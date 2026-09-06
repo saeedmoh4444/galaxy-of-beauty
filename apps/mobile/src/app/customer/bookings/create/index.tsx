@@ -30,6 +30,13 @@ interface TechnicianService {
 interface ServiceVariant {
   id?: number;
   nameJson?: { ar?: string; en?: string };
+  priceDelta?: number;
+}
+
+interface AppliedPromo {
+  code: string;
+  discountAmount: number;
+  finalAmount: number;
 }
 
 interface ServiceDetail extends ServiceListItem {
@@ -77,9 +84,15 @@ export default function CreateBookingScreen() {
   // in handleSubmit (local time, not UTC) so the user controls the slot.
   const [bookingDate, setBookingDate] = useState<string>(buildNextDays(locale)[0]?.iso ?? '');
   const [bookingTime, setBookingTime] = useState<string>('10:00');
+  // B.2 — promo chain: validate at confirm, redeem after booking creation.
+  const [promoCode, setPromoCode] = useState('');
+  const [appliedPromo, setAppliedPromo] = useState<AppliedPromo | null>(null);
+  const [promoMsg, setPromoMsg] = useState('');
+  const [promoErr, setPromoErr] = useState(false);
   const NEXT_DAYS = buildNextDays(locale);
 
   const isAuthed = useAuthState();
+  const utils = trpc.useUtils();
   const servicesQ = trpc.services.list.useQuery({ page: 1, limit: MAX_LIST_SIZE });
   // Guests have no address book — gate to avoid a 401 on mount.
   const addressesQ = trpc.addresses.list.useQuery(undefined, { enabled: isAuthed });
@@ -91,8 +104,24 @@ export default function CreateBookingScreen() {
   const addresses: AddressItem[] = (addressesQ.data as AddressItem[] | undefined) ?? [];
   const loading = servicesQ.isLoading || addressesQ.isLoading;
 
+  const variants = svc?.variants ?? [];
+  // Displayed total: base price + selected variant delta.
+  const orderAmount =
+    Number(svc?.basePrice ?? 0) +
+    (variantId ? Number(variants.find((v) => v.id === variantId)?.priceDelta ?? 0) : 0);
+
+  const redeemMut = trpc.promo.redeemOnBooking.useMutation({
+    onError: () => showToast('error', t('promo.redeem-failed')),
+  });
+
   const createMut = trpc.bookings.create.useMutation({
-    onSuccess: () => {
+    onSuccess: (result) => {
+      if (appliedPromo) {
+        const bookingId = Number((result as unknown as { id?: number | string })?.id ?? 0);
+        if (bookingId > 0) {
+          redeemMut.mutate({ code: appliedPromo.code, bookingId });
+        }
+      }
       showToast('success', t('booking.created-success'));
       setTimeout(() => router.back(), 1000);
     },
@@ -100,6 +129,39 @@ export default function CreateBookingScreen() {
       showToast('error', t('booking.create-failed'));
     },
   });
+
+  const handleApplyPromo = async () => {
+    setPromoMsg('');
+    setPromoErr(false);
+    if (!promoCode.trim()) {
+      setPromoErr(true);
+      setPromoMsg(t('promo.err.required'));
+      return;
+    }
+    try {
+      const r = await utils.promo.validate.fetch({
+        code: promoCode.trim().toUpperCase(),
+        orderAmount,
+      });
+      setAppliedPromo({
+        code: r.code,
+        discountAmount: r.discountAmount,
+        finalAmount: r.finalAmount,
+      });
+      setPromoMsg(t('promo.applied'));
+    } catch {
+      setAppliedPromo(null);
+      setPromoErr(true);
+      setPromoMsg(t('promo.err.invalid'));
+    }
+  };
+
+  const handleRemovePromo = () => {
+    setAppliedPromo(null);
+    setPromoCode('');
+    setPromoMsg('');
+    setPromoErr(false);
+  };
 
   const handleSubmit = () => {
     if (!serviceId || !addressId) {
@@ -131,8 +193,6 @@ export default function CreateBookingScreen() {
       endAt: new Date(start.getTime() + durationMin * 60000).toISOString(),
     });
   };
-
-  const variants = svc?.variants ?? [];
 
   if (loading) return <ActivityIndicator color="#7c3aed" style={{ marginTop: 40 }} size="large" />;
 
@@ -329,7 +389,54 @@ export default function CreateBookingScreen() {
                 {t('booking.date-time-confirm', { date: bookingDate, time: bookingTime })}
               </Text>
             </View>
+            {appliedPromo && (
+              <>
+                <View style={styles.summaryRow}>
+                  <Text style={styles.summaryLabel}>
+                    {t('promo.field.discount')} ({appliedPromo.code})
+                  </Text>
+                  <Text style={styles.summaryDiscount}>
+                    −{appliedPromo.discountAmount.toFixed(0)} {t('misc.sar')}
+                  </Text>
+                </View>
+                <View style={styles.summaryRow}>
+                  <Text style={styles.summaryTotalLabel}>{t('promo.field.total')}</Text>
+                  <Text style={styles.summaryPrice}>
+                    {appliedPromo.finalAmount.toFixed(0)} {t('misc.sar')}
+                  </Text>
+                </View>
+              </>
+            )}
           </View>
+
+          {/* Promo code (B.2) */}
+          {appliedPromo ? (
+            <View style={styles.promoApplied}>
+              <Text style={styles.promoAppliedText}>
+                {t('promo.applied')}: {appliedPromo.code}
+              </Text>
+              <TouchableOpacity onPress={handleRemovePromo}>
+                <Text style={styles.promoRemove}>{t('promo.remove')}</Text>
+              </TouchableOpacity>
+            </View>
+          ) : (
+            <View style={styles.promoRow}>
+              <TextInput
+                style={[styles.input, styles.promoInput]}
+                value={promoCode}
+                onChangeText={(v) => setPromoCode(v.toUpperCase())}
+                placeholder={t('promo.codePlaceholder')}
+                placeholderTextColor="#9ca3af"
+                autoCapitalize="characters"
+              />
+              <TouchableOpacity style={styles.promoBtn} onPress={handleApplyPromo}>
+                <Text style={styles.promoBtnText}>{t('promo.apply')}</Text>
+              </TouchableOpacity>
+            </View>
+          )}
+          {promoMsg ? (
+            <Text style={[styles.promoMsg, promoErr && styles.promoMsgErr]}>{promoMsg}</Text>
+          ) : null}
           <Text style={styles.note}>{t('bookings.create.technician-note')}</Text>
           <View style={styles.btnRow}>
             <TouchableOpacity style={styles.backBtn} onPress={() => setStep(2)}>
@@ -470,5 +577,32 @@ const styles = StyleSheet.create({
   summaryLabel: { fontSize: 13, color: '#6b7280' },
   summaryValue: { fontSize: 14, color: '#374151' },
   summaryPrice: { fontSize: 16, fontWeight: '700', color: '#7c3aed' },
+  summaryDiscount: { fontSize: 14, fontWeight: '600', color: '#16a34a' },
+  summaryTotalLabel: { fontSize: 13, fontWeight: '700', color: '#111827' },
+  promoApplied: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginTop: 12,
+    borderWidth: 1,
+    borderColor: '#bbf7d0',
+    backgroundColor: '#f0fdf4',
+    borderRadius: 10,
+    padding: 12,
+  },
+  promoAppliedText: { fontSize: 13, fontWeight: '600', color: '#15803d' },
+  promoRemove: { fontSize: 13, fontWeight: '600', color: '#7c3aed' },
+  promoRow: { flexDirection: 'row', gap: 8, marginTop: 12 },
+  promoInput: { flex: 1 },
+  promoBtn: {
+    borderWidth: 1,
+    borderColor: '#7c3aed',
+    borderRadius: 10,
+    paddingHorizontal: 16,
+    justifyContent: 'center',
+  },
+  promoBtnText: { fontSize: 14, fontWeight: '600', color: '#7c3aed' },
+  promoMsg: { fontSize: 12, color: '#16a34a', marginTop: 8, textAlign: 'right' },
+  promoMsgErr: { color: '#dc2626' },
   note: { fontSize: 11, color: '#9ca3af', textAlign: 'right', marginTop: 12 },
 });
