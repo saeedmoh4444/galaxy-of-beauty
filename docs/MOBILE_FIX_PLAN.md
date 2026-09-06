@@ -438,12 +438,26 @@ REJECTED(reason)` + `createdByUserId` + `reviewedBy/reviewedAt`. Only
     the engine behind every "and then notify them" in B.1–B.25):
     - Existing: notifications router + sentVia, SMS (Twilio), push (Expo),
       BullMQ workers, whatsappBot (gated). Missing: the framework layer.
-    - **P1 — templates + triggers + preferences**: ar/en template model
-      with `{{placeholders}}` (catalog pattern); trigger registry —
-      time-based (BullMQ delays: 24/48h booking reminders), action-based
-      (event hooks: booking created, registration started, approval
-      decided), condition-based (sweep jobs); per-type per-channel
-      opt-in/out preferences UI (anti-fatigue).
+    - ✅ **P1 core — DONE (2026-09-06)**:
+      - `NotificationTemplate` model + migration + 6 seeded templates
+        (booking_created, booking_request_tech, booking_accepted,
+        booking_reminder, booking_followup, loyalty_nudge) — bilingual
+        with `{{placeholders}}`, category → preference toggle mapping.
+      - `lib/notify.ts`: `renderTemplate` + `notifyUser` (prefs-respecting,
+        channel filtering via smsAlerts/emailDigest, in-app row synchronous,
+        external channels via gob-notifications queue with skipInApp flag).
+      - Worker dispatch wired to REAL senders (sendEmail/sendSms/
+        sendPushToUser) — the TODO stubs are gone; job-name dispatcher
+        (`notification.send` / `booking.reminder`).
+      - Triggers: booking create → customer + technician notifications;
+        transition accept → booking_accepted; 48h/24h pre-appointment
+        reminder jobs (BullMQ delay, status re-checked at fire time,
+        cancelled bookings never get one).
+      - Tests: `notify.test.ts` (7) + `booking-reminder.test.ts` (5).
+    - **P1 remaining**: preferences UI per-type per-channel (the
+      notification-settings pages exist but map only the flat booleans —
+      align + extend), registration-started and approval-decided triggers,
+      condition-based sweep jobs.
     - **P2 — the blueprints**: customers (booking reminders 24–48h with
       prep instructions, post-service follow-up + rebook, loyalty nudges
       "باقي ٥٠ نقطة على خدمة مجانية!", "we miss you" 2-month re-engagement
