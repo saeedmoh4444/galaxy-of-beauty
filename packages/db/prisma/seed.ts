@@ -86,6 +86,14 @@ async function main() {
     db.compareProduct.deleteMany(),
     db.matchmakerQuestion.deleteMany(),
     db.notificationTemplate.deleteMany(),
+    // Marketplace + provider submission tables (B.3/B.6) — vendor rows
+    // reference users, so they must be wiped before db.user.deleteMany().
+    db.cartItem.deleteMany(),
+    db.productReview.deleteMany(),
+    db.product.deleteMany(),
+    db.vendor.deleteMany(),
+    db.productCategory.deleteMany(),
+    db.providerSubmission.deleteMany(),
     db.user.deleteMany(),
     db.saudiCity.deleteMany(),
   ]);
@@ -2710,6 +2718,28 @@ async function main() {
         bodyJson: {
           ar: '{{customerName}}، باقي {{pointsNeeded}} نقطة فقط لتصلي إلى مستوى {{nextTier}}!',
           en: '{{customerName}}, only {{pointsNeeded}} points to reach {{nextTier}} tier!',
+        },
+      },
+      // B.6/B.7 — provider submission decisions. Category 'provider' is not
+      // a preference toggle → always delivered.
+      {
+        key: 'submission_approved',
+        category: 'provider',
+        channels: ['in_app', 'push'],
+        titleJson: { ar: 'تمت الموافقة على طلبك', en: 'Your Submission Was Approved' },
+        bodyJson: {
+          ar: 'تهانينا {{providerName}}! تمت الموافقة على {{subjectName}} من قبل فريق جالكسي بيوتي.',
+          en: 'Congratulations {{providerName}}! Your {{subjectName}} was approved by the Galaxy of Beauty team.',
+        },
+      },
+      {
+        key: 'submission_rejected',
+        category: 'provider',
+        channels: ['in_app', 'push'],
+        titleJson: { ar: 'تم رفض طلبك', en: 'Your Submission Was Rejected' },
+        bodyJson: {
+          ar: 'عذرًا {{providerName}}، تم رفض {{subjectName}}.{{reason}}',
+          en: 'Sorry {{providerName}}, your {{subjectName}} was rejected.{{reason}}',
         },
       },
     ] as const;
