@@ -4,19 +4,20 @@ import { trpc } from '@/lib/trpc-react';
 import { useLocale } from '@/components/LocaleProvider';
 import { useAuthState } from '@/hooks/useAuthState';
 
-interface PostCarePlan {
-  id?: number;
-  emoji?: string;
-  nameAr?: string;
-  descAr?: string;
+interface LibraryCategory {
+  key: string;
+  emoji: string;
+  nameAr: string;
+  nameEn: string;
+  tipsCount: number;
 }
 
 export default function PostCareScreen(): JSX.Element {
-  const { t } = useLocale();
+  const { t, locale } = useLocale();
   const isAuthed = useAuthState();
   const libraryQ = trpc.postCare.library.useQuery(undefined, { enabled: isAuthed });
-  const data: PostCarePlan[] =
-    (libraryQ.data as unknown as { categories?: PostCarePlan[] } | null)?.categories ?? [];
+  const data: LibraryCategory[] =
+    (libraryQ.data as unknown as { categories?: LibraryCategory[] } | null)?.categories ?? [];
   if (libraryQ.isLoading) return <SkeletonList count={4} />;
 
   return (
@@ -33,11 +34,13 @@ export default function PostCareScreen(): JSX.Element {
     >
       <Text style={styles.t}>{t('mobile.postCare.title')}</Text>
       {data.map((p, i) => (
-        <View key={i} style={styles.card}>
+        <View key={p.key ?? i} style={styles.card}>
           <Text style={styles.emoji}>{p.emoji ?? ''}</Text>
           <View style={{ flex: 1 }}>
-            <Text style={styles.name}>{p.nameAr ?? ''}</Text>
-            <Text style={styles.desc}>{p.descAr ?? ''}</Text>
+            <Text style={styles.name}>{locale === 'en' ? p.nameEn : p.nameAr}</Text>
+            <Text style={styles.desc}>
+              {t('mobile.postCare.tipsCount', { count: p.tipsCount })}
+            </Text>
           </View>
         </View>
       ))}
