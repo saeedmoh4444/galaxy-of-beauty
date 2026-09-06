@@ -288,19 +288,24 @@ remaining ungated, mobile tsc + lint clean, API suite 823/823.
     - Phasing: P1 rename + occasion model + limits → P2 seasonal occasions
       - gift/experience rewards.
 15. **Post-care logic** (user finding, 2026-09-03):
-    - **LIVE BUG — myPlan is dead**: `orderBy: { completedAt: 'desc' }` on
-      a field that does NOT exist on Booking (schema has startAt/endAt/
-      cancelledAt only) → Prisma throws → `.catch(() => [])` silently
-      returns [] → the personalized plan is ALWAYS empty. Same class as the
-      search ILIKE silent-fallback bug. Fix: order by a real field
-      (startAt/endAt) — completion time ≈ endAt.
+    - ✅ **LIVE BUG — myPlan is dead** — FIXED (2026-09-06): `orderBy:
+{ completedAt: 'desc' }` threw (no such column) and `.catch(() => [])`
+      silently returned [] → the personalized plan was ALWAYS empty. Now
+      orders by `endAt` desc, returns `completedAt: endAt` (ISO), no silent
+      catch. Regression test: `post-care.test.ts` (5 tests). Also fixed in
+      the same pass: category mapping fed the ARABIC category name into an
+      English-only map (always fell back to skincare) — now matches by
+      category `slug` patterns; myPlan returns bilingual
+      `serviceNameAr/En` + `categoryAr/En` and web/mobile render by locale
+      (EN mode was broken — `.ar`-only reads).
     - **Day-aware personalization**: `TIMEFRAMES` exists but is unused —
       tips should progress by days-since-completion (day 1 vs day 7 tips).
     - **Reminders**: schedule push notifications per tip timeframe
       (notification + reminder infra exist).
     - **Progress checklist**: mark tips done (bingo-mark pattern).
-    - **i18n**: `myPlan` reads `.ar` only for service/category names — EN
-      mode broken; consider making `byCategory` public (guest content).
+    - ✅ **i18n** — FIXED (2026-09-06): myPlan now returns bilingual names
+      and web/mobile render by locale. Remaining consideration: making
+      `byCategory` public (guest content).
 16. **Mood-board logic** (user finding, 2026-09-03 — has drag-drop reorder
     with persistence already):
     - **P1 — board lifecycle**: edit/rename/delete boards, choose the cover
