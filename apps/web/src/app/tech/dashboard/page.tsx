@@ -71,6 +71,28 @@ export default function TechDashboardPage(): JSX.Element {
   const myServices =
     (myServicesQ.data as unknown as Array<Record<string, unknown>> | undefined) ?? [];
 
+  // B.7 — My Promotions (time-limited discounts on own services).
+  const myPromotionsQ = api.promotions.myPromotions.useQuery(undefined, {
+    enabled: isAuthenticated,
+  });
+  const proposePromoMut = api.promotions.propose.useMutation({
+    onSuccess: () => {
+      setShowPromoForm(false);
+      myPromotionsQ.refetch();
+    },
+  });
+  const [showPromoForm, setShowPromoForm] = useState(false);
+  const [promoSvcId, setPromoSvcId] = useState<number | undefined>();
+  const [promoDealPrice, setPromoDealPrice] = useState('');
+  const [promoStarts, setPromoStarts] = useState(
+    new Date(Date.now() + 86_400_000).toISOString().slice(0, 16),
+  );
+  const [promoEnds, setPromoEnds] = useState(
+    new Date(Date.now() + 3 * 86_400_000).toISOString().slice(0, 16),
+  );
+  const myPromotions =
+    (myPromotionsQ.data as unknown as Array<Record<string, unknown>> | undefined) ?? [];
+
   // technicianEarnings returns { dailyEarnings, totalEarnings, ... } — the
   // today/week/month summaries below were never part of that shape, so the
   // KPIs show 0 until product decides the intended aggregation.
@@ -273,6 +295,122 @@ export default function TechDashboardPage(): JSX.Element {
                 ) : null}
               </Card>
             ))}
+          </div>
+        )}
+
+        {/* B.7 — My Promotions (time-limited discounts, admin-approved) */}
+        <div className="flex items-center justify-between">
+          <h2 className="text-lg font-semibold text-text-primary">{t('tech.promotions.title')}</h2>
+          <Button size="sm" variant="outline" onClick={() => setShowPromoForm(!showPromoForm)}>
+            {t('tech.promotions.propose')}
+          </Button>
+        </div>
+        {showPromoForm && (
+          <Card padding="md">
+            <div className="space-y-3">
+              <div>
+                <label className="mb-1 block text-sm text-text-secondary">
+                  {t('tech.promotions.select-service')}
+                </label>
+                <select
+                  value={promoSvcId ?? ''}
+                  onChange={(e) => setPromoSvcId(Number(e.target.value) || undefined)}
+                  className="w-full rounded-lg border border-gray-300 p-2 text-sm dark:border-gray-600 dark:bg-gray-800"
+                >
+                  <option value="">—</option>
+                  {myServices.map((mapping: Record<string, unknown>) => {
+                    const svc = mapping.service as Record<string, unknown>;
+                    const sid = svc?.id as number;
+                    return (
+                      <option key={sid} value={sid}>
+                        {localize(svc?.titleJson, locale)} ·{' '}
+                        {formatCurrency(Number(mapping.customPrice ?? svc?.basePrice ?? 0))}
+                      </option>
+                    );
+                  })}
+                </select>
+              </div>
+              <Input
+                label={t('tech.promotions.deal-price')}
+                type="number"
+                value={promoDealPrice}
+                onChange={(e) => setPromoDealPrice(e.target.value)}
+              />
+              <div className="grid gap-3 sm:grid-cols-2">
+                <Input
+                  label={t('tech.promotions.starts-at')}
+                  type="datetime-local"
+                  value={promoStarts}
+                  onChange={(e) => setPromoStarts(e.target.value)}
+                />
+                <Input
+                  label={t('tech.promotions.ends-at')}
+                  type="datetime-local"
+                  value={promoEnds}
+                  onChange={(e) => setPromoEnds(e.target.value)}
+                />
+              </div>
+              {proposePromoMut.isError && (
+                <p className="text-sm text-red-600">{proposePromoMut.error.message}</p>
+              )}
+              <Button
+                onClick={() =>
+                  proposePromoMut.mutate({
+                    serviceId: promoSvcId ?? 0,
+                    dealPrice: Number(promoDealPrice),
+                    startsAt: new Date(promoStarts).toISOString(),
+                    endsAt: new Date(promoEnds).toISOString(),
+                  })
+                }
+                loading={proposePromoMut.isPending}
+                disabled={!promoSvcId || !promoDealPrice || !promoStarts || !promoEnds}
+              >
+                {t('button.save')}
+              </Button>
+            </div>
+          </Card>
+        )}
+        {!myPromotionsQ.isLoading && myPromotions.length === 0 ? (
+          <EmptyState title={t('tech.promotions.empty')} />
+        ) : (
+          <div className="space-y-3">
+            {myPromotions.map((sub: Record<string, unknown>) => {
+              const payload = (sub.payload ?? {}) as Record<string, unknown>;
+              return (
+                <Card key={sub.id as number} padding="md">
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <p className="font-semibold text-text-primary">{payload.titleAr as string}</p>
+                      <p className="text-sm text-text-secondary">
+                        {formatCurrency(payload.originalPrice as number)} ←{' '}
+                        <span className="font-bold text-red-600">
+                          {formatCurrency(payload.dealPrice as number)}
+                        </span>
+                      </p>
+                    </div>
+                    <span
+                      className={`rounded-full px-3 py-1 text-xs font-medium ${
+                        sub.status === 'APPROVED'
+                          ? 'bg-green-100 text-green-700'
+                          : sub.status === 'REJECTED'
+                            ? 'bg-red-100 text-red-700'
+                            : 'bg-amber-100 text-amber-700'
+                      }`}
+                    >
+                      {t(
+                        PACKAGE_STATUS_LABEL[(sub.status as string) ?? ''] ??
+                          'tech.packages.status-pending',
+                      )}
+                    </span>
+                  </div>
+                  {sub.status === 'REJECTED' && sub.reviewNotes ? (
+                    <p className="mt-2 text-xs text-red-600">
+                      {t('tech.packages.reject-reason', { reason: sub.reviewNotes as string })}
+                    </p>
+                  ) : null}
+                </Card>
+              );
+            })}
           </div>
         )}
 

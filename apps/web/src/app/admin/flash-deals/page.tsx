@@ -1,7 +1,7 @@
 'use client';
 import { useState } from 'react';
 import { api } from '@/lib/trpc';
-import { Card, CardListSkeleton, Button, formatCurrency } from '@galaxy/ui';
+import { Card, CardListSkeleton, Button, Input, formatCurrency, useAuth } from '@galaxy/ui';
 import { useLocale } from '@/components/LocaleProvider';
 
 const SERVICES = [
@@ -15,15 +15,24 @@ const SERVICES = [
 
 export default function AdminFlashDealsPage(): JSX.Element {
   const { t } = useLocale();
-  const { data: active, isLoading } = api.flashDeals.active.useQuery() as {
-    data: Array<Record<string, unknown>> | undefined;
-    isLoading: boolean;
-  };
+  const { isAuthenticated } = useAuth();
+  const { data: active, isLoading } = api.flashDeals.active.useQuery();
   const createMut = api.flashDeals.create.useMutation();
   const [svcId, setSvcId] = useState(1);
   const [discount, setDiscount] = useState(30);
   const [hours, setHours] = useState(24);
   const [maxRedemptions, setMax] = useState(20);
+
+  // B.7 — provider promotion proposals review queue.
+  const { data: pendingData, refetch: refetchQueue } = api.providerReview.list.useQuery(
+    { kind: 'promotion', status: 'PENDING_REVIEW' },
+    { enabled: isAuthenticated },
+  ) as { data: { items: Array<Record<string, unknown>> } | undefined; refetch: () => void };
+  const pendingSubs = pendingData?.items ?? [];
+  const [rejectNotes, setRejectNotes] = useState<Record<number, string>>({});
+  const decideMut = api.providerReview.decide.useMutation({
+    onSuccess: () => refetchQueue(),
+  });
 
   return (
     <>
@@ -89,6 +98,65 @@ export default function AdminFlashDealsPage(): JSX.Element {
             {t('admin.flash-deals.create-button')}
           </Button>
         </Card>
+
+        {/* B.7 — provider promotion proposals */}
+        {pendingSubs.length > 0 && (
+          <Card padding="lg">
+            <h3 className="font-bold mb-3">{t('admin.promotions.review-title')}</h3>
+            <div className="space-y-3">
+              {pendingSubs.map((sub: Record<string, unknown>) => {
+                const payload = (sub.payload ?? {}) as Record<string, unknown>;
+                return (
+                  <div
+                    key={sub.id as number}
+                    className="flex flex-wrap items-center justify-between gap-3 rounded-lg border p-3"
+                  >
+                    <div>
+                      <p className="font-bold">{payload.titleAr as string}</p>
+                      <p className="text-xs text-text-secondary">
+                        {t('admin.promotions.review-provider', { id: sub.providerId as number })}
+                        {' · '}
+                        {formatCurrency(payload.originalPrice as number)} ←{' '}
+                        {formatCurrency(payload.dealPrice as number)}
+                      </p>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <Input
+                        placeholder={t('admin.promotions.reject-notes-placeholder')}
+                        value={rejectNotes[sub.id as number] ?? ''}
+                        onChange={(e) =>
+                          setRejectNotes({ ...rejectNotes, [sub.id as number]: e.target.value })
+                        }
+                        className="w-48"
+                      />
+                      <Button
+                        size="sm"
+                        variant="outline"
+                        onClick={() =>
+                          decideMut.mutate({
+                            id: sub.id as number,
+                            approve: false,
+                            notes: rejectNotes[sub.id as number] || undefined,
+                          })
+                        }
+                        loading={decideMut.isPending}
+                      >
+                        {t('admin.packages.reject')}
+                      </Button>
+                      <Button
+                        size="sm"
+                        onClick={() => decideMut.mutate({ id: sub.id as number, approve: true })}
+                        loading={decideMut.isPending}
+                      >
+                        {t('admin.packages.approve')}
+                      </Button>
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          </Card>
+        )}
 
         <Card padding="lg">
           <h3 className="font-bold mb-3">{t('admin.flash-deals.active-deals')}</h3>

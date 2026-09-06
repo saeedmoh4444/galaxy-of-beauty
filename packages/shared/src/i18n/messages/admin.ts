@@ -115,6 +115,27 @@ export const adminMessages = {
   'tech.packages.status-approved': { ar: 'معتمدة', en: 'Approved' },
   'tech.packages.status-rejected': { ar: 'مرفوضة', en: 'Rejected' },
   'tech.packages.reject-reason': { ar: 'سبب الرفض: {reason}', en: 'Rejection reason: {reason}' },
+
+  // ---- B.7 tech promotions ----
+  'admin.promotions.review-title': {
+    ar: 'عروض مقدمات الخدمة بانتظار المراجعة',
+    en: 'Pending Provider Promotion Proposals',
+  },
+  'admin.promotions.review-provider': {
+    ar: 'مقدمة الخدمة #{id}',
+    en: 'Service provider #{id}',
+  },
+  'admin.promotions.reject-notes-placeholder': {
+    ar: 'سبب الرفض (اختياري)',
+    en: 'Rejection reason (optional)',
+  },
+  'tech.promotions.title': { ar: 'عروضي الترويجية', en: 'My Promotions' },
+  'tech.promotions.propose': { ar: '+ اقترح عرضًا', en: '+ Propose Promotion' },
+  'tech.promotions.select-service': { ar: 'الخدمة', en: 'Service' },
+  'tech.promotions.deal-price': { ar: 'سعر العرض (ر.س)', en: 'Deal price (SAR)' },
+  'tech.promotions.starts-at': { ar: 'يبدأ من', en: 'Starts at' },
+  'tech.promotions.ends-at': { ar: 'ينتهي عند', en: 'Ends at' },
+  'tech.promotions.empty': { ar: 'لا توجد عروض مقترحة بعد', en: 'No proposed promotions yet' },
   'tech.dashboard.pending-empty': { ar: 'لا توجد طلبات معلقة', en: 'No pending requests' },
 
   'tech.wallet.title': { ar: ' محفظتي', en: 'My Wallet' },
