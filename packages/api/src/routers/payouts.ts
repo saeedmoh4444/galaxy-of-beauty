@@ -213,6 +213,13 @@ export const payoutRouter = router({
                 email: true,
               },
             },
+            // Store plan Phase 3 — store payouts carry a vendor instead.
+            vendor: {
+              select: {
+                id: true,
+                storeName: true,
+              },
+            },
           },
           orderBy: { createdAt: 'desc' },
           skip: (input.page - 1) * input.limit,
