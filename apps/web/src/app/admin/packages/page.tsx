@@ -29,6 +29,20 @@ export default function AdminPackagesPage(): JSX.Element {
     },
   });
 
+  // B.6 — provider-submission review queue (package proposals).
+  const { data: pendingData, refetch: refetchQueue } = api.providerReview.list.useQuery(
+    { kind: 'package', status: 'PENDING_REVIEW' },
+    { enabled: isAuthenticated },
+  ) as { data: { items: Array<Record<string, unknown>> } | undefined; refetch: () => void };
+  const pendingSubs = pendingData?.items ?? [];
+  const [rejectNotes, setRejectNotes] = useState<Record<number, string>>({});
+  const decideMut = api.providerReview.decide.useMutation({
+    onSuccess: () => {
+      refetch();
+      refetchQueue();
+    },
+  });
+
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between">
@@ -61,6 +75,60 @@ export default function AdminPackagesPage(): JSX.Element {
           ))}
         </div>
       )}
+      {/* B.6 — pending provider proposals review queue */}
+      {pendingSubs.length > 0 && (
+        <div className="space-y-3">
+          <h2 className="text-lg font-bold">{t('admin.packages.review-title')}</h2>
+          {pendingSubs.map((sub: Record<string, unknown>) => {
+            const payload = (sub.payload ?? {}) as Record<string, unknown>;
+            const name = (payload.nameJson as Record<string, string> | undefined)?.ar ?? '';
+            return (
+              <Card key={sub.id as number} padding="md">
+                <div className="flex flex-wrap items-center justify-between gap-3">
+                  <div>
+                    <p className="font-bold">{name}</p>
+                    <p className="text-xs text-text-secondary">
+                      {t('admin.packages.review-provider', { id: sub.providerId as number })}
+                    </p>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <Input
+                      placeholder={t('admin.packages.reject-notes-placeholder')}
+                      value={rejectNotes[sub.id as number] ?? ''}
+                      onChange={(e) =>
+                        setRejectNotes({ ...rejectNotes, [sub.id as number]: e.target.value })
+                      }
+                      className="w-48"
+                    />
+                    <Button
+                      size="sm"
+                      variant="outline"
+                      onClick={() =>
+                        decideMut.mutate({
+                          id: sub.id as number,
+                          approve: false,
+                          notes: rejectNotes[sub.id as number] || undefined,
+                        })
+                      }
+                      loading={decideMut.isPending}
+                    >
+                      {t('admin.packages.reject')}
+                    </Button>
+                    <Button
+                      size="sm"
+                      onClick={() => decideMut.mutate({ id: sub.id as number, approve: true })}
+                      loading={decideMut.isPending}
+                    >
+                      {t('admin.packages.approve')}
+                    </Button>
+                  </div>
+                </div>
+              </Card>
+            );
+          })}
+        </div>
+      )}
+
       <Modal
         open={showCreate}
         onClose={() => setShowCreate(false)}
