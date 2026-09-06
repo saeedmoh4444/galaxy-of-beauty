@@ -89,8 +89,44 @@ export const providerReviewRouter = router({
           },
         });
         subjectName = ((payload.nameJson as { ar?: string })?.ar ?? '') || `باقة #${pkg.id}`;
+      } else if (submission.kind === 'promotion') {
+        // B.7 — approved promotions become FlashDeal rows (they appear in
+        // the existing public flashDeals feed). Rejected → nothing created.
+        const payload = submission.payload as {
+          serviceId: number;
+          titleAr?: string;
+          titleEn?: string;
+          originalPrice: number;
+          dealPrice: number;
+          startsAt: string;
+          endsAt: string;
+        };
+        subjectName = payload.titleAr ? `عرض ${payload.titleAr}` : `عرض #${submission.id}`;
+        if (input.approve) {
+          const originalPrice = Number(payload.originalPrice);
+          const dealPrice = Number(payload.dealPrice);
+          const discountValue = Math.round((originalPrice - dealPrice) * 100) / 100;
+          const discountPercent =
+            originalPrice > 0 ? Math.round((discountValue / originalPrice) * 100) : 0;
+          await prisma.flashDeal.create({
+            data: {
+              serviceId: payload.serviceId,
+              titleAr: payload.titleAr,
+              titleEn: payload.titleEn,
+              discountPercent,
+              originalPrice,
+              dealPrice,
+              discountValue,
+              maxRedemptions: 20,
+              currentRedemptions: 0,
+              startsAt: new Date(payload.startsAt),
+              endsAt: new Date(payload.endsAt),
+              isActive: true,
+            },
+          });
+        }
       } else {
-        // 'promotion'/'product' kinds land with B.7 and the store plan.
+        // 'product' kind lands with the store plan.
         subjectName = `${submission.kind} #${submission.id}`;
       }
 
