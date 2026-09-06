@@ -11,6 +11,7 @@ import {
   Modal,
   PageContainer,
   CardListSkeleton,
+  useAuth,
 } from '@galaxy/ui';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
 import { useLocale } from '@/components/LocaleProvider';
@@ -28,14 +29,18 @@ const STATUS_TABS = [
 
 export default function BookingsPage(): JSX.Element {
   const { t, locale } = useLocale();
+  const { isAuthenticated } = useAuth();
   const [status, setStatus] = useState<string | undefined>(undefined);
   const [page, setPage] = useState(1);
   const [cancelId, setCancelId] = useState<number | null>(null);
-  const { data, isLoading, isError, refetch } = api.bookings.list.useQuery({
-    status,
-    page,
-    limit: 10,
-  });
+  const { data, isLoading, isError, refetch } = api.bookings.list.useQuery(
+    {
+      status,
+      page,
+      limit: 10,
+    },
+    { enabled: isAuthenticated },
+  );
   const cancelMut = api.bookings.transition.useMutation({
     onSuccess: () => {
       setCancelId(null);

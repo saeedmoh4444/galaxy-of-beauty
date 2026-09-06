@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import { api } from '@/lib/trpc';
 import type { RouterOutput } from '@galaxy/api/client';
-import { Button, Card, CardListSkeleton, ErrorAlert, EmptyState, Modal } from '@galaxy/ui';
+import { Button, Card, CardListSkeleton, ErrorAlert, EmptyState, Modal, useAuth } from '@galaxy/ui';
 import { useLocale } from '@/components/LocaleProvider';
 import { type TranslationKey } from '@galaxy/shared';
 
@@ -51,16 +51,20 @@ const statusBadge = (status: string): { labelKey: TranslationKey; className: str
 
 export default function AdminDisputesPage(): JSX.Element {
   const { t, locale } = useLocale();
+  const { isAuthenticated } = useAuth();
   const [statusTab, setStatusTab] = useState<string>('OPEN');
   const [resolveOpen, setResolveOpen] = useState(false);
   const [selected, setSelected] = useState<DisputeItem | null>(null);
   const [resolveStatus, setResolveStatus] = useState<string>('RESOLVED_CUSTOMER');
   const [resolutionText, setResolutionText] = useState('');
 
-  const { data, isLoading, isError, refetch } = api.disputes.listAdmin.useQuery({
-    page: 1,
-    limit: 20,
-  });
+  const { data, isLoading, isError, refetch } = api.disputes.listAdmin.useQuery(
+    {
+      page: 1,
+      limit: 20,
+    },
+    { enabled: isAuthenticated },
+  );
   const resolveMut = api.disputes.resolve.useMutation({
     onSuccess: () => {
       refetch();

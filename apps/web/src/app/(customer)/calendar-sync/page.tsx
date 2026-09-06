@@ -1,16 +1,21 @@
 'use client';
 import { api } from '@/lib/trpc';
-import { Card, Button } from '@galaxy/ui';
+import { Card, Button, useAuth } from '@galaxy/ui';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
 import { useLocale } from '@/components/LocaleProvider';
 
 export default function CalendarSyncPage(): JSX.Element {
   const { t, locale } = useLocale();
-  const { data: status, refetch } = api.calendarSync.status.useQuery() as {
+  const { isAuthenticated } = useAuth();
+  const { data: status, refetch } = api.calendarSync.status.useQuery(undefined, {
+    enabled: isAuthenticated,
+  }) as {
     data: Record<string, unknown> | undefined;
     refetch: () => void;
   };
-  const { data: upcoming } = api.calendarSync.upcoming.useQuery() as {
+  const { data: upcoming } = api.calendarSync.upcoming.useQuery(undefined, {
+    enabled: isAuthenticated,
+  }) as {
     data: Array<Record<string, unknown>> | undefined;
   };
   const connectMut = api.calendarSync.connect.useMutation({ onSuccess: () => refetch() });

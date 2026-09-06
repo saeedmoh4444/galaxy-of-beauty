@@ -1,13 +1,17 @@
 'use client';
 import { api } from '@/lib/trpc';
-import { Card, CardListSkeleton, formatCurrency } from '@galaxy/ui';
+import { Card, CardListSkeleton, formatCurrency, useAuth } from '@galaxy/ui';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
 import { useLocale } from '@/components/LocaleProvider';
 import { localize } from '@galaxy/shared';
 
 export default function InvoicesPage(): JSX.Element {
   const { t, locale } = useLocale();
-  const { data: bookingsData, isLoading } = api.bookings.list.useQuery({ page: 1, limit: 50 }) as {
+  const { isAuthenticated } = useAuth();
+  const { data: bookingsData, isLoading } = api.bookings.list.useQuery(
+    { page: 1, limit: 50 },
+    { enabled: isAuthenticated },
+  ) as {
     data: Record<string, unknown> | undefined;
     isLoading: boolean;
     isError: boolean;

@@ -1,17 +1,22 @@
 'use client';
 
 import { api } from '@/lib/trpc';
-import { Card, GridSkeleton, ErrorAlert, Button, formatCurrency } from '@galaxy/ui';
+import { Card, GridSkeleton, ErrorAlert, Button, formatCurrency, useAuth } from '@galaxy/ui';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
 import { useLocale } from '@/components/LocaleProvider';
 
 export default function VIPMembershipPage(): JSX.Element {
   const { t } = useLocale();
-  const { data: tiers, isLoading } = api.vipMembership.tiers.useQuery() as {
+  const { isAuthenticated } = useAuth();
+  const { data: tiers, isLoading } = api.vipMembership.tiers.useQuery(undefined, {
+    enabled: isAuthenticated,
+  }) as {
     data: Array<Record<string, unknown>> | undefined;
     isLoading: boolean;
   };
-  const { data: myTier } = api.vipMembership.myTier.useQuery() as {
+  const { data: myTier } = api.vipMembership.myTier.useQuery(undefined, {
+    enabled: isAuthenticated,
+  }) as {
     data: Record<string, unknown> | undefined;
   };
   const upgradeMut = api.vipMembership.upgrade.useMutation();

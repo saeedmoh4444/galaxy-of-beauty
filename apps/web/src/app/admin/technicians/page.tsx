@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import { api } from '@/lib/trpc';
 import type { RouterOutputs } from '@galaxy/api';
-import { Button, Card, GridSkeleton, ErrorAlert, EmptyState, Modal } from '@galaxy/ui';
+import { Button, Card, GridSkeleton, ErrorAlert, EmptyState, Modal, useAuth } from '@galaxy/ui';
 import { useLocale } from '@/components/LocaleProvider';
 import { type TranslationKey } from '@galaxy/shared';
 
@@ -36,6 +36,7 @@ const kycBadge = (status: string): { labelKey: TranslationKey; className: string
 
 export default function AdminTechniciansPage(): JSX.Element {
   const { t } = useLocale();
+  const { isAuthenticated } = useAuth();
   const [kycTab, setKycTab] = useState<string>('ALL');
   const [reviewTech, setReviewTech] = useState<TechnicianItem | null>(null);
   const [reviewNote, setReviewNote] = useState('');
@@ -46,7 +47,10 @@ export default function AdminTechniciansPage(): JSX.Element {
     api as unknown as {
       admin: {
         listTechnicians: {
-          useQuery: (input: { page: number; limit: number }) => {
+          useQuery: (
+            input: { page: number; limit: number },
+            opts?: { enabled: boolean },
+          ) => {
             data: { items: TechnicianItem[] } | undefined;
             isLoading: boolean;
             isError: boolean;
@@ -55,10 +59,13 @@ export default function AdminTechniciansPage(): JSX.Element {
         };
       };
     }
-  ).admin.listTechnicians.useQuery({
-    page: 1,
-    limit: 50,
-  });
+  ).admin.listTechnicians.useQuery(
+    {
+      page: 1,
+      limit: 50,
+    },
+    { enabled: isAuthenticated },
+  );
   const verifyMut = api.technicians.verifyKyc.useMutation({
     onSuccess: () => {
       refetch();

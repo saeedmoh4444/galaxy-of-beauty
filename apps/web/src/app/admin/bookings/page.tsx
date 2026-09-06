@@ -2,7 +2,15 @@
 
 import { useState } from 'react';
 import { api } from '@/lib/trpc';
-import { Card, CardListSkeleton, ErrorAlert, EmptyState, Button, formatCurrency } from '@galaxy/ui';
+import {
+  Card,
+  CardListSkeleton,
+  ErrorAlert,
+  EmptyState,
+  Button,
+  formatCurrency,
+  useAuth,
+} from '@galaxy/ui';
 import { useLocale } from '@/components/LocaleProvider';
 
 const STATUSES = ['ALL', 'REQUESTED', 'ACCEPTED', 'PAID', 'IN_PROGRESS', 'COMPLETED', 'CANCELLED'];
@@ -29,6 +37,7 @@ interface AdminBooking {
 
 export default function AdminBookingsPage(): JSX.Element {
   const { t, locale } = useLocale();
+  const { isAuthenticated } = useAuth();
   const [status, setStatus] = useState<string | undefined>(undefined);
   // Structural cast instead of RouterOutput — avoids TS2589 from deeply
   // nested admin RouterOutput in Next.js build
@@ -36,7 +45,10 @@ export default function AdminBookingsPage(): JSX.Element {
     api as unknown as {
       admin: {
         getAllBookings: {
-          useQuery: (input: { status?: BookingStatus; page: number; limit: number }) => {
+          useQuery: (
+            input: { status?: BookingStatus; page: number; limit: number },
+            opts?: { enabled: boolean },
+          ) => {
             data: { items: AdminBooking[] } | undefined;
             isLoading: boolean;
             isError: boolean;
@@ -45,11 +57,14 @@ export default function AdminBookingsPage(): JSX.Element {
         };
       };
     }
-  ).admin.getAllBookings.useQuery({
-    status: (status || undefined) as BookingStatus | undefined,
-    page: 1,
-    limit: 20,
-  });
+  ).admin.getAllBookings.useQuery(
+    {
+      status: (status || undefined) as BookingStatus | undefined,
+      page: 1,
+      limit: 20,
+    },
+    { enabled: isAuthenticated },
+  );
   const { data, isLoading, isError, refetch } = bookingsQuery;
   const cancelMut = api.bookings.transition.useMutation({ onSuccess: () => refetch() });
 

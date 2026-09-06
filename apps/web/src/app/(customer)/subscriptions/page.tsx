@@ -1,14 +1,25 @@
 'use client';
 
 import { api } from '@/lib/trpc';
-import { Card, GridSkeleton, ErrorAlert, EmptyState, Button, formatCurrency } from '@galaxy/ui';
+import {
+  Card,
+  GridSkeleton,
+  ErrorAlert,
+  EmptyState,
+  Button,
+  formatCurrency,
+  useAuth,
+} from '@galaxy/ui';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
 import { useLocale } from '@/components/LocaleProvider';
 
 export default function SubscriptionsPage(): JSX.Element {
   const { t } = useLocale();
+  const { isAuthenticated } = useAuth();
   const plansQ = api.subscriptions.getPlans.useQuery();
-  const mySubQ = api.subscriptions.getMySubscription.useQuery();
+  const mySubQ = api.subscriptions.getMySubscription.useQuery(undefined, {
+    enabled: isAuthenticated,
+  });
   const purchaseMut = api.subscriptions.purchase.useMutation({ onSuccess: () => mySubQ.refetch() });
   const cancelMut = api.subscriptions.cancelAutoRenew.useMutation({
     onSuccess: () => mySubQ.refetch(),

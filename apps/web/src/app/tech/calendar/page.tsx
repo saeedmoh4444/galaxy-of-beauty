@@ -1,13 +1,14 @@
 'use client';
 
 import { api } from '@/lib/trpc';
-import { Card, CardSkeleton, ErrorAlert, Button } from '@galaxy/ui';
+import { Card, CardSkeleton, ErrorAlert, Button, useAuth } from '@galaxy/ui';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
 import { useLocale } from '@/components/LocaleProvider';
 
 export default function TechCalendarPage(): JSX.Element {
   const { t } = useLocale();
-  const status = api.calendar.status.useQuery();
+  const { isAuthenticated } = useAuth();
+  const status = api.calendar.status.useQuery(undefined, { enabled: isAuthenticated });
   const connectMut = api.calendar.connect.useMutation({ onSuccess: () => status.refetch() });
   const disconnectMut = api.calendar.disconnect.useMutation({ onSuccess: () => status.refetch() });
   const syncMut = api.calendar.sync.useMutation({ onSuccess: () => status.refetch() });

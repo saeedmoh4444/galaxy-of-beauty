@@ -34,8 +34,11 @@ export default function TechDashboardPage(): JSX.Element {
   const pending = api.bookings.getTechnicianPending.useQuery(undefined, {
     enabled: isAuthenticated,
   });
-  const earnings = api.analytics.technicianEarnings.useQuery({ days: 30 });
-  const { data: profile } = api.auth.me.useQuery();
+  const earnings = api.analytics.technicianEarnings.useQuery(
+    { days: 30 },
+    { enabled: isAuthenticated },
+  );
+  const { data: profile } = api.auth.me.useQuery(undefined, { enabled: isAuthenticated });
   const transition = api.bookings.transition.useMutation({
     onSuccess: () => {
       pending.refetch();
