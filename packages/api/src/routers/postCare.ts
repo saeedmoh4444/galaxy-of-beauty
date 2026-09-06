@@ -3,9 +3,6 @@ import { prisma } from '@galaxy/db';
 import { SMALL_PAGE_SIZE } from '@galaxy/shared';
 import { customerProcedure, router } from '../trpc';
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any -- Booking has no completedAt in Prisma schema (legacy orderBy)
-const db = prisma as any;
-
 // Curated aftercare tips by service category — vetted by beauty professionals
 const CARE_LIBRARY: Record<
   string,
@@ -174,9 +171,34 @@ const TIMEFRAMES = [
   { key: 'ongoing', labelAr: 'مستمر', labelEn: 'Ongoing', color: 'from-blue-400 to-cyan-400' },
 ];
 
-function getCategoryTips(category: string) {
-  // Map service names/categories to our care keys
-  const map: Record<string, string> = {
+type CareKey = keyof typeof CARE_LIBRARY;
+
+// Category slugs → care keys. Slug matching is checked BEFORE name matching:
+// the seeded categories have Arabic nameJson, and the legacy name map below
+// is English-only — feeding it an Arabic name always fell back to skincare.
+const SLUG_PATTERNS: Array<{ pattern: RegExp; key: CareKey }> = [
+  { pattern: /hair|haircut|hairstyling|henna|groom/, key: 'hair' },
+  { pattern: /skin|facial|cleansing/, key: 'skincare' },
+  { pattern: /makeup|make-up|bridal|lash|brow/, key: 'makeup' },
+  { pattern: /nail|manicure|pedicure/, key: 'nails' },
+  { pattern: /massage|spa|relax|body/, key: 'massage' },
+  { pattern: /wax|hair-removal|threading|sugaring/, key: 'waxing' },
+];
+
+function getCategoryKey(
+  slug: string | null | undefined,
+  nameEn?: string,
+  nameAr?: string,
+): CareKey {
+  if (slug) {
+    const s = slug.toLowerCase();
+    for (const { pattern, key } of SLUG_PATTERNS) {
+      if (pattern.test(s)) return key;
+    }
+  }
+  // Legacy fallback: name-based mapping (English names match; Arabic won't,
+  // so the slug path above carries the real-world cases).
+  const map: Record<string, CareKey> = {
     hair: 'hair',
     haircare: 'hair',
     'hair-styling': 'hair',
@@ -198,7 +220,12 @@ function getCategoryTips(category: string) {
     'hair-removal': 'waxing',
     sugaring: 'waxing',
   };
-  const key = (map[category] ?? 'skincare') as keyof typeof CARE_LIBRARY;
+  const key = map[(nameEn ?? nameAr ?? '').toLowerCase()] ?? 'skincare';
+  return key;
+}
+
+function getCategoryTips(category: string) {
+  const key = getCategoryKey(category);
   return CARE_LIBRARY[key] ?? CARE_LIBRARY['skincare']!;
 }
 
@@ -214,29 +241,37 @@ export const postCareRouter = router({
 
   // Get personalized care plan from recent bookings
   myPlan: customerProcedure.query(async ({ ctx }) => {
-    const recentBookings = await db.booking
-      .findMany({
-        where: { customerId: ctx.user.id, status: { in: ['COMPLETED', 'IN_PROGRESS'] } },
-        orderBy: { completedAt: 'desc' },
-        take: SMALL_PAGE_SIZE,
-        include: {
-          service: {
-            select: { titleJson: true, categoryId: true, category: { select: { nameJson: true } } },
+    const recentBookings = await prisma.booking.findMany({
+      where: { customerId: ctx.user.id, status: { in: ['COMPLETED', 'IN_PROGRESS'] } },
+      // Booking has no completedAt column (B.15 regression): completion
+      // time ≈ endAt. The old orderBy threw and a silent catch returned [],
+      // so the plan was always empty. No catch — real errors must surface.
+      orderBy: { endAt: 'desc' },
+      take: SMALL_PAGE_SIZE,
+      include: {
+        service: {
+          select: {
+            titleJson: true,
+            categoryId: true,
+            category: { select: { nameJson: true, slug: true } },
           },
         },
-      })
-      .catch(() => []);
+      },
+    });
 
-    const plans = (recentBookings as any[]).map((b: any) => {
-      const categoryName =
-        (b.service?.category?.nameJson as Record<string, string>)?.ar ?? 'skincare';
-      const serviceName = (b.service?.titleJson as Record<string, string>)?.ar ?? '';
-      const tips = getCategoryTips(categoryName.toLowerCase());
+    const plans = recentBookings.map((b) => {
+      const title = (b.service?.titleJson ?? {}) as Record<string, string>;
+      const name = (b.service?.category?.nameJson ?? {}) as Record<string, string>;
+      const tips = getCategoryTips(
+        b.service?.category?.slug ?? name['en'] ?? name['ar'] ?? 'skincare',
+      );
       return {
         bookingId: b.id,
-        serviceName,
-        category: categoryName,
-        completedAt: b.completedAt,
+        serviceNameAr: title['ar'] ?? '',
+        serviceNameEn: title['en'] ?? '',
+        categoryAr: name['ar'] ?? '',
+        categoryEn: name['en'] ?? '',
+        completedAt: b.endAt.toISOString(),
         tips,
       };
     });
