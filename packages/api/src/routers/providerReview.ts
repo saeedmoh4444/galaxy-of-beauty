@@ -12,7 +12,15 @@ import { adminProcedure, router } from '../trpc';
 import { notifyUser } from '../lib/notify';
 
 const SUBMISSION_STATUSES = ['PENDING_REVIEW', 'APPROVED', 'REJECTED'] as const;
-const SUBMISSION_KINDS = ['package', 'promotion', 'store', 'store_promotion', 'product'] as const;
+const SUBMISSION_KINDS = [
+  'package',
+  'promotion',
+  'store',
+  'store_promotion',
+  'product',
+  'clinic',
+  'clinic_package',
+] as const;
 
 export const providerReviewRouter = router({
   list: adminProcedure
@@ -180,6 +188,42 @@ export const providerReviewRouter = router({
             }),
           ]);
         }
+      } else if (submission.kind === 'clinic') {
+        // E2 — medical clinic registration. Approve flips the clinic to
+        // verified and stamps the license-verification date (trust badge).
+        const payload = submission.payload as { vendorId: number; clinicName?: string };
+        const vendor = await prisma.vendor.findUnique({ where: { id: payload.vendorId } });
+        if (!vendor) {
+          throw new TRPCError({ code: 'NOT_FOUND', message: 'Clinic missing' });
+        }
+        await prisma.vendor.update({
+          where: { id: vendor.id },
+          data: {
+            isVerified: input.approve,
+            isActive: input.approve ? vendor.isActive : false,
+            licenseVerifiedAt: input.approve ? new Date() : null,
+          },
+        });
+        subjectName = payload.clinicName ?? `عيادة #${vendor.id}`;
+      } else if (submission.kind === 'clinic_package') {
+        // E2 — clinic treatment packages (display-only, B.6 machinery).
+        const payload = submission.payload as { packageId: number; nameJson?: { ar?: string } };
+        const pkg = await prisma.beautyPackage.findUnique({
+          where: { id: payload.packageId },
+        });
+        if (!pkg) {
+          throw new TRPCError({ code: 'NOT_FOUND', message: 'Package missing' });
+        }
+        await prisma.beautyPackage.update({
+          where: { id: pkg.id },
+          data: {
+            status: newStatus,
+            reviewNotes: input.approve ? null : (input.notes ?? null),
+            reviewedBy: ctx.user.id,
+            reviewedAt: new Date(),
+          },
+        });
+        subjectName = ((payload.nameJson as { ar?: string })?.ar ?? '') || `باقة #${pkg.id}`;
       } else {
         // 'product' kind lands with the store plan.
         subjectName = `${submission.kind} #${submission.id}`;

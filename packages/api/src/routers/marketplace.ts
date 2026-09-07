@@ -191,9 +191,11 @@ export const marketplaceRouter = router({
     .input(z.object({ page: z.number().default(1), limit: z.number().default(20) }))
     .query(async ({ input }) => {
       const skip = (input.page - 1) * input.limit;
+      // Store types only — clinics (E2) have their own listing.
+      const storeTypes = { in: ['STORE', 'VENDOR'] };
       const [items, total] = await Promise.all([
         prisma.vendor.findMany({
-          where: { isActive: true, isVerified: true },
+          where: { isActive: true, isVerified: true, type: storeTypes },
           include: {
             user: { select: { name: true, avatarUrl: true } },
             _count: { select: { products: true } },
@@ -201,14 +203,14 @@ export const marketplaceRouter = router({
           skip,
           take: input.limit,
         }),
-        prisma.vendor.count({ where: { isActive: true } }),
+        prisma.vendor.count({ where: { isActive: true, type: storeTypes } }),
       ]);
       return { items, total, page: input.page };
     }),
 
   vendorDetail: publicProcedure.input(z.object({ slug: z.string() })).query(async ({ input }) => {
-    const vendor = await prisma.vendor.findUnique({
-      where: { storeSlug: input.slug },
+    const vendor = await prisma.vendor.findFirst({
+      where: { storeSlug: input.slug, type: { in: ['STORE', 'VENDOR'] } },
       include: {
         products: { where: { isActive: true }, take: LARGE_PAGE_SIZE },
         _count: { select: { products: true } },
@@ -232,9 +234,15 @@ export const marketplaceRouter = router({
         descriptionAr: z.string().optional(),
         descriptionEn: z.string().optional(),
         logoUrl: z.string().optional(),
-        licenseNumber: z.string().optional(),
+        licenseNumber: z.string().min(1),
         bankIban: z.string().optional(),
         bankName: z.string().optional(),
+        // KSA merchant documents — required for admin approval.
+        documents: z.object({
+          crUrl: z.string().url(),
+          nationalIdUrl: z.string().url(),
+          bankLetterUrl: z.string().url(),
+        }),
       }),
     )
     .mutation(async ({ ctx, input }) => {
@@ -265,9 +273,73 @@ export const marketplaceRouter = router({
             vendorId: vendor.id,
             storeName: input.storeName,
             storeSlug: input.storeSlug,
-            licenseNumber: input.licenseNumber ?? '',
+            licenseNumber: input.licenseNumber,
             bankIban: input.bankIban ?? '',
             bankName: input.bankName ?? '',
+            documents: input.documents,
+          },
+        },
+      });
+
+      return vendor;
+    }),
+
+  // ── Become a clinic (E2 — medical beauty clinics) ───────
+  /**
+   * becomeClinic — medical clinic registration. Same unified provider
+   * pipeline: UNVERIFIED Vendor (type CLINIC) + PENDING_REVIEW submission
+   * (kind 'clinic'). KSA documents are required: MOH/SFDA license, CR,
+   * national ID.
+   */
+  becomeClinic: protectedProcedure
+    .input(
+      z.object({
+        storeName: z.string().min(2),
+        storeSlug: z.string().min(3),
+        clinicType: z.enum(['dermatology', 'laser', 'injectables', 'dental', 'nutrition']),
+        licenseNumber: z.string().min(4),
+        licenseAgency: z.enum(['MOH', 'SFDA']),
+        descriptionAr: z.string().optional(),
+        descriptionEn: z.string().optional(),
+        logoUrl: z.string().optional(),
+        documents: z.object({
+          medicalLicenseUrl: z.string().url(),
+          crUrl: z.string().url(),
+          nationalIdUrl: z.string().url(),
+        }),
+      }),
+    )
+    .mutation(async ({ ctx, input }) => {
+      const existing = await prisma.vendor.findUnique({ where: { userId: ctx.user.id } });
+      if (existing) throw new TRPCError({ code: 'CONFLICT', message: 'Already a vendor' });
+
+      const vendor = await prisma.vendor.create({
+        data: {
+          userId: ctx.user.id,
+          storeName: input.storeName,
+          storeSlug: input.storeSlug,
+          descriptionJson: { ar: input.descriptionAr || '', en: input.descriptionEn || '' },
+          logoUrl: input.logoUrl,
+          licenseNumber: input.licenseNumber,
+          licenseAgency: input.licenseAgency,
+          clinicType: input.clinicType,
+          type: 'CLINIC',
+          isVerified: false,
+        },
+      });
+
+      await prisma.providerSubmission.create({
+        data: {
+          providerId: ctx.user.id,
+          kind: 'clinic',
+          status: 'PENDING_REVIEW',
+          payload: {
+            vendorId: vendor.id,
+            clinicName: input.storeName,
+            clinicType: input.clinicType,
+            licenseNumber: input.licenseNumber,
+            licenseAgency: input.licenseAgency,
+            documents: input.documents,
           },
         },
       });

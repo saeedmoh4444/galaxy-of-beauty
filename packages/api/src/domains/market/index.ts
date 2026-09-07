@@ -12,6 +12,7 @@ export { bridalConciergeRouter } from '../../routers/bridalConcierge';
 export { giftRegistryRouter } from '../../routers/giftRegistry';
 export { giftQuizRouter } from '../../routers/giftQuiz';
 export { providerReviewRouter } from '../../routers/providerReview';
+export { clinicsRouter } from '../../routers/clinics';
 export { promotionRouter } from '../../routers/promotions';
 export { beautyBingoRouter } from '../../routers/beautyBingo';
 export { eventTicketsRouter } from '../../routers/eventTickets';

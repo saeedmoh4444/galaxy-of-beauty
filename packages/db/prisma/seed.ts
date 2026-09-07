@@ -91,6 +91,10 @@ async function main() {
     db.cartItem.deleteMany(),
     db.productReview.deleteMany(),
     db.product.deleteMany(),
+    db.beautyPackage.deleteMany(),
+    // E2 — clinic tables reference vendors (and users), wipe before both.
+    db.clinicConsultation.deleteMany(),
+    db.clinicSlot.deleteMany(),
     db.vendor.deleteMany(),
     db.productCategory.deleteMany(),
     db.providerSubmission.deleteMany(),
@@ -2768,6 +2772,28 @@ async function main() {
         bodyJson: {
           ar: 'عذرًا {{providerName}}، تم رفض {{subjectName}}.{{reason}}',
           en: 'Sorry {{providerName}}, your {{subjectName}} was rejected.{{reason}}',
+        },
+      },
+      // E2 — clinic consultation decisions. Category 'provider' is not a
+      // preference toggle → always delivered.
+      {
+        key: 'consultation_confirmed',
+        category: 'provider',
+        channels: ['in_app', 'push'],
+        titleJson: { ar: 'تم تأكيد استشارتك', en: 'Your Consultation Is Confirmed' },
+        bodyJson: {
+          ar: 'أكدت {{clinicName}} استشارتك {{when}} (رقم الحجز: {{code}}). نراكِ قريباً!',
+          en: '{{clinicName}} confirmed your consultation on {{when}} (code: {{code}}). See you soon!',
+        },
+      },
+      {
+        key: 'consultation_cancelled',
+        category: 'provider',
+        channels: ['in_app', 'push'],
+        titleJson: { ar: 'تم إلغاء استشارتك', en: 'Your Consultation Was Cancelled' },
+        bodyJson: {
+          ar: 'عذرًا، ألغت {{clinicName}} استشارتك {{when}} (رقم الحجز: {{code}}). يمكنك حجز موعد آخر.',
+          en: 'Sorry, {{clinicName}} cancelled your consultation on {{when}} (code: {{code}}). You can book another slot.',
         },
       },
     ] as const;

@@ -76,11 +76,89 @@ export default function VendorPortalPage(): JSX.Element {
     onSuccess: () => refetchStore(),
   });
 
+  // E2 — KSA provider documents + clinic registration.
+  const [applyType, setApplyType] = useState<'store' | 'clinic'>('store');
+  const [applyClinicType, setApplyClinicType] = useState('dermatology');
+  const [applyAgency, setApplyAgency] = useState('MOH');
+  const [docCr, setDocCr] = useState('');
+  const [docNationalId, setDocNationalId] = useState('');
+  const [docBankLetter, setDocBankLetter] = useState('');
+  const [docMedicalLicense, setDocMedicalLicense] = useState('');
+  const uploadMut = api.uploads.uploadKycDocument.useMutation({});
+  const applyClinicMut = api.marketplace.becomeClinic.useMutation({
+    onSuccess: () => refetchStore(),
+  });
+
+  const uploadDoc =
+    (documentType: 'cr' | 'national_id' | 'bank_letter' | 'medical_license') =>
+    (e: React.ChangeEvent<HTMLInputElement>) => {
+      const file = e.target.files?.[0];
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = () => {
+        uploadMut.mutate(
+          {
+            file: {
+              name: file.name,
+              type: file.type,
+              size: file.size,
+              base64: String(reader.result ?? ''),
+            },
+            documentType,
+          },
+          {
+            onSuccess: (res) => {
+              if (documentType === 'cr') setDocCr(res.url);
+              if (documentType === 'national_id') setDocNationalId(res.url);
+              if (documentType === 'bank_letter') setDocBankLetter(res.url);
+              if (documentType === 'medical_license') setDocMedicalLicense(res.url);
+            },
+          },
+        );
+      };
+      reader.readAsDataURL(file);
+    };
+
   const prods = (products as unknown as Array<Record<string, unknown>> | undefined) ?? [];
   const storeOrders = (orders as unknown as Array<Record<string, unknown>> | undefined) ?? [];
 
-  /* ---------- Apply wizard (no store yet) ---------- */
+  /* ---------- Apply wizard (no store/clinic yet) ---------- */
   if (!storeLoading && !store) {
+    const isClinic = applyType === 'clinic';
+    const docsReady = isClinic
+      ? docMedicalLicense && docCr && docNationalId
+      : docCr && docNationalId && docBankLetter;
+    const submit = () => {
+      const slug = `provider-${Date.now().toString(36)}-${Math.random().toString(36).slice(2, 8)}`;
+      if (isClinic) {
+        applyClinicMut.mutate({
+          storeName: applyName.trim(),
+          storeSlug: slug,
+          clinicType: applyClinicType as never,
+          licenseNumber: applyLicense.trim(),
+          licenseAgency: applyAgency as never,
+          descriptionAr: applyBio.trim() || undefined,
+          logoUrl: applyLogo.trim() || undefined,
+          documents: {
+            medicalLicenseUrl: docMedicalLicense,
+            crUrl: docCr,
+            nationalIdUrl: docNationalId,
+          },
+        });
+      } else {
+        applyMut.mutate({
+          storeName: applyName.trim(),
+          storeSlug: slug,
+          descriptionAr: applyBio.trim() || undefined,
+          licenseNumber: applyLicense.trim(),
+          bankName: applyBank.trim() || undefined,
+          bankIban: applyIban.trim() || undefined,
+          logoUrl: applyLogo.trim() || undefined,
+          documents: { crUrl: docCr, nationalIdUrl: docNationalId, bankLetterUrl: docBankLetter },
+        });
+      }
+    };
+
     return (
       <DashboardLayout userRole="CUSTOMER">
         <div className="mx-auto max-w-xl space-y-6 px-4 py-8">
@@ -90,30 +168,83 @@ export default function VendorPortalPage(): JSX.Element {
           </div>
           <Card padding="lg">
             <div className="space-y-3">
+              <div className="flex gap-2">
+                <Button
+                  size="sm"
+                  variant={!isClinic ? 'primary' : 'outline'}
+                  onClick={() => setApplyType('store')}
+                >
+                  {t('vendorPortal.apply.register-store')}
+                </Button>
+                <Button
+                  size="sm"
+                  variant={isClinic ? 'primary' : 'outline'}
+                  onClick={() => setApplyType('clinic')}
+                >
+                  {t('vendorPortal.apply.register-clinic')}
+                </Button>
+              </div>
+
               <Input
                 label={t('vendorPortal.apply.store-name')}
                 value={applyName}
                 onChange={(e) => setApplyName(e.target.value)}
               />
-              <Input
-                label={t('vendorPortal.apply.license')}
-                value={applyLicense}
-                onChange={(e) => setApplyLicense(e.target.value)}
-                placeholder="CR-123456"
-              />
-              <div className="grid gap-3 sm:grid-cols-2">
-                <Input
-                  label={t('vendorPortal.apply.bank')}
-                  value={applyBank}
-                  onChange={(e) => setApplyBank(e.target.value)}
-                />
-                <Input
-                  label={t('vendorPortal.apply.iban')}
-                  value={applyIban}
-                  onChange={(e) => setApplyIban(e.target.value)}
-                  placeholder="SA0000000000000000000000"
-                />
-              </div>
+
+              {isClinic ? (
+                <>
+                  <select
+                    value={applyClinicType}
+                    onChange={(e) => setApplyClinicType(e.target.value)}
+                    className="w-full rounded-lg border px-3 py-2 text-sm dark:border-gray-700 dark:bg-gray-800"
+                  >
+                    {['dermatology', 'laser', 'injectables', 'dental', 'nutrition'].map((tt) => (
+                      <option key={tt} value={tt}>
+                        {t(`clinics.treatment.${tt}` as never)}
+                      </option>
+                    ))}
+                  </select>
+                  <div className="grid gap-3 sm:grid-cols-2">
+                    <Input
+                      label={t('vendorPortal.apply.license')}
+                      value={applyLicense}
+                      onChange={(e) => setApplyLicense(e.target.value)}
+                      placeholder="MOH-123456"
+                    />
+                    <select
+                      value={applyAgency}
+                      onChange={(e) => setApplyAgency(e.target.value)}
+                      className="w-full rounded-lg border px-3 py-2 text-sm dark:border-gray-700 dark:bg-gray-800"
+                    >
+                      <option value="MOH">MOH</option>
+                      <option value="SFDA">SFDA</option>
+                    </select>
+                  </div>
+                </>
+              ) : (
+                <>
+                  <Input
+                    label={t('vendorPortal.apply.license')}
+                    value={applyLicense}
+                    onChange={(e) => setApplyLicense(e.target.value)}
+                    placeholder="CR-123456"
+                  />
+                  <div className="grid gap-3 sm:grid-cols-2">
+                    <Input
+                      label={t('vendorPortal.apply.bank')}
+                      value={applyBank}
+                      onChange={(e) => setApplyBank(e.target.value)}
+                    />
+                    <Input
+                      label={t('vendorPortal.apply.iban')}
+                      value={applyIban}
+                      onChange={(e) => setApplyIban(e.target.value)}
+                      placeholder="SA0000000000000000000000"
+                    />
+                  </div>
+                </>
+              )}
+
               <Input
                 label={t('vendorPortal.apply.bio')}
                 value={applyBio}
@@ -125,23 +256,60 @@ export default function VendorPortalPage(): JSX.Element {
                 onChange={(e) => setApplyLogo(e.target.value)}
                 placeholder="https://…"
               />
-              {applyMut.isError && <p className="text-sm text-red-600">{applyMut.error.message}</p>}
+
+              {/* E2 — KSA required documents */}
+              <div>
+                <p className="mb-2 text-sm font-semibold">
+                  {t('vendorPortal.apply.documents-title')}
+                </p>
+                <div className="space-y-2">
+                  {isClinic ? (
+                    <>
+                      <DocUploadInput
+                        label={t('vendorPortal.apply.doc-medical-license')}
+                        value={docMedicalLicense}
+                        onChange={uploadDoc('medical_license')}
+                      />
+                      <DocUploadInput
+                        label={t('vendorPortal.apply.doc-cr')}
+                        value={docCr}
+                        onChange={uploadDoc('cr')}
+                      />
+                    </>
+                  ) : (
+                    <DocUploadInput
+                      label={t('vendorPortal.apply.doc-cr')}
+                      value={docCr}
+                      onChange={uploadDoc('cr')}
+                    />
+                  )}
+                  <DocUploadInput
+                    label={t('vendorPortal.apply.doc-national-id')}
+                    value={docNationalId}
+                    onChange={uploadDoc('national_id')}
+                  />
+                  {!isClinic && (
+                    <DocUploadInput
+                      label={t('vendorPortal.apply.doc-bank-letter')}
+                      value={docBankLetter}
+                      onChange={uploadDoc('bank_letter')}
+                    />
+                  )}
+                </div>
+              </div>
+
+              {(applyMut.isError || applyClinicMut.isError) && (
+                <p className="text-sm text-red-600">
+                  {(applyMut.isError ? applyMut.error?.message : applyClinicMut.error?.message) ??
+                    ''}
+                </p>
+              )}
               <Button
-                onClick={() =>
-                  applyMut.mutate({
-                    storeName: applyName.trim(),
-                    storeSlug: `store-${Date.now().toString(36)}-${Math.random()
-                      .toString(36)
-                      .slice(2, 8)}`,
-                    descriptionAr: applyBio.trim() || undefined,
-                    licenseNumber: applyLicense.trim() || undefined,
-                    bankName: applyBank.trim() || undefined,
-                    bankIban: applyIban.trim() || undefined,
-                    logoUrl: applyLogo.trim() || undefined,
-                  })
+                onClick={submit}
+                loading={applyMut.isPending || applyClinicMut.isPending || uploadMut.isPending}
+                disabled={
+                  !applyName.trim() || (isClinic ? !applyLicense.trim() : false) || !docsReady
                 }
-                loading={applyMut.isPending}
-                disabled={!applyName.trim()}
                 className="w-full"
               >
                 {t('vendorPortal.apply.submit')}
@@ -151,6 +319,11 @@ export default function VendorPortalPage(): JSX.Element {
         </div>
       </DashboardLayout>
     );
+  }
+
+  /* ---------- Clinic dashboard (E2) ---------- */
+  if (store && (store.type as string) === 'CLINIC') {
+    return <ClinicDashboard store={store} />;
   }
 
   return (
@@ -440,5 +613,230 @@ export default function VendorPortalPage(): JSX.Element {
         </Modal>
       </div>
     </DashboardLayout>
+  );
+}
+
+/**
+ * E2 — clinic dashboard (the same provider shell as stores): consultation
+ * price, slot management, and incoming consultation requests.
+ */
+function ClinicDashboard({ store }: { store: Record<string, unknown> }): JSX.Element {
+  const { t } = useLocale();
+  const [price, setPrice] = useState(String((store.consultationPrice as number) ?? 0));
+  const [slotStart, setSlotStart] = useState(
+    new Date(Date.now() + 3_600_000).toISOString().slice(0, 16),
+  );
+  const [slotEnd, setSlotEnd] = useState(
+    new Date(Date.now() + 2 * 3_600_000).toISOString().slice(0, 16),
+  );
+
+  const slotsQ = api.vendorPortal['clinicSlots.list'].useQuery(undefined) as {
+    data: Array<Record<string, unknown>> | undefined;
+    refetch: () => void;
+  };
+  const consultsQ = api.vendorPortal.clinicConsultations.useQuery(undefined) as {
+    data: Array<Record<string, unknown>> | undefined;
+    refetch: () => void;
+  };
+  const priceMut = api.vendorPortal.setConsultationPrice.useMutation({});
+  const addSlotMut = api.vendorPortal['clinicSlots.add'].useMutation({
+    onSuccess: () => slotsQ.refetch(),
+  });
+  const removeSlotMut = api.vendorPortal['clinicSlots.remove'].useMutation({
+    onSuccess: () => slotsQ.refetch(),
+  });
+  const confirmMut = api.vendorPortal.confirmConsultation.useMutation({
+    onSuccess: () => consultsQ.refetch(),
+  });
+  const clinicCancelMut = api.vendorPortal.clinicCancelConsultation.useMutation({
+    onSuccess: () => consultsQ.refetch(),
+  });
+
+  const slots = slotsQ.data ?? [];
+  const consults = consultsQ.data ?? [];
+
+  return (
+    <DashboardLayout userRole="CUSTOMER">
+      <div className="mx-auto max-w-4xl space-y-6">
+        <div>
+          <h1 className="text-2xl font-bold">{store.storeName as string}</h1>
+          <p className="mt-1 text-sm text-text-secondary">
+            {t(`clinics.treatment.${store.clinicType as string}` as never)}
+          </p>
+        </div>
+
+        {!(store.isVerified as boolean) && (
+          <Card
+            padding="md"
+            className="border-amber-200 bg-amber-50 dark:border-amber-800 dark:bg-amber-950"
+          >
+            <p className="text-sm font-semibold text-amber-700 dark:text-amber-300">
+              {t('vendorPortal.clinic.pending-license')}
+            </p>
+          </Card>
+        )}
+
+        {/* Consultation price */}
+        <Card padding="md">
+          <div className="flex items-end gap-3">
+            <Input
+              label={t('vendorPortal.clinic.price')}
+              type="number"
+              value={price}
+              onChange={(e) => setPrice(e.target.value)}
+              className="w-48"
+            />
+            <Button
+              size="sm"
+              onClick={() => priceMut.mutate({ price: Number(price) || 0 })}
+              loading={priceMut.isPending}
+            >
+              {t('vendorPortal.clinic.price-save')}
+            </Button>
+          </div>
+        </Card>
+
+        {/* Slots */}
+        <Card padding="lg">
+          <h3 className="mb-3 font-bold">{t('vendorPortal.clinic.slots-title')}</h3>
+          <div className="mb-3 flex flex-wrap items-end gap-3">
+            <Input
+              label={t('vendorPortal.deals.starts')}
+              type="datetime-local"
+              value={slotStart}
+              onChange={(e) => setSlotStart(e.target.value)}
+            />
+            <Input
+              label={t('vendorPortal.deals.ends')}
+              type="datetime-local"
+              value={slotEnd}
+              onChange={(e) => setSlotEnd(e.target.value)}
+            />
+            <Button
+              size="sm"
+              onClick={() =>
+                addSlotMut.mutate({
+                  startAt: new Date(slotStart).toISOString(),
+                  endAt: new Date(slotEnd).toISOString(),
+                })
+              }
+              loading={addSlotMut.isPending}
+            >
+              {t('vendorPortal.clinic.slot-add')}
+            </Button>
+          </div>
+          <div className="space-y-2">
+            {slots.map((s: Record<string, unknown>) => (
+              <div
+                key={s.id as number}
+                className="flex items-center justify-between rounded-lg border p-3"
+              >
+                <p className="text-sm">
+                  {new Date(s.startAt as string).toLocaleDateString('ar-SA')} ·{' '}
+                  {new Date(s.startAt as string).toLocaleTimeString('ar-SA', {
+                    hour: '2-digit',
+                    minute: '2-digit',
+                  })}
+                  {s.isBooked ? ` · ${t('vendorPortal.orders.fulfilled')}` : ''}
+                </p>
+                <Button
+                  size="sm"
+                  variant="outline"
+                  disabled={s.isBooked as boolean}
+                  onClick={() => removeSlotMut.mutate({ slotId: s.id as number })}
+                  loading={removeSlotMut.isPending}
+                >
+                  {t('vendorPortal.clinic.slot-remove')}
+                </Button>
+              </div>
+            ))}
+            {slots.length === 0 && (
+              <p className="text-sm text-text-tertiary">{t('clinics.slots.empty')}</p>
+            )}
+          </div>
+        </Card>
+
+        {/* Incoming consultations */}
+        <Card padding="lg">
+          <h3 className="mb-3 font-bold">{t('vendorPortal.clinic.consultations-title')}</h3>
+          {consults.length === 0 ? (
+            <p className="text-sm text-text-tertiary">
+              {t('vendorPortal.clinic.consultations-empty')}
+            </p>
+          ) : (
+            <div className="space-y-2">
+              {consults.map((c: Record<string, unknown>) => {
+                const customer = c.customer as Record<string, unknown> | undefined;
+                return (
+                  <div
+                    key={c.id as number}
+                    className="flex flex-wrap items-center justify-between gap-3 rounded-lg border p-3"
+                  >
+                    <div>
+                      <p className="text-sm font-bold">
+                        {customer?.name as string} · {c.code as string} ·{' '}
+                        {t(`clinics.treatment.${c.treatmentType as string}` as never)}
+                      </p>
+                      <p className="text-xs text-text-secondary">
+                        {new Date(c.scheduledAt as string).toLocaleString('ar-SA')} ·{' '}
+                        {formatCurrency(Number(c.price ?? 0))}
+                      </p>
+                    </div>
+                    {c.status === 'REQUESTED' ? (
+                      <div className="flex items-center gap-2">
+                        <Button
+                          size="sm"
+                          variant="outline"
+                          onClick={() => clinicCancelMut.mutate({ consultationId: c.id as number })}
+                          loading={clinicCancelMut.isPending}
+                        >
+                          {t('clinics.cancel')}
+                        </Button>
+                        <Button
+                          size="sm"
+                          onClick={() => confirmMut.mutate({ consultationId: c.id as number })}
+                          loading={confirmMut.isPending}
+                        >
+                          {t('vendorPortal.clinic.confirm')}
+                        </Button>
+                      </div>
+                    ) : (
+                      <span className="text-sm font-semibold">
+                        {t(`clinics.status.${c.status as string}` as never)}
+                      </span>
+                    )}
+                  </div>
+                );
+              })}
+            </div>
+          )}
+        </Card>
+      </div>
+    </DashboardLayout>
+  );
+}
+
+/** E2 — file upload input for KSA provider documents (top-level: the
+ *  react-hooks/static-components rule forbids creating components during
+ *  render). */
+function DocUploadInput({
+  label,
+  value,
+  onChange,
+}: {
+  label: string;
+  value: string;
+  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+}): JSX.Element {
+  const { t } = useLocale();
+  return (
+    <div className="flex items-center gap-2">
+      <label className="cursor-pointer rounded-lg border px-3 py-2 text-sm">
+        {value
+          ? `${t('vendorPortal.apply.uploaded')} ✓`
+          : `${t('vendorPortal.apply.upload')} — ${label}`}
+        <input type="file" accept=".pdf,.jpg,.jpeg,.png" className="hidden" onChange={onChange} />
+      </label>
+    </div>
   );
 }

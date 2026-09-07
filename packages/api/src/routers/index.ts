@@ -214,6 +214,7 @@ import {
   beautyBingoRouter,
   eventTicketsRouter,
   beautyCouponsRouter,
+  clinicsRouter,
 } from '../domains/market';
 
 // Wellness
@@ -537,6 +538,7 @@ export const appRouter = router({
   beautyBingo: beautyBingoRouter,
   eventTickets: eventTicketsRouter,
   beautyCoupons: beautyCouponsRouter,
+  clinics: clinicsRouter,
 
   // Wellness
   selfCare: selfCareRouter,
