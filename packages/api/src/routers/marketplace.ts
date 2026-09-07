@@ -285,7 +285,13 @@ export const marketplaceRouter = router({
       }),
     )
     .mutation(async ({ ctx, input }) => {
-      return prisma.productReview.upsert({
+      const product = await prisma.product.findUnique({
+        where: { id: input.productId },
+        select: { vendorId: true },
+      });
+      if (!product) throw new TRPCError({ code: 'NOT_FOUND', message: 'Product not found' });
+
+      const review = await prisma.productReview.upsert({
         where: { productId_userId: { productId: input.productId, userId: ctx.user.id } },
         update: { rating: input.rating, comment: input.comment },
         create: {
@@ -295,6 +301,22 @@ export const marketplaceRouter = router({
           comment: input.comment,
         },
       });
+
+      // Store plan Phase 4 — keep the denormalized store rating fresh.
+      const agg = await prisma.productReview.aggregate({
+        where: { product: { vendorId: product.vendorId } },
+        _avg: { rating: true },
+        _count: true,
+      });
+      await prisma.vendor.update({
+        where: { id: product.vendorId },
+        data: {
+          ratingAvg: Math.round((agg._avg.rating ?? 0) * 100) / 100,
+          totalReviews: agg._count,
+        },
+      });
+
+      return review;
     }),
 
   productReviews: publicProcedure
