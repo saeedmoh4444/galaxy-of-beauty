@@ -20,6 +20,7 @@ const SUBMISSION_KINDS = [
   'product',
   'clinic',
   'clinic_package',
+  'gym',
 ] as const;
 
 export const providerReviewRouter = router({
@@ -224,6 +225,23 @@ export const providerReviewRouter = router({
           },
         });
         subjectName = ((payload.nameJson as { ar?: string })?.ar ?? '') || `باقة #${pkg.id}`;
+      } else if (submission.kind === 'gym') {
+        // E3 — gym registration. Approve flips to verified + stamps the
+        // license-verification date (same trust badge as clinics).
+        const payload = submission.payload as { vendorId: number; gymName?: string };
+        const vendor = await prisma.vendor.findUnique({ where: { id: payload.vendorId } });
+        if (!vendor) {
+          throw new TRPCError({ code: 'NOT_FOUND', message: 'Gym missing' });
+        }
+        await prisma.vendor.update({
+          where: { id: vendor.id },
+          data: {
+            isVerified: input.approve,
+            isActive: input.approve ? vendor.isActive : false,
+            licenseVerifiedAt: input.approve ? new Date() : null,
+          },
+        });
+        subjectName = payload.gymName ?? `نادي #${vendor.id}`;
       } else {
         // 'product' kind lands with the store plan.
         subjectName = `${submission.kind} #${submission.id}`;

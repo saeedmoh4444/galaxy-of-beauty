@@ -95,6 +95,9 @@ async function main() {
     // E2 — clinic tables reference vendors (and users), wipe before both.
     db.clinicConsultation.deleteMany(),
     db.clinicSlot.deleteMany(),
+    // E3 — gym tables reference vendors (and users), wipe before both.
+    db.gymClassBooking.deleteMany(),
+    db.gymClass.deleteMany(),
     db.vendor.deleteMany(),
     db.productCategory.deleteMany(),
     db.providerSubmission.deleteMany(),
@@ -318,6 +321,15 @@ async function main() {
         slug: 'spa-wellness',
         sortOrder: 12,
         iconUrl: '/icons/spa.svg',
+      },
+    }),
+    // E3 — fitness vertical (trainers attach these via addService).
+    prisma.category.create({
+      data: {
+        nameJson: { ar: 'اللياقة البدنية', en: 'Fitness' },
+        slug: 'fitness',
+        sortOrder: 13,
+        iconUrl: '/icons/fitness.svg',
       },
     }),
   ]);
@@ -923,6 +935,43 @@ async function main() {
         basePrice: 200,
         durationMin: 60,
         sortOrder: 8,
+      },
+    }),
+    // E3 — fitness services (trainers attach these; the Booking engine
+    // handles 1:1 sessions unchanged).
+    prisma.service.create({
+      data: {
+        categoryId: categories[12]!.id,
+        titleJson: { ar: 'جلسة تدريب شخصي', en: 'Personal Training Session' },
+        descriptionJson: {
+          ar: 'جلسة تدريب فردية مع مدربة معتمدة',
+          en: 'One-on-one session with a certified trainer',
+        },
+        basePrice: 150,
+        durationMin: 60,
+        isPopular: true,
+        slug: 'personal-training',
+        sortOrder: 1,
+      },
+    }),
+    prisma.service.create({
+      data: {
+        categoryId: categories[12]!.id,
+        titleJson: { ar: 'بيلاتس', en: 'Pilates' },
+        basePrice: 120,
+        durationMin: 45,
+        slug: 'pilates',
+        sortOrder: 2,
+      },
+    }),
+    prisma.service.create({
+      data: {
+        categoryId: categories[12]!.id,
+        titleJson: { ar: 'يوغا', en: 'Yoga' },
+        basePrice: 100,
+        durationMin: 60,
+        slug: 'yoga',
+        sortOrder: 3,
       },
     }),
   ]);

@@ -7,6 +7,8 @@ import { trpc } from '@/lib/trpc-react';
 interface BeautyProfileData {
   skinType?: string;
   hairType?: string;
+  measurements?: { heightCm?: number; weightKg?: number; waistCm?: number } | null;
+  fitnessGoals?: string[];
 }
 
 export default function BeautyProfileScreen(): JSX.Element {
@@ -15,6 +17,7 @@ export default function BeautyProfileScreen(): JSX.Element {
   const q = trpc.beautyProfile.get.useQuery(undefined, { enabled: isAuthed });
   if (q.isLoading) return <SkeletonList count={3} />;
   const data = q.data as unknown as BeautyProfileData | null;
+  const m = data?.measurements ?? {};
   return (
     <ScrollView
       style={styles.c}
@@ -36,6 +39,17 @@ export default function BeautyProfileScreen(): JSX.Element {
           <Text style={styles.label}>
             {t('beautyProfile.hair-type', { type: String(data.hairType ?? '') })}
           </Text>
+          {(m.heightCm || m.weightKg || m.waistCm) && (
+            <Text style={styles.label}>
+              {t('profile.measurements.title')}: {m.heightCm ? `${m.heightCm}cm` : ''}{' '}
+              {m.weightKg ? `${m.weightKg}kg` : ''} {m.waistCm ? `${m.waistCm}cm` : ''}
+            </Text>
+          )}
+          {(data.fitnessGoals ?? []).length > 0 && (
+            <Text style={styles.label}>
+              {t('profile.measurements.goals')}: {(data.fitnessGoals ?? []).join('، ')}
+            </Text>
+          )}
         </View>
       )}
     </ScrollView>

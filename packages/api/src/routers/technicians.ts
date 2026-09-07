@@ -62,6 +62,34 @@ export const technicianRouter = router({
   }),
 
   /**
+   * trainers — E3 fitness vertical: verified technicians offering
+   * fitness-category services. The 1:1 session flow itself is the standard
+   * Booking engine (unchanged).
+   * Public.
+   */
+  trainers: publicProcedure.query(async () => {
+    const FITNESS_SLUGS = ['fitness', 'personal-training', 'yoga', 'pilates', 'gym'];
+    return prisma.technician.findMany({
+      where: {
+        kycStatus: 'VERIFIED',
+        technicianServices: {
+          some: {
+            isActive: true,
+            service: { category: { slug: { in: FITNESS_SLUGS } } },
+          },
+        },
+      },
+      orderBy: { ratingAvg: 'desc' },
+      take: 50,
+      include: {
+        user: {
+          select: { id: true, name: true, avatarUrl: true },
+        },
+      },
+    });
+  }),
+
+  /**
    * getById — full technician profile by user ID.
    * Public.
    * Includes user info, offered services (with category), and review / booking stats.

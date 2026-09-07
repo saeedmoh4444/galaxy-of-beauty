@@ -101,6 +101,7 @@ export const uploadRouter = router({
           'national_id',
           'bank_letter',
           'medical_license',
+          'license',
         ]),
       }),
     )

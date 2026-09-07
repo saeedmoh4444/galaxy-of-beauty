@@ -8,6 +8,7 @@ export const classPassRouter = router({
     .query(async ({ input }) =>
       prisma.classPass.findMany({
         where: { isActive: true },
+        include: { gym: { select: { storeName: true, storeSlug: true } } },
         take: input.limit,
         orderBy: { price: 'asc' },
       }),
@@ -18,7 +19,8 @@ export const classPassRouter = router({
     .mutation(async ({ ctx, input }) => {
       const pass = await prisma.classPass.findUnique({ where: { id: input.passId } });
       if (!pass) return { error: 'Pass not found' };
-      await prisma.classPassPurchase.create({
+      // E3 — record-only purchase; the pass is validated at the gym desk.
+      return prisma.classPassPurchase.create({
         data: {
           userId: ctx.user.id,
           passId: input.passId,
@@ -26,7 +28,6 @@ export const classPassRouter = router({
           expiresAt: new Date(Date.now() + 90 * 86400000),
         },
       });
-      return { success: true };
     }),
 
   myPasses: customerProcedure

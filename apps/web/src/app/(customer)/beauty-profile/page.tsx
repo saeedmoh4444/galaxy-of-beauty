@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { api } from '@/lib/trpc';
-import { Card, FormSkeleton, ErrorAlert, Button } from '@galaxy/ui';
+import { Card, FormSkeleton, ErrorAlert, Button, Input } from '@galaxy/ui';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
 import { useToast } from '@galaxy/ui';
 import { useLocale } from '@/components/LocaleProvider';
@@ -66,6 +66,12 @@ export default function BeautyProfilePage(): JSX.Element {
   const [concerns, setConcerns] = useState<string[]>([]);
   const [scents, setScents] = useState<string[]>([]);
   const [notes, setNotes] = useState('');
+  // E3 — fitness measurements + goals.
+  const [heightCm, setHeightCm] = useState('');
+  const [weightKg, setWeightKg] = useState('');
+  const [waistCm, setWaistCm] = useState('');
+  const [fitnessGoals, setFitnessGoals] = useState<string[]>([]);
+  const [goalInput, setGoalInput] = useState('');
 
   useEffect(() => {
     if (data) {
@@ -77,6 +83,11 @@ export default function BeautyProfilePage(): JSX.Element {
       setConcerns(data.concerns || []);
       setScents(data.preferredScents || []);
       setNotes(data.notes || '');
+      const m = (data.measurements ?? {}) as Record<string, number>;
+      setHeightCm(m.heightCm ? String(m.heightCm) : '');
+      setWeightKg(m.weightKg ? String(m.weightKg) : '');
+      setWaistCm(m.waistCm ? String(m.waistCm) : '');
+      setFitnessGoals(data.fitnessGoals || []);
     }
   }, [data]);
 
@@ -94,6 +105,12 @@ export default function BeautyProfilePage(): JSX.Element {
       concerns: concerns.length ? concerns : undefined,
       preferredScents: scents.length ? scents : undefined,
       notes: notes || undefined,
+      measurements: {
+        heightCm: heightCm ? Number(heightCm) : undefined,
+        weightKg: weightKg ? Number(weightKg) : undefined,
+        waistCm: waistCm ? Number(waistCm) : undefined,
+      },
+      fitnessGoals: fitnessGoals.length ? fitnessGoals : undefined,
     });
 
   return (
@@ -186,6 +203,65 @@ export default function BeautyProfilePage(): JSX.Element {
                 onChange={(e) => setNotes(e.target.value)}
                 placeholder={t('beautyProfile.notesPlaceholder')}
               />
+            </Card>
+
+            {/* E3 — fitness measurements + goals */}
+            <Card padding="md">
+              <h3 className="mb-3 font-semibold text-text-primary dark:text-gray-100">
+                {t('profile.measurements.title')}
+              </h3>
+              <div className="grid gap-3 sm:grid-cols-3">
+                <Input
+                  label={t('profile.measurements.height')}
+                  type="number"
+                  value={heightCm}
+                  onChange={(e) => setHeightCm(e.target.value)}
+                />
+                <Input
+                  label={t('profile.measurements.weight')}
+                  type="number"
+                  value={weightKg}
+                  onChange={(e) => setWeightKg(e.target.value)}
+                />
+                <Input
+                  label={t('profile.measurements.waist')}
+                  type="number"
+                  value={waistCm}
+                  onChange={(e) => setWaistCm(e.target.value)}
+                />
+              </div>
+              <p className="mb-2 mt-4 text-sm font-semibold">{t('profile.measurements.goals')}</p>
+              <div className="flex flex-wrap gap-2">
+                {fitnessGoals.map((g) => (
+                  <button
+                    key={g}
+                    onClick={() => setFitnessGoals(fitnessGoals.filter((x) => x !== g))}
+                    className="rounded-full bg-brand-600 px-3 py-1.5 text-xs font-medium text-white"
+                  >
+                    {g} ✕
+                  </button>
+                ))}
+              </div>
+              <div className="mt-2 flex gap-2">
+                <Input
+                  placeholder={t('profile.measurements.goals-hint')}
+                  value={goalInput}
+                  onChange={(e) => setGoalInput(e.target.value)}
+                  className="flex-1"
+                />
+                <Button
+                  size="sm"
+                  variant="outline"
+                  onClick={() => {
+                    if (goalInput.trim() && !fitnessGoals.includes(goalInput.trim())) {
+                      setFitnessGoals([...fitnessGoals, goalInput.trim()]);
+                      setGoalInput('');
+                    }
+                  }}
+                >
+                  +
+                </Button>
+              </div>
             </Card>
 
             <Button onClick={handleSave} loading={upsertMut.isPending} className="w-full" size="lg">

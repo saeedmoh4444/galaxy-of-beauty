@@ -167,6 +167,19 @@ export const adminMessages = {
   'admin.clinics.doc-medical-license': { ar: 'الترخيص الطبي', en: 'Medical license' },
   'admin.clinics.doc-cr': { ar: 'السجل التجاري', en: 'CR' },
   'admin.clinics.doc-national-id': { ar: 'الهوية الوطنية', en: 'National ID' },
+  // E3 — gym review queue
+  'admin.gyms.title': { ar: 'مراجعة النوادي', en: 'Gym Review' },
+  'admin.gyms.subtitle': {
+    ar: 'الموافقة على تراخيص النوادي الرياضية ومستنداتها',
+    en: 'Approve gym licenses and documents',
+  },
+  'admin.gyms.empty': { ar: 'لا توجد طلبات نوادي', en: 'No gym applications' },
+  'admin.gyms.type': { ar: 'النوع', en: 'Type' },
+  'admin.gyms.city': { ar: 'المدينة', en: 'City' },
+  'admin.gyms.address': { ar: 'العنوان', en: 'Address' },
+  'admin.gyms.doc-license': { ar: 'ترخيص النادي', en: 'Gym license' },
+  'admin.gyms.doc-cr': { ar: 'السجل التجاري', en: 'CR' },
+  'admin.gyms.doc-national-id': { ar: 'الهوية الوطنية', en: 'National ID' },
   'tech.dashboard.pending-empty': { ar: 'لا توجد طلبات معلقة', en: 'No pending requests' },
 
   'tech.wallet.title': { ar: ' محفظتي', en: 'My Wallet' },
