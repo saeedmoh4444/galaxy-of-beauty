@@ -22,6 +22,16 @@ export const beautyProfileRouter = router({
         makeupStyle: z.enum(['natural', 'glam', 'soft', 'bold']).optional(),
         concerns: z.array(z.string()).optional(),
         notes: z.string().max(1000).optional(),
+        // E3 — fitness data feeding trainer recommendations.
+        measurements: z
+          .object({
+            heightCm: z.number().positive().max(250).optional(),
+            weightKg: z.number().positive().max(400).optional(),
+            waistCm: z.number().positive().max(300).optional(),
+            hipCm: z.number().positive().max(300).optional(),
+          })
+          .optional(),
+        fitnessGoals: z.array(z.string().max(50)).max(20).optional(),
       }),
     )
     .mutation(async ({ ctx, input }) => {

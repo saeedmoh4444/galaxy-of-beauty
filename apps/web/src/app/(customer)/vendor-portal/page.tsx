@@ -77,20 +77,28 @@ export default function VendorPortalPage(): JSX.Element {
   });
 
   // E2 — KSA provider documents + clinic registration.
-  const [applyType, setApplyType] = useState<'store' | 'clinic'>('store');
+  const [applyType, setApplyType] = useState<'store' | 'clinic' | 'gym'>('store');
   const [applyClinicType, setApplyClinicType] = useState('dermatology');
   const [applyAgency, setApplyAgency] = useState('MOH');
   const [docCr, setDocCr] = useState('');
   const [docNationalId, setDocNationalId] = useState('');
   const [docBankLetter, setDocBankLetter] = useState('');
   const [docMedicalLicense, setDocMedicalLicense] = useState('');
+  // E3 — gym registration fields.
+  const [applyGymType, setApplyGymType] = useState('ladies');
+  const [applyGymCity, setApplyGymCity] = useState('');
+  const [applyGymAddress, setApplyGymAddress] = useState('');
+  const [docGymLicense, setDocGymLicense] = useState('');
   const uploadMut = api.uploads.uploadKycDocument.useMutation({});
   const applyClinicMut = api.marketplace.becomeClinic.useMutation({
     onSuccess: () => refetchStore(),
   });
+  const applyGymMut = api.marketplace.becomeGym.useMutation({
+    onSuccess: () => refetchStore(),
+  });
 
   const uploadDoc =
-    (documentType: 'cr' | 'national_id' | 'bank_letter' | 'medical_license') =>
+    (documentType: 'cr' | 'national_id' | 'bank_letter' | 'medical_license' | 'license') =>
     (e: React.ChangeEvent<HTMLInputElement>) => {
       const file = e.target.files?.[0];
       if (!file) return;
@@ -112,6 +120,7 @@ export default function VendorPortalPage(): JSX.Element {
               if (documentType === 'national_id') setDocNationalId(res.url);
               if (documentType === 'bank_letter') setDocBankLetter(res.url);
               if (documentType === 'medical_license') setDocMedicalLicense(res.url);
+              if (documentType === 'license') setDocGymLicense(res.url);
             },
           },
         );
@@ -122,12 +131,15 @@ export default function VendorPortalPage(): JSX.Element {
   const prods = (products as unknown as Array<Record<string, unknown>> | undefined) ?? [];
   const storeOrders = (orders as unknown as Array<Record<string, unknown>> | undefined) ?? [];
 
-  /* ---------- Apply wizard (no store/clinic yet) ---------- */
+  /* ---------- Apply wizard (no store/clinic/gym yet) ---------- */
   if (!storeLoading && !store) {
     const isClinic = applyType === 'clinic';
+    const isGym = applyType === 'gym';
     const docsReady = isClinic
       ? docMedicalLicense && docCr && docNationalId
-      : docCr && docNationalId && docBankLetter;
+      : isGym
+        ? docGymLicense && docCr && docNationalId
+        : docCr && docNationalId && docBankLetter;
     const submit = () => {
       const slug = `provider-${Date.now().toString(36)}-${Math.random().toString(36).slice(2, 8)}`;
       if (isClinic) {
@@ -141,6 +153,23 @@ export default function VendorPortalPage(): JSX.Element {
           logoUrl: applyLogo.trim() || undefined,
           documents: {
             medicalLicenseUrl: docMedicalLicense,
+            crUrl: docCr,
+            nationalIdUrl: docNationalId,
+          },
+        });
+      } else if (isGym) {
+        applyGymMut.mutate({
+          storeName: applyName.trim(),
+          storeSlug: slug,
+          gymType: applyGymType as never,
+          licenseNumber: applyLicense.trim(),
+          licenseAgency: 'MISA',
+          gymCity: applyGymCity.trim(),
+          gymAddress: applyGymAddress.trim(),
+          descriptionAr: applyBio.trim() || undefined,
+          logoUrl: applyLogo.trim() || undefined,
+          documents: {
+            licenseUrl: docGymLicense,
             crUrl: docCr,
             nationalIdUrl: docNationalId,
           },
@@ -171,7 +200,7 @@ export default function VendorPortalPage(): JSX.Element {
               <div className="flex gap-2">
                 <Button
                   size="sm"
-                  variant={!isClinic ? 'primary' : 'outline'}
+                  variant={applyType === 'store' ? 'primary' : 'outline'}
                   onClick={() => setApplyType('store')}
                 >
                   {t('vendorPortal.apply.register-store')}
@@ -182,6 +211,13 @@ export default function VendorPortalPage(): JSX.Element {
                   onClick={() => setApplyType('clinic')}
                 >
                   {t('vendorPortal.apply.register-clinic')}
+                </Button>
+                <Button
+                  size="sm"
+                  variant={isGym ? 'primary' : 'outline'}
+                  onClick={() => setApplyType('gym')}
+                >
+                  {t('vendorPortal.apply.register-gym')}
                 </Button>
               </div>
 
@@ -220,6 +256,33 @@ export default function VendorPortalPage(): JSX.Element {
                       <option value="SFDA">SFDA</option>
                     </select>
                   </div>
+                </>
+              ) : isGym ? (
+                <>
+                  <select
+                    value={applyGymType}
+                    onChange={(e) => setApplyGymType(e.target.value)}
+                    className="w-full rounded-lg border px-3 py-2 text-sm dark:border-gray-700 dark:bg-gray-800"
+                  >
+                    <option value="ladies">{t('gyms.type.ladies')}</option>
+                    <option value="family">{t('gyms.type.family')}</option>
+                  </select>
+                  <Input
+                    label={t('vendorPortal.apply.license')}
+                    value={applyLicense}
+                    onChange={(e) => setApplyLicense(e.target.value)}
+                    placeholder="MISA-123456"
+                  />
+                  <Input
+                    label={t('vendorPortal.apply.gym-city')}
+                    value={applyGymCity}
+                    onChange={(e) => setApplyGymCity(e.target.value)}
+                  />
+                  <Input
+                    label={t('vendorPortal.apply.gym-address')}
+                    value={applyGymAddress}
+                    onChange={(e) => setApplyGymAddress(e.target.value)}
+                  />
                 </>
               ) : (
                 <>
@@ -276,6 +339,12 @@ export default function VendorPortalPage(): JSX.Element {
                         onChange={uploadDoc('cr')}
                       />
                     </>
+                  ) : isGym ? (
+                    <DocUploadInput
+                      label={t('vendorPortal.apply.doc-license')}
+                      value={docGymLicense}
+                      onChange={uploadDoc('license')}
+                    />
                   ) : (
                     <DocUploadInput
                       label={t('vendorPortal.apply.doc-cr')}
@@ -283,32 +352,58 @@ export default function VendorPortalPage(): JSX.Element {
                       onChange={uploadDoc('cr')}
                     />
                   )}
-                  <DocUploadInput
-                    label={t('vendorPortal.apply.doc-national-id')}
-                    value={docNationalId}
-                    onChange={uploadDoc('national_id')}
-                  />
-                  {!isClinic && (
+                  {!isGym && (
+                    <DocUploadInput
+                      label={t('vendorPortal.apply.doc-national-id')}
+                      value={docNationalId}
+                      onChange={uploadDoc('national_id')}
+                    />
+                  )}
+                  {!isClinic && !isGym && (
                     <DocUploadInput
                       label={t('vendorPortal.apply.doc-bank-letter')}
                       value={docBankLetter}
                       onChange={uploadDoc('bank_letter')}
                     />
                   )}
+                  {isGym && (
+                    <>
+                      <DocUploadInput
+                        label={t('vendorPortal.apply.doc-cr')}
+                        value={docCr}
+                        onChange={uploadDoc('cr')}
+                      />
+                      <DocUploadInput
+                        label={t('vendorPortal.apply.doc-national-id')}
+                        value={docNationalId}
+                        onChange={uploadDoc('national_id')}
+                      />
+                    </>
+                  )}
                 </div>
               </div>
 
-              {(applyMut.isError || applyClinicMut.isError) && (
+              {(applyMut.isError || applyClinicMut.isError || applyGymMut.isError) && (
                 <p className="text-sm text-red-600">
-                  {(applyMut.isError ? applyMut.error?.message : applyClinicMut.error?.message) ??
-                    ''}
+                  {(applyMut.isError
+                    ? applyMut.error?.message
+                    : applyClinicMut.isError
+                      ? applyClinicMut.error?.message
+                      : applyGymMut.error?.message) ?? ''}
                 </p>
               )}
               <Button
                 onClick={submit}
-                loading={applyMut.isPending || applyClinicMut.isPending || uploadMut.isPending}
+                loading={
+                  applyMut.isPending ||
+                  applyClinicMut.isPending ||
+                  applyGymMut.isPending ||
+                  uploadMut.isPending
+                }
                 disabled={
-                  !applyName.trim() || (isClinic ? !applyLicense.trim() : false) || !docsReady
+                  !applyName.trim() ||
+                  (isClinic || isGym ? !applyLicense.trim() : false) ||
+                  !docsReady
                 }
                 className="w-full"
               >
@@ -324,6 +419,11 @@ export default function VendorPortalPage(): JSX.Element {
   /* ---------- Clinic dashboard (E2) ---------- */
   if (store && (store.type as string) === 'CLINIC') {
     return <ClinicDashboard store={store} />;
+  }
+
+  /* ---------- Gym dashboard (E3) ---------- */
+  if (store && (store.type as string) === 'GYM') {
+    return <GymDashboard store={store} />;
   }
 
   return (
@@ -838,5 +938,203 @@ function DocUploadInput({
         <input type="file" accept=".pdf,.jpg,.jpeg,.png" className="hidden" onChange={onChange} />
       </label>
     </div>
+  );
+}
+
+/**
+ * E3 — gym dashboard (the same provider shell as stores/clinics): schedule
+ * capacity-based classes and manage incoming class bookings.
+ */
+function GymDashboard({ store }: { store: Record<string, unknown> }): JSX.Element {
+  const { t, locale } = useLocale();
+  const [clsNameAr, setClsNameAr] = useState('');
+  const [clsNameEn, setClsNameEn] = useState('');
+  const [clsStart, setClsStart] = useState(
+    new Date(Date.now() + 24 * 3_600_000).toISOString().slice(0, 16),
+  );
+  const [clsEnd, setClsEnd] = useState(
+    new Date(Date.now() + 25 * 3_600_000).toISOString().slice(0, 16),
+  );
+  const [clsCapacity, setClsCapacity] = useState(10);
+  const [clsPrice, setClsPrice] = useState(0);
+
+  const classesQ = api.vendorPortal['gymClasses.list'].useQuery(undefined) as {
+    data: Array<Record<string, unknown>> | undefined;
+    refetch: () => void;
+  };
+  const bookingsQ = api.vendorPortal.gymClassBookings.useQuery(undefined) as {
+    data: Array<Record<string, unknown>> | undefined;
+    refetch: () => void;
+  };
+  const addClassMut = api.vendorPortal['gymClasses.add'].useMutation({
+    onSuccess: () => classesQ.refetch(),
+  });
+  const removeClassMut = api.vendorPortal['gymClasses.remove'].useMutation({
+    onSuccess: () => classesQ.refetch(),
+  });
+  const gymCancelMut = api.vendorPortal.gymCancelBooking.useMutation({
+    onSuccess: () => {
+      bookingsQ.refetch();
+      classesQ.refetch();
+    },
+  });
+
+  const classes = classesQ.data ?? [];
+  const bookings = bookingsQ.data ?? [];
+
+  return (
+    <DashboardLayout userRole="CUSTOMER">
+      <div className="mx-auto max-w-4xl space-y-6">
+        <div>
+          <h1 className="text-2xl font-bold">{store.storeName as string}</h1>
+          <p className="mt-1 text-sm text-text-secondary">
+            {store.gymType ? t(`gyms.type.${store.gymType as string}` as never) : ''} ·{' '}
+            {store.gymCity as string} · {store.gymAddress as string}
+          </p>
+        </div>
+
+        {!(store.isVerified as boolean) && (
+          <Card
+            padding="md"
+            className="border-amber-200 bg-amber-50 dark:border-amber-800 dark:bg-amber-950"
+          >
+            <p className="text-sm font-semibold text-amber-700 dark:text-amber-300">
+              {t('vendorPortal.status.pending-review')}
+            </p>
+          </Card>
+        )}
+
+        {/* Classes */}
+        <Card padding="lg">
+          <h3 className="mb-3 font-bold">{t('vendorPortal.gym.classes-title')}</h3>
+          <div className="mb-3 grid gap-3 sm:grid-cols-2">
+            <Input
+              label={t('vendorPortal.gym.class-add')}
+              value={clsNameAr}
+              onChange={(e) => setClsNameAr(e.target.value)}
+              placeholder="اليوغا"
+            />
+            <Input
+              label="EN"
+              value={clsNameEn}
+              onChange={(e) => setClsNameEn(e.target.value)}
+              placeholder="Yoga"
+            />
+            <Input
+              label={t('vendorPortal.deals.starts')}
+              type="datetime-local"
+              value={clsStart}
+              onChange={(e) => setClsStart(e.target.value)}
+            />
+            <Input
+              label={t('vendorPortal.deals.ends')}
+              type="datetime-local"
+              value={clsEnd}
+              onChange={(e) => setClsEnd(e.target.value)}
+            />
+            <Input
+              label={t('vendorPortal.gym.capacity')}
+              type="number"
+              value={String(clsCapacity)}
+              onChange={(e) => setClsCapacity(parseInt(e.target.value) || 0)}
+            />
+            <Input
+              label={t('vendorPortal.gym.price')}
+              type="number"
+              value={String(clsPrice)}
+              onChange={(e) => setClsPrice(parseInt(e.target.value) || 0)}
+            />
+          </div>
+          <Button
+            size="sm"
+            disabled={!clsNameAr.trim() || !clsNameEn.trim() || clsCapacity < 1}
+            onClick={() =>
+              addClassMut.mutate({
+                nameAr: clsNameAr.trim(),
+                nameEn: clsNameEn.trim(),
+                startsAt: new Date(clsStart).toISOString(),
+                endsAt: new Date(clsEnd).toISOString(),
+                capacity: clsCapacity,
+                price: clsPrice,
+              })
+            }
+            loading={addClassMut.isPending}
+          >
+            {t('vendorPortal.gym.class-add')}
+          </Button>
+          <div className="mt-3 space-y-2">
+            {classes.map((c: Record<string, unknown>) => (
+              <div
+                key={c.id as number}
+                className="flex items-center justify-between rounded-lg border p-3"
+              >
+                <p className="text-sm">
+                  {localize(c.nameJson, locale)} ·{' '}
+                  {new Date(c.startsAt as string).toLocaleString('ar-SA')} ·{' '}
+                  {c.enrolledCount as number}/{c.capacity as number}
+                </p>
+                <Button
+                  size="sm"
+                  variant="outline"
+                  disabled={(c.enrolledCount as number) > 0}
+                  onClick={() => removeClassMut.mutate({ classId: c.id as number })}
+                  loading={removeClassMut.isPending}
+                >
+                  {t('vendorPortal.gym.class-remove')}
+                </Button>
+              </div>
+            ))}
+            {classes.length === 0 && (
+              <p className="text-sm text-text-tertiary">{t('gyms.classes.empty')}</p>
+            )}
+          </div>
+        </Card>
+
+        {/* Class bookings */}
+        <Card padding="lg">
+          <h3 className="mb-3 font-bold">{t('vendorPortal.gym.bookings-title')}</h3>
+          {bookings.length === 0 ? (
+            <p className="text-sm text-text-tertiary">{t('vendorPortal.gym.bookings-empty')}</p>
+          ) : (
+            <div className="space-y-2">
+              {bookings.map((b: Record<string, unknown>) => {
+                const customer = b.customer as Record<string, unknown> | undefined;
+                const cls = b.class as Record<string, unknown> | undefined;
+                return (
+                  <div
+                    key={b.id as number}
+                    className="flex flex-wrap items-center justify-between gap-3 rounded-lg border p-3"
+                  >
+                    <div>
+                      <p className="text-sm font-bold">
+                        {customer?.name as string} · {b.code as string}
+                      </p>
+                      <p className="text-xs text-text-secondary">
+                        {cls ? localize(cls.nameJson, locale) : ''} ·{' '}
+                        {cls ? new Date(cls.startsAt as string).toLocaleString('ar-SA') : ''}
+                      </p>
+                    </div>
+                    {b.status === 'BOOKED' ? (
+                      <Button
+                        size="sm"
+                        variant="outline"
+                        onClick={() => gymCancelMut.mutate({ bookingId: b.id as number })}
+                        loading={gymCancelMut.isPending}
+                      >
+                        {t('gyms.cancel')}
+                      </Button>
+                    ) : (
+                      <span className="text-sm font-semibold">
+                        {t(`gyms.status.${b.status as string}` as never)}
+                      </span>
+                    )}
+                  </div>
+                );
+              })}
+            </div>
+          )}
+        </Card>
+      </div>
+    </DashboardLayout>
   );
 }

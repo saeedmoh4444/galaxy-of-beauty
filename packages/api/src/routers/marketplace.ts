@@ -347,6 +347,74 @@ export const marketplaceRouter = router({
       return vendor;
     }),
 
+  // ── Become a gym (E3 — fitness vertical) ───────────────
+  /**
+   * becomeGym — gym registration. Same unified provider pipeline:
+   * UNVERIFIED Vendor (type GYM) + PENDING_REVIEW submission (kind 'gym').
+   * KSA documents required: CR, national ID, license (MISA/municipality).
+   */
+  becomeGym: protectedProcedure
+    .input(
+      z.object({
+        storeName: z.string().min(2),
+        storeSlug: z.string().min(3),
+        gymType: z.enum(['ladies', 'family']),
+        licenseNumber: z.string().min(4),
+        licenseAgency: z.enum(['MISA', 'MUNICIPALITY']),
+        gymCity: z.string().min(2),
+        gymAddress: z.string().min(5),
+        descriptionAr: z.string().optional(),
+        descriptionEn: z.string().optional(),
+        logoUrl: z.string().optional(),
+        documents: z.object({
+          crUrl: z.string().url(),
+          nationalIdUrl: z.string().url(),
+          licenseUrl: z.string().url(),
+        }),
+      }),
+    )
+    .mutation(async ({ ctx, input }) => {
+      const existing = await prisma.vendor.findUnique({ where: { userId: ctx.user.id } });
+      if (existing) throw new TRPCError({ code: 'CONFLICT', message: 'Already a vendor' });
+
+      const vendor = await prisma.vendor.create({
+        data: {
+          userId: ctx.user.id,
+          storeName: input.storeName,
+          storeSlug: input.storeSlug,
+          descriptionJson: { ar: input.descriptionAr || '', en: input.descriptionEn || '' },
+          logoUrl: input.logoUrl,
+          licenseNumber: input.licenseNumber,
+          licenseAgency: input.licenseAgency,
+          gymType: input.gymType,
+          gymCity: input.gymCity,
+          gymAddress: input.gymAddress,
+          type: 'GYM',
+          isVerified: false,
+        },
+      });
+
+      await prisma.providerSubmission.create({
+        data: {
+          providerId: ctx.user.id,
+          kind: 'gym',
+          status: 'PENDING_REVIEW',
+          payload: {
+            vendorId: vendor.id,
+            gymName: input.storeName,
+            gymType: input.gymType,
+            gymCity: input.gymCity,
+            gymAddress: input.gymAddress,
+            licenseNumber: input.licenseNumber,
+            licenseAgency: input.licenseAgency,
+            documents: input.documents,
+          },
+        },
+      });
+
+      return vendor;
+    }),
+
   // ── Product Reviews ────────────────────────────────────
   addReview: customerProcedure
     .input(

@@ -31,6 +31,9 @@ const adminLinks: { href: string; key: TranslationKey; icon: string }[] = [
   { href: '/admin/audit-log', key: 'nav.admin.auditLog', icon: '' },
   { href: '/admin/reports', key: 'nav.admin.reports', icon: '' },
   { href: '/admin/areas', key: 'nav.admin.areas', icon: '' },
+  { href: '/admin/vendors', key: 'admin.vendors.title', icon: '' },
+  { href: '/admin/clinics', key: 'admin.clinics.title', icon: '' },
+  { href: '/admin/gyms', key: 'admin.gyms.title', icon: '' },
 ];
 
 export default function AdminLayout({ children }: { children: ReactNode }): ReactNode {

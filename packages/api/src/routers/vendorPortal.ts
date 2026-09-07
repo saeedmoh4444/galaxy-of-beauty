@@ -489,4 +489,118 @@ export const vendorPortalRouter = router({
         return updated;
       });
     }),
+
+  // ---------------------------------------------------------------------------
+  // E3 — gym dashboard (same provider shell)
+  // ---------------------------------------------------------------------------
+
+  /** myGym — the caller's gym (null unless type GYM). */
+  myGym: customerProcedure.query(async ({ ctx }) => {
+    const vendor = await prisma.vendor.findUnique({ where: { userId: ctx.user.id } });
+    return vendor && vendor.type === 'GYM' ? vendor : null;
+  }),
+
+  /** gymClasses.add — schedule a capacity-based class. */
+  'gymClasses.add': customerProcedure
+    .input(
+      z.object({
+        nameAr: z.string().min(2),
+        nameEn: z.string().min(2),
+        startsAt: z.string().datetime(),
+        endsAt: z.string().datetime(),
+        capacity: z.number().int().min(1).max(100),
+        price: z.number().min(0).max(100000).default(0),
+      }),
+    )
+    .mutation(async ({ ctx, input }) => {
+      const vendor = await prisma.vendor.findUnique({ where: { userId: ctx.user.id } });
+      if (!vendor || vendor.type !== 'GYM') {
+        throw new TRPCError({ code: 'FORBIDDEN', message: 'Gym not found' });
+      }
+      if (new Date(input.endsAt) <= new Date(input.startsAt)) {
+        throw new TRPCError({ code: 'BAD_REQUEST', message: 'endAt must be after startAt' });
+      }
+      return prisma.gymClass.create({
+        data: {
+          gymId: vendor.id,
+          nameJson: { ar: input.nameAr, en: input.nameEn },
+          startsAt: new Date(input.startsAt),
+          endsAt: new Date(input.endsAt),
+          capacity: input.capacity,
+          price: input.price,
+        },
+      });
+    }),
+
+  /** gymClasses.remove — delete an un-enrolled class (own gym). */
+  'gymClasses.remove': customerProcedure
+    .input(z.object({ classId: z.number().int().positive() }))
+    .mutation(async ({ ctx, input }) => {
+      const vendor = await prisma.vendor.findUnique({ where: { userId: ctx.user.id } });
+      if (!vendor || vendor.type !== 'GYM') {
+        throw new TRPCError({ code: 'FORBIDDEN', message: 'Gym not found' });
+      }
+      await prisma.gymClass.deleteMany({
+        where: { id: input.classId, gymId: vendor.id, enrolledCount: 0 },
+      });
+      return { success: true };
+    }),
+
+  /** gymClasses.list — the gym's own upcoming classes. */
+  'gymClasses.list': customerProcedure.query(async ({ ctx }) => {
+    const vendor = await prisma.vendor.findUnique({ where: { userId: ctx.user.id } });
+    if (!vendor || vendor.type !== 'GYM') return [];
+
+    return prisma.gymClass.findMany({
+      where: { gymId: vendor.id },
+      orderBy: { startsAt: 'asc' },
+    });
+  }),
+
+  /** gymClassBookings — incoming bookings (own gym). */
+  gymClassBookings: customerProcedure.query(async ({ ctx }) => {
+    const vendor = await prisma.vendor.findUnique({ where: { userId: ctx.user.id } });
+    if (!vendor || vendor.type !== 'GYM') return [];
+
+    return prisma.gymClassBooking.findMany({
+      where: { class: { gymId: vendor.id } },
+      include: {
+        customer: { select: { id: true, name: true, phone: true } },
+        class: { select: { nameJson: true, startsAt: true } },
+      },
+      orderBy: { createdAt: 'desc' },
+    });
+  }),
+
+  /** gymCancelBooking — gym cancels a member's BOOKED seat. */
+  gymCancelBooking: customerProcedure
+    .input(z.object({ bookingId: z.number().int().positive() }))
+    .mutation(async ({ ctx, input }) => {
+      const vendor = await prisma.vendor.findUnique({ where: { userId: ctx.user.id } });
+      if (!vendor || vendor.type !== 'GYM') {
+        throw new TRPCError({ code: 'FORBIDDEN', message: 'Gym not found' });
+      }
+      const booking = await prisma.gymClassBooking.findUnique({
+        where: { id: input.bookingId },
+        include: { class: true },
+      });
+      if (!booking || booking.class.gymId !== vendor.id) {
+        throw new TRPCError({ code: 'NOT_FOUND', message: 'Booking not found' });
+      }
+      if (booking.status !== 'BOOKED') {
+        throw new TRPCError({ code: 'BAD_REQUEST', message: 'Booking already cancelled' });
+      }
+
+      return prisma.$transaction(async (tx) => {
+        const updated = await tx.gymClassBooking.update({
+          where: { id: input.bookingId },
+          data: { status: 'CANCELLED', cancelledAt: new Date() },
+        });
+        await tx.gymClass.update({
+          where: { id: booking.classId },
+          data: { enrolledCount: { decrement: 1 } },
+        });
+        return updated;
+      });
+    }),
 });
