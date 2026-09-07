@@ -3649,6 +3649,17 @@ export const miscMessages = {
   'vendorPortal.orders.pending': { ar: 'بانتظار التنفيذ', en: 'Pending fulfillment' },
   'vendorPortal.orders.fulfilled': { ar: 'تم التنفيذ', en: 'Fulfilled' },
   'vendorPortal.orders.fulfill': { ar: 'تنفيذ', en: 'Fulfill' },
+  // Store plan Phase 4b — product deals
+  'vendorPortal.topProducts': { ar: 'الأكثر مبيعاً', en: 'Top products' },
+  'vendorPortal.deals.title': { ar: 'عروضي على المنتجات', en: 'My Product Deals' },
+  'vendorPortal.deals.propose': { ar: '+ اقترح عرضاً', en: '+ Propose deal' },
+  'vendorPortal.deals.empty': { ar: 'لا توجد عروض مقترحة بعد', en: 'No proposed deals yet' },
+  'vendorPortal.deals.price': { ar: 'سعر العرض (ر.س)', en: 'Deal price (SAR)' },
+  'vendorPortal.deals.starts': { ar: 'يبدأ من', en: 'Starts at' },
+  'vendorPortal.deals.ends': { ar: 'ينتهي عند', en: 'Ends at' },
+  'vendorPortal.deals.pending': { ar: 'قيد المراجعة', en: 'Pending review' },
+  'vendorPortal.deals.approved': { ar: 'معتمد', en: 'Approved' },
+  'vendorPortal.deals.rejected': { ar: 'مرفوض', en: 'Rejected' },
   // Store plan Phase 2 — public storefront
   'stores.title': { ar: 'المتاجر', en: 'Stores' },
   'stores.subtitle': {

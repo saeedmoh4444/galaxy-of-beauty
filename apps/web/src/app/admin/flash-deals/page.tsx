@@ -35,9 +35,20 @@ export default function AdminFlashDealsPage(): JSX.Element {
     { enabled: isAuthenticated },
   ) as { data: { items: Array<Record<string, unknown>> } | undefined; refetch: () => void };
   const pendingSubs = pendingData?.items ?? [];
+
+  // Store plan Phase 4b — store product-deal proposals (same queue).
+  const { data: storeDealData, refetch: refetchStoreDeals } = api.providerReview.list.useQuery(
+    { kind: 'store_promotion', status: 'PENDING_REVIEW' },
+    { enabled: isAuthenticated },
+  ) as { data: { items: Array<Record<string, unknown>> } | undefined; refetch: () => void };
+  const pendingStoreDeals = storeDealData?.items ?? [];
+
   const [rejectNotes, setRejectNotes] = useState<Record<number, string>>({});
   const decideMut = api.providerReview.decide.useMutation({
-    onSuccess: () => refetchQueue(),
+    onSuccess: () => {
+      refetchQueue();
+      refetchStoreDeals();
+    },
   });
 
   return (
@@ -104,6 +115,64 @@ export default function AdminFlashDealsPage(): JSX.Element {
             {t('admin.flash-deals.create-button')}
           </Button>
         </Card>
+
+        {/* Store plan Phase 4b — store product-deal proposals */}
+        {pendingStoreDeals.length > 0 && (
+          <Card padding="lg">
+            <h3 className="font-bold mb-3">{t('admin.promotions.store-review-title')}</h3>
+            <div className="space-y-3">
+              {pendingStoreDeals.map((sub: Record<string, unknown>) => {
+                const payload = (sub.payload ?? {}) as Record<string, unknown>;
+                return (
+                  <div
+                    key={sub.id as number}
+                    className="flex flex-wrap items-center justify-between gap-3 rounded-lg border p-3"
+                  >
+                    <div>
+                      <p className="font-bold">{payload.titleAr as string}</p>
+                      <p className="text-xs text-text-secondary">
+                        {formatCurrency(payload.originalPrice as number)} ←{' '}
+                        {formatCurrency(payload.dealPrice as number)} ·{' '}
+                        {t('admin.promotions.review-provider', { id: sub.providerId as number })}
+                      </p>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <Input
+                        placeholder={t('admin.promotions.reject-notes-placeholder')}
+                        value={rejectNotes[sub.id as number] ?? ''}
+                        onChange={(e) =>
+                          setRejectNotes({ ...rejectNotes, [sub.id as number]: e.target.value })
+                        }
+                        className="w-48"
+                      />
+                      <Button
+                        size="sm"
+                        variant="outline"
+                        onClick={() =>
+                          decideMut.mutate({
+                            id: sub.id as number,
+                            approve: false,
+                            notes: rejectNotes[sub.id as number] || undefined,
+                          })
+                        }
+                        loading={decideMut.isPending}
+                      >
+                        {t('admin.packages.reject')}
+                      </Button>
+                      <Button
+                        size="sm"
+                        onClick={() => decideMut.mutate({ id: sub.id as number, approve: true })}
+                        loading={decideMut.isPending}
+                      >
+                        {t('admin.packages.approve')}
+                      </Button>
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          </Card>
+        )}
 
         {/* B.7 — provider promotion proposals */}
         {pendingSubs.length > 0 && (

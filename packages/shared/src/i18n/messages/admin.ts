@@ -121,6 +121,10 @@ export const adminMessages = {
     ar: 'عروض مقدمات الخدمة بانتظار المراجعة',
     en: 'Pending Provider Promotion Proposals',
   },
+  'admin.promotions.store-review-title': {
+    ar: 'عروض منتجات المتاجر بانتظار المراجعة',
+    en: 'Pending Store Product Deals',
+  },
   'admin.promotions.review-provider': {
     ar: 'مقدمة الخدمة #{id}',
     en: 'Service provider #{id}',

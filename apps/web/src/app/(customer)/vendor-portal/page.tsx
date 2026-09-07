@@ -4,9 +4,10 @@ import { api } from '@/lib/trpc';
 import { Card, Button, Modal, Input, formatCurrency, useAuth } from '@galaxy/ui';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
 import { useLocale } from '@/components/LocaleProvider';
+import { localize } from '@galaxy/shared';
 
 export default function VendorPortalPage(): JSX.Element {
-  const { t } = useLocale();
+  const { t, locale } = useLocale();
   const { isAuthenticated } = useAuth();
 
   // Store plan Phase 1 — registration state.
@@ -41,6 +42,28 @@ export default function VendorPortalPage(): JSX.Element {
   const [name, setName] = useState('');
   const [price, setPrice] = useState(100);
   const [stock, setStock] = useState(10);
+
+  // Store plan Phase 4b — My Deals + top products.
+  const { data: deals, refetch: refetchDeals } = api.vendorPortal.myDeals.useQuery(undefined, {
+    enabled: isAuthenticated,
+  });
+  const proposeDealMut = api.vendorPortal.proposeDeal.useMutation({
+    onSuccess: () => {
+      setShowDeal(false);
+      refetchDeals();
+    },
+  });
+  const [showDeal, setShowDeal] = useState(false);
+  const [dealProductId, setDealProductId] = useState<number | undefined>();
+  const [dealPrice, setDealPrice] = useState('');
+  const [dealStarts, setDealStarts] = useState(
+    new Date(Date.now() + 3_600_000).toISOString().slice(0, 16),
+  );
+  const [dealEnds, setDealEnds] = useState(
+    new Date(Date.now() + 3 * 86_400_000).toISOString().slice(0, 16),
+  );
+  const myDeals = (deals as unknown as Array<Record<string, unknown>> | undefined) ?? [];
+  const topProducts = (dash?.topProducts as Array<Record<string, unknown>> | undefined) ?? [];
 
   // Apply form
   const [applyName, setApplyName] = useState('');
@@ -233,6 +256,71 @@ export default function VendorPortalPage(): JSX.Element {
         </Card>
 
         <div className="space-y-3">
+          {/* Store plan Phase 4b — My Deals */}
+          <div className="flex items-center justify-between">
+            <h2 className="text-lg font-bold">{t('vendorPortal.deals.title')}</h2>
+            <Button size="sm" variant="outline" onClick={() => setShowDeal(true)}>
+              {t('vendorPortal.deals.propose')}
+            </Button>
+          </div>
+          {myDeals.length === 0 ? (
+            <p className="text-sm text-text-tertiary">{t('vendorPortal.deals.empty')}</p>
+          ) : (
+            <div className="space-y-2">
+              {myDeals.map((sub: Record<string, unknown>) => {
+                const payload = (sub.payload ?? {}) as Record<string, unknown>;
+                return (
+                  <Card key={sub.id as number} padding="sm">
+                    <div className="flex items-center justify-between">
+                      <p className="text-sm font-semibold">{payload.titleAr as string}</p>
+                      <div className="flex items-center gap-2">
+                        <span className="text-xs text-text-tertiary line-through">
+                          {formatCurrency(payload.originalPrice as number)}
+                        </span>
+                        <span className="text-sm font-bold text-red-600">
+                          {formatCurrency(payload.dealPrice as number)}
+                        </span>
+                        <span
+                          className={`rounded-full px-2 py-0.5 text-xs ${
+                            sub.status === 'APPROVED'
+                              ? 'bg-green-100 text-green-700'
+                              : sub.status === 'REJECTED'
+                                ? 'bg-red-100 text-red-700'
+                                : 'bg-amber-100 text-amber-700'
+                          }`}
+                        >
+                          {sub.status === 'APPROVED'
+                            ? t('vendorPortal.deals.approved')
+                            : sub.status === 'REJECTED'
+                              ? t('vendorPortal.deals.rejected')
+                              : t('vendorPortal.deals.pending')}
+                        </span>
+                      </div>
+                    </div>
+                  </Card>
+                );
+              })}
+            </div>
+          )}
+
+          {/* Phase 4b — top products (analytics P1) */}
+          {topProducts.length > 0 && (
+            <Card padding="md">
+              <h3 className="mb-2 font-bold">{t('vendorPortal.topProducts')}</h3>
+              <div className="space-y-1">
+                {topProducts.map((p: Record<string, unknown>) => (
+                  <div key={p.id as number} className="flex justify-between text-sm">
+                    <span className="font-medium">{localize(p.nameJson, locale)}</span>
+                    <span className="text-text-secondary">
+                      {p.sales as number} {t('vendorPortal.sales')} ·{' '}
+                      {formatCurrency(Number(p.price ?? 0))}
+                    </span>
+                  </div>
+                ))}
+              </div>
+            </Card>
+          )}
+
           {prods.map((p: Record<string, unknown>) => (
             <Card key={p.id as number} padding="md" className="flex items-center justify-between">
               <div className="flex items-center gap-3">
@@ -259,6 +347,63 @@ export default function VendorPortalPage(): JSX.Element {
             </Card>
           ))}
         </div>
+
+        {/* Phase 4b — propose deal modal */}
+        <Modal
+          open={showDeal}
+          onClose={() => setShowDeal(false)}
+          title={t('vendorPortal.deals.propose')}
+        >
+          <div className="space-y-3">
+            <select
+              value={dealProductId ?? ''}
+              onChange={(e) => setDealProductId(Number(e.target.value) || undefined)}
+              className="w-full rounded-lg border px-3 py-2 text-sm dark:border-gray-700 dark:bg-gray-800"
+            >
+              <option value="">—</option>
+              {prods.map((p: Record<string, unknown>) => (
+                <option key={p.id as number} value={p.id as number}>
+                  {p.nameAr as string} · {formatCurrency(p.price as number)}
+                </option>
+              ))}
+            </select>
+            <Input
+              label={t('vendorPortal.deals.price')}
+              type="number"
+              value={dealPrice}
+              onChange={(e) => setDealPrice(e.target.value)}
+            />
+            <Input
+              label={t('vendorPortal.deals.starts')}
+              type="datetime-local"
+              value={dealStarts}
+              onChange={(e) => setDealStarts(e.target.value)}
+            />
+            <Input
+              label={t('vendorPortal.deals.ends')}
+              type="datetime-local"
+              value={dealEnds}
+              onChange={(e) => setDealEnds(e.target.value)}
+            />
+            {proposeDealMut.isError && (
+              <p className="text-sm text-red-600">{proposeDealMut.error.message}</p>
+            )}
+            <Button
+              onClick={() =>
+                proposeDealMut.mutate({
+                  productId: dealProductId ?? 0,
+                  dealPrice: Number(dealPrice),
+                  startsAt: new Date(dealStarts).toISOString(),
+                  endsAt: new Date(dealEnds).toISOString(),
+                })
+              }
+              loading={proposeDealMut.isPending}
+              disabled={!dealProductId || !dealPrice || !dealStarts || !dealEnds}
+            >
+              {t('button.save')}
+            </Button>
+          </div>
+        </Modal>
 
         <Modal open={show} onClose={() => setShow(false)} title={t('vendorPortal.addProductTitle')}>
           <div className="space-y-3">

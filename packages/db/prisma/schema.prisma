@@ -1276,6 +1276,7 @@ model Product {
   category ProductCategory  @relation(fields: [categoryId], references: [id])
   reviews  ProductReview[]
   cartItems CartItem[]
+  deals    StoreDeal[]
 
   @@index([vendorId, isActive])
   @@index([categoryId, isActive])
@@ -1309,6 +1310,7 @@ model Vendor {
   user     User      @relation(fields: [userId], references: [id])
   products Product[]
   orders   StoreOrder[]
+  deals    StoreDeal[]
   payouts  Payout[]
 
   @@index([storeSlug])
@@ -1333,6 +1335,28 @@ model StoreOrder {
   @@index([vendorId, status, createdAt])
   @@index([customerId, createdAt])
   @@map("store_orders")
+}
+
+// Store plan Phase 4b — store-proposed product deals (approved via the
+// provider-submission queue; windows materialize into comparePrice on the
+// product for the public listing).
+model StoreDeal {
+  id            Int      @id @default(autoincrement())
+  productId     Int
+  vendorId      Int
+  originalPrice Decimal  @db.Decimal(10, 2)
+  dealPrice     Decimal  @db.Decimal(10, 2)
+  startsAt      DateTime
+  endsAt        DateTime
+  isActive      Boolean  @default(true)
+  createdAt     DateTime @default(now())
+
+  product Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+  vendor  Vendor  @relation(fields: [vendorId], references: [id], onDelete: Cascade)
+
+  @@index([productId, isActive, startsAt, endsAt])
+  @@index([vendorId, isActive])
+  @@map("store_deals")
 }
 
 model ProductReview {
