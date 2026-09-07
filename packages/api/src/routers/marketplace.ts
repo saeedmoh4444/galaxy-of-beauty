@@ -144,6 +144,8 @@ export const marketplaceRouter = router({
     const totalItems = cartItems.reduce((sum, i) => sum + i.quantity, 0);
 
     await prisma.$transaction(async (tx) => {
+      // Store plan Phase 1 — one order record per store in the cart.
+      const byVendor = new Map<number, { amount: number; items: number }>();
       for (const item of cartItems) {
         const amount = Number(item.product.price) * item.quantity;
         await tx.product.update({
@@ -156,6 +158,21 @@ export const marketplaceRouter = router({
         await tx.vendor.update({
           where: { id: item.product.vendorId },
           data: { totalSales: { increment: amount } },
+        });
+        const agg = byVendor.get(item.product.vendorId) ?? { amount: 0, items: 0 };
+        agg.amount += amount;
+        agg.items += item.quantity;
+        byVendor.set(item.product.vendorId, agg);
+      }
+      for (const [vendorId, agg] of byVendor) {
+        await tx.storeOrder.create({
+          data: {
+            vendorId,
+            customerId: ctx.user.id,
+            totalAmount: agg.amount,
+            itemCount: agg.items,
+            status: 'PENDING_FULFILLMENT',
+          },
         });
       }
       await tx.cartItem.deleteMany({ where: { userId: ctx.user.id } });
@@ -201,7 +218,12 @@ export const marketplaceRouter = router({
     return vendor;
   }),
 
-  // ── Become a vendor ───────────────────────────────────
+  // ── Become a vendor / store (Store plan Phase 1) ────────
+  /**
+   * becomeVendor — merchant registration. Creates an UNVERIFIED vendor and
+   * a PENDING_REVIEW ProviderSubmission (kind 'store') for the admin review
+   * queue. Products/orders are blocked until approval flips isVerified.
+   */
   becomeVendor: protectedProcedure
     .input(
       z.object({
@@ -209,20 +231,48 @@ export const marketplaceRouter = router({
         storeSlug: z.string().min(3),
         descriptionAr: z.string().optional(),
         descriptionEn: z.string().optional(),
+        logoUrl: z.string().optional(),
+        licenseNumber: z.string().optional(),
+        bankIban: z.string().optional(),
+        bankName: z.string().optional(),
       }),
     )
     .mutation(async ({ ctx, input }) => {
       const existing = await prisma.vendor.findUnique({ where: { userId: ctx.user.id } });
       if (existing) throw new TRPCError({ code: 'CONFLICT', message: 'Already a vendor' });
 
-      return prisma.vendor.create({
+      const vendor = await prisma.vendor.create({
         data: {
           userId: ctx.user.id,
           storeName: input.storeName,
           storeSlug: input.storeSlug,
           descriptionJson: { ar: input.descriptionAr || '', en: input.descriptionEn || '' },
+          logoUrl: input.logoUrl,
+          licenseNumber: input.licenseNumber,
+          bankIban: input.bankIban,
+          bankName: input.bankName,
+          type: 'STORE',
+          isVerified: false,
         },
       });
+
+      await prisma.providerSubmission.create({
+        data: {
+          providerId: ctx.user.id,
+          kind: 'store',
+          status: 'PENDING_REVIEW',
+          payload: {
+            vendorId: vendor.id,
+            storeName: input.storeName,
+            storeSlug: input.storeSlug,
+            licenseNumber: input.licenseNumber ?? '',
+            bankIban: input.bankIban ?? '',
+            bankName: input.bankName ?? '',
+          },
+        },
+      });
+
+      return vendor;
     }),
 
   // ── Product Reviews ────────────────────────────────────

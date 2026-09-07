@@ -140,6 +140,20 @@ export const adminMessages = {
   'tech.promotions.starts-at': { ar: 'يبدأ من', en: 'Starts at' },
   'tech.promotions.ends-at': { ar: 'ينتهي عند', en: 'Ends at' },
   'tech.promotions.empty': { ar: 'لا توجد عروض مقترحة بعد', en: 'No proposed promotions yet' },
+
+  // ---- Store plan Phase 1 — merchant approvals ----
+  'admin.vendors.title': { ar: 'طلبات تسجيل المتاجر', en: 'Store Registrations' },
+  'admin.vendors.subtitle': {
+    ar: 'مراجعة طلبات تسجيل المتاجر (السجل التجاري + البنك)',
+    en: 'Review merchant registration requests (license + bank)',
+  },
+  'admin.vendors.empty': { ar: 'لا توجد طلبات معلقة', en: 'No pending requests' },
+  'admin.vendors.license': { ar: 'السجل التجاري', en: 'License' },
+  'admin.vendors.bank': { ar: 'البنك', en: 'Bank' },
+  'admin.vendors.reject-notes-placeholder': {
+    ar: 'سبب الرفض (اختياري)',
+    en: 'Rejection reason (optional)',
+  },
   'tech.dashboard.pending-empty': { ar: 'لا توجد طلبات معلقة', en: 'No pending requests' },
 
   'tech.wallet.title': { ar: ' محفظتي', en: 'My Wallet' },

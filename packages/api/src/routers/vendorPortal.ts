@@ -80,6 +80,11 @@ export const vendorPortalRouter = router({
       _avg: { rating: true },
     });
 
+    // Store plan Phase 1 — pending order count (store-managed fulfillment).
+    const pendingOrders = await prisma.storeOrder.count({
+      where: { vendorId: vendor.id, status: 'PENDING_FULFILLMENT' },
+    });
+
     // Phase 4b — analytics P1: top products by sales.
     const topProducts = await prisma.product.findMany({
       where: { vendorId: vendor.id },
@@ -93,6 +98,7 @@ export const vendorPortalRouter = router({
       totalSales: agg._sum.sales ?? 0,
       revenue,
       rating: Number(reviewsAgg._avg.rating?.toFixed(1) ?? 4.8),
+      pendingOrders,
       topProducts,
     };
   }),
@@ -155,6 +161,55 @@ export const vendorPortalRouter = router({
         data: { isActive: false },
       });
       return { success: true };
+    }),
+
+  // ---------------------------------------------------------------------------
+  // Store plan Phase 1 — store registration state + orders
+  // ---------------------------------------------------------------------------
+
+  /** myStore — the caller's store (or null when not registered yet). */
+  myStore: customerProcedure.query(async ({ ctx }) => {
+    return prisma.vendor.findUnique({ where: { userId: ctx.user.id } });
+  }),
+
+  /** orders — the store's orders, newest first. */
+  orders: customerProcedure.query(async ({ ctx }) => {
+    const vendor = await prisma.vendor.findUnique({ where: { userId: ctx.user.id } });
+    if (!vendor) return [];
+
+    return prisma.storeOrder.findMany({
+      where: { vendorId: vendor.id },
+      orderBy: { createdAt: 'desc' },
+      include: {
+        customer: { select: { id: true, name: true, phone: true } },
+      },
+    });
+  }),
+
+  /** fulfillOrder — mark a store order fulfilled (ownership-guarded). */
+  fulfillOrder: customerProcedure
+    .input(z.object({ orderId: z.number().int().positive() }))
+    .mutation(async ({ ctx, input }) => {
+      const vendor = await prisma.vendor.findUnique({ where: { userId: ctx.user.id } });
+      if (!vendor) {
+        throw new TRPCError({ code: 'NOT_FOUND', message: 'Store not found' });
+      }
+
+      const order = await prisma.storeOrder.findUnique({
+        where: { id: input.orderId },
+        select: { vendorId: true, status: true },
+      });
+      if (!order || order.vendorId !== vendor.id) {
+        throw new TRPCError({ code: 'NOT_FOUND', message: 'Order not found' });
+      }
+      if (order.status === 'FULFILLED') {
+        throw new TRPCError({ code: 'BAD_REQUEST', message: 'Order already fulfilled' });
+      }
+
+      return prisma.storeOrder.update({
+        where: { id: input.orderId },
+        data: { status: 'FULFILLED' },
+      });
     }),
 
   // ---------------------------------------------------------------------------
