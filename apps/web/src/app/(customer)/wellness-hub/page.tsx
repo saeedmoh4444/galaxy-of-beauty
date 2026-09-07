@@ -44,7 +44,7 @@ export default function WellnessHubPage(): JSX.Element {
               {t('wellnessHub.cycleDay', { day: d!.cycle.currentDay, total: d!.cycle.cycleLength })}
             </p>
             <p className="text-xs text-brand-600 mt-1">
-              ️ {t('wellnessHub.nextPeriod', { days: d!.cycle.daysUntilNext })}
+              ️ {t('wellnessHub.nextPeriod', { days: d!.cycle.daysUntilNext ?? 0 })}
             </p>
           </Card>
         )}
