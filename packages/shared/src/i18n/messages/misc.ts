@@ -3660,6 +3660,22 @@ export const miscMessages = {
   'vendorPortal.deals.pending': { ar: 'قيد المراجعة', en: 'Pending review' },
   'vendorPortal.deals.approved': { ar: 'معتمد', en: 'Approved' },
   'vendorPortal.deals.rejected': { ar: 'مرفوض', en: 'Rejected' },
+  // Store plan Phase 2 — public storefront
+  'stores.title': { ar: 'المتاجر', en: 'Stores' },
+  'stores.subtitle': {
+    ar: 'تسوّقي من متاجر التجميل الموثقة',
+    en: 'Shop from verified beauty stores',
+  },
+  'stores.empty': { ar: 'لا توجد متاجر بعد', en: 'No stores yet' },
+  'stores.not-found': { ar: 'المتجر غير موجود', en: 'Store not found' },
+  'stores.load-error': { ar: 'فشل تحميل المتاجر', en: 'Failed to load stores' },
+  'stores.product-count': { ar: '{count} منتج', en: '{count} products' },
+  'stores.verified': { ar: 'متجر موثق', en: 'Verified' },
+  'stores.empty-products': { ar: 'لا توجد منتجات في هذا المتجر', en: 'No products in this store' },
+  'stores.stock': { ar: 'المخزون: {count}', en: 'Stock: {count}' },
+  'stores.add-to-cart': { ar: 'أضيفي للسلة', en: 'Add to cart' },
+  'stores.added-to-cart': { ar: 'تمت الإضافة للسلة', en: 'Added to cart' },
+  'stores.login-to-buy': { ar: 'سجلي الدخول للشراء', en: 'Sign in to buy' },
   'video.title': { ar: ' استشارات الفيديو', en: 'Video Consultations' },
   'video.subtitle': {
     ar: 'مكالمات فيديو مباشرة مع الفنيات',
