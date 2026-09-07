@@ -81,7 +81,10 @@ export default function PayoutsPage(): JSX.Element {
               <tbody className="divide-y divide-gray-100 dark:divide-gray-800">
                 {items.map((p: PayoutItem) => (
                   <tr key={p.id}>
-                    <td className="p-3 font-medium">{p.technician?.name ?? '-'}</td>
+                    <td className="p-3 font-medium">
+                      {/* Store plan Phase 3 — store payouts carry a vendor. */}
+                      {p.vendor?.storeName ?? p.technician?.name ?? '-'}
+                    </td>
                     <td className="p-3 font-bold">{formatCurrency(Number(p.amount ?? 0))}</td>
                     <td className="p-3">{statusBadge(p.status)}</td>
                     <td className="p-3 text-text-tertiary">
