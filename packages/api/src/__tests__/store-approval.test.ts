@@ -42,6 +42,10 @@ describe('store registration + approval (Store Phase 1)', () => {
 
   afterAll(async () => {
     try {
+      // Phase 3 accrual rows — delete before the vendors (SET NULL FK).
+      await prisma.payout.deleteMany({ where: { vendorId: { in: createdVendorIds } } });
+    } catch {}
+    try {
       await prisma.cartItem.deleteMany({ where: { userId: { in: createdUserIds } } });
     } catch {}
     try {
@@ -286,5 +290,88 @@ describe('store registration + approval (Store Phase 1)', () => {
     const p2 = await prisma.product.findUniqueOrThrow({ where: { id: product2.id } });
     expect(p1.stock).toBe(p1Before.stock - 1);
     expect(p2.stock).toBe(p2Before.stock - 2);
+  });
+
+  // ---- Store plan Phase 3 — commissions + payout accrual ----
+
+  it('fulfilling an order accrues a PENDING payout (net = total − commission)', async () => {
+    // Fresh order for a deterministic accrual.
+    const c = await caller(buyer);
+    await c.marketplace.addToCart({ productId: createdProductIds[0]!, quantity: 1 });
+    await c.marketplace.buyCart({});
+
+    const order = await prisma.storeOrder.findFirstOrThrow({
+      where: { customerId: buyer.id, status: 'PENDING_FULFILLMENT' },
+      orderBy: { createdAt: 'desc' },
+    });
+    createdOrderIds.push(order.id);
+
+    const store = await caller(merchant);
+    // An earlier test fulfilled an order — payouts accrued there too.
+    const payoutsBefore = await prisma.payout.count({
+      where: { vendorId: createdVendorIds[0] },
+    });
+    await store.vendorPortal.fulfillOrder({ orderId: order.id });
+
+    const payout = await prisma.payout.findFirst({
+      where: { vendorId: createdVendorIds[0] },
+      orderBy: { createdAt: 'desc' },
+    });
+    expect(payout).not.toBeNull();
+    // Default commission = 10% → net 81, fee 9 (order total was 90 SAR).
+    expect(Number(payout!.amount)).toBe(81);
+    expect(Number(payout!.fee)).toBe(9);
+    expect(payout!.status).toBe('PENDING');
+    expect(payout!.technicianId).toBeNull();
+
+    // Idempotency: fulfilling again throws, no second payout.
+    await expect(store.vendorPortal.fulfillOrder({ orderId: order.id })).rejects.toThrow(
+      /already fulfilled/,
+    );
+    const count = await prisma.payout.count({ where: { vendorId: createdVendorIds[0] } });
+    expect(count).toBe(payoutsBefore + 1);
+  });
+
+  it('admin can set a custom commission rate that applies to later payouts', async () => {
+    const a = await caller(admin);
+    await a.marketplace.adminSetCommission({ vendorId: createdVendorIds[0]!, commissionRate: 20 });
+
+    const vendor = await prisma.vendor.findFirstOrThrow({
+      where: { userId: merchant.id },
+    });
+    expect(Number(vendor.commissionRate)).toBe(20);
+
+    // Buy + fulfill → net = 90 − 18 = 72.
+    const c = await caller(buyer);
+    await c.marketplace.addToCart({ productId: createdProductIds[0]!, quantity: 1 });
+    await c.marketplace.buyCart({});
+    const order = await prisma.storeOrder.findFirstOrThrow({
+      where: { customerId: buyer.id, status: 'PENDING_FULFILLMENT' },
+      orderBy: { createdAt: 'desc' },
+    });
+    createdOrderIds.push(order.id);
+
+    const store = await caller(merchant);
+    await store.vendorPortal.fulfillOrder({ orderId: order.id });
+
+    const payout = await prisma.payout.findFirst({
+      where: { vendorId: createdVendorIds[0] },
+      orderBy: { createdAt: 'desc' },
+    });
+    expect(Number(payout!.amount)).toBe(72);
+    expect(Number(payout!.fee)).toBe(18);
+  });
+
+  it('vendorPortal.earnings lists only the store own payouts', async () => {
+    const store = await caller(merchant);
+    const mine = await store.vendorPortal.earnings();
+    // 1 from the ownership-guard test + 1 from the accrual test + 1 from
+    // the commission test = 3 fulfilled orders so far.
+    expect(mine.length).toBe(3);
+    expect(mine.every((p: { vendorId: number }) => p.vendorId === createdVendorIds[0])).toBe(true);
+
+    const other = await caller(buyer);
+    const otherEarnings = await other.vendorPortal.earnings();
+    expect(otherEarnings.length).toBe(0);
   });
 });

@@ -306,6 +306,24 @@ export const marketplaceRouter = router({
     }),
 
   // ── Admin ─────────────────────────────────────────────
+  /** adminSetCommission — store plan Phase 3: per-store commission rate. */
+  adminSetCommission: adminProcedure
+    .input(
+      z.object({
+        vendorId: z.number().int().positive(),
+        commissionRate: z.number().min(0).max(100),
+      }),
+    )
+    .mutation(async ({ input }) => {
+      const vendor = await prisma.vendor.findUnique({ where: { id: input.vendorId } });
+      if (!vendor) throw new TRPCError({ code: 'NOT_FOUND', message: 'Store not found' });
+
+      return prisma.vendor.update({
+        where: { id: input.vendorId },
+        data: { commissionRate: input.commissionRate },
+      });
+    }),
+
   adminProducts: adminProcedure
     .input(z.object({ page: z.number().default(1), limit: z.number().default(50) }))
     .query(async ({ input }) => {
