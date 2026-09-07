@@ -186,7 +186,9 @@ export const vendorPortalRouter = router({
     });
   }),
 
-  /** fulfillOrder — mark a store order fulfilled (ownership-guarded). */
+  /** fulfillOrder — mark a store order fulfilled (ownership-guarded).
+   *  Store plan Phase 3: accrues a PENDING payout — net = total minus the
+   *  store's commission rate. */
   fulfillOrder: customerProcedure
     .input(z.object({ orderId: z.number().int().positive() }))
     .mutation(async ({ ctx, input }) => {
@@ -197,7 +199,7 @@ export const vendorPortalRouter = router({
 
       const order = await prisma.storeOrder.findUnique({
         where: { id: input.orderId },
-        select: { vendorId: true, status: true },
+        select: { vendorId: true, status: true, totalAmount: true },
       });
       if (!order || order.vendorId !== vendor.id) {
         throw new TRPCError({ code: 'NOT_FOUND', message: 'Order not found' });
@@ -206,9 +208,29 @@ export const vendorPortalRouter = router({
         throw new TRPCError({ code: 'BAD_REQUEST', message: 'Order already fulfilled' });
       }
 
-      return prisma.storeOrder.update({
-        where: { id: input.orderId },
-        data: { status: 'FULFILLED' },
+      return prisma.$transaction(async (tx) => {
+        const fulfilled = await tx.storeOrder.update({
+          where: { id: input.orderId },
+          data: { status: 'FULFILLED' },
+        });
+
+        // Phase 3 — accrual: net payout for the store.
+        const total = Number(order.totalAmount);
+        const commission = Math.round(total * Number(vendor.commissionRate)) / 100;
+        const net = Math.round((total - commission) * 100) / 100;
+        await tx.payout.create({
+          data: {
+            technicianId: null,
+            vendorId: vendor.id,
+            periodStart: new Date(),
+            periodEnd: new Date(),
+            amount: net,
+            fee: commission,
+            status: 'PENDING',
+          },
+        });
+
+        return fulfilled;
       });
     }),
 
@@ -288,6 +310,17 @@ export const vendorPortalRouter = router({
   myDeals: customerProcedure.query(async ({ ctx }) => {
     return prisma.providerSubmission.findMany({
       where: { providerId: ctx.user.id, kind: 'store_promotion' },
+      orderBy: { createdAt: 'desc' },
+    });
+  }),
+
+  /** earnings — the store's payout statements (Phase 3). */
+  earnings: customerProcedure.query(async ({ ctx }) => {
+    const vendor = await prisma.vendor.findUnique({ where: { userId: ctx.user.id } });
+    if (!vendor) return [];
+
+    return prisma.payout.findMany({
+      where: { vendorId: vendor.id },
       orderBy: { createdAt: 'desc' },
     });
   }),

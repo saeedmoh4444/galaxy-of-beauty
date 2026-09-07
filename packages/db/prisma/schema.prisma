@@ -603,7 +603,8 @@ model Payment {
 
 model Payout {
   id           Int          @id @default(autoincrement())
-  technicianId Int          // References User.id (technician's user ID)
+  technicianId Int?         // References User.id (technician's user ID); null for store payouts
+  vendorId     Int?         // Store plan Phase 3 — store payouts
   periodStart  DateTime
   periodEnd    DateTime
   amount       Decimal      @db.Decimal(10, 2)
@@ -615,9 +616,11 @@ model Payout {
   createdAt    DateTime     @default(now())
   updatedAt    DateTime     @updatedAt
 
-  technician User @relation(fields: [technicianId], references: [id])
+  technician User?   @relation(fields: [technicianId], references: [id])
+  vendor     Vendor? @relation(fields: [vendorId], references: [id])
 
   @@index([technicianId, status])
+  @@index([vendorId, status])
   @@index([periodStart, periodEnd])
   @@map("payouts")
 }
@@ -1305,6 +1308,7 @@ model Vendor {
   products Product[]
   orders   StoreOrder[]
   deals    StoreDeal[]
+  payouts  Payout[]
 
   @@index([storeSlug])
   @@index([isVerified, isActive])
