@@ -12,7 +12,7 @@ import { adminProcedure, router } from '../trpc';
 import { notifyUser } from '../lib/notify';
 
 const SUBMISSION_STATUSES = ['PENDING_REVIEW', 'APPROVED', 'REJECTED'] as const;
-const SUBMISSION_KINDS = ['package', 'promotion', 'product'] as const;
+const SUBMISSION_KINDS = ['package', 'promotion', 'store', 'product'] as const;
 
 export const providerReviewRouter = router({
   list: adminProcedure
@@ -125,6 +125,22 @@ export const providerReviewRouter = router({
             },
           });
         }
+      } else if (submission.kind === 'store') {
+        // Store plan Phase 1 — merchant registration. Approve flips the
+        // vendor to verified (public listings + product visibility).
+        const payload = submission.payload as { vendorId: number; storeName?: string };
+        const vendor = await prisma.vendor.findUnique({ where: { id: payload.vendorId } });
+        if (!vendor) {
+          throw new TRPCError({ code: 'NOT_FOUND', message: 'Store missing' });
+        }
+        await prisma.vendor.update({
+          where: { id: vendor.id },
+          data: {
+            isVerified: input.approve,
+            isActive: input.approve ? vendor.isActive : false,
+          },
+        });
+        subjectName = payload.storeName ?? `متجر #${vendor.id}`;
       } else {
         // 'product' kind lands with the store plan.
         subjectName = `${submission.kind} #${submission.id}`;

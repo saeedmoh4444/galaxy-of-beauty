@@ -33,13 +33,28 @@ avoids three separate half-features.
 
 ### Phase 1 — Store foundation (the door)
 
-- `MERCHANT/STORE` provider type + registration wizard: business name,
-  license/CR number, bank details (payouts), logo, bio
-- Admin approval via the shared submission queue + KYC review screen
-- Store dashboard v1 (web): product CRUD with image upload, price, stock;
-  orders list; basic revenue
-- Acceptance: a store registers → admin approves → store uploads a product →
-  product visible in admin
+- ✅ **DONE (2026-09-06)**:
+  - `Vendor` gained `type` (STORE/VENDOR), `licenseNumber`, `bankIban`,
+    `bankName`; new `StoreOrder` model (per-store orders, store-managed
+    fulfillment PENDING_FULFILLMENT → FULFILLED). Migration
+    `20260906000003`.
+  - Registration wizard (web vendor portal — appears when the user has no
+    store): business name, license/CR, bank + IBAN, bio, logo → Vendor
+    (isVerified=false) + `ProviderSubmission` kind 'store' (the shared
+    B.6/B.7 queue).
+  - Admin approvals at `/admin/vendors` (approve/reject + notes →
+    submission_approved/rejected notifications). Approve flips isVerified;
+    public `marketplace.vendors` only lists verified stores.
+  - `buyCart` splits the cart per store → one `StoreOrder` per store
+    (amount + item count); the portal shows orders + pending count and
+    can fulfill (ownership-guarded).
+  - Tests: `store-approval.test.ts` (9 — the acceptance flow
+    register → approve → product → admin-visible, order split, fulfill
+    guards, rejection path).
+- Remaining from the original Phase 1 spec: product image upload
+  (logo URL input for now), store bio/logo display, mobile.
+- Acceptance: ✅ a store registers → admin approves → store uploads a
+  product → product visible in admin.
 
 ### Phase 2 — Commerce (the storefront)
 
