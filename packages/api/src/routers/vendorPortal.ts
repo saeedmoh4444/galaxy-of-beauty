@@ -2,6 +2,7 @@ import { z } from 'zod';
 import { TRPCError } from '@trpc/server';
 import { prisma } from '@galaxy/db';
 import { customerProcedure, router } from '../trpc';
+import { notifyUser } from '../lib/notify';
 
 /** B.3: vendor portal is DB-backed (was an in-memory array). */
 
@@ -324,4 +325,168 @@ export const vendorPortalRouter = router({
       orderBy: { createdAt: 'desc' },
     });
   }),
+
+  // ---------------------------------------------------------------------------
+  // E2 — medical clinics dashboard (same provider shell)
+  // ---------------------------------------------------------------------------
+
+  /** myClinic — the caller's clinic (null unless type CLINIC). */
+  myClinic: customerProcedure.query(async ({ ctx }) => {
+    const vendor = await prisma.vendor.findUnique({ where: { userId: ctx.user.id } });
+    return vendor && vendor.type === 'CLINIC' ? vendor : null;
+  }),
+
+  /** setConsultationPrice — the clinic's per-visit consultation fee. */
+  setConsultationPrice: customerProcedure
+    .input(z.object({ price: z.number().min(0).max(100000) }))
+    .mutation(async ({ ctx, input }) => {
+      const vendor = await prisma.vendor.findUnique({ where: { userId: ctx.user.id } });
+      if (!vendor || vendor.type !== 'CLINIC') {
+        throw new TRPCError({ code: 'FORBIDDEN', message: 'Clinic not found' });
+      }
+      return prisma.vendor.update({
+        where: { id: vendor.id },
+        data: { consultationPrice: input.price },
+      });
+    }),
+
+  /** clinicSlots.add — open a consultation slot for the clinic. */
+  'clinicSlots.add': customerProcedure
+    .input(z.object({ startAt: z.string().datetime(), endAt: z.string().datetime() }))
+    .mutation(async ({ ctx, input }) => {
+      const vendor = await prisma.vendor.findUnique({ where: { userId: ctx.user.id } });
+      if (!vendor || vendor.type !== 'CLINIC') {
+        throw new TRPCError({ code: 'FORBIDDEN', message: 'Clinic not found' });
+      }
+      if (new Date(input.endAt) <= new Date(input.startAt)) {
+        throw new TRPCError({ code: 'BAD_REQUEST', message: 'endAt must be after startAt' });
+      }
+      return prisma.clinicSlot.create({
+        data: {
+          clinicId: vendor.id,
+          startAt: new Date(input.startAt),
+          endAt: new Date(input.endAt),
+        },
+      });
+    }),
+
+  /** clinicSlots.remove — drop an unbooked slot (own clinic). */
+  'clinicSlots.remove': customerProcedure
+    .input(z.object({ slotId: z.number().int().positive() }))
+    .mutation(async ({ ctx, input }) => {
+      const vendor = await prisma.vendor.findUnique({ where: { userId: ctx.user.id } });
+      if (!vendor || vendor.type !== 'CLINIC') {
+        throw new TRPCError({ code: 'FORBIDDEN', message: 'Clinic not found' });
+      }
+      await prisma.clinicSlot.deleteMany({
+        where: { id: input.slotId, clinicId: vendor.id, isBooked: false },
+      });
+      return { success: true };
+    }),
+
+  /** clinicSlots.list — the clinic's own upcoming slots. */
+  'clinicSlots.list': customerProcedure.query(async ({ ctx }) => {
+    const vendor = await prisma.vendor.findUnique({ where: { userId: ctx.user.id } });
+    if (!vendor || vendor.type !== 'CLINIC') return [];
+
+    return prisma.clinicSlot.findMany({
+      where: { clinicId: vendor.id },
+      orderBy: { startAt: 'asc' },
+    });
+  }),
+
+  /** clinicConsultations — incoming consultations (own clinic). */
+  clinicConsultations: customerProcedure.query(async ({ ctx }) => {
+    const vendor = await prisma.vendor.findUnique({ where: { userId: ctx.user.id } });
+    if (!vendor || vendor.type !== 'CLINIC') return [];
+
+    return prisma.clinicConsultation.findMany({
+      where: { clinicId: vendor.id },
+      include: { customer: { select: { id: true, name: true, phone: true } } },
+      orderBy: { scheduledAt: 'desc' },
+    });
+  }),
+
+  /** confirmConsultation — clinic accepts a REQUESTED consultation. */
+  confirmConsultation: customerProcedure
+    .input(z.object({ consultationId: z.number().int().positive() }))
+    .mutation(async ({ ctx, input }) => {
+      const vendor = await prisma.vendor.findUnique({ where: { userId: ctx.user.id } });
+      if (!vendor || vendor.type !== 'CLINIC') {
+        throw new TRPCError({ code: 'FORBIDDEN', message: 'Clinic not found' });
+      }
+      const consultation = await prisma.clinicConsultation.findUnique({
+        where: { id: input.consultationId },
+      });
+      if (!consultation || consultation.clinicId !== vendor.id) {
+        throw new TRPCError({ code: 'NOT_FOUND', message: 'Consultation not found' });
+      }
+      if (consultation.status !== 'REQUESTED') {
+        throw new TRPCError({ code: 'BAD_REQUEST', message: 'Consultation already decided' });
+      }
+
+      const updated = await prisma.clinicConsultation.update({
+        where: { id: input.consultationId },
+        data: { status: 'CONFIRMED' },
+      });
+
+      try {
+        await notifyUser({
+          userId: consultation.customerId,
+          templateKey: 'consultation_confirmed',
+          vars: {
+            clinicName: vendor.storeName,
+            when: consultation.scheduledAt.toISOString().slice(0, 16),
+            code: consultation.code,
+          },
+        });
+      } catch {
+        // Notification failure must never fail the confirmation.
+      }
+      return updated;
+    }),
+
+  /** clinicCancelConsultation — clinic rejects a REQUESTED consultation. */
+  clinicCancelConsultation: customerProcedure
+    .input(z.object({ consultationId: z.number().int().positive() }))
+    .mutation(async ({ ctx, input }) => {
+      const vendor = await prisma.vendor.findUnique({ where: { userId: ctx.user.id } });
+      if (!vendor || vendor.type !== 'CLINIC') {
+        throw new TRPCError({ code: 'FORBIDDEN', message: 'Clinic not found' });
+      }
+      const consultation = await prisma.clinicConsultation.findUnique({
+        where: { id: input.consultationId },
+      });
+      if (!consultation || consultation.clinicId !== vendor.id) {
+        throw new TRPCError({ code: 'NOT_FOUND', message: 'Consultation not found' });
+      }
+      if (consultation.status !== 'REQUESTED') {
+        throw new TRPCError({ code: 'BAD_REQUEST', message: 'Consultation already decided' });
+      }
+
+      return prisma.$transaction(async (tx) => {
+        const updated = await tx.clinicConsultation.update({
+          where: { id: input.consultationId },
+          data: { status: 'CANCELLED' },
+        });
+        await tx.clinicSlot.updateMany({
+          where: { consultationId: input.consultationId },
+          data: { isBooked: false, consultationId: null },
+        });
+        try {
+          await notifyUser({
+            userId: consultation.customerId,
+            templateKey: 'consultation_cancelled',
+            vars: {
+              clinicName: vendor.storeName,
+              when: consultation.scheduledAt.toISOString().slice(0, 16),
+              code: consultation.code,
+            },
+          });
+        } catch {
+          // Notification failure must never fail the cancellation.
+        }
+        return updated;
+      });
+    }),
 });

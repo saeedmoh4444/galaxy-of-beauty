@@ -2,7 +2,7 @@ import { z } from 'zod';
 import { TRPCError } from '@trpc/server';
 import { prisma } from '@galaxy/db';
 import { MAX_IMAGE_SIZE, MAX_DOC_SIZE } from '@galaxy/shared';
-import { protectedProcedure, technicianProcedure, adminProcedure, router } from '../trpc';
+import { protectedProcedure, adminProcedure, router } from '../trpc';
 import { uploadFile, deleteFile, generatePresignedUrl } from '../lib/storage';
 
 // ── Allowed MIME types ────────────────────────────────────
@@ -78,9 +78,12 @@ export const uploadRouter = router({
     }),
 
   // ────────────────────────────────────────────────────────
-  // Upload KYC document (technician only)
+  // Upload KYC / provider document (technicians, vendors, clinics).
+  // Vendors and clinics upload KSA papers here and pass the returned URLs
+  // to becomeVendor/becomeClinic; technician uploads are appended to the
+  // technician's kycDocuments and flip KYC to SUBMITTED.
   // ────────────────────────────────────────────────────────
-  uploadKycDocument: technicianProcedure
+  uploadKycDocument: protectedProcedure
     .input(
       z.object({
         file: z.object({
@@ -89,7 +92,16 @@ export const uploadRouter = router({
           size: z.number().max(MAX_DOC_SIZE, 'Document must be under 10 MB'),
           base64: z.string(),
         }),
-        documentType: z.enum(['id_front', 'id_back', 'certificate', 'selfie']),
+        documentType: z.enum([
+          'id_front',
+          'id_back',
+          'certificate',
+          'selfie',
+          'cr',
+          'national_id',
+          'bank_letter',
+          'medical_license',
+        ]),
       }),
     )
     .mutation(async ({ ctx, input }) => {
@@ -108,15 +120,22 @@ export const uploadRouter = router({
         input.file.type,
       );
 
-      // Update KYC status to SUBMITTED if pending
+      // Technicians: append the document to kycDocuments and flip PENDING
+      // → SUBMITTED so the admin KYC review queue picks it up.
       const technician = await prisma.technician.findUnique({
         where: { userId: ctx.user.id },
       });
 
-      if (technician && technician.kycStatus === 'PENDING') {
+      if (technician) {
+        const docs = ((technician.kycDocuments ?? []) as Array<{ type: string; url: string }>)
+          .filter((d) => d.type !== input.documentType)
+          .concat([{ type: input.documentType, url: result.url }]);
         await prisma.technician.update({
           where: { userId: ctx.user.id },
-          data: { kycStatus: 'SUBMITTED' },
+          data: {
+            kycDocuments: docs,
+            ...(technician.kycStatus === 'PENDING' ? { kycStatus: 'SUBMITTED' as const } : {}),
+          },
         });
       }
 

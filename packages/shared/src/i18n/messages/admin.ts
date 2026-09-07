@@ -154,6 +154,19 @@ export const adminMessages = {
     ar: 'سبب الرفض (اختياري)',
     en: 'Rejection reason (optional)',
   },
+  // E2 — medical clinics review queue
+  'admin.clinics.title': { ar: 'مراجعة العيادات', en: 'Clinic Review' },
+  'admin.clinics.subtitle': {
+    ar: 'الموافقة على تراخيص العيادات الطبية ومستنداتها',
+    en: 'Approve medical clinic licenses and documents',
+  },
+  'admin.clinics.empty': { ar: 'لا توجد طلبات عيادات', en: 'No clinic applications' },
+  'admin.clinics.type': { ar: 'التخصص', en: 'Specialty' },
+  'admin.clinics.agency': { ar: 'جهة الترخيص', en: 'License agency' },
+  'admin.clinics.documents': { ar: 'المستندات', en: 'Documents' },
+  'admin.clinics.doc-medical-license': { ar: 'الترخيص الطبي', en: 'Medical license' },
+  'admin.clinics.doc-cr': { ar: 'السجل التجاري', en: 'CR' },
+  'admin.clinics.doc-national-id': { ar: 'الهوية الوطنية', en: 'National ID' },
   'tech.dashboard.pending-empty': { ar: 'لا توجد طلبات معلقة', en: 'No pending requests' },
 
   'tech.wallet.title': { ar: ' محفظتي', en: 'My Wallet' },

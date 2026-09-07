@@ -323,6 +323,32 @@ export const mobileCustomerBMessages = {
   'mobile.stores.added-to-cart': { ar: 'تمت الإضافة للسلة', en: 'Added to cart' },
   'mobile.stores.login-to-buy': { ar: 'سجلي الدخول للشراء', en: 'Sign in to buy' },
   'mobile.stores.empty-products': { ar: 'لا توجد منتجات', en: 'No products' },
+  // E2 — medical clinics screens
+  'mobile.clinics.title': { ar: 'العيادات الطبية', en: 'Medical Clinics' },
+  'mobile.clinics.empty': { ar: 'لا توجد عيادات', en: 'No clinics' },
+  'mobile.clinics.load-error': { ar: 'فشل تحميل العيادات', en: 'Failed to load clinics' },
+  'mobile.clinics.not-found': { ar: 'العيادة غير موجودة', en: 'Clinic not found' },
+  'mobile.clinics.verified': { ar: 'ترخيص معتمد', en: 'Licensed & verified' },
+  'mobile.clinics.price': {
+    ar: 'الاستشارة: {{price}} ر.س',
+    en: 'Consultation: {{price}} SAR',
+  },
+  'mobile.clinics.slots': { ar: 'المواعيد المتاحة', en: 'Open slots' },
+  'mobile.clinics.no-slots': { ar: 'لا توجد مواعيد متاحة', en: 'No open slots' },
+  'mobile.clinics.book': { ar: 'حجز استشارة', en: 'Book consultation' },
+  'mobile.clinics.type': { ar: 'نوع الاستشارة', en: 'Treatment type' },
+  'mobile.clinics.consent': {
+    ar: 'أوافق على الإقرار الطبي',
+    en: 'I consent to the medical disclaimer',
+  },
+  'mobile.clinics.confirm': { ar: 'تأكيد الحجز', en: 'Confirm' },
+  'mobile.clinics.booked': { ar: 'تم إرسال طلب الحجز', en: 'Booking request sent' },
+  'mobile.clinics.packages': { ar: 'باقات العلاج', en: 'Treatment packages' },
+  'mobile.clinics.my': { ar: 'استشاراتي', en: 'My consultations' },
+  'mobile.clinics.login-to-book': {
+    ar: 'سجلي الدخول للحجز',
+    en: 'Sign in to book',
+  },
 
   // ---- travel-kit ----
   'mobile.travelKit.title': { ar: ' حقيبة السفر', en: ' Travel Kit' },

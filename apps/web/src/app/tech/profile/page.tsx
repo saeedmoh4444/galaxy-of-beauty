@@ -126,6 +126,39 @@ export default function TechProfilePage(): JSX.Element {
     submitKycMut.mutate({ documents: [{ type: docType, url: docUrl }] });
   };
 
+  // E2 — file upload for KYC documents (KSA papers) instead of pasting URLs.
+  const uploadKycMut = api.uploads.uploadKycDocument.useMutation({});
+  const handleKycFile = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = () => {
+      uploadKycMut.mutate(
+        {
+          file: {
+            name: file.name,
+            type: file.type,
+            size: file.size,
+            base64: String(reader.result ?? ''),
+          },
+          documentType:
+            docType === 'NATIONAL_ID'
+              ? 'id_front'
+              : docType === 'LICENSE'
+                ? 'certificate'
+                : 'id_back',
+        },
+        {
+          onSuccess: (res) => {
+            setDocUrl(res.url);
+            setKycMsg(t('vendorPortal.apply.uploaded'));
+          },
+        },
+      );
+    };
+    reader.readAsDataURL(file);
+  };
+
   /* ---------- Profile save ---------- */
   const profileMut = api.auth.updateProfile.useMutation();
 
@@ -218,9 +251,20 @@ export default function TechProfilePage(): JSX.Element {
                       className="flex-1"
                     />
                   </div>
-                  <Button onClick={handleKycSubmit} loading={submitKycMut.isPending}>
-                    {t('tech.profile.kyc-submit')}
-                  </Button>
+                  <div className="flex items-center gap-3">
+                    <label className="cursor-pointer rounded-lg border border-edge px-3 py-2 text-sm dark:border-gray-600">
+                      {uploadKycMut.isPending ? '…' : t('vendorPortal.apply.upload')}
+                      <input
+                        type="file"
+                        accept=".pdf,.jpg,.jpeg,.png"
+                        className="hidden"
+                        onChange={handleKycFile}
+                      />
+                    </label>
+                    <Button onClick={handleKycSubmit} loading={submitKycMut.isPending}>
+                      {t('tech.profile.kyc-submit')}
+                    </Button>
+                  </div>
                 </div>
               ) : kycStatus === 'SUBMITTED' ? (
                 <p className="mt-2 text-sm text-amber-600">

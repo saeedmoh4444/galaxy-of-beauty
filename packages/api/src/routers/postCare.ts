@@ -152,6 +152,113 @@ const CARE_LIBRARY: Record<
       emoji: '',
     },
   ],
+  // E2 — medical clinic aftercare, keyed by consultation treatment type.
+  dermatology: [
+    {
+      id: 'derm_1',
+      titleAr: 'استخدمي واقي الشمس يومياً',
+      titleEn: 'Wear Sunscreen Daily',
+      bodyAr: 'بعد علاجات الجلد، بشرتكِ أكثر حساسية للشمس. ضعي SPF50 كل صباح لمدة أسبوعين.',
+      bodyEn:
+        'After dermatological treatments, your skin is more sun-sensitive. Apply SPF50 every morning for two weeks.',
+      timeframe: '1w',
+      emoji: '',
+    },
+    {
+      id: 'derm_2',
+      titleAr: 'تجنبي التقشير والمنتجات القوية',
+      titleEn: 'Avoid Harsh Actives',
+      bodyAr: 'أوقفي الريتينول وأحماض التقشير لمدة أسبوع بعد الجلسة لتجنب التهيج.',
+      bodyEn:
+        'Pause retinol and exfoliating acids for a week after the session to avoid irritation.',
+      timeframe: '1w',
+      emoji: '',
+    },
+  ],
+  laser: [
+    {
+      id: 'laser_1',
+      titleAr: 'تجنبي الشمس تماماً',
+      titleEn: 'Avoid Sun Completely',
+      bodyAr:
+        'لمدة ٤٨ ساعة بعد جلسة الليزر، تجنبي التعرض المباشر للشمس وضعي واقي شمس عالي الحماية.',
+      bodyEn:
+        'For 48 hours after a laser session, avoid direct sun exposure and use a high-SPF sunscreen.',
+      timeframe: '48h',
+      emoji: '',
+    },
+    {
+      id: 'laser_2',
+      titleAr: 'لا تزيلي الشعر بالشمع',
+      titleEn: 'No Waxing or Plucking',
+      bodyAr: 'بين جلسات الليزر، لا تستخدمي الشمع أو الملقط — الحلاقة فقط مسموحة.',
+      bodyEn: 'Between laser sessions, avoid waxing or plucking — shaving only.',
+      timeframe: 'ongoing',
+      emoji: '',
+    },
+  ],
+  injectables: [
+    {
+      id: 'inj_1',
+      titleAr: 'تجنبي التمارين والمكياج',
+      titleEn: 'Skip Exercise & Makeup',
+      bodyAr: 'لمدة ٢٤ ساعة بعد الحقن، تجنبي التمارين الرياضية ووضع المكياج على المنطقة المعالجة.',
+      bodyEn:
+        'For 24 hours after injections, avoid exercise and applying makeup on the treated area.',
+      timeframe: '24h',
+      emoji: '',
+    },
+    {
+      id: 'inj_2',
+      titleAr: 'نامي ورأسكِ مرفوع',
+      titleEn: 'Sleep Upright',
+      bodyAr: 'ارفعي رأسكِ على وسادتين عند النوم في الليلة الأولى لتقليل التورم.',
+      bodyEn: 'Prop your head on two pillows the first night to reduce swelling.',
+      timeframe: '24h',
+      emoji: '',
+    },
+  ],
+  dental: [
+    {
+      id: 'dent_1',
+      titleAr: 'تجنبي الأطعمة الصلبة',
+      titleEn: 'Avoid Hard Foods',
+      bodyAr: 'لمدة ٤٨ ساعة بعد علاج الأسنان، التزمي بالأطعمة اللينة وتجنبي الساخن جداً.',
+      bodyEn:
+        'For 48 hours after dental treatment, stick to soft foods and avoid very hot food and drinks.',
+      timeframe: '48h',
+      emoji: '',
+    },
+    {
+      id: 'dent_2',
+      titleAr: 'اشطفي بالماء والملح',
+      titleEn: 'Salt-Water Rinses',
+      bodyAr: 'اشطفي فمكِ بمحلول ملحي دافئ مرتين يومياً للحفاظ على نظافة المنطقة المعالجة.',
+      bodyEn: 'Rinse with a warm salt-water solution twice a day to keep the treated area clean.',
+      timeframe: '1w',
+      emoji: '',
+    },
+  ],
+  nutrition: [
+    {
+      id: 'nutr_1',
+      titleAr: 'اشربي الماء بانتظام',
+      titleEn: 'Hydrate Consistently',
+      bodyAr: 'التزمي بـ ٨-١٠ أكواب ماء يومياً لدعم الخطة الغذائية.',
+      bodyEn: 'Stick to 8-10 glasses of water daily to support your nutrition plan.',
+      timeframe: 'ongoing',
+      emoji: '',
+    },
+    {
+      id: 'nutr_2',
+      titleAr: 'سجلي وجباتكِ',
+      titleEn: 'Track Your Meals',
+      bodyAr: 'سجلي وجباتكِ يومياً لمراجعة التقدم مع أخصائية التغذية في الزيارة القادمة.',
+      bodyEn: 'Log your meals daily to review progress with the nutritionist at the next visit.',
+      timeframe: 'ongoing',
+      emoji: '',
+    },
+  ],
 };
 
 const TIMEFRAMES = [
@@ -276,7 +383,24 @@ export const postCareRouter = router({
       };
     });
 
-    return { plans, timeframes: TIMEFRAMES };
+    // E2 — clinic consultation aftercare (treatment type → library key).
+    const consultations = await prisma.clinicConsultation.findMany({
+      where: { customerId: ctx.user.id, status: { in: ['CONFIRMED', 'COMPLETED'] } },
+      orderBy: { scheduledAt: 'desc' },
+      take: SMALL_PAGE_SIZE,
+      include: { clinic: { select: { storeName: true } } },
+    });
+
+    const consultationPlans = consultations.map((c) => ({
+      consultationId: c.id,
+      code: c.code,
+      clinicName: c.clinic.storeName,
+      treatmentType: c.treatmentType,
+      scheduledAt: c.scheduledAt.toISOString(),
+      tips: CARE_LIBRARY[c.treatmentType] ?? CARE_LIBRARY['skincare']!,
+    }));
+
+    return { plans, consultationPlans, timeframes: TIMEFRAMES };
   }),
 
   // Get care library for browsing
@@ -289,6 +413,11 @@ export const postCareRouter = router({
         nails: { ar: 'الأظافر', en: 'Nails', emoji: '' },
         massage: { ar: 'المساج', en: 'Massage', emoji: '‍️' },
         waxing: { ar: 'إزالة الشعر', en: 'Waxing', emoji: '' },
+        dermatology: { ar: 'الجلدية', en: 'Dermatology', emoji: '' },
+        laser: { ar: 'الليزر', en: 'Laser', emoji: '' },
+        injectables: { ar: 'الحقن التجميلي', en: 'Injectables', emoji: '' },
+        dental: { ar: 'تجميل الأسنان', en: 'Dental', emoji: '' },
+        nutrition: { ar: 'التغذية', en: 'Nutrition', emoji: '' },
       };
       return {
         key,

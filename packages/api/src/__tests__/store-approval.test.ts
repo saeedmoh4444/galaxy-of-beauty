@@ -71,7 +71,16 @@ describe('store registration + approval (Store Phase 1)', () => {
   it('rejects anonymous registration', async () => {
     const anon = await caller(null);
     await expect(
-      anon.marketplace.becomeVendor({ storeName: 'x', storeSlug: 'x-store' }),
+      anon.marketplace.becomeVendor({
+        storeName: 'x',
+        storeSlug: 'x-store',
+        licenseNumber: 'CR-1',
+        documents: {
+          crUrl: 'https://example.com/cr.pdf',
+          nationalIdUrl: 'https://example.com/id.pdf',
+          bankLetterUrl: 'https://example.com/bank.pdf',
+        },
+      }),
     ).rejects.toThrow();
   });
 
@@ -84,6 +93,11 @@ describe('store registration + approval (Store Phase 1)', () => {
       licenseNumber: 'CR-123456',
       bankIban: 'SA0000000000000000000000',
       bankName: 'البنك الأهلي',
+      documents: {
+        crUrl: 'https://example.com/cr.pdf',
+        nationalIdUrl: 'https://example.com/id.pdf',
+        bankLetterUrl: 'https://example.com/bank.pdf',
+      },
     });
     createdVendorIds.push(vendor.id);
 
@@ -108,7 +122,16 @@ describe('store registration + approval (Store Phase 1)', () => {
   it('rejects duplicate registration', async () => {
     const c = await caller(merchant);
     await expect(
-      c.marketplace.becomeVendor({ storeName: 'متجر آخر', storeSlug: 'another-store' }),
+      c.marketplace.becomeVendor({
+        storeName: 'متجر آخر',
+        storeSlug: 'another-store',
+        licenseNumber: 'CR-1',
+        documents: {
+          crUrl: 'https://example.com/cr.pdf',
+          nationalIdUrl: 'https://example.com/id.pdf',
+          bankLetterUrl: 'https://example.com/bank.pdf',
+        },
+      }),
     ).rejects.toThrow(/Already a vendor/);
   });
 
@@ -208,6 +231,12 @@ describe('store registration + approval (Store Phase 1)', () => {
     const vendor = await c.marketplace.becomeVendor({
       storeName: 'متجر مرفوض',
       storeSlug: `rejected-store-${Date.now()}`,
+      licenseNumber: 'CR-999',
+      documents: {
+        crUrl: 'https://example.com/cr.pdf',
+        nationalIdUrl: 'https://example.com/id.pdf',
+        bankLetterUrl: 'https://example.com/bank.pdf',
+      },
     });
     createdVendorIds.push(vendor.id);
     const submission = await prisma.providerSubmission.findFirstOrThrow({

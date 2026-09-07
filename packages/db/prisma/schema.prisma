@@ -173,6 +173,7 @@ model User {
   referralsReceived Referral[]         @relation("ReferralsReceived")
   kindnessAccount   KindnessAccount?
   beautyCircleMembers BeautyCircleMember[]
+  clinicConsultations ClinicConsultation[]
 
   @@index([role, isActive])
   @@index([createdAt])
@@ -1293,8 +1294,8 @@ model Vendor {
   logoUrl     String?
   bannerUrl   String?
   // Store plan Phase 1 — merchant registration + KYC-ish approval.
-  type            String  @default("STORE") // STORE | VENDOR (unified provider model)
-  licenseNumber   String? // commercial registration / CR number
+  type            String  @default("STORE") // STORE | VENDOR | CLINIC (unified provider model)
+  licenseNumber   String? // commercial registration / CR number, or clinic medical license
   bankIban        String?
   bankName        String?
   isVerified  Boolean  @default(false)
@@ -1304,6 +1305,11 @@ model Vendor {
   // Store plan Phase 4 — denormalized store rating (aggregate of product reviews).
   ratingAvg   Decimal  @default(0) @db.Decimal(3, 2)
   totalReviews Int     @default(0)
+  // E2 — medical beauty clinics (first vertical pilot).
+  clinicType        String? // dermatology | laser | injectables | dental | nutrition
+  licenseAgency     String? // MOH | SFDA
+  licenseVerifiedAt DateTime?
+  consultationPrice Decimal  @default(0) @db.Decimal(10, 2)
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
 
@@ -1312,10 +1318,57 @@ model Vendor {
   orders   StoreOrder[]
   deals    StoreDeal[]
   payouts  Payout[]
+  clinicSlots         ClinicSlot[]
+  clinicConsultations ClinicConsultation[]
+  clinicPackages      BeautyPackage[]
 
   @@index([storeSlug])
   @@index([isVerified, isActive])
+  @@index([type, isVerified, isActive])
   @@map("vendors")
+}
+
+// E2 — clinic consultation slots (clinic-managed, claimed by consultations).
+model ClinicSlot {
+  id             Int      @id @default(autoincrement())
+  clinicId       Int
+  startAt        DateTime
+  endAt          DateTime
+  isBooked       Boolean  @default(false)
+  consultationId Int?     @unique
+  createdAt      DateTime @default(now())
+
+  clinic        Vendor               @relation(fields: [clinicId], references: [id], onDelete: Cascade)
+  consultation  ClinicConsultation?  @relation("ConsultationSlot", fields: [consultationId], references: [id])
+
+  @@index([clinicId, startAt])
+  @@map("clinic_slots")
+}
+
+// E2 — clinic consultations (light parallel booking flow; the core Booking
+// engine stays technician-only for the pilot). Payment happens at the clinic.
+model ClinicConsultation {
+  id                Int      @id @default(autoincrement())
+  code              String   @unique // GOC-XXXXXX
+  clinicId          Int
+  customerId        Int
+  slotId            Int      @unique
+  treatmentType     String   // dermatology | laser | injectables | dental | nutrition
+  price             Decimal  @db.Decimal(10, 2)
+  status            String   @default("REQUESTED") // REQUESTED | CONFIRMED | CANCELLED | COMPLETED
+  notes             String?
+  consentAcceptedAt DateTime?
+  scheduledAt       DateTime
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+
+  clinic   Vendor      @relation(fields: [clinicId], references: [id], onDelete: Cascade)
+  customer User        @relation(fields: [customerId], references: [id], onDelete: Cascade)
+  slot     ClinicSlot? @relation("ConsultationSlot")
+
+  @@index([clinicId, status])
+  @@index([customerId, scheduledAt])
+  @@map("clinic_consultations")
 }
 
 // Store plan Phase 1 — per-store order records (store-managed fulfillment).
@@ -1482,9 +1535,12 @@ model BeautyPackage {
   reviewNotes     String?
   reviewedBy      Int?
   reviewedAt      DateTime?
+  // E2 — clinic-proposed treatment packages (null for tech/admin packages).
+  clinicId        Int?
   createdAt       DateTime @default(now())
   updatedAt       DateTime @updatedAt
 
+  clinic          Vendor?  @relation(fields: [clinicId], references: [id])
   services        BeautyPackageService[]
 
   @@index([status, isActive])
