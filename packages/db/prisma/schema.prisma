@@ -162,6 +162,7 @@ model User {
   vendor             Vendor?
   productReviews     ProductReview[]
   cartItems          CartItem[]
+  storeOrders        StoreOrder[]
   sentMessages      ChatMessage[]      @relation("SenderMessages")
   auditLogs         AuditLog[]
   wishlistItems     WishlistItem[]
@@ -1287,6 +1288,11 @@ model Vendor {
   descriptionJson Json?
   logoUrl     String?
   bannerUrl   String?
+  // Store plan Phase 1 — merchant registration + KYC-ish approval.
+  type            String  @default("STORE") // STORE | VENDOR (unified provider model)
+  licenseNumber   String? // commercial registration / CR number
+  bankIban        String?
+  bankName        String?
   isVerified  Boolean  @default(false)
   isActive    Boolean  @default(true)
   commissionRate Decimal @default(10) @db.Decimal(5, 2) // Platform commission %
@@ -1296,10 +1302,30 @@ model Vendor {
 
   user     User      @relation(fields: [userId], references: [id])
   products Product[]
+  orders   StoreOrder[]
 
   @@index([storeSlug])
   @@index([isVerified, isActive])
   @@map("vendors")
+}
+
+// Store plan Phase 1 — per-store order records (store-managed fulfillment).
+model StoreOrder {
+  id          Int      @id @default(autoincrement())
+  vendorId    Int
+  customerId  Int
+  totalAmount Decimal  @db.Decimal(10, 2)
+  itemCount   Int      @default(1)
+  status      String   @default("PENDING_FULFILLMENT") // PENDING_FULFILLMENT | FULFILLED
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  vendor   Vendor @relation(fields: [vendorId], references: [id], onDelete: Cascade)
+  customer User   @relation(fields: [customerId], references: [id])
+
+  @@index([vendorId, status, createdAt])
+  @@index([customerId, createdAt])
+  @@map("store_orders")
 }
 
 model ProductReview {
