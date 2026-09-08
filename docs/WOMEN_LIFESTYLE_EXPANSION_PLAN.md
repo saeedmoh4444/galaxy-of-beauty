@@ -137,6 +137,25 @@ Recommended order: life-stage journeys → period pampering → postpartum.
 - Medical advisory beyond marketplace + disclaimers (PDPL, liability)
 - New heavy verticals that don't reuse the existing provider pipeline
 
+### E7 — Beauty Media Layer (reels & before/after visuals)
+
+User request 2026-09-08. Today `beautyShorts` serves a hardcoded mock
+(no video URLs/images); `ShortLike` and the uploads pipeline already exist.
+A beauty platform without visuals is the biggest attractiveness gap.
+
+- **Persisted shorts**: `Short` model (videoUrl, thumbnailUrl, duration,
+  views, category, technicianId?) replacing the hardcoded array; mobile
+  vertical swipe feed (TikTok-style), web hover-play grid
+- **Technician before/after galleries** — posted work converts browsers
+  into bookings better than ratings
+- **Product images in stores** — real product shots instead of emojis
+- **Uploads** — reuse the existing upload pipeline (KYC uploads work) for
+  video + images, with a moderation queue before publish
+- **Privacy as the moat (KSA-specific)**: women-only feeds (no public
+  indexing), consent on every upload, face-blur option, no-camera badges
+  for salons — market it as "the only beauty reels that never leave the
+  women's circle"
+
 ## 4. Sequencing rules
 
 1. Core backlog (B.1–B.25 + store plan) BEFORE verticals — each vertical

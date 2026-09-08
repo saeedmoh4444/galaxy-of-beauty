@@ -415,6 +415,139 @@ export const marketplaceRouter = router({
       return vendor;
     }),
 
+  /**
+   * becomeNailBar — E5 nail bar registration. Same unified provider
+   * pipeline: UNVERIFIED Vendor (type NAIL_BAR) + PENDING_REVIEW submission
+   * (kind 'nail_bar'). KSA documents required: CR, national ID, municipal
+   * license. Payment happens at the venue (record-only bookings).
+   */
+  becomeNailBar: protectedProcedure
+    .input(
+      z.object({
+        storeName: z.string().min(2),
+        storeSlug: z.string().min(3),
+        nailBarType: z.enum(['express', 'standard']),
+        nailBarCity: z.string().min(2),
+        nailBarAddress: z.string().min(5),
+        licenseNumber: z.string().min(4),
+        licenseAgency: z.enum(['MISA', 'MUNICIPALITY']),
+        descriptionAr: z.string().optional(),
+        descriptionEn: z.string().optional(),
+        logoUrl: z.string().optional(),
+        documents: z.object({
+          crUrl: z.string().url(),
+          nationalIdUrl: z.string().url(),
+          licenseUrl: z.string().url(),
+        }),
+      }),
+    )
+    .mutation(async ({ ctx, input }) => {
+      const existing = await prisma.vendor.findUnique({ where: { userId: ctx.user.id } });
+      if (existing) throw new TRPCError({ code: 'CONFLICT', message: 'Already a vendor' });
+
+      const vendor = await prisma.vendor.create({
+        data: {
+          userId: ctx.user.id,
+          storeName: input.storeName,
+          storeSlug: input.storeSlug,
+          descriptionJson: { ar: input.descriptionAr || '', en: input.descriptionEn || '' },
+          logoUrl: input.logoUrl,
+          licenseNumber: input.licenseNumber,
+          licenseAgency: input.licenseAgency,
+          nailBarType: input.nailBarType,
+          nailBarCity: input.nailBarCity,
+          nailBarAddress: input.nailBarAddress,
+          type: 'NAIL_BAR',
+          isVerified: false,
+        },
+      });
+
+      await prisma.providerSubmission.create({
+        data: {
+          providerId: ctx.user.id,
+          kind: 'nail_bar',
+          status: 'PENDING_REVIEW',
+          payload: {
+            vendorId: vendor.id,
+            nailBarName: input.storeName,
+            nailBarType: input.nailBarType,
+            nailBarCity: input.nailBarCity,
+            nailBarAddress: input.nailBarAddress,
+            licenseNumber: input.licenseNumber,
+            licenseAgency: input.licenseAgency,
+            documents: input.documents,
+          },
+        },
+      });
+
+      return vendor;
+    }),
+
+  /**
+   * becomeAthomeSalon — E5 at-home salon registration. Same pipeline:
+   * UNVERIFIED Vendor (type ATHOME) + PENDING_REVIEW submission
+   * (kind 'athome_salon'). Verified providers receive homeService requests
+   * covering their city.
+   */
+  becomeAthomeSalon: protectedProcedure
+    .input(
+      z.object({
+        storeName: z.string().min(2),
+        storeSlug: z.string().min(3),
+        homeCity: z.string().min(2),
+        homeAddress: z.string().min(5),
+        licenseNumber: z.string().min(4),
+        licenseAgency: z.enum(['MISA', 'MUNICIPALITY']),
+        descriptionAr: z.string().optional(),
+        descriptionEn: z.string().optional(),
+        logoUrl: z.string().optional(),
+        documents: z.object({
+          crUrl: z.string().url(),
+          nationalIdUrl: z.string().url(),
+          licenseUrl: z.string().url(),
+        }),
+      }),
+    )
+    .mutation(async ({ ctx, input }) => {
+      const existing = await prisma.vendor.findUnique({ where: { userId: ctx.user.id } });
+      if (existing) throw new TRPCError({ code: 'CONFLICT', message: 'Already a vendor' });
+
+      const vendor = await prisma.vendor.create({
+        data: {
+          userId: ctx.user.id,
+          storeName: input.storeName,
+          storeSlug: input.storeSlug,
+          descriptionJson: { ar: input.descriptionAr || '', en: input.descriptionEn || '' },
+          logoUrl: input.logoUrl,
+          licenseNumber: input.licenseNumber,
+          licenseAgency: input.licenseAgency,
+          homeCity: input.homeCity,
+          homeAddress: input.homeAddress,
+          type: 'ATHOME',
+          isVerified: false,
+        },
+      });
+
+      await prisma.providerSubmission.create({
+        data: {
+          providerId: ctx.user.id,
+          kind: 'athome_salon',
+          status: 'PENDING_REVIEW',
+          payload: {
+            vendorId: vendor.id,
+            salonName: input.storeName,
+            homeCity: input.homeCity,
+            homeAddress: input.homeAddress,
+            licenseNumber: input.licenseNumber,
+            licenseAgency: input.licenseAgency,
+            documents: input.documents,
+          },
+        },
+      });
+
+      return vendor;
+    }),
+
   // ── Product Reviews ────────────────────────────────────
   addReview: customerProcedure
     .input(

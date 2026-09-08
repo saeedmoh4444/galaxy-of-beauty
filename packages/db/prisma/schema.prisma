@@ -1298,7 +1298,7 @@ model Vendor {
   logoUrl     String?
   bannerUrl   String?
   // Store plan Phase 1 — merchant registration + KYC-ish approval.
-  type            String  @default("STORE") // STORE | VENDOR | CLINIC | GYM (unified provider model)
+  type            String  @default("STORE") // STORE | VENDOR | CLINIC | GYM | NAIL_BAR | ATHOME (unified provider model)
   licenseNumber   String? // commercial registration / CR number, or clinic medical license
   bankIban        String?
   bankName        String?
@@ -1318,6 +1318,13 @@ model Vendor {
   gymType    String? // ladies | family
   gymCity    String?
   gymAddress String?
+  // E5 — nail bars (venue vertical, station-capacity slots).
+  nailBarType    String? // express | standard
+  nailBarCity    String?
+  nailBarAddress String?
+  // E5 — at-home salons (homeService requests get assigned to providers).
+  homeCity    String?
+  homeAddress String?
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
 
@@ -1332,6 +1339,7 @@ model Vendor {
   gymClasses          GymClass[]
   gymPlans            SubscriptionPlan[]
   gymDayPasses        ClassPass[]
+  nailBarSlots        NailBarSlot[]
 
   @@index([storeSlug])
   @@index([isVerified, isActive])
@@ -1936,8 +1944,12 @@ model HomeServiceRequest {
   preferredDate   String
   preferredTime   String
   notes           String?
+  // E5 — assigned to a verified at-home salon provider (ATHOME vendor).
+  vendorId        Int?
+  assignedAt      DateTime?
 
   @@index([userId])
+  @@index([vendorId, status])
   status          String   @default("PENDING")
   createdAt       DateTime @default(now())
   @@map("home_service_requests")
@@ -3838,4 +3850,38 @@ model BnplPlan {
 
   @@index([userId, status])
   @@map("bnpl_plans")
+}
+
+// =============================================================================
+// E5 — Nail bars (venue vertical: station-capacity slots, pay-at-venue)
+// =============================================================================
+
+model NailBarSlot {
+  id          Int      @id @default(autoincrement())
+  nailBarId   Int
+  startAt     DateTime
+  endAt       DateTime
+  capacity    Int      @default(1) // nail stations
+  bookedCount Int      @default(0)
+  createdAt   DateTime @default(now())
+
+  nailBar  Vendor          @relation(fields: [nailBarId], references: [id], onDelete: Cascade)
+  bookings NailBarBooking[]
+
+  @@index([nailBarId, startAt])
+  @@map("nail_bar_slots")
+}
+
+model NailBarBooking {
+  id         Int      @id @default(autoincrement())
+  code       String   @unique // GON-XXXXXX
+  slotId     Int
+  customerId Int
+  createdAt  DateTime @default(now())
+
+  slot NailBarSlot @relation(fields: [slotId], references: [id], onDelete: Cascade)
+
+  @@unique([slotId, customerId])
+  @@index([customerId])
+  @@map("nail_bar_bookings")
 }

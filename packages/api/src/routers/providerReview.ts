@@ -21,6 +21,8 @@ const SUBMISSION_KINDS = [
   'clinic',
   'clinic_package',
   'gym',
+  'nail_bar',
+  'athome_salon',
 ] as const;
 
 export const providerReviewRouter = router({
@@ -242,6 +244,39 @@ export const providerReviewRouter = router({
           },
         });
         subjectName = payload.gymName ?? `نادي #${vendor.id}`;
+      } else if (submission.kind === 'nail_bar') {
+        // E5 — nail bar registration. Same verified + license stamp flow.
+        const payload = submission.payload as { vendorId: number; nailBarName?: string };
+        const vendor = await prisma.vendor.findUnique({ where: { id: payload.vendorId } });
+        if (!vendor) {
+          throw new TRPCError({ code: 'NOT_FOUND', message: 'Nail bar missing' });
+        }
+        await prisma.vendor.update({
+          where: { id: vendor.id },
+          data: {
+            isVerified: input.approve,
+            isActive: input.approve ? vendor.isActive : false,
+            licenseVerifiedAt: input.approve ? new Date() : null,
+          },
+        });
+        subjectName = payload.nailBarName ?? `صالون أظافر #${vendor.id}`;
+      } else if (submission.kind === 'athome_salon') {
+        // E5 — at-home salon registration. Verified providers receive
+        // homeService requests covering their city.
+        const payload = submission.payload as { vendorId: number; salonName?: string };
+        const vendor = await prisma.vendor.findUnique({ where: { id: payload.vendorId } });
+        if (!vendor) {
+          throw new TRPCError({ code: 'NOT_FOUND', message: 'At-home salon missing' });
+        }
+        await prisma.vendor.update({
+          where: { id: vendor.id },
+          data: {
+            isVerified: input.approve,
+            isActive: input.approve ? vendor.isActive : false,
+            licenseVerifiedAt: input.approve ? new Date() : null,
+          },
+        });
+        subjectName = payload.salonName ?? `صالون منزلي #${vendor.id}`;
       } else {
         // 'product' kind lands with the store plan.
         subjectName = `${submission.kind} #${submission.id}`;

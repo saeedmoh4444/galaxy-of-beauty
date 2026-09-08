@@ -77,7 +77,9 @@ export default function VendorPortalPage(): JSX.Element {
   });
 
   // E2 — KSA provider documents + clinic registration.
-  const [applyType, setApplyType] = useState<'store' | 'clinic' | 'gym'>('store');
+  const [applyType, setApplyType] = useState<'store' | 'clinic' | 'gym' | 'nail_bar' | 'athome'>(
+    'store',
+  );
   const [applyClinicType, setApplyClinicType] = useState('dermatology');
   const [applyAgency, setApplyAgency] = useState('MOH');
   const [docCr, setDocCr] = useState('');
@@ -89,11 +91,21 @@ export default function VendorPortalPage(): JSX.Element {
   const [applyGymCity, setApplyGymCity] = useState('');
   const [applyGymAddress, setApplyGymAddress] = useState('');
   const [docGymLicense, setDocGymLicense] = useState('');
+  // E5 — nail bar + at-home salon registration fields.
+  const [applyNailBarType, setApplyNailBarType] = useState('standard');
+  const [applyNailBarCity, setApplyNailBarCity] = useState('');
+  const [applyNailBarAddress, setApplyNailBarAddress] = useState('');
   const uploadMut = api.uploads.uploadKycDocument.useMutation({});
   const applyClinicMut = api.marketplace.becomeClinic.useMutation({
     onSuccess: () => refetchStore(),
   });
   const applyGymMut = api.marketplace.becomeGym.useMutation({
+    onSuccess: () => refetchStore(),
+  });
+  const applyNailBarMut = api.marketplace.becomeNailBar.useMutation({
+    onSuccess: () => refetchStore(),
+  });
+  const applyAthomeMut = api.marketplace.becomeAthomeSalon.useMutation({
     onSuccess: () => refetchStore(),
   });
 
@@ -131,13 +143,15 @@ export default function VendorPortalPage(): JSX.Element {
   const prods = (products as unknown as Array<Record<string, unknown>> | undefined) ?? [];
   const storeOrders = (orders as unknown as Array<Record<string, unknown>> | undefined) ?? [];
 
-  /* ---------- Apply wizard (no store/clinic/gym yet) ---------- */
+  /* ---------- Apply wizard (no store/clinic/gym/nail bar/athome yet) ---------- */
   if (!storeLoading && !store) {
     const isClinic = applyType === 'clinic';
     const isGym = applyType === 'gym';
+    const isNailBar = applyType === 'nail_bar';
+    const isAthome = applyType === 'athome';
     const docsReady = isClinic
       ? docMedicalLicense && docCr && docNationalId
-      : isGym
+      : isGym || isNailBar || isAthome
         ? docGymLicense && docCr && docNationalId
         : docCr && docNationalId && docBankLetter;
     const submit = () => {
@@ -166,6 +180,39 @@ export default function VendorPortalPage(): JSX.Element {
           licenseAgency: 'MISA',
           gymCity: applyGymCity.trim(),
           gymAddress: applyGymAddress.trim(),
+          descriptionAr: applyBio.trim() || undefined,
+          logoUrl: applyLogo.trim() || undefined,
+          documents: {
+            licenseUrl: docGymLicense,
+            crUrl: docCr,
+            nationalIdUrl: docNationalId,
+          },
+        });
+      } else if (isNailBar) {
+        applyNailBarMut.mutate({
+          storeName: applyName.trim(),
+          storeSlug: slug,
+          nailBarType: applyNailBarType as never,
+          licenseNumber: applyLicense.trim(),
+          licenseAgency: 'MUNICIPALITY',
+          nailBarCity: applyNailBarCity.trim(),
+          nailBarAddress: applyNailBarAddress.trim(),
+          descriptionAr: applyBio.trim() || undefined,
+          logoUrl: applyLogo.trim() || undefined,
+          documents: {
+            licenseUrl: docGymLicense,
+            crUrl: docCr,
+            nationalIdUrl: docNationalId,
+          },
+        });
+      } else if (isAthome) {
+        applyAthomeMut.mutate({
+          storeName: applyName.trim(),
+          storeSlug: slug,
+          licenseNumber: applyLicense.trim(),
+          licenseAgency: 'MUNICIPALITY',
+          homeCity: applyNailBarCity.trim(),
+          homeAddress: applyNailBarAddress.trim(),
           descriptionAr: applyBio.trim() || undefined,
           logoUrl: applyLogo.trim() || undefined,
           documents: {
@@ -218,6 +265,20 @@ export default function VendorPortalPage(): JSX.Element {
                   onClick={() => setApplyType('gym')}
                 >
                   {t('vendorPortal.apply.register-gym')}
+                </Button>
+                <Button
+                  size="sm"
+                  variant={isNailBar ? 'primary' : 'outline'}
+                  onClick={() => setApplyType('nail_bar')}
+                >
+                  {t('vendorPortal.apply.register-nail-bar')}
+                </Button>
+                <Button
+                  size="sm"
+                  variant={isAthome ? 'primary' : 'outline'}
+                  onClick={() => setApplyType('athome')}
+                >
+                  {t('vendorPortal.apply.register-athome')}
                 </Button>
               </div>
 
@@ -282,6 +343,43 @@ export default function VendorPortalPage(): JSX.Element {
                     label={t('vendorPortal.apply.gym-address')}
                     value={applyGymAddress}
                     onChange={(e) => setApplyGymAddress(e.target.value)}
+                  />
+                </>
+              ) : isNailBar || isAthome ? (
+                <>
+                  {isNailBar && (
+                    <select
+                      value={applyNailBarType}
+                      onChange={(e) => setApplyNailBarType(e.target.value)}
+                      className="w-full rounded-lg border px-3 py-2 text-sm dark:border-gray-700 dark:bg-gray-800"
+                    >
+                      <option value="standard">{t('nailBars.type.standard')}</option>
+                      <option value="express">{t('nailBars.type.express')}</option>
+                    </select>
+                  )}
+                  <Input
+                    label={t('vendorPortal.apply.license')}
+                    value={applyLicense}
+                    onChange={(e) => setApplyLicense(e.target.value)}
+                    placeholder="MUN-123456"
+                  />
+                  <Input
+                    label={t(
+                      isNailBar
+                        ? 'vendorPortal.apply.nail-bar-city'
+                        : 'vendorPortal.apply.athome-city',
+                    )}
+                    value={applyNailBarCity}
+                    onChange={(e) => setApplyNailBarCity(e.target.value)}
+                  />
+                  <Input
+                    label={t(
+                      isNailBar
+                        ? 'vendorPortal.apply.nail-bar-address'
+                        : 'vendorPortal.apply.athome-address',
+                    )}
+                    value={applyNailBarAddress}
+                    onChange={(e) => setApplyNailBarAddress(e.target.value)}
                   />
                 </>
               ) : (
@@ -359,14 +457,14 @@ export default function VendorPortalPage(): JSX.Element {
                       onChange={uploadDoc('national_id')}
                     />
                   )}
-                  {!isClinic && !isGym && (
+                  {!isClinic && !isGym && !isNailBar && !isAthome && (
                     <DocUploadInput
                       label={t('vendorPortal.apply.doc-bank-letter')}
                       value={docBankLetter}
                       onChange={uploadDoc('bank_letter')}
                     />
                   )}
-                  {isGym && (
+                  {(isGym || isNailBar || isAthome) && (
                     <>
                       <DocUploadInput
                         label={t('vendorPortal.apply.doc-cr')}
@@ -383,13 +481,21 @@ export default function VendorPortalPage(): JSX.Element {
                 </div>
               </div>
 
-              {(applyMut.isError || applyClinicMut.isError || applyGymMut.isError) && (
+              {(applyMut.isError ||
+                applyClinicMut.isError ||
+                applyGymMut.isError ||
+                applyNailBarMut.isError ||
+                applyAthomeMut.isError) && (
                 <p className="text-sm text-red-600">
                   {(applyMut.isError
                     ? applyMut.error?.message
                     : applyClinicMut.isError
                       ? applyClinicMut.error?.message
-                      : applyGymMut.error?.message) ?? ''}
+                      : applyGymMut.isError
+                        ? applyGymMut.error?.message
+                        : applyNailBarMut.isError
+                          ? applyNailBarMut.error?.message
+                          : applyAthomeMut.error?.message) ?? ''}
                 </p>
               )}
               <Button
@@ -398,11 +504,13 @@ export default function VendorPortalPage(): JSX.Element {
                   applyMut.isPending ||
                   applyClinicMut.isPending ||
                   applyGymMut.isPending ||
+                  applyNailBarMut.isPending ||
+                  applyAthomeMut.isPending ||
                   uploadMut.isPending
                 }
                 disabled={
                   !applyName.trim() ||
-                  (isClinic || isGym ? !applyLicense.trim() : false) ||
+                  (isClinic || isGym || isNailBar || isAthome ? !applyLicense.trim() : false) ||
                   !docsReady
                 }
                 className="w-full"
@@ -424,6 +532,16 @@ export default function VendorPortalPage(): JSX.Element {
   /* ---------- Gym dashboard (E3) ---------- */
   if (store && (store.type as string) === 'GYM') {
     return <GymDashboard store={store} />;
+  }
+
+  /* ---------- Nail bar dashboard (E5) ---------- */
+  if (store && (store.type as string) === 'NAIL_BAR') {
+    return <NailBarDashboard store={store} />;
+  }
+
+  /* ---------- At-home salon dashboard (E5) ---------- */
+  if (store && (store.type as string) === 'ATHOME') {
+    return <AthomeDashboard store={store} />;
   }
 
   return (
@@ -1131,6 +1249,246 @@ function GymDashboard({ store }: { store: Record<string, unknown> }): JSX.Elemen
                   </div>
                 );
               })}
+            </div>
+          )}
+        </Card>
+      </div>
+    </DashboardLayout>
+  );
+}
+
+/* ================================================================
+ * E5 — Nail bar dashboard (station-capacity slots + bookings)
+ * ================================================================ */
+function NailBarDashboard({ store }: { store: Record<string, unknown> }): JSX.Element {
+  const { t } = useLocale();
+  const [slotStart, setSlotStart] = useState(
+    new Date(Date.now() + 24 * 3_600_000).toISOString().slice(0, 16),
+  );
+  const [slotEnd, setSlotEnd] = useState(
+    new Date(Date.now() + 25 * 3_600_000).toISOString().slice(0, 16),
+  );
+  const [slotCapacity, setSlotCapacity] = useState(4);
+
+  const slotsQ = api.vendorPortal['nailBarSlots.list'].useQuery(undefined) as {
+    data: Array<Record<string, unknown>> | undefined;
+    refetch: () => void;
+  };
+  const bookingsQ = api.vendorPortal.nailBarBookings.useQuery(undefined) as {
+    data: Array<Record<string, unknown>> | undefined;
+    refetch: () => void;
+  };
+  const addSlotMut = api.vendorPortal['nailBarSlots.add'].useMutation({
+    onSuccess: () => slotsQ.refetch(),
+  });
+  const removeSlotMut = api.vendorPortal['nailBarSlots.remove'].useMutation({
+    onSuccess: () => slotsQ.refetch(),
+  });
+
+  const slots = slotsQ.data ?? [];
+  const bookings = bookingsQ.data ?? [];
+
+  return (
+    <DashboardLayout userRole="CUSTOMER">
+      <div className="mx-auto max-w-4xl space-y-6">
+        <div>
+          <h1 className="text-2xl font-bold">{store.storeName as string}</h1>
+          <p className="mt-1 text-sm text-text-secondary">
+            {store.nailBarType ? t(`nailBars.type.${store.nailBarType as string}` as never) : ''} ·{' '}
+            {store.nailBarCity as string} · {store.nailBarAddress as string}
+          </p>
+        </div>
+
+        {!(store.isVerified as boolean) && (
+          <Card
+            padding="md"
+            className="border-amber-200 bg-amber-50 dark:border-amber-800 dark:bg-amber-950"
+          >
+            <p className="text-sm font-semibold text-amber-700 dark:text-amber-300">
+              {t('vendorPortal.status.pending-review')}
+            </p>
+          </Card>
+        )}
+
+        {/* Station slots */}
+        <Card padding="lg">
+          <h3 className="mb-3 font-bold">{t('vendorPortal.nailBar.slots-title')}</h3>
+          <div className="mb-3 grid gap-3 sm:grid-cols-3">
+            <Input
+              label={t('vendorPortal.deals.starts')}
+              type="datetime-local"
+              value={slotStart}
+              onChange={(e) => setSlotStart(e.target.value)}
+            />
+            <Input
+              label={t('vendorPortal.deals.ends')}
+              type="datetime-local"
+              value={slotEnd}
+              onChange={(e) => setSlotEnd(e.target.value)}
+            />
+            <Input
+              label={t('vendorPortal.nailBar.capacity')}
+              type="number"
+              value={String(slotCapacity)}
+              onChange={(e) => setSlotCapacity(parseInt(e.target.value) || 1)}
+            />
+          </div>
+          <Button
+            size="sm"
+            disabled={slotCapacity < 1}
+            onClick={() =>
+              addSlotMut.mutate({
+                startAt: new Date(slotStart).toISOString(),
+                endAt: new Date(slotEnd).toISOString(),
+                capacity: slotCapacity,
+              })
+            }
+            loading={addSlotMut.isPending}
+          >
+            {t('vendorPortal.nailBar.slot-add')}
+          </Button>
+          <div className="mt-3 space-y-2">
+            {slots.map((s: Record<string, unknown>) => (
+              <div
+                key={s.id as number}
+                className="flex items-center justify-between rounded-xl bg-surface-muted p-3"
+              >
+                <p className="text-sm">
+                  {new Date(s.startAt as string).toLocaleString()} →{' '}
+                  {new Date(s.endAt as string).toLocaleString()} ·{' '}
+                  <span className="font-bold">
+                    {s.bookedCount as number}/{s.capacity as number}
+                  </span>
+                </p>
+                <Button
+                  size="sm"
+                  variant="ghost"
+                  disabled={(s.bookedCount as number) > 0}
+                  onClick={() => removeSlotMut.mutate({ slotId: s.id as number })}
+                  loading={removeSlotMut.isPending}
+                >
+                  ✕
+                </Button>
+              </div>
+            ))}
+          </div>
+        </Card>
+
+        {/* Incoming bookings */}
+        <Card padding="lg">
+          <h3 className="mb-3 font-bold">{t('vendorPortal.nailBar.bookings-title')}</h3>
+          {bookings.length === 0 ? (
+            <p className="text-sm text-text-tertiary">{t('vendorPortal.nailBar.bookings-empty')}</p>
+          ) : (
+            <div className="space-y-2">
+              {bookings.map((b: Record<string, unknown>) => (
+                <div
+                  key={b.id as number}
+                  className="flex items-center justify-between rounded-xl bg-surface-muted p-3"
+                >
+                  <div>
+                    <p className="text-sm font-bold">{b.code as string}</p>
+                    <p className="text-xs text-text-secondary">
+                      {(b.customer as Record<string, unknown> | null)?.name as string} ·{' '}
+                      {(b.customer as Record<string, unknown> | null)?.phone as string} ·{' '}
+                      {b.slot
+                        ? new Date(
+                            (b.slot as Record<string, unknown>).startAt as string,
+                          ).toLocaleString()
+                        : ''}
+                    </p>
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
+        </Card>
+      </div>
+    </DashboardLayout>
+  );
+}
+
+/* ================================================================
+ * E5 — At-home salon dashboard (assigned home requests)
+ * ================================================================ */
+function AthomeDashboard({ store }: { store: Record<string, unknown> }): JSX.Element {
+  const { t } = useLocale();
+  const requestsQ = api.vendorPortal['homeRequests.list'].useQuery(undefined) as {
+    data: Array<Record<string, unknown>> | undefined;
+    refetch: () => void;
+  };
+  const completeMut = api.vendorPortal['homeRequests.complete'].useMutation({
+    onSuccess: () => requestsQ.refetch(),
+  });
+
+  const requests = requestsQ.data ?? [];
+
+  return (
+    <DashboardLayout userRole="CUSTOMER">
+      <div className="mx-auto max-w-4xl space-y-6">
+        <div>
+          <h1 className="text-2xl font-bold">{store.storeName as string}</h1>
+          <p className="mt-1 text-sm text-text-secondary">
+            {t('vendorPortal.athome.coverage')}: {store.homeCity as string} ·{' '}
+            {store.homeAddress as string}
+          </p>
+        </div>
+
+        {!(store.isVerified as boolean) && (
+          <Card
+            padding="md"
+            className="border-amber-200 bg-amber-50 dark:border-amber-800 dark:bg-amber-950"
+          >
+            <p className="text-sm font-semibold text-amber-700 dark:text-amber-300">
+              {t('vendorPortal.status.pending-review')}
+            </p>
+          </Card>
+        )}
+
+        <Card padding="lg">
+          <h3 className="mb-3 font-bold">{t('vendorPortal.athome.requests-title')}</h3>
+          {requests.length === 0 ? (
+            <p className="text-sm text-text-tertiary">{t('vendorPortal.athome.requests-empty')}</p>
+          ) : (
+            <div className="space-y-3">
+              {requests.map((r: Record<string, unknown>) => (
+                <div key={r.id as number} className="rounded-xl bg-surface-muted p-3">
+                  <div className="flex items-center justify-between">
+                    <p className="text-sm font-bold">
+                      {(r.customer as Record<string, unknown> | null)?.name as string}
+                    </p>
+                    <span className="rounded-full bg-brand-100 px-2 py-0.5 text-xs font-medium text-brand-700">
+                      {r.status as string}
+                    </span>
+                  </div>
+                  <p className="mt-1 text-xs text-text-secondary">
+                    {r.address as string} · {r.preferredDate as string} ·{' '}
+                    {r.preferredTime as string}
+                  </p>
+                  <p className="mt-1 text-xs text-text-tertiary">
+                    {(r.service as Record<string, unknown> | null)
+                      ? String(
+                          (
+                            (r.service as Record<string, unknown>).titleJson as Record<
+                              string,
+                              string
+                            >
+                          )?.ar ?? '',
+                        )
+                      : ''}
+                  </p>
+                  {r.status === 'PENDING' && (
+                    <Button
+                      size="sm"
+                      className="mt-2"
+                      onClick={() => completeMut.mutate({ requestId: r.id as number })}
+                      loading={completeMut.isPending}
+                    >
+                      {t('vendorPortal.athome.complete')}
+                    </Button>
+                  )}
+                </div>
+              ))}
             </div>
           )}
         </Card>
