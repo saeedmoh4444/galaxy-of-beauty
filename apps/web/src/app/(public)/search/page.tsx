@@ -10,8 +10,18 @@ export default function SearchPage(): JSX.Element {
   const { t, locale } = useLocale();
   const [query, setQuery] = useState('');
   const [searched, setSearched] = useState(false);
+  // E6d — trust badge filters.
+  const [womenOnly, setWomenOnly] = useState(false);
+  const [privateSuite, setPrivateSuite] = useState(false);
+  const [pregnancySafe, setPregnancySafe] = useState(false);
   const { data: services, isLoading: svcLoading } = api.services.list.useQuery(
-    { search: query || undefined, limit: 12 },
+    {
+      search: query || undefined,
+      limit: 12,
+      womenOnly,
+      privateSuite,
+      pregnancySafe,
+    },
     { enabled: searched && query.length > 1 },
   );
   const { data: products, isLoading: prodLoading } = api.marketplace.products.useQuery(
@@ -57,6 +67,33 @@ export default function SearchPage(): JSX.Element {
 
       {searched && (
         <>
+          {/* E6d — trust badge filter chips */}
+          <div className="mb-4 flex flex-wrap justify-center gap-2">
+            <button
+              onClick={() => setWomenOnly(!womenOnly)}
+              className={`rounded-full px-3 py-1 text-xs font-medium ${
+                womenOnly ? 'bg-brand-600 text-white' : 'bg-surface-muted text-text-secondary'
+              }`}
+            >
+              🙋‍♀️ {t('trust.womenOnly')}
+            </button>
+            <button
+              onClick={() => setPrivateSuite(!privateSuite)}
+              className={`rounded-full px-3 py-1 text-xs font-medium ${
+                privateSuite ? 'bg-brand-600 text-white' : 'bg-surface-muted text-text-secondary'
+              }`}
+            >
+              🚪 {t('trust.privateSuite')}
+            </button>
+            <button
+              onClick={() => setPregnancySafe(!pregnancySafe)}
+              className={`rounded-full px-3 py-1 text-xs font-medium ${
+                pregnancySafe ? 'bg-brand-600 text-white' : 'bg-surface-muted text-text-secondary'
+              }`}
+            >
+              🤰 {t('trust.pregnancySafe')}
+            </button>
+          </div>
           <p className="mb-6 text-sm text-text-secondary">
             {isLoading
               ? t('marketing.search.searching')
@@ -86,6 +123,23 @@ export default function SearchPage(): JSX.Element {
                             {t('marketing.search.duration-min', { min: s.durationMin })} ·{' '}
                             {formatCurrency(Number(s.basePrice))}
                           </p>
+                          <div className="mt-1 flex flex-wrap gap-1">
+                            {s.isWomenOnlyStaff && (
+                              <span className="rounded-full bg-pink-100 px-2 py-0.5 text-[10px] text-pink-700">
+                                🙋‍♀️ {t('trust.womenOnly')}
+                              </span>
+                            )}
+                            {s.isPrivateSuite && (
+                              <span className="rounded-full bg-purple-100 px-2 py-0.5 text-[10px] text-purple-700">
+                                🚪 {t('trust.privateSuite')}
+                              </span>
+                            )}
+                            {s.isPregnancySafe && (
+                              <span className="rounded-full bg-green-100 px-2 py-0.5 text-[10px] text-green-700">
+                                🤰 {t('trust.pregnancySafe')}
+                              </span>
+                            )}
+                          </div>
                         </Card>
                       </Link>
                     ))}

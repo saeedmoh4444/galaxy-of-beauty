@@ -27,6 +27,11 @@ export const serviceRouter = router({
       where.categoryId = categoryId;
     }
 
+    // E6d — trust badge filters.
+    if (input.womenOnly) where.isWomenOnlyStaff = true;
+    if (input.privateSuite) where.isPrivateSuite = true;
+    if (input.pregnancySafe) where.isPregnancySafe = true;
+
     if (minPrice !== undefined || maxPrice !== undefined) {
       const priceFilter: Record<string, unknown> = {};
       if (minPrice !== undefined) priceFilter.gte = minPrice;

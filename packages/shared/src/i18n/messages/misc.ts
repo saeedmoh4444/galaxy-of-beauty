@@ -4164,4 +4164,14 @@ export const miscMessages = {
     ar: 'عيادات للاستشارة الهرمونية',
     en: 'Clinics for hormone consultations',
   },
+  // E6d — trust badges (Tier 2)
+  'trust.womenOnly': { ar: 'كادر نسائي فقط', en: 'Women-only staff' },
+  'trust.privateSuite': { ar: 'جناح خاص', en: 'Private suite' },
+  'trust.pregnancySafe': { ar: 'آمن للحمل', en: 'Pregnancy-safe' },
+  'vendorPortal.trust.title': { ar: 'شارات الثقة', en: 'Trust badges' },
+  'vendorPortal.trust.women-only': { ar: 'كادر نسائي فقط', en: 'Women-only staff' },
+  'vendorPortal.trust.private-suite': {
+    ar: 'يوجد جناح خاص',
+    en: 'Private suite available',
+  },
 } as const;

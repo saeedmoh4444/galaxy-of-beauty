@@ -111,6 +111,8 @@ export default function VendorPortalPage(): JSX.Element {
   const applyAthomeMut = api.marketplace.becomeAthomeSalon.useMutation({
     onSuccess: () => refetchStore(),
   });
+  // E6d — trust badge self-service toggles.
+  const trustMut = api.vendorPortal.setTrustFlags.useMutation({});
 
   const uploadDoc =
     (documentType: 'cr' | 'national_id' | 'bank_letter' | 'medical_license' | 'license') =>
@@ -557,6 +559,39 @@ export default function VendorPortalPage(): JSX.Element {
           </div>
           <Button onClick={() => setShow(true)}>+ {t('vendorPortal.newProduct')}</Button>
         </div>
+
+        {/* E6d — trust badge toggles (vendor self-service) */}
+        <Card padding="md">
+          <h3 className="mb-2 text-sm font-semibold">{t('vendorPortal.trust.title')}</h3>
+          <div className="flex flex-wrap gap-4">
+            <label className="flex items-center gap-2 text-sm">
+              <input
+                type="checkbox"
+                checked={(store as Record<string, unknown>).womenOnlyStaff as boolean}
+                onChange={(e) =>
+                  trustMut.mutate(
+                    { womenOnlyStaff: e.target.checked },
+                    { onSuccess: () => refetchStore() },
+                  )
+                }
+              />
+              🙋‍♀️ {t('vendorPortal.trust.women-only')}
+            </label>
+            <label className="flex items-center gap-2 text-sm">
+              <input
+                type="checkbox"
+                checked={(store as Record<string, unknown>).privateSuite as boolean}
+                onChange={(e) =>
+                  trustMut.mutate(
+                    { privateSuite: e.target.checked },
+                    { onSuccess: () => refetchStore() },
+                  )
+                }
+              />
+              🚪 {t('vendorPortal.trust.private-suite')}
+            </label>
+          </div>
+        </Card>
 
         {/* Store plan Phase 1 — approval status */}
         {store && !(store.isVerified as boolean) && (

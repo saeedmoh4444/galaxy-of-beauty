@@ -21,6 +21,9 @@ export const nailBarsRouter = router({
         page: z.number().min(1).default(1),
         limit: z.number().min(1).max(100).default(DEFAULT_PAGE_SIZE),
         city: z.string().optional(),
+        // E6d — women-only-staff / private-suite nail bars.
+        womenOnly: z.boolean().optional(),
+        privateSuite: z.boolean().optional(),
       }),
     )
     .query(async ({ input }) => {
@@ -28,6 +31,8 @@ export const nailBarsRouter = router({
         type: 'NAIL_BAR',
         isActive: true,
         isVerified: true,
+        ...(input.womenOnly ? { womenOnlyStaff: true } : {}),
+        ...(input.privateSuite ? { privateSuite: true } : {}),
         ...(input.city ? { nailBarCity: input.city } : {}),
       };
       const skip = (input.page - 1) * input.limit;
@@ -45,6 +50,8 @@ export const nailBarsRouter = router({
             descriptionJson: true,
             ratingAvg: true,
             totalReviews: true,
+            womenOnlyStaff: true,
+            privateSuite: true,
           },
           orderBy: { ratingAvg: 'desc' },
           skip,
