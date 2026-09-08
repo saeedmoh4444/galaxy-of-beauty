@@ -4099,4 +4099,16 @@ export const miscMessages = {
   'lifeStage.pamper.deals': { ar: 'عروض مختارة', en: 'Selected deals' },
   'lifeStage.pamper.kits': { ar: 'مجموعات العناية', en: 'Self-care kits' },
   'lifeStage.pamper.spa': { ar: 'مساج وسبا', en: 'Massage & spa' },
+  // E6b — postpartum care
+  'postpartum.title': { ar: 'رعاية ما بعد الولادة', en: 'Postpartum care' },
+  'postpartum.subtitle': {
+    ar: 'مراحل التعافي، نصائح العناية، ومتى تطلبين المساعدة',
+    en: 'Healing stages, self-care tips, and when to seek help',
+  },
+  'postpartum.signalsTitle': { ar: 'متى تراجعين طبيبتك', en: 'When to see your doctor' },
+  'postpartum.services': { ar: 'خدمات التعافي', en: 'Recovery services' },
+  'postpartum.babyFriendlySalons': {
+    ar: 'زيارات منزلية ترحب بطفلك',
+    en: 'Home visits that welcome your baby',
+  },
 } as const;

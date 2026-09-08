@@ -66,6 +66,97 @@ export function LifeStageCard(): JSX.Element {
   );
 }
 
+/** E6b — postpartum hub section, shown only for the new_mom stage. */
+export function PostpartumSection(): JSX.Element {
+  const { t, locale } = useLocale();
+  const stageQ = api.lifeStage.get.useQuery();
+  const stage = (stageQ.data as { stage: string } | undefined)?.stage;
+  const isNewMom = stage === 'new_mom';
+
+  const libQ = api.postpartum.library.useQuery(undefined, { enabled: isNewMom });
+  const servicesQ = api.postpartum.services.useQuery(undefined, { enabled: isNewMom });
+  const salonsQ = api.postpartum.babyFriendlySalons.useQuery({}, { enabled: isNewMom });
+
+  const lib = libQ.data as
+    | {
+        phases: Array<Record<string, string>>;
+        tips: Array<Record<string, string>>;
+        signals: Array<Record<string, string>>;
+      }
+    | undefined;
+  const services = (servicesQ.data ?? []) as Array<Record<string, any>>;
+  const salons = (salonsQ.data ?? []) as Array<Record<string, any>>;
+
+  if (!isNewMom || !lib) return <></>;
+
+  return (
+    <Card padding="lg" className="border-2 border-rose-100 dark:border-rose-900">
+      <h3 className="font-bold">{t('postpartum.title')}</h3>
+      <p className="mt-1 text-xs text-text-secondary">{t('postpartum.subtitle')}</p>
+      <div className="mt-3 space-y-4">
+        {lib.phases.map((p) => (
+          <details key={p.key} className="rounded-xl bg-surface-muted p-3">
+            <summary className="cursor-pointer text-sm font-bold">
+              {p.emoji} {p[locale === 'en' ? 'rangeEn' : 'rangeAr']} ·{' '}
+              {p[locale === 'en' ? 'titleEn' : 'titleAr']}
+            </summary>
+            <p className="mt-2 text-xs text-text-secondary">
+              {p[locale === 'en' ? 'bodyEn' : 'bodyAr']}
+            </p>
+          </details>
+        ))}
+        <div className="flex flex-wrap gap-2">
+          {lib.tips.map((tip, i) => (
+            <span key={i} className="rounded-full bg-rose-50 px-3 py-1 text-xs text-rose-700">
+              {tip.emoji} {tip[locale === 'en' ? 'en' : 'ar']}
+            </span>
+          ))}
+        </div>
+        <div className="rounded-xl border border-amber-200 bg-amber-50 p-3 dark:border-amber-800 dark:bg-amber-950/40">
+          <p className="text-xs font-bold text-amber-700">{t('postpartum.signalsTitle')}</p>
+          <ul className="mt-1 space-y-1 text-xs text-amber-800 dark:text-amber-300">
+            {lib.signals.map((s, i) => (
+              <li key={i}>
+                {s.emoji} {s[locale === 'en' ? 'en' : 'ar']}
+              </li>
+            ))}
+          </ul>
+        </div>
+        {services.length > 0 && (
+          <div>
+            <p className="text-xs font-bold text-text-secondary">{t('postpartum.services')}</p>
+            <div className="mt-1 flex flex-wrap gap-2">
+              {services.map((s) => (
+                <Link key={s.id} href="/search">
+                  <span className="rounded-full bg-surface-muted px-3 py-1 text-xs">
+                    {locale === 'en'
+                      ? ((s.titleJson as Record<string, string>)?.en ?? '')
+                      : ((s.titleJson as Record<string, string>)?.ar ?? '')}
+                  </span>
+                </Link>
+              ))}
+            </div>
+          </div>
+        )}
+        {salons.length > 0 && (
+          <div>
+            <p className="text-xs font-bold text-text-secondary">
+              {t('postpartum.babyFriendlySalons')}
+            </p>
+            <div className="mt-1 space-y-1">
+              {salons.map((v) => (
+                <p key={v.id} className="text-xs text-text-secondary">
+                  🏠 {v.storeName} · {v.homeCity}
+                </p>
+              ))}
+            </div>
+          </div>
+        )}
+      </div>
+    </Card>
+  );
+}
+
 export function PamperCard(): JSX.Element {
   const { t, locale } = useLocale();
   const statusQ = api.lifeStage.pamperStatus.useQuery();

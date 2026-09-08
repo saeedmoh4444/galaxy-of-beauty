@@ -1325,6 +1325,8 @@ model Vendor {
   // E5 — at-home salons (homeService requests get assigned to providers).
   homeCity    String?
   homeAddress String?
+  // E6b — postpartum: baby-friendly at-home salons (home visits with baby).
+  babyFriendly Boolean @default(false)
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
 

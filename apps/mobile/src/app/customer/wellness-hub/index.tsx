@@ -77,6 +77,15 @@ export default function WellnessHubScreen(): JSX.Element {
   const stage = stageQ.data as any;
   const pamper = pamperQ.data as any;
 
+  // E6b — postpartum care (new_mom stage only).
+  const isNewMom = stage?.stage === 'new_mom';
+  const postLibQ = trpc.postpartum.library.useQuery(undefined, { enabled: isNewMom });
+  const postServicesQ = trpc.postpartum.services.useQuery(undefined, { enabled: isNewMom });
+  const postSalonsQ = trpc.postpartum.babyFriendlySalons.useQuery({}, { enabled: isNewMom });
+  const postLib = postLibQ.data as any;
+  const postServices = (postServicesQ.data ?? []) as Array<any>;
+  const postSalons = (postSalonsQ.data ?? []) as Array<any>;
+
   if (dashQ.isLoading) return <SkeletonList count={4} />;
   if (dashQ.isError)
     return (
@@ -262,6 +271,59 @@ export default function WellnessHubScreen(): JSX.Element {
               </Text>
             ))}
           </View>
+        </View>
+      )}
+
+      {/* E6b — postpartum care (new_mom stage only) */}
+      {isNewMom && postLib && (
+        <View style={[s.card, { borderColor: '#ffe4e6', borderWidth: 2 }]}>
+          <Text style={s.st}>🤱 {t('mobile.postpartum.title')}</Text>
+          {(postLib.phases ?? []).map((p: any) => (
+            <View key={p.key} style={{ marginTop: 8 }}>
+              <Text style={{ fontSize: 13, fontWeight: '700', color: '#111827' }}>
+                {p.emoji} {locale === 'en' ? p.rangeEn : p.rangeAr} ·{' '}
+                {locale === 'en' ? p.titleEn : p.titleAr}
+              </Text>
+              <Text style={{ fontSize: 12, color: '#6b7280', marginTop: 2 }}>
+                {locale === 'en' ? p.bodyEn : p.bodyAr}
+              </Text>
+            </View>
+          ))}
+          <View style={{ flexDirection: 'row', flexWrap: 'wrap', gap: 6, marginTop: 10 }}>
+            {(postLib.tips ?? []).map((tip: any, i: number) => (
+              <Text key={i} style={{ fontSize: 12, color: '#be123c' }}>
+                {tip.emoji} {locale === 'en' ? tip.en : tip.ar}
+              </Text>
+            ))}
+          </View>
+          <Text style={{ fontSize: 12, fontWeight: '700', color: '#b45309', marginTop: 10 }}>
+            {t('mobile.postpartum.signals-title')}
+          </Text>
+          {(postLib.signals ?? []).map((sig: any, i: number) => (
+            <Text key={i} style={{ fontSize: 12, color: '#92400e', marginTop: 2 }}>
+              {sig.emoji} {locale === 'en' ? sig.en : sig.ar}
+            </Text>
+          ))}
+          {postServices.length > 0 && (
+            <Text style={{ fontSize: 12, fontWeight: '700', color: '#374151', marginTop: 10 }}>
+              {t('mobile.postpartum.services')}
+            </Text>
+          )}
+          {postServices.map((sv: any) => (
+            <Text key={sv.id} style={{ fontSize: 12, color: '#6b7280', marginTop: 2 }}>
+              💆‍♀️ {locale === 'en' ? sv.titleJson?.en : sv.titleJson?.ar}
+            </Text>
+          ))}
+          {postSalons.length > 0 && (
+            <Text style={{ fontSize: 12, fontWeight: '700', color: '#374151', marginTop: 10 }}>
+              {t('mobile.postpartum.salons')}
+            </Text>
+          )}
+          {postSalons.map((v: any) => (
+            <Text key={v.id} style={{ fontSize: 12, color: '#6b7280', marginTop: 2 }}>
+              🏠 {v.storeName} · {v.homeCity}
+            </Text>
+          ))}
         </View>
       )}
 

@@ -351,6 +351,15 @@ async function main() {
         iconUrl: '/icons/barberette.svg',
       },
     }),
+    // E6b — postpartum care (rides technicians/clinics/ATHOME vendors).
+    prisma.category.create({
+      data: {
+        nameJson: { ar: 'رعاية ما بعد الولادة', en: 'Postpartum Care' },
+        slug: 'postpartum-care',
+        sortOrder: 15,
+        iconUrl: '/icons/postpartum.svg',
+      },
+    }),
   ]);
   console.log(` ${categories.length} root categories`);
 
@@ -1022,6 +1031,42 @@ async function main() {
         basePrice: 70,
         durationMin: 30,
         slug: 'clean-fade',
+        sortOrder: 3,
+      },
+    }),
+    // E6b — postpartum care services (bookable through the existing engines).
+    prisma.service.create({
+      data: {
+        categoryId: categories[14]!.id,
+        titleJson: { ar: 'تدليك التعافي بعد الولادة', en: 'Postpartum Recovery Massage' },
+        descriptionJson: {
+          ar: 'تدليك لطيف يساعد على الاسترخاء والتعافي',
+          en: 'Gentle massage supporting relaxation and recovery',
+        },
+        basePrice: 200,
+        durationMin: 60,
+        isPopular: true,
+        slug: 'postpartum-recovery-massage',
+        sortOrder: 1,
+      },
+    }),
+    prisma.service.create({
+      data: {
+        categoryId: categories[14]!.id,
+        titleJson: { ar: 'عناية بالبشرة بعد الولادة', en: 'Postpartum Skin Care' },
+        basePrice: 150,
+        durationMin: 45,
+        slug: 'postpartum-skin-care',
+        sortOrder: 2,
+      },
+    }),
+    prisma.service.create({
+      data: {
+        categoryId: categories[14]!.id,
+        titleJson: { ar: 'عناية بالشعر آمنة مع الرضاعة', en: 'Nursing-Safe Hair Care' },
+        basePrice: 130,
+        durationMin: 60,
+        slug: 'nursing-safe-hair-care',
         sortOrder: 3,
       },
     }),

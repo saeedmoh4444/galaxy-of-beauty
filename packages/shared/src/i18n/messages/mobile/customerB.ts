@@ -568,6 +568,14 @@ export const mobileCustomerBMessages = {
     ar: 'دورتكِ قريبة — دللي نفسك بهذه العروض',
     en: 'Your period is near — treat yourself',
   },
+  // E6b — postpartum care (mobile)
+  'mobile.postpartum.title': { ar: 'رعاية ما بعد الولادة', en: 'Postpartum care' },
+  'mobile.postpartum.signals-title': { ar: 'متى تراجعين طبيبتك', en: 'When to see your doctor' },
+  'mobile.postpartum.services': { ar: 'خدمات التعافي', en: 'Recovery services' },
+  'mobile.postpartum.salons': {
+    ar: 'زيارات منزلية ترحب بطفلك',
+    en: 'Home visits that welcome your baby',
+  },
 
   // ---- wallet/top-up ----
   'mobile.topUp.top-up-error': { ar: 'فشل شحن الرصيد', en: 'Failed to top up balance' },
