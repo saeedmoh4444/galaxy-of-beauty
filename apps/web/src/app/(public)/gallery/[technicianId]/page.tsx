@@ -13,12 +13,13 @@ export default async function GalleryPage({
   const tid = Number(technicianId);
   const locale = await getServerLocale();
 
-  const data: GalleryPageData = { items: [], total: 0 };
+  const data: GalleryPageData = { items: [], total: 0, technicianUserId: 0 };
 
   if (isNaN(tid)) {
     data.fetchError = t('marketing.gallery.invalid-id', locale);
     return <GalleryClient data={data} />;
   }
+  data.technicianUserId = tid;
 
   try {
     const caller = await getServerCaller();
