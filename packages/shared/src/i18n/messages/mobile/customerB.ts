@@ -351,6 +351,23 @@ export const mobileCustomerBMessages = {
   },
   // E3 — gym screens
   'mobile.gyms.title': { ar: 'النوادي الرياضية', en: 'Fitness Gyms' },
+  // E5 — nail bars + barberettes (mobile)
+  'mobile.nailBars.title': { ar: 'صالونات الأظافر', en: 'Nail Bars' },
+  'mobile.nailBars.empty': { ar: 'لا توجد صالونات أظافر', en: 'No nail bars' },
+  'mobile.nailBars.load-error': { ar: 'فشل تحميل الصالونات', en: 'Failed to load nail bars' },
+  'mobile.nailBars.pay-at-venue': { ar: 'الدفع في الصالون', en: 'Pay at venue' },
+  'mobile.nailBars.slots': { ar: 'المحطات المتاحة', en: 'Available stations' },
+  'mobile.nailBars.no-slots': { ar: 'لا توجد مواعيد متاحة', en: 'No slots available' },
+  'mobile.nailBars.spots-left': { ar: 'متبقي {n} محطة', en: '{n} stations left' },
+  'mobile.nailBars.full': { ar: 'مكتمل', en: 'Full' },
+  'mobile.nailBars.book': { ar: 'احجزي', en: 'Book' },
+  'mobile.barberettes.title': { ar: 'باربيريت', en: 'Barberettes' },
+  'mobile.barberettes.subtitle': {
+    ar: 'خبيرات القصات القصيرة العصرية',
+    en: 'Experts in short modern cuts',
+  },
+  'mobile.barberettes.empty': { ar: 'لا توجد باربيريت بعد', en: 'No barberettes yet' },
+  'mobile.barberettes.load-error': { ar: 'فشل تحميل الباربيريت', en: 'Failed to load barberettes' },
   'mobile.gyms.empty': { ar: 'لا توجد نوادي', en: 'No gyms' },
   'mobile.gyms.load-error': { ar: 'فشل تحميل النوادي', en: 'Failed to load gyms' },
   'mobile.gyms.not-found': { ar: 'النادي غير موجود', en: 'Gym not found' },

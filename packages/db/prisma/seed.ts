@@ -98,6 +98,9 @@ async function main() {
     // E3 — gym tables reference vendors (and users), wipe before both.
     db.gymClassBooking.deleteMany(),
     db.gymClass.deleteMany(),
+    // E5 — nail bar tables reference vendors, wipe before both.
+    db.nailBarBooking.deleteMany(),
+    db.nailBarSlot.deleteMany(),
     db.vendor.deleteMany(),
     db.productCategory.deleteMany(),
     db.providerSubmission.deleteMany(),
@@ -337,6 +340,15 @@ async function main() {
         slug: 'fitness',
         sortOrder: 13,
         iconUrl: '/icons/fitness.svg',
+      },
+    }),
+    // E5 — barberettes (women's barbershops ride the technician engine).
+    prisma.category.create({
+      data: {
+        nameJson: { ar: 'باربيريت — قصات عصرية', en: 'Barberette' },
+        slug: 'barberette',
+        sortOrder: 14,
+        iconUrl: '/icons/barberette.svg',
       },
     }),
   ]);
@@ -978,6 +990,38 @@ async function main() {
         basePrice: 100,
         durationMin: 60,
         slug: 'yoga',
+        sortOrder: 3,
+      },
+    }),
+    // E5 — barberette services (ride the technician Booking engine unchanged).
+    prisma.service.create({
+      data: {
+        categoryId: categories[13]!.id,
+        titleJson: { ar: 'قصة بيكسي', en: 'Pixie Cut' },
+        descriptionJson: { ar: 'قصة قصيرة عصرية جريئة', en: 'A bold modern short cut' },
+        basePrice: 90,
+        durationMin: 45,
+        slug: 'pixie-cut',
+        sortOrder: 1,
+      },
+    }),
+    prisma.service.create({
+      data: {
+        categoryId: categories[13]!.id,
+        titleJson: { ar: 'قص مدرج قصير', en: 'Layered Bob' },
+        basePrice: 110,
+        durationMin: 60,
+        slug: 'layered-bob',
+        sortOrder: 2,
+      },
+    }),
+    prisma.service.create({
+      data: {
+        categoryId: categories[13]!.id,
+        titleJson: { ar: 'حلاقة ناعمة', en: 'Clean Fade' },
+        basePrice: 70,
+        durationMin: 30,
+        slug: 'clean-fade',
         sortOrder: 3,
       },
     }),

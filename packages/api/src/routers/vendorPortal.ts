@@ -572,6 +572,145 @@ export const vendorPortalRouter = router({
     });
   }),
 
+  // ── E5 — nail bars ──────────────────────────────────────
+
+  /** myNailBar — the caller's nail bar (null unless type NAIL_BAR). */
+  myNailBar: customerProcedure.query(async ({ ctx }) => {
+    const vendor = await prisma.vendor.findUnique({ where: { userId: ctx.user.id } });
+    return vendor && vendor.type === 'NAIL_BAR' ? vendor : null;
+  }),
+
+  /** nailBarSlots.add — open a station-capacity slot for the nail bar. */
+  'nailBarSlots.add': customerProcedure
+    .input(
+      z.object({
+        startAt: z.string().datetime(),
+        endAt: z.string().datetime(),
+        capacity: z.number().int().min(1).max(50),
+      }),
+    )
+    .mutation(async ({ ctx, input }) => {
+      const vendor = await prisma.vendor.findUnique({ where: { userId: ctx.user.id } });
+      if (!vendor || vendor.type !== 'NAIL_BAR') {
+        throw new TRPCError({ code: 'FORBIDDEN', message: 'Nail bar not found' });
+      }
+      if (new Date(input.endAt) <= new Date(input.startAt)) {
+        throw new TRPCError({ code: 'BAD_REQUEST', message: 'endAt must be after startAt' });
+      }
+      return prisma.nailBarSlot.create({
+        data: {
+          nailBarId: vendor.id,
+          startAt: new Date(input.startAt),
+          endAt: new Date(input.endAt),
+          capacity: input.capacity,
+        },
+      });
+    }),
+
+  /** nailBarSlots.remove — delete an empty slot (own nail bar). */
+  'nailBarSlots.remove': customerProcedure
+    .input(z.object({ slotId: z.number().int().positive() }))
+    .mutation(async ({ ctx, input }) => {
+      const vendor = await prisma.vendor.findUnique({ where: { userId: ctx.user.id } });
+      if (!vendor || vendor.type !== 'NAIL_BAR') {
+        throw new TRPCError({ code: 'FORBIDDEN', message: 'Nail bar not found' });
+      }
+      await prisma.nailBarSlot.deleteMany({
+        where: { id: input.slotId, nailBarId: vendor.id, bookedCount: 0 },
+      });
+      return { success: true };
+    }),
+
+  /** nailBarSlots.list — the nail bar's own upcoming slots. */
+  'nailBarSlots.list': customerProcedure.query(async ({ ctx }) => {
+    const vendor = await prisma.vendor.findUnique({ where: { userId: ctx.user.id } });
+    if (!vendor || vendor.type !== 'NAIL_BAR') return [];
+
+    return prisma.nailBarSlot.findMany({
+      where: { nailBarId: vendor.id },
+      orderBy: { startAt: 'asc' },
+    });
+  }),
+
+  /** nailBarBookings — incoming station bookings (own nail bar). */
+  nailBarBookings: customerProcedure.query(async ({ ctx }) => {
+    const vendor = await prisma.vendor.findUnique({ where: { userId: ctx.user.id } });
+    if (!vendor || vendor.type !== 'NAIL_BAR') return [];
+
+    const bookings = await prisma.nailBarBooking.findMany({
+      where: { slot: { nailBarId: vendor.id } },
+      orderBy: { createdAt: 'desc' },
+    });
+    // No relation fields on NailBarBooking — join manually.
+    const users = await prisma.user.findMany({
+      where: { id: { in: bookings.map((b) => b.customerId) } },
+      select: { id: true, name: true, phone: true },
+    });
+    const slots = await prisma.nailBarSlot.findMany({
+      where: { id: { in: bookings.map((b) => b.slotId) } },
+      select: { id: true, nailBarId: true, startAt: true, endAt: true },
+    });
+    return bookings.map((b) => ({
+      ...b,
+      customer: users.find((u) => u.id === b.customerId) ?? null,
+      slot: slots.find((s) => s.id === b.slotId) ?? null,
+    }));
+  }),
+
+  // ── E5 — at-home salons ─────────────────────────────────
+
+  /** myAthomeSalon — the caller's at-home salon (null unless type ATHOME). */
+  myAthomeSalon: customerProcedure.query(async ({ ctx }) => {
+    const vendor = await prisma.vendor.findUnique({ where: { userId: ctx.user.id } });
+    return vendor && vendor.type === 'ATHOME' ? vendor : null;
+  }),
+
+  /** homeRequests.list — requests assigned to the caller's ATHOME vendor. */
+  'homeRequests.list': customerProcedure.query(async ({ ctx }) => {
+    const vendor = await prisma.vendor.findUnique({ where: { userId: ctx.user.id } });
+    if (!vendor || vendor.type !== 'ATHOME') return [];
+
+    const requests = await prisma.homeServiceRequest.findMany({
+      where: { vendorId: vendor.id },
+      orderBy: { createdAt: 'desc' },
+    });
+    // homeServiceRequest has no relation fields — join manually.
+    const users = await prisma.user.findMany({
+      where: { id: { in: requests.map((r) => r.userId) } },
+      select: { id: true, name: true, phone: true },
+    });
+    const services = await prisma.service.findMany({
+      where: { id: { in: requests.map((r) => r.serviceId) } },
+      select: { id: true, titleJson: true },
+    });
+    return requests.map((r) => ({
+      ...r,
+      customer: users.find((u) => u.id === r.userId) ?? null,
+      service: services.find((s) => s.id === r.serviceId) ?? null,
+    }));
+  }),
+
+  /** homeRequests.complete — mark an assigned request COMPLETED (own vendor). */
+  'homeRequests.complete': customerProcedure
+    .input(z.object({ requestId: z.number().int().positive() }))
+    .mutation(async ({ ctx, input }) => {
+      const vendor = await prisma.vendor.findUnique({ where: { userId: ctx.user.id } });
+      if (!vendor || vendor.type !== 'ATHOME') {
+        throw new TRPCError({ code: 'FORBIDDEN', message: 'At-home salon not found' });
+      }
+      const request = await prisma.homeServiceRequest.findFirst({
+        where: { id: input.requestId, vendorId: vendor.id },
+      });
+      if (!request) throw new TRPCError({ code: 'NOT_FOUND', message: 'Request not found' });
+      if (request.status !== 'PENDING') {
+        throw new TRPCError({ code: 'BAD_REQUEST', message: 'Request already completed' });
+      }
+      return prisma.homeServiceRequest.update({
+        where: { id: input.requestId },
+        data: { status: 'COMPLETED' },
+      });
+    }),
+
   /** gymCancelBooking — gym cancels a member's BOOKED seat. */
   gymCancelBooking: customerProcedure
     .input(z.object({ bookingId: z.number().int().positive() }))

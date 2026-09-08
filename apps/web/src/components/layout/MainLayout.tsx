@@ -20,6 +20,8 @@ const navLinks: { href: string; key: TranslationKey }[] = [
   { href: '/clinics', key: 'nav.clinics' },
   { href: '/gyms', key: 'nav.gyms' },
   { href: '/trainers', key: 'nav.trainers' },
+  { href: '/nail-bars', key: 'nav.nailBars' },
+  { href: '/barberettes', key: 'nav.barberettes' },
   { href: '/mommy-and-me', key: 'nav.mommyAndMe' },
   { href: '/lookbook', key: 'nav.lookbook' },
   { href: '/bundles', key: 'nav.bundles' },

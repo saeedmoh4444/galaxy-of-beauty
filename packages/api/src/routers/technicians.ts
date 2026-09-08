@@ -90,6 +90,33 @@ export const technicianRouter = router({
   }),
 
   /**
+   * barberettes — E5: verified technicians offering barberette-category
+   * services (short cuts, fades). The booking flow itself is the standard
+   * technician Booking engine (unchanged). Public.
+   */
+  barberettes: publicProcedure.query(async () => {
+    const BARBERETTE_SLUGS = ['barberette', 'pixie-cut', 'layered-bob', 'clean-fade'];
+    return prisma.technician.findMany({
+      where: {
+        kycStatus: 'VERIFIED',
+        technicianServices: {
+          some: {
+            isActive: true,
+            service: { category: { slug: { in: BARBERETTE_SLUGS } } },
+          },
+        },
+      },
+      orderBy: { ratingAvg: 'desc' },
+      take: 50,
+      include: {
+        user: {
+          select: { id: true, name: true, avatarUrl: true },
+        },
+      },
+    });
+  }),
+
+  /**
    * getById — full technician profile by user ID.
    * Public.
    * Includes user info, offered services (with category), and review / booking stats.
