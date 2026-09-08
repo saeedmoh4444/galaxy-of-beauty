@@ -106,6 +106,31 @@ Recommended order: life-stage journeys → period pampering → postpartum.
 2. **Period pampering** — E4a predicts period dates; 2–3 days ahead offer
    cramps-relief massages, self-care kits from stores, home delivery.
    Turns tracking into revenue; the cycle ↔ booking/store glue.
+
+**E6a design (user-confirmed 2026-09-08, one PR)**
+
+- **Scope**: life-stage journeys + period pampering together.
+- **Stage model**: auto-derived + manual override, stored on
+  `BeautyProfile.lifeStage` (`bride | trying | pregnant | new_mom | back_to_me`).
+  Derivation: bridalConcierge exists → bride; cycleSettings.pregnancyMode
+  → pregnant; cycle settings with lastPeriodStart → trying; else
+  back_to_me. Manual `choose()` always wins.
+- **New `lifeStage` router** (wellness domain):
+  - `get` — derived/override stage + bilingual stage definitions
+  - `choose({ stage })` — manual override (upserts BeautyProfile)
+  - `home` — stage-aware sections: cycle summary (trying/pregnant),
+    pregnancy weeks/trimester (pregnant), pregnancy-safe services
+    (pregnant), mommy-friendly services (new_mom), bridal summary (bride),
+    quick links
+  - `pamperStatus` — computeCyclePredictions → isPamperWindow
+    (daysUntilNext ≤ 3 or period day ≤ 3) + offers: active FlashDeals,
+    self-care kits (top products in product-skincare/haircare), spa
+    services (spa-wellness category)
+- **UI**: web wellness-hub stage card + pamper card (activates in the
+  window), cycle-tracker pamper banner; mobile wellness-hub equivalents.
+- **Tests**: life-stage.test.ts (~8) — derivation, override, home
+  sections per stage, pamper window edges.
+
 3. **Postpartum care vertical** — recovery services, baby-friendly salons,
    nursing-safe treatments. Rides homeService + clinic patterns. (Adult
    women's health — NOT the deferred kids vertical.)
