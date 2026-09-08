@@ -1720,6 +1720,8 @@ model BeautyProfile {
   // E3 — fitness data feeding trainer recommendations (B.25 profile).
   measurements Json?     // { heightCm, weightKg, waistCm, hipCm, ... }
   fitnessGoals String[]  @default([]) // lose-weight, tone, endurance, ...
+  // E6a — life-stage journeys (manual override; auto-derivation otherwise).
+  lifeStage   String?    // bride | trying | pregnant | new_mom | back_to_me
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
 

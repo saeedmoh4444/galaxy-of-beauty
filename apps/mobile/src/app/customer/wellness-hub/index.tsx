@@ -70,6 +70,13 @@ export default function WellnessHubScreen(): JSX.Element {
   const goals = (goalsQ.data ?? []) as Array<any>;
   const nutrition = nutritionQ.data as any;
 
+  // E6a — life-stage journeys + period pampering.
+  const stageQ = trpc.lifeStage.get.useQuery(undefined, { enabled: isAuthed });
+  const chooseMut = trpc.lifeStage.choose.useMutation({ onSuccess: () => stageQ.refetch() });
+  const pamperQ = trpc.lifeStage.pamperStatus.useQuery(undefined, { enabled: isAuthed });
+  const stage = stageQ.data as any;
+  const pamper = pamperQ.data as any;
+
   if (dashQ.isLoading) return <SkeletonList count={4} />;
   if (dashQ.isError)
     return (
@@ -196,6 +203,64 @@ export default function WellnessHubScreen(): JSX.Element {
                 ]}
               />
             </View>
+          </View>
+        </View>
+      )}
+
+      {/* E6a — life stage (auto-derived + manual chips) */}
+      {stage && (
+        <View style={s.card}>
+          <Text style={s.st}>{t('mobile.lifeStage.title')}</Text>
+          <Text style={{ fontSize: 16, fontWeight: '800', color: '#111827', marginTop: 4 }}>
+            {stage.definition?.emoji}{' '}
+            {locale === 'en' ? stage.definition?.nameEn : stage.definition?.nameAr}
+          </Text>
+          <Text style={{ fontSize: 12, color: '#6b7280', marginTop: 2 }}>
+            {locale === 'en' ? stage.definition?.taglineEn : stage.definition?.taglineAr}
+          </Text>
+          <View style={{ flexDirection: 'row', flexWrap: 'wrap', gap: 6, marginTop: 8 }}>
+            {(stage.stages ?? []).map((st: any) => (
+              <TouchableOpacity
+                key={st.key}
+                disabled={chooseMut.isPending}
+                onPress={() => chooseMut.mutate({ stage: st.key })}
+                style={{
+                  backgroundColor: stage.stage === st.key ? '#db2777' : '#f3f4f6',
+                  borderRadius: 16,
+                  paddingHorizontal: 12,
+                  paddingVertical: 6,
+                }}
+              >
+                <Text style={{ fontSize: 12, color: stage.stage === st.key ? '#fff' : '#6b7280' }}>
+                  {st.emoji} {locale === 'en' ? st.nameEn : st.nameAr}
+                </Text>
+              </TouchableOpacity>
+            ))}
+          </View>
+        </View>
+      )}
+
+      {/* E6a — period pampering (activates in the window) */}
+      {pamper?.isPamperWindow && (
+        <View style={[s.card, { borderColor: '#fbcfe8', borderWidth: 2 }]}>
+          <Text style={s.st}>🌸 {t('mobile.lifeStage.pamper-title')}</Text>
+          <Text style={{ fontSize: 12, color: '#be185d', marginTop: 4 }}>
+            {t('mobile.lifeStage.pamper-active')}
+          </Text>
+          {(pamper.deals ?? []).map((deal: any) => (
+            <Text key={deal.id} style={{ fontSize: 13, color: '#374151', marginTop: 4 }}>
+              {locale === 'en' ? deal.titleEn : deal.titleAr} · {Number(deal.dealPrice)} ر.س
+            </Text>
+          ))}
+          <View style={{ flexDirection: 'row', flexWrap: 'wrap', gap: 6, marginTop: 6 }}>
+            {(pamper.kits ?? []).map((p: any) => (
+              <Text key={p.id} style={{ fontSize: 12, color: '#6b7280' }}>
+                {(p.emoji as string) || '🧴'}{' '}
+                {locale === 'en'
+                  ? ((p.nameJson as Record<string, string>)?.en ?? '')
+                  : ((p.nameJson as Record<string, string>)?.ar ?? '')}
+              </Text>
+            ))}
           </View>
         </View>
       )}

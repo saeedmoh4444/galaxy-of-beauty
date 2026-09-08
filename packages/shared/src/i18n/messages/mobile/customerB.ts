@@ -561,6 +561,13 @@ export const mobileCustomerBMessages = {
   },
   'mobile.wellnessContent.journalPromptTitle': { ar: 'سؤال اليوم', en: "Today's prompt" },
   'mobile.wellnessContent.load-error': { ar: 'فشل تحميل المحتوى', en: 'Failed to load content' },
+  // E6a — life-stage journeys + period pampering (mobile)
+  'mobile.lifeStage.title': { ar: 'رحلتك الآن', en: 'Your journey now' },
+  'mobile.lifeStage.pamper-title': { ar: 'تدليل ما قبل الدورة', en: 'Pre-period pampering' },
+  'mobile.lifeStage.pamper-active': {
+    ar: 'دورتكِ قريبة — دللي نفسك بهذه العروض',
+    en: 'Your period is near — treat yourself',
+  },
 
   // ---- wallet/top-up ----
   'mobile.topUp.top-up-error': { ar: 'فشل شحن الرصيد', en: 'Failed to top up balance' },
