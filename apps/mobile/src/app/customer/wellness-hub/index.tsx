@@ -86,6 +86,13 @@ export default function WellnessHubScreen(): JSX.Element {
   const postServices = (postServicesQ.data ?? []) as Array<any>;
   const postSalons = (postSalonsQ.data ?? []) as Array<any>;
 
+  // E6c — menopause mode (enabled only).
+  const menoStatusQ = trpc.menopause.status.useQuery(undefined, { enabled: isAuthed });
+  const menoOn = (menoStatusQ.data as any)?.enabled ?? false;
+  const menoLibQ = trpc.menopause.library.useQuery(undefined, { enabled: menoOn });
+  const menoLib = menoLibQ.data as any;
+  const menoLogMut = trpc.menopause.logSymptom.useMutation({});
+
   if (dashQ.isLoading) return <SkeletonList count={4} />;
   if (dashQ.isError)
     return (
@@ -322,6 +329,50 @@ export default function WellnessHubScreen(): JSX.Element {
           {postSalons.map((v: any) => (
             <Text key={v.id} style={{ fontSize: 12, color: '#6b7280', marginTop: 2 }}>
               🏠 {v.storeName} · {v.homeCity}
+            </Text>
+          ))}
+        </View>
+      )}
+
+      {/* E6c — menopause mode card (enabled only) */}
+      {menoOn && menoLib && (
+        <View style={[s.card, { borderColor: '#ede9fe', borderWidth: 2 }]}>
+          <Text style={s.st}>🌗 {t('mobile.menopause.title')}</Text>
+          {(menoLib.phases ?? []).map((p: any) => (
+            <View key={p.key} style={{ marginTop: 8 }}>
+              <Text style={{ fontSize: 13, fontWeight: '700', color: '#111827' }}>
+                {p.emoji} {locale === 'en' ? p.titleEn : p.titleAr}
+              </Text>
+              <Text style={{ fontSize: 12, color: '#6b7280', marginTop: 2 }}>
+                {locale === 'en' ? p.bodyEn : p.bodyAr}
+              </Text>
+            </View>
+          ))}
+          <View style={{ flexDirection: 'row', flexWrap: 'wrap', gap: 6, marginTop: 10 }}>
+            {(menoLib.symptoms ?? []).map((sym: any) => (
+              <TouchableOpacity
+                key={sym.slug}
+                disabled={menoLogMut.isPending}
+                onPress={() => menoLogMut.mutate({ symptom: sym.slug, severity: 2 })}
+                style={{
+                  backgroundColor: '#f3f4f6',
+                  borderRadius: 16,
+                  paddingHorizontal: 12,
+                  paddingVertical: 6,
+                }}
+              >
+                <Text style={{ fontSize: 12, color: '#6b7280' }}>
+                  {sym.emoji} {locale === 'en' ? sym.en : sym.ar} +
+                </Text>
+              </TouchableOpacity>
+            ))}
+          </View>
+          <Text style={{ fontSize: 12, fontWeight: '700', color: '#b45309', marginTop: 10 }}>
+            {t('mobile.menopause.signals-title')}
+          </Text>
+          {(menoLib.signals ?? []).map((sig: any, i: number) => (
+            <Text key={i} style={{ fontSize: 12, color: '#92400e', marginTop: 2 }}>
+              {sig.emoji} {locale === 'en' ? sig.en : sig.ar}
             </Text>
           ))}
         </View>

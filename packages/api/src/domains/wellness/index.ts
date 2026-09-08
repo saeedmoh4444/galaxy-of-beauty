@@ -6,6 +6,7 @@ export { wellnessHubRouter } from '../../routers/wellnessHub';
 export { wellnessContentRouter } from '../../routers/wellnessContent';
 export { lifeStageRouter } from '../../routers/lifeStage';
 export { postpartumRouter } from '../../routers/postpartum';
+export { menopauseRouter } from '../../routers/menopause';
 export { beautyBudgetRouter } from '../../routers/beautyBudget';
 export { beautyBudgetPlannerRouter } from '../../routers/beautyBudgetPlanner';
 export { beautyDashboardRouter } from '../../routers/beautyDashboard';
