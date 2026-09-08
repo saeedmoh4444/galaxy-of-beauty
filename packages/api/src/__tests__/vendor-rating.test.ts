@@ -94,9 +94,9 @@ describe('vendor rating (Store Phase 4a)', () => {
 
   it('editing a review re-aggregates without inflating the count', async () => {
     // r1 (the 4-star reviewer) updates to 5 → avg (5+2)/2 = 3.5, count 2.
-    const r1 = await prisma.user.findFirstOrThrow({
-      where: { id: { in: createdUserIds.slice(1) } },
-    });
+    // findFirst has no ordering guarantee — pin the reviewer explicitly
+    // (createdUserIds = [owner, r1, r2]; index 1 is the 4-star reviewer).
+    const r1 = await prisma.user.findUniqueOrThrow({ where: { id: createdUserIds[1] } });
     await callerFor(r1).marketplace.addReview({ productId, rating: 5 });
 
     const vendor = await prisma.vendor.findUniqueOrThrow({ where: { id: createdVendorIds[0] } });
