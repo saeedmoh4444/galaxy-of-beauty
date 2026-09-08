@@ -9,7 +9,11 @@ import {
   JournalPromptCard,
   NutritionSection,
 } from '@/components/wellness/WellnessContentSections';
-import { LifeStageCard, PamperCard } from '@/components/wellness/LifeStageSection';
+import {
+  LifeStageCard,
+  PamperCard,
+  PostpartumSection,
+} from '@/components/wellness/LifeStageSection';
 
 export default function WellnessHubPage(): JSX.Element {
   const { t, locale } = useLocale();
@@ -154,6 +158,9 @@ export default function WellnessHubPage(): JSX.Element {
           <LifeStageCard />
           <PamperCard />
         </div>
+
+        {/* E6b — postpartum care (new_mom stage only) */}
+        <PostpartumSection />
 
         {/* E4b — mental wellness (breathing + meditations) */}
         <MentalWellnessSection />

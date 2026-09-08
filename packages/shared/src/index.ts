@@ -14,6 +14,9 @@ export * from './wellness';
 // E6a — life-stage journey definitions + pamper window math.
 export * from './lifeStage';
 
+// E6b — postpartum care content library (healing phases, tips, signals).
+export * from './postpartum';
+
 // Utils (pure functions, no JSX)
 export { cn } from './utils/cn';
 export { formatCurrency } from './utils/formatCurrency';
