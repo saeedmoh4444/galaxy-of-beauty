@@ -2551,6 +2551,11 @@ model CycleEntry {
   phase     String
   mood      String?
   notes     String?
+  // E4a — symptom logging (accepted by logDay before, now actually stored).
+  flowIntensity String? // light | medium | heavy | spotting
+  symptoms      String[]
+  temperature   Float?
+  beautyNotes   String?
   createdAt DateTime @default(now())
   @@index([userId])
   @@map("cycle_entries")
@@ -2564,9 +2569,25 @@ model CycleSettings {
   periodLength    Int      @default(5)
   lastPeriodStart DateTime?
   isActive        Boolean  @default(true)
+  // E4a — history-aware predictions + pregnancy mode.
+  avgCycleLength  Int?     // learned from logged periods (mean of last 3)
+  pregnancyMode   Boolean  @default(false)
+  dueDate         DateTime?
   createdAt       DateTime @default(now())
   updatedAt       DateTime @updatedAt
   @@map("cycle_settings")
+}
+
+// E4a — logged period history (feeds the prediction average).
+model CyclePeriod {
+  id        Int      @id @default(autoincrement())
+  userId    Int
+  startDate DateTime
+  length    Int?     // actual cycle length, set when the next period starts
+  createdAt DateTime @default(now())
+
+  @@index([userId, startDate])
+  @@map("cycle_periods")
 }
 
 // ── Beauty Closet ─────────────────────────────────────────

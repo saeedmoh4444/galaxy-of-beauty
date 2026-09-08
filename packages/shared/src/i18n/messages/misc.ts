@@ -3836,6 +3836,35 @@ export const miscMessages = {
     ar: 'أدخلي هدفاً واضغطي إضافة',
     en: 'Type a goal and press Add',
   },
+  // E4a — period tracking upgrade
+  'cycleTracker.fertileWindow': { ar: 'نافذة الخصوبة', en: 'Fertile window' },
+  'cycleTracker.ovulation': { ar: 'الإباضة', en: 'Ovulation' },
+  'cycleTracker.fertileToday': {
+    ar: 'اليوم ضمن نافذة الخصوبة',
+    en: 'Today is in your fertile window',
+  },
+  'cycleTracker.predictionSource.average': {
+    ar: 'التنبؤ مبني على متوسط آخر دوراتك',
+    en: 'Prediction based on your recent cycle average',
+  },
+  'cycleTracker.predictionSource.default': {
+    ar: 'تنبؤ افتراضي ٢٨ يوماً',
+    en: 'Default 28-day prediction',
+  },
+  'cycleTracker.pregnancyMode': { ar: 'وضع الحمل', en: 'Pregnancy mode' },
+  'cycleTracker.dueDate': { ar: 'تاريخ الولادة المتوقع', en: 'Due date' },
+  'cycleTracker.pregnancyWeeks': {
+    ar: 'الأسبوع {{weeks}} من الحمل',
+    en: 'Week {{weeks}} of pregnancy',
+  },
+  'cycleTracker.trimester.1': { ar: 'الثلث الأول', en: 'First trimester' },
+  'cycleTracker.trimester.2': { ar: 'الثلث الثاني', en: 'Second trimester' },
+  'cycleTracker.trimester.3': { ar: 'الثلث الثالث', en: 'Third trimester' },
+  'cycleTracker.pmsTips': {
+    ar: 'نصائح فترة ما قبل الدورة',
+    en: 'PMS self-care tips',
+  },
+  'cycleTracker.label.temperature': { ar: 'الحرارة (اختياري)', en: 'Temperature (optional)' },
   'video.title': { ar: ' استشارات الفيديو', en: 'Video Consultations' },
   'video.subtitle': {
     ar: 'مكالمات فيديو مباشرة مع الفنيات',

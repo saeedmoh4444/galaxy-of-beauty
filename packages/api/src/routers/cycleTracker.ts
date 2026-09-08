@@ -1,56 +1,18 @@
 import { z } from 'zod';
 import { prisma } from '@galaxy/db';
-import { CYCLE_TRACKER_DAYS } from '@galaxy/shared';
+import {
+  CYCLE_TRACKER_DAYS,
+  CYCLE_PHASES,
+  CYCLE_SYMPTOMS,
+  PMS_LIBRARY,
+  computeCyclePredictions,
+  computePregnancy,
+} from '@galaxy/shared';
 import { customerProcedure, router } from '../trpc';
 
 const db = prisma;
 
-const PHASES = [
-  {
-    key: 'menstrual',
-    emoji: '🩸',
-    name: 'الدورة',
-    days: [1, 5],
-    color: '#ec4899',
-    tips: ['تجنبي إزالة الشعر بالشمع', 'البشرة حساسة — رطبي بلطف', 'تجنبي العلاجات القوية'],
-  },
-  {
-    key: 'follicular',
-    emoji: '',
-    name: 'الجريبي',
-    days: [6, 13],
-    color: '#f59e0b',
-    tips: [
-      'أفضل وقت لتجربة منتجات جديدة',
-      'البشرة متقبلة للعلاج',
-      'الشعر ينمو أسرع — وقت مثالي للقص',
-    ],
-  },
-  {
-    key: 'ovulation',
-    emoji: '',
-    name: 'الإباضة',
-    days: [14, 16],
-    color: '#8b5cf6',
-    tips: ['البشرة في أفضل حالاتها', 'مكياج خفيف يكفي', 'وقت مثالي للمناسبات'],
-  },
-  {
-    key: 'luteal',
-    emoji: '',
-    name: 'الأصفري',
-    days: [17, 28],
-    color: '#059669',
-    tips: ['البشرة دهنية — استخدمي التونر', 'قناع الطين مفيد', 'احتمالية ظهور حب الشباب'],
-  },
-];
-
-function getPhase(day: number, cycleLength: number = 28) {
-  const adjustedDay = ((day - 1) % cycleLength) + 1;
-  if (adjustedDay <= 5) return PHASES[0]!;
-  if (adjustedDay <= 13) return PHASES[1]!;
-  if (adjustedDay <= 16) return PHASES[2]!;
-  return PHASES[3]!;
-}
+const SYMPTOM_SLUGS = CYCLE_SYMPTOMS.map((s) => s.slug);
 
 export const cycleTrackerRouter = router({
   settings: customerProcedure.query(async ({ ctx }) => {
@@ -61,6 +23,9 @@ export const cycleTrackerRouter = router({
         cycleLength: 28,
         periodLength: 5,
         lastPeriodStart: null,
+        avgCycleLength: null,
+        pregnancyMode: false,
+        dueDate: null,
         createdAt: new Date(),
         updatedAt: new Date(),
       }
@@ -73,53 +38,98 @@ export const cycleTrackerRouter = router({
         cycleLength: z.number().min(20).max(45).optional(),
         periodLength: z.number().min(2).max(10).optional(),
         lastPeriodStart: z.string().optional(),
+        pregnancyMode: z.boolean().optional(),
+        dueDate: z.string().optional(),
       }),
     )
     .mutation(async ({ ctx, input }) => {
+      const existing = await db.cycleSettings.findUnique({ where: { userId: ctx.user.id } });
+
+      // E4a — when a new period starts, close the previous one with its
+      // actual length and learn the average of the last 3 cycles.
+      let avgCycleLength = existing?.avgCycleLength ?? null;
+      const newStart = input.lastPeriodStart ? new Date(input.lastPeriodStart) : null;
+      if (existing?.lastPeriodStart && newStart) {
+        const prevLength = Math.max(
+          15,
+          Math.round((newStart.getTime() - existing.lastPeriodStart.getTime()) / 86_400_000),
+        );
+        await db.cyclePeriod.create({
+          data: { userId: ctx.user.id, startDate: existing.lastPeriodStart, length: prevLength },
+        });
+        const recent = await db.cyclePeriod.findMany({
+          where: { userId: ctx.user.id },
+          orderBy: { startDate: 'desc' },
+          take: 3,
+        });
+        const lengths = recent.map((p) => p.length).filter((l): l is number => !!l);
+        if (lengths.length >= 2) {
+          avgCycleLength = Math.round(lengths.reduce((a, b) => a + b, 0) / lengths.length);
+        }
+      }
+
       return db.cycleSettings.upsert({
         where: { userId: ctx.user.id },
         update: {
-          ...input,
-          lastPeriodStart: input.lastPeriodStart ? new Date(input.lastPeriodStart) : undefined,
+          ...(input.cycleLength !== undefined ? { cycleLength: input.cycleLength } : {}),
+          ...(input.periodLength !== undefined ? { periodLength: input.periodLength } : {}),
+          ...(newStart ? { lastPeriodStart: newStart } : {}),
+          ...(input.pregnancyMode !== undefined ? { pregnancyMode: input.pregnancyMode } : {}),
+          ...(input.dueDate !== undefined ? { dueDate: new Date(input.dueDate) } : {}),
+          ...(avgCycleLength !== null ? { avgCycleLength } : {}),
         },
         create: {
           userId: ctx.user.id,
-          ...input,
-          lastPeriodStart: input.lastPeriodStart ? new Date(input.lastPeriodStart) : undefined,
+          ...(input.cycleLength !== undefined ? { cycleLength: input.cycleLength } : {}),
+          ...(input.periodLength !== undefined ? { periodLength: input.periodLength } : {}),
+          ...(newStart ? { lastPeriodStart: newStart } : {}),
+          ...(input.pregnancyMode !== undefined ? { pregnancyMode: input.pregnancyMode } : {}),
+          ...(input.dueDate !== undefined ? { dueDate: new Date(input.dueDate) } : {}),
+          ...(avgCycleLength !== null ? { avgCycleLength } : {}),
         },
       });
     }),
 
   today: customerProcedure.query(async ({ ctx }) => {
     const settings = await db.cycleSettings.findUnique({ where: { userId: ctx.user.id } });
-    const cycleLength = settings?.cycleLength ?? 28;
-    const lastStart = settings?.lastPeriodStart;
 
-    let currentDay = 14;
-    let nextPeriod: string | null = null;
-    let daysUntilNext: number | null = null;
-
-    if (lastStart) {
-      const diffDays = Math.floor((Date.now() - new Date(lastStart).getTime()) / 86400000);
-      currentDay = (diffDays % cycleLength) + 1;
-      daysUntilNext = cycleLength - (currentDay - 1);
-      nextPeriod = new Date(Date.now() + daysUntilNext * 86400000).toISOString();
+    // E4a — pregnancy mode replaces period predictions with a timeline.
+    if (settings?.pregnancyMode && settings.dueDate) {
+      const { weeksPregnant, trimester } = computePregnancy({ dueDate: settings.dueDate });
+      return {
+        pregnancyMode: true,
+        dueDate: settings.dueDate.toISOString(),
+        weeksPregnant,
+        trimester,
+        hasSettings: true,
+      };
     }
 
-    const phase = getPhase(currentDay, cycleLength);
+    const predictions = computeCyclePredictions({
+      cycleLength: settings?.cycleLength ?? 28,
+      lastPeriodStart: settings?.lastPeriodStart ?? null,
+      avgCycleLength: settings?.avgCycleLength,
+    });
+
     const todayEntry = await db.cycleEntry.findFirst({
-      where: { userId: ctx.user.id, dayNumber: currentDay },
+      where: { userId: ctx.user.id, dayNumber: predictions.currentDay },
       orderBy: { createdAt: 'desc' },
     });
 
+    const pmsTips = predictions.phase.key === 'luteal' ? PMS_LIBRARY : [];
+
     return {
-      currentDay,
-      cycleLength,
-      phase,
-      nextPeriodDate: nextPeriod,
-      daysUntilNext,
+      ...predictions,
+      periodLength: settings?.periodLength ?? 5,
+      pregnancyMode: false,
       todayEntry,
-      hasSettings: !!settings?.lastPeriodStart,
+      pmsTips,
+      fertileWindow: {
+        ovulationDate: predictions.ovulationDate,
+        fertileStart: predictions.fertileStart,
+        fertileEnd: predictions.fertileEnd,
+        isFertileToday: predictions.isFertileToday,
+      },
     };
   }),
 
@@ -129,24 +139,46 @@ export const cycleTrackerRouter = router({
         dayNumber: z.number().min(1).max(45),
         mood: z.string().optional(),
         flowIntensity: z.enum(['light', 'medium', 'heavy', 'spotting']).optional(),
-        symptoms: z.array(z.string()).optional(),
-        temperature: z.number().optional(),
-        beautyNotes: z.string().optional(),
+        symptoms: z.array(z.string()).max(10).optional(),
+        temperature: z.number().min(34).max(42).optional(),
+        beautyNotes: z.string().max(500).optional(),
         notes: z.string().optional(),
       }),
     )
     .mutation(async ({ ctx, input }) => {
-      const phase = getPhase(input.dayNumber);
+      const settings = await db.cycleSettings.findUnique({ where: { userId: ctx.user.id } });
+      // dayNumber is the day-in-cycle (1-45 window) — phase from it.
+      const cycleLength = settings?.avgCycleLength ?? settings?.cycleLength ?? 28;
+      const adjusted = ((input.dayNumber - 1) % cycleLength) + 1;
+      const phase =
+        adjusted <= 5
+          ? 'menstrual'
+          : adjusted <= 13
+            ? 'follicular'
+            : adjusted <= 16
+              ? 'ovulation'
+              : 'luteal';
+
+      // Validate symptom slugs against the shared library.
+      const symptoms = (input.symptoms ?? []).filter((s) => SYMPTOM_SLUGS.includes(s));
+
       const existing = await db.cycleEntry.findFirst({
         where: { userId: ctx.user.id, dayNumber: input.dayNumber },
         orderBy: { createdAt: 'desc' },
       });
-      if (existing)
-        return db.cycleEntry.update({
-          where: { id: existing.id },
-          data: { phase: phase.key, ...input },
-        });
-      return db.cycleEntry.create({ data: { userId: ctx.user.id, phase: phase.key, ...input } });
+      const data = {
+        phase,
+        ...(input.mood !== undefined ? { mood: input.mood } : {}),
+        ...(input.notes !== undefined ? { notes: input.notes } : {}),
+        ...(input.flowIntensity !== undefined ? { flowIntensity: input.flowIntensity } : {}),
+        ...(input.temperature !== undefined ? { temperature: input.temperature } : {}),
+        ...(input.beautyNotes !== undefined ? { beautyNotes: input.beautyNotes } : {}),
+        symptoms,
+      };
+      if (existing) return db.cycleEntry.update({ where: { id: existing.id }, data });
+      return db.cycleEntry.create({
+        data: { userId: ctx.user.id, dayNumber: input.dayNumber, ...data },
+      });
     }),
 
   myEntries: customerProcedure.query(async ({ ctx }) => {
@@ -156,7 +188,7 @@ export const cycleTrackerRouter = router({
       take: CYCLE_TRACKER_DAYS,
     });
     const settings = await db.cycleSettings.findUnique({ where: { userId: ctx.user.id } });
-    const cycleLength = settings?.cycleLength ?? 28;
-    return { entries, cycleLength, phases: PHASES };
+    const cycleLength = settings?.avgCycleLength ?? settings?.cycleLength ?? 28;
+    return { entries, cycleLength, phases: CYCLE_PHASES };
   }),
 });

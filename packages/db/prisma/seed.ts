@@ -101,6 +101,10 @@ async function main() {
     db.vendor.deleteMany(),
     db.productCategory.deleteMany(),
     db.providerSubmission.deleteMany(),
+    // E4a — cycle tables reference users, wipe before user.deleteMany().
+    db.cyclePeriod.deleteMany(),
+    db.cycleEntry.deleteMany(),
+    db.cycleSettings.deleteMany(),
     db.user.deleteMany(),
     db.saudiCity.deleteMany(),
   ]);

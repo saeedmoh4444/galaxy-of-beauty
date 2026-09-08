@@ -749,6 +749,18 @@ export const mobileCustomerAMessages = {
   'cycleTracker.phase-follicular': { ar: 'الجريبي', en: 'Follicular' },
   'cycleTracker.phase-ovulation': { ar: 'الإباضة', en: 'Ovulation' },
   'cycleTracker.phase-luteal': { ar: 'الأصفري', en: 'Luteal' },
+  // E4a — period tracking upgrade (mobile)
+  'cycleTracker.fertileWindow': { ar: 'نافذة الخصوبة', en: 'Fertile window' },
+  'cycleTracker.fertileToday': {
+    ar: 'اليوم ضمن نافذة الخصوبة',
+    en: 'Today is in your fertile window',
+  },
+  'cycleTracker.pmsTips': { ar: 'نصائح ما قبل الدورة', en: 'PMS tips' },
+  'cycleTracker.pregnancyMode': { ar: 'وضع الحمل', en: 'Pregnancy mode' },
+  'cycleTracker.pregnancyWeeks': {
+    ar: 'الأسبوع {{weeks}} من الحمل',
+    en: 'Week {{weeks}} of pregnancy',
+  },
 
   // ── dashboard ──
   'dashboard.load-error': { ar: 'فشل تحميل لوحة التحكم', en: 'Failed to load dashboard' },

@@ -4,6 +4,10 @@
 // Constants
 export * from './constants';
 
+// E4a — cycle phases, predictions, symptoms, PMS library (shared by the
+// cycleTracker + wellnessHub routers).
+export * from './cycle';
+
 // Utils (pure functions, no JSX)
 export { cn } from './utils/cn';
 export { formatCurrency } from './utils/formatCurrency';
