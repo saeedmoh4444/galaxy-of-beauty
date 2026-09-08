@@ -54,6 +54,9 @@ export default function CycleTrackerPage(): JSX.Element {
   // E4a — pregnancy mode.
   const [pregnancyMode, setPregnancyMode] = useState(false);
   const [dueDate, setDueDate] = useState('');
+  // E6c — menopause/perimenopause mode.
+  const [menopauseMode, setMenopauseMode] = useState(false);
+  const [lastPeriodAt, setLastPeriodAt] = useState('');
 
   const phase = today?.phase as Record<string, unknown> | undefined;
   const entries = (entriesData?.entries as Array<Record<string, unknown>>) ?? [];
@@ -109,6 +112,12 @@ export default function CycleTrackerPage(): JSX.Element {
                 setDueDate(
                   settings.dueDate
                     ? new Date(settings.dueDate as string).toISOString().slice(0, 10)
+                    : '',
+                );
+                setMenopauseMode((settings.menopauseMode as boolean) ?? false);
+                setLastPeriodAt(
+                  settings.lastPeriodAt
+                    ? new Date(settings.lastPeriodAt as string).toISOString().slice(0, 10)
                     : '',
                 );
               }
@@ -184,6 +193,31 @@ export default function CycleTrackerPage(): JSX.Element {
                 </div>
               )}
             </div>
+            {/* E6c — menopause mode */}
+            <div className="mt-3 rounded-lg border p-3">
+              <label className="flex items-center gap-2 text-sm font-semibold">
+                <input
+                  type="checkbox"
+                  checked={menopauseMode}
+                  onChange={(e) => setMenopauseMode(e.target.checked)}
+                />
+                {t('menopause.title')}
+              </label>
+              {menopauseMode && (
+                <div className="mt-2">
+                  <label htmlFor="ct-lastPeriodAt" className="text-xs text-text-secondary">
+                    {t('menopause.lastPeriodAt')}
+                  </label>
+                  <input
+                    id="ct-lastPeriodAt"
+                    type="date"
+                    value={lastPeriodAt}
+                    onChange={(e) => setLastPeriodAt(e.target.value)}
+                    className="w-full rounded-lg border px-3 py-2 text-sm dark:border-gray-700 dark:bg-gray-800"
+                  />
+                </div>
+              )}
+            </div>
             <Button
               onClick={() =>
                 settingsMut.mutate(
@@ -193,6 +227,8 @@ export default function CycleTrackerPage(): JSX.Element {
                     lastPeriodStart: lastStart || undefined,
                     pregnancyMode,
                     dueDate: pregnancyMode && dueDate ? dueDate : undefined,
+                    menopauseMode,
+                    lastPeriodAt: menopauseMode && lastPeriodAt ? lastPeriodAt : undefined,
                   },
                   { onSuccess: () => setShowSettings(false) },
                 )

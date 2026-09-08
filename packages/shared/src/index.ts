@@ -17,6 +17,9 @@ export * from './lifeStage';
 // E6b — postpartum care content library (healing phases, tips, signals).
 export * from './postpartum';
 
+// E6c — menopause/perimenopause content, symptoms and phase math.
+export * from './menopause';
+
 // Utils (pure functions, no JSX)
 export { cn } from './utils/cn';
 export { formatCurrency } from './utils/formatCurrency';

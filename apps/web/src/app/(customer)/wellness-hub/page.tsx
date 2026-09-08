@@ -13,6 +13,7 @@ import {
   LifeStageCard,
   PamperCard,
   PostpartumSection,
+  MenopauseCard,
 } from '@/components/wellness/LifeStageSection';
 
 export default function WellnessHubPage(): JSX.Element {
@@ -161,6 +162,9 @@ export default function WellnessHubPage(): JSX.Element {
 
         {/* E6b — postpartum care (new_mom stage only) */}
         <PostpartumSection />
+
+        {/* E6c — menopause mode (enabled only) */}
+        <MenopauseCard />
 
         {/* E4b — mental wellness (breathing + meditations) */}
         <MentalWellnessSection />

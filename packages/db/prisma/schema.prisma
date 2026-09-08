@@ -2612,6 +2612,9 @@ model CycleSettings {
   avgCycleLength  Int?     // learned from logged periods (mean of last 3)
   pregnancyMode   Boolean  @default(false)
   dueDate         DateTime?
+  // E6c — menopause/perimenopause mode (pregnancy-mode pattern).
+  menopauseMode   Boolean  @default(false)
+  lastPeriodAt    DateTime? // perimenopause tracking: last recorded period
   createdAt       DateTime @default(now())
   updatedAt       DateTime @updatedAt
   @@map("cycle_settings")
@@ -3859,6 +3862,19 @@ model MeasurementLog {
 
   @@index([userId, createdAt])
   @@map("measurement_logs")
+}
+
+// E6c — menopause symptom log (self-reported, per-day entries).
+model MenopauseLog {
+  id        Int      @id @default(autoincrement())
+  userId    Int
+  symptom   String   // hot_flash | night_sweats | mood | sleep | dryness | brain_fog
+  severity  Int      @default(2) // 1-3
+  notes     String?
+  createdAt DateTime @default(now())
+
+  @@index([userId, createdAt])
+  @@map("menopause_logs")
 }
 
 // E4b — persisted installment plans (bnpl.createPlan used to compute only).

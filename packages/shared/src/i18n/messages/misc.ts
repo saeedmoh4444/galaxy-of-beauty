@@ -4150,4 +4150,18 @@ export const miscMessages = {
   'admin.shorts.consent': { ar: 'الموافقة', en: 'Consent' },
   'common.yes': { ar: 'نعم', en: 'Yes' },
   'common.no': { ar: 'لا', en: 'No' },
+  // E6c — menopause/perimenopause mode
+  'menopause.title': { ar: 'وضع انقطاع الطمث', en: 'Menopause mode' },
+  'menopause.subtitle': {
+    ar: 'مراحل، أعراض، ورعاية مخصصة لهذه المرحلة',
+    en: 'Stages, symptoms and dedicated care for this chapter',
+  },
+  'menopause.lastPeriodAt': { ar: 'تاريخ آخر دورة', en: 'Last period date' },
+  'menopause.signalsTitle': { ar: 'متى تراجعين طبيبتك', en: 'When to see your doctor' },
+  'menopause.logTitle': { ar: 'سجلي أعراضك — اضغطي على العرض', en: 'Log symptoms — tap a symptom' },
+  'menopause.logged': { ar: 'سجلتِ {count} عرضاً', en: '{count} symptoms logged' },
+  'menopause.clinics': {
+    ar: 'عيادات للاستشارة الهرمونية',
+    en: 'Clinics for hormone consultations',
+  },
 } as const;

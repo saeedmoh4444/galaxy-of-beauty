@@ -40,6 +40,9 @@ export const cycleTrackerRouter = router({
         lastPeriodStart: z.string().optional(),
         pregnancyMode: z.boolean().optional(),
         dueDate: z.string().optional(),
+        // E6c — menopause/perimenopause mode flags.
+        menopauseMode: z.boolean().optional(),
+        lastPeriodAt: z.string().optional(),
       }),
     )
     .mutation(async ({ ctx, input }) => {
@@ -77,6 +80,10 @@ export const cycleTrackerRouter = router({
           ...(input.pregnancyMode !== undefined ? { pregnancyMode: input.pregnancyMode } : {}),
           ...(input.dueDate !== undefined ? { dueDate: new Date(input.dueDate) } : {}),
           ...(avgCycleLength !== null ? { avgCycleLength } : {}),
+          ...(input.menopauseMode !== undefined ? { menopauseMode: input.menopauseMode } : {}),
+          ...(input.lastPeriodAt !== undefined
+            ? { lastPeriodAt: new Date(input.lastPeriodAt) }
+            : {}),
         },
         create: {
           userId: ctx.user.id,
@@ -86,6 +93,10 @@ export const cycleTrackerRouter = router({
           ...(input.pregnancyMode !== undefined ? { pregnancyMode: input.pregnancyMode } : {}),
           ...(input.dueDate !== undefined ? { dueDate: new Date(input.dueDate) } : {}),
           ...(avgCycleLength !== null ? { avgCycleLength } : {}),
+          ...(input.menopauseMode !== undefined ? { menopauseMode: input.menopauseMode } : {}),
+          ...(input.lastPeriodAt !== undefined
+            ? { lastPeriodAt: new Date(input.lastPeriodAt) }
+            : {}),
         },
       });
     }),

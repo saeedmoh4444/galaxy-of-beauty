@@ -157,6 +157,100 @@ export function PostpartumSection(): JSX.Element {
   );
 }
 
+/** E6c — menopause mode card, shown only while the mode is enabled. */
+export function MenopauseCard(): JSX.Element {
+  const { t, locale } = useLocale();
+  const statusQ = api.menopause.status.useQuery();
+  const enabled = (statusQ.data as { enabled: boolean } | undefined)?.enabled ?? false;
+
+  const libQ = api.menopause.library.useQuery(undefined, { enabled });
+  const historyQ = api.menopause.history.useQuery({}, { enabled });
+  const clinicsQ = api.menopause.clinics.useQuery(undefined, { enabled });
+  const logMut = api.menopause.logSymptom.useMutation({ onSuccess: () => historyQ.refetch() });
+
+  const lib = libQ.data as
+    | {
+        phases: Array<Record<string, string>>;
+        tips: Array<Record<string, string>>;
+        signals: Array<Record<string, string>>;
+        symptoms: Array<Record<string, string>>;
+      }
+    | undefined;
+  const history = (historyQ.data ?? []) as Array<Record<string, any>>;
+  const clinics = (clinicsQ.data ?? []) as Array<Record<string, any>>;
+
+  if (!enabled || !lib) return <></>;
+
+  return (
+    <Card padding="lg" className="border-2 border-purple-100 dark:border-purple-900">
+      <h3 className="font-bold">🌗 {t('menopause.title')}</h3>
+      <p className="mt-1 text-xs text-text-secondary">{t('menopause.subtitle')}</p>
+      <div className="mt-3 space-y-4">
+        {lib.phases.map((p) => (
+          <details key={p.key} className="rounded-xl bg-surface-muted p-3">
+            <summary className="cursor-pointer text-sm font-bold">
+              {p.emoji} {p[locale === 'en' ? 'titleEn' : 'titleAr']}
+            </summary>
+            <p className="mt-2 text-xs text-text-secondary">
+              {p[locale === 'en' ? 'bodyEn' : 'bodyAr']}
+            </p>
+          </details>
+        ))}
+        <div className="flex flex-wrap gap-2">
+          {lib.tips.map((tip, i) => (
+            <span key={i} className="rounded-full bg-purple-50 px-3 py-1 text-xs text-purple-700">
+              {tip.emoji} {tip[locale === 'en' ? 'en' : 'ar']}
+            </span>
+          ))}
+        </div>
+        <div className="rounded-xl border border-amber-200 bg-amber-50 p-3 dark:border-amber-800 dark:bg-amber-950/40">
+          <p className="text-xs font-bold text-amber-700">{t('menopause.signalsTitle')}</p>
+          <ul className="mt-1 space-y-1 text-xs text-amber-800 dark:text-amber-300">
+            {lib.signals.map((s, i) => (
+              <li key={i}>
+                {s.emoji} {s[locale === 'en' ? 'en' : 'ar']}
+              </li>
+            ))}
+          </ul>
+        </div>
+        {/* Symptom log */}
+        <div>
+          <p className="text-xs font-bold text-text-secondary">{t('menopause.logTitle')}</p>
+          <div className="mt-1 flex flex-wrap gap-2">
+            {lib.symptoms.map((s) => (
+              <button
+                key={s.slug}
+                disabled={logMut.isPending}
+                onClick={() => logMut.mutate({ symptom: s.slug as never, severity: 2 })}
+                className="rounded-full bg-surface-muted px-3 py-1 text-xs text-text-secondary disabled:opacity-50"
+              >
+                {s.emoji} {s[locale === 'en' ? 'en' : 'ar']} +
+              </button>
+            ))}
+          </div>
+          {history.length > 0 && (
+            <p className="mt-2 text-[11px] text-text-tertiary">
+              {t('menopause.logged', { count: history.length })}
+            </p>
+          )}
+        </div>
+        {clinics.length > 0 && (
+          <div>
+            <p className="text-xs font-bold text-text-secondary">{t('menopause.clinics')}</p>
+            <div className="mt-1 space-y-1">
+              {clinics.map((v) => (
+                <Link key={v.id} href={`/clinics/${v.storeSlug}`}>
+                  <p className="text-xs text-brand-600 underline">{v.storeName}</p>
+                </Link>
+              ))}
+            </div>
+          </div>
+        )}
+      </div>
+    </Card>
+  );
+}
+
 export function PamperCard(): JSX.Element {
   const { t, locale } = useLocale();
   const statusQ = api.lifeStage.pamperStatus.useQuery();

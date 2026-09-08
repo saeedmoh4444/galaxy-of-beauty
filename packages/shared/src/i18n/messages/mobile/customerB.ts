@@ -581,6 +581,9 @@ export const mobileCustomerBMessages = {
     ar: 'نساء فقط — المحتوى لا يغادر دائرة النساء',
     en: 'Women only — content stays in the women’s circle',
   },
+  // E6c — menopause mode (mobile)
+  'mobile.menopause.title': { ar: 'وضع انقطاع الطمث', en: 'Menopause mode' },
+  'mobile.menopause.signals-title': { ar: 'متى تراجعين طبيبتك', en: 'When to see your doctor' },
 
   // ---- wallet/top-up ----
   'mobile.topUp.top-up-error': { ar: 'فشل شحن الرصيد', en: 'Failed to top up balance' },
