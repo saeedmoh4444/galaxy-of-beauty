@@ -98,6 +98,29 @@ export const beautyShortsRouter = router({
       });
     }),
 
+  /**
+   * gallery — E6e: a technician's approved before/after shorts (by USER id),
+   * surfaced on the technician profile/gallery pages. Public.
+   */
+  gallery: publicProcedure
+    .input(z.object({ technicianUserId: z.number().int().positive() }))
+    .query(async ({ input }) => {
+      const technician = await db.technician.findUnique({
+        where: { userId: input.technicianUserId },
+      });
+      if (!technician) return [];
+      return db.short.findMany({
+        where: {
+          technicianId: technician.id,
+          type: 'before_after',
+          isApproved: true,
+          isActive: true,
+        },
+        orderBy: { createdAt: 'desc' },
+        take: 12,
+      });
+    }),
+
   /** myShorts — the caller's own posts with their moderation status. */
   myShorts: protectedProcedure.query(async ({ ctx }) => {
     const technician = await db.technician.findUnique({ where: { userId: ctx.user.id } });

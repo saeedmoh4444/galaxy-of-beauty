@@ -93,6 +93,9 @@ export default function TechDashboardPage(): JSX.Element {
   const [shortTitleEn, setShortTitleEn] = useState('');
   const [shortVideoUrl, setShortVideoUrl] = useState('');
   const [shortCategory, setShortCategory] = useState('makeup');
+  // E6e — before/after posting.
+  const [shortType, setShortType] = useState<'reel' | 'before_after'>('reel');
+  const [shortBeforeUrl, setShortBeforeUrl] = useState('');
   const [shortFaceBlur, setShortFaceBlur] = useState(false);
   const [shortConsent, setShortConsent] = useState(false);
   const myShorts = (myShortsQ.data as unknown as Array<Record<string, unknown>> | undefined) ?? [];
@@ -344,12 +347,29 @@ export default function TechDashboardPage(): JSX.Element {
                 value={shortTitleEn}
                 onChange={(e) => setShortTitleEn(e.target.value)}
               />
-              <Input
-                label={t('tech.shorts.video-url')}
-                value={shortVideoUrl}
-                onChange={(e) => setShortVideoUrl(e.target.value)}
-                placeholder="https://…"
-              />
+              <select
+                value={shortType}
+                onChange={(e) => setShortType(e.target.value as 'reel' | 'before_after')}
+                className="w-full rounded-lg border px-3 py-2 text-sm dark:border-gray-700 dark:bg-gray-800"
+              >
+                <option value="reel">{t('tech.shorts.type-reel')}</option>
+                <option value="before_after">{t('tech.shorts.type-before-after')}</option>
+              </select>
+              {shortType === 'reel' ? (
+                <Input
+                  label={t('tech.shorts.video-url')}
+                  value={shortVideoUrl}
+                  onChange={(e) => setShortVideoUrl(e.target.value)}
+                  placeholder="https://…"
+                />
+              ) : (
+                <Input
+                  label={t('tech.shorts.after-image-url')}
+                  value={shortBeforeUrl}
+                  onChange={(e) => setShortBeforeUrl(e.target.value)}
+                  placeholder="https://… (صورة النتيجة)"
+                />
+              )}
               <select
                 value={shortCategory}
                 onChange={(e) => setShortCategory(e.target.value)}
@@ -383,11 +403,13 @@ export default function TechDashboardPage(): JSX.Element {
               <Button
                 onClick={() =>
                   shortCreateMut.mutate({
-                    type: 'reel' as const,
+                    type: shortType,
                     titleAr: shortTitleAr.trim(),
                     titleEn: shortTitleEn.trim() || shortTitleAr.trim(),
-                    videoUrl: shortVideoUrl.trim() || undefined,
-                    durationSec: 30,
+                    videoUrl: shortType === 'reel' ? shortVideoUrl.trim() || undefined : undefined,
+                    beforeImageUrl:
+                      shortType === 'before_after' ? shortBeforeUrl.trim() || undefined : undefined,
+                    durationSec: shortType === 'reel' ? 30 : 0,
                     category: shortCategory,
                     faceBlurred: shortFaceBlur,
                     consent: true as const,

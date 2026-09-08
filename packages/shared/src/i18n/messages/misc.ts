@@ -4174,4 +4174,9 @@ export const miscMessages = {
     ar: 'يوجد جناح خاص',
     en: 'Private suite available',
   },
+  // E6e — before/after galleries
+  'gallery.beforeAfterTitle': { ar: 'نتائج قبل وبعد', en: 'Before & after results' },
+  'tech.shorts.type-reel': { ar: 'فيديو (ريل)', en: 'Reel' },
+  'tech.shorts.type-before-after': { ar: 'صورة قبل/بعد', en: 'Before/after image' },
+  'tech.shorts.after-image-url': { ar: 'رابط صورة النتيجة', en: 'Result image URL' },
 } as const;
