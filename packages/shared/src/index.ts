@@ -11,6 +11,9 @@ export * from './cycle';
 // E4b — breathing/meditation/journaling/nutrition libraries (wellnessContent).
 export * from './wellness';
 
+// E6a — life-stage journey definitions + pamper window math.
+export * from './lifeStage';
+
 // Utils (pure functions, no JSX)
 export { cn } from './utils/cn';
 export { formatCurrency } from './utils/formatCurrency';

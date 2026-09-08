@@ -4068,4 +4068,35 @@ export const miscMessages = {
   'bnpl.markPaid': { ar: 'سجّلي الدفعة', en: 'Mark as paid' },
   'bnpl.status.ACTIVE': { ar: 'نشطة', en: 'Active' },
   'bnpl.status.COMPLETED': { ar: 'مكتملة', en: 'Completed' },
+  // E6a — life-stage journeys + period pampering
+  'lifeStage.title': { ar: 'رحلتك الآن', en: 'Your journey now' },
+  'lifeStage.autoHint': {
+    ar: 'تم تحديدها تلقائياً — يمكنك تغييرها',
+    en: 'Auto-detected — you can change it',
+  },
+  'lifeStage.link.bridal': { ar: 'خدمة العروس', en: 'Bridal concierge' },
+  'lifeStage.link.packages': { ar: 'الباقات', en: 'Packages' },
+  'lifeStage.link.campaigns': { ar: 'الحملات', en: 'Campaigns' },
+  'lifeStage.link.cycle': { ar: 'متابعة الدورة', en: 'Cycle tracker' },
+  'lifeStage.link.clinics': { ar: 'العيادات', en: 'Clinics' },
+  'lifeStage.link.hub': { ar: 'مركز العافية', en: 'Wellness hub' },
+  'lifeStage.link.search': { ar: 'البحث', en: 'Search' },
+  'lifeStage.link.stores': { ar: 'المتاجر', en: 'Stores' },
+  'lifeStage.link.discover': { ar: 'اكتشفي', en: 'Discover' },
+  'lifeStage.pamper.title': { ar: 'تدليل ما قبل الدورة', en: 'Pre-period pampering' },
+  'lifeStage.pamper.active': {
+    ar: 'دورتكِ قريبة — دللي نفسك بهذه العروض',
+    en: 'Your period is near — treat yourself to these offers',
+  },
+  'lifeStage.pamper.dormant': {
+    ar: 'يفتح قبل دورتكِ المتوقعة — باقي {days} يوم',
+    en: 'Opens before your predicted period — {days} days left',
+  },
+  'lifeStage.pamper.noCycle': {
+    ar: 'سجلي دورتك في متابعة الدورة لتفعيل التدليل',
+    en: 'Log your cycle to unlock pampering',
+  },
+  'lifeStage.pamper.deals': { ar: 'عروض مختارة', en: 'Selected deals' },
+  'lifeStage.pamper.kits': { ar: 'مجموعات العناية', en: 'Self-care kits' },
+  'lifeStage.pamper.spa': { ar: 'مساج وسبا', en: 'Massage & spa' },
 } as const;

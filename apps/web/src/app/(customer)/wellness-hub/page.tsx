@@ -9,6 +9,7 @@ import {
   JournalPromptCard,
   NutritionSection,
 } from '@/components/wellness/WellnessContentSections';
+import { LifeStageCard, PamperCard } from '@/components/wellness/LifeStageSection';
 
 export default function WellnessHubPage(): JSX.Element {
   const { t, locale } = useLocale();
@@ -146,6 +147,12 @@ export default function WellnessHubPage(): JSX.Element {
               <p className="text-sm text-text-tertiary">{t('wellnessHub.weeklyEmpty')}</p>
             )}
           </Card>
+        </div>
+
+        {/* E6a — life-stage journeys + period pampering */}
+        <div className="grid gap-6 lg:grid-cols-2">
+          <LifeStageCard />
+          <PamperCard />
         </div>
 
         {/* E4b — mental wellness (breathing + meditations) */}
