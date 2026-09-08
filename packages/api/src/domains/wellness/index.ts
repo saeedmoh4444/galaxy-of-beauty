@@ -3,6 +3,7 @@
 export { selfCareRouter } from '../../routers/selfCare';
 export { wellnessTrackerRouter } from '../../routers/wellnessTracker';
 export { wellnessHubRouter } from '../../routers/wellnessHub';
+export { wellnessContentRouter } from '../../routers/wellnessContent';
 export { beautyBudgetRouter } from '../../routers/beautyBudget';
 export { beautyBudgetPlannerRouter } from '../../routers/beautyBudgetPlanner';
 export { beautyDashboardRouter } from '../../routers/beautyDashboard';

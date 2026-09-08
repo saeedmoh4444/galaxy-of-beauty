@@ -4,6 +4,11 @@ import { api } from '@/lib/trpc';
 import { Card, DashboardSkeleton, Button, ErrorAlert } from '@galaxy/ui';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
 import { useLocale } from '@/components/LocaleProvider';
+import {
+  MentalWellnessSection,
+  JournalPromptCard,
+  NutritionSection,
+} from '@/components/wellness/WellnessContentSections';
 
 export default function WellnessHubPage(): JSX.Element {
   const { t, locale } = useLocale();
@@ -142,6 +147,15 @@ export default function WellnessHubPage(): JSX.Element {
             )}
           </Card>
         </div>
+
+        {/* E4b — mental wellness (breathing + meditations) */}
+        <MentalWellnessSection />
+
+        {/* E4b — daily journaling prompt */}
+        <JournalPromptCard />
+
+        {/* E4b — nutrition for beauty goals */}
+        <NutritionSection />
 
         {/* Journal */}
         <Card padding="lg">
