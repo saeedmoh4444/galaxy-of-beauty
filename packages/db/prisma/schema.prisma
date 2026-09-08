@@ -1970,6 +1970,29 @@ model VipMembership {
   @@map("vip_memberships")
 }
 
+// E7 — persisted beauty shorts (reels + before/after), moderation-gated.
+model Short {
+  id            Int      @id @default(autoincrement())
+  type          String   @default("reel") // reel | before_after
+  technicianId  Int?
+  titleJson     Json     // { ar, en }
+  videoUrl      String?
+  thumbnailUrl  String?
+  beforeImageUrl String? // before_after: the "before" side
+  durationSec   Int      @default(0)
+  views         Int      @default(0)
+  category      String   @default("general")
+  isActive      Boolean  @default(true)
+  isApproved    Boolean  @default(false) // moderation queue until approved
+  faceBlurred   Boolean  @default(false) // privacy option on upload
+  consentGiven  Boolean  @default(false) // required consent on upload
+  createdAt     DateTime @default(now())
+
+  @@index([isApproved, isActive])
+  @@index([technicianId])
+  @@map("shorts")
+}
+
 model ShortLike {
   id      Int      @id @default(autoincrement())
   shortId Int

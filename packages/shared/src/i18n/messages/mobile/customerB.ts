@@ -576,6 +576,11 @@ export const mobileCustomerBMessages = {
     ar: 'زيارات منزلية ترحب بطفلك',
     en: 'Home visits that welcome your baby',
   },
+  // E7 — beauty media layer (mobile)
+  'mobile.beautyShorts.privacy': {
+    ar: 'نساء فقط — المحتوى لا يغادر دائرة النساء',
+    en: 'Women only — content stays in the women’s circle',
+  },
 
   // ---- wallet/top-up ----
   'mobile.topUp.top-up-error': { ar: 'فشل شحن الرصيد', en: 'Failed to top up balance' },

@@ -111,6 +111,9 @@ async function main() {
     // E4b — measurement history + installment plans (user-owned rows).
     db.measurementLog.deleteMany(),
     db.bnplPlan.deleteMany(),
+    // E7 — media layer (shorts + likes).
+    db.shortLike.deleteMany(),
+    db.short.deleteMany(),
     db.user.deleteMany(),
     db.saudiCity.deleteMany(),
   ]);
@@ -3003,6 +3006,74 @@ async function main() {
     console.log(' Daily tips + beauty quiz questions');
   } catch (err: any) {
     console.log(`    Tips/quiz: ${err.message?.slice(0, 60)}`);
+  }
+
+  // ---- E7 — beauty shorts (persisted media, pre-approved for the demo) ----
+  const SAMPLE_VIDEOS = [
+    'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4',
+    'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerJoyrides.mp4',
+  ];
+  const SHORT_SEEDS = [
+    {
+      type: 'reel',
+      titleJson: { ar: 'طريقة تطبيق الآيلاينر بسهولة', en: 'Easy eyeliner application' },
+      videoUrl: SAMPLE_VIDEOS[0],
+      durationSec: 32,
+      views: 5200,
+      category: 'makeup',
+      isApproved: true,
+    },
+    {
+      type: 'reel',
+      titleJson: { ar: 'روتين عناية بالبشرة في دقيقة', en: 'One-minute skincare routine' },
+      videoUrl: SAMPLE_VIDEOS[1],
+      durationSec: 45,
+      views: 3800,
+      category: 'skincare',
+      isApproved: true,
+    },
+    {
+      type: 'reel',
+      titleJson: { ar: 'تسريحة شعر سريعة للمناسبات', en: 'Quick event hairstyle' },
+      durationSec: 28,
+      views: 4100,
+      category: 'hair',
+      isApproved: true,
+    },
+    {
+      type: 'reel',
+      titleJson: { ar: 'مانيكير في ٣٠ ثانية', en: 'Manicure in 30 seconds' },
+      durationSec: 35,
+      views: 2900,
+      category: 'nails',
+      isApproved: true,
+    },
+    {
+      type: 'before_after',
+      titleJson: { ar: 'نتيجة صبغ الشعر البلاتيني', en: 'Platinum hair color result' },
+      beforeImageUrl: null,
+      durationSec: 0,
+      views: 1200,
+      category: 'hair',
+      isApproved: true,
+      consentGiven: true,
+    },
+    {
+      type: 'before_after',
+      titleJson: { ar: 'علاج حب الشباب — بعد ٣ جلسات', en: 'Acne treatment — after 3 sessions' },
+      beforeImageUrl: null,
+      durationSec: 0,
+      views: 2100,
+      category: 'skincare',
+      isApproved: true,
+      consentGiven: true,
+    },
+  ];
+  try {
+    await prisma.short.createMany({ data: SHORT_SEEDS });
+    console.log(` ${SHORT_SEEDS.length} beauty shorts`);
+  } catch (err: any) {
+    console.log(`    Shorts: ${err.message?.slice(0, 60)}`);
   }
 
   console.log('\n Seed complete! Test login: customer@test.com / Admin@123456\n');

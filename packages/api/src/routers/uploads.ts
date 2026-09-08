@@ -144,6 +144,41 @@ export const uploadRouter = router({
     }),
 
   // ────────────────────────────────────────────────────────
+  // E7 — upload media (shorts videos / gallery images / product shots).
+  // Reuses the storage pipeline; images ≤ 5 MB, videos ≤ 25 MB.
+  // ────────────────────────────────────────────────────────
+  uploadMedia: protectedProcedure
+    .input(
+      z.object({
+        mediaType: z.enum(['image', 'video']),
+        file: z.object({
+          name: z.string(),
+          type: z.string(),
+          size: z.number().max(25 * 1024 * 1024, 'Video must be under 25 MB'),
+          base64: z.string(),
+        }),
+      }),
+    )
+    .mutation(async ({ ctx, input }) => {
+      const ALLOWED_MEDIA = [...ALLOWED_IMAGE_TYPES, 'video/mp4', 'video/webm', 'video/quicktime'];
+      if (!ALLOWED_MEDIA.includes(input.file.type)) {
+        throw new TRPCError({
+          code: 'BAD_REQUEST',
+          message: `Unsupported file type: ${input.file.type}. Allowed: images, MP4, WebM`,
+        });
+      }
+      if (input.mediaType === 'image' && !ALLOWED_IMAGE_TYPES.includes(input.file.type)) {
+        throw new TRPCError({
+          code: 'BAD_REQUEST',
+          message: 'Image uploads must be JPEG, PNG, WebP or AVIF',
+        });
+      }
+
+      const { buffer } = decodeBase64File(input.file);
+      return uploadFile(buffer, input.file.name, `media/${ctx.user.id}`, input.file.type);
+    }),
+
+  // ────────────────────────────────────────────────────────
   // Upload category or service image (admin only)
   // ────────────────────────────────────────────────────────
   uploadImage: adminProcedure
