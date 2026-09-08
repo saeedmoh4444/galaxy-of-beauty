@@ -42,6 +42,9 @@ export default function VendorPortalPage(): JSX.Element {
   const [name, setName] = useState('');
   const [price, setPrice] = useState(100);
   const [stock, setStock] = useState(10);
+  // E7 — real product shot upload (media pipeline).
+  const [prodImage, setProdImage] = useState('');
+  const prodImgMut = api.uploads.uploadMedia.useMutation({});
 
   // Store plan Phase 4b — My Deals + top products.
   const { data: deals, refetch: refetchDeals } = api.vendorPortal.myDeals.useQuery(undefined, {
@@ -818,11 +821,46 @@ export default function VendorPortalPage(): JSX.Element {
               placeholder={t('vendorPortal.stockPlaceholder')}
               className="w-full rounded-lg border px-3 py-2 text-sm dark:border-gray-700 dark:bg-gray-800"
             />
+            <input
+              type="file"
+              accept="image/*"
+              onChange={(e) => {
+                const file = e.target.files?.[0];
+                if (!file) return;
+                const reader = new FileReader();
+                reader.onload = () => {
+                  prodImgMut.mutate(
+                    {
+                      mediaType: 'image',
+                      file: {
+                        name: file.name,
+                        type: file.type,
+                        size: file.size,
+                        base64: String(reader.result ?? ''),
+                      },
+                    },
+                    { onSuccess: (res) => setProdImage(res.url) },
+                  );
+                };
+                reader.readAsDataURL(file);
+              }}
+              className="w-full text-sm"
+            />
+            {prodImage && (
+              // eslint-disable-next-line @next/next/no-img-element
+              <img src={prodImage} alt="product" className="h-16 w-16 rounded-xl object-cover" />
+            )}
             <Button
               onClick={() => {
-                if (name.trim() && price > 0) addMut.mutate({ nameAr: name.trim(), price, stock });
+                if (name.trim() && price > 0)
+                  addMut.mutate({
+                    nameAr: name.trim(),
+                    price,
+                    stock,
+                    imageUrl: prodImage || undefined,
+                  });
               }}
-              loading={addMut.isPending}
+              loading={addMut.isPending || prodImgMut.isPending}
               className="w-full"
             >
               {t('vendorPortal.add')}

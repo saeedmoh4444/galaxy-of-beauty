@@ -124,6 +124,8 @@ export const vendorPortalRouter = router({
         stock: z.number().min(0).default(10),
         emoji: z.string().default(''),
         categoryId: z.number().int().positive().optional(),
+        // E7 — real product shots instead of emojis.
+        imageUrl: z.string().url().optional(),
       }),
     )
     .mutation(async ({ ctx, input }) => {
@@ -143,6 +145,7 @@ export const vendorPortalRouter = router({
           stock: input.stock,
           sales: 0,
           emoji: input.emoji,
+          imageUrl: input.imageUrl,
           isActive: true,
         },
       });

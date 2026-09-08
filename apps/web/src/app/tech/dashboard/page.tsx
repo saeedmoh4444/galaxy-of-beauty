@@ -74,6 +74,29 @@ export default function TechDashboardPage(): JSX.Element {
   const myServices =
     (myServicesQ.data as unknown as Array<Record<string, unknown>> | undefined) ?? [];
 
+  // E7 — My Shorts (post media → moderation queue → live feed).
+  const myShortsQ = api.beautyShorts.myShorts.useQuery(undefined, {
+    enabled: isAuthenticated,
+  });
+  const shortCreateMut = api.beautyShorts.create.useMutation({
+    onSuccess: () => {
+      setShowShortForm(false);
+      setShortTitleAr('');
+      setShortTitleEn('');
+      setShortVideoUrl('');
+      setShortConsent(false);
+      myShortsQ.refetch();
+    },
+  });
+  const [showShortForm, setShowShortForm] = useState(false);
+  const [shortTitleAr, setShortTitleAr] = useState('');
+  const [shortTitleEn, setShortTitleEn] = useState('');
+  const [shortVideoUrl, setShortVideoUrl] = useState('');
+  const [shortCategory, setShortCategory] = useState('makeup');
+  const [shortFaceBlur, setShortFaceBlur] = useState(false);
+  const [shortConsent, setShortConsent] = useState(false);
+  const myShorts = (myShortsQ.data as unknown as Array<Record<string, unknown>> | undefined) ?? [];
+
   // B.7 — My Promotions (time-limited discounts on own services).
   const myPromotionsQ = api.promotions.myPromotions.useQuery(undefined, {
     enabled: isAuthenticated,
@@ -296,6 +319,111 @@ export default function TechDashboardPage(): JSX.Element {
                     {t('tech.packages.reject-reason', { reason: p.reviewNotes as string })}
                   </p>
                 ) : null}
+              </Card>
+            ))}
+          </div>
+        )}
+
+        {/* E7 — My Shorts (media posts: moderation-gated, consent-required) */}
+        <div className="flex items-center justify-between">
+          <h2 className="text-lg font-semibold text-text-primary">{t('tech.shorts.title')}</h2>
+          <Button size="sm" variant="outline" onClick={() => setShowShortForm(!showShortForm)}>
+            {t('tech.shorts.post')}
+          </Button>
+        </div>
+        {showShortForm && (
+          <Card padding="md">
+            <div className="space-y-3">
+              <Input
+                label={t('tech.shorts.title-ar')}
+                value={shortTitleAr}
+                onChange={(e) => setShortTitleAr(e.target.value)}
+              />
+              <Input
+                label={t('tech.shorts.title-en')}
+                value={shortTitleEn}
+                onChange={(e) => setShortTitleEn(e.target.value)}
+              />
+              <Input
+                label={t('tech.shorts.video-url')}
+                value={shortVideoUrl}
+                onChange={(e) => setShortVideoUrl(e.target.value)}
+                placeholder="https://…"
+              />
+              <select
+                value={shortCategory}
+                onChange={(e) => setShortCategory(e.target.value)}
+                className="w-full rounded-lg border px-3 py-2 text-sm dark:border-gray-700 dark:bg-gray-800"
+              >
+                {['makeup', 'hair', 'skincare', 'nails', 'general'].map((c) => (
+                  <option key={c} value={c}>
+                    {c}
+                  </option>
+                ))}
+              </select>
+              <label className="flex items-center gap-2 text-sm">
+                <input
+                  type="checkbox"
+                  checked={shortFaceBlur}
+                  onChange={(e) => setShortFaceBlur(e.target.checked)}
+                />
+                {t('tech.shorts.face-blur')}
+              </label>
+              <label className="flex items-center gap-2 text-sm">
+                <input
+                  type="checkbox"
+                  checked={shortConsent}
+                  onChange={(e) => setShortConsent(e.target.checked)}
+                />
+                {t('tech.shorts.consent')}
+              </label>
+              {shortCreateMut.isError && (
+                <p className="text-sm text-red-600">{shortCreateMut.error.message}</p>
+              )}
+              <Button
+                onClick={() =>
+                  shortCreateMut.mutate({
+                    type: 'reel' as const,
+                    titleAr: shortTitleAr.trim(),
+                    titleEn: shortTitleEn.trim() || shortTitleAr.trim(),
+                    videoUrl: shortVideoUrl.trim() || undefined,
+                    durationSec: 30,
+                    category: shortCategory,
+                    faceBlurred: shortFaceBlur,
+                    consent: true as const,
+                  })
+                }
+                loading={shortCreateMut.isPending}
+                disabled={!shortTitleAr.trim() || !shortConsent}
+              >
+                {t('button.save')}
+              </Button>
+            </div>
+          </Card>
+        )}
+        {!myShortsQ.isLoading && myShorts.length === 0 ? (
+          <EmptyState title={t('tech.shorts.empty')} />
+        ) : (
+          <div className="space-y-3">
+            {myShorts.map((s: Record<string, unknown>) => (
+              <Card key={s.id as number} padding="md">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <p className="font-semibold text-text-primary">
+                      {((s.titleJson as Record<string, string>) ?? {})['ar']}
+                    </p>
+                    <p className="text-sm text-text-secondary">
+                      👁️ {s.views as number} · {s.category as string}
+                    </p>
+                  </div>
+                  <span
+                    className={`rounded-full px-3 py-1 text-xs font-medium ${
+                      s.isApproved ? 'bg-green-100 text-green-700' : 'bg-amber-100 text-amber-700'
+                    }`}
+                  >
+                    {s.isApproved ? t('tech.shorts.approved') : t('tech.shorts.pending')}
+                  </span>
+                </div>
               </Card>
             ))}
           </div>
