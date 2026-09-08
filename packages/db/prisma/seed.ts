@@ -105,6 +105,9 @@ async function main() {
     db.cyclePeriod.deleteMany(),
     db.cycleEntry.deleteMany(),
     db.cycleSettings.deleteMany(),
+    // E4b — measurement history + installment plans (user-owned rows).
+    db.measurementLog.deleteMany(),
+    db.bnplPlan.deleteMany(),
     db.user.deleteMany(),
     db.saudiCity.deleteMany(),
   ]);

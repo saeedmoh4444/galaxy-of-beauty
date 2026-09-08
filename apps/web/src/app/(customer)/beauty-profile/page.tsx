@@ -7,6 +7,7 @@ import { DashboardLayout } from '@/components/layout/DashboardLayout';
 import { useToast } from '@galaxy/ui';
 import { useLocale } from '@/components/LocaleProvider';
 import type { TranslationKey } from '@galaxy/shared';
+import { MeasurementHistory } from '@/components/wellness/MeasurementHistory';
 
 const SKIN_TYPES = ['oily', 'dry', 'combination', 'sensitive', 'normal'] as const;
 const HAIR_TYPES = ['straight', 'wavy', 'curly', 'coily'] as const;
@@ -263,6 +264,9 @@ export default function BeautyProfilePage(): JSX.Element {
                 </Button>
               </div>
             </Card>
+
+            {/* E4b — measurement history (logs + progress) */}
+            <MeasurementHistory />
 
             <Button onClick={handleSave} loading={upsertMut.isPending} className="w-full" size="lg">
               {t('beautyProfile.saveButton')}

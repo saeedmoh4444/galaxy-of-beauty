@@ -530,6 +530,21 @@ export const mobileCustomerBMessages = {
   'mobile.wellnessHub.action-skin': { ar: 'بشرة', en: 'Skin' },
   'mobile.wellnessHub.action-wellness': { ar: 'عافية', en: 'Wellness' },
 
+  // ---- E4b — mental wellness + nutrition content ----
+  'mobile.wellnessContent.breatheTitle': { ar: 'تمارين التنفس', en: 'Breathing exercises' },
+  'mobile.wellnessContent.meditationTitle': { ar: 'تأملات قصيرة', en: 'Short meditations' },
+  'mobile.wellnessContent.minutes': { ar: '{min} دقائق', en: '{min} min' },
+  'mobile.wellnessContent.pattern': {
+    ar: 'شهيق {inhale} · حبس {hold} · زفير {exhale} × {cycles}',
+    en: 'Inhale {inhale} · hold {hold} · exhale {exhale} × {cycles}',
+  },
+  'mobile.wellnessContent.nutritionTitle': {
+    ar: 'تغذية من أجل جمالك',
+    en: 'Nutrition for your beauty',
+  },
+  'mobile.wellnessContent.journalPromptTitle': { ar: 'سؤال اليوم', en: "Today's prompt" },
+  'mobile.wellnessContent.load-error': { ar: 'فشل تحميل المحتوى', en: 'Failed to load content' },
+
   // ---- wallet/top-up ----
   'mobile.topUp.top-up-error': { ar: 'فشل شحن الرصيد', en: 'Failed to top up balance' },
   'mobile.topUp.invalid-amount': { ar: 'أدخلي مبلغاً صحيحاً', en: 'Enter a valid amount' },

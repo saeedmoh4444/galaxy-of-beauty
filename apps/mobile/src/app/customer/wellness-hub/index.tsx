@@ -1,4 +1,5 @@
 import { View, Text, ScrollView, StyleSheet, TouchableOpacity, RefreshControl } from 'react-native';
+import { useState } from 'react';
 import { ErrorAlert } from '@/components/ErrorAlert';
 import { SkeletonList } from '@/components/SkeletonCard';
 import { useAuthState } from '@/hooks/useAuthState';
@@ -54,6 +55,20 @@ export default function WellnessHubScreen(): JSX.Element {
   const { t, locale } = useLocale();
   const isAuthed = useAuthState();
   const dashQ = trpc.wellnessHub.dashboard.useQuery(undefined, { enabled: isAuthed });
+
+  // E4b — mental wellness + nutrition content.
+  const breatheQ = trpc.wellnessContent.breathing.useQuery(undefined, { enabled: isAuthed });
+  const medsQ = trpc.wellnessContent.meditations.useQuery(undefined, { enabled: isAuthed });
+  const goalsQ = trpc.wellnessContent.nutritionGoals.useQuery(undefined, { enabled: isAuthed });
+  const [goalKey, setGoalKey] = useState('glow');
+  const nutritionQ = trpc.wellnessContent.nutrition.useQuery(
+    { goal: goalKey },
+    { enabled: isAuthed },
+  );
+  const breathe = (breatheQ.data ?? []) as Array<any>;
+  const meds = (medsQ.data ?? []) as Array<any>;
+  const goals = (goalsQ.data ?? []) as Array<any>;
+  const nutrition = nutritionQ.data as any;
 
   if (dashQ.isLoading) return <SkeletonList count={4} />;
   if (dashQ.isError)
@@ -182,6 +197,82 @@ export default function WellnessHubScreen(): JSX.Element {
               />
             </View>
           </View>
+        </View>
+      )}
+
+      {/* E4b — breathing exercises + short meditations */}
+      {(breathe.length > 0 || meds.length > 0) && (
+        <View style={s.card}>
+          <Text style={s.st}>{t('mobile.wellnessContent.breatheTitle')}</Text>
+          {breathe.map((e) => (
+            <View
+              key={e.key}
+              style={{ borderBottomWidth: 1, borderBottomColor: '#f3f4f6', paddingVertical: 8 }}
+            >
+              <Text style={{ fontSize: 13, fontWeight: '700', color: '#374151' }}>
+                {e.emoji} {locale === 'en' ? e.nameEn : e.nameAr}
+                <Text style={{ fontWeight: '400', color: '#9ca3af' }}>
+                  {' '}
+                  · {t('mobile.wellnessContent.minutes', { min: e.minutes })}
+                </Text>
+              </Text>
+              <Text style={{ fontSize: 11, color: '#6b7280', marginTop: 2 }}>
+                {t('mobile.wellnessContent.pattern', {
+                  inhale: e.inhale,
+                  hold: e.hold,
+                  exhale: e.exhale,
+                  cycles: e.cycles,
+                })}
+              </Text>
+            </View>
+          ))}
+          <Text style={[s.st, { marginTop: 12 }]}>
+            {t('mobile.wellnessContent.meditationTitle')}
+          </Text>
+          {meds.map((m) => (
+            <View
+              key={m.key}
+              style={{ borderBottomWidth: 1, borderBottomColor: '#f3f4f6', paddingVertical: 8 }}
+            >
+              <Text style={{ fontSize: 13, fontWeight: '700', color: '#374151' }}>
+                {m.emoji} {locale === 'en' ? m.titleEn : m.titleAr}
+                <Text style={{ fontWeight: '400', color: '#9ca3af' }}>
+                  {' '}
+                  · {t('mobile.wellnessContent.minutes', { min: m.minutes })}
+                </Text>
+              </Text>
+            </View>
+          ))}
+        </View>
+      )}
+
+      {/* E4b — nutrition for beauty goals */}
+      {nutrition && (
+        <View style={s.card}>
+          <Text style={s.st}>{t('mobile.wellnessContent.nutritionTitle')}</Text>
+          <View style={{ flexDirection: 'row', flexWrap: 'wrap', gap: 6, marginTop: 8 }}>
+            {goals.map((g) => (
+              <TouchableOpacity
+                key={g.key}
+                onPress={() => setGoalKey(g.key)}
+                style={{
+                  backgroundColor: goalKey === g.key ? '#db2777' : '#f3f4f6',
+                  borderRadius: 16,
+                  paddingHorizontal: 12,
+                  paddingVertical: 6,
+                }}
+              >
+                <Text style={{ fontSize: 12, color: goalKey === g.key ? '#fff' : '#6b7280' }}>
+                  {g.emoji} {locale === 'en' ? g.nameEn : g.nameAr}
+                </Text>
+              </TouchableOpacity>
+            ))}
+          </View>
+          {(nutrition.foods ?? []).slice(0, 4).map((f: any, i: number) => (
+            <Text key={i} style={{ fontSize: 13, color: '#374151', marginTop: 6 }}>
+              {f.emoji} {locale === 'en' ? f.en : f.ar}
+            </Text>
+          ))}
         </View>
       )}
 
