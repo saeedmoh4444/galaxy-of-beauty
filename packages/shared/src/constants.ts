@@ -145,6 +145,9 @@ export const GOOGLE_TOKEN_URL = 'https://oauth2.googleapis.com/token';
 export const GOOGLE_CALENDAR_API_URL = 'https://www.googleapis.com/calendar/v3';
 /** Google OAuth default scopes. */
 export const GOOGLE_OAUTH_SCOPE = 'email profile https://www.googleapis.com/auth/calendar.events';
+/** E9 — OAuth redirect URI (must match the Google Cloud console config).
+ *  The API layer may override via the GOOGLE_OAUTH_REDIRECT_URI env var. */
+export const GOOGLE_OAUTH_REDIRECT_URI = 'http://localhost:3000/calendar-sync';
 
 /** Twilio API base URL. */
 export const TWILIO_API_URL = 'https://api.twilio.com/2010-04-01';

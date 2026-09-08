@@ -2924,6 +2924,13 @@ export const miscMessages = {
   'calendarSync.disconnect': { ar: 'قطع الاتصال', en: 'Disconnect' },
   'calendarSync.connect': { ar: 'ربط تقويم قوقل', en: 'Connect Google Calendar' },
   'calendarSync.upcoming': { ar: ' مواعيد قادمة', en: 'Upcoming appointments' },
+  // E9 — real calendar sync
+  'calendarSync.syncPeriods': { ar: 'مزامنة توقعات الدورة', en: 'Sync period predictions' },
+  'calendarSync.synced': { ar: 'تمت إضافة {n} أحداث', en: '{n} events added' },
+  'calendarSync.notConfigured': {
+    ar: 'الربط بقوقل غير مهيأ على الخادم بعد — المواعيد القادمة تعمل',
+    en: 'Google sync is not configured on the server yet — upcoming appointments work',
+  },
   'accessoriesGuide.title': { ar: ' دليل الإكسسوارات', en: 'Accessories Guide' },
   'accessoriesGuide.subtitle': {
     ar: 'اللمسة الأخيرة لإطلالة متكاملة',
