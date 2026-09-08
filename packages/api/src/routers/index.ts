@@ -140,6 +140,7 @@ import {
 import {
   aiRouter,
   aiAssistantRouter,
+  lifestyleAIRouter,
   aiFeaturesRouter,
   aiRoutineRouter,
   skinAnalysisRouter,
@@ -476,6 +477,7 @@ export const appRouter = router({
   // AI
   ai: aiRouter,
   aiAssistant: aiAssistantRouter,
+  lifestyleAI: lifestyleAIRouter,
   aiFeatures: aiFeaturesRouter,
   aiRoutine: aiRoutineRouter,
   skinAnalysis: skinAnalysisRouter,

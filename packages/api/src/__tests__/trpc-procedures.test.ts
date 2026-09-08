@@ -51,8 +51,8 @@ const TEST_ADMIN: JwtPayload = {
 describe('Router Structure', () => {
   const routerKeys = Object.keys(appRouter['_def']['record']);
 
-  it('should have exactly 251 routers', () => {
-    expect(routerKeys).toHaveLength(251);
+  it('should have exactly 252 routers', () => {
+    expect(routerKeys).toHaveLength(252);
   });
 
   const required = [

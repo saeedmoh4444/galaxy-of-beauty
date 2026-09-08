@@ -2952,6 +2952,11 @@ export const miscMessages = {
     en: 'Ask about routines, skin, makeup...',
   },
   'aiAssistant.ask': { ar: 'اسألي', en: 'Ask' },
+  // E8 — lifestyle AI advisor
+  'aiAssistant.lifestyle': {
+    ar: 'نمط الحياة (إجابات من بياناتك)',
+    en: 'Lifestyle (answers from your data)',
+  },
   'aiFeed.title': { ar: ' لكِ خصيصاً', en: 'Just for You' },
   'aiFeed.subtitle': {
     ar: 'توصيات ذكية مبنية على تفضيلاتكِ',
