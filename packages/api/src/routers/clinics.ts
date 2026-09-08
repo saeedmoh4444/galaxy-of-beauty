@@ -23,6 +23,8 @@ export const clinicsRouter = router({
       z.object({
         page: z.number().min(1).default(1),
         limit: z.number().min(1).max(100).default(DEFAULT_PAGE_SIZE),
+        // E6d — women-only-staff clinics (female doctors).
+        womenOnly: z.boolean().optional(),
       }),
     )
     .query(async ({ input }) => {
@@ -30,6 +32,7 @@ export const clinicsRouter = router({
         type: 'CLINIC',
         isActive: true,
         isVerified: true,
+        ...(input.womenOnly ? { womenOnlyStaff: true } : {}),
       };
       const skip = (input.page - 1) * input.limit;
       const [items, total] = await Promise.all([
@@ -45,6 +48,8 @@ export const clinicsRouter = router({
             ratingAvg: true,
             totalReviews: true,
             consultationPrice: true,
+            womenOnlyStaff: true,
+            privateSuite: true,
           },
           orderBy: { ratingAvg: 'desc' },
           skip,

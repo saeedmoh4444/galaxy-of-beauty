@@ -417,6 +417,9 @@ model Service {
   isPopular       Boolean  @default(false)
   isPregnancySafe  Boolean @default(false) // Safe for pregnant women
   isMommyFriendly  Boolean @default(false) // Suitable for mother+child
+  // E6d — trust badges (Tier 2): modesty is the #1 purchase driver in KSA.
+  isWomenOnlyStaff Boolean @default(false) // female staff only
+  isPrivateSuite   Boolean @default(false) // fully private suite
   sortOrder       Int      @default(0)
   createdAt       DateTime @default(now())
   updatedAt       DateTime @updatedAt
@@ -1327,6 +1330,9 @@ model Vendor {
   homeAddress String?
   // E6b — postpartum: baby-friendly at-home salons (home visits with baby).
   babyFriendly Boolean @default(false)
+  // E6d — trust badges at the venue level (clinics/gyms/nail bars).
+  womenOnlyStaff Boolean @default(false)
+  privateSuite   Boolean @default(false)
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
 

@@ -31,6 +31,8 @@ export default async function GymPage({
         logoUrl: gym.logoUrl,
         ratingAvg: gym.ratingAvg,
         totalReviews: gym.totalReviews,
+        womenOnlyStaff: gym.womenOnlyStaff,
+        privateSuite: gym.privateSuite,
       }) as unknown as GymPageData['gym'];
       data.plans = serializeForClient(gym.plans ?? []);
       data.dayPasses = serializeForClient(gym.dayPasses ?? []);

@@ -577,6 +577,26 @@ export const vendorPortalRouter = router({
 
   // ── E5 — nail bars ──────────────────────────────────────
 
+  /** setTrustFlags — E6d: the vendor toggles its own trust badges. */
+  setTrustFlags: customerProcedure
+    .input(
+      z.object({
+        womenOnlyStaff: z.boolean().optional(),
+        privateSuite: z.boolean().optional(),
+      }),
+    )
+    .mutation(async ({ ctx, input }) => {
+      const vendor = await prisma.vendor.findUnique({ where: { userId: ctx.user.id } });
+      if (!vendor) throw new TRPCError({ code: 'FORBIDDEN', message: 'Vendor not found' });
+      return prisma.vendor.update({
+        where: { id: vendor.id },
+        data: {
+          ...(input.womenOnlyStaff !== undefined ? { womenOnlyStaff: input.womenOnlyStaff } : {}),
+          ...(input.privateSuite !== undefined ? { privateSuite: input.privateSuite } : {}),
+        },
+      });
+    }),
+
   /** myNailBar — the caller's nail bar (null unless type NAIL_BAR). */
   myNailBar: customerProcedure.query(async ({ ctx }) => {
     const vendor = await prisma.vendor.findUnique({ where: { userId: ctx.user.id } });

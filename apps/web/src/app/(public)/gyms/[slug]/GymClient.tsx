@@ -28,6 +28,8 @@ export interface GymPageData {
     logoUrl: string | null;
     ratingAvg: number | null;
     totalReviews: number;
+    womenOnlyStaff?: boolean;
+    privateSuite?: boolean;
   } | null;
   plans: Array<Record<string, unknown>>;
   dayPasses: Array<Record<string, unknown>>;
@@ -127,6 +129,18 @@ export function GymClient({ data }: { data: GymPageData }): JSX.Element {
               {t('gyms.verified-badge', { agency: gym.licenseAgency ?? 'MISA' })}
             </span>
           )}
+          <div className="mt-2 flex flex-wrap gap-1">
+            {(gym.womenOnlyStaff as boolean) && (
+              <span className="rounded-full bg-pink-100 px-2 py-0.5 text-[10px] text-pink-700">
+                🙋‍♀️ {t('trust.womenOnly')}
+              </span>
+            )}
+            {(gym.privateSuite as boolean) && (
+              <span className="rounded-full bg-purple-100 px-2 py-0.5 text-[10px] text-purple-700">
+                🚪 {t('trust.privateSuite')}
+              </span>
+            )}
+          </div>
         </div>
       </div>
 

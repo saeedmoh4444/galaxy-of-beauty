@@ -31,6 +31,8 @@ export default async function NailBarPage({
         logoUrl: nailBar.logoUrl,
         ratingAvg: nailBar.ratingAvg,
         totalReviews: nailBar.totalReviews,
+        womenOnlyStaff: nailBar.womenOnlyStaff,
+        privateSuite: nailBar.privateSuite,
       }) as unknown as NailBarPageData['nailBar'];
     }
   } catch {

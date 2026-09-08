@@ -3008,6 +3008,18 @@ async function main() {
     console.log(`    Tips/quiz: ${err.message?.slice(0, 60)}`);
   }
 
+  // ---- E6d — trust badges: flag the spa/wellness catalog as women-only
+  // with private suites (modesty-first demo data).
+  try {
+    await prisma.service.updateMany({
+      where: { category: { slug: 'spa-wellness' } },
+      data: { isWomenOnlyStaff: true, isPrivateSuite: true },
+    });
+    console.log(' Trust badges: spa-wellness flagged women-only + private suite');
+  } catch (err: any) {
+    console.log(`    Trust badges: ${err.message?.slice(0, 60)}`);
+  }
+
   // ---- E7 — beauty shorts (persisted media, pre-approved for the demo) ----
   const SAMPLE_VIDEOS = [
     'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4',

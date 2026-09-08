@@ -20,6 +20,8 @@ export interface NailBarPageData {
     logoUrl: string | null;
     ratingAvg: number | null;
     totalReviews: number;
+    womenOnlyStaff?: boolean;
+    privateSuite?: boolean;
   } | null;
   fetchError?: string;
 }
@@ -89,6 +91,18 @@ export function NailBarClient({ data }: { data: NailBarPageData }): JSX.Element 
                 {t('nailBars.verified', { agency: n.licenseAgency ?? '' })}
               </span>
             )}
+            <div className="mt-2 flex flex-wrap gap-1">
+              {(n.womenOnlyStaff as boolean) && (
+                <span className="rounded-full bg-pink-100 px-2 py-0.5 text-[10px] text-pink-700">
+                  🙋‍♀️ {t('trust.womenOnly')}
+                </span>
+              )}
+              {(n.privateSuite as boolean) && (
+                <span className="rounded-full bg-purple-100 px-2 py-0.5 text-[10px] text-purple-700">
+                  🚪 {t('trust.privateSuite')}
+                </span>
+              )}
+            </div>
           </div>
         </div>
         {n.descriptionJson && (
