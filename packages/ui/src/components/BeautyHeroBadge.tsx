@@ -69,7 +69,7 @@ export function BeautyHeroBadge({
         </div>
         <p className="mt-2 text-sm font-bold text-text-primary dark:text-gray-100">{member.name}</p>
         {member.city && (
-          <p className="text-[10px] text-text-tertiary dark:text-gray-500"> {member.city}</p>
+          <p className="text-[10px] text-text-tertiary dark:text-text-secondary"> {member.city}</p>
         )}
         <p className="mt-2 text-xs leading-relaxed text-text-secondary dark:text-gray-300">
           &ldquo;{member.story}&rdquo;

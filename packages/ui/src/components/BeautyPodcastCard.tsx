@@ -81,7 +81,7 @@ export function BeautyPodcastCard({
               {episode.guest}
             </p>
             {episode.guestTitle && (
-              <p className="text-[9px] text-text-tertiary dark:text-gray-500">
+              <p className="text-[9px] text-text-tertiary dark:text-text-secondary">
                 {episode.guestTitle}
               </p>
             )}
@@ -97,7 +97,7 @@ export function BeautyPodcastCard({
 
         {/* Duration + Listen */}
         <div className="mt-2 flex items-center justify-between">
-          <span className="text-[10px] text-text-tertiary dark:text-gray-500">
+          <span className="text-[10px] text-text-tertiary dark:text-text-secondary">
             ️ {episode.duration}
           </span>
           <button
@@ -119,7 +119,7 @@ export function BeautyPodcastCard({
         {subscribeText}
       </button>
 
-      <p className="mt-1.5 text-center text-[9px] text-text-tertiary dark:text-gray-500">
+      <p className="mt-1.5 text-center text-[9px] text-text-tertiary dark:text-text-secondary">
         {availabilityText}
       </p>
     </div>

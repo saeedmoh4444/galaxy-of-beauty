@@ -36,7 +36,7 @@ export default function TechCalendarPage(): JSX.Element {
                   <p className="text-sm text-text-secondary">{st.email as string}</p>
                 </div>
               </div>
-              <p className="text-sm text-text-secondary dark:text-gray-400">
+              <p className="text-sm text-text-secondary dark:text-text-tertiary">
                 {t('tech.calendar.connected-desc')}
               </p>
               <div className="flex flex-wrap gap-3">

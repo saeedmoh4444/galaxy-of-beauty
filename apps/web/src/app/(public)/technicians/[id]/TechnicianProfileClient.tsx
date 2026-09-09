@@ -64,7 +64,7 @@ export function TechnicianProfileClient({ data }: { data: TechnicianProfileData 
           </div>
           <div className="flex-1 text-center sm:text-right">
             <div className="flex items-center justify-center gap-2 sm:justify-start">
-              <h1 className="text-2xl font-bold text-gray-900 dark:text-gray-100">{name}</h1>
+              <h1 className="text-2xl font-bold text-text-primary">{name}</h1>
               {kycStatus === 'VERIFIED' && (
                 <span
                   className="text-green-500"
@@ -78,23 +78,23 @@ export function TechnicianProfileClient({ data }: { data: TechnicianProfileData 
                 ></span>
               )}
             </div>
-            <p className="text-gray-500">
+            <p className="text-text-secondary">
               {city}
               {area ? `${locale === 'ar' ? '، ' : ', '}${area}` : ''}
             </p>
             <div className="mt-2 flex items-center justify-center gap-4 sm:justify-start">
               <span className="text-amber-500"> {rating.toFixed(1)}</span>
-              <span className="text-gray-400">
+              <span className="text-text-tertiary">
                 {t('marketing.technician-profile.completed-bookings', { count: completed })}
               </span>
             </div>
-            {bio && <p className="mt-3 text-sm text-gray-600 dark:text-gray-400">{bio}</p>}
+            {bio && <p className="mt-3 text-sm text-text-secondary">{bio}</p>}
           </div>
         </div>
       </Card>
 
       {/* Services */}
-      <h2 className="mt-8 mb-4 text-lg font-bold text-gray-900 dark:text-gray-100">
+      <h2 className="mt-8 mb-4 text-lg font-bold text-text-primary">
         {t('marketing.technician-profile.services')}
       </h2>
       {services.length === 0 ? (
@@ -109,7 +109,7 @@ export function TechnicianProfileClient({ data }: { data: TechnicianProfileData 
             return (
               <Card key={s.id} padding="md">
                 <h3 className="font-semibold">{localize(svc.titleJson, locale)}</h3>
-                <p className="text-sm text-gray-500">
+                <p className="text-sm text-text-secondary">
                   {t('marketing.technician-profile.duration-min', { min: svc.durationMin })}
                 </p>
                 <p className="mt-1 font-bold text-brand-600">
@@ -129,14 +129,14 @@ export function TechnicianProfileClient({ data }: { data: TechnicianProfileData 
       {/* Gallery */}
       {galleryImages.length > 0 && (
         <>
-          <h2 className="mt-8 mb-4 text-lg font-bold text-gray-900 dark:text-gray-100">
+          <h2 className="mt-8 mb-4 text-lg font-bold text-text-primary">
             {t('marketing.technician-profile.gallery-title')}
           </h2>
           <div className="grid gap-3 sm:grid-cols-3 lg:grid-cols-4">
             {galleryImages.slice(0, 8).map((img, i) => (
               <div
                 key={i}
-                className="relative aspect-square rounded-xl bg-gray-100 flex items-center justify-center overflow-hidden dark:bg-gray-800"
+                className="relative aspect-square rounded-xl bg-surface-muted flex items-center justify-center overflow-hidden dark:bg-gray-800"
               >
                 {img.imageUrl ? (
                   <Image

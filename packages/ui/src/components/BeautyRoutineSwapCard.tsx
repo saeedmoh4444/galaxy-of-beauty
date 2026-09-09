@@ -54,7 +54,7 @@ export function BeautyRoutineSwapCard({
           >
             <span className="text-sm shrink-0">{s.emoji || ''}</span>
             <div className="flex-1 min-w-0 text-center">
-              <span className="text-[10px] text-gray-400 line-through dark:text-gray-600">
+              <span className="text-[10px] text-text-tertiary line-through dark:text-text-secondary">
                 {s.from}
               </span>
               <span className="mx-2 text-amber-400">→</span>

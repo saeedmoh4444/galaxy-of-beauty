@@ -100,7 +100,7 @@ export function BeautySavingsGoal({
       <div className="flex items-center justify-between">
         <div>
           <h4 className="text-sm font-bold text-text-primary dark:text-gray-100">{title}</h4>
-          <p className="mt-0.5 text-xs text-text-tertiary dark:text-gray-400">{subtitle}</p>
+          <p className="mt-0.5 text-xs text-text-tertiary dark:text-text-tertiary">{subtitle}</p>
         </div>
         <div className="rounded-full bg-amber-50 px-3 py-1 text-xs font-bold text-amber-700 dark:bg-amber-950 dark:text-amber-300">
           {formatSAR(totalSaved)} / {formatSAR(totalTarget)}
@@ -110,7 +110,7 @@ export function BeautySavingsGoal({
       {/* Overall progress */}
       <div className="mt-3">
         <div className="flex items-center justify-between text-xs">
-          <span className="text-text-tertiary dark:text-gray-400">{overallProgressLabel}</span>
+          <span className="text-text-tertiary dark:text-text-tertiary">{overallProgressLabel}</span>
           <span className="font-bold text-amber-600 dark:text-amber-400">
             {Math.round((totalSaved / totalTarget) * 100)}%
           </span>
@@ -133,7 +133,7 @@ export function BeautySavingsGoal({
           return (
             <div
               key={i}
-              className="rounded-xl border border-gray-100 bg-surface p-3 dark:border-gray-800 dark:bg-gray-800"
+              className="rounded-xl border border-edge-muted bg-surface p-3 dark:border-gray-800 dark:bg-gray-800"
             >
               <div className="flex items-center justify-between">
                 <span className="text-xs font-semibold text-text-primary dark:text-gray-100">
@@ -154,7 +154,7 @@ export function BeautySavingsGoal({
 
               {/* Per-goal progress */}
               <div className="mt-1.5 flex items-center gap-2">
-                <div className="flex-1 h-2 overflow-hidden rounded-full bg-gray-100 dark:bg-gray-700">
+                <div className="flex-1 h-2 overflow-hidden rounded-full bg-surface-muted dark:bg-gray-700">
                   <div
                     className={cn(
                       'h-full rounded-full transition-all duration-700',
@@ -171,7 +171,7 @@ export function BeautySavingsGoal({
               </div>
 
               {/* SAR labels */}
-              <div className="mt-1 flex justify-between text-[10px] text-text-tertiary dark:text-gray-500">
+              <div className="mt-1 flex justify-between text-[10px] text-text-tertiary dark:text-text-secondary">
                 <span>
                   {formatSAR(goal.saved)} {savedSuffix}
                 </span>
@@ -182,8 +182,8 @@ export function BeautySavingsGoal({
 
               {/* Monthly contribution row */}
               {goal.monthly && remaining > 0 && (
-                <div className="mt-2 flex items-center gap-2 border-t border-gray-100 pt-2 dark:border-gray-700">
-                  <span className="text-[10px] text-text-tertiary dark:text-gray-500">
+                <div className="mt-2 flex items-center gap-2 border-t border-edge-muted pt-2 dark:border-gray-700">
+                  <span className="text-[10px] text-text-tertiary dark:text-text-secondary">
                     {monthlyPrefix}
                     {formatSAR(goal.monthly)}
                   </span>
@@ -193,7 +193,7 @@ export function BeautySavingsGoal({
                       style={{ width: `${Math.min(100, (goal.saved / goal.monthly) * 100)}%` }}
                     />
                   </div>
-                  <span className="text-[10px] text-text-tertiary dark:text-gray-500">
+                  <span className="text-[10px] text-text-tertiary dark:text-text-secondary">
                     {Math.ceil(remaining / goal.monthly)} {monthsRemainingSuffix}
                   </span>
                 </div>
@@ -230,7 +230,7 @@ export function BeautySavingsGoal({
 
       {/* Footer encouragement */}
       {totalSaved < totalTarget && (
-        <p className="mt-3 text-center text-[10px] text-text-tertiary dark:text-gray-500">
+        <p className="mt-3 text-center text-[10px] text-text-tertiary dark:text-text-secondary">
           {encouragementText}
         </p>
       )}

@@ -176,7 +176,7 @@ export default function AdminAnalyticsPage(): JSX.Element {
               </thead>
               <tbody>
                 {topTechs.map((t: TopTechnician, i: number) => (
-                  <tr key={t.id ?? i} className="border-b border-gray-100 dark:border-gray-800">
+                  <tr key={t.id ?? i} className="border-b border-edge-muted">
                     <td className="py-2 font-medium">{t.name}</td>
                     <td className="py-2">{String(t.completedBookings ?? 0)}</td>
                     <td className="py-2"> {Number(t.ratingAvg ?? 0).toFixed(1)}</td>
@@ -205,7 +205,7 @@ export default function AdminAnalyticsPage(): JSX.Element {
             {userGrowth.map((u: UserGrowthDay, i: number) => (
               <div
                 key={i}
-                className="flex items-center justify-between border-b border-gray-100 pb-1 text-sm dark:border-gray-800"
+                className="flex items-center justify-between border-b border-edge-muted pb-1 text-sm dark:border-gray-800"
               >
                 <span>{u.date ?? '—'}</span>
                 <span className="font-medium text-brand-600">+{String(u.total ?? 0)}</span>

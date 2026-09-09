@@ -143,7 +143,7 @@ export default async function ShopTheLookPage(): Promise<JSX.Element> {
                   <h2 className="text-xl font-bold text-text-primary dark:text-gray-100">
                     {t(look.name, locale)}
                   </h2>
-                  <p className="text-sm text-text-secondary dark:text-gray-400">
+                  <p className="text-sm text-text-secondary dark:text-text-tertiary">
                     {t(look.desc, locale)}
                   </p>
                 </div>

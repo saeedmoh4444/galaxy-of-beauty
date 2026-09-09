@@ -150,7 +150,9 @@ export function BeautyFlashCard({
             <p className="mt-2 text-lg font-bold text-purple-800 dark:text-purple-200">
               {card.term[locale]}
             </p>
-            <p className="mt-1 text-[9px] text-text-tertiary dark:text-gray-500">{flipHint}</p>
+            <p className="mt-1 text-[9px] text-text-tertiary dark:text-text-secondary">
+              {flipHint}
+            </p>
           </>
         ) : (
           <p className="text-sm leading-relaxed text-purple-800 dark:text-purple-200">

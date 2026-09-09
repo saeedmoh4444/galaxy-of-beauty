@@ -46,7 +46,7 @@ export function ShareButtons({ title, url }: ShareButtonsProps): JSX.Element {
       </button>
       <button
         onClick={() => share('copy')}
-        className="rounded-lg border border-gray-200 px-3 py-1.5 text-xs font-medium text-gray-600 hover:bg-gray-50 dark:border-gray-700 dark:text-gray-400 transition-colors"
+        className="rounded-lg border border-edge px-3 py-1.5 text-xs font-medium text-text-secondary hover:bg-surface-muted dark:border-gray-700 dark:text-text-tertiary transition-colors"
         title={t('share.copy-link')}
       >
         {t('share.copy')}

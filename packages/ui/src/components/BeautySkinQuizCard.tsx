@@ -147,7 +147,7 @@ export function BeautySkinQuizCard({
     >
       <div className="flex items-center justify-between">
         <span className="text-lg">{q.emoji}</span>
-        <span className="text-[10px] text-text-tertiary dark:text-gray-500">
+        <span className="text-[10px] text-text-tertiary dark:text-text-secondary">
           {step + 1}/{QUESTIONS.length}
         </span>
       </div>

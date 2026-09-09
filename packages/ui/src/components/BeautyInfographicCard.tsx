@@ -89,7 +89,7 @@ export function BeautyInfographicCard({
 
       {/* Source */}
       {source && (
-        <p className="mt-2 text-center text-[9px] text-text-tertiary dark:text-gray-500">
+        <p className="mt-2 text-center text-[9px] text-text-tertiary dark:text-text-secondary">
           {sourceLabel} {source}
         </p>
       )}

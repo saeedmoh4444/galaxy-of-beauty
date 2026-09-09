@@ -91,7 +91,7 @@ export function BeautySavingsChallengeCard({
                 'h-6 rounded text-[8px] flex items-center justify-center font-bold',
                 daySaved
                   ? 'bg-emerald-200 text-emerald-700 dark:bg-emerald-800 dark:text-emerald-300'
-                  : 'bg-gray-100 text-gray-400 dark:bg-gray-800',
+                  : 'bg-surface-muted text-text-tertiary dark:bg-gray-800',
               )}
             >
               {i + 1}

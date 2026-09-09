@@ -118,7 +118,7 @@ export default function AdminFinancePage(): JSX.Element {
             {payouts.data.payouts.map((p: PayoutItem) => (
               <div
                 key={p.id}
-                className="flex items-center justify-between border-b border-gray-100 pb-2 dark:border-gray-800"
+                className="flex items-center justify-between border-b border-edge-muted pb-2 dark:border-gray-800"
               >
                 <span>{formatCurrency(Number(p.amount))}</span>
                 <span className="text-sm text-text-secondary">{p.status}</span>

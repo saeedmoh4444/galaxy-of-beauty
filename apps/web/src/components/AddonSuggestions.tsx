@@ -55,9 +55,7 @@ export function AddonSuggestions({
 
   return (
     <div>
-      <h4 className="mb-3 text-sm font-semibold text-gray-900 dark:text-gray-100">
-        {t('addon.add-to-booking')}
-      </h4>
+      <h4 className="mb-3 text-sm font-semibold text-text-primary">{t('addon.add-to-booking')}</h4>
       <div className="grid gap-2 sm:grid-cols-2">
         {addons.map((a) => {
           const isSelected = selected.includes(a.id);
@@ -68,14 +66,12 @@ export function AddonSuggestions({
               className={`flex items-center gap-3 rounded-xl border-2 p-3 text-right transition-all ${
                 isSelected
                   ? 'border-brand-500 bg-brand-50 dark:bg-brand-950'
-                  : 'border-gray-200 hover:border-brand-300 dark:border-gray-700'
+                  : 'border-edge hover:border-brand-300 dark:border-gray-700'
               }`}
             >
               <span className="text-2xl">{a.emoji}</span>
               <div className="flex-1 min-w-0">
-                <p className="text-sm font-medium text-gray-900 dark:text-gray-100 truncate">
-                  {t(a.title)}
-                </p>
+                <p className="text-sm font-medium text-text-primary truncate">{t(a.title)}</p>
                 <p className="text-xs font-bold text-brand-600">+{formatCurrency(a.price)}</p>
               </div>
               {isSelected && <span className="text-brand-600 text-sm"></span>}

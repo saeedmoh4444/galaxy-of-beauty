@@ -101,11 +101,11 @@ export function AnnualSummitCard({
       {/* Event details */}
       <div className="mt-3 grid grid-cols-2 gap-2">
         <div className="rounded-xl bg-white/60 p-2.5 text-center dark:bg-gray-800/60">
-          <p className="text-[9px] text-text-tertiary dark:text-gray-500">{cityLabel}</p>
+          <p className="text-[9px] text-text-tertiary dark:text-text-secondary">{cityLabel}</p>
           <p className="text-xs font-bold text-amber-800 dark:text-amber-200"> {city}</p>
         </div>
         <div className="rounded-xl bg-white/60 p-2.5 text-center dark:bg-gray-800/60">
-          <p className="text-[9px] text-text-tertiary dark:text-gray-500">{dateLabel}</p>
+          <p className="text-[9px] text-text-tertiary dark:text-text-secondary">{dateLabel}</p>
           <p className="text-xs font-bold text-amber-800 dark:text-amber-200"> {date}</p>
         </div>
       </div>
@@ -148,7 +148,9 @@ export function AnnualSummitCard({
                   <p className="text-[10px] font-bold text-text-primary dark:text-gray-100">
                     {s.name}
                   </p>
-                  <p className="text-[9px] text-text-tertiary dark:text-gray-500">{s.title}</p>
+                  <p className="text-[9px] text-text-tertiary dark:text-text-secondary">
+                    {s.title}
+                  </p>
                 </div>
               </div>
             ))}
@@ -169,7 +171,7 @@ export function AnnualSummitCard({
       {/* Pricing + CTA */}
       <div className="mt-3 flex items-center justify-between">
         <div>
-          <p className="text-[9px] text-text-tertiary dark:text-gray-500">{earlyBirdLabel}</p>
+          <p className="text-[9px] text-text-tertiary dark:text-text-secondary">{earlyBirdLabel}</p>
           <p className="text-lg font-bold text-amber-800 dark:text-amber-200">
             {earlyBirdPrice} {currencySuffix}
           </p>

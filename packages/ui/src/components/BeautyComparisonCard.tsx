@@ -70,7 +70,7 @@ export function BeautyComparisonCard({
               'rounded-xl p-3 text-center',
               item.best
                 ? 'bg-blue-50 ring-2 ring-blue-300 dark:bg-blue-950 dark:ring-blue-700'
-                : 'bg-gray-50 dark:bg-gray-800',
+                : 'bg-surface-muted',
             )}
           >
             {item.emoji && (
@@ -110,7 +110,7 @@ export function BeautyComparisonCard({
         ))}
       </div>
 
-      <p className="mt-2 text-center text-[9px] text-text-tertiary dark:text-gray-500">
+      <p className="mt-2 text-center text-[9px] text-text-tertiary dark:text-text-secondary">
         ️ {footerText}
       </p>
     </div>

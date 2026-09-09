@@ -88,7 +88,7 @@ export function BeautyBudgetCard({
           <span className="text-lg" aria-hidden="true"></span>
           <div>
             <h4 className="text-sm font-bold text-text-primary dark:text-gray-100">{title}</h4>
-            <p className="text-[10px] text-text-tertiary dark:text-gray-400">
+            <p className="text-[10px] text-text-tertiary dark:text-text-tertiary">
               {curatedPrefix}
               {maxPrice} {riyalSuffix}
             </p>
@@ -110,7 +110,7 @@ export function BeautyBudgetCard({
           return (
             <div
               key={i}
-              className="flex items-center gap-3 rounded-xl bg-gray-50 p-2.5 transition-colors hover:bg-lime-50 dark:bg-gray-800 dark:hover:bg-lime-950"
+              className="flex items-center gap-3 rounded-xl bg-surface-muted p-2.5 transition-colors hover:bg-lime-50 dark:bg-gray-800 dark:hover:bg-lime-950"
             >
               {/* Category icon */}
               <span
@@ -125,7 +125,7 @@ export function BeautyBudgetCard({
                 <p className="truncate text-xs font-semibold text-text-primary dark:text-gray-100">
                   {service.name}
                 </p>
-                <div className="flex items-center gap-1.5 text-[10px] text-text-tertiary dark:text-gray-500">
+                <div className="flex items-center gap-1.5 text-[10px] text-text-tertiary dark:text-text-secondary">
                   <span>{cat.label[locale]}</span>
                   {service.duration && (
                     <>
@@ -149,7 +149,7 @@ export function BeautyBudgetCard({
                 </div>
                 {service.originalPrice && (
                   <div className="text-[10px]">
-                    <span className="text-text-tertiary line-through dark:text-gray-500">
+                    <span className="text-text-tertiary line-through dark:text-text-secondary">
                       {service.originalPrice} {currencySuffix}
                     </span>
                     <span className="ml-1 font-bold text-rose-600 dark:text-rose-400">
@@ -164,7 +164,7 @@ export function BeautyBudgetCard({
       </div>
 
       {/* Footer */}
-      <p className="mt-3 text-center text-[10px] text-text-tertiary dark:text-gray-500">
+      <p className="mt-3 text-center text-[10px] text-text-tertiary dark:text-text-secondary">
         {footerText}
       </p>
     </div>

@@ -50,7 +50,7 @@ export function BeautyAlumniCard({
           <p className="text-xs font-bold text-text-primary dark:text-gray-100">
             {alumna.currentRole}
           </p>
-          <p className="text-[10px] text-text-tertiary dark:text-gray-500">
+          <p className="text-[10px] text-text-tertiary dark:text-text-secondary">
             {graduatePrefix} {alumna.graduationYear}
             {alumna.city && ` ·  ${alumna.city}`}
           </p>

@@ -128,7 +128,7 @@ export function AcademyCertificateBadge({
           >
             {level.emoji} {level.label[locale]}
           </span>
-          <span className="text-[10px] text-text-tertiary dark:text-gray-500">
+          <span className="text-[10px] text-text-tertiary dark:text-text-secondary">
             {certificate.date}
           </span>
         </div>
@@ -137,7 +137,7 @@ export function AcademyCertificateBadge({
       {/* Certificate ID */}
       {certificate.certId && (
         <div className="mt-2 rounded-lg bg-white/60 p-2 text-center dark:bg-gray-800/60">
-          <p className="text-[9px] text-text-tertiary dark:text-gray-500">{certIdLabel}</p>
+          <p className="text-[9px] text-text-tertiary dark:text-text-secondary">{certIdLabel}</p>
           <p className="text-xs font-mono font-bold text-text-primary dark:text-gray-100" dir="ltr">
             {certificate.certId}
           </p>

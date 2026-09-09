@@ -36,7 +36,7 @@ export default function AdminGiftCardsPage(): JSX.Element {
                 <th className="p-3 text-right">{t('admin.gift-cards.date-header')}</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-gray-100 dark:divide-gray-800">
+            <tbody className="divide-y divide-edge-muted">
               {items.map((c) => (
                 <tr key={c.id}>
                   <td className="p-3 font-mono font-bold text-brand-600">{c.code}</td>

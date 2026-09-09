@@ -83,7 +83,7 @@ export function BeautySkillTreeCard({
                     'h-2 flex-1 rounded-full',
                     j < skill.level
                       ? `bg-gradient-to-r ${COLORS[i % COLORS.length]}`
-                      : 'bg-gray-200 dark:bg-gray-700',
+                      : 'bg-surface-muted',
                   )}
                 />
               ))}

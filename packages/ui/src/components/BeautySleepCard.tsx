@@ -111,11 +111,11 @@ export function BeautySleepCard({
       {/* Sleep stats */}
       <div className="mt-3 grid grid-cols-2 gap-2">
         <div className="rounded-xl bg-white/60 p-2.5 text-center dark:bg-gray-800/60">
-          <p className="text-[9px] text-text-tertiary dark:text-gray-500">{bedtimeLabel}</p>
+          <p className="text-[9px] text-text-tertiary dark:text-text-secondary">{bedtimeLabel}</p>
           <p className="text-lg font-bold text-indigo-800 dark:text-indigo-200">{bedtime}</p>
         </div>
         <div className="rounded-xl bg-white/60 p-2.5 text-center dark:bg-gray-800/60">
-          <p className="text-[9px] text-text-tertiary dark:text-gray-500">{wakeTimeLabel}</p>
+          <p className="text-[9px] text-text-tertiary dark:text-text-secondary">{wakeTimeLabel}</p>
           <p className="text-lg font-bold text-amber-600 dark:text-amber-400">{wakeTime}</p>
         </div>
       </div>
@@ -140,7 +140,7 @@ export function BeautySleepCard({
               <span className="flex-1 text-[10px] text-text-primary dark:text-gray-100">
                 {step.action[locale]}
               </span>
-              <span className="text-[10px] text-text-tertiary dark:text-gray-500 w-12 text-right">
+              <span className="text-[10px] text-text-tertiary dark:text-text-secondary w-12 text-right">
                 {step.duration[locale]}
               </span>
               <span className="text-[9px] font-bold text-indigo-600 dark:text-indigo-400 w-12 text-right">

@@ -38,9 +38,9 @@ export function MainLayout({ children }: { children: ReactNode }): JSX.Element {
   const { t } = useLocale();
 
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-gray-950">
+    <div className="min-h-screen bg-surface">
       {/* Navbar */}
-      <header className="sticky top-0 z-40 border-b border-gray-200 bg-white/80 backdrop-blur dark:border-gray-800 dark:bg-gray-950/80">
+      <header className="sticky top-0 z-40 border-b border-edge bg-white/80 backdrop-blur dark:border-gray-800 dark:bg-gray-950/80">
         <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4">
           <Link href="/" className="flex items-center gap-2">
             <Image
@@ -59,9 +59,7 @@ export function MainLayout({ children }: { children: ReactNode }): JSX.Element {
                 key={link.href}
                 href={link.href}
                 className={`text-sm font-medium transition-colors hover:text-brand-600 ${
-                  pathname.startsWith(link.href)
-                    ? 'text-brand-600'
-                    : 'text-gray-600 dark:text-gray-400'
+                  pathname.startsWith(link.href) ? 'text-brand-600' : 'text-text-secondary'
                 }`}
               >
                 {t(link.key)}
@@ -75,7 +73,7 @@ export function MainLayout({ children }: { children: ReactNode }): JSX.Element {
             <ThemeToggle />
             <Link
               href="/login"
-              className="rounded-lg px-4 py-2 text-sm font-medium text-gray-700 transition-colors hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-800"
+              className="rounded-lg px-4 py-2 text-sm font-medium text-text-secondary transition-colors hover:bg-surface-muted dark:text-gray-300 dark:hover:bg-gray-800"
             >
               {t('auth.loginShort')}
             </Link>
@@ -94,7 +92,7 @@ export function MainLayout({ children }: { children: ReactNode }): JSX.Element {
       <BackToTop />
 
       {/* Footer */}
-      <footer className="border-t border-gray-200 bg-white dark:border-gray-800 dark:bg-gray-950">
+      <footer className="border-t border-edge bg-white dark:border-gray-800 dark:bg-gray-950">
         <div className="mx-auto max-w-7xl px-4 py-12">
           <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-4">
             <div>
@@ -108,13 +106,11 @@ export function MainLayout({ children }: { children: ReactNode }): JSX.Element {
                 />
                 <span className="text-lg font-bold text-brand-600">{t('common.brandName')}</span>
               </Link>
-              <p className="mt-3 text-sm text-gray-500 dark:text-gray-400">{t('footer.tagline')}</p>
+              <p className="mt-3 text-sm text-text-secondary">{t('footer.tagline')}</p>
             </div>
             <div>
-              <h4 className="mb-3 text-sm font-bold text-gray-900 dark:text-gray-100">
-                {t('footer.browse')}
-              </h4>
-              <div className="space-y-2 text-sm text-gray-500 dark:text-gray-400">
+              <h4 className="mb-3 text-sm font-bold text-text-primary">{t('footer.browse')}</h4>
+              <div className="space-y-2 text-sm text-text-secondary">
                 <Link href="/services" className="block hover:text-brand-600">
                   {t('nav.services')}
                 </Link>
@@ -130,10 +126,8 @@ export function MainLayout({ children }: { children: ReactNode }): JSX.Element {
               </div>
             </div>
             <div>
-              <h4 className="mb-3 text-sm font-bold text-gray-900 dark:text-gray-100">
-                {t('footer.help')}
-              </h4>
-              <div className="space-y-2 text-sm text-gray-500 dark:text-gray-400">
+              <h4 className="mb-3 text-sm font-bold text-text-primary">{t('footer.help')}</h4>
+              <div className="space-y-2 text-sm text-text-secondary">
                 <Link href="/ai-chat" className="block hover:text-brand-600">
                   {t('footer.chatBeautyGalaxy')}
                 </Link>
@@ -149,10 +143,8 @@ export function MainLayout({ children }: { children: ReactNode }): JSX.Element {
               </div>
             </div>
             <div>
-              <h4 className="mb-3 text-sm font-bold text-gray-900 dark:text-gray-100">
-                {t('footer.quickLinks')}
-              </h4>
-              <div className="space-y-2 text-sm text-gray-500 dark:text-gray-400">
+              <h4 className="mb-3 text-sm font-bold text-text-primary">{t('footer.quickLinks')}</h4>
+              <div className="space-y-2 text-sm text-text-secondary">
                 <Link href="/login" className="block hover:text-brand-600">
                   {t('auth.login')}
                 </Link>
@@ -168,7 +160,7 @@ export function MainLayout({ children }: { children: ReactNode }): JSX.Element {
               </div>
             </div>
           </div>
-          <div className="mt-10 border-t border-gray-100 pt-6 text-center text-sm text-gray-400 dark:border-gray-800">
+          <div className="mt-10 border-t border-edge-muted pt-6 text-center text-sm text-text-tertiary dark:border-gray-800">
             © {new Date().getFullYear()} {t('common.brandName')}. {t('footer.rights')}
           </div>
         </div>

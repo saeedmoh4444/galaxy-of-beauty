@@ -133,7 +133,7 @@ export function BeautyBudgetPlanner({
           onChange={(e) => setBeautyPercent(Number(e.target.value))}
           className="mt-1 w-full h-1.5 rounded-full appearance-none bg-emerald-200 dark:bg-emerald-800 accent-emerald-600"
         />
-        <div className="mt-1 flex justify-between text-[9px] text-text-tertiary dark:text-gray-500">
+        <div className="mt-1 flex justify-between text-[9px] text-text-tertiary dark:text-text-secondary">
           <span>5%</span>
           <span>25%</span>
         </div>
@@ -141,8 +141,10 @@ export function BeautyBudgetPlanner({
 
       {/* Monthly budget display */}
       <div className="mt-3 grid grid-cols-2 gap-2">
-        <div className="rounded-xl bg-gray-50 p-3 text-center dark:bg-gray-800">
-          <p className="text-[9px] text-text-tertiary dark:text-gray-500">{monthlyIncomeLabel}</p>
+        <div className="rounded-xl bg-surface-muted p-3 text-center dark:bg-gray-800">
+          <p className="text-[9px] text-text-tertiary dark:text-text-secondary">
+            {monthlyIncomeLabel}
+          </p>
           <p className="text-sm font-bold text-text-primary dark:text-gray-100">
             {monthlyIncome.toLocaleString('ar-SA')} {currencySuffix}
           </p>
@@ -170,7 +172,7 @@ export function BeautyBudgetPlanner({
               <span className="text-[10px] text-text-secondary dark:text-gray-300 w-24 truncate">
                 {cat.name[locale]}
               </span>
-              <div className="flex-1 h-1.5 rounded-full bg-gray-100 dark:bg-gray-700">
+              <div className="flex-1 h-1.5 rounded-full bg-surface-muted dark:bg-gray-700">
                 <div
                   className={cn('h-full rounded-full bg-gradient-to-r', cat.color)}
                   style={{ width: `${cat.percentage}%` }}
@@ -185,7 +187,7 @@ export function BeautyBudgetPlanner({
       </div>
 
       {/* Tip */}
-      <p className="mt-3 text-center text-[9px] text-text-tertiary dark:text-gray-500">
+      <p className="mt-3 text-center text-[9px] text-text-tertiary dark:text-text-secondary">
         {tipPrefix}
         {beautyPercent}
         {tipSuffix}

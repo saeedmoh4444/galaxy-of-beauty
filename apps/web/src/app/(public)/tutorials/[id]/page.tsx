@@ -10,7 +10,7 @@ import type { TranslationKey } from '@galaxy/shared';
 
 const DEFAULT_DIFFICULTY = {
   label: 'marketing.tutorials.difficulty-unknown' as TranslationKey,
-  color: 'bg-gray-100 text-gray-700',
+  color: 'bg-surface-muted text-text-secondary',
 };
 const DIFFICULTY_META: Record<string, { label: TranslationKey; color: string }> = {
   beginner: {
@@ -142,21 +142,19 @@ export default function TutorialDetailPage(): JSX.Element {
         {/* Title & Meta */}
         <div className="flex flex-wrap items-start justify-between gap-4">
           <div className="flex-1">
-            <h1 className="text-2xl font-extrabold text-gray-900 dark:text-gray-100 sm:text-3xl">
-              {title}
-            </h1>
+            <h1 className="text-2xl font-extrabold text-text-primary sm:text-3xl">{title}</h1>
             <div className="mt-3 flex flex-wrap items-center gap-3">
               <span className={`rounded-full px-3 py-0.5 text-xs font-medium ${diffMeta.color}`}>
                 {t(diffMeta.label)}
               </span>
-              <span className="text-sm text-gray-500">
+              <span className="text-sm text-text-secondary">
                 {catMeta.emoji} {t(catMeta.label)}
               </span>
-              <span className="text-sm text-gray-500">️ {duration}</span>
-              <span className="text-sm text-gray-500">
+              <span className="text-sm text-text-secondary">️ {duration}</span>
+              <span className="text-sm text-text-secondary">
                 ️ {t('marketing.tutorials.views-label', { count: formatViews(views) })}
               </span>
-              <span className="text-sm text-gray-500">️ {likes}</span>
+              <span className="text-sm text-text-secondary">️ {likes}</span>
             </div>
           </div>
         </div>
@@ -167,8 +165,8 @@ export default function TutorialDetailPage(): JSX.Element {
             {authorName[0]}
           </div>
           <div>
-            <p className="font-bold text-gray-900 dark:text-gray-100">{authorName}</p>
-            {authorTitle && <p className="text-xs text-gray-500">{authorTitle}</p>}
+            <p className="font-bold text-text-primary">{authorName}</p>
+            {authorTitle && <p className="text-xs text-text-secondary">{authorTitle}</p>}
           </div>
         </Card>
 
@@ -178,7 +176,7 @@ export default function TutorialDetailPage(): JSX.Element {
             {tags.map((tag) => (
               <span
                 key={tag}
-                className="rounded-full bg-gray-100 px-3 py-1 text-xs text-gray-600 dark:bg-gray-800 dark:text-gray-400"
+                className="rounded-full bg-surface-muted px-3 py-1 text-xs text-text-secondary dark:bg-gray-800 dark:text-text-tertiary"
               >
                 #{tag}
               </span>
@@ -188,11 +186,11 @@ export default function TutorialDetailPage(): JSX.Element {
 
         {/* Description */}
         {desc && (
-          <div className="mt-6 rounded-2xl bg-gray-50 p-5 dark:bg-gray-900">
-            <h3 className="text-sm font-bold text-gray-700 dark:text-gray-300 mb-2">
+          <div className="mt-6 rounded-2xl bg-surface-muted p-5 dark:bg-gray-900">
+            <h3 className="text-sm font-bold text-text-secondary mb-2">
               {t('marketing.tutorials.desc-title')}
             </h3>
-            <p className="text-sm text-gray-600 dark:text-gray-400 leading-relaxed whitespace-pre-wrap">
+            <p className="text-sm text-text-secondary leading-relaxed whitespace-pre-wrap">
               {desc}
             </p>
           </div>

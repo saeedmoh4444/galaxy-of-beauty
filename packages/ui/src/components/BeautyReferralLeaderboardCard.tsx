@@ -60,7 +60,7 @@ export function BeautyReferralLeaderboardCard({
             key={l.name}
             className={cn(
               'flex items-center gap-2 rounded-lg px-3 py-2',
-              i === 0 ? 'bg-amber-50 dark:bg-amber-950' : 'bg-gray-50 dark:bg-gray-800',
+              i === 0 ? 'bg-amber-50 dark:bg-amber-950' : 'bg-surface-muted',
             )}
           >
             <span className="text-sm w-6 text-center">{medals[i] || `${i + 1}.`}</span>

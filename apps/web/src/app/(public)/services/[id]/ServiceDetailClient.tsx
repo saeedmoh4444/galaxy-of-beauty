@@ -86,9 +86,9 @@ export function ServiceDetailClient({ svc }: { svc: ServiceDetailData }): JSX.El
         </div>
       )}
 
-      <h1 className="mt-4 text-3xl font-bold text-gray-900 dark:text-gray-100">{title}</h1>
-      <p className="mt-1 text-sm text-gray-500">{(cat.nameAr as string) || ''}</p>
-      {desc && <p className="mt-3 text-gray-600 dark:text-gray-400">{desc}</p>}
+      <h1 className="mt-4 text-3xl font-bold text-text-primary">{title}</h1>
+      <p className="mt-1 text-sm text-text-secondary">{(cat.nameAr as string) || ''}</p>
+      {desc && <p className="mt-3 text-text-secondary">{desc}</p>}
 
       {/* Share */}
       <div className="mt-3 flex gap-2">
@@ -98,7 +98,7 @@ export function ServiceDetailClient({ svc }: { svc: ServiceDetailData }): JSX.El
               .share?.({ title, url: window.location.href })
               .catch(() => navigator.clipboard.writeText(window.location.href))
           }
-          className="rounded-lg border border-gray-200 px-3 py-1 text-xs text-gray-500 hover:bg-gray-50 dark:border-gray-700 dark:text-gray-400"
+          className="rounded-lg border border-edge px-3 py-1 text-xs text-text-secondary hover:bg-surface-muted dark:border-gray-700 dark:text-text-tertiary"
         >
           {t('marketing.service-detail.share')}
         </button>
@@ -106,7 +106,7 @@ export function ServiceDetailClient({ svc }: { svc: ServiceDetailData }): JSX.El
           onClick={() => {
             navigator.clipboard.writeText(window.location.href);
           }}
-          className="rounded-lg border border-gray-200 px-3 py-1 text-xs text-gray-500 hover:bg-gray-50 dark:border-gray-700 dark:text-gray-400"
+          className="rounded-lg border border-edge px-3 py-1 text-xs text-text-secondary hover:bg-surface-muted dark:border-gray-700 dark:text-text-tertiary"
         >
           {t('marketing.service-detail.copy-link')}
         </button>
@@ -114,13 +114,15 @@ export function ServiceDetailClient({ svc }: { svc: ServiceDetailData }): JSX.El
 
       <div className="mt-6 flex gap-8">
         <div>
-          <span className="text-sm text-gray-500">{t('marketing.service-detail.price')}</span>
+          <span className="text-sm text-text-secondary">{t('marketing.service-detail.price')}</span>
           <p className="text-2xl font-bold text-brand-600">
             {formatCurrency(Number(svc.basePrice))}
           </p>
         </div>
         <div>
-          <span className="text-sm text-gray-500">{t('marketing.service-detail.duration')}</span>
+          <span className="text-sm text-text-secondary">
+            {t('marketing.service-detail.duration')}
+          </span>
           <p className="text-2xl font-bold">
             {t('marketing.service-detail.duration-min', { min: svc.durationMin })}
           </p>
@@ -130,14 +132,14 @@ export function ServiceDetailClient({ svc }: { svc: ServiceDetailData }): JSX.El
       {/* Variants */}
       {variants.length > 0 && (
         <div className="mt-6">
-          <h2 className="text-lg font-semibold text-gray-900 dark:text-gray-100">
+          <h2 className="text-lg font-semibold text-text-primary">
             {t('marketing.service-detail.options')}
           </h2>
           <div className="mt-2 flex flex-wrap gap-2">
             {variants.map((v) => (
               <span
                 key={v.id}
-                className="rounded-full bg-gray-100 px-3 py-1 text-sm dark:bg-gray-800"
+                className="rounded-full bg-surface-muted px-3 py-1 text-sm dark:bg-gray-800"
               >
                 {localize(v.nameJson, locale)}
                 {Number(v.priceDelta) > 0 ? ` (+${formatCurrency(Number(v.priceDelta))})` : ''}
@@ -162,7 +164,7 @@ export function ServiceDetailClient({ svc }: { svc: ServiceDetailData }): JSX.El
       {/* Technicians */}
       {techs.length > 0 && (
         <div className="mt-10">
-          <h2 className="mb-4 text-lg font-semibold text-gray-900 dark:text-gray-100">
+          <h2 className="mb-4 text-lg font-semibold text-text-primary">
             {t('marketing.service-detail.available-technicians')}
           </h2>
           <div className="grid gap-4 md:grid-cols-2">
@@ -173,12 +175,12 @@ export function ServiceDetailClient({ svc }: { svc: ServiceDetailData }): JSX.El
                 <Card key={ts.id} padding="md">
                   <div className="flex items-center justify-between">
                     <div>
-                      <p className="font-semibold text-gray-900 dark:text-gray-100">{user.name}</p>
-                      <p className="text-sm text-gray-500">
+                      <p className="font-semibold text-text-primary">{user.name}</p>
+                      <p className="text-sm text-text-secondary">
                         {tech.city} · {Number(tech.ratingAvg ?? 0).toFixed(1)}
                       </p>
                       {tech.bioJson ? (
-                        <p className="mt-1 line-clamp-2 text-xs text-gray-400">
+                        <p className="mt-1 line-clamp-2 text-xs text-text-tertiary">
                           {localize(tech.bioJson, locale)}
                         </p>
                       ) : null}
@@ -202,15 +204,15 @@ export function ServiceDetailClient({ svc }: { svc: ServiceDetailData }): JSX.El
       {/* Related */}
       {related.length > 0 && (
         <div className="mt-12">
-          <h2 className="mb-4 text-lg font-semibold text-gray-900 dark:text-gray-100">
+          <h2 className="mb-4 text-lg font-semibold text-text-primary">
             {t('marketing.service-detail.related-services')}
           </h2>
           <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
             {related.map((r) => (
               <Link key={r.id} href={`/services/${r.id}`}>
                 <Card hover padding="sm">
-                  <div className="flex h-24 items-center justify-center rounded-lg bg-gray-100 text-3xl dark:bg-gray-800"></div>
-                  <p className="mt-2 text-sm font-semibold text-gray-900 dark:text-gray-100">
+                  <div className="flex h-24 items-center justify-center rounded-lg bg-surface-muted text-3xl dark:bg-gray-800"></div>
+                  <p className="mt-2 text-sm font-semibold text-text-primary">
                     {localize(r.titleJson, locale)}
                   </p>
                   <p className="mt-1 text-xs font-bold text-brand-600">

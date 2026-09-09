@@ -47,7 +47,9 @@ export function BeautyMicroChallengeCard({
           <h4 className="text-sm font-bold text-text-primary dark:text-gray-100">
             {challenge.title}
           </h4>
-          <p className="text-[10px] text-text-tertiary dark:text-gray-500">️ {challenge.duration}</p>
+          <p className="text-[10px] text-text-tertiary dark:text-text-secondary">
+            ️ {challenge.duration}
+          </p>
         </div>
         {challenge.completed && <span className="text-lg shrink-0"></span>}
       </div>
@@ -62,7 +64,7 @@ export function BeautyMicroChallengeCard({
         <button
           type="button"
           onClick={onSkip}
-          className="rounded-lg border border-gray-200 px-4 py-2 text-[10px] font-bold text-gray-500 hover:bg-gray-50 dark:border-gray-700 dark:text-gray-400"
+          className="rounded-lg border border-edge px-4 py-2 text-[10px] font-bold text-text-secondary hover:bg-surface-muted dark:border-gray-700 dark:text-text-tertiary"
         >
           {skipText}
         </button>

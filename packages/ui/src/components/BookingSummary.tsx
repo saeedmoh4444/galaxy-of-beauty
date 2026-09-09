@@ -85,32 +85,32 @@ export function BookingSummary({
 
       <div className="space-y-2 text-sm">
         <div className="flex justify-between">
-          <span className="text-text-secondary dark:text-gray-400">{codeLabel}</span>
+          <span className="text-text-secondary dark:text-text-tertiary">{codeLabel}</span>
           <span className="font-mono font-semibold text-text-primary dark:text-gray-100">
             {booking.code}
           </span>
         </div>
         <div className="flex justify-between">
-          <span className="text-text-secondary dark:text-gray-400">{serviceLabel}</span>
+          <span className="text-text-secondary dark:text-text-tertiary">{serviceLabel}</span>
           <span className="font-semibold text-text-primary dark:text-gray-100">
             {booking.service}
           </span>
         </div>
         {booking.technician ? (
           <div className="flex justify-between">
-            <span className="text-text-secondary dark:text-gray-400">{technicianLabel}</span>
+            <span className="text-text-secondary dark:text-text-tertiary">{technicianLabel}</span>
             <span className="font-semibold text-text-primary dark:text-gray-100">
               {booking.technician}
             </span>
           </div>
         ) : null}
         <div className="flex justify-between">
-          <span className="text-text-secondary dark:text-gray-400">{dateLabel}</span>
+          <span className="text-text-secondary dark:text-text-tertiary">{dateLabel}</span>
           <span className="text-text-primary dark:text-gray-100">{booking.date}</span>
         </div>
         {booking.address ? (
           <div className="flex justify-between">
-            <span className="text-text-secondary dark:text-gray-400">{addressLabel}</span>
+            <span className="text-text-secondary dark:text-text-tertiary">{addressLabel}</span>
             <span className="text-text-primary dark:text-gray-100">{booking.address}</span>
           </div>
         ) : null}
@@ -120,7 +120,7 @@ export function BookingSummary({
 
       <div className="space-y-1 text-sm">
         <div className="flex justify-between">
-          <span className="text-text-secondary dark:text-gray-400">{priceLabel}</span>
+          <span className="text-text-secondary dark:text-text-tertiary">{priceLabel}</span>
           <span className="text-text-primary dark:text-gray-100">
             {booking.price} {currencySuffix}
           </span>

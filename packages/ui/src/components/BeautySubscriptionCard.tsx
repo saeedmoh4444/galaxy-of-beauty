@@ -100,7 +100,7 @@ export function BeautySubscriptionCard({
           {t.emoji}
         </span>
         <h4 className="mt-1 text-sm font-bold text-text-primary dark:text-gray-100">{title}</h4>
-        <p className="text-[10px] text-text-tertiary dark:text-gray-400">
+        <p className="text-[10px] text-text-tertiary dark:text-text-tertiary">
           {planPrefix}
           {t.label[locale]}
         </p>
@@ -111,7 +111,7 @@ export function BeautySubscriptionCard({
         <p className="text-3xl font-bold text-text-primary dark:text-gray-100">
           {t.price} {currencySuffix}
         </p>
-        <p className="text-[10px] text-text-tertiary dark:text-gray-500">{monthlySuffix}</p>
+        <p className="text-[10px] text-text-tertiary dark:text-text-secondary">{monthlySuffix}</p>
       </div>
 
       {/* Includes */}

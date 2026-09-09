@@ -75,7 +75,7 @@ export default function TutorialsPage(): JSX.Element {
         <h1 className="mt-4 text-3xl font-bold text-text-primary dark:text-gray-100">
           {t('marketing.tutorials.title')}
         </h1>
-        <p className="mt-2 text-text-secondary dark:text-gray-400">
+        <p className="mt-2 text-text-secondary dark:text-text-tertiary">
           {t('marketing.tutorials.subtitle')}
         </p>
       </div>
@@ -106,7 +106,7 @@ export default function TutorialsPage(): JSX.Element {
             className={`rounded-full px-4 py-1.5 text-sm font-medium transition-all ${
               !category
                 ? 'bg-brand-600 text-white shadow-md'
-                : 'bg-surface-muted text-text-secondary hover:bg-gray-200 dark:bg-gray-800 dark:text-gray-400'
+                : 'bg-surface-muted text-text-secondary hover:bg-surface-muted dark:text-text-tertiary'
             }`}
           >
             {t('marketing.tutorials.all')}
@@ -121,7 +121,7 @@ export default function TutorialsPage(): JSX.Element {
               className={`rounded-full px-4 py-1.5 text-sm font-medium transition-all ${
                 category === c.key
                   ? 'bg-brand-600 text-white shadow-md'
-                  : 'bg-surface-muted text-text-secondary hover:bg-gray-200 dark:bg-gray-800 dark:text-gray-400'
+                  : 'bg-surface-muted text-text-secondary hover:bg-surface-muted dark:text-text-tertiary'
               }`}
             >
               {c.emoji} {c.nameAr}
@@ -139,8 +139,8 @@ export default function TutorialsPage(): JSX.Element {
               }}
               className={`rounded-full px-3 py-1 text-xs font-medium transition-all ${
                 difficulty === d.key
-                  ? 'bg-gray-800 text-white dark:bg-white dark:text-gray-800'
-                  : 'bg-surface-muted text-text-secondary hover:bg-gray-200 dark:bg-gray-800 dark:text-gray-400'
+                  ? 'bg-gray-800 text-white dark:bg-white dark:text-text-primary'
+                  : 'bg-surface-muted text-text-secondary hover:bg-surface-muted dark:text-text-tertiary'
               }`}
             >
               {d.nameAr}

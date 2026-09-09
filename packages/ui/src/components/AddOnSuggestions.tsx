@@ -45,7 +45,7 @@ export function AddOnSuggestions({
       className={`rounded-2xl border border-edge bg-surface-muted p-4 dark:border-gray-700 dark:bg-gray-900 ${className}`}
     >
       <h4 className="text-sm font-semibold text-text-primary dark:text-gray-100">{title}</h4>
-      <p className="mt-1 text-xs text-text-secondary dark:text-gray-400">{subtitle}</p>
+      <p className="mt-1 text-xs text-text-secondary dark:text-text-tertiary">{subtitle}</p>
       <div className="mt-3 space-y-2">
         {addOns.map((addOn) => (
           <div

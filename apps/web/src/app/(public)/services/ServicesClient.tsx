@@ -116,7 +116,7 @@ export function ServicesClient({ data }: { data: ServicesPageData }): JSX.Elemen
           className={`rounded-lg px-4 py-2 text-sm font-medium transition-colors ${
             compareMode
               ? 'bg-brand-600 text-white'
-              : 'border border-edge text-text-secondary hover:bg-surface-muted dark:border-gray-600 dark:text-gray-400'
+              : 'border border-edge text-text-secondary hover:bg-surface-muted dark:border-gray-600 dark:text-text-tertiary'
           }`}
         >
           {t('marketing.services.compare')}{' '}

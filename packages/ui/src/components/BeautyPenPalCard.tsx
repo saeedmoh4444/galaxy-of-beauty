@@ -96,11 +96,11 @@ export function BeautyPenPalCard({
       {/* Interest + city */}
       <div className="mt-3 grid grid-cols-2 gap-2">
         <div className="rounded-xl bg-purple-50 p-2.5 text-center dark:bg-purple-950">
-          <p className="text-[9px] text-text-tertiary dark:text-gray-500">{cityLabel}</p>
+          <p className="text-[9px] text-text-tertiary dark:text-text-secondary">{cityLabel}</p>
           <p className="text-xs font-bold text-purple-700 dark:text-purple-300"> {match.city}</p>
         </div>
         <div className="rounded-xl bg-purple-50 p-2.5 text-center dark:bg-purple-950">
-          <p className="text-[9px] text-text-tertiary dark:text-gray-500">{interestLabel}</p>
+          <p className="text-[9px] text-text-tertiary dark:text-text-secondary">{interestLabel}</p>
           <p className="text-xs font-bold text-purple-700 dark:text-purple-300">
             {match.emoji || ''} {match.interest}
           </p>
@@ -116,7 +116,7 @@ export function BeautyPenPalCard({
               'rounded-full px-2 py-0.5 text-[9px] font-medium',
               c.ar === match.city
                 ? 'bg-purple-100 text-purple-700 dark:bg-purple-900 dark:text-purple-300'
-                : 'bg-gray-50 text-gray-400 dark:bg-gray-800 dark:text-gray-600',
+                : 'bg-surface-muted text-text-tertiary dark:bg-gray-800 dark:text-text-secondary',
             )}
           >
             {c[locale]}
@@ -132,7 +132,7 @@ export function BeautyPenPalCard({
         {connectButtonText}
       </button>
 
-      <p className="mt-2 text-center text-[9px] text-text-tertiary dark:text-gray-500">
+      <p className="mt-2 text-center text-[9px] text-text-tertiary dark:text-text-secondary">
         {footerText}
       </p>
     </div>
