@@ -3,7 +3,17 @@
 import Link from 'next/link';
 import { localize } from '@galaxy/shared';
 import { useLocale } from '@/components/LocaleProvider';
-import { Button, Card, ErrorAlert, EmptyState, ServiceImage } from '@galaxy/ui';
+import {
+  Button,
+  Card,
+  ErrorAlert,
+  EmptyState,
+  ServiceImage,
+  FloatingBlob,
+  Marquee,
+  Sparkles,
+} from '@galaxy/ui';
+import { heroImages } from '@galaxy/shared';
 
 interface Category {
   id: number;
@@ -55,25 +65,116 @@ export function HomeClient({
 
   return (
     <div>
-      {/* Hero */}
-      <section className="bg-gradient-to-br from-brand-600 to-brand-800 px-4 py-24 text-center text-white">
-        <h1 className="text-3xl font-extrabold md:text-5xl">{t('marketing.home.hero-title')}</h1>
-        <p className="mt-4 text-lg text-brand-100">{t('marketing.home.hero-subtitle')}</p>
-        <div className="mt-8 flex justify-center gap-4">
-          <Link href="/bookings/create">
-            <Button size="lg" className="bg-white !text-brand-700 hover:bg-surface-muted">
-              {t('marketing.home.book-now')}
-            </Button>
-          </Link>
-          <Link href="/services/surprise-me">
-            <Button
-              size="lg"
-              variant="outline"
-              className="border-white !text-white hover:bg-white/10"
-            >
-              {t('marketing.home.surprise-me')}
-            </Button>
-          </Link>
+      {/* Hero — K-beauty flat design */}
+      <section className="relative overflow-hidden">
+        <div
+          aria-hidden
+          className="absolute inset-0 bg-gradient-to-b from-brand-50 via-surface to-accent-50"
+        />
+        <FloatingBlob
+          gradient="from-brand-200 to-accent-100"
+          className="-top-24 -start-24 h-72 w-72"
+          opacity={70}
+        />
+        <FloatingBlob
+          gradient="from-accent-200 to-brand-100"
+          className="top-1/3 -end-20 h-80 w-80"
+          animation="float-slow"
+          delay={-4}
+          opacity={60}
+        />
+        <FloatingBlob
+          gradient="from-brand-300 to-brand-100"
+          className="bottom-0 start-1/4 h-56 w-56"
+          animation="float"
+          delay={-2}
+          opacity={40}
+        />
+        <Sparkles
+          sparkles={[
+            { top: '12%', start: '8%', size: 18, delay: -0.5, color: '#e268a0' },
+            { top: '24%', start: '90%', size: 14, delay: -2.1, color: '#d98e4a' },
+            { top: '70%', start: '5%', size: 12, delay: -1.2, color: '#e268a0' },
+            { top: '78%', start: '94%', size: 20, delay: -3, color: '#d98e4a' },
+          ]}
+        />
+
+        <div className="relative mx-auto max-w-7xl px-4 py-16 md:py-24 lg:px-8">
+          <div className="grid items-center gap-12 md:grid-cols-2">
+            <div>
+              <span className="inline-flex items-center gap-2 rounded-full bg-brand-100/80 px-4 py-1.5 text-sm font-bold text-brand-700 ring-1 ring-brand-200">
+                <span aria-hidden>✨</span> {t('women.safeSpace')}
+              </span>
+              <h1 className="mt-6 text-4xl font-extrabold leading-tight text-text-primary md:text-5xl lg:text-6xl">
+                {t('marketing.home.hero-title')}
+              </h1>
+              <p className="mt-5 max-w-xl text-lg text-text-secondary md:text-xl">
+                {t('marketing.home.hero-subtitle')}
+              </p>
+              <div className="mt-8 flex flex-wrap gap-4">
+                <Link href="/bookings/create">
+                  <Button size="lg" className="rounded-full px-8 shadow-lg shadow-brand-600/25">
+                    {t('marketing.home.book-now')}
+                  </Button>
+                </Link>
+                <Link href="/services/surprise-me">
+                  <Button
+                    size="lg"
+                    variant="outline"
+                    className="rounded-full border-brand-300 px-8 !text-brand-700 hover:bg-brand-50"
+                  >
+                    {t('marketing.home.surprise-me')}
+                  </Button>
+                </Link>
+              </div>
+              <div className="mt-8 flex flex-wrap items-center gap-x-6 gap-y-3 text-sm font-semibold text-text-secondary">
+                <span className="inline-flex items-center gap-2">
+                  <span aria-hidden>🌸</span> {t('trust.womenOnly')}
+                </span>
+                <span className="inline-flex items-center gap-2">
+                  <span aria-hidden>🔒</span> {t('vendorPortal.trust.private-suite')}
+                </span>
+                <span className="inline-flex items-center gap-2">
+                  <span aria-hidden className="text-accent-500">
+                    ★
+                  </span>{' '}
+                  4.8 {t('misc.rating')}
+                </span>
+              </div>
+            </div>
+
+            {/* media composition — blob-framed photo + floating cards */}
+            <div className="relative mx-auto w-full max-w-md">
+              <div
+                aria-hidden
+                className="absolute inset-0 rotate-6 rounded-[3rem] bg-gradient-to-br from-brand-200 to-accent-200"
+              />
+              <ServiceImage
+                src={heroImages.main}
+                alt={t('marketing.home.hero-title')}
+                className="relative h-72 w-full rounded-[3rem] object-cover shadow-2xl shadow-brand-600/20 md:h-96"
+              />
+              <div className="absolute -start-6 top-8 animate-float rounded-2xl bg-surface-elevated p-3 shadow-lg shadow-brand-600/10">
+                <div className="flex items-center gap-2">
+                  <span aria-hidden className="text-accent-500">
+                    ★
+                  </span>
+                  <span className="text-sm font-extrabold text-text-primary">4.8</span>
+                  <span className="text-xs text-text-tertiary">{t('misc.rating')}</span>
+                </div>
+              </div>
+              <div className="absolute -end-4 bottom-10 animate-float-slow rounded-2xl bg-surface-elevated p-3 shadow-lg shadow-brand-600/10">
+                <div className="flex items-center gap-2">
+                  <span aria-hidden>🌸</span>
+                  <span className="text-xs font-bold text-text-secondary">
+                    {t('trust.womenOnly')}
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <Marquee className="mt-16" items={categories.map((c) => localize(c.nameJson, locale))} />
         </div>
       </section>
 
