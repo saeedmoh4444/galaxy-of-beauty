@@ -147,7 +147,7 @@ export default function PostCarePage(): JSX.Element {
                   <div key={plan.bookingId} className="space-y-3">
                     {/* Plan Header */}
                     <div className="flex items-center gap-3">
-                      <div className="flex h-10 w-10 items-center justify-center rounded-full bg-gradient-to-br from-brand-400 to-purple-500 text-white text-lg">
+                      <div className="flex h-10 w-10 items-center justify-center rounded-full bg-gradient-to-br from-brand-400 to-brand-500 text-white text-lg">
                         ‍️
                       </div>
                       <div>
@@ -281,7 +281,7 @@ export default function PostCarePage(): JSX.Element {
         {/* Bottom tip */}
         <Card
           padding="lg"
-          className="bg-gradient-to-r from-brand-50 to-purple-50 dark:from-brand-950 dark:to-purple-950 border-none text-center"
+          className="bg-gradient-to-r from-brand-50 to-brand-50 dark:from-brand-950 dark:to-brand-950 border-none text-center"
         >
           <p className="text-lg font-bold text-text-primary dark:text-gray-100">
             {t('postCare.rememberTitle')}

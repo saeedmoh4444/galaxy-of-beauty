@@ -65,12 +65,12 @@ export default function AiChatPage(): JSX.Element {
     <DashboardLayout userRole="CUSTOMER">
       <div className="mx-auto flex h-[calc(100vh-12rem)] max-w-3xl flex-col">
         <div className="flex items-center gap-3 border-b border-edge pb-4 dark:border-gray-700">
-          <div className="flex h-12 w-12 items-center justify-center rounded-full bg-purple-100 text-2xl dark:bg-purple-900">
+          <div className="flex h-12 w-12 items-center justify-center rounded-full bg-brand-100 text-2xl dark:bg-brand-900">
             {BEAUTY_GALAXY_AVATAR}
           </div>
           <div>
             <h1 className="text-xl font-bold">{t('aiChat.title')}</h1>
-            <p className="text-xs text-purple-600 dark:text-purple-400">
+            <p className="text-xs text-brand-600 dark:text-brand-400">
               {t('aiChat.smartBeautyAdvisor')}
             </p>
           </div>
@@ -92,7 +92,7 @@ export default function AiChatPage(): JSX.Element {
             <div className="flex flex-col items-center justify-center pt-16 text-center">
               <div className="mb-4 text-6xl">{BEAUTY_GALAXY_AVATAR}</div>
               <EmptyState title={t('aiChat.welcomeTitle')} description={t('aiChat.welcomeDesc')} />
-              <p className="mt-4 text-sm text-purple-500">{t('aiChat.askHint')}</p>
+              <p className="mt-4 text-sm text-brand-500">{t('aiChat.askHint')}</p>
             </div>
           ) : (
             messages.map((msg) => (
@@ -104,11 +104,11 @@ export default function AiChatPage(): JSX.Element {
                   className={`max-w-[80%] rounded-2xl px-4 py-3 ${
                     msg.role === 'user'
                       ? 'rounded-br-md bg-brand-600 text-white'
-                      : 'rounded-bl-md border border-purple-200 bg-purple-50 text-text-primary dark:border-purple-800 dark:bg-purple-900/30 dark:text-gray-200'
+                      : 'rounded-bl-md border border-brand-200 bg-brand-50 text-text-primary dark:border-brand-800 dark:bg-purple-900/30 dark:text-gray-200'
                   }`}
                 >
                   {msg.role === 'assistant' && (
-                    <span className="mb-1 block text-xs font-medium text-purple-500">
+                    <span className="mb-1 block text-xs font-medium text-brand-500">
                       {t('aiChat.title')}
                     </span>
                   )}
@@ -130,8 +130,8 @@ export default function AiChatPage(): JSX.Element {
           )}
           {sendMut.isPending && (
             <div className="flex justify-start">
-              <div className="max-w-[80%] rounded-2xl rounded-bl-md border border-purple-200 bg-purple-50 px-4 py-3 dark:border-purple-800 dark:bg-purple-900/30">
-                <span className="mb-1 block text-xs font-medium text-purple-500">
+              <div className="max-w-[80%] rounded-2xl rounded-bl-md border border-brand-200 bg-brand-50 px-4 py-3 dark:border-brand-800 dark:bg-purple-900/30">
+                <span className="mb-1 block text-xs font-medium text-brand-500">
                   {t('aiChat.title')}
                 </span>
                 <span className="text-sm text-text-secondary">...</span>
@@ -144,7 +144,7 @@ export default function AiChatPage(): JSX.Element {
         <div className="border-t border-edge pt-4 dark:border-gray-700">
           <div className="flex gap-2">
             <textarea
-              className="flex-1 resize-none rounded-xl border border-edge bg-white p-3 text-sm outline-none focus:border-purple-400 dark:border-gray-600 dark:bg-gray-800"
+              className="flex-1 resize-none rounded-xl border border-edge bg-white p-3 text-sm outline-none focus:border-brand-400 dark:border-gray-600 dark:bg-gray-800"
               rows={2}
               value={input}
               onChange={(e) => setInput(e.target.value)}
@@ -153,7 +153,7 @@ export default function AiChatPage(): JSX.Element {
               disabled={sendMut.isPending}
             />
             <Button
-              className="self-end bg-purple-600 hover:bg-purple-700"
+              className="self-end bg-brand-600 hover:bg-brand-700"
               onClick={handleSend}
               disabled={!input.trim() || sendMut.isPending}
               loading={sendMut.isPending}

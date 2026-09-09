@@ -197,7 +197,7 @@ export default function FamilyAccountPage(): JSX.Element {
                 </span>
 
                 <div className="flex items-start gap-4">
-                  <div className="flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl bg-gradient-to-br from-brand-100 to-purple-100 text-2xl dark:from-brand-900 dark:to-purple-900">
+                  <div className="flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl bg-gradient-to-br from-brand-100 to-brand-100 text-2xl dark:from-brand-900 dark:to-brand-900">
                     {AGE_EMOJI[m.ageGroup] ?? ''}
                   </div>
                   <div className="flex-1 min-w-0">

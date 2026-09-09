@@ -55,7 +55,7 @@ export default function BeautyDashboardPage(): JSX.Element {
                 <p className="text-xs text-text-secondary">{t('beautyDashboard.streakDays')}</p>
               </Card>
               <Card padding="lg" className="text-center">
-                <p className="text-2xl font-extrabold text-purple-600">
+                <p className="text-2xl font-extrabold text-brand-600">
                   {formatCurrency((data?.walletBalance as number) ?? 0)}
                 </p>
                 <p className="text-xs text-text-secondary">{t('beautyDashboard.wallet')}</p>
@@ -104,7 +104,7 @@ export default function BeautyDashboardPage(): JSX.Element {
                         {(data.skinConcerns as string[]).map((c: string) => (
                           <span
                             key={c}
-                            className="rounded-full bg-purple-100 px-2 py-0.5 text-xs text-purple-700"
+                            className="rounded-full bg-brand-100 px-2 py-0.5 text-xs text-brand-700"
                           >
                             {c}
                           </span>

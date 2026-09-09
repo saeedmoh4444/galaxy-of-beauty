@@ -32,7 +32,7 @@ const SEASONS = [
     nameAr: 'marketing.lookbook.season-ramadan-ar',
     nameEn: 'marketing.lookbook.season-ramadan-en',
     emoji: '',
-    color: 'from-purple-400 to-indigo-600',
+    color: 'from-brand-400 to-indigo-600',
   },
 ] as const;
 

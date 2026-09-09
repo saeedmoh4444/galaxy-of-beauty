@@ -43,7 +43,7 @@ function BeforeAfterSection({ technicianUserId }: { technicianUserId: number }):
                 />
               </div>
             ) : (
-              <div className="flex aspect-square items-center justify-center bg-gradient-to-br from-brand-50 to-purple-50 text-5xl dark:from-brand-950 dark:to-purple-950">
+              <div className="flex aspect-square items-center justify-center bg-gradient-to-br from-brand-50 to-brand-50 text-5xl dark:from-brand-950 dark:to-brand-950">
                 ✨
               </div>
             )}

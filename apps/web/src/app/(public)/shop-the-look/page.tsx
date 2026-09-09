@@ -32,7 +32,7 @@ const LOOKS = [
     emoji: '',
     name: 'marketing.shop-the-look.look-party-name',
     desc: 'marketing.shop-the-look.look-party-desc',
-    color: 'from-purple-100 to-violet-100 dark:from-purple-950 dark:to-violet-950',
+    color: 'from-brand-100 to-violet-100 dark:from-brand-950 dark:to-violet-950',
     services: [
       {
         name: 'marketing.shop-the-look.service-evening-makeup',

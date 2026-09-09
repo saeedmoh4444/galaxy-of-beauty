@@ -47,14 +47,14 @@ export default function BeautyMetaversePage(): JSX.Element {
           <p className="mt-1 text-sm text-text-secondary">{t('beautyMetaverse.subtitle')}</p>
         </div>
         {result ? (
-          <Card padding="lg" className="text-center border-2 border-purple-300">
+          <Card padding="lg" className="text-center border-2 border-brand-300">
             <span className="text-6xl"></span>
             <h2 className="mt-4 text-xl font-bold">{result.welcomeMessage as string}</h2>
             <div className="mt-3 flex flex-wrap justify-center gap-2">
               {(result.availableActions as string[])?.map((a: string) => (
                 <span
                   key={a}
-                  className="rounded-full bg-purple-100 dark:bg-purple-900 px-3 py-1 text-sm"
+                  className="rounded-full bg-brand-100 dark:bg-brand-900 px-3 py-1 text-sm"
                 >
                   {a}
                 </span>
@@ -77,7 +77,7 @@ export default function BeautyMetaversePage(): JSX.Element {
                       { onSuccess: (d) => setResult(d as Record<string, unknown>) },
                     )
                   }
-                  className="rounded-xl border-2 border-edge p-4 text-center hover:border-purple-400 transition-all"
+                  className="rounded-xl border-2 border-edge p-4 text-center hover:border-brand-400 transition-all"
                 >
                   <span className="text-4xl">{s.emoji as string}</span>
                   <p className="font-bold mt-2">{s.name as string}</p>

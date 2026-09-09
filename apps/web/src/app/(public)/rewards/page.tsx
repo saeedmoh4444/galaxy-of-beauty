@@ -11,7 +11,7 @@ const TIER_LABELS: Record<string, { name: TranslationKey; emoji: string; color: 
   PLATINUM: {
     name: 'marketing.rewards.tier-platinum',
     emoji: '',
-    color: 'from-purple-400 to-indigo-500',
+    color: 'from-brand-400 to-indigo-500',
   },
 };
 

@@ -91,7 +91,7 @@ export default function PenPalPage(): JSX.Element {
           <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
             {pals.map((p: Record<string, unknown>) => (
               <Card key={p.userId as number} padding="lg" className="text-center">
-                <div className="flex h-14 w-14 mx-auto items-center justify-center rounded-full bg-gradient-to-br from-brand-400 to-purple-500 text-white text-xl font-bold">
+                <div className="flex h-14 w-14 mx-auto items-center justify-center rounded-full bg-gradient-to-br from-brand-400 to-brand-500 text-white text-xl font-bold">
                   {(p.userName as string)?.[0] ?? ''}
                 </div>
                 <div className="mt-2 flex justify-center">

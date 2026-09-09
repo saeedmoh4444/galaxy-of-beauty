@@ -164,7 +164,7 @@ export default function ProductScannerPage(): JSX.Element {
             {/* Product Card */}
             <Card padding="lg" className="border-2 border-brand-200 dark:border-brand-800">
               <div className="flex items-start gap-4">
-                <div className="flex h-16 w-16 shrink-0 items-center justify-center rounded-2xl bg-gradient-to-br from-brand-100 to-purple-100 text-3xl dark:from-brand-900 dark:to-purple-900">
+                <div className="flex h-16 w-16 shrink-0 items-center justify-center rounded-2xl bg-gradient-to-br from-brand-100 to-brand-100 text-3xl dark:from-brand-900 dark:to-brand-900">
                   {product.category === 'skincare' ? '' : product.category === 'makeup' ? '' : '‍️'}
                 </div>
                 <div className="flex-1">

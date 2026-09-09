@@ -175,7 +175,7 @@ export default function CampaignsPage(): JSX.Element {
                     padding="none"
                     className="overflow-hidden opacity-70 hover:opacity-100 transition-all"
                   >
-                    <div className="flex h-36 items-center justify-center bg-gradient-to-br from-blue-100 to-purple-100 dark:from-blue-950 dark:to-purple-950 text-5xl">
+                    <div className="flex h-36 items-center justify-center bg-gradient-to-br from-blue-100 to-brand-100 dark:from-blue-950 dark:to-brand-950 text-5xl">
                       <span></span>
                     </div>
                     <div className="p-5">

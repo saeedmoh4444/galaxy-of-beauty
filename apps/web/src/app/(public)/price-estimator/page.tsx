@@ -246,7 +246,7 @@ export default function PriceEstimatorPage(): JSX.Element {
               {estimate.serviceName}
             </h3>
             {estimate.variantDelta > 0 && estimate.variantName && (
-              <span className="inline-block mt-1 rounded-full bg-purple-100 px-2.5 py-0.5 text-xs font-medium text-purple-700 dark:bg-purple-900 dark:text-purple-300">
+              <span className="inline-block mt-1 rounded-full bg-brand-100 px-2.5 py-0.5 text-xs font-medium text-brand-700 dark:bg-brand-900 dark:text-brand-300">
                 {estimate.variantName}
               </span>
             )}
@@ -268,7 +268,7 @@ export default function PriceEstimatorPage(): JSX.Element {
                 <span className="text-text-secondary">
                   {estimate.variantName || t('marketing.price-estimator.variant-fallback')}
                 </span>
-                <span className="text-purple-600 font-medium">
+                <span className="text-brand-600 font-medium">
                   +{formatCurrency(estimate.variantDelta)}
                 </span>
               </div>

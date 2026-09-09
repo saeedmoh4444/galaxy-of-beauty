@@ -18,7 +18,7 @@ const FEATURES = [
     title: 'marketing.discover.technicians',
     desc: 'marketing.discover.technicians-desc',
     href: '/technicians',
-    color: 'from-purple-100 to-purple-200',
+    color: 'from-brand-100 to-brand-200',
   },
   {
     emoji: '️',
@@ -144,7 +144,7 @@ const FEATURES = [
     title: 'marketing.discover.onboarding',
     desc: 'marketing.discover.onboarding-desc',
     href: '/onboarding',
-    color: 'from-purple-100 to-indigo-200',
+    color: 'from-brand-100 to-indigo-200',
   },
   {
     emoji: '',

@@ -285,7 +285,7 @@ export default function CycleTrackerPage(): JSX.Element {
                   {new Date(fertileWindow.fertileEnd as string).toLocaleDateString('ar-SA')}
                 </p>
                 {(fertileWindow.isFertileToday as boolean) && (
-                  <p className="text-purple-600 font-semibold mt-1">
+                  <p className="text-brand-600 font-semibold mt-1">
                     {t('cycleTracker.fertileToday')}
                   </p>
                 )}
@@ -364,7 +364,7 @@ export default function CycleTrackerPage(): JSX.Element {
                             : [...prev, s.slug],
                         )
                       }
-                      className={`rounded-full px-3 py-1 text-xs ${symptoms.includes(s.slug) ? 'bg-purple-100 text-purple-700' : 'bg-surface-muted'}`}
+                      className={`rounded-full px-3 py-1 text-xs ${symptoms.includes(s.slug) ? 'bg-brand-100 text-brand-700' : 'bg-surface-muted'}`}
                     >
                       {t(s.key)}
                     </button>
@@ -414,7 +414,7 @@ export default function CycleTrackerPage(): JSX.Element {
 
         {/* E4a — PMS self-care tips (luteal phase only) */}
         {pmsTips.length > 0 && (
-          <Card padding="lg" className="border-purple-200 bg-purple-50 dark:bg-purple-950">
+          <Card padding="lg" className="border-brand-200 bg-brand-50 dark:bg-brand-950">
             <h3 className="font-bold mb-3"> {t('cycleTracker.pmsTips')}</h3>
             <div className="space-y-2">
               {pmsTips.map((tip, i) => (

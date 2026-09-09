@@ -92,7 +92,7 @@ export default function BeautyFortunePage(): JSX.Element {
   };
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-gradient-to-br from-purple-50 via-pink-50 to-rose-50 px-4 dark:from-gray-950 dark:via-purple-950 dark:to-pink-950">
+    <div className="flex min-h-screen items-center justify-center bg-gradient-to-br from-brand-50 via-pink-50 to-rose-50 px-4 dark:from-gray-950 dark:via-brand-950 dark:to-pink-950">
       <div className="w-full max-w-md text-center">
         {!fortune && !opening && (
           <div>

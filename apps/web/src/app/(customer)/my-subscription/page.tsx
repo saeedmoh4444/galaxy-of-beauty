@@ -84,7 +84,7 @@ export default function MySubscriptionPage(): JSX.Element {
         {/* Status Card */}
         <Card
           padding="lg"
-          className="bg-gradient-to-r from-brand-50 to-purple-50 dark:from-brand-950 dark:to-purple-950"
+          className="bg-gradient-to-r from-brand-50 to-brand-50 dark:from-brand-950 dark:to-brand-950"
         >
           <div className="text-center">
             <span className="text-5xl"></span>
@@ -112,7 +112,7 @@ export default function MySubscriptionPage(): JSX.Element {
                 <p className="text-text-secondary">{t('mySubscription.booked')}</p>
               </div>
               <div className="text-center">
-                <p className="font-bold text-purple-600">{remaining}</p>
+                <p className="font-bold text-brand-600">{remaining}</p>
                 <p className="text-text-secondary">{t('mySubscription.remaining')}</p>
               </div>
               <div className="text-center">
@@ -149,7 +149,7 @@ export default function MySubscriptionPage(): JSX.Element {
             </div>
             <div className="flex justify-between">
               <span className="text-text-secondary">{t('mySubscription.remainingBookings')}</span>
-              <span className="font-bold text-purple-600">
+              <span className="font-bold text-brand-600">
                 {t('mySubscription.remainingOf', { remaining, total: servicesPerMonth })}
               </span>
             </div>

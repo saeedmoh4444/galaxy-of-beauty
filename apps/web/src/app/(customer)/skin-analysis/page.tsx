@@ -139,7 +139,7 @@ export default function SkinAnalysisPage(): JSX.Element {
               </div>
               <div className="rounded-xl bg-surface-elevated p-4">
                 <p className="text-xs text-text-secondary">{t('skin.result.sensitivity')}</p>
-                <p className="text-xl font-bold text-purple-600">
+                <p className="text-xl font-bold text-brand-600">
                   {(result['sensitivityLevel'] as string) || '—'}
                 </p>
               </div>
@@ -213,7 +213,7 @@ export default function SkinAnalysisPage(): JSX.Element {
                   padding="md"
                   className={`flex items-center gap-4 ${idx === 0 ? 'border-s-4 border-brand-500' : ''}`}
                 >
-                  <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-brand-100 to-purple-100 dark:from-brand-900 dark:to-purple-900 text-lg"></div>
+                  <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-brand-100 to-brand-100 dark:from-brand-900 dark:to-brand-900 text-lg"></div>
                   <div className="flex-1 min-w-0">
                     <div className="flex items-center gap-2">
                       <p className="font-bold text-sm">

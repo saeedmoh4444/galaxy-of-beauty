@@ -109,7 +109,7 @@ export default async function MommyAndMePage(): Promise<JSX.Element> {
         ))}
       </div>
 
-      <div className="mt-16 text-center bg-gradient-to-r from-pink-50 to-purple-50 rounded-3xl p-12 dark:from-pink-950 dark:to-purple-950">
+      <div className="mt-16 text-center bg-gradient-to-r from-pink-50 to-brand-50 rounded-3xl p-12 dark:from-pink-950 dark:to-brand-950">
         <h2 className="text-2xl font-bold text-text-primary dark:text-gray-100">
           {t('marketing.mommy-and-me.gift-ideal', locale)}
         </h2>

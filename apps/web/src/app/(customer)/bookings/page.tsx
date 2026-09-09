@@ -118,7 +118,7 @@ export default function BookingsPage(): JSX.Element {
                   {(b.status === 'PAID' || b.status === 'IN_PROGRESS') && (
                     <Link
                       href={`/video/${b.id}`}
-                      className="rounded-lg bg-purple-600 px-3 py-1 text-xs font-medium text-white hover:bg-purple-700"
+                      className="rounded-lg bg-brand-600 px-3 py-1 text-xs font-medium text-white hover:bg-brand-700"
                     >
                       {t('booking.video')}
                     </Link>

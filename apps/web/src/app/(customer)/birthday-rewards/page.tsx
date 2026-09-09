@@ -83,7 +83,7 @@ export default function BirthdayRewardsPage(): JSX.Element {
             {/* Main Reward Card */}
             <Card
               padding="lg"
-              className="relative overflow-hidden bg-gradient-to-br from-pink-50 to-purple-50 dark:from-pink-950 dark:to-purple-950 border-2 border-pink-200 dark:border-pink-800"
+              className="relative overflow-hidden bg-gradient-to-br from-pink-50 to-brand-50 dark:from-pink-950 dark:to-brand-950 border-2 border-pink-200 dark:border-pink-800"
             >
               {/* Decorative */}
               <div className="absolute -top-6 -end-6 text-6xl opacity-20"></div>

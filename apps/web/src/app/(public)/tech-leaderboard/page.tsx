@@ -62,7 +62,7 @@ export default function TechLeaderboardPage(): JSX.Element {
                 <span className="text-2xl w-10 text-center font-bold">
                   {['', '', ''][idx] ?? `#${idx + 1}`}
                 </span>
-                <div className="flex h-10 w-10 items-center justify-center rounded-full bg-gradient-to-br from-brand-400 to-purple-500 text-white font-bold">
+                <div className="flex h-10 w-10 items-center justify-center rounded-full bg-gradient-to-br from-brand-400 to-brand-500 text-white font-bold">
                   {((item.name as string) || '')[0]}
                 </div>
                 <div className="flex-1">

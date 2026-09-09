@@ -204,7 +204,7 @@ export default function BeautyRoutinePage(): JSX.Element {
                   </ul>
                 </div>
                 <div>
-                  <h4 className="font-semibold text-sm mb-2 text-purple-600">
+                  <h4 className="font-semibold text-sm mb-2 text-brand-600">
                     {' '}
                     {t('routine.weekly')}
                   </h4>
