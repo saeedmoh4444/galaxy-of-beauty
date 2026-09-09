@@ -192,7 +192,7 @@ export default function FamilyAccountPage(): JSX.Element {
             {allMembers.map((m) => (
               <Card key={m.id} padding="lg" className="relative">
                 {/* Relationship badge */}
-                <span className="absolute top-3 right-3 text-2xl">
+                <span className="absolute top-3 end-3 text-2xl">
                   {RELATIONSHIP_EMOJI[m.relationship] ?? ''}
                 </span>
 

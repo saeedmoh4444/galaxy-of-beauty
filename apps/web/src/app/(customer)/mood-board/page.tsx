@@ -180,7 +180,7 @@ export default function MoodBoardPage(): JSX.Element {
                     <div className="flex h-full items-center justify-center text-5xl"></div>
                   )}
                   {/* Pin count badge */}
-                  <span className="absolute top-2 left-2 rounded-full bg-black/60 px-2 py-0.5 text-xs text-white backdrop-blur">
+                  <span className="absolute top-2 start-2 rounded-full bg-black/60 px-2 py-0.5 text-xs text-white backdrop-blur">
                     {t('mood.pinCount', { count: board.pins.length })}
                   </span>
                 </div>

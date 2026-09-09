@@ -55,7 +55,7 @@ export default function DNABeautyPage(): JSX.Element {
                 ),
               )}
             </div>
-            <div className="mt-4 text-right space-y-2">
+            <div className="mt-4 text-end space-y-2">
               <p className="font-bold">{t('dnaBeauty.recommended')}</p>
               <div className="flex flex-wrap gap-1">
                 {(result.recommendations as string[])?.map((r: string) => (

@@ -211,7 +211,7 @@ export default function CreateBookingPage(): JSX.Element {
                     setServiceId(s.id);
                     setStep(2);
                   }}
-                  className={`w-full rounded-lg border p-4 text-right transition-colors hover:border-brand-400 ${
+                  className={`w-full rounded-lg border p-4 text-end transition-colors hover:border-brand-400 ${
                     serviceId === s.id
                       ? 'border-brand-500 bg-brand-50 dark:bg-brand-950'
                       : 'border-edge'

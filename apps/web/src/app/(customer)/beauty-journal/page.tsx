@@ -132,7 +132,7 @@ export default function BeautyJournalPage(): JSX.Element {
               <Card key={e.id} padding="md" className="relative group">
                 <button
                   onClick={() => deleteMut.mutate({ id: e.id })}
-                  className="absolute top-2 right-2 hidden rounded-full bg-red-500 p-1 text-white text-xs group-hover:block"
+                  className="absolute top-2 end-2 hidden rounded-full bg-red-500 p-1 text-white text-xs group-hover:block"
                 ></button>
                 <div className="flex items-center gap-3 text-xs text-text-tertiary mb-2">
                   {e.mood && <span>{MOODS[e.mood - 1]}</span>}

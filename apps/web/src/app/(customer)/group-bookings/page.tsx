@@ -255,7 +255,7 @@ export default function GroupBookingsPage(): JSX.Element {
                           </div>
                         </div>
                       </div>
-                      <div className="text-right">
+                      <div className="text-end">
                         {Number(group.totalAmount) > 0 && (
                           <p className="text-lg font-bold text-brand-600">
                             {formatCurrency(Number(group.totalAmount))}
@@ -367,7 +367,7 @@ export default function GroupBookingsPage(): JSX.Element {
                   + {t('groupBookings.addMember')}
                 </button>
               </div>
-              <div className="space-y-3 max-h-64 overflow-y-auto pr-1">
+              <div className="space-y-3 max-h-64 overflow-y-auto pe-1">
                 {members.map((m, idx) => (
                   <div
                     key={idx}

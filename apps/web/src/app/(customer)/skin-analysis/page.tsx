@@ -88,7 +88,7 @@ export default function SkinAnalysisPage(): JSX.Element {
             <input
               type="file"
               accept="image/*"
-              className="block w-full text-sm text-text-secondary file:mr-4 file:rounded-lg file:border-0 file:bg-brand-600 file:px-4 file:py-2 file:text-sm file:font-semibold file:text-white hover:file:bg-brand-700"
+              className="block w-full text-sm text-text-secondary file:me-4 file:rounded-lg file:border-0 file:bg-brand-600 file:px-4 file:py-2 file:text-sm file:font-semibold file:text-white hover:file:bg-brand-700"
             />
             <p className="text-xs text-text-tertiary">{t('skin.orImageUrl')}</p>
             <div className="flex gap-2">
@@ -211,7 +211,7 @@ export default function SkinAnalysisPage(): JSX.Element {
                 <Card
                   key={a.id as number}
                   padding="md"
-                  className={`flex items-center gap-4 ${idx === 0 ? 'border-l-4 border-brand-500' : ''}`}
+                  className={`flex items-center gap-4 ${idx === 0 ? 'border-s-4 border-brand-500' : ''}`}
                 >
                   <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-brand-100 to-purple-100 dark:from-brand-900 dark:to-purple-900 text-lg"></div>
                   <div className="flex-1 min-w-0">

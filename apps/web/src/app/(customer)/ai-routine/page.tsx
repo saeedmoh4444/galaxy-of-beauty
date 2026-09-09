@@ -74,7 +74,7 @@ export default function AIRoutinePage(): JSX.Element {
                 <button
                   key={s.key}
                   onClick={() => setSkinType(s.key)}
-                  className={`rounded-xl border-2 p-4 text-right transition-all ${skinType === s.key ? 'border-brand-400 bg-brand-50 dark:bg-brand-950' : 'border-edge'}`}
+                  className={`rounded-xl border-2 p-4 text-end transition-all ${skinType === s.key ? 'border-brand-400 bg-brand-50 dark:bg-brand-950' : 'border-edge'}`}
                 >
                   <span className="text-3xl">{s.emoji}</span>
                   <p className="font-bold mt-1">{t(s.label)}</p>

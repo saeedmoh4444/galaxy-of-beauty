@@ -50,7 +50,7 @@ export default function MarketplacePage(): JSX.Element {
           value={search}
           onChange={(e) => setSearch(e.target.value)}
           placeholder={t('marketplace.searchPlaceholder')}
-          className="mb-6 w-full rounded-xl border border-edge px-4 py-3 text-sm text-right dark:border-gray-700 dark:bg-gray-800 dark:text-gray-100"
+          className="mb-6 w-full rounded-xl border border-edge px-4 py-3 text-sm text-end dark:border-gray-700 dark:bg-gray-800 dark:text-gray-100"
         />
 
         {items.length === 0 ? (

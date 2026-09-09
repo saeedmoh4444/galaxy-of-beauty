@@ -62,7 +62,7 @@ export default function NightModePage(): JSX.Element {
                         }
                         setChecked(n);
                       }}
-                      className="h-5 w-5 accent-brand-600 ml-2"
+                      className="h-5 w-5 accent-brand-600 ms-2"
                     />
                   </div>
                 );

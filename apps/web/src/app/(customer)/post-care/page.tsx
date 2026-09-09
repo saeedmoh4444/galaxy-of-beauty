@@ -99,7 +99,7 @@ export default function PostCarePage(): JSX.Element {
     <DashboardLayout userRole="CUSTOMER">
       <div className="mx-auto max-w-4xl space-y-6">
         {/* Header */}
-        <div className="text-center sm:text-right">
+        <div className="text-center sm:text-end">
           <h1 className="text-2xl font-bold text-text-primary dark:text-gray-100">
             ‍️ {t('postCare.title')}
           </h1>

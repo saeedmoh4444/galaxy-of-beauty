@@ -56,7 +56,7 @@ export default function VIPMembershipPage(): JSX.Element {
                   className={`relative text-center ${isCurrent ? 'border-2 border-brand-400 ring-2 ring-brand-100 dark:ring-brand-900' : ''}`}
                 >
                   {isCurrent && (
-                    <span className="absolute -top-3 left-1/2 -translate-x-1/2 rounded-full bg-brand-600 px-4 py-0.5 text-xs font-bold text-white">
+                    <span className="absolute -top-3 start-1/2 -translate-x-1/2 rounded-full bg-brand-600 px-4 py-0.5 text-xs font-bold text-white">
                       {t('vipMembership.current')}
                     </span>
                   )}
@@ -71,7 +71,7 @@ export default function VIPMembershipPage(): JSX.Element {
                       / {t('vipMembership.perYear')}
                     </span>
                   </p>
-                  <ul className="mt-4 space-y-2 text-right">
+                  <ul className="mt-4 space-y-2 text-end">
                     {benefits.map((b: string, i: number) => (
                       <li key={i} className="flex items-center gap-2 text-sm">
                         <span className="text-brand-500"></span>{' '}

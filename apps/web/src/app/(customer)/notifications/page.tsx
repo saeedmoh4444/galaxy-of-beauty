@@ -75,7 +75,7 @@ export default function NotificationsPage(): JSX.Element {
                     className={
                       isRead
                         ? ''
-                        : 'border-r-4 border-r-brand-500 bg-brand-50/30 dark:bg-brand-950/20'
+                        : 'border-e-4 border-e-brand-500 bg-brand-50/30 dark:bg-brand-950/20'
                     }
                   >
                     <div className="flex items-start gap-3">

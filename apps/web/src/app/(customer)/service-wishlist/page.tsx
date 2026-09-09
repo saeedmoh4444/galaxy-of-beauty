@@ -55,7 +55,7 @@ export default function ServiceWishlistPage(): JSX.Element {
                     </p>
                   </div>
                 </div>
-                <div className="text-right">
+                <div className="text-end">
                   <p className="font-bold text-brand-600">
                     {formatCurrency(i.currentPrice as number)}
                   </p>

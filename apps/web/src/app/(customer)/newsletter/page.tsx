@@ -66,7 +66,7 @@ export default function NewsletterPage(): JSX.Element {
                   <p className="font-bold">{i.titleAr as string}</p>
                   <p className="text-xs text-text-secondary">{i.subject as string}</p>
                 </div>
-                <div className="text-right">
+                <div className="text-end">
                   <span className="text-xs text-text-tertiary">{i.sentAt as string}</span>
                   <p className="text-xs font-bold text-green-600">
                     {t('newsletter.openRate', { count: i.openRate as number })}

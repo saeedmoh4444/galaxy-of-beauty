@@ -88,7 +88,7 @@ export default function EmergencyBookingPage(): JSX.Element {
                 <button
                   key={tech.technicianId as number}
                   onClick={() => setSelectedTech(tech.technicianId as number)}
-                  className={`w-full rounded-xl border-2 p-3 text-right transition-all ${selectedTech === tech.technicianId ? 'border-red-400 bg-red-50' : 'border-edge'}`}
+                  className={`w-full rounded-xl border-2 p-3 text-end transition-all ${selectedTech === tech.technicianId ? 'border-red-400 bg-red-50' : 'border-edge'}`}
                 >
                   <div className="flex justify-between items-center">
                     <span className="font-bold">{tech.name as string}</span>

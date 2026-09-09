@@ -243,7 +243,7 @@ function ColorPalette({
             {c.nameAr}
           </span>
           {selectedId === c.id && (
-            <span className="absolute -top-1 -right-1 flex h-4 w-4 items-center justify-center rounded-full bg-brand-500 text-[10px] text-white"></span>
+            <span className="absolute -top-1 -end-1 flex h-4 w-4 items-center justify-center rounded-full bg-brand-500 text-[10px] text-white"></span>
           )}
         </button>
       ))}
@@ -392,7 +392,7 @@ export default function VirtualTryOnPage(): JSX.Element {
     <DashboardLayout userRole="CUSTOMER">
       <div className="mx-auto max-w-4xl space-y-6">
         {/* Header */}
-        <div className="text-center sm:text-right">
+        <div className="text-center sm:text-end">
           <h1 className="text-2xl font-bold text-text-primary dark:text-gray-100">
             {t('tryOn.title')}
           </h1>
@@ -499,16 +499,16 @@ export default function VirtualTryOnPage(): JSX.Element {
                     {!selectedColor && (
                       <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
                         <div className="relative w-[65%] h-[55%] rounded-[50%] border-2 border-dashed border-white/40">
-                          <div className="absolute top-[15%] left-[25%] w-[20%] h-[10%] rounded-full border border-white/25" />
-                          <div className="absolute top-[15%] right-[25%] w-[20%] h-[10%] rounded-full border border-white/25" />
-                          <div className="absolute bottom-[12%] left-[35%] w-[30%] h-[8%] rounded-full border border-white/25" />
+                          <div className="absolute top-[15%] start-[25%] w-[20%] h-[10%] rounded-full border border-white/25" />
+                          <div className="absolute top-[15%] end-[25%] w-[20%] h-[10%] rounded-full border border-white/25" />
+                          <div className="absolute bottom-[12%] start-[35%] w-[30%] h-[8%] rounded-full border border-white/25" />
                         </div>
                       </div>
                     )}
 
                     {/* Selected color indicator */}
                     {selectedColor && (
-                      <div className="absolute top-3 left-3 flex items-center gap-2 rounded-full bg-black/50 px-3 py-1.5 text-white text-xs backdrop-blur">
+                      <div className="absolute top-3 start-3 flex items-center gap-2 rounded-full bg-black/50 px-3 py-1.5 text-white text-xs backdrop-blur">
                         <div
                           className="h-4 w-4 rounded-full border border-white/50"
                           style={{ backgroundColor: selectedColor.hex }}
@@ -518,7 +518,7 @@ export default function VirtualTryOnPage(): JSX.Element {
                     )}
 
                     {/* Camera controls */}
-                    <div className="absolute top-3 right-3 flex gap-2">
+                    <div className="absolute top-3 end-3 flex gap-2">
                       <button
                         onClick={flipCamera}
                         className="rounded-full bg-black/50 p-2 text-white text-sm backdrop-blur hover:bg-black/70 transition-colors"
@@ -548,7 +548,7 @@ export default function VirtualTryOnPage(): JSX.Element {
                           alt={t('tryOn.photoAlt')}
                           className="h-full w-full object-cover"
                         />
-                        <div className="absolute bottom-4 left-4 right-4 flex gap-2">
+                        <div className="absolute bottom-4 start-4 end-4 flex gap-2">
                           <Button
                             size="sm"
                             onClick={() => {

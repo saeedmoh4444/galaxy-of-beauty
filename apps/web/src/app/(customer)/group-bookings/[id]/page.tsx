@@ -106,7 +106,7 @@ export default function GroupBookingDetailPage(): JSX.Element {
             {/* Group Header */}
             <Card padding="lg" className="relative overflow-hidden">
               <div
-                className={`absolute top-0 right-0 left-0 h-1.5 bg-gradient-to-r ${status === 'COMPLETED' ? 'from-gray-400 to-gray-500' : status === 'CANCELLED' ? 'from-red-400 to-red-500' : 'from-brand-400 to-brand-600'}`}
+                className={`absolute top-0 end-0 start-0 h-1.5 bg-gradient-to-r ${status === 'COMPLETED' ? 'from-gray-400 to-gray-500' : status === 'CANCELLED' ? 'from-red-400 to-red-500' : 'from-brand-400 to-brand-600'}`}
               />
               <div className="pt-4">
                 <div className="flex items-center justify-between">

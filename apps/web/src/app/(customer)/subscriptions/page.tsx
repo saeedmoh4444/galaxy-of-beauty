@@ -115,7 +115,7 @@ export default function SubscriptionsPage(): JSX.Element {
                     className={`relative flex flex-col border-2 ${isCurrentPlan ? 'border-brand-500' : 'border-transparent'}`}
                   >
                     {isCurrentPlan && (
-                      <span className="absolute -top-3 left-1/2 -translate-x-1/2 rounded-full bg-brand-600 px-4 py-0.5 text-xs font-medium text-white">
+                      <span className="absolute -top-3 start-1/2 -translate-x-1/2 rounded-full bg-brand-600 px-4 py-0.5 text-xs font-medium text-white">
                         {t('subscriptions.currentBadge')}
                       </span>
                     )}

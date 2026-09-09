@@ -81,7 +81,7 @@ export default function AiChatPage(): JSX.Element {
             <div className="space-y-4">
               {Array.from({ length: 3 }, (_, i) => (
                 <div key={i} className={`flex ${i % 2 === 0 ? 'justify-start' : 'justify-end'}`}>
-                  <div className={`w-2/3 space-y-2 ${i % 2 === 0 ? 'pr-8' : 'pl-8'}`}>
+                  <div className={`w-2/3 space-y-2 ${i % 2 === 0 ? 'pe-8' : 'ps-8'}`}>
                     <CardSkeleton />
                     <CardSkeleton />
                   </div>

@@ -125,7 +125,7 @@ export default function ProductScannerPage(): JSX.Element {
                 <>
                   <video ref={videoRef} playsInline muted className="h-48 w-full object-cover" />
                   <div className="absolute inset-0 border-2 border-brand-400/60 m-8 rounded-lg" />
-                  <p className="absolute bottom-2 left-0 right-0 text-center text-xs text-white/70">
+                  <p className="absolute bottom-2 start-0 end-0 text-center text-xs text-white/70">
                     {t('scanner.alignBarcode')}
                   </p>
                 </>

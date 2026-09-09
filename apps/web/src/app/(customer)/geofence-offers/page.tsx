@@ -45,7 +45,7 @@ export default function GeofenceOffersPage(): JSX.Element {
                     {o.salonName as string} · {o.distance as string} · {o.city as string}
                   </p>
                 </div>
-                <div className="text-right">
+                <div className="text-end">
                   <span className="rounded-full bg-red-100 dark:bg-red-900 px-2.5 py-0.5 text-xs font-bold text-red-700">
                     {o.expiresIn as string}
                   </span>

@@ -177,7 +177,7 @@ export default function ServiceWarrantyPage(): JSX.Element {
                     </p>
                     <p className="text-xs text-text-secondary mt-0.5">{c.reason as string}</p>
                   </div>
-                  <div className="text-right">
+                  <div className="text-end">
                     <span
                       className={`rounded-full px-2.5 py-0.5 text-xs font-medium ${
                         c.status === 'APPROVED'
@@ -224,7 +224,7 @@ export default function ServiceWarrantyPage(): JSX.Element {
                     key={comp.key}
                     type="button"
                     onClick={() => setCompType(comp.key)}
-                    className={`w-full text-right rounded-xl border p-3 text-sm transition-all ${compType === comp.key ? 'border-brand-400 bg-brand-50 dark:bg-brand-950' : 'border-edge'}`}
+                    className={`w-full text-end rounded-xl border p-3 text-sm transition-all ${compType === comp.key ? 'border-brand-400 bg-brand-50 dark:bg-brand-950' : 'border-edge'}`}
                   >
                     <span className="font-bold">
                       {comp.emoji} {t(comp.label)}

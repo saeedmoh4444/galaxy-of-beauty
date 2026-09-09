@@ -157,7 +157,7 @@ export default function PostTreatmentPage(): JSX.Element {
                 key={i}
                 type="button"
                 onClick={() => toggleDay(tl.day)}
-                className={`flex w-full items-center gap-3 rounded-xl p-3 text-right transition-all ${completed.includes(tl.day) ? 'bg-emerald-100 dark:bg-emerald-900' : 'bg-surface-muted'}`}
+                className={`flex w-full items-center gap-3 rounded-xl p-3 text-end transition-all ${completed.includes(tl.day) ? 'bg-emerald-100 dark:bg-emerald-900' : 'bg-surface-muted'}`}
               >
                 <span
                   className={`flex h-6 w-6 shrink-0 items-center justify-center rounded-md text-sm ${completed.includes(tl.day) ? 'bg-emerald-500 text-white' : 'border-2 border-edge'}`}

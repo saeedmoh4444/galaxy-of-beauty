@@ -123,7 +123,7 @@ export default function TravelChecklistPage(): JSX.Element {
                 key={i}
                 type="button"
                 onClick={() => toggle(item)}
-                className={`flex w-full items-center gap-3 rounded-xl p-3 text-right transition-all ${checked.has(item) ? 'bg-emerald-100 dark:bg-emerald-900' : 'bg-white/60 dark:bg-gray-800/60'}`}
+                className={`flex w-full items-center gap-3 rounded-xl p-3 text-end transition-all ${checked.has(item) ? 'bg-emerald-100 dark:bg-emerald-900' : 'bg-white/60 dark:bg-gray-800/60'}`}
               >
                 <span
                   className={`flex h-6 w-6 shrink-0 items-center justify-center rounded-md text-sm ${checked.has(item) ? 'bg-emerald-500 text-white' : 'border-2 border-edge'}`}

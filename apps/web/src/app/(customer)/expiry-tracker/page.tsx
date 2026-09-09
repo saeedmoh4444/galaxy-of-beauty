@@ -87,7 +87,7 @@ export default function ExpiryTrackerPage(): JSX.Element {
                       })}
                     </p>
                   </div>
-                  <div className="text-right">
+                  <div className="text-end">
                     {(i.expired as boolean) ? (
                       <span className="rounded-full bg-red-100 dark:bg-red-900 px-2.5 py-0.5 text-xs font-bold text-red-700">
                         {t('expiryTracker.expired')}

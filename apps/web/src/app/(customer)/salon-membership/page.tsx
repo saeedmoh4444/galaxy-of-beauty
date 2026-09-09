@@ -122,7 +122,7 @@ export default function SalonMembershipPage(): JSX.Element {
                   ? t('membership.free')
                   : t('membership.perMonth', { price: formatCurrency(m.price) })}
               </p>
-              <div className="mt-4 space-y-2 text-sm text-right">
+              <div className="mt-4 space-y-2 text-sm text-end">
                 <p className="font-semibold text-text-primary">{t('membership.benefitsTitle')}</p>
                 {m.benefits.map((b, i) => (
                   <p key={i} className="text-green-600">

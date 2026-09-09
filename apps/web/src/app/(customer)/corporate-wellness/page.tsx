@@ -62,7 +62,7 @@ export default function CorporateWellnessPage(): JSX.Element {
                   key={p.id}
                   type="button"
                   onClick={() => setPlanId(p.id)}
-                  className={`flex gap-4 rounded-2xl border-2 p-5 text-right transition-all ${planId === p.id ? 'border-rose-300 bg-rose-50 dark:border-rose-700 dark:bg-rose-950' : 'border-edge-muted bg-white dark:border-gray-800 dark:bg-gray-900'}`}
+                  className={`flex gap-4 rounded-2xl border-2 p-5 text-end transition-all ${planId === p.id ? 'border-rose-300 bg-rose-50 dark:border-rose-700 dark:bg-rose-950' : 'border-edge-muted bg-white dark:border-gray-800 dark:bg-gray-900'}`}
                 >
                   <span className="text-4xl shrink-0">{p.emoji}</span>
                   <div className="flex-1">
@@ -107,20 +107,20 @@ export default function CorporateWellnessPage(): JSX.Element {
                   value={companyName}
                   onChange={(e) => setCompanyName(e.target.value)}
                   placeholder={t('corporateWellness.companyPlaceholder')}
-                  className="w-full rounded-xl border border-edge px-4 py-3 text-sm text-right dark:border-gray-700 dark:bg-gray-800 dark:text-gray-100"
+                  className="w-full rounded-xl border border-edge px-4 py-3 text-sm text-end dark:border-gray-700 dark:bg-gray-800 dark:text-gray-100"
                 />
                 <input
                   value={contactName}
                   onChange={(e) => setContactName(e.target.value)}
                   placeholder={t('corporateWellness.contactPlaceholder')}
-                  className="w-full rounded-xl border border-edge px-4 py-3 text-sm text-right dark:border-gray-700 dark:bg-gray-800 dark:text-gray-100"
+                  className="w-full rounded-xl border border-edge px-4 py-3 text-sm text-end dark:border-gray-700 dark:bg-gray-800 dark:text-gray-100"
                 />
                 <input
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   type="email"
                   placeholder={t('corporateWellness.emailPlaceholder')}
-                  className="w-full rounded-xl border border-edge px-4 py-3 text-sm text-right dark:border-gray-700 dark:bg-gray-800 dark:text-gray-100"
+                  className="w-full rounded-xl border border-edge px-4 py-3 text-sm text-end dark:border-gray-700 dark:bg-gray-800 dark:text-gray-100"
                 />
                 <button
                   type="button"

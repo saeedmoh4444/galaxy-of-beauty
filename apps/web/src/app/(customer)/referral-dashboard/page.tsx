@@ -163,7 +163,7 @@ export default function ReferralDashboardPage(): JSX.Element {
                     </p>
                   </div>
                 </div>
-                <div className="text-right">
+                <div className="text-end">
                   <span
                     className={`rounded-full px-2.5 py-0.5 text-xs font-medium ${
                       r.status === 'COMPLETED'
@@ -210,7 +210,7 @@ export default function ReferralDashboardPage(): JSX.Element {
                       }}
                     />
                   </div>
-                  <span className="text-sm font-semibold w-12 text-right">{entry._count.id}</span>
+                  <span className="text-sm font-semibold w-12 text-end">{entry._count.id}</span>
                 </div>
               ))}
             </div>

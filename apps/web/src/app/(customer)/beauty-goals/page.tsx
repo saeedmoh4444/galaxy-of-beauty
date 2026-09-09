@@ -137,7 +137,7 @@ export default function BeautyGoalsPage(): JSX.Element {
                 <div className="flex items-center gap-2 mb-3">
                   <span className="text-2xl">{cat.emoji}</span>
                   <h3 className="font-bold">{t(cat.name)}</h3>
-                  <span className="text-xs text-text-tertiary mr-auto">
+                  <span className="text-xs text-text-tertiary me-auto">
                     {catChecked}/{cat.goals.length}
                   </span>
                 </div>

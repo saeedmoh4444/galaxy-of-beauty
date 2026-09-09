@@ -86,8 +86,8 @@ export default function BirthdayRewardsPage(): JSX.Element {
               className="relative overflow-hidden bg-gradient-to-br from-pink-50 to-purple-50 dark:from-pink-950 dark:to-purple-950 border-2 border-pink-200 dark:border-pink-800"
             >
               {/* Decorative */}
-              <div className="absolute -top-6 -right-6 text-6xl opacity-20"></div>
-              <div className="absolute -bottom-6 -left-6 text-6xl opacity-20"></div>
+              <div className="absolute -top-6 -end-6 text-6xl opacity-20"></div>
+              <div className="absolute -bottom-6 -start-6 text-6xl opacity-20"></div>
 
               {isClaimed ? (
                 /* Claimed State */
