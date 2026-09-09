@@ -17,7 +17,7 @@ const LIFE_STAGES: Record<
   young_adult: {
     emoji: '',
     label: { ar: 'شابة (١٨-٢٥)', en: 'Young Adult (18-25)' },
-    color: 'bg-purple-100 text-purple-700 dark:bg-purple-950 dark:text-purple-300',
+    color: 'bg-brand-100 text-brand-700 dark:bg-brand-950 dark:text-brand-300',
   },
   career: {
     emoji: '',

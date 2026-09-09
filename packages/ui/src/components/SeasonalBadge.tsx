@@ -38,7 +38,7 @@ const SEASONS: Record<string, { emoji: string; labelAr: string; labelEn: string;
       emoji: '',
       labelAr: 'عرض نهاية الأسبوع',
       labelEn: 'Weekend Deal',
-      color: 'bg-purple-100 text-purple-800 dark:bg-purple-950 dark:text-purple-300',
+      color: 'bg-brand-100 text-brand-800 dark:bg-brand-950 dark:text-brand-300',
     },
     SUMMER: {
       emoji: '️',

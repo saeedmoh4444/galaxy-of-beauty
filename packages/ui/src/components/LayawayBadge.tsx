@@ -146,7 +146,7 @@ export function LayawayBadge({
           </div>
           <div className="mt-1.5 h-2 overflow-hidden rounded-full bg-violet-100 dark:bg-violet-950">
             <div
-              className="h-full rounded-full bg-gradient-to-r from-violet-400 to-purple-500 transition-all duration-700"
+              className="h-full rounded-full bg-gradient-to-r from-violet-400 to-brand-500 transition-all duration-700"
               style={{ width: `${progress}%` }}
             />
           </div>

@@ -23,7 +23,7 @@ export function RamadanBanner({
   if (!season.seasonLabel) return null;
 
   const isEid = season.isEidAlFitr || season.isEidAlAdha;
-  const bg = isEid ? 'from-amber-500 to-orange-600' : 'from-indigo-700 to-purple-800';
+  const bg = isEid ? 'from-amber-500 to-orange-600' : 'from-indigo-700 to-brand-800';
 
   return (
     <div className={`bg-gradient-to-r ${bg} px-4 py-3 text-center text-white`}>

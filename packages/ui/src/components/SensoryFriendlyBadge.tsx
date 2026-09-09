@@ -122,7 +122,7 @@ export function SensoryFriendlyBadge({
   return (
     <div
       className={cn(
-        'rounded-2xl border border-purple-100 bg-white p-4 dark:border-purple-900 dark:bg-gray-900',
+        'rounded-2xl border border-brand-100 bg-white p-4 dark:border-brand-900 dark:bg-gray-900',
         className,
       )}
     >
@@ -135,15 +135,15 @@ export function SensoryFriendlyBadge({
         <div className="flex items-center gap-2">
           <span className="text-lg" aria-hidden="true"></span>
           <div>
-            <h4 className="text-sm font-bold text-purple-700 dark:text-purple-300">{title}</h4>
-            <p className="text-[10px] text-purple-500 dark:text-purple-400">
+            <h4 className="text-sm font-bold text-brand-700 dark:text-brand-300">{title}</h4>
+            <p className="text-[10px] text-brand-500 dark:text-brand-400">
               {active.length} {optionsText}
             </p>
           </div>
         </div>
         <svg
           className={cn(
-            'h-4 w-4 text-purple-400 transition-transform duration-200',
+            'h-4 w-4 text-brand-400 transition-transform duration-200',
             expanded && 'rotate-180',
           )}
           fill="none"
@@ -161,7 +161,7 @@ export function SensoryFriendlyBadge({
         {active.map((f) => (
           <span
             key={f.key}
-            className="inline-flex items-center gap-1 rounded-full bg-purple-50 px-2 py-0.5 text-[10px] font-medium text-purple-700 dark:bg-purple-950 dark:text-purple-300"
+            className="inline-flex items-center gap-1 rounded-full bg-brand-50 px-2 py-0.5 text-[10px] font-medium text-brand-700 dark:bg-brand-950 dark:text-brand-300"
             title={f.description[locale]}
           >
             <span aria-hidden="true">{f.emoji}</span>
@@ -172,7 +172,7 @@ export function SensoryFriendlyBadge({
 
       {/* Expanded detail — toggled */}
       {expanded && (
-        <div className="mt-3 space-y-2 border-t border-purple-50 pt-3 dark:border-purple-900">
+        <div className="mt-3 space-y-2 border-t border-brand-50 pt-3 dark:border-brand-900">
           {active.map((f) => (
             <div key={f.key} className="flex items-start gap-2">
               <span className="mt-0.5 text-sm" aria-hidden="true">
@@ -189,7 +189,7 @@ export function SensoryFriendlyBadge({
             </div>
           ))}
 
-          <p className="!mt-3 text-[10px] leading-relaxed text-purple-500 dark:text-purple-400">
+          <p className="!mt-3 text-[10px] leading-relaxed text-brand-500 dark:text-brand-400">
             {expandedNote}
           </p>
         </div>

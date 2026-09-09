@@ -101,6 +101,16 @@ for (const [prefix, shade, token] of [
   RULES.push([`${prefix}-gray-${shade}(?![\\d/])`, `${prefix}-${token}`, false]);
 }
 
+// ── purple→brand (legacy violet complements — old brand WAS violet) ──
+// Rose Blush unified palette: purple tints become rose brand tints.
+for (const prefix of ['text', 'bg', 'border', 'ring', 'from', 'via', 'to', 'fill', 'stroke']) {
+  RULES.push([
+    `(?<![a-zA-Z0-9-])${prefix}-purple-([0-9]{2,3})(?![\\d/])`,
+    `${prefix}-brand-$1`,
+    false,
+  ]);
+}
+
 /** Walk a dir for source files. */
 function* walk(dir) {
   for (const entry of readdirSync(dir)) {

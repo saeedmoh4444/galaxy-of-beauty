@@ -79,10 +79,10 @@ export function SelfCareReminder({
 
   return (
     <div
-      className={`rounded-xl border border-purple-100 bg-purple-50 p-4 dark:border-purple-900 dark:bg-purple-950 ${className}`}
+      className={`rounded-xl border border-brand-100 bg-brand-50 p-4 dark:border-brand-900 dark:bg-brand-950 ${className}`}
     >
-      <p className="text-xs font-semibold text-purple-600 dark:text-purple-400">{title}</p>
-      <p className="mt-2 text-sm text-purple-800 dark:text-purple-200">
+      <p className="text-xs font-semibold text-brand-600 dark:text-brand-400">{title}</p>
+      <p className="mt-2 text-sm text-brand-800 dark:text-brand-200">
         <span className="me-2 text-xl">{reminder.emoji}</span>
         {reminder.text[locale]}
       </p>

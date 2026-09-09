@@ -99,8 +99,8 @@ export function ThreeGenerationsCard({
       key: 'daughter',
       data: generations.daughter,
       label: { ar: 'الابنة', en: 'Daughter' },
-      color: 'text-purple-700 dark:text-purple-300',
-      gradient: 'from-purple-100 to-violet-100 dark:from-purple-900 dark:to-violet-900',
+      color: 'text-brand-700 dark:text-brand-300',
+      gradient: 'from-brand-100 to-violet-100 dark:from-brand-900 dark:to-violet-900',
     },
   ];
 

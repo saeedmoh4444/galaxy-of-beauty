@@ -92,8 +92,8 @@ const EVENTS: Record<LifeEvent, EventDef> = {
       { ar: 'كريمات ترطيب', en: 'Moisturizing creams' },
     ],
     price: 300,
-    color: 'border-purple-200 bg-purple-50/30 dark:border-purple-900 dark:bg-purple-950/20',
-    gradient: 'from-purple-500 to-violet-500',
+    color: 'border-brand-200 bg-purple-50/30 dark:border-brand-900 dark:bg-purple-950/20',
+    gradient: 'from-brand-500 to-violet-500',
   },
   new_mother: {
     emoji: '',
@@ -159,7 +159,7 @@ const EVENTS: Record<LifeEvent, EventDef> = {
     ],
     price: 500,
     color: 'border-indigo-200 bg-indigo-50/30 dark:border-indigo-900 dark:bg-indigo-950/20',
-    gradient: 'from-indigo-500 to-purple-500',
+    gradient: 'from-indigo-500 to-brand-500',
   },
 };
 

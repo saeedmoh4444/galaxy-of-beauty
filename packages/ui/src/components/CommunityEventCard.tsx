@@ -63,7 +63,7 @@ export function CommunityEventCard({
       )}
     >
       <div className="flex items-start gap-3">
-        <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-violet-100 to-purple-100 text-2xl dark:from-violet-900 dark:to-purple-900">
+        <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-violet-100 to-brand-100 text-2xl dark:from-violet-900 dark:to-brand-900">
           {event.emoji || '‍️'}
         </div>
         <div className="min-w-0 flex-1">
@@ -93,7 +93,7 @@ export function CommunityEventCard({
           {event.maxAttendees && (
             <div className="mt-1 h-1.5 overflow-hidden rounded-full bg-surface-muted dark:bg-gray-700">
               <div
-                className="h-full rounded-full bg-gradient-to-r from-violet-400 to-purple-500 transition-all"
+                className="h-full rounded-full bg-gradient-to-r from-violet-400 to-brand-500 transition-all"
                 style={{ width: `${Math.round((event.attendees / event.maxAttendees) * 100)}%` }}
               />
             </div>

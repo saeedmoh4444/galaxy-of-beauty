@@ -138,8 +138,8 @@ export function FirstFacialCard({
 
       {/* Mom section */}
       {momName && (
-        <div className="mt-2 rounded-xl bg-purple-50 p-3 dark:bg-purple-950">
-          <p className="text-center text-[10px] text-purple-700 dark:text-purple-300">
+        <div className="mt-2 rounded-xl bg-brand-50 p-3 dark:bg-brand-950">
+          <p className="text-center text-[10px] text-brand-700 dark:text-brand-300">
             {momPrefix}
             {momName} {momWithText}
           </p>

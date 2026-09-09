@@ -101,7 +101,7 @@ export function WomenEmployerBadge({
           </span>
         )}
         {womenInManagement !== undefined && womenInManagement > 0 && (
-          <span className="rounded-full bg-purple-50 px-2 py-0.5 text-[9px] font-medium text-purple-700 dark:bg-purple-950 dark:text-purple-300">
+          <span className="rounded-full bg-brand-50 px-2 py-0.5 text-[9px] font-medium text-brand-700 dark:bg-brand-950 dark:text-brand-300">
             {womenInManagement} {inManagementText}
           </span>
         )}

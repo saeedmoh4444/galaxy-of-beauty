@@ -35,7 +35,7 @@ const LEVELS: Record<CourseLevel, LevelDef> = {
   advanced: {
     emoji: '',
     label: { ar: 'متقدمة', en: 'Advanced' },
-    color: 'bg-purple-50 text-purple-700 dark:bg-purple-950 dark:text-purple-300',
+    color: 'bg-brand-50 text-brand-700 dark:bg-brand-950 dark:text-brand-300',
   },
 };
 

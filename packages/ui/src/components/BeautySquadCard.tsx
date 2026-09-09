@@ -43,12 +43,12 @@ export function BeautySquadCard({
   return (
     <div
       className={cn(
-        'rounded-2xl border border-fuchsia-100 bg-gradient-to-br from-fuchsia-50 to-purple-50 p-5 dark:border-fuchsia-900 dark:from-fuchsia-950 dark:to-purple-950',
+        'rounded-2xl border border-fuchsia-100 bg-gradient-to-br from-fuchsia-50 to-brand-50 p-5 dark:border-fuchsia-900 dark:from-fuchsia-950 dark:to-brand-950',
         className,
       )}
     >
       <div className="text-center">
-        <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-full bg-gradient-to-br from-fuchsia-200 to-purple-200 text-2xl dark:from-fuchsia-800 dark:to-purple-800">
+        <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-full bg-gradient-to-br from-fuchsia-200 to-brand-200 text-2xl dark:from-fuchsia-800 dark:to-brand-800">
           {squad.emoji || '‍️'}
         </div>
         <h4 className="mt-2 text-sm font-bold text-fuchsia-800 dark:text-fuchsia-200">

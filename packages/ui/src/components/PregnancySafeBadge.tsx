@@ -80,7 +80,7 @@ const TRIMESTERS: Record<Trimester, TrimesterDef> = {
       { ar: 'وقت طويل', en: 'Long sessions' },
       { ar: 'علاجات قوية', en: 'Strong treatments' },
     ],
-    color: 'border-purple-200 bg-purple-50/50 dark:border-purple-900 dark:bg-purple-950/30',
+    color: 'border-brand-200 bg-purple-50/50 dark:border-brand-900 dark:bg-purple-950/30',
   },
   postpartum: {
     emoji: '',

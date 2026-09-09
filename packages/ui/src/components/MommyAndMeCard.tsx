@@ -150,7 +150,7 @@ export function MommyAndMeCard({
   return (
     <div
       className={cn(
-        'rounded-2xl border border-pink-100 bg-gradient-to-br from-pink-50 to-purple-50 p-5 dark:border-pink-900 dark:from-pink-950 dark:to-purple-950',
+        'rounded-2xl border border-pink-100 bg-gradient-to-br from-pink-50 to-brand-50 p-5 dark:border-pink-900 dark:from-pink-950 dark:to-brand-950',
         className,
       )}
     >
@@ -174,7 +174,7 @@ export function MommyAndMeCard({
         <span className="text-pink-400 text-lg" aria-hidden="true"></span>
 
         <div className="text-center">
-          <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-gradient-to-br from-purple-200 to-violet-200 text-lg dark:from-purple-800 dark:to-violet-800"></div>
+          <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-gradient-to-br from-brand-200 to-violet-200 text-lg dark:from-brand-800 dark:to-violet-800"></div>
           <p className="mt-1 text-[10px] font-bold text-text-primary dark:text-gray-100">
             {daughter}
           </p>
@@ -250,7 +250,7 @@ export function MommyAndMeCard({
       <button
         type="button"
         onClick={onBook}
-        className="mt-3 w-full rounded-xl bg-gradient-to-r from-pink-500 to-purple-500 py-2.5 text-xs font-bold text-white hover:from-pink-600 hover:to-purple-600 active:scale-[0.98] transition-all shadow-sm"
+        className="mt-3 w-full rounded-xl bg-gradient-to-r from-pink-500 to-brand-500 py-2.5 text-xs font-bold text-white hover:from-pink-600 hover:to-brand-600 active:scale-[0.98] transition-all shadow-sm"
       >
         {bookLabel}
       </button>

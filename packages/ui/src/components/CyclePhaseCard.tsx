@@ -102,7 +102,7 @@ const PHASES: Record<CyclePhase, PhaseData> = {
       { ar: 'منتجات جديدة', en: 'New products' },
     ],
     colorClass: 'border-indigo-200 bg-indigo-50/50 dark:border-indigo-900 dark:bg-indigo-950/30',
-    gradientClass: 'from-indigo-300 to-purple-300 dark:from-indigo-800 dark:to-purple-700',
+    gradientClass: 'from-indigo-300 to-brand-300 dark:from-indigo-800 dark:to-brand-700',
   },
 };
 
