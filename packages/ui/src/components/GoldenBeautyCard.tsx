@@ -159,7 +159,7 @@ export function GoldenBeautyCard({
                 {s.description[locale]} · {s.duration[locale]}
               </p>
             </div>
-            <div className="shrink-0 text-right">
+            <div className="shrink-0 text-end">
               <p className="text-xs font-bold text-amber-800 dark:text-amber-200">
                 {s.price} {currencySuffix}
               </p>

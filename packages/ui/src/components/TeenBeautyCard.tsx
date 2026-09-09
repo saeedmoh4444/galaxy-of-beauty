@@ -158,7 +158,7 @@ export function TeenBeautyCard({
             {service.price} {currencySuffix}
           </span>
           {service.parentRequired && (
-            <span className="ml-1 text-[10px] text-text-tertiary dark:text-text-secondary">
+            <span className="ms-1 text-[10px] text-text-tertiary dark:text-text-secondary">
               {parentConsentSuffix}
             </span>
           )}

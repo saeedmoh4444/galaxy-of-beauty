@@ -91,7 +91,7 @@ export function WalkMeToCar({
             {isHomeService ? '' : ''}
           </span>
           {escorting && (
-            <span className="absolute -bottom-0.5 -right-0.5 flex h-3 w-3">
+            <span className="absolute -bottom-0.5 -end-0.5 flex h-3 w-3">
               <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-indigo-400 opacity-75" />
               <span className="relative inline-flex h-3 w-3 rounded-full bg-indigo-500" />
             </span>

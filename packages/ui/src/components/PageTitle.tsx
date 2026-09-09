@@ -16,7 +16,7 @@ export function PageTitle({ title, subtitle, emoji, className = '' }: PageTitleP
   return (
     <div className={`mb-6 ${className}`}>
       <h1 className="text-2xl font-extrabold text-text-primary dark:text-gray-100">
-        {emoji ? <span className="mr-2">{emoji}</span> : null}
+        {emoji ? <span className="me-2">{emoji}</span> : null}
         {title}
       </h1>
       {subtitle ? (

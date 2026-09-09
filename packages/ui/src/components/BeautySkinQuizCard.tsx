@@ -160,7 +160,7 @@ export function BeautySkinQuizCard({
             key={i}
             type="button"
             onClick={() => handleAnswer(opt.score)}
-            className="w-full rounded-lg bg-teal-50 px-3 py-2.5 text-left text-[10px] font-medium text-teal-800 hover:bg-teal-100 dark:bg-teal-950 dark:text-teal-200 dark:hover:bg-teal-900 transition-colors"
+            className="w-full rounded-lg bg-teal-50 px-3 py-2.5 text-start text-[10px] font-medium text-teal-800 hover:bg-teal-100 dark:bg-teal-950 dark:text-teal-200 dark:hover:bg-teal-900 transition-colors"
           >
             {opt.text[locale]}
           </button>

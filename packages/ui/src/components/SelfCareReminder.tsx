@@ -83,7 +83,7 @@ export function SelfCareReminder({
     >
       <p className="text-xs font-semibold text-purple-600 dark:text-purple-400">{title}</p>
       <p className="mt-2 text-sm text-purple-800 dark:text-purple-200">
-        <span className="mr-2 text-xl">{reminder.emoji}</span>
+        <span className="me-2 text-xl">{reminder.emoji}</span>
         {reminder.text[locale]}
       </p>
     </div>

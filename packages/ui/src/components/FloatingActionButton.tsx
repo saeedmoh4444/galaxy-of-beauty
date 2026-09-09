@@ -21,7 +21,7 @@ export function FloatingActionButton({
   return (
     <button
       onClick={onClick}
-      className={`fixed bottom-6 right-6 z-40 flex items-center gap-2 rounded-2xl bg-brand-600 px-5 py-3.5 text-sm font-bold text-white shadow-lg transition-all hover:bg-brand-700 hover:scale-105 hover:shadow-xl active:scale-95 md:bottom-8 md:right-8 md:px-6 md:py-4 ${className}`}
+      className={`fixed bottom-6 end-6 z-40 flex items-center gap-2 rounded-2xl bg-brand-600 px-5 py-3.5 text-sm font-bold text-white shadow-lg transition-all hover:bg-brand-700 hover:scale-105 hover:shadow-xl active:scale-95 md:bottom-8 md:end-8 md:px-6 md:py-4 ${className}`}
       aria-label={label}
     >
       <span className="animate-pulse">{icon}</span>

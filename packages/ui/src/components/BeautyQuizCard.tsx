@@ -216,7 +216,7 @@ export function BeautyQuizCard({
               onClick={() => handleAnswer(i)}
               disabled={selected !== null}
               className={cn(
-                'w-full rounded-xl border-2 border-transparent px-3 py-2.5 text-left text-xs transition-all',
+                'w-full rounded-xl border-2 border-transparent px-3 py-2.5 text-start text-xs transition-all',
                 bg,
               )}
             >

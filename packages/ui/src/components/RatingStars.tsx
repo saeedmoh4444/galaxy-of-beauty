@@ -43,7 +43,7 @@ export function RatingStars({
         <span key={`e-${i}`} className="text-text-tertiary"></span>
       ))}
       {showNumeric ? (
-        <span className="ml-1 text-xs text-text-secondary dark:text-text-tertiary">
+        <span className="ms-1 text-xs text-text-secondary dark:text-text-tertiary">
           {rating.toFixed(1)}
         </span>
       ) : null}

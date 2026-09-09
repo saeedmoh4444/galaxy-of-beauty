@@ -140,15 +140,15 @@ export function BeautySleepCard({
               <span className="flex-1 text-[10px] text-text-primary dark:text-gray-100">
                 {step.action[locale]}
               </span>
-              <span className="text-[10px] text-text-tertiary dark:text-text-secondary w-12 text-right">
+              <span className="text-[10px] text-text-tertiary dark:text-text-secondary w-12 text-end">
                 {step.duration[locale]}
               </span>
-              <span className="text-[9px] font-bold text-indigo-600 dark:text-indigo-400 w-12 text-right">
+              <span className="text-[9px] font-bold text-indigo-600 dark:text-indigo-400 w-12 text-end">
                 {step.time}
               </span>
               {/* Connector dot */}
               {i < ROUTINE.length - 1 && (
-                <div className="absolute right-0 translate-x-1/2" aria-hidden="true" />
+                <div className="absolute end-0 translate-x-1/2" aria-hidden="true" />
               )}
             </div>
           );

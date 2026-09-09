@@ -54,7 +54,7 @@ export function BeautyVlogCard({
             ▶️
           </span>
         </button>
-        <span className="absolute bottom-2 right-2 rounded bg-black/60 px-1.5 py-0.5 text-[9px] font-bold text-white">
+        <span className="absolute bottom-2 end-2 rounded bg-black/60 px-1.5 py-0.5 text-[9px] font-bold text-white">
           {vlog.duration}
         </span>
       </div>

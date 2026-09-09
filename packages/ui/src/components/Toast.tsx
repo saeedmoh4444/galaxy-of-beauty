@@ -72,7 +72,7 @@ export function ToastProvider({
       <div
         aria-live="polite"
         aria-label={ariaLabel}
-        className="pointer-events-none fixed bottom-4 left-1/2 z-50 flex -translate-x-1/2 flex-col-reverse gap-2"
+        className="pointer-events-none fixed bottom-4 start-1/2 z-50 flex -translate-x-1/2 flex-col-reverse gap-2"
       >
         {toasts.map((toast) => (
           <div
@@ -115,7 +115,7 @@ export function ToastProvider({
             <span>{toast.message}</span>
             <button
               onClick={() => removeToast(toast.id)}
-              className="ml-2 opacity-70 hover:opacity-100"
+              className="ms-2 opacity-70 hover:opacity-100"
               aria-label={closeLabel}
             ></button>
           </div>

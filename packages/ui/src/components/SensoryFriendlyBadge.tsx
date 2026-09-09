@@ -130,7 +130,7 @@ export function SensoryFriendlyBadge({
       <button
         type="button"
         onClick={() => setExpanded(!expanded)}
-        className="flex w-full items-center justify-between text-left"
+        className="flex w-full items-center justify-between text-start"
       >
         <div className="flex items-center gap-2">
           <span className="text-lg" aria-hidden="true"></span>

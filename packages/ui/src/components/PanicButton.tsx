@@ -140,7 +140,7 @@ export function PanicButton({
         <button
           type="button"
           onClick={handlePress}
-          className="flex w-full items-center gap-3 rounded-xl border-2 border-red-200 bg-red-50 p-4 text-left transition-all hover:border-red-300 hover:bg-red-100 active:scale-[0.98] dark:border-red-900 dark:bg-red-950 dark:hover:bg-red-900"
+          className="flex w-full items-center gap-3 rounded-xl border-2 border-red-200 bg-red-50 p-4 text-start transition-all hover:border-red-300 hover:bg-red-100 active:scale-[0.98] dark:border-red-900 dark:bg-red-950 dark:hover:bg-red-900"
         >
           <span className="text-2xl shrink-0" aria-hidden="true">
             🆘

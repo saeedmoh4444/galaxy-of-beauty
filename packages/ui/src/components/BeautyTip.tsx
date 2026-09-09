@@ -142,7 +142,7 @@ export function BeautyTip({
     >
       <p className="text-xs font-semibold text-pink-600 dark:text-pink-400">{heading}</p>
       <p className="mt-2 text-sm text-pink-800 dark:text-pink-200">
-        <span className="mr-2 text-lg">{tip.emoji}</span>
+        <span className="me-2 text-lg">{tip.emoji}</span>
         {tip.text[locale]}
       </p>
     </div>

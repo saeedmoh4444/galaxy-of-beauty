@@ -219,7 +219,7 @@ export function BeautyJourneyTimeline({
                     >
                       {def.title[locale]}
                     </span>
-                    <span className="ml-2 text-[10px] text-text-tertiary dark:text-text-secondary">
+                    <span className="ms-2 text-[10px] text-text-tertiary dark:text-text-secondary">
                       {def.ageRange} {ageSuffix}
                     </span>
                   </div>

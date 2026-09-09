@@ -43,7 +43,7 @@ export function CookieConsent({
 
   return (
     <div
-      className="fixed bottom-0 left-0 right-0 z-50 border-t border-edge bg-white p-4 shadow-2xl dark:border-gray-700 dark:bg-gray-900 md:p-6"
+      className="fixed bottom-0 start-0 end-0 z-50 border-t border-edge bg-white p-4 shadow-2xl dark:border-gray-700 dark:bg-gray-900 md:p-6"
       role="dialog"
       aria-label={ariaLabel}
     >

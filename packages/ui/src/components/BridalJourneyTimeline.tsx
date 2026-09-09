@@ -233,7 +233,7 @@ export function BridalJourneyTimeline({
                       <span className="text-xs font-bold text-text-primary dark:text-gray-100">
                         {beforeLabel} {m.month} {monthsWord}
                       </span>
-                      <span className="ml-2 text-[10px] text-text-tertiary dark:text-text-secondary">
+                      <span className="ms-2 text-[10px] text-text-tertiary dark:text-text-secondary">
                         {m.title[locale]}
                       </span>
                     </div>

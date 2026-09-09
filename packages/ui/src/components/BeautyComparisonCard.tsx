@@ -94,7 +94,7 @@ export function BeautyComparisonCard({
             )}
 
             {/* Pros/Cons */}
-            <div className="mt-2 space-y-1 text-left">
+            <div className="mt-2 space-y-1 text-start">
               {item.pros.map((p) => (
                 <p key={p} className="text-[9px] text-emerald-600 dark:text-emerald-400">
                   {p}

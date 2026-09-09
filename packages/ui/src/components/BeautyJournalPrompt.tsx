@@ -63,7 +63,7 @@ export function BeautyJournalPrompt({
     >
       <p className="text-xs font-semibold text-indigo-600 dark:text-indigo-400">{title}</p>
       <p className="mt-2 text-sm text-indigo-800 dark:text-indigo-200">
-        <span className="mr-2 text-lg">{prompt.emoji}</span>
+        <span className="me-2 text-lg">{prompt.emoji}</span>
         {prompt.text[locale]}
       </p>
       <textarea

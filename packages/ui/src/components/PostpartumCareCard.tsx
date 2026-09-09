@@ -197,7 +197,7 @@ export function PostpartumCareCard({
                   {service.description[locale]}
                 </p>
               </div>
-              <div className="shrink-0 text-right">
+              <div className="shrink-0 text-end">
                 {isAvailable ? (
                   <>
                     <p className="text-xs font-bold text-purple-700 dark:text-purple-400">

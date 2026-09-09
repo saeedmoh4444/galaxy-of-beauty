@@ -81,7 +81,7 @@ export function SelfieStationBadge({
             >
               {f.label[locale]}
             </span>
-            <span className="ml-auto text-[9px]">{f.available ? '' : '—'}</span>
+            <span className="ms-auto text-[9px]">{f.available ? '' : '—'}</span>
           </div>
         ))}
       </div>

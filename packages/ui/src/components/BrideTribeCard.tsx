@@ -101,7 +101,7 @@ export function BrideTribeCard({
             <p className="text-[10px] text-rose-600 dark:text-rose-400">{brideLabel}</p>
           </div>
           {weddingDate && (
-            <span className="ml-auto text-[10px] text-text-tertiary dark:text-text-tertiary">
+            <span className="ms-auto text-[10px] text-text-tertiary dark:text-text-tertiary">
               {weddingDate}
             </span>
           )}

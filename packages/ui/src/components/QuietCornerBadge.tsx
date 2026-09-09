@@ -132,7 +132,7 @@ export function QuietCornerBadge({
           <p className="text-[10px] text-orange-500 dark:text-orange-400">{subtitle}</p>
         </div>
         {supervised && (
-          <span className="ml-auto shrink-0 rounded-full bg-emerald-50 px-2 py-0.5 text-[10px] font-bold text-emerald-700 dark:bg-emerald-950 dark:text-emerald-300">
+          <span className="ms-auto shrink-0 rounded-full bg-emerald-50 px-2 py-0.5 text-[10px] font-bold text-emerald-700 dark:bg-emerald-950 dark:text-emerald-300">
             {supervisedLabel}
           </span>
         )}

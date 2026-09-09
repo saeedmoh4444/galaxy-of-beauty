@@ -89,7 +89,7 @@ export function BeautySavingsMilestoneCard({
             </div>
             <span
               className={cn(
-                'text-[10px] font-bold w-16 text-right',
+                'text-[10px] font-bold w-16 text-end',
                 saved >= m ? 'text-emerald-700 dark:text-emerald-300' : 'text-text-tertiary',
               )}
             >

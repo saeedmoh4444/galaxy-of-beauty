@@ -163,7 +163,7 @@ export function CyclePhaseCard({
 
         {/* Cycle day indicator */}
         {day && (
-          <div className="text-right">
+          <div className="text-end">
             <span className="text-[10px] text-text-tertiary dark:text-text-tertiary">
               {dayLabel}
             </span>

@@ -90,7 +90,7 @@ export function BeautyRewardsCard({
               disabled={!canRedeem}
               onClick={() => onRedeem?.(r.name.ar)}
               className={cn(
-                'flex items-center gap-2 rounded-lg px-2.5 py-2 text-left transition-all',
+                'flex items-center gap-2 rounded-lg px-2.5 py-2 text-start transition-all',
                 canRedeem
                   ? 'bg-amber-50 hover:bg-amber-100 dark:bg-amber-950 dark:hover:bg-amber-900'
                   : 'bg-surface-muted opacity-50 cursor-not-allowed dark:bg-gray-800',

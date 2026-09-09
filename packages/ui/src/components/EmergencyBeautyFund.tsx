@@ -183,7 +183,7 @@ export function EmergencyBeautyFund({
         </div>
         <span
           className={cn(
-            'ml-auto shrink-0 rounded-full px-2.5 py-0.5 text-[10px] font-bold',
+            'ms-auto shrink-0 rounded-full px-2.5 py-0.5 text-[10px] font-bold',
             st.className,
           )}
         >
@@ -202,7 +202,7 @@ export function EmergencyBeautyFund({
             <p className="text-[10px] opacity-70">{r.description[locale]}</p>
           </div>
           {r.urgency === 'high' && (
-            <span className="ml-auto rounded-full bg-rose-100 px-2 py-0.5 text-[9px] font-bold text-rose-700 dark:bg-rose-900 dark:text-rose-300">
+            <span className="ms-auto rounded-full bg-rose-100 px-2 py-0.5 text-[9px] font-bold text-rose-700 dark:bg-rose-900 dark:text-rose-300">
               {urgentLabel}
             </span>
           )}

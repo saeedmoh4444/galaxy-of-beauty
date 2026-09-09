@@ -79,7 +79,7 @@ export function BeautyHabitTrackerCard({
             <span className="text-sm">{h.emoji}</span>
             <span
               className={cn(
-                'flex-1 text-left text-[10px]',
+                'flex-1 text-start text-[10px]',
                 h.done
                   ? 'text-emerald-700 dark:text-emerald-300 line-through'
                   : 'text-text-primary dark:text-gray-100',
