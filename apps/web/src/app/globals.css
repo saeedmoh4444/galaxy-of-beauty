@@ -7,11 +7,32 @@
 @tailwind utilities;
 
 @layer base {
+  /* ── Typography: Arabic-first ──────────────────────────
+     Arabic needs taller leading (deep ascenders/descenders) and ZERO
+     letter-spacing (spacing breaks cursive letter joining). Latin gets
+     subtle negative tracking on display headings for the premium feel. */
   html[dir='rtl'] {
-    font-family: 'Tajawal', sans-serif;
+    font-family: 'Tajawal', 'Inter', system-ui, sans-serif;
+    line-height: 1.7;
+    letter-spacing: 0;
   }
   html[dir='ltr'] {
-    font-family: 'Inter', sans-serif;
+    font-family: 'Inter', 'Tajawal', system-ui, sans-serif;
+  }
+
+  /* Tracking utilities would corrupt Arabic letter joining — neutralize
+     them in RTL (specificity 0-2-1 beats the utility's 0-1-0). */
+  html[dir='rtl'] .tracking-tighter,
+  html[dir='rtl'] .tracking-tight,
+  html[dir='rtl'] .tracking-wide,
+  html[dir='rtl'] .tracking-widest {
+    letter-spacing: 0;
+  }
+
+  html[dir='ltr'] h1,
+  html[dir='ltr'] h2,
+  html[dir='ltr'] h3 {
+    letter-spacing: -0.015em;
   }
 
   /* ── Semantic colour tokens — Rose Blush direction ──── */
