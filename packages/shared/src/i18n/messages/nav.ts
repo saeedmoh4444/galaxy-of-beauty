@@ -5,6 +5,8 @@ export const navMessages = {
   'nav.services': { ar: 'الخدمات', en: 'Services' },
   'nav.bookings': { ar: 'الحجوزات', en: 'Bookings' },
   'nav.wallet': { ar: 'المحفظة', en: 'Wallet' },
+  'nav.wellness-hub': { ar: 'مركز العافية', en: 'Wellness hub' },
+  'nav.referrals': { ar: 'دعوة الصديقات', en: 'Referrals' },
   'nav.profile': { ar: 'الملف الشخصي', en: 'Profile' },
   'nav.notifications': { ar: 'الإشعارات', en: 'Notifications' },
 
