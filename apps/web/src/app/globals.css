@@ -1,8 +1,10 @@
+/* CSS spec: @import must precede all other statements (was below the
+   @tailwind directives, where browsers ignore it). */
+@import url('https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800&family=Inter:wght@400;500;600;700&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-
-@import url('https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800&family=Inter:wght@400;500;600;700&display=swap');
 
 @layer base {
   html[dir='rtl'] {
@@ -12,53 +14,54 @@
     font-family: 'Inter', sans-serif;
   }
 
-  /* ── Semantic colour tokens ─────────────────────────── */
+  /* ── Semantic colour tokens — Rose Blush direction ──── */
   :root {
-    /* Surface */
-    --color-surface: #ffffff;
-    --color-surface-muted: #f9fafb;
+    /* Surface — warm cream ground, white cards */
+    --color-surface: #fdf9f7;
+    --color-surface-muted: #f8f0ee;
     --color-surface-elevated: #ffffff;
 
-    /* Text */
-    --color-text-primary: #111827;
-    --color-text-secondary: #6b7280;
-    --color-text-tertiary: #9ca3af;
+    /* Text — warm near-blacks, never pure */
+    --color-text-primary: #2d1b22;
+    --color-text-secondary: #8a6e78;
+    --color-text-tertiary: #b3a0ab;
 
-    /* Border */
-    --color-border-default: #e5e7eb;
-    --color-border-muted: #f3f4f6;
+    /* Border — soft blush edges */
+    --color-border-default: #f0e4e8;
+    --color-border-muted: #f6ecef;
 
     /* Semantic status */
     --color-success: #10b981;
-    --color-success-subtle: #ecfdf5;
+    --color-success-subtle: #ecf7f1;
     --color-warning: #f59e0b;
-    --color-warning-subtle: #fffbeb;
-    --color-danger: #ef4444;
-    --color-danger-subtle: #fef2f2;
+    --color-warning-subtle: #fdf6ec;
+    --color-danger: #e5484d;
+    --color-danger-subtle: #fdefef;
     --color-info: #3b82f6;
-    --color-info-subtle: #eff6ff;
+    --color-info-subtle: #eff5fc;
   }
 
   .dark {
-    --color-surface: #111827;
-    --color-surface-muted: #1f2937;
-    --color-surface-elevated: #1f2937;
+    /* Deep plum-black surfaces with a rose glow */
+    --color-surface: #1f1418;
+    --color-surface-muted: #271a20;
+    --color-surface-elevated: #2e1f26;
 
-    --color-text-primary: #f9fafb;
-    --color-text-secondary: #9ca3af;
-    --color-text-tertiary: #6b7280;
+    --color-text-primary: #f7eef2;
+    --color-text-secondary: #c9aeb9;
+    --color-text-tertiary: #8a6e78;
 
-    --color-border-default: #374151;
-    --color-border-muted: #1f2937;
+    --color-border-default: #3d2b32;
+    --color-border-muted: #2e1f26;
 
-    --color-success: #34d399;
-    --color-success-subtle: #064e3b;
+    --color-success: #4ade80;
+    --color-success-subtle: #103326;
     --color-warning: #fbbf24;
-    --color-warning-subtle: #78350f;
+    --color-warning-subtle: #4a3410;
     --color-danger: #f87171;
-    --color-danger-subtle: #7f1d1d;
+    --color-danger-subtle: #4a1b1b;
     --color-info: #60a5fa;
-    --color-info-subtle: #1e3a5f;
+    --color-info-subtle: #16283f;
   }
 }
 

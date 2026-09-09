@@ -34,27 +34,27 @@ export interface ThemeColors {
   success: string;
 }
 
-/** Web-palette-aligned theme colors (light values match today's mobile look). */
+/** Web-palette-aligned theme colors — Rose Blush direction (2026-09-09). */
 export const themeColors: Record<'light' | 'dark', ThemeColors> = {
   light: {
-    bg: '#ffffff',
+    bg: '#fdf9f7',
     surface: '#ffffff',
-    text: '#111827',
-    textSecondary: '#6b7280',
-    brand: '#7c3aed',
-    border: '#e5e7eb',
-    danger: '#dc2626',
+    text: '#2d1b22',
+    textSecondary: '#8a6e78',
+    brand: '#c2255c',
+    border: '#f0e4e8',
+    danger: '#e5484d',
     success: '#059669',
   },
   dark: {
-    bg: '#0b0f19',
-    surface: '#1f2937',
-    text: '#f9fafb',
-    textSecondary: '#9ca3af',
-    brand: '#7c3aed',
-    border: '#374151',
-    danger: '#dc2626',
-    success: '#059669',
+    bg: '#1f1418',
+    surface: '#2e1f26',
+    text: '#f7eef2',
+    textSecondary: '#c9aeb9',
+    brand: '#e268a0',
+    border: '#3d2b32',
+    danger: '#f87171',
+    success: '#34d399',
   },
 };
 
