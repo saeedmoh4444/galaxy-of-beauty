@@ -1,4 +1,5 @@
 'use client';
+import { useEffect } from 'react';
 import { api } from '@/lib/trpc';
 import { Card, Button, useAuth } from '@galaxy/ui';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
@@ -20,6 +21,29 @@ export default function CalendarSyncPage(): JSX.Element {
   };
   const connectMut = api.calendarSync.connect.useMutation({ onSuccess: () => refetch() });
   const disconnectMut = api.calendarSync.disconnect.useMutation({ onSuccess: () => refetch() });
+  // E9 — real OAuth flow + cycle-event sync.
+  const authUrlQ = api.calendarSync.authUrl.useQuery(
+    {},
+    { enabled: isAuthenticated, refetchOnWindowFocus: false },
+  );
+  const syncMut = api.calendarSync.syncCycleEvents.useMutation();
+
+  // E9 — handle the OAuth redirect (code query param → connect).
+  useEffect(() => {
+    const code = new URLSearchParams(window.location.search).get('code');
+    if (code) {
+      connectMut.mutate(
+        { authCode: code },
+        {
+          onSuccess: () => {
+            window.history.replaceState({}, '', '/calendar-sync');
+            refetch();
+          },
+        },
+      );
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const connected = status?.connected as boolean;
   const events = upcoming ?? [];
@@ -48,20 +72,41 @@ export default function CalendarSyncPage(): JSX.Element {
           )}
           <div className="mt-4">
             {connected ? (
-              <Button
-                onClick={() => disconnectMut.mutate()}
-                loading={disconnectMut.isPending}
-                variant="ghost"
-              >
-                {t('calendarSync.disconnect')}
-              </Button>
+              <div className="flex flex-col items-center gap-2">
+                <Button onClick={() => syncMut.mutate()} loading={syncMut.isPending}>
+                  🩸 {t('calendarSync.syncPeriods')}
+                </Button>
+                {syncMut.data && (
+                  <p className="text-xs text-text-secondary">
+                    {t('calendarSync.synced', { n: syncMut.data.synced as number })}
+                  </p>
+                )}
+                <Button
+                  onClick={() => disconnectMut.mutate()}
+                  loading={disconnectMut.isPending}
+                  variant="ghost"
+                >
+                  {t('calendarSync.disconnect')}
+                </Button>
+              </div>
             ) : (
               <Button
-                onClick={() => connectMut.mutate({ authCode: 'google-auth-code' })}
+                onClick={async () => {
+                  const url = await authUrlQ.refetch();
+                  const target = url.data as string | null;
+                  if (target) {
+                    window.location.href = target;
+                  } else {
+                    connectMut.mutate({ authCode: 'missing-config' });
+                  }
+                }}
                 loading={connectMut.isPending}
               >
                 {t('calendarSync.connect')}
               </Button>
+            )}
+            {!status?.configured && (
+              <p className="mt-2 text-xs text-amber-600">{t('calendarSync.notConfigured')}</p>
             )}
           </div>
         </Card>
