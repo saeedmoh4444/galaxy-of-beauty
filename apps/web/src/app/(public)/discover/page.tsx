@@ -3,7 +3,7 @@ import Link from 'next/link';
 import { api } from '@/lib/trpc';
 import { localize } from '@galaxy/shared';
 import { useLocale } from '@/components/LocaleProvider';
-import { Card, GridSkeleton, formatCurrency, ErrorAlert, HeroSection, Reveal } from '@galaxy/ui';
+import { Card, GridSkeleton, formatCurrency, ErrorAlert, HeroSection } from '@galaxy/ui';
 
 const FEATURES = [
   {
