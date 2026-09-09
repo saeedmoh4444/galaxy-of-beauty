@@ -115,7 +115,7 @@ export default function StyleMatchPage(): JSX.Element {
                   <button
                     key={p.label}
                     onClick={() => applyPreset(p.colors, p.label)}
-                    className={`rounded-full px-3 py-1 text-xs font-medium transition-all ${activePreset === p.label ? 'bg-brand-600 text-white' : 'bg-surface-muted dark:bg-gray-800 hover:bg-gray-200'}`}
+                    className={`rounded-full px-3 py-1 text-xs font-medium transition-all ${activePreset === p.label ? 'bg-brand-600 text-white' : 'bg-surface-muted dark:bg-gray-800 hover:bg-surface-muted'}`}
                   >
                     <span className="flex items-center gap-1.5">
                       {p.colors.map((c) => (
@@ -150,7 +150,7 @@ export default function StyleMatchPage(): JSX.Element {
                 {customColors.length < 5 && (
                   <button
                     onClick={addColor}
-                    className="flex h-8 w-8 items-center justify-center rounded-lg border-2 border-dashed border-gray-300 dark:border-gray-600 text-text-tertiary hover:border-brand-400 text-lg"
+                    className="flex h-8 w-8 items-center justify-center rounded-lg border-2 border-dashed border-edge text-text-tertiary hover:border-brand-400 text-lg"
                   >
                     +
                   </button>
@@ -178,7 +178,7 @@ export default function StyleMatchPage(): JSX.Element {
                 <button
                   key={c.key}
                   onClick={() => setCategory(c.key === category ? '' : c.key)}
-                  className={`rounded-full px-4 py-2 text-sm font-medium transition-all ${category === c.key ? 'bg-brand-600 text-white shadow-md' : category === '' && c.key === '' ? 'bg-brand-600 text-white shadow-md' : 'bg-surface-muted dark:bg-gray-800 hover:bg-gray-200'}`}
+                  className={`rounded-full px-4 py-2 text-sm font-medium transition-all ${category === c.key ? 'bg-brand-600 text-white shadow-md' : category === '' && c.key === '' ? 'bg-brand-600 text-white shadow-md' : 'bg-surface-muted dark:bg-gray-800 hover:bg-surface-muted'}`}
                 >
                   {c.emoji} {t(c.label)}
                 </button>
@@ -253,7 +253,7 @@ export default function StyleMatchPage(): JSX.Element {
                         {(r.dominantColors as string[])?.map((c: string) => (
                           <span
                             key={c}
-                            className="h-3 w-3 rounded-full border border-gray-300 dark:border-gray-600"
+                            className="h-3 w-3 rounded-full border border-edge"
                             style={{ backgroundColor: c }}
                           />
                         ))}

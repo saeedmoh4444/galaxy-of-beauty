@@ -138,7 +138,7 @@ export default function MoodBoardPage(): JSX.Element {
             <h1 className="text-2xl font-bold text-text-primary dark:text-gray-100">
               {t('mood.title')}
             </h1>
-            <p className="mt-1 text-sm text-text-secondary dark:text-gray-400">
+            <p className="mt-1 text-sm text-text-secondary dark:text-text-tertiary">
               {t('mood.subtitle', { totalPins, boards: allBoards.length })}
             </p>
           </div>
@@ -219,7 +219,7 @@ export default function MoodBoardPage(): JSX.Element {
                       </SortableGrid>
                     </div>
                     {board.pins.length > 5 && (
-                      <div className="flex h-16 w-10 shrink-0 items-center justify-center rounded bg-gray-200 dark:bg-gray-700 text-xs text-text-secondary">
+                      <div className="flex h-16 w-10 shrink-0 items-center justify-center rounded bg-surface-muted text-xs text-text-secondary">
                         +{board.pins.length - 5}
                       </div>
                     )}
@@ -227,7 +227,7 @@ export default function MoodBoardPage(): JSX.Element {
                 )}
 
                 {/* Actions */}
-                <div className="mt-4 flex gap-2 border-t border-gray-100 pt-3 dark:border-gray-800">
+                <div className="mt-4 flex gap-2 border-t border-edge-muted pt-3 dark:border-gray-800">
                   <Button
                     size="sm"
                     className="flex-1"
@@ -274,7 +274,7 @@ export default function MoodBoardPage(): JSX.Element {
                 value={newBoardName}
                 onChange={(e) => setNewBoardName(e.target.value)}
                 placeholder={t('mood.placeholder.name')}
-                className="w-full rounded-lg border border-gray-200 px-3 py-2 text-sm focus:border-brand-500 focus:outline-none dark:border-gray-700 dark:bg-gray-800"
+                className="w-full rounded-lg border border-edge px-3 py-2 text-sm focus:border-brand-500 focus:outline-none dark:border-gray-700 dark:bg-gray-800"
               />
             </div>
             <div>
@@ -290,7 +290,7 @@ export default function MoodBoardPage(): JSX.Element {
                 onChange={(e) => setNewBoardDesc(e.target.value)}
                 placeholder={t('mood.placeholder.description')}
                 rows={2}
-                className="w-full rounded-lg border border-gray-200 px-3 py-2 text-sm focus:border-brand-500 focus:outline-none dark:border-gray-700 dark:bg-gray-800"
+                className="w-full rounded-lg border border-edge px-3 py-2 text-sm focus:border-brand-500 focus:outline-none dark:border-gray-700 dark:bg-gray-800"
               />
             </div>
             <div className="flex justify-end gap-3 pt-2">
@@ -320,7 +320,7 @@ export default function MoodBoardPage(): JSX.Element {
                 value={pinImageUrl}
                 onChange={(e) => setPinImageUrl(e.target.value)}
                 placeholder="https://example.com/image.jpg"
-                className="w-full rounded-lg border border-gray-200 px-3 py-2 text-sm focus:border-brand-500 focus:outline-none dark:border-gray-700 dark:bg-gray-800"
+                className="w-full rounded-lg border border-edge px-3 py-2 text-sm focus:border-brand-500 focus:outline-none dark:border-gray-700 dark:bg-gray-800"
               />
               {pinImageUrl && (
                 <div className="mt-2 h-32 rounded-xl bg-surface-muted dark:bg-gray-800 overflow-hidden">
@@ -349,7 +349,7 @@ export default function MoodBoardPage(): JSX.Element {
                 value={pinTitle}
                 onChange={(e) => setPinTitle(e.target.value)}
                 placeholder={t('mood.placeholder.title')}
-                className="w-full rounded-lg border border-gray-200 px-3 py-2 text-sm focus:border-brand-500 focus:outline-none dark:border-gray-700 dark:bg-gray-800"
+                className="w-full rounded-lg border border-edge px-3 py-2 text-sm focus:border-brand-500 focus:outline-none dark:border-gray-700 dark:bg-gray-800"
               />
             </div>
             <div>
@@ -365,7 +365,7 @@ export default function MoodBoardPage(): JSX.Element {
                 value={pinTags}
                 onChange={(e) => setPinTags(e.target.value)}
                 placeholder={t('mood.placeholder.tags')}
-                className="w-full rounded-lg border border-gray-200 px-3 py-2 text-sm focus:border-brand-500 focus:outline-none dark:border-gray-700 dark:bg-gray-800"
+                className="w-full rounded-lg border border-edge px-3 py-2 text-sm focus:border-brand-500 focus:outline-none dark:border-gray-700 dark:bg-gray-800"
               />
             </div>
             <div className="flex justify-end gap-3 pt-2">

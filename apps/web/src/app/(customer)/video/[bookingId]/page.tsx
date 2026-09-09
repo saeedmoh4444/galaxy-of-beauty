@@ -45,9 +45,7 @@ export default function VideoSessionPage(): JSX.Element {
   return (
     <DashboardLayout userRole="CUSTOMER">
       <div className="mx-auto max-w-2xl space-y-6 px-4 py-8">
-        <h1 className="text-2xl font-bold text-gray-900 dark:text-gray-100">
-          {t('videoSession.title')}
-        </h1>
+        <h1 className="text-2xl font-bold text-text-primary">{t('videoSession.title')}</h1>
 
         {isLoading ? (
           <KPIRowSkeleton count={1} />
@@ -56,12 +54,10 @@ export default function VideoSessionPage(): JSX.Element {
         ) : !sess ? (
           <Card padding="md" className="text-center">
             <div className="mb-4 text-5xl"></div>
-            <h3 className="text-lg font-semibold text-gray-900 dark:text-gray-100">
+            <h3 className="text-lg font-semibold text-text-primary">
               {t('videoSession.consultationTitle')}
             </h3>
-            <p className="mt-2 text-sm text-gray-500 dark:text-gray-400">
-              {t('videoSession.consultationDesc')}
-            </p>
+            <p className="mt-2 text-sm text-text-secondary">{t('videoSession.consultationDesc')}</p>
             <div className="mt-6">
               <Button onClick={handleStart} loading={joining}>
                 {t('videoSession.start')}
@@ -101,9 +97,9 @@ export default function VideoSessionPage(): JSX.Element {
         ) : (
           <Card padding="md" className="text-center">
             <div className="mb-4 text-5xl"></div>
-            <h3 className="font-semibold text-gray-500">{t('videoSession.sessionEnded')}</h3>
+            <h3 className="font-semibold text-text-secondary">{t('videoSession.sessionEnded')}</h3>
             {sess.durationSec ? (
-              <p className="mt-2 text-sm text-gray-400">
+              <p className="mt-2 text-sm text-text-tertiary">
                 {t('videoSession.duration')}{' '}
                 {t('serviceCompare.minutes', {
                   count: Math.round((sess.durationSec as number) / 60),

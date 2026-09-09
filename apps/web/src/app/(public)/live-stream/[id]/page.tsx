@@ -125,9 +125,9 @@ export default function LiveStreamDetailPage(): JSX.Element {
         </div>
 
         {/* Chat Sidebar */}
-        <div className="flex w-full flex-col border-t border-gray-200 dark:border-gray-800 lg:w-80 lg:border-l lg:border-t-0">
+        <div className="flex w-full flex-col border-t border-edge lg:w-80 lg:border-l lg:border-t-0">
           {/* Header */}
-          <div className="border-b border-gray-200 dark:border-gray-800 p-4">
+          <div className="border-b border-edge p-4">
             <div className="flex items-center gap-2">
               {isLive && <span className="h-2 w-2 rounded-full bg-red-500 animate-pulse" />}
               <h2 className="font-bold text-sm">
@@ -136,9 +136,9 @@ export default function LiveStreamDetailPage(): JSX.Element {
                   : t('marketing.live-stream-detail.upcoming-badge')}
               </h2>
             </div>
-            <p className="text-xs text-gray-500 mt-0.5">{stream.technicianName as string}</p>
+            <p className="text-xs text-text-secondary mt-0.5">{stream.technicianName as string}</p>
             {isLive && (
-              <p className="text-xs text-gray-400 mt-0.5">
+              <p className="text-xs text-text-tertiary mt-0.5">
                 {t('marketing.live-stream-detail.viewers', { count: stream.viewerCount as number })}
               </p>
             )}
@@ -147,14 +147,14 @@ export default function LiveStreamDetailPage(): JSX.Element {
           {/* Messages */}
           <div ref={chatRef} className="flex-1 overflow-y-auto p-4 space-y-2">
             {!chat || chat.length === 0 ? (
-              <p className="text-center text-xs text-gray-400 py-8">
+              <p className="text-center text-xs text-text-tertiary py-8">
                 {t('marketing.live-stream-detail.no-messages')}
               </p>
             ) : (
               chat.map((m: Record<string, unknown>) => (
                 <div key={m.id as number} className="text-sm">
                   <span className="font-bold text-brand-600 text-xs">{m.userName as string}</span>
-                  <span className="text-gray-400 text-[10px] ml-1">
+                  <span className="text-text-tertiary text-[10px] ml-1">
                     {new Date(m.createdAt as string).toLocaleTimeString(
                       locale === 'ar' ? 'ar-SA' : 'en-GB',
                       {
@@ -163,7 +163,7 @@ export default function LiveStreamDetailPage(): JSX.Element {
                       },
                     )}
                   </span>
-                  <p className="text-gray-700 dark:text-gray-300">{m.message as string}</p>
+                  <p className="text-text-secondary">{m.message as string}</p>
                 </div>
               ))
             )}
@@ -171,7 +171,7 @@ export default function LiveStreamDetailPage(): JSX.Element {
 
           {/* Input */}
           {isLive && (
-            <div className="border-t border-gray-200 dark:border-gray-800 p-3">
+            <div className="border-t border-edge p-3">
               {user ? (
                 <div className="flex gap-2">
                   <input

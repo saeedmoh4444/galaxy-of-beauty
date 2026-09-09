@@ -182,7 +182,7 @@ export default function CreateBookingPage(): JSX.Element {
                       ? 'bg-green-500 text-white'
                       : step === i + 1
                         ? 'bg-brand-600 text-white'
-                        : 'bg-gray-200 text-text-secondary'
+                        : 'bg-surface-muted text-text-secondary'
                   }`}
                 >
                   {step > i + 1 ? '' : i + 1}
@@ -214,7 +214,7 @@ export default function CreateBookingPage(): JSX.Element {
                   className={`w-full rounded-lg border p-4 text-right transition-colors hover:border-brand-400 ${
                     serviceId === s.id
                       ? 'border-brand-500 bg-brand-50 dark:bg-brand-950'
-                      : 'border-gray-200 dark:border-gray-700'
+                      : 'border-edge'
                   }`}
                 >
                   <p className="font-semibold text-text-primary dark:text-gray-100">
@@ -248,7 +248,7 @@ export default function CreateBookingPage(): JSX.Element {
                 </label>
                 <select
                   id="bc-variant"
-                  className="w-full rounded-lg border border-gray-300 p-2 text-sm dark:border-gray-600 dark:bg-gray-800"
+                  className="w-full rounded-lg border border-edge p-2 text-sm dark:border-gray-600 dark:bg-gray-800"
                   value={variantId || ''}
                   onChange={(e) => setVariantId(Number(e.target.value) || undefined)}
                 >
@@ -274,7 +274,7 @@ export default function CreateBookingPage(): JSX.Element {
                   min={new Date(Date.now() + 86400000).toISOString().slice(0, 10)}
                   value={bookingDate}
                   onChange={(e) => setBookingDate(e.target.value)}
-                  className="w-full rounded-lg border border-gray-300 p-2 text-sm dark:border-gray-600 dark:bg-gray-800"
+                  className="w-full rounded-lg border border-edge p-2 text-sm dark:border-gray-600 dark:bg-gray-800"
                 />
               </div>
               <div>
@@ -285,7 +285,7 @@ export default function CreateBookingPage(): JSX.Element {
                   id="bc-time"
                   value={bookingTime}
                   onChange={(e) => setBookingTime(e.target.value)}
-                  className="w-full rounded-lg border border-gray-300 p-2 text-sm dark:border-gray-600 dark:bg-gray-800"
+                  className="w-full rounded-lg border border-edge p-2 text-sm dark:border-gray-600 dark:bg-gray-800"
                 >
                   {TIME_SLOTS.map((slot) => (
                     <option key={slot} value={slot}>
@@ -302,7 +302,7 @@ export default function CreateBookingPage(): JSX.Element {
               </label>
               <select
                 id="bc-address"
-                className="w-full rounded-lg border border-gray-300 p-2 text-sm dark:border-gray-600 dark:bg-gray-800"
+                className="w-full rounded-lg border border-edge p-2 text-sm dark:border-gray-600 dark:bg-gray-800"
                 value={addressId || ''}
                 onChange={(e) => setAddressId(Number(e.target.value) || undefined)}
               >
@@ -321,7 +321,7 @@ export default function CreateBookingPage(): JSX.Element {
               </label>
               <textarea
                 id="bc-notes"
-                className="w-full rounded-lg border border-gray-300 p-3 text-sm dark:border-gray-600 dark:bg-gray-800"
+                className="w-full rounded-lg border border-edge p-3 text-sm dark:border-gray-600 dark:bg-gray-800"
                 rows={3}
                 value={notes}
                 onChange={(e) => setNotes(e.target.value)}

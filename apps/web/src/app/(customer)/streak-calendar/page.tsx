@@ -101,7 +101,7 @@ export default function StreakCalendarPage(): JSX.Element {
                   <p className="text-xs text-brand-600 mt-1">
                     {milestone.emoji} {t(milestone.reward)}
                   </p>
-                  <div className="mt-2 h-2 rounded-full bg-gray-200 dark:bg-gray-700">
+                  <div className="mt-2 h-2 rounded-full bg-surface-muted">
                     <div
                       className="h-2 rounded-full bg-brand-500"
                       style={{ width: `${(currentStreak / nextMilestone!) * 100}%` }}
@@ -118,7 +118,7 @@ export default function StreakCalendarPage(): JSX.Element {
                 {weeks.map((w, i) => (
                   <div
                     key={i}
-                    className={`rounded-lg p-3 text-center text-xs transition-all ${w.booked ? 'bg-green-100 dark:bg-green-900/30 border border-green-300 dark:border-green-700' : 'bg-surface-muted dark:bg-gray-800 border border-gray-200 dark:border-gray-700'} ${w.isCurrent ? 'ring-2 ring-brand-500' : ''}`}
+                    className={`rounded-lg p-3 text-center text-xs transition-all ${w.booked ? 'bg-green-100 dark:bg-green-900/30 border border-green-300 dark:border-green-700' : 'bg-surface-muted dark:bg-gray-800 border border-edge'} ${w.isCurrent ? 'ring-2 ring-brand-500' : ''}`}
                   >
                     <div className="text-lg">{w.booked ? '' : '—'}</div>
                     <div className="mt-1 text-text-secondary">{w.label}</div>

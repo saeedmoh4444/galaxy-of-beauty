@@ -92,7 +92,7 @@ export default function ServiceMatchmakerPage(): JSX.Element {
             {qs.map((_, i) => (
               <div
                 key={i}
-                className={`h-1.5 flex-1 rounded-full ${i <= step ? 'bg-brand-500' : 'bg-gray-200 dark:bg-gray-700'}`}
+                className={`h-1.5 flex-1 rounded-full ${i <= step ? 'bg-brand-500' : 'bg-surface-muted'}`}
               />
             ))}
           </div>

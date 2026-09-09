@@ -107,13 +107,13 @@ export default function DNABeautyPage(): JSX.Element {
                   <div className="flex gap-2">
                     <button
                       onClick={() => setAnswers({ ...answers, [q.id as string]: true })}
-                      className={`rounded-lg px-4 py-1.5 text-sm ${answers[q.id as string] === true ? 'bg-brand-600 text-white' : 'bg-gray-200 dark:bg-gray-700'}`}
+                      className={`rounded-lg px-4 py-1.5 text-sm ${answers[q.id as string] === true ? 'bg-brand-600 text-white' : 'bg-surface-muted'}`}
                     >
                       {t('dnaBeauty.yes')}
                     </button>
                     <button
                       onClick={() => setAnswers({ ...answers, [q.id as string]: false })}
-                      className={`rounded-lg px-4 py-1.5 text-sm ${answers[q.id as string] === false ? 'bg-brand-600 text-white' : 'bg-gray-200 dark:bg-gray-700'}`}
+                      className={`rounded-lg px-4 py-1.5 text-sm ${answers[q.id as string] === false ? 'bg-brand-600 text-white' : 'bg-surface-muted'}`}
                     >
                       {t('dnaBeauty.no')}
                     </button>

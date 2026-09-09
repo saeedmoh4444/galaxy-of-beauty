@@ -100,7 +100,7 @@ export default function BeautyFortunePage(): JSX.Element {
             <h1 className="mt-6 text-3xl font-extrabold text-text-primary dark:text-gray-100">
               {t('marketing.beauty-fortune.title')}
             </h1>
-            <p className="mt-2 text-text-secondary dark:text-gray-400">
+            <p className="mt-2 text-text-secondary dark:text-text-tertiary">
               {t('marketing.beauty-fortune.subtitle')}
             </p>
             <Button onClick={openFortune} size="lg" className="mt-8">

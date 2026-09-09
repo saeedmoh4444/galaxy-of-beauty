@@ -222,7 +222,7 @@ function BridalDashboard(): JSX.Element {
             </div>
           ))}
         </div>
-        <div className="mt-4 h-2 rounded-full bg-gray-200 dark:bg-gray-700">
+        <div className="mt-4 h-2 rounded-full bg-surface-muted">
           <div
             className="h-2 rounded-full bg-gradient-to-r from-brand-400 to-brand-600 transition-all duration-700"
             style={{ width: `${Math.min(100, (currentStep / 3) * 100)}%` }}
@@ -349,7 +349,7 @@ function BridalDashboard(): JSX.Element {
             description={t('marketing.bridal-concierge.no-services-desc')}
           />
         ) : (
-          <div className="divide-y divide-gray-100 dark:divide-gray-800">
+          <div className="divide-y divide-edge-muted">
             {services.map((svc) => (
               <div
                 key={svc.id}
@@ -406,7 +406,7 @@ function BridalDashboard(): JSX.Element {
         <h3 className="font-bold text-text-primary dark:text-gray-100 mb-3">
           {t('marketing.bridal-concierge.bride-tips')}
         </h3>
-        <div className="grid gap-2 text-sm text-text-secondary dark:text-gray-400">
+        <div className="grid gap-2 text-sm text-text-secondary dark:text-text-tertiary">
           <p>{t('marketing.bridal-concierge.tip-skin')}</p>
           <p>{t('marketing.bridal-concierge.tip-makeup-trial')}</p>
           <p>{t('marketing.bridal-concierge.tip-hair')}</p>
@@ -602,7 +602,7 @@ function MarketingLanding(): JSX.Element {
         <h1 className="mt-6 text-4xl font-extrabold text-text-primary dark:text-gray-100">
           {t('marketing.bridal-concierge.landing-title')}
         </h1>
-        <p className="mt-4 text-lg text-text-secondary dark:text-gray-400 max-w-2xl mx-auto leading-relaxed">
+        <p className="mt-4 text-lg text-text-secondary dark:text-text-tertiary max-w-2xl mx-auto leading-relaxed">
           {t('marketing.bridal-concierge.landing-subtitle')}
         </p>
         <div className="mt-6">
@@ -619,7 +619,7 @@ function MarketingLanding(): JSX.Element {
             <h3 className="mt-3 text-lg font-bold text-text-primary dark:text-gray-100">
               {t(f.title)}
             </h3>
-            <p className="mt-2 text-sm text-text-secondary dark:text-gray-400 leading-relaxed">
+            <p className="mt-2 text-sm text-text-secondary dark:text-text-tertiary leading-relaxed">
               {t(f.desc)}
             </p>
           </Card>
@@ -642,7 +642,7 @@ function MarketingLanding(): JSX.Element {
       </div>
 
       <div className="mt-12 text-center">
-        <p className="text-lg text-text-secondary dark:text-gray-400">
+        <p className="text-lg text-text-secondary dark:text-text-tertiary">
           {t('marketing.bridal-concierge.help-line')}
           <span className="font-bold text-brand-600">٩٢٠٠١٣٣٣٣</span>
         </p>

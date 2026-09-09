@@ -36,7 +36,7 @@ export default function SkinTimelinePage(): JSX.Element {
               {entries.map((e: Record<string, unknown>, i: number) => (
                 <div key={i} className="relative pr-10">
                   <div
-                    className={`absolute right-2.5 top-4 w-3 h-3 rounded-full border-2 border-brand-600 bg-white dark:bg-gray-900`}
+                    className={`absolute right-2.5 top-4 w-3 h-3 rounded-full border-2 border-brand-600 bg-surface-elevated`}
                   />
                   <Card padding="md">
                     <div className="flex items-start gap-3">

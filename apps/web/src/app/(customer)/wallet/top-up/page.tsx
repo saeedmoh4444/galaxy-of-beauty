@@ -55,7 +55,7 @@ export default function WalletTopUpPage(): JSX.Element {
                   setSelected(a);
                   setAmount('');
                 }}
-                className={`rounded-xl border-2 p-4 text-center transition-all ${selected === a ? 'border-brand-500 bg-brand-50 dark:bg-brand-950' : 'border-gray-200 hover:border-brand-300 dark:border-gray-700'}`}
+                className={`rounded-xl border-2 p-4 text-center transition-all ${selected === a ? 'border-brand-500 bg-brand-50 dark:bg-brand-950' : 'border-edge hover:border-brand-300 dark:border-gray-700'}`}
               >
                 <p className="text-2xl font-extrabold text-brand-600">{a}</p>
                 <p className="text-xs text-text-tertiary">{t('misc.sar')}</p>
@@ -63,9 +63,9 @@ export default function WalletTopUpPage(): JSX.Element {
             ))}
           </div>
           <div className="flex gap-2 items-center mb-4">
-            <div className="flex-1 border-t border-gray-200 dark:border-gray-700" />
+            <div className="flex-1 border-t border-edge" />
             <span className="text-xs text-text-tertiary">{t('wallet.custom-amount')}</span>
-            <div className="flex-1 border-t border-gray-200 dark:border-gray-700" />
+            <div className="flex-1 border-t border-edge" />
           </div>
           <input
             type="number"
@@ -75,7 +75,7 @@ export default function WalletTopUpPage(): JSX.Element {
               setAmount(e.target.value);
               setSelected(null);
             }}
-            className="w-full rounded-lg border border-gray-300 p-3 text-center text-lg dark:border-gray-600 dark:bg-gray-800"
+            className="w-full rounded-lg border border-edge p-3 text-center text-lg dark:border-gray-600 dark:bg-gray-800"
           />
           <Button onClick={handleTopUp} size="lg" className="w-full mt-4">
             {t('wallet.top-up-button', { amount: formatCurrency(selected || Number(amount) || 0) })}

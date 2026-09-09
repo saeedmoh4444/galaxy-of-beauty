@@ -198,7 +198,7 @@ export default function BeautyProfilePage(): JSX.Element {
                 {t('beautyProfile.notesTitle')}
               </h3>
               <textarea
-                className="w-full rounded-lg border border-gray-300 p-3 text-sm dark:border-gray-600 dark:bg-gray-800"
+                className="w-full rounded-lg border border-edge p-3 text-sm dark:border-gray-600 dark:bg-gray-800"
                 rows={3}
                 value={notes}
                 onChange={(e) => setNotes(e.target.value)}
@@ -298,7 +298,7 @@ function Section({
           <button
             key={o}
             onClick={() => setSelected(selected === o ? '' : o)}
-            className={`rounded-full px-4 py-2 text-sm font-medium transition-colors ${selected === o ? 'bg-brand-600 text-white' : 'bg-surface-muted text-text-secondary hover:bg-gray-200 dark:bg-gray-800 dark:hover:bg-gray-700'}`}
+            className={`rounded-full px-4 py-2 text-sm font-medium transition-colors ${selected === o ? 'bg-brand-600 text-white' : 'bg-surface-muted text-text-secondary hover:bg-surface-muted dark:hover:bg-gray-700'}`}
           >
             {LABELS[o] ? t(LABELS[o]) : o}
           </button>

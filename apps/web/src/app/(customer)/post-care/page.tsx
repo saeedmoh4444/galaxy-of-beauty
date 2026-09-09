@@ -103,7 +103,7 @@ export default function PostCarePage(): JSX.Element {
           <h1 className="text-2xl font-bold text-text-primary dark:text-gray-100">
             ‍️ {t('postCare.title')}
           </h1>
-          <p className="mt-1 text-sm text-text-secondary dark:text-gray-400">
+          <p className="mt-1 text-sm text-text-secondary dark:text-text-tertiary">
             {t('postCare.subtitle')}
           </p>
         </div>
@@ -171,17 +171,14 @@ export default function PostCarePage(): JSX.Element {
                       const tfTips = plan.tips.filter((t) => t.timeframe === tf.key);
                       if (tfTips.length === 0) return null;
                       return (
-                        <div
-                          key={tf.key}
-                          className="rounded-xl border border-gray-200 dark:border-gray-700 overflow-hidden"
-                        >
+                        <div key={tf.key} className="rounded-xl border border-edge overflow-hidden">
                           <div
                             className={`bg-gradient-to-r ${tf.color} px-4 py-2 text-white text-sm font-bold`}
                           >
                             {TIMEFRAME_ICONS[tf.key] ?? ''}{' '}
                             {locale === 'en' ? tf.labelEn : tf.labelAr}
                           </div>
-                          <div className="divide-y divide-gray-100 dark:divide-gray-800">
+                          <div className="divide-y divide-edge-muted">
                             {tfTips.map((tip) => (
                               <div key={tip.id} className="flex gap-3 p-4">
                                 <span className="text-2xl shrink-0">{tip.emoji}</span>
@@ -189,7 +186,7 @@ export default function PostCarePage(): JSX.Element {
                                   <h4 className="text-sm font-bold text-text-primary dark:text-gray-100">
                                     {locale === 'en' ? tip.titleEn : tip.titleAr}
                                   </h4>
-                                  <p className="mt-1 text-sm text-text-secondary dark:text-gray-400 leading-relaxed">
+                                  <p className="mt-1 text-sm text-text-secondary dark:text-text-tertiary leading-relaxed">
                                     {locale === 'en' ? tip.bodyEn : tip.bodyAr}
                                   </p>
                                 </div>
@@ -268,7 +265,7 @@ export default function PostCarePage(): JSX.Element {
                                   tip.timeframe)}
                             </span>
                           </div>
-                          <p className="text-sm text-text-secondary dark:text-gray-400 leading-relaxed">
+                          <p className="text-sm text-text-secondary dark:text-text-tertiary leading-relaxed">
                             {locale === 'en' ? tip.bodyEn : tip.bodyAr}
                           </p>
                         </div>
@@ -289,7 +286,7 @@ export default function PostCarePage(): JSX.Element {
           <p className="text-lg font-bold text-text-primary dark:text-gray-100">
             {t('postCare.rememberTitle')}
           </p>
-          <p className="mt-1 text-sm text-text-secondary dark:text-gray-400">
+          <p className="mt-1 text-sm text-text-secondary dark:text-text-tertiary">
             {t('postCare.rememberBody')}
           </p>
           <Link href="/bookings/create" className="mt-3 inline-block">

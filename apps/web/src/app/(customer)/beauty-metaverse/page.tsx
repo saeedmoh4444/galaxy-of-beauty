@@ -77,7 +77,7 @@ export default function BeautyMetaversePage(): JSX.Element {
                       { onSuccess: (d) => setResult(d as Record<string, unknown>) },
                     )
                   }
-                  className="rounded-xl border-2 border-gray-200 dark:border-gray-700 p-4 text-center hover:border-purple-400 transition-all"
+                  className="rounded-xl border-2 border-edge p-4 text-center hover:border-purple-400 transition-all"
                 >
                   <span className="text-4xl">{s.emoji as string}</span>
                   <p className="font-bold mt-2">{s.name as string}</p>

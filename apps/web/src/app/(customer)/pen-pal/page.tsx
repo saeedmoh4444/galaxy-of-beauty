@@ -59,7 +59,7 @@ export default function PenPalPage(): JSX.Element {
                         : [...p, i.key as string],
                     )
                   }
-                  className={`rounded-full px-4 py-2 text-sm font-medium transition-all ${selected.includes(i.key as string) ? 'bg-brand-600 text-white' : 'bg-surface-muted dark:bg-gray-800 hover:bg-gray-200'}`}
+                  className={`rounded-full px-4 py-2 text-sm font-medium transition-all ${selected.includes(i.key as string) ? 'bg-brand-600 text-white' : 'bg-surface-muted dark:bg-gray-800 hover:bg-surface-muted'}`}
                 >
                   {i.emoji as string} {i.nameAr as string}
                 </button>

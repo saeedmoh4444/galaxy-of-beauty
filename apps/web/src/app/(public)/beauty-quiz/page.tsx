@@ -169,7 +169,7 @@ export default function BeautyQuizPage(): JSX.Element {
           {questions.map((_, i) => (
             <div
               key={i}
-              className={`h-1.5 flex-1 rounded-full transition-colors ${i <= step ? 'bg-brand-600' : 'bg-gray-200 dark:bg-gray-700'}`}
+              className={`h-1.5 flex-1 rounded-full transition-colors ${i <= step ? 'bg-brand-600' : 'bg-surface-muted'}`}
             />
           ))}
         </div>

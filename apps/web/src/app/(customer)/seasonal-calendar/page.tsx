@@ -154,7 +154,7 @@ export default function SeasonalCalendarPage(): JSX.Element {
               key={sc.key}
               type="button"
               onClick={() => setSeason(sc.key)}
-              className={`flex-1 rounded-2xl border-2 p-3 text-center transition-all ${season === sc.key ? 'border-current bg-white dark:bg-gray-900' : 'border-gray-100 bg-white dark:border-gray-800 dark:bg-gray-900'}`}
+              className={`flex-1 rounded-2xl border-2 p-3 text-center transition-all ${season === sc.key ? 'border-current bg-surface-elevated' : 'border-edge-muted bg-white dark:border-gray-800 dark:bg-gray-900'}`}
               style={season === sc.key ? { borderColor: sc.color } : {}}
             >
               <span className="text-2xl">{sc.emoji}</span>
@@ -169,7 +169,7 @@ export default function SeasonalCalendarPage(): JSX.Element {
           <h3 className="text-xl font-bold text-text-primary dark:text-gray-100">
             {s.emoji} {t(s.name)}
           </h3>
-          <p className="mt-1 text-sm text-text-secondary dark:text-gray-400">{t(s.months)}</p>
+          <p className="mt-1 text-sm text-text-secondary dark:text-text-tertiary">{t(s.months)}</p>
           <p className="mt-4 rounded-xl bg-white/60 p-3 text-sm text-text-primary dark:bg-gray-800/60 dark:text-gray-200">
             {t(s.tips)}
           </p>
@@ -185,7 +185,9 @@ export default function SeasonalCalendarPage(): JSX.Element {
                   <p className="text-sm font-bold text-text-primary dark:text-gray-100">
                     {t(svc.name)}
                   </p>
-                  <p className="text-xs text-text-tertiary dark:text-gray-500">{t(svc.why)}</p>
+                  <p className="text-xs text-text-tertiary dark:text-text-secondary">
+                    {t(svc.why)}
+                  </p>
                 </div>
               </div>
             ))}

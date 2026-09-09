@@ -88,7 +88,7 @@ export default function TravelKitPage(): JSX.Element {
                       {t('travelKit.essential')}
                     </span>
                   ) : (
-                    <span className="rounded-full bg-gray-200 dark:bg-gray-700 px-2 py-0.5 text-xs">
+                    <span className="rounded-full bg-surface-muted px-2 py-0.5 text-xs">
                       {t('travelKit.optional')}
                     </span>
                   )}

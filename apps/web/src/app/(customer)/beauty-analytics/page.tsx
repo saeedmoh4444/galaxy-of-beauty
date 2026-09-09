@@ -56,7 +56,7 @@ export default function BeautyAnalyticsPage(): JSX.Element {
           <h1 className="text-2xl font-bold text-text-primary dark:text-gray-100">
             {t('beautyAnalytics.title')}
           </h1>
-          <p className="mt-1 text-sm text-text-secondary dark:text-gray-400">
+          <p className="mt-1 text-sm text-text-secondary dark:text-text-tertiary">
             {t('beautyAnalytics.subtitle')}
           </p>
         </div>
@@ -153,7 +153,7 @@ export default function BeautyAnalyticsPage(): JSX.Element {
                     const height = Math.max(8, (m.count / maxMonthly) * 100);
                     return (
                       <div key={m.month} className="flex-1 flex flex-col items-center gap-1">
-                        <span className="text-xs font-semibold text-text-secondary dark:text-gray-400">
+                        <span className="text-xs font-semibold text-text-secondary dark:text-text-tertiary">
                           {m.count}
                         </span>
                         <div

@@ -33,7 +33,7 @@ export default function TechOnboardingPage(): JSX.Element {
           <p className="mt-1 text-sm text-text-secondary">{t('techOnboarding.subtitle')}</p>
         </div>
         <Card padding="lg">
-          <div className="mb-4 h-2 rounded-full bg-gray-200 dark:bg-gray-700">
+          <div className="mb-4 h-2 rounded-full bg-surface-muted">
             <div
               className="h-2 rounded-full bg-brand-500"
               style={{ width: `${(completed / total) * 100}%` }}

@@ -54,12 +54,12 @@ export default function ChallengesPage(): JSX.Element {
                     {t(cfg.label)}
                   </h4>
                   {prog && (
-                    <p className="mt-1 text-xs text-text-tertiary dark:text-gray-500">
+                    <p className="mt-1 text-xs text-text-tertiary dark:text-text-secondary">
                       {prog.current}/{prog.total} — {Math.round((prog.current / prog.total) * 100)}%
                     </p>
                   )}
                   {prog && (
-                    <div className="mt-2 h-2 w-full rounded-full bg-gray-100 dark:bg-gray-800">
+                    <div className="mt-2 h-2 w-full rounded-full bg-surface-muted">
                       <div
                         className="h-full rounded-full transition-all"
                         style={{

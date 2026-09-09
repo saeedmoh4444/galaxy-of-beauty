@@ -60,7 +60,7 @@ export function EventsClient({ initialEvents }: { initialEvents: unknown[] }): J
         <h1 className="mt-4 text-3xl font-bold text-text-primary dark:text-gray-100">
           {t('marketing.events.title')}
         </h1>
-        <p className="mt-2 text-text-secondary dark:text-gray-400">
+        <p className="mt-2 text-text-secondary dark:text-text-tertiary">
           {t('marketing.events.subtitle')}
         </p>
       </div>
@@ -69,7 +69,7 @@ export function EventsClient({ initialEvents }: { initialEvents: unknown[] }): J
       <div className="mb-8 flex flex-wrap justify-center gap-2">
         <button
           onClick={() => setActiveType(null)}
-          className={`rounded-full px-4 py-1.5 text-sm font-medium transition-all ${!activeType ? 'bg-brand-600 text-white shadow-md' : 'bg-surface-muted text-text-secondary hover:bg-gray-200 dark:bg-gray-800 dark:text-gray-400'}`}
+          className={`rounded-full px-4 py-1.5 text-sm font-medium transition-all ${!activeType ? 'bg-brand-600 text-white shadow-md' : 'bg-surface-muted text-text-secondary hover:bg-surface-muted dark:text-text-tertiary'}`}
         >
           {t('marketing.events.all')}
         </button>
@@ -77,7 +77,7 @@ export function EventsClient({ initialEvents }: { initialEvents: unknown[] }): J
           <button
             key={key}
             onClick={() => setActiveType(key === activeType ? null : key)}
-            className={`rounded-full px-4 py-1.5 text-sm font-medium transition-all ${activeType === key ? 'bg-brand-600 text-white shadow-md' : 'bg-surface-muted text-text-secondary hover:bg-gray-200 dark:bg-gray-800 dark:text-gray-400'}`}
+            className={`rounded-full px-4 py-1.5 text-sm font-medium transition-all ${activeType === key ? 'bg-brand-600 text-white shadow-md' : 'bg-surface-muted text-text-secondary hover:bg-surface-muted dark:text-text-tertiary'}`}
           >
             {t(label)}
           </button>

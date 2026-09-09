@@ -91,7 +91,7 @@ export default function CertificationQuizPage(): JSX.Element {
                           a[qi] = oi;
                           setAnswers(a);
                         }}
-                        className={`w-full text-right rounded-lg border p-3 text-sm transition-all ${answers[qi] === oi ? 'border-brand-400 bg-brand-50 dark:bg-brand-950' : 'border-gray-200 dark:border-gray-700'}`}
+                        className={`w-full text-right rounded-lg border p-3 text-sm transition-all ${answers[qi] === oi ? 'border-brand-400 bg-brand-50 dark:bg-brand-950' : 'border-edge'}`}
                       >
                         {opt}
                       </button>

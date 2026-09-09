@@ -27,15 +27,15 @@ export default async function BeautyPackagesPage(): Promise<JSX.Element> {
   return (
     <div className="mx-auto max-w-6xl px-4 py-12">
       <div className="mb-10 text-center">
-        <h1 className="text-3xl font-bold text-gray-900 dark:text-gray-100">
+        <h1 className="text-3xl font-bold text-text-primary">
           {t('marketing.beauty-packages.title', locale)}
         </h1>
-        <p className="mt-2 text-gray-500 dark:text-gray-400">
+        <p className="mt-2 text-text-secondary">
           {t('marketing.beauty-packages.subtitle', locale)}
         </p>
       </div>
       {packages.length === 0 ? (
-        <div className="py-16 text-center text-gray-400">
+        <div className="py-16 text-center text-text-tertiary">
           <span className="text-5xl"></span>
           <p className="mt-4">{t('marketing.beauty-packages.no-packages', locale)}</p>
           <Link href="/services" className="mt-4 inline-block text-brand-600 hover:underline">
@@ -51,7 +51,7 @@ export default async function BeautyPackagesPage(): Promise<JSX.Element> {
             return (
               <div
                 key={pkg.id}
-                className="overflow-hidden rounded-2xl border border-gray-200 bg-white dark:border-gray-800 dark:bg-gray-900"
+                className="overflow-hidden rounded-2xl border border-edge bg-white dark:border-gray-800 dark:bg-gray-900"
               >
                 <div className="relative flex h-40 items-center justify-center bg-gradient-to-br from-brand-200 to-accent-200 text-5xl dark:from-brand-900 dark:to-accent-900">
                   {pkg.imageUrl ? (
@@ -62,17 +62,17 @@ export default async function BeautyPackagesPage(): Promise<JSX.Element> {
                 </div>
                 <div className="p-5">
                   <div className="flex items-center justify-between">
-                    <h2 className="text-lg font-bold text-gray-900 dark:text-gray-100">{name}</h2>
+                    <h2 className="text-lg font-bold text-text-primary">{name}</h2>
                     <span className="rounded-full bg-red-100 px-2 py-0.5 text-xs font-bold text-red-600">
                       -{pkg.discountPercent}%
                     </span>
                   </div>
-                  {desc && <p className="mt-2 text-sm text-gray-500 line-clamp-2">{desc}</p>}
+                  {desc && <p className="mt-2 text-sm text-text-secondary line-clamp-2">{desc}</p>}
                   <div className="mt-3 space-y-1">
                     {services.map((s) => (
                       <div
                         key={s.id}
-                        className="flex items-center gap-2 text-sm text-gray-600 dark:text-gray-400"
+                        className="flex items-center gap-2 text-sm text-text-secondary"
                       >
                         <span></span>
                         {/* serviceId is the foreign key — service title not joined */}

@@ -104,14 +104,14 @@ export default function CheckoutPage(): JSX.Element {
               <div className="space-y-2">
                 <button
                   onClick={() => setMethod('online')}
-                  className={`w-full rounded-xl border-2 p-3 text-right ${method === 'online' ? 'border-brand-400 bg-brand-50' : 'border-gray-200'}`}
+                  className={`w-full rounded-xl border-2 p-3 text-right ${method === 'online' ? 'border-brand-400 bg-brand-50' : 'border-edge'}`}
                 >
                   <span className="font-bold">{t('wallet.online-payment')}</span>
                   <p className="text-xs text-text-secondary">{t('wallet.card-brands')}</p>
                 </button>
                 <button
                   onClick={() => setMethod('wallet')}
-                  className={`w-full rounded-xl border-2 p-3 text-right ${method === 'wallet' ? 'border-brand-400 bg-brand-50' : 'border-gray-200'}`}
+                  className={`w-full rounded-xl border-2 p-3 text-right ${method === 'wallet' ? 'border-brand-400 bg-brand-50' : 'border-edge'}`}
                   disabled={walletBalance < total}
                 >
                   <span className="font-bold">{t('wallet.title')}</span>

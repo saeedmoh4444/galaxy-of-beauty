@@ -69,7 +69,7 @@ export default function SpaPlannerPage(): JSX.Element {
                   <button
                     key={s.id as number}
                     onClick={() => toggleSvc(s.id as number)}
-                    className={`rounded-xl border-2 p-3 text-right transition-all ${selectedSvcs.includes(s.id as number) ? 'border-brand-400 bg-brand-50 dark:bg-brand-950' : 'border-gray-200 dark:border-gray-700'}`}
+                    className={`rounded-xl border-2 p-3 text-right transition-all ${selectedSvcs.includes(s.id as number) ? 'border-brand-400 bg-brand-50 dark:bg-brand-950' : 'border-edge'}`}
                   >
                     <span className="text-2xl">{s.emoji as string}</span>
                     <span className="font-bold text-sm mr-2">{s.nameAr as string}</span>

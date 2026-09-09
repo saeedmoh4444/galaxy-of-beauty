@@ -49,7 +49,7 @@ export default function ServiceRecommenderPage(): JSX.Element {
                   <Card padding="lg" className="hover:shadow-lg transition-all text-center">
                     <span className="text-4xl">{r.emoji as string}</span>
                     <h3 className="font-bold mt-2">{r.nameAr as string}</h3>
-                    <div className="mt-2 h-2 rounded-full bg-gray-200 dark:bg-gray-700">
+                    <div className="mt-2 h-2 rounded-full bg-surface-muted">
                       <div
                         className="h-2 rounded-full bg-brand-500"
                         style={{ width: `${r.matchPct as number}%` }}
@@ -82,7 +82,7 @@ export default function ServiceRecommenderPage(): JSX.Element {
             {qs.map((_, i) => (
               <div
                 key={i}
-                className={`h-1.5 flex-1 rounded-full ${i <= step ? 'bg-brand-500' : 'bg-gray-200 dark:bg-gray-700'}`}
+                className={`h-1.5 flex-1 rounded-full ${i <= step ? 'bg-brand-500' : 'bg-surface-muted'}`}
               />
             ))}
           </div>

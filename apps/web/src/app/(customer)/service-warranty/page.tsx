@@ -224,7 +224,7 @@ export default function ServiceWarrantyPage(): JSX.Element {
                     key={comp.key}
                     type="button"
                     onClick={() => setCompType(comp.key)}
-                    className={`w-full text-right rounded-xl border p-3 text-sm transition-all ${compType === comp.key ? 'border-brand-400 bg-brand-50 dark:bg-brand-950' : 'border-gray-200 dark:border-gray-700'}`}
+                    className={`w-full text-right rounded-xl border p-3 text-sm transition-all ${compType === comp.key ? 'border-brand-400 bg-brand-50 dark:bg-brand-950' : 'border-edge'}`}
                   >
                     <span className="font-bold">
                       {comp.emoji} {t(comp.label)}

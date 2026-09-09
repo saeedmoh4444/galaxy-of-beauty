@@ -126,7 +126,7 @@ export default function BeautyMentorPage(): JSX.Element {
             <button
               key={l.key}
               onClick={() => setLevel(l.key)}
-              className={`rounded-xl border-2 p-4 text-center transition-all ${level === l.key ? 'border-brand-400 bg-brand-50 shadow-lg' : 'border-gray-200 hover:border-gray-300'}`}
+              className={`rounded-xl border-2 p-4 text-center transition-all ${level === l.key ? 'border-brand-400 bg-brand-50 shadow-lg' : 'border-edge hover:border-edge'}`}
             >
               <span className="text-4xl block">{l.emoji}</span>
               <p className="font-bold mt-2">{t(l.name)}</p>
@@ -160,7 +160,7 @@ export default function BeautyMentorPage(): JSX.Element {
                 <button
                   key={tp}
                   onClick={() => setSelectedTopic(selectedTopic === tp ? null : tp)}
-                  className={`rounded-full px-4 py-2 text-sm transition-all ${selectedTopic === tp ? 'bg-brand-600 text-white' : 'bg-surface-muted hover:bg-gray-200'}`}
+                  className={`rounded-full px-4 py-2 text-sm transition-all ${selectedTopic === tp ? 'bg-brand-600 text-white' : 'bg-surface-muted hover:bg-surface-muted'}`}
                 >
                   {t(tp)}
                 </button>

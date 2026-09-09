@@ -239,7 +239,7 @@ function ColorPalette({
             className="h-9 w-9 rounded-full border-2 border-white shadow-md transition-transform group-hover:scale-110"
             style={{ backgroundColor: c.hex }}
           />
-          <span className="text-[10px] text-text-secondary dark:text-gray-400 leading-tight text-center max-w-[48px] truncate">
+          <span className="text-[10px] text-text-secondary dark:text-text-tertiary leading-tight text-center max-w-[48px] truncate">
             {c.nameAr}
           </span>
           {selectedId === c.id && (
@@ -396,7 +396,7 @@ export default function VirtualTryOnPage(): JSX.Element {
           <h1 className="text-2xl font-bold text-text-primary dark:text-gray-100">
             {t('tryOn.title')}
           </h1>
-          <p className="mt-1 text-sm text-text-secondary dark:text-gray-400">
+          <p className="mt-1 text-sm text-text-secondary dark:text-text-tertiary">
             {t('tryOn.subtitle')}
           </p>
         </div>
@@ -420,7 +420,7 @@ export default function VirtualTryOnPage(): JSX.Element {
                     className={`flex items-center gap-2 rounded-xl px-3 py-2.5 text-sm font-medium transition-all ${
                       makeupType === typeKey
                         ? 'bg-brand-100 text-brand-700 ring-2 ring-brand-300 dark:bg-brand-900 dark:text-brand-300'
-                        : 'bg-surface-muted text-text-secondary hover:bg-surface-muted dark:bg-gray-800 dark:text-gray-400'
+                        : 'bg-surface-muted text-text-secondary hover:bg-surface-muted dark:bg-gray-800 dark:text-text-tertiary'
                     }`}
                   >
                     <span className="text-lg">{TYPE_LABELS[typeKey].emoji}</span>
@@ -439,7 +439,7 @@ export default function VirtualTryOnPage(): JSX.Element {
               {palettesLoading ? (
                 <div className="flex gap-2">
                   {Array.from({ length: 6 }, (_, i) => (
-                    <div key={i} className="h-9 w-9 rounded-full bg-gray-200 animate-pulse" />
+                    <div key={i} className="h-9 w-9 rounded-full bg-surface-muted animate-pulse" />
                   ))}
                 </div>
               ) : (
@@ -653,7 +653,7 @@ export default function VirtualTryOnPage(): JSX.Element {
           <h3 className="font-bold text-text-primary dark:text-gray-100 mb-3">
             {t('tryOn.tipsTitle')}
           </h3>
-          <div className="grid gap-2 text-sm text-text-secondary dark:text-gray-400 sm:grid-cols-2">
+          <div className="grid gap-2 text-sm text-text-secondary dark:text-text-tertiary sm:grid-cols-2">
             <p>{t('tryOn.tip1')}</p>
             <p>{t('tryOn.tip2')}</p>
             <p>{t('tryOn.tip3')}</p>

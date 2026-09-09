@@ -28,7 +28,7 @@ const STATUS_COLORS: Record<string, string> = {
   COMPLETED: 'bg-green-100 text-green-700',
   CANCELLED: 'bg-red-100 text-red-700',
   REJECTED: 'bg-red-100 text-red-700',
-  NO_SHOW: 'bg-gray-100 text-gray-700 dark:bg-gray-800 dark:text-gray-300',
+  NO_SHOW: 'bg-surface-muted text-text-secondary dark:bg-gray-800 dark:text-gray-300',
 };
 
 export default function BookingDetailPage(): JSX.Element {
@@ -56,9 +56,7 @@ export default function BookingDetailPage(): JSX.Element {
     <DashboardLayout userRole="CUSTOMER">
       <div className="mx-auto max-w-3xl space-y-6">
         <div className="flex items-center justify-between">
-          <h1 className="text-2xl font-bold text-gray-900 dark:text-gray-100">
-            {t('booking.details')}
-          </h1>
+          <h1 className="text-2xl font-bold text-text-primary">{t('booking.details')}</h1>
           <Link href="/bookings">
             <Button variant="outline">{t('booking.back-to-bookings')}</Button>
           </Link>
@@ -67,21 +65,21 @@ export default function BookingDetailPage(): JSX.Element {
         <Card padding="lg">
           <div className="space-y-4">
             <div className="flex items-center justify-between">
-              <span className="text-sm text-gray-500">{t('booking.code')}</span>
+              <span className="text-sm text-text-secondary">{t('booking.code')}</span>
               <span className="font-mono font-bold text-brand-600">
                 {booking.bookingCode ?? `GOB-${String(booking.id).padStart(6, '0')}`}
               </span>
             </div>
             <div className="flex items-center justify-between">
-              <span className="text-sm text-gray-500">{t('booking.status-label')}</span>
+              <span className="text-sm text-text-secondary">{t('booking.status-label')}</span>
               <span
-                className={`rounded-full px-3 py-1 text-xs font-medium ${STATUS_COLORS[booking.status] || 'bg-gray-100 text-gray-700 dark:bg-gray-800 dark:text-gray-300'}`}
+                className={`rounded-full px-3 py-1 text-xs font-medium ${STATUS_COLORS[booking.status] || 'bg-surface-muted text-text-secondary dark:bg-gray-800 dark:text-gray-300'}`}
               >
                 {t(STATUS_LABELS[booking.status] ?? (booking.status as TranslationKey))}
               </span>
             </div>
             <div className="flex items-center justify-between">
-              <span className="text-sm text-gray-500">{t('booking.service')}</span>
+              <span className="text-sm text-text-secondary">{t('booking.service')}</span>
               <span className="font-semibold">
                 {localize(
                   (booking.service as unknown as { titleJson?: Record<string, string> } | null)
@@ -91,13 +89,13 @@ export default function BookingDetailPage(): JSX.Element {
               </span>
             </div>
             <div className="flex items-center justify-between">
-              <span className="text-sm text-gray-500">{t('booking.amount')}</span>
+              <span className="text-sm text-text-secondary">{t('booking.amount')}</span>
               <span className="font-bold text-brand-600">
                 {formatCurrency(Number(booking.totalAmount || 0))}
               </span>
             </div>
             <div className="flex items-center justify-between">
-              <span className="text-sm text-gray-500">{t('booking.date')}</span>
+              <span className="text-sm text-text-secondary">{t('booking.date')}</span>
               <span className="text-sm">
                 {new Date(booking.startAt).toLocaleDateString(locale === 'en' ? 'en-GB' : 'ar-SA', {
                   weekday: 'long',
@@ -108,7 +106,7 @@ export default function BookingDetailPage(): JSX.Element {
               </span>
             </div>
             <div className="flex items-center justify-between">
-              <span className="text-sm text-gray-500">{t('booking.time')}</span>
+              <span className="text-sm text-text-secondary">{t('booking.time')}</span>
               <span className="text-sm">
                 {new Date(booking.startAt).toLocaleTimeString(locale === 'en' ? 'en-GB' : 'ar-SA', {
                   hour: '2-digit',
@@ -118,8 +116,8 @@ export default function BookingDetailPage(): JSX.Element {
             </div>
             {booking.notes && (
               <div className="flex items-center justify-between">
-                <span className="text-sm text-gray-500">{t('booking.notes')}</span>
-                <span className="text-sm text-gray-700">{booking.notes}</span>
+                <span className="text-sm text-text-secondary">{t('booking.notes')}</span>
+                <span className="text-sm text-text-secondary">{booking.notes}</span>
               </div>
             )}
           </div>

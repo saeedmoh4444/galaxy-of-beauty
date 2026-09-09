@@ -181,7 +181,7 @@ export default function ProductScannerPage(): JSX.Element {
                           {product.safetyScore}%
                         </span>
                       </div>
-                      <div className="h-2.5 rounded-full bg-gray-200 dark:bg-gray-700 overflow-hidden">
+                      <div className="h-2.5 rounded-full bg-surface-muted overflow-hidden">
                         <div
                           className={`h-full rounded-full ${SAFETY_BG(product.safetyScore)}`}
                           style={{ width: `${product.safetyScore}%` }}
@@ -225,7 +225,7 @@ export default function ProductScannerPage(): JSX.Element {
                         className={`rounded-full px-2.5 py-0.5 text-xs font-medium ${
                           isAllergen
                             ? 'bg-red-100 text-red-700 dark:bg-red-900 dark:text-red-300'
-                            : 'bg-surface-muted text-text-secondary dark:bg-gray-800 dark:text-gray-400'
+                            : 'bg-surface-muted text-text-secondary dark:bg-gray-800 dark:text-text-tertiary'
                         }`}
                       >
                         {ing} {isAllergen && ''}
@@ -272,7 +272,7 @@ export default function ProductScannerPage(): JSX.Element {
           className="bg-gradient-to-r from-green-50 to-emerald-50 dark:from-green-950 dark:to-emerald-950 border-none"
         >
           <h3 className="font-bold mb-3">{t('scanner.tipsTitle')}</h3>
-          <div className="grid gap-2 text-sm text-text-secondary dark:text-gray-400 sm:grid-cols-2">
+          <div className="grid gap-2 text-sm text-text-secondary dark:text-text-tertiary sm:grid-cols-2">
             <p>{t('scanner.tip1')}</p>
             <p>{t('scanner.tip2')}</p>
             <p>{t('scanner.tip3')}</p>

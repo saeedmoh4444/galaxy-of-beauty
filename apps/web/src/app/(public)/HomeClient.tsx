@@ -191,7 +191,7 @@ export function HomeClient({
                   {'★'.repeat(tst.rating)}
                   {'☆'.repeat(5 - tst.rating)}
                 </p>
-                <p className="mt-3 text-sm text-text-secondary dark:text-gray-400 leading-relaxed">
+                <p className="mt-3 text-sm text-text-secondary dark:text-text-tertiary leading-relaxed">
                   &ldquo;{tst.text}&rdquo;
                 </p>
                 <p className="mt-3 font-bold text-brand-600">— {tst.name}</p>

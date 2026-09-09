@@ -10,8 +10,8 @@ import { Breadcrumbs } from '@/components/Breadcrumbs';
 
 const DEFAULT_STATUS: { label: TranslationKey; color: string; bg: string } = {
   label: 'groupBookingDetail.status.unknown',
-  color: 'text-gray-700 dark:text-gray-300',
-  bg: 'bg-gray-100 dark:bg-gray-800',
+  color: 'text-text-secondary',
+  bg: 'bg-surface-muted',
 };
 const STATUS_MAP: Record<string, { label: TranslationKey; color: string; bg: string }> = {
   PENDING: {
@@ -31,8 +31,8 @@ const STATUS_MAP: Record<string, { label: TranslationKey; color: string; bg: str
   },
   COMPLETED: {
     label: 'groupBookingDetail.status.completed',
-    color: 'text-gray-700 dark:text-gray-300',
-    bg: 'bg-gray-100 dark:bg-gray-800',
+    color: 'text-text-secondary',
+    bg: 'bg-surface-muted',
   },
   CANCELLED: {
     label: 'groupBookingDetail.status.cancelled',
@@ -113,10 +113,10 @@ export default function GroupBookingDetailPage(): JSX.Element {
                   <div className="flex items-center gap-4">
                     <span className="text-5xl">{THEME_EMOJI[theme] ?? ''}</span>
                     <div>
-                      <h1 className="text-2xl font-bold text-gray-900 dark:text-gray-100">
+                      <h1 className="text-2xl font-bold text-text-primary">
                         {group?.name as string}
                       </h1>
-                      <p className="text-sm text-gray-500">
+                      <p className="text-sm text-text-secondary">
                         {t('groupBookingDetail.themeDiscount', {
                           theme: THEME_LABELS[theme]
                             ? t(THEME_LABELS[theme])
@@ -139,40 +139,42 @@ export default function GroupBookingDetailPage(): JSX.Element {
             <div className="grid gap-4 sm:grid-cols-3">
               <Card padding="md" className="text-center">
                 <p className="text-3xl">‍️</p>
-                <p className="mt-1 text-2xl font-bold text-gray-900 dark:text-gray-100">
-                  {members.length}
+                <p className="mt-1 text-2xl font-bold text-text-primary">{members.length}</p>
+                <p className="text-xs text-text-secondary">
+                  {t('groupBookingDetail.membersLabel')}
                 </p>
-                <p className="text-xs text-gray-500">{t('groupBookingDetail.membersLabel')}</p>
               </Card>
               <Card padding="md" className="text-center">
                 <p className="text-3xl">️</p>
                 <p className="mt-1 text-2xl font-bold text-brand-600">
                   {(group?.discountPercent as number) ?? 0}%
                 </p>
-                <p className="text-xs text-gray-500">{t('groupBookingDetail.groupDiscount')}</p>
+                <p className="text-xs text-text-secondary">
+                  {t('groupBookingDetail.groupDiscount')}
+                </p>
               </Card>
               <Card padding="md" className="text-center">
                 <p className="text-3xl"></p>
-                <p className="mt-1 text-2xl font-bold text-gray-900 dark:text-gray-100">
+                <p className="mt-1 text-2xl font-bold text-text-primary">
                   {Number(group?.totalAmount) > 0
                     ? formatCurrency(Number(group?.totalAmount))
                     : '—'}
                 </p>
-                <p className="text-xs text-gray-500">{t('groupBookingDetail.totalAmount')}</p>
+                <p className="text-xs text-text-secondary">{t('groupBookingDetail.totalAmount')}</p>
               </Card>
             </div>
 
             {/* Members List */}
             <Card padding="lg">
-              <h2 className="text-lg font-bold text-gray-900 dark:text-gray-100 mb-4">
+              <h2 className="text-lg font-bold text-text-primary mb-4">
                 {t('groupBookingDetail.membersTitle', { count: members.length })}
               </h2>
               {members.length === 0 ? (
-                <p className="text-center text-sm text-gray-400 py-8">
+                <p className="text-center text-sm text-text-tertiary py-8">
                   {t('groupBookingDetail.noMembers')}
                 </p>
               ) : (
-                <div className="divide-y divide-gray-100 dark:divide-gray-800">
+                <div className="divide-y divide-edge-muted">
                   {members.map((member: Record<string, unknown>, idx: number) => {
                     const memberStatus = (member?.status as string) ?? 'PENDING';
                     const mStatusInfo = STATUS_MAP[memberStatus] ?? DEFAULT_STATUS;
@@ -186,10 +188,10 @@ export default function GroupBookingDetailPage(): JSX.Element {
                             {idx + 1}
                           </div>
                           <div>
-                            <p className="text-sm font-semibold text-gray-900 dark:text-gray-100">
+                            <p className="text-sm font-semibold text-text-primary">
                               {member?.name as string}
                             </p>
-                            <p className="text-xs text-gray-500">
+                            <p className="text-xs text-text-secondary">
                               {t('groupBookingDetail.memberService', {
                                 id: member?.serviceId as number,
                               })}
@@ -214,7 +216,7 @@ export default function GroupBookingDetailPage(): JSX.Element {
             </Card>
 
             {/* Created Date */}
-            <p className="text-center text-xs text-gray-400">
+            <p className="text-center text-xs text-text-tertiary">
               {t('groupBookingDetail.createdAtLabel')}{' '}
               {group?.createdAt
                 ? new Date(group.createdAt as string).toLocaleDateString(

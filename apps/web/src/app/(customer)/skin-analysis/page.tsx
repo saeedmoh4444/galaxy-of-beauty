@@ -97,7 +97,7 @@ export default function SkinAnalysisPage(): JSX.Element {
                 placeholder="https://..."
                 value={imageUrl}
                 onChange={(e) => setImageUrl(e.target.value)}
-                className="flex-1 rounded-lg border border-gray-200 px-3 py-2 text-sm dark:border-gray-700 dark:bg-gray-800"
+                className="flex-1 rounded-lg border border-edge px-3 py-2 text-sm dark:border-gray-700 dark:bg-gray-800"
               />
               <Button
                 onClick={() => {
@@ -125,25 +125,25 @@ export default function SkinAnalysisPage(): JSX.Element {
               {t('skin.resultsTitle')}
             </h3>
             <div className="grid gap-4 sm:grid-cols-2">
-              <div className="rounded-xl bg-white dark:bg-gray-800 p-4">
+              <div className="rounded-xl bg-surface-elevated p-4">
                 <p className="text-xs text-text-secondary">{t('skin.result.skinType')}</p>
                 <p className="text-xl font-bold text-brand-600">
                   {(result['skinType'] as string) || t('skin.unspecified')}
                 </p>
               </div>
-              <div className="rounded-xl bg-white dark:bg-gray-800 p-4">
+              <div className="rounded-xl bg-surface-elevated p-4">
                 <p className="text-xs text-text-secondary">{t('skin.result.hydration')}</p>
                 <p className="text-xl font-bold text-blue-600">
                   {(result['hydrationLevel'] as string) || '—'}
                 </p>
               </div>
-              <div className="rounded-xl bg-white dark:bg-gray-800 p-4">
+              <div className="rounded-xl bg-surface-elevated p-4">
                 <p className="text-xs text-text-secondary">{t('skin.result.sensitivity')}</p>
                 <p className="text-xl font-bold text-purple-600">
                   {(result['sensitivityLevel'] as string) || '—'}
                 </p>
               </div>
-              <div className="rounded-xl bg-white dark:bg-gray-800 p-4">
+              <div className="rounded-xl bg-surface-elevated p-4">
                 <p className="text-xs text-text-secondary">{t('skin.result.age')}</p>
                 <p className="text-xl font-bold text-amber-600">
                   {(result['ageEstimate'] as string) || '—'}
@@ -174,7 +174,7 @@ export default function SkinAnalysisPage(): JSX.Element {
                   ] as string[];
                   if (!recs?.length) return null;
                   return (
-                    <div key={cat} className="rounded-xl bg-white dark:bg-gray-800 p-3">
+                    <div key={cat} className="rounded-xl bg-surface-elevated p-3">
                       <p className="text-xs font-bold text-text-secondary mb-1">
                         {cat === 'services'
                           ? t('skin.recs.services')

@@ -82,7 +82,7 @@ export default function NotificationsPage(): JSX.Element {
                       <span className="mt-1 text-xl">{TYPE_ICONS[n.type as string] ?? ''}</span>
                       <div className="min-w-0 flex-1">
                         <p
-                          className={`text-sm ${isRead ? 'text-text-secondary dark:text-gray-400' : 'font-semibold text-text-primary dark:text-gray-100'}`}
+                          className={`text-sm ${isRead ? 'text-text-secondary dark:text-text-tertiary' : 'font-semibold text-text-primary dark:text-gray-100'}`}
                         >
                           {localize(titleJson, locale)}
                         </p>

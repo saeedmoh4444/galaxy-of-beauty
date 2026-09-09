@@ -43,7 +43,7 @@ export default function GroupBuyPage(): JSX.Element {
                   })}
                 </span>
               </div>
-              <div className="mt-2 h-2 rounded-full bg-gray-200 dark:bg-gray-700">
+              <div className="mt-2 h-2 rounded-full bg-surface-muted">
                 <div
                   className="h-2 rounded-full bg-brand-500"
                   style={{

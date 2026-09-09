@@ -50,7 +50,7 @@ export default function BookingConfirmPage(): JSX.Element {
               </span>
             </div>
           </div>
-          <div className="mt-4 border-t border-gray-100 pt-4 dark:border-gray-800">
+          <div className="mt-4 border-t border-edge-muted pt-4 dark:border-gray-800">
             <AddToCalendar
               title={t('booking.calendar-title', { code })}
               startAt={date}

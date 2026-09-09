@@ -95,7 +95,7 @@ export default function TravelChecklistPage(): JSX.Element {
               key={dt.key}
               type="button"
               onClick={() => setDest(dt.key)}
-              className={`flex-1 rounded-2xl border-2 p-3 text-center transition-all ${dest === dt.key ? 'bg-white dark:bg-gray-900' : 'bg-white dark:bg-gray-900'}`}
+              className={`flex-1 rounded-2xl border-2 p-3 text-center transition-all ${dest === dt.key ? 'bg-surface-elevated' : 'bg-surface-elevated'}`}
               style={dest === dt.key ? { borderColor: dt.color } : { borderColor: '#e5e7eb' }}
             >
               <span className="text-2xl">{dt.emoji}</span>
@@ -126,7 +126,7 @@ export default function TravelChecklistPage(): JSX.Element {
                 className={`flex w-full items-center gap-3 rounded-xl p-3 text-right transition-all ${checked.has(item) ? 'bg-emerald-100 dark:bg-emerald-900' : 'bg-white/60 dark:bg-gray-800/60'}`}
               >
                 <span
-                  className={`flex h-6 w-6 shrink-0 items-center justify-center rounded-md text-sm ${checked.has(item) ? 'bg-emerald-500 text-white' : 'border-2 border-gray-300 dark:border-gray-600'}`}
+                  className={`flex h-6 w-6 shrink-0 items-center justify-center rounded-md text-sm ${checked.has(item) ? 'bg-emerald-500 text-white' : 'border-2 border-edge'}`}
                 >
                   {checked.has(item) ? '' : ''}
                 </span>

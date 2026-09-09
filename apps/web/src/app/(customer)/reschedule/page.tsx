@@ -81,7 +81,7 @@ export default function ReschedulePage(): JSX.Element {
                     setSelectedId(isSelected ? null : (b.id as number));
                     setDone(false);
                   }}
-                  className={`w-full rounded-xl border-2 p-4 text-right transition-all ${isSelected ? 'border-brand-400 bg-brand-50' : 'border-gray-200'}`}
+                  className={`w-full rounded-xl border-2 p-4 text-right transition-all ${isSelected ? 'border-brand-400 bg-brand-50' : 'border-edge'}`}
                 >
                   <div className="flex justify-between items-center">
                     <div>

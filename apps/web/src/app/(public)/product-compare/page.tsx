@@ -134,7 +134,7 @@ export default function ProductComparePage(): JSX.Element {
                     return (
                       <td key={p.id as number} className="text-center py-3 px-4">
                         <div className="flex items-center gap-2 justify-center">
-                          <div className="h-2 flex-1 max-w-[80px] rounded-full bg-gray-200 dark:bg-gray-700 overflow-hidden">
+                          <div className="h-2 flex-1 max-w-[80px] rounded-full bg-surface-muted overflow-hidden">
                             <div
                               className={`h-full rounded-full ${val >= 85 ? 'bg-green-500' : val >= 70 ? 'bg-amber-500' : 'bg-red-500'}`}
                               style={{ width: `${val}%` }}

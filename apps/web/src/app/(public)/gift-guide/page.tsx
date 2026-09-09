@@ -250,7 +250,7 @@ function GiftQuizWidget(): JSX.Element {
             {qs.map((_: unknown, i: number) => (
               <div
                 key={i}
-                className={`h-1.5 flex-1 rounded-full ${i <= step ? 'bg-brand-600' : 'bg-gray-200'}`}
+                className={`h-1.5 flex-1 rounded-full ${i <= step ? 'bg-brand-600' : 'bg-surface-muted'}`}
               />
             ))}
           </div>

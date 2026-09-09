@@ -44,7 +44,7 @@ export default function ServiceComparePage(): JSX.Element {
                 key={s.id as number}
                 type="button"
                 onClick={() => toggle(s.id as number)}
-                className={`rounded-2xl border-2 p-4 text-center transition-all ${isSel ? 'border-cyan-400 bg-cyan-50 dark:border-cyan-600 dark:bg-cyan-950' : 'border-gray-100 bg-white dark:border-gray-800 dark:bg-gray-900'}`}
+                className={`rounded-2xl border-2 p-4 text-center transition-all ${isSel ? 'border-cyan-400 bg-cyan-50 dark:border-cyan-600 dark:bg-cyan-950' : 'border-edge-muted bg-white dark:border-gray-800 dark:bg-gray-900'}`}
               >
                 <span className="text-3xl">{(s.emoji as string) ?? '‍️'}</span>
                 <p className="mt-2 text-xs font-bold text-text-primary dark:text-gray-100">
@@ -59,18 +59,21 @@ export default function ServiceComparePage(): JSX.Element {
         </div>
 
         {compareItems.length >= 2 && (
-          <div className="rounded-2xl border border-gray-100 bg-white p-6 dark:border-gray-800 dark:bg-gray-900">
+          <div className="rounded-2xl border border-edge-muted bg-white p-6 dark:border-gray-800 dark:bg-gray-900">
             <h3 className="text-lg font-bold text-text-primary dark:text-gray-100">
               {t('serviceCompare.comparison')}
             </h3>
             <div className="mt-4 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
               {compareItems.map((s) => (
-                <div key={s.id as number} className="rounded-xl bg-gray-50 p-4 dark:bg-gray-800">
+                <div
+                  key={s.id as number}
+                  className="rounded-xl bg-surface-muted p-4 dark:bg-gray-800"
+                >
                   <span className="text-2xl">{s.emoji as string}</span>
                   <h4 className="mt-2 text-sm font-bold text-text-primary dark:text-gray-100">
                     {(s.titleJson as { ar?: string } | null)?.ar}
                   </h4>
-                  <div className="mt-3 space-y-2 text-sm text-text-secondary dark:text-gray-400">
+                  <div className="mt-3 space-y-2 text-sm text-text-secondary dark:text-text-tertiary">
                     <div className="flex justify-between">
                       <span>{t('serviceCompare.price')}</span>
                       <span className="font-bold text-text-primary dark:text-gray-100">

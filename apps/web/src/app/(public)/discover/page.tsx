@@ -192,7 +192,9 @@ export default function DiscoverPage(): JSX.Element {
               <h3 className="mt-3 font-bold text-sm text-text-primary dark:text-gray-100">
                 {t(f.title)}
               </h3>
-              <p className="mt-1 text-xs text-text-secondary dark:text-gray-400">{t(f.desc)}</p>
+              <p className="mt-1 text-xs text-text-secondary dark:text-text-tertiary">
+                {t(f.desc)}
+              </p>
             </Card>
           </Link>
         ))}

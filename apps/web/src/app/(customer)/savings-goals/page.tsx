@@ -101,7 +101,7 @@ export default function SavingsGoalsPage(): JSX.Element {
                       {pct.toFixed(0)}%
                     </span>
                   </div>
-                  <div className="mt-3 h-3 rounded-full bg-gray-200 dark:bg-gray-700">
+                  <div className="mt-3 h-3 rounded-full bg-surface-muted">
                     <div
                       className={`h-3 rounded-full transition-all ${g.status === 'COMPLETED' ? 'bg-green-500' : 'bg-brand-500'}`}
                       style={{ width: `${pct}%` }}

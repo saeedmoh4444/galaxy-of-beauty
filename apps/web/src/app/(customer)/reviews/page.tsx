@@ -124,7 +124,7 @@ export default function ReviewsPage(): JSX.Element {
                           ))}
                         </div>
                         {b.reviewComment ? (
-                          <p className="text-sm text-text-secondary dark:text-gray-400">
+                          <p className="text-sm text-text-secondary dark:text-text-tertiary">
                             &ldquo;{b.reviewComment as string}&rdquo;
                           </p>
                         ) : null}
