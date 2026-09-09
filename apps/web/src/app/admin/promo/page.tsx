@@ -37,7 +37,7 @@ export default function AdminPromoPage(): JSX.Element {
                     <p className="font-bold font-mono">{p.code as string}</p>
                     <p className="text-xs text-text-secondary">{(p.description as string) ?? ''}</p>
                   </div>
-                  <div className="text-right">
+                  <div className="text-end">
                     <p className="font-bold text-green-600">
                       {p.discountType === 'percent'
                         ? `${p.discountValue as number}%`

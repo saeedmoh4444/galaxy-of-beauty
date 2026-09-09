@@ -185,12 +185,12 @@ export default function PriceEstimatorPage(): JSX.Element {
                 className="w-full rounded-xl border border-edge bg-surface-muted px-4 py-3 text-sm uppercase tracking-wider focus:border-brand-500 focus:outline-none focus:ring-2 focus:ring-brand-100 dark:border-gray-700 dark:bg-gray-800 dark:placeholder:text-text-secondary"
               />
               {promoCode && estimate?.promoValid && (
-                <span className="absolute left-3 top-1/2 -translate-y-1/2 text-green-500 text-sm font-bold">
+                <span className="absolute start-3 top-1/2 -translate-y-1/2 text-green-500 text-sm font-bold">
                   {t('marketing.price-estimator.promo-valid')}
                 </span>
               )}
               {hasPromoError && (
-                <span className="absolute left-3 top-1/2 -translate-y-1/2 text-red-400 text-xs">
+                <span className="absolute start-3 top-1/2 -translate-y-1/2 text-red-400 text-xs">
                   {t('marketing.price-estimator.promo-invalid')}
                 </span>
               )}

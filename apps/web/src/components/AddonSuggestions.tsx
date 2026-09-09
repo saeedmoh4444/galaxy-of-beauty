@@ -63,7 +63,7 @@ export function AddonSuggestions({
             <button
               key={a.id}
               onClick={() => onSelect(a)}
-              className={`flex items-center gap-3 rounded-xl border-2 p-3 text-right transition-all ${
+              className={`flex items-center gap-3 rounded-xl border-2 p-3 text-end transition-all ${
                 isSelected
                   ? 'border-brand-500 bg-brand-50 dark:bg-brand-950'
                   : 'border-edge hover:border-brand-300 dark:border-gray-700'

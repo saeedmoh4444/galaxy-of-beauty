@@ -31,7 +31,7 @@ export default function AdminGymsPage(): JSX.Element {
       href={url}
       target="_blank"
       rel="noreferrer"
-      className="mr-2 inline-block rounded-full bg-brand-100 px-2 py-0.5 text-xs text-brand-700 underline"
+      className="me-2 inline-block rounded-full bg-brand-100 px-2 py-0.5 text-xs text-brand-700 underline"
     >
       {label}
     </a>

@@ -168,7 +168,7 @@ export default function FlashDealsPage(): JSX.Element {
               >
                 {/* Flash badge */}
                 <div
-                  className={`absolute top-3 right-3 rounded-full px-3 py-1 text-xs font-bold text-white ${
+                  className={`absolute top-3 end-3 rounded-full px-3 py-1 text-xs font-bold text-white ${
                     soldOut ? 'bg-gray-400' : 'bg-red-500 animate-pulse'
                   }`}
                 >

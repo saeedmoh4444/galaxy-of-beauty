@@ -144,12 +144,12 @@ export default function AuditLogPage(): JSX.Element {
                 <table className="w-full text-sm">
                   <thead className="border-b border-edge bg-surface-muted text-xs text-text-secondary">
                     <tr>
-                      <th className="px-4 py-3 text-right">#</th>
-                      <th className="px-4 py-3 text-right">{t('admin.audit-log.action-header')}</th>
-                      <th className="px-4 py-3 text-right">{t('admin.audit-log.type-header')}</th>
-                      <th className="px-4 py-3 text-right">{t('admin.audit-log.target-header')}</th>
-                      <th className="px-4 py-3 text-right">{t('admin.audit-log.admin-header')}</th>
-                      <th className="px-4 py-3 text-right">{t('admin.audit-log.date-header')}</th>
+                      <th className="px-4 py-3 text-end">#</th>
+                      <th className="px-4 py-3 text-end">{t('admin.audit-log.action-header')}</th>
+                      <th className="px-4 py-3 text-end">{t('admin.audit-log.type-header')}</th>
+                      <th className="px-4 py-3 text-end">{t('admin.audit-log.target-header')}</th>
+                      <th className="px-4 py-3 text-end">{t('admin.audit-log.admin-header')}</th>
+                      <th className="px-4 py-3 text-end">{t('admin.audit-log.date-header')}</th>
                     </tr>
                   </thead>
                   <tbody className="divide-y divide-edge-muted">

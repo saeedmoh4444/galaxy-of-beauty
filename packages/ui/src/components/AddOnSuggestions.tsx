@@ -58,7 +58,7 @@ export function AddOnSuggestions({
                 {addOn.name}
               </span>
               {addOn.popularity ? (
-                <span className="ml-2 text-[10px] text-amber-600">
+                <span className="ms-2 text-[10px] text-amber-600">
                   {' '}
                   {addOn.popularity}+ {bookingsText}
                 </span>

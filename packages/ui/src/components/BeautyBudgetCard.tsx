@@ -143,7 +143,7 @@ export function BeautyBudgetCard({
               </div>
 
               {/* Price */}
-              <div className="shrink-0 text-right">
+              <div className="shrink-0 text-end">
                 <div className="text-sm font-bold text-lime-700 dark:text-lime-400">
                   {service.price} {currencySuffix}
                 </div>
@@ -152,7 +152,7 @@ export function BeautyBudgetCard({
                     <span className="text-text-tertiary line-through dark:text-text-secondary">
                       {service.originalPrice} {currencySuffix}
                     </span>
-                    <span className="ml-1 font-bold text-rose-600 dark:text-rose-400">
+                    <span className="ms-1 font-bold text-rose-600 dark:text-rose-400">
                       -{discount}%
                     </span>
                   </div>

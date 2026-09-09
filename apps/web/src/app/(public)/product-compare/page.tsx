@@ -85,7 +85,7 @@ export default function ProductComparePage(): JSX.Element {
           <table className="w-full text-sm">
             <thead>
               <tr>
-                <th className="text-right py-3 px-4 text-text-secondary font-semibold w-32">
+                <th className="text-end py-3 px-4 text-text-secondary font-semibold w-32">
                   {t('marketing.product-compare.feature-column')}
                 </th>
                 {compared.map((p: Record<string, unknown>) => (

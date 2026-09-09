@@ -145,7 +145,7 @@ export default function AdminCategoriesPage(): JSX.Element {
                 </div>
               </Card>
               {childrenOf(cat.id).map((child: CategoryItem) => (
-                <div key={child.id} className="mr-6">
+                <div key={child.id} className="me-6">
                   <Card padding="md">
                     <div className="flex items-center justify-between">
                       <div>

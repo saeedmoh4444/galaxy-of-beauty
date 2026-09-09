@@ -22,7 +22,7 @@ export function NotificationBadge(): JSX.Element {
     >
       <span className="text-lg"></span>
       {count > 0 && (
-        <span className="absolute -top-0.5 -right-0.5 flex h-5 w-5 items-center justify-center rounded-full bg-red-500 text-[10px] font-bold text-white">
+        <span className="absolute -top-0.5 -end-0.5 flex h-5 w-5 items-center justify-center rounded-full bg-red-500 text-[10px] font-bold text-white">
           {count > 9 ? '9+' : count}
         </span>
       )}

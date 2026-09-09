@@ -37,7 +37,7 @@ export default function GroupBuyPage(): JSX.Element {
                 <span className="text-text-tertiary line-through">
                   {formatCurrency(d.originalPrice as number)}
                 </span>
-                <span className="text-2xl font-extrabold text-green-600 ml-2">
+                <span className="text-2xl font-extrabold text-green-600 ms-2">
                   {t('marketing.group-buy.price-sar', {
                     price: formatCurrency(d.groupPrice as number),
                   })}

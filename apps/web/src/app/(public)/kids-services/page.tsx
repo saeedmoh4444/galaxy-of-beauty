@@ -147,7 +147,7 @@ export default function KidsServicesPage(): JSX.Element {
                     </p>
                   </div>
                 </div>
-                <div className="text-right">
+                <div className="text-end">
                   <p className="text-xl font-extrabold text-brand-600">
                     {t('marketing.kids-services.price-sar', {
                       price: formatCurrency(s.price as number),

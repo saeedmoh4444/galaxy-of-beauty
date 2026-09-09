@@ -30,7 +30,7 @@ export default function BeautyStoriesPage(): JSX.Element {
               <span className="text-4xl">{s.emoji as string}</span>
               <p className="text-[10px] font-bold mt-2">{s.technicianName as string}</p>
               <p className="text-[8px] opacity-70">{s.postedAt as string}</p>
-              <span className="absolute top-2 right-2 rounded-full bg-surface-elevated/20 px-2 py-0.5 text-[9px]">
+              <span className="absolute top-2 end-2 rounded-full bg-surface-elevated/20 px-2 py-0.5 text-[9px]">
                 {s.viewers as number} ️
               </span>
             </button>

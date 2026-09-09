@@ -178,7 +178,7 @@ export function BeautyBudgetPlanner({
                   style={{ width: `${cat.percentage}%` }}
                 />
               </div>
-              <span className="text-[10px] font-bold text-text-primary dark:text-gray-100 w-16 text-right">
+              <span className="text-[10px] font-bold text-text-primary dark:text-gray-100 w-16 text-end">
                 {amount} {currencySuffix}
               </span>
             </div>

@@ -98,7 +98,7 @@ export default function AdminReportsPage(): JSX.Element {
             <div className="overflow-x-auto">
               <table className="w-full text-sm">
                 <thead>
-                  <tr className="text-right text-text-secondary border-b dark:border-gray-700">
+                  <tr className="text-end text-text-secondary border-b dark:border-gray-700">
                     <th className="py-2 px-3">{t('admin.reports.name-header')}</th>
                     <th className="py-2 px-3">{t('admin.reports.revenue-header')}</th>
                     <th className="py-2 px-3">{t('admin.reports.bookings-header')}</th>

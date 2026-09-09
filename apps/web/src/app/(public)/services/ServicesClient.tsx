@@ -151,14 +151,14 @@ export function ServicesClient({ data }: { data: ServicesPageData }): JSX.Elemen
               <button
                 key={svc.id}
                 onClick={() => toggleSelect(svc.id)}
-                className={`text-right ${selected.has(svc.id) ? 'ring-2 ring-brand-500 rounded-2xl' : ''}`}
+                className={`text-end ${selected.has(svc.id) ? 'ring-2 ring-brand-500 rounded-2xl' : ''}`}
               >
                 <Card hover padding="md" className="relative">
                   <input
                     type="checkbox"
                     checked={selected.has(svc.id)}
                     readOnly
-                    className="absolute left-3 top-3 h-5 w-5 accent-brand-600"
+                    className="absolute start-3 top-3 h-5 w-5 accent-brand-600"
                   />
                   <div className="h-40 rounded-xl bg-gradient-to-br from-brand-100 to-accent-100 dark:from-brand-900 dark:to-accent-900" />
                   <h3 className="mt-3 font-semibold text-text-primary dark:text-gray-100">

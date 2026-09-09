@@ -154,7 +154,7 @@ export default function LiveStreamDetailPage(): JSX.Element {
               chat.map((m: Record<string, unknown>) => (
                 <div key={m.id as number} className="text-sm">
                   <span className="font-bold text-brand-600 text-xs">{m.userName as string}</span>
-                  <span className="text-text-tertiary text-[10px] ml-1">
+                  <span className="text-text-tertiary text-[10px] ms-1">
                     {new Date(m.createdAt as string).toLocaleTimeString(
                       locale === 'ar' ? 'ar-SA' : 'en-GB',
                       {

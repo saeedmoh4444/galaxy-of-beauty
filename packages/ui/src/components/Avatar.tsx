@@ -76,7 +76,7 @@ export function Avatar({
       )}
       {online ? (
         <span
-          className={`absolute bottom-0 right-0 ${DOT_SIZES[size]} rounded-full border-2 border-white bg-green-500 dark:border-gray-900`}
+          className={`absolute bottom-0 end-0 ${DOT_SIZES[size]} rounded-full border-2 border-white bg-green-500 dark:border-gray-900`}
         />
       ) : null}
     </span>

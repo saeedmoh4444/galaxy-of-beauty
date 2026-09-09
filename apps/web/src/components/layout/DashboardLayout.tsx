@@ -202,7 +202,7 @@ export function DashboardLayout({
       </div>
 
       {/* Mobile Bottom Navigation */}
-      <nav className="fixed bottom-0 left-0 right-0 z-50 border-t border-edge bg-white dark:border-gray-800 dark:bg-gray-950 md:hidden">
+      <nav className="fixed bottom-0 start-0 end-0 z-50 border-t border-edge bg-white dark:border-gray-800 dark:bg-gray-950 md:hidden">
         <div className="flex overflow-x-auto">
           {links.slice(0, 5).map((link) => (
             <Link

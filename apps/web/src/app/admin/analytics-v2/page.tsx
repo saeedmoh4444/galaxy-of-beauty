@@ -85,7 +85,7 @@ export default function AdminAnalyticsV2Page(): JSX.Element {
                     <span>
                       {t('admin.analytics-v2.bookings-count', { count: s.bookings as number })}
                     </span>
-                    <span className="text-green-600 font-bold ml-4">
+                    <span className="text-green-600 font-bold ms-4">
                       {formatCurrency(s.revenue as number)}
                     </span>
                     <span className="rounded-full bg-green-100 dark:bg-green-900 px-2 py-0.5 text-xs">

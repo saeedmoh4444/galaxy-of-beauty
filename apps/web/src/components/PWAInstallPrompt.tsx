@@ -34,7 +34,7 @@ export function PWAInstallPrompt(): JSX.Element {
   };
 
   return (
-    <div className="fixed bottom-20 left-4 right-4 z-50 mx-auto max-w-sm rounded-2xl bg-white p-4 shadow-2xl border border-brand-200 dark:bg-gray-900 dark:border-brand-800 animate-slide-up">
+    <div className="fixed bottom-20 start-4 end-4 z-50 mx-auto max-w-sm rounded-2xl bg-white p-4 shadow-2xl border border-brand-200 dark:bg-gray-900 dark:border-brand-800 animate-slide-up">
       <div className="flex items-center gap-4">
         <Image
           src="/logo.png"

@@ -115,7 +115,7 @@ export function GalleryClient({ data }: { data: GalleryPageData }): JSX.Element 
                       </span>
                     ) : null}
                     {img.category ? (
-                      <span className="ml-1 mt-1 inline-block rounded bg-surface-muted px-2 py-0.5 text-xs text-text-secondary dark:bg-gray-800 dark:text-text-tertiary">
+                      <span className="ms-1 mt-1 inline-block rounded bg-surface-muted px-2 py-0.5 text-xs text-text-secondary dark:bg-gray-800 dark:text-text-tertiary">
                         {String(img.category)}
                       </span>
                     ) : null}

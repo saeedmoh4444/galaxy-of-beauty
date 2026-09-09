@@ -71,11 +71,11 @@ export default function PayoutsPage(): JSX.Element {
             <table className="w-full text-sm">
               <thead className="bg-surface-muted text-text-secondary dark:bg-gray-800 dark:text-text-tertiary">
                 <tr>
-                  <th className="p-3 text-right">{t('admin.payouts.technician-header')}</th>
-                  <th className="p-3 text-right">{t('admin.payouts.amount-header')}</th>
-                  <th className="p-3 text-right">{t('admin.payouts.status-header')}</th>
-                  <th className="p-3 text-right">{t('admin.payouts.date-header')}</th>
-                  <th className="p-3 text-right">{t('admin.payouts.action-header')}</th>
+                  <th className="p-3 text-end">{t('admin.payouts.technician-header')}</th>
+                  <th className="p-3 text-end">{t('admin.payouts.amount-header')}</th>
+                  <th className="p-3 text-end">{t('admin.payouts.status-header')}</th>
+                  <th className="p-3 text-end">{t('admin.payouts.date-header')}</th>
+                  <th className="p-3 text-end">{t('admin.payouts.action-header')}</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-edge-muted">

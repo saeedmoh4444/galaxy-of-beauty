@@ -264,7 +264,7 @@ function GiftQuizWidget(): JSX.Element {
                     setAnswers((prev) => ({ ...prev, [currentQ.id as string]: o.key as string }));
                     if (step < qs.length - 1) setStep(step + 1);
                   }}
-                  className="w-full rounded-xl border-2 border-edge p-3 text-right hover:border-brand-400 hover:bg-brand-50 transition-all"
+                  className="w-full rounded-xl border-2 border-edge p-3 text-end hover:border-brand-400 hover:bg-brand-50 transition-all"
                 >
                   {o.labelAr as string}
                 </button>

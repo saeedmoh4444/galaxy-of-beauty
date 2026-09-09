@@ -42,7 +42,7 @@ export function PlansClient({ data }: { data: PlansPageData }): JSX.Element {
           {planList.map((plan) => (
             <Card key={plan.id} padding="lg" className="relative flex flex-col">
               {Number(plan.discountPercent) > 0 && (
-                <span className="absolute left-3 top-3 rounded-full bg-red-100 px-3 py-1 text-xs font-bold text-red-600 dark:bg-red-900 dark:text-red-300">
+                <span className="absolute start-3 top-3 rounded-full bg-red-100 px-3 py-1 text-xs font-bold text-red-600 dark:bg-red-900 dark:text-red-300">
                   {t('marketing.plans.discount-percent', {
                     percent: Number(plan.discountPercent),
                   })}

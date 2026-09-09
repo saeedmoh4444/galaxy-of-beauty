@@ -150,7 +150,7 @@ export default function GiftQuizPage(): JSX.Element {
               <button
                 key={opt.key}
                 onClick={() => handleAnswer(opt.key)}
-                className="w-full rounded-xl border-2 border-edge dark:border-gray-700 p-4 text-right hover:border-brand-400 hover:bg-brand-50 dark:hover:bg-brand-950 transition-all"
+                className="w-full rounded-xl border-2 border-edge dark:border-gray-700 p-4 text-end hover:border-brand-400 hover:bg-brand-50 dark:hover:bg-brand-950 transition-all"
               >
                 {opt.labelAr}
               </button>

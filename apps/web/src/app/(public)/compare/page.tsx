@@ -47,7 +47,7 @@ export default function ComparePage(): JSX.Element {
           <table className="w-full border-collapse rounded-xl border border-edge dark:border-gray-700">
             <thead>
               <tr className="bg-surface-muted dark:bg-gray-800">
-                <th className="p-4 text-right text-sm font-semibold text-text-secondary dark:text-text-tertiary min-w-[140px]">
+                <th className="p-4 text-end text-sm font-semibold text-text-secondary dark:text-text-tertiary min-w-[140px]">
                   {t('marketing.compare.feature-col')}
                 </th>
                 {services.map((s) => (

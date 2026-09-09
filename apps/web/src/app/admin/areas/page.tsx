@@ -96,10 +96,10 @@ export default function AdminAreasPage(): JSX.Element {
             <table className="w-full text-sm">
               <thead className="bg-surface-muted text-text-secondary dark:bg-gray-800 dark:text-text-tertiary">
                 <tr>
-                  <th className="p-3 text-right">{t('admin.areas.area-header')}</th>
-                  <th className="p-3 text-right">{t('admin.areas.city-header')}</th>
-                  <th className="p-3 text-right">{t('admin.areas.status-header')}</th>
-                  <th className="p-3 text-right">{t('admin.areas.actions-header')}</th>
+                  <th className="p-3 text-end">{t('admin.areas.area-header')}</th>
+                  <th className="p-3 text-end">{t('admin.areas.city-header')}</th>
+                  <th className="p-3 text-end">{t('admin.areas.status-header')}</th>
+                  <th className="p-3 text-end">{t('admin.areas.actions-header')}</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-edge-muted">

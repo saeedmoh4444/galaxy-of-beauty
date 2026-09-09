@@ -47,7 +47,7 @@ export default function AdminGroupBookingsPage(): JSX.Element {
                       })}
                     </p>
                   </div>
-                  <div className="text-right">
+                  <div className="text-end">
                     <p className="font-bold text-brand-600">
                       {formatCurrency(Number(g.totalAmount ?? 0))}
                     </p>

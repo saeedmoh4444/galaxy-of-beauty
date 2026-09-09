@@ -162,7 +162,7 @@ export default function AdminAnalyticsPage(): JSX.Element {
           <div className="overflow-x-auto">
             <table className="w-full text-sm">
               <thead>
-                <tr className="border-b border-edge text-right dark:border-gray-800">
+                <tr className="border-b border-edge text-end dark:border-gray-800">
                   <th className="pb-2 font-medium text-text-secondary">
                     {t('admin.analytics.name-header')}
                   </th>

@@ -62,7 +62,7 @@ export function TechnicianProfileClient({ data }: { data: TechnicianProfileData 
               <span>‍</span>
             )}
           </div>
-          <div className="flex-1 text-center sm:text-right">
+          <div className="flex-1 text-center sm:text-end">
             <div className="flex items-center justify-center gap-2 sm:justify-start">
               <h1 className="text-2xl font-bold text-text-primary">{name}</h1>
               {kycStatus === 'VERIFIED' && (

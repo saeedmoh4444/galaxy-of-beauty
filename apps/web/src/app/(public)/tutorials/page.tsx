@@ -205,13 +205,13 @@ export default function TutorialsPage(): JSX.Element {
                     {/* Play overlay */}
                     <div className="absolute inset-0 flex items-center justify-center">
                       <div className="flex h-12 w-12 items-center justify-center rounded-full bg-white/90 text-text-primary shadow-lg transition-transform group-hover:scale-110">
-                        <svg className="h-5 w-5 mr-[-2px]" fill="currentColor" viewBox="0 0 24 24">
+                        <svg className="h-5 w-5 me-[-2px]" fill="currentColor" viewBox="0 0 24 24">
                           <path d="M8 5v14l11-7z" />
                         </svg>
                       </div>
                     </div>
                     {/* Duration badge */}
-                    <span className="absolute bottom-2 right-2 rounded bg-black/70 px-2 py-0.5 text-xs font-medium text-white">
+                    <span className="absolute bottom-2 end-2 rounded bg-black/70 px-2 py-0.5 text-xs font-medium text-white">
                       {tut.duration}
                     </span>
                   </div>

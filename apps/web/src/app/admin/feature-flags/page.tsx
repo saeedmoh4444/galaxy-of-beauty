@@ -37,10 +37,10 @@ export default function FeatureFlagsPage(): JSX.Element {
             <table className="w-full text-sm">
               <thead className="bg-surface-muted text-text-secondary dark:bg-gray-800 dark:text-text-tertiary">
                 <tr>
-                  <th className="p-3 text-right">{t('admin.feature-flags.feature-header')}</th>
-                  <th className="p-3 text-right">{t('admin.feature-flags.status-header')}</th>
-                  <th className="p-3 text-right">{t('admin.feature-flags.rollout-header')}</th>
-                  <th className="p-3 text-right">{t('admin.feature-flags.action-header')}</th>
+                  <th className="p-3 text-end">{t('admin.feature-flags.feature-header')}</th>
+                  <th className="p-3 text-end">{t('admin.feature-flags.status-header')}</th>
+                  <th className="p-3 text-end">{t('admin.feature-flags.rollout-header')}</th>
+                  <th className="p-3 text-end">{t('admin.feature-flags.action-header')}</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-edge-muted">

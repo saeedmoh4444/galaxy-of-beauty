@@ -100,7 +100,7 @@ export default function BundlesPage(): JSX.Element {
                 <button
                   key={svc.id}
                   onClick={() => toggle(svc.id)}
-                  className={`text-right rounded-2xl border-2 p-4 transition-all ${selected.has(svc.id) ? 'border-brand-500 bg-brand-50 dark:bg-brand-950' : 'border-edge hover:border-brand-300 dark:border-gray-700'}`}
+                  className={`text-end rounded-2xl border-2 p-4 transition-all ${selected.has(svc.id) ? 'border-brand-500 bg-brand-50 dark:bg-brand-950' : 'border-edge hover:border-brand-300 dark:border-gray-700'}`}
                 >
                   <div className="flex items-center justify-between">
                     <div>

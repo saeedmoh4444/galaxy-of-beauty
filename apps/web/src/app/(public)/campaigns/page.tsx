@@ -117,7 +117,7 @@ export default function CampaignsPage(): JSX.Element {
                       ) : (
                         <span></span>
                       )}
-                      <span className="absolute top-3 right-3 rounded-full bg-red-500 px-3 py-1 text-xs font-bold text-white animate-pulse">
+                      <span className="absolute top-3 end-3 rounded-full bg-red-500 px-3 py-1 text-xs font-bold text-white animate-pulse">
                         {t('marketing.campaigns.active')}
                       </span>
                     </div>
@@ -146,7 +146,7 @@ export default function CampaignsPage(): JSX.Element {
                             onClick={() => {
                               navigator.clipboard.writeText(c.promoCode ?? '');
                             }}
-                            className="mr-auto text-xs text-brand-500 hover:text-brand-700"
+                            className="me-auto text-xs text-brand-500 hover:text-brand-700"
                           >
                             {t('marketing.campaigns.copy')}
                           </button>

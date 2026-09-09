@@ -29,11 +29,11 @@ export default function AdminGiftCardsPage(): JSX.Element {
           <table className="w-full text-sm">
             <thead className="bg-surface-muted text-text-secondary dark:bg-gray-800">
               <tr>
-                <th className="p-3 text-right">{t('admin.gift-cards.code-header')}</th>
-                <th className="p-3 text-right">{t('admin.gift-cards.amount-header')}</th>
-                <th className="p-3 text-right">{t('admin.gift-cards.balance-header')}</th>
-                <th className="p-3 text-right">{t('admin.gift-cards.status-header')}</th>
-                <th className="p-3 text-right">{t('admin.gift-cards.date-header')}</th>
+                <th className="p-3 text-end">{t('admin.gift-cards.code-header')}</th>
+                <th className="p-3 text-end">{t('admin.gift-cards.amount-header')}</th>
+                <th className="p-3 text-end">{t('admin.gift-cards.balance-header')}</th>
+                <th className="p-3 text-end">{t('admin.gift-cards.status-header')}</th>
+                <th className="p-3 text-end">{t('admin.gift-cards.date-header')}</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-edge-muted">

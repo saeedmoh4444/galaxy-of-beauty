@@ -162,7 +162,7 @@ export default function WomensServicesPage(): JSX.Element {
                     ) : null}
                   </div>
                 </div>
-                <div className="text-right">
+                <div className="text-end">
                   <p className="text-xl font-extrabold text-brand-600">
                     {t('marketing.womens-services.price-sar', {
                       price: formatCurrency(s.price as number),

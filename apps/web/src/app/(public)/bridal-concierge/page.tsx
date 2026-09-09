@@ -197,7 +197,7 @@ function BridalDashboard(): JSX.Element {
   return (
     <>
       {/* Dashboard Header */}
-      <div className="text-center sm:text-right">
+      <div className="text-center sm:text-end">
         <h1 className="text-2xl font-bold text-text-primary dark:text-gray-100">
           {t('marketing.bridal-concierge.dashboard-title')}
         </h1>

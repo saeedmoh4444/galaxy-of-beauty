@@ -74,7 +74,7 @@ export default function TechLeaderboardPage(): JSX.Element {
                     })}
                   </p>
                 </div>
-                <div className="text-right">
+                <div className="text-end">
                   <p className="font-bold text-brand-600">
                     {category === 'bookings'
                       ? t('marketing.tech-leaderboard.bookings-count', {
