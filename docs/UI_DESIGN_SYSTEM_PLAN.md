@@ -1,9 +1,16 @@
 # UI/UX Design System Plan
 
-> Status: **v1 — 2026-09-09**. User request: elevate Galaxy of Beauty into a
-> high-modern platform using Figma + Figma MCP + Tailwind CSS. This plan is
-> grounded in the ACTUAL codebase state after shipping E1–E9 (the agent
-> touched nearly every screen during the expansion).
+> Status: **v2 — 2026-09-09 (afternoon)**. Phase 1 DELIVERED
+> (branch design/phase1-rose-blush): Rose Blush token palette (rose
+> primary #c2255c, champagne gold accent #d98e4a, warm cream surfaces,
+> deep plum darks), gray→semantic sweep (1,025 replacements), purple→brand
+> sweep (1,068), RTL logical-properties sweep (zero physical-direction
+> leftovers), Arabic typography pass (1.7 leading, zero letter-spacing,
+> Tajawal verified loading). K-beauty motion kit + hero rollout DELIVERED
+> (branch design/hero-motion): Reveal/FloatingBlob/Sparkles/Marquee/
+> HeroSection in @galaxy/ui; heroes live on Home, Discover, Services,
+> Wellness hub, clinics, gyms, nail-bars, stores, trainers, technicians,
+> events. §3.6 onboarding queued next.
 
 ## 1. Baseline — what already exists
 
@@ -103,6 +110,26 @@ crops, women-only privacy watermarking (E7), alt-text in both languages.
 Acceptance: grep finds no remaining emoji-as-hero placeholders in the
 customer-facing flows (dashboard, discover, search, venues, stores);
 marketplace + venue cards render real images with graceful fallback.
+
+## 3.6 Onboarding & product walkthrough (user request, 2026-09-09)
+
+New users land on a 285-route feature wall — activation and trust
+establishment (women-only, privacy) need a guided first run.
+
+- **Customer first-run tour** (web-first): after first login on
+  `/dashboard`, 5 stops — book a service → wallet/top-up → AI advisor →
+  wellness hub → referrals. Spotlight ring + tooltip card + progress
+  dots + skip/"later". Reuses the motion kit (Reveal, Rose Blush tokens).
+- **Storage gate**: localStorage per user — shown once; "later" re-offers
+  from the help menu.
+- **A11y & RTL**: focus trap, aria-live, logical positioning,
+  reduced-motion = instant panels.
+- **Tooltips layer**: hover helpers on the dashboard (same component).
+- **Technician side**: upgrade /tech-onboarding with the same kit
+  (follow-up).
+- **Mobile**: RN needs its own spotlight engine — phase after web.
+- Acceptance: tour completes in <60s, 100% skippable, ar+en, zero
+  console errors, dashboard smoke tests green.
 
 ## 4. Design direction (what "modern" means HERE)
 

@@ -3,7 +3,7 @@ import Link from 'next/link';
 import { api } from '@/lib/trpc';
 import { localize } from '@galaxy/shared';
 import { useLocale } from '@/components/LocaleProvider';
-import { Card, GridSkeleton, formatCurrency, ErrorAlert } from '@galaxy/ui';
+import { Card, GridSkeleton, formatCurrency, ErrorAlert, HeroSection } from '@galaxy/ui';
 
 const FEATURES = [
   {
@@ -172,35 +172,38 @@ const FEATURES = [
 export default function DiscoverPage(): JSX.Element {
   const { t } = useLocale();
   return (
-    <div className="mx-auto max-w-6xl px-4 py-12">
-      <div className="text-center mb-10">
-        <span className="text-6xl"></span>
-        <h1 className="mt-4 text-3xl font-bold text-text-primary dark:text-gray-100">
-          {t('marketing.discover.header-title')}
-        </h1>
-        <p className="mt-2 text-text-secondary">{t('marketing.discover.header-subtitle')}</p>
-      </div>
-      <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-        {FEATURES.map((f, i) => (
-          <Link key={i} href={f.href}>
-            <Card
-              hover
-              padding="md"
-              className={`h-full bg-gradient-to-br ${f.color} dark:bg-none dark:bg-gray-900`}
-            >
-              <span className="text-3xl">{f.emoji}</span>
-              <h3 className="mt-3 font-bold text-sm text-text-primary dark:text-gray-100">
-                {t(f.title)}
-              </h3>
-              <p className="mt-1 text-xs text-text-secondary dark:text-text-tertiary">
-                {t(f.desc)}
-              </p>
-            </Card>
-          </Link>
-        ))}
-      </div>
+    <div>
+      <HeroSection
+        align="center"
+        eyebrow="✨"
+        title={t('marketing.discover.header-title')}
+        subtitle={t('marketing.discover.header-subtitle')}
+        gradient="from-brand-50 via-surface to-accent-50"
+        className="mb-2"
+      />
+      <div className="mx-auto max-w-6xl px-4 pb-12">
+        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+          {FEATURES.map((f, i) => (
+            <Link key={i} href={f.href}>
+              <Card
+                hover
+                padding="md"
+                className={`h-full bg-gradient-to-br ${f.color} dark:bg-none dark:bg-gray-900`}
+              >
+                <span className="text-3xl">{f.emoji}</span>
+                <h3 className="mt-3 font-bold text-sm text-text-primary dark:text-gray-100">
+                  {t(f.title)}
+                </h3>
+                <p className="mt-1 text-xs text-text-secondary dark:text-text-tertiary">
+                  {t(f.desc)}
+                </p>
+              </Card>
+            </Link>
+          ))}
+        </div>
 
-      <TrendingNow />
+        <TrendingNow />
+      </div>
     </div>
   );
 }

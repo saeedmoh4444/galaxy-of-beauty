@@ -1,7 +1,7 @@
 'use client';
 import Link from 'next/link';
 import { api } from '@/lib/trpc';
-import { Card, DashboardSkeleton, Button, ErrorAlert } from '@galaxy/ui';
+import { Card, DashboardSkeleton, Button, ErrorAlert, HeroSection } from '@galaxy/ui';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
 import { useLocale } from '@/components/LocaleProvider';
 import {
@@ -41,10 +41,13 @@ export default function WellnessHubPage(): JSX.Element {
   return (
     <DashboardLayout userRole="CUSTOMER">
       <div className="mx-auto max-w-5xl space-y-6">
-        <div>
-          <h1 className="text-2xl font-bold">{t('wellnessHub.title')}</h1>
-          <p className="mt-1 text-sm text-text-secondary">{t('wellnessHub.subtitle')}</p>
-        </div>
+        <HeroSection
+          eyebrow="🌿"
+          title={t('wellnessHub.title')}
+          subtitle={t('wellnessHub.subtitle')}
+          gradient="from-brand-50 via-surface to-accent-50"
+          className="rounded-3xl"
+        />
 
         {/* Cycle Card */}
         {d?.cycle && (

@@ -2305,4 +2305,10 @@ export const marketingMessages = {
   'marketing.womens-services.book': { ar: 'احجزي', en: 'Book' },
   'marketing.womens-services.tips-title': { ar: ' نصائح مهمة', en: ' Important tips' },
   'marketing.womens-services.login-cta': { ar: 'سجّلي دخول للحجز', en: 'Log in to book' },
+
+  // Hero rollouts (Rose Blush phase — K-beauty flat heroes)
+  'marketing.services.hero-subtitle': {
+    ar: 'كل خدمات التجميل والرعاية في مكان واحد — احجزي، قارني، واستمتعي بخصوصية كاملة',
+    en: 'Every beauty and care service in one place — book, compare, and enjoy complete privacy',
+  },
 } as const satisfies Record<string, { ar: string; en: string }>;
