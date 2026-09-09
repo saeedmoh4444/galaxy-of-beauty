@@ -11,7 +11,7 @@ const TIER_LABELS: Record<string, { name: TranslationKey; emoji: string; color: 
   PLATINUM: {
     name: 'marketing.rewards.tier-platinum',
     emoji: '',
-    color: 'from-purple-400 to-indigo-500',
+    color: 'from-brand-400 to-indigo-500',
   },
 };
 
@@ -70,7 +70,7 @@ export default async function RewardsPage(): Promise<JSX.Element> {
             const desc = (r.descriptionJson as Record<string, string>)?.ar || '';
             return (
               <Card key={r.id} padding="lg" className="relative">
-                <div className="absolute top-3 left-3 rounded-full bg-brand-100 px-3 py-1 text-xs font-bold text-brand-700">
+                <div className="absolute top-3 start-3 rounded-full bg-brand-100 px-3 py-1 text-xs font-bold text-brand-700">
                   {t('marketing.rewards.points-cost', locale, { points: r.pointsCost })}
                 </div>
                 <div className="text-center pt-4">

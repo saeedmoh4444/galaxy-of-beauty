@@ -31,7 +31,7 @@ export function Tabs({ tabs, active, onChange, className = '' }: TabsProps): JSX
           className={`whitespace-nowrap rounded-full px-4 py-1.5 text-sm font-medium transition-all ${
             (active ?? selected) === tab
               ? 'bg-brand-600 text-white shadow-sm'
-              : 'bg-surface-muted text-text-secondary hover:bg-gray-200 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-gray-700'
+              : 'bg-surface-muted text-text-secondary hover:bg-surface-muted dark:text-text-tertiary dark:hover:bg-gray-700'
           }`}
         >
           {tab}

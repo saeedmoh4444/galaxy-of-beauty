@@ -117,7 +117,7 @@ export function BeautyWikiCard({
       </p>
 
       {/* Meta row */}
-      <div className="mt-2 flex items-center gap-2 text-[10px] text-text-tertiary dark:text-gray-500">
+      <div className="mt-2 flex items-center gap-2 text-[10px] text-text-tertiary dark:text-text-secondary">
         {entry.readTime && (
           <span className="flex items-center gap-1">
             {' '}

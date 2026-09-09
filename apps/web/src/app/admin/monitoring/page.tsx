@@ -16,7 +16,7 @@ const STATUS_COLORS: Record<string, string> = {
   healthy: 'text-green-600 bg-green-100 dark:bg-green-900 dark:text-green-300',
   warning: 'text-amber-600 bg-amber-100 dark:bg-amber-900 dark:text-amber-300',
   error: 'text-red-600 bg-red-100 dark:bg-red-900 dark:text-red-300',
-  unknown: 'text-gray-500 bg-gray-100 dark:bg-gray-800 dark:text-gray-400',
+  unknown: 'text-text-secondary bg-surface-muted dark:text-text-tertiary',
 };
 
 const SERVICE_LABEL_KEYS: Record<string, TranslationKey> = {
@@ -177,7 +177,7 @@ export default function MonitoringPage(): JSX.Element {
                     (e: Record<string, unknown>, i: number) => (
                       <div key={i} className="flex items-center gap-2">
                         <span className="text-sm w-32">{e.type as string}</span>
-                        <div className="flex-1 h-3 rounded-full bg-gray-200 dark:bg-gray-700">
+                        <div className="flex-1 h-3 rounded-full bg-surface-muted">
                           <div
                             className="h-3 rounded-full bg-red-500"
                             style={{ width: `${e.pct as number}%` }}

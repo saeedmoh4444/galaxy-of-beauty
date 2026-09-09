@@ -18,7 +18,7 @@ export function BeautyConfidenceCard({
   return (
     <div
       className={cn(
-        'rounded-2xl border border-fuchsia-100 bg-gradient-to-br from-fuchsia-50 to-purple-50 p-5 dark:border-fuchsia-900 dark:from-fuchsia-950 dark:to-purple-950',
+        'rounded-2xl border border-fuchsia-100 bg-gradient-to-br from-fuchsia-50 to-brand-50 p-5 dark:border-fuchsia-900 dark:from-fuchsia-950 dark:to-brand-950',
         className,
       )}
     >

@@ -98,7 +98,7 @@ export default function VirtualConsultationPage(): JSX.Element {
                 setSelected(c.key);
                 setSlot(null);
               }}
-              className={`rounded-xl border-2 p-4 text-center transition-all ${selected === c.key ? 'border-brand-400 bg-brand-50' : 'border-gray-200'}`}
+              className={`rounded-xl border-2 p-4 text-center transition-all ${selected === c.key ? 'border-brand-400 bg-brand-50' : 'border-edge'}`}
             >
               <span className="text-5xl">{c.emoji}</span>
               <h3 className="font-bold mt-2">{t(c.name)}</h3>

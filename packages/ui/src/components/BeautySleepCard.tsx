@@ -97,7 +97,7 @@ export function BeautySleepCard({
   return (
     <div
       className={cn(
-        'rounded-2xl border border-indigo-100 bg-gradient-to-br from-indigo-50 to-purple-50 p-5 dark:border-indigo-900 dark:from-indigo-950 dark:to-purple-950',
+        'rounded-2xl border border-indigo-100 bg-gradient-to-br from-indigo-50 to-brand-50 p-5 dark:border-indigo-900 dark:from-indigo-950 dark:to-brand-950',
         className,
       )}
     >
@@ -111,11 +111,11 @@ export function BeautySleepCard({
       {/* Sleep stats */}
       <div className="mt-3 grid grid-cols-2 gap-2">
         <div className="rounded-xl bg-white/60 p-2.5 text-center dark:bg-gray-800/60">
-          <p className="text-[9px] text-text-tertiary dark:text-gray-500">{bedtimeLabel}</p>
+          <p className="text-[9px] text-text-tertiary dark:text-text-secondary">{bedtimeLabel}</p>
           <p className="text-lg font-bold text-indigo-800 dark:text-indigo-200">{bedtime}</p>
         </div>
         <div className="rounded-xl bg-white/60 p-2.5 text-center dark:bg-gray-800/60">
-          <p className="text-[9px] text-text-tertiary dark:text-gray-500">{wakeTimeLabel}</p>
+          <p className="text-[9px] text-text-tertiary dark:text-text-secondary">{wakeTimeLabel}</p>
           <p className="text-lg font-bold text-amber-600 dark:text-amber-400">{wakeTime}</p>
         </div>
       </div>
@@ -140,15 +140,15 @@ export function BeautySleepCard({
               <span className="flex-1 text-[10px] text-text-primary dark:text-gray-100">
                 {step.action[locale]}
               </span>
-              <span className="text-[10px] text-text-tertiary dark:text-gray-500 w-12 text-right">
+              <span className="text-[10px] text-text-tertiary dark:text-text-secondary w-12 text-end">
                 {step.duration[locale]}
               </span>
-              <span className="text-[9px] font-bold text-indigo-600 dark:text-indigo-400 w-12 text-right">
+              <span className="text-[9px] font-bold text-indigo-600 dark:text-indigo-400 w-12 text-end">
                 {step.time}
               </span>
               {/* Connector dot */}
               {i < ROUTINE.length - 1 && (
-                <div className="absolute right-0 translate-x-1/2" aria-hidden="true" />
+                <div className="absolute end-0 translate-x-1/2" aria-hidden="true" />
               )}
             </div>
           );

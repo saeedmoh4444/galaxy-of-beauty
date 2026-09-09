@@ -37,8 +37,8 @@ const CERTS: Record<CertLevel, LevelDef> = {
   master: {
     emoji: '',
     label: { ar: 'ماستر', en: 'Master' },
-    color: 'text-purple-600 dark:text-purple-300',
-    gradient: 'from-purple-500 to-violet-500',
+    color: 'text-brand-600 dark:text-brand-300',
+    gradient: 'from-brand-500 to-violet-500',
   },
 };
 
@@ -120,7 +120,7 @@ export function AcademyCertificateBadge({
             className={cn(
               'inline-flex items-center gap-1 rounded-full px-2.5 py-0.5 text-[10px] font-medium',
               certificate.level === 'master'
-                ? 'bg-purple-100 text-purple-700 dark:bg-purple-900 dark:text-purple-300'
+                ? 'bg-brand-100 text-brand-700 dark:bg-brand-900 dark:text-brand-300'
                 : certificate.level === 'professional'
                   ? 'bg-blue-100 text-blue-700 dark:bg-blue-900 dark:text-blue-300'
                   : 'bg-emerald-100 text-emerald-700 dark:bg-emerald-900 dark:text-emerald-300',
@@ -128,7 +128,7 @@ export function AcademyCertificateBadge({
           >
             {level.emoji} {level.label[locale]}
           </span>
-          <span className="text-[10px] text-text-tertiary dark:text-gray-500">
+          <span className="text-[10px] text-text-tertiary dark:text-text-secondary">
             {certificate.date}
           </span>
         </div>
@@ -137,7 +137,7 @@ export function AcademyCertificateBadge({
       {/* Certificate ID */}
       {certificate.certId && (
         <div className="mt-2 rounded-lg bg-white/60 p-2 text-center dark:bg-gray-800/60">
-          <p className="text-[9px] text-text-tertiary dark:text-gray-500">{certIdLabel}</p>
+          <p className="text-[9px] text-text-tertiary dark:text-text-secondary">{certIdLabel}</p>
           <p className="text-xs font-mono font-bold text-text-primary dark:text-gray-100" dir="ltr">
             {certificate.certId}
           </p>

@@ -110,7 +110,7 @@ export default function LoyaltyDashboardPage(): JSX.Element {
                 {Object.entries(LOYALTY_TIERS).map(([key, tierObj]) => (
                   <div
                     key={key}
-                    className={`rounded-xl border-2 p-4 ${currentTier === key ? 'border-brand-500 bg-brand-50 dark:bg-brand-950' : 'border-gray-200 dark:border-gray-700'}`}
+                    className={`rounded-xl border-2 p-4 ${currentTier === key ? 'border-brand-500 bg-brand-50 dark:bg-brand-950' : 'border-edge'}`}
                   >
                     <div className="flex items-center justify-between">
                       <div className="flex items-center gap-3">

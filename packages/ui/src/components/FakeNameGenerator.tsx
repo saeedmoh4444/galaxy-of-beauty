@@ -164,7 +164,7 @@ export function FakeNameGenerator({
 
           {/* Name grid */}
           <div className="mt-3">
-            <p className="text-[10px] font-bold text-text-tertiary dark:text-gray-400 mb-2">
+            <p className="text-[10px] font-bold text-text-tertiary dark:text-text-tertiary mb-2">
               {pickFromListLabel}
             </p>
             <div className="flex flex-wrap gap-1.5">
@@ -184,9 +184,9 @@ export function FakeNameGenerator({
       )}
 
       {/* Privacy note */}
-      <div className="mt-3 flex items-start gap-1.5 rounded-lg bg-gray-50 p-2 dark:bg-gray-800">
+      <div className="mt-3 flex items-start gap-1.5 rounded-lg bg-surface-muted p-2 dark:bg-gray-800">
         <span className="text-xs shrink-0" aria-hidden="true"></span>
-        <p className="text-[9px] text-text-tertiary dark:text-gray-500">{privacyNote}</p>
+        <p className="text-[9px] text-text-tertiary dark:text-text-secondary">{privacyNote}</p>
       </div>
     </div>
   );

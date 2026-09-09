@@ -87,7 +87,7 @@ export function ScentFreeBadge({
           </p>
         </div>
         {fullyScentFree && (
-          <span className="ml-auto shrink-0 rounded-full bg-green-100 px-2 py-0.5 text-[10px] font-bold text-green-700 dark:bg-green-950 dark:text-green-300">
+          <span className="ms-auto shrink-0 rounded-full bg-green-100 px-2 py-0.5 text-[10px] font-bold text-green-700 dark:bg-green-950 dark:text-green-300">
             100%
           </span>
         )}
@@ -128,7 +128,7 @@ export function ScentFreeBadge({
         </div>
       )}
 
-      <p className="mt-2 text-center text-[9px] text-text-tertiary dark:text-gray-500">
+      <p className="mt-2 text-center text-[9px] text-text-tertiary dark:text-text-secondary">
         {footerText}
       </p>
     </div>

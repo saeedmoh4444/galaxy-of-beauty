@@ -43,7 +43,7 @@ export default function BeautyAwardsPage(): JSX.Element {
                       <div>
                         <span className="font-bold">{n.name as string}</span>
                         {(n.desc as string) ? (
-                          <span className="text-xs text-text-secondary mr-2">
+                          <span className="text-xs text-text-secondary me-2">
                             — {n.desc as string}
                           </span>
                         ) : null}

@@ -155,11 +155,11 @@ export function GoldenBeautyCard({
               <p className="text-xs font-bold text-text-primary dark:text-gray-100">
                 {s.name[locale]}
               </p>
-              <p className="text-[10px] text-text-tertiary dark:text-gray-400">
+              <p className="text-[10px] text-text-tertiary dark:text-text-tertiary">
                 {s.description[locale]} · {s.duration[locale]}
               </p>
             </div>
-            <div className="shrink-0 text-right">
+            <div className="shrink-0 text-end">
               <p className="text-xs font-bold text-amber-800 dark:text-amber-200">
                 {s.price} {currencySuffix}
               </p>

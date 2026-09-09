@@ -65,7 +65,7 @@ export default function SaleAlertsPage(): JSX.Element {
               {activeDeals.map((d: Record<string, unknown>) => (
                 <div
                   key={d.id as number}
-                  className="rounded-xl bg-white dark:bg-gray-800 p-3 text-center"
+                  className="rounded-xl bg-surface-elevated p-3 text-center"
                 >
                   <span className="text-2xl">{d.emoji as string}</span>
                   <p className="font-bold text-sm mt-1">{d.titleAr as string}</p>

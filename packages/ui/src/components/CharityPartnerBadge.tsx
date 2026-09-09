@@ -71,7 +71,7 @@ export function CharityPartnerBadge({
       {/* Raised amount */}
       {raised !== undefined && (
         <div className="mt-2 rounded-xl bg-white/60 p-3 text-center dark:bg-gray-800/60">
-          <p className="text-[9px] text-text-tertiary dark:text-gray-500">{raisedLabel}</p>
+          <p className="text-[9px] text-text-tertiary dark:text-text-secondary">{raisedLabel}</p>
           <p className="text-lg font-bold text-rose-700 dark:text-rose-300">
             {raised.toLocaleString('ar-SA')} {currencySuffix}
           </p>
@@ -86,7 +86,7 @@ export function CharityPartnerBadge({
         {donateButtonText}
       </button>
 
-      <p className="mt-1.5 text-center text-[9px] text-text-tertiary dark:text-gray-500">
+      <p className="mt-1.5 text-center text-[9px] text-text-tertiary dark:text-text-secondary">
         {footerText}
       </p>
     </div>

@@ -69,7 +69,7 @@ export function BabyShowerCard({
         <h4 className="mt-1 text-sm font-bold text-sky-800 dark:text-sky-200">{title}</h4>
         <p className="text-[10px] text-sky-500 dark:text-sky-400">{subtitle}</p>
         {guests && (
-          <p className="mt-0.5 text-[10px] text-text-tertiary dark:text-gray-500">
+          <p className="mt-0.5 text-[10px] text-text-tertiary dark:text-text-secondary">
             {guests} {guestsSuffix}
           </p>
         )}
@@ -89,7 +89,9 @@ export function BabyShowerCard({
 
       <div className="mt-3 flex items-center justify-between">
         <div>
-          <p className="text-[9px] text-text-tertiary dark:text-gray-500">{startingAtLabel}</p>
+          <p className="text-[9px] text-text-tertiary dark:text-text-secondary">
+            {startingAtLabel}
+          </p>
           <p className="text-lg font-bold text-sky-800 dark:text-sky-200">500 {currencySuffix}</p>
         </div>
         <button

@@ -144,9 +144,9 @@ export default function TechCalendarPage(): JSX.Element {
                 <button
                   key={tech.id as number}
                   onClick={() => setTechId(String(tech.id))}
-                  className={`w-full text-right rounded-lg p-3 transition-all flex items-center gap-3 ${String(tech.id) === techId ? 'bg-brand-50 dark:bg-brand-950 ring-2 ring-brand-300' : 'hover:bg-surface-muted dark:hover:bg-gray-800'}`}
+                  className={`w-full text-end rounded-lg p-3 transition-all flex items-center gap-3 ${String(tech.id) === techId ? 'bg-brand-50 dark:bg-brand-950 ring-2 ring-brand-300' : 'hover:bg-surface-muted dark:hover:bg-gray-800'}`}
                 >
-                  <div className="flex h-8 w-8 items-center justify-center rounded-full bg-gradient-to-br from-brand-400 to-purple-500 text-white text-sm font-bold">
+                  <div className="flex h-8 w-8 items-center justify-center rounded-full bg-gradient-to-br from-brand-400 to-brand-500 text-white text-sm font-bold">
                     {(tech.name as string)?.[0] ?? ''}
                   </div>
                   <div className="flex-1 min-w-0">

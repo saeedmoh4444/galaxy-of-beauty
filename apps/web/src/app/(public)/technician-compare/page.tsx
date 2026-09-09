@@ -107,7 +107,7 @@ export default function TechnicianComparePage(): JSX.Element {
               <button
                 key={tech.id}
                 onClick={() => toggle(tech.id)}
-                className={`rounded-xl border-2 p-4 text-right transition-all ${isSel ? 'border-brand-400 bg-brand-50' : 'border-edge hover:border-edge'}`}
+                className={`rounded-xl border-2 p-4 text-end transition-all ${isSel ? 'border-brand-400 bg-brand-50' : 'border-edge hover:border-edge'}`}
               >
                 <div className="flex items-center gap-3">
                   <span className="text-3xl">{tech.emoji}</span>
@@ -117,7 +117,7 @@ export default function TechnicianComparePage(): JSX.Element {
                       {t(tech.specialty)} · {tech.city} · {tech.rating} · {t(tech.experience)}
                     </p>
                   </div>
-                  {isSel && <span className="mr-auto text-brand-600 text-xl"></span>}
+                  {isSel && <span className="me-auto text-brand-600 text-xl"></span>}
                 </div>
               </button>
             );
@@ -134,7 +134,7 @@ export default function TechnicianComparePage(): JSX.Element {
             <table className="w-full text-sm">
               <thead>
                 <tr className="border-b">
-                  <th className="p-3 text-right">
+                  <th className="p-3 text-end">
                     {t('marketing.technician-compare.feature-column')}
                   </th>
                   {techs.map((tech) => (

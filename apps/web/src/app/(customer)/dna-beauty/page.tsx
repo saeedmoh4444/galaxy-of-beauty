@@ -37,7 +37,7 @@ export default function DNABeautyPage(): JSX.Element {
           <p className="mt-1 text-sm text-text-secondary">{t('dnaBeauty.subtitle')}</p>
         </div>
         {result ? (
-          <Card padding="lg" className="text-center border-2 border-purple-300">
+          <Card padding="lg" className="text-center border-2 border-brand-300">
             <span className="text-6xl"></span>
             <h2 className="mt-4 text-xl font-bold">{t('dnaBeauty.resultTitle')}</h2>
             <p className="text-2xl font-extrabold text-brand-600 mt-2">
@@ -48,14 +48,14 @@ export default function DNABeautyPage(): JSX.Element {
                 (tx: Record<string, unknown>) => (
                   <span
                     key={tx.key as string}
-                    className="rounded-full bg-purple-100 dark:bg-purple-900 px-2 py-0.5 text-xs"
+                    className="rounded-full bg-brand-100 dark:bg-brand-900 px-2 py-0.5 text-xs"
                   >
                     {tx.label as string}
                   </span>
                 ),
               )}
             </div>
-            <div className="mt-4 text-right space-y-2">
+            <div className="mt-4 text-end space-y-2">
               <p className="font-bold">{t('dnaBeauty.recommended')}</p>
               <div className="flex flex-wrap gap-1">
                 {(result.recommendations as string[])?.map((r: string) => (
@@ -107,13 +107,13 @@ export default function DNABeautyPage(): JSX.Element {
                   <div className="flex gap-2">
                     <button
                       onClick={() => setAnswers({ ...answers, [q.id as string]: true })}
-                      className={`rounded-lg px-4 py-1.5 text-sm ${answers[q.id as string] === true ? 'bg-brand-600 text-white' : 'bg-gray-200 dark:bg-gray-700'}`}
+                      className={`rounded-lg px-4 py-1.5 text-sm ${answers[q.id as string] === true ? 'bg-brand-600 text-white' : 'bg-surface-muted'}`}
                     >
                       {t('dnaBeauty.yes')}
                     </button>
                     <button
                       onClick={() => setAnswers({ ...answers, [q.id as string]: false })}
-                      className={`rounded-lg px-4 py-1.5 text-sm ${answers[q.id as string] === false ? 'bg-brand-600 text-white' : 'bg-gray-200 dark:bg-gray-700'}`}
+                      className={`rounded-lg px-4 py-1.5 text-sm ${answers[q.id as string] === false ? 'bg-brand-600 text-white' : 'bg-surface-muted'}`}
                     >
                       {t('dnaBeauty.no')}
                     </button>

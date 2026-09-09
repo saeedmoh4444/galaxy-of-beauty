@@ -74,7 +74,7 @@ export default function BeautyShortsPage(): JSX.Element {
                   )}
                 </div>
               )}
-              <div className="absolute bottom-4 left-4 right-4 flex items-center justify-between text-sm">
+              <div className="absolute bottom-4 start-4 end-4 flex items-center justify-between text-sm">
                 <span>👁️ {s.views.toLocaleString()}</span>
                 <button
                   disabled={!isAuthenticated || likeMut.isPending}

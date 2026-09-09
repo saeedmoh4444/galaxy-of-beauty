@@ -152,7 +152,7 @@ export function BeautyQuizCard({
         <p className="mt-1 text-lg font-bold text-teal-800 dark:text-teal-200">
           {score}/{QUESTIONS.length}
         </p>
-        <p className="text-[10px] text-text-tertiary dark:text-gray-400 mt-1">
+        <p className="text-[10px] text-text-tertiary dark:text-text-tertiary mt-1">
           {score === QUESTIONS.length
             ? SCORE_FEEDBACK.perfect[locale]
             : score >= 2
@@ -187,7 +187,7 @@ export function BeautyQuizCard({
           <span className="text-lg" aria-hidden="true"></span>
           <h4 className="text-sm font-bold text-teal-700 dark:text-teal-300">{title}</h4>
         </div>
-        <span className="text-[10px] text-text-tertiary dark:text-gray-500">
+        <span className="text-[10px] text-text-tertiary dark:text-text-secondary">
           {qIndex + 1}/{QUESTIONS.length}
         </span>
       </div>
@@ -200,13 +200,13 @@ export function BeautyQuizCard({
       {/* Options */}
       <div className="mt-2 space-y-1.5">
         {q.options.map((opt, i) => {
-          let bg = 'bg-gray-50 dark:bg-gray-800 hover:bg-teal-50 dark:hover:bg-teal-950';
+          let bg = 'bg-surface-muted hover:bg-teal-50 dark:hover:bg-teal-950';
           if (selected !== null) {
             if (i === q.correct)
               bg = 'bg-emerald-100 border-emerald-400 dark:bg-emerald-950 dark:border-emerald-600';
             else if (i === selected)
               bg = 'bg-rose-100 border-rose-400 dark:bg-rose-950 dark:border-rose-600';
-            else bg = 'bg-gray-50 opacity-50 dark:bg-gray-800';
+            else bg = 'bg-surface-muted opacity-50 dark:bg-gray-800';
           }
 
           return (
@@ -216,7 +216,7 @@ export function BeautyQuizCard({
               onClick={() => handleAnswer(i)}
               disabled={selected !== null}
               className={cn(
-                'w-full rounded-xl border-2 border-transparent px-3 py-2.5 text-left text-xs transition-all',
+                'w-full rounded-xl border-2 border-transparent px-3 py-2.5 text-start text-xs transition-all',
                 bg,
               )}
             >

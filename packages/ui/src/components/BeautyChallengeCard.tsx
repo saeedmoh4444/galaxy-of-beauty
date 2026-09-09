@@ -157,12 +157,12 @@ export function BeautyChallengeCard({
                     ? 'bg-emerald-100 text-emerald-600 dark:bg-emerald-900 dark:text-emerald-400'
                     : isToday
                       ? 'bg-emerald-500 text-white ring-2 ring-emerald-300'
-                      : 'bg-gray-100 text-gray-400 dark:bg-gray-800 dark:text-gray-600',
+                      : 'bg-surface-muted text-text-tertiary dark:bg-gray-800 dark:text-text-secondary',
                 )}
               >
                 {isCompleted ? '' : d.emoji}
               </div>
-              <p className="mt-0.5 text-[8px] text-text-tertiary dark:text-gray-500">
+              <p className="mt-0.5 text-[8px] text-text-tertiary dark:text-text-secondary">
                 {dayWordLabel} {d.day}
               </p>
             </div>
@@ -171,7 +171,7 @@ export function BeautyChallengeCard({
       </div>
 
       {/* Motivation */}
-      <p className="mt-3 text-center text-[9px] text-text-tertiary dark:text-gray-500">
+      <p className="mt-3 text-center text-[9px] text-text-tertiary dark:text-text-secondary">
         {30 - completedDays} {daysRemainingLabel}
       </p>
     </div>

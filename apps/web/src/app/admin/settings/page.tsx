@@ -96,7 +96,7 @@ export default function AdminSettingsPage(): JSX.Element {
             {settingsEntries.map(([key, value]) => (
               <div
                 key={key}
-                className="flex items-center justify-between border-b border-gray-100 pb-2 dark:border-gray-800"
+                className="flex items-center justify-between border-b border-edge-muted pb-2 dark:border-gray-800"
               >
                 <div className="flex-1">
                   <p className="text-sm font-medium">{key}</p>

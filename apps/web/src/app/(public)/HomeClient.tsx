@@ -159,7 +159,7 @@ export function HomeClient({
       </section>
 
       {/* Testimonials */}
-      <section className="bg-gradient-to-r from-brand-50 to-purple-50 dark:from-brand-950 dark:to-purple-950 px-4 py-16">
+      <section className="bg-gradient-to-r from-brand-50 to-brand-50 dark:from-brand-950 dark:to-brand-950 px-4 py-16">
         <div className="mx-auto max-w-5xl">
           <h2 className="mb-8 text-center text-2xl font-bold">
             {t('marketing.home.testimonials-title')}
@@ -191,7 +191,7 @@ export function HomeClient({
                   {'★'.repeat(tst.rating)}
                   {'☆'.repeat(5 - tst.rating)}
                 </p>
-                <p className="mt-3 text-sm text-text-secondary dark:text-gray-400 leading-relaxed">
+                <p className="mt-3 text-sm text-text-secondary dark:text-text-tertiary leading-relaxed">
                   &ldquo;{tst.text}&rdquo;
                 </p>
                 <p className="mt-3 font-bold text-brand-600">— {tst.name}</p>
@@ -249,7 +249,7 @@ export function HomeClient({
           ].map((f) => (
             <Link key={f.href} href={f.href}>
               <Card hover padding="lg" className="flex items-start gap-3 transition-all">
-                <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-gradient-to-br from-brand-100 to-purple-100 dark:from-brand-900 dark:to-purple-900">
+                <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-gradient-to-br from-brand-100 to-brand-100 dark:from-brand-900 dark:to-brand-900">
                   <span className="text-lg font-bold text-brand-600 dark:text-brand-300">
                     {f.title.charAt(0)}
                   </span>

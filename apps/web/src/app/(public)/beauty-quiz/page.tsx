@@ -169,7 +169,7 @@ export default function BeautyQuizPage(): JSX.Element {
           {questions.map((_, i) => (
             <div
               key={i}
-              className={`h-1.5 flex-1 rounded-full transition-colors ${i <= step ? 'bg-brand-600' : 'bg-gray-200 dark:bg-gray-700'}`}
+              className={`h-1.5 flex-1 rounded-full transition-colors ${i <= step ? 'bg-brand-600' : 'bg-surface-muted'}`}
             />
           ))}
         </div>
@@ -183,7 +183,7 @@ export default function BeautyQuizPage(): JSX.Element {
           <button
             key={o.value}
             onClick={() => handleAnswer(q.id, o.value)}
-            className="flex w-full items-center gap-4 rounded-xl border border-edge p-4 text-right transition-all hover:border-brand-400 hover:bg-brand-50 dark:border-gray-700 dark:hover:bg-brand-950"
+            className="flex w-full items-center gap-4 rounded-xl border border-edge p-4 text-end transition-all hover:border-brand-400 hover:bg-brand-50 dark:border-gray-700 dark:hover:bg-brand-950"
           >
             <span className="text-2xl">{o.icon}</span>
             <span className="text-lg font-medium text-text-primary dark:text-gray-100">

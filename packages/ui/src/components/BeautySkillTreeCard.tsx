@@ -28,7 +28,7 @@ interface BeautySkillTreeCardProps {
 
 const COLORS = [
   'from-pink-400 to-rose-400',
-  'from-purple-400 to-violet-400',
+  'from-brand-400 to-violet-400',
   'from-sky-400 to-blue-400',
   'from-emerald-400 to-green-400',
   'from-amber-400 to-orange-400',
@@ -83,7 +83,7 @@ export function BeautySkillTreeCard({
                     'h-2 flex-1 rounded-full',
                     j < skill.level
                       ? `bg-gradient-to-r ${COLORS[i % COLORS.length]}`
-                      : 'bg-gray-200 dark:bg-gray-700',
+                      : 'bg-surface-muted',
                   )}
                 />
               ))}

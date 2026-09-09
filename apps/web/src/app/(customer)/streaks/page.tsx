@@ -57,7 +57,7 @@ export default function StreaksPage(): JSX.Element {
             <div className="grid gap-4 md:grid-cols-3">
               <Card padding="lg" className="flex flex-col items-center justify-center text-center">
                 <span className="text-5xl"></span>
-                <p className="mt-3 text-sm text-text-secondary dark:text-gray-400">
+                <p className="mt-3 text-sm text-text-secondary dark:text-text-tertiary">
                   {t('streaks.current')}
                 </p>
                 <p className="mt-1 text-4xl font-bold text-brand-600">
@@ -67,7 +67,7 @@ export default function StreaksPage(): JSX.Element {
               </Card>
               <Card padding="lg" className="flex flex-col items-center justify-center text-center">
                 <span className="text-5xl"></span>
-                <p className="mt-3 text-sm text-text-secondary dark:text-gray-400">
+                <p className="mt-3 text-sm text-text-secondary dark:text-text-tertiary">
                   {t('streaks.longest')}
                 </p>
                 <p className="mt-1 text-4xl font-bold text-amber-600">
@@ -77,7 +77,7 @@ export default function StreaksPage(): JSX.Element {
               </Card>
               <Card padding="lg" className="flex flex-col items-center justify-center text-center">
                 <span className="text-5xl"></span>
-                <p className="mt-3 text-sm text-text-secondary dark:text-gray-400">
+                <p className="mt-3 text-sm text-text-secondary dark:text-text-tertiary">
                   {t('streaks.lastBooking')}
                 </p>
                 <p className="mt-1 text-lg font-semibold text-text-primary dark:text-gray-300">

@@ -76,7 +76,7 @@ export default function GiftCardsPage(): JSX.Element {
           {t('giftCards.title')}
         </h1>
 
-        <div className="flex gap-2 border-b border-gray-200 dark:border-gray-700">
+        <div className="flex gap-2 border-b border-edge">
           {[
             { key: 'my', label: t('giftCards.tabMy') },
             { key: 'buy', label: t('giftCards.tabBuy') },
@@ -159,7 +159,7 @@ export default function GiftCardsPage(): JSX.Element {
                 </label>
                 <textarea
                   id="gc-message"
-                  className="w-full rounded-lg border border-gray-300 p-2 text-sm dark:border-gray-600 dark:bg-gray-800"
+                  className="w-full rounded-lg border border-edge p-2 text-sm dark:border-gray-600 dark:bg-gray-800"
                   rows={3}
                   value={giftMessage}
                   onChange={(e) => setGiftMessage(e.target.value)}

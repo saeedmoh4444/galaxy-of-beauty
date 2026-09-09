@@ -60,7 +60,7 @@ export function MediaFeatureCard({
           <p className="mt-0.5 text-xs font-bold text-text-primary dark:text-gray-100">
             {feature.title}
           </p>
-          <div className="mt-1 flex items-center gap-2 text-[10px] text-text-tertiary dark:text-gray-500">
+          <div className="mt-1 flex items-center gap-2 text-[10px] text-text-tertiary dark:text-text-secondary">
             <span>
               {TYPE_ICONS[feature.type || 'online']} {feature.outlet}
             </span>
@@ -77,7 +77,7 @@ export function MediaFeatureCard({
         {readMoreText}
       </button>
 
-      <p className="mt-1.5 text-center text-[9px] text-text-tertiary dark:text-gray-500">
+      <p className="mt-1.5 text-center text-[9px] text-text-tertiary dark:text-text-secondary">
         {footerText}
       </p>
     </div>

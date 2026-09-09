@@ -256,7 +256,7 @@ export default function TechDashboardPage(): JSX.Element {
                         className={`rounded-full border px-3 py-1 text-xs ${
                           active
                             ? 'border-brand-500 bg-brand-50 text-brand-700'
-                            : 'border-gray-300 text-text-secondary'
+                            : 'border-edge text-text-secondary'
                         }`}
                       >
                         {localize(svc?.titleJson, locale)}
@@ -468,7 +468,7 @@ export default function TechDashboardPage(): JSX.Element {
                 <select
                   value={promoSvcId ?? ''}
                   onChange={(e) => setPromoSvcId(Number(e.target.value) || undefined)}
-                  className="w-full rounded-lg border border-gray-300 p-2 text-sm dark:border-gray-600 dark:bg-gray-800"
+                  className="w-full rounded-lg border border-edge p-2 text-sm dark:border-gray-600 dark:bg-gray-800"
                 >
                   <option value="">—</option>
                   {myServices.map((mapping: Record<string, unknown>) => {

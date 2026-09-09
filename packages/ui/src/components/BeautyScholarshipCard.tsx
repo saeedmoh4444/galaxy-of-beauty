@@ -108,7 +108,7 @@ export function BeautyScholarshipCard({
 
       {/* Includes */}
       {program.includes && program.includes.length > 0 && (
-        <div className="mt-2 rounded-xl bg-gray-50 p-2.5 dark:bg-gray-800">
+        <div className="mt-2 rounded-xl bg-surface-muted p-2.5 dark:bg-gray-800">
           <p className="text-[10px] font-bold text-text-primary dark:text-gray-100">
             {includesLabel}
           </p>
@@ -128,14 +128,14 @@ export function BeautyScholarshipCard({
       {/* Seats progress */}
       <div className="mt-2">
         <div className="flex items-center justify-between text-[10px]">
-          <span className="text-text-tertiary dark:text-gray-500">
+          <span className="text-text-tertiary dark:text-text-secondary">
             {remaining > 0
               ? `${seatsRemainingPrefix}${remaining} ${seatsRemainingSuffix}`
               : seatsFullText}
           </span>
           <span className="font-bold text-teal-700 dark:text-teal-300">{pct}%</span>
         </div>
-        <div className="mt-1 h-1.5 overflow-hidden rounded-full bg-gray-100 dark:bg-gray-700">
+        <div className="mt-1 h-1.5 overflow-hidden rounded-full bg-surface-muted dark:bg-gray-700">
           <div
             className={cn(
               'h-full rounded-full bg-gradient-to-r transition-all',
@@ -148,7 +148,7 @@ export function BeautyScholarshipCard({
 
       {/* Duration */}
       {program.duration && (
-        <p className="mt-1.5 text-[10px] text-text-tertiary dark:text-gray-500">
+        <p className="mt-1.5 text-[10px] text-text-tertiary dark:text-text-secondary">
           {durationLabel} {program.duration}
         </p>
       )}
@@ -163,7 +163,7 @@ export function BeautyScholarshipCard({
             'flex-1 rounded-xl py-2 text-[10px] font-bold transition-all active:scale-[0.98]',
             remaining > 0
               ? 'bg-teal-600 text-white hover:bg-teal-700'
-              : 'bg-gray-200 text-gray-400 cursor-not-allowed dark:bg-gray-700 dark:text-gray-500',
+              : 'bg-surface-muted text-text-tertiary cursor-not-allowed dark:bg-gray-700 dark:text-text-secondary',
           )}
         >
           {remaining > 0 ? applyButtonText : registrationClosedText}

@@ -129,7 +129,7 @@ export default function BeautyRescuePage(): JSX.Element {
                   <button
                     key={e.key}
                     onClick={() => setSelected(isSel ? null : e.key)}
-                    className={`rounded-xl border-2 p-4 text-right transition-all ${isSel ? 'border-red-400 bg-red-50' : 'border-gray-200 hover:border-gray-300'}`}
+                    className={`rounded-xl border-2 p-4 text-end transition-all ${isSel ? 'border-red-400 bg-red-50' : 'border-edge hover:border-edge'}`}
                   >
                     <span className="text-3xl">{e.emoji}</span>
                     <h3 className="font-bold mt-2">{t(e.name)}</h3>

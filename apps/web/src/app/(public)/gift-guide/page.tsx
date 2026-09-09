@@ -163,7 +163,7 @@ export default function GiftGuidePage(): JSX.Element {
         </div>
       ))}
 
-      <div className="text-center mt-12 p-8 bg-gradient-to-r from-pink-50 to-purple-50 rounded-3xl dark:from-pink-950 dark:to-purple-950">
+      <div className="text-center mt-12 p-8 bg-gradient-to-r from-pink-50 to-brand-50 rounded-3xl dark:from-pink-950 dark:to-brand-950">
         <h2 className="text-xl font-bold text-text-primary dark:text-gray-100">
           {t('marketing.gift-guide.not-found-title')}
         </h2>
@@ -250,7 +250,7 @@ function GiftQuizWidget(): JSX.Element {
             {qs.map((_: unknown, i: number) => (
               <div
                 key={i}
-                className={`h-1.5 flex-1 rounded-full ${i <= step ? 'bg-brand-600' : 'bg-gray-200'}`}
+                className={`h-1.5 flex-1 rounded-full ${i <= step ? 'bg-brand-600' : 'bg-surface-muted'}`}
               />
             ))}
           </div>
@@ -264,7 +264,7 @@ function GiftQuizWidget(): JSX.Element {
                     setAnswers((prev) => ({ ...prev, [currentQ.id as string]: o.key as string }));
                     if (step < qs.length - 1) setStep(step + 1);
                   }}
-                  className="w-full rounded-xl border-2 border-edge p-3 text-right hover:border-brand-400 hover:bg-brand-50 transition-all"
+                  className="w-full rounded-xl border-2 border-edge p-3 text-end hover:border-brand-400 hover:bg-brand-50 transition-all"
                 >
                   {o.labelAr as string}
                 </button>

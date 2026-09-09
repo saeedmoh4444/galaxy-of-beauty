@@ -101,7 +101,7 @@ export default function KidsServicesPage(): JSX.Element {
           </button>
           <Card
             padding="lg"
-            className="bg-gradient-to-r from-blue-50 to-purple-50 dark:from-blue-950 dark:to-purple-950 border-none"
+            className="bg-gradient-to-r from-blue-50 to-brand-50 dark:from-blue-950 dark:to-brand-950 border-none"
           >
             <span className="text-5xl">{category?.emoji as string}</span>
             <h2 className="text-xl font-bold mt-2">{category?.nameAr as string}</h2>
@@ -147,7 +147,7 @@ export default function KidsServicesPage(): JSX.Element {
                     </p>
                   </div>
                 </div>
-                <div className="text-right">
+                <div className="text-end">
                   <p className="text-xl font-extrabold text-brand-600">
                     {t('marketing.kids-services.price-sar', {
                       price: formatCurrency(s.price as number),

@@ -62,7 +62,7 @@ export function BeautyNightOutCard({
   return (
     <div
       className={cn(
-        'rounded-2xl border border-indigo-100 bg-gradient-to-br from-indigo-50 to-purple-50 p-5 dark:border-indigo-900 dark:from-indigo-950 dark:to-purple-950',
+        'rounded-2xl border border-indigo-100 bg-gradient-to-br from-indigo-50 to-brand-50 p-5 dark:border-indigo-900 dark:from-indigo-950 dark:to-brand-950',
         className,
       )}
     >
@@ -88,7 +88,9 @@ export function BeautyNightOutCard({
               <p className="text-[10px] font-bold text-text-primary dark:text-gray-100">
                 {s.name[locale]}
               </p>
-              <p className="text-[9px] text-text-tertiary dark:text-gray-500">{s.time[locale]}</p>
+              <p className="text-[9px] text-text-tertiary dark:text-text-secondary">
+                {s.time[locale]}
+              </p>
             </div>
             <span className="text-xs font-bold text-indigo-700 dark:text-indigo-300">
               {s.price} {currencySuffix}
@@ -105,7 +107,7 @@ export function BeautyNightOutCard({
           'mt-3 w-full rounded-xl py-2.5 text-xs font-bold transition-all active:scale-[0.98]',
           available
             ? 'bg-indigo-600 text-white hover:bg-indigo-700'
-            : 'bg-gray-200 text-gray-400 cursor-not-allowed dark:bg-gray-700',
+            : 'bg-surface-muted text-text-tertiary cursor-not-allowed dark:bg-gray-700',
         )}
       >
         {available ? bookNowText : unavailableText}

@@ -33,7 +33,7 @@ const BADGE_META: Record<string, { emoji: string; gradient: string; descKey: Tra
   },
   premium: {
     emoji: '',
-    gradient: 'from-purple-400 to-indigo-500',
+    gradient: 'from-brand-400 to-indigo-500',
     descKey: 'marketing.technician-badges.badge-premium',
   },
   certified: {
@@ -92,7 +92,7 @@ export default function TechnicianBadgesPage(): JSX.Element {
         <h1 className="mt-4 text-3xl font-bold text-text-primary dark:text-gray-100">
           {t('marketing.technician-badges.title')}
         </h1>
-        <p className="mt-2 text-text-secondary dark:text-gray-400">
+        <p className="mt-2 text-text-secondary dark:text-text-tertiary">
           {t('marketing.technician-badges.subtitle')}
         </p>
       </div>
@@ -134,7 +134,7 @@ export default function TechnicianBadgesPage(): JSX.Element {
                 <h3 className="mt-4 text-lg font-bold text-text-primary dark:text-gray-100">
                   {name}
                 </h3>
-                <p className="mt-1 text-xs text-text-secondary dark:text-gray-400 leading-relaxed">
+                <p className="mt-1 text-xs text-text-secondary dark:text-text-tertiary leading-relaxed">
                   {desc}
                 </p>
                 <div

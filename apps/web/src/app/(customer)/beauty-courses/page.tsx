@@ -77,17 +77,17 @@ export default function BeautyCoursesPage(): JSX.Element {
                 return (
                   <div
                     key={c.id}
-                    className="flex gap-4 rounded-2xl border border-gray-100 bg-white p-5 dark:border-gray-800 dark:bg-gray-900"
+                    className="flex gap-4 rounded-2xl border border-edge-muted bg-white p-5 dark:border-gray-800 dark:bg-gray-900"
                   >
                     <span className="text-5xl shrink-0">{c.emoji}</span>
                     <div className="flex-1">
                       <h4 className="text-base font-bold text-text-primary dark:text-gray-100">
                         {c.titleAr}
                       </h4>
-                      <p className="mt-1 text-xs text-text-secondary dark:text-gray-400">
+                      <p className="mt-1 text-xs text-text-secondary dark:text-text-tertiary">
                         {c.descAr}
                       </p>
-                      <div className="mt-2 flex flex-wrap items-center gap-3 text-xs text-text-tertiary dark:text-gray-500">
+                      <div className="mt-2 flex flex-wrap items-center gap-3 text-xs text-text-tertiary dark:text-text-secondary">
                         <span>‍ {c.instructor}</span>
                         <span> {t('beautyCourses.lessons', { count: c.lessons })}</span>
                         <span> {c.rating}</span>

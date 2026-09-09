@@ -151,7 +151,7 @@ export default function AdminBeautyEventsPage(): JSX.Element {
                       )}
                     </p>
                   </div>
-                  <div className="text-right">
+                  <div className="text-end">
                     <p className="font-bold">
                       {e.price ? formatCurrency(Number(e.price)) : t('admin.beauty-events.free')}
                     </p>

@@ -35,7 +35,7 @@ const LEVELS: Record<CourseLevel, LevelDef> = {
   advanced: {
     emoji: '',
     label: { ar: 'متقدمة', en: 'Advanced' },
-    color: 'bg-purple-50 text-purple-700 dark:bg-purple-950 dark:text-purple-300',
+    color: 'bg-brand-50 text-brand-700 dark:bg-brand-950 dark:text-brand-300',
   },
 };
 
@@ -118,7 +118,7 @@ export function FreeCourseCard({
               {level.emoji} {level.label[locale]}
             </span>
             {course.language && (
-              <span className="text-[10px] text-text-tertiary dark:text-gray-500">
+              <span className="text-[10px] text-text-tertiary dark:text-text-secondary">
                 {LANG_LABELS[course.language][locale]}
               </span>
             )}

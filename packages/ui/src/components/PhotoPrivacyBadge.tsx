@@ -42,7 +42,7 @@ const PRIVACY: Record<PrivacyLevel, PrivacyConfig> = {
     label: { ar: 'خاصة', en: 'Private' },
     description: { ar: 'لكِ فقط — غير مرئية لأحد', en: 'Just for you — visible to no one' },
     colorClass:
-      'bg-purple-50 text-purple-700 border-purple-200 dark:bg-purple-950 dark:text-purple-300 dark:border-purple-800',
+      'bg-brand-50 text-brand-700 border-brand-200 dark:bg-brand-950 dark:text-brand-300 dark:border-brand-800',
   },
   VIEW_ONCE: {
     emoji: '️',

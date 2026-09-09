@@ -71,7 +71,7 @@ export default function InvoicesPage(): JSX.Element {
                         · {b.bookingCode as string}
                       </p>
                     </div>
-                    <div className="text-right">
+                    <div className="text-end">
                       <p className="font-bold text-green-600">
                         {formatCurrency(Number(b.totalAmount) || 0)}
                       </p>

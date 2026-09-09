@@ -39,7 +39,7 @@ export default function BeautyClosetPage(): JSX.Element {
                 <h3 className="font-bold mt-2">{p.name as string}</h3>
                 <div className="mt-2 h-2 bg-surface-muted rounded-full">
                   <div
-                    className="h-2 bg-purple-600 rounded-full"
+                    className="h-2 bg-brand-600 rounded-full"
                     style={{ width: `${(p.usagePct as number) ?? 100}%` }}
                   />
                 </div>

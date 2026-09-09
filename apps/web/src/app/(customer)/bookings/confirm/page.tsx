@@ -23,7 +23,7 @@ export default function BookingConfirmPage(): JSX.Element {
         </h1>
         <p className="text-text-secondary">{t('booking.success-message')}</p>
 
-        <Card padding="lg" className="text-left">
+        <Card padding="lg" className="text-start">
           <div className="space-y-3 text-sm">
             <div className="flex justify-between">
               <span className="text-text-secondary">{t('booking.code')}</span>
@@ -50,7 +50,7 @@ export default function BookingConfirmPage(): JSX.Element {
               </span>
             </div>
           </div>
-          <div className="mt-4 border-t border-gray-100 pt-4 dark:border-gray-800">
+          <div className="mt-4 border-t border-edge-muted pt-4 dark:border-gray-800">
             <AddToCalendar
               title={t('booking.calendar-title', { code })}
               startAt={date}

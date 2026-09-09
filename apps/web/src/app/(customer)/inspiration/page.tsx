@@ -96,7 +96,7 @@ export default function InspirationPage(): JSX.Element {
               >
                 {/* Drag handle indicator */}
                 <div
-                  className="absolute top-2 left-2 z-10 flex items-center gap-1 rounded-full bg-black/40 px-2 py-0.5 text-xs text-white opacity-0 backdrop-blur transition-opacity group-hover:opacity-100"
+                  className="absolute top-2 start-2 z-10 flex items-center gap-1 rounded-full bg-black/40 px-2 py-0.5 text-xs text-white opacity-0 backdrop-blur transition-opacity group-hover:opacity-100"
                   aria-hidden="true"
                 >
                   <svg className="h-3 w-3" fill="currentColor" viewBox="0 0 24 24">
@@ -148,7 +148,7 @@ export default function InspirationPage(): JSX.Element {
                     deleteMut.mutate({ id: p.id });
                     setOrderedPins(null);
                   }}
-                  className="absolute top-2 right-2 hidden rounded-full bg-red-500 p-1.5 text-white shadow-sm transition-colors hover:bg-red-600 group-hover:block"
+                  className="absolute top-2 end-2 hidden rounded-full bg-red-500 p-1.5 text-white shadow-sm transition-colors hover:bg-red-600 group-hover:block"
                   aria-label={t('inspiration.deleteLabel')}
                 >
                   <svg

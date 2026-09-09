@@ -140,7 +140,7 @@ export function MentalWellnessSection(): JSX.Element {
           {list.map((e) => (
             <div key={e.key} className="rounded-xl bg-surface-muted p-3">
               <button
-                className="w-full text-left flex items-center justify-between"
+                className="w-full text-start flex items-center justify-between"
                 onClick={() => setActive(active === e.key ? null : e.key)}
               >
                 <span className="font-bold text-sm">
@@ -171,7 +171,7 @@ export function MentalWellnessSection(): JSX.Element {
             <details key={m.key} className="rounded-xl bg-surface-muted p-3">
               <summary className="cursor-pointer font-bold text-sm">
                 {m.emoji} {pick({ ar: m.titleAr, en: m.titleEn }, locale)}
-                <span className="text-xs text-text-secondary font-normal ml-2">
+                <span className="text-xs text-text-secondary font-normal ms-2">
                   {t('wellnessContent.minutes', { min: m.minutes })}
                 </span>
               </summary>

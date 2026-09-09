@@ -99,8 +99,8 @@ export function ThreeGenerationsCard({
       key: 'daughter',
       data: generations.daughter,
       label: { ar: 'الابنة', en: 'Daughter' },
-      color: 'text-purple-700 dark:text-purple-300',
-      gradient: 'from-purple-100 to-violet-100 dark:from-purple-900 dark:to-violet-900',
+      color: 'text-brand-700 dark:text-brand-300',
+      gradient: 'from-brand-100 to-violet-100 dark:from-brand-900 dark:to-violet-900',
     },
   ];
 
@@ -115,7 +115,7 @@ export function ThreeGenerationsCard({
       <div className="text-center">
         <span className="text-3xl" aria-hidden="true"></span>
         <h4 className="mt-1 text-sm font-bold text-text-primary dark:text-gray-100">{title}</h4>
-        <p className="text-[10px] text-text-tertiary dark:text-gray-400">{subtitle}</p>
+        <p className="text-[10px] text-text-tertiary dark:text-text-tertiary">{subtitle}</p>
       </div>
 
       {/* Three generations */}
@@ -134,7 +134,7 @@ export function ThreeGenerationsCard({
               {member.data.name}
             </p>
             {member.data.service && (
-              <p className="mt-0.5 text-[9px] text-text-tertiary dark:text-gray-400">
+              <p className="mt-0.5 text-[9px] text-text-tertiary dark:text-text-tertiary">
                 {member.data.service}
               </p>
             )}
@@ -145,17 +145,17 @@ export function ThreeGenerationsCard({
       {/* Package details */}
       <div className="mt-3 grid grid-cols-3 gap-2 text-center">
         <div className="rounded-xl bg-white/60 p-2 dark:bg-gray-800/60">
-          <p className="text-[9px] text-text-tertiary dark:text-gray-500">{durationLabel}</p>
+          <p className="text-[9px] text-text-tertiary dark:text-text-secondary">{durationLabel}</p>
           <p className="text-xs font-bold text-text-primary dark:text-gray-100">{duration}</p>
         </div>
         <div className="rounded-xl bg-white/60 p-2 dark:bg-gray-800/60">
-          <p className="text-[9px] text-text-tertiary dark:text-gray-500">{priceLabel}</p>
+          <p className="text-[9px] text-text-tertiary dark:text-text-secondary">{priceLabel}</p>
           <p className="text-xs font-bold text-rose-700 dark:text-rose-400">
             {totalPrice} {currencySuffix}
           </p>
         </div>
         <div className="rounded-xl bg-white/60 p-2 dark:bg-gray-800/60">
-          <p className="text-[9px] text-text-tertiary dark:text-gray-500">{perPersonLabel}</p>
+          <p className="text-[9px] text-text-tertiary dark:text-text-secondary">{perPersonLabel}</p>
           <p className="text-xs font-bold text-text-primary dark:text-gray-100">
             {Math.round(totalPrice / 3)} {currencySuffix}
           </p>

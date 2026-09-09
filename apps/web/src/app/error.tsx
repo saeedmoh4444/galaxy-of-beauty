@@ -41,10 +41,8 @@ export default function RootError({
         height={80}
         className="mb-8 h-20 w-20 rounded-2xl object-cover shadow-lg"
       />
-      <h1 className="text-2xl font-bold text-gray-900 dark:text-gray-100">
-        {t('error.unexpected', locale)}
-      </h1>
-      <p className="mt-2 max-w-md text-center text-sm text-gray-500 dark:text-gray-400">
+      <h1 className="text-2xl font-bold text-text-primary">{t('error.unexpected', locale)}</h1>
+      <p className="mt-2 max-w-md text-center text-sm text-text-secondary">
         {error.message || t('error.try-again-support', locale)}
       </p>
       <div className="mt-6 flex gap-3">
@@ -56,7 +54,7 @@ export default function RootError({
         </button>
         <Link
           href="/"
-          className="rounded-xl border border-gray-300 px-6 py-3 text-sm font-semibold text-gray-700 transition-colors hover:bg-gray-50 dark:border-gray-600 dark:text-gray-300 dark:hover:bg-gray-800"
+          className="rounded-xl border border-edge px-6 py-3 text-sm font-semibold text-text-secondary transition-colors hover:bg-surface-muted dark:border-gray-600 dark:text-gray-300 dark:hover:bg-gray-800"
         >
           {t('common.back-home', locale)}
         </Link>

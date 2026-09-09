@@ -18,7 +18,7 @@ const FEATURES = [
     title: 'marketing.discover.technicians',
     desc: 'marketing.discover.technicians-desc',
     href: '/technicians',
-    color: 'from-purple-100 to-purple-200',
+    color: 'from-brand-100 to-brand-200',
   },
   {
     emoji: '️',
@@ -144,7 +144,7 @@ const FEATURES = [
     title: 'marketing.discover.onboarding',
     desc: 'marketing.discover.onboarding-desc',
     href: '/onboarding',
-    color: 'from-purple-100 to-indigo-200',
+    color: 'from-brand-100 to-indigo-200',
   },
   {
     emoji: '',
@@ -192,7 +192,9 @@ export default function DiscoverPage(): JSX.Element {
               <h3 className="mt-3 font-bold text-sm text-text-primary dark:text-gray-100">
                 {t(f.title)}
               </h3>
-              <p className="mt-1 text-xs text-text-secondary dark:text-gray-400">{t(f.desc)}</p>
+              <p className="mt-1 text-xs text-text-secondary dark:text-text-tertiary">
+                {t(f.desc)}
+              </p>
             </Card>
           </Link>
         ))}

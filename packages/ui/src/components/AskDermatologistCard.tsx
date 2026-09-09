@@ -90,7 +90,9 @@ export function AskDermatologistCard({
           <h4 className="text-sm font-bold text-text-primary dark:text-gray-100">{doctor.name}</h4>
           <p className="text-[10px] text-text-secondary dark:text-gray-300">{doctor.specialty}</p>
           {doctor.credentials && (
-            <p className="text-[9px] text-text-tertiary dark:text-gray-500">{doctor.credentials}</p>
+            <p className="text-[9px] text-text-tertiary dark:text-text-secondary">
+              {doctor.credentials}
+            </p>
           )}
           <span className="mt-1 inline-block rounded-full bg-blue-50 px-2 py-0.5 text-[9px] font-bold text-blue-600 dark:bg-blue-950 dark:text-blue-400">
             {certifiedBadgeText}
@@ -118,7 +120,7 @@ export function AskDermatologistCard({
       </div>
 
       {/* Questions counter */}
-      <div className="mt-2 flex items-center gap-2 rounded-lg bg-gray-50 p-2 dark:bg-gray-800">
+      <div className="mt-2 flex items-center gap-2 rounded-lg bg-surface-muted p-2 dark:bg-gray-800">
         <span className="text-sm" aria-hidden="true"></span>
         <span className="text-[10px] text-text-secondary dark:text-gray-300">
           {questionsCount > 0 ? `${questionsCount} ${questionsSubmittedSuffix}` : firstQuestionText}
@@ -163,7 +165,7 @@ export function AskDermatologistCard({
       </button>
 
       {/* Anonymity note */}
-      <p className="mt-2 text-center text-[9px] text-text-tertiary dark:text-gray-500">
+      <p className="mt-2 text-center text-[9px] text-text-tertiary dark:text-text-secondary">
         {anonymityNoteText}
       </p>
     </div>

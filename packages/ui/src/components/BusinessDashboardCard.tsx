@@ -93,10 +93,10 @@ export function BusinessDashboardCard({
       {/* Profit margin bar */}
       <div className="mt-2">
         <div className="flex items-center justify-between text-[10px]">
-          <span className="text-text-tertiary dark:text-gray-500">{marginLabel}</span>
+          <span className="text-text-tertiary dark:text-text-secondary">{marginLabel}</span>
           <span className="font-bold text-emerald-700 dark:text-emerald-300">{margin}%</span>
         </div>
-        <div className="mt-1 h-2 overflow-hidden rounded-full bg-gray-100 dark:bg-gray-700">
+        <div className="mt-1 h-2 overflow-hidden rounded-full bg-surface-muted dark:bg-gray-700">
           <div
             className="h-full rounded-full bg-gradient-to-r from-emerald-400 to-green-500 transition-all"
             style={{ width: `${Math.min(100, margin)}%` }}

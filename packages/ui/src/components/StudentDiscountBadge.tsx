@@ -76,10 +76,10 @@ export function StudentDiscountBadge({
       {originalPrice && discountedPrice && (
         <div className="mt-3 flex items-center justify-center gap-3 rounded-xl bg-orange-50 p-3 dark:bg-orange-950">
           <div className="text-center">
-            <p className="text-[10px] text-text-tertiary dark:text-gray-500">
+            <p className="text-[10px] text-text-tertiary dark:text-text-secondary">
               {originalPriceLabel}
             </p>
-            <p className="text-sm text-text-tertiary line-through dark:text-gray-400">
+            <p className="text-sm text-text-tertiary line-through dark:text-text-tertiary">
               {originalPrice} {currencySuffix}
             </p>
           </div>
@@ -129,7 +129,7 @@ export function StudentDiscountBadge({
       </button>
 
       {/* Footer */}
-      <p className="mt-2 text-center text-[9px] text-text-tertiary dark:text-gray-500">
+      <p className="mt-2 text-center text-[9px] text-text-tertiary dark:text-text-secondary">
         {footerText}
       </p>
     </div>

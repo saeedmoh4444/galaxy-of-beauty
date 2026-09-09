@@ -51,7 +51,7 @@ const ZONES: Record<ZoneType, ZoneDef> = {
     emoji: '',
     label: { ar: 'غرفة خاصة', en: 'Private room' },
     description: { ar: 'غرفة منفصلة بخصوصية تامة', en: 'A separate room with full privacy' },
-    color: 'bg-purple-100 border-purple-300 dark:bg-purple-950 dark:border-purple-800',
+    color: 'bg-brand-100 border-brand-300 dark:bg-brand-950 dark:border-brand-800',
   },
   aromatherapy: {
     emoji: '',
@@ -92,15 +92,15 @@ export function SensoryMapCard({
   return (
     <div
       className={cn(
-        'rounded-2xl border border-purple-100 bg-white p-4 dark:border-purple-900 dark:bg-gray-900',
+        'rounded-2xl border border-brand-100 bg-white p-4 dark:border-brand-900 dark:bg-gray-900',
         className,
       )}
     >
       <div className="flex items-center gap-2">
         <span className="text-xl" aria-hidden="true"></span>
         <div>
-          <h4 className="text-sm font-bold text-purple-700 dark:text-purple-300">{title}</h4>
-          <p className="text-[10px] text-purple-500 dark:text-purple-400">
+          <h4 className="text-sm font-bold text-brand-700 dark:text-brand-300">{title}</h4>
+          <p className="text-[10px] text-brand-500 dark:text-brand-400">
             {salonName ? `${salonName} — ` : ''}
             {zoneNote}
           </p>
@@ -134,13 +134,13 @@ export function SensoryMapCard({
       </div>
 
       {/* Preference note */}
-      <div className="mt-3 rounded-xl bg-purple-50 p-3 dark:bg-purple-950">
-        <p className="text-center text-[10px] text-purple-700 dark:text-purple-300">
+      <div className="mt-3 rounded-xl bg-brand-50 p-3 dark:bg-brand-950">
+        <p className="text-center text-[10px] text-brand-700 dark:text-brand-300">
           {preferenceNote}
         </p>
       </div>
 
-      <p className="mt-2 text-center text-[9px] text-text-tertiary dark:text-gray-500">
+      <p className="mt-2 text-center text-[9px] text-text-tertiary dark:text-text-secondary">
         {footerText}
       </p>
     </div>

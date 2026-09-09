@@ -81,7 +81,7 @@ export default function MyJourneyPage(): JSX.Element {
           </Card>
           <Card className="text-center" padding="lg">
             <span className="text-3xl"></span>
-            <p className="text-3xl font-extrabold text-purple-600 mt-2">{uniqueServices}</p>
+            <p className="text-3xl font-extrabold text-brand-600 mt-2">{uniqueServices}</p>
             <p className="text-sm text-text-secondary">{t('myJourney.uniqueServices')}</p>
           </Card>
           <Card className="text-center" padding="lg">

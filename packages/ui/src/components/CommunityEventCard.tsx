@@ -63,12 +63,12 @@ export function CommunityEventCard({
       )}
     >
       <div className="flex items-start gap-3">
-        <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-violet-100 to-purple-100 text-2xl dark:from-violet-900 dark:to-purple-900">
+        <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-violet-100 to-brand-100 text-2xl dark:from-violet-900 dark:to-brand-900">
           {event.emoji || '‍️'}
         </div>
         <div className="min-w-0 flex-1">
           <h4 className="text-sm font-bold text-violet-700 dark:text-violet-300">{event.title}</h4>
-          <div className="mt-0.5 flex flex-wrap gap-x-2 gap-y-0.5 text-[10px] text-text-tertiary dark:text-gray-500">
+          <div className="mt-0.5 flex flex-wrap gap-x-2 gap-y-0.5 text-[10px] text-text-tertiary dark:text-text-secondary">
             <span> {event.date}</span>
             <span> {event.city}</span>
             {event.time && <span> {event.time}</span>}
@@ -80,7 +80,7 @@ export function CommunityEventCard({
       {event.attendees !== undefined && (
         <div className="mt-2">
           <div className="flex items-center justify-between text-[10px]">
-            <span className="text-text-tertiary dark:text-gray-500">
+            <span className="text-text-tertiary dark:text-text-secondary">
               {event.attendees} {registeredCountText}
               {event.maxAttendees && ` / ${event.maxAttendees}`}
             </span>
@@ -91,9 +91,9 @@ export function CommunityEventCard({
             )}
           </div>
           {event.maxAttendees && (
-            <div className="mt-1 h-1.5 overflow-hidden rounded-full bg-gray-100 dark:bg-gray-700">
+            <div className="mt-1 h-1.5 overflow-hidden rounded-full bg-surface-muted dark:bg-gray-700">
               <div
-                className="h-full rounded-full bg-gradient-to-r from-violet-400 to-purple-500 transition-all"
+                className="h-full rounded-full bg-gradient-to-r from-violet-400 to-brand-500 transition-all"
                 style={{ width: `${Math.round((event.attendees / event.maxAttendees) * 100)}%` }}
               />
             </div>
@@ -103,7 +103,7 @@ export function CommunityEventCard({
 
       {/* Host */}
       {event.host && (
-        <p className="mt-1.5 text-[10px] text-text-tertiary dark:text-gray-500">
+        <p className="mt-1.5 text-[10px] text-text-tertiary dark:text-text-secondary">
           ‍ {hostPrefix} {event.host}
         </p>
       )}
@@ -118,14 +118,14 @@ export function CommunityEventCard({
           isRegistered
             ? 'bg-emerald-50 text-emerald-700 dark:bg-emerald-950 dark:text-emerald-300'
             : isFull
-              ? 'bg-gray-100 text-gray-400 cursor-not-allowed dark:bg-gray-700 dark:text-gray-500'
+              ? 'bg-surface-muted text-text-tertiary cursor-not-allowed dark:bg-gray-700 dark:text-text-secondary'
               : 'bg-violet-600 text-white hover:bg-violet-700',
         )}
       >
         {isRegistered ? registeredButtonText : isFull ? fullButtonText : registerButtonText}
       </button>
 
-      <p className="mt-1.5 text-center text-[9px] text-text-tertiary dark:text-gray-500">
+      <p className="mt-1.5 text-center text-[9px] text-text-tertiary dark:text-text-secondary">
         {footerText}
       </p>
     </div>

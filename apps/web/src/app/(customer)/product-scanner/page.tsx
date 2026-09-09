@@ -125,7 +125,7 @@ export default function ProductScannerPage(): JSX.Element {
                 <>
                   <video ref={videoRef} playsInline muted className="h-48 w-full object-cover" />
                   <div className="absolute inset-0 border-2 border-brand-400/60 m-8 rounded-lg" />
-                  <p className="absolute bottom-2 left-0 right-0 text-center text-xs text-white/70">
+                  <p className="absolute bottom-2 start-0 end-0 text-center text-xs text-white/70">
                     {t('scanner.alignBarcode')}
                   </p>
                 </>
@@ -164,7 +164,7 @@ export default function ProductScannerPage(): JSX.Element {
             {/* Product Card */}
             <Card padding="lg" className="border-2 border-brand-200 dark:border-brand-800">
               <div className="flex items-start gap-4">
-                <div className="flex h-16 w-16 shrink-0 items-center justify-center rounded-2xl bg-gradient-to-br from-brand-100 to-purple-100 text-3xl dark:from-brand-900 dark:to-purple-900">
+                <div className="flex h-16 w-16 shrink-0 items-center justify-center rounded-2xl bg-gradient-to-br from-brand-100 to-brand-100 text-3xl dark:from-brand-900 dark:to-brand-900">
                   {product.category === 'skincare' ? '' : product.category === 'makeup' ? '' : '‍️'}
                 </div>
                 <div className="flex-1">
@@ -181,7 +181,7 @@ export default function ProductScannerPage(): JSX.Element {
                           {product.safetyScore}%
                         </span>
                       </div>
-                      <div className="h-2.5 rounded-full bg-gray-200 dark:bg-gray-700 overflow-hidden">
+                      <div className="h-2.5 rounded-full bg-surface-muted overflow-hidden">
                         <div
                           className={`h-full rounded-full ${SAFETY_BG(product.safetyScore)}`}
                           style={{ width: `${product.safetyScore}%` }}
@@ -225,7 +225,7 @@ export default function ProductScannerPage(): JSX.Element {
                         className={`rounded-full px-2.5 py-0.5 text-xs font-medium ${
                           isAllergen
                             ? 'bg-red-100 text-red-700 dark:bg-red-900 dark:text-red-300'
-                            : 'bg-surface-muted text-text-secondary dark:bg-gray-800 dark:text-gray-400'
+                            : 'bg-surface-muted text-text-secondary dark:bg-gray-800 dark:text-text-tertiary'
                         }`}
                       >
                         {ing} {isAllergen && ''}
@@ -272,7 +272,7 @@ export default function ProductScannerPage(): JSX.Element {
           className="bg-gradient-to-r from-green-50 to-emerald-50 dark:from-green-950 dark:to-emerald-950 border-none"
         >
           <h3 className="font-bold mb-3">{t('scanner.tipsTitle')}</h3>
-          <div className="grid gap-2 text-sm text-text-secondary dark:text-gray-400 sm:grid-cols-2">
+          <div className="grid gap-2 text-sm text-text-secondary dark:text-text-tertiary sm:grid-cols-2">
             <p>{t('scanner.tip1')}</p>
             <p>{t('scanner.tip2')}</p>
             <p>{t('scanner.tip3')}</p>

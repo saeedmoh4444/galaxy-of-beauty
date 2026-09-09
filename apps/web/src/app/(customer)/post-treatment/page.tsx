@@ -102,7 +102,7 @@ export default function PostTreatmentPage(): JSX.Element {
                 setSelected(key);
                 setCompleted([]);
               }}
-              className={`flex-1 rounded-2xl border-2 p-3 text-center transition-all ${selected === key ? 'border-rose-400 bg-rose-50 dark:border-rose-600 dark:bg-rose-950' : 'border-gray-100 bg-white dark:border-gray-800 dark:bg-gray-900'}`}
+              className={`flex-1 rounded-2xl border-2 p-3 text-center transition-all ${selected === key ? 'border-rose-400 bg-rose-50 dark:border-rose-600 dark:bg-rose-950' : 'border-edge-muted bg-white dark:border-gray-800 dark:bg-gray-900'}`}
             >
               <span className="text-2xl">{val.emoji}</span>
               <p className="mt-1 text-xs font-semibold text-text-primary dark:text-gray-100">
@@ -112,7 +112,7 @@ export default function PostTreatmentPage(): JSX.Element {
           ))}
         </div>
 
-        <div className="rounded-2xl border border-gray-100 bg-white p-6 dark:border-gray-800 dark:bg-gray-900">
+        <div className="rounded-2xl border border-edge-muted bg-white p-6 dark:border-gray-800 dark:bg-gray-900">
           <h3 className="text-lg font-bold text-text-primary dark:text-gray-100">
             {treat.emoji} {t(treat.label)}
           </h3>
@@ -126,7 +126,7 @@ export default function PostTreatmentPage(): JSX.Element {
                 {progress}%
               </span>
             </div>
-            <div className="mt-2 h-3 w-full rounded-full bg-gray-100 dark:bg-gray-800">
+            <div className="mt-2 h-3 w-full rounded-full bg-surface-muted">
               <div
                 className="h-full rounded-full bg-rose-500 transition-all"
                 style={{ width: `${progress}%` }}
@@ -141,7 +141,7 @@ export default function PostTreatmentPage(): JSX.Element {
             {treat.aftercare.map((a, i) => (
               <p
                 key={i}
-                className="flex items-center gap-2 text-sm text-text-secondary dark:text-gray-400"
+                className="flex items-center gap-2 text-sm text-text-secondary dark:text-text-tertiary"
               >
                 <span>•</span> {t(a)}
               </p>
@@ -157,10 +157,10 @@ export default function PostTreatmentPage(): JSX.Element {
                 key={i}
                 type="button"
                 onClick={() => toggleDay(tl.day)}
-                className={`flex w-full items-center gap-3 rounded-xl p-3 text-right transition-all ${completed.includes(tl.day) ? 'bg-emerald-100 dark:bg-emerald-900' : 'bg-gray-50 dark:bg-gray-800'}`}
+                className={`flex w-full items-center gap-3 rounded-xl p-3 text-end transition-all ${completed.includes(tl.day) ? 'bg-emerald-100 dark:bg-emerald-900' : 'bg-surface-muted'}`}
               >
                 <span
-                  className={`flex h-6 w-6 shrink-0 items-center justify-center rounded-md text-sm ${completed.includes(tl.day) ? 'bg-emerald-500 text-white' : 'border-2 border-gray-300 dark:border-gray-600'}`}
+                  className={`flex h-6 w-6 shrink-0 items-center justify-center rounded-md text-sm ${completed.includes(tl.day) ? 'bg-emerald-500 text-white' : 'border-2 border-edge'}`}
                 >
                   {completed.includes(tl.day) ? '' : ''}
                 </span>
@@ -170,7 +170,9 @@ export default function PostTreatmentPage(): JSX.Element {
                   >
                     {t(tl.day)}
                   </p>
-                  <p className="text-xs text-text-tertiary dark:text-gray-500">{t(tl.action)}</p>
+                  <p className="text-xs text-text-tertiary dark:text-text-secondary">
+                    {t(tl.action)}
+                  </p>
                 </div>
               </button>
             ))}

@@ -64,11 +64,11 @@ export function TechnicianCard({
       </div>
 
       {tech.city ? (
-        <p className="mt-1 text-xs text-text-secondary dark:text-gray-400"> {tech.city}</p>
+        <p className="mt-1 text-xs text-text-secondary dark:text-text-tertiary"> {tech.city}</p>
       ) : null}
 
       {tech.minPrice ? (
-        <p className="mt-1 text-xs text-text-secondary dark:text-gray-400">
+        <p className="mt-1 text-xs text-text-secondary dark:text-text-tertiary">
           {pricePrefix} {tech.minPrice} {currency}
         </p>
       ) : null}

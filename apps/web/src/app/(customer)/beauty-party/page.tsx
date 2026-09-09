@@ -38,7 +38,7 @@ export default function BeautyPartyPage(): JSX.Element {
               <button
                 key={th.key}
                 onClick={() => setTheme(th.key)}
-                className={`w-full rounded-xl p-4 text-right border-2 transition-all ${theme === th.key ? 'border-brand-400 bg-brand-50' : 'border-gray-200'}`}
+                className={`w-full rounded-xl p-4 text-end border-2 transition-all ${theme === th.key ? 'border-brand-400 bg-brand-50' : 'border-edge'}`}
               >
                 <span className="text-2xl">{th.emoji}</span>{' '}
                 <span className="font-bold">{t(th.name)}</span>

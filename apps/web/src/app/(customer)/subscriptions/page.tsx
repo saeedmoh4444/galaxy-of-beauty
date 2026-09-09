@@ -85,7 +85,7 @@ export default function SubscriptionsPage(): JSX.Element {
                     )}
                   </div>
                 </div>
-                <div className="mt-3 h-2 w-full overflow-hidden rounded-full bg-gray-200 dark:bg-gray-700">
+                <div className="mt-3 h-2 w-full overflow-hidden rounded-full bg-surface-muted">
                   <div
                     className="h-full rounded-full bg-brand-600 transition-all"
                     style={{
@@ -115,7 +115,7 @@ export default function SubscriptionsPage(): JSX.Element {
                     className={`relative flex flex-col border-2 ${isCurrentPlan ? 'border-brand-500' : 'border-transparent'}`}
                   >
                     {isCurrentPlan && (
-                      <span className="absolute -top-3 left-1/2 -translate-x-1/2 rounded-full bg-brand-600 px-4 py-0.5 text-xs font-medium text-white">
+                      <span className="absolute -top-3 start-1/2 -translate-x-1/2 rounded-full bg-brand-600 px-4 py-0.5 text-xs font-medium text-white">
                         {t('subscriptions.currentBadge')}
                       </span>
                     )}
@@ -130,7 +130,7 @@ export default function SubscriptionsPage(): JSX.Element {
                       {(plan.features as string[])?.map((f: string, i: number) => (
                         <li
                           key={i}
-                          className="flex items-center gap-2 text-text-secondary dark:text-gray-400"
+                          className="flex items-center gap-2 text-text-secondary dark:text-text-tertiary"
                         >
                           <span className="text-green-500">&#10003;</span>
                           {f}

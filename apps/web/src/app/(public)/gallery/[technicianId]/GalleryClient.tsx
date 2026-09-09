@@ -29,14 +29,12 @@ function BeforeAfterSection({ technicianUserId }: { technicianUserId: number }):
 
   return (
     <section className="space-y-4">
-      <h2 className="text-lg font-bold text-gray-900 dark:text-gray-100">
-        ✨ {t('gallery.beforeAfterTitle')}
-      </h2>
+      <h2 className="text-lg font-bold text-text-primary">✨ {t('gallery.beforeAfterTitle')}</h2>
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
         {beforeAfters.map((s) => (
           <Card key={s.id} padding="none" className="overflow-hidden">
             {s.beforeImageUrl || s.thumbnailUrl ? (
-              <div className="relative flex aspect-square items-center justify-center bg-gray-100 dark:bg-gray-800">
+              <div className="relative flex aspect-square items-center justify-center bg-surface-muted">
                 <Image
                   src={String(s.beforeImageUrl ?? s.thumbnailUrl)}
                   alt={(s.titleJson as Record<string, string>)?.ar ?? ''}
@@ -45,17 +43,17 @@ function BeforeAfterSection({ technicianUserId }: { technicianUserId: number }):
                 />
               </div>
             ) : (
-              <div className="flex aspect-square items-center justify-center bg-gradient-to-br from-brand-50 to-purple-50 text-5xl dark:from-brand-950 dark:to-purple-950">
+              <div className="flex aspect-square items-center justify-center bg-gradient-to-br from-brand-50 to-brand-50 text-5xl dark:from-brand-950 dark:to-brand-950">
                 ✨
               </div>
             )}
             <div className="p-3">
-              <p className="text-sm font-medium text-gray-900 dark:text-gray-100">
+              <p className="text-sm font-medium text-text-primary">
                 {locale === 'en'
                   ? ((s.titleJson as Record<string, string>)?.en ?? '')
                   : ((s.titleJson as Record<string, string>)?.ar ?? '')}
               </p>
-              <p className="mt-1 text-xs text-gray-500">
+              <p className="mt-1 text-xs text-text-secondary">
                 👁️ {s.views as number} · {s.category as string}
               </p>
             </div>
@@ -72,9 +70,7 @@ export function GalleryClient({ data }: { data: GalleryPageData }): JSX.Element 
 
   return (
     <div className="mx-auto max-w-6xl space-y-6 px-4 py-8">
-      <h1 className="text-2xl font-bold text-gray-900 dark:text-gray-100">
-        {t('marketing.gallery.title')}
-      </h1>
+      <h1 className="text-2xl font-bold text-text-primary">{t('marketing.gallery.title')}</h1>
 
       {/* E6e — before/after shorts from the media layer */}
       <BeforeAfterSection technicianUserId={technicianUserId} />
@@ -90,13 +86,13 @@ export function GalleryClient({ data }: { data: GalleryPageData }): JSX.Element 
         />
       ) : (
         <>
-          <p className="text-sm text-gray-500">
+          <p className="text-sm text-text-secondary">
             {t('marketing.gallery.images-count', { count: total })}
           </p>
           <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
             {items.map((img: GalleryImage) => (
               <Card key={img.id} padding="none" className="group cursor-pointer overflow-hidden">
-                <div className="relative flex aspect-square items-center justify-center bg-gray-100 text-5xl dark:bg-gray-800">
+                <div className="relative flex aspect-square items-center justify-center bg-surface-muted text-5xl dark:bg-gray-800">
                   {img.imageUrl ? (
                     <Image
                       src={String(img.imageUrl)}
@@ -110,7 +106,7 @@ export function GalleryClient({ data }: { data: GalleryPageData }): JSX.Element 
                 </div>
                 {localize(img.captionJson, locale) ? (
                   <div className="p-3">
-                    <p className="text-sm font-medium text-gray-900 dark:text-gray-100">
+                    <p className="text-sm font-medium text-text-primary">
                       {localize(img.captionJson, locale)}
                     </p>
                     {img.isBefore ? (
@@ -119,7 +115,7 @@ export function GalleryClient({ data }: { data: GalleryPageData }): JSX.Element 
                       </span>
                     ) : null}
                     {img.category ? (
-                      <span className="ml-1 mt-1 inline-block rounded bg-gray-100 px-2 py-0.5 text-xs text-gray-500 dark:bg-gray-800 dark:text-gray-400">
+                      <span className="ms-1 mt-1 inline-block rounded bg-surface-muted px-2 py-0.5 text-xs text-text-secondary dark:bg-gray-800 dark:text-text-tertiary">
                         {String(img.category)}
                       </span>
                     ) : null}

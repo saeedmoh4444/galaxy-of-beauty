@@ -130,7 +130,7 @@ export default function SearchPage(): JSX.Element {
                               </span>
                             )}
                             {s.isPrivateSuite && (
-                              <span className="rounded-full bg-purple-100 px-2 py-0.5 text-[10px] text-purple-700">
+                              <span className="rounded-full bg-brand-100 px-2 py-0.5 text-[10px] text-brand-700">
                                 🚪 {t('trust.privateSuite')}
                               </span>
                             )}

@@ -98,7 +98,7 @@ export default function AdminReportsPage(): JSX.Element {
             <div className="overflow-x-auto">
               <table className="w-full text-sm">
                 <thead>
-                  <tr className="text-right text-text-secondary border-b dark:border-gray-700">
+                  <tr className="text-end text-text-secondary border-b dark:border-gray-700">
                     <th className="py-2 px-3">{t('admin.reports.name-header')}</th>
                     <th className="py-2 px-3">{t('admin.reports.revenue-header')}</th>
                     <th className="py-2 px-3">{t('admin.reports.bookings-header')}</th>
@@ -125,7 +125,7 @@ export default function AdminReportsPage(): JSX.Element {
                 {byService.map((s: Record<string, unknown>, i: number) => (
                   <div key={i} className="flex items-center gap-2">
                     <span className="w-20 text-xs">{s.name as string}</span>
-                    <div className="flex-1 h-3 rounded-full bg-gray-200 dark:bg-gray-700">
+                    <div className="flex-1 h-3 rounded-full bg-surface-muted">
                       <div
                         className="h-3 rounded-full bg-brand-500"
                         style={{ width: `${s.pct as number}%` }}

@@ -209,7 +209,7 @@ export function BridalJourneyTimeline({
                         ? 'border-emerald-300 bg-emerald-50 dark:border-emerald-800 dark:bg-emerald-950'
                         : isCurrent
                           ? 'border-rose-400 bg-rose-50 dark:border-rose-800 dark:bg-rose-950'
-                          : 'border-gray-200 bg-gray-50 dark:border-gray-700 dark:bg-gray-800',
+                          : 'border-edge bg-surface-muted dark:border-gray-700 dark:bg-gray-800',
                     )}
                   >
                     <span className={cn(isPast && !isCurrent && 'opacity-40')}>
@@ -220,9 +220,7 @@ export function BridalJourneyTimeline({
                     <div
                       className={cn(
                         'h-full min-h-[16px] w-0.5',
-                        isCompleted
-                          ? 'bg-emerald-200 dark:bg-emerald-800'
-                          : 'bg-gray-200 dark:bg-gray-700',
+                        isCompleted ? 'bg-emerald-200 dark:bg-emerald-800' : 'bg-surface-muted',
                       )}
                     />
                   )}
@@ -235,7 +233,7 @@ export function BridalJourneyTimeline({
                       <span className="text-xs font-bold text-text-primary dark:text-gray-100">
                         {beforeLabel} {m.month} {monthsWord}
                       </span>
-                      <span className="ml-2 text-[10px] text-text-tertiary dark:text-gray-500">
+                      <span className="ms-2 text-[10px] text-text-tertiary dark:text-text-secondary">
                         {m.title[locale]}
                       </span>
                     </div>
@@ -263,7 +261,7 @@ export function BridalJourneyTimeline({
                   </div>
 
                   {/* Tip */}
-                  <p className="mt-1 text-[9px] italic text-text-tertiary dark:text-gray-500">
+                  <p className="mt-1 text-[9px] italic text-text-tertiary dark:text-text-secondary">
                     {m.tip[locale]}
                   </p>
 

@@ -85,7 +85,7 @@ export function SecureCallBadge({
         <div className="relative">
           <span className="text-xl" aria-hidden="true"></span>
           {isActive && (
-            <span className="absolute -bottom-0.5 -right-0.5 flex h-2.5 w-2.5">
+            <span className="absolute -bottom-0.5 -end-0.5 flex h-2.5 w-2.5">
               <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-75" />
               <span className="relative inline-flex h-2.5 w-2.5 rounded-full bg-emerald-500" />
             </span>
@@ -96,7 +96,7 @@ export function SecureCallBadge({
           <p className="text-[10px] text-emerald-500 dark:text-emerald-400">{subtitle}</p>
         </div>
         {isActive && (
-          <span className="ml-auto rounded-full bg-emerald-100 px-2 py-0.5 text-[10px] font-bold text-emerald-700 dark:bg-emerald-950 dark:text-emerald-300">
+          <span className="ms-auto rounded-full bg-emerald-100 px-2 py-0.5 text-[10px] font-bold text-emerald-700 dark:bg-emerald-950 dark:text-emerald-300">
             {activeText}
           </span>
         )}
@@ -142,11 +142,11 @@ export function SecureCallBadge({
       </div>
 
       {/* How it works */}
-      <div className="mt-2 rounded-lg bg-gray-50 p-2.5 dark:bg-gray-800">
+      <div className="mt-2 rounded-lg bg-surface-muted p-2.5 dark:bg-gray-800">
         <p className="text-[10px] font-bold text-text-secondary dark:text-gray-300">
           {howItWorksTitle}
         </p>
-        <p className="mt-0.5 text-[9px] leading-relaxed text-text-tertiary dark:text-gray-500">
+        <p className="mt-0.5 text-[9px] leading-relaxed text-text-tertiary dark:text-text-secondary">
           {howItWorksTextPrefix}
           {expiresIn}
           {howItWorksTextSuffix}
@@ -175,7 +175,7 @@ export function SecureCallBadge({
       )}
 
       {/* Privacy guarantee */}
-      <p className="mt-2 text-center text-[9px] text-text-tertiary dark:text-gray-500">
+      <p className="mt-2 text-center text-[9px] text-text-tertiary dark:text-text-secondary">
         {privacyText}
       </p>
     </div>

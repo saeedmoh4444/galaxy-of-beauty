@@ -74,11 +74,11 @@ export default function ColorAnalysisPage(): JSX.Element {
               key={sc.key}
               type="button"
               onClick={() => setSeason(sc.key)}
-              className={`flex-1 rounded-2xl border-2 p-3 text-center transition-all ${season === sc.key ? 'border-rose-400 bg-rose-50 dark:border-rose-600 dark:bg-rose-950' : 'border-gray-100 bg-white dark:border-gray-800 dark:bg-gray-900'}`}
+              className={`flex-1 rounded-2xl border-2 p-3 text-center transition-all ${season === sc.key ? 'border-rose-400 bg-rose-50 dark:border-rose-600 dark:bg-rose-950' : 'border-edge-muted bg-white dark:border-gray-800 dark:bg-gray-900'}`}
             >
               <span className="text-2xl">{sc.emoji}</span>
               <p
-                className={`mt-1 text-xs font-semibold ${season === sc.key ? 'text-rose-600 dark:text-rose-400' : 'text-text-tertiary dark:text-gray-500'}`}
+                className={`mt-1 text-xs font-semibold ${season === sc.key ? 'text-rose-600 dark:text-rose-400' : 'text-text-tertiary dark:text-text-secondary'}`}
               >
                 {t(sc.name)}
               </p>
@@ -86,11 +86,11 @@ export default function ColorAnalysisPage(): JSX.Element {
           ))}
         </div>
 
-        <div className="rounded-2xl border border-gray-100 bg-white p-6 dark:border-gray-800 dark:bg-gray-900">
+        <div className="rounded-2xl border border-edge-muted bg-white p-6 dark:border-gray-800 dark:bg-gray-900">
           <h3 className="text-xl font-bold text-text-primary dark:text-gray-100">
             {s.emoji} {t(s.name)} — {t(s.desc)}
           </h3>
-          <p className="mt-2 text-sm text-text-secondary dark:text-gray-400"> {t(s.skin)}</p>
+          <p className="mt-2 text-sm text-text-secondary dark:text-text-tertiary"> {t(s.skin)}</p>
 
           <h4 className="mt-6 text-sm font-bold text-text-primary dark:text-gray-100">
             {t('color.palette')}
@@ -99,7 +99,7 @@ export default function ColorAnalysisPage(): JSX.Element {
             {s.colors.map((c, i) => (
               <div
                 key={i}
-                className="h-10 w-10 rounded-full border border-gray-200 shadow-sm dark:border-gray-700"
+                className="h-10 w-10 rounded-full border border-edge shadow-sm dark:border-gray-700"
                 style={{ backgroundColor: c }}
               />
             ))}
@@ -112,7 +112,7 @@ export default function ColorAnalysisPage(): JSX.Element {
             {s.makeup.map((m, i) => (
               <div
                 key={i}
-                className="flex items-center gap-3 rounded-lg bg-gray-50 px-3 py-2 dark:bg-gray-800"
+                className="flex items-center gap-3 rounded-lg bg-surface-muted px-3 py-2 dark:bg-gray-800"
               >
                 <span></span>
                 <span className="text-sm text-text-secondary dark:text-gray-300">{t(m)}</span>
@@ -120,8 +120,8 @@ export default function ColorAnalysisPage(): JSX.Element {
             ))}
           </div>
 
-          <div className="mt-4 flex items-center justify-between border-t border-gray-100 pt-4 dark:border-gray-800">
-            <span className="text-sm text-text-tertiary dark:text-gray-500">
+          <div className="mt-4 flex items-center justify-between border-t border-edge-muted pt-4 dark:border-gray-800">
+            <span className="text-sm text-text-tertiary dark:text-text-secondary">
               {' '}
               {t('color.jewelry')}
             </span>

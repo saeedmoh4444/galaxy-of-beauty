@@ -44,12 +44,12 @@ export function BeautyVoiceAssistantCard({
   return (
     <div
       className={cn(
-        'rounded-2xl border border-violet-100 bg-gradient-to-br from-violet-50 to-purple-50 p-5 dark:border-violet-900 dark:from-violet-950 dark:to-purple-950',
+        'rounded-2xl border border-violet-100 bg-gradient-to-br from-violet-50 to-brand-50 p-5 dark:border-violet-900 dark:from-violet-950 dark:to-brand-950',
         className,
       )}
     >
       <div className="text-center">
-        <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-full bg-gradient-to-br from-violet-200 to-purple-200 text-2xl dark:from-violet-800 dark:to-purple-800 animate-pulse"></div>
+        <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-full bg-gradient-to-br from-violet-200 to-brand-200 text-2xl dark:from-violet-800 dark:to-brand-800 animate-pulse"></div>
         <h4 className="mt-2 text-sm font-bold text-violet-800 dark:text-violet-200">{title}</h4>
         <p className="text-[10px] text-violet-500 dark:text-violet-400">{subtitle}</p>
       </div>
@@ -58,7 +58,7 @@ export function BeautyVoiceAssistantCard({
       <button
         type="button"
         onClick={onActivate}
-        className="mt-3 w-full rounded-xl bg-gradient-to-r from-violet-500 to-purple-500 py-3 text-sm font-bold text-white hover:from-violet-600 hover:to-purple-600 active:scale-[0.98] transition-all shadow-lg shadow-violet-200 dark:shadow-violet-900"
+        className="mt-3 w-full rounded-xl bg-gradient-to-r from-violet-500 to-brand-500 py-3 text-sm font-bold text-white hover:from-violet-600 hover:to-brand-600 active:scale-[0.98] transition-all shadow-lg shadow-violet-200 dark:shadow-violet-900"
       >
         {activateButtonText}
       </button>

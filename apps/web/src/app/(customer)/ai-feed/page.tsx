@@ -30,12 +30,12 @@ export default function AiFeedPage(): JSX.Element {
         ) : (
           <>
             {skinProfile && (
-              <Card padding="lg" className="border-2 border-purple-200 bg-purple-50">
+              <Card padding="lg" className="border-2 border-brand-200 bg-brand-50">
                 <div className="flex items-center gap-3">
                   <span className="text-3xl"></span>
                   <div>
-                    <p className="font-bold text-purple-700">{t('aiFeed.skinProfile')}</p>
-                    <p className="text-sm text-purple-600">
+                    <p className="font-bold text-brand-700">{t('aiFeed.skinProfile')}</p>
+                    <p className="text-sm text-brand-600">
                       {t('aiFeed.skinTypeLine', {
                         type: skinProfile.skinType as string,
                         concerns:

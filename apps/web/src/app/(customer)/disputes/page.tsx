@@ -12,7 +12,7 @@ const STATUS_STYLES: Record<string, string> = {
   UNDER_REVIEW: 'bg-blue-100 text-blue-700 dark:bg-blue-900 dark:text-blue-300',
   RESOLVED_CUSTOMER: 'bg-green-100 text-green-700 dark:bg-green-900 dark:text-green-300',
   RESOLVED_TECHNICIAN: 'bg-green-100 text-green-700 dark:bg-green-900 dark:text-green-300',
-  CLOSED: 'bg-surface-muted text-text-secondary dark:bg-gray-800 dark:text-gray-400',
+  CLOSED: 'bg-surface-muted text-text-secondary dark:bg-gray-800 dark:text-text-tertiary',
 };
 
 const STATUS_LABELS: Record<string, TranslationKey> = {
@@ -85,7 +85,7 @@ export default function DisputesPage(): JSX.Element {
                         {t(STATUS_LABELS[statusKey] ?? 'disputes.status.unknown')}
                       </span>
                     </div>
-                    <p className="text-sm text-text-secondary dark:text-gray-400">
+                    <p className="text-sm text-text-secondary dark:text-text-tertiary">
                       {d.reason as string}
                     </p>
                     {(d.resolution as string) && (
@@ -125,7 +125,7 @@ export default function DisputesPage(): JSX.Element {
             </label>
             <textarea
               id="dp-reason"
-              className="w-full rounded-lg border border-gray-300 bg-white p-3 text-sm outline-none focus:border-brand-500 dark:border-gray-600 dark:bg-gray-800"
+              className="w-full rounded-lg border border-edge bg-white p-3 text-sm outline-none focus:border-brand-500 dark:border-gray-600 dark:bg-gray-800"
               rows={4}
               value={reason}
               onChange={(e) => setReason(e.target.value)}

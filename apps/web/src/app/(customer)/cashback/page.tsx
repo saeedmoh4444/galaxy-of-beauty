@@ -45,8 +45,8 @@ export default function CashbackPage(): JSX.Element {
               </p>
               <p className="text-xs text-text-secondary">{t('cashback.balance')}</p>
             </Card>
-            <Card padding="lg" className="text-center bg-purple-50">
-              <p className="text-2xl font-extrabold text-purple-600">
+            <Card padding="lg" className="text-center bg-brand-50">
+              <p className="text-2xl font-extrabold text-brand-600">
                 {(info?.isFirstBooking as boolean)
                   ? formatCurrency(info?.firstBookingBonus as number)
                   : '—'}

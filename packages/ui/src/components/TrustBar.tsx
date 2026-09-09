@@ -30,11 +30,11 @@ export function TrustBar({ items = DEFAULT_ITEMS, className = '' }: TrustBarProp
       {items.map((item, i) => (
         <div key={i} className="flex items-center gap-2 text-center">
           <span className="text-xl">{item.icon}</span>
-          <div className="text-right">
+          <div className="text-end">
             <div className="text-lg font-extrabold text-brand-600 dark:text-brand-400">
               {item.value}
             </div>
-            <div className="text-xs text-text-secondary dark:text-gray-400">{item.label}</div>
+            <div className="text-xs text-text-secondary dark:text-text-tertiary">{item.label}</div>
           </div>
         </div>
       ))}

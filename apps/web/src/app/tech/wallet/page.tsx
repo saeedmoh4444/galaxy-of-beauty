@@ -45,7 +45,7 @@ export default function TechWalletPage(): JSX.Element {
               <p className="text-xs text-text-secondary">{t('tech.wallet.balance')}</p>
             </Card>
             <Card padding="lg" className="text-center">
-              <p className="text-2xl font-extrabold text-purple-600">
+              <p className="text-2xl font-extrabold text-brand-600">
                 {formatCurrency(Number(wallet?.bonusBalance ?? 0))}
               </p>
               <p className="text-xs text-text-secondary">{t('tech.wallet.bonus')}</p>

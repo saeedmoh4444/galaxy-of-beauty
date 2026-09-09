@@ -17,10 +17,7 @@ export const FormField = forwardRef<HTMLInputElement, FormFieldProps>(
     const inputId = id ?? label.toLowerCase().replace(/\s+/g, '-');
     return (
       <div className="w-full">
-        <label
-          htmlFor={inputId}
-          className="mb-1.5 block text-sm font-medium text-gray-700 dark:text-gray-300"
-        >
+        <label htmlFor={inputId} className="mb-1.5 block text-sm font-medium text-text-secondary">
           {label}
         </label>
         <input
@@ -29,10 +26,10 @@ export const FormField = forwardRef<HTMLInputElement, FormFieldProps>(
           className={cn(
             'w-full rounded-lg border px-3 py-2 text-sm transition-colors',
             'focus:outline-none focus:ring-2 focus:ring-brand-500 focus:border-transparent',
-            'disabled:cursor-not-allowed disabled:bg-gray-100 dark:disabled:bg-gray-800',
+            'disabled:cursor-not-allowed disabled:bg-surface-muted dark:disabled:bg-gray-800',
             error
               ? 'border-red-500 focus:ring-red-500'
-              : 'border-gray-300 dark:border-gray-600 dark:bg-gray-900 dark:text-gray-100',
+              : 'border-edge dark:bg-gray-900 dark:text-gray-100',
             className,
           )}
           aria-invalid={error ? 'true' : undefined}
@@ -40,7 +37,7 @@ export const FormField = forwardRef<HTMLInputElement, FormFieldProps>(
           {...props}
         />
         {hint && !error && (
-          <p id={`${inputId}-hint`} className="mt-1 text-xs text-gray-500 dark:text-gray-400">
+          <p id={`${inputId}-hint`} className="mt-1 text-xs text-text-secondary">
             {hint}
           </p>
         )}
@@ -76,10 +73,7 @@ export function FormSelect({
   const selectId = id ?? label.toLowerCase().replace(/\s+/g, '-');
   return (
     <div className="w-full">
-      <label
-        htmlFor={selectId}
-        className="mb-1.5 block text-sm font-medium text-gray-700 dark:text-gray-300"
-      >
+      <label htmlFor={selectId} className="mb-1.5 block text-sm font-medium text-text-secondary">
         {label}
       </label>
       <select
@@ -87,10 +81,8 @@ export function FormSelect({
         className={cn(
           'w-full rounded-lg border px-3 py-2 text-sm transition-colors',
           'focus:outline-none focus:ring-2 focus:ring-brand-500 focus:border-transparent',
-          'disabled:cursor-not-allowed disabled:bg-gray-100 dark:disabled:bg-gray-800',
-          error
-            ? 'border-red-500'
-            : 'border-gray-300 dark:border-gray-600 dark:bg-gray-900 dark:text-gray-100',
+          'disabled:cursor-not-allowed disabled:bg-surface-muted dark:disabled:bg-gray-800',
+          error ? 'border-red-500' : 'border-edge dark:bg-gray-900 dark:text-gray-100',
           className,
         )}
         aria-invalid={error ? 'true' : undefined}
@@ -102,7 +94,7 @@ export function FormSelect({
           </option>
         ))}
       </select>
-      {hint && !error && <p className="mt-1 text-xs text-gray-500 dark:text-gray-400">{hint}</p>}
+      {hint && !error && <p className="mt-1 text-xs text-text-secondary">{hint}</p>}
       {error && <p className="mt-1 text-xs text-red-600 dark:text-red-400">{error}</p>}
     </div>
   );
@@ -127,10 +119,7 @@ export function FormTextarea({
   const textareaId = id ?? label.toLowerCase().replace(/\s+/g, '-');
   return (
     <div className="w-full">
-      <label
-        htmlFor={textareaId}
-        className="mb-1.5 block text-sm font-medium text-gray-700 dark:text-gray-300"
-      >
+      <label htmlFor={textareaId} className="mb-1.5 block text-sm font-medium text-text-secondary">
         {label}
       </label>
       <textarea
@@ -138,16 +127,16 @@ export function FormTextarea({
         className={cn(
           'w-full rounded-lg border px-3 py-2 text-sm transition-colors resize-y min-h-[80px]',
           'focus:outline-none focus:ring-2 focus:ring-brand-500 focus:border-transparent',
-          'disabled:cursor-not-allowed disabled:bg-gray-100 dark:disabled:bg-gray-800',
+          'disabled:cursor-not-allowed disabled:bg-surface-muted dark:disabled:bg-gray-800',
           error
             ? 'border-red-500 focus:ring-red-500'
-            : 'border-gray-300 dark:border-gray-600 dark:bg-gray-900 dark:text-gray-100',
+            : 'border-edge dark:bg-gray-900 dark:text-gray-100',
           className,
         )}
         aria-invalid={error ? 'true' : undefined}
         {...props}
       />
-      {hint && !error && <p className="mt-1 text-xs text-gray-500 dark:text-gray-400">{hint}</p>}
+      {hint && !error && <p className="mt-1 text-xs text-text-secondary">{hint}</p>}
       {error && <p className="mt-1 text-xs text-red-600 dark:text-red-400">{error}</p>}
     </div>
   );

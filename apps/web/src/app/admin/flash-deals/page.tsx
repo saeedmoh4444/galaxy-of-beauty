@@ -248,7 +248,7 @@ export default function AdminFlashDealsPage(): JSX.Element {
                 >
                   <div>
                     <span className="font-bold">{d.serviceNameAr as string}</span>
-                    <span className="text-xs text-text-secondary mr-2">
+                    <span className="text-xs text-text-secondary me-2">
                       {(d.titleAr as string) ?? ''}
                     </span>
                   </div>

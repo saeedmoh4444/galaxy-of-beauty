@@ -24,15 +24,11 @@ export default async function NotFound(): Promise<JSX.Element> {
         className="mb-8 h-20 w-20 rounded-2xl object-cover shadow-lg opacity-60"
       />
       <div className="mb-4 text-7xl"></div>
-      <h1 className="text-4xl font-extrabold text-gray-900 dark:text-gray-100">
+      <h1 className="text-4xl font-extrabold text-text-primary">
         {t('error.not-found-code', locale)}
       </h1>
-      <p className="mt-3 text-lg text-gray-600 dark:text-gray-400">
-        {t('error.not-found-title', locale)}
-      </p>
-      <p className="mt-1 text-sm text-gray-400 dark:text-gray-500">
-        {t('error.not-found-hint', locale)}
-      </p>
+      <p className="mt-3 text-lg text-text-secondary">{t('error.not-found-title', locale)}</p>
+      <p className="mt-1 text-sm text-text-tertiary">{t('error.not-found-hint', locale)}</p>
       <div className="mt-8 flex gap-3">
         <Link
           href="/"
@@ -42,7 +38,7 @@ export default async function NotFound(): Promise<JSX.Element> {
         </Link>
         <Link
           href="/services"
-          className="rounded-xl border border-gray-300 px-6 py-3 text-sm font-semibold text-gray-700 transition-colors hover:bg-gray-50 dark:border-gray-600 dark:text-gray-300 dark:hover:bg-gray-800"
+          className="rounded-xl border border-edge px-6 py-3 text-sm font-semibold text-text-secondary transition-colors hover:bg-surface-muted dark:border-gray-600 dark:text-gray-300 dark:hover:bg-gray-800"
         >
           {t('common.browse-services', locale)}
         </Link>

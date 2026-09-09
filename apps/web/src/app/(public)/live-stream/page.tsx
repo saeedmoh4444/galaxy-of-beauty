@@ -66,10 +66,10 @@ export default function LiveStreamPage(): JSX.Element {
                         <div className="text-center text-white/60">
                           <span className="text-6xl"></span>
                         </div>
-                        <span className="absolute top-3 left-3 flex items-center gap-1 rounded-full bg-red-600 px-3 py-1 text-xs font-bold text-white animate-pulse">
+                        <span className="absolute top-3 start-3 flex items-center gap-1 rounded-full bg-red-600 px-3 py-1 text-xs font-bold text-white animate-pulse">
                           {t('marketing.live-stream.live-badge')}
                         </span>
-                        <span className="absolute bottom-2 right-2 rounded bg-black/70 px-2 py-0.5 text-xs text-white">
+                        <span className="absolute bottom-2 end-2 rounded bg-black/70 px-2 py-0.5 text-xs text-white">
                           {t('marketing.live-stream.viewers', { count: s.viewerCount as number })}
                         </span>
                       </div>

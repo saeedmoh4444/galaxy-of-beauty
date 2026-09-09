@@ -65,7 +65,7 @@ export function BeautyPriceDropHistoryCard({
             <span className="flex-1 text-[10px] text-text-primary dark:text-gray-100 truncate">
               {d.service}
             </span>
-            <span className="text-[10px] text-text-tertiary line-through dark:text-gray-500">
+            <span className="text-[10px] text-text-tertiary line-through dark:text-text-secondary">
               {d.oldPrice}
             </span>
             <span className="text-[10px] font-bold text-emerald-700 dark:text-emerald-300">

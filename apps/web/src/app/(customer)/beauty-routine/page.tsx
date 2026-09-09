@@ -180,7 +180,7 @@ export default function BeautyRoutinePage(): JSX.Element {
                     {skinRoutine?.morning.map((s, i) => (
                       <li
                         key={i}
-                        className="text-sm text-text-secondary dark:text-gray-400 flex gap-2"
+                        className="text-sm text-text-secondary dark:text-text-tertiary flex gap-2"
                       >
                         <span>•</span> {t(s)}
                       </li>
@@ -196,7 +196,7 @@ export default function BeautyRoutinePage(): JSX.Element {
                     {skinRoutine?.evening.map((s, i) => (
                       <li
                         key={i}
-                        className="text-sm text-text-secondary dark:text-gray-400 flex gap-2"
+                        className="text-sm text-text-secondary dark:text-text-tertiary flex gap-2"
                       >
                         <span>•</span> {t(s)}
                       </li>
@@ -204,7 +204,7 @@ export default function BeautyRoutinePage(): JSX.Element {
                   </ul>
                 </div>
                 <div>
-                  <h4 className="font-semibold text-sm mb-2 text-purple-600">
+                  <h4 className="font-semibold text-sm mb-2 text-brand-600">
                     {' '}
                     {t('routine.weekly')}
                   </h4>
@@ -212,7 +212,7 @@ export default function BeautyRoutinePage(): JSX.Element {
                     {skinRoutine?.weekly.map((s, i) => (
                       <li
                         key={i}
-                        className="text-sm text-text-secondary dark:text-gray-400 flex gap-2"
+                        className="text-sm text-text-secondary dark:text-text-tertiary flex gap-2"
                       >
                         <span>•</span> {t(s)}
                       </li>
@@ -240,7 +240,7 @@ export default function BeautyRoutinePage(): JSX.Element {
                   {hairRoutine.map((s, i) => (
                     <li
                       key={i}
-                      className="text-sm text-text-secondary dark:text-gray-400 flex gap-2"
+                      className="text-sm text-text-secondary dark:text-text-tertiary flex gap-2"
                     >
                       <span>•</span> {t(s)}
                     </li>

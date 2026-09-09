@@ -68,7 +68,7 @@ export default function LastMilePage(): JSX.Element {
                     <p className="text-xs text-text-secondary">️ {p.deliveryTime as string}</p>
                   </div>
                 </div>
-                <div className="text-right">
+                <div className="text-end">
                   <p className="font-bold text-brand-600">
                     {formatCurrency(p.price as number)} {t('beautyParty.currency')}
                   </p>

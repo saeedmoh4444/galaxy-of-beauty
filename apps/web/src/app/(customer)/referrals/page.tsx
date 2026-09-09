@@ -87,7 +87,7 @@ export default function ReferralsPage(): JSX.Element {
           <>
             {/* Referral Code */}
             <Card padding="lg" className="text-center">
-              <p className="text-sm text-text-secondary dark:text-gray-400">
+              <p className="text-sm text-text-secondary dark:text-text-tertiary">
                 {t('referrals.yourCode')}
               </p>
               <div className="my-4 flex items-center justify-center gap-3">
@@ -110,7 +110,7 @@ export default function ReferralsPage(): JSX.Element {
             {/* Stats */}
             <div className="grid gap-4 md:grid-cols-2">
               <Card padding="md" className="text-center">
-                <p className="text-sm text-text-secondary dark:text-gray-400">
+                <p className="text-sm text-text-secondary dark:text-text-tertiary">
                   {t('referrals.stat.totalReferred')}
                 </p>
                 <p className="mt-1 text-3xl font-bold text-brand-600">
@@ -118,7 +118,7 @@ export default function ReferralsPage(): JSX.Element {
                 </p>
               </Card>
               <Card padding="md" className="text-center">
-                <p className="text-sm text-text-secondary dark:text-gray-400">
+                <p className="text-sm text-text-secondary dark:text-text-tertiary">
                   {t('referrals.stat.totalEarned')}
                 </p>
                 <p className="mt-1 text-3xl font-bold text-green-600">
@@ -129,7 +129,7 @@ export default function ReferralsPage(): JSX.Element {
 
             <div className="grid gap-4 md:grid-cols-2">
               <Card padding="md" className="text-center">
-                <p className="text-sm text-text-secondary dark:text-gray-400">
+                <p className="text-sm text-text-secondary dark:text-text-tertiary">
                   {t('referrals.stat.completed')}
                 </p>
                 <p className="mt-1 text-2xl font-bold text-green-600">
@@ -137,7 +137,7 @@ export default function ReferralsPage(): JSX.Element {
                 </p>
               </Card>
               <Card padding="md" className="text-center">
-                <p className="text-sm text-text-secondary dark:text-gray-400">
+                <p className="text-sm text-text-secondary dark:text-text-tertiary">
                   {t('referrals.stat.pending')}
                 </p>
                 <p className="mt-1 text-2xl font-bold text-amber-600">

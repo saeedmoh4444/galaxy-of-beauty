@@ -49,7 +49,7 @@ export function IncognitoModeBadge({
         'rounded-2xl border p-4 transition-all',
         active
           ? 'border-indigo-200 bg-indigo-50/50 dark:border-indigo-900 dark:bg-indigo-950/30'
-          : 'border-gray-100 bg-white dark:border-gray-800 dark:bg-gray-900',
+          : 'border-edge-muted bg-white dark:border-gray-800 dark:bg-gray-900',
         className,
       )}
     >
@@ -120,9 +120,9 @@ export function IncognitoModeBadge({
       )}
 
       {/* Privacy note */}
-      <div className="mt-2 flex items-start gap-1.5 rounded-lg bg-gray-50 p-2 dark:bg-gray-800">
+      <div className="mt-2 flex items-start gap-1.5 rounded-lg bg-surface-muted p-2 dark:bg-gray-800">
         <span className="text-xs shrink-0" aria-hidden="true"></span>
-        <p className="text-[9px] text-text-tertiary dark:text-gray-500">{privacyNote}</p>
+        <p className="text-[9px] text-text-tertiary dark:text-text-secondary">{privacyNote}</p>
       </div>
     </div>
   );

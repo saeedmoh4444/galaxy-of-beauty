@@ -182,7 +182,7 @@ export default function SalonMapPage(): JSX.Element {
       />
 
       {/* City Selector Bar */}
-      <div className="absolute top-0 left-0 right-0 z-[1000] bg-white/90 dark:bg-gray-900/90 backdrop-blur border-b border-edge dark:border-gray-800">
+      <div className="absolute top-0 start-0 end-0 z-[1000] bg-white/90 dark:bg-gray-900/90 backdrop-blur border-b border-edge dark:border-gray-800">
         <div className="mx-auto max-w-6xl px-4 py-3">
           <div className="flex items-center gap-3 overflow-x-auto pb-1">
             <span className="text-sm font-bold text-text-primary dark:text-gray-300 shrink-0">
@@ -198,7 +198,7 @@ export default function SalonMapPage(): JSX.Element {
                 className={`shrink-0 rounded-full px-3 py-1 text-xs font-medium transition-all ${
                   selectedCityKey === c.key
                     ? 'bg-brand-600 text-white shadow-md'
-                    : 'bg-surface-muted text-text-secondary hover:bg-gray-200 dark:bg-gray-800 dark:text-gray-400'
+                    : 'bg-surface-muted text-text-secondary hover:bg-surface-muted dark:text-text-tertiary'
                 }`}
               >
                 {c.nameAr}
@@ -237,11 +237,11 @@ export default function SalonMapPage(): JSX.Element {
 
       {/* Technician Detail Panel */}
       {selectedTechnician && (
-        <div className="absolute bottom-4 left-4 right-4 z-[1000] sm:left-auto sm:right-4 sm:w-80">
+        <div className="absolute bottom-4 start-4 end-4 z-[1000] sm:start-auto sm:end-4 sm:w-80">
           <Card padding="lg" className="shadow-2xl">
             <button
               onClick={() => setSelectedTechnician(null)}
-              className="absolute top-3 right-3 text-text-tertiary hover:text-text-secondary text-lg"
+              className="absolute top-3 end-3 text-text-tertiary hover:text-text-secondary text-lg"
             ></button>
             <div className="flex items-center gap-3">
               <div className="relative flex h-12 w-12 items-center justify-center rounded-full bg-gradient-to-br from-brand-400 to-brand-600 text-white text-lg font-bold">
@@ -295,7 +295,7 @@ export default function SalonMapPage(): JSX.Element {
       )}
 
       {/* Stats bar */}
-      <div className="absolute bottom-4 right-4 z-[1000] hidden sm:block">
+      <div className="absolute bottom-4 end-4 z-[1000] hidden sm:block">
         <div className="rounded-full bg-white/90 dark:bg-gray-900/90 backdrop-blur px-3 py-1.5 text-xs font-medium text-text-secondary shadow">
           {t('marketing.salon-map.technicians-count', {
             count: techs.length,

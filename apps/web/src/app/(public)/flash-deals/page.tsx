@@ -126,7 +126,7 @@ export default function FlashDealsPage(): JSX.Element {
         <h1 className="mt-4 text-3xl font-bold text-text-primary dark:text-gray-100">
           {t('marketing.flash-deals.title')}
         </h1>
-        <p className="mt-2 text-text-secondary dark:text-gray-400">
+        <p className="mt-2 text-text-secondary dark:text-text-tertiary">
           {t('marketing.flash-deals.subtitle')}
         </p>
       </div>
@@ -168,7 +168,7 @@ export default function FlashDealsPage(): JSX.Element {
               >
                 {/* Flash badge */}
                 <div
-                  className={`absolute top-3 right-3 rounded-full px-3 py-1 text-xs font-bold text-white ${
+                  className={`absolute top-3 end-3 rounded-full px-3 py-1 text-xs font-bold text-white ${
                     soldOut ? 'bg-gray-400' : 'bg-red-500 animate-pulse'
                   }`}
                 >

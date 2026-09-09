@@ -92,7 +92,7 @@ export function BridalBeautyCountdown({
               key={m.label.ar}
               className={cn(
                 'flex items-center gap-2 rounded-lg px-3 py-2',
-                m.done ? 'bg-emerald-50 dark:bg-emerald-950' : 'bg-gray-50 dark:bg-gray-800',
+                m.done ? 'bg-emerald-50 dark:bg-emerald-950' : 'bg-surface-muted',
               )}
             >
               <span
@@ -100,7 +100,7 @@ export function BridalBeautyCountdown({
                   'flex h-6 w-6 shrink-0 items-center justify-center rounded-full text-xs',
                   m.done
                     ? 'bg-emerald-200 text-emerald-700 dark:bg-emerald-800 dark:text-emerald-300'
-                    : 'bg-gray-200 text-gray-500 dark:bg-gray-700',
+                    : 'bg-surface-muted text-text-secondary dark:bg-gray-700',
                 )}
               >
                 {m.done ? '' : m.emoji}
@@ -115,7 +115,7 @@ export function BridalBeautyCountdown({
               >
                 {m.label[locale]}
               </span>
-              <span className="text-[9px] text-text-tertiary dark:text-gray-500">
+              <span className="text-[9px] text-text-tertiary dark:text-text-secondary">
                 {m.daysBefore} {daysSuffix}
               </span>
             </div>

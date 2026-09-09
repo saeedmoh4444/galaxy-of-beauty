@@ -53,7 +53,7 @@ export default function LookOfTheDayPage(): JSX.Element {
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
         {looks.map((l: Record<string, unknown>) => (
           <Card key={l.id as number} padding="md" className="text-center">
-            <div className="h-36 rounded-xl bg-gradient-to-br from-brand-100 to-purple-100 dark:from-brand-900 dark:to-purple-900 flex items-center justify-center text-4xl"></div>
+            <div className="h-36 rounded-xl bg-gradient-to-br from-brand-100 to-brand-100 dark:from-brand-900 dark:to-brand-900 flex items-center justify-center text-4xl"></div>
             <h3 className="font-bold mt-2">{l.title as string}</h3>
             <p className="text-xs text-text-secondary">
               {l.userName as string} · ‍ {l.technicianName as string}

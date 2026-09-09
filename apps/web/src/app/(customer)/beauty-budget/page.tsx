@@ -81,7 +81,7 @@ export default function BeautyBudgetPage(): JSX.Element {
                       </p>
                     </div>
                   </div>
-                  <div className="mt-4 h-3 rounded-full bg-gray-200 dark:bg-gray-700">
+                  <div className="mt-4 h-3 rounded-full bg-surface-muted">
                     <div
                       className={`h-3 rounded-full transition-all ${pct > 90 ? 'bg-red-500' : pct > 70 ? 'bg-amber-500' : 'bg-green-500'}`}
                       style={{ width: `${pct}%` }}

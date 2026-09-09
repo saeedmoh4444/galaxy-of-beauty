@@ -88,7 +88,7 @@ export default function RestockReminderPage(): JSX.Element {
                         )}
                       </div>
                       <div className="mt-1 flex items-center gap-2">
-                        <div className="h-2 flex-1 rounded-full bg-gray-200 dark:bg-gray-700 overflow-hidden">
+                        <div className="h-2 flex-1 rounded-full bg-surface-muted overflow-hidden">
                           <div
                             className={`h-full rounded-full ${needsRestock ? 'bg-red-500' : 'bg-green-500'}`}
                             style={{ width: `${pct}%` }}

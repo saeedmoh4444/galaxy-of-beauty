@@ -80,7 +80,7 @@ export default function PriceDropAlertsPage(): JSX.Element {
                   className="flex items-center justify-between rounded-lg bg-surface-muted dark:bg-gray-800 p-3"
                 >
                   <div>
-                    <span className="text-lg mr-2">{a.emoji as string}</span>
+                    <span className="text-lg me-2">{a.emoji as string}</span>
                     <span className="font-bold">{a.serviceName as string}</span>
                   </div>
                   <div className="flex items-center gap-3">

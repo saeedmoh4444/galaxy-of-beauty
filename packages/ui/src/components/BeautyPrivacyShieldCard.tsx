@@ -90,18 +90,14 @@ export function BeautyPrivacyShieldCard({
             key={item.key}
             className={cn(
               'flex items-center gap-2 rounded-lg px-3 py-2',
-              item.active
-                ? 'bg-emerald-50 dark:bg-emerald-950'
-                : 'bg-gray-50 dark:bg-gray-800 opacity-50',
+              item.active ? 'bg-emerald-50 dark:bg-emerald-950' : 'bg-surface-muted opacity-50',
             )}
           >
             <span className="text-sm">{item.emoji}</span>
             <span
               className={cn(
                 'flex-1 text-[10px]',
-                item.active
-                  ? 'text-emerald-700 dark:text-emerald-300'
-                  : 'text-gray-400 dark:text-gray-600',
+                item.active ? 'text-emerald-700 dark:text-emerald-300' : 'text-text-tertiary',
               )}
             >
               {item.label[locale]}

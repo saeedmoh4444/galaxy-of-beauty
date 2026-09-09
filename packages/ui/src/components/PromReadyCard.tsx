@@ -109,7 +109,7 @@ export function PromReadyCard({
   return (
     <div
       className={cn(
-        'rounded-2xl border border-purple-100 bg-gradient-to-br from-purple-50 to-violet-50 p-5 dark:border-purple-900 dark:from-purple-950 dark:to-violet-950',
+        'rounded-2xl border border-brand-100 bg-gradient-to-br from-brand-50 to-violet-50 p-5 dark:border-brand-900 dark:from-brand-950 dark:to-violet-950',
         className,
       )}
     >
@@ -117,12 +117,12 @@ export function PromReadyCard({
         <span className="text-3xl" aria-hidden="true">
           {ev.emoji}
         </span>
-        <h4 className="mt-1 text-sm font-bold text-purple-800 dark:text-purple-200">
+        <h4 className="mt-1 text-sm font-bold text-brand-800 dark:text-brand-200">
           {ev.title[locale]}
         </h4>
-        <p className="text-[10px] text-purple-500 dark:text-purple-400">{ev.description[locale]}</p>
+        <p className="text-[10px] text-brand-500 dark:text-brand-400">{ev.description[locale]}</p>
         {isTeen && (
-          <span className="mt-1 inline-block rounded-full bg-purple-100 px-2 py-0.5 text-[9px] font-medium text-purple-700 dark:bg-purple-900 dark:text-purple-300">
+          <span className="mt-1 inline-block rounded-full bg-brand-100 px-2 py-0.5 text-[9px] font-medium text-brand-700 dark:bg-brand-900 dark:text-brand-300">
             {ageLabel} {age} {ageYearsSuffix}
           </span>
         )}
@@ -130,15 +130,13 @@ export function PromReadyCard({
 
       {/* The look */}
       <div className="mt-3 rounded-xl bg-white/60 p-3 dark:bg-gray-800/60">
-        <p className="text-[10px] font-bold text-purple-700 dark:text-purple-300">{lookLabel}</p>
+        <p className="text-[10px] font-bold text-brand-700 dark:text-brand-300">{lookLabel}</p>
         <p className="mt-1 text-xs text-text-primary dark:text-gray-100">{ev.look[locale]}</p>
       </div>
 
       {/* What's included */}
       <div className="mt-2 rounded-xl bg-white/60 p-3 dark:bg-gray-800/60">
-        <p className="text-[10px] font-bold text-purple-700 dark:text-purple-300">
-          {includesLabel}
-        </p>
+        <p className="text-[10px] font-bold text-brand-700 dark:text-brand-300">{includesLabel}</p>
         <div className="mt-1 grid grid-cols-2 gap-1 text-[10px] text-text-secondary dark:text-gray-300">
           {INCLUDED_ITEMS.map((item) => (
             <span key={item.ar}>• {item[locale]}</span>
@@ -149,23 +147,21 @@ export function PromReadyCard({
       {/* Price + CTA */}
       <div className="mt-3 flex items-center justify-between">
         <div>
-          <p className="text-[9px] text-text-tertiary dark:text-gray-500">{priceLabel}</p>
-          <p className="text-lg font-bold text-purple-800 dark:text-purple-200">
+          <p className="text-[9px] text-text-tertiary dark:text-text-secondary">{priceLabel}</p>
+          <p className="text-lg font-bold text-brand-800 dark:text-brand-200">
             {price} {currencySuffix}
           </p>
         </div>
         <button
           type="button"
           onClick={onBook}
-          className="rounded-xl bg-purple-600 px-4 py-2.5 text-xs font-bold text-white hover:bg-purple-700 active:scale-[0.98] transition-all"
+          className="rounded-xl bg-brand-600 px-4 py-2.5 text-xs font-bold text-white hover:bg-brand-700 active:scale-[0.98] transition-all"
         >
           {bookLabel}
         </button>
       </div>
 
-      <p className="mt-2 text-center text-[9px] text-purple-500 dark:text-purple-400">
-        {footerText}
-      </p>
+      <p className="mt-2 text-center text-[9px] text-brand-500 dark:text-brand-400">{footerText}</p>
     </div>
   );
 }

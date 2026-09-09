@@ -35,13 +35,13 @@ export function RebookReminder({ enabled = true }: { enabled?: boolean }): JSX.E
       <div className="flex items-center gap-4">
         <span className="text-3xl"></span>
         <div className="flex-1">
-          <p className="font-semibold text-gray-900 dark:text-gray-100 text-sm">
+          <p className="font-semibold text-text-primary text-sm">
             {t(weeksSince === 1 ? 'rebook.since-one' : 'rebook.since-many', {
               weeks: weeksSince,
               service: serviceName,
             })}
           </p>
-          <p className="text-xs text-gray-500 mt-0.5">{t('rebook.ready')}</p>
+          <p className="text-xs text-text-secondary mt-0.5">{t('rebook.ready')}</p>
         </div>
         <Link href={`/bookings/create?serviceId=${serviceId}`}>
           <Button size="sm">{t('rebook.button')}</Button>

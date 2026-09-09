@@ -25,7 +25,7 @@ export function ThemeToggle(): JSX.Element {
     <button
       onClick={toggle}
       aria-label={dark ? 'تفعيل الوضع النهاري' : 'تفعيل الوضع الليلي'}
-      className="rounded-lg p-2 text-gray-500 transition-colors hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-brand-500"
+      className="rounded-lg p-2 text-text-secondary transition-colors hover:bg-surface-muted dark:text-text-tertiary dark:hover:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-brand-500"
     >
       {dark ? (
         <svg

@@ -29,7 +29,7 @@ export default function SmartPricingPage(): JSX.Element {
                 <h3 className="font-bold text-lg">{s.service as string}</h3>
                 <p className="text-xs text-text-secondary">{s.reason as string}</p>
               </div>
-              <div className="text-right">
+              <div className="text-end">
                 {s.currentPrice !== s.basePrice && (
                   <span className="text-sm text-text-tertiary line-through">
                     {formatCurrency(s.basePrice as number)}

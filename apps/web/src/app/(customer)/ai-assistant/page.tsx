@@ -69,7 +69,7 @@ export default function AIAssistantPage(): JSX.Element {
                   setQ((tx.labelAr as string) ?? (tx.labelEn as string));
                   ask((tx.labelAr as string) ?? (tx.labelEn as string));
                 }}
-                className="rounded-full bg-purple-50 dark:bg-purple-950 px-3 py-1.5 text-xs font-medium"
+                className="rounded-full bg-brand-50 dark:bg-brand-950 px-3 py-1.5 text-xs font-medium"
               >
                 {tx.emoji as string} {String(locale === 'en' ? tx.labelEn : tx.labelAr)}
               </button>
@@ -95,7 +95,7 @@ export default function AIAssistantPage(): JSX.Element {
         ) : (answer as Record<string, unknown>) ? (
           <Card
             padding="lg"
-            className="border-2 border-brand-200 dark:border-brand-800 bg-gradient-to-br from-brand-50 to-purple-50 dark:from-brand-950 dark:to-purple-950"
+            className="border-2 border-brand-200 dark:border-brand-800 bg-gradient-to-br from-brand-50 to-brand-50 dark:from-brand-950 dark:to-brand-950"
           >
             <div className="flex items-start gap-3">
               <span className="text-3xl">{lifestyleMut.data?.handled ? '🌱' : '💄'}</span>

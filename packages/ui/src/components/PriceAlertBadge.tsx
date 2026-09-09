@@ -95,7 +95,7 @@ export function PriceAlertBadge({
         'rounded-2xl border p-4 transition-all',
         isActive
           ? 'border-green-200 bg-green-50/50 dark:border-green-900 dark:bg-green-950/30'
-          : 'border-gray-100 bg-white dark:border-gray-800 dark:bg-gray-900',
+          : 'border-edge-muted bg-white dark:border-gray-800 dark:bg-gray-900',
         className,
       )}
     >
@@ -107,7 +107,7 @@ export function PriceAlertBadge({
             <h4 className="text-sm font-bold text-text-primary dark:text-gray-100">
               {serviceName}
             </h4>
-            <p className="text-[10px] text-text-tertiary dark:text-gray-400">{badgeLabel}</p>
+            <p className="text-[10px] text-text-tertiary dark:text-text-tertiary">{badgeLabel}</p>
           </div>
         </div>
 
@@ -131,20 +131,26 @@ export function PriceAlertBadge({
 
       {/* Price info */}
       <div className="mt-3 grid grid-cols-3 gap-2">
-        <div className="rounded-xl bg-gray-50 p-2 text-center dark:bg-gray-800">
-          <p className="text-[9px] text-text-tertiary dark:text-gray-500">{currentPriceLabel}</p>
+        <div className="rounded-xl bg-surface-muted p-2 text-center dark:bg-gray-800">
+          <p className="text-[9px] text-text-tertiary dark:text-text-secondary">
+            {currentPriceLabel}
+          </p>
           <p className="text-xs font-bold text-text-primary dark:text-gray-100">
             {currentPrice} {currencySuffix}
           </p>
         </div>
-        <div className="rounded-xl bg-gray-50 p-2 text-center dark:bg-gray-800">
-          <p className="text-[9px] text-text-tertiary dark:text-gray-500">{targetPriceLabel}</p>
+        <div className="rounded-xl bg-surface-muted p-2 text-center dark:bg-gray-800">
+          <p className="text-[9px] text-text-tertiary dark:text-text-secondary">
+            {targetPriceLabel}
+          </p>
           <p className="text-xs font-bold text-green-700 dark:text-green-400">
             {target} {currencySuffix}
           </p>
         </div>
-        <div className="rounded-xl bg-gray-50 p-2 text-center dark:bg-gray-800">
-          <p className="text-[9px] text-text-tertiary dark:text-gray-500">{differenceLabel}</p>
+        <div className="rounded-xl bg-surface-muted p-2 text-center dark:bg-gray-800">
+          <p className="text-[9px] text-text-tertiary dark:text-text-secondary">
+            {differenceLabel}
+          </p>
           <p
             className={cn(
               'text-xs font-bold',
@@ -191,16 +197,16 @@ export function PriceAlertBadge({
             onChange={(e) => setTarget(Number(e.target.value))}
             min={1}
             max={currentPrice}
-            className="flex-1 rounded-lg border border-gray-200 px-2 py-1 text-[10px] dark:border-gray-700 dark:bg-gray-800 dark:text-gray-100"
+            className="flex-1 rounded-lg border border-edge px-2 py-1 text-[10px] dark:border-gray-700 dark:bg-gray-800 dark:text-gray-100"
           />
-          <span className="text-[10px] text-text-tertiary dark:text-gray-500">
+          <span className="text-[10px] text-text-tertiary dark:text-text-secondary">
             {currencySuffix}
           </span>
         </div>
       )}
 
       {/* Status message */}
-      <p className="mt-2 text-center text-[9px] text-text-tertiary dark:text-gray-500">
+      <p className="mt-2 text-center text-[9px] text-text-tertiary dark:text-text-secondary">
         {isActive ? `${willNotifyPrefix}${target} ${currencySuffix}` : inactiveStatusText}
       </p>
     </div>

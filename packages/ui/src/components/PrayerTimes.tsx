@@ -65,7 +65,7 @@ export function PrayerTimes({
       <div className="flex items-center justify-between">
         <span className="text-xs font-semibold text-text-primary dark:text-gray-100">{title}</span>
         {prayer.next ? (
-          <span className="text-[10px] text-text-secondary dark:text-gray-400">
+          <span className="text-[10px] text-text-secondary dark:text-text-tertiary">
             {upcomingPrefix}
             {prayer.next[locale]} {prayer.nextTime}
           </span>
@@ -80,7 +80,7 @@ export function PrayerTimes({
             className={`flex-1 rounded-md px-1 py-1 text-center text-[9px] font-medium ${
               prayer.current === p.name
                 ? 'bg-brand-100 text-brand-700 dark:bg-brand-950 dark:text-brand-300'
-                : 'bg-white text-text-tertiary dark:bg-gray-800 dark:text-gray-500'
+                : 'bg-white text-text-tertiary dark:bg-gray-800 dark:text-text-secondary'
             }`}
           >
             <div>{p.name[locale]}</div>

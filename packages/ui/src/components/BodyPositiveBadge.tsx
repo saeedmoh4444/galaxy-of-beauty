@@ -120,15 +120,15 @@ export function BodyPositiveBadge({
   return (
     <div
       className={cn(
-        'rounded-2xl border border-rose-100 bg-gradient-to-br from-rose-50 via-purple-50 to-blue-50 p-5 dark:border-rose-900 dark:from-rose-950 dark:via-purple-950 dark:to-blue-950',
+        'rounded-2xl border border-rose-100 bg-gradient-to-br from-rose-50 via-brand-50 to-blue-50 p-5 dark:border-rose-900 dark:from-rose-950 dark:via-brand-950 dark:to-blue-950',
         className,
       )}
     >
       {/* Header */}
       <div className="text-center">
         <span className="text-3xl" aria-hidden="true"></span>
-        <h4 className="mt-1 text-sm font-bold text-purple-700 dark:text-purple-300">{title}</h4>
-        <p className="text-[10px] text-purple-500 dark:text-purple-400">{subtitle}</p>
+        <h4 className="mt-1 text-sm font-bold text-brand-700 dark:text-brand-300">{title}</h4>
+        <p className="text-[10px] text-brand-500 dark:text-brand-400">{subtitle}</p>
       </div>
 
       {/* Features */}
@@ -155,14 +155,14 @@ export function BodyPositiveBadge({
 
       {/* Pledge */}
       <div className="mt-3 rounded-xl bg-white/60 p-3 text-center dark:bg-gray-800/60">
-        <p className="text-xs font-bold text-purple-700 dark:text-purple-300">{pledgeTitle}</p>
-        <p className="mt-1 text-[10px] leading-relaxed text-purple-600 dark:text-purple-400">
+        <p className="text-xs font-bold text-brand-700 dark:text-brand-300">{pledgeTitle}</p>
+        <p className="mt-1 text-[10px] leading-relaxed text-brand-600 dark:text-brand-400">
           {pledgeText}
         </p>
       </div>
 
       {/* Affirmation */}
-      <p className="mt-2 text-center text-[9px] italic text-purple-500 dark:text-purple-400">
+      <p className="mt-2 text-center text-[9px] italic text-brand-500 dark:text-brand-400">
         &ldquo;{affirmation}&rdquo;
       </p>
     </div>

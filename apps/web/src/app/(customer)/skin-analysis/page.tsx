@@ -88,7 +88,7 @@ export default function SkinAnalysisPage(): JSX.Element {
             <input
               type="file"
               accept="image/*"
-              className="block w-full text-sm text-text-secondary file:mr-4 file:rounded-lg file:border-0 file:bg-brand-600 file:px-4 file:py-2 file:text-sm file:font-semibold file:text-white hover:file:bg-brand-700"
+              className="block w-full text-sm text-text-secondary file:me-4 file:rounded-lg file:border-0 file:bg-brand-600 file:px-4 file:py-2 file:text-sm file:font-semibold file:text-white hover:file:bg-brand-700"
             />
             <p className="text-xs text-text-tertiary">{t('skin.orImageUrl')}</p>
             <div className="flex gap-2">
@@ -97,7 +97,7 @@ export default function SkinAnalysisPage(): JSX.Element {
                 placeholder="https://..."
                 value={imageUrl}
                 onChange={(e) => setImageUrl(e.target.value)}
-                className="flex-1 rounded-lg border border-gray-200 px-3 py-2 text-sm dark:border-gray-700 dark:bg-gray-800"
+                className="flex-1 rounded-lg border border-edge px-3 py-2 text-sm dark:border-gray-700 dark:bg-gray-800"
               />
               <Button
                 onClick={() => {
@@ -125,25 +125,25 @@ export default function SkinAnalysisPage(): JSX.Element {
               {t('skin.resultsTitle')}
             </h3>
             <div className="grid gap-4 sm:grid-cols-2">
-              <div className="rounded-xl bg-white dark:bg-gray-800 p-4">
+              <div className="rounded-xl bg-surface-elevated p-4">
                 <p className="text-xs text-text-secondary">{t('skin.result.skinType')}</p>
                 <p className="text-xl font-bold text-brand-600">
                   {(result['skinType'] as string) || t('skin.unspecified')}
                 </p>
               </div>
-              <div className="rounded-xl bg-white dark:bg-gray-800 p-4">
+              <div className="rounded-xl bg-surface-elevated p-4">
                 <p className="text-xs text-text-secondary">{t('skin.result.hydration')}</p>
                 <p className="text-xl font-bold text-blue-600">
                   {(result['hydrationLevel'] as string) || '—'}
                 </p>
               </div>
-              <div className="rounded-xl bg-white dark:bg-gray-800 p-4">
+              <div className="rounded-xl bg-surface-elevated p-4">
                 <p className="text-xs text-text-secondary">{t('skin.result.sensitivity')}</p>
-                <p className="text-xl font-bold text-purple-600">
+                <p className="text-xl font-bold text-brand-600">
                   {(result['sensitivityLevel'] as string) || '—'}
                 </p>
               </div>
-              <div className="rounded-xl bg-white dark:bg-gray-800 p-4">
+              <div className="rounded-xl bg-surface-elevated p-4">
                 <p className="text-xs text-text-secondary">{t('skin.result.age')}</p>
                 <p className="text-xl font-bold text-amber-600">
                   {(result['ageEstimate'] as string) || '—'}
@@ -174,7 +174,7 @@ export default function SkinAnalysisPage(): JSX.Element {
                   ] as string[];
                   if (!recs?.length) return null;
                   return (
-                    <div key={cat} className="rounded-xl bg-white dark:bg-gray-800 p-3">
+                    <div key={cat} className="rounded-xl bg-surface-elevated p-3">
                       <p className="text-xs font-bold text-text-secondary mb-1">
                         {cat === 'services'
                           ? t('skin.recs.services')
@@ -211,9 +211,9 @@ export default function SkinAnalysisPage(): JSX.Element {
                 <Card
                   key={a.id as number}
                   padding="md"
-                  className={`flex items-center gap-4 ${idx === 0 ? 'border-l-4 border-brand-500' : ''}`}
+                  className={`flex items-center gap-4 ${idx === 0 ? 'border-s-4 border-brand-500' : ''}`}
                 >
-                  <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-brand-100 to-purple-100 dark:from-brand-900 dark:to-purple-900 text-lg"></div>
+                  <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-brand-100 to-brand-100 dark:from-brand-900 dark:to-brand-900 text-lg"></div>
                   <div className="flex-1 min-w-0">
                     <div className="flex items-center gap-2">
                       <p className="font-bold text-sm">

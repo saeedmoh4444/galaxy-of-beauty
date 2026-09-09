@@ -122,7 +122,7 @@ export default function RegisterPage(): JSX.Element {
               id="rg-account-type"
               value={form.role}
               onChange={(e) => set('role', e.target.value)}
-              className="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm dark:border-gray-600 dark:bg-gray-900"
+              className="w-full rounded-lg border border-edge px-3 py-2 text-sm dark:border-gray-600 dark:bg-gray-900"
             >
               <option value="CUSTOMER">{t('auth.role-customer')}</option>
               <option value="TECHNICIAN">{t('auth.role-technician')}</option>

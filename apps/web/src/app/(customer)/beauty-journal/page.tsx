@@ -63,14 +63,14 @@ export default function BeautyJournalPage(): JSX.Element {
               placeholder={t('beautyJournal.titlePlaceholder')}
               value={title}
               onChange={(e) => setTitle(e.target.value)}
-              className="w-full rounded-lg border border-gray-300 p-2 text-sm dark:border-gray-600 dark:bg-gray-800"
+              className="w-full rounded-lg border border-edge p-2 text-sm dark:border-gray-600 dark:bg-gray-800"
             />
             <textarea
               placeholder={t('beautyDiary.placeholder')}
               value={content}
               onChange={(e) => setContent(e.target.value)}
               rows={3}
-              className="w-full rounded-lg border border-gray-300 p-3 text-sm dark:border-gray-600 dark:bg-gray-800"
+              className="w-full rounded-lg border border-edge p-3 text-sm dark:border-gray-600 dark:bg-gray-800"
             />
             <div className="flex gap-4 flex-wrap">
               <div className="flex gap-1">
@@ -87,7 +87,7 @@ export default function BeautyJournalPage(): JSX.Element {
               <select
                 value={serviceType}
                 onChange={(e) => setServiceType(e.target.value)}
-                className="rounded-lg border border-gray-300 p-2 text-xs dark:border-gray-600 dark:bg-gray-800"
+                className="rounded-lg border border-edge p-2 text-xs dark:border-gray-600 dark:bg-gray-800"
               >
                 <option value="">{t('beautyJournal.serviceTypeLabel')}</option>
                 {SERVICE_TYPES.map((s) => (
@@ -132,7 +132,7 @@ export default function BeautyJournalPage(): JSX.Element {
               <Card key={e.id} padding="md" className="relative group">
                 <button
                   onClick={() => deleteMut.mutate({ id: e.id })}
-                  className="absolute top-2 right-2 hidden rounded-full bg-red-500 p-1 text-white text-xs group-hover:block"
+                  className="absolute top-2 end-2 hidden rounded-full bg-red-500 p-1 text-white text-xs group-hover:block"
                 ></button>
                 <div className="flex items-center gap-3 text-xs text-text-tertiary mb-2">
                   {e.mood && <span>{MOODS[e.mood - 1]}</span>}
@@ -153,7 +153,7 @@ export default function BeautyJournalPage(): JSX.Element {
                     {e.title}
                   </h3>
                 )}
-                <p className="text-sm text-text-secondary dark:text-gray-400 whitespace-pre-wrap">
+                <p className="text-sm text-text-secondary dark:text-text-tertiary whitespace-pre-wrap">
                   {e.content}
                 </p>
               </Card>

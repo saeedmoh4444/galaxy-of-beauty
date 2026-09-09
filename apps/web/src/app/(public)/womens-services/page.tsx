@@ -46,7 +46,7 @@ export default function WomensServicesPage(): JSX.Element {
         <h1 className="mt-4 text-3xl font-bold text-text-primary dark:text-gray-100">
           {t('marketing.womens-services.title')}
         </h1>
-        <p className="mt-2 text-text-secondary dark:text-gray-400">
+        <p className="mt-2 text-text-secondary dark:text-text-tertiary">
           {t('marketing.womens-services.subtitle')}
         </p>
       </div>
@@ -72,7 +72,7 @@ export default function WomensServicesPage(): JSX.Element {
               {(bookingResult.specialRequirements as string[]).map((r: string, i: number) => (
                 <span
                   key={i}
-                  className="rounded-full bg-purple-100 dark:bg-purple-900 px-2 py-0.5 text-xs"
+                  className="rounded-full bg-brand-100 dark:bg-brand-900 px-2 py-0.5 text-xs"
                 >
                   {r}
                 </span>
@@ -103,7 +103,7 @@ export default function WomensServicesPage(): JSX.Element {
                 <h3 className="mt-3 text-lg font-bold text-text-primary dark:text-gray-100">
                   {c.nameAr as string}
                 </h3>
-                <p className="mt-1 text-xs text-text-secondary dark:text-gray-400">
+                <p className="mt-1 text-xs text-text-secondary dark:text-text-tertiary">
                   {c.description as string}
                 </p>
                 <span className="mt-3 inline-block rounded-full bg-brand-100 dark:bg-brand-900 px-3 py-1 text-xs font-medium text-brand-700 dark:text-brand-300">
@@ -130,13 +130,13 @@ export default function WomensServicesPage(): JSX.Element {
 
           <Card
             padding="lg"
-            className="bg-gradient-to-r from-pink-50 to-purple-50 dark:from-pink-950 dark:to-purple-950 border-none"
+            className="bg-gradient-to-r from-pink-50 to-brand-50 dark:from-pink-950 dark:to-brand-950 border-none"
           >
             <div className="flex items-center gap-4">
               <span className="text-5xl">{category?.emoji as string}</span>
               <div>
                 <h2 className="text-xl font-bold">{category?.nameAr as string}</h2>
-                <p className="text-sm text-text-secondary dark:text-gray-400">
+                <p className="text-sm text-text-secondary dark:text-text-tertiary">
                   {category?.description as string}
                 </p>
               </div>
@@ -162,7 +162,7 @@ export default function WomensServicesPage(): JSX.Element {
                     ) : null}
                   </div>
                 </div>
-                <div className="text-right">
+                <div className="text-end">
                   <p className="text-xl font-extrabold text-brand-600">
                     {t('marketing.womens-services.price-sar', {
                       price: formatCurrency(s.price as number),
@@ -202,7 +202,7 @@ export default function WomensServicesPage(): JSX.Element {
               </h3>
               <div className="space-y-2">
                 {safetyTips.map((tip: string, i: number) => (
-                  <p key={i} className="text-sm text-text-secondary dark:text-gray-400">
+                  <p key={i} className="text-sm text-text-secondary dark:text-text-tertiary">
                     {tip}
                   </p>
                 ))}

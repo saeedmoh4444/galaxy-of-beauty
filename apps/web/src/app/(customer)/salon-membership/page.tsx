@@ -89,9 +89,9 @@ export default function SalonMembershipPage(): JSX.Element {
           <KPIRowSkeleton count={1} />
         ) : (
           (membership?.tier as string) && (
-            <Card padding="lg" className="text-center border-2 border-purple-300">
+            <Card padding="lg" className="text-center border-2 border-brand-300">
               <p className="text-sm text-text-secondary">{t('membership.currentTier')}</p>
-              <p className="text-3xl font-extrabold text-purple-600 mt-1">
+              <p className="text-3xl font-extrabold text-brand-600 mt-1">
                 {(membership?.tier as string) === 'platinum'
                   ? t('membership.tier.platinumShort')
                   : (membership?.tier as string) === 'premium'
@@ -122,7 +122,7 @@ export default function SalonMembershipPage(): JSX.Element {
                   ? t('membership.free')
                   : t('membership.perMonth', { price: formatCurrency(m.price) })}
               </p>
-              <div className="mt-4 space-y-2 text-sm text-right">
+              <div className="mt-4 space-y-2 text-sm text-end">
                 <p className="font-semibold text-text-primary">{t('membership.benefitsTitle')}</p>
                 {m.benefits.map((b, i) => (
                   <p key={i} className="text-green-600">

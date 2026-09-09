@@ -92,8 +92,8 @@ const EVENTS: Record<LifeEvent, EventDef> = {
       { ar: 'كريمات ترطيب', en: 'Moisturizing creams' },
     ],
     price: 300,
-    color: 'border-purple-200 bg-purple-50/30 dark:border-purple-900 dark:bg-purple-950/20',
-    gradient: 'from-purple-500 to-violet-500',
+    color: 'border-brand-200 bg-purple-50/30 dark:border-brand-900 dark:bg-purple-950/20',
+    gradient: 'from-brand-500 to-violet-500',
   },
   new_mother: {
     emoji: '',
@@ -159,7 +159,7 @@ const EVENTS: Record<LifeEvent, EventDef> = {
     ],
     price: 500,
     color: 'border-indigo-200 bg-indigo-50/30 dark:border-indigo-900 dark:bg-indigo-950/20',
-    gradient: 'from-indigo-500 to-purple-500',
+    gradient: 'from-indigo-500 to-brand-500',
   },
 };
 
@@ -206,7 +206,7 @@ export function LifeEventCard({
           <h4 className="text-sm font-bold text-text-primary dark:text-gray-100">
             {e.title[locale]}
           </h4>
-          <p className="text-[10px] text-text-tertiary dark:text-gray-400">
+          <p className="text-[10px] text-text-tertiary dark:text-text-tertiary">
             {e.description[locale]}
           </p>
         </div>
@@ -229,7 +229,7 @@ export function LifeEventCard({
       {/* Price + CTA */}
       <div className="mt-3 flex items-center justify-between">
         <div>
-          <p className="text-[9px] text-text-tertiary dark:text-gray-500">{priceLabel}</p>
+          <p className="text-[9px] text-text-tertiary dark:text-text-secondary">{priceLabel}</p>
           <p className="text-lg font-bold text-text-primary dark:text-gray-100">
             {e.price} {currencySuffix}
           </p>

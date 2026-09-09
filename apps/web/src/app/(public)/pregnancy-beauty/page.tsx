@@ -141,7 +141,7 @@ export default function PregnancyBeautyPage(): JSX.Element {
           <button
             key={tri.key}
             onClick={() => setTrimester(tri.key)}
-            className={`rounded-full px-6 py-2.5 text-sm font-medium transition-all ${trimester === tri.key ? 'bg-brand-600 text-white' : 'bg-surface-muted hover:bg-gray-200'}`}
+            className={`rounded-full px-6 py-2.5 text-sm font-medium transition-all ${trimester === tri.key ? 'bg-brand-600 text-white' : 'bg-surface-muted hover:bg-surface-muted'}`}
           >
             {tri.emoji} {t(tri.nameAr)}
           </button>

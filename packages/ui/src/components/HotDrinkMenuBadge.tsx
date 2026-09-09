@@ -124,7 +124,7 @@ export function HotDrinkMenuBadge({
           </p>
         </div>
         {complimentary && (
-          <span className="ml-auto shrink-0 rounded-full bg-amber-100 px-2 py-0.5 text-[10px] font-bold text-amber-700 dark:bg-amber-950 dark:text-amber-300">
+          <span className="ms-auto shrink-0 rounded-full bg-amber-100 px-2 py-0.5 text-[10px] font-bold text-amber-700 dark:bg-amber-950 dark:text-amber-300">
             {freeBadgeText}
           </span>
         )}
@@ -156,7 +156,7 @@ export function HotDrinkMenuBadge({
       </div>
 
       {/* Warm touch */}
-      <p className="mt-2 text-center text-[9px] text-text-tertiary dark:text-gray-500">
+      <p className="mt-2 text-center text-[9px] text-text-tertiary dark:text-text-secondary">
         {quoteText}
       </p>
     </div>

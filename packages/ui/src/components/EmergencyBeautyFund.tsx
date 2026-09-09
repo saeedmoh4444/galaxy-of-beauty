@@ -75,7 +75,7 @@ const REASONS: Record<EmergencyReason, ReasonDef> = {
     },
     urgency: 'high',
     color:
-      'bg-purple-50 text-purple-700 border-purple-200 dark:bg-purple-950 dark:text-purple-300 dark:border-purple-800',
+      'bg-brand-50 text-brand-700 border-brand-200 dark:bg-brand-950 dark:text-brand-300 dark:border-brand-800',
   },
 };
 
@@ -159,7 +159,7 @@ export function EmergencyBeautyFund({
     completed: {
       emoji: '',
       label: { ar: 'مكتمل', en: 'Completed' },
-      className: 'bg-purple-50 text-purple-700 dark:bg-purple-950 dark:text-purple-300',
+      className: 'bg-brand-50 text-brand-700 dark:bg-brand-950 dark:text-brand-300',
     },
   } as const;
 
@@ -168,22 +168,22 @@ export function EmergencyBeautyFund({
   return (
     <div
       className={cn(
-        'rounded-2xl border border-purple-100 bg-white p-5 dark:border-purple-900 dark:bg-gray-900',
+        'rounded-2xl border border-brand-100 bg-white p-5 dark:border-brand-900 dark:bg-gray-900',
         className,
       )}
     >
       {/* Header */}
       <div className="flex items-start gap-3">
-        <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-purple-100 to-rose-100 text-2xl dark:from-purple-900 dark:to-rose-900">
+        <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-brand-100 to-rose-100 text-2xl dark:from-brand-900 dark:to-rose-900">
           🆘
         </div>
         <div>
-          <h4 className="text-sm font-bold text-purple-700 dark:text-purple-300">{title}</h4>
-          <p className="text-[10px] text-purple-500 dark:text-purple-400">{subtitle}</p>
+          <h4 className="text-sm font-bold text-brand-700 dark:text-brand-300">{title}</h4>
+          <p className="text-[10px] text-brand-500 dark:text-brand-400">{subtitle}</p>
         </div>
         <span
           className={cn(
-            'ml-auto shrink-0 rounded-full px-2.5 py-0.5 text-[10px] font-bold',
+            'ms-auto shrink-0 rounded-full px-2.5 py-0.5 text-[10px] font-bold',
             st.className,
           )}
         >
@@ -202,7 +202,7 @@ export function EmergencyBeautyFund({
             <p className="text-[10px] opacity-70">{r.description[locale]}</p>
           </div>
           {r.urgency === 'high' && (
-            <span className="ml-auto rounded-full bg-rose-100 px-2 py-0.5 text-[9px] font-bold text-rose-700 dark:bg-rose-900 dark:text-rose-300">
+            <span className="ms-auto rounded-full bg-rose-100 px-2 py-0.5 text-[9px] font-bold text-rose-700 dark:bg-rose-900 dark:text-rose-300">
               {urgentLabel}
             </span>
           )}
@@ -210,7 +210,7 @@ export function EmergencyBeautyFund({
       </div>
 
       {/* What's included */}
-      <div className="mt-3 rounded-xl bg-gray-50 p-3 dark:bg-gray-800">
+      <div className="mt-3 rounded-xl bg-surface-muted p-3 dark:bg-gray-800">
         <p className="text-[10px] font-bold text-text-primary dark:text-gray-100">
           {includesLabel}
         </p>
@@ -223,8 +223,8 @@ export function EmergencyBeautyFund({
       </div>
 
       {/* Women helped */}
-      <div className="mt-2 rounded-lg bg-purple-50 p-2 text-center dark:bg-purple-950">
-        <p className="text-[10px] text-purple-700 dark:text-purple-300">
+      <div className="mt-2 rounded-lg bg-brand-50 p-2 text-center dark:bg-brand-950">
+        <p className="text-[10px] text-brand-700 dark:text-brand-300">
           {helpedPrefix} {womenHelped} {helpedSuffix}
         </p>
       </div>
@@ -234,7 +234,7 @@ export function EmergencyBeautyFund({
         <button
           type="button"
           onClick={onApply}
-          className="mt-3 w-full rounded-xl bg-purple-600 py-2.5 text-xs font-bold text-white hover:bg-purple-700 active:scale-[0.98] transition-all"
+          className="mt-3 w-full rounded-xl bg-brand-600 py-2.5 text-xs font-bold text-white hover:bg-brand-700 active:scale-[0.98] transition-all"
         >
           {applyLabel}
         </button>
@@ -250,7 +250,7 @@ export function EmergencyBeautyFund({
       )}
 
       {/* Privacy */}
-      <p className="mt-2 text-center text-[9px] text-text-tertiary dark:text-gray-500">
+      <p className="mt-2 text-center text-[9px] text-text-tertiary dark:text-text-secondary">
         {privacyNote}
       </p>
     </div>

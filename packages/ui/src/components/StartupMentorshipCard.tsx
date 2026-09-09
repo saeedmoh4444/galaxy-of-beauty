@@ -70,11 +70,11 @@ export function StartupMentorshipCard({
 
       <div className="mt-3 grid grid-cols-2 gap-2">
         <div className="rounded-xl bg-white/60 p-3 text-center dark:bg-gray-800/60">
-          <p className="text-[9px] text-text-tertiary dark:text-gray-500">{mentorsLabel}</p>
+          <p className="text-[9px] text-text-tertiary dark:text-text-secondary">{mentorsLabel}</p>
           <p className="text-xl font-bold text-amber-800 dark:text-amber-200">{mentors}</p>
         </div>
         <div className="rounded-xl bg-white/60 p-3 text-center dark:bg-gray-800/60">
-          <p className="text-[9px] text-text-tertiary dark:text-gray-500">{startupsLabel}</p>
+          <p className="text-[9px] text-text-tertiary dark:text-text-secondary">{startupsLabel}</p>
           <p className="text-xl font-bold text-amber-800 dark:text-amber-200">{startups}</p>
         </div>
       </div>

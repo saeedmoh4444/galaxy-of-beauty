@@ -74,7 +74,7 @@ export default async function RootLayout({
         {/* eslint-disable-next-line @next/next/no-sync-scripts */}
         <script dangerouslySetInnerHTML={{ __html: themeInitScript }} />
       </head>
-      <body className="min-h-screen bg-white font-sans text-text-primary antialiased dark:bg-gray-950 dark:text-gray-100">
+      <body className="min-h-screen bg-surface font-sans text-text-primary antialiased">
         <SkipLink />
         <OfflineBanner />
         <main id="main-content" tabIndex={-1}>

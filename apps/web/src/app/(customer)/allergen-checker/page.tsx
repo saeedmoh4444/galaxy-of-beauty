@@ -101,10 +101,10 @@ export default function AllergenCheckerPage(): JSX.Element {
                 <button
                   key={a.key}
                   onClick={() => toggle(a.key)}
-                  className={`rounded-xl border-2 p-3 text-right transition-all ${isChecked ? (a.risk === 'high' ? 'border-red-400 bg-red-50' : a.risk === 'medium' ? 'border-amber-400 bg-amber-50' : 'border-green-400 bg-green-50') : 'border-gray-200'}`}
+                  className={`rounded-xl border-2 p-3 text-end transition-all ${isChecked ? (a.risk === 'high' ? 'border-red-400 bg-red-50' : a.risk === 'medium' ? 'border-amber-400 bg-amber-50' : 'border-green-400 bg-green-50') : 'border-edge'}`}
                 >
                   <span className="text-2xl">{a.emoji}</span>
-                  <span className="font-bold ml-2">{t(a.name)}</span>
+                  <span className="font-bold ms-2">{t(a.name)}</span>
                   <span
                     className={`text-xs rounded-full px-2 py-0.5 ${a.risk === 'high' ? 'bg-red-100 text-red-700' : a.risk === 'medium' ? 'bg-amber-100 text-amber-700' : 'bg-green-100 text-green-700'}`}
                   >

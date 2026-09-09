@@ -32,7 +32,7 @@ export default function HairColorSimPage(): JSX.Element {
           <input
             type="file"
             accept="image/*"
-            className="block w-full text-sm file:mr-4 file:rounded-lg file:border-0 file:bg-brand-600 file:px-4 file:py-2 file:text-sm file:font-semibold file:text-white"
+            className="block w-full text-sm file:me-4 file:rounded-lg file:border-0 file:bg-brand-600 file:px-4 file:py-2 file:text-sm file:font-semibold file:text-white"
             onChange={(e) => {
               const f = e.target.files?.[0];
               if (f) setPhoto(URL.createObjectURL(f));

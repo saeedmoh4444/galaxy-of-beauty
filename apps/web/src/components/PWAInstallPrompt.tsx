@@ -34,7 +34,7 @@ export function PWAInstallPrompt(): JSX.Element {
   };
 
   return (
-    <div className="fixed bottom-20 left-4 right-4 z-50 mx-auto max-w-sm rounded-2xl bg-white p-4 shadow-2xl border border-brand-200 dark:bg-gray-900 dark:border-brand-800 animate-slide-up">
+    <div className="fixed bottom-20 start-4 end-4 z-50 mx-auto max-w-sm rounded-2xl bg-white p-4 shadow-2xl border border-brand-200 dark:bg-gray-900 dark:border-brand-800 animate-slide-up">
       <div className="flex items-center gap-4">
         <Image
           src="/logo.png"
@@ -44,10 +44,8 @@ export function PWAInstallPrompt(): JSX.Element {
           className="h-12 w-12 rounded-xl"
         />
         <div className="flex-1">
-          <p className="font-bold text-gray-900 dark:text-gray-100 text-sm">
-            {t('pwa.install-title')}
-          </p>
-          <p className="text-xs text-gray-500 mt-0.5">{t('pwa.install-desc')}</p>
+          <p className="font-bold text-text-primary text-sm">{t('pwa.install-title')}</p>
+          <p className="text-xs text-text-secondary mt-0.5">{t('pwa.install-desc')}</p>
         </div>
       </div>
       <div className="mt-3 flex gap-2">
@@ -59,7 +57,7 @@ export function PWAInstallPrompt(): JSX.Element {
         </button>
         <button
           onClick={() => setDismissed(true)}
-          className="rounded-lg px-4 py-2 text-sm text-gray-500 hover:bg-gray-100 dark:hover:bg-gray-800"
+          className="rounded-lg px-4 py-2 text-sm text-text-secondary hover:bg-surface-muted"
         >
           {t('pwa.later')}
         </button>

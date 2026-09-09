@@ -113,7 +113,7 @@ export default function BeautyWishlistGiftsPage(): JSX.Element {
                       )}
                     </p>
                   </div>
-                  <div className="text-right">
+                  <div className="text-end">
                     <p className="text-sm text-text-secondary">
                       {formatCurrency(r.raisedAmount as number)} /{' '}
                       {formatCurrency(r.targetAmount as number)}

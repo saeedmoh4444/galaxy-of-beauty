@@ -8,7 +8,7 @@ import { LanguageToggle } from '@/components/LanguageToggle';
  */
 export default function AuthLayout({ children }: { children: ReactNode }): ReactNode {
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-gray-950">
+    <div className="min-h-screen bg-surface">
       <header className="flex items-center justify-end gap-2 px-4 py-3">
         <LanguageToggle />
         <ThemeToggle />

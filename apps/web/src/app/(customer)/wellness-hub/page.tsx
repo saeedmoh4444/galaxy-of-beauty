@@ -75,7 +75,7 @@ export default function WellnessHubPage(): JSX.Element {
             <p className="text-xs text-text-secondary">{t('wellnessHub.stat.energy')}</p>
           </Card>
           <Card padding="md" className="text-center">
-            <p className="text-2xl font-extrabold text-purple-600">
+            <p className="text-2xl font-extrabold text-brand-600">
               {d?.todayMood ? String(d.todayMood.sleepHours) + 'h' : '—'}
             </p>
             <p className="text-xs text-text-secondary">{t('wellnessHub.stat.sleep')}</p>
@@ -102,7 +102,7 @@ export default function WellnessHubPage(): JSX.Element {
                   {((d.skin.concerns as string[]) ?? []).map((c) => (
                     <span
                       key={c}
-                      className="rounded-full bg-purple-100 px-2 py-0.5 text-xs text-purple-700"
+                      className="rounded-full bg-brand-100 px-2 py-0.5 text-xs text-brand-700"
                     >
                       {c}
                     </span>

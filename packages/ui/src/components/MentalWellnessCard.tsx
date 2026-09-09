@@ -111,7 +111,7 @@ const MOODS: Record<WellnessMood, MoodDef> = {
     ],
     packageName: { ar: 'عناية لطيفة', en: 'Gentle care' },
     price: 200,
-    color: 'from-purple-100 to-violet-100 dark:from-purple-950 dark:to-violet-950',
+    color: 'from-brand-100 to-violet-100 dark:from-brand-950 dark:to-violet-950',
   },
   new_beginning: {
     emoji: '',
@@ -183,7 +183,7 @@ export function MentalWellnessCard({
   return (
     <div
       className={cn(
-        'rounded-2xl border border-gray-100 bg-white p-5 dark:border-gray-800 dark:bg-gray-900',
+        'rounded-2xl border border-edge-muted bg-white p-5 dark:border-gray-800 dark:bg-gray-900',
         className,
       )}
     >
@@ -205,7 +205,7 @@ export function MentalWellnessCard({
       </div>
 
       {/* Package */}
-      <div className="mt-3 rounded-xl bg-gray-50 p-3 dark:bg-gray-800">
+      <div className="mt-3 rounded-xl bg-surface-muted p-3 dark:bg-gray-800">
         <p className="text-[10px] font-bold text-text-primary dark:text-gray-100">
           {m.packageName[locale]}
         </p>
@@ -224,7 +224,7 @@ export function MentalWellnessCard({
       {/* Pricing + CTA */}
       <div className="mt-3 flex items-center justify-between">
         <div>
-          <p className="text-[9px] text-text-tertiary dark:text-gray-500">{priceLabel}</p>
+          <p className="text-[9px] text-text-tertiary dark:text-text-secondary">{priceLabel}</p>
           <p className="text-lg font-bold text-text-primary dark:text-gray-100">
             {m.price} {currencySuffix}
           </p>
@@ -232,7 +232,7 @@ export function MentalWellnessCard({
         <button
           type="button"
           onClick={onBookTherapy}
-          className="rounded-xl bg-gradient-to-r from-purple-500 to-violet-500 px-4 py-2.5 text-xs font-bold text-white hover:from-purple-600 hover:to-violet-600 active:scale-[0.98] transition-all shadow-sm"
+          className="rounded-xl bg-gradient-to-r from-brand-500 to-violet-500 px-4 py-2.5 text-xs font-bold text-white hover:from-brand-600 hover:to-violet-600 active:scale-[0.98] transition-all shadow-sm"
         >
           {bookLabel}
         </button>
@@ -242,13 +242,13 @@ export function MentalWellnessCard({
       <button
         type="button"
         onClick={onJournalPrompt}
-        className="mt-2 w-full rounded-lg border border-purple-100 bg-purple-50 py-2 text-[10px] font-medium text-purple-700 hover:bg-purple-100 dark:border-purple-900 dark:bg-purple-950 dark:text-purple-300 transition-colors"
+        className="mt-2 w-full rounded-lg border border-brand-100 bg-brand-50 py-2 text-[10px] font-medium text-brand-700 hover:bg-brand-100 dark:border-brand-900 dark:bg-brand-950 dark:text-brand-300 transition-colors"
       >
         {journalPromptLabel}
       </button>
 
       {/* Wellness tip */}
-      <p className="mt-2 text-center text-[9px] text-text-tertiary dark:text-gray-500">
+      <p className="mt-2 text-center text-[9px] text-text-tertiary dark:text-text-secondary">
         {wellnessTip}
       </p>
     </div>

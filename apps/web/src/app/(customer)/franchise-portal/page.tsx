@@ -69,7 +69,7 @@ export default function FranchisePortalPage(): JSX.Element {
                   {t('franchisePortal.staffCount', { count: l.staff as number })}
                 </p>
               </div>
-              <div className="text-right flex items-center gap-4">
+              <div className="text-end flex items-center gap-4">
                 <span>{t('franchisePortal.bookingsCount', { count: l.bookings as number })}</span>
                 <span className="font-bold text-brand-600">
                   {formatCurrency(l.revenue as number)}

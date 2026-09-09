@@ -96,11 +96,13 @@ export function SheLeadsProgramCard({
       {/* Stats */}
       <div className="mt-3 grid grid-cols-2 gap-2">
         <div className="rounded-xl bg-white/60 p-2.5 text-center dark:bg-gray-800/60">
-          <p className="text-[9px] text-text-tertiary dark:text-gray-500">{durationLabel}</p>
+          <p className="text-[9px] text-text-tertiary dark:text-text-secondary">{durationLabel}</p>
           <p className="text-sm font-bold text-amber-800 dark:text-amber-200">{duration}</p>
         </div>
         <div className="rounded-xl bg-white/60 p-2.5 text-center dark:bg-gray-800/60">
-          <p className="text-[9px] text-text-tertiary dark:text-gray-500">{participantsLabel}</p>
+          <p className="text-[9px] text-text-tertiary dark:text-text-secondary">
+            {participantsLabel}
+          </p>
           <p className="text-sm font-bold text-amber-800 dark:text-amber-200">{participants}+</p>
         </div>
       </div>
@@ -115,7 +117,9 @@ export function SheLeadsProgramCard({
             <p className="mt-0.5 text-[10px] font-bold text-text-primary dark:text-gray-100">
               {m.title[locale]}
             </p>
-            <p className="text-[9px] text-text-tertiary dark:text-gray-400">{m.desc[locale]}</p>
+            <p className="text-[9px] text-text-tertiary dark:text-text-tertiary">
+              {m.desc[locale]}
+            </p>
           </div>
         ))}
       </div>
@@ -125,7 +129,7 @@ export function SheLeadsProgramCard({
         <p className="text-center text-[10px] italic text-amber-700 dark:text-amber-300">
           {testimonial}
         </p>
-        <p className="mt-1 text-center text-[9px] text-text-tertiary dark:text-gray-500">
+        <p className="mt-1 text-center text-[9px] text-text-tertiary dark:text-text-secondary">
           {testimonialAuthor}
         </p>
       </div>

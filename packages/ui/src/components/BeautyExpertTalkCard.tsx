@@ -49,7 +49,7 @@ export function BeautyExpertTalkCard({
         </div>
         <div className="min-w-0 flex-1">
           <h4 className="text-sm font-bold text-indigo-700 dark:text-indigo-300">{talk.title}</h4>
-          <p className="text-[10px] text-text-tertiary dark:text-gray-500">
+          <p className="text-[10px] text-text-tertiary dark:text-text-secondary">
             ️ {talk.expert} · {talk.date}
           </p>
         </div>

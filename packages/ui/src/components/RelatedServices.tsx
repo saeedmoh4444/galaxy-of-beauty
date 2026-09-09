@@ -40,7 +40,7 @@ export function RelatedServices({
           <button
             key={s.id}
             onClick={() => onSelect(s)}
-            className="flex items-center gap-3 rounded-xl border border-edge bg-white p-4 text-right transition-all hover:border-brand-300 hover:shadow-md dark:border-gray-700 dark:bg-gray-900 dark:hover:border-brand-700"
+            className="flex items-center gap-3 rounded-xl border border-edge bg-white p-4 text-end transition-all hover:border-brand-300 hover:shadow-md dark:border-gray-700 dark:bg-gray-900 dark:hover:border-brand-700"
           >
             <span className="text-2xl">{s.emoji ?? ''}</span>
             <div className="flex-1">

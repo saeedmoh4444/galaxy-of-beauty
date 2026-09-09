@@ -40,7 +40,7 @@ export default function BookingInsightsPage(): JSX.Element {
                 <p className="text-xs text-text-secondary">{t('bookingInsights.totalSpent')}</p>
               </Card>
               <Card padding="lg" className="text-center">
-                <p className="text-2xl font-extrabold text-purple-600">
+                <p className="text-2xl font-extrabold text-brand-600">
                   {insights?.avgPerBooking ? formatCurrency(Number(insights?.avgPerBooking)) : '—'}
                 </p>
                 <p className="text-xs text-text-secondary">{t('bookingInsights.avgBooking')}</p>

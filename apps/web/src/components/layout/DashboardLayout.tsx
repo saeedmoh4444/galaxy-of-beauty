@@ -152,7 +152,7 @@ export function DashboardLayout({
   return (
     <div className="flex min-h-screen">
       {/* Sidebar */}
-      <aside className="hidden w-64 border-e border-gray-200 bg-white p-4 md:block dark:border-gray-800 dark:bg-gray-950">
+      <aside className="hidden w-64 border-e border-edge bg-white p-4 md:block dark:border-gray-800 dark:bg-gray-950">
         <Link href="/" className="mb-8 flex items-center gap-2">
           <Image
             src="/logo.png"
@@ -171,7 +171,7 @@ export function DashboardLayout({
               className={`flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium transition-colors ${
                 pathname.startsWith(link.href)
                   ? 'bg-brand-50 text-brand-700 dark:bg-brand-950 dark:text-brand-300'
-                  : 'text-gray-600 hover:bg-gray-50 dark:text-gray-400 dark:hover:bg-gray-900'
+                  : 'text-text-secondary hover:bg-surface-muted dark:text-text-tertiary dark:hover:bg-gray-900'
               }`}
             >
               <span>{link.icon}</span>
@@ -189,27 +189,27 @@ export function DashboardLayout({
 
       {/* Content — header strip hosts the language/theme toggles on all breakpoints */}
       <div className="flex flex-1 flex-col overflow-auto">
-        <header className="sticky top-0 z-30 flex items-center justify-end gap-2 border-b border-gray-200 bg-white/80 px-4 py-2 backdrop-blur dark:border-gray-800 dark:bg-gray-950/80">
+        <header className="sticky top-0 z-30 flex items-center justify-end gap-2 border-b border-edge bg-white/80 px-4 py-2 backdrop-blur dark:border-gray-800 dark:bg-gray-950/80">
           <LanguageToggle />
           <ThemeToggle />
         </header>
         <main
           data-testid="dashboard-content"
-          className="flex-1 overflow-auto bg-gray-50 p-4 pb-20 md:p-6 md:pb-6 dark:bg-gray-950 animate-fade-in"
+          className="flex-1 overflow-auto bg-surface-muted p-4 pb-20 md:p-6 md:pb-6 dark:bg-gray-950 animate-fade-in"
         >
           {children}
         </main>
       </div>
 
       {/* Mobile Bottom Navigation */}
-      <nav className="fixed bottom-0 left-0 right-0 z-50 border-t border-gray-200 bg-white dark:border-gray-800 dark:bg-gray-950 md:hidden">
+      <nav className="fixed bottom-0 start-0 end-0 z-50 border-t border-edge bg-white dark:border-gray-800 dark:bg-gray-950 md:hidden">
         <div className="flex overflow-x-auto">
           {links.slice(0, 5).map((link) => (
             <Link
               key={link.href}
               href={link.href}
               className={`flex min-w-[64px] flex-1 flex-col items-center gap-0.5 px-1 py-2 text-[10px] font-medium transition-colors ${
-                pathname.startsWith(link.href) ? 'text-brand-600' : 'text-gray-400'
+                pathname.startsWith(link.href) ? 'text-brand-600' : 'text-text-tertiary'
               }`}
             >
               <span className="text-lg">{link.icon}</span>

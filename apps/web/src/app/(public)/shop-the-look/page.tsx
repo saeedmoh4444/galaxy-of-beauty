@@ -32,7 +32,7 @@ const LOOKS = [
     emoji: '',
     name: 'marketing.shop-the-look.look-party-name',
     desc: 'marketing.shop-the-look.look-party-desc',
-    color: 'from-purple-100 to-violet-100 dark:from-purple-950 dark:to-violet-950',
+    color: 'from-brand-100 to-violet-100 dark:from-brand-950 dark:to-violet-950',
     services: [
       {
         name: 'marketing.shop-the-look.service-evening-makeup',
@@ -143,7 +143,7 @@ export default async function ShopTheLookPage(): Promise<JSX.Element> {
                   <h2 className="text-xl font-bold text-text-primary dark:text-gray-100">
                     {t(look.name, locale)}
                   </h2>
-                  <p className="text-sm text-text-secondary dark:text-gray-400">
+                  <p className="text-sm text-text-secondary dark:text-text-tertiary">
                     {t(look.desc, locale)}
                   </p>
                 </div>

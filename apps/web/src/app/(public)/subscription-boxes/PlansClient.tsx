@@ -25,7 +25,7 @@ export function PlansClient({ data }: { data: PlansPageData }): JSX.Element {
         <h1 className="text-3xl font-bold text-text-primary dark:text-gray-100">
           {t('marketing.plans.title')}
         </h1>
-        <p className="mt-3 text-text-secondary dark:text-gray-400">
+        <p className="mt-3 text-text-secondary dark:text-text-tertiary">
           {t('marketing.plans.subtitle')}
         </p>
       </div>
@@ -42,7 +42,7 @@ export function PlansClient({ data }: { data: PlansPageData }): JSX.Element {
           {planList.map((plan) => (
             <Card key={plan.id} padding="lg" className="relative flex flex-col">
               {Number(plan.discountPercent) > 0 && (
-                <span className="absolute left-3 top-3 rounded-full bg-red-100 px-3 py-1 text-xs font-bold text-red-600 dark:bg-red-900 dark:text-red-300">
+                <span className="absolute start-3 top-3 rounded-full bg-red-100 px-3 py-1 text-xs font-bold text-red-600 dark:bg-red-900 dark:text-red-300">
                   {t('marketing.plans.discount-percent', {
                     percent: Number(plan.discountPercent),
                   })}
@@ -60,11 +60,11 @@ export function PlansClient({ data }: { data: PlansPageData }): JSX.Element {
               <h3 className="text-center text-lg font-bold text-text-primary dark:text-gray-100">
                 {localize(plan.nameJson, locale)}
               </h3>
-              <p className="mt-2 text-center text-sm text-text-secondary dark:text-gray-400">
+              <p className="mt-2 text-center text-sm text-text-secondary dark:text-text-tertiary">
                 {localize(plan.descriptionJson, locale)}
               </p>
 
-              <div className="mt-4 space-y-2 text-sm text-text-secondary dark:text-gray-400">
+              <div className="mt-4 space-y-2 text-sm text-text-secondary dark:text-text-tertiary">
                 <div className="flex justify-between">
                   <span>
                     {' '}
@@ -137,7 +137,9 @@ export function PlansClient({ data }: { data: PlansPageData }): JSX.Element {
               <h4 className="mt-2 font-semibold text-text-primary dark:text-gray-100">
                 {step.title}
               </h4>
-              <p className="mt-1 text-sm text-text-secondary dark:text-gray-400">{step.desc}</p>
+              <p className="mt-1 text-sm text-text-secondary dark:text-text-tertiary">
+                {step.desc}
+              </p>
             </div>
           ))}
         </div>

@@ -54,7 +54,7 @@ export function BeautyVlogCard({
             ▶️
           </span>
         </button>
-        <span className="absolute bottom-2 right-2 rounded bg-black/60 px-1.5 py-0.5 text-[9px] font-bold text-white">
+        <span className="absolute bottom-2 end-2 rounded bg-black/60 px-1.5 py-0.5 text-[9px] font-bold text-white">
           {vlog.duration}
         </span>
       </div>
@@ -62,12 +62,12 @@ export function BeautyVlogCard({
       {/* Info */}
       <div className="mt-2">
         <p className="text-xs font-bold text-text-primary dark:text-gray-100">{vlog.title}</p>
-        <div className="mt-1 flex items-center gap-2 text-[10px] text-text-tertiary dark:text-gray-500">
+        <div className="mt-1 flex items-center gap-2 text-[10px] text-text-tertiary dark:text-text-secondary">
           <span>‍ {vlog.technician}</span>
           {vlog.category && <span>· {vlog.category}</span>}
         </div>
         {vlog.views && (
-          <p className="mt-0.5 text-[9px] text-text-tertiary dark:text-gray-500">
+          <p className="mt-0.5 text-[9px] text-text-tertiary dark:text-text-secondary">
             ️ {vlog.views.toLocaleString('ar-SA')} {viewsSuffix}
           </p>
         )}
@@ -82,7 +82,7 @@ export function BeautyVlogCard({
         {watchText}
       </button>
 
-      <p className="mt-1.5 text-center text-[9px] text-text-tertiary dark:text-gray-500">
+      <p className="mt-1.5 text-center text-[9px] text-text-tertiary dark:text-text-secondary">
         {footerText}
       </p>
     </div>

@@ -59,7 +59,7 @@ const TOPICS: Record<CircleTopic, TopicDef> = {
   teen_beauty: {
     emoji: '',
     label: { ar: 'جمال المراهقات', en: 'Teen Beauty' },
-    color: 'bg-purple-100 text-purple-700 dark:bg-purple-950 dark:text-purple-300',
+    color: 'bg-brand-100 text-brand-700 dark:bg-brand-950 dark:text-brand-300',
   },
   wellness: {
     emoji: '',
@@ -163,7 +163,7 @@ export function BeautyCircleCard({
               {topic.emoji} {topic.label[locale]}
             </span>
             {circle.city && (
-              <span className="text-[10px] text-text-tertiary dark:text-gray-500">
+              <span className="text-[10px] text-text-tertiary dark:text-text-secondary">
                 {circle.city}
               </span>
             )}
@@ -186,7 +186,7 @@ export function BeautyCircleCard({
                 </span>
               ))}
               {circle.recentMembers.length > 4 && (
-                <span className="flex h-6 w-6 items-center justify-center rounded-full border-2 border-white bg-gray-100 text-[9px] font-bold text-gray-500 dark:border-gray-900 dark:bg-gray-800">
+                <span className="flex h-6 w-6 items-center justify-center rounded-full border-2 border-white bg-surface-muted text-[9px] font-bold text-text-secondary dark:border-gray-900 dark:bg-gray-800">
                   +{circle.recentMembers.length - 4}
                 </span>
               )}

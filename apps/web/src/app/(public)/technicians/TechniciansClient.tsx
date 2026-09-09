@@ -32,7 +32,7 @@ export function TechniciansClient({ data }: { data: TechniciansPageData }): JSX.
         <h1 className="text-3xl font-bold text-text-primary dark:text-gray-100">
           {t('marketing.technicians.title')}
         </h1>
-        <p className="mt-2 text-text-secondary dark:text-gray-400">
+        <p className="mt-2 text-text-secondary dark:text-text-tertiary">
           {t('marketing.technicians.subtitle')}
         </p>
       </div>

@@ -80,7 +80,7 @@ const TRIMESTERS: Record<Trimester, TrimesterDef> = {
       { ar: 'وقت طويل', en: 'Long sessions' },
       { ar: 'علاجات قوية', en: 'Strong treatments' },
     ],
-    color: 'border-purple-200 bg-purple-50/50 dark:border-purple-900 dark:bg-purple-950/30',
+    color: 'border-brand-200 bg-purple-50/50 dark:border-brand-900 dark:bg-purple-950/30',
   },
   postpartum: {
     emoji: '',
@@ -152,11 +152,11 @@ export function PregnancySafeBadge({
           <h4 className="text-sm font-bold text-text-primary dark:text-gray-100">
             {t.label[locale]}
           </h4>
-          <p className="text-[10px] text-text-tertiary dark:text-gray-400">
+          <p className="text-[10px] text-text-tertiary dark:text-text-tertiary">
             {t.description[locale]}
           </p>
         </div>
-        <span className="ml-auto shrink-0 rounded-full bg-white/70 px-2.5 py-0.5 text-[10px] font-bold text-emerald-700 dark:bg-black/20 dark:text-emerald-300">
+        <span className="ms-auto shrink-0 rounded-full bg-white/70 px-2.5 py-0.5 text-[10px] font-bold text-emerald-700 dark:bg-black/20 dark:text-emerald-300">
           {safeLabel}
         </span>
       </div>
@@ -171,7 +171,7 @@ export function PregnancySafeBadge({
             </span>
           </div>
           {service.duration && (
-            <p className="mt-0.5 text-[10px] text-text-tertiary dark:text-gray-400">
+            <p className="mt-0.5 text-[10px] text-text-tertiary dark:text-text-tertiary">
               ️ {service.duration}
             </p>
           )}
@@ -205,7 +205,7 @@ export function PregnancySafeBadge({
       </div>
 
       {/* Disclaimer */}
-      <p className="mt-2 text-center text-[9px] text-text-tertiary dark:text-gray-500">
+      <p className="mt-2 text-center text-[9px] text-text-tertiary dark:text-text-secondary">
         {disclaimerText}
       </p>
     </div>

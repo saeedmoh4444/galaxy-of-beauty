@@ -64,7 +64,7 @@ export function NoRushBadge({
             {bufferMinutes} {bufferSuffix}
           </p>
         </div>
-        <span className="ml-auto rounded-full bg-teal-50 px-2.5 py-0.5 text-[10px] font-bold text-teal-700 dark:bg-teal-950 dark:text-teal-300">
+        <span className="ms-auto rounded-full bg-teal-50 px-2.5 py-0.5 text-[10px] font-bold text-teal-700 dark:bg-teal-950 dark:text-teal-300">
           {comfortBadgeText}
         </span>
       </div>
@@ -144,7 +144,7 @@ export function NoRushBadge({
       )}
 
       {/* Footer */}
-      <p className="mt-2 text-center text-[9px] text-text-tertiary dark:text-gray-500">
+      <p className="mt-2 text-center text-[9px] text-text-tertiary dark:text-text-secondary">
         {footerText}
       </p>
     </div>

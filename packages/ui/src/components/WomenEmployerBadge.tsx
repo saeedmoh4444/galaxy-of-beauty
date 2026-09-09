@@ -63,7 +63,7 @@ export function WomenEmployerBadge({
             <h4 className="text-sm font-bold text-text-primary dark:text-gray-100">
               {isChampion ? championTitle : employerTitle}
             </h4>
-            <p className="text-[10px] text-text-tertiary dark:text-gray-400">
+            <p className="text-[10px] text-text-tertiary dark:text-text-tertiary">
               {womenEmployed} {fromText} {totalStaff} {staffCountText}
             </p>
           </div>
@@ -81,7 +81,7 @@ export function WomenEmployerBadge({
       </div>
 
       {/* Progress bar */}
-      <div className="mt-2 h-2 overflow-hidden rounded-full bg-gray-100 dark:bg-gray-700">
+      <div className="mt-2 h-2 overflow-hidden rounded-full bg-surface-muted dark:bg-gray-700">
         <div
           className={cn(
             'h-full rounded-full transition-all',
@@ -101,13 +101,13 @@ export function WomenEmployerBadge({
           </span>
         )}
         {womenInManagement !== undefined && womenInManagement > 0 && (
-          <span className="rounded-full bg-purple-50 px-2 py-0.5 text-[9px] font-medium text-purple-700 dark:bg-purple-950 dark:text-purple-300">
+          <span className="rounded-full bg-brand-50 px-2 py-0.5 text-[9px] font-medium text-brand-700 dark:bg-brand-950 dark:text-brand-300">
             {womenInManagement} {inManagementText}
           </span>
         )}
       </div>
 
-      <p className="mt-2 text-center text-[9px] text-text-tertiary dark:text-gray-500">
+      <p className="mt-2 text-center text-[9px] text-text-tertiary dark:text-text-secondary">
         {footerText}
       </p>
     </div>

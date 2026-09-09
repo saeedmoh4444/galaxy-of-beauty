@@ -64,14 +64,12 @@ function ErrorFallback({
           />
         </svg>
       </div>
-      <h2 className="mt-4 text-xl font-bold text-gray-900 dark:text-gray-100">
-        {t('error.unexpected', locale)}
-      </h2>
-      <p className="mt-2 text-sm text-gray-500 dark:text-gray-400 max-w-md">
+      <h2 className="mt-4 text-xl font-bold text-text-primary">{t('error.unexpected', locale)}</h2>
+      <p className="mt-2 text-sm text-text-secondary max-w-md">
         {t('error.unexpected-desc', locale)}
       </p>
       {error && (
-        <p className="mt-2 text-xs text-gray-400 dark:text-gray-500 font-mono max-w-lg truncate">
+        <p className="mt-2 text-xs text-text-tertiary font-mono max-w-lg truncate">
           {error.message}
         </p>
       )}
@@ -85,7 +83,7 @@ function ErrorFallback({
         </button>
         <button
           onClick={() => window.location.reload()}
-          className="rounded-lg border border-gray-300 px-5 py-2.5 text-sm font-medium text-gray-700 hover:bg-gray-50 dark:border-gray-600 dark:text-gray-300 dark:hover:bg-gray-800 transition-colors focus:outline-none focus:ring-2 focus:ring-gray-400 focus:ring-offset-2"
+          className="rounded-lg border border-edge px-5 py-2.5 text-sm font-medium text-text-secondary hover:bg-surface-muted dark:border-gray-600 dark:text-gray-300 dark:hover:bg-gray-800 transition-colors focus:outline-none focus:ring-2 focus:ring-gray-400 focus:ring-offset-2"
           aria-label={t('error.reload-page', locale)}
         >
           {t('error.reload-page', locale)}

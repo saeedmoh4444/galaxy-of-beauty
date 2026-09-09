@@ -81,14 +81,14 @@ export default function TravelKitPage(): JSX.Element {
                   <span className="text-2xl">{item.emoji as string}</span>
                   <div className="flex-1">
                     <span className="font-semibold text-sm">{item.nameAr as string}</span>
-                    <span className="text-xs text-text-secondary ml-2">{item.size as string}</span>
+                    <span className="text-xs text-text-secondary ms-2">{item.size as string}</span>
                   </div>
                   {item.essential ? (
                     <span className="rounded-full bg-green-200 dark:bg-green-800 px-2 py-0.5 text-xs font-bold">
                       {t('travelKit.essential')}
                     </span>
                   ) : (
-                    <span className="rounded-full bg-gray-200 dark:bg-gray-700 px-2 py-0.5 text-xs">
+                    <span className="rounded-full bg-surface-muted px-2 py-0.5 text-xs">
                       {t('travelKit.optional')}
                     </span>
                   )}

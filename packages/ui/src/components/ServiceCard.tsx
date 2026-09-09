@@ -63,7 +63,7 @@ export function ServiceCard({
         {service.title}
       </h3>
       {service.description ? (
-        <p className="mt-1 text-xs text-text-secondary dark:text-gray-400 line-clamp-2">
+        <p className="mt-1 text-xs text-text-secondary dark:text-text-tertiary line-clamp-2">
           {service.description}
         </p>
       ) : null}

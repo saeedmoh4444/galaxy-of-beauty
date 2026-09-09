@@ -84,7 +84,7 @@ export default function PriceEstimatorPage(): JSX.Element {
         <h1 className="mt-4 text-3xl font-bold text-text-primary dark:text-gray-100">
           {t('marketing.price-estimator.title')}
         </h1>
-        <p className="mt-2 text-text-secondary dark:text-gray-400">
+        <p className="mt-2 text-text-secondary dark:text-text-tertiary">
           {t('marketing.price-estimator.subtitle')}
         </p>
       </div>
@@ -146,7 +146,7 @@ export default function PriceEstimatorPage(): JSX.Element {
                       <button
                         key={s.id}
                         onClick={() => handleServiceSelect(s.id)}
-                        className="flex w-full items-center justify-between px-4 py-3 text-sm hover:bg-brand-50 dark:hover:bg-brand-950 transition-colors border-b border-gray-50 dark:border-gray-800 last:border-0"
+                        className="flex w-full items-center justify-between px-4 py-3 text-sm hover:bg-brand-50 dark:hover:bg-brand-950 transition-colors border-b border-edge-muted dark:border-gray-800 last:border-0"
                       >
                         <span className="text-text-primary dark:text-gray-100">
                           {s.titleJson?.ar ??
@@ -185,12 +185,12 @@ export default function PriceEstimatorPage(): JSX.Element {
                 className="w-full rounded-xl border border-edge bg-surface-muted px-4 py-3 text-sm uppercase tracking-wider focus:border-brand-500 focus:outline-none focus:ring-2 focus:ring-brand-100 dark:border-gray-700 dark:bg-gray-800 dark:placeholder:text-text-secondary"
               />
               {promoCode && estimate?.promoValid && (
-                <span className="absolute left-3 top-1/2 -translate-y-1/2 text-green-500 text-sm font-bold">
+                <span className="absolute start-3 top-1/2 -translate-y-1/2 text-green-500 text-sm font-bold">
                   {t('marketing.price-estimator.promo-valid')}
                 </span>
               )}
               {hasPromoError && (
-                <span className="absolute left-3 top-1/2 -translate-y-1/2 text-red-400 text-xs">
+                <span className="absolute start-3 top-1/2 -translate-y-1/2 text-red-400 text-xs">
                   {t('marketing.price-estimator.promo-invalid')}
                 </span>
               )}
@@ -246,7 +246,7 @@ export default function PriceEstimatorPage(): JSX.Element {
               {estimate.serviceName}
             </h3>
             {estimate.variantDelta > 0 && estimate.variantName && (
-              <span className="inline-block mt-1 rounded-full bg-purple-100 px-2.5 py-0.5 text-xs font-medium text-purple-700 dark:bg-purple-900 dark:text-purple-300">
+              <span className="inline-block mt-1 rounded-full bg-brand-100 px-2.5 py-0.5 text-xs font-medium text-brand-700 dark:bg-brand-900 dark:text-brand-300">
                 {estimate.variantName}
               </span>
             )}
@@ -268,17 +268,17 @@ export default function PriceEstimatorPage(): JSX.Element {
                 <span className="text-text-secondary">
                   {estimate.variantName || t('marketing.price-estimator.variant-fallback')}
                 </span>
-                <span className="text-purple-600 font-medium">
+                <span className="text-brand-600 font-medium">
                   +{formatCurrency(estimate.variantDelta)}
                 </span>
               </div>
             )}
 
-            <div className="flex justify-between pt-2 border-t border-gray-100 dark:border-gray-800">
+            <div className="flex justify-between pt-2 border-t border-edge-muted">
               <span className="text-text-secondary">
                 {t('marketing.price-estimator.subtotal-label')}
               </span>
-              <span className="font-semibold text-gray-800 dark:text-gray-200">
+              <span className="font-semibold text-text-primary">
                 {formatCurrency(estimate.subtotal)}
               </span>
             </div>
@@ -287,7 +287,7 @@ export default function PriceEstimatorPage(): JSX.Element {
               <span className="text-text-secondary">
                 {t('marketing.price-estimator.platform-fee-label')}
               </span>
-              <span className="text-text-secondary dark:text-gray-400">
+              <span className="text-text-secondary dark:text-text-tertiary">
                 {formatCurrency(estimate.platformFee)}
               </span>
             </div>

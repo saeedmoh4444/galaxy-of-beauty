@@ -94,15 +94,15 @@ export default function AdminAreasPage(): JSX.Element {
         ) : (
           <Card padding="none">
             <table className="w-full text-sm">
-              <thead className="bg-surface-muted text-text-secondary dark:bg-gray-800 dark:text-gray-400">
+              <thead className="bg-surface-muted text-text-secondary dark:bg-gray-800 dark:text-text-tertiary">
                 <tr>
-                  <th className="p-3 text-right">{t('admin.areas.area-header')}</th>
-                  <th className="p-3 text-right">{t('admin.areas.city-header')}</th>
-                  <th className="p-3 text-right">{t('admin.areas.status-header')}</th>
-                  <th className="p-3 text-right">{t('admin.areas.actions-header')}</th>
+                  <th className="p-3 text-end">{t('admin.areas.area-header')}</th>
+                  <th className="p-3 text-end">{t('admin.areas.city-header')}</th>
+                  <th className="p-3 text-end">{t('admin.areas.status-header')}</th>
+                  <th className="p-3 text-end">{t('admin.areas.actions-header')}</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-gray-100 dark:divide-gray-800">
+              <tbody className="divide-y divide-edge-muted">
                 {areas.map((a) => (
                   <tr key={a.id} className="hover:bg-surface-muted dark:hover:bg-gray-900">
                     <td className="p-3 font-medium">{a.nameAr}</td>
