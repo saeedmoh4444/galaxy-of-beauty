@@ -21,6 +21,10 @@ async function loginAsCustomer(page: import('@playwright/test').Page) {
 }
 
 test.describe('Onboarding tour (§3.6)', () => {
+  // The tour is desktop-web only (md+ viewports) — the RN app gets its
+  // own walkthrough engine later (plan §3.6).
+  test.skip(({ isMobile }) => isMobile, 'tour targets md+ (desktop) viewports only');
+
   test('auto-opens on first dashboard visit and skip persists', async ({ page }) => {
     await loginAsCustomer(page);
     await page.goto('/dashboard');

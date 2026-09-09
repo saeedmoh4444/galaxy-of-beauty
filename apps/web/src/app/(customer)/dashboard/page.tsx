@@ -126,6 +126,7 @@ export default function CustomerDashboardPage(): JSX.Element {
               data-testid="tour-replay"
               onClick={() => setTourOpen(true)}
               aria-label={t('tour.replay')}
+              className="hidden md:inline-flex"
             >
               <Icon name="sparkle" size="sm" />
               {t('tour.replay')}
