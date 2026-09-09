@@ -115,7 +115,7 @@ export function LocationSharingCard({
 
       {/* Service context */}
       {(address || technicianName) && (
-        <div className="mt-2 space-y-1 rounded-lg bg-gray-50 p-2.5 dark:bg-gray-800">
+        <div className="mt-2 space-y-1 rounded-lg bg-surface-muted p-2.5 dark:bg-gray-800">
           {technicianName && (
             <div className="flex items-center gap-1.5 text-[10px]">
               <span aria-hidden="true">‍</span>
@@ -145,7 +145,7 @@ export function LocationSharingCard({
 
       {/* Contacts */}
       <div className="mt-3 space-y-1.5">
-        <p className="text-[10px] font-bold text-text-tertiary dark:text-gray-400">
+        <p className="text-[10px] font-bold text-text-tertiary dark:text-text-tertiary">
           {trustedContactsTitle}
         </p>
         {contacts.map((contact) => {
@@ -160,7 +160,7 @@ export function LocationSharingCard({
                 'flex items-center justify-between rounded-xl border p-2.5 transition-all',
                 isSharedThis
                   ? 'border-teal-200 bg-teal-50 dark:border-teal-800 dark:bg-teal-950'
-                  : 'border-gray-100 dark:border-gray-800',
+                  : 'border-edge-muted',
               )}
             >
               <div className="flex items-center gap-2">
@@ -171,7 +171,7 @@ export function LocationSharingCard({
                   <p className="text-xs font-bold text-text-primary dark:text-gray-100">
                     {contact.name}
                   </p>
-                  <p className="text-[10px] text-text-tertiary dark:text-gray-500">
+                  <p className="text-[10px] text-text-tertiary dark:text-text-secondary">
                     {contact.phone}
                     {contact.relation && ` · ${contact.relation}`}
                   </p>
@@ -217,7 +217,7 @@ export function LocationSharingCard({
 
       {/* Auto-stop reminder */}
       {shared && (
-        <p className="mt-1.5 text-center text-[9px] text-text-tertiary dark:text-gray-500">
+        <p className="mt-1.5 text-center text-[9px] text-text-tertiary dark:text-text-secondary">
           {autoStopText}
         </p>
       )}

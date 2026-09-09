@@ -150,7 +150,7 @@ export function PostpartumCareCard({
       {/* Progress */}
       <div className="mt-3">
         <div className="flex items-center justify-between text-[10px]">
-          <span className="text-text-tertiary dark:text-gray-400">{progressLabel}</span>
+          <span className="text-text-tertiary dark:text-text-tertiary">{progressLabel}</span>
           <span className="font-bold text-purple-700 dark:text-purple-300">
             {Math.min(100, Math.round((daysSinceBirth / 40) * 100))}%
           </span>
@@ -161,7 +161,7 @@ export function PostpartumCareCard({
             style={{ width: `${Math.min(100, Math.round((daysSinceBirth / 40) * 100))}%` }}
           />
         </div>
-        <div className="mt-1 flex justify-between text-[9px] text-text-tertiary dark:text-gray-500">
+        <div className="mt-1 flex justify-between text-[9px] text-text-tertiary dark:text-text-secondary">
           <span>{dayOneLabel}</span>
           <span>{dayFortyLabel}</span>
         </div>
@@ -183,7 +183,7 @@ export function PostpartumCareCard({
                 'flex items-center gap-3 rounded-xl border p-3 transition-all',
                 isAvailable
                   ? 'border-purple-200 bg-purple-50 dark:border-purple-800 dark:bg-purple-950'
-                  : 'border-gray-100 bg-gray-50 opacity-60 dark:border-gray-800 dark:bg-gray-800',
+                  : 'border-edge-muted bg-surface-muted opacity-60 dark:border-gray-800 dark:bg-gray-800',
               )}
             >
               <span className="text-lg shrink-0" aria-hidden="true">
@@ -193,7 +193,7 @@ export function PostpartumCareCard({
                 <p className="text-xs font-bold text-text-primary dark:text-gray-100">
                   {service.name[locale]}
                 </p>
-                <p className="text-[10px] text-text-tertiary dark:text-gray-400">
+                <p className="text-[10px] text-text-tertiary dark:text-text-tertiary">
                   {service.description[locale]}
                 </p>
               </div>
@@ -212,7 +212,7 @@ export function PostpartumCareCard({
                     </button>
                   </>
                 ) : (
-                  <p className="text-[10px] text-text-tertiary dark:text-gray-500">
+                  <p className="text-[10px] text-text-tertiary dark:text-text-secondary">
                     {availableAfterText} {daysUntil} {dayWord}
                   </p>
                 )}

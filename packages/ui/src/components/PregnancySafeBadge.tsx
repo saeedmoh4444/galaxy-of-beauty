@@ -152,7 +152,7 @@ export function PregnancySafeBadge({
           <h4 className="text-sm font-bold text-text-primary dark:text-gray-100">
             {t.label[locale]}
           </h4>
-          <p className="text-[10px] text-text-tertiary dark:text-gray-400">
+          <p className="text-[10px] text-text-tertiary dark:text-text-tertiary">
             {t.description[locale]}
           </p>
         </div>
@@ -171,7 +171,7 @@ export function PregnancySafeBadge({
             </span>
           </div>
           {service.duration && (
-            <p className="mt-0.5 text-[10px] text-text-tertiary dark:text-gray-400">
+            <p className="mt-0.5 text-[10px] text-text-tertiary dark:text-text-tertiary">
               ️ {service.duration}
             </p>
           )}
@@ -205,7 +205,7 @@ export function PregnancySafeBadge({
       </div>
 
       {/* Disclaimer */}
-      <p className="mt-2 text-center text-[9px] text-text-tertiary dark:text-gray-500">
+      <p className="mt-2 text-center text-[9px] text-text-tertiary dark:text-text-secondary">
         {disclaimerText}
       </p>
     </div>

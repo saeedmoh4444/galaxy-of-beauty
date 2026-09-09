@@ -149,7 +149,7 @@ export function PromReadyCard({
       {/* Price + CTA */}
       <div className="mt-3 flex items-center justify-between">
         <div>
-          <p className="text-[9px] text-text-tertiary dark:text-gray-500">{priceLabel}</p>
+          <p className="text-[9px] text-text-tertiary dark:text-text-secondary">{priceLabel}</p>
           <p className="text-lg font-bold text-purple-800 dark:text-purple-200">
             {price} {currencySuffix}
           </p>

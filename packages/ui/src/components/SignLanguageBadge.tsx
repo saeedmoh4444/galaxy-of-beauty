@@ -101,7 +101,7 @@ export function SignLanguageBadge({
                   {tech.name}
                 </p>
                 {tech.specialty && (
-                  <p className="text-[10px] text-text-tertiary dark:text-gray-500">
+                  <p className="text-[10px] text-text-tertiary dark:text-text-secondary">
                     {tech.specialty}
                   </p>
                 )}

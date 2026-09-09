@@ -91,7 +91,7 @@ export function ToastProvider({
                   ? 'bg-red-600 text-white'
                   : toast.type === 'warning'
                     ? 'bg-amber-500 text-white'
-                    : 'bg-gray-800 text-white dark:bg-gray-200 dark:text-gray-900'
+                    : 'bg-gray-800 text-white dark:bg-surface-muted dark:text-text-primary'
             }`}
           >
             <span aria-hidden="true">

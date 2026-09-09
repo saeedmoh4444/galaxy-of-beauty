@@ -70,7 +70,7 @@ export function HijriDate({
   });
 
   return (
-    <span className="text-xs text-text-secondary dark:text-gray-400" dir="rtl">
+    <span className="text-xs text-text-secondary dark:text-text-tertiary" dir="rtl">
       {hijriStr}
       {showGregorian ? <span className="mx-1 text-text-tertiary">|</span> : null}
       {showGregorian ? `${gregStr} ${gregorianSuffix}` : null}

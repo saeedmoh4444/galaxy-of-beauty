@@ -131,7 +131,7 @@ export function PanicButton({
           ? 'border-red-300 bg-red-50 dark:border-red-900 dark:bg-red-950'
           : stage === 'done'
             ? 'border-emerald-200 bg-emerald-50 dark:border-emerald-900 dark:bg-emerald-950'
-            : 'border-gray-100 bg-white dark:border-gray-800 dark:bg-gray-900',
+            : 'border-edge-muted bg-white dark:border-gray-800 dark:bg-gray-900',
         className,
       )}
     >
@@ -213,7 +213,7 @@ export function PanicButton({
             <button
               type="button"
               onClick={handleCancel}
-              className="rounded-xl border border-gray-200 bg-white px-4 py-2.5 text-xs font-bold text-gray-600 hover:bg-gray-50 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-300"
+              className="rounded-xl border border-edge bg-white px-4 py-2.5 text-xs font-bold text-text-secondary hover:bg-surface-muted dark:border-gray-700 dark:bg-gray-800 dark:text-gray-300"
             >
               {cancelButtonText}
             </button>

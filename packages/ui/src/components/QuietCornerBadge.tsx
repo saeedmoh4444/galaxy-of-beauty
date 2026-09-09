@@ -168,7 +168,7 @@ export function QuietCornerBadge({
       )}
 
       {/* Mom encouragement */}
-      <p className="mt-2 text-center text-[9px] text-text-tertiary dark:text-gray-500">
+      <p className="mt-2 text-center text-[9px] text-text-tertiary dark:text-text-secondary">
         {footerText}
       </p>
     </div>

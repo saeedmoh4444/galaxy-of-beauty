@@ -206,7 +206,7 @@ export function LifeEventCard({
           <h4 className="text-sm font-bold text-text-primary dark:text-gray-100">
             {e.title[locale]}
           </h4>
-          <p className="text-[10px] text-text-tertiary dark:text-gray-400">
+          <p className="text-[10px] text-text-tertiary dark:text-text-tertiary">
             {e.description[locale]}
           </p>
         </div>
@@ -229,7 +229,7 @@ export function LifeEventCard({
       {/* Price + CTA */}
       <div className="mt-3 flex items-center justify-between">
         <div>
-          <p className="text-[9px] text-text-tertiary dark:text-gray-500">{priceLabel}</p>
+          <p className="text-[9px] text-text-tertiary dark:text-text-secondary">{priceLabel}</p>
           <p className="text-lg font-bold text-text-primary dark:text-gray-100">
             {e.price} {currencySuffix}
           </p>

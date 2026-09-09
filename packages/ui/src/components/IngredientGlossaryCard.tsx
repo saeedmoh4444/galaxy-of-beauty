@@ -110,7 +110,7 @@ export function IngredientGlossaryCard({
             {ingredient.name}
           </h4>
           {ingredient.arabicName && (
-            <p className="text-[10px] text-text-tertiary dark:text-gray-500">
+            <p className="text-[10px] text-text-tertiary dark:text-text-secondary">
               {ingredient.arabicName}
             </p>
           )}
@@ -168,7 +168,7 @@ export function IngredientGlossaryCard({
 
       {/* Safety note */}
       {ingredient.safetyNote && (
-        <div className="mt-2 rounded-lg bg-gray-50 p-2 dark:bg-gray-800">
+        <div className="mt-2 rounded-lg bg-surface-muted p-2 dark:bg-gray-800">
           <p className="text-[10px] text-text-secondary dark:text-gray-300">
             {ingredient.safetyNote}
           </p>
@@ -176,7 +176,7 @@ export function IngredientGlossaryCard({
       )}
 
       {/* Arabic content badge */}
-      <div className="mt-2 flex items-center gap-1 text-[9px] text-text-tertiary dark:text-gray-500">
+      <div className="mt-2 flex items-center gap-1 text-[9px] text-text-tertiary dark:text-text-secondary">
         <span></span>
         <span>{arabicContentText}</span>
       </div>

@@ -183,7 +183,7 @@ export function MentalWellnessCard({
   return (
     <div
       className={cn(
-        'rounded-2xl border border-gray-100 bg-white p-5 dark:border-gray-800 dark:bg-gray-900',
+        'rounded-2xl border border-edge-muted bg-white p-5 dark:border-gray-800 dark:bg-gray-900',
         className,
       )}
     >
@@ -205,7 +205,7 @@ export function MentalWellnessCard({
       </div>
 
       {/* Package */}
-      <div className="mt-3 rounded-xl bg-gray-50 p-3 dark:bg-gray-800">
+      <div className="mt-3 rounded-xl bg-surface-muted p-3 dark:bg-gray-800">
         <p className="text-[10px] font-bold text-text-primary dark:text-gray-100">
           {m.packageName[locale]}
         </p>
@@ -224,7 +224,7 @@ export function MentalWellnessCard({
       {/* Pricing + CTA */}
       <div className="mt-3 flex items-center justify-between">
         <div>
-          <p className="text-[9px] text-text-tertiary dark:text-gray-500">{priceLabel}</p>
+          <p className="text-[9px] text-text-tertiary dark:text-text-secondary">{priceLabel}</p>
           <p className="text-lg font-bold text-text-primary dark:text-gray-100">
             {m.price} {currencySuffix}
           </p>
@@ -248,7 +248,7 @@ export function MentalWellnessCard({
       </button>
 
       {/* Wellness tip */}
-      <p className="mt-2 text-center text-[9px] text-text-tertiary dark:text-gray-500">
+      <p className="mt-2 text-center text-[9px] text-text-tertiary dark:text-text-secondary">
         {wellnessTip}
       </p>
     </div>

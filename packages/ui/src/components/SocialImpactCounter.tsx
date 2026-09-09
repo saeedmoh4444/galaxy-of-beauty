@@ -151,7 +151,7 @@ export function SocialImpactCounter({
                 >
                   {metric.current.toLocaleString('ar-SA')}
                 </span>
-                <span className="text-[10px] text-text-tertiary dark:text-gray-500">
+                <span className="text-[10px] text-text-tertiary dark:text-text-secondary">
                   {goalPrefix} {metric.target.toLocaleString('ar-SA')}
                 </span>
               </div>

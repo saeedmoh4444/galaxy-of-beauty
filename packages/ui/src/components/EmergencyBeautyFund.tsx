@@ -210,7 +210,7 @@ export function EmergencyBeautyFund({
       </div>
 
       {/* What's included */}
-      <div className="mt-3 rounded-xl bg-gray-50 p-3 dark:bg-gray-800">
+      <div className="mt-3 rounded-xl bg-surface-muted p-3 dark:bg-gray-800">
         <p className="text-[10px] font-bold text-text-primary dark:text-gray-100">
           {includesLabel}
         </p>
@@ -250,7 +250,7 @@ export function EmergencyBeautyFund({
       )}
 
       {/* Privacy */}
-      <p className="mt-2 text-center text-[9px] text-text-tertiary dark:text-gray-500">
+      <p className="mt-2 text-center text-[9px] text-text-tertiary dark:text-text-secondary">
         {privacyNote}
       </p>
     </div>

@@ -182,7 +182,7 @@ export function SensoryFriendlyBadge({
                 <p className="text-xs font-semibold text-text-primary dark:text-gray-100">
                   {f.label[locale]}
                 </p>
-                <p className="text-[10px] text-text-tertiary dark:text-gray-400">
+                <p className="text-[10px] text-text-tertiary dark:text-text-tertiary">
                   {f.description[locale]}
                 </p>
               </div>

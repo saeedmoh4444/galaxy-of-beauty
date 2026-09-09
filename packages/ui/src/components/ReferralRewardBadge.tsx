@@ -62,7 +62,9 @@ export function ReferralRewardBadge({
 
       {/* Referral code */}
       <div className="mt-3 rounded-xl bg-white/60 p-3 dark:bg-gray-800/60">
-        <p className="text-center text-[10px] text-text-tertiary dark:text-gray-500">{codeLabel}</p>
+        <p className="text-center text-[10px] text-text-tertiary dark:text-text-secondary">
+          {codeLabel}
+        </p>
         <div className="mt-1 flex items-center justify-center gap-2">
           <code className="rounded-lg bg-fuchsia-100 px-3 py-1.5 text-sm font-bold tracking-wider text-fuchsia-700 dark:bg-fuchsia-950 dark:text-fuchsia-300">
             {referralCode}
@@ -79,13 +81,15 @@ export function ReferralRewardBadge({
       <div className="mt-3 grid grid-cols-2 gap-2">
         <div className="rounded-xl bg-white/60 p-3 text-center dark:bg-gray-800/60">
           <p className="text-lg font-bold text-fuchsia-700 dark:text-fuchsia-300">{referrals}</p>
-          <p className="text-[9px] text-text-tertiary dark:text-gray-500">{referralsLabel}</p>
+          <p className="text-[9px] text-text-tertiary dark:text-text-secondary">{referralsLabel}</p>
         </div>
         <div className="rounded-xl bg-white/60 p-3 text-center dark:bg-gray-800/60">
           <p className="text-lg font-bold text-emerald-700 dark:text-emerald-300">
             {referrals * discount}%
           </p>
-          <p className="text-[9px] text-text-tertiary dark:text-gray-500">{discountEarnedLabel}</p>
+          <p className="text-[9px] text-text-tertiary dark:text-text-secondary">
+            {discountEarnedLabel}
+          </p>
         </div>
       </div>
 

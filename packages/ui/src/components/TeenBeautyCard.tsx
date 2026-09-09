@@ -89,7 +89,7 @@ export function TeenBeautyCard({
             <h4 className="text-sm font-bold text-text-primary dark:text-gray-100">
               {service.name}
             </h4>
-            <p className="text-[10px] text-text-tertiary dark:text-gray-400">
+            <p className="text-[10px] text-text-tertiary dark:text-text-tertiary">
               ️ {service.duration || defaultDuration}
             </p>
           </div>
@@ -158,7 +158,7 @@ export function TeenBeautyCard({
             {service.price} {currencySuffix}
           </span>
           {service.parentRequired && (
-            <span className="ml-1 text-[10px] text-text-tertiary dark:text-gray-500">
+            <span className="ml-1 text-[10px] text-text-tertiary dark:text-text-secondary">
               {parentConsentSuffix}
             </span>
           )}

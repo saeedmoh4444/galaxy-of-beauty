@@ -113,7 +113,7 @@ export function HandwrittenNote({
           &ldquo;{displayMessage}&rdquo;
         </p>
         {technicianName && (
-          <p className="mt-2 text-center text-xs text-text-tertiary dark:text-gray-400">
+          <p className="mt-2 text-center text-xs text-text-tertiary dark:text-text-tertiary">
             {withLovePrefix}
             {technicianName}
           </p>
@@ -130,7 +130,7 @@ export function HandwrittenNote({
 
       {/* Next milestone */}
       {bookingCount < 100 && (
-        <p className="mt-2 text-center text-[9px] text-text-tertiary dark:text-gray-500">
+        <p className="mt-2 text-center text-[9px] text-text-tertiary dark:text-text-secondary">
           {milestone + 15 - bookingCount} {nextMilestoneSuffix}
         </p>
       )}

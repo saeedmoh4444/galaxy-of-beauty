@@ -161,7 +161,7 @@ export function ConsentShield({
                 'flex items-center gap-3 rounded-xl border p-3 transition-all',
                 isGranted
                   ? 'border-emerald-200 bg-emerald-50 dark:border-emerald-800 dark:bg-emerald-950'
-                  : 'border-gray-100 bg-gray-50 dark:border-gray-800 dark:bg-gray-800',
+                  : 'border-edge-muted bg-surface-muted dark:border-gray-800 dark:bg-gray-800',
               )}
             >
               <span className="text-lg shrink-0" aria-hidden="true">
@@ -178,7 +178,7 @@ export function ConsentShield({
                     </span>
                   )}
                 </div>
-                <p className="text-[10px] text-text-tertiary dark:text-gray-400">
+                <p className="text-[10px] text-text-tertiary dark:text-text-tertiary">
                   {def.description[locale]}
                 </p>
               </div>

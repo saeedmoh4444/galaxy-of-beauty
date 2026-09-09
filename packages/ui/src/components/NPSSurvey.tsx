@@ -59,7 +59,7 @@ export function NPSSurvey({
       className={`rounded-2xl border border-edge bg-white p-6 dark:border-gray-700 dark:bg-gray-900 ${className}`}
     >
       <h3 className="text-lg font-bold text-text-primary dark:text-gray-100">{questionTitle}</h3>
-      <p className="mt-1 text-sm text-text-secondary dark:text-gray-400">{questionSubtitle}</p>
+      <p className="mt-1 text-sm text-text-secondary dark:text-text-tertiary">{questionSubtitle}</p>
 
       {score === null ? (
         <div className="mt-4 flex justify-between gap-1">

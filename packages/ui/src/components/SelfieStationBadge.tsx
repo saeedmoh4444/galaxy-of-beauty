@@ -67,7 +67,7 @@ export function SelfieStationBadge({
               'flex items-center gap-2 rounded-lg px-2.5 py-2',
               f.available
                 ? 'bg-fuchsia-50 dark:bg-fuchsia-950'
-                : 'bg-gray-50 opacity-40 dark:bg-gray-800',
+                : 'bg-surface-muted opacity-40 dark:bg-gray-800',
             )}
           >
             <span className="text-sm" aria-hidden="true">
@@ -76,9 +76,7 @@ export function SelfieStationBadge({
             <span
               className={cn(
                 'text-[10px] font-medium',
-                f.available
-                  ? 'text-fuchsia-800 dark:text-fuchsia-200'
-                  : 'text-gray-400 dark:text-gray-600',
+                f.available ? 'text-fuchsia-800 dark:text-fuchsia-200' : 'text-text-tertiary',
               )}
             >
               {f.label[locale]}
@@ -96,7 +94,7 @@ export function SelfieStationBadge({
         </p>
       </div>
 
-      <p className="mt-2 text-center text-[9px] text-text-tertiary dark:text-gray-500">
+      <p className="mt-2 text-center text-[9px] text-text-tertiary dark:text-text-secondary">
         {footerText}
       </p>
     </div>

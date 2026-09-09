@@ -154,7 +154,7 @@ export function CyclePhaseCard({
             <h4 className="text-sm font-bold text-text-primary dark:text-gray-100">
               {data.title[locale]}
             </h4>
-            <p className="text-[10px] text-text-tertiary dark:text-gray-400">
+            <p className="text-[10px] text-text-tertiary dark:text-text-tertiary">
               {data.days[locale]}
               {day && ` — ${todayLabel} ${day}`}
             </p>
@@ -164,9 +164,11 @@ export function CyclePhaseCard({
         {/* Cycle day indicator */}
         {day && (
           <div className="text-right">
-            <span className="text-[10px] text-text-tertiary dark:text-gray-400">{dayLabel}</span>
+            <span className="text-[10px] text-text-tertiary dark:text-text-tertiary">
+              {dayLabel}
+            </span>
             <div className="text-lg font-bold text-text-primary dark:text-gray-100">{day}</div>
-            <span className="text-[10px] text-text-tertiary dark:text-gray-400">/ 28</span>
+            <span className="text-[10px] text-text-tertiary dark:text-text-tertiary">/ 28</span>
           </div>
         )}
       </div>
@@ -184,7 +186,7 @@ export function CyclePhaseCard({
               key={p}
               className={cn(
                 'h-1.5 flex-1 rounded-full transition-all',
-                p === phase ? 'bg-current opacity-80' : 'bg-gray-200 dark:bg-gray-700',
+                p === phase ? 'bg-current opacity-80' : 'bg-surface-muted',
               )}
               style={{
                 backgroundColor: p === phase ? undefined : undefined,
@@ -202,7 +204,7 @@ export function CyclePhaseCard({
             />
           ))}
         </div>
-        <div className="mt-1 flex justify-between text-[9px] text-text-tertiary dark:text-gray-500">
+        <div className="mt-1 flex justify-between text-[9px] text-text-tertiary dark:text-text-secondary">
           {phases.map((p) => (
             <span key={p} className={cn(p === phase && 'font-bold text-current')}>
               {PHASES[p].title[locale]}
@@ -262,7 +264,7 @@ export function CyclePhaseCard({
       </div>
 
       {/* Footer tip */}
-      <p className="mt-2 text-center text-[9px] italic text-text-tertiary dark:text-gray-500">
+      <p className="mt-2 text-center text-[9px] italic text-text-tertiary dark:text-text-secondary">
         {footerTip}
       </p>
     </div>

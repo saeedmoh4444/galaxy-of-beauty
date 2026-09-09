@@ -20,7 +20,7 @@ export function PageTitle({ title, subtitle, emoji, className = '' }: PageTitleP
         {title}
       </h1>
       {subtitle ? (
-        <p className="mt-1 text-sm text-text-secondary dark:text-gray-400">{subtitle}</p>
+        <p className="mt-1 text-sm text-text-secondary dark:text-text-tertiary">{subtitle}</p>
       ) : null}
     </div>
   );

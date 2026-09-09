@@ -81,7 +81,7 @@ export function HydrationTracker({
               'flex h-9 w-9 items-center justify-center rounded-lg text-sm transition-all',
               i < current
                 ? 'bg-sky-200 text-sky-700 dark:bg-sky-900 dark:text-sky-300'
-                : 'bg-gray-100 text-gray-400 hover:bg-sky-50 dark:bg-gray-800 dark:hover:bg-gray-700',
+                : 'bg-surface-muted text-text-tertiary hover:bg-sky-50 dark:bg-gray-800 dark:hover:bg-gray-700',
             )}
           ></button>
         ))}
@@ -90,12 +90,12 @@ export function HydrationTracker({
       {/* Progress */}
       <div className="mt-2">
         <div className="flex items-center justify-between text-[10px]">
-          <span className="text-text-tertiary dark:text-gray-500">
+          <span className="text-text-tertiary dark:text-text-secondary">
             {pct >= 100 ? goalCompletedText : `${remainingPrefix} ${goal - current} ${cupsText}`}
           </span>
           <span className="font-bold text-sky-700 dark:text-sky-300">{pct}%</span>
         </div>
-        <div className="mt-1 h-2 overflow-hidden rounded-full bg-gray-100 dark:bg-gray-700">
+        <div className="mt-1 h-2 overflow-hidden rounded-full bg-surface-muted dark:bg-gray-700">
           <div
             className="h-full rounded-full bg-gradient-to-r from-sky-300 to-blue-500 transition-all duration-500"
             style={{ width: `${pct}%` }}
@@ -112,7 +112,7 @@ export function HydrationTracker({
           className={cn(
             'flex-1 rounded-xl py-2 text-xs font-bold transition-all active:scale-[0.98]',
             current >= goal
-              ? 'bg-gray-100 text-gray-400 cursor-not-allowed dark:bg-gray-700 dark:text-gray-500'
+              ? 'bg-surface-muted text-text-tertiary cursor-not-allowed dark:bg-gray-700 dark:text-text-secondary'
               : 'bg-sky-600 text-white hover:bg-sky-700',
           )}
         >
@@ -121,7 +121,7 @@ export function HydrationTracker({
         <button
           type="button"
           onClick={reset}
-          className="rounded-xl border border-gray-200 px-3 py-2 text-[10px] font-bold text-gray-500 hover:bg-gray-50 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-800"
+          className="rounded-xl border border-edge px-3 py-2 text-[10px] font-bold text-text-secondary hover:bg-surface-muted dark:border-gray-700 dark:text-text-tertiary dark:hover:bg-gray-800"
         >
           ↩️
         </button>

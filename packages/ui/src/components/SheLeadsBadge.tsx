@@ -105,7 +105,7 @@ const ROLES: Record<LeadershipRole, RoleDef> = {
 const TIER_STYLES: Record<RoleDef['tier'], string> = {
   gold: 'border-amber-300 bg-gradient-to-br from-amber-50 to-yellow-50 dark:border-amber-800 dark:from-amber-950 dark:to-yellow-950',
   silver:
-    'border-gray-300 bg-gradient-to-br from-gray-50 to-slate-50 dark:border-gray-700 dark:from-gray-900 dark:to-slate-900',
+    'border-edge bg-gradient-to-br from-gray-50 to-slate-50 dark:border-gray-700 dark:from-gray-900 dark:to-slate-900',
   bronze:
     'border-orange-300 bg-gradient-to-br from-orange-50 to-amber-50 dark:border-orange-800 dark:from-orange-950 dark:to-amber-950',
 };
@@ -122,7 +122,7 @@ const TIER_BADGE: Record<
   silver: {
     emoji: '',
     label: { ar: 'فضي', en: 'Silver' },
-    className: 'bg-gray-100 text-gray-700 dark:bg-gray-800 dark:text-gray-300',
+    className: 'bg-surface-muted text-text-secondary dark:bg-gray-800 dark:text-gray-300',
   },
   bronze: {
     emoji: '',
@@ -200,7 +200,7 @@ export function SheLeadsBadge({
         >
           {name}
         </h4>
-        <p className="text-[10px] font-medium text-text-tertiary dark:text-gray-400">
+        <p className="text-[10px] font-medium text-text-tertiary dark:text-text-tertiary">
           {roleDef.emoji} {roleDef.title[locale]}
         </p>
       </div>

@@ -168,7 +168,7 @@ export function MommyAndMeCard({
         <div className="text-center">
           <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-gradient-to-br from-pink-200 to-rose-200 text-lg dark:from-pink-800 dark:to-rose-800"></div>
           <p className="mt-1 text-[10px] font-bold text-text-primary dark:text-gray-100">{mom}</p>
-          <p className="text-[9px] text-text-tertiary dark:text-gray-500">{momLabel}</p>
+          <p className="text-[9px] text-text-tertiary dark:text-text-secondary">{momLabel}</p>
         </div>
 
         <span className="text-pink-400 text-lg" aria-hidden="true"></span>
@@ -178,7 +178,7 @@ export function MommyAndMeCard({
           <p className="mt-1 text-[10px] font-bold text-text-primary dark:text-gray-100">
             {daughter}
           </p>
-          <p className="text-[9px] text-text-tertiary dark:text-gray-500">
+          <p className="text-[9px] text-text-tertiary dark:text-text-secondary">
             {daughterAge} {yearsSuffix}
           </p>
         </div>
@@ -235,11 +235,11 @@ export function MommyAndMeCard({
       {/* Details */}
       <div className="mt-3 grid grid-cols-2 gap-2">
         <div className="rounded-xl bg-white/60 p-2 text-center dark:bg-gray-800/60">
-          <p className="text-[9px] text-text-tertiary dark:text-gray-500">{durationLabel}</p>
+          <p className="text-[9px] text-text-tertiary dark:text-text-secondary">{durationLabel}</p>
           <p className="text-xs font-bold text-text-primary dark:text-gray-100">{duration}</p>
         </div>
         <div className="rounded-xl bg-white/60 p-2 text-center dark:bg-gray-800/60">
-          <p className="text-[9px] text-text-tertiary dark:text-gray-500">{priceLabel}</p>
+          <p className="text-[9px] text-text-tertiary dark:text-text-secondary">{priceLabel}</p>
           <p className="text-xs font-bold text-pink-700 dark:text-pink-400">
             {totalPrice} {currencySuffix}
           </p>

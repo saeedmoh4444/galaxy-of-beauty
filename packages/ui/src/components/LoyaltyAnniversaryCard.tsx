@@ -103,7 +103,7 @@ export function LoyaltyAnniversaryCard({
           {years === 1 ? yearSingular : years <= 10 ? yearPlural : yearSingular} {withYouText}
         </p>
         {totalBookings && (
-          <p className="mt-1 text-[10px] text-text-tertiary dark:text-gray-500">
+          <p className="mt-1 text-[10px] text-text-tertiary dark:text-text-secondary">
             {totalBookings}
             {bookingsSuffix}
           </p>

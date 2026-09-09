@@ -68,7 +68,7 @@ const TIERS: Record<'silver' | 'gold' | 'diamond', TierDef> = {
     minSpend: 1000,
     rate: 3,
     color:
-      'bg-gray-50 text-gray-700 border-gray-200 dark:bg-gray-900 dark:text-gray-300 dark:border-gray-700',
+      'bg-surface-muted text-text-secondary border-edge dark:bg-gray-900 dark:text-gray-300 dark:border-gray-700',
     gradient: 'from-gray-400 to-slate-500',
   },
   gold: {
@@ -145,7 +145,7 @@ export function LoyaltyDividendBadge({
           </span>
           <div>
             <h4 className="text-sm font-bold text-text-primary dark:text-gray-100">{title}</h4>
-            <p className="text-[10px] text-text-tertiary dark:text-gray-400">
+            <p className="text-[10px] text-text-tertiary dark:text-text-tertiary">
               {rankLabel}
               {tierDef.label[locale]} · {rate}% {cashbackWord}
             </p>
@@ -157,24 +157,26 @@ export function LoyaltyDividendBadge({
           <p className="text-lg font-bold text-text-primary dark:text-gray-100">
             {cashback} {currencySuffix}
           </p>
-          <p className="text-[9px] text-text-tertiary dark:text-gray-500">{annualCashbackLabel}</p>
+          <p className="text-[9px] text-text-tertiary dark:text-text-secondary">
+            {annualCashbackLabel}
+          </p>
         </div>
       </div>
 
       {/* Yearly spend summary */}
       <div className="mt-3 grid grid-cols-3 gap-2">
         <div className="rounded-xl bg-white/60 p-2 text-center dark:bg-gray-800/60">
-          <p className="text-[9px] text-text-tertiary dark:text-gray-500">{spendLabel}</p>
+          <p className="text-[9px] text-text-tertiary dark:text-text-secondary">{spendLabel}</p>
           <p className="text-xs font-bold text-text-primary dark:text-gray-100">
             {yearlySpend.toLocaleString('ar-SA')} {currencySuffix}
           </p>
         </div>
         <div className="rounded-xl bg-white/60 p-2 text-center dark:bg-gray-800/60">
-          <p className="text-[9px] text-text-tertiary dark:text-gray-500">{refundLabel}</p>
+          <p className="text-[9px] text-text-tertiary dark:text-text-secondary">{refundLabel}</p>
           <p className="text-xs font-bold text-emerald-600 dark:text-emerald-400">{rate}%</p>
         </div>
         <div className="rounded-xl bg-white/60 p-2 text-center dark:bg-gray-800/60">
-          <p className="text-[9px] text-text-tertiary dark:text-gray-500">{payoutLabel}</p>
+          <p className="text-[9px] text-text-tertiary dark:text-text-secondary">{payoutLabel}</p>
           <p className="text-xs font-bold text-text-primary dark:text-gray-100">{payoutMonth}</p>
         </div>
       </div>
@@ -191,7 +193,7 @@ export function LoyaltyDividendBadge({
               {progressToNext}%
             </span>
           </div>
-          <div className="mt-1 h-1.5 overflow-hidden rounded-full bg-gray-100 dark:bg-gray-700">
+          <div className="mt-1 h-1.5 overflow-hidden rounded-full bg-surface-muted dark:bg-gray-700">
             <div
               className={cn(
                 'h-full rounded-full bg-gradient-to-r transition-all duration-700',
@@ -200,7 +202,7 @@ export function LoyaltyDividendBadge({
               style={{ width: `${progressToNext}%` }}
             />
           </div>
-          <p className="mt-1 text-[9px] text-text-tertiary dark:text-gray-500">
+          <p className="mt-1 text-[9px] text-text-tertiary dark:text-text-secondary">
             {remainingLabel}{' '}
             {nextTier.minSpend - yearlySpend > 0
               ? (nextTier.minSpend - yearlySpend).toLocaleString('ar-SA')
@@ -218,7 +220,7 @@ export function LoyaltyDividendBadge({
       )}
 
       {/* Payout info */}
-      <p className="mt-2 text-center text-[9px] text-text-tertiary dark:text-gray-500">
+      <p className="mt-2 text-center text-[9px] text-text-tertiary dark:text-text-secondary">
         {payoutInfoPrefix}
         {payoutMonth} {payoutInfoSuffix}
       </p>

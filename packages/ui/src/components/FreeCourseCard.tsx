@@ -118,7 +118,7 @@ export function FreeCourseCard({
               {level.emoji} {level.label[locale]}
             </span>
             {course.language && (
-              <span className="text-[10px] text-text-tertiary dark:text-gray-500">
+              <span className="text-[10px] text-text-tertiary dark:text-text-secondary">
                 {LANG_LABELS[course.language][locale]}
               </span>
             )}

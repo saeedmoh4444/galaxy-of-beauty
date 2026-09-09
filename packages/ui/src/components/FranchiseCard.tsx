@@ -139,11 +139,13 @@ export function FranchiseCard({
       {/* Stats */}
       <div className="mt-3 grid grid-cols-2 gap-2">
         <div className="rounded-xl bg-white/60 p-2.5 text-center dark:bg-gray-800/60">
-          <p className="text-[9px] text-text-tertiary dark:text-gray-500">{investmentLabel}</p>
+          <p className="text-[9px] text-text-tertiary dark:text-text-secondary">
+            {investmentLabel}
+          </p>
           <p className="text-xs font-bold text-amber-800 dark:text-amber-200">{investmentRange}</p>
         </div>
         <div className="rounded-xl bg-white/60 p-2.5 text-center dark:bg-gray-800/60">
-          <p className="text-[9px] text-text-tertiary dark:text-gray-500">{revenueLabel}</p>
+          <p className="text-[9px] text-text-tertiary dark:text-text-secondary">{revenueLabel}</p>
           <p className="text-xs font-bold text-emerald-700 dark:text-emerald-300">
             {expectedRevenue}
           </p>
@@ -167,7 +169,7 @@ export function FranchiseCard({
             <p className="mt-0.5 text-[10px] font-bold text-text-primary dark:text-gray-100">
               {b.title[locale]}
             </p>
-            <p className="text-[9px] text-text-tertiary dark:text-gray-400">
+            <p className="text-[9px] text-text-tertiary dark:text-text-tertiary">
               {b.description[locale]}
             </p>
           </div>

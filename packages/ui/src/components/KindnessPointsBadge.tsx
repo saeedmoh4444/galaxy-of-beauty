@@ -162,7 +162,7 @@ export function KindnessPointsBadge({
           <p className="text-xl font-bold text-pink-700 dark:text-pink-300">
             {points.toLocaleString('ar-SA')}
           </p>
-          <p className="text-[9px] text-text-tertiary dark:text-gray-500">{pointsLabel}</p>
+          <p className="text-[9px] text-text-tertiary dark:text-text-secondary">{pointsLabel}</p>
         </div>
       </div>
 
@@ -185,7 +185,7 @@ export function KindnessPointsBadge({
               style={{ width: `${progressToNext}%` }}
             />
           </div>
-          <p className="mt-1 text-[9px] text-text-tertiary dark:text-gray-500">
+          <p className="mt-1 text-[9px] text-text-tertiary dark:text-text-secondary">
             {remainingPrefix}
             {nextDef.minPoints - points} {remainingSuffix}
           </p>
@@ -200,7 +200,7 @@ export function KindnessPointsBadge({
         {ACTIVITIES.map((a) => (
           <div
             key={a.action.ar}
-            className="flex items-center justify-between rounded-lg bg-gray-50 px-2.5 py-1.5 dark:bg-gray-800"
+            className="flex items-center justify-between rounded-lg bg-surface-muted px-2.5 py-1.5 dark:bg-gray-800"
           >
             <span className="text-[10px] text-text-secondary dark:text-gray-300">
               {a.action[locale]}
@@ -222,7 +222,7 @@ export function KindnessPointsBadge({
       </button>
 
       {/* Sisterhood message */}
-      <p className="mt-2 text-center text-[9px] text-text-tertiary dark:text-gray-500">
+      <p className="mt-2 text-center text-[9px] text-text-tertiary dark:text-text-secondary">
         {footerText}
       </p>
     </div>

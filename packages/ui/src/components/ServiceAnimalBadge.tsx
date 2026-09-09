@@ -59,13 +59,13 @@ export function ServiceAnimalBadge({
         </div>
       </div>
 
-      <div className="mt-2 rounded-lg bg-gray-50 p-2 dark:bg-gray-800">
+      <div className="mt-2 rounded-lg bg-surface-muted p-2 dark:bg-gray-800">
         <p className="text-center text-[10px] text-text-secondary dark:text-gray-300">
           {proofNoteText}
         </p>
       </div>
 
-      <p className="mt-1.5 text-center text-[9px] text-text-tertiary dark:text-gray-500">
+      <p className="mt-1.5 text-center text-[9px] text-text-tertiary dark:text-text-secondary">
         {footerText}
       </p>
     </div>

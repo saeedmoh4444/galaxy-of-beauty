@@ -186,7 +186,7 @@ export function SkincareRoutineBuilder({
         <div
           className={cn(
             'h-1 flex-1 rounded-full',
-            step === 'goal' ? 'bg-pink-500' : 'bg-gray-200 dark:bg-gray-700',
+            step === 'goal' ? 'bg-pink-500' : 'bg-surface-muted',
           )}
         />
       </div>

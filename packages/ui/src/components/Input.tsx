@@ -17,10 +17,7 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
     return (
       <div className="w-full">
         {label && (
-          <label
-            htmlFor={inputId}
-            className="mb-1.5 block text-sm font-medium text-gray-700 dark:text-gray-300"
-          >
+          <label htmlFor={inputId} className="mb-1.5 block text-sm font-medium text-text-secondary">
             {label}
           </label>
         )}
@@ -28,10 +25,10 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
           ref={ref}
           id={inputId}
           className={cn(
-            'w-full rounded-lg border border-edge bg-surface px-3 py-2 text-sm text-text-primary placeholder-gray-400 transition-colors',
+            'w-full rounded-lg border border-edge bg-surface px-3 py-2 text-sm text-text-primary placeholder-text-tertiary transition-colors',
             'focus:outline-none focus:ring-2 focus:ring-brand-500 focus:border-transparent',
             'disabled:cursor-not-allowed disabled:bg-surface-muted disabled:text-text-tertiary',
-            'dark:bg-gray-900 dark:text-gray-100 dark:placeholder-gray-500',
+            'dark:bg-gray-900 dark:text-gray-100 dark:placeholder-text-tertiary',
             error
               ? 'border-danger focus:ring-red-500 dark:border-red-700'
               : 'focus:border-transparent',
@@ -42,7 +39,10 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
           {...props}
         />
         {hint && !error && (
-          <p id={`${inputId}-hint`} className="mt-1 text-xs text-text-secondary dark:text-gray-400">
+          <p
+            id={`${inputId}-hint`}
+            className="mt-1 text-xs text-text-secondary dark:text-text-tertiary"
+          >
             {hint}
           </p>
         )}

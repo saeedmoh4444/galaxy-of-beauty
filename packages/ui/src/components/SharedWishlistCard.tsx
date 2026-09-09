@@ -80,7 +80,7 @@ export function SharedWishlistCard({
             key={i}
             className={cn(
               'flex items-center gap-2 rounded-lg px-3 py-2',
-              item.isGifted ? 'bg-emerald-50 dark:bg-emerald-950' : 'bg-gray-50 dark:bg-gray-800',
+              item.isGifted ? 'bg-emerald-50 dark:bg-emerald-950' : 'bg-surface-muted',
             )}
           >
             <span className="text-sm shrink-0" aria-hidden="true">
@@ -113,7 +113,9 @@ export function SharedWishlistCard({
 
       {/* Shared with */}
       <div className="mt-2">
-        <span className="text-[10px] text-text-tertiary dark:text-gray-500">{sharedWithLabel}</span>
+        <span className="text-[10px] text-text-tertiary dark:text-text-secondary">
+          {sharedWithLabel}
+        </span>
         <div className="mt-1 flex flex-wrap gap-1">
           {sharedWith.map((name) => (
             <span
@@ -134,7 +136,7 @@ export function SharedWishlistCard({
         {addItemText}
       </button>
 
-      <p className="mt-1.5 text-center text-[9px] text-text-tertiary dark:text-gray-500">
+      <p className="mt-1.5 text-center text-[9px] text-text-tertiary dark:text-text-secondary">
         {footerText}
       </p>
     </div>

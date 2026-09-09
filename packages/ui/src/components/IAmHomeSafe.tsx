@@ -102,7 +102,7 @@ export function IAmHomeSafe({
           <h4 className="text-sm font-bold text-text-primary dark:text-gray-100">
             {checkedIn ? checkedInTitle : confirmTitle}
           </h4>
-          <p className="text-[10px] text-text-tertiary dark:text-gray-400">
+          <p className="text-[10px] text-text-tertiary dark:text-text-tertiary">
             {checkedIn ? checkedInSubtitle : `${alertSubtitlePrefix}${getAlertTime()}`}
           </p>
         </div>
@@ -154,7 +154,7 @@ export function IAmHomeSafe({
       {/* Timer indicator */}
       {!checkedIn && (
         <div className="mt-2">
-          <div className="flex items-center justify-between text-[9px] text-text-tertiary dark:text-gray-500">
+          <div className="flex items-center justify-between text-[9px] text-text-tertiary dark:text-text-secondary">
             <span>{remainingTimeLabel}</span>
             <span>
               {graceMinutes} {graceMinutesSuffix}

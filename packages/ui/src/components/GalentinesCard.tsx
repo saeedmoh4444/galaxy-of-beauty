@@ -123,19 +123,19 @@ export function GalentinesCard({
       {/* Pricing */}
       <div className="mt-3 grid grid-cols-3 gap-2 text-center">
         <div className="rounded-xl bg-white/60 p-2 dark:bg-gray-800/60">
-          <p className="text-[9px] text-text-tertiary dark:text-gray-500">{totalLabel}</p>
+          <p className="text-[9px] text-text-tertiary dark:text-text-secondary">{totalLabel}</p>
           <p className="text-xs font-bold text-text-primary dark:text-gray-100">
             {totalPrice} {currencySuffix}
           </p>
         </div>
         <div className="rounded-xl bg-white/60 p-2 dark:bg-gray-800/60">
-          <p className="text-[9px] text-text-tertiary dark:text-gray-500">{perPersonLabel}</p>
+          <p className="text-[9px] text-text-tertiary dark:text-text-secondary">{perPersonLabel}</p>
           <p className="text-xs font-bold text-pink-700 dark:text-pink-400">
             {pricePerPerson} {currencySuffix}
           </p>
         </div>
         <div className="rounded-xl bg-white/60 p-2 dark:bg-gray-800/60">
-          <p className="text-[9px] text-text-tertiary dark:text-gray-500">{discountLabel}</p>
+          <p className="text-[9px] text-text-tertiary dark:text-text-secondary">{discountLabel}</p>
           <p className="text-xs font-bold text-rose-600 dark:text-rose-400">-{discount}%</p>
         </div>
       </div>
