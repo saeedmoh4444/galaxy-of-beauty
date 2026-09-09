@@ -7,7 +7,7 @@ import { api } from '@/lib/trpc';
 import type { RouterOutputs } from '@galaxy/api';
 import { localize } from '@galaxy/shared';
 import { useLocale } from '@/components/LocaleProvider';
-import { Input, Card, GridSkeleton, ErrorAlert, EmptyState } from '@galaxy/ui';
+import { Input, Card, GridSkeleton, ErrorAlert, EmptyState, HeroSection } from '@galaxy/ui';
 
 type TechnicianItem = RouterOutputs['technicians']['list']['items'][number];
 
@@ -27,82 +27,83 @@ export function TechniciansClient({ data }: { data: TechniciansPageData }): JSX.
       : [];
 
   return (
-    <div className="mx-auto max-w-7xl px-4 py-8">
-      <div className="mb-8 text-center">
-        <h1 className="text-3xl font-bold text-text-primary dark:text-gray-100">
-          {t('marketing.technicians.title')}
-        </h1>
-        <p className="mt-2 text-text-secondary dark:text-text-tertiary">
-          {t('marketing.technicians.subtitle')}
-        </p>
-      </div>
-
-      <div className="mb-6 flex flex-wrap gap-4">
-        <Input
-          placeholder={t('marketing.technicians.city-placeholder')}
-          value={city}
-          onChange={(e) => setCity(e.target.value)}
-          className="max-w-xs"
-        />
-      </div>
-
-      {query.isLoading && techs.length === 0 ? (
-        <GridSkeleton count={6} />
-      ) : query.isError ? (
-        <ErrorAlert
-          message={t('marketing.technicians.load-error')}
-          onRetry={() => query.refetch()}
-        />
-      ) : techs.length === 0 ? (
-        <EmptyState
-          title={t('marketing.technicians.no-technicians')}
-          description={t('marketing.technicians.no-technicians-desc')}
-        />
-      ) : (
-        <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-          {techs.map((tech) => {
-            const user = tech.user ?? ({} as typeof tech.user);
-            const name = user.name ?? '';
-            const avatarUrl = user.avatarUrl ?? '';
-            const cityName = tech.city ?? '';
-            const rating = Number(tech.ratingAvg ?? 0);
-            const bookings = tech.completedBookings ?? 0;
-            const isEco = tech.isEcoFriendly ?? false;
-            const bio = tech.bioJson ? localize(tech.bioJson, locale) : '';
-
-            return (
-              <Link key={tech.id} href={`/technicians/${tech.id}`}>
-                <Card hover padding="lg" className="flex flex-col items-center text-center">
-                  <div className="relative flex h-24 w-24 items-center justify-center rounded-full bg-gradient-to-br from-brand-100 to-accent-100 text-3xl dark:from-brand-900 dark:to-accent-900">
-                    {avatarUrl ? (
-                      <Image
-                        src={avatarUrl}
-                        alt={name}
-                        fill
-                        className="rounded-full object-cover"
-                      />
-                    ) : (
-                      <span>‍</span>
-                    )}
-                  </div>
-                  <h3 className="mt-4 text-lg font-bold text-text-primary dark:text-gray-100">
-                    {name}
-                  </h3>
-                  <p className="text-sm text-text-secondary">{cityName}</p>
-                  {bio && <p className="mt-1 line-clamp-2 text-xs text-text-tertiary">{bio}</p>}
-                  <div className="mt-3 flex items-center gap-3 text-sm">
-                    <span className="text-amber-500"> {rating.toFixed(1)}</span>
-                    <span className="text-text-tertiary">
-                      {t('marketing.technicians.bookings-count', { count: bookings })}
-                    </span>
-                    {isEco && <span className="text-green-500"></span>}
-                  </div>
-                </Card>
-              </Link>
-            );
-          })}
+    <div>
+      <HeroSection
+        align="center"
+        eyebrow="🌸"
+        title={t('marketing.technicians.title')}
+        subtitle={t('marketing.technicians.subtitle')}
+        gradient="from-brand-50 via-surface to-accent-50"
+        className="mb-2"
+      />
+      <div className="mx-auto max-w-7xl px-4 pb-8">
+        <div className="mb-6 flex flex-wrap gap-4">
+          <Input
+            placeholder={t('marketing.technicians.city-placeholder')}
+            value={city}
+            onChange={(e) => setCity(e.target.value)}
+            className="max-w-xs"
+          />
         </div>
-      )}
+
+        {query.isLoading && techs.length === 0 ? (
+          <GridSkeleton count={6} />
+        ) : query.isError ? (
+          <ErrorAlert
+            message={t('marketing.technicians.load-error')}
+            onRetry={() => query.refetch()}
+          />
+        ) : techs.length === 0 ? (
+          <EmptyState
+            title={t('marketing.technicians.no-technicians')}
+            description={t('marketing.technicians.no-technicians-desc')}
+          />
+        ) : (
+          <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+            {techs.map((tech) => {
+              const user = tech.user ?? ({} as typeof tech.user);
+              const name = user.name ?? '';
+              const avatarUrl = user.avatarUrl ?? '';
+              const cityName = tech.city ?? '';
+              const rating = Number(tech.ratingAvg ?? 0);
+              const bookings = tech.completedBookings ?? 0;
+              const isEco = tech.isEcoFriendly ?? false;
+              const bio = tech.bioJson ? localize(tech.bioJson, locale) : '';
+
+              return (
+                <Link key={tech.id} href={`/technicians/${tech.id}`}>
+                  <Card hover padding="lg" className="flex flex-col items-center text-center">
+                    <div className="relative flex h-24 w-24 items-center justify-center rounded-full bg-gradient-to-br from-brand-100 to-accent-100 text-3xl dark:from-brand-900 dark:to-accent-900">
+                      {avatarUrl ? (
+                        <Image
+                          src={avatarUrl}
+                          alt={name}
+                          fill
+                          className="rounded-full object-cover"
+                        />
+                      ) : (
+                        <span>‍</span>
+                      )}
+                    </div>
+                    <h3 className="mt-4 text-lg font-bold text-text-primary dark:text-gray-100">
+                      {name}
+                    </h3>
+                    <p className="text-sm text-text-secondary">{cityName}</p>
+                    {bio && <p className="mt-1 line-clamp-2 text-xs text-text-tertiary">{bio}</p>}
+                    <div className="mt-3 flex items-center gap-3 text-sm">
+                      <span className="text-amber-500"> {rating.toFixed(1)}</span>
+                      <span className="text-text-tertiary">
+                        {t('marketing.technicians.bookings-count', { count: bookings })}
+                      </span>
+                      {isEco && <span className="text-green-500"></span>}
+                    </div>
+                  </Card>
+                </Link>
+              );
+            })}
+          </div>
+        )}
+      </div>
     </div>
   );
 }

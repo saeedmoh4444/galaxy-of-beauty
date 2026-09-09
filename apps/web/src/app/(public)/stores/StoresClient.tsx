@@ -1,7 +1,7 @@
 'use client';
 
 import Link from 'next/link';
-import { Card, ErrorAlert, EmptyState } from '@galaxy/ui';
+import { Card, ErrorAlert, EmptyState, HeroSection } from '@galaxy/ui';
 import { useLocale } from '@/components/LocaleProvider';
 
 export interface StoresPageData {
@@ -21,54 +21,56 @@ export function StoresClient({ data }: { data: StoresPageData }): JSX.Element {
   }
 
   return (
-    <div className="mx-auto max-w-5xl space-y-6 px-4 py-8">
-      <div>
-        <h1 className="text-2xl font-bold text-text-primary dark:text-gray-100">
-          {t('stores.title')}
-        </h1>
-        <p className="mt-1 text-sm text-text-secondary">{t('stores.subtitle')}</p>
-      </div>
-
-      {data.stores.length === 0 ? (
-        <EmptyState title={t('stores.empty')} />
-      ) : (
-        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-          {data.stores.map((s: Record<string, unknown>) => {
-            const count = (s._count as Record<string, number> | undefined)?.products ?? 0;
-            return (
-              <Link key={s.id as number} href={`/stores/${s.storeSlug as string}`}>
-                <Card
-                  padding="md"
-                  className="h-full transition-all hover:-translate-y-0.5 hover:shadow-lg"
-                >
-                  <div className="flex items-center gap-3">
-                    {s.logoUrl ? (
-                      // eslint-disable-next-line @next/next/no-img-element
-                      <img
-                        src={s.logoUrl as string}
-                        alt={s.storeName as string}
-                        className="h-12 w-12 rounded-xl object-cover"
-                      />
-                    ) : (
-                      <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-brand-100 text-2xl">
-                        ️
+    <div>
+      <HeroSection
+        eyebrow="🛍️"
+        title={t('stores.title')}
+        subtitle={t('stores.subtitle')}
+        gradient="from-accent-50 via-surface to-brand-50"
+        className="mb-2"
+      />
+      <div className="mx-auto max-w-5xl space-y-6 px-4 pb-8">
+        {data.stores.length === 0 ? (
+          <EmptyState title={t('stores.empty')} />
+        ) : (
+          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+            {data.stores.map((s: Record<string, unknown>) => {
+              const count = (s._count as Record<string, number> | undefined)?.products ?? 0;
+              return (
+                <Link key={s.id as number} href={`/stores/${s.storeSlug as string}`}>
+                  <Card
+                    padding="md"
+                    className="h-full transition-all hover:-translate-y-0.5 hover:shadow-lg"
+                  >
+                    <div className="flex items-center gap-3">
+                      {s.logoUrl ? (
+                        // eslint-disable-next-line @next/next/no-img-element
+                        <img
+                          src={s.logoUrl as string}
+                          alt={s.storeName as string}
+                          className="h-12 w-12 rounded-xl object-cover"
+                        />
+                      ) : (
+                        <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-brand-100 text-2xl">
+                          ️
+                        </div>
+                      )}
+                      <div className="min-w-0">
+                        <p className="truncate font-bold text-text-primary dark:text-gray-100">
+                          {s.storeName as string}
+                        </p>
+                        <p className="text-xs text-text-secondary">
+                          {t('stores.product-count', { count })}
+                        </p>
                       </div>
-                    )}
-                    <div className="min-w-0">
-                      <p className="truncate font-bold text-text-primary dark:text-gray-100">
-                        {s.storeName as string}
-                      </p>
-                      <p className="text-xs text-text-secondary">
-                        {t('stores.product-count', { count })}
-                      </p>
                     </div>
-                  </div>
-                </Card>
-              </Link>
-            );
-          })}
-        </div>
-      )}
+                  </Card>
+                </Link>
+              );
+            })}
+          </div>
+        )}
+      </div>
     </div>
   );
 }
