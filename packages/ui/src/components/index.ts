@@ -563,3 +563,10 @@ export { BeautyPerfumeSaffronCard } from './BeautyPerfumeSaffronCard';
 export { BeautyPerfumeMixingCard } from './BeautyPerfumeMixingCard';
 export { BeautyPerfumeStorageCard } from './BeautyPerfumeStorageCard';
 export { BeautyPerfumeOccasionCard } from './BeautyPerfumeOccasionCard';
+
+// Motion kit (beauty motion — Rose Blush)
+export { Reveal } from './motion/Reveal';
+export { FloatingBlob } from './motion/FloatingBlob';
+export { Sparkles, type SparkleSpec } from './motion/Sparkles';
+export { Marquee } from './motion/Marquee';
+export { HeroSection } from './motion/HeroSection';
