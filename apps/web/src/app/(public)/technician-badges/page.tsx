@@ -33,7 +33,7 @@ const BADGE_META: Record<string, { emoji: string; gradient: string; descKey: Tra
   },
   premium: {
     emoji: '',
-    gradient: 'from-purple-400 to-indigo-500',
+    gradient: 'from-brand-400 to-indigo-500',
     descKey: 'marketing.technician-badges.badge-premium',
   },
   certified: {

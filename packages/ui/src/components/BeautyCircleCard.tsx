@@ -59,7 +59,7 @@ const TOPICS: Record<CircleTopic, TopicDef> = {
   teen_beauty: {
     emoji: '',
     label: { ar: 'جمال المراهقات', en: 'Teen Beauty' },
-    color: 'bg-purple-100 text-purple-700 dark:bg-purple-950 dark:text-purple-300',
+    color: 'bg-brand-100 text-brand-700 dark:bg-brand-950 dark:text-brand-300',
   },
   wellness: {
     emoji: '',

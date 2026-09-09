@@ -29,7 +29,7 @@ const CATEGORIES: BudgetCategory[] = [
     name: { ar: 'شعر', en: 'Hair' },
     emoji: '',
     percentage: 20,
-    color: 'from-purple-400 to-violet-400',
+    color: 'from-brand-400 to-violet-400',
   },
   {
     name: { ar: 'أظافر', en: 'Nails' },

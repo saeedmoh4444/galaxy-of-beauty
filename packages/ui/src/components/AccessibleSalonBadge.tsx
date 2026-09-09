@@ -66,7 +66,7 @@ const FEATURES: FeatureDef[] = [
       en: 'Real photos, robes and chairs for all sizes',
     },
     color:
-      'bg-purple-50 text-purple-700 border-purple-200 dark:bg-purple-950 dark:text-purple-300 dark:border-purple-800',
+      'bg-brand-50 text-brand-700 border-brand-200 dark:bg-brand-950 dark:text-brand-300 dark:border-brand-800',
   },
   {
     emoji: '',
@@ -187,7 +187,7 @@ export function AccessibleSalonBadge({
       </div>
 
       {/* Footer pledge */}
-      <div className="mt-3 rounded-xl bg-gradient-to-r from-blue-50 to-purple-50 p-3 dark:from-blue-950 dark:to-purple-950">
+      <div className="mt-3 rounded-xl bg-gradient-to-r from-blue-50 to-brand-50 p-3 dark:from-blue-950 dark:to-brand-950">
         <p className="text-center text-[10px] font-medium text-blue-700 dark:text-blue-300">
           {pledgeText}
         </p>

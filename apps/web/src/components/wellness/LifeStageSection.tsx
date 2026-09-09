@@ -182,7 +182,7 @@ export function MenopauseCard(): JSX.Element {
   if (!enabled || !lib) return <></>;
 
   return (
-    <Card padding="lg" className="border-2 border-purple-100 dark:border-purple-900">
+    <Card padding="lg" className="border-2 border-brand-100 dark:border-brand-900">
       <h3 className="font-bold">🌗 {t('menopause.title')}</h3>
       <p className="mt-1 text-xs text-text-secondary">{t('menopause.subtitle')}</p>
       <div className="mt-3 space-y-4">
@@ -198,7 +198,7 @@ export function MenopauseCard(): JSX.Element {
         ))}
         <div className="flex flex-wrap gap-2">
           {lib.tips.map((tip, i) => (
-            <span key={i} className="rounded-full bg-purple-50 px-3 py-1 text-xs text-purple-700">
+            <span key={i} className="rounded-full bg-brand-50 px-3 py-1 text-xs text-brand-700">
               {tip.emoji} {tip[locale === 'en' ? 'en' : 'ar']}
             </span>
           ))}

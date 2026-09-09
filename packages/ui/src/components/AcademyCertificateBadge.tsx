@@ -37,8 +37,8 @@ const CERTS: Record<CertLevel, LevelDef> = {
   master: {
     emoji: '',
     label: { ar: 'ماستر', en: 'Master' },
-    color: 'text-purple-600 dark:text-purple-300',
-    gradient: 'from-purple-500 to-violet-500',
+    color: 'text-brand-600 dark:text-brand-300',
+    gradient: 'from-brand-500 to-violet-500',
   },
 };
 
@@ -120,7 +120,7 @@ export function AcademyCertificateBadge({
             className={cn(
               'inline-flex items-center gap-1 rounded-full px-2.5 py-0.5 text-[10px] font-medium',
               certificate.level === 'master'
-                ? 'bg-purple-100 text-purple-700 dark:bg-purple-900 dark:text-purple-300'
+                ? 'bg-brand-100 text-brand-700 dark:bg-brand-900 dark:text-brand-300'
                 : certificate.level === 'professional'
                   ? 'bg-blue-100 text-blue-700 dark:bg-blue-900 dark:text-blue-300'
                   : 'bg-emerald-100 text-emerald-700 dark:bg-emerald-900 dark:text-emerald-300',

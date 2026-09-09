@@ -62,7 +62,7 @@ export function BeautyNightOutCard({
   return (
     <div
       className={cn(
-        'rounded-2xl border border-indigo-100 bg-gradient-to-br from-indigo-50 to-purple-50 p-5 dark:border-indigo-900 dark:from-indigo-950 dark:to-purple-950',
+        'rounded-2xl border border-indigo-100 bg-gradient-to-br from-indigo-50 to-brand-50 p-5 dark:border-indigo-900 dark:from-indigo-950 dark:to-brand-950',
         className,
       )}
     >

@@ -42,7 +42,7 @@ export default function TechPerformancePage(): JSX.Element {
                 <p className="text-xs text-text-secondary">{t('tech.performance.completed')}</p>
               </Card>
               <Card padding="lg" className="text-center">
-                <p className="text-2xl font-extrabold text-purple-600">
+                <p className="text-2xl font-extrabold text-brand-600">
                   {data?.completionRate as number}%
                 </p>
                 <p className="text-xs text-text-secondary">

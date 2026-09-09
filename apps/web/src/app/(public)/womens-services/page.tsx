@@ -72,7 +72,7 @@ export default function WomensServicesPage(): JSX.Element {
               {(bookingResult.specialRequirements as string[]).map((r: string, i: number) => (
                 <span
                   key={i}
-                  className="rounded-full bg-purple-100 dark:bg-purple-900 px-2 py-0.5 text-xs"
+                  className="rounded-full bg-brand-100 dark:bg-brand-900 px-2 py-0.5 text-xs"
                 >
                   {r}
                 </span>
@@ -130,7 +130,7 @@ export default function WomensServicesPage(): JSX.Element {
 
           <Card
             padding="lg"
-            className="bg-gradient-to-r from-pink-50 to-purple-50 dark:from-pink-950 dark:to-purple-950 border-none"
+            className="bg-gradient-to-r from-pink-50 to-brand-50 dark:from-pink-950 dark:to-brand-950 border-none"
           >
             <div className="flex items-center gap-4">
               <span className="text-5xl">{category?.emoji as string}</span>

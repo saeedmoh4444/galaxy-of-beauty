@@ -110,7 +110,7 @@ export function BeautyFlashCard({
   return (
     <div
       className={cn(
-        'rounded-2xl border border-purple-100 bg-white p-4 dark:border-purple-900 dark:bg-gray-900',
+        'rounded-2xl border border-brand-100 bg-white p-4 dark:border-brand-900 dark:bg-gray-900',
         className,
       )}
     >
@@ -120,13 +120,13 @@ export function BeautyFlashCard({
             🃏
           </span>
           <div>
-            <h4 className="text-sm font-bold text-purple-700 dark:text-purple-300">{title}</h4>
-            <p className="text-[10px] text-purple-500 dark:text-purple-400">
+            <h4 className="text-sm font-bold text-brand-700 dark:text-brand-300">{title}</h4>
+            <p className="text-[10px] text-brand-500 dark:text-brand-400">
               {index + 1}/{CARDS.length}
             </p>
           </div>
         </div>
-        <span className="rounded-full bg-purple-50 px-2 py-0.5 text-[10px] text-purple-600 dark:bg-purple-950 dark:text-purple-400">
+        <span className="rounded-full bg-brand-50 px-2 py-0.5 text-[10px] text-brand-600 dark:bg-brand-950 dark:text-brand-400">
           {card.category[locale]}
         </span>
       </div>
@@ -138,8 +138,8 @@ export function BeautyFlashCard({
         className={cn(
           'mt-3 w-full rounded-xl border-2 p-6 text-center transition-all duration-300 min-h-[120px] flex flex-col items-center justify-center',
           flipped
-            ? 'border-purple-200 bg-purple-50 dark:border-purple-800 dark:bg-purple-950'
-            : 'border-dashed border-purple-200 bg-white hover:bg-purple-50 dark:border-purple-800 dark:bg-gray-800 dark:hover:bg-purple-950',
+            ? 'border-brand-200 bg-brand-50 dark:border-brand-800 dark:bg-brand-950'
+            : 'border-dashed border-brand-200 bg-white hover:bg-brand-50 dark:border-brand-800 dark:bg-gray-800 dark:hover:bg-brand-950',
         )}
       >
         {!flipped ? (
@@ -147,7 +147,7 @@ export function BeautyFlashCard({
             <span className="text-3xl" aria-hidden="true">
               {card.emoji}
             </span>
-            <p className="mt-2 text-lg font-bold text-purple-800 dark:text-purple-200">
+            <p className="mt-2 text-lg font-bold text-brand-800 dark:text-brand-200">
               {card.term[locale]}
             </p>
             <p className="mt-1 text-[9px] text-text-tertiary dark:text-text-secondary">
@@ -155,7 +155,7 @@ export function BeautyFlashCard({
             </p>
           </>
         ) : (
-          <p className="text-sm leading-relaxed text-purple-800 dark:text-purple-200">
+          <p className="text-sm leading-relaxed text-brand-800 dark:text-brand-200">
             {card.definition[locale]}
           </p>
         )}
@@ -169,14 +169,14 @@ export function BeautyFlashCard({
             setFlipped(false);
             setIndex((p) => (p - 1 + CARDS.length) % CARDS.length);
           }}
-          className="flex-1 rounded-lg border border-purple-200 py-1.5 text-[10px] font-bold text-purple-600 hover:bg-purple-50 dark:border-purple-800 dark:text-purple-400"
+          className="flex-1 rounded-lg border border-brand-200 py-1.5 text-[10px] font-bold text-brand-600 hover:bg-brand-50 dark:border-brand-800 dark:text-brand-400"
         >
           {prevLabel}
         </button>
         <button
           type="button"
           onClick={next}
-          className="flex-1 rounded-lg bg-purple-600 py-1.5 text-[10px] font-bold text-white hover:bg-purple-700"
+          className="flex-1 rounded-lg bg-brand-600 py-1.5 text-[10px] font-bold text-white hover:bg-brand-700"
         >
           {nextLabel}
         </button>

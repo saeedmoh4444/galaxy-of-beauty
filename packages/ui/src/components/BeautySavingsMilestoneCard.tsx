@@ -27,7 +27,7 @@ const COLORS = [
   'from-amber-400 to-yellow-400',
   'from-amber-500 to-orange-500',
   'from-rose-400 to-pink-500',
-  'from-purple-400 to-violet-500',
+  'from-brand-400 to-violet-500',
   'from-emerald-400 to-green-500',
 ];
 

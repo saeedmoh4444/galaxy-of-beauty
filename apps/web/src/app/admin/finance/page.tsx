@@ -65,7 +65,7 @@ export default function AdminFinancePage(): JSX.Element {
           </Card>
           <Card className="text-center">
             <p className="text-sm text-text-secondary">{t('admin.finance.pending-payouts')}</p>
-            <p className="text-2xl font-bold text-purple-600">
+            <p className="text-2xl font-bold text-brand-600">
               {formatCurrency(Number(fin?.pendingPayouts ?? 0))}
             </p>
           </Card>

@@ -198,7 +198,7 @@ export default function TutorialDetailPage(): JSX.Element {
       </div>
 
       {/* Bottom CTA */}
-      <div className="mt-10 rounded-2xl bg-gradient-to-r from-brand-500 to-purple-500 p-6 text-center text-white">
+      <div className="mt-10 rounded-2xl bg-gradient-to-r from-brand-500 to-brand-500 p-6 text-center text-white">
         <p className="text-xl font-bold">{t('marketing.tutorials.cta-title')}</p>
         <p className="mt-1 text-white/80">{t('marketing.tutorials.cta-desc')}</p>
         <Link href="/tutorials" className="mt-4 inline-block">

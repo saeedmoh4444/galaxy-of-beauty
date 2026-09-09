@@ -18,7 +18,7 @@ export function BeautyMeditationCard({
   return (
     <div
       className={cn(
-        'rounded-2xl border border-violet-100 bg-gradient-to-br from-violet-50 to-purple-50 p-5 dark:border-violet-900 dark:from-violet-950 dark:to-purple-950',
+        'rounded-2xl border border-violet-100 bg-gradient-to-br from-violet-50 to-brand-50 p-5 dark:border-violet-900 dark:from-violet-950 dark:to-brand-950',
         className,
       )}
     >

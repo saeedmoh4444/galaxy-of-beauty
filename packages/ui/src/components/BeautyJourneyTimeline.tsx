@@ -53,8 +53,8 @@ const STAGE_DEFS: Record<LifeStage, StageDef> = {
       { ar: 'تجربة ألوان الشعر', en: 'Experimenting with hair colors' },
       { ar: 'ميزانية الجمال', en: 'Beauty budget' },
     ],
-    color: 'text-purple-600 dark:text-purple-300',
-    gradient: 'from-purple-400 to-violet-400',
+    color: 'text-brand-600 dark:text-brand-300',
+    gradient: 'from-brand-400 to-violet-400',
   },
   career: {
     emoji: '',
