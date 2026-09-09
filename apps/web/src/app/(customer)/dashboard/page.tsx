@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import Image from 'next/image';
-import type { ComponentProps } from 'react';
+import { useEffect, useMemo, useState, type ComponentProps } from 'react';
 import { api } from '@/lib/trpc';
 import {
   Card,
@@ -24,15 +24,71 @@ import {
   BeautyCircleCard,
   BeautySavingsGoal,
   useAuth,
+  Walkthrough,
+  type WalkthroughStep,
 } from '@galaxy/ui';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
 import { RebookReminder } from '@/components/RebookReminder';
 import { useLocale } from '@/components/LocaleProvider';
 import { localize } from '@galaxy/shared';
 
+/** §3.6 — first-run tour storage key (written on skip or complete). */
+const TOUR_STORAGE_KEY = 'gob_tour_v1';
+
+// i18n keys as const literals — resolved via t() at render so locale
+// switches mid-tour stay correct.
+const TOUR_STEP_KEYS = [
+  { target: '[data-tour="book"]', title: 'tour.bookTitle', body: 'tour.bookBody' },
+  { target: '[data-tour="wallet"]', title: 'tour.walletTitle', body: 'tour.walletBody' },
+  { target: 'aside a[href="/ai-assistant"]', title: 'tour.aiTitle', body: 'tour.aiBody' },
+  {
+    target: 'aside a[href="/wellness-hub"]',
+    title: 'tour.wellnessTitle',
+    body: 'tour.wellnessBody',
+  },
+  {
+    target: 'aside a[href="/referrals"]',
+    title: 'tour.referralsTitle',
+    body: 'tour.referralsBody',
+  },
+] as const;
+
 export default function CustomerDashboardPage(): JSX.Element {
   const { t, locale } = useLocale();
   const { isAuthenticated } = useAuth();
+  const [tourOpen, setTourOpen] = useState(false);
+
+  // First-run auto-start: once per browser, md+ viewports only (the
+  // mobile RN app gets its own engine later — plan §3.6).
+  useEffect(() => {
+    if (!isAuthenticated) return;
+    if (typeof window === 'undefined') return;
+    if (window.matchMedia('(max-width: 767px)').matches) return;
+    let stored: string | null = null;
+    try {
+      stored = localStorage.getItem(TOUR_STORAGE_KEY);
+    } catch {
+      // private mode — fall through and skip auto-start
+      return;
+    }
+    if (stored === 'done') return;
+    const timer = setTimeout(() => setTourOpen(true), 800);
+    return () => clearTimeout(timer);
+  }, [isAuthenticated]);
+
+  const closeTour = (_reason: 'complete' | 'skip') => {
+    try {
+      localStorage.setItem(TOUR_STORAGE_KEY, 'done');
+    } catch {
+      // non-fatal — private mode
+    }
+    setTourOpen(false);
+  };
+
+  const tourSteps: WalkthroughStep[] = useMemo(
+    () => TOUR_STEP_KEYS.map((s) => ({ target: s.target, title: t(s.title), body: t(s.body) })),
+    [t],
+  );
   const bookings = api.bookings.list.useQuery({ limit: 3 }, { enabled: isAuthenticated });
   const insights = api.analytics.customerInsights.useQuery(undefined, {
     enabled: isAuthenticated,
@@ -60,15 +116,27 @@ export default function CustomerDashboardPage(): JSX.Element {
   return (
     <DashboardLayout userRole="CUSTOMER">
       <PageContainer width="wide">
-        <div className="flex items-center justify-between">
+        <div className="flex items-center justify-between gap-3">
           <h1 className="text-2xl font-bold text-text-primary">{t('dashboard.title')}</h1>
-          <RebookReminder enabled={isAuthenticated} />
-          <Link href="/self-care">
-            <Button variant="outline" size="sm">
+          <div className="flex items-center gap-2">
+            <RebookReminder enabled={isAuthenticated} />
+            <Button
+              variant="ghost"
+              size="sm"
+              data-testid="tour-replay"
+              onClick={() => setTourOpen(true)}
+              aria-label={t('tour.replay')}
+            >
               <Icon name="sparkle" size="sm" />
-              {t('dashboard.daily-assessment')}
+              {t('tour.replay')}
             </Button>
-          </Link>
+            <Link href="/self-care">
+              <Button variant="outline" size="sm">
+                <Icon name="sparkle" size="sm" />
+                {t('dashboard.daily-assessment')}
+              </Button>
+            </Link>
+          </div>
         </div>
 
         {/* Stats */}
@@ -77,7 +145,7 @@ export default function CustomerDashboardPage(): JSX.Element {
         ) : insights.isError ? (
           <ErrorAlert message={t('dashboard.stats-error')} onRetry={() => insights.refetch()} />
         ) : (
-          <div className="grid gap-4 md:grid-cols-4">
+          <div className="grid gap-4 md:grid-cols-4" data-tour="wallet">
             <StatCard
               label={t('dashboard.bookings')}
               value={insights.data?.bookingCount ?? 0}
@@ -107,7 +175,7 @@ export default function CustomerDashboardPage(): JSX.Element {
 
         {/* Quick Actions */}
         <div className="flex flex-wrap gap-2">
-          <Link href="/bookings/create">
+          <Link href="/bookings/create" data-tour="book">
             <Button size="lg">
               <Icon name="sparkle" size="sm" />
               {t('button.bookNow')}
@@ -311,6 +379,20 @@ export default function CustomerDashboardPage(): JSX.Element {
           ) : null}
         </div>
       </PageContainer>
+
+      <Walkthrough
+        open={tourOpen}
+        steps={tourSteps}
+        onClose={closeTour}
+        labels={{
+          next: t('tour.next'),
+          back: t('tour.back'),
+          skip: t('tour.skip'),
+          done: t('tour.done'),
+          progress: (current, total) =>
+            t('tour.progress', { current: String(current), total: String(total) }),
+        }}
+      />
     </DashboardLayout>
   );
 }

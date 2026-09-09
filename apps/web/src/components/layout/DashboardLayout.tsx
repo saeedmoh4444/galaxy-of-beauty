@@ -20,6 +20,8 @@ const customerLinks: NavLink[] = [
   { href: '/bookings', key: 'nav.myBookings', icon: '' },
   { href: '/bookings/create', key: 'nav.bookings.create', icon: '' },
   { href: '/wallet', key: 'nav.wallet', icon: '' },
+  { href: '/wellness-hub', key: 'nav.wellness-hub', icon: '🌿' },
+  { href: '/referrals', key: 'nav.referrals', icon: '💝' },
   { href: '/wishlist', key: 'nav.wishlist', icon: '️' },
   { href: '/womens-services', key: 'nav.womens-services', icon: '' },
   { href: '/dna-beauty', key: 'nav.dna-beauty', icon: '' },

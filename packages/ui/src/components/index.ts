@@ -570,3 +570,4 @@ export { FloatingBlob } from './motion/FloatingBlob';
 export { Sparkles, type SparkleSpec } from './motion/Sparkles';
 export { Marquee } from './motion/Marquee';
 export { HeroSection } from './motion/HeroSection';
+export { Walkthrough, type WalkthroughStep } from './motion/Walkthrough';
