@@ -4,7 +4,7 @@ import { cn } from '@galaxy/shared';
 
 /**
  * Beauty Expert Talk Card — expert lecture & masterclass series.
- * From Phase W6: Education & Empowerment — Galaxy Beauty Academy.
+ * From Phase W6: Education & Empowerment — Dalal Beauty Academy.
  *
  * Usage:
  *   <BeautyExpertTalkCard talk={{ title: 'أسرار البشرة', expert: 'د. نورة', date: '15 سبتمبر' }} />

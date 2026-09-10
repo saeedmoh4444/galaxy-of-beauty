@@ -76,7 +76,7 @@ export const referralRaceRouter = router({
       const appUrl = process.env['NEXT_PUBLIC_APP_URL'] || DEFAULT_APP_URL;
       return {
         url: `${appUrl}/register?ref=${code?.referralCode || ctx.user.id}`,
-        message: 'انضمي لجالكسي بيوتي واكسبي جوائز!',
+        message: 'انضمي لدلال واكسبي جوائز!',
       };
     }),
 });

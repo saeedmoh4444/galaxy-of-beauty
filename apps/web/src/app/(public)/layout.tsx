@@ -4,8 +4,8 @@ import { MainLayout } from '@/components/layout/MainLayout';
 
 export const metadata: Metadata = {
   title: {
-    default: 'Galaxy of Beauty | جالكسي بيوتي — منصة خدمات التجميل',
-    template: '%s | Galaxy of Beauty',
+    default: 'Dalal | دلال — منصة خدمات التجميل',
+    template: '%s | Dalal',
   },
   description:
     'احجزي خدمات التجميل المنزلية بكل سهولة — شعر، بشرة، مكياج، مساج، حناء والمزيد. منصة سعودية تربطك بأفضل فنيات التجميل المعتمدات.',
@@ -31,16 +31,16 @@ export const metadata: Metadata = {
     'Saudi Arabia',
   ],
   openGraph: {
-    title: 'Galaxy of Beauty | جالكسي بيوتي — منصة خدمات التجميل',
+    title: 'Dalal | دلال — منصة خدمات التجميل',
     description: 'احجزي خدمات التجميل المنزلية بكل سهولة — شعر، بشرة، مكياج، مساج، حناء والمزيد.',
-    siteName: 'Galaxy of Beauty',
+    siteName: 'Dalal',
     locale: 'ar_SA',
     type: 'website',
     images: ['/logo.png'],
   },
   twitter: {
     card: 'summary',
-    title: 'Galaxy of Beauty | جالكسي بيوتي',
+    title: 'Dalal | دلال',
     description: 'منصة خدمات التجميل المنزلية في السعودية',
   },
   robots: {

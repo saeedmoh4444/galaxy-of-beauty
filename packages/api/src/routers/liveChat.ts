@@ -35,7 +35,7 @@ export const liveChatRouter = router({
       if (!autoReply) autoReply = 'شكراً لتواصلكِ معنا! فريق الدعم سيرد عليكِ قريباً.';
 
       const agentMsg = await prisma.liveChatMessage.create({
-        data: { userId: ctx.user.id, userName: 'دعم جالكسي', message: autoReply, isAgent: true },
+        data: { userId: ctx.user.id, userName: 'دعم دلال', message: autoReply, isAgent: true },
       });
 
       return { userMsg, agentMsg };

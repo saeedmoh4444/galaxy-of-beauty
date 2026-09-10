@@ -4,7 +4,7 @@ import { cn } from '@galaxy/shared';
 
 /**
  * Beauty Career Path Card — career paths in the beauty industry.
- * From Phase W6: Education & Empowerment — Galaxy Beauty Academy.
+ * From Phase W6: Education & Empowerment — Dalal Beauty Academy.
  *
  * Usage:
  *   <BeautyCareerPathCard path="makeup_artist" />
