@@ -2,9 +2,18 @@
 
 import Link from 'next/link';
 import type { RouterOutputs } from '@galaxy/api';
-import { localize } from '@galaxy/shared';
+import { localize, serviceKeyFromCategorySlug } from '@galaxy/shared';
 import { useLocale } from '@/components/LocaleProvider';
-import { Button, Card, EmptyState, formatCurrency } from '@galaxy/ui';
+import { api } from '@/lib/trpc';
+import {
+  Button,
+  Card,
+  EmptyState,
+  formatCurrency,
+  ServiceImage,
+  TrustBadge,
+  TrustBadges,
+} from '@galaxy/ui';
 
 type ServiceJson = { ar?: string; en?: string };
 
@@ -26,6 +35,7 @@ type ServiceDetailTechService =
 type ServiceDetailRelated = RouterOutputs['services']['getRelated'][number] & {
   titleJson?: ServiceJson | null;
 };
+type GalleryItem = RouterOutputs['beautyShorts']['gallery'][number];
 
 export interface ServiceDetailData {
   id: number;
@@ -33,6 +43,11 @@ export interface ServiceDetailData {
   descriptionJson: ServiceJson | null;
   basePrice: number;
   durationMin: number;
+  imageUrl: string | null;
+  isWomenOnlyStaff: boolean;
+  isPrivateSuite: boolean;
+  isPregnancySafe: boolean;
+  isMommyFriendly: boolean;
   category: ServiceDetailCategory;
   variants: ServiceDetailVariant[];
   technicianServices: ServiceDetailTechService[];
@@ -52,6 +67,40 @@ export function ServiceDetailClient({ svc }: { svc: ServiceDetailData }): JSX.El
   const related = svc.related ?? [];
   const id = svc.id;
 
+  // Phase 3 sprint 2 — data-driven trust layer (E6d fields are on the model).
+  const verifiedTechCount = techs.filter((ts) => ts.technician?.kycStatus === 'VERIFIED').length;
+  const bestRating = techs.reduce(
+    (max, ts) => Math.max(max, Number(ts.technician?.ratingAvg ?? 0)),
+    0,
+  );
+  const trustItems = [
+    { variant: 'safeSpace' as const, label: t('trust.safeSpace') },
+    ...(svc.isWomenOnlyStaff
+      ? [{ variant: 'womenOnly' as const, label: t('trust.womenOnly') }]
+      : []),
+    ...(svc.isPrivateSuite
+      ? [{ variant: 'private' as const, label: t('trust.privateSuite') }]
+      : []),
+    ...(verifiedTechCount > 0
+      ? [{ variant: 'verified' as const, label: t('trust.verified') }]
+      : []),
+    ...(techs.length > 0
+      ? [{ variant: 'rating' as const, label: t('misc.rating'), value: bestRating.toFixed(1) }]
+      : []),
+  ];
+  const stageChips = [
+    ...(svc.isPregnancySafe ? [t('trust.pregnancySafe')] : []),
+    ...(svc.isMommyFriendly ? [t('trust.mommyFriendly')] : []),
+  ];
+
+  // E6e — before/after gallery for the first mapped technician.
+  const galleryTechUserId = techs[0]?.technician?.user?.id;
+  const galleryQ = api.beautyShorts.gallery.useQuery(
+    { technicianUserId: galleryTechUserId ?? 0 },
+    { enabled: !!galleryTechUserId },
+  );
+  const galleryItems = (galleryQ.data as GalleryItem[] | undefined) ?? [];
+
   if (svc.fetchError) {
     return (
       <div className="mx-auto max-w-4xl px-4 py-8">
@@ -67,20 +116,26 @@ export function ServiceDetailClient({ svc }: { svc: ServiceDetailData }): JSX.El
 
   return (
     <div className="mx-auto max-w-4xl px-4 py-8">
-      {/* Hero */}
-      <div className="flex h-64 items-center justify-center rounded-2xl bg-gradient-to-br from-brand-200 to-accent-200 dark:from-brand-900 dark:to-accent-900">
-        <span className="text-6xl"></span>
+      {/* Hero — real imagery (imageUrl → category mapping fallback) */}
+      <div data-testid="service-hero" className="overflow-hidden rounded-3xl">
+        <ServiceImage
+          src={svc.imageUrl}
+          service={serviceKeyFromCategorySlug(cat.slug)}
+          size="full"
+          alt={title}
+          className="h-64 w-full object-cover md:h-80"
+        />
       </div>
 
       {/* Tags */}
       {tags.length > 0 && (
         <div className="mt-4 flex flex-wrap gap-2">
-          {tags.map((t, i) => (
+          {tags.map((tag, i) => (
             <span
               key={i}
               className="rounded-full bg-brand-50 px-3 py-1 text-xs text-brand-700 dark:bg-brand-950 dark:text-brand-300"
             >
-              {localize(t.tag.nameJson, locale)}
+              {localize(tag.tag.nameJson, locale)}
             </span>
           ))}
         </div>
@@ -89,6 +144,23 @@ export function ServiceDetailClient({ svc }: { svc: ServiceDetailData }): JSX.El
       <h1 className="mt-4 text-3xl font-bold text-text-primary">{title}</h1>
       <p className="mt-1 text-sm text-text-secondary">{(cat.nameAr as string) || ''}</p>
       {desc && <p className="mt-3 text-text-secondary">{desc}</p>}
+
+      {/* Trust layer (E6d, data-driven) */}
+      <TrustBadges className="mt-4" items={trustItems} />
+
+      {/* Stage-friendly chips (pregnancy-safe / mommy-friendly) */}
+      {stageChips.length > 0 && (
+        <div data-testid="stage-chips" className="mt-3 flex flex-wrap gap-2">
+          {stageChips.map((chip) => (
+            <span
+              key={chip}
+              className="rounded-full bg-accent-50 px-3 py-1 text-xs font-semibold text-accent-600 dark:bg-accent-950 dark:text-accent-300"
+            >
+              {chip}
+            </span>
+          ))}
+        </div>
+      )}
 
       {/* Share */}
       <div className="mt-3 flex gap-2">
@@ -161,7 +233,7 @@ export function ServiceDetailClient({ svc }: { svc: ServiceDetailData }): JSX.El
         </Link>
       </div>
 
-      {/* Technicians */}
+      {/* Technicians — with per-card verified badges (kycStatus) */}
       {techs.length > 0 && (
         <div className="mt-10">
           <h2 className="mb-4 text-lg font-semibold text-text-primary">
@@ -175,7 +247,12 @@ export function ServiceDetailClient({ svc }: { svc: ServiceDetailData }): JSX.El
                 <Card key={ts.id} padding="md">
                   <div className="flex items-center justify-between">
                     <div>
-                      <p className="font-semibold text-text-primary">{user.name}</p>
+                      <div className="flex items-center gap-2">
+                        <p className="font-semibold text-text-primary">{user.name}</p>
+                        {tech.kycStatus === 'VERIFIED' && (
+                          <TrustBadge variant="verified" label={t('trust.verified')} />
+                        )}
+                      </div>
                       <p className="text-sm text-text-secondary">
                         {tech.city} · {Number(tech.ratingAvg ?? 0).toFixed(1)}
                       </p>
@@ -201,9 +278,39 @@ export function ServiceDetailClient({ svc }: { svc: ServiceDetailData }): JSX.El
         </div>
       )}
 
-      {/* Related */}
+      {/* E6e — before/after gallery (approved shorts of the first technician) */}
+      {galleryItems.length > 0 && (
+        <div className="mt-12" data-testid="ba-gallery">
+          <div className="mb-4 flex items-center justify-between">
+            <h2 className="text-lg font-semibold text-text-primary">
+              {t('gallery.beforeAfterTitle')}
+            </h2>
+            {galleryTechUserId && (
+              <Link
+                href={`/gallery/${galleryTechUserId}`}
+                className="text-sm font-semibold text-brand-600 hover:underline"
+              >
+                {t('marketing.service-detail.view-full-gallery')}
+              </Link>
+            )}
+          </div>
+          <div className="grid grid-cols-3 gap-4 md:grid-cols-4">
+            {galleryItems.slice(0, 4).map((g) => (
+              <ServiceImage
+                key={g.id}
+                src={g.thumbnailUrl ?? g.beforeImageUrl}
+                alt={localize(g.titleJson as ServiceJson, locale)}
+                size="full"
+                className="h-32 w-full rounded-xl object-cover"
+              />
+            ))}
+          </div>
+        </div>
+      )}
+
+      {/* Related — real imagery, same category mapping as the hero */}
       {related.length > 0 && (
-        <div className="mt-12">
+        <div className="mt-12" data-testid="related-services">
           <h2 className="mb-4 text-lg font-semibold text-text-primary">
             {t('marketing.service-detail.related-services')}
           </h2>
@@ -211,7 +318,13 @@ export function ServiceDetailClient({ svc }: { svc: ServiceDetailData }): JSX.El
             {related.map((r) => (
               <Link key={r.id} href={`/services/${r.id}`}>
                 <Card hover padding="sm">
-                  <div className="flex h-24 items-center justify-center rounded-lg bg-surface-muted text-3xl dark:bg-gray-800"></div>
+                  <ServiceImage
+                    src={r.imageUrl}
+                    service={serviceKeyFromCategorySlug(cat.slug)}
+                    size="full"
+                    alt={localize(r.titleJson, locale)}
+                    className="h-24 w-full rounded-lg object-cover"
+                  />
                   <p className="mt-2 text-sm font-semibold text-text-primary">
                     {localize(r.titleJson, locale)}
                   </p>
