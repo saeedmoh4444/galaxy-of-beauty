@@ -293,6 +293,12 @@ export const mobileCustomerAMessages = {
   'beautyDashboard.bookings': { ar: 'الحجوزات', en: 'Bookings' },
   'beautyDashboard.spending': { ar: 'الإنفاق', en: 'Spending' },
   'beautyDashboard.sar': { ar: '{value} ر.س', en: '{value} SAR' },
+  'beautyDashboard.quick-book': { ar: 'احجزي الآن', en: 'Book now' },
+  'beautyDashboard.quick-wallet': { ar: 'المحفظة', en: 'Wallet' },
+  'beautyDashboard.quick-ai': { ar: 'المستشارة الذكية', en: 'AI Advisor' },
+  'beautyDashboard.quick-wellness': { ar: 'مركز العافية', en: 'Wellness Hub' },
+  'beautyDashboard.quick-referrals': { ar: 'دعوة الصديقات', en: 'Invite Friends' },
+  'beautyDashboard.replay-tour': { ar: 'جولة تعريفية', en: 'Guided tour' },
 
   // ── beauty-diary ──
   'beautyDiary.title': { ar: ' يوميات الجمال', en: 'Beauty Diary' },
