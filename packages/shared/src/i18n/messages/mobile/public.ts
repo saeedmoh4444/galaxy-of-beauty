@@ -128,8 +128,8 @@ export const mobilePublicMessages = {
   },
   'mobile.public.beauty-quiz.restart': { ar: ' إعادة', en: ' Restart' },
   'mobile.public.beauty-stats.title': {
-    ar: 'جالكسي بيوتي في أرقام',
-    en: 'Galaxy of Beauty in Numbers',
+    ar: 'دلال في أرقام',
+    en: 'Dalal in Numbers',
   },
   'mobile.public.beauty-stats.subtitle': {
     ar: 'المنصة الأولى لحجز خدمات التجميل في المملكة',

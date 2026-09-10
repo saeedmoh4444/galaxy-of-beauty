@@ -42,7 +42,7 @@ export const navMessages = {
     ar: 'جميع الحقوق محفوظة.',
     en: 'All rights reserved.',
   },
-  'common.brandName': { ar: 'جالكسي بيوتي', en: 'Galaxy of Beauty' },
+  'common.brandName': { ar: 'دلال', en: 'Dalal' },
   'common.switchToLight': { ar: 'تفعيل الوضع النهاري', en: 'Switch to light mode' },
   'common.switchToDark': { ar: 'تفعيل الوضع الليلي', en: 'Switch to dark mode' },
   'nav.myBookings': { ar: 'حجوزاتي', en: 'My Bookings' },

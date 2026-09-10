@@ -39,8 +39,8 @@ export const marketingMessages = {
   },
   'marketing.home.testimonial-noura-name': { ar: 'نورة', en: 'Noura' },
   'marketing.home.testimonial-noura-text': {
-    ar: 'المنصة سهلة والتطبيق رائع. أقدر أحجز لأمي وأختي من حساب واحد. شكراً جالكسي بيوتي!',
-    en: 'The platform is easy and the app is great. I can book for my mom and sister from one account. Thank you Galaxy of Beauty!',
+    ar: 'المنصة سهلة والتطبيق رائع. أقدر أحجز لأمي وأختي من حساب واحد. شكراً دلال!',
+    en: 'The platform is easy and the app is great. I can book for my mom and sister from one account. Thank you Dalal!',
   },
   'marketing.home.discover-more': { ar: 'اكتشفي المزيد', en: 'Discover more' },
   'marketing.home.feature-virtual-try-on': { ar: 'تجربة افتراضية', en: 'Virtual try-on' },
@@ -104,7 +104,7 @@ export const marketingMessages = {
   'marketing.services.book': { ar: 'احجز', en: 'Book' },
 
   // Discover
-  'marketing.discover.header-title': { ar: 'اكتشفي جالكسي بيوتي', en: 'Discover Galaxy of Beauty' },
+  'marketing.discover.header-title': { ar: 'اكتشفي دلال', en: 'Discover Dalal' },
   'marketing.discover.header-subtitle': {
     ar: 'كل ما تحتاجينه للعناية بجمالكِ في مكان واحد',
     en: 'Everything you need for your beauty care in one place',
@@ -1155,8 +1155,8 @@ export const marketingMessages = {
     en: 'Send "hello" to the WhatsApp number',
   },
   'marketing.beauty-stats.title': {
-    ar: 'جالكسي بيوتي في أرقام',
-    en: 'Galaxy of Beauty in numbers',
+    ar: 'دلال في أرقام',
+    en: 'Dalal in numbers',
   },
   'marketing.beauty-stats.subtitle': {
     ar: 'المنصة الأولى لحجز خدمات التجميل في المملكة — نفتخر بثقة عملائنا',
@@ -1668,8 +1668,8 @@ export const marketingMessages = {
   },
   'marketing.lookbook.community-title': { ar: ' إطلالات المجتمع', en: ' Community looks' },
   'marketing.lookbook.community-subtitle': {
-    ar: 'أحدث الإطلالات من مجتمع جالكسي بيوتي',
-    en: 'The latest looks from the Galaxy of Beauty community',
+    ar: 'أحدث الإطلالات من مجتمع دلال',
+    en: 'The latest looks from the Dalal community',
   },
   'marketing.mommy-and-me.pkg-mani-title': {
     ar: 'مانيكير الأم وابنتها',
@@ -1740,8 +1740,8 @@ export const marketingMessages = {
   },
   'marketing.mommy-and-me.buy-gift-card': { ar: ' اشتري بطاقة هدية', en: ' Buy a gift card' },
   'marketing.onboarding.step-1-title': {
-    ar: ' أهلاً بكِ في جالكسي بيوتي!',
-    en: ' Welcome to Galaxy of Beauty!',
+    ar: ' أهلاً بكِ في دلال!',
+    en: ' Welcome to Dalal!',
   },
   'marketing.onboarding.step-1-desc': {
     ar: 'منصتكِ الشاملة للجمال والعناية. دعينا نأخذكِ في جولة سريعة.',
@@ -2120,8 +2120,8 @@ export const marketingMessages = {
     en: 'Quick responses and instant booking confirmations',
   },
   'marketing.technician-badges.badge-premium': {
-    ar: 'مقدمة خدمة متميزة معتمدة من جالكسي بيوتي',
-    en: 'A distinguished service provider certified by Galaxy of Beauty',
+    ar: 'مقدمة خدمة متميزة معتمدة من دلال',
+    en: 'A distinguished service provider certified by Dalal',
   },
   'marketing.technician-badges.badge-certified': {
     ar: 'حاصلة على شهادات معتمدة في مجال التجميل',
@@ -2232,13 +2232,13 @@ export const marketingMessages = {
   'marketing.terms.title': { ar: ' الشروط والأحكام', en: ' Terms and Conditions' },
   'marketing.terms.section-1-title': { ar: '١. مقدمة', en: '1. Introduction' },
   'marketing.terms.section-1-body': {
-    ar: 'مرحباً بكِ في جالكسي بيوتي. باستخدامكِ للمنصة، فإنكِ توافقين على الشروط والأحكام التالية. يرجى قراءتها بعناية.',
-    en: 'Welcome to Galaxy of Beauty. By using the platform, you agree to the following terms and conditions. Please read them carefully.',
+    ar: 'مرحباً بكِ في دلال. باستخدامكِ للمنصة، فإنكِ توافقين على الشروط والأحكام التالية. يرجى قراءتها بعناية.',
+    en: 'Welcome to Dalal. By using the platform, you agree to the following terms and conditions. Please read them carefully.',
   },
   'marketing.terms.section-2-title': { ar: '٢. الخدمات', en: '2. Services' },
   'marketing.terms.section-2-body': {
-    ar: 'تعمل جالكسي بيوتي كمنصة وسيطة بين العملاء ومقدمي خدمات التجميل. نحن لا نقدم خدمات التجميل مباشرة، وإنما نسهل عملية الحجز والتواصل.',
-    en: 'Galaxy of Beauty operates as an intermediary platform between clients and beauty service providers. We do not provide beauty services directly, but rather facilitate the booking and communication process.',
+    ar: 'تعمل دلال كمنصة وسيطة بين العملاء ومقدمي خدمات التجميل. نحن لا نقدم خدمات التجميل مباشرة، وإنما نسهل عملية الحجز والتواصل.',
+    en: 'Dalal operates as an intermediary platform between clients and beauty service providers. We do not provide beauty services directly, but rather facilitate the booking and communication process.',
   },
   'marketing.terms.section-3-title': {
     ar: '٣. الحجوزات والإلغاء',
@@ -2260,8 +2260,8 @@ export const marketingMessages = {
   },
   'marketing.terms.section-6-title': { ar: '٦. التعديلات', en: '6. Amendments' },
   'marketing.terms.section-6-body': {
-    ar: 'تحتفظ جالكسي بيوتي بالحق في تعديل هذه الشروط في أي وقت. سيتم إشعاركِ بأي تغييرات جوهرية عبر البريد الإلكتروني أو عبر المنصة.',
-    en: 'Galaxy of Beauty reserves the right to amend these terms at any time. You will be notified of any material changes via email or through the platform.',
+    ar: 'تحتفظ دلال بالحق في تعديل هذه الشروط في أي وقت. سيتم إشعاركِ بأي تغييرات جوهرية عبر البريد الإلكتروني أو عبر المنصة.',
+    en: 'Dalal reserves the right to amend these terms at any time. You will be notified of any material changes via email or through the platform.',
   },
   'marketing.tutorials.difficulty-unknown': { ar: 'غير معروف', en: 'Unknown' },
   'marketing.tutorials.difficulty-beginner': { ar: 'مبتدئ', en: 'Beginner' },

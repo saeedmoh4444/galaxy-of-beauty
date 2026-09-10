@@ -3,7 +3,7 @@
 import { cn } from '@galaxy/shared';
 
 /**
- * Franchise Card — helps top technicians open their own Galaxy of Beauty franchise.
+ * Franchise Card — helps top technicians open their own Dalal franchise.
  * From Phase W10: Saudi Women Leadership — Franchise Program.
  *
  * Usage:
@@ -22,7 +22,7 @@ const BENEFITS: FranchiseBenefit[] = [
     title: { ar: 'العلامة التجارية', en: 'Brand' },
     description: {
       ar: 'استخدمي اسم جالاكسي بيوتي المعروف',
-      en: 'Use the well-known Galaxy Beauty name',
+      en: 'Use the well-known Dalal name',
     },
   },
   {

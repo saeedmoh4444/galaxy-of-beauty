@@ -3,7 +3,7 @@
 import { cn } from '@galaxy/shared';
 
 /**
- * Academy Certificate Badge — course completion certification from Galaxy Beauty Academy.
+ * Academy Certificate Badge — course completion certification from Dalal Beauty Academy.
  * From Phase W6: Education & Empowerment — Paid Certifications.
  *
  * Usage:
