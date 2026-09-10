@@ -207,6 +207,7 @@ export default function CreateBookingPage(): JSX.Element {
               {services.map((s) => (
                 <button
                   key={s.id}
+                  data-testid="service-option"
                   onClick={() => {
                     setServiceId(s.id);
                     setStep(2);
@@ -333,7 +334,7 @@ export default function CreateBookingPage(): JSX.Element {
               <Button onClick={() => setStep(1)} variant="outline">
                 {t('booking.previous')}
               </Button>
-              <Button onClick={() => setStep(3)} className="flex-1">
+              <Button data-testid="step-next" onClick={() => setStep(3)} className="flex-1">
                 {t('button.next')}
               </Button>
             </div>
@@ -392,6 +393,34 @@ export default function CreateBookingPage(): JSX.Element {
                   </div>
                 </>
               )}
+            </div>
+
+            {/* Phase 3 sprint 2 — payment clarity: how you'll pay */}
+            <div
+              data-testid="payment-clarity"
+              className="mt-4 rounded-lg border border-edge bg-surface-muted p-4 dark:border-gray-700 dark:bg-gray-900"
+            >
+              <p className="mb-2 text-sm font-semibold text-text-primary">
+                {t('booking.payment.title')}
+              </p>
+              <div className="grid gap-2 sm:grid-cols-2">
+                <div className="rounded-lg bg-surface p-3">
+                  <p className="text-sm font-semibold text-brand-700">
+                    {t('booking.payment.online-label')}
+                  </p>
+                  <p className="mt-1 text-xs text-text-secondary">
+                    {t('booking.payment.online-desc')}
+                  </p>
+                </div>
+                <div className="rounded-lg bg-surface p-3">
+                  <p className="text-sm font-semibold text-brand-700">
+                    {t('booking.payment.venue-label')}
+                  </p>
+                  <p className="mt-1 text-xs text-text-secondary">
+                    {t('booking.payment.venue-desc')}
+                  </p>
+                </div>
+              </div>
             </div>
 
             {/* Promo code (B.2) */}
