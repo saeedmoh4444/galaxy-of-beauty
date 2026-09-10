@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import Image from 'next/image';
-import { useEffect, useMemo, useState, type ComponentProps } from 'react';
+import { useCallback, useEffect, useMemo, useState, type ComponentProps } from 'react';
 import { api } from '@/lib/trpc';
 import {
   Card,
@@ -73,18 +73,31 @@ export default function CustomerDashboardPage(): JSX.Element {
       return;
     }
     if (stored === 'done') return;
-    const timer = setTimeout(() => setTourOpen(true), 800);
+    const timer = setTimeout(() => {
+      // Re-check at fire time: the user may have skipped/completed the
+      // tour during the settle delay (or a re-hydrated auth state
+      // re-armed this effect) — re-opening then would yank them back
+      // to step 1 mid-session.
+      try {
+        if (localStorage.getItem(TOUR_STORAGE_KEY) === 'done') return;
+      } catch {
+        // private mode — fall through and open
+      }
+      setTourOpen(true);
+    }, 800);
     return () => clearTimeout(timer);
   }, [isAuthenticated]);
 
-  const closeTour = (_reason: 'complete' | 'skip') => {
+  // Stable identity so Walkthrough's settle effect doesn't re-run (and
+  // reset to step 1) on every query-driven parent re-render.
+  const closeTour = useCallback((_reason: 'complete' | 'skip') => {
     try {
       localStorage.setItem(TOUR_STORAGE_KEY, 'done');
     } catch {
       // non-fatal — private mode
     }
     setTourOpen(false);
-  };
+  }, []);
 
   const tourSteps: WalkthroughStep[] = useMemo(
     () => TOUR_STEP_KEYS.map((s) => ({ target: s.target, title: t(s.title), body: t(s.body) })),
