@@ -155,15 +155,17 @@ export function DashboardLayout({
     <div className="flex min-h-screen">
       {/* Sidebar */}
       <aside className="hidden w-64 border-e border-edge bg-white p-4 md:block dark:border-gray-800 dark:bg-gray-950">
-        <Link href="/" className="mb-8 flex items-center gap-2">
+        <Link href="/" className="mb-8 flex shrink-0 items-center gap-2">
           <Image
             src="/logo.png"
             alt={t('common.brandName')}
             width={40}
             height={40}
-            className="h-10 w-10 rounded-lg object-cover"
+            className="h-10 w-10 shrink-0 rounded-lg object-cover"
           />
-          <span className="text-xl font-bold text-brand-600">{t('common.brandName')}</span>
+          <span className="whitespace-nowrap text-xl font-bold leading-none text-brand-600">
+            {t('common.brandName')}
+          </span>
         </Link>
         <nav className="space-y-1">
           {links.map((link) => (

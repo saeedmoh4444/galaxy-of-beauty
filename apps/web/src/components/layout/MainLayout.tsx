@@ -42,15 +42,17 @@ export function MainLayout({ children }: { children: ReactNode }): JSX.Element {
       {/* Navbar */}
       <header className="sticky top-0 z-40 border-b border-edge bg-white/80 backdrop-blur dark:border-gray-800 dark:bg-gray-950/80">
         <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4">
-          <Link href="/" className="flex items-center gap-2">
+          <Link href="/" className="flex shrink-0 items-center gap-2">
             <Image
               src="/logo.png"
               alt={t('common.brandName')}
               width={40}
               height={40}
-              className="h-10 w-10 rounded-lg object-cover"
+              className="h-10 w-10 shrink-0 rounded-lg object-cover"
             />
-            <span className="text-xl font-bold text-brand-600">{t('common.brandName')}</span>
+            <span className="hidden whitespace-nowrap text-xl font-bold leading-none text-brand-600 sm:block">
+              {t('common.brandName')}
+            </span>
           </Link>
 
           <nav className="hidden items-center gap-6 md:flex">
@@ -96,15 +98,17 @@ export function MainLayout({ children }: { children: ReactNode }): JSX.Element {
         <div className="mx-auto max-w-7xl px-4 py-12">
           <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-4">
             <div>
-              <Link href="/" className="flex items-center gap-2">
+              <Link href="/" className="flex shrink-0 items-center gap-2">
                 <Image
                   src="/logo.png"
                   alt={t('common.brandName')}
                   width={40}
                   height={40}
-                  className="h-10 w-10 rounded-lg object-cover"
+                  className="h-10 w-10 shrink-0 rounded-lg object-cover"
                 />
-                <span className="text-lg font-bold text-brand-600">{t('common.brandName')}</span>
+                <span className="whitespace-nowrap text-lg font-bold leading-none text-brand-600">
+                  {t('common.brandName')}
+                </span>
               </Link>
               <p className="mt-3 text-sm text-text-secondary">{t('footer.tagline')}</p>
             </div>
