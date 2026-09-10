@@ -1,0 +1,47 @@
+/**
+ * services.getById — technician kycStatus exposure.
+ *
+ * Phase 3 sprint 2.1: the service-detail UI renders per-card verified badges,
+ * so getById's technician mapping must expose kycStatus (raw value — the UI
+ * decides when to show the badge, keeping cards honest on mixed sources).
+ *
+ * Run: pnpm --filter @galaxy/api test -- services-kyc-status.test.ts
+ */
+import { describe, it, expect } from 'vitest';
+import { appRouter } from '../routers/index';
+import { createTRPCContext } from '../context';
+
+const KYC_VALUES = ['PENDING', 'SUBMITTED', 'VERIFIED', 'REJECTED'] as const;
+
+async function anonCaller() {
+  const ctx = await createTRPCContext();
+  return (appRouter as any).createCaller(ctx);
+}
+
+describe('services.getById — technician kycStatus', () => {
+  it('exposes kycStatus on every mapped technician', async () => {
+    const caller = await anonCaller();
+    const list = await caller.services.list({ page: 1, limit: 100, sort: 'popular' });
+
+    // Find the first service whose detail carries at least one technician
+    // mapping (seed data varies between environments).
+    let detail: any = null;
+    for (const svc of list.items ?? []) {
+      const d = await caller.services.getById({ id: svc.id });
+      if ((d.technicianServices ?? []).length > 0) {
+        detail = d;
+        break;
+      }
+    }
+    if (!detail) {
+      // No mapped technicians in this dataset — nothing to assert against.
+      return;
+    }
+
+    for (const ts of detail.technicianServices) {
+      expect(ts.technician).toBeDefined();
+      expect(ts.technician).toHaveProperty('kycStatus');
+      expect(KYC_VALUES).toContain(ts.technician.kycStatus);
+    }
+  });
+});
