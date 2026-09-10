@@ -43,7 +43,7 @@
     "react-native-web": "^0.21.2",
     "socket.io-client": "^4.8.3",
     "superjson": "^2.2.6",
-    "zod": "^3.23.0"
+    "zod": "^4.4.3"
   },
   "devDependencies": {
     "@galaxy/config": "workspace:*",
