@@ -108,6 +108,25 @@ export function getHomeGreetingKey(stage: string | null | undefined): Translatio
   );
 }
 
+/**
+ * Phase 3 sprint 1 — stage-aware ordering for the discover tiles.
+ * Items whose href matches a life-stage quick link surface first (in link
+ * order); everything else keeps its original relative order. Pure.
+ */
+export function prioritizeByLinks<T extends { href: string }>(
+  items: readonly T[],
+  links: readonly string[],
+): T[] {
+  const rank = new Map(links.map((href, i) => [href, i]));
+  return items
+    .map((item, i) => ({
+      item,
+      key: rank.has(item.href) ? rank.get(item.href)! : links.length + i,
+    }))
+    .sort((a, b) => a.key - b.key)
+    .map((x) => x.item);
+}
+
 /** Pamper window: the predicted period starts within 3 days, or we are on
  *  period days 1–3. */
 export function isPamperWindow(input: {
