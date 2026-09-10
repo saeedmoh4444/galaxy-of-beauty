@@ -574,3 +574,4 @@ export { Walkthrough, type WalkthroughStep } from './motion/Walkthrough';
 
 // Trust layer (Phase 3 sprint 1)
 export { TrustBadge, TrustBadges, type TrustBadgeVariant } from './TrustBadges';
+export { ReelCard } from './ReelCard';

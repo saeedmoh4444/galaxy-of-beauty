@@ -15,6 +15,7 @@ import {
   Sparkles,
   TrustBadge,
   TrustBadges,
+  ReelCard,
 } from '@galaxy/ui';
 import { heroImages } from '@galaxy/shared';
 
@@ -31,12 +32,23 @@ interface Service {
   durationMin: number;
 }
 
+interface ShortItem {
+  id: number;
+  titleJson: { ar?: string; en?: string };
+  videoUrl: string | null;
+  thumbnailUrl: string | null;
+  beforeImageUrl: string | null;
+  durationSec: number;
+  views: number;
+}
+
 export interface HomePageProps {
   initialCategories: Category[];
   initialServices: Service[];
   serviceTotal: number;
   technicianTotal: number;
   placeCount: number;
+  initialShorts: ShortItem[];
   fetchError?: string;
 }
 
@@ -74,11 +86,13 @@ export function HomeClient({
   serviceTotal,
   technicianTotal,
   placeCount,
+  initialShorts,
   fetchError,
 }: HomePageProps): JSX.Element {
   const { t, locale } = useLocale();
   const categories = initialCategories;
   const svcItems = initialServices;
+  const shorts = initialShorts;
 
   // Stage-aware greeting (E6a) — guest-safe: back_to_me until the
   // per-user stage arrives from the API.
@@ -303,6 +317,40 @@ export function HomeClient({
           )}
         </div>
       </section>
+
+      {/* Reels — real media "شاهدينا" (E7 home, Phase 3 sprint 1) */}
+      {shorts.length > 0 && (
+        <section data-testid="home-reels" className="mx-auto max-w-7xl px-4 py-16">
+          <div className="mb-8 flex items-center justify-between">
+            <h2 className="text-2xl font-bold">{t('marketing.home.reels-title')}</h2>
+            <Link
+              href="/beauty-shorts"
+              className="text-sm font-semibold text-brand-600 hover:text-brand-700"
+            >
+              {t('marketing.home.reels-view-all')}
+            </Link>
+          </div>
+          <div className="flex gap-4 overflow-x-auto pb-4 snap-x">
+            {shorts.map((s) => (
+              <Link
+                key={s.id}
+                href="/beauty-shorts"
+                className="shrink-0 snap-start"
+                aria-label={localize(s.titleJson, locale)}
+              >
+                <ReelCard
+                  title={localize(s.titleJson, locale)}
+                  videoUrl={s.videoUrl}
+                  thumbnailUrl={s.thumbnailUrl}
+                  beforeImageUrl={s.beforeImageUrl}
+                  durationSec={s.durationSec}
+                  views={s.views}
+                />
+              </Link>
+            ))}
+          </div>
+        </section>
+      )}
 
       {/* Trust Section — API-derived stats (Phase 3 sprint 1) */}
       <section data-testid="trust-stats" className="mx-auto max-w-7xl px-4 py-16 text-center">
