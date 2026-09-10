@@ -3,6 +3,7 @@
  * shared by the lifeStage router and the wellness-hub UIs.
  * Pure data/helpers — no JSX, no server imports.
  */
+import type { TranslationKey } from './i18n';
 
 export const LIFE_STAGE_KEYS = ['bride', 'trying', 'pregnant', 'new_mom', 'back_to_me'] as const;
 export type LifeStageKey = (typeof LIFE_STAGE_KEYS)[number];
@@ -88,6 +89,23 @@ export const LIFE_STAGES: LifeStageDefinition[] = [
 
 export function getLifeStageDefinition(key: string | null | undefined): LifeStageDefinition {
   return LIFE_STAGES.find((s) => s.key === key) ?? LIFE_STAGES[4]!;
+}
+
+/** Home-hero greeting copy per stage (Phase 3 sprint 1). Unknown or missing
+ *  stages fall back to the generic hero subtitle. */
+const HOME_GREETING_KEYS: Record<LifeStageKey, TranslationKey> = {
+  bride: 'marketing.home.greeting.bride',
+  trying: 'marketing.home.greeting.trying',
+  pregnant: 'marketing.home.greeting.pregnant',
+  new_mom: 'marketing.home.greeting.new_mom',
+  back_to_me: 'marketing.home.greeting.back_to_me',
+};
+
+export function getHomeGreetingKey(stage: string | null | undefined): TranslationKey {
+  return (
+    (stage ? HOME_GREETING_KEYS[stage as LifeStageKey] : undefined) ??
+    'marketing.home.hero-subtitle'
+  );
 }
 
 /** Pamper window: the predicted period starts within 3 days, or we are on

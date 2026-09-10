@@ -11,6 +11,27 @@ export const marketingMessages = {
     ar: 'احجزي خدمات التجميل المنزلية بكل سهولة — شعر، بشرة، مكياج، مساج والمزيد',
     en: 'Book home beauty services with ease — hair, skin, makeup, massage and more',
   },
+  // Stage-aware hero greetings (E6a — Phase 3 sprint 1)
+  'marketing.home.greeting.bride': {
+    ar: 'استعدي ليومكِ الكبير — تصفيف، مكياج واهتمام كامل بالعروس',
+    en: 'Get ready for your big day — bridal styling, makeup and full pampering',
+  },
+  'marketing.home.greeting.trying': {
+    ar: 'رحلة الأمومة تبدأ بالعناية — خدمات آمنة ومريحة لكِ',
+    en: 'Your motherhood journey starts with self-care — safe, relaxing services for you',
+  },
+  'marketing.home.greeting.pregnant': {
+    ar: 'اهتمام آمن لكِ ولطفلكِ — خدمات آمنة للحمل وصالونات صديقة',
+    en: 'Safe care for you and your baby — pregnancy-safe services and friendly salons',
+  },
+  'marketing.home.greeting.new_mom': {
+    ar: 'مرحباً بعودتكِ — خدمات صديقة للأمهات ودعم بعد الولادة',
+    en: 'Welcome back — mommy-friendly services and postpartum support',
+  },
+  'marketing.home.greeting.back_to_me': {
+    ar: 'احجزي خدمات التجميل المنزلية بكل سهولة — شعر، بشرة، مكياج، مساج والمزيد',
+    en: 'Book home beauty services with ease — hair, skin, makeup, massage and more',
+  },
   'marketing.home.book-now': { ar: 'احجزي الآن', en: 'Book now' },
   'marketing.home.surprise-me': { ar: 'فاجئيني', en: 'Surprise me' },
   'marketing.home.categories': { ar: 'الأقسام', en: 'Categories' },

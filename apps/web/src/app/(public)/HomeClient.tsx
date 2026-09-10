@@ -1,8 +1,9 @@
 'use client';
 
 import Link from 'next/link';
-import { localize } from '@galaxy/shared';
+import { localize, getHomeGreetingKey } from '@galaxy/shared';
 import { useLocale } from '@/components/LocaleProvider';
+import { api } from '@/lib/trpc';
 import {
   Button,
   Card,
@@ -35,6 +36,16 @@ export interface HomePageProps {
   fetchError?: string;
 }
 
+type HomeGreeting = {
+  stage: string;
+  pamper: {
+    isActive: boolean;
+    deals: Array<Record<string, unknown>>;
+    kits: Array<Record<string, unknown>>;
+    spaServices: Array<Record<string, unknown>>;
+  };
+};
+
 function categoryImageKey(slug: string): string {
   const map: Record<string, string> = {
     hair: 'hair',
@@ -62,6 +73,13 @@ export function HomeClient({
   const { t, locale } = useLocale();
   const categories = initialCategories;
   const svcItems = initialServices;
+
+  // Stage-aware greeting (E6a) — guest-safe: back_to_me until the
+  // per-user stage arrives from the API.
+  const greetingQ = api.lifeStage.homeGreeting.useQuery();
+  const greeting = greetingQ.data as HomeGreeting | undefined;
+  const stage = greeting?.stage ?? 'back_to_me';
+  const pamper = greeting?.pamper;
 
   return (
     <div>
@@ -108,8 +126,11 @@ export function HomeClient({
               <h1 className="mt-6 text-4xl font-extrabold leading-tight text-text-primary md:text-5xl lg:text-6xl">
                 {t('marketing.home.hero-title')}
               </h1>
-              <p className="mt-5 max-w-xl text-lg text-text-secondary md:text-xl">
-                {t('marketing.home.hero-subtitle')}
+              <p
+                data-testid="hero-greeting"
+                className="mt-5 max-w-xl text-lg text-text-secondary md:text-xl"
+              >
+                {t(getHomeGreetingKey(stage))}
               </p>
               <div className="mt-8 flex flex-wrap gap-4">
                 <Link href="/bookings/create">
@@ -177,6 +198,52 @@ export function HomeClient({
           <Marquee className="mt-16" items={categories.map((c) => localize(c.nameJson, locale))} />
         </div>
       </section>
+
+      {/* Pamper window banner (E6a) — period-relief offers, customers only */}
+      {pamper?.isActive && (
+        <section
+          aria-label={t('lifeStage.pamper.title')}
+          data-testid="pamper-banner"
+          className="mx-auto max-w-7xl px-4"
+        >
+          <Card
+            padding="lg"
+            className="border-2 border-pink-200 bg-pink-50/60 dark:border-pink-900 dark:bg-pink-950/30"
+          >
+            <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
+              <div>
+                <h2 className="font-bold">{t('lifeStage.pamper.title')}</h2>
+                <p className="mt-1 text-sm font-semibold text-pink-700 dark:text-pink-300">
+                  {t('lifeStage.pamper.active')}
+                </p>
+              </div>
+              <div className="flex flex-wrap items-center gap-2">
+                {pamper.deals.length > 0 && (
+                  <Link href="/flash-deals">
+                    <span className="rounded-full bg-pink-100 px-3 py-1 text-xs font-semibold text-pink-700 dark:bg-pink-900 dark:text-pink-200">
+                      {t('lifeStage.pamper.deals')}
+                    </span>
+                  </Link>
+                )}
+                {pamper.kits.length > 0 && (
+                  <Link href="/stores">
+                    <span className="rounded-full bg-pink-100 px-3 py-1 text-xs font-semibold text-pink-700 dark:bg-pink-900 dark:text-pink-200">
+                      {t('lifeStage.pamper.kits')}
+                    </span>
+                  </Link>
+                )}
+                {pamper.spaServices.length > 0 && (
+                  <Link href="/search">
+                    <span className="rounded-full bg-pink-100 px-3 py-1 text-xs font-semibold text-pink-700 dark:bg-pink-900 dark:text-pink-200">
+                      {t('lifeStage.pamper.spa')}
+                    </span>
+                  </Link>
+                )}
+              </div>
+            </div>
+          </Card>
+        </section>
+      )}
 
       {/* Categories */}
       <section className="mx-auto max-w-7xl px-4 py-16">

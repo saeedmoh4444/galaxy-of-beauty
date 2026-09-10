@@ -6,6 +6,7 @@
  */
 import { describe, it, expect, beforeAll, afterAll } from 'vitest';
 import { prisma } from '@galaxy/db';
+import { getHomeGreetingKey } from '@galaxy/shared';
 import { appRouter } from '../routers/index';
 import type { JwtPayload } from '../lib/jwt';
 import { buildUser } from './factories';
@@ -150,5 +151,103 @@ describe('life-stage journeys + period pampering (E6a)', () => {
     });
     const out = await c.lifeStage.pamperStatus();
     expect(out.isPamperWindow).toBe(false);
+  });
+});
+
+/**
+ * Phase 3 sprint 1 — homeGreeting feeds the public home hero. Guest-safe:
+ * anonymous and non-customer callers get back_to_me with no pamper window;
+ * customers get their derived/overridden stage and the pamper offers when
+ * the window is open.
+ */
+describe('homeGreeting — guest-safe public hero greeting (Phase 3 sprint 1)', () => {
+  let techUser: JwtPayload;
+
+  beforeAll(async () => {
+    const t = await prisma.user.create({ data: buildUser({ role: 'TECHNICIAN' }) });
+    techUser = { id: t.id, role: 'TECHNICIAN', email: t.email };
+    createdUserIds.push(t.id);
+  }, 15000);
+
+  it('is public — anonymous callers get back_to_me with an inactive pamper window', async () => {
+    const anon = await caller(null);
+    const g = await anon.lifeStage.homeGreeting();
+    expect(g.stage).toBe('back_to_me');
+    expect(g.pamper.isActive).toBe(false);
+    expect(g.pamper.deals).toEqual([]);
+    expect(g.pamper.kits).toEqual([]);
+    expect(g.pamper.spaServices).toEqual([]);
+  });
+
+  it('treats non-customer roles as back_to_me', async () => {
+    const tc = await caller(techUser);
+    const g = await tc.lifeStage.homeGreeting();
+    expect(g.stage).toBe('back_to_me');
+    expect(g.pamper.isActive).toBe(false);
+  });
+
+  it('returns the derived stage for a signed-in customer', async () => {
+    await prisma.cycleSettings.deleteMany({ where: { userId: user.id } });
+    await prisma.bridalConcierge.create({
+      data: { userId: user.id, weddingDate: new Date(Date.now() + 90 * 86_400_000) },
+    });
+    const c = await caller(user);
+    const g = await c.lifeStage.homeGreeting();
+    expect(g.stage).toBe('bride');
+  });
+
+  it('honours the manual stage override', async () => {
+    const c = await caller(user);
+    await c.lifeStage.choose({ stage: 'new_mom' });
+    const g = await c.lifeStage.homeGreeting();
+    expect(g.stage).toBe('new_mom');
+  });
+
+  it('surfaces the pamper window with offers ≤3 days before the period', async () => {
+    await prisma.beautyProfile.update({
+      where: { userId: user.id },
+      data: { lifeStage: null },
+    });
+    await prisma.bridalConcierge.deleteMany({ where: { userId: user.id } });
+    await prisma.cycleSettings.create({
+      data: {
+        userId: user.id,
+        cycleLength: 28,
+        lastPeriodStart: new Date(Date.now() - 26 * 86_400_000),
+      },
+    });
+    const c = await caller(user);
+    const g = await c.lifeStage.homeGreeting();
+    expect(g.pamper.isActive).toBe(true);
+    expect(Array.isArray(g.pamper.deals)).toBe(true);
+    expect(Array.isArray(g.pamper.kits)).toBe(true);
+    expect(Array.isArray(g.pamper.spaServices)).toBe(true);
+  });
+
+  it('keeps the window closed mid-cycle with empty offers', async () => {
+    await prisma.cycleSettings.update({
+      where: { userId: user.id },
+      data: { lastPeriodStart: new Date(Date.now() - 14 * 86_400_000) },
+    });
+    const c = await caller(user);
+    const g = await c.lifeStage.homeGreeting();
+    expect(g.pamper.isActive).toBe(false);
+    expect(g.pamper.deals).toEqual([]);
+    expect(g.pamper.kits).toEqual([]);
+    expect(g.pamper.spaServices).toEqual([]);
+  });
+});
+
+describe('getHomeGreetingKey — stage → hero greeting copy mapping', () => {
+  it('maps every life stage to its greeting key', () => {
+    for (const s of ['bride', 'trying', 'pregnant', 'new_mom', 'back_to_me']) {
+      expect(getHomeGreetingKey(s)).toBe(`marketing.home.greeting.${s}`);
+    }
+  });
+
+  it('falls back to the generic subtitle for unknown or missing stages', () => {
+    expect(getHomeGreetingKey('nonsense')).toBe('marketing.home.hero-subtitle');
+    expect(getHomeGreetingKey(null)).toBe('marketing.home.hero-subtitle');
+    expect(getHomeGreetingKey(undefined)).toBe('marketing.home.hero-subtitle');
   });
 });

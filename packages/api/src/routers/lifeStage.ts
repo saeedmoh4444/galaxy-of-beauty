@@ -8,7 +8,7 @@ import {
   getLifeStageDefinition,
   isPamperWindow,
 } from '@galaxy/shared';
-import { customerProcedure, router } from '../trpc';
+import { customerProcedure, publicProcedure, router } from '../trpc';
 
 const db = prisma;
 
@@ -26,6 +26,31 @@ async function resolveStage(userId: number): Promise<{ stage: string; source: 'm
   if (cycle?.pregnancyMode) return { stage: 'pregnant', source: 'auto' };
   if (cycle?.lastPeriodStart) return { stage: 'trying', source: 'auto' };
   return { stage: 'back_to_me', source: 'auto' };
+}
+
+/** Active pamper offers: flash deals, self-care kits, spa services. */
+async function pamperOffers() {
+  const now = new Date();
+  const [deals, kits, spaServices] = await Promise.all([
+    db.flashDeal.findMany({
+      where: { isActive: true, startsAt: { lte: now }, endsAt: { gte: now } },
+      orderBy: { dealPrice: 'asc' },
+      take: 4,
+    }),
+    db.product.findMany({
+      where: {
+        isActive: true,
+        category: { slug: { in: ['product-skincare', 'product-haircare'] } },
+      },
+      orderBy: { sales: 'desc' },
+      take: 4,
+    }),
+    db.service.findMany({
+      where: { isActive: true, category: { slug: 'spa-wellness' } },
+      take: 4,
+    }),
+  ]);
+  return { deals, kits, spaServices };
 }
 
 /** Services matched to the stage (pregnancy-safe / mommy-friendly / popular). */
@@ -134,34 +159,45 @@ export const lifeStageRouter = router({
       hasSettings: predictions.hasSettings,
     });
 
-    const now = new Date();
-    const [deals, kits, spaServices] = await Promise.all([
-      db.flashDeal.findMany({
-        where: { isActive: true, startsAt: { lte: now }, endsAt: { gte: now } },
-        orderBy: { dealPrice: 'asc' },
-        take: 4,
-      }),
-      db.product.findMany({
-        where: {
-          isActive: true,
-          category: { slug: { in: ['product-skincare', 'product-haircare'] } },
-        },
-        orderBy: { sales: 'desc' },
-        take: 4,
-      }),
-      db.service.findMany({
-        where: { isActive: true, category: { slug: 'spa-wellness' } },
-        take: 4,
-      }),
-    ]);
+    const offers = await pamperOffers();
 
     return {
       isPamperWindow: window,
       daysUntilNext: predictions.daysUntilNext,
       currentDay: predictions.currentDay,
-      deals,
-      kits,
-      spaServices,
+      ...offers,
     };
+  }),
+
+  /**
+   * homeGreeting — guest-safe hero greeting for the public home page
+   * (Phase 3 sprint 1). Anonymous and non-customer callers get back_to_me
+   * with no pamper window; signed-in customers get their derived/overridden
+   * stage and the pamper offers only when the window is open.
+   */
+  homeGreeting: publicProcedure.query(async ({ ctx }) => {
+    const userId = ctx.user?.role === 'CUSTOMER' ? ctx.user.id : null;
+    if (userId === null) {
+      return {
+        stage: 'back_to_me',
+        pamper: { isActive: false, deals: [], kits: [], spaServices: [] },
+      };
+    }
+
+    const { stage } = await resolveStage(userId);
+    const cycle = await db.cycleSettings.findUnique({ where: { userId } });
+    const predictions = computeCyclePredictions({
+      cycleLength: cycle?.cycleLength ?? 28,
+      lastPeriodStart: cycle?.lastPeriodStart ?? null,
+      avgCycleLength: cycle?.avgCycleLength,
+    });
+    const isActive = isPamperWindow({
+      daysUntilNext: predictions.daysUntilNext,
+      currentDay: predictions.currentDay,
+      hasSettings: predictions.hasSettings,
+    });
+    const offers = isActive ? await pamperOffers() : { deals: [], kits: [], spaServices: [] };
+
+    return { stage, pamper: { isActive, ...offers } };
   }),
 });
