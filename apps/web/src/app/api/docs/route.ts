@@ -5,7 +5,7 @@ const swaggerHtml = `<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Galaxy of Beauty — API Docs</title>
+  <title>Dalal — API Docs</title>
   <link rel="stylesheet" href="${SWAGGER_CSS_URL}">
 </head>
 <body>

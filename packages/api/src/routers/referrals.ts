@@ -199,7 +199,7 @@ export const referralRouter = router({
     return {
       code,
       shareUrl: `${process.env['NEXT_PUBLIC_APP_URL'] || 'http://localhost:3000'}/register?ref=${code}`,
-      shareText: 'انضمي إلى جالكسي بيوتي واحصلي على خصم ٢٠ ريال!',
+      shareText: 'انضمي إلى دلال واحصلي على خصم ٢٠ ريال!',
     };
   }),
 

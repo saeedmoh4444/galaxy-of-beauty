@@ -1,11 +1,11 @@
-// Galaxy of Beauty — Full Demo Seed
+// Dalal — Full Demo Seed
 // Run: pnpm --filter @galaxy/db exec tsx prisma/seed-demo-full.ts
 import { PrismaClient } from '@prisma/client';
 
 const prisma = new PrismaClient();
 
 async function main() {
-  console.log(' Seeding Galaxy of Beauty demo data...');
+  console.log(' Seeding Dalal demo data...');
 
   // ── Create admin ────────────────────────────────────────
   const admin = await prisma.user.upsert({

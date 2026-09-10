@@ -5,8 +5,8 @@ const API_BASE_URL = process.env['NEXT_PUBLIC_APP_URL'] || DEFAULT_APP_URL;
 
 const API_REFERENCE = {
   version: '2.2.0',
-  title: 'Galaxy of Beauty API',
-  description: 'REST-like tRPC API for the Galaxy of Beauty platform',
+  title: 'Dalal API',
+  description: 'REST-like tRPC API for the Dalal platform',
   baseUrl: `${API_BASE_URL}/api/trpc`,
   authentication: {
     type: 'JWT Bearer Token',
@@ -212,7 +212,7 @@ export const apiDocsRouter = router({
   openapi: publicProcedure.query(() => ({
     openapi: '3.0.3',
     info: {
-      title: 'Galaxy of Beauty API',
+      title: 'Dalal API',
       version: '2.2.0',
       description: 'Beauty marketplace tRPC API — 145 routers, 300+ procedures',
     },
