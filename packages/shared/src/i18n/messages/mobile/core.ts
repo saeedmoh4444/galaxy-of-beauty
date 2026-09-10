@@ -89,7 +89,7 @@ export const mobileCoreMessages = {
   'mobile.core.loyaltyPoints': { ar: 'نقاط ولاء', en: 'Loyalty Points' },
   'mobile.core.cashbackLabel': { ar: 'كاش باك', en: 'Cashback' },
   'mobile.core.recentTransactions': { ar: 'آخر المعاملات', en: 'Recent Transactions' },
-  'mobile.core.beautyGalaxyUser': { ar: 'مستخدمة جالكسي بيوتي', en: 'Galaxy of Beauty User' },
+  'mobile.core.beautyGalaxyUser': { ar: 'مستخدمة دلال', en: 'Dalal User' },
   'mobile.core.errorBoundaryDesc': {
     ar: 'نأسف على هذا الخطأ. يرجى المحاولة لاحقاً.',
     en: 'Sorry for this error. Please try again later.',

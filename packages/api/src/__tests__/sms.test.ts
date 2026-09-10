@@ -74,9 +74,7 @@ describe('sms lib', () => {
       await sendBookingConfirmationSms('+966500000001', 'GOB-1234', '2026-09-01');
       expect(spy).toHaveBeenCalledWith(expect.stringContaining('GOB-1234'));
       await sendBookingConfirmationSms('+966500000001', 'GOB-1234', '2026-09-01', 'en');
-      expect(spy).toHaveBeenCalledWith(
-        expect.stringContaining('Galaxy of Beauty booking is confirmed'),
-      );
+      expect(spy).toHaveBeenCalledWith(expect.stringContaining('Dalal booking is confirmed'));
     });
 
     it('builds Arabic and English reminder messages with hours', async () => {

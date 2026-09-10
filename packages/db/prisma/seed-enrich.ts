@@ -1,5 +1,5 @@
 /**
- * Galaxy of Beauty — Seed Data Enrichment
+ * Dalal — Seed Data Enrichment
  *
  * Generates realistic production-scale data on top of the base seed.
  * Run AFTER `pnpm db:seed`:
@@ -128,7 +128,7 @@ const REVIEW_COMMENTS_AR = [
 ];
 
 async function main() {
-  console.log(' Enriching Galaxy of Beauty database...\n');
+  console.log(' Enriching Dalal database...\n');
 
   // ── Get existing data ──
   const existingUsers = await db.user.findMany({ include: { wallet: true } });
