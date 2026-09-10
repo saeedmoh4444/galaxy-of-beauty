@@ -23,6 +23,11 @@ export default function BookingConfirmPage(): JSX.Element {
         </h1>
         <p className="text-text-secondary">{t('booking.success-message')}</p>
 
+        {/* Phase 3 sprint 2 — payment explainer under the confirmation */}
+        <p className="text-sm text-text-tertiary">
+          {t('booking.payment.online-desc')} · {t('booking.payment.venue-desc')}
+        </p>
+
         <Card padding="lg" className="text-start">
           <div className="space-y-3 text-sm">
             <div className="flex justify-between">

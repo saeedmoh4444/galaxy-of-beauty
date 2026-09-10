@@ -58,6 +58,18 @@ export const bookingMessages = {
     ar: 'لا توجد فنيات متاحة لهذه الخدمة حالياً',
     en: 'No service providers are currently available for this service',
   },
+  // Phase 3 sprint 2 — payment clarity (pay-at-venue vs online)
+  'booking.payment.title': { ar: 'طريقة الدفع', en: 'Payment method' },
+  'booking.payment.online-label': { ar: 'ادفعي إلكترونياً', en: 'Pay online' },
+  'booking.payment.online-desc': {
+    ar: 'من محفظتك بعد قبول مقدم الخدمة للحجز',
+    en: 'From your wallet once the provider accepts the booking',
+  },
+  'booking.payment.venue-label': { ar: 'ادفعي عند الوصول', en: 'Pay at venue' },
+  'booking.payment.venue-desc': {
+    ar: 'نقداً أو بالبطاقة في الموقع',
+    en: 'Cash or card at the venue',
+  },
   'booking.step-details': { ar: 'التفاصيل', en: 'Details' },
   'booking.step-confirm': { ar: 'التأكيد', en: 'Confirmation' },
   'booking.choose-service': { ar: 'اختر الخدمة', en: 'Choose Service' },
