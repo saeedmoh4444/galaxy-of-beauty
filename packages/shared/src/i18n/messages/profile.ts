@@ -102,6 +102,32 @@ export const profileMessages = {
   'tour.done': { ar: 'تمام، لنبدأ!', en: 'Done, let’s go!' },
   'tour.replay': { ar: 'جولة تعريفية', en: 'Guided tour' },
   'tour.progress': { ar: '{current} من {total}', en: '{current} of {total}' },
+
+  // Hover tooltips (§3.6 secondary layer)
+  'tooltip.bookNow': {
+    ar: 'احجزي خدمة مع الفنية الأنسب لكِ',
+    en: 'Book a service with the provider that fits you',
+  },
+  'tooltip.giftCards': {
+    ar: 'بطاقات هدايا لصديقاتكِ',
+    en: 'Gift cards for your friends',
+  },
+  'tooltip.inspiration': {
+    ar: 'لوحة إلهام لحفظ أفكارك الجمالية',
+    en: 'A pin board for your beauty ideas',
+  },
+  'tooltip.surpriseMe': {
+    ar: 'دعينا نختار لكِ تجربة مميزة',
+    en: 'Let us pick a surprise experience for you',
+  },
+  'tooltip.dailyAssessment': {
+    ar: 'تقييم يومي سريع لحالتك',
+    en: 'A quick daily wellness check-in',
+  },
+  'tooltip.replay': {
+    ar: 'إعادة الجولة التعريفية',
+    en: 'Replay the guided tour',
+  },
   'dashboard.bookings': { ar: 'الحجوزات', en: 'Bookings' },
   'dashboard.spending': { ar: 'الإنفاق', en: 'Spending' },
   'dashboard.continuity': { ar: 'الاستمرارية', en: 'Continuity' },

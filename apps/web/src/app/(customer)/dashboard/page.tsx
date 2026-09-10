@@ -26,6 +26,7 @@ import {
   useAuth,
   Walkthrough,
   type WalkthroughStep,
+  Tooltip,
 } from '@galaxy/ui';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
 import { RebookReminder } from '@/components/RebookReminder';
@@ -133,23 +134,26 @@ export default function CustomerDashboardPage(): JSX.Element {
           <h1 className="text-2xl font-bold text-text-primary">{t('dashboard.title')}</h1>
           <div className="flex items-center gap-2">
             <RebookReminder enabled={isAuthenticated} />
-            <Button
-              variant="ghost"
-              size="sm"
-              data-testid="tour-replay"
-              onClick={() => setTourOpen(true)}
-              aria-label={t('tour.replay')}
-              className="hidden md:inline-flex"
-            >
-              <Icon name="sparkle" size="sm" />
-              {t('tour.replay')}
-            </Button>
-            <Link href="/self-care">
-              <Button variant="outline" size="sm">
+            <Tooltip content={t('tooltip.replay')} className="hidden md:inline-flex">
+              <Button
+                variant="ghost"
+                size="sm"
+                data-testid="tour-replay"
+                onClick={() => setTourOpen(true)}
+                aria-label={t('tour.replay')}
+              >
                 <Icon name="sparkle" size="sm" />
-                {t('dashboard.daily-assessment')}
+                {t('tour.replay')}
               </Button>
-            </Link>
+            </Tooltip>
+            <Tooltip content={t('tooltip.dailyAssessment')}>
+              <Link href="/self-care">
+                <Button variant="outline" size="sm">
+                  <Icon name="sparkle" size="sm" />
+                  {t('dashboard.daily-assessment')}
+                </Button>
+              </Link>
+            </Tooltip>
           </div>
         </div>
 
@@ -189,30 +193,38 @@ export default function CustomerDashboardPage(): JSX.Element {
 
         {/* Quick Actions */}
         <div className="flex flex-wrap gap-2">
-          <Link href="/bookings/create" data-tour="book">
-            <Button size="lg">
-              <Icon name="sparkle" size="sm" />
-              {t('button.bookNow')}
-            </Button>
-          </Link>
-          <Link href="/gift-cards">
-            <Button variant="outline">
-              <Icon name="gift" size="sm" />
-              {t('dashboard.gift-cards')}
-            </Button>
-          </Link>
-          <Link href="/inspiration">
-            <Button variant="outline">
-              <Icon name="bookmark" size="sm" />
-              {t('dashboard.inspiration-board')}
-            </Button>
-          </Link>
-          <Link href="/services/surprise-me">
-            <Button variant="outline">
-              <Icon name="sparkle" size="sm" />
-              {t('dashboard.surprise-me')}
-            </Button>
-          </Link>
+          <Tooltip content={t('tooltip.bookNow')}>
+            <Link href="/bookings/create" data-tour="book">
+              <Button size="lg">
+                <Icon name="sparkle" size="sm" />
+                {t('button.bookNow')}
+              </Button>
+            </Link>
+          </Tooltip>
+          <Tooltip content={t('tooltip.giftCards')}>
+            <Link href="/gift-cards">
+              <Button variant="outline">
+                <Icon name="gift" size="sm" />
+                {t('dashboard.gift-cards')}
+              </Button>
+            </Link>
+          </Tooltip>
+          <Tooltip content={t('tooltip.inspiration')}>
+            <Link href="/inspiration">
+              <Button variant="outline">
+                <Icon name="bookmark" size="sm" />
+                {t('dashboard.inspiration-board')}
+              </Button>
+            </Link>
+          </Tooltip>
+          <Tooltip content={t('tooltip.surpriseMe')}>
+            <Link href="/services/surprise-me">
+              <Button variant="outline">
+                <Icon name="sparkle" size="sm" />
+                {t('dashboard.surprise-me')}
+              </Button>
+            </Link>
+          </Tooltip>
         </div>
 
         <div className="grid gap-6 lg:grid-cols-2">
