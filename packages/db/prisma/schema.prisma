@@ -554,7 +554,9 @@ model Booking {
   idempotencyKey     String?       @unique
   cancelledAt        DateTime?
   cancelReason       String?
-  googleEventId      String?
+  // Booking auto-sync (E9 follow-up): Google Calendar event ids per side.
+  googleEventId             String? // the CUSTOMER's calendar event
+  technicianGoogleEventId   String? // the TECHNICIAN's calendar event
   createdAt          DateTime      @default(now())
   updatedAt          DateTime      @updatedAt
 
