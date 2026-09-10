@@ -207,6 +207,7 @@ export default function CreateBookingPage(): JSX.Element {
               {services.map((s) => (
                 <button
                   key={s.id}
+                  data-testid="service-option"
                   onClick={() => {
                     setServiceId(s.id);
                     setStep(2);
@@ -333,7 +334,7 @@ export default function CreateBookingPage(): JSX.Element {
               <Button onClick={() => setStep(1)} variant="outline">
                 {t('booking.previous')}
               </Button>
-              <Button onClick={() => setStep(3)} className="flex-1">
+              <Button data-testid="step-next" onClick={() => setStep(3)} className="flex-1">
                 {t('button.next')}
               </Button>
             </div>
