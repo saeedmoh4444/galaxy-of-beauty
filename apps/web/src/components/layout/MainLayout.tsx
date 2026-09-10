@@ -50,7 +50,7 @@ export function MainLayout({ children }: { children: ReactNode }): JSX.Element {
               height={40}
               className="h-10 w-10 shrink-0 rounded-lg object-cover"
             />
-            <span className="whitespace-nowrap text-xl font-bold leading-none text-brand-600">
+            <span className="hidden whitespace-nowrap text-xl font-bold leading-none text-brand-600 sm:block">
               {t('common.brandName')}
             </span>
           </Link>
