@@ -1014,4 +1014,36 @@ export const mobileCustomerBMessages = {
     en: 'Add your favorite services to find them quickly',
   },
   'mobile.wishlist.service-fallback': { ar: 'خدمة #{id}', en: 'Service #{id}' },
+
+  // ---- onboarding tour (§3.6 — RN walkthrough engine) ----
+  'mobile.tour.bookTitle': { ar: 'احجزي أول خدمة', en: 'Book your first service' },
+  'mobile.tour.bookBody': {
+    ar: 'من زر «احجزي الآن» تختارين الخدمة والفنية والوقت — الدفع عند الوصول أو أونلاين، وأنتِ تتحكمين بكل التفاصيل.',
+    en: 'From “Book now” pick a service, technician and time — pay at the venue or online, with full control over the details.',
+  },
+  'mobile.tour.walletTitle': { ar: 'محفظتك وميزانيتك', en: 'Your wallet & budget' },
+  'mobile.tour.walletBody': {
+    ar: 'رصيدك، بطاقات الهدايا، والميزانية الشهرية في مكان واحد — اشحني وتابعي مصاريفك من هذه البطاقة.',
+    en: 'Balance, gift cards and monthly budget in one place — top up and track spending from this card.',
+  },
+  'mobile.tour.aiTitle': { ar: 'بيوتي AI — مستشارتك', en: 'Beauty AI, your advisor' },
+  'mobile.tour.aiBody': {
+    ar: 'اسألي مستشارة الذكاء الاصطناعي عن روتينك، بشرتك، أو أي سؤال تجميلي — متاحة على مدار الساعة وبخصوصية كاملة.',
+    en: 'Ask the AI advisor about your routine, skin or any beauty question — available 24/7 with complete privacy.',
+  },
+  'mobile.tour.wellnessTitle': { ar: 'مركز العافية', en: 'Your wellness hub' },
+  'mobile.tour.wellnessBody': {
+    ar: 'دورتك، حالتك المزاجية، نصائح ما بعد الجلسات والمزيد — كل رحلتك الصحية في صفحة واحدة تتبع مرحلة حياتك.',
+    en: 'Your cycle, mood, post-treatment care and more — your whole wellness journey in one life-stage-aware page.',
+  },
+  'mobile.tour.referralsTitle': { ar: 'دعوة الصديقات', en: 'Invite your friends' },
+  'mobile.tour.referralsBody': {
+    ar: 'شاركي رابطك الخاص واكسبي مكافآت عندما تنضم صديقاتك — جمال مشترك، مكافآت مشتركة.',
+    en: 'Share your personal link and earn rewards when friends join — shared beauty, shared rewards.',
+  },
+  'mobile.tour.next': { ar: 'التالي', en: 'Next' },
+  'mobile.tour.back': { ar: 'السابق', en: 'Back' },
+  'mobile.tour.skip': { ar: 'تخطي', en: 'Skip' },
+  'mobile.tour.done': { ar: 'تمام، لنبدأ!', en: 'Done, let’s go!' },
+  'mobile.tour.progress': { ar: '{current} من {total}', en: '{current} of {total}' },
 } as const satisfies Record<string, { ar: string; en: string }>;
