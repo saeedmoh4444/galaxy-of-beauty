@@ -180,6 +180,7 @@ export const lifeStageRouter = router({
     if (userId === null) {
       return {
         stage: 'back_to_me',
+        links: getLifeStageDefinition('back_to_me').links,
         pamper: { isActive: false, deals: [], kits: [], spaServices: [] },
       };
     }
@@ -198,6 +199,10 @@ export const lifeStageRouter = router({
     });
     const offers = isActive ? await pamperOffers() : { deals: [], kits: [], spaServices: [] };
 
-    return { stage, pamper: { isActive, ...offers } };
+    return {
+      stage,
+      links: getLifeStageDefinition(stage).links,
+      pamper: { isActive, ...offers },
+    };
   }),
 });

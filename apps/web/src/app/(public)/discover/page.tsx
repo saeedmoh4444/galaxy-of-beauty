@@ -1,176 +1,177 @@
 'use client';
 import Link from 'next/link';
 import { api } from '@/lib/trpc';
-import { localize } from '@galaxy/shared';
+import { localize, prioritizeByLinks } from '@galaxy/shared';
 import { useLocale } from '@/components/LocaleProvider';
-import { Card, GridSkeleton, formatCurrency, ErrorAlert, HeroSection } from '@galaxy/ui';
+import {
+  Card,
+  GridSkeleton,
+  formatCurrency,
+  ErrorAlert,
+  HeroSection,
+  Reveal,
+  ServiceImage,
+} from '@galaxy/ui';
 
 const FEATURES = [
   {
-    emoji: '‍️',
     title: 'marketing.discover.services',
     desc: 'marketing.discover.services-desc',
     href: '/services',
-    color: 'from-brand-100 to-brand-200',
+    image: 'spa',
   },
   {
-    emoji: '‍',
     title: 'marketing.discover.technicians',
     desc: 'marketing.discover.technicians-desc',
     href: '/technicians',
-    color: 'from-brand-100 to-brand-200',
+    image: 'makeup',
   },
   {
-    emoji: '️',
     title: 'marketing.discover.shop-the-look',
     desc: 'marketing.discover.shop-the-look-desc',
     href: '/shop-the-look',
-    color: 'from-pink-100 to-pink-200',
+    image: 'eveningMakeup',
   },
   {
-    emoji: '',
     title: 'marketing.discover.lookbook',
     desc: 'marketing.discover.lookbook-desc',
     href: '/lookbook',
-    color: 'from-amber-100 to-amber-200',
+    image: 'bridalMakeup',
   },
   {
-    emoji: '',
     title: 'marketing.discover.beauty-fortune',
     desc: 'marketing.discover.beauty-fortune-desc',
     href: '/beauty-fortune',
-    color: 'from-rose-100 to-rose-200',
+    image: 'aromatherapy',
   },
   {
-    emoji: '',
     title: 'marketing.discover.beauty-quiz',
     desc: 'marketing.discover.beauty-quiz-desc',
     href: '/beauty-quiz',
-    color: 'from-violet-100 to-violet-200',
+    image: 'facial',
   },
   {
-    emoji: '',
     title: 'marketing.discover.bundles',
     desc: 'marketing.discover.bundles-desc',
     href: '/bundles',
-    color: 'from-green-100 to-green-200',
+    image: 'bridalPackage',
   },
   {
-    emoji: '',
     title: 'marketing.discover.beauty-packages',
     desc: 'marketing.discover.beauty-packages-desc',
     href: '/beauty-packages',
-    color: 'from-cyan-100 to-cyan-200',
+    image: 'massage',
   },
   {
-    emoji: '',
     title: 'marketing.discover.bridal-concierge',
     desc: 'marketing.discover.bridal-concierge-desc',
     href: '/bridal-concierge',
-    color: 'from-pink-100 to-rose-200',
+    image: 'engagement',
   },
   {
-    emoji: '‍',
     title: 'marketing.discover.mommy-and-me',
     desc: 'marketing.discover.mommy-and-me-desc',
     href: '/mommy-and-me',
-    color: 'from-fuchsia-100 to-fuchsia-200',
+    image: 'deepCleansing',
   },
   {
-    emoji: '',
     title: 'marketing.discover.flash-deals',
     desc: 'marketing.discover.flash-deals-desc',
     href: '/flash-deals',
-    color: 'from-red-100 to-red-200',
+    image: 'manicure',
   },
   {
-    emoji: '',
     title: 'marketing.discover.campaigns',
     desc: 'marketing.discover.campaigns-desc',
     href: '/campaigns',
-    color: 'from-orange-100 to-orange-200',
+    image: 'blowout',
   },
   {
-    emoji: '',
     title: 'marketing.discover.blog',
     desc: 'marketing.discover.blog-desc',
     href: '/blog',
-    color: 'from-blue-100 to-blue-200',
+    image: 'antiAging',
   },
   {
-    emoji: '',
     title: 'marketing.discover.community',
     desc: 'marketing.discover.community-desc',
     href: '/community',
-    color: 'from-indigo-100 to-indigo-200',
+    image: 'lashes',
   },
   {
-    emoji: '',
     title: 'marketing.discover.events',
     desc: 'marketing.discover.events-desc',
     href: '/events',
-    color: 'from-teal-100 to-teal-200',
+    image: 'hairStyling',
   },
   {
-    emoji: '',
     title: 'marketing.discover.challenges',
     desc: 'marketing.discover.challenges-desc',
     href: '/challenges',
-    color: 'from-yellow-100 to-yellow-200',
+    image: 'bodyScrub',
   },
   {
-    emoji: '',
     title: 'marketing.discover.rewards',
     desc: 'marketing.discover.rewards-desc',
     href: '/rewards',
-    color: 'from-amber-100 to-yellow-200',
+    image: 'hotStone',
   },
   {
-    emoji: '',
     title: 'marketing.discover.gift-guide',
     desc: 'marketing.discover.gift-guide-desc',
     href: '/gift-guide',
-    color: 'from-red-100 to-pink-200',
+    image: 'bridalHenna',
   },
   {
-    emoji: '',
     title: 'marketing.discover.price-estimator',
     desc: 'marketing.discover.price-estimator-desc',
     href: '/price-estimator',
-    color: 'from-emerald-100 to-emerald-200',
+    image: 'hairColor',
   },
   {
-    emoji: '',
     title: 'marketing.discover.onboarding',
     desc: 'marketing.discover.onboarding-desc',
     href: '/onboarding',
-    color: 'from-brand-100 to-indigo-200',
+    image: 'beautyService',
   },
   {
-    emoji: '',
     title: 'marketing.discover.search',
     desc: 'marketing.discover.search-desc',
     href: '/search',
-    color: 'from-gray-100 to-gray-200',
+    image: 'pedicure',
   },
   {
-    emoji: '',
     title: 'marketing.discover.marketplace',
     desc: 'marketing.discover.marketplace-desc',
     href: '/marketplace',
-    color: 'from-lime-100 to-lime-200',
+    image: 'nailArt',
   },
   {
-    emoji: '',
     title: 'marketing.discover.subscription-boxes',
     desc: 'marketing.discover.subscription-boxes-desc',
     href: '/subscription-boxes',
-    color: 'from-sky-100 to-sky-200',
+    image: 'bodyWrap',
   },
 ] as const;
 
 export default function DiscoverPage(): JSX.Element {
   const { t } = useLocale();
+
+  // Stage-aware ordering (Phase 3 sprint 1): the life stage's quick links
+  // surface first. back_to_me (guests/default) keeps the canonical order.
+  const greetingQ = api.lifeStage.homeGreeting.useQuery();
+  const greeting = greetingQ.data as
+    { stage: string; links?: Array<{ href: string; key: string }> } | undefined;
+  const stage = greeting?.stage ?? 'back_to_me';
+  const links = greeting?.links ?? [];
+  const ordered =
+    stage !== 'back_to_me' && links.length > 0
+      ? prioritizeByLinks(
+          FEATURES,
+          links.map((l) => l.href),
+        )
+      : FEATURES;
+
   return (
     <div>
       <HeroSection
@@ -182,23 +183,26 @@ export default function DiscoverPage(): JSX.Element {
         className="mb-2"
       />
       <div className="mx-auto max-w-6xl px-4 pb-12">
-        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-          {FEATURES.map((f, i) => (
-            <Link key={i} href={f.href}>
-              <Card
-                hover
-                padding="md"
-                className={`h-full bg-gradient-to-br ${f.color} dark:bg-none dark:bg-gray-900`}
-              >
-                <span className="text-3xl">{f.emoji}</span>
-                <h3 className="mt-3 font-bold text-sm text-text-primary dark:text-gray-100">
-                  {t(f.title)}
-                </h3>
-                <p className="mt-1 text-xs text-text-secondary dark:text-text-tertiary">
-                  {t(f.desc)}
-                </p>
-              </Card>
-            </Link>
+        <div
+          data-testid="discover-grid"
+          className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4"
+        >
+          {ordered.map((f, i) => (
+            <Reveal key={f.href} delay={(i % 4) * 60} className="h-full">
+              <Link href={f.href} className="block h-full">
+                <Card hover padding="md" className="h-full">
+                  <div className="h-24 overflow-hidden rounded-xl">
+                    <ServiceImage service={f.image} size="full" alt={t(f.title)} />
+                  </div>
+                  <h3 className="mt-3 font-bold text-sm text-text-primary dark:text-gray-100">
+                    {t(f.title)}
+                  </h3>
+                  <p className="mt-1 text-xs text-text-secondary dark:text-text-tertiary">
+                    {t(f.desc)}
+                  </p>
+                </Card>
+              </Link>
+            </Reveal>
           ))}
         </div>
 
