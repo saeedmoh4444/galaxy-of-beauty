@@ -32,6 +32,9 @@ export const marketingMessages = {
     ar: 'احجزي خدمات التجميل المنزلية بكل سهولة — شعر، بشرة، مكياج، مساج والمزيد',
     en: 'Book home beauty services with ease — hair, skin, makeup, massage and more',
   },
+  // Real-media reels row (E7 — Phase 3 sprint 1)
+  'marketing.home.reels-title': { ar: 'شاهدينا', en: 'Watch us' },
+  'marketing.home.reels-view-all': { ar: 'عرض الكل', en: 'View all' },
   'marketing.home.book-now': { ar: 'احجزي الآن', en: 'Book now' },
   'marketing.home.surprise-me': { ar: 'فاجئيني', en: 'Surprise me' },
   'marketing.home.categories': { ar: 'الأقسام', en: 'Categories' },

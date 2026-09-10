@@ -27,6 +27,18 @@ export const beautyShortsRouter = router({
     }),
   ),
 
+  /**
+   * home — the curated reels row for the public home (Phase 3 sprint 1):
+   * approved + active shorts, top by views. Public.
+   */
+  home: publicProcedure.query(() =>
+    db.short.findMany({
+      where: { isApproved: true, isActive: true },
+      orderBy: [{ views: 'desc' }, { createdAt: 'desc' }],
+      take: 8,
+    }),
+  ),
+
   /** like — toggles the caller's like on a short. */
   like: customerProcedure
     .input(z.object({ shortId: z.number() }))
