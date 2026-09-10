@@ -13,6 +13,8 @@ import {
   FloatingBlob,
   Marquee,
   Sparkles,
+  TrustBadge,
+  TrustBadges,
 } from '@galaxy/ui';
 import { heroImages } from '@galaxy/shared';
 
@@ -33,6 +35,8 @@ export interface HomePageProps {
   initialCategories: Category[];
   initialServices: Service[];
   serviceTotal: number;
+  technicianTotal: number;
+  placeCount: number;
   fetchError?: string;
 }
 
@@ -68,6 +72,8 @@ export function HomeClient({
   initialCategories,
   initialServices,
   serviceTotal,
+  technicianTotal,
+  placeCount,
   fetchError,
 }: HomePageProps): JSX.Element {
   const { t, locale } = useLocale();
@@ -120,9 +126,7 @@ export function HomeClient({
         <div className="relative mx-auto max-w-7xl px-4 py-16 md:py-24 lg:px-8">
           <div className="grid items-center gap-12 md:grid-cols-2">
             <div>
-              <span className="inline-flex items-center gap-2 rounded-full bg-brand-100/80 px-4 py-1.5 text-sm font-bold text-brand-700 ring-1 ring-brand-200">
-                <span aria-hidden>✨</span> {t('women.safeSpace')}
-              </span>
+              <TrustBadge variant="safeSpace" label={t('women.safeSpace')} />
               <h1 className="mt-6 text-4xl font-extrabold leading-tight text-text-primary md:text-5xl lg:text-6xl">
                 {t('marketing.home.hero-title')}
               </h1>
@@ -148,20 +152,14 @@ export function HomeClient({
                   </Button>
                 </Link>
               </div>
-              <div className="mt-8 flex flex-wrap items-center gap-x-6 gap-y-3 text-sm font-semibold text-text-secondary">
-                <span className="inline-flex items-center gap-2">
-                  <span aria-hidden>🌸</span> {t('trust.womenOnly')}
-                </span>
-                <span className="inline-flex items-center gap-2">
-                  <span aria-hidden>🔒</span> {t('vendorPortal.trust.private-suite')}
-                </span>
-                <span className="inline-flex items-center gap-2">
-                  <span aria-hidden className="text-accent-500">
-                    ★
-                  </span>{' '}
-                  4.8 {t('misc.rating')}
-                </span>
-              </div>
+              <TrustBadges
+                className="mt-8"
+                items={[
+                  { variant: 'womenOnly', label: t('trust.womenOnly') },
+                  { variant: 'private', label: t('vendorPortal.trust.private-suite') },
+                  { variant: 'rating', label: t('misc.rating'), value: '4.8' },
+                ]}
+              />
             </div>
 
             {/* media composition — blob-framed photo + floating cards */}
@@ -306,17 +304,17 @@ export function HomeClient({
         </div>
       </section>
 
-      {/* Trust Section */}
-      <section className="mx-auto max-w-7xl px-4 py-16 text-center">
+      {/* Trust Section — API-derived stats (Phase 3 sprint 1) */}
+      <section data-testid="trust-stats" className="mx-auto max-w-7xl px-4 py-16 text-center">
         <div className="grid gap-8 md:grid-cols-4">
           {[
             {
               label: t('marketing.home.stat-beauty-sections'),
-              value: `+${categories.length || 12}`,
+              value: `+${categories.length}`,
             },
-            { label: t('marketing.home.stat-beauty-experts'), value: '+500' },
-            { label: t('marketing.home.stat-services'), value: `+${serviceTotal || 25}` },
-            { label: t('marketing.home.stat-saudi-cities'), value: '+24' },
+            { label: t('marketing.home.stat-beauty-experts'), value: `+${technicianTotal}` },
+            { label: t('marketing.home.stat-services'), value: `+${serviceTotal}` },
+            { label: t('marketing.home.stat-saudi-cities'), value: `+${placeCount}` },
           ].map((s) => (
             <div key={s.label}>
               <p className="text-3xl font-extrabold text-brand-600">{s.value}</p>
