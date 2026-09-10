@@ -4,7 +4,7 @@ import { cn } from '@galaxy/shared';
 
 /**
  * Beauty Challenge Card — 30-day beauty & self-care challenge.
- * From Phase W6: Education & Empowerment — Galaxy Beauty Academy.
+ * From Phase W6: Education & Empowerment — Dalal Beauty Academy.
  *
  * Usage:
  *   <BeautyChallengeCard

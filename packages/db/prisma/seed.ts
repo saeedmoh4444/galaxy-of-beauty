@@ -8,7 +8,7 @@ function generateBookingCode(): string {
 }
 
 async function main() {
-  console.log(' Seeding Galaxy of Beauty database...\n');
+  console.log(' Seeding Dalal database...\n');
 
   // ---- Clean existing data (in dependency order) ----
   const db = prisma as any;
@@ -1672,7 +1672,7 @@ async function main() {
         tags: ['استرخاء', 'صحة'],
       },
       {
-        nameJson: { ar: 'بطاقة هدية جالكسي بيوتي', en: 'Galaxy Gift Card' },
+        nameJson: { ar: 'بطاقة هدية دلال', en: 'Dalal Gift Card' },
         descJson: { ar: 'قيمة ٣٠٠ ر.س', en: 'Value: 300 SAR' },
         price: 300,
         category: 'giftcard',
@@ -2908,8 +2908,8 @@ async function main() {
         channels: ['in_app', 'push'],
         titleJson: { ar: 'تمت الموافقة على طلبك', en: 'Your Submission Was Approved' },
         bodyJson: {
-          ar: 'تهانينا {{providerName}}! تمت الموافقة على {{subjectName}} من قبل فريق جالكسي بيوتي.',
-          en: 'Congratulations {{providerName}}! Your {{subjectName}} was approved by the Galaxy of Beauty team.',
+          ar: 'تهانينا {{providerName}}! تمت الموافقة على {{subjectName}} من قبل فريق دلال.',
+          en: 'Congratulations {{providerName}}! Your {{subjectName}} was approved by the Dalal team.',
         },
       },
       {

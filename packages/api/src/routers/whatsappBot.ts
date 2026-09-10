@@ -24,7 +24,7 @@ export const whatsappBotRouter = router({
       }
       if (!reply)
         reply =
-          ' أهلاً بكِ في جالكسي بيوتي!\n\nأرسلي: حجز | خدمات | أسعار | مساعدة\n\nأو زوري موقعنا لحجز مباشر: galaxyofbeauty.sa';
+          ' أهلاً بكِ في دلال!\n\nأرسلي: حجز | خدمات | أسعار | مساعدة\n\nأو زوري موقعنا لحجز مباشر: galaxyofbeauty.sa';
       return { reply, to: input.from };
     }),
   commands: publicProcedure.query(() => Object.keys(COMMANDS)),

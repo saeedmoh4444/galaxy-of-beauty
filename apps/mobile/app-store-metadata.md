@@ -1,11 +1,11 @@
-# Galaxy of Beauty — App Store Metadata
+# Dalal — App Store Metadata
 
 ## App Store Connect (iOS)
 
 ### App Name
 
-- **Primary:** Galaxy of Beauty
-- **Arabic:** جالكسي بيوتي
+- **Primary:** Dalal
+- **Arabic:** دلال
 
 ### Subtitle (30 chars)
 
@@ -16,7 +16,7 @@
 
 ```
 [EN]
-Galaxy of Beauty connects women in Saudi Arabia with vetted female beauty
+Dalal connects women in Saudi Arabia with vetted female beauty
 technicians. Book hair, nails, skincare, makeup, massage, and henna services
 with confidence.
 
@@ -39,7 +39,7 @@ SECURITY:
 • All technicians are KYC-verified
 
 [AR]
-جالكسي بيوتي يربط النساء في المملكة العربية السعودية بفنيات تجميل موثوقات.
+دلال يربط النساء في المملكة العربية السعودية بفنيات تجميل موثوقات.
 احجزي خدمات الشعر، الأظافر، البشرة، المكياج، المساج، والحناء بكل ثقة.
 
 المميزات:

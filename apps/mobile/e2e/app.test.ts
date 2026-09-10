@@ -1,5 +1,5 @@
 /**
- * Galaxy of Beauty — Mobile Detox E2E Tests (Comprehensive)
+ * Dalal — Mobile Detox E2E Tests (Comprehensive)
  *
  * Prerequisites:
  *   1. Detox CLI:  npm i -g detox-cli
@@ -12,7 +12,7 @@ import { device, element, by, expect as detoxExpect } from 'detox';
 const DEMO_EMAIL = 'admin@galaxyofbeauty.sa';
 const DEMO_PASSWORD = 'Admin@123456';
 
-describe('Galaxy of Beauty Mobile App', () => {
+describe('Dalal Mobile App', () => {
   beforeAll(async () => {
     await device.launchApp({ newInstance: true });
   });
@@ -36,7 +36,7 @@ describe('Galaxy of Beauty Mobile App', () => {
       await detoxExpect(element(by.text('بحث عن خدمة...'))).toBeVisible();
 
       await element(by.text('الرئيسية')).tap();
-      await detoxExpect(element(by.text('جالكسي بيوتي'))).toBeVisible();
+      await detoxExpect(element(by.text('دلال'))).toBeVisible();
     });
   });
 
@@ -44,7 +44,7 @@ describe('Galaxy of Beauty Mobile App', () => {
   describe('Home Screen', () => {
     it('should display hero with brand name', async () => {
       await element(by.text('الرئيسية')).tap();
-      await detoxExpect(element(by.text('جالكسي بيوتي'))).toBeVisible();
+      await detoxExpect(element(by.text('دلال'))).toBeVisible();
     });
 
     it('should display quick action buttons', async () => {
@@ -215,7 +215,7 @@ describe('Galaxy of Beauty Mobile App', () => {
     it('should load home screen within 5 seconds', async () => {
       const start = Date.now();
       await device.launchApp({ newInstance: true });
-      await detoxExpect(element(by.text('جالكسي بيوتي'))).toBeVisible();
+      await detoxExpect(element(by.text('دلال'))).toBeVisible();
       const loadTime = Date.now() - start;
       // eslint-disable-next-line no-console
       console.log(`Home screen load time: ${loadTime}ms`);

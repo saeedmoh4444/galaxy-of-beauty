@@ -1,5 +1,5 @@
 // ---------------------------------------------------------------------------
-// Galaxy of Beauty — i18n Configuration
+// Dalal — i18n Configuration
 // ---------------------------------------------------------------------------
 // Catalog split into per-domain modules under ./messages so parallel
 // translation sweeps own disjoint files. Spread of `as const` literals
