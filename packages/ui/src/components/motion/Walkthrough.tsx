@@ -98,10 +98,15 @@ export function Walkthrough({
     [steps, resolveTarget, onClose],
   );
 
-  // Reset + settle on open.
+  // Reset + settle on the open transition only. settleStep is recreated
+  // whenever a consumer passes an unstable onClose (e.g. an inline
+  // function) — re-running this effect on every parent render while the
+  // tour is open would yank the user back to step 1 mid-tour.
+  const prevOpen = useRef(false);
   useEffect(() => {
-    if (open && steps.length > 0) settleStep(0);
+    if (open && !prevOpen.current && steps.length > 0) settleStep(0);
     else if (!open) setIndex(0);
+    prevOpen.current = open;
   }, [open, steps, settleStep]);
 
   // Escape = skip.
