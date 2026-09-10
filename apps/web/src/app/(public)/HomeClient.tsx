@@ -17,7 +17,7 @@ import {
   TrustBadges,
   ReelCard,
 } from '@galaxy/ui';
-import { heroImages } from '@galaxy/shared';
+import { heroImages, serviceKeyFromCategorySlug } from '@galaxy/shared';
 
 interface Category {
   id: number;
@@ -61,24 +61,6 @@ type HomeGreeting = {
     spaServices: Array<Record<string, unknown>>;
   };
 };
-
-function categoryImageKey(slug: string): string {
-  const map: Record<string, string> = {
-    hair: 'hair',
-    nails: 'nails',
-    skincare: 'skincare',
-    makeup: 'makeup',
-    massage: 'massage',
-    henna: 'henna',
-    waxing: 'waxing',
-    lashes: 'lashes',
-    body: 'bodyTreatments',
-    spa: 'spa',
-    bridal: 'bridal',
-    men: 'mensGrooming',
-  };
-  return map[slug] ?? 'default';
-}
 
 export function HomeClient({
   initialCategories,
@@ -270,7 +252,7 @@ export function HomeClient({
               <Link key={c.id} href={`/services?categoryId=${c.id}`}>
                 <Card hover padding="lg" className="flex flex-col items-center text-center">
                   <ServiceImage
-                    service={categoryImageKey(c.slug)}
+                    service={serviceKeyFromCategorySlug(c.slug)}
                     size="lg"
                     alt={localize(c.nameJson, locale)}
                   />

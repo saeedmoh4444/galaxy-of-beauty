@@ -330,6 +330,11 @@ export const marketingMessages = {
     en: 'No service providers are currently available for this service',
   },
   'marketing.service-detail.related-services': { ar: 'خدمات مشابهة', en: 'Related services' },
+  'marketing.service-detail.view-full-gallery': {
+    ar: 'عرض المعرض كاملاً',
+    en: 'View full gallery',
+  },
+  'marketing.service-detail.stage-friendly': { ar: 'مناسبة لرحلتك', en: 'Fits your journey' },
 
   // Technician profile
   'marketing.technician-profile.not-found': {

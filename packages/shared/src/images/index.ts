@@ -139,3 +139,26 @@ export function getCategoryImage(key?: string | null): string {
   if (key && categoryImages[key]) return categoryImages[key]!;
   return categoryImages['default']!;
 }
+
+/**
+ * Map a category slug to a service-image registry key (the registry is keyed
+ * by service key, not slug). Shared by home categories, discover tiles, and
+ * the service-detail hero/related cards — one source of truth.
+ */
+export function serviceKeyFromCategorySlug(slug?: string | null): string {
+  const map: Record<string, string> = {
+    hair: 'hair',
+    nails: 'nails',
+    skincare: 'skincare',
+    makeup: 'makeup',
+    massage: 'massage',
+    henna: 'henna',
+    waxing: 'waxing',
+    lashes: 'lashes',
+    body: 'bodyTreatments',
+    spa: 'spa',
+    bridal: 'bridal',
+    men: 'mensGrooming',
+  };
+  return (slug && map[slug]) || 'default';
+}

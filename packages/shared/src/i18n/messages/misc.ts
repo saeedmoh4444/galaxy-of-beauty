@@ -4180,6 +4180,10 @@ export const miscMessages = {
   'trust.womenOnly': { ar: 'كادر نسائي فقط', en: 'Women-only staff' },
   'trust.privateSuite': { ar: 'جناح خاص', en: 'Private suite' },
   'trust.pregnancySafe': { ar: 'آمن للحمل', en: 'Pregnancy-safe' },
+  // Phase 3 sprint 2 — service-detail trust layer
+  'trust.verified': { ar: 'موثقة', en: 'Verified' },
+  'trust.safeSpace': { ar: 'مساحة آمنة للنساء', en: 'Women-only safe space' },
+  'trust.mommyFriendly': { ar: 'مناسبة للأمهات', en: 'Mommy-friendly' },
   'vendorPortal.trust.title': { ar: 'شارات الثقة', en: 'Trust badges' },
   'vendorPortal.trust.women-only': { ar: 'كادر نسائي فقط', en: 'Women-only staff' },
   'vendorPortal.trust.private-suite': {
