@@ -2,12 +2,20 @@
 
 import { useState } from 'react';
 import Link from 'next/link';
-import Image from 'next/image';
 import { api } from '@/lib/trpc';
 import type { RouterOutputs } from '@galaxy/api';
 import { localize } from '@galaxy/shared';
 import { useLocale } from '@/components/LocaleProvider';
-import { Input, Card, GridSkeleton, ErrorAlert, EmptyState, HeroSection } from '@galaxy/ui';
+import {
+  Input,
+  Card,
+  GridSkeleton,
+  ErrorAlert,
+  EmptyState,
+  HeroSection,
+  ServiceImage,
+  Icon,
+} from '@galaxy/ui';
 
 type TechnicianItem = RouterOutputs['technicians']['list']['items'][number];
 
@@ -73,17 +81,13 @@ export function TechniciansClient({ data }: { data: TechniciansPageData }): JSX.
               return (
                 <Link key={tech.id} href={`/technicians/${tech.id}`}>
                   <Card hover padding="lg" className="flex flex-col items-center text-center">
-                    <div className="relative flex h-24 w-24 items-center justify-center rounded-full bg-gradient-to-br from-brand-100 to-accent-100 text-3xl dark:from-brand-900 dark:to-accent-900">
-                      {avatarUrl ? (
-                        <Image
-                          src={avatarUrl}
-                          alt={name}
-                          fill
-                          className="rounded-full object-cover"
-                        />
-                      ) : (
-                        <span>‍</span>
-                      )}
+                    <div className="relative flex h-24 w-24 items-center justify-center overflow-hidden rounded-full bg-gradient-to-br from-brand-100 to-accent-100 dark:from-brand-900 dark:to-accent-900">
+                      <ServiceImage
+                        src={avatarUrl || null}
+                        alt={name}
+                        size="full"
+                        className="h-24 w-24 rounded-full object-cover"
+                      />
                     </div>
                     <h3 className="mt-4 text-lg font-bold text-text-primary dark:text-gray-100">
                       {name}
@@ -91,11 +95,14 @@ export function TechniciansClient({ data }: { data: TechniciansPageData }): JSX.
                     <p className="text-sm text-text-secondary">{cityName}</p>
                     {bio && <p className="mt-1 line-clamp-2 text-xs text-text-tertiary">{bio}</p>}
                     <div className="mt-3 flex items-center gap-3 text-sm">
-                      <span className="text-amber-500"> {rating.toFixed(1)}</span>
+                      <span className="flex items-center gap-1 text-amber-500">
+                        <Icon name="star" size="sm" />
+                        {rating.toFixed(1)}
+                      </span>
                       <span className="text-text-tertiary">
                         {t('marketing.technicians.bookings-count', { count: bookings })}
                       </span>
-                      {isEco && <span className="text-green-500"></span>}
+                      {isEco && <Icon name="sparkle" size="sm" className="text-green-500" />}
                     </div>
                   </Card>
                 </Link>
