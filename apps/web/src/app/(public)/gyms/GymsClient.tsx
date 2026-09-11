@@ -1,7 +1,7 @@
 'use client';
 
 import Link from 'next/link';
-import { Card, ErrorAlert, EmptyState, HeroSection } from '@galaxy/ui';
+import { Card, ErrorAlert, EmptyState, HeroSection, ServiceImage } from '@galaxy/ui';
 import { useLocale } from '@/components/LocaleProvider';
 
 export interface GymsPageData {
@@ -41,18 +41,11 @@ export function GymsClient({ data }: { data: GymsPageData }): JSX.Element {
                   className="h-full transition-all hover:-translate-y-0.5 hover:shadow-lg"
                 >
                   <div className="flex items-center gap-3">
-                    {g.logoUrl ? (
-                      // eslint-disable-next-line @next/next/no-img-element
-                      <img
-                        src={g.logoUrl as string}
-                        alt={g.storeName as string}
-                        className="h-12 w-12 rounded-xl object-cover"
-                      />
-                    ) : (
-                      <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-brand-100 text-2xl">
-                        ️
-                      </div>
-                    )}
+                    <ServiceImage
+                      src={(g.logoUrl as string) ?? null}
+                      alt={(g.storeName as string) ?? ''}
+                      size="md"
+                    />
                     <div className="min-w-0">
                       <p className="truncate font-bold text-text-primary dark:text-gray-100">
                         {g.storeName as string}

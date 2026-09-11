@@ -1,7 +1,7 @@
 'use client';
 
 import Link from 'next/link';
-import { Card, ErrorAlert, EmptyState, HeroSection } from '@galaxy/ui';
+import { Card, ErrorAlert, EmptyState, HeroSection, ServiceImage } from '@galaxy/ui';
 import { useLocale } from '@/components/LocaleProvider';
 
 export interface TrainersPageData {
@@ -44,18 +44,14 @@ export function TrainersClient({ data }: { data: TrainersPageData }): JSX.Elemen
                     className="h-full transition-all hover:-translate-y-0.5 hover:shadow-lg"
                   >
                     <div className="flex items-center gap-3">
-                      {user.avatarUrl ? (
-                        // eslint-disable-next-line @next/next/no-img-element
-                        <img
-                          src={user.avatarUrl as string}
-                          alt={user.name as string}
-                          className="h-12 w-12 rounded-full object-cover"
+                      <div className="h-12 w-12 overflow-hidden rounded-full">
+                        <ServiceImage
+                          src={(user.avatarUrl as string) ?? null}
+                          alt={(user.name as string) ?? ''}
+                          size="full"
+                          className="h-12 w-12 object-cover"
                         />
-                      ) : (
-                        <div className="flex h-12 w-12 items-center justify-center rounded-full bg-brand-100 text-2xl">
-                          ️
-                        </div>
-                      )}
+                      </div>
                       <div className="min-w-0">
                         <p className="truncate font-bold text-text-primary dark:text-gray-100">
                           {user.name as string}

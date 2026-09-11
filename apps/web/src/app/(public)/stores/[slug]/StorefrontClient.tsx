@@ -9,6 +9,7 @@ import {
   EmptyState,
   useToast,
   useAuth,
+  ServiceImage,
 } from '@galaxy/ui';
 import { useLocale } from '@/components/LocaleProvider';
 import { localize } from '@galaxy/shared';
@@ -60,18 +61,12 @@ export function StorefrontClient({ data }: { data: StorefrontPageData }): JSX.El
     <div className="mx-auto max-w-5xl space-y-8 px-4 py-8">
       {/* Store header */}
       <div className="flex items-center gap-4">
-        {store.logoUrl ? (
-          // eslint-disable-next-line @next/next/no-img-element
-          <img
-            src={store.logoUrl}
-            alt={store.storeName}
-            className="h-20 w-20 rounded-2xl object-cover"
-          />
-        ) : (
-          <div className="flex h-20 w-20 items-center justify-center rounded-2xl bg-brand-100 text-4xl">
-            ️
-          </div>
-        )}
+        <ServiceImage
+          src={store.logoUrl ?? null}
+          alt={store.storeName ?? ''}
+          size="xl"
+          className="h-20 w-20 rounded-2xl"
+        />
         <div>
           <h1 className="text-2xl font-bold text-text-primary dark:text-gray-100">
             {store.storeName}
@@ -94,6 +89,12 @@ export function StorefrontClient({ data }: { data: StorefrontPageData }): JSX.El
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
           {data.products.map((p: Record<string, unknown>) => (
             <Card key={p.id as number} padding="md">
+              <ServiceImage
+                src={(p.imageUrl as string) ?? null}
+                alt={localize(p.nameJson, locale)}
+                size="full"
+                className="mb-3 h-32 w-full"
+              />
               <div className="flex items-start justify-between gap-3">
                 <div className="min-w-0">
                   <p className="truncate font-bold text-text-primary dark:text-gray-100">
