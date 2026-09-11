@@ -2,7 +2,14 @@
 
 import { api } from '@/lib/trpc';
 import { useState } from 'react';
-import { PageContainer, PageTitle, useAuth, GridSkeleton, EmptyState } from '@galaxy/ui';
+import {
+  PageContainer,
+  PageTitle,
+  useAuth,
+  GridSkeleton,
+  EmptyState,
+  ServiceImage,
+} from '@galaxy/ui';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
 import { useLocale } from '@/components/LocaleProvider';
 
@@ -64,7 +71,12 @@ export default function MarketplacePage(): JSX.Element {
                 key={p.id as number}
                 className="rounded-2xl border border-edge-muted bg-white p-4 dark:border-gray-800 dark:bg-gray-900"
               >
-                <span className="text-4xl">{p.emoji as string}</span>
+                <ServiceImage
+                  src={(p.imageUrl as string) ?? null}
+                  alt={(p.nameAr as string) ?? (p.titleAr as string) ?? ''}
+                  size="full"
+                  className="mb-2 h-32 w-full"
+                />
                 <h4 className="mt-2 text-sm font-bold text-text-primary dark:text-gray-100">
                   {(p.nameAr as string) ?? (p.titleAr as string)}
                 </h4>
