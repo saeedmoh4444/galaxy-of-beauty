@@ -24,7 +24,7 @@ export const CYCLE_PHASES: CyclePhase[] = [
   },
   {
     key: 'follicular',
-    emoji: '',
+    emoji: '🌱',
     name: 'الجريبي',
     days: [6, 13],
     color: '#f59e0b',
@@ -36,7 +36,7 @@ export const CYCLE_PHASES: CyclePhase[] = [
   },
   {
     key: 'ovulation',
-    emoji: '',
+    emoji: '✨',
     name: 'الإباضة',
     days: [14, 16],
     color: '#8b5cf6',
@@ -44,7 +44,7 @@ export const CYCLE_PHASES: CyclePhase[] = [
   },
   {
     key: 'luteal',
-    emoji: '',
+    emoji: '🌙',
     name: 'الأصفري',
     days: [17, 28],
     color: '#059669',
