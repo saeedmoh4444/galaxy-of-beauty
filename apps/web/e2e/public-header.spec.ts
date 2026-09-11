@@ -12,6 +12,9 @@ import { test, expect } from '@playwright/test';
 // First hit per locale compiles the route on-demand — be generous.
 test.setTimeout(120_000);
 
+// The primary row + dropdown are desktop-only (md+); the drawer test covers mobile.
+test.skip(({ isMobile }) => isMobile, 'primary row targets md+ (desktop) viewports only');
+
 test('public header shows the primary row and a working More dropdown', async ({ page }) => {
   await page.goto('/');
 
