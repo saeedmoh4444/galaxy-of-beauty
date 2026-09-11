@@ -40,19 +40,24 @@ export default function WellnessHubPage(): JSX.Element {
   const menoQ = api.menopause.status.useQuery();
 
   // Last-picked tab — per-viewer convenience (localStorage may be absent).
+  // `savedRead` marks the read done: the stored value itself can be null
+  // (first visit), so it cannot double as the "read completed" signal —
+  // setState(null) is a React no-op and `ready` would never flip.
   const [savedTab, setSavedTab] = useState<string | null>(null);
+  const [savedRead, setSavedRead] = useState(false);
   useEffect(() => {
     try {
       setSavedTab(localStorage.getItem(SAVED_TAB_KEY));
     } catch {
       setSavedTab(null);
     }
+    setSavedRead(true);
   }, []);
 
   // Tab state: null until the resolver inputs are ready (first visit only —
   // user clicks own the tab afterwards).
   const [tab, setTab] = useState<WellnessTabKey | null>(null);
-  const ready = savedTab !== null && !stageQ.isLoading && !pamperQ.isLoading && !menoQ.isLoading;
+  const ready = savedRead && !stageQ.isLoading && !pamperQ.isLoading && !menoQ.isLoading;
   useEffect(() => {
     if (tab === null && ready) {
       setTab(
