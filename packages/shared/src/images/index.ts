@@ -141,6 +141,37 @@ export function getCategoryImage(key?: string | null): string {
 }
 
 /**
+ * §3.5 — map a womens-services catalog category key (pregnancy_safe, nails,
+ * bridal_glow, …) onto a registry key by theme. The 94-key catalog predates
+ * the image registry and carries no imageUrl — theme rules + a generic
+ * beauty fallback keep every card honest.
+ */
+const WOMENS_THEME_RULES: Array<{ pattern: RegExp; key: string }> = [
+  { pattern: /bridal|bride/i, key: 'bridalPackage' },
+  { pattern: /nail|manicure|pedicure/i, key: 'manicure' },
+  { pattern: /laser/i, key: 'laserHairRemoval' },
+  { pattern: /hair/i, key: 'hairStyling' },
+  { pattern: /skin|facial|glow|complexion/i, key: 'facial' },
+  { pattern: /lash/i, key: 'lashes' },
+  { pattern: /wax/i, key: 'waxing' },
+  { pattern: /massage/i, key: 'massage' },
+  { pattern: /spa|hammam|moroccan|bath/i, key: 'spa' },
+  { pattern: /makeup|make-up/i, key: 'makeup' },
+  { pattern: /henna/i, key: 'henna' },
+  { pattern: /body|scrub/i, key: 'bodyScrub' },
+  { pattern: /laser/i, key: 'laserHairRemoval' },
+  { pattern: /aroma/i, key: 'aromatherapy' },
+];
+
+export function womensCategoryImageKey(categoryKey?: string | null): string {
+  if (!categoryKey) return 'beautyService';
+  for (const rule of WOMENS_THEME_RULES) {
+    if (rule.pattern.test(categoryKey)) return rule.key;
+  }
+  return 'beautyService';
+}
+
+/**
  * Map a category slug to a service-image registry key (the registry is keyed
  * by service key, not slug). Shared by home categories, discover tiles, and
  * the service-detail hero/related cards — one source of truth.

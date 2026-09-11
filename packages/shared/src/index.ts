@@ -59,4 +59,5 @@ export {
   getServiceImage,
   getCategoryImage,
   serviceKeyFromCategorySlug,
+  womensCategoryImageKey,
 } from './images';
