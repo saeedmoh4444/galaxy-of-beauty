@@ -14,6 +14,10 @@ export const walletMessages = {
   'wallet.request-withdraw': { ar: 'طلب سحب', en: 'Request Withdrawal' },
   'wallet.transactions-error': { ar: 'فشل تحميل المعاملات', en: 'Failed to load transactions' },
   'wallet.no-transactions': { ar: 'لا توجد معاملات', en: 'No transactions yet' },
+  'wallet.no-transactions-desc': {
+    ar: 'ستظهر هنا عمليات الدفع والإيداع والسحب',
+    en: 'Payments, top-ups, and withdrawals will appear here',
+  },
   'wallet.amount-label': { ar: 'المبلغ (ر.س)', en: 'Amount (SAR)' },
   'wallet.min-withdraw': { ar: 'الحد الأدنى ١٠٠ ر.س', en: 'Minimum withdrawal is 100 SAR' },
   'wallet.confirm-withdraw': { ar: 'تأكيد السحب', en: 'Confirm Withdrawal' },
