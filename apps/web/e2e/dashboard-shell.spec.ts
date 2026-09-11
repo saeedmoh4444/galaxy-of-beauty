@@ -25,6 +25,8 @@ async function loginAsCustomer(page: import('@playwright/test').Page) {
 }
 
 test('dashboard sidebar shows 6 collapsible groups, active group open', async ({ page }) => {
+  // The sidebar is desktop-only (md+); the second test covers the mobile nav.
+  test.skip(({ isMobile }) => isMobile, 'sidebar targets md+ (desktop) viewports only');
   await loginAsCustomer(page);
   await page.goto('/dashboard');
 
@@ -33,14 +35,16 @@ test('dashboard sidebar shows 6 collapsible groups, active group open', async ({
 
   // Core group (holds /dashboard) is expanded by default.
   await expect(toggles.first()).toHaveAttribute('aria-expanded', 'true');
-  await expect(page.locator('a[href="/wallet"]').first()).toBeVisible();
+  // :visible — on mobile the sidebar copy of this link is hidden and the
+  // bottom-nav copy is the one that must render.
+  await expect(page.locator('a[href="/wallet"]:visible')).toBeVisible();
 
   // Shopping group is collapsed by default and expands on click.
   const shopping = toggles.nth(3);
   await expect(shopping).toHaveAttribute('aria-expanded', 'false');
   await shopping.click();
   await expect(shopping).toHaveAttribute('aria-expanded', 'true');
-  await expect(page.locator('a[href="/cart"]').first()).toBeVisible();
+  await expect(page.locator('a[href="/cart"]:visible')).toBeVisible();
 });
 
 test('mobile viewport keeps the 5-item bottom nav', async ({ page }) => {

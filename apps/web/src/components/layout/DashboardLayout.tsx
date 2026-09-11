@@ -88,6 +88,19 @@ export function DashboardLayout({
   }, []);
 
   const isGroupOpen = (key: string) => !(collapsed ?? defaultCollapsed)[key];
+
+  // Phase 3 sprint 4 — while the §3.6 onboarding tour is open, expand every
+  // group so the tour's sidebar targets (aside a[href=…]) exist in the DOM.
+  // The dashboard page broadcasts 'gob:tour' when the tour opens/closes.
+  const [tourOpen, setTourOpen] = useState(false);
+  useEffect(() => {
+    const onTour = (e: Event) => {
+      setTourOpen(Boolean((e as CustomEvent<{ open?: boolean }>).detail?.open));
+    };
+    window.addEventListener('gob:tour', onTour);
+    return () => window.removeEventListener('gob:tour', onTour);
+  }, []);
+  const groupOpen = (key: string) => tourOpen || isGroupOpen(key);
   const toggleGroup = (key: string) => {
     setCollapsed((prev) => {
       const base = prev ?? defaultCollapsed;
@@ -140,7 +153,7 @@ export function DashboardLayout({
                     type="button"
                     data-testid="nav-group-toggle"
                     onClick={() => toggleGroup(group.key)}
-                    aria-expanded={isGroupOpen(group.key)}
+                    aria-expanded={groupOpen(group.key)}
                     aria-controls={`nav-group-${group.key}`}
                     className={`flex w-full items-center justify-between rounded-lg px-3 py-2 text-sm font-semibold transition-colors hover:bg-surface-muted focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-500 dark:hover:bg-gray-900 ${
                       group.links.some((link) => pathname.startsWith(link.href))
@@ -155,13 +168,13 @@ export function DashboardLayout({
                     <span
                       aria-hidden
                       className={`transition-transform motion-reduce:transition-none ${
-                        isGroupOpen(group.key) ? 'rotate-90 rtl:-rotate-90' : ''
+                        groupOpen(group.key) ? 'rotate-90 rtl:-rotate-90' : ''
                       }`}
                     >
                       ›
                     </span>
                   </button>
-                  {isGroupOpen(group.key) && (
+                  {groupOpen(group.key) && (
                     <div
                       id={`nav-group-${group.key}`}
                       className="mt-1 ms-3 space-y-1 border-s border-edge ps-3 dark:border-gray-800"
