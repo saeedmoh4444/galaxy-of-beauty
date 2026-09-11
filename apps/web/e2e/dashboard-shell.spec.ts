@@ -24,9 +24,10 @@ async function loginAsCustomer(page: import('@playwright/test').Page) {
   await page.waitForTimeout(3000);
 }
 
+// The sidebar is desktop-only (md+); the second test covers the mobile nav.
+test.skip(({ isMobile }) => isMobile, 'sidebar targets md+ (desktop) viewports only');
+
 test('dashboard sidebar shows 6 collapsible groups, active group open', async ({ page }) => {
-  // The sidebar is desktop-only (md+); the second test covers the mobile nav.
-  test.skip(({ isMobile }) => isMobile, 'sidebar targets md+ (desktop) viewports only');
   await loginAsCustomer(page);
   await page.goto('/dashboard');
 
