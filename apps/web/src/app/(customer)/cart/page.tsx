@@ -1,7 +1,14 @@
 'use client';
 import { useRouter } from 'next/navigation';
 import { api } from '@/lib/trpc';
-import { Card, CardListSkeleton, Button, formatCurrency, EmptyState } from '@galaxy/ui';
+import {
+  Card,
+  CardListSkeleton,
+  Button,
+  formatCurrency,
+  EmptyState,
+  ServiceImage,
+} from '@galaxy/ui';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
 import { useLocale } from '@/components/LocaleProvider';
 import { localize } from '@galaxy/shared';
@@ -53,7 +60,12 @@ export default function CartPage(): JSX.Element {
                   <Card key={item.id as number} padding="md">
                     <div className="flex items-center justify-between">
                       <div className="flex items-center gap-3">
-                        <span className="text-3xl"></span>
+                        <ServiceImage
+                          src={((product as Record<string, unknown>).imageUrl as string) ?? null}
+                          alt=""
+                          size="lg"
+                          className="h-14 w-14 shrink-0"
+                        />
                         <div>
                           <p className="font-bold">
                             {localize(product?.nameJson, locale) ||

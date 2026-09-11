@@ -1,7 +1,6 @@
 'use client';
 
 import Link from 'next/link';
-import Image from 'next/image';
 import { useCallback, useEffect, useMemo, useState, type ComponentProps } from 'react';
 import { api } from '@/lib/trpc';
 import {
@@ -25,6 +24,7 @@ import {
   BeautySavingsGoal,
   useAuth,
   Walkthrough,
+  ServiceImage,
   type WalkthroughStep,
   Tooltip,
 } from '@galaxy/ui';
@@ -173,23 +173,23 @@ export default function CustomerDashboardPage(): JSX.Element {
             <StatCard
               label={t('dashboard.bookings')}
               value={insights.data?.bookingCount ?? 0}
-              icon=""
+              icon={<Icon name="calendar" size="md" />}
             />
             <StatCard
               label={t('dashboard.spending')}
               value={formatCurrency(Number(insights.data?.totalSpent ?? 0))}
-              icon=""
+              icon={<Icon name="wallet" size="md" />}
             />
             <StatCard
               label={t('dashboard.continuity')}
               value={` ${streakInfo?.currentStreak ?? 0} ${t('dashboard.weeks')}`}
-              icon=""
+              icon={<Icon name="sparkle" size="md" />}
             />
             {budget?.data ? (
               <StatCard
                 label={t('dashboard.budget')}
                 value={formatCurrency(Number(budget.data.remaining))}
-                icon=""
+                icon={<Icon name="clock" size="md" />}
               />
             ) : (
               <CardSkeleton />
@@ -306,14 +306,12 @@ export default function CustomerDashboardPage(): JSX.Element {
                       key={p.id}
                       className="relative h-20 w-20 flex-shrink-0 overflow-hidden rounded-xl bg-surface-muted dark:bg-gray-800"
                     >
-                      {p.imageUrl ? (
-                        <Image src={p.imageUrl} alt="" fill className="object-cover" />
-                      ) : (
-                        <div
-                          className="flex h-full items-center justify-center text-2xl"
-                          aria-hidden="true"
-                        ></div>
-                      )}
+                      <ServiceImage
+                        src={p.imageUrl ?? null}
+                        alt=""
+                        size="full"
+                        className="h-full w-full object-cover"
+                      />
                     </div>
                   ))}
                 </div>
