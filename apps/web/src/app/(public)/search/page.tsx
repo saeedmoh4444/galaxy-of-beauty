@@ -5,7 +5,15 @@ import Link from 'next/link';
 import { api } from '@/lib/trpc';
 import { localize } from '@galaxy/shared';
 import { useLocale } from '@/components/LocaleProvider';
-import { Input, Card, GridSkeleton, Button, formatCurrency } from '@galaxy/ui';
+import {
+  Input,
+  Card,
+  GridSkeleton,
+  Button,
+  formatCurrency,
+  ServiceImage,
+  EmptyState,
+} from '@galaxy/ui';
 export default function SearchPage(): JSX.Element {
   const { t, locale } = useLocale();
   const [query, setQuery] = useState('');
@@ -102,10 +110,7 @@ export default function SearchPage(): JSX.Element {
           {isLoading ? (
             <GridSkeleton count={8} />
           ) : totalResults === 0 ? (
-            <div className="py-16 text-center text-text-tertiary">
-              <span className="text-5xl"></span>
-              <p className="mt-4">{t('marketing.search.no-results')}</p>
-            </div>
+            <EmptyState title={t('marketing.search.no-results')} />
           ) : (
             <div className="space-y-8">
               {svcItems.length > 0 && (
@@ -117,7 +122,12 @@ export default function SearchPage(): JSX.Element {
                     {svcItems.map((s) => (
                       <Link key={s.id} href={`/services/${s.id}`}>
                         <Card hover padding="md">
-                          <div className="h-32 rounded-xl bg-gradient-to-br from-brand-100 to-accent-100 flex items-center justify-center text-3xl"></div>
+                          <ServiceImage
+                            src={s.imageUrl}
+                            alt={localize(s.titleJson, locale)}
+                            size="full"
+                            className="h-32 w-full"
+                          />
                           <h3 className="mt-2 font-semibold">{localize(s.titleJson, locale)}</h3>
                           <p className="text-sm text-text-secondary">
                             {t('marketing.search.duration-min', { min: s.durationMin })} ·{' '}
@@ -155,7 +165,12 @@ export default function SearchPage(): JSX.Element {
                     {prodItems.map((p) => (
                       <Link key={p.id} href={`/marketplace`}>
                         <Card hover padding="sm">
-                          <div className="h-24 rounded-lg bg-surface-muted flex items-center justify-center text-2xl"></div>
+                          <ServiceImage
+                            src={p.imageUrl ?? null}
+                            alt={localize(p.nameJson, locale)}
+                            size="full"
+                            className="h-24 w-full"
+                          />
                           <p className="mt-2 text-sm font-semibold truncate">
                             {localize(p.nameJson, locale)}
                           </p>
@@ -178,8 +193,13 @@ export default function SearchPage(): JSX.Element {
                       <Link key={t.id} href={`/technicians/${t.id}`}>
                         <Card hover padding="md">
                           <div className="text-center">
-                            <div className="mx-auto h-16 w-16 rounded-full bg-brand-100 flex items-center justify-center text-2xl">
-                              ‍
+                            <div className="mx-auto h-16 w-16 overflow-hidden rounded-full bg-brand-100">
+                              <ServiceImage
+                                src={t.user?.avatarUrl ?? null}
+                                alt={t.user?.name ?? ''}
+                                size="full"
+                                className="h-16 w-16 object-cover"
+                              />
                             </div>
                             <p className="mt-2 font-semibold">{t.user?.name}</p>
                             <p className="text-sm text-text-secondary">
