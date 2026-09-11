@@ -7,7 +7,7 @@ import Image from 'next/image';
 import { usePathname, useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import type { ReactNode } from 'react';
-import { useAuth } from '@galaxy/ui';
+import { useAuth, Icon } from '@galaxy/ui';
 import { api } from '@/lib/trpc';
 import { useLocale } from '@/components/LocaleProvider';
 import { ThemeToggle } from '@/components/ThemeToggle';
@@ -18,37 +18,37 @@ import { customerNavGroups, customerLinks, type NavLink } from './nav-groups';
 const COLLAPSED_KEY = 'dashboard-nav-collapsed';
 
 const technicianLinks: NavLink[] = [
-  { href: '/tech/dashboard', key: 'nav.tech.dashboard', icon: '' },
-  { href: '/tech/slots', key: 'nav.tech.slots', icon: '' },
-  { href: '/tech/bookings', key: 'nav.tech.bookings', icon: '' },
-  { href: '/tech/earnings', key: 'nav.tech.earnings', icon: '' },
-  { href: '/tech/performance', key: 'nav.tech.performance', icon: '' },
-  { href: '/tech/wallet', key: 'nav.tech.wallet', icon: '' },
-  { href: '/tech/waitlist', key: 'nav.tech.waitlist', icon: '' },
-  { href: '/tech/gallery', key: 'nav.tech.gallery', icon: '️' },
-  { href: '/tech/calendar', key: 'nav.tech.calendar', icon: '' },
-  { href: '/tech/profile', key: 'nav.tech.profile', icon: '' },
+  { href: '/tech/dashboard', key: 'nav.tech.dashboard', icon: 'sparkle' },
+  { href: '/tech/slots', key: 'nav.tech.slots', icon: 'clock' },
+  { href: '/tech/bookings', key: 'nav.tech.bookings', icon: 'calendar' },
+  { href: '/tech/earnings', key: 'nav.tech.earnings', icon: 'wallet' },
+  { href: '/tech/performance', key: 'nav.tech.performance', icon: 'filter' },
+  { href: '/tech/wallet', key: 'nav.tech.wallet', icon: 'wallet' },
+  { href: '/tech/waitlist', key: 'nav.tech.waitlist', icon: 'clock' },
+  { href: '/tech/gallery', key: 'nav.tech.gallery', icon: 'camera' },
+  { href: '/tech/calendar', key: 'nav.tech.calendar', icon: 'calendar' },
+  { href: '/tech/profile', key: 'nav.tech.profile', icon: 'user' },
 ];
 
 const adminLinks: NavLink[] = [
-  { href: '/admin/dashboard', key: 'nav.admin.dashboard', icon: '' },
-  { href: '/admin/users', key: 'nav.admin.users', icon: '' },
-  { href: '/admin/technicians', key: 'nav.admin.technicians', icon: '‍' },
-  { href: '/admin/services', key: 'nav.admin.services', icon: '' },
-  { href: '/admin/categories', key: 'nav.admin.categories', icon: '' },
-  { href: '/admin/areas', key: 'nav.admin.areas', icon: '' },
-  { href: '/admin/bookings', key: 'nav.admin.bookings', icon: '' },
-  { href: '/admin/finance', key: 'nav.admin.finance', icon: '' },
-  { href: '/admin/flash-deals', key: 'nav.admin.flash-deals', icon: '' },
-  { href: '/admin/beauty-events', key: 'nav.admin.beauty-events', icon: '' },
-  { href: '/admin/loyalty', key: 'nav.admin.loyalty', icon: '' },
-  { href: '/admin/cms', key: 'nav.admin.cms', icon: '' },
-  { href: '/admin/admin-tools', key: 'nav.admin.admin-tools', icon: '️' },
-  { href: '/admin/group-bookings', key: 'nav.admin.group-bookings', icon: '' },
-  { href: '/admin/disputes', key: 'nav.admin.disputes', icon: '' },
-  { href: '/admin/analytics', key: 'nav.admin.analytics', icon: '' },
-  { href: '/admin/zatca', key: 'nav.admin.zatca', icon: '' },
-  { href: '/admin/settings', key: 'nav.admin.settings', icon: '️' },
+  { href: '/admin/dashboard', key: 'nav.admin.dashboard', icon: 'sparkle' },
+  { href: '/admin/users', key: 'nav.admin.users', icon: 'user' },
+  { href: '/admin/technicians', key: 'nav.admin.technicians', icon: 'user' },
+  { href: '/admin/services', key: 'nav.admin.services', icon: 'sparkle' },
+  { href: '/admin/categories', key: 'nav.admin.categories', icon: 'filter' },
+  { href: '/admin/areas', key: 'nav.admin.areas', icon: 'map-pin' },
+  { href: '/admin/bookings', key: 'nav.admin.bookings', icon: 'calendar' },
+  { href: '/admin/finance', key: 'nav.admin.finance', icon: 'wallet' },
+  { href: '/admin/flash-deals', key: 'nav.admin.flash-deals', icon: 'gift' },
+  { href: '/admin/beauty-events', key: 'nav.admin.beauty-events', icon: 'calendar' },
+  { href: '/admin/loyalty', key: 'nav.admin.loyalty', icon: 'star' },
+  { href: '/admin/cms', key: 'nav.admin.cms', icon: 'edit' },
+  { href: '/admin/admin-tools', key: 'nav.admin.admin-tools', icon: 'settings' },
+  { href: '/admin/group-bookings', key: 'nav.admin.group-bookings', icon: 'user' },
+  { href: '/admin/disputes', key: 'nav.admin.disputes', icon: 'chat' },
+  { href: '/admin/analytics', key: 'nav.admin.analytics', icon: 'filter' },
+  { href: '/admin/zatca', key: 'nav.admin.zatca', icon: 'check' },
+  { href: '/admin/settings', key: 'nav.admin.settings', icon: 'settings' },
 ];
 
 export function DashboardLayout({
@@ -189,7 +189,7 @@ export function DashboardLayout({
                               : 'text-text-secondary hover:bg-surface-muted dark:text-text-tertiary dark:hover:bg-gray-900'
                           }`}
                         >
-                          <span>{link.icon}</span>
+                          <Icon name={link.icon} size="md" className="opacity-70" />
                           {t(link.key)}
                         </Link>
                       ))}
@@ -207,7 +207,7 @@ export function DashboardLayout({
                       : 'text-text-secondary hover:bg-surface-muted dark:text-text-tertiary dark:hover:bg-gray-900'
                   }`}
                 >
-                  <span>{link.icon}</span>
+                  <Icon name={link.icon} size="md" className="opacity-70" />
                   {t(link.key)}
                 </Link>
               ))}
@@ -245,7 +245,7 @@ export function DashboardLayout({
                 pathname.startsWith(link.href) ? 'text-brand-600' : 'text-text-tertiary'
               }`}
             >
-              <span className="text-lg">{link.icon}</span>
+              <Icon name={link.icon} size="md" />
               <span className="truncate max-w-[56px]">{t(link.key)}</span>
             </Link>
           ))}
