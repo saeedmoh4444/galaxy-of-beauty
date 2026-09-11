@@ -58,7 +58,7 @@ export default function WellnessHubPage(): JSX.Element {
       setTab(
         defaultTabFor({
           stage: stageQ.data?.stage,
-          pamperActive: pamperQ.data?.isActive,
+          pamperActive: pamperQ.data?.isPamperWindow,
           menopauseEnabled: Boolean(menoQ.data?.enabled),
           savedTab,
           param: paramTab,
@@ -100,7 +100,7 @@ export default function WellnessHubPage(): JSX.Element {
   const d = data;
 
   const labels = WELLNESS_TABS.map((key) =>
-    key === 'pamper' && pamperQ.data?.isActive
+    key === 'pamper' && pamperQ.data?.isPamperWindow
       ? `${t(WELLNESS_TAB_I18N[key])} ●`
       : t(WELLNESS_TAB_I18N[key]),
   );
