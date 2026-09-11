@@ -10,6 +10,7 @@ import {
   Button,
   ProgressBar,
   formatCurrency,
+  ServiceImage,
   COUNTDOWN_INTERVAL_MS,
 } from '@galaxy/ui';
 import { useAuth } from '@galaxy/ui';
@@ -178,9 +179,14 @@ export default function FlashDealsPage(): JSX.Element {
                 </div>
 
                 <div className="flex flex-col sm:flex-row items-start gap-5">
-                  {/* Emoji / Service icon */}
-                  <div className="flex h-20 w-20 shrink-0 items-center justify-center rounded-2xl bg-gradient-to-br from-red-50 to-orange-100 text-5xl dark:from-red-950 dark:to-orange-900">
-                    {deal.serviceEmoji}
+                  {/* Service image */}
+                  <div className="h-20 w-20 shrink-0 overflow-hidden rounded-2xl bg-gradient-to-br from-red-50 to-orange-100 dark:from-red-950 dark:to-orange-900">
+                    <ServiceImage
+                      src={(deal as { serviceImageUrl?: string }).serviceImageUrl || null}
+                      alt={title}
+                      size="full"
+                      className="h-20 w-20 object-cover"
+                    />
                   </div>
 
                   <div className="flex-1 min-w-0">

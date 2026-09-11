@@ -1,7 +1,7 @@
 'use client';
 import { useState } from 'react';
 import { api } from '@/lib/trpc';
-import { Card, Button, Modal, formatCurrency } from '@galaxy/ui';
+import { Card, Button, Modal, formatCurrency, Icon } from '@galaxy/ui';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
 import { useLocale } from '@/components/LocaleProvider';
 
@@ -42,7 +42,7 @@ export default function GiftCardMarketPage(): JSX.Element {
           <div className="grid gap-4 sm:grid-cols-2">
             {items.map((l: Record<string, unknown>) => (
               <Card key={l.id as number} padding="lg" className="text-center">
-                <span className="text-4xl"></span>
+                <Icon name="gift" size="xl" className="text-brand-600" />
                 <p className="font-bold mt-2">
                   {t('giftCardMarket.cardLabel', { amount: formatCurrency(l.value as number) })}
                 </p>
