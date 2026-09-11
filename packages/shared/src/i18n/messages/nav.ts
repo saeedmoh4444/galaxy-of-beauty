@@ -134,4 +134,12 @@ export const navMessages = {
   'nav.admin.analytics': { ar: 'التحليلات', en: 'Analytics' },
   'nav.admin.zatca': { ar: 'زاتكا', en: 'ZATCA' },
   'nav.admin.settings': { ar: 'الإعدادات', en: 'Settings' },
+
+  // Phase 3 sprint 4 — grouped customer sidebar
+  'nav.group.core': { ar: 'الأساسيات', en: 'Core' },
+  'nav.group.bookPay': { ar: 'الحجز والدفع', en: 'Book & pay' },
+  'nav.group.beauty': { ar: 'الجمال والعافية', en: 'Beauty & wellness' },
+  'nav.group.shopping': { ar: 'التسوق', en: 'Shopping' },
+  'nav.group.community': { ar: 'المجتمع والمكافآت', en: 'Community & rewards' },
+  'nav.group.more': { ar: 'المزيد', en: 'More' },
 } as const;

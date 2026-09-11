@@ -59,6 +59,12 @@ export default function CustomerDashboardPage(): JSX.Element {
   const { isAuthenticated } = useAuth();
   const [tourOpen, setTourOpen] = useState(false);
 
+  // Phase 3 sprint 4 — tell the shell when the tour opens/closes so the
+  // grouped sidebar expands every group (tour steps 3–5 target sidebar links).
+  useEffect(() => {
+    window.dispatchEvent(new CustomEvent('gob:tour', { detail: { open: tourOpen } }));
+  }, [tourOpen]);
+
   // First-run auto-start: once per browser, md+ viewports only (the
   // mobile RN app gets its own engine later — plan §3.6).
   useEffect(() => {
