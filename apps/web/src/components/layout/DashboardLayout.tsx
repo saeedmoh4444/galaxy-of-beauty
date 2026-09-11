@@ -5,86 +5,17 @@
 import Link from 'next/link';
 import Image from 'next/image';
 import { usePathname, useRouter } from 'next/navigation';
+import { useEffect, useState } from 'react';
 import type { ReactNode } from 'react';
-import type { TranslationKey } from '@galaxy/shared';
 import { useAuth } from '@galaxy/ui';
 import { api } from '@/lib/trpc';
 import { useLocale } from '@/components/LocaleProvider';
 import { ThemeToggle } from '@/components/ThemeToggle';
 import { LanguageToggle } from '@/components/LanguageToggle';
+import { customerNavGroups, customerLinks, type NavLink } from './nav-groups';
 
-type NavLink = { href: string; key: TranslationKey; icon: string };
-
-const customerLinks: NavLink[] = [
-  { href: '/dashboard', key: 'nav.dashboard', icon: '' },
-  { href: '/bookings', key: 'nav.myBookings', icon: '' },
-  { href: '/bookings/create', key: 'nav.bookings.create', icon: '' },
-  { href: '/wallet', key: 'nav.wallet', icon: '' },
-  { href: '/wellness-hub', key: 'nav.wellness-hub', icon: '🌿' },
-  { href: '/referrals', key: 'nav.referrals', icon: '💝' },
-  { href: '/wishlist', key: 'nav.wishlist', icon: '️' },
-  { href: '/womens-services', key: 'nav.womens-services', icon: '' },
-  { href: '/dna-beauty', key: 'nav.dna-beauty', icon: '' },
-  { href: '/ride-hailing', key: 'nav.ride-hailing', icon: '' },
-  { href: '/last-mile', key: 'nav.last-mile', icon: '' },
-  { href: '/calendar-sync', key: 'nav.calendar-sync', icon: '️' },
-  { href: '/bnpl', key: 'nav.bnpl', icon: '' },
-  { href: '/tech-onboarding', key: 'nav.tech-onboarding', icon: '' },
-  { href: '/ai-assistant', key: 'nav.ai-assistant', icon: '' },
-  { href: '/beauty-bingo', key: 'nav.beauty-bingo', icon: '' },
-  { href: '/service-wishlist', key: 'nav.service-wishlist', icon: '' },
-  { href: '/gift-card-market', key: 'nav.gift-card-market', icon: '' },
-  { href: '/live-chat', key: 'nav.live-chat', icon: '' },
-  { href: '/vendor-portal', key: 'nav.vendor-portal', icon: '' },
-  { href: '/certification-quiz', key: 'nav.certification-quiz', icon: '' },
-  { href: '/tech-waitlist', key: 'nav.tech-waitlist', icon: '' },
-  { href: '/night-mode', key: 'nav.night-mode', icon: '' },
-  { href: '/travel-kit', key: 'nav.travel-kit', icon: '' },
-  { href: '/expiry-tracker', key: 'nav.expiry-tracker', icon: '️' },
-  { href: '/price-drop-alerts', key: 'nav.price-drop-alerts', icon: '' },
-  { href: '/loyalty-punch-card', key: 'nav.loyalty-punch-card', icon: '' },
-  { href: '/routine-scheduler', key: 'nav.routine-scheduler', icon: '' },
-  { href: '/booking-checklist', key: 'nav.booking-checklist', icon: '' },
-  { href: '/hair-color-sim', key: 'nav.hair-color-sim', icon: '‍️' },
-  { href: '/spa-planner', key: 'nav.spa-planner', icon: '️' },
-  { href: '/restock-reminder', key: 'nav.restock-reminder', icon: '' },
-  { href: '/skin-diary', key: 'nav.skin-diary', icon: '' },
-  { href: '/pen-pal', key: 'nav.pen-pal', icon: '' },
-  { href: '/sale-alerts', key: 'nav.sale-alerts', icon: '' },
-  { href: '/style-match', key: 'nav.style-match', icon: '' },
-  { href: '/product-scanner', key: 'nav.product-scanner', icon: '' },
-  { href: '/vip-membership', key: 'nav.vip-membership', icon: '' },
-  { href: '/ai-routine', key: 'nav.ai-routine', icon: '' },
-  { href: '/box-builder', key: 'nav.box-builder', icon: '' },
-  { href: '/service-warranty', key: 'nav.service-warranty', icon: '️' },
-  { href: '/wellness-tracker', key: 'nav.wellness-tracker', icon: '' },
-  { href: '/home-service', key: 'nav.home-service', icon: '' },
-  { href: '/beauty-analytics', key: 'nav.beauty-analytics', icon: '' },
-  { href: '/birthday-rewards', key: 'nav.birthday-rewards', icon: '' },
-  { href: '/post-care', key: 'nav.post-care', icon: '‍️' },
-  { href: '/mood-board', key: 'nav.mood-board', icon: '' },
-  { href: '/family-account', key: 'nav.family-account', icon: '‍‍' },
-  { href: '/virtual-try-on', key: 'nav.virtual-try-on', icon: '' },
-  { href: '/bridal-concierge', key: 'nav.bridal-concierge', icon: '' },
-  { href: '/group-bookings', key: 'nav.group-bookings', icon: '‍️' },
-  { href: '/challenges', key: 'nav.challenges', icon: '' },
-  { href: '/loyalty', key: 'nav.loyalty', icon: '' },
-  { href: '/promo', key: 'nav.promo', icon: '️' },
-  { href: '/saved-cards', key: 'nav.saved-cards', icon: '' },
-  { href: '/notifications', key: 'nav.notifications', icon: '' },
-  { href: '/skin-analysis', key: 'nav.skin-analysis', icon: '' },
-  { href: '/ai-chat', key: 'nav.ai-chat', icon: '' },
-  { href: '/subscriptions', key: 'nav.subscriptions', icon: '' },
-  { href: '/marketplace', key: 'nav.marketplace', icon: '️' },
-  { href: '/subscription-boxes', key: 'nav.subscription-boxes', icon: '' },
-  { href: '/cart', key: 'nav.cart', icon: '' },
-  { href: '/cashback', key: 'nav.cashback', icon: '' },
-  { href: '/social', key: 'nav.social', icon: '' },
-  { href: '/video', key: 'nav.video', icon: '' },
-  { href: '/smart-schedule', key: 'nav.smart-schedule', icon: '' },
-  { href: '/profile', key: 'nav.profile', icon: '' },
-  { href: '/addresses', key: 'nav.addresses', icon: '' },
-];
+// Phase 3 sprint 4 — sidebar group collapse state (per viewer).
+const COLLAPSED_KEY = 'dashboard-nav-collapsed';
 
 const technicianLinks: NavLink[] = [
   { href: '/tech/dashboard', key: 'nav.tech.dashboard', icon: '' },
@@ -136,6 +67,40 @@ export function DashboardLayout({
   const links =
     userRole === 'ADMIN' ? adminLinks : userRole === 'TECHNICIAN' ? technicianLinks : customerLinks;
 
+  // Phase 3 sprint 4 — collapsible groups (customer sidebar only).
+  // Default: every group collapsed except the one holding the active route.
+  const defaultCollapsed = Object.fromEntries(
+    customerNavGroups.map((group) => [
+      group.key,
+      !group.links.some((link) => pathname.startsWith(link.href)),
+    ]),
+  ) as Record<string, boolean>;
+  const [collapsed, setCollapsed] = useState<Record<string, boolean> | null>(null);
+  useEffect(() => {
+    try {
+      const raw = localStorage.getItem(COLLAPSED_KEY);
+      setCollapsed(raw ? (JSON.parse(raw) as Record<string, boolean>) : defaultCollapsed);
+    } catch {
+      setCollapsed(defaultCollapsed);
+    }
+    // Read once on mount — defaultCollapsed at mount reflects the entry route.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  const isGroupOpen = (key: string) => !(collapsed ?? defaultCollapsed)[key];
+  const toggleGroup = (key: string) => {
+    setCollapsed((prev) => {
+      const base = prev ?? defaultCollapsed;
+      const next = { ...base, [key]: !base[key] };
+      try {
+        localStorage.setItem(COLLAPSED_KEY, JSON.stringify(next));
+      } catch {
+        // storage unavailable — session-only state
+      }
+      return next;
+    });
+  };
+
   const handleLogout = async () => {
     if (!window.confirm(t('confirm.logout'))) return;
     // Server logout clears the HttpOnly cookies (gob_access/gob_refresh)
@@ -168,20 +133,71 @@ export function DashboardLayout({
           </span>
         </Link>
         <nav className="space-y-1">
-          {links.map((link) => (
-            <Link
-              key={link.href}
-              href={link.href}
-              className={`flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium transition-colors ${
-                pathname.startsWith(link.href)
-                  ? 'bg-brand-50 text-brand-700 dark:bg-brand-950 dark:text-brand-300'
-                  : 'text-text-secondary hover:bg-surface-muted dark:text-text-tertiary dark:hover:bg-gray-900'
-              }`}
-            >
-              <span>{link.icon}</span>
-              {t(link.key)}
-            </Link>
-          ))}
+          {userRole === 'CUSTOMER'
+            ? customerNavGroups.map((group) => (
+                <div key={group.key}>
+                  <button
+                    type="button"
+                    data-testid="nav-group-toggle"
+                    onClick={() => toggleGroup(group.key)}
+                    aria-expanded={isGroupOpen(group.key)}
+                    aria-controls={`nav-group-${group.key}`}
+                    className={`flex w-full items-center justify-between rounded-lg px-3 py-2 text-sm font-semibold transition-colors hover:bg-surface-muted focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-500 dark:hover:bg-gray-900 ${
+                      group.links.some((link) => pathname.startsWith(link.href))
+                        ? 'text-brand-700 dark:text-brand-300'
+                        : 'text-text-primary dark:text-gray-100'
+                    }`}
+                  >
+                    <span className="flex items-center gap-2">
+                      <span aria-hidden>{group.icon}</span>
+                      {t(group.key)}
+                    </span>
+                    <span
+                      aria-hidden
+                      className={`transition-transform motion-reduce:transition-none ${
+                        isGroupOpen(group.key) ? 'rotate-90 rtl:-rotate-90' : ''
+                      }`}
+                    >
+                      ›
+                    </span>
+                  </button>
+                  {isGroupOpen(group.key) && (
+                    <div
+                      id={`nav-group-${group.key}`}
+                      className="mt-1 ms-3 space-y-1 border-s border-edge ps-3 dark:border-gray-800"
+                    >
+                      {group.links.map((link) => (
+                        <Link
+                          key={link.href}
+                          href={link.href}
+                          className={`flex items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium transition-colors ${
+                            pathname.startsWith(link.href)
+                              ? 'bg-brand-50 text-brand-700 dark:bg-brand-950 dark:text-brand-300'
+                              : 'text-text-secondary hover:bg-surface-muted dark:text-text-tertiary dark:hover:bg-gray-900'
+                          }`}
+                        >
+                          <span>{link.icon}</span>
+                          {t(link.key)}
+                        </Link>
+                      ))}
+                    </div>
+                  )}
+                </div>
+              ))
+            : links.map((link) => (
+                <Link
+                  key={link.href}
+                  href={link.href}
+                  className={`flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium transition-colors ${
+                    pathname.startsWith(link.href)
+                      ? 'bg-brand-50 text-brand-700 dark:bg-brand-950 dark:text-brand-300'
+                      : 'text-text-secondary hover:bg-surface-muted dark:text-text-tertiary dark:hover:bg-gray-900'
+                  }`}
+                >
+                  <span>{link.icon}</span>
+                  {t(link.key)}
+                </Link>
+              ))}
         </nav>
         <button
           onClick={handleLogout}
