@@ -6,6 +6,7 @@ import { usePathname } from 'next/navigation';
 import { useEffect, useRef, useState } from 'react';
 import type { ReactNode } from 'react';
 import type { TranslationKey } from '@galaxy/shared';
+import { Icon } from '@galaxy/ui';
 import { ThemeToggle } from '@/components/ThemeToggle';
 import { LanguageToggle } from '@/components/LanguageToggle';
 import { BackToTop } from '@/components/BackToTop';
@@ -117,7 +118,7 @@ export function MainLayout({ children }: { children: ReactNode }): JSX.Element {
               onClick={() => setDrawerOpen(true)}
               aria-label={t('nav.menu')}
             >
-              ☰
+              <Icon name="menu" size="md" />
             </button>
             <Link href="/" className="flex shrink-0 items-center gap-2">
               <Image
@@ -151,12 +152,11 @@ export function MainLayout({ children }: { children: ReactNode }): JSX.Element {
                 }`}
               >
                 {t('nav.more')}
-                <span
-                  aria-hidden
+                <Icon
+                  name="chevron-down"
+                  size="sm"
                   className={`transition-transform ${moreOpen ? 'rotate-180' : ''}`}
-                >
-                  ▾
-                </span>
+                />
               </button>
               {moreOpen && (
                 <div
@@ -235,7 +235,7 @@ export function MainLayout({ children }: { children: ReactNode }): JSX.Element {
                 aria-label={t('common.close')}
                 className="rounded-lg p-2 text-text-secondary hover:bg-surface-muted"
               >
-                ✕
+                <Icon name="close" size="md" />
               </button>
             </div>
             <div className="space-y-1">
