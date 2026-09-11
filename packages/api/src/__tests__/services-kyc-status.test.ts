@@ -5,9 +5,13 @@
  * so getById's technician mapping must expose kycStatus (raw value — the UI
  * decides when to show the badge, keeping cards honest on mixed sources).
  *
+ * Finds its service via prisma (one query) and calls the API once — scanning
+ * the list through getById trips the anonymous rate limiter (TOO_MANY_REQUESTS).
+ *
  * Run: pnpm --filter @galaxy/api test -- services-kyc-status.test.ts
  */
 import { describe, it, expect } from 'vitest';
+import { prisma } from '@galaxy/db';
 import { appRouter } from '../routers/index';
 import { createTRPCContext } from '../context';
 
@@ -20,24 +24,19 @@ async function anonCaller() {
 
 describe('services.getById — technician kycStatus', () => {
   it('exposes kycStatus on every mapped technician', async () => {
-    const caller = await anonCaller();
-    const list = await caller.services.list({ page: 1, limit: 100, sort: 'popular' });
-
-    // Find the first service whose detail carries at least one technician
-    // mapping (seed data varies between environments).
-    let detail: any = null;
-    for (const svc of list.items ?? []) {
-      const d = await caller.services.getById({ id: svc.id });
-      if ((d.technicianServices ?? []).length > 0) {
-        detail = d;
-        break;
-      }
-    }
-    if (!detail) {
+    const mapping = await prisma.technicianService.findFirst({
+      where: { isActive: true },
+      select: { serviceId: true },
+    });
+    if (!mapping) {
       // No mapped technicians in this dataset — nothing to assert against.
       return;
     }
 
+    const caller = await anonCaller();
+    const detail = await caller.services.getById({ id: mapping.serviceId });
+
+    expect((detail.technicianServices ?? []).length).toBeGreaterThan(0);
     for (const ts of detail.technicianServices) {
       expect(ts.technician).toBeDefined();
       expect(ts.technician).toHaveProperty('kycStatus');

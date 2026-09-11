@@ -43,6 +43,7 @@ export const navMessages = {
     en: 'All rights reserved.',
   },
   'common.brandName': { ar: 'دلال', en: 'Dalal' },
+  'common.close': { ar: 'إغلاق', en: 'Close' },
   'common.switchToLight': { ar: 'تفعيل الوضع النهاري', en: 'Switch to light mode' },
   'common.switchToDark': { ar: 'تفعيل الوضع الليلي', en: 'Switch to dark mode' },
   'nav.myBookings': { ar: 'حجوزاتي', en: 'My Bookings' },
@@ -134,6 +135,12 @@ export const navMessages = {
   'nav.admin.analytics': { ar: 'التحليلات', en: 'Analytics' },
   'nav.admin.zatca': { ar: 'زاتكا', en: 'ZATCA' },
   'nav.admin.settings': { ar: 'الإعدادات', en: 'Settings' },
+
+  // Phase 3 sprint 4 — public header IA
+  'nav.more': { ar: 'المزيد', en: 'More' },
+  'nav.menu': { ar: 'القائمة', en: 'Menu' },
+  'nav.venues': { ar: 'الوجهات', en: 'Venues' },
+  'nav.reels': { ar: 'شاهدينا', en: 'Reels' },
 
   // Phase 3 sprint 4 — grouped customer sidebar
   'nav.group.core': { ar: 'الأساسيات', en: 'Core' },
