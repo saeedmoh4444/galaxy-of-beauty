@@ -1676,6 +1676,12 @@ export const miscMessages = {
   // Wellness Hub
   'wellnessHub.err.load': { ar: 'فشل تحميل البيانات', en: 'Failed to load data' },
   'wellnessHub.title': { ar: ' مركز العافية', en: ' Wellness Hub' },
+  // Phase 3 sprint 3 — stage-aware hub tabs
+  'wellnessHub.tab.cycle': { ar: 'دورتي', en: 'Cycle' },
+  'wellnessHub.tab.pamper': { ar: 'تدليل', en: 'Pamper' },
+  'wellnessHub.tab.postpartum': { ar: 'بعد الولادة', en: 'Postpartum' },
+  'wellnessHub.tab.menopause': { ar: 'انقطاع الطمث', en: 'Menopause' },
+  'wellnessHub.tab.mind': { ar: 'العقل', en: 'Mind' },
   'wellnessHub.subtitle': {
     ar: 'نظرة شاملة على صحتكِ وجمالكِ في مكان واحد',
     en: 'A complete view of your health and beauty in one place',
