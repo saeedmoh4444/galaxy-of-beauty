@@ -2587,6 +2587,7 @@ export const miscMessages = {
     ar: 'سلتكِ فاضية — تصفحي المنتجات وأضيفي اللي يعجبكِ',
     en: 'Your cart is empty — browse the products and add what you like',
   },
+  'cart.shop': { ar: 'تصفحي المتجر', en: 'Browse the marketplace' },
   'cart.productFallback': { ar: 'منتج #{id}', en: 'Product #{id}' },
   'cart.quantity': { ar: 'الكمية: {qty}', en: 'Quantity: {qty}' },
   'cart.remove': { ar: 'حذف', en: 'Remove' },
