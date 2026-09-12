@@ -25,7 +25,7 @@ const GOAL_TEMPLATES: {
 }[] = [
   {
     key: 'skincare',
-    emoji: '',
+    emoji: '🧴',
     name: 'beautyGoals.cat.skincare',
     goals: [
       'beautyGoals.goal.skincare1',
@@ -36,7 +36,7 @@ const GOAL_TEMPLATES: {
   },
   {
     key: 'makeup',
-    emoji: '',
+    emoji: '💄',
     name: 'beautyGoals.cat.makeup',
     goals: [
       'beautyGoals.goal.makeup1',
@@ -58,7 +58,7 @@ const GOAL_TEMPLATES: {
   },
   {
     key: 'health',
-    emoji: '',
+    emoji: '💪',
     name: 'beautyGoals.cat.health',
     goals: [
       'beautyGoals.goal.health1',
@@ -69,7 +69,7 @@ const GOAL_TEMPLATES: {
   },
   {
     key: 'nails',
-    emoji: '',
+    emoji: '💅',
     name: 'beautyGoals.cat.nails',
     goals: [
       'beautyGoals.goal.nails1',
@@ -80,7 +80,7 @@ const GOAL_TEMPLATES: {
   },
   {
     key: 'spirit',
-    emoji: '',
+    emoji: '🧘',
     name: 'beautyGoals.cat.spirit',
     goals: [
       'beautyGoals.goal.spirit1',
@@ -172,15 +172,20 @@ export default function BeautyGoalsPage(): JSX.Element {
                 year: g.year,
                 achieved: g.achieved,
               })) ?? [
-                { emoji: '', text: t('beautyGoals.visionWedding'), year: '2027', achieved: false },
+                {
+                  emoji: '👰',
+                  text: t('beautyGoals.visionWedding'),
+                  year: '2027',
+                  achieved: false,
+                },
               ]
             }
           />
           <BeautySkillTreeCard
             skills={[
-              { name: t('beautyGoals.skill.basicMakeup'), emoji: '', level: 3, max: 5 },
-              { name: t('beautyGoals.skill.skincare'), emoji: '', level: 2, max: 5 },
-              { name: t('beautyGoals.skill.hairstyles'), emoji: '', level: 1, max: 5 },
+              { name: t('beautyGoals.skill.basicMakeup'), emoji: '💄', level: 3, max: 5 },
+              { name: t('beautyGoals.skill.skincare'), emoji: '🧴', level: 2, max: 5 },
+              { name: t('beautyGoals.skill.hairstyles'), emoji: '💇', level: 1, max: 5 },
             ]}
           />
         </div>
@@ -188,8 +193,8 @@ export default function BeautyGoalsPage(): JSX.Element {
           <BeautyHabitTrackerCard
             habits={[
               { name: t('beautyGoals.habit.sunscreen'), emoji: '️', done: true },
-              { name: t('beautyGoals.habit.water'), emoji: '', done: false },
-              { name: t('beautyGoals.habit.evening'), emoji: '', done: true },
+              { name: t('beautyGoals.habit.water'), emoji: '💧', done: false },
+              { name: t('beautyGoals.habit.evening'), emoji: '🌙', done: true },
             ]}
           />
           <HydrationTracker goal={8} current={5} />
@@ -201,7 +206,7 @@ export default function BeautyGoalsPage(): JSX.Element {
               title: t('beautyGoals.path.title'),
               modules: 8,
               completed: 3,
-              emoji: '',
+              emoji: '🎓',
               duration: t('beautyGoals.path.duration'),
             }}
           />

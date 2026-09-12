@@ -16,7 +16,7 @@ const CHALLENGES: {
 }[] = [
   {
     key: '7day_mask',
-    emoji: '',
+    emoji: '🧖',
     name: 'socialChallenge.chal.mask',
     desc: 'socialChallenge.desc.mask',
     participants: 234,
@@ -25,7 +25,7 @@ const CHALLENGES: {
   },
   {
     key: 'selfie_30',
-    emoji: '',
+    emoji: '🚫',
     name: 'socialChallenge.chal.noMakeup',
     desc: 'socialChallenge.desc.noMakeup',
     participants: 156,
@@ -34,7 +34,7 @@ const CHALLENGES: {
   },
   {
     key: 'water_challenge',
-    emoji: '',
+    emoji: '💧',
     name: 'socialChallenge.chal.water',
     desc: 'socialChallenge.desc.water',
     participants: 412,
@@ -43,7 +43,7 @@ const CHALLENGES: {
   },
   {
     key: 'night_routine',
-    emoji: '',
+    emoji: '🌙',
     name: 'socialChallenge.chal.nightRoutine',
     desc: 'socialChallenge.desc.nightRoutine',
     participants: 189,

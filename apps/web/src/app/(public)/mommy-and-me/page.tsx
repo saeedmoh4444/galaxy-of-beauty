@@ -5,7 +5,7 @@ import { t } from '@galaxy/shared';
 
 const PACKAGES = [
   {
-    emoji: '',
+    emoji: '💅',
     title: 'marketing.mommy-and-me.pkg-mani-title',
     desc: 'marketing.mommy-and-me.pkg-mani-desc',
     price: 150,
@@ -19,14 +19,14 @@ const PACKAGES = [
     services: ['marketing.mommy-and-me.svc-hairstyle'],
   },
   {
-    emoji: '',
+    emoji: '🧖',
     title: 'marketing.mommy-and-me.pkg-skin-title',
     desc: 'marketing.mommy-and-me.pkg-skin-desc',
     price: 250,
     services: ['marketing.mommy-and-me.svc-facial', 'marketing.mommy-and-me.svc-mask'],
   },
   {
-    emoji: '',
+    emoji: '👰',
     title: 'marketing.mommy-and-me.pkg-wedding-title',
     desc: 'marketing.mommy-and-me.pkg-wedding-desc',
     price: 500,
@@ -37,7 +37,7 @@ const PACKAGES = [
     ],
   },
   {
-    emoji: '',
+    emoji: '🎂',
     title: 'marketing.mommy-and-me.pkg-birthday-title',
     desc: 'marketing.mommy-and-me.pkg-birthday-desc',
     price: 300,

@@ -66,7 +66,7 @@ export default function BeautyServicesPage(): JSX.Element {
                 items={[
                   {
                     name: t('beautyServices.creamA'),
-                    emoji: '',
+                    emoji: '🧴',
                     price: 120,
                     rating: 4.5,
                     pros: [t('beautyServices.prosDeepHydration'), t('beautyServices.prosLasts24h')],
@@ -75,7 +75,7 @@ export default function BeautyServicesPage(): JSX.Element {
                   },
                   {
                     name: t('beautyServices.creamB'),
-                    emoji: '',
+                    emoji: '💧',
                     price: 80,
                     rating: 4.0,
                     pros: [t('beautyServices.prosLight'), t('beautyServices.prosFastAbsorb')],
@@ -90,14 +90,14 @@ export default function BeautyServicesPage(): JSX.Element {
                 drops={[
                   {
                     service: t('beautyBudget.spaManicure'),
-                    emoji: '',
+                    emoji: '💅',
                     oldPrice: 150,
                     newPrice: 99,
                     date: '2026-08-01',
                   },
                   {
                     service: t('beautyCourses.path.title'),
-                    emoji: '',
+                    emoji: '🎓',
                     oldPrice: 350,
                     newPrice: 299,
                     date: '2026-07-28',

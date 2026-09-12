@@ -26,22 +26,22 @@ const SEASONS: {
     tips: 'seasonal.tips.winter',
     services: [
       {
-        emoji: '',
+        emoji: '💧',
         name: 'seasonal.svc.winter.deepHydration',
         why: 'seasonal.svc.winter.deepHydrationWhy',
       },
       {
-        emoji: '',
+        emoji: '💆',
         name: 'seasonal.svc.winter.oilMassage',
         why: 'seasonal.svc.winter.oilMassageWhy',
       },
       {
-        emoji: '',
+        emoji: '💇',
         name: 'seasonal.svc.winter.hairTreatment',
         why: 'seasonal.svc.winter.hairTreatmentWhy',
       },
       {
-        emoji: '',
+        emoji: '💅',
         name: 'seasonal.svc.winter.winterNails',
         why: 'seasonal.svc.winter.winterNailsWhy',
       },
@@ -49,7 +49,7 @@ const SEASONS: {
   },
   {
     key: 'spring',
-    emoji: '',
+    emoji: '🌸',
     name: 'seasonal.season.spring',
     months: 'seasonal.months.spring',
     color: '#ec4899',
@@ -57,18 +57,18 @@ const SEASONS: {
     tips: 'seasonal.tips.spring',
     services: [
       {
-        emoji: '',
+        emoji: '✨',
         name: 'seasonal.svc.spring.exfoliation',
         why: 'seasonal.svc.spring.exfoliationWhy',
       },
-      { emoji: '', name: 'seasonal.svc.spring.hairTrim', why: 'seasonal.svc.spring.hairTrimWhy' },
+      { emoji: '✂️', name: 'seasonal.svc.spring.hairTrim', why: 'seasonal.svc.spring.hairTrimWhy' },
       {
-        emoji: '',
+        emoji: '💄',
         name: 'seasonal.svc.spring.springMakeup',
         why: 'seasonal.svc.spring.springMakeupWhy',
       },
       {
-        emoji: '',
+        emoji: '🌿',
         name: 'seasonal.svc.spring.naturalTreatments',
         why: 'seasonal.svc.spring.naturalTreatmentsWhy',
       },
@@ -84,12 +84,12 @@ const SEASONS: {
     tips: 'seasonal.tips.summer',
     services: [
       {
-        emoji: '',
+        emoji: '🧴',
         name: 'seasonal.svc.summer.medicalSunscreen',
         why: 'seasonal.svc.summer.medicalSunscreenWhy',
       },
       {
-        emoji: '',
+        emoji: '🦶',
         name: 'seasonal.svc.summer.summerPedicure',
         why: 'seasonal.svc.summer.summerPedicureWhy',
       },
@@ -99,7 +99,7 @@ const SEASONS: {
         why: 'seasonal.svc.summer.hairRemovalWhy',
       },
       {
-        emoji: '',
+        emoji: '🌊',
         name: 'seasonal.svc.summer.summerHairstyles',
         why: 'seasonal.svc.summer.summerHairstylesWhy',
       },
@@ -107,7 +107,7 @@ const SEASONS: {
   },
   {
     key: 'autumn',
-    emoji: '',
+    emoji: '🍂',
     name: 'seasonal.season.autumn',
     months: 'seasonal.months.autumn',
     color: '#d97706',
@@ -115,22 +115,22 @@ const SEASONS: {
     tips: 'seasonal.tips.autumn',
     services: [
       {
-        emoji: '',
+        emoji: '🍋',
         name: 'seasonal.svc.autumn.pigmentation',
         why: 'seasonal.svc.autumn.pigmentationWhy',
       },
       {
-        emoji: '',
+        emoji: '💆',
         name: 'seasonal.svc.autumn.relaxingMassage',
         why: 'seasonal.svc.autumn.relaxingMassageWhy',
       },
       {
-        emoji: '',
+        emoji: '💇',
         name: 'seasonal.svc.winter.hairTreatment',
         why: 'seasonal.svc.autumn.hairTreatmentWhy',
       },
       {
-        emoji: '',
+        emoji: '🧖',
         name: 'seasonal.svc.autumn.nourishingMask',
         why: 'seasonal.svc.autumn.nourishingMaskWhy',
       },

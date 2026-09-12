@@ -6,11 +6,15 @@ import { t } from '@galaxy/shared';
 import type { TranslationKey } from '@galaxy/shared';
 
 const TIER_LABELS: Record<string, { name: TranslationKey; emoji: string; color: string }> = {
-  SILVER: { name: 'marketing.rewards.tier-silver', emoji: '', color: 'from-gray-300 to-gray-400' },
-  GOLD: { name: 'marketing.rewards.tier-gold', emoji: '', color: 'from-yellow-400 to-amber-500' },
+  SILVER: {
+    name: 'marketing.rewards.tier-silver',
+    emoji: '🥈',
+    color: 'from-gray-300 to-gray-400',
+  },
+  GOLD: { name: 'marketing.rewards.tier-gold', emoji: '🥇', color: 'from-yellow-400 to-amber-500' },
   PLATINUM: {
     name: 'marketing.rewards.tier-platinum',
-    emoji: '',
+    emoji: '💎',
     color: 'from-brand-400 to-indigo-500',
   },
 };

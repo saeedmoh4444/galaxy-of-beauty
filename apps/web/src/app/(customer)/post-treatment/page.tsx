@@ -16,7 +16,7 @@ const TREATMENTS: Record<
   }
 > = {
   facial: {
-    emoji: '',
+    emoji: '🧖',
     label: 'postTreatment.treat.facial',
     aftercare: [
       'postTreatment.care.facial1',
@@ -61,7 +61,7 @@ const TREATMENTS: Record<
     ],
   },
   nails: {
-    emoji: '',
+    emoji: '💅',
     label: 'postTreatment.treat.nails',
     aftercare: [
       'postTreatment.care.nails1',

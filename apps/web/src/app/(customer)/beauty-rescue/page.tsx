@@ -30,7 +30,7 @@ const EMERGENCIES: {
 }[] = [
   {
     key: 'pimple',
-    emoji: '',
+    emoji: '💊',
     name: 'rescue.emergency.pimple',
     desc: 'rescue.desc.pimple',
     price: 50,
@@ -39,7 +39,7 @@ const EMERGENCIES: {
   },
   {
     key: 'smudge',
-    emoji: '',
+    emoji: '💄',
     name: 'rescue.emergency.smudge',
     desc: 'rescue.desc.smudge',
     price: 40,
@@ -57,7 +57,7 @@ const EMERGENCIES: {
   },
   {
     key: 'nail',
-    emoji: '',
+    emoji: '💅',
     name: 'rescue.emergency.nail',
     desc: 'rescue.desc.nail',
     price: 35,
@@ -75,7 +75,7 @@ const EMERGENCIES: {
   },
   {
     key: 'redness',
-    emoji: '',
+    emoji: '🧊',
     name: 'rescue.emergency.redness',
     desc: 'rescue.desc.redness',
     price: 55,

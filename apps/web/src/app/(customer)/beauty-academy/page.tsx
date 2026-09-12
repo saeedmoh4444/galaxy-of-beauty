@@ -86,7 +86,7 @@ export default function BeautyAcademyPage(): JSX.Element {
                       lessons: 6,
                       instructor: 'د. نورة',
                       enrolled: 1234,
-                      emoji: '',
+                      emoji: '🧴',
                     }}
                   />
                   <FreeCourseCard
@@ -96,7 +96,7 @@ export default function BeautyAcademyPage(): JSX.Element {
                       duration: t('academy.duration90'),
                       lessons: 12,
                       hasCertificate: true,
-                      emoji: '',
+                      emoji: '💄',
                     }}
                   />
                 </>
@@ -132,7 +132,7 @@ export default function BeautyAcademyPage(): JSX.Element {
                       expert: 'م. سارة',
                       date: t('academy.dateSep15'),
                       isFree: true,
-                      emoji: '',
+                      emoji: '💼',
                     }}
                   />
                 </>
@@ -266,7 +266,7 @@ export default function BeautyAcademyPage(): JSX.Element {
                 title: t('academy.course.professionalMakeup'),
                 modules: 8,
                 completed: 3,
-                emoji: '',
+                emoji: '💄',
                 duration: t('academy.path.sixMonths'),
               }}
             />

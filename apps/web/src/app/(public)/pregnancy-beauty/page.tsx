@@ -7,7 +7,7 @@ const TRIMESTERS = [
   {
     key: 'first',
     nameAr: 'marketing.pregnancy-beauty.trimester-first',
-    emoji: '',
+    emoji: '🌱',
     tips: [
       {
         title: 'marketing.pregnancy-beauty.tip-chem-title',
@@ -39,7 +39,7 @@ const TRIMESTERS = [
   {
     key: 'second',
     nameAr: 'marketing.pregnancy-beauty.trimester-second',
-    emoji: '',
+    emoji: '🌸',
     tips: [
       {
         title: 'marketing.pregnancy-beauty.tip-pregnancy-massage-title',
@@ -71,7 +71,7 @@ const TRIMESTERS = [
   {
     key: 'third',
     nameAr: 'marketing.pregnancy-beauty.trimester-third',
-    emoji: '',
+    emoji: '🍼',
     tips: [
       {
         title: 'marketing.pregnancy-beauty.tip-relax-title',

@@ -130,7 +130,7 @@ export default function BeautyCoursesPage(): JSX.Element {
                 expert: 'م. سارة',
                 date: t('beautyCourses.talk.date'),
                 isFree: true,
-                emoji: '',
+                emoji: '🎤',
               }}
             />
             <BeautyLearningPathCard
@@ -138,7 +138,7 @@ export default function BeautyCoursesPage(): JSX.Element {
                 title: t('beautyCourses.path.title'),
                 modules: 8,
                 completed: 0,
-                emoji: '',
+                emoji: '📚',
                 duration: t('beautyCourses.path.duration'),
               }}
             />

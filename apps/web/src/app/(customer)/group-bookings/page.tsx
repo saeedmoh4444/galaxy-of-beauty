@@ -17,11 +17,11 @@ import type { TranslationKey } from '@galaxy/shared';
 import Link from 'next/link';
 
 const THEMES: { value: string; label: TranslationKey; emoji: string }[] = [
-  { value: 'bridal', label: 'groupBookings.theme.bridal', emoji: '' },
-  { value: 'birthday', label: 'groupBookings.theme.birthday', emoji: '' },
-  { value: 'girls_night', label: 'groupBookings.theme.girlsNight', emoji: '' },
+  { value: 'bridal', label: 'groupBookings.theme.bridal', emoji: '👰' },
+  { value: 'birthday', label: 'groupBookings.theme.birthday', emoji: '🎂' },
+  { value: 'girls_night', label: 'groupBookings.theme.girlsNight', emoji: '👭' },
   { value: 'family', label: 'groupBookings.theme.family', emoji: '‍‍‍' },
-  { value: 'other', label: 'groupBookings.theme.other', emoji: '' },
+  { value: 'other', label: 'groupBookings.theme.other', emoji: '✨' },
 ];
 
 interface MemberInput {
@@ -189,7 +189,7 @@ export default function GroupBookingsPage(): JSX.Element {
         <div className="grid gap-4 sm:grid-cols-3">
           {[
             {
-              emoji: '',
+              emoji: '💰',
               title: t('groupBookings.benefit1.title'),
               desc: t('groupBookings.benefit1.desc'),
             },
@@ -199,7 +199,7 @@ export default function GroupBookingsPage(): JSX.Element {
               desc: t('groupBookings.benefit2.desc'),
             },
             {
-              emoji: '',
+              emoji: '🎉',
               title: t('groupBookings.benefit3.title'),
               desc: t('groupBookings.benefit3.desc'),
             },
