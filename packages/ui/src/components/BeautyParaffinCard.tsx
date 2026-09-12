@@ -42,7 +42,7 @@ export function BeautyParaffinCard({
             },
           },
           {
-            emoji: '️',
+            emoji: '⏰',
             text: {
               ar: '15-20 دقيقة — تغمس الأيدي 3-5 مرات',
               en: '15-20 minutes — dip hands 3-5 times',

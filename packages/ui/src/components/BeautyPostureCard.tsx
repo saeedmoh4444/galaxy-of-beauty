@@ -32,7 +32,7 @@ export function BeautyPostureCard({
       <div className="mt-3 grid grid-cols-2 gap-1.5">
         {[
           {
-            emoji: '️',
+            emoji: '⬆️',
             label: { ar: 'ارفعي ذقنك', en: 'Lift your chin' },
             tip: { ar: 'موازية للأرض', en: 'Parallel to the ground' },
           },

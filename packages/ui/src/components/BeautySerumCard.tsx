@@ -37,7 +37,7 @@ export function BeautySerumCard({
           },
           { emoji: '🌙', text: { ar: '3. ريتينول — مساءً فقط', en: '3. Retinol — evenings only' } },
           {
-            emoji: '️',
+            emoji: '💊',
             text: { ar: '4. نياسيناميد — صباح ومساء', en: '4. Niacinamide — morning and night' },
           },
         ].map((t, i) => (

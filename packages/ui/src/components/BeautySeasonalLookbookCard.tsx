@@ -7,7 +7,7 @@ import { cn } from '@galaxy/shared';
  * From Phase W9: The Small Details — Delightful Surprises.
  *
  * Usage:
- *   <BeautySeasonalLookbookCard season="summer" looks={[{ emoji: '️', name: 'إطلالة الصيف' }]} />
+ *   <BeautySeasonalLookbookCard season="summer" looks={[{ emoji: '🌴', name: 'إطلالة الصيف' }]} />
  */
 
 type Season = 'spring' | 'summer' | 'autumn' | 'winter' | 'ramadan' | 'eid';
@@ -42,11 +42,11 @@ const SEASONAL: Record<
     ],
   },
   summer: {
-    emoji: '️',
+    emoji: '☀️',
     title: { ar: 'صيف 2026', en: 'Summer 2026' },
     looks: [
       {
-        emoji: '️',
+        emoji: '🏖️',
         name: { ar: 'إطلالة الشاطئ', en: 'Beach look' },
         description: { ar: 'مكياج مقاوم للماء وواقي شمس', en: 'Waterproof makeup and sunscreen' },
       },
@@ -74,7 +74,7 @@ const SEASONAL: Record<
     ],
   },
   winter: {
-    emoji: '️',
+    emoji: '❄️',
     title: { ar: 'شتاء 2026', en: 'Winter 2026' },
     looks: [
       {

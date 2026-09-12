@@ -32,7 +32,7 @@ const ROUTINE: NightRoutine[] = [
   },
   {
     time: '21:30',
-    emoji: '️',
+    emoji: '🧘',
     action: { ar: 'استرخاء وتأمل', en: 'Relax and meditate' },
     duration: { ar: '10 دقيقة', en: '10 min' },
   },

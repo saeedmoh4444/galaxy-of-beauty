@@ -35,7 +35,7 @@ export function BeautyTravelKitCard({
             },
           },
           {
-            emoji: '️',
+            emoji: '🌞',
             text: {
               ar: 'واقي شمس — أهم منتج في أي سفر',
               en: 'Sunscreen — the most important travel product',

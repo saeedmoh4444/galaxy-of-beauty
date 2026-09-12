@@ -42,7 +42,7 @@ export function BeautyRadioFrequencyCard({
             },
           },
           {
-            emoji: '️',
+            emoji: '📅',
             text: {
               ar: 'جلسة 30-45 دقيقة — مرة شهرياً',
               en: 'A 30-45 minute session — once a month',

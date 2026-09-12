@@ -36,7 +36,7 @@ const QUESTIONS: Question[] = [
       ar: 'كيف تتصرف بشرتكِ في الطقس الحار؟',
       en: 'How does your skin behave in hot weather?',
     },
-    emoji: '️',
+    emoji: '🥵',
     options: [
       { text: { ar: 'تصبح دهنية جداً', en: 'Becomes very oily' }, score: { oily: 3 } },
       { text: { ar: 'تبقى جافة', en: 'Stays dry' }, score: { dry: 3 } },

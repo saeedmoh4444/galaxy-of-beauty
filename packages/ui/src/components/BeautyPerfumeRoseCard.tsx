@@ -28,7 +28,7 @@ export function BeautyPerfumeRoseCard({
       <div className="mt-3 space-y-1">
         {[
           {
-            emoji: '️',
+            emoji: '🌄',
             text: {
               ar: 'يزرع في جبال الطائف — 2000 متر فوق البحر',
               en: 'Grown in the Taif mountains — 2,000 meters above sea level',

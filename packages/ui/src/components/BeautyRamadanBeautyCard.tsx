@@ -42,7 +42,7 @@ export function BeautyRamadanBeautyCard({
             },
           },
           {
-            emoji: '️',
+            emoji: '🌞',
             text: { ar: 'واقي شمس — حتى في رمضان', en: 'Sunscreen — even during Ramadan' },
           },
           {

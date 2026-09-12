@@ -42,7 +42,7 @@ export function BeautyOxygenFacialCard({
             },
           },
           {
-            emoji: '️',
+            emoji: '⏰',
             text: {
               ar: '30-45 دقيقة — بدون ألم أو احمرار',
               en: '30-45 minutes — no pain or redness',

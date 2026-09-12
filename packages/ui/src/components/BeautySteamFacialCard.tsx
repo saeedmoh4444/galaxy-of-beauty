@@ -35,7 +35,7 @@ export function BeautySteamFacialCard({
             },
           },
           {
-            emoji: '️',
+            emoji: '⏳',
             text: { ar: '5-10 دقائق — مرتين أسبوعياً', en: '5-10 minutes — twice a week' },
           },
           {

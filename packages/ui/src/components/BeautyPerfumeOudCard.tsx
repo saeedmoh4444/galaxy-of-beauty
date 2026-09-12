@@ -35,7 +35,7 @@ export function BeautyPerfumeOudCard({
             },
           },
           {
-            emoji: '️',
+            emoji: '🔥',
             text: {
               ar: 'دفء الجسم — يفوح العطر طوال اليوم',
               en: 'Body warmth — the scent lasts all day',

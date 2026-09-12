@@ -33,7 +33,7 @@ export function BeautyPerfumeSeasonCard({
             tip: { ar: 'زهري، أخضر، منعش', en: 'Floral, green, fresh' },
           },
           {
-            emoji: '️',
+            emoji: '☀️',
             label: { ar: 'صيف', en: 'Summer' },
             tip: { ar: 'حمضيات، بحري، خفيف', en: 'Citrus, marine, light' },
           },
@@ -43,7 +43,7 @@ export function BeautyPerfumeSeasonCard({
             tip: { ar: 'خشبي، حار، دافئ', en: 'Woody, spicy, warm' },
           },
           {
-            emoji: '️',
+            emoji: '❄️',
             label: { ar: 'شتاء', en: 'Winter' },
             tip: { ar: 'شرقي، ثقيل، مسك', en: 'Oriental, heavy, musky' },
           },

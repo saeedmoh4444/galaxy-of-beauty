@@ -27,9 +27,12 @@ export function BeautyPerfumeStorageCard({
       </div>
       <div className="mt-3 space-y-1">
         {[
-          { emoji: '️', text: { ar: 'مكان بارد — 15-20 درجة مئوية', en: 'A cool place — 15-20°C' } },
           {
-            emoji: '️',
+            emoji: '❄️',
+            text: { ar: 'مكان بارد — 15-20 درجة مئوية', en: 'A cool place — 15-20°C' },
+          },
+          {
+            emoji: '☀️',
             text: {
               ar: 'بعيداً عن الشمس — الضوء يدمر العطر',
               en: 'Away from sunlight — light destroys perfume',

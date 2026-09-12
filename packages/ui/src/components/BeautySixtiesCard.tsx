@@ -42,14 +42,14 @@ export function BeautySixtiesCard({
             },
           },
           {
-            emoji: '️',
+            emoji: '🛡️',
             text: {
               ar: 'حماية دائمة — البشرة الرقيقة تحتاج عناية',
               en: 'Constant protection — delicate skin needs care',
             },
           },
           {
-            emoji: '️',
+            emoji: '🥗',
             text: {
               ar: 'الجمال من الداخل — تغذية، نوم، سعادة',
               en: 'Beauty from within — nutrition, sleep, happiness',

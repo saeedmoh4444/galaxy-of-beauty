@@ -47,7 +47,7 @@ export function BeautyTeethCareCard({
             tip: { ar: 'فراولة + بيكربونات', en: 'Strawberry + baking soda' },
           },
           {
-            emoji: '‍️',
+            emoji: '🦷',
             label: { ar: 'فحص دوري', en: 'Regular checkup' },
             tip: { ar: 'كل 6 أشهر عند الطبيب', en: 'Every 6 months at the dentist' },
           },

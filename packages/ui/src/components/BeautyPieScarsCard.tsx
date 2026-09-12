@@ -46,7 +46,7 @@ export function BeautyPieScarsCard({
             text: { ar: 'ريتينول — يسرع تجدد الخلايا', en: 'Retinol — speeds up cell renewal' },
           },
           {
-            emoji: '️',
+            emoji: '🌞',
             text: {
               ar: 'SPF يومي — يمنع تفاقم التصبغات',
               en: 'Daily SPF — prevents pigmentation from worsening',

@@ -28,14 +28,14 @@ export function BeautySchoolMakeupCard({
       <div className="mt-3 space-y-1">
         {[
           {
-            emoji: '️',
+            emoji: '🌞',
             text: {
               ar: 'واقي شمس ملون — حماية + لون خفيف',
               en: 'Tinted sunscreen — protection + a hint of color',
             },
           },
           {
-            emoji: '️',
+            emoji: '👀',
             text: { ar: 'ماسكارا بنية — أنعم من السوداء', en: 'Brown mascara — softer than black' },
           },
           {

@@ -35,14 +35,14 @@ export function BeautySkinToneMatchCard({
             },
           },
           {
-            emoji: '️',
+            emoji: '☀️',
             text: {
               ar: 'اختاري في ضوء طبيعي — إضاءة المحل تخدع',
               en: 'Choose in natural light — store lighting deceives',
             },
           },
           {
-            emoji: '️',
+            emoji: '⏳',
             text: {
               ar: 'انتظري 5 دقائق — لون الفاونديشن يتغير',
               en: 'Wait 5 minutes — foundation color changes',

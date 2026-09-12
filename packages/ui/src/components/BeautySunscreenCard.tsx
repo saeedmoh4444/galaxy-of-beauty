@@ -46,7 +46,7 @@ export function BeautySunscreenCard({
             },
           },
           {
-            emoji: '️',
+            emoji: '⛅',
             text: {
               ar: 'حتى في الغيوم — الأشعة تخترق',
               en: 'Even on cloudy days — rays penetrate',

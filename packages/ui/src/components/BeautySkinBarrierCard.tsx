@@ -49,7 +49,7 @@ export function BeautySkinBarrierCard({
             },
           },
           {
-            emoji: '️',
+            emoji: '🛡️',
             text: {
               ar: 'حاجز صحي = بشرة أقل حساسية وأكثر نضارة',
               en: 'A healthy barrier = less sensitive, more radiant skin',

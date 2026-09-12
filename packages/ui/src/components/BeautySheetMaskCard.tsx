@@ -35,7 +35,7 @@ export function BeautySheetMaskCard({
             },
           },
           {
-            emoji: '️',
+            emoji: '⏰',
             text: {
               ar: '15-20 دقيقة — لا تتركيه حتى يجف',
               en: '15-20 minutes — do not let it dry out',

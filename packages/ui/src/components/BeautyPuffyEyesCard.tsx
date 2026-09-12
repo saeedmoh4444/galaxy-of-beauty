@@ -42,7 +42,7 @@ export function BeautyPuffyEyesCard({
             },
           },
           {
-            emoji: '️',
+            emoji: '😴',
             text: {
               ar: 'نامي على وسادة مرتفعة — تقلل تجمع السوائل',
               en: 'Sleep on an elevated pillow — reduces fluid pooling',
