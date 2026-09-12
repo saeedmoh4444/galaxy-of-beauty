@@ -78,7 +78,7 @@ export default function TrendingScreen(): JSX.Element {
           {spotlightItems.map((t, i) => (
             <View key={t.id ?? i} style={styles.card}>
               <Text style={styles.techEmoji}>
-                {i === 0 ? '' : i === 1 ? '' : i === 2 ? '' : '‍'}
+                {i === 0 ? '' : i === 1 ? '' : i === 2 ? '' : ''}
               </Text>
               <View style={{ flex: 1 }}>
                 <Text style={styles.techName}>{t.name}</Text>

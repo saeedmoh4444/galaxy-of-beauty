@@ -49,7 +49,7 @@ export default function TechniciansScreen(): JSX.Element {
       ) : (
         items.map((item) => (
           <View key={item.id} style={styles.card}>
-            <Text style={styles.avatar}>‍</Text>
+            <Text style={styles.avatar}></Text>
             <View style={{ flex: 1 }}>
               <Text style={styles.techName}>{item.name as string}</Text>
               <Text style={styles.techSpecialty}>

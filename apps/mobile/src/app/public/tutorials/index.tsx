@@ -41,7 +41,7 @@ export default function TutorialsScreen(): JSX.Element {
           <View style={{ flex: 1 }}>
             <Text style={styles.tt}>{t.titleAr}</Text>
             <Text style={styles.tm}>
-              {t.categoryAr} · {t.difficultyAr} · ️ {t.duration}
+              {t.categoryAr} · {t.difficultyAr} · {t.duration}
             </Text>
           </View>
           <Text style={styles.tv}> {t.views}</Text>

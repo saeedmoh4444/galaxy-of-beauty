@@ -60,7 +60,7 @@ export default function TechCalendarScreen(): JSX.Element {
                   },
                 )}
               </Text>
-              <Text style={styles.st}>‍ {s.technician as string}</Text>
+              <Text style={styles.st}> {s.technician as string}</Text>
               <View style={[styles.sb, s.available ? styles.sf : styles.su]}>
                 <Text style={styles.sbt}>
                   {s.available
