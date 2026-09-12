@@ -23,7 +23,7 @@ export function TrainersClient({ data }: { data: TrainersPageData }): JSX.Elemen
   return (
     <div>
       <HeroSection
-        eyebrow="🏋️‍♀️"
+        eyebrow="🏋️♀️"
         title={t('trainers.title')}
         subtitle={t('trainers.subtitle')}
         gradient="from-brand-50 via-surface to-accent-50"

@@ -48,7 +48,7 @@ export default function AdminAnalyticsV2Page(): JSX.Element {
               <p className="text-xs text-text-secondary">{t('admin.analytics-v2.active-users')}</p>
             </Card>
             <Card padding="lg" className="text-center">
-              <p className="text-3xl">‍</p>
+              <p className="text-3xl"></p>
               <p className="text-2xl font-bold">
                 {(d.technicians as Record<string, number>)?.active ?? 0}
               </p>

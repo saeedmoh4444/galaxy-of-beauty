@@ -130,7 +130,7 @@ export default function TutorialDetailPage(): JSX.Element {
         ) : (
           <div className="absolute inset-0 flex items-center justify-center text-white/40">
             <div className="text-center">
-              <span className="text-6xl"></span>
+              <span className="text-6xl">🎬</span>
               <p className="mt-2">{t('marketing.tutorials.video-unavailable')}</p>
             </div>
           </div>
@@ -150,11 +150,11 @@ export default function TutorialDetailPage(): JSX.Element {
               <span className="text-sm text-text-secondary">
                 {catMeta.emoji} {t(catMeta.label)}
               </span>
-              <span className="text-sm text-text-secondary">️ {duration}</span>
+              <span className="text-sm text-text-secondary"> {duration}</span>
               <span className="text-sm text-text-secondary">
-                ️ {t('marketing.tutorials.views-label', { count: formatViews(views) })}
+                {t('marketing.tutorials.views-label', { count: formatViews(views) })}
               </span>
-              <span className="text-sm text-text-secondary">️ {likes}</span>
+              <span className="text-sm text-text-secondary"> {likes}</span>
             </div>
           </div>
         </div>

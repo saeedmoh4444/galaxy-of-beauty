@@ -19,7 +19,7 @@ type AdminHealth = RouterOutput['adminTools']['health'];
 
 const QUICK_LINKS: Array<{ href: string; labelKey: TranslationKey; icon: string }> = [
   { href: '/admin/users', labelKey: 'admin.dashboard.quick-users', icon: '' },
-  { href: '/admin/technicians', labelKey: 'admin.dashboard.quick-technicians', icon: '‍' },
+  { href: '/admin/technicians', labelKey: 'admin.dashboard.quick-technicians', icon: '' },
   { href: '/admin/services', labelKey: 'admin.dashboard.quick-services', icon: '' },
   { href: '/admin/categories', labelKey: 'admin.dashboard.quick-categories', icon: '' },
   { href: '/admin/bookings', labelKey: 'admin.dashboard.quick-bookings', icon: '' },
@@ -27,7 +27,7 @@ const QUICK_LINKS: Array<{ href: string; labelKey: TranslationKey; icon: string 
   { href: '/admin/disputes', labelKey: 'admin.dashboard.quick-disputes', icon: '' },
   { href: '/admin/zatca', labelKey: 'admin.dashboard.quick-zatca', icon: '' },
   { href: '/admin/analytics', labelKey: 'admin.dashboard.quick-analytics', icon: '' },
-  { href: '/admin/settings', labelKey: 'admin.dashboard.quick-settings', icon: '️' },
+  { href: '/admin/settings', labelKey: 'admin.dashboard.quick-settings', icon: '' },
 ];
 
 export default function AdminDashboardPage(): JSX.Element {
@@ -75,7 +75,7 @@ export default function AdminDashboardPage(): JSX.Element {
             value={Number(stats?.technicians ?? 0).toLocaleString(
               locale === 'en' ? 'en-GB' : 'ar-SA',
             )}
-            icon="‍"
+            icon=""
           />
           <StatCard
             label={t('admin.dashboard.active-services')}

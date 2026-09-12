@@ -94,7 +94,7 @@ export default function TechnicianComparePage(): JSX.Element {
   return (
     <div className="mx-auto max-w-6xl px-4 py-12">
       <div className="text-center mb-10">
-        <span className="text-6xl">‍</span>
+        <span className="text-6xl">🆚</span>
         <h1 className="mt-4 text-3xl font-bold">{t('marketing.technician-compare.title')}</h1>
         <p className="mt-2 text-text-secondary">{t('marketing.technician-compare.subtitle')}</p>
       </div>
@@ -117,7 +117,7 @@ export default function TechnicianComparePage(): JSX.Element {
                       {t(tech.specialty)} · {tech.city} · {tech.rating} · {t(tech.experience)}
                     </p>
                   </div>
-                  {isSel && <span className="me-auto text-brand-600 text-xl"></span>}
+                  {isSel && <span className="me-auto text-brand-600 text-xl">✅</span>}
                 </div>
               </button>
             );

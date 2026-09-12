@@ -32,7 +32,7 @@ export default function AdminSubscriptionsPage(): JSX.Element {
           <div className="grid gap-4 sm:grid-cols-3">
             {(plans ?? []).map((p: Record<string, unknown>) => (
               <Card key={p.id as number} padding="lg" className="text-center">
-                <span className="text-4xl"></span>
+                <span className="text-4xl">💳</span>
                 <h3 className="font-bold mt-3">{(p.nameJson as Record<string, string>)?.ar}</h3>
                 <p className="text-xs text-text-secondary mt-1">{p.feature as string}</p>
                 <p className="text-2xl font-extrabold mt-3">

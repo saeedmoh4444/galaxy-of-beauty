@@ -49,7 +49,7 @@ export function SurpriseMeClient({ data }: { data: SurpriseMePageData }): JSX.El
   return (
     <div className="mx-auto max-w-2xl px-4 py-16 text-center">
       <div className="mb-8">
-        <span className="text-6xl"></span>
+        <span className="text-6xl">🎲</span>
         <h1 className="mt-4 text-3xl font-bold text-text-primary dark:text-gray-100">
           {t('marketing.surprise-me.title')}
         </h1>

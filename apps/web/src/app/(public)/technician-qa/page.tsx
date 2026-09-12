@@ -93,7 +93,7 @@ export default function TechnicianQAPage(): JSX.Element {
           {items.map((item: Record<string, unknown>) => (
             <Card key={item.id as number} padding="md">
               <div className="flex items-start gap-3">
-                <span className="text-2xl"></span>
+                <span className="text-2xl">❓</span>
                 <div className="flex-1">
                   <p className="font-bold text-sm text-text-primary dark:text-gray-100">
                     {item.question as string}
@@ -101,7 +101,7 @@ export default function TechnicianQAPage(): JSX.Element {
                   {item.isAnswered ? (
                     <div className="mt-2 rounded-xl bg-green-50 dark:bg-green-950 p-3">
                       <div className="flex items-center gap-2 mb-1">
-                        <span className="text-lg">‍</span>
+                        <span className="text-lg">✅</span>
                         <span className="text-xs font-bold text-green-700 dark:text-green-300">
                           {item.technicianName as string}
                         </span>
