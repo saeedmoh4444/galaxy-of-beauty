@@ -17,7 +17,7 @@ export function BeautySkinCycleCard({
       )}
     >
       <div className="flex items-center gap-2">
-        <span className="text-xl"></span>
+        <span className="text-xl">🔄</span>
         <div>
           <h4 className="text-sm font-bold text-violet-700 dark:text-violet-300">Skin Cycling</h4>
           <p className="text-[10px] text-violet-500 dark:text-violet-400">{subtitle}</p>
