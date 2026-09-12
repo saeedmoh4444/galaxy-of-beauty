@@ -52,7 +52,7 @@ export default function CalendarSyncPage(): JSX.Element {
     <DashboardLayout userRole="CUSTOMER">
       <div className="mx-auto max-w-2xl space-y-6">
         <div>
-          <h1 className="text-2xl font-bold">️{t('calendarSync.title')}</h1>
+          <h1 className="text-2xl font-bold">{t('calendarSync.title')}</h1>
           <p className="mt-1 text-sm text-text-secondary">{t('calendarSync.subtitle')}</p>
         </div>
         <Card padding="lg" className="text-center">
@@ -122,7 +122,7 @@ export default function CalendarSyncPage(): JSX.Element {
                   <span className="text-2xl">{e.emoji as string}</span>
                   <div className="flex-1">
                     <p className="font-bold text-sm">{e.title as string}</p>
-                    <p className="text-xs text-text-secondary">‍ {e.technician as string}</p>
+                    <p className="text-xs text-text-secondary"> {e.technician as string}</p>
                   </div>
                   <span className="text-xs text-text-tertiary">
                     {new Date(e.date as string).toLocaleDateString(

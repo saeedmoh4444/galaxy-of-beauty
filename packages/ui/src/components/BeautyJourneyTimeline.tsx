@@ -229,7 +229,7 @@ export function BeautyJourneyTimeline({
                     </span>
                   )}
                   {isPast && (
-                    <span className="text-[10px] text-emerald-500 dark:text-emerald-400"></span>
+                    <span className="text-[10px] text-emerald-500 dark:text-emerald-400">✅</span>
                   )}
                 </div>
 

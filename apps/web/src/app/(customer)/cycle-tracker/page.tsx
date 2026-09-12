@@ -123,13 +123,13 @@ export default function CycleTrackerPage(): JSX.Element {
               }
             }}
           >
-            ️
+            ⚙️
           </Button>
         </div>
 
         {showSettings && (
           <Card padding="lg">
-            <h3 className="font-bold mb-3">️ {t('cycleTracker.settingsTitle')}</h3>
+            <h3 className="font-bold mb-3"> {t('cycleTracker.settingsTitle')}</h3>
             <div className="grid gap-3 sm:grid-cols-3">
               <div>
                 <label htmlFor="ct-cycleLen" className="text-xs text-text-secondary">
@@ -266,7 +266,7 @@ export default function CycleTrackerPage(): JSX.Element {
             </p>
             {(today?.hasSettings as boolean) && (today?.daysUntilNext as number) != null && (
               <p className="text-xs text-brand-600 mt-1">
-                ️ {t('cycleTracker.daysUntilNext', { days: today?.daysUntilNext as number })}
+                {t('cycleTracker.daysUntilNext', { days: today?.daysUntilNext as number })}
               </p>
             )}
             {!today?.hasSettings && (
@@ -434,7 +434,7 @@ export default function CycleTrackerPage(): JSX.Element {
           </div>
         ) : (
           <Card padding="lg">
-            <h3 className="font-bold mb-3">️ {t('cycleTracker.daysTitle')}</h3>
+            <h3 className="font-bold mb-3"> {t('cycleTracker.daysTitle')}</h3>
             <div className="flex flex-wrap gap-1">
               {Array.from({ length: cycleLength }, (_, i) => i + 1).map((d) => {
                 const p = (() => {

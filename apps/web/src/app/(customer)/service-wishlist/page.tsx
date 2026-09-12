@@ -67,9 +67,7 @@ export default function ServiceWishlistPage(): JSX.Element {
                   <button
                     onClick={() => removeMut.mutate({ id: i.id as number })}
                     className="block mt-1 text-xs text-red-400"
-                  >
-                    ️
-                  </button>
+                  ></button>
                 </div>
               </Card>
             ))}

@@ -67,7 +67,7 @@ export default function SalonFinderPage(): JSX.Element {
             const services = (item.services as Array<Record<string, unknown>>) ?? [];
             return (
               <Card key={item.id as number} padding="lg" className="text-center">
-                <span className="text-5xl">‍️</span>
+                <span className="text-5xl">💇</span>
                 <h3 className="font-bold mt-3">
                   {(user?.name as string) ??
                     t('marketing.salon-finder.tech-fallback', { id: item.id as number })}

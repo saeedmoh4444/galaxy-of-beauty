@@ -97,7 +97,7 @@ export default function LoyaltyDashboardPage(): JSX.Element {
                     key={i}
                     className="flex items-center gap-3 rounded-lg bg-surface-muted p-3 text-sm dark:bg-gray-800"
                   >
-                    <span className="text-brand-600"></span> {t(b)}
+                    <span className="text-brand-600">✅</span> {t(b)}
                   </div>
                 ))}
               </div>

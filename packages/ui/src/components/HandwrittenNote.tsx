@@ -70,7 +70,7 @@ export function HandwrittenNote({
   technicianName,
   message,
   className = '',
-  withLovePrefix = '️ مع حب، ',
+  withLovePrefix = ' مع حب، ',
   bookingCountPrefix = 'حجز #',
   nextMilestoneSuffix = 'حجوزات متبقية لمفاجأتكِ القادمة',
   footerText = 'لأن كل حجز هو قصة جميلة بيننا',

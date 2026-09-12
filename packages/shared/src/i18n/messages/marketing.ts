@@ -114,7 +114,7 @@ export const marketingMessages = {
   'marketing.services.sort-price-asc': { ar: 'السعر: منخفض لأعلى', en: 'Price: low to high' },
   'marketing.services.sort-price-desc': { ar: 'السعر: أعلى لمنخفض', en: 'Price: high to low' },
   'marketing.services.sort-popular': { ar: 'الأكثر طلباً', en: 'Most popular' },
-  'marketing.services.compare': { ar: '️ مقارنة', en: 'Compare' },
+  'marketing.services.compare': { ar: ' مقارنة', en: 'Compare' },
   'marketing.services.compare-active': { ar: 'نشط', en: 'active' },
   'marketing.services.compare-count': { ar: 'مقارنة ({count})', en: 'Compare ({count})' },
   'marketing.services.load-error': { ar: 'فشل تحميل الخدمات', en: 'Failed to load services' },
@@ -283,7 +283,7 @@ export const marketingMessages = {
   'marketing.search.services-heading': { ar: ' خدمات', en: 'Services' },
   'marketing.search.duration-min': { ar: '{min} دقيقة', en: '{min} minutes' },
   'marketing.search.products-heading': { ar: ' منتجات', en: 'Products' },
-  'marketing.search.technicians-heading': { ar: '‍ فنيات', en: 'Service Providers' },
+  'marketing.search.technicians-heading': { ar: ' فنيات', en: 'Service Providers' },
 
   // Surprise me
   'marketing.surprise-me.title': { ar: 'فاجئيني', en: 'Surprise me' },
@@ -391,7 +391,7 @@ export const marketingMessages = {
   },
   'marketing.events.all': { ar: 'الكل', en: 'All' },
   'marketing.events.type-workshop': { ar: ' ورش عمل', en: 'Workshops' },
-  'marketing.events.type-masterclass': { ar: '‍ دروس متقدمة', en: 'Masterclasses' },
+  'marketing.events.type-masterclass': { ar: ' دروس متقدمة', en: 'Masterclasses' },
   'marketing.events.type-launch': { ar: ' إطلاق منتجات', en: 'Product launches' },
   'marketing.events.type-seasonal': { ar: ' موسمي', en: 'Seasonal' },
   'marketing.events.load-error': { ar: 'فشل تحميل الفعاليات', en: 'Failed to load events' },
@@ -537,7 +537,7 @@ export const marketingMessages = {
     en: 'Choose makeup that enhances your natural beauty',
   },
   'marketing.beauty-fortune.fortune-4': {
-    ar: 'الاعتناء بنفسكِ ليس رفاهية — إنه ضرورة ‍️',
+    ar: 'الاعتناء بنفسكِ ليس رفاهية — إنه ضرورة ',
     en: 'Taking care of yourself is not a luxury - it is a necessity',
   },
   'marketing.beauty-fortune.tip-4': {
@@ -593,7 +593,7 @@ export const marketingMessages = {
     en: 'Choose services that suit your unique skin type',
   },
   'marketing.beauty-fortune.fortune-11': {
-    ar: 'الراحة والاسترخاء سر من أسرار الجمال ‍️',
+    ar: 'الراحة والاسترخاء سر من أسرار الجمال ',
     en: 'Rest and relaxation are one of the secrets of beauty',
   },
   'marketing.beauty-fortune.tip-11': {
@@ -623,7 +623,7 @@ export const marketingMessages = {
     en: 'Vote for the best service providers - {month}',
   },
   'marketing.beauty-awards.votes': { ar: '{count} صوت', en: '{count} votes' },
-  'marketing.beauty-awards.vote': { ar: '️ تصويت', en: 'Vote' },
+  'marketing.beauty-awards.vote': { ar: ' تصويت', en: 'Vote' },
   'marketing.beauty-expo.title': { ar: 'معرض التجميل الافتراضي', en: 'Virtual Beauty Expo' },
   'marketing.beauty-expo.subtitle': {
     ar: 'تجولي في أجنحة أشهر الماركات العالمية',
@@ -731,7 +731,7 @@ export const marketingMessages = {
   'marketing.compare.price-delta': { ar: ' (+{price} ر.س)', en: ' (+{price} SAR)' },
   'marketing.compare.best-value': { ar: 'الأفضل قيمة:', en: 'Best value:' },
   'marketing.compare.best-per-minute': { ar: 'الأقل سعراً للدقيقة', en: 'Lowest price per minute' },
-  'marketing.event-tickets.title': { ar: '️ تذاكر الفعاليات', en: 'Event Tickets' },
+  'marketing.event-tickets.title': { ar: ' تذاكر الفعاليات', en: 'Event Tickets' },
   'marketing.event-tickets.subtitle': {
     ar: 'احجزي مقعدكِ في أقوى فعاليات وفعاليات التجميل',
     en: 'Reserve your seat at the hottest beauty events',
@@ -884,7 +884,7 @@ export const marketingMessages = {
   },
   'marketing.gift-quiz.match-pct': { ar: '{percent}% تطابق', en: '{percent}% match' },
   'marketing.gift-quiz.price-sar': { ar: '{price} ر.س', en: '{price} SAR' },
-  'marketing.gift-quiz.shop-now': { ar: '️ تسوقي الآن', en: 'Shop now' },
+  'marketing.gift-quiz.shop-now': { ar: ' تسوقي الآن', en: 'Shop now' },
   'marketing.gift-quiz.gift-card': { ar: 'بطاقة هدية', en: 'Gift card' },
   'marketing.gift-quiz.retry': { ar: 'إعادة الاختبار', en: 'Retake the quiz' },
   'marketing.gift-quiz.quiz-title': { ar: 'اختبار توصية الهدايا', en: 'Gift Recommendation Quiz' },
@@ -902,7 +902,7 @@ export const marketingMessages = {
     en: 'Vote for the most beautiful look!',
   },
   'marketing.look-of-the-day.votes': { ar: '{count} صوت', en: '{count} votes' },
-  'marketing.look-of-the-day.vote': { ar: '️ تصويت', en: 'Vote' },
+  'marketing.look-of-the-day.vote': { ar: ' تصويت', en: 'Vote' },
   'marketing.beauty-faq.subtitle': {
     ar: 'أجوبة على أسئلتكِ عن الجمال والعناية',
     en: 'Answers to your most common questions about our services',
@@ -1413,7 +1413,7 @@ export const marketingMessages = {
     en: ' Book your makeup trial at least two months ahead',
   },
   'marketing.bridal-concierge.tip-hair': {
-    ar: '‍️ جربي تسريحة الشعر مع الطرحة قبل ٣ أسابيع',
+    ar: ' جربي تسريحة الشعر مع الطرحة قبل ٣ أسابيع',
     en: ' Try your hairstyle with the veil three weeks before',
   },
   'marketing.bridal-concierge.tip-nails': {
@@ -2005,7 +2005,7 @@ export const marketingMessages = {
   },
   'marketing.price-estimator.variant-fallback': { ar: 'المتغير', en: 'Variant' },
   'marketing.price-estimator.subtotal-label': { ar: 'المجموع الفرعي', en: 'Subtotal' },
-  'marketing.price-estimator.discount-row': { ar: '️ الخصم ', en: ' Discount ' },
+  'marketing.price-estimator.discount-row': { ar: ' الخصم ', en: ' Discount ' },
   'marketing.price-estimator.promo-error': {
     ar: 'كود الخصم "{code}" غير صالح أو منتهي الصلاحية',
     en: 'The promo code "{code}" is invalid or expired',
@@ -2027,7 +2027,7 @@ export const marketingMessages = {
     en: 'Compare beauty products side by side',
   },
   'marketing.product-compare.choose-products': {
-    ar: '️ اختر منتجين للمقارنة ({count}/4)',
+    ar: ' اختر منتجين للمقارنة ({count}/4)',
     en: ' Choose two products to compare ({count}/4)',
   },
   'marketing.product-compare.price-sar': { ar: '{price} ر.س', en: '{price} SAR' },
@@ -2130,9 +2130,9 @@ export const marketingMessages = {
     en: 'Browse the available slots for service providers and book directly',
   },
   'marketing.tech-calendar.load-error': { ar: 'فشل التحميل', en: 'Failed to load' },
-  'marketing.tech-calendar.techs-label': { ar: '‍ الفنيات', en: ' Service Providers' },
+  'marketing.tech-calendar.techs-label': { ar: ' الفنيات', en: ' Service Providers' },
   'marketing.tech-calendar.available-days': {
-    ar: '‍ {name} · {count} يوم متاح هذا الشهر',
+    ar: ' {name} · {count} يوم متاح هذا الشهر',
     en: ' {name} · {count} days available this month',
   },
   'marketing.tech-calendar.book-cta': { ar: 'احجزي الآن ←', en: 'Book now ←' },
@@ -2234,7 +2234,7 @@ export const marketingMessages = {
   'marketing.technician-compare.row-price': { ar: ' السعر', en: ' Price' },
   'marketing.technician-compare.price-sar': { ar: '{price} ر.س', en: '{price} SAR' },
   'marketing.technician-compare.row-city': { ar: ' المدينة', en: ' City' },
-  'marketing.technician-compare.row-experience': { ar: '️ الخبرة', en: ' Experience' },
+  'marketing.technician-compare.row-experience': { ar: ' الخبرة', en: ' Experience' },
   'marketing.technician-compare.row-services': { ar: ' الخدمات', en: ' Services' },
   'marketing.technician-qa.title': { ar: ' اسألي الفنيات', en: ' Ask the service providers' },
   'marketing.technician-qa.subtitle': {
@@ -2257,7 +2257,7 @@ export const marketingMessages = {
     en: 'Write your question here...',
   },
   'marketing.technician-qa.cancel': { ar: 'إلغاء', en: 'Cancel' },
-  'marketing.technician-qa.submit': { ar: 'إرسال ️', en: 'Send ' },
+  'marketing.technician-qa.submit': { ar: 'إرسال ', en: 'Send ' },
   'marketing.terms.title': { ar: ' الشروط والأحكام', en: ' Terms and Conditions' },
   'marketing.terms.section-1-title': { ar: '١. مقدمة', en: '1. Introduction' },
   'marketing.terms.section-1-body': {

@@ -65,7 +65,7 @@ export default function BirthdayRewardsPage(): JSX.Element {
       <div className="mx-auto max-w-3xl space-y-6">
         {/* Header */}
         <div className="text-center">
-          <span className="text-7xl"></span>
+          <span className="text-7xl">🎂</span>
           <h1 className="mt-4 text-3xl font-bold text-text-primary dark:text-gray-100">
             {t('birthday.title')}
           </h1>
@@ -92,7 +92,7 @@ export default function BirthdayRewardsPage(): JSX.Element {
               {isClaimed ? (
                 /* Claimed State */
                 <div className="text-center relative z-10">
-                  <span className="text-6xl"></span>
+                  <span className="text-6xl">🎉</span>
                   <h2 className="mt-4 text-2xl font-extrabold text-text-primary dark:text-gray-100">
                     {t('birthday.claimedTitle')}
                   </h2>
@@ -141,7 +141,7 @@ export default function BirthdayRewardsPage(): JSX.Element {
               ) : hasReward ? (
                 /* Unclaimed — can claim */
                 <div className="text-center relative z-10">
-                  <span className="text-6xl"></span>
+                  <span className="text-6xl">🎁</span>
                   <h2 className="mt-4 text-2xl font-extrabold text-text-primary dark:text-gray-100">
                     {t('birthday.waitingTitle')}
                   </h2>
@@ -168,7 +168,7 @@ export default function BirthdayRewardsPage(): JSX.Element {
               ) : (
                 /* No reward yet */
                 <div className="text-center relative z-10">
-                  <span className="text-6xl"></span>
+                  <span className="text-6xl">⏳</span>
                   <h2 className="mt-4 text-xl font-bold text-text-primary dark:text-gray-100">
                     {t('birthday.notYetTitle')}
                   </h2>
@@ -194,21 +194,21 @@ export default function BirthdayRewardsPage(): JSX.Element {
             {/* Info Cards */}
             <div className="grid gap-4 sm:grid-cols-3">
               <Card padding="md" className="text-center">
-                <span className="text-3xl"></span>
+                <span className="text-3xl">📅</span>
                 <h3 className="mt-2 font-semibold text-text-primary dark:text-gray-100">
                   {t('birthday.annualGift')}
                 </h3>
                 <p className="text-xs text-text-secondary">{t('birthday.annualGiftDesc')}</p>
               </Card>
               <Card padding="md" className="text-center">
-                <span className="text-3xl"></span>
+                <span className="text-3xl">👥</span>
                 <h3 className="mt-2 font-semibold text-text-primary dark:text-gray-100">
                   {t('birthday.forAllMembers')}
                 </h3>
                 <p className="text-xs text-text-secondary">{t('birthday.forAllMembersDesc')}</p>
               </Card>
               <Card padding="md" className="text-center">
-                <span className="text-3xl"></span>
+                <span className="text-3xl">⏰</span>
                 <h3 className="mt-2 font-semibold text-text-primary dark:text-gray-100">
                   {t('birthday.valid30')}
                 </h3>

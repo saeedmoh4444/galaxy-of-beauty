@@ -46,7 +46,7 @@ export default function ServiceDetailScreen(): JSX.Element {
       }
     >
       <Text style={styles.t}>
-        {data.emoji ?? '‍️'} {localize(data.titleJson, locale)}
+        {data.emoji ?? ''} {localize(data.titleJson, locale)}
       </Text>
       <View style={styles.card}>
         <Text style={styles.price}>

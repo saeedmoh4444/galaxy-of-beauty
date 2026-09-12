@@ -143,10 +143,10 @@ export default function RewardsMarketplaceScreen(): JSX.Element {
             <View style={{ alignItems: 'center' }}>
               <Text style={{ fontSize: 36 }}>
                 {r.rewardType === 'free_service'
-                  ? '‍️'
+                  ? '🎁'
                   : r.rewardType === 'discount_percent'
-                    ? '️'
-                    : ''}
+                    ? '🏷️'
+                    : '✨'}
               </Text>
               <Text style={{ fontWeight: '700', fontSize: 16, marginTop: 8 }}>
                 {r.nameJson ? localize(r.nameJson, locale) : ''}

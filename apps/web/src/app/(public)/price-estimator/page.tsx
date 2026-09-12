@@ -80,7 +80,7 @@ export default function PriceEstimatorPage(): JSX.Element {
     <div className="mx-auto max-w-lg px-4 py-12">
       {/* Header */}
       <div className="mb-8 text-center">
-        <span className="text-6xl"></span>
+        <span className="text-6xl">🧮</span>
         <h1 className="mt-4 text-3xl font-bold text-text-primary dark:text-gray-100">
           {t('marketing.price-estimator.title')}
         </h1>
@@ -105,7 +105,7 @@ export default function PriceEstimatorPage(): JSX.Element {
             {selectedService ? (
               <div className="flex items-center justify-between rounded-xl border-2 border-brand-300 bg-brand-50 p-3 dark:border-brand-700 dark:bg-brand-950">
                 <div className="flex items-center gap-3">
-                  <span className="text-2xl"></span>
+                  <span className="text-2xl">💆</span>
                   <div>
                     <p className="text-sm font-bold text-text-primary dark:text-gray-100">
                       {selectedService.titleJson?.ar ??

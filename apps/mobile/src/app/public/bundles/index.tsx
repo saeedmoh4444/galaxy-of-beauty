@@ -55,7 +55,7 @@ export default function BundlesScreen(): JSX.Element {
             onPress={() => toggle(s.id)}
             style={[styles.card, isSel && styles.ca]}
           >
-            <Text style={styles.se}>{s.emoji ?? '‍️'}</Text>
+            <Text style={styles.se}>{s.emoji ?? ''}</Text>
             <View style={{ flex: 1 }}>
               <Text style={styles.sn}>{s.nameJson?.ar ?? s.nameAr ?? s.slug}</Text>
               <Text style={styles.sm}>

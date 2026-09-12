@@ -39,7 +39,7 @@ export default function BoxBuilderPage(): JSX.Element {
             padding="lg"
             className="text-center border-2 border-green-300 dark:border-green-700"
           >
-            <span className="text-6xl"></span>
+            <span className="text-6xl">📦</span>
             <h2 className="mt-4 text-xl font-bold">{t('boxBuilder.built')}</h2>
             <p className="text-2xl font-extrabold text-brand-600 mt-2">
               {formatCurrency(result.total as number)} {t('beautyParty.currency')} /{' '}
@@ -63,7 +63,7 @@ export default function BoxBuilderPage(): JSX.Element {
         ) : (
           <>
             <Card padding="lg">
-              <h3 className="font-bold mb-3">️{t('boxBuilder.pickProducts')}</h3>
+              <h3 className="font-bold mb-3">{t('boxBuilder.pickProducts')}</h3>
               {isLoading ? (
                 <GridSkeleton count={8} />
               ) : (

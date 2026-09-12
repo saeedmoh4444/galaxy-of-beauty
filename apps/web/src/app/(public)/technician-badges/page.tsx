@@ -88,7 +88,7 @@ export default function TechnicianBadgesPage(): JSX.Element {
     <div className="mx-auto max-w-5xl px-4 py-12">
       {/* Header */}
       <div className="mb-10 text-center">
-        <span className="text-6xl"></span>
+        <span className="text-6xl">🏅</span>
         <h1 className="mt-4 text-3xl font-bold text-text-primary dark:text-gray-100">
           {t('marketing.technician-badges.title')}
         </h1>

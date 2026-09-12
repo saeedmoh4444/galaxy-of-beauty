@@ -104,9 +104,7 @@ export default function ExpiryTrackerPage(): JSX.Element {
                     <button
                       onClick={() => deleteMut.mutate({ id: i.id as number })}
                       className="block mt-1 text-xs text-red-400"
-                    >
-                      ️
-                    </button>
+                    ></button>
                   </div>
                 </div>
               </Card>

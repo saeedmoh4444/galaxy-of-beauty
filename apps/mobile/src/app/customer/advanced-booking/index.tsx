@@ -135,7 +135,7 @@ export default function AdvancedBookingScreen(): JSX.Element {
           onPress={() => setSelectedSvc(s.id)}
           style={[styles.sc, selectedSvc === s.id && styles.sca]}
         >
-          <Text style={styles.se}>{s.emoji ?? '‍️'}</Text>
+          <Text style={styles.se}>{s.emoji ?? ''}</Text>
           <Text style={styles.sn}>{localize(s.titleJson, locale) || s.nameAr}</Text>
         </TouchableOpacity>
       ))}

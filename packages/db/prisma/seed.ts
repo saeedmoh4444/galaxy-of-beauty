@@ -1576,8 +1576,8 @@ async function main() {
         questionKey: 'recipient',
         questionJson: { ar: 'لمن الهدية؟', en: 'Who is the gift for?' },
         options: [
-          { key: 'friend', labelAr: 'صديقة ‍️', labelEn: 'Friend', tags: ['عصري', 'مرح'] },
-          { key: 'mom', labelAr: 'أمي ‍', labelEn: 'Mom', tags: ['فخم', 'عناية'] },
+          { key: 'friend', labelAr: 'صديقة ', labelEn: 'Friend', tags: ['عصري', 'مرح'] },
+          { key: 'mom', labelAr: 'أمي ', labelEn: 'Mom', tags: ['فخم', 'عناية'] },
           { key: 'sister', labelAr: 'أختي ', labelEn: 'Sister', tags: ['شبابي', 'شخصي'] },
           { key: 'wife', labelAr: 'زوجتي ', labelEn: 'Wife', tags: ['رومانسي', 'فخم'] },
           { key: 'self', labelAr: 'نفسي ', labelEn: 'Myself', tags: ['شخصي', 'متنوع'] },
@@ -1620,7 +1620,7 @@ async function main() {
           { key: 'makeup', labelAr: 'المكياج ', labelEn: 'Makeup', tags: ['مكياج', 'عصري'] },
           {
             key: 'hair',
-            labelAr: 'العناية بالشعر ‍️',
+            labelAr: 'العناية بالشعر ',
             labelEn: 'Hair Care',
             tags: ['شعر', 'عناية'],
           },
@@ -1806,7 +1806,7 @@ async function main() {
         questionKey: 'occasion',
         question: 'ما هي المناسبة؟',
         options: [
-          { k: 'daily', l: 'يومي ️', t: ['basic'] },
+          { k: 'daily', l: 'يومي ', t: ['basic'] },
           { k: 'work', l: 'عمل ', t: ['natural'] },
           { k: 'party', l: 'حفلة ', t: ['glam'] },
           { k: 'wedding', l: 'زفاف ', t: ['luxury'] },
@@ -1827,8 +1827,8 @@ async function main() {
         question: 'ما تهتمين به؟',
         options: [
           { k: 'face', l: 'وجه ', t: ['skincare', 'makeup'] },
-          { k: 'hair', l: 'شعر ‍️', t: ['hair'] },
-          { k: 'body', l: 'جسم ‍️', t: ['massage', 'spa'] },
+          { k: 'hair', l: 'شعر ', t: ['hair'] },
+          { k: 'body', l: 'جسم ', t: ['massage', 'spa'] },
           { k: 'nails', l: 'أظافر ', t: ['nails'] },
           { k: 'all', l: 'كل شيء ', t: ['full'] },
         ],
@@ -2434,7 +2434,7 @@ async function main() {
           balance: 1000,
           purchaserId: customers[0]!.id,
           recipientName: 'أمي الحبيبة',
-          message: 'كل عام وأنتِ بألف خير ️',
+          message: 'كل عام وأنتِ بألف خير ',
           status: 'ACTIVE',
           expiresAt: new Date(Date.now() + 365 * 86400000),
         },

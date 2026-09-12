@@ -25,7 +25,7 @@ export default function ReferralRacePage(): JSX.Element {
   return (
     <div className="mx-auto max-w-3xl px-4 py-12">
       <div className="mb-8 text-center">
-        <span className="text-6xl"></span>
+        <span className="text-6xl">🏆</span>
         <h1 className="mt-4 text-3xl font-bold">{t('marketing.referral-race.title')}</h1>
         <p className="mt-2 text-text-secondary">
           {t('marketing.referral-race.subtitle', { days })}
@@ -55,7 +55,7 @@ export default function ReferralRacePage(): JSX.Element {
                 className="flex items-center gap-3 rounded-lg bg-surface-muted dark:bg-gray-800 p-3"
               >
                 <span className="text-xl w-8 text-center">
-                  {['', '', ''][idx] ?? `#${idx + 1}`}
+                  {['🥇', '🥈', '🥉'][idx] ?? `#${idx + 1}`}
                 </span>
                 <div className="flex-1">
                   <span className="font-bold">{l.userName as string}</span>

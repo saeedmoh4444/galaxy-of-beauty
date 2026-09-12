@@ -69,7 +69,7 @@ export default function ProductCompareScreen(): JSX.Element {
                 </Text>
               </View>
               <View style={styles.tr}>
-                <Text style={styles.tl}>️</Text>
+                <Text style={styles.tl}></Text>
                 <Text style={styles.tv}>{p.brand ?? ''}</Text>
               </View>
               <View style={styles.tr}>

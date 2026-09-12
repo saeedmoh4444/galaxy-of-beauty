@@ -10,10 +10,10 @@ const questions = [
     id: 'occasion',
     text: 'marketing.beauty-quiz.q-occasion',
     options: [
-      { label: 'marketing.beauty-quiz.opt-daily', value: 'daily', icon: '️' },
+      { label: 'marketing.beauty-quiz.opt-daily', value: 'daily', icon: '' },
       { label: 'marketing.beauty-quiz.opt-special', value: 'special', icon: '' },
       { label: 'marketing.beauty-quiz.opt-wedding', value: 'wedding', icon: '' },
-      { label: 'marketing.beauty-quiz.opt-relax', value: 'relax', icon: '‍️' },
+      { label: 'marketing.beauty-quiz.opt-relax', value: 'relax', icon: '' },
       { label: 'marketing.beauty-quiz.opt-new', value: 'new', icon: '' },
     ],
   },
@@ -21,7 +21,7 @@ const questions = [
     id: 'focus',
     text: 'marketing.beauty-quiz.q-focus',
     options: [
-      { label: 'marketing.beauty-quiz.opt-hair', value: 'hair', icon: '‍️' },
+      { label: 'marketing.beauty-quiz.opt-hair', value: 'hair', icon: '' },
       { label: 'marketing.beauty-quiz.opt-skin', value: 'skin', icon: '' },
       { label: 'marketing.beauty-quiz.opt-makeup', value: 'makeup', icon: '' },
       { label: 'marketing.beauty-quiz.opt-nails', value: 'nails', icon: '' },
@@ -137,7 +137,7 @@ export default function BeautyQuizPage(): JSX.Element {
   if (result) {
     return (
       <div className="mx-auto max-w-lg px-4 py-16 text-center">
-        <span className="text-6xl"></span>
+        <span className="text-6xl">✨</span>
         <h1 className="mt-4 text-3xl font-bold text-text-primary dark:text-gray-100">
           {t(result.title)}
         </h1>

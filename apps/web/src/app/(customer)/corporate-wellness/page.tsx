@@ -49,7 +49,7 @@ export default function CorporateWellnessPage(): JSX.Element {
           <div className="lg:col-span-2 space-y-6">
             {submitted && (
               <div className="rounded-2xl bg-emerald-50 p-6 text-center dark:bg-emerald-950">
-                <span className="text-4xl"></span>
+                <span className="text-4xl">✅</span>
                 <p className="mt-3 font-bold text-emerald-700 dark:text-emerald-300">
                   {t('corporateWellness.received')}
                 </p>

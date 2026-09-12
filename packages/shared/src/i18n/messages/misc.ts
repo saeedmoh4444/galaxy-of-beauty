@@ -1554,7 +1554,7 @@ export const miscMessages = {
   'cycleTracker.phase.luteal': { ar: 'الأصفري', en: 'Luteal' },
 
   // Beauty Community
-  'community.hubTitle': { ar: '‍️ مجتمع الجمال', en: 'Beauty Community' },
+  'community.hubTitle': { ar: ' مجتمع الجمال', en: 'Beauty Community' },
   'community.hubSubtitle': {
     ar: 'تواصلي، تعلمي، وشاركي رحلتكِ',
     en: 'Connect, learn, and share your journey',
@@ -1943,7 +1943,7 @@ export const miscMessages = {
   'styleMatch.preview': { ar: 'معاينة', en: 'Preview' },
   'styleMatch.colorsTitle': { ar: ' الألوان ({count})', en: ' Colors ({count})' },
   'styleMatch.matchCta': { ar: ' ابحثي عن إطلالات مشابهة', en: ' Find similar looks' },
-  'styleMatch.lookTypeTitle': { ar: '️ نوع الإطلالة', en: ' Look type' },
+  'styleMatch.lookTypeTitle': { ar: ' نوع الإطلالة', en: ' Look type' },
   'styleMatch.err.search': { ar: 'فشل البحث', en: 'Search failed' },
   'styleMatch.empty.title': { ar: 'لا توجد إطلالات مطابقة', en: 'No matching looks' },
   'styleMatch.empty.desc': {
@@ -2115,7 +2115,7 @@ export const miscMessages = {
   'wellnessTracker.checkinTitle': { ar: ' تسجيل اليوم', en: ' Today’s check-in' },
   'wellnessTracker.waterLabel': { ar: 'الماء (أكواب)', en: 'Water (cups)' },
   'wellnessTracker.sleepLabel': { ar: 'النوم (ساعات)', en: 'Sleep (hours)' },
-  'wellnessTracker.stepsLabel': { ar: '‍️ الخطوات', en: ' Steps' },
+  'wellnessTracker.stepsLabel': { ar: ' الخطوات', en: ' Steps' },
   'wellnessTracker.skincareLabel': { ar: ' روتين العناية', en: ' Skincare routine' },
   'wellnessTracker.done': { ar: ' تم', en: ' Done' },
   'wellnessTracker.notDone': { ar: 'لم يتم', en: 'Not done' },
@@ -2154,7 +2154,7 @@ export const miscMessages = {
     en: 'Add your first skin photo to start tracking progress',
   },
   'skinDiary.empty.action': { ar: 'إضافة', en: 'Add' },
-  'skinDiary.delete': { ar: '️ حذف', en: ' Delete' },
+  'skinDiary.delete': { ar: ' حذف', en: ' Delete' },
   'skinDiary.modal.title': { ar: 'إضافة للبوميات', en: 'Add to diary' },
   'skinDiary.imageUrlLabel': { ar: 'رابط الصورة', en: 'Image URL' },
   'skinDiary.conditionLabel': { ar: 'حالة البشرة', en: 'Skin condition' },
@@ -2344,7 +2344,7 @@ export const miscMessages = {
   },
   'aiRoutine.pickSkinType': { ar: ' اختاري نوع بشرتكِ', en: ' Pick your skin type' },
   'aiRoutine.generate': { ar: 'توليد الروتين', en: 'Generate routine' },
-  'aiRoutine.morningTitle': { ar: '️ الصباح ({time})', en: '️ Morning ({time})' },
+  'aiRoutine.morningTitle': { ar: ' الصباح ({time})', en: ' Morning ({time})' },
   'aiRoutine.eveningTitle': { ar: 'المساء ({time})', en: 'Evening ({time})' },
   'aiRoutine.tipsTitle': { ar: ' نصائح', en: ' Tips' },
   'aiRoutine.changeSkinType': { ar: 'تغيير نوع البشرة', en: 'Change skin type' },
@@ -2460,7 +2460,7 @@ export const miscMessages = {
   'promo.currency': { ar: 'ر.س', en: 'SAR' },
 
   // Expiry Tracker
-  'expiryTracker.title': { ar: '️ متعقب الصلاحية', en: '️ Expiry Tracker' },
+  'expiryTracker.title': { ar: ' متعقب الصلاحية', en: ' Expiry Tracker' },
   'expiryTracker.subtitle': {
     ar: 'تتبعي تاريخ فتح منتجاتكِ وتجنبي استخدام المنتجات منتهية الصلاحية',
     en: 'Track when you opened your products and avoid using expired ones',
@@ -2482,7 +2482,7 @@ export const miscMessages = {
   'expiryTracker.modal.title': { ar: 'إضافة منتج', en: 'Add product' },
   'expiryTracker.namePlaceholder': { ar: 'اسم المنتج', en: 'Product name' },
   'expiryTracker.monthUnit': { ar: 'شهر', en: 'months' },
-  'expiryTracker.add': { ar: '️ إضافة', en: '️ Add' },
+  'expiryTracker.add': { ar: ' إضافة', en: ' Add' },
 
   // Service History
   'serviceHistory.title': { ar: ' سجل الخدمات', en: ' Service History' },
@@ -2499,7 +2499,7 @@ export const miscMessages = {
   'serviceHistory.serviceFallback': { ar: 'خدمة #{id}', en: 'Service #{id}' },
 
   // Family Beauty
-  'familyBeauty.title': { ar: '‍‍‍ جمال العائلة', en: ' Family Beauty' },
+  'familyBeauty.title': { ar: ' جمال العائلة', en: ' Family Beauty' },
   'familyBeauty.subtitle': {
     ar: 'لحظات جميلة تجمع الأحباب',
     en: 'Beautiful moments that bring loved ones together',
@@ -2773,13 +2773,13 @@ export const miscMessages = {
     en: 'Record your beauty journey — experiences, feelings, and looks',
   },
   'beautyJournal.titlePlaceholder': { ar: 'عنوان (اختياري)', en: 'Title (optional)' },
-  'beautyJournal.type.hair': { ar: '‍️ شعر', en: 'Hair' },
+  'beautyJournal.type.hair': { ar: ' شعر', en: 'Hair' },
   'beautyJournal.type.skin': { ar: ' بشرة', en: 'Skin' },
   'beautyJournal.type.makeup': { ar: ' مكياج', en: 'Makeup' },
   'beautyJournal.type.nails': { ar: ' أظافر', en: 'Nails' },
   'beautyJournal.type.body': { ar: ' جسم', en: 'Body' },
   'beautyJournal.serviceTypeLabel': { ar: 'نوع الخدمة', en: 'Service type' },
-  'beautyJournal.submit': { ar: '️ تدوين', en: 'Write' },
+  'beautyJournal.submit': { ar: ' تدوين', en: 'Write' },
   'beautyJournal.loadError': { ar: 'فشل التحميل', en: 'Failed to load' },
   'beautyJournal.emptyTitle': { ar: 'لا توجد يوميات', en: 'No journal entries yet' },
   'beautyJournal.emptyDesc': {

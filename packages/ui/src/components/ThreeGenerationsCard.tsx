@@ -113,7 +113,9 @@ export function ThreeGenerationsCard({
     >
       {/* Header */}
       <div className="text-center">
-        <span className="text-3xl" aria-hidden="true"></span>
+        <span className="text-3xl" aria-hidden="true">
+          💐
+        </span>
         <h4 className="mt-1 text-sm font-bold text-text-primary dark:text-gray-100">{title}</h4>
         <p className="text-[10px] text-text-tertiary dark:text-text-tertiary">{subtitle}</p>
       </div>

@@ -4,7 +4,7 @@ import { useLocale } from '@/components/LocaleProvider';
 import { useAuthState } from '@/hooks/useAuthState';
 import { trpc } from '@/lib/trpc-react';
 
-const CATS = [' مكياج', ' عناية', '‍️ شعر', ' أظافر', ' طبيعي'];
+const CATS = [' مكياج', ' عناية', ' شعر', ' أظافر', ' طبيعي'];
 
 interface ClosetProduct {
   id?: number;

@@ -62,7 +62,7 @@ export function BeautyBookClubCard({
           <p className="text-xs font-bold text-text-primary dark:text-gray-100 mt-0.5">
             {book.title}
           </p>
-          <p className="text-[10px] text-text-tertiary dark:text-text-secondary">️ {book.author}</p>
+          <p className="text-[10px] text-text-tertiary dark:text-text-secondary"> {book.author}</p>
         </div>
       </div>
 

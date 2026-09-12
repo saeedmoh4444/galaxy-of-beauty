@@ -73,7 +73,7 @@ export function BlogClient({
   return (
     <div className="mx-auto max-w-6xl px-4 py-12">
       <div className="mb-10 text-center">
-        <span className="text-6xl"></span>
+        <span className="text-6xl">📰</span>
         <h1 className="mt-4 text-3xl font-bold text-text-primary dark:text-gray-100">
           {t('marketing.blog.title')}
         </h1>
@@ -162,7 +162,7 @@ export function BlogClient({
                           className="object-cover transition-transform group-hover:scale-105"
                         />
                       ) : (
-                        <span></span>
+                        <span>📰</span>
                       )}
                     </div>
                     <div className="p-5">
@@ -173,7 +173,7 @@ export function BlogClient({
                         {date && <span> {date}</span>}
                         {body && (
                           <span>
-                            ️ {t('marketing.blog.reading-time', { minutes: readingMinutes(body) })}
+                            {t('marketing.blog.reading-time', { minutes: readingMinutes(body) })}
                           </span>
                         )}
                       </div>

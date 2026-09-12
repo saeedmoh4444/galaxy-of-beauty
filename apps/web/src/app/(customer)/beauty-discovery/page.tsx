@@ -33,7 +33,7 @@ export default function BeautyDiscoveryPage(): JSX.Element {
           (forYou?.profile as Record<string, unknown>) && (
             <Card padding="lg" className="border-2 border-brand-200 bg-brand-50">
               <div className="flex items-center gap-3">
-                <span className="text-2xl"></span>
+                <span className="text-2xl">🪞</span>
                 <div>
                   <p className="font-bold text-brand-700">{t('beautyDiscovery.profile')}</p>
                   <p className="text-sm text-brand-600">

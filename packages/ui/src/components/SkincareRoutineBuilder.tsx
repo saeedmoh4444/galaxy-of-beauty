@@ -118,7 +118,9 @@ export function SkincareRoutineBuilder({
         )}
       >
         <div className="text-center">
-          <span className="text-3xl" aria-hidden="true"></span>
+          <span className="text-3xl" aria-hidden="true">
+            💫
+          </span>
           <h4 className="mt-1 text-sm font-bold text-pink-700 dark:text-pink-300">{resultTitle}</h4>
           <p className="text-[10px] text-pink-500 dark:text-pink-400">
             {SKIN_TYPES.find((s) => s.value === skinType)!.emoji}{' '}
@@ -168,7 +170,9 @@ export function SkincareRoutineBuilder({
       )}
     >
       <div className="text-center">
-        <span className="text-3xl" aria-hidden="true"></span>
+        <span className="text-3xl" aria-hidden="true">
+          🧩
+        </span>
         <h4 className="mt-1 text-sm font-bold text-pink-700 dark:text-pink-300">{title}</h4>
         <p className="text-[10px] text-pink-500 dark:text-pink-400">
           {step === 'skin' ? skinQuestion : goalQuestion}

@@ -152,7 +152,7 @@ export default function WellnessHubPage(): JSX.Element {
                 })}
               </p>
               <p className="text-xs text-brand-600 mt-1">
-                ️ {t('wellnessHub.nextPeriod', { days: d!.cycle.daysUntilNext ?? 0 })}
+                {t('wellnessHub.nextPeriod', { days: d!.cycle.daysUntilNext ?? 0 })}
               </p>
             </Card>
           )}
@@ -334,25 +334,25 @@ export default function WellnessHubPage(): JSX.Element {
         <div className="grid gap-3 sm:grid-cols-4">
           <Link href="/self-care">
             <Card hover padding="md" className="text-center">
-              <span className="text-2xl"></span>
+              <span className="text-2xl">📅</span>
               <p className="text-xs font-medium mt-1">{t('wellnessHub.action.today')}</p>
             </Card>
           </Link>
           <Link href="/cycle-tracker">
             <Card hover padding="md" className="text-center">
-              <span className="text-2xl"></span>
+              <span className="text-2xl">🌙</span>
               <p className="text-xs font-medium mt-1">{t('wellnessHub.action.cycle')}</p>
             </Card>
           </Link>
           <Link href="/skin-analysis">
             <Card hover padding="md" className="text-center">
-              <span className="text-2xl"></span>
+              <span className="text-2xl">🔍</span>
               <p className="text-xs font-medium mt-1">{t('wellnessHub.action.skin')}</p>
             </Card>
           </Link>
           <Link href="/wellness-tracker">
             <Card hover padding="md" className="text-center">
-              <span className="text-2xl"></span>
+              <span className="text-2xl">🧘</span>
               <p className="text-xs font-medium mt-1">{t('wellnessHub.action.wellness')}</p>
             </Card>
           </Link>

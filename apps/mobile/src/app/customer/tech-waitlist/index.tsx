@@ -76,7 +76,7 @@ export default function TechWaitlistScreen(): JSX.Element {
       {myList.length > 0 && <Text style={styles.st}>{t('mobile.techWaitlist.my-lists')}</Text>}
       {myList.map((w) => (
         <View key={w.id} style={styles.card}>
-          <Text style={styles.te}>‍</Text>
+          <Text style={styles.te}></Text>
           <View style={{ flex: 1 }}>
             <Text style={styles.tn}>{w.name}</Text>
             <Text style={styles.tm}>
@@ -91,7 +91,7 @@ export default function TechWaitlistScreen(): JSX.Element {
       <Text style={styles.st}>{t('mobile.techWaitlist.popular')}</Text>
       {popular.map((p) => (
         <View key={p.id} style={styles.card}>
-          <Text style={styles.te}>‍</Text>
+          <Text style={styles.te}></Text>
           <View style={{ flex: 1 }}>
             <Text style={styles.tn}>{p.name}</Text>
             <Text style={styles.tm}>

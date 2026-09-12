@@ -62,7 +62,7 @@ export function BlogPostClient({
   if (!slug) {
     return (
       <div className="mx-auto max-w-3xl px-4 py-24 text-center">
-        <span className="text-6xl"></span>
+        <span className="text-6xl">🔗</span>
         <h1 className="mt-4 text-2xl font-bold">{t('marketing.blog-post.invalid-link')}</h1>
         <Link href="/blog" className="mt-4 inline-block">
           <Button size="sm">{t('marketing.blog-post.back-to-blog')}</Button>
@@ -94,7 +94,7 @@ export function BlogPostClient({
   if (!post) {
     return (
       <div className="mx-auto max-w-3xl px-4 py-24 text-center">
-        <span className="text-6xl"></span>
+        <span className="text-6xl">🔍</span>
         <h1 className="mt-4 text-2xl font-bold">{t('marketing.blog-post.not-found')}</h1>
         <p className="mt-2 text-text-secondary">{t('marketing.blog-post.not-found-desc')}</p>
         <Link href="/blog" className="mt-4 inline-block">
@@ -159,7 +159,7 @@ export function BlogPostClient({
         </h1>
         <div className="mt-3 flex flex-wrap items-center gap-4 text-sm text-text-secondary">
           {date && <span> {date}</span>}
-          <span>️ {t('marketing.blog-post.reading-time', { minutes: readTime })}</span>
+          <span> {t('marketing.blog-post.reading-time', { minutes: readTime })}</span>
         </div>
 
         <div

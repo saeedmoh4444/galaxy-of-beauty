@@ -250,7 +250,7 @@ export default function MoodBoardPage(): JSX.Element {
                     }}
                     className="text-red-500 hover:text-red-700"
                   >
-                    ️
+                    🗑️
                   </Button>
                 </div>
               </Card>

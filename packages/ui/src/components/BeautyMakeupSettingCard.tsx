@@ -19,7 +19,7 @@ export function BeautyMakeupSettingCard({
       )}
     >
       <div className="flex items-center gap-2">
-        <span className="text-xl"></span>
+        <span className="text-xl">⏳</span>
         <div>
           <h4 className="text-sm font-bold text-fuchsia-700 dark:text-fuchsia-300">{heading}</h4>
           <p className="text-[10px] text-fuchsia-500 dark:text-fuchsia-400">{subtitle}</p>

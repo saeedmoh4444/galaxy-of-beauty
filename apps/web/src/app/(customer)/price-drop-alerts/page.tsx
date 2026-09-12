@@ -92,9 +92,7 @@ export default function PriceDropAlertsPage(): JSX.Element {
                     <button
                       onClick={() => deleteMut.mutate({ id: a.id as number })}
                       className="text-red-400"
-                    >
-                      ️
-                    </button>
+                    ></button>
                   </div>
                 </div>
               ))}

@@ -97,7 +97,9 @@ export function FakeNameGenerator({
     >
       {/* Header */}
       <div className="flex items-center gap-2">
-        <span className="text-lg" aria-hidden="true"></span>
+        <span className="text-lg" aria-hidden="true">
+          🎭
+        </span>
         <div>
           <h4 className="text-sm font-bold text-fuchsia-700 dark:text-fuchsia-300">{title}</h4>
           <p className="text-[10px] text-fuchsia-500 dark:text-fuchsia-400">{subtitle}</p>
@@ -185,7 +187,9 @@ export function FakeNameGenerator({
 
       {/* Privacy note */}
       <div className="mt-3 flex items-start gap-1.5 rounded-lg bg-surface-muted p-2 dark:bg-gray-800">
-        <span className="text-xs shrink-0" aria-hidden="true"></span>
+        <span className="text-xs shrink-0" aria-hidden="true">
+          🔒
+        </span>
         <p className="text-[9px] text-text-tertiary dark:text-text-secondary">{privacyNote}</p>
       </div>
     </div>

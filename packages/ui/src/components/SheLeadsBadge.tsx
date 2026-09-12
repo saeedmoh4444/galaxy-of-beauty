@@ -224,7 +224,7 @@ export function SheLeadsBadge({
         )}
         {yearsOfExperience && (
           <span className="inline-flex items-center gap-1 rounded-full bg-white/60 px-2 py-0.5 text-[10px] dark:bg-black/20 dark:text-gray-300">
-            ️ {yearsOfExperience} {yearsExperienceText}
+            {yearsOfExperience} {yearsExperienceText}
           </span>
         )}
         {teamSize && (

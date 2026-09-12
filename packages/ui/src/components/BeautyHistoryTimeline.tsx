@@ -114,7 +114,9 @@ export function BeautyHistoryTimeline({
   return (
     <div className={cn('rounded-2xl bg-white p-5 dark:bg-gray-900', className)}>
       <div className="text-center">
-        <span className="text-3xl" aria-hidden="true"></span>
+        <span className="text-3xl" aria-hidden="true">
+          📜
+        </span>
         <h4 className="mt-1 text-sm font-bold text-amber-700 dark:text-amber-300">{title}</h4>
         <p className="text-[10px] text-amber-500 dark:text-amber-400">{subtitle}</p>
       </div>

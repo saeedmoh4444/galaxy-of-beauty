@@ -72,7 +72,7 @@ export function PanicButton({
   willNotifyLabel = 'سيتم إشعار',
   policeLabel = 'الشرطة',
   locationPrefix = ' الموقع: ',
-  technicianPrefix = '‍ الخبيرة: ',
+  technicianPrefix = ' الخبيرة: ',
   confirmButtonText = 'نعم، إرسال الطوارئ 🆘',
   cancelButtonText = 'إلغاء',
   activatedTitle = 'تم إرسال الطوارئ!',
@@ -156,7 +156,9 @@ export function PanicButton({
       {stage === 'confirm' && (
         <div className="space-y-3">
           <div className="flex items-center gap-2">
-            <span className="text-2xl" aria-hidden="true"></span>
+            <span className="text-2xl" aria-hidden="true">
+              ❗
+            </span>
             <div>
               <p className="text-sm font-bold text-red-700 dark:text-red-300">{confirmTitle}</p>
               <p className="text-[10px] text-red-500 dark:text-red-400">{confirmDescription}</p>
@@ -180,7 +182,7 @@ export function PanicButton({
                 </div>
               ))}
               <div className="flex items-center gap-1.5 text-[10px] text-text-secondary dark:text-gray-300">
-                <span></span>
+                <span>🚓</span>
                 <span className="font-bold">{policeLabel}</span>
                 <span className="text-text-tertiary">999</span>
               </div>
@@ -225,7 +227,9 @@ export function PanicButton({
       {stage === 'activated' && (
         <div className="text-center space-y-3">
           <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-red-100 dark:bg-red-900">
-            <span className="text-3xl animate-pulse" aria-hidden="true"></span>
+            <span className="text-3xl animate-pulse" aria-hidden="true">
+              🚨
+            </span>
           </div>
           <div>
             <p className="text-sm font-bold text-red-700 dark:text-red-300">{activatedTitle}</p>
@@ -242,7 +246,9 @@ export function PanicButton({
       {/* Done state */}
       {stage === 'done' && (
         <div className="text-center space-y-2">
-          <span className="text-3xl" aria-hidden="true"></span>
+          <span className="text-3xl" aria-hidden="true">
+            ✅
+          </span>
           <p className="text-sm font-bold text-emerald-700 dark:text-emerald-300">{doneTitle}</p>
           <p className="text-[10px] text-emerald-600 dark:text-emerald-400">{doneDescription}</p>
           <button

@@ -83,9 +83,7 @@ export function AskDermatologistCard({
     >
       {/* Doctor card */}
       <div className="flex items-start gap-3">
-        <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-blue-100 to-sky-100 text-xl dark:from-blue-900 dark:to-sky-900">
-          ‍️
-        </div>
+        <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-blue-100 to-sky-100 text-xl dark:from-blue-900 dark:to-sky-900"></div>
         <div className="min-w-0 flex-1">
           <h4 className="text-sm font-bold text-text-primary dark:text-gray-100">{doctor.name}</h4>
           <p className="text-[10px] text-text-secondary dark:text-gray-300">{doctor.specialty}</p>
@@ -104,7 +102,9 @@ export function AskDermatologistCard({
       <div className="mt-3 rounded-xl bg-gradient-to-r from-blue-50 to-sky-50 p-3 dark:from-blue-950 dark:to-sky-950">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-1.5">
-            <span className="text-sm" aria-hidden="true"></span>
+            <span className="text-sm" aria-hidden="true">
+              📅
+            </span>
             <span className="text-[10px] font-bold text-blue-700 dark:text-blue-300">
               {nextSessionLabel}
             </span>
@@ -121,7 +121,9 @@ export function AskDermatologistCard({
 
       {/* Questions counter */}
       <div className="mt-2 flex items-center gap-2 rounded-lg bg-surface-muted p-2 dark:bg-gray-800">
-        <span className="text-sm" aria-hidden="true"></span>
+        <span className="text-sm" aria-hidden="true">
+          ❓
+        </span>
         <span className="text-[10px] text-text-secondary dark:text-gray-300">
           {questionsCount > 0 ? `${questionsCount} ${questionsSubmittedSuffix}` : firstQuestionText}
         </span>

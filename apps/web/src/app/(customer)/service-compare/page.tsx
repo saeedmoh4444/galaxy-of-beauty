@@ -34,7 +34,7 @@ export default function ServiceComparePage(): JSX.Element {
   return (
     <DashboardLayout userRole="CUSTOMER">
       <PageContainer width="wide">
-        <PageTitle title={'️' + t('serviceCompare.title')} subtitle={t('serviceCompare.subtitle')} />
+        <PageTitle title={'' + t('serviceCompare.title')} subtitle={t('serviceCompare.subtitle')} />
 
         <div className="mb-6 grid gap-3 sm:grid-cols-3">
           {services.slice(0, 12).map((s) => {
@@ -46,7 +46,7 @@ export default function ServiceComparePage(): JSX.Element {
                 onClick={() => toggle(s.id as number)}
                 className={`rounded-2xl border-2 p-4 text-center transition-all ${isSel ? 'border-cyan-400 bg-cyan-50 dark:border-cyan-600 dark:bg-cyan-950' : 'border-edge-muted bg-white dark:border-gray-800 dark:bg-gray-900'}`}
               >
-                <span className="text-3xl">{(s.emoji as string) ?? '‍️'}</span>
+                <span className="text-3xl">{(s.emoji as string) ?? ''}</span>
                 <p className="mt-2 text-xs font-bold text-text-primary dark:text-gray-100">
                   {(s.titleJson as { ar?: string } | null)?.ar ?? (s.nameAr as string | undefined)}
                 </p>
@@ -81,7 +81,7 @@ export default function ServiceComparePage(): JSX.Element {
                       </span>
                     </div>
                     <div className="flex justify-between">
-                      <span>️{t('serviceCompare.duration')}</span>
+                      <span>{t('serviceCompare.duration')}</span>
                       <span className="font-bold text-text-primary dark:text-gray-100">
                         {t('serviceCompare.minutes', { count: s.durationMin as number })}
                       </span>

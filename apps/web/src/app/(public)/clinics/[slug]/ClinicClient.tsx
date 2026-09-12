@@ -98,9 +98,7 @@ export function ClinicClient({ data }: { data: ClinicPageData }): JSX.Element {
             className="h-20 w-20 rounded-2xl object-cover"
           />
         ) : (
-          <div className="flex h-20 w-20 items-center justify-center rounded-2xl bg-brand-100 text-4xl">
-            ️
-          </div>
+          <div className="flex h-20 w-20 items-center justify-center rounded-2xl bg-brand-100 text-4xl"></div>
         )}
         <div>
           <h1 className="text-2xl font-bold text-text-primary dark:text-gray-100">

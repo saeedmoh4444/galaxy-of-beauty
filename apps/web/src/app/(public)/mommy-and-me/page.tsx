@@ -67,7 +67,7 @@ export default async function MommyAndMePage(): Promise<JSX.Element> {
   return (
     <div className="mx-auto max-w-5xl px-4 py-12">
       <div className="text-center mb-10">
-        <span className="text-7xl">‍</span>
+        <span className="text-7xl">🤱</span>
         <h1 className="mt-6 text-4xl font-extrabold text-text-primary dark:text-gray-100">
           Mommy & Me
         </h1>

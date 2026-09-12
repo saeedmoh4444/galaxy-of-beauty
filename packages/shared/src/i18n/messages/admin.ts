@@ -360,7 +360,7 @@ export const adminMessages = {
   'admin.audit-log.action-verify-kyc': { ar: ' توثيق مقدمة خدمة', en: 'Verify Service Provider' },
   'admin.audit-log.action-update-category': { ar: ' تعديل قسم', en: 'Update Category' },
   'admin.audit-log.action-update-service': { ar: ' تعديل خدمة', en: 'Update Service' },
-  'admin.audit-log.action-create-promo': { ar: '️ إنشاء كود خصم', en: 'Create Promo Code' },
+  'admin.audit-log.action-create-promo': { ar: ' إنشاء كود خصم', en: 'Create Promo Code' },
   'admin.audit-log.action-refund-payment': { ar: ' استرداد مبلغ', en: 'Refund Payment' },
   'admin.audit-log.action-maintenance-mode': { ar: ' وضع الصيانة', en: 'Maintenance Mode' },
   'admin.audit-log.action-feature-flag': { ar: ' تغيير خاصية', en: 'Feature Flag Change' },
@@ -492,7 +492,7 @@ export const adminMessages = {
   'admin.cashback.title': { ar: ' إدارة الكاش باك', en: 'Manage Cashback' },
   'admin.cashback.subtitle': { ar: 'تعديل نسبة الاسترداد النقدي', en: 'Adjust the cashback rate' },
   'admin.cashback.current-rate': { ar: 'نسبة الكاش باك الحالية', en: 'Current Cashback Rate' },
-  'admin.cashback.edit-rate': { ar: '️ تعديل النسبة', en: 'Edit Rate' },
+  'admin.cashback.edit-rate': { ar: ' تعديل النسبة', en: 'Edit Rate' },
   'admin.cashback.range-hint': { ar: 'النطاق المسموح: ١٪ — ٢٠٪', en: 'Allowed range: 1% — 20%' },
 
   'admin.categories.title': { ar: 'إدارة الأقسام', en: 'Manage Categories' },
@@ -633,7 +633,7 @@ export const adminMessages = {
   'admin.loyalty.no-rewards': { ar: 'لا توجد مكافآت', en: 'No rewards' },
   'admin.loyalty.points-cost': { ar: '{points} نقطة', en: '{points} points' },
 
-  'admin.monitoring.svc-database': { ar: '️ قاعدة البيانات', en: 'Database' },
+  'admin.monitoring.svc-database': { ar: ' قاعدة البيانات', en: 'Database' },
   'admin.monitoring.svc-redis': { ar: ' Redis', en: 'Redis' },
   'admin.monitoring.svc-api': { ar: ' API', en: 'API' },
   'admin.monitoring.svc-socket': { ar: ' Socket.IO', en: 'Socket.IO' },
@@ -735,7 +735,7 @@ export const adminMessages = {
   'admin.predictive-demand.by-service': { ar: ' حسب الخدمة', en: 'By Service' },
   'admin.predictive-demand.demand': { ar: 'الطلب: {demand}%', en: 'Demand: {demand}%' },
 
-  'admin.promo.title': { ar: '️ إدارة العروض الترويجية', en: 'Manage Promotions' },
+  'admin.promo.title': { ar: ' إدارة العروض الترويجية', en: 'Manage Promotions' },
   'admin.promo.subtitle': {
     ar: 'أكواد الخصم والعروض النشطة',
     en: 'Discount codes and active offers',

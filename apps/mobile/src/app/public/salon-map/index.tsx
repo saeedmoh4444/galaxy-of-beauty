@@ -34,7 +34,7 @@ export default function SalonMapScreen(): JSX.Element {
       <Text style={styles.t}>{t('mobile.public.salon-map.title')}</Text>
       {salons.map((s) => (
         <View key={s.id} style={styles.card}>
-          <Text style={styles.se}>‍️</Text>
+          <Text style={styles.se}></Text>
           <View style={{ flex: 1 }}>
             <Text style={styles.sn}>{s.nameAr ?? s.name}</Text>
             <Text style={styles.sm}> {s.city}</Text>

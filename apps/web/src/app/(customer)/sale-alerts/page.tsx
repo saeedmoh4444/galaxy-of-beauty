@@ -122,9 +122,7 @@ export default function SaleAlertsPage(): JSX.Element {
                   <button
                     onClick={() => deleteMut.mutate({ id: a.id as number })}
                     className="text-red-400 text-sm"
-                  >
-                    ️
-                  </button>
+                  ></button>
                 </div>
               </Card>
             ))}

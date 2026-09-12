@@ -99,7 +99,7 @@ export default function MarketplaceScreen(): JSX.Element {
 
       {products.length === 0 && (
         <View style={{ alignItems: 'center', padding: 30 }}>
-          <Text style={{ fontSize: 40 }}>️</Text>
+          <Text style={{ fontSize: 40 }}></Text>
           <Text style={{ color: '#6b7280', marginTop: 8 }}>{t('marketplace.noProducts')}</Text>
         </View>
       )}

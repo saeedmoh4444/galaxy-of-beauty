@@ -53,7 +53,7 @@ export function PersonalStylingCard({
   className = '',
   title = 'استشارة الإطلالة',
   subtitle = 'اكتشفي ألوانكِ وأسلوبكِ الخاص',
-  withStylistPrefix = '‍ مع خبيرة الإطلالة: ',
+  withStylistPrefix = ' مع خبيرة الإطلالة: ',
   priceLabel = 'السعر',
   currencySuffix = 'ر.س',
   durationLabel = 'المدة',
@@ -69,7 +69,9 @@ export function PersonalStylingCard({
       )}
     >
       <div className="text-center">
-        <span className="text-3xl" aria-hidden="true"></span>
+        <span className="text-3xl" aria-hidden="true">
+          👗
+        </span>
         <h4 className="mt-1 text-sm font-bold text-fuchsia-700 dark:text-fuchsia-300">{title}</h4>
         <p className="text-[10px] text-fuchsia-500 dark:text-fuchsia-400">{subtitle}</p>
         {stylist && (

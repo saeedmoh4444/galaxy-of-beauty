@@ -30,11 +30,11 @@ const KITS: Record<
 const DESTINATIONS = [
   {
     key: 'beach',
-    nameAr: 'شاطئ ️',
+    nameAr: 'شاطئ ',
     tips: 'حماية من الشمس أولوية! واقي شمس ومرطب شفاه SPF أساسيان',
   },
   { key: 'business', nameAr: 'عمل ', tips: 'منتجات متعددة الاستخدام توفر مساحة' },
-  { key: 'adventure', nameAr: 'مغامرة ️', tips: 'منتجات مقاومة للماء ومتينة' },
+  { key: 'adventure', nameAr: 'مغامرة ', tips: 'منتجات مقاومة للماء ومتينة' },
 ];
 
 export const travelKitRouter = router({

@@ -70,22 +70,22 @@ export default function MyJourneyPage(): JSX.Element {
         {/* Summary */}
         <div className="grid gap-4 sm:grid-cols-2">
           <Card className="text-center" padding="lg">
-            <span className="text-3xl"></span>
+            <span className="text-3xl">📅</span>
             <p className="text-3xl font-extrabold text-brand-600 mt-2">{allBookings.length}</p>
             <p className="text-sm text-text-secondary">{t('myJourney.totalBookings')}</p>
           </Card>
           <Card className="text-center" padding="lg">
-            <span className="text-3xl"></span>
+            <span className="text-3xl">✅</span>
             <p className="text-3xl font-extrabold text-pink-600 mt-2">{completed.length}</p>
             <p className="text-sm text-text-secondary">{t('myJourney.completedBookings')}</p>
           </Card>
           <Card className="text-center" padding="lg">
-            <span className="text-3xl"></span>
+            <span className="text-3xl">💎</span>
             <p className="text-3xl font-extrabold text-brand-600 mt-2">{uniqueServices}</p>
             <p className="text-sm text-text-secondary">{t('myJourney.uniqueServices')}</p>
           </Card>
           <Card className="text-center" padding="lg">
-            <span className="text-3xl">‍</span>
+            <span className="text-3xl">💇</span>
             <p className="text-3xl font-extrabold text-amber-600 mt-2">{uniqueTechnicians}</p>
             <p className="text-sm text-text-secondary">{t('myJourney.uniqueTechs')}</p>
           </Card>
@@ -127,7 +127,7 @@ export default function MyJourneyPage(): JSX.Element {
                     </p>
                   )}
                 </div>
-                {m.achieved && <span className="text-green-600 text-sm"></span>}
+                {m.achieved && <span className="text-green-600 text-sm">✅</span>}
               </div>
             ))}
           </div>

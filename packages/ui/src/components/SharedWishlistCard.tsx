@@ -45,7 +45,7 @@ export function SharedWishlistCard({
   giftedText = 'مُهداة',
   currencySuffix = 'ر.س',
   totalLabel = ' المجموع',
-  sharedWithLabel = '‍️ مشاركة مع',
+  sharedWithLabel = ' مشاركة مع',
   addItemText = '+ أضيفي أمنية',
   footerText = 'شاركي أمنياتكِ — ودعي أحبابكِ يدللونكِ',
 }: SharedWishlistCardProps): JSX.Element {
@@ -61,7 +61,9 @@ export function SharedWishlistCard({
     >
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-2">
-          <span className="text-xl" aria-hidden="true"></span>
+          <span className="text-xl" aria-hidden="true">
+            💝
+          </span>
           <div>
             <h4 className="text-sm font-bold text-pink-700 dark:text-pink-300">{title}</h4>
             <p className="text-[10px] text-pink-500 dark:text-pink-400">
@@ -84,7 +86,7 @@ export function SharedWishlistCard({
             )}
           >
             <span className="text-sm shrink-0" aria-hidden="true">
-              {item.isGifted ? '' : item.emoji || ''}
+              {item.isGifted ? '🎁' : item.emoji || ''}
             </span>
             <span className="flex-1 text-[10px] font-medium text-text-primary dark:text-gray-100">
               {item.name}

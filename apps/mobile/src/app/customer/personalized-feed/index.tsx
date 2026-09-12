@@ -44,9 +44,9 @@ export default function PersonalizedFeedScreen(): JSX.Element {
             <Text style={styles.nm}>{item.title}</Text>
             <Text style={styles.meta}>
               {item.technician
-                ? `‍ ${item.technician}`
+                ? ` ${item.technician}`
                 : item.brand
-                  ? `️ ${item.brand}`
+                  ? ` ${item.brand}`
                   : t('mobile.personalizedFeed.price', { price: item.price ?? 0 })}
             </Text>
           </View>

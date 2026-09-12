@@ -97,7 +97,7 @@ export default function ServiceMatchmakerScreen(): JSX.Element {
           </Text>
           {result.matches?.map((m, i) => (
             <View key={i} style={styles.match}>
-              <Text style={styles.matchEmoji}>{m.emoji ?? '‍️'}</Text>
+              <Text style={styles.matchEmoji}>{m.emoji ?? ''}</Text>
               <View style={{ flex: 1 }}>
                 <Text style={styles.matchName}>{m.nameAr}</Text>
                 <Text style={styles.matchWhy}>{m.whyAr}</Text>

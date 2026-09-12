@@ -18,7 +18,7 @@ export default function SkinTimelinePage(): JSX.Element {
     <DashboardLayout userRole="CUSTOMER">
       <div className="mx-auto max-w-3xl space-y-6">
         <div>
-          <h1 className="text-2xl font-bold">️{t('skinTimeline.title')}</h1>
+          <h1 className="text-2xl font-bold">{t('skinTimeline.title')}</h1>
           <p className="mt-1 text-sm text-text-secondary">{t('skinTimeline.subtitle')}</p>
         </div>
 
@@ -26,7 +26,7 @@ export default function SkinTimelinePage(): JSX.Element {
           <CardListSkeleton count={4} />
         ) : entries.length === 0 ? (
           <Card padding="lg" className="text-center py-8">
-            <p className="text-4xl mb-2">️</p>
+            <p className="text-4xl mb-2"></p>
             <p className="text-text-secondary">{t('skinTimeline.empty')}</p>
           </Card>
         ) : (
@@ -40,7 +40,7 @@ export default function SkinTimelinePage(): JSX.Element {
                   />
                   <Card padding="md">
                     <div className="flex items-start gap-3">
-                      <span className="text-2xl"></span>
+                      <span className="text-2xl">🧖</span>
                       <div className="flex-1">
                         <p className="font-bold text-sm">
                           {(e.skinCondition as string) ?? t('skinTimeline.unspecified')}

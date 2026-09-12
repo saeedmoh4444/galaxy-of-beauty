@@ -25,7 +25,7 @@ export default function AdminPromoPage(): JSX.Element {
           <CardListSkeleton count={4} />
         ) : !(data ?? []).length ? (
           <Card padding="lg" className="text-center py-8">
-            <p className="text-4xl mb-2">️</p>
+            <p className="text-4xl mb-2"></p>
             <p className="text-text-secondary">{t('admin.promo.empty')}</p>
           </Card>
         ) : (

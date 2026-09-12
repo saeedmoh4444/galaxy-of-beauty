@@ -32,7 +32,7 @@ export default function MommyAndMeScreen(): JSX.Element {
       <Text style={styles.t}>{t('mobile.public.mommy-and-me.title')}</Text>
       {services.map((s) => (
         <View key={s.id} style={styles.card}>
-          <Text style={styles.se}>{s.emoji ?? '‍️'}</Text>
+          <Text style={styles.se}>{s.emoji ?? ''}</Text>
           <View style={{ flex: 1 }}>
             <Text style={styles.sn}>{s.nameAr}</Text>
             <Text style={styles.sd}>{s.descAr}</Text>
@@ -40,7 +40,7 @@ export default function MommyAndMeScreen(): JSX.Element {
               <Text style={styles.sp}>
                 {s.price?.toLocaleString()} {t('misc.sar')}
               </Text>
-              <Text style={styles.sdu}>️ {s.duration}</Text>
+              <Text style={styles.sdu}> {s.duration}</Text>
             </View>
           </View>
           <TouchableOpacity style={styles.bb}>
