@@ -38,7 +38,7 @@ const ERAS: HistoryEra[] = [
   },
   {
     era: { ar: 'الجزيرة العربية', en: 'Arabian Peninsula' },
-    emoji: '',
+    emoji: '🌿',
     year: { ar: '2000 ق.م', en: '2000 BC' },
     fact: {
       ar: 'الحناء استخدمت للتزيين والتبريد — ونقشاتها تروي قصص القبائل',
@@ -47,7 +47,7 @@ const ERAS: HistoryEra[] = [
   },
   {
     era: { ar: 'العصر العباسي', en: 'Abbasid era' },
-    emoji: '',
+    emoji: '💈',
     year: { ar: '800 م', en: '800 AD' },
     fact: {
       ar: 'زرياب الأندلسي أدخل روتين العناية بالشعر والبشرة للنساء',
@@ -56,7 +56,7 @@ const ERAS: HistoryEra[] = [
   },
   {
     era: { ar: 'أوروبا الفيكتورية', en: 'Victorian Europe' },
-    emoji: '',
+    emoji: '👒',
     year: { ar: '1850 م', en: '1850 AD' },
     fact: {
       ar: 'البشرة البيضاء رمز الثراء — والنساء تجنبن الشمس تماماً',
@@ -65,7 +65,7 @@ const ERAS: HistoryEra[] = [
   },
   {
     era: { ar: 'العصر الذهبي', en: 'The Golden Age' },
-    emoji: '',
+    emoji: '💋',
     year: { ar: '1950 م', en: '1950 AD' },
     fact: {
       ar: 'مارلين مونرو جعلت الشامة والشعر الأشقر موضة عالمية',
@@ -74,7 +74,7 @@ const ERAS: HistoryEra[] = [
   },
   {
     era: { ar: 'الثمانينات', en: 'The 80s' },
-    emoji: '',
+    emoji: '🌈',
     year: { ar: '1980 م', en: '1980 AD' },
     fact: {
       ar: 'الألوان الجريئة والمكياج الثقيل — عصر الإفراط في كل شيء',
@@ -83,7 +83,7 @@ const ERAS: HistoryEra[] = [
   },
   {
     era: { ar: 'اليوم', en: 'Today' },
-    emoji: '',
+    emoji: '🌍',
     year: { ar: '2026 م', en: '2026 AD' },
     fact: {
       ar: 'الجمال الطبيعي والعناية بالبشرة — والأهم: الجمال للجميع',

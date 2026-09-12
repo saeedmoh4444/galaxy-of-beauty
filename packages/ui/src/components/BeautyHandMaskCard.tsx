@@ -28,25 +28,25 @@ export function BeautyHandMaskCard({
       <div className="mt-3 space-y-1">
         {[
           {
-            emoji: '',
+            emoji: '🧴',
             text: {
               ar: 'كريم كثيف — طبقة سميكة على اليدين',
               en: 'Thick cream — a generous layer on your hands',
             },
           },
           {
-            emoji: '',
+            emoji: '🧤',
             text: { ar: 'قفازات قطنية — للنوم طوال الليل', en: 'Cotton gloves — worn overnight' },
           },
           {
-            emoji: '',
+            emoji: '✨',
             text: {
               ar: 'صباحاً — أيدي ناعمة كالحرير',
               en: 'In the morning — hands as soft as silk',
             },
           },
           {
-            emoji: '',
+            emoji: '📅',
             text: {
               ar: 'مرة أسبوعياً — أو قبل المناسبات',
               en: 'Once a week — or before special occasions',

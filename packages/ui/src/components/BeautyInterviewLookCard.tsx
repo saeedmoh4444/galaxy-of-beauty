@@ -28,28 +28,28 @@ export function BeautyInterviewLookCard({
       <div className="mt-3 space-y-1">
         {[
           {
-            emoji: '',
+            emoji: '💄',
             text: {
               ar: 'مكياج طبيعي — BB كريم + ماسكارا + بلسم شفاه',
               en: 'Natural makeup — BB cream + mascara + lip balm',
             },
           },
           {
-            emoji: '',
+            emoji: '💅',
             text: {
               ar: 'أظافر محايدة — Nude أو فرنسي كلاسيك',
               en: 'Neutral nails — nude or classic French',
             },
           },
           {
-            emoji: '',
+            emoji: '💇',
             text: {
               ar: 'تسريحة مرتبة — كعكة منخفضة أو شعر منسدل أنيق',
               en: 'Tidy hairstyle — low bun or sleek loose hair',
             },
           },
           {
-            emoji: '',
+            emoji: '🌸',
             text: {
               ar: 'عطر خفيف — منعش وغير قوي',
               en: 'Light fragrance — fresh, not overpowering',

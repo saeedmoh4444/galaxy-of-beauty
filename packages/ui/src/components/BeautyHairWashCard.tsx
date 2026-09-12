@@ -28,15 +28,15 @@ export function BeautyHairWashCard({
       <div className="mt-3 space-y-1">
         {[
           {
-            emoji: '',
+            emoji: '💧',
             text: {
               ar: 'بللي الشعر تماماً — 1-2 دقيقة',
               en: 'Wet the hair thoroughly — for 1-2 minutes',
             },
           },
-          { emoji: '', text: { ar: 'الشامبو لفروة الرأس فقط', en: 'Shampoo the scalp only' } },
+          { emoji: '🧼', text: { ar: 'الشامبو لفروة الرأس فقط', en: 'Shampoo the scalp only' } },
           {
-            emoji: '',
+            emoji: '🧴',
             text: {
               ar: 'البلسم للأطراف فقط — وليس الجذور',
               en: 'Conditioner on the ends only — not the roots',

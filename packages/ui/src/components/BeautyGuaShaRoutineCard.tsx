@@ -28,7 +28,7 @@ export function BeautyGuaShaRoutineCard({
       <div className="mt-3 space-y-1">
         {[
           {
-            emoji: '',
+            emoji: '🫒',
             text: {
               ar: '1. زيت أو سيروم — لتزلق الأداة على البشرة',
               en: '1. Oil or serum — so the tool glides over the skin',
@@ -42,7 +42,7 @@ export function BeautyGuaShaRoutineCard({
             },
           },
           {
-            emoji: '',
+            emoji: '✋',
             text: {
               ar: '3. 5 تمريرات لكل منطقة — بلطف وليس بقوة',
               en: '3. 5 passes per area — gently, not forcefully',

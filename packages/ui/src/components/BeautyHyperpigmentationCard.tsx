@@ -35,21 +35,21 @@ export function BeautyHyperpigmentationCard({
             },
           },
           {
-            emoji: '',
+            emoji: '🍊',
             text: {
               ar: 'فيتامين سي — يفتح التصبغات صباحاً',
               en: 'Vitamin C — brightens spots in the morning',
             },
           },
           {
-            emoji: '',
+            emoji: '🧪',
             text: {
               ar: 'نياسيناميد — يقلل إنتاج الميلانين',
               en: 'Niacinamide — reduces melanin production',
             },
           },
           {
-            emoji: '',
+            emoji: '⏳',
             text: {
               ar: 'الصبر — النتائج تحتاج 8-12 أسبوع',
               en: 'Patience — results take 8-12 weeks',

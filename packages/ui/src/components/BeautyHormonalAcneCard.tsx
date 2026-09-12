@@ -28,21 +28,21 @@ export function BeautyHormonalAcneCard({
       <div className="mt-3 space-y-1">
         {[
           {
-            emoji: '',
+            emoji: '📍',
             text: {
               ar: 'مكانها: الذقن والفك — علامة أنها هرمونية',
               en: 'Location: chin and jawline — a sign they are hormonal',
             },
           },
           {
-            emoji: '',
+            emoji: '🧪',
             text: {
               ar: 'علاج موضعي: بنزويل بيروكسايد أو ساليسيليك',
               en: 'Topical treatment: benzoyl peroxide or salicylic acid',
             },
           },
           {
-            emoji: '',
+            emoji: '🍬',
             text: {
               ar: 'قللي السكر والألبان — تزيد الالتهاب',
               en: 'Cut back on sugar and dairy — they increase inflammation',

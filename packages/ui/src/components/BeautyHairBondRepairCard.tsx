@@ -28,14 +28,14 @@ export function BeautyHairBondRepairCard({
       <div className="mt-3 space-y-1">
         {[
           {
-            emoji: '',
+            emoji: '🔗',
             text: {
               ar: 'يصلح الروابط المكسورة — داخل الشعرة',
               en: 'Repairs broken bonds — inside the hair shaft',
             },
           },
           {
-            emoji: '',
+            emoji: '💇',
             text: { ar: 'للشعر المصبوغ والمعالج حرارياً', en: 'For colored and heat-treated hair' },
           },
           {
@@ -46,7 +46,7 @@ export function BeautyHairBondRepairCard({
             },
           },
           {
-            emoji: '',
+            emoji: '✨',
             text: {
               ar: 'نتائج فورية — شعر أنعم وأقوى',
               en: 'Instant results — softer, stronger hair',

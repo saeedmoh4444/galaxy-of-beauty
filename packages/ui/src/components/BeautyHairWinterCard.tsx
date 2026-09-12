@@ -28,28 +28,28 @@ export function BeautyHairWinterCard({
       <div className="mt-3 space-y-1">
         {[
           {
-            emoji: '',
+            emoji: '🧴',
             text: {
               ar: 'زيت شعر قبل الغسيل — لمقاومة الجفاف',
               en: 'Oil your hair before washing — to fight dryness',
             },
           },
           {
-            emoji: '',
+            emoji: '🚫',
             text: {
               ar: 'لا تخرجي بشعر مبلل — يتجمد ويتكسر',
               en: 'Do not go out with wet hair — it freezes and breaks',
             },
           },
           {
-            emoji: '',
+            emoji: '💧',
             text: {
               ar: 'بلسم يترك على الشعر — حماية إضافية',
               en: 'Leave-in conditioner — extra protection',
             },
           },
           {
-            emoji: '',
+            emoji: '💇',
             text: { ar: 'مشط خشب — يقلل الكهرباء الساكنة', en: 'A wooden comb — reduces static' },
           },
         ].map((t, i) => (

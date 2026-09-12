@@ -28,21 +28,21 @@ export function BeautyHairLossCard({
       <div className="mt-3 space-y-1">
         {[
           {
-            emoji: '',
+            emoji: '🩺',
             text: {
               ar: 'فحص الحديد وفيتامين د — الأسباب الشائعة',
               en: 'Check iron and vitamin D — the common culprits',
             },
           },
           {
-            emoji: '',
+            emoji: '💆',
             text: {
               ar: 'تدليك فروة الرأس — 5 دقائق يومياً',
               en: 'Scalp massage — 5 minutes daily',
             },
           },
           {
-            emoji: '',
+            emoji: '🥗',
             text: { ar: 'تغذية: بروتين، حديد، زنك', en: 'Nutrition: protein, iron, zinc' },
           },
           {

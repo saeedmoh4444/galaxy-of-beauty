@@ -33,17 +33,17 @@ export function BeautyIceRollerCard({
             tip: { ar: 'يغلق المسام بعد التنظيف', en: 'Closes pores after cleansing' },
           },
           {
-            emoji: '',
+            emoji: '🧊',
             label: { ar: 'يهدئ البشرة', en: 'Calms the skin' },
             tip: { ar: 'يخفف الاحمرار والالتهاب', en: 'Reduces redness and inflammation' },
           },
           {
-            emoji: '',
+            emoji: '✨',
             label: { ar: 'ينشط الدورة', en: 'Boosts circulation' },
             tip: { ar: 'يمنح البشرة إشراقة فورية', en: 'Gives an instant glow' },
           },
           {
-            emoji: '',
+            emoji: '⏰',
             label: { ar: '3 دقائق', en: '3 minutes' },
             tip: { ar: 'صباحاً — قبل المكياج', en: 'In the morning — before makeup' },
           },

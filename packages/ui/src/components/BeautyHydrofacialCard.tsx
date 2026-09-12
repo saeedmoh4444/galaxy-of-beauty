@@ -28,14 +28,14 @@ export function BeautyHydrofacialCard({
       <div className="mt-3 space-y-1">
         {[
           {
-            emoji: '',
+            emoji: '🫧',
             text: {
               ar: 'ينظف المسام بعمق — بدون ألم أو احمرار',
               en: 'Deeply cleans pores — painless, no redness',
             },
           },
           {
-            emoji: '',
+            emoji: '💧',
             text: {
               ar: 'يرطب ويغذي — في نفس الجلسة',
               en: 'Hydrates and nourishes — in the same session',
@@ -46,7 +46,7 @@ export function BeautyHydrofacialCard({
             text: { ar: '30-45 دقيقة — نتائج فورية', en: '30-45 minutes — instant results' },
           },
           {
-            emoji: '',
+            emoji: '📅',
             text: {
               ar: 'مرة شهرياً — للحفاظ على النتائج',
               en: 'Once a month — to maintain results',

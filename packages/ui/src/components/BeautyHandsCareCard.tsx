@@ -32,12 +32,12 @@ export function BeautyHandsCareCard({
       <div className="mt-3 grid grid-cols-2 gap-1.5">
         {[
           {
-            emoji: '',
+            emoji: '🧴',
             label: { ar: 'كريم بعد الغسيل', en: 'Cream after washing' },
             tip: { ar: 'كل مرة تغسلين يديك', en: 'Every time you wash your hands' },
           },
           {
-            emoji: '',
+            emoji: '🧤',
             label: { ar: 'قفازات', en: 'Gloves' },
             tip: { ar: 'للتنظيف والغسيل', en: 'For cleaning and washing' },
           },
@@ -47,7 +47,7 @@ export function BeautyHandsCareCard({
             tip: { ar: 'ظهر اليدين يظهر العمر', en: 'The back of the hands shows age' },
           },
           {
-            emoji: '',
+            emoji: '💅',
             label: { ar: 'تقليم منتظم', en: 'Regular trimming' },
             tip: { ar: 'أسبوعياً للحفاظ على الشكل', en: 'Weekly to keep the shape' },
           },

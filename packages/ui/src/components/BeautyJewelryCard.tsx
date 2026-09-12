@@ -32,22 +32,22 @@ export function BeautyJewelryCard({
       <div className="mt-3 grid grid-cols-2 gap-1.5">
         {[
           {
-            emoji: '',
+            emoji: '💎',
             label: { ar: 'أقراط', en: 'Earrings' },
             tip: { ar: 'طويلة = وجه أنحف', en: 'Long ones = slimmer face' },
           },
           {
-            emoji: '',
+            emoji: '📿',
             label: { ar: 'عقد', en: 'Necklace' },
             tip: { ar: 'يناسب الفتحة', en: 'Matches the neckline' },
           },
           {
-            emoji: '',
+            emoji: '⌚',
             label: { ar: 'ساعة', en: 'Watch' },
             tip: { ar: 'كلاسيك = لكل مناسبة', en: 'Classic = for every occasion' },
           },
           {
-            emoji: '',
+            emoji: '💍',
             label: { ar: 'خواتم', en: 'Rings' },
             tip: { ar: '2-3 كحد أقصى', en: '2-3 at most' },
           },

@@ -28,14 +28,14 @@ export function BeautyHairGrowthCard({
       <div className="mt-3 space-y-1">
         {[
           {
-            emoji: '',
+            emoji: '💆',
             text: {
               ar: 'تدليك فروة الرأس — يحفز البصيلات',
               en: 'Scalp massage — stimulates the follicles',
             },
           },
           {
-            emoji: '',
+            emoji: '🌿',
             text: {
               ar: 'زيت إكليل الجبل — فعال مثل المينوكسيديل',
               en: 'Rosemary oil — as effective as minoxidil',
@@ -43,7 +43,7 @@ export function BeautyHairGrowthCard({
           },
           { emoji: '️', text: { ar: 'قص الأطراف كل 3 أشهر', en: 'Trim the ends every 3 months' } },
           {
-            emoji: '',
+            emoji: '💊',
             text: {
               ar: 'بيوتين وزنك — بعد استشارة الطبيب',
               en: 'Biotin and zinc — after consulting your doctor',

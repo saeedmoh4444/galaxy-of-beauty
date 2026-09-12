@@ -28,7 +28,7 @@ export function BeautyHairRemovalCard({
       <div className="mt-3 grid grid-cols-2 gap-1.5">
         {[
           {
-            emoji: '',
+            emoji: '🍯',
             label: { ar: 'حلاوة', en: 'Halawa (sugaring)' },
             tip: { ar: 'طبيعية — ألم أقل من الشمع', en: 'Natural — less painful than wax' },
           },
@@ -38,12 +38,12 @@ export function BeautyHairRemovalCard({
             tip: { ar: 'نتيجة تدوم 3-4 أسابيع', en: 'Results last 3-4 weeks' },
           },
           {
-            emoji: '',
+            emoji: '⚡',
             label: { ar: 'ليزر', en: 'Laser' },
             tip: { ar: 'نتيجة شبه دائمة — 6 جلسات', en: 'Semi-permanent result — 6 sessions' },
           },
           {
-            emoji: '',
+            emoji: '🧵',
             label: { ar: 'فتلة', en: 'Threading' },
             tip: { ar: 'للوجه — دقيقة جداً', en: 'For the face — very precise' },
           },

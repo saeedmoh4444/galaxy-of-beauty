@@ -35,21 +35,21 @@ export function BeautyHairThinningCard({
             },
           },
           {
-            emoji: '',
+            emoji: '💆',
             text: {
               ar: 'تدليك الفروة — 5 دقائق يومياً بزيت دافئ',
               en: 'Scalp massage — 5 minutes daily with warm oil',
             },
           },
           {
-            emoji: '',
+            emoji: '🥗',
             text: {
               ar: 'تغذية — بروتين، حديد، زنك، فيتامين D',
               en: 'Nutrition — protein, iron, zinc, vitamin D',
             },
           },
           {
-            emoji: '',
+            emoji: '💊',
             text: {
               ar: 'مينوكسيديل — العلاج الوحيد المثبت علمياً',
               en: 'Minoxidil — the only scientifically proven treatment',

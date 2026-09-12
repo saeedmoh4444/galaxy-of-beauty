@@ -28,21 +28,21 @@ export function BeautyIceFacialCard({
       <div className="mt-3 space-y-1">
         {[
           {
-            emoji: '',
+            emoji: '🧊',
             text: {
               ar: 'يقلص المسام — بشرة أنعم فوراً',
               en: 'Tightens pores — instantly smoother skin',
             },
           },
           {
-            emoji: '',
+            emoji: '🌅',
             text: {
               ar: 'صباحاً — يقلل الانتفاخ تحت العين',
               en: 'In the morning — reduces under-eye puffiness',
             },
           },
           {
-            emoji: '',
+            emoji: '🌹',
             text: {
               ar: 'ثلج ماء الورد — مهدئ للبشرة',
               en: 'Rose water ice — soothing for the skin',

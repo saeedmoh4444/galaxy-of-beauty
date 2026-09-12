@@ -28,28 +28,28 @@ export function BeautyHairHijabCard({
       <div className="mt-3 space-y-1">
         {[
           {
-            emoji: '',
+            emoji: '🧣',
             text: {
               ar: 'بطانة حرير — تقلل الاحتكاك وتكسر الشعر',
               en: 'A silk lining — reduces friction and hair breakage',
             },
           },
           {
-            emoji: '',
+            emoji: '💨',
             text: {
               ar: 'فكي الشعر فور العودة — دعيه يتنفس',
               en: 'Release your hair as soon as you are home — let it breathe',
             },
           },
           {
-            emoji: '',
+            emoji: '💆',
             text: {
               ar: 'تدليك فروة الرأس — يحسن الدورة',
               en: 'Scalp massage — improves circulation',
             },
           },
           {
-            emoji: '',
+            emoji: '🫒',
             text: {
               ar: 'زيت خفيف — قبل لف الحجاب بساعة',
               en: 'A light oil — an hour before wrapping the hijab',

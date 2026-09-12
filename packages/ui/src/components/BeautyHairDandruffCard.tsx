@@ -28,21 +28,21 @@ export function BeautyHairDandruffCard({
       <div className="mt-3 space-y-1">
         {[
           {
-            emoji: '',
+            emoji: '🧴',
             text: {
               ar: 'شامبو مضاد للقشرة — 2-3 مرات أسبوعياً',
               en: 'Anti-dandruff shampoo — 2-3 times a week',
             },
           },
           {
-            emoji: '',
+            emoji: '🌿',
             text: {
               ar: 'زيت شجرة الشاي — مضاد فطريات طبيعي',
               en: 'Tea tree oil — a natural antifungal',
             },
           },
           {
-            emoji: '',
+            emoji: '💆',
             text: {
               ar: 'دلكي فروة الرأس — يحسن الدورة',
               en: 'Massage the scalp — improves circulation',

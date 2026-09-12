@@ -28,12 +28,12 @@ export function BeautyHairColorCard({
       <div className="mt-3 grid grid-cols-2 gap-1.5">
         {[
           {
-            emoji: '',
+            emoji: '🧪',
             label: { ar: 'اختبار الحساسية', en: 'Patch test' },
             tip: { ar: 'قبل 48 ساعة من الصبغة', en: '48 hours before coloring' },
           },
           {
-            emoji: '',
+            emoji: '🚫',
             label: { ar: 'لا تغسلي', en: 'Skip the wash' },
             tip: {
               ar: 'لا تغسلي شعرك قبل الصبغة بيوم',
@@ -41,7 +41,7 @@ export function BeautyHairColorCard({
             },
           },
           {
-            emoji: '',
+            emoji: '🟣',
             label: { ar: 'شامبو بنفسجي', en: 'Purple shampoo' },
             tip: {
               ar: 'للشعر الأشقر — يمنع الاصفرار',
@@ -49,7 +49,7 @@ export function BeautyHairColorCard({
             },
           },
           {
-            emoji: '',
+            emoji: '🧴',
             label: { ar: 'بلسم عميق', en: 'Deep conditioner' },
             tip: { ar: 'بعد الصبغة — لتثبيت اللون', en: 'After coloring — to lock in the color' },
           },

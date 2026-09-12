@@ -28,21 +28,21 @@ export function BeautyGlutenFreeCard({
       <div className="mt-3 space-y-1">
         {[
           {
-            emoji: '',
+            emoji: '🌾',
             text: {
               ar: 'بعض المنتجات تحتوي جلوتين — كريمات، بلسم، أحمر شفاه',
               en: 'Some products contain gluten — creams, conditioners, lipsticks',
             },
           },
           {
-            emoji: '',
+            emoji: '🔍',
             text: {
               ar: 'تأكدي من المكونات — قمح، شعير، شوفان',
               en: 'Check the ingredients — wheat, barley, oats',
             },
           },
           {
-            emoji: '',
+            emoji: '✅',
             text: {
               ar: 'معظم المنتجات خالية — لكن الجئي للمعتمد',
               en: 'Most products are free — but choose certified ones',
