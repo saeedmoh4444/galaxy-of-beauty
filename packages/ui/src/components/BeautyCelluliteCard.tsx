@@ -28,21 +28,21 @@ export function BeautyCelluliteCard({
       <div className="mt-3 space-y-1">
         {[
           {
-            emoji: '',
+            emoji: '💆',
             text: {
               ar: 'مساج التصريف اللمفاوي — يقلل الاحتباس',
               en: 'Lymphatic drainage massage — reduces retention',
             },
           },
           {
-            emoji: '',
+            emoji: '🏃',
             text: {
               ar: 'رياضة منتظمة — تحسن الدورة الدموية',
               en: 'Regular exercise — improves circulation',
             },
           },
           {
-            emoji: '',
+            emoji: '💧',
             text: {
               ar: 'اشربي ماء — الترطيب يحسن مظهر الجلد',
               en: 'Drink water — hydration improves skin texture',

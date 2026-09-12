@@ -4,32 +4,32 @@ import { t } from '@galaxy/shared';
 
 const FEATURES = [
   {
-    emoji: '',
+    emoji: '📅',
     title: 'marketing.whatsapp-bot.feature-quick-booking',
     desc: 'marketing.whatsapp-bot.feature-quick-booking-desc',
   },
   {
-    emoji: '',
+    emoji: '🔔',
     title: 'marketing.whatsapp-bot.feature-auto-reminder',
     desc: 'marketing.whatsapp-bot.feature-auto-reminder-desc',
   },
   {
-    emoji: '',
+    emoji: '💬',
     title: 'marketing.whatsapp-bot.feature-instant-consult',
     desc: 'marketing.whatsapp-bot.feature-instant-consult-desc',
   },
   {
-    emoji: '',
+    emoji: '⭐',
     title: 'marketing.whatsapp-bot.feature-easy-rating',
     desc: 'marketing.whatsapp-bot.feature-easy-rating-desc',
   },
   {
-    emoji: '',
+    emoji: '🎁',
     title: 'marketing.whatsapp-bot.feature-exclusive-offers',
     desc: 'marketing.whatsapp-bot.feature-exclusive-offers-desc',
   },
   {
-    emoji: '',
+    emoji: '📍',
     title: 'marketing.whatsapp-bot.feature-nearest-salon',
     desc: 'marketing.whatsapp-bot.feature-nearest-salon-desc',
   },

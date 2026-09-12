@@ -28,7 +28,7 @@ export function BeautyThirtiesCard({
       <div className="mt-3 space-y-1">
         {[
           {
-            emoji: '',
+            emoji: '✨',
             text: {
               ar: 'ابدئي الريتينول — الكولاجين يبدأ بالانخفاض',
               en: 'Start retinoids — collagen begins to decline',
@@ -42,14 +42,14 @@ export function BeautyThirtiesCard({
             },
           },
           {
-            emoji: '',
+            emoji: '🧪',
             text: {
               ar: 'تقشير منتظم — مرة أسبوعياً AHA/BHA',
               en: 'Regular exfoliation — once a week AHA/BHA',
             },
           },
           {
-            emoji: '',
+            emoji: '💧',
             text: {
               ar: 'سيروم هيالورونيك — ترطيب مكثف',
               en: 'Hyaluronic serum — intense hydration',

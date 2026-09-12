@@ -64,17 +64,17 @@ const SKIN_TIPS: Record<string, { ar: string; en: string }> = {
 };
 
 const STEPS: { emoji: string; text: { ar: string; en: string } }[] = [
-  { emoji: '', text: { ar: 'تحليل بشرتكِ بلطف', en: 'Gentle skin analysis' } },
+  { emoji: '🔍', text: { ar: 'تحليل بشرتكِ بلطف', en: 'Gentle skin analysis' } },
   {
-    emoji: '',
+    emoji: '🧼',
     text: { ar: 'تنظيف لطيف بدون مواد قاسية', en: 'Gentle cleansing without harsh ingredients' },
   },
   {
     emoji: '‍️',
     text: { ar: 'تدليك خفيف للوجه (3 دقائق)', en: 'Light facial massage (3 minutes)' },
   },
-  { emoji: '', text: { ar: 'ترطيب وواقي شمس', en: 'Moisturizer and sunscreen' } },
-  { emoji: '', text: { ar: 'نصائح للعناية اليومية', en: 'Daily care tips' } },
+  { emoji: '🧴', text: { ar: 'ترطيب وواقي شمس', en: 'Moisturizer and sunscreen' } },
+  { emoji: '💡', text: { ar: 'نصائح للعناية اليومية', en: 'Daily care tips' } },
 ];
 
 export function FirstFacialCard({

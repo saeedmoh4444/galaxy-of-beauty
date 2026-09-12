@@ -23,17 +23,17 @@ interface TypeDef {
 
 const TYPES: Record<IngredientType, TypeDef> = {
   active: {
-    emoji: '',
+    emoji: '⚡',
     label: { ar: 'مادة فعالة', en: 'Active ingredient' },
     color: 'bg-amber-50 text-amber-700 dark:bg-amber-950 dark:text-amber-300',
   },
   moisturizer: {
-    emoji: '',
+    emoji: '💧',
     label: { ar: 'مرطب', en: 'Moisturizer' },
     color: 'bg-sky-50 text-sky-700 dark:bg-sky-950 dark:text-sky-300',
   },
   exfoliant: {
-    emoji: '',
+    emoji: '🧪',
     label: { ar: 'مقشر', en: 'Exfoliant' },
     color: 'bg-orange-50 text-orange-700 dark:bg-orange-950 dark:text-orange-300',
   },
@@ -53,7 +53,7 @@ const TYPES: Record<IngredientType, TypeDef> = {
     color: 'bg-lime-50 text-lime-700 dark:bg-lime-950 dark:text-lime-300',
   },
   natural: {
-    emoji: '',
+    emoji: '🌿',
     label: { ar: 'طبيعي', en: 'Natural' },
     color: 'bg-green-50 text-green-700 dark:bg-green-950 dark:text-green-300',
   },

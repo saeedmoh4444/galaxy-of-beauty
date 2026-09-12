@@ -32,22 +32,22 @@ export function BeautyExerciseCard({
       <div className="mt-3 grid grid-cols-2 gap-1.5">
         {[
           {
-            emoji: '',
+            emoji: '🚶',
             label: { ar: 'مشي 30 دقيقة', en: '30-minute walk' },
             tip: { ar: 'ينشط الدورة الدموية', en: 'Boosts circulation' },
           },
           {
-            emoji: '',
+            emoji: '🧘',
             label: { ar: 'يوغا', en: 'Yoga' },
             tip: { ar: 'تقلل التوتر = بشرة أفضل', en: 'Reduces stress = better skin' },
           },
           {
-            emoji: '',
+            emoji: '🏊',
             label: { ar: 'سباحة', en: 'Swimming' },
             tip: { ar: 'تمرين كامل للجسم', en: 'Full-body workout' },
           },
           {
-            emoji: '',
+            emoji: '💃',
             label: { ar: 'رقص', en: 'Dancing' },
             tip: { ar: 'يفرز هرمونات السعادة', en: 'Releases happiness hormones' },
           },

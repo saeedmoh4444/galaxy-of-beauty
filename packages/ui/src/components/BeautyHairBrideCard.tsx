@@ -28,14 +28,14 @@ export function BeautyHairBrideCard({
       <div className="mt-3 space-y-1">
         {[
           {
-            emoji: '',
+            emoji: '📅',
             text: {
               ar: 'ابدئي العناية قبل 6 أشهر من الزفاف',
               en: 'Start your care routine 6 months before the wedding',
             },
           },
           {
-            emoji: '',
+            emoji: '🫒',
             text: {
               ar: 'حمام زيت أسبوعي — لتغذية عميقة',
               en: 'A weekly oil treatment — for deep nourishment',
@@ -49,7 +49,7 @@ export function BeautyHairBrideCard({
             },
           },
           {
-            emoji: '',
+            emoji: '💇',
             text: {
               ar: 'تجربة التسريحة قبل الزفاف بأسبوعين',
               en: 'Try the hairstyle two weeks before the wedding',

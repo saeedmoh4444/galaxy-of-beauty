@@ -60,12 +60,12 @@ export const beautyFaqRouter = router({
 
   categories: publicProcedure.query(async () => {
     const CATEGORY_META: Record<string, { emoji: string; nameAr: string }> = {
-      makeup: { emoji: '', nameAr: 'مكياج' },
-      skincare: { emoji: '', nameAr: 'عناية بالبشرة' },
-      hair: { emoji: '', nameAr: 'شعر' },
-      nails: { emoji: '', nameAr: 'أظافر' },
-      massage: { emoji: '', nameAr: 'مساج' },
-      general: { emoji: '', nameAr: 'عام' },
+      makeup: { emoji: '💄', nameAr: 'مكياج' },
+      skincare: { emoji: '🧴', nameAr: 'عناية بالبشرة' },
+      hair: { emoji: '💇', nameAr: 'شعر' },
+      nails: { emoji: '💅', nameAr: 'أظافر' },
+      massage: { emoji: '💆', nameAr: 'مساج' },
+      general: { emoji: '❓', nameAr: 'عام' },
     };
     const rows = await prisma.beautyFaq.findMany({
       select: { category: true },

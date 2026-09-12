@@ -28,14 +28,14 @@ export function BeautyPerfumeLayerCard({
       <div className="mt-3 space-y-1">
         {[
           {
-            emoji: '',
+            emoji: '🍋',
             text: {
               ar: 'النفحة العليا: أول ما تشمين — حمضيات، خفيفة',
               en: 'Top notes: what you smell first — citrus, light',
             },
           },
           {
-            emoji: '',
+            emoji: '🌹',
             text: {
               ar: 'قلب العطر: بعد 15 دقيقة — ورود، توابل',
               en: 'Heart notes: after 15 minutes — roses, spices',
@@ -49,7 +49,7 @@ export function BeautyPerfumeLayerCard({
             },
           },
           {
-            emoji: '',
+            emoji: '⏰',
             text: {
               ar: 'انتظري 30 دقيقة قبل الحكم على العطر',
               en: 'Wait 30 minutes before judging a fragrance',

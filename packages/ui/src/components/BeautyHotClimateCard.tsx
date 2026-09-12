@@ -28,22 +28,22 @@ export function BeautyHotClimateCard({
       <div className="mt-3 space-y-1">
         {[
           {
-            emoji: '',
+            emoji: '☀️',
             text: { ar: 'SPF 50+ — جدديه كل ساعتين', en: 'SPF 50+ — reapply every two hours' },
           },
           {
-            emoji: '',
+            emoji: '💦',
             text: {
               ar: 'سبراي مرطب — للانتعاش أثناء اليوم',
               en: 'Hydrating mist — to refresh during the day',
             },
           },
           {
-            emoji: '',
+            emoji: '👒',
             text: { ar: 'قبعة ونظارة — حماية إضافية', en: 'Hat and sunglasses — extra protection' },
           },
           {
-            emoji: '',
+            emoji: '🌿',
             text: {
               ar: 'جل الألوفيرا مبرد — بعد الشمس',
               en: 'Cooled aloe vera gel — after sun exposure',

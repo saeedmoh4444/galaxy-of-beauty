@@ -28,7 +28,7 @@ export function BeautyUndertoneCard({
       <div className="mt-3 grid grid-cols-2 gap-1.5">
         {[
           {
-            emoji: '',
+            emoji: '🌞',
             label: { ar: 'دافئ', en: 'Warm' },
             tip: { ar: 'عروق خضراء — الذهب يناسبك', en: 'Green veins — gold suits you' },
           },
@@ -38,7 +38,7 @@ export function BeautyUndertoneCard({
             tip: { ar: 'عروق زرقاء — الفضة تناسبك', en: 'Blue veins — silver suits you' },
           },
           {
-            emoji: '',
+            emoji: '⚪',
             label: { ar: 'محايد', en: 'Neutral' },
             tip: { ar: 'مزيج — الذهب والفضة', en: 'A mix — gold and silver' },
           },

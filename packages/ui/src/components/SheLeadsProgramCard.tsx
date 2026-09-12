@@ -35,32 +35,32 @@ interface SheLeadsProgramCardProps {
 
 const MODULES = [
   {
-    emoji: '',
+    emoji: '📊',
     title: { ar: 'إدارة الأعمال', en: 'Business Management' },
     desc: { ar: 'محاسبة، تسعير، إدارة المخزون', en: 'Accounting, pricing, inventory management' },
   },
   {
-    emoji: '',
+    emoji: '👥',
     title: { ar: 'قيادة الفريق', en: 'Team Leadership' },
     desc: { ar: 'توظيف، تدريب، تحفيز الخبيرات', en: 'Hiring, training, motivating technicians' },
   },
   {
-    emoji: '',
+    emoji: '📣',
     title: { ar: 'التسويق', en: 'Marketing' },
     desc: { ar: 'وسائل التواصل، العلامة التجارية', en: 'Social media, branding' },
   },
   {
-    emoji: '',
+    emoji: '💻',
     title: { ar: 'التقنية', en: 'Technology' },
     desc: { ar: 'نظام الحجز، التحليلات، التقارير', en: 'Booking system, analytics, reports' },
   },
   {
-    emoji: '',
+    emoji: '🤝',
     title: { ar: 'خدمة العملاء', en: 'Customer Service' },
     desc: { ar: 'بناء العلاقات، حل المشكلات', en: 'Building relationships, problem solving' },
   },
   {
-    emoji: '',
+    emoji: '💡',
     title: { ar: 'الابتكار', en: 'Innovation' },
     desc: { ar: 'تطوير خدمات جديدة، التميز', en: 'Developing new services, excellence' },
   },

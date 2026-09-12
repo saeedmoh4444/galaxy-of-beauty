@@ -20,12 +20,12 @@ export function TrustIndicators({
       desc: { ar: 'جميع الفنيات نساء', en: 'All technicians are women' },
     },
     {
-      emoji: '',
+      emoji: '✅',
       label: { ar: 'موثقات', en: 'Verified' },
       desc: { ar: 'تم التحقق من هوياتهن', en: 'Identities verified' },
     },
     {
-      emoji: '',
+      emoji: '🔒',
       label: { ar: 'خصوصية تامة', en: 'Full Privacy' },
       desc: { ar: 'بياناتكِ محمية بالكامل', en: 'Your data is fully protected' },
     },

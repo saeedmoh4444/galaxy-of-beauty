@@ -35,7 +35,7 @@ export function BeautyDeclutterCard({
             },
           },
           {
-            emoji: '',
+            emoji: '📅',
             text: {
               ar: 'كل 3 أشهر — راجعي مجموعتكِ',
               en: 'Every 3 months — review your collection',
@@ -49,7 +49,7 @@ export function BeautyDeclutterCard({
             },
           },
           {
-            emoji: '',
+            emoji: '🎁',
             text: {
               ar: 'تبرعي بالجديد غير المستخدم — لصديقة أو جمعية',
               en: 'Donate unused new items — to a friend or charity',

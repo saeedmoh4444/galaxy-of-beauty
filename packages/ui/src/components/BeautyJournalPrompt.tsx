@@ -7,14 +7,14 @@
 
 const PROMPTS = [
   {
-    emoji: '',
+    emoji: '💭',
     text: {
       ar: 'كيف تشعرين اليوم؟ وكيف أثر ذلك على روتين جمالكِ؟',
       en: 'How do you feel today? And how did it affect your beauty routine?',
     },
   },
   {
-    emoji: '',
+    emoji: '✨',
     text: {
       ar: 'ما الشيء الوحيد الذي فعلتيه اليوم وجعلكِ تشعرين بالجمال؟',
       en: 'What is the one thing you did today that made you feel beautiful?',
@@ -28,14 +28,14 @@ const PROMPTS = [
     },
   },
   {
-    emoji: '',
+    emoji: '💪',
     text: {
       ar: 'ما التحدي الذي واجهتيه هذا الأسبوع وتغلبتِ عليه؟',
       en: 'What challenge did you face this week and overcome?',
     },
   },
   {
-    emoji: '',
+    emoji: '🙏',
     text: {
       ar: 'اكتبي ثلاثة أشياء أنتِ ممتنة لها اليوم.',
       en: 'Write down three things you are grateful for today.',

@@ -9,11 +9,11 @@
  */
 
 const EMERGENCIES = [
-  { emoji: '', label: { ar: 'مقابلة عمل غداً', en: 'Job interview tomorrow' } },
-  { emoji: '', label: { ar: 'مناسبة مفاجئة', en: 'Surprise occasion' } },
-  { emoji: '', label: { ar: 'جلسة تصوير', en: 'Photo shoot' } },
-  { emoji: '', label: { ar: 'حفلة الليلة', en: 'Party tonight' } },
-  { emoji: '', label: { ar: 'يوم سيء — أحتاج عناية', en: 'Bad day — I need pampering' } },
+  { emoji: '💼', label: { ar: 'مقابلة عمل غداً', en: 'Job interview tomorrow' } },
+  { emoji: '🎉', label: { ar: 'مناسبة مفاجئة', en: 'Surprise occasion' } },
+  { emoji: '📸', label: { ar: 'جلسة تصوير', en: 'Photo shoot' } },
+  { emoji: '🎊', label: { ar: 'حفلة الليلة', en: 'Party tonight' } },
+  { emoji: '🛀', label: { ar: 'يوم سيء — أحتاج عناية', en: 'Bad day — I need pampering' } },
 ];
 
 interface BeautyEmergencyProps {

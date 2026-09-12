@@ -28,7 +28,7 @@ interface PathDef {
 
 const PATHS: Record<CareerPath, PathDef> = {
   makeup_artist: {
-    emoji: '',
+    emoji: '💄',
     title: { ar: 'خبيرة مكياج', en: 'Makeup artist' },
     avgSalary: '5000-15000',
     courses: [
@@ -39,7 +39,7 @@ const PATHS: Record<CareerPath, PathDef> = {
     duration: { ar: '6 أشهر', en: '6 months' },
   },
   skincare_specialist: {
-    emoji: '',
+    emoji: '🧖',
     title: { ar: 'أخصائية بشرة', en: 'Skincare specialist' },
     avgSalary: '6000-18000',
     courses: [
@@ -50,7 +50,7 @@ const PATHS: Record<CareerPath, PathDef> = {
     duration: { ar: '9 أشهر', en: '9 months' },
   },
   salon_manager: {
-    emoji: '',
+    emoji: '🏪',
     title: { ar: 'مديرة صالون', en: 'Salon manager' },
     avgSalary: '8000-20000',
     courses: [
@@ -61,7 +61,7 @@ const PATHS: Record<CareerPath, PathDef> = {
     duration: { ar: '12 شهر', en: '12 months' },
   },
   henna_artist: {
-    emoji: '',
+    emoji: '🌿',
     title: { ar: 'فنانة حناء', en: 'Henna artist' },
     avgSalary: '4000-12000',
     courses: [
@@ -72,7 +72,7 @@ const PATHS: Record<CareerPath, PathDef> = {
     duration: { ar: '3 أشهر', en: '3 months' },
   },
   beauty_blogger: {
-    emoji: '',
+    emoji: '📱',
     title: { ar: 'مدونة جمال', en: 'Beauty blogger' },
     avgSalary: '3000-20000',
     courses: [
@@ -83,7 +83,7 @@ const PATHS: Record<CareerPath, PathDef> = {
     duration: { ar: '4 أشهر', en: '4 months' },
   },
   product_developer: {
-    emoji: '',
+    emoji: '🧪',
     title: { ar: 'مطورة منتجات', en: 'Product developer' },
     avgSalary: '10000-25000',
     courses: [

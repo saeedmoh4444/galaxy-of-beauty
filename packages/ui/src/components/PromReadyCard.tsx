@@ -21,31 +21,31 @@ interface EventDef {
 
 const EVENTS: Record<Event, EventDef> = {
   prom: {
-    emoji: '',
+    emoji: '💃',
     title: { ar: 'حفلة موسيقية', en: 'Prom' },
     description: { ar: 'إطلالة راقية تخطف الأنظار', en: 'An elegant look that turns heads' },
     look: { ar: 'مكياج سهرة ناعم + تسريحة راقية', en: 'Soft evening makeup + elegant hairstyle' },
   },
   graduation: {
-    emoji: '',
+    emoji: '🎓',
     title: { ar: 'حفل تخرج', en: 'Graduation' },
     description: { ar: 'إشراقة تليق بإنجازكِ', en: 'A glow worthy of your achievement' },
     look: { ar: 'مكياج طبيعي + تسريحة أنيقة', en: 'Natural makeup + chic hairstyle' },
   },
   eid: {
-    emoji: '',
+    emoji: '🌙',
     title: { ar: 'عيد', en: 'Eid' },
     description: { ar: 'إطلالة مبهجة للعيد', en: 'A joyful look for Eid' },
     look: { ar: 'مكياج ناعم + ضفائر عصرية', en: 'Soft makeup + trendy braids' },
   },
   wedding_guest: {
-    emoji: '',
+    emoji: '👗',
     title: { ar: 'حضور زفاف', en: 'Wedding guest' },
     description: { ar: 'إطلالة أنيقة تليق بالمناسبة', en: 'An elegant look fitting the occasion' },
     look: { ar: 'مكياج راقٍ + تسريحة كلاسيكية', en: 'Refined makeup + classic hairstyle' },
   },
   birthday_party: {
-    emoji: '',
+    emoji: '🎂',
     title: { ar: 'حفلة ميلاد', en: 'Birthday party' },
     description: { ar: 'إطلالة مميزة ليومكِ الخاص', en: 'A standout look for your special day' },
     look: { ar: 'مكياج لامع + تسريحة مميزة', en: 'Glowy makeup + signature hairstyle' },

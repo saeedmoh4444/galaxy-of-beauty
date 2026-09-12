@@ -28,15 +28,15 @@ export function BeautyMakeupEyeCard({
       <div className="mt-3 space-y-1">
         {[
           {
-            emoji: '',
+            emoji: '🤍',
             text: { ar: 'اللون الفاتح — على كامل الجفن', en: 'Light shade — all over the lid' },
           },
           {
-            emoji: '',
+            emoji: '🤎',
             text: { ar: 'اللون المتوسط — على الثنية', en: 'Mid shade — in the crease' },
           },
           {
-            emoji: '',
+            emoji: '✨',
             text: {
               ar: 'اللون اللامع — في الزاوية الداخلية',
               en: 'Shimmer shade — in the inner corner',

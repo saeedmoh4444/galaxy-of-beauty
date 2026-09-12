@@ -32,24 +32,24 @@ export default function MyJourneyPage(): JSX.Element {
     {
       label: 'myJourney.milestone.first',
       achieved: allBookings.length > 0,
-      emoji: '',
+      emoji: '🎉',
       date: firstBooking?.createdAt,
     },
     {
       label: 'myJourney.milestone.five',
       achieved: completed.length >= 5,
-      emoji: '',
+      emoji: '⭐',
       date: completed.length >= 5 ? completed[4]?.createdAt : null,
     },
     {
       label: 'myJourney.milestone.ten',
       achieved: completed.length >= 10,
-      emoji: '',
+      emoji: '🏆',
       date: completed.length >= 10 ? completed[9]?.createdAt : null,
     },
-    { label: 'myJourney.milestone.savings', achieved: totalSpent >= 1000, emoji: '' },
+    { label: 'myJourney.milestone.savings', achieved: totalSpent >= 1000, emoji: '💰' },
     { label: 'myJourney.milestone.techs', achieved: uniqueTechnicians >= 3, emoji: '‍' },
-    { label: 'myJourney.milestone.services', achieved: uniqueServices >= 5, emoji: '' },
+    { label: 'myJourney.milestone.services', achieved: uniqueServices >= 5, emoji: '💎' },
   ];
 
   if (bLoading)

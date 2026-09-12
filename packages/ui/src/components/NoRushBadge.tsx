@@ -84,7 +84,7 @@ export function NoRushBadge({
             },
           },
           {
-            emoji: '',
+            emoji: '☕',
             title: hasRefreshments
               ? { ar: 'مشروبات مجانية', en: 'Free drinks' }
               : { ar: 'بيئة مريحة', en: 'Comfortable environment' },
@@ -99,7 +99,7 @@ export function NoRushBadge({
                 },
           },
           {
-            emoji: '',
+            emoji: '🔌',
             title: { ar: 'شاحن جوال', en: 'Phone charger' },
             description: {
               ar: 'شاحن متوفر في كل محطة — لا داعي للقلق على بطاريتكِ',

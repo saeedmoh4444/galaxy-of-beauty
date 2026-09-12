@@ -28,22 +28,22 @@ export function BeautyDetoxWaterCard({
       <div className="mt-3 grid grid-cols-2 gap-1.5">
         {[
           {
-            emoji: '',
+            emoji: '🍋',
             label: { ar: 'ليمون + نعناع', en: 'Lemon + mint' },
             tip: { ar: 'منعش — يطرد السموم', en: 'Refreshing — flushes toxins' },
           },
           {
-            emoji: '',
+            emoji: '🍓',
             label: { ar: 'فراولة + ريحان', en: 'Strawberry + basil' },
             tip: { ar: 'مضاد أكسدة — بشرة مشرقة', en: 'Antioxidant — radiant skin' },
           },
           {
-            emoji: '',
+            emoji: '🥒',
             label: { ar: 'خيار + زنجبيل', en: 'Cucumber + ginger' },
             tip: { ar: 'مهدئ — يقلل الالتهابات', en: 'Soothing — reduces inflammation' },
           },
           {
-            emoji: '',
+            emoji: '🍊',
             label: { ar: 'برتقال + قرفة', en: 'Orange + cinnamon' },
             tip: { ar: 'فيتامين C — كولاجين طبيعي', en: 'Vitamin C — natural collagen' },
           },

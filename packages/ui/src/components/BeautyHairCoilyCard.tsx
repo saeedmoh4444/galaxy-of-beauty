@@ -28,18 +28,18 @@ export function BeautyHairCoilyCard({
       <div className="mt-3 space-y-1">
         {[
           {
-            emoji: '',
+            emoji: '💧',
             text: {
               ar: 'ترطيب مكثف — أهم خطوة',
               en: 'Intense hydration — the most important step',
             },
           },
           {
-            emoji: '',
+            emoji: '🧴',
             text: { ar: 'زبدة الشيا — للترطيب العميق', en: 'Shea butter — for deep moisture' },
           },
           {
-            emoji: '',
+            emoji: '💇',
             text: { ar: 'تقسيم الشعر لأجزاء — للعناية', en: 'Section the hair — for easier care' },
           },
           {

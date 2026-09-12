@@ -32,7 +32,7 @@ export function BeautySelfMassageCard({
       <div className="mt-3 space-y-1.5">
         {[
           {
-            emoji: '',
+            emoji: '💆',
             name: { ar: 'تدليك دائري', en: 'Circular massage' },
             desc: { ar: 'بأطراف الأصابع على الوجنتين', en: 'With fingertips on the cheeks' },
           },
@@ -42,7 +42,7 @@ export function BeautySelfMassageCard({
             desc: { ar: 'من الحواجب لأعلى — 10 مرات', en: 'From brows upward — 10 times' },
           },
           {
-            emoji: '',
+            emoji: '🤲',
             name: { ar: 'تدليك الفك', en: 'Jaw massage' },
             desc: { ar: 'حركات دائرية على مفصل الفك', en: 'Circular motions on the jaw joint' },
           },

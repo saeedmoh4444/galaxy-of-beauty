@@ -28,15 +28,15 @@ export function BeautyMorningRoutineCard({
       <div className="mt-3 space-y-1">
         {[
           {
-            emoji: '',
+            emoji: '🧼',
             text: { ar: '1. غسول لطيف — ماء فاتر', en: '1. Gentle cleanser — lukewarm water' },
           },
           {
-            emoji: '',
+            emoji: '💧',
             text: { ar: '2. تونر — يعيد توازن البشرة', en: '2. Toner — restores skin balance' },
           },
           {
-            emoji: '',
+            emoji: '🍊',
             text: {
               ar: '3. سيروم فيتامين سي — مضاد أكسدة',
               en: '3. Vitamin C serum — an antioxidant',

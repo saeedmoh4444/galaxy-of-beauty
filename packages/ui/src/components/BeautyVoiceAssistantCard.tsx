@@ -24,10 +24,10 @@ interface BeautyVoiceAssistantCardProps {
 }
 
 const COMMANDS = [
-  { emoji: '', text: { ar: 'احجزي لي مكياج يوم الخميس', en: 'Book me makeup on Thursday' } },
-  { emoji: '', text: { ar: 'ابحثي عن خبيرة قريبة مني', en: 'Find a technician near me' } },
-  { emoji: '', text: { ar: 'قيمي آخر جلسة لي', en: 'Rate my last session' } },
-  { emoji: '', text: { ar: 'متى موعدي القادم؟', en: 'When is my next appointment?' } },
+  { emoji: '💄', text: { ar: 'احجزي لي مكياج يوم الخميس', en: 'Book me makeup on Thursday' } },
+  { emoji: '📍', text: { ar: 'ابحثي عن خبيرة قريبة مني', en: 'Find a technician near me' } },
+  { emoji: '⭐', text: { ar: 'قيمي آخر جلسة لي', en: 'Rate my last session' } },
+  { emoji: '📅', text: { ar: 'متى موعدي القادم؟', en: 'When is my next appointment?' } },
 ];
 
 export function BeautyVoiceAssistantCard({

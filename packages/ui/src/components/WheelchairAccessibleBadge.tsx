@@ -28,22 +28,22 @@ interface FeatureDef {
 
 const FEATURES: Record<AccessFeature, FeatureDef> = {
   wide_doors: {
-    emoji: '',
+    emoji: '🚪',
     label: { ar: 'أبواب واسعة', en: 'Wide doors' },
     detail: { ar: '90 سم عرض الأبواب', en: '90 cm door width' },
   },
   elevator: {
-    emoji: '',
+    emoji: '🛗',
     label: { ar: 'مصعد', en: 'Elevator' },
     detail: { ar: 'مصعد يتسع للكرسي', en: 'Elevator fits a wheelchair' },
   },
   accessible_bathroom: {
-    emoji: '',
+    emoji: '🚻',
     label: { ar: 'دورة مياه مجهزة', en: 'Accessible bathroom' },
     detail: { ar: 'مقابض ومساحة للكرسي', en: 'Grab bars and wheelchair space' },
   },
   low_counter: {
-    emoji: '',
+    emoji: '🛎',
     label: { ar: 'طاولة منخفضة', en: 'Low counter' },
     detail: { ar: 'طاولة استقبال منخفضة', en: 'Low reception counter' },
   },
@@ -53,12 +53,12 @@ const FEATURES: Record<AccessFeature, FeatureDef> = {
     detail: { ar: 'موقف قريب من المدخل', en: 'Parking near the entrance' },
   },
   ramp: {
-    emoji: '',
+    emoji: '♿',
     label: { ar: 'منحدر', en: 'Ramp' },
     detail: { ar: 'منحدر بديل عن الدرج', en: 'Ramp alternative to stairs' },
   },
   turning_space: {
-    emoji: '',
+    emoji: '🔄',
     label: { ar: 'مساحة دوران', en: 'Turning space' },
     detail: { ar: 'مساحة 150 سم للدوران', en: '150 cm turning space' },
   },

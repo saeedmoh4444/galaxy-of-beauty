@@ -28,21 +28,21 @@ export function BeautyPostpartumHairCard({
       <div className="mt-3 space-y-1">
         {[
           {
-            emoji: '',
+            emoji: '📅',
             text: {
               ar: 'يبدأ بعد 3-6 أشهر — يستمر 3-6 أشهر',
               en: 'Starts 3-6 months after — lasts 3-6 months',
             },
           },
           {
-            emoji: '',
+            emoji: '💆',
             text: {
               ar: 'تدليك الفروة — يحفز نمو شعر جديد',
               en: 'Scalp massage — stimulates new hair growth',
             },
           },
           {
-            emoji: '',
+            emoji: '💊',
             text: {
               ar: 'فيتامينات ما بعد الولادة — حديد وزنك',
               en: 'Postpartum vitamins — iron and zinc',

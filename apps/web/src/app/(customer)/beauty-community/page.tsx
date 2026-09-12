@@ -36,19 +36,21 @@ export default function BeautyCommunityPage(): JSX.Element {
           <div className="lg:col-span-2 space-y-6">
             {/* Squad & Friends */}
             <div className="grid gap-4 sm:grid-cols-2">
-              <BeautySquadCard squad={{ name: t('community.squadName'), members: 4, emoji: '' }} />
+              <BeautySquadCard
+                squad={{ name: t('community.squadName'), members: 4, emoji: '👯' }}
+              />
               <BeautyFriendActivityCard
                 activities={[
                   {
                     friend: t('community.name.noura'),
                     action: t('community.activity.bookedMakeup'),
-                    emoji: '',
+                    emoji: '💄',
                     time: t('community.time.twoHoursAgo'),
                   },
                   {
                     friend: t('community.name.maha'),
                     action: t('community.activity.finishedChallenge'),
-                    emoji: '',
+                    emoji: '🏆',
                     time: t('community.time.fiveHoursAgo'),
                   },
                 ]}
@@ -84,7 +86,7 @@ export default function BeautyCommunityPage(): JSX.Element {
               <BeautySavingsChallengeCard
                 challenge={{
                   name: t('community.challenge.name'),
-                  emoji: '',
+                  emoji: '💰',
                   target: 5000,
                   saved: 3200,
                   days: 30,
@@ -112,7 +114,7 @@ export default function BeautyCommunityPage(): JSX.Element {
                 emoji="‍️"
               />
               <BeautyProgressPhotoCard
-                photos={[{ date: '2026-06-01', emoji: '', note: t('community.photo.note') }]}
+                photos={[{ date: '2026-06-01', emoji: '📸', note: t('community.photo.note') }]}
               />
             </div>
 
@@ -141,9 +143,9 @@ export default function BeautyCommunityPage(): JSX.Element {
               />
               <BeautyMoodBoardCard
                 items={[
-                  { emoji: '', label: t('community.mood.oceanBlue') },
-                  { emoji: '', label: t('community.mood.softPink') },
-                  { emoji: '', label: t('community.mood.shimmeringGold') },
+                  { emoji: '🌊', label: t('community.mood.oceanBlue') },
+                  { emoji: '🌸', label: t('community.mood.softPink') },
+                  { emoji: '✨', label: t('community.mood.shimmeringGold') },
                 ]}
               />
             </div>

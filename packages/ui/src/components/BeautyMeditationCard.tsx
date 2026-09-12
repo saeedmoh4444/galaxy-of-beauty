@@ -37,21 +37,21 @@ export function BeautyMeditationCard({
             },
           },
           {
-            emoji: '',
+            emoji: '🌸',
             text: {
               ar: 'ركزي على شيء جميل في نفسكِ — داخلياً أو خارجياً',
               en: 'Focus on something beautiful about yourself — inside or out',
             },
           },
           {
-            emoji: '',
+            emoji: '💪',
             text: {
               ar: 'كرري: "أنا جميلة، أنا قوية، أنا كافية"',
               en: 'Repeat: "I am beautiful, I am strong, I am enough"',
             },
           },
           {
-            emoji: '',
+            emoji: '😊',
             text: { ar: 'افتحي عينيكِ ببطء — وابتسمي', en: 'Slowly open your eyes — and smile' },
           },
         ].map((s, i) => (

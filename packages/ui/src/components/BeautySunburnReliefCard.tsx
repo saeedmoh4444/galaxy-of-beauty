@@ -35,21 +35,21 @@ export function BeautySunburnReliefCard({
             },
           },
           {
-            emoji: '',
+            emoji: '🌿',
             text: {
               ar: 'جل الألوفيرا — مبرد في الثلاجة',
               en: 'Aloe vera gel — chilled in the fridge',
             },
           },
           {
-            emoji: '',
+            emoji: '💧',
             text: {
               ar: 'اشربي ماء كثيراً — الترطيب من الداخل',
               en: 'Drink plenty of water — hydrate from within',
             },
           },
           {
-            emoji: '',
+            emoji: '🚫',
             text: {
               ar: 'لا تقشري — اتركي الجلد يتجدد طبيعياً',
               en: "Don't exfoliate — let the skin renew naturally",

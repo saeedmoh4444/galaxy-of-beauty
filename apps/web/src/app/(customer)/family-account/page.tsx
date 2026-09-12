@@ -164,9 +164,9 @@ export default function FamilyAccountPage(): JSX.Element {
         {/* Benefits */}
         <div className="grid gap-4 sm:grid-cols-3">
           {[
-            { emoji: '', title: t('family.benefit1.title'), desc: t('family.benefit1.desc') },
-            { emoji: '', title: t('family.benefit2.title'), desc: t('family.benefit2.desc') },
-            { emoji: '', title: t('family.benefit3.title'), desc: t('family.benefit3.desc') },
+            { emoji: '🧒', title: t('family.benefit1.title'), desc: t('family.benefit1.desc') },
+            { emoji: '👵', title: t('family.benefit2.title'), desc: t('family.benefit2.desc') },
+            { emoji: '🧔', title: t('family.benefit3.title'), desc: t('family.benefit3.desc') },
           ].map((b) => (
             <Card key={b.title} padding="md" className="text-center">
               <span className="text-3xl">{b.emoji}</span>

@@ -6,9 +6,9 @@ import { useAuthState } from '@/hooks/useAuthState';
 import { DEFAULT_PAGE_SIZE } from '@galaxy/ui';
 
 const TIERS: Record<string, { emoji: string }> = {
-  SILVER: { emoji: '' },
-  GOLD: { emoji: '' },
-  PLATINUM: { emoji: '' },
+  SILVER: { emoji: '🥈' },
+  GOLD: { emoji: '🥇' },
+  PLATINUM: { emoji: '💎' },
 };
 
 interface LoyaltyAccount {

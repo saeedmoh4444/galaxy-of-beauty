@@ -35,18 +35,18 @@ export function BeautyMakeupGlitterCard({
             },
           },
           {
-            emoji: '',
+            emoji: '✨',
             text: { ar: 'هايلايتر — أعلى الوجنة', en: 'Highlighter — on the top of the cheekbone' },
           },
           {
-            emoji: '',
+            emoji: '🧴',
             text: {
               ar: 'قاعدة لاصقة — تثبت الجليتر',
               en: 'Adhesive base — holds the glitter in place',
             },
           },
           {
-            emoji: '',
+            emoji: '🩹',
             text: {
               ar: 'شريط لاصق — لإزالة الجليتر بسهولة',
               en: 'Tape — for easy glitter removal',

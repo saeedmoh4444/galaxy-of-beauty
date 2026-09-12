@@ -28,14 +28,14 @@ export function BeautyRadioFrequencyCard({
       <div className="mt-3 space-y-1">
         {[
           {
-            emoji: '',
+            emoji: '🔥',
             text: {
               ar: 'يسخن الأدمة — يحفز إنتاج الكولاجين',
               en: 'Heats the dermis — stimulates collagen production',
             },
           },
           {
-            emoji: '',
+            emoji: '✨',
             text: {
               ar: 'يشد الجلد — يقلل الترهلات والخطوط',
               en: 'Tightens skin — reduces sagging and lines',
@@ -49,7 +49,7 @@ export function BeautyRadioFrequencyCard({
             },
           },
           {
-            emoji: '',
+            emoji: '⏰',
             text: {
               ar: 'احمرار مؤقت — يختفي خلال ساعات',
               en: 'Temporary redness — fades within hours',

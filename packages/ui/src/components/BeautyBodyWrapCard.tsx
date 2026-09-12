@@ -28,22 +28,22 @@ export function BeautyBodyWrapCard({
       <div className="mt-3 grid grid-cols-2 gap-1.5">
         {[
           {
-            emoji: '',
+            emoji: '🌊',
             label: { ar: 'طين البحر', en: 'Sea mud' },
             tip: { ar: 'ينظف ويزيل السموم', en: 'Cleanses and detoxifies' },
           },
           {
-            emoji: '',
+            emoji: '🍫',
             label: { ar: 'شوكولاتة', en: 'Chocolate' },
             tip: { ar: 'مضاد أكسدة — يرطب وينعم', en: 'Antioxidant — moisturizes and softens' },
           },
           {
-            emoji: '',
+            emoji: '🌿',
             label: { ar: 'أعشاب بحرية', en: 'Seaweed' },
             tip: { ar: 'يغذي وينشط البشرة', en: 'Nourishes and energizes the skin' },
           },
           {
-            emoji: '',
+            emoji: '☕',
             label: { ar: 'قهوة', en: 'Coffee' },
             tip: { ar: 'كافيين — يشد وينشط', en: 'Caffeine — firms and energizes' },
           },

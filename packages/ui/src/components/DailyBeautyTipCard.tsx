@@ -13,7 +13,7 @@ import { cn } from '@galaxy/shared';
 
 const TIPS = [
   {
-    emoji: '',
+    emoji: '💧',
     tip: {
       ar: 'اشربي كوب ماء قبل قهوتكِ الصباحية — بشرتكِ ستشكركِ',
       en: 'Drink a glass of water before your morning coffee — your skin will thank you',
@@ -29,7 +29,7 @@ const TIPS = [
     category: { ar: 'حماية', en: 'Protection' },
   },
   {
-    emoji: '',
+    emoji: '🛌',
     tip: {
       ar: 'نامي على ظهركِ — يمنع تجاعيد الوجه ويحافظ على نضارة البشرة',
       en: 'Sleep on your back — it prevents facial wrinkles and keeps skin fresh',
@@ -37,7 +37,7 @@ const TIPS = [
     category: { ar: 'صحة', en: 'Health' },
   },
   {
-    emoji: '',
+    emoji: '🧴',
     tip: {
       ar: 'طبقي المرطب على بشرة رطبة — يمتص بشكل أفضل',
       en: 'Apply moisturizer on damp skin — it absorbs better',
@@ -45,7 +45,7 @@ const TIPS = [
     category: { ar: 'عناية', en: 'Care' },
   },
   {
-    emoji: '',
+    emoji: '💄',
     tip: {
       ar: 'جددِي مكياجكِ كل 6 أشهر — المنتجات القديمة تجمع البكتيريا',
       en: 'Refresh your makeup every 6 months — old products collect bacteria',
@@ -53,7 +53,7 @@ const TIPS = [
     category: { ar: 'صحة', en: 'Health' },
   },
   {
-    emoji: '',
+    emoji: '🥒',
     tip: {
       ar: 'شرائح الخيار الباردة تقلل انتفاخ العينين في 10 دقائق',
       en: 'Cold cucumber slices reduce eye puffiness in 10 minutes',
@@ -69,7 +69,7 @@ const TIPS = [
     category: { ar: 'عناية', en: 'Care' },
   },
   {
-    emoji: '',
+    emoji: '🍵',
     tip: {
       ar: 'الشاي الأخضر قبل النوم يساعد في محاربة الالتهابات وتجديد البشرة',
       en: 'Green tea before bed helps fight inflammation and renew skin',

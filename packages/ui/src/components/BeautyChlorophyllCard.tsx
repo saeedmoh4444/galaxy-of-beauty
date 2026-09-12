@@ -28,7 +28,7 @@ export function BeautyChlorophyllCard({
       <div className="mt-3 space-y-1">
         {[
           {
-            emoji: '',
+            emoji: '🌿',
             text: {
               ar: 'ينقي البشرة من الداخل — يقلل الحبوب',
               en: 'Purifies skin from within — reduces breakouts',
@@ -42,14 +42,14 @@ export function BeautyChlorophyllCard({
             },
           },
           {
-            emoji: '',
+            emoji: '💧',
             text: {
               ar: '15 قطرة في كوب ماء — صباحاً',
               en: '15 drops in a glass of water — in the morning',
             },
           },
           {
-            emoji: '',
+            emoji: '🍃',
             text: {
               ar: 'طبيعي 100% — مستخلص من البرسيم',
               en: '100% natural — extracted from alfalfa',

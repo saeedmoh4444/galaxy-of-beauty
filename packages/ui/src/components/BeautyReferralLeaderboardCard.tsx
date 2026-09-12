@@ -7,7 +7,7 @@ import { cn } from '@galaxy/shared';
  * From Phase W4: Sisterhood & Community — Referral Program.
  *
  * Usage:
- *   <BeautyReferralLeaderboardCard leaders={[{ name: 'نورة', referrals: 12, emoji: '' }]} />
+ *   <BeautyReferralLeaderboardCard leaders={[{ name: 'نورة', referrals: 12, emoji: '🏆' }]} />
  */
 
 interface Leader {

@@ -22,7 +22,7 @@ interface ProfDef {
 
 const PROFS: Record<Profession, ProfDef> = {
   office: {
-    emoji: '',
+    emoji: '💼',
     title: { ar: 'مكتبية', en: 'Office' },
     look: { ar: 'مكياج ناعم احترافي', en: 'Soft professional makeup' },
     services: [
@@ -42,7 +42,7 @@ const PROFS: Record<Profession, ProfDef> = {
     ],
   },
   education: {
-    emoji: '',
+    emoji: '📚',
     title: { ar: 'تعليمية', en: 'Education' },
     look: { ar: 'مكياج خفيف ولطيف', en: 'Light, gentle makeup' },
     services: [
@@ -52,7 +52,7 @@ const PROFS: Record<Profession, ProfDef> = {
     ],
   },
   entrepreneur: {
-    emoji: '',
+    emoji: '🚀',
     title: { ar: 'رائدة أعمال', en: 'Entrepreneur' },
     look: { ar: 'إطلالة قوية وواثقة', en: 'Strong, confident look' },
     services: [
@@ -62,7 +62,7 @@ const PROFS: Record<Profession, ProfDef> = {
     ],
   },
   media: {
-    emoji: '',
+    emoji: '🎬',
     title: { ar: 'إعلامية', en: 'Media' },
     look: { ar: 'مكياج كاميرا', en: 'Camera makeup' },
     services: [
@@ -72,7 +72,7 @@ const PROFS: Record<Profession, ProfDef> = {
     ],
   },
   customer_facing: {
-    emoji: '',
+    emoji: '🤝',
     title: { ar: 'خدمة عملاء', en: 'Customer service' },
     look: { ar: 'إطلالة ودودة وجذابة', en: 'Friendly, attractive look' },
     services: [

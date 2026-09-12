@@ -19,12 +19,12 @@ interface Reward {
 }
 
 const REWARDS: Reward[] = [
-  { name: { ar: 'مانيكير مجاني', en: 'Free manicure' }, emoji: '', points: 500 },
-  { name: { ar: 'قناع وجه', en: 'Face mask' }, emoji: '', points: 300 },
-  { name: { ar: 'خصم 50 ر.س', en: '50 SAR off' }, emoji: '', points: 400 },
-  { name: { ar: 'خدمة سريعة', en: 'Quick service' }, emoji: '', points: 250 },
-  { name: { ar: 'هدية شهرية', en: 'Monthly gift' }, emoji: '', points: 800 },
-  { name: { ar: 'يوم سبا مصغر', en: 'Mini spa day' }, emoji: '', points: 1500 },
+  { name: { ar: 'مانيكير مجاني', en: 'Free manicure' }, emoji: '💅', points: 500 },
+  { name: { ar: 'قناع وجه', en: 'Face mask' }, emoji: '🎭', points: 300 },
+  { name: { ar: 'خصم 50 ر.س', en: '50 SAR off' }, emoji: '💰', points: 400 },
+  { name: { ar: 'خدمة سريعة', en: 'Quick service' }, emoji: '⚡', points: 250 },
+  { name: { ar: 'هدية شهرية', en: 'Monthly gift' }, emoji: '🎁', points: 800 },
+  { name: { ar: 'يوم سبا مصغر', en: 'Mini spa day' }, emoji: '🧖', points: 1500 },
 ];
 
 interface BeautyRewardsCardProps {

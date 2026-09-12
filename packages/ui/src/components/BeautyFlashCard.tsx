@@ -21,7 +21,7 @@ interface FlashCard {
 const CARDS: FlashCard[] = [
   {
     term: { ar: 'كولاجين', en: 'Collagen' },
-    emoji: '',
+    emoji: '🧬',
     definition: {
       ar: 'بروتين طبيعي في البشرة يمنحها المرونة والشباب. يقل إنتاجه مع التقدم في العمر.',
       en: 'A natural protein in the skin that gives it elasticity and youth. Its production decreases with age.',
@@ -30,7 +30,7 @@ const CARDS: FlashCard[] = [
   },
   {
     term: { ar: 'هيالورونيك أسيد', en: 'Hyaluronic acid' },
-    emoji: '',
+    emoji: '💧',
     definition: {
       ar: 'مادة طبيعية في البشرة تجذب الرطوبة وتحتفظ بها. الملعقة الواحدة تحمل 6 لترات ماء!',
       en: 'A natural substance in the skin that attracts and retains moisture. One teaspoon holds 6 liters of water!',
@@ -39,7 +39,7 @@ const CARDS: FlashCard[] = [
   },
   {
     term: { ar: 'نياسيناميد', en: 'Niacinamide' },
-    emoji: '',
+    emoji: '🧪',
     definition: {
       ar: 'فيتامين B3 — يعالج حبوب الشباب، يفتح التصبغات، يقلص المسام، ويقوي حاجز البشرة.',
       en: 'Vitamin B3 — treats acne, brightens pigmentation, tightens pores, and strengthens the skin barrier.',
@@ -48,7 +48,7 @@ const CARDS: FlashCard[] = [
   },
   {
     term: { ar: 'ريتينول', en: 'Retinol' },
-    emoji: '',
+    emoji: '🌙',
     definition: {
       ar: 'فيتامين A — أقوى مضاد للتجاعيد. يستخدم مساءً فقط لأنه حساس للشمس.',
       en: 'Vitamin A — the most powerful anti-wrinkle ingredient. Used only at night as it is sun-sensitive.',
@@ -66,7 +66,7 @@ const CARDS: FlashCard[] = [
   },
   {
     term: { ar: 'فيتزباتريك', en: 'Fitzpatrick' },
-    emoji: '',
+    emoji: '🎨',
     definition: {
       ar: 'مقياس يقسم ألوان البشرة إلى 6 أنواع. البشرة السعودية غالباً من النوع 3-5.',
       en: 'A scale dividing skin tones into 6 types. Saudi skin is usually type 3-5.',

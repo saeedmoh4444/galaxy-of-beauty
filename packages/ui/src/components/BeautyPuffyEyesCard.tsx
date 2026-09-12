@@ -28,7 +28,7 @@ export function BeautyPuffyEyesCard({
       <div className="mt-3 space-y-1">
         {[
           {
-            emoji: '',
+            emoji: '🥄',
             text: {
               ar: 'ملعقتان باردتان — على الجفون 5 دقائق',
               en: 'Two cold spoons — on the eyelids for 5 minutes',
@@ -49,7 +49,7 @@ export function BeautyPuffyEyesCard({
             },
           },
           {
-            emoji: '',
+            emoji: '☕',
             text: {
               ar: 'كريم عيون بكافيين — نتائج فورية',
               en: 'A caffeine eye cream — instant results',

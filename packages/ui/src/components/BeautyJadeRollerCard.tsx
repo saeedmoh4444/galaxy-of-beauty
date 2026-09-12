@@ -34,7 +34,7 @@ export function BeautyJadeRollerCard({
           },
           { emoji: '️', text: { ar: 'دحرجي للأعلى وللخارج', en: 'Roll upward and outward' } },
           {
-            emoji: '',
+            emoji: '🧴',
             text: { ar: 'بعد السيروم — لتسهيل الامتصاص', en: 'After serum — to help absorption' },
           },
           {

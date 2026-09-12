@@ -16,22 +16,22 @@ const STATUS_CONFIG: Record<
   { emoji: string; labelAr: { ar: string; en: string }; color: string }
 > = {
   VERIFIED: {
-    emoji: '',
+    emoji: '✅',
     labelAr: { ar: 'موثقة', en: 'Verified' },
     color: 'bg-green-100 text-green-700 dark:bg-green-950 dark:text-green-300',
   },
   SUBMITTED: {
-    emoji: '',
+    emoji: '⏳',
     labelAr: { ar: 'قيد المراجعة', en: 'Under review' },
     color: 'bg-amber-100 text-amber-700 dark:bg-amber-950 dark:text-amber-300',
   },
   PENDING: {
-    emoji: '',
+    emoji: '🕐',
     labelAr: { ar: 'بانتظار التوثيق', en: 'Awaiting verification' },
     color: 'bg-surface-muted text-text-secondary dark:bg-gray-800 dark:text-text-tertiary',
   },
   REJECTED: {
-    emoji: '',
+    emoji: '❌',
     labelAr: { ar: 'مرفوض', en: 'Rejected' },
     color: 'bg-red-100 text-red-700 dark:bg-red-950 dark:text-red-300',
   },

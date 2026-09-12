@@ -32,52 +32,52 @@ interface TopicDef {
 
 const TOPICS: Record<CircleTopic, TopicDef> = {
   wedding: {
-    emoji: '',
+    emoji: '👰',
     label: { ar: 'عرايس', en: 'Brides' },
     color: 'bg-rose-100 text-rose-700 dark:bg-rose-950 dark:text-rose-300',
   },
   new_mom: {
-    emoji: '',
+    emoji: '👶',
     label: { ar: 'أمهات جدد', en: 'New Moms' },
     color: 'bg-sky-100 text-sky-700 dark:bg-sky-950 dark:text-sky-300',
   },
   curly_hair: {
-    emoji: '',
+    emoji: '🦱',
     label: { ar: 'شعر مجعد', en: 'Curly Hair' },
     color: 'bg-amber-100 text-amber-700 dark:bg-amber-950 dark:text-amber-300',
   },
   skincare: {
-    emoji: '',
+    emoji: '🧴',
     label: { ar: 'عناية بالبشرة', en: 'Skincare' },
     color: 'bg-emerald-100 text-emerald-700 dark:bg-emerald-950 dark:text-emerald-300',
   },
   makeup: {
-    emoji: '',
+    emoji: '💄',
     label: { ar: 'مكياج', en: 'Makeup' },
     color: 'bg-pink-100 text-pink-700 dark:bg-pink-950 dark:text-pink-300',
   },
   teen_beauty: {
-    emoji: '',
+    emoji: '🎀',
     label: { ar: 'جمال المراهقات', en: 'Teen Beauty' },
     color: 'bg-brand-100 text-brand-700 dark:bg-brand-950 dark:text-brand-300',
   },
   wellness: {
-    emoji: '',
+    emoji: '🧘',
     label: { ar: 'صحة شاملة', en: 'Wellness' },
     color: 'bg-teal-100 text-teal-700 dark:bg-teal-950 dark:text-teal-300',
   },
   professional: {
-    emoji: '',
+    emoji: '💼',
     label: { ar: 'خبيرات تجميل', en: 'Beauty Experts' },
     color: 'bg-indigo-100 text-indigo-700 dark:bg-indigo-950 dark:text-indigo-300',
   },
   hijabi_beauty: {
-    emoji: '',
+    emoji: '🧕',
     label: { ar: 'جمال المحجبات', en: 'Hijabi Beauty' },
     color: 'bg-violet-100 text-violet-700 dark:bg-violet-950 dark:text-violet-300',
   },
   budget_beauty: {
-    emoji: '',
+    emoji: '💰',
     label: { ar: 'جمال اقتصادي', en: 'Budget Beauty' },
     color: 'bg-lime-100 text-lime-700 dark:bg-lime-950 dark:text-lime-300',
   },

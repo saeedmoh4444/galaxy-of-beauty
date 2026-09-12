@@ -35,21 +35,21 @@ export function BeautyFitnessGlowCard({
             },
           },
           {
-            emoji: '',
+            emoji: '💦',
             text: {
               ar: 'العرق ينظف المسام — بشرة أنقى',
               en: 'Sweat cleans the pores — clearer skin',
             },
           },
           {
-            emoji: '',
+            emoji: '🧼',
             text: {
               ar: 'نظفي وجهك بعد التمرين — خلال 10 دقائق',
               en: 'Clean your face after your workout — within 10 minutes',
             },
           },
           {
-            emoji: '',
+            emoji: '💧',
             text: {
               ar: 'اشربي ماء — الرياضة تجفف الجسم',
               en: 'Drink water — exercise dehydrates the body',

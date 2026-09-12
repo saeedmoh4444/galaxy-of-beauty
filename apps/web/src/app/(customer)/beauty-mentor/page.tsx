@@ -14,7 +14,7 @@ const LEVELS: {
 }[] = [
   {
     key: 'beginner',
-    emoji: '',
+    emoji: '🌱',
     name: 'mentor.level.beginner',
     desc: 'mentor.level.beginnerDesc',
     plan: [
@@ -27,7 +27,7 @@ const LEVELS: {
   },
   {
     key: 'intermediate',
-    emoji: '',
+    emoji: '🌿',
     name: 'mentor.level.intermediate',
     desc: 'mentor.level.intermediateDesc',
     plan: [
@@ -40,7 +40,7 @@ const LEVELS: {
   },
   {
     key: 'advanced',
-    emoji: '',
+    emoji: '🌳',
     name: 'mentor.level.advanced',
     desc: 'mentor.level.advancedDesc',
     plan: [

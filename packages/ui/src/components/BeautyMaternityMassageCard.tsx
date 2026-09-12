@@ -35,18 +35,18 @@ export function BeautyMaternityMassageCard({
             },
           },
           {
-            emoji: '',
+            emoji: '📅',
             text: { ar: 'بعد الشهر الثالث — بأمان', en: 'After the third month — safely' },
           },
           {
-            emoji: '',
+            emoji: '🚫',
             text: {
               ar: 'تجنبي الزيوت القوية — النعناع والقرفة',
               en: 'Avoid strong oils — mint and cinnamon',
             },
           },
           {
-            emoji: '',
+            emoji: '💆',
             text: {
               ar: 'يخفف آلام الظهر — ويحسن النوم',
               en: 'Relieves back pain — and improves sleep',

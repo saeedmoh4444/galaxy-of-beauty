@@ -28,14 +28,14 @@ export function BeautySweatProofCard({
       <div className="mt-3 space-y-1">
         {[
           {
-            emoji: '',
+            emoji: '🧴',
             text: {
               ar: 'برايمر مات — أساس أي مكياج رياضي',
               en: 'Matte primer — the base of any workout makeup',
             },
           },
           {
-            emoji: '',
+            emoji: '💄',
             text: {
               ar: 'تينت شفاه وخدود — بدل الكريمي الثقيل',
               en: 'Lip and cheek tint — instead of heavy cream',
@@ -46,7 +46,7 @@ export function BeautySweatProofCard({
             text: { ar: 'ماسكارا مقاومة للماء — ضرورية', en: 'Waterproof mascara — a must' },
           },
           {
-            emoji: '',
+            emoji: '🧻',
             text: { ar: 'ورق نشاف — للما بعد التمرين', en: 'Blotting paper — for post-workout' },
           },
         ].map((t, i) => (

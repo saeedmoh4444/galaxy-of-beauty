@@ -28,22 +28,22 @@ export function BeautyHairWavyCard({
       <div className="mt-3 space-y-1">
         {[
           {
-            emoji: '',
+            emoji: '💨',
             text: { ar: 'جففي بالهواء — أو بالناشر', en: 'Air dry — or use a diffuser' },
           },
           {
-            emoji: '',
+            emoji: '🧴',
             text: {
               ar: 'منتجات خفيفة — لا تثقل التموجات',
               en: 'Lightweight products — they do not weigh waves down',
             },
           },
           {
-            emoji: '',
+            emoji: '🌊',
             text: { ar: 'رذاذ ملح — لتعريف التموجات', en: 'Sea salt spray — to define the waves' },
           },
           {
-            emoji: '',
+            emoji: '🙌',
             text: {
               ar: 'Scrunching — ارفعي الشعر للأعلى',
               en: 'Scrunching — cup your hair upward',

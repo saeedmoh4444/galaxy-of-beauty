@@ -4,7 +4,7 @@ import { cn } from '@galaxy/shared';
 
 const TIPS = [
   {
-    emoji: '',
+    emoji: '💧',
     title: { ar: 'الترطيب أولاً', en: 'Moisturize first' },
     desc: {
       ar: 'بشرة مرطبة = مكياج أجمل وأثبت',
@@ -17,12 +17,12 @@ const TIPS = [
     desc: { ar: 'أسبوعياً — البكتيريا تتراكم', en: 'Weekly — bacteria builds up' },
   },
   {
-    emoji: '',
+    emoji: '📅',
     title: { ar: 'تاريخ الصلاحية', en: 'Check expiry dates' },
     desc: { ar: 'جددِي مكياجك كل 6-12 شهر', en: 'Replace your makeup every 6-12 months' },
   },
   {
-    emoji: '',
+    emoji: '🧼',
     title: { ar: 'أزيلي المكياج', en: 'Remove your makeup' },
     desc: { ar: 'لا تنامي أبداً بالمكياج', en: 'Never sleep with makeup on' },
   },

@@ -28,21 +28,21 @@ export function BeautySkinBarrierCard({
       <div className="mt-3 space-y-1">
         {[
           {
-            emoji: '',
+            emoji: '🧱',
             text: {
               ar: 'السيراميد — طوب بناء حاجز البشرة',
               en: 'Ceramides — the building blocks of the skin barrier',
             },
           },
           {
-            emoji: '',
+            emoji: '🚫',
             text: {
               ar: 'لا تفرطي في التقشير — مرتين أسبوعياً كحد أقصى',
               en: 'Do not over-exfoliate — twice a week at most',
             },
           },
           {
-            emoji: '',
+            emoji: '🧴',
             text: {
               ar: 'مرطب بعد الغسيل مباشرة — لحبس الرطوبة',
               en: 'Moisturize right after cleansing — to lock in moisture',

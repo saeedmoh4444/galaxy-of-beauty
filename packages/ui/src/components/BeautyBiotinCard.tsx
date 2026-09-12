@@ -28,21 +28,21 @@ export function BeautyBiotinCard({
       <div className="mt-3 space-y-1">
         {[
           {
-            emoji: '',
+            emoji: '💇',
             text: {
               ar: 'يقوي الشعر — يقلل التساقط ويزيد الكثافة',
               en: 'Strengthens hair — reduces shedding and boosts density',
             },
           },
           {
-            emoji: '',
+            emoji: '💅',
             text: {
               ar: 'يقوي الأظافر — يقلل التكسر والتقصف',
               en: 'Strengthens nails — reduces breakage and splitting',
             },
           },
           {
-            emoji: '',
+            emoji: '🥑',
             text: {
               ar: 'موجود طبيعياً — بيض، مكسرات، أفوكادو',
               en: 'Found naturally — eggs, nuts, avocado',

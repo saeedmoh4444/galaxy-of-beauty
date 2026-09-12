@@ -31,25 +31,25 @@ interface FeatureDef {
 const FEATURES: FeatureDef[] = [
   {
     key: 'dim_lights',
-    emoji: '',
+    emoji: '💡',
     label: { ar: 'إضاءة هادئة', en: 'Dim lighting' },
     description: { ar: 'إضاءة خافتة ومريحة للعين', en: 'Soft, eye-comfortable lighting' },
   },
   {
     key: 'quiet_music',
-    emoji: '',
+    emoji: '🎵',
     label: { ar: 'موسيقى منخفضة', en: 'Low music' },
     description: { ar: 'موسيقى هادئة أو إيقافها تماماً', en: 'Quiet music or none at all' },
   },
   {
     key: 'no_fragrance',
-    emoji: '',
+    emoji: '🚫',
     label: { ar: 'بدون عطور قوية', en: 'No strong fragrances' },
     description: { ar: 'منتجات خالية من العطور القوية', en: 'Products free of strong scents' },
   },
   {
     key: 'silent_appointment',
-    emoji: '',
+    emoji: '🤫',
     label: { ar: 'موعد صامت', en: 'Silent appointment' },
     description: {
       ar: 'بدون أحاديث جانبية إلا إذا بدأتِ أنتِ',
@@ -58,7 +58,7 @@ const FEATURES: FeatureDef[] = [
   },
   {
     key: 'comfort_kit',
-    emoji: '',
+    emoji: '🎧',
     label: { ar: 'حقيبة راحة', en: 'Comfort kit' },
     description: {
       ar: 'سماعات عازلة للضوضاء، ألعاب حسية، بطانية ثقيلة',
@@ -67,19 +67,19 @@ const FEATURES: FeatureDef[] = [
   },
   {
     key: 'predictable_service',
-    emoji: '',
+    emoji: '📋',
     label: { ar: 'خدمة متوقعة', en: 'Predictable service' },
     description: { ar: 'شرح كل خطوة قبل البدء بها', en: 'Every step explained before it begins' },
   },
   {
     key: 'private_room',
-    emoji: '',
+    emoji: '🚪',
     label: { ar: 'غرفة خاصة', en: 'Private room' },
     description: { ar: 'غرفة منفصلة بعيداً عن الضوضاء', en: 'A separate room away from noise' },
   },
   {
     key: 'extra_time',
-    emoji: '',
+    emoji: '⏳',
     label: { ar: 'وقت إضافي', en: 'Extra time' },
     description: {
       ar: 'وقت إضافي 15-30 دقيقة بدون استعجال',

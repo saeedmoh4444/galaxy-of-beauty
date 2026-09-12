@@ -143,11 +143,11 @@ interface TeenSkincareGuideProps {
 }
 
 const SKIN_LABELS: Record<TeenSkinType, { emoji: string; label: { ar: string; en: string } }> = {
-  oily: { emoji: '', label: { ar: 'دهنية', en: 'Oily' } },
-  dry: { emoji: '', label: { ar: 'جافة', en: 'Dry' } },
-  combination: { emoji: '', label: { ar: 'مختلطة', en: 'Combination' } },
-  normal: { emoji: '', label: { ar: 'طبيعية', en: 'Normal' } },
-  acne_prone: { emoji: '', label: { ar: 'معرضة للحبوب', en: 'Acne-prone' } },
+  oily: { emoji: '💦', label: { ar: 'دهنية', en: 'Oily' } },
+  dry: { emoji: '🌵', label: { ar: 'جافة', en: 'Dry' } },
+  combination: { emoji: '🔀', label: { ar: 'مختلطة', en: 'Combination' } },
+  normal: { emoji: '✅', label: { ar: 'طبيعية', en: 'Normal' } },
+  acne_prone: { emoji: '🧼', label: { ar: 'معرضة للحبوب', en: 'Acne-prone' } },
 };
 
 export function TeenSkincareGuide({

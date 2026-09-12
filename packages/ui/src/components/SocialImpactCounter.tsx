@@ -60,7 +60,7 @@ export function SocialImpactCounter({
     ...(womenInTraining
       ? [
           {
-            emoji: '',
+            emoji: '🎓',
             label: { ar: 'متدربة', en: 'In training' },
             current: womenInTraining,
             target: 500,
@@ -70,7 +70,7 @@ export function SocialImpactCounter({
     ...(survivorServices
       ? [
           {
-            emoji: '',
+            emoji: '🎁',
             label: { ar: 'خدمة مجانية', en: 'Free services' },
             current: survivorServices,
             target: 500,
@@ -80,7 +80,7 @@ export function SocialImpactCounter({
     ...(ruralWomen
       ? [
           {
-            emoji: '',
+            emoji: '🌾',
             label: { ar: 'امرأة ريفية', en: 'Rural women' },
             current: ruralWomen,
             target: 200,

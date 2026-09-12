@@ -33,7 +33,7 @@ export function BeautyPlasticFreeCard({
             tip: { ar: 'قابلة للتحلل — بدل البلاستيك', en: 'Biodegradable — instead of plastic' },
           },
           {
-            emoji: '',
+            emoji: '🥛',
             label: { ar: 'زجاج وألمنيوم', en: 'Glass and aluminum' },
             tip: { ar: 'قابلة للتدوير للأبد', en: 'Recyclable forever' },
           },
@@ -43,7 +43,7 @@ export function BeautyPlasticFreeCard({
             tip: { ar: 'تدوم سنوات — ليس للرمي', en: 'Lasts for years — not for throwing away' },
           },
           {
-            emoji: '',
+            emoji: '🧼',
             label: { ar: 'صابون صلب', en: 'Solid soap' },
             tip: { ar: 'بدون تغليف — ورق فقط', en: 'No packaging — paper only' },
           },

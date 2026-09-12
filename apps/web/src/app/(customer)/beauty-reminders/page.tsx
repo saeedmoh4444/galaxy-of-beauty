@@ -39,8 +39,8 @@ export default function BeautyRemindersPage(): JSX.Element {
             <BeautyHabitTrackerCard
               habits={[
                 { name: t('beautyReminders.habitSunscreen'), emoji: '️', done: true },
-                { name: t('beautyReminders.habitWater'), emoji: '', done: false },
-                { name: t('beautyReminders.habitEvening'), emoji: '', done: true },
+                { name: t('beautyReminders.habitWater'), emoji: '💧', done: false },
+                { name: t('beautyReminders.habitEvening'), emoji: '🌙', done: true },
               ]}
             />
           </div>

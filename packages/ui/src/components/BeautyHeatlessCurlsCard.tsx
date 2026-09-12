@@ -28,22 +28,22 @@ export function BeautyHeatlessCurlsCard({
       <div className="mt-3 grid grid-cols-2 gap-1.5">
         {[
           {
-            emoji: '',
+            emoji: '🧦',
             label: { ar: 'الجوارب', en: 'Socks' },
             tip: { ar: 'طريقة سهلة — لفات ناعمة', en: 'An easy method — soft waves' },
           },
           {
-            emoji: '',
+            emoji: '🎀',
             label: { ar: 'الروبن', en: 'Ribbon' },
             tip: { ar: 'شريط طويل — تموجات مثالية', en: 'A long ribbon — perfect waves' },
           },
           {
-            emoji: '',
+            emoji: '🧣',
             label: { ar: 'لفات القماش', en: 'Fabric wraps' },
             tip: { ar: 'طرية للنوم — مريحة', en: 'Soft for sleeping — comfortable' },
           },
           {
-            emoji: '',
+            emoji: '🌙',
             label: { ar: 'قبل النوم', en: 'Before bed' },
             tip: { ar: 'تصفيفة الليل = شعر الصباح', en: 'Tonight’s style = tomorrow’s hair' },
           },

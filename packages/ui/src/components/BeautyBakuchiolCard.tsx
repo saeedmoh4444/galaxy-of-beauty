@@ -28,7 +28,7 @@ export function BeautyBakuchiolCard({
       <div className="mt-3 space-y-1">
         {[
           {
-            emoji: '',
+            emoji: '🌱',
             text: {
               ar: 'نباتي 100% — مستخلص من نبات البسوراليا',
               en: '100% plant-based — extracted from the Psoralea plant',
@@ -42,14 +42,14 @@ export function BeautyBakuchiolCard({
             },
           },
           {
-            emoji: '',
+            emoji: '🤰',
             text: {
               ar: 'آمن للحوامل — بديل ممتاز للريتينول',
               en: 'Safe for pregnancy — an excellent retinol alternative',
             },
           },
           {
-            emoji: '',
+            emoji: '✨',
             text: {
               ar: 'يحفز الكولاجين — بدون تهيج أو تقشير',
               en: 'Boosts collagen — without irritation or peeling',

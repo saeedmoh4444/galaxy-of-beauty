@@ -28,21 +28,21 @@ export function BeautyNursingBeautyCard({
       <div className="mt-3 space-y-1">
         {[
           {
-            emoji: '',
+            emoji: '💧',
             text: {
               ar: 'اشربي ماء أكثر — الرضاعة تجفف الجسم',
               en: 'Drink more water — breastfeeding dehydrates the body',
             },
           },
           {
-            emoji: '',
+            emoji: '🧴',
             text: {
               ar: 'كريمات آمنة — بدون ريتينول أو ساليسيليك',
               en: 'Safe creams — no retinol or salicylic acid',
             },
           },
           {
-            emoji: '',
+            emoji: '💊',
             text: {
               ar: 'شعركِ قد يتساقط — فيتامينات ومكملات',
               en: 'Your hair may shed — vitamins and supplements',

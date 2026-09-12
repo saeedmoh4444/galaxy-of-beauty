@@ -19,13 +19,13 @@ interface CategoryDef {
 }
 
 const CATEGORIES: Record<BudgetCategory, CategoryDef> = {
-  nails: { emoji: '', label: { ar: 'أظافر', en: 'Nails' } },
-  hair: { emoji: '', label: { ar: 'شعر', en: 'Hair' } },
-  facial: { emoji: '', label: { ar: 'بشرة', en: 'Skin' } },
-  massage: { emoji: '', label: { ar: 'مساج', en: 'Massage' } },
-  makeup: { emoji: '', label: { ar: 'مكياج', en: 'Makeup' } },
-  henna: { emoji: '', label: { ar: 'حناء', en: 'Henna' } },
-  brows: { emoji: '', label: { ar: 'حواجب', en: 'Brows' } },
+  nails: { emoji: '💅', label: { ar: 'أظافر', en: 'Nails' } },
+  hair: { emoji: '💇', label: { ar: 'شعر', en: 'Hair' } },
+  facial: { emoji: '🧖', label: { ar: 'بشرة', en: 'Skin' } },
+  massage: { emoji: '💆', label: { ar: 'مساج', en: 'Massage' } },
+  makeup: { emoji: '💄', label: { ar: 'مكياج', en: 'Makeup' } },
+  henna: { emoji: '🌿', label: { ar: 'حناء', en: 'Henna' } },
+  brows: { emoji: '🎨', label: { ar: 'حواجب', en: 'Brows' } },
   waxing: { emoji: '️', label: { ar: 'إزالة شعر', en: 'Hair removal' } },
 };
 

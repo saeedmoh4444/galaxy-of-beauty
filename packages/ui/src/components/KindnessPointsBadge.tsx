@@ -22,28 +22,28 @@ interface LevelDef {
 
 const LEVELS: Record<KindnessLevel, LevelDef> = {
   helper: {
-    emoji: '',
+    emoji: '🌱',
     title: { ar: 'مساعدة', en: 'Helper' },
     minPoints: 0,
     color: 'text-pink-600 dark:text-pink-300',
     gradient: 'from-pink-400 to-rose-400',
   },
   supporter: {
-    emoji: '',
+    emoji: '💗',
     title: { ar: 'داعمة', en: 'Supporter' },
     minPoints: 100,
     color: 'text-rose-600 dark:text-rose-300',
     gradient: 'from-rose-400 to-red-400',
   },
   generous: {
-    emoji: '',
+    emoji: '💎',
     title: { ar: 'كريمة', en: 'Generous' },
     minPoints: 300,
     color: 'text-brand-600 dark:text-brand-300',
     gradient: 'from-brand-400 to-violet-400',
   },
   angel: {
-    emoji: '',
+    emoji: '👼',
     title: { ar: 'ملاك', en: 'Angel' },
     minPoints: 1000,
     color: 'text-amber-600 dark:text-amber-300',

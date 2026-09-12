@@ -35,21 +35,21 @@ export function BeautyBalayageCard({
             },
           },
           {
-            emoji: '',
+            emoji: '🍃',
             text: {
               ar: 'مظهر طبيعي — جذور أغمق وأطراف أفتح',
               en: 'Natural look — darker roots and lighter ends',
             },
           },
           {
-            emoji: '',
+            emoji: '⏳',
             text: {
               ar: 'يدوم 3-4 أشهر — نمو الجذور غير ملحوظ',
               en: 'Lasts 3-4 months — root growth is unnoticeable',
             },
           },
           {
-            emoji: '',
+            emoji: '💰',
             text: {
               ar: 'أغلى من الصبغة — لكن صيانة أقل',
               en: 'Pricier than dye — but less maintenance',

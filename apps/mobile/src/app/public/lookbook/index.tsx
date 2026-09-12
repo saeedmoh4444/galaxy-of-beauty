@@ -4,9 +4,9 @@ import { useLocale } from '@/components/LocaleProvider';
 
 const SEASONS = [
   { id: 'summer', nameAr: 'صيف ٢٠٢٦', emoji: '️', color: '#f59e0b' },
-  { id: 'eid', nameAr: 'أناقة العيد', emoji: '', color: '#10b981' },
-  { id: 'wedding', nameAr: 'موسم الأعراس', emoji: '', color: '#ec4899' },
-  { id: 'ramadan', nameAr: 'رمضان كريم', emoji: '', color: '#7c3aed' },
+  { id: 'eid', nameAr: 'أناقة العيد', emoji: '✨', color: '#10b981' },
+  { id: 'wedding', nameAr: 'موسم الأعراس', emoji: '💍', color: '#ec4899' },
+  { id: 'ramadan', nameAr: 'رمضان كريم', emoji: '🌙', color: '#7c3aed' },
 ];
 
 const LOOKS: Record<string, { title: string; desc: string; emoji: string; tags: string[] }[]> = {
@@ -14,19 +14,19 @@ const LOOKS: Record<string, { title: string; desc: string; emoji: string; tags: 
     {
       title: 'إطلالة شاطئية منعشة',
       desc: 'مكياج خفيف مقاوم للماء مع تسريحة شاطئية',
-      emoji: '',
+      emoji: '🏖️',
       tags: ['مكياج', 'شعر', 'عناية'],
     },
     {
       title: 'عناية بالبشرة قبل الصيف',
       desc: 'تقشير وترطيب عميق لبشرة متألقة',
-      emoji: '',
+      emoji: '🧴',
       tags: ['بشرة', 'عناية'],
     },
     {
       title: 'ألوان الصيف الجريئة',
       desc: 'مانيكير وباديكير بألوان الموسم',
-      emoji: '',
+      emoji: '💅',
       tags: ['أظافر', 'مانيكير'],
     },
   ],
@@ -34,19 +34,19 @@ const LOOKS: Record<string, { title: string; desc: string; emoji: string; tags: 
     {
       title: 'إطلالة العيد الفاخرة',
       desc: 'مكياج سهرة مع تسريحة أنيقة',
-      emoji: '',
+      emoji: '💫',
       tags: ['مكياج', 'شعر'],
     },
     {
       title: 'حناء العيد',
       desc: 'نقوش حناء عصرية للمناسبات',
-      emoji: '',
+      emoji: '🌿',
       tags: ['حناء', 'مناسبات'],
     },
     {
       title: 'بشرة متألقة للعيد',
       desc: 'جلسة عناية متكاملة قبل العيد',
-      emoji: '',
+      emoji: '✨',
       tags: ['بشرة', 'عناية'],
     },
   ],
@@ -54,19 +54,19 @@ const LOOKS: Record<string, { title: string; desc: string; emoji: string; tags: 
     {
       title: 'إطلالة العروس الكاملة',
       desc: 'مكياج، شعر، وأظافر ليومكِ الكبير',
-      emoji: '',
+      emoji: '👰',
       tags: ['عرايس', 'مكياج', 'شعر'],
     },
     {
       title: 'جلسة تصوير العروس',
       desc: 'مكياج احترافي يدوم طوال اليوم',
-      emoji: '',
+      emoji: '📸',
       tags: ['مكياج', 'تصوير'],
     },
     {
       title: 'إطلالة أم العروس',
       desc: 'مكياج ناعم وأنيق لأم العروس',
-      emoji: '',
+      emoji: '💐',
       tags: ['مكياج', 'مناسبات'],
     },
   ],
@@ -74,13 +74,13 @@ const LOOKS: Record<string, { title: string; desc: string; emoji: string; tags: 
     {
       title: 'إطلالة رمضانية راقية',
       desc: 'مكياج ناعم للسهرات الرمضانية',
-      emoji: '',
+      emoji: '🌙',
       tags: ['مكياج', 'سهرة'],
     },
     {
       title: 'عناية رمضانية',
       desc: 'روتين عناية ليلي للصائمات',
-      emoji: '',
+      emoji: '🧴',
       tags: ['بشرة', 'عناية'],
     },
     { title: 'تسريحة السحور', desc: 'تسريحة سريعة وأنيقة', emoji: '‍️', tags: ['شعر', 'تسريحة'] },

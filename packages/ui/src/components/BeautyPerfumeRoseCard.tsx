@@ -35,21 +35,21 @@ export function BeautyPerfumeRoseCard({
             },
           },
           {
-            emoji: '',
+            emoji: '🌅',
             text: {
               ar: 'يقطف عند الفجر — لأعلى تركيز عطري',
               en: 'Harvested at dawn — for the highest aromatic concentration',
             },
           },
           {
-            emoji: '',
+            emoji: '🌹',
             text: {
               ar: 'ماء الورد — تونر طبيعي ومنعش',
               en: 'Rose water — a natural, refreshing toner',
             },
           },
           {
-            emoji: '',
+            emoji: '💎',
             text: {
               ar: 'من أندر وأغلى الزيوت العطرية في العالم',
               en: 'Among the rarest and most precious essential oils in the world',

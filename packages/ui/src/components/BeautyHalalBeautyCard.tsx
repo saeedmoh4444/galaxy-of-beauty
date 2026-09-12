@@ -28,28 +28,28 @@ export function BeautyHalalBeautyCard({
       <div className="mt-3 space-y-1">
         {[
           {
-            emoji: '',
+            emoji: '🚫',
             text: {
               ar: 'خالٍ من الكحول والمواد المحرمة',
               en: 'Free of alcohol and forbidden ingredients',
             },
           },
           {
-            emoji: '',
+            emoji: '💧',
             text: {
               ar: 'قابل للوضوء — يسمح بمرور الماء للبشرة',
               en: 'Wudu-friendly — lets water reach the skin',
             },
           },
           {
-            emoji: '',
+            emoji: '✅',
             text: {
               ar: 'ابحثي عن شهادة حلال معتمدة',
               en: 'Look for a certified halal certificate',
             },
           },
           {
-            emoji: '',
+            emoji: '📈',
             text: {
               ar: 'يزداد الطلب — منتجات حلال سعودية',
               en: 'Growing in demand — Saudi halal products',

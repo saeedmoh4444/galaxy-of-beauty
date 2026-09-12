@@ -28,14 +28,14 @@ export function BeautyAfterPeelCard({
       <div className="mt-3 space-y-1">
         {[
           {
-            emoji: '',
+            emoji: '💧',
             text: {
               ar: 'ترطيب مكثف — كريمات مهدئة بدون عطور',
               en: 'Intense moisturizing — soothing, fragrance-free creams',
             },
           },
           {
-            emoji: '',
+            emoji: '🚫',
             text: {
               ar: 'لا تقشري الجلد المتقشر — اتركيه يسقط طبيعياً',
               en: "Don't peel flaking skin — let it fall off naturally",
@@ -49,7 +49,7 @@ export function BeautyAfterPeelCard({
             },
           },
           {
-            emoji: '',
+            emoji: '📅',
             text: {
               ar: 'لا ريتينول أو أحماض — لمدة أسبوع',
               en: 'No retinol or acids — for a week',

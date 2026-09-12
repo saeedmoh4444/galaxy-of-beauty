@@ -8,11 +8,11 @@ import { useLocale } from '@/components/LocaleProvider';
 import type { TranslationKey } from '@galaxy/shared';
 
 const MOODS: { value: number; emoji: string; label: TranslationKey }[] = [
-  { value: 1, emoji: '', label: 'wellnessTracker.mood.bad' },
-  { value: 2, emoji: '', label: 'wellnessTracker.mood.okay' },
-  { value: 3, emoji: '', label: 'wellnessTracker.mood.normal' },
-  { value: 4, emoji: '', label: 'wellnessTracker.mood.good' },
-  { value: 5, emoji: '', label: 'wellnessTracker.mood.excellent' },
+  { value: 1, emoji: '😢', label: 'wellnessTracker.mood.bad' },
+  { value: 2, emoji: '😐', label: 'wellnessTracker.mood.okay' },
+  { value: 3, emoji: '🙂', label: 'wellnessTracker.mood.normal' },
+  { value: 4, emoji: '😊', label: 'wellnessTracker.mood.good' },
+  { value: 5, emoji: '🤩', label: 'wellnessTracker.mood.excellent' },
 ];
 
 const DAYS: TranslationKey[] = [

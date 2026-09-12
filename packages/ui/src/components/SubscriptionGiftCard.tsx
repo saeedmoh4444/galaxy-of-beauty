@@ -26,16 +26,16 @@ interface SubscriptionGiftCardProps {
 }
 
 const GIFT_OPTIONS = [
-  { emoji: '', months: 1, price: 99, label: { ar: 'شهر واحد', en: '1 month' } },
+  { emoji: '🎁', months: 1, price: 99, label: { ar: 'شهر واحد', en: '1 month' } },
   {
-    emoji: '',
+    emoji: '🎀',
     months: 3,
     price: 269,
     label: { ar: '3 أشهر', en: '3 months' },
     discount: { ar: 'وفر 10%', en: 'Save 10%' },
   },
   {
-    emoji: '',
+    emoji: '👑',
     months: 6,
     price: 499,
     label: { ar: '6 أشهر', en: '6 months' },

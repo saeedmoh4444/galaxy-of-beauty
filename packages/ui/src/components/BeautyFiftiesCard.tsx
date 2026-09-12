@@ -28,14 +28,14 @@ export function BeautyFiftiesCard({
       <div className="mt-3 space-y-1">
         {[
           {
-            emoji: '',
+            emoji: '💧',
             text: {
               ar: 'زيوت غنية — سكوالين، زيت الأرغان، ثمر الورد',
               en: 'Rich oils — squalane, argan oil, rosehip',
             },
           },
           {
-            emoji: '',
+            emoji: '🧴',
             text: {
               ar: 'مرطبات كثيفة — كريمات وليس جل',
               en: 'Thick moisturizers — creams, not gels',
@@ -49,7 +49,7 @@ export function BeautyFiftiesCard({
             },
           },
           {
-            emoji: '',
+            emoji: '👑',
             text: {
               ar: 'الجمال الحقيقي — الثقة والعناية الذاتية',
               en: 'True beauty — confidence and self-care',

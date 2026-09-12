@@ -28,20 +28,20 @@ export function BeautyAfterBotoxCard({
       <div className="mt-3 space-y-1">
         {[
           {
-            emoji: '',
+            emoji: '🤚',
             text: {
               ar: 'لا تلمسي — لا تدلكي المنطقة 24 ساعة',
               en: "Don't touch — don't massage the area for 24 hours",
             },
           },
           {
-            emoji: '',
+            emoji: '🛏',
             text: {
               ar: 'ابقِ رأسك مرفوعاً — 4 ساعات بعد الحقن',
               en: 'Keep your head elevated — for 4 hours after the injections',
             },
           },
-          { emoji: '', text: { ar: 'لا رياضة — 24 ساعة', en: 'No exercise — for 24 hours' } },
+          { emoji: '🏃', text: { ar: 'لا رياضة — 24 ساعة', en: 'No exercise — for 24 hours' } },
           {
             emoji: '️',
             text: { ar: 'النتيجة النهائية — بعد 10-14 يوم', en: 'Final result — after 10-14 days' },

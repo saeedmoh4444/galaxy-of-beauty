@@ -28,28 +28,28 @@ export function BeautyCaviarFacialCard({
       <div className="mt-3 space-y-1">
         {[
           {
-            emoji: '',
+            emoji: '🐟',
             text: {
               ar: 'غني بالأحماض الأمينية — يغذي البشرة بعمق',
               en: 'Rich in amino acids — nourishes skin deeply',
             },
           },
           {
-            emoji: '',
+            emoji: '💊',
             text: {
               ar: 'أوميغا 3 وفيتامينات — يرطب ويجدد',
               en: 'Omega-3 and vitamins — hydrates and renews',
             },
           },
           {
-            emoji: '',
+            emoji: '📈',
             text: {
               ar: 'يحسن المرونة — يقلل الخطوط الدقيقة',
               en: 'Improves elasticity — reduces fine lines',
             },
           },
           {
-            emoji: '',
+            emoji: '💎',
             text: {
               ar: 'فاخر — من أفخم علاجات التجميل',
               en: 'Luxurious — among the most lavish beauty treatments',

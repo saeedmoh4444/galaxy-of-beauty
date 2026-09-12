@@ -28,17 +28,17 @@ export function BeautyHairCurlCard({
       <div className="mt-3 space-y-1">
         {[
           {
-            emoji: '',
+            emoji: '🧴',
             text: {
               ar: 'Co-wash — غسيل بالبلسم بدل الشامبو',
               en: 'Co-wash — cleansing with conditioner instead of shampoo',
             },
           },
           {
-            emoji: '',
+            emoji: '✋',
             text: { ar: 'لا تلمسي الشعر وهو يجف', en: 'Do not touch the hair while it dries' },
           },
-          { emoji: '', text: { ar: 'منتجات خالية من السلفات', en: 'Sulfate-free products' } },
+          { emoji: '🌿', text: { ar: 'منتجات خالية من السلفات', en: 'Sulfate-free products' } },
           {
             emoji: '️',
             text: { ar: 'وسادة حرير — تقلل التكسر', en: 'A silk pillowcase — reduces breakage' },

@@ -28,22 +28,22 @@ export function BeautyMakeupPowderCard({
       <div className="mt-3 grid grid-cols-2 gap-1.5">
         {[
           {
-            emoji: '',
+            emoji: '🤍',
             label: { ar: 'شفافة', en: 'Translucent' },
             tip: { ar: 'تثبت بدون لون', en: 'Sets makeup without color' },
           },
           {
-            emoji: '',
+            emoji: '🎨',
             label: { ar: 'ملونة', en: 'Tinted' },
             tip: { ar: 'تغطية إضافية', en: 'Extra coverage' },
           },
           {
-            emoji: '',
+            emoji: '🪶',
             label: { ar: 'مدمجة', en: 'Pressed' },
             tip: { ar: 'كريم + بودرة', en: 'Cream + powder' },
           },
           {
-            emoji: '',
+            emoji: '🌿',
             label: { ar: 'طبيعية', en: 'Natural' },
             tip: { ar: 'مكونات نباتية', en: 'Plant-based ingredients' },
           },

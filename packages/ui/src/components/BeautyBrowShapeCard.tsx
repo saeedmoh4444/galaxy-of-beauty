@@ -28,12 +28,12 @@ export function BeautyBrowShapeCard({
       <div className="mt-3 grid grid-cols-2 gap-1.5">
         {[
           {
-            emoji: '',
+            emoji: '🥚',
             label: { ar: 'بيضاوي', en: 'Oval' },
             tip: { ar: 'حواجب طبيعية — قوس ناعم', en: 'Natural brows — a soft arch' },
           },
           {
-            emoji: '',
+            emoji: '⭕',
             label: { ar: 'دائري', en: 'Round' },
             tip: { ar: 'قوس مرتفع — يطيل الوجه', en: 'High arch — elongates the face' },
           },

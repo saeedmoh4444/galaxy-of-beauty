@@ -7,7 +7,7 @@ import { cn } from '@galaxy/shared';
  * From Phase W3: Health & Wellness & W1: Privacy.
  *
  * Usage:
- *   <BeautyProgressPhotoCard photos={[{ date: '2026-01', emoji: '', note: 'بداية الروتين' }]} />
+ *   <BeautyProgressPhotoCard photos={[{ date: '2026-01', emoji: '📸', note: 'بداية الروتين' }]} />
  */
 
 interface ProgressPhoto {

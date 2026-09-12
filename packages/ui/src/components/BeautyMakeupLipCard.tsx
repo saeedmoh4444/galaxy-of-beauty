@@ -28,7 +28,7 @@ export function BeautyMakeupLipCard({
       <div className="mt-3 space-y-1">
         {[
           {
-            emoji: '',
+            emoji: '🧴',
             text: {
               ar: '1. رطبي شفتيك — بلسم قبل المكياج',
               en: '1. Hydrate your lips — balm before makeup',
@@ -42,14 +42,14 @@ export function BeautyMakeupLipCard({
             },
           },
           {
-            emoji: '',
+            emoji: '💄',
             text: {
               ar: '3. أحمر الشفاه — من المنتصف للأطراف',
               en: '3. Lipstick — from the center outward',
             },
           },
           {
-            emoji: '',
+            emoji: '🧻',
             text: {
               ar: '4. اضغطي بمنديل — لتثبيت اللون',
               en: '4. Press with a tissue — to set the color',

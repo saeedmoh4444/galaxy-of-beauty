@@ -28,28 +28,28 @@ export function BeautyCapsuleWardrobeCard({
       <div className="mt-3 space-y-1">
         {[
           {
-            emoji: '',
+            emoji: '🧴',
             text: {
               ar: '5 منتجات فقط — منظف، مرطب، واقي، سيروم، مقشر',
               en: 'Only 5 products — cleanser, moisturizer, SPF, serum, exfoliator',
             },
           },
           {
-            emoji: '',
+            emoji: '💄',
             text: {
               ar: '3 مستحضرات — BB كريم، ماسكارا، أحمر شفاه',
               en: '3 makeup items — BB cream, mascara, lipstick',
             },
           },
           {
-            emoji: '',
+            emoji: '✨',
             text: {
               ar: 'منتج متعدد = مساحة أقل — زيت للوجه والجسم',
               en: 'Multitasking = less clutter — oil for face and body',
             },
           },
           {
-            emoji: '',
+            emoji: '📅',
             text: {
               ar: 'كل 3 أشهر — راجعي منتجاتك وتخلصي من القديم',
               en: 'Every 3 months — review products and toss old ones',

@@ -28,21 +28,21 @@ export function BeautySkincareRetinolCard({
       <div className="mt-3 space-y-1">
         {[
           {
-            emoji: '',
+            emoji: '🌙',
             text: {
               ar: 'مساءً فقط — يتحسس من الشمس',
               en: 'Evenings only — sensitizes in sunlight',
             },
           },
           {
-            emoji: '',
+            emoji: '🤏',
             text: {
               ar: 'كمية حبة بازلاء — للوجه كله',
               en: 'A pea-sized amount — for the whole face',
             },
           },
           {
-            emoji: '',
+            emoji: '📅',
             text: {
               ar: 'ابدئي مرة أسبوعياً — ثم زيدي تدريجياً',
               en: 'Start once a week — then increase gradually',

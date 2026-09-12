@@ -28,18 +28,18 @@ export function BeautyPostAcneMarksCard({
       <div className="mt-3 space-y-1">
         {[
           {
-            emoji: '',
+            emoji: '🍊',
             text: {
               ar: 'فيتامين C — صباحاً لتفتيح التصبغات',
               en: 'Vitamin C — in the morning to fade hyperpigmentation',
             },
           },
           {
-            emoji: '',
+            emoji: '🧪',
             text: { ar: 'أزيليك أسيد — آمن للحوامل', en: 'Azelaic acid — pregnancy-safe' },
           },
           {
-            emoji: '',
+            emoji: '🧽',
             text: {
               ar: 'أحماض ألفا هيدروكسي — تقشير كيميائي',
               en: 'Alpha hydroxy acids — chemical exfoliation',

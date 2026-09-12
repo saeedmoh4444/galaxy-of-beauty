@@ -28,28 +28,28 @@ export function BeautyPerfumeSaffronCard({
       <div className="mt-3 space-y-1">
         {[
           {
-            emoji: '',
+            emoji: '🌼',
             text: {
               ar: 'أغلى توابل العالم — يستخدم في العطور الفاخرة',
               en: 'The most expensive spice in the world — used in luxury fragrances',
             },
           },
           {
-            emoji: '',
+            emoji: '✨',
             text: {
               ar: 'رائحة حارة ومعدنية — أنيقة ومميزة',
               en: 'A spicy, metallic scent — elegant and distinctive',
             },
           },
           {
-            emoji: '',
+            emoji: '🧖',
             text: {
               ar: 'يستخدم في ماسكات الوجه — لتفتيح البشرة',
               en: 'Used in face masks — to brighten the skin',
             },
           },
           {
-            emoji: '',
+            emoji: '🐪',
             text: {
               ar: 'العربية السعودية — تاريخ طويل مع الزعفران',
               en: 'Saudi Arabia — a long history with saffron',

@@ -23,17 +23,17 @@ interface LevelDef {
 
 const LEVELS: Record<CourseLevel, LevelDef> = {
   beginner: {
-    emoji: '',
+    emoji: '🌱',
     label: { ar: 'مبتدئة', en: 'Beginner' },
     color: 'bg-emerald-50 text-emerald-700 dark:bg-emerald-950 dark:text-emerald-300',
   },
   intermediate: {
-    emoji: '',
+    emoji: '🌿',
     label: { ar: 'متوسطة', en: 'Intermediate' },
     color: 'bg-sky-50 text-sky-700 dark:bg-sky-950 dark:text-sky-300',
   },
   advanced: {
-    emoji: '',
+    emoji: '🌳',
     label: { ar: 'متقدمة', en: 'Advanced' },
     color: 'bg-brand-50 text-brand-700 dark:bg-brand-950 dark:text-brand-300',
   },

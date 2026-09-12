@@ -33,7 +33,7 @@ interface EventDef {
 
 const EVENTS: Record<LifeEvent, EventDef> = {
   graduation: {
-    emoji: '',
+    emoji: '🎓',
     title: { ar: 'تخرج', en: 'Graduation' },
     description: {
       ar: 'انطلاقة جديدة تليق بإنجازكِ',
@@ -51,7 +51,7 @@ const EVENTS: Record<LifeEvent, EventDef> = {
     gradient: 'from-amber-500 to-yellow-500',
   },
   new_job: {
-    emoji: '',
+    emoji: '💼',
     title: { ar: 'وظيفة جديدة', en: 'New job' },
     description: { ar: 'انطباع أول لا يُنسى', en: 'An unforgettable first impression' },
     packageName: { ar: 'جاهزة ليومي الأول', en: 'Ready for my first day' },
@@ -65,7 +65,7 @@ const EVENTS: Record<LifeEvent, EventDef> = {
     gradient: 'from-blue-500 to-sky-500',
   },
   wedding: {
-    emoji: '',
+    emoji: '👰',
     title: { ar: 'زواج', en: 'Wedding' },
     description: { ar: 'رحلة متكاملة ليوم العمر', en: 'A complete journey for the big day' },
     packageName: { ar: 'رحلة العروس', en: 'Bride journey' },
@@ -81,7 +81,7 @@ const EVENTS: Record<LifeEvent, EventDef> = {
     gradient: 'from-rose-500 to-pink-500',
   },
   pregnancy: {
-    emoji: '',
+    emoji: '🤰',
     title: { ar: 'حمل', en: 'Pregnancy' },
     description: { ar: 'عناية خاصة بكِ وبطفلكِ', en: 'Special care for you and your baby' },
     packageName: { ar: 'الأم المتوهجة', en: 'Radiant mother' },
@@ -96,7 +96,7 @@ const EVENTS: Record<LifeEvent, EventDef> = {
     gradient: 'from-brand-500 to-violet-500',
   },
   new_mother: {
-    emoji: '',
+    emoji: '👶',
     title: { ar: 'أمومة جديدة', en: 'New motherhood' },
     description: { ar: 'استعيدي نضارتكِ بعد الولادة', en: 'Regain your glow after childbirth' },
     packageName: { ar: 'انتعاشة الأم', en: 'Mother refresh' },
@@ -111,7 +111,7 @@ const EVENTS: Record<LifeEvent, EventDef> = {
     gradient: 'from-emerald-500 to-teal-500',
   },
   birthday: {
-    emoji: '',
+    emoji: '🎂',
     title: { ar: 'عيد ميلاد', en: 'Birthday' },
     description: {
       ar: 'احتفلي بنفسكِ بأجمل إطلالة',
@@ -129,7 +129,7 @@ const EVENTS: Record<LifeEvent, EventDef> = {
     gradient: 'from-pink-500 to-fuchsia-500',
   },
   hajj_umrah: {
-    emoji: '',
+    emoji: '🕋',
     title: { ar: 'حج / عمرة', en: 'Hajj / Umrah' },
     description: {
       ar: 'استعداد روحي وجمالي للرحلة المباركة',
@@ -147,7 +147,7 @@ const EVENTS: Record<LifeEvent, EventDef> = {
     gradient: 'from-teal-500 to-emerald-500',
   },
   divorce_recovery: {
-    emoji: '',
+    emoji: '🌟',
     title: { ar: 'بداية جديدة', en: 'New beginning' },
     description: { ar: 'انطلاقة جديدة بعد التغيير', en: 'A new start after change' },
     packageName: { ar: 'بداية جديدة', en: 'New beginning' },

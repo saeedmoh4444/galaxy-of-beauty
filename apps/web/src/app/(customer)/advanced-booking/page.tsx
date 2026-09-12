@@ -7,17 +7,17 @@ import { useLocale } from '@/components/LocaleProvider';
 import type { TranslationKey } from '@galaxy/shared';
 
 const SERVICES: { id: number; name: TranslationKey; emoji: string; price: number }[] = [
-  { id: 1, name: 'advancedBooking.service.manicure', emoji: '', price: 100 },
-  { id: 2, name: 'advancedBooking.service.pedicure', emoji: '', price: 120 },
-  { id: 3, name: 'advancedBooking.service.facial', emoji: '', price: 200 },
+  { id: 1, name: 'advancedBooking.service.manicure', emoji: '💅', price: 100 },
+  { id: 2, name: 'advancedBooking.service.pedicure', emoji: '🦶', price: 120 },
+  { id: 3, name: 'advancedBooking.service.facial', emoji: '🧖', price: 200 },
   { id: 4, name: 'advancedBooking.service.massage', emoji: '‍️', price: 250 },
-  { id: 5, name: 'advancedBooking.service.makeup', emoji: '', price: 300 },
+  { id: 5, name: 'advancedBooking.service.makeup', emoji: '💄', price: 300 },
 ];
 
 const RECURRENCE_OPTS: { key: string; name: TranslationKey; emoji: string }[] = [
-  { key: 'WEEKLY', name: 'advancedBooking.freq.weekly', emoji: '' },
+  { key: 'WEEKLY', name: 'advancedBooking.freq.weekly', emoji: '📅' },
   { key: 'BIWEEKLY', name: 'advancedBooking.freq.biweekly', emoji: '️' },
-  { key: 'MONTHLY', name: 'advancedBooking.freq.monthly', emoji: '' },
+  { key: 'MONTHLY', name: 'advancedBooking.freq.monthly', emoji: '🗓' },
 ];
 
 export default function AdvancedBookingPage(): JSX.Element {

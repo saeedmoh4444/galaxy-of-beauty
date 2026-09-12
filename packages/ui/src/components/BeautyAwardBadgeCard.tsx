@@ -7,7 +7,7 @@ import { cn } from '@galaxy/shared';
  * From Phase W10: Saudi Women Leadership — Annual Summit.
  *
  * Usage:
- *   <BeautyAwardBadgeCard awards={[{ name: 'أفضل خبيرة مكياج', year: '2026', emoji: '' }]} />
+ *   <BeautyAwardBadgeCard awards={[{ name: 'أفضل خبيرة مكياج', year: '2026', emoji: '🏆' }]} />
  */
 
 interface Award {

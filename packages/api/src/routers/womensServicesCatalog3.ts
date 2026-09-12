@@ -6,7 +6,7 @@ export const womensCatalog3 = {
   kbeauty_inspired: {
     nameAr: 'جمال كوري',
     nameEn: 'K-Beauty Inspired',
-    emoji: '',
+    emoji: '🌸',
     description: 'إطلالات مستوحاة من الجمال الكوري — نضارة وإشراقة',
     subServices: [
       {
@@ -15,7 +15,7 @@ export const womensCatalog3 = {
         nameEn: 'K-Beauty Routine',
         price: 280,
         durationMin: 60,
-        emoji: '',
+        emoji: '✨',
         precautions: '١٠ خطوات للعناية',
       },
       {
@@ -24,7 +24,7 @@ export const womensCatalog3 = {
         nameEn: 'K-Beauty Makeup',
         price: 250,
         durationMin: 50,
-        emoji: '',
+        emoji: '💄',
         precautions: 'إطلالة طبيعية ناعمة',
       },
       {
@@ -33,7 +33,7 @@ export const womensCatalog3 = {
         nameEn: 'Korean Sheet Mask',
         price: 100,
         durationMin: 20,
-        emoji: '',
+        emoji: '🧖',
         precautions: 'ورق كوري أصلي',
       },
     ],
@@ -41,7 +41,7 @@ export const womensCatalog3 = {
   eco_beauty: {
     nameAr: 'الجمال المستدام',
     nameEn: 'Eco-Conscious Beauty',
-    emoji: '',
+    emoji: '🌿',
     description: 'خدمات تجميل صديقة للبيئة — جميلة أنتِ وجميلة الأرض',
     subServices: [
       {
@@ -50,7 +50,7 @@ export const womensCatalog3 = {
         nameEn: 'Eco-Friendly Facial',
         price: 250,
         durationMin: 50,
-        emoji: '',
+        emoji: '🌱',
         precautions: 'منتجات قابلة للتحلل',
       },
       {
@@ -59,7 +59,7 @@ export const womensCatalog3 = {
         nameEn: 'Plant-Based Hair Color',
         price: 300,
         durationMin: 90,
-        emoji: '',
+        emoji: '🍃',
         precautions: 'خالي من الأمونيا',
       },
       {
@@ -76,7 +76,7 @@ export const womensCatalog3 = {
   volunteer_beauty: {
     nameAr: 'عناية المتطوعات',
     nameEn: 'Volunteer Woman Beauty',
-    emoji: '',
+    emoji: '🫶',
     description: 'خدمات مخصصة للمتطوعات — شكراً لعطائكِ',
     subServices: [
       {
@@ -85,7 +85,7 @@ export const womensCatalog3 = {
         nameEn: 'Volunteer Package',
         price: 200,
         durationMin: 75,
-        emoji: '',
+        emoji: '🎁',
         precautions: 'خصم خاص للمتطوعات',
       },
       {
@@ -111,7 +111,7 @@ export const womensCatalog3 = {
   gamer_beauty: {
     nameAr: 'عناية اللاعبات',
     nameEn: 'Gamer Girl Beauty',
-    emoji: '',
+    emoji: '🎮',
     description: 'خدمات تجميل لمحبات الألعاب — إطلالات مستوحاة من عالم الألعاب',
     subServices: [
       {
@@ -120,7 +120,7 @@ export const womensCatalog3 = {
         nameEn: 'Gamer Nail Art',
         price: 180,
         durationMin: 40,
-        emoji: '',
+        emoji: '💅',
         precautions: 'تصاميم شخصيات الألعاب',
       },
       {
@@ -138,7 +138,7 @@ export const womensCatalog3 = {
         nameEn: 'Tournament Look',
         price: 250,
         durationMin: 50,
-        emoji: '',
+        emoji: '🏆',
         precautions: 'للظهور في البطولات',
       },
     ],
@@ -155,7 +155,7 @@ export const womensCatalog3 = {
         nameEn: 'Writing Session',
         price: 200,
         durationMin: 60,
-        emoji: '',
+        emoji: '✍️',
         precautions: 'مساج + وقت كتابة',
       },
       {
@@ -164,7 +164,7 @@ export const womensCatalog3 = {
         nameEn: 'Book Signing Look',
         price: 300,
         durationMin: 60,
-        emoji: '',
+        emoji: '📖',
         precautions: 'إطلالة أدبية راقية',
       },
       {
@@ -173,7 +173,7 @@ export const womensCatalog3 = {
         nameEn: 'Writer Hand Care',
         price: 150,
         durationMin: 30,
-        emoji: '',
+        emoji: '🧴',
         precautions: 'للأيدي المتعبة من الكتابة',
       },
     ],
@@ -181,7 +181,7 @@ export const womensCatalog3 = {
   photographer_beauty: {
     nameAr: 'عناية المصورات',
     nameEn: 'Photographer Woman Beauty',
-    emoji: '',
+    emoji: '📸',
     description: 'خدمات تجميل للمصورات — لأنكِ خلف الكاميرا تستحقين الظهور',
     subServices: [
       {
@@ -190,7 +190,7 @@ export const womensCatalog3 = {
         nameEn: 'Behind-the-Lens Look',
         price: 280,
         durationMin: 55,
-        emoji: '',
+        emoji: '🎬',
         precautions: 'للمناسبات الخاصة',
       },
       {
@@ -199,7 +199,7 @@ export const womensCatalog3 = {
         nameEn: 'Photographer Hand Care',
         price: 150,
         durationMin: 30,
-        emoji: '',
+        emoji: '🧴',
         precautions: 'للأيدي الحاملة للكاميرا',
       },
       {
@@ -225,7 +225,7 @@ export const womensCatalog3 = {
         nameEn: 'Chef Hand Care',
         price: 180,
         durationMin: 35,
-        emoji: '',
+        emoji: '🧴',
         precautions: 'ترطيب مكثف',
       },
       {
@@ -234,7 +234,7 @@ export const womensCatalog3 = {
         nameEn: 'Heat-Resistant Facial',
         price: 220,
         durationMin: 45,
-        emoji: '',
+        emoji: '🔥',
         precautions: 'للبشرة المعرضة للحرارة',
       },
       {
@@ -251,7 +251,7 @@ export const womensCatalog3 = {
   dancer_beauty: {
     nameAr: 'عناية الراقصات',
     nameEn: 'Dancer Woman Beauty',
-    emoji: '',
+    emoji: '🩰',
     description: 'خدمات تجميل للراقصات — مرونة وجمال في كل حركة',
     subServices: [
       {
@@ -269,7 +269,7 @@ export const womensCatalog3 = {
         nameEn: 'Performance Look',
         price: 350,
         durationMin: 70,
-        emoji: '',
+        emoji: '💃',
         precautions: 'مكياج يدوم طويلاً',
       },
       {
@@ -278,7 +278,7 @@ export const womensCatalog3 = {
         nameEn: 'Dancer Foot Care',
         price: 200,
         durationMin: 40,
-        emoji: '',
+        emoji: '🦶',
         precautions: 'للأقدام المتعبة',
       },
     ],
@@ -286,7 +286,7 @@ export const womensCatalog3 = {
   designer_beauty: {
     nameAr: 'عناية المصممات',
     nameEn: 'Fashion Designer Beauty',
-    emoji: '',
+    emoji: '👗',
     description: 'خدمات تجميل لمصممات الأزياء — لأن الأناقة تبدأ منكِ',
     subServices: [
       {
@@ -295,7 +295,7 @@ export const womensCatalog3 = {
         nameEn: 'Fashion Show Look',
         price: 400,
         durationMin: 80,
-        emoji: '',
+        emoji: '👠',
         precautions: 'إطلالة راقية',
       },
       {
@@ -304,7 +304,7 @@ export const womensCatalog3 = {
         nameEn: 'Color Consultation',
         price: 250,
         durationMin: 50,
-        emoji: '',
+        emoji: '🎨',
         precautions: 'تحليل ألوان البشرة',
       },
       {
@@ -313,7 +313,7 @@ export const womensCatalog3 = {
         nameEn: 'Designer Package',
         price: 600,
         durationMin: 150,
-        emoji: '',
+        emoji: '👜',
         precautions: 'شعر + مكياج + أظافر',
       },
     ],
@@ -321,7 +321,7 @@ export const womensCatalog3 = {
   florist_beauty: {
     nameAr: 'عناية بائعات الزهور',
     nameEn: 'Florist Woman Beauty',
-    emoji: '',
+    emoji: '🌷',
     description: 'خدمات تجميل لمحبات وبائعات الزهور — جمال الطبيعة في عنايتكِ',
     subServices: [
       {
@@ -330,7 +330,7 @@ export const womensCatalog3 = {
         nameEn: 'Florist Hand Care',
         price: 150,
         durationMin: 30,
-        emoji: '',
+        emoji: '🧴',
         precautions: 'ترميم الأيدي المتعبة',
       },
       {
@@ -339,7 +339,7 @@ export const womensCatalog3 = {
         nameEn: 'Flowers & Facial',
         price: 350,
         durationMin: 90,
-        emoji: '',
+        emoji: '💐',
         precautions: 'باقة ورد + عناية بالبشرة',
       },
       {
@@ -348,7 +348,7 @@ export const womensCatalog3 = {
         nameEn: 'Shop Look',
         price: 200,
         durationMin: 45,
-        emoji: '',
+        emoji: '🛍️',
         precautions: 'إطلالة منعشة',
       },
     ],
@@ -365,7 +365,7 @@ export const womensCatalog3 = {
         nameEn: 'Voice Care',
         price: 150,
         durationMin: 30,
-        emoji: '',
+        emoji: '🎤',
         precautions: 'مساج حنجرة وأعشاب',
       },
       {
@@ -391,7 +391,7 @@ export const womensCatalog3 = {
   musician_beauty: {
     nameAr: 'عناية الموسيقيات',
     nameEn: 'Musician Woman Beauty',
-    emoji: '',
+    emoji: '🎵',
     description: 'خدمات تجميل للموسيقيات — لأن الموسيقى والجمال لحن واحد',
     subServices: [
       {
@@ -400,7 +400,7 @@ export const womensCatalog3 = {
         nameEn: 'Musician Hand Care',
         price: 200,
         durationMin: 35,
-        emoji: '',
+        emoji: '🧴',
         precautions: 'للعازفات على الآلات',
       },
       {
@@ -409,7 +409,7 @@ export const womensCatalog3 = {
         nameEn: 'Concert Look',
         price: 350,
         durationMin: 70,
-        emoji: '',
+        emoji: '🎶',
         precautions: 'مكياج + شعر',
       },
       {
@@ -418,7 +418,7 @@ export const womensCatalog3 = {
         nameEn: 'Musician Relaxation',
         price: 250,
         durationMin: 50,
-        emoji: '',
+        emoji: '🎧',
         precautions: 'بعد البروفات',
       },
     ],
@@ -426,7 +426,7 @@ export const womensCatalog3 = {
   actress_beauty: {
     nameAr: 'عناية الممثلات',
     nameEn: 'Actress Woman Beauty',
-    emoji: '',
+    emoji: '🌟',
     description: 'خدمات تجميل للممثلات — من خشبة المسرح للشاشة',
     subServices: [
       {
@@ -435,7 +435,7 @@ export const womensCatalog3 = {
         nameEn: 'Stage Makeup',
         price: 400,
         durationMin: 75,
-        emoji: '',
+        emoji: '🎭',
         precautions: 'يدوم تحت الأضواء',
       },
       {
@@ -444,7 +444,7 @@ export const womensCatalog3 = {
         nameEn: 'Premiere Look',
         price: 500,
         durationMin: 90,
-        emoji: '',
+        emoji: '💎',
         precautions: 'إطلالة السجادة الحمراء',
       },
       {
@@ -453,7 +453,7 @@ export const womensCatalog3 = {
         nameEn: 'Actor Skincare',
         price: 280,
         durationMin: 50,
-        emoji: '',
+        emoji: '🧖',
         precautions: 'للبشرة بعد المكياج الثقيل',
       },
     ],
@@ -470,7 +470,7 @@ export const womensCatalog3 = {
         nameEn: 'Architect Hand Care',
         price: 180,
         durationMin: 30,
-        emoji: '',
+        emoji: '🧴',
         precautions: 'للأيدي العاملة على المخططات',
       },
       {
@@ -479,7 +479,7 @@ export const womensCatalog3 = {
         nameEn: 'Project Pitch Look',
         price: 300,
         durationMin: 60,
-        emoji: '',
+        emoji: '📐',
         precautions: 'احترافية وواثقة',
       },
       {
@@ -505,7 +505,7 @@ export const womensCatalog3 = {
         nameEn: 'Hydration Facial',
         price: 250,
         durationMin: 50,
-        emoji: '',
+        emoji: '💧',
         precautions: 'لبشرة الطائرة الجافة',
       },
       {
@@ -514,7 +514,7 @@ export const womensCatalog3 = {
         nameEn: 'Flight Ready Look',
         price: 200,
         durationMin: 40,
-        emoji: '',
+        emoji: '✈️',
         precautions: 'يدوم طوال الرحلة',
       },
       {
@@ -523,7 +523,7 @@ export const womensCatalog3 = {
         nameEn: 'Transit Relaxation',
         price: 300,
         durationMin: 60,
-        emoji: '',
+        emoji: '🛋️',
         precautions: 'بين الرحلات',
       },
     ],
@@ -540,7 +540,7 @@ export const womensCatalog3 = {
         nameEn: 'Farmer Hand Care',
         price: 180,
         durationMin: 35,
-        emoji: '',
+        emoji: '🧴',
         precautions: 'ترميم وترطيب عميق',
       },
       {
@@ -549,7 +549,7 @@ export const womensCatalog3 = {
         nameEn: 'Natural Facial',
         price: 200,
         durationMin: 45,
-        emoji: '',
+        emoji: '🌿',
         precautions: 'منتجات من الطبيعة',
       },
       {
@@ -566,7 +566,7 @@ export const womensCatalog3 = {
   librarian_beauty: {
     nameAr: 'عناية أمينات المكتبات',
     nameEn: 'Librarian Woman Beauty',
-    emoji: '',
+    emoji: '📚',
     description: 'خدمات تجميل لأمينات المكتبات — أناقة المعرفة',
     subServices: [
       {
@@ -575,7 +575,7 @@ export const womensCatalog3 = {
         nameEn: 'Quiet Elegance Look',
         price: 200,
         durationMin: 45,
-        emoji: '',
+        emoji: '🕊️',
         precautions: 'مكياج ناعم',
       },
       {
@@ -584,7 +584,7 @@ export const womensCatalog3 = {
         nameEn: 'Reading Relaxation',
         price: 300,
         durationMin: 80,
-        emoji: '',
+        emoji: '🍵',
         precautions: 'مساج + كتاب + شاي',
       },
       {
@@ -593,7 +593,7 @@ export const womensCatalog3 = {
         nameEn: 'Librarian Hand Care',
         price: 150,
         durationMin: 30,
-        emoji: '',
+        emoji: '🧴',
         precautions: 'للأيدي المتعاملة مع الكتب',
       },
     ],
@@ -601,7 +601,7 @@ export const womensCatalog3 = {
   sailor_beauty: {
     nameAr: 'عناية البحريات',
     nameEn: 'Sailor Woman Beauty',
-    emoji: '',
+    emoji: '⚓',
     description: 'خدمات تجميل للعاملات في البحر — جمال يقاوم الملوحة',
     subServices: [
       {
@@ -610,7 +610,7 @@ export const womensCatalog3 = {
         nameEn: 'Salt-Resistant Facial',
         price: 280,
         durationMin: 50,
-        emoji: '',
+        emoji: '🌊',
         precautions: 'حماية من海水',
       },
       {
@@ -636,7 +636,7 @@ export const womensCatalog3 = {
   veterinarian_beauty: {
     nameAr: 'عناية الطبيبات البيطريات',
     nameEn: 'Veterinarian Beauty',
-    emoji: '',
+    emoji: '🐾',
     description: 'خدمات تجميل للطبيبات البيطريات — لأنكِ تعتنين بالجميع إلا نفسكِ',
     subServices: [
       {
@@ -645,7 +645,7 @@ export const womensCatalog3 = {
         nameEn: 'Vet Hand Care',
         price: 200,
         durationMin: 35,
-        emoji: '',
+        emoji: '🧴',
         precautions: 'تعقيم وترميم',
       },
       {
@@ -663,7 +663,7 @@ export const womensCatalog3 = {
         nameEn: 'Veterinarian Package',
         price: 400,
         durationMin: 100,
-        emoji: '',
+        emoji: '🩺',
         precautions: 'مساج + بشرة + أظافر',
       },
     ],
@@ -671,7 +671,7 @@ export const womensCatalog3 = {
   pharmacist_beauty: {
     nameAr: 'عناية الصيدلانيات',
     nameEn: 'Pharmacist Woman Beauty',
-    emoji: '',
+    emoji: '💊',
     description: 'خدمات تجميل للصيدلانيات — أنتِ خبيرة التركيبات',
     subServices: [
       {
@@ -680,7 +680,7 @@ export const womensCatalog3 = {
         nameEn: 'Pharmacist Hand Care',
         price: 180,
         durationMin: 30,
-        emoji: '',
+        emoji: '🧴',
         precautions: 'ترميم من جفاف المعقمات',
       },
       {
@@ -689,7 +689,7 @@ export const womensCatalog3 = {
         nameEn: 'Pharmacy Look',
         price: 200,
         durationMin: 45,
-        emoji: '',
+        emoji: '🏥',
         precautions: 'مكياج خفيف وطبيعي',
       },
       {
@@ -706,7 +706,7 @@ export const womensCatalog3 = {
   dentist_beauty: {
     nameAr: 'عناية طبيبات الأسنان',
     nameEn: 'Dentist Woman Beauty',
-    emoji: '',
+    emoji: '🦷',
     description: 'خدمات تجميل لطبيبات الأسنان — ابتسامة جميلة تستحقينها',
     subServices: [
       {
@@ -715,7 +715,7 @@ export const womensCatalog3 = {
         nameEn: 'Dentist Hand Care',
         price: 200,
         durationMin: 35,
-        emoji: '',
+        emoji: '🧴',
         precautions: 'للأيدي الدقيقة',
       },
       {
@@ -733,7 +733,7 @@ export const womensCatalog3 = {
         nameEn: 'Clinic Look',
         price: 280,
         durationMin: 55,
-        emoji: '',
+        emoji: '💼',
         precautions: 'احترافية وأنيقة',
       },
     ],
@@ -741,7 +741,7 @@ export const womensCatalog3 = {
   psychologist_beauty: {
     nameAr: 'عناية المعالجات النفسيات',
     nameEn: 'Psychologist Woman Beauty',
-    emoji: '',
+    emoji: '🧠',
     description: 'خدمات عناية للمعالجات النفسيات — لأنكِ تستمعين للجميع، استمعي لجسدكِ',
     subServices: [
       {
@@ -768,7 +768,7 @@ export const womensCatalog3 = {
         nameEn: 'Practice Look',
         price: 250,
         durationMin: 50,
-        emoji: '',
+        emoji: '🏥',
         precautions: 'مريحة واحترافية',
       },
     ],
@@ -776,7 +776,7 @@ export const womensCatalog3 = {
   dietitian_beauty: {
     nameAr: 'عناية أخصائيات التغذية',
     nameEn: 'Dietitian Woman Beauty',
-    emoji: '',
+    emoji: '🥗',
     description: 'خدمات تجميل لأخصائيات التغذية — جمال من الداخل والخارج',
     subServices: [
       {
@@ -785,7 +785,7 @@ export const womensCatalog3 = {
         nameEn: 'Nourishing Facial',
         price: 250,
         durationMin: 50,
-        emoji: '',
+        emoji: '🥑',
         precautions: 'مكونات طبيعية',
       },
       {
@@ -794,7 +794,7 @@ export const womensCatalog3 = {
         nameEn: 'Health & Beauty Package',
         price: 400,
         durationMin: 100,
-        emoji: '',
+        emoji: '🎀',
         precautions: 'عناية + استشارة غذائية',
       },
       {
@@ -803,7 +803,7 @@ export const womensCatalog3 = {
         nameEn: 'Clinic Consultation Look',
         price: 200,
         durationMin: 45,
-        emoji: '',
+        emoji: '📋',
         precautions: 'طبيعي ومنعش',
       },
     ],
@@ -811,7 +811,7 @@ export const womensCatalog3 = {
   social_worker_beauty: {
     nameAr: 'عناية الأخصائيات الاجتماعيات',
     nameEn: 'Social Worker Beauty',
-    emoji: '',
+    emoji: '🤝',
     description: 'خدمات عناية للأخصائيات الاجتماعيات — لأنكِ تقدمين للآخرين كل يوم',
     subServices: [
       {
@@ -829,7 +829,7 @@ export const womensCatalog3 = {
         nameEn: 'Giver Package',
         price: 350,
         durationMin: 100,
-        emoji: '',
+        emoji: '🎁',
         precautions: 'خصم خاص',
       },
       {
@@ -846,7 +846,7 @@ export const womensCatalog3 = {
   physiotherapist_beauty: {
     nameAr: 'عناية المعالجات الطبيعيات',
     nameEn: 'Physiotherapist Beauty',
-    emoji: '',
+    emoji: '💆',
     description: 'خدمات تجميل للمعالجات الطبيعيات — لأنكِ تعالجين الأجسام، عالجي جسدكِ',
     subServices: [
       {
@@ -864,7 +864,7 @@ export const womensCatalog3 = {
         nameEn: 'Therapist Hand Care',
         price: 200,
         durationMin: 35,
-        emoji: '',
+        emoji: '🧴',
         precautions: 'للأيدي القوية',
       },
       {
@@ -881,7 +881,7 @@ export const womensCatalog3 = {
   gardener_beauty: {
     nameAr: 'عناية البستانيات',
     nameEn: 'Gardener Woman Beauty',
-    emoji: '',
+    emoji: '🌻',
     description: 'خدمات تجميل لمحبات الزراعة والبستنة — جمال الطبيعة في يديكِ',
     subServices: [
       {
@@ -890,7 +890,7 @@ export const womensCatalog3 = {
         nameEn: 'Gardener Hand Care',
         price: 180,
         durationMin: 35,
-        emoji: '',
+        emoji: '🧴',
         precautions: 'ترميم وترطيب عميق',
       },
       {
@@ -899,7 +899,7 @@ export const womensCatalog3 = {
         nameEn: 'Nature Package',
         price: 300,
         durationMin: 90,
-        emoji: '',
+        emoji: '🌳',
         precautions: 'بشرة + شعر بمنتجات نباتية',
       },
       {
@@ -908,7 +908,7 @@ export const womensCatalog3 = {
         nameEn: 'Garden Party Look',
         price: 250,
         durationMin: 50,
-        emoji: '',
+        emoji: '🌺',
         precautions: 'إطلالة منعشة وطبيعية',
       },
     ],

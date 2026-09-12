@@ -21,37 +21,37 @@ interface BudgetCategory {
 const CATEGORIES: BudgetCategory[] = [
   {
     name: { ar: 'عناية بالبشرة', en: 'Skincare' },
-    emoji: '',
+    emoji: '🧴',
     percentage: 25,
     color: 'from-pink-400 to-rose-400',
   },
   {
     name: { ar: 'شعر', en: 'Hair' },
-    emoji: '',
+    emoji: '💇',
     percentage: 20,
     color: 'from-brand-400 to-violet-400',
   },
   {
     name: { ar: 'أظافر', en: 'Nails' },
-    emoji: '',
+    emoji: '💅',
     percentage: 15,
     color: 'from-amber-400 to-orange-400',
   },
   {
     name: { ar: 'مساج واسترخاء', en: 'Massage & Relaxation' },
-    emoji: '',
+    emoji: '💆',
     percentage: 15,
     color: 'from-teal-400 to-emerald-400',
   },
   {
     name: { ar: 'مكياج', en: 'Makeup' },
-    emoji: '',
+    emoji: '💄',
     percentage: 15,
     color: 'from-rose-400 to-pink-400',
   },
   {
     name: { ar: 'ادخار', en: 'Savings' },
-    emoji: '',
+    emoji: '💰',
     percentage: 10,
     color: 'from-green-400 to-teal-400',
   },

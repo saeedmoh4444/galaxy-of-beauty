@@ -28,28 +28,28 @@ export function BeautyEidGlowCard({
       <div className="mt-3 space-y-1">
         {[
           {
-            emoji: '',
+            emoji: '📅',
             text: {
               ar: 'قبل بأسبوع: فيشل + حواجب + مانيكير',
               en: 'A week before: facial + brows + manicure',
             },
           },
           {
-            emoji: '',
+            emoji: '🌙',
             text: {
               ar: 'ليلة العيد: حمام زيت + مرطب + نوم مبكر',
               en: 'Eid eve: oil treatment + moisturizer + early sleep',
             },
           },
           {
-            emoji: '',
+            emoji: '💄',
             text: {
               ar: 'صباح العيد: مكياج ناعم + عطر العيد',
               en: 'Eid morning: soft makeup + Eid perfume',
             },
           },
           {
-            emoji: '',
+            emoji: '📷',
             text: {
               ar: 'صوري إطلالتك — ذكريات العيد',
               en: 'Photograph your look — Eid memories',

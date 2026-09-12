@@ -28,7 +28,7 @@ export function BeautyEyeCreamCard({
       <div className="mt-3 space-y-1">
         {[
           {
-            emoji: '',
+            emoji: '🍚',
             text: {
               ar: 'الكمية: حبة أرز — لا أكثر',
               en: 'Amount: a grain of rice — no more',
@@ -42,14 +42,14 @@ export function BeautyEyeCreamCard({
             },
           },
           {
-            emoji: '',
+            emoji: '⏰',
             text: {
               ar: 'الوقت: صباح ومساء',
               en: 'When: morning and evening',
             },
           },
           {
-            emoji: '',
+            emoji: '🧪',
             text: {
               ar: 'المكونات: كافيين، ببتيدات، فيتامين K',
               en: 'Ingredients: caffeine, peptides, vitamin K',

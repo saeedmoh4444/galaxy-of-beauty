@@ -20,7 +20,7 @@ interface Question {
 const QUESTIONS: Question[] = [
   {
     question: { ar: 'كيف تبدو بشرتكِ بعد غسلها؟', en: 'How does your skin feel after washing?' },
-    emoji: '',
+    emoji: '🧼',
     options: [
       { text: { ar: 'مشدودة وجافة', en: 'Tight and dry' }, score: { dry: 3 } },
       { text: { ar: 'لامعة ودهنية', en: 'Shiny and oily' }, score: { oily: 3 } },
@@ -52,7 +52,7 @@ const QUESTIONS: Question[] = [
       ar: 'هل بشرتكِ حساسة للمنتجات الجديدة؟',
       en: 'Is your skin sensitive to new products?',
     },
-    emoji: '',
+    emoji: '🌸',
     options: [
       { text: { ar: 'نعم، تحمر بسرعة', en: 'Yes, it reddens quickly' }, score: { sensitive: 4 } },
       { text: { ar: 'أحياناً', en: 'Sometimes' }, score: { sensitive: 2 } },

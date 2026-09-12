@@ -28,14 +28,14 @@ export function BeautyContourGuideCard({
       <div className="mt-3 space-y-1">
         {[
           {
-            emoji: '',
+            emoji: '⭕',
             text: {
               ar: 'بيضاوي: خفيف تحت عظمة الخد — وفوق الجبهة',
               en: 'Oval: light under the cheekbone — and on the forehead',
             },
           },
           {
-            emoji: '',
+            emoji: '⚪',
             text: {
               ar: 'دائري: تحت الخد بكثافة — جوانب الجبهة',
               en: 'Round: denser under the cheeks — forehead sides',

@@ -28,28 +28,28 @@ export function BeautyScarTreatmentCard({
       <div className="mt-3 space-y-1">
         {[
           {
-            emoji: '',
+            emoji: '🧴',
             text: {
               ar: 'سيليكون جل — أفضل علاج موضعي للندبات',
               en: 'Silicone gel — the best topical scar treatment',
             },
           },
           {
-            emoji: '',
+            emoji: '💉',
             text: {
               ar: 'مايكرونيدلنغ — يحفز كولاجين جديد',
               en: 'Microneedling — stimulates new collagen',
             },
           },
           {
-            emoji: '',
+            emoji: '⚡',
             text: {
               ar: 'ليزر فراكشنال — يعيد سطح البشرة',
               en: 'Fractional laser — resurfaces the skin',
             },
           },
           {
-            emoji: '',
+            emoji: '⏰',
             text: {
               ar: 'العلاج المبكر — أفضل من الندبات القديمة',
               en: 'Early treatment — better than old scars',

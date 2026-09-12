@@ -4,12 +4,12 @@ import { cn } from '@galaxy/shared';
 
 const TIPS = [
   {
-    emoji: '',
+    emoji: '🧽',
     title: { ar: 'تقشير أسبوعي', en: 'Weekly exfoliation' },
     desc: { ar: 'يزيل الخلايا الميتة ويجدد البشرة', en: 'Removes dead cells and renews the skin' },
   },
   {
-    emoji: '',
+    emoji: '🧴',
     title: { ar: 'ترطيب بعد الاستحمام', en: 'Moisturize after showering' },
     desc: {
       ar: 'البشرة تمتص المرطب أفضل وهي رطبة',
@@ -22,7 +22,7 @@ const TIPS = [
     desc: { ar: 'لا تنسي رقبتك ويديك وقدميك', en: "Don't forget your neck, hands and feet" },
   },
   {
-    emoji: '',
+    emoji: '💧',
     title: { ar: 'شرب الماء', en: 'Drink water' },
     desc: { ar: 'بشرة الجسم تحتاج ترطيب من الداخل', en: 'Body skin needs hydration from within' },
   },

@@ -7,7 +7,7 @@ import { cn } from '@galaxy/shared';
  * From Phase W6: Education & Empowerment.
  *
  * Usage:
- *   <BeautyMicroChallengeCard challenge={{ title: 'تحدي الترطيب', emoji: '', duration: '5 دقائق' }} />
+ *   <BeautyMicroChallengeCard challenge={{ title: 'تحدي الترطيب', emoji: '💧', duration: '5 دقائق' }} />
  */
 
 interface MicroChallenge {

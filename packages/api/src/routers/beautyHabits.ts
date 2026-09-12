@@ -19,7 +19,7 @@ export const beautyHabitsRouter = router({
       });
       if (!habit)
         return prisma.beautyHabit.create({
-          data: { userId: ctx.user.id, name: 'عادة جديدة', emoji: '', doneToday: true },
+          data: { userId: ctx.user.id, name: 'عادة جديدة', emoji: '✨', doneToday: true },
         });
 
       await prisma.beautyHabit.update({

@@ -30,14 +30,14 @@ interface ItemDef {
 const ITEMS: Record<KitItem, ItemDef> = {
   pads: { emoji: '🩹', label: { ar: 'فوط صحية', en: 'Sanitary pads' } },
   tampons: { emoji: '🩹', label: { ar: 'سدادات قطنية', en: 'Tampons' } },
-  hair_spray: { emoji: '', label: { ar: 'مثبت شعر', en: 'Hairspray' } },
-  bobby_pins: { emoji: '', label: { ar: 'دبابيس شعر', en: 'Bobby pins' } },
-  hair_tie: { emoji: '', label: { ar: 'ربطة شعر', en: 'Hair tie' } },
-  deodorant: { emoji: '', label: { ar: 'مزيل عرق', en: 'Deodorant' } },
+  hair_spray: { emoji: '💇', label: { ar: 'مثبت شعر', en: 'Hairspray' } },
+  bobby_pins: { emoji: '📎', label: { ar: 'دبابيس شعر', en: 'Bobby pins' } },
+  hair_tie: { emoji: '🎀', label: { ar: 'ربطة شعر', en: 'Hair tie' } },
+  deodorant: { emoji: '💨', label: { ar: 'مزيل عرق', en: 'Deodorant' } },
   sewing_kit: { emoji: '🪡', label: { ar: 'عدة خياطة', en: 'Sewing kit' } },
-  stain_remover: { emoji: '', label: { ar: 'مزيل بقع', en: 'Stain remover' } },
-  nail_file: { emoji: '', label: { ar: 'مبرد أظافر', en: 'Nail file' } },
-  mints: { emoji: '', label: { ar: 'منعش نفس', en: 'Breath mints' } },
+  stain_remover: { emoji: '🧼', label: { ar: 'مزيل بقع', en: 'Stain remover' } },
+  nail_file: { emoji: '💅', label: { ar: 'مبرد أظافر', en: 'Nail file' } },
+  mints: { emoji: '🍬', label: { ar: 'منعش نفس', en: 'Breath mints' } },
 };
 
 interface BeautyEmergencyKitProps {

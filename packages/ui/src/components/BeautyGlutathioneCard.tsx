@@ -28,7 +28,7 @@ export function BeautyGlutathioneCard({
       <div className="mt-3 space-y-1">
         {[
           {
-            emoji: '',
+            emoji: '✨',
             text: {
               ar: 'يفتح البشرة — يقلل إنتاج الميلانين',
               en: 'Brightens the skin — reduces melanin production',
@@ -42,14 +42,14 @@ export function BeautyGlutathioneCard({
             },
           },
           {
-            emoji: '',
+            emoji: '💉',
             text: {
               ar: 'حقن أو كبسولات — تحت إشراف طبي',
               en: 'Injections or capsules — under medical supervision',
             },
           },
           {
-            emoji: '',
+            emoji: '🍅',
             text: {
               ar: 'مصادر طبيعية — طماطم، سبانخ، ثوم',
               en: 'Natural sources — tomatoes, spinach, garlic',

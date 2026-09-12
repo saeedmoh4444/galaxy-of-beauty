@@ -28,7 +28,7 @@ export function BeautyFaceShapeCard({
       <div className="mt-3 grid grid-cols-2 gap-1.5">
         {[
           {
-            emoji: '',
+            emoji: '🥚',
             label: { ar: 'بيضاوي', en: 'Oval' },
             tip: { ar: 'متناسق — يناسبه كل شيء', en: 'Symmetrical — suits everything' },
           },
@@ -38,7 +38,7 @@ export function BeautyFaceShapeCard({
             tip: { ar: 'جبهة عريضة — ذقن مدبب', en: 'Wide forehead — pointed chin' },
           },
           {
-            emoji: '',
+            emoji: '⚪',
             label: { ar: 'دائري', en: 'Round' },
             tip: { ar: 'خدود ممتلئة — متساوي', en: 'Full cheeks — balanced' },
           },

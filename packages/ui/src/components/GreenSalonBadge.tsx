@@ -27,13 +27,13 @@ interface PracticeDef {
 
 const PRACTICES: Record<GreenPractice, PracticeDef> = {
   recycled: { emoji: '️', label: { ar: 'إعادة تدوير', en: 'Recycling' } },
-  organic: { emoji: '', label: { ar: 'منتجات عضوية', en: 'Organic products' } },
-  energy_efficient: { emoji: '', label: { ar: 'طاقة موفرة', en: 'Energy efficient' } },
-  water_saving: { emoji: '', label: { ar: 'ترشيد مياه', en: 'Water saving' } },
-  vegan_products: { emoji: '', label: { ar: 'منتجات نباتية', en: 'Vegan products' } },
-  plastic_free: { emoji: '', label: { ar: 'خالٍ من البلاستيك', en: 'Plastic free' } },
-  local_sourcing: { emoji: '', label: { ar: 'منتجات محلية', en: 'Local sourcing' } },
-  carbon_neutral: { emoji: '', label: { ar: 'محايد كربونياً', en: 'Carbon neutral' } },
+  organic: { emoji: '🌿', label: { ar: 'منتجات عضوية', en: 'Organic products' } },
+  energy_efficient: { emoji: '⚡', label: { ar: 'طاقة موفرة', en: 'Energy efficient' } },
+  water_saving: { emoji: '💧', label: { ar: 'ترشيد مياه', en: 'Water saving' } },
+  vegan_products: { emoji: '🌱', label: { ar: 'منتجات نباتية', en: 'Vegan products' } },
+  plastic_free: { emoji: '🚫', label: { ar: 'خالٍ من البلاستيك', en: 'Plastic free' } },
+  local_sourcing: { emoji: '🚜', label: { ar: 'منتجات محلية', en: 'Local sourcing' } },
+  carbon_neutral: { emoji: '🌍', label: { ar: 'محايد كربونياً', en: 'Carbon neutral' } },
 };
 
 interface GreenSalonBadgeProps {

@@ -50,17 +50,17 @@ export default function BeautyTipsPage(): JSX.Element {
             <div className="grid gap-4 sm:grid-cols-2">
               <BeautyTrendAlertCard
                 trends={[
-                  { name: t('beautyTips.trend.pastel'), emoji: '', heat: '' },
-                  { name: t('beautyTips.trend.glassSkin'), emoji: '', heat: '' },
-                  { name: t('beautyTips.trend.lipCare'), emoji: '', heat: '' },
-                  { name: t('beautyTips.trend.naturalMakeup'), emoji: '', heat: '' },
+                  { name: t('beautyTips.trend.pastel'), emoji: '🌸', heat: '' },
+                  { name: t('beautyTips.trend.glassSkin'), emoji: '✨', heat: '' },
+                  { name: t('beautyTips.trend.lipCare'), emoji: '💋', heat: '' },
+                  { name: t('beautyTips.trend.naturalMakeup'), emoji: '🌿', heat: '' },
                 ]}
               />
               <BeautyStyleMatchCard
                 matches={[
-                  { style: t('beautyTips.style.classic'), emoji: '', match: 92 },
-                  { style: t('beautyTips.style.modern'), emoji: '', match: 78 },
-                  { style: t('beautyTips.style.boho'), emoji: '', match: 65 },
+                  { style: t('beautyTips.style.classic'), emoji: '🎀', match: 92 },
+                  { style: t('beautyTips.style.modern'), emoji: '🌟', match: 78 },
+                  { style: t('beautyTips.style.boho'), emoji: '🍃', match: 65 },
                 ]}
               />
             </div>
@@ -69,7 +69,7 @@ export default function BeautyTipsPage(): JSX.Element {
             <BeautyIngredientSpotlightCard
               ingredient={{
                 name: t('beautyTips.ingredient.name'),
-                emoji: '',
+                emoji: '🧪',
                 type: t('beautyTips.ingredient.type'),
                 rating: 'A+',
                 description: t('beautyTips.ingredient.desc'),
@@ -95,7 +95,7 @@ export default function BeautyTipsPage(): JSX.Element {
               <BeautyMicroChallengeCard
                 challenge={{
                   title: t('beautyTips.challenge.title'),
-                  emoji: '',
+                  emoji: '🏆',
                   duration: t('beautyTips.challenge.duration'),
                 }}
               />

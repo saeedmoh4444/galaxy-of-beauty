@@ -28,28 +28,28 @@ export function BeautySpaBathCard({
       <div className="mt-3 space-y-1">
         {[
           {
-            emoji: '',
+            emoji: '🧼',
             text: {
               ar: 'الصابون البلدي — أساس الحمام المغربي',
               en: 'Beldy soap — the base of the Moroccan bath',
             },
           },
           {
-            emoji: '',
+            emoji: '🧤',
             text: {
               ar: 'الليفة المغربية — تقشير عميق للجسم',
               en: 'Moroccan kessa glove — deep body exfoliation',
             },
           },
           {
-            emoji: '',
+            emoji: '🧖',
             text: {
               ar: 'طين الغاسول — ينقي ويشد البشرة',
               en: 'Ghassoul clay — purifies and tightens the skin',
             },
           },
           {
-            emoji: '',
+            emoji: '🌹',
             text: {
               ar: 'ماء الورد — لإنعاش البعد عن الحمام',
               en: 'Rose water — to refresh after the bath',

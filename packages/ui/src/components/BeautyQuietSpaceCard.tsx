@@ -21,12 +21,12 @@ interface BeautyQuietSpaceCardProps {
 }
 
 const FEATURES_MAP: Record<string, { emoji: string; label: { ar: string; en: string } }> = {
-  meditation_cushions: { emoji: '', label: { ar: 'وسائد تأمل', en: 'Meditation cushions' } },
-  sound_machine: { emoji: '', label: { ar: 'جهاز أصوات مهدئة', en: 'Calming sound machine' } },
-  dim_lights: { emoji: '', label: { ar: 'إضاءة خافتة', en: 'Dim lighting' } },
-  aromatherapy: { emoji: '', label: { ar: 'علاج بالروائح', en: 'Aromatherapy' } },
-  weighted_blanket: { emoji: '', label: { ar: 'بطانية ثقيلة', en: 'Weighted blanket' } },
-  tea_station: { emoji: '', label: { ar: 'ركن شاي', en: 'Tea corner' } },
+  meditation_cushions: { emoji: '🧘', label: { ar: 'وسائد تأمل', en: 'Meditation cushions' } },
+  sound_machine: { emoji: '🎵', label: { ar: 'جهاز أصوات مهدئة', en: 'Calming sound machine' } },
+  dim_lights: { emoji: '🔅', label: { ar: 'إضاءة خافتة', en: 'Dim lighting' } },
+  aromatherapy: { emoji: '🌿', label: { ar: 'علاج بالروائح', en: 'Aromatherapy' } },
+  weighted_blanket: { emoji: '🛌', label: { ar: 'بطانية ثقيلة', en: 'Weighted blanket' } },
+  tea_station: { emoji: '🍵', label: { ar: 'ركن شاي', en: 'Tea corner' } },
 };
 
 export function BeautyQuietSpaceCard({

@@ -28,7 +28,7 @@ export function BeautySteamFacialCard({
       <div className="mt-3 space-y-1">
         {[
           {
-            emoji: '',
+            emoji: '🌿',
             text: {
               ar: 'أضيفي أعشاب — بابونج أو نعناع أو روزماري',
               en: 'Add herbs — chamomile, mint, or rosemary',
@@ -39,11 +39,11 @@ export function BeautySteamFacialCard({
             text: { ar: '5-10 دقائق — مرتين أسبوعياً', en: '5-10 minutes — twice a week' },
           },
           {
-            emoji: '',
+            emoji: '📏',
             text: { ar: 'مسافة آمنة — 30 سم عن الوجه', en: 'Safe distance — 30 cm from the face' },
           },
           {
-            emoji: '',
+            emoji: '💧',
             text: {
               ar: 'بعد البخار — سيروم أو مرطب فوراً',
               en: 'After steaming — serum or moisturizer right away',

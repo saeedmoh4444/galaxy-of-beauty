@@ -17,42 +17,42 @@ interface Badge {
 
 const BADGE_META: Record<string, { emoji: string; gradient: string; descKey: TranslationKey }> = {
   top_rated: {
-    emoji: '',
+    emoji: '⭐',
     gradient: 'from-amber-400 to-yellow-500',
     descKey: 'marketing.technician-badges.badge-top-rated',
   },
   most_booked: {
-    emoji: '',
+    emoji: '🔥',
     gradient: 'from-red-400 to-orange-500',
     descKey: 'marketing.technician-badges.badge-most-booked',
   },
   quick_response: {
-    emoji: '',
+    emoji: '⚡',
     gradient: 'from-cyan-400 to-blue-500',
     descKey: 'marketing.technician-badges.badge-quick-response',
   },
   premium: {
-    emoji: '',
+    emoji: '💎',
     gradient: 'from-brand-400 to-indigo-500',
     descKey: 'marketing.technician-badges.badge-premium',
   },
   certified: {
-    emoji: '',
+    emoji: '🎓',
     gradient: 'from-green-400 to-emerald-500',
     descKey: 'marketing.technician-badges.badge-certified',
   },
   newcomer: {
-    emoji: '',
+    emoji: '🌱',
     gradient: 'from-lime-400 to-green-500',
     descKey: 'marketing.technician-badges.badge-newcomer',
   },
   loyal: {
-    emoji: '',
+    emoji: '💗',
     gradient: 'from-pink-400 to-rose-500',
     descKey: 'marketing.technician-badges.badge-loyal',
   },
   mentor: {
-    emoji: '',
+    emoji: '🦉',
     gradient: 'from-teal-400 to-cyan-500',
     descKey: 'marketing.technician-badges.badge-mentor',
   },

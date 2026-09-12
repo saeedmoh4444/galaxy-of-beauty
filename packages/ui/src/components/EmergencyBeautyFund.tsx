@@ -24,7 +24,7 @@ interface ReasonDef {
 
 const REASONS: Record<EmergencyReason, ReasonDef> = {
   interview: {
-    emoji: '',
+    emoji: '💼',
     title: { ar: 'مقابلة عمل', en: 'Job interview' },
     description: {
       ar: 'انطباع أول قوي لوظيفة جديدة',
@@ -43,7 +43,7 @@ const REASONS: Record<EmergencyReason, ReasonDef> = {
       'bg-indigo-50 text-indigo-700 border-indigo-200 dark:bg-indigo-950 dark:text-indigo-300 dark:border-indigo-800',
   },
   wedding_guest: {
-    emoji: '',
+    emoji: '👰',
     title: { ar: 'حضور زفاف', en: 'Wedding guest' },
     description: { ar: 'إطلالة تليق بالمناسبة', en: 'A look worthy of the occasion' },
     urgency: 'medium',
@@ -51,7 +51,7 @@ const REASONS: Record<EmergencyReason, ReasonDef> = {
       'bg-pink-50 text-pink-700 border-pink-200 dark:bg-pink-950 dark:text-pink-300 dark:border-pink-800',
   },
   medical: {
-    emoji: '',
+    emoji: '🩺',
     title: { ar: 'موعد طبي مهم', en: 'Important medical appointment' },
     description: { ar: 'تشعرين بالثقة أمام الطبيب', en: 'Feel confident in front of your doctor' },
     urgency: 'medium',
@@ -59,7 +59,7 @@ const REASONS: Record<EmergencyReason, ReasonDef> = {
       'bg-emerald-50 text-emerald-700 border-emerald-200 dark:bg-emerald-950 dark:text-emerald-300 dark:border-emerald-800',
   },
   graduation: {
-    emoji: '',
+    emoji: '🎓',
     title: { ar: 'حفل تخرج', en: 'Graduation ceremony' },
     description: { ar: 'إطلالة مشرقة ليومكِ الكبير', en: 'A radiant look for your big day' },
     urgency: 'medium',
@@ -67,7 +67,7 @@ const REASONS: Record<EmergencyReason, ReasonDef> = {
       'bg-amber-50 text-amber-700 border-amber-200 dark:bg-amber-950 dark:text-amber-300 dark:border-amber-800',
   },
   escape_violence: {
-    emoji: '',
+    emoji: '🌟',
     title: { ar: 'بداية حياة جديدة', en: 'A new beginning' },
     description: {
       ar: 'دعم للناجيات من العنف الأسري',
@@ -142,22 +142,22 @@ export function EmergencyBeautyFund({
 
   const statusDisplay = {
     available: {
-      emoji: '',
+      emoji: '🟢',
       label: { ar: 'متاح', en: 'Available' },
       className: 'bg-emerald-50 text-emerald-700 dark:bg-emerald-950 dark:text-emerald-300',
     },
     applied: {
-      emoji: '',
+      emoji: '🟡',
       label: { ar: 'قيد المراجعة', en: 'Under review' },
       className: 'bg-amber-50 text-amber-700 dark:bg-amber-950 dark:text-amber-300',
     },
     approved: {
-      emoji: '',
+      emoji: '🔵',
       label: { ar: 'تمت الموافقة', en: 'Approved' },
       className: 'bg-blue-50 text-blue-700 dark:bg-blue-950 dark:text-blue-300',
     },
     completed: {
-      emoji: '',
+      emoji: '✅',
       label: { ar: 'مكتمل', en: 'Completed' },
       className: 'bg-brand-50 text-brand-700 dark:bg-brand-950 dark:text-brand-300',
     },

@@ -30,12 +30,12 @@ interface BeautyConciergeCardProps {
 }
 
 const SERVICES = [
-  { emoji: '', label: { ar: 'تنظيم المواعيد', en: 'Appointment scheduling' } },
-  { emoji: '', label: { ar: 'اقتراح خدمات', en: 'Service suggestions' } },
-  { emoji: '', label: { ar: 'تنسيق المفاجآت', en: 'Surprise coordination' } },
-  { emoji: '', label: { ar: 'ترتيب التوصيل', en: 'Delivery arrangement' } },
-  { emoji: '', label: { ar: 'استشارة سريعة', en: 'Quick consultation' } },
-  { emoji: '', label: { ar: 'أولوية الحجز', en: 'Booking priority' } },
+  { emoji: '📅', label: { ar: 'تنظيم المواعيد', en: 'Appointment scheduling' } },
+  { emoji: '💡', label: { ar: 'اقتراح خدمات', en: 'Service suggestions' } },
+  { emoji: '🎉', label: { ar: 'تنسيق المفاجآت', en: 'Surprise coordination' } },
+  { emoji: '🚚', label: { ar: 'ترتيب التوصيل', en: 'Delivery arrangement' } },
+  { emoji: '💬', label: { ar: 'استشارة سريعة', en: 'Quick consultation' } },
+  { emoji: '⭐', label: { ar: 'أولوية الحجز', en: 'Booking priority' } },
 ];
 
 export function BeautyConciergeCard({

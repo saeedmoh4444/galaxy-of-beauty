@@ -17,12 +17,12 @@ interface Term {
 }
 
 const TERMS: Term[] = [
-  { ar: 'مكياج', en: 'Makeup', emoji: '' },
-  { ar: 'عناية بالبشرة', en: 'Skincare', emoji: '' },
-  { ar: 'حناء', en: 'Henna', emoji: '' },
-  { ar: 'عطر', en: 'Perfume', emoji: '' },
+  { ar: 'مكياج', en: 'Makeup', emoji: '💄' },
+  { ar: 'عناية بالبشرة', en: 'Skincare', emoji: '🧴' },
+  { ar: 'حناء', en: 'Henna', emoji: '🌿' },
+  { ar: 'عطر', en: 'Perfume', emoji: '🌸' },
   { ar: 'زيت', en: 'Oil', emoji: '🫒' },
-  { ar: 'جمال', en: 'Beauty', emoji: '' },
+  { ar: 'جمال', en: 'Beauty', emoji: '✨' },
 ];
 
 interface BeautyLanguageExchangeCardProps {

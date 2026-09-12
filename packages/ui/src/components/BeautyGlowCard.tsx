@@ -32,28 +32,28 @@ export function BeautyGlowCard({
       <div className="mt-3 space-y-1.5">
         {[
           {
-            emoji: '',
+            emoji: '💧',
             text: {
               ar: '8 أكواب ماء يومياً — أساس الإشراقة',
               en: '8 cups of water a day — the foundation of glow',
             },
           },
           {
-            emoji: '',
+            emoji: '🥗',
             text: {
               ar: 'خضروات وفواكه ملونة = فيتامينات',
               en: 'Colorful vegetables and fruits = vitamins',
             },
           },
           {
-            emoji: '',
+            emoji: '😴',
             text: {
               ar: '7-8 ساعات نوم — بشرة متجددة',
               en: '7-8 hours of sleep — regenerated skin',
             },
           },
           {
-            emoji: '',
+            emoji: '🏃',
             text: {
               ar: 'حركة 30 دقيقة — دورة دموية أفضل',
               en: '30 minutes of movement — better blood circulation',

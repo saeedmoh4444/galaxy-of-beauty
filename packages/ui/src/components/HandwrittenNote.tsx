@@ -32,7 +32,7 @@ const MILESTONE_MESSAGES: Record<
   { emoji: string; title: { ar: string; en: string }; message: { ar: string; en: string } }
 > = {
   10: {
-    emoji: '',
+    emoji: '🎉',
     title: { ar: '10 حجوزات!', en: '10 bookings!' },
     message: {
       ar: 'شكراً لكِ على ثقتكِ بنا. أنتِ جزء من عائلة جالاكسي بيوتي الآن.',
@@ -40,7 +40,7 @@ const MILESTONE_MESSAGES: Record<
     },
   },
   25: {
-    emoji: '',
+    emoji: '🌟',
     title: { ar: '25 حجوزات!', en: '25 bookings!' },
     message: {
       ar: 'أنتِ من أروع عميلاتنا. شكراً لوجودكِ معنا في كل مرة.',
@@ -48,7 +48,7 @@ const MILESTONE_MESSAGES: Record<
     },
   },
   50: {
-    emoji: '',
+    emoji: '👑',
     title: { ar: '50 حجوزات!', en: '50 bookings!' },
     message: {
       ar: 'لا نجد كلمات توفيكِ حقكِ. شكراً من القلب — أنتِ ملكة جالاكسي بيوتي.',
@@ -56,7 +56,7 @@ const MILESTONE_MESSAGES: Record<
     },
   },
   100: {
-    emoji: '',
+    emoji: '🏆',
     title: { ar: '100 حجوزات!', en: '100 bookings!' },
     message: {
       ar: 'مئة مرة! أنتِ لستِ عميلة — أنتِ أخت وصديقة. شكراً لكل مرة.',

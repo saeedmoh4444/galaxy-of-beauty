@@ -28,14 +28,14 @@ export function BeautyMakeupContourCard({
       <div className="mt-3 space-y-1">
         {[
           {
-            emoji: '',
+            emoji: '🎨',
             text: {
               ar: 'الكونتور: تحت عظمة الوجنة — خط الفك',
               en: 'Contour: under the cheekbone — along the jawline',
             },
           },
           {
-            emoji: '',
+            emoji: '✨',
             text: {
               ar: 'الهايلايت: أعلى الوجنة — عظمة الحاجب',
               en: 'Highlight: top of the cheekbone — brow bone',
@@ -46,7 +46,7 @@ export function BeautyMakeupContourCard({
             text: { ar: 'ادمجي جيداً — لا خطوط ظاهرة', en: 'Blend well — no visible lines' },
           },
           {
-            emoji: '',
+            emoji: '🌗',
             text: {
               ar: 'درجة أغمق من بشرتك بدرجتين فقط',
               en: 'Only two shades darker than your skin',

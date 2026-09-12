@@ -28,7 +28,7 @@ export function BeautyMakeupBlushCard({
       <div className="mt-3 space-y-1">
         {[
           {
-            emoji: '',
+            emoji: '😊',
             text: {
               ar: 'ابتسمي — ضعيه على تفاحة الخد',
               en: 'Smile — apply on the apples of the cheeks',
@@ -39,14 +39,14 @@ export function BeautyMakeupBlushCard({
             text: { ar: 'ادمجيه للأعلى — نحو الصدغ', en: 'Blend upward — toward the temples' },
           },
           {
-            emoji: '',
+            emoji: '🧴',
             text: {
               ar: 'كريمي للبشرة الجافة — بودرة للدهنية',
               en: 'Cream for dry skin — powder for oily',
             },
           },
           {
-            emoji: '',
+            emoji: '🤏',
             text: {
               ar: 'القليل كثير — ابدئي بكمية صغيرة',
               en: 'Less is more — start with a small amount',

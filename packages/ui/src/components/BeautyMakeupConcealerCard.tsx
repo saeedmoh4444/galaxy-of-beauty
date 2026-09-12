@@ -32,18 +32,18 @@ export function BeautyMakeupConcealerCard({
             text: { ar: 'تحت العين — مثلث مقلوب', en: 'Under the eyes — an inverted triangle' },
           },
           {
-            emoji: '',
+            emoji: '🩹',
             text: { ar: 'على الحبوب — نقطة صغيرة', en: 'On blemishes — a tiny dot' },
           },
           {
-            emoji: '',
+            emoji: '🎨',
             text: {
               ar: 'أفتح من بشرتك بدرجة — تحت العين',
               en: 'One shade lighter than your skin — under the eyes',
             },
           },
           {
-            emoji: '',
+            emoji: '👆',
             text: { ar: 'التربيت — وليس الفرك', en: "Tap — don't rub" },
           },
         ].map((t, i) => (

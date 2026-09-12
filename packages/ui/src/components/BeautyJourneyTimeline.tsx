@@ -33,7 +33,7 @@ const STAGES: LifeStage[] = [
 
 const STAGE_DEFS: Record<LifeStage, StageDef> = {
   first_steps: {
-    emoji: '',
+    emoji: '🌱',
     title: { ar: 'خطواتي الأولى', en: 'First steps' },
     ageRange: '15-18',
     services: [
@@ -45,7 +45,7 @@ const STAGE_DEFS: Record<LifeStage, StageDef> = {
     gradient: 'from-pink-400 to-rose-400',
   },
   discovery: {
-    emoji: '',
+    emoji: '🎨',
     title: { ar: 'اكتشاف وتعبير', en: 'Discovery and expression' },
     ageRange: '18-25',
     services: [
@@ -57,7 +57,7 @@ const STAGE_DEFS: Record<LifeStage, StageDef> = {
     gradient: 'from-brand-400 to-violet-400',
   },
   career: {
-    emoji: '',
+    emoji: '💼',
     title: { ar: 'مهنة وثقة', en: 'Career and confidence' },
     ageRange: '25-35',
     services: [
@@ -69,7 +69,7 @@ const STAGE_DEFS: Record<LifeStage, StageDef> = {
     gradient: 'from-blue-400 to-sky-400',
   },
   wedding_motherhood: {
-    emoji: '',
+    emoji: '👰',
     title: { ar: 'زواج وأمومة', en: 'Marriage and motherhood' },
     ageRange: '25-40',
     services: [
@@ -81,7 +81,7 @@ const STAGE_DEFS: Record<LifeStage, StageDef> = {
     gradient: 'from-rose-400 to-pink-400',
   },
   confidence: {
-    emoji: '',
+    emoji: '👑',
     title: { ar: 'ثقة وأناقة', en: 'Confidence and elegance' },
     ageRange: '40-55',
     services: [
@@ -93,7 +93,7 @@ const STAGE_DEFS: Record<LifeStage, StageDef> = {
     gradient: 'from-amber-400 to-orange-400',
   },
   golden: {
-    emoji: '',
+    emoji: '🌟',
     title: { ar: 'الجمال الذهبي', en: 'Golden beauty' },
     ageRange: '55+',
     services: [

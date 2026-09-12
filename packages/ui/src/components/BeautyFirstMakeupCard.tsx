@@ -28,7 +28,7 @@ export function BeautyFirstMakeupCard({
       <div className="mt-3 space-y-1">
         {[
           {
-            emoji: '',
+            emoji: '💄',
             text: {
               ar: 'BB كريم — بدل الفاونديشن الثقيل',
               en: 'BB cream — instead of heavy foundation',
@@ -39,11 +39,11 @@ export function BeautyFirstMakeupCard({
             text: { ar: 'ماسكارا شفافة — طبيعية وناعمة', en: 'Clear mascara — natural and soft' },
           },
           {
-            emoji: '',
+            emoji: '💋',
             text: { ar: 'بلسم شفاه ملون — بدل الروج', en: 'Tinted lip balm — instead of lipstick' },
           },
           {
-            emoji: '',
+            emoji: '✨',
             text: {
               ar: 'الأقل هو الأكثر — بشرة شابة جميلة',
               en: 'Less is more — young, beautiful skin',

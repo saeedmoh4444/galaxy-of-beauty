@@ -28,28 +28,28 @@ export function BeautyOmegaCard({
       <div className="mt-3 space-y-1">
         {[
           {
-            emoji: '',
+            emoji: '💧',
             text: {
               ar: 'يرطب البشرة — يقوي حاجز الدهون الطبيعي',
               en: 'Hydrates the skin — strengthens the natural lipid barrier',
             },
           },
           {
-            emoji: '',
+            emoji: '🌿',
             text: {
               ar: 'يقلل الالتهابات — ممتاز لحبوب والوردية',
               en: 'Reduces inflammation — great for breakouts and rosacea',
             },
           },
           {
-            emoji: '',
+            emoji: '🐟',
             text: {
               ar: 'سلمون، تونة، سردين — أو كبسولات',
               en: 'Salmon, tuna, sardines — or capsules',
             },
           },
           {
-            emoji: '',
+            emoji: '🌰',
             text: {
               ar: 'مصادر نباتية — جوز، بذور كتان، شيا',
               en: 'Plant sources — walnuts, flaxseed, chia',

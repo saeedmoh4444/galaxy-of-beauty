@@ -37,12 +37,12 @@ export function BeautyTeethCareCard({
             tip: { ar: 'صباحاً ومساءً — دقيقتان', en: 'Morning and night — two minutes' },
           },
           {
-            emoji: '',
+            emoji: '🦷',
             label: { ar: 'خيط الأسنان', en: 'Dental floss' },
             tip: { ar: 'يومياً — يمنع التسوس', en: 'Daily — prevents cavities' },
           },
           {
-            emoji: '',
+            emoji: '✨',
             label: { ar: 'تبييض طبيعي', en: 'Natural whitening' },
             tip: { ar: 'فراولة + بيكربونات', en: 'Strawberry + baking soda' },
           },

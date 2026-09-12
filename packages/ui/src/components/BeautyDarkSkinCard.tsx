@@ -28,21 +28,21 @@ export function BeautyDarkSkinCard({
       <div className="mt-3 space-y-1">
         {[
           {
-            emoji: '',
+            emoji: '🧴',
             text: {
               ar: 'ميل للجفاف — ترطيب مكثف بزبدة الشيا',
               en: 'Prone to dryness — intense hydration with shea butter',
             },
           },
           {
-            emoji: '',
+            emoji: '🍊',
             text: {
               ar: 'تصبغات — فيتامين C وهيالورونيك أسيد',
               en: 'Hyperpigmentation — vitamin C and hyaluronic acid',
             },
           },
           {
-            emoji: '',
+            emoji: '🎨',
             text: {
               ar: 'ألوان: برقوقي، عنابي، ذهبي — غنية وعميقة',
               en: 'Shades: plum, maroon, gold — rich and deep',

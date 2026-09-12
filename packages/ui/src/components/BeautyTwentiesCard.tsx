@@ -35,21 +35,21 @@ export function BeautyTwentiesCard({
             },
           },
           {
-            emoji: '',
+            emoji: '🧴',
             text: {
               ar: 'روتين أساسي — منظف، مرطب، واقي شمس',
               en: 'Basic routine — cleanser, moisturizer, sunscreen',
             },
           },
           {
-            emoji: '',
+            emoji: '🍊',
             text: {
               ar: 'فيتامين C — ابدئي مبكراً لمضادات الأكسدة',
               en: 'Vitamin C — start early for antioxidants',
             },
           },
           {
-            emoji: '',
+            emoji: '🚫',
             text: {
               ar: 'لا ريبتينول بعد — بشرتك تنتجه طبيعياً',
               en: 'No retinoids yet — your skin produces it naturally',

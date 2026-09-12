@@ -28,28 +28,28 @@ export function BeautyBreakoutSOSCard({
       <div className="mt-3 space-y-1">
         {[
           {
-            emoji: '',
+            emoji: '🧊',
             text: {
               ar: 'كمادة ثلج — 5 دقائق لتقليل الالتهاب',
               en: 'Ice compress — 5 minutes to reduce inflammation',
             },
           },
           {
-            emoji: '',
+            emoji: '🩹',
             text: {
               ar: 'لصقة حبوب — تجفف وتحمي من العبث',
               en: 'Pimple patch — dries it out and stops picking',
             },
           },
           {
-            emoji: '',
+            emoji: '🚫',
             text: {
               ar: 'لا تضغطي — يزيد الالتهاب ويترك أثراً',
               en: "Don't squeeze — it worsens inflammation and leaves a mark",
             },
           },
           {
-            emoji: '',
+            emoji: '🧴',
             text: {
               ar: 'كريم بنزويل بيروكسايد — للطوارئ فقط',
               en: 'Benzoyl peroxide cream — for emergencies only',

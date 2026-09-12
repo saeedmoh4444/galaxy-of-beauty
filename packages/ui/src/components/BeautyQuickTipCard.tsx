@@ -7,7 +7,7 @@ import { cn } from '@galaxy/shared';
  * From Phase W6: Education & Empowerment — Knowledge Hub.
  *
  * Usage:
- *   <BeautyQuickTipCard tip={{ emoji: '', title: 'الماء أولاً', body: 'اشربي كوب ماء قبل قهوتك الصباحية.' }} />
+ *   <BeautyQuickTipCard tip={{ emoji: '💧', title: 'الماء أولاً', body: 'اشربي كوب ماء قبل قهوتك الصباحية.' }} />
  */
 
 interface QuickTip {

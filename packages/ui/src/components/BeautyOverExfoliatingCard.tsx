@@ -28,28 +28,28 @@ export function BeautyOverExfoliatingCard({
       <div className="mt-3 space-y-1">
         {[
           {
-            emoji: '',
+            emoji: '🔍',
             text: {
               ar: 'علامات: احمرار، حرقان، لمعان زائد، حساسية',
               en: 'Signs: redness, stinging, excess shine, sensitivity',
             },
           },
           {
-            emoji: '',
+            emoji: '🛑',
             text: {
               ar: 'توقفي فوراً — كل المنتجات النشطة',
               en: 'Stop immediately — all active products',
             },
           },
           {
-            emoji: '',
+            emoji: '🧴',
             text: {
               ar: 'العلاج: مرطب بسيط + سيراميد فقط',
               en: 'Treatment: simple moisturizer + ceramides only',
             },
           },
           {
-            emoji: '',
+            emoji: '🌿',
             text: {
               ar: 'أسبوعين راحة — ثم عودي تدريجياً',
               en: 'Two weeks of rest — then ease back gradually',

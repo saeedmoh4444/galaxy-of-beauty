@@ -28,21 +28,21 @@ export function BeautyTravelPackingCard({
       <div className="mt-3 space-y-1">
         {[
           {
-            emoji: '',
+            emoji: '🧳',
             text: {
               ar: 'عبوات سفر صغيرة — أعيدي تعبئتها من الكبيرة',
               en: 'Small travel bottles — refill them from large ones',
             },
           },
           {
-            emoji: '',
+            emoji: '🎨',
             text: {
               ar: 'باليت متعدد — خدود + عيون + هايلايتر',
               en: 'Multi-palette — blush + eyes + highlighter',
             },
           },
           {
-            emoji: '',
+            emoji: '📝',
             text: {
               ar: 'قائمة أساسيات — لا تنسي شيئاً',
               en: 'An essentials list — never forget anything',

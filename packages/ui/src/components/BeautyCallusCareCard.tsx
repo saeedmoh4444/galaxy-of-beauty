@@ -35,21 +35,21 @@ export function BeautyCallusCareCard({
             },
           },
           {
-            emoji: '',
+            emoji: '🧴',
             text: {
               ar: 'كريم يوريا — يرطب ويزيل الجلد الميت',
               en: 'Urea cream — hydrates and removes dead skin',
             },
           },
           {
-            emoji: '',
+            emoji: '🧦',
             text: {
               ar: 'جوارب قطنية — بعد الكريم طوال الليل',
               en: 'Cotton socks — over the cream overnight',
             },
           },
           {
-            emoji: '',
+            emoji: '📅',
             text: {
               ar: 'مرتين أسبوعياً — للصيف خصوصاً',
               en: 'Twice a week — especially in summer',

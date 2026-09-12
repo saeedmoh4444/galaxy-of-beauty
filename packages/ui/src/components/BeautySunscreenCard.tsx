@@ -28,18 +28,18 @@ export function BeautySunscreenCard({
       <div className="mt-3 space-y-1">
         {[
           {
-            emoji: '',
+            emoji: '🌞',
             text: { ar: 'SPF 30 كحد أدنى — SPF 50 أفضل', en: 'SPF 30 minimum — SPF 50 is better' },
           },
           {
-            emoji: '',
+            emoji: '⏰',
             text: {
               ar: 'جددي كل ساعتين — خاصة في الصيف',
               en: 'Reapply every 2 hours — especially in summer',
             },
           },
           {
-            emoji: '',
+            emoji: '🥄',
             text: {
               ar: 'كمية كافية — ملعقة شاي للوجه',
               en: 'Enough amount — a teaspoon for the face',

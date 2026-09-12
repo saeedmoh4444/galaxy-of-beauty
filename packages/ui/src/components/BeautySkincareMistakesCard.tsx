@@ -28,14 +28,14 @@ export function BeautySkincareMistakesCard({
       <div className="mt-3 space-y-1">
         {[
           {
-            emoji: '',
+            emoji: '🔥',
             text: {
               ar: 'غسل الوجه بالماء الساخن — يجرد البشرة من زيوتها',
               en: 'Washing your face with hot water — strips the skin of its oils',
             },
           },
           {
-            emoji: '',
+            emoji: '🚫',
             text: {
               ar: 'تخطي المرطب — حتى البشرة الدهنية تحتاج ترطيب',
               en: 'Skipping moisturizer — even oily skin needs hydration',
@@ -49,7 +49,7 @@ export function BeautySkincareMistakesCard({
             },
           },
           {
-            emoji: '',
+            emoji: '🔄',
             text: {
               ar: 'تغيير المنتجات كل أسبوع — أعطيها 6-8 أسابيع',
               en: 'Switching products weekly — give them 6-8 weeks',

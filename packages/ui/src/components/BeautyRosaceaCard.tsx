@@ -28,21 +28,21 @@ export function BeautyRosaceaCard({
       <div className="mt-3 space-y-1">
         {[
           {
-            emoji: '',
+            emoji: '🌿',
             text: {
               ar: 'منتجات مهدئة — ألوفيرا، سيراميد',
               en: 'Soothing products — aloe vera, ceramides',
             },
           },
           {
-            emoji: '',
+            emoji: '🚫',
             text: {
               ar: 'تجنبي: كحول، عطور، مقشرات قوية',
               en: 'Avoid: alcohol, fragrances, harsh exfoliants',
             },
           },
           {
-            emoji: '',
+            emoji: '🧊',
             text: { ar: 'كمادات باردة — عند الالتهاب', en: 'Cold compresses — during flare-ups' },
           },
           {

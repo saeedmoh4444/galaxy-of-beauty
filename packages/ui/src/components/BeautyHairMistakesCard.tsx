@@ -28,14 +28,14 @@ export function BeautyHairMistakesCard({
       <div className="mt-3 space-y-1">
         {[
           {
-            emoji: '',
+            emoji: '🔥',
             text: {
               ar: 'استخدام الحرارة بدون واقي — تلف دائم للشعر',
               en: 'Heat styling without a protectant — permanent hair damage',
             },
           },
           {
-            emoji: '',
+            emoji: '🚫',
             text: {
               ar: 'وضع البلسم على الجذور — يسد المسام ويثقل الشعر',
               en: 'Applying conditioner to the roots — clogs pores and weighs hair down',
@@ -49,7 +49,7 @@ export function BeautyHairMistakesCard({
             },
           },
           {
-            emoji: '',
+            emoji: '😴',
             text: {
               ar: 'النوم بشعر مبلل — فطريات وتقصف',
               en: 'Sleeping with wet hair — fungus and split ends',

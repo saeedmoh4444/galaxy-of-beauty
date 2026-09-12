@@ -31,7 +31,7 @@ const CONSULTANTS: {
   },
   {
     key: 'makeup',
-    emoji: '',
+    emoji: '💄',
     name: 'virtualConsultation.consultant.makeup.name',
     specialty: 'virtualConsultation.consultant.makeup.specialty',
     price: 120,
@@ -59,7 +59,7 @@ const CONSULTANTS: {
   },
   {
     key: 'nutrition',
-    emoji: '',
+    emoji: '🥗',
     name: 'virtualConsultation.consultant.nutrition.name',
     specialty: 'virtualConsultation.consultant.nutrition.specialty',
     price: 130,

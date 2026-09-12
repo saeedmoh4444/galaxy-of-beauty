@@ -5,7 +5,7 @@ import { useLocale } from '@/components/LocaleProvider';
 const EMERGENCIES = [
   {
     key: 'pimple',
-    emoji: '',
+    emoji: '🔴',
     name: 'بثرة طارئة',
     desc: 'ظهور بثرة قبل مناسبة',
     price: 50,
@@ -14,7 +14,7 @@ const EMERGENCIES = [
   },
   {
     key: 'smudge',
-    emoji: '',
+    emoji: '💄',
     name: 'مكياج متلطخ',
     desc: 'تلطخ المكياج فجأة',
     price: 40,
@@ -32,7 +32,7 @@ const EMERGENCIES = [
   },
   {
     key: 'nail',
-    emoji: '',
+    emoji: '💅',
     name: 'ظفر مكسور',
     desc: 'كسر ظفر قبل مناسبة',
     price: 35,
@@ -50,7 +50,7 @@ const EMERGENCIES = [
   },
   {
     key: 'redness',
-    emoji: '',
+    emoji: '🧊',
     name: 'احمرار البشرة',
     desc: 'احمرار أو تهيج مفاجئ',
     price: 55,
@@ -156,7 +156,7 @@ export default function BeautyRescueScreen(): JSX.Element {
       </Text>
       {[
         {
-          emoji: '',
+          emoji: '💢',
           title: 'طوارئ الحبوب',
           subtitle: 'ظهور مفاجئ — حل سريع',
           color: '#ef4444',
@@ -169,7 +169,7 @@ export default function BeautyRescueScreen(): JSX.Element {
           ],
         },
         {
-          emoji: '',
+          emoji: '🔥',
           title: 'علاج حروق الشمس',
           subtitle: 'إسعاف سريع للبشرة المحروقة',
           color: '#ea580c',
@@ -182,7 +182,7 @@ export default function BeautyRescueScreen(): JSX.Element {
           ],
         },
         {
-          emoji: '',
+          emoji: '👀',
           title: 'انتفاخ العيون',
           subtitle: 'صباح منتفخ — حل سريع',
           color: '#0284c7',
@@ -195,7 +195,7 @@ export default function BeautyRescueScreen(): JSX.Element {
           ],
         },
         {
-          emoji: '',
+          emoji: '👄',
           title: 'تشقق الشفاه',
           subtitle: 'علاج سريع للشفاه الجافة',
           color: '#e11d48',
@@ -208,7 +208,7 @@ export default function BeautyRescueScreen(): JSX.Element {
           ],
         },
         {
-          emoji: '',
+          emoji: '🧊',
           title: 'تهدئة الاحمرار',
           subtitle: 'بشرة هادئة في دقائق',
           color: '#059669',
@@ -272,7 +272,7 @@ export default function BeautyRescueScreen(): JSX.Element {
       </Text>
       {[
         {
-          emoji: '',
+          emoji: '💉',
           title: 'بعد البوتوكس',
           subtitle: 'تعليمات ما بعد الحقن',
           color: '#0284c7',
@@ -285,7 +285,7 @@ export default function BeautyRescueScreen(): JSX.Element {
           ],
         },
         {
-          emoji: '',
+          emoji: '💧',
           title: 'بعد الفيلر',
           subtitle: 'عناية ما بعد التعبئة',
           color: '#7c3aed',
@@ -298,7 +298,7 @@ export default function BeautyRescueScreen(): JSX.Element {
           ],
         },
         {
-          emoji: '',
+          emoji: '⚡',
           title: 'بعد الليزر',
           subtitle: 'عناية خاصة بعد جلسة الليزر',
           color: '#ef4444',
@@ -311,7 +311,7 @@ export default function BeautyRescueScreen(): JSX.Element {
           ],
         },
         {
-          emoji: '',
+          emoji: '🍋',
           title: 'بعد التقشير',
           subtitle: 'روتين ما بعد التقشير الكيميائي',
           color: '#d97706',

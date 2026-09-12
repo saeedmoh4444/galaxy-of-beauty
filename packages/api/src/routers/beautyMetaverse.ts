@@ -3,7 +3,7 @@ import { EXPERIMENTAL_FEATURES } from '@galaxy/shared';
 import { customerProcedure, publicProcedure, router, requireFeatureFlag } from '../trpc';
 
 const SALONS = [
-  { id: 1, name: 'صالون نورة', technician: 'نورة العمري', emoji: '', visitors: 450, rating: 4.9 },
+  { id: 1, name: 'صالون نورة', technician: 'نورة العمري', emoji: '💅', visitors: 450, rating: 4.9 },
   {
     id: 2,
     name: 'استوديو سارة',
@@ -16,16 +16,16 @@ const SALONS = [
     id: 3,
     name: 'عيادة د. ليلى',
     technician: 'د. ليلى القحطاني',
-    emoji: '',
+    emoji: '🩺',
     visitors: 280,
     rating: 4.9,
   },
 ];
 
 const AVATARS = [
-  { id: 'skin1', name: 'بشرة فاتحة', emoji: '' },
-  { id: 'skin2', name: 'بشرة متوسطة', emoji: '' },
-  { id: 'skin3', name: 'بشرة غامقة', emoji: '' },
+  { id: 'skin1', name: 'بشرة فاتحة', emoji: '🌕' },
+  { id: 'skin2', name: 'بشرة متوسطة', emoji: '🌗' },
+  { id: 'skin3', name: 'بشرة غامقة', emoji: '🌑' },
 ];
 
 const flag = requireFeatureFlag(EXPERIMENTAL_FEATURES.BEAUTY_METAVERSE);

@@ -22,7 +22,7 @@ interface Milestone {
 const MILESTONES: Milestone[] = [
   {
     month: 6,
-    emoji: '',
+    emoji: '📋',
     title: { ar: 'خطة العناية', en: 'Care plan' },
     description: {
       ar: 'نضع خطة عناية متكاملة لبشرتكِ قبل الزفاف',
@@ -40,7 +40,7 @@ const MILESTONES: Milestone[] = [
   },
   {
     month: 5,
-    emoji: '',
+    emoji: '🧴',
     title: { ar: 'روتين العناية', en: 'Care routine' },
     description: {
       ar: 'بناء روتين عناية يومي بالبشرة',
@@ -76,7 +76,7 @@ const MILESTONES: Milestone[] = [
   },
   {
     month: 3,
-    emoji: '',
+    emoji: '💄',
     title: { ar: 'تجربة الإطلالة', en: 'Look trial' },
     description: {
       ar: 'تجربة كاملة لإطلالة الزفاف',
@@ -94,7 +94,7 @@ const MILESTONES: Milestone[] = [
   },
   {
     month: 2,
-    emoji: '',
+    emoji: '✨',
     title: { ar: 'اللمسات النهائية', en: 'Final touches' },
     description: {
       ar: 'التركيز على التفاصيل الدقيقة',
@@ -112,7 +112,7 @@ const MILESTONES: Milestone[] = [
   },
   {
     month: 1,
-    emoji: '',
+    emoji: '👰',
     title: { ar: 'الأسبوع الأخير', en: 'The final week' },
     description: {
       ar: 'الاستعداد النهائي والاسترخاء',

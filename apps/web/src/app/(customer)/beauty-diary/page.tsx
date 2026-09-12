@@ -7,11 +7,11 @@ import { useLocale } from '@/components/LocaleProvider';
 import type { TranslationKey } from '@galaxy/shared';
 
 const MOODS: { value: number; emoji: string; label: TranslationKey }[] = [
-  { value: 5, emoji: '', label: 'beautyDiary.mood.great' },
-  { value: 4, emoji: '', label: 'beautyDiary.mood.good' },
-  { value: 3, emoji: '', label: 'beautyDiary.mood.ok' },
-  { value: 2, emoji: '', label: 'beautyDiary.mood.bad' },
-  { value: 1, emoji: '', label: 'beautyDiary.mood.irritated' },
+  { value: 5, emoji: '😍', label: 'beautyDiary.mood.great' },
+  { value: 4, emoji: '😊', label: 'beautyDiary.mood.good' },
+  { value: 3, emoji: '😐', label: 'beautyDiary.mood.ok' },
+  { value: 2, emoji: '😕', label: 'beautyDiary.mood.bad' },
+  { value: 1, emoji: '😣', label: 'beautyDiary.mood.irritated' },
 ];
 
 export default function BeautyDiaryPage(): JSX.Element {

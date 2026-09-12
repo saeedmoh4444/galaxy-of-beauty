@@ -19,7 +19,7 @@ const CONSULTANTS = [
   },
   {
     key: 'makeup',
-    emoji: '',
+    emoji: '💄',
     name: 'خبيرة مكياج',
     specialty: 'استشارة مكياج للمناسبات',
     price: 120,
@@ -37,7 +37,7 @@ const CONSULTANTS = [
   },
   {
     key: 'nutrition',
-    emoji: '',
+    emoji: '🥗',
     name: 'اخصائية تغذية',
     specialty: 'تغذية البشرة والشعر',
     price: 130,

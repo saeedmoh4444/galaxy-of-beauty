@@ -28,7 +28,7 @@ export function BeautyPerfumeOudCard({
       <div className="mt-3 space-y-1">
         {[
           {
-            emoji: '',
+            emoji: '💧',
             text: {
               ar: 'ضعيه على نقاط النبض — قطرة صغيرة تكفي',
               en: 'Apply to pulse points — a tiny drop is enough',
@@ -42,14 +42,14 @@ export function BeautyPerfumeOudCard({
             },
           },
           {
-            emoji: '',
+            emoji: '💎',
             text: {
               ar: 'العود السعودي — من أفخر الأنواع',
               en: 'Saudi oud — among the finest varieties',
             },
           },
           {
-            emoji: '',
+            emoji: '💰',
             text: {
               ar: 'استثمار — العود الحقيقي ثمين ويدوم',
               en: 'An investment — real oud is precious and long-lasting',

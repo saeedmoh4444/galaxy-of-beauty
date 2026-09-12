@@ -28,14 +28,14 @@ export function BeautyParaffinCard({
       <div className="mt-3 space-y-1">
         {[
           {
-            emoji: '',
+            emoji: '🕯',
             text: {
               ar: 'شمع دافئ — يفتح المسام ويرطب بعمق',
               en: 'Warm wax — opens pores and deeply hydrates',
             },
           },
           {
-            emoji: '',
+            emoji: '🧴',
             text: {
               ar: 'يعالج الجفاف — ممتاز للشتاء',
               en: 'Treats dryness — excellent for winter',
@@ -49,7 +49,7 @@ export function BeautyParaffinCard({
             },
           },
           {
-            emoji: '',
+            emoji: '🧤',
             text: {
               ar: 'بعد الجلسة — كريم مرطب لليدين',
               en: 'After the session — moisturizing hand cream',

@@ -28,28 +28,28 @@ export function BeautyNailStrengthenCard({
       <div className="mt-3 space-y-1">
         {[
           {
-            emoji: '',
+            emoji: '💅',
             text: {
               ar: 'مقوي أظافر — طبقة أساس قبل الطلاء',
               en: 'A nail hardener — a base layer before polish',
             },
           },
           {
-            emoji: '',
+            emoji: '💧',
             text: {
               ar: 'زيت الأظافر — يومياً على الظفر والبشرة',
               en: 'Nail oil — daily on the nail and cuticle',
             },
           },
           {
-            emoji: '',
+            emoji: '💊',
             text: {
               ar: 'بيوتين وزنك — من الداخل للخارج',
               en: 'Biotin and zinc — from the inside out',
             },
           },
           {
-            emoji: '',
+            emoji: '🧤',
             text: {
               ar: 'قفازات للتنظيف — احمي أظافركِ',
               en: 'Cleaning gloves — protect your nails',

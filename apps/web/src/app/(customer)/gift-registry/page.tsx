@@ -18,10 +18,10 @@ import { useToast } from '@galaxy/ui';
 import type { TranslationKey } from '@galaxy/shared';
 
 const OCCASIONS: Record<string, { label: TranslationKey; emoji: string }> = {
-  wedding: { label: 'giftRegistry.occasion.wedding', emoji: '' },
-  birthday: { label: 'giftRegistry.occasion.birthday', emoji: '' },
-  baby_shower: { label: 'giftRegistry.occasion.babyShower', emoji: '' },
-  other: { label: 'giftRegistry.occasion.other', emoji: '' },
+  wedding: { label: 'giftRegistry.occasion.wedding', emoji: '💍' },
+  birthday: { label: 'giftRegistry.occasion.birthday', emoji: '🎂' },
+  baby_shower: { label: 'giftRegistry.occasion.babyShower', emoji: '👶' },
+  other: { label: 'giftRegistry.occasion.other', emoji: '🎁' },
 };
 
 type RegistryItem = RouterOutputs['giftRegistry']['myRegistries'][number] & {

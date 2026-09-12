@@ -50,7 +50,7 @@ const MOODS: Record<WellnessMood, MoodDef> = {
     color: 'from-indigo-100 to-blue-100 dark:from-indigo-950 dark:to-blue-950',
   },
   anxious: {
-    emoji: '',
+    emoji: '😟',
     title: { ar: 'قلقة', en: 'Anxious' },
     description: {
       ar: 'القلق يسرق نضارتكِ — استعيدي هدوءكِ',
@@ -66,7 +66,7 @@ const MOODS: Record<WellnessMood, MoodDef> = {
     color: 'from-sky-100 to-teal-100 dark:from-sky-950 dark:to-teal-950',
   },
   tired: {
-    emoji: '',
+    emoji: '😴',
     title: { ar: 'مرهقة', en: 'Exhausted' },
     description: {
       ar: 'الإرهاق يظهر على وجهكِ — دلّلي نفسكِ',
@@ -82,7 +82,7 @@ const MOODS: Record<WellnessMood, MoodDef> = {
     color: 'from-amber-100 to-orange-100 dark:from-amber-950 dark:to-orange-950',
   },
   low_confidence: {
-    emoji: '',
+    emoji: '💗',
     title: { ar: 'ثقة منخفضة', en: 'Low confidence' },
     description: {
       ar: 'كل امرأة تستحق أن تشعر بالثقة',
@@ -98,7 +98,7 @@ const MOODS: Record<WellnessMood, MoodDef> = {
     color: 'from-rose-100 to-pink-100 dark:from-rose-950 dark:to-pink-950',
   },
   grieving: {
-    emoji: '',
+    emoji: '🤍',
     title: { ar: 'حزينة', en: 'Grieving' },
     description: {
       ar: 'العناية بنفسكِ جزء من رحلة التعافي',
@@ -114,7 +114,7 @@ const MOODS: Record<WellnessMood, MoodDef> = {
     color: 'from-brand-100 to-violet-100 dark:from-brand-950 dark:to-violet-950',
   },
   new_beginning: {
-    emoji: '',
+    emoji: '🌱',
     title: { ar: 'بداية جديدة', en: 'New beginning' },
     description: {
       ar: 'انطلاقة جديدة تستحقين فيها أفضل عناية',
@@ -130,7 +130,7 @@ const MOODS: Record<WellnessMood, MoodDef> = {
     color: 'from-emerald-100 to-teal-100 dark:from-emerald-950 dark:to-teal-950',
   },
   celebrating: {
-    emoji: '',
+    emoji: '🎉',
     title: { ar: 'احتفال', en: 'Celebrating' },
     description: {
       ar: 'لحظات الفرح تستحق إطلالة استثنائية',

@@ -28,21 +28,21 @@ export function BeautyCryoStickCard({
       <div className="mt-3 space-y-1">
         {[
           {
-            emoji: '',
+            emoji: '✨',
             text: {
               ar: 'يقلص المسام — بشرة أنعم وأكثر إشراقاً',
               en: 'Tightens pores — smoother, brighter skin',
             },
           },
           {
-            emoji: '',
+            emoji: '🧊',
             text: {
               ar: 'تدليك بارد — يقلل الانتفاخ تحت العين',
               en: 'Cold massage — reduces under-eye puffiness',
             },
           },
           {
-            emoji: '',
+            emoji: '🌅',
             text: {
               ar: 'صباحاً — ينشط الدورة الدموية',
               en: 'In the morning — boosts circulation',

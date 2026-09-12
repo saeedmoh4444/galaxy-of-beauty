@@ -7,7 +7,7 @@ import { cn } from '@galaxy/shared';
  * From Phase W9: The Small Details — Delightful Surprises.
  *
  * Usage:
- *   <BeautyDreamBoardCard dreams={[{ emoji: '', text: 'شعر طويل صحي' }]} />
+ *   <BeautyDreamBoardCard dreams={[{ emoji: '💇', text: 'شعر طويل صحي' }]} />
  */
 
 interface Dream {

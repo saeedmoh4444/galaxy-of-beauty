@@ -28,7 +28,7 @@ export function BeautyTravelKitCard({
       <div className="mt-3 space-y-1">
         {[
           {
-            emoji: '',
+            emoji: '🧳',
             text: {
               ar: 'عبوات صغيرة — أقل من 100 مل للطائرة',
               en: 'Small bottles — under 100 ml for flights',
@@ -42,14 +42,14 @@ export function BeautyTravelKitCard({
             },
           },
           {
-            emoji: '',
+            emoji: '💄',
             text: {
               ar: 'منتجات متعددة الاستخدام — أحمر شفاه = بلاشر',
               en: 'Multi-use products — lipstick = blush',
             },
           },
           {
-            emoji: '',
+            emoji: '🧻',
             text: {
               ar: 'مناديل ميسيلار — للتنظيف بدون ماء',
               en: 'Micellar wipes — cleansing without water',

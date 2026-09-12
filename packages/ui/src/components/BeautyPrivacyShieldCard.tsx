@@ -39,13 +39,13 @@ export function BeautyPrivacyShieldCard({
   const items = [
     {
       key: 'photosEncrypted',
-      emoji: '',
+      emoji: '🔒',
       label: { ar: 'الصور مشفرة', en: 'Photos encrypted' },
       active: status.photosEncrypted,
     },
     {
       key: 'locationHidden',
-      emoji: '',
+      emoji: '📍',
       label: { ar: 'الموقع مخفي', en: 'Location hidden' },
       active: status.locationHidden,
     },

@@ -28,22 +28,22 @@ export function BeautyFootSoakCard({
       <div className="mt-3 grid grid-cols-2 gap-1.5">
         {[
           {
-            emoji: '',
+            emoji: '🧂',
             label: { ar: 'ملح إبسوم', en: 'Epsom salt' },
             tip: { ar: 'يخفف الآلام ويريح العضلات', en: 'Relieves aches and relaxes muscles' },
           },
           {
-            emoji: '',
+            emoji: '🌸',
             label: { ar: 'لافندر', en: 'Lavender' },
             tip: { ar: 'للاسترخاء قبل النوم', en: 'To relax before bed' },
           },
           {
-            emoji: '',
+            emoji: '🍋',
             label: { ar: 'ليمون', en: 'Lemon' },
             tip: { ar: 'منعش — يزيل الروائح', en: 'Refreshing — removes odors' },
           },
           {
-            emoji: '',
+            emoji: '🍯',
             label: { ar: 'حليب + عسل', en: 'Milk + honey' },
             tip: { ar: 'ترطيب فاخر للقدمين', en: 'Luxurious moisture for the feet' },
           },

@@ -35,21 +35,21 @@ export function BeautyHairSummerCard({
             },
           },
           {
-            emoji: '',
+            emoji: '👒',
             text: {
               ar: 'قبعة واسعة — تحمي الشعر وفروة الرأس',
               en: 'A wide hat — protects the hair and scalp',
             },
           },
           {
-            emoji: '',
+            emoji: '🚿',
             text: {
               ar: 'اشطفي الشعر بماء عذب قبل وبعد البحر',
               en: 'Rinse the hair with fresh water before and after the sea',
             },
           },
           {
-            emoji: '',
+            emoji: '💧',
             text: {
               ar: 'ترطيب مكثف — الشمس تجفف الشعر',
               en: 'Intense hydration — the sun dries out hair',

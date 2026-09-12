@@ -28,7 +28,7 @@ export function BeautyVanityOrganizationCard({
       <div className="mt-3 space-y-1">
         {[
           {
-            emoji: '',
+            emoji: '☀️',
             text: {
               ar: 'إضاءة طبيعية — ضعي التسريحة قرب النافذة',
               en: 'Natural light — place the vanity near a window',
@@ -49,7 +49,7 @@ export function BeautyVanityOrganizationCard({
             },
           },
           {
-            emoji: '',
+            emoji: '🧼',
             text: {
               ar: 'نظفي التسريحة أسبوعياً — غبار وبكتيريا',
               en: 'Clean the vanity weekly — dust and bacteria',

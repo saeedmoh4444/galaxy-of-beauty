@@ -28,25 +28,25 @@ export function BeautyHumidClimateCard({
       <div className="mt-3 space-y-1">
         {[
           {
-            emoji: '',
+            emoji: '🧴',
             text: {
               ar: 'مرطب جل — خفيف وليس كريمي',
               en: 'Gel moisturizer — lightweight, not creamy',
             },
           },
           {
-            emoji: '',
+            emoji: '🧻',
             text: {
               ar: 'ورق نشاف — لإزالة اللمعان الزائد',
               en: 'Blotting paper — to remove excess shine',
             },
           },
           {
-            emoji: '',
+            emoji: '💄',
             text: { ar: 'مكياج خفيف — بدون طبقات ثقيلة', en: 'Light makeup — no heavy layers' },
           },
           {
-            emoji: '',
+            emoji: '🍃',
             text: {
               ar: 'تونر مات — يقلل إفراز الدهون',
               en: 'Mattifying toner — reduces oil production',

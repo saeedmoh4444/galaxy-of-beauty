@@ -28,18 +28,18 @@ export function BeautyHairStraightCard({
       <div className="mt-3 space-y-1">
         {[
           {
-            emoji: '',
+            emoji: '🧼',
             text: { ar: 'شامبو منقي — مرة أسبوعياً', en: 'Clarifying shampoo — once a week' },
           },
           {
-            emoji: '',
+            emoji: '🧴',
             text: {
               ar: 'بلسم خفيف — لا يثقل الشعر',
               en: 'Light conditioner — does not weigh hair down',
             },
           },
-          { emoji: '', text: { ar: 'سيروم لمعان — لأطراف فقط', en: 'Shine serum — ends only' } },
-          { emoji: '', text: { ar: 'غسيل كل 2-3 أيام', en: 'Wash every 2-3 days' } },
+          { emoji: '✨', text: { ar: 'سيروم لمعان — لأطراف فقط', en: 'Shine serum — ends only' } },
+          { emoji: '📅', text: { ar: 'غسيل كل 2-3 أيام', en: 'Wash every 2-3 days' } },
         ].map((t, i) => (
           <div
             key={i}

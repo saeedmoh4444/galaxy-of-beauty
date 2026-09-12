@@ -28,7 +28,7 @@ export function BeautySkincarePeptideCard({
       <div className="mt-3 space-y-1">
         {[
           {
-            emoji: '',
+            emoji: '✨',
             text: {
               ar: 'تحفز الكولاجين — بشرة أكثر شباباً',
               en: 'Stimulate collagen — more youthful skin',
@@ -39,10 +39,10 @@ export function BeautySkincarePeptideCard({
             text: { ar: 'يمكن استخدامها صباحاً ومساءً', en: 'Can be used morning and evening' },
           },
           {
-            emoji: '',
+            emoji: '✅',
             text: { ar: 'آمنة مع معظم المكونات الأخرى', en: 'Safe with most other ingredients' },
           },
-          { emoji: '', text: { ar: 'النتائج تحتاج 4-8 أسابيع', en: 'Results take 4-8 weeks' } },
+          { emoji: '📅', text: { ar: 'النتائج تحتاج 4-8 أسابيع', en: 'Results take 4-8 weeks' } },
         ].map((t, i) => (
           <div
             key={i}

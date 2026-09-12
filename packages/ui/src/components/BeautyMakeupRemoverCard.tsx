@@ -35,7 +35,7 @@ export function BeautyMakeupRemoverCard({
             },
           },
           {
-            emoji: '',
+            emoji: '🧴',
             text: { ar: 'غسول لطيف — الخطوة الثانية', en: 'Gentle cleanser — the second step' },
           },
           {
@@ -46,7 +46,7 @@ export function BeautyMakeupRemoverCard({
             },
           },
           {
-            emoji: '',
+            emoji: '🚫',
             text: {
               ar: 'لا تفركي — الفرك يسبب التجاعيد',
               en: "Don't rub — rubbing causes wrinkles",

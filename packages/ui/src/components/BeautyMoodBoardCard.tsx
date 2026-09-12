@@ -7,7 +7,7 @@ import { cn } from '@galaxy/shared';
  * From Phase W9: The Small Details & W4: Sisterhood.
  *
  * Usage:
- *   <BeautyMoodBoardCard items={[{ emoji: '', label: 'أزرق محيطي', color: '#0ea5e9' }]} />
+ *   <BeautyMoodBoardCard items={[{ emoji: '🌊', label: 'أزرق محيطي', color: '#0ea5e9' }]} />
  */
 
 interface MoodItem {

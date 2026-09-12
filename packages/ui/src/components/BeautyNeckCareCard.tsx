@@ -35,7 +35,7 @@ export function BeautyNeckCareCard({
             },
           },
           {
-            emoji: '',
+            emoji: '🧴',
             text: {
               ar: 'كريمات مشدودة — ببتيدات وريتينول',
               en: 'Firming creams — peptides and retinol',

@@ -28,12 +28,12 @@ export function BeautyChemicalPeelCard({
       <div className="mt-3 grid grid-cols-2 gap-1.5">
         {[
           {
-            emoji: '',
+            emoji: '🟢',
             label: { ar: 'سطحي', en: 'Superficial' },
             tip: { ar: 'أحماض خفيفة — لا وقت تعافي', en: 'Light acids — no downtime' },
           },
           {
-            emoji: '',
+            emoji: '🟡',
             label: { ar: 'متوسط', en: 'Medium' },
             tip: {
               ar: 'يخترق أعمق — 3-5 أيام تقشير',
@@ -41,7 +41,7 @@ export function BeautyChemicalPeelCard({
             },
           },
           {
-            emoji: '',
+            emoji: '🔴',
             label: { ar: 'عميق', en: 'Deep' },
             tip: { ar: 'طبيب فقط — نتائج قوية', en: 'Doctor only — powerful results' },
           },

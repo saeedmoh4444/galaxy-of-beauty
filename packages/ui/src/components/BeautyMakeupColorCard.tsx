@@ -28,28 +28,28 @@ export function BeautyMakeupColorCard({
       <div className="mt-3 space-y-1">
         {[
           {
-            emoji: '',
+            emoji: '🧡',
             text: {
               ar: 'البشرة الدافئة: ألوان ذهبية، برونزية، خوخية',
               en: 'Warm skin: golds, bronzes, peaches',
             },
           },
           {
-            emoji: '',
+            emoji: '💜',
             text: {
               ar: 'البشرة الباردة: وردي، بنفسجي، فضي',
               en: 'Cool skin: pinks, purples, silvers',
             },
           },
           {
-            emoji: '',
+            emoji: '💚',
             text: {
               ar: 'البشرة الزيتونية: ألوان ترابية، زيتوني',
               en: 'Olive skin: earthy tones, olives',
             },
           },
           {
-            emoji: '',
+            emoji: '🎨',
             text: {
               ar: 'البشرة المحايدة: جميع الألوان تناسبك',
               en: 'Neutral skin: every color suits you',

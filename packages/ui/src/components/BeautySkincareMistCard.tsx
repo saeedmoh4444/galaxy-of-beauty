@@ -28,14 +28,14 @@ export function BeautySkincareMistCard({
       <div className="mt-3 space-y-1">
         {[
           {
-            emoji: '',
+            emoji: '🌹',
             text: {
               ar: 'ماء الورد — مهدئ ومنعش طبيعي',
               en: 'Rose water — naturally soothing and refreshing',
             },
           },
           {
-            emoji: '',
+            emoji: '💧',
             text: { ar: 'قبل المرطب — يمتص بشكل أفضل', en: 'Before moisturizer — absorbs better' },
           },
           {

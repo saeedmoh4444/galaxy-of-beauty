@@ -21,19 +21,19 @@ const SKIN_TYPES: {
   },
   {
     key: 'oily',
-    emoji: '',
+    emoji: '✨',
     label: 'aiRoutine.skinType.oily.label',
     desc: 'aiRoutine.skinType.oily.desc',
   },
   {
     key: 'combination',
-    emoji: '',
+    emoji: '🌗',
     label: 'aiRoutine.skinType.combination.label',
     desc: 'aiRoutine.skinType.combination.desc',
   },
   {
     key: 'normal',
-    emoji: '',
+    emoji: '🌿',
     label: 'aiRoutine.skinType.normal.label',
     desc: 'aiRoutine.skinType.normal.desc',
   },

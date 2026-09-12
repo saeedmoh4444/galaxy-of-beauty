@@ -28,14 +28,14 @@ export function BeautyNailHealthCard({
       <div className="mt-3 space-y-1">
         {[
           {
-            emoji: '',
+            emoji: '⚪',
             text: {
               ar: 'بقع بيضاء — نقص زنك أو إصابة',
               en: 'White spots — zinc deficiency or injury',
             },
           },
           {
-            emoji: '',
+            emoji: '⚠',
             text: {
               ar: 'اصفرار — فطريات أو طلاء بدون base coat',
               en: 'Yellowing — fungus or polish without a base coat',

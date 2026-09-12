@@ -28,14 +28,14 @@ export function BeautyUltrasonicCard({
       <div className="mt-3 space-y-1">
         {[
           {
-            emoji: '',
+            emoji: '📳',
             text: {
               ar: 'اهتزازات عالية — تطرد الرؤوس السوداء',
               en: 'High vibrations — drive out blackheads',
             },
           },
           {
-            emoji: '',
+            emoji: '💧',
             text: { ar: 'على بشرة رطبة — أفضل نتائج', en: 'On damp skin — best results' },
           },
           {
@@ -43,7 +43,7 @@ export function BeautyUltrasonicCard({
             text: { ar: 'حركي للأعلى — بطول المسام', en: 'Move upward — along the pores' },
           },
           {
-            emoji: '',
+            emoji: '📅',
             text: {
               ar: 'مرة أسبوعياً — لا تفرطي في الاستخدام',
               en: "Once a week — don't overuse it",

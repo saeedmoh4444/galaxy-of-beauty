@@ -28,14 +28,14 @@ export function BeautyOxygenFacialCard({
       <div className="mt-3 space-y-1">
         {[
           {
-            emoji: '',
+            emoji: '💨',
             text: {
               ar: 'يرش الأكسجين — مع سيروم مغذي للبشرة',
               en: 'Sprays oxygen — with a nourishing skin serum',
             },
           },
           {
-            emoji: '',
+            emoji: '💧',
             text: {
               ar: 'ترطيب فوري — بشرة ممتلئة ومشرقة',
               en: 'Instant hydration — plump, glowing skin',
@@ -49,7 +49,7 @@ export function BeautyOxygenFacialCard({
             },
           },
           {
-            emoji: '',
+            emoji: '✨',
             text: { ar: 'قبل المناسبات — نتيجة فورية', en: 'Before events — instant results' },
           },
         ].map((t, i) => (

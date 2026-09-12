@@ -35,10 +35,10 @@ interface ConciergeData {
 }
 
 const STEPS = [
-  { key: 'profile', label: 'marketing.bridal-concierge.step-profile', emoji: '' },
-  { key: 'services', label: 'marketing.bridal-concierge.step-services', emoji: '' },
-  { key: 'trials', label: 'marketing.bridal-concierge.step-trials', emoji: '' },
-  { key: 'wedding', label: 'marketing.bridal-concierge.step-wedding', emoji: '' },
+  { key: 'profile', label: 'marketing.bridal-concierge.step-profile', emoji: '👤' },
+  { key: 'services', label: 'marketing.bridal-concierge.step-services', emoji: '📋' },
+  { key: 'trials', label: 'marketing.bridal-concierge.step-trials', emoji: '💄' },
+  { key: 'wedding', label: 'marketing.bridal-concierge.step-wedding', emoji: '💍' },
 ] as const;
 
 const MARKETING_FEATURES = [

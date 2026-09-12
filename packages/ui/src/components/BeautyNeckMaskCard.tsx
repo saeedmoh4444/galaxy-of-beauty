@@ -28,14 +28,14 @@ export function BeautyNeckMaskCard({
       <div className="mt-3 space-y-1">
         {[
           {
-            emoji: '',
+            emoji: '🎭',
             text: {
               ar: 'قناع سيليكون — يعاد استخدامه فوق السيروم',
               en: 'Silicone mask — reusable over serum',
             },
           },
           {
-            emoji: '',
+            emoji: '🧖',
             text: {
               ar: 'قناع ورقي للرقبة — مرة أسبوعياً',
               en: 'A sheet mask for the neck — once a week',
@@ -46,7 +46,7 @@ export function BeautyNeckMaskCard({
             text: { ar: '20-30 دقيقة — وقت الاسترخاء', en: '20-30 minutes — relaxation time' },
           },
           {
-            emoji: '',
+            emoji: '🌙',
             text: {
               ar: 'قبل النوم — البشرة تتجدد ليلاً',
               en: 'Before bed — skin regenerates at night',

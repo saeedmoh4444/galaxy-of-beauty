@@ -39,14 +39,14 @@ export function BeautyHairHeatCard({
             text: { ar: 'حرارة متوسطة — لا القصوى', en: 'Medium heat — not the maximum' },
           },
           {
-            emoji: '',
+            emoji: '🚫',
             text: {
               ar: 'لا تمرري المكواة على نفس الخصلة مرتين',
               en: 'Do not run the straightener over the same strand twice',
             },
           },
           {
-            emoji: '',
+            emoji: '📅',
             text: { ar: 'يوم بدون حرارة في الأسبوع', en: 'One heat-free day per week' },
           },
         ].map((t, i) => (

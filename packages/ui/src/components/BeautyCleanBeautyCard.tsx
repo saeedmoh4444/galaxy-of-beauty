@@ -28,28 +28,28 @@ export function BeautyCleanBeautyCard({
       <div className="mt-3 space-y-1">
         {[
           {
-            emoji: '',
+            emoji: '🚫',
             text: {
               ar: 'بدون: بارابين، سلفات، فثالات، فورمالديهايد',
               en: 'Free of: parabens, sulfates, phthalates, formaldehyde',
             },
           },
           {
-            emoji: '',
+            emoji: '🐰',
             text: {
               ar: 'مكونات نباتية — غير مختبرة على الحيوانات',
               en: 'Plant-based ingredients — not tested on animals',
             },
           },
           {
-            emoji: '',
+            emoji: '🔍',
             text: {
               ar: 'اقرئي الملصق — أول 5 مكونات هي الأساس',
               en: 'Read the label — the first 5 ingredients matter most',
             },
           },
           {
-            emoji: '',
+            emoji: '🏅',
             text: {
               ar: 'شهادات: EWG Verified، COSMOS، Leaping Bunny',
               en: 'Certifications: EWG Verified, COSMOS, Leaping Bunny',

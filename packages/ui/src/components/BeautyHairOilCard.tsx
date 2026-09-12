@@ -28,7 +28,7 @@ export function BeautyHairOilCard({
       <div className="mt-3 grid grid-cols-2 gap-1.5">
         {[
           {
-            emoji: '',
+            emoji: '🥥',
             label: { ar: 'جوز الهند', en: 'Coconut' },
             tip: {
               ar: 'يخترق الشعرة — ترطيب عميق',
@@ -41,12 +41,12 @@ export function BeautyHairOilCard({
             tip: { ar: 'ذهبي — للمعان وتغذية', en: 'Golden — for shine and nourishment' },
           },
           {
-            emoji: '',
+            emoji: '🌿',
             label: { ar: 'إكليل الجبل', en: 'Rosemary' },
             tip: { ar: 'يحفز نمو الشعر', en: 'Stimulates hair growth' },
           },
           {
-            emoji: '',
+            emoji: '🌱',
             label: { ar: 'الجوجوبا', en: 'Jojoba' },
             tip: { ar: 'يشبه زيوت فروة الرأس', en: 'Similar to the scalp’s natural oils' },
           },

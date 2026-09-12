@@ -28,21 +28,21 @@ export function BeautyDecolletageCard({
       <div className="mt-3 space-y-1">
         {[
           {
-            emoji: '',
+            emoji: '🧴',
             text: {
               ar: 'نفس روتين وجهكِ — يمتد للصدر',
               en: 'Same routine as your face — extend to the chest',
             },
           },
           {
-            emoji: '',
+            emoji: '🧽',
             text: {
               ar: 'تقشير لطيف — مرة أسبوعياً',
               en: 'Gentle exfoliation — once a week',
             },
           },
           {
-            emoji: '',
+            emoji: '💧',
             text: {
               ar: 'ترطيب بعد الاستحمام — البشرة تمتص أفضل',
               en: 'Moisturize after showering — skin absorbs best',

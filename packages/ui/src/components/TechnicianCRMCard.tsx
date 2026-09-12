@@ -125,10 +125,10 @@ export function TechnicianCRMCard({
       {/* Quick actions */}
       <div className="mt-3 grid grid-cols-2 gap-1.5">
         {[
-          { emoji: '', label: { ar: actionSendOffer, en: 'Send offer' } },
-          { emoji: '', label: { ar: actionBirthdayWish, en: 'Birthday wish' } },
-          { emoji: '', label: { ar: actionAskRating, en: 'Ask for rating' } },
-          { emoji: '', label: { ar: actionFullReport, en: 'Full report' } },
+          { emoji: '🎁', label: { ar: actionSendOffer, en: 'Send offer' } },
+          { emoji: '🎂', label: { ar: actionBirthdayWish, en: 'Birthday wish' } },
+          { emoji: '⭐', label: { ar: actionAskRating, en: 'Ask for rating' } },
+          { emoji: '📊', label: { ar: actionFullReport, en: 'Full report' } },
         ].map((a) => (
           <button
             key={a.label.ar}

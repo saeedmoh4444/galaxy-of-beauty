@@ -10,7 +10,7 @@ const TREATMENTS: Record<
   { emoji: string; aftercare: string[]; timeline: { day: string; action: string }[] }
 > = {
   facial: {
-    emoji: '',
+    emoji: '🧖',
     aftercare: [
       'mobile.postTreatment.aftercare-facial-1',
       'mobile.postTreatment.aftercare-facial-2',
@@ -67,7 +67,7 @@ const TREATMENTS: Record<
     ],
   },
   nails: {
-    emoji: '',
+    emoji: '💅',
     aftercare: [
       'mobile.postTreatment.aftercare-nails-1',
       'mobile.postTreatment.aftercare-nails-2',

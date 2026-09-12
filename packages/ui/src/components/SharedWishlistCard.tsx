@@ -8,7 +8,7 @@ import { cn } from '@galaxy/shared';
  *
  * Usage:
  *   <SharedWishlistCard
- *     items={[{ name: 'مانيكير سبا', price: 150, emoji: '' }]}
+ *     items={[{ name: 'مانيكير سبا', price: 150, emoji: '💅' }]}
  *     sharedWith={['نورة', 'أمي']}
  *   />
  */

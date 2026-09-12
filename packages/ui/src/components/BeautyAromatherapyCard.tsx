@@ -28,22 +28,22 @@ export function BeautyAromatherapyCard({
       <div className="mt-3 space-y-1">
         {[
           {
-            emoji: '',
+            emoji: '💜',
             text: {
               ar: 'اللافندر — للاسترخاء والنوم العميق',
               en: 'Lavender — for relaxation and deep sleep',
             },
           },
           {
-            emoji: '',
+            emoji: '🍋',
             text: { ar: 'الليمون — منعش ومنشط للطاقة', en: 'Lemon — refreshing and energizing' },
           },
           {
-            emoji: '',
+            emoji: '🌹',
             text: { ar: 'الورد — مهدئ للبشرة الحساسة', en: 'Rose — soothing for sensitive skin' },
           },
           {
-            emoji: '',
+            emoji: '🍃',
             text: {
               ar: 'النعناع — للصداع وتنشيط الدورة الدموية',
               en: 'Peppermint — for headaches and boosting circulation',

@@ -28,28 +28,28 @@ export function BeautyProductOverloadCard({
       <div className="mt-3 space-y-1">
         {[
           {
-            emoji: '',
+            emoji: '🚫',
             text: {
               ar: 'لا تخلطي أكثر من 3 منتجات نشطة في الجلسة',
               en: 'Do not layer more than 3 active products per routine',
             },
           },
           {
-            emoji: '',
+            emoji: '🌞',
             text: {
               ar: 'قاعدة: منتج فعال واحد في الصباح — وآخر في المساء',
               en: 'Rule: one active in the morning — another in the evening',
             },
           },
           {
-            emoji: '',
+            emoji: '🔄',
             text: {
               ar: 'نظام التدوير: يوم ريتينول — يوم تقشير — يوم راحة',
               en: 'Rotation: a retinol day — an exfoliating day — a rest day',
             },
           },
           {
-            emoji: '',
+            emoji: '🌿',
             text: {
               ar: 'البشرة تفضل البساطة — الأقل هو الأكثر',
               en: 'Skin prefers simplicity — less is more',

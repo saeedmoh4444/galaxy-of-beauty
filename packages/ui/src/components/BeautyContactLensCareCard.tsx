@@ -28,28 +28,28 @@ export function BeautyContactLensCareCard({
       <div className="mt-3 space-y-1">
         {[
           {
-            emoji: '',
+            emoji: '👀',
             text: {
               ar: 'العدسات أولاً — ثم المكياج',
               en: 'Lenses first — then makeup',
             },
           },
           {
-            emoji: '',
+            emoji: '💧',
             text: {
               ar: 'قطرات مرطبة — قبل وبعد المكياج',
               en: 'Moisturizing drops — before and after makeup',
             },
           },
           {
-            emoji: '',
+            emoji: '🚫',
             text: {
               ar: 'تجنبي الجليتر — يسقط في العين',
               en: 'Avoid glitter — it can fall into the eye',
             },
           },
           {
-            emoji: '',
+            emoji: '🔄',
             text: {
               ar: 'جديدي الماسكارا — كل 3 أشهر',
               en: 'Replace mascara — every 3 months',

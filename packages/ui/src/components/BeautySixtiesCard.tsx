@@ -28,14 +28,14 @@ export function BeautySixtiesCard({
       <div className="mt-3 space-y-1">
         {[
           {
-            emoji: '',
+            emoji: '🧴',
             text: {
               ar: 'ترطيب مكثف — كريمات غنية بالسيراميد',
               en: 'Intense hydration — creams rich in ceramides',
             },
           },
           {
-            emoji: '',
+            emoji: '💆',
             text: {
               ar: 'مساج دوري — يحسن مرونة البشرة',
               en: 'Regular massage — improves skin elasticity',

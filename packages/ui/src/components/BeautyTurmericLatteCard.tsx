@@ -28,28 +28,28 @@ export function BeautyTurmericLatteCard({
       <div className="mt-3 space-y-1">
         {[
           {
-            emoji: '',
+            emoji: '🟡',
             text: {
               ar: 'كركمين — أقوى مضاد التهاب طبيعي',
               en: 'Curcumin — a powerful natural anti-inflammatory',
             },
           },
           {
-            emoji: '',
+            emoji: '😌',
             text: {
               ar: 'يهدئ البشرة — ممتاز للحبوب والوردية',
               en: 'Calms the skin — great for breakouts and rosacea',
             },
           },
           {
-            emoji: '',
+            emoji: '🥛',
             text: {
               ar: 'حليب + كركم + فلفل أسود + عسل',
               en: 'Milk + turmeric + black pepper + honey',
             },
           },
           {
-            emoji: '',
+            emoji: '🌙',
             text: {
               ar: 'قبل النوم — يهدئ ويساعد على الاسترخاء',
               en: 'Before bed — soothing and relaxing',

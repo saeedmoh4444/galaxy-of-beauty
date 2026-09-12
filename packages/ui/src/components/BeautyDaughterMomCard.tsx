@@ -28,7 +28,7 @@ export function BeautyDaughterMomCard({
       <div className="mt-3 space-y-1">
         {[
           {
-            emoji: '',
+            emoji: '📚',
             text: {
               ar: 'علميها أساسيات العناية — بالحب',
               en: 'Teach her skincare basics — with love',
@@ -42,14 +42,14 @@ export function BeautyDaughterMomCard({
             },
           },
           {
-            emoji: '',
+            emoji: '💅',
             text: {
               ar: 'مانيكير مشترك — تجربة ممتعة',
               en: 'Shared manicure — a fun experience',
             },
           },
           {
-            emoji: '',
+            emoji: '📸',
             text: {
               ar: 'صوري اللحظة — ذكريات تدوم',
               en: 'Capture the moment — lasting memories',

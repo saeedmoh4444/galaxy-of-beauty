@@ -28,14 +28,14 @@ export function BeautyDryClimateCard({
       <div className="mt-3 space-y-1">
         {[
           {
-            emoji: '',
+            emoji: '🧴',
             text: {
               ar: 'مرطب كثيف — كريم غني وليس جل',
               en: 'Rich moisturizer — a heavy cream, not a gel',
             },
           },
           {
-            emoji: '',
+            emoji: '💧',
             text: {
               ar: 'سيروم هيالورونيك — قبل المرطب',
               en: 'Hyaluronic serum — before moisturizer',

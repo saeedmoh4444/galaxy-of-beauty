@@ -134,8 +134,8 @@ export default function CommunityPage(): JSX.Element {
                 />
                 <InspirationBoardCard
                   pins={[
-                    { emoji: '', title: t('community.pinSoftHairstyle'), savedBy: 'نورة' },
-                    { emoji: '', title: t('community.pinPartyMakeup'), savedBy: 'مها' },
+                    { emoji: '💇', title: t('community.pinSoftHairstyle'), savedBy: 'نورة' },
+                    { emoji: '💄', title: t('community.pinPartyMakeup'), savedBy: 'مها' },
                   ]}
                 />
               </div>
@@ -158,7 +158,7 @@ export default function CommunityPage(): JSX.Element {
               />
               <MentorBadge />
               <BeautyPenPalCard
-                match={{ city: 'جدة', interest: t('community.interestMakeup'), emoji: '' }}
+                match={{ city: 'جدة', interest: t('community.interestMakeup'), emoji: '💄' }}
               />
               <HijabiBeautyCard />
             </div>

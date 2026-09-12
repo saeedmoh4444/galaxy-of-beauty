@@ -26,7 +26,7 @@ const CARE_LIBRARY: Record<
       bodyEn:
         'After color or protein treatment, wait at least 48 hours before washing to preserve color and treatment.',
       timeframe: '48h',
-      emoji: '',
+      emoji: '🚿',
     },
     {
       id: 'hair_2',
@@ -36,7 +36,7 @@ const CARE_LIBRARY: Record<
         'الكبريتات تزيل الزيوت الطبيعية وتسبب بهتان اللون. اختاري شامبو لطيف خالي من الكبريتات.',
       bodyEn: 'Sulfates strip natural oils and fade color. Choose a gentle sulfate-free shampoo.',
       timeframe: '1w',
-      emoji: '',
+      emoji: '🧴',
     },
     {
       id: 'hair_3',
@@ -46,7 +46,7 @@ const CARE_LIBRARY: Record<
       bodyEn:
         'Minimize flat iron and dryer use for a week. If needed, always use a heat protectant.',
       timeframe: '1w',
-      emoji: '',
+      emoji: '🔥',
     },
   ],
   skincare: [
@@ -68,7 +68,7 @@ const CARE_LIBRARY: Record<
       bodyAr: 'تجنبي لمس الوجه أو وضع المكياج لمدة ٢٤ ساعة للسماح للمسام بالتنفس.',
       bodyEn: 'Avoid touching your face or applying makeup for 24 hours to let pores breathe.',
       timeframe: '24h',
-      emoji: '',
+      emoji: '🚫',
     },
     {
       id: 'skin_3',
@@ -77,7 +77,7 @@ const CARE_LIBRARY: Record<
       bodyAr: 'اشربي ٨-١٠ أكواب من الماء يومياً للحفاظ على ترطيب بشرتكِ من الداخل.',
       bodyEn: 'Drink 8-10 glasses of water daily to maintain skin hydration from within.',
       timeframe: 'ongoing',
-      emoji: '',
+      emoji: '💧',
     },
   ],
   makeup: [
@@ -89,7 +89,7 @@ const CARE_LIBRARY: Record<
       bodyEn:
         'Remove makeup with a gentle remover, then wash with a cleanser suitable for your skin type before bed.',
       timeframe: '24h',
-      emoji: '',
+      emoji: '🧼',
     },
     {
       id: 'makeup_2',
@@ -98,7 +98,7 @@ const CARE_LIBRARY: Record<
       bodyAr: 'بعد إزالة المكياج، طبقي مرطب غني للحفاظ على نضارة البشرة.',
       bodyEn: 'After removing makeup, apply a rich moisturizer to maintain skin freshness.',
       timeframe: '24h',
-      emoji: '',
+      emoji: '🧴',
     },
   ],
   nails: [
@@ -109,7 +109,7 @@ const CARE_LIBRARY: Record<
       bodyAr: 'الماء الساخن يضعف طلاء الأظافر. استخدمي ماء فاتر وارتدي قفازات للغسيل.',
       bodyEn: 'Hot water weakens nail polish. Use lukewarm water and wear gloves for washing.',
       timeframe: '48h',
-      emoji: '',
+      emoji: '🧤',
     },
     {
       id: 'nails_2',
@@ -118,7 +118,7 @@ const CARE_LIBRARY: Record<
       bodyAr: 'ضعي زيت البشرة يومياً حول الأظافر لمنع الجفاف والتشقق.',
       bodyEn: 'Apply cuticle oil daily around nails to prevent dryness and cracking.',
       timeframe: 'ongoing',
-      emoji: '',
+      emoji: '💅',
     },
   ],
   massage: [
@@ -129,7 +129,7 @@ const CARE_LIBRARY: Record<
       bodyAr: 'المساج يحرر السموم — اشربي الكثير من الماء للمساعدة في طردها.',
       bodyEn: 'Massage releases toxins — drink plenty of water to help flush them out.',
       timeframe: '24h',
-      emoji: '',
+      emoji: '💧',
     },
     {
       id: 'massage_2',
@@ -138,7 +138,7 @@ const CARE_LIBRARY: Record<
       bodyAr: 'حمام دافئ مع أملاح إبسوم يساعد على استرخاء العضلات بعد المساج.',
       bodyEn: 'A warm bath with Epsom salts helps relax muscles after massage.',
       timeframe: '24h',
-      emoji: '',
+      emoji: '🛁',
     },
   ],
   waxing: [
@@ -149,7 +149,7 @@ const CARE_LIBRARY: Record<
       bodyAr: 'لا تقشري المنطقة المعالجة لمدة ٤٨ ساعة لتجنب التهيج.',
       bodyEn: 'Do not exfoliate the treated area for 48 hours to avoid irritation.',
       timeframe: '48h',
-      emoji: '',
+      emoji: '🚫',
     },
   ],
   // E2 — medical clinic aftercare, keyed by consultation treatment type.
@@ -162,7 +162,7 @@ const CARE_LIBRARY: Record<
       bodyEn:
         'After dermatological treatments, your skin is more sun-sensitive. Apply SPF50 every morning for two weeks.',
       timeframe: '1w',
-      emoji: '',
+      emoji: '🧴',
     },
     {
       id: 'derm_2',
@@ -172,7 +172,7 @@ const CARE_LIBRARY: Record<
       bodyEn:
         'Pause retinol and exfoliating acids for a week after the session to avoid irritation.',
       timeframe: '1w',
-      emoji: '',
+      emoji: '🚫',
     },
   ],
   laser: [
@@ -185,7 +185,7 @@ const CARE_LIBRARY: Record<
       bodyEn:
         'For 48 hours after a laser session, avoid direct sun exposure and use a high-SPF sunscreen.',
       timeframe: '48h',
-      emoji: '',
+      emoji: '🌞',
     },
     {
       id: 'laser_2',
@@ -194,7 +194,7 @@ const CARE_LIBRARY: Record<
       bodyAr: 'بين جلسات الليزر، لا تستخدمي الشمع أو الملقط — الحلاقة فقط مسموحة.',
       bodyEn: 'Between laser sessions, avoid waxing or plucking — shaving only.',
       timeframe: 'ongoing',
-      emoji: '',
+      emoji: '🪒',
     },
   ],
   injectables: [
@@ -206,7 +206,7 @@ const CARE_LIBRARY: Record<
       bodyEn:
         'For 24 hours after injections, avoid exercise and applying makeup on the treated area.',
       timeframe: '24h',
-      emoji: '',
+      emoji: '🚫',
     },
     {
       id: 'inj_2',
@@ -215,7 +215,7 @@ const CARE_LIBRARY: Record<
       bodyAr: 'ارفعي رأسكِ على وسادتين عند النوم في الليلة الأولى لتقليل التورم.',
       bodyEn: 'Prop your head on two pillows the first night to reduce swelling.',
       timeframe: '24h',
-      emoji: '',
+      emoji: '🛏',
     },
   ],
   dental: [
@@ -227,7 +227,7 @@ const CARE_LIBRARY: Record<
       bodyEn:
         'For 48 hours after dental treatment, stick to soft foods and avoid very hot food and drinks.',
       timeframe: '48h',
-      emoji: '',
+      emoji: '🍎',
     },
     {
       id: 'dent_2',
@@ -236,7 +236,7 @@ const CARE_LIBRARY: Record<
       bodyAr: 'اشطفي فمكِ بمحلول ملحي دافئ مرتين يومياً للحفاظ على نظافة المنطقة المعالجة.',
       bodyEn: 'Rinse with a warm salt-water solution twice a day to keep the treated area clean.',
       timeframe: '1w',
-      emoji: '',
+      emoji: '🦷',
     },
   ],
   nutrition: [
@@ -247,7 +247,7 @@ const CARE_LIBRARY: Record<
       bodyAr: 'التزمي بـ ٨-١٠ أكواب ماء يومياً لدعم الخطة الغذائية.',
       bodyEn: 'Stick to 8-10 glasses of water daily to support your nutrition plan.',
       timeframe: 'ongoing',
-      emoji: '',
+      emoji: '💧',
     },
     {
       id: 'nutr_2',
@@ -256,7 +256,7 @@ const CARE_LIBRARY: Record<
       bodyAr: 'سجلي وجباتكِ يومياً لمراجعة التقدم مع أخصائية التغذية في الزيارة القادمة.',
       bodyEn: 'Log your meals daily to review progress with the nutritionist at the next visit.',
       timeframe: 'ongoing',
-      emoji: '',
+      emoji: '📝',
     },
   ],
 };
@@ -408,16 +408,16 @@ export const postCareRouter = router({
     categories: Object.entries(CARE_LIBRARY).map(([key, tips]) => {
       const names: Record<string, { ar: string; en: string; emoji: string }> = {
         hair: { ar: 'الشعر', en: 'Hair', emoji: '‍️' },
-        skincare: { ar: 'البشرة', en: 'Skincare', emoji: '' },
-        makeup: { ar: 'المكياج', en: 'Makeup', emoji: '' },
-        nails: { ar: 'الأظافر', en: 'Nails', emoji: '' },
+        skincare: { ar: 'البشرة', en: 'Skincare', emoji: '🧴' },
+        makeup: { ar: 'المكياج', en: 'Makeup', emoji: '💄' },
+        nails: { ar: 'الأظافر', en: 'Nails', emoji: '💅' },
         massage: { ar: 'المساج', en: 'Massage', emoji: '‍️' },
-        waxing: { ar: 'إزالة الشعر', en: 'Waxing', emoji: '' },
-        dermatology: { ar: 'الجلدية', en: 'Dermatology', emoji: '' },
-        laser: { ar: 'الليزر', en: 'Laser', emoji: '' },
-        injectables: { ar: 'الحقن التجميلي', en: 'Injectables', emoji: '' },
-        dental: { ar: 'تجميل الأسنان', en: 'Dental', emoji: '' },
-        nutrition: { ar: 'التغذية', en: 'Nutrition', emoji: '' },
+        waxing: { ar: 'إزالة الشعر', en: 'Waxing', emoji: '🍯' },
+        dermatology: { ar: 'الجلدية', en: 'Dermatology', emoji: '🩺' },
+        laser: { ar: 'الليزر', en: 'Laser', emoji: '⚡' },
+        injectables: { ar: 'الحقن التجميلي', en: 'Injectables', emoji: '💉' },
+        dental: { ar: 'تجميل الأسنان', en: 'Dental', emoji: '🦷' },
+        nutrition: { ar: 'التغذية', en: 'Nutrition', emoji: '🥗' },
       };
       return {
         key,

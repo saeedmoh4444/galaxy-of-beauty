@@ -28,7 +28,7 @@ export function BeautyPerfumeSeasonCard({
       <div className="mt-3 grid grid-cols-2 gap-1.5">
         {[
           {
-            emoji: '',
+            emoji: '🌸',
             label: { ar: 'ربيع', en: 'Spring' },
             tip: { ar: 'زهري، أخضر، منعش', en: 'Floral, green, fresh' },
           },
@@ -38,7 +38,7 @@ export function BeautyPerfumeSeasonCard({
             tip: { ar: 'حمضيات، بحري، خفيف', en: 'Citrus, marine, light' },
           },
           {
-            emoji: '',
+            emoji: '🍂',
             label: { ar: 'خريف', en: 'Autumn' },
             tip: { ar: 'خشبي، حار، دافئ', en: 'Woody, spicy, warm' },
           },

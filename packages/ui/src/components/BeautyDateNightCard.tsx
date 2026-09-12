@@ -28,7 +28,7 @@ export function BeautyDateNightCard({
       <div className="mt-3 space-y-1">
         {[
           {
-            emoji: '',
+            emoji: '✨',
             text: {
               ar: 'بشرة متوهجة — هايلايتر على عظمة الخد',
               en: 'Glowing skin — highlighter on cheekbones',
@@ -42,14 +42,14 @@ export function BeautyDateNightCard({
             },
           },
           {
-            emoji: '',
+            emoji: '💋',
             text: {
               ar: 'شفاه طبيعية — تينت أو لون شفاه شفاف',
               en: 'Natural lips — a tint or clear gloss',
             },
           },
           {
-            emoji: '',
+            emoji: '🌸',
             text: {
               ar: 'عطر على نقاط النبض — وراء الأذن والرسغ',
               en: 'Perfume on pulse points — behind ears and wrists',

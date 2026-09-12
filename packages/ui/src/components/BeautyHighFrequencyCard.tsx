@@ -28,21 +28,21 @@ export function BeautyHighFrequencyCard({
       <div className="mt-3 space-y-1">
         {[
           {
-            emoji: '',
+            emoji: '🦠',
             text: {
               ar: 'يجفف الحبوب — يقتل البكتيريا المسببة',
               en: 'Dries out pimples — kills the bacteria that cause them',
             },
           },
           {
-            emoji: '',
+            emoji: '✨',
             text: {
               ar: 'يحسن الدورة الدموية — بشرة متوهجة',
               en: 'Improves blood circulation — glowing skin',
             },
           },
           {
-            emoji: '',
+            emoji: '🩹',
             text: {
               ar: 'على بشرة جافة — مع شاش واقي',
               en: 'On dry skin — with a protective gauze',

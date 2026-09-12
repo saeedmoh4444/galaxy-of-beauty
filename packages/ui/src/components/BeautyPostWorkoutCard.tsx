@@ -28,28 +28,28 @@ export function BeautyPostWorkoutCard({
       <div className="mt-3 space-y-1">
         {[
           {
-            emoji: '',
+            emoji: '🧼',
             text: {
               ar: 'اغسلي وجهك فوراً — العرق يسد المسام',
               en: 'Wash your face right away — sweat clogs pores',
             },
           },
           {
-            emoji: '',
+            emoji: '🚿',
             text: {
               ar: 'ماء بارد — يغلق المسام ويهدئ البشرة',
               en: 'Cold water — closes pores and calms the skin',
             },
           },
           {
-            emoji: '',
+            emoji: '🧴',
             text: {
               ar: 'مرطب خفيف — البشرة تمتصه أفضل',
               en: 'A light moisturizer — absorbed better by the skin',
             },
           },
           {
-            emoji: '',
+            emoji: '👕',
             text: {
               ar: 'غيري ملابسك — البكتيريا تتراكم على القماش',
               en: 'Change your clothes — bacteria build up on fabric',

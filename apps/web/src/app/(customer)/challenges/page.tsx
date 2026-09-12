@@ -39,7 +39,7 @@ export default function ChallengesPage(): JSX.Element {
 
         <div className="space-y-4">
           {challenges.map((c) => {
-            const cfg = CH[c.id] ?? { emoji: '', color: '#6b7280', label: c.id };
+            const cfg = CH[c.id] ?? { emoji: '🎯', color: '#6b7280', label: c.id };
             const prog =
               c.id === '5bookings'
                 ? { current: progress?.bookingCount ?? 0, total: 5 }

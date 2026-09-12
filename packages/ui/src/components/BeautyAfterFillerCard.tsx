@@ -28,21 +28,21 @@ export function BeautyAfterFillerCard({
       <div className="mt-3 space-y-1">
         {[
           {
-            emoji: '',
+            emoji: '🧊',
             text: {
               ar: 'كمادات باردة — لتقليل التورم أول 24 ساعة',
               en: 'Cold compresses — to reduce swelling for the first 24 hours',
             },
           },
           {
-            emoji: '',
+            emoji: '🚫',
             text: {
               ar: 'تجنبي الضغط — لا تنامي على الوجه',
               en: "Avoid pressure — don't sleep on your face",
             },
           },
           {
-            emoji: '',
+            emoji: '💄',
             text: {
               ar: 'لا مكياج — 24 ساعة على المنطقة',
               en: 'No makeup — for 24 hours on the area',

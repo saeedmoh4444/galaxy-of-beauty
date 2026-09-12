@@ -28,28 +28,28 @@ export function BeautyFragranceFreeCard({
       <div className="mt-3 space-y-1">
         {[
           {
-            emoji: '',
+            emoji: '🌸',
             text: {
               ar: 'العطور — السبب الأول لتحسس البشرة',
               en: 'Fragrance — the number one cause of skin sensitivity',
             },
           },
           {
-            emoji: '',
+            emoji: '🚫',
             text: {
               ar: 'Fragrance-free ≠ Unscented — انتبهي للفرق',
               en: 'Fragrance-free ≠ Unscented — mind the difference',
             },
           },
           {
-            emoji: '',
+            emoji: '🌿',
             text: {
               ar: 'مناسب للبشرة الحساسة والإكزيما',
               en: 'Suitable for sensitive skin and eczema',
             },
           },
           {
-            emoji: '',
+            emoji: '🩺',
             text: {
               ar: 'منتجات طبية — غالباً خالية من العطور',
               en: 'Medical products — usually fragrance-free',

@@ -28,28 +28,28 @@ export function BeautyStretchMarksCard({
       <div className="mt-3 space-y-1">
         {[
           {
-            emoji: '',
+            emoji: '🧴',
             text: {
               ar: 'زبدة الكاكاو — ترطيب يومي أثناء الحمل',
               en: 'Cocoa butter — daily moisture during pregnancy',
             },
           },
           {
-            emoji: '',
+            emoji: '🌹',
             text: {
               ar: 'زيت ثمر الورد — يحسن مظهر العلامات',
               en: 'Rosehip oil — improves the appearance of marks',
             },
           },
           {
-            emoji: '',
+            emoji: '💉',
             text: {
               ar: 'مايكرونيدلنغ — لتحفيز الكولاجين',
               en: 'Microneedling — to stimulate collagen',
             },
           },
           {
-            emoji: '',
+            emoji: '⏰',
             text: { ar: 'العلاج المبكر — أفضل النتائج', en: 'Early treatment — best results' },
           },
         ].map((t, i) => (

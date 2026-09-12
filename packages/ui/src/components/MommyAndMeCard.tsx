@@ -64,7 +64,7 @@ const EXPERIENCES = {
     ],
   },
   manicure: {
-    emoji: '',
+    emoji: '💅',
     title: { ar: 'مانيكير الأم وابنتها', en: 'Mom & daughter manicure' },
     description: { ar: 'أظافر جميلة جنباً إلى جنب', en: 'Beautiful nails side by side' },
     ageMin: 6,
@@ -77,7 +77,7 @@ const EXPERIENCES = {
     ],
   },
   hair_braiding: {
-    emoji: '',
+    emoji: '🎀',
     title: { ar: 'تضفير الشعر', en: 'Hair braiding' },
     description: { ar: 'تسريحات شعر جميلة ومتناسقة', en: 'Beautiful matching hairstyles' },
     ageMin: 5,
@@ -89,7 +89,7 @@ const EXPERIENCES = {
     ],
   },
   spa_day: {
-    emoji: '',
+    emoji: '🛀',
     title: { ar: 'يوم سبا مصغر', en: 'Mini spa day' },
     description: {
       ar: 'يوم كامل من التدليل للأم وابنتها',
@@ -105,7 +105,7 @@ const EXPERIENCES = {
     ],
   },
   makeup_lesson: {
-    emoji: '',
+    emoji: '💄',
     title: { ar: 'درس مكياج أول', en: 'First makeup lesson' },
     description: {
       ar: 'تعلم أساسيات العناية والبشرة مع أمكِ',

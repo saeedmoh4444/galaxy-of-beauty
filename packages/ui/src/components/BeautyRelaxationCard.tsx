@@ -32,7 +32,7 @@ export function BeautyRelaxationCard({
       <div className="mt-3 space-y-1.5">
         {[
           {
-            emoji: '',
+            emoji: '🛁',
             step: { ar: 'حمام دافئ بملح إنكليزي', en: 'Warm bath with Epsom salt' },
             time: { ar: '20 دقيقة', en: '20 minutes' },
           },
@@ -42,12 +42,12 @@ export function BeautyRelaxationCard({
             time: { ar: '—', en: '—' },
           },
           {
-            emoji: '',
+            emoji: '🧴',
             step: { ar: 'ترطيب الجسم بالكامل', en: 'Moisturize the whole body' },
             time: { ar: '5 دقائق', en: '5 minutes' },
           },
           {
-            emoji: '',
+            emoji: '😴',
             step: { ar: 'الاستعداد للنوم العميق', en: 'Prepare for deep sleep' },
             time: { ar: '8 ساعات', en: '8 hours' },
           },

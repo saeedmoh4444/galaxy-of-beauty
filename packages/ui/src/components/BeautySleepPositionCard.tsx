@@ -42,14 +42,14 @@ export function BeautySleepPositionCard({
             },
           },
           {
-            emoji: '',
+            emoji: '🛌',
             text: {
               ar: 'على البطن — الأسوأ للرقبة والظهر',
               en: 'On your stomach — worst for neck and back',
             },
           },
           {
-            emoji: '',
+            emoji: '💤',
             text: {
               ar: 'وسادة حرير — تقلل احتكاك البشرة',
               en: 'Silk pillow — reduces skin friction',

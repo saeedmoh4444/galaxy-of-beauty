@@ -28,28 +28,28 @@ export function BeautyGoldFacialCard({
       <div className="mt-3 space-y-1">
         {[
           {
-            emoji: '',
+            emoji: '🥇',
             text: {
               ar: 'رقائق ذهب حقيقية — توضع على الوجه',
               en: 'Real gold flakes — applied to the face',
             },
           },
           {
-            emoji: '',
+            emoji: '⏳',
             text: {
               ar: 'يحسن مرونة البشرة — يبطئ الشيخوخة',
               en: 'Improves skin elasticity — slows aging',
             },
           },
           {
-            emoji: '',
+            emoji: '✨',
             text: {
               ar: 'يعكس الضوء — بشرة متوهجة فوراً',
               en: 'Reflects light — instantly glowing skin',
             },
           },
           {
-            emoji: '',
+            emoji: '👑',
             text: { ar: 'فاخر — للمناسبات الخاصة', en: 'Luxurious — for special occasions' },
           },
         ].map((t, i) => (

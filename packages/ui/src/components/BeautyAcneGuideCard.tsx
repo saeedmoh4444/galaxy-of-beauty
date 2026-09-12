@@ -28,17 +28,17 @@ export function BeautyAcneGuideCard({
       <div className="mt-3 grid grid-cols-2 gap-1.5">
         {[
           {
-            emoji: '',
+            emoji: '⚪',
             label: { ar: 'رؤوس بيضاء', en: 'Whiteheads' },
             tip: { ar: 'مسام مسدودة — تقشير لطيف', en: 'Clogged pores — gentle exfoliation' },
           },
           {
-            emoji: '',
+            emoji: '⚫',
             label: { ar: 'رؤوس سوداء', en: 'Blackheads' },
             tip: { ar: 'حمض الساليسيليك', en: 'Salicylic acid' },
           },
           {
-            emoji: '',
+            emoji: '🔴',
             label: { ar: 'ملتهبة', en: 'Inflamed' },
             tip: { ar: 'بينزويل بيروكسايد', en: 'Benzoyl peroxide' },
           },

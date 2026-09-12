@@ -7,7 +7,7 @@ import { cn } from '@galaxy/shared';
  * From Phase W9: The Small Details — Delightful Surprises.
  *
  * Usage:
- *   <BeautyVisionBoardCard goals={[{ emoji: '', text: 'إطلالة زفاف مثالية', year: '2027' }]} />
+ *   <BeautyVisionBoardCard goals={[{ emoji: '👰', text: 'إطلالة زفاف مثالية', year: '2027' }]} />
  */
 
 interface VisionGoal {

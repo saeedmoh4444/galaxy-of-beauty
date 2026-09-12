@@ -28,14 +28,14 @@ export function BeautyEyeBagsCard({
       <div className="mt-3 space-y-1">
         {[
           {
-            emoji: '',
+            emoji: '🧊',
             text: {
               ar: 'كمادات باردة — 10 دقائق صباحاً',
               en: 'Cold compresses — 10 minutes in the morning',
             },
           },
           {
-            emoji: '',
+            emoji: '☕',
             text: {
               ar: 'كافيين موضعي — كريمات تضيق الأوعية',
               en: 'Topical caffeine — creams that constrict vessels',
@@ -49,7 +49,7 @@ export function BeautyEyeBagsCard({
             },
           },
           {
-            emoji: '',
+            emoji: '🧂',
             text: {
               ar: 'قللي الملح — يسبب احتباس السوائل',
               en: 'Cut down on salt — it causes fluid retention',

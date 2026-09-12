@@ -36,10 +36,10 @@ export function BeautyWellnessCornerCard({
               en: 'Light a candle and relax for 5 minutes',
             },
           },
-          { emoji: '', text: { ar: 'استمعي لموسيقى هادئة', en: 'Listen to calming music' } },
-          { emoji: '', text: { ar: 'اشربي شاي أعشاب دافئ', en: 'Sip a warm herbal tea' } },
+          { emoji: '🎵', text: { ar: 'استمعي لموسيقى هادئة', en: 'Listen to calming music' } },
+          { emoji: '🍵', text: { ar: 'اشربي شاي أعشاب دافئ', en: 'Sip a warm herbal tea' } },
           {
-            emoji: '',
+            emoji: '📖',
             text: { ar: 'اقرئي صفحة من كتابكِ المفضل', en: 'Read a page from your favorite book' },
           },
         ].map((t) => (

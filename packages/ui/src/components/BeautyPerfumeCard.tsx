@@ -4,17 +4,17 @@ import { cn } from '@galaxy/shared';
 
 const TIPS = [
   {
-    emoji: '',
+    emoji: '💓',
     title: { ar: 'نقاط النبض', en: 'Pulse points' },
     desc: { ar: 'المعصم، خلف الأذن، المرفق', en: 'Wrist, behind the ears, inner elbow' },
   },
   {
-    emoji: '',
+    emoji: '💧',
     title: { ar: 'رطبي أولاً', en: 'Moisturize first' },
     desc: { ar: 'البشرة المرطبة تثبت العطر أطول', en: 'Moisturized skin holds fragrance longer' },
   },
   {
-    emoji: '',
+    emoji: '🚫',
     title: { ar: 'لا تفركي', en: 'Do not rub' },
     desc: { ar: 'الفرك يكسر جزيئات العطر', en: 'Rubbing breaks down fragrance molecules' },
   },

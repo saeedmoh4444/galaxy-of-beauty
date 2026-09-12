@@ -17,7 +17,7 @@ const SEASONS: Record<
   { emoji: string; title: { ar: string; en: string }; reminders: { ar: string; en: string }[] }
 > = {
   spring: {
-    emoji: '',
+    emoji: '🌸',
     title: { ar: 'الربيع', en: 'Spring' },
     reminders: [
       { ar: 'جددي روتين التقشير', en: 'Refresh your exfoliation routine' },
@@ -37,7 +37,7 @@ const SEASONS: Record<
     ],
   },
   autumn: {
-    emoji: '',
+    emoji: '🍂',
     title: { ar: 'الخريف', en: 'Autumn' },
     reminders: [
       { ar: 'استعيدي ترطيب بشرتكِ', en: "Restore your skin's moisture" },

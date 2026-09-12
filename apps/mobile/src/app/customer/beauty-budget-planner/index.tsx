@@ -7,11 +7,11 @@ import { trpc } from '@/lib/trpc-react';
 
 const CATEGORIES = [
   { key: 'hair', emoji: '‍️', name: 'الشعر', budget: 200, color: '#ec4899' },
-  { key: 'skin', emoji: '', name: 'البشرة', budget: 300, color: '#8b5cf6' },
-  { key: 'nails', emoji: '', name: 'الأظافر', budget: 100, color: '#f59e0b' },
-  { key: 'makeup', emoji: '', name: 'المكياج', budget: 150, color: '#db2777' },
+  { key: 'skin', emoji: '🧴', name: 'البشرة', budget: 300, color: '#8b5cf6' },
+  { key: 'nails', emoji: '💅', name: 'الأظافر', budget: 100, color: '#f59e0b' },
+  { key: 'makeup', emoji: '💄', name: 'المكياج', budget: 150, color: '#db2777' },
   { key: 'spa', emoji: '‍️', name: 'السبا', budget: 250, color: '#059669' },
-  { key: 'products', emoji: '', name: 'منتجات', budget: 200, color: '#0891b2' },
+  { key: 'products', emoji: '🛒', name: 'منتجات', budget: 200, color: '#0891b2' },
 ];
 
 export default function BeautyBudgetPlannerScreen(): JSX.Element {

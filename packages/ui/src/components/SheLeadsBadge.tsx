@@ -29,7 +29,7 @@ interface RoleDef {
 
 const ROLES: Record<LeadershipRole, RoleDef> = {
   franchise_owner: {
-    emoji: '',
+    emoji: '🏪',
     title: { ar: 'مالكة امتياز', en: 'Franchise owner' },
     description: {
       ar: 'تملك وتدير فرعها الخاص من جالاكسي بيوتي',
@@ -38,7 +38,7 @@ const ROLES: Record<LeadershipRole, RoleDef> = {
     tier: 'gold',
   },
   salon_manager: {
-    emoji: '',
+    emoji: '💼',
     title: { ar: 'مديرة صالون', en: 'Salon manager' },
     description: {
       ar: 'تقود فريقاً من الخبيرات في صالونها',
@@ -47,7 +47,7 @@ const ROLES: Record<LeadershipRole, RoleDef> = {
     tier: 'silver',
   },
   master_technician: {
-    emoji: '',
+    emoji: '🏆',
     title: { ar: 'خبيرة رئيسية', en: 'Master technician' },
     description: {
       ar: 'أعلى مستوى من المهارة والخبرة',
@@ -56,7 +56,7 @@ const ROLES: Record<LeadershipRole, RoleDef> = {
     tier: 'gold',
   },
   academy_instructor: {
-    emoji: '',
+    emoji: '🎓',
     title: { ar: 'مدربة أكاديمية', en: 'Academy instructor' },
     description: {
       ar: 'تعلّم الجيل القادم من خبيرات التجميل',
@@ -65,7 +65,7 @@ const ROLES: Record<LeadershipRole, RoleDef> = {
     tier: 'silver',
   },
   mentor: {
-    emoji: '',
+    emoji: '🤝',
     title: { ar: 'مرشدة', en: 'Mentor' },
     description: {
       ar: 'تشارك خبرتها مع الأخت الصغرى في برنامج الإرشاد',
@@ -83,7 +83,7 @@ const ROLES: Record<LeadershipRole, RoleDef> = {
     tier: 'gold',
   },
   community_leader: {
-    emoji: '',
+    emoji: '🌟',
     title: { ar: 'قائدة مجتمعية', en: 'Community leader' },
     description: {
       ar: 'تنظم فعاليات المجتمع وتدعم الأخوات',
@@ -92,7 +92,7 @@ const ROLES: Record<LeadershipRole, RoleDef> = {
     tier: 'bronze',
   },
   top_earner: {
-    emoji: '',
+    emoji: '💰',
     title: { ar: 'الأعلى دخلاً', en: 'Top earner' },
     description: {
       ar: 'من بين الأعلى دخلاً على المنصة هذا الشهر',
@@ -115,17 +115,17 @@ const TIER_BADGE: Record<
   { emoji: string; label: { ar: string; en: string }; className: string }
 > = {
   gold: {
-    emoji: '',
+    emoji: '🥇',
     label: { ar: 'ذهبي', en: 'Gold' },
     className: 'bg-amber-100 text-amber-800 dark:bg-amber-900 dark:text-amber-200',
   },
   silver: {
-    emoji: '',
+    emoji: '🥈',
     label: { ar: 'فضي', en: 'Silver' },
     className: 'bg-surface-muted text-text-secondary dark:bg-gray-800 dark:text-gray-300',
   },
   bronze: {
-    emoji: '',
+    emoji: '🥉',
     label: { ar: 'برونزي', en: 'Bronze' },
     className: 'bg-orange-100 text-orange-800 dark:bg-orange-900 dark:text-orange-200',
   },

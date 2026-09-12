@@ -35,15 +35,15 @@ export function BeautyNailGelCard({
             },
           },
           {
-            emoji: '',
+            emoji: '🧤',
             text: { ar: 'قفازات للتنظيف — تحمي الجل', en: 'Cleaning gloves — protect the gel' },
           },
           {
-            emoji: '',
+            emoji: '💧',
             text: { ar: 'زيّتي البشرة حول الظفر يومياً', en: 'Oil the skin around the nail daily' },
           },
           {
-            emoji: '',
+            emoji: '🚫',
             text: {
               ar: 'لا تقشري الجل — يضعف الظفر',
               en: 'Do not peel the gel — it weakens the nail',

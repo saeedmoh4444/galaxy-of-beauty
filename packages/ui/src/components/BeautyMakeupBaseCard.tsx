@@ -26,21 +26,21 @@ export function BeautyMakeupBaseCard({
       <div className="mt-3 space-y-1">
         {[
           {
-            emoji: '',
+            emoji: '🧴',
             text: {
               ar: '1. برايمر — يملأ المسام ويثبت المكياج',
               en: '1. Primer — fills pores and sets the makeup',
             },
           },
           {
-            emoji: '',
+            emoji: '💧',
             text: {
               ar: '2. بشرة رطبة — المرطب قبل البرايمر',
               en: '2. Hydrated skin — moisturizer before the primer',
             },
           },
           {
-            emoji: '',
+            emoji: '🎨',
             text: { ar: '3. فاونديشن — طبقة رقيقة', en: '3. Foundation — a thin layer' },
           },
           {

@@ -40,7 +40,7 @@ const SERVICES: GoldenService[] = [
     duration: { ar: '45 دقيقة', en: '45 minutes' },
   },
   {
-    emoji: '',
+    emoji: '💇',
     name: { ar: 'تسريحة كلاسيكية', en: 'Classic hairstyle' },
     description: {
       ar: 'تسريحة ناعمة تليق بجمالكِ',
@@ -50,7 +50,7 @@ const SERVICES: GoldenService[] = [
     duration: { ar: '45 دقيقة', en: '45 minutes' },
   },
   {
-    emoji: '',
+    emoji: '💄',
     name: { ar: 'مكياج ناعم', en: 'Soft makeup' },
     description: {
       ar: 'مكياج خفيف يبرز جمالكِ الطبيعي',
@@ -60,7 +60,7 @@ const SERVICES: GoldenService[] = [
     duration: { ar: '40 دقيقة', en: '40 minutes' },
   },
   {
-    emoji: '',
+    emoji: '💅',
     name: { ar: 'مانيكير لطيف', en: 'Gentle manicure' },
     description: {
       ar: 'عناية بالأظافر مع ترطيب',

@@ -75,8 +75,8 @@ export function Vision2030Badge({
       <div className="mt-2 grid grid-cols-3 gap-1.5 text-center">
         {[
           { emoji: '‍', label: { ar: 'تمكين المرأة', en: 'Women empowerment' } },
-          { emoji: '', label: { ar: 'تنويع الاقتصاد', en: 'Economic diversification' } },
-          { emoji: '', label: { ar: 'ريادة عالمية', en: 'Global leadership' } },
+          { emoji: '📈', label: { ar: 'تنويع الاقتصاد', en: 'Economic diversification' } },
+          { emoji: '🌍', label: { ar: 'ريادة عالمية', en: 'Global leadership' } },
         ].map((p) => (
           <div key={p.label.ar} className="rounded-lg bg-white/60 p-2 dark:bg-gray-800/60">
             <span className="text-lg" aria-hidden="true">

@@ -28,7 +28,7 @@ export function BeautyBridalEmergencyCard({
       <div className="mt-3 grid grid-cols-2 gap-1.5">
         {[
           {
-            emoji: '',
+            emoji: '💊',
             label: { ar: 'حبة حساسية', en: 'Allergy pill' },
             tip: { ar: 'لأي تحسس مفاجئ', en: 'For any sudden reaction' },
           },
@@ -38,12 +38,12 @@ export function BeautyBridalEmergencyCard({
             tip: { ar: 'للكعب من الحذاء', en: 'For heels from shoes' },
           },
           {
-            emoji: '',
+            emoji: '📄',
             label: { ar: 'ورق نشاف', en: 'Oil blotting paper' },
             tip: { ar: 'لإزالة اللمعان', en: 'To remove shine' },
           },
           {
-            emoji: '',
+            emoji: '💄',
             label: { ar: 'أحمر شفاه', en: 'Lipstick' },
             tip: { ar: 'للمسات سريعة', en: 'For quick touch-ups' },
           },

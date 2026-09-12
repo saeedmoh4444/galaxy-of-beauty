@@ -5,12 +5,12 @@ import { useAuthState } from '@/hooks/useAuthState';
 import { trpc } from '@/lib/trpc-react';
 
 const OCCASIONS = [
-  { key: 'birthday', emoji: '', name: 'عيد ميلاد' },
-  { key: 'eid', emoji: '', name: 'العيد' },
-  { key: 'wedding', emoji: '', name: 'زفاف' },
-  { key: 'graduation', emoji: '', name: 'تخرج' },
-  { key: 'valentine', emoji: '', name: 'عيد الحب' },
-  { key: 'mothersday', emoji: '', name: 'عيد الأم' },
+  { key: 'birthday', emoji: '🎂', name: 'عيد ميلاد' },
+  { key: 'eid', emoji: '🌙', name: 'العيد' },
+  { key: 'wedding', emoji: '💍', name: 'زفاف' },
+  { key: 'graduation', emoji: '🎓', name: 'تخرج' },
+  { key: 'valentine', emoji: '💖', name: 'عيد الحب' },
+  { key: 'mothersday', emoji: '💐', name: 'عيد الأم' },
 ];
 
 export default function BeautyWishlistGiftsScreen(): JSX.Element {
@@ -82,7 +82,7 @@ export default function BeautyWishlistGiftsScreen(): JSX.Element {
       <View style={styles.gifts}>
         {[
           { emoji: '‍️', name: 'جلسة مساج سويدي', price: 350, priority: 'أولوية' },
-          { emoji: '', name: 'مانيكير جل', price: 180, priority: 'مهم' },
+          { emoji: '💅', name: 'مانيكير جل', price: 180, priority: 'مهم' },
           { emoji: '‍️', name: 'جلسة عناية بالبشرة', price: 250, priority: 'جميل' },
           { emoji: '‍️', name: 'تصفيف شعر', price: 200, priority: 'جميل' },
         ].map((g, i) => (

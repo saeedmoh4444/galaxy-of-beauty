@@ -28,28 +28,28 @@ export function BeautyCrueltyFreeCard({
       <div className="mt-3 space-y-1">
         {[
           {
-            emoji: '',
+            emoji: '🐰',
             text: {
               ar: 'شعار Leaping Bunny — المعيار الذهبي',
               en: 'The Leaping Bunny logo — the gold standard',
             },
           },
           {
-            emoji: '',
+            emoji: '🏅',
             text: {
               ar: 'PETA Certified — علامة أخرى موثوقة',
               en: 'PETA Certified — another trusted mark',
             },
           },
           {
-            emoji: '',
+            emoji: '🚫',
             text: {
               ar: 'السعودية تمنع التجارب على الحيوانات للتجميل',
               en: 'Saudi Arabia bans animal testing for cosmetics',
             },
           },
           {
-            emoji: '',
+            emoji: '🔍',
             text: {
               ar: 'ابحثي عن الشعار — ليس كل ما يقول "طبيعي" خالٍ',
               en: 'Look for the logo — not everything labeled natural is',

@@ -51,17 +51,17 @@ const DEMAND_LABELS: Record<
   { emoji: string; label: { ar: string; en: string }; color: string }
 > = {
   high: {
-    emoji: '',
+    emoji: '📈',
     label: { ar: 'طلب عالي', en: 'High demand' },
     color: 'text-rose-600 dark:text-rose-400',
   },
   medium: {
-    emoji: '',
+    emoji: '📊',
     label: { ar: 'طلب متوسط', en: 'Medium demand' },
     color: 'text-amber-600 dark:text-amber-400',
   },
   low: {
-    emoji: '',
+    emoji: '📉',
     label: { ar: 'طلب منخفض', en: 'Low demand' },
     color: 'text-text-secondary',
   },

@@ -19,13 +19,13 @@ interface AllergyDef {
 }
 
 const ALLERGIES: Record<Allergy, AllergyDef> = {
-  fragrance: { emoji: '', label: { ar: 'عطور', en: 'Fragrance' } },
-  nuts: { emoji: '', label: { ar: 'مكسرات', en: 'Nuts' } },
-  dairy: { emoji: '', label: { ar: 'ألبان', en: 'Dairy' } },
-  gluten: { emoji: '', label: { ar: 'جلوتين', en: 'Gluten' } },
-  paraben: { emoji: '', label: { ar: 'بارابين', en: 'Parabens' } },
+  fragrance: { emoji: '🌸', label: { ar: 'عطور', en: 'Fragrance' } },
+  nuts: { emoji: '🥜', label: { ar: 'مكسرات', en: 'Nuts' } },
+  dairy: { emoji: '🥛', label: { ar: 'ألبان', en: 'Dairy' } },
+  gluten: { emoji: '🌾', label: { ar: 'جلوتين', en: 'Gluten' } },
+  paraben: { emoji: '🧪', label: { ar: 'بارابين', en: 'Parabens' } },
   sulfate: { emoji: '🫧', label: { ar: 'سلفات', en: 'Sulfates' } },
-  alcohol: { emoji: '', label: { ar: 'كحول', en: 'Alcohol' } },
+  alcohol: { emoji: '🍷', label: { ar: 'كحول', en: 'Alcohol' } },
   essential_oils: { emoji: '🫒', label: { ar: 'زيوت عطرية', en: 'Essential oils' } },
 };
 

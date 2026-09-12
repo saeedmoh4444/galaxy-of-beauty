@@ -22,7 +22,7 @@ interface PathDef {
 
 const PATHS: Record<CertPath, PathDef> = {
   makeup: {
-    emoji: '',
+    emoji: '💄',
     title: { ar: 'مكياج احترافي', en: 'Professional makeup' },
     levels: [
       { ar: 'أساسي', en: 'Foundation' },
@@ -33,7 +33,7 @@ const PATHS: Record<CertPath, PathDef> = {
     accredited: true,
   },
   skincare: {
-    emoji: '',
+    emoji: '🧴',
     title: { ar: 'عناية بالبشرة', en: 'Skincare' },
     levels: [
       { ar: 'أساسي', en: 'Foundation' },
@@ -44,7 +44,7 @@ const PATHS: Record<CertPath, PathDef> = {
     accredited: true,
   },
   henna: {
-    emoji: '',
+    emoji: '🌿',
     title: { ar: 'فن الحناء', en: 'Henna art' },
     levels: [
       { ar: 'تقليدي', en: 'Traditional' },
@@ -55,7 +55,7 @@ const PATHS: Record<CertPath, PathDef> = {
     accredited: false,
   },
   salon_management: {
-    emoji: '',
+    emoji: '💼',
     title: { ar: 'إدارة الصالونات', en: 'Salon management' },
     levels: [
       { ar: 'مشرفة', en: 'Supervisor' },

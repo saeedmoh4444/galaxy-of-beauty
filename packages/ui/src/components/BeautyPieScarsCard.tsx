@@ -28,21 +28,21 @@ export function BeautyPieScarsCard({
       <div className="mt-3 space-y-1">
         {[
           {
-            emoji: '',
+            emoji: '🍊',
             text: {
               ar: 'PIH: تصبغ بني — فيتامين C وأربيوتين',
               en: 'PIH: brown pigmentation — vitamin C and arbutin',
             },
           },
           {
-            emoji: '',
+            emoji: '🔴',
             text: {
               ar: 'PIE: احمرار — نيوكسين، أزيليك أسيد',
               en: 'PIE: redness — niacinamide, azelaic acid',
             },
           },
           {
-            emoji: '',
+            emoji: '✨',
             text: { ar: 'ريتينول — يسرع تجدد الخلايا', en: 'Retinol — speeds up cell renewal' },
           },
           {

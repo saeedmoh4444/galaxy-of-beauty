@@ -8,10 +8,10 @@ import type { TranslationKey } from '@galaxy/shared';
 
 const THEMES: { key: string; emoji: string; name: TranslationKey }[] = [
   { key: 'spa', emoji: '‍️', name: 'beautyParty.theme.homeSpa' },
-  { key: 'makeup', emoji: '', name: 'beautyParty.theme.makeupParty' },
-  { key: 'nails', emoji: '', name: 'beautyParty.theme.nailSalon' },
-  { key: 'bridal', emoji: '', name: 'beautyParty.theme.bachelorette' },
-  { key: 'skincare', emoji: '', name: 'beautyParty.theme.skincareRoutine' },
+  { key: 'makeup', emoji: '💄', name: 'beautyParty.theme.makeupParty' },
+  { key: 'nails', emoji: '💅', name: 'beautyParty.theme.nailSalon' },
+  { key: 'bridal', emoji: '👰', name: 'beautyParty.theme.bachelorette' },
+  { key: 'skincare', emoji: '🧖', name: 'beautyParty.theme.skincareRoutine' },
 ];
 
 export default function BeautyPartyPage(): JSX.Element {

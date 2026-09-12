@@ -5,10 +5,10 @@ import { publicProcedure, router } from '../trpc';
 const db = prisma;
 
 const CATEGORIES = [
-  { key: 'rating', nameAr: 'الأعلى تقييماً', emoji: '' },
-  { key: 'bookings', nameAr: 'الأكثر حجوزات', emoji: '' },
-  { key: 'speed', nameAr: 'الأسرع استجابة', emoji: '' },
-  { key: 'reviews', nameAr: 'الأكثر مراجعات', emoji: '' },
+  { key: 'rating', nameAr: 'الأعلى تقييماً', emoji: '⭐' },
+  { key: 'bookings', nameAr: 'الأكثر حجوزات', emoji: '📅' },
+  { key: 'speed', nameAr: 'الأسرع استجابة', emoji: '⚡' },
+  { key: 'reviews', nameAr: 'الأكثر مراجعات', emoji: '💬' },
 ];
 
 export const techLeaderboardRouter = router({

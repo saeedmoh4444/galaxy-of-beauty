@@ -81,22 +81,22 @@ export const PMS_LIBRARY: Array<{ ar: string; en: string; emoji: string }> = [
   {
     ar: 'خففي الملح والكافيين — يقلل الانتفاخ والصداع',
     en: 'Cut salt and caffeine — reduces bloating and headaches',
-    emoji: '',
+    emoji: '🧂',
   },
   {
     ar: 'المشي الخفيف ٢٠ دقيقة يحسن المزاج',
     en: 'A light 20-minute walk lifts your mood',
-    emoji: '',
+    emoji: '👟',
   },
   {
     ar: 'اشربي ماءً دافئاً مع الأعشاب المهدئة',
     en: 'Sip warm water with calming herbal tea',
-    emoji: '',
+    emoji: '🍵',
   },
   {
     ar: 'قناع الطين مرة هذا الأسبوع يقلل البثور الهرمونية',
     en: 'One clay mask this week reduces hormonal breakouts',
-    emoji: '',
+    emoji: '🧖',
   },
 ];
 
