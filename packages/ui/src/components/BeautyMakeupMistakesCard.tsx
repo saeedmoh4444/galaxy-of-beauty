@@ -28,7 +28,7 @@ export function BeautyMakeupMistakesCard({
       <div className="mt-3 space-y-1">
         {[
           {
-            emoji: '',
+            emoji: '❌',
             text: {
               ar: 'اختيار لون فاونديشن أفتح — جربي على خط الفك',
               en: 'Choosing a lighter foundation shade — test on the jawline',
@@ -42,7 +42,7 @@ export function BeautyMakeupMistakesCard({
             },
           },
           {
-            emoji: '',
+            emoji: '🚫',
             text: {
               ar: 'تحديد الشفاه بلون أغمق بكثير — نفس درجة الروج',
               en: 'Lining lips much darker — match the lipstick shade',

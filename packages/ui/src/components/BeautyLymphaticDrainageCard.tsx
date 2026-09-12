@@ -28,14 +28,14 @@ export function BeautyLymphaticDrainageCard({
       <div className="mt-3 space-y-1">
         {[
           {
-            emoji: '',
+            emoji: '💆',
             text: {
               ar: 'حركات خفيفة — باتجاه الغدد اللمفاوية',
               en: 'Light strokes — toward the lymph nodes',
             },
           },
           {
-            emoji: '',
+            emoji: '💧',
             text: {
               ar: 'يقلل احتباس السوائل — جسم أنحف',
               en: 'Reduces fluid retention — a slimmer body',
@@ -49,7 +49,7 @@ export function BeautyLymphaticDrainageCard({
             },
           },
           {
-            emoji: '',
+            emoji: '📅',
             text: {
               ar: 'مرة أسبوعياً — أو قبل المناسبات',
               en: 'Once a week — or before special occasions',

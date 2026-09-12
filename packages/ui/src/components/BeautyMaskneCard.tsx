@@ -28,25 +28,25 @@ export function BeautyMaskneCard({
       <div className="mt-3 space-y-1">
         {[
           {
-            emoji: '',
+            emoji: '😷',
             text: {
               ar: 'غيري الكمامة يومياً — قماش أو طبي',
               en: 'Change the mask daily — cloth or medical',
             },
           },
           {
-            emoji: '',
+            emoji: '🧴',
             text: {
               ar: 'مرطب خفيف قبل الكمامة — حاجز حماية',
               en: 'A light moisturizer before the mask — a protective barrier',
             },
           },
           {
-            emoji: '',
+            emoji: '🚫',
             text: { ar: 'تجنبي المكياج تحت الكمامة', en: 'Avoid makeup under the mask' },
           },
           {
-            emoji: '',
+            emoji: '💧',
             text: {
               ar: 'نظفي وجهك بعد نزعها — بماء بارد',
               en: 'Cleanse your face after removing it — with cold water',

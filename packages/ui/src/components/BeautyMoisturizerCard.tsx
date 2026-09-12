@@ -28,22 +28,22 @@ export function BeautyMoisturizerCard({
       <div className="mt-3 grid grid-cols-2 gap-1.5">
         {[
           {
-            emoji: '',
+            emoji: '✨',
             label: { ar: 'دهنية', en: 'Oily' },
             tip: { ar: 'جل أو لوشن خفيف', en: 'Light gel or lotion' },
           },
           {
-            emoji: '',
+            emoji: '🍂',
             label: { ar: 'جافة', en: 'Dry' },
             tip: { ar: 'كريم غني', en: 'Rich cream' },
           },
           {
-            emoji: '',
+            emoji: '🌗',
             label: { ar: 'مختلطة', en: 'Combination' },
             tip: { ar: 'لوشن متوازن', en: 'Balanced lotion' },
           },
           {
-            emoji: '',
+            emoji: '🪶',
             label: { ar: 'حساسة', en: 'Sensitive' },
             tip: { ar: 'خالٍ من العطور', en: 'Fragrance-free' },
           },

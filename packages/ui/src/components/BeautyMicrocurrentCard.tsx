@@ -28,7 +28,7 @@ export function BeautyMicrocurrentCard({
       <div className="mt-3 space-y-1">
         {[
           {
-            emoji: '',
+            emoji: '⚡',
             text: {
               ar: 'يحفز العضلات — يشد ملامح الوجه',
               en: 'Stimulates muscles — firms facial contours',
@@ -46,7 +46,7 @@ export function BeautyMicrocurrentCard({
             text: { ar: '5-10 دقائق — 3-4 مرات أسبوعياً', en: '5-10 minutes — 3-4 times a week' },
           },
           {
-            emoji: '',
+            emoji: '🧴',
             text: {
               ar: 'جل موصل — ضروري لتوصيل التيار',
               en: 'Conductive gel — essential for current flow',

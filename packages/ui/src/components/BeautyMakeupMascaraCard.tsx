@@ -35,18 +35,18 @@ export function BeautyMakeupMascaraCard({
             },
           },
           {
-            emoji: '',
+            emoji: '📅',
             text: { ar: 'جددِي الماسكارا كل 3 أشهر', en: 'Replace your mascara every 3 months' },
           },
           {
-            emoji: '',
+            emoji: '🚫',
             text: {
               ar: 'لا تضخي الهواء في الأنبوب — يجففها',
               en: "Don't pump the wand — it dries it out",
             },
           },
           {
-            emoji: '',
+            emoji: '🧴',
             text: {
               ar: 'ماسكارا مقاومة للماء = مزيل زيتي',
               en: 'Waterproof mascara = oil-based remover',

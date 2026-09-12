@@ -28,28 +28,28 @@ export function BeautyMatchaCard({
       <div className="mt-3 space-y-1">
         {[
           {
-            emoji: '',
+            emoji: '🍵',
             text: {
               ar: 'مركز 10x — مضادات أكسدة أكثر من الشاي العادي',
               en: '10x concentrated — more antioxidants than regular tea',
             },
           },
           {
-            emoji: '',
+            emoji: '🌿',
             text: {
               ar: 'كلوروفيل — ينقي البشرة من الداخل',
               en: 'Chlorophyll — purifies the skin from within',
             },
           },
           {
-            emoji: '',
+            emoji: '😌',
             text: {
               ar: 'L-Theanine — استرخاء بدون نعاس',
               en: 'L-Theanine — relaxation without drowsiness',
             },
           },
           {
-            emoji: '',
+            emoji: '🥛',
             text: {
               ar: 'مع الحليب — لاتيه ماتشا لذيذ',
               en: 'With milk — a delicious matcha latte',

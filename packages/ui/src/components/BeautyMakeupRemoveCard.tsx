@@ -35,7 +35,7 @@ export function BeautyMakeupRemoveCard({
             },
           },
           {
-            emoji: '',
+            emoji: '💧',
             text: {
               ar: 'غسول مائي — الخطوة الثانية تنظف بعمق',
               en: 'Water-based cleanser — the second step cleans deeply',
@@ -49,7 +49,7 @@ export function BeautyMakeupRemoveCard({
             },
           },
           {
-            emoji: '',
+            emoji: '🧽',
             text: {
               ar: 'قطعة قماش ناعمة — وليس مناديل ورقية',
               en: 'A soft cloth — not paper tissues',

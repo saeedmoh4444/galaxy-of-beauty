@@ -35,7 +35,7 @@ export function BeautyMakeupStorageCard({
             },
           },
           {
-            emoji: '',
+            emoji: '📦',
             text: {
               ar: 'منظمات أكريليك شفافة — تري كل شيء',
               en: 'Clear acrylic organizers — see everything',

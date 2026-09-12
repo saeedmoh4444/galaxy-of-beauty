@@ -28,14 +28,14 @@ export function BeautyMicroneedlingCard({
       <div className="mt-3 space-y-1">
         {[
           {
-            emoji: '',
+            emoji: '💉',
             text: {
               ar: 'يحفز الكولاجين — إبر دقيقة تخترق الجلد',
               en: 'Stimulates collagen — fine needles penetrate the skin',
             },
           },
           {
-            emoji: '',
+            emoji: '✨',
             text: { ar: 'يعالج الندبات والمسام الواسعة', en: 'Treats scars and enlarged pores' },
           },
           {
@@ -46,7 +46,7 @@ export function BeautyMicroneedlingCard({
             },
           },
           {
-            emoji: '',
+            emoji: '💧',
             text: {
               ar: 'بعد الجلسة — سيروم هيالورونيك أسيد فقط',
               en: 'After the session — hyaluronic acid serum only',

@@ -35,21 +35,21 @@ export function BeautyMediumSkinCard({
             },
           },
           {
-            emoji: '',
+            emoji: '🍊',
             text: {
               ar: 'ميل للتصبغات — فيتامين C أساسي',
               en: 'Prone to pigmentation — vitamin C is essential',
             },
           },
           {
-            emoji: '',
+            emoji: '🎨',
             text: {
               ar: 'ألوان: برونزي، خوخي، تيراكوتا — دافئة',
               en: 'Shades: bronze, peach, terracotta — warm tones',
             },
           },
           {
-            emoji: '',
+            emoji: '✨',
             text: {
               ar: 'هايلايتر ذهبي — يناسب الأندرتون الدافئ',
               en: 'Golden highlighter — suits warm undertones',

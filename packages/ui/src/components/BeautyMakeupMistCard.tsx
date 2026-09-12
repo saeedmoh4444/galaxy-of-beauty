@@ -28,22 +28,22 @@ export function BeautyMakeupMistCard({
       <div className="mt-3 grid grid-cols-2 gap-1.5">
         {[
           {
-            emoji: '',
+            emoji: '🔒',
             label: { ar: 'تثبيت', en: 'Setting' },
             tip: { ar: 'يثبت المكياج', en: 'Sets the makeup' },
           },
           {
-            emoji: '',
+            emoji: '💧',
             label: { ar: 'ترطيب', en: 'Hydrating' },
             tip: { ar: 'ينعش البشرة', en: 'Refreshes the skin' },
           },
           {
-            emoji: '',
+            emoji: '✨',
             label: { ar: 'إشراقة', en: 'Glow' },
             tip: { ar: 'يزيل مظهر البودرة', en: 'Removes powderiness' },
           },
           {
-            emoji: '',
+            emoji: '🌹',
             label: { ar: 'طبيعي', en: 'Natural' },
             tip: { ar: 'ماء ورد أو صبار', en: 'Rose water or aloe' },
           },

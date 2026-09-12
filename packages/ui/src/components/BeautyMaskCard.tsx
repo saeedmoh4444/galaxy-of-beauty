@@ -28,22 +28,22 @@ export function BeautyMaskCard({
       <div className="mt-3 grid grid-cols-2 gap-1.5">
         {[
           {
-            emoji: '',
+            emoji: '🪨',
             label: { ar: 'طين', en: 'Clay' },
             tip: { ar: 'للبشرة الدهنية — ينظف المسام', en: 'For oily skin — deep cleans pores' },
           },
           {
-            emoji: '',
+            emoji: '💧',
             label: { ar: 'ورقي', en: 'Sheet' },
             tip: { ar: 'للبشرة الجافة — ترطيب مكثف', en: 'For dry skin — intense hydration' },
           },
           {
-            emoji: '',
+            emoji: '🍯',
             label: { ar: 'طبيعي', en: 'Natural' },
             tip: { ar: 'عسل + زبادي — مهدئ', en: 'Honey + yogurt — soothing' },
           },
           {
-            emoji: '',
+            emoji: '✨',
             label: { ar: 'ذهبي', en: 'Gold' },
             tip: { ar: 'لجميع الأنواع — إشراقة', en: 'For all skin types — glow' },
           },

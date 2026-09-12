@@ -28,7 +28,7 @@ export function BeautyMakeupBrowsCard({
       <div className="mt-3 space-y-1">
         {[
           {
-            emoji: '',
+            emoji: '📏',
             text: {
               ar: 'بداية الحاجب = عند طرف الأنف',
               en: 'Brow start = at the edge of the nose',

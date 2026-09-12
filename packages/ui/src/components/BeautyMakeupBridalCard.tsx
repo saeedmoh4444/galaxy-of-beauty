@@ -28,28 +28,28 @@ export function BeautyMakeupBridalCard({
       <div className="mt-3 space-y-1">
         {[
           {
-            emoji: '',
+            emoji: '📅',
             text: {
               ar: 'تجربة المكياج قبل الزفاف بـ 3-4 أسابيع',
               en: 'Do a makeup trial 3-4 weeks before the wedding',
             },
           },
           {
-            emoji: '',
+            emoji: '📸',
             text: {
               ar: 'صوري المكياج التجريبي — لتري كيف يبدو',
               en: 'Photograph the trial — to see how it looks',
             },
           },
           {
-            emoji: '',
+            emoji: '🧖',
             text: {
               ar: 'اهتمي ببشرتك قبل الزفاف بـ 6 أشهر',
               en: 'Care for your skin 6 months before the wedding',
             },
           },
           {
-            emoji: '',
+            emoji: '💄',
             text: {
               ar: 'مكياج يدوم — تقنية HD أو airbrush',
               en: 'Long-lasting makeup — HD or airbrush technique',

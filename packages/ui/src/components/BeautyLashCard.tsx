@@ -37,22 +37,22 @@ export function BeautyLashCard({
       <div className="mt-3 grid grid-cols-2 gap-1.5">
         {[
           {
-            emoji: '',
+            emoji: '🧼',
             label: { ar: 'تنظيف لطيف', en: 'Gentle cleansing' },
             tip: { ar: 'مزيل مكياج خالٍ من الزيوت', en: 'Oil-free makeup remover' },
           },
           {
-            emoji: '',
+            emoji: '🌿',
             label: { ar: 'زيت الخروع', en: 'Castor oil' },
             tip: { ar: 'يطبق ليلاً لتقوية الرموش', en: 'Apply at night to strengthen lashes' },
           },
           {
-            emoji: '',
+            emoji: '🚫',
             label: { ar: 'لا تفركي', en: "Don't rub" },
             tip: { ar: 'الفرك يسبب تساقط الرموش', en: 'Rubbing causes lash loss' },
           },
           {
-            emoji: '',
+            emoji: '💤',
             label: { ar: 'استراحة', en: 'Take breaks' },
             tip: { ar: 'خذي استراحة من الرموش الصناعية', en: 'Take breaks from false lashes' },
           },

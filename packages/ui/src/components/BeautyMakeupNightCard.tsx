@@ -28,25 +28,25 @@ export function BeautyMakeupNightCard({
       <div className="mt-3 space-y-1">
         {[
           {
-            emoji: '',
+            emoji: '💄',
             text: {
               ar: 'فاونديشن كامل التغطية — يتحمل التصوير',
               en: 'Full-coverage foundation — camera-proof',
             },
           },
           {
-            emoji: '',
+            emoji: '👁',
             text: { ar: 'سموكي آيز — جريء وجذاب', en: 'Smoky eyes — bold and captivating' },
           },
           {
-            emoji: '',
+            emoji: '✨',
             text: {
               ar: 'هايلايتر — على أعلى نقاط الوجه',
               en: 'Highlighter — on the highest points of the face',
             },
           },
           {
-            emoji: '',
+            emoji: '💋',
             text: {
               ar: 'أحمر شفاه مطفي — يدوم طوال السهرة',
               en: 'Matte lipstick — lasts the whole evening',

@@ -28,7 +28,7 @@ export function BeautyMakeupEyelinerCard({
       <div className="mt-3 space-y-1">
         {[
           {
-            emoji: '',
+            emoji: '👁',
             text: {
               ar: 'ابدئي من المنتصف — ثم ارسمي الجناح',
               en: 'Start from the middle — then draw the wing',
@@ -49,7 +49,7 @@ export function BeautyMakeupEyelinerCard({
             },
           },
           {
-            emoji: '',
+            emoji: '🧴',
             text: {
               ar: 'عود قطني بمزيل — لتصحيح الأخطاء',
               en: 'Cotton swab with remover — to fix mistakes',

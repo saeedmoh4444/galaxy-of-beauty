@@ -28,28 +28,28 @@ export function BeautyMaternityGlowCard({
       <div className="mt-3 space-y-1">
         {[
           {
-            emoji: '',
+            emoji: '🌸',
             text: {
               ar: 'الهرمونات تزيد تدفق الدم — بشرة وردية طبيعية',
               en: 'Hormones increase blood flow — a natural rosy glow',
             },
           },
           {
-            emoji: '',
+            emoji: '🌹',
             text: {
               ar: 'زيت الورد أو اللوز — لترطيب البطن',
               en: 'Rose or almond oil — to moisturize the belly',
             },
           },
           {
-            emoji: '',
+            emoji: '😴',
             text: {
               ar: 'نامي جيداً — الإرهاق يظهر على بشرتكِ',
               en: 'Sleep well — fatigue shows on your skin',
             },
           },
           {
-            emoji: '',
+            emoji: '🥗',
             text: {
               ar: 'تغذية صحية — فيتامينات الحمل لبشرتكِ',
               en: 'Healthy eating — prenatal vitamins for your skin',

@@ -28,14 +28,14 @@ export function BeautyMenopauseSkincareCard({
       <div className="mt-3 space-y-1">
         {[
           {
-            emoji: '',
+            emoji: '💧',
             text: {
               ar: 'ترطيب مكثف — البشرة تفقد الرطوبة',
               en: 'Intense hydration — skin loses moisture',
             },
           },
           {
-            emoji: '',
+            emoji: '🧬',
             text: { ar: 'ببتيدات — تحفز الكولاجين', en: 'Peptides — stimulate collagen' },
           },
           {

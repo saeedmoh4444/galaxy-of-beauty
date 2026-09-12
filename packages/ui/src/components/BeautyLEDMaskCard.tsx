@@ -28,22 +28,22 @@ export function BeautyLEDMaskCard({
       <div className="mt-3 grid grid-cols-2 gap-1.5">
         {[
           {
-            emoji: '',
+            emoji: '🔴',
             label: { ar: 'أحمر', en: 'Red' },
             tip: { ar: 'كولاجين — مضاد للشيخوخة', en: 'Collagen — anti-aging' },
           },
           {
-            emoji: '',
+            emoji: '🔵',
             label: { ar: 'أزرق', en: 'Blue' },
             tip: { ar: 'يقتل البكتيريا — لعلاج الحبوب', en: 'Kills bacteria — treats breakouts' },
           },
           {
-            emoji: '',
+            emoji: '🟡',
             label: { ar: 'أصفر', en: 'Yellow' },
             tip: { ar: 'يفتح البقع — يقلل التصبغات', en: 'Brightens spots — reduces pigmentation' },
           },
           {
-            emoji: '',
+            emoji: '🟢',
             label: { ar: 'أخضر', en: 'Green' },
             tip: { ar: 'مهدئ — يقلل الاحمرار', en: 'Calming — reduces redness' },
           },

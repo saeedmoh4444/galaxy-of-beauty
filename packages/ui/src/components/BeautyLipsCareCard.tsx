@@ -32,7 +32,7 @@ export function BeautyLipsCareCard({
       <div className="mt-3 grid grid-cols-2 gap-1.5">
         {[
           {
-            emoji: '',
+            emoji: '💧',
             label: { ar: 'ترطيب دائم', en: 'Constant hydration' },
             tip: { ar: 'بلسم شفاه كل ساعتين', en: 'Lip balm every two hours' },
           },
@@ -42,12 +42,12 @@ export function BeautyLipsCareCard({
             tip: { ar: 'الشفاه تحتاج واقي شمس', en: 'Lips need sunscreen too' },
           },
           {
-            emoji: '',
+            emoji: '🚫',
             label: { ar: 'لا تلعقي', en: "Don't lick" },
             tip: { ar: 'اللعاب يجفف الشفاه', en: 'Saliva dries out the lips' },
           },
           {
-            emoji: '',
+            emoji: '🍯',
             label: { ar: 'ماسك عسل', en: 'Honey mask' },
             tip: { ar: 'عسل + سكر = تقشير لطيف', en: 'Honey + sugar = gentle exfoliation' },
           },

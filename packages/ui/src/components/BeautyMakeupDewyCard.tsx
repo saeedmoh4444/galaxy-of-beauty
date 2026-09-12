@@ -28,25 +28,25 @@ export function BeautyMakeupDewyCard({
       <div className="mt-3 space-y-1">
         {[
           {
-            emoji: '',
+            emoji: '💧',
             text: {
               ar: 'ترطيب عميق — أساس المكياج الندي',
               en: 'Deep hydration — the base of dewy makeup',
             },
           },
           {
-            emoji: '',
+            emoji: '✨',
             text: {
               ar: 'هايلايتر سائل — يخلط مع الفاونديشن',
               en: 'Liquid highlighter — mix with foundation',
             },
           },
           {
-            emoji: '',
+            emoji: '💄',
             text: { ar: 'فاونديشن مضيء — وليس مطفي', en: 'Luminous foundation — not matte' },
           },
           {
-            emoji: '',
+            emoji: '💦',
             text: { ar: 'سبراي مرطب — لتثبيت اللمعة', en: 'Hydrating mist — to lock in the glow' },
           },
         ].map((t, i) => (

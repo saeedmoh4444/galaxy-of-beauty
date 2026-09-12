@@ -35,21 +35,21 @@ export function BeautyLipShapeCard({
             },
           },
           {
-            emoji: '',
+            emoji: '✨',
             text: {
               ar: 'هايلايتر فوق قوس كيوبيد — يبرز الشفاه',
               en: "Highlighter on the cupid's bow — accentuates the lips",
             },
           },
           {
-            emoji: '',
+            emoji: '🎨',
             text: {
               ar: 'لونين — فاتح بالوسط وداكن بالأطراف',
               en: 'Two tones — light in the center, darker at the edges',
             },
           },
           {
-            emoji: '',
+            emoji: '💎',
             text: {
               ar: 'غلوس على المركز فقط — يعطي عمقاً بصرياً',
               en: 'Gloss only on the center — adds visual depth',

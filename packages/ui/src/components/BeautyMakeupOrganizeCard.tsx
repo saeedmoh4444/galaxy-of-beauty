@@ -28,15 +28,15 @@ export function BeautyMakeupOrganizeCard({
       <div className="mt-3 space-y-1">
         {[
           {
-            emoji: '',
+            emoji: '🚮',
             text: { ar: 'تخلصي من المكياج منتهي الصلاحية', en: 'Throw away expired makeup' },
           },
           {
-            emoji: '',
+            emoji: '🧽',
             text: { ar: 'نظفي الدرج مرة في الشهر', en: 'Clean the drawer once a month' },
           },
           {
-            emoji: '',
+            emoji: '📦',
             text: { ar: 'قسمي حسب النوع — عيون، شفاه، وجه', en: 'Sort by type — eyes, lips, face' },
           },
           {
