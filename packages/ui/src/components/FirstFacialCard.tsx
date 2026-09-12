@@ -87,7 +87,7 @@ export function FirstFacialCard({
   subtitle = 'تجربة لطيفة وممتعة لأول مرة',
   ageNote = 'مناسب للأعمار 10-17 سنة',
   stepsLabel = ' ماذا سنفعل',
-  momPrefix = '‍ ',
+  momPrefix = ' ',
   momWithText = 'تستطيعين الحضور معها ومشاهدة التجربة',
   pledgeText = 'لا كريم أساس ثقيل · لا مقشرات قوية · منتجات آمنة فقط',
   bookWithMomLabel = 'احجزي مع أمكِ ',
@@ -106,7 +106,9 @@ export function FirstFacialCard({
       )}
     >
       <div className="text-center">
-        <span className="text-3xl" aria-hidden="true"></span>
+        <span className="text-3xl" aria-hidden="true">
+          ✨
+        </span>
         <h4 className="mt-1 text-sm font-bold text-pink-700 dark:text-pink-300">{title}</h4>
         <p className="text-[10px] text-pink-500 dark:text-pink-400">{subtitle}</p>
         {!isAgeAppropriate && (

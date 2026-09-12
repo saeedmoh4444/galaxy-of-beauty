@@ -49,14 +49,14 @@ export function EmailCapture({
     >
       {submitted ? (
         <div>
-          <span className="text-4xl"></span>
+          <span className="text-4xl">🎉</span>
           <h3 className="mt-3 text-lg font-bold">{successTitle}</h3>
           <p className="mt-1 text-sm text-brand-200">{discountCodeLabel}WELCOME10</p>
           <p className="mt-2 text-xs text-brand-300">{useCodeText}</p>
         </div>
       ) : (
         <div>
-          <span className="text-4xl"></span>
+          <span className="text-4xl">🎁</span>
           <h3 className="mt-3 text-lg font-bold">
             {discountTitlePrefix}
             {discount}

@@ -173,7 +173,7 @@ export function MentalWellnessCard({
   className = '',
   priceLabel = 'السعر',
   currencySuffix = 'ر.س',
-  bookLabel = 'احجزي جلستكِ ‍️',
+  bookLabel = 'احجزي جلستكِ ',
   journalPromptLabel = 'اكتبي مشاعركِ في يومياتكِ الجمالية',
   wellnessTip = '"الجمال يبدأ من الداخل" — عنايتكِ بنفسكِ عبادة',
   locale = 'ar',
@@ -212,7 +212,9 @@ export function MentalWellnessCard({
         <div className="mt-1.5 space-y-0.5">
           {m.recommendations.map((r) => (
             <div key={r.ar} className="flex items-center gap-1.5">
-              <span className="text-[10px] text-text-tertiary" aria-hidden="true"></span>
+              <span className="text-[10px] text-text-tertiary" aria-hidden="true">
+                ✨
+              </span>
               <span className="text-[10px] text-text-secondary dark:text-gray-300">
                 {r[locale]}
               </span>

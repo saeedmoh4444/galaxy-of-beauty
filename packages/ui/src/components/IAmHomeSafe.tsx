@@ -143,7 +143,9 @@ export function IAmHomeSafe({
       {/* Alert contact info */}
       {alertContact && !checkedIn && (
         <div className="mt-2 flex items-center gap-1.5 rounded-lg bg-white/60 p-2 dark:bg-black/20">
-          <span className="text-xs" aria-hidden="true"></span>
+          <span className="text-xs" aria-hidden="true">
+            📞
+          </span>
           <span className="text-[10px] text-text-secondary dark:text-gray-300">
             {alertContactPrefix}
             {alertContact.name} ({alertContact.phone}){alertContactSuffix}

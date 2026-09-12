@@ -157,7 +157,7 @@ export function MommyAndMeCard({
       {/* Header */}
       <div className="text-center">
         <span className="text-3xl" aria-hidden="true">
-          ‍
+          🎀
         </span>
         <h4 className="mt-1 text-sm font-bold text-pink-800 dark:text-pink-200">{title}</h4>
         <p className="text-[10px] text-pink-500 dark:text-pink-400">{subtitle}</p>
@@ -171,7 +171,9 @@ export function MommyAndMeCard({
           <p className="text-[9px] text-text-tertiary dark:text-text-secondary">{momLabel}</p>
         </div>
 
-        <span className="text-pink-400 text-lg" aria-hidden="true"></span>
+        <span className="text-pink-400 text-lg" aria-hidden="true">
+          💗
+        </span>
 
         <div className="text-center">
           <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-gradient-to-br from-brand-200 to-violet-200 text-lg dark:from-brand-800 dark:to-violet-800"></div>

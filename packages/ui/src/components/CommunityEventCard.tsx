@@ -64,7 +64,7 @@ export function CommunityEventCard({
     >
       <div className="flex items-start gap-3">
         <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-violet-100 to-brand-100 text-2xl dark:from-violet-900 dark:to-brand-900">
-          {event.emoji || '‍️'}
+          {event.emoji || ''}
         </div>
         <div className="min-w-0 flex-1">
           <h4 className="text-sm font-bold text-violet-700 dark:text-violet-300">{event.title}</h4>
@@ -104,7 +104,7 @@ export function CommunityEventCard({
       {/* Host */}
       {event.host && (
         <p className="mt-1.5 text-[10px] text-text-tertiary dark:text-text-secondary">
-          ‍ {hostPrefix} {event.host}
+          {hostPrefix} {event.host}
         </p>
       )}
 

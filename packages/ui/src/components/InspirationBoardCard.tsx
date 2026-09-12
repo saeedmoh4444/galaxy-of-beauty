@@ -54,7 +54,9 @@ export function InspirationBoardCard({
       {/* Header */}
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-2">
-          <span className="text-lg" aria-hidden="true"></span>
+          <span className="text-lg" aria-hidden="true">
+            ✨
+          </span>
           <div>
             <h4 className="text-sm font-bold text-rose-700 dark:text-rose-300">{boardName}</h4>
             <p className="text-[10px] text-rose-500 dark:text-rose-400">
@@ -86,7 +88,7 @@ export function InspirationBoardCard({
       {/* Collaborators */}
       {collaborators && collaborators.length > 0 && (
         <div className="mt-2 flex items-center gap-1.5">
-          <span className="text-[10px] text-text-tertiary dark:text-text-secondary">‍️</span>
+          <span className="text-[10px] text-text-tertiary dark:text-text-secondary">👥</span>
           <div className="flex -space-x-1.5">
             {collaborators.slice(0, 4).map((name) => (
               <span
