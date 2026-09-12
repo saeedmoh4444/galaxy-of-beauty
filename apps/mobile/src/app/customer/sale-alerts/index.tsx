@@ -34,7 +34,7 @@ export default function SaleAlertsScreen(): JSX.Element {
       <Text style={styles.t}>{t('mobile.saleAlerts.title')}</Text>
       {data.map((a, i) => (
         <View key={i} style={styles.card}>
-          <Text style={styles.emoji}>{a.emoji ?? '️'}</Text>
+          <Text style={styles.emoji}>{a.emoji ?? ''}</Text>
           <View style={{ flex: 1 }}>
             <Text style={styles.name}>{a.serviceName}</Text>
             <Text style={styles.discount}>-{a.discount}%</Text>

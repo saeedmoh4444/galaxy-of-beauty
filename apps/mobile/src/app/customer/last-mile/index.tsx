@@ -73,7 +73,7 @@ export default function LastMileScreen(): JSX.Element {
           <Text style={styles.pe}>{p.emoji}</Text>
           <View style={{ flex: 1 }}>
             <Text style={styles.pn}>{p.nameAr}</Text>
-            <Text style={styles.pd}>️ {p.deliveryTime}</Text>
+            <Text style={styles.pd}> {p.deliveryTime}</Text>
           </View>
           <View style={{ alignItems: 'flex-end' }}>
             <Text style={styles.pp}>{p.price?.toLocaleString()} ر.س</Text>

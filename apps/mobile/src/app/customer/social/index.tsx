@@ -123,7 +123,7 @@ export default function SocialScreen(): JSX.Element {
           <Text style={s.st}>{t('mobile.social.spotlight-technicians')}</Text>
           {spotlightList.map((tech, i) => (
             <View key={tech.id ?? i} style={s.card}>
-              <Text style={s.avatar}>‍</Text>
+              <Text style={s.avatar}></Text>
               <View style={{ flex: 1 }}>
                 <Text style={s.cardTitle}>{tech.name}</Text>
                 <Text style={s.cardSub}>

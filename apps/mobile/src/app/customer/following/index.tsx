@@ -39,7 +39,7 @@ export default function FollowingScreen(): JSX.Element {
       <Text style={styles.t}>{t('following.title')}</Text>
       {follows.map((f) => (
         <View key={f.technicianId} style={styles.card}>
-          <Text style={styles.av}>‍</Text>
+          <Text style={styles.av}></Text>
           <View style={{ flex: 1 }}>
             <Text style={styles.nm}>{t('following.technician', { id: f.technicianId })}</Text>
             <Text style={styles.meta}>

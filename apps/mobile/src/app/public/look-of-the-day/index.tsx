@@ -36,7 +36,7 @@ export default function LookOfTheDayScreen(): JSX.Element {
           <View style={{ flex: 1 }}>
             <Text style={styles.lt}>{l.titleAr}</Text>
             <Text style={styles.ld}>{l.descAr}</Text>
-            <Text style={styles.lb}>‍ {l.technician}</Text>
+            <Text style={styles.lb}> {l.technician}</Text>
           </View>
         </View>
       ))}

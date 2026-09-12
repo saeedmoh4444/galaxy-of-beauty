@@ -56,7 +56,7 @@ export default function SalonManagementScreen(): JSX.Element {
       </View>
       {staff.map((s) => (
         <View key={s.id} style={styles.card}>
-          <Text style={styles.em}>‍</Text>
+          <Text style={styles.em}></Text>
           <View style={{ flex: 1 }}>
             <Text style={styles.nm}>{s.name ?? ''}</Text>
             <Text style={styles.role}>{s.role ?? ''}</Text>

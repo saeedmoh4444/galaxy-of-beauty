@@ -168,7 +168,7 @@ export default function CommunityScreen(): JSX.Element {
                 <Text style={{ fontSize: 11, fontWeight: '600', marginTop: 4 }}>
                   {p.user?.name}
                 </Text>
-                <Text style={{ fontSize: 11, color: '#d97706' }}>️{p.likes}</Text>
+                <Text style={{ fontSize: 11, color: '#d97706' }}>{p.likes}</Text>
               </View>
             ))}
           </ScrollView>
@@ -185,7 +185,7 @@ export default function CommunityScreen(): JSX.Element {
       {posts.map((p) => (
         <View key={p.id} style={s.card}>
           <View style={{ flexDirection: 'row', alignItems: 'center', gap: 10, marginBottom: 8 }}>
-            <Text style={{ fontSize: 30 }}>‍</Text>
+            <Text style={{ fontSize: 30 }}></Text>
             <View>
               <Text style={{ fontWeight: '600', fontSize: 14 }}>
                 {p.user?.name ?? t('community.user-fallback')}
@@ -203,7 +203,7 @@ export default function CommunityScreen(): JSX.Element {
               <Text
                 style={{ color: likedIds.has(p.id) ? '#ef4444' : '#9ca3af', fontWeight: '600' }}
               >
-                {likedIds.has(p.id) ? '️' : ''} {p.likes}
+                {likedIds.has(p.id) ? '❤️' : '🤍'} {p.likes}
               </Text>
             </TouchableOpacity>
             <TouchableOpacity onPress={() => setCommentId(commentId === p.id ? null : p.id)}>

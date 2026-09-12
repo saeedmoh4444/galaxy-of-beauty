@@ -33,7 +33,7 @@ export default function ReferralDashboardScreen(): JSX.Element {
       <Text style={styles.t}>{t('mobile.referralDashboard.title')}</Text>
       <View style={styles.kpiRow}>
         <View style={styles.kpi}>
-          <Text style={styles.kpiEmoji}>‍️</Text>
+          <Text style={styles.kpiEmoji}></Text>
           <Text style={styles.kpiVal}>{d.totalReferred ?? 0}</Text>
           <Text style={styles.kpiLabel}>{t('mobile.referralDashboard.referrals')}</Text>
         </View>
