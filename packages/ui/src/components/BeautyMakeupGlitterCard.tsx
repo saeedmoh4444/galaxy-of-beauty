@@ -28,7 +28,7 @@ export function BeautyMakeupGlitterCard({
       <div className="mt-3 space-y-1">
         {[
           {
-            emoji: '️',
+            emoji: '✨',
             text: {
               ar: 'جليتر على الجفن — فقط في المنتصف',
               en: 'Glitter on the lid — center only',

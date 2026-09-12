@@ -42,7 +42,7 @@ export function BeautyMakeupContourCard({
             },
           },
           {
-            emoji: '️',
+            emoji: '🖌️',
             text: { ar: 'ادمجي جيداً — لا خطوط ظاهرة', en: 'Blend well — no visible lines' },
           },
           {

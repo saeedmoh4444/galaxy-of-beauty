@@ -12,7 +12,7 @@ const TIPS = [
     },
   },
   {
-    emoji: '️',
+    emoji: '🖌️',
     title: { ar: 'نظفي فرشك', en: 'Clean your brushes' },
     desc: { ar: 'أسبوعياً — البكتيريا تتراكم', en: 'Weekly — bacteria builds up' },
   },

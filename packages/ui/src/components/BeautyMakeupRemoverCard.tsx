@@ -39,7 +39,7 @@ export function BeautyMakeupRemoverCard({
             text: { ar: 'غسول لطيف — الخطوة الثانية', en: 'Gentle cleanser — the second step' },
           },
           {
-            emoji: '️',
+            emoji: '👁️',
             text: {
               ar: 'العين: قطنة مبللة — اضغطي 10 ثوانٍ',
               en: 'Eyes: damp cotton pad — press for 10 seconds',

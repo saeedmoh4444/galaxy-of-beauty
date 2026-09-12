@@ -35,7 +35,7 @@ export function BeautyJapaneseRoutineCard({
             },
           },
           {
-            emoji: '️',
+            emoji: '🌞',
             text: {
               ar: 'واقي شمس — أساس الجمال الياباني',
               en: 'Sunscreen — the core of Japanese beauty',

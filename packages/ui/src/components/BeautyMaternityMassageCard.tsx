@@ -28,7 +28,7 @@ export function BeautyMaternityMassageCard({
       <div className="mt-3 space-y-1">
         {[
           {
-            emoji: '️',
+            emoji: '🤰',
             text: {
               ar: 'الاستلقاء على الجانب — ليس على البطن',
               en: 'Lie on your side — not on your stomach',

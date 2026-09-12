@@ -28,7 +28,7 @@ export function BeautyHyperpigmentationCard({
       <div className="mt-3 space-y-1">
         {[
           {
-            emoji: '️',
+            emoji: '🌞',
             text: {
               ar: 'السبب: الشمس — واقي الشمس هو الحل الأول',
               en: 'Cause: the sun — sunscreen is the first solution',

@@ -33,7 +33,7 @@ export function BeautyHairRemovalCard({
             tip: { ar: 'طبيعية — ألم أقل من الشمع', en: 'Natural — less painful than wax' },
           },
           {
-            emoji: '️',
+            emoji: '🕯️',
             label: { ar: 'شمع', en: 'Wax' },
             tip: { ar: 'نتيجة تدوم 3-4 أسابيع', en: 'Results last 3-4 weeks' },
           },

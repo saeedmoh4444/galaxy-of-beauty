@@ -28,7 +28,7 @@ export function BeautyNailPolishCard({
       <div className="mt-3 space-y-1">
         {[
           {
-            emoji: '️',
+            emoji: '💅',
             text: {
               ar: '1. Base coat — يحمي الظفر من التصبغ',
               en: '1. Base coat — protects the nail from staining',

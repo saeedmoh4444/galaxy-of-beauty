@@ -42,7 +42,7 @@ export function BeautyHairBrushCard({
             },
           },
           {
-            emoji: '️',
+            emoji: '🛡️',
             text: {
               ar: 'رذاذ حماية من الحرارة قبل التصفيف',
               en: 'Heat protectant spray before styling',

@@ -42,7 +42,7 @@ export function BeautyHydrofacialCard({
             },
           },
           {
-            emoji: '️',
+            emoji: '⏰',
             text: { ar: '30-45 دقيقة — نتائج فورية', en: '30-45 minutes — instant results' },
           },
           {

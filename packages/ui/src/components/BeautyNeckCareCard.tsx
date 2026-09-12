@@ -28,7 +28,7 @@ export function BeautyNeckCareCard({
       <div className="mt-3 space-y-1">
         {[
           {
-            emoji: '️',
+            emoji: '⬇️',
             text: {
               ar: 'مددي منتجات الوجه للأسفل — الرقبة والصدر',
               en: 'Extend face products downward — neck and chest',
@@ -42,11 +42,11 @@ export function BeautyNeckCareCard({
             },
           },
           {
-            emoji: '️',
+            emoji: '☀️',
             text: { ar: 'واقي شمس — للرقبة أيضاً', en: 'Sunscreen — for the neck too' },
           },
           {
-            emoji: '️',
+            emoji: '🛏️',
             text: {
               ar: 'نامي على الظهر — تجاعيد النوم على الجانب',
               en: 'Sleep on your back — side-sleeping creases',

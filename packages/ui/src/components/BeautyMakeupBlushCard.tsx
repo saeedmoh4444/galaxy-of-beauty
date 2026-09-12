@@ -35,7 +35,7 @@ export function BeautyMakeupBlushCard({
             },
           },
           {
-            emoji: '️',
+            emoji: '🔼',
             text: { ar: 'ادمجيه للأعلى — نحو الصدغ', en: 'Blend upward — toward the temples' },
           },
           {

@@ -42,7 +42,7 @@ export function BeautyHandsCareCard({
             tip: { ar: 'للتنظيف والغسيل', en: 'For cleaning and washing' },
           },
           {
-            emoji: '️',
+            emoji: '🌞',
             label: { ar: 'واقي شمس', en: 'Sunscreen' },
             tip: { ar: 'ظهر اليدين يظهر العمر', en: 'The back of the hands shows age' },
           },

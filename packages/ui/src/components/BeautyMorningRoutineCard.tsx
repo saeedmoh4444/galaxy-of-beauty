@@ -43,7 +43,7 @@ export function BeautyMorningRoutineCard({
             },
           },
           {
-            emoji: '️',
+            emoji: '🌞',
             text: {
               ar: '4. مرطب + واقي شمس — أهم خطوة',
               en: '4. Moisturizer + sunscreen — the most important step',

@@ -35,14 +35,14 @@ export function BeautyMicrocurrentCard({
             },
           },
           {
-            emoji: '️',
+            emoji: '🔼',
             text: {
               ar: 'يحرك للأعلى وللخارج — ضد الجاذبية',
               en: 'Move upward and outward — against gravity',
             },
           },
           {
-            emoji: '️',
+            emoji: '📅',
             text: { ar: '5-10 دقائق — 3-4 مرات أسبوعياً', en: '5-10 minutes — 3-4 times a week' },
           },
           {

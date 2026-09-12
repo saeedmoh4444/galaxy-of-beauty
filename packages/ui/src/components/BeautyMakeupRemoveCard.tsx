@@ -42,7 +42,7 @@ export function BeautyMakeupRemoveCard({
             },
           },
           {
-            emoji: '️',
+            emoji: '👀',
             text: {
               ar: 'العين أولاً — اضغطي 10 ثوانٍ ثم امسحي',
               en: 'Eyes first — press for 10 seconds, then wipe',

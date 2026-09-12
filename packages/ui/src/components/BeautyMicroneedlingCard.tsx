@@ -39,7 +39,7 @@ export function BeautyMicroneedlingCard({
             text: { ar: 'يعالج الندبات والمسام الواسعة', en: 'Treats scars and enlarged pores' },
           },
           {
-            emoji: '️',
+            emoji: '📅',
             text: {
               ar: 'جلسة كل 4-6 أسابيع — 3-6 جلسات',
               en: 'A session every 4-6 weeks — 3-6 sessions',

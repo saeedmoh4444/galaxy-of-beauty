@@ -28,7 +28,7 @@ export function BeautyHairSummerCard({
       <div className="mt-3 space-y-1">
         {[
           {
-            emoji: '️',
+            emoji: '🌞',
             text: {
               ar: 'واقي شعر SPF — قبل التعرض للشمس',
               en: 'SPF hair protectant — before sun exposure',

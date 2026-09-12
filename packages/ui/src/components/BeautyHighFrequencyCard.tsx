@@ -49,7 +49,7 @@ export function BeautyHighFrequencyCard({
             },
           },
           {
-            emoji: '️',
+            emoji: '⏱️',
             text: {
               ar: '3-5 دقائق لكل منطقة — مرتين أسبوعياً',
               en: '3-5 minutes per area — twice a week',

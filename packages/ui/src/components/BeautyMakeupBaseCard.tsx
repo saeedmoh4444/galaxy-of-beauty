@@ -44,7 +44,7 @@ export function BeautyMakeupBaseCard({
             text: { ar: '3. فاونديشن — طبقة رقيقة', en: '3. Foundation — a thin layer' },
           },
           {
-            emoji: '️',
+            emoji: '🧽',
             text: {
               ar: '4. ادمجي بالإسفنجة — وليس الأصابع',
               en: '4. Blend with a sponge — not your fingers',

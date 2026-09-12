@@ -42,7 +42,7 @@ export function BeautyHairBrideCard({
             },
           },
           {
-            emoji: '️',
+            emoji: '✂️',
             text: {
               ar: 'قص الأطراف قبل الزفاف بشهر',
               en: 'Trim the ends a month before the wedding',

@@ -28,14 +28,14 @@ export function BeautyHairHeatCard({
       <div className="mt-3 space-y-1">
         {[
           {
-            emoji: '️',
+            emoji: '🧴',
             text: {
               ar: 'واقي حراري — دائماً قبل المجفف أو المكواة',
               en: 'Heat protectant — always before the dryer or straightener',
             },
           },
           {
-            emoji: '️',
+            emoji: '🌡️',
             text: { ar: 'حرارة متوسطة — لا القصوى', en: 'Medium heat — not the maximum' },
           },
           {

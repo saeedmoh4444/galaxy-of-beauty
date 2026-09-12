@@ -35,14 +35,14 @@ export function BeautyMakeupEyelinerCard({
             },
           },
           {
-            emoji: '️',
+            emoji: '✏️',
             text: {
               ar: 'القلم أسهل للمبتدئات — جففي بعد الرسم',
               en: 'A pencil is easier for beginners — set it with shadow',
             },
           },
           {
-            emoji: '️',
+            emoji: '⬆️',
             text: {
               ar: 'ارفعي الجفن قليلاً — لخط مستقيم',
               en: 'Gently lift the lid — for a straight line',

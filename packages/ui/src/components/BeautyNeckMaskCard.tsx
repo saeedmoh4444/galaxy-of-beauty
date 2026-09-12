@@ -42,7 +42,7 @@ export function BeautyNeckMaskCard({
             },
           },
           {
-            emoji: '️',
+            emoji: '🛀',
             text: { ar: '20-30 دقيقة — وقت الاسترخاء', en: '20-30 minutes — relaxation time' },
           },
           {

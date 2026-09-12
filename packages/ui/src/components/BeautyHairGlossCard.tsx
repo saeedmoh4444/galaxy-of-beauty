@@ -42,7 +42,7 @@ export function BeautyHairGlossCard({
             },
           },
           {
-            emoji: '️',
+            emoji: '⏱️',
             text: {
               ar: '20 دقيقة — في الصالون أو في البيت',
               en: '20 minutes — at the salon or at home',

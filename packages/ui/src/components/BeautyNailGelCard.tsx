@@ -28,7 +28,7 @@ export function BeautyNailGelCard({
       <div className="mt-3 space-y-1">
         {[
           {
-            emoji: '️',
+            emoji: '☀️',
             text: {
               ar: 'لا تعرضي الجل للشمس — يبهت',
               en: 'Do not expose gel to sunlight — it fades',

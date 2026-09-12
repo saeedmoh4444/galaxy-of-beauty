@@ -35,7 +35,7 @@ export function BeautyMakeupBrushCard({
             },
           },
           {
-            emoji: '️',
+            emoji: '💨',
             text: { ar: 'جففيها أفقياً — لا عمودياً', en: 'Dry them flat — not standing up' },
           },
           {

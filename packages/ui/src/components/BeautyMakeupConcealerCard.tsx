@@ -28,7 +28,7 @@ export function BeautyMakeupConcealerCard({
       <div className="mt-3 space-y-1">
         {[
           {
-            emoji: '️',
+            emoji: '🔻',
             text: { ar: 'تحت العين — مثلث مقلوب', en: 'Under the eyes — an inverted triangle' },
           },
           {
