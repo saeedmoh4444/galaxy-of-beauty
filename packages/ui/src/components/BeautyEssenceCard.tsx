@@ -28,28 +28,28 @@ export function BeautyEssenceCard({
       <div className="mt-3 space-y-1">
         {[
           {
-            emoji: '',
+            emoji: '🔢',
             text: {
               ar: 'بعد التونر — وقبل السيروم',
               en: 'After toner — before serum',
             },
           },
           {
-            emoji: '',
+            emoji: '💧',
             text: {
               ar: 'قوام مائي خفيف — يخترق الطبقات العميقة',
               en: 'Light watery texture — penetrates deep layers',
             },
           },
           {
-            emoji: '',
+            emoji: '✨',
             text: {
               ar: 'يهيئ البشرة — يمتص السيروم بشكل أفضل',
               en: 'Prepares skin — absorbs serum better',
             },
           },
           {
-            emoji: '',
+            emoji: '🤲',
             text: {
               ar: 'يطبق باليدين — ربتي ولا تفركي',
               en: 'Apply with hands — pat, do not rub',

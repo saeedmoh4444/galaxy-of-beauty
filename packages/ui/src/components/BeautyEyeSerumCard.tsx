@@ -28,22 +28,22 @@ export function BeautyEyeSerumCard({
       <div className="mt-3 grid grid-cols-2 gap-1.5">
         {[
           {
-            emoji: '',
+            emoji: '☕',
             label: { ar: 'كافيين', en: 'Caffeine' },
             tip: { ar: 'للهالات والانتفاخ', en: 'For dark circles and puffiness' },
           },
           {
-            emoji: '',
+            emoji: '🧬',
             label: { ar: 'ببتيدات', en: 'Peptides' },
             tip: { ar: 'للتجاعيد والخطوط', en: 'For wrinkles and lines' },
           },
           {
-            emoji: '',
+            emoji: '💧',
             label: { ar: 'هيالورونيك', en: 'Hyaluronic acid' },
             tip: { ar: 'للترطيب العميق', en: 'For deep hydration' },
           },
           {
-            emoji: '',
+            emoji: '🍊',
             label: { ar: 'فيتامين C', en: 'Vitamin C' },
             tip: { ar: 'لتفتيح الهالات', en: 'To brighten dark circles' },
           },

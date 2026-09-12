@@ -35,21 +35,21 @@ export function BeautyFairSkinCard({
             },
           },
           {
-            emoji: '',
+            emoji: '🌿',
             text: {
               ar: 'ميل للاحمرار — منتجات مهدئة بالسنيتلا',
               en: 'Prone to redness — soothing products with cica',
             },
           },
           {
-            emoji: '',
+            emoji: '🎨',
             text: {
               ar: 'ألوان: وردي، خوخي، بيج فاتح — تجنبي البرونزي',
               en: 'Shades: pink, peach, light beige — avoid bronzy tones',
             },
           },
           {
-            emoji: '',
+            emoji: '✨',
             text: { ar: 'هايلايتر شمباني — وليس ذهبي', en: 'Champagne highlighter — not gold' },
           },
         ].map((t, i) => (

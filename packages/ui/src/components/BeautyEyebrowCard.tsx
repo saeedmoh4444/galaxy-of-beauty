@@ -37,7 +37,7 @@ export function BeautyEyebrowCard({
       <div className="mt-3 grid grid-cols-2 gap-1.5">
         {[
           {
-            emoji: '',
+            emoji: '📏',
             label: { ar: 'تحديد الشكل', en: 'Shape them' },
             tip: {
               ar: 'لا تتبعي الصيحة — اتبعي شكل وجهك',
@@ -55,7 +55,7 @@ export function BeautyEyebrowCard({
             tip: { ar: 'قلم حواجب بلون مطابق', en: 'A brow pencil in a matching shade' },
           },
           {
-            emoji: '',
+            emoji: '🧴',
             label: { ar: 'زيت الخروع', en: 'Castor oil' },
             tip: { ar: 'يساعد على تكثيف الحواجب', en: 'Helps thicken brows' },
           },

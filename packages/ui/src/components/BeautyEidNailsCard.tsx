@@ -28,28 +28,28 @@ export function BeautyEidNailsCard({
       <div className="mt-3 space-y-1">
         {[
           {
-            emoji: '',
+            emoji: '💅',
             text: {
               ar: 'ألوان باستيل — وردي، لافندر، بيج',
               en: 'Pastel colors — pink, lavender, beige',
             },
           },
           {
-            emoji: '',
+            emoji: '✨',
             text: {
               ar: 'جليتر خفيف — لمسة احتفالية',
               en: 'Light glitter — a festive touch',
             },
           },
           {
-            emoji: '',
+            emoji: '🌙',
             text: {
               ar: 'هلال ذهبي — تصميم العيد',
               en: 'Golden crescent — an Eid design',
             },
           },
           {
-            emoji: '',
+            emoji: '📅',
             text: {
               ar: 'قبل العيد بيومين — لتكون مثالية',
               en: 'Two days before Eid — to be perfect',

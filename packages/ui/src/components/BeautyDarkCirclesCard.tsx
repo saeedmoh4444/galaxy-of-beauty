@@ -28,7 +28,7 @@ export function BeautyDarkCirclesCard({
       <div className="mt-3 grid grid-cols-2 gap-1.5">
         {[
           {
-            emoji: '',
+            emoji: '😴',
             label: { ar: 'قلة النوم', en: 'Lack of sleep' },
             tip: {
               ar: 'السبب الأول — نامي 7-8 ساعات',
@@ -41,12 +41,12 @@ export function BeautyDarkCirclesCard({
             tip: { ar: 'سبب شائع — فحص دم', en: 'A common cause — get a blood test' },
           },
           {
-            emoji: '',
+            emoji: '🧬',
             label: { ar: 'وراثة', en: 'Genetics' },
             tip: { ar: 'ميل طبيعي — كريمات خاصة', en: 'Natural tendency — special creams' },
           },
           {
-            emoji: '',
+            emoji: '💧',
             label: { ar: 'جفاف', en: 'Dryness' },
             tip: { ar: 'البشرة الرقيقة تحت العين', en: 'Thin skin under the eye' },
           },

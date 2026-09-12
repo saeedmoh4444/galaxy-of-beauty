@@ -4,7 +4,7 @@ import { cn } from '@galaxy/shared';
 
 const TIPS = [
   {
-    emoji: '',
+    emoji: '🛁',
     title: { ar: 'نقع أسبوعي', en: 'Weekly soak' },
     desc: { ar: 'ماء دافئ وملح إنكليزي 15 دقيقة', en: 'Warm water and Epsom salt for 15 minutes' },
   },
@@ -14,12 +14,12 @@ const TIPS = [
     desc: { ar: 'لإزالة الجلد الميت بلطف', en: 'To remove dead skin gently' },
   },
   {
-    emoji: '',
+    emoji: '🧦',
     title: { ar: 'ترطيب عميق', en: 'Deep moisturizing' },
     desc: { ar: 'كريم مرطب قبل النوم مع جوارب', en: 'Moisturizing cream before bed with socks' },
   },
   {
-    emoji: '',
+    emoji: '💅',
     title: { ar: 'عناية بالأظافر', en: 'Nail care' },
     desc: { ar: 'قص مستقيم لمنع الانغراس', en: 'Cut straight across to prevent ingrown nails' },
   },

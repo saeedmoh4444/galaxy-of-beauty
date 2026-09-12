@@ -28,21 +28,21 @@ export function BeautyGlassSkinCard({
       <div className="mt-3 space-y-1">
         {[
           {
-            emoji: '',
+            emoji: '💧',
             text: {
               ar: '7 طبقات ترطيب — تونر خفيف يطبق 7 مرات',
               en: '7 layers of hydration — a light toner applied 7 times',
             },
           },
           {
-            emoji: '',
+            emoji: '✨',
             text: {
               ar: 'طبقات رقيقة — كل طبقة تمتص قبل التالية',
               en: 'Thin layers — each one absorbs before the next',
             },
           },
           {
-            emoji: '',
+            emoji: '🪞',
             text: {
               ar: 'تقشير منتظم — أساس البشرة الزجاجية',
               en: 'Regular exfoliation — the foundation of glass skin',

@@ -28,7 +28,7 @@ export function BeautyExfoliationCard({
       <div className="mt-3 grid grid-cols-2 gap-1.5">
         {[
           {
-            emoji: '',
+            emoji: '🧪',
             label: { ar: 'كيميائي', en: 'Chemical' },
             tip: { ar: 'AHA/BHA — مرة أسبوعياً', en: 'AHA/BHA — once a week' },
           },
@@ -38,7 +38,7 @@ export function BeautyExfoliationCard({
             tip: { ar: 'حبيبات — مرة أسبوعياً', en: 'Granules — once a week' },
           },
           {
-            emoji: '',
+            emoji: '🌙',
             label: { ar: 'مساءً فقط', en: 'Evenings only' },
             tip: { ar: 'البشرة حساسة بعد التقشير', en: 'Skin is sensitive after exfoliating' },
           },

@@ -35,14 +35,14 @@ export function BeautyEyeMassageCard({
             },
           },
           {
-            emoji: '',
+            emoji: '🔄',
             text: {
               ar: 'من الداخل للخارج — بحركة دائرية',
               en: 'From inner to outer corner — in a circular motion',
             },
           },
           {
-            emoji: '',
+            emoji: '🧴',
             text: {
               ar: 'مع كريم أو زيت — لتزلق الأصابع',
               en: 'With cream or oil — so fingers glide',

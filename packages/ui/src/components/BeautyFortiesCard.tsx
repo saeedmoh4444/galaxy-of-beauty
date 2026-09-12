@@ -28,7 +28,7 @@ export function BeautyFortiesCard({
       <div className="mt-3 space-y-1">
         {[
           {
-            emoji: '',
+            emoji: '🧪',
             text: {
               ar: 'ببتيدات — تحفز الكولاجين وتشد البشرة',
               en: 'Peptides — boost collagen and firm the skin',
@@ -42,14 +42,14 @@ export function BeautyFortiesCard({
             },
           },
           {
-            emoji: '',
+            emoji: '💆',
             text: {
               ar: 'مساج وجه — يحسن الدورة ويرفع البشرة',
               en: 'Facial massage — improves circulation and lifts the skin',
             },
           },
           {
-            emoji: '',
+            emoji: '✨',
             text: {
               ar: 'علاجات احترافية — ميكرونيدلنغ أو ليزر',
               en: 'Professional treatments — microneedling or laser',

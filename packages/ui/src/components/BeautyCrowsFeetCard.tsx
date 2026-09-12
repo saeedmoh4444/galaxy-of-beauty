@@ -35,21 +35,21 @@ export function BeautyCrowsFeetCard({
             },
           },
           {
-            emoji: '',
+            emoji: '👁',
             text: {
               ar: 'تربيت خفيف — لا تفركي عيونكِ',
               en: 'Tap gently — do not rub your eyes',
             },
           },
           {
-            emoji: '',
+            emoji: '🧴',
             text: {
               ar: 'كريم عيون ببتيدات — صباح ومساء',
               en: 'Peptide eye cream — morning and evening',
             },
           },
           {
-            emoji: '',
+            emoji: '💉',
             text: {
               ar: 'بوتوكس — حل تجميلي للخطوط العميقة',
               en: 'Botox — a cosmetic fix for deep lines',

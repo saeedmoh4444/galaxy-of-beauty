@@ -28,28 +28,28 @@ export function BeautyEidPerfumeCard({
       <div className="mt-3 space-y-1">
         {[
           {
-            emoji: '',
+            emoji: '🌹',
             text: {
               ar: 'عود وورد — كلاسيكية العيد',
               en: 'Oud and rose — an Eid classic',
             },
           },
           {
-            emoji: '',
+            emoji: '🌸',
             text: {
               ar: 'طبقات العطر — قاعدة + قلب + نفحة عليا',
               en: 'Perfume layers — base + heart + top notes',
             },
           },
           {
-            emoji: '',
+            emoji: '⏰',
             text: {
               ar: 'قبل الخروج بساعة — ليثبت العطر',
               en: 'An hour before going out — so it lasts',
             },
           },
           {
-            emoji: '',
+            emoji: '🎁',
             text: {
               ar: 'عطر جديد للعيد — تقليد جميل',
               en: 'A new Eid perfume — a lovely tradition',

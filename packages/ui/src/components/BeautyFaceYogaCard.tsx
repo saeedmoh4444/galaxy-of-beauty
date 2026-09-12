@@ -28,21 +28,21 @@ export function BeautyFaceYogaCard({
       <div className="mt-3 space-y-1">
         {[
           {
-            emoji: '',
+            emoji: '😮',
             text: {
               ar: 'تمرين O —— افتحي فمكِ 5 ثوانٍ — 10 مرات',
               en: 'Exercise O — open your mouth for 5 seconds — 10 times',
             },
           },
           {
-            emoji: '',
+            emoji: '😗',
             text: {
               ar: 'تمرين القبلة —— مدي شفاهكِ للأمام — 10 مرات',
               en: 'Kiss exercise — pucker your lips forward — 10 times',
             },
           },
           {
-            emoji: '',
+            emoji: '😊',
             text: {
               ar: 'رفع الخدود —— ابتسمي بدون عيون — 15 مرة',
               en: 'Cheek lift — smile with your eyes closed — 15 times',

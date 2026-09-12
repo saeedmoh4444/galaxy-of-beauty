@@ -42,14 +42,14 @@ export function BeautyDryBrushingCard({
             },
           },
           {
-            emoji: '',
+            emoji: '📅',
             text: {
               ar: '2-3 مرات أسبوعياً — لا يومياً',
               en: '2-3 times a week — not daily',
             },
           },
           {
-            emoji: '',
+            emoji: '🧴',
             text: {
               ar: 'بعدها — زيت أو كريم مرطب فوراً',
               en: 'Afterwards — oil or moisturizer immediately',

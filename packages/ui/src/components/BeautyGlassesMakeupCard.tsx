@@ -35,14 +35,14 @@ export function BeautyGlassesMakeupCard({
             },
           },
           {
-            emoji: '',
+            emoji: '✨',
             text: {
               ar: 'هايلايتر تحت الحاجب — يبرز العين',
               en: 'Highlighter under the brow — makes the eyes pop',
             },
           },
           {
-            emoji: '',
+            emoji: '🎨',
             text: { ar: 'ظلال مات — ليس لامعاً', en: 'Matte eyeshadow — not shimmery' },
           },
           {

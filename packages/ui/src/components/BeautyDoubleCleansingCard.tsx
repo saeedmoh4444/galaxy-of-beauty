@@ -35,21 +35,21 @@ export function BeautyDoubleCleansingCard({
             },
           },
           {
-            emoji: '',
+            emoji: '💧',
             text: {
               ar: 'الخطوة 2: منظف مائي — ينظف البشرة بعمق',
               en: 'Step 2: water cleanser — deeply cleanses skin',
             },
           },
           {
-            emoji: '',
+            emoji: '🌙',
             text: {
               ar: 'مساءً فقط — صباحاً اكتفي بغسول واحد',
               en: 'Evenings only — one cleanser in the morning',
             },
           },
           {
-            emoji: '',
+            emoji: '✨',
             text: {
               ar: 'النتيجة: بشرة أنظف وأكثر إشراقاً',
               en: 'Result: cleaner, more radiant skin',
