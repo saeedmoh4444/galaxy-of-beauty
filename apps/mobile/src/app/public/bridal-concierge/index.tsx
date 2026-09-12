@@ -6,9 +6,9 @@ import { trpc } from '@/lib/trpc-react';
 import { useLocale } from '@/components/LocaleProvider';
 
 const STEPS = [
-  { key: 'consultation', emoji: '', title: 'استشارة', desc: 'تحديد احتياجات العروس' },
-  { key: 'trial', emoji: '', title: 'تجربة', desc: 'تجربة المكياج والتسريحة' },
-  { key: 'final', emoji: '', title: 'اليوم الكبير', desc: 'يوم الزفاف' },
+  { key: 'consultation', emoji: '💬', title: 'استشارة', desc: 'تحديد احتياجات العروس' },
+  { key: 'trial', emoji: '💄', title: 'تجربة', desc: 'تجربة المكياج والتسريحة' },
+  { key: 'final', emoji: '💍', title: 'اليوم الكبير', desc: 'يوم الزفاف' },
 ];
 
 interface ConciergeStep {

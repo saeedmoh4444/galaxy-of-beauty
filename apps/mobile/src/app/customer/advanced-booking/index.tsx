@@ -7,8 +7,8 @@ import { trpc } from '@/lib/trpc-react';
 import { localize } from '@galaxy/shared';
 
 const REC = [
-  { key: 'WEEKLY', emoji: '' },
-  { key: 'BIWEEKLY', emoji: '' },
+  { key: 'WEEKLY', emoji: '📅' },
+  { key: 'BIWEEKLY', emoji: '📆' },
   { key: 'MONTHLY', emoji: '️' },
 ] as const;
 

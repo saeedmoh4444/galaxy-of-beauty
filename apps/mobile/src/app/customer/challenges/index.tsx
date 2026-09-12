@@ -5,10 +5,10 @@ import { useLocale } from '@/components/LocaleProvider';
 import { useAuthState } from '@/hooks/useAuthState';
 
 const CH: Record<string, { emoji: string; color: string }> = {
-  '7day_skincare': { emoji: '', color: '#ec4899' },
+  '7day_skincare': { emoji: '🧴', color: '#ec4899' },
   '5bookings': { emoji: '‍️', color: '#f59e0b' },
-  first_review: { emoji: '', color: '#3b82f6' },
-  streak_4weeks: { emoji: '', color: '#8b5cf6' },
+  first_review: { emoji: '⭐', color: '#3b82f6' },
+  streak_4weeks: { emoji: '🔥', color: '#8b5cf6' },
   refer_3friends: { emoji: '‍️', color: '#10b981' },
 };
 
@@ -59,7 +59,7 @@ export default function ChallengesScreen(): JSX.Element {
     >
       <Text style={styles.t}>{t('challenges.title')}</Text>
       {challenges.map((ch) => {
-        const s = CH[ch.id] ?? { emoji: '', color: '#6b7280' };
+        const s = CH[ch.id] ?? { emoji: '🏆', color: '#6b7280' };
         const pct = Math.min(100, ((progress?.bookingCount || 0) / (ch.target || 1)) * 100);
         return (
           <View key={ch.id} style={[styles.card, { borderLeftColor: s.color }]}>

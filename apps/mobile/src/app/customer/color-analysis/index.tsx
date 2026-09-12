@@ -15,7 +15,7 @@ const SEASONS_COLORS = [
   },
   {
     key: 'summer',
-    emoji: '',
+    emoji: '☀️',
     name: 'صيفية',
     desc: 'ألوان ناعمة وباستيل',
     colors: ['#fbcfe8', '#ddd6fe', '#bfdbfe', '#d1d5db', '#ec4899', '#8b5cf6', '#93c5fd'],
@@ -25,7 +25,7 @@ const SEASONS_COLORS = [
   },
   {
     key: 'autumn',
-    emoji: '',
+    emoji: '🍂',
     name: 'خريفية',
     desc: 'ألوان دافئة وغنية',
     colors: ['#fef3c7', '#fed7aa', '#fde68a', '#d97706', '#b45309', '#92400e', '#78350f'],
@@ -35,7 +35,7 @@ const SEASONS_COLORS = [
   },
   {
     key: 'spring',
-    emoji: '',
+    emoji: '🌸',
     name: 'ربيعية',
     desc: 'ألوان مشرقة ودافئة',
     colors: ['#fef08a', '#fde047', '#86efac', '#fca5a5', '#fb923c', '#22c55e', '#fbbf24'],

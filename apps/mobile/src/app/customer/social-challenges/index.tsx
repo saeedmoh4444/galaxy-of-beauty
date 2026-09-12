@@ -5,7 +5,7 @@ import { useLocale } from '@/components/LocaleProvider';
 const CHALLENGES = [
   {
     key: '7day_mask',
-    emoji: '',
+    emoji: '🧖',
     name: 'تحدي ٧ أيام قناع',
     desc: 'قناع يومي للبشرة لمدة أسبوع',
     participants: 234,
@@ -14,7 +14,7 @@ const CHALLENGES = [
   },
   {
     key: 'selfie_30',
-    emoji: '',
+    emoji: '🤳',
     name: 'تحدي ٣٠ يوم بدون مكياج',
     desc: 'صوري بشرتكِ يومياً بدون مكياج',
     participants: 156,
@@ -23,7 +23,7 @@ const CHALLENGES = [
   },
   {
     key: 'water_challenge',
-    emoji: '',
+    emoji: '💧',
     name: 'تحدي ٨ أكواب ماء',
     desc: 'اشربي ٨ أكواب ماء يومياً',
     participants: 412,
@@ -32,7 +32,7 @@ const CHALLENGES = [
   },
   {
     key: 'night_routine',
-    emoji: '',
+    emoji: '🌙',
     name: 'تحدي الروتين الليلي',
     desc: 'التزمي بروتينكِ الليلي لمدة ٢١ يوم',
     participants: 189,

@@ -4,9 +4,9 @@ import { trpc } from '@/lib/trpc-react';
 import { useLocale } from '@/components/LocaleProvider';
 
 const TL: Record<string, { name: string; emoji: string; color: string }> = {
-  SILVER: { name: 'الفضية', emoji: '', color: '#9ca3af' },
-  GOLD: { name: 'الذهبية', emoji: '', color: '#f59e0b' },
-  PLATINUM: { name: 'البلاتينية', emoji: '', color: '#7c3aed' },
+  SILVER: { name: 'الفضية', emoji: '🥈', color: '#9ca3af' },
+  GOLD: { name: 'الذهبية', emoji: '🥇', color: '#f59e0b' },
+  PLATINUM: { name: 'البلاتينية', emoji: '💎', color: '#7c3aed' },
 };
 
 interface Reward {

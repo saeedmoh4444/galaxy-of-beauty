@@ -5,7 +5,7 @@ import { useLocale } from '@/components/LocaleProvider';
 const TRIMESTERS = [
   {
     key: 'first',
-    emoji: '',
+    emoji: '🌱',
     name: 'الأول',
     weeks: '1-13',
     color: '#10b981',
@@ -15,7 +15,7 @@ const TRIMESTERS = [
   },
   {
     key: 'second',
-    emoji: '',
+    emoji: '🌸',
     name: 'الثاني',
     weeks: '14-26',
     color: '#8b5cf6',
@@ -25,7 +25,7 @@ const TRIMESTERS = [
   },
   {
     key: 'third',
-    emoji: '',
+    emoji: '🌟',
     name: 'الثالث',
     weeks: '27-40',
     color: '#ec4899',

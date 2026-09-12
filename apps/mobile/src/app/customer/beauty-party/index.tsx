@@ -5,10 +5,10 @@ import { useLocale } from '@/components/LocaleProvider';
 
 const THEMES = [
   { key: 'spa', emoji: '‍️', name: 'سبا منزلي', desc: 'مساج وأقنعة واسترخاء' },
-  { key: 'makeup', emoji: '', name: 'حفلة مكياج', desc: 'تجربة مكياج جماعي' },
-  { key: 'nails', emoji: '', name: 'صالون أظافر', desc: 'مانيكير وباديكير جماعي' },
-  { key: 'bridal', emoji: '', name: 'توديع عزوبية', desc: 'عناية متكاملة للعروس' },
-  { key: 'skincare', emoji: '', name: 'روتين عناية', desc: 'أقنعة وعناية بالبشرة' },
+  { key: 'makeup', emoji: '💄', name: 'حفلة مكياج', desc: 'تجربة مكياج جماعي' },
+  { key: 'nails', emoji: '💅', name: 'صالون أظافر', desc: 'مانيكير وباديكير جماعي' },
+  { key: 'bridal', emoji: '👰', name: 'توديع عزوبية', desc: 'عناية متكاملة للعروس' },
+  { key: 'skincare', emoji: '🧴', name: 'روتين عناية', desc: 'أقنعة وعناية بالبشرة' },
 ];
 
 export default function BeautyPartyScreen(): JSX.Element {
