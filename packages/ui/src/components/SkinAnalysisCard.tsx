@@ -129,7 +129,9 @@ export function SkinAnalysisCard({
       )}
     >
       <div className="text-center">
-        <span className="text-3xl" aria-hidden="true"></span>
+        <span className="text-3xl" aria-hidden="true">
+          🔍
+        </span>
         <h4 className="mt-1 text-sm font-bold text-blue-700 dark:text-blue-300">{title}</h4>
         <p className="text-[10px] text-blue-500 dark:text-blue-400">{subtitle}</p>
       </div>

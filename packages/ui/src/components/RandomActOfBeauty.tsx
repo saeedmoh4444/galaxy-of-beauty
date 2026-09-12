@@ -81,7 +81,9 @@ export function RandomActOfBeauty({
       )}
     >
       <div className="text-center">
-        <span className="text-3xl" aria-hidden="true"></span>
+        <span className="text-3xl" aria-hidden="true">
+          🎁
+        </span>
         <h4 className="mt-1 text-sm font-bold text-amber-800 dark:text-amber-200">
           {hasWon ? wonTitle : surpriseTitle}
         </h4>
@@ -104,7 +106,9 @@ export function RandomActOfBeauty({
           </>
         ) : (
           <>
-            <span className="text-4xl" aria-hidden="true"></span>
+            <span className="text-4xl" aria-hidden="true">
+              🎉
+            </span>
             <p className="mt-1 text-xs text-text-secondary dark:text-gray-300">{anyServiceText}</p>
             <div className="mt-2 flex flex-wrap justify-center gap-1">
               {SURPRISES.map((s) => (

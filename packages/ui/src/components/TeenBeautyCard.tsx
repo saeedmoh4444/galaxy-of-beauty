@@ -68,7 +68,7 @@ export function TeenBeautyCard({
   ageAppropriateOlder = 'عناية لطيفة مناسبة لسنكِ — التركيز على العناية قبل التجميل',
   currencySuffix = 'ر.س',
   parentConsentSuffix = '+ موافقة ولي الأمر',
-  bookWithParentText = 'احجزي مع أمكِ ‍',
+  bookWithParentText = 'احجزي مع أمكِ ',
 }: TeenBeautyCardProps): JSX.Element {
   const ageMin = Number(service.ageRange.split('-')[0]) || 12;
 
@@ -90,7 +90,7 @@ export function TeenBeautyCard({
               {service.name}
             </h4>
             <p className="text-[10px] text-text-tertiary dark:text-text-tertiary">
-              ️ {service.duration || defaultDuration}
+              {service.duration || defaultDuration}
             </p>
           </div>
         </div>
@@ -116,7 +116,9 @@ export function TeenBeautyCard({
           </p>
           {service.learningPoints.map((point, i) => (
             <div key={i} className="flex items-center gap-1.5">
-              <span className="text-[10px] text-brand-400" aria-hidden="true"></span>
+              <span className="text-[10px] text-brand-400" aria-hidden="true">
+                ✅
+              </span>
               <span className="text-[10px] text-text-secondary dark:text-gray-300">{point}</span>
             </div>
           ))}
@@ -127,7 +129,7 @@ export function TeenBeautyCard({
       {service.parentRequired && (
         <div className="mt-3 flex items-start gap-2 rounded-xl bg-amber-50 p-2.5 dark:bg-amber-950">
           <span className="text-sm" aria-hidden="true">
-            ‍
+            👪
           </span>
           <div>
             <p className="text-[10px] font-bold text-amber-700 dark:text-amber-300">
@@ -140,7 +142,9 @@ export function TeenBeautyCard({
 
       {/* Age-appropriate reminder */}
       <div className="mt-2 flex items-start gap-2 rounded-xl bg-brand-50 p-2.5 dark:bg-brand-950">
-        <span className="text-sm" aria-hidden="true"></span>
+        <span className="text-sm" aria-hidden="true">
+          💡
+        </span>
         <div>
           <p className="text-[10px] font-bold text-brand-700 dark:text-brand-300">
             {ageAppropriateTitle}

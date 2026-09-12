@@ -35,7 +35,7 @@ const SEED_COMPLIMENTS = [
 export function SisterhoodWall({
   className = '',
   locale = 'ar',
-  title = '‍️ جدار الأختية',
+  title = ' جدار الأختية',
   subtitle = 'اتركي رسالة إيجابية لأخت مجهولة',
   placeholder = 'اكتبي رسالة تشجيع...',
   sendButtonText = 'إرسال',
