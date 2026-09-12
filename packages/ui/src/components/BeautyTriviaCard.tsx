@@ -17,42 +17,42 @@ const TRIVIA = [
       ar: 'البشرة هي أكبر عضو في جسم الإنسان — مساحتها حوالي 2 متر مربع',
       en: 'The skin is the largest organ of the human body — about 2 square meters',
     },
-    emoji: '',
+    emoji: '🩺',
   },
   {
     fact: {
       ar: 'النساء في المملكة ينفقن 6 مليارات ريال سنوياً على مستحضرات التجميل',
       en: 'Women in the Kingdom spend 6 billion riyals a year on cosmetics',
     },
-    emoji: '',
+    emoji: '💰',
   },
   {
     fact: {
       ar: 'زيت الورد الطائفي من أندر وأغلى الزيوت العطرية في العالم',
       en: 'Taif rose oil is among the rarest and most expensive fragrances in the world',
     },
-    emoji: '',
+    emoji: '🌹',
   },
   {
     fact: {
       ar: 'الحناء تستخدم في الجزيرة العربية منذ أكثر من 5000 سنة',
       en: 'Henna has been used in the Arabian Peninsula for over 5,000 years',
     },
-    emoji: '',
+    emoji: '🌿',
   },
   {
     fact: {
       ar: 'شرب 8 أكواب من الماء يومياً يحسن مرونة البشرة بنسبة 28%',
       en: 'Drinking 8 glasses of water a day improves skin elasticity by 28%',
     },
-    emoji: '',
+    emoji: '💧',
   },
   {
     fact: {
       ar: 'النوم 8 ساعات يزيد إنتاج الكولاجين الطبيعي في البشرة',
       en: '8 hours of sleep boosts natural collagen production in the skin',
     },
-    emoji: '',
+    emoji: '😴',
   },
   {
     fact: {

@@ -49,7 +49,7 @@ const ADVICE: Record<WeatherCondition, WeatherAdvice> = {
     },
   },
   humid: {
-    emoji: '',
+    emoji: '💦',
     title: { ar: 'رطب', en: 'Humid' },
     tips: {
       ar: ['منتجات خالية من الزيوت', 'مثبت مكياج', 'ورق نشاف', 'تونر قابض'],

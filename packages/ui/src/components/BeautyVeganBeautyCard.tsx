@@ -28,25 +28,25 @@ export function BeautyVeganBeautyCard({
       <div className="mt-3 space-y-1">
         {[
           {
-            emoji: '',
+            emoji: '🚫',
             text: {
               ar: 'بدون مكونات حيوانية — شمع عسل، لانولين، كولاجين',
               en: 'No animal ingredients — beeswax, lanolin, collagen',
             },
           },
           {
-            emoji: '',
+            emoji: '🌱',
             text: {
               ar: 'بدائل نباتية — شمع الصويا، زبدة الشيا',
               en: 'Plant-based alternatives — soy wax, shea butter',
             },
           },
           {
-            emoji: '',
+            emoji: '🔍',
             text: { ar: 'ابحثي عن شعار Vegan Certified', en: 'Look for the Vegan Certified logo' },
           },
           {
-            emoji: '',
+            emoji: '📖',
             text: {
               ar: 'نباتي ≠ طبيعي — اقرئي المكونات',
               en: 'Vegan ≠ natural — read the ingredients',

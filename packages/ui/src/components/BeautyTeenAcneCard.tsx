@@ -28,18 +28,18 @@ export function BeautyTeenAcneCard({
       <div className="mt-3 space-y-1">
         {[
           {
-            emoji: '',
+            emoji: '🧼',
             text: { ar: 'غسول لطيف — مرتين يومياً', en: 'Gentle cleanser — twice daily' },
           },
           {
-            emoji: '',
+            emoji: '🚫',
             text: {
               ar: 'لا تضغطي — تترك أثراً وندبات',
               en: "Don't squeeze — it leaves marks and scars",
             },
           },
           {
-            emoji: '',
+            emoji: '🧴',
             text: { ar: 'مرطب خالٍ من الزيوت — ضروري', en: 'Oil-free moisturizer — essential' },
           },
           {

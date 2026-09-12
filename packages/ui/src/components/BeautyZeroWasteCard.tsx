@@ -28,28 +28,28 @@ export function BeautyZeroWasteCard({
       <div className="mt-3 space-y-1">
         {[
           {
-            emoji: '',
+            emoji: '🧼',
             text: {
               ar: 'شامبو صلب — يدوم 3 شهور بدون بلاستيك',
               en: 'Solid shampoo — lasts 3 months, no plastic',
             },
           },
           {
-            emoji: '',
+            emoji: '🧺',
             text: {
               ar: 'فوط قماش — بدل القطن أحادي الاستخدام',
               en: 'Cloth pads — instead of single-use cotton',
             },
           },
           {
-            emoji: '',
+            emoji: '🔄',
             text: {
               ar: 'اشتري عبوات كبيرة — وأعيدي تعبئة الصغيرة',
               en: 'Buy large refills — and refill small containers',
             },
           },
           {
-            emoji: '',
+            emoji: '🌿',
             text: {
               ar: 'منتجات قابلة للتحلل — تغليف ورقي',
               en: 'Biodegradable products — paper packaging',

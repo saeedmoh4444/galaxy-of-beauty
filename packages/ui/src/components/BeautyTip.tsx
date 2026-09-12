@@ -12,42 +12,42 @@ import { useState, useEffect } from 'react';
 
 const TIPS = [
   {
-    emoji: '',
+    emoji: '💧',
     text: {
       ar: 'اشربي ٨ أكواب من الماء يومياً لبشرة متوهجة',
       en: 'Drink 8 glasses of water daily for glowing skin',
     },
   },
   {
-    emoji: '',
+    emoji: '😴',
     text: {
       ar: 'النوم ٧-٨ ساعات يومياً هو سر الجمال',
       en: 'Sleeping 7-8 hours a day is the secret to beauty',
     },
   },
   {
-    emoji: '',
+    emoji: '🌞',
     text: {
       ar: 'لا تنسي واقي الشمس حتى في الأيام الغائمة',
       en: 'Do not forget sunscreen even on cloudy days',
     },
   },
   {
-    emoji: '',
+    emoji: '💄',
     text: {
       ar: 'جددّي مكياجكِ كل ٦-١٢ شهر للوقاية من البكتيريا',
       en: 'Refresh your makeup every 6-12 months to prevent bacteria',
     },
   },
   {
-    emoji: '',
+    emoji: '📅',
     text: {
       ar: 'احجزي خدماتكِ قبل العيد بأسبوعين لتجنب الازدحام',
       en: 'Book your services two weeks before Eid to avoid the rush',
     },
   },
   {
-    emoji: '',
+    emoji: '🌙',
     text: {
       ar: 'في رمضان: احجزي بعد الإفطار للحصول على أفضل النتائج',
       en: 'In Ramadan: book after iftar for the best results',
@@ -61,7 +61,7 @@ const TIPS = [
     },
   },
   {
-    emoji: '',
+    emoji: '🧽',
     text: { ar: 'قشري بشرتكِ مرة واحدة أسبوعياً فقط', en: 'Exfoliate your skin only once a week' },
   },
   {
@@ -72,7 +72,7 @@ const TIPS = [
     },
   },
   {
-    emoji: '',
+    emoji: '🤰',
     text: {
       ar: 'أثناء الحمل: تجنبي العلاجات بالحرارة العالية والزيوت القوية',
       en: 'During pregnancy: avoid high-heat treatments and strong oils',
@@ -93,21 +93,21 @@ const TIPS = [
     },
   },
   {
-    emoji: '',
+    emoji: '👰',
     text: {
       ar: 'العروس: ابدأي روتين العناية بالبشرة قبل ٦ أشهر من الزفاف',
       en: 'Bride: start your skincare routine 6 months before the wedding',
     },
   },
   {
-    emoji: '',
+    emoji: '🍵',
     text: {
       ar: 'الشاي الأخضر يقلل الهالات السوداء — ضعي الأكياس الباردة على عينيكِ',
       en: 'Green tea reduces dark circles — place cold tea bags on your eyes',
     },
   },
   {
-    emoji: '',
+    emoji: '💅',
     text: {
       ar: 'الأظافر تحتاج تنفساً — اتركيها بدون طلاء يومين بين الجلسات',
       en: 'Nails need to breathe — leave them polish-free two days between sessions',

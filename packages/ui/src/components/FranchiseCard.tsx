@@ -26,7 +26,7 @@ const BENEFITS: FranchiseBenefit[] = [
     },
   },
   {
-    emoji: '',
+    emoji: '🎓',
     title: { ar: 'تدريب وتأهيل', en: 'Training' },
     description: {
       ar: 'برنامج تدريبي شامل لكِ ولفريقكِ',
@@ -34,7 +34,7 @@ const BENEFITS: FranchiseBenefit[] = [
     },
   },
   {
-    emoji: '',
+    emoji: '📅',
     title: { ar: 'نظام حجز متكامل', en: 'Integrated booking' },
     description: {
       ar: 'منصتنا التقنية مع حجوزات ومدفوعات',
@@ -42,7 +42,7 @@ const BENEFITS: FranchiseBenefit[] = [
     },
   },
   {
-    emoji: '',
+    emoji: '📣',
     title: { ar: 'تسويق ودعم', en: 'Marketing and support' },
     description: {
       ar: 'حملات تسويقية وإعلانات على حساب المنصة',
@@ -50,7 +50,7 @@ const BENEFITS: FranchiseBenefit[] = [
     },
   },
   {
-    emoji: '',
+    emoji: '💰',
     title: { ar: 'تمويل ميسر', en: 'Easy financing' },
     description: {
       ar: 'شراكة مع بنوك سعودية للتمويل الصغير',

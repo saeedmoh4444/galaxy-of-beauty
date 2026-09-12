@@ -28,22 +28,22 @@ interface AmenityDef {
 
 const AMENITIES: AmenityDef[] = [
   {
-    emoji: '',
+    emoji: '🎀',
     label: { ar: 'ربطة شعر', en: 'Hair tie' },
     detail: { ar: 'ربطات شعر جديدة', en: 'Fresh hair ties' },
   },
   {
-    emoji: '',
+    emoji: '📌',
     label: { ar: 'دبابيس شعر', en: 'Bobby pins' },
     detail: { ar: 'بكل الأحجام', en: 'In all sizes' },
   },
   {
-    emoji: '',
+    emoji: '🧴',
     label: { ar: 'مزيل عرق', en: 'Deodorant' },
     detail: { ar: 'أنواع خالية من العطور', en: 'Fragrance-free options' },
   },
   {
-    emoji: '',
+    emoji: '🔌',
     label: { ar: 'شاحن جوال', en: 'Phone charger' },
     detail: { ar: 'جميع أنواع الشواحن', en: 'All charger types' },
   },
@@ -53,12 +53,12 @@ const AMENITIES: AmenityDef[] = [
     detail: { ar: 'مجاناً في دورة المياه', en: 'Free in the restroom' },
   },
   {
-    emoji: '',
+    emoji: '🌸',
     label: { ar: 'عطر', en: 'Perfume' },
     detail: { ar: 'عطور فاخرة للمسة أخيرة', en: 'Luxury scents for a final touch' },
   },
   {
-    emoji: '',
+    emoji: '🧻',
     label: { ar: 'مناديل مبللة', en: 'Wet wipes' },
     detail: { ar: 'مناديل منعشة', en: 'Refreshing wipes' },
   },

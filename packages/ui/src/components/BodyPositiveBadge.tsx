@@ -26,7 +26,7 @@ interface FeatureDef {
 
 const FEATURES: FeatureDef[] = [
   {
-    emoji: '',
+    emoji: '📷',
     label: { ar: 'صور حقيقية', en: 'Real photos' },
     detail: {
       ar: 'نستخدم صور نساء حقيقيات — بدون تعديل أو فوتوشوب',
@@ -34,7 +34,7 @@ const FEATURES: FeatureDef[] = [
     },
   },
   {
-    emoji: '',
+    emoji: '📏',
     label: { ar: 'شامل الأحجام', en: 'Size inclusive' },
     detail: {
       ar: 'روبات، كراسي، ومناشف لكل أحجام الأجسام',
@@ -42,7 +42,7 @@ const FEATURES: FeatureDef[] = [
     },
   },
   {
-    emoji: '',
+    emoji: '🎨',
     label: { ar: 'كل ألوان البشرة', en: 'All skin tones' },
     detail: {
       ar: 'خبيرات متدربات على كل درجات البشرة',
@@ -50,7 +50,7 @@ const FEATURES: FeatureDef[] = [
     },
   },
   {
-    emoji: '',
+    emoji: '🌟',
     label: { ar: 'إيجابية العمر', en: 'Age positive' },
     detail: {
       ar: 'الجمال ليس له عمر — كل مرحلة عمرية جميلة',
@@ -58,7 +58,7 @@ const FEATURES: FeatureDef[] = [
     },
   },
   {
-    emoji: '',
+    emoji: '🤍',
     label: { ar: 'صديق للندبات', en: 'Scar friendly' },
     detail: {
       ar: 'لا نحكم على الندبات أو علامات التمدد — بل نحتضنها',
@@ -66,7 +66,7 @@ const FEATURES: FeatureDef[] = [
     },
   },
   {
-    emoji: '',
+    emoji: '🪞',
     label: { ar: 'بدون تنقيح', en: 'No retouching' },
     detail: {
       ar: 'صور قبل/بعد حقيقية 100% — لا فوتوشوب',

@@ -39,7 +39,7 @@ const PERMISSIONS: Record<Permission, PermDef> = {
     },
   },
   before_after: {
-    emoji: '',
+    emoji: '📷',
     label: { ar: 'صور قبل/بعد', en: 'Before/after photos' },
     description: {
       ar: 'السماح بمشاركة صور التحول (يمكن تعتيم الوجه)',
@@ -47,7 +47,7 @@ const PERMISSIONS: Record<Permission, PermDef> = {
     },
   },
   testimonial: {
-    emoji: '',
+    emoji: '💬',
     label: { ar: 'شهادة', en: 'Testimonial' },
     description: {
       ar: 'السماح بنشر تقييمي وشهادتي على المنصة',
@@ -55,7 +55,7 @@ const PERMISSIONS: Record<Permission, PermDef> = {
     },
   },
   data_analytics: {
-    emoji: '',
+    emoji: '📊',
     label: { ar: 'تحليل البيانات', en: 'Data analytics' },
     description: {
       ar: 'استخدام بياناتي بشكل مجهول لتحسين الخدمات',
@@ -63,7 +63,7 @@ const PERMISSIONS: Record<Permission, PermDef> = {
     },
   },
   marketing_email: {
-    emoji: '',
+    emoji: '📧',
     label: { ar: 'رسائل تسويقية', en: 'Marketing emails' },
     description: {
       ar: 'استلام عروض وخصومات عبر البريد الإلكتروني',
@@ -71,7 +71,7 @@ const PERMISSIONS: Record<Permission, PermDef> = {
     },
   },
   location_sharing: {
-    emoji: '',
+    emoji: '📍',
     label: { ar: 'مشاركة الموقع', en: 'Location sharing' },
     description: {
       ar: 'مشاركة موقعي مع الخبيرة أثناء الخدمة المنزلية',

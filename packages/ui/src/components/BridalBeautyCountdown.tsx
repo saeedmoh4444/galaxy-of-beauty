@@ -32,13 +32,13 @@ interface BridalBeautyCountdownProps {
 }
 
 const MILESTONES: Omit<Milestone, 'done'>[] = [
-  { label: { ar: 'خطة العناية', en: 'Care plan' }, emoji: '', daysBefore: 180 },
-  { label: { ar: 'روتين يومي', en: 'Daily routine' }, emoji: '', daysBefore: 150 },
+  { label: { ar: 'خطة العناية', en: 'Care plan' }, emoji: '📋', daysBefore: 180 },
+  { label: { ar: 'روتين يومي', en: 'Daily routine' }, emoji: '🧴', daysBefore: 150 },
   { label: { ar: 'علاجات متقدمة', en: 'Advanced treatments' }, emoji: '‍️', daysBefore: 120 },
-  { label: { ar: 'تجربة الإطلالة', en: 'Look trial' }, emoji: '', daysBefore: 90 },
-  { label: { ar: 'اللمسات النهائية', en: 'Final touches' }, emoji: '', daysBefore: 60 },
-  { label: { ar: 'الاستعداد الأخير', en: 'Last preparations' }, emoji: '', daysBefore: 30 },
-  { label: { ar: 'يوم الزفاف', en: 'Wedding day' }, emoji: '', daysBefore: 0 },
+  { label: { ar: 'تجربة الإطلالة', en: 'Look trial' }, emoji: '💄', daysBefore: 90 },
+  { label: { ar: 'اللمسات النهائية', en: 'Final touches' }, emoji: '✨', daysBefore: 60 },
+  { label: { ar: 'الاستعداد الأخير', en: 'Last preparations' }, emoji: '🎀', daysBefore: 30 },
+  { label: { ar: 'يوم الزفاف', en: 'Wedding day' }, emoji: '👰', daysBefore: 0 },
 ];
 
 export function BridalBeautyCountdown({

@@ -21,25 +21,25 @@ interface OccasionDef {
 
 const OCCASIONS: Record<Occasion, OccasionDef> = {
   wedding: {
-    emoji: '',
+    emoji: '👰',
     title: { ar: 'جدة العروس', en: "Bride's grandmother" },
     look: { ar: 'مكياج كلاسيكي + تسريحة أنيقة', en: 'Classic makeup + elegant hairstyle' },
     price: 350,
   },
   graduation: {
-    emoji: '',
+    emoji: '🎓',
     title: { ar: 'جدة الخريجة', en: "Graduate's grandmother" },
     look: { ar: 'مكياج ناعم + لمسة أناقة', en: 'Soft makeup + a touch of elegance' },
     price: 250,
   },
   aqeeqah: {
-    emoji: '',
+    emoji: '👶',
     title: { ar: 'جدة المولود', en: "Newborn's grandmother" },
     look: { ar: 'إطلالة دافئة ومبهجة', en: 'A warm, cheerful look' },
     price: 200,
   },
   eid: {
-    emoji: '',
+    emoji: '🌙',
     title: { ar: 'إطلالة العيد', en: 'Eid look' },
     look: { ar: 'مكياج راقٍ + تسريحة تقليدية', en: 'Refined makeup + traditional hairstyle' },
     price: 300,

@@ -28,22 +28,22 @@ export function BeautyUpcycledCard({
       <div className="mt-3 grid grid-cols-2 gap-1.5">
         {[
           {
-            emoji: '',
+            emoji: '☕',
             label: { ar: 'بقايا القهوة', en: 'Coffee grounds' },
             tip: { ar: 'مقشر طبيعي للجسم', en: 'Natural body scrub' },
           },
           {
-            emoji: '',
+            emoji: '🍊',
             label: { ar: 'قشور الحمضيات', en: 'Citrus peels' },
             tip: { ar: 'زيوت عطرية طبيعية', en: 'Natural essential oils' },
           },
           {
-            emoji: '',
+            emoji: '🥑',
             label: { ar: 'بذور الأفوكادو', en: 'Avocado seeds' },
             tip: { ar: 'صبغة وردية طبيعية', en: 'Natural pink dye' },
           },
           {
-            emoji: '',
+            emoji: '🌾',
             label: { ar: 'نخالة الأرز', en: 'Rice bran' },
             tip: { ar: 'مقشر لطيف للوجه', en: 'Gentle facial exfoliant' },
           },

@@ -7,7 +7,7 @@ import { cn } from '@galaxy/shared';
  * From Phase W9: The Small Details & W6: Education.
  *
  * Usage:
- *   <BeautyTrendAlertCard trends={[{ name: 'ألوان الباستيل', emoji: '', heat: '' }]} />
+ *   <BeautyTrendAlertCard trends={[{ name: 'ألوان الباستيل', emoji: '🎨', heat: '' }]} />
  */
 
 interface Trend {

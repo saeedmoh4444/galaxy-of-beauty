@@ -44,12 +44,12 @@ export function ColorBlindBadge({
       <div className="mt-3 space-y-1.5 text-[10px] text-brand-700 dark:text-brand-300">
         {[
           {
-            emoji: '',
+            emoji: '🎨',
             label: { ar: 'ألوان عالية التباين', en: 'High-contrast colors' },
             desc: { ar: 'نستخدم تبايناً عالياً في اللوحات', en: 'We use high contrast in signage' },
           },
           {
-            emoji: '',
+            emoji: '🔡',
             label: { ar: 'رموز مع النصوص', en: 'Icons with text' },
             desc: {
               ar: 'كل لون مصحوب برمز أو نص',
@@ -57,7 +57,7 @@ export function ColorBlindBadge({
             },
           },
           {
-            emoji: '',
+            emoji: '💡',
             label: { ar: 'إضاءة جيدة', en: 'Good lighting' },
             desc: {
               ar: 'إضاءة كافية لتمييز التفاصيل',

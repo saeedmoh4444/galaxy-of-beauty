@@ -30,7 +30,7 @@ const WORKOUTS: Record<WorkoutType, WorkoutDef> = {
     ],
   },
   yoga: {
-    emoji: '',
+    emoji: '🧘',
     title: { ar: 'يوغا', en: 'Yoga' },
     tips: [
       { ar: 'نظفي بشرتكِ قبل الجلسة', en: 'Cleanse your skin before the session' },
@@ -40,7 +40,7 @@ const WORKOUTS: Record<WorkoutType, WorkoutDef> = {
     ],
   },
   running: {
-    emoji: '',
+    emoji: '🏃',
     title: { ar: 'جري', en: 'Running' },
     tips: [
       { ar: 'ضعي واقي شمس قبل الخروج', en: 'Apply sunscreen before going out' },
@@ -50,7 +50,7 @@ const WORKOUTS: Record<WorkoutType, WorkoutDef> = {
     ],
   },
   swimming: {
-    emoji: '',
+    emoji: '🏊',
     title: { ar: 'سباحة', en: 'Swimming' },
     tips: [
       { ar: 'اشطفي شعركِ قبل النزول للمسبح', en: 'Rinse your hair before entering the pool' },
@@ -60,7 +60,7 @@ const WORKOUTS: Record<WorkoutType, WorkoutDef> = {
     ],
   },
   crossfit: {
-    emoji: '',
+    emoji: '💪',
     title: { ar: 'تدريب مكثف', en: 'Intense training' },
     tips: [
       { ar: 'اربطي شعركِ بإحكام', en: 'Tie your hair tightly' },

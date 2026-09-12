@@ -47,7 +47,7 @@ const PHASES: Record<CyclePhase, PhaseData> = {
     gradientClass: 'from-rose-200 to-rose-300 dark:from-rose-800 dark:to-rose-700',
   },
   follicular: {
-    emoji: '',
+    emoji: '🌱',
     title: { ar: 'المرحلة الجرابية', en: 'Follicular phase' },
     days: { ar: 'الأيام 6-14', en: 'Days 6-14' },
     description: {
@@ -65,7 +65,7 @@ const PHASES: Record<CyclePhase, PhaseData> = {
     gradientClass: 'from-pink-300 to-rose-300 dark:from-pink-800 dark:to-rose-700',
   },
   ovulation: {
-    emoji: '',
+    emoji: '✨',
     title: { ar: 'الإباضة', en: 'Ovulation' },
     days: { ar: 'اليوم 14 تقريباً', en: 'Around day 14' },
     description: {
@@ -83,7 +83,7 @@ const PHASES: Record<CyclePhase, PhaseData> = {
     gradientClass: 'from-amber-300 to-yellow-300 dark:from-amber-800 dark:to-yellow-700',
   },
   luteal: {
-    emoji: '',
+    emoji: '🌙',
     title: { ar: 'المرحلة الأصفرية', en: 'Luteal phase' },
     days: { ar: 'الأيام 15-28', en: 'Days 15-28' },
     description: {

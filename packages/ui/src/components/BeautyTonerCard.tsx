@@ -29,22 +29,22 @@ export function BeautyTonerCard({
       <div className="mt-3 grid grid-cols-2 gap-1.5">
         {[
           {
-            emoji: '',
+            emoji: '💡',
             label: { ar: 'لماذا', en: 'Why' },
             tip: { ar: 'يعيد توازن pH البشرة', en: "Restores the skin's pH balance" },
           },
           {
-            emoji: '',
+            emoji: '⏰',
             label: { ar: 'متى', en: 'When' },
             tip: { ar: 'بعد الغسول مباشرة', en: 'Right after cleansing' },
           },
           {
-            emoji: '',
+            emoji: '✋',
             label: { ar: 'كيف', en: 'How' },
             tip: { ar: 'بقطنة أو براحة اليد', en: 'With a cotton pad or hands' },
           },
           {
-            emoji: '',
+            emoji: '🧴',
             label: { ar: 'أي نوع', en: 'Which type' },
             tip: { ar: 'حسب نوع بشرتكِ', en: 'Depends on your skin type' },
           },

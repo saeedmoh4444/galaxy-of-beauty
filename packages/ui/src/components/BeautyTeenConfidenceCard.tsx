@@ -28,7 +28,7 @@ export function BeautyTeenConfidenceCard({
       <div className="mt-3 space-y-1">
         {[
           {
-            emoji: '',
+            emoji: '💖',
             text: { ar: 'أنتِ جميلة — بدون مكياج', en: 'You are beautiful — without makeup' },
           },
           {
@@ -39,14 +39,14 @@ export function BeautyTeenConfidenceCard({
             },
           },
           {
-            emoji: '',
+            emoji: '📱',
             text: {
               ar: 'لا تقارني نفسكِ — بمواقع التواصل',
               en: "Don't compare yourself — on social media",
             },
           },
           {
-            emoji: '',
+            emoji: '💬',
             text: {
               ar: 'تحدثي مع أمكِ — أو أختكِ الكبيرة',
               en: 'Talk to your mother — or older sister',

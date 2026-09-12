@@ -29,7 +29,7 @@ const RESOURCES: Record<CyclePhase, Resource[]> = {
       },
     },
     {
-      emoji: '',
+      emoji: '🥬',
       title: { ar: 'تغذية', en: 'Nutrition' },
       detail: {
         ar: 'أطعمة غنية بالحديد: سبانخ، عدس، لحم أحمر',
@@ -37,7 +37,7 @@ const RESOURCES: Record<CyclePhase, Resource[]> = {
       },
     },
     {
-      emoji: '',
+      emoji: '🧘',
       title: { ar: 'حركة', en: 'Movement' },
       detail: {
         ar: 'مشي خفيف ويوغا لطيفة — لا تمارين قاسية',
@@ -47,7 +47,7 @@ const RESOURCES: Record<CyclePhase, Resource[]> = {
   ],
   follicular: [
     {
-      emoji: '',
+      emoji: '⚡',
       title: { ar: 'طاقة متجددة', en: 'Renewed energy' },
       detail: {
         ar: 'الإستروجين يرتفع — طاقتكِ في الذروة',
@@ -55,12 +55,12 @@ const RESOURCES: Record<CyclePhase, Resource[]> = {
       },
     },
     {
-      emoji: '',
+      emoji: '🥗',
       title: { ar: 'تغذية', en: 'Nutrition' },
       detail: { ar: 'بروتينات خفيفة وخضروات طازجة', en: 'Light proteins and fresh vegetables' },
     },
     {
-      emoji: '',
+      emoji: '🏃',
       title: { ar: 'حركة', en: 'Movement' },
       detail: {
         ar: 'أفضل وقت للتمارين القوية والنشاط',
@@ -70,7 +70,7 @@ const RESOURCES: Record<CyclePhase, Resource[]> = {
   ],
   ovulation: [
     {
-      emoji: '',
+      emoji: '✨',
       title: { ar: 'إشراقة', en: 'Radiance' },
       detail: {
         ar: 'البشرة في أفضل حالاتها — وقت المناسبات',
@@ -78,7 +78,7 @@ const RESOURCES: Record<CyclePhase, Resource[]> = {
       },
     },
     {
-      emoji: '',
+      emoji: '💧',
       title: { ar: 'ترطيب', en: 'Hydration' },
       detail: {
         ar: 'اشربي ماء كثيراً — بشرتكِ تشكركِ',
@@ -86,7 +86,7 @@ const RESOURCES: Record<CyclePhase, Resource[]> = {
       },
     },
     {
-      emoji: '',
+      emoji: '💃',
       title: { ar: 'ثقة', en: 'Confidence' },
       detail: {
         ar: 'أعلى درجات الثقة — وقت التصوير والمناسبات',
@@ -96,7 +96,7 @@ const RESOURCES: Record<CyclePhase, Resource[]> = {
   ],
   luteal: [
     {
-      emoji: '',
+      emoji: '📅',
       title: { ar: 'استعداد', en: 'Preparation' },
       detail: {
         ar: 'الجسم يستعد للدورة القادمة — خذي الأمور بهدوء',
@@ -104,7 +104,7 @@ const RESOURCES: Record<CyclePhase, Resource[]> = {
       },
     },
     {
-      emoji: '',
+      emoji: '🍫',
       title: { ar: 'تغذية', en: 'Nutrition' },
       detail: {
         ar: 'مغنيسيوم: مكسرات، موز، شوكولاتة داكنة',
@@ -112,7 +112,7 @@ const RESOURCES: Record<CyclePhase, Resource[]> = {
       },
     },
     {
-      emoji: '',
+      emoji: '🛁',
       title: { ar: 'استرخاء', en: 'Relaxation' },
       detail: {
         ar: 'حمام دافئ، تأمل، قراءة — دللي نفسكِ',
@@ -133,9 +133,9 @@ interface CycleResourceCardProps {
 
 const PHASE_LABELS: Record<CyclePhase, { emoji: string; title: { ar: string; en: string } }> = {
   menstrual: { emoji: '🩸', title: { ar: 'الدورة الشهرية', en: 'Menstrual phase' } },
-  follicular: { emoji: '', title: { ar: 'المرحلة الجرابية', en: 'Follicular phase' } },
-  ovulation: { emoji: '', title: { ar: 'الإباضة', en: 'Ovulation' } },
-  luteal: { emoji: '', title: { ar: 'المرحلة الأصفرية', en: 'Luteal phase' } },
+  follicular: { emoji: '🌱', title: { ar: 'المرحلة الجرابية', en: 'Follicular phase' } },
+  ovulation: { emoji: '✨', title: { ar: 'الإباضة', en: 'Ovulation' } },
+  luteal: { emoji: '🌙', title: { ar: 'المرحلة الأصفرية', en: 'Luteal phase' } },
 };
 
 export function CycleResourceCard({
