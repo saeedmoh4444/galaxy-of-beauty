@@ -28,7 +28,7 @@ const PRIVACY: Record<PrivacyLevel, PrivacyConfig> = {
       'bg-emerald-50 text-emerald-700 border-emerald-200 dark:bg-emerald-950 dark:text-emerald-300 dark:border-emerald-800',
   },
   TECHNICIAN_ONLY: {
-    emoji: '‍',
+    emoji: '💼',
     label: { ar: 'للخبيرة فقط', en: 'Technician only' },
     description: {
       ar: 'لا تظهر إلا للخبيرة المعتمدة',
@@ -45,7 +45,7 @@ const PRIVACY: Record<PrivacyLevel, PrivacyConfig> = {
       'bg-brand-50 text-brand-700 border-brand-200 dark:bg-brand-950 dark:text-brand-300 dark:border-brand-800',
   },
   VIEW_ONCE: {
-    emoji: '️',
+    emoji: '👀',
     label: { ar: 'مرة واحدة', en: 'View once' },
     description: { ar: 'تختفي بعد مشاهدتها', en: 'Disappears after viewing' },
     colorClass:

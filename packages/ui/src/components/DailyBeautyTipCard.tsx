@@ -21,7 +21,7 @@ const TIPS = [
     category: { ar: 'عناية', en: 'Care' },
   },
   {
-    emoji: '️',
+    emoji: '🌞',
     tip: {
       ar: 'واقي الشمس حتى في الأيام الغائمة — الأشعة فوق البنفسجية تخترق الغيوم',
       en: 'Sunscreen even on cloudy days — UV rays penetrate clouds',
@@ -61,7 +61,7 @@ const TIPS = [
     category: { ar: 'طبيعي', en: 'Natural' },
   },
   {
-    emoji: '‍️',
+    emoji: '🚿',
     tip: {
       ar: 'لا تغسلي وجهكِ بالماء الساخن — الماء الفاتر أفضل للبشرة',
       en: 'Do not wash your face with hot water — lukewarm water is better for skin',

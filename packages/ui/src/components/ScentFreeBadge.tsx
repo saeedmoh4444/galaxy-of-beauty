@@ -23,7 +23,7 @@ const TYPES: Record<ProductType, TypeDef> = {
   body: { emoji: '🧼', label: { ar: 'عناية بالجسم', en: 'Body care' } },
   makeup: { emoji: '💄', label: { ar: 'مكياج', en: 'Makeup' } },
   nail: { emoji: '💅', label: { ar: 'أظافر', en: 'Nails' } },
-  wax: { emoji: '️', label: { ar: 'إزالة شعر', en: 'Hair removal' } },
+  wax: { emoji: '🪒', label: { ar: 'إزالة شعر', en: 'Hair removal' } },
 };
 
 interface ScentFreeBadgeProps {

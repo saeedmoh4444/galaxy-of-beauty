@@ -36,7 +36,7 @@ const PRACTICES: Record<HeritagePractice, PracticeDef> = {
     },
   },
   kohl: {
-    emoji: '️',
+    emoji: '👁️',
     title: { ar: 'الكحل العربي', en: 'Arabian kohl' },
     origin: { ar: 'شبه الجزيرة العربية — 7000 سنة', en: 'Arabian Peninsula — 7000 years' },
     description: {

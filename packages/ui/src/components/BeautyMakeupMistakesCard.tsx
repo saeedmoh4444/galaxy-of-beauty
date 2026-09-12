@@ -35,7 +35,7 @@ export function BeautyMakeupMistakesCard({
             },
           },
           {
-            emoji: '️',
+            emoji: '🧼',
             text: {
               ar: 'عدم تنظيف الفرش — بكتيريا تسبب الحبوب',
               en: 'Not cleaning brushes — bacteria cause breakouts',
@@ -49,7 +49,7 @@ export function BeautyMakeupMistakesCard({
             },
           },
           {
-            emoji: '️',
+            emoji: '⚖️',
             text: {
               ar: 'مكياج عيون ثقيل + شفاه ثقيلة — اختاري واحداً',
               en: 'Heavy eyes + heavy lips — pick just one',

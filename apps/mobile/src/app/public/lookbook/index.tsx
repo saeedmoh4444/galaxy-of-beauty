@@ -3,7 +3,7 @@ import { useState } from 'react';
 import { useLocale } from '@/components/LocaleProvider';
 
 const SEASONS = [
-  { id: 'summer', nameAr: 'صيف ٢٠٢٦', emoji: '️', color: '#f59e0b' },
+  { id: 'summer', nameAr: 'صيف ٢٠٢٦', emoji: '☀️', color: '#f59e0b' },
   { id: 'eid', nameAr: 'أناقة العيد', emoji: '✨', color: '#10b981' },
   { id: 'wedding', nameAr: 'موسم الأعراس', emoji: '💍', color: '#ec4899' },
   { id: 'ramadan', nameAr: 'رمضان كريم', emoji: '🌙', color: '#7c3aed' },
@@ -83,7 +83,7 @@ const LOOKS: Record<string, { title: string; desc: string; emoji: string; tags: 
       emoji: '🧴',
       tags: ['بشرة', 'عناية'],
     },
-    { title: 'تسريحة السحور', desc: 'تسريحة سريعة وأنيقة', emoji: '‍️', tags: ['شعر', 'تسريحة'] },
+    { title: 'تسريحة السحور', desc: 'تسريحة سريعة وأنيقة', emoji: '💇', tags: ['شعر', 'تسريحة'] },
   ],
 };
 

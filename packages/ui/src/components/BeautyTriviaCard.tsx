@@ -59,7 +59,7 @@ const TRIVIA = [
       ar: 'الكحل العربي كان يستخدم لحماية العينين من أشعة الشمس والرمال',
       en: 'Arabian kohl was used to protect the eyes from sun and sand',
     },
-    emoji: '️',
+    emoji: '👀',
   },
   {
     fact: {

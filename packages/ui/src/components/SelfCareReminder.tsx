@@ -7,7 +7,7 @@
 
 const REMINDERS = [
   {
-    emoji: '‍️',
+    emoji: '🧘',
     text: {
       ar: 'خذي ٥ دقائق للتنفس العميق. أنتِ تستحقين هذه اللحظة.',
       en: 'Take 5 minutes for deep breathing. You deserve this moment.',

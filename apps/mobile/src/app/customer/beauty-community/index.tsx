@@ -29,7 +29,7 @@ const CARDS: Card[] = [
     ],
   },
   {
-    emoji: '‍',
+    emoji: '🏅',
     title: 'خريجة متميزة',
     subtitle: 'نورة — دفعة 2025',
     color: '#d97706',
@@ -61,7 +61,7 @@ const CARDS: Card[] = [
     color: '#e11d48',
     bg: '#fff1f2',
     tips: [
-      { emoji: '️', text: 'الكود: BEAUTY20 — خصم 20%' },
+      { emoji: '🔖', text: 'الكود: BEAUTY20 — خصم 20%' },
       { emoji: '💳', text: 'الحد الأدنى: 150 ر.س' },
       { emoji: '📅', text: 'صالح حتى: 31 ديسمبر 2026' },
       { emoji: '👤', text: 'مرة واحدة لكل عميلة' },
@@ -81,7 +81,7 @@ const CARDS: Card[] = [
     ],
   },
   {
-    emoji: '‍',
+    emoji: '🤝',
     title: 'اطلبي مرشداً',
     subtitle: 'تعلمي من الخبيرات',
     color: '#db2777',
@@ -126,9 +126,9 @@ const CARDS: Card[] = [
     color: '#4f46e5',
     bg: '#eef2ff',
     tips: [
-      { emoji: '️', text: 'اختاري من يرى صورتكِ' },
+      { emoji: '📷', text: 'اختاري من يرى صورتكِ' },
       { emoji: '🔒', text: 'تاريخكِ — لكِ وحدكِ' },
-      { emoji: '️', text: 'مشفرة — أعلى معايير الأمان' },
+      { emoji: '🔐', text: 'مشفرة — أعلى معايير الأمان' },
       { emoji: '✅', text: 'موافقة — قبل أي مشاركة' },
     ],
   },

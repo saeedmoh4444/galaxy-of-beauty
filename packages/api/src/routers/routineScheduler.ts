@@ -11,7 +11,7 @@ const PRESETS = [
       { time: '7:05', task: 'تونر', emoji: '💧' },
       { time: '7:10', task: 'سيروم', emoji: '🧪' },
       { time: '7:15', task: 'مرطب', emoji: '🧴' },
-      { time: '7:20', task: 'واقي شمس', emoji: '️' },
+      { time: '7:20', task: 'واقي شمس', emoji: '☀️' },
     ],
   },
   {
@@ -32,7 +32,7 @@ const PRESETS = [
       { time: 'السبت', task: 'قناع وجه', emoji: '🧖' },
       { time: 'الأحد', task: 'تقشير', emoji: '🪨' },
       { time: 'الثلاثاء', task: 'قناع ترطيب', emoji: '💧' },
-      { time: 'الخميس', task: 'مساج وجه', emoji: '‍️' },
+      { time: 'الخميس', task: 'مساج وجه', emoji: '💆' },
     ],
   },
 ];

@@ -49,7 +49,7 @@ export function BeautyContourGuideCard({
             },
           },
           {
-            emoji: '️',
+            emoji: '💗',
             text: {
               ar: 'قلب: الذقن — لتقليصه بصرياً',
               en: 'Heart: the chin — to make it appear smaller',

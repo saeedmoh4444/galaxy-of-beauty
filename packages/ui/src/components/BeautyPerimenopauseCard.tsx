@@ -42,7 +42,7 @@ export function BeautyPerimenopauseCard({
             },
           },
           {
-            emoji: '️',
+            emoji: '🧬',
             text: {
               ar: 'الكولاجين يقل — ببتيدات وسيراميد',
               en: 'Collagen declines — peptides and ceramides',

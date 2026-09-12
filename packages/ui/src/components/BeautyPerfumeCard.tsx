@@ -19,7 +19,7 @@ const TIPS = [
     desc: { ar: 'الفرك يكسر جزيئات العطر', en: 'Rubbing breaks down fragrance molecules' },
   },
   {
-    emoji: '️',
+    emoji: '📦',
     title: { ar: 'تخزين صحيح', en: 'Proper storage' },
     desc: { ar: 'مكان بارد ومظلم — ليس الحمام', en: 'A cool, dark place — not the bathroom' },
   },

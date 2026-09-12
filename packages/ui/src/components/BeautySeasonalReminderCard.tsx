@@ -27,7 +27,7 @@ const SEASONS: Record<
     ],
   },
   summer: {
-    emoji: '️',
+    emoji: '🌞',
     title: { ar: 'الصيف', en: 'Summer' },
     reminders: [
       { ar: 'SPF 50+ يومياً', en: 'SPF 50+ daily' },
@@ -47,7 +47,7 @@ const SEASONS: Record<
     ],
   },
   winter: {
-    emoji: '️',
+    emoji: '🧣',
     title: { ar: 'الشتاء', en: 'Winter' },
     reminders: [
       { ar: 'مرطب غني', en: 'Rich moisturizer' },

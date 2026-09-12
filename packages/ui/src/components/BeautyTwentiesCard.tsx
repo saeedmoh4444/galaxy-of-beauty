@@ -28,7 +28,7 @@ export function BeautyTwentiesCard({
       <div className="mt-3 space-y-1">
         {[
           {
-            emoji: '️',
+            emoji: '🌞',
             text: {
               ar: 'واقي شمس يومي — أهم استثمار لبشرتك',
               en: 'Daily sunscreen — the most important investment for your skin',

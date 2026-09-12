@@ -35,7 +35,7 @@ export function BeautyDateNightCard({
             },
           },
           {
-            emoji: '️',
+            emoji: '👀',
             text: {
               ar: 'عيون سموكي ناعمة — ألوان دافئة',
               en: 'Soft smoky eyes — warm tones',

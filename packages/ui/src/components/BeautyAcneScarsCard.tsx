@@ -28,7 +28,7 @@ export function BeautyAcneScarsCard({
       <div className="mt-3 grid grid-cols-2 gap-1.5">
         {[
           {
-            emoji: '️',
+            emoji: '🩹',
             label: { ar: 'حفر', en: 'Pitted' },
             tip: {
               ar: 'ندبات عميقة — تحتاج ليزر أو فيلر',

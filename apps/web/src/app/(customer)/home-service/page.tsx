@@ -230,8 +230,8 @@ export default function HomeServicePage(): JSX.Element {
         <div className="grid gap-4 sm:grid-cols-3">
           {[
             { emoji: '🏠', title: t('homeService.feat1.title'), desc: t('homeService.feat1.desc') },
-            { emoji: '️', title: t('homeService.feat2.title'), desc: t('homeService.feat2.desc') },
-            { emoji: '️', title: t('homeService.feat3.title'), desc: t('homeService.feat3.desc') },
+            { emoji: '⏰', title: t('homeService.feat2.title'), desc: t('homeService.feat2.desc') },
+            { emoji: '✅', title: t('homeService.feat3.title'), desc: t('homeService.feat3.desc') },
           ].map((b, i) => (
             <Card key={i} padding="md" className="text-center">
               <span className="text-3xl">{b.emoji}</span>

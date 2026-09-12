@@ -20,7 +20,7 @@ const AGE_GROUPS = [
 
 const PREFERENCES = [
   { key: 'gentle', nameAr: 'منتجات لطيفة', nameEn: 'Gentle Products', emoji: '🌸' },
-  { key: 'hypoallergenic', nameAr: 'مضاد للحساسية', nameEn: 'Hypoallergenic', emoji: '️' },
+  { key: 'hypoallergenic', nameAr: 'مضاد للحساسية', nameEn: 'Hypoallergenic', emoji: '🛡️' },
   { key: 'fragrance_free', nameAr: 'خالي من العطور', nameEn: 'Fragrance Free', emoji: '🚫' },
   { key: 'natural', nameAr: 'منتجات طبيعية', nameEn: 'Natural Products', emoji: '🌿' },
   { key: 'quick', nameAr: 'جلسات سريعة', nameEn: 'Quick Sessions', emoji: '⚡' },

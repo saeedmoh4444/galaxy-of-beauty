@@ -49,7 +49,7 @@ export function BeautySleepRoutineCard({
             },
           },
           {
-            emoji: '️',
+            emoji: '🧘',
             text: {
               ar: 'أجواء هادئة — شمعة، كتاب، تأمل',
               en: 'Calm atmosphere — candle, book, meditation',

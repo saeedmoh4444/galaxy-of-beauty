@@ -42,7 +42,7 @@ export function BeautyBridalBodyCareCard({
             },
           },
           {
-            emoji: '️',
+            emoji: '🪒',
             text: {
               ar: 'إزالة الشعر — قبل الزفاف بـ 3-5 أيام',
               en: 'Hair removal — 3-5 days before the wedding',

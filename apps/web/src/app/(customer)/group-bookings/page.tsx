@@ -20,7 +20,7 @@ const THEMES: { value: string; label: TranslationKey; emoji: string }[] = [
   { value: 'bridal', label: 'groupBookings.theme.bridal', emoji: '👰' },
   { value: 'birthday', label: 'groupBookings.theme.birthday', emoji: '🎂' },
   { value: 'girls_night', label: 'groupBookings.theme.girlsNight', emoji: '👭' },
-  { value: 'family', label: 'groupBookings.theme.family', emoji: '‍‍‍' },
+  { value: 'family', label: 'groupBookings.theme.family', emoji: '👪' },
   { value: 'other', label: 'groupBookings.theme.other', emoji: '✨' },
 ];
 
@@ -194,7 +194,7 @@ export default function GroupBookingsPage(): JSX.Element {
               desc: t('groupBookings.benefit1.desc'),
             },
             {
-              emoji: '‍️',
+              emoji: '👥',
               title: t('groupBookings.benefit2.title'),
               desc: t('groupBookings.benefit2.desc'),
             },

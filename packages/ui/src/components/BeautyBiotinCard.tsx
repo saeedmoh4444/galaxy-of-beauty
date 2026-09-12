@@ -49,7 +49,7 @@ export function BeautyBiotinCard({
             },
           },
           {
-            emoji: '️',
+            emoji: '⏳',
             text: { ar: '3-6 أشهر — لرؤية نتائج واضحة', en: '3-6 months — to see clear results' },
           },
         ].map((t, i) => (

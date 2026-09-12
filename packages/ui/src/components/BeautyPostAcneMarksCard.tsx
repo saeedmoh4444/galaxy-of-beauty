@@ -46,7 +46,7 @@ export function BeautyPostAcneMarksCard({
             },
           },
           {
-            emoji: '️',
+            emoji: '⏳',
             text: {
               ar: 'الصبر — النتائج تحتاج 8-12 أسبوعاً',
               en: 'Patience — results take 8-12 weeks',

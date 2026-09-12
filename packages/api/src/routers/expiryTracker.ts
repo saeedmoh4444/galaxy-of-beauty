@@ -3,11 +3,11 @@ import { prisma } from '@galaxy/db';
 import { customerProcedure, router } from '../trpc';
 
 const CATEGORIES = [
-  { key: 'mascara', nameAr: 'ماسكارا', emoji: '️', months: 6 },
+  { key: 'mascara', nameAr: 'ماسكارا', emoji: '👁️', months: 6 },
   { key: 'lipstick', nameAr: 'أحمر شفاه', emoji: '💄', months: 18 },
   { key: 'foundation', nameAr: 'كريم أساس', emoji: '🧴', months: 12 },
   { key: 'skincare', nameAr: 'عناية بالبشرة', emoji: '🧖', months: 12 },
-  { key: 'sunscreen', nameAr: 'واقي شمس', emoji: '️', months: 12 },
+  { key: 'sunscreen', nameAr: 'واقي شمس', emoji: '☀️', months: 12 },
   { key: 'eyeshadow', nameAr: 'ظلال عيون', emoji: '🎨', months: 24 },
 ];
 

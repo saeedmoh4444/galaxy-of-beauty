@@ -28,7 +28,7 @@ export function BeautySkincareVitaminCCard({
       <div className="mt-3 space-y-1">
         {[
           {
-            emoji: '️',
+            emoji: '🌅',
             text: { ar: 'صباحاً — قبل واقي الشمس', en: 'In the morning — before sunscreen' },
           },
           {
@@ -38,7 +38,7 @@ export function BeautySkincareVitaminCCard({
               en: 'Fades hyperpigmentation and evens skin tone',
             },
           },
-          { emoji: '️', text: { ar: 'يعزز حماية واقي الشمس', en: 'Boosts sunscreen protection' } },
+          { emoji: '🛡️', text: { ar: 'يعزز حماية واقي الشمس', en: 'Boosts sunscreen protection' } },
           {
             emoji: '🧪',
             text: {

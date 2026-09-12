@@ -49,7 +49,7 @@ export function BeautyIceFacialCard({
             },
           },
           {
-            emoji: '️',
+            emoji: '⏱️',
             text: {
               ar: '30 ثانية لكل منطقة — لا تطيلي',
               en: "30 seconds per area — don't overdo it",

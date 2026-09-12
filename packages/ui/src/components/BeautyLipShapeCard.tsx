@@ -28,7 +28,7 @@ export function BeautyLipShapeCard({
       <div className="mt-3 space-y-1">
         {[
           {
-            emoji: '️',
+            emoji: '✏️',
             text: {
               ar: 'تحديد فوق الخط الطبيعي بقليل — شفاه ممتلئة',
               en: 'Line just above your natural lip line — fuller lips',

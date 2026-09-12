@@ -28,7 +28,7 @@ export function BeautyDeclutterCard({
       <div className="mt-3 space-y-1">
         {[
           {
-            emoji: '️',
+            emoji: '🚮',
             text: {
               ar: 'تخلصي من: منتجات تغير لونها أو رائحتها أو قوامها',
               en: 'Get rid of: products whose color, smell, or texture changed',
@@ -42,7 +42,7 @@ export function BeautyDeclutterCard({
             },
           },
           {
-            emoji: '️',
+            emoji: '✅',
             text: {
               ar: 'احتفظي بما تستخدمينه فعلاً — وليس ما تتمنين',
               en: 'Keep what you actually use — not what you wish you did',

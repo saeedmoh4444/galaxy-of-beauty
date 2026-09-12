@@ -15,7 +15,7 @@ export function TrustIndicators({
 }): JSX.Element {
   const items = [
     {
-      emoji: '‍',
+      emoji: '👩',
       label: { ar: 'فنيات فقط', en: 'Female Only' },
       desc: { ar: 'جميع الفنيات نساء', en: 'All technicians are women' },
     },

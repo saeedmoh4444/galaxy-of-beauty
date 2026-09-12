@@ -30,7 +30,7 @@ export default function BeautyRemindersPage(): JSX.Element {
           <div className="space-y-6">
             <BeautySelfCareReminderCard
               reminder={t('beautyReminders.reminder')}
-              emoji=""
+              emoji="💆"
               time={t('beautyReminders.time10am')}
             />
             <BeautySleepCard bedtime="22:30" wakeTime="06:30" />
@@ -38,7 +38,7 @@ export default function BeautyRemindersPage(): JSX.Element {
             <WellnessCheckCard lastCheck="2026-07" />
             <BeautyHabitTrackerCard
               habits={[
-                { name: t('beautyReminders.habitSunscreen'), emoji: '️', done: true },
+                { name: t('beautyReminders.habitSunscreen'), emoji: '☀️', done: true },
                 { name: t('beautyReminders.habitWater'), emoji: '💧', done: false },
                 { name: t('beautyReminders.habitEvening'), emoji: '🌙', done: true },
               ]}

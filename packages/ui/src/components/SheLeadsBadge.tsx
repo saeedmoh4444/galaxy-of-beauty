@@ -74,7 +74,7 @@ const ROLES: Record<LeadershipRole, RoleDef> = {
     tier: 'bronze',
   },
   advisory_board: {
-    emoji: '️',
+    emoji: '👑',
     title: { ar: 'المجلس الاستشاري', en: 'Advisory board' },
     description: {
       ar: 'قائدة في مجال التجميل والأعمال والتقنية',

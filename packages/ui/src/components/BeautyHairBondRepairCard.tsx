@@ -39,7 +39,7 @@ export function BeautyHairBondRepairCard({
             text: { ar: 'للشعر المصبوغ والمعالج حرارياً', en: 'For colored and heat-treated hair' },
           },
           {
-            emoji: '️',
+            emoji: '📅',
             text: {
               ar: 'علاج أسبوعي — 10 دقائق قبل الشامبو',
               en: 'A weekly treatment — 10 minutes before shampoo',

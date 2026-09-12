@@ -28,7 +28,7 @@ export function BeautyBalayageCard({
       <div className="mt-3 space-y-1">
         {[
           {
-            emoji: '️',
+            emoji: '🎨',
             text: {
               ar: 'تلوين يدوي — خصل مرسومة بالفرشاة',
               en: 'Hand-painted color — strands painted with a brush',

@@ -28,7 +28,7 @@ export function BeautyGreenTeaCard({
       <div className="mt-3 space-y-1">
         {[
           {
-            emoji: '️',
+            emoji: '🛡️',
             text: {
               ar: 'مضاد أكسدة قوي — يحمي البشرة من التلف',
               en: 'A powerful antioxidant — protects skin from damage',

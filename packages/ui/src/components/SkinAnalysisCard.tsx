@@ -28,7 +28,7 @@ interface ConcernDef {
 
 const CONCERNS: Record<SkinConcern, ConcernDef> = {
   dryness: {
-    emoji: '️',
+    emoji: '💧',
     label: { ar: 'جفاف', en: 'Dryness' },
     recommendation: {
       ar: 'سيروم هيالورونيك أسيد + مرطب غني بالسيراميد',

@@ -101,12 +101,12 @@ const LOOKS = [
 ];
 
 const CATEGORIES = [
-  { key: 'daily', nameAr: 'يومي', emoji: '️' },
+  { key: 'daily', nameAr: 'يومي', emoji: '🌸' },
   { key: 'evening', nameAr: 'سهرة', emoji: '🌙' },
   { key: 'party', nameAr: 'حفلات', emoji: '🎉' },
   { key: 'bridal', nameAr: 'عرايس', emoji: '👰' },
   { key: 'summer', nameAr: 'صيفي', emoji: '🌞' },
-  { key: 'winter', nameAr: 'شتوي', emoji: '️' },
+  { key: 'winter', nameAr: 'شتوي', emoji: '🧣' },
   { key: 'traditional', nameAr: 'تقليدي', emoji: '👗' },
 ];
 

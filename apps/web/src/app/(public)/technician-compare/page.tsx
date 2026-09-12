@@ -30,7 +30,7 @@ const TECHNICIANS = [
     price: 250,
     experience: 'marketing.technician-compare.exp-6',
     city: 'جدة',
-    emoji: '‍️',
+    emoji: '💇',
     services: [
       'marketing.technician-compare.svc-hairstyles',
       'marketing.technician-compare.svc-dyes',

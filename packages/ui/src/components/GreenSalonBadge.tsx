@@ -26,7 +26,7 @@ interface PracticeDef {
 }
 
 const PRACTICES: Record<GreenPractice, PracticeDef> = {
-  recycled: { emoji: '️', label: { ar: 'إعادة تدوير', en: 'Recycling' } },
+  recycled: { emoji: '♻️', label: { ar: 'إعادة تدوير', en: 'Recycling' } },
   organic: { emoji: '🌿', label: { ar: 'منتجات عضوية', en: 'Organic products' } },
   energy_efficient: { emoji: '⚡', label: { ar: 'طاقة موفرة', en: 'Energy efficient' } },
   water_saving: { emoji: '💧', label: { ar: 'ترشيد مياه', en: 'Water saving' } },

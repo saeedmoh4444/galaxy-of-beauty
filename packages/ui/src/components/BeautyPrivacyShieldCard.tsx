@@ -51,13 +51,13 @@ export function BeautyPrivacyShieldCard({
     },
     {
       key: 'dataEncrypted',
-      emoji: '️',
+      emoji: '🔒',
       label: { ar: 'البيانات مشفرة', en: 'Data encrypted' },
       active: status.dataEncrypted,
     },
     {
       key: 'anonymousMode',
-      emoji: '️',
+      emoji: '🕵️',
       label: { ar: 'وضع التخفي', en: 'Incognito mode' },
       active: status.anonymousMode ?? false,
     },

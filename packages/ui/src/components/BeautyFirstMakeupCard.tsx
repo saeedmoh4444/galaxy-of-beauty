@@ -35,7 +35,7 @@ export function BeautyFirstMakeupCard({
             },
           },
           {
-            emoji: '️',
+            emoji: '👀',
             text: { ar: 'ماسكارا شفافة — طبيعية وناعمة', en: 'Clear mascara — natural and soft' },
           },
           {

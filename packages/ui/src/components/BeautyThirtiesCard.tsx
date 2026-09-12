@@ -35,7 +35,7 @@ export function BeautyThirtiesCard({
             },
           },
           {
-            emoji: '️',
+            emoji: '👁',
             text: {
               ar: 'كريم عيون — أولى علامات الخطوط الرفيعة',
               en: 'Eye cream — the first signs of fine lines',

@@ -35,7 +35,7 @@ export default function MarketplaceScreen(): JSX.Element {
           ? [
               { emoji: '🧴', title: 'منتجات العناية', desc: 'تصفحي المنتجات' },
               { emoji: '💄', title: 'مستحضرات تجميل', desc: 'أفضل الماركات' },
-              { emoji: '‍️', title: 'منتجات الشعر', desc: 'عناية متكاملة' },
+              { emoji: '💇', title: 'منتجات الشعر', desc: 'عناية متكاملة' },
               { emoji: '💅', title: 'منتجات الأظافر', desc: 'ألوان رائعة' },
             ].map((item, i) => (
               <View key={i} style={styles.card}>

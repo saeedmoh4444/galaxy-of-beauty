@@ -15,7 +15,7 @@ const KIDS_CATEGORIES = {
         price: 80,
         durationMin: 15,
         ageMin: 0,
-        emoji: '️',
+        emoji: '✂️',
       },
       {
         id: 'bb2',
@@ -94,7 +94,7 @@ const KIDS_CATEGORIES = {
         price: 90,
         durationMin: 30,
         ageMin: 7,
-        emoji: '‍️',
+        emoji: '💇',
       },
       {
         id: 'kd2',
@@ -156,7 +156,7 @@ const KIDS_CATEGORIES = {
         price: 100,
         durationMin: 35,
         ageMin: 13,
-        emoji: '‍️',
+        emoji: '💇',
       },
       {
         id: 'tn4',

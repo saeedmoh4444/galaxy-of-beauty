@@ -49,7 +49,7 @@ export function BeautySkincareRetinolCard({
             },
           },
           {
-            emoji: '️',
+            emoji: '🌞',
             text: {
               ar: 'واقي شمس في الصباح — ضروري جداً',
               en: 'Sunscreen in the morning — absolutely essential',

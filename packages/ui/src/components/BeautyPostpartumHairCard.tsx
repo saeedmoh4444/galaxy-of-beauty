@@ -49,7 +49,7 @@ export function BeautyPostpartumHairCard({
             },
           },
           {
-            emoji: '️',
+            emoji: '✂️',
             text: {
               ar: 'قصة أقصر — تخفف الثقل وتشجع النمو',
               en: 'A shorter cut — reduces weight and encourages growth',

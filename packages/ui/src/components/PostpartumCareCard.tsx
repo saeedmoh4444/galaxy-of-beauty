@@ -30,7 +30,7 @@ const SERVICES: PostpartumService[] = [
     availableFromDay: 3,
   },
   {
-    emoji: '‍️',
+    emoji: '💆',
     name: { ar: 'مساج النفاس', en: 'Postpartum massage' },
     description: {
       ar: 'مساج لطيف للجسم بالزيوت الدافئة لتخفيف الآلام',
@@ -40,7 +40,7 @@ const SERVICES: PostpartumService[] = [
     availableFromDay: 7,
   },
   {
-    emoji: '‍️',
+    emoji: '💇',
     name: { ar: 'علاج تساقط الشعر', en: 'Hair loss treatment' },
     description: {
       ar: 'علاج طبيعي لتساقط الشعر بعد الولادة',
@@ -50,7 +50,7 @@ const SERVICES: PostpartumService[] = [
     availableFromDay: 30,
   },
   {
-    emoji: '‍️',
+    emoji: '🧴',
     name: { ar: 'عناية بالبشرة للنفاس', en: 'Postpartum skincare' },
     description: {
       ar: 'ترطيب عميق وتوحيد لون البشرة بعد التغيرات الهرمونية',

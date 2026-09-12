@@ -37,12 +37,12 @@ export function BeautySleepHygieneCard({
             tip: { ar: 'قبل النوم بساعة', en: 'An hour before bed' },
           },
           {
-            emoji: '️',
+            emoji: '🧊',
             label: { ar: 'غرفة باردة', en: 'Cool room' },
             tip: { ar: '18-20 درجة مئوية', en: '18-20°C' },
           },
           {
-            emoji: '️',
+            emoji: '⏰',
             label: { ar: 'روتين ثابت', en: 'Consistent routine' },
             tip: { ar: 'نفس الموعد يومياً', en: 'Same time every day' },
           },

@@ -28,7 +28,7 @@ export function BeautyMediumSkinCard({
       <div className="mt-3 space-y-1">
         {[
           {
-            emoji: '️',
+            emoji: '🌞',
             text: {
               ar: 'SPF 30-50 — الميلانين يحمي ولكن ليس بالكامل',
               en: 'SPF 30-50 — melanin protects but not fully',

@@ -10,7 +10,7 @@ const SEASONS = [
     id: 'summer',
     nameAr: 'marketing.lookbook.season-summer-ar',
     nameEn: 'marketing.lookbook.season-summer-en',
-    emoji: '️',
+    emoji: '☀️',
     color: 'from-amber-400 to-orange-500',
   },
   {

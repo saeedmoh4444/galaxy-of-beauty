@@ -38,7 +38,7 @@ export function BeautyHairScalpCard({
               en: 'Daily massage — 5 minutes with warm oil',
             },
           },
-          { emoji: '️', text: { ar: 'ماء فاتر — ليس ساخناً', en: 'Lukewarm water — not hot' } },
+          { emoji: '🚿', text: { ar: 'ماء فاتر — ليس ساخناً', en: 'Lukewarm water — not hot' } },
           {
             emoji: '🌙',
             text: { ar: 'سيروم لفروة الرأس — قبل النوم', en: 'Scalp serum — before bed' },

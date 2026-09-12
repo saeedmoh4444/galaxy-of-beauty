@@ -43,7 +43,7 @@ export function BeautyHairWashCard({
             },
           },
           {
-            emoji: '️',
+            emoji: '🚿',
             text: {
               ar: 'اشطفي بماء بارد — يغلق البشرة ويضيف لمعان',
               en: 'Rinse with cold water — seals the cuticle and adds shine',

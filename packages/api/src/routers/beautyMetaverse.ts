@@ -8,7 +8,7 @@ const SALONS = [
     id: 2,
     name: 'استوديو سارة',
     technician: 'سارة الحربي',
-    emoji: '‍️',
+    emoji: '💇',
     visitors: 320,
     rating: 4.8,
   },

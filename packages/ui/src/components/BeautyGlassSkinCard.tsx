@@ -49,7 +49,7 @@ export function BeautyGlassSkinCard({
             },
           },
           {
-            emoji: '️',
+            emoji: '🌞',
             text: {
               ar: 'واقي شمس يومي — حماية من التصبغات',
               en: 'Daily sunscreen — protection against pigmentation',

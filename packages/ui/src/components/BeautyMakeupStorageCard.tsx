@@ -28,7 +28,7 @@ export function BeautyMakeupStorageCard({
       <div className="mt-3 space-y-1">
         {[
           {
-            emoji: '️',
+            emoji: '🧊',
             text: {
               ar: 'مكان بارد وجاف — ليس في الحمام الرطب',
               en: 'Cool, dry place — not the humid bathroom',
@@ -42,14 +42,14 @@ export function BeautyMakeupStorageCard({
             },
           },
           {
-            emoji: '️',
+            emoji: '🌞',
             text: {
               ar: 'بعيداً عن الشمس — الضوء يدمر المنتجات',
               en: 'Away from sunlight — light ruins products',
             },
           },
           {
-            emoji: '️',
+            emoji: '📆',
             text: {
               ar: 'قسميها: يومي — أسبوعي — مناسبات',
               en: 'Sort them: daily — weekly — occasions',

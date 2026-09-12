@@ -61,7 +61,7 @@ const BADGE_META: Record<string, { emoji: string; gradient: string; descKey: Tra
 function getBadgeMeta(key: string): { emoji: string; gradient: string; descKey: TranslationKey } {
   return (
     BADGE_META[key] ?? {
-      emoji: '️',
+      emoji: '🏅',
       gradient: 'from-gray-400 to-gray-500',
       descKey: 'marketing.technician-badges.badge-fallback',
     }

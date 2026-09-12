@@ -28,7 +28,7 @@ export function BeautySunburnReliefCard({
       <div className="mt-3 space-y-1">
         {[
           {
-            emoji: '️',
+            emoji: '🧊',
             text: {
               ar: 'كمادات باردة — 15 دقيقة كل ساعة',
               en: 'Cold compresses — 15 minutes every hour',

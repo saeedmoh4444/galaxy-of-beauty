@@ -59,14 +59,14 @@ export default function SafetyScreen(): JSX.Element {
             bg: '#eef2ff',
           },
           {
-            emoji: '️',
+            emoji: '👻',
             title: 'وضع التخفي',
             desc: 'تصفحي بدون تسجيل نشاطكِ',
             color: '#d946ef',
             bg: '#fdf4ff',
           },
           {
-            emoji: '️',
+            emoji: '🤝',
             title: 'درع الموافقة',
             desc: 'موافقة صريحة قبل كل خدمة',
             color: '#14b8a6',

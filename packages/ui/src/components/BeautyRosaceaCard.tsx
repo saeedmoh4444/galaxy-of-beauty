@@ -46,7 +46,7 @@ export function BeautyRosaceaCard({
             text: { ar: 'كمادات باردة — عند الالتهاب', en: 'Cold compresses — during flare-ups' },
           },
           {
-            emoji: '️',
+            emoji: '☀️',
             text: {
               ar: 'واقي شمس معدني — ألطف على البشرة',
               en: 'Mineral sunscreen — gentler on skin',

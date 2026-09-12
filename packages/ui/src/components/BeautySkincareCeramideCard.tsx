@@ -27,7 +27,7 @@ export function BeautySkincareCeramideCard({
       </div>
       <div className="mt-3 space-y-1">
         {[
-          { emoji: '️', text: { ar: 'يعيد بناء حاجز البشرة', en: 'Rebuilds the skin barrier' } },
+          { emoji: '🧱', text: { ar: 'يعيد بناء حاجز البشرة', en: 'Rebuilds the skin barrier' } },
           { emoji: '💧', text: { ar: 'يمنع فقدان الرطوبة', en: 'Prevents moisture loss' } },
           {
             emoji: '🌿',

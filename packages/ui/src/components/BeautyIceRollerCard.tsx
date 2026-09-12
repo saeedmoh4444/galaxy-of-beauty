@@ -28,7 +28,7 @@ export function BeautyIceRollerCard({
       <div className="mt-3 grid grid-cols-2 gap-1.5">
         {[
           {
-            emoji: '️',
+            emoji: '🧽',
             label: { ar: 'يقلص المسام', en: 'Tightens pores' },
             tip: { ar: 'يغلق المسام بعد التنظيف', en: 'Closes pores after cleansing' },
           },

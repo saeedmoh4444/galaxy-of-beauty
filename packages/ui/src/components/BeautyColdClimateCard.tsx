@@ -35,7 +35,7 @@ export function BeautyColdClimateCard({
             },
           },
           {
-            emoji: '️',
+            emoji: '🧥',
             text: {
               ar: 'طبقة حماية — كريم سميك قبل الخروج',
               en: 'A protective layer — thick cream before going out',

@@ -46,7 +46,7 @@ export const technicianQARouter = router({
 
   categories: publicProcedure.query(() => [
     { key: 'makeup', nameAr: 'مكياج', emoji: '💄' },
-    { key: 'hair', nameAr: 'شعر', emoji: '‍️' },
+    { key: 'hair', nameAr: 'شعر', emoji: '💇' },
     { key: 'skincare', nameAr: 'عناية بالبشرة', emoji: '🧴' },
     { key: 'nails', nameAr: 'أظافر', emoji: '💅' },
     { key: 'general', nameAr: 'عام', emoji: '❓' },

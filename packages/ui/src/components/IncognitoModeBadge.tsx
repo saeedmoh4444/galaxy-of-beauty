@@ -94,7 +94,7 @@ export function IncognitoModeBadge({
               { emoji: '📭', label: { ar: 'بدون سجل', en: 'No history' } },
               { emoji: '🚫', label: { ar: 'بدون اقتراحات', en: 'No suggestions' } },
               { emoji: '🍪', label: { ar: 'بدون كعكات', en: 'No cookies' } },
-              { emoji: '️', label: { ar: 'حذف تلقائي', en: 'Auto-delete' } },
+              { emoji: '🗑️', label: { ar: 'حذف تلقائي', en: 'Auto-delete' } },
             ].map((f) => (
               <div
                 key={f.label.ar}

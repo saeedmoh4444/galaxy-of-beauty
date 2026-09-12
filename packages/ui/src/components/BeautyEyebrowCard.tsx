@@ -50,7 +50,7 @@ export function BeautyEyebrowCard({
             tip: { ar: 'الشعر قد لا ينمو مجدداً', en: 'Hair may not grow back' },
           },
           {
-            emoji: '️',
+            emoji: '✏️',
             label: { ar: 'تعبئة الفراغات', en: 'Fill gaps' },
             tip: { ar: 'قلم حواجب بلون مطابق', en: 'A brow pencil in a matching shade' },
           },

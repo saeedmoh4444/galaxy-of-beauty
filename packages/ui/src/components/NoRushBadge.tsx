@@ -73,7 +73,7 @@ export function NoRushBadge({
       <div className="mt-3 space-y-2">
         {[
           {
-            emoji: '️',
+            emoji: '⏰',
             title: {
               ar: `${bufferMinutes} دقيقة إضافية`,
               en: `${bufferMinutes} extra minutes`,
@@ -107,7 +107,7 @@ export function NoRushBadge({
             },
           },
           {
-            emoji: '‍️',
+            emoji: '🐢',
             title: { ar: 'لا داعي للعجلة', en: 'No need to hurry' },
             description: {
               ar: 'استرخي بعد الخدمة — لا نطلب منكِ المغادرة فوراً',

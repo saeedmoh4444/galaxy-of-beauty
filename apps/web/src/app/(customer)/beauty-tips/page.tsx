@@ -86,7 +86,7 @@ export default function BeautyTipsPage(): JSX.Element {
             <div className="grid gap-4 sm:grid-cols-2">
               <BeautyQuickTipCard
                 tip={{
-                  emoji: '️',
+                  emoji: '☀️',
                   title: t('beautyTips.tip.title'),
                   body: t('beautyTips.tip.body'),
                   source: t('beautyTips.tip.source'),

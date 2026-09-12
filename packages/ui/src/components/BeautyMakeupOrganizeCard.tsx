@@ -40,7 +40,7 @@ export function BeautyMakeupOrganizeCard({
             text: { ar: 'قسمي حسب النوع — عيون، شفاه، وجه', en: 'Sort by type — eyes, lips, face' },
           },
           {
-            emoji: '️',
+            emoji: '🧊',
             text: {
               ar: 'احفظيه في مكان بارد — وليس الحمام',
               en: 'Store it in a cool place — not the bathroom',

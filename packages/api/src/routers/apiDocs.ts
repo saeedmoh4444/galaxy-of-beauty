@@ -180,7 +180,7 @@ const API_REFERENCE = {
     },
     {
       name: 'Admin & Operations',
-      emoji: '️',
+      emoji: '🔧',
       routers: [
         'admin',
         'adminTools',

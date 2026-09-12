@@ -38,7 +38,7 @@ const ROUTINE_TEMPLATES: Record<
       time: 'morning',
       stepAr: 'واقي شمس SPF50',
       stepEn: 'SPF50 Sunscreen',
-      emoji: '️',
+      emoji: '☀️',
       duration: '١ دقيقة',
     },
     {
@@ -110,7 +110,7 @@ const ROUTINE_TEMPLATES: Record<
       time: 'morning',
       stepAr: 'واقي شمس SPF50',
       stepEn: 'SPF50 Sunscreen',
-      emoji: '️',
+      emoji: '☀️',
       duration: '١ دقيقة',
     },
     {
@@ -176,7 +176,7 @@ const ROUTINE_TEMPLATES: Record<
       time: 'morning',
       stepAr: 'واقي شمس SPF50',
       stepEn: 'SPF50 Sunscreen',
-      emoji: '️',
+      emoji: '☀️',
       duration: '١ دقيقة',
     },
     {

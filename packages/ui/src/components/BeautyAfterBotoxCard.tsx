@@ -43,7 +43,7 @@ export function BeautyAfterBotoxCard({
           },
           { emoji: '🏃', text: { ar: 'لا رياضة — 24 ساعة', en: 'No exercise — for 24 hours' } },
           {
-            emoji: '️',
+            emoji: '✨',
             text: { ar: 'النتيجة النهائية — بعد 10-14 يوم', en: 'Final result — after 10-14 days' },
           },
         ].map((t, i) => (

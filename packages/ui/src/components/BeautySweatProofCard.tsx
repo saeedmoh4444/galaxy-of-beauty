@@ -42,7 +42,7 @@ export function BeautySweatProofCard({
             },
           },
           {
-            emoji: '️',
+            emoji: '👁️',
             text: { ar: 'ماسكارا مقاومة للماء — ضرورية', en: 'Waterproof mascara — a must' },
           },
           {

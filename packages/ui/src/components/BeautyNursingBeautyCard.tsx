@@ -49,7 +49,7 @@ export function BeautyNursingBeautyCard({
             },
           },
           {
-            emoji: '️',
+            emoji: '⏰',
             text: { ar: 'روتين سريع — 5 دقائق تكفي', en: 'A quick routine — 5 minutes is enough' },
           },
         ].map((t, i) => (

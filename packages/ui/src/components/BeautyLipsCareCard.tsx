@@ -37,7 +37,7 @@ export function BeautyLipsCareCard({
             tip: { ar: 'بلسم شفاه كل ساعتين', en: 'Lip balm every two hours' },
           },
           {
-            emoji: '️',
+            emoji: '☀️',
             label: { ar: 'حماية SPF', en: 'SPF protection' },
             tip: { ar: 'الشفاه تحتاج واقي شمس', en: 'Lips need sunscreen too' },
           },

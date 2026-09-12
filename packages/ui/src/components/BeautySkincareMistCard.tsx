@@ -39,11 +39,11 @@ export function BeautySkincareMistCard({
             text: { ar: 'قبل المرطب — يمتص بشكل أفضل', en: 'Before moisturizer — absorbs better' },
           },
           {
-            emoji: '️',
+            emoji: '✨',
             text: { ar: 'فوق المكياج — إشراقة منتصف اليوم', en: 'Over makeup — midday glow' },
           },
           {
-            emoji: '️',
+            emoji: '✈️',
             text: { ar: 'في الطائرة — يحمي من الجفاف', en: 'On the plane — protects from dryness' },
           },
         ].map((t, i) => (

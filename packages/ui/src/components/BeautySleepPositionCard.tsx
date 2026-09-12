@@ -28,7 +28,7 @@ export function BeautySleepPositionCard({
       <div className="mt-3 space-y-1">
         {[
           {
-            emoji: '️',
+            emoji: '🛏️',
             text: {
               ar: 'على الظهر — الأفضل للبشرة والرقبة',
               en: 'On your back — best for skin and neck',

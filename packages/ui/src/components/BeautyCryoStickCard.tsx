@@ -49,7 +49,7 @@ export function BeautyCryoStickCard({
             },
           },
           {
-            emoji: '️',
+            emoji: '⏳',
             text: {
               ar: '3-5 دقائق — لا تطيلي على منطقة واحدة',
               en: '3-5 minutes — do not linger on one area',

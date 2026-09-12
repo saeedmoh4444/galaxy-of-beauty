@@ -81,10 +81,10 @@ export default function BeautyWishlistGiftsScreen(): JSX.Element {
       </Text>
       <View style={styles.gifts}>
         {[
-          { emoji: '‍️', name: 'جلسة مساج سويدي', price: 350, priority: 'أولوية' },
+          { emoji: '💆', name: 'جلسة مساج سويدي', price: 350, priority: 'أولوية' },
           { emoji: '💅', name: 'مانيكير جل', price: 180, priority: 'مهم' },
-          { emoji: '‍️', name: 'جلسة عناية بالبشرة', price: 250, priority: 'جميل' },
-          { emoji: '‍️', name: 'تصفيف شعر', price: 200, priority: 'جميل' },
+          { emoji: '🧖', name: 'جلسة عناية بالبشرة', price: 250, priority: 'جميل' },
+          { emoji: '💇', name: 'تصفيف شعر', price: 200, priority: 'جميل' },
         ].map((g, i) => (
           <View key={i} style={styles.gift}>
             <Text style={styles.ge}>{g.emoji}</Text>

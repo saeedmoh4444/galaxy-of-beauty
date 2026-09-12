@@ -5,7 +5,7 @@ import { useLocale } from '@/components/LocaleProvider';
 const DESTINATIONS = [
   {
     key: 'beach',
-    emoji: '️',
+    emoji: '🏖️',
     name: 'شاطئ',
     color: '#0891b2',
     essentials: [
@@ -22,7 +22,7 @@ const DESTINATIONS = [
   },
   {
     key: 'city',
-    emoji: '️',
+    emoji: '🏙️',
     name: 'مدينة',
     color: '#6366f1',
     essentials: [
@@ -39,7 +39,7 @@ const DESTINATIONS = [
   },
   {
     key: 'mountain',
-    emoji: '️',
+    emoji: '⛰️',
     name: 'جبال',
     color: '#059669',
     essentials: [

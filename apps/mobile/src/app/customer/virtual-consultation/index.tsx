@@ -15,7 +15,7 @@ interface ConsultationBooking {
 const CONSULTANTS = [
   {
     key: 'skincare',
-    emoji: '‍️',
+    emoji: '🧖',
     name: 'اخصائية بشرة',
     specialty: 'تحليل البشرة وتشخيص المشاكل',
     price: 150,
@@ -33,7 +33,7 @@ const CONSULTANTS = [
   },
   {
     key: 'hair',
-    emoji: '‍️',
+    emoji: '💇',
     name: 'مصففة شعر',
     specialty: 'استشارة تسريحات وعناية',
     price: 100,

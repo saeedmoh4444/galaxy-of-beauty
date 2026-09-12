@@ -42,7 +42,7 @@ export function BeautyAfterPeelCard({
             },
           },
           {
-            emoji: '️',
+            emoji: '🌞',
             text: {
               ar: 'SPF 50+ — البشرة حساسة جداً للشمس',
               en: 'SPF 50+ — skin is very sensitive to the sun',

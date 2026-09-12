@@ -24,7 +24,7 @@ const TREATMENTS: Record<
     ],
   },
   waxing: {
-    emoji: '️',
+    emoji: '🪒',
     aftercare: [
       'mobile.postTreatment.aftercare-waxing-1',
       'mobile.postTreatment.aftercare-waxing-2',
@@ -44,7 +44,7 @@ const TREATMENTS: Record<
     ],
   },
   hair_color: {
-    emoji: '‍️',
+    emoji: '🎨',
     aftercare: [
       'mobile.postTreatment.aftercare-hair-color-1',
       'mobile.postTreatment.aftercare-hair-color-2',

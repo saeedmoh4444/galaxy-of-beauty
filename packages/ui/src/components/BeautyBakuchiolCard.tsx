@@ -35,7 +35,7 @@ export function BeautyBakuchiolCard({
             },
           },
           {
-            emoji: '️',
+            emoji: '☀️',
             text: {
               ar: 'آمن نهاراً — لا يتحسس من الشمس',
               en: 'Safe for daytime — no sun sensitivity',

@@ -35,7 +35,7 @@ export function BeautySkincarePeptideCard({
             },
           },
           {
-            emoji: '️',
+            emoji: '🌅',
             text: { ar: 'يمكن استخدامها صباحاً ومساءً', en: 'Can be used morning and evening' },
           },
           {

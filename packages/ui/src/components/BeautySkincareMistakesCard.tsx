@@ -42,7 +42,7 @@ export function BeautySkincareMistakesCard({
             },
           },
           {
-            emoji: '️',
+            emoji: '☀️',
             text: {
               ar: 'عدم استخدام واقي شمس — السبب الأول للشيخوخة',
               en: 'No sunscreen — the number one cause of aging',

@@ -15,11 +15,11 @@ const CHECKLISTS: Record<string, Array<{ emoji: string; textAr: string; textEn: 
       textAr: 'لا تستخدمي منتجات تصفيف ثقيلة',
       textEn: 'Avoid heavy styling products before',
     },
-    { emoji: '‍️', textAr: 'اغسلي شعركِ قبل ٢٤ ساعة', textEn: 'Wash hair 24 hours before' },
+    { emoji: '🚿', textAr: 'اغسلي شعركِ قبل ٢٤ ساعة', textEn: 'Wash hair 24 hours before' },
   ],
   skincare: [
     { emoji: '🧼', textAr: 'نظفي وجهكِ قبل الجلسة', textEn: 'Cleanse face before session' },
-    { emoji: '️', textAr: 'تجنبي الشمس قبل ٤٨ ساعة', textEn: 'Avoid sun exposure 48h before' },
+    { emoji: '☀️', textAr: 'تجنبي الشمس قبل ٤٨ ساعة', textEn: 'Avoid sun exposure 48h before' },
     {
       emoji: '📝',
       textAr: 'أحضري قائمة منتجاتكِ الحالية',
@@ -43,9 +43,9 @@ export const bookingChecklistRouter = router({
   })),
   categories: customerProcedure.query(() => [
     { key: 'makeup', nameAr: 'مكياج', emoji: '💄' },
-    { key: 'hair', nameAr: 'شعر', emoji: '‍️' },
+    { key: 'hair', nameAr: 'شعر', emoji: '💇' },
     { key: 'skincare', nameAr: 'بشرة', emoji: '🧴' },
     { key: 'nails', nameAr: 'أظافر', emoji: '💅' },
-    { key: 'massage', nameAr: 'مساج', emoji: '‍️' },
+    { key: 'massage', nameAr: 'مساج', emoji: '💆' },
   ]),
 });

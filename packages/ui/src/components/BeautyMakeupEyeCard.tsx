@@ -43,7 +43,7 @@ export function BeautyMakeupEyeCard({
             },
           },
           {
-            emoji: '️',
+            emoji: '🖌️',
             text: { ar: 'ادمجي جيداً — لا خطوط قاسية', en: 'Blend well — no harsh lines' },
           },
         ].map((t, i) => (

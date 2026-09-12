@@ -35,7 +35,7 @@ export function BeautyVanityOrganizationCard({
             },
           },
           {
-            emoji: '️',
+            emoji: '📦',
             text: {
               ar: 'أدراج مقسمة — كل فئة في درج',
               en: 'Divided drawers — one category per drawer',

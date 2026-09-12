@@ -31,7 +31,7 @@ interface PermDef {
 
 const PERMISSIONS: Record<Permission, PermDef> = {
   photo_gallery: {
-    emoji: '️',
+    emoji: '🖼️',
     label: { ar: 'صور المعرض', en: 'Gallery photos' },
     description: {
       ar: 'السماح بعرض صوري في المعرض العام للمنصة',

@@ -43,7 +43,7 @@ export function BeautyHairCoilyCard({
             text: { ar: 'تقسيم الشعر لأجزاء — للعناية', en: 'Section the hair — for easier care' },
           },
           {
-            emoji: '️',
+            emoji: '🍍',
             text: {
               ar: 'Pineapple — رفع الشعر قبل النوم',
               en: 'Pineapple — pile the hair up before bed',

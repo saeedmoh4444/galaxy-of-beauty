@@ -33,7 +33,7 @@ const ZONES: Record<ZoneType, ZoneDef> = {
     color: 'bg-amber-100 border-amber-300 dark:bg-amber-950 dark:border-amber-800',
   },
   bright: {
-    emoji: '️',
+    emoji: '🌞',
     label: { ar: 'إضاءة طبيعية', en: 'Natural light' },
     description: { ar: 'نوافذ كبيرة، إضاءة نهارية', en: 'Large windows, daylight' },
     color: 'bg-yellow-100 border-yellow-300 dark:bg-yellow-950 dark:border-yellow-800',

@@ -34,7 +34,7 @@ interface MoodDef {
 
 const MOODS: Record<WellnessMood, MoodDef> = {
   stressed: {
-    emoji: '‍',
+    emoji: '😰',
     title: { ar: 'متوترة', en: 'Stressed' },
     description: {
       ar: 'الضغوط اليومية تؤثر على بشرتكِ وجمالكِ',

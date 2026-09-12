@@ -28,14 +28,14 @@ export function BeautyDryBrushingCard({
       <div className="mt-3 space-y-1">
         {[
           {
-            emoji: '️',
+            emoji: '🔼',
             text: {
               ar: 'من الأسفل للأعلى — دائماً باتجاه القلب',
               en: 'Bottom to top — always toward the heart',
             },
           },
           {
-            emoji: '️',
+            emoji: '🚿',
             text: {
               ar: 'قبل الاستحمام — على بشرة جافة تماماً',
               en: 'Before showering — on completely dry skin',

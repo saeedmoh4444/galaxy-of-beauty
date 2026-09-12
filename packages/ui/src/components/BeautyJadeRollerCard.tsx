@@ -26,19 +26,19 @@ export function BeautyJadeRollerCard({
       <div className="mt-3 space-y-1">
         {[
           {
-            emoji: '️',
+            emoji: '🧊',
             text: {
               ar: 'احفظيها في الثلاجة — تأثير منعش',
               en: 'Keep it in the fridge — for a refreshing effect',
             },
           },
-          { emoji: '️', text: { ar: 'دحرجي للأعلى وللخارج', en: 'Roll upward and outward' } },
+          { emoji: '🔼', text: { ar: 'دحرجي للأعلى وللخارج', en: 'Roll upward and outward' } },
           {
             emoji: '🧴',
             text: { ar: 'بعد السيروم — لتسهيل الامتصاص', en: 'After serum — to help absorption' },
           },
           {
-            emoji: '️',
+            emoji: '🌅',
             text: { ar: 'صباحاً — لتقليل الانتفاخ', en: 'In the morning — to reduce puffiness' },
           },
         ].map((t, i) => (

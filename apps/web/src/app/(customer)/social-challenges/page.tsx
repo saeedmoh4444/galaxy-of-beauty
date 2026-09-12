@@ -52,7 +52,7 @@ const CHALLENGES: {
   },
   {
     key: 'natural_hair',
-    emoji: '‍️',
+    emoji: '💇',
     name: 'socialChallenge.chal.naturalHair',
     desc: 'socialChallenge.desc.naturalHair',
     participants: 98,

@@ -35,18 +35,18 @@ export function BeautyMakeupBrowsCard({
             },
           },
           {
-            emoji: '️',
+            emoji: '📐',
             text: { ar: 'القوس = فوق البؤبؤ مباشرة', en: 'The arch = directly above the pupil' },
           },
           {
-            emoji: '️',
+            emoji: '🎯',
             text: {
               ar: 'النهاية = زاوية الأنف لطرف العين',
               en: 'The tail = from nose corner to outer eye corner',
             },
           },
           {
-            emoji: '️',
+            emoji: '🖌️',
             text: {
               ar: 'حركات خفيفة تشبه الشعر — وليس خطاً واحداً',
               en: 'Light hair-like strokes — not one solid line',

@@ -20,7 +20,7 @@ interface HistoryEra {
 const ERAS: HistoryEra[] = [
   {
     era: { ar: 'مصر القديمة', en: 'Ancient Egypt' },
-    emoji: '️',
+    emoji: '👑',
     year: { ar: '3000 ق.م', en: '3000 BC' },
     fact: {
       ar: 'كليوباترا استخدمت الحليب والعسل للاستحمام — وزيت الخروع للكحل',
@@ -29,7 +29,7 @@ const ERAS: HistoryEra[] = [
   },
   {
     era: { ar: 'اليونان القديمة', en: 'Ancient Greece' },
-    emoji: '️',
+    emoji: '🏺',
     year: { ar: '500 ق.م', en: '500 BC' },
     fact: {
       ar: 'استخدموا زيت الزيتون للترطيب والرصاص الأبيض لتفتيح البشرة',

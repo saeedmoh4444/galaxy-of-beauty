@@ -38,7 +38,7 @@ export function BeautyPerfumeOccasionCard({
             tip: { ar: 'شرقي، قوي، جذاب', en: 'Oriental, strong, alluring' },
           },
           {
-            emoji: '️',
+            emoji: '🌞',
             label: { ar: 'نهار', en: 'Daytime' },
             tip: { ar: 'حمضيات، أزهار', en: 'Citrus, florals' },
           },

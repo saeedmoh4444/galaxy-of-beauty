@@ -18,7 +18,7 @@ interface FranchiseBenefit {
 
 const BENEFITS: FranchiseBenefit[] = [
   {
-    emoji: '️',
+    emoji: '🏷️',
     title: { ar: 'العلامة التجارية', en: 'Brand' },
     description: {
       ar: 'استخدمي اسم جالاكسي بيوتي المعروف',
@@ -58,7 +58,7 @@ const BENEFITS: FranchiseBenefit[] = [
     },
   },
   {
-    emoji: '‍',
+    emoji: '🧭',
     title: { ar: 'إرشاد مستمر', en: 'Ongoing mentorship' },
     description: {
       ar: 'مرشدة أعمال شخصية لمدة سنة كاملة',

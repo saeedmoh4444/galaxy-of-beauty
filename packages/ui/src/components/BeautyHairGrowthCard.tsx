@@ -41,7 +41,7 @@ export function BeautyHairGrowthCard({
               en: 'Rosemary oil — as effective as minoxidil',
             },
           },
-          { emoji: '️', text: { ar: 'قص الأطراف كل 3 أشهر', en: 'Trim the ends every 3 months' } },
+          { emoji: '✂️', text: { ar: 'قص الأطراف كل 3 أشهر', en: 'Trim the ends every 3 months' } },
           {
             emoji: '💊',
             text: {

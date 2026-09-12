@@ -66,7 +66,7 @@ const PATHS: Record<CertPath, PathDef> = {
     accredited: true,
   },
   lash_tech: {
-    emoji: '️',
+    emoji: '👀',
     title: { ar: 'تقنية الرموش', en: 'Lash technology' },
     levels: [
       { ar: 'كلاسيك', en: 'Classic' },

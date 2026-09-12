@@ -35,7 +35,7 @@ const REASONS: Record<EmergencyReason, ReasonDef> = {
       'bg-blue-50 text-blue-700 border-blue-200 dark:bg-blue-950 dark:text-blue-300 dark:border-blue-800',
   },
   court: {
-    emoji: '️',
+    emoji: '⚖️',
     title: { ar: 'محكمة', en: 'Court' },
     description: { ar: 'إطلالة محترمة ليوم مهم', en: 'A respectful look for an important day' },
     urgency: 'high',

@@ -28,7 +28,7 @@ export function BeautyCrowsFeetCard({
       <div className="mt-3 space-y-1">
         {[
           {
-            emoji: '️',
+            emoji: '🕶️',
             text: {
               ar: 'نظارة شمس — تمنع التحديق والتجاعيد',
               en: 'Sunglasses — prevent squinting and wrinkles',

@@ -48,7 +48,10 @@ export function BeautyVampireFacialCard({
               en: '100% natural results — from your own body',
             },
           },
-          { emoji: '️', text: { ar: '3-4 جلسات — بينها شهر', en: '3-4 sessions — a month apart' } },
+          {
+            emoji: '📅',
+            text: { ar: '3-4 جلسات — بينها شهر', en: '3-4 sessions — a month apart' },
+          },
         ].map((t, i) => (
           <div
             key={i}

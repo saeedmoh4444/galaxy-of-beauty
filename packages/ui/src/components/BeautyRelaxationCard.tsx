@@ -37,7 +37,7 @@ export function BeautyRelaxationCard({
             time: { ar: '20 دقيقة', en: '20 minutes' },
           },
           {
-            emoji: '️',
+            emoji: '🕯️',
             step: { ar: 'إطفاء الأضواء وإشعال شمعة', en: 'Dim the lights and light a candle' },
             time: { ar: '—', en: '—' },
           },

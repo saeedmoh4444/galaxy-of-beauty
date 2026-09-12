@@ -37,7 +37,7 @@ export function BeautySelfMassageCard({
             desc: { ar: 'بأطراف الأصابع على الوجنتين', en: 'With fingertips on the cheeks' },
           },
           {
-            emoji: '️',
+            emoji: '🔼',
             name: { ar: 'رفع الجبهة', en: 'Forehead lift' },
             desc: { ar: 'من الحواجب لأعلى — 10 مرات', en: 'From brows upward — 10 times' },
           },
@@ -47,7 +47,7 @@ export function BeautySelfMassageCard({
             desc: { ar: 'حركات دائرية على مفصل الفك', en: 'Circular motions on the jaw joint' },
           },
           {
-            emoji: '️',
+            emoji: '👀',
             name: { ar: 'منطقة العين', en: 'Eye area' },
             desc: { ar: 'تربيت خفيف — لا تسحبِ', en: 'Gentle patting — do not pull' },
           },

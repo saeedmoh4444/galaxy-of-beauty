@@ -37,7 +37,11 @@ const CHECKS = [
     label: { ar: 'روتين العناية', en: 'Skincare routine' },
     desc: { ar: 'صباح ومساء', en: 'Morning & evening' },
   },
-  { emoji: '️', label: { ar: 'واقي شمس', en: 'Sunscreen' }, desc: { ar: 'SPF 30+', en: 'SPF 30+' } },
+  {
+    emoji: '🌞',
+    label: { ar: 'واقي شمس', en: 'Sunscreen' },
+    desc: { ar: 'SPF 30+', en: 'SPF 30+' },
+  },
   {
     emoji: '🧘',
     label: { ar: 'صحة نفسية', en: 'Mental health' },

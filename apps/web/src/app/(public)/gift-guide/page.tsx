@@ -65,7 +65,7 @@ const OCCASIONS = [
   },
   {
     id: 'mom',
-    emoji: '‍',
+    emoji: '💐',
     name: 'marketing.gift-guide.occasion-mom-name',
     desc: 'marketing.gift-guide.occasion-mom-desc',
     gifts: [
@@ -73,14 +73,14 @@ const OCCASIONS = [
         title: 'marketing.gift-guide.gift-mom-day-title',
         price: 'marketing.gift-guide.gift-mom-day-price',
         desc: 'marketing.gift-guide.gift-mom-day-desc',
-        emoji: '‍️',
+        emoji: '💆',
         link: '/mommy-and-me',
       },
       {
         title: 'marketing.gift-guide.gift-mom-duo-title',
         price: 'marketing.gift-guide.gift-mom-duo-price',
         desc: 'marketing.gift-guide.gift-mom-duo-desc',
-        emoji: '‍',
+        emoji: '👭',
         link: '/mommy-and-me',
       },
       {

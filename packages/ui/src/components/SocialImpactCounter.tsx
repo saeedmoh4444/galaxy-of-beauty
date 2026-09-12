@@ -52,7 +52,7 @@ export function SocialImpactCounter({
 }: SocialImpactCounterProps): JSX.Element {
   const metrics: ImpactMetric[] = [
     {
-      emoji: '‍',
+      emoji: '💼',
       label: { ar: 'امرأة عاملة', en: 'Women employed' },
       current: womenEmployed,
       target: 1000,

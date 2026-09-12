@@ -33,7 +33,7 @@ export function BeautyFaceShapeCard({
             tip: { ar: 'متناسق — يناسبه كل شيء', en: 'Symmetrical — suits everything' },
           },
           {
-            emoji: '️',
+            emoji: '💗',
             label: { ar: 'قلب', en: 'Heart' },
             tip: { ar: 'جبهة عريضة — ذقن مدبب', en: 'Wide forehead — pointed chin' },
           },

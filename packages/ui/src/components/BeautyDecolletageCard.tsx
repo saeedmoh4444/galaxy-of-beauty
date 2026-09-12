@@ -49,7 +49,7 @@ export function BeautyDecolletageCard({
             },
           },
           {
-            emoji: '️',
+            emoji: '🌞',
             text: {
               ar: 'SPF يومي — الصدر معرض للشمس كثيراً',
               en: 'Daily SPF — the chest sees a lot of sun',

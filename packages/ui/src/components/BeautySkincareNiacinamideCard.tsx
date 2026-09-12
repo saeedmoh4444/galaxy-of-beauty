@@ -38,7 +38,7 @@ export function BeautySkincareNiacinamideCard({
               en: 'Evens tone — reduces hyperpigmentation',
             },
           },
-          { emoji: '️', text: { ar: 'يقوي حاجز البشرة', en: 'Strengthens the skin barrier' } },
+          { emoji: '🧱', text: { ar: 'يقوي حاجز البشرة', en: 'Strengthens the skin barrier' } },
           {
             emoji: '✅',
             text: {

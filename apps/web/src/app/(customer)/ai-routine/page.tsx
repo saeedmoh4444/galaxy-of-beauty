@@ -15,7 +15,7 @@ const SKIN_TYPES: {
 }[] = [
   {
     key: 'dry',
-    emoji: '️',
+    emoji: '🌵',
     label: 'aiRoutine.skinType.dry.label',
     desc: 'aiRoutine.skinType.dry.desc',
   },

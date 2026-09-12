@@ -51,7 +51,7 @@ export function BeautyBagCard({
             tip: { ar: 'حجم صغير للطوارئ', en: 'A travel size for emergencies' },
           },
           {
-            emoji: '️',
+            emoji: '☀️',
             label: { ar: 'واقي شمس', en: 'Sunscreen' },
             tip: { ar: 'Mini size للشنطة', en: 'A mini size for your bag' },
           },

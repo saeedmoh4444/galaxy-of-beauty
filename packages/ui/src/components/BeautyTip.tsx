@@ -54,7 +54,7 @@ const TIPS = [
     },
   },
   {
-    emoji: '‍️',
+    emoji: '💆',
     text: {
       ar: 'التدليك المنتظم يقلل التوتر ويحسن الدورة الدموية',
       en: 'Regular massage reduces stress and improves circulation',
@@ -79,14 +79,14 @@ const TIPS = [
     },
   },
   {
-    emoji: '‍️',
+    emoji: '✂️',
     text: {
       ar: 'قصي أطراف شعركِ كل ٦-٨ أسابيع للمحافظة على صحته',
       en: 'Trim your hair ends every 6-8 weeks to keep it healthy',
     },
   },
   {
-    emoji: '‍️',
+    emoji: '🧼',
     text: {
       ar: 'نظفي فرش المكياج أسبوعياً — البكتيريا تتراكم بسرعة!',
       en: 'Clean your makeup brushes weekly — bacteria build up fast!',

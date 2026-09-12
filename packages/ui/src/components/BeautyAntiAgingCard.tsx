@@ -28,7 +28,7 @@ export function BeautyAntiAgingCard({
       <div className="mt-3 space-y-1">
         {[
           {
-            emoji: '️',
+            emoji: '☀️',
             text: {
               ar: 'واقي شمس يومياً — يمنع 80% من التجاعيد',
               en: 'Daily sunscreen — prevents 80% of wrinkles',

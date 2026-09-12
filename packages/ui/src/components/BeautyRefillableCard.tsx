@@ -46,7 +46,7 @@ export function BeautyRefillableCard({
             text: { ar: 'أحمر شفاه — كريم أساس — عطور', en: 'Lipstick — foundation — fragrances' },
           },
           {
-            emoji: '️',
+            emoji: '🔄',
             text: {
               ar: 'ارجعي العبوة الفارغة — لخصم على القادمة',
               en: 'Return the empty container — for a discount on the next',

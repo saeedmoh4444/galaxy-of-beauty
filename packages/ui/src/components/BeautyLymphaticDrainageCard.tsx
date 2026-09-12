@@ -42,7 +42,7 @@ export function BeautyLymphaticDrainageCard({
             },
           },
           {
-            emoji: '️',
+            emoji: '💪',
             text: {
               ar: 'يقوي المناعة — ينشط الجهاز اللمفاوي',
               en: 'Boosts immunity — activates the lymphatic system',

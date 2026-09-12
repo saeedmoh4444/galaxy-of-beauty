@@ -39,7 +39,7 @@ export function BeautyMenopauseSkincareCard({
             text: { ar: 'ببتيدات — تحفز الكولاجين', en: 'Peptides — stimulate collagen' },
           },
           {
-            emoji: '️',
+            emoji: '🌞',
             text: {
               ar: 'حماية من الشمس — التصبغات تزيد',
               en: 'Sun protection — pigmentation increases',

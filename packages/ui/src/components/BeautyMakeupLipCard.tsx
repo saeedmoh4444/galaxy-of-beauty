@@ -35,7 +35,7 @@ export function BeautyMakeupLipCard({
             },
           },
           {
-            emoji: '️',
+            emoji: '✏️',
             text: {
               ar: '2. حددي الشفاه — بقلم بلون مطابق',
               en: '2. Line your lips — with a matching pencil',

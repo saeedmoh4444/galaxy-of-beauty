@@ -40,7 +40,7 @@ export function BeautyHairCurlCard({
           },
           { emoji: '🌿', text: { ar: 'منتجات خالية من السلفات', en: 'Sulfate-free products' } },
           {
-            emoji: '️',
+            emoji: '🛌',
             text: { ar: 'وسادة حرير — تقلل التكسر', en: 'A silk pillowcase — reduces breakage' },
           },
         ].map((t, i) => (

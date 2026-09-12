@@ -28,7 +28,7 @@ export function BeautyEyeMassageCard({
       <div className="mt-3 space-y-1">
         {[
           {
-            emoji: '️',
+            emoji: '👆',
             text: {
               ar: 'البنصر — الأخف للتربيت على محيط العين',
               en: 'Ring finger — the gentlest for tapping around the eye',
@@ -49,7 +49,7 @@ export function BeautyEyeMassageCard({
             },
           },
           {
-            emoji: '️',
+            emoji: '⏰',
             text: {
               ar: '3 دقائق — صباحاً لتقليل الانتفاخ',
               en: '3 minutes — in the morning to reduce puffiness',
