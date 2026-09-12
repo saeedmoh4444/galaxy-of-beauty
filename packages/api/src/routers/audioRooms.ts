@@ -9,7 +9,7 @@ const ROOMS = [
     listeners: 85,
     category: 'skincare',
     isLive: true,
-    emoji: '️',
+    emoji: '🧖',
   },
   {
     id: 2,
@@ -18,7 +18,7 @@ const ROOMS = [
     listeners: 120,
     category: 'makeup',
     isLive: true,
-    emoji: '️',
+    emoji: '💄',
   },
   {
     id: 3,
@@ -27,7 +27,7 @@ const ROOMS = [
     listeners: 45,
     category: 'hair',
     isLive: false,
-    emoji: '️',
+    emoji: '💇',
     scheduledFor: '2026-07-30T20:00:00',
   },
   {
@@ -37,7 +37,7 @@ const ROOMS = [
     listeners: 32,
     category: 'business',
     isLive: false,
-    emoji: '️',
+    emoji: '💼',
     scheduledFor: '2026-08-01T19:00:00',
   },
 ];

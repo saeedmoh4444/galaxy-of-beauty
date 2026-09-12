@@ -42,7 +42,7 @@ const PRODUCT_CATALOG = [
     nameEn: 'Waterproof Mascara',
     price: 95,
     category: 'makeup',
-    emoji: '️',
+    emoji: '👁️',
   },
   {
     id: 6,
@@ -50,7 +50,7 @@ const PRODUCT_CATALOG = [
     nameEn: 'Natural Hair Oil',
     price: 65,
     category: 'hair',
-    emoji: '‍️',
+    emoji: '🫒',
   },
   {
     id: 7,

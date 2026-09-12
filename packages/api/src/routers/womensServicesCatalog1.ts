@@ -15,7 +15,7 @@ export const womensCatalog1 = {
         nameEn: 'Safe Pregnancy Massage',
         price: 250,
         durationMin: 45,
-        emoji: '‍️',
+        emoji: '💆',
         precautions: 'ثلاثي الحمل الثاني والثالث فقط',
       },
       {
@@ -50,7 +50,7 @@ export const womensCatalog1 = {
         nameEn: 'Recovery Massage',
         price: 280,
         durationMin: 60,
-        emoji: '‍️',
+        emoji: '💆',
         precautions: 'بعد ٦ أسابيع من الولادة',
       },
       {
@@ -120,7 +120,7 @@ export const womensCatalog1 = {
   brows_lashes: {
     nameAr: 'حواجب ورموش',
     nameEn: 'Brows & Lashes',
-    emoji: '️',
+    emoji: '👁️',
     description: 'خدمات الحواجب والرموش — تشكيل، صبغ، وتركيب',
     subServices: [
       {
@@ -129,7 +129,7 @@ export const womensCatalog1 = {
         nameEn: 'Eyebrow Shaping',
         price: 80,
         durationMin: 20,
-        emoji: '️',
+        emoji: '🤨',
         precautions: '',
       },
       {
@@ -147,7 +147,7 @@ export const womensCatalog1 = {
         nameEn: 'Microblading',
         price: 800,
         durationMin: 120,
-        emoji: '️',
+        emoji: '✏️',
         precautions: 'جلسة تصحيح بعد شهر',
       },
       {
@@ -165,7 +165,7 @@ export const womensCatalog1 = {
         nameEn: 'Lash Lift',
         price: 200,
         durationMin: 45,
-        emoji: '️',
+        emoji: '💫',
         precautions: '',
       },
     ],
@@ -235,7 +235,7 @@ export const womensCatalog1 = {
         nameEn: 'Full Body Scrub',
         price: 250,
         durationMin: 50,
-        emoji: '‍️',
+        emoji: '🧽',
         precautions: '',
       },
       {
@@ -244,7 +244,7 @@ export const womensCatalog1 = {
         nameEn: 'V-Steam',
         price: 180,
         durationMin: 30,
-        emoji: '️',
+        emoji: '♨️',
         precautions: 'أعشاب طبيعية',
       },
     ],
@@ -252,7 +252,7 @@ export const womensCatalog1 = {
   mommy_makeover: {
     nameAr: 'تجديد الأمومة',
     nameEn: 'Mommy Makeover',
-    emoji: '‍',
+    emoji: '💐',
     description: 'باقة متكاملة لاستعادة جمالكِ بعد الولادة',
     subServices: [
       {
@@ -270,7 +270,7 @@ export const womensCatalog1 = {
         nameEn: 'Mom Relaxation Session',
         price: 350,
         durationMin: 90,
-        emoji: '‍️',
+        emoji: '💆',
         precautions: 'مساج + قناع + عناية',
       },
     ],
@@ -331,7 +331,7 @@ export const womensCatalog1 = {
         nameEn: 'Hormonal Balance Massage',
         price: 280,
         durationMin: 60,
-        emoji: '‍️',
+        emoji: '💆',
         precautions: 'زيوت طبيعية متوازنة',
       },
       {
@@ -357,7 +357,7 @@ export const womensCatalog1 = {
         nameEn: 'Hair Loss Treatment',
         price: 300,
         durationMin: 60,
-        emoji: '‍️',
+        emoji: '💇',
         precautions: 'جلسات شهرية',
       },
       {
@@ -375,7 +375,7 @@ export const womensCatalog1 = {
         nameEn: 'Hijab-Friendly Styling',
         price: 150,
         durationMin: 30,
-        emoji: '‍️',
+        emoji: '💁',
         precautions: 'خصوصية تامة',
       },
       {
@@ -427,7 +427,7 @@ export const womensCatalog1 = {
   bridal_prep: {
     nameAr: 'تحضير العروس',
     nameEn: 'Bridal Preparation',
-    emoji: '‍️',
+    emoji: '💍',
     description: 'برنامج متكامل لتحضير العروس — من ٦ أشهر حتى يوم الزفاف',
     subServices: [
       {
@@ -498,7 +498,7 @@ export const womensCatalog1 = {
         nameEn: 'Express Styling',
         price: 100,
         durationMin: 25,
-        emoji: '‍️',
+        emoji: '💇',
         precautions: '',
       },
       {
@@ -507,7 +507,7 @@ export const womensCatalog1 = {
         nameEn: 'Working Woman Bundle',
         price: 250,
         durationMin: 60,
-        emoji: '️',
+        emoji: '🎁',
         precautions: 'مكياج + أظافر + شعر',
       },
     ],
@@ -568,7 +568,7 @@ export const womensCatalog1 = {
         nameEn: 'Relaxation Massage',
         price: 250,
         durationMin: 50,
-        emoji: '‍️',
+        emoji: '💆',
         precautions: 'وضعية جانبية آمنة',
       },
       {
@@ -594,7 +594,7 @@ export const womensCatalog1 = {
         nameEn: 'Fertility Massage',
         price: 300,
         durationMin: 60,
-        emoji: '‍️',
+        emoji: '💆',
         precautions: 'تقنيات لطيفة',
       },
       {
@@ -612,7 +612,7 @@ export const womensCatalog1 = {
         nameEn: 'Relaxation & Meditation',
         price: 250,
         durationMin: 75,
-        emoji: '‍️',
+        emoji: '🧘',
         precautions: 'تقليل التوتر',
       },
     ],
@@ -629,7 +629,7 @@ export const womensCatalog1 = {
         nameEn: 'Lymphatic Drainage',
         price: 350,
         durationMin: 60,
-        emoji: '‍️',
+        emoji: '💧',
         precautions: 'بعد موافقة الطبيب',
       },
       {
@@ -664,7 +664,7 @@ export const womensCatalog1 = {
         nameEn: 'Cramp Relief Massage',
         price: 250,
         durationMin: 50,
-        emoji: '‍️',
+        emoji: '💆',
         precautions: 'زيوت دافئة',
       },
       {
@@ -699,7 +699,7 @@ export const womensCatalog1 = {
         nameEn: 'Collagen Lifting',
         price: 350,
         durationMin: 60,
-        emoji: '️',
+        emoji: '🧬',
         precautions: 'نتيجة فورية',
       },
       {
@@ -734,7 +734,7 @@ export const womensCatalog1 = {
         nameEn: 'Pre-Iftar Refresh',
         price: 150,
         durationMin: 30,
-        emoji: '️',
+        emoji: '🌅',
         precautions: 'منعشة وسريعة',
       },
       {
@@ -822,7 +822,7 @@ export const womensCatalog1 = {
         nameEn: 'Pre-Honeymoon Prep',
         price: 500,
         durationMin: 120,
-        emoji: '️',
+        emoji: '🧳',
         precautions: 'باقة شاملة للسفر',
       },
     ],
@@ -892,7 +892,7 @@ export const womensCatalog1 = {
         nameEn: 'Pampering Session',
         price: 400,
         durationMin: 120,
-        emoji: '‍️',
+        emoji: '💆',
         precautions: 'مساج + عناية بالبشرة',
       },
     ],
@@ -900,7 +900,7 @@ export const womensCatalog1 = {
   athlete_beauty: {
     nameAr: 'عناية الرياضيات',
     nameEn: 'Athlete Woman Beauty',
-    emoji: '‍️',
+    emoji: '🏃',
     description: 'خدمات عناية مصممة للمرأة النشطة — بعد التمرين وقبل المنافسات',
     subServices: [
       {

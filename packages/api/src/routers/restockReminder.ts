@@ -5,11 +5,11 @@ import { customerProcedure, router } from '../trpc';
 const CATEGORIES = [
   { key: 'moisturizer', nameAr: 'مرطب', emoji: '🧴', lifespan: 60 },
   { key: 'serum', nameAr: 'سيروم', emoji: '💧', lifespan: 45 },
-  { key: 'sunscreen', nameAr: 'واقي شمس', emoji: '️', lifespan: 30 },
+  { key: 'sunscreen', nameAr: 'واقي شمس', emoji: '☀️', lifespan: 30 },
   { key: 'cleanser', nameAr: 'غسول', emoji: '🧼', lifespan: 60 },
   { key: 'shampoo', nameAr: 'شامبو', emoji: '🫧', lifespan: 60 },
   { key: 'lipstick', nameAr: 'أحمر شفاه', emoji: '💄', lifespan: 180 },
-  { key: 'mascara', nameAr: 'ماسكارا', emoji: '️', lifespan: 90 },
+  { key: 'mascara', nameAr: 'ماسكارا', emoji: '👁️', lifespan: 90 },
 ];
 
 export const restockReminderRouter = router({

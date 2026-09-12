@@ -4,10 +4,10 @@ import { customerProcedure, router } from '../trpc';
 
 const CATEGORIES = [
   { key: 'makeup', nameAr: 'مكياج', emoji: '💄' },
-  { key: 'hair', nameAr: 'شعر', emoji: '‍️' },
+  { key: 'hair', nameAr: 'شعر', emoji: '💇' },
   { key: 'skincare', nameAr: 'بشرة', emoji: '🧴' },
   { key: 'nails', nameAr: 'أظافر', emoji: '💅' },
-  { key: 'massage', nameAr: 'مساج', emoji: '‍️' },
+  { key: 'massage', nameAr: 'مساج', emoji: '💆' },
   { key: 'all', nameAr: 'الكل', emoji: '🛒' },
 ];
 
@@ -34,7 +34,7 @@ const ACTIVE_DEALS = [
     category: 'hair',
     discount: 25,
     endsIn: '٦ ساعات',
-    emoji: '‍️',
+    emoji: '💇',
   },
 ];
 

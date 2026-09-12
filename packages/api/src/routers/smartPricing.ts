@@ -27,7 +27,7 @@ const DYNAMIC_PRICES = [
     demand: 'low',
     discount: 10,
     reason: 'الطلب منخفض — خصم ١٠٪',
-    emoji: '‍️',
+    emoji: '💆',
   },
   {
     service: 'مانيكير',

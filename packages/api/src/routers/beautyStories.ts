@@ -14,7 +14,7 @@ const STORIES = [
     id: 2,
     technicianName: 'سارة الحربي',
     imageUrl: '',
-    emoji: '‍️',
+    emoji: '💇',
     title: 'تسريحة جديدة ',
     postedAt: 'قبل ساعة',
     viewers: 89,

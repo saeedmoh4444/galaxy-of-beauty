@@ -6,7 +6,7 @@ export const womensCatalog4 = {
   yoga_instructor: {
     nameAr: 'عناية مدربات اليوغا',
     nameEn: 'Yoga Instructor Beauty',
-    emoji: '‍️',
+    emoji: '🧘',
     description: 'خدمات تجميل لمدربات اليوغا — توازن الجسد والروح',
     subServices: [
       {
@@ -15,7 +15,7 @@ export const womensCatalog4 = {
         nameEn: 'Flexibility Massage',
         price: 300,
         durationMin: 60,
-        emoji: '‍️',
+        emoji: '💆',
         precautions: 'زيوت أيورفيدا',
       },
       {
@@ -24,7 +24,7 @@ export const womensCatalog4 = {
         nameEn: 'Zen Look',
         price: 200,
         durationMin: 40,
-        emoji: '️',
+        emoji: '🌿',
         precautions: 'مكياج طبيعي جداً',
       },
       {
@@ -33,7 +33,7 @@ export const womensCatalog4 = {
         nameEn: 'Meditation Session',
         price: 350,
         durationMin: 90,
-        emoji: '️',
+        emoji: '🍵',
         precautions: 'مساج + تأمل + شاي',
       },
     ],
@@ -76,7 +76,7 @@ export const womensCatalog4 = {
   swimmer_beauty: {
     nameAr: 'عناية السباحات',
     nameEn: 'Swimmer Woman Beauty',
-    emoji: '‍️',
+    emoji: '🏊',
     description: 'خدمات تجميل للسباحات — جمال يقاوم الكلور',
     subServices: [
       {
@@ -94,7 +94,7 @@ export const womensCatalog4 = {
         nameEn: 'Swimmer Hair Care',
         price: 280,
         durationMin: 55,
-        emoji: '‍️',
+        emoji: '💇',
         precautions: 'ترميم من الكلور',
       },
       {
@@ -120,7 +120,7 @@ export const womensCatalog4 = {
         nameEn: 'Deep Recovery Massage',
         price: 350,
         durationMin: 60,
-        emoji: '‍️',
+        emoji: '💆',
         precautions: 'استرخاء عميق',
       },
       {
@@ -138,7 +138,7 @@ export const womensCatalog4 = {
         nameEn: 'Fight Night Look',
         price: 300,
         durationMin: 55,
-        emoji: '️',
+        emoji: '💄',
         precautions: 'للظهور الإعلامي',
       },
     ],
@@ -146,7 +146,7 @@ export const womensCatalog4 = {
   runner_beauty: {
     nameAr: 'عناية العداءات',
     nameEn: 'Runner Woman Beauty',
-    emoji: '‍️',
+    emoji: '🏃',
     description: 'خدمات تجميل للعداءات — جمال في الحركة',
     subServices: [
       {
@@ -164,7 +164,7 @@ export const womensCatalog4 = {
         nameEn: 'Runner Muscle Massage',
         price: 300,
         durationMin: 60,
-        emoji: '‍️',
+        emoji: '💆',
         precautions: 'استرخاء بعد الماراثون',
       },
       {
@@ -181,7 +181,7 @@ export const womensCatalog4 = {
   weightlifter_beauty: {
     nameAr: 'عناية رافعات الأثقال',
     nameEn: 'Weightlifter Beauty',
-    emoji: '️‍️',
+    emoji: '💪',
     description: 'خدمات تجميل لرافعات الأثقال — قوة وأنوثة',
     subServices: [
       {
@@ -216,7 +216,7 @@ export const womensCatalog4 = {
   cyclist_beauty: {
     nameAr: 'عناية الدراجات',
     nameEn: 'Cyclist Woman Beauty',
-    emoji: '‍️',
+    emoji: '🚴',
     description: 'خدمات تجميل لراكبات الدراجات — جمال على الطريق',
     subServices: [
       {
@@ -234,7 +234,7 @@ export const womensCatalog4 = {
         nameEn: 'Wind-Resistant Facial',
         price: 250,
         durationMin: 45,
-        emoji: '️',
+        emoji: '🧣',
         precautions: 'حماية من الرياح',
       },
       {
@@ -251,7 +251,7 @@ export const womensCatalog4 = {
   climber_beauty: {
     nameAr: 'عناية المتسلقات',
     nameEn: 'Climber Woman Beauty',
-    emoji: '‍️',
+    emoji: '🧗',
     description: 'خدمات تجميل لمتسلقات الجبال — جمال القمم',
     subServices: [
       {
@@ -269,7 +269,7 @@ export const womensCatalog4 = {
         nameEn: 'Full Body Recovery',
         price: 350,
         durationMin: 60,
-        emoji: '‍️',
+        emoji: '💆',
         precautions: 'استرخاء كامل',
       },
       {
@@ -278,7 +278,7 @@ export const womensCatalog4 = {
         nameEn: 'Summit Look',
         price: 250,
         durationMin: 45,
-        emoji: '️',
+        emoji: '🌄',
         precautions: 'للاحتفال بالقمة',
       },
     ],
@@ -286,7 +286,7 @@ export const womensCatalog4 = {
   lawyer_beauty: {
     nameAr: 'عناية المحاميات',
     nameEn: 'Lawyer Woman Beauty',
-    emoji: '️',
+    emoji: '📜',
     description: 'إطلالات قوية للمحاميات — ثقة أمام القاضي',
     subServices: [
       {
@@ -295,7 +295,7 @@ export const womensCatalog4 = {
         nameEn: 'Courtroom Look',
         price: 350,
         durationMin: 65,
-        emoji: '️',
+        emoji: '💼',
         precautions: 'احترافية ورسمية',
       },
       {
@@ -313,7 +313,7 @@ export const womensCatalog4 = {
         nameEn: 'Post-Case Relaxation',
         price: 350,
         durationMin: 80,
-        emoji: '‍️',
+        emoji: '🛀',
         precautions: 'لتخفيف التوتر',
       },
     ],
@@ -348,7 +348,7 @@ export const womensCatalog4 = {
         nameEn: 'Post-Shift Relax',
         price: 280,
         durationMin: 55,
-        emoji: '‍️',
+        emoji: '🛀',
         precautions: 'لتخفيف الضغط',
       },
     ],
@@ -374,7 +374,7 @@ export const womensCatalog4 = {
         nameEn: 'Back Recovery',
         price: 300,
         durationMin: 55,
-        emoji: '‍️',
+        emoji: '💆',
         precautions: 'بعد يوم طويل',
       },
       {
@@ -400,7 +400,7 @@ export const womensCatalog4 = {
         nameEn: 'Voice Care Treatment',
         price: 150,
         durationMin: 30,
-        emoji: '️',
+        emoji: '🍵',
         precautions: 'أعشاب ومرطبات',
       },
       {
@@ -409,7 +409,7 @@ export const womensCatalog4 = {
         nameEn: 'Neck & Head Massage',
         price: 220,
         durationMin: 40,
-        emoji: '‍️',
+        emoji: '💆',
         precautions: 'لتخفيف آلام السماعة',
       },
       {
@@ -418,7 +418,7 @@ export const womensCatalog4 = {
         nameEn: 'Post-Shift Relaxation',
         price: 250,
         durationMin: 55,
-        emoji: '‍️',
+        emoji: '🛀',
         precautions: 'لتفريغ ضغط المكالمات',
       },
     ],
@@ -426,7 +426,7 @@ export const womensCatalog4 = {
   real_estate_beauty: {
     nameAr: 'عناية العقاريات',
     nameEn: 'Real Estate Beauty',
-    emoji: '️',
+    emoji: '🔑',
     description: 'إطلالات جاهزة للقاء العملاء — بيعي بأجمل إطلالة',
     subServices: [
       {
@@ -470,7 +470,7 @@ export const womensCatalog4 = {
         nameEn: 'Back & Neck Massage',
         price: 280,
         durationMin: 50,
-        emoji: '‍️',
+        emoji: '💆',
         precautions: 'لتخفيف آلام الجلوس',
       },
       {
@@ -479,7 +479,7 @@ export const womensCatalog4 = {
         nameEn: 'Screen-Time Eye Care',
         price: 200,
         durationMin: 30,
-        emoji: '️',
+        emoji: '👀',
         precautions: 'لتخفيف إجهاد الأرقام',
       },
       {
@@ -488,7 +488,7 @@ export const womensCatalog4 = {
         nameEn: 'Tax Season Relief',
         price: 400,
         durationMin: 100,
-        emoji: '‍️',
+        emoji: '🛀',
         precautions: 'لتخفيف ضغط الموسم',
       },
     ],
@@ -523,7 +523,7 @@ export const womensCatalog4 = {
         nameEn: 'Voice Care',
         price: 180,
         durationMin: 30,
-        emoji: '️',
+        emoji: '🍵',
         precautions: 'أعشاب ومرطبات للحنجرة',
       },
     ],
@@ -593,7 +593,7 @@ export const womensCatalog4 = {
         nameEn: 'Motherhood Relaxation',
         price: 280,
         durationMin: 50,
-        emoji: '‍️',
+        emoji: '🛀',
         precautions: 'استراحة تستحقينها',
       },
     ],
@@ -619,7 +619,7 @@ export const womensCatalog4 = {
         nameEn: 'Back Recovery',
         price: 300,
         durationMin: 55,
-        emoji: '‍️',
+        emoji: '💆',
         precautions: 'بعد يوم طويل من العمل',
       },
       {

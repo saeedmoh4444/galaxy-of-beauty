@@ -59,7 +59,7 @@ const CARE_LIBRARY: Record<
       bodyEn:
         'After facial treatment, your skin is sensitive. Use SPF50 sunscreen and avoid sun for 48 hours.',
       timeframe: '48h',
-      emoji: '️',
+      emoji: '🌞',
     },
     {
       id: 'skin_2',
@@ -407,11 +407,11 @@ export const postCareRouter = router({
   library: customerProcedure.query(() => ({
     categories: Object.entries(CARE_LIBRARY).map(([key, tips]) => {
       const names: Record<string, { ar: string; en: string; emoji: string }> = {
-        hair: { ar: 'الشعر', en: 'Hair', emoji: '‍️' },
+        hair: { ar: 'الشعر', en: 'Hair', emoji: '💇' },
         skincare: { ar: 'البشرة', en: 'Skincare', emoji: '🧴' },
         makeup: { ar: 'المكياج', en: 'Makeup', emoji: '💄' },
         nails: { ar: 'الأظافر', en: 'Nails', emoji: '💅' },
-        massage: { ar: 'المساج', en: 'Massage', emoji: '‍️' },
+        massage: { ar: 'المساج', en: 'Massage', emoji: '💆' },
         waxing: { ar: 'إزالة الشعر', en: 'Waxing', emoji: '🍯' },
         dermatology: { ar: 'الجلدية', en: 'Dermatology', emoji: '🩺' },
         laser: { ar: 'الليزر', en: 'Laser', emoji: '⚡' },
@@ -423,7 +423,7 @@ export const postCareRouter = router({
         key,
         nameAr: names[key]?.ar ?? key,
         nameEn: names[key]?.en ?? key,
-        emoji: names[key]?.emoji ?? '‍️',
+        emoji: names[key]?.emoji ?? '✨',
         tipsCount: tips.length,
       };
     }),

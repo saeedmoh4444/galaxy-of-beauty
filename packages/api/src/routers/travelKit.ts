@@ -7,11 +7,11 @@ const KITS: Record<
   Array<{ nameAr: string; emoji: string; essential: boolean; size: string }>
 > = {
   beach: [
-    { nameAr: 'واقي شمس SPF50', emoji: '️', essential: true, size: 'حجم سفر ٥٠مل' },
+    { nameAr: 'واقي شمس SPF50', emoji: '🌞', essential: true, size: 'حجم سفر ٥٠مل' },
     { nameAr: 'مرطب خفيف', emoji: '🧴', essential: true, size: 'حجم سفر ٣٠مل' },
     { nameAr: 'مزيل مكياج', emoji: '🧼', essential: true, size: 'مناديل' },
-    { nameAr: 'بلسم شعر', emoji: '‍️', essential: false, size: 'حجم سفر ٥٠مل' },
-    { nameAr: 'ماسكارا مقاومة للماء', emoji: '️', essential: false, size: 'حجم عادي' },
+    { nameAr: 'بلسم شعر', emoji: '🚿', essential: false, size: 'حجم سفر ٥٠مل' },
+    { nameAr: 'ماسكارا مقاومة للماء', emoji: '👀', essential: false, size: 'حجم عادي' },
   ],
   business: [
     { nameAr: 'كريم أساس', emoji: '🧴', essential: true, size: 'حجم سفر ١٥مل' },
@@ -20,7 +20,7 @@ const KITS: Record<
     { nameAr: 'عطر صغير', emoji: '🌸', essential: false, size: 'حجم سفر ١٠مل' },
   ],
   adventure: [
-    { nameAr: 'واقي شمس مقاوم للماء', emoji: '️', essential: true, size: 'حجم سفر ٥٠مل' },
+    { nameAr: 'واقي شمس مقاوم للماء', emoji: '🌞', essential: true, size: 'حجم سفر ٥٠مل' },
     { nameAr: 'مرطب شفاه SPF', emoji: '💋', essential: true, size: 'حجم عادي' },
     { nameAr: 'طارد حشرات طبيعي', emoji: '🦟', essential: true, size: 'حجم سفر ٣٠مل' },
     { nameAr: 'شامبو جاف', emoji: '🧴', essential: false, size: 'حجم سفر ٥٠مل' },

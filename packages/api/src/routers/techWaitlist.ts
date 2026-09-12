@@ -14,7 +14,7 @@ let wId = 1;
 
 const POPULAR_TECHS = [
   { id: 1, name: 'نورة العمري', emoji: '💇', waitlistCount: 12, avgWait: '٣-٥ أيام' },
-  { id: 2, name: 'سارة الحربي', emoji: '‍️', waitlistCount: 8, avgWait: '١-٣ أيام' },
+  { id: 2, name: 'سارة الحربي', emoji: '💅', waitlistCount: 8, avgWait: '١-٣ أيام' },
   { id: 3, name: 'د. ليلى القحطاني', emoji: '🩺', waitlistCount: 15, avgWait: '٥-٧ أيام' },
 ];
 

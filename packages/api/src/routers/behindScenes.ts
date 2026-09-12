@@ -49,7 +49,7 @@ const VIDEOS = [
     category: 'shopping',
     thumbnail: '',
     views: 2800,
-    emoji: '️',
+    emoji: '🛒',
   },
 ];
 
