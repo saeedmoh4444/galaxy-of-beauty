@@ -122,10 +122,10 @@ export function SecureCallBadge({
       {/* Feature list */}
       <div className="mt-3 grid grid-cols-2 gap-1.5">
         {[
-          { emoji: '', label: { ar: 'رقمكِ مخفي', en: 'Your number is hidden' } },
-          { emoji: '', label: { ar: 'رقم مؤقت', en: 'Temporary number' } },
-          { emoji: '', label: { ar: 'المكالمات مسجلة', en: 'Calls are recorded' } },
-          { emoji: '', label: { ar: 'لا رسائل مزعجة', en: 'No spam calls' } },
+          { emoji: '🙈', label: { ar: 'رقمكِ مخفي', en: 'Your number is hidden' } },
+          { emoji: '🔢', label: { ar: 'رقم مؤقت', en: 'Temporary number' } },
+          { emoji: '🎙', label: { ar: 'المكالمات مسجلة', en: 'Calls are recorded' } },
+          { emoji: '🚫', label: { ar: 'لا رسائل مزعجة', en: 'No spam calls' } },
         ].map((f) => (
           <div
             key={f.label.ar}

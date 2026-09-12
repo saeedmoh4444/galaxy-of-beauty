@@ -9,18 +9,18 @@
  */
 
 const AMENITIES: Record<string, { emoji: string; label: { ar: string; en: string } }> = {
-  prayer_room: { emoji: '', label: { ar: 'غرفة صلاة', en: 'Prayer room' } },
+  prayer_room: { emoji: '🕌', label: { ar: 'غرفة صلاة', en: 'Prayer room' } },
   period_kit: { emoji: '🩸', label: { ar: 'أدوات الدورة الشهرية', en: 'Period kit' } },
-  child_friendly: { emoji: '', label: { ar: 'مناسب للأطفال', en: 'Child friendly' } },
-  phone_charger: { emoji: '', label: { ar: 'شاحن جوال', en: 'Phone charger' } },
-  wifi: { emoji: '', label: { ar: 'واي فاي مجاني', en: 'Free Wi-Fi' } },
-  coffee_tea: { emoji: '', label: { ar: 'مشروبات ساخنة', en: 'Hot drinks' } },
-  wheelchair: { emoji: '', label: { ar: 'مناسب لذوي الاحتياجات', en: 'Wheelchair accessible' } },
-  private_room: { emoji: '', label: { ar: 'غرفة خاصة', en: 'Private room' } },
+  child_friendly: { emoji: '🧸', label: { ar: 'مناسب للأطفال', en: 'Child friendly' } },
+  phone_charger: { emoji: '🔌', label: { ar: 'شاحن جوال', en: 'Phone charger' } },
+  wifi: { emoji: '📶', label: { ar: 'واي فاي مجاني', en: 'Free Wi-Fi' } },
+  coffee_tea: { emoji: '☕', label: { ar: 'مشروبات ساخنة', en: 'Hot drinks' } },
+  wheelchair: { emoji: '♿', label: { ar: 'مناسب لذوي الاحتياجات', en: 'Wheelchair accessible' } },
+  private_room: { emoji: '🚪', label: { ar: 'غرفة خاصة', en: 'Private room' } },
   parking: { emoji: '🅿️', label: { ar: 'مواقف سيارات', en: 'Parking' } },
-  luxury_robe: { emoji: '', label: { ar: 'روب فاخر', en: 'Luxury robe' } },
-  makeup_touchup: { emoji: '', label: { ar: 'تعديل مكياج مجاني', en: 'Free makeup touch-up' } },
-  sensory_friendly: { emoji: '', label: { ar: 'مناسب للحساسية الحسية', en: 'Sensory friendly' } },
+  luxury_robe: { emoji: '👘', label: { ar: 'روب فاخر', en: 'Luxury robe' } },
+  makeup_touchup: { emoji: '💄', label: { ar: 'تعديل مكياج مجاني', en: 'Free makeup touch-up' } },
+  sensory_friendly: { emoji: '🤫', label: { ar: 'مناسب للحساسية الحسية', en: 'Sensory friendly' } },
 };
 
 interface SalonAmenitiesProps {

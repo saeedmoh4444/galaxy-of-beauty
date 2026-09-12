@@ -17,17 +17,17 @@ const LEVELS: Record<
   { emoji: string; label: { ar: string; en: string }; color: string }
 > = {
   basic: {
-    emoji: '',
+    emoji: '👋',
     label: { ar: 'أساسي', en: 'Basic' },
     color: 'bg-sky-50 text-sky-700 dark:bg-sky-950 dark:text-sky-300',
   },
   intermediate: {
-    emoji: '',
+    emoji: '🤙',
     label: { ar: 'متوسط', en: 'Intermediate' },
     color: 'bg-blue-50 text-blue-700 dark:bg-blue-950 dark:text-blue-300',
   },
   fluent: {
-    emoji: '',
+    emoji: '🤟',
     label: { ar: 'متقن', en: 'Fluent' },
     color: 'bg-indigo-50 text-indigo-700 dark:bg-indigo-950 dark:text-indigo-300',
   },

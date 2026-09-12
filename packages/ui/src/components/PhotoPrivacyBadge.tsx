@@ -21,7 +21,7 @@ interface PrivacyConfig {
 
 const PRIVACY: Record<PrivacyLevel, PrivacyConfig> = {
   PUBLIC: {
-    emoji: '',
+    emoji: '🌍',
     label: { ar: 'عام', en: 'Public' },
     description: { ar: 'ظاهرة في المعرض العام', en: 'Visible in the public gallery' },
     colorClass:
@@ -38,7 +38,7 @@ const PRIVACY: Record<PrivacyLevel, PrivacyConfig> = {
       'bg-blue-50 text-blue-700 border-blue-200 dark:bg-blue-950 dark:text-blue-300 dark:border-blue-800',
   },
   PRIVATE: {
-    emoji: '',
+    emoji: '🔒',
     label: { ar: 'خاصة', en: 'Private' },
     description: { ar: 'لكِ فقط — غير مرئية لأحد', en: 'Just for you — visible to no one' },
     colorClass:

@@ -18,11 +18,11 @@ interface TypeDef {
 }
 
 const TYPES: Record<ProductType, TypeDef> = {
-  facial: { emoji: '', label: { ar: 'عناية بالبشرة', en: 'Skincare' } },
-  hair: { emoji: '', label: { ar: 'عناية بالشعر', en: 'Haircare' } },
-  body: { emoji: '', label: { ar: 'عناية بالجسم', en: 'Body care' } },
-  makeup: { emoji: '', label: { ar: 'مكياج', en: 'Makeup' } },
-  nail: { emoji: '', label: { ar: 'أظافر', en: 'Nails' } },
+  facial: { emoji: '🧴', label: { ar: 'عناية بالبشرة', en: 'Skincare' } },
+  hair: { emoji: '💇', label: { ar: 'عناية بالشعر', en: 'Haircare' } },
+  body: { emoji: '🧼', label: { ar: 'عناية بالجسم', en: 'Body care' } },
+  makeup: { emoji: '💄', label: { ar: 'مكياج', en: 'Makeup' } },
+  nail: { emoji: '💅', label: { ar: 'أظافر', en: 'Nails' } },
   wax: { emoji: '️', label: { ar: 'إزالة شعر', en: 'Hair removal' } },
 };
 

@@ -91,9 +91,9 @@ export function IncognitoModeBadge({
         <div className="mt-3 space-y-2">
           <div className="grid grid-cols-2 gap-1.5">
             {[
-              { emoji: '', label: { ar: 'بدون سجل', en: 'No history' } },
-              { emoji: '', label: { ar: 'بدون اقتراحات', en: 'No suggestions' } },
-              { emoji: '', label: { ar: 'بدون كعكات', en: 'No cookies' } },
+              { emoji: '📭', label: { ar: 'بدون سجل', en: 'No history' } },
+              { emoji: '🚫', label: { ar: 'بدون اقتراحات', en: 'No suggestions' } },
+              { emoji: '🍪', label: { ar: 'بدون كعكات', en: 'No cookies' } },
               { emoji: '️', label: { ar: 'حذف تلقائي', en: 'Auto-delete' } },
             ].map((f) => (
               <div

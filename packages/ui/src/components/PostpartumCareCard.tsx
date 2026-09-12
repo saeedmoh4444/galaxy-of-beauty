@@ -60,7 +60,7 @@ const SERVICES: PostpartumService[] = [
     availableFromDay: 14,
   },
   {
-    emoji: '',
+    emoji: '💄',
     name: { ar: 'إطلالة الخروج الأولى', en: 'First outing look' },
     description: {
       ar: 'مكياج ناعم وتصفيفة شعر لأول خروج بعد النفاس',

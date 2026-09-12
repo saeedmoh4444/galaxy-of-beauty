@@ -35,7 +35,7 @@ const TIPS: {
   desc: { ar: string; en: string };
 }[] = [
   {
-    emoji: '',
+    emoji: '🧖',
     title: { ar: 'عناية بالشعر تحت الحجاب', en: 'Hair care under the hijab' },
     desc: {
       ar: 'جلسات ترطيب عميق أسبوعياً — لأن شعركِ يحتاج عناية إضافية تحت الحجاب',
@@ -51,7 +51,7 @@ const TIPS: {
     },
   },
   {
-    emoji: '',
+    emoji: '💄',
     title: { ar: 'مكياج يناسب الحجاب', en: 'Hijab-friendly makeup' },
     desc: {
       ar: 'تركيز على العينين والحواجب — لأنها نافذة وجهكِ',
@@ -59,7 +59,7 @@ const TIPS: {
     },
   },
   {
-    emoji: '',
+    emoji: '🌙',
     title: { ar: 'روتين مسائي للشعر', en: 'Evening hair routine' },
     desc: {
       ar: 'فك الشعر فور العودة للمنزل وترطيبه ليسترجع حيويته',
@@ -67,7 +67,7 @@ const TIPS: {
     },
   },
   {
-    emoji: '',
+    emoji: '🧣',
     title: { ar: 'بطانة حجاب حريرية', en: 'Silk hijab lining' },
     desc: {
       ar: 'تحمي الشعر من التكسر وتقلل الاحتكاك — متوفرة في صالوناتنا',
@@ -75,7 +75,7 @@ const TIPS: {
     },
   },
   {
-    emoji: '',
+    emoji: '🧴',
     title: { ar: 'عناية بالبشرة', en: 'Skincare' },
     desc: {
       ar: 'تركيز على منطقة الجبهة والذقن — الأكثر تأثراً بالحجاب',

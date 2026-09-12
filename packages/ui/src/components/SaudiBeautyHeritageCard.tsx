@@ -23,7 +23,7 @@ interface PracticeDef {
 
 const PRACTICES: Record<HeritagePractice, PracticeDef> = {
   henna: {
-    emoji: '',
+    emoji: '🌿',
     title: { ar: 'الحناء', en: 'Henna' },
     origin: { ar: 'الجزيرة العربية — 5000 سنة', en: 'Arabian Peninsula — 5000 years' },
     description: {
@@ -49,7 +49,7 @@ const PRACTICES: Record<HeritagePractice, PracticeDef> = {
     },
   },
   rose_water: {
-    emoji: '',
+    emoji: '🌹',
     title: { ar: 'ماء الورد الطائفي', en: 'Taif rose water' },
     origin: { ar: 'الطائف — 500 سنة', en: 'Taif — 500 years' },
     description: {
@@ -62,7 +62,7 @@ const PRACTICES: Record<HeritagePractice, PracticeDef> = {
     },
   },
   saffron: {
-    emoji: '',
+    emoji: '🌾',
     title: { ar: 'الزعفران', en: 'Saffron' },
     origin: { ar: 'طرق التجارة القديمة — 3000 سنة', en: 'Ancient trade routes — 3000 years' },
     description: {
@@ -75,7 +75,7 @@ const PRACTICES: Record<HeritagePractice, PracticeDef> = {
     },
   },
   musk: {
-    emoji: '',
+    emoji: '🤍',
     title: { ar: 'المسك', en: 'Musk' },
     origin: { ar: 'طرق البخور العربية — 2000 سنة', en: 'Arabian incense routes — 2000 years' },
     description: {
@@ -88,7 +88,7 @@ const PRACTICES: Record<HeritagePractice, PracticeDef> = {
     },
   },
   amber: {
-    emoji: '',
+    emoji: '🟠',
     title: { ar: 'العنبر', en: 'Amber' },
     origin: { ar: 'المحيط — آلاف السنين', en: 'The ocean — thousands of years' },
     description: {
@@ -101,7 +101,7 @@ const PRACTICES: Record<HeritagePractice, PracticeDef> = {
     },
   },
   sidr: {
-    emoji: '',
+    emoji: '🌳',
     title: { ar: 'السدر', en: 'Sidr' },
     origin: { ar: 'الجزيرة العربية — قديم', en: 'Arabian Peninsula — ancient' },
     description: {
@@ -114,7 +114,7 @@ const PRACTICES: Record<HeritagePractice, PracticeDef> = {
     },
   },
   clove_oil: {
-    emoji: '',
+    emoji: '🍂',
     title: { ar: 'زيت القرنفل', en: 'Clove oil' },
     origin: { ar: 'طرق التوابل — 2000 سنة', en: 'Spice routes — 2000 years' },
     description: {

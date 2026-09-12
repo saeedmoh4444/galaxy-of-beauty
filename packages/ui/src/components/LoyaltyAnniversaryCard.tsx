@@ -33,22 +33,22 @@ const YEAR_MESSAGES: Record<
   { emoji: string; title: { ar: string; en: string }; gift: { ar: string; en: string } }
 > = {
   1: {
-    emoji: '',
+    emoji: '🥉',
     title: { ar: 'ذكرى سنوية أولى', en: 'First anniversary' },
     gift: { ar: 'خصم 20% على خدمتكِ القادمة', en: '20% off your next service' },
   },
   2: {
-    emoji: '',
+    emoji: '🥈',
     title: { ar: 'ذكرى سنوية ثانية', en: 'Second anniversary' },
     gift: { ar: 'خدمة مجانية صغيرة من اختياركِ', en: 'A small free service of your choice' },
   },
   3: {
-    emoji: '',
+    emoji: '🥇',
     title: { ar: 'ذكرى سنوية ثالثة', en: 'Third anniversary' },
     gift: { ar: 'يوم سبا مصغر مجاني', en: 'A free mini spa day' },
   },
   5: {
-    emoji: '',
+    emoji: '👑',
     title: { ar: '5 سنوات من الجمال', en: '5 years of beauty' },
     gift: { ar: 'باقة VIP شاملة', en: 'Full VIP package' },
   },

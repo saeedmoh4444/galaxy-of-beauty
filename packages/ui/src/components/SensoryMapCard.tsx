@@ -21,13 +21,13 @@ interface ZoneDef {
 
 const ZONES: Record<ZoneType, ZoneDef> = {
   quiet: {
-    emoji: '',
+    emoji: '🤫',
     label: { ar: 'منطقة هادئة', en: 'Quiet zone' },
     description: { ar: 'موسيقى منخفضة، أحاديث قليلة', en: 'Low music, minimal conversation' },
     color: 'bg-sky-100 border-sky-300 dark:bg-sky-950 dark:border-sky-800',
   },
   dim: {
-    emoji: '',
+    emoji: '🌙',
     label: { ar: 'إضاءة خافتة', en: 'Dim lighting' },
     description: { ar: 'أضواء دافئة وخافتة', en: 'Warm, dim lights' },
     color: 'bg-amber-100 border-amber-300 dark:bg-amber-950 dark:border-amber-800',
@@ -39,7 +39,7 @@ const ZONES: Record<ZoneType, ZoneDef> = {
     color: 'bg-yellow-100 border-yellow-300 dark:bg-yellow-950 dark:border-yellow-800',
   },
   social: {
-    emoji: '',
+    emoji: '💬',
     label: { ar: 'منطقة اجتماعية', en: 'Social zone' },
     description: {
       ar: 'مساحة مفتوحة للحديث والتواصل',
@@ -48,13 +48,13 @@ const ZONES: Record<ZoneType, ZoneDef> = {
     color: 'bg-pink-100 border-pink-300 dark:bg-pink-950 dark:border-pink-800',
   },
   private: {
-    emoji: '',
+    emoji: '🚪',
     label: { ar: 'غرفة خاصة', en: 'Private room' },
     description: { ar: 'غرفة منفصلة بخصوصية تامة', en: 'A separate room with full privacy' },
     color: 'bg-brand-100 border-brand-300 dark:bg-brand-950 dark:border-brand-800',
   },
   aromatherapy: {
-    emoji: '',
+    emoji: '🌸',
     label: { ar: 'علاج بالروائح', en: 'Aromatherapy' },
     description: { ar: 'زيوت عطرية طبيعية مهدئة', en: 'Calming natural essential oils' },
     color: 'bg-emerald-100 border-emerald-300 dark:bg-emerald-950 dark:border-emerald-800',

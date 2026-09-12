@@ -14,28 +14,28 @@ const REMINDERS = [
     },
   },
   {
-    emoji: '',
+    emoji: '💖',
     text: {
       ar: 'العناية بنفسكِ ليست رفاهية — إنها ضرورة. أنتِ الأولوية.',
       en: 'Caring for yourself is not a luxury — it is a necessity. You are the priority.',
     },
   },
   {
-    emoji: '',
+    emoji: '🌸',
     text: {
       ar: 'أنتِ جميلة كما أنتِ. لا تقارني نفسكِ بأحد.',
       en: 'You are beautiful as you are. Do not compare yourself to anyone.',
     },
   },
   {
-    emoji: '',
+    emoji: '🍵',
     text: {
       ar: 'اشربي شيئاً دافئاً واستمتعي بلحظة هدوء.',
       en: 'Drink something warm and enjoy a quiet moment.',
     },
   },
   {
-    emoji: '',
+    emoji: '📵',
     text: {
       ar: 'ابتعدي عن الجوال لمدة ٣٠ دقيقة. عيناكِ وعقلكِ يستحقان الراحة.',
       en: 'Step away from your phone for 30 minutes. Your eyes and mind deserve rest.',
@@ -49,14 +49,14 @@ const REMINDERS = [
     },
   },
   {
-    emoji: '',
+    emoji: '🎵',
     text: {
       ar: 'شغّلي أغنيتكِ المفضلة وارقصي. الفرح دواء.',
       en: 'Play your favorite song and dance. Joy is medicine.',
     },
   },
   {
-    emoji: '',
+    emoji: '📖',
     text: {
       ar: 'اقرئي صفحة من كتاب تحبينه. العقل السليم في الجمال السليم.',
       en: 'Read a page from a book you love. A healthy mind in healthy beauty.',

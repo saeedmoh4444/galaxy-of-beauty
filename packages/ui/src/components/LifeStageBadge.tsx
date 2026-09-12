@@ -10,37 +10,37 @@ const LIFE_STAGES: Record<
   { emoji: string; label: { ar: string; en: string }; color: string }
 > = {
   teen: {
-    emoji: '',
+    emoji: '🌸',
     label: { ar: 'مراهقة (١٥-١٨)', en: 'Teen (15-18)' },
     color: 'bg-pink-100 text-pink-700 dark:bg-pink-950 dark:text-pink-300',
   },
   young_adult: {
-    emoji: '',
+    emoji: '🌟',
     label: { ar: 'شابة (١٨-٢٥)', en: 'Young Adult (18-25)' },
     color: 'bg-brand-100 text-brand-700 dark:bg-brand-950 dark:text-brand-300',
   },
   career: {
-    emoji: '',
+    emoji: '💼',
     label: { ar: 'مهنية (٢٥-٣٥)', en: 'Career Woman (25-35)' },
     color: 'bg-blue-100 text-blue-700 dark:bg-blue-950 dark:text-blue-300',
   },
   bride: {
-    emoji: '',
+    emoji: '👰',
     label: { ar: 'عروس', en: 'Bride' },
     color: 'bg-amber-100 text-amber-700 dark:bg-amber-950 dark:text-amber-300',
   },
   mother: {
-    emoji: '',
+    emoji: '🤱',
     label: { ar: 'أمومة', en: 'Motherhood' },
     color: 'bg-rose-100 text-rose-700 dark:bg-rose-950 dark:text-rose-300',
   },
   confident: {
-    emoji: '',
+    emoji: '💪',
     label: { ar: 'ثقة (٤٠-٥٥)', en: 'Confident (40-55)' },
     color: 'bg-indigo-100 text-indigo-700 dark:bg-indigo-950 dark:text-indigo-300',
   },
   golden: {
-    emoji: '',
+    emoji: '👑',
     label: { ar: 'العصر الذهبي (٥٥+)', en: 'Golden Age (55+)' },
     color: 'bg-amber-100 text-amber-700 dark:bg-amber-950 dark:text-amber-300',
   },

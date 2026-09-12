@@ -13,12 +13,12 @@ const SAFETY_TYPES: Record<
   { emoji: string; label: { ar: string; en: string }; desc: { ar: string; en: string } }
 > = {
   female_verified: {
-    emoji: '',
+    emoji: '✅',
     label: { ar: 'فنية موثقة', en: 'Verified technician' },
     desc: { ar: 'تم التحقق من هويتها عبر مكالمة فيديو', en: 'Identity verified via video call' },
   },
   privacy_first: {
-    emoji: '',
+    emoji: '🔒',
     label: { ar: 'خصوصية تامة', en: 'Full privacy' },
     desc: {
       ar: 'صوركِ ومعلوماتكِ محمية ولا تشارك',
@@ -31,7 +31,7 @@ const SAFETY_TYPES: Record<
     desc: { ar: 'منصة نسائية بالكامل — لا رجال', en: 'Women-only platform — no men' },
   },
   secure_payment: {
-    emoji: '',
+    emoji: '💳',
     label: { ar: 'دفع آمن', en: 'Secure payment' },
     desc: { ar: 'مشفّر بالكامل عبر PayFort', en: 'Fully encrypted via PayFort' },
   },
@@ -41,7 +41,7 @@ const SAFETY_TYPES: Record<
     desc: { ar: 'فريق دعم متاح ٢٤/٧ للطوارئ', en: 'Support team available 24/7 for emergencies' },
   },
   pdpl_compliant: {
-    emoji: '',
+    emoji: '📜',
     label: { ar: 'متوافقة مع PDPL', en: 'PDPL compliant' },
     desc: { ar: 'نظام حماية البيانات الشخصية السعودي', en: 'Saudi Personal Data Protection Law' },
   },

@@ -28,7 +28,7 @@ interface DrinkDef {
 
 const DRINKS: Record<Drink, DrinkDef> = {
   arabic_coffee: {
-    emoji: '',
+    emoji: '☕',
     name: { ar: 'قهوة عربية', en: 'Arabic coffee' },
     description: {
       ar: 'قهوة سعودية أصيلة بالهيل والزعفران',
@@ -36,7 +36,7 @@ const DRINKS: Record<Drink, DrinkDef> = {
     },
   },
   karak: {
-    emoji: '',
+    emoji: '🫖',
     name: { ar: 'كرك', en: 'Karak tea' },
     description: {
       ar: 'شاي كرك هندي بالحليب والتوابل',
@@ -44,32 +44,32 @@ const DRINKS: Record<Drink, DrinkDef> = {
     },
   },
   herbal_tea: {
-    emoji: '',
+    emoji: '🌿',
     name: { ar: 'شاي أعشاب', en: 'Herbal tea' },
     description: { ar: 'مزيج أعشاب طبيعي مهدئ', en: 'A calming natural herbal blend' },
   },
   green_tea: {
-    emoji: '',
+    emoji: '🍵',
     name: { ar: 'شاي أخضر', en: 'Green tea' },
     description: { ar: 'شاي أخضر منعش مع نعناع', en: 'Refreshing green tea with mint' },
   },
   chamomile: {
-    emoji: '',
+    emoji: '🌼',
     name: { ar: 'بابونج', en: 'Chamomile' },
     description: { ar: 'شاي بابونج للاسترخاء', en: 'Chamomile tea for relaxation' },
   },
   mint_tea: {
-    emoji: '',
+    emoji: '🌱',
     name: { ar: 'شاي نعناع', en: 'Mint tea' },
     description: { ar: 'شاي نعناع طازج منعش', en: 'Fresh and refreshing mint tea' },
   },
   latte: {
-    emoji: '',
+    emoji: '🥛',
     name: { ar: 'لاتيه', en: 'Latte' },
     description: { ar: 'قهوة لاتيه كريمية', en: 'Creamy latte coffee' },
   },
   hot_chocolate: {
-    emoji: '',
+    emoji: '🍫',
     name: { ar: 'شوكولاتة ساخنة', en: 'Hot chocolate' },
     description: { ar: 'شوكولاتة ساخنة غنية', en: 'Rich hot chocolate' },
   },

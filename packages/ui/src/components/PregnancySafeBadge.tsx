@@ -23,7 +23,7 @@ interface TrimesterDef {
 
 const TRIMESTERS: Record<Trimester, TrimesterDef> = {
   1: {
-    emoji: '',
+    emoji: '🌱',
     label: { ar: 'الثلث الأول', en: 'First trimester' },
     description: {
       ar: 'الأشهر 1-3 — فترة حساسة، عناية لطيفة فقط',
@@ -43,7 +43,7 @@ const TRIMESTERS: Record<Trimester, TrimesterDef> = {
     color: 'border-rose-200 bg-rose-50/50 dark:border-rose-900 dark:bg-rose-950/30',
   },
   2: {
-    emoji: '',
+    emoji: '🌸',
     label: { ar: 'الثلث الثاني', en: 'Second trimester' },
     description: {
       ar: 'الأشهر 4-6 — الفترة الذهبية للعناية',
@@ -63,7 +63,7 @@ const TRIMESTERS: Record<Trimester, TrimesterDef> = {
     color: 'border-emerald-200 bg-emerald-50/50 dark:border-emerald-900 dark:bg-emerald-950/30',
   },
   3: {
-    emoji: '',
+    emoji: '🤰',
     label: { ar: 'الثلث الثالث', en: 'Third trimester' },
     description: {
       ar: 'الأشهر 7-9 — راحة واستعداد للولادة',
@@ -83,7 +83,7 @@ const TRIMESTERS: Record<Trimester, TrimesterDef> = {
     color: 'border-brand-200 bg-purple-50/50 dark:border-brand-900 dark:bg-purple-950/30',
   },
   postpartum: {
-    emoji: '',
+    emoji: '🍼',
     label: { ar: 'ما بعد الولادة', en: 'Postpartum' },
     description: {
       ar: 'الأربعين يوماً — عناية النفاس التقليدية',

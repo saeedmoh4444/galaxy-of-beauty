@@ -37,9 +37,9 @@ export function SelfieStationBadge({
   footerText = 'لأن كل إطلالة جميلة تستحق صورة',
 }: SelfieStationBadgeProps): JSX.Element {
   const features = [
-    { emoji: '', label: { ar: 'إضاءة Ring Light', en: 'Ring light' }, available: hasRingLight },
-    { emoji: '', label: { ar: 'حامل جوال', en: 'Phone stand' }, available: hasPhoneStand },
-    { emoji: '', label: { ar: 'خلفية تصوير', en: 'Photo backdrop' }, available: hasBackdrop },
+    { emoji: '💡', label: { ar: 'إضاءة Ring Light', en: 'Ring light' }, available: hasRingLight },
+    { emoji: '📱', label: { ar: 'حامل جوال', en: 'Phone stand' }, available: hasPhoneStand },
+    { emoji: '🖼', label: { ar: 'خلفية تصوير', en: 'Photo backdrop' }, available: hasBackdrop },
     { emoji: '🪞', label: { ar: 'إكسسوارات تصوير', en: 'Photo props' }, available: hasProps },
   ];
 

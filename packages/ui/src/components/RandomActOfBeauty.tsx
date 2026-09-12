@@ -45,11 +45,11 @@ interface RandomActOfBeautyProps {
 }
 
 const SURPRISES = [
-  { emoji: '', text: { ar: 'قصة شعر مجانية', en: 'Free haircut' } },
-  { emoji: '', text: { ar: 'مانيكير مجاني', en: 'Free manicure' } },
-  { emoji: '', text: { ar: 'جلسة عناية بالبشرة', en: 'Skincare session' } },
-  { emoji: '', text: { ar: 'مساج استرخاء', en: 'Relaxing massage' } },
-  { emoji: '', text: { ar: 'مكياج احترافي', en: 'Professional makeup' } },
+  { emoji: '💇', text: { ar: 'قصة شعر مجانية', en: 'Free haircut' } },
+  { emoji: '💅', text: { ar: 'مانيكير مجاني', en: 'Free manicure' } },
+  { emoji: '✨', text: { ar: 'جلسة عناية بالبشرة', en: 'Skincare session' } },
+  { emoji: '💆', text: { ar: 'مساج استرخاء', en: 'Relaxing massage' } },
+  { emoji: '💄', text: { ar: 'مكياج احترافي', en: 'Professional makeup' } },
 ];
 
 export function RandomActOfBeauty({

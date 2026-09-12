@@ -37,12 +37,12 @@ interface PersonalStylingCardProps {
 }
 
 const INCLUDES = [
-  { emoji: '', label: { ar: 'تحليل لون البشرة', en: 'Skin tone analysis' } },
-  { emoji: '', label: { ar: 'تحديد نمط الملابس', en: 'Determine clothing style' } },
-  { emoji: '', label: { ar: 'ألوان المكياج المناسبة', en: 'Suitable makeup colors' } },
-  { emoji: '', label: { ar: 'تسريحات تناسب وجهكِ', en: 'Hairstyles that suit your face' } },
-  { emoji: '', label: { ar: 'جلسة تصوير للإطلالة', en: 'Outfit photo session' } },
-  { emoji: '', label: { ar: 'تقرير شخصي شامل', en: 'Comprehensive personal report' } },
+  { emoji: '🎨', label: { ar: 'تحليل لون البشرة', en: 'Skin tone analysis' } },
+  { emoji: '👗', label: { ar: 'تحديد نمط الملابس', en: 'Determine clothing style' } },
+  { emoji: '💄', label: { ar: 'ألوان المكياج المناسبة', en: 'Suitable makeup colors' } },
+  { emoji: '💇', label: { ar: 'تسريحات تناسب وجهكِ', en: 'Hairstyles that suit your face' } },
+  { emoji: '📸', label: { ar: 'جلسة تصوير للإطلالة', en: 'Outfit photo session' } },
+  { emoji: '📋', label: { ar: 'تقرير شخصي شامل', en: 'Comprehensive personal report' } },
 ];
 
 export function PersonalStylingCard({

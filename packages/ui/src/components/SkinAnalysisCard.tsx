@@ -36,7 +36,7 @@ const CONCERNS: Record<SkinConcern, ConcernDef> = {
     },
   },
   dark_spots: {
-    emoji: '',
+    emoji: '🟤',
     label: { ar: 'تصبغات', en: 'Dark spots' },
     recommendation: {
       ar: 'فيتامين سي صباحاً + نياسيناميد مساءً + واقي شمس',
@@ -44,7 +44,7 @@ const CONCERNS: Record<SkinConcern, ConcernDef> = {
     },
   },
   acne: {
-    emoji: '',
+    emoji: '🔴',
     label: { ar: 'حبوب', en: 'Acne' },
     recommendation: {
       ar: 'حمض الساليسيليك + نياسيناميد + مرطب خالٍ من الزيوت',
@@ -52,7 +52,7 @@ const CONCERNS: Record<SkinConcern, ConcernDef> = {
     },
   },
   wrinkles: {
-    emoji: '',
+    emoji: '👵',
     label: { ar: 'تجاعيد', en: 'Wrinkles' },
     recommendation: {
       ar: 'ريتينول مساءً + ببتيدات + واقي شمس يومي',
@@ -60,7 +60,7 @@ const CONCERNS: Record<SkinConcern, ConcernDef> = {
     },
   },
   redness: {
-    emoji: '',
+    emoji: '🥵',
     label: { ar: 'احمرار', en: 'Redness' },
     recommendation: {
       ar: 'سيراميد + أزيلينك أسيد + مرطب مهدئ',
@@ -68,7 +68,7 @@ const CONCERNS: Record<SkinConcern, ConcernDef> = {
     },
   },
   large_pores: {
-    emoji: '',
+    emoji: '🔍',
     label: { ar: 'مسام واسعة', en: 'Large pores' },
     recommendation: {
       ar: 'نياسيناميد + مقشر كيميائي لطيف أسبوعياً',
@@ -76,7 +76,7 @@ const CONCERNS: Record<SkinConcern, ConcernDef> = {
     },
   },
   dullness: {
-    emoji: '',
+    emoji: '💤',
     label: { ar: 'بهتان', en: 'Dullness' },
     recommendation: {
       ar: 'مقشر إنزيمي + فيتامين سي + ترطيب عميق',
@@ -84,7 +84,7 @@ const CONCERNS: Record<SkinConcern, ConcernDef> = {
     },
   },
   oiliness: {
-    emoji: '',
+    emoji: '🫧',
     label: { ar: 'دهون زائدة', en: 'Excess oil' },
     recommendation: {
       ar: 'نياسيناميد + تونر خالٍ من الكحول + مرطب جل',
