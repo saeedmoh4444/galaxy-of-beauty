@@ -64,7 +64,7 @@ const COMMON_ALLERGENS: {
   },
   {
     key: 'formaldehyde',
-    emoji: '️',
+    emoji: '💀',
     name: 'allergenChecker.allergen.formaldehyde',
     risk: 'high',
     desc: 'allergenChecker.desc.formaldehyde',

@@ -12,7 +12,7 @@ const PACKAGES = [
     services: ['marketing.mommy-and-me.svc-manicure', 'marketing.mommy-and-me.svc-nail-polish'],
   },
   {
-    emoji: '‍️',
+    emoji: '💇',
     title: 'marketing.mommy-and-me.pkg-hair-title',
     desc: 'marketing.mommy-and-me.pkg-hair-desc',
     price: 200,
@@ -48,7 +48,7 @@ const PACKAGES = [
     ],
   },
   {
-    emoji: '‍️',
+    emoji: '💆',
     title: 'marketing.mommy-and-me.pkg-spa-title',
     desc: 'marketing.mommy-and-me.pkg-spa-desc',
     price: 600,

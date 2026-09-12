@@ -48,7 +48,7 @@ export default function MyJourneyPage(): JSX.Element {
       date: completed.length >= 10 ? completed[9]?.createdAt : null,
     },
     { label: 'myJourney.milestone.savings', achieved: totalSpent >= 1000, emoji: '💰' },
-    { label: 'myJourney.milestone.techs', achieved: uniqueTechnicians >= 3, emoji: '‍' },
+    { label: 'myJourney.milestone.techs', achieved: uniqueTechnicians >= 3, emoji: '💇' },
     { label: 'myJourney.milestone.services', achieved: uniqueServices >= 5, emoji: '💎' },
   ];
 

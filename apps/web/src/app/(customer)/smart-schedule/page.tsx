@@ -10,7 +10,7 @@ const POPULAR_SERVICES: { id: number; name: TranslationKey; emoji: string }[] = 
   { id: 1, name: 'recommendations.manicure', emoji: '💅' },
   { id: 2, name: 'recommendations.pedicure', emoji: '🦶' },
   { id: 3, name: 'recommendations.facialCleaning', emoji: '🧖' },
-  { id: 4, name: 'recommendations.massage', emoji: '‍️' },
+  { id: 4, name: 'recommendations.massage', emoji: '💆' },
   { id: 5, name: 'recommendations.hairDye', emoji: '🎨' },
   { id: 6, name: 'recommendations.makeup', emoji: '💄' },
 ];

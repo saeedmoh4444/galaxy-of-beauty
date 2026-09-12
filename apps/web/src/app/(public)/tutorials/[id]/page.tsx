@@ -29,7 +29,7 @@ const DIFFICULTY_META: Record<string, { label: TranslationKey; color: string }> 
 
 const CATEGORY_META: Record<string, { label: TranslationKey; emoji: string }> = {
   makeup: { label: 'marketing.tutorials.cat-makeup', emoji: '💄' },
-  hair: { label: 'marketing.tutorials.cat-hair', emoji: '‍️' },
+  hair: { label: 'marketing.tutorials.cat-hair', emoji: '💇' },
   skincare: { label: 'marketing.tutorials.cat-skincare', emoji: '🧴' },
   nails: { label: 'marketing.tutorials.cat-nails', emoji: '💅' },
 };

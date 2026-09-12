@@ -47,7 +47,7 @@ const GOAL_TEMPLATES: {
   },
   {
     key: 'hair',
-    emoji: '‍️',
+    emoji: '💇',
     name: 'beautyGoals.cat.hair',
     goals: [
       'beautyGoals.goal.hair1',
@@ -192,7 +192,7 @@ export default function BeautyGoalsPage(): JSX.Element {
         <div className="grid gap-6 lg:grid-cols-3">
           <BeautyHabitTrackerCard
             habits={[
-              { name: t('beautyGoals.habit.sunscreen'), emoji: '️', done: true },
+              { name: t('beautyGoals.habit.sunscreen'), emoji: '☀️', done: true },
               { name: t('beautyGoals.habit.water'), emoji: '💧', done: false },
               { name: t('beautyGoals.habit.evening'), emoji: '🌙', done: true },
             ]}

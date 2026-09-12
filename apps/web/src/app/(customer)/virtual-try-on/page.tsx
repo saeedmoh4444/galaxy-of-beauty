@@ -33,7 +33,7 @@ type MakeupType = 'lips' | 'eyes' | 'blush' | 'nails';
 
 const TYPE_LABELS: Record<MakeupType, { label: TranslationKey; emoji: string }> = {
   lips: { label: 'tryOn.type.lips', emoji: '💋' },
-  eyes: { label: 'tryOn.type.eyes', emoji: '️' },
+  eyes: { label: 'tryOn.type.eyes', emoji: '👁️' },
   blush: { label: 'tryOn.type.blush', emoji: '🌸' },
   nails: { label: 'tryOn.type.nails', emoji: '💅' },
 };

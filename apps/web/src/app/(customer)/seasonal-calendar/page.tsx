@@ -18,7 +18,7 @@ const SEASONS: {
 }[] = [
   {
     key: 'winter',
-    emoji: '️',
+    emoji: '⛄',
     name: 'seasonal.season.winter',
     months: 'seasonal.months.winter',
     color: '#3b82f6',
@@ -76,7 +76,7 @@ const SEASONS: {
   },
   {
     key: 'summer',
-    emoji: '️',
+    emoji: '🌞',
     name: 'seasonal.season.summer',
     months: 'seasonal.months.summer',
     color: '#f59e0b',
@@ -94,7 +94,7 @@ const SEASONS: {
         why: 'seasonal.svc.summer.summerPedicureWhy',
       },
       {
-        emoji: '️',
+        emoji: '🪒',
         name: 'seasonal.svc.summer.hairRemoval',
         why: 'seasonal.svc.summer.hairRemovalWhy',
       },

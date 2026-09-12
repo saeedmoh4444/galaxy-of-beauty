@@ -8,7 +8,7 @@ const SERVICES = [
   { id: 1, name: 'مانيكير', emoji: '💅' },
   { id: 2, name: 'باديكير', emoji: '🦶' },
   { id: 3, name: 'تنظيف بشرة', emoji: '🧖' },
-  { id: 4, name: 'مساج', emoji: '‍️' },
+  { id: 4, name: 'مساج', emoji: '💆' },
   { id: 5, name: 'صبغ شعر', emoji: '💈' },
   { id: 6, name: 'مكياج', emoji: '💄' },
 ];

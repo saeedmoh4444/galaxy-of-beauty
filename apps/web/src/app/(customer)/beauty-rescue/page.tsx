@@ -48,7 +48,7 @@ const EMERGENCIES: {
   },
   {
     key: 'hair',
-    emoji: '‍️',
+    emoji: '💇',
     name: 'rescue.emergency.hair',
     desc: 'rescue.desc.hair',
     price: 60,
@@ -66,7 +66,7 @@ const EMERGENCIES: {
   },
   {
     key: 'dry',
-    emoji: '️',
+    emoji: '💧',
     name: 'rescue.emergency.dry',
     desc: 'rescue.desc.dry',
     price: 45,
