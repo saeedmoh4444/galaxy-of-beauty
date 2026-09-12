@@ -35,7 +35,7 @@ export function BeautyBabyBluesCard({
             },
           },
           {
-            emoji: '',
+            emoji: '👭',
             text: {
               ar: 'لا تنعزلي — تحدثي مع صديقة أو أخت',
               en: "Don't isolate yourself — talk to a friend or sister",
@@ -49,7 +49,7 @@ export function BeautyBabyBluesCard({
             },
           },
           {
-            emoji: '',
+            emoji: '💗',
             text: {
               ar: 'أنتِ أم رائعة — لا تقسي على نفسكِ',
               en: 'You are an amazing mother — be gentle with yourself',

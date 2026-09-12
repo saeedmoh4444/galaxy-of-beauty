@@ -23,19 +23,19 @@ interface LevelDef {
 
 const CERTS: Record<CertLevel, LevelDef> = {
   foundation: {
-    emoji: '',
+    emoji: '🌱',
     label: { ar: 'أساسي', en: 'Foundation' },
     color: 'text-emerald-600 dark:text-emerald-300',
     gradient: 'from-emerald-500 to-teal-500',
   },
   professional: {
-    emoji: '',
+    emoji: '🎓',
     label: { ar: 'احترافي', en: 'Professional' },
     color: 'text-blue-600 dark:text-blue-300',
     gradient: 'from-blue-500 to-sky-500',
   },
   master: {
-    emoji: '',
+    emoji: '🏆',
     label: { ar: 'ماستر', en: 'Master' },
     color: 'text-brand-600 dark:text-brand-300',
     gradient: 'from-brand-500 to-violet-500',

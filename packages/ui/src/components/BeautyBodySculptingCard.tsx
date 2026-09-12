@@ -36,17 +36,17 @@ export function BeautyBodySculptingCard({
             },
           },
           {
-            emoji: '',
+            emoji: '📻',
             label: { ar: 'راديو فريكونسي', en: 'Radio frequency' },
             tip: { ar: 'حرارة — تشد الجلد', en: 'Heat — tightens the skin' },
           },
           {
-            emoji: '',
+            emoji: '🔊',
             label: { ar: 'ألتراساوند', en: 'Ultrasound' },
             tip: { ar: 'موجات صوتية — تذيب الدهون', en: 'Sound waves — melt fat' },
           },
           {
-            emoji: '',
+            emoji: '💉',
             label: { ar: 'حقن', en: 'Injections' },
             tip: { ar: 'إذابة دهون موضعية', en: 'Local fat dissolving' },
           },

@@ -28,28 +28,28 @@ export function BeautyBarreCard({
       <div className="mt-3 space-y-1">
         {[
           {
-            emoji: '',
+            emoji: '🦵',
             text: {
               ar: 'ينحت الساقين — تمارين صغيرة ومركزة',
               en: 'Sculpts the legs — small, focused moves',
             },
           },
           {
-            emoji: '',
+            emoji: '🧍',
             text: {
               ar: 'يحسن الوقفة — ظهر مستقيم وأكتاف مرفوعة',
               en: 'Improves posture — straight back, lifted shoulders',
             },
           },
           {
-            emoji: '',
+            emoji: '💪',
             text: {
               ar: 'يقوي العضلات الصغيرة — جسم مشدود',
               en: 'Strengthens small muscles — a toned body',
             },
           },
           {
-            emoji: '',
+            emoji: '🪶',
             text: {
               ar: 'مناسب لكل الأعمار — بدون قفز أو إجهاد',
               en: 'Suitable for all ages — no jumping or strain',

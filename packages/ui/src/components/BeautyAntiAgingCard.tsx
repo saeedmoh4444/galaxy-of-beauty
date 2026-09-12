@@ -35,21 +35,21 @@ export function BeautyAntiAgingCard({
             },
           },
           {
-            emoji: '',
+            emoji: '✨',
             text: {
               ar: 'ريتينول — المكون الذهبي لمكافحة الشيخوخة',
               en: 'Retinol — the golden anti-aging ingredient',
             },
           },
           {
-            emoji: '',
+            emoji: '💧',
             text: {
               ar: 'ترطيب — بشرة رطبة = بشرة شابة',
               en: 'Moisturize — hydrated skin is youthful skin',
             },
           },
           {
-            emoji: '',
+            emoji: '😴',
             text: {
               ar: 'نوم كافٍ — وقت إصلاح البشرة الطبيعي',
               en: 'Enough sleep — the skin’s natural repair time',

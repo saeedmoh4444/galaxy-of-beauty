@@ -28,14 +28,14 @@ export function BeautyBlushPlacementCard({
       <div className="mt-3 space-y-1">
         {[
           {
-            emoji: '',
+            emoji: '😊',
             text: {
               ar: 'بيضاوي: على تفاحة الخد — للأعلى نحو الصدغ',
               en: 'Oval: on the cheek apple — upward toward the temple',
             },
           },
           {
-            emoji: '',
+            emoji: '😄',
             text: {
               ar: 'دائري: أعلى الخد — بزاوية حادة للأعلى',
               en: 'Circular: on the upper cheek — at a sharp upward angle',

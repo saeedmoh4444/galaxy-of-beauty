@@ -28,28 +28,28 @@ export function BeautyBedtimeRitualCard({
       <div className="mt-3 space-y-1">
         {[
           {
-            emoji: '',
+            emoji: '🧼',
             text: {
               ar: 'نظفي وجهك — مزدوج: زيت + غسول',
               en: 'Cleanse your face — double cleanse: oil + cleanser',
             },
           },
           {
-            emoji: '',
+            emoji: '🌙',
             text: {
               ar: 'سيروم ليلي — وقت الإصلاح أثناء النوم',
               en: 'Night serum — repair time while you sleep',
             },
           },
           {
-            emoji: '',
+            emoji: '💆',
             text: {
               ar: 'تدليك 3 دقائق — يحفز الدورة الدموية',
               en: '3-minute massage — boosts circulation',
             },
           },
           {
-            emoji: '',
+            emoji: '📵',
             text: {
               ar: 'أطفئي الجوال — الضوء الأزرق يمنع الميلاتونين',
               en: 'Turn off your phone — blue light blocks melatonin',

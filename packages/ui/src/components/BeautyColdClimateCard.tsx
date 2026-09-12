@@ -28,7 +28,7 @@ export function BeautyColdClimateCard({
       <div className="mt-3 space-y-1">
         {[
           {
-            emoji: '',
+            emoji: '🧴',
             text: {
               ar: 'بلسم منظف — بدل الجل القاسي',
               en: 'Cleansing balm — instead of harsh gel',
@@ -42,14 +42,14 @@ export function BeautyColdClimateCard({
             },
           },
           {
-            emoji: '',
+            emoji: '🧣',
             text: {
               ar: 'وشاح — يحمي الوجه من الرياح',
               en: 'A scarf — protects the face from wind',
             },
           },
           {
-            emoji: '',
+            emoji: '🌙',
             text: {
               ar: 'زيت وجه — طبقة إضافية ليلاً',
               en: 'Face oil — an extra layer at night',

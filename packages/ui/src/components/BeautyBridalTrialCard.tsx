@@ -28,28 +28,28 @@ export function BeautyBridalTrialCard({
       <div className="mt-3 space-y-1">
         {[
           {
-            emoji: '',
+            emoji: '📅',
             text: {
               ar: 'قبل الزفاف بشهر — الوقت المثالي للتجربة',
               en: 'A month before the wedding — the ideal time to trial',
             },
           },
           {
-            emoji: '',
+            emoji: '📸',
             text: {
               ar: 'صوري الإطلالة — لتقييمها لاحقاً',
               en: 'Photograph the look — to review it later',
             },
           },
           {
-            emoji: '',
+            emoji: '👗',
             text: {
               ar: 'ارتدي أبيض — لترى التناسق مع الفستان',
               en: 'Wear white — to see how it pairs with the dress',
             },
           },
           {
-            emoji: '',
+            emoji: '💬',
             text: {
               ar: 'كوني صريحة — هذه تجربتكِ وليس يوم الزفاف',
               en: 'Be honest — this is your trial, not the wedding day',

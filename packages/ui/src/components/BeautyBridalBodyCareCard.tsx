@@ -28,14 +28,14 @@ export function BeautyBridalBodyCareCard({
       <div className="mt-3 space-y-1">
         {[
           {
-            emoji: '',
+            emoji: '🧽',
             text: {
               ar: 'تقشير الجسم — مرة أسبوعياً قبل الزفاف',
               en: 'Body exfoliation — once a week before the wedding',
             },
           },
           {
-            emoji: '',
+            emoji: '💆',
             text: {
               ar: 'مساج استرخاء — يخفف توتر التحضيرات',
               en: 'Relaxing massage — eases pre-wedding stress',
@@ -49,7 +49,7 @@ export function BeautyBridalBodyCareCard({
             },
           },
           {
-            emoji: '',
+            emoji: '🌞',
             text: {
               ar: 'تان لطيف — قبل الزفاف بيومين',
               en: 'A subtle tan — two days before the wedding',

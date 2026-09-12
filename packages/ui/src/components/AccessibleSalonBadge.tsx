@@ -29,7 +29,7 @@ interface FeatureDef {
 
 const FEATURES: FeatureDef[] = [
   {
-    emoji: '',
+    emoji: '♿',
     label: { ar: 'كرسي متحرك', en: 'Wheelchair accessible' },
     detail: {
       ar: 'مداخل واسعة، مصعد، حمام مجهز',
@@ -39,7 +39,7 @@ const FEATURES: FeatureDef[] = [
       'bg-blue-50 text-blue-700 border-blue-200 dark:bg-blue-950 dark:text-blue-300 dark:border-blue-800',
   },
   {
-    emoji: '',
+    emoji: '🎨',
     label: { ar: 'كل ألوان البشرة', en: 'All skin tones' },
     detail: {
       ar: 'خبيرات مدربات على كل ألوان البشرة (فيتزباتريك I-VI)',
@@ -49,7 +49,7 @@ const FEATURES: FeatureDef[] = [
       'bg-amber-50 text-amber-700 border-amber-200 dark:bg-amber-950 dark:text-amber-300 dark:border-amber-800',
   },
   {
-    emoji: '',
+    emoji: '💇',
     label: { ar: 'كل أنواع الشعر', en: 'All hair types' },
     detail: {
       ar: 'مصففات مدربات على كل أنماط التجعيد (1A إلى 4C)',
@@ -59,7 +59,7 @@ const FEATURES: FeatureDef[] = [
       'bg-rose-50 text-rose-700 border-rose-200 dark:bg-rose-950 dark:text-rose-300 dark:border-rose-800',
   },
   {
-    emoji: '',
+    emoji: '🫶',
     label: { ar: 'إيجابية الجسد', en: 'Body positive' },
     detail: {
       ar: 'صور حقيقية، روبات وكراسي لجميع الأحجام',
@@ -69,7 +69,7 @@ const FEATURES: FeatureDef[] = [
       'bg-brand-50 text-brand-700 border-brand-200 dark:bg-brand-950 dark:text-brand-300 dark:border-brand-800',
   },
   {
-    emoji: '',
+    emoji: '🤟',
     label: { ar: 'لغة الإشارة', en: 'Sign language' },
     detail: {
       ar: 'خبيرات مدربات على لغة الإشارة (قريباً)',
@@ -79,7 +79,7 @@ const FEATURES: FeatureDef[] = [
       'bg-sky-50 text-sky-700 border-sky-200 dark:bg-sky-950 dark:text-sky-300 dark:border-sky-800',
   },
   {
-    emoji: '',
+    emoji: '🦯',
     label: { ar: 'قائمة برايل', en: 'Braille menu' },
     detail: {
       ar: 'قائمة خدمات بطريقة برايل للمكفوفات',
@@ -99,7 +99,7 @@ const FEATURES: FeatureDef[] = [
       'bg-emerald-50 text-emerald-700 border-emerald-200 dark:bg-emerald-950 dark:text-emerald-300 dark:border-emerald-800',
   },
   {
-    emoji: '',
+    emoji: '🛗',
     label: { ar: 'مصعد', en: 'Elevator' },
     detail: { ar: 'مصعد متاح لجميع الطوابق', en: 'Elevator available on all floors' },
     color:

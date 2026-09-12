@@ -28,28 +28,28 @@ export function BeautyBridalSkincareCard({
       <div className="mt-3 space-y-1">
         {[
           {
-            emoji: '',
+            emoji: '🌱',
             text: {
               ar: '6 أشهر: بدء روتين عناية + واقي شمس يومي',
               en: '6 months: start a care routine + daily SPF',
             },
           },
           {
-            emoji: '',
+            emoji: '💆',
             text: {
               ar: '3 أشهر: أول جلسة فيشل + تحديد المشاكل',
               en: '3 months: first facial + address concerns',
             },
           },
           {
-            emoji: '',
+            emoji: '✨',
             text: {
               ar: 'شهر واحد: آخر تقشير — لا تجارب جديدة',
               en: '1 month: last peel — no new experiments',
             },
           },
           {
-            emoji: '',
+            emoji: '💧',
             text: {
               ar: 'أسبوع الزفاف: ترطيب مكثف — بشرة مشرقة',
               en: 'Wedding week: intense hydration — radiant skin',

@@ -19,27 +19,27 @@ interface ChallengeDay {
 }
 
 const CHALLENGES: ChallengeDay[] = [
-  { day: 1, task: { ar: 'اشربي 8 أكواب ماء', en: 'Drink 8 glasses of water' }, emoji: '' },
-  { day: 2, task: { ar: 'نظفي بشرتكِ مرتين', en: 'Cleanse your skin twice' }, emoji: '' },
+  { day: 1, task: { ar: 'اشربي 8 أكواب ماء', en: 'Drink 8 glasses of water' }, emoji: '💧' },
+  { day: 2, task: { ar: 'نظفي بشرتكِ مرتين', en: 'Cleanse your skin twice' }, emoji: '🧼' },
   { day: 3, task: { ar: 'طبقي واقي شمس', en: 'Apply sunscreen' }, emoji: '️' },
-  { day: 4, task: { ar: 'تأملي 10 دقائق', en: 'Meditate for 10 minutes' }, emoji: '' },
-  { day: 5, task: { ar: 'قناع وجه طبيعي', en: 'Use a natural face mask' }, emoji: '' },
+  { day: 4, task: { ar: 'تأملي 10 دقائق', en: 'Meditate for 10 minutes' }, emoji: '🧘' },
+  { day: 5, task: { ar: 'قناع وجه طبيعي', en: 'Use a natural face mask' }, emoji: '🥒' },
   { day: 6, task: { ar: 'امشي 30 دقيقة', en: 'Walk for 30 minutes' }, emoji: '‍️' },
-  { day: 7, task: { ar: 'دللي شعركِ', en: 'Pamper your hair' }, emoji: '' },
-  { day: 8, task: { ar: 'نامي 8 ساعات', en: 'Sleep for 8 hours' }, emoji: '' },
-  { day: 9, task: { ar: 'لا سكر اليوم', en: 'No sugar today' }, emoji: '' },
+  { day: 7, task: { ar: 'دللي شعركِ', en: 'Pamper your hair' }, emoji: '💇' },
+  { day: 8, task: { ar: 'نامي 8 ساعات', en: 'Sleep for 8 hours' }, emoji: '😴' },
+  { day: 9, task: { ar: 'لا سكر اليوم', en: 'No sugar today' }, emoji: '🚫' },
   {
     day: 10,
     task: { ar: 'اكتبي 3 أشياء تحبينها في نفسكِ', en: 'Write 3 things you love about yourself' },
-    emoji: '',
+    emoji: '📝',
   },
-  { day: 11, task: { ar: 'تقشير لطيف للبشرة', en: 'Gentle skin exfoliation' }, emoji: '' },
+  { day: 11, task: { ar: 'تقشير لطيف للبشرة', en: 'Gentle skin exfoliation' }, emoji: '🧽' },
   { day: 12, task: { ar: 'جربي تسريحة جديدة', en: 'Try a new hairstyle' }, emoji: '‍️' },
-  { day: 13, task: { ar: 'اشربي شاي أخضر', en: 'Drink green tea' }, emoji: '' },
+  { day: 13, task: { ar: 'اشربي شاي أخضر', en: 'Drink green tea' }, emoji: '🍵' },
   {
     day: 14,
     task: { ar: 'صوري بشرتكِ (قبل/بعد)', en: 'Photo your skin (before/after)' },
-    emoji: '',
+    emoji: '📸',
   },
   { day: 15, task: { ar: 'جلسة تأمل مسائية', en: 'Evening meditation session' }, emoji: '️' },
 ];

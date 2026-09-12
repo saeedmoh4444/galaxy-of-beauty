@@ -34,16 +34,16 @@ export function BeautyAfterLaserCard({
               en: 'Avoid the sun — a full week after the session',
             },
           },
-          { emoji: '', text: { ar: 'SPF 50+ — ضرورة مطلقة', en: 'SPF 50+ — an absolute must' } },
+          { emoji: '🧴', text: { ar: 'SPF 50+ — ضرورة مطلقة', en: 'SPF 50+ — an absolute must' } },
           {
-            emoji: '',
+            emoji: '🚫',
             text: {
               ar: 'لا تقشري — لا منتجات قوية 5 أيام',
               en: 'No exfoliation — no strong products for 5 days',
             },
           },
           {
-            emoji: '',
+            emoji: '💧',
             text: {
               ar: 'مرطب لطيف — ألوفيرا أو بانثينول',
               en: 'Gentle moisturizer — aloe vera or panthenol',

@@ -36,7 +36,7 @@ export function BeautyBagCard({
       <div className="mt-3 grid grid-cols-2 gap-1.5">
         {[
           {
-            emoji: '',
+            emoji: '💄',
             label: { ar: 'أحمر شفاه', en: 'Lipstick' },
             tip: { ar: 'لون ناعم للإطلالة اليومية', en: 'A soft shade for everyday looks' },
           },
@@ -46,7 +46,7 @@ export function BeautyBagCard({
             tip: { ar: 'للمسات السريعة', en: 'For quick touch-ups' },
           },
           {
-            emoji: '',
+            emoji: '🧴',
             label: { ar: 'مرطب سفر', en: 'Travel moisturizer' },
             tip: { ar: 'حجم صغير للطوارئ', en: 'A travel size for emergencies' },
           },

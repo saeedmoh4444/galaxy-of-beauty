@@ -28,7 +28,7 @@ export function BeautyCentellaCard({
       <div className="mt-3 space-y-1">
         {[
           {
-            emoji: '',
+            emoji: '🌿',
             text: {
               ar: 'يهدئ الالتهابات — ممتاز للبشرة الحساسة',
               en: 'Soothes inflammation — excellent for sensitive skin',
@@ -42,14 +42,14 @@ export function BeautyCentellaCard({
             },
           },
           {
-            emoji: '',
+            emoji: '🌸',
             text: {
               ar: 'يقلل الاحمرار — بشرة هادئة ومتجانسة',
               en: 'Reduces redness — calm, even skin',
             },
           },
           {
-            emoji: '',
+            emoji: '🔒',
             text: {
               ar: 'يقوي حاجز البشرة — يمنع فقدان الرطوبة',
               en: 'Strengthens the skin barrier — prevents moisture loss',

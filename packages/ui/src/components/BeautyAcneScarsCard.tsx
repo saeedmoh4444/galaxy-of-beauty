@@ -36,12 +36,12 @@ export function BeautyAcneScarsCard({
             },
           },
           {
-            emoji: '',
+            emoji: '⏳',
             label: { ar: 'حمراء', en: 'Red' },
             tip: { ar: 'حديثة — تختفي مع الوقت', en: 'Recent — fade with time' },
           },
           {
-            emoji: '',
+            emoji: '🍊',
             label: { ar: 'بنية', en: 'Brown' },
             tip: {
               ar: 'تصبغات — تقشير وفيتامين C',
@@ -49,7 +49,7 @@ export function BeautyAcneScarsCard({
             },
           },
           {
-            emoji: '',
+            emoji: '💊',
             label: { ar: 'بارزة', en: 'Raised' },
             tip: {
               ar: 'ندبات متضخمة — كورتيزون موضعي',
