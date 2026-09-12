@@ -6,8 +6,8 @@ import { trpc } from '@/lib/trpc-react';
 
 const GT = [
   { key: 'glowing_skin', emoji: '✨', title: 'بشرة متألقة', target: 12 },
-  { key: 'hair_care', emoji: '‍️', title: 'عناية بالشعر', target: 8 },
-  { key: 'selfcare', emoji: '‍️', title: 'عناية ذاتية', target: 20 },
+  { key: 'hair_care', emoji: '💇', title: 'عناية بالشعر', target: 8 },
+  { key: 'selfcare', emoji: '🧘', title: 'عناية ذاتية', target: 20 },
   { key: 'nails', emoji: '💅', title: 'أظافر مثالية', target: 24 },
 ];
 

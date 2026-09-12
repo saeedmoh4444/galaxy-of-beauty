@@ -4,7 +4,7 @@ import { trpc } from '@/lib/trpc-react';
 import { useLocale } from '@/components/LocaleProvider';
 
 const THEMES = [
-  { key: 'spa', emoji: '‍️', name: 'سبا منزلي', desc: 'مساج وأقنعة واسترخاء' },
+  { key: 'spa', emoji: '💆', name: 'سبا منزلي', desc: 'مساج وأقنعة واسترخاء' },
   { key: 'makeup', emoji: '💄', name: 'حفلة مكياج', desc: 'تجربة مكياج جماعي' },
   { key: 'nails', emoji: '💅', name: 'صالون أظافر', desc: 'مانيكير وباديكير جماعي' },
   { key: 'bridal', emoji: '👰', name: 'توديع عزوبية', desc: 'عناية متكاملة للعروس' },

@@ -41,7 +41,7 @@ const CHALLENGES = [
   },
   {
     key: 'natural_hair',
-    emoji: '‍️',
+    emoji: '💇',
     name: 'تحدي شعر طبيعي',
     desc: 'تجنبي الحرارة لمدة أسبوعين',
     participants: 98,

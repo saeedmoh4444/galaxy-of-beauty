@@ -23,7 +23,7 @@ const EMERGENCIES = [
   },
   {
     key: 'hair',
-    emoji: '‍️',
+    emoji: '💇',
     name: 'شعر طارئ',
     desc: 'تسريحة تفسد فجأة',
     price: 60,
@@ -41,7 +41,7 @@ const EMERGENCIES = [
   },
   {
     key: 'dry',
-    emoji: '️',
+    emoji: '💧',
     name: 'بشرة جافة',
     desc: 'جفاف مفاجئ للبشرة',
     price: 45,
@@ -324,7 +324,7 @@ export default function BeautyRescueScreen(): JSX.Element {
           ],
         },
         {
-          emoji: '️',
+          emoji: '🪒',
           title: 'بعد إزالة الشعر',
           subtitle: 'بشرة ناعمة — بدون التهاب',
           color: '#ec4899',

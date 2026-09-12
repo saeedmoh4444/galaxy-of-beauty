@@ -9,7 +9,7 @@ import { localize } from '@galaxy/shared';
 const REC = [
   { key: 'WEEKLY', emoji: '📅' },
   { key: 'BIWEEKLY', emoji: '📆' },
-  { key: 'MONTHLY', emoji: '️' },
+  { key: 'MONTHLY', emoji: '🗓️' },
 ] as const;
 
 interface ServiceRow {

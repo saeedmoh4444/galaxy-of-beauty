@@ -5,7 +5,7 @@ import { useLocale } from '@/components/LocaleProvider';
 const SEASONS_COLORS = [
   {
     key: 'winter',
-    emoji: '️',
+    emoji: '❄️',
     name: 'شتوية',
     desc: 'ألوان باردة وعميقة',
     colors: ['#1e1b4b', '#312e81', '#831843', '#ffffff', '#000000', '#dc2626', '#4c1d95'],

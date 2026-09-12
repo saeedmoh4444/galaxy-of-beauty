@@ -11,11 +11,11 @@ interface Addon {
 
 const ADDONS: Record<string, Addon[]> = {
   hair: [
-    { id: 1, titleKey: 'addon.deep-hair-treatment', price: 50, emoji: '‍️' },
+    { id: 1, titleKey: 'addon.deep-hair-treatment', price: 50, emoji: '💇' },
     { id: 2, titleKey: 'addon.shine-serum', price: 30, emoji: '✨' },
   ],
   makeup: [
-    { id: 4, titleKey: 'addon.lash-extensions', price: 60, emoji: '️' },
+    { id: 4, titleKey: 'addon.lash-extensions', price: 60, emoji: '👁️' },
     { id: 5, titleKey: 'addon.brow-shaping', price: 35, emoji: '🤨' },
   ],
   nails: [
@@ -26,7 +26,7 @@ const ADDONS: Record<string, Addon[]> = {
     { id: 10, titleKey: 'addon.face-mask', price: 45, emoji: '🧖' },
     { id: 11, titleKey: 'addon.chemical-peel', price: 80, emoji: '🍋' },
   ],
-  default: [{ id: 13, titleKey: 'mobile.core.quickMassage', price: 40, emoji: '‍️' }],
+  default: [{ id: 13, titleKey: 'mobile.core.quickMassage', price: 40, emoji: '💆' }],
 };
 
 interface Props {

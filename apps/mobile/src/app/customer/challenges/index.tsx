@@ -6,10 +6,10 @@ import { useAuthState } from '@/hooks/useAuthState';
 
 const CH: Record<string, { emoji: string; color: string }> = {
   '7day_skincare': { emoji: '🧴', color: '#ec4899' },
-  '5bookings': { emoji: '‍️', color: '#f59e0b' },
+  '5bookings': { emoji: '📅', color: '#f59e0b' },
   first_review: { emoji: '⭐', color: '#3b82f6' },
   streak_4weeks: { emoji: '🔥', color: '#8b5cf6' },
-  refer_3friends: { emoji: '‍️', color: '#10b981' },
+  refer_3friends: { emoji: '👥', color: '#10b981' },
 };
 
 interface ChallengeItem {

@@ -22,7 +22,7 @@ const CARDS: Card[] = [
     color: '#d97706',
     bg: '#fffbeb',
     tips: [
-      { emoji: '️', text: 'SPF 50+ — للوجه والرقبة واليدين' },
+      { emoji: '🧴', text: 'SPF 50+ — للوجه والرقبة واليدين' },
       { emoji: '🔄', text: 'جدديه كل ساعتين — تحت الشمس المباشرة' },
       { emoji: '🏠', text: 'حتى في البيت — الأشعة تخترق الزجاج' },
       { emoji: '📅', text: '365 يوم — صيفاً وشتاءً' },
@@ -68,7 +68,7 @@ const CARDS: Card[] = [
     ],
   },
   {
-    emoji: '️',
+    emoji: '📊',
     title: 'مقارنة المنتجات',
     subtitle: 'كريم A vs كريم B',
     color: '#0284c7',

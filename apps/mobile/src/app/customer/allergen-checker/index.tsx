@@ -42,7 +42,7 @@ const COMMON_ALLERGENS = [
   },
   {
     key: 'formaldehyde',
-    emoji: '️',
+    emoji: '💀',
     name: 'الفورمالديهايد',
     risk: 'high',
     desc: 'مادة حافظة ضارة',

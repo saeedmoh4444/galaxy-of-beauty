@@ -15,10 +15,10 @@ const QUESTIONS = [
     id: 'mood',
     text: 'ما مزاجك اليوم؟',
     options: [
-      { label: 'استرخاء', value: 'relax', emoji: '‍️' },
+      { label: 'استرخاء', value: 'relax', emoji: '🧘' },
       { label: 'تجديد', value: 'refresh', emoji: '✨' },
       { label: 'جرأة', value: 'bold', emoji: '🔥' },
-      { label: 'عناية', value: 'care', emoji: '‍️' },
+      { label: 'عناية', value: 'care', emoji: '🤍' },
     ],
   },
   {
@@ -26,7 +26,7 @@ const QUESTIONS = [
     text: 'على ماذا تركزين؟',
     options: [
       { label: 'البشرة', value: 'skin', emoji: '🧴' },
-      { label: 'الشعر', value: 'hair', emoji: '‍️' },
+      { label: 'الشعر', value: 'hair', emoji: '💇' },
       { label: 'الأظافر', value: 'nails', emoji: '💅' },
       { label: 'المكياج', value: 'makeup', emoji: '💄' },
     ],
