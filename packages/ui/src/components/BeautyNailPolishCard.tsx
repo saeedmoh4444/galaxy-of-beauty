@@ -35,18 +35,18 @@ export function BeautyNailPolishCard({
             },
           },
           {
-            emoji: '',
+            emoji: '🎨',
             text: {
               ar: '2. طبقتان رقيقتان — أفضل من طبقة سميكة',
               en: '2. Two thin coats — better than one thick one',
             },
           },
           {
-            emoji: '',
+            emoji: '✨',
             text: { ar: '3. Top coat — لمعان وحماية', en: '3. Top coat — shine and protection' },
           },
           {
-            emoji: '',
+            emoji: '⏳',
             text: {
               ar: '4. انتظري 2-3 دقائق بين الطبقات',
               en: '4. Wait 2-3 minutes between coats',

@@ -28,28 +28,28 @@ export function BeautyPerfumeAmberCard({
       <div className="mt-3 space-y-1">
         {[
           {
-            emoji: '',
+            emoji: '🌊',
             text: {
               ar: 'يستخرج من المحيط — مادة نادرة وثمينة',
               en: 'Sourced from the ocean — a rare, precious substance',
             },
           },
           {
-            emoji: '',
+            emoji: '🔥',
             text: {
               ar: 'رائحة دافئة — حلوة مع لمسة خشبية',
               en: 'A warm scent — sweet with a woody touch',
             },
           },
           {
-            emoji: '',
+            emoji: '⏳',
             text: {
               ar: 'يدوم طويلاً — يثبت في العطور الشرقية',
               en: 'Long-lasting — anchors Oriental fragrances',
             },
           },
           {
-            emoji: '',
+            emoji: '🪵',
             text: {
               ar: 'يمتزج مع العود والمسك — للعطور الفاخرة',
               en: 'Blends with oud and musk — for luxury perfumes',

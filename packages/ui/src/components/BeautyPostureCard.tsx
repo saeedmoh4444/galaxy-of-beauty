@@ -42,12 +42,12 @@ export function BeautyPostureCard({
             tip: { ar: 'تفتح الصدر', en: 'Opens the chest' },
           },
           {
-            emoji: '',
+            emoji: '🧍',
             label: { ar: 'ظهر مستقيم', en: 'Straight back' },
             tip: { ar: 'لا تنحني للأمام', en: 'Do not lean forward' },
           },
           {
-            emoji: '',
+            emoji: '🧘',
             label: { ar: 'وزن متوازن', en: 'Balanced weight' },
             tip: { ar: 'على القدمين بالتساوي', en: 'Evenly on both feet' },
           },

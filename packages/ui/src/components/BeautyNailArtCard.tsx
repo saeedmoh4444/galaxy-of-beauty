@@ -28,22 +28,22 @@ export function BeautyNailArtCard({
       <div className="mt-3 grid grid-cols-2 gap-1.5">
         {[
           {
-            emoji: '',
+            emoji: '💅',
             label: { ar: 'فرنسي', en: 'French' },
             tip: { ar: 'كلاسيك — طرف أبيض', en: 'Classic — white tips' },
           },
           {
-            emoji: '',
+            emoji: '✨',
             label: { ar: 'جليتر', en: 'Glitter' },
             tip: { ar: 'لامع — للمناسبات', en: 'Shiny — for events' },
           },
           {
-            emoji: '',
+            emoji: '🎨',
             label: { ar: 'Ombre', en: 'Ombre' },
             tip: { ar: 'تدرج لونين', en: 'A gradient of two colors' },
           },
           {
-            emoji: '',
+            emoji: '🤍',
             label: { ar: 'طبيعي', en: 'Natural' },
             tip: { ar: 'Nude — لكل يوم', en: 'Nude — for everyday' },
           },

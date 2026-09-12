@@ -28,28 +28,28 @@ export function BeautyNeckFirmingCard({
       <div className="mt-3 space-y-1">
         {[
           {
-            emoji: '',
+            emoji: '⭕',
             text: {
               ar: 'تمرين O —— مددي شفاهكِ — 15 مرة',
               en: 'The "O" exercise — pucker your lips — 15 times',
             },
           },
           {
-            emoji: '',
+            emoji: '🔝',
             text: {
               ar: 'مد الرقبة — انظري للسقف 10 ثوانٍ',
               en: 'Stretch the neck — look at the ceiling for 10 seconds',
             },
           },
           {
-            emoji: '',
+            emoji: '🧴',
             text: {
               ar: 'كريمات الشد — كافيين وببتيدات',
               en: 'Firming creams — caffeine and peptides',
             },
           },
           {
-            emoji: '',
+            emoji: '💆',
             text: {
               ar: 'مساج للأعلى — من الترقوة للذقن',
               en: 'Massage upward — from collarbone to chin',

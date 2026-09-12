@@ -28,21 +28,21 @@ export function BeautyPcosSkincareCard({
       <div className="mt-3 space-y-1">
         {[
           {
-            emoji: '',
+            emoji: '🧴',
             text: {
               ar: 'منتجات خالية من الزيوت — للبشرة الدهنية',
               en: 'Oil-free products — for oily skin',
             },
           },
           {
-            emoji: '',
+            emoji: '🧪',
             text: {
               ar: 'نياسيناميد وزنك — لتنظيم إفراز الدهون',
               en: 'Niacinamide and zinc — to regulate sebum',
             },
           },
           {
-            emoji: '',
+            emoji: '🥗',
             text: {
               ar: 'تغذية منخفضة السكر — تقلل الالتهابات',
               en: 'A low-sugar diet — reduces inflammation',

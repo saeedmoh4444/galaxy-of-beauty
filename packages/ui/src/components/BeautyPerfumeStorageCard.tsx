@@ -35,9 +35,9 @@ export function BeautyPerfumeStorageCard({
               en: 'Away from sunlight — light destroys perfume',
             },
           },
-          { emoji: '', text: { ar: 'في علبته الأصلية', en: 'In its original box' } },
+          { emoji: '📦', text: { ar: 'في علبته الأصلية', en: 'In its original box' } },
           {
-            emoji: '',
+            emoji: '🚫',
             text: {
               ar: 'ليس في الحمام — الرطوبة تفسده',
               en: 'Not in the bathroom — humidity ruins it',

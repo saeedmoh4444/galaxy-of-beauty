@@ -17,10 +17,10 @@ interface Track {
 }
 
 const TRACKS: Track[] = [
-  { title: { ar: 'أمواج البحر', en: 'Sea waves' }, duration: '4:30', emoji: '' },
+  { title: { ar: 'أمواج البحر', en: 'Sea waves' }, duration: '4:30', emoji: '🌊' },
   { title: { ar: 'صوت المطر', en: 'Rain sounds' }, duration: '5:15', emoji: '️' },
-  { title: { ar: 'عود هادئ', en: 'Calm oud' }, duration: '3:45', emoji: '' },
-  { title: { ar: 'تأمل الصباح', en: 'Morning meditation' }, duration: '6:00', emoji: '' },
+  { title: { ar: 'عود هادئ', en: 'Calm oud' }, duration: '3:45', emoji: '🎵' },
+  { title: { ar: 'تأمل الصباح', en: 'Morning meditation' }, duration: '6:00', emoji: '🧘' },
 ];
 
 interface BeautyPlaylistCardProps {

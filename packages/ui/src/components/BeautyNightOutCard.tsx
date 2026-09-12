@@ -27,19 +27,19 @@ interface BeautyNightOutCardProps {
 
 const SERVICES = [
   {
-    emoji: '',
+    emoji: '💄',
     name: { ar: 'مكياج سريع', en: 'Quick makeup' },
     time: { ar: '30 دقيقة', en: '30 minutes' },
     price: 150,
   },
   {
-    emoji: '',
+    emoji: '💇',
     name: { ar: 'تسريحة سهرة', en: 'Evening hairstyle' },
     time: { ar: '20 دقيقة', en: '20 minutes' },
     price: 100,
   },
   {
-    emoji: '',
+    emoji: '💅',
     name: { ar: 'مانيكير سريع', en: 'Quick manicure' },
     time: { ar: '20 دقيقة', en: '20 minutes' },
     price: 80,

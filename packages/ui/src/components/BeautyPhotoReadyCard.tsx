@@ -28,25 +28,25 @@ export function BeautyPhotoReadyCard({
       <div className="mt-3 space-y-1">
         {[
           {
-            emoji: '',
+            emoji: '🚫',
             text: {
               ar: 'تجنبي SPF العالي — يسبب وميض أبيض في الفلاش',
               en: 'Avoid high-SPF — it causes a white flashback in photos',
             },
           },
           {
-            emoji: '',
+            emoji: '✨',
             text: { ar: 'هايلايتر بودرة — وليس كريمي', en: 'Powder highlighter — not cream' },
           },
           {
-            emoji: '',
+            emoji: '🎨',
             text: {
               ar: 'ألوان معتدلة — الفلاش يفتح الألوان أكثر',
               en: 'Muted colors — flash brightens shades',
             },
           },
           {
-            emoji: '',
+            emoji: '📸',
             text: {
               ar: 'بخاخ تثبيت — آخر خطوة قبل الصور',
               en: 'Setting spray — the last step before photos',

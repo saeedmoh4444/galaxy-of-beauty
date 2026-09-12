@@ -32,22 +32,22 @@ export function BeautyNutritionCard({
       <div className="mt-3 grid grid-cols-2 gap-1.5">
         {[
           {
-            emoji: '',
+            emoji: '🥑',
             label: { ar: 'دهون صحية', en: 'Healthy fats' },
             tip: { ar: 'أفوكادو، مكسرات، زيت زيتون', en: 'Avocado, nuts, olive oil' },
           },
           {
-            emoji: '',
+            emoji: '🍓',
             label: { ar: 'مضادات أكسدة', en: 'Antioxidants' },
             tip: { ar: 'توت، فراولة، رمان', en: 'Berries, strawberries, pomegranate' },
           },
           {
-            emoji: '',
+            emoji: '🥬',
             label: { ar: 'خضروات ورقية', en: 'Leafy greens' },
             tip: { ar: 'سبانخ، كيل، جرجير', en: 'Spinach, kale, arugula' },
           },
           {
-            emoji: '',
+            emoji: '🐟',
             label: { ar: 'أوميغا 3', en: 'Omega 3' },
             tip: { ar: 'سلمون، سردين، بذور كتان', en: 'Salmon, sardines, flaxseed' },
           },

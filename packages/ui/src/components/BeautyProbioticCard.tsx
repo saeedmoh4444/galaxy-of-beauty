@@ -28,28 +28,28 @@ export function BeautyProbioticCard({
       <div className="mt-3 space-y-1">
         {[
           {
-            emoji: '',
+            emoji: '🫀',
             text: {
               ar: 'صحة الأمعاء = بشرة نقية — اتصال مباشر',
               en: 'Gut health = clear skin — a direct link',
             },
           },
           {
-            emoji: '',
+            emoji: '🌿',
             text: {
               ar: 'يقلل الالتهابات — مفيد للحبوب والإكزيما',
               en: 'Reduces inflammation — helpful for acne and eczema',
             },
           },
           {
-            emoji: '',
+            emoji: '🥛',
             text: {
               ar: 'زبادي، كفير، مخللات — مصادر طبيعية',
               en: 'Yogurt, kefir, pickles — natural sources',
             },
           },
           {
-            emoji: '',
+            emoji: '💊',
             text: {
               ar: 'كبسولات بروبيوتيك — تركيز أعلى',
               en: 'Probiotic capsules — higher concentration',

@@ -28,28 +28,28 @@ export function BeautyPostWorkoutHairCard({
       <div className="mt-3 space-y-1">
         {[
           {
-            emoji: '',
+            emoji: '🧴',
             text: {
               ar: 'شامبو جاف — قبل التمرين لامتصاص العرق',
               en: 'Dry shampoo — before the workout to absorb sweat',
             },
           },
           {
-            emoji: '',
+            emoji: '💇',
             text: {
               ar: 'كعكة عالية — تمنع التعرق على الرقبة',
               en: 'A high bun — keeps sweat off the neck',
             },
           },
           {
-            emoji: '',
+            emoji: '💧',
             text: {
               ar: 'بلسم يترك على الشعر — بعد التمرين',
               en: 'Leave-in conditioner — after the workout',
             },
           },
           {
-            emoji: '',
+            emoji: '🚫',
             text: {
               ar: 'لا تغسلي يومياً — 2-3 مرات أسبوعياً',
               en: 'Do not wash daily — 2-3 times a week',

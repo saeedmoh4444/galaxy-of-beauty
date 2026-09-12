@@ -12,11 +12,11 @@ import { cn } from '@galaxy/shared';
  */
 
 const MOODS = [
-  { emoji: '', label: { ar: 'سعيدة', en: 'Happy' }, value: 5 },
-  { emoji: '', label: { ar: 'مرتاحة', en: 'Relaxed' }, value: 4 },
-  { emoji: '', label: { ar: 'عادية', en: 'Neutral' }, value: 3 },
-  { emoji: '', label: { ar: 'حزينة', en: 'Sad' }, value: 2 },
-  { emoji: '', label: { ar: 'متوترة', en: 'Anxious' }, value: 1 },
+  { emoji: '😊', label: { ar: 'سعيدة', en: 'Happy' }, value: 5 },
+  { emoji: '😌', label: { ar: 'مرتاحة', en: 'Relaxed' }, value: 4 },
+  { emoji: '😐', label: { ar: 'عادية', en: 'Neutral' }, value: 3 },
+  { emoji: '😢', label: { ar: 'حزينة', en: 'Sad' }, value: 2 },
+  { emoji: '😰', label: { ar: 'متوترة', en: 'Anxious' }, value: 1 },
 ];
 
 interface BeautyMoodTrackerCardProps {

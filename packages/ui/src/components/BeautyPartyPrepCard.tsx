@@ -28,28 +28,28 @@ export function BeautyPartyPrepCard({
       <div className="mt-3 space-y-1">
         {[
           {
-            emoji: '',
+            emoji: '📅',
             text: {
               ar: 'قبل بأسبوع: فيشل + حواجب + إزالة شعر',
               en: 'A week before: facial + brows + hair removal',
             },
           },
           {
-            emoji: '',
+            emoji: '🛏',
             text: {
               ar: 'قبل بيوم: عناية بالبشرة — نامي 8 ساعات',
               en: 'The day before: skincare — sleep 8 hours',
             },
           },
           {
-            emoji: '',
+            emoji: '💄',
             text: {
               ar: 'يوم الحفلة: مكياج قبلها بـ 3 ساعات',
               en: 'Event day: makeup 3 hours beforehand',
             },
           },
           {
-            emoji: '',
+            emoji: '👜',
             text: {
               ar: 'حقيبة طوارئ: أحمر شفاه + ورق نشاف',
               en: 'Emergency kit: lipstick + blotting paper',

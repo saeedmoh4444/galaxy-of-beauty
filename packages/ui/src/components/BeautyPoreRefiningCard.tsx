@@ -28,25 +28,25 @@ export function BeautyPoreRefiningCard({
       <div className="mt-3 space-y-1">
         {[
           {
-            emoji: '',
+            emoji: '🧪',
             text: { ar: 'BHA — ينظف المسام من الداخل', en: 'BHA — cleans pores from within' },
           },
           {
-            emoji: '',
+            emoji: '🧴',
             text: {
               ar: 'نياسيناميد — ينظم إفراز الدهون',
               en: 'Niacinamide — regulates sebum production',
             },
           },
           {
-            emoji: '',
+            emoji: '🧊',
             text: {
               ar: 'ماء بارد — يقلص المسام مؤقتاً',
               en: 'Cold water — temporarily tightens pores',
             },
           },
           {
-            emoji: '',
+            emoji: '🧽',
             text: { ar: 'برايمر — يملأ المسام بصرياً', en: 'Primer — visually fills pores' },
           },
         ].map((t, i) => (
