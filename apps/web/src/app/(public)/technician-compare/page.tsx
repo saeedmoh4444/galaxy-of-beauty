@@ -13,7 +13,7 @@ const TECHNICIANS = [
     price: 300,
     experience: 'marketing.technician-compare.exp-8',
     city: 'الرياض',
-    emoji: '',
+    emoji: '💄',
     services: [
       'marketing.technician-compare.svc-bridal-makeup',
       'marketing.technician-compare.svc-evening-makeup',
@@ -47,7 +47,7 @@ const TECHNICIANS = [
     price: 180,
     experience: 'marketing.technician-compare.exp-5',
     city: 'الدمام',
-    emoji: '',
+    emoji: '💅',
     services: [
       'marketing.technician-compare.svc-manicure',
       'marketing.technician-compare.svc-pedicure',
@@ -64,7 +64,7 @@ const TECHNICIANS = [
     price: 350,
     experience: 'marketing.technician-compare.exp-12',
     city: 'الرياض',
-    emoji: '',
+    emoji: '🧖',
     services: [
       'marketing.technician-compare.svc-facial',
       'marketing.technician-compare.svc-peeling',

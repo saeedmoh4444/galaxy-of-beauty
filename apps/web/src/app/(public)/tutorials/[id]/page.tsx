@@ -28,10 +28,10 @@ const DIFFICULTY_META: Record<string, { label: TranslationKey; color: string }> 
 };
 
 const CATEGORY_META: Record<string, { label: TranslationKey; emoji: string }> = {
-  makeup: { label: 'marketing.tutorials.cat-makeup', emoji: '' },
+  makeup: { label: 'marketing.tutorials.cat-makeup', emoji: '💄' },
   hair: { label: 'marketing.tutorials.cat-hair', emoji: '‍️' },
-  skincare: { label: 'marketing.tutorials.cat-skincare', emoji: '' },
-  nails: { label: 'marketing.tutorials.cat-nails', emoji: '' },
+  skincare: { label: 'marketing.tutorials.cat-skincare', emoji: '🧴' },
+  nails: { label: 'marketing.tutorials.cat-nails', emoji: '💅' },
 };
 
 function formatViews(n: number): string {
@@ -103,7 +103,7 @@ export default function TutorialDetailPage(): JSX.Element {
   const views = (tutorial.views as number) ?? 0;
   const likes = (tutorial.likes as number) ?? 0;
   const diffMeta = DIFFICULTY_META[difficulty] ?? DEFAULT_DIFFICULTY;
-  const catMeta = CATEGORY_META[category] ?? { label: category as TranslationKey, emoji: '' };
+  const catMeta = CATEGORY_META[category] ?? { label: category as TranslationKey, emoji: '✨' };
 
   return (
     <div className="mx-auto max-w-4xl px-4 py-12">

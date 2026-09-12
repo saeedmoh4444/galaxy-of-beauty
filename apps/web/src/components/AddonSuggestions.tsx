@@ -15,27 +15,27 @@ interface Addon {
 const ADDONS_BY_CATEGORY: Record<string, Addon[]> = {
   hair: [
     { id: 1, title: 'addon.deep-hair-treatment', price: 50, emoji: '‍️' },
-    { id: 2, title: 'addon.shine-serum', price: 30, emoji: '' },
+    { id: 2, title: 'addon.shine-serum', price: 30, emoji: '✨' },
     { id: 3, title: 'addon.extra-styling', price: 40, emoji: '‍️' },
   ],
   makeup: [
     { id: 4, title: 'addon.lash-extensions', price: 60, emoji: '️' },
-    { id: 5, title: 'addon.brow-shaping', price: 35, emoji: '' },
-    { id: 6, title: 'addon.waterproof-makeup', price: 25, emoji: '' },
+    { id: 5, title: 'addon.brow-shaping', price: 35, emoji: '👁' },
+    { id: 6, title: 'addon.waterproof-makeup', price: 25, emoji: '💧' },
   ],
   nails: [
-    { id: 7, title: 'addon.gel-polish', price: 40, emoji: '' },
-    { id: 8, title: 'addon.nail-art', price: 30, emoji: '' },
-    { id: 9, title: 'addon.nail-treatment', price: 25, emoji: '' },
+    { id: 7, title: 'addon.gel-polish', price: 40, emoji: '💅' },
+    { id: 8, title: 'addon.nail-art', price: 30, emoji: '🎨' },
+    { id: 9, title: 'addon.nail-treatment', price: 25, emoji: '💅' },
   ],
   skin: [
-    { id: 10, title: 'addon.face-mask', price: 45, emoji: '' },
-    { id: 11, title: 'addon.chemical-peel', price: 80, emoji: '' },
+    { id: 10, title: 'addon.face-mask', price: 45, emoji: '🧖' },
+    { id: 11, title: 'addon.chemical-peel', price: 80, emoji: '🧪' },
     { id: 12, title: 'addon.sunscreen', price: 20, emoji: '️' },
   ],
   default: [
     { id: 13, title: 'addon.quick-massage', price: 40, emoji: '‍️' },
-    { id: 14, title: 'addon.welcome-drink', price: 15, emoji: '' },
+    { id: 14, title: 'addon.welcome-drink', price: 15, emoji: '🥤' },
   ],
 };
 

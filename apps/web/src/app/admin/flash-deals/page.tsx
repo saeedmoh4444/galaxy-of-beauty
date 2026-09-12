@@ -5,12 +5,12 @@ import { Card, CardListSkeleton, Button, Input, formatCurrency, useAuth } from '
 import { useLocale } from '@/components/LocaleProvider';
 
 const SERVICES = [
-  { id: 1, name: 'مانيكير', emoji: '' },
-  { id: 2, name: 'باديكير', emoji: '' },
-  { id: 3, name: 'تنظيف بشرة', emoji: '' },
+  { id: 1, name: 'مانيكير', emoji: '💅' },
+  { id: 2, name: 'باديكير', emoji: '🦶' },
+  { id: 3, name: 'تنظيف بشرة', emoji: '🧖' },
   { id: 4, name: 'مساج', emoji: '‍️' },
-  { id: 5, name: 'صبغ شعر', emoji: '' },
-  { id: 6, name: 'مكياج', emoji: '' },
+  { id: 5, name: 'صبغ شعر', emoji: '💈' },
+  { id: 6, name: 'مكياج', emoji: '💄' },
 ];
 
 export default function AdminFlashDealsPage(): JSX.Element {
