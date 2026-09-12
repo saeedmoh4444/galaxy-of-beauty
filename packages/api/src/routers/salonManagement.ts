@@ -29,7 +29,7 @@ export const salonManagementRouter = router({
   dashboard: customerProcedure.query(() => SALON_STATS),
   staff: customerProcedure.query(() => STAFF),
   addStaff: customerProcedure
-    .input(z.object({ name: z.string().min(1), role: z.string(), emoji: z.string().default('‍') }))
+    .input(z.object({ name: z.string().min(1), role: z.string(), emoji: z.string().default('') }))
     .mutation(async ({ input }) => {
       const s: SalonStaff = {
         id: STAFF.length + 1,

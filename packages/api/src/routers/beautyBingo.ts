@@ -7,12 +7,12 @@ const BINGO_CARD = [
   { id: 1, task: 'روتين عناية يومي كامل ' },
   { id: 2, task: 'شرب ٨ أكواب ماء ' },
   { id: 3, task: 'قناع وجه ' },
-  { id: 4, task: 'تطبيق واقي شمس ️' },
-  { id: 5, task: 'ماسك شعر ‍️' },
+  { id: 4, task: 'تطبيق واقي شمس ' },
+  { id: 5, task: 'ماسك شعر ' },
   { id: 6, task: 'إزالة مكياج قبل النوم ' },
-  { id: 7, task: 'تمارين وجه ٥ دقائق ️' },
+  { id: 7, task: 'تمارين وجه ٥ دقائق ' },
   { id: 8, task: 'تقشير بشرة 🪨' },
-  { id: 9, task: 'تدليك وجه ‍️' },
+  { id: 9, task: 'تدليك وجه ' },
 ];
 
 const flag = requireFeatureFlag(EXPERIMENTAL_FEATURES.BEAUTY_BINGO);
