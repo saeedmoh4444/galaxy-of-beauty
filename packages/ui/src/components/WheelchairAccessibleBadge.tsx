@@ -63,7 +63,7 @@ const FEATURES: Record<AccessFeature, FeatureDef> = {
     detail: { ar: 'مساحة 150 سم للدوران', en: '150 cm turning space' },
   },
   staff_assistance: {
-    emoji: '‍',
+    emoji: '🤝',
     label: { ar: 'مساعدة الموظفات', en: 'Staff assistance' },
     detail: { ar: 'موظفات مدربات للمساعدة', en: 'Trained staff to help' },
   },

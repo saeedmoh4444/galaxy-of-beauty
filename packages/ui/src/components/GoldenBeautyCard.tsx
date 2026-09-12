@@ -20,7 +20,7 @@ interface GoldenService {
 
 const SERVICES: GoldenService[] = [
   {
-    emoji: '‍️',
+    emoji: '🌸',
     name: { ar: 'عناية لطيفة بالبشرة', en: 'Gentle skincare' },
     description: {
       ar: 'تنظيف وترطيب عميق للبشرة الناضجة',
@@ -30,7 +30,7 @@ const SERVICES: GoldenService[] = [
     duration: { ar: '60 دقيقة', en: '60 minutes' },
   },
   {
-    emoji: '‍️',
+    emoji: '💆',
     name: { ar: 'مساج كلاسيكي', en: 'Classic massage' },
     description: {
       ar: 'مساج لطيف للعضلات والمفاصل',

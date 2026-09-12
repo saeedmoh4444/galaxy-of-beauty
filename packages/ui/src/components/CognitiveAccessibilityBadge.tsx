@@ -31,7 +31,7 @@ const FEATURES: CogDef[] = [
     detail: { ar: 'خيارات واضحة بدون تعقيد', en: 'Clear options without complexity' },
   },
   {
-    emoji: '️',
+    emoji: '📅',
     label: { ar: 'جدول مرئي', en: 'Visual schedule' },
     detail: { ar: 'صور توضح كل خطوة قبل البدء', en: 'Images explain each step before you start' },
   },
@@ -46,7 +46,7 @@ const FEATURES: CogDef[] = [
     detail: { ar: 'مكان للاستراحة عند الحاجة', en: 'A place to rest when needed' },
   },
   {
-    emoji: '‍',
+    emoji: '🧑',
     label: { ar: 'طاقم مألوف', en: 'Familiar staff' },
     detail: { ar: 'نفس الخبيرة في كل زيارة', en: 'The same technician at every visit' },
   },

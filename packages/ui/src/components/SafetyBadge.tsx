@@ -26,7 +26,7 @@ const SAFETY_TYPES: Record<
     },
   },
   safe_space: {
-    emoji: '️',
+    emoji: '🛡️',
     label: { ar: 'مساحة آمنة', en: 'Safe space' },
     desc: { ar: 'منصة نسائية بالكامل — لا رجال', en: 'Women-only platform — no men' },
   },

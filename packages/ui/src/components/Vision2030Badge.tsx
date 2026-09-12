@@ -74,7 +74,7 @@ export function Vision2030Badge({
       {/* Vision pillars */}
       <div className="mt-2 grid grid-cols-3 gap-1.5 text-center">
         {[
-          { emoji: '‍', label: { ar: 'تمكين المرأة', en: 'Women empowerment' } },
+          { emoji: '👩', label: { ar: 'تمكين المرأة', en: 'Women empowerment' } },
           { emoji: '📈', label: { ar: 'تنويع الاقتصاد', en: 'Economic diversification' } },
           { emoji: '🌍', label: { ar: 'ريادة عالمية', en: 'Global leadership' } },
         ].map((p) => (

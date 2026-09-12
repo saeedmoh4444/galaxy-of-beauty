@@ -49,7 +49,7 @@ export function BeautyTravelPackingCard({
             },
           },
           {
-            emoji: '️',
+            emoji: '🛂',
             text: {
               ar: 'حقيبة شفافة — للمطار والفحص الأمني',
               en: 'Clear bag — for the airport and security checks',

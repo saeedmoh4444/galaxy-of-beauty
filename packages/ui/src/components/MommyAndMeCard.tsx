@@ -48,7 +48,7 @@ interface MommyAndMeCardProps {
 
 const EXPERIENCES = {
   mini_facial: {
-    emoji: '‍️',
+    emoji: '🧖',
     title: { ar: 'عناية بالبشرة المصغرة', en: 'Mini facial' },
     description: {
       ar: 'أول تجربة عناية بالبشرة للأم وابنتها',

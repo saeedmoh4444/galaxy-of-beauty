@@ -30,7 +30,7 @@ export function BeautyWellnessCornerCard({
       <div className="mt-3 space-y-1.5">
         {[
           {
-            emoji: '️',
+            emoji: '🕯️',
             text: {
               ar: 'أشعلي شمعة واسترخي 5 دقائق',
               en: 'Light a candle and relax for 5 minutes',

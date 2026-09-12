@@ -70,7 +70,7 @@ const STEPS: { emoji: string; text: { ar: string; en: string } }[] = [
     text: { ar: 'تنظيف لطيف بدون مواد قاسية', en: 'Gentle cleansing without harsh ingredients' },
   },
   {
-    emoji: '‍️',
+    emoji: '💆',
     text: { ar: 'تدليك خفيف للوجه (3 دقائق)', en: 'Light facial massage (3 minutes)' },
   },
   { emoji: '🧴', text: { ar: 'ترطيب وواقي شمس', en: 'Moisturizer and sunscreen' } },

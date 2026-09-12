@@ -41,7 +41,7 @@ const SEASONS: Record<string, { emoji: string; labelAr: string; labelEn: string;
       color: 'bg-brand-100 text-brand-800 dark:bg-brand-950 dark:text-brand-300',
     },
     SUMMER: {
-      emoji: '️',
+      emoji: '☀️',
       labelAr: 'عرض الصيف',
       labelEn: 'Summer Deal',
       color: 'bg-orange-100 text-orange-800 dark:bg-orange-950 dark:text-orange-300',

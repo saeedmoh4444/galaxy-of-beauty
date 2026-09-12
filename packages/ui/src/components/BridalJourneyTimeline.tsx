@@ -58,7 +58,7 @@ const MILESTONES: Milestone[] = [
   },
   {
     month: 4,
-    emoji: '‍️',
+    emoji: '💉',
     title: { ar: 'علاجات متقدمة', en: 'Advanced treatments' },
     description: {
       ar: 'بدء العلاجات التجميلية المتقدمة',

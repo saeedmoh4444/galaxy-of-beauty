@@ -39,7 +39,7 @@ export function BeautyUltrasonicCard({
             text: { ar: 'على بشرة رطبة — أفضل نتائج', en: 'On damp skin — best results' },
           },
           {
-            emoji: '️',
+            emoji: '⬆️',
             text: { ar: 'حركي للأعلى — بطول المسام', en: 'Move upward — along the pores' },
           },
           {

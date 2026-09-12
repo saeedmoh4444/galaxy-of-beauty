@@ -20,7 +20,7 @@ interface WorkoutDef {
 
 const WORKOUTS: Record<WorkoutType, WorkoutDef> = {
   gym: {
-    emoji: '️',
+    emoji: '🏋️',
     title: { ar: 'تمارين القوة', en: 'Strength training' },
     tips: [
       { ar: 'اغسلي وجهكِ فوراً بعد التمرين', en: 'Wash your face right after the workout' },
