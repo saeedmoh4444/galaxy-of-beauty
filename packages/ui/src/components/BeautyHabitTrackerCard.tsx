@@ -8,7 +8,7 @@ import { cn } from '@galaxy/shared';
  * From Phase W3: Health & Wellness — Mental Wellness & Beauty.
  *
  * Usage:
- *   <BeautyHabitTrackerCard habits={[{ name: 'واقي شمس', emoji: '️', done: true }]} />
+ *   <BeautyHabitTrackerCard habits={[{ name: 'واقي شمس', emoji: '🌞', done: true }]} />
  */
 
 interface Habit {

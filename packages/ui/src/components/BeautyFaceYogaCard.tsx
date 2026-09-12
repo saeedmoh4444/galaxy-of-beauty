@@ -49,7 +49,7 @@ export function BeautyFaceYogaCard({
             },
           },
           {
-            emoji: '️',
+            emoji: '⏱️',
             text: {
               ar: '5 دقائق يومياً — نتائج بعد 4-6 أسابيع',
               en: '5 minutes daily — results in 4-6 weeks',

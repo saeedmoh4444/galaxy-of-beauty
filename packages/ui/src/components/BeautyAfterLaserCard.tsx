@@ -28,7 +28,7 @@ export function BeautyAfterLaserCard({
       <div className="mt-3 space-y-1">
         {[
           {
-            emoji: '️',
+            emoji: '🌞',
             text: {
               ar: 'تجنبي الشمس — أسبوع كامل بعد الجلسة',
               en: 'Avoid the sun — a full week after the session',

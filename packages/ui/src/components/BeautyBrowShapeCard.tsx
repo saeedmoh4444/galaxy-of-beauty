@@ -43,7 +43,7 @@ export function BeautyBrowShapeCard({
             tip: { ar: 'زوايا حادة — توازن الفك', en: 'Angled brows — balance the jaw' },
           },
           {
-            emoji: '️',
+            emoji: '❤️',
             label: { ar: 'قلب', en: 'Heart' },
             tip: { ar: 'حواجب مقوسة — تلطف الجبهة', en: 'Arched brows — soften the forehead' },
           },

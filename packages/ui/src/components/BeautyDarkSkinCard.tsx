@@ -49,7 +49,7 @@ export function BeautyDarkSkinCard({
             },
           },
           {
-            emoji: '️',
+            emoji: '🌞',
             text: {
               ar: 'SPF 30+ — الميلانين يحمي ولكن ليس 100%',
               en: 'SPF 30+ — melanin protects, but not 100%',

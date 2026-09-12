@@ -35,7 +35,7 @@ export function BeautyFortiesCard({
             },
           },
           {
-            emoji: '️',
+            emoji: '🧱',
             text: {
               ar: 'سيراميد — يقوي حاجز البشرة المترقق',
               en: 'Ceramides — strengthen the thinning skin barrier',

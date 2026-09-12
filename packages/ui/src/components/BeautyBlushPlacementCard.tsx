@@ -49,7 +49,7 @@ export function BeautyBlushPlacementCard({
             },
           },
           {
-            emoji: '️',
+            emoji: '❤️',
             text: { ar: 'قلب: منخفض — تحت تفاحة الخد', en: 'Heart: low — below the cheek apple' },
           },
         ].map((t, i) => (

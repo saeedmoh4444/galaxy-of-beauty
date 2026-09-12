@@ -42,14 +42,14 @@ export function BeautyDryClimateCard({
             },
           },
           {
-            emoji: '️',
+            emoji: '💨',
             text: {
               ar: 'مرطب جو في الغرفة — أثناء النوم',
               en: 'Humidifier in the room — while sleeping',
             },
           },
           {
-            emoji: '️',
+            emoji: '🧱',
             text: {
               ar: 'سيراميد — يقوي حاجز البشرة',
               en: 'Ceramides — strengthen the skin barrier',

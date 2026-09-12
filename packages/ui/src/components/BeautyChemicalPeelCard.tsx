@@ -46,7 +46,7 @@ export function BeautyChemicalPeelCard({
             tip: { ar: 'طبيب فقط — نتائج قوية', en: 'Doctor only — powerful results' },
           },
           {
-            emoji: '️',
+            emoji: '🌞',
             label: { ar: 'بعد الجلسة', en: 'After the session' },
             tip: { ar: 'واقي شمس — ضروري جداً', en: 'Sunscreen — absolutely essential' },
           },

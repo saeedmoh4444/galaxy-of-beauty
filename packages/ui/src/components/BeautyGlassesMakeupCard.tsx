@@ -28,7 +28,7 @@ export function BeautyGlassesMakeupCard({
       <div className="mt-3 space-y-1">
         {[
           {
-            emoji: '️',
+            emoji: '👁️',
             text: {
               ar: 'رموش مرفوعة — لا تلمس العدسات',
               en: 'Curled lashes — so they do not touch the lenses',
@@ -46,7 +46,7 @@ export function BeautyGlassesMakeupCard({
             text: { ar: 'ظلال مات — ليس لامعاً', en: 'Matte eyeshadow — not shimmery' },
           },
           {
-            emoji: '️',
+            emoji: '✂️',
             text: {
               ar: 'حاجبين مرتبين — الإطار يبرزهما',
               en: 'Tidy brows — the frames draw attention to them',

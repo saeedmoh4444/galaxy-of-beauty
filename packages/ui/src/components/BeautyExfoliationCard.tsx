@@ -43,7 +43,7 @@ export function BeautyExfoliationCard({
             tip: { ar: 'البشرة حساسة بعد التقشير', en: 'Skin is sensitive after exfoliating' },
           },
           {
-            emoji: '️',
+            emoji: '🌞',
             label: { ar: 'واقي شمس', en: 'Sunscreen' },
             tip: { ar: 'ضروري جداً بعد التقشير', en: 'Absolutely essential after exfoliating' },
           },

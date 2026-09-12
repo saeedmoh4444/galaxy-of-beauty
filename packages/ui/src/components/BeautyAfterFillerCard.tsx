@@ -49,7 +49,7 @@ export function BeautyAfterFillerCard({
             },
           },
           {
-            emoji: '️',
+            emoji: '✨',
             text: { ar: 'النتيجة النهائية — بعد أسبوعين', en: 'Final result — after two weeks' },
           },
         ].map((t, i) => (

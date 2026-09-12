@@ -28,7 +28,7 @@ export function BeautyBodySculptingCard({
       <div className="mt-3 grid grid-cols-2 gap-1.5">
         {[
           {
-            emoji: '️',
+            emoji: '🧊',
             label: { ar: 'تجميد الدهون', en: 'Fat freezing' },
             tip: {
               ar: 'كريوليبوليسز — يقتل الخلايا الدهنية',

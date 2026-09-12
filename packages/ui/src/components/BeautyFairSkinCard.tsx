@@ -28,7 +28,7 @@ export function BeautyFairSkinCard({
       <div className="mt-3 space-y-1">
         {[
           {
-            emoji: '️',
+            emoji: '☀️',
             text: {
               ar: 'SPF 50+ — البشرة الفاتحة تحترق بسرعة',
               en: 'SPF 50+ — fair skin burns quickly',

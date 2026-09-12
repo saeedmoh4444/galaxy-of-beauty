@@ -57,7 +57,7 @@ const CARDS: FlashCard[] = [
   },
   {
     term: { ar: 'SPF', en: 'SPF' },
-    emoji: '️',
+    emoji: '🌞',
     definition: {
       ar: 'Sun Protection Factor — مقياس حماية من أشعة الشمس. الحد الأدنى الموصى به: SPF 30.',
       en: 'Sun Protection Factor — a measure of sun protection. Recommended minimum: SPF 30.',

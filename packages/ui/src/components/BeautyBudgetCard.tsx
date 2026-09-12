@@ -26,7 +26,7 @@ const CATEGORIES: Record<BudgetCategory, CategoryDef> = {
   makeup: { emoji: '💄', label: { ar: 'مكياج', en: 'Makeup' } },
   henna: { emoji: '🌿', label: { ar: 'حناء', en: 'Henna' } },
   brows: { emoji: '🎨', label: { ar: 'حواجب', en: 'Brows' } },
-  waxing: { emoji: '️', label: { ar: 'إزالة شعر', en: 'Hair removal' } },
+  waxing: { emoji: '🪒', label: { ar: 'إزالة شعر', en: 'Hair removal' } },
 };
 
 interface BudgetService {

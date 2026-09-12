@@ -35,7 +35,7 @@ export function BeautyGuaShaRoutineCard({
             },
           },
           {
-            emoji: '️',
+            emoji: '🔼',
             text: {
               ar: '2. دائماً للأعلى وللخارج — ضد الجاذبية',
               en: '2. Always upward and outward — against gravity',
@@ -49,7 +49,7 @@ export function BeautyGuaShaRoutineCard({
             },
           },
           {
-            emoji: '️',
+            emoji: '🧊',
             text: {
               ar: '4. خزني الحجر في الثلاجة — لانتعاش إضافي',
               en: '4. Keep the stone in the fridge — for extra refreshment',

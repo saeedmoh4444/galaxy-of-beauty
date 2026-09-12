@@ -89,7 +89,7 @@ const FEATURES: FeatureDef[] = [
       'bg-teal-50 text-teal-700 border-teal-200 dark:bg-teal-950 dark:text-teal-300 dark:border-teal-800',
   },
   {
-    emoji: '‍',
+    emoji: '🦮',
     label: { ar: 'حيوان الخدمة', en: 'Service animal' },
     detail: {
       ar: 'نرحب بحيوانات الخدمة في الصالون',

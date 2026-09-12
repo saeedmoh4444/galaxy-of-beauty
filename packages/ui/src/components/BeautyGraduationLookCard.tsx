@@ -49,7 +49,7 @@ export function BeautyGraduationLookCard({
             },
           },
           {
-            emoji: '️',
+            emoji: '🌞',
             text: {
               ar: 'واقي شمس — الحفل في النهار غالباً',
               en: 'Sunscreen — the ceremony is usually during the day',

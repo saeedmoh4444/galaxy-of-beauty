@@ -35,7 +35,7 @@ export function BeautyGlutathioneCard({
             },
           },
           {
-            emoji: '️',
+            emoji: '🫐',
             text: {
               ar: 'مضاد أكسدة قوي — يحمي من التلف',
               en: 'A powerful antioxidant — protects against damage',

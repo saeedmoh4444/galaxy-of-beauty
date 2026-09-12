@@ -35,7 +35,7 @@ export function BeautyEyeCreamCard({
             },
           },
           {
-            emoji: '️',
+            emoji: '👆',
             text: {
               ar: 'الطريقة: تربيت بالبنصر — لا تفركي',
               en: 'Method: tap with ring finger — do not rub',

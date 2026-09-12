@@ -17,7 +17,7 @@ const TIPS = [
     },
   },
   {
-    emoji: '️',
+    emoji: '☀️',
     title: { ar: 'واقي للجسم', en: 'Body sunscreen' },
     desc: { ar: 'لا تنسي رقبتك ويديك وقدميك', en: "Don't forget your neck, hands and feet" },
   },
