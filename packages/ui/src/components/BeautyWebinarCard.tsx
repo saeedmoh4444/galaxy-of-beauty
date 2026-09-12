@@ -69,7 +69,7 @@ export function BeautyWebinarCard({
             {webinar.title}
           </h4>
           <p className="text-[10px] text-text-tertiary dark:text-text-secondary">
-            ‍ {webinar.instructor}
+            {webinar.instructor}
             {webinar.topic && ` · ${webinar.topic}`}
           </p>
         </div>

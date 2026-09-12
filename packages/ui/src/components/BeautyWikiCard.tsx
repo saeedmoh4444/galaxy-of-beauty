@@ -124,7 +124,7 @@ export function BeautyWikiCard({
             {entry.readTime} {readTimeSuffix}
           </span>
         )}
-        {entry.author && <span className="flex items-center gap-1">️ {entry.author}</span>}
+        {entry.author && <span className="flex items-center gap-1"> {entry.author}</span>}
         {entry.isArabicOriginal && (
           <span className="rounded bg-teal-50 px-1.5 py-0.5 text-teal-700 dark:bg-teal-950 dark:text-teal-300">
             {originalContentText}

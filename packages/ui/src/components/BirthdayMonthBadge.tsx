@@ -53,7 +53,9 @@ export function BirthdayMonthBadge({
       )}
     >
       <div className="text-center">
-        <span className="text-3xl" aria-hidden="true"></span>
+        <span className="text-3xl" aria-hidden="true">
+          🎂
+        </span>
         <h4 className="mt-1 text-sm font-bold text-pink-800 dark:text-pink-200">{title}</h4>
         <p className="text-[10px] text-pink-500 dark:text-pink-400">
           {discount}%{discountDuringText}
