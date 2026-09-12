@@ -1,10 +1,19 @@
 'use client';
 import { useState } from 'react';
 import { api } from '@/lib/trpc';
-import { Card, CardListSkeleton, Button, ErrorAlert, formatCurrency } from '@galaxy/ui';
+import {
+  Card,
+  CardListSkeleton,
+  Button,
+  ErrorAlert,
+  formatCurrency,
+  ServiceImage,
+  Icon,
+} from '@galaxy/ui';
 import { useAuth } from '@galaxy/ui';
 import Link from 'next/link';
 import { useLocale } from '@/components/LocaleProvider';
+import { womensCategoryImageKey } from '@galaxy/shared';
 
 export default function WomensServicesPage(): JSX.Element {
   const { t } = useLocale();
@@ -42,7 +51,7 @@ export default function WomensServicesPage(): JSX.Element {
   return (
     <div className="mx-auto max-w-5xl px-4 py-12">
       <div className="mb-10 text-center">
-        <span className="text-6xl"></span>
+        <ServiceImage service="beautyService" alt="" size="xl" className="mx-auto rounded-3xl" />
         <h1 className="mt-4 text-3xl font-bold text-text-primary dark:text-gray-100">
           {t('marketing.womens-services.title')}
         </h1>
@@ -53,7 +62,7 @@ export default function WomensServicesPage(): JSX.Element {
 
       {bookingResult ? (
         <Card padding="lg" className="text-center border-2 border-green-300 dark:border-green-700">
-          <span className="text-6xl"></span>
+          <Icon name="check" size="xl" className="mx-auto text-green-600" />
           <h2 className="mt-4 text-xl font-bold">{t('marketing.womens-services.booked-title')}</h2>
           <p className="font-bold mt-1">{bookingResult.service as string}</p>
           <p className="text-2xl font-extrabold text-brand-600 mt-2">
@@ -62,7 +71,6 @@ export default function WomensServicesPage(): JSX.Element {
             })}
           </p>
           <p className="text-sm text-text-secondary">
-            ️{' '}
             {t('marketing.womens-services.duration-min', {
               count: bookingResult.durationMin as number,
             })}
@@ -99,7 +107,12 @@ export default function WomensServicesPage(): JSX.Element {
                 padding="lg"
                 className="text-center h-full hover:shadow-xl hover:-translate-y-1 transition-all"
               >
-                <span className="text-5xl">{c.emoji as string}</span>
+                <ServiceImage
+                  service={womensCategoryImageKey(c.key as string)}
+                  alt={(c.nameAr as string) ?? ''}
+                  size="lg"
+                  className="mx-auto"
+                />
                 <h3 className="mt-3 text-lg font-bold text-text-primary dark:text-gray-100">
                   {c.nameAr as string}
                 </h3>
@@ -133,7 +146,11 @@ export default function WomensServicesPage(): JSX.Element {
             className="bg-gradient-to-r from-pink-50 to-brand-50 dark:from-pink-950 dark:to-brand-950 border-none"
           >
             <div className="flex items-center gap-4">
-              <span className="text-5xl">{category?.emoji as string}</span>
+              <ServiceImage
+                service={womensCategoryImageKey(selectedCat)}
+                alt={(category?.nameAr as string) ?? ''}
+                size="md"
+              />
               <div>
                 <h2 className="text-xl font-bold">{category?.nameAr as string}</h2>
                 <p className="text-sm text-text-secondary dark:text-text-tertiary">
@@ -151,7 +168,11 @@ export default function WomensServicesPage(): JSX.Element {
                 className="flex items-center justify-between hover:shadow-md transition-all"
               >
                 <div className="flex items-center gap-4">
-                  <span className="text-3xl">{s.emoji as string}</span>
+                  <ServiceImage
+                    service={womensCategoryImageKey(selectedCat)}
+                    alt={(s.nameAr as string) ?? ''}
+                    size="sm"
+                  />
                   <div>
                     <h3 className="font-bold text-text-primary dark:text-gray-100">
                       {s.nameAr as string}
