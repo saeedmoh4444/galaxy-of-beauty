@@ -9,7 +9,7 @@ const ISSUES = [
     subject: ' دليلكِ للعناية بالبشرة صيفاً',
     sentAt: '2026-07-25',
     openRate: 68,
-    emoji: '',
+    emoji: '🧴',
   },
   {
     id: 2,
@@ -17,7 +17,7 @@ const ISSUES = [
     subject: ' اكتشفي أحدث صيحات مكياج ٢٠٢٦',
     sentAt: '2026-07-18',
     openRate: 72,
-    emoji: '',
+    emoji: '💄',
   },
   {
     id: 3,
@@ -25,7 +25,7 @@ const ISSUES = [
     subject: ' عروض خاصة بمناسبة العيد',
     sentAt: '2026-07-01',
     openRate: 85,
-    emoji: '',
+    emoji: '🎁',
   },
 ];
 
@@ -64,7 +64,7 @@ export const newsletterRouter = router({
         subject: input.subject,
         sentAt: new Date().toISOString().slice(0, 10),
         openRate: 0,
-        emoji: '',
+        emoji: '📰',
       };
       ISSUES.unshift(issue);
       return issue;

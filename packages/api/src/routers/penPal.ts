@@ -14,14 +14,14 @@ const INTERESTS = [
 ];
 
 const INTEREST_LABELS: Record<string, { nameAr: string; emoji: string }> = {
-  skincare: { nameAr: 'عناية بالبشرة', emoji: '' },
-  makeup: { nameAr: 'مكياج', emoji: '' },
+  skincare: { nameAr: 'عناية بالبشرة', emoji: '🧴' },
+  makeup: { nameAr: 'مكياج', emoji: '💄' },
   hair: { nameAr: 'شعر', emoji: '‍️' },
-  nails: { nameAr: 'أظافر', emoji: '' },
-  wellness: { nameAr: 'عافية', emoji: '' },
-  natural: { nameAr: 'طبيعي', emoji: '' },
-  kbeauty: { nameAr: 'K-Beauty', emoji: '' },
-  arabic: { nameAr: 'عربي', emoji: '' },
+  nails: { nameAr: 'أظافر', emoji: '💅' },
+  wellness: { nameAr: 'عافية', emoji: '🧘' },
+  natural: { nameAr: 'طبيعي', emoji: '🌱' },
+  kbeauty: { nameAr: 'K-Beauty', emoji: '✨' },
+  arabic: { nameAr: 'عربي', emoji: '📖' },
 };
 
 export const penPalRouter = router({
