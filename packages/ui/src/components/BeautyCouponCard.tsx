@@ -51,7 +51,9 @@ export function BeautyCouponCard({
       )}
     >
       <div className="text-center">
-        <span className="text-3xl" aria-hidden="true"></span>
+        <span className="text-3xl" aria-hidden="true">
+          🎫
+        </span>
         <h4 className="mt-1 text-sm font-bold text-amber-800 dark:text-amber-200">{title}</h4>
         <p className="mt-1 text-3xl font-extrabold text-amber-700 dark:text-amber-300">
           {discount}%
