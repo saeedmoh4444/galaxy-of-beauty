@@ -85,7 +85,9 @@ export function BeautyBudgetCard({
       {/* Header */}
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-2">
-          <span className="text-lg" aria-hidden="true"></span>
+          <span className="text-lg" aria-hidden="true">
+            💰
+          </span>
           <div>
             <h4 className="text-sm font-bold text-text-primary dark:text-gray-100">{title}</h4>
             <p className="text-[10px] text-text-tertiary dark:text-text-tertiary">

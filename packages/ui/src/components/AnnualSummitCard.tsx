@@ -73,11 +73,11 @@ export function AnnualSummitCard({
   cityLabel = 'المدينة',
   dateLabel = 'التاريخ',
   topicsLabel = ' محاور الملتقى',
-  speakersLabel = '️ متحدثات',
+  speakersLabel = ' متحدثات',
   attendeesLabel = ' سيدة مسجلة حتى الآن',
   earlyBirdLabel = ' الحجز المبكر',
   currencySuffix = 'ر.س',
-  registerLabel = 'سجّلي الآن ️',
+  registerLabel = 'سجّلي الآن ',
   sponsorLabel = 'راعي الملتقى',
   footerText = 'معاً نبني مستقبل المرأة السعودية في قطاع التجميل',
   locale = 'ar',
@@ -162,7 +162,7 @@ export function AnnualSummitCard({
       {attendees && (
         <div className="mt-2 rounded-lg bg-white/60 p-2 text-center dark:bg-gray-800/60">
           <p className="text-[10px] text-amber-700 dark:text-amber-300">
-            ️ {attendees.toLocaleString('ar-SA')}
+            {attendees.toLocaleString('ar-SA')}
             {attendeesLabel}
           </p>
         </div>

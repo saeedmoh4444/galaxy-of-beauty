@@ -65,7 +65,9 @@ export function BabyShowerCard({
       )}
     >
       <div className="text-center">
-        <span className="text-3xl" aria-hidden="true"></span>
+        <span className="text-3xl" aria-hidden="true">
+          👶
+        </span>
         <h4 className="mt-1 text-sm font-bold text-sky-800 dark:text-sky-200">{title}</h4>
         <p className="text-[10px] text-sky-500 dark:text-sky-400">{subtitle}</p>
         {guests && (
