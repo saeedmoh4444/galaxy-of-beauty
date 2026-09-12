@@ -101,7 +101,7 @@ export default function PostCarePage(): JSX.Element {
         {/* Header */}
         <div className="text-center sm:text-end">
           <h1 className="text-2xl font-bold text-text-primary dark:text-gray-100">
-            ‍️ {t('postCare.title')}
+            {t('postCare.title')}
           </h1>
           <p className="mt-1 text-sm text-text-secondary dark:text-text-tertiary">
             {t('postCare.subtitle')}
@@ -147,9 +147,7 @@ export default function PostCarePage(): JSX.Element {
                   <div key={plan.bookingId} className="space-y-3">
                     {/* Plan Header */}
                     <div className="flex items-center gap-3">
-                      <div className="flex h-10 w-10 items-center justify-center rounded-full bg-gradient-to-br from-brand-400 to-brand-500 text-white text-lg">
-                        ‍️
-                      </div>
+                      <div className="flex h-10 w-10 items-center justify-center rounded-full bg-gradient-to-br from-brand-400 to-brand-500 text-white text-lg"></div>
                       <div>
                         <h3 className="font-bold text-text-primary dark:text-gray-100">
                           {locale === 'en' ? plan.serviceNameEn : plan.serviceNameAr}

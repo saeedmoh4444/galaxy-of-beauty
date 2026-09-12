@@ -32,7 +32,7 @@ export default function AiFeedPage(): JSX.Element {
             {skinProfile && (
               <Card padding="lg" className="border-2 border-brand-200 bg-brand-50">
                 <div className="flex items-center gap-3">
-                  <span className="text-3xl"></span>
+                  <span className="text-3xl">🧬</span>
                   <div>
                     <p className="font-bold text-brand-700">{t('aiFeed.skinProfile')}</p>
                     <p className="text-sm text-brand-600">
@@ -79,7 +79,7 @@ export default function AiFeedPage(): JSX.Element {
                 <div className="grid gap-4 sm:grid-cols-3">
                   {recommendations.map((r: Record<string, unknown>) => (
                     <Card key={r.id as number} padding="md" className="text-center">
-                      <span className="text-3xl"></span>
+                      <span className="text-3xl">✨</span>
                       <h4 className="font-bold mt-2 text-sm">
                         {localize(r.titleJson, locale) ??
                           t('aiFeed.serviceFallback', { id: r.id as number })}

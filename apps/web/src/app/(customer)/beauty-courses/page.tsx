@@ -88,7 +88,7 @@ export default function BeautyCoursesPage(): JSX.Element {
                         {c.descAr}
                       </p>
                       <div className="mt-2 flex flex-wrap items-center gap-3 text-xs text-text-tertiary dark:text-text-secondary">
-                        <span>‍ {c.instructor}</span>
+                        <span> {c.instructor}</span>
                         <span> {t('beautyCourses.lessons', { count: c.lessons })}</span>
                         <span> {c.rating}</span>
                         <span

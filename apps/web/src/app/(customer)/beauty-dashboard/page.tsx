@@ -135,21 +135,21 @@ export default function BeautyDashboardPage(): JSX.Element {
             <div className="grid gap-4 sm:grid-cols-3">
               <Link href="/beauty-journal">
                 <Card hover padding="md" className="text-center">
-                  <span className="text-3xl"></span>
+                  <span className="text-3xl">📔</span>
                   <p className="font-bold mt-2">{(data?.journalCount as number) ?? 0}</p>
                   <p className="text-xs text-text-secondary">{t('beautyDashboard.journal')}</p>
                 </Card>
               </Link>
               <Link href="/wishlist">
                 <Card hover padding="md" className="text-center">
-                  <span className="text-3xl">️</span>
+                  <span className="text-3xl">💖</span>
                   <p className="font-bold mt-2">{(data?.wishlistCount as number) ?? 0}</p>
                   <p className="text-xs text-text-secondary">{t('beautyDashboard.wishlist')}</p>
                 </Card>
               </Link>
               <Link href="/wallet">
                 <Card hover padding="md" className="text-center">
-                  <span className="text-3xl"></span>
+                  <span className="text-3xl">💰</span>
                   <p className="font-bold mt-2">
                     {formatCurrency((data?.bonusBalance as number) ?? 0)}
                   </p>

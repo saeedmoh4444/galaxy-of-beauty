@@ -87,9 +87,9 @@ export default function RewardsMarketplacePage(): JSX.Element {
                 >
                   <span className="text-4xl">
                     {r.rewardType === 'free_service'
-                      ? '‍️'
+                      ? ''
                       : r.rewardType === 'discount_percent'
-                        ? '️'
+                        ? ''
                         : ''}
                   </span>
                   <h3 className="font-bold mt-3">{(r.nameJson as Record<string, string>)?.ar}</h3>

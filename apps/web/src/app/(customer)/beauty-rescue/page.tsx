@@ -135,7 +135,7 @@ export default function BeautyRescuePage(): JSX.Element {
                     <h3 className="font-bold mt-2">{t(e.name)}</h3>
                     <p className="text-xs text-text-secondary">{t(e.desc)}</p>
                     <p className="text-sm font-bold text-brand-600 mt-1">
-                      {formatCurrency(e.price)} · ️ {t(e.time)}
+                      {formatCurrency(e.price)} · {t(e.time)}
                     </p>
                   </button>
                 );

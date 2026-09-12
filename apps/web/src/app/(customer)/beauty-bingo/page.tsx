@@ -27,7 +27,7 @@ export default function BeautyBingoPage(): JSX.Element {
           <CardListSkeleton count={1} />
         ) : (
           <Card padding="lg" className="text-center">
-            <span className="text-5xl"></span>
+            <span className="text-5xl">🎉</span>
             <p className="mt-2 font-bold">{t('beautyBingo.completed', { completed, total })}</p>
             <p className="text-xs text-brand-600 mt-1">{data?.reward as string}</p>
             <div className="mt-4 grid grid-cols-3 gap-2">

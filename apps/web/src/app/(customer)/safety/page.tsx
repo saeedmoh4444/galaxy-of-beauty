@@ -31,7 +31,7 @@ export default function SafetyPage(): JSX.Element {
   return (
     <DashboardLayout userRole="CUSTOMER">
       <PageContainer width="wide">
-        <PageTitle title={'️' + t('safety.title')} subtitle={t('safety.subtitle')} />
+        <PageTitle title={'' + t('safety.title')} subtitle={t('safety.subtitle')} />
 
         <div className="grid gap-6 lg:grid-cols-3">
           <div className="lg:col-span-2 space-y-6">

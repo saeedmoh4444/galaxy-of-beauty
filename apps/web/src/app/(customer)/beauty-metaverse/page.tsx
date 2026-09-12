@@ -48,7 +48,7 @@ export default function BeautyMetaversePage(): JSX.Element {
         </div>
         {result ? (
           <Card padding="lg" className="text-center border-2 border-brand-300">
-            <span className="text-6xl"></span>
+            <span className="text-6xl">🌐</span>
             <h2 className="mt-4 text-xl font-bold">{result.welcomeMessage as string}</h2>
             <div className="mt-3 flex flex-wrap justify-center gap-2">
               {(result.availableActions as string[])?.map((a: string) => (
@@ -82,7 +82,7 @@ export default function BeautyMetaversePage(): JSX.Element {
                   <span className="text-4xl">{s.emoji as string}</span>
                   <p className="font-bold mt-2">{s.name as string}</p>
                   <p className="text-xs text-text-secondary">
-                    ‍ {s.technician as string} · {s.rating as number} · {s.visitors as number}
+                    {s.technician as string} · {s.rating as number} · {s.visitors as number}
                   </p>
                 </button>
               ))}

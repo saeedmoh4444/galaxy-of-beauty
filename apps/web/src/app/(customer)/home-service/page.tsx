@@ -108,7 +108,7 @@ export default function HomeServicePage(): JSX.Element {
             padding="lg"
             className="text-center border-2 border-green-300 dark:border-green-700"
           >
-            <span className="text-6xl"></span>
+            <span className="text-6xl">✅</span>
             <h2 className="mt-4 text-xl font-bold text-green-700 dark:text-green-300">
               {t('homeService.success.title')}
             </h2>
