@@ -79,7 +79,7 @@ export default function SmartSchedulePage(): JSX.Element {
                 return (
                   <div key={i} className="flex items-center justify-between rounded-lg border p-3">
                     <div className="flex items-center gap-3">
-                      <span className="text-2xl">‍</span>
+                      <span className="text-2xl">💇</span>
                       <div>
                         <p className="font-bold text-sm">
                           {t('smartSchedule.technicianLabel', { id: s.technicianId as number })}

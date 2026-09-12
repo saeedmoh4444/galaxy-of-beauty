@@ -17,7 +17,7 @@ export default function GroupBuyPage(): JSX.Element {
   return (
     <div className="mx-auto max-w-4xl px-4 py-12">
       <div className="mb-8 text-center">
-        <span className="text-6xl"></span>
+        <span className="text-6xl">👥</span>
         <h1 className="mt-4 text-3xl font-bold">{t('marketing.group-buy.title')}</h1>
         <p className="mt-2 text-text-secondary">{t('marketing.group-buy.subtitle')}</p>
       </div>

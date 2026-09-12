@@ -36,7 +36,7 @@ export default async function BeautyPackagesPage(): Promise<JSX.Element> {
       </div>
       {packages.length === 0 ? (
         <div className="py-16 text-center text-text-tertiary">
-          <span className="text-5xl"></span>
+          <span className="text-5xl">📦</span>
           <p className="mt-4">{t('marketing.beauty-packages.no-packages', locale)}</p>
           <Link href="/services" className="mt-4 inline-block text-brand-600 hover:underline">
             {t('marketing.beauty-packages.browse-services', locale)}
@@ -57,7 +57,7 @@ export default async function BeautyPackagesPage(): Promise<JSX.Element> {
                   {pkg.imageUrl ? (
                     <Image src={pkg.imageUrl} alt={name} fill className="object-cover" />
                   ) : (
-                    <span></span>
+                    <span>🎁</span>
                   )}
                 </div>
                 <div className="p-5">
@@ -74,7 +74,7 @@ export default async function BeautyPackagesPage(): Promise<JSX.Element> {
                         key={s.id}
                         className="flex items-center gap-2 text-sm text-text-secondary"
                       >
-                        <span></span>
+                        <span>💆</span>
                         {/* serviceId is the foreign key — service title not joined */}
                         <span>
                           {t('marketing.beauty-packages.service-id', locale, { id: s.serviceId })}

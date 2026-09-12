@@ -69,12 +69,18 @@ const FORTUNES = [
 ] as const;
 
 const SERVICE_LINKS: Record<string, { href: string }> = {
-  '‍️': { href: '/services' },
-  '': { href: '/services' },
-  '': { href: '/services' },
-  '': { href: '/services' },
-  '': { href: '/services' },
-  default: { href: '/services' },
+  '💧': { href: '/services' },
+  '😊': { href: '/services' },
+  '🌿': { href: '/services' },
+  '🧖': { href: '/services' },
+  '✨': { href: '/services' },
+  '💆': { href: '/services' },
+  '👑': { href: '/services' },
+  '💎': { href: '/services' },
+  '💝': { href: '/services' },
+  '🌸': { href: '/services' },
+  '🛀': { href: '/services' },
+  '🌅': { href: '/services' },
 };
 
 export default function BeautyFortunePage(): JSX.Element {
@@ -96,7 +102,7 @@ export default function BeautyFortunePage(): JSX.Element {
       <div className="w-full max-w-md text-center">
         {!fortune && !opening && (
           <div>
-            <span className="text-8xl"></span>
+            <span className="text-8xl">🔮</span>
             <h1 className="mt-6 text-3xl font-extrabold text-text-primary dark:text-gray-100">
               {t('marketing.beauty-fortune.title')}
             </h1>
@@ -111,7 +117,7 @@ export default function BeautyFortunePage(): JSX.Element {
 
         {opening && (
           <div className="animate-pulse">
-            <span className="text-8xl"></span>
+            <span className="text-8xl">🔮</span>
             <p className="mt-4 text-text-secondary">{t('marketing.beauty-fortune.opening')}</p>
           </div>
         )}

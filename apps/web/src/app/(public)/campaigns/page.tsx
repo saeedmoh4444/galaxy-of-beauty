@@ -77,7 +77,7 @@ export default function CampaignsPage(): JSX.Element {
   return (
     <div className="mx-auto max-w-6xl px-4 py-12">
       <div className="mb-10 text-center">
-        <span className="text-6xl"></span>
+        <span className="text-6xl">📣</span>
         <h1 className="mt-4 text-3xl font-bold text-text-primary dark:text-gray-100">
           {t('marketing.campaigns.title')}
         </h1>
@@ -115,7 +115,7 @@ export default function CampaignsPage(): JSX.Element {
                       {c.imageUrl ? (
                         <Image src={c.imageUrl} alt="" fill className="object-cover" />
                       ) : (
-                        <span></span>
+                        <span>🎉</span>
                       )}
                       <span className="absolute top-3 end-3 rounded-full bg-red-500 px-3 py-1 text-xs font-bold text-white animate-pulse">
                         {t('marketing.campaigns.active')}
@@ -176,7 +176,7 @@ export default function CampaignsPage(): JSX.Element {
                     className="overflow-hidden opacity-70 hover:opacity-100 transition-all"
                   >
                     <div className="flex h-36 items-center justify-center bg-gradient-to-br from-blue-100 to-brand-100 dark:from-blue-950 dark:to-brand-950 text-5xl">
-                      <span></span>
+                      <span>📅</span>
                     </div>
                     <div className="p-5">
                       <h3 className="text-lg font-bold">{localize(c.nameJson, locale)}</h3>

@@ -71,7 +71,7 @@ export default function GiftQuizPage(): JSX.Element {
     return (
       <div className="mx-auto max-w-4xl px-4 py-12">
         <div className="text-center mb-10">
-          <span className="text-6xl"></span>
+          <span className="text-6xl">🎁</span>
           <h1 className="mt-4 text-3xl font-bold">{t('marketing.gift-quiz.title')}</h1>
           <p className="mt-2 text-text-secondary">{t('marketing.gift-quiz.subtitle')}</p>
         </div>
@@ -125,7 +125,7 @@ export default function GiftQuizPage(): JSX.Element {
   return (
     <div className="mx-auto max-w-lg px-4 py-12">
       <div className="text-center mb-8">
-        <span className="text-6xl"></span>
+        <span className="text-6xl">🎁</span>
         <h1 className="mt-4 text-3xl font-bold">{t('marketing.gift-quiz.quiz-title')}</h1>
         <p className="mt-2 text-text-secondary">{t('marketing.gift-quiz.quiz-subtitle')}</p>
       </div>

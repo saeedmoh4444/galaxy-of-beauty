@@ -769,9 +769,7 @@ export default function VendorPortalPage(): JSX.Element {
                 <button
                   onClick={() => deleteMut.mutate({ id: p.id as number })}
                   className="text-red-400"
-                >
-                  ️
-                </button>
+                ></button>
               </div>
             </Card>
           ))}

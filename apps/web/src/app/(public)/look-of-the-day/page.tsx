@@ -21,7 +21,7 @@ export default function LookOfTheDayPage(): JSX.Element {
   return (
     <div className="mx-auto max-w-5xl px-4 py-12">
       <div className="mb-8 text-center">
-        <span className="text-6xl"></span>
+        <span className="text-6xl">👗</span>
         <h1 className="mt-4 text-3xl font-bold">{t('marketing.look-of-the-day.title')}</h1>
         <p className="mt-2 text-text-secondary">{t('marketing.look-of-the-day.subtitle')}</p>
       </div>
@@ -32,11 +32,11 @@ export default function LookOfTheDayPage(): JSX.Element {
           padding="lg"
           className="mb-8 border-2 border-amber-300 dark:border-amber-700 bg-gradient-to-br from-amber-50 to-yellow-50 dark:from-amber-950 dark:to-yellow-950 text-center"
         >
-          <span className="text-5xl"></span>
+          <span className="text-5xl">🌟</span>
           <h2 className="mt-2 text-xl font-bold">{t('marketing.look-of-the-day.title')}</h2>
           <p className="text-lg font-bold mt-1">{today.title as string}</p>
           <p className="text-sm text-text-secondary">
-            ‍ {today.technicianName as string} · ️{' '}
+            {today.technicianName as string} ·{' '}
             {t('marketing.look-of-the-day.votes', { count: today.votes as number })}
           </p>
           {user && (
@@ -56,10 +56,10 @@ export default function LookOfTheDayPage(): JSX.Element {
             <div className="h-36 rounded-xl bg-gradient-to-br from-brand-100 to-brand-100 dark:from-brand-900 dark:to-brand-900 flex items-center justify-center text-4xl"></div>
             <h3 className="font-bold mt-2">{l.title as string}</h3>
             <p className="text-xs text-text-secondary">
-              {l.userName as string} · ‍ {l.technicianName as string}
+              {l.userName as string} · {l.technicianName as string}
             </p>
             <div className="mt-2 flex items-center justify-center gap-2">
-              <span className="text-sm">️ {l.votes as number}</span>
+              <span className="text-sm"> {l.votes as number}</span>
               {user && (
                 <button
                   onClick={() => voteMut.mutate({ lookId: l.id as number })}

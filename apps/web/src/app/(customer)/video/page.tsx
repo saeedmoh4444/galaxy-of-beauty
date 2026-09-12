@@ -44,7 +44,7 @@ export default function VideoPage(): JSX.Element {
               <Card key={b.id as number} padding="md">
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-3">
-                    <span className="text-3xl"></span>
+                    <span className="text-3xl">📹</span>
                     <div>
                       <p className="font-bold">
                         {t('video.bookingLabel')} #{b.id as number}
