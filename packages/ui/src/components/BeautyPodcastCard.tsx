@@ -42,7 +42,7 @@ export function BeautyPodcastCard({
   episodeLabel = 'حلقة',
   listenText = '▶️ استمعي',
   subscribeText = 'تابعي البودكاست',
-  availabilityText = '️ متوفر على أبل بودكاست، سبوتيفاي، وجميع المنصات',
+  availabilityText = ' متوفر على أبل بودكاست، سبوتيفاي، وجميع المنصات',
 }: BeautyPodcastCardProps): JSX.Element {
   return (
     <div
@@ -53,9 +53,7 @@ export function BeautyPodcastCard({
     >
       {/* Podcast badge */}
       <div className="flex items-center gap-2">
-        <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-rose-200 to-pink-200 text-lg dark:from-rose-800 dark:to-pink-800">
-          ️
-        </div>
+        <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-rose-200 to-pink-200 text-lg dark:from-rose-800 dark:to-pink-800"></div>
         <div>
           <h4 className="text-sm font-bold text-rose-700 dark:text-rose-300">{title}</h4>
           <p className="text-[10px] text-rose-500 dark:text-rose-400">{subtitle}</p>
@@ -73,9 +71,7 @@ export function BeautyPodcastCard({
 
         {/* Guest */}
         <div className="mt-1.5 flex items-center gap-2">
-          <div className="flex h-8 w-8 items-center justify-center rounded-full bg-white text-sm dark:bg-gray-700">
-            ‍
-          </div>
+          <div className="flex h-8 w-8 items-center justify-center rounded-full bg-white text-sm dark:bg-gray-700"></div>
           <div>
             <p className="text-[10px] font-bold text-text-primary dark:text-gray-100">
               {episode.guest}
@@ -98,7 +94,7 @@ export function BeautyPodcastCard({
         {/* Duration + Listen */}
         <div className="mt-2 flex items-center justify-between">
           <span className="text-[10px] text-text-tertiary dark:text-text-secondary">
-            ️ {episode.duration}
+            {episode.duration}
           </span>
           <button
             type="button"
