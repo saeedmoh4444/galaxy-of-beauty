@@ -27,20 +27,23 @@ export function BeautySkincareAzelaicCard({
       </div>
       <div className="mt-3 space-y-1">
         {[
-          { emoji: '', text: { ar: 'يعالج حبوب الشباب والوردية', en: 'Treats acne and rosacea' } },
           {
-            emoji: '',
+            emoji: '🧪',
+            text: { ar: 'يعالج حبوب الشباب والوردية', en: 'Treats acne and rosacea' },
+          },
+          {
+            emoji: '✨',
             text: {
               ar: 'يفتح التصبغات — آمن للحوامل',
               en: 'Fades hyperpigmentation — pregnancy-safe',
             },
           },
           {
-            emoji: '',
+            emoji: '🌿',
             text: { ar: 'لطيف — مناسب للبشرة الحساسة', en: 'Gentle — suitable for sensitive skin' },
           },
           {
-            emoji: '',
+            emoji: '🤝',
             text: { ar: 'مع النياسيناميد — ثنائي مهدئ', en: 'With niacinamide — a soothing duo' },
           },
         ].map((t, i) => (

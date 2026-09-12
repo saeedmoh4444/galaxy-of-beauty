@@ -49,7 +49,7 @@ export function BeautySkinToneMatchCard({
             },
           },
           {
-            emoji: '',
+            emoji: '🌗',
             text: {
               ar: 'درجتين: الصيف أغمق — الشتاء أفتح',
               en: 'Two shades: darker in summer — lighter in winter',

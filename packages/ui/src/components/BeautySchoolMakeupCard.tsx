@@ -39,14 +39,14 @@ export function BeautySchoolMakeupCard({
             text: { ar: 'ماسكارا بنية — أنعم من السوداء', en: 'Brown mascara — softer than black' },
           },
           {
-            emoji: '',
+            emoji: '💋',
             text: {
               ar: 'تينت شفاه — لون طبيعي يدوم',
               en: 'Lip tint — a natural, long-lasting color',
             },
           },
           {
-            emoji: '',
+            emoji: '🧴',
             text: {
               ar: 'مرطب فقط — البشرة تحتاج التنفس',
               en: 'Moisturizer only — skin needs to breathe',

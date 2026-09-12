@@ -28,19 +28,19 @@ export function BeautySkinFastingCard({
       <div className="mt-3 space-y-1">
         {[
           {
-            emoji: '',
+            emoji: '📅',
             text: {
               ar: 'يوم في الأسبوع — بدون أي منتجات',
               en: 'One day a week — with no products at all',
             },
           },
-          { emoji: '', text: { ar: 'ماء فقط — للتنظيف', en: 'Water only — for cleansing' } },
+          { emoji: '💧', text: { ar: 'ماء فقط — للتنظيف', en: 'Water only — for cleansing' } },
           {
-            emoji: '',
+            emoji: '🌿',
             text: { ar: 'دعي بشرتك تتوازن طبيعياً', en: 'Let your skin rebalance naturally' },
           },
           {
-            emoji: '',
+            emoji: '✅',
             text: { ar: 'مناسب لجميع أنواع البشرة', en: 'Suitable for all skin types' },
           },
         ].map((t, i) => (

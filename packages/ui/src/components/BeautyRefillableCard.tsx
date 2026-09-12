@@ -28,21 +28,21 @@ export function BeautyRefillableCard({
       <div className="mt-3 space-y-1">
         {[
           {
-            emoji: '',
+            emoji: '💰',
             text: {
               ar: 'أوفر — العبوة الأصلية مرة واحدة فقط',
               en: 'More affordable — buy the original container only once',
             },
           },
           {
-            emoji: '',
+            emoji: '🌍',
             text: {
               ar: 'تقلل النفايات — 70% أقل من البلاستيك',
               en: 'Reduces waste — 70% less plastic',
             },
           },
           {
-            emoji: '',
+            emoji: '💄',
             text: { ar: 'أحمر شفاه — كريم أساس — عطور', en: 'Lipstick — foundation — fragrances' },
           },
           {

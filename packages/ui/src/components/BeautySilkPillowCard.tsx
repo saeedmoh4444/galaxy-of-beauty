@@ -28,28 +28,28 @@ export function BeautySilkPillowCard({
       <div className="mt-3 space-y-1">
         {[
           {
-            emoji: '',
+            emoji: '💇',
             text: {
               ar: 'يمنع تكسر الشعر — احتكاك أقل من القطن',
               en: 'Prevents hair breakage — less friction than cotton',
             },
           },
           {
-            emoji: '',
+            emoji: '😴',
             text: {
               ar: 'يمنع تجاعيد النوم — بشرة أنعم صباحاً',
               en: 'Prevents sleep wrinkles — smoother skin in the morning',
             },
           },
           {
-            emoji: '',
+            emoji: '💧',
             text: {
               ar: 'يحافظ على ترطيب البشرة — لا يمتص الزيوت',
               en: 'Preserves skin moisture — does not absorb oils',
             },
           },
           {
-            emoji: '',
+            emoji: '🧼',
             text: {
               ar: 'اغسليها كل أسبوع — بماء بارد وصابون لطيف',
               en: 'Wash it weekly — in cold water with a gentle soap',

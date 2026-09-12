@@ -28,14 +28,14 @@ export function BeautySkincareOilCard({
       <div className="mt-3 space-y-1">
         {[
           {
-            emoji: '',
+            emoji: '🌙',
             text: {
               ar: 'آخر خطوة في المساء — تغلق الترطيب',
               en: 'Last step in the evening — seals in moisture',
             },
           },
           {
-            emoji: '',
+            emoji: '💧',
             text: {
               ar: '2-3 قطرات فقط — بين راحة اليد',
               en: 'Just 2-3 drops — warmed between palms',
@@ -49,7 +49,7 @@ export function BeautySkincareOilCard({
             },
           },
           {
-            emoji: '',
+            emoji: '🫒',
             text: {
               ar: 'جوجوبا — الأقرب لزيوت البشرة',
               en: "Jojoba — closest to the skin's natural oils",

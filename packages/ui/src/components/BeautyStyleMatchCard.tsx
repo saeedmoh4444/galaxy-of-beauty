@@ -7,7 +7,7 @@ import { cn } from '@galaxy/shared';
  * From Phase W9: The Small Details.
  *
  * Usage:
- *   <BeautyStyleMatchCard matches={[{ style: 'كلاسيكي', emoji: '', match: 92 }]} />
+ *   <BeautyStyleMatchCard matches={[{ style: 'كلاسيكي', emoji: '👗', match: 92 }]} />
  */
 
 interface StyleMatch {

@@ -32,7 +32,7 @@ export function BeautySleepHygieneCard({
       <div className="mt-3 grid grid-cols-2 gap-1.5">
         {[
           {
-            emoji: '',
+            emoji: '📵',
             label: { ar: 'لا شاشات', en: 'No screens' },
             tip: { ar: 'قبل النوم بساعة', en: 'An hour before bed' },
           },
@@ -47,7 +47,7 @@ export function BeautySleepHygieneCard({
             tip: { ar: 'نفس الموعد يومياً', en: 'Same time every day' },
           },
           {
-            emoji: '',
+            emoji: '☕',
             label: { ar: 'لا كافيين', en: 'No caffeine' },
             tip: { ar: 'بعد الرابعة عصراً', en: 'After 4 PM' },
           },

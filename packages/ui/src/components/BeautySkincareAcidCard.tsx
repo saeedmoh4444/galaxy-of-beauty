@@ -28,22 +28,22 @@ export function BeautySkincareAcidCard({
       <div className="mt-3 grid grid-cols-2 gap-1.5">
         {[
           {
-            emoji: '',
+            emoji: '🍋',
             label: { ar: 'AHA', en: 'AHA' },
             tip: { ar: 'يذيب السطح — للتجاعيد', en: 'Dissolves the surface — for wrinkles' },
           },
           {
-            emoji: '',
+            emoji: '🧼',
             label: { ar: 'BHA', en: 'BHA' },
             tip: { ar: 'ينظف المسام — للحبوب', en: 'Cleans pores — for breakouts' },
           },
           {
-            emoji: '',
+            emoji: '🌿',
             label: { ar: 'PHA', en: 'PHA' },
             tip: { ar: 'لطيف — للبشرة الحساسة', en: 'Gentle — for sensitive skin' },
           },
           {
-            emoji: '',
+            emoji: '🚫',
             label: { ar: 'تنبيه', en: 'Caution' },
             tip: { ar: 'لا تخلطي مع ريتينول', en: 'Do not mix with retinol' },
           },

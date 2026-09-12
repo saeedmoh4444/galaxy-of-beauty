@@ -32,7 +32,7 @@ export function BeautyStretchCard({
       <div className="mt-3 space-y-1.5">
         {[
           {
-            emoji: '',
+            emoji: '🧘',
             name: { ar: 'إطالة الرقبة', en: 'Neck stretch' },
             desc: {
               ar: 'إمالة بطيئة يمين ويسار — 30 ثانية',
@@ -40,12 +40,12 @@ export function BeautyStretchCard({
             },
           },
           {
-            emoji: '',
+            emoji: '🔄',
             name: { ar: 'إطالة الكتف', en: 'Shoulder stretch' },
             desc: { ar: 'لف الكتفين للخلف 10 مرات', en: 'Roll shoulders back 10 times' },
           },
           {
-            emoji: '',
+            emoji: '🦵',
             name: { ar: 'لمس القدمين', en: 'Toe touch' },
             desc: { ar: 'انحناء للأمام — 20 ثانية', en: 'Bend forward — 20 seconds' },
           },

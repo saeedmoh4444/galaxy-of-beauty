@@ -22,7 +22,7 @@ interface TierDef {
 
 const TIERS: Record<SubTier, TierDef> = {
   basic: {
-    emoji: '',
+    emoji: '🌱',
     label: { ar: 'أساسية', en: 'Basic' },
     price: 99,
     includes: [
@@ -33,7 +33,7 @@ const TIERS: Record<SubTier, TierDef> = {
     color: 'bg-pink-50 border-pink-200 dark:bg-pink-950 dark:border-pink-800',
   },
   premium: {
-    emoji: '',
+    emoji: '⭐',
     label: { ar: 'مميزة', en: 'Premium' },
     price: 199,
     includes: [
@@ -45,7 +45,7 @@ const TIERS: Record<SubTier, TierDef> = {
     color: 'bg-brand-50 border-brand-200 dark:bg-brand-950 dark:border-brand-800',
   },
   vip: {
-    emoji: '',
+    emoji: '👑',
     label: { ar: 'VIP', en: 'VIP' },
     price: 399,
     includes: [

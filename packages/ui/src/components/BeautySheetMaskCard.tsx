@@ -28,7 +28,7 @@ export function BeautySheetMaskCard({
       <div className="mt-3 space-y-1">
         {[
           {
-            emoji: '',
+            emoji: '🧼',
             text: {
               ar: 'بعد التنظيف — البشرة النظيفة تمتص أفضل',
               en: 'After cleansing — clean skin absorbs better',
@@ -42,14 +42,14 @@ export function BeautySheetMaskCard({
             },
           },
           {
-            emoji: '',
+            emoji: '💆',
             text: {
               ar: 'دلكي الفائض — لا تغسلي وجهك بعده',
               en: 'Massage in the excess — do not rinse after',
             },
           },
           {
-            emoji: '',
+            emoji: '📅',
             text: { ar: '2-3 مرات أسبوعياً — لا يومياً', en: '2-3 times a week — not daily' },
           },
         ].map((t, i) => (

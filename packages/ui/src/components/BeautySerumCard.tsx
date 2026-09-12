@@ -28,14 +28,14 @@ export function BeautySerumCard({
       <div className="mt-3 space-y-1">
         {[
           {
-            emoji: '',
+            emoji: '💧',
             text: { ar: '1. هيالورونيك — على بشرة رطبة', en: '1. Hyaluronic — on damp skin' },
           },
           {
-            emoji: '',
+            emoji: '🍊',
             text: { ar: '2. فيتامين سي — صباحاً', en: '2. Vitamin C — in the morning' },
           },
-          { emoji: '', text: { ar: '3. ريتينول — مساءً فقط', en: '3. Retinol — evenings only' } },
+          { emoji: '🌙', text: { ar: '3. ريتينول — مساءً فقط', en: '3. Retinol — evenings only' } },
           {
             emoji: '️',
             text: { ar: '4. نياسيناميد — صباح ومساء', en: '4. Niacinamide — morning and night' },

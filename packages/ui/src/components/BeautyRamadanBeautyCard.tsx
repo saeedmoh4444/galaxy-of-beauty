@@ -28,14 +28,14 @@ export function BeautyRamadanBeautyCard({
       <div className="mt-3 space-y-1">
         {[
           {
-            emoji: '',
+            emoji: '💧',
             text: {
               ar: 'اشربي الماء بين الفطور والسحور — 8 أكواب',
               en: 'Drink water between iftar and suhoor — 8 glasses',
             },
           },
           {
-            emoji: '',
+            emoji: '🧴',
             text: {
               ar: 'روتين ليلي بسيط — مرطب كثيف قبل النوم',
               en: 'A simple night routine — rich moisturizer before bed',
@@ -46,7 +46,7 @@ export function BeautyRamadanBeautyCard({
             text: { ar: 'واقي شمس — حتى في رمضان', en: 'Sunscreen — even during Ramadan' },
           },
           {
-            emoji: '',
+            emoji: '🌙',
             text: {
               ar: 'سيروم مرطب — الجفاف هو العدو الأول',
               en: 'Hydrating serum — dryness is the number one enemy',

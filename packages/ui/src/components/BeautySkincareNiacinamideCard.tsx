@@ -28,11 +28,11 @@ export function BeautySkincareNiacinamideCard({
       <div className="mt-3 space-y-1">
         {[
           {
-            emoji: '',
+            emoji: '🧪',
             text: { ar: 'يقلص المسام — بشرة أنعم', en: 'Minimizes pores — smoother skin' },
           },
           {
-            emoji: '',
+            emoji: '✨',
             text: {
               ar: 'يوحد اللون — يقلل التصبغات',
               en: 'Evens tone — reduces hyperpigmentation',
@@ -40,7 +40,7 @@ export function BeautySkincareNiacinamideCard({
           },
           { emoji: '️', text: { ar: 'يقوي حاجز البشرة', en: 'Strengthens the skin barrier' } },
           {
-            emoji: '',
+            emoji: '✅',
             text: {
               ar: 'آمن مع معظم المكونات — صباح ومساء',
               en: 'Safe with most ingredients — morning and night',

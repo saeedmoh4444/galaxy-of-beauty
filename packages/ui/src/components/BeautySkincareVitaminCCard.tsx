@@ -32,7 +32,7 @@ export function BeautySkincareVitaminCCard({
             text: { ar: 'صباحاً — قبل واقي الشمس', en: 'In the morning — before sunscreen' },
           },
           {
-            emoji: '',
+            emoji: '🍊',
             text: {
               ar: 'يفتح التصبغات ويوحد اللون',
               en: 'Fades hyperpigmentation and evens skin tone',
@@ -40,7 +40,7 @@ export function BeautySkincareVitaminCCard({
           },
           { emoji: '️', text: { ar: 'يعزز حماية واقي الشمس', en: 'Boosts sunscreen protection' } },
           {
-            emoji: '',
+            emoji: '🧪',
             text: {
               ar: 'L-Ascorbic Acid — أقوى صيغة',
               en: 'L-Ascorbic Acid — the most potent form',

@@ -20,13 +20,13 @@ interface NightRoutine {
 const ROUTINE: NightRoutine[] = [
   {
     time: '21:00',
-    emoji: '',
+    emoji: '📵',
     action: { ar: 'إطفاء الشاشات', en: 'Turn off screens' },
     duration: { ar: '—', en: '—' },
   },
   {
     time: '21:15',
-    emoji: '',
+    emoji: '🧴',
     action: { ar: 'روتين العناية الليلي', en: 'Night skincare routine' },
     duration: { ar: '15 دقيقة', en: '15 min' },
   },
@@ -38,19 +38,19 @@ const ROUTINE: NightRoutine[] = [
   },
   {
     time: '21:45',
-    emoji: '',
+    emoji: '📖',
     action: { ar: 'قراءة هادئة', en: 'Quiet reading' },
     duration: { ar: '20 دقيقة', en: '20 min' },
   },
   {
     time: '22:15',
-    emoji: '',
+    emoji: '🍵',
     action: { ar: 'شاي أعشاب', en: 'Herbal tea' },
     duration: { ar: '10 دقيقة', en: '10 min' },
   },
   {
     time: '22:30',
-    emoji: '',
+    emoji: '😴',
     action: { ar: 'نوم عميق', en: 'Deep sleep' },
     duration: { ar: '8 ساعات', en: '8 hours' },
   },

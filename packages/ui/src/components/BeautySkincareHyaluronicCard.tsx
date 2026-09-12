@@ -28,18 +28,21 @@ export function BeautySkincareHyaluronicCard({
       <div className="mt-3 space-y-1">
         {[
           {
-            emoji: '',
+            emoji: '💧',
             text: { ar: 'يحمل 1000 ضعف وزنه ماء', en: 'Holds 1,000 times its weight in water' },
           },
           {
-            emoji: '',
+            emoji: '💦',
             text: { ar: 'يطبق على بشرة رطبة — وليس جافة', en: 'Apply to damp skin — not dry skin' },
           },
           {
-            emoji: '',
+            emoji: '🍊',
             text: { ar: 'مع فيتامين سي — ثنائي رائع', en: 'With vitamin C — a wonderful duo' },
           },
-          { emoji: '', text: { ar: 'يناسب جميع أنواع البشرة', en: 'Suitable for all skin types' } },
+          {
+            emoji: '✅',
+            text: { ar: 'يناسب جميع أنواع البشرة', en: 'Suitable for all skin types' },
+          },
         ].map((t, i) => (
           <div
             key={i}

@@ -26,19 +26,19 @@ export function BeautySkinCycleCard({
       <div className="mt-3 space-y-1">
         {[
           {
-            emoji: '',
+            emoji: '✨',
             text: { ar: 'ليلة 1: تقشير — AHA/BHA', en: 'Night 1: Exfoliate — AHA/BHA' },
           },
           {
-            emoji: '',
+            emoji: '🌙',
             text: { ar: 'ليلة 2: ريتينول — مكافحة الشيخوخة', en: 'Night 2: Retinol — anti-aging' },
           },
           {
-            emoji: '',
+            emoji: '💧',
             text: { ar: 'ليلة 3: ترطيب — إصلاح البشرة', en: 'Night 3: Moisturize — skin repair' },
           },
           {
-            emoji: '',
+            emoji: '💧',
             text: { ar: 'ليلة 4: ترطيب — إصلاح البشرة', en: 'Night 4: Moisturize — skin repair' },
           },
         ].map((t, i) => (

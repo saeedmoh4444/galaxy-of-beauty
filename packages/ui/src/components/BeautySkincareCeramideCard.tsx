@@ -28,16 +28,16 @@ export function BeautySkincareCeramideCard({
       <div className="mt-3 space-y-1">
         {[
           { emoji: '️', text: { ar: 'يعيد بناء حاجز البشرة', en: 'Rebuilds the skin barrier' } },
-          { emoji: '', text: { ar: 'يمنع فقدان الرطوبة', en: 'Prevents moisture loss' } },
+          { emoji: '💧', text: { ar: 'يمنع فقدان الرطوبة', en: 'Prevents moisture loss' } },
           {
-            emoji: '',
+            emoji: '🌿',
             text: {
               ar: 'ممتاز للبشرة الحساسة والجافة',
               en: 'Excellent for sensitive and dry skin',
             },
           },
           {
-            emoji: '',
+            emoji: '✨',
             text: { ar: 'مع النياسيناميد — ثنائي مرمم', en: 'With niacinamide — a repairing duo' },
           },
         ].map((t, i) => (
