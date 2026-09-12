@@ -16,8 +16,8 @@ const QUESTIONS = [
     text: 'ما مزاجك اليوم؟',
     options: [
       { label: 'استرخاء', value: 'relax', emoji: '‍️' },
-      { label: 'تجديد', value: 'refresh', emoji: '' },
-      { label: 'جرأة', value: 'bold', emoji: '' },
+      { label: 'تجديد', value: 'refresh', emoji: '✨' },
+      { label: 'جرأة', value: 'bold', emoji: '🔥' },
       { label: 'عناية', value: 'care', emoji: '‍️' },
     ],
   },
@@ -25,19 +25,19 @@ const QUESTIONS = [
     id: 'focus',
     text: 'على ماذا تركزين؟',
     options: [
-      { label: 'البشرة', value: 'skin', emoji: '' },
+      { label: 'البشرة', value: 'skin', emoji: '🧴' },
       { label: 'الشعر', value: 'hair', emoji: '‍️' },
-      { label: 'الأظافر', value: 'nails', emoji: '' },
-      { label: 'المكياج', value: 'makeup', emoji: '' },
+      { label: 'الأظافر', value: 'nails', emoji: '💅' },
+      { label: 'المكياج', value: 'makeup', emoji: '💄' },
     ],
   },
   {
     id: 'budget',
     text: 'ميزانيتك؟',
     options: [
-      { label: 'اقتصادية', value: 'low', emoji: '' },
-      { label: 'متوسطة', value: 'mid', emoji: '' },
-      { label: 'فاخرة', value: 'high', emoji: '' },
+      { label: 'اقتصادية', value: 'low', emoji: '🪙' },
+      { label: 'متوسطة', value: 'mid', emoji: '💰' },
+      { label: 'فاخرة', value: 'high', emoji: '💎' },
     ],
   },
 ];
