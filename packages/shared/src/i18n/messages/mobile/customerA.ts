@@ -140,7 +140,7 @@ export const mobileCustomerAMessages = {
   'aiRoutine.skin-combination': { ar: 'مختلطة', en: 'Combination' },
   'aiRoutine.skin-normal': { ar: 'عادية', en: 'Normal' },
   'aiRoutine.generate': { ar: ' توليد الروتين', en: 'Generate Routine' },
-  'aiRoutine.morning': { ar: '️ الصباح ({time})', en: 'Morning ({time})' },
+  'aiRoutine.morning': { ar: ' الصباح ({time})', en: 'Morning ({time})' },
   'aiRoutine.evening': { ar: ' المساء ({time})', en: 'Evening ({time})' },
   'aiRoutine.tips': { ar: ' نصائح', en: 'Tips' },
   'aiRoutine.reset': { ar: ' إعادة', en: 'Reset' },
@@ -228,7 +228,7 @@ export const mobileCustomerAMessages = {
   'beautyBudgetPlanner.budget': { ar: 'الميزانية', en: 'Budget' },
   'beautyBudgetPlanner.allocated': { ar: 'مخصص', en: 'Allocated' },
   'beautyBudgetPlanner.remaining': { ar: 'متبقي', en: 'Remaining' },
-  'beautyBudgetPlanner.categories': { ar: '‍️ الفئات', en: 'Categories' },
+  'beautyBudgetPlanner.categories': { ar: ' الفئات', en: 'Categories' },
   'beautyBudgetPlanner.cat-budget': {
     ar: 'الميزانية: {budget} ر.س / شهرياً',
     en: 'Budget: {budget} SAR / month',
@@ -251,7 +251,7 @@ export const mobileCustomerAMessages = {
   'beautyCloset.all': { ar: 'الكل', en: 'All' },
   'beautyCloset.cat-makeup': { ar: ' مكياج', en: 'Makeup' },
   'beautyCloset.cat-skin': { ar: ' عناية', en: 'Skincare' },
-  'beautyCloset.cat-hair': { ar: '‍️ شعر', en: 'Hair' },
+  'beautyCloset.cat-hair': { ar: ' شعر', en: 'Hair' },
   'beautyCloset.cat-nails': { ar: ' أظافر', en: 'Nails' },
   'beautyCloset.cat-natural': { ar: ' طبيعي', en: 'Natural' },
   'beautyCloset.empty': { ar: ' أضيفي منتجاتكِ الأولى!', en: ' Add your first products!' },
@@ -260,7 +260,7 @@ export const mobileCustomerAMessages = {
   'beautyCloset.add-product': { ar: '+ إضافة منتج جديد', en: '+ Add New Product' },
 
   // ── beauty-community ──
-  'beautyCommunity.title': { ar: '‍️ مجتمع الجمال', en: 'Beauty Community' },
+  'beautyCommunity.title': { ar: ' مجتمع الجمال', en: 'Beauty Community' },
   'beautyCommunity.subtitle': {
     ar: 'تواصلي، تعلمي، وشاركي رحلتكِ',
     en: 'Connect, learn, and share your journey',
@@ -314,9 +314,9 @@ export const mobileCustomerAMessages = {
   'beautyDiary.mood-tired': { ar: 'متعب', en: 'Tired' },
   'beautyDiary.latest-entries': { ar: ' آخر المدخلات', en: ' Latest Entries' },
   'beautyDiary.entry-fallback': { ar: 'يوميات الجمال', en: 'Beauty Diary' },
-  'beautyDiary.today-service': { ar: '‍️ خدمة اليوم', en: " Today's service" },
+  'beautyDiary.today-service': { ar: ' خدمة اليوم', en: " Today's service" },
   'beautyDiary.glow-skin': { ar: ' بشرة متألقة', en: ' Glowing skin' },
-  'beautyDiary.write-today': { ar: '️ تدوين اليوم', en: ' Write today' },
+  'beautyDiary.write-today': { ar: ' تدوين اليوم', en: ' Write today' },
 
   // ── beauty-discovery ──
   'beautyDiscovery.load-error': { ar: 'فشل تحميل المحتوى', en: 'Failed to load content' },
@@ -397,7 +397,7 @@ export const mobileCustomerAMessages = {
   },
 
   // ── beauty-mentor ──
-  'beautyMentor.title': { ar: '‍ مرشدة الجمال', en: 'Beauty Mentor' },
+  'beautyMentor.title': { ar: ' مرشدة الجمال', en: 'Beauty Mentor' },
   'beautyMentor.subtitle': {
     ar: 'تعلمي من خبيرات التجميل',
     en: 'Learn from beauty experts',
@@ -408,7 +408,7 @@ export const mobileCustomerAMessages = {
     ar: ' خطة التعلم — {name}',
     en: ' Learning Plan — {name}',
   },
-  'beautyMentor.start': { ar: '‍ ابدئي رحلة التعلم', en: ' Start Learning Journey' },
+  'beautyMentor.start': { ar: ' ابدئي رحلة التعلم', en: ' Start Learning Journey' },
   'beautyMentor.level-beginner': { ar: 'مبتدئة', en: 'Beginner' },
   'beautyMentor.level-beginner-desc': {
     ar: 'اكتشفي أساسيات العناية',
@@ -437,7 +437,7 @@ export const mobileCustomerAMessages = {
   },
   'beautyParty.choose-theme': { ar: ' اختاري الثيم', en: ' Choose a Theme' },
   'beautyParty.guests-count': {
-    ar: '‍️ عدد الصديقات: {count}',
+    ar: ' عدد الصديقات: {count}',
     en: ' Number of friends: {count}',
   },
   'beautyParty.estimated-cost': { ar: ' التكلفة التقديرية', en: ' Estimated Cost' },
@@ -569,7 +569,7 @@ export const mobileCustomerAMessages = {
 
   // ── beauty-routine ──
   'beautyRoutine.title': { ar: ' روتيني', en: 'My Routine' },
-  'beautyRoutine.morning': { ar: '️ الصباح', en: ' Morning' },
+  'beautyRoutine.morning': { ar: ' الصباح', en: ' Morning' },
   'beautyRoutine.evening': { ar: ' المساء', en: ' Evening' },
 
   // ── beauty-services ──
@@ -631,7 +631,7 @@ export const mobileCustomerAMessages = {
   'bookingInsights.spent-label': { ar: 'ر.س إنفاق', en: 'SAR spent' },
   'bookingInsights.booking-label': { ar: 'حجز', en: 'Bookings' },
   'bookingInsights.avg-label': { ar: 'متوسط', en: 'Average' },
-  'bookingInsights.by-category': { ar: '‍️ توزيع الفئات', en: ' Category Breakdown' },
+  'bookingInsights.by-category': { ar: ' توزيع الفئات', en: ' Category Breakdown' },
   'bookingInsights.smart-tip': { ar: 'نصيحة ذكية', en: 'Smart Tip' },
   'bookingInsights.tip-low': {
     ar: 'احجزي ٥ خدمات للفئة الذهبية ',
@@ -750,7 +750,7 @@ export const mobileCustomerAMessages = {
   'cycleTracker.day': { ar: 'اليوم {day}', en: 'Day {day}' },
   'cycleTracker.days': { ar: 'الأيام {days}', en: 'Days {days}' },
   'cycleTracker.tips': { ar: ' توصيات الجمال', en: ' Beauty Recommendations' },
-  'cycleTracker.services': { ar: '‍️ الخدمات المناسبة', en: ' Recommended Services' },
+  'cycleTracker.services': { ar: ' الخدمات المناسبة', en: ' Recommended Services' },
   'cycleTracker.phase-menstrual': { ar: 'الدورة', en: 'Menstrual' },
   'cycleTracker.phase-follicular': { ar: 'الجريبي', en: 'Follicular' },
   'cycleTracker.phase-ovulation': { ar: 'الإباضة', en: 'Ovulation' },
@@ -777,7 +777,7 @@ export const mobileCustomerAMessages = {
   'dashboard.sar': { ar: '{value} ر.س', en: '{value} SAR' },
   'dashboard.link-bookings': { ar: ' حجوزاتي', en: ' My Bookings' },
   'dashboard.link-wallet': { ar: ' المحفظة', en: ' Wallet' },
-  'dashboard.link-wishlist': { ar: '️ المفضلة', en: ' Favorites' },
+  'dashboard.link-wishlist': { ar: ' المفضلة', en: ' Favorites' },
   'dashboard.link-loyalty': { ar: ' الولاء', en: ' Loyalty' },
   'dashboard.link-ai-chat': { ar: ' مجرة الجمال', en: ' Beauty Galaxy' },
   'dashboard.link-profile': { ar: ' حسابي', en: ' My Account' },
@@ -789,7 +789,7 @@ export const mobileCustomerAMessages = {
     ar: 'يمكنكِ فتح نزاع على أي حجز',
     en: 'You can open a dispute on any booking',
   },
-  'disputes.title': { ar: '️ النزاعات', en: ' Disputes' },
+  'disputes.title': { ar: ' النزاعات', en: ' Disputes' },
   'disputes.resolution': { ar: 'الحل: {resolution}', en: 'Resolution: {resolution}' },
   'disputes.open-new': { ar: ' فتح نزاع جديد', en: ' Open New Dispute' },
   'disputes.status-open': { ar: 'مفتوح', en: 'Open' },
@@ -820,14 +820,14 @@ export const mobileCustomerAMessages = {
   'emergencyBooking.change-service': { ar: ' تغيير الخدمة', en: ' Change Service' },
 
   // ── expiry-tracker ──
-  'expiryTracker.title': { ar: '️ متعقب الصلاحية', en: ' Expiry Tracker' },
+  'expiryTracker.title': { ar: ' متعقب الصلاحية', en: ' Expiry Tracker' },
   'expiryTracker.expires': { ar: 'ينتهي بعد {months} شهر', en: 'Expires in {months} months' },
 
   // ── family-account ──
-  'familyAccount.title': { ar: '‍‍ حساب العائلة', en: ' Family Account' },
+  'familyAccount.title': { ar: ' حساب العائلة', en: ' Family Account' },
 
   // ── family-beauty ──
-  'familyBeauty.title': { ar: '‍‍‍ جمال العائلة', en: ' Family Beauty' },
+  'familyBeauty.title': { ar: ' جمال العائلة', en: ' Family Beauty' },
   'familyBeauty.subtitle': {
     ar: 'لحظات جميلة تجمع الأحباب',
     en: 'Beautiful moments that bring loved ones together',
@@ -844,7 +844,7 @@ export const mobileCustomerAMessages = {
   'favorites.service-id': { ar: 'خدمة #{id}', en: 'Service #{id}' },
 
   // ── following ──
-  'following.title': { ar: '‍ متابعة الفنيات', en: ' Following Service Providers' },
+  'following.title': { ar: ' متابعة الفنيات', en: ' Following Service Providers' },
   'following.technician': { ar: 'مقدمة خدمة #{id}', en: 'Service Provider #{id}' },
   'following.since': { ar: 'منذ {date}', en: 'Since {date}' },
   'following.unfollow': { ar: 'إلغاء المتابعة', en: 'Unfollow' },

@@ -74,7 +74,7 @@ export const coreMessages = {
     en: 'Sorry! Something unexpected happened. Our tech team has been alerted. Try again?',
   },
   'error.validationError': {
-    ar: 'بعض البيانات تحتاج تعديل بسيط. راجعي الحقول المحددة ️',
+    ar: 'بعض البيانات تحتاج تعديل بسيط. راجعي الحقول المحددة ',
     en: 'Some fields need a quick fix. Check the highlighted fields.',
   },
   'error.rateLimit': {
