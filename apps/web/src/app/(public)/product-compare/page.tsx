@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import type { JSX } from 'react';
 import { api } from '@/lib/trpc';
 import { Card, GridSkeleton, TableSkeleton, formatCurrency } from '@galaxy/ui';
 import { useLocale } from '@/components/LocaleProvider';
