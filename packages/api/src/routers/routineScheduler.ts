@@ -5,7 +5,7 @@ import { customerProcedure, router } from '../trpc';
 const PRESETS = [
   {
     id: 'morning',
-    nameAr: ' روتين صباحي',
+    nameAr: 'روتين صباحي',
     steps: [
       { time: '7:00', task: 'غسول وجه', emoji: '🧼' },
       { time: '7:05', task: 'تونر', emoji: '💧' },
@@ -16,7 +16,7 @@ const PRESETS = [
   },
   {
     id: 'evening',
-    nameAr: ' روتين مسائي',
+    nameAr: 'روتين مسائي',
     steps: [
       { time: '21:00', task: 'مزيل مكياج', emoji: '🧽' },
       { time: '21:05', task: 'غسول', emoji: '🧼' },
@@ -27,7 +27,7 @@ const PRESETS = [
   },
   {
     id: 'weekly',
-    nameAr: ' روتين أسبوعي',
+    nameAr: 'روتين أسبوعي',
     steps: [
       { time: 'السبت', task: 'قناع وجه', emoji: '🧖' },
       { time: 'الأحد', task: 'تقشير', emoji: '🪨' },
