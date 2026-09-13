@@ -42,6 +42,14 @@ test('public header shows the primary row and a working More dropdown', async ({
   await expect(menu).toBeHidden();
 });
 
+test('nav search box routes to the search page with the query', async ({ page }) => {
+  await page.goto('/');
+  const search = page.getByTestId('nav-search').locator('input');
+  await search.fill('شعر');
+  await search.press('Enter');
+  await expect(page).toHaveURL(/\/search\?q=/);
+});
+
 test('mobile drawer opens and navigates', async ({ page }) => {
   await page.setViewportSize({ width: 390, height: 844 });
   await page.goto('/');

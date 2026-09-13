@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { api } from '@/lib/trpc';
 import { localize } from '@galaxy/shared';
@@ -18,6 +18,15 @@ export default function SearchPage(): JSX.Element {
   const { t, locale } = useLocale();
   const [query, setQuery] = useState('');
   const [searched, setSearched] = useState(false);
+
+  // Nav search box deep-link: /search?q=... pre-fills and auto-searches.
+  useEffect(() => {
+    const q = new URLSearchParams(window.location.search).get('q');
+    if (q && q.trim().length > 1) {
+      setQuery(q.trim());
+      setSearched(true);
+    }
+  }, []);
   // E6d — trust badge filters.
   const [womenOnly, setWomenOnly] = useState(false);
   const [privateSuite, setPrivateSuite] = useState(false);
