@@ -6,7 +6,7 @@ const ISSUES = [
   {
     id: 1,
     titleAr: 'العناية بالبشرة في الصيف',
-    subject: ' دليلكِ للعناية بالبشرة صيفاً',
+    subject: 'دليلكِ للعناية بالبشرة صيفاً',
     sentAt: '2026-07-25',
     openRate: 68,
     emoji: '🧴',
@@ -14,7 +14,7 @@ const ISSUES = [
   {
     id: 2,
     titleAr: 'أحدث صيحات المكياج',
-    subject: ' اكتشفي أحدث صيحات مكياج ٢٠٢٦',
+    subject: 'اكتشفي أحدث صيحات مكياج ٢٠٢٦',
     sentAt: '2026-07-18',
     openRate: 72,
     emoji: '💄',
@@ -22,7 +22,7 @@ const ISSUES = [
   {
     id: 3,
     titleAr: 'عروض العيد',
-    subject: ' عروض خاصة بمناسبة العيد',
+    subject: 'عروض خاصة بمناسبة العيد',
     sentAt: '2026-07-01',
     openRate: 85,
     emoji: '🎁',

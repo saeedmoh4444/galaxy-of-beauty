@@ -53,7 +53,7 @@ export function PersonalStylingCard({
   className = '',
   title = 'استشارة الإطلالة',
   subtitle = 'اكتشفي ألوانكِ وأسلوبكِ الخاص',
-  withStylistPrefix = ' مع خبيرة الإطلالة: ',
+  withStylistPrefix = 'مع خبيرة الإطلالة: ',
   priceLabel = 'السعر',
   currencySuffix = 'ر.س',
   durationLabel = 'المدة',

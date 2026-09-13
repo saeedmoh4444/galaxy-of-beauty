@@ -36,7 +36,7 @@ export function BeautyGratitudeCard({
   locale = 'ar',
   title = 'يوميات الامتنان',
   entriesLabel = 'مدخل',
-  addEntryText = ' اكتبي اليوم',
+  addEntryText = 'اكتبي اليوم',
   footerText = 'الامتنان يجعل الجمال يدوم',
 }: BeautyGratitudeCardProps): JSX.Element {
   const prompt = PROMPTS[entries % PROMPTS.length]!;

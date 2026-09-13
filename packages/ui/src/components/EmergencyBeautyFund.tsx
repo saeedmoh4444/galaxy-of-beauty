@@ -126,7 +126,7 @@ export function EmergencyBeautyFund({
   title = 'صندوق الجمال الطارئ',
   subtitle = 'لأن بعض الأيام تحتاج أكثر من غيرها',
   urgentLabel = 'عاجل',
-  includesLabel = ' تشمل الخدمة',
+  includesLabel = 'تشمل الخدمة',
   item1 = 'مكياج احترافي',
   item2 = 'تسريحة شعر',
   item3 = 'عناية بالبشرة سريعة',

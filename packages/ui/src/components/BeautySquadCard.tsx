@@ -35,7 +35,7 @@ export function BeautySquadCard({
   onInvite,
   className = '',
   membersText = 'عضوات',
-  nextEventLabel = ' اللقاء القادم',
+  nextEventLabel = 'اللقاء القادم',
   createEventText = 'لقاء جديد',
   inviteText = 'دعوة',
   footerText = 'صديقاتكِ هن عائلتكِ المختارة',

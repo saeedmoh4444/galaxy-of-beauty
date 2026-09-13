@@ -117,7 +117,7 @@ const TIPS = [
 
 export function BeautyTip({
   className = '',
-  heading = ' نصيحة جمال',
+  heading = 'نصيحة جمال',
   locale = 'ar',
 }: {
   className?: string;

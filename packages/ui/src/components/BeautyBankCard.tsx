@@ -58,7 +58,7 @@ export function BeautyBankCard({
   goalPrefix = 'الهدف ',
   waitlistLabel = 'نساء بانتظار المساعدة',
   waitlistCountSuffix = 'امرأة',
-  howTitle = ' كيف تساعدين',
+  howTitle = 'كيف تساعدين',
   currencySuffix = 'ر.س',
   example1 = 'قصة شعر',
   example2 = 'مكياج مقابلة',

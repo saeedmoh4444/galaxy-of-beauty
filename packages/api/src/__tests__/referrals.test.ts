@@ -315,8 +315,8 @@ describe('referrals router', () => {
       expect(s.totalReferrals).toBe(0);
       expect(s.completedReferrals).toBe(0);
       expect(s.totalEarnings).toBe(0);
-      expect(s.tier).toBe(' مبتدئ');
-      expect(s.nextTier).toBe(' فضي (إحالة واحدة)');
+      expect(s.tier).toBe('مبتدئ');
+      expect(s.nextTier).toBe('فضي (إحالة واحدة)');
       expect(s.nextCount).toBe(1);
       expect(s.referrerBonus).toBe(20);
       expect(s.referredBonus).toBe(20);
@@ -332,8 +332,8 @@ describe('referrals router', () => {
       expect(s.totalReferrals).toBe(2);
       expect(s.completedReferrals).toBe(1);
       expect(s.totalEarnings).toBe(20);
-      expect(s.tier).toBe(' فضي');
-      expect(s.nextTier).toBe(' ذهبي (٥ إحالات)');
+      expect(s.tier).toBe('فضي');
+      expect(s.nextTier).toBe('ذهبي (٥ إحالات)');
       expect(s.nextCount).toBe(4);
       expect(s.referralCode).toBe(`GOB-LEAD-${referrerA.id}-1`); // most recent first
       expect(s.recentReferrals).toHaveLength(2);
@@ -358,8 +358,8 @@ describe('referrals router', () => {
       const cs = await c.referrals.getEnhancedStats();
       expect(cs.totalReferrals).toBe(5);
       expect(cs.completedReferrals).toBe(5);
-      expect(cs.tier).toBe(' ذهبي');
-      expect(cs.nextTier).toBe(' الماسي (١٠ إحالات)');
+      expect(cs.tier).toBe('ذهبي');
+      expect(cs.nextTier).toBe('الماسي (١٠ إحالات)');
       expect(cs.nextCount).toBe(5);
       expect(cs.totalEarnings).toBe(100); // 5 x default 20
     });

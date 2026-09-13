@@ -35,7 +35,7 @@ export function BirthdayMonthBadge({
   onClaim,
   className = '',
   title = 'شهر ميلادكِ',
-  discountDuringText = ' خصم طوال شهر ',
+  discountDuringText = 'خصم طوال شهر ',
   daysLeftText = 'يوم متبقي للاستفادة من خصمكِ',
   giftsTitle = 'هدايا شهر ميلادكِ',
   gift1Suffix = '% خصم على جميع الخدمات',

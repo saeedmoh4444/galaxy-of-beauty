@@ -11,7 +11,7 @@ export const navMessages = {
   'nav.notifications': { ar: 'الإشعارات', en: 'Notifications' },
 
   // Public header nav
-  'nav.discover': { ar: ' اكتشفي', en: 'Discover' },
+  'nav.discover': { ar: 'اكتشفي', en: 'Discover' },
   'nav.search': { ar: '', en: 'Search' },
   'nav.marketplace': { ar: 'المتجر', en: 'Marketplace' },
   'nav.mommyAndMe': { ar: 'أم وابنتها', en: 'Mommy & Me' },

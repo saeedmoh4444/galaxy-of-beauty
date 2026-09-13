@@ -135,7 +135,7 @@ export async function sendPasswordResetEmail(
  * Send welcome email to newly registered user.
  */
 export async function sendWelcomeEmail(to: string, name: string): Promise<void> {
-  const subject = ' مرحباً بكِ في دلال';
+  const subject = 'مرحباً بكِ في دلال';
   const html = `
     <div dir="rtl" style="max-width:600px;margin:0 auto;font-family:Tajawal,sans-serif;background:#faf5ff;padding:20px;border-radius:16px">
       <div style="text-align:center;padding:30px">

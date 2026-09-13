@@ -134,8 +134,8 @@ export function CyclePhaseCard({
   className = '',
   dayLabel = 'يوم',
   todayLabel = 'اليوم',
-  recommendedLabel = ' ينصح بها',
-  avoidLabel = ' تجنبي',
+  recommendedLabel = 'ينصح بها',
+  avoidLabel = 'تجنبي',
   footerTip = 'CycleSync™ — لأن جمالكِ مرتبط بصحتكِ',
   locale = 'ar',
 }: CyclePhaseCardProps): JSX.Element {

@@ -39,7 +39,7 @@ export function WomenEmployerBadge({
   staffCountText = 'موظفة سعودية',
   benefitsText = 'تأمين ومزايا',
   inManagementText = 'في الإدارة',
-  footerText = ' ندعم الصالونات التي توظف وتمكّن المرأة السعودية',
+  footerText = 'ندعم الصالونات التي توظف وتمكّن المرأة السعودية',
 }: WomenEmployerBadgeProps): JSX.Element {
   const pct = Math.round((womenEmployed / totalStaff) * 100);
   const isChampion = pct >= 80;

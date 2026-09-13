@@ -80,9 +80,9 @@ interface FreeCourseCardProps {
 }
 
 const LANG_LABELS: Record<CourseLang, { ar: string; en: string }> = {
-  ar: { ar: ' بالعربية', en: ' in Arabic' },
-  en: { ar: ' بالإنجليزية', en: ' in English' },
-  both: { ar: ' العربية + الإنجليزية', en: ' Arabic + English' },
+  ar: { ar: 'بالعربية', en: ' in Arabic' },
+  en: { ar: 'بالإنجليزية', en: ' in English' },
+  both: { ar: 'العربية + الإنجليزية', en: ' Arabic + English' },
 };
 
 export function FreeCourseCard({

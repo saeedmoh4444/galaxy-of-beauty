@@ -7,7 +7,7 @@ const COMMANDS: Record<string, string> = {
   مساعدة:
     'الأوامر المتاحة:\n حجز — حجز خدمة\n خدمات — قائمة الخدمات\n أسعار — الأسعار\n فروع — مواقعنا\n تواصل — خدمة العملاء',
   أسعار:
-    ' الأسعار التقريبية:\n مكياج: من ٢٠٠ ر.س\n تنظيف بشرة: من ١٥٠ ر.س\n تسريحة: من ١٥٠ ر.س\n مانيكير: من ١٠٠ ر.س\n مساج: من ٢٠٠ ر.س',
+    'الأسعار التقريبية:\n مكياج: من ٢٠٠ ر.س\n تنظيف بشرة: من ١٥٠ ر.س\n تسريحة: من ١٥٠ ر.س\n مانيكير: من ١٠٠ ر.س\n مساج: من ٢٠٠ ر.س',
 };
 
 export const whatsappBotRouter = router({
@@ -24,7 +24,7 @@ export const whatsappBotRouter = router({
       }
       if (!reply)
         reply =
-          ' أهلاً بكِ في دلال!\n\nأرسلي: حجز | خدمات | أسعار | مساعدة\n\nأو زوري موقعنا لحجز مباشر: galaxyofbeauty.sa';
+          'أهلاً بكِ في دلال!\n\nأرسلي: حجز | خدمات | أسعار | مساعدة\n\nأو زوري موقعنا لحجز مباشر: galaxyofbeauty.sa';
       return { reply, to: input.from };
     }),
   commands: publicProcedure.query(() => Object.keys(COMMANDS)),

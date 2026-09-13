@@ -89,7 +89,7 @@ export function AcademyCertificateBadge({
   verifiedText = 'شهادتكِ محمية ولا يمكن تزويرها',
   shareLabel = 'مشاركة',
   verifyLabel = 'تحقق',
-  accreditationText = ' معتمدة من المؤسسة العامة للتدريب التقني والمهني',
+  accreditationText = 'معتمدة من المؤسسة العامة للتدريب التقني والمهني',
   locale = 'ar',
 }: AcademyCertificateBadgeProps): JSX.Element {
   const level = CERTS[certificate.level];

@@ -31,7 +31,7 @@ export function HydrationTracker({
   className = '',
   title = 'متعقب الماء',
   cupsText = 'أكواب',
-  goalCompletedText = ' أكملتِ الهدف!',
+  goalCompletedText = 'أكملتِ الهدف!',
   remainingPrefix = 'باقي',
   addCupText = '+ كوب',
   benefitText = 'أكواب ماء = بشرة أكثر نضارة ومرونة',

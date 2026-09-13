@@ -88,9 +88,9 @@ export function IngredientGlossaryCard({
   ingredient,
   locale = 'ar',
   className = '',
-  benefitsLabel = ' الفوائد',
-  suitableForLabel = ' مناسب لـ',
-  warningsLabel = ' تحذيرات',
+  benefitsLabel = 'الفوائد',
+  suitableForLabel = 'مناسب لـ',
+  warningsLabel = 'تحذيرات',
   arabicContentText = 'محتوى عربي — لأن المعرفة حق للجميع',
 }: IngredientGlossaryCardProps): JSX.Element {
   const type = TYPES[ingredient.type];

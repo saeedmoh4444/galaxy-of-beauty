@@ -112,7 +112,7 @@ export function PostpartumCareCard({
   onBook,
   className = '',
   title = 'عناية النفاس',
-  nifasCompleteText = ' اكتملت الأربعون — ألف مبروك!',
+  nifasCompleteText = 'اكتملت الأربعون — ألف مبروك!',
   nifasDayPrefix = 'اليوم',
   nifasFromWord = 'من النفاس —',
   daysRemainingText = 'يوم متبقي',

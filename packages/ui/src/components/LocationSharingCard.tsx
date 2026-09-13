@@ -65,7 +65,7 @@ export function LocationSharingCard({
   sharingNowText = 'تشارك الآن',
   sharingProgressText = 'جاري...',
   shareButtonText = 'مشاركة',
-  stopSharingText = ' إيقاف المشاركة',
+  stopSharingText = 'إيقاف المشاركة',
   autoStopText = 'ستتوقف المشاركة تلقائياً بعد انتهاء الموعد',
 }: LocationSharingCardProps): JSX.Element | null {
   const [sharing, setSharing] = useState(false);

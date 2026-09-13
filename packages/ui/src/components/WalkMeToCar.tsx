@@ -45,16 +45,16 @@ export function WalkMeToCar({
   className = '',
   homeServiceTitle = 'أمان الخدمة المنزلية',
   carServiceTitle = 'توصيل للسيارة',
-  darkSubtitle = ' موعد مسائي — سلامتكِ أولاً',
-  lightSubtitle = ' خدمة متاحة في أي وقت تحتاجينها',
+  darkSubtitle = 'موعد مسائي — سلامتكِ أولاً',
+  lightSubtitle = 'خدمة متاحة في أي وقت تحتاجينها',
   escortingTitle = 'الخبيرة في طريقها لمرافقتكِ',
   escortingSubtitle = 'انتظري لحظة — لا تغادري وحدكِ',
   sendingText = 'جاري إرسال الطلب... الخبيرة ستصل خلال دقيقة',
   homeButtonText = 'شاركي موقعكِ المباشر',
   carButtonText = 'رافقيني للسيارة ',
-  safeCallText = ' اتصال آمن',
-  liveLocationText = ' موقع مباشر',
-  verifiedExpertText = ' خبيرة موثقة',
+  safeCallText = 'اتصال آمن',
+  liveLocationText = 'موقع مباشر',
+  verifiedExpertText = 'خبيرة موثقة',
 }: WalkMeToCarProps): JSX.Element {
   const [requested, setRequested] = useState(false);
   const [escorting, setEscorting] = useState(false);

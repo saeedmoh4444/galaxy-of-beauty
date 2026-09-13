@@ -45,7 +45,7 @@ export function CommunityEventCard({
   registeredCountText = 'مسجلة',
   fullText = 'اكتمل',
   hostPrefix = 'تستضيفها:',
-  registeredButtonText = ' مسجلة',
+  registeredButtonText = 'مسجلة',
   fullButtonText = 'القائمة مكتملة',
   registerButtonText = 'سجّلي الآن',
   footerText = 'لقاءات حقيقية لنساء حقيقيات',

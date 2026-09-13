@@ -42,7 +42,7 @@ export function BeautyVirtualConsultationCard({
   priceLabel = 'السعر',
   durationLabel = 'المدة',
   currencySuffix = 'ر.س',
-  availableSlotsLabel = ' مواعيد متاحة',
+  availableSlotsLabel = 'مواعيد متاحة',
   bookButtonText = 'احجزي استشارة',
 }: BeautyVirtualConsultationCardProps): JSX.Element {
   return (

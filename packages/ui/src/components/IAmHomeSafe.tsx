@@ -62,8 +62,8 @@ export function IAmHomeSafe({
   confirmedText = 'تم التأكيد — شكراً لاستخدامكِ جالاكسي بيوتي',
   rateExperienceText = 'قيّمي تجربتكِ',
   alertContactPrefix = 'سيتم إشعار ',
-  alertContactSuffix = ' إذا لم تؤكدي وصولكِ',
-  remainingTimeLabel = ' وقت التأكيد المتبقي',
+  alertContactSuffix = 'إذا لم تؤكدي وصولكِ',
+  remainingTimeLabel = 'وقت التأكيد المتبقي',
 }: IAmHomeSafeProps): JSX.Element {
   const [checkedIn, setCheckedIn] = useState(false);
 

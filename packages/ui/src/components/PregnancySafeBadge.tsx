@@ -134,8 +134,8 @@ export function PregnancySafeBadge({
   className = '',
   safeLabel = 'آمن للحمل',
   currencySuffix = 'ر.س',
-  allowedLabel = ' مسموح',
-  avoidLabel = ' غير مناسب',
+  allowedLabel = 'مسموح',
+  avoidLabel = 'غير مناسب',
   disclaimerText = '🩺 استشيري طبيبكِ قبل أي علاج تجميلي أثناء الحمل',
   locale = 'ar',
 }: PregnancySafeBadgeProps): JSX.Element {

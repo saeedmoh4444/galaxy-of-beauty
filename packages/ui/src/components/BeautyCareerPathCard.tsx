@@ -123,7 +123,7 @@ export function BeautyCareerPathCard({
   salaryLabel = 'متوسط الدخل',
   currencySuffix = 'ر.س',
   durationLabel = 'المدة',
-  coursesLabel = ' الدورات',
+  coursesLabel = 'الدورات',
   learnMoreLabel = 'اكتشفي المسار',
   locale = 'ar',
 }: BeautyCareerPathCardProps): JSX.Element {

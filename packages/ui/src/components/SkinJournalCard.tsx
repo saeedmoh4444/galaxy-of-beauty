@@ -40,7 +40,7 @@ export function SkinJournalCard({
   streakLabel = 'يوم متتالي',
   moodLabel = 'آخر مزاج',
   moodQuestion = 'كيف تشعر بشرتكِ اليوم؟',
-  addEntryText = ' أضيفي مدخلاً جديداً',
+  addEntryText = 'أضيفي مدخلاً جديداً',
   footerText = 'تتبعي بشرتكِ يومياً — التغييرات الصغيرة تصنع فرقاً كبيراً',
 }: SkinJournalCardProps): JSX.Element {
   return (

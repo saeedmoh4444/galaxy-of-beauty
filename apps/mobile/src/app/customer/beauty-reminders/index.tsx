@@ -15,12 +15,12 @@ import { useAuthState } from '@/hooks/useAuthState';
 import { trpc } from '@/lib/trpc-react';
 
 const CATS: Record<string, string> = {
-  hair: ' شعر',
-  nails: ' أظافر',
-  skincare: ' بشرة',
-  makeup: ' مكياج',
-  body: ' جسم',
-  other: ' أخرى',
+  hair: 'شعر',
+  nails: 'أظافر',
+  skincare: 'بشرة',
+  makeup: 'مكياج',
+  body: 'جسم',
+  other: 'أخرى',
 };
 const INTERVALS = [7, 14, 30, 60, 90];
 

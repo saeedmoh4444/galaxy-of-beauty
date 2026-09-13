@@ -40,7 +40,7 @@ export function BeautyLearningPathCard({
   unitsText = 'وحدات',
   completedSuffix = 'مكتمل',
   startButtonText = 'ابدئي المسار',
-  completedButtonText = ' مكتمل — راجعي',
+  completedButtonText = 'مكتمل — راجعي',
   continueButtonText = 'واصلي التعلم ',
 }: BeautyLearningPathCardProps): JSX.Element {
   const pct = Math.round((path.completed / path.modules) * 100);

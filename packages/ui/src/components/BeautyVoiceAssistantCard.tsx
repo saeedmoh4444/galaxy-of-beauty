@@ -37,7 +37,7 @@ export function BeautyVoiceAssistantCard({
   title = 'المساعد الصوتي',
   subtitle = 'تحدثي — ونحن ننفذ',
   activateButtonText = 'اضغطي وتحدثي',
-  trySayLabel = ' جربي قول',
+  trySayLabel = 'جربي قول',
   arabicLabel = 'العربية',
   footerQuote = 'يداكِ مشغولتان — وصوتكِ يكفي',
 }: BeautyVoiceAssistantCardProps): JSX.Element {

@@ -117,7 +117,7 @@ export function FranchiseCard({
   investmentLabel = 'الاستثمار',
   revenueLabel = 'العائد المتوقع',
   existingFranchisesText = 'سيدة سبقوكِ وافتتحن فروعهنّ!',
-  qualifyTitle = ' شروط التأهل',
+  qualifyTitle = 'شروط التأهل',
   applyLabel = 'ابدئي رحلة الامتياز',
   footerText = 'نساعدكِ تبنين مشروعكِ الخاص وتحققين استقلالكِ المالي',
   locale = 'ar',

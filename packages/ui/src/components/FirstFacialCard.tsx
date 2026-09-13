@@ -86,7 +86,7 @@ export function FirstFacialCard({
   title = 'أول عناية بالبشرة',
   subtitle = 'تجربة لطيفة وممتعة لأول مرة',
   ageNote = 'مناسب للأعمار 10-17 سنة',
-  stepsLabel = ' ماذا سنفعل',
+  stepsLabel = 'ماذا سنفعل',
   momPrefix = ' ',
   momWithText = 'تستطيعين الحضور معها ومشاهدة التجربة',
   pledgeText = 'لا كريم أساس ثقيل · لا مقشرات قوية · منتجات آمنة فقط',

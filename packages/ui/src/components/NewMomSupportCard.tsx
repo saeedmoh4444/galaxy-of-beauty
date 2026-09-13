@@ -60,7 +60,7 @@ export function NewMomSupportCard({
   underOneMonth = 'أقل من شهر',
   monthSingular = 'شهر',
   monthPlural = 'أشهر',
-  offersTitle = ' خدمات مناسبة لكِ',
+  offersTitle = 'خدمات مناسبة لكِ',
   offer1 = '• خدمات سريعة (30-45 دقيقة)',
   offer2 = '• ركن أطفال مع مراقبة',
   offer3 = '• إمكانية إرضاع الطفل أثناء الجلسة',

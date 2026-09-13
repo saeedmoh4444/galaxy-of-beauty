@@ -79,7 +79,7 @@ export function PhotoPrivacyBadge({
   locale = 'ar',
   deletedTomorrowText = 'تحذف غداً',
   deletesAfterPrefix = 'تحذف بعد ',
-  deletesAfterSuffix = ' يوم',
+  deletesAfterSuffix = 'يوم',
   indefiniteText = 'لا تنتهي',
 }: PhotoPrivacyBadgeProps): JSX.Element {
   const config = PRIVACY[level];
