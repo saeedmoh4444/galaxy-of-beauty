@@ -3,12 +3,15 @@ import { TRPCError } from '@trpc/server';
 import { createHash } from 'crypto';
 import { adminProcedure, protectedProcedure, router } from '../trpc';
 import { prisma } from '@galaxy/db';
+import { ZATCA_TEST_VAT, ZATCA_API_URL as SHARED_ZATCA_URL } from '@galaxy/shared';
 
 // ── ZATCA Configuration ───────────────────────────────────
 const VAT_RATE = 0.15; // 15% VAT in Saudi Arabia
-const VAT_NUMBER = process.env['ZATCA_VAT_NUMBER'] || '300000000000003'; // Default test VAT
-const ZATCA_API_BASE = process.env['ZATCA_API_URL'] || 'https://gw-fatoora.zatca.gov.sa/e-invoicing/developer-portal';
-const SELLER_NAME_AR = 'جالكسي بيوتي';
+const VAT_NUMBER =
+  process.env['ZATCA_VAT_NUMBER'] ||
+  (process.env['NODE_ENV'] === 'production' ? '' : ZATCA_TEST_VAT);
+const ZATCA_API_BASE = process.env['ZATCA_API_URL'] || SHARED_ZATCA_URL;
+const SELLER_NAME_AR = process.env['BUSINESS_NAME_AR'] || 'جالكسي بيوتي';
 
 // ── SHA-256 Invoice Hashing ───────────────────────────────
 function computeInvoiceHash(invoiceData: {
@@ -80,18 +83,18 @@ async function reportToZatcaApi(invoice: {
   const apiSecret = process.env['ZATCA_API_SECRET'];
 
   if (!apiKey || !apiSecret) {
-    // In development/testing: simulate successful reporting
-    if (process.env['NODE_ENV'] === 'production') {
-      return { success: false, error: 'ZATCA API credentials not configured' };
+    // Simulate in dev/test only when explicitly opted in
+    if (process.env['ZATCA_SIMULATE'] === 'true') {
+      return { success: true, clearanceId: `sim_${invoice.invoiceHash.slice(0, 16)}` };
     }
-    return { success: true, clearanceId: `sim_${invoice.invoiceHash.slice(0, 16)}` };
+    return { success: false, error: 'ZATCA API credentials not configured' };
   }
 
   try {
     const response = await fetch(`${ZATCA_API_BASE}/invoices/report`, {
       method: 'POST',
       headers: {
-        'Authorization': `Basic ${Buffer.from(`${apiKey}:${apiSecret}`).toString('base64')}`,
+        Authorization: `Basic ${Buffer.from(`${apiKey}:${apiSecret}`).toString('base64')}`,
         'Content-Type': 'application/json',
         'Accept-Language': 'ar',
       },
@@ -102,7 +105,7 @@ async function reportToZatcaApi(invoice: {
         qrCode: invoice.qrCode,
         issueDate: invoice.createdAt.toISOString(),
         invoiceTotal: invoice.totalAmount.toFixed(2),
-        vatAmount: (invoice.totalAmount * VAT_RATE / (1 + VAT_RATE)).toFixed(2),
+        vatAmount: ((invoice.totalAmount * VAT_RATE) / (1 + VAT_RATE)).toFixed(2),
         vatNumber: VAT_NUMBER,
         sellerName: SELLER_NAME_AR,
         bookingReference: invoice.bookingCode,
@@ -116,7 +119,10 @@ async function reportToZatcaApi(invoice: {
     }
 
     const data = (await response.json()) as Record<string, unknown>;
-    return { success: true, clearanceId: data['clearanceId'] as string || data['uuid'] as string };
+    return {
+      success: true,
+      clearanceId: (data['clearanceId'] as string) || (data['uuid'] as string),
+    };
   } catch (err) {
     return { success: false, error: `ZATCA API unreachable: ${(err as Error).message}` };
   }
@@ -143,7 +149,10 @@ export const zatcaRouter = router({
         where: { bookingId: input.bookingId },
       });
       if (existing) {
-        throw new TRPCError({ code: 'CONFLICT', message: 'Invoice already exists for this booking' });
+        throw new TRPCError({
+          code: 'CONFLICT',
+          message: 'Invoice already exists for this booking',
+        });
       }
 
       // Get previous invoice hash for chain linking
@@ -161,7 +170,7 @@ export const zatcaRouter = router({
 
       // Calculate VAT
       const totalAmount = booking.totalAmount.toNumber();
-      const vatAmount = totalAmount * VAT_RATE / (1 + VAT_RATE);
+      const vatAmount = (totalAmount * VAT_RATE) / (1 + VAT_RATE);
       const totalWithVat = totalAmount;
       const timestamp = new Date().toISOString();
 
@@ -348,9 +357,7 @@ export const zatcaRouter = router({
     .input(
       z
         .object({
-          status: z
-            .enum(['PENDING', 'REPORTED', 'CLEARED', 'REJECTED'])
-            .optional(),
+          status: z.enum(['PENDING', 'REPORTED', 'CLEARED', 'REJECTED']).optional(),
           page: z.number().optional().default(1),
           limit: z.number().optional().default(20),
         })

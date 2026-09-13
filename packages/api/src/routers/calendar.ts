@@ -2,6 +2,7 @@ import { z } from 'zod';
 import { TRPCError } from '@trpc/server';
 import { technicianProcedure, router } from '../trpc';
 import { prisma } from '@galaxy/db';
+import { notFound, badRequest } from '../lib/errors';
 import {
   exchangeGoogleCode,
   refreshGoogleToken,
@@ -18,7 +19,7 @@ async function getValidAccessToken(userId: number): Promise<string> {
   });
 
   if (!tech?.googleCalendarToken) {
-    throw new TRPCError({ code: 'BAD_REQUEST', message: 'Google Calendar not connected' });
+    throw badRequest('Google Calendar not connected');
   }
 
   if (tech.googleTokenExpiry && tech.googleTokenExpiry < new Date() && tech.googleRefreshToken) {
@@ -46,7 +47,7 @@ export const calendarRouter = router({
       select: { googleCalendarToken: true, googleCalendarEmail: true, googleRefreshToken: true },
     });
 
-    if (!tech) throw new TRPCError({ code: 'NOT_FOUND', message: 'Technician profile not found' });
+    if (!tech) throw notFound('Technician profile');
 
     return {
       connected: tech.googleCalendarToken !== null,
@@ -59,7 +60,8 @@ export const calendarRouter = router({
     const redirectUri = `${process.env['NEXT_PUBLIC_APP_URL'] || 'http://localhost:3000'}/tech/calendar/callback`;
     const state = crypto.randomUUID?.() || Math.random().toString(36).slice(2);
     const url = getGoogleAuthUrl(redirectUri, state);
-    if (!url) throw new TRPCError({ code: 'NOT_IMPLEMENTED', message: 'Google OAuth not configured' });
+    if (!url)
+      throw new TRPCError({ code: 'NOT_IMPLEMENTED', message: 'Google OAuth not configured' });
     return { url, state };
   }),
 
@@ -71,7 +73,7 @@ export const calendarRouter = router({
       const tokens = await exchangeGoogleCode(input.authCode, redirectUri);
 
       if (!tokens) {
-        throw new TRPCError({ code: 'BAD_REQUEST', message: 'Failed to exchange authorization code' });
+        throw badRequest('Failed to exchange authorization code');
       }
 
       // Store tokens in technician profile
@@ -91,7 +93,8 @@ export const calendarRouter = router({
   disconnect: technicianProcedure.mutation(async ({ ctx }) => {
     const tech = await prisma.technician.findUnique({ where: { userId: ctx.user.id } });
     if (!tech) throw new TRPCError({ code: 'NOT_FOUND' });
-    if (!tech.googleCalendarToken) throw new TRPCError({ code: 'BAD_REQUEST', message: 'Not connected' });
+    if (!tech.googleCalendarToken)
+      throw new TRPCError({ code: 'BAD_REQUEST', message: 'Not connected' });
 
     // Clean up synced Google events before disconnecting
     const syncedBookings = await prisma.booking.findMany({
@@ -103,24 +106,38 @@ export const calendarRouter = router({
     if (syncedBookings.length > 0) {
       const accessToken = await getValidAccessToken(ctx.user.id).catch(() => null);
       if (accessToken) {
+        const cleanedIds: number[] = [];
         for (const b of syncedBookings) {
           if (b.googleEventId && (await deleteGoogleCalendarEvent(accessToken, b.googleEventId))) {
-            await prisma.booking.update({
-              where: { id: b.id },
-              data: { googleEventId: null },
-            });
+            cleanedIds.push(b.id);
             cleaned++;
           }
+        }
+        // Batch clear event IDs
+        if (cleanedIds.length > 0) {
+          await prisma.booking.updateMany({
+            where: { id: { in: cleanedIds } },
+            data: { googleEventId: null },
+          });
         }
       }
     }
 
     await prisma.technician.update({
       where: { userId: ctx.user.id },
-      data: { googleCalendarToken: null, googleRefreshToken: null, googleTokenExpiry: null, googleCalendarEmail: null },
+      data: {
+        googleCalendarToken: null,
+        googleRefreshToken: null,
+        googleTokenExpiry: null,
+        googleCalendarEmail: null,
+      },
     });
 
-    return { connected: false, cleaned, message: `Google Calendar disconnected${cleaned > 0 ? `. ${cleaned} event(s) cleaned up.` : ''}` };
+    return {
+      connected: false,
+      cleaned,
+      message: `Google Calendar disconnected${cleaned > 0 ? `. ${cleaned} event(s) cleaned up.` : ''}`,
+    };
   }),
 
   // ── Sync bookings to Google Calendar (push) ─────────────
@@ -140,9 +157,12 @@ export const calendarRouter = router({
     });
 
     let synced = 0;
+    const updates: Array<{ id: number; eventId: string }> = [];
+
     for (const booking of bookings) {
       if (booking.startAt && booking.endAt) {
-        const serviceName = ((booking.service.titleJson as Record<string, string>)['ar']) || 'Booking';
+        const serviceName =
+          (booking.service.titleJson as Record<string, string>)['ar'] || 'Booking';
         const eventId = await createGoogleCalendarEvent(accessToken, {
           summary: `${serviceName} - ${booking.customer.name}`,
           description: `GOB-${booking.bookingCode}`,
@@ -152,13 +172,22 @@ export const calendarRouter = router({
         });
 
         if (eventId) {
-          await prisma.booking.update({
-            where: { id: booking.id },
-            data: { googleEventId: eventId },
-          });
+          updates.push({ id: booking.id, eventId });
           synced++;
         }
       }
+    }
+
+    // Batch update all synced bookings
+    if (updates.length > 0) {
+      await prisma.$transaction(
+        updates.map((u) =>
+          prisma.booking.update({
+            where: { id: u.id },
+            data: { googleEventId: u.eventId },
+          }),
+        ),
+      );
     }
 
     return { synced, message: `${synced} booking(s) synced to Google Calendar` };
@@ -172,15 +201,28 @@ export const calendarRouter = router({
     const timeMin = new Date().toISOString();
     const timeMax = new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString();
 
-    const response = await fetch(
-      `https://www.googleapis.com/calendar/v3/calendars/primary/events?timeMin=${encodeURIComponent(timeMin)}&timeMax=${encodeURIComponent(timeMax)}&singleEvents=true&orderBy=startTime`,
-      {
-        headers: { Authorization: `Bearer ${accessToken}` },
-      },
-    );
+    let response: Response;
+    try {
+      response = await fetch(
+        `https://www.googleapis.com/calendar/v3/calendars/primary/events?timeMin=${encodeURIComponent(timeMin)}&timeMax=${encodeURIComponent(timeMax)}&singleEvents=true&orderBy=startTime`,
+        {
+          headers: { Authorization: `Bearer ${accessToken}` },
+        },
+      );
+    } catch {
+      // Network failures must surface as TRPCErrors, not raw TypeErrors
+      // (every other Google path in this file degrades gracefully).
+      throw new TRPCError({
+        code: 'BAD_REQUEST',
+        message: 'Failed to fetch Google Calendar events',
+      });
+    }
 
     if (!response.ok) {
-      throw new TRPCError({ code: 'BAD_REQUEST', message: 'Failed to fetch Google Calendar events' });
+      throw new TRPCError({
+        code: 'BAD_REQUEST',
+        message: 'Failed to fetch Google Calendar events',
+      });
     }
 
     const data = (await response.json()) as Record<string, unknown>;
@@ -232,7 +274,8 @@ export const calendarRouter = router({
 
       if (!booking) throw new TRPCError({ code: 'NOT_FOUND' });
       if (booking.technicianId !== ctx.user.id) throw new TRPCError({ code: 'FORBIDDEN' });
-      if (!booking.googleEventId) throw new TRPCError({ code: 'BAD_REQUEST', message: 'Not synced to Google Calendar' });
+      if (!booking.googleEventId)
+        throw new TRPCError({ code: 'BAD_REQUEST', message: 'Not synced to Google Calendar' });
 
       const accessToken = await getValidAccessToken(ctx.user.id);
       const deleted = await deleteGoogleCalendarEvent(accessToken, booking.googleEventId);
@@ -244,6 +287,9 @@ export const calendarRouter = router({
         });
       }
 
-      return { success: deleted, message: deleted ? 'Event removed from Google Calendar' : 'Failed to delete event' };
+      return {
+        success: deleted,
+        message: deleted ? 'Event removed from Google Calendar' : 'Failed to delete event',
+      };
     }),
 });

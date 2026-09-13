@@ -1,99 +1,80 @@
-import { View, Text, ScrollView, TouchableOpacity, StyleSheet, ActivityIndicator, TextInput } from 'react-native';
-import { trpc } from '@/lib/api';
-import { useState, useEffect } from 'react';
-import { useRouter } from 'expo-router';
+import { View, Text, ScrollView, StyleSheet, RefreshControl } from 'react-native';
+import { SkeletonList } from '@/components/SkeletonCard';
+import { ErrorAlert } from '@/components/ErrorAlert';
+import { trpc } from '@/lib/trpc-react';
+import { useLocale } from '@/components/LocaleProvider';
 
-export default function TechniciansScreen() {
-  const router = useRouter();
-  const [data, setData] = useState<Record<string, unknown>[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState('');
-  const [search, setSearch] = useState('');
-
-  const fetch = () => {
-    setLoading(true);
-    setError('');
-    (trpc.technicians.list as any).query({ page: 1, limit: 50 })
-      .then((d: Record<string, unknown>) => { setData((d?.items ?? []) as Record<string, unknown>[]); setLoading(false); })
-      .catch(() => { setError('فشل تحميل الفنيات'); setLoading(false); });
-  };
-
-  useEffect(() => { fetch(); }, []);
-
-  const filtered = search
-    ? data.filter((t) => {
-        const name = (t.name as string ?? '').toLowerCase();
-        const city = (t.city as string ?? '').toLowerCase();
-        const q = search.toLowerCase();
-        return name.includes(q) || city.includes(q);
-      })
-    : data;
-
-  return (
-    <View style={styles.container}>
-      <Text style={styles.title}>الفنيات</Text>
-
-      <TextInput
-        style={styles.searchInput}
-        placeholder="بحث عن فنية..."
-        value={search}
-        onChangeText={setSearch}
-      />
-
-      {loading ? <ActivityIndicator color="#7c3aed" style={{ marginTop: 40 }} /> :
-       error ? (
-        <View style={styles.centered}>
-          <Text style={styles.error}>{error}</Text>
-          <TouchableOpacity style={styles.retryBtn} onPress={fetch}><Text style={styles.retryText}>إعادة المحاولة</Text></TouchableOpacity>
-        </View>
-       ) : filtered.length === 0 ? (
-        <View style={styles.centered}>
-          <Text style={styles.emptyIcon}>👩‍🎤</Text>
-          <Text style={styles.empty}>لا توجد فنيات</Text>
-        </View>
-       ) : (
-        <ScrollView>
-          {filtered.map((t: Record<string, unknown>) => (
-            <TouchableOpacity
-              key={t.id as number}
-              style={styles.card}
-              onPress={() => router.push(`/technicians/${t.id}`)}
-            >
-              <View style={styles.avatar}>
-                <Text style={styles.avatarText}>👤</Text>
-              </View>
-              <View style={{ flex: 1 }}>
-                <Text style={styles.name}>{t.name as string}</Text>
-                <Text style={styles.city}>{t.city as string ?? '—'}</Text>
-                <View style={styles.ratingRow}>
-                  <Text style={styles.rating}>⭐ {Number(t.ratingAvg ?? 0).toFixed(1)}</Text>
-                  <Text style={styles.reviews}>({String(t.totalReviews ?? 0)})</Text>
-                </View>
-              </View>
-            </TouchableOpacity>
-          ))}
-        </ScrollView>
-      )}
-    </View>
-  );
+interface TechnicianItem {
+  id?: number;
+  name?: string;
+  specialtyAr?: string;
+  specialty?: string;
+  rating?: number;
+  totalBookings?: number;
+  startingPrice?: number;
 }
 
+export default function TechniciansScreen(): JSX.Element {
+  const { t } = useLocale();
+  const q = trpc.technicians.list.useQuery({});
+  const techs = (q.data as unknown as { items?: TechnicianItem[] } | null)?.items ?? [];
+  if (q.isLoading) return <SkeletonList count={5} />;
+  if (q.isError)
+    return (
+      <ErrorAlert message={t('mobile.public.technicians.load-error')} onRetry={() => q.refetch()} />
+    );
+  return (
+    <ScrollView
+      style={styles.c}
+      contentContainerStyle={styles.i}
+      refreshControl={
+        <RefreshControl
+          refreshing={q.isRefetching}
+          onRefresh={() => q.refetch()}
+          colors={['#db2777']}
+        />
+      }
+    >
+      <Text style={styles.t}>{t('mobile.public.technicians.title')}</Text>
+      {techs.map((item) => (
+        <View key={item.id} style={styles.card}>
+          <Text style={styles.av}>👩</Text>
+          <View style={{ flex: 1 }}>
+            <Text style={styles.tn}>{item.name}</Text>
+            <Text style={styles.ts}>{item.specialtyAr ?? item.specialty}</Text>
+            <View style={styles.tm}>
+              <Text style={styles.tr}> {item.rating ?? 0}</Text>
+              <Text style={styles.tb}>
+                {t('mobile.public.bookings-count', { count: item.totalBookings ?? 0 })}
+              </Text>
+              <Text style={styles.tp}>
+                {t('mobile.public.currency', { price: item.startingPrice?.toLocaleString() ?? '' })}
+              </Text>
+            </View>
+          </View>
+        </View>
+      ))}
+    </ScrollView>
+  );
+}
 const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: '#fff', padding: 16 },
-  title: { fontSize: 24, fontWeight: '800', color: '#111827', marginBottom: 12 },
-  searchInput: { borderWidth: 1, borderColor: '#d1d5db', borderRadius: 12, padding: 14, fontSize: 16, backgroundColor: '#f9fafb', textAlign: 'right', marginBottom: 16 },
-  card: { flexDirection: 'row', alignItems: 'center', padding: 16, marginBottom: 8, borderRadius: 12, borderWidth: 1, borderColor: '#e5e7eb' },
-  avatar: { width: 56, height: 56, borderRadius: 28, backgroundColor: '#f5f3ff', justifyContent: 'center', alignItems: 'center', marginRight: 12 },
-  avatarText: { fontSize: 24 },
-  name: { fontSize: 16, fontWeight: '600', color: '#111827' },
-  city: { fontSize: 13, color: '#6b7280', marginTop: 2 },
-  ratingRow: { flexDirection: 'row', alignItems: 'center', gap: 4, marginTop: 4 },
-  rating: { fontSize: 14, color: '#f59e0b', fontWeight: '600' },
-  reviews: { fontSize: 13, color: '#9ca3af' },
-  centered: { alignItems: 'center', marginTop: 40 },
-  emptyIcon: { fontSize: 48, marginBottom: 12 },
-  empty: { fontSize: 18, fontWeight: '600', color: '#6b7280' },
-  error: { color: '#ef4444', fontSize: 16, marginBottom: 12 },
-  retryBtn: { backgroundColor: '#7c3aed', borderRadius: 12, paddingHorizontal: 24, paddingVertical: 10 },
-  retryText: { color: '#fff', fontSize: 14, fontWeight: '600' },
+  c: { flex: 1, backgroundColor: '#fdf2f8' },
+  i: { padding: 16, paddingTop: 30, paddingBottom: 40 },
+  t: { fontSize: 24, fontWeight: '800', color: '#db2777', textAlign: 'center', marginBottom: 20 },
+  card: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 12,
+    backgroundColor: '#fff',
+    borderRadius: 14,
+    padding: 14,
+    marginBottom: 8,
+  },
+  av: { fontSize: 40 },
+  tn: { fontSize: 15, fontWeight: '700', color: '#111827' },
+  ts: { fontSize: 12, color: '#6b7280', marginTop: 2 },
+  tm: { flexDirection: 'row', gap: 12, marginTop: 6 },
+  tr: { fontSize: 12, color: '#f59e0b' },
+  tb: { fontSize: 12, color: '#6b7280' },
+  tp: { fontSize: 13, fontWeight: '700', color: '#db2777' },
 });

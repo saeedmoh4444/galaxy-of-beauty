@@ -1,0 +1,8 @@
+User-agent: *
+Allow: /
+Disallow: /api/
+Disallow: /admin/
+Disallow: /customer/
+Disallow: /tech/
+
+Sitemap: https://galaxyofbeauty.sa/sitemap.xml

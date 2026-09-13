@@ -1,85 +1,111 @@
-import { View, Text, ScrollView, StyleSheet, ActivityIndicator, TouchableOpacity } from 'react-native';
-import { trpc } from '@/lib/api';
-import { useState, useEffect } from 'react';
+import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
+import { ScreenState } from '@/components/ScreenState';
+import { trpc } from '@/lib/trpc-react';
+import { useLocale } from '@/components/LocaleProvider';
+import { useAuthState } from '@/hooks/useAuthState';
 
-export default function ReferralsScreen() {
-  const [data, setData] = useState<Record<string, unknown> | null>(null);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState('');
+const COLORS = {
+  brand: '#7c3aed',
+  white: '#ffffff',
+  gray400: '#6b7280',
+  gray900: '#111827',
+  success: '#10b981',
+};
 
-  const fetch = () => {
-    setLoading(true);
-    setError('');
-    (trpc.referrals.getMyCode as any).query({} as never)
-      .then((d: Record<string, unknown>) => { setData(d); setLoading(false); })
-      .catch(() => { setError('فشل تحميل بيانات الإحالة'); setLoading(false); });
+interface ReferralCodeData {
+  referralCode?: string;
+}
+
+interface ReferralStats {
+  totalReferrals?: number;
+  totalEarnings?: number;
+}
+
+export default function ReferralsScreen(): JSX.Element {
+  const { t } = useLocale();
+  const isAuthed = useAuthState();
+  const code = trpc.referrals.getMyCode.useQuery(undefined, { enabled: isAuthed });
+  const stats = trpc.referrals.getStats.useQuery(undefined, { enabled: isAuthed }) ?? {
+    data: null,
   };
-
-  useEffect(() => { fetch(); }, []);
-
-  const handleCreate = async () => {
-    // Code is auto-generated on first fetch
-    fetch();
-  };
+  const codeData = code.data as ReferralCodeData | null;
+  const statsData = stats.data as ReferralStats | null;
 
   return (
-    <ScrollView style={styles.container}>
-      <Text style={styles.title}>برنامج الإحالة</Text>
-
-      {loading ? <ActivityIndicator color="#7c3aed" style={{ marginTop: 40 }} /> :
-       error ? (
-        <View style={styles.centered}>
-          <Text style={styles.error}>{error}</Text>
-          <TouchableOpacity style={styles.retryBtn} onPress={fetch}><Text style={styles.retryText}>إعادة المحاولة</Text></TouchableOpacity>
-        </View>
-       ) : !data ? (
-        <View style={styles.centered}>
-          <Text style={styles.emptyIcon}>🎁</Text>
-          <Text style={styles.empty}>انضم لبرنامج الإحالة</Text>
-          <Text style={styles.hint}>أحِلّي صديقاتك واكسبي مكافآت</Text>
-          <TouchableOpacity style={styles.btn} onPress={handleCreate}><Text style={styles.btnText}>إنشاء رمز الإحالة</Text></TouchableOpacity>
-        </View>
-       ) : (
-        <View>
-          <View style={styles.codeCard}>
-            <Text style={styles.codeLabel}>رمز الإحالة الخاص بك</Text>
-            <Text style={styles.code} selectable>{data.code as string}</Text>
-            <Text style={styles.codeHint}>شاركي هذا الرمز مع صديقاتك</Text>
+    <ScreenState
+      isLoading={code.isLoading}
+      isError={code.isError}
+      isEmpty={!code.data}
+      errorMessage={t('mobile.referrals.load-error')}
+      onRetry={() => code.refetch()}
+    >
+      <Text style={styles.title}>{t('mobile.referrals.title')}</Text>
+      <View style={styles.codeCard}>
+        <Text style={styles.codeLabel}>{t('mobile.referrals.your-code')}</Text>
+        <Text style={styles.codeValue}>{codeData?.referralCode ?? '———'}</Text>
+        <TouchableOpacity style={styles.copyBtn} onPress={() => {}}>
+          <Text style={styles.copyText}>{t('mobile.referrals.copy-code')}</Text>
+        </TouchableOpacity>
+      </View>
+      {stats.data && (
+        <View style={styles.statsRow}>
+          <View style={styles.statCard}>
+            <Text style={styles.statNum}>{String(statsData?.totalReferrals ?? 0)}</Text>
+            <Text style={styles.statLabel}>{t('mobile.referrals.referrals')}</Text>
           </View>
-          <View style={styles.statsRow}>
-            <View style={styles.statCard}>
-              <Text style={styles.statValue}>{String(data.totalReferrals ?? 0)}</Text>
-              <Text style={styles.statLabel}>إحالات</Text>
-            </View>
-            <View style={styles.statCard}>
-              <Text style={styles.statValue}>{Number(data.totalRewards ?? 0).toFixed(0)} ر.س</Text>
-              <Text style={styles.statLabel}>مكافآت</Text>
-            </View>
+          <View style={styles.statCard}>
+            <Text style={styles.statNum}>{String(statsData?.totalEarnings ?? 0)} ر.س</Text>
+            <Text style={styles.statLabel}>{t('mobile.referrals.rewards')}</Text>
           </View>
         </View>
       )}
-    </ScrollView>
+    </ScreenState>
   );
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: '#fff', padding: 16 },
-  title: { fontSize: 24, fontWeight: '800', color: '#111827', marginBottom: 16 },
-  centered: { alignItems: 'center', marginTop: 40 },
-  emptyIcon: { fontSize: 48, marginBottom: 12 },
-  empty: { fontSize: 18, fontWeight: '600', color: '#6b7280' },
-  hint: { fontSize: 14, color: '#9ca3af', marginTop: 4, textAlign: 'center', marginBottom: 16 },
-  error: { color: '#ef4444', fontSize: 16, marginBottom: 12 },
-  retryBtn: { backgroundColor: '#7c3aed', borderRadius: 12, paddingHorizontal: 24, paddingVertical: 10 },
-  retryText: { color: '#fff', fontSize: 14, fontWeight: '600' },
-  btn: { backgroundColor: '#7c3aed', borderRadius: 12, padding: 14, alignItems: 'center' },
-  btnText: { color: '#fff', fontSize: 16, fontWeight: '600' },
-  codeCard: { backgroundColor: '#f5f3ff', borderRadius: 16, padding: 24, alignItems: 'center', marginBottom: 16 },
-  codeLabel: { fontSize: 14, color: '#7c3aed', marginBottom: 8 },
-  code: { fontSize: 28, fontWeight: '800', color: '#111827', fontFamily: 'monospace', letterSpacing: 4 },
-  codeHint: { fontSize: 12, color: '#9ca3af', marginTop: 8 },
-  statsRow: { flexDirection: 'row', gap: 12 },
-  statCard: { flex: 1, backgroundColor: '#f9fafb', borderRadius: 12, padding: 16, alignItems: 'center' },
-  statValue: { fontSize: 20, fontWeight: '800', color: '#111827' },
-  statLabel: { fontSize: 13, color: '#6b7280', marginTop: 4 },
+  title: {
+    fontSize: 24,
+    fontWeight: '800',
+    color: COLORS.brand,
+    textAlign: 'center',
+    marginBottom: 20,
+  },
+  codeCard: {
+    backgroundColor: COLORS.brand,
+    borderRadius: 16,
+    padding: 24,
+    alignItems: 'center',
+    marginBottom: 20,
+  },
+  codeLabel: { fontSize: 13, color: 'rgba(255,255,255,0.8)', marginBottom: 8 },
+  codeValue: {
+    fontSize: 24,
+    fontWeight: '800',
+    color: COLORS.white,
+    letterSpacing: 2,
+    fontFamily: 'monospace',
+  },
+  copyBtn: {
+    marginTop: 16,
+    backgroundColor: 'rgba(255,255,255,0.2)',
+    borderRadius: 10,
+    paddingHorizontal: 20,
+    paddingVertical: 10,
+  },
+  copyText: { fontSize: 14, fontWeight: '600', color: COLORS.white },
+  statsRow: { flexDirection: 'row', gap: 10 },
+  statCard: {
+    flex: 1,
+    backgroundColor: COLORS.white,
+    borderRadius: 14,
+    padding: 16,
+    alignItems: 'center',
+    shadowColor: '#000',
+    shadowOpacity: 0.05,
+    shadowRadius: 4,
+    elevation: 2,
+  },
+  statNum: { fontSize: 18, fontWeight: '800', color: COLORS.gray900 },
+  statLabel: { fontSize: 12, color: COLORS.gray400, marginTop: 4 },
 });

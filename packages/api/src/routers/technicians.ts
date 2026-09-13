@@ -1,12 +1,8 @@
 import { TRPCError } from '@trpc/server';
 import { z } from 'zod';
 import { prisma } from '@galaxy/db';
-import {
-  publicProcedure,
-  adminProcedure,
-  technicianProcedure,
-  router,
-} from '../trpc';
+import { notFound } from '../lib/errors';
+import { publicProcedure, adminProcedure, technicianProcedure, router } from '../trpc';
 import { addTechnicianServiceSchema } from '../validators/catalog';
 
 /** Shared pagination / filter input for the technician list endpoint. */
@@ -24,48 +20,128 @@ export const technicianRouter = router({
    * Optionally filters by city and/or a service the technician offers.
    * Ordered by average rating descending.
    */
-  list: publicProcedure
-    .input(technicianListSchema)
-    .query(async ({ input }) => {
-      const { city, serviceId, page, limit } = input;
-      const skip = (page - 1) * limit;
+  list: publicProcedure.input(technicianListSchema).query(async ({ input }) => {
+    const { city, serviceId, page, limit } = input;
+    const skip = (page - 1) * limit;
 
-      const where: Record<string, unknown> = { kycStatus: 'VERIFIED' };
+    const where: Record<string, unknown> = { kycStatus: 'VERIFIED' };
 
-      if (city) {
-        where.city = city;
-      }
+    if (city) {
+      where.city = city;
+    }
 
-      if (serviceId) {
-        where.technicianServices = {
-          some: {
-            serviceId,
-            isActive: true,
-          },
-        };
-      }
+    if (serviceId) {
+      where.technicianServices = {
+        some: {
+          serviceId,
+          isActive: true,
+        },
+      };
+    }
 
-      const [items, total] = await Promise.all([
-        prisma.technician.findMany({
-          where,
-          orderBy: { ratingAvg: 'desc' },
-          skip,
-          take: limit,
-          include: {
-            user: {
-              select: {
-                id: true,
-                name: true,
-                avatarUrl: true,
-              },
+    const [items, total] = await Promise.all([
+      prisma.technician.findMany({
+        where,
+        orderBy: { ratingAvg: 'desc' },
+        skip,
+        take: limit,
+        include: {
+          user: {
+            select: {
+              id: true,
+              name: true,
+              avatarUrl: true,
             },
           },
-        }),
-        prisma.technician.count({ where }),
-      ]);
+        },
+      }),
+      prisma.technician.count({ where }),
+    ]);
 
-      return { items, total, page, limit };
-    }),
+    return { items, total, page, limit };
+  }),
+
+  /**
+   * coverage — distinct areas + cities served by verified technicians.
+   * Feeds the home trust stat row (Phase 3 sprint 1). City is required on
+   * Technician, so `cities` is the stable fallback when areas are unset
+   * (as in the main seed). Public.
+   */
+  coverage: publicProcedure.query(async () => {
+    const [areaRows, cityRows] = await Promise.all([
+      prisma.technician.findMany({
+        where: { kycStatus: 'VERIFIED', area: { not: null } },
+        distinct: ['area'],
+        select: { area: true },
+        orderBy: { area: 'asc' },
+      }),
+      prisma.technician.findMany({
+        where: { kycStatus: 'VERIFIED' },
+        distinct: ['city'],
+        select: { city: true },
+        orderBy: { city: 'asc' },
+      }),
+    ]);
+    return {
+      areas: areaRows.map((r) => r.area),
+      cities: cityRows.map((r) => r.city),
+    };
+  }),
+
+  /**
+   * trainers — E3 fitness vertical: verified technicians offering
+   * fitness-category services. The 1:1 session flow itself is the standard
+   * Booking engine (unchanged).
+   * Public.
+   */
+  trainers: publicProcedure.query(async () => {
+    const FITNESS_SLUGS = ['fitness', 'personal-training', 'yoga', 'pilates', 'gym'];
+    return prisma.technician.findMany({
+      where: {
+        kycStatus: 'VERIFIED',
+        technicianServices: {
+          some: {
+            isActive: true,
+            service: { category: { slug: { in: FITNESS_SLUGS } } },
+          },
+        },
+      },
+      orderBy: { ratingAvg: 'desc' },
+      take: 50,
+      include: {
+        user: {
+          select: { id: true, name: true, avatarUrl: true },
+        },
+      },
+    });
+  }),
+
+  /**
+   * barberettes — E5: verified technicians offering barberette-category
+   * services (short cuts, fades). The booking flow itself is the standard
+   * technician Booking engine (unchanged). Public.
+   */
+  barberettes: publicProcedure.query(async () => {
+    const BARBERETTE_SLUGS = ['barberette', 'pixie-cut', 'layered-bob', 'clean-fade'];
+    return prisma.technician.findMany({
+      where: {
+        kycStatus: 'VERIFIED',
+        technicianServices: {
+          some: {
+            isActive: true,
+            service: { category: { slug: { in: BARBERETTE_SLUGS } } },
+          },
+        },
+      },
+      orderBy: { ratingAvg: 'desc' },
+      take: 50,
+      include: {
+        user: {
+          select: { id: true, name: true, avatarUrl: true },
+        },
+      },
+    });
+  }),
 
   /**
    * getById — full technician profile by user ID.
@@ -109,10 +185,7 @@ export const technicianRouter = router({
       });
 
       if (!technician) {
-        throw new TRPCError({
-          code: 'NOT_FOUND',
-          message: 'Technician not found',
-        });
+        throw notFound('Technician');
       }
 
       return technician;
@@ -156,20 +229,14 @@ export const technicianRouter = router({
         where: { userId: ctx.user.id },
       });
       if (!technician) {
-        throw new TRPCError({
-          code: 'NOT_FOUND',
-          message: 'Technician profile not found',
-        });
+        throw notFound('Technician profile');
       }
 
       const service = await prisma.service.findUnique({
         where: { id: input.serviceId, isActive: true },
       });
       if (!service) {
-        throw new TRPCError({
-          code: 'NOT_FOUND',
-          message: 'Service not found',
-        });
+        throw notFound('Service');
       }
 
       const mapping = await prisma.technicianService.create({
@@ -196,10 +263,7 @@ export const technicianRouter = router({
       });
 
       if (!mapping) {
-        throw new TRPCError({
-          code: 'NOT_FOUND',
-          message: 'Service mapping not found',
-        });
+        throw notFound('Service mapping');
       }
       if (mapping.technician.userId !== ctx.user.id) {
         throw new TRPCError({
@@ -234,10 +298,7 @@ export const technicianRouter = router({
       });
 
       if (!mapping) {
-        throw new TRPCError({
-          code: 'NOT_FOUND',
-          message: 'Service mapping not found',
-        });
+        throw notFound('Service mapping');
       }
       if (mapping.technician.userId !== ctx.user.id) {
         throw new TRPCError({
@@ -252,6 +313,60 @@ export const technicianRouter = router({
       });
 
       return updated;
+    }),
+
+  /**
+   * updateProfile — update the authenticated technician's profile fields
+   * (B.8: previously the web form stubbed this — city/area/bio/buffer/eco
+   * were decorative). Technician only. Partial updates: omitted fields are
+   * left untouched, and bioAr/bioEn merge into bioJson per-language.
+   */
+  updateProfile: technicianProcedure
+    .input(
+      z
+        .object({
+          city: z.string().min(1).max(100).optional(),
+          area: z.string().min(1).max(100).optional(),
+          bioAr: z.string().max(2000).optional(),
+          bioEn: z.string().max(2000).optional(),
+          bufferMinutes: z.number().int().min(0).max(180).optional(),
+          isEcoFriendly: z.boolean().optional(),
+        })
+        .refine((v) => Object.keys(v).length > 0, {
+          message: 'At least one field is required',
+        }),
+    )
+    .mutation(async ({ ctx, input }) => {
+      const technician = await prisma.technician.findUnique({
+        where: { userId: ctx.user.id },
+      });
+      if (!technician) {
+        throw notFound('Technician profile');
+      }
+
+      const data: {
+        city?: string;
+        area?: string;
+        bioJson?: { ar?: string; en?: string };
+        bufferMinutes?: number;
+        isEcoFriendly?: boolean;
+      } = {};
+      if (input.city !== undefined) data.city = input.city;
+      if (input.area !== undefined) data.area = input.area;
+      if (input.bufferMinutes !== undefined) data.bufferMinutes = input.bufferMinutes;
+      if (input.isEcoFriendly !== undefined) data.isEcoFriendly = input.isEcoFriendly;
+      if (input.bioAr !== undefined || input.bioEn !== undefined) {
+        const current = (technician.bioJson ?? {}) as { ar?: string; en?: string };
+        data.bioJson = {
+          ar: input.bioAr ?? current.ar,
+          en: input.bioEn ?? current.en,
+        };
+      }
+
+      return prisma.technician.update({
+        where: { userId: ctx.user.id },
+        data,
+      });
     }),
 
   /**
@@ -275,10 +390,7 @@ export const technicianRouter = router({
         where: { userId: ctx.user.id },
       });
       if (!technician) {
-        throw new TRPCError({
-          code: 'NOT_FOUND',
-          message: 'Technician profile not found',
-        });
+        throw notFound('Technician profile');
       }
 
       const updated = await prisma.technician.update({
@@ -333,10 +445,7 @@ export const technicianRouter = router({
         where: { userId: input.userId },
       });
       if (!technician) {
-        throw new TRPCError({
-          code: 'NOT_FOUND',
-          message: 'Technician not found',
-        });
+        throw notFound('Technician');
       }
 
       const updated = await prisma.technician.update({
@@ -384,7 +493,7 @@ export const technicianRouter = router({
    * unavailable, and vice versa.
    * Technician only.
    */
-  toggleBusy: technicianProcedure.mutation(async ({ ctx }) => {
+  toggleBusy: technicianProcedure.input(z.object({})).mutation(async ({ ctx }) => {
     const technician = await prisma.technician.findUnique({
       where: { userId: ctx.user.id },
     });

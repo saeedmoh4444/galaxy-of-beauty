@@ -5,6 +5,8 @@ const config: Config = {
   content: [
     './src/**/*.{js,ts,jsx,tsx,mdx}',
     '../../packages/shared/src/**/*.{js,ts,jsx,tsx}',
+    // @galaxy/ui ships raw source — its classes must be scanned here too.
+    '../../packages/ui/src/**/*.{js,ts,jsx,tsx}',
   ],
   presets: [shared],
   theme: {

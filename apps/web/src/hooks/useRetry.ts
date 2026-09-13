@@ -45,7 +45,7 @@ export function useRetry({
   }, [retryCount, maxRetries]);
 
   const withRetry = useCallback(
-    async <T,>(fn: () => Promise<T>): Promise<T | null> => {
+    async <T>(fn: () => Promise<T>): Promise<T | null> => {
       setIsRetrying(true);
 
       for (let attempt = 0; attempt <= maxRetries; attempt++) {
@@ -54,7 +54,7 @@ export function useRetry({
           setIsRetrying(false);
           setRetryCount(0);
           return result;
-        } catch (err) {
+        } catch {
           if (attempt === maxRetries) {
             setIsRetrying(false);
             return null;

@@ -1,5 +1,6 @@
 import { protectedProcedure, router } from '../trpc';
 import { prisma } from '@galaxy/db';
+import { BULK_PAGE_SIZE } from '@galaxy/shared';
 
 export const streakRouter = router({
   get: protectedProcedure.query(async ({ ctx }) => {
@@ -34,12 +35,8 @@ export const streakRouter = router({
       }),
     ]);
 
-    const earnedIds = new Set(
-      earnedAchievements.map((e) => e.achievementId),
-    );
-    const earnedMap = new Map(
-      earnedAchievements.map((e) => [e.achievementId, e.awardedAt]),
-    );
+    const earnedIds = new Set(earnedAchievements.map((e) => e.achievementId));
+    const earnedMap = new Map(earnedAchievements.map((e) => [e.achievementId, e.awardedAt]));
 
     return {
       all: allAchievements.map((a) => ({
@@ -99,7 +96,7 @@ export const streakRouter = router({
         },
       },
       orderBy: { startAt: 'desc' },
-      take: 50,
+      take: BULK_PAGE_SIZE,
     });
 
     return {

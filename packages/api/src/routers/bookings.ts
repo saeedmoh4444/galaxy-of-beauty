@@ -2,17 +2,18 @@ import { z } from 'zod';
 import { TRPCError } from '@trpc/server';
 import { prisma } from '@galaxy/db';
 import crypto from 'crypto';
-import {
-  protectedProcedure,
-  customerProcedure,
-  technicianProcedure,
-  router,
-} from '../trpc';
-import {
-  createBookingSchema,
-  bookingQuerySchema,
-} from '../validators/booking';
+import { notFound, forbidden } from '../lib/errors';
+import { protectedProcedure, customerProcedure, technicianProcedure, router } from '../trpc';
+import { createBookingSchema, bookingQuerySchema } from '../validators/booking';
 import { emitToUser, emitToTechnician, emitToAdmin } from '../socket/index';
+import type { CashbackJob, LoyaltyPointsJob, CalendarSyncJob } from '../workers';
+import { notifyUser } from '../lib/notify';
+import {
+  getWalletQueue,
+  getLoyaltyQueue,
+  getNotificationQueue,
+  getIntegrationQueue,
+} from '../queues';
 
 // ---------------------------------------------------------------------------
 // Booking State Machine
@@ -79,142 +80,238 @@ export const bookingRouter = router({
    *  4. Calculate totalAmount from service basePrice + variant priceDelta
    *  5. Generate human-readable bookingCode
    */
-  create: customerProcedure
-    .input(createBookingSchema)
-    .mutation(async ({ ctx, input }) => {
-      const customerId = ctx.user.id;
+  create: customerProcedure.input(createBookingSchema).mutation(async ({ ctx, input }) => {
+    const customerId = ctx.user.id;
 
-      // 1. Idempotency check
-      const existing = await prisma.booking.findUnique({
-        where: { idempotencyKey: input.idempotencyKey },
-        include: bookingDetailInclude,
+    // 1. Idempotency check
+    const existing = await prisma.booking.findUnique({
+      where: { idempotencyKey: input.idempotencyKey },
+      include: bookingDetailInclude,
+    });
+    if (existing) return existing;
+
+    // 2a. Look up technician (User ID → Technician record)
+    const technician = await prisma.technician.findUnique({
+      where: { userId: input.technicianId },
+    });
+    if (!technician) {
+      throw new TRPCError({
+        code: 'NOT_FOUND',
+        message: 'Technician not found',
       });
-      if (existing) return existing;
+    }
 
-      // 2a. Look up technician (User ID → Technician record)
-      const technician = await prisma.technician.findUnique({
-        where: { userId: input.technicianId },
+    // 2b. Look up slot
+    const slot = await prisma.availabilitySlot.findUnique({
+      where: { id: input.slotId },
+    });
+    if (!slot) {
+      throw notFound('Slot');
+    }
+    if (slot.technicianId !== technician.id) {
+      throw forbidden('Slot does not belong to the specified technician');
+    }
+    if (slot.isBooked) {
+      throw new TRPCError({
+        code: 'CONFLICT',
+        message: 'Slot is already booked',
       });
-      if (!technician) {
-        throw new TRPCError({
-          code: 'NOT_FOUND',
-          message: 'Technician not found',
-        });
-      }
+    }
 
-      // 2b. Look up slot
-      const slot = await prisma.availabilitySlot.findUnique({
+    // 3. Atomic create
+    const booking = await prisma.$transaction(async (tx) => {
+      // Re-check slot inside transaction to avoid races
+      const currentSlot = await tx.availabilitySlot.findUnique({
         where: { id: input.slotId },
       });
-      if (!slot) {
-        throw new TRPCError({ code: 'NOT_FOUND', message: 'Slot not found' });
-      }
-      if (slot.technicianId !== technician.id) {
-        throw new TRPCError({
-          code: 'FORBIDDEN',
-          message: 'Slot does not belong to the specified technician',
-        });
-      }
-      if (slot.isBooked) {
+      if (!currentSlot || currentSlot.isBooked) {
         throw new TRPCError({
           code: 'CONFLICT',
-          message: 'Slot is already booked',
+          message: 'Slot is no longer available',
         });
       }
 
-      // 3. Atomic create
-      const booking = await prisma.$transaction(async (tx) => {
-        // Re-check slot inside transaction to avoid races
-        const currentSlot = await tx.availabilitySlot.findUnique({
-          where: { id: input.slotId },
+      // 4. Calculate totalAmount
+      const service = await tx.service.findUnique({
+        where: { id: input.serviceId },
+      });
+      if (!service) {
+        throw new TRPCError({
+          code: 'NOT_FOUND',
+          message: 'Service not found',
         });
-        if (!currentSlot || currentSlot.isBooked) {
-          throw new TRPCError({
-            code: 'CONFLICT',
-            message: 'Slot is no longer available',
-          });
-        }
+      }
 
-        // 4. Calculate totalAmount
-        const service = await tx.service.findUnique({
-          where: { id: input.serviceId },
+      let totalAmount = Number(service.basePrice);
+
+      if (input.variantId) {
+        const variant = await tx.serviceVariant.findUnique({
+          where: { id: input.variantId },
         });
-        if (!service) {
+        if (!variant || variant.serviceId !== input.serviceId) {
           throw new TRPCError({
             code: 'NOT_FOUND',
-            message: 'Service not found',
+            message: 'Service variant not found or does not belong to this service',
           });
         }
-
-        let totalAmount = Number(service.basePrice);
-
-        if (input.variantId) {
-          const variant = await tx.serviceVariant.findUnique({
-            where: { id: input.variantId },
-          });
-          if (!variant || variant.serviceId !== input.serviceId) {
-            throw new TRPCError({
-              code: 'NOT_FOUND',
-              message: 'Service variant not found or does not belong to this service',
-            });
-          }
-          totalAmount += Number(variant.priceDelta);
-        }
-
-        // 5. Generate booking code
-        const bookingCode = `GOB-${crypto.randomBytes(4).toString('hex').toUpperCase()}`;
-
-        // 6. Create booking
-        const newBooking = await tx.booking.create({
-          data: {
-            bookingCode,
-            customerId,
-            technicianId: input.technicianId,
-            serviceId: input.serviceId,
-            variantId: input.variantId ?? null,
-            addressId: input.addressId,
-            startAt: new Date(input.startAt),
-            endAt: new Date(input.endAt),
-            status: 'REQUESTED',
-            totalAmount,
-            platformFee: 0,
-            paymentFee: 0,
-            cashHandlingFee: 0,
-            notes: input.notes ?? null,
-            idempotencyKey: input.idempotencyKey,
-          },
-        });
-
-        // 7. Mark slot as booked and link to booking
-        await tx.availabilitySlot.update({
-          where: { id: input.slotId },
-          data: {
-            isBooked: true,
-            bookingId: newBooking.id,
-          },
-        });
-
-        return newBooking;
-      });
-
-      // 8. Return full booking with relations
-      const result = await prisma.booking.findUnique({
-        where: { id: booking.id },
-        include: bookingDetailInclude,
-      });
-
-      // 9. Emit real-time events
-      if (result) {
-        // Notify the technician about the new booking request
-        emitToTechnician(input.technicianId, 'new_booking_request', result);
-        // Notify the customer with confirmation
-        emitToUser(ctx.user.id, 'new_booking_request', result);
-        // Notify admins
-        emitToAdmin('admin_update', { type: 'new_booking', booking: result });
+        totalAmount += Number(variant.priceDelta);
       }
 
-      return result;
-    }),
+      // 5. Generate booking code
+      const bookingCode = `GOB-${crypto.randomBytes(4).toString('hex').toUpperCase()}`;
+
+      // 6. Create booking
+      const newBooking = await tx.booking.create({
+        data: {
+          bookingCode,
+          customerId,
+          technicianId: input.technicianId,
+          serviceId: input.serviceId,
+          variantId: input.variantId ?? null,
+          addressId: input.addressId,
+          startAt: new Date(input.startAt),
+          endAt: new Date(input.endAt),
+          status: 'REQUESTED',
+          totalAmount,
+          platformFee: 0,
+          paymentFee: 0,
+          cashHandlingFee: 0,
+          notes: input.notes ?? null,
+          idempotencyKey: input.idempotencyKey,
+        },
+      });
+
+      // 7. Mark slot as booked and link to booking
+      await tx.availabilitySlot.update({
+        where: { id: input.slotId },
+        data: {
+          isBooked: true,
+          bookingId: newBooking.id,
+        },
+      });
+
+      return newBooking;
+    });
+
+    // 8. Return full booking with relations
+    const result = await prisma.booking.findUnique({
+      where: { id: booking.id },
+      include: bookingDetailInclude,
+    });
+
+    // 9. Emit real-time events (immediate)
+    if (result) {
+      emitToTechnician(input.technicianId, 'new_booking_request', result);
+      emitToUser(ctx.user.id, 'new_booking_request', result);
+      emitToAdmin('admin_update', { type: 'new_booking', booking: result });
+    }
+
+    // 10. Enqueue async side effects (fire-and-forget)
+    const idemKey = input.idempotencyKey;
+    try {
+      const cashback = Math.round(Number(booking.totalAmount) * 0.05 * 100) / 100;
+      const points = Math.round(Number(booking.totalAmount));
+
+      // B.26 — template-driven notifications (prefs-respecting). In-app rows
+      // are created synchronously; external channels ride the queue.
+      const customer = await prisma.user.findUnique({
+        where: { id: customerId },
+        select: { name: true, preferredLanguage: true },
+      });
+      const serviceRow = await prisma.service.findUnique({
+        where: { id: input.serviceId },
+        select: { titleJson: true },
+      });
+      const serviceTitle = (serviceRow?.titleJson ?? {}) as { ar?: string; en?: string };
+      const customerLocale = customer?.preferredLanguage === 'en' ? 'en' : 'ar';
+      const fmt = new Intl.DateTimeFormat(customerLocale === 'ar' ? 'ar-SA' : 'en-GB', {
+        weekday: 'long',
+        month: 'long',
+        day: 'numeric',
+      });
+      const fmtTime = new Intl.DateTimeFormat(customerLocale === 'ar' ? 'ar-SA' : 'en-GB', {
+        hour: '2-digit',
+        minute: '2-digit',
+      });
+      const startDate = new Date(input.startAt);
+      const notifVars = {
+        customerName: customer?.name ?? '',
+        serviceName: serviceTitle[customerLocale] ?? '',
+        date: fmt.format(startDate),
+        time: fmtTime.format(startDate),
+      };
+
+      await Promise.allSettled([
+        // Wallet cashback
+        getWalletQueue()?.add('cashback.accrue', {
+          userId: customerId,
+          bookingId: booking.id,
+          amount: cashback,
+          idempotencyKey: idemKey ? `${idemKey}_cashback` : undefined,
+        } as CashbackJob),
+
+        // Loyalty points
+        getLoyaltyQueue()?.add('points.earn', {
+          userId: customerId,
+          bookingId: booking.id,
+          points,
+          reason: 'booking',
+          idempotencyKey: idemKey ? `${idemKey}_loyalty` : undefined,
+        } as LoyaltyPointsJob),
+
+        // Notification to technician (template-driven)
+        notifyUser({
+          userId: input.technicianId,
+          templateKey: 'booking_request_tech',
+          vars: notifVars,
+          link: `/tech/bookings`,
+        }),
+
+        // Notification to customer (template-driven)
+        notifyUser({
+          userId: customerId,
+          templateKey: 'booking_created',
+          vars: notifVars,
+          link: `/bookings/${booking.id}`,
+        }),
+
+        // Booking auto-sync (E9 follow-up): push the event to the Google
+        // Calendars of the customer AND the technician when connected.
+        getIntegrationQueue()?.add('calendar.create', {
+          technicianId: input.technicianId,
+          customerId,
+          bookingId: booking.id,
+          action: 'create',
+          startAt: input.startAt,
+          endAt: input.endAt,
+          summary: `Booking #${booking.bookingCode}`,
+          idempotencyKey: idemKey ? `${idemKey}_calendar` : undefined,
+        } as CalendarSyncJob),
+      ]);
+
+      // B.26 — schedule 48h and 24h pre-appointment reminders (BullMQ delays).
+      // If the appointment is sooner than a window, that reminder is skipped;
+      // the worker re-checks the status so cancelled bookings never get one.
+      const reminderQueue = getNotificationQueue();
+      if (reminderQueue) {
+        const now = Date.now();
+        for (const hoursBefore of [48, 24]) {
+          const delay = startDate.getTime() - hoursBefore * 3_600_000 - now;
+          if (delay > 0) {
+            await reminderQueue.add(
+              'booking.reminder',
+              { bookingId: booking.id, date: notifVars.date, time: notifVars.time },
+              { delay, jobId: `reminder_${booking.id}_${hoursBefore}h` },
+            );
+          }
+        }
+      }
+    } catch {
+      // Fire-and-forget — enqueue failures should never fail the booking creation
+    }
+
+    return result;
+  }),
 
   /**
    * List bookings for the current user.
@@ -223,48 +320,46 @@ export const bookingRouter = router({
    * - Admins see all bookings.
    * Supports pagination and optional status filter.
    */
-  list: protectedProcedure
-    .input(bookingQuerySchema)
-    .query(async ({ ctx, input }) => {
-      const userId = ctx.user.id;
-      const role = ctx.user.role;
+  list: protectedProcedure.input(bookingQuerySchema).query(async ({ ctx, input }) => {
+    const userId = ctx.user.id;
+    const role = ctx.user.role;
 
-      const where: Record<string, unknown> = {};
+    const where: Record<string, unknown> = {};
 
-      if (role === 'CUSTOMER') {
-        where.customerId = userId;
-      } else if (role === 'TECHNICIAN') {
-        where.technicianId = userId;
-      }
-      // ADMIN sees all (no additional filter)
+    if (role === 'CUSTOMER') {
+      where.customerId = userId;
+    } else if (role === 'TECHNICIAN') {
+      where.technicianId = userId;
+    }
+    // ADMIN sees all (no additional filter)
 
-      if (input.status) {
-        where.status = input.status;
-      }
+    if (input.status) {
+      where.status = input.status;
+    }
 
-      const skip = (input.page - 1) * input.limit;
+    const skip = (input.page - 1) * input.limit;
 
-      const [bookings, total] = await Promise.all([
-        prisma.booking.findMany({
-          where,
-          skip,
-          take: input.limit,
-          orderBy: { createdAt: 'desc' },
-          include: bookingListInclude,
-        }),
-        prisma.booking.count({ where }),
-      ]);
+    const [bookings, total] = await Promise.all([
+      prisma.booking.findMany({
+        where,
+        skip,
+        take: input.limit,
+        orderBy: { createdAt: 'desc' },
+        include: bookingListInclude,
+      }),
+      prisma.booking.count({ where }),
+    ]);
 
-      return {
-        bookings,
-        pagination: {
-          page: input.page,
-          limit: input.limit,
-          total,
-          totalPages: Math.ceil(total / input.limit),
-        },
-      };
-    }),
+    return {
+      bookings,
+      pagination: {
+        page: input.page,
+        limit: input.limit,
+        total,
+        totalPages: Math.ceil(total / input.limit),
+      },
+    };
+  }),
 
   /**
    * Get a single booking by ID.
@@ -272,7 +367,7 @@ export const bookingRouter = router({
    * or an admin.
    */
   getById: protectedProcedure
-    .input(z.object({ id: z.number() }))
+    .input(z.object({ id: z.number().int().positive() }))
     .query(async ({ ctx, input }) => {
       const booking = await prisma.booking.findUnique({
         where: { id: input.id },
@@ -280,7 +375,7 @@ export const bookingRouter = router({
       });
 
       if (!booking) {
-        throw new TRPCError({ code: 'NOT_FOUND', message: 'Booking not found' });
+        throw notFound('Booking');
       }
 
       const userId = ctx.user.id;
@@ -314,7 +409,7 @@ export const bookingRouter = router({
   transition: protectedProcedure
     .input(
       z.object({
-        id: z.number(),
+        id: z.number().int().positive(),
         action: z.enum(['accept', 'reject', 'cancel', 'start', 'complete', 'no_show']),
         reason: z.string().max(500).optional(),
       }),
@@ -330,7 +425,7 @@ export const bookingRouter = router({
       });
 
       if (!booking) {
-        throw new TRPCError({ code: 'NOT_FOUND', message: 'Booking not found' });
+        throw notFound('Booking');
       }
 
       // Determine new status (input.action is validated by zod enum, so this is safe)
@@ -344,7 +439,11 @@ export const bookingRouter = router({
       let authorized = false;
       if (role === 'ADMIN') {
         authorized = true;
-      } else if (role === 'TECHNICIAN' && isInvolvedTechnician && allowedRoles.includes('technician')) {
+      } else if (
+        role === 'TECHNICIAN' &&
+        isInvolvedTechnician &&
+        allowedRoles.includes('technician')
+      ) {
         authorized = true;
       } else if (role === 'CUSTOMER' && isInvolvedCustomer && allowedRoles.includes('customer')) {
         authorized = true;
@@ -435,6 +534,52 @@ export const bookingRouter = router({
         booking: updatedBooking,
       });
 
+      // Booking auto-sync (E9 follow-up): cancel/reject removes the
+      // Google Calendar events for both sides.
+      if (input.action === 'cancel' || input.action === 'reject') {
+        getIntegrationQueue()?.add('calendar.cancel', {
+          technicianId: booking.technicianId,
+          customerId: booking.customerId ?? undefined,
+          bookingId: booking.id,
+          action: 'cancel',
+        } as CalendarSyncJob);
+      }
+
+      // B.26 — template-driven notification on acceptance (fire-and-forget).
+      if (input.action === 'accept') {
+        try {
+          const svc = updatedBooking.service as { titleJson?: { ar?: string; en?: string } } | null;
+          const customerLocale =
+            (updatedBooking.customer as { preferredLanguage?: string } | null)
+              ?.preferredLanguage === 'en'
+              ? 'en'
+              : 'ar';
+          const fmt = new Intl.DateTimeFormat(customerLocale === 'ar' ? 'ar-SA' : 'en-GB', {
+            weekday: 'long',
+            month: 'long',
+            day: 'numeric',
+          });
+          const fmtTime = new Intl.DateTimeFormat(customerLocale === 'ar' ? 'ar-SA' : 'en-GB', {
+            hour: '2-digit',
+            minute: '2-digit',
+          });
+          await notifyUser({
+            userId: booking.customerId,
+            templateKey: 'booking_accepted',
+            vars: {
+              customerName: updatedBooking.customer?.name ?? '',
+              serviceName: svc?.titleJson?.[customerLocale] ?? '',
+              techName: updatedBooking.technician?.name ?? '',
+              date: fmt.format(updatedBooking.startAt),
+              time: fmtTime.format(updatedBooking.startAt),
+            },
+            link: `/bookings/${booking.id}`,
+          });
+        } catch {
+          // Notification failure must never fail the transition
+        }
+      }
+
       return updatedBooking;
     }),
 
@@ -451,6 +596,7 @@ export const bookingRouter = router({
         status: 'REQUESTED',
       },
       orderBy: { startAt: 'asc' },
+      take: 50,
       include: {
         customer: { select: { id: true, name: true, avatarUrl: true } },
         service: true,
@@ -487,7 +633,7 @@ export const bookingRouter = router({
       });
 
       if (!booking) {
-        throw new TRPCError({ code: 'NOT_FOUND', message: 'Booking not found' });
+        throw notFound('Booking');
       }
 
       if (booking.customerId !== userId) {
@@ -567,6 +713,17 @@ export const bookingRouter = router({
         });
       });
 
+      // Booking auto-sync (E9 follow-up): move the Google Calendar events
+      // to the new time for both sides.
+      getIntegrationQueue()?.add('calendar.update', {
+        technicianId: booking.technicianId,
+        customerId: booking.customerId,
+        bookingId: booking.id,
+        action: 'update',
+        startAt: input.newStartAt,
+        endAt: input.newEndAt,
+      } as CalendarSyncJob);
+
       return updatedBooking;
     }),
 
@@ -585,7 +742,7 @@ export const bookingRouter = router({
       });
 
       if (!booking) {
-        throw new TRPCError({ code: 'NOT_FOUND', message: 'Booking not found' });
+        throw notFound('Booking');
       }
 
       const userId = ctx.user.id;
@@ -594,7 +751,7 @@ export const bookingRouter = router({
         booking.technicianId !== userId &&
         ctx.user.role !== 'ADMIN'
       ) {
-        throw new TRPCError({ code: 'FORBIDDEN', message: 'You do not have access to this booking' });
+        throw forbidden('You do not have access to this booking');
       }
 
       const events: Array<Record<string, unknown>> = [];
@@ -634,7 +791,10 @@ export const bookingRouter = router({
         NO_SHOW: { ar: 'لم يحضر', en: 'No-show' },
       };
 
-      const currentLabel = statusLabels[booking.status] || { ar: booking.status, en: booking.status };
+      const currentLabel = statusLabels[booking.status] || {
+        ar: booking.status,
+        en: booking.status,
+      };
 
       // Cancelled event
       if (booking.cancelledAt) {
@@ -680,7 +840,10 @@ export const bookingRouter = router({
       }
 
       // Sort chronologically
-      events.sort((a, b) => new Date(a.timestamp as string).getTime() - new Date(b.timestamp as string).getTime());
+      events.sort(
+        (a, b) =>
+          new Date(a.timestamp as string).getTime() - new Date(b.timestamp as string).getTime(),
+      );
 
       return {
         bookingId: input.bookingId,

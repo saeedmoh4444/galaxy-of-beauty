@@ -5,11 +5,13 @@ import { protectedProcedure, customerProcedure, router } from '../trpc';
 
 export const rescheduleRouter = router({
   request: customerProcedure
-    .input(z.object({
-      bookingId: z.number().int().positive(),
-      newStartAt: z.string().datetime(),
-      reason: z.string().optional(),
-    }))
+    .input(
+      z.object({
+        bookingId: z.number().int().positive(),
+        newStartAt: z.string().datetime(),
+        reason: z.string().optional(),
+      }),
+    )
     .mutation(async ({ ctx, input }) => {
       const booking = await prisma.booking.findUnique({
         where: { id: input.bookingId },
@@ -30,7 +32,9 @@ export const rescheduleRouter = router({
       }
 
       // Check slot availability
-      const newEnd = new Date(newStart.getTime() + (booking.endAt.getTime() - booking.startAt.getTime()));
+      const newEnd = new Date(
+        newStart.getTime() + (booking.endAt.getTime() - booking.startAt.getTime()),
+      );
       const conflicts = await prisma.availabilitySlot.findFirst({
         where: {
           technicianId: booking.technicianId,
@@ -66,7 +70,11 @@ export const rescheduleRouter = router({
 
         return tx.booking.update({
           where: { id: booking.id },
-          data: { startAt: newStart, endAt: newEnd, notes: input.reason ? `Rescheduled: ${input.reason}` : booking.notes },
+          data: {
+            startAt: newStart,
+            endAt: newEnd,
+            notes: input.reason ? `Rescheduled: ${input.reason}` : booking.notes,
+          },
         });
       });
 

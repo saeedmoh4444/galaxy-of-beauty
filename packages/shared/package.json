@@ -16,19 +16,34 @@
   "scripts": {
     "build": "tsc",
     "clean": "rm -rf .turbo dist",
-    "type-check": "tsc --noEmit"
-  },
-  "dependencies": {
-    "react": "^18.3.0 || ^19.0.0",
-    "react-dom": "^18.3.0 || ^19.0.0"
+    "type-check": "tsc --noEmit",
+    "lint": "eslint . --ext .ts --max-warnings 10",
+    "storybook": "storybook dev -p 6006",
+    "build-storybook": "storybook build"
   },
   "devDependencies": {
     "@galaxy/config": "workspace:*",
+    "@storybook/addon-a11y": "^8.6.18",
+    "@storybook/addon-essentials": "^8.6.18",
+    "@storybook/addon-interactions": "^8.6.18",
+    "@storybook/blocks": "^8.6.14",
+    "@storybook/builder-vite": "8.6.18",
+    "@storybook/react": "^8.6.18",
+    "@storybook/react-vite": "^8.6.18",
+    "@storybook/test": "^8.6.18",
     "@types/react": "^18.3.0",
     "@types/react-dom": "^18.3.0",
-    "typescript": "^5.5.0"
+    "@vitejs/plugin-react": "^4.7.0",
+    "storybook": "^8.6.18",
+    "typescript": "^5.5.0",
+    "vite": "^5"
   },
   "peerDependencies": {
-    "react": "^18.3.0 || ^19.0.0"
+    "react": "^18.3.0 || ^19.0.0",
+    "react-dom": "^18.3.0 || ^19.0.0"
+  },
+  "dependencies": {
+    "clsx": "^2.1.1",
+    "tailwind-merge": "^3.6.0"
   }
 }

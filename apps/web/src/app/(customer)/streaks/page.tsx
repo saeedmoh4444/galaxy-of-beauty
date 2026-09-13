@@ -1,15 +1,30 @@
 'use client';
 
+import Image from 'next/image';
 import { api } from '@/lib/trpc';
-import { Card, CardSkeleton, ErrorAlert, EmptyState, Button, formatCurrency } from '@galaxy/shared';
+import type { RouterOutput } from '@galaxy/api/client';
+import {
+  Card,
+  KPIRowSkeleton,
+  GridSkeleton,
+  ErrorAlert,
+  EmptyState,
+  Button,
+  formatCurrency,
+} from '@galaxy/ui';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
+import { useLocale } from '@/components/LocaleProvider';
+
+type StreakData = RouterOutput['streaks']['get'];
+type AchievementData = RouterOutput['streaks']['getAchievements'];
 
 export default function StreaksPage(): JSX.Element {
-  const streakQ = api.streaks.get.useQuery({} as never);
-  const achievementsQ = api.streaks.getAchievements.useQuery({} as never);
+  const { t, locale } = useLocale();
+  const streakQ = api.streaks.get.useQuery();
+  const achievementsQ = api.streaks.getAchievements.useQuery();
 
-  const streakData = streakQ.data as unknown as Record<string, unknown> | undefined;
-  const achievementsData = achievementsQ.data as unknown as Record<string, unknown> | undefined;
+  const streakData = streakQ.data as StreakData | undefined;
+  const achievementsData = achievementsQ.data as AchievementData | undefined;
 
   const isLoading = streakQ.isLoading || achievementsQ.isLoading;
   const isError = streakQ.isError || achievementsQ.isError;
@@ -19,53 +34,77 @@ export default function StreaksPage(): JSX.Element {
   const earnedKeys = new Set(earned.map((a) => a.key as string));
 
   return (
-    <DashboardLayout role="CUSTOMER">
+    <DashboardLayout userRole="CUSTOMER">
       <div className="mx-auto max-w-4xl space-y-6">
-        <h1 className="text-2xl font-bold">الاستمرارية</h1>
+        <h1 className="text-2xl font-bold">{t('streaks.title')}</h1>
 
         {isLoading ? (
           <div className="space-y-4">
-            <div className="grid gap-4 md:grid-cols-3">{Array.from({ length: 3 }, (_, i) => <CardSkeleton key={i} />)}</div>
-            <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">{Array.from({ length: 3 }, (_, i) => <CardSkeleton key={i} />)}</div>
+            <KPIRowSkeleton count={3} />
+            <GridSkeleton count={6} />
           </div>
         ) : isError ? (
-          <ErrorAlert message="فشل تحميل بيانات الاستمرارية" onRetry={() => { streakQ.refetch(); achievementsQ.refetch(); }} />
+          <ErrorAlert
+            message={t('streaks.loadError')}
+            onRetry={() => {
+              streakQ.refetch();
+              achievementsQ.refetch();
+            }}
+          />
         ) : (
           <>
             {/* Current Streak */}
             <div className="grid gap-4 md:grid-cols-3">
               <Card padding="lg" className="flex flex-col items-center justify-center text-center">
                 <span className="text-5xl">🔥</span>
-                <p className="mt-3 text-sm text-gray-500 dark:text-gray-400">الاستمرارية الحالية</p>
-                <p className="mt-1 text-4xl font-bold text-brand-600">{streakData?.currentStreak as number ?? 0}</p>
-                <p className="text-xs text-gray-400">أسابيع متتالية</p>
+                <p className="mt-3 text-sm text-text-secondary dark:text-text-tertiary">
+                  {t('streaks.current')}
+                </p>
+                <p className="mt-1 text-4xl font-bold text-brand-600">
+                  {(streakData?.currentStreak as number) ?? 0}
+                </p>
+                <p className="text-xs text-text-tertiary">{t('streaks.weeksInARow')}</p>
               </Card>
               <Card padding="lg" className="flex flex-col items-center justify-center text-center">
                 <span className="text-5xl">🏆</span>
-                <p className="mt-3 text-sm text-gray-500 dark:text-gray-400">أطول استمرارية</p>
-                <p className="mt-1 text-4xl font-bold text-amber-600">{streakData?.longestStreak as number ?? 0}</p>
-                <p className="text-xs text-gray-400">أسابيع</p>
+                <p className="mt-3 text-sm text-text-secondary dark:text-text-tertiary">
+                  {t('streaks.longest')}
+                </p>
+                <p className="mt-1 text-4xl font-bold text-amber-600">
+                  {(streakData?.longestStreak as number) ?? 0}
+                </p>
+                <p className="text-xs text-text-tertiary">{t('streaks.weeks')}</p>
               </Card>
               <Card padding="lg" className="flex flex-col items-center justify-center text-center">
                 <span className="text-5xl">📅</span>
-                <p className="mt-3 text-sm text-gray-500 dark:text-gray-400">آخر حجز</p>
-                <p className="mt-1 text-lg font-semibold text-gray-700 dark:text-gray-300">
+                <p className="mt-3 text-sm text-text-secondary dark:text-text-tertiary">
+                  {t('streaks.lastBooking')}
+                </p>
+                <p className="mt-1 text-lg font-semibold text-text-primary dark:text-gray-300">
                   {streakData?.lastBookingDate
-                    ? new Date(streakData.lastBookingDate as string).toLocaleDateString('ar-SA', {
-                        year: 'numeric', month: 'short', day: 'numeric',
-                      })
-                    : 'لا يوجد'}
+                    ? new Date(streakData.lastBookingDate as unknown as string).toLocaleDateString(
+                        locale === 'en' ? 'en-GB' : 'ar-SA',
+                        {
+                          year: 'numeric',
+                          month: 'short',
+                          day: 'numeric',
+                        },
+                      )
+                    : t('streaks.none')}
                 </p>
               </Card>
             </div>
 
             {/* Achievements */}
-            <h2 className="text-lg font-semibold">الإنجازات</h2>
+            <h2 className="text-lg font-semibold">{t('streaks.achievements')}</h2>
             {allAchievements.length === 0 ? (
               <div>
-                <EmptyState title="لا توجد إنجازات" description="ليس لديك أي إنجازات حتى الآن" />
+                <EmptyState
+                  title={t('streaks.emptyTitle')}
+                  description={t('streaks.emptyDescription')}
+                />
                 <div className="text-center">
-                  <Button onClick={() => streakQ.refetch()}>تحديث</Button>
+                  <Button onClick={() => streakQ.refetch()}>{t('streaks.refresh')}</Button>
                 </div>
               </div>
             ) : (
@@ -84,24 +123,32 @@ export default function StreaksPage(): JSX.Element {
                       <div className="flex items-start gap-3">
                         <span className="text-3xl">
                           {ach.iconUrl ? (
-                            <img src={ach.iconUrl as string} alt="" className="h-10 w-10 rounded-full object-cover" />
+                            <Image
+                              src={ach.iconUrl as string}
+                              alt=""
+                              width={40}
+                              height={40}
+                              className="h-10 w-10 rounded-full object-cover"
+                            />
                           ) : isEarned ? (
-                            '🏅'
+                            ''
                           ) : (
-                            '🔒'
+                            ''
                           )}
                         </span>
                         <div className="min-w-0 flex-1">
                           <p className="font-semibold">{nameJson?.ar ?? nameJson?.en ?? ''}</p>
-                          <p className="mt-0.5 text-xs text-gray-500">{descriptionJson?.ar ?? descriptionJson?.en ?? ''}</p>
+                          <p className="mt-0.5 text-xs text-text-secondary">
+                            {descriptionJson?.ar ?? descriptionJson?.en ?? ''}
+                          </p>
                           <div className="mt-2 flex items-center gap-2">
                             {isEarned ? (
                               <span className="rounded-full bg-green-100 px-2.5 py-0.5 text-xs font-medium text-green-700 dark:bg-green-900 dark:text-green-300">
-                                تم الإنجاز ✓
+                                {t('streaks.earned')}
                               </span>
                             ) : (
-                              <span className="rounded-full bg-gray-100 px-2.5 py-0.5 text-xs font-medium text-gray-500 dark:bg-gray-800">
-                                لم يتم بعد
+                              <span className="rounded-full bg-surface-muted px-2.5 py-0.5 text-xs font-medium text-text-secondary dark:bg-gray-800">
+                                {t('streaks.notYet')}
                               </span>
                             )}
                             {Number(ach.rewardAmount) > 0 && (

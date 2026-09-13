@@ -1,3 +1,10 @@
+import {
+  GOOGLE_TOKEN_URL,
+  GOOGLE_CALENDAR_API_URL,
+  GOOGLE_OAUTH_URL,
+  GOOGLE_OAUTH_SCOPE,
+} from '@galaxy/shared';
+
 // ── Types ──────────────────────────────────────────────────
 
 interface GoogleTokens {
@@ -17,12 +24,15 @@ function getGoogleConfig() {
 
 // ── OAuth2 Token Exchange ──────────────────────────────────
 
-export async function exchangeGoogleCode(code: string, redirectUri: string): Promise<GoogleTokens | null> {
+export async function exchangeGoogleCode(
+  code: string,
+  redirectUri: string,
+): Promise<GoogleTokens | null> {
   const config = getGoogleConfig();
   if (!config) return null;
 
   try {
-    const response = await fetch('https://oauth2.googleapis.com/token', {
+    const response = await fetch(GOOGLE_TOKEN_URL, {
       method: 'POST',
       headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
       body: new URLSearchParams({
@@ -53,7 +63,7 @@ export async function refreshGoogleToken(refreshToken: string): Promise<GoogleTo
   if (!config) return null;
 
   try {
-    const response = await fetch('https://oauth2.googleapis.com/token', {
+    const response = await fetch(GOOGLE_TOKEN_URL, {
       method: 'POST',
       headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
       body: new URLSearchParams({
@@ -84,7 +94,7 @@ interface CalendarEvent {
   summary: string;
   description?: string;
   start: string; // ISO 8601 date-time
-  end: string;   // ISO 8601 date-time
+  end: string; // ISO 8601 date-time
   timezone?: string;
 }
 
@@ -93,10 +103,64 @@ export async function createGoogleCalendarEvent(
   event: CalendarEvent,
 ): Promise<string | null> {
   try {
+    const response = await fetch(`${GOOGLE_CALENDAR_API_URL}/calendars/primary/events`, {
+      method: 'POST',
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        summary: event.summary,
+        description: event.description || '',
+        start: {
+          dateTime: event.start,
+          timeZone: event.timezone || 'Asia/Riyadh',
+        },
+        end: {
+          dateTime: event.end,
+          timeZone: event.timezone || 'Asia/Riyadh',
+        },
+      }),
+    });
+
+    const data = (await response.json()) as Record<string, unknown>;
+    if (!response.ok) return null;
+
+    return data['id'] as string;
+  } catch {
+    return null;
+  }
+}
+
+export async function deleteGoogleCalendarEvent(
+  accessToken: string,
+  eventId: string,
+): Promise<boolean> {
+  try {
     const response = await fetch(
-      'https://www.googleapis.com/calendar/v3/calendars/primary/events',
+      `${GOOGLE_CALENDAR_API_URL}/calendars/primary/events/${encodeURIComponent(eventId)}`,
       {
-        method: 'POST',
+        method: 'DELETE',
+        headers: { Authorization: `Bearer ${accessToken}` },
+      },
+    );
+    return response.ok || response.status === 410; // 410 = already deleted
+  } catch {
+    return false;
+  }
+}
+
+/** Patch an existing event (PATCH — only the fields provided change). */
+export async function updateGoogleCalendarEvent(
+  accessToken: string,
+  eventId: string,
+  event: CalendarEvent,
+): Promise<boolean> {
+  try {
+    const response = await fetch(
+      `${GOOGLE_CALENDAR_API_URL}/calendars/primary/events/${encodeURIComponent(eventId)}`,
+      {
+        method: 'PATCH',
         headers: {
           Authorization: `Bearer ${accessToken}`,
           'Content-Type': 'application/json',
@@ -115,29 +179,7 @@ export async function createGoogleCalendarEvent(
         }),
       },
     );
-
-    const data = (await response.json()) as Record<string, unknown>;
-    if (!response.ok) return null;
-
-    return data['id'] as string;
-  } catch {
-    return null;
-  }
-}
-
-export async function deleteGoogleCalendarEvent(
-  accessToken: string,
-  eventId: string,
-): Promise<boolean> {
-  try {
-    const response = await fetch(
-      `https://www.googleapis.com/calendar/v3/calendars/primary/events/${encodeURIComponent(eventId)}`,
-      {
-        method: 'DELETE',
-        headers: { Authorization: `Bearer ${accessToken}` },
-      },
-    );
-    return response.ok || response.status === 410; // 410 = already deleted
+    return response.ok;
   } catch {
     return false;
   }
@@ -154,11 +196,11 @@ export function getGoogleAuthUrl(redirectUri: string, state: string): string | n
     client_id: config.clientId,
     redirect_uri: redirectUri,
     response_type: 'code',
-    scope: 'https://www.googleapis.com/auth/calendar.events',
+    scope: GOOGLE_OAUTH_SCOPE,
     access_type: 'offline',
     prompt: 'consent',
     state,
   });
 
-  return `https://accounts.google.com/o/oauth2/v2/auth?${params.toString()}`;
+  return `${GOOGLE_OAUTH_URL}?${params.toString()}`;
 }

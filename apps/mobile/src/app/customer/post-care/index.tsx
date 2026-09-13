@@ -1,0 +1,67 @@
+import { View, Text, ScrollView, StyleSheet, RefreshControl } from 'react-native';
+import { SkeletonList } from '@/components/SkeletonCard';
+import { trpc } from '@/lib/trpc-react';
+import { useLocale } from '@/components/LocaleProvider';
+import { useAuthState } from '@/hooks/useAuthState';
+
+interface LibraryCategory {
+  key: string;
+  emoji: string;
+  nameAr: string;
+  nameEn: string;
+  tipsCount: number;
+}
+
+export default function PostCareScreen(): JSX.Element {
+  const { t, locale } = useLocale();
+  const isAuthed = useAuthState();
+  const libraryQ = trpc.postCare.library.useQuery(undefined, { enabled: isAuthed });
+  const data: LibraryCategory[] =
+    (libraryQ.data as unknown as { categories?: LibraryCategory[] } | null)?.categories ?? [];
+  if (libraryQ.isLoading) return <SkeletonList count={4} />;
+
+  return (
+    <ScrollView
+      style={styles.c}
+      contentContainerStyle={styles.i}
+      refreshControl={
+        <RefreshControl
+          refreshing={libraryQ.isRefetching}
+          onRefresh={() => libraryQ.refetch()}
+          colors={['#059669']}
+        />
+      }
+    >
+      <Text style={styles.t}>{t('mobile.postCare.title')}</Text>
+      {data.map((p, i) => (
+        <View key={p.key ?? i} style={styles.card}>
+          <Text style={styles.emoji}>{p.emoji ?? ''}</Text>
+          <View style={{ flex: 1 }}>
+            <Text style={styles.name}>{locale === 'en' ? p.nameEn : p.nameAr}</Text>
+            <Text style={styles.desc}>
+              {t('mobile.postCare.tipsCount', { count: p.tipsCount })}
+            </Text>
+          </View>
+        </View>
+      ))}
+    </ScrollView>
+  );
+}
+
+const styles = StyleSheet.create({
+  c: { flex: 1, backgroundColor: '#ecfdf5' },
+  i: { padding: 16, paddingTop: 30, paddingBottom: 40 },
+  t: { fontSize: 24, fontWeight: '800', color: '#059669', textAlign: 'center', marginBottom: 20 },
+  card: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 12,
+    backgroundColor: '#fff',
+    borderRadius: 14,
+    padding: 14,
+    marginBottom: 8,
+  },
+  emoji: { fontSize: 28 },
+  name: { fontSize: 14, fontWeight: '600', color: '#111827' },
+  desc: { fontSize: 12, color: '#6b7280', marginTop: 2 },
+});

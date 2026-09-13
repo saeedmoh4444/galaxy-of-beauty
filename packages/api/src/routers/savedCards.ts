@@ -12,15 +12,17 @@ export const savedCardRouter = router({
   }),
 
   add: protectedProcedure
-    .input(z.object({
-      cardToken: z.string().min(1),
-      lastFour: z.string().length(4),
-      brand: z.enum(['visa', 'mastercard', 'mada', 'amex']),
-      expMonth: z.number().int().min(1).max(12),
-      expYear: z.number().int().min(2026).max(2040),
-      cardholderName: z.string().min(1),
-      setDefault: z.boolean().default(true),
-    }))
+    .input(
+      z.object({
+        cardToken: z.string().min(1),
+        lastFour: z.string().length(4),
+        brand: z.enum(['visa', 'mastercard', 'mada', 'amex']),
+        expMonth: z.number().int().min(1).max(12),
+        expYear: z.number().int().min(2026).max(2040),
+        cardholderName: z.string().min(1),
+        setDefault: z.boolean().default(true),
+      }),
+    )
     .mutation(async ({ ctx, input }) => {
       // Unset existing default if this is the new default
       if (input.setDefault) {
@@ -56,7 +58,10 @@ export const savedCardRouter = router({
       if (!card) throw new TRPCError({ code: 'NOT_FOUND' });
 
       await prisma.$transaction([
-        prisma.savedCard.updateMany({ where: { userId: ctx.user.id, isDefault: true }, data: { isDefault: false } }),
+        prisma.savedCard.updateMany({
+          where: { userId: ctx.user.id, isDefault: true },
+          data: { isDefault: false },
+        }),
         prisma.savedCard.update({ where: { id: card.id }, data: { isDefault: true } }),
       ]);
 

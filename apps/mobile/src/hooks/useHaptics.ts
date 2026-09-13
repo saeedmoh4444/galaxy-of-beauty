@@ -8,6 +8,8 @@ export function useHaptics() {
     if (Platform.OS === 'web') return;
 
     try {
+      // expo-haptics is an optional dependency — require dynamically so web builds work without it
+      // eslint-disable-next-line @typescript-eslint/no-require-imports
       const Haptics = require('expo-haptics');
 
       switch (type) {

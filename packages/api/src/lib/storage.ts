@@ -12,8 +12,12 @@ export interface UploadResult {
 
 // ── S3 (lazy-loaded via dynamic import to avoid requiring AWS SDK at install) ─
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-let _s3Client: any = undefined;
+/** Minimal structural type for the lazily-imported AWS S3 client. */
+interface S3ClientLike {
+  send(command: unknown): Promise<unknown>;
+}
+
+let _s3Client: S3ClientLike | null | undefined = undefined;
 
 async function getS3Client() {
   if (_s3Client !== undefined) return _s3Client;
@@ -86,13 +90,15 @@ export async function uploadFile(
 
   try {
     const sdk = await Function('return import("@aws-sdk/client-s3")')();
-    await s3.send(new sdk.PutObjectCommand({
-      Bucket: bucket,
-      Key: key,
-      Body: buffer,
-      ContentType: mimeType,
-      CacheControl: 'public, max-age=31536000, immutable',
-    }));
+    await s3.send(
+      new sdk.PutObjectCommand({
+        Bucket: bucket,
+        Key: key,
+        Body: buffer,
+        ContentType: mimeType,
+        CacheControl: 'public, max-age=31536000, immutable',
+      }),
+    );
 
     return {
       url: `https://${bucket}.s3.${getS3Region()}.amazonaws.com/${key}`,

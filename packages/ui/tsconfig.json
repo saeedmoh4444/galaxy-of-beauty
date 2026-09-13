@@ -1,0 +1,5 @@
+{
+  "extends": "@galaxy/config/tsconfig/react-library.json",
+  "include": ["src/**/*.ts", "src/**/*.tsx"],
+  "exclude": ["dist", ".turbo", "node_modules", "storybook-static"]
+}

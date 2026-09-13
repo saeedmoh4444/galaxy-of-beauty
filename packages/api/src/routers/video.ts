@@ -16,7 +16,9 @@ export const videoRouter = router({
         throw new TRPCError({ code: 'FORBIDDEN' });
       }
 
-      const existing = await prisma.videoSession.findUnique({ where: { bookingId: input.bookingId } });
+      const existing = await prisma.videoSession.findUnique({
+        where: { bookingId: input.bookingId },
+      });
       if (existing) {
         await prisma.videoSession.update({
           where: { id: existing.id },
@@ -31,7 +33,8 @@ export const videoRouter = router({
       });
 
       // Notify the other party
-      const otherId = ctx.user.id === booking.customerId ? booking.technicianId : booking.customerId;
+      const otherId =
+        ctx.user.id === booking.customerId ? booking.technicianId : booking.customerId;
       emitToUser(otherId, 'video_call_started', { roomId, bookingId: input.bookingId });
 
       return session;
@@ -42,7 +45,10 @@ export const videoRouter = router({
     .input(z.object({ bookingId: z.number().int().positive() }))
     .query(async ({ ctx, input }) => {
       const booking = await prisma.booking.findUnique({ where: { id: input.bookingId } });
-      if (!booking || (booking.customerId !== ctx.user.id && booking.technicianId !== ctx.user.id)) {
+      if (
+        !booking ||
+        (booking.customerId !== ctx.user.id && booking.technicianId !== ctx.user.id)
+      ) {
         throw new TRPCError({ code: 'FORBIDDEN' });
       }
       return prisma.videoSession.findUnique({ where: { bookingId: input.bookingId } });

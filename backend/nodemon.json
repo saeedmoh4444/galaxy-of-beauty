@@ -1,9 +1,0 @@
-{
-  "watch": ["src", "prisma"],
-  "ext": "js,json,prisma",
-  "ignore": ["node_modules", "tests", "uploads"],
-  "exec": "node src/app.js",
-  "env": {
-    "NODE_ENV": "development"
-  }
-}

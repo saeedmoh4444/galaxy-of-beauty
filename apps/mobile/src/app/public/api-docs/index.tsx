@@ -1,0 +1,46 @@
+import { View, Text, ScrollView, StyleSheet, RefreshControl } from 'react-native';
+import { SkeletonList } from '@/components/SkeletonCard';
+import { trpc } from '@/lib/trpc-react';
+
+interface ApiDocsData {
+  title?: string;
+  version?: string;
+  endpoints?: number;
+}
+
+export default function ApiDocsScreen(): JSX.Element {
+  const docsQ = trpc.apiDocs.reference.useQuery();
+  if (docsQ.isLoading) return <SkeletonList count={4} />;
+  const data = docsQ.data as ApiDocsData | null;
+  return (
+    <ScrollView
+      style={styles.c}
+      contentContainerStyle={styles.i}
+      refreshControl={
+        <RefreshControl
+          refreshing={docsQ.isRefetching}
+          onRefresh={() => docsQ.refetch()}
+          colors={['#6366f1']}
+        />
+      }
+    >
+      <Text style={styles.t}> API Docs</Text>
+      {data && (
+        <View style={styles.card}>
+          <Text style={styles.ttl}>
+            {data.title ?? ''} v{data.version ?? ''}
+          </Text>
+          <Text style={styles.meta}>{data.endpoints ?? 0} routers</Text>
+        </View>
+      )}
+    </ScrollView>
+  );
+}
+const styles = StyleSheet.create({
+  c: { flex: 1, backgroundColor: '#eef2ff' },
+  i: { padding: 16, paddingTop: 30, paddingBottom: 40 },
+  t: { fontSize: 24, fontWeight: '800', color: '#4f46e5', textAlign: 'center', marginBottom: 20 },
+  card: { backgroundColor: '#fff', borderRadius: 16, padding: 20, alignItems: 'center' },
+  ttl: { fontSize: 20, fontWeight: '700', color: '#111827' },
+  meta: { fontSize: 13, color: '#6b7280', marginTop: 4 },
+});

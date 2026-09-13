@@ -1,0 +1,79 @@
+# ═══════════════════════════════════════════
+# Galaxy of Beauty — Production Override
+# ═══════════════════════════════════════════
+# Extends docker-compose.yml with production settings.
+# Usage: docker compose -f docker-compose.yml -f docker-compose.prod.yml up -d
+
+services:
+  postgres:
+    deploy:
+      resources:
+        limits:
+          memory: 2G
+          cpus: '2'
+        reservations:
+          memory: 512M
+          cpus: '0.5'
+    environment:
+      POSTGRES_SHARED_BUFFERS: 512MB
+      POSTGRES_EFFECTIVE_CACHE_SIZE: 1GB
+      POSTGRES_MAINTENANCE_WORK_MEM: 128MB
+      POSTGRES_WAL_BUFFERS: 16MB
+      POSTGRES_MAX_CONNECTIONS: 100
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./scripts/backup-db.sh:/backup.sh:ro
+
+  redis:
+    deploy:
+      resources:
+        limits:
+          memory: 512M
+          cpus: '1'
+    command: redis-server --maxmemory 256mb --maxmemory-policy allkeys-lru --appendonly yes --save 900 1 --save 300 10
+
+  web:
+    build:
+      dockerfile: apps/web/Dockerfile
+      target: production
+    environment:
+      NODE_ENV: production
+      SENTRY_DSN: ${SENTRY_DSN}
+    deploy:
+      replicas: 2
+      resources:
+        limits:
+          memory: 512M
+          cpus: '1'
+    restart: always
+    healthcheck:
+      test: ["CMD", "wget", "-qO-", "http://localhost:3000/api/trpc/health"]
+      interval: 15s
+      timeout: 5s
+      retries: 3
+      start_period: 30s
+
+  socket:
+    deploy:
+      replicas: 1
+      resources:
+        limits:
+          memory: 256M
+          cpus: '0.5'
+    restart: always
+
+  mobile:
+    profiles: ["full"]
+    deploy:
+      resources:
+        limits:
+          memory: 512M
+          cpus: '1'
+
+volumes:
+  postgres_data:
+    driver: local
+
+networks:
+  gob-network:
+    driver: bridge

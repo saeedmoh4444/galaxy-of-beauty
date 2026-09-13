@@ -1,11 +1,54 @@
 {
   "expo": {
-    "name": "Galaxy of Beauty",
+    "name": "Dalal",
     "slug": "galaxy-of-beauty",
     "version": "2.0.0",
     "orientation": "portrait",
     "scheme": "galaxyofbeauty",
     "platforms": ["ios", "android", "web"],
-    "plugins": ["expo-router"]
+    "icon": "./assets/logo.png",
+    "userInterfaceStyle": "automatic",
+    "splash": {
+      "image": "./assets/logo.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#7c3aed"
+    },
+    "ios": {
+      "supportsTablet": true,
+      "bundleIdentifier": "sa.galaxyofbeauty.app",
+      "infoPlist": {
+        "NSCameraUsageDescription": "لتجربة المكياج الافتراضية والتقاط الصور",
+        "NSPhotoLibraryUsageDescription": "لتحميل صوركِ لتحليل البشرة",
+        "NSLocationWhenInUseUsageDescription": "لعرض الصالونات القريبة من موقعك"
+      }
+    },
+    "android": {
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/logo.png",
+        "backgroundColor": "#7c3aed"
+      },
+      "package": "sa.galaxyofbeauty.app",
+      "permissions": ["CAMERA", "ACCESS_FINE_LOCATION", "VIBRATE"]
+    },
+    "web": {
+      "favicon": "./assets/logo.png",
+      "bundler": "metro"
+    },
+    "plugins": ["expo-router", "expo-camera", "expo-location", "expo-notifications"],
+    "extra": {
+      "eas": {
+        "projectId": "galaxy-of-beauty"
+      }
+    },
+    "notification": {
+      "icon": "./assets/logo.png",
+      "color": "#7c3aed"
+    },
+    "updates": {
+      "url": "https://u.expo.dev/galaxy-of-beauty",
+      "enabled": true,
+      "checkAutomatically": "ON_LOAD",
+      "fallbackToCacheTimeout": 0
+    }
   }
 }

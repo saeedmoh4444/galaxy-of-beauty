@@ -36,16 +36,14 @@ export const analyticsRouter = router({
         dailyMap.set(key, (dailyMap.get(key) ?? 0) + p.amount.toNumber());
       }
 
-      const dailyRevenue = Array.from(dailyMap.entries()).map(
-        ([date, revenue]) => ({ date, revenue }),
-      );
+      const dailyRevenue = Array.from(dailyMap.entries()).map(([date, revenue]) => ({
+        date,
+        revenue,
+      }));
 
       return {
         dailyRevenue,
-        totalRevenue: payments.reduce(
-          (sum, p) => sum + p.amount.toNumber(),
-          0,
-        ),
+        totalRevenue: payments.reduce((sum, p) => sum + p.amount.toNumber(), 0),
         period: {
           start: since.toISOString(),
           end: new Date().toISOString(),
@@ -64,11 +62,7 @@ export const analyticsRouter = router({
       prisma.booking.count({ where: { status: 'COMPLETED' } }),
       prisma.booking.count({
         where: {
-          OR: [
-            { status: 'CANCELLED' },
-            { status: 'REJECTED' },
-            { status: 'NO_SHOW' },
-          ],
+          OR: [{ status: 'CANCELLED' }, { status: 'REJECTED' }, { status: 'NO_SHOW' }],
         },
       }),
     ]);
@@ -203,12 +197,10 @@ export const analyticsRouter = router({
         }
       }
 
-      const dailyGrowth = Array.from(dailyMap.entries()).map(
-        ([date, counts]) => ({
-          date,
-          ...counts,
-        }),
-      );
+      const dailyGrowth = Array.from(dailyMap.entries()).map(([date, counts]) => ({
+        date,
+        ...counts,
+      }));
 
       return {
         dailyGrowth,
@@ -253,24 +245,20 @@ export const analyticsRouter = router({
         const key = b.createdAt.toISOString().slice(0, 10);
         const entry = dailyMap.get(key);
         if (entry) {
-          entry.earnings +=
-            b.totalAmount.toNumber() - b.platformFee.toNumber();
+          entry.earnings += b.totalAmount.toNumber() - b.platformFee.toNumber();
           entry.count++;
         }
       }
 
-      const dailyEarnings = Array.from(dailyMap.entries()).map(
-        ([date, data]) => ({
-          date,
-          ...data,
-        }),
-      );
+      const dailyEarnings = Array.from(dailyMap.entries()).map(([date, data]) => ({
+        date,
+        ...data,
+      }));
 
       return {
         dailyEarnings,
         totalEarnings: bookings.reduce(
-          (sum, b) =>
-            sum + (b.totalAmount.toNumber() - b.platformFee.toNumber()),
+          (sum, b) => sum + (b.totalAmount.toNumber() - b.platformFee.toNumber()),
           0,
         ),
         totalBookings: bookings.length,
@@ -301,10 +289,7 @@ export const analyticsRouter = router({
     const categoryCount = new Map<number, number>();
     for (const b of bookings) {
       if (b.service?.categoryId) {
-        categoryCount.set(
-          b.service.categoryId,
-          (categoryCount.get(b.service.categoryId) ?? 0) + 1,
-        );
+        categoryCount.set(b.service.categoryId, (categoryCount.get(b.service.categoryId) ?? 0) + 1);
       }
     }
 
@@ -340,5 +325,83 @@ export const analyticsRouter = router({
           }
         : null,
     };
+  }),
+
+  // Booking trends — last 30 days by day
+  bookingTrends: adminProcedure.query(async () => {
+    const days: Array<{ date: string; count: number; revenue: number }> = [];
+    for (let d = 29; d >= 0; d--) {
+      const start = new Date();
+      start.setDate(start.getDate() - d);
+      start.setHours(0, 0, 0, 0);
+      const end = new Date(start.getTime() + 86400000);
+      const [count, revenueResult] = await Promise.all([
+        prisma.booking.count({ where: { createdAt: { gte: start, lt: end } } }),
+        prisma.booking.aggregate({
+          where: { createdAt: { gte: start, lt: end }, status: 'COMPLETED' },
+          _sum: { totalAmount: true },
+        }),
+      ]);
+      days.push({
+        date: start.toISOString().slice(0, 10),
+        count,
+        revenue: Number(revenueResult._sum.totalAmount ?? 0),
+      });
+    }
+    return days;
+  }),
+
+  // Revenue summary — this month vs last month
+  revenueSummary: adminProcedure.query(async () => {
+    const now = new Date();
+    const thisMonth = new Date(now.getFullYear(), now.getMonth(), 1);
+    const lastMonth = new Date(now.getFullYear(), now.getMonth() - 1, 1);
+
+    const [thisMonthRevenue, lastMonthRevenue, thisMonthBookings, lastMonthBookings] =
+      await Promise.all([
+        prisma.payment.aggregate({
+          where: { status: 'CAPTURED', createdAt: { gte: thisMonth } },
+          _sum: { amount: true },
+        }),
+        prisma.payment.aggregate({
+          where: { status: 'CAPTURED', createdAt: { gte: lastMonth, lt: thisMonth } },
+          _sum: { amount: true },
+        }),
+        prisma.booking.count({ where: { createdAt: { gte: thisMonth } } }),
+        prisma.booking.count({ where: { createdAt: { gte: lastMonth, lt: thisMonth } } }),
+      ]);
+
+    const thisRev = Number(thisMonthRevenue._sum.amount ?? 0);
+    const lastRev = Number(lastMonthRevenue._sum.amount ?? 0);
+    const growth = lastRev > 0 ? (((thisRev - lastRev) / lastRev) * 100).toFixed(1) : '0';
+
+    return {
+      thisMonthRevenue: thisRev,
+      lastMonthRevenue: lastRev,
+      growthPct: growth,
+      thisMonthBookings,
+      lastMonthBookings,
+    };
+  }),
+
+  // Technician ranking
+  techRanking: adminProcedure.query(async () => {
+    const techs = await prisma.technician.findMany({
+      where: { kycStatus: 'VERIFIED' },
+      orderBy: { ratingAvg: 'desc' },
+      take: 10,
+      select: {
+        id: true,
+        ratingAvg: true,
+        completedBookings: true,
+        user: { select: { name: true } },
+      },
+    });
+    return techs.map((t) => ({
+      id: t.id,
+      name: t.user.name,
+      rating: t.ratingAvg,
+      bookings: t.completedBookings,
+    }));
   }),
 });

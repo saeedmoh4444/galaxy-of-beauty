@@ -1,3 +1,5 @@
+import { TWILIO_API_URL } from '@galaxy/shared';
+
 // ── Types ──────────────────────────────────────────────────
 
 interface SmsConfig {
@@ -17,10 +19,7 @@ function getTwilioConfig(): SmsConfig | null {
 
 // ── SMS Sending ────────────────────────────────────────────
 
-export async function sendSms(
-  to: string,
-  message: string,
-): Promise<boolean> {
+export async function sendSms(to: string, message: string): Promise<boolean> {
   const config = getTwilioConfig();
 
   if (!config) {
@@ -39,17 +38,14 @@ export async function sendSms(
       Body: message,
     }).toString();
 
-    const response = await fetch(
-      `https://api.twilio.com/2010-04-01/Accounts/${config.accountSid}/Messages.json`,
-      {
-        method: 'POST',
-        headers: {
-          Authorization: `Basic ${auth}`,
-          'Content-Type': 'application/x-www-form-urlencoded',
-        },
-        body: body.toString(),
+    const response = await fetch(`${TWILIO_API_URL}/Accounts/${config.accountSid}/Messages.json`, {
+      method: 'POST',
+      headers: {
+        Authorization: `Basic ${auth}`,
+        'Content-Type': 'application/x-www-form-urlencoded',
       },
-    );
+      body: body.toString(),
+    });
 
     return response.ok;
   } catch (err) {
@@ -67,9 +63,10 @@ export async function sendBookingConfirmationSms(
   date: string,
   locale: 'ar' | 'en' = 'ar',
 ): Promise<void> {
-  const message = locale === 'ar'
-    ? `تم تأكيد حجزك في جالكسي بيوتي!\nرمز الحجز: ${bookingCode}\nالتاريخ: ${date}\nشكراً لثقتك`
-    : `Your Galaxy of Beauty booking is confirmed!\nBooking code: ${bookingCode}\nDate: ${date}\nThank you!`;
+  const message =
+    locale === 'ar'
+      ? `تم تأكيد حجزك في دلال!\nرمز الحجز: ${bookingCode}\nالتاريخ: ${date}\nشكراً لثقتك`
+      : `Your Dalal booking is confirmed!\nBooking code: ${bookingCode}\nDate: ${date}\nThank you!`;
 
   await sendSms(phone, message);
 }
@@ -80,17 +77,15 @@ export async function sendBookingReminderSms(
   hoursUntil: number,
   locale: 'ar' | 'en' = 'ar',
 ): Promise<void> {
-  const message = locale === 'ar'
-    ? `تذكير: حجزك (${bookingCode}) بعد ${hoursUntil} ساعة. جالكسي بيوتي`
-    : `Reminder: Your booking (${bookingCode}) is in ${hoursUntil} hours. Galaxy of Beauty`;
+  const message =
+    locale === 'ar'
+      ? `تذكير: حجزك (${bookingCode}) بعد ${hoursUntil} ساعة. دلال`
+      : `Reminder: Your booking (${bookingCode}) is in ${hoursUntil} hours. Dalal`;
 
   await sendSms(phone, message);
 }
 
-export async function sendOtpSms(
-  phone: string,
-  code: string,
-): Promise<void> {
-  const message = `رمز التحقق الخاص بك في جالكسي بيوتي: ${code}\nYour Galaxy of Beauty verification code: ${code}`;
+export async function sendOtpSms(phone: string, code: string): Promise<void> {
+  const message = `رمز التحقق الخاص بك في دلال: ${code}\nYour Dalal verification code: ${code}`;
   await sendSms(phone, message);
 }

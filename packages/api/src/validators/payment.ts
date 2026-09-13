@@ -2,7 +2,7 @@ import { z } from 'zod';
 
 export const paymentAuthorizeSchema = z.object({
   method: z.enum(['online', 'cash']).default('online'),
-  idempotencyKey: z.string().uuid(),
+  idempotencyKey: z.string().min(8).max(128),
 });
 
 export const paymentCaptureSchema = z.object({
@@ -11,7 +11,7 @@ export const paymentCaptureSchema = z.object({
 
 export const walletWithdrawSchema = z.object({
   amount: z.number().positive().min(100, 'Minimum withdrawal is 100 SAR'),
-  idempotencyKey: z.string().uuid(),
+  idempotencyKey: z.string().min(8).max(128),
 });
 
 export const walletTransactionQuerySchema = z.object({

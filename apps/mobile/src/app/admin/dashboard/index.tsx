@@ -1,47 +1,94 @@
-import { View, Text, ScrollView, StyleSheet, ActivityIndicator } from 'react-native';
-import { trpc } from '@/lib/api';
-import { useState, useEffect } from 'react';
+import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
+import { useRouter } from 'expo-router';
+import { ScreenState } from '@/components/ScreenState';
+import { trpc } from '@/lib/trpc-react';
+import { useLocale } from '@/components/LocaleProvider';
 
-export default function AdminDashboardScreen() {
-  const [stats, setStats] = useState<Record<string, unknown> | null>(null);
-  const [loading, setLoading] = useState(true);
+const COLORS = { brand: '#7c3aed', white: '#ffffff', gray400: '#6b7280', gray900: '#111827' };
 
-  useEffect(() => {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    (trpc.admin.dashboardStats as any).query()
-      .then((d: Record<string, unknown>) => { setStats(d as unknown as Record<string, unknown>); setLoading(false); })
-      .catch(() => setLoading(false));
-  }, []);
-
-  if (loading) return <ActivityIndicator color="#7c3aed" style={{ marginTop: 40 }} />;
+export default function AdminDashboardScreen(): JSX.Element {
+  const router = useRouter();
+  const { t } = useLocale();
+  const stats = trpc.admin.dashboardStats.useQuery();
+  const data = stats.data as Record<string, unknown> | undefined;
 
   return (
-    <ScrollView style={styles.container}>
-      <Text style={styles.title}>لوحة الإدارة</Text>
-      <View style={styles.grid}>
-        <StatCard label="المستخدمين" value={String(stats?.totalUsers ?? 0)} color="#7c3aed" />
-        <StatCard label="الفنيات" value={String(stats?.totalTechnicians ?? 0)} color="#10b981" />
-        <StatCard label="الحجوزات" value={String(stats?.totalBookings ?? 0)} color="#f59e0b" />
-        <StatCard label="الإيرادات" value={`${Number(stats?.totalRevenue ?? 0).toFixed(0)} ر.س`} color="#8b5cf6" />
+    <ScreenState
+      isLoading={stats.isLoading}
+      isError={stats.isError}
+      isEmpty={!data}
+      errorMessage={t('mobile.admin.dashboard.load-error')}
+      onRetry={() => stats.refetch()}
+    >
+      <Text style={styles.title}>{t('mobile.admin.dashboard.title')}</Text>
+      <View style={styles.statsGrid}>
+        {['totalUsers', 'totalBookings', 'totalTechnicians', 'totalRevenue'].map((key) => (
+          <View key={key} style={styles.statCard}>
+            <Text style={styles.statNum}>{String(data?.[key] ?? 0)}</Text>
+            <Text style={styles.statLabel}>
+              {key === 'totalUsers'
+                ? t('mobile.admin.dashboard.users')
+                : key === 'totalBookings'
+                  ? t('mobile.admin.dashboard.bookings')
+                  : key === 'totalTechnicians'
+                    ? t('mobile.admin.dashboard.technicians')
+                    : t('mobile.admin.dashboard.revenue')}
+            </Text>
+          </View>
+        ))}
       </View>
-    </ScrollView>
-  );
-}
-
-function StatCard({ label, value, color }: { label: string; value: string; color: string }) {
-  return (
-    <View style={[styles.statCard, { borderLeftColor: color }]}>
-      <Text style={styles.statValue}>{value}</Text>
-      <Text style={styles.statLabel}>{label}</Text>
-    </View>
+      <View style={styles.links}>
+        {[
+          { h: '/admin/users', l: t('mobile.admin.dashboard.link-users') },
+          { h: '/admin/bookings', l: t('mobile.admin.dashboard.link-bookings') },
+          { h: '/admin/technicians', l: t('mobile.admin.dashboard.link-technicians') },
+          { h: '/admin/finance', l: t('mobile.admin.dashboard.link-finance') },
+          { h: '/admin/analytics', l: t('mobile.admin.dashboard.link-analytics') },
+        ].map((link, i) => (
+          <TouchableOpacity
+            key={i}
+            style={styles.linkBtn}
+            onPress={() => router.push(link.h as never)}
+          >
+            <Text style={styles.linkText}>{link.l}</Text>
+          </TouchableOpacity>
+        ))}
+      </View>
+    </ScreenState>
   );
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: '#fff', padding: 16 },
-  title: { fontSize: 24, fontWeight: '800', color: '#111827', marginBottom: 16 },
-  grid: { flexDirection: 'row', flexWrap: 'wrap', gap: 8 },
-  statCard: { width: '47%', backgroundColor: '#f9fafb', borderRadius: 12, padding: 16, borderLeftWidth: 3, marginBottom: 8 },
-  statValue: { fontSize: 24, fontWeight: '800', color: '#111827' },
-  statLabel: { fontSize: 13, color: '#6b7280', marginTop: 4 },
+  title: {
+    fontSize: 24,
+    fontWeight: '800',
+    color: COLORS.brand,
+    textAlign: 'center',
+    marginBottom: 20,
+  },
+  statsGrid: { flexDirection: 'row', flexWrap: 'wrap', gap: 10, marginBottom: 24 },
+  statCard: {
+    width: '47%',
+    backgroundColor: COLORS.white,
+    borderRadius: 14,
+    padding: 16,
+    alignItems: 'center',
+    shadowColor: '#000',
+    shadowOpacity: 0.05,
+    shadowRadius: 4,
+    elevation: 2,
+  },
+  statNum: { fontSize: 20, fontWeight: '800', color: COLORS.gray900 },
+  statLabel: { fontSize: 12, color: COLORS.gray400, marginTop: 4 },
+  links: { gap: 8 },
+  linkBtn: {
+    backgroundColor: COLORS.white,
+    borderRadius: 12,
+    padding: 16,
+    shadowColor: '#000',
+    shadowOpacity: 0.03,
+    shadowRadius: 2,
+    elevation: 1,
+  },
+  linkText: { fontSize: 15, fontWeight: '600', color: COLORS.gray900 },
 });

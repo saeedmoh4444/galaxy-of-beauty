@@ -1,0 +1,111 @@
+import { View, Text, ScrollView, TouchableOpacity, StyleSheet, RefreshControl } from 'react-native';
+import { useState } from 'react';
+import { SkeletonList } from '@/components/SkeletonCard';
+import { trpc } from '@/lib/trpc-react';
+import { useLocale } from '@/components/LocaleProvider';
+import { useAuthState } from '@/hooks/useAuthState';
+
+interface BoxProduct {
+  id: number;
+  emoji?: string;
+  nameAr?: string;
+  price?: number;
+}
+
+export default function BoxBuilderScreen(): JSX.Element {
+  const isAuthed = useAuthState();
+  const { t } = useLocale();
+  const [selected, setSelected] = useState<Set<number>>(new Set());
+  const q = trpc.boxBuilder.catalog.useQuery(undefined, { enabled: isAuthed });
+  const products: BoxProduct[] = (q.data as unknown as BoxProduct[] | undefined) ?? [];
+
+  const toggle = (id: number) => {
+    const n = new Set(selected);
+    if (n.has(id)) n.delete(id);
+    else if (n.size < 5) n.add(id);
+    setSelected(n);
+  };
+
+  if (q.isLoading) return <SkeletonList count={5} />;
+
+  return (
+    <ScrollView
+      style={styles.c}
+      contentContainerStyle={styles.i}
+      refreshControl={
+        <RefreshControl
+          refreshing={q.isRefetching}
+          onRefresh={() => q.refetch()}
+          colors={['#7c3aed']}
+        />
+      }
+    >
+      <Text style={styles.t}>{t('boxBuilder.title')}</Text>
+      <Text style={styles.sub}>{t('boxBuilder.subtitle')}</Text>
+      {selected.size > 0 && (
+        <View style={styles.badge}>
+          <Text style={styles.badgeText}>{t('boxBuilder.count', { count: selected.size })}</Text>
+        </View>
+      )}
+      {products.map((p) => {
+        const isSel = selected.has(p.id);
+        return (
+          <TouchableOpacity
+            key={p.id}
+            onPress={() => toggle(p.id)}
+            style={[styles.card, isSel && styles.cardActive]}
+          >
+            <Text style={styles.emoji}>{p.emoji ?? ''}</Text>
+            <View style={{ flex: 1 }}>
+              <Text style={styles.name}>{p.nameAr}</Text>
+              <Text style={styles.price}>
+                {t('boxBuilder.price', { price: p.price?.toLocaleString() ?? '' })}
+              </Text>
+            </View>
+            <View style={[styles.check, isSel && styles.checkOn]}>
+              <Text style={styles.checkText}>{isSel ? '' : '+'}</Text>
+            </View>
+          </TouchableOpacity>
+        );
+      })}
+    </ScrollView>
+  );
+}
+
+const styles = StyleSheet.create({
+  c: { flex: 1, backgroundColor: '#faf5ff' },
+  i: { padding: 16, paddingTop: 30, paddingBottom: 40 },
+  t: { fontSize: 24, fontWeight: '800', color: '#7c3aed', textAlign: 'center', marginBottom: 4 },
+  sub: { fontSize: 13, color: '#9ca3af', textAlign: 'center', marginBottom: 16 },
+  badge: {
+    backgroundColor: '#ede9fe',
+    borderRadius: 12,
+    padding: 10,
+    alignItems: 'center',
+    marginBottom: 12,
+  },
+  badgeText: { fontSize: 14, fontWeight: '700', color: '#7c3aed' },
+  card: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 12,
+    backgroundColor: '#fff',
+    borderRadius: 14,
+    padding: 14,
+    marginBottom: 8,
+  },
+  cardActive: { borderWidth: 2, borderColor: '#7c3aed', backgroundColor: '#faf5ff' },
+  emoji: { fontSize: 28 },
+  name: { fontSize: 14, fontWeight: '600', color: '#111827' },
+  price: { fontSize: 12, color: '#6b7280', marginTop: 2 },
+  check: {
+    width: 28,
+    height: 28,
+    borderRadius: 14,
+    backgroundColor: '#f3f4f6',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  checkOn: { backgroundColor: '#7c3aed' },
+  checkText: { fontSize: 14, fontWeight: '700', color: '#6b7280' },
+});

@@ -2,7 +2,23 @@
 
 import { useState } from 'react';
 import { api } from '@/lib/trpc';
-import { Button, Card, CardSkeleton, ErrorAlert, EmptyState, Input, Modal, formatCurrency } from '@galaxy/shared';
+import type { RouterOutputs } from '@galaxy/api';
+import {
+  Button,
+  Card,
+  CardListSkeleton,
+  ErrorAlert,
+  EmptyState,
+  Input,
+  Modal,
+  formatCurrency,
+  useAuth,
+} from '@galaxy/ui';
+import { useLocale } from '@/components/LocaleProvider';
+
+type ServiceItem = RouterOutputs['services']['list']['items'][number];
+type CategoryItem = RouterOutputs['categories']['all'][number];
+type VariantItem = RouterOutputs['services']['list']['items'][number]['variants'][number];
 
 interface ServiceForm {
   titleAr: string;
@@ -11,104 +27,196 @@ interface ServiceForm {
   descriptionEn: string;
   basePrice: number;
   durationMin: number;
-  categoryId: number | null;
+  categoryId: number;
   imageUrl: string;
   isPopular: boolean;
 }
 
 const emptyForm: ServiceForm = {
-  titleAr: '', titleEn: '', descriptionAr: '', descriptionEn: '',
-  basePrice: 0, durationMin: 30, categoryId: null, imageUrl: '', isPopular: false,
+  titleAr: '',
+  titleEn: '',
+  descriptionAr: '',
+  descriptionEn: '',
+  basePrice: 0,
+  durationMin: 30,
+  categoryId: 0,
+  imageUrl: '',
+  isPopular: false,
+};
+
+// Variant form matches the actual schema field names
+interface VariantForm {
+  nameAr: string;
+  nameEn: string;
+  priceDelta: number;
+  durationDelta: number;
+}
+
+const emptyVariantForm: VariantForm = {
+  nameAr: '',
+  nameEn: '',
+  priceDelta: 0,
+  durationDelta: 0,
 };
 
 const STATUSES = ['ALL', 'ACTIVE', 'INACTIVE'] as const;
 
 export default function AdminServicesPage(): JSX.Element {
+  const { t } = useLocale();
+  const { isAuthenticated } = useAuth();
   const [search, setSearch] = useState('');
   const [catFilter, setCatFilter] = useState<number | null>(null);
   const [statusFilter, setStatusFilter] = useState<string>('ALL');
   const [createOpen, setCreateOpen] = useState(false);
   const [editOpen, setEditOpen] = useState(false);
-  const [selected, setSelected] = useState<Record<string, unknown> | null>(null);
+  const [selected, setSelected] = useState<ServiceItem | null>(null);
   const [form, setForm] = useState<ServiceForm>(emptyForm);
   const [expandedId, setExpandedId] = useState<number | null>(null);
-  const [variantForm, setVariantForm] = useState({ titleAr: '', titleEn: '', price: 0, durationMin: 30 });
+  const [variantForm, setVariantForm] = useState<VariantForm>(emptyVariantForm);
 
-  const { data, isLoading, isError, refetch } = api.services.list.useQuery({ limit: 50 } as never);
-  const createMut = api.services.create.useMutation({ onSuccess: () => { refetch(); setCreateOpen(false); setForm(emptyForm); } });
-  const updateMut = api.services.update.useMutation({ onSuccess: () => { refetch(); setEditOpen(false); setSelected(null); } });
+  const { data, isLoading, isError, refetch } = api.services.list.useQuery(
+    { limit: 50 },
+    { enabled: isAuthenticated },
+  );
+  const createMut = api.services.create.useMutation({
+    onSuccess: () => {
+      refetch();
+      setCreateOpen(false);
+      setForm(emptyForm);
+    },
+  });
+  const updateMut = api.services.update.useMutation({
+    onSuccess: () => {
+      refetch();
+      setEditOpen(false);
+      setSelected(null);
+    },
+  });
   const deleteMut = api.services.delete.useMutation({ onSuccess: () => refetch() });
   const addVariantMut = api.services.createVariant.useMutation({ onSuccess: () => refetch() });
   const removeVariantMut = api.services.deleteVariant.useMutation({ onSuccess: () => refetch() });
 
-  const catsQuery = api.categories.all.useQuery({} as never);
-  const categories = (catsQuery.data as unknown as Record<string, unknown>[]) ?? [];
-  const services = (data as unknown as Record<string, unknown>[]) ?? [];
+  const catsQuery = api.categories.all.useQuery(undefined, { enabled: isAuthenticated });
+  const categories: CategoryItem[] = catsQuery.data ?? [];
+  const services: ServiceItem[] = data?.items ?? [];
 
   const filtered = services.filter((s) => {
-    if (search && !(s.titleAr as string)?.includes(search) && !(s.titleEn as string)?.includes(search)) return false;
-    if (catFilter && Number(s.categoryId) !== catFilter) return false;
+    // titleJson is a Json field: { ar: string, en: string }
+    const titles = s.titleJson as { ar?: string; en?: string };
+    if (search && !titles.ar?.includes(search) && !titles.en?.includes(search)) return false;
+    if (catFilter && s.categoryId !== catFilter) return false;
     if (statusFilter === 'ACTIVE' && !s.isActive) return false;
     if (statusFilter === 'INACTIVE' && s.isActive) return false;
     return true;
   });
 
-  const handleCreate = () => createMut.mutate(form as never);
-  const handleUpdate = () => {
-    if (!selected) return;
-    updateMut.mutate({ id: selected.id as number, ...form } as never);
+  const handleCreate = () => {
+    if (!form.categoryId) return;
+    createMut.mutate({
+      categoryId: form.categoryId,
+      titleAr: form.titleAr,
+      titleEn: form.titleEn,
+      descriptionAr: form.descriptionAr || undefined,
+      descriptionEn: form.descriptionEn || undefined,
+      basePrice: form.basePrice,
+      durationMin: form.durationMin,
+      imageUrl: form.imageUrl || undefined,
+      isPopular: form.isPopular,
+    });
   };
-  const handleDelete = (svc: Record<string, unknown>) => deleteMut.mutate({ id: svc.id as number } as never);
 
-  const openEdit = (svc: Record<string, unknown>) => {
+  const handleUpdate = () => {
+    if (!selected || !form.categoryId) return;
+    updateMut.mutate({
+      id: selected.id,
+      categoryId: form.categoryId,
+      titleAr: form.titleAr,
+      titleEn: form.titleEn,
+      descriptionAr: form.descriptionAr || undefined,
+      descriptionEn: form.descriptionEn || undefined,
+      basePrice: form.basePrice,
+      durationMin: form.durationMin,
+      imageUrl: form.imageUrl || undefined,
+      isPopular: form.isPopular,
+    });
+  };
+
+  const handleDelete = (svc: ServiceItem) => {
+    deleteMut.mutate({ id: svc.id });
+  };
+
+  const openEdit = (svc: ServiceItem) => {
     setSelected(svc);
+    const titles = svc.titleJson as { ar?: string; en?: string };
+    const descs = (svc.descriptionJson ?? {}) as { ar?: string; en?: string };
     setForm({
-      titleAr: svc.titleAr as string,
-      titleEn: svc.titleEn as string,
-      descriptionAr: svc.descriptionAr as string,
-      descriptionEn: svc.descriptionEn as string,
+      titleAr: titles.ar ?? '',
+      titleEn: titles.en ?? '',
+      descriptionAr: descs.ar ?? '',
+      descriptionEn: descs.en ?? '',
       basePrice: Number(svc.basePrice ?? 0),
-      durationMin: Number(svc.durationMin ?? 30),
-      categoryId: svc.categoryId as number | null,
-      imageUrl: svc.imageUrl as string ?? '',
-      isPopular: Boolean(svc.isPopular),
+      durationMin: svc.durationMin,
+      categoryId: svc.categoryId,
+      imageUrl: svc.imageUrl ?? '',
+      isPopular: svc.isPopular,
     });
     setEditOpen(true);
   };
 
   const handleAddVariant = (serviceId: number) => {
-    addVariantMut.mutate({ serviceId, ...variantForm } as never);
-    setVariantForm({ titleAr: '', titleEn: '', price: 0, durationMin: 30 });
+    addVariantMut.mutate({
+      serviceId,
+      nameAr: variantForm.nameAr,
+      nameEn: variantForm.nameEn,
+      priceDelta: variantForm.priceDelta,
+      durationDelta: variantForm.durationDelta,
+    });
+    setVariantForm(emptyVariantForm);
   };
 
-  const variantsData = (svc: Record<string, unknown>): Record<string, unknown>[] =>
-    (svc.variants as unknown as Record<string, unknown>[]) ?? [];
+  const getVariants = (svc: ServiceItem): VariantItem[] => svc.variants ?? [];
 
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between">
-        <h1 className="text-2xl font-bold">إدارة الخدمات</h1>
-        <Button variant="primary" onClick={() => { setForm(emptyForm); setCreateOpen(true); }}>إضافة خدمة</Button>
+        <h1 className="text-2xl font-bold">{t('admin.services.title')}</h1>
+        <Button
+          variant="primary"
+          onClick={() => {
+            setForm(emptyForm);
+            setCreateOpen(true);
+          }}
+        >
+          {t('admin.services.add-service')}
+        </Button>
       </div>
 
       <div className="flex flex-wrap gap-4">
         <Input
-          placeholder="بحث عن خدمة..."
+          placeholder={t('admin.services.search-placeholder')}
           value={search}
           onChange={(e) => setSearch(e.target.value)}
           className="w-64"
         />
         <div>
-          <label className="mb-1 block text-xs text-gray-500">التصنيف</label>
+          <label htmlFor="as-cat-filter" className="mb-1 block text-xs text-text-secondary">
+            {t('admin.services.category')}
+          </label>
           <select
-            className="rounded-lg border border-gray-300 bg-white p-2 text-sm dark:border-gray-700 dark:bg-gray-900"
+            id="as-cat-filter"
+            className="rounded-lg border border-edge bg-white p-2 text-sm dark:border-gray-700 dark:bg-gray-900"
             value={catFilter ?? ''}
             onChange={(e) => setCatFilter(e.target.value ? Number(e.target.value) : null)}
           >
-            <option value="">جميع التصنيفات</option>
-            {categories.map((c) => (
-              <option key={c.id as number} value={c.id as number}>{c.nameAr as string}</option>
-            ))}
+            <option value="">{t('admin.services.all-categories')}</option>
+            {categories.map((c) => {
+              const name = (c.nameJson as { ar?: string }).ar ?? '';
+              return (
+                <option key={c.id} value={c.id}>
+                  {name}
+                </option>
+              );
+            })}
           </select>
         </div>
         <div className="flex gap-1">
@@ -116,168 +224,349 @@ export default function AdminServicesPage(): JSX.Element {
             <button
               key={s}
               onClick={() => setStatusFilter(s)}
-              className={`rounded-full px-3 py-1 text-xs font-medium ${statusFilter === s ? 'bg-brand-600 text-white' : 'bg-gray-100 text-gray-600 dark:bg-gray-800 dark:text-gray-400'}`}
+              className={`rounded-full px-3 py-1 text-xs font-medium ${statusFilter === s ? 'bg-brand-600 text-white' : 'bg-surface-muted text-text-secondary dark:bg-gray-800 dark:text-text-tertiary'}`}
             >
-              {s === 'ALL' ? 'الكل' : s === 'ACTIVE' ? 'نشط' : 'غير نشط'}
+              {s === 'ALL'
+                ? t('admin.all')
+                : s === 'ACTIVE'
+                  ? t('status.active')
+                  : t('status.inactive')}
             </button>
           ))}
         </div>
       </div>
 
-      {isLoading ? <CardSkeleton />
-      : isError ? <ErrorAlert message="فشل تحميل الخدمات" onRetry={() => refetch()} />
-      : filtered.length === 0 ? (
+      {isLoading ? (
+        <CardListSkeleton count={4} />
+      ) : isError ? (
+        <ErrorAlert message={t('admin.services.load-error')} onRetry={() => refetch()} />
+      ) : filtered.length === 0 ? (
         <>
-          <EmptyState title="لا توجد خدمات" />
-          <Button variant="primary" onClick={() => setCreateOpen(true)}>إضافة خدمة</Button>
+          <EmptyState title={t('admin.services.empty')} />
+          <Button variant="primary" onClick={() => setCreateOpen(true)}>
+            {t('admin.services.add-service')}
+          </Button>
         </>
       ) : (
         <div className="space-y-2">
-          {filtered.map((svc: Record<string, unknown>) => (
-            <div key={svc.id as number}>
-              <Card padding="md">
-                <div className="flex items-center justify-between">
-                  <div className="flex-1">
-                    <p className="font-semibold">{svc.titleAr as string} / {svc.titleEn as string}</p>
-                    <div className="mt-1 flex flex-wrap gap-2 text-sm text-gray-500">
-                      <span>{categories.find((c) => c.id === svc.categoryId)?.nameAr as string ?? 'بدون تصنيف'}</span>
-                      <span>{formatCurrency(Number(svc.basePrice ?? 0))}</span>
-                      <span>{String(svc.durationMin ?? 0)} دقيقة</span>
-                    </div>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    {Boolean(svc.isPopular) && <span className="rounded-full bg-amber-100 px-2 py-0.5 text-xs text-amber-700">مشهور</span>}
-                    <span className={`rounded-full px-2 py-0.5 text-xs ${Boolean(svc.isActive) ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700'}`}>
-                      {Boolean(svc.isActive) ? 'نشط' : 'غير نشط'}
-                    </span>
-                    <button
-                      className="text-xs text-brand-600 hover:underline"
-                      onClick={() => setExpandedId(expandedId === (svc.id as number) ? null : svc.id as number)}
-                    >
-                      {expandedId === (svc.id as number) ? 'إخفاء المتغيرات' : 'عرض المتغيرات'}
-                    </button>
-                    <Button size="sm" variant="outline" onClick={() => openEdit(svc)}>تعديل</Button>
-                    {Boolean(svc.isActive) && <Button size="sm" variant="danger" onClick={() => handleDelete(svc)}>حذف</Button>}
-                  </div>
-                </div>
+          {filtered.map((svc) => {
+            const titles = svc.titleJson as { ar?: string; en?: string };
+            const catName =
+              (
+                categories.find((c) => c.id === svc.categoryId)?.nameJson as
+                  { ar?: string } | undefined
+              )?.ar ?? t('admin.services.uncategorized');
+            const variantCount = getVariants(svc).length;
 
-                {expandedId === (svc.id as number) && (
-                  <div className="mt-4 border-t border-gray-100 pt-3 dark:border-gray-800">
-                    <h4 className="mb-2 text-sm font-semibold">المتغيرات</h4>
-                    {variantsData(svc).length === 0 ? (
-                      <p className="mb-2 text-xs text-gray-500">لا توجد متغيرات</p>
-                    ) : (
-                      <div className="mb-3 space-y-1">
-                        {variantsData(svc).map((v: Record<string, unknown>) => (
-                          <div key={v.id as number} className="flex items-center justify-between rounded bg-gray-50 px-3 py-1.5 text-sm dark:bg-gray-900">
-                            <span>{v.titleAr as string} / {v.titleEn as string}</span>
-                            <span>{formatCurrency(Number(v.price ?? 0))} - {String(v.durationMin ?? 0)} دقيقة</span>
-                            <Button size="sm" variant="danger" onClick={() => removeVariantMut.mutate({ id: v.id as number } as never)}>حذف</Button>
-                          </div>
-                        ))}
+            return (
+              <div key={svc.id}>
+                <Card padding="md">
+                  <div className="flex items-center justify-between">
+                    <div className="flex-1">
+                      <p className="font-semibold">
+                        {titles.ar ?? ''} / {titles.en ?? ''}
+                      </p>
+                      <div className="mt-1 flex flex-wrap gap-2 text-sm text-text-secondary">
+                        <span>{catName}</span>
+                        <span>{formatCurrency(Number(svc.basePrice ?? 0))}</span>
+                        <span>
+                          {t('admin.services.duration-min', { minutes: svc.durationMin })}
+                        </span>
                       </div>
-                    )}
-                    <div className="flex flex-wrap items-end gap-2">
-                      <Input
-                        placeholder="اسم المتغير (عربي)"
-                        value={variantForm.titleAr}
-                        onChange={(e) => setVariantForm({ ...variantForm, titleAr: e.target.value })}
-                        className="w-36"
-                      />
-                      <Input
-                        placeholder="اسم المتغير (إنجليزي)"
-                        value={variantForm.titleEn}
-                        onChange={(e) => setVariantForm({ ...variantForm, titleEn: e.target.value })}
-                        className="w-36"
-                      />
-                      <Input
-                        placeholder="السعر"
-                        type="number"
-                        value={variantForm.price}
-                        onChange={(e) => setVariantForm({ ...variantForm, price: Number(e.target.value) })}
-                        className="w-24"
-                      />
-                      <Input
-                        placeholder="المدة (دقيقة)"
-                        type="number"
-                        value={variantForm.durationMin}
-                        onChange={(e) => setVariantForm({ ...variantForm, durationMin: Number(e.target.value) })}
-                        className="w-28"
-                      />
-                      <Button size="sm" variant="primary" onClick={() => handleAddVariant(svc.id as number)} loading={addVariantMut.isPending}>إضافة</Button>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      {svc.isPopular && (
+                        <span className="rounded-full bg-amber-100 px-2 py-0.5 text-xs text-amber-700">
+                          {t('admin.services.popular')}
+                        </span>
+                      )}
+                      <span
+                        className={`rounded-full px-2 py-0.5 text-xs ${svc.isActive ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700'}`}
+                      >
+                        {svc.isActive ? t('status.active') : t('status.inactive')}
+                      </span>
+                      <button
+                        className="text-xs text-brand-600 hover:underline"
+                        onClick={() => setExpandedId(expandedId === svc.id ? null : svc.id)}
+                      >
+                        {expandedId === svc.id
+                          ? t('admin.services.hide-variants')
+                          : t('admin.services.show-variants')}
+                      </button>
+                      <Button size="sm" variant="outline" onClick={() => openEdit(svc)}>
+                        {t('button.edit')}
+                      </Button>
+                      {svc.isActive && (
+                        <Button size="sm" variant="danger" onClick={() => handleDelete(svc)}>
+                          {t('button.delete')}
+                        </Button>
+                      )}
                     </div>
                   </div>
-                )}
-              </Card>
-            </div>
-          ))}
+
+                  {expandedId === svc.id && (
+                    <div className="mt-4 border-t border-edge-muted pt-3 dark:border-gray-800">
+                      <h4 className="mb-2 text-sm font-semibold">{t('admin.services.variants')}</h4>
+                      {variantCount === 0 ? (
+                        <p className="mb-2 text-xs text-text-secondary">
+                          {t('admin.services.no-variants')}
+                        </p>
+                      ) : (
+                        <div className="mb-3 space-y-1">
+                          {getVariants(svc).map((v: VariantItem) => {
+                            const vNames = v.nameJson as { ar?: string; en?: string };
+                            return (
+                              <div
+                                key={v.id}
+                                className="flex items-center justify-between rounded bg-surface-muted px-3 py-1.5 text-sm dark:bg-gray-900"
+                              >
+                                <span>
+                                  {vNames.ar ?? ''} / {vNames.en ?? ''}
+                                </span>
+                                <span>
+                                  {formatCurrency(Number(v.priceDelta ?? 0))} -{' '}
+                                  {t('admin.services.duration-min', {
+                                    minutes: v.durationDelta ?? 0,
+                                  })}
+                                </span>
+                                <Button
+                                  size="sm"
+                                  variant="danger"
+                                  onClick={() => removeVariantMut.mutate({ id: v.id })}
+                                >
+                                  {t('button.delete')}
+                                </Button>
+                              </div>
+                            );
+                          })}
+                        </div>
+                      )}
+                      <div className="flex flex-wrap items-end gap-2">
+                        <Input
+                          placeholder={t('admin.services.variant-name-ar')}
+                          value={variantForm.nameAr}
+                          onChange={(e) =>
+                            setVariantForm({ ...variantForm, nameAr: e.target.value })
+                          }
+                          className="w-36"
+                        />
+                        <Input
+                          placeholder={t('admin.services.variant-name-en')}
+                          value={variantForm.nameEn}
+                          onChange={(e) =>
+                            setVariantForm({ ...variantForm, nameEn: e.target.value })
+                          }
+                          className="w-36"
+                        />
+                        <Input
+                          placeholder={t('admin.services.price-delta')}
+                          type="number"
+                          value={variantForm.priceDelta}
+                          onChange={(e) =>
+                            setVariantForm({ ...variantForm, priceDelta: Number(e.target.value) })
+                          }
+                          className="w-24"
+                        />
+                        <Input
+                          placeholder={t('admin.services.duration-delta')}
+                          type="number"
+                          value={variantForm.durationDelta}
+                          onChange={(e) =>
+                            setVariantForm({
+                              ...variantForm,
+                              durationDelta: Number(e.target.value),
+                            })
+                          }
+                          className="w-28"
+                        />
+                        <Button
+                          size="sm"
+                          variant="primary"
+                          onClick={() => handleAddVariant(svc.id)}
+                          loading={addVariantMut.isPending}
+                        >
+                          {t('admin.services.add-variant')}
+                        </Button>
+                      </div>
+                    </div>
+                  )}
+                </Card>
+              </div>
+            );
+          })}
         </div>
       )}
 
       {/* Create Modal */}
-      <Modal open={createOpen} onClose={() => setCreateOpen(false)} title="إضافة خدمة جديدة">
+      <Modal
+        open={createOpen}
+        onClose={() => setCreateOpen(false)}
+        title={t('admin.services.add-title')}
+      >
         <div className="space-y-4">
-          <Input label="العنوان (عربي)" value={form.titleAr} onChange={(e) => setForm({ ...form, titleAr: e.target.value })} />
-          <Input label="العنوان (إنجليزي)" value={form.titleEn} onChange={(e) => setForm({ ...form, titleEn: e.target.value })} />
-          <Input label="الوصف (عربي)" value={form.descriptionAr} onChange={(e) => setForm({ ...form, descriptionAr: e.target.value })} />
-          <Input label="الوصف (إنجليزي)" value={form.descriptionEn} onChange={(e) => setForm({ ...form, descriptionEn: e.target.value })} />
-          <Input label="السعر الأساسي" type="number" value={form.basePrice} onChange={(e) => setForm({ ...form, basePrice: Number(e.target.value) })} />
-          <Input label="المدة (دقيقة)" type="number" value={form.durationMin} onChange={(e) => setForm({ ...form, durationMin: Number(e.target.value) })} />
+          <Input
+            label={t('admin.services.title-ar')}
+            value={form.titleAr}
+            onChange={(e) => setForm({ ...form, titleAr: e.target.value })}
+          />
+          <Input
+            label={t('admin.services.title-en')}
+            value={form.titleEn}
+            onChange={(e) => setForm({ ...form, titleEn: e.target.value })}
+          />
+          <Input
+            label={t('admin.services.description-ar')}
+            value={form.descriptionAr}
+            onChange={(e) => setForm({ ...form, descriptionAr: e.target.value })}
+          />
+          <Input
+            label={t('admin.services.description-en')}
+            value={form.descriptionEn}
+            onChange={(e) => setForm({ ...form, descriptionEn: e.target.value })}
+          />
+          <Input
+            label={t('admin.services.base-price')}
+            type="number"
+            value={form.basePrice}
+            onChange={(e) => setForm({ ...form, basePrice: Number(e.target.value) })}
+          />
+          <Input
+            label={t('admin.services.duration-min-label')}
+            type="number"
+            value={form.durationMin}
+            onChange={(e) => setForm({ ...form, durationMin: Number(e.target.value) })}
+          />
           <div>
-            <label className="mb-1 block text-sm font-medium text-gray-700 dark:text-gray-300">التصنيف</label>
-            <select
-              className="w-full rounded-lg border border-gray-300 bg-white p-2 text-sm dark:border-gray-700 dark:bg-gray-900"
-              value={form.categoryId ?? ''}
-              onChange={(e) => setForm({ ...form, categoryId: e.target.value ? Number(e.target.value) : null })}
+            <label
+              htmlFor="as-cat-create"
+              className="mb-1 block text-sm font-medium text-text-primary dark:text-gray-300"
             >
-              <option value="">-- اختر تصنيف --</option>
-              {categories.map((c) => (
-                <option key={c.id as number} value={c.id as number}>{c.nameAr as string}</option>
-              ))}
+              {t('admin.services.category')}
+            </label>
+            <select
+              id="as-cat-create"
+              className="w-full rounded-lg border border-edge bg-white p-2 text-sm dark:border-gray-700 dark:bg-gray-900"
+              value={form.categoryId || ''}
+              onChange={(e) => setForm({ ...form, categoryId: Number(e.target.value) || 0 })}
+            >
+              <option value="">{t('admin.services.select-category')}</option>
+              {categories.map((c) => {
+                const name = (c.nameJson as { ar?: string }).ar ?? '';
+                return (
+                  <option key={c.id} value={c.id}>
+                    {name}
+                  </option>
+                );
+              })}
             </select>
           </div>
-          <Input label="رابط الصورة" value={form.imageUrl} onChange={(e) => setForm({ ...form, imageUrl: e.target.value })} />
+          <Input
+            label={t('admin.services.image-url')}
+            value={form.imageUrl}
+            onChange={(e) => setForm({ ...form, imageUrl: e.target.value })}
+          />
           <label className="flex items-center gap-2 text-sm">
-            <input type="checkbox" checked={form.isPopular} onChange={(e) => setForm({ ...form, isPopular: e.target.checked })} />
-            خدمة مشهورة
+            <input
+              type="checkbox"
+              checked={form.isPopular}
+              onChange={(e) => setForm({ ...form, isPopular: e.target.checked })}
+            />
+            {t('admin.services.popular-label')}
           </label>
           <div className="flex gap-2">
-            <Button variant="primary" onClick={handleCreate} loading={createMut.isPending}>حفظ</Button>
-            <Button variant="secondary" onClick={() => setCreateOpen(false)}>إلغاء</Button>
+            <Button variant="primary" onClick={handleCreate} loading={createMut.isPending}>
+              {t('button.save')}
+            </Button>
+            <Button variant="secondary" onClick={() => setCreateOpen(false)}>
+              {t('button.cancel')}
+            </Button>
           </div>
         </div>
       </Modal>
 
       {/* Edit Modal */}
-      <Modal open={editOpen} onClose={() => setEditOpen(false)} title="تعديل الخدمة">
+      <Modal
+        open={editOpen}
+        onClose={() => setEditOpen(false)}
+        title={t('admin.services.edit-title')}
+      >
         <div className="space-y-4">
-          <Input label="العنوان (عربي)" value={form.titleAr} onChange={(e) => setForm({ ...form, titleAr: e.target.value })} />
-          <Input label="العنوان (إنجليزي)" value={form.titleEn} onChange={(e) => setForm({ ...form, titleEn: e.target.value })} />
-          <Input label="الوصف (عربي)" value={form.descriptionAr} onChange={(e) => setForm({ ...form, descriptionAr: e.target.value })} />
-          <Input label="الوصف (إنجليزي)" value={form.descriptionEn} onChange={(e) => setForm({ ...form, descriptionEn: e.target.value })} />
-          <Input label="السعر الأساسي" type="number" value={form.basePrice} onChange={(e) => setForm({ ...form, basePrice: Number(e.target.value) })} />
-          <Input label="المدة (دقيقة)" type="number" value={form.durationMin} onChange={(e) => setForm({ ...form, durationMin: Number(e.target.value) })} />
+          <Input
+            label={t('admin.services.title-ar')}
+            value={form.titleAr}
+            onChange={(e) => setForm({ ...form, titleAr: e.target.value })}
+          />
+          <Input
+            label={t('admin.services.title-en')}
+            value={form.titleEn}
+            onChange={(e) => setForm({ ...form, titleEn: e.target.value })}
+          />
+          <Input
+            label={t('admin.services.description-ar')}
+            value={form.descriptionAr}
+            onChange={(e) => setForm({ ...form, descriptionAr: e.target.value })}
+          />
+          <Input
+            label={t('admin.services.description-en')}
+            value={form.descriptionEn}
+            onChange={(e) => setForm({ ...form, descriptionEn: e.target.value })}
+          />
+          <Input
+            label={t('admin.services.base-price')}
+            type="number"
+            value={form.basePrice}
+            onChange={(e) => setForm({ ...form, basePrice: Number(e.target.value) })}
+          />
+          <Input
+            label={t('admin.services.duration-min-label')}
+            type="number"
+            value={form.durationMin}
+            onChange={(e) => setForm({ ...form, durationMin: Number(e.target.value) })}
+          />
           <div>
-            <label className="mb-1 block text-sm font-medium text-gray-700 dark:text-gray-300">التصنيف</label>
-            <select
-              className="w-full rounded-lg border border-gray-300 bg-white p-2 text-sm dark:border-gray-700 dark:bg-gray-900"
-              value={form.categoryId ?? ''}
-              onChange={(e) => setForm({ ...form, categoryId: e.target.value ? Number(e.target.value) : null })}
+            <label
+              htmlFor="as-cat-edit"
+              className="mb-1 block text-sm font-medium text-text-primary dark:text-gray-300"
             >
-              <option value="">-- اختر تصنيف --</option>
-              {categories.map((c) => (
-                <option key={c.id as number} value={c.id as number}>{c.nameAr as string}</option>
-              ))}
+              {t('admin.services.category')}
+            </label>
+            <select
+              id="as-cat-edit"
+              className="w-full rounded-lg border border-edge bg-white p-2 text-sm dark:border-gray-700 dark:bg-gray-900"
+              value={form.categoryId || ''}
+              onChange={(e) => setForm({ ...form, categoryId: Number(e.target.value) || 0 })}
+            >
+              <option value="">{t('admin.services.select-category')}</option>
+              {categories.map((c) => {
+                const name = (c.nameJson as { ar?: string }).ar ?? '';
+                return (
+                  <option key={c.id} value={c.id}>
+                    {name}
+                  </option>
+                );
+              })}
             </select>
           </div>
-          <Input label="رابط الصورة" value={form.imageUrl} onChange={(e) => setForm({ ...form, imageUrl: e.target.value })} />
+          <Input
+            label={t('admin.services.image-url')}
+            value={form.imageUrl}
+            onChange={(e) => setForm({ ...form, imageUrl: e.target.value })}
+          />
           <label className="flex items-center gap-2 text-sm">
-            <input type="checkbox" checked={form.isPopular} onChange={(e) => setForm({ ...form, isPopular: e.target.checked })} />
-            خدمة مشهورة
+            <input
+              type="checkbox"
+              checked={form.isPopular}
+              onChange={(e) => setForm({ ...form, isPopular: e.target.checked })}
+            />
+            {t('admin.services.popular-label')}
           </label>
           <div className="flex gap-2">
-            <Button variant="primary" onClick={handleUpdate} loading={updateMut.isPending}>تحديث</Button>
-            <Button variant="secondary" onClick={() => setEditOpen(false)}>إلغاء</Button>
+            <Button variant="primary" onClick={handleUpdate} loading={updateMut.isPending}>
+              {t('admin.services.update')}
+            </Button>
+            <Button variant="secondary" onClick={() => setEditOpen(false)}>
+              {t('button.cancel')}
+            </Button>
           </div>
         </div>
       </Modal>

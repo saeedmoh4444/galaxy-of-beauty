@@ -1,4 +1,6 @@
-import { Card, EmptyState } from '@galaxy/shared';
+'use client';
+
+import { Card, EmptyState } from '@galaxy/ui';
 
 export default function OfflinePage(): JSX.Element {
   return (

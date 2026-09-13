@@ -1,70 +1,68 @@
-import { View, Text, ScrollView, StyleSheet, ActivityIndicator, TouchableOpacity } from 'react-native';
-import { trpc } from '@/lib/api';
-import { useState, useEffect } from 'react';
+import { View, Text, ScrollView, StyleSheet, RefreshControl } from 'react-native';
+import { SkeletonList } from '@/components/SkeletonCard';
+import { ErrorAlert } from '@/components/ErrorAlert';
+import { trpc } from '@/lib/trpc-react';
+import { useLocale } from '@/components/LocaleProvider';
 
-export default function AdminZatcaScreen() {
-  const [data, setData] = useState<Record<string, unknown>[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState('');
+interface ZatcaInvoiceItem {
+  invoiceNumber?: string;
+  totalAmount?: number;
+  createdAt?: string;
+}
 
-  const fetch = () => {
-    setLoading(true);
-    setError('');
-    (trpc.zatca.listInvoices as any).query({ page: 1, limit: 50 } as never)
-      .then((d: Record<string, unknown>) => { setData((d?.invoices ?? []) as Record<string, unknown>[]); setLoading(false); })
-      .catch(() => { setError('فشل تحميل الفواتير'); setLoading(false); });
-  };
+export default function AdminZatcaScreen(): JSX.Element {
+  const { t, locale } = useLocale();
+  const q = trpc.zatca.listInvoices.useQuery({});
+  const data = (q.data as unknown as { items?: ZatcaInvoiceItem[] } | null)?.items ?? [];
 
-  useEffect(() => { fetch(); }, []);
-
-  const statusColor = (s: string) => {
-    if (s === 'CLEARED') return '#10b981';
-    if (s === 'PENDING') return '#f59e0b';
-    if (s === 'FAILED') return '#ef4444';
-    return '#9ca3af';
-  };
+  if (q.isLoading) return <SkeletonList count={5} />;
+  if (q.isError)
+    return <ErrorAlert message={t('admin.zatca.load-error')} onRetry={() => q.refetch()} />;
 
   return (
-    <ScrollView style={styles.container}>
-      <Text style={styles.title}>فواتير زاتكا</Text>
-
-      {loading ? <ActivityIndicator color="#7c3aed" style={{ marginTop: 40 }} /> :
-       error ? (
-        <View style={styles.centered}>
-          <Text style={styles.error}>{error}</Text>
-          <TouchableOpacity style={styles.retryBtn} onPress={fetch}><Text style={styles.retryText}>إعادة المحاولة</Text></TouchableOpacity>
-        </View>
-       ) : data.length === 0 ? (
-        <View style={styles.centered}><Text style={styles.empty}>لا توجد فواتير</Text></View>
-       ) : (
-        data.map((inv: Record<string, unknown>) => (
-          <View key={inv.id as number} style={styles.card}>
-            <View style={{ flex: 1 }}>
-              <Text style={styles.invId}>فاتورة #{inv.id as string}</Text>
-              <Text style={styles.meta}>{inv.bookingCode as string ?? `حجز #${inv.bookingId as string}`}</Text>
-              <Text style={styles.meta}>{Number(inv.totalAmount ?? 0).toFixed(0)} ر.س</Text>
-              <Text style={styles.meta}>{new Date(inv.createdAt as string).toLocaleDateString('ar-SA')}</Text>
-            </View>
-            <View style={[styles.badge, { backgroundColor: statusColor(inv.zatcaStatus as string) + '20' }]}>
-              <Text style={{ color: statusColor(inv.zatcaStatus as string), fontSize: 12, fontWeight: '600' }}>{inv.zatcaStatus as string}</Text>
-            </View>
+    <ScrollView
+      style={styles.c}
+      contentContainerStyle={styles.i}
+      refreshControl={
+        <RefreshControl
+          refreshing={q.isRefetching}
+          onRefresh={() => q.refetch()}
+          colors={['#059669']}
+        />
+      }
+    >
+      <Text style={styles.t}>{t('mobile.admin.zatca.title')}</Text>
+      {data.map((inv, i) => (
+        <View key={i} style={styles.card}>
+          <Text style={styles.invNum}>{inv.invoiceNumber}</Text>
+          <View style={{ flex: 1 }}>
+            <Text style={styles.amount}>
+              {inv.totalAmount?.toLocaleString()} {t('misc.sar')}
+            </Text>
           </View>
-        ))
-      )}
+          <Text style={styles.invDate}>
+            {new Date(inv.createdAt ?? '').toLocaleDateString(locale === 'en' ? 'en-US' : 'ar-SA')}
+          </Text>
+        </View>
+      ))}
     </ScrollView>
   );
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: '#fff', padding: 16 },
-  title: { fontSize: 24, fontWeight: '800', color: '#111827', marginBottom: 16 },
-  centered: { alignItems: 'center', marginTop: 40 },
-  empty: { fontSize: 18, fontWeight: '600', color: '#6b7280' },
-  error: { color: '#ef4444', fontSize: 16, marginBottom: 12 },
-  retryBtn: { backgroundColor: '#7c3aed', borderRadius: 12, paddingHorizontal: 24, paddingVertical: 10 },
-  retryText: { color: '#fff', fontSize: 14, fontWeight: '600' },
-  card: { flexDirection: 'row', alignItems: 'center', padding: 14, marginBottom: 8, borderRadius: 12, borderWidth: 1, borderColor: '#e5e7eb' },
-  invId: { fontSize: 15, fontWeight: '600', color: '#111827' },
-  meta: { fontSize: 13, color: '#6b7280', marginTop: 2 },
-  badge: { paddingHorizontal: 10, paddingVertical: 4, borderRadius: 12 },
+  c: { flex: 1, backgroundColor: '#ecfdf5' },
+  i: { padding: 16, paddingTop: 30, paddingBottom: 40 },
+  t: { fontSize: 24, fontWeight: '800', color: '#059669', textAlign: 'center', marginBottom: 20 },
+  card: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 10,
+    backgroundColor: '#fff',
+    borderRadius: 12,
+    padding: 14,
+    marginBottom: 6,
+  },
+  invNum: { fontSize: 13, fontWeight: '700', color: '#111827', fontFamily: 'monospace' },
+  amount: { fontSize: 14, fontWeight: '600', color: '#059669' },
+  invDate: { fontSize: 11, color: '#9ca3af' },
 });

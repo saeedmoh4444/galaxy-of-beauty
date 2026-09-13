@@ -1,5 +1,6 @@
 import { z } from 'zod';
 import { TRPCError } from '@trpc/server';
+import { SMALL_PAGE_SIZE } from '@galaxy/shared';
 import { adminProcedure, router } from '../trpc';
 import { prisma } from '@galaxy/db';
 
@@ -26,7 +27,7 @@ export const adminRouter = router({
         _count: true,
       }),
       prisma.booking.findMany({
-        take: 5,
+        take: SMALL_PAGE_SIZE,
         orderBy: { createdAt: 'desc' },
         include: {
           customer: { select: { id: true, name: true } },
@@ -35,7 +36,7 @@ export const adminRouter = router({
         },
       }),
       prisma.technician.findMany({
-        take: 5,
+        take: SMALL_PAGE_SIZE,
         orderBy: { completedBookings: 'desc' },
         include: {
           user: { select: { id: true, name: true, email: true } },
@@ -77,9 +78,7 @@ export const adminRouter = router({
     .input(
       z
         .object({
-          kycStatus: z
-            .enum(['PENDING', 'SUBMITTED', 'VERIFIED', 'REJECTED'])
-            .optional(),
+          kycStatus: z.enum(['PENDING', 'SUBMITTED', 'VERIFIED', 'REJECTED']).optional(),
           page: z.number().optional().default(1),
           limit: z.number().optional().default(20),
         })
@@ -87,9 +86,7 @@ export const adminRouter = router({
         .default({}),
     )
     .query(async ({ input }) => {
-      const where = input.kycStatus
-        ? { kycStatus: input.kycStatus as any }
-        : {};
+      const where = input.kycStatus ? { kycStatus: input.kycStatus as any } : {};
       const skip = (input.page - 1) * input.limit;
 
       const [items, total] = await Promise.all([
@@ -122,6 +119,7 @@ export const adminRouter = router({
           city: t.city,
           area: t.area,
           kycStatus: t.kycStatus,
+          kycDocuments: t.kycDocuments,
           kycNotes: t.kycNotes,
           isEcoFriendly: t.isEcoFriendly,
           completedBookings: t.completedBookings,
@@ -192,7 +190,7 @@ export const adminRouter = router({
   suspendUser: adminProcedure
     .input(
       z.object({
-        userId: z.number(),
+        userId: z.number().int().positive(),
         reason: z.string().optional(),
       }),
     )
@@ -223,16 +221,14 @@ export const adminRouter = router({
         userId: updated.id,
         isActive: updated.isActive,
         suspendedAt: updated.suspendedAt,
-        message: isSuspended
-          ? 'User has been unsuspended'
-          : 'User has been suspended',
+        message: isSuspended ? 'User has been unsuspended' : 'User has been suspended',
       };
     }),
 
   changeUserRole: adminProcedure
     .input(
       z.object({
-        userId: z.number(),
+        userId: z.number().int().positive(),
         role: z.enum(['CUSTOMER', 'TECHNICIAN', 'ADMIN']),
       }),
     )
@@ -324,24 +320,23 @@ export const adminRouter = router({
     }),
 
   getFinancials: adminProcedure.query(async () => {
-    const [revenueAgg, platformFeeAgg, technicianEarningsAgg, payoutsAgg] =
-      await Promise.all([
-        prisma.payment.aggregate({
-          _sum: { amount: true },
-          where: { status: 'CAPTURED' },
-        }),
-        prisma.booking.aggregate({
-          _sum: { platformFee: true },
-        }),
-        prisma.booking.aggregate({
-          _sum: { totalAmount: true },
-          where: { status: 'COMPLETED' },
-        }),
-        prisma.payout.aggregate({
-          _sum: { amount: true },
-          where: { status: 'PENDING' },
-        }),
-      ]);
+    const [revenueAgg, platformFeeAgg, technicianEarningsAgg, payoutsAgg] = await Promise.all([
+      prisma.payment.aggregate({
+        _sum: { amount: true },
+        where: { status: 'CAPTURED' },
+      }),
+      prisma.booking.aggregate({
+        _sum: { platformFee: true },
+      }),
+      prisma.booking.aggregate({
+        _sum: { totalAmount: true },
+        where: { status: 'COMPLETED' },
+      }),
+      prisma.payout.aggregate({
+        _sum: { amount: true },
+        where: { status: 'PENDING' },
+      }),
+    ]);
 
     return {
       totalRevenue: revenueAgg._sum.amount?.toNumber() ?? 0,
@@ -354,7 +349,7 @@ export const adminRouter = router({
   verifyKyc: adminProcedure
     .input(
       z.object({
-        userId: z.number(),
+        userId: z.number().int().positive(),
         status: z.enum(['VERIFIED', 'REJECTED']),
         notes: z.string().optional(),
       }),
@@ -404,7 +399,7 @@ export const adminRouter = router({
     }),
 
   toggleEcoFriendly: adminProcedure
-    .input(z.object({ userId: z.number() }))
+    .input(z.object({ userId: z.number().int().positive() }))
     .mutation(async ({ input }) => {
       const technician = await prisma.technician.findUnique({
         where: { userId: input.userId },
@@ -435,19 +430,19 @@ export const adminRouter = router({
     // Negative wallet balances
     const negativeWallets = await prisma.wallet.findMany({
       where: { balance: { lt: 0 } },
+      take: 100,
       include: {
         user: { select: { id: true, name: true, email: true } },
       },
     });
     if (negativeWallets.length > 0) {
-      issues.push(
-        `Found ${negativeWallets.length} wallet(s) with negative balance`,
-      );
+      issues.push(`Found ${negativeWallets.length} wallet(s) with negative balance`);
     }
 
     // Users who are CUSTOMER but have a Technician profile (role mismatch)
     const customerTechnicians = await prisma.technician.findMany({
       where: { user: { role: 'CUSTOMER' } },
+      take: 100,
       include: {
         user: { select: { id: true, name: true, email: true } },
       },
@@ -479,4 +474,34 @@ export const adminRouter = router({
       },
     };
   }),
+
+  // Audit logs with filtering and pagination
+  auditLogs: adminProcedure
+    .input(
+      z.object({
+        page: z.number().default(1),
+        limit: z.number().default(20),
+        action: z.string().optional(),
+        targetType: z.string().optional(),
+        adminId: z.number().optional(),
+      }),
+    )
+    .query(async ({ input }) => {
+      const where: Record<string, unknown> = {};
+      if (input.action) where.action = input.action;
+      if (input.targetType) where.targetType = input.targetType;
+      if (input.adminId) where.adminId = input.adminId;
+
+      const [items, total] = await Promise.all([
+        prisma.auditLog.findMany({
+          where,
+          orderBy: { createdAt: 'desc' },
+          skip: (input.page - 1) * input.limit,
+          take: input.limit,
+        }),
+        prisma.auditLog.count({ where }),
+      ]);
+
+      return { items, total, page: input.page, limit: input.limit };
+    }),
 });
