@@ -12,7 +12,7 @@ export const navMessages = {
 
   // Public header nav
   'nav.discover': { ar: 'اكتشفي', en: 'Discover' },
-  'nav.search': { ar: '', en: 'Search' },
+  'nav.search': { ar: 'البحث', en: 'Search' },
   'nav.marketplace': { ar: 'المتجر', en: 'Marketplace' },
   'nav.mommyAndMe': { ar: 'أم وابنتها', en: 'Mommy & Me' },
   'nav.lookbook': { ar: 'لوك بوك', en: 'Lookbook' },

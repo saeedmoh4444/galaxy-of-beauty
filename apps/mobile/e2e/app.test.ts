@@ -54,6 +54,15 @@ describe('Dalal Mobile App', () => {
       await detoxExpect(element(by.text('🔬 تحليل البشرة'))).toBeVisible();
     });
 
+    it('should open the More screen from home', async () => {
+      await detoxExpect(element(by.id('home-more-button'))).toBeVisible();
+      await element(by.id('home-more-button')).tap();
+      await detoxExpect(element(by.text('الوجهات'))).toBeVisible();
+      await detoxExpect(element(by.text('استكشفي'))).toBeVisible();
+      // back to home
+      await device.pressBack();
+    });
+
     it('should navigate to marketplace from home', async () => {
       await element(by.text('🛍️ متجر المنتجات')).tap();
       await detoxExpect(element(by.text('متجر منتجات التجميل'))).toBeVisible();

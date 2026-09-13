@@ -41,6 +41,7 @@ const MENU_ITEMS: { labelKey: TranslationKey; href: string }[] = [
   { labelKey: 'mobile.core.menuAcademy', href: '/customer/beauty-academy' },
   { labelKey: 'wellness.title', href: '/customer/wellness' },
   { labelKey: 'mobile.core.menuNotifications', href: '/customer/notifications' },
+  { labelKey: 'nav.more', href: '/public/more' },
   { labelKey: 'mobile.core.aiAssistantHelp', href: '/customer/ai-chat' },
 ];
 
