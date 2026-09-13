@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import type { RouterOutputs } from '@galaxy/api';
-import { localize, serviceKeyFromCategorySlug } from '@galaxy/shared';
+import { buildServiceTrust, localize, serviceKeyFromCategorySlug } from '@galaxy/shared';
 import { useLocale } from '@/components/LocaleProvider';
 import { api } from '@/lib/trpc';
 import {
@@ -68,30 +68,26 @@ export function ServiceDetailClient({ svc }: { svc: ServiceDetailData }): JSX.El
   const id = svc.id;
 
   // Phase 3 sprint 2 — data-driven trust layer (E6d fields are on the model).
-  const verifiedTechCount = techs.filter((ts) => ts.technician?.kycStatus === 'VERIFIED').length;
-  const bestRating = techs.reduce(
-    (max, ts) => Math.max(max, Number(ts.technician?.ratingAvg ?? 0)),
-    0,
-  );
-  const trustItems = [
-    { variant: 'safeSpace' as const, label: t('trust.safeSpace') },
-    ...(svc.isWomenOnlyStaff
-      ? [{ variant: 'womenOnly' as const, label: t('trust.womenOnly') }]
-      : []),
-    ...(svc.isPrivateSuite
-      ? [{ variant: 'private' as const, label: t('trust.privateSuite') }]
-      : []),
-    ...(verifiedTechCount > 0
-      ? [{ variant: 'verified' as const, label: t('trust.verified') }]
-      : []),
-    ...(techs.length > 0
-      ? [{ variant: 'rating' as const, label: t('misc.rating'), value: bestRating.toFixed(1) }]
-      : []),
-  ];
-  const stageChips = [
-    ...(svc.isPregnancySafe ? [t('trust.pregnancySafe')] : []),
-    ...(svc.isMommyFriendly ? [t('trust.mommyFriendly')] : []),
-  ];
+  // Shared with the RN mirror via buildServiceTrust.
+  const { items: trustItems, stageChips } = buildServiceTrust({
+    isWomenOnlyStaff: svc.isWomenOnlyStaff,
+    isPrivateSuite: svc.isPrivateSuite,
+    isPregnancySafe: svc.isPregnancySafe,
+    isMommyFriendly: svc.isMommyFriendly,
+    technicians: techs.map((ts) => ({
+      kycStatus: ts.technician?.kycStatus,
+      ratingAvg: ts.technician?.ratingAvg,
+    })),
+    labels: {
+      safeSpace: t('trust.safeSpace'),
+      womenOnly: t('trust.womenOnly'),
+      privateSuite: t('trust.privateSuite'),
+      verified: t('trust.verified'),
+      rating: t('misc.rating'),
+      pregnancySafe: t('trust.pregnancySafe'),
+      mommyFriendly: t('trust.mommyFriendly'),
+    },
+  });
 
   // E6e — before/after gallery for the first mapped technician.
   const galleryTechUserId = techs[0]?.technician?.user?.id;

@@ -95,6 +95,12 @@ describe('Dalal Mobile App', () => {
       const searchField = element(by.text('بحث عن خدمة...'));
       await searchField.clearText();
       await new Promise((r) => setTimeout(r, 2000));
+      // Tap the first service card
+      await element(by.type('react-native.View')).atIndex(0).tap();
+      await new Promise((r) => setTimeout(r, 3000));
+      // RN mirror: detail screen shows trust layer + book CTA (web parity)
+      await detoxExpect(element(by.id('service-book-now'))).toBeVisible();
+      await detoxExpect(element(by.id('service-image'))).toBeVisible();
     });
   });
 
