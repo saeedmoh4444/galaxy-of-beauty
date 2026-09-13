@@ -28,7 +28,7 @@ export default function BeautyAdvisorScreen(): JSX.Element {
     {
       role: 'assistant',
       content:
-        ' مرحباً! أنا مجرة الجمال، مستشارة جمالكِ الشخصية. اسأليني أي سؤال عن العناية والتجميل!',
+        'مرحباً! أنا مجرة الجمال، مستشارة جمالكِ الشخصية. اسأليني أي سؤال عن العناية والتجميل!',
     },
   ]);
   const [input, setInput] = useState('');
