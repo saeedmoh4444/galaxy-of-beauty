@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import Image from 'next/image';
-import { usePathname } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 import { useEffect, useRef, useState } from 'react';
 import type { ReactNode } from 'react';
 import type { TranslationKey } from '@galaxy/shared';
@@ -55,6 +55,8 @@ const moreLinks: HeaderLink[] = [
 
 export function MainLayout({ children }: { children: ReactNode }): JSX.Element {
   const pathname = usePathname();
+  const router = useRouter();
+  const [navQuery, setNavQuery] = useState('');
   const { t } = useLocale();
   const [moreOpen, setMoreOpen] = useState(false);
   const [drawerOpen, setDrawerOpen] = useState(false);
@@ -133,6 +135,27 @@ export function MainLayout({ children }: { children: ReactNode }): JSX.Element {
               </span>
             </Link>
           </div>
+
+          {/* Nav search box (sprint 4 follow-up 2) — routes to /search?q= */}
+          <form
+            data-testid="nav-search"
+            className="hidden max-w-sm flex-1 md:flex"
+            onSubmit={(e) => {
+              e.preventDefault();
+              if (navQuery.trim().length > 0) {
+                router.push(`/search?q=${encodeURIComponent(navQuery.trim())}`);
+              }
+            }}
+          >
+            <input
+              type="search"
+              value={navQuery}
+              onChange={(e) => setNavQuery(e.target.value)}
+              placeholder={t('nav.search')}
+              aria-label={t('nav.search')}
+              className="w-full rounded-full border border-edge bg-surface-muted px-4 py-2 text-sm text-text-primary placeholder:text-text-tertiary focus:border-brand-400 focus:outline-none dark:border-gray-700 dark:bg-gray-900"
+            />
+          </form>
 
           <nav className="hidden items-center gap-5 md:flex" aria-label={t('nav.menu')}>
             {primaryLinks.map((link) => (
