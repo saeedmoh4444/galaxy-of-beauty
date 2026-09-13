@@ -1,3 +1,4 @@
+import type { JSX } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, ScrollView } from 'react-native';
 import { useRouter } from 'expo-router';
 import type { TranslationKey } from '@galaxy/shared';

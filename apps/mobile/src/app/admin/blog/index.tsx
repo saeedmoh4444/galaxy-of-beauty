@@ -1,3 +1,4 @@
+import type { JSX } from 'react';
 import { View, Text, ScrollView, StyleSheet, RefreshControl } from 'react-native';
 import { BULK_PAGE_SIZE } from '@galaxy/ui';
 import { SkeletonList } from '@/components/SkeletonCard';
