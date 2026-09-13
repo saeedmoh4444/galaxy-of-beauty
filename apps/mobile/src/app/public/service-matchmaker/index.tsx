@@ -91,7 +91,7 @@ export default function ServiceMatchmakerScreen(): JSX.Element {
       <ScrollView style={styles.c} contentContainerStyle={styles.i}>
         <Text style={styles.t}>{t('mobile.public.service-matchmaker.results')}</Text>
         <View style={styles.resultCard}>
-          <Text style={styles.resultEmoji}></Text>
+          <Text style={styles.resultEmoji}>✨</Text>
           <Text style={styles.resultTitle}>
             {t('mobile.public.service-matchmaker.your-perfect-services')}
           </Text>

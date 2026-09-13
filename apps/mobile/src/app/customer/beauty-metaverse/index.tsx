@@ -31,7 +31,7 @@ export default function BeautyMetaverseScreen(): JSX.Element {
       <ScrollView style={styles.c} contentContainerStyle={styles.i}>
         <Text style={styles.t}>{t('beautyMetaverse.title')}</Text>
         <View style={[styles.card, styles.resultCard]}>
-          <Text style={styles.resultEmoji}></Text>
+          <Text style={styles.resultEmoji}>🌐</Text>
           <Text style={styles.resultTitle}>{result.welcomeMessage}</Text>
           <TouchableOpacity onPress={() => setResult(null)} style={styles.exitBtn}>
             <Text style={styles.exitBtnText}>{t('beautyMetaverse.exit')}</Text>

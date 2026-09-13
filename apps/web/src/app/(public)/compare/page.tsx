@@ -53,7 +53,9 @@ export default function ComparePage(): JSX.Element {
                 {services.map((s) => (
                   <th key={s.id as number} className="p-4 text-center min-w-[200px]">
                     <div className="flex flex-col items-center gap-2">
-                      <div className="flex h-16 w-16 items-center justify-center rounded-xl bg-brand-50 text-2xl dark:bg-brand-950"></div>
+                      <div className="flex h-16 w-16 items-center justify-center rounded-xl bg-brand-50 text-2xl dark:bg-brand-950">
+                        💅
+                      </div>
                       <p className="text-sm font-bold text-text-primary dark:text-gray-100">
                         {localize(s.titleJson as Record<string, string>, locale)}
                       </p>

@@ -67,13 +67,13 @@ export default function CompareScreen(): JSX.Element {
             <View key={s.id} style={styles.compareCard}>
               <Text style={styles.cTitle}>{s.nameAr ?? ''}</Text>
               <View style={styles.cRow}>
-                <Text style={styles.cLabel}></Text>
+                <Text style={styles.cLabel}>💰</Text>
                 <Text style={styles.cVal}>
                   {(s.price ?? 0).toLocaleString()} {t('misc.sar')}
                 </Text>
               </View>
               <View style={styles.cRow}>
-                <Text style={styles.cLabel}></Text>
+                <Text style={styles.cLabel}>⏳</Text>
                 <Text style={styles.cVal}>{s.duration ?? ''}</Text>
               </View>
             </View>

@@ -96,7 +96,7 @@ export function IAmHomeSafe({
       {/* Status */}
       <div className="flex items-center gap-2">
         <span className="text-2xl" aria-hidden="true">
-          {checkedIn ? '' : ''}
+          {checkedIn ? '✅' : '🏠'}
         </span>
         <div>
           <h4 className="text-sm font-bold text-text-primary dark:text-gray-100">
@@ -123,7 +123,9 @@ export function IAmHomeSafe({
       {checkedIn && (
         <div className="mt-3 space-y-2">
           <div className="rounded-xl bg-emerald-100 p-3 text-center dark:bg-emerald-900">
-            <p className="text-lg" aria-hidden="true"></p>
+            <p className="text-lg" aria-hidden="true">
+              ✅
+            </p>
             <p className="text-xs font-bold text-emerald-800 dark:text-emerald-200">{safeTitle}</p>
             <p className="mt-0.5 text-[10px] text-emerald-600 dark:text-emerald-400">
               {confirmedText}

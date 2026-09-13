@@ -46,7 +46,7 @@ export default function TechnicianCompareScreen(): JSX.Element {
               onPress={() => toggle(t.id)}
               style={[styles.ch, isSel && styles.cha]}
             >
-              <Text style={styles.ce}></Text>
+              <Text style={styles.ce}>💇</Text>
               <Text style={[styles.cn, isSel && styles.cna]}>{t.name ?? ''}</Text>
               <Text style={styles.cr}> {t.rating ?? 0}</Text>
             </TouchableOpacity>
@@ -60,17 +60,17 @@ export default function TechnicianCompareScreen(): JSX.Element {
             <View key={item.id} style={styles.tc}>
               <Text style={styles.tcn}>{item.name ?? ''}</Text>
               <View style={styles.tr}>
-                <Text style={styles.tl}></Text>
+                <Text style={styles.tl}>⭐</Text>
                 <Text style={styles.tv}>{item.rating ?? 0}</Text>
               </View>
               <View style={styles.tr}>
-                <Text style={styles.tl}></Text>
+                <Text style={styles.tl}>📅</Text>
                 <Text style={styles.tv}>
                   {t('mobile.public.bookings-count', { count: item.totalBookings ?? 0 })}
                 </Text>
               </View>
               <View style={styles.tr}>
-                <Text style={styles.tl}></Text>
+                <Text style={styles.tl}>💰</Text>
                 <Text style={styles.tv}>
                   {t('mobile.public.currency', {
                     price: (item.startingPrice ?? 0).toLocaleString(),

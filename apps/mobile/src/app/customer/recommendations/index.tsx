@@ -71,7 +71,7 @@ export default function RecommendationsScreen(): JSX.Element {
       )}
       {related.map((r) => (
         <View key={r.id} style={styles.card}>
-          <Text style={styles.re}></Text>
+          <Text style={styles.re}>💅</Text>
           <View style={{ flex: 1 }}>
             <Text style={styles.rn}>{r.title}</Text>
             <Text style={styles.rp}>

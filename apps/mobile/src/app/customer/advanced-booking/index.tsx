@@ -102,7 +102,7 @@ export default function AdvancedBookingScreen(): JSX.Element {
       <ScrollView style={styles.c} contentContainerStyle={styles.i}>
         <Text style={styles.t}>{t('advancedBooking.recurringTitle')}</Text>
         <View style={[styles.card, styles.rc]}>
-          <Text style={styles.re}></Text>
+          <Text style={styles.re}>🔁</Text>
           <Text style={styles.rtt}>{t('advancedBooking.done')}</Text>
           <Text style={styles.rcnt}>
             {t('advancedBooking.bookings-count', {

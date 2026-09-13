@@ -25,7 +25,7 @@ export default function AdminSubscriptionsPage(): JSX.Element {
           <GridSkeleton count={6} />
         ) : !(plans ?? []).length ? (
           <Card padding="lg" className="text-center py-8">
-            <p className="text-4xl mb-2"></p>
+            <p className="text-4xl mb-2">💳</p>
             <p className="text-text-secondary">{t('admin.subscriptions.empty')}</p>
           </Card>
         ) : (

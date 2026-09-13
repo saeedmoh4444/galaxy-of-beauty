@@ -59,7 +59,9 @@ export function BeautyGratitudeCard({
       </div>
 
       <div className="mt-3 rounded-xl bg-white/60 p-4 text-center dark:bg-gray-800/60">
-        <p className="text-lg" aria-hidden="true"></p>
+        <p className="text-lg" aria-hidden="true">
+          🌸
+        </p>
         <p className="mt-1 text-sm font-bold leading-relaxed text-amber-800 dark:text-amber-200">
           &ldquo;{prompt[locale]}&rdquo;
         </p>

@@ -85,7 +85,9 @@ export function GalentinesCard({
     >
       {/* Header */}
       <div className="text-center">
-        <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-full bg-gradient-to-br from-pink-200 to-rose-200 text-2xl dark:from-pink-800 dark:to-rose-800"></div>
+        <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-full bg-gradient-to-br from-pink-200 to-rose-200 text-2xl dark:from-pink-800 dark:to-rose-800">
+          💕
+        </div>
         <h4 className="mt-2 text-sm font-bold text-pink-800 dark:text-pink-200">{title}</h4>
         <p className="text-[10px] text-pink-500 dark:text-pink-400">
           {date} {subtitle}

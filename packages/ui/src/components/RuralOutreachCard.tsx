@@ -92,17 +92,23 @@ export function RuralOutreachCard({
       {/* Stats */}
       <div className="mt-3 grid grid-cols-3 gap-2">
         <div className="rounded-xl bg-white/60 p-3 text-center dark:bg-gray-800/60">
-          <p className="text-lg" aria-hidden="true"></p>
+          <p className="text-lg" aria-hidden="true">
+            🎓
+          </p>
           <p className="text-lg font-bold text-emerald-800 dark:text-emerald-200">{trained}</p>
           <p className="text-[9px] text-emerald-600 dark:text-emerald-400">{trainedLabel}</p>
         </div>
         <div className="rounded-xl bg-white/60 p-3 text-center dark:bg-gray-800/60">
-          <p className="text-lg" aria-hidden="true"></p>
+          <p className="text-lg" aria-hidden="true">
+            💼
+          </p>
           <p className="text-lg font-bold text-emerald-800 dark:text-emerald-200">{employed}</p>
           <p className="text-[9px] text-emerald-600 dark:text-emerald-400">{employedLabel}</p>
         </div>
         <div className="rounded-xl bg-white/60 p-3 text-center dark:bg-gray-800/60">
-          <p className="text-lg" aria-hidden="true"></p>
+          <p className="text-lg" aria-hidden="true">
+            🏡
+          </p>
           <p className="text-lg font-bold text-emerald-800 dark:text-emerald-200">{villages}</p>
           <p className="text-[9px] text-emerald-600 dark:text-emerald-400">{villagesLabel}</p>
         </div>

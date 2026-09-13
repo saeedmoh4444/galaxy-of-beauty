@@ -57,7 +57,7 @@ export default function SalonFinderPage(): JSX.Element {
         <GridSkeleton count={6} />
       ) : !(results ?? []).length ? (
         <Card padding="lg" className="text-center py-8">
-          <p className="text-4xl mb-2"></p>
+          <p className="text-4xl mb-2">💇</p>
           <p className="text-text-secondary">{t('marketing.salon-finder.no-salons')}</p>
         </Card>
       ) : (

@@ -83,7 +83,7 @@ export default function LiveStreamDetailScreen(): JSX.Element {
           placeholderTextColor="#9ca3af"
         />
         <TouchableOpacity onPress={sendMsg} style={styles.sendBtn}>
-          <Text style={styles.sendBtnText}></Text>
+          <Text style={styles.sendBtnText}>📤</Text>
         </TouchableOpacity>
       </View>
     </View>

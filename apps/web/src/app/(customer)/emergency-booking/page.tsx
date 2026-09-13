@@ -121,7 +121,7 @@ export default function EmergencyBookingPage(): JSX.Element {
 
         {bookingCode ? (
           <Card padding="lg" className="text-center border-2 border-green-300 bg-green-50">
-            <p className="text-3xl"></p>
+            <p className="text-3xl">✅</p>
             <p className="font-bold text-green-700 mt-2">{t('emergencyBooking.success')}</p>
             <p className="text-sm text-text-secondary">
               {t('emergencyBooking.codeLabel')}{' '}

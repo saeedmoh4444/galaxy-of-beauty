@@ -87,7 +87,7 @@ export default function BeautyWishlistGiftsPage(): JSX.Element {
 
         {created && (
           <Card padding="lg" className="text-center border-2 border-green-300 bg-green-50">
-            <p className="text-2xl"></p>
+            <p className="text-2xl">✅</p>
             <p className="font-bold text-green-700 mt-2">{t('wishlistGifts.created')}</p>
           </Card>
         )}
@@ -96,7 +96,7 @@ export default function BeautyWishlistGiftsPage(): JSX.Element {
           <CardListSkeleton count={4} />
         ) : !(registries ?? []).length ? (
           <Card padding="lg" className="text-center py-8">
-            <p className="text-4xl mb-2"></p>
+            <p className="text-4xl mb-2">🎁</p>
             <p className="text-text-secondary">{t('wishlistGifts.empty')}</p>
           </Card>
         ) : (

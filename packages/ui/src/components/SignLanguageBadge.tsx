@@ -95,7 +95,9 @@ export function SignLanguageBadge({
               key={tech.name}
               className="flex items-center gap-3 rounded-xl bg-sky-50 p-3 dark:bg-sky-950"
             >
-              <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-white text-sm dark:bg-gray-700"></div>
+              <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-white text-sm dark:bg-gray-700">
+                👩
+              </div>
               <div className="min-w-0 flex-1">
                 <p className="text-xs font-bold text-text-primary dark:text-gray-100">
                   {tech.name}

@@ -18,7 +18,7 @@ export default function AdminCashbackPage(): JSX.Element {
         </div>
 
         <Card padding="lg" className="text-center">
-          <p className="text-6xl mb-4"></p>
+          <p className="text-6xl mb-4">💸</p>
           <p className="text-sm text-text-secondary">{t('admin.cashback.current-rate')}</p>
           <p className="text-4xl font-extrabold text-brand-600 mt-2">{rate}%</p>
         </Card>

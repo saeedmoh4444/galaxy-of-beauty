@@ -59,7 +59,7 @@ export default function ShopTheLookScreen(): JSX.Element {
                 <Image source={{ uri: l.imageUrl }} style={styles.lookImage} />
               ) : (
                 <View style={styles.lookPlaceholder}>
-                  <Text style={{ fontSize: 32 }}></Text>
+                  <Text style={{ fontSize: 32 }}>👗</Text>
                 </View>
               )}
               <View style={{ flex: 1 }}>

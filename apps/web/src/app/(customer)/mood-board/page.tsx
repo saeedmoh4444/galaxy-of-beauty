@@ -177,7 +177,7 @@ export default function MoodBoardPage(): JSX.Element {
                       className="object-cover transition-transform group-hover:scale-105"
                     />
                   ) : (
-                    <div className="flex h-full items-center justify-center text-5xl"></div>
+                    <div className="flex h-full items-center justify-center text-5xl">🖼️</div>
                   )}
                   {/* Pin count badge */}
                   <span className="absolute top-2 start-2 rounded-full bg-black/60 px-2 py-0.5 text-xs text-white backdrop-blur">

@@ -47,14 +47,14 @@ export default function SkinTimelineScreen(): JSX.Element {
           <View style={[styles.compareCard, styles.before]}>
             <Text style={styles.compareLabel}>{t('mobile.skinTimeline.last-week')}</Text>
             <View style={styles.imgPlaceholder}>
-              <Text style={{ fontSize: 40 }}></Text>
+              <Text style={{ fontSize: 40 }}>📷</Text>
             </View>
           </View>
           <Text style={styles.compareVs}>VS</Text>
           <View style={[styles.compareCard, styles.after]}>
             <Text style={styles.compareLabel}>{t('mobile.skinTimeline.this-week')}</Text>
             <View style={styles.imgPlaceholder}>
-              <Text style={{ fontSize: 40 }}></Text>
+              <Text style={{ fontSize: 40 }}>📷</Text>
             </View>
           </View>
         </View>
@@ -91,17 +91,17 @@ export default function SkinTimelineScreen(): JSX.Element {
         <Text style={styles.st}>{t('mobile.skinTimeline.stats')}</Text>
         <View style={styles.statRow}>
           <View style={styles.stat}>
-            <Text style={styles.statVal}></Text>
+            <Text style={styles.statVal}>💧</Text>
             <Text style={styles.statLabel}>{t('mobile.skinTimeline.hydration-improvement')}</Text>
             <Text style={styles.statPct}>+15%</Text>
           </View>
           <View style={styles.stat}>
-            <Text style={styles.statVal}></Text>
+            <Text style={styles.statVal}>✨</Text>
             <Text style={styles.statLabel}>{t('mobile.skinTimeline.glow-improvement')}</Text>
             <Text style={styles.statPct}>+20%</Text>
           </View>
           <View style={styles.stat}>
-            <Text style={styles.statVal}></Text>
+            <Text style={styles.statVal}>📝</Text>
             <Text style={styles.statLabel}>{t('mobile.skinTimeline.updates')}</Text>
             <Text style={styles.statPct}>{entries.length}</Text>
           </View>

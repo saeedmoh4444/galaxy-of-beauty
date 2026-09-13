@@ -30,9 +30,9 @@ let nextId = 0;
 // both themes (white text); dark mode swaps success for the palette green.
 function getToastColors(isDark: boolean): Record<ToastType, { bg: string; icon: string }> {
   return {
-    success: { bg: isDark ? themeColors.dark.success : '#16a34a', icon: '' },
-    error: { bg: themeColors.dark.danger, icon: '' },
-    warning: { bg: '#f59e0b', icon: '' },
+    success: { bg: isDark ? themeColors.dark.success : '#16a34a', icon: '✅' },
+    error: { bg: themeColors.dark.danger, icon: '❌' },
+    warning: { bg: '#f59e0b', icon: '⚠️' },
     info: { bg: themeColors.dark.border, icon: 'ℹ️' },
   };
 }
@@ -68,7 +68,7 @@ export function ToastProvider({ children }: { children: ReactNode }) {
             {toast.message}
           </Text>
           <TouchableOpacity onPress={() => setToast(null)}>
-            <Text style={styles.close}></Text>
+            <Text style={styles.close}>❌</Text>
           </TouchableOpacity>
         </Animated.View>
       )}

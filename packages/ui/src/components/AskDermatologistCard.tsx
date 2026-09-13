@@ -83,7 +83,9 @@ export function AskDermatologistCard({
     >
       {/* Doctor card */}
       <div className="flex items-start gap-3">
-        <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-blue-100 to-sky-100 text-xl dark:from-blue-900 dark:to-sky-900"></div>
+        <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-blue-100 to-sky-100 text-xl dark:from-blue-900 dark:to-sky-900">
+          👩
+        </div>
         <div className="min-w-0 flex-1">
           <h4 className="text-sm font-bold text-text-primary dark:text-gray-100">{doctor.name}</h4>
           <p className="text-[10px] text-text-secondary dark:text-gray-300">{doctor.specialty}</p>

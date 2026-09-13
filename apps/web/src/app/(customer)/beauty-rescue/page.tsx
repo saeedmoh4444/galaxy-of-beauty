@@ -101,7 +101,7 @@ export default function BeautyRescuePage(): JSX.Element {
 
         {booked && emergency ? (
           <Card padding="lg" className="text-center border-2 border-green-300 bg-green-50">
-            <p className="text-5xl"></p>
+            <p className="text-5xl">✅</p>
             <p className="font-bold text-green-700 text-xl mt-3">{t('rescue.bookedTitle')}</p>
             <p className="text-sm text-text-secondary mt-1">
               {t('rescue.onTheWay', { time: t(emergency.time) })}

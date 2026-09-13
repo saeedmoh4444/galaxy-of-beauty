@@ -52,7 +52,9 @@ export function BeautyMentorRequestCard({
       )}
     >
       <div className="text-center">
-        <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-gradient-to-br from-brand-200 to-pink-200 text-3xl dark:from-brand-800 dark:to-pink-800"></div>
+        <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-gradient-to-br from-brand-200 to-pink-200 text-3xl dark:from-brand-800 dark:to-pink-800">
+          🤝
+        </div>
         <h4 className="mt-2 text-sm font-bold text-brand-800 dark:text-brand-200">{title}</h4>
         <p className="text-[10px] text-brand-500 dark:text-brand-400">{subtitle}</p>
       </div>

@@ -83,7 +83,7 @@ export default function StreakCalendarPage(): JSX.Element {
               padding="lg"
               className="text-center bg-gradient-to-r from-amber-50 to-orange-50 dark:from-amber-950 dark:to-orange-950"
             >
-              <p className="text-6xl"></p>
+              <p className="text-6xl">🔥</p>
               <p className="mt-2 text-sm text-text-secondary">
                 {t('streakCalendar.currentStreak')}
               </p>

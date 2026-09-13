@@ -147,7 +147,9 @@ export default function PostCarePage(): JSX.Element {
                   <div key={plan.bookingId} className="space-y-3">
                     {/* Plan Header */}
                     <div className="flex items-center gap-3">
-                      <div className="flex h-10 w-10 items-center justify-center rounded-full bg-gradient-to-br from-brand-400 to-brand-500 text-white text-lg"></div>
+                      <div className="flex h-10 w-10 items-center justify-center rounded-full bg-gradient-to-br from-brand-400 to-brand-500 text-white text-lg">
+                        💆
+                      </div>
                       <div>
                         <h3 className="font-bold text-text-primary dark:text-gray-100">
                           {locale === 'en' ? plan.serviceNameEn : plan.serviceNameAr}

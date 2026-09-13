@@ -6,7 +6,7 @@ export default function OfflineScreen(): JSX.Element {
   return (
     <View style={styles.c}>
       <View style={styles.card}>
-        <Text style={styles.emoji}></Text>
+        <Text style={styles.emoji}>📡</Text>
         <Text style={styles.title}>{t('mobile.offline.title')}</Text>
         <Text style={styles.desc}>{t('mobile.offline.desc')}</Text>
         <TouchableOpacity onPress={() => {}} style={styles.btn}>

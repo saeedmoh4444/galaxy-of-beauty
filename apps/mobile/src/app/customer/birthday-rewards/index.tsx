@@ -31,7 +31,7 @@ export default function BirthdayRewardsScreen(): JSX.Element {
       <Text style={styles.t}>{t('birthdayRewards.title')}</Text>
       {data ? (
         <View style={styles.card}>
-          <Text style={styles.emoji}></Text>
+          <Text style={styles.emoji}>🎂</Text>
           <Text style={styles.reward}>{data.rewardName}</Text>
           <Text style={styles.code}>
             {t('birthdayRewards.code', { code: String(data.promoCode ?? '') })}

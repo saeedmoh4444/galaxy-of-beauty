@@ -97,7 +97,7 @@ export default function LiveStreamPage(): JSX.Element {
                     padding="lg"
                     className="opacity-70 hover:opacity-100 transition-all"
                   >
-                    <div className="text-5xl text-center"></div>
+                    <div className="text-5xl text-center">📅</div>
                     <h3 className="mt-3 font-bold text-center">{s.titleAr as string}</h3>
                     <p className="text-xs text-text-secondary text-center mt-1">
                       {s.technicianName as string}

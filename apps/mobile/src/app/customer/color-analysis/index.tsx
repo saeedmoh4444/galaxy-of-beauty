@@ -84,7 +84,7 @@ export default function ColorAnalysisScreen(): JSX.Element {
         <Text style={styles.st}>{t('colorAnalysis.makeup')}</Text>
         {s.makeup.map((m, i) => (
           <View key={i} style={styles.makeupItem}>
-            <Text style={styles.makeupEmoji}></Text>
+            <Text style={styles.makeupEmoji}>💄</Text>
             <Text style={styles.makeupText}>{m}</Text>
           </View>
         ))}

@@ -48,7 +48,7 @@ export default function BeautyQuizScreen(): JSX.Element {
         <ScrollView style={styles.c} contentContainerStyle={styles.i}>
           <Text style={styles.t}>{t('mobile.public.beauty-quiz.result-title')}</Text>
           <View style={styles.resultCard}>
-            <Text style={styles.resultEmoji}></Text>
+            <Text style={styles.resultEmoji}>🎉</Text>
             <Text style={styles.resultTitle}>{t('mobile.public.beauty-quiz.thanks')}</Text>
             <Text style={styles.resultDesc}>{t('mobile.public.beauty-quiz.result-desc')}</Text>
             <View style={styles.answers}>
@@ -93,7 +93,7 @@ export default function BeautyQuizScreen(): JSX.Element {
                 onPress={() => select(Number(o.value))}
                 style={styles.option}
               >
-                <Text style={styles.optionIcon}></Text>
+                <Text style={styles.optionIcon}>✨</Text>
                 <Text style={styles.optionLabel}>{o.label}</Text>
               </TouchableOpacity>
             ))}

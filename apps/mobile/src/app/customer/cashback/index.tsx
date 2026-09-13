@@ -65,7 +65,7 @@ export default function CashbackScreen(): JSX.Element {
       </View>
       {items.map((tx) => (
         <View key={tx.id} style={styles.card}>
-          <Text style={styles.em}></Text>
+          <Text style={styles.em}>💸</Text>
           <View style={{ flex: 1 }}>
             <Text style={styles.ta}>
               {t('cashback.amount', { value: `+${tx.amount?.toLocaleString()}` })}

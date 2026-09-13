@@ -181,7 +181,9 @@ export function PriceAlertBadge({
       {/* Target reached */}
       {isActive && isBelow && (
         <div className="mt-2 rounded-xl bg-emerald-100 p-3 text-center dark:bg-emerald-900">
-          <p className="text-sm" aria-hidden="true"></p>
+          <p className="text-sm" aria-hidden="true">
+            🎉
+          </p>
           <p className="text-xs font-bold text-emerald-800 dark:text-emerald-200">{reachedTitle}</p>
           <p className="text-[10px] text-emerald-600 dark:text-emerald-400">
             {nowPrefix}

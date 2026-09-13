@@ -51,7 +51,7 @@ export default function RescheduleScreen(): JSX.Element {
       <ScrollView style={styles.c} contentContainerStyle={styles.i}>
         <Text style={styles.t}>{t('bookings.reschedule.title')}</Text>
         <View style={[styles.card, styles.rc]}>
-          <Text style={styles.re}></Text>
+          <Text style={styles.re}>✅</Text>
           <Text style={styles.rt}>{t('bookings.reschedule.requested')}</Text>
           <Text style={styles.rm}>{t('bookings.reschedule.notified')}</Text>
         </View>

@@ -97,7 +97,7 @@ export default function SkinAnalysisScreen() {
         <Text style={styles.cardTitle}>{t('mobile.skinAnalysis.upload-title')}</Text>
 
         <View style={styles.uploadZone}>
-          <Text style={styles.uploadEmoji}></Text>
+          <Text style={styles.uploadEmoji}>📷</Text>
           <Text style={styles.uploadHint}>{t('mobile.skinAnalysis.upload-hint')}</Text>
           <TouchableOpacity
             style={styles.cameraBtn}
@@ -191,7 +191,7 @@ export default function SkinAnalysisScreen() {
         <ActivityIndicator color="#7c3aed" style={{ marginTop: 20 }} />
       ) : history.length === 0 ? (
         <View style={styles.empty}>
-          <Text style={styles.emptyIcon}></Text>
+          <Text style={styles.emptyIcon}>🔍</Text>
           <Text style={styles.emptyTitle}>{t('mobile.skinAnalysis.empty-title')}</Text>
           <Text style={styles.emptySub}>{t('mobile.skinAnalysis.empty-desc')}</Text>
         </View>
@@ -199,7 +199,7 @@ export default function SkinAnalysisScreen() {
         history.map((a) => (
           <TouchableOpacity key={a.id as number} style={styles.historyCard} activeOpacity={0.7}>
             <View style={styles.histIcon}>
-              <Text style={styles.histEmoji}></Text>
+              <Text style={styles.histEmoji}>🧴</Text>
             </View>
             <View style={styles.histInfo}>
               <Text style={styles.histType}>

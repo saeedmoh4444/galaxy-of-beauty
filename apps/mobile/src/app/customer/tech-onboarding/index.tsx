@@ -55,7 +55,7 @@ export default function TechOnboardingScreen(): JSX.Element {
     >
       <Text style={styles.t}>{t('mobile.techOnboarding.title')}</Text>
       <View style={styles.pc}>
-        <Text style={styles.pe}></Text>
+        <Text style={styles.pe}>✅</Text>
         <Text style={styles.pt}>{t('mobile.techOnboarding.completed', { completed, total })}</Text>
         <View style={styles.pb}>
           <View style={[styles.pf, { width: `${(completed / total) * 100}%` }]} />

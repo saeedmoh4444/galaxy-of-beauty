@@ -38,7 +38,7 @@ export default function SearchScreen(): JSX.Element {
           returnKeyType="search"
         />
         <TouchableOpacity onPress={doSearch} style={styles.sb}>
-          <Text style={styles.sbt}></Text>
+          <Text style={styles.sbt}>🔍</Text>
         </TouchableOpacity>
       </View>
       {resultsQ.isLoading && <SkeletonList count={4} />}

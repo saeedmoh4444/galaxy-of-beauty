@@ -57,22 +57,22 @@ export default function BeautyAnalyticsScreen(): JSX.Element {
       <Text style={styles.t}>{t('beautyAnalytics.title')}</Text>
       <View style={styles.kr}>
         <View style={styles.k}>
-          <Text style={styles.ke}></Text>
+          <Text style={styles.ke}>📅</Text>
           <Text style={styles.kv}>{s.totalBookings}</Text>
           <Text style={styles.kl}>{t('beautyAnalytics.bookings')}</Text>
         </View>
         <View style={styles.k}>
-          <Text style={styles.ke}></Text>
+          <Text style={styles.ke}>✅</Text>
           <Text style={[styles.kv, { color: '#059669' }]}>{s.completedBookings}</Text>
           <Text style={styles.kl}>{t('beautyAnalytics.completed')}</Text>
         </View>
         <View style={styles.k}>
-          <Text style={styles.ke}></Text>
+          <Text style={styles.ke}>📈</Text>
           <Text style={[styles.kv, { color: '#2563eb' }]}>{s.completionRate}%</Text>
           <Text style={styles.kl}>{t('beautyAnalytics.rate')}</Text>
         </View>
         <View style={styles.k}>
-          <Text style={styles.ke}></Text>
+          <Text style={styles.ke}>💰</Text>
           <Text style={[styles.kv, { color: '#7c3aed' }]}>{s.totalSpent?.toLocaleString()}</Text>
           <Text style={styles.kl}>{t('beautyAnalytics.currency')}</Text>
         </View>

@@ -120,7 +120,7 @@ export default function TravelChecklistScreen(): JSX.Element {
       ))}
 
       <View style={styles.tip}>
-        <Text style={styles.tipEmoji}></Text>
+        <Text style={styles.tipEmoji}>💡</Text>
         <Text style={styles.tipText}>{d.tips}</Text>
       </View>
     </ScrollView>
