@@ -1,4 +1,5 @@
 'use client';
+import type { JSX } from 'react';
 
 /**
  * Empowerment Quote — rotating inspirational quotes from Saudi and Arab women.

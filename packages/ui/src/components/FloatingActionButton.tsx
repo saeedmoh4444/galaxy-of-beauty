@@ -1,4 +1,5 @@
 'use client';
+import type { JSX } from 'react';
 
 /**
  * Floating Action Button — "Book Now" CTA fixed at bottom-right.

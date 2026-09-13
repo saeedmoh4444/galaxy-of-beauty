@@ -1,4 +1,5 @@
 'use client';
+import type { JSX } from 'react';
 
 /**
  * Hero Banner — landing page hero section with title, subtitle, CTA, and stats.

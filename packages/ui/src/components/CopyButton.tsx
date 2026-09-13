@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import type { JSX } from 'react';
 
 /**
  * Copy to Clipboard button with feedback animation.
