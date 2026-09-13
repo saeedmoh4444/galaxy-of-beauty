@@ -66,7 +66,7 @@ export function LayawayBadge({
   className = '',
   title = 'احجزي الآن وادفعي لاحقاً',
   installmentsPrefix = 'قسطي على ',
-  installmentsSuffix = ' دفعات بدون فوائد',
+  installmentsSuffix = 'دفعات بدون فوائد',
   reservedText = 'محجوزة',
   totalLabel = 'الإجمالي',
   installmentLabel = 'الدفعة',
@@ -76,7 +76,7 @@ export function LayawayBadge({
   installmentsUnit = 'دفعة',
   remainingPrefix = 'متبقي ',
   remainingSuffix = 'دفعات',
-  completedText = ' مكتمل!',
+  completedText = 'مكتمل!',
   nextPaymentPrefix = 'الدفعة القادمة: ',
   footerText = 'بدون فوائد، بدون رسوم خفية — الجمال للجميع',
 }: LayawayBadgeProps): JSX.Element {

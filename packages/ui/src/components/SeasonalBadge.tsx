@@ -5,7 +5,7 @@
  *
  * Usage:
  *   <SeasonalBadge season="EID" />
- *   → " عرض العيد"
+ *   → "عرض العيد"
  */
 
 const SEASONS: Record<string, { emoji: string; labelAr: string; labelEn: string; color: string }> =

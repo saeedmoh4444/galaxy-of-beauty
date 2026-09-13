@@ -146,7 +146,7 @@ interface SaudiBeautyHeritageCardProps {
 export function SaudiBeautyHeritageCard({
   practice,
   className = '',
-  historyLabel = ' التاريخ',
+  historyLabel = 'التاريخ',
   modernUseLabel = 'الاستخدام الحديث',
   heritageNote = 'هذا المحتوى يوثق تراث الجمال السعودي الأصيل',
   footerText = 'نحافظ على تراثنا — لأنه جزء من هويتنا',

@@ -30,7 +30,7 @@ export function ServiceAnimalBadge({
   item2 = '• ماء متوفر لحيوانكِ',
   item3 = '• فريق مدرب على التعامل مع حيوانات الخدمة',
   item4 = '• مساحة كافية للكرسي المتحرك وحيوان الخدمة معاً',
-  proofNoteText = ' لا نحتاج إثبات — وجودكِ مع حيوانكِ يكفي',
+  proofNoteText = 'لا نحتاج إثبات — وجودكِ مع حيوانكِ يكفي',
   footerText = 'الوصول حق للجميع',
 }: ServiceAnimalBadgeProps): JSX.Element {
   return (

@@ -54,12 +54,12 @@ export function TaxHelperCard({
   monthlyRevenueLabel = 'الإيراد الشهري',
   vatLabel = 'ضريبة القيمة المضافة',
   currencySuffix = 'ر.س',
-  growthPositivePrefix = ' نمو ',
-  growthNegativePrefix = ' انخفاض ',
-  comparedPrefix = ' عن ',
+  growthPositivePrefix = 'نمو ',
+  growthNegativePrefix = 'انخفاض ',
+  comparedPrefix = 'عن ',
   downloadButtonText = 'تقرير ZATCA',
   detailsButtonText = 'التفاصيل',
-  footerText = ' متوافق مع متطلبات هيئة الزكاة والضريبة والجمارك السعودية',
+  footerText = 'متوافق مع متطلبات هيئة الزكاة والضريبة والجمارك السعودية',
 }: TaxHelperCardProps): JSX.Element {
   const growth = previousQuarter
     ? Math.round(((revenue.monthly - previousQuarter) / previousQuarter) * 100)

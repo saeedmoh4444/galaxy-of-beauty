@@ -44,7 +44,7 @@ export function SocialImpactCounter({
   ruralWomen,
   className = '',
   locale = 'ar',
-  title = ' أثرنا الاجتماعي',
+  title = 'أثرنا الاجتماعي',
   subtitle = 'معاً نحو تمكين 1000 امرأة بحلول 2028',
   goalPrefix = 'الهدف',
   pctOf2028Text = 'من هدف 2028',

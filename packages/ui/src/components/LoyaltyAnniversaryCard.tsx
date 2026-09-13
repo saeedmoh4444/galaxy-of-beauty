@@ -65,8 +65,8 @@ export function LoyaltyAnniversaryCard({
   yearSingular = 'سنة',
   yearPlural = 'سنوات',
   withYouText = 'من جمالكِ معنا',
-  bookingsSuffix = ' حجز',
-  giftLabel = ' هديتكِ',
+  bookingsSuffix = 'حجز',
+  giftLabel = 'هديتكِ',
   claimGiftButtonText = 'استلمي هديتكِ',
   footerText = 'شكراً لأنكِ جزء من عائلتنا',
 }: LoyaltyAnniversaryCardProps): JSX.Element {

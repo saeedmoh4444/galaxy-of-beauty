@@ -95,8 +95,8 @@ export function QuietCornerBadge({
   className = '',
   title = 'ركن الأطفال',
   subtitle = 'لأن الأم تحتاج وقتاً لنفسها',
-  supervisedLabel = ' مراقب',
-  supervisedNote = ' موظفة مخصصة لمراقبة الأطفال — اطمئني على صغاركِ',
+  supervisedLabel = 'مراقب',
+  supervisedNote = 'موظفة مخصصة لمراقبة الأطفال — اطمئني على صغاركِ',
   footerText = 'أنتِ تستحقين وقتاً لنفسكِ — وصغاركِ في أيدٍ أمينة',
   locale = 'ar',
 }: QuietCornerBadgeProps): JSX.Element | null {

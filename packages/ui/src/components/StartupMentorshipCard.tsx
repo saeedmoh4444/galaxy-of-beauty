@@ -47,7 +47,7 @@ export function StartupMentorshipCard({
   subtitle = 'دعم وتمويل لرائدات الأعمال في التجميل',
   mentorsLabel = 'مرشدات',
   startupsLabel = 'مشاريع ناشئة',
-  weOfferTitle = ' نقدم',
+  weOfferTitle = 'نقدم',
   offer1 = '• إرشاد من خبيرات في المجال',
   offer2 = '• مساحة عمل مشتركة',
   offer3 = '• دعم قانوني ومحاسبي',

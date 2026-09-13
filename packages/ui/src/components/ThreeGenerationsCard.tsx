@@ -69,7 +69,7 @@ export function ThreeGenerationsCard({
   priceLabel = 'السعر',
   currencySuffix = 'ر.س',
   perPersonLabel = 'للفرد',
-  includesLabel = ' تشمل الباقة',
+  includesLabel = 'تشمل الباقة',
   keepsakeText = 'صورة تذكارية للثلاثة أجيال — هديتنا لكِ',
   bookLabel = 'احجزي للعائلة',
   locale = 'ar',

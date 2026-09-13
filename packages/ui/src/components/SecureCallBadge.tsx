@@ -65,12 +65,12 @@ export function SecureCallBadge({
   expiresPrefix = 'ينتهي بعد ',
   unlimitedText = 'غير محدود',
   callsRemainingSuffix = 'مكالمات متبقية',
-  howItWorksTitle = ' كيف يعمل؟',
+  howItWorksTitle = 'كيف يعمل؟',
   howItWorksTextPrefix = 'عندما تتصل الخبيرة، يمر الاتصال عبر رقم وسيط (Twilio). ترين رقمها المؤقت، وترى رقمكِ المؤقت. بعد انتهاء الموعد بـ ',
   howItWorksTextSuffix = '، تُحذف الأرقام تلقائياً.',
   activateButtonText = 'فعّلي الاتصال الآمن',
-  cancelButtonText = ' إلغاء الرقم المؤقت',
-  privacyText = ' خصوصيتكِ أمانة — لا نشارك رقمكِ الحقيقي مع أحد',
+  cancelButtonText = 'إلغاء الرقم المؤقت',
+  privacyText = 'خصوصيتكِ أمانة — لا نشارك رقمكِ الحقيقي مع أحد',
   locale = 'ar',
 }: SecureCallBadgeProps): JSX.Element {
   return (

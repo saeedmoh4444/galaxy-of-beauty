@@ -67,7 +67,7 @@ const REMINDERS = [
 export function SelfCareReminder({
   className = '',
   locale = 'ar',
-  title = ' تذكير يومي',
+  title = 'تذكير يومي',
 }: {
   className?: string;
   /** Display language for built-in reminders */
