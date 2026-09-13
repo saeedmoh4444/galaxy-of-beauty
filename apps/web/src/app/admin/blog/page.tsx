@@ -11,6 +11,7 @@ import {
   useAuth,
 } from '@galaxy/ui';
 import { useState } from 'react';
+import type { JSX } from 'react';
 import { useLocale } from '@/components/LocaleProvider';
 import { localize } from '@galaxy/shared';
 
