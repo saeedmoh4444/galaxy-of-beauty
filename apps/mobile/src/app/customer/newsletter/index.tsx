@@ -62,7 +62,7 @@ export default function NewsletterScreen(): JSX.Element {
         </View>
       ) : (
         <View style={[styles.card, styles.sc]}>
-          <Text style={{ fontSize: 48 }}></Text>
+          <Text style={{ fontSize: 48 }}>✅</Text>
           <Text style={styles.st}>{t('mobile.newsletter.subscribed')}</Text>
         </View>
       )}

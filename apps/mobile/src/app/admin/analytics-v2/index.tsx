@@ -59,12 +59,12 @@ export default function AdminAnalyticsV2Screen(): JSX.Element {
       <Text style={styles.t}>{t('admin.analytics-v2.title')}</Text>
       <View style={styles.kpiRow}>
         <View style={styles.kpi}>
-          <Text style={styles.kpiEmoji}></Text>
+          <Text style={styles.kpiEmoji}>💰</Text>
           <Text style={styles.kpiVal}>{(revenue.today ?? 0)?.toLocaleString()}</Text>
           <Text style={styles.kpiLabel}>{t('admin.analytics-v2.revenue-today')}</Text>
         </View>
         <View style={styles.kpi}>
-          <Text style={styles.kpiEmoji}></Text>
+          <Text style={styles.kpiEmoji}>📅</Text>
           <Text style={[styles.kpiVal, { color: '#2563eb' }]}>{bookings.today ?? 0}</Text>
           <Text style={styles.kpiLabel}>{t('admin.analytics-v2.bookings-today')}</Text>
         </View>

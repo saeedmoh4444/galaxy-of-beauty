@@ -69,13 +69,13 @@ export default function CompareScreen(): JSX.Element {
             <View key={s.id} style={styles.tc}>
               <Text style={styles.tcn}>{s.nameAr}</Text>
               <View style={styles.tr}>
-                <Text style={styles.tl}></Text>
+                <Text style={styles.tl}>💰</Text>
                 <Text style={styles.tv}>
                   {t('mobile.public.currency', { price: s.price?.toLocaleString() ?? '' })}
                 </Text>
               </View>
               <View style={styles.tr}>
-                <Text style={styles.tl}></Text>
+                <Text style={styles.tl}>⏳</Text>
                 <Text style={styles.tv}>{s.duration}</Text>
               </View>
             </View>

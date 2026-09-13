@@ -164,7 +164,7 @@ export default function CommunityScreen(): JSX.Element {
                   minWidth: 90,
                 }}
               >
-                <Text style={{ fontSize: 24 }}></Text>
+                <Text style={{ fontSize: 24 }}>🔥</Text>
                 <Text style={{ fontSize: 11, fontWeight: '600', marginTop: 4 }}>
                   {p.user?.name}
                 </Text>
@@ -177,7 +177,7 @@ export default function CommunityScreen(): JSX.Element {
 
       {posts.length === 0 && (
         <View style={{ alignItems: 'center', padding: 30 }}>
-          <Text style={{ fontSize: 40 }}></Text>
+          <Text style={{ fontSize: 40 }}>💬</Text>
           <Text style={{ color: '#6b7280', marginTop: 8 }}>{t('community.empty')}</Text>
         </View>
       )}
@@ -185,7 +185,7 @@ export default function CommunityScreen(): JSX.Element {
       {posts.map((p) => (
         <View key={p.id} style={s.card}>
           <View style={{ flexDirection: 'row', alignItems: 'center', gap: 10, marginBottom: 8 }}>
-            <Text style={{ fontSize: 30 }}></Text>
+            <Text style={{ fontSize: 30 }}>👤</Text>
             <View>
               <Text style={{ fontWeight: '600', fontSize: 14 }}>
                 {p.user?.name ?? t('community.user-fallback')}
@@ -210,7 +210,7 @@ export default function CommunityScreen(): JSX.Element {
               <Text style={{ color: '#9ca3af' }}> {p._count?.comments ?? 0}</Text>
             </TouchableOpacity>
             <TouchableOpacity onPress={() => handleDelete(p.id)} style={{ marginLeft: 'auto' }}>
-              <Text style={{ color: '#9ca3af' }}></Text>
+              <Text style={{ color: '#9ca3af' }}>🗑️</Text>
             </TouchableOpacity>
           </View>
           {commentId === p.id && (

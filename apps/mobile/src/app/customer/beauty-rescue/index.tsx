@@ -73,7 +73,7 @@ export default function BeautyRescueScreen(): JSX.Element {
 
       {booked && emergency ? (
         <View style={styles.confirmed}>
-          <Text style={styles.cfEmoji}></Text>
+          <Text style={styles.cfEmoji}>✅</Text>
           <Text style={styles.cfTitle}>{t('beautyRescue.requested')}</Text>
           <Text style={styles.cfText}>
             {t('beautyRescue.on-the-way', { time: emergency.time })}
@@ -120,7 +120,7 @@ export default function BeautyRescueScreen(): JSX.Element {
               <Text style={styles.dsub}>{t('beautyRescue.includes')}</Text>
               {emergency.tips.map((t, i) => (
                 <View key={i} style={styles.dr}>
-                  <Text style={styles.db}></Text>
+                  <Text style={styles.db}>✨</Text>
                   <Text style={styles.dx}>{t}</Text>
                 </View>
               ))}

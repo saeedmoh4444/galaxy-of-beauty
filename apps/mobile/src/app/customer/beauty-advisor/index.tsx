@@ -114,7 +114,7 @@ export default function BeautyAdvisorScreen(): JSX.Element {
           onSubmitEditing={() => handleSend()}
         />
         <TouchableOpacity onPress={() => handleSend()} style={s.sendBtn}>
-          <Text style={s.sendText}></Text>
+          <Text style={s.sendText}>📤</Text>
         </TouchableOpacity>
       </View>
     </KeyboardAvoidingView>

@@ -46,14 +46,14 @@ export default function FranchisePortalScreen(): JSX.Element {
       <Text style={styles.t}>{t('franchisePortal.title')}</Text>
       <View style={styles.kr}>
         <View style={styles.k}>
-          <Text style={styles.ke}></Text>
+          <Text style={styles.ke}>💰</Text>
           <Text style={styles.kv}>
             {t('franchisePortal.amount', { value: (dash?.totalRevenue ?? 0).toLocaleString() })}
           </Text>
           <Text style={styles.kl}>{t('franchisePortal.revenue')}</Text>
         </View>
         <View style={styles.k}>
-          <Text style={styles.ke}></Text>
+          <Text style={styles.ke}>📅</Text>
           <Text style={[styles.kv, { color: '#2563eb' }]}>{dash?.totalBookings ?? 0}</Text>
           <Text style={styles.kl}>{t('franchisePortal.bookings')}</Text>
         </View>

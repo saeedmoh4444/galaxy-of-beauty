@@ -45,7 +45,7 @@ export default function BeautyBingoScreen(): JSX.Element {
     >
       <Text style={styles.t}>{t('beautyBingo.title')}</Text>
       <View style={styles.card}>
-        <Text style={styles.em}></Text>
+        <Text style={styles.em}>🎯</Text>
         <Text style={styles.pr}>
           {t('beautyBingo.completed', { done: data?.completed ?? 0, total: data?.total ?? 9 })}
         </Text>

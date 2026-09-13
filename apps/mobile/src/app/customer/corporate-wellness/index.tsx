@@ -94,7 +94,7 @@ export default function CorporateWellnessScreen(): JSX.Element {
             alignItems: 'center',
           }}
         >
-          <Text style={{ fontSize: 32 }}></Text>
+          <Text style={{ fontSize: 32 }}>✅</Text>
           <Text style={{ fontWeight: '700', color: '#059669', marginTop: 8 }}>
             {t('corporateWellness.request-received')}
           </Text>

@@ -99,7 +99,7 @@ export default function MarketplaceScreen(): JSX.Element {
 
       {products.length === 0 && (
         <View style={{ alignItems: 'center', padding: 30 }}>
-          <Text style={{ fontSize: 40 }}></Text>
+          <Text style={{ fontSize: 40 }}>🛒</Text>
           <Text style={{ color: '#6b7280', marginTop: 8 }}>{t('marketplace.noProducts')}</Text>
         </View>
       )}
@@ -107,7 +107,7 @@ export default function MarketplaceScreen(): JSX.Element {
       <View style={s.grid}>
         {products.map((p) => (
           <TouchableOpacity key={p.id} style={s.prod} onPress={() => handleAddToCart(p.id ?? 0)}>
-            <Text style={{ fontSize: 36, textAlign: 'center' }}></Text>
+            <Text style={{ fontSize: 36, textAlign: 'center' }}>🧴</Text>
             <Text
               style={{ fontWeight: '600', fontSize: 13, textAlign: 'center', marginTop: 6 }}
               numberOfLines={1}

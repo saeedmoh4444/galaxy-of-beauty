@@ -44,17 +44,17 @@ export default function BookingInsightsScreen(): JSX.Element {
       <Text style={styles.t}>{t('bookingInsights.title')}</Text>
       <View style={styles.kr}>
         <View style={styles.k}>
-          <Text style={styles.ke}></Text>
+          <Text style={styles.ke}>💰</Text>
           <Text style={styles.kv}>{totalSpent.toLocaleString()}</Text>
           <Text style={styles.kl}>{t('bookingInsights.spent-label')}</Text>
         </View>
         <View style={styles.k}>
-          <Text style={styles.ke}></Text>
+          <Text style={styles.ke}>📅</Text>
           <Text style={[styles.kv, { color: '#2563eb' }]}>{totalBookings}</Text>
           <Text style={styles.kl}>{t('bookingInsights.booking-label')}</Text>
         </View>
         <View style={styles.k}>
-          <Text style={styles.ke}></Text>
+          <Text style={styles.ke}>📊</Text>
           <Text style={[styles.kv, { color: '#059669' }]}>{avgPerBooking.toLocaleString()}</Text>
           <Text style={styles.kl}>{t('bookingInsights.avg-label')}</Text>
         </View>
@@ -77,7 +77,7 @@ export default function BookingInsightsScreen(): JSX.Element {
         </View>
       )}
       <View style={styles.ic}>
-        <Text style={styles.ie}></Text>
+        <Text style={styles.ie}>💡</Text>
         <Text style={styles.it}>{t('bookingInsights.smart-tip')}</Text>
         <Text style={styles.ix}>
           {totalBookings < 5

@@ -63,7 +63,7 @@ export default function AIAssistantScreen(): JSX.Element {
           placeholderTextColor="#9ca3af"
         />
         <TouchableOpacity style={styles.sendBtn}>
-          <Text style={styles.sendBtnText}></Text>
+          <Text style={styles.sendBtnText}>📤</Text>
         </TouchableOpacity>
       </View>
     </View>

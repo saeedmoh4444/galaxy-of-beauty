@@ -43,7 +43,7 @@ export default function BnplScreen(): JSX.Element {
       <ScrollView style={styles.c} contentContainerStyle={styles.i}>
         <Text style={styles.t}>{t('bnpl.title')}</Text>
         <View style={[styles.card, styles.sc]}>
-          <Text style={styles.se}></Text>
+          <Text style={styles.se}>✅</Text>
           <Text style={styles.stt}>{t('bnpl.approved')}</Text>
           <Text style={styles.ta}>
             {t('bnpl.amount', { amount: result.totalAmount?.toLocaleString() ?? '' })}

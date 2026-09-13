@@ -69,7 +69,7 @@ export default function EmergencyBookingScreen(): JSX.Element {
       <ScrollView style={styles.c} contentContainerStyle={styles.i}>
         <Text style={styles.t}>{t('emergencyBooking.title')}</Text>
         <View style={[styles.card, styles.rc]}>
-          <Text style={styles.re}></Text>
+          <Text style={styles.re}>✅</Text>
           <Text style={styles.rt}>{t('emergencyBooking.success')}</Text>
           <Text style={styles.rcode}>{result.bookingCode ?? '—'}</Text>
         </View>
@@ -115,7 +115,7 @@ export default function EmergencyBookingScreen(): JSX.Element {
       </View>
       {(availability.available ?? []).map((tech) => (
         <View key={tech.technicianId} style={styles.card}>
-          <Text style={styles.te}></Text>
+          <Text style={styles.te}>👤</Text>
           <View style={{ flex: 1 }}>
             <Text style={styles.tn}>{tech.name ?? ''}</Text>
             <Text style={styles.tm}> {tech.rating ?? ''}</Text>

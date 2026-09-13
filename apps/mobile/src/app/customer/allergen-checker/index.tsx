@@ -78,7 +78,7 @@ export default function AllergenCheckerScreen(): JSX.Element {
           placeholderTextColor="#9ca3af"
         />
         <TouchableOpacity style={styles.sb}>
-          <Text style={styles.sbt}></Text>
+          <Text style={styles.sbt}>🔍</Text>
         </TouchableOpacity>
       </View>
 

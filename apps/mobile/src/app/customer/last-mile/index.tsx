@@ -43,7 +43,7 @@ export default function LastMileScreen(): JSX.Element {
       <ScrollView style={styles.c} contentContainerStyle={styles.i}>
         <Text style={styles.t}>{t('mobile.lastMile.title')}</Text>
         <View style={[styles.card, styles.rc]}>
-          <Text style={styles.re}></Text>
+          <Text style={styles.re}>✅</Text>
           <Text style={styles.rtt}>{t('mobile.lastMile.ordered')}</Text>
           <Text style={styles.rp}>{result.product}</Text>
           <Text style={styles.rm}>
