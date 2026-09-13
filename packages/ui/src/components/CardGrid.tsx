@@ -1,4 +1,5 @@
 import type { ReactNode } from 'react';
+import type { JSX } from 'react';
 
 /**
  * Responsive card grid — consistent grid layout for service/product cards.
