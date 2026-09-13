@@ -57,7 +57,9 @@ export function BeautyAffirmationCard({
         <p className="text-lg font-bold leading-relaxed text-pink-800 dark:text-pink-200">
           &ldquo;{affirmation[locale]}&rdquo;
         </p>
-        <p className="mt-2 text-2xl" aria-hidden="true"></p>
+        <p className="mt-2 text-2xl" aria-hidden="true">
+          ✨
+        </p>
       </div>
 
       <div className="mt-2 flex justify-center gap-1">

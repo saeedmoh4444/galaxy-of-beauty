@@ -65,7 +65,9 @@ export function BeautyPenPalCard({
       )}
     >
       <div className="text-center">
-        <span className="text-3xl" aria-hidden="true"></span>
+        <span className="text-3xl" aria-hidden="true">
+          💌
+        </span>
         <h4 className="mt-1 text-sm font-bold text-brand-700 dark:text-brand-300">{title}</h4>
         <p className="text-[10px] text-brand-500 dark:text-brand-400">{subtitle}</p>
       </div>
@@ -74,7 +76,9 @@ export function BeautyPenPalCard({
       <div className="mt-3 rounded-xl bg-gradient-to-br from-brand-50 to-pink-50 p-4 dark:from-brand-950 dark:to-pink-950">
         <div className="flex items-center justify-center gap-4">
           <div className="text-center">
-            <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-brand-200 text-lg dark:bg-brand-800"></div>
+            <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-brand-200 text-lg dark:bg-brand-800">
+              👩
+            </div>
             <p className="mt-1 text-[10px] font-bold text-text-primary dark:text-gray-100">
               {youText}
             </p>
@@ -83,7 +87,9 @@ export function BeautyPenPalCard({
             💌
           </span>
           <div className="text-center">
-            <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-pink-200 text-lg dark:bg-pink-800"></div>
+            <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-pink-200 text-lg dark:bg-pink-800">
+              👩
+            </div>
             <p className="mt-1 text-[10px] font-bold text-text-primary dark:text-gray-100">
               {friendText}
             </p>

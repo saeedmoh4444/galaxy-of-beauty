@@ -75,7 +75,9 @@ export function MirrorStickerCard({
         >
           &ldquo;{affirmation[locale]}&rdquo;
         </p>
-        <p className="mt-2 text-2xl" aria-hidden="true"></p>
+        <p className="mt-2 text-2xl" aria-hidden="true">
+          💖
+        </p>
       </div>
 
       {/* Context */}

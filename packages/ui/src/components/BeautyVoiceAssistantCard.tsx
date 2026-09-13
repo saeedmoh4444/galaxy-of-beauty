@@ -49,7 +49,9 @@ export function BeautyVoiceAssistantCard({
       )}
     >
       <div className="text-center">
-        <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-full bg-gradient-to-br from-violet-200 to-brand-200 text-2xl dark:from-violet-800 dark:to-brand-800 animate-pulse"></div>
+        <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-full bg-gradient-to-br from-violet-200 to-brand-200 text-2xl dark:from-violet-800 dark:to-brand-800 animate-pulse">
+          🎤
+        </div>
         <h4 className="mt-2 text-sm font-bold text-violet-800 dark:text-violet-200">{title}</h4>
         <p className="text-[10px] text-violet-500 dark:text-violet-400">{subtitle}</p>
       </div>

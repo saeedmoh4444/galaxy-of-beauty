@@ -128,17 +128,23 @@ export function BeautyBankCard({
         <p className="text-[10px] font-bold text-pink-700 dark:text-pink-300">{howTitle}</p>
         <div className="grid grid-cols-3 gap-1.5 text-center text-[9px]">
           <div className="rounded-lg bg-white/60 p-2 dark:bg-gray-800/60">
-            <p className="text-lg" aria-hidden="true"></p>
+            <p className="text-lg" aria-hidden="true">
+              💇
+            </p>
             <p className="font-bold text-pink-800 dark:text-pink-200">50 {currencySuffix}</p>
             <p className="text-pink-500 dark:text-pink-400">{example1}</p>
           </div>
           <div className="rounded-lg bg-white/60 p-2 dark:bg-gray-800/60">
-            <p className="text-lg" aria-hidden="true"></p>
+            <p className="text-lg" aria-hidden="true">
+              💄
+            </p>
             <p className="font-bold text-pink-800 dark:text-pink-200">150 {currencySuffix}</p>
             <p className="text-pink-500 dark:text-pink-400">{example2}</p>
           </div>
           <div className="rounded-lg bg-white/60 p-2 dark:bg-gray-800/60">
-            <p className="text-lg" aria-hidden="true"></p>
+            <p className="text-lg" aria-hidden="true">
+              🧖
+            </p>
             <p className="font-bold text-pink-800 dark:text-pink-200">300 {currencySuffix}</p>
             <p className="text-pink-500 dark:text-pink-400">{example3}</p>
           </div>

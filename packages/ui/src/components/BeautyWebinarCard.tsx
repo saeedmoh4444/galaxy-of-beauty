@@ -63,7 +63,9 @@ export function BeautyWebinarCard({
       )}
     >
       <div className="flex items-start gap-3">
-        <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-indigo-100 to-blue-100 text-xl dark:from-indigo-900 dark:to-blue-900"></div>
+        <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-indigo-100 to-blue-100 text-xl dark:from-indigo-900 dark:to-blue-900">
+          🎓
+        </div>
         <div className="min-w-0 flex-1">
           <h4 className="text-sm font-bold text-indigo-700 dark:text-indigo-300">
             {webinar.title}
