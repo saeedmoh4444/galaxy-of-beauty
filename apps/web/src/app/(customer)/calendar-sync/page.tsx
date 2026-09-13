@@ -14,10 +14,12 @@ export default function CalendarSyncPage(): JSX.Element {
     data: Record<string, unknown> | undefined;
     refetch: () => void;
   };
-  const { data: upcoming } = api.calendarSync.upcoming.useQuery(undefined, {
-    enabled: isAuthenticated,
-  }) as {
+  const { data: upcoming, refetch: refetchUpcoming } = api.calendarSync.upcoming.useQuery(
+    undefined,
+    { enabled: isAuthenticated },
+  ) as {
     data: Array<Record<string, unknown>> | undefined;
+    refetch: () => void;
   };
   const connectMut = api.calendarSync.connect.useMutation({ onSuccess: () => refetch() });
   const disconnectMut = api.calendarSync.disconnect.useMutation({ onSuccess: () => refetch() });
@@ -27,6 +29,10 @@ export default function CalendarSyncPage(): JSX.Element {
     { enabled: isAuthenticated, refetchOnWindowFocus: false },
   );
   const syncMut = api.calendarSync.syncCycleEvents.useMutation();
+  // Booking auto-sync (E9 follow-up) — backfill push + per-run count.
+  const bookingsSyncMut = api.calendarSync.syncBookings.useMutation({
+    onSuccess: () => refetchUpcoming(),
+  });
 
   // E9 — handle the OAuth redirect (code query param → connect).
   useEffect(() => {
@@ -56,7 +62,7 @@ export default function CalendarSyncPage(): JSX.Element {
           <p className="mt-1 text-sm text-text-secondary">{t('calendarSync.subtitle')}</p>
         </div>
         <Card padding="lg" className="text-center">
-          <span className="text-6xl">{connected ? '' : ''}</span>
+          <span className="text-6xl">{connected ? '📅' : '🔗'}</span>
           <h2 className="mt-4 text-xl font-bold">
             {connected ? t('calendarSync.connected') : t('calendarSync.notConnected')}
           </h2>
@@ -112,7 +118,28 @@ export default function CalendarSyncPage(): JSX.Element {
         </Card>
         {events.length > 0 && (
           <Card padding="lg">
-            <h3 className="font-bold mb-4">{t('calendarSync.upcoming')}</h3>
+            <div className="mb-4 flex items-center justify-between">
+              <h3 className="font-bold">{t('calendarSync.upcoming')}</h3>
+              {connected && (
+                <div className="flex items-center gap-2">
+                  {bookingsSyncMut.data && (
+                    <p className="text-xs text-text-secondary">
+                      {t('calendarSync.syncedBookings', {
+                        n: bookingsSyncMut.data.synced as number,
+                      })}
+                    </p>
+                  )}
+                  <Button
+                    size="sm"
+                    variant="outline"
+                    onClick={() => bookingsSyncMut.mutate()}
+                    loading={bookingsSyncMut.isPending}
+                  >
+                    📅 {t('calendarSync.syncBookings')}
+                  </Button>
+                </div>
+              )}
+            </div>
             <div className="space-y-2">
               {events.map((e: Record<string, unknown>) => (
                 <div
@@ -124,6 +151,11 @@ export default function CalendarSyncPage(): JSX.Element {
                     <p className="font-bold text-sm">{e.title as string}</p>
                     <p className="text-xs text-text-secondary"> {e.technician as string}</p>
                   </div>
+                  {e.synced ? (
+                    <span className="rounded-full bg-green-100 px-2 py-0.5 text-[10px] font-semibold text-green-700 dark:bg-green-900 dark:text-green-300">
+                      ✓ {t('calendarSync.onCalendar')}
+                    </span>
+                  ) : null}
                   <span className="text-xs text-text-tertiary">
                     {new Date(e.date as string).toLocaleDateString(
                       locale === 'en' ? 'en-GB' : 'ar-SA',
