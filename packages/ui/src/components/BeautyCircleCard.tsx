@@ -129,7 +129,7 @@ export function BeautyCircleCard({
   almostFullText = 'أوشكت على الامتلاء',
   nextMeetupPrefix = 'اللقاء القادم: ',
   discountPrefix = 'خصم ',
-  discountSuffix = ' عند الحجز الجماعي',
+  discountSuffix = 'عند الحجز الجماعي',
   joinButtonText = 'انضمي للدائرة',
   locale = 'ar',
 }: BeautyCircleCardProps): JSX.Element {

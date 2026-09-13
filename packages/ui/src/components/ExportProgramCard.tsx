@@ -35,7 +35,7 @@ export function ExportProgramCard({
   subtitle = 'منتجات سعودية إلى العالم',
   productLabel = 'منتج سعودي',
   countryLabel = 'دولة',
-  offerLabel = ' نقدم لكِ',
+  offerLabel = 'نقدم لكِ',
   item1 = '• شهادات مطابقة دولية',
   item2 = '• دعم لوجستي وشحن',
   item3 = '• تسجيل في الأسواق العالمية',

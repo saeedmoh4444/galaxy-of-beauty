@@ -34,8 +34,8 @@ export function BeautyRecipeCard({
   recipe,
   className = '',
   naturalText = 'طبيعي 100%',
-  ingredientsLabel = ' المكونات',
-  stepsLabel = ' الطريقة',
+  ingredientsLabel = 'المكونات',
+  stepsLabel = 'الطريقة',
   cautionText = 'اختبري على جزء صغير من بشرتكِ قبل الاستخدام',
 }: BeautyRecipeCardProps): JSX.Element {
   return (

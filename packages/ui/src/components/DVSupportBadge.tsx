@@ -54,7 +54,7 @@ export function DVSupportBadge({
   className = '',
   title = 'يداً بيد ننهض',
   subtitle = 'لأن كل امرأة تستحق بداية جديدة',
-  freeServicesTitle = ' نقدم مجاناً',
+  freeServicesTitle = 'نقدم مجاناً',
   service1 = '• عناية بالبشرة',
   service2 = '• مكياج تعليمي',
   service3 = '• تسريحة شعر',

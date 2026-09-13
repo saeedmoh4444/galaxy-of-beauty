@@ -38,7 +38,7 @@ export function BreastHealthCard({
   examTip1 = '• مرة شهرياً — بعد انتهاء الدورة',
   examTip2 = '• 5 دقائق فقط قد تنقذ حياتكِ',
   examTip3 = '• الكشف المبكر = شفاء 98%',
-  lastExamLabel = ' آخر فحص: ',
+  lastExamLabel = 'آخر فحص: ',
   nextReminderLabel = 'التذكير القادم: ',
   learnButtonText = 'تعلمي طريقة الفحص',
   footerText = 'صحتكِ أغلى ما تملكين',

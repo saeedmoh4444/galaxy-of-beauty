@@ -47,7 +47,7 @@ export function BeautyMythBusterCard({
   className = '',
   mythOrFactTitle = 'خرافة أم حقيقة؟',
   subtitle = 'نكشف لكِ الحقيقة العلمية',
-  mythLabel = ' الخرافة الشائعة',
+  mythLabel = 'الخرافة الشائعة',
   revealButtonText = 'اكشفي الحقيقة',
   verdictText = 'خرافة!',
   sourcePrefix = 'المصدر: ',

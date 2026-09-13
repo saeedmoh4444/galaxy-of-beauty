@@ -33,7 +33,7 @@ export function BeautyReferralLeaderboardCard({
   title = 'قائمة الإحالات',
   subtitle = 'الأكثر دعوة لصديقاتهن',
   referralsText = 'إحالة',
-  rankText = ' ترتيبكِ: #',
+  rankText = 'ترتيبكِ: #',
 }: BeautyReferralLeaderboardCardProps): JSX.Element | null {
   if (!leaders.length) return null;
 

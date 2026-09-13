@@ -42,7 +42,7 @@ export function BeautyPodcastCard({
   episodeLabel = 'حلقة',
   listenText = '▶️ استمعي',
   subscribeText = 'تابعي البودكاست',
-  availabilityText = ' متوفر على أبل بودكاست، سبوتيفاي، وجميع المنصات',
+  availabilityText = 'متوفر على أبل بودكاست، سبوتيفاي، وجميع المنصات',
 }: BeautyPodcastCardProps): JSX.Element {
   return (
     <div

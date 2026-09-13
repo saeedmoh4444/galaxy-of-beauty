@@ -46,7 +46,7 @@ const PROMPTS = [
 export function BeautyJournalPrompt({
   className = '',
   locale = 'ar',
-  title = ' يوميات الجمال',
+  title = 'يوميات الجمال',
   placeholder = 'اكتبي هنا...',
 }: {
   className?: string;

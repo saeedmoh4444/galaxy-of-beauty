@@ -40,7 +40,7 @@ export function BeautyLanguageExchangeCard({
   toLang: _toLang = 'en',
   className = '',
   title = 'قاموس الجمال',
-  arToEnLabel = ' عربي →  English',
+  arToEnLabel = 'عربي →  English',
   enToArLabel = ' English →  عربي',
   footerText = 'الجمال لغة عالمية',
 }: BeautyLanguageExchangeCardProps): JSX.Element {

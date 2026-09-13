@@ -37,7 +37,7 @@ export function AllergyTestCard({
   patchTestSubtitle = 'اختبار رقعة قبل العلاجات الجديدة',
   lastTestLabel = 'آخر اختبار',
   nextDueLabel = 'الاختبار القادم',
-  dueButtonText = ' موعد الاختبار',
+  dueButtonText = 'موعد الاختبار',
   bookButtonText = 'احجزي اختبار حساسية',
   footerText = '🩺 سلامتكِ أولاً — اختبار الحساسية مجاني',
 }: AllergyTestCardProps): JSX.Element {

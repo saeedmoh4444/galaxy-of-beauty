@@ -40,7 +40,7 @@ export function BeautyHeroBadge({
   onReadStory,
   className = '',
   title = 'بطلة الجمال',
-  monthFallback = ' هذا الشهر',
+  monthFallback = 'هذا الشهر',
   achievementLabel = 'إنجازها',
   readStoryText = 'اقرئي قصتها',
   nominateText = 'رشّحي بطلة',

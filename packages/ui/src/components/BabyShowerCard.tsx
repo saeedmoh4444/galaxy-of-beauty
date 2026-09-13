@@ -46,7 +46,7 @@ export function BabyShowerCard({
   title = 'بيبي شاور',
   subtitle = 'إطلالة مميزة للأم المنتظرة',
   guestsSuffix = 'ضيفة',
-  includesTitle = ' تشمل الباقة',
+  includesTitle = 'تشمل الباقة',
   include1 = '• مكياج ناعم',
   include2 = '• تسريحة',
   include3 = '• مانيكير',

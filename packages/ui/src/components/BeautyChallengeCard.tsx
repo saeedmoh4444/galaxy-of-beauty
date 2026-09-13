@@ -78,7 +78,7 @@ export function BeautyChallengeCard({
   subtitle = 'رحلة 30 يوم للعناية بنفسكِ',
   dayLabel = 'اليوم',
   ofLabel = 'من',
-  taskLabel = ' مهمة اليوم',
+  taskLabel = 'مهمة اليوم',
   doneLabel = 'أنجزتها!',
   dayWordLabel = 'يوم',
   daysRemainingLabel = 'يوم متبقي — أنتِ قادرة!',

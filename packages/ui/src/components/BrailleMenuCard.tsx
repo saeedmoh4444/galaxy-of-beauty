@@ -35,7 +35,7 @@ export function BrailleMenuCard({
   locale = 'ar',
   title = 'قائمة برايل',
   subtitle = 'قائمة الخدمات بطريقة برايل متوفرة',
-  voiceMenuText = ' قائمة صوتية',
+  voiceMenuText = 'قائمة صوتية',
   accessibilityLabel = 'ميزات الإتاحة',
   feat1 = '• قائمة برايل عند المدخل',
   feat2 = '• أحرف كبيرة للضعف البصري',

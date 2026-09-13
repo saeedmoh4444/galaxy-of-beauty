@@ -87,7 +87,7 @@ export function BeautySubscriptionCard({
   planPrefix = 'الباقة ',
   currencySuffix = 'ر.س',
   monthlySuffix = '/ شهرياً',
-  includesTitle = ' يشمل',
+  includesTitle = 'يشمل',
   subscribeButtonText = 'اشتركي الآن',
   locale = 'ar',
 }: BeautySubscriptionCardProps): JSX.Element {

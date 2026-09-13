@@ -71,7 +71,7 @@ export function BeautySavingsGoal({
   title = 'حصالتي التجميلية',
   subtitle = 'ادخري لهواياتكِ الجمالية',
   overallProgressLabel = 'التقدم الكلي',
-  completedText = ' اكتمل!',
+  completedText = 'اكتمل!',
   remainingPrefix = 'باقي ',
   savedSuffix = 'تم',
   targetSuffix = 'الهدف',

@@ -65,7 +65,7 @@ export function GalentinesCard({
   subtitle = '— احتفلي بصداقاتكِ',
   withYouLabel = 'معكِ في هذا اليوم',
   youLabel = 'أنتِ',
-  includesLabel = ' الباقة تشمل',
+  includesLabel = 'الباقة تشمل',
   totalLabel = 'الإجمالي',
   perPersonLabel = 'للفرد',
   discountLabel = 'الخصم',

@@ -51,7 +51,7 @@ export function BeautyRewardsCard({
   className = '',
   locale = 'ar',
   myRewardsTitle = 'مكافآتي',
-  pointsSuffix = ' نقطة',
+  pointsSuffix = 'نقطة',
 }: BeautyRewardsCardProps): JSX.Element {
   return (
     <div

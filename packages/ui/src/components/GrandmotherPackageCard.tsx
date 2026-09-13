@@ -73,7 +73,7 @@ export function GrandmotherPackageCard({
   grandmaName,
   onBook,
   className = '',
-  includesTitle = ' تشمل الباقة',
+  includesTitle = 'تشمل الباقة',
   include1 = '• مكياج راقٍ',
   include2 = '• تسريحة',
   include3 = '• مانيكير',
