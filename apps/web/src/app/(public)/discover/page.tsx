@@ -1,4 +1,5 @@
 'use client';
+import type { JSX } from 'react';
 import Link from 'next/link';
 import { api } from '@/lib/trpc';
 import { localize, prioritizeByLinks } from '@galaxy/shared';

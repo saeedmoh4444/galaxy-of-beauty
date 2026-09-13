@@ -1,3 +1,4 @@
+import type { JSX } from 'react';
 import { getServerCaller, serializeForClient } from '@/lib/server-trpc';
 import { ClinicsClient } from './ClinicsClient';
 import type { ClinicsPageData } from './ClinicsClient';

@@ -1,4 +1,5 @@
 'use client';
+import type { JSX } from 'react';
 
 import { useSearchParams } from 'next/navigation';
 import { api } from '@/lib/trpc';

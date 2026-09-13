@@ -1,4 +1,5 @@
 'use client';
+import type { JSX } from 'react';
 
 import { useParams, useSearchParams } from 'next/navigation';
 import { Card, Button } from '@galaxy/ui';
