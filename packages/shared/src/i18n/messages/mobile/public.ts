@@ -322,6 +322,7 @@ export const mobilePublicMessages = {
     ar: 'أحدث إطلالات وصيحات الجمال',
     en: 'Latest looks and beauty trends',
   },
+  'mobile.public.more.explore': { ar: 'استكشفي', en: 'Explore' },
   'mobile.public.onboarding.back': { ar: 'السابق', en: 'Previous' },
   'mobile.public.onboarding.next': { ar: 'التالي →', en: 'Next →' },
   'mobile.public.onboarding.start': { ar: 'ابدئي الآن', en: 'Start Now' },
