@@ -8,6 +8,7 @@ import {
   TouchableOpacity,
 } from 'react-native';
 import { useState } from 'react';
+import type { JSX } from 'react';
 import { BULK_PAGE_SIZE } from '@galaxy/ui';
 import { trpc } from '@/lib/trpc-react';
 import { useLocale } from '@/components/LocaleProvider';
