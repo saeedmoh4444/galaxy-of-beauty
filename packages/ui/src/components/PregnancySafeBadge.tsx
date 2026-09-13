@@ -172,7 +172,7 @@ export function PregnancySafeBadge({
           </div>
           {service.duration && (
             <p className="mt-0.5 text-[10px] text-text-tertiary dark:text-text-tertiary">
-              ️ {service.duration}
+              {service.duration}
             </p>
           )}
         </div>

@@ -69,8 +69,8 @@ export function SecureCallBadge({
   howItWorksTextPrefix = 'عندما تتصل الخبيرة، يمر الاتصال عبر رقم وسيط (Twilio). ترين رقمها المؤقت، وترى رقمكِ المؤقت. بعد انتهاء الموعد بـ ',
   howItWorksTextSuffix = '، تُحذف الأرقام تلقائياً.',
   activateButtonText = 'فعّلي الاتصال الآمن',
-  cancelButtonText = '️ إلغاء الرقم المؤقت',
-  privacyText = '️ خصوصيتكِ أمانة — لا نشارك رقمكِ الحقيقي مع أحد',
+  cancelButtonText = ' إلغاء الرقم المؤقت',
+  privacyText = ' خصوصيتكِ أمانة — لا نشارك رقمكِ الحقيقي مع أحد',
   locale = 'ar',
 }: SecureCallBadgeProps): JSX.Element {
   return (
@@ -83,7 +83,9 @@ export function SecureCallBadge({
       {/* Header */}
       <div className="flex items-center gap-2">
         <div className="relative">
-          <span className="text-xl" aria-hidden="true"></span>
+          <span className="text-xl" aria-hidden="true">
+            📞
+          </span>
           {isActive && (
             <span className="absolute -bottom-0.5 -end-0.5 flex h-2.5 w-2.5">
               <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-75" />

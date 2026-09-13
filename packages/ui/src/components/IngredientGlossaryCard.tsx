@@ -177,7 +177,7 @@ export function IngredientGlossaryCard({
 
       {/* Arabic content badge */}
       <div className="mt-2 flex items-center gap-1 text-[9px] text-text-tertiary dark:text-text-secondary">
-        <span></span>
+        <span>📖</span>
         <span>{arabicContentText}</span>
       </div>
     </div>

@@ -86,7 +86,7 @@ export default function ReferralDashboardPage(): JSX.Element {
         {/* Stats Cards */}
         <div className="grid gap-4 sm:grid-cols-4">
           <Card padding="md" className="text-center">
-            <p className="text-3xl">‍️</p>
+            <p className="text-3xl"></p>
             <p className="mt-1 text-2xl font-bold">{s.totalReferred}</p>
             <p className="text-xs text-text-secondary">{t('referralDashboard.stat.invited')}</p>
           </Card>

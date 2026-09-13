@@ -95,8 +95,8 @@ export function QuietCornerBadge({
   className = '',
   title = 'ركن الأطفال',
   subtitle = 'لأن الأم تحتاج وقتاً لنفسها',
-  supervisedLabel = '‍ مراقب',
-  supervisedNote = '‍ موظفة مخصصة لمراقبة الأطفال — اطمئني على صغاركِ',
+  supervisedLabel = ' مراقب',
+  supervisedNote = ' موظفة مخصصة لمراقبة الأطفال — اطمئني على صغاركِ',
   footerText = 'أنتِ تستحقين وقتاً لنفسكِ — وصغاركِ في أيدٍ أمينة',
   locale = 'ar',
 }: QuietCornerBadgeProps): JSX.Element | null {
@@ -126,7 +126,9 @@ export function QuietCornerBadge({
     >
       {/* Header */}
       <div className="flex items-center gap-2">
-        <span className="text-xl" aria-hidden="true"></span>
+        <span className="text-xl" aria-hidden="true">
+          🧸
+        </span>
         <div>
           <h4 className="text-sm font-bold text-orange-700 dark:text-orange-300">{title}</h4>
           <p className="text-[10px] text-orange-500 dark:text-orange-400">{subtitle}</p>

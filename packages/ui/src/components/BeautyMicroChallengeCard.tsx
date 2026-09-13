@@ -48,10 +48,10 @@ export function BeautyMicroChallengeCard({
             {challenge.title}
           </h4>
           <p className="text-[10px] text-text-tertiary dark:text-text-secondary">
-            ️ {challenge.duration}
+            {challenge.duration}
           </p>
         </div>
-        {challenge.completed && <span className="text-lg shrink-0"></span>}
+        {challenge.completed && <span className="text-lg shrink-0">✅</span>}
       </div>
       <div className="mt-3 flex gap-2">
         <button

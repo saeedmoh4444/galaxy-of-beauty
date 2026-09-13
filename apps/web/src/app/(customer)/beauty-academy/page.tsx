@@ -236,7 +236,7 @@ export default function BeautyAcademyPage(): JSX.Element {
             <SaudiBeautyHeritageCard practice="henna" />
             <BeautyInfographicCard
               topic={t('academy.info.sunProtection')}
-              emoji="️"
+              emoji=""
               stats={[
                 { label: t('academy.info.uvaRays'), value: '95%', desc: t('academy.info.uvaDesc') },
                 { label: 'SPF 30', value: '97%', desc: t('academy.info.spfDesc') },

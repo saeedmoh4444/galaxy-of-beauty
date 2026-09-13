@@ -18,10 +18,10 @@ interface TrustBarProps {
 
 const DEFAULT_ITEMS: TrustItem[] = [
   { icon: '', label: 'خدمة تجميل', value: '٤٥+' },
-  { icon: '‍', label: 'فنية موثقة', value: '٩+' },
+  { icon: '', label: 'فنية موثقة', value: '٩+' },
   { icon: '', label: 'حجز مكتمل', value: '٥٠٠+' },
   { icon: '', label: 'تقييم', value: '٤.٨' },
-  { icon: '️', label: 'مدينة', value: '١٢+' },
+  { icon: '', label: 'مدينة', value: '١٢+' },
 ];
 
 export function TrustBar({ items = DEFAULT_ITEMS, className = '' }: TrustBarProps): JSX.Element {

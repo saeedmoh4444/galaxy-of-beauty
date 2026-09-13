@@ -50,7 +50,7 @@ export function BeautyExpertTalkCard({
         <div className="min-w-0 flex-1">
           <h4 className="text-sm font-bold text-indigo-700 dark:text-indigo-300">{talk.title}</h4>
           <p className="text-[10px] text-text-tertiary dark:text-text-secondary">
-            ️ {talk.expert} · {talk.date}
+            {talk.expert} · {talk.date}
           </p>
         </div>
         {talk.isFree && (
@@ -63,7 +63,7 @@ export function BeautyExpertTalkCard({
       {talk.seats !== undefined && (
         <div className="mt-2 rounded-lg bg-indigo-50 p-2 text-center dark:bg-indigo-950">
           <p className="text-[10px] text-indigo-700 dark:text-indigo-300">
-            ️ {talk.seats} {seatsSuffix}
+            {talk.seats} {seatsSuffix}
           </p>
         </div>
       )}

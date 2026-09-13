@@ -111,7 +111,9 @@ export function PrayerRoomBadge({
     >
       {/* Header */}
       <div className="flex items-center gap-2">
-        <span className="text-lg" aria-hidden="true"></span>
+        <span className="text-lg" aria-hidden="true">
+          🕌
+        </span>
         <div>
           <h4 className="text-sm font-bold text-emerald-700 dark:text-emerald-300">{title}</h4>
           <p className="text-[10px] text-emerald-500 dark:text-emerald-400">{subtitle}</p>
@@ -144,7 +146,9 @@ export function PrayerRoomBadge({
       {nextPrayer && (
         <div className="mt-3 flex items-center justify-between rounded-xl bg-gradient-to-r from-emerald-50 to-teal-50 p-2.5 dark:from-emerald-950 dark:to-teal-950">
           <div className="flex items-center gap-2">
-            <span className="text-sm" aria-hidden="true"></span>
+            <span className="text-sm" aria-hidden="true">
+              ⏰
+            </span>
             <div>
               <p className="text-[10px] font-bold text-emerald-800 dark:text-emerald-200">
                 {nextPrayer.name}

@@ -48,7 +48,7 @@ export default function FranchisePortalPage(): JSX.Element {
               <p className="text-xs text-text-secondary">{t('franchisePortal.bookings')}</p>
             </Card>
             <Card padding="md" className="text-center">
-              <p className="text-3xl">‍</p>
+              <p className="text-3xl"></p>
               <p className="text-2xl font-bold">{(dash?.totalStaff as number) ?? 0}</p>
               <p className="text-xs text-text-secondary">{t('franchisePortal.staff')}</p>
             </Card>

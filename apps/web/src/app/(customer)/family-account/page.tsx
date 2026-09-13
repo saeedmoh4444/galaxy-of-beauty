@@ -248,7 +248,7 @@ export default function FamilyAccountPage(): JSX.Element {
                     </Button>
                   </Link>
                   <Button size="sm" variant="ghost" onClick={() => openEdit(m)}>
-                    ️
+                    ✏️
                   </Button>
                   <Button
                     size="sm"
@@ -256,7 +256,7 @@ export default function FamilyAccountPage(): JSX.Element {
                     onClick={() => handleRemove(m.id, m.name)}
                     className="text-red-500 hover:text-red-700"
                   >
-                    ️
+                    🗑️
                   </Button>
                 </div>
               </Card>

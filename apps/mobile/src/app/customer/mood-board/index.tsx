@@ -37,7 +37,7 @@ export default function MoodBoardScreen(): JSX.Element {
               <Image source={{ uri: p.imageUrl }} style={styles.img} />
             ) : (
               <View style={styles.placeholder}>
-                <Text style={{ fontSize: 28 }}>️</Text>
+                <Text style={{ fontSize: 28 }}></Text>
               </View>
             )}
           </View>

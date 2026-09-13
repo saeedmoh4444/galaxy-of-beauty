@@ -56,7 +56,7 @@ export default function AdminPayoutsScreen(): JSX.Element {
         return (
           <View key={i} style={styles.card}>
             <View style={{ flex: 1 }}>
-              <Text style={styles.tech}>‍ {p.technicianName ?? ''}</Text>
+              <Text style={styles.tech}> {p.technicianName ?? ''}</Text>
               <Text style={styles.amount}>
                 {(p.amount ?? 0).toLocaleString()} {t('misc.sar')}
               </Text>

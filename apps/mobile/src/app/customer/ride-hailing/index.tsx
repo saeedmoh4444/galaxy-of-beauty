@@ -74,7 +74,7 @@ export default function RideHailingScreen(): JSX.Element {
           <View style={{ flex: 1 }}>
             <Text style={styles.pn}>{p.nameAr}</Text>
             <Text style={styles.pm}>
-              ️{' '}
+              {' '}
               {t('mobile.rideHailing.eta', {
                 time: p.estimatedTime,
                 price: p.estimatedPrice?.toLocaleString(locale === 'en' ? 'en-GB' : 'ar-SA') ?? '',

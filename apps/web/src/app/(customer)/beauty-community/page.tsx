@@ -111,7 +111,7 @@ export default function BeautyCommunityPage(): JSX.Element {
               <BeautyVirtualConsultationCard
                 specialist={t('community.specialist.name')}
                 specialty={t('community.specialist.specialty')}
-                emoji="‍️"
+                emoji=""
               />
               <BeautyProgressPhotoCard
                 photos={[{ date: '2026-06-01', emoji: '📸', note: t('community.photo.note') }]}

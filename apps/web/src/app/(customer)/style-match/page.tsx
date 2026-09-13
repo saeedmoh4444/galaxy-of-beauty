@@ -219,12 +219,12 @@ export default function StyleMatchPage(): JSX.Element {
                     ].includes(r.category as string)
                       ? (
                           {
-                            daily: '️',
+                            daily: '',
                             evening: '',
                             party: '',
                             bridal: '',
                             summer: '',
-                            winter: '️',
+                            winter: '',
                             traditional: '',
                           } as Record<string, string>
                         )[r.category as string]

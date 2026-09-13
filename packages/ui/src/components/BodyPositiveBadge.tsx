@@ -126,7 +126,9 @@ export function BodyPositiveBadge({
     >
       {/* Header */}
       <div className="text-center">
-        <span className="text-3xl" aria-hidden="true"></span>
+        <span className="text-3xl" aria-hidden="true">
+          💗
+        </span>
         <h4 className="mt-1 text-sm font-bold text-brand-700 dark:text-brand-300">{title}</h4>
         <p className="text-[10px] text-brand-500 dark:text-brand-400">{subtitle}</p>
       </div>

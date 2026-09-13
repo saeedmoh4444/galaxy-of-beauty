@@ -158,7 +158,9 @@ export function CareerBeautyCard({
       <div className="mt-2 rounded-xl bg-gradient-to-r from-sky-100 to-blue-100 p-3 dark:from-sky-900 dark:to-blue-900">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-1.5">
-            <span className="text-sm" aria-hidden="true"></span>
+            <span className="text-sm" aria-hidden="true">
+              🥗
+            </span>
             <div>
               <p className="text-[10px] font-bold text-sky-800 dark:text-sky-200">{lunchTitle}</p>
               <p className="text-[10px] text-sky-600 dark:text-sky-400">{lunchNote}</p>

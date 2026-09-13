@@ -41,7 +41,7 @@ export default function EmergencyBookingPage(): JSX.Element {
 
         <Card padding="lg" className="border-2 border-red-300 bg-red-50">
           <div className="flex items-center gap-3">
-            <span className="text-3xl"></span>
+            <span className="text-3xl">🚨</span>
             <div>
               <p className="font-bold text-red-700">
                 {t('emergencyBooking.surcharge', {

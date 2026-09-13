@@ -53,7 +53,7 @@ export default function TutorialDetailScreen(): JSX.Element {
       <View style={styles.meta}>
         <Text style={styles.mi}>{data.categoryAr}</Text>
         <Text style={styles.mi}>{data.difficultyAr}</Text>
-        <Text style={styles.mi}>️ {data.duration}</Text>
+        <Text style={styles.mi}> {data.duration}</Text>
       </View>
       <Text style={styles.desc}>{data.descAr}</Text>
       {data.steps && (

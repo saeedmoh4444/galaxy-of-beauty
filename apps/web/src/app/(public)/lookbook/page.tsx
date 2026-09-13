@@ -228,17 +228,17 @@ function CommunityLooks(): JSX.Element {
                 {l.category === 'makeup'
                   ? ''
                   : l.category === 'hair'
-                    ? '‍️'
+                    ? ''
                     : l.category === 'nails'
                       ? ''
                       : ''}
               </span>
               <h3 className="font-bold mt-3">{l.title as string}</h3>
               <p className="text-xs text-text-secondary mt-1">
-                {l.userName as string} · ‍ {l.technicianName as string}
+                {l.userName as string} · {l.technicianName as string}
               </p>
               <p className="text-xs text-text-tertiary mt-1">
-                ️ {l.votes as number} ·{' '}
+                {l.votes as number} ·{' '}
                 {new Date(l.date as string).toLocaleDateString(locale === 'ar' ? 'ar-SA' : 'en-GB')}
               </p>
             </Card>

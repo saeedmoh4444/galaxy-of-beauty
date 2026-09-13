@@ -38,7 +38,7 @@ export default function HomeServiceScreen(): JSX.Element {
       {estimate && (
         <View style={styles.card}>
           <Text style={styles.ep}>{(estimate.totalEstimate ?? 0).toLocaleString()} ر.س</Text>
-          <Text style={styles.em}>️ {estimate.estimatedDuration ?? ''}</Text>
+          <Text style={styles.em}> {estimate.estimatedDuration ?? ''}</Text>
         </View>
       )}
     </ScrollView>

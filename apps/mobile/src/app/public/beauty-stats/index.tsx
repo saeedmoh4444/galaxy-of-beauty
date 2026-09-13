@@ -41,7 +41,7 @@ export default function BeautyStatsScreen(): JSX.Element {
           <Text style={s.cl}>{t('mobile.public.beauty-stats.completed-bookings')}</Text>
         </View>
         <View style={s.card}>
-          <Text style={s.ce}>‍</Text>
+          <Text style={s.ce}></Text>
           <Text style={s.cv}>
             {stats.totalTechnicians.toLocaleString(locale === 'ar' ? 'ar-SA' : 'en-US')}+
           </Text>

@@ -36,7 +36,7 @@ export function BeautyGratitudeCard({
   locale = 'ar',
   title = 'يوميات الامتنان',
   entriesLabel = 'مدخل',
-  addEntryText = '️ اكتبي اليوم',
+  addEntryText = ' اكتبي اليوم',
   footerText = 'الامتنان يجعل الجمال يدوم',
 }: BeautyGratitudeCardProps): JSX.Element {
   const prompt = PROMPTS[entries % PROMPTS.length]!;
@@ -49,7 +49,9 @@ export function BeautyGratitudeCard({
       )}
     >
       <div className="text-center">
-        <span className="text-3xl" aria-hidden="true"></span>
+        <span className="text-3xl" aria-hidden="true">
+          🙏
+        </span>
         <h4 className="mt-1 text-sm font-bold text-amber-800 dark:text-amber-200">{title}</h4>
         <p className="text-[10px] text-amber-600 dark:text-amber-400">
           {entries} {entriesLabel}
@@ -57,9 +59,7 @@ export function BeautyGratitudeCard({
       </div>
 
       <div className="mt-3 rounded-xl bg-white/60 p-4 text-center dark:bg-gray-800/60">
-        <p className="text-lg" aria-hidden="true">
-          ️
-        </p>
+        <p className="text-lg" aria-hidden="true"></p>
         <p className="mt-1 text-sm font-bold leading-relaxed text-amber-800 dark:text-amber-200">
           &ldquo;{prompt[locale]}&rdquo;
         </p>

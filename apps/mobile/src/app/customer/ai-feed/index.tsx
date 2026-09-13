@@ -59,7 +59,7 @@ export default function AIFeedScreen(): JSX.Element {
       {wishlistItems.length > 0 && <Text style={styles.stl}>{t('aiFeed.from-wishlist')}</Text>}
       {wishlistItems.map((w) => (
         <View key={w.id} style={styles.card}>
-          <Text style={styles.em}>️</Text>
+          <Text style={styles.em}></Text>
           <View style={{ flex: 1 }}>
             <Text style={styles.nm}>{localize(w.titleJson, locale) || w.nameAr}</Text>
             <Text style={styles.meta}>{t('aiFeed.price', { price: w.basePrice ?? 0 })}</Text>

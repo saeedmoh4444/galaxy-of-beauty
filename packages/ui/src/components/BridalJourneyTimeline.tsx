@@ -174,9 +174,7 @@ export function BridalJourneyTimeline({
     <div className={cn('rounded-2xl bg-white p-5 dark:bg-gray-900', className)}>
       {/* Header */}
       <div className="text-center">
-        <span className="text-3xl" aria-hidden="true">
-          ‍️
-        </span>
+        <span className="text-3xl" aria-hidden="true"></span>
         <h4 className="mt-1 text-sm font-bold text-rose-700 dark:text-rose-300">{title}</h4>
         <p className="text-[10px] text-rose-500 dark:text-rose-400">{subtitle}</p>
         {weddingDate && (

@@ -27,7 +27,7 @@ export default function NewsletterPage(): JSX.Element {
 
         {subscribed ? (
           <Card padding="lg" className="text-center border-2 border-green-300">
-            <span className="text-6xl"></span>
+            <span className="text-6xl">💌</span>
             <h2 className="mt-4 text-xl font-bold">{t('newsletter.subscribedTitle')}</h2>
             <p className="text-text-secondary">{t('newsletter.subscribedMessage')}</p>
           </Card>

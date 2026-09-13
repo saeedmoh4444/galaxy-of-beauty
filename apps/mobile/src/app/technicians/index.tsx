@@ -38,7 +38,7 @@ export default function TechniciansScreen(): JSX.Element {
       <Text style={styles.t}>{t('mobile.public.technicians.title')}</Text>
       {techs.map((item) => (
         <View key={item.id} style={styles.card}>
-          <Text style={styles.av}>‍</Text>
+          <Text style={styles.av}></Text>
           <View style={{ flex: 1 }}>
             <Text style={styles.tn}>{item.name}</Text>
             <Text style={styles.ts}>{item.specialtyAr ?? item.specialty}</Text>

@@ -69,7 +69,7 @@ export default function TechCalendarPage(): JSX.Element {
   return (
     <div className="mx-auto max-w-4xl px-4 py-12">
       <div className="mb-8 text-center">
-        <span className="text-6xl"></span>
+        <span className="text-6xl">📅</span>
         <h1 className="mt-4 text-3xl font-bold">{t('marketing.tech-calendar.title')}</h1>
         <p className="mt-2 text-text-secondary">{t('marketing.tech-calendar.subtitle')}</p>
       </div>
@@ -153,7 +153,7 @@ export default function TechCalendarPage(): JSX.Element {
                     <p className="text-sm font-bold truncate">{tech.name as string}</p>
                     <p className="text-xs text-text-secondary"> {tech.rating as number}</p>
                   </div>
-                  {String(tech.id) === techId && <span className="text-brand-500 text-xs"></span>}
+                  {String(tech.id) === techId && <span className="text-brand-500 text-xs">✅</span>}
                 </button>
               ))}
             </div>

@@ -114,7 +114,7 @@ export default function ColorAnalysisPage(): JSX.Element {
                 key={i}
                 className="flex items-center gap-3 rounded-lg bg-surface-muted px-3 py-2 dark:bg-gray-800"
               >
-                <span></span>
+                <span>💄</span>
                 <span className="text-sm text-text-secondary dark:text-gray-300">{t(m)}</span>
               </div>
             ))}

@@ -36,7 +36,7 @@ export default function FavoritesPage(): JSX.Element {
               <Card key={f.id as number} padding="md">
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-3">
-                    <span className="text-2xl"></span>
+                    <span className="text-2xl">💖</span>
                     <div>
                       <p className="font-bold">{f.label as string}</p>
                       <p className="text-xs text-text-secondary">

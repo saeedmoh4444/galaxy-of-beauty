@@ -38,11 +38,11 @@ export default function BeautyPodcastScreen(): JSX.Element {
       ) : (
         items.map((e: Record<string, unknown>, i: number) => (
           <View key={i} style={styles.card}>
-            <Text style={styles.epEmoji}>{(e.emoji as string) ?? '️'}</Text>
+            <Text style={styles.epEmoji}>{(e.emoji as string) ?? ''}</Text>
             <View style={{ flex: 1 }}>
               <Text style={styles.epTitle}>{e.titleAr as string}</Text>
               <Text style={styles.epHost}> {e.host as string}</Text>
-              <Text style={styles.epDuration}>️ {e.duration as string}</Text>
+              <Text style={styles.epDuration}> {e.duration as string}</Text>
             </View>
           </View>
         ))

@@ -83,7 +83,7 @@ export function BeautyWeatherCard({
   temp,
   className = '',
   title = 'طقس الجمال',
-  footerText = '️ روتينكِ يتغير مع الطقس — ونحن نذكركِ',
+  footerText = ' روتينكِ يتغير مع الطقس — ونحن نذكركِ',
   locale = 'ar',
 }: BeautyWeatherCardProps): JSX.Element {
   const a = ADVICE[condition];

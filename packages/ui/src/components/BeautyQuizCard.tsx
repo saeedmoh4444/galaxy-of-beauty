@@ -147,7 +147,9 @@ export function BeautyQuizCard({
           className,
         )}
       >
-        <span className="text-4xl" aria-hidden="true"></span>
+        <span className="text-4xl" aria-hidden="true">
+          🎉
+        </span>
         <h4 className="mt-2 text-sm font-bold text-teal-700 dark:text-teal-300">{doneTitle}</h4>
         <p className="mt-1 text-lg font-bold text-teal-800 dark:text-teal-200">
           {score}/{QUESTIONS.length}
@@ -184,7 +186,9 @@ export function BeautyQuizCard({
     >
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-2">
-          <span className="text-lg" aria-hidden="true"></span>
+          <span className="text-lg" aria-hidden="true">
+            🧠
+          </span>
           <h4 className="text-sm font-bold text-teal-700 dark:text-teal-300">{title}</h4>
         </div>
         <span className="text-[10px] text-text-tertiary dark:text-text-secondary">
@@ -221,8 +225,8 @@ export function BeautyQuizCard({
               )}
             >
               <span className="font-bold">{OPTION_LETTERS[i]?.[locale]}.</span> {opt[locale]}
-              {selected !== null && i === q.correct && <span className="float-right"></span>}
-              {selected === i && i !== q.correct && <span className="float-right"></span>}
+              {selected !== null && i === q.correct && <span className="float-right">✅</span>}
+              {selected === i && i !== q.correct && <span className="float-right">❌</span>}
             </button>
           );
         })}

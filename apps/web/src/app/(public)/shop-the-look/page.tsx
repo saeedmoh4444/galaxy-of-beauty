@@ -129,7 +129,7 @@ export default async function ShopTheLookPage(): Promise<JSX.Element> {
   return (
     <div className="mx-auto max-w-6xl px-4 py-12">
       <div className="text-center mb-12">
-        <span className="text-6xl">️</span>
+        <span className="text-6xl">👗</span>
         <h1 className="mt-4 text-3xl font-bold text-text-primary dark:text-gray-100">
           {t('marketing.shop-the-look.title', locale)}
         </h1>

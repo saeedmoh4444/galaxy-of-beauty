@@ -5,11 +5,11 @@ import { useLocale } from '@/components/LocaleProvider';
 import { useAuthState } from '@/hooks/useAuthState';
 
 const TE: Record<string, string> = {
-  bridal: '',
-  birthday: '',
-  girls_night: '',
-  family: '‍‍‍',
-  other: '',
+  bridal: '👰',
+  birthday: '🎂',
+  girls_night: '💃',
+  family: '👪',
+  other: '✨',
 };
 
 interface GroupBookingSummary {

@@ -46,12 +46,12 @@ export function WalkMeToCar({
   homeServiceTitle = 'أمان الخدمة المنزلية',
   carServiceTitle = 'توصيل للسيارة',
   darkSubtitle = ' موعد مسائي — سلامتكِ أولاً',
-  lightSubtitle = '️ خدمة متاحة في أي وقت تحتاجينها',
+  lightSubtitle = ' خدمة متاحة في أي وقت تحتاجينها',
   escortingTitle = 'الخبيرة في طريقها لمرافقتكِ',
   escortingSubtitle = 'انتظري لحظة — لا تغادري وحدكِ',
   sendingText = 'جاري إرسال الطلب... الخبيرة ستصل خلال دقيقة',
   homeButtonText = 'شاركي موقعكِ المباشر',
-  carButtonText = 'رافقيني للسيارة ‍️',
+  carButtonText = 'رافقيني للسيارة ',
   safeCallText = ' اتصال آمن',
   liveLocationText = ' موقع مباشر',
   verifiedExpertText = ' خبيرة موثقة',
@@ -111,9 +111,7 @@ export function WalkMeToCar({
       {escorting && (
         <div className="mt-3 rounded-xl bg-indigo-100 p-3 dark:bg-indigo-900">
           <div className="flex items-center gap-2">
-            <span className="animate-pulse text-lg" aria-hidden="true">
-              ‍️
-            </span>
+            <span className="animate-pulse text-lg" aria-hidden="true"></span>
             <div>
               <p className="text-xs font-bold text-indigo-700 dark:text-indigo-200">
                 {escortingTitle}

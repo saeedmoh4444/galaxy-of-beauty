@@ -32,7 +32,7 @@ export default function PenPalScreen(): JSX.Element {
       <Text style={styles.t}>{t('mobile.penPal.title')}</Text>
       {data ? (
         <View style={styles.card}>
-          <Text style={styles.emoji}>‍</Text>
+          <Text style={styles.emoji}></Text>
           <Text style={styles.name}>{data.name ?? ''}</Text>
           <Text style={styles.match}>{data.matchReason ?? ''}</Text>
         </View>

@@ -19,7 +19,7 @@ export function BeautySkincareMistakesCard({
       )}
     >
       <div className="flex items-center gap-2">
-        <span className="text-xl"></span>
+        <span className="text-xl">🚫</span>
         <div>
           <h4 className="text-sm font-bold text-red-700 dark:text-red-300">{title}</h4>
           <p className="text-[10px] text-red-500 dark:text-red-400">{subtitle}</p>

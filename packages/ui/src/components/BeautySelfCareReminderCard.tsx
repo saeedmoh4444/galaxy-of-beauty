@@ -22,7 +22,7 @@ interface BeautySelfCareReminderCardProps {
 
 export function BeautySelfCareReminderCard({
   reminder,
-  emoji = '‍️',
+  emoji = '',
   time,
   onSnooze,
   title = 'تذكير بالعناية',

@@ -114,7 +114,7 @@ export default function BeautyCoursesScreen(): JSX.Element {
               <Text style={s.cTitle}>{c.titleAr}</Text>
               <Text style={s.cDesc}>{c.descAr}</Text>
               <View style={s.tags}>
-                <Text style={{ fontSize: 11, color: '#6b7280' }}>‍ {c.instructor}</Text>
+                <Text style={{ fontSize: 11, color: '#6b7280' }}> {c.instructor}</Text>
                 <Text style={{ fontSize: 11, color: '#6b7280' }}>
                   {t('beautyCourses.lessons', { lessons: c.lessons ?? 0 })}
                 </Text>

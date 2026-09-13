@@ -80,7 +80,7 @@ export default function CalendarSyncScreen(): JSX.Element {
               <Text style={styles.ee}>{e.emoji}</Text>
               <View style={{ flex: 1 }}>
                 <Text style={styles.et}>{e.title}</Text>
-                <Text style={styles.em}>‍ {e.technician}</Text>
+                <Text style={styles.em}> {e.technician}</Text>
               </View>
               <Text style={styles.ed}>
                 {new Date(e.date).toLocaleDateString(locale === 'ar' ? 'ar-SA' : 'en-US', {

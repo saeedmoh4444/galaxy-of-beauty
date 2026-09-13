@@ -45,7 +45,7 @@ const THEME_EMOJI: Record<string, string> = {
   bridal: '',
   birthday: '',
   girls_night: '',
-  family: '‍‍‍',
+  family: '',
   other: '',
 };
 
@@ -138,14 +138,14 @@ export default function GroupBookingDetailPage(): JSX.Element {
             {/* Summary Stats */}
             <div className="grid gap-4 sm:grid-cols-3">
               <Card padding="md" className="text-center">
-                <p className="text-3xl">‍️</p>
+                <p className="text-3xl"></p>
                 <p className="mt-1 text-2xl font-bold text-text-primary">{members.length}</p>
                 <p className="text-xs text-text-secondary">
                   {t('groupBookingDetail.membersLabel')}
                 </p>
               </Card>
               <Card padding="md" className="text-center">
-                <p className="text-3xl">️</p>
+                <p className="text-3xl"></p>
                 <p className="mt-1 text-2xl font-bold text-brand-600">
                   {(group?.discountPercent as number) ?? 0}%
                 </p>

@@ -47,7 +47,7 @@ export function BeautyMythBusterCard({
   className = '',
   mythOrFactTitle = 'خرافة أم حقيقة؟',
   subtitle = 'نكشف لكِ الحقيقة العلمية',
-  mythLabel = '️ الخرافة الشائعة',
+  mythLabel = ' الخرافة الشائعة',
   revealButtonText = 'اكشفي الحقيقة',
   verdictText = 'خرافة!',
   sourcePrefix = 'المصدر: ',
@@ -65,7 +65,9 @@ export function BeautyMythBusterCard({
     >
       {/* Header */}
       <div className="flex items-center gap-2">
-        <span className="text-lg" aria-hidden="true"></span>
+        <span className="text-lg" aria-hidden="true">
+          ❓
+        </span>
         <div>
           <h4 className="text-sm font-bold text-rose-700 dark:text-rose-300">
             {CAT_EMOJIS[category]} {mythOrFactTitle}

@@ -6,11 +6,11 @@ import { useLocale } from '@/components/LocaleProvider';
 import { useAuthState } from '@/hooks/useAuthState';
 
 const TE: Record<string, string> = {
-  bridal: '',
-  birthday: '',
-  girls_night: '',
-  family: '‍‍‍',
-  other: '',
+  bridal: '👰',
+  birthday: '🎂',
+  girls_night: '💃',
+  family: '👪',
+  other: '✨',
 };
 const SM: Record<string, { color: string; bg: string }> = {
   PENDING: { color: '#d97706', bg: '#fef3c7' },

@@ -42,7 +42,7 @@ export default function FeaturedTechScreen(): JSX.Element {
       <Text style={styles.t}>{t('mobile.public.featured-tech.title')}</Text>
       {tech && (
         <View style={styles.featured}>
-          <Text style={styles.fEmoji}>‍</Text>
+          <Text style={styles.fEmoji}></Text>
           <Text style={styles.fName}>{tech.name ?? ''}</Text>
           <Text style={styles.fMeta}>
             {tech.rating ?? 0} · {tech.specialtyAr ?? ''}
@@ -55,7 +55,7 @@ export default function FeaturedTechScreen(): JSX.Element {
       ) : (
         past.map((p, i) => (
           <View key={i} style={styles.card}>
-            <Text style={styles.avatar}>‍</Text>
+            <Text style={styles.avatar}></Text>
             <View style={{ flex: 1 }}>
               <Text style={styles.name}>{p.name ?? ''}</Text>
               <Text style={styles.month}>{p.month ?? ''}</Text>

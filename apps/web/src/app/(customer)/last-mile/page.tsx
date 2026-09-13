@@ -49,7 +49,7 @@ export default function LastMilePage(): JSX.Element {
         </div>
         {result ? (
           <Card padding="lg" className="text-center border-2 border-green-300">
-            <span className="text-6xl"></span>
+            <span className="text-6xl">✅</span>
             <h2 className="mt-4 text-xl font-bold">{t('lastMile.orderPlaced')}</h2>
             <p className="font-bold mt-1">{result.product as string}</p>
             <p className="text-sm text-text-secondary">
@@ -65,7 +65,7 @@ export default function LastMilePage(): JSX.Element {
                   <span className="text-3xl">{p.emoji as string}</span>
                   <div>
                     <p className="font-bold">{p.nameAr as string}</p>
-                    <p className="text-xs text-text-secondary">️ {p.deliveryTime as string}</p>
+                    <p className="text-xs text-text-secondary"> {p.deliveryTime as string}</p>
                   </div>
                 </div>
                 <div className="text-end">

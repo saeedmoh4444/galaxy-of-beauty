@@ -15,7 +15,7 @@ import { useAuthState } from '@/hooks/useAuthState';
 import { trpc } from '@/lib/trpc-react';
 
 const CATS: Record<string, string> = {
-  hair: '‍️ شعر',
+  hair: ' شعر',
   nails: ' أظافر',
   skincare: ' بشرة',
   makeup: ' مكياج',

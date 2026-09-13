@@ -49,7 +49,7 @@ export function BeautySquadCard({
     >
       <div className="text-center">
         <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-full bg-gradient-to-br from-fuchsia-200 to-brand-200 text-2xl dark:from-fuchsia-800 dark:to-brand-800">
-          {squad.emoji || '‍️'}
+          {squad.emoji || ''}
         </div>
         <h4 className="mt-2 text-sm font-bold text-fuchsia-800 dark:text-fuchsia-200">
           {squad.name}

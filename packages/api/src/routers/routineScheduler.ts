@@ -5,7 +5,7 @@ import { customerProcedure, router } from '../trpc';
 const PRESETS = [
   {
     id: 'morning',
-    nameAr: '️ روتين صباحي',
+    nameAr: ' روتين صباحي',
     steps: [
       { time: '7:00', task: 'غسول وجه', emoji: '🧼' },
       { time: '7:05', task: 'تونر', emoji: '💧' },

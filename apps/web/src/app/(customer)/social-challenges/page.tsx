@@ -132,7 +132,7 @@ export default function SocialChallengesPage(): JSX.Element {
                     <p className="text-sm text-text-secondary">{t(c.desc)}</p>
                     <div className="mt-2 flex gap-4 text-xs text-text-secondary">
                       <span> {c.participants}</span>
-                      <span>️ {t(c.duration)}</span>
+                      <span> {t(c.duration)}</span>
                       <span> {t(c.prize)}</span>
                     </div>
                   </div>

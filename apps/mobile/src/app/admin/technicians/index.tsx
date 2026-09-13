@@ -34,7 +34,7 @@ export default function AdminTechniciansScreen(): JSX.Element {
       <Text style={styles.t}>{t('mobile.admin.technicians.title')}</Text>
       {data.map((row, i) => (
         <View key={i} style={styles.card}>
-          <Text style={styles.avatar}>‍</Text>
+          <Text style={styles.avatar}></Text>
           <View style={{ flex: 1 }}>
             <Text style={styles.name}>{row.name}</Text>
             <Text style={styles.meta}>

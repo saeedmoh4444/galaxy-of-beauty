@@ -95,7 +95,7 @@ export default function SocialPage(): JSX.Element {
               <div className="space-y-3">
                 {(spotlight ?? []).map((t: Record<string, unknown>) => (
                   <div key={t.id as number} className="flex items-center gap-3">
-                    <span className="text-3xl">‍</span>
+                    <span className="text-3xl">⭐</span>
                     <div>
                       <p className="font-bold text-sm">{t.name as string}</p>
                       <p className="text-xs text-text-secondary">
@@ -156,7 +156,7 @@ export default function SocialPage(): JSX.Element {
             <div className="grid gap-3 sm:grid-cols-4">
               {(lookbook ?? []).map((l: Record<string, unknown>) => (
                 <div key={l.id as string} className="rounded-lg border p-2 text-center">
-                  <span className="text-3xl"></span>
+                  <span className="text-3xl">👗</span>
                   <p className="text-xs font-bold mt-1">{(l.titleAr as string) ?? l.id}</p>
                 </div>
               ))}
@@ -175,7 +175,7 @@ export default function SocialPage(): JSX.Element {
             <div className="grid gap-3 sm:grid-cols-3">
               {feedItems.map((f: Record<string, unknown>) => (
                 <div key={f.id as number} className="rounded-lg border p-2 text-center">
-                  <span className="text-3xl"></span>
+                  <span className="text-3xl">📸</span>
                   <p className="text-xs mt-1">
                     {((f.technician as Record<string, unknown>)?.city as string) ?? ''}
                   </p>

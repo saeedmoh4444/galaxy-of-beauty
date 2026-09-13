@@ -65,7 +65,7 @@ export function LocationSharingCard({
   sharingNowText = 'تشارك الآن',
   sharingProgressText = 'جاري...',
   shareButtonText = 'مشاركة',
-  stopSharingText = '️ إيقاف المشاركة',
+  stopSharingText = ' إيقاف المشاركة',
   autoStopText = 'ستتوقف المشاركة تلقائياً بعد انتهاء الموعد',
 }: LocationSharingCardProps): JSX.Element | null {
   const [sharing, setSharing] = useState(false);
@@ -97,7 +97,9 @@ export function LocationSharingCard({
     >
       {/* Header */}
       <div className="flex items-center gap-2">
-        <span className="text-lg" aria-hidden="true"></span>
+        <span className="text-lg" aria-hidden="true">
+          📍
+        </span>
         <div>
           <h4 className="text-sm font-bold text-teal-700 dark:text-teal-300">{title}</h4>
           <p className="text-[10px] text-teal-500 dark:text-teal-400">{subtitle}</p>
@@ -118,7 +120,7 @@ export function LocationSharingCard({
         <div className="mt-2 space-y-1 rounded-lg bg-surface-muted p-2.5 dark:bg-gray-800">
           {technicianName && (
             <div className="flex items-center gap-1.5 text-[10px]">
-              <span aria-hidden="true">‍</span>
+              <span aria-hidden="true">💇</span>
               <span className="text-text-secondary dark:text-gray-300">
                 {technicianPrefix}
                 <span className="font-bold">{technicianName}</span>
@@ -127,13 +129,13 @@ export function LocationSharingCard({
           )}
           {address && (
             <div className="flex items-center gap-1.5 text-[10px]">
-              <span aria-hidden="true"></span>
+              <span aria-hidden="true">🏠</span>
               <span className="text-text-secondary dark:text-gray-300">{address}</span>
             </div>
           )}
           {estimatedEnd && (
             <div className="flex items-center gap-1.5 text-[10px]">
-              <span aria-hidden="true"></span>
+              <span aria-hidden="true">⏰</span>
               <span className="text-text-secondary dark:text-gray-300">
                 {estimatedEndPrefix}
                 {estimatedEnd}

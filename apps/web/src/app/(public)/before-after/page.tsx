@@ -37,7 +37,7 @@ export default function BeforeAfterPage(): JSX.Element {
   return (
     <div className="mx-auto max-w-6xl px-4 py-12">
       <div className="mb-10 text-center">
-        <span className="text-6xl"></span>
+        <span className="text-6xl">🔄</span>
         <h1 className="mt-4 text-3xl font-bold">{t('marketing.before-after.title')}</h1>
         <p className="mt-2 text-text-secondary">{t('marketing.before-after.subtitle')}</p>
       </div>
@@ -80,12 +80,12 @@ export default function BeforeAfterPage(): JSX.Element {
               <div className="mt-3">
                 <p className="font-bold text-sm">{ba.description as string}</p>
                 <p className="text-xs text-text-secondary mt-1">
-                  ‍ {ba.technicianName as string} · {ba.serviceType as string}
+                  {ba.technicianName as string} · {ba.serviceType as string}
                 </p>
               </div>
               <div className="mt-2 flex items-center justify-between">
                 <span className="text-xs text-text-tertiary">{ba.userName as string}</span>
-                <span className="text-xs text-red-500">️ {ba.likes as number}</span>
+                <span className="text-xs text-red-500"> {ba.likes as number}</span>
               </div>
             </Card>
           ))}

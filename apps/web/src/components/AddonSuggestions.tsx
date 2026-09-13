@@ -74,7 +74,7 @@ export function AddonSuggestions({
                 <p className="text-sm font-medium text-text-primary truncate">{t(a.title)}</p>
                 <p className="text-xs font-bold text-brand-600">+{formatCurrency(a.price)}</p>
               </div>
-              {isSelected && <span className="text-brand-600 text-sm"></span>}
+              {isSelected && <span className="text-brand-600 text-sm">✅</span>}
             </button>
           );
         })}

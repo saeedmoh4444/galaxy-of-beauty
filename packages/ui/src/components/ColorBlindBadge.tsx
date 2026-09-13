@@ -33,9 +33,7 @@ export function ColorBlindBadge({
       )}
     >
       <div className="flex items-center gap-2">
-        <span className="text-xl" aria-hidden="true">
-          ️
-        </span>
+        <span className="text-xl" aria-hidden="true"></span>
         <div>
           <h4 className="text-sm font-bold text-brand-700 dark:text-brand-300">{title}</h4>
           <p className="text-[10px] text-brand-500 dark:text-brand-400">{subtitle}</p>
@@ -80,7 +78,7 @@ export function ColorBlindBadge({
         ))}
       </div>
       <p className="mt-2 text-center text-[9px] text-text-tertiary dark:text-text-secondary">
-        ️ {footerText}
+        {footerText}
       </p>
     </div>
   );

@@ -40,7 +40,7 @@ export function SkinJournalCard({
   streakLabel = 'يوم متتالي',
   moodLabel = 'آخر مزاج',
   moodQuestion = 'كيف تشعر بشرتكِ اليوم؟',
-  addEntryText = '️ أضيفي مدخلاً جديداً',
+  addEntryText = ' أضيفي مدخلاً جديداً',
   footerText = 'تتبعي بشرتكِ يومياً — التغييرات الصغيرة تصنع فرقاً كبيراً',
 }: SkinJournalCardProps): JSX.Element {
   return (
@@ -52,7 +52,9 @@ export function SkinJournalCard({
     >
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-2">
-          <span className="text-2xl" aria-hidden="true"></span>
+          <span className="text-2xl" aria-hidden="true">
+            📔
+          </span>
           <div>
             <h4 className="text-sm font-bold text-brand-700 dark:text-brand-300">{title}</h4>
             <p className="text-[10px] text-brand-500 dark:text-brand-400">{subtitle}</p>

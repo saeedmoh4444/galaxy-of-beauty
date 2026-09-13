@@ -11,7 +11,7 @@ export const mobileCustomerBMessages = {
 
   // ---- promo ----
   'mobile.promo.load-error': { ar: 'فشل تحميل الأكواد', en: 'Failed to load promo codes' },
-  'mobile.promo.title': { ar: '️ أكواد الخصم', en: 'Promo Codes' },
+  'mobile.promo.title': { ar: ' أكواد الخصم', en: 'Promo Codes' },
   'mobile.promo.input-placeholder': { ar: 'أدخلي كود الخصم', en: 'Enter a promo code' },
   'mobile.promo.apply': { ar: 'تطبيق', en: 'Apply' },
   'mobile.promo.discount-percent': { ar: 'خصم {value}%', en: 'Discount {value}%' },
@@ -104,7 +104,7 @@ export const mobileCustomerBMessages = {
   // ---- smart-schedule ----
   'mobile.smartSchedule.title': { ar: ' جدولة ذكية', en: ' Smart Schedule' },
   'mobile.smartSchedule.tech-rating': {
-    ar: '‍ #{id} · {rating}',
+    ar: ' #{id} · {rating}',
     en: 'Service Provider #{id} · {rating}',
   },
   'mobile.smartSchedule.book': { ar: 'احجز', en: 'Book' },
@@ -176,7 +176,7 @@ export const mobileCustomerBMessages = {
   },
 
   // ---- post-treatment ----
-  'mobile.postTreatment.title': { ar: '‍️ متابعة ما بعد العلاج', en: 'Post-Treatment Care' },
+  'mobile.postTreatment.title': { ar: ' متابعة ما بعد العلاج', en: 'Post-Treatment Care' },
   'mobile.postTreatment.subtitle': {
     ar: 'تعليمات العناية بعد كل خدمة',
     en: 'Aftercare instructions for every service',
@@ -308,7 +308,7 @@ export const mobileCustomerBMessages = {
   },
 
   // ---- post-care ----
-  'mobile.postCare.title': { ar: '‍️ عناية ما بعد الخدمة', en: 'Post-Service Care' },
+  'mobile.postCare.title': { ar: ' عناية ما بعد الخدمة', en: 'Post-Service Care' },
   'mobile.postCare.tipsCount': { ar: '{count} نصيحة للعناية', en: '{count} care tips' },
 
   // ---- stores (store plan Phase 4) ----
@@ -398,14 +398,14 @@ export const mobileCustomerBMessages = {
   },
 
   // ---- spa-planner ----
-  'mobile.spaPlanner.title': { ar: '‍️ مخطط السبا', en: 'Spa Planner' },
+  'mobile.spaPlanner.title': { ar: ' مخطط السبا', en: 'Spa Planner' },
   'mobile.spaPlanner.duration-price': {
-    ar: '️ {duration} · {price} ر.س',
+    ar: ' {duration} · {price} ر.س',
     en: '{duration} · {price} SAR',
   },
 
   // ---- service-warranty ----
-  'mobile.serviceWarranty.title': { ar: '️ ضمان الخدمة', en: 'Service Warranty' },
+  'mobile.serviceWarranty.title': { ar: ' ضمان الخدمة', en: 'Service Warranty' },
   'mobile.serviceWarranty.expires': { ar: 'ينتهي: {date}', en: 'Expires: {date}' },
 
   // ---- savings-goals ----
@@ -439,10 +439,10 @@ export const mobileCustomerBMessages = {
 
   // ---- self-care ----
   'mobile.selfCare.title': { ar: ' العناية الذاتية', en: ' Self-Care' },
-  'mobile.selfCare.duration': { ar: '️ {duration}', en: '{duration}' },
+  'mobile.selfCare.duration': { ar: ' {duration}', en: '{duration}' },
 
   // ---- sale-alerts ----
-  'mobile.saleAlerts.title': { ar: '️ تنبيهات التخفيضات', en: 'Sale Alerts' },
+  'mobile.saleAlerts.title': { ar: ' تنبيهات التخفيضات', en: 'Sale Alerts' },
 
   // ---- routine-scheduler ----
   'mobile.routineScheduler.title': { ar: ' جدول الروتين', en: ' Routine Scheduler' },
@@ -524,7 +524,7 @@ export const mobileCustomerBMessages = {
     en: 'Day {day} of {length}',
   },
   'mobile.wellnessHub.next-cycle': {
-    ar: '️ الدورة القادمة بعد {days} يوم',
+    ar: ' الدورة القادمة بعد {days} يوم',
     en: 'Next cycle in {days} days',
   },
   'mobile.wellnessHub.mood': { ar: 'مزاج', en: 'Mood' },
@@ -620,7 +620,7 @@ export const mobileCustomerBMessages = {
   'mobile.giftRegistry.title': { ar: ' سجل الهدايا', en: ' Gift Registry' },
 
   // ---- group-bookings ----
-  'mobile.groupBookings.title': { ar: '‍️ الحجوزات الجماعية', en: ' Group Bookings' },
+  'mobile.groupBookings.title': { ar: ' الحجوزات الجماعية', en: ' Group Bookings' },
   'mobile.groupBookings.members-summary': {
     ar: '{count} أفراد · {total} ر.س',
     en: '{count} members · {total} SAR',
@@ -636,14 +636,14 @@ export const mobileCustomerBMessages = {
   'mobile.groupBookings.discount': { ar: 'خصم: {value}%', en: 'Discount: {value}%' },
 
   // ---- hair-care-guide ----
-  'mobile.hairCareGuide.title': { ar: '‍️ دليل العناية بالشعر', en: ' Hair Care Guide' },
+  'mobile.hairCareGuide.title': { ar: ' دليل العناية بالشعر', en: ' Hair Care Guide' },
   'mobile.hairCareGuide.subtitle': {
     ar: 'كل ما تحتاجينه لشعر صحي وجميل',
     en: 'Everything you need for healthy, beautiful hair',
   },
 
   // ---- hair-color-sim ----
-  'mobile.hairColorSim.title': { ar: '‍️ محاكي لون الشعر', en: ' Hair Color Simulator' },
+  'mobile.hairColorSim.title': { ar: ' محاكي لون الشعر', en: ' Hair Color Simulator' },
   'mobile.hairColorSim.subtitle': { ar: 'اختاري لون شعرك الجديد', en: 'Pick your new hair color' },
 
   // ---- home-service ----
@@ -800,10 +800,10 @@ export const mobileCustomerBMessages = {
   'mobile.profile.role-supervisor': { ar: 'مشرفة', en: 'Supervisor' },
   'mobile.profile.language': { ar: 'اللغة', en: 'Language' },
   'mobile.profile.lang-ar': { ar: 'العربية', en: 'Arabic' },
-  'mobile.profile.edit': { ar: '️ تعديل الملف', en: ' Edit Profile' },
+  'mobile.profile.edit': { ar: ' تعديل الملف', en: ' Edit Profile' },
 
   // ---- safety ----
-  'mobile.safety.title': { ar: '️ السلامة', en: ' Safety' },
+  'mobile.safety.title': { ar: ' السلامة', en: ' Safety' },
   'mobile.safety.subtitle': { ar: 'سلامتكِ أولويتنا', en: 'Your safety is our priority' },
   'mobile.safety.activate': { ar: 'تفعيل', en: 'Activate' },
 
@@ -837,7 +837,7 @@ export const mobileCustomerBMessages = {
     ar: 'خدمات موسمية مصممة لبشرتكِ',
     en: 'Seasonal services designed for your skin',
   },
-  'mobile.seasonalCalendar.season-services': { ar: '‍️ خدمات الموسم', en: ' Seasonal Services' },
+  'mobile.seasonalCalendar.season-services': { ar: ' خدمات الموسم', en: ' Seasonal Services' },
   'mobile.seasonalCalendar.book': { ar: ' احجزي خدمات الموسم', en: ' Book Seasonal Services' },
 
   // ---- skin-analysis ----
@@ -1006,7 +1006,7 @@ export const mobileCustomerBMessages = {
   'mobile.wellnessHub.skin-type-label': { ar: 'النوع:', en: 'Type:' },
 
   // ---- wishlist ----
-  'mobile.wishlist.title': { ar: '️ المفضلة', en: ' Favorites' },
+  'mobile.wishlist.title': { ar: ' المفضلة', en: ' Favorites' },
   'mobile.wishlist.load-error': { ar: 'فشل تحميل المفضلة', en: 'Failed to load favorites' },
   'mobile.wishlist.empty-title': { ar: 'لا توجد خدمات مفضلة', en: 'No favorite services' },
   'mobile.wishlist.empty-desc': {

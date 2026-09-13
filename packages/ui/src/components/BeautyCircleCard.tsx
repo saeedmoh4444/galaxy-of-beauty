@@ -215,7 +215,9 @@ export function BeautyCircleCard({
       {/* Next meetup */}
       {circle.nextMeetup && (
         <div className="mt-2 flex items-center gap-1.5 rounded-lg bg-pink-50 px-2.5 py-1.5 dark:bg-pink-950">
-          <span className="text-xs" aria-hidden="true"></span>
+          <span className="text-xs" aria-hidden="true">
+            📅
+          </span>
           <span className="text-[10px] text-text-secondary dark:text-gray-300">
             {nextMeetupPrefix}
             {circle.nextMeetup}
@@ -226,7 +228,7 @@ export function BeautyCircleCard({
       {/* Group discount */}
       {circle.groupDiscount && (
         <div className="mt-1.5 flex items-center gap-1.5 text-[10px] font-medium text-amber-700 dark:text-amber-400">
-          <span aria-hidden="true"></span>
+          <span aria-hidden="true">💰</span>
           {discountPrefix}
           {circle.groupDiscount}%{discountSuffix}
         </div>

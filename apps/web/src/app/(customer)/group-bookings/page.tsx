@@ -78,7 +78,7 @@ const THEME_EMOJI: Record<string, string> = {
   bridal: '',
   birthday: '',
   girls_night: '',
-  family: '‍‍‍',
+  family: '',
   other: '',
 };
 
@@ -176,7 +176,7 @@ export default function GroupBookingsPage(): JSX.Element {
         <div className="flex items-center justify-between">
           <div>
             <h1 className="text-2xl font-bold text-text-primary dark:text-gray-100">
-              ‍️ {t('groupBookings.title')}
+              {t('groupBookings.title')}
             </h1>
             <p className="mt-1 text-sm text-text-secondary dark:text-text-tertiary">
               {t('groupBookings.subtitle')}

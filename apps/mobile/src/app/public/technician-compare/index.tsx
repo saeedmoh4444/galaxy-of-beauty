@@ -46,7 +46,7 @@ export default function TechnicianCompareScreen(): JSX.Element {
               onPress={() => toggle(t.id)}
               style={[styles.ch, isSel && styles.cha]}
             >
-              <Text style={styles.ce}>‍</Text>
+              <Text style={styles.ce}></Text>
               <Text style={[styles.cn, isSel && styles.cna]}>{t.name ?? ''}</Text>
               <Text style={styles.cr}> {t.rating ?? 0}</Text>
             </TouchableOpacity>

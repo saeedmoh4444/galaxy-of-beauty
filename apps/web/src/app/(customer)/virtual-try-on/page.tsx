@@ -243,7 +243,9 @@ function ColorPalette({
             {c.nameAr}
           </span>
           {selectedId === c.id && (
-            <span className="absolute -top-1 -end-1 flex h-4 w-4 items-center justify-center rounded-full bg-brand-500 text-[10px] text-white"></span>
+            <span className="absolute -top-1 -end-1 flex h-4 w-4 items-center justify-center rounded-full bg-brand-500 text-[10px] text-white">
+              ✅
+            </span>
           )}
         </button>
       ))}
@@ -616,7 +618,7 @@ export default function VirtualTryOnPage(): JSX.Element {
                             className="rounded-xl object-cover"
                           />
                         ) : (
-                          <span className="text-4xl"></span>
+                          <span className="text-4xl">💄</span>
                         )}
                       </div>
                       {p.brand && (

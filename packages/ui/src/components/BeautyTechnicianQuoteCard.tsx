@@ -46,9 +46,7 @@ export function BeautyTechnicianQuoteCard({
             &ldquo;{quote.text}&rdquo;
           </p>
           <div className="mt-2 flex items-center gap-2">
-            <div className="h-8 w-8 rounded-full bg-amber-200 dark:bg-amber-800 flex items-center justify-center text-sm">
-              ‍
-            </div>
+            <div className="h-8 w-8 rounded-full bg-amber-200 dark:bg-amber-800 flex items-center justify-center text-sm"></div>
             <div>
               <p className="text-xs font-bold text-amber-700 dark:text-amber-300">{quote.author}</p>
               <p className="text-[10px] text-amber-600 dark:text-amber-400">{quote.role}</p>

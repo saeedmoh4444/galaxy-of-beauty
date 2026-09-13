@@ -52,13 +52,13 @@ export default function InspirationScreen(): JSX.Element {
               <Image source={{ uri: p.imageUrl }} style={styles.img} />
             ) : (
               <View style={styles.ph}>
-                <Text style={{ fontSize: 36 }}>️</Text>
+                <Text style={{ fontSize: 36 }}></Text>
               </View>
             )}
             <View style={styles.cb}>
               <Text style={styles.pt}>{p.title ?? ''}</Text>
               <TouchableOpacity onPress={() => p.id && remove(p.id)}>
-                <Text>️</Text>
+                <Text></Text>
               </TouchableOpacity>
             </View>
           </View>

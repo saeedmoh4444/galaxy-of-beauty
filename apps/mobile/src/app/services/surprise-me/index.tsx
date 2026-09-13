@@ -32,7 +32,7 @@ export default function SurpriseMeScreen(): JSX.Element {
         </View>
       ) : (
         <View style={styles.card}>
-          <Text style={styles.re}>{result.emoji ?? '‍️'}</Text>
+          <Text style={styles.re}>{result.emoji ?? ''}</Text>
           <Text style={styles.rn}>{localize(result.titleJson, locale)}</Text>
           <Text style={styles.rp}>
             {t('mobile.public.currency', { price: result.basePrice?.toLocaleString() ?? '' })}

@@ -85,7 +85,7 @@ export default function VendorPortalScreen(): JSX.Element {
             </Text>
           </View>
           <TouchableOpacity onPress={() => remove(p.id)}>
-            <Text style={styles.del}>️</Text>
+            <Text style={styles.del}></Text>
           </TouchableOpacity>
         </View>
       ))}

@@ -70,7 +70,7 @@ export function DadApprovalBadge({
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-2">
           <span className="text-xl" aria-hidden="true">
-            {parentApproved ? '' : '‍‍'}
+            {parentApproved ? '' : ''}
           </span>
           <div>
             <h4 className="text-sm font-bold text-text-primary dark:text-gray-100">
@@ -139,7 +139,7 @@ export function DadApprovalBadge({
       )}
 
       <p className="mt-1.5 text-center text-[9px] text-text-tertiary dark:text-text-secondary">
-        ‍‍ {footerText}
+        {footerText}
       </p>
     </div>
   );

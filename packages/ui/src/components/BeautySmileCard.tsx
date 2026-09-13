@@ -27,7 +27,7 @@ export function BeautySmileCard({
       )}
     >
       <div className="text-center">
-        <span className="text-4xl"></span>
+        <span className="text-4xl">😊</span>
         <h4 className="mt-1 text-sm font-bold text-amber-800 dark:text-amber-200">{title}</h4>
         <p className="mt-2 text-xs leading-relaxed text-amber-700 dark:text-amber-300">
           {description}

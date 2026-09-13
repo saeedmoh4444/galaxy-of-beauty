@@ -71,7 +71,7 @@ export default function TutorialsPage(): JSX.Element {
     <div className="mx-auto max-w-6xl px-4 py-12">
       {/* Header */}
       <div className="mb-10 text-center">
-        <span className="text-6xl"></span>
+        <span className="text-6xl">🎓</span>
         <h1 className="mt-4 text-3xl font-bold text-text-primary dark:text-gray-100">
           {t('marketing.tutorials.title')}
         </h1>
@@ -198,7 +198,7 @@ export default function TutorialsPage(): JSX.Element {
                       />
                     ) : (
                       <div className="text-center text-white/60">
-                        <span className="text-5xl block"></span>
+                        <span className="text-5xl block">🎬</span>
                         <span className="text-xs mt-1 block">{tut.category}</span>
                       </div>
                     )}
@@ -235,7 +235,7 @@ export default function TutorialsPage(): JSX.Element {
                       <span>
                         {t('marketing.tutorials.views-count', { count: formatViews(tut.views) })}
                       </span>
-                      <span>️ {tut.likes}</span>
+                      <span> {tut.likes}</span>
                     </div>
                   </div>
                 </Card>

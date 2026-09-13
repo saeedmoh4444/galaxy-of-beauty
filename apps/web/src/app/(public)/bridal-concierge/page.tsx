@@ -598,7 +598,7 @@ function MarketingLanding(): JSX.Element {
   return (
     <>
       <div className="text-center">
-        <span className="text-7xl"></span>
+        <span className="text-7xl">👰</span>
         <h1 className="mt-6 text-4xl font-extrabold text-text-primary dark:text-gray-100">
           {t('marketing.bridal-concierge.landing-title')}
         </h1>

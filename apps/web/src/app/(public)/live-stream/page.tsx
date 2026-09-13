@@ -34,7 +34,7 @@ export default function LiveStreamPage(): JSX.Element {
   return (
     <div className="mx-auto max-w-6xl px-4 py-12">
       <div className="mb-10 text-center">
-        <span className="text-6xl"></span>
+        <span className="text-6xl">📺</span>
         <h1 className="mt-4 text-3xl font-bold text-text-primary dark:text-gray-100">
           {t('marketing.live-stream.title')}
         </h1>
@@ -64,7 +64,7 @@ export default function LiveStreamPage(): JSX.Element {
                     >
                       <div className="relative flex h-44 items-center justify-center bg-gradient-to-br from-gray-800 to-gray-900">
                         <div className="text-center text-white/60">
-                          <span className="text-6xl"></span>
+                          <span className="text-6xl">📹</span>
                         </div>
                         <span className="absolute top-3 start-3 flex items-center gap-1 rounded-full bg-red-600 px-3 py-1 text-xs font-bold text-white animate-pulse">
                           {t('marketing.live-stream.live-badge')}

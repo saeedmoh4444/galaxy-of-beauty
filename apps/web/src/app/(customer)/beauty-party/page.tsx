@@ -47,7 +47,7 @@ export default function BeautyPartyPage(): JSX.Element {
           </div>
         </Card>
         <Card padding="lg">
-          <h3 className="font-bold mb-4">‍️ {t('beautyParty.guestsCount', { guests })}</h3>
+          <h3 className="font-bold mb-4"> {t('beautyParty.guestsCount', { guests })}</h3>
           <div className="flex gap-2">
             {[2, 3, 4, 5, 6, 8, 10].map((g) => (
               <button

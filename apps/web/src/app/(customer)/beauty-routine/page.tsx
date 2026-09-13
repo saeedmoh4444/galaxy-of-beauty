@@ -147,7 +147,7 @@ export default function BeautyRoutinePage(): JSX.Element {
           <ErrorAlert message={t('routine.loadError')} onRetry={() => refetch()} />
         ) : !profile ? (
           <Card padding="lg" className="text-center">
-            <span className="text-5xl"></span>
+            <span className="text-5xl">📝</span>
             <p className="mt-4 text-text-secondary">{t('routine.noProfile')}</p>
             <a href="/beauty-profile" className="mt-4 inline-block">
               <Button>{t('routine.completeProfile')}</Button>

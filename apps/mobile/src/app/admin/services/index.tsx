@@ -36,7 +36,7 @@ export default function AdminServicesScreen(): JSX.Element {
       <Text style={styles.t}>{t('mobile.admin.services.title')}</Text>
       {data.map((s, i) => (
         <View key={i} style={styles.card}>
-          <Text style={styles.emoji}>{s.emoji ?? '‍️'}</Text>
+          <Text style={styles.emoji}>{s.emoji ?? ''}</Text>
           <View style={{ flex: 1 }}>
             <Text style={styles.name}>{localize(s.titleJson, locale)}</Text>
             <Text style={styles.price}>

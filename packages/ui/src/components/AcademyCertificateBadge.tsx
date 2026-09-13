@@ -89,7 +89,7 @@ export function AcademyCertificateBadge({
   verifiedText = 'شهادتكِ محمية ولا يمكن تزويرها',
   shareLabel = 'مشاركة',
   verifyLabel = 'تحقق',
-  accreditationText = '️ معتمدة من المؤسسة العامة للتدريب التقني والمهني',
+  accreditationText = ' معتمدة من المؤسسة العامة للتدريب التقني والمهني',
   locale = 'ar',
 }: AcademyCertificateBadgeProps): JSX.Element {
   const level = CERTS[certificate.level];
@@ -104,7 +104,9 @@ export function AcademyCertificateBadge({
       {/* Certificate seal */}
       <div className="text-center">
         <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-gradient-to-br from-blue-100 to-sky-100 dark:from-blue-800 dark:to-sky-800">
-          <span className="text-3xl" aria-hidden="true"></span>
+          <span className="text-3xl" aria-hidden="true">
+            🏆
+          </span>
         </div>
         <h4 className="mt-2 text-sm font-bold text-blue-800 dark:text-blue-200">{title}</h4>
         <p className="text-[10px] text-blue-500 dark:text-blue-400">{academyName}</p>
@@ -147,7 +149,9 @@ export function AcademyCertificateBadge({
       {/* Blockchain verification */}
       {certificate.isBlockchainVerified && (
         <div className="mt-2 flex items-center gap-1.5 rounded-lg bg-emerald-50 px-2.5 py-1.5 dark:bg-emerald-950">
-          <span className="text-xs" aria-hidden="true"></span>
+          <span className="text-xs" aria-hidden="true">
+            🔗
+          </span>
           <div>
             <p className="text-[10px] font-bold text-emerald-700 dark:text-emerald-300">
               {verifiedTitle}

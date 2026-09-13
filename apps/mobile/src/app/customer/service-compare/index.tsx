@@ -76,7 +76,7 @@ export default function ServiceCompareScreen(): JSX.Element {
                 </Text>
               </View>
               <View style={styles.cr}>
-                <Text style={styles.cl}>️</Text>
+                <Text style={styles.cl}></Text>
                 <Text style={styles.cv}>
                   {t('marketing.compare.duration-min', { min: s.durationMin ?? 0 })}
                 </Text>

@@ -19,7 +19,7 @@ export function BeautyMakeupMinimalCard({
       )}
     >
       <div className="flex items-center gap-2">
-        <span className="text-xl"></span>
+        <span className="text-xl">🍃</span>
         <div>
           <h4 className="text-sm font-bold text-text-secondary">{heading}</h4>
           <p className="text-[10px] text-text-secondary">{subtitle}</p>

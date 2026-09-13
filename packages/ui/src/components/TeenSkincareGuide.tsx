@@ -158,7 +158,7 @@ export function TeenSkincareGuide({
   teenSkinLabel = 'للبشرة المراهقة',
   ageYearsSuffix = ' سنة',
   youngSkinLabel = 'للبشرة الشابة',
-  morningLabel = '️ الروتين الصباحي',
+  morningLabel = ' الروتين الصباحي',
   eveningLabel = 'الروتين المسائي',
   tipsLabel = ' نصائح لبشرتكِ',
   reminderText = 'في هذا العمر: الأقل هو الأكثر — لا حاجة لمنتجات قوية أو باهظة',

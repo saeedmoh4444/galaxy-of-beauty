@@ -128,7 +128,7 @@ export function PhotoPrivacyBadge({
           )}
         >
           <span className="text-[10px]" aria-hidden="true">
-            {isExpiringSoon ? '' : '️'}
+            {isExpiringSoon ? '' : ''}
           </span>
           <span
             className={cn(
@@ -146,9 +146,7 @@ export function PhotoPrivacyBadge({
       {/* Indefinite badge */}
       {!hasExpiry && level !== 'VIEW_ONCE' && (
         <div className="flex items-center gap-1 rounded-full bg-white/60 px-2 py-0.5 dark:bg-black/20">
-          <span className="text-[10px]" aria-hidden="true">
-            ️
-          </span>
+          <span className="text-[10px]" aria-hidden="true"></span>
           <span className="text-[10px] font-medium opacity-70">{indefiniteText}</span>
         </div>
       )}

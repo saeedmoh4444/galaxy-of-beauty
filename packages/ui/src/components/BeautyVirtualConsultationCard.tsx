@@ -34,7 +34,7 @@ export function BeautyVirtualConsultationCard({
   price = 150,
   duration = '30 دقيقة',
   availableSlots = ['10:00', '14:00', '16:30'],
-  emoji = '‍️',
+  emoji = '',
   onBook,
   className = '',
   title = 'استشارة عن بُعد',

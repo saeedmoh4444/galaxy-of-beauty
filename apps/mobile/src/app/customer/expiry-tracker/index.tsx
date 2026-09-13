@@ -50,7 +50,7 @@ export default function ExpiryTrackerScreen(): JSX.Element {
             </Text>
           </View>
           <TouchableOpacity onPress={() => remove(i.id ?? 0)}>
-            <Text style={styles.del}>️</Text>
+            <Text style={styles.del}></Text>
           </TouchableOpacity>
         </View>
       ))}

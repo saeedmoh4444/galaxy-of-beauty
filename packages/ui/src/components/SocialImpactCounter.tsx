@@ -163,7 +163,9 @@ export function SocialImpactCounter({
       {/* Year target */}
       <div className="mt-3 text-center">
         <div className="inline-flex items-center gap-1 rounded-full bg-white/60 px-3 py-1 dark:bg-black/20">
-          <span className="text-xs" aria-hidden="true"></span>
+          <span className="text-xs" aria-hidden="true">
+            🎯
+          </span>
           <span className="text-[10px] font-bold text-amber-800 dark:text-amber-200">
             {Math.round((womenEmployed / 1000) * 100)}% {pctOf2028Text}
           </span>

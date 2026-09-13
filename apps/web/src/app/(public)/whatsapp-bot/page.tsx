@@ -40,7 +40,7 @@ export default async function WhatsAppBotPage(): Promise<JSX.Element> {
   return (
     <div className="mx-auto max-w-4xl px-4 py-16">
       <div className="text-center mb-12">
-        <span className="text-7xl"></span>
+        <span className="text-7xl">💬</span>
         <h1 className="mt-6 text-4xl font-extrabold">
           {t('marketing.whatsapp-bot.title', locale)}
         </h1>
@@ -60,7 +60,7 @@ export default async function WhatsAppBotPage(): Promise<JSX.Element> {
       </div>
 
       <div className="rounded-3xl bg-emerald-50 p-8 text-center dark:bg-emerald-950">
-        <span className="text-5xl"></span>
+        <span className="text-5xl">🚀</span>
         <h2 className="mt-4 text-2xl font-extrabold">
           {t('marketing.whatsapp-bot.start-now', locale)}
         </h2>

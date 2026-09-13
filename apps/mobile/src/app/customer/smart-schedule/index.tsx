@@ -60,7 +60,7 @@ export default function SmartScheduleScreen(): JSX.Element {
             onPress={() => findSlots(s.id)}
             style={[styles.sc, selectedSvc === s.id && styles.sca]}
           >
-            <Text style={styles.se}>{s.emoji ?? '‍️'}</Text>
+            <Text style={styles.se}>{s.emoji ?? ''}</Text>
             <Text style={styles.sn}>{s.titleJson ? localize(s.titleJson, locale) : s.nameAr}</Text>
           </TouchableOpacity>
         ))}

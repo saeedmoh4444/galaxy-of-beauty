@@ -24,7 +24,7 @@ export const mobileAdminMessages = {
   'mobile.admin.bookings.title': { ar: ' الحجوزات', en: 'Bookings' },
 
   // ---- Technicians ----
-  'mobile.admin.technicians.title': { ar: '‍ الفنيات', en: 'Service Providers' },
+  'mobile.admin.technicians.title': { ar: ' الفنيات', en: 'Service Providers' },
 
   // ---- Finance ----
   'mobile.admin.finance.title': { ar: ' المالية', en: 'Finance' },
@@ -35,7 +35,7 @@ export const mobileAdminMessages = {
   'mobile.admin.finance.payouts': { ar: 'المدفوعات', en: 'Payouts' },
 
   // ---- Disputes ----
-  'mobile.admin.disputes.title': { ar: '️ النزاعات', en: 'Disputes' },
+  'mobile.admin.disputes.title': { ar: ' النزاعات', en: 'Disputes' },
 
   // ---- ZATCA ----
   'mobile.admin.zatca.title': { ar: ' الفوترة (ZATCA)', en: 'E-Invoicing (ZATCA)' },
@@ -87,10 +87,10 @@ export const mobileAdminMessages = {
 
   // ---- Reports ----
   'mobile.admin.reports.load-error': { ar: 'فشل تحميل التقارير', en: 'Failed to load reports' },
-  'mobile.admin.reports.top-technicians': { ar: '‍ أفضل الفنيات', en: 'Top Service Providers' },
+  'mobile.admin.reports.top-technicians': { ar: ' أفضل الفنيات', en: 'Top Service Providers' },
 
   // ---- Services ----
-  'mobile.admin.services.title': { ar: '‍️ الخدمات', en: 'Services' },
+  'mobile.admin.services.title': { ar: ' الخدمات', en: 'Services' },
 
   // ---- Categories ----
   'mobile.admin.categories.title': { ar: ' الفئات', en: 'Categories' },
@@ -115,7 +115,7 @@ export const mobileAdminMessages = {
   'mobile.admin.packages.load-error': { ar: 'فشل تحميل الباقات', en: 'Failed to load packages' },
 
   // ---- Admin Tools ----
-  'mobile.admin.admin-tools.title': { ar: '️ أدوات المشرف', en: 'Admin Tools' },
+  'mobile.admin.admin-tools.title': { ar: ' أدوات المشرف', en: 'Admin Tools' },
   'mobile.admin.admin-tools.feature-flags': { ar: ' إدارة الميزات', en: 'Manage Features' },
 
   // ---- AI Features ----
@@ -224,7 +224,7 @@ export const mobileAdminMessages = {
   'mobile.admin.subscriptions.since': { ar: ' منذ {date}', en: 'Since {date}' },
 
   // ---- Settings ----
-  'mobile.admin.settings.title': { ar: '️ الإعدادات', en: 'Settings' },
+  'mobile.admin.settings.title': { ar: ' الإعدادات', en: 'Settings' },
   'mobile.admin.settings.platform-fees': { ar: ' رسوم المنصة', en: 'Platform Fees' },
   'mobile.admin.settings.platform-rate': { ar: 'نسبة المنصة', en: 'Platform rate' },
   'mobile.admin.settings.min-withdrawal': { ar: 'الحد الأدنى للسحب', en: 'Minimum withdrawal' },

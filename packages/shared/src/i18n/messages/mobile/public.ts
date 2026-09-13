@@ -45,7 +45,7 @@ export const mobilePublicMessages = {
     ar: '{count} دروس',
     en: '{count} lessons',
   },
-  'mobile.public.audio-rooms.title': { ar: '️ الغرف الصوتية', en: 'Audio Rooms' },
+  'mobile.public.audio-rooms.title': { ar: ' الغرف الصوتية', en: 'Audio Rooms' },
   'mobile.public.audio-rooms.subtitle': {
     ar: 'انضمي لنقاشات مباشرة مع خبراء التجميل',
     en: 'Join live discussions with beauty experts',
@@ -161,7 +161,7 @@ export const mobilePublicMessages = {
   'mobile.public.booking-heatmap.low': { ar: 'هادئ', en: 'Quiet' },
   'mobile.public.booking-heatmap.medium': { ar: 'متوسط', en: 'Average' },
   'mobile.public.booking-heatmap.peak': { ar: 'ذروة', en: 'Peak' },
-  'mobile.public.beauty-podcast.title': { ar: '️ بودكاست الجمال', en: 'Beauty Podcast' },
+  'mobile.public.beauty-podcast.title': { ar: ' بودكاست الجمال', en: 'Beauty Podcast' },
   'mobile.public.beauty-podcast.subtitle': {
     ar: 'حلقات شيقة عن الجمال والعناية',
     en: 'Interesting episodes about beauty and care',
@@ -190,13 +190,13 @@ export const mobilePublicMessages = {
     ar: 'فشل تحميل الخدمات',
     en: 'Failed to load services',
   },
-  'mobile.public.compare.title': { ar: '️ مقارنة الخدمات', en: 'Compare Services' },
+  'mobile.public.compare.title': { ar: ' مقارنة الخدمات', en: 'Compare Services' },
   'mobile.public.compare.subtitle': {
     ar: 'اختاري حتى ٣ خدمات للمقارنة',
     en: 'Select up to 3 services to compare',
   },
   'mobile.public.compare.compare-title': { ar: ' المقارنة', en: ' Comparison' },
-  'mobile.public.event-tickets.title': { ar: '️ تذاكر الفعاليات', en: 'Event Tickets' },
+  'mobile.public.event-tickets.title': { ar: ' تذاكر الفعاليات', en: 'Event Tickets' },
   'mobile.public.event-tickets.subtitle': {
     ar: 'احجزي تذكرتكِ لأقرب فعالية',
     en: 'Book your ticket for the next event',
@@ -244,7 +244,7 @@ export const mobilePublicMessages = {
     en: 'No posts yet. Be the first!',
   },
   'mobile.public.community.user': { ar: 'مستخدم', en: 'User' },
-  'mobile.public.community.likes': { ar: '️ {count}', en: '{count}' },
+  'mobile.public.community.likes': { ar: ' {count}', en: '{count}' },
   'mobile.public.campaigns.title': { ar: ' العروض والحملات', en: 'Offers & Campaigns' },
   'mobile.public.campaigns.subtitle': {
     ar: 'أحدث العروض والتخفيضات',
@@ -264,7 +264,7 @@ export const mobilePublicMessages = {
     en: 'Enter ingredient name...',
   },
   'mobile.public.ingredient-analyzer.analyze': { ar: 'تحليل', en: 'Analyze' },
-  'mobile.public.gallery.title': { ar: '️ معرض الصور', en: 'Photo Gallery' },
+  'mobile.public.gallery.title': { ar: ' معرض الصور', en: 'Photo Gallery' },
   'mobile.public.challenges.title': { ar: ' تحديات الجمال', en: 'Beauty Challenges' },
   'mobile.public.challenges.subtitle': {
     ar: 'أكملي التحديات واكسبي مكافآت',
@@ -315,7 +315,7 @@ export const mobilePublicMessages = {
     ar: 'فشل تحميل الخدمات',
     en: 'Failed to load services',
   },
-  'mobile.public.marketplace.title': { ar: '️ المتجر', en: 'Marketplace' },
+  'mobile.public.marketplace.title': { ar: ' المتجر', en: 'Marketplace' },
   'mobile.public.look-of-the-day.title': { ar: ' إطلالة اليوم', en: 'Look of the Day' },
   'mobile.public.lookbook.title': { ar: ' لوك بوك', en: 'Lookbook' },
   'mobile.public.lookbook.subtitle': {
@@ -378,7 +378,7 @@ export const mobilePublicMessages = {
     en: '{count} service providers',
   },
   'mobile.public.salon-finder.view': { ar: 'عرض', en: 'View' },
-  'mobile.public.mommy-and-me.title': { ar: '‍ أمي وأنا', en: 'Mommy and Me' },
+  'mobile.public.mommy-and-me.title': { ar: ' أمي وأنا', en: 'Mommy and Me' },
   'mobile.public.mommy-and-me.book': { ar: 'حجز', en: 'Book' },
   'mobile.public.referral-race.title': { ar: ' سباق الإحالات', en: 'Referral Race' },
   'mobile.public.referral-race.referral': { ar: '{count} إحالة', en: '{count} referrals' },
@@ -459,7 +459,7 @@ export const mobilePublicMessages = {
   'mobile.public.products-count': { ar: '{count} منتجات', en: '{count} products' },
   // Gallery detail
   'mobile.public.gallery-detail.title': {
-    ar: '️ معرض مقدمة الخدمة',
+    ar: ' معرض مقدمة الخدمة',
     en: 'Service Provider Gallery',
   },
   'mobile.public.gallery-detail.load-error': {
@@ -475,7 +475,7 @@ export const mobilePublicMessages = {
   'mobile.public.service-trends.title': { ar: ' اتجاهات الخدمات', en: 'Service Trends' },
   'mobile.public.service-trends.growth': { ar: '{growth}% نمو', en: '{growth}% growth' },
   // Services
-  'mobile.public.services.title': { ar: '‍️ الخدمات', en: 'Services' },
+  'mobile.public.services.title': { ar: ' الخدمات', en: 'Services' },
   'mobile.public.services.subtitle': {
     ar: 'اكتشفي جميع خدمات التجميل والعناية',
     en: 'Discover all beauty and care services',
@@ -486,7 +486,7 @@ export const mobilePublicMessages = {
     en: 'No services in this category',
   },
   // Shop the look
-  'mobile.public.shop-the-look.title': { ar: '️ تسوقي الإطلالة', en: 'Shop the Look' },
+  'mobile.public.shop-the-look.title': { ar: ' تسوقي الإطلالة', en: 'Shop the Look' },
   'mobile.public.shop-the-look.subtitle': {
     ar: 'تسوقي منتجات مستوحاة من إطلالات الفنانات',
     en: 'Shop products inspired by celebrity looks',
@@ -527,7 +527,7 @@ export const mobilePublicMessages = {
   'mobile.public.tech-leaderboard.empty': { ar: 'لا توجد بيانات', en: 'No data' },
   // Technician compare
   'mobile.public.technician-compare.title': {
-    ar: '️ مقارنة الفنيات',
+    ar: ' مقارنة الفنيات',
     en: 'Compare Service Providers',
   },
   'mobile.public.technician-compare.best': { ar: 'الأفضل: {name}', en: 'Best: {name}' },
@@ -542,7 +542,7 @@ export const mobilePublicMessages = {
   'mobile.public.technician-qa.answer': { ar: ' الإجابة:', en: ' Answer:' },
   'mobile.public.technician-qa.waiting': { ar: ' في انتظار الرد...', en: ' Awaiting reply...' },
   // Technicians
-  'mobile.public.technicians.title': { ar: '‍ الفنيات', en: 'Service Providers' },
+  'mobile.public.technicians.title': { ar: ' الفنيات', en: 'Service Providers' },
   'mobile.public.technicians.subtitle': {
     ar: 'تعرفي على نخبة فنيات التجميل',
     en: 'Meet our top beauty service providers',
@@ -564,7 +564,7 @@ export const mobilePublicMessages = {
     en: 'The most requested services and service providers this month',
   },
   'mobile.public.trending.services': {
-    ar: '‍️ الخدمات الرائجة',
+    ar: ' الخدمات الرائجة',
     en: ' Trending Services',
   },
   'mobile.public.trending.spotlight': { ar: ' فنيات مميزات', en: ' Featured Service Providers' },
@@ -589,7 +589,7 @@ export const mobilePublicMessages = {
   },
   'mobile.public.service-detail.not-found': { ar: 'الخدمة غير موجودة', en: 'Service not found' },
   'mobile.public.service-detail.duration': {
-    ar: '️ {minutes} دقيقة',
+    ar: ' {minutes} دقيقة',
     en: '{minutes} minutes',
   },
   // Technician detail

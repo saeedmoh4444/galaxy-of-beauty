@@ -101,7 +101,7 @@ export function BeautyCertificationPathCard({
   onEnroll,
   className = '',
   subtitle = 'مسار شهادة معتمدة',
-  accreditedLabel = '️ معتمد',
+  accreditedLabel = ' معتمد',
   levelsLabel = 'المستويات',
   durationLabel = 'المدة',
   enrollLabel = 'سجلي في المسار',

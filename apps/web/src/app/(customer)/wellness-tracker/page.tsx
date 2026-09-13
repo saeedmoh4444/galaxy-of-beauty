@@ -167,7 +167,7 @@ export default function WellnessTrackerPage(): JSX.Element {
               <p className="text-xs text-text-secondary">{t('wellnessHub.avgMood')}</p>
             </Card>
             <Card padding="md" className="text-center">
-              <p className="text-3xl">‍️</p>
+              <p className="text-3xl"></p>
               <p className="text-2xl font-bold text-green-600">
                 {(w.totalSteps / 1000).toFixed(1)}k
               </p>

@@ -39,14 +39,14 @@ export default function KidsServicesPage(): JSX.Element {
   return (
     <div className="mx-auto max-w-5xl px-4 py-12">
       <div className="mb-10 text-center">
-        <span className="text-6xl"></span>
+        <span className="text-6xl">🧸</span>
         <h1 className="mt-4 text-3xl font-bold">{t('marketing.kids-services.title')}</h1>
         <p className="mt-2 text-text-secondary">{t('marketing.kids-services.subtitle')}</p>
       </div>
 
       {result ? (
         <Card padding="lg" className="text-center border-2 border-green-300">
-          <span className="text-6xl"></span>
+          <span className="text-6xl">🎉</span>
           <h2 className="mt-4 text-xl font-bold">{result.message as string}</h2>
           <p className="text-2xl font-extrabold text-brand-600 mt-2">
             {t('marketing.kids-services.price-sar', {
@@ -54,7 +54,7 @@ export default function KidsServicesPage(): JSX.Element {
             })}
           </p>
           <p className="text-sm text-text-secondary mt-1">
-            {result.childName as string} · ️{' '}
+            {result.childName as string} ·{' '}
             {t('marketing.kids-services.duration-min', { min: result.durationMin as number })} ·{' '}
             {result.tip as string}
           </p>

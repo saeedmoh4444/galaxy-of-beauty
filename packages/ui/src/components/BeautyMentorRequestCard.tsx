@@ -36,7 +36,7 @@ export function BeautyMentorRequestCard({
   title = 'أخت كبيرة',
   subtitle = 'خبيرة ترشدكِ في رحلتكِ الجمالية',
   interestsLabel = ' اهتماماتكِ',
-  mentorRoleLabel = '‍ ماذا تقدم لكِ الأخت الكبيرة؟',
+  mentorRoleLabel = ' ماذا تقدم لكِ الأخت الكبيرة؟',
   roleItem1 = '• جلسة أسبوعية مباشرة',
   roleItem2 = '• نصائح مخصصة لبشرتكِ',
   roleItem3 = '• تعليم تقنيات المكياج',

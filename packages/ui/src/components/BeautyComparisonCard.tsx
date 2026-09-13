@@ -52,9 +52,7 @@ export function BeautyComparisonCard({
       )}
     >
       <div className="flex items-center gap-2">
-        <span className="text-lg" aria-hidden="true">
-          ️
-        </span>
+        <span className="text-lg" aria-hidden="true"></span>
         <h4 className="text-sm font-bold text-blue-700 dark:text-blue-300">{title}</h4>
       </div>
 
@@ -111,7 +109,7 @@ export function BeautyComparisonCard({
       </div>
 
       <p className="mt-2 text-center text-[9px] text-text-tertiary dark:text-text-secondary">
-        ️ {footerText}
+        {footerText}
       </p>
     </div>
   );

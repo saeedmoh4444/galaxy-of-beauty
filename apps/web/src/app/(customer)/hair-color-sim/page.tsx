@@ -23,7 +23,7 @@ export default function HairColorSimPage(): JSX.Element {
     <DashboardLayout userRole="CUSTOMER">
       <div className="mx-auto max-w-4xl space-y-6">
         <div>
-          <h1 className="text-2xl font-bold">‍️{t('hairColorSim.title')}</h1>
+          <h1 className="text-2xl font-bold">{t('hairColorSim.title')}</h1>
           <p className="mt-1 text-sm text-text-secondary">{t('hairColorSim.subtitle')}</p>
         </div>
 
@@ -68,7 +68,7 @@ export default function HairColorSimPage(): JSX.Element {
                     style={{ backgroundColor: c.hex as string }}
                   />
                   <span className="text-[10px] text-text-secondary">{c.nameAr as string}</span>
-                  {selected === c.id && <span className="text-brand-500 text-xs"></span>}
+                  {selected === c.id && <span className="text-brand-500 text-xs">✅</span>}
                 </button>
               ))}
             </div>
@@ -78,7 +78,7 @@ export default function HairColorSimPage(): JSX.Element {
         {selected && (
           <div className="text-center">
             <Link href="/bookings/create">
-              <Button size="lg">‍️{t('hairColorSim.bookNow')}</Button>
+              <Button size="lg">{t('hairColorSim.bookNow')}</Button>
             </Link>
           </div>
         )}

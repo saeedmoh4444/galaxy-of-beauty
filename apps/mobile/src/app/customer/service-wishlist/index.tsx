@@ -57,7 +57,7 @@ export default function ServiceWishlistScreen(): JSX.Element {
               })}
             </Text>
             <TouchableOpacity onPress={() => remove(i.id ?? 0)}>
-              <Text style={styles.del}>️</Text>
+              <Text style={styles.del}></Text>
             </TouchableOpacity>
           </View>
         </View>

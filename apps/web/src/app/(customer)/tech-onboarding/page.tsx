@@ -54,7 +54,7 @@ export default function TechOnboardingPage(): JSX.Element {
                   <p className="text-xs text-text-secondary">{s.desc as string}</p>
                 </div>
                 {s.completed ? (
-                  <span className="text-green-600"></span>
+                  <span className="text-green-600">✅</span>
                 ) : (
                   <Button
                     size="sm"

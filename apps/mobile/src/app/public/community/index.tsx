@@ -101,7 +101,7 @@ export default function CommunityScreen(): JSX.Element {
           items.map((p) => (
             <View key={p.id} style={styles.card}>
               <View style={styles.cardHeader}>
-                <Text style={styles.avatar}>‍</Text>
+                <Text style={styles.avatar}></Text>
                 <View style={{ flex: 1 }}>
                   <Text style={styles.userName}>
                     {p.userName ?? t('mobile.public.community.user')}

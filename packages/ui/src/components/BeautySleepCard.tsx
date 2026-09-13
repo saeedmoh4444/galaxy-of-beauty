@@ -103,7 +103,9 @@ export function BeautySleepCard({
     >
       {/* Header */}
       <div className="text-center">
-        <span className="text-3xl" aria-hidden="true"></span>
+        <span className="text-3xl" aria-hidden="true">
+          🌙
+        </span>
         <h4 className="mt-1 text-sm font-bold text-indigo-800 dark:text-indigo-200">{title}</h4>
         <p className="text-[10px] text-indigo-500 dark:text-indigo-400">{subtitle}</p>
       </div>

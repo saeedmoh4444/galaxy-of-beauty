@@ -44,7 +44,7 @@ export default function AdminAreasScreen(): JSX.Element {
             <Text style={styles.meta}>{a.nameEn ?? ''}</Text>
           </View>
           <TouchableOpacity onPress={() => remove(a.id)}>
-            <Text style={styles.del}>️</Text>
+            <Text style={styles.del}></Text>
           </TouchableOpacity>
         </View>
       ))}

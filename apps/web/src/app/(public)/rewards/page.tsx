@@ -80,7 +80,7 @@ export default async function RewardsPage(): Promise<JSX.Element> {
                 <div className="text-center pt-4">
                   <span className="text-4xl">
                     {r.rewardType === 'discount_percent'
-                      ? '️'
+                      ? ''
                       : r.rewardType === 'free_service'
                         ? ''
                         : ''}

@@ -57,7 +57,7 @@ export function BeautyScholarshipCard({
   seatsRemainingPrefix = 'باقي ',
   seatsRemainingSuffix = 'مقعد',
   seatsFullText = 'اكتملت المقاعد',
-  durationLabel = '️ المدة:',
+  durationLabel = ' المدة:',
   applyButtonText = 'تقديم على المنحة',
   registrationClosedText = 'اكتمل التسجيل',
   sponsorButtonText = 'راعي',
