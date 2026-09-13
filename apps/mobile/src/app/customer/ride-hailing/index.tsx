@@ -44,7 +44,7 @@ export default function RideHailingScreen(): JSX.Element {
       <ScrollView style={styles.c} contentContainerStyle={styles.i}>
         <Text style={styles.t}>{t('mobile.rideHailing.title')}</Text>
         <View style={[styles.card, styles.rc]}>
-          <Text style={styles.re}></Text>
+          <Text style={styles.re}>🚗</Text>
           <Text style={styles.rt}>{t('mobile.rideHailing.booked')}</Text>
           <Text style={styles.rn}>
             {result.driverName} · {result.carModel}

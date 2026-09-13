@@ -31,7 +31,7 @@ export default function WaitlistScreen(): JSX.Element {
       <Text style={styles.t}>{t('mobile.waitlist.title')}</Text>
       {data.map((w, i) => (
         <View key={i} style={styles.card}>
-          <Text style={styles.emoji}></Text>
+          <Text style={styles.emoji}>⏳</Text>
           <View style={{ flex: 1 }}>
             <Text style={styles.name}>{w.serviceName}</Text>
             <Text style={styles.pos}>

@@ -61,12 +61,12 @@ export default function VendorPortalScreen(): JSX.Element {
       <Text style={styles.t}>{t('mobile.vendorPortal.title')}</Text>
       <View style={styles.kr}>
         <View style={styles.k}>
-          <Text style={styles.ke}></Text>
+          <Text style={styles.ke}>📦</Text>
           <Text style={styles.kv}>{dash?.totalProducts ?? 0}</Text>
           <Text style={styles.kl}>{t('mobile.vendorPortal.products')}</Text>
         </View>
         <View style={styles.k}>
-          <Text style={styles.ke}></Text>
+          <Text style={styles.ke}>💰</Text>
           <Text style={[styles.kv, { color: '#059669' }]}>
             {(dash?.totalRevenue ?? 0)?.toLocaleString(locale === 'en' ? 'en-GB' : 'ar-SA')}
           </Text>
@@ -75,7 +75,7 @@ export default function VendorPortalScreen(): JSX.Element {
       </View>
       {products.map((p) => (
         <View key={p.id} style={styles.card}>
-          <Text style={styles.em}></Text>
+          <Text style={styles.em}>🧴</Text>
           <View style={{ flex: 1 }}>
             <Text style={styles.nm}>{p.name}</Text>
             <Text style={styles.meta}>
@@ -85,7 +85,7 @@ export default function VendorPortalScreen(): JSX.Element {
             </Text>
           </View>
           <TouchableOpacity onPress={() => remove(p.id)}>
-            <Text style={styles.del}></Text>
+            <Text style={styles.del}>🗑️</Text>
           </TouchableOpacity>
         </View>
       ))}

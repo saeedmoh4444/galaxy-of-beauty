@@ -49,7 +49,7 @@ export default function WishlistScreen(): JSX.Element {
                   .then(() => wishlist.refetch())
               }
             >
-              <Text style={styles.removeBtn}></Text>
+              <Text style={styles.removeBtn}>❌</Text>
             </TouchableOpacity>
           )}
         </View>

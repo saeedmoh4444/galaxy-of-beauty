@@ -140,7 +140,7 @@ export default function PostTreatmentScreen(): JSX.Element {
       <View style={styles.card}>
         {treatment.aftercare.map((a, i) => (
           <View key={i} style={styles.ac}>
-            <Text style={styles.acb}></Text>
+            <Text style={styles.acb}>💡</Text>
             <Text style={styles.act}>{t(a as TranslationKey)}</Text>
           </View>
         ))}

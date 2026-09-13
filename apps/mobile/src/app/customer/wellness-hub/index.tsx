@@ -475,19 +475,19 @@ export default function WellnessHubScreen(): JSX.Element {
 
       <View style={s.actions}>
         <TouchableOpacity style={s.actBtn}>
-          <Text style={{ fontSize: 24 }}></Text>
+          <Text style={{ fontSize: 24 }}>✅</Text>
           <Text style={s.actLabel}>{t('mobile.wellnessHub.action-checkin')}</Text>
         </TouchableOpacity>
         <TouchableOpacity style={s.actBtn}>
-          <Text style={{ fontSize: 24 }}></Text>
+          <Text style={{ fontSize: 24 }}>🌸</Text>
           <Text style={s.actLabel}>{t('mobile.wellnessHub.action-cycle')}</Text>
         </TouchableOpacity>
         <TouchableOpacity style={s.actBtn}>
-          <Text style={{ fontSize: 24 }}></Text>
+          <Text style={{ fontSize: 24 }}>🧴</Text>
           <Text style={s.actLabel}>{t('mobile.wellnessHub.action-skin')}</Text>
         </TouchableOpacity>
         <TouchableOpacity style={s.actBtn}>
-          <Text style={{ fontSize: 24 }}></Text>
+          <Text style={{ fontSize: 24 }}>💚</Text>
           <Text style={s.actLabel}>{t('mobile.wellnessHub.action-wellness')}</Text>
         </TouchableOpacity>
       </View>

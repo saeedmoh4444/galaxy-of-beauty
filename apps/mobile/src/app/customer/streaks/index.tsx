@@ -22,7 +22,7 @@ export default function StreaksScreen(): JSX.Element {
     >
       <Text style={styles.title}>{t('mobile.streaks.title')}</Text>
       <View style={styles.card}>
-        <Text style={styles.fire}></Text>
+        <Text style={styles.fire}>🔥</Text>
         <Text style={styles.current}>
           {t('mobile.streaks.current', { days: String(data?.currentStreak ?? 0) })}
         </Text>

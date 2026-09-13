@@ -31,17 +31,17 @@ export default function WellnessTrackerScreen(): JSX.Element {
       <Text style={styles.t}>{t('mobile.wellnessTracker.title')}</Text>
       <View style={styles.kpiRow}>
         <View style={styles.kpi}>
-          <Text style={styles.kpiEmoji}></Text>
+          <Text style={styles.kpiEmoji}>💧</Text>
           <Text style={styles.kpiVal}>{d.water ?? 0}</Text>
           <Text style={styles.kpiLabel}>{t('mobile.wellnessTracker.cups')}</Text>
         </View>
         <View style={styles.kpi}>
-          <Text style={styles.kpiEmoji}></Text>
+          <Text style={styles.kpiEmoji}>😴</Text>
           <Text style={[styles.kpiVal, { color: '#2563eb' }]}>{d.sleep ?? 0}h</Text>
           <Text style={styles.kpiLabel}>{t('mobile.wellnessTracker.sleep')}</Text>
         </View>
         <View style={styles.kpi}>
-          <Text style={styles.kpiEmoji}></Text>
+          <Text style={styles.kpiEmoji}>👟</Text>
           <Text style={[styles.kpiVal, { color: '#059669' }]}>{d.steps ?? 0}</Text>
           <Text style={styles.kpiLabel}>{t('mobile.wellnessTracker.steps')}</Text>
         </View>

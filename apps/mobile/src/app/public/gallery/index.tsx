@@ -37,7 +37,7 @@ export default function GalleryScreen(): JSX.Element {
               <Image source={{ uri: p.imageUrl }} style={styles.img} />
             ) : (
               <View style={styles.ph}>
-                <Text style={{ fontSize: 32 }}></Text>
+                <Text style={{ fontSize: 32 }}>🖼️</Text>
               </View>
             )}
             <View style={styles.pi}>
