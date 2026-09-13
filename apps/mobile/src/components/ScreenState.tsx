@@ -21,6 +21,7 @@
  */
 
 import React, { useMemo } from 'react';
+import type { JSX } from 'react';
 import {
   View,
   Text,

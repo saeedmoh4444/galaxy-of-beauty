@@ -19,6 +19,7 @@ import {
   useState,
   type ReactNode,
 } from 'react';
+import type { JSX } from 'react';
 import { useColorScheme } from 'react-native';
 
 export type ThemeMode = 'light' | 'dark' | 'system';
