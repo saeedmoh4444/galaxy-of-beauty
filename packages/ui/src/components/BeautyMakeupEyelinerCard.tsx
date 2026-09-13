@@ -19,7 +19,7 @@ export function BeautyMakeupEyelinerCard({
       )}
     >
       <div className="flex items-center gap-2">
-        <span className="text-xl">️</span>
+        <span className="text-xl">🪄</span>
         <div>
           <h4 className="text-sm font-bold text-sky-700 dark:text-sky-300">{heading}</h4>
           <p className="text-[10px] text-sky-500 dark:text-sky-400">{subtitle}</p>
@@ -28,28 +28,28 @@ export function BeautyMakeupEyelinerCard({
       <div className="mt-3 space-y-1">
         {[
           {
-            emoji: '',
+            emoji: '👁',
             text: {
               ar: 'ابدئي من المنتصف — ثم ارسمي الجناح',
               en: 'Start from the middle — then draw the wing',
             },
           },
           {
-            emoji: '️',
+            emoji: '✏️',
             text: {
               ar: 'القلم أسهل للمبتدئات — جففي بعد الرسم',
               en: 'A pencil is easier for beginners — set it with shadow',
             },
           },
           {
-            emoji: '️',
+            emoji: '⬆️',
             text: {
               ar: 'ارفعي الجفن قليلاً — لخط مستقيم',
               en: 'Gently lift the lid — for a straight line',
             },
           },
           {
-            emoji: '',
+            emoji: '🧴',
             text: {
               ar: 'عود قطني بمزيل — لتصحيح الأخطاء',
               en: 'Cotton swab with remover — to fix mistakes',

@@ -15,25 +15,25 @@ const SKIN_TYPES: {
 }[] = [
   {
     key: 'dry',
-    emoji: '️',
+    emoji: '🌵',
     label: 'aiRoutine.skinType.dry.label',
     desc: 'aiRoutine.skinType.dry.desc',
   },
   {
     key: 'oily',
-    emoji: '',
+    emoji: '✨',
     label: 'aiRoutine.skinType.oily.label',
     desc: 'aiRoutine.skinType.oily.desc',
   },
   {
     key: 'combination',
-    emoji: '',
+    emoji: '🌗',
     label: 'aiRoutine.skinType.combination.label',
     desc: 'aiRoutine.skinType.combination.desc',
   },
   {
     key: 'normal',
-    emoji: '',
+    emoji: '🌿',
     label: 'aiRoutine.skinType.normal.label',
     desc: 'aiRoutine.skinType.normal.desc',
   },

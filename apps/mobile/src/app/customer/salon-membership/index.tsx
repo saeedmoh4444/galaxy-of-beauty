@@ -13,7 +13,7 @@ interface MembershipInfo {
 const MEMBERSHIPS = [
   {
     key: 'basic',
-    emoji: '',
+    emoji: '🎫',
     name: 'الأساسية',
     price: 0,
     color: '#9ca3af',
@@ -22,7 +22,7 @@ const MEMBERSHIPS = [
   },
   {
     key: 'premium',
-    emoji: '',
+    emoji: '💎',
     name: 'المميزة',
     price: 99,
     color: '#f59e0b',
@@ -38,7 +38,7 @@ const MEMBERSHIPS = [
   },
   {
     key: 'platinum',
-    emoji: '',
+    emoji: '👑',
     name: 'البلاتينية',
     price: 299,
     color: '#7c3aed',

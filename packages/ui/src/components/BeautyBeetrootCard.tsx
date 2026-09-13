@@ -28,7 +28,7 @@ export function BeautyBeetrootCard({
       <div className="mt-3 space-y-1">
         {[
           {
-            emoji: '',
+            emoji: '💓',
             text: {
               ar: 'يحسن الدورة الدموية — بشرة وردية متوهجة',
               en: 'Improves circulation — rosy, glowing skin',
@@ -42,14 +42,14 @@ export function BeautyBeetrootCard({
             },
           },
           {
-            emoji: '',
+            emoji: '🍊',
             text: {
               ar: 'فيتامين C — يحفز إنتاج الكولاجين',
               en: 'Vitamin C — stimulates collagen production',
             },
           },
           {
-            emoji: '',
+            emoji: '🥤',
             text: {
               ar: 'شمندر + برتقال + زنجبيل — عصار الصباح',
               en: 'Beetroot + orange + ginger — the morning juice',

@@ -10,28 +10,28 @@ const SEASONS = [
     id: 'summer',
     nameAr: 'marketing.lookbook.season-summer-ar',
     nameEn: 'marketing.lookbook.season-summer-en',
-    emoji: '️',
+    emoji: '☀️',
     color: 'from-amber-400 to-orange-500',
   },
   {
     id: 'eid',
     nameAr: 'marketing.lookbook.season-eid-ar',
     nameEn: 'marketing.lookbook.season-eid-en',
-    emoji: '',
+    emoji: '✨',
     color: 'from-emerald-400 to-teal-600',
   },
   {
     id: 'wedding',
     nameAr: 'marketing.lookbook.season-wedding-ar',
     nameEn: 'marketing.lookbook.season-wedding-en',
-    emoji: '',
+    emoji: '💍',
     color: 'from-pink-400 to-rose-500',
   },
   {
     id: 'ramadan',
     nameAr: 'marketing.lookbook.season-ramadan-ar',
     nameEn: 'marketing.lookbook.season-ramadan-en',
-    emoji: '',
+    emoji: '🌙',
     color: 'from-brand-400 to-indigo-600',
   },
 ] as const;
@@ -228,17 +228,17 @@ function CommunityLooks(): JSX.Element {
                 {l.category === 'makeup'
                   ? ''
                   : l.category === 'hair'
-                    ? '‍️'
+                    ? ''
                     : l.category === 'nails'
                       ? ''
                       : ''}
               </span>
               <h3 className="font-bold mt-3">{l.title as string}</h3>
               <p className="text-xs text-text-secondary mt-1">
-                {l.userName as string} · ‍ {l.technicianName as string}
+                {l.userName as string} · {l.technicianName as string}
               </p>
               <p className="text-xs text-text-tertiary mt-1">
-                ️ {l.votes as number} ·{' '}
+                {l.votes as number} ·{' '}
                 {new Date(l.date as string).toLocaleDateString(locale === 'ar' ? 'ar-SA' : 'en-GB')}
               </p>
             </Card>

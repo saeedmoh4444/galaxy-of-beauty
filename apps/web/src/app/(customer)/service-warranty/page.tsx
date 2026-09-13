@@ -24,19 +24,19 @@ const COMPENSATION_TYPES: {
 }[] = [
   {
     key: 'redo',
-    emoji: '',
+    emoji: '🔄',
     label: 'warranty.comp.redo',
     desc: 'warranty.comp.redoDesc',
   },
   {
     key: 'refund',
-    emoji: '',
+    emoji: '💰',
     label: 'warranty.comp.refund',
     desc: 'warranty.comp.refundDesc',
   },
   {
     key: 'credit',
-    emoji: '',
+    emoji: '🎫',
     label: 'warranty.comp.credit',
     desc: 'warranty.comp.creditDesc',
   },

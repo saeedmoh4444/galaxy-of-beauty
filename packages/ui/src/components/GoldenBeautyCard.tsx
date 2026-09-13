@@ -20,7 +20,7 @@ interface GoldenService {
 
 const SERVICES: GoldenService[] = [
   {
-    emoji: '‍️',
+    emoji: '🌸',
     name: { ar: 'عناية لطيفة بالبشرة', en: 'Gentle skincare' },
     description: {
       ar: 'تنظيف وترطيب عميق للبشرة الناضجة',
@@ -30,7 +30,7 @@ const SERVICES: GoldenService[] = [
     duration: { ar: '60 دقيقة', en: '60 minutes' },
   },
   {
-    emoji: '‍️',
+    emoji: '💆',
     name: { ar: 'مساج كلاسيكي', en: 'Classic massage' },
     description: {
       ar: 'مساج لطيف للعضلات والمفاصل',
@@ -40,7 +40,7 @@ const SERVICES: GoldenService[] = [
     duration: { ar: '45 دقيقة', en: '45 minutes' },
   },
   {
-    emoji: '',
+    emoji: '💇',
     name: { ar: 'تسريحة كلاسيكية', en: 'Classic hairstyle' },
     description: {
       ar: 'تسريحة ناعمة تليق بجمالكِ',
@@ -50,7 +50,7 @@ const SERVICES: GoldenService[] = [
     duration: { ar: '45 دقيقة', en: '45 minutes' },
   },
   {
-    emoji: '',
+    emoji: '💄',
     name: { ar: 'مكياج ناعم', en: 'Soft makeup' },
     description: {
       ar: 'مكياج خفيف يبرز جمالكِ الطبيعي',
@@ -60,7 +60,7 @@ const SERVICES: GoldenService[] = [
     duration: { ar: '40 دقيقة', en: '40 minutes' },
   },
   {
-    emoji: '',
+    emoji: '💅',
     name: { ar: 'مانيكير لطيف', en: 'Gentle manicure' },
     description: {
       ar: 'عناية بالأظافر مع ترطيب',
@@ -126,7 +126,9 @@ export function GoldenBeautyCard({
     >
       {/* Header */}
       <div className="text-center">
-        <span className="text-3xl" aria-hidden="true"></span>
+        <span className="text-3xl" aria-hidden="true">
+          👑
+        </span>
         <h4 className="mt-1 text-sm font-bold text-amber-800 dark:text-amber-200">{title}</h4>
         <p className="text-[10px] text-amber-600 dark:text-amber-400">
           {isGolden ? `${goldenSubtitle} ${age}` : matureSkinSubtitle}
@@ -135,7 +137,9 @@ export function GoldenBeautyCard({
 
       {/* Special discount */}
       <div className="mt-3 rounded-xl bg-white/60 p-3 text-center dark:bg-gray-800/60">
-        <p className="text-lg" aria-hidden="true"></p>
+        <p className="text-lg" aria-hidden="true">
+          ⏰
+        </p>
         <p className="text-sm font-bold text-amber-800 dark:text-amber-200">{discountTitle}</p>
         <p className="text-[10px] text-amber-600 dark:text-amber-400">{discountText}</p>
       </div>

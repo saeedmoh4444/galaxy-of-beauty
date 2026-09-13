@@ -19,7 +19,7 @@ export function BeautyColdClimateCard({
       )}
     >
       <div className="flex items-center gap-2">
-        <span className="text-xl">️</span>
+        <span className="text-xl">🧣</span>
         <div>
           <h4 className="text-sm font-bold text-sky-700 dark:text-sky-300">{title}</h4>
           <p className="text-[10px] text-sky-500 dark:text-sky-400">{subtitle}</p>
@@ -28,28 +28,28 @@ export function BeautyColdClimateCard({
       <div className="mt-3 space-y-1">
         {[
           {
-            emoji: '',
+            emoji: '🧴',
             text: {
               ar: 'بلسم منظف — بدل الجل القاسي',
               en: 'Cleansing balm — instead of harsh gel',
             },
           },
           {
-            emoji: '️',
+            emoji: '🧥',
             text: {
               ar: 'طبقة حماية — كريم سميك قبل الخروج',
               en: 'A protective layer — thick cream before going out',
             },
           },
           {
-            emoji: '',
+            emoji: '🧣',
             text: {
               ar: 'وشاح — يحمي الوجه من الرياح',
               en: 'A scarf — protects the face from wind',
             },
           },
           {
-            emoji: '',
+            emoji: '🌙',
             text: {
               ar: 'زيت وجه — طبقة إضافية ليلاً',
               en: 'Face oil — an extra layer at night',

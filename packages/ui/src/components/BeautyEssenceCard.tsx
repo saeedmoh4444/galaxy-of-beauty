@@ -19,7 +19,7 @@ export function BeautyEssenceCard({
       )}
     >
       <div className="flex items-center gap-2">
-        <span className="text-xl"></span>
+        <span className="text-xl">🧴</span>
         <div>
           <h4 className="text-sm font-bold text-brand-700 dark:text-brand-300">{title}</h4>
           <p className="text-[10px] text-brand-500 dark:text-brand-400">{subtitle}</p>
@@ -28,28 +28,28 @@ export function BeautyEssenceCard({
       <div className="mt-3 space-y-1">
         {[
           {
-            emoji: '',
+            emoji: '🔢',
             text: {
               ar: 'بعد التونر — وقبل السيروم',
               en: 'After toner — before serum',
             },
           },
           {
-            emoji: '',
+            emoji: '💧',
             text: {
               ar: 'قوام مائي خفيف — يخترق الطبقات العميقة',
               en: 'Light watery texture — penetrates deep layers',
             },
           },
           {
-            emoji: '',
+            emoji: '✨',
             text: {
               ar: 'يهيئ البشرة — يمتص السيروم بشكل أفضل',
               en: 'Prepares skin — absorbs serum better',
             },
           },
           {
-            emoji: '',
+            emoji: '🤲',
             text: {
               ar: 'يطبق باليدين — ربتي ولا تفركي',
               en: 'Apply with hands — pat, do not rub',

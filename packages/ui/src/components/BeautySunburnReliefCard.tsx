@@ -19,7 +19,7 @@ export function BeautySunburnReliefCard({
       )}
     >
       <div className="flex items-center gap-2">
-        <span className="text-xl"></span>
+        <span className="text-xl">🌞</span>
         <div>
           <h4 className="text-sm font-bold text-orange-700 dark:text-orange-300">{title}</h4>
           <p className="text-[10px] text-orange-500 dark:text-orange-400">{subtitle}</p>
@@ -28,28 +28,28 @@ export function BeautySunburnReliefCard({
       <div className="mt-3 space-y-1">
         {[
           {
-            emoji: '️',
+            emoji: '🧊',
             text: {
               ar: 'كمادات باردة — 15 دقيقة كل ساعة',
               en: 'Cold compresses — 15 minutes every hour',
             },
           },
           {
-            emoji: '',
+            emoji: '🌿',
             text: {
               ar: 'جل الألوفيرا — مبرد في الثلاجة',
               en: 'Aloe vera gel — chilled in the fridge',
             },
           },
           {
-            emoji: '',
+            emoji: '💧',
             text: {
               ar: 'اشربي ماء كثيراً — الترطيب من الداخل',
               en: 'Drink plenty of water — hydrate from within',
             },
           },
           {
-            emoji: '',
+            emoji: '🚫',
             text: {
               ar: 'لا تقشري — اتركي الجلد يتجدد طبيعياً',
               en: "Don't exfoliate — let the skin renew naturally",

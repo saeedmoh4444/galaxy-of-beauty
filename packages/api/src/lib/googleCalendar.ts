@@ -150,6 +150,41 @@ export async function deleteGoogleCalendarEvent(
   }
 }
 
+/** Patch an existing event (PATCH — only the fields provided change). */
+export async function updateGoogleCalendarEvent(
+  accessToken: string,
+  eventId: string,
+  event: CalendarEvent,
+): Promise<boolean> {
+  try {
+    const response = await fetch(
+      `${GOOGLE_CALENDAR_API_URL}/calendars/primary/events/${encodeURIComponent(eventId)}`,
+      {
+        method: 'PATCH',
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          summary: event.summary,
+          description: event.description || '',
+          start: {
+            dateTime: event.start,
+            timeZone: event.timezone || 'Asia/Riyadh',
+          },
+          end: {
+            dateTime: event.end,
+            timeZone: event.timezone || 'Asia/Riyadh',
+          },
+        }),
+      },
+    );
+    return response.ok;
+  } catch {
+    return false;
+  }
+}
+
 /**
  * Get the Google OAuth2 authorization URL.
  */

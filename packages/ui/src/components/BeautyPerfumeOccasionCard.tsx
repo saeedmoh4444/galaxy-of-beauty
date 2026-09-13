@@ -19,7 +19,7 @@ export function BeautyPerfumeOccasionCard({
       )}
     >
       <div className="flex items-center gap-2">
-        <span className="text-xl"></span>
+        <span className="text-xl">🌸</span>
         <div>
           <h4 className="text-sm font-bold text-pink-700 dark:text-pink-300">{title}</h4>
           <p className="text-[10px] text-pink-500 dark:text-pink-400">{subtitle}</p>
@@ -28,22 +28,22 @@ export function BeautyPerfumeOccasionCard({
       <div className="mt-3 grid grid-cols-2 gap-1.5">
         {[
           {
-            emoji: '',
+            emoji: '💼',
             label: { ar: 'عمل', en: 'Work' },
             tip: { ar: 'خفيف، نظيف، غير مزعج', en: 'Light, clean, unobtrusive' },
           },
           {
-            emoji: '',
+            emoji: '🌙',
             label: { ar: 'سهرة', en: 'Evening' },
             tip: { ar: 'شرقي، قوي، جذاب', en: 'Oriental, strong, alluring' },
           },
           {
-            emoji: '️',
+            emoji: '🌞',
             label: { ar: 'نهار', en: 'Daytime' },
             tip: { ar: 'حمضيات، أزهار', en: 'Citrus, florals' },
           },
           {
-            emoji: '',
+            emoji: '✨',
             label: { ar: 'مناسبة', en: 'Occasions' },
             tip: { ar: 'فاخر، مميز، يدوم', en: 'Luxurious, distinctive, long-lasting' },
           },

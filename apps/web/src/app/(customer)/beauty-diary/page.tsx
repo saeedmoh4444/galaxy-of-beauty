@@ -7,11 +7,11 @@ import { useLocale } from '@/components/LocaleProvider';
 import type { TranslationKey } from '@galaxy/shared';
 
 const MOODS: { value: number; emoji: string; label: TranslationKey }[] = [
-  { value: 5, emoji: '', label: 'beautyDiary.mood.great' },
-  { value: 4, emoji: '', label: 'beautyDiary.mood.good' },
-  { value: 3, emoji: '', label: 'beautyDiary.mood.ok' },
-  { value: 2, emoji: '', label: 'beautyDiary.mood.bad' },
-  { value: 1, emoji: '', label: 'beautyDiary.mood.irritated' },
+  { value: 5, emoji: '😍', label: 'beautyDiary.mood.great' },
+  { value: 4, emoji: '😊', label: 'beautyDiary.mood.good' },
+  { value: 3, emoji: '😐', label: 'beautyDiary.mood.ok' },
+  { value: 2, emoji: '😕', label: 'beautyDiary.mood.bad' },
+  { value: 1, emoji: '😣', label: 'beautyDiary.mood.irritated' },
 ];
 
 export default function BeautyDiaryPage(): JSX.Element {
@@ -89,7 +89,7 @@ export default function BeautyDiaryPage(): JSX.Element {
           <CardListSkeleton count={4} />
         ) : entries.length === 0 ? (
           <Card padding="lg" className="text-center py-8">
-            <p className="text-4xl mb-2"></p>
+            <p className="text-4xl mb-2">📖</p>
             <p className="text-text-secondary">{t('beautyDiary.empty')}</p>
           </Card>
         ) : (

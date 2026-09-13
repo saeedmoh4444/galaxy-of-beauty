@@ -2,7 +2,14 @@
 
 import { api } from '@/lib/trpc';
 import { useState } from 'react';
-import { PageContainer, PageTitle, useAuth } from '@galaxy/ui';
+import {
+  PageContainer,
+  PageTitle,
+  useAuth,
+  GridSkeleton,
+  EmptyState,
+  ServiceImage,
+} from '@galaxy/ui';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
 import { useLocale } from '@/components/LocaleProvider';
 
@@ -53,13 +60,10 @@ export default function MarketplacePage(): JSX.Element {
           className="mb-6 w-full rounded-xl border border-edge px-4 py-3 text-sm text-end dark:border-gray-700 dark:bg-gray-800 dark:text-gray-100"
         />
 
-        {items.length === 0 ? (
-          <div className="py-20 text-center">
-            <span className="text-5xl">️</span>
-            <p className="mt-4 text-text-secondary dark:text-text-tertiary">
-              {t('marketplace.noProducts')}
-            </p>
-          </div>
+        {products.isLoading ? (
+          <GridSkeleton count={8} />
+        ) : items.length === 0 ? (
+          <EmptyState title={t('marketplace.noProducts')} />
         ) : (
           <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
             {items.map((p) => (
@@ -67,7 +71,12 @@ export default function MarketplacePage(): JSX.Element {
                 key={p.id as number}
                 className="rounded-2xl border border-edge-muted bg-white p-4 dark:border-gray-800 dark:bg-gray-900"
               >
-                <span className="text-4xl">{p.emoji as string}</span>
+                <ServiceImage
+                  src={(p.imageUrl as string) ?? null}
+                  alt={(p.nameAr as string) ?? (p.titleAr as string) ?? ''}
+                  size="full"
+                  className="mb-2 h-32 w-full"
+                />
                 <h4 className="mt-2 text-sm font-bold text-text-primary dark:text-gray-100">
                   {(p.nameAr as string) ?? (p.titleAr as string)}
                 </h4>

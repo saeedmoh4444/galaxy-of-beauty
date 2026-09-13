@@ -19,7 +19,7 @@ export function BeautyHairSummerCard({
       )}
     >
       <div className="flex items-center gap-2">
-        <span className="text-xl">️</span>
+        <span className="text-xl">👒</span>
         <div>
           <h4 className="text-sm font-bold text-yellow-700 dark:text-yellow-300">{title}</h4>
           <p className="text-[10px] text-yellow-500 dark:text-yellow-400">{subtitle}</p>
@@ -28,28 +28,28 @@ export function BeautyHairSummerCard({
       <div className="mt-3 space-y-1">
         {[
           {
-            emoji: '️',
+            emoji: '🌞',
             text: {
               ar: 'واقي شعر SPF — قبل التعرض للشمس',
               en: 'SPF hair protectant — before sun exposure',
             },
           },
           {
-            emoji: '',
+            emoji: '👒',
             text: {
               ar: 'قبعة واسعة — تحمي الشعر وفروة الرأس',
               en: 'A wide hat — protects the hair and scalp',
             },
           },
           {
-            emoji: '',
+            emoji: '🚿',
             text: {
               ar: 'اشطفي الشعر بماء عذب قبل وبعد البحر',
               en: 'Rinse the hair with fresh water before and after the sea',
             },
           },
           {
-            emoji: '',
+            emoji: '💧',
             text: {
               ar: 'ترطيب مكثف — الشمس تجفف الشعر',
               en: 'Intense hydration — the sun dries out hair',

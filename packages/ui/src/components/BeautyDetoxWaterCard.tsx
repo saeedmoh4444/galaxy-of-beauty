@@ -19,7 +19,7 @@ export function BeautyDetoxWaterCard({
       )}
     >
       <div className="flex items-center gap-2">
-        <span className="text-xl"></span>
+        <span className="text-xl">🍋</span>
         <div>
           <h4 className="text-sm font-bold text-emerald-700 dark:text-emerald-300">{title}</h4>
           <p className="text-[10px] text-emerald-500 dark:text-emerald-400">{subtitle}</p>
@@ -28,22 +28,22 @@ export function BeautyDetoxWaterCard({
       <div className="mt-3 grid grid-cols-2 gap-1.5">
         {[
           {
-            emoji: '',
+            emoji: '🍋',
             label: { ar: 'ليمون + نعناع', en: 'Lemon + mint' },
             tip: { ar: 'منعش — يطرد السموم', en: 'Refreshing — flushes toxins' },
           },
           {
-            emoji: '',
+            emoji: '🍓',
             label: { ar: 'فراولة + ريحان', en: 'Strawberry + basil' },
             tip: { ar: 'مضاد أكسدة — بشرة مشرقة', en: 'Antioxidant — radiant skin' },
           },
           {
-            emoji: '',
+            emoji: '🥒',
             label: { ar: 'خيار + زنجبيل', en: 'Cucumber + ginger' },
             tip: { ar: 'مهدئ — يقلل الالتهابات', en: 'Soothing — reduces inflammation' },
           },
           {
-            emoji: '',
+            emoji: '🍊',
             label: { ar: 'برتقال + قرفة', en: 'Orange + cinnamon' },
             tip: { ar: 'فيتامين C — كولاجين طبيعي', en: 'Vitamin C — natural collagen' },
           },

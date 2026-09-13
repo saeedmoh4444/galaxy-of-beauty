@@ -21,14 +21,14 @@ interface PrivacyConfig {
 
 const PRIVACY: Record<PrivacyLevel, PrivacyConfig> = {
   PUBLIC: {
-    emoji: '',
+    emoji: '🌍',
     label: { ar: 'عام', en: 'Public' },
     description: { ar: 'ظاهرة في المعرض العام', en: 'Visible in the public gallery' },
     colorClass:
       'bg-emerald-50 text-emerald-700 border-emerald-200 dark:bg-emerald-950 dark:text-emerald-300 dark:border-emerald-800',
   },
   TECHNICIAN_ONLY: {
-    emoji: '‍',
+    emoji: '💼',
     label: { ar: 'للخبيرة فقط', en: 'Technician only' },
     description: {
       ar: 'لا تظهر إلا للخبيرة المعتمدة',
@@ -38,14 +38,14 @@ const PRIVACY: Record<PrivacyLevel, PrivacyConfig> = {
       'bg-blue-50 text-blue-700 border-blue-200 dark:bg-blue-950 dark:text-blue-300 dark:border-blue-800',
   },
   PRIVATE: {
-    emoji: '',
+    emoji: '🔒',
     label: { ar: 'خاصة', en: 'Private' },
     description: { ar: 'لكِ فقط — غير مرئية لأحد', en: 'Just for you — visible to no one' },
     colorClass:
       'bg-brand-50 text-brand-700 border-brand-200 dark:bg-brand-950 dark:text-brand-300 dark:border-brand-800',
   },
   VIEW_ONCE: {
-    emoji: '️',
+    emoji: '👀',
     label: { ar: 'مرة واحدة', en: 'View once' },
     description: { ar: 'تختفي بعد مشاهدتها', en: 'Disappears after viewing' },
     colorClass:
@@ -79,7 +79,7 @@ export function PhotoPrivacyBadge({
   locale = 'ar',
   deletedTomorrowText = 'تحذف غداً',
   deletesAfterPrefix = 'تحذف بعد ',
-  deletesAfterSuffix = ' يوم',
+  deletesAfterSuffix = 'يوم',
   indefiniteText = 'لا تنتهي',
 }: PhotoPrivacyBadgeProps): JSX.Element {
   const config = PRIVACY[level];
@@ -128,7 +128,7 @@ export function PhotoPrivacyBadge({
           )}
         >
           <span className="text-[10px]" aria-hidden="true">
-            {isExpiringSoon ? '' : '️'}
+            {isExpiringSoon ? '' : ''}
           </span>
           <span
             className={cn(
@@ -146,9 +146,7 @@ export function PhotoPrivacyBadge({
       {/* Indefinite badge */}
       {!hasExpiry && level !== 'VIEW_ONCE' && (
         <div className="flex items-center gap-1 rounded-full bg-white/60 px-2 py-0.5 dark:bg-black/20">
-          <span className="text-[10px]" aria-hidden="true">
-            ️
-          </span>
+          <span className="text-[10px]" aria-hidden="true"></span>
           <span className="text-[10px] font-medium opacity-70">{indefiniteText}</span>
         </div>
       )}

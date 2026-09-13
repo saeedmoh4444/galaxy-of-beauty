@@ -19,7 +19,7 @@ export function BeautyHairRemovalCard({
       )}
     >
       <div className="flex items-center gap-2">
-        <span className="text-xl">️</span>
+        <span className="text-xl">🪒</span>
         <div>
           <h4 className="text-sm font-bold text-rose-700 dark:text-rose-300">{title}</h4>
           <p className="text-[10px] text-rose-500 dark:text-rose-400">{subtitle}</p>
@@ -28,22 +28,22 @@ export function BeautyHairRemovalCard({
       <div className="mt-3 grid grid-cols-2 gap-1.5">
         {[
           {
-            emoji: '',
+            emoji: '🍯',
             label: { ar: 'حلاوة', en: 'Halawa (sugaring)' },
             tip: { ar: 'طبيعية — ألم أقل من الشمع', en: 'Natural — less painful than wax' },
           },
           {
-            emoji: '️',
+            emoji: '🕯️',
             label: { ar: 'شمع', en: 'Wax' },
             tip: { ar: 'نتيجة تدوم 3-4 أسابيع', en: 'Results last 3-4 weeks' },
           },
           {
-            emoji: '',
+            emoji: '⚡',
             label: { ar: 'ليزر', en: 'Laser' },
             tip: { ar: 'نتيجة شبه دائمة — 6 جلسات', en: 'Semi-permanent result — 6 sessions' },
           },
           {
-            emoji: '',
+            emoji: '🧵',
             label: { ar: 'فتلة', en: 'Threading' },
             tip: { ar: 'للوجه — دقيقة جداً', en: 'For the face — very precise' },
           },

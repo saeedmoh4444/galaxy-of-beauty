@@ -23,7 +23,7 @@ export function BeautyHandsCareCard({
       )}
     >
       <div className="flex items-center gap-2">
-        <span className="text-xl"></span>
+        <span className="text-xl">🧴</span>
         <div>
           <h4 className="text-sm font-bold text-sky-700 dark:text-sky-300">{title}</h4>
           <p className="text-[10px] text-sky-500 dark:text-sky-400">{subtitle}</p>
@@ -32,22 +32,22 @@ export function BeautyHandsCareCard({
       <div className="mt-3 grid grid-cols-2 gap-1.5">
         {[
           {
-            emoji: '',
+            emoji: '🧴',
             label: { ar: 'كريم بعد الغسيل', en: 'Cream after washing' },
             tip: { ar: 'كل مرة تغسلين يديك', en: 'Every time you wash your hands' },
           },
           {
-            emoji: '',
+            emoji: '🧤',
             label: { ar: 'قفازات', en: 'Gloves' },
             tip: { ar: 'للتنظيف والغسيل', en: 'For cleaning and washing' },
           },
           {
-            emoji: '️',
+            emoji: '🌞',
             label: { ar: 'واقي شمس', en: 'Sunscreen' },
             tip: { ar: 'ظهر اليدين يظهر العمر', en: 'The back of the hands shows age' },
           },
           {
-            emoji: '',
+            emoji: '💅',
             label: { ar: 'تقليم منتظم', en: 'Regular trimming' },
             tip: { ar: 'أسبوعياً للحفاظ على الشكل', en: 'Weekly to keep the shape' },
           },

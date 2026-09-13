@@ -19,7 +19,7 @@ export function BeautyAfterPeelCard({
       )}
     >
       <div className="flex items-center gap-2">
-        <span className="text-xl"></span>
+        <span className="text-xl">🧴</span>
         <div>
           <h4 className="text-sm font-bold text-amber-700 dark:text-amber-300">{title}</h4>
           <p className="text-[10px] text-amber-500 dark:text-amber-400">{subtitle}</p>
@@ -28,28 +28,28 @@ export function BeautyAfterPeelCard({
       <div className="mt-3 space-y-1">
         {[
           {
-            emoji: '',
+            emoji: '💧',
             text: {
               ar: 'ترطيب مكثف — كريمات مهدئة بدون عطور',
               en: 'Intense moisturizing — soothing, fragrance-free creams',
             },
           },
           {
-            emoji: '',
+            emoji: '🚫',
             text: {
               ar: 'لا تقشري الجلد المتقشر — اتركيه يسقط طبيعياً',
               en: "Don't peel flaking skin — let it fall off naturally",
             },
           },
           {
-            emoji: '️',
+            emoji: '🌞',
             text: {
               ar: 'SPF 50+ — البشرة حساسة جداً للشمس',
               en: 'SPF 50+ — skin is very sensitive to the sun',
             },
           },
           {
-            emoji: '',
+            emoji: '📅',
             text: {
               ar: 'لا ريتينول أو أحماض — لمدة أسبوع',
               en: 'No retinol or acids — for a week',

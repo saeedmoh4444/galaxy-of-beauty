@@ -30,7 +30,7 @@ const EMERGENCIES: {
 }[] = [
   {
     key: 'pimple',
-    emoji: '',
+    emoji: '💊',
     name: 'rescue.emergency.pimple',
     desc: 'rescue.desc.pimple',
     price: 50,
@@ -39,7 +39,7 @@ const EMERGENCIES: {
   },
   {
     key: 'smudge',
-    emoji: '',
+    emoji: '💄',
     name: 'rescue.emergency.smudge',
     desc: 'rescue.desc.smudge',
     price: 40,
@@ -48,7 +48,7 @@ const EMERGENCIES: {
   },
   {
     key: 'hair',
-    emoji: '‍️',
+    emoji: '💇',
     name: 'rescue.emergency.hair',
     desc: 'rescue.desc.hair',
     price: 60,
@@ -57,7 +57,7 @@ const EMERGENCIES: {
   },
   {
     key: 'nail',
-    emoji: '',
+    emoji: '💅',
     name: 'rescue.emergency.nail',
     desc: 'rescue.desc.nail',
     price: 35,
@@ -66,7 +66,7 @@ const EMERGENCIES: {
   },
   {
     key: 'dry',
-    emoji: '️',
+    emoji: '💧',
     name: 'rescue.emergency.dry',
     desc: 'rescue.desc.dry',
     price: 45,
@@ -75,7 +75,7 @@ const EMERGENCIES: {
   },
   {
     key: 'redness',
-    emoji: '',
+    emoji: '🧊',
     name: 'rescue.emergency.redness',
     desc: 'rescue.desc.redness',
     price: 55,
@@ -101,7 +101,7 @@ export default function BeautyRescuePage(): JSX.Element {
 
         {booked && emergency ? (
           <Card padding="lg" className="text-center border-2 border-green-300 bg-green-50">
-            <p className="text-5xl"></p>
+            <p className="text-5xl">✅</p>
             <p className="font-bold text-green-700 text-xl mt-3">{t('rescue.bookedTitle')}</p>
             <p className="text-sm text-text-secondary mt-1">
               {t('rescue.onTheWay', { time: t(emergency.time) })}
@@ -135,7 +135,7 @@ export default function BeautyRescuePage(): JSX.Element {
                     <h3 className="font-bold mt-2">{t(e.name)}</h3>
                     <p className="text-xs text-text-secondary">{t(e.desc)}</p>
                     <p className="text-sm font-bold text-brand-600 mt-1">
-                      {formatCurrency(e.price)} · ️ {t(e.time)}
+                      {formatCurrency(e.price)} · {t(e.time)}
                     </p>
                   </button>
                 );

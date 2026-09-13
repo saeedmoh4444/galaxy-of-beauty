@@ -64,17 +64,17 @@ const SKIN_TIPS: Record<string, { ar: string; en: string }> = {
 };
 
 const STEPS: { emoji: string; text: { ar: string; en: string } }[] = [
-  { emoji: '', text: { ar: 'تحليل بشرتكِ بلطف', en: 'Gentle skin analysis' } },
+  { emoji: '🔍', text: { ar: 'تحليل بشرتكِ بلطف', en: 'Gentle skin analysis' } },
   {
-    emoji: '',
+    emoji: '🧼',
     text: { ar: 'تنظيف لطيف بدون مواد قاسية', en: 'Gentle cleansing without harsh ingredients' },
   },
   {
-    emoji: '‍️',
+    emoji: '💆',
     text: { ar: 'تدليك خفيف للوجه (3 دقائق)', en: 'Light facial massage (3 minutes)' },
   },
-  { emoji: '', text: { ar: 'ترطيب وواقي شمس', en: 'Moisturizer and sunscreen' } },
-  { emoji: '', text: { ar: 'نصائح للعناية اليومية', en: 'Daily care tips' } },
+  { emoji: '🧴', text: { ar: 'ترطيب وواقي شمس', en: 'Moisturizer and sunscreen' } },
+  { emoji: '💡', text: { ar: 'نصائح للعناية اليومية', en: 'Daily care tips' } },
 ];
 
 export function FirstFacialCard({
@@ -86,8 +86,8 @@ export function FirstFacialCard({
   title = 'أول عناية بالبشرة',
   subtitle = 'تجربة لطيفة وممتعة لأول مرة',
   ageNote = 'مناسب للأعمار 10-17 سنة',
-  stepsLabel = ' ماذا سنفعل',
-  momPrefix = '‍ ',
+  stepsLabel = 'ماذا سنفعل',
+  momPrefix = ' ',
   momWithText = 'تستطيعين الحضور معها ومشاهدة التجربة',
   pledgeText = 'لا كريم أساس ثقيل · لا مقشرات قوية · منتجات آمنة فقط',
   bookWithMomLabel = 'احجزي مع أمكِ ',
@@ -106,7 +106,9 @@ export function FirstFacialCard({
       )}
     >
       <div className="text-center">
-        <span className="text-3xl" aria-hidden="true"></span>
+        <span className="text-3xl" aria-hidden="true">
+          ✨
+        </span>
         <h4 className="mt-1 text-sm font-bold text-pink-700 dark:text-pink-300">{title}</h4>
         <p className="text-[10px] text-pink-500 dark:text-pink-400">{subtitle}</p>
         {!isAgeAppropriate && (

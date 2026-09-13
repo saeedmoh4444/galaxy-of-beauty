@@ -59,23 +59,24 @@ export function TechnicianProfileClient({ data }: { data: TechnicianProfileData 
             {user.avatarUrl ? (
               <Image src={user.avatarUrl} alt={name} fill className="rounded-full object-cover" />
             ) : (
-              <span>‍</span>
+              <span>👩</span>
             )}
           </div>
           <div className="flex-1 text-center sm:text-end">
             <div className="flex items-center justify-center gap-2 sm:justify-start">
               <h1 className="text-2xl font-bold text-text-primary">{name}</h1>
               {kycStatus === 'VERIFIED' && (
-                <span
-                  className="text-green-500"
-                  title={t('marketing.technician-profile.verified')}
-                ></span>
+                <span className="text-green-500" title={t('marketing.technician-profile.verified')}>
+                  ✅
+                </span>
               )}
               {isEco && (
                 <span
                   className="text-green-500"
                   title={t('marketing.technician-profile.eco-friendly')}
-                ></span>
+                >
+                  🌿
+                </span>
               )}
             </div>
             <p className="text-text-secondary">
@@ -146,7 +147,7 @@ export function TechnicianProfileClient({ data }: { data: TechnicianProfileData 
                     className="object-cover"
                   />
                 ) : (
-                  <span className="text-2xl">️</span>
+                  <span className="text-2xl">📷</span>
                 )}
               </div>
             ))}

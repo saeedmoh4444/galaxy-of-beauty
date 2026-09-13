@@ -46,7 +46,9 @@ export function Vision2030Badge({
       )}
     >
       <div className="text-center">
-        <span className="text-3xl" aria-hidden="true"></span>
+        <span className="text-3xl" aria-hidden="true">
+          🌅
+        </span>
         <h4 className="mt-1 text-sm font-bold text-emerald-800 dark:text-emerald-200">{title}</h4>
         <p className="text-[10px] text-emerald-600 dark:text-emerald-400">{subtitle}</p>
       </div>
@@ -74,9 +76,9 @@ export function Vision2030Badge({
       {/* Vision pillars */}
       <div className="mt-2 grid grid-cols-3 gap-1.5 text-center">
         {[
-          { emoji: '‍', label: { ar: 'تمكين المرأة', en: 'Women empowerment' } },
-          { emoji: '', label: { ar: 'تنويع الاقتصاد', en: 'Economic diversification' } },
-          { emoji: '', label: { ar: 'ريادة عالمية', en: 'Global leadership' } },
+          { emoji: '👩', label: { ar: 'تمكين المرأة', en: 'Women empowerment' } },
+          { emoji: '📈', label: { ar: 'تنويع الاقتصاد', en: 'Economic diversification' } },
+          { emoji: '🌍', label: { ar: 'ريادة عالمية', en: 'Global leadership' } },
         ].map((p) => (
           <div key={p.label.ar} className="rounded-lg bg-white/60 p-2 dark:bg-gray-800/60">
             <span className="text-lg" aria-hidden="true">

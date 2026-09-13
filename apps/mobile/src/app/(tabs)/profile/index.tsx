@@ -36,10 +36,12 @@ const MENU_ITEMS: { labelKey: TranslationKey; href: string }[] = [
   { labelKey: 'mobile.core.menuAddresses', href: '/customer/addresses' },
   { labelKey: 'mobile.core.menuSavedCards', href: '/customer/saved-cards' },
   { labelKey: 'mobile.core.menuReferrals', href: '/customer/referrals' },
+  { labelKey: 'mobile.core.menuBeautyDashboard', href: '/customer/beauty-dashboard' },
   { labelKey: 'mobile.core.menuCommunity', href: '/customer/community' },
   { labelKey: 'mobile.core.menuAcademy', href: '/customer/beauty-academy' },
   { labelKey: 'wellness.title', href: '/customer/wellness' },
   { labelKey: 'mobile.core.menuNotifications', href: '/customer/notifications' },
+  { labelKey: 'nav.more', href: '/public/more' },
   { labelKey: 'mobile.core.aiAssistantHelp', href: '/customer/ai-chat' },
 ];
 
@@ -125,7 +127,7 @@ export default function ProfileScreen(): JSX.Element {
           {MODE_DISPLAY[mode].icon} {MODE_DISPLAY[mode].label}
         </Text>
       </TouchableOpacity>
-      <ScrollView style={styles.menuList}>
+      <ScrollView style={styles.menuList} testID="profile-menu">
         {MENU_ITEMS.map((item, i) => (
           <TouchableOpacity
             key={i}

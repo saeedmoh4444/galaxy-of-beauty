@@ -51,7 +51,9 @@ export function BeautySecretSantaCard({
       )}
     >
       <div className="text-center">
-        <span className="text-3xl" aria-hidden="true"></span>
+        <span className="text-3xl" aria-hidden="true">
+          🎁
+        </span>
         <h4 className="mt-1 text-sm font-bold text-red-700 dark:text-red-300">{title}</h4>
         <p className="text-[10px] text-red-500 dark:text-red-400">{group}</p>
       </div>

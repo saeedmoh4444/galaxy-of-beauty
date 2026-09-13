@@ -56,7 +56,9 @@ export function NoRushBadge({
     >
       {/* Header */}
       <div className="flex items-center gap-2">
-        <span className="text-xl" aria-hidden="true"></span>
+        <span className="text-xl" aria-hidden="true">
+          🐢
+        </span>
         <div>
           <h4 className="text-sm font-bold text-teal-700 dark:text-teal-300">{title}</h4>
           <p className="text-[10px] text-teal-500 dark:text-teal-400">
@@ -73,7 +75,7 @@ export function NoRushBadge({
       <div className="mt-3 space-y-2">
         {[
           {
-            emoji: '️',
+            emoji: '⏰',
             title: {
               ar: `${bufferMinutes} دقيقة إضافية`,
               en: `${bufferMinutes} extra minutes`,
@@ -84,7 +86,7 @@ export function NoRushBadge({
             },
           },
           {
-            emoji: '',
+            emoji: '☕',
             title: hasRefreshments
               ? { ar: 'مشروبات مجانية', en: 'Free drinks' }
               : { ar: 'بيئة مريحة', en: 'Comfortable environment' },
@@ -99,7 +101,7 @@ export function NoRushBadge({
                 },
           },
           {
-            emoji: '',
+            emoji: '🔌',
             title: { ar: 'شاحن جوال', en: 'Phone charger' },
             description: {
               ar: 'شاحن متوفر في كل محطة — لا داعي للقلق على بطاريتكِ',
@@ -107,7 +109,7 @@ export function NoRushBadge({
             },
           },
           {
-            emoji: '‍️',
+            emoji: '🐢',
             title: { ar: 'لا داعي للعجلة', en: 'No need to hurry' },
             description: {
               ar: 'استرخي بعد الخدمة — لا نطلب منكِ المغادرة فوراً',

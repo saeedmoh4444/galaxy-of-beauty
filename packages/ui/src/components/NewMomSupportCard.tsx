@@ -60,7 +60,7 @@ export function NewMomSupportCard({
   underOneMonth = 'أقل من شهر',
   monthSingular = 'شهر',
   monthPlural = 'أشهر',
-  offersTitle = ' خدمات مناسبة لكِ',
+  offersTitle = 'خدمات مناسبة لكِ',
   offer1 = '• خدمات سريعة (30-45 دقيقة)',
   offer2 = '• ركن أطفال مع مراقبة',
   offer3 = '• إمكانية إرضاع الطفل أثناء الجلسة',
@@ -83,7 +83,9 @@ export function NewMomSupportCard({
       )}
     >
       <div className="text-center">
-        <span className="text-3xl" aria-hidden="true"></span>
+        <span className="text-3xl" aria-hidden="true">
+          👶
+        </span>
         <h4 className="mt-1 text-sm font-bold text-sky-800 dark:text-sky-200">
           {isNewborn ? newbornTitle : returnTitle}
         </h4>

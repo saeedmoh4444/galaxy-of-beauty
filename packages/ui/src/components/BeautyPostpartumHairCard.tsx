@@ -19,7 +19,7 @@ export function BeautyPostpartumHairCard({
       )}
     >
       <div className="flex items-center gap-2">
-        <span className="text-xl"></span>
+        <span className="text-xl">👶</span>
         <div>
           <h4 className="text-sm font-bold text-brand-700 dark:text-brand-300">{title}</h4>
           <p className="text-[10px] text-brand-500 dark:text-brand-400">{subtitle}</p>
@@ -28,28 +28,28 @@ export function BeautyPostpartumHairCard({
       <div className="mt-3 space-y-1">
         {[
           {
-            emoji: '',
+            emoji: '📅',
             text: {
               ar: 'يبدأ بعد 3-6 أشهر — يستمر 3-6 أشهر',
               en: 'Starts 3-6 months after — lasts 3-6 months',
             },
           },
           {
-            emoji: '',
+            emoji: '💆',
             text: {
               ar: 'تدليك الفروة — يحفز نمو شعر جديد',
               en: 'Scalp massage — stimulates new hair growth',
             },
           },
           {
-            emoji: '',
+            emoji: '💊',
             text: {
               ar: 'فيتامينات ما بعد الولادة — حديد وزنك',
               en: 'Postpartum vitamins — iron and zinc',
             },
           },
           {
-            emoji: '️',
+            emoji: '✂️',
             text: {
               ar: 'قصة أقصر — تخفف الثقل وتشجع النمو',
               en: 'A shorter cut — reduces weight and encourages growth',

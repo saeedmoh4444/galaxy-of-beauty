@@ -1,10 +1,18 @@
 'use client';
 
 import Link from 'next/link';
-import Image from 'next/image';
 import { api } from '@/lib/trpc';
 import type { RouterOutputs } from '@galaxy/api';
-import { Card, GridSkeleton, ErrorAlert, EmptyState, Button, formatCurrency } from '@galaxy/ui';
+import {
+  Card,
+  GridSkeleton,
+  ErrorAlert,
+  EmptyState,
+  Button,
+  formatCurrency,
+  ServiceImage,
+  Icon,
+} from '@galaxy/ui';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
 import { useLocale } from '@/components/LocaleProvider';
 
@@ -49,17 +57,13 @@ export default function WishlistPage(): JSX.Element {
                 const titleJson = service.titleJson;
                 return (
                   <Card key={item.id as number} padding="md" className="relative">
-                    <div className="relative mb-3 flex h-36 items-center justify-center rounded-lg bg-surface-muted dark:bg-gray-800">
-                      {service.imageUrl ? (
-                        <Image
-                          src={service.imageUrl as string}
-                          alt=""
-                          fill
-                          className="rounded-lg object-cover"
-                        />
-                      ) : (
-                        <span className="text-4xl text-gray-300"></span>
-                      )}
+                    <div className="relative mb-3 flex h-36 items-center justify-center overflow-hidden rounded-lg bg-surface-muted dark:bg-gray-800">
+                      <ServiceImage
+                        src={(service.imageUrl as string) || null}
+                        alt=""
+                        size="full"
+                        className="h-full w-full object-cover"
+                      />
                     </div>
                     <h3 className="font-semibold">
                       {(titleJson as { ar?: string; en?: string })?.ar ??
@@ -87,17 +91,13 @@ export default function WishlistPage(): JSX.Element {
                 return (
                   <Card key={item.id as number} padding="md" className="relative">
                     <div className="mb-3 flex items-center gap-3">
-                      <div className="relative flex h-16 w-16 items-center justify-center rounded-full bg-surface-muted dark:bg-gray-800">
-                        {user.avatarUrl ? (
-                          <Image
-                            src={user.avatarUrl as string}
-                            alt=""
-                            fill
-                            className="rounded-full object-cover"
-                          />
-                        ) : (
-                          <span className="text-2xl text-gray-300"></span>
-                        )}
+                      <div className="relative flex h-16 w-16 items-center justify-center overflow-hidden rounded-full bg-surface-muted dark:bg-gray-800">
+                        <ServiceImage
+                          src={(user.avatarUrl as string) || null}
+                          alt=""
+                          size="full"
+                          className="h-16 w-16 rounded-full object-cover"
+                        />
                       </div>
                       <div>
                         <h3 className="font-semibold">{user.name as string}</h3>
@@ -105,7 +105,7 @@ export default function WishlistPage(): JSX.Element {
                       </div>
                     </div>
                     <div className="flex items-center gap-1 text-sm text-amber-500">
-                      <span></span>
+                      <Icon name="star" size="sm" />
                       <span>{Number(technician.ratingAvg).toFixed(1)}</span>
                     </div>
                     <button

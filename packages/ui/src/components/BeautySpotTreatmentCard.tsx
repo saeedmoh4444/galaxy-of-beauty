@@ -19,7 +19,7 @@ export function BeautySpotTreatmentCard({
       )}
     >
       <div className="flex items-center gap-2">
-        <span className="text-xl"></span>
+        <span className="text-xl">🎯</span>
         <div>
           <h4 className="text-sm font-bold text-rose-700 dark:text-rose-300">{title}</h4>
           <p className="text-[10px] text-rose-500 dark:text-rose-400">{subtitle}</p>
@@ -28,22 +28,22 @@ export function BeautySpotTreatmentCard({
       <div className="mt-3 space-y-1">
         {[
           {
-            emoji: '',
+            emoji: '🧪',
             text: {
               ar: 'حمض الساليسيليك — يجفف الحبة',
               en: 'Salicylic acid — dries out the pimple',
             },
           },
           {
-            emoji: '',
+            emoji: '🌿',
             text: { ar: 'زيت شجرة الشاي — مضاد بكتيريا', en: 'Tea tree oil — antibacterial' },
           },
           {
-            emoji: '',
+            emoji: '🧊',
             text: { ar: 'كمادة باردة — تخفف الالتهاب', en: 'Cold compress — reduces inflammation' },
           },
           {
-            emoji: '',
+            emoji: '🚫',
             text: {
               ar: 'لا تعبثي بالحبة — تترك أثراً',
               en: "Don't pick at the pimple — it leaves a mark",

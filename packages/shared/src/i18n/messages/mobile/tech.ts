@@ -2,7 +2,7 @@
 
 export const mobileTechMessages = {
   // ---- Wallet ----
-  'mobile.tech.wallet.title': { ar: ' المحفظة', en: 'Wallet' },
+  'mobile.tech.wallet.title': { ar: 'المحفظة', en: 'Wallet' },
   'mobile.tech.wallet.current-balance': { ar: 'الرصيد الحالي', en: 'Current Balance' },
   'mobile.tech.wallet.pending-settlement': {
     ar: ' {amount} ر.س قيد التسوية',
@@ -10,19 +10,19 @@ export const mobileTechMessages = {
   },
   'mobile.tech.wallet.current-month': { ar: 'الشهر الحالي', en: 'This Month' },
   'mobile.tech.wallet.completed-bookings': { ar: 'حجز مكتمل', en: 'Completed Bookings' },
-  'mobile.tech.wallet.recent-transactions': { ar: ' آخر المعاملات', en: 'Recent Transactions' },
+  'mobile.tech.wallet.recent-transactions': { ar: 'آخر المعاملات', en: 'Recent Transactions' },
 
   // ---- Waitlist ----
-  'mobile.tech.waitlist.title': { ar: ' قائمة الانتظار', en: 'Waitlist' },
+  'mobile.tech.waitlist.title': { ar: 'قائمة الانتظار', en: 'Waitlist' },
   'mobile.tech.waitlist.subtitle': { ar: 'إدارة طلبات الانتظار', en: 'Manage waiting requests' },
-  'mobile.tech.waitlist.notified': { ar: ' تم الإشعار', en: 'Notified' },
+  'mobile.tech.waitlist.notified': { ar: 'تم الإشعار', en: 'Notified' },
   'mobile.tech.waitlist.notify-available': {
-    ar: ' إشعار بتوفر موعد',
+    ar: 'إشعار بتوفر موعد',
     en: 'Notify When Available',
   },
 
   // ---- Calendar ----
-  'mobile.tech.calendar.title': { ar: ' التقويم', en: 'Calendar' },
+  'mobile.tech.calendar.title': { ar: 'التقويم', en: 'Calendar' },
   'mobile.tech.calendar.load-error': { ar: 'فشل تحميل التقويم', en: 'Failed to load calendar' },
   'mobile.tech.calendar.day-sunday': { ar: 'الأحد', en: 'Sun' },
   'mobile.tech.calendar.day-monday': { ar: 'الإثنين', en: 'Mon' },
@@ -32,39 +32,39 @@ export const mobileTechMessages = {
   'mobile.tech.calendar.day-friday': { ar: 'الجمعة', en: 'Fri' },
   'mobile.tech.calendar.day-saturday': { ar: 'السبت', en: 'Sat' },
   'mobile.tech.calendar.sync-note': {
-    ar: ' تتم مزامنة الحجوزات تلقائياً مع تقويم قوقل',
+    ar: 'تتم مزامنة الحجوزات تلقائياً مع تقويم قوقل',
     en: 'Bookings are automatically synced with Google Calendar',
   },
 
   // ---- Dashboard ----
-  'mobile.tech.dashboard.title': { ar: ' لوحة مقدمة الخدمة', en: 'Service Provider Dashboard' },
-  'mobile.tech.dashboard.pending': { ar: ' معلقة', en: 'Pending' },
-  'mobile.tech.dashboard.completed': { ar: ' مكتملة', en: 'Completed' },
-  'mobile.tech.dashboard.rating': { ar: ' التقييم', en: 'Rating' },
-  'mobile.tech.dashboard.bookings': { ar: ' الحجوزات', en: 'Bookings' },
-  'mobile.tech.dashboard.slots': { ar: ' المواعيد', en: 'Slots' },
-  'mobile.tech.dashboard.my-profile': { ar: ' ملفي', en: 'My Profile' },
+  'mobile.tech.dashboard.title': { ar: 'لوحة مقدمة الخدمة', en: 'Service Provider Dashboard' },
+  'mobile.tech.dashboard.pending': { ar: 'معلقة', en: 'Pending' },
+  'mobile.tech.dashboard.completed': { ar: 'مكتملة', en: 'Completed' },
+  'mobile.tech.dashboard.rating': { ar: 'التقييم', en: 'Rating' },
+  'mobile.tech.dashboard.bookings': { ar: 'الحجوزات', en: 'Bookings' },
+  'mobile.tech.dashboard.slots': { ar: 'المواعيد', en: 'Slots' },
+  'mobile.tech.dashboard.my-profile': { ar: 'ملفي', en: 'My Profile' },
 
   // ---- Gallery ----
-  'mobile.tech.gallery.title': { ar: '️ معرض الأعمال', en: 'My Work Gallery' },
+  'mobile.tech.gallery.title': { ar: 'معرض الأعمال', en: 'My Work Gallery' },
   'mobile.tech.gallery.subtitle': {
     ar: 'صور من أعمالكِ السابقة',
     en: 'Photos from your previous work',
   },
-  'mobile.tech.gallery.likes': { ar: '️ {count} إعجاب', en: '{count} likes' },
+  'mobile.tech.gallery.likes': { ar: ' {count} إعجاب', en: '{count} likes' },
 
   // ---- Bookings ----
-  'mobile.tech.bookings.title': { ar: ' حجوزاتي', en: 'My Bookings' },
+  'mobile.tech.bookings.title': { ar: 'حجوزاتي', en: 'My Bookings' },
   'mobile.tech.bookings.status-in-progress': { ar: 'جاري', en: 'In Progress' },
 
   // ---- Slots ----
-  'mobile.tech.slots.title': { ar: ' المواعيد المتاحة', en: 'Available Slots' },
+  'mobile.tech.slots.title': { ar: 'المواعيد المتاحة', en: 'Available Slots' },
   'mobile.tech.slots.empty-desc': { ar: 'أضيفي مواعيدك المتاحة', en: 'Add your available slots' },
-  'mobile.tech.slots.booked': { ar: ' محجوز', en: 'Booked' },
-  'mobile.tech.slots.available': { ar: ' متاح', en: 'Available' },
+  'mobile.tech.slots.booked': { ar: 'محجوز', en: 'Booked' },
+  'mobile.tech.slots.available': { ar: 'متاح', en: 'Available' },
 
   // ---- Earnings ----
-  'mobile.tech.earnings.title': { ar: ' أرباحي', en: 'My Earnings' },
+  'mobile.tech.earnings.title': { ar: 'أرباحي', en: 'My Earnings' },
 
   // ---- Performance ----
   'mobile.tech.performance.subtitle': {
@@ -72,14 +72,14 @@ export const mobileTechMessages = {
     en: 'Analytics and statistics',
   },
   'mobile.tech.performance.bookings-this-month': { ar: 'حجز هذا الشهر', en: 'Bookings this month' },
-  'mobile.tech.performance.rating': { ar: ' التقييم', en: 'Rating' },
+  'mobile.tech.performance.rating': { ar: 'التقييم', en: 'Rating' },
   'mobile.tech.performance.revenue-sar': { ar: 'ر.س الإيرادات', en: 'SAR revenue' },
   'mobile.tech.performance.attendance-rate': { ar: 'نسبة الحضور', en: 'Attendance Rate' },
-  'mobile.tech.performance.bookings-trend': { ar: ' اتجاه الحجوزات', en: 'Bookings Trend' },
+  'mobile.tech.performance.bookings-trend': { ar: 'اتجاه الحجوزات', en: 'Bookings Trend' },
   'mobile.tech.performance.month-june': { ar: 'يونيو', en: 'June' },
   'mobile.tech.performance.month-august': { ar: 'أغسطس', en: 'August' },
   'mobile.tech.performance.top-services': {
-    ar: ' خدماتي الأكثر طلباً',
+    ar: 'خدماتي الأكثر طلباً',
     en: 'My Most Requested Services',
   },
 
@@ -116,15 +116,15 @@ export const mobileTechMessages = {
   },
 
   // ---- Profile ----
-  'mobile.tech.profile.title': { ar: ' ملفي الشخصي', en: 'My Profile' },
+  'mobile.tech.profile.title': { ar: 'ملفي الشخصي', en: 'My Profile' },
   'mobile.tech.profile.completed-bookings': { ar: 'الحجوزات المكتملة', en: 'Completed Bookings' },
   'mobile.tech.profile.eco-friendly-products': {
     ar: 'منتجات صديقة للبيئة',
     en: 'Eco-friendly products',
   },
-  'mobile.tech.profile.yes': { ar: ' نعم', en: 'Yes' },
-  'mobile.tech.profile.no': { ar: ' لا', en: 'No' },
-  'mobile.tech.profile.edit-profile': { ar: '️ تعديل الملف', en: 'Edit Profile' },
+  'mobile.tech.profile.yes': { ar: 'نعم', en: 'Yes' },
+  'mobile.tech.profile.no': { ar: 'لا', en: 'No' },
+  'mobile.tech.profile.edit-profile': { ar: 'تعديل الملف', en: 'Edit Profile' },
   'mobile.tech.profile.bio': { ar: 'نبذة عني', en: 'About me' },
   'mobile.tech.profile.saving': { ar: 'جارٍ الحفظ…', en: 'Saving…' },
   'mobile.tech.profile.cancel': { ar: 'إلغاء', en: 'Cancel' },

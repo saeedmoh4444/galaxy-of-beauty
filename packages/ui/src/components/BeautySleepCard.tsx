@@ -20,37 +20,37 @@ interface NightRoutine {
 const ROUTINE: NightRoutine[] = [
   {
     time: '21:00',
-    emoji: '',
+    emoji: '📵',
     action: { ar: 'إطفاء الشاشات', en: 'Turn off screens' },
     duration: { ar: '—', en: '—' },
   },
   {
     time: '21:15',
-    emoji: '',
+    emoji: '🧴',
     action: { ar: 'روتين العناية الليلي', en: 'Night skincare routine' },
     duration: { ar: '15 دقيقة', en: '15 min' },
   },
   {
     time: '21:30',
-    emoji: '️',
+    emoji: '🧘',
     action: { ar: 'استرخاء وتأمل', en: 'Relax and meditate' },
     duration: { ar: '10 دقيقة', en: '10 min' },
   },
   {
     time: '21:45',
-    emoji: '',
+    emoji: '📖',
     action: { ar: 'قراءة هادئة', en: 'Quiet reading' },
     duration: { ar: '20 دقيقة', en: '20 min' },
   },
   {
     time: '22:15',
-    emoji: '',
+    emoji: '🍵',
     action: { ar: 'شاي أعشاب', en: 'Herbal tea' },
     duration: { ar: '10 دقيقة', en: '10 min' },
   },
   {
     time: '22:30',
-    emoji: '',
+    emoji: '😴',
     action: { ar: 'نوم عميق', en: 'Deep sleep' },
     duration: { ar: '8 ساعات', en: '8 hours' },
   },
@@ -103,7 +103,9 @@ export function BeautySleepCard({
     >
       {/* Header */}
       <div className="text-center">
-        <span className="text-3xl" aria-hidden="true"></span>
+        <span className="text-3xl" aria-hidden="true">
+          🌙
+        </span>
         <h4 className="mt-1 text-sm font-bold text-indigo-800 dark:text-indigo-200">{title}</h4>
         <p className="text-[10px] text-indigo-500 dark:text-indigo-400">{subtitle}</p>
       </div>

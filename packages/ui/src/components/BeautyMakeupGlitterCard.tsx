@@ -19,7 +19,7 @@ export function BeautyMakeupGlitterCard({
       )}
     >
       <div className="flex items-center gap-2">
-        <span className="text-xl"></span>
+        <span className="text-xl">✨</span>
         <div>
           <h4 className="text-sm font-bold text-yellow-700 dark:text-yellow-300">{heading}</h4>
           <p className="text-[10px] text-yellow-500 dark:text-yellow-400">{subtitle}</p>
@@ -28,25 +28,25 @@ export function BeautyMakeupGlitterCard({
       <div className="mt-3 space-y-1">
         {[
           {
-            emoji: '️',
+            emoji: '✨',
             text: {
               ar: 'جليتر على الجفن — فقط في المنتصف',
               en: 'Glitter on the lid — center only',
             },
           },
           {
-            emoji: '',
+            emoji: '✨',
             text: { ar: 'هايلايتر — أعلى الوجنة', en: 'Highlighter — on the top of the cheekbone' },
           },
           {
-            emoji: '',
+            emoji: '🧴',
             text: {
               ar: 'قاعدة لاصقة — تثبت الجليتر',
               en: 'Adhesive base — holds the glitter in place',
             },
           },
           {
-            emoji: '',
+            emoji: '🩹',
             text: {
               ar: 'شريط لاصق — لإزالة الجليتر بسهولة',
               en: 'Tape — for easy glitter removal',

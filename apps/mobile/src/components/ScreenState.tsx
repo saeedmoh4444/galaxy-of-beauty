@@ -143,7 +143,7 @@ export function ScreenState({
   if (isError) {
     return (
       <View style={styles.centered}>
-        <Text style={styles.errorEmoji}></Text>
+        <Text style={styles.errorEmoji}>⚠️</Text>
         <Text style={styles.errorMessage}>{errMsg}</Text>
         {onRetry && (
           <TouchableOpacity onPress={onRetry} style={styles.retryBtn}>
@@ -158,7 +158,7 @@ export function ScreenState({
   if (isEmpty) {
     return (
       <View style={styles.centered}>
-        <Text style={styles.emptyEmoji}></Text>
+        <Text style={styles.emptyEmoji}>📭</Text>
         <Text style={styles.emptyTitle}>{emptyT}</Text>
         {emptyDescription && <Text style={styles.emptyDescription}>{emptyDescription}</Text>}
         {emptyAction && (

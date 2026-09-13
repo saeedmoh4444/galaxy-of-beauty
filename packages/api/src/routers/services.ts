@@ -396,6 +396,9 @@ export const serviceRouter = router({
                   id: true,
                   ratingAvg: true,
                   totalReviews: true,
+                  // Phase 3 sprint 2.1 — the service-detail UI renders
+                  // per-card verified badges off this value.
+                  kycStatus: true,
                   user: {
                     select: {
                       id: true,

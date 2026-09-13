@@ -15,7 +15,7 @@ interface ConsultationBooking {
 const CONSULTANTS = [
   {
     key: 'skincare',
-    emoji: '‍️',
+    emoji: '🧖',
     name: 'اخصائية بشرة',
     specialty: 'تحليل البشرة وتشخيص المشاكل',
     price: 150,
@@ -24,7 +24,7 @@ const CONSULTANTS = [
   },
   {
     key: 'makeup',
-    emoji: '',
+    emoji: '💄',
     name: 'خبيرة مكياج',
     specialty: 'استشارة مكياج للمناسبات',
     price: 120,
@@ -33,7 +33,7 @@ const CONSULTANTS = [
   },
   {
     key: 'hair',
-    emoji: '‍️',
+    emoji: '💇',
     name: 'مصففة شعر',
     specialty: 'استشارة تسريحات وعناية',
     price: 100,
@@ -42,7 +42,7 @@ const CONSULTANTS = [
   },
   {
     key: 'nutrition',
-    emoji: '',
+    emoji: '🥗',
     name: 'اخصائية تغذية',
     specialty: 'تغذية البشرة والشعر',
     price: 130,
@@ -115,7 +115,7 @@ export default function VirtualConsultationScreen(): JSX.Element {
             alignItems: 'center',
           }}
         >
-          <Text style={{ fontSize: 32 }}></Text>
+          <Text style={{ fontSize: 32 }}>✅</Text>
           <Text style={{ fontWeight: '700', color: '#059669', marginTop: 8 }}>
             {t('mobile.virtualConsultation.booked')}
           </Text>

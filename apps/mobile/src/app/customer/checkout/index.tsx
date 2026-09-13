@@ -6,10 +6,10 @@ import { useLocale } from '@/components/LocaleProvider';
 import { useAuthState } from '@/hooks/useAuthState';
 
 const PAYMENT_METHODS = [
-  { key: 'wallet', emoji: '', label: 'المحفظة' },
-  { key: 'card', emoji: '', label: 'بطاقة' },
-  { key: 'apple_pay', emoji: '', label: 'Apple Pay' },
-  { key: 'bnpl', emoji: '', label: 'تقسيط' },
+  { key: 'wallet', emoji: '👛', label: 'المحفظة' },
+  { key: 'card', emoji: '💳', label: 'بطاقة' },
+  { key: 'apple_pay', emoji: '🍎', label: 'Apple Pay' },
+  { key: 'bnpl', emoji: '🧾', label: 'تقسيط' },
 ];
 
 export default function CheckoutScreen(): JSX.Element {

@@ -20,7 +20,7 @@ interface HistoryEra {
 const ERAS: HistoryEra[] = [
   {
     era: { ar: 'مصر القديمة', en: 'Ancient Egypt' },
-    emoji: '️',
+    emoji: '👑',
     year: { ar: '3000 ق.م', en: '3000 BC' },
     fact: {
       ar: 'كليوباترا استخدمت الحليب والعسل للاستحمام — وزيت الخروع للكحل',
@@ -29,7 +29,7 @@ const ERAS: HistoryEra[] = [
   },
   {
     era: { ar: 'اليونان القديمة', en: 'Ancient Greece' },
-    emoji: '️',
+    emoji: '🏺',
     year: { ar: '500 ق.م', en: '500 BC' },
     fact: {
       ar: 'استخدموا زيت الزيتون للترطيب والرصاص الأبيض لتفتيح البشرة',
@@ -38,7 +38,7 @@ const ERAS: HistoryEra[] = [
   },
   {
     era: { ar: 'الجزيرة العربية', en: 'Arabian Peninsula' },
-    emoji: '',
+    emoji: '🌿',
     year: { ar: '2000 ق.م', en: '2000 BC' },
     fact: {
       ar: 'الحناء استخدمت للتزيين والتبريد — ونقشاتها تروي قصص القبائل',
@@ -47,7 +47,7 @@ const ERAS: HistoryEra[] = [
   },
   {
     era: { ar: 'العصر العباسي', en: 'Abbasid era' },
-    emoji: '',
+    emoji: '💈',
     year: { ar: '800 م', en: '800 AD' },
     fact: {
       ar: 'زرياب الأندلسي أدخل روتين العناية بالشعر والبشرة للنساء',
@@ -56,7 +56,7 @@ const ERAS: HistoryEra[] = [
   },
   {
     era: { ar: 'أوروبا الفيكتورية', en: 'Victorian Europe' },
-    emoji: '',
+    emoji: '👒',
     year: { ar: '1850 م', en: '1850 AD' },
     fact: {
       ar: 'البشرة البيضاء رمز الثراء — والنساء تجنبن الشمس تماماً',
@@ -65,7 +65,7 @@ const ERAS: HistoryEra[] = [
   },
   {
     era: { ar: 'العصر الذهبي', en: 'The Golden Age' },
-    emoji: '',
+    emoji: '💋',
     year: { ar: '1950 م', en: '1950 AD' },
     fact: {
       ar: 'مارلين مونرو جعلت الشامة والشعر الأشقر موضة عالمية',
@@ -74,7 +74,7 @@ const ERAS: HistoryEra[] = [
   },
   {
     era: { ar: 'الثمانينات', en: 'The 80s' },
-    emoji: '',
+    emoji: '🌈',
     year: { ar: '1980 م', en: '1980 AD' },
     fact: {
       ar: 'الألوان الجريئة والمكياج الثقيل — عصر الإفراط في كل شيء',
@@ -83,7 +83,7 @@ const ERAS: HistoryEra[] = [
   },
   {
     era: { ar: 'اليوم', en: 'Today' },
-    emoji: '',
+    emoji: '🌍',
     year: { ar: '2026 م', en: '2026 AD' },
     fact: {
       ar: 'الجمال الطبيعي والعناية بالبشرة — والأهم: الجمال للجميع',
@@ -114,7 +114,9 @@ export function BeautyHistoryTimeline({
   return (
     <div className={cn('rounded-2xl bg-white p-5 dark:bg-gray-900', className)}>
       <div className="text-center">
-        <span className="text-3xl" aria-hidden="true"></span>
+        <span className="text-3xl" aria-hidden="true">
+          📜
+        </span>
         <h4 className="mt-1 text-sm font-bold text-amber-700 dark:text-amber-300">{title}</h4>
         <p className="text-[10px] text-amber-500 dark:text-amber-400">{subtitle}</p>
       </div>

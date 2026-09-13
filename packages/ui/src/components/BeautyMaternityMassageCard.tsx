@@ -19,7 +19,7 @@ export function BeautyMaternityMassageCard({
       )}
     >
       <div className="flex items-center gap-2">
-        <span className="text-xl"></span>
+        <span className="text-xl">🤰</span>
         <div>
           <h4 className="text-sm font-bold text-brand-700 dark:text-brand-300">{title}</h4>
           <p className="text-[10px] text-brand-500 dark:text-brand-400">{subtitle}</p>
@@ -28,25 +28,25 @@ export function BeautyMaternityMassageCard({
       <div className="mt-3 space-y-1">
         {[
           {
-            emoji: '️',
+            emoji: '🤰',
             text: {
               ar: 'الاستلقاء على الجانب — ليس على البطن',
               en: 'Lie on your side — not on your stomach',
             },
           },
           {
-            emoji: '',
+            emoji: '📅',
             text: { ar: 'بعد الشهر الثالث — بأمان', en: 'After the third month — safely' },
           },
           {
-            emoji: '',
+            emoji: '🚫',
             text: {
               ar: 'تجنبي الزيوت القوية — النعناع والقرفة',
               en: 'Avoid strong oils — mint and cinnamon',
             },
           },
           {
-            emoji: '',
+            emoji: '💆',
             text: {
               ar: 'يخفف آلام الظهر — ويحسن النوم',
               en: 'Relieves back pain — and improves sleep',

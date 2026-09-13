@@ -19,7 +19,7 @@ export function BeautyPerfumeMuskCard({
       )}
     >
       <div className="flex items-center gap-2">
-        <span className="text-xl"></span>
+        <span className="text-xl">🌸</span>
         <div>
           <h4 className="text-sm font-bold text-brand-700 dark:text-brand-300">{title}</h4>
           <p className="text-[10px] text-brand-500 dark:text-brand-400">{subtitle}</p>
@@ -28,14 +28,14 @@ export function BeautyPerfumeMuskCard({
       <div className="mt-3 space-y-1">
         {[
           {
-            emoji: '',
+            emoji: '🤍',
             text: {
               ar: 'المسك الأبيض — أنقى وأخف أنواع المسك',
               en: 'White musk — the purest and lightest type',
             },
           },
           {
-            emoji: '',
+            emoji: '🌹',
             text: {
               ar: 'يدمج مع الورد — للعطور النسائية',
               en: 'Blends with rose — for feminine fragrances',
@@ -49,7 +49,7 @@ export function BeautyPerfumeMuskCard({
             },
           },
           {
-            emoji: '',
+            emoji: '🧴',
             text: {
               ar: 'زيت المسك — يدوم أطول من العطر الكحولي',
               en: 'Musk oil — lasts longer than alcohol-based perfume',

@@ -37,17 +37,17 @@ export function BeautyBreathingCard({
             count: { ar: '4 ثوانٍ', en: '4 seconds' },
           },
           {
-            emoji: '',
+            emoji: '🫁',
             step: { ar: 'احبسي النفس', en: 'Hold your breath' },
             count: { ar: '7 ثوانٍ', en: '7 seconds' },
           },
           {
-            emoji: '',
+            emoji: '💨',
             step: { ar: 'زفير من الفم', en: 'Exhale through mouth' },
             count: { ar: '8 ثوانٍ', en: '8 seconds' },
           },
           {
-            emoji: '',
+            emoji: '🔁',
             step: { ar: 'كرري 4 مرات', en: 'Repeat 4 times' },
             count: { ar: 'دقيقتان', en: '2 minutes' },
           },

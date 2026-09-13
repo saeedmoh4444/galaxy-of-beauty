@@ -9,13 +9,13 @@ import { useLocale } from '@/components/LocaleProvider';
 
 const slides = [
   {
-    emoji: '‍️',
-    title: 'أهلاً بكِ في جالكسي بيوتي',
+    emoji: '🌸',
+    title: 'أهلاً بكِ في دلال',
     desc: 'منصتكِ الشاملة لكل خدمات التجميل والعناية',
   },
-  { emoji: '', title: 'احجزي بسهولة', desc: 'تصفحي الخدمات واحجزي موعدكِ في دقائق' },
-  { emoji: '‍', title: 'أفضل الفنيات', desc: 'اختاري من نخبة الفنيات المحترفات في منطقتكِ' },
-  { emoji: '', title: 'مكافآت وخصومات', desc: 'اكسبي نقاط واستمتعي بعروض حصرية' },
+  { emoji: '📅', title: 'احجزي بسهولة', desc: 'تصفحي الخدمات واحجزي موعدكِ في دقائق' },
+  { emoji: '💇', title: 'أفضل الفنيات', desc: 'اختاري من نخبة الفنيات المحترفات في منطقتكِ' },
+  { emoji: '🎁', title: 'مكافآت وخصومات', desc: 'اكسبي نقاط واستمتعي بعروض حصرية' },
 ];
 
 export default function OnboardingScreen(): JSX.Element {

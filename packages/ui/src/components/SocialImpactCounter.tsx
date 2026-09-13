@@ -44,7 +44,7 @@ export function SocialImpactCounter({
   ruralWomen,
   className = '',
   locale = 'ar',
-  title = ' أثرنا الاجتماعي',
+  title = 'أثرنا الاجتماعي',
   subtitle = 'معاً نحو تمكين 1000 امرأة بحلول 2028',
   goalPrefix = 'الهدف',
   pctOf2028Text = 'من هدف 2028',
@@ -52,7 +52,7 @@ export function SocialImpactCounter({
 }: SocialImpactCounterProps): JSX.Element {
   const metrics: ImpactMetric[] = [
     {
-      emoji: '‍',
+      emoji: '💼',
       label: { ar: 'امرأة عاملة', en: 'Women employed' },
       current: womenEmployed,
       target: 1000,
@@ -60,7 +60,7 @@ export function SocialImpactCounter({
     ...(womenInTraining
       ? [
           {
-            emoji: '',
+            emoji: '🎓',
             label: { ar: 'متدربة', en: 'In training' },
             current: womenInTraining,
             target: 500,
@@ -70,7 +70,7 @@ export function SocialImpactCounter({
     ...(survivorServices
       ? [
           {
-            emoji: '',
+            emoji: '🎁',
             label: { ar: 'خدمة مجانية', en: 'Free services' },
             current: survivorServices,
             target: 500,
@@ -80,7 +80,7 @@ export function SocialImpactCounter({
     ...(ruralWomen
       ? [
           {
-            emoji: '',
+            emoji: '🌾',
             label: { ar: 'امرأة ريفية', en: 'Rural women' },
             current: ruralWomen,
             target: 200,
@@ -163,7 +163,9 @@ export function SocialImpactCounter({
       {/* Year target */}
       <div className="mt-3 text-center">
         <div className="inline-flex items-center gap-1 rounded-full bg-white/60 px-3 py-1 dark:bg-black/20">
-          <span className="text-xs" aria-hidden="true"></span>
+          <span className="text-xs" aria-hidden="true">
+            🎯
+          </span>
           <span className="text-[10px] font-bold text-amber-800 dark:text-amber-200">
             {Math.round((womenEmployed / 1000) * 100)}% {pctOf2028Text}
           </span>

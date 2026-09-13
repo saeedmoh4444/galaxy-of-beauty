@@ -19,7 +19,7 @@ export function BeautySixtiesCard({
       )}
     >
       <div className="flex items-center gap-2">
-        <span className="text-xl"></span>
+        <span className="text-xl">🧓</span>
         <div>
           <h4 className="text-sm font-bold text-emerald-700 dark:text-emerald-300">{title}</h4>
           <p className="text-[10px] text-emerald-500 dark:text-emerald-400">{subtitle}</p>
@@ -28,28 +28,28 @@ export function BeautySixtiesCard({
       <div className="mt-3 space-y-1">
         {[
           {
-            emoji: '',
+            emoji: '🧴',
             text: {
               ar: 'ترطيب مكثف — كريمات غنية بالسيراميد',
               en: 'Intense hydration — creams rich in ceramides',
             },
           },
           {
-            emoji: '',
+            emoji: '💆',
             text: {
               ar: 'مساج دوري — يحسن مرونة البشرة',
               en: 'Regular massage — improves skin elasticity',
             },
           },
           {
-            emoji: '️',
+            emoji: '🛡️',
             text: {
               ar: 'حماية دائمة — البشرة الرقيقة تحتاج عناية',
               en: 'Constant protection — delicate skin needs care',
             },
           },
           {
-            emoji: '️',
+            emoji: '🥗',
             text: {
               ar: 'الجمال من الداخل — تغذية، نوم، سعادة',
               en: 'Beauty from within — nutrition, sleep, happiness',

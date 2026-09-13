@@ -63,17 +63,17 @@ export default function ProductCompareScreen(): JSX.Element {
             <View key={p.id} style={styles.tc}>
               <Text style={styles.tcn}>{p.nameAr ?? ''}</Text>
               <View style={styles.tr}>
-                <Text style={styles.tl}></Text>
+                <Text style={styles.tl}>💰</Text>
                 <Text style={styles.tv}>
                   {(p.price ?? 0).toLocaleString()} {t('misc.sar')}
                 </Text>
               </View>
               <View style={styles.tr}>
-                <Text style={styles.tl}>️</Text>
+                <Text style={styles.tl}>🏷️</Text>
                 <Text style={styles.tv}>{p.brand ?? ''}</Text>
               </View>
               <View style={styles.tr}>
-                <Text style={styles.tl}></Text>
+                <Text style={styles.tl}>⭐</Text>
                 <Text style={styles.tv}>{p.rating ?? ''}</Text>
               </View>
             </View>

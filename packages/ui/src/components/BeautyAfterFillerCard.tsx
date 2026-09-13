@@ -19,7 +19,7 @@ export function BeautyAfterFillerCard({
       )}
     >
       <div className="flex items-center gap-2">
-        <span className="text-xl"></span>
+        <span className="text-xl">💉</span>
         <div>
           <h4 className="text-sm font-bold text-brand-700 dark:text-brand-300">{title}</h4>
           <p className="text-[10px] text-brand-500 dark:text-brand-400">{subtitle}</p>
@@ -28,28 +28,28 @@ export function BeautyAfterFillerCard({
       <div className="mt-3 space-y-1">
         {[
           {
-            emoji: '',
+            emoji: '🧊',
             text: {
               ar: 'كمادات باردة — لتقليل التورم أول 24 ساعة',
               en: 'Cold compresses — to reduce swelling for the first 24 hours',
             },
           },
           {
-            emoji: '',
+            emoji: '🚫',
             text: {
               ar: 'تجنبي الضغط — لا تنامي على الوجه',
               en: "Avoid pressure — don't sleep on your face",
             },
           },
           {
-            emoji: '',
+            emoji: '💄',
             text: {
               ar: 'لا مكياج — 24 ساعة على المنطقة',
               en: 'No makeup — for 24 hours on the area',
             },
           },
           {
-            emoji: '️',
+            emoji: '✨',
             text: { ar: 'النتيجة النهائية — بعد أسبوعين', en: 'Final result — after two weeks' },
           },
         ].map((t, i) => (

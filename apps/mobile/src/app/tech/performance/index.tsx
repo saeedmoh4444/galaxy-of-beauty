@@ -89,9 +89,9 @@ export default function TechPerformanceScreen(): JSX.Element {
         <View style={s.card}>
           <Text style={s.ct}>{t('mobile.tech.performance.top-services')}</Text>
           {[
-            { name: 'مكياج', count: 15, emoji: '' },
-            { name: 'تسريحة شعر', count: 12, emoji: '' },
-            { name: 'مانيكير', count: 8, emoji: '' },
+            { name: 'مكياج', count: 15, emoji: '💄' },
+            { name: 'تسريحة شعر', count: 12, emoji: '💇' },
+            { name: 'مانيكير', count: 8, emoji: '💅' },
           ].map((sv, i) => (
             <View
               key={i}

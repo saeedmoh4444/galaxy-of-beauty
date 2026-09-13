@@ -19,14 +19,14 @@ interface CategoryDef {
 }
 
 const CATEGORIES: Record<BudgetCategory, CategoryDef> = {
-  nails: { emoji: '', label: { ar: 'أظافر', en: 'Nails' } },
-  hair: { emoji: '', label: { ar: 'شعر', en: 'Hair' } },
-  facial: { emoji: '', label: { ar: 'بشرة', en: 'Skin' } },
-  massage: { emoji: '', label: { ar: 'مساج', en: 'Massage' } },
-  makeup: { emoji: '', label: { ar: 'مكياج', en: 'Makeup' } },
-  henna: { emoji: '', label: { ar: 'حناء', en: 'Henna' } },
-  brows: { emoji: '', label: { ar: 'حواجب', en: 'Brows' } },
-  waxing: { emoji: '️', label: { ar: 'إزالة شعر', en: 'Hair removal' } },
+  nails: { emoji: '💅', label: { ar: 'أظافر', en: 'Nails' } },
+  hair: { emoji: '💇', label: { ar: 'شعر', en: 'Hair' } },
+  facial: { emoji: '🧖', label: { ar: 'بشرة', en: 'Skin' } },
+  massage: { emoji: '💆', label: { ar: 'مساج', en: 'Massage' } },
+  makeup: { emoji: '💄', label: { ar: 'مكياج', en: 'Makeup' } },
+  henna: { emoji: '🌿', label: { ar: 'حناء', en: 'Henna' } },
+  brows: { emoji: '🎨', label: { ar: 'حواجب', en: 'Brows' } },
+  waxing: { emoji: '🪒', label: { ar: 'إزالة شعر', en: 'Hair removal' } },
 };
 
 interface BudgetService {
@@ -85,7 +85,9 @@ export function BeautyBudgetCard({
       {/* Header */}
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-2">
-          <span className="text-lg" aria-hidden="true"></span>
+          <span className="text-lg" aria-hidden="true">
+            💰
+          </span>
           <div>
             <h4 className="text-sm font-bold text-text-primary dark:text-gray-100">{title}</h4>
             <p className="text-[10px] text-text-tertiary dark:text-text-tertiary">

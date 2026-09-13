@@ -118,7 +118,7 @@ export default function LiveStreamDetailPage(): JSX.Element {
             />
           ) : (
             <div className="text-center text-white/40">
-              <span className="text-8xl"></span>
+              <span className="text-8xl">📡</span>
               <p className="mt-4">{t('marketing.live-stream-detail.waiting-for-stream')}</p>
             </div>
           )}

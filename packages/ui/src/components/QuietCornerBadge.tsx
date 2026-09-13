@@ -29,22 +29,22 @@ interface AmenityDef {
 
 const AMENITIES: AmenityDef[] = [
   {
-    emoji: '',
+    emoji: '🧸',
     label: { ar: 'ألعاب', en: 'Toys' },
     detail: { ar: 'ألعاب آمنة ومناسبة للأطفال', en: 'Safe, age-appropriate toys' },
   },
   {
-    emoji: '',
+    emoji: '🎨',
     label: { ar: 'تلوين', en: 'Coloring' },
     detail: { ar: 'دفاتر تلوين وأقلام ملونة', en: 'Coloring books and crayons' },
   },
   {
-    emoji: '',
+    emoji: '📱',
     label: { ar: 'تابلت', en: 'Tablet' },
     detail: { ar: 'تابلت تعليمي مع سماعات', en: 'Educational tablet with headphones' },
   },
   {
-    emoji: '',
+    emoji: '🎠',
     label: { ar: 'ركن ألعاب', en: 'Play area' },
     detail: { ar: 'مساحة لعب آمنة ومرئية', en: 'Safe, visible play space' },
   },
@@ -54,17 +54,17 @@ const AMENITIES: AmenityDef[] = [
     detail: { ar: 'كرسي طعام للأطفال الصغار', en: 'High chair for toddlers' },
   },
   {
-    emoji: '',
+    emoji: '🧷',
     label: { ar: 'طاولة تغيير', en: 'Changing table' },
     detail: { ar: 'طاولة تغيير حفاضات نظيفة', en: 'Clean diaper changing table' },
   },
   {
-    emoji: '',
+    emoji: '🍼',
     label: { ar: 'ركن رضاعة', en: 'Nursing area' },
     detail: { ar: 'مكان خاص ومريح للرضاعة', en: 'Private, comfortable nursing area' },
   },
   {
-    emoji: '',
+    emoji: '🧃',
     label: { ar: 'مشروبات أطفال', en: 'Kids drinks' },
     detail: { ar: 'عصائر وحليب مجاني للأطفال', en: 'Free juices and milk for kids' },
   },
@@ -95,8 +95,8 @@ export function QuietCornerBadge({
   className = '',
   title = 'ركن الأطفال',
   subtitle = 'لأن الأم تحتاج وقتاً لنفسها',
-  supervisedLabel = '‍ مراقب',
-  supervisedNote = '‍ موظفة مخصصة لمراقبة الأطفال — اطمئني على صغاركِ',
+  supervisedLabel = 'مراقب',
+  supervisedNote = 'موظفة مخصصة لمراقبة الأطفال — اطمئني على صغاركِ',
   footerText = 'أنتِ تستحقين وقتاً لنفسكِ — وصغاركِ في أيدٍ أمينة',
   locale = 'ar',
 }: QuietCornerBadgeProps): JSX.Element | null {
@@ -126,7 +126,9 @@ export function QuietCornerBadge({
     >
       {/* Header */}
       <div className="flex items-center gap-2">
-        <span className="text-xl" aria-hidden="true"></span>
+        <span className="text-xl" aria-hidden="true">
+          🧸
+        </span>
         <div>
           <h4 className="text-sm font-bold text-orange-700 dark:text-orange-300">{title}</h4>
           <p className="text-[10px] text-orange-500 dark:text-orange-400">{subtitle}</p>

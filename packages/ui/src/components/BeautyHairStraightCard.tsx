@@ -19,7 +19,7 @@ export function BeautyHairStraightCard({
       )}
     >
       <div className="flex items-center gap-2">
-        <span className="text-xl"></span>
+        <span className="text-xl">💁</span>
         <div>
           <h4 className="text-sm font-bold text-sky-700 dark:text-sky-300">{title}</h4>
           <p className="text-[10px] text-sky-500 dark:text-sky-400">{subtitle}</p>
@@ -28,18 +28,18 @@ export function BeautyHairStraightCard({
       <div className="mt-3 space-y-1">
         {[
           {
-            emoji: '',
+            emoji: '🧼',
             text: { ar: 'شامبو منقي — مرة أسبوعياً', en: 'Clarifying shampoo — once a week' },
           },
           {
-            emoji: '',
+            emoji: '🧴',
             text: {
               ar: 'بلسم خفيف — لا يثقل الشعر',
               en: 'Light conditioner — does not weigh hair down',
             },
           },
-          { emoji: '', text: { ar: 'سيروم لمعان — لأطراف فقط', en: 'Shine serum — ends only' } },
-          { emoji: '', text: { ar: 'غسيل كل 2-3 أيام', en: 'Wash every 2-3 days' } },
+          { emoji: '✨', text: { ar: 'سيروم لمعان — لأطراف فقط', en: 'Shine serum — ends only' } },
+          { emoji: '📅', text: { ar: 'غسيل كل 2-3 أيام', en: 'Wash every 2-3 days' } },
         ].map((t, i) => (
           <div
             key={i}

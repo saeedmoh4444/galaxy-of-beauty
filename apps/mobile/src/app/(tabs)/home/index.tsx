@@ -35,7 +35,19 @@ export default function HomeScreen(): JSX.Element {
       emptyTitle={t('marketing.home.no-categories')}
       onRetry={() => cats.refetch()}
     >
-      <Text style={styles.title}>{t('common.brandName')}</Text>
+      <View style={styles.headerRow}>
+        <Text style={styles.title}>{t('common.brandName')}</Text>
+        <TouchableOpacity
+          testID="home-more-button"
+          style={styles.moreBtn}
+          onPress={() => {
+            trigger();
+            router.push('/public/more');
+          }}
+        >
+          <Text style={styles.moreBtnText}>{t('nav.more')}</Text>
+        </TouchableOpacity>
+      </View>
 
       {/* Community Stats Bar */}
       <View style={styles.statsRow}>
@@ -99,13 +111,26 @@ export default function HomeScreen(): JSX.Element {
 
 const makeStyles = (c: typeof themeColors.light | typeof themeColors.dark) =>
   StyleSheet.create({
+    headerRow: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      justifyContent: 'space-between',
+      marginBottom: 20,
+    },
     title: {
       fontSize: 24,
       fontWeight: '800',
       color: c.brand,
       textAlign: 'center',
-      marginBottom: 20,
     },
+    moreBtn: {
+      borderColor: c.border,
+      borderWidth: 1,
+      borderRadius: 999,
+      paddingHorizontal: 12,
+      paddingVertical: 5,
+    },
+    moreBtnText: { fontSize: 12, fontWeight: '700', color: c.textSecondary },
     grid: { flexDirection: 'row', flexWrap: 'wrap', gap: 10 },
     card: {
       width: '30%',

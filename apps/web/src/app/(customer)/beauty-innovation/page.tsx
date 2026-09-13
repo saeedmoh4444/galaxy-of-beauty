@@ -71,9 +71,9 @@ export default function BeautyInnovationPage(): JSX.Element {
             <BeautyTimeCapsuleCard savedDate="2026-08-06" />
             <BeautyDreamBoardCard
               dreams={[
-                { emoji: '', text: t('beautyInnovation.dreamLongHair') },
-                { emoji: '', text: t('beautyInnovation.dreamWeddingLook') },
-                { emoji: '', text: t('beautyInnovation.dreamMasterMakeup') },
+                { emoji: '💇', text: t('beautyInnovation.dreamLongHair') },
+                { emoji: '👰', text: t('beautyInnovation.dreamWeddingLook') },
+                { emoji: '💄', text: t('beautyInnovation.dreamMasterMakeup') },
               ]}
             />
             <BeautySecretSantaCard
@@ -96,7 +96,7 @@ export default function BeautyInnovationPage(): JSX.Element {
             <div className="grid gap-4 sm:grid-cols-2">
               <BeautyQuickTipCard
                 tip={{
-                  emoji: '',
+                  emoji: '💧',
                   title: t('beautyInnovation.tipWaterTitle'),
                   body: t('beautyInnovation.tipWaterBody'),
                 }}

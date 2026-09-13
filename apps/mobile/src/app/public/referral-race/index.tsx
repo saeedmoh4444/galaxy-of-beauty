@@ -46,7 +46,7 @@ export default function ReferralRaceScreen(): JSX.Element {
               {t('mobile.public.referral-race.referral', { count: r.referrals ?? 0 })}
             </Text>
           </View>
-          {i === 0 && <Text style={styles.cr}></Text>}
+          {i === 0 && <Text style={styles.cr}>🏆</Text>}
         </View>
       ))}
     </ScrollView>

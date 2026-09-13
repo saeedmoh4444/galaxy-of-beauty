@@ -23,7 +23,7 @@ export function BeautySleepHygieneCard({
       )}
     >
       <div className="flex items-center gap-2">
-        <span className="text-xl"></span>
+        <span className="text-xl">😴</span>
         <div>
           <h4 className="text-sm font-bold text-indigo-700 dark:text-indigo-300">{title}</h4>
           <p className="text-[10px] text-indigo-500 dark:text-indigo-400">{subtitle}</p>
@@ -32,22 +32,22 @@ export function BeautySleepHygieneCard({
       <div className="mt-3 grid grid-cols-2 gap-1.5">
         {[
           {
-            emoji: '',
+            emoji: '📵',
             label: { ar: 'لا شاشات', en: 'No screens' },
             tip: { ar: 'قبل النوم بساعة', en: 'An hour before bed' },
           },
           {
-            emoji: '️',
+            emoji: '🧊',
             label: { ar: 'غرفة باردة', en: 'Cool room' },
             tip: { ar: '18-20 درجة مئوية', en: '18-20°C' },
           },
           {
-            emoji: '️',
+            emoji: '⏰',
             label: { ar: 'روتين ثابت', en: 'Consistent routine' },
             tip: { ar: 'نفس الموعد يومياً', en: 'Same time every day' },
           },
           {
-            emoji: '',
+            emoji: '☕',
             label: { ar: 'لا كافيين', en: 'No caffeine' },
             tip: { ar: 'بعد الرابعة عصراً', en: 'After 4 PM' },
           },

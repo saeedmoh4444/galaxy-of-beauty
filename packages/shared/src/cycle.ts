@@ -24,7 +24,7 @@ export const CYCLE_PHASES: CyclePhase[] = [
   },
   {
     key: 'follicular',
-    emoji: '',
+    emoji: '🌱',
     name: 'الجريبي',
     days: [6, 13],
     color: '#f59e0b',
@@ -36,7 +36,7 @@ export const CYCLE_PHASES: CyclePhase[] = [
   },
   {
     key: 'ovulation',
-    emoji: '',
+    emoji: '✨',
     name: 'الإباضة',
     days: [14, 16],
     color: '#8b5cf6',
@@ -44,7 +44,7 @@ export const CYCLE_PHASES: CyclePhase[] = [
   },
   {
     key: 'luteal',
-    emoji: '',
+    emoji: '🌙',
     name: 'الأصفري',
     days: [17, 28],
     color: '#059669',
@@ -81,22 +81,22 @@ export const PMS_LIBRARY: Array<{ ar: string; en: string; emoji: string }> = [
   {
     ar: 'خففي الملح والكافيين — يقلل الانتفاخ والصداع',
     en: 'Cut salt and caffeine — reduces bloating and headaches',
-    emoji: '',
+    emoji: '🧂',
   },
   {
     ar: 'المشي الخفيف ٢٠ دقيقة يحسن المزاج',
     en: 'A light 20-minute walk lifts your mood',
-    emoji: '',
+    emoji: '👟',
   },
   {
     ar: 'اشربي ماءً دافئاً مع الأعشاب المهدئة',
     en: 'Sip warm water with calming herbal tea',
-    emoji: '',
+    emoji: '🍵',
   },
   {
     ar: 'قناع الطين مرة هذا الأسبوع يقلل البثور الهرمونية',
     en: 'One clay mask this week reduces hormonal breakouts',
-    emoji: '',
+    emoji: '🧖',
   },
 ];
 

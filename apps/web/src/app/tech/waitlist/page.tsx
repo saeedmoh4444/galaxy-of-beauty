@@ -34,7 +34,7 @@ export default function TechWaitlistPage(): JSX.Element {
           </div>
         ) : bookings.length === 0 ? (
           <Card padding="lg" className="text-center py-8">
-            <p className="text-4xl mb-2"></p>
+            <p className="text-4xl mb-2">⏳</p>
             <p className="text-text-secondary">{t('tech.waitlist.empty')}</p>
           </Card>
         ) : (

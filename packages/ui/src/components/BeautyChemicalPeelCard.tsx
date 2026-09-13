@@ -19,7 +19,7 @@ export function BeautyChemicalPeelCard({
       )}
     >
       <div className="flex items-center gap-2">
-        <span className="text-xl"></span>
+        <span className="text-xl">🧪</span>
         <div>
           <h4 className="text-sm font-bold text-amber-700 dark:text-amber-300">{title}</h4>
           <p className="text-[10px] text-amber-500 dark:text-amber-400">{subtitle}</p>
@@ -28,12 +28,12 @@ export function BeautyChemicalPeelCard({
       <div className="mt-3 grid grid-cols-2 gap-1.5">
         {[
           {
-            emoji: '',
+            emoji: '🟢',
             label: { ar: 'سطحي', en: 'Superficial' },
             tip: { ar: 'أحماض خفيفة — لا وقت تعافي', en: 'Light acids — no downtime' },
           },
           {
-            emoji: '',
+            emoji: '🟡',
             label: { ar: 'متوسط', en: 'Medium' },
             tip: {
               ar: 'يخترق أعمق — 3-5 أيام تقشير',
@@ -41,12 +41,12 @@ export function BeautyChemicalPeelCard({
             },
           },
           {
-            emoji: '',
+            emoji: '🔴',
             label: { ar: 'عميق', en: 'Deep' },
             tip: { ar: 'طبيب فقط — نتائج قوية', en: 'Doctor only — powerful results' },
           },
           {
-            emoji: '️',
+            emoji: '🌞',
             label: { ar: 'بعد الجلسة', en: 'After the session' },
             tip: { ar: 'واقي شمس — ضروري جداً', en: 'Sunscreen — absolutely essential' },
           },

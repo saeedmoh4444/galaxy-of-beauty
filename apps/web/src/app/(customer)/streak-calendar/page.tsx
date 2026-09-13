@@ -8,11 +8,11 @@ import type { TranslationKey } from '@galaxy/shared';
 import Link from 'next/link';
 
 const MILESTONES: Record<number, { emoji: string; reward: TranslationKey }> = {
-  5: { emoji: '', reward: 'streakCalendar.reward.m5' },
-  10: { emoji: '', reward: 'streakCalendar.reward.m10' },
-  20: { emoji: '', reward: 'streakCalendar.reward.m20' },
-  30: { emoji: '', reward: 'streakCalendar.reward.m30' },
-  50: { emoji: '', reward: 'streakCalendar.reward.m50' },
+  5: { emoji: '🔖', reward: 'streakCalendar.reward.m5' },
+  10: { emoji: '💆', reward: 'streakCalendar.reward.m10' },
+  20: { emoji: '🎁', reward: 'streakCalendar.reward.m20' },
+  30: { emoji: '🥇', reward: 'streakCalendar.reward.m30' },
+  50: { emoji: '👑', reward: 'streakCalendar.reward.m50' },
 };
 
 export default function StreakCalendarPage(): JSX.Element {
@@ -83,7 +83,7 @@ export default function StreakCalendarPage(): JSX.Element {
               padding="lg"
               className="text-center bg-gradient-to-r from-amber-50 to-orange-50 dark:from-amber-950 dark:to-orange-950"
             >
-              <p className="text-6xl"></p>
+              <p className="text-6xl">🔥</p>
               <p className="mt-2 text-sm text-text-secondary">
                 {t('streakCalendar.currentStreak')}
               </p>

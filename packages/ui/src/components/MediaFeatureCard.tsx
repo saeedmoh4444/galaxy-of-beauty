@@ -31,7 +31,7 @@ interface MediaFeatureCardProps {
 const TYPE_ICONS: Record<string, string> = {
   tv: '',
   newspaper: '',
-  podcast: '️',
+  podcast: '',
   magazine: '',
   online: '',
 };

@@ -2,32 +2,32 @@
 
 export const mobileAdminMessages = {
   // ---- Dashboard ----
-  'mobile.admin.dashboard.title': { ar: ' لوحة الإدارة', en: 'Admin Dashboard' },
+  'mobile.admin.dashboard.title': { ar: 'لوحة الإدارة', en: 'Admin Dashboard' },
   'mobile.admin.dashboard.load-error': {
     ar: 'فشل تحميل لوحة الإدارة',
     en: 'Failed to load admin dashboard',
   },
-  'mobile.admin.dashboard.users': { ar: ' مستخدمين', en: 'Users' },
-  'mobile.admin.dashboard.bookings': { ar: ' حجوزات', en: 'Bookings' },
-  'mobile.admin.dashboard.technicians': { ar: ' فنيات', en: 'Service Providers' },
-  'mobile.admin.dashboard.revenue': { ar: ' إيرادات', en: 'Revenue' },
-  'mobile.admin.dashboard.link-users': { ar: ' المستخدمين', en: 'Users' },
-  'mobile.admin.dashboard.link-bookings': { ar: ' الحجوزات', en: 'Bookings' },
-  'mobile.admin.dashboard.link-technicians': { ar: ' الفنيات', en: 'Service Providers' },
-  'mobile.admin.dashboard.link-finance': { ar: ' المالية', en: 'Finance' },
-  'mobile.admin.dashboard.link-analytics': { ar: ' التحليلات', en: 'Analytics' },
+  'mobile.admin.dashboard.users': { ar: 'مستخدمين', en: 'Users' },
+  'mobile.admin.dashboard.bookings': { ar: 'حجوزات', en: 'Bookings' },
+  'mobile.admin.dashboard.technicians': { ar: 'فنيات', en: 'Service Providers' },
+  'mobile.admin.dashboard.revenue': { ar: 'إيرادات', en: 'Revenue' },
+  'mobile.admin.dashboard.link-users': { ar: 'المستخدمين', en: 'Users' },
+  'mobile.admin.dashboard.link-bookings': { ar: 'الحجوزات', en: 'Bookings' },
+  'mobile.admin.dashboard.link-technicians': { ar: 'الفنيات', en: 'Service Providers' },
+  'mobile.admin.dashboard.link-finance': { ar: 'المالية', en: 'Finance' },
+  'mobile.admin.dashboard.link-analytics': { ar: 'التحليلات', en: 'Analytics' },
 
   // ---- Users ----
-  'mobile.admin.users.title': { ar: ' المستخدمين', en: 'Users' },
+  'mobile.admin.users.title': { ar: 'المستخدمين', en: 'Users' },
 
   // ---- Bookings ----
-  'mobile.admin.bookings.title': { ar: ' الحجوزات', en: 'Bookings' },
+  'mobile.admin.bookings.title': { ar: 'الحجوزات', en: 'Bookings' },
 
   // ---- Technicians ----
-  'mobile.admin.technicians.title': { ar: '‍ الفنيات', en: 'Service Providers' },
+  'mobile.admin.technicians.title': { ar: 'الفنيات', en: 'Service Providers' },
 
   // ---- Finance ----
-  'mobile.admin.finance.title': { ar: ' المالية', en: 'Finance' },
+  'mobile.admin.finance.title': { ar: 'المالية', en: 'Finance' },
   'mobile.admin.finance.load-error': {
     ar: 'فشل تحميل البيانات المالية',
     en: 'Failed to load financial data',
@@ -35,10 +35,10 @@ export const mobileAdminMessages = {
   'mobile.admin.finance.payouts': { ar: 'المدفوعات', en: 'Payouts' },
 
   // ---- Disputes ----
-  'mobile.admin.disputes.title': { ar: '️ النزاعات', en: 'Disputes' },
+  'mobile.admin.disputes.title': { ar: 'النزاعات', en: 'Disputes' },
 
   // ---- ZATCA ----
-  'mobile.admin.zatca.title': { ar: ' الفوترة (ZATCA)', en: 'E-Invoicing (ZATCA)' },
+  'mobile.admin.zatca.title': { ar: 'الفوترة (ZATCA)', en: 'E-Invoicing (ZATCA)' },
 
   // ---- Payouts ----
   'mobile.admin.payouts.load-error': {
@@ -47,7 +47,7 @@ export const mobileAdminMessages = {
   },
 
   // ---- Analytics ----
-  'mobile.admin.analytics.title': { ar: ' التحليلات', en: 'Analytics' },
+  'mobile.admin.analytics.title': { ar: 'التحليلات', en: 'Analytics' },
   'mobile.admin.analytics.load-error': {
     ar: 'فشل تحميل التحليلات',
     en: 'Failed to load analytics',
@@ -56,7 +56,7 @@ export const mobileAdminMessages = {
   'mobile.admin.analytics.bookings': { ar: 'حجز', en: 'Bookings' },
 
   // ---- Analytics V2 ----
-  'mobile.admin.analytics-v2.top': { ar: ' الأعلى', en: 'Top' },
+  'mobile.admin.analytics-v2.top': { ar: 'الأعلى', en: 'Top' },
 
   // ---- Audit Log ----
   'mobile.admin.audit-log.subtitle': {
@@ -81,19 +81,19 @@ export const mobileAdminMessages = {
     ar: 'فشل تحميل حالة الأنظمة',
     en: 'Failed to load system health',
   },
-  'mobile.admin.monitoring.services': { ar: ' الخدمات', en: 'Services' },
+  'mobile.admin.monitoring.services': { ar: 'الخدمات', en: 'Services' },
   'mobile.admin.monitoring.response': { ar: 'الاستجابة', en: 'Response' },
   'mobile.admin.monitoring.sessions': { ar: 'جلسات', en: 'Sessions' },
 
   // ---- Reports ----
   'mobile.admin.reports.load-error': { ar: 'فشل تحميل التقارير', en: 'Failed to load reports' },
-  'mobile.admin.reports.top-technicians': { ar: '‍ أفضل الفنيات', en: 'Top Service Providers' },
+  'mobile.admin.reports.top-technicians': { ar: 'أفضل الفنيات', en: 'Top Service Providers' },
 
   // ---- Services ----
-  'mobile.admin.services.title': { ar: '‍️ الخدمات', en: 'Services' },
+  'mobile.admin.services.title': { ar: 'الخدمات', en: 'Services' },
 
   // ---- Categories ----
-  'mobile.admin.categories.title': { ar: ' الفئات', en: 'Categories' },
+  'mobile.admin.categories.title': { ar: 'الفئات', en: 'Categories' },
   'mobile.admin.categories.load-error': {
     ar: 'فشل تحميل الفئات',
     en: 'Failed to load categories',
@@ -115,21 +115,21 @@ export const mobileAdminMessages = {
   'mobile.admin.packages.load-error': { ar: 'فشل تحميل الباقات', en: 'Failed to load packages' },
 
   // ---- Admin Tools ----
-  'mobile.admin.admin-tools.title': { ar: '️ أدوات المشرف', en: 'Admin Tools' },
-  'mobile.admin.admin-tools.feature-flags': { ar: ' إدارة الميزات', en: 'Manage Features' },
+  'mobile.admin.admin-tools.title': { ar: 'أدوات المشرف', en: 'Admin Tools' },
+  'mobile.admin.admin-tools.feature-flags': { ar: 'إدارة الميزات', en: 'Manage Features' },
 
   // ---- AI Features ----
-  'mobile.admin.ai-features.title': { ar: ' ميزات الذكاء الاصطناعي', en: 'AI Features' },
+  'mobile.admin.ai-features.title': { ar: 'ميزات الذكاء الاصطناعي', en: 'AI Features' },
   'mobile.admin.ai-features.subtitle': {
     ar: 'إدارة خوارزميات AI في المنصة',
     en: 'Manage AI algorithms on the platform',
   },
 
   // ---- Areas ----
-  'mobile.admin.areas.title': { ar: ' المناطق', en: 'Areas' },
+  'mobile.admin.areas.title': { ar: 'المناطق', en: 'Areas' },
 
   // ---- Beauty Events ----
-  'mobile.admin.beauty-events.title': { ar: ' فعاليات التجميل', en: 'Beauty Events' },
+  'mobile.admin.beauty-events.title': { ar: 'فعاليات التجميل', en: 'Beauty Events' },
   'mobile.admin.beauty-events.subtitle': {
     ar: 'إدارة الفعاليات والمناسبات',
     en: 'Manage events and occasions',
@@ -148,13 +148,13 @@ export const mobileAdminMessages = {
     en: '{rate}% cashback — min spend {min} SAR',
   },
   'mobile.admin.cashback.max-cashback': {
-    ar: ' أقصى استرداد: {amount} ر.س',
+    ar: 'أقصى استرداد: {amount} ر.س',
     en: 'Max cashback: {amount} SAR',
   },
-  'mobile.admin.cashback.add-rule': { ar: ' إضافة قاعدة جديدة', en: 'Add New Rule' },
+  'mobile.admin.cashback.add-rule': { ar: 'إضافة قاعدة جديدة', en: 'Add New Rule' },
 
   // ---- Flash Deals ----
-  'mobile.admin.flash-deals.title': { ar: ' عروض فلاش', en: 'Flash Deals' },
+  'mobile.admin.flash-deals.title': { ar: 'عروض فلاش', en: 'Flash Deals' },
   'mobile.admin.flash-deals.subtitle': {
     ar: 'إدارة العروض محدودة الوقت',
     en: 'Manage limited-time deals',
@@ -163,7 +163,7 @@ export const mobileAdminMessages = {
     ar: '{sold}/{max} مباع · {endsIn}',
     en: '{sold}/{max} sold · {endsIn}',
   },
-  'mobile.admin.flash-deals.new-deal': { ar: ' عرض فلاش جديد', en: 'New Flash Deal' },
+  'mobile.admin.flash-deals.new-deal': { ar: 'عرض فلاش جديد', en: 'New Flash Deal' },
 
   // ---- Gift Cards ----
   'mobile.admin.gift-cards.load-error': {
@@ -172,13 +172,13 @@ export const mobileAdminMessages = {
   },
 
   // ---- Group Bookings ----
-  'mobile.admin.group-bookings.title': { ar: ' حجوزات جماعية', en: 'Group Bookings' },
+  'mobile.admin.group-bookings.title': { ar: 'حجوزات جماعية', en: 'Group Bookings' },
   'mobile.admin.group-bookings.people': { ar: '{count} أشخاص', en: '{count} people' },
   'mobile.admin.group-bookings.confirmed': { ar: 'مؤكد', en: 'Confirmed' },
   'mobile.admin.group-bookings.pending': { ar: 'معلق', en: 'Pending' },
 
   // ---- Loyalty ----
-  'mobile.admin.loyalty.title': { ar: ' برنامج الولاء', en: 'Loyalty Program' },
+  'mobile.admin.loyalty.title': { ar: 'برنامج الولاء', en: 'Loyalty Program' },
   'mobile.admin.loyalty.subtitle': {
     ar: 'إدارة مستويات العضوية والمكافآت',
     en: 'Manage membership tiers and rewards',
@@ -188,13 +188,13 @@ export const mobileAdminMessages = {
     en: '{discount}% discount · {points} points',
   },
   'mobile.admin.loyalty.members-count': { ar: '{count} عضوة', en: '{count} members' },
-  'mobile.admin.loyalty.stats': { ar: ' إحصائيات', en: 'Statistics' },
+  'mobile.admin.loyalty.stats': { ar: 'إحصائيات', en: 'Statistics' },
   'mobile.admin.loyalty.total-members': { ar: 'مجموع العضوات', en: 'Total members' },
   'mobile.admin.loyalty.points-awarded': { ar: 'نقطة ممنوحة', en: 'Points awarded' },
   'mobile.admin.loyalty.retention-rate': { ar: 'نسبة الاحتفاظ', en: 'Retention rate' },
 
   // ---- Promo ----
-  'mobile.admin.promo.title': { ar: ' إدارة العروض', en: 'Manage Promotions' },
+  'mobile.admin.promo.title': { ar: 'إدارة العروض', en: 'Manage Promotions' },
   'mobile.admin.promo.subtitle': {
     ar: 'أكواد خصم وحملات ترويجية',
     en: 'Discount codes and promotional campaigns',
@@ -202,7 +202,7 @@ export const mobileAdminMessages = {
   'mobile.admin.promo.discount-percent': { ar: 'خصم {discount}%', en: '{discount}% off' },
   'mobile.admin.promo.discount-fixed': { ar: 'خصم {discount} ر.س', en: '{discount} SAR off' },
   'mobile.admin.promo.uses': { ar: '{used}/{max} استخدام', en: '{used}/{max} uses' },
-  'mobile.admin.promo.add-code': { ar: ' إضافة كود خصم', en: 'Add Promo Code' },
+  'mobile.admin.promo.add-code': { ar: 'إضافة كود خصم', en: 'Add Promo Code' },
 
   // ---- Predictive Demand ----
   'mobile.admin.predictive-demand.load-error': {
@@ -211,7 +211,7 @@ export const mobileAdminMessages = {
   },
 
   // ---- Subscriptions ----
-  'mobile.admin.subscriptions.title': { ar: ' الاشتراكات', en: 'Subscriptions' },
+  'mobile.admin.subscriptions.title': { ar: 'الاشتراكات', en: 'Subscriptions' },
   'mobile.admin.subscriptions.subtitle': {
     ar: 'إدارة اشتراكات العضوية',
     en: 'Manage membership subscriptions',
@@ -221,19 +221,19 @@ export const mobileAdminMessages = {
   'mobile.admin.subscriptions.free': { ar: 'مجاناً', en: 'Free' },
   'mobile.admin.subscriptions.price-month': { ar: '{price} ر.س/شهر', en: '{price} SAR/month' },
   'mobile.admin.subscriptions.cancelled-m': { ar: 'ملغى', en: 'Cancelled' },
-  'mobile.admin.subscriptions.since': { ar: ' منذ {date}', en: 'Since {date}' },
+  'mobile.admin.subscriptions.since': { ar: 'منذ {date}', en: 'Since {date}' },
 
   // ---- Settings ----
-  'mobile.admin.settings.title': { ar: '️ الإعدادات', en: 'Settings' },
-  'mobile.admin.settings.platform-fees': { ar: ' رسوم المنصة', en: 'Platform Fees' },
+  'mobile.admin.settings.title': { ar: 'الإعدادات', en: 'Settings' },
+  'mobile.admin.settings.platform-fees': { ar: 'رسوم المنصة', en: 'Platform Fees' },
   'mobile.admin.settings.platform-rate': { ar: 'نسبة المنصة', en: 'Platform rate' },
   'mobile.admin.settings.min-withdrawal': { ar: 'الحد الأدنى للسحب', en: 'Minimum withdrawal' },
-  'mobile.admin.settings.cashback': { ar: ' الكاش باك', en: 'Cashback' },
+  'mobile.admin.settings.cashback': { ar: 'الكاش باك', en: 'Cashback' },
   'mobile.admin.settings.cashback-rate': { ar: 'نسبة الاسترداد', en: 'Cashback rate' },
   'mobile.admin.settings.first-booking-bonus': {
     ar: 'مكافأة أول حجز',
     en: 'First booking bonus',
   },
-  'mobile.admin.settings.maintenance': { ar: ' الصيانة', en: 'Maintenance' },
+  'mobile.admin.settings.maintenance': { ar: 'الصيانة', en: 'Maintenance' },
   'mobile.admin.settings.maintenance-mode': { ar: 'وضع الصيانة', en: 'Maintenance mode' },
 } as const satisfies Record<string, { ar: string; en: string }>;

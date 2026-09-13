@@ -19,7 +19,7 @@ export function BeautyDiamondFacialCard({
       )}
     >
       <div className="flex items-center gap-2">
-        <span className="text-xl"></span>
+        <span className="text-xl">💎</span>
         <div>
           <h4 className="text-sm font-bold text-indigo-700 dark:text-indigo-300">{title}</h4>
           <p className="text-[10px] text-indigo-500 dark:text-indigo-400">{subtitle}</p>
@@ -28,28 +28,28 @@ export function BeautyDiamondFacialCard({
       <div className="mt-3 space-y-1">
         {[
           {
-            emoji: '',
+            emoji: '💎',
             text: {
               ar: 'رأس ماسي — يقشر الطبقة السطحية بلطف',
               en: 'Diamond tip — gently exfoliates the surface layer',
             },
           },
           {
-            emoji: '',
+            emoji: '✨',
             text: {
               ar: 'يحفز الكولاجين — بشرة أنعم وأكثر شباباً',
               en: 'Stimulates collagen — smoother, younger skin',
             },
           },
           {
-            emoji: '',
+            emoji: '🧽',
             text: {
               ar: 'يزيل الخلايا الميتة — يمتص السيروم أفضل',
               en: 'Removes dead cells — serum absorbs better',
             },
           },
           {
-            emoji: '',
+            emoji: '📅',
             text: {
               ar: 'كل 4-6 أسابيع — للنتائج المثالية',
               en: 'Every 4-6 weeks — for best results',

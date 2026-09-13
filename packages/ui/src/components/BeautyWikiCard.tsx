@@ -19,12 +19,12 @@ interface CategoryDef {
 }
 
 const CATEGORIES: Record<WikiCategory, CategoryDef> = {
-  ingredient: { emoji: '', label: { ar: 'مكونات', en: 'Ingredients' } },
-  skincare: { emoji: '', label: { ar: 'عناية بالبشرة', en: 'Skincare' } },
-  haircare: { emoji: '', label: { ar: 'عناية بالشعر', en: 'Haircare' } },
-  makeup: { emoji: '', label: { ar: 'مكياج', en: 'Makeup' } },
-  tradition: { emoji: '', label: { ar: 'تراث سعودي', en: 'Saudi heritage' } },
-  myth: { emoji: '', label: { ar: 'خرافات شائعة', en: 'Common myths' } },
+  ingredient: { emoji: '🧪', label: { ar: 'مكونات', en: 'Ingredients' } },
+  skincare: { emoji: '🧴', label: { ar: 'عناية بالبشرة', en: 'Skincare' } },
+  haircare: { emoji: '💇', label: { ar: 'عناية بالشعر', en: 'Haircare' } },
+  makeup: { emoji: '💄', label: { ar: 'مكياج', en: 'Makeup' } },
+  tradition: { emoji: '🏺', label: { ar: 'تراث سعودي', en: 'Saudi heritage' } },
+  myth: { emoji: '❓', label: { ar: 'خرافات شائعة', en: 'Common myths' } },
   health: { emoji: '🩺', label: { ar: 'صحة', en: 'Health' } },
 };
 
@@ -124,7 +124,7 @@ export function BeautyWikiCard({
             {entry.readTime} {readTimeSuffix}
           </span>
         )}
-        {entry.author && <span className="flex items-center gap-1">️ {entry.author}</span>}
+        {entry.author && <span className="flex items-center gap-1"> {entry.author}</span>}
         {entry.isArabicOriginal && (
           <span className="rounded bg-teal-50 px-1.5 py-0.5 text-teal-700 dark:bg-teal-950 dark:text-teal-300">
             {originalContentText}

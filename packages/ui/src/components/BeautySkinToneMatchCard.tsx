@@ -19,7 +19,7 @@ export function BeautySkinToneMatchCard({
       )}
     >
       <div className="flex items-center gap-2">
-        <span className="text-xl"></span>
+        <span className="text-xl">🎨</span>
         <div>
           <h4 className="text-sm font-bold text-rose-700 dark:text-rose-300">{title}</h4>
           <p className="text-[10px] text-rose-500 dark:text-rose-400">{subtitle}</p>
@@ -35,21 +35,21 @@ export function BeautySkinToneMatchCard({
             },
           },
           {
-            emoji: '️',
+            emoji: '☀️',
             text: {
               ar: 'اختاري في ضوء طبيعي — إضاءة المحل تخدع',
               en: 'Choose in natural light — store lighting deceives',
             },
           },
           {
-            emoji: '️',
+            emoji: '⏳',
             text: {
               ar: 'انتظري 5 دقائق — لون الفاونديشن يتغير',
               en: 'Wait 5 minutes — foundation color changes',
             },
           },
           {
-            emoji: '',
+            emoji: '🌗',
             text: {
               ar: 'درجتين: الصيف أغمق — الشتاء أفتح',
               en: 'Two shades: darker in summer — lighter in winter',

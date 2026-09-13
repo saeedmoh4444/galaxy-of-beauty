@@ -19,7 +19,7 @@ export function BeautyMakeupMinimalCard({
       )}
     >
       <div className="flex items-center gap-2">
-        <span className="text-xl"></span>
+        <span className="text-xl">🍃</span>
         <div>
           <h4 className="text-sm font-bold text-text-secondary">{heading}</h4>
           <p className="text-[10px] text-text-secondary">{subtitle}</p>
@@ -28,22 +28,22 @@ export function BeautyMakeupMinimalCard({
       <div className="mt-3 space-y-1">
         {[
           {
-            emoji: '',
+            emoji: '🧴',
             text: {
               ar: 'BB كريم — بدل الفاونديشن الثقيل',
               en: 'BB cream — instead of heavy foundation',
             },
           },
           {
-            emoji: '',
+            emoji: '👀',
             text: { ar: 'كونسيلر — فقط حيث تحتاجين', en: 'Concealer — only where you need it' },
           },
           {
-            emoji: '',
+            emoji: '🌸',
             text: { ar: 'بلاش كريمي — يبدو طبيعياً', en: 'Creamy blush — looks natural' },
           },
           {
-            emoji: '',
+            emoji: '💄',
             text: { ar: ' tint شفاه — لون خفيف وطبيعي', en: 'Lip tint — light, natural color' },
           },
         ].map((t, i) => (

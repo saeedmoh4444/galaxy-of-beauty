@@ -19,7 +19,7 @@ export function BeautyGoldFacialCard({
       )}
     >
       <div className="flex items-center gap-2">
-        <span className="text-xl"></span>
+        <span className="text-xl">👑</span>
         <div>
           <h4 className="text-sm font-bold text-amber-700 dark:text-amber-300">{title}</h4>
           <p className="text-[10px] text-amber-500 dark:text-amber-400">{subtitle}</p>
@@ -28,28 +28,28 @@ export function BeautyGoldFacialCard({
       <div className="mt-3 space-y-1">
         {[
           {
-            emoji: '',
+            emoji: '🥇',
             text: {
               ar: 'رقائق ذهب حقيقية — توضع على الوجه',
               en: 'Real gold flakes — applied to the face',
             },
           },
           {
-            emoji: '',
+            emoji: '⏳',
             text: {
               ar: 'يحسن مرونة البشرة — يبطئ الشيخوخة',
               en: 'Improves skin elasticity — slows aging',
             },
           },
           {
-            emoji: '',
+            emoji: '✨',
             text: {
               ar: 'يعكس الضوء — بشرة متوهجة فوراً',
               en: 'Reflects light — instantly glowing skin',
             },
           },
           {
-            emoji: '',
+            emoji: '👑',
             text: { ar: 'فاخر — للمناسبات الخاصة', en: 'Luxurious — for special occasions' },
           },
         ].map((t, i) => (

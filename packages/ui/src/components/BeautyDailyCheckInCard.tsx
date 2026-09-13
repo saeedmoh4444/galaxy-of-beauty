@@ -12,12 +12,12 @@ import { cn } from '@galaxy/shared';
  */
 
 const RITUALS = [
-  { emoji: '', label: { ar: '8 أكواب ماء', en: '8 glasses of water' } },
-  { emoji: '', label: { ar: 'روتين عناية', en: 'Skincare routine' } },
-  { emoji: '️', label: { ar: 'واقي شمس', en: 'Sunscreen' } },
-  { emoji: '', label: { ar: 'نوم كافٍ', en: 'Enough sleep' } },
-  { emoji: '', label: { ar: 'تأمل', en: 'Meditation' } },
-  { emoji: '', label: { ar: 'تغذية صحية', en: 'Healthy eating' } },
+  { emoji: '💧', label: { ar: '8 أكواب ماء', en: '8 glasses of water' } },
+  { emoji: '🧴', label: { ar: 'روتين عناية', en: 'Skincare routine' } },
+  { emoji: '🌞', label: { ar: 'واقي شمس', en: 'Sunscreen' } },
+  { emoji: '😴', label: { ar: 'نوم كافٍ', en: 'Enough sleep' } },
+  { emoji: '🧘', label: { ar: 'تأمل', en: 'Meditation' } },
+  { emoji: '🥗', label: { ar: 'تغذية صحية', en: 'Healthy eating' } },
 ];
 
 interface BeautyDailyCheckInCardProps {
@@ -53,7 +53,7 @@ export function BeautyDailyCheckInCard({
     >
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-2">
-          <span className="text-xl"></span>
+          <span className="text-xl">✅</span>
           <div>
             <h4 className="text-sm font-bold text-emerald-700 dark:text-emerald-300">{title}</h4>
             <p className="text-[10px] text-emerald-500 dark:text-emerald-400">

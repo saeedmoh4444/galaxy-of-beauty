@@ -19,7 +19,7 @@ export function BeautyAntiAgingCard({
       )}
     >
       <div className="flex items-center gap-2">
-        <span className="text-xl"></span>
+        <span className="text-xl">✨</span>
         <div>
           <h4 className="text-sm font-bold text-brand-700 dark:text-brand-300">{title}</h4>
           <p className="text-[10px] text-brand-500 dark:text-brand-400">{subtitle}</p>
@@ -28,28 +28,28 @@ export function BeautyAntiAgingCard({
       <div className="mt-3 space-y-1">
         {[
           {
-            emoji: '️',
+            emoji: '☀️',
             text: {
               ar: 'واقي شمس يومياً — يمنع 80% من التجاعيد',
               en: 'Daily sunscreen — prevents 80% of wrinkles',
             },
           },
           {
-            emoji: '',
+            emoji: '✨',
             text: {
               ar: 'ريتينول — المكون الذهبي لمكافحة الشيخوخة',
               en: 'Retinol — the golden anti-aging ingredient',
             },
           },
           {
-            emoji: '',
+            emoji: '💧',
             text: {
               ar: 'ترطيب — بشرة رطبة = بشرة شابة',
               en: 'Moisturize — hydrated skin is youthful skin',
             },
           },
           {
-            emoji: '',
+            emoji: '😴',
             text: {
               ar: 'نوم كافٍ — وقت إصلاح البشرة الطبيعي',
               en: 'Enough sleep — the skin’s natural repair time',

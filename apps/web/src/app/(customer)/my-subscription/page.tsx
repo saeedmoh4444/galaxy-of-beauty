@@ -87,7 +87,7 @@ export default function MySubscriptionPage(): JSX.Element {
           className="bg-gradient-to-r from-brand-50 to-brand-50 dark:from-brand-950 dark:to-brand-950"
         >
           <div className="text-center">
-            <span className="text-5xl"></span>
+            <span className="text-5xl">💳</span>
             <h2 className="mt-3 text-xl font-bold text-text-primary dark:text-gray-100">
               {planName}
             </h2>

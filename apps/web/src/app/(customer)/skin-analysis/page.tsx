@@ -57,22 +57,22 @@ export default function SkinAnalysisPage(): JSX.Element {
         {histItems.length > 0 && (
           <div className="grid gap-4 sm:grid-cols-4">
             <Card padding="md" className="text-center">
-              <p className="text-3xl"></p>
+              <p className="text-3xl">🔬</p>
               <p className="mt-1 text-2xl font-bold">{totalAnalyses}</p>
               <p className="text-xs text-text-secondary">{t('skin.stat.analyses')}</p>
             </Card>
             <Card padding="md" className="text-center">
-              <p className="text-3xl"></p>
+              <p className="text-3xl">🧴</p>
               <p className="mt-1 text-lg font-bold">{latestSkinType}</p>
               <p className="text-xs text-text-secondary">{t('skin.stat.currentType')}</p>
             </Card>
             <Card padding="md" className="text-center">
-              <p className="text-3xl"></p>
+              <p className="text-3xl">🎯</p>
               <p className="mt-1 text-2xl font-bold">{topConcerns.length}</p>
               <p className="text-xs text-text-secondary">{t('skin.stat.concerns')}</p>
             </Card>
             <Card padding="md" className="text-center">
-              <p className="text-3xl"></p>
+              <p className="text-3xl">📈</p>
               <p className="mt-1 text-2xl font-bold">
                 {skinTypes.length > 1 ? t('skin.stat.changing') : t('skin.stat.stable')}
               </p>
@@ -213,7 +213,9 @@ export default function SkinAnalysisPage(): JSX.Element {
                   padding="md"
                   className={`flex items-center gap-4 ${idx === 0 ? 'border-s-4 border-brand-500' : ''}`}
                 >
-                  <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-brand-100 to-brand-100 dark:from-brand-900 dark:to-brand-900 text-lg"></div>
+                  <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-brand-100 to-brand-100 dark:from-brand-900 dark:to-brand-900 text-lg">
+                    🧪
+                  </div>
                   <div className="flex-1 min-w-0">
                     <div className="flex items-center gap-2">
                       <p className="font-bold text-sm">

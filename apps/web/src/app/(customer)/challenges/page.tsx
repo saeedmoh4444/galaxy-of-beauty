@@ -7,11 +7,11 @@ import { useLocale } from '@/components/LocaleProvider';
 import type { TranslationKey } from '@galaxy/shared';
 
 const CH: Record<string, { emoji: string; color: string; label: TranslationKey }> = {
-  '7day_skincare': { emoji: '', color: '#ec4899', label: 'challenges.sevenDaySkincare' },
-  '5bookings': { emoji: '‍️', color: '#f59e0b', label: 'challenges.fiveBookings' },
-  first_review: { emoji: '', color: '#3b82f6', label: 'challenges.firstReview' },
-  streak_4weeks: { emoji: '', color: '#8b5cf6', label: 'challenges.fourWeeksStreak' },
-  refer_3friends: { emoji: '‍️', color: '#10b981', label: 'challenges.threeReferrals' },
+  '7day_skincare': { emoji: '🧴', color: '#ec4899', label: 'challenges.sevenDaySkincare' },
+  '5bookings': { emoji: '📅', color: '#f59e0b', label: 'challenges.fiveBookings' },
+  first_review: { emoji: '⭐', color: '#3b82f6', label: 'challenges.firstReview' },
+  streak_4weeks: { emoji: '🔥', color: '#8b5cf6', label: 'challenges.fourWeeksStreak' },
+  refer_3friends: { emoji: '💝', color: '#10b981', label: 'challenges.threeReferrals' },
 };
 
 export default function ChallengesPage(): JSX.Element {
@@ -39,7 +39,7 @@ export default function ChallengesPage(): JSX.Element {
 
         <div className="space-y-4">
           {challenges.map((c) => {
-            const cfg = CH[c.id] ?? { emoji: '', color: '#6b7280', label: c.id };
+            const cfg = CH[c.id] ?? { emoji: '🎯', color: '#6b7280', label: c.id };
             const prog =
               c.id === '5bookings'
                 ? { current: progress?.bookingCount ?? 0, total: 5 }

@@ -19,7 +19,7 @@ export function BeautyMorningRoutineCard({
       )}
     >
       <div className="flex items-center gap-2">
-        <span className="text-xl">️</span>
+        <span className="text-xl">🌅</span>
         <div>
           <h4 className="text-sm font-bold text-amber-700 dark:text-amber-300">{title}</h4>
           <p className="text-[10px] text-amber-500 dark:text-amber-400">{subtitle}</p>
@@ -28,22 +28,22 @@ export function BeautyMorningRoutineCard({
       <div className="mt-3 space-y-1">
         {[
           {
-            emoji: '',
+            emoji: '🧼',
             text: { ar: '1. غسول لطيف — ماء فاتر', en: '1. Gentle cleanser — lukewarm water' },
           },
           {
-            emoji: '',
+            emoji: '💧',
             text: { ar: '2. تونر — يعيد توازن البشرة', en: '2. Toner — restores skin balance' },
           },
           {
-            emoji: '',
+            emoji: '🍊',
             text: {
               ar: '3. سيروم فيتامين سي — مضاد أكسدة',
               en: '3. Vitamin C serum — an antioxidant',
             },
           },
           {
-            emoji: '️',
+            emoji: '🌞',
             text: {
               ar: '4. مرطب + واقي شمس — أهم خطوة',
               en: '4. Moisturizer + sunscreen — the most important step',

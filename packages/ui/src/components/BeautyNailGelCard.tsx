@@ -19,7 +19,7 @@ export function BeautyNailGelCard({
       )}
     >
       <div className="flex items-center gap-2">
-        <span className="text-xl"></span>
+        <span className="text-xl">💅</span>
         <div>
           <h4 className="text-sm font-bold text-sky-700 dark:text-sky-300">{title}</h4>
           <p className="text-[10px] text-sky-500 dark:text-sky-400">{subtitle}</p>
@@ -28,22 +28,22 @@ export function BeautyNailGelCard({
       <div className="mt-3 space-y-1">
         {[
           {
-            emoji: '️',
+            emoji: '☀️',
             text: {
               ar: 'لا تعرضي الجل للشمس — يبهت',
               en: 'Do not expose gel to sunlight — it fades',
             },
           },
           {
-            emoji: '',
+            emoji: '🧤',
             text: { ar: 'قفازات للتنظيف — تحمي الجل', en: 'Cleaning gloves — protect the gel' },
           },
           {
-            emoji: '',
+            emoji: '💧',
             text: { ar: 'زيّتي البشرة حول الظفر يومياً', en: 'Oil the skin around the nail daily' },
           },
           {
-            emoji: '',
+            emoji: '🚫',
             text: {
               ar: 'لا تقشري الجل — يضعف الظفر',
               en: 'Do not peel the gel — it weakens the nail',

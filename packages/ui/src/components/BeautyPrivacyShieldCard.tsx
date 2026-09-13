@@ -39,25 +39,25 @@ export function BeautyPrivacyShieldCard({
   const items = [
     {
       key: 'photosEncrypted',
-      emoji: '',
+      emoji: '🔒',
       label: { ar: 'الصور مشفرة', en: 'Photos encrypted' },
       active: status.photosEncrypted,
     },
     {
       key: 'locationHidden',
-      emoji: '',
+      emoji: '📍',
       label: { ar: 'الموقع مخفي', en: 'Location hidden' },
       active: status.locationHidden,
     },
     {
       key: 'dataEncrypted',
-      emoji: '️',
+      emoji: '🔒',
       label: { ar: 'البيانات مشفرة', en: 'Data encrypted' },
       active: status.dataEncrypted,
     },
     {
       key: 'anonymousMode',
-      emoji: '️',
+      emoji: '🕵️',
       label: { ar: 'وضع التخفي', en: 'Incognito mode' },
       active: status.anonymousMode ?? false,
     },
@@ -73,9 +73,7 @@ export function BeautyPrivacyShieldCard({
     >
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-2">
-          <span className="text-2xl" aria-hidden="true">
-            ️
-          </span>
+          <span className="text-2xl" aria-hidden="true"></span>
           <div>
             <h4 className="text-sm font-bold text-emerald-700 dark:text-emerald-300">{title}</h4>
             <p className="text-[10px] text-emerald-500 dark:text-emerald-400">

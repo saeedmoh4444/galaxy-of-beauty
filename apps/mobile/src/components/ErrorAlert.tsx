@@ -40,7 +40,7 @@ export function ErrorAlert({ message, onRetry }: ErrorAlertProps): JSX.Element {
   const styles = useMemo(() => createStyles(isDark), [isDark]);
   return (
     <View style={styles.c}>
-      <Text style={styles.emoji}></Text>
+      <Text style={styles.emoji}>⚠️</Text>
       <Text style={styles.message}>{message ?? t('common.loadFailed')}</Text>
       {onRetry && (
         <TouchableOpacity onPress={onRetry} style={styles.btn}>

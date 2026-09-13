@@ -56,7 +56,7 @@ export default function StreaksPage(): JSX.Element {
             {/* Current Streak */}
             <div className="grid gap-4 md:grid-cols-3">
               <Card padding="lg" className="flex flex-col items-center justify-center text-center">
-                <span className="text-5xl"></span>
+                <span className="text-5xl">🔥</span>
                 <p className="mt-3 text-sm text-text-secondary dark:text-text-tertiary">
                   {t('streaks.current')}
                 </p>
@@ -66,7 +66,7 @@ export default function StreaksPage(): JSX.Element {
                 <p className="text-xs text-text-tertiary">{t('streaks.weeksInARow')}</p>
               </Card>
               <Card padding="lg" className="flex flex-col items-center justify-center text-center">
-                <span className="text-5xl"></span>
+                <span className="text-5xl">🏆</span>
                 <p className="mt-3 text-sm text-text-secondary dark:text-text-tertiary">
                   {t('streaks.longest')}
                 </p>
@@ -76,7 +76,7 @@ export default function StreaksPage(): JSX.Element {
                 <p className="text-xs text-text-tertiary">{t('streaks.weeks')}</p>
               </Card>
               <Card padding="lg" className="flex flex-col items-center justify-center text-center">
-                <span className="text-5xl"></span>
+                <span className="text-5xl">📅</span>
                 <p className="mt-3 text-sm text-text-secondary dark:text-text-tertiary">
                   {t('streaks.lastBooking')}
                 </p>

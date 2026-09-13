@@ -123,7 +123,7 @@ export default function SocialScreen(): JSX.Element {
           <Text style={s.st}>{t('mobile.social.spotlight-technicians')}</Text>
           {spotlightList.map((tech, i) => (
             <View key={tech.id ?? i} style={s.card}>
-              <Text style={s.avatar}>‍</Text>
+              <Text style={s.avatar}>👤</Text>
               <View style={{ flex: 1 }}>
                 <Text style={s.cardTitle}>{tech.name}</Text>
                 <Text style={s.cardSub}>
@@ -155,7 +155,7 @@ export default function SocialScreen(): JSX.Element {
           <View style={s.grid}>
             {feedItems.map((item, i) => (
               <View key={item.id ?? i} style={s.gridItem}>
-                <Text style={s.gridEmoji}></Text>
+                <Text style={s.gridEmoji}>📸</Text>
                 <Text style={s.gridTitle}>{item.technician?.user?.name ?? ''}</Text>
                 <Text style={s.gridSub}>{item.technician?.city ?? ''}</Text>
               </View>
@@ -169,7 +169,7 @@ export default function SocialScreen(): JSX.Element {
           <Text style={s.st}>{t('mobile.social.lookbook')}</Text>
           {lookbookItems.slice(0, 4).map((l, i) => (
             <View key={l.id ?? i} style={s.card}>
-              <Text style={s.avatar}></Text>
+              <Text style={s.avatar}>👤</Text>
               <View style={{ flex: 1 }}>
                 <Text style={s.cardTitle}>{l.titleAr ?? l.id}</Text>
                 <Text style={s.cardSub}>{l.category ?? ''}</Text>

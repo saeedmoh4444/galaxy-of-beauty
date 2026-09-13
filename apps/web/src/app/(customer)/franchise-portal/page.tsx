@@ -36,24 +36,24 @@ export default function FranchisePortalPage(): JSX.Element {
         ) : (
           <div className="grid gap-4 sm:grid-cols-4">
             <Card padding="md" className="text-center">
-              <p className="text-3xl"></p>
+              <p className="text-3xl">💰</p>
               <p className="text-2xl font-bold text-brand-600">
                 {formatCurrency((dash?.totalRevenue as number) ?? 0)}
               </p>
               <p className="text-xs text-text-secondary">{t('franchisePortal.revenue')}</p>
             </Card>
             <Card padding="md" className="text-center">
-              <p className="text-3xl"></p>
+              <p className="text-3xl">📅</p>
               <p className="text-2xl font-bold">{(dash?.totalBookings as number) ?? 0}</p>
               <p className="text-xs text-text-secondary">{t('franchisePortal.bookings')}</p>
             </Card>
             <Card padding="md" className="text-center">
-              <p className="text-3xl">‍</p>
+              <p className="text-3xl">👥</p>
               <p className="text-2xl font-bold">{(dash?.totalStaff as number) ?? 0}</p>
               <p className="text-xs text-text-secondary">{t('franchisePortal.staff')}</p>
             </Card>
             <Card padding="md" className="text-center">
-              <p className="text-3xl"></p>
+              <p className="text-3xl">📈</p>
               <p className="text-2xl font-bold text-green-600">+{(dash?.growth as number) ?? 0}%</p>
               <p className="text-xs text-text-secondary">{t('franchisePortal.growth')}</p>
             </Card>

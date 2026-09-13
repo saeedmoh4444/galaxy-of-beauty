@@ -19,7 +19,7 @@ export function BeautySkincareRetinolCard({
       )}
     >
       <div className="flex items-center gap-2">
-        <span className="text-xl"></span>
+        <span className="text-xl">🧪</span>
         <div>
           <h4 className="text-sm font-bold text-brand-700 dark:text-brand-300">{title}</h4>
           <p className="text-[10px] text-brand-500 dark:text-brand-400">{subtitle}</p>
@@ -28,28 +28,28 @@ export function BeautySkincareRetinolCard({
       <div className="mt-3 space-y-1">
         {[
           {
-            emoji: '',
+            emoji: '🌙',
             text: {
               ar: 'مساءً فقط — يتحسس من الشمس',
               en: 'Evenings only — sensitizes in sunlight',
             },
           },
           {
-            emoji: '',
+            emoji: '🤏',
             text: {
               ar: 'كمية حبة بازلاء — للوجه كله',
               en: 'A pea-sized amount — for the whole face',
             },
           },
           {
-            emoji: '',
+            emoji: '📅',
             text: {
               ar: 'ابدئي مرة أسبوعياً — ثم زيدي تدريجياً',
               en: 'Start once a week — then increase gradually',
             },
           },
           {
-            emoji: '️',
+            emoji: '🌞',
             text: {
               ar: 'واقي شمس في الصباح — ضروري جداً',
               en: 'Sunscreen in the morning — absolutely essential',

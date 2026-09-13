@@ -19,7 +19,7 @@ export function BeautyBiotinCard({
       )}
     >
       <div className="flex items-center gap-2">
-        <span className="text-xl"></span>
+        <span className="text-xl">💊</span>
         <div>
           <h4 className="text-sm font-bold text-emerald-700 dark:text-emerald-300">{title}</h4>
           <p className="text-[10px] text-emerald-500 dark:text-emerald-400">{subtitle}</p>
@@ -28,28 +28,28 @@ export function BeautyBiotinCard({
       <div className="mt-3 space-y-1">
         {[
           {
-            emoji: '',
+            emoji: '💇',
             text: {
               ar: 'يقوي الشعر — يقلل التساقط ويزيد الكثافة',
               en: 'Strengthens hair — reduces shedding and boosts density',
             },
           },
           {
-            emoji: '',
+            emoji: '💅',
             text: {
               ar: 'يقوي الأظافر — يقلل التكسر والتقصف',
               en: 'Strengthens nails — reduces breakage and splitting',
             },
           },
           {
-            emoji: '',
+            emoji: '🥑',
             text: {
               ar: 'موجود طبيعياً — بيض، مكسرات، أفوكادو',
               en: 'Found naturally — eggs, nuts, avocado',
             },
           },
           {
-            emoji: '️',
+            emoji: '⏳',
             text: { ar: '3-6 أشهر — لرؤية نتائج واضحة', en: '3-6 months — to see clear results' },
           },
         ].map((t, i) => (

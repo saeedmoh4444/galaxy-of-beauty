@@ -19,7 +19,7 @@ export function BeautyEidGlowCard({
       )}
     >
       <div className="flex items-center gap-2">
-        <span className="text-xl"></span>
+        <span className="text-xl">🌙</span>
         <div>
           <h4 className="text-sm font-bold text-amber-700 dark:text-amber-300">{title}</h4>
           <p className="text-[10px] text-amber-500 dark:text-amber-400">{subtitle}</p>
@@ -28,28 +28,28 @@ export function BeautyEidGlowCard({
       <div className="mt-3 space-y-1">
         {[
           {
-            emoji: '',
+            emoji: '📅',
             text: {
               ar: 'قبل بأسبوع: فيشل + حواجب + مانيكير',
               en: 'A week before: facial + brows + manicure',
             },
           },
           {
-            emoji: '',
+            emoji: '🌙',
             text: {
               ar: 'ليلة العيد: حمام زيت + مرطب + نوم مبكر',
               en: 'Eid eve: oil treatment + moisturizer + early sleep',
             },
           },
           {
-            emoji: '',
+            emoji: '💄',
             text: {
               ar: 'صباح العيد: مكياج ناعم + عطر العيد',
               en: 'Eid morning: soft makeup + Eid perfume',
             },
           },
           {
-            emoji: '',
+            emoji: '📷',
             text: {
               ar: 'صوري إطلالتك — ذكريات العيد',
               en: 'Photograph your look — Eid memories',

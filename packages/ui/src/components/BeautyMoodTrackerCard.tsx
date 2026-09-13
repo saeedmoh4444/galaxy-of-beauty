@@ -12,11 +12,11 @@ import { cn } from '@galaxy/shared';
  */
 
 const MOODS = [
-  { emoji: '', label: { ar: 'سعيدة', en: 'Happy' }, value: 5 },
-  { emoji: '', label: { ar: 'مرتاحة', en: 'Relaxed' }, value: 4 },
-  { emoji: '', label: { ar: 'عادية', en: 'Neutral' }, value: 3 },
-  { emoji: '', label: { ar: 'حزينة', en: 'Sad' }, value: 2 },
-  { emoji: '', label: { ar: 'متوترة', en: 'Anxious' }, value: 1 },
+  { emoji: '😊', label: { ar: 'سعيدة', en: 'Happy' }, value: 5 },
+  { emoji: '😌', label: { ar: 'مرتاحة', en: 'Relaxed' }, value: 4 },
+  { emoji: '😐', label: { ar: 'عادية', en: 'Neutral' }, value: 3 },
+  { emoji: '😢', label: { ar: 'حزينة', en: 'Sad' }, value: 2 },
+  { emoji: '😰', label: { ar: 'متوترة', en: 'Anxious' }, value: 1 },
 ];
 
 interface BeautyMoodTrackerCardProps {
@@ -56,7 +56,9 @@ export function BeautyMoodTrackerCard({
     >
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-2">
-          <span className="text-xl" aria-hidden="true"></span>
+          <span className="text-xl" aria-hidden="true">
+            💭
+          </span>
           <div>
             <h4 className="text-sm font-bold text-violet-700 dark:text-violet-300">{title}</h4>
             <p className="text-[10px] text-violet-500 dark:text-violet-400">

@@ -19,7 +19,7 @@ export function BeautyMakeupMatteCard({
       )}
     >
       <div className="flex items-center gap-2">
-        <span className="text-xl"></span>
+        <span className="text-xl">💄</span>
         <div>
           <h4 className="text-sm font-bold text-text-secondary">{heading}</h4>
           <p className="text-[10px] text-text-secondary">{subtitle}</p>
@@ -28,22 +28,22 @@ export function BeautyMakeupMatteCard({
       <div className="mt-3 space-y-1">
         {[
           {
-            emoji: '',
+            emoji: '🧴',
             text: { ar: 'برايمر مطفي — يتحكم باللمعان', en: 'Matte primer — controls shine' },
           },
           {
-            emoji: '',
+            emoji: '✨',
             text: {
               ar: 'بودرة شفافة — لتثبيت المكياج',
               en: 'Translucent powder — to set the makeup',
             },
           },
           {
-            emoji: '',
+            emoji: '💄',
             text: { ar: 'أحمر شفاه مطفي — يدوم ساعات', en: 'Matte lipstick — lasts for hours' },
           },
           {
-            emoji: '',
+            emoji: '🧻',
             text: {
               ar: 'ورق نشاف — بدل إضافة بودرة',
               en: 'Blotting paper — instead of adding powder',

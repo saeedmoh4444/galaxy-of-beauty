@@ -72,12 +72,12 @@ export function AnnualSummitCard({
   editionLabel = 'النسخة السنوية',
   cityLabel = 'المدينة',
   dateLabel = 'التاريخ',
-  topicsLabel = ' محاور الملتقى',
-  speakersLabel = '️ متحدثات',
-  attendeesLabel = ' سيدة مسجلة حتى الآن',
-  earlyBirdLabel = ' الحجز المبكر',
+  topicsLabel = 'محاور الملتقى',
+  speakersLabel = 'متحدثات',
+  attendeesLabel = 'سيدة مسجلة حتى الآن',
+  earlyBirdLabel = 'الحجز المبكر',
   currencySuffix = 'ر.س',
-  registerLabel = 'سجّلي الآن ️',
+  registerLabel = 'سجّلي الآن ',
   sponsorLabel = 'راعي الملتقى',
   footerText = 'معاً نبني مستقبل المرأة السعودية في قطاع التجميل',
   locale = 'ar',
@@ -91,7 +91,9 @@ export function AnnualSummitCard({
     >
       {/* Header */}
       <div className="text-center">
-        <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-full bg-gradient-to-br from-amber-200 to-yellow-200 text-2xl dark:from-amber-800 dark:to-yellow-800"></div>
+        <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-full bg-gradient-to-br from-amber-200 to-yellow-200 text-2xl dark:from-amber-800 dark:to-yellow-800">
+          🌟
+        </div>
         <h4 className="mt-2 text-sm font-bold text-amber-800 dark:text-amber-200">{title}</h4>
         <p className="text-[10px] text-amber-600 dark:text-amber-400">
           {editionLabel} {year}
@@ -162,7 +164,7 @@ export function AnnualSummitCard({
       {attendees && (
         <div className="mt-2 rounded-lg bg-white/60 p-2 text-center dark:bg-gray-800/60">
           <p className="text-[10px] text-amber-700 dark:text-amber-300">
-            ️ {attendees.toLocaleString('ar-SA')}
+            {attendees.toLocaleString('ar-SA')}
             {attendeesLabel}
           </p>
         </div>

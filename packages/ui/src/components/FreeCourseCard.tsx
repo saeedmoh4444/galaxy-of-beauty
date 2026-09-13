@@ -23,17 +23,17 @@ interface LevelDef {
 
 const LEVELS: Record<CourseLevel, LevelDef> = {
   beginner: {
-    emoji: '',
+    emoji: '🌱',
     label: { ar: 'مبتدئة', en: 'Beginner' },
     color: 'bg-emerald-50 text-emerald-700 dark:bg-emerald-950 dark:text-emerald-300',
   },
   intermediate: {
-    emoji: '',
+    emoji: '🌿',
     label: { ar: 'متوسطة', en: 'Intermediate' },
     color: 'bg-sky-50 text-sky-700 dark:bg-sky-950 dark:text-sky-300',
   },
   advanced: {
-    emoji: '',
+    emoji: '🌳',
     label: { ar: 'متقدمة', en: 'Advanced' },
     color: 'bg-brand-50 text-brand-700 dark:bg-brand-950 dark:text-brand-300',
   },
@@ -80,9 +80,9 @@ interface FreeCourseCardProps {
 }
 
 const LANG_LABELS: Record<CourseLang, { ar: string; en: string }> = {
-  ar: { ar: ' بالعربية', en: ' in Arabic' },
-  en: { ar: ' بالإنجليزية', en: ' in English' },
-  both: { ar: ' العربية + الإنجليزية', en: ' Arabic + English' },
+  ar: { ar: 'بالعربية', en: ' in Arabic' },
+  en: { ar: 'بالإنجليزية', en: ' in English' },
+  both: { ar: 'العربية + الإنجليزية', en: ' Arabic + English' },
 };
 
 export function FreeCourseCard({
@@ -134,22 +134,22 @@ export function FreeCourseCard({
       {/* Meta row */}
       <div className="mt-3 grid grid-cols-2 gap-2 text-[10px]">
         <div className="flex items-center gap-1 text-text-secondary dark:text-gray-300">
-          <span aria-hidden="true">️</span>
+          <span aria-hidden="true">⏳</span>
           {course.duration}
         </div>
         <div className="flex items-center gap-1 text-text-secondary dark:text-gray-300">
-          <span aria-hidden="true"></span>
+          <span aria-hidden="true">📚</span>
           {course.lessons} {lessonsSuffix}
         </div>
         {course.instructor && (
           <div className="flex items-center gap-1 text-text-secondary dark:text-gray-300">
-            <span aria-hidden="true">‍</span>
+            <span aria-hidden="true">🎓</span>
             {course.instructor}
           </div>
         )}
         {course.enrolled !== undefined && (
           <div className="flex items-center gap-1 text-text-secondary dark:text-gray-300">
-            <span aria-hidden="true">‍</span>
+            <span aria-hidden="true">👥</span>
             {course.enrolled.toLocaleString('ar-SA')} {enrolledSuffix}
           </div>
         )}
@@ -158,7 +158,9 @@ export function FreeCourseCard({
       {/* Progress / Certificate row */}
       {course.hasCertificate && (
         <div className="mt-2 flex items-center gap-1.5 rounded-lg bg-teal-50 px-2 py-1 dark:bg-teal-950">
-          <span className="text-xs" aria-hidden="true"></span>
+          <span className="text-xs" aria-hidden="true">
+            🏅
+          </span>
           <span className="text-[10px] font-medium text-teal-700 dark:text-teal-300">
             {certificateText}
           </span>

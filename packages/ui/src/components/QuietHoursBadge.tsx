@@ -45,7 +45,9 @@ export function QuietHoursBadge({
       )}
     >
       <div className="text-center">
-        <span className="text-3xl" aria-hidden="true"></span>
+        <span className="text-3xl" aria-hidden="true">
+          🤫
+        </span>
         <h4 className="mt-1 text-sm font-bold text-brand-800 dark:text-brand-200">{title}</h4>
         <p className="text-[10px] text-brand-500 dark:text-brand-400">{subtitle}</p>
       </div>

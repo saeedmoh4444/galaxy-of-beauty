@@ -19,7 +19,7 @@ export function BeautyCaviarFacialCard({
       )}
     >
       <div className="flex items-center gap-2">
-        <span className="text-xl"></span>
+        <span className="text-xl">💎</span>
         <div>
           <h4 className="text-sm font-bold text-brand-700 dark:text-brand-300">{title}</h4>
           <p className="text-[10px] text-brand-500 dark:text-brand-400">{subtitle}</p>
@@ -28,28 +28,28 @@ export function BeautyCaviarFacialCard({
       <div className="mt-3 space-y-1">
         {[
           {
-            emoji: '',
+            emoji: '🐟',
             text: {
               ar: 'غني بالأحماض الأمينية — يغذي البشرة بعمق',
               en: 'Rich in amino acids — nourishes skin deeply',
             },
           },
           {
-            emoji: '',
+            emoji: '💊',
             text: {
               ar: 'أوميغا 3 وفيتامينات — يرطب ويجدد',
               en: 'Omega-3 and vitamins — hydrates and renews',
             },
           },
           {
-            emoji: '',
+            emoji: '📈',
             text: {
               ar: 'يحسن المرونة — يقلل الخطوط الدقيقة',
               en: 'Improves elasticity — reduces fine lines',
             },
           },
           {
-            emoji: '',
+            emoji: '💎',
             text: {
               ar: 'فاخر — من أفخم علاجات التجميل',
               en: 'Luxurious — among the most lavish beauty treatments',

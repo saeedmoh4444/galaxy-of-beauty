@@ -1,7 +1,7 @@
 'use client';
 import { useState } from 'react';
 import { api } from '@/lib/trpc';
-import { Card, CardListSkeleton, Button, formatCurrency } from '@galaxy/ui';
+import { Card, CardListSkeleton, Button, formatCurrency, EmptyState, Icon } from '@galaxy/ui';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
 import { useLocale } from '@/components/LocaleProvider';
 import { localize } from '@galaxy/shared';
@@ -53,13 +53,10 @@ export default function CheckoutPage(): JSX.Element {
         {isLoading ? (
           <CardListSkeleton count={4} />
         ) : cartItems.length === 0 ? (
-          <Card padding="lg" className="text-center py-8">
-            <p className="text-4xl mb-2"></p>
-            <p className="text-text-secondary">{t('wallet.empty-cart')}</p>
-          </Card>
+          <EmptyState title={t('wallet.empty-cart')} />
         ) : placed ? (
           <Card padding="lg" className="text-center border-2 border-green-300 bg-green-50">
-            <p className="text-3xl"></p>
+            <Icon name="check" size="xl" className="mx-auto text-green-600" />
             <p className="font-bold text-green-700 mt-2">{t('wallet.order-placed')}</p>
             <p className="text-sm text-text-secondary mt-1">{t('wallet.order-confirm-message')}</p>
           </Card>

@@ -46,6 +46,10 @@ export { colors, typography, spacing, borderRadius, shadows, breakpoints } from 
 export { default as theme } from './theme';
 export type { Theme } from './theme';
 
+// Wellness hub tabs (Phase 3 sprint 3)
+export { WELLNESS_TABS, WELLNESS_TAB_I18N, defaultTabFor, isWellnessTabKey } from './wellnessTabs';
+export type { WellnessTabKey, WellnessTabInput } from './wellnessTabs';
+
 // Images
 export {
   serviceImages,
@@ -54,4 +58,15 @@ export {
   dashboardImages,
   getServiceImage,
   getCategoryImage,
+  serviceKeyFromCategorySlug,
+  womensCategoryImageKey,
 } from './images';
+
+// Service detail trust layer (shared by web + RN mirror)
+export { buildServiceTrust } from './serviceDetail';
+export type {
+  ServiceTrustItem,
+  ServiceTrustInput,
+  ServiceTrustResult,
+  TrustItemVariant,
+} from './serviceDetail';

@@ -275,9 +275,11 @@ export const bookingRouter = router({
           link: `/bookings/${booking.id}`,
         }),
 
-        // Calendar sync (if technician has Google Calendar)
+        // Booking auto-sync (E9 follow-up): push the event to the Google
+        // Calendars of the customer AND the technician when connected.
         getIntegrationQueue()?.add('calendar.create', {
           technicianId: input.technicianId,
+          customerId,
           bookingId: booking.id,
           action: 'create',
           startAt: input.startAt,
@@ -532,6 +534,17 @@ export const bookingRouter = router({
         booking: updatedBooking,
       });
 
+      // Booking auto-sync (E9 follow-up): cancel/reject removes the
+      // Google Calendar events for both sides.
+      if (input.action === 'cancel' || input.action === 'reject') {
+        getIntegrationQueue()?.add('calendar.cancel', {
+          technicianId: booking.technicianId,
+          customerId: booking.customerId ?? undefined,
+          bookingId: booking.id,
+          action: 'cancel',
+        } as CalendarSyncJob);
+      }
+
       // B.26 — template-driven notification on acceptance (fire-and-forget).
       if (input.action === 'accept') {
         try {
@@ -699,6 +712,17 @@ export const bookingRouter = router({
           include: bookingDetailInclude,
         });
       });
+
+      // Booking auto-sync (E9 follow-up): move the Google Calendar events
+      // to the new time for both sides.
+      getIntegrationQueue()?.add('calendar.update', {
+        technicianId: booking.technicianId,
+        customerId: booking.customerId,
+        bookingId: booking.id,
+        action: 'update',
+        startAt: input.newStartAt,
+        endAt: input.newEndAt,
+      } as CalendarSyncJob);
 
       return updatedBooking;
     }),

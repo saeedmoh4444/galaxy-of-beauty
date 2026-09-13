@@ -19,7 +19,7 @@ export function BeautyMakeupDayCard({
       )}
     >
       <div className="flex items-center gap-2">
-        <span className="text-xl">️</span>
+        <span className="text-xl">💄</span>
         <div>
           <h4 className="text-sm font-bold text-sky-700 dark:text-sky-300">{heading}</h4>
           <p className="text-[10px] text-sky-500 dark:text-sky-400">{subtitle}</p>
@@ -28,22 +28,22 @@ export function BeautyMakeupDayCard({
       <div className="mt-3 space-y-1">
         {[
           {
-            emoji: '',
+            emoji: '🧴',
             text: {
               ar: 'BB كريم أو مرطب ملون — بدل الفاونديشن',
               en: 'BB cream or tinted moisturizer — instead of foundation',
             },
           },
           {
-            emoji: '',
+            emoji: '👀',
             text: { ar: 'كونسيلر — تحت العين فقط', en: 'Concealer — only under the eyes' },
           },
           {
-            emoji: '',
+            emoji: '🌸',
             text: { ar: 'بلاش كريمي — يبدو طبيعياً', en: 'Creamy blush — looks natural' },
           },
           {
-            emoji: '',
+            emoji: '💄',
             text: {
               ar: 'أحمر شفاه ب tint — يدوم ويناسب النهار',
               en: 'Lip tint — long-wearing and day-appropriate',

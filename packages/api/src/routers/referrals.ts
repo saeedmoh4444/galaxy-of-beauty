@@ -199,7 +199,7 @@ export const referralRouter = router({
     return {
       code,
       shareUrl: `${process.env['NEXT_PUBLIC_APP_URL'] || 'http://localhost:3000'}/register?ref=${code}`,
-      shareText: 'انضمي إلى جالكسي بيوتي واحصلي على خصم ٢٠ ريال!',
+      shareText: 'انضمي إلى دلال واحصلي على خصم ٢٠ ريال!',
     };
   }),
 
@@ -216,15 +216,15 @@ export const referralRouter = router({
 
     // Tiered rewards
     const count = completed.length;
-    const tier = count >= 10 ? ' الماسي' : count >= 5 ? ' ذهبي' : count >= 1 ? ' فضي' : ' مبتدئ';
+    const tier = count >= 10 ? 'الماسي' : count >= 5 ? 'ذهبي' : count >= 1 ? 'فضي' : 'مبتدئ';
     const nextTier =
       count >= 10
         ? null
         : count >= 5
-          ? ' الماسي (١٠ إحالات)'
+          ? 'الماسي (١٠ إحالات)'
           : count >= 1
-            ? ' ذهبي (٥ إحالات)'
-            : ' فضي (إحالة واحدة)';
+            ? 'ذهبي (٥ إحالات)'
+            : 'فضي (إحالة واحدة)';
     const nextCount = count >= 10 ? 0 : count >= 5 ? 10 - count : count >= 1 ? 5 - count : 1;
 
     // Double-sided rewards

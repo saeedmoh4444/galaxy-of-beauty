@@ -75,7 +75,7 @@ export default function EventTicketsPage(): JSX.Element {
             >
               <span className="text-5xl">
                 {['workshop', 'masterclass', 'launch', 'seasonal'].includes(e.eventType as string)
-                  ? { workshop: '️', masterclass: '‍', launch: '', seasonal: '' }[
+                  ? { workshop: '', masterclass: '', launch: '', seasonal: '' }[
                       e.eventType as string
                     ]
                   : ''}

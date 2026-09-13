@@ -46,7 +46,7 @@ export default function DNABeautyScreen(): JSX.Element {
       <ScrollView style={styles.c} contentContainerStyle={styles.i}>
         <Text style={styles.t}>{t('dnaBeauty.title')}</Text>
         <View style={[styles.card, styles.rc]}>
-          <Text style={styles.re}></Text>
+          <Text style={styles.re}>🧬</Text>
           <Text style={styles.rt}>{t('dnaBeauty.result')}</Text>
           <Text style={styles.score}>{t('dnaBeauty.match', { score: result.score })}</Text>
           <TouchableOpacity

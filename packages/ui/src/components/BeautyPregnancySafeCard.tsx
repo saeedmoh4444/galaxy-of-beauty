@@ -19,7 +19,7 @@ export function BeautyPregnancySafeCard({
       )}
     >
       <div className="flex items-center gap-2">
-        <span className="text-xl"></span>
+        <span className="text-xl">🤰</span>
         <div>
           <h4 className="text-sm font-bold text-pink-700 dark:text-pink-300">{title}</h4>
           <p className="text-[10px] text-pink-500 dark:text-pink-400">{subtitle}</p>
@@ -28,7 +28,7 @@ export function BeautyPregnancySafeCard({
       <div className="mt-3 grid grid-cols-2 gap-1.5">
         {[
           {
-            emoji: '',
+            emoji: '✅',
             label: { ar: 'مسموح', en: 'Allowed' },
             tip: {
               ar: 'فيتامين C، حمض الأزيليك، هيالورونيك',
@@ -36,12 +36,12 @@ export function BeautyPregnancySafeCard({
             },
           },
           {
-            emoji: '',
+            emoji: '🟡',
             label: { ar: 'بحذر', en: 'With caution' },
             tip: { ar: 'حمض الساليسيليك — أقل من 2%', en: 'Salicylic acid — under 2%' },
           },
           {
-            emoji: '',
+            emoji: '🚫',
             label: { ar: 'ممنوع', en: 'Not allowed' },
             tip: { ar: 'ريتينول، هيدروكينون، بوتوكس', en: 'Retinol, hydroquinone, Botox' },
           },

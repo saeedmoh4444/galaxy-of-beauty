@@ -19,7 +19,7 @@ export function BeautyFaceYogaCard({
       )}
     >
       <div className="flex items-center gap-2">
-        <span className="text-xl"></span>
+        <span className="text-xl">🧘</span>
         <div>
           <h4 className="text-sm font-bold text-brand-700 dark:text-brand-300">{title}</h4>
           <p className="text-[10px] text-brand-500 dark:text-brand-400">{subtitle}</p>
@@ -28,28 +28,28 @@ export function BeautyFaceYogaCard({
       <div className="mt-3 space-y-1">
         {[
           {
-            emoji: '',
+            emoji: '😮',
             text: {
               ar: 'تمرين O —— افتحي فمكِ 5 ثوانٍ — 10 مرات',
               en: 'Exercise O — open your mouth for 5 seconds — 10 times',
             },
           },
           {
-            emoji: '',
+            emoji: '😗',
             text: {
               ar: 'تمرين القبلة —— مدي شفاهكِ للأمام — 10 مرات',
               en: 'Kiss exercise — pucker your lips forward — 10 times',
             },
           },
           {
-            emoji: '',
+            emoji: '😊',
             text: {
               ar: 'رفع الخدود —— ابتسمي بدون عيون — 15 مرة',
               en: 'Cheek lift — smile with your eyes closed — 15 times',
             },
           },
           {
-            emoji: '️',
+            emoji: '⏱️',
             text: {
               ar: '5 دقائق يومياً — نتائج بعد 4-6 أسابيع',
               en: '5 minutes daily — results in 4-6 weeks',

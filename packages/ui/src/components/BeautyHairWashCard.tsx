@@ -19,7 +19,7 @@ export function BeautyHairWashCard({
       )}
     >
       <div className="flex items-center gap-2">
-        <span className="text-xl"></span>
+        <span className="text-xl">🚿</span>
         <div>
           <h4 className="text-sm font-bold text-sky-700 dark:text-sky-300">{title}</h4>
           <p className="text-[10px] text-sky-500 dark:text-sky-400">{subtitle}</p>
@@ -28,22 +28,22 @@ export function BeautyHairWashCard({
       <div className="mt-3 space-y-1">
         {[
           {
-            emoji: '',
+            emoji: '💧',
             text: {
               ar: 'بللي الشعر تماماً — 1-2 دقيقة',
               en: 'Wet the hair thoroughly — for 1-2 minutes',
             },
           },
-          { emoji: '', text: { ar: 'الشامبو لفروة الرأس فقط', en: 'Shampoo the scalp only' } },
+          { emoji: '🧼', text: { ar: 'الشامبو لفروة الرأس فقط', en: 'Shampoo the scalp only' } },
           {
-            emoji: '',
+            emoji: '🧴',
             text: {
               ar: 'البلسم للأطراف فقط — وليس الجذور',
               en: 'Conditioner on the ends only — not the roots',
             },
           },
           {
-            emoji: '️',
+            emoji: '🚿',
             text: {
               ar: 'اشطفي بماء بارد — يغلق البشرة ويضيف لمعان',
               en: 'Rinse with cold water — seals the cuticle and adds shine',

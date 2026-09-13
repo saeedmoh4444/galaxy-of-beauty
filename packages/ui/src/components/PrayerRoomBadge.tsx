@@ -21,37 +21,37 @@ interface AmenityDef {
 
 const AMENITIES: AmenityDef[] = [
   {
-    emoji: '',
+    emoji: '🛐',
     label: { ar: 'سجادات صلاة', en: 'Prayer mats' },
     description: { ar: 'سجادات نظيفة ومعطرة', en: 'Clean and scented prayer mats' },
   },
   {
-    emoji: '',
+    emoji: '🧥',
     label: { ar: 'عبايات', en: 'Abayas' },
     description: { ar: 'عبايات نظيفة للإعارة', en: 'Clean abayas available to borrow' },
   },
   {
-    emoji: '',
+    emoji: '📖',
     label: { ar: 'مصحف', en: 'Quran' },
     description: { ar: 'قرآن كريم متوفر', en: 'Holy Quran available' },
   },
   {
-    emoji: '',
+    emoji: '🧭',
     label: { ar: 'اتجاه القبلة', en: 'Qibla direction' },
     description: { ar: 'علامة اتجاه القبلة واضحة', en: 'Clear qibla direction marker' },
   },
   {
-    emoji: '',
+    emoji: '🚰',
     label: { ar: 'مكان وضوء', en: 'Wudu area' },
     description: { ar: 'مكان مخصص للوضوء', en: 'Dedicated wudu area' },
   },
   {
-    emoji: '',
+    emoji: '🚪',
     label: { ar: 'مساحة خاصة', en: 'Private space' },
     description: { ar: 'غرفة منفصلة للصلاة', en: 'Separate room for prayer' },
   },
   {
-    emoji: '',
+    emoji: '⏰',
     label: { ar: 'مواقيت الصلاة', en: 'Prayer times' },
     description: { ar: 'منبه لمواقيت الصلاة', en: 'Prayer time reminder' },
   },
@@ -111,7 +111,9 @@ export function PrayerRoomBadge({
     >
       {/* Header */}
       <div className="flex items-center gap-2">
-        <span className="text-lg" aria-hidden="true"></span>
+        <span className="text-lg" aria-hidden="true">
+          🕌
+        </span>
         <div>
           <h4 className="text-sm font-bold text-emerald-700 dark:text-emerald-300">{title}</h4>
           <p className="text-[10px] text-emerald-500 dark:text-emerald-400">{subtitle}</p>
@@ -144,7 +146,9 @@ export function PrayerRoomBadge({
       {nextPrayer && (
         <div className="mt-3 flex items-center justify-between rounded-xl bg-gradient-to-r from-emerald-50 to-teal-50 p-2.5 dark:from-emerald-950 dark:to-teal-950">
           <div className="flex items-center gap-2">
-            <span className="text-sm" aria-hidden="true"></span>
+            <span className="text-sm" aria-hidden="true">
+              ⏰
+            </span>
             <div>
               <p className="text-[10px] font-bold text-emerald-800 dark:text-emerald-200">
                 {nextPrayer.name}

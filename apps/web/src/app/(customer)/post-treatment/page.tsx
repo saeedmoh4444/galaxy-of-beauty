@@ -16,7 +16,7 @@ const TREATMENTS: Record<
   }
 > = {
   facial: {
-    emoji: '',
+    emoji: '🧖',
     label: 'postTreatment.treat.facial',
     aftercare: [
       'postTreatment.care.facial1',
@@ -31,7 +31,7 @@ const TREATMENTS: Record<
     ],
   },
   waxing: {
-    emoji: '️',
+    emoji: '🕯️',
     label: 'postTreatment.treat.waxing',
     aftercare: [
       'postTreatment.care.waxing1',
@@ -46,7 +46,7 @@ const TREATMENTS: Record<
     ],
   },
   hair_color: {
-    emoji: '‍️',
+    emoji: '💇',
     label: 'postTreatment.treat.hairColor',
     aftercare: [
       'postTreatment.care.hairColor1',
@@ -61,7 +61,7 @@ const TREATMENTS: Record<
     ],
   },
   nails: {
-    emoji: '',
+    emoji: '💅',
     label: 'postTreatment.treat.nails',
     aftercare: [
       'postTreatment.care.nails1',

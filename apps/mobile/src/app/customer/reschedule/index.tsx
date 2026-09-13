@@ -88,7 +88,7 @@ export default function RescheduleScreen(): JSX.Element {
             alignItems: 'center',
           }}
         >
-          <Text style={{ fontSize: 32 }}></Text>
+          <Text style={{ fontSize: 32 }}>✅</Text>
           <Text style={{ fontWeight: '700', color: '#059669', marginTop: 8 }}>
             {t('mobile.reschedule.success')}
           </Text>
@@ -97,7 +97,7 @@ export default function RescheduleScreen(): JSX.Element {
 
       {active.length === 0 && (
         <View style={{ alignItems: 'center', padding: 30 }}>
-          <Text style={{ fontSize: 40 }}></Text>
+          <Text style={{ fontSize: 40 }}>📅</Text>
           <Text style={{ color: '#6b7280', marginTop: 8 }}>
             {t('mobile.reschedule.no-reschedulable')}
           </Text>

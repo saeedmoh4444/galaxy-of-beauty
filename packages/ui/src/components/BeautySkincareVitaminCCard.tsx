@@ -19,7 +19,7 @@ export function BeautySkincareVitaminCCard({
       )}
     >
       <div className="flex items-center gap-2">
-        <span className="text-xl"></span>
+        <span className="text-xl">🍊</span>
         <div>
           <h4 className="text-sm font-bold text-orange-700 dark:text-orange-300">{title}</h4>
           <p className="text-[10px] text-orange-500 dark:text-orange-400">{subtitle}</p>
@@ -28,19 +28,19 @@ export function BeautySkincareVitaminCCard({
       <div className="mt-3 space-y-1">
         {[
           {
-            emoji: '️',
+            emoji: '🌅',
             text: { ar: 'صباحاً — قبل واقي الشمس', en: 'In the morning — before sunscreen' },
           },
           {
-            emoji: '',
+            emoji: '🍊',
             text: {
               ar: 'يفتح التصبغات ويوحد اللون',
               en: 'Fades hyperpigmentation and evens skin tone',
             },
           },
-          { emoji: '️', text: { ar: 'يعزز حماية واقي الشمس', en: 'Boosts sunscreen protection' } },
+          { emoji: '🛡️', text: { ar: 'يعزز حماية واقي الشمس', en: 'Boosts sunscreen protection' } },
           {
-            emoji: '',
+            emoji: '🧪',
             text: {
               ar: 'L-Ascorbic Acid — أقوى صيغة',
               en: 'L-Ascorbic Acid — the most potent form',

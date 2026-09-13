@@ -17,12 +17,12 @@ interface Term {
 }
 
 const TERMS: Term[] = [
-  { ar: 'مكياج', en: 'Makeup', emoji: '' },
-  { ar: 'عناية بالبشرة', en: 'Skincare', emoji: '' },
-  { ar: 'حناء', en: 'Henna', emoji: '' },
-  { ar: 'عطر', en: 'Perfume', emoji: '' },
+  { ar: 'مكياج', en: 'Makeup', emoji: '💄' },
+  { ar: 'عناية بالبشرة', en: 'Skincare', emoji: '🧴' },
+  { ar: 'حناء', en: 'Henna', emoji: '🌿' },
+  { ar: 'عطر', en: 'Perfume', emoji: '🌸' },
   { ar: 'زيت', en: 'Oil', emoji: '🫒' },
-  { ar: 'جمال', en: 'Beauty', emoji: '' },
+  { ar: 'جمال', en: 'Beauty', emoji: '✨' },
 ];
 
 interface BeautyLanguageExchangeCardProps {
@@ -40,7 +40,7 @@ export function BeautyLanguageExchangeCard({
   toLang: _toLang = 'en',
   className = '',
   title = 'قاموس الجمال',
-  arToEnLabel = ' عربي →  English',
+  arToEnLabel = 'عربي →  English',
   enToArLabel = ' English →  عربي',
   footerText = 'الجمال لغة عالمية',
 }: BeautyLanguageExchangeCardProps): JSX.Element {
@@ -54,7 +54,9 @@ export function BeautyLanguageExchangeCard({
       )}
     >
       <div className="flex items-center gap-2">
-        <span className="text-xl" aria-hidden="true"></span>
+        <span className="text-xl" aria-hidden="true">
+          📖
+        </span>
         <div>
           <h4 className="text-sm font-bold text-teal-700 dark:text-teal-300">{title}</h4>
           <p className="text-[10px] text-teal-500 dark:text-teal-400">

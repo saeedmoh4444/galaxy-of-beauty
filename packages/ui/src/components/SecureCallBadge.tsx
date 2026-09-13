@@ -65,12 +65,12 @@ export function SecureCallBadge({
   expiresPrefix = 'ينتهي بعد ',
   unlimitedText = 'غير محدود',
   callsRemainingSuffix = 'مكالمات متبقية',
-  howItWorksTitle = ' كيف يعمل؟',
+  howItWorksTitle = 'كيف يعمل؟',
   howItWorksTextPrefix = 'عندما تتصل الخبيرة، يمر الاتصال عبر رقم وسيط (Twilio). ترين رقمها المؤقت، وترى رقمكِ المؤقت. بعد انتهاء الموعد بـ ',
   howItWorksTextSuffix = '، تُحذف الأرقام تلقائياً.',
   activateButtonText = 'فعّلي الاتصال الآمن',
-  cancelButtonText = '️ إلغاء الرقم المؤقت',
-  privacyText = '️ خصوصيتكِ أمانة — لا نشارك رقمكِ الحقيقي مع أحد',
+  cancelButtonText = 'إلغاء الرقم المؤقت',
+  privacyText = 'خصوصيتكِ أمانة — لا نشارك رقمكِ الحقيقي مع أحد',
   locale = 'ar',
 }: SecureCallBadgeProps): JSX.Element {
   return (
@@ -83,7 +83,9 @@ export function SecureCallBadge({
       {/* Header */}
       <div className="flex items-center gap-2">
         <div className="relative">
-          <span className="text-xl" aria-hidden="true"></span>
+          <span className="text-xl" aria-hidden="true">
+            📞
+          </span>
           {isActive && (
             <span className="absolute -bottom-0.5 -end-0.5 flex h-2.5 w-2.5">
               <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-75" />
@@ -122,10 +124,10 @@ export function SecureCallBadge({
       {/* Feature list */}
       <div className="mt-3 grid grid-cols-2 gap-1.5">
         {[
-          { emoji: '', label: { ar: 'رقمكِ مخفي', en: 'Your number is hidden' } },
-          { emoji: '', label: { ar: 'رقم مؤقت', en: 'Temporary number' } },
-          { emoji: '', label: { ar: 'المكالمات مسجلة', en: 'Calls are recorded' } },
-          { emoji: '', label: { ar: 'لا رسائل مزعجة', en: 'No spam calls' } },
+          { emoji: '🙈', label: { ar: 'رقمكِ مخفي', en: 'Your number is hidden' } },
+          { emoji: '🔢', label: { ar: 'رقم مؤقت', en: 'Temporary number' } },
+          { emoji: '🎙', label: { ar: 'المكالمات مسجلة', en: 'Calls are recorded' } },
+          { emoji: '🚫', label: { ar: 'لا رسائل مزعجة', en: 'No spam calls' } },
         ].map((f) => (
           <div
             key={f.label.ar}

@@ -19,7 +19,7 @@ export function BeautyDeclutterCard({
       )}
     >
       <div className="flex items-center gap-2">
-        <span className="text-xl"></span>
+        <span className="text-xl">🧹</span>
         <div>
           <h4 className="text-sm font-bold text-emerald-700 dark:text-emerald-300">{title}</h4>
           <p className="text-[10px] text-emerald-500 dark:text-emerald-400">{subtitle}</p>
@@ -28,28 +28,28 @@ export function BeautyDeclutterCard({
       <div className="mt-3 space-y-1">
         {[
           {
-            emoji: '️',
+            emoji: '🚮',
             text: {
               ar: 'تخلصي من: منتجات تغير لونها أو رائحتها أو قوامها',
               en: 'Get rid of: products whose color, smell, or texture changed',
             },
           },
           {
-            emoji: '',
+            emoji: '📅',
             text: {
               ar: 'كل 3 أشهر — راجعي مجموعتكِ',
               en: 'Every 3 months — review your collection',
             },
           },
           {
-            emoji: '️',
+            emoji: '✅',
             text: {
               ar: 'احتفظي بما تستخدمينه فعلاً — وليس ما تتمنين',
               en: 'Keep what you actually use — not what you wish you did',
             },
           },
           {
-            emoji: '',
+            emoji: '🎁',
             text: {
               ar: 'تبرعي بالجديد غير المستخدم — لصديقة أو جمعية',
               en: 'Donate unused new items — to a friend or charity',

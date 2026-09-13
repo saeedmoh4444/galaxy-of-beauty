@@ -19,7 +19,7 @@ export function BeautyPostWorkoutCard({
       )}
     >
       <div className="flex items-center gap-2">
-        <span className="text-xl">️</span>
+        <span className="text-xl">🏃</span>
         <div>
           <h4 className="text-sm font-bold text-emerald-700 dark:text-emerald-300">{title}</h4>
           <p className="text-[10px] text-emerald-500 dark:text-emerald-400">{subtitle}</p>
@@ -28,28 +28,28 @@ export function BeautyPostWorkoutCard({
       <div className="mt-3 space-y-1">
         {[
           {
-            emoji: '',
+            emoji: '🧼',
             text: {
               ar: 'اغسلي وجهك فوراً — العرق يسد المسام',
               en: 'Wash your face right away — sweat clogs pores',
             },
           },
           {
-            emoji: '',
+            emoji: '🚿',
             text: {
               ar: 'ماء بارد — يغلق المسام ويهدئ البشرة',
               en: 'Cold water — closes pores and calms the skin',
             },
           },
           {
-            emoji: '',
+            emoji: '🧴',
             text: {
               ar: 'مرطب خفيف — البشرة تمتصه أفضل',
               en: 'A light moisturizer — absorbed better by the skin',
             },
           },
           {
-            emoji: '',
+            emoji: '👕',
             text: {
               ar: 'غيري ملابسك — البكتيريا تتراكم على القماش',
               en: 'Change your clothes — bacteria build up on fabric',

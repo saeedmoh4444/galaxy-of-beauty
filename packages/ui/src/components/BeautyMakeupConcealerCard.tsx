@@ -19,7 +19,7 @@ export function BeautyMakeupConcealerCard({
       )}
     >
       <div className="flex items-center gap-2">
-        <span className="text-xl"></span>
+        <span className="text-xl">🩹</span>
         <div>
           <h4 className="text-sm font-bold text-amber-700 dark:text-amber-300">{heading}</h4>
           <p className="text-[10px] text-amber-500 dark:text-amber-400">{subtitle}</p>
@@ -28,22 +28,22 @@ export function BeautyMakeupConcealerCard({
       <div className="mt-3 space-y-1">
         {[
           {
-            emoji: '️',
+            emoji: '🔻',
             text: { ar: 'تحت العين — مثلث مقلوب', en: 'Under the eyes — an inverted triangle' },
           },
           {
-            emoji: '',
+            emoji: '🩹',
             text: { ar: 'على الحبوب — نقطة صغيرة', en: 'On blemishes — a tiny dot' },
           },
           {
-            emoji: '',
+            emoji: '🎨',
             text: {
               ar: 'أفتح من بشرتك بدرجة — تحت العين',
               en: 'One shade lighter than your skin — under the eyes',
             },
           },
           {
-            emoji: '',
+            emoji: '👆',
             text: { ar: 'التربيت — وليس الفرك', en: "Tap — don't rub" },
           },
         ].map((t, i) => (

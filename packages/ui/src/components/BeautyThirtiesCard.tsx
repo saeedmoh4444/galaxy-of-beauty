@@ -19,7 +19,7 @@ export function BeautyThirtiesCard({
       )}
     >
       <div className="flex items-center gap-2">
-        <span className="text-xl"></span>
+        <span className="text-xl">🌿</span>
         <div>
           <h4 className="text-sm font-bold text-brand-700 dark:text-brand-300">{title}</h4>
           <p className="text-[10px] text-brand-500 dark:text-brand-400">{subtitle}</p>
@@ -28,28 +28,28 @@ export function BeautyThirtiesCard({
       <div className="mt-3 space-y-1">
         {[
           {
-            emoji: '',
+            emoji: '✨',
             text: {
               ar: 'ابدئي الريتينول — الكولاجين يبدأ بالانخفاض',
               en: 'Start retinoids — collagen begins to decline',
             },
           },
           {
-            emoji: '️',
+            emoji: '👁',
             text: {
               ar: 'كريم عيون — أولى علامات الخطوط الرفيعة',
               en: 'Eye cream — the first signs of fine lines',
             },
           },
           {
-            emoji: '',
+            emoji: '🧪',
             text: {
               ar: 'تقشير منتظم — مرة أسبوعياً AHA/BHA',
               en: 'Regular exfoliation — once a week AHA/BHA',
             },
           },
           {
-            emoji: '',
+            emoji: '💧',
             text: {
               ar: 'سيروم هيالورونيك — ترطيب مكثف',
               en: 'Hyaluronic serum — intense hydration',

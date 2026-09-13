@@ -35,7 +35,7 @@ export default function BNPLPage(): JSX.Element {
         </div>
         {result ? (
           <Card padding="lg" className="text-center border-2 border-green-300">
-            <span className="text-6xl"></span>
+            <span className="text-6xl">✅</span>
             <h2 className="mt-4 text-xl font-bold">{t('bnpl.approved')}</h2>
             <p className="text-2xl font-extrabold mt-2">
               {formatCurrency(result.totalAmount as number)} {t('beautyParty.currency')}

@@ -19,7 +19,7 @@ export function BeautyHairCurlCard({
       )}
     >
       <div className="flex items-center gap-2">
-        <span className="text-xl"></span>
+        <span className="text-xl">🦱</span>
         <div>
           <h4 className="text-sm font-bold text-brand-700 dark:text-brand-300">{title}</h4>
           <p className="text-[10px] text-brand-500 dark:text-brand-400">{subtitle}</p>
@@ -28,19 +28,19 @@ export function BeautyHairCurlCard({
       <div className="mt-3 space-y-1">
         {[
           {
-            emoji: '',
+            emoji: '🧴',
             text: {
               ar: 'Co-wash — غسيل بالبلسم بدل الشامبو',
               en: 'Co-wash — cleansing with conditioner instead of shampoo',
             },
           },
           {
-            emoji: '',
+            emoji: '✋',
             text: { ar: 'لا تلمسي الشعر وهو يجف', en: 'Do not touch the hair while it dries' },
           },
-          { emoji: '', text: { ar: 'منتجات خالية من السلفات', en: 'Sulfate-free products' } },
+          { emoji: '🌿', text: { ar: 'منتجات خالية من السلفات', en: 'Sulfate-free products' } },
           {
-            emoji: '️',
+            emoji: '🛌',
             text: { ar: 'وسادة حرير — تقلل التكسر', en: 'A silk pillowcase — reduces breakage' },
           },
         ].map((t, i) => (

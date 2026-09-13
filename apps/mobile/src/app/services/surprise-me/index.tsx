@@ -24,7 +24,7 @@ export default function SurpriseMeScreen(): JSX.Element {
       <Text style={styles.t}>{t('mobile.public.surprise-me.title')}</Text>
       {!result ? (
         <View style={styles.centered}>
-          <Text style={styles.emoji}></Text>
+          <Text style={styles.emoji}>🎁</Text>
           <Text style={styles.hint}>{t('mobile.public.surprise-me.hint')}</Text>
           <TouchableOpacity onPress={surprise} style={styles.btn}>
             <Text style={styles.bt}>{t('mobile.public.surprise-me.choose')}</Text>
@@ -32,7 +32,7 @@ export default function SurpriseMeScreen(): JSX.Element {
         </View>
       ) : (
         <View style={styles.card}>
-          <Text style={styles.re}>{result.emoji ?? '‍️'}</Text>
+          <Text style={styles.re}>{result.emoji ?? ''}</Text>
           <Text style={styles.rn}>{localize(result.titleJson, locale)}</Text>
           <Text style={styles.rp}>
             {t('mobile.public.currency', { price: result.basePrice?.toLocaleString() ?? '' })}

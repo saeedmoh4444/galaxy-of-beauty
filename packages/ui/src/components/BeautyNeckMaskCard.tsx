@@ -19,7 +19,7 @@ export function BeautyNeckMaskCard({
       )}
     >
       <div className="flex items-center gap-2">
-        <span className="text-xl"></span>
+        <span className="text-xl">🎭</span>
         <div>
           <h4 className="text-sm font-bold text-brand-700 dark:text-brand-300">{title}</h4>
           <p className="text-[10px] text-brand-500 dark:text-brand-400">{subtitle}</p>
@@ -28,25 +28,25 @@ export function BeautyNeckMaskCard({
       <div className="mt-3 space-y-1">
         {[
           {
-            emoji: '',
+            emoji: '🎭',
             text: {
               ar: 'قناع سيليكون — يعاد استخدامه فوق السيروم',
               en: 'Silicone mask — reusable over serum',
             },
           },
           {
-            emoji: '',
+            emoji: '🧖',
             text: {
               ar: 'قناع ورقي للرقبة — مرة أسبوعياً',
               en: 'A sheet mask for the neck — once a week',
             },
           },
           {
-            emoji: '️',
+            emoji: '🛀',
             text: { ar: '20-30 دقيقة — وقت الاسترخاء', en: '20-30 minutes — relaxation time' },
           },
           {
-            emoji: '',
+            emoji: '🌙',
             text: {
               ar: 'قبل النوم — البشرة تتجدد ليلاً',
               en: 'Before bed — skin regenerates at night',

@@ -5,12 +5,14 @@ export const navMessages = {
   'nav.services': { ar: 'الخدمات', en: 'Services' },
   'nav.bookings': { ar: 'الحجوزات', en: 'Bookings' },
   'nav.wallet': { ar: 'المحفظة', en: 'Wallet' },
+  'nav.wellness-hub': { ar: 'مركز العافية', en: 'Wellness hub' },
+  'nav.referrals': { ar: 'دعوة الصديقات', en: 'Referrals' },
   'nav.profile': { ar: 'الملف الشخصي', en: 'Profile' },
   'nav.notifications': { ar: 'الإشعارات', en: 'Notifications' },
 
   // Public header nav
-  'nav.discover': { ar: ' اكتشفي', en: 'Discover' },
-  'nav.search': { ar: '', en: 'Search' },
+  'nav.discover': { ar: 'اكتشفي', en: 'Discover' },
+  'nav.search': { ar: 'البحث', en: 'Search' },
   'nav.marketplace': { ar: 'المتجر', en: 'Marketplace' },
   'nav.mommyAndMe': { ar: 'أم وابنتها', en: 'Mommy & Me' },
   'nav.lookbook': { ar: 'لوك بوك', en: 'Lookbook' },
@@ -40,7 +42,8 @@ export const navMessages = {
     ar: 'جميع الحقوق محفوظة.',
     en: 'All rights reserved.',
   },
-  'common.brandName': { ar: 'جالكسي بيوتي', en: 'Galaxy of Beauty' },
+  'common.brandName': { ar: 'دلال', en: 'Dalal' },
+  'common.close': { ar: 'إغلاق', en: 'Close' },
   'common.switchToLight': { ar: 'تفعيل الوضع النهاري', en: 'Switch to light mode' },
   'common.switchToDark': { ar: 'تفعيل الوضع الليلي', en: 'Switch to dark mode' },
   'nav.myBookings': { ar: 'حجوزاتي', en: 'My Bookings' },
@@ -132,4 +135,18 @@ export const navMessages = {
   'nav.admin.analytics': { ar: 'التحليلات', en: 'Analytics' },
   'nav.admin.zatca': { ar: 'زاتكا', en: 'ZATCA' },
   'nav.admin.settings': { ar: 'الإعدادات', en: 'Settings' },
+
+  // Phase 3 sprint 4 — public header IA
+  'nav.more': { ar: 'المزيد', en: 'More' },
+  'nav.menu': { ar: 'القائمة', en: 'Menu' },
+  'nav.venues': { ar: 'الوجهات', en: 'Venues' },
+  'nav.reels': { ar: 'شاهدينا', en: 'Reels' },
+
+  // Phase 3 sprint 4 — grouped customer sidebar
+  'nav.group.core': { ar: 'الأساسيات', en: 'Core' },
+  'nav.group.bookPay': { ar: 'الحجز والدفع', en: 'Book & pay' },
+  'nav.group.beauty': { ar: 'الجمال والعافية', en: 'Beauty & wellness' },
+  'nav.group.shopping': { ar: 'التسوق', en: 'Shopping' },
+  'nav.group.community': { ar: 'المجتمع والمكافآت', en: 'Community & rewards' },
+  'nav.group.more': { ar: 'المزيد', en: 'More' },
 } as const;

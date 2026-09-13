@@ -3,15 +3,15 @@
 export const mobileCustomerBMessages = {
   // ---- referrals ----
   'mobile.referrals.load-error': { ar: 'فشل تحميل الإحالات', en: 'Failed to load referrals' },
-  'mobile.referrals.title': { ar: ' الإحالات', en: ' Referrals' },
+  'mobile.referrals.title': { ar: 'الإحالات', en: ' Referrals' },
   'mobile.referrals.your-code': { ar: 'كود الإحالة الخاص بكِ', en: 'Your referral code' },
-  'mobile.referrals.copy-code': { ar: ' نسخ الكود', en: ' Copy Code' },
+  'mobile.referrals.copy-code': { ar: 'نسخ الكود', en: ' Copy Code' },
   'mobile.referrals.referrals': { ar: 'إحالات', en: 'Referrals' },
   'mobile.referrals.rewards': { ar: 'مكافآت', en: 'Rewards' },
 
   // ---- promo ----
   'mobile.promo.load-error': { ar: 'فشل تحميل الأكواد', en: 'Failed to load promo codes' },
-  'mobile.promo.title': { ar: '️ أكواد الخصم', en: 'Promo Codes' },
+  'mobile.promo.title': { ar: 'أكواد الخصم', en: 'Promo Codes' },
   'mobile.promo.input-placeholder': { ar: 'أدخلي كود الخصم', en: 'Enter a promo code' },
   'mobile.promo.apply': { ar: 'تطبيق', en: 'Apply' },
   'mobile.promo.discount-percent': { ar: 'خصم {value}%', en: 'Discount {value}%' },
@@ -21,18 +21,18 @@ export const mobileCustomerBMessages = {
   // ---- wallet ----
   'mobile.wallet.available-balance': { ar: 'الرصيد المتاح', en: 'Available Balance' },
   'mobile.wallet.bonus': { ar: '+ {amount} مكافآت', en: '+ {amount} bonus' },
-  'mobile.wallet.top-up': { ar: ' شحن رصيد', en: ' Top Up' },
+  'mobile.wallet.top-up': { ar: 'شحن رصيد', en: ' Top Up' },
   'mobile.wallet.recent-transactions': { ar: 'آخر المعاملات', en: 'Recent Transactions' },
 
   // ---- ride-hailing ----
-  'mobile.rideHailing.title': { ar: ' توصيل للموعد', en: ' Ride to Your Appointment' },
+  'mobile.rideHailing.title': { ar: 'توصيل للموعد', en: ' Ride to Your Appointment' },
   'mobile.rideHailing.booked': { ar: 'تم الحجز!', en: 'Booked!' },
   'mobile.rideHailing.eta': { ar: '{time} · {price} ر.س', en: '{time} · {price} SAR' },
   'mobile.rideHailing.book': { ar: 'احجز', en: 'Book' },
 
   // ---- streaks ----
   'mobile.streaks.load-error': { ar: 'فشل تحميل الاستمرارية', en: 'Failed to load streak' },
-  'mobile.streaks.title': { ar: ' الاستمرارية', en: ' Streaks' },
+  'mobile.streaks.title': { ar: 'الاستمرارية', en: ' Streaks' },
   'mobile.streaks.current': {
     ar: 'الاستمرارية الحالية: {days} أيام',
     en: 'Current streak: {days} days',
@@ -51,7 +51,7 @@ export const mobileCustomerBMessages = {
     ar: 'فشل تحميل التقويم',
     en: 'Failed to load calendar',
   },
-  'mobile.streakCalendar.title': { ar: ' تقويم الاستمرارية', en: ' Streak Calendar' },
+  'mobile.streakCalendar.title': { ar: 'تقويم الاستمرارية', en: ' Streak Calendar' },
   'mobile.streakCalendar.current-week': {
     ar: 'الأسبوع الحالي: {days} أيام',
     en: 'Current week: {days} days',
@@ -66,11 +66,11 @@ export const mobileCustomerBMessages = {
   },
 
   // ---- service-compare ----
-  'mobile.serviceCompare.comparison': { ar: ' المقارنة', en: ' Comparison' },
+  'mobile.serviceCompare.comparison': { ar: 'المقارنة', en: ' Comparison' },
 
   // ---- saved-cards ----
   'mobile.savedCards.load-error': { ar: 'فشل تحميل البطاقات', en: 'Failed to load cards' },
-  'mobile.savedCards.title': { ar: ' البطاقات المحفوظة', en: ' Saved Cards' },
+  'mobile.savedCards.title': { ar: 'البطاقات المحفوظة', en: ' Saved Cards' },
   'mobile.savedCards.empty-title': { ar: 'لا توجد بطاقات محفوظة', en: 'No saved cards' },
   'mobile.savedCards.empty-desc': {
     ar: 'أضيفي بطاقتكِ للدفع السريع',
@@ -79,7 +79,7 @@ export const mobileCustomerBMessages = {
   'mobile.savedCards.expires': { ar: 'تنتهي {month}/{year}', en: 'Expires {month}/{year}' },
 
   // ---- wellness-tracker ----
-  'mobile.wellnessTracker.title': { ar: ' متعقب الصحة', en: ' Health Tracker' },
+  'mobile.wellnessTracker.title': { ar: 'متعقب الصحة', en: ' Health Tracker' },
   'mobile.wellnessTracker.cups': { ar: 'أكواب', en: 'Cups' },
   'mobile.wellnessTracker.sleep': { ar: 'نوم', en: 'Sleep' },
   'mobile.wellnessTracker.steps': { ar: 'خطوة', en: 'Steps' },
@@ -91,7 +91,7 @@ export const mobileCustomerBMessages = {
     ar: 'ستظهر خدماتكِ السابقة هنا',
     en: 'Your past services will appear here',
   },
-  'mobile.serviceHistory.title': { ar: ' سجل الخدمات', en: ' Service History' },
+  'mobile.serviceHistory.title': { ar: 'سجل الخدمات', en: ' Service History' },
 
   // ---- reviews ----
   'mobile.reviews.load-error': { ar: 'فشل تحميل التقييمات', en: 'Failed to load reviews' },
@@ -102,22 +102,22 @@ export const mobileCustomerBMessages = {
   },
 
   // ---- smart-schedule ----
-  'mobile.smartSchedule.title': { ar: ' جدولة ذكية', en: ' Smart Schedule' },
+  'mobile.smartSchedule.title': { ar: 'جدولة ذكية', en: ' Smart Schedule' },
   'mobile.smartSchedule.tech-rating': {
-    ar: '‍ #{id} · {rating}',
+    ar: ' #{id} · {rating}',
     en: 'Service Provider #{id} · {rating}',
   },
   'mobile.smartSchedule.book': { ar: 'احجز', en: 'Book' },
-  'mobile.smartSchedule.change-service': { ar: ' تغيير الخدمة', en: ' Change Service' },
+  'mobile.smartSchedule.change-service': { ar: 'تغيير الخدمة', en: ' Change Service' },
 
   // ---- vendor-portal ----
-  'mobile.vendorPortal.title': { ar: ' بوابة البائعين', en: ' Vendor Portal' },
+  'mobile.vendorPortal.title': { ar: 'بوابة البائعين', en: ' Vendor Portal' },
   'mobile.vendorPortal.products': { ar: 'منتجات', en: 'Products' },
   'mobile.vendorPortal.sar': { ar: 'ر.س', en: 'SAR' },
 
   // ---- tech-onboarding ----
   'mobile.techOnboarding.title': {
-    ar: ' التسجيل كمقدمة خدمة',
+    ar: 'التسجيل كمقدمة خدمة',
     en: ' Register as a Service Provider',
   },
   'mobile.techOnboarding.completed': {
@@ -127,12 +127,12 @@ export const mobileCustomerBMessages = {
   'mobile.techOnboarding.upload': { ar: 'رفع', en: 'Upload' },
 
   // ---- style-match ----
-  'mobile.styleMatch.title': { ar: ' مطابقة الأسلوب', en: ' Style Match' },
+  'mobile.styleMatch.title': { ar: 'مطابقة الأسلوب', en: ' Style Match' },
   'mobile.styleMatch.hint': { ar: 'اكتشفي أسلوبكِ المثالي', en: 'Discover your perfect style' },
-  'mobile.styleMatch.analyze': { ar: ' حللي أسلوبي', en: ' Analyze My Style' },
+  'mobile.styleMatch.analyze': { ar: 'حللي أسلوبي', en: ' Analyze My Style' },
 
   // ---- service-wishlist ----
-  'mobile.serviceWishlist.title': { ar: ' قائمة الخدمات', en: ' Service Wishlist' },
+  'mobile.serviceWishlist.title': { ar: 'قائمة الخدمات', en: ' Service Wishlist' },
   'mobile.serviceWishlist.lowest-price': {
     ar: 'أقل سعر: {price} ر.س',
     en: 'Lowest price: {price} SAR',
@@ -144,28 +144,28 @@ export const mobileCustomerBMessages = {
   'mobile.serviceMenuQr.generated': { ar: 'تم توليد QR!', en: 'QR generated!' },
 
   // ---- salon-management ----
-  'mobile.salonManagement.title': { ar: ' إدارة الصالون', en: ' Salon Management' },
+  'mobile.salonManagement.title': { ar: 'إدارة الصالون', en: ' Salon Management' },
   'mobile.salonManagement.today-bookings': { ar: 'حجز اليوم', en: "Today's Bookings" },
 
   // ---- referral-dashboard ----
-  'mobile.referralDashboard.title': { ar: ' لوحة الإحالات', en: ' Referral Dashboard' },
+  'mobile.referralDashboard.title': { ar: 'لوحة الإحالات', en: ' Referral Dashboard' },
   'mobile.referralDashboard.referrals': { ar: 'إحالة', en: 'Referral' },
 
   // ---- recommendations ----
-  'mobile.recommendations.title': { ar: ' توصيات ذكية', en: ' Smart Recommendations' },
-  'mobile.recommendations.booked-together': { ar: ' غالباً تُحجز مع:', en: ' Often booked with:' },
+  'mobile.recommendations.title': { ar: 'توصيات ذكية', en: ' Smart Recommendations' },
+  'mobile.recommendations.booked-together': { ar: 'غالباً تُحجز مع:', en: ' Often booked with:' },
 
   // ---- product-scanner ----
   'mobile.productScanner.not-found': { ar: 'لم يتم العثور على المنتج', en: 'Product not found' },
-  'mobile.productScanner.title': { ar: ' فحص المنتجات', en: ' Product Scanner' },
-  'mobile.productScanner.scan': { ar: ' مسح الباركود', en: ' Scan Barcode' },
+  'mobile.productScanner.title': { ar: 'فحص المنتجات', en: ' Product Scanner' },
+  'mobile.productScanner.scan': { ar: 'مسح الباركود', en: ' Scan Barcode' },
 
   // ---- waitlist ----
-  'mobile.waitlist.title': { ar: ' قائمة الانتظار', en: ' Waitlist' },
+  'mobile.waitlist.title': { ar: 'قائمة الانتظار', en: ' Waitlist' },
   'mobile.waitlist.position': { ar: 'الموقع: #{position}', en: 'Position: #{position}' },
 
   // ---- vip-membership ----
-  'mobile.vipMembership.title': { ar: ' العضوية المميزة', en: ' VIP Membership' },
+  'mobile.vipMembership.title': { ar: 'العضوية المميزة', en: ' VIP Membership' },
   'mobile.vipMembership.auto-renew-on': {
     ar: 'تجديد تلقائي مفعل',
     en: 'Auto-renewal enabled',
@@ -176,7 +176,7 @@ export const mobileCustomerBMessages = {
   },
 
   // ---- post-treatment ----
-  'mobile.postTreatment.title': { ar: '‍️ متابعة ما بعد العلاج', en: 'Post-Treatment Care' },
+  'mobile.postTreatment.title': { ar: 'متابعة ما بعد العلاج', en: 'Post-Treatment Care' },
   'mobile.postTreatment.subtitle': {
     ar: 'تعليمات العناية بعد كل خدمة',
     en: 'Aftercare instructions for every service',
@@ -189,8 +189,8 @@ export const mobileCustomerBMessages = {
     ar: 'تقدم المتابعة: {progress}%',
     en: 'Follow-up progress: {progress}%',
   },
-  'mobile.postTreatment.instructions': { ar: ' التعليمات', en: ' Instructions' },
-  'mobile.postTreatment.timeline': { ar: ' الجدول الزمني', en: ' Timeline' },
+  'mobile.postTreatment.instructions': { ar: 'التعليمات', en: ' Instructions' },
+  'mobile.postTreatment.timeline': { ar: 'الجدول الزمني', en: ' Timeline' },
   'mobile.postTreatment.day-1': { ar: 'اليوم 1', en: 'Day 1' },
   'mobile.postTreatment.day-2-3': { ar: 'اليوم 2-3', en: 'Day 2-3' },
   'mobile.postTreatment.day-4-7': { ar: 'اليوم 4-7', en: 'Day 4-7' },
@@ -308,7 +308,7 @@ export const mobileCustomerBMessages = {
   },
 
   // ---- post-care ----
-  'mobile.postCare.title': { ar: '‍️ عناية ما بعد الخدمة', en: 'Post-Service Care' },
+  'mobile.postCare.title': { ar: 'عناية ما بعد الخدمة', en: 'Post-Service Care' },
   'mobile.postCare.tipsCount': { ar: '{count} نصيحة للعناية', en: '{count} care tips' },
 
   // ---- stores (store plan Phase 4) ----
@@ -391,64 +391,64 @@ export const mobileCustomerBMessages = {
   'mobile.trainers.load-error': { ar: 'فشل تحميل المدربات', en: 'Failed to load trainers' },
 
   // ---- travel-kit ----
-  'mobile.travelKit.title': { ar: ' حقيبة السفر', en: ' Travel Kit' },
+  'mobile.travelKit.title': { ar: 'حقيبة السفر', en: ' Travel Kit' },
   'mobile.travelKit.kit-contents': {
-    ar: ' محتويات الحقيبة - {name}',
+    ar: 'محتويات الحقيبة - {name}',
     en: ' Kit Contents - {name}',
   },
 
   // ---- spa-planner ----
-  'mobile.spaPlanner.title': { ar: '‍️ مخطط السبا', en: 'Spa Planner' },
+  'mobile.spaPlanner.title': { ar: 'مخطط السبا', en: 'Spa Planner' },
   'mobile.spaPlanner.duration-price': {
-    ar: '️ {duration} · {price} ر.س',
+    ar: ' {duration} · {price} ر.س',
     en: '{duration} · {price} SAR',
   },
 
   // ---- service-warranty ----
-  'mobile.serviceWarranty.title': { ar: '️ ضمان الخدمة', en: 'Service Warranty' },
+  'mobile.serviceWarranty.title': { ar: 'ضمان الخدمة', en: 'Service Warranty' },
   'mobile.serviceWarranty.expires': { ar: 'ينتهي: {date}', en: 'Expires: {date}' },
 
   // ---- savings-goals ----
-  'mobile.savingsGoals.title': { ar: ' أهداف التوفير', en: ' Savings Goals' },
+  'mobile.savingsGoals.title': { ar: 'أهداف التوفير', en: ' Savings Goals' },
   'mobile.savingsGoals.progress': {
     ar: '{current} / {target} ر.س',
     en: '{current} / {target} SAR',
   },
 
   // ---- restock-reminder ----
-  'mobile.restockReminder.title': { ar: ' تذكير بإعادة الطلب', en: ' Restock Reminder' },
+  'mobile.restockReminder.title': { ar: 'تذكير بإعادة الطلب', en: ' Restock Reminder' },
   'mobile.restockReminder.last-ordered': { ar: 'آخر طلب: {date}', en: 'Last ordered: {date}' },
 
   // ---- recurring ----
-  'mobile.recurring.title': { ar: ' حجوزات متكررة', en: ' Recurring Bookings' },
+  'mobile.recurring.title': { ar: 'حجوزات متكررة', en: ' Recurring Bookings' },
   'mobile.recurring.freq': {
     ar: '{recurrence} · {count} مرات',
     en: '{recurrence} · {count} times',
   },
 
   // ---- price-drop-alerts ----
-  'mobile.priceDropAlerts.title': { ar: ' تنبيهات الأسعار', en: ' Price Drop Alerts' },
+  'mobile.priceDropAlerts.title': { ar: 'تنبيهات الأسعار', en: ' Price Drop Alerts' },
   'mobile.priceDropAlerts.dropped': { ar: ' {price} ر.س', en: ' {price} SAR' },
 
   // ---- personalized-feed ----
-  'mobile.personalizedFeed.title': { ar: ' خلاصتي', en: ' My Feed' },
+  'mobile.personalizedFeed.title': { ar: 'خلاصتي', en: ' My Feed' },
   'mobile.personalizedFeed.price': { ar: ' {price} ر.س', en: ' {price} SAR' },
 
   // ---- skin-diary ----
-  'mobile.skinDiary.title': { ar: ' يوميات البشرة', en: ' Skin Diary' },
+  'mobile.skinDiary.title': { ar: 'يوميات البشرة', en: ' Skin Diary' },
 
   // ---- self-care ----
-  'mobile.selfCare.title': { ar: ' العناية الذاتية', en: ' Self-Care' },
-  'mobile.selfCare.duration': { ar: '️ {duration}', en: '{duration}' },
+  'mobile.selfCare.title': { ar: 'العناية الذاتية', en: ' Self-Care' },
+  'mobile.selfCare.duration': { ar: ' {duration}', en: '{duration}' },
 
   // ---- sale-alerts ----
-  'mobile.saleAlerts.title': { ar: '️ تنبيهات التخفيضات', en: 'Sale Alerts' },
+  'mobile.saleAlerts.title': { ar: 'تنبيهات التخفيضات', en: 'Sale Alerts' },
 
   // ---- routine-scheduler ----
-  'mobile.routineScheduler.title': { ar: ' جدول الروتين', en: ' Routine Scheduler' },
+  'mobile.routineScheduler.title': { ar: 'جدول الروتين', en: ' Routine Scheduler' },
 
   // ---- reschedule ----
-  'mobile.reschedule.title': { ar: ' إعادة جدولة', en: ' Reschedule' },
+  'mobile.reschedule.title': { ar: 'إعادة جدولة', en: ' Reschedule' },
   'mobile.reschedule.subtitle': {
     ar: 'غيري موعد حجوزاتكِ القادمة',
     en: 'Change the time of your upcoming bookings',
@@ -470,14 +470,14 @@ export const mobileCustomerBMessages = {
     ar: 'سبب إعادة الجدولة (اختياري)',
     en: 'Reason for rescheduling (optional)',
   },
-  'mobile.reschedule.confirm': { ar: ' تأكيد إعادة الجدولة', en: ' Confirm Reschedule' },
+  'mobile.reschedule.confirm': { ar: 'تأكيد إعادة الجدولة', en: ' Confirm Reschedule' },
 
   // ---- rewards-marketplace ----
   'mobile.rewardsMarketplace.load-error': {
     ar: 'فشل تحميل المكافآت',
     en: 'Failed to load rewards',
   },
-  'mobile.rewardsMarketplace.title': { ar: ' سوق المكافآت', en: ' Rewards Marketplace' },
+  'mobile.rewardsMarketplace.title': { ar: 'سوق المكافآت', en: ' Rewards Marketplace' },
   'mobile.rewardsMarketplace.subtitle': {
     ar: 'استبدلي نقاطكِ بمكافآت حصرية',
     en: 'Redeem your points for exclusive rewards',
@@ -488,33 +488,33 @@ export const mobileCustomerBMessages = {
     en: '{tier} · Multiplier ×{multiplier}',
   },
   'mobile.rewardsMarketplace.redeemed': { ar: 'تم الاستبدال', en: 'Redeemed' },
-  'mobile.rewardsMarketplace.redeem': { ar: ' استبدلي', en: ' Redeem' },
+  'mobile.rewardsMarketplace.redeem': { ar: 'استبدلي', en: ' Redeem' },
   'mobile.rewardsMarketplace.insufficient': {
-    ar: ' نقاط غير كافية',
+    ar: 'نقاط غير كافية',
     en: ' Not enough points',
   },
   'mobile.rewardsMarketplace.points-history': { ar: 'سجل النقاط', en: 'Points history' },
 
   // ---- social ----
   'mobile.social.load-error': { ar: 'فشل تحميل المحتوى', en: 'Failed to load content' },
-  'mobile.social.title': { ar: ' مجتمع الجمال', en: ' Beauty Community' },
+  'mobile.social.title': { ar: 'مجتمع الجمال', en: ' Beauty Community' },
   'mobile.social.subtitle': {
     ar: 'اكتشفي أحدث الصيحات والفنيات المميزات',
     en: 'Discover the latest trends and top service providers',
   },
-  'mobile.social.tab-trending': { ar: ' رائج', en: ' Trending' },
-  'mobile.social.tab-spotlight': { ar: ' مميزات', en: ' Spotlight' },
-  'mobile.social.tab-tips': { ar: ' نصائح', en: ' Tips' },
-  'mobile.social.tab-feed': { ar: ' قبل وبعد', en: ' Before & After' },
-  'mobile.social.trending-services': { ar: ' الخدمات الرائجة', en: ' Trending Services' },
+  'mobile.social.tab-trending': { ar: 'رائج', en: ' Trending' },
+  'mobile.social.tab-spotlight': { ar: 'مميزات', en: ' Spotlight' },
+  'mobile.social.tab-tips': { ar: 'نصائح', en: ' Tips' },
+  'mobile.social.tab-feed': { ar: 'قبل وبعد', en: ' Before & After' },
+  'mobile.social.trending-services': { ar: 'الخدمات الرائجة', en: ' Trending Services' },
   'mobile.social.bookings-count': { ar: '{count} حجز', en: '{count} bookings' },
-  'mobile.social.spotlight-technicians': { ar: ' فنيات مميزات', en: ' Featured Service Providers' },
-  'mobile.social.beauty-tips': { ar: ' نصائح تجميلية', en: ' Beauty Tips' },
-  'mobile.social.lookbook': { ar: ' لوك بوك الموسم', en: ' Lookbook of the Season' },
+  'mobile.social.spotlight-technicians': { ar: 'فنيات مميزات', en: ' Featured Service Providers' },
+  'mobile.social.beauty-tips': { ar: 'نصائح تجميلية', en: ' Beauty Tips' },
+  'mobile.social.lookbook': { ar: 'لوك بوك الموسم', en: ' Lookbook of the Season' },
 
   // ---- wellness-hub ----
   'mobile.wellnessHub.load-error': { ar: 'فشل تحميل البيانات', en: 'Failed to load data' },
-  'mobile.wellnessHub.title': { ar: ' مركز العافية', en: ' Wellness Hub' },
+  'mobile.wellnessHub.title': { ar: 'مركز العافية', en: ' Wellness Hub' },
   'mobile.wellnessHub.subtitle': {
     ar: 'نظرة شاملة على صحتكِ وجمالكِ',
     en: 'A complete overview of your health and beauty',
@@ -524,7 +524,7 @@ export const mobileCustomerBMessages = {
     en: 'Day {day} of {length}',
   },
   'mobile.wellnessHub.next-cycle': {
-    ar: '️ الدورة القادمة بعد {days} يوم',
+    ar: 'الدورة القادمة بعد {days} يوم',
     en: 'Next cycle in {days} days',
   },
   'mobile.wellnessHub.mood': { ar: 'مزاج', en: 'Mood' },
@@ -532,7 +532,7 @@ export const mobileCustomerBMessages = {
   'mobile.wellnessHub.sleep': { ar: 'نوم', en: 'Sleep' },
   'mobile.wellnessHub.water': { ar: 'ماء', en: 'Water' },
   'mobile.wellnessHub.skin-type': { ar: 'النوع: {type}', en: 'Type: {type}' },
-  'mobile.wellnessHub.weekly-summary': { ar: ' ملخص الأسبوع', en: ' Weekly Summary' },
+  'mobile.wellnessHub.weekly-summary': { ar: 'ملخص الأسبوع', en: ' Weekly Summary' },
   'mobile.wellnessHub.avg-mood': {
     ar: 'متوسط المزاج: {avg}/5',
     en: 'Average mood: {avg}/5',
@@ -541,7 +541,7 @@ export const mobileCustomerBMessages = {
     ar: 'متوسط الطاقة: {avg}/10',
     en: 'Average energy: {avg}/10',
   },
-  'mobile.wellnessHub.recent-journals': { ar: ' آخر اليوميات', en: ' Recent Journal Entries' },
+  'mobile.wellnessHub.recent-journals': { ar: 'آخر اليوميات', en: ' Recent Journal Entries' },
   'mobile.wellnessHub.action-checkin': { ar: 'تقييم', en: 'Check-in' },
   'mobile.wellnessHub.action-cycle': { ar: 'الدورة', en: 'Cycle' },
   'mobile.wellnessHub.action-skin': { ar: 'بشرة', en: 'Skin' },
@@ -592,14 +592,14 @@ export const mobileCustomerBMessages = {
     ar: 'المبلغ يجب أن يكون بين {min} و {max} ر.س',
     en: 'Amount must be between {min} and {max} SAR',
   },
-  'mobile.topUp.title': { ar: ' شحن الرصيد', en: ' Top Up Balance' },
+  'mobile.topUp.title': { ar: 'شحن الرصيد', en: ' Top Up Balance' },
   'mobile.topUp.quick-amounts': { ar: 'المبالغ السريعة', en: 'Quick Amounts' },
   'mobile.topUp.amount-placeholder': { ar: 'أدخلي المبلغ', en: 'Enter amount' },
 
   // ---- video ----
   'mobile.video.unavailable': { ar: 'الجلسة غير متاحة', en: 'Session unavailable' },
-  'mobile.video.title': { ar: ' جلسة فيديو', en: ' Video Session' },
-  'mobile.video.join-room': { ar: ' دخول الغرفة', en: ' Enter Room' },
+  'mobile.video.title': { ar: 'جلسة فيديو', en: ' Video Session' },
+  'mobile.video.join-room': { ar: 'دخول الغرفة', en: ' Enter Room' },
   'mobile.video.room-toast': { ar: 'رقم الغرفة: {room}', en: 'Room number: {room}' },
   'mobile.video.unknown': { ar: 'غير معروف', en: 'Unknown' },
   'mobile.video.room-label': { ar: 'رقم الغرفة', en: 'Room number' },
@@ -609,18 +609,18 @@ export const mobileCustomerBMessages = {
     ar: 'يتم التكامل مع Daily.co أو Whereby',
     en: 'Integration with Daily.co or Whereby is in progress',
   },
-  'mobile.video.copied': { ar: ' تم النسخ', en: ' Copied' },
+  'mobile.video.copied': { ar: 'تم النسخ', en: ' Copied' },
 
   // ---- gift-card-market ----
-  'mobile.giftCardMarket.title': { ar: ' سوق البطاقات', en: ' Gift Card Market' },
+  'mobile.giftCardMarket.title': { ar: 'سوق البطاقات', en: ' Gift Card Market' },
   'mobile.giftCardMarket.save': { ar: 'وفر {percent}%', en: 'Save {percent}%' },
-  'mobile.giftCardMarket.buy': { ar: ' شراء', en: ' Buy' },
+  'mobile.giftCardMarket.buy': { ar: 'شراء', en: ' Buy' },
 
   // ---- gift-registry ----
-  'mobile.giftRegistry.title': { ar: ' سجل الهدايا', en: ' Gift Registry' },
+  'mobile.giftRegistry.title': { ar: 'سجل الهدايا', en: ' Gift Registry' },
 
   // ---- group-bookings ----
-  'mobile.groupBookings.title': { ar: '‍️ الحجوزات الجماعية', en: ' Group Bookings' },
+  'mobile.groupBookings.title': { ar: 'الحجوزات الجماعية', en: ' Group Bookings' },
   'mobile.groupBookings.members-summary': {
     ar: '{count} أفراد · {total} ر.س',
     en: '{count} members · {total} SAR',
@@ -632,29 +632,29 @@ export const mobileCustomerBMessages = {
   'mobile.groupBookings.status-in-progress': { ar: 'جاري', en: 'In Progress' },
   'mobile.groupBookings.status-unknown': { ar: 'غير معروف', en: 'Unknown' },
   'mobile.groupBookings.load-error': { ar: 'تعذر تحميل التفاصيل', en: 'Failed to load details' },
-  'mobile.groupBookings.amount': { ar: ' المبلغ', en: ' Amount' },
+  'mobile.groupBookings.amount': { ar: 'المبلغ', en: ' Amount' },
   'mobile.groupBookings.discount': { ar: 'خصم: {value}%', en: 'Discount: {value}%' },
 
   // ---- hair-care-guide ----
-  'mobile.hairCareGuide.title': { ar: '‍️ دليل العناية بالشعر', en: ' Hair Care Guide' },
+  'mobile.hairCareGuide.title': { ar: 'دليل العناية بالشعر', en: ' Hair Care Guide' },
   'mobile.hairCareGuide.subtitle': {
     ar: 'كل ما تحتاجينه لشعر صحي وجميل',
     en: 'Everything you need for healthy, beautiful hair',
   },
 
   // ---- hair-color-sim ----
-  'mobile.hairColorSim.title': { ar: '‍️ محاكي لون الشعر', en: ' Hair Color Simulator' },
+  'mobile.hairColorSim.title': { ar: 'محاكي لون الشعر', en: ' Hair Color Simulator' },
   'mobile.hairColorSim.subtitle': { ar: 'اختاري لون شعرك الجديد', en: 'Pick your new hair color' },
 
   // ---- home-service ----
-  'mobile.homeService.title': { ar: ' خدمة منزلية', en: ' Home Service' },
-  'mobile.homeService.estimate': { ar: ' تقدير التكلفة — الرياض', en: ' Estimate Cost — Riyadh' },
+  'mobile.homeService.title': { ar: 'خدمة منزلية', en: ' Home Service' },
+  'mobile.homeService.estimate': { ar: 'تقدير التكلفة — الرياض', en: ' Estimate Cost — Riyadh' },
 
   // ---- inspiration ----
-  'mobile.inspiration.title': { ar: ' لوحة الإلهام', en: ' Inspiration Board' },
+  'mobile.inspiration.title': { ar: 'لوحة الإلهام', en: ' Inspiration Board' },
 
   // ---- invoices ----
-  'mobile.invoices.title': { ar: ' الفواتير الإلكترونية', en: ' E-Invoices' },
+  'mobile.invoices.title': { ar: 'الفواتير الإلكترونية', en: ' E-Invoices' },
   'mobile.invoices.load-error': { ar: 'فشل تحميل الفواتير', en: 'Failed to load invoices' },
   'mobile.invoices.empty': { ar: 'لا توجد فواتير', en: 'No invoices' },
   'mobile.invoices.status-reported': { ar: 'مبلغ عنه', en: 'Reported' },
@@ -662,79 +662,79 @@ export const mobileCustomerBMessages = {
   'mobile.invoices.status-rejected': { ar: 'مرفوض', en: 'Rejected' },
 
   // ---- iot-sync ----
-  'mobile.iotSync.title': { ar: ' الأجهزة الذكية', en: ' Smart Devices' },
-  'mobile.iotSync.connected': { ar: ' متصل', en: ' Connected' },
-  'mobile.iotSync.disconnected': { ar: ' غير متصل', en: ' Disconnected' },
+  'mobile.iotSync.title': { ar: 'الأجهزة الذكية', en: ' Smart Devices' },
+  'mobile.iotSync.connected': { ar: 'متصل', en: ' Connected' },
+  'mobile.iotSync.disconnected': { ar: 'غير متصل', en: ' Disconnected' },
   'mobile.iotSync.sync': { ar: 'مزامنة', en: 'Sync' },
   'mobile.iotSync.link': { ar: 'ربط', en: 'Link' },
 
   // ---- last-mile ----
-  'mobile.lastMile.title': { ar: ' توصيل سريع', en: ' Fast Delivery' },
+  'mobile.lastMile.title': { ar: 'توصيل سريع', en: ' Fast Delivery' },
   'mobile.lastMile.ordered': { ar: 'تم الطلب!', en: 'Order placed!' },
   'mobile.lastMile.summary': { ar: '{estimated} · {total} ر.س', en: '{estimated} · {total} SAR' },
   'mobile.lastMile.order': { ar: 'اطلب', en: 'Order' },
 
   // ---- leadership ----
-  'mobile.leadership.title': { ar: ' القيادة', en: ' Leadership' },
+  'mobile.leadership.title': { ar: 'القيادة', en: ' Leadership' },
   'mobile.leadership.subtitle': {
     ar: 'تمكين المرأة في عالم التجميل',
     en: 'Empowering women in the beauty industry',
   },
 
   // ---- life-events ----
-  'mobile.lifeEvents.title': { ar: ' مراحل الحياة', en: ' Life Stages' },
+  'mobile.lifeEvents.title': { ar: 'مراحل الحياة', en: ' Life Stages' },
   'mobile.lifeEvents.subtitle': {
     ar: 'لكل مرحلة عمرية جمالها الخاص',
     en: 'Every stage of life has its own beauty',
   },
 
   // ---- live-chat ----
-  'mobile.liveChat.title': { ar: ' الدعم المباشر', en: ' Live Support' },
+  'mobile.liveChat.title': { ar: 'الدعم المباشر', en: ' Live Support' },
   'mobile.liveChat.input-placeholder': { ar: 'اكتبي...', en: 'Type a message...' },
   'mobile.liveChat.send': { ar: 'إرسال', en: 'Send' },
 
   // ---- loyalty-punch-card ----
-  'mobile.loyaltyPunchCard.title': { ar: ' بطاقة الولاء', en: ' Loyalty Card' },
+  'mobile.loyaltyPunchCard.title': { ar: 'بطاقة الولاء', en: ' Loyalty Card' },
 
   // ---- makeup-guide ----
-  'mobile.makeupGuide.title': { ar: ' دليل المكياج', en: ' Makeup Guide' },
+  'mobile.makeupGuide.title': { ar: 'دليل المكياج', en: ' Makeup Guide' },
   'mobile.makeupGuide.subtitle': {
     ar: 'كل ما تحتاجينه لإطلالة مثالية',
     en: 'Everything you need for a perfect look',
   },
 
   // ---- mood-board ----
-  'mobile.moodBoard.title': { ar: ' لوحة المود', en: ' Mood Board' },
+  'mobile.moodBoard.title': { ar: 'لوحة المود', en: ' Mood Board' },
 
   // ---- my-journey ----
-  'mobile.myJourney.title': { ar: ' رحلتي', en: ' My Journey' },
+  'mobile.myJourney.title': { ar: 'رحلتي', en: ' My Journey' },
   'mobile.myJourney.load-error': { ar: 'فشل تحميل الرحلة', en: 'Failed to load your journey' },
   'mobile.myJourney.empty': { ar: 'لا توجد بيانات', en: 'No data yet' },
 
   // ---- my-subscription ----
-  'mobile.mySubscription.title': { ar: ' اشتراكي', en: ' My Subscription' },
+  'mobile.mySubscription.title': { ar: 'اشتراكي', en: ' My Subscription' },
   'mobile.mySubscription.auto-renew': { ar: 'تجديد تلقائي', en: 'Auto-renew' },
   'mobile.mySubscription.no-renewal': { ar: 'بدون تجديد', en: 'No renewal' },
   'mobile.mySubscription.not-subscribed': { ar: 'غير مشترك', en: 'Not subscribed' },
   'mobile.mySubscription.no-active': { ar: 'لا يوجد اشتراك نشط', en: 'No active subscription' },
 
   // ---- nail-care-guide ----
-  'mobile.nailCareGuide.title': { ar: ' دليل العناية بالأظافر', en: ' Nail Care Guide' },
+  'mobile.nailCareGuide.title': { ar: 'دليل العناية بالأظافر', en: ' Nail Care Guide' },
   'mobile.nailCareGuide.subtitle': {
     ar: 'كل ما تحتاجينه لأظافر جميلة وصحية',
     en: 'Everything you need for beautiful, healthy nails',
   },
 
   // ---- newsletter ----
-  'mobile.newsletter.title': { ar: ' النشرة البريدية', en: ' Newsletter' },
+  'mobile.newsletter.title': { ar: 'النشرة البريدية', en: ' Newsletter' },
   'mobile.newsletter.email-placeholder': { ar: 'بريدكِ الإلكتروني', en: 'Your email' },
   'mobile.newsletter.subscribe': { ar: 'اشتراك', en: 'Subscribe' },
   'mobile.newsletter.subscribed': { ar: 'تم الاشتراك!', en: 'Subscribed!' },
 
   // ---- night-mode ----
-  'mobile.nightMode.title': { ar: ' الوضع الليلي', en: ' Night Mode' },
+  'mobile.nightMode.title': { ar: 'الوضع الليلي', en: ' Night Mode' },
   'mobile.nightMode.enable': { ar: 'تفعيل الوضع الليلي', en: 'Enable night mode' },
-  'mobile.nightMode.colors': { ar: ' الألوان', en: ' Colors' },
+  'mobile.nightMode.colors': { ar: 'الألوان', en: ' Colors' },
   'mobile.nightMode.desc': {
     ar: 'خلفيات داكنة ونصوص فاتحة لتجربة مريحة للعين في الإضاءة المنخفضة',
     en: 'Dark backgrounds and light text for comfortable viewing in low light',
@@ -746,7 +746,7 @@ export const mobileCustomerBMessages = {
   },
 
   // ---- notifications ----
-  'mobile.notifications.title': { ar: ' الإشعارات', en: ' Notifications' },
+  'mobile.notifications.title': { ar: 'الإشعارات', en: ' Notifications' },
   'mobile.notifications.load-error': {
     ar: 'فشل تحميل الإشعارات',
     en: 'Failed to load notifications',
@@ -759,37 +759,37 @@ export const mobileCustomerBMessages = {
   'mobile.notifications.mark-all': { ar: 'تحديد الكل كمقروء', en: 'Mark all as read' },
 
   // ---- notification-settings ----
-  'mobile.notificationSettings.title': { ar: ' إعدادات الإشعارات', en: ' Notification Settings' },
-  'mobile.notificationSettings.bookings': { ar: ' الحجوزات', en: ' Bookings' },
-  'mobile.notificationSettings.promo': { ar: ' العروض', en: ' Promotions' },
-  'mobile.notificationSettings.chat': { ar: ' المحادثة', en: ' Chat' },
-  'mobile.notificationSettings.reviews': { ar: ' التقييمات', en: ' Reviews' },
+  'mobile.notificationSettings.title': { ar: 'إعدادات الإشعارات', en: ' Notification Settings' },
+  'mobile.notificationSettings.bookings': { ar: 'الحجوزات', en: ' Bookings' },
+  'mobile.notificationSettings.promo': { ar: 'العروض', en: ' Promotions' },
+  'mobile.notificationSettings.chat': { ar: 'المحادثة', en: ' Chat' },
+  'mobile.notificationSettings.reviews': { ar: 'التقييمات', en: ' Reviews' },
 
   // ---- payments ----
-  'mobile.payments.title': { ar: ' المدفوعات', en: ' Payments' },
+  'mobile.payments.title': { ar: 'المدفوعات', en: ' Payments' },
   'mobile.payments.load-error': { ar: 'فشل تحميل المدفوعات', en: 'Failed to load payments' },
   'mobile.payments.empty': { ar: 'لا توجد مدفوعات', en: 'No payments' },
 
   // ---- pen-pal ----
-  'mobile.penPal.title': { ar: ' صديقة الجمال', en: ' Beauty Buddy' },
+  'mobile.penPal.title': { ar: 'صديقة الجمال', en: ' Beauty Buddy' },
   'mobile.penPal.no-match': { ar: 'لم تجدِ صديقة بعد', en: 'No match yet' },
 
   // ---- perfume-guide ----
-  'mobile.perfumeGuide.title': { ar: ' دليل العطور', en: ' Perfume Guide' },
+  'mobile.perfumeGuide.title': { ar: 'دليل العطور', en: ' Perfume Guide' },
   'mobile.perfumeGuide.subtitle': {
     ar: 'كل ما تحتاجينه عن عالم العطور الشرقية والغربية',
     en: 'Everything you need to know about Eastern and Western fragrances',
   },
 
   // ---- personal-care ----
-  'mobile.personalCare.title': { ar: ' العناية الشخصية', en: ' Personal Care' },
+  'mobile.personalCare.title': { ar: 'العناية الشخصية', en: ' Personal Care' },
   'mobile.personalCare.subtitle': {
     ar: 'تفاصيل صغيرة — تأثير كبير',
     en: 'Small details — big impact',
   },
 
   // ---- profile ----
-  'mobile.profile.title': { ar: ' حسابي', en: ' My Account' },
+  'mobile.profile.title': { ar: 'حسابي', en: ' My Account' },
   'mobile.profile.load-error': { ar: 'فشل تحميل الملف الشخصي', en: 'Failed to load profile' },
   'mobile.profile.name': { ar: 'الاسم', en: 'Name' },
   'mobile.profile.email': { ar: 'البريد', en: 'Email' },
@@ -800,15 +800,15 @@ export const mobileCustomerBMessages = {
   'mobile.profile.role-supervisor': { ar: 'مشرفة', en: 'Supervisor' },
   'mobile.profile.language': { ar: 'اللغة', en: 'Language' },
   'mobile.profile.lang-ar': { ar: 'العربية', en: 'Arabic' },
-  'mobile.profile.edit': { ar: '️ تعديل الملف', en: ' Edit Profile' },
+  'mobile.profile.edit': { ar: 'تعديل الملف', en: ' Edit Profile' },
 
   // ---- safety ----
-  'mobile.safety.title': { ar: '️ السلامة', en: ' Safety' },
+  'mobile.safety.title': { ar: 'السلامة', en: ' Safety' },
   'mobile.safety.subtitle': { ar: 'سلامتكِ أولويتنا', en: 'Your safety is our priority' },
   'mobile.safety.activate': { ar: 'تفعيل', en: 'Activate' },
 
   // ---- salon-membership ----
-  'mobile.salonMembership.title': { ar: ' عضويات الصالون', en: ' Salon Memberships' },
+  'mobile.salonMembership.title': { ar: 'عضويات الصالون', en: ' Salon Memberships' },
   'mobile.salonMembership.subtitle': {
     ar: 'اختاري العضوية اللي تناسبكِ',
     en: 'Choose the membership that suits you',
@@ -818,9 +818,9 @@ export const mobileCustomerBMessages = {
     en: 'Failed to load memberships',
   },
   'mobile.salonMembership.current': { ar: 'عضويتكِ الحالية', en: 'Your current membership' },
-  'mobile.salonMembership.tier-platinum': { ar: ' بلاتينية', en: ' Platinum' },
-  'mobile.salonMembership.tier-premium': { ar: ' مميزة', en: ' Premium' },
-  'mobile.salonMembership.tier-basic': { ar: ' أساسية', en: ' Basic' },
+  'mobile.salonMembership.tier-platinum': { ar: 'بلاتينية', en: ' Platinum' },
+  'mobile.salonMembership.tier-premium': { ar: 'مميزة', en: ' Premium' },
+  'mobile.salonMembership.tier-basic': { ar: 'أساسية', en: ' Basic' },
   'mobile.salonMembership.cancel-auto-renew': {
     ar: 'إلغاء التجديد التلقائي',
     en: 'Cancel auto-renewal',
@@ -832,13 +832,13 @@ export const mobileCustomerBMessages = {
   'mobile.salonMembership.subscribe': { ar: 'اشتراك', en: 'Subscribe' },
 
   // ---- seasonal-calendar ----
-  'mobile.seasonalCalendar.title': { ar: ' تقويم الجمال', en: ' Beauty Calendar' },
+  'mobile.seasonalCalendar.title': { ar: 'تقويم الجمال', en: ' Beauty Calendar' },
   'mobile.seasonalCalendar.subtitle': {
     ar: 'خدمات موسمية مصممة لبشرتكِ',
     en: 'Seasonal services designed for your skin',
   },
-  'mobile.seasonalCalendar.season-services': { ar: '‍️ خدمات الموسم', en: ' Seasonal Services' },
-  'mobile.seasonalCalendar.book': { ar: ' احجزي خدمات الموسم', en: ' Book Seasonal Services' },
+  'mobile.seasonalCalendar.season-services': { ar: 'خدمات الموسم', en: ' Seasonal Services' },
+  'mobile.seasonalCalendar.book': { ar: 'احجزي خدمات الموسم', en: ' Book Seasonal Services' },
 
   // ---- skin-analysis ----
   'mobile.skinAnalysis.title': { ar: 'تحليل البشرة بالذكاء الاصطناعي', en: 'AI Skin Analysis' },
@@ -847,8 +847,8 @@ export const mobileCustomerBMessages = {
     ar: 'التقطي صورة أو أدخلي رابط الصورة',
     en: 'Take a photo or enter an image URL',
   },
-  'mobile.skinAnalysis.capturing': { ar: ' جاري التصوير...', en: ' Capturing...' },
-  'mobile.skinAnalysis.capture': { ar: ' التقاط صورة', en: ' Take Photo' },
+  'mobile.skinAnalysis.capturing': { ar: 'جاري التصوير...', en: ' Capturing...' },
+  'mobile.skinAnalysis.capture': { ar: 'التقاط صورة', en: ' Take Photo' },
   'mobile.skinAnalysis.analyze': { ar: 'تحليل', en: 'Analyze' },
   'mobile.skinAnalysis.analyze-error': {
     ar: 'فشل تحليل الصورة. حاولي مجدداً.',
@@ -883,55 +883,55 @@ export const mobileCustomerBMessages = {
   },
 
   // ---- skincare-guide ----
-  'mobile.skincareGuide.title': { ar: ' دليل المكونات', en: ' Ingredient Guide' },
+  'mobile.skincareGuide.title': { ar: 'دليل المكونات', en: ' Ingredient Guide' },
   'mobile.skincareGuide.subtitle': {
     ar: 'كل ما تحتاجين معرفته عن المكونات الفعالة للعناية بالبشرة',
     en: 'Everything you need to know about effective skincare ingredients',
   },
 
   // ---- skin-timeline ----
-  'mobile.skinTimeline.title': { ar: ' تطور البشرة', en: ' Skin Journey' },
+  'mobile.skinTimeline.title': { ar: 'تطور البشرة', en: ' Skin Journey' },
   'mobile.skinTimeline.subtitle': {
     ar: 'تابعي رحلة بشرتكِ عبر الزمن',
     en: 'Follow your skin journey through time',
   },
   'mobile.skinTimeline.cancel-compare': { ar: 'إلغاء المقارنة', en: 'Cancel comparison' },
-  'mobile.skinTimeline.weekly-compare': { ar: ' مقارنة أسبوعية', en: ' Weekly Comparison' },
-  'mobile.skinTimeline.last-week': { ar: ' الأسبوع الماضي', en: ' Last Week' },
-  'mobile.skinTimeline.this-week': { ar: ' هذا الأسبوع', en: ' This Week' },
+  'mobile.skinTimeline.weekly-compare': { ar: 'مقارنة أسبوعية', en: ' Weekly Comparison' },
+  'mobile.skinTimeline.last-week': { ar: 'الأسبوع الماضي', en: ' Last Week' },
+  'mobile.skinTimeline.this-week': { ar: 'هذا الأسبوع', en: ' This Week' },
   'mobile.skinTimeline.skin-update': { ar: 'تحديث البشرة', en: 'Skin update' },
-  'mobile.skinTimeline.stats': { ar: ' إحصائيات', en: ' Stats' },
+  'mobile.skinTimeline.stats': { ar: 'إحصائيات', en: ' Stats' },
   'mobile.skinTimeline.hydration-improvement': { ar: 'تحسن الترطيب', en: 'Hydration improvement' },
   'mobile.skinTimeline.glow-improvement': { ar: 'تحسن النضارة', en: 'Glow improvement' },
   'mobile.skinTimeline.updates': { ar: 'تحديثات', en: 'Updates' },
 
   // ---- social-challenges ----
-  'mobile.socialChallenges.title': { ar: ' تحديات اجتماعية', en: ' Social Challenges' },
+  'mobile.socialChallenges.title': { ar: 'تحديات اجتماعية', en: ' Social Challenges' },
   'mobile.socialChallenges.subtitle': {
     ar: 'انضمي للتحديات الجماعية وكسبي مكافآت',
     en: 'Join group challenges and earn rewards',
   },
   'mobile.socialChallenges.my-challenges': {
-    ar: ' تحدياتي ({count})',
+    ar: 'تحدياتي ({count})',
     en: ' My Challenges ({count})',
   },
   'mobile.socialChallenges.no-challenges': {
     ar: 'لم تنضمي لأي تحدي بعد',
     en: 'You have not joined any challenges yet',
   },
-  'mobile.socialChallenges.joined': { ar: ' منضم', en: ' Joined' },
+  'mobile.socialChallenges.joined': { ar: 'منضم', en: ' Joined' },
   'mobile.socialChallenges.join': { ar: 'انضمام', en: 'Join' },
 
   // ---- subscriptions ----
-  'mobile.subscriptions.title': { ar: ' اشتراكاتي', en: ' My Subscriptions' },
+  'mobile.subscriptions.title': { ar: 'اشتراكاتي', en: ' My Subscriptions' },
   'mobile.subscriptions.load-error': {
     ar: 'فشل تحميل الاشتراكات',
     en: 'Failed to load subscriptions',
   },
   'mobile.subscriptions.current': { ar: 'الاشتراك الحالي', en: 'Current subscription' },
   'mobile.subscriptions.plan': { ar: 'خطة', en: 'Plan' },
-  'mobile.subscriptions.active': { ar: ' نشط', en: ' Active' },
-  'mobile.subscriptions.paused': { ar: ' متوقف', en: ' Paused' },
+  'mobile.subscriptions.active': { ar: 'نشط', en: ' Active' },
+  'mobile.subscriptions.paused': { ar: 'متوقف', en: ' Paused' },
   'mobile.subscriptions.expires': { ar: 'ينتهي: {date}', en: 'Expires: {date}' },
   'mobile.subscriptions.available-plans': { ar: 'الباقات المتاحة', en: 'Available plans' },
   'mobile.subscriptions.per-month': { ar: '/ شهر', en: '/ month' },
@@ -939,7 +939,7 @@ export const mobileCustomerBMessages = {
 
   // ---- sustainability ----
   'mobile.sustainability.title': {
-    ar: ' الاستدامة والإتاحة',
+    ar: 'الاستدامة والإتاحة',
     en: ' Sustainability & Accessibility',
   },
   'mobile.sustainability.subtitle': {
@@ -948,11 +948,11 @@ export const mobileCustomerBMessages = {
   },
 
   // ---- tech-waitlist ----
-  'mobile.techWaitlist.my-lists': { ar: ' قوائمي', en: ' My Lists' },
+  'mobile.techWaitlist.my-lists': { ar: 'قوائمي', en: ' My Lists' },
   'mobile.techWaitlist.position': { ar: 'الموقع: {position}', en: 'Position: {position}' },
   'mobile.techWaitlist.leave': { ar: 'خروج', en: 'Leave' },
   'mobile.techWaitlist.popular': {
-    ar: ' الفنيات الأكثر طلباً',
+    ar: 'الفنيات الأكثر طلباً',
     en: ' Most Requested Service Providers',
   },
   'mobile.techWaitlist.waiting': {
@@ -967,10 +967,10 @@ export const mobileCustomerBMessages = {
     en: 'A beauty essentials checklist for travel',
   },
   'mobile.travelChecklist.progress': { ar: ' {progress}% جاهز', en: ' {progress}% ready' },
-  'mobile.travelChecklist.list': { ar: ' القائمة', en: ' The List' },
+  'mobile.travelChecklist.list': { ar: 'القائمة', en: ' The List' },
 
   // ---- virtual-consultation ----
-  'mobile.virtualConsultation.title': { ar: ' استشارة افتراضية', en: ' Virtual Consultation' },
+  'mobile.virtualConsultation.title': { ar: 'استشارة افتراضية', en: ' Virtual Consultation' },
   'mobile.virtualConsultation.subtitle': {
     ar: 'استشيري خبيرات التجميل عبر الفيديو',
     en: 'Consult beauty experts over video',
@@ -984,29 +984,29 @@ export const mobileCustomerBMessages = {
     ar: 'اختر الوقت — {name}',
     en: 'Choose a time — {name}',
   },
-  'mobile.virtualConsultation.book-cta': { ar: ' احجزي — {price} ر.س', en: ' Book — {price} SAR' },
+  'mobile.virtualConsultation.book-cta': { ar: 'احجزي — {price} ر.س', en: ' Book — {price} SAR' },
   'mobile.virtualConsultation.my-bookings': { ar: 'حجوزاتي', en: 'My bookings' },
 
   // ---- virtual-try-on ----
-  'mobile.virtualTryOn.title': { ar: ' تجربة افتراضية', en: ' Virtual Try-On' },
+  'mobile.virtualTryOn.title': { ar: 'تجربة افتراضية', en: ' Virtual Try-On' },
   'mobile.virtualTryOn.subtitle': {
     ar: 'جربي ألوان المكياج افتراضياً',
     en: 'Try makeup colors virtually',
   },
 
   // ---- wellness ----
-  'mobile.wellness.title': { ar: ' الصحة والعافية', en: ' Health & Wellness' },
+  'mobile.wellness.title': { ar: 'الصحة والعافية', en: ' Health & Wellness' },
   'mobile.wellness.subtitle': {
     ar: 'جمالكِ يبدأ من صحتكِ',
     en: 'Your beauty starts with your health',
   },
 
   // ---- wellness-hub ----
-  'mobile.wellnessHub.skin-analysis': { ar: ' تحليل البشرة', en: ' Skin Analysis' },
+  'mobile.wellnessHub.skin-analysis': { ar: 'تحليل البشرة', en: ' Skin Analysis' },
   'mobile.wellnessHub.skin-type-label': { ar: 'النوع:', en: 'Type:' },
 
   // ---- wishlist ----
-  'mobile.wishlist.title': { ar: '️ المفضلة', en: ' Favorites' },
+  'mobile.wishlist.title': { ar: 'المفضلة', en: ' Favorites' },
   'mobile.wishlist.load-error': { ar: 'فشل تحميل المفضلة', en: 'Failed to load favorites' },
   'mobile.wishlist.empty-title': { ar: 'لا توجد خدمات مفضلة', en: 'No favorite services' },
   'mobile.wishlist.empty-desc': {
@@ -1014,4 +1014,36 @@ export const mobileCustomerBMessages = {
     en: 'Add your favorite services to find them quickly',
   },
   'mobile.wishlist.service-fallback': { ar: 'خدمة #{id}', en: 'Service #{id}' },
+
+  // ---- onboarding tour (§3.6 — RN walkthrough engine) ----
+  'mobile.tour.bookTitle': { ar: 'احجزي أول خدمة', en: 'Book your first service' },
+  'mobile.tour.bookBody': {
+    ar: 'من زر «احجزي الآن» تختارين الخدمة والفنية والوقت — الدفع عند الوصول أو أونلاين، وأنتِ تتحكمين بكل التفاصيل.',
+    en: 'From “Book now” pick a service, technician and time — pay at the venue or online, with full control over the details.',
+  },
+  'mobile.tour.walletTitle': { ar: 'محفظتك وميزانيتك', en: 'Your wallet & budget' },
+  'mobile.tour.walletBody': {
+    ar: 'رصيدك، بطاقات الهدايا، والميزانية الشهرية في مكان واحد — اشحني وتابعي مصاريفك من هذه البطاقة.',
+    en: 'Balance, gift cards and monthly budget in one place — top up and track spending from this card.',
+  },
+  'mobile.tour.aiTitle': { ar: 'بيوتي AI — مستشارتك', en: 'Beauty AI, your advisor' },
+  'mobile.tour.aiBody': {
+    ar: 'اسألي مستشارة الذكاء الاصطناعي عن روتينك، بشرتك، أو أي سؤال تجميلي — متاحة على مدار الساعة وبخصوصية كاملة.',
+    en: 'Ask the AI advisor about your routine, skin or any beauty question — available 24/7 with complete privacy.',
+  },
+  'mobile.tour.wellnessTitle': { ar: 'مركز العافية', en: 'Your wellness hub' },
+  'mobile.tour.wellnessBody': {
+    ar: 'دورتك، حالتك المزاجية، نصائح ما بعد الجلسات والمزيد — كل رحلتك الصحية في صفحة واحدة تتبع مرحلة حياتك.',
+    en: 'Your cycle, mood, post-treatment care and more — your whole wellness journey in one life-stage-aware page.',
+  },
+  'mobile.tour.referralsTitle': { ar: 'دعوة الصديقات', en: 'Invite your friends' },
+  'mobile.tour.referralsBody': {
+    ar: 'شاركي رابطك الخاص واكسبي مكافآت عندما تنضم صديقاتك — جمال مشترك، مكافآت مشتركة.',
+    en: 'Share your personal link and earn rewards when friends join — shared beauty, shared rewards.',
+  },
+  'mobile.tour.next': { ar: 'التالي', en: 'Next' },
+  'mobile.tour.back': { ar: 'السابق', en: 'Back' },
+  'mobile.tour.skip': { ar: 'تخطي', en: 'Skip' },
+  'mobile.tour.done': { ar: 'تمام، لنبدأ!', en: 'Done, let’s go!' },
+  'mobile.tour.progress': { ar: '{current} من {total}', en: '{current} of {total}' },
 } as const satisfies Record<string, { ar: string; en: string }>;

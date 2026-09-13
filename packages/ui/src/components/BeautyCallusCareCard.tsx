@@ -19,7 +19,7 @@ export function BeautyCallusCareCard({
       )}
     >
       <div className="flex items-center gap-2">
-        <span className="text-xl"></span>
+        <span className="text-xl">🦶</span>
         <div>
           <h4 className="text-sm font-bold text-orange-700 dark:text-orange-300">{title}</h4>
           <p className="text-[10px] text-orange-500 dark:text-orange-400">{subtitle}</p>
@@ -35,21 +35,21 @@ export function BeautyCallusCareCard({
             },
           },
           {
-            emoji: '',
+            emoji: '🧴',
             text: {
               ar: 'كريم يوريا — يرطب ويزيل الجلد الميت',
               en: 'Urea cream — hydrates and removes dead skin',
             },
           },
           {
-            emoji: '',
+            emoji: '🧦',
             text: {
               ar: 'جوارب قطنية — بعد الكريم طوال الليل',
               en: 'Cotton socks — over the cream overnight',
             },
           },
           {
-            emoji: '',
+            emoji: '📅',
             text: {
               ar: 'مرتين أسبوعياً — للصيف خصوصاً',
               en: 'Twice a week — especially in summer',

@@ -19,7 +19,7 @@ export function BeautyPerimenopauseCard({
       )}
     >
       <div className="flex items-center gap-2">
-        <span className="text-xl">️</span>
+        <span className="text-xl">🌷</span>
         <div>
           <h4 className="text-sm font-bold text-amber-700 dark:text-amber-300">{title}</h4>
           <p className="text-[10px] text-amber-500 dark:text-amber-400">{subtitle}</p>
@@ -28,28 +28,28 @@ export function BeautyPerimenopauseCard({
       <div className="mt-3 space-y-1">
         {[
           {
-            emoji: '',
+            emoji: '🧴',
             text: {
               ar: 'جفاف البشرة — انتقلي لكريمات أغنى',
               en: 'Dry skin — switch to richer creams',
             },
           },
           {
-            emoji: '',
+            emoji: '🔥',
             text: {
               ar: 'احمرار وهبات ساخنة — منتجات مهدئة',
               en: 'Redness and hot flashes — soothing products',
             },
           },
           {
-            emoji: '️',
+            emoji: '🧬',
             text: {
               ar: 'الكولاجين يقل — ببتيدات وسيراميد',
               en: 'Collagen declines — peptides and ceramides',
             },
           },
           {
-            emoji: '',
+            emoji: '🌞',
             text: {
               ar: 'SPF ضروري — التصبغات تزيد',
               en: 'SPF is essential — pigmentation increases',

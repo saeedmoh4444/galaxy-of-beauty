@@ -26,32 +26,32 @@ interface CogDef {
 
 const FEATURES: CogDef[] = [
   {
-    emoji: '',
+    emoji: '📋',
     label: { ar: 'قائمة مبسطة', en: 'Simple menu' },
     detail: { ar: 'خيارات واضحة بدون تعقيد', en: 'Clear options without complexity' },
   },
   {
-    emoji: '️',
+    emoji: '📅',
     label: { ar: 'جدول مرئي', en: 'Visual schedule' },
     detail: { ar: 'صور توضح كل خطوة قبل البدء', en: 'Images explain each step before you start' },
   },
   {
-    emoji: '',
+    emoji: '🪧',
     label: { ar: 'لافتات واضحة', en: 'Clear signage' },
     detail: { ar: 'إشارات بسيطة ومفهومة', en: 'Simple, easy-to-understand signs' },
   },
   {
-    emoji: '',
+    emoji: '🤫',
     label: { ar: 'مساحة هادئة', en: 'Quiet space' },
     detail: { ar: 'مكان للاستراحة عند الحاجة', en: 'A place to rest when needed' },
   },
   {
-    emoji: '‍',
+    emoji: '🧑',
     label: { ar: 'طاقم مألوف', en: 'Familiar staff' },
     detail: { ar: 'نفس الخبيرة في كل زيارة', en: 'The same technician at every visit' },
   },
   {
-    emoji: '',
+    emoji: '⏳',
     label: { ar: 'وقت ممتد', en: 'Extended time' },
     detail: { ar: 'مواعيد أطول بدون استعجال', en: 'Longer appointments without rushing' },
   },
@@ -101,7 +101,9 @@ export function CognitiveAccessibilityBadge({
       )}
     >
       <div className="flex items-center gap-2">
-        <span className="text-xl" aria-hidden="true"></span>
+        <span className="text-xl" aria-hidden="true">
+          🧠
+        </span>
         <div>
           <h4 className="text-sm font-bold text-teal-700 dark:text-teal-300">{title}</h4>
           <p className="text-[10px] text-teal-500 dark:text-teal-400">{subtitle}</p>

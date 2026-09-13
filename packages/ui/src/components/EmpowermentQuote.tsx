@@ -25,7 +25,7 @@ const QUOTES = [
       ar: 'كل امرأة تستحق أن تشعر بالتميز — ليس لأنها جميلة، بل لأنها هي.',
       en: 'Every woman deserves to feel special — not because she is beautiful, but because she is herself.',
     },
-    author: { ar: 'فريق جالكسي بيوتي', en: 'Galaxy Beauty team' },
+    author: { ar: 'فريق دلال', en: 'Dalal team' },
   },
   {
     text: {

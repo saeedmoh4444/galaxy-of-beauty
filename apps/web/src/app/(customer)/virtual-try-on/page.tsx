@@ -32,10 +32,10 @@ interface ProductRec {
 type MakeupType = 'lips' | 'eyes' | 'blush' | 'nails';
 
 const TYPE_LABELS: Record<MakeupType, { label: TranslationKey; emoji: string }> = {
-  lips: { label: 'tryOn.type.lips', emoji: '' },
-  eyes: { label: 'tryOn.type.eyes', emoji: '️' },
-  blush: { label: 'tryOn.type.blush', emoji: '' },
-  nails: { label: 'tryOn.type.nails', emoji: '' },
+  lips: { label: 'tryOn.type.lips', emoji: '💋' },
+  eyes: { label: 'tryOn.type.eyes', emoji: '👁️' },
+  blush: { label: 'tryOn.type.blush', emoji: '🌸' },
+  nails: { label: 'tryOn.type.nails', emoji: '💅' },
 };
 
 const TYPE_CATEGORIES: Record<MakeupType, 'lips' | 'eyes' | 'blush' | 'nails'> = {
@@ -243,7 +243,9 @@ function ColorPalette({
             {c.nameAr}
           </span>
           {selectedId === c.id && (
-            <span className="absolute -top-1 -end-1 flex h-4 w-4 items-center justify-center rounded-full bg-brand-500 text-[10px] text-white"></span>
+            <span className="absolute -top-1 -end-1 flex h-4 w-4 items-center justify-center rounded-full bg-brand-500 text-[10px] text-white">
+              ✅
+            </span>
           )}
         </button>
       ))}
@@ -530,7 +532,7 @@ export default function VirtualTryOnPage(): JSX.Element {
                     {cameraError && (
                       <div className="absolute inset-0 flex items-center justify-center bg-black/80">
                         <div className="text-center p-6">
-                          <p className="text-white text-lg mb-2"></p>
+                          <p className="text-white text-lg mb-2">⚠️</p>
                           <p className="text-white/80 text-sm mb-3">{cameraError}</p>
                           <Button size="sm" onClick={() => startCamera('user')}>
                             {t('tryOn.retry')}
@@ -616,7 +618,7 @@ export default function VirtualTryOnPage(): JSX.Element {
                             className="rounded-xl object-cover"
                           />
                         ) : (
-                          <span className="text-4xl"></span>
+                          <span className="text-4xl">💄</span>
                         )}
                       </div>
                       {p.brand && (

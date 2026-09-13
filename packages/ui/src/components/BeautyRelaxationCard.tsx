@@ -23,7 +23,7 @@ export function BeautyRelaxationCard({
       )}
     >
       <div className="flex items-center gap-2">
-        <span className="text-xl"></span>
+        <span className="text-xl">🛁</span>
         <div>
           <h4 className="text-sm font-bold text-indigo-700 dark:text-indigo-300">{title}</h4>
           <p className="text-[10px] text-indigo-500 dark:text-indigo-400">{subtitle}</p>
@@ -32,22 +32,22 @@ export function BeautyRelaxationCard({
       <div className="mt-3 space-y-1.5">
         {[
           {
-            emoji: '',
+            emoji: '🛁',
             step: { ar: 'حمام دافئ بملح إنكليزي', en: 'Warm bath with Epsom salt' },
             time: { ar: '20 دقيقة', en: '20 minutes' },
           },
           {
-            emoji: '️',
+            emoji: '🕯️',
             step: { ar: 'إطفاء الأضواء وإشعال شمعة', en: 'Dim the lights and light a candle' },
             time: { ar: '—', en: '—' },
           },
           {
-            emoji: '',
+            emoji: '🧴',
             step: { ar: 'ترطيب الجسم بالكامل', en: 'Moisturize the whole body' },
             time: { ar: '5 دقائق', en: '5 minutes' },
           },
           {
-            emoji: '',
+            emoji: '😴',
             step: { ar: 'الاستعداد للنوم العميق', en: 'Prepare for deep sleep' },
             time: { ar: '8 ساعات', en: '8 hours' },
           },

@@ -331,17 +331,18 @@ this is what CORRECT looks like:
 
 ## 11. Troubleshooting Quick Hits
 
-| Symptom                                     | Fix                                                                                        |
-| ------------------------------------------- | ------------------------------------------------------------------------------------------ |
-| `DATABASE_URL not found` in prisma commands | export `DATABASE_URL`, or use `pnpm --filter @galaxy/db exec prisma ...`                   |
-| Tests fail with missing tables              | `pnpm db:migrate:deploy && pnpm db:seed`                                                   |
-| `next start` says no build                  | `pnpm --filter @galaxy/web build` first                                                    |
-| E2E hangs silently on the monolithic run    | use the per-spec loop from §6                                                              |
-| E2E boots but auth tests fail               | don't weaken the JWT secrets in playwright.config.ts — the env validator rejects weak ones |
-| Playwright browsers missing                 | `pnpm --filter @galaxy/web exec playwright install chromium firefox`                       |
-| Expo dev server port conflict               | `npx expo start --port 8099`                                                               |
-| Push to master rejected                     | branch protection — create a branch + PR (see below)                                       |
-| Storybook errors                            | run from `packages/ui` (`pnpm --filter @galaxy/ui storybook`)                              |
+| Symptom                                                                                             | Fix                                                                                                                                     |
+| --------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------- |
+| `DATABASE_URL not found` in prisma commands                                                         | export `DATABASE_URL`, or use `pnpm --filter @galaxy/db exec prisma ...`                                                                |
+| Tests fail with missing tables                                                                      | `pnpm db:migrate:deploy && pnpm db:seed`                                                                                                |
+| `next start` says no build                                                                          | `pnpm --filter @galaxy/web build` first                                                                                                 |
+| E2E hangs silently on the monolithic run                                                            | use the per-spec loop from §6                                                                                                           |
+| E2E boots but auth tests fail                                                                       | don't weaken the JWT secrets in playwright.config.ts — the env validator rejects weak ones                                              |
+| Playwright browsers missing                                                                         | `pnpm --filter @galaxy/web exec playwright install chromium firefox`                                                                    |
+| Expo dev server port conflict                                                                       | `npx expo start --port 8099`                                                                                                            |
+| `next dev` crashes with `Cannot read properties of undefined (reading 'call')` after a Next.js bump | stale `.next` from the old version — stop dev, delete `apps/web/.next`, cold start (verified: 15.5.24 dev + HMR clean after cache wipe) |
+| Push to master rejected                                                                             | branch protection — create a branch + PR (see below)                                                                                    |
+| Storybook errors                                                                                    | run from `packages/ui` (`pnpm --filter @galaxy/ui storybook`)                                                                           |
 
 ### 11.8 Branch protection workflow (new)
 

@@ -7,12 +7,12 @@ import { useLocale } from '@/components/LocaleProvider';
 import type { TranslationKey } from '@galaxy/shared';
 
 const POPULAR_SERVICES: { id: number; name: TranslationKey; emoji: string }[] = [
-  { id: 1, name: 'advancedBooking.service.manicure', emoji: '' },
-  { id: 2, name: 'advancedBooking.service.pedicure', emoji: '' },
-  { id: 3, name: 'advancedBooking.service.facial', emoji: '' },
-  { id: 4, name: 'advancedBooking.service.massage', emoji: '‍️' },
-  { id: 5, name: 'emergencyBooking.service.dyeHair', emoji: '' },
-  { id: 6, name: 'advancedBooking.service.makeup', emoji: '' },
+  { id: 1, name: 'advancedBooking.service.manicure', emoji: '💅' },
+  { id: 2, name: 'advancedBooking.service.pedicure', emoji: '🦶' },
+  { id: 3, name: 'advancedBooking.service.facial', emoji: '🧖' },
+  { id: 4, name: 'advancedBooking.service.massage', emoji: '💆' },
+  { id: 5, name: 'emergencyBooking.service.dyeHair', emoji: '🎨' },
+  { id: 6, name: 'advancedBooking.service.makeup', emoji: '💄' },
 ];
 
 export default function EmergencyBookingPage(): JSX.Element {
@@ -41,7 +41,7 @@ export default function EmergencyBookingPage(): JSX.Element {
 
         <Card padding="lg" className="border-2 border-red-300 bg-red-50">
           <div className="flex items-center gap-3">
-            <span className="text-3xl"></span>
+            <span className="text-3xl">🚨</span>
             <div>
               <p className="font-bold text-red-700">
                 {t('emergencyBooking.surcharge', {
@@ -121,7 +121,7 @@ export default function EmergencyBookingPage(): JSX.Element {
 
         {bookingCode ? (
           <Card padding="lg" className="text-center border-2 border-green-300 bg-green-50">
-            <p className="text-3xl"></p>
+            <p className="text-3xl">✅</p>
             <p className="font-bold text-green-700 mt-2">{t('emergencyBooking.success')}</p>
             <p className="text-sm text-text-secondary">
               {t('emergencyBooking.codeLabel')}{' '}

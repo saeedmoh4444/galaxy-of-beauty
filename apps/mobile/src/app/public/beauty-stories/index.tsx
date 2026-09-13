@@ -51,7 +51,7 @@ export default function BeautyStoriesScreen(): JSX.Element {
             <Text style={styles.storyEmoji}>{(s.emoji as string) ?? ''}</Text>
             <View style={{ flex: 1 }}>
               <Text style={styles.storyTitle}>{(s.titleAr as string) ?? (s.title as string)}</Text>
-              <Text style={styles.storyAuthor}>️ {s.author as string}</Text>
+              <Text style={styles.storyAuthor}> {s.author as string}</Text>
               <Text style={styles.storyPreview}>
                 {((s.preview as string) ?? (s.descAr as string))?.substring(0, 80)}...
               </Text>

@@ -15,19 +15,19 @@ type SkinType = 'oily' | 'dry' | 'combination' | 'sensitive' | 'normal';
 type SkinGoal = 'anti_aging' | 'brightening' | 'acne' | 'hydration' | 'even_tone';
 
 const SKIN_TYPES: { value: SkinType; emoji: string; label: { ar: string; en: string } }[] = [
-  { value: 'oily', emoji: '', label: { ar: 'دهنية', en: 'Oily' } },
-  { value: 'dry', emoji: '', label: { ar: 'جافة', en: 'Dry' } },
-  { value: 'combination', emoji: '', label: { ar: 'مختلطة', en: 'Combination' } },
-  { value: 'sensitive', emoji: '', label: { ar: 'حساسة', en: 'Sensitive' } },
-  { value: 'normal', emoji: '', label: { ar: 'طبيعية', en: 'Normal' } },
+  { value: 'oily', emoji: '💦', label: { ar: 'دهنية', en: 'Oily' } },
+  { value: 'dry', emoji: '🌵', label: { ar: 'جافة', en: 'Dry' } },
+  { value: 'combination', emoji: '🔀', label: { ar: 'مختلطة', en: 'Combination' } },
+  { value: 'sensitive', emoji: '🌸', label: { ar: 'حساسة', en: 'Sensitive' } },
+  { value: 'normal', emoji: '✅', label: { ar: 'طبيعية', en: 'Normal' } },
 ];
 
 const GOALS: { value: SkinGoal; emoji: string; label: { ar: string; en: string } }[] = [
-  { value: 'anti_aging', emoji: '', label: { ar: 'مكافحة الشيخوخة', en: 'Anti-aging' } },
-  { value: 'brightening', emoji: '', label: { ar: 'تفتيح', en: 'Brightening' } },
-  { value: 'acne', emoji: '', label: { ar: 'علاج حبوب', en: 'Acne treatment' } },
-  { value: 'hydration', emoji: '', label: { ar: 'ترطيب', en: 'Hydration' } },
-  { value: 'even_tone', emoji: '', label: { ar: 'توحيد لون', en: 'Even tone' } },
+  { value: 'anti_aging', emoji: '⏳', label: { ar: 'مكافحة الشيخوخة', en: 'Anti-aging' } },
+  { value: 'brightening', emoji: '✨', label: { ar: 'تفتيح', en: 'Brightening' } },
+  { value: 'acne', emoji: '🧼', label: { ar: 'علاج حبوب', en: 'Acne treatment' } },
+  { value: 'hydration', emoji: '💧', label: { ar: 'ترطيب', en: 'Hydration' } },
+  { value: 'even_tone', emoji: '🎨', label: { ar: 'توحيد لون', en: 'Even tone' } },
 ];
 
 const ROUTINE_STEPS: Record<SkinType, { ar: string; en: string }[]> = {
@@ -118,7 +118,9 @@ export function SkincareRoutineBuilder({
         )}
       >
         <div className="text-center">
-          <span className="text-3xl" aria-hidden="true"></span>
+          <span className="text-3xl" aria-hidden="true">
+            💫
+          </span>
           <h4 className="mt-1 text-sm font-bold text-pink-700 dark:text-pink-300">{resultTitle}</h4>
           <p className="text-[10px] text-pink-500 dark:text-pink-400">
             {SKIN_TYPES.find((s) => s.value === skinType)!.emoji}{' '}
@@ -168,7 +170,9 @@ export function SkincareRoutineBuilder({
       )}
     >
       <div className="text-center">
-        <span className="text-3xl" aria-hidden="true"></span>
+        <span className="text-3xl" aria-hidden="true">
+          🧩
+        </span>
         <h4 className="mt-1 text-sm font-bold text-pink-700 dark:text-pink-300">{title}</h4>
         <p className="text-[10px] text-pink-500 dark:text-pink-400">
           {step === 'skin' ? skinQuestion : goalQuestion}

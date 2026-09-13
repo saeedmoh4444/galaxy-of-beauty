@@ -7,6 +7,12 @@
  */
 import type { Job } from 'bullmq';
 import { prisma } from '@galaxy/db';
+import {
+  createGoogleCalendarEvent,
+  updateGoogleCalendarEvent,
+  deleteGoogleCalendarEvent,
+  refreshGoogleToken,
+} from '../lib/googleCalendar';
 
 // ── Job type definitions ──
 
@@ -39,9 +45,12 @@ export interface NotificationJob {
 }
 
 export interface CalendarSyncJob {
-  technicianId: number;
+  /** Both sides are optional so one job can target one or both calendars. */
+  technicianId?: number;
+  customerId?: number;
   bookingId: number;
-  action: 'create' | 'update' | 'delete';
+  /** 'delete' is a legacy alias of 'cancel' (kept for old queued jobs). */
+  action: 'create' | 'update' | 'cancel' | 'delete';
   googleCalendarToken?: string;
   startAt?: string;
   endAt?: string;
@@ -214,14 +223,116 @@ export async function dispatchNotificationJob(job: Job): Promise<void> {
   return handleNotificationJob(job as Job<NotificationJob>);
 }
 
+/**
+ * Booking auto-sync (E9 follow-up) — push booking lifecycle events to the
+ * connected Google Calendars of BOTH sides (customer first, then
+ * technician). Fully graceful: any missing integration or Google failure
+ * is logged and swallowed so a calendar outage can never break the
+ * booking flow (the BullMQ retry would only duplicate events anyway —
+ * event ids are persisted exactly once on success).
+ */
 export async function handleIntegrationJob(job: Job<CalendarSyncJob>): Promise<void> {
-  const { technicianId, bookingId, action } = job.data;
+  const { technicianId, customerId, bookingId, action, startAt, endAt, summary } = job.data;
 
-  // Calendar sync would call the Google Calendar API
-  // Currently logged for observability
-  console.log(
-    `[Integration] Calendar ${action} for booking #${bookingId}, technician ${technicianId}`,
-  );
-  // TODO: Implement Google Calendar API call via googleCalendar.ts
-  // TODO: Implement ZATCA reporting for completed bookings
+  const booking = await prisma.booking.findUnique({
+    where: { id: bookingId },
+    include: { service: { select: { titleJson: true } } },
+  });
+  if (!booking) {
+    console.log(`[Integration] Calendar ${action} skipped — booking #${bookingId} not found`);
+    return;
+  }
+
+  const serviceTitle =
+    ((booking.service?.titleJson as Record<string, string> | null)?.ar ?? '') || 'حجز';
+  const event = {
+    summary: summary ?? `💅 ${serviceTitle} — ${booking.bookingCode}`,
+    description: 'حجز من منصة دلال — Dalal booking',
+    start: startAt ?? booking.startAt.toISOString(),
+    end: endAt ?? booking.endAt.toISOString(),
+  };
+
+  const sides: Array<{
+    userId?: number;
+    eventIdColumn: 'googleEventId' | 'technicianGoogleEventId';
+  }> = [
+    { userId: customerId, eventIdColumn: 'googleEventId' },
+    { userId: technicianId, eventIdColumn: 'technicianGoogleEventId' },
+  ];
+
+  for (const side of sides) {
+    if (!side.userId) continue;
+    try {
+      await syncSideToCalendar(side.userId, side.eventIdColumn, bookingId, action, event);
+    } catch (err) {
+      console.log(`[Integration] Calendar ${action} failed for user #${side.userId}:`, err);
+    }
+  }
+}
+
+async function syncSideToCalendar(
+  userId: number,
+  eventIdColumn: 'googleEventId' | 'technicianGoogleEventId',
+  bookingId: number,
+  action: CalendarSyncJob['action'],
+  event: { summary: string; description: string; start: string; end: string },
+): Promise<void> {
+  const integration = await prisma.beautyIntegration.findUnique({
+    where: { userId_provider: { userId, provider: 'google_calendar' } },
+  });
+  if (!integration || integration.status !== 'CONNECTED' || !integration.accessToken) {
+    return; // not connected — nothing to do
+  }
+
+  // Refresh the token when it is (almost) expired; a failed refresh or a
+  // missing refresh token means this side is skipped this cycle.
+  let accessToken = integration.accessToken;
+  if (integration.tokenExpiry && integration.tokenExpiry.getTime() < Date.now() + 60_000) {
+    if (!integration.refreshToken) return;
+    const refreshed = await refreshGoogleToken(integration.refreshToken);
+    if (!refreshed) {
+      console.log(`[Integration] Calendar token refresh failed for user #${userId}`);
+      return;
+    }
+    accessToken = refreshed.accessToken;
+    await prisma.beautyIntegration.update({
+      where: { id: integration.id },
+      data: { accessToken, tokenExpiry: new Date(refreshed.expiryDate) },
+    });
+  }
+
+  const booking = await prisma.booking.findUnique({
+    where: { id: bookingId },
+    select: { [eventIdColumn]: true } as never,
+  });
+  const eventId = (booking as Record<string, string | null> | null)?.[eventIdColumn];
+
+  if (action === 'cancel' || action === 'delete') {
+    if (eventId) {
+      await deleteGoogleCalendarEvent(accessToken, eventId);
+      await prisma.booking.update({
+        where: { id: bookingId },
+        data: { [eventIdColumn]: null } as never,
+      });
+    }
+    return;
+  }
+
+  if (eventId && action === 'update') {
+    const ok = await updateGoogleCalendarEvent(accessToken, eventId, event);
+    if (!ok) {
+      console.log(`[Integration] Calendar update failed for user #${userId}, event ${eventId}`);
+    }
+    return;
+  }
+
+  const createdId = await createGoogleCalendarEvent(accessToken, event);
+  if (createdId) {
+    await prisma.booking.update({
+      where: { id: bookingId },
+      data: { [eventIdColumn]: createdId } as never,
+    });
+  } else {
+    console.log(`[Integration] Calendar create failed for user #${userId}, booking #${bookingId}`);
+  }
 }

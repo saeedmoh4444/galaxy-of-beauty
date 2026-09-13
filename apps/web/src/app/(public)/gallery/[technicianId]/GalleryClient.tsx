@@ -101,7 +101,7 @@ export function GalleryClient({ data }: { data: GalleryPageData }): JSX.Element 
                       className="object-cover"
                     />
                   ) : (
-                    <span>️</span>
+                    <span>📷</span>
                   )}
                 </div>
                 {localize(img.captionJson, locale) ? (

@@ -18,12 +18,12 @@ const PALETTE_PRESETS: { label: TranslationKey; colors: string[] }[] = [
 ];
 
 const CATEGORIES: { key: string; label: TranslationKey; emoji: string }[] = [
-  { key: '', label: 'styleMatch.category.all', emoji: '' },
-  { key: 'daily', label: 'styleMatch.category.daily', emoji: '️' },
-  { key: 'evening', label: 'styleMatch.category.evening', emoji: '' },
-  { key: 'party', label: 'styleMatch.category.party', emoji: '' },
-  { key: 'bridal', label: 'styleMatch.category.bridal', emoji: '' },
-  { key: 'traditional', label: 'styleMatch.category.traditional', emoji: '' },
+  { key: '', label: 'styleMatch.category.all', emoji: '✨' },
+  { key: 'daily', label: 'styleMatch.category.daily', emoji: '🌞' },
+  { key: 'evening', label: 'styleMatch.category.evening', emoji: '🌙' },
+  { key: 'party', label: 'styleMatch.category.party', emoji: '🎉' },
+  { key: 'bridal', label: 'styleMatch.category.bridal', emoji: '👰' },
+  { key: 'traditional', label: 'styleMatch.category.traditional', emoji: '🏺' },
 ];
 
 export default function StyleMatchPage(): JSX.Element {
@@ -219,12 +219,12 @@ export default function StyleMatchPage(): JSX.Element {
                     ].includes(r.category as string)
                       ? (
                           {
-                            daily: '️',
+                            daily: '',
                             evening: '',
                             party: '',
                             bridal: '',
                             summer: '',
-                            winter: '️',
+                            winter: '',
                             traditional: '',
                           } as Record<string, string>
                         )[r.category as string]

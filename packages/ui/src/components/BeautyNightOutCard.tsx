@@ -27,19 +27,19 @@ interface BeautyNightOutCardProps {
 
 const SERVICES = [
   {
-    emoji: '',
+    emoji: '💄',
     name: { ar: 'مكياج سريع', en: 'Quick makeup' },
     time: { ar: '30 دقيقة', en: '30 minutes' },
     price: 150,
   },
   {
-    emoji: '',
+    emoji: '💇',
     name: { ar: 'تسريحة سهرة', en: 'Evening hairstyle' },
     time: { ar: '20 دقيقة', en: '20 minutes' },
     price: 100,
   },
   {
-    emoji: '',
+    emoji: '💅',
     name: { ar: 'مانيكير سريع', en: 'Quick manicure' },
     time: { ar: '20 دقيقة', en: '20 minutes' },
     price: 80,
@@ -67,7 +67,9 @@ export function BeautyNightOutCard({
       )}
     >
       <div className="text-center">
-        <span className="text-3xl" aria-hidden="true"></span>
+        <span className="text-3xl" aria-hidden="true">
+          💃
+        </span>
         <h4 className="mt-1 text-sm font-bold text-indigo-800 dark:text-indigo-200">{title}</h4>
         <p className="text-[10px] text-indigo-500 dark:text-indigo-400">{subtitle}</p>
         {available && (

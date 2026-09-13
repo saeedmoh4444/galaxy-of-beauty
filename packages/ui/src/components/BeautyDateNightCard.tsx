@@ -19,7 +19,7 @@ export function BeautyDateNightCard({
       )}
     >
       <div className="flex items-center gap-2">
-        <span className="text-xl"></span>
+        <span className="text-xl">💃</span>
         <div>
           <h4 className="text-sm font-bold text-rose-700 dark:text-rose-300">{title}</h4>
           <p className="text-[10px] text-rose-500 dark:text-rose-400">{subtitle}</p>
@@ -28,28 +28,28 @@ export function BeautyDateNightCard({
       <div className="mt-3 space-y-1">
         {[
           {
-            emoji: '',
+            emoji: '✨',
             text: {
               ar: 'بشرة متوهجة — هايلايتر على عظمة الخد',
               en: 'Glowing skin — highlighter on cheekbones',
             },
           },
           {
-            emoji: '️',
+            emoji: '👀',
             text: {
               ar: 'عيون سموكي ناعمة — ألوان دافئة',
               en: 'Soft smoky eyes — warm tones',
             },
           },
           {
-            emoji: '',
+            emoji: '💋',
             text: {
               ar: 'شفاه طبيعية — تينت أو لون شفاه شفاف',
               en: 'Natural lips — a tint or clear gloss',
             },
           },
           {
-            emoji: '',
+            emoji: '🌸',
             text: {
               ar: 'عطر على نقاط النبض — وراء الأذن والرسغ',
               en: 'Perfume on pulse points — behind ears and wrists',

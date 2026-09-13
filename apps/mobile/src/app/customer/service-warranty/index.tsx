@@ -32,7 +32,7 @@ export default function ServiceWarrantyScreen(): JSX.Element {
       <Text style={styles.t}>{t('mobile.serviceWarranty.title')}</Text>
       {data.map((w, i) => (
         <View key={i} style={styles.card}>
-          <Text style={styles.emoji}>{w.emoji ?? '️'}</Text>
+          <Text style={styles.emoji}>{w.emoji ?? ''}</Text>
           <View style={{ flex: 1 }}>
             <Text style={styles.name}>{w.serviceName}</Text>
             <Text style={styles.exp}>

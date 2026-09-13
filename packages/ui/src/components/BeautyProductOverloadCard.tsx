@@ -19,7 +19,7 @@ export function BeautyProductOverloadCard({
       )}
     >
       <div className="flex items-center gap-2">
-        <span className="text-xl"></span>
+        <span className="text-xl">📦</span>
         <div>
           <h4 className="text-sm font-bold text-brand-700 dark:text-brand-300">{title}</h4>
           <p className="text-[10px] text-brand-500 dark:text-brand-400">{subtitle}</p>
@@ -28,28 +28,28 @@ export function BeautyProductOverloadCard({
       <div className="mt-3 space-y-1">
         {[
           {
-            emoji: '',
+            emoji: '🚫',
             text: {
               ar: 'لا تخلطي أكثر من 3 منتجات نشطة في الجلسة',
               en: 'Do not layer more than 3 active products per routine',
             },
           },
           {
-            emoji: '',
+            emoji: '🌞',
             text: {
               ar: 'قاعدة: منتج فعال واحد في الصباح — وآخر في المساء',
               en: 'Rule: one active in the morning — another in the evening',
             },
           },
           {
-            emoji: '',
+            emoji: '🔄',
             text: {
               ar: 'نظام التدوير: يوم ريتينول — يوم تقشير — يوم راحة',
               en: 'Rotation: a retinol day — an exfoliating day — a rest day',
             },
           },
           {
-            emoji: '',
+            emoji: '🌿',
             text: {
               ar: 'البشرة تفضل البساطة — الأقل هو الأكثر',
               en: 'Skin prefers simplicity — less is more',

@@ -6,7 +6,7 @@ export default function RootError({ error, retry }: ErrorBoundaryProps): JSX.Ele
   const { t } = useLocale();
   return (
     <View style={styles.c}>
-      <Text style={styles.emoji}></Text>
+      <Text style={styles.emoji}>⚠️</Text>
       <Text style={styles.t}>{t('mobile.rootError.title')}</Text>
       <Text style={styles.desc}>{error.message || t('mobile.rootError.desc')}</Text>
       <TouchableOpacity onPress={retry} style={styles.btn}>

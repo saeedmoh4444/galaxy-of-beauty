@@ -7,11 +7,11 @@ import { useLocale } from '@/components/LocaleProvider';
 import type { TranslationKey } from '@galaxy/shared';
 
 const THEMES: { key: string; emoji: string; name: TranslationKey }[] = [
-  { key: 'spa', emoji: '‍️', name: 'beautyParty.theme.homeSpa' },
-  { key: 'makeup', emoji: '', name: 'beautyParty.theme.makeupParty' },
-  { key: 'nails', emoji: '', name: 'beautyParty.theme.nailSalon' },
-  { key: 'bridal', emoji: '', name: 'beautyParty.theme.bachelorette' },
-  { key: 'skincare', emoji: '', name: 'beautyParty.theme.skincareRoutine' },
+  { key: 'spa', emoji: '🧖', name: 'beautyParty.theme.homeSpa' },
+  { key: 'makeup', emoji: '💄', name: 'beautyParty.theme.makeupParty' },
+  { key: 'nails', emoji: '💅', name: 'beautyParty.theme.nailSalon' },
+  { key: 'bridal', emoji: '👰', name: 'beautyParty.theme.bachelorette' },
+  { key: 'skincare', emoji: '🧖', name: 'beautyParty.theme.skincareRoutine' },
 ];
 
 export default function BeautyPartyPage(): JSX.Element {
@@ -47,7 +47,7 @@ export default function BeautyPartyPage(): JSX.Element {
           </div>
         </Card>
         <Card padding="lg">
-          <h3 className="font-bold mb-4">‍️ {t('beautyParty.guestsCount', { guests })}</h3>
+          <h3 className="font-bold mb-4"> {t('beautyParty.guestsCount', { guests })}</h3>
           <div className="flex gap-2">
             {[2, 3, 4, 5, 6, 8, 10].map((g) => (
               <button

@@ -8,73 +8,79 @@ import Link from 'next/link';
 const FORTUNES = [
   {
     text: 'marketing.beauty-fortune.fortune-1',
-    emoji: '',
+    emoji: '💧',
     tip: 'marketing.beauty-fortune.tip-1',
   },
   {
     text: 'marketing.beauty-fortune.fortune-2',
-    emoji: '',
+    emoji: '😊',
     tip: 'marketing.beauty-fortune.tip-2',
   },
   {
     text: 'marketing.beauty-fortune.fortune-3',
-    emoji: '',
+    emoji: '🌿',
     tip: 'marketing.beauty-fortune.tip-3',
   },
   {
     text: 'marketing.beauty-fortune.fortune-4',
-    emoji: '',
+    emoji: '🧖',
     tip: 'marketing.beauty-fortune.tip-4',
   },
   {
     text: 'marketing.beauty-fortune.fortune-5',
-    emoji: '',
+    emoji: '✨',
     tip: 'marketing.beauty-fortune.tip-5',
   },
   {
     text: 'marketing.beauty-fortune.fortune-6',
-    emoji: '',
+    emoji: '💆',
     tip: 'marketing.beauty-fortune.tip-6',
   },
   {
     text: 'marketing.beauty-fortune.fortune-7',
-    emoji: '',
+    emoji: '👑',
     tip: 'marketing.beauty-fortune.tip-7',
   },
   {
     text: 'marketing.beauty-fortune.fortune-8',
-    emoji: '',
+    emoji: '💎',
     tip: 'marketing.beauty-fortune.tip-8',
   },
   {
     text: 'marketing.beauty-fortune.fortune-9',
-    emoji: '',
+    emoji: '💝',
     tip: 'marketing.beauty-fortune.tip-9',
   },
   {
     text: 'marketing.beauty-fortune.fortune-10',
-    emoji: '',
+    emoji: '🌸',
     tip: 'marketing.beauty-fortune.tip-10',
   },
   {
     text: 'marketing.beauty-fortune.fortune-11',
-    emoji: '',
+    emoji: '🛀',
     tip: 'marketing.beauty-fortune.tip-11',
   },
   {
     text: 'marketing.beauty-fortune.fortune-12',
-    emoji: '',
+    emoji: '🌅',
     tip: 'marketing.beauty-fortune.tip-12',
   },
 ] as const;
 
 const SERVICE_LINKS: Record<string, { href: string }> = {
-  '‍️': { href: '/services' },
-  '': { href: '/services' },
-  '': { href: '/services' },
-  '': { href: '/services' },
-  '': { href: '/services' },
-  default: { href: '/services' },
+  '💧': { href: '/services' },
+  '😊': { href: '/services' },
+  '🌿': { href: '/services' },
+  '🧖': { href: '/services' },
+  '✨': { href: '/services' },
+  '💆': { href: '/services' },
+  '👑': { href: '/services' },
+  '💎': { href: '/services' },
+  '💝': { href: '/services' },
+  '🌸': { href: '/services' },
+  '🛀': { href: '/services' },
+  '🌅': { href: '/services' },
 };
 
 export default function BeautyFortunePage(): JSX.Element {
@@ -96,7 +102,7 @@ export default function BeautyFortunePage(): JSX.Element {
       <div className="w-full max-w-md text-center">
         {!fortune && !opening && (
           <div>
-            <span className="text-8xl"></span>
+            <span className="text-8xl">🔮</span>
             <h1 className="mt-6 text-3xl font-extrabold text-text-primary dark:text-gray-100">
               {t('marketing.beauty-fortune.title')}
             </h1>
@@ -111,7 +117,7 @@ export default function BeautyFortunePage(): JSX.Element {
 
         {opening && (
           <div className="animate-pulse">
-            <span className="text-8xl"></span>
+            <span className="text-8xl">🔮</span>
             <p className="mt-4 text-text-secondary">{t('marketing.beauty-fortune.opening')}</p>
           </div>
         )}

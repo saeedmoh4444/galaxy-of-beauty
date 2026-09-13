@@ -21,12 +21,12 @@ interface BeautyQuietSpaceCardProps {
 }
 
 const FEATURES_MAP: Record<string, { emoji: string; label: { ar: string; en: string } }> = {
-  meditation_cushions: { emoji: '', label: { ar: 'وسائد تأمل', en: 'Meditation cushions' } },
-  sound_machine: { emoji: '', label: { ar: 'جهاز أصوات مهدئة', en: 'Calming sound machine' } },
-  dim_lights: { emoji: '', label: { ar: 'إضاءة خافتة', en: 'Dim lighting' } },
-  aromatherapy: { emoji: '', label: { ar: 'علاج بالروائح', en: 'Aromatherapy' } },
-  weighted_blanket: { emoji: '', label: { ar: 'بطانية ثقيلة', en: 'Weighted blanket' } },
-  tea_station: { emoji: '', label: { ar: 'ركن شاي', en: 'Tea corner' } },
+  meditation_cushions: { emoji: '🧘', label: { ar: 'وسائد تأمل', en: 'Meditation cushions' } },
+  sound_machine: { emoji: '🎵', label: { ar: 'جهاز أصوات مهدئة', en: 'Calming sound machine' } },
+  dim_lights: { emoji: '🔅', label: { ar: 'إضاءة خافتة', en: 'Dim lighting' } },
+  aromatherapy: { emoji: '🌿', label: { ar: 'علاج بالروائح', en: 'Aromatherapy' } },
+  weighted_blanket: { emoji: '🛌', label: { ar: 'بطانية ثقيلة', en: 'Weighted blanket' } },
+  tea_station: { emoji: '🍵', label: { ar: 'ركن شاي', en: 'Tea corner' } },
 };
 
 export function BeautyQuietSpaceCard({
@@ -47,7 +47,9 @@ export function BeautyQuietSpaceCard({
       )}
     >
       <div className="text-center">
-        <span className="text-3xl" aria-hidden="true"></span>
+        <span className="text-3xl" aria-hidden="true">
+          🧘
+        </span>
         <h4 className="mt-1 text-sm font-bold text-brand-800 dark:text-brand-200">{title}</h4>
         <p className="text-[10px] text-brand-500 dark:text-brand-400">{subtitle}</p>
       </div>

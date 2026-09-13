@@ -10,7 +10,7 @@ const TREATMENTS: Record<
   { emoji: string; aftercare: string[]; timeline: { day: string; action: string }[] }
 > = {
   facial: {
-    emoji: '',
+    emoji: '🧖',
     aftercare: [
       'mobile.postTreatment.aftercare-facial-1',
       'mobile.postTreatment.aftercare-facial-2',
@@ -24,7 +24,7 @@ const TREATMENTS: Record<
     ],
   },
   waxing: {
-    emoji: '️',
+    emoji: '🪒',
     aftercare: [
       'mobile.postTreatment.aftercare-waxing-1',
       'mobile.postTreatment.aftercare-waxing-2',
@@ -44,7 +44,7 @@ const TREATMENTS: Record<
     ],
   },
   hair_color: {
-    emoji: '‍️',
+    emoji: '🎨',
     aftercare: [
       'mobile.postTreatment.aftercare-hair-color-1',
       'mobile.postTreatment.aftercare-hair-color-2',
@@ -67,7 +67,7 @@ const TREATMENTS: Record<
     ],
   },
   nails: {
-    emoji: '',
+    emoji: '💅',
     aftercare: [
       'mobile.postTreatment.aftercare-nails-1',
       'mobile.postTreatment.aftercare-nails-2',
@@ -140,7 +140,7 @@ export default function PostTreatmentScreen(): JSX.Element {
       <View style={styles.card}>
         {treatment.aftercare.map((a, i) => (
           <View key={i} style={styles.ac}>
-            <Text style={styles.acb}></Text>
+            <Text style={styles.acb}>💡</Text>
             <Text style={styles.act}>{t(a as TranslationKey)}</Text>
           </View>
         ))}

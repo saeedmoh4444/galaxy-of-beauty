@@ -19,7 +19,7 @@ export function BeautyMakeupPrimerCard({
       )}
     >
       <div className="flex items-center gap-2">
-        <span className="text-xl">️</span>
+        <span className="text-xl">💠</span>
         <div>
           <h4 className="text-sm font-bold text-brand-700 dark:text-brand-300">{heading}</h4>
           <p className="text-[10px] text-brand-500 dark:text-brand-400">{subtitle}</p>
@@ -28,22 +28,22 @@ export function BeautyMakeupPrimerCard({
       <div className="mt-3 grid grid-cols-2 gap-1.5">
         {[
           {
-            emoji: '',
+            emoji: '✨',
             label: { ar: 'مضيء', en: 'Glow' },
             tip: { ar: 'لمعة طبيعية', en: 'Natural radiance' },
           },
           {
-            emoji: '',
+            emoji: '⚪',
             label: { ar: 'مطفي', en: 'Matte' },
             tip: { ar: 'يتحكم بالزيوت', en: 'Controls oil' },
           },
           {
-            emoji: '',
+            emoji: '💠',
             label: { ar: 'مملئ مسام', en: 'Pore-filling' },
             tip: { ar: 'بشرة ناعمة', en: 'Smooth skin' },
           },
           {
-            emoji: '',
+            emoji: '🎨',
             label: { ar: 'مصحح لون', en: 'Color-correcting' },
             tip: { ar: 'يصحح الأحمرار', en: 'Neutralizes redness' },
           },

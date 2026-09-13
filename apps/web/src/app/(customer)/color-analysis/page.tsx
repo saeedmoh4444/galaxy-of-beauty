@@ -18,7 +18,7 @@ const SEASONS: {
 }[] = [
   {
     key: 'winter',
-    emoji: '️',
+    emoji: '❄️',
     name: 'color.season.winter',
     desc: 'color.desc.winter',
     colors: ['#1e1b4b', '#312e81', '#831843', '#ffffff', '#000000', '#dc2626', '#4c1d95'],
@@ -28,7 +28,7 @@ const SEASONS: {
   },
   {
     key: 'summer',
-    emoji: '',
+    emoji: '🌞',
     name: 'color.season.summer',
     desc: 'color.desc.summer',
     colors: ['#fbcfe8', '#ddd6fe', '#bfdbfe', '#d1d5db', '#ec4899', '#8b5cf6', '#93c5fd'],
@@ -38,7 +38,7 @@ const SEASONS: {
   },
   {
     key: 'autumn',
-    emoji: '',
+    emoji: '🍂',
     name: 'color.season.autumn',
     desc: 'color.desc.autumn',
     colors: ['#fef3c7', '#fed7aa', '#fde68a', '#d97706', '#b45309', '#92400e', '#78350f'],
@@ -48,7 +48,7 @@ const SEASONS: {
   },
   {
     key: 'spring',
-    emoji: '',
+    emoji: '🌸',
     name: 'color.season.spring',
     desc: 'color.desc.spring',
     colors: ['#fef08a', '#fde047', '#86efac', '#fca5a5', '#fb923c', '#22c55e', '#fbbf24'],
@@ -114,7 +114,7 @@ export default function ColorAnalysisPage(): JSX.Element {
                 key={i}
                 className="flex items-center gap-3 rounded-lg bg-surface-muted px-3 py-2 dark:bg-gray-800"
               >
-                <span></span>
+                <span>💄</span>
                 <span className="text-sm text-text-secondary dark:text-gray-300">{t(m)}</span>
               </div>
             ))}

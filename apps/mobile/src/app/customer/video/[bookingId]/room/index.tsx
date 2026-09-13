@@ -23,7 +23,7 @@ export default function VideoRoomScreen() {
       <Text style={styles.title}>{t('videoRoom.title')}</Text>
 
       <View style={styles.card}>
-        <Text style={styles.emoji}></Text>
+        <Text style={styles.emoji}>🎥</Text>
         <Text style={styles.roomLabel}>{t('mobile.video.room-label')}</Text>
         <Text style={styles.roomId}>{room || t('mobile.video.unknown')}</Text>
         <Text style={styles.bookingLabel}>{t('mobile.video.booking-id', { id: bookingId })}</Text>

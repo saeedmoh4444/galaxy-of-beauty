@@ -38,7 +38,7 @@ export default function DNABeautyPage(): JSX.Element {
         </div>
         {result ? (
           <Card padding="lg" className="text-center border-2 border-brand-300">
-            <span className="text-6xl"></span>
+            <span className="text-6xl">🧬</span>
             <h2 className="mt-4 text-xl font-bold">{t('dnaBeauty.resultTitle')}</h2>
             <p className="text-2xl font-extrabold text-brand-600 mt-2">
               {t('dnaBeauty.matchPercent', { score: result.score as number })}

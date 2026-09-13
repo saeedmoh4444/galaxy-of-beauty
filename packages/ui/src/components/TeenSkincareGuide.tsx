@@ -143,11 +143,11 @@ interface TeenSkincareGuideProps {
 }
 
 const SKIN_LABELS: Record<TeenSkinType, { emoji: string; label: { ar: string; en: string } }> = {
-  oily: { emoji: '', label: { ar: 'دهنية', en: 'Oily' } },
-  dry: { emoji: '', label: { ar: 'جافة', en: 'Dry' } },
-  combination: { emoji: '', label: { ar: 'مختلطة', en: 'Combination' } },
-  normal: { emoji: '', label: { ar: 'طبيعية', en: 'Normal' } },
-  acne_prone: { emoji: '', label: { ar: 'معرضة للحبوب', en: 'Acne-prone' } },
+  oily: { emoji: '💦', label: { ar: 'دهنية', en: 'Oily' } },
+  dry: { emoji: '🌵', label: { ar: 'جافة', en: 'Dry' } },
+  combination: { emoji: '🔀', label: { ar: 'مختلطة', en: 'Combination' } },
+  normal: { emoji: '✅', label: { ar: 'طبيعية', en: 'Normal' } },
+  acne_prone: { emoji: '🧼', label: { ar: 'معرضة للحبوب', en: 'Acne-prone' } },
 };
 
 export function TeenSkincareGuide({
@@ -156,11 +156,11 @@ export function TeenSkincareGuide({
   className = '',
   title = 'دليل العناية بالبشرة',
   teenSkinLabel = 'للبشرة المراهقة',
-  ageYearsSuffix = ' سنة',
+  ageYearsSuffix = 'سنة',
   youngSkinLabel = 'للبشرة الشابة',
-  morningLabel = '️ الروتين الصباحي',
+  morningLabel = 'الروتين الصباحي',
   eveningLabel = 'الروتين المسائي',
-  tipsLabel = ' نصائح لبشرتكِ',
+  tipsLabel = 'نصائح لبشرتكِ',
   reminderText = 'في هذا العمر: الأقل هو الأكثر — لا حاجة لمنتجات قوية أو باهظة',
   locale = 'ar',
 }: TeenSkincareGuideProps): JSX.Element {

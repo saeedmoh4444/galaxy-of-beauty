@@ -19,7 +19,7 @@ export function BeautyMaternityStyleCard({
       )}
     >
       <div className="flex items-center gap-2">
-        <span className="text-xl"></span>
+        <span className="text-xl">🤰</span>
         <div>
           <h4 className="text-sm font-bold text-amber-700 dark:text-amber-300">{title}</h4>
           <p className="text-[10px] text-amber-500 dark:text-amber-400">{subtitle}</p>
@@ -28,25 +28,25 @@ export function BeautyMaternityStyleCard({
       <div className="mt-3 space-y-1">
         {[
           {
-            emoji: '',
+            emoji: '👗',
             text: {
               ar: 'فساتين Empire — تبرز الجمال وليس البطن',
               en: 'Empire dresses — highlight beauty, not the belly',
             },
           },
           {
-            emoji: '',
+            emoji: '💍',
             text: {
               ar: 'إكسسوارات — تشتت الانتباه بأناقة',
               en: 'Accessories — draw attention elegantly',
             },
           },
           {
-            emoji: '',
+            emoji: '👀',
             text: { ar: 'مكياج خفيف — ركزي على العيون', en: 'Light makeup — focus on the eyes' },
           },
           {
-            emoji: '',
+            emoji: '📷',
             text: {
               ar: 'صوري حملكِ — ذكريات جميلة',
               en: 'Capture your pregnancy — beautiful memories',

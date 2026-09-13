@@ -19,7 +19,7 @@ export function BeautyEyeBagsCard({
       )}
     >
       <div className="flex items-center gap-2">
-        <span className="text-xl"></span>
+        <span className="text-xl">👀</span>
         <div>
           <h4 className="text-sm font-bold text-sky-700 dark:text-sky-300">{title}</h4>
           <p className="text-[10px] text-sky-500 dark:text-sky-400">{subtitle}</p>
@@ -28,28 +28,28 @@ export function BeautyEyeBagsCard({
       <div className="mt-3 space-y-1">
         {[
           {
-            emoji: '',
+            emoji: '🧊',
             text: {
               ar: 'كمادات باردة — 10 دقائق صباحاً',
               en: 'Cold compresses — 10 minutes in the morning',
             },
           },
           {
-            emoji: '',
+            emoji: '☕',
             text: {
               ar: 'كافيين موضعي — كريمات تضيق الأوعية',
               en: 'Topical caffeine — creams that constrict vessels',
             },
           },
           {
-            emoji: '️',
+            emoji: '🛏️',
             text: {
               ar: 'وسادة مرتفعة — تقلل تجمع السوائل ليلاً',
               en: 'Elevated pillow — reduces fluid pooling at night',
             },
           },
           {
-            emoji: '',
+            emoji: '🧂',
             text: {
               ar: 'قللي الملح — يسبب احتباس السوائل',
               en: 'Cut down on salt — it causes fluid retention',

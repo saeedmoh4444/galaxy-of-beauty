@@ -19,7 +19,7 @@ export function BeautyUndertoneCard({
       )}
     >
       <div className="flex items-center gap-2">
-        <span className="text-xl"></span>
+        <span className="text-xl">🩷</span>
         <div>
           <h4 className="text-sm font-bold text-brand-700 dark:text-brand-300">{title}</h4>
           <p className="text-[10px] text-brand-500 dark:text-brand-400">{subtitle}</p>
@@ -28,7 +28,7 @@ export function BeautyUndertoneCard({
       <div className="mt-3 grid grid-cols-2 gap-1.5">
         {[
           {
-            emoji: '',
+            emoji: '🌞',
             label: { ar: 'دافئ', en: 'Warm' },
             tip: { ar: 'عروق خضراء — الذهب يناسبك', en: 'Green veins — gold suits you' },
           },
@@ -38,7 +38,7 @@ export function BeautyUndertoneCard({
             tip: { ar: 'عروق زرقاء — الفضة تناسبك', en: 'Blue veins — silver suits you' },
           },
           {
-            emoji: '',
+            emoji: '⚪',
             label: { ar: 'محايد', en: 'Neutral' },
             tip: { ar: 'مزيج — الذهب والفضة', en: 'A mix — gold and silver' },
           },

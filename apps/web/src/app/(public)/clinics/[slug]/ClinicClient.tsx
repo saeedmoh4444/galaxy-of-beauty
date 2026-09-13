@@ -99,7 +99,7 @@ export function ClinicClient({ data }: { data: ClinicPageData }): JSX.Element {
           />
         ) : (
           <div className="flex h-20 w-20 items-center justify-center rounded-2xl bg-brand-100 text-4xl">
-            ️
+            🏥
           </div>
         )}
         <div>

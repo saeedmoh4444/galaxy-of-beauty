@@ -19,7 +19,7 @@ export function BeautyHumidClimateCard({
       )}
     >
       <div className="flex items-center gap-2">
-        <span className="text-xl"></span>
+        <span className="text-xl">☔</span>
         <div>
           <h4 className="text-sm font-bold text-teal-700 dark:text-teal-300">{heading}</h4>
           <p className="text-[10px] text-teal-500 dark:text-teal-400">{subtitle}</p>
@@ -28,25 +28,25 @@ export function BeautyHumidClimateCard({
       <div className="mt-3 space-y-1">
         {[
           {
-            emoji: '',
+            emoji: '🧴',
             text: {
               ar: 'مرطب جل — خفيف وليس كريمي',
               en: 'Gel moisturizer — lightweight, not creamy',
             },
           },
           {
-            emoji: '',
+            emoji: '🧻',
             text: {
               ar: 'ورق نشاف — لإزالة اللمعان الزائد',
               en: 'Blotting paper — to remove excess shine',
             },
           },
           {
-            emoji: '',
+            emoji: '💄',
             text: { ar: 'مكياج خفيف — بدون طبقات ثقيلة', en: 'Light makeup — no heavy layers' },
           },
           {
-            emoji: '',
+            emoji: '🍃',
             text: {
               ar: 'تونر مات — يقلل إفراز الدهون',
               en: 'Mattifying toner — reduces oil production',

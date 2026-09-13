@@ -19,7 +19,7 @@ export function BeautyGlassesMakeupCard({
       )}
     >
       <div className="flex items-center gap-2">
-        <span className="text-xl"></span>
+        <span className="text-xl">👓</span>
         <div>
           <h4 className="text-sm font-bold text-sky-700 dark:text-sky-300">{title}</h4>
           <p className="text-[10px] text-sky-500 dark:text-sky-400">{subtitle}</p>
@@ -28,25 +28,25 @@ export function BeautyGlassesMakeupCard({
       <div className="mt-3 space-y-1">
         {[
           {
-            emoji: '️',
+            emoji: '👁️',
             text: {
               ar: 'رموش مرفوعة — لا تلمس العدسات',
               en: 'Curled lashes — so they do not touch the lenses',
             },
           },
           {
-            emoji: '',
+            emoji: '✨',
             text: {
               ar: 'هايلايتر تحت الحاجب — يبرز العين',
               en: 'Highlighter under the brow — makes the eyes pop',
             },
           },
           {
-            emoji: '',
+            emoji: '🎨',
             text: { ar: 'ظلال مات — ليس لامعاً', en: 'Matte eyeshadow — not shimmery' },
           },
           {
-            emoji: '️',
+            emoji: '✂️',
             text: {
               ar: 'حاجبين مرتبين — الإطار يبرزهما',
               en: 'Tidy brows — the frames draw attention to them',

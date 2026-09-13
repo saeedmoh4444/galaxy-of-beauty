@@ -16,7 +16,7 @@ const MEMBERSHIPS: {
 }[] = [
   {
     key: 'basic',
-    emoji: '',
+    emoji: '🥉',
     name: 'membership.tier.basic',
     price: 0,
     color: '#9ca3af',
@@ -33,7 +33,7 @@ const MEMBERSHIPS: {
   },
   {
     key: 'premium',
-    emoji: '',
+    emoji: '🥈',
     name: 'membership.tier.premium',
     price: 99,
     color: '#f59e0b',
@@ -49,7 +49,7 @@ const MEMBERSHIPS: {
   },
   {
     key: 'platinum',
-    emoji: '',
+    emoji: '🥇',
     name: 'membership.tier.platinum',
     price: 299,
     color: '#7c3aed',

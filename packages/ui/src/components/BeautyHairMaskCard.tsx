@@ -19,7 +19,7 @@ export function BeautyHairMaskCard({
       )}
     >
       <div className="flex items-center gap-2">
-        <span className="text-xl">‍️</span>
+        <span className="text-xl">🧖</span>
         <div>
           <h4 className="text-sm font-bold text-brand-700 dark:text-brand-300">{title}</h4>
           <p className="text-[10px] text-brand-500 dark:text-brand-400">{subtitle}</p>
@@ -28,22 +28,22 @@ export function BeautyHairMaskCard({
       <div className="mt-3 grid grid-cols-2 gap-1.5">
         {[
           {
-            emoji: '',
+            emoji: '🥑',
             label: { ar: 'أفوكادو + عسل', en: 'Avocado + honey' },
             tip: { ar: 'للشعر الجاف — ترطيب عميق', en: 'For dry hair — deep hydration' },
           },
           {
-            emoji: '',
+            emoji: '🥚',
             label: { ar: 'بيض + زيت زيتون', en: 'Egg + olive oil' },
             tip: { ar: 'للشعر الضعيف — بروتين', en: 'For weak hair — protein' },
           },
           {
-            emoji: '',
+            emoji: '🍌',
             label: { ar: 'موز + زبادي', en: 'Banana + yogurt' },
             tip: { ar: 'للشعر التالف — ترميم', en: 'For damaged hair — repair' },
           },
           {
-            emoji: '',
+            emoji: '🍎',
             label: { ar: 'خل تفاح', en: 'Apple cider vinegar' },
             tip: { ar: 'لمعان وتنظيف فروة الرأس', en: 'Shine and scalp cleansing' },
           },

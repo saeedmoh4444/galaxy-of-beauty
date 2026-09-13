@@ -27,7 +27,7 @@ export default function StreakCalendarScreen(): JSX.Element {
     >
       <Text style={styles.title}>{t('mobile.streakCalendar.title')}</Text>
       <View style={styles.card}>
-        <Text style={styles.fire}></Text>
+        <Text style={styles.fire}>🔥</Text>
         <Text style={styles.current}>
           {t('mobile.streakCalendar.current-week', {
             days: String(streak.data?.currentStreak ?? 0),

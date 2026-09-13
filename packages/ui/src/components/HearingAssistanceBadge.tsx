@@ -26,32 +26,32 @@ interface FeatureDef {
 
 const FEATURES: Record<HearingFeature, FeatureDef> = {
   hearing_loop: {
-    emoji: '',
+    emoji: '🦻',
     label: { ar: 'حلقة سمعية', en: 'Hearing loop' },
     detail: { ar: 'نظام تضخيم صوت للأجهزة السمعية', en: 'Sound amplification for hearing devices' },
   },
   written_communication: {
-    emoji: '',
+    emoji: '📝',
     label: { ar: 'تواصل كتابي', en: 'Written communication' },
     detail: { ar: 'ورقة وقلم للتواصل الكتابي', en: 'Pen and paper for written communication' },
   },
   visual_alerts: {
-    emoji: '',
+    emoji: '🔔',
     label: { ar: 'تنبيهات بصرية', en: 'Visual alerts' },
     detail: { ar: 'إشعارات ضوئية بدل الصوتية', en: 'Light notifications instead of sound' },
   },
   lip_reading: {
-    emoji: '',
+    emoji: '👄',
     label: { ar: 'قراءة شفاه', en: 'Lip reading' },
     detail: { ar: 'خبيرات يتحدثن بوضوح للقراءة', en: 'Technicians speak clearly for reading' },
   },
   sign_language: {
-    emoji: '',
+    emoji: '🤟',
     label: { ar: 'لغة إشارة', en: 'Sign language' },
     detail: { ar: 'خبيرات بلغة الإشارة', en: 'Sign language technicians' },
   },
   quiet_environment: {
-    emoji: '',
+    emoji: '🤫',
     label: { ar: 'بيئة هادئة', en: 'Quiet environment' },
     detail: { ar: 'ضوضاء منخفضة للتركيز', en: 'Low noise for focus' },
   },
@@ -85,7 +85,9 @@ export function HearingAssistanceBadge({
       )}
     >
       <div className="flex items-center gap-2">
-        <span className="text-xl" aria-hidden="true"></span>
+        <span className="text-xl" aria-hidden="true">
+          🦻
+        </span>
         <div>
           <h4 className="text-sm font-bold text-sky-700 dark:text-sky-300">{title}</h4>
           <p className="text-[10px] text-sky-500 dark:text-sky-400">

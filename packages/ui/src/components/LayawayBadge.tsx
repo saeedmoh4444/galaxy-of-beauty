@@ -66,7 +66,7 @@ export function LayawayBadge({
   className = '',
   title = 'احجزي الآن وادفعي لاحقاً',
   installmentsPrefix = 'قسطي على ',
-  installmentsSuffix = ' دفعات بدون فوائد',
+  installmentsSuffix = 'دفعات بدون فوائد',
   reservedText = 'محجوزة',
   totalLabel = 'الإجمالي',
   installmentLabel = 'الدفعة',
@@ -76,7 +76,7 @@ export function LayawayBadge({
   installmentsUnit = 'دفعة',
   remainingPrefix = 'متبقي ',
   remainingSuffix = 'دفعات',
-  completedText = ' مكتمل!',
+  completedText = 'مكتمل!',
   nextPaymentPrefix = 'الدفعة القادمة: ',
   footerText = 'بدون فوائد، بدون رسوم خفية — الجمال للجميع',
 }: LayawayBadgeProps): JSX.Element {
@@ -93,9 +93,7 @@ export function LayawayBadge({
       {/* Header */}
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-2">
-          <span className="text-lg" aria-hidden="true">
-            ️
-          </span>
+          <span className="text-lg" aria-hidden="true"></span>
           <div>
             <h4 className="text-sm font-bold text-violet-700 dark:text-violet-300">{title}</h4>
             <p className="text-[10px] text-violet-500 dark:text-violet-400">
@@ -156,7 +154,9 @@ export function LayawayBadge({
       {/* Next payment */}
       {nextPaymentDate && remaining && remaining > 0 && (
         <div className="mt-2 flex items-center gap-2 rounded-lg bg-amber-50 px-2.5 py-1.5 dark:bg-amber-950">
-          <span className="text-xs" aria-hidden="true"></span>
+          <span className="text-xs" aria-hidden="true">
+            📅
+          </span>
           <span className="text-[10px] text-amber-700 dark:text-amber-300">
             {nextPaymentPrefix}
             {nextPaymentDate}

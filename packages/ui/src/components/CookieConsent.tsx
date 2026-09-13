@@ -11,7 +11,7 @@ import { useState, useEffect } from 'react';
 
 export function CookieConsent({
   ariaLabel = 'سياسة ملفات تعريف الارتباط',
-  title = ' خصوصيتك تهمنا',
+  title = 'خصوصيتك تهمنا',
   description = 'نستخدم ملفات تعريف الارتباط لتحسين تجربتكِ على المنصة، وتحليل الاستخدام، وتقديم محتوى مخصص. بموافقتكِ، نلتزم بحماية بياناتكِ وفقاً لنظام حماية البيانات الشخصية السعودي (PDPL).',
   privacyLinkText = 'معرفة المزيد عن سياسة الخصوصية',
   necessaryButtonText = 'الضرورية فقط',

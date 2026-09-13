@@ -19,7 +19,7 @@ export function BeautySkinBarrierCard({
       )}
     >
       <div className="flex items-center gap-2">
-        <span className="text-xl">️</span>
+        <span className="text-xl">🚧</span>
         <div>
           <h4 className="text-sm font-bold text-emerald-700 dark:text-emerald-300">{title}</h4>
           <p className="text-[10px] text-emerald-500 dark:text-emerald-400">{subtitle}</p>
@@ -28,28 +28,28 @@ export function BeautySkinBarrierCard({
       <div className="mt-3 space-y-1">
         {[
           {
-            emoji: '',
+            emoji: '🧱',
             text: {
               ar: 'السيراميد — طوب بناء حاجز البشرة',
               en: 'Ceramides — the building blocks of the skin barrier',
             },
           },
           {
-            emoji: '',
+            emoji: '🚫',
             text: {
               ar: 'لا تفرطي في التقشير — مرتين أسبوعياً كحد أقصى',
               en: 'Do not over-exfoliate — twice a week at most',
             },
           },
           {
-            emoji: '',
+            emoji: '🧴',
             text: {
               ar: 'مرطب بعد الغسيل مباشرة — لحبس الرطوبة',
               en: 'Moisturize right after cleansing — to lock in moisture',
             },
           },
           {
-            emoji: '️',
+            emoji: '🛡️',
             text: {
               ar: 'حاجز صحي = بشرة أقل حساسية وأكثر نضارة',
               en: 'A healthy barrier = less sensitive, more radiant skin',

@@ -57,7 +57,7 @@ export function IncognitoModeBadge({
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-2">
           <span className="text-xl" aria-hidden="true">
-            {active ? '️' : '️'}
+            {active ? '🙈' : '👁'}
           </span>
           <div>
             <h4 className="text-sm font-bold text-indigo-700 dark:text-indigo-300">
@@ -91,10 +91,10 @@ export function IncognitoModeBadge({
         <div className="mt-3 space-y-2">
           <div className="grid grid-cols-2 gap-1.5">
             {[
-              { emoji: '', label: { ar: 'بدون سجل', en: 'No history' } },
-              { emoji: '', label: { ar: 'بدون اقتراحات', en: 'No suggestions' } },
-              { emoji: '', label: { ar: 'بدون كعكات', en: 'No cookies' } },
-              { emoji: '️', label: { ar: 'حذف تلقائي', en: 'Auto-delete' } },
+              { emoji: '📭', label: { ar: 'بدون سجل', en: 'No history' } },
+              { emoji: '🚫', label: { ar: 'بدون اقتراحات', en: 'No suggestions' } },
+              { emoji: '🍪', label: { ar: 'بدون كعكات', en: 'No cookies' } },
+              { emoji: '🗑️', label: { ar: 'حذف تلقائي', en: 'Auto-delete' } },
             ].map((f) => (
               <div
                 key={f.label.ar}
@@ -121,7 +121,9 @@ export function IncognitoModeBadge({
 
       {/* Privacy note */}
       <div className="mt-2 flex items-start gap-1.5 rounded-lg bg-surface-muted p-2 dark:bg-gray-800">
-        <span className="text-xs shrink-0" aria-hidden="true"></span>
+        <span className="text-xs shrink-0" aria-hidden="true">
+          🔒
+        </span>
         <p className="text-[9px] text-text-tertiary dark:text-text-secondary">{privacyNote}</p>
       </div>
     </div>

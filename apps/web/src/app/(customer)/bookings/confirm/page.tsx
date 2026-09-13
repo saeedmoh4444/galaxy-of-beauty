@@ -17,11 +17,18 @@ export default function BookingConfirmPage(): JSX.Element {
   return (
     <DashboardLayout userRole="CUSTOMER">
       <div className="mx-auto max-w-lg space-y-6 py-8 text-center">
-        <div className="mx-auto flex h-24 w-24 items-center justify-center rounded-full bg-green-100 text-6xl dark:bg-green-900"></div>
+        <div className="mx-auto flex h-24 w-24 items-center justify-center rounded-full bg-green-100 text-6xl dark:bg-green-900">
+          ✅
+        </div>
         <h1 className="text-3xl font-extrabold text-text-primary dark:text-gray-100">
           {t('booking.success-title')}
         </h1>
         <p className="text-text-secondary">{t('booking.success-message')}</p>
+
+        {/* Phase 3 sprint 2 — payment explainer under the confirmation */}
+        <p className="text-sm text-text-tertiary">
+          {t('booking.payment.online-desc')} · {t('booking.payment.venue-desc')}
+        </p>
 
         <Card padding="lg" className="text-start">
           <div className="space-y-3 text-sm">

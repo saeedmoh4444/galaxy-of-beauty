@@ -39,7 +39,7 @@ export default function VideoTestimonialsScreen(): JSX.Element {
           <View style={{ flex: 1 }}>
             <Text style={styles.vt}>{v.titleAr}</Text>
             <Text style={styles.vm}>
-              ‍ {v.technician} · {v.views}
+              {v.technician} · {v.views}
             </Text>
           </View>
         </View>

@@ -19,7 +19,7 @@ export function BeautyBreakoutSOSCard({
       )}
     >
       <div className="flex items-center gap-2">
-        <span className="text-xl"></span>
+        <span className="text-xl">🆘</span>
         <div>
           <h4 className="text-sm font-bold text-red-700 dark:text-red-300">{title}</h4>
           <p className="text-[10px] text-red-500 dark:text-red-400">{subtitle}</p>
@@ -28,28 +28,28 @@ export function BeautyBreakoutSOSCard({
       <div className="mt-3 space-y-1">
         {[
           {
-            emoji: '',
+            emoji: '🧊',
             text: {
               ar: 'كمادة ثلج — 5 دقائق لتقليل الالتهاب',
               en: 'Ice compress — 5 minutes to reduce inflammation',
             },
           },
           {
-            emoji: '',
+            emoji: '🩹',
             text: {
               ar: 'لصقة حبوب — تجفف وتحمي من العبث',
               en: 'Pimple patch — dries it out and stops picking',
             },
           },
           {
-            emoji: '',
+            emoji: '🚫',
             text: {
               ar: 'لا تضغطي — يزيد الالتهاب ويترك أثراً',
               en: "Don't squeeze — it worsens inflammation and leaves a mark",
             },
           },
           {
-            emoji: '',
+            emoji: '🧴',
             text: {
               ar: 'كريم بنزويل بيروكسايد — للطوارئ فقط',
               en: 'Benzoyl peroxide cream — for emergencies only',

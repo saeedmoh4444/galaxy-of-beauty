@@ -62,6 +62,33 @@ export const technicianRouter = router({
   }),
 
   /**
+   * coverage — distinct areas + cities served by verified technicians.
+   * Feeds the home trust stat row (Phase 3 sprint 1). City is required on
+   * Technician, so `cities` is the stable fallback when areas are unset
+   * (as in the main seed). Public.
+   */
+  coverage: publicProcedure.query(async () => {
+    const [areaRows, cityRows] = await Promise.all([
+      prisma.technician.findMany({
+        where: { kycStatus: 'VERIFIED', area: { not: null } },
+        distinct: ['area'],
+        select: { area: true },
+        orderBy: { area: 'asc' },
+      }),
+      prisma.technician.findMany({
+        where: { kycStatus: 'VERIFIED' },
+        distinct: ['city'],
+        select: { city: true },
+        orderBy: { city: 'asc' },
+      }),
+    ]);
+    return {
+      areas: areaRows.map((r) => r.area),
+      cities: cityRows.map((r) => r.city),
+    };
+  }),
+
+  /**
    * trainers — E3 fitness vertical: verified technicians offering
    * fitness-category services. The 1:1 session flow itself is the standard
    * Booking engine (unchanged).

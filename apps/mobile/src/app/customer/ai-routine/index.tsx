@@ -11,10 +11,10 @@ import { trpc } from '@/lib/trpc-react';
 import { useLocale } from '@/components/LocaleProvider';
 
 const SKIN_TYPES = [
-  { key: 'dry', emoji: '️', label: 'جافة' },
-  { key: 'oily', emoji: '', label: 'دهنية' },
-  { key: 'combination', emoji: '', label: 'مختلطة' },
-  { key: 'normal', emoji: '', label: 'عادية' },
+  { key: 'dry', emoji: '🧴', label: 'جافة' },
+  { key: 'oily', emoji: '💧', label: 'دهنية' },
+  { key: 'combination', emoji: '🔀', label: 'مختلطة' },
+  { key: 'normal', emoji: '😊', label: 'عادية' },
 ] as const;
 
 interface RoutineStep {

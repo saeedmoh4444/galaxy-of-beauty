@@ -19,7 +19,7 @@ export function BeautyTravelClimateCard({
       )}
     >
       <div className="flex items-center gap-2">
-        <span className="text-xl">️</span>
+        <span className="text-xl">🧳</span>
         <div>
           <h4 className="text-sm font-bold text-brand-700 dark:text-brand-300">{title}</h4>
           <p className="text-[10px] text-brand-500 dark:text-brand-400">{subtitle}</p>
@@ -28,28 +28,28 @@ export function BeautyTravelClimateCard({
       <div className="mt-3 space-y-1">
         {[
           {
-            emoji: '',
+            emoji: '🧴',
             text: {
               ar: 'منتجات متعددة — ترطب وتحمي في آن واحد',
               en: 'Multi-purpose products — moisturize and protect at once',
             },
           },
           {
-            emoji: '',
+            emoji: '💧',
             text: {
               ar: 'اشربي ماء في الطائرة — الجو جاف جداً',
               en: 'Drink water on the plane — the air is very dry',
             },
           },
           {
-            emoji: '',
+            emoji: '🧖',
             text: {
               ar: 'قناع ورقي — في الطائرة لترطيب فوري',
               en: 'A sheet mask — on the plane for instant hydration',
             },
           },
           {
-            emoji: '',
+            emoji: '🧳',
             text: {
               ar: 'عدلي روتينك — حسب مناخ وجهتك',
               en: "Adjust your routine — to your destination's climate",

@@ -57,7 +57,7 @@ export default function ReschedulePage(): JSX.Element {
 
         {done && (
           <Card padding="lg" className="text-center border-2 border-green-300 bg-green-50">
-            <p className="text-2xl"></p>
+            <p className="text-2xl">✅</p>
             <p className="font-bold text-green-700 mt-2">{t('reschedule.success')}</p>
           </Card>
         )}
@@ -66,7 +66,7 @@ export default function ReschedulePage(): JSX.Element {
           <CardListSkeleton count={3} />
         ) : activeBookings.length === 0 ? (
           <Card padding="lg" className="text-center py-8">
-            <p className="text-4xl mb-2"></p>
+            <p className="text-4xl mb-2">📅</p>
             <p className="text-text-secondary">{t('reschedule.noneAvailable')}</p>
           </Card>
         ) : (

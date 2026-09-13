@@ -28,10 +28,10 @@ const DIFFICULTY_META: Record<string, { label: TranslationKey; color: string }> 
 };
 
 const CATEGORY_META: Record<string, { label: TranslationKey; emoji: string }> = {
-  makeup: { label: 'marketing.tutorials.cat-makeup', emoji: '' },
-  hair: { label: 'marketing.tutorials.cat-hair', emoji: '‍️' },
-  skincare: { label: 'marketing.tutorials.cat-skincare', emoji: '' },
-  nails: { label: 'marketing.tutorials.cat-nails', emoji: '' },
+  makeup: { label: 'marketing.tutorials.cat-makeup', emoji: '💄' },
+  hair: { label: 'marketing.tutorials.cat-hair', emoji: '💇' },
+  skincare: { label: 'marketing.tutorials.cat-skincare', emoji: '🧴' },
+  nails: { label: 'marketing.tutorials.cat-nails', emoji: '💅' },
 };
 
 function formatViews(n: number): string {
@@ -103,7 +103,7 @@ export default function TutorialDetailPage(): JSX.Element {
   const views = (tutorial.views as number) ?? 0;
   const likes = (tutorial.likes as number) ?? 0;
   const diffMeta = DIFFICULTY_META[difficulty] ?? DEFAULT_DIFFICULTY;
-  const catMeta = CATEGORY_META[category] ?? { label: category as TranslationKey, emoji: '' };
+  const catMeta = CATEGORY_META[category] ?? { label: category as TranslationKey, emoji: '✨' };
 
   return (
     <div className="mx-auto max-w-4xl px-4 py-12">
@@ -130,7 +130,7 @@ export default function TutorialDetailPage(): JSX.Element {
         ) : (
           <div className="absolute inset-0 flex items-center justify-center text-white/40">
             <div className="text-center">
-              <span className="text-6xl"></span>
+              <span className="text-6xl">🎬</span>
               <p className="mt-2">{t('marketing.tutorials.video-unavailable')}</p>
             </div>
           </div>
@@ -150,11 +150,11 @@ export default function TutorialDetailPage(): JSX.Element {
               <span className="text-sm text-text-secondary">
                 {catMeta.emoji} {t(catMeta.label)}
               </span>
-              <span className="text-sm text-text-secondary">️ {duration}</span>
+              <span className="text-sm text-text-secondary"> {duration}</span>
               <span className="text-sm text-text-secondary">
-                ️ {t('marketing.tutorials.views-label', { count: formatViews(views) })}
+                {t('marketing.tutorials.views-label', { count: formatViews(views) })}
               </span>
-              <span className="text-sm text-text-secondary">️ {likes}</span>
+              <span className="text-sm text-text-secondary"> {likes}</span>
             </div>
           </div>
         </div>

@@ -17,7 +17,7 @@ const DESTINATIONS: {
 }[] = [
   {
     key: 'beach',
-    emoji: '️',
+    emoji: '🏖️',
     name: 'travel.dest.beach',
     color: '#0891b2',
     bg: 'from-cyan-50 to-teal-50 dark:from-cyan-950 dark:to-teal-950',
@@ -35,7 +35,7 @@ const DESTINATIONS: {
   },
   {
     key: 'city',
-    emoji: '️',
+    emoji: '🏙️',
     name: 'travel.dest.city',
     color: '#6366f1',
     bg: 'from-indigo-50 to-violet-50 dark:from-indigo-950 dark:to-violet-950',
@@ -53,7 +53,7 @@ const DESTINATIONS: {
   },
   {
     key: 'mountain',
-    emoji: '️',
+    emoji: '⛰️',
     name: 'travel.dest.mountain',
     color: '#059669',
     bg: 'from-emerald-50 to-green-50 dark:from-emerald-950 dark:to-green-950',

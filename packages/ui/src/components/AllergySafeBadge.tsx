@@ -19,13 +19,13 @@ interface AllergyDef {
 }
 
 const ALLERGIES: Record<Allergy, AllergyDef> = {
-  fragrance: { emoji: '', label: { ar: 'عطور', en: 'Fragrance' } },
-  nuts: { emoji: '', label: { ar: 'مكسرات', en: 'Nuts' } },
-  dairy: { emoji: '', label: { ar: 'ألبان', en: 'Dairy' } },
-  gluten: { emoji: '', label: { ar: 'جلوتين', en: 'Gluten' } },
-  paraben: { emoji: '', label: { ar: 'بارابين', en: 'Parabens' } },
+  fragrance: { emoji: '🌸', label: { ar: 'عطور', en: 'Fragrance' } },
+  nuts: { emoji: '🥜', label: { ar: 'مكسرات', en: 'Nuts' } },
+  dairy: { emoji: '🥛', label: { ar: 'ألبان', en: 'Dairy' } },
+  gluten: { emoji: '🌾', label: { ar: 'جلوتين', en: 'Gluten' } },
+  paraben: { emoji: '🧪', label: { ar: 'بارابين', en: 'Parabens' } },
   sulfate: { emoji: '🫧', label: { ar: 'سلفات', en: 'Sulfates' } },
-  alcohol: { emoji: '', label: { ar: 'كحول', en: 'Alcohol' } },
+  alcohol: { emoji: '🍷', label: { ar: 'كحول', en: 'Alcohol' } },
   essential_oils: { emoji: '🫒', label: { ar: 'زيوت عطرية', en: 'Essential oils' } },
 };
 
@@ -72,9 +72,7 @@ export function AllergySafeBadge({
       )}
     >
       <div className="flex items-center gap-2">
-        <span className="text-xl" aria-hidden="true">
-          ️
-        </span>
+        <span className="text-xl" aria-hidden="true"></span>
         <div>
           <h4 className="text-sm font-bold text-emerald-700 dark:text-emerald-300">{title}</h4>
           <p className="text-[10px] text-emerald-500 dark:text-emerald-400">{subtitle}</p>

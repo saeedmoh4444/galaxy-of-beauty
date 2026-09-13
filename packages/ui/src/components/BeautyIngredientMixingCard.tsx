@@ -19,7 +19,7 @@ export function BeautyIngredientMixingCard({
       )}
     >
       <div className="flex items-center gap-2">
-        <span className="text-xl">️</span>
+        <span className="text-xl">🧪</span>
         <div>
           <h4 className="text-sm font-bold text-rose-700 dark:text-rose-300">{heading}</h4>
           <p className="text-[10px] text-rose-500 dark:text-rose-400">{subtitle}</p>
@@ -28,22 +28,22 @@ export function BeautyIngredientMixingCard({
       <div className="mt-3 grid grid-cols-2 gap-1.5">
         {[
           {
-            emoji: '',
+            emoji: '🍊',
             label: { ar: 'فيتامين C + واقي شمس', en: 'Vitamin C + sunscreen' },
             tip: { ar: 'ثنائي الحماية المثالي', en: 'The perfect protection duo' },
           },
           {
-            emoji: '',
+            emoji: '✨',
             label: { ar: 'ريتينول + ببتيدات', en: 'Retinol + peptides' },
             tip: { ar: 'مضاد شيخوخة قوي', en: 'Powerful anti-aging combo' },
           },
           {
-            emoji: '',
+            emoji: '🚫',
             label: { ar: 'ريتينول + أحماض', en: 'Retinol + acids' },
             tip: { ar: 'تهيج شديد — لا تخلطيهم', en: "Severe irritation — don't mix them" },
           },
           {
-            emoji: '',
+            emoji: '⚠',
             label: { ar: 'فيتامين C + أحماض', en: 'Vitamin C + acids' },
             tip: { ar: 'يبطل مفعولهم — استخدمي منفصل', en: 'Neutralizes them — use separately' },
           },

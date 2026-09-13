@@ -30,7 +30,7 @@ const SERVICES: PostpartumService[] = [
     availableFromDay: 3,
   },
   {
-    emoji: '‍️',
+    emoji: '💆',
     name: { ar: 'مساج النفاس', en: 'Postpartum massage' },
     description: {
       ar: 'مساج لطيف للجسم بالزيوت الدافئة لتخفيف الآلام',
@@ -40,7 +40,7 @@ const SERVICES: PostpartumService[] = [
     availableFromDay: 7,
   },
   {
-    emoji: '‍️',
+    emoji: '💇',
     name: { ar: 'علاج تساقط الشعر', en: 'Hair loss treatment' },
     description: {
       ar: 'علاج طبيعي لتساقط الشعر بعد الولادة',
@@ -50,7 +50,7 @@ const SERVICES: PostpartumService[] = [
     availableFromDay: 30,
   },
   {
-    emoji: '‍️',
+    emoji: '🧴',
     name: { ar: 'عناية بالبشرة للنفاس', en: 'Postpartum skincare' },
     description: {
       ar: 'ترطيب عميق وتوحيد لون البشرة بعد التغيرات الهرمونية',
@@ -60,7 +60,7 @@ const SERVICES: PostpartumService[] = [
     availableFromDay: 14,
   },
   {
-    emoji: '',
+    emoji: '💄',
     name: { ar: 'إطلالة الخروج الأولى', en: 'First outing look' },
     description: {
       ar: 'مكياج ناعم وتصفيفة شعر لأول خروج بعد النفاس',
@@ -112,7 +112,7 @@ export function PostpartumCareCard({
   onBook,
   className = '',
   title = 'عناية النفاس',
-  nifasCompleteText = ' اكتملت الأربعون — ألف مبروك!',
+  nifasCompleteText = 'اكتملت الأربعون — ألف مبروك!',
   nifasDayPrefix = 'اليوم',
   nifasFromWord = 'من النفاس —',
   daysRemainingText = 'يوم متبقي',
@@ -138,7 +138,9 @@ export function PostpartumCareCard({
     >
       {/* Header */}
       <div className="text-center">
-        <span className="text-3xl" aria-hidden="true"></span>
+        <span className="text-3xl" aria-hidden="true">
+          🤱
+        </span>
         <h4 className="mt-1 text-sm font-bold text-brand-700 dark:text-brand-300">{title}</h4>
         <p className="text-[10px] text-brand-500 dark:text-brand-400">
           {isNifasComplete

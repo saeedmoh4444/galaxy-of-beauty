@@ -19,7 +19,7 @@ export function BeautyMakeupMascaraCard({
       )}
     >
       <div className="flex items-center gap-2">
-        <span className="text-xl"></span>
+        <span className="text-xl">👀</span>
         <div>
           <h4 className="text-sm font-bold text-brand-700 dark:text-brand-300">{heading}</h4>
           <p className="text-[10px] text-brand-500 dark:text-brand-400">{subtitle}</p>
@@ -35,18 +35,18 @@ export function BeautyMakeupMascaraCard({
             },
           },
           {
-            emoji: '',
+            emoji: '📅',
             text: { ar: 'جددِي الماسكارا كل 3 أشهر', en: 'Replace your mascara every 3 months' },
           },
           {
-            emoji: '',
+            emoji: '🚫',
             text: {
               ar: 'لا تضخي الهواء في الأنبوب — يجففها',
               en: "Don't pump the wand — it dries it out",
             },
           },
           {
-            emoji: '',
+            emoji: '🧴',
             text: {
               ar: 'ماسكارا مقاومة للماء = مزيل زيتي',
               en: 'Waterproof mascara = oil-based remover',

@@ -19,7 +19,7 @@ export function BeautyMakeupBrushCard({
       )}
     >
       <div className="flex items-center gap-2">
-        <span className="text-xl">️</span>
+        <span className="text-xl">🧼</span>
         <div>
           <h4 className="text-sm font-bold text-rose-700 dark:text-rose-300">{heading}</h4>
           <p className="text-[10px] text-rose-500 dark:text-rose-400">{subtitle}</p>
@@ -28,22 +28,22 @@ export function BeautyMakeupBrushCard({
       <div className="mt-3 space-y-1">
         {[
           {
-            emoji: '',
+            emoji: '🧼',
             text: {
               ar: 'نظفي الفرش أسبوعياً — بشامبو أطفال',
               en: 'Wash brushes weekly — with baby shampoo',
             },
           },
           {
-            emoji: '️',
+            emoji: '💨',
             text: { ar: 'جففيها أفقياً — لا عمودياً', en: 'Dry them flat — not standing up' },
           },
           {
-            emoji: '',
+            emoji: '🔄',
             text: { ar: 'استبدلي الفرش كل 6-12 شهر', en: 'Replace brushes every 6-12 months' },
           },
           {
-            emoji: '',
+            emoji: '🚫',
             text: { ar: 'لا تشاركي فرشك مع أحد', en: 'Never share your brushes' },
           },
         ].map((t, i) => (

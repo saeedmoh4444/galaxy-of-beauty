@@ -19,7 +19,7 @@ export function BeautyEidHairCard({
       )}
     >
       <div className="flex items-center gap-2">
-        <span className="text-xl"></span>
+        <span className="text-xl">🌙</span>
         <div>
           <h4 className="text-sm font-bold text-brand-700 dark:text-brand-300">{title}</h4>
           <p className="text-[10px] text-brand-500 dark:text-brand-400">{subtitle}</p>
@@ -28,28 +28,28 @@ export function BeautyEidHairCard({
       <div className="mt-3 space-y-1">
         {[
           {
-            emoji: '',
+            emoji: '💇',
             text: {
               ar: 'كعكة منخفضة — أنيقة مع الطرحة',
               en: 'Low bun — elegant with the hijab',
             },
           },
           {
-            emoji: '',
+            emoji: '🌊',
             text: {
               ar: 'ويفي ناعم — مع لفّة حجاب',
               en: 'Soft waves — with a hijab wrap',
             },
           },
           {
-            emoji: '',
+            emoji: '🪢',
             text: {
               ar: 'ضفيرة جانبية — عصرية ومريحة',
               en: 'Side braid — modern and comfortable',
             },
           },
           {
-            emoji: '',
+            emoji: '🫒',
             text: {
               ar: 'حمام زيت قبلها بيوم — لمعان طبيعي',
               en: 'Oil treatment the day before — natural shine',

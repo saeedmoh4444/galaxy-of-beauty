@@ -19,7 +19,7 @@ export function BeautyCrowsFeetCard({
       )}
     >
       <div className="flex items-center gap-2">
-        <span className="text-xl"></span>
+        <span className="text-xl">👁</span>
         <div>
           <h4 className="text-sm font-bold text-amber-700 dark:text-amber-300">{title}</h4>
           <p className="text-[10px] text-amber-500 dark:text-amber-400">{subtitle}</p>
@@ -28,28 +28,28 @@ export function BeautyCrowsFeetCard({
       <div className="mt-3 space-y-1">
         {[
           {
-            emoji: '️',
+            emoji: '🕶️',
             text: {
               ar: 'نظارة شمس — تمنع التحديق والتجاعيد',
               en: 'Sunglasses — prevent squinting and wrinkles',
             },
           },
           {
-            emoji: '',
+            emoji: '👁',
             text: {
               ar: 'تربيت خفيف — لا تفركي عيونكِ',
               en: 'Tap gently — do not rub your eyes',
             },
           },
           {
-            emoji: '',
+            emoji: '🧴',
             text: {
               ar: 'كريم عيون ببتيدات — صباح ومساء',
               en: 'Peptide eye cream — morning and evening',
             },
           },
           {
-            emoji: '',
+            emoji: '💉',
             text: {
               ar: 'بوتوكس — حل تجميلي للخطوط العميقة',
               en: 'Botox — a cosmetic fix for deep lines',

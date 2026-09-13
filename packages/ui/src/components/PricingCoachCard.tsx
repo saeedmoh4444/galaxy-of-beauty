@@ -51,17 +51,17 @@ const DEMAND_LABELS: Record<
   { emoji: string; label: { ar: string; en: string }; color: string }
 > = {
   high: {
-    emoji: '',
+    emoji: '📈',
     label: { ar: 'طلب عالي', en: 'High demand' },
     color: 'text-rose-600 dark:text-rose-400',
   },
   medium: {
-    emoji: '',
+    emoji: '📊',
     label: { ar: 'طلب متوسط', en: 'Medium demand' },
     color: 'text-amber-600 dark:text-amber-400',
   },
   low: {
-    emoji: '',
+    emoji: '📉',
     label: { ar: 'طلب منخفض', en: 'Low demand' },
     color: 'text-text-secondary',
   },
@@ -94,7 +94,9 @@ export function PricingCoachCard({
       )}
     >
       <div className="flex items-center gap-2">
-        <span className="text-xl" aria-hidden="true"></span>
+        <span className="text-xl" aria-hidden="true">
+          💹
+        </span>
         <div>
           <h4 className="text-sm font-bold text-blue-700 dark:text-blue-300">{title}</h4>
           <p className="text-[10px] text-blue-500 dark:text-blue-400">{subtitle}</p>

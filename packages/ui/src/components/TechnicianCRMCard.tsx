@@ -75,9 +75,7 @@ export function TechnicianCRMCard({
       )}
     >
       <div className="flex items-center gap-2">
-        <span className="text-xl" aria-hidden="true">
-          ‍
-        </span>
+        <span className="text-xl" aria-hidden="true"></span>
         <div>
           <h4 className="text-sm font-bold text-blue-700 dark:text-blue-300">{title}</h4>
           <p className="text-[10px] text-blue-500 dark:text-blue-400">{subtitle}</p>
@@ -125,10 +123,10 @@ export function TechnicianCRMCard({
       {/* Quick actions */}
       <div className="mt-3 grid grid-cols-2 gap-1.5">
         {[
-          { emoji: '', label: { ar: actionSendOffer, en: 'Send offer' } },
-          { emoji: '', label: { ar: actionBirthdayWish, en: 'Birthday wish' } },
-          { emoji: '', label: { ar: actionAskRating, en: 'Ask for rating' } },
-          { emoji: '', label: { ar: actionFullReport, en: 'Full report' } },
+          { emoji: '🎁', label: { ar: actionSendOffer, en: 'Send offer' } },
+          { emoji: '🎂', label: { ar: actionBirthdayWish, en: 'Birthday wish' } },
+          { emoji: '⭐', label: { ar: actionAskRating, en: 'Ask for rating' } },
+          { emoji: '📊', label: { ar: actionFullReport, en: 'Full report' } },
         ].map((a) => (
           <button
             key={a.label.ar}

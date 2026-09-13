@@ -19,7 +19,7 @@ export function BeautyNailStrengthenCard({
       )}
     >
       <div className="flex items-center gap-2">
-        <span className="text-xl"></span>
+        <span className="text-xl">💅</span>
         <div>
           <h4 className="text-sm font-bold text-brand-700 dark:text-brand-300">{title}</h4>
           <p className="text-[10px] text-brand-500 dark:text-brand-400">{subtitle}</p>
@@ -28,28 +28,28 @@ export function BeautyNailStrengthenCard({
       <div className="mt-3 space-y-1">
         {[
           {
-            emoji: '',
+            emoji: '💅',
             text: {
               ar: 'مقوي أظافر — طبقة أساس قبل الطلاء',
               en: 'A nail hardener — a base layer before polish',
             },
           },
           {
-            emoji: '',
+            emoji: '💧',
             text: {
               ar: 'زيت الأظافر — يومياً على الظفر والبشرة',
               en: 'Nail oil — daily on the nail and cuticle',
             },
           },
           {
-            emoji: '',
+            emoji: '💊',
             text: {
               ar: 'بيوتين وزنك — من الداخل للخارج',
               en: 'Biotin and zinc — from the inside out',
             },
           },
           {
-            emoji: '',
+            emoji: '🧤',
             text: {
               ar: 'قفازات للتنظيف — احمي أظافركِ',
               en: 'Cleaning gloves — protect your nails',

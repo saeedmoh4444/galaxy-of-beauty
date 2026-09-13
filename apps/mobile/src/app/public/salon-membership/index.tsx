@@ -10,7 +10,7 @@ import { getAuthToken } from '@/lib/authToken';
 const MEMBERSHIPS = [
   {
     key: 'basic',
-    emoji: '',
+    emoji: '🌱',
     name: 'الأساسية',
     price: 0,
     color: '#9ca3af',
@@ -19,7 +19,7 @@ const MEMBERSHIPS = [
   },
   {
     key: 'premium',
-    emoji: '',
+    emoji: '⭐',
     name: 'المميزة',
     price: 99,
     color: '#f59e0b',
@@ -35,7 +35,7 @@ const MEMBERSHIPS = [
   },
   {
     key: 'platinum',
-    emoji: '',
+    emoji: '👑',
     name: 'البلاتينية',
     price: 299,
     color: '#7c3aed',
@@ -141,7 +141,7 @@ export default function SalonMembershipScreen(): JSX.Element {
                   <Text style={styles.cbTitle}>{t('mobile.public.salon-membership.features')}</Text>
                   {m.benefits.map((b, i) => (
                     <View key={i} style={styles.benefit}>
-                      <Text style={styles.benefitBullet}></Text>
+                      <Text style={styles.benefitBullet}>✅</Text>
                       <Text style={styles.benefitText}>{b}</Text>
                     </View>
                   ))}
@@ -152,7 +152,7 @@ export default function SalonMembershipScreen(): JSX.Element {
                       </Text>
                       {m.notIncluded.map((b, i) => (
                         <View key={i} style={styles.benefit}>
-                          <Text style={styles.benefitBulletX}></Text>
+                          <Text style={styles.benefitBulletX}>❌</Text>
                           <Text style={[styles.benefitText, { color: '#9ca3af' }]}>{b}</Text>
                         </View>
                       ))}

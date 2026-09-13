@@ -49,7 +49,7 @@ export function SurpriseMeClient({ data }: { data: SurpriseMePageData }): JSX.El
   return (
     <div className="mx-auto max-w-2xl px-4 py-16 text-center">
       <div className="mb-8">
-        <span className="text-6xl"></span>
+        <span className="text-6xl">🎲</span>
         <h1 className="mt-4 text-3xl font-bold text-text-primary dark:text-gray-100">
           {t('marketing.surprise-me.title')}
         </h1>
@@ -88,7 +88,9 @@ function ServiceCard({ svc }: { svc: ServiceItem }): JSX.Element {
   const { t, locale } = useLocale();
   return (
     <Card padding="lg" className="mx-auto max-w-sm text-center">
-      <div className="mx-auto flex h-32 w-32 items-center justify-center rounded-full bg-gradient-to-br from-brand-100 to-accent-100 text-5xl dark:from-brand-900 dark:to-accent-900"></div>
+      <div className="mx-auto flex h-32 w-32 items-center justify-center rounded-full bg-gradient-to-br from-brand-100 to-accent-100 text-5xl dark:from-brand-900 dark:to-accent-900">
+        🎁
+      </div>
       <h2 className="mt-4 text-xl font-bold text-text-primary dark:text-gray-100">
         {localize(svc.titleJson, locale)}
       </h2>

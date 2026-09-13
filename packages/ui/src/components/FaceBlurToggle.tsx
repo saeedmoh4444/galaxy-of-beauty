@@ -34,11 +34,11 @@ export function FaceBlurToggle({
   title = 'تعتيم الوجه',
   enabledStatusText = 'يتم تعتيم الوجوه تلقائياً — خصوصيتكِ أولاً',
   disabledStatusText = 'الوجوه ظاهرة — أنتِ تتحكمين',
-  howItWorksLabel = ' كيف يعمل؟',
+  howItWorksLabel = 'كيف يعمل؟',
   howItWorksDescription = 'ذكاء اصطناعي على جهازكِ يتعرف على الوجوه ويعتمها تلقائياً. لا يتم رفع صوركِ إلى أي خادم — كل شيء على جهازكِ.',
-  photosAffectedText = ' صورة متأثرة بهذا الإعداد',
-  enabledFooterText = ' الوجوه معتمة تلقائياً في المعرض العام',
-  disabledFooterText = ' الوجوه غير معتمة — ننصح بتفعيل التعتيم للخصوصية',
+  photosAffectedText = 'صورة متأثرة بهذا الإعداد',
+  enabledFooterText = 'الوجوه معتمة تلقائياً في المعرض العام',
+  disabledFooterText = 'الوجوه غير معتمة — ننصح بتفعيل التعتيم للخصوصية',
   footerNoteText = 'معالجة محلية بالكامل — خصوصيتكِ في جهازكِ فقط',
 }: FaceBlurToggleProps): JSX.Element {
   const [enabled, setEnabled] = useState(true);
@@ -58,9 +58,7 @@ export function FaceBlurToggle({
     >
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-2">
-          <span className="text-xl" aria-hidden="true">
-            ‍️
-          </span>
+          <span className="text-xl" aria-hidden="true"></span>
           <div>
             <h4 className="text-sm font-bold text-blue-700 dark:text-blue-300">{title}</h4>
             <p className="text-[10px] text-blue-500 dark:text-blue-400">

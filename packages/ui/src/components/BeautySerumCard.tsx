@@ -19,7 +19,7 @@ export function BeautySerumCard({
       )}
     >
       <div className="flex items-center gap-2">
-        <span className="text-xl"></span>
+        <span className="text-xl">🧪</span>
         <div>
           <h4 className="text-sm font-bold text-brand-700 dark:text-brand-300">{title}</h4>
           <p className="text-[10px] text-brand-500 dark:text-brand-400">{subtitle}</p>
@@ -28,16 +28,16 @@ export function BeautySerumCard({
       <div className="mt-3 space-y-1">
         {[
           {
-            emoji: '',
+            emoji: '💧',
             text: { ar: '1. هيالورونيك — على بشرة رطبة', en: '1. Hyaluronic — on damp skin' },
           },
           {
-            emoji: '',
+            emoji: '🍊',
             text: { ar: '2. فيتامين سي — صباحاً', en: '2. Vitamin C — in the morning' },
           },
-          { emoji: '', text: { ar: '3. ريتينول — مساءً فقط', en: '3. Retinol — evenings only' } },
+          { emoji: '🌙', text: { ar: '3. ريتينول — مساءً فقط', en: '3. Retinol — evenings only' } },
           {
-            emoji: '️',
+            emoji: '💊',
             text: { ar: '4. نياسيناميد — صباح ومساء', en: '4. Niacinamide — morning and night' },
           },
         ].map((t, i) => (

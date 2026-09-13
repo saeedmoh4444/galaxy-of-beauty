@@ -20,7 +20,7 @@ interface Question {
 const QUESTIONS: Question[] = [
   {
     question: { ar: 'كيف تبدو بشرتكِ بعد غسلها؟', en: 'How does your skin feel after washing?' },
-    emoji: '',
+    emoji: '🧼',
     options: [
       { text: { ar: 'مشدودة وجافة', en: 'Tight and dry' }, score: { dry: 3 } },
       { text: { ar: 'لامعة ودهنية', en: 'Shiny and oily' }, score: { oily: 3 } },
@@ -36,7 +36,7 @@ const QUESTIONS: Question[] = [
       ar: 'كيف تتصرف بشرتكِ في الطقس الحار؟',
       en: 'How does your skin behave in hot weather?',
     },
-    emoji: '️',
+    emoji: '🥵',
     options: [
       { text: { ar: 'تصبح دهنية جداً', en: 'Becomes very oily' }, score: { oily: 3 } },
       { text: { ar: 'تبقى جافة', en: 'Stays dry' }, score: { dry: 3 } },
@@ -52,7 +52,7 @@ const QUESTIONS: Question[] = [
       ar: 'هل بشرتكِ حساسة للمنتجات الجديدة؟',
       en: 'Is your skin sensitive to new products?',
     },
-    emoji: '',
+    emoji: '🌸',
     options: [
       { text: { ar: 'نعم، تحمر بسرعة', en: 'Yes, it reddens quickly' }, score: { sensitive: 4 } },
       { text: { ar: 'أحياناً', en: 'Sometimes' }, score: { sensitive: 2 } },
@@ -118,7 +118,9 @@ export function BeautySkinQuizCard({
           className,
         )}
       >
-        <span className="text-4xl" aria-hidden="true"></span>
+        <span className="text-4xl" aria-hidden="true">
+          🔬
+        </span>
         <h4 className="mt-2 text-sm font-bold text-teal-700 dark:text-teal-300">{resultTitle}</h4>
         <p className="mt-2 text-2xl font-bold text-teal-800 dark:text-teal-200">{result}</p>
         <button

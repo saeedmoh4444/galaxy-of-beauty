@@ -19,7 +19,7 @@ export function BeautyHairGlossCard({
       )}
     >
       <div className="flex items-center gap-2">
-        <span className="text-xl"></span>
+        <span className="text-xl">✨</span>
         <div>
           <h4 className="text-sm font-bold text-brand-700 dark:text-brand-300">{title}</h4>
           <p className="text-[10px] text-brand-500 dark:text-brand-400">{subtitle}</p>
@@ -28,28 +28,28 @@ export function BeautyHairGlossCard({
       <div className="mt-3 space-y-1">
         {[
           {
-            emoji: '',
+            emoji: '✨',
             text: {
               ar: 'لمعان زجاجي — يعكس الضوء بشكل جميل',
               en: 'Glassy shine — reflects light beautifully',
             },
           },
           {
-            emoji: '',
+            emoji: '🎨',
             text: {
               ar: 'شفاف أو ملون — ينعش لون شعركِ',
               en: 'Clear or tinted — refreshes your hair color',
             },
           },
           {
-            emoji: '️',
+            emoji: '⏱️',
             text: {
               ar: '20 دقيقة — في الصالون أو في البيت',
               en: '20 minutes — at the salon or at home',
             },
           },
           {
-            emoji: '',
+            emoji: '📅',
             text: {
               ar: 'كل 4-6 أسابيع — للحفاظ على اللمعان',
               en: 'Every 4-6 weeks — to maintain the shine',

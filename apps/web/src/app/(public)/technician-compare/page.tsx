@@ -13,7 +13,7 @@ const TECHNICIANS = [
     price: 300,
     experience: 'marketing.technician-compare.exp-8',
     city: 'الرياض',
-    emoji: '',
+    emoji: '💄',
     services: [
       'marketing.technician-compare.svc-bridal-makeup',
       'marketing.technician-compare.svc-evening-makeup',
@@ -30,7 +30,7 @@ const TECHNICIANS = [
     price: 250,
     experience: 'marketing.technician-compare.exp-6',
     city: 'جدة',
-    emoji: '‍️',
+    emoji: '💇',
     services: [
       'marketing.technician-compare.svc-hairstyles',
       'marketing.technician-compare.svc-dyes',
@@ -47,7 +47,7 @@ const TECHNICIANS = [
     price: 180,
     experience: 'marketing.technician-compare.exp-5',
     city: 'الدمام',
-    emoji: '',
+    emoji: '💅',
     services: [
       'marketing.technician-compare.svc-manicure',
       'marketing.technician-compare.svc-pedicure',
@@ -64,7 +64,7 @@ const TECHNICIANS = [
     price: 350,
     experience: 'marketing.technician-compare.exp-12',
     city: 'الرياض',
-    emoji: '',
+    emoji: '🧖',
     services: [
       'marketing.technician-compare.svc-facial',
       'marketing.technician-compare.svc-peeling',
@@ -94,7 +94,7 @@ export default function TechnicianComparePage(): JSX.Element {
   return (
     <div className="mx-auto max-w-6xl px-4 py-12">
       <div className="text-center mb-10">
-        <span className="text-6xl">‍</span>
+        <span className="text-6xl">🆚</span>
         <h1 className="mt-4 text-3xl font-bold">{t('marketing.technician-compare.title')}</h1>
         <p className="mt-2 text-text-secondary">{t('marketing.technician-compare.subtitle')}</p>
       </div>
@@ -117,7 +117,7 @@ export default function TechnicianComparePage(): JSX.Element {
                       {t(tech.specialty)} · {tech.city} · {tech.rating} · {t(tech.experience)}
                     </p>
                   </div>
-                  {isSel && <span className="me-auto text-brand-600 text-xl"></span>}
+                  {isSel && <span className="me-auto text-brand-600 text-xl">✅</span>}
                 </div>
               </button>
             );

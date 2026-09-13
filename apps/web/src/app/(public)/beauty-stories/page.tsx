@@ -14,7 +14,7 @@ export default function BeautyStoriesPage(): JSX.Element {
   return (
     <div className="mx-auto max-w-4xl px-4 py-12">
       <div className="mb-8 text-center">
-        <span className="text-6xl"></span>
+        <span className="text-6xl">📖</span>
         <h1 className="mt-4 text-3xl font-bold">Beauty Stories</h1>
         <p className="mt-2 text-text-secondary">{t('marketing.beauty-stories.subtitle')}</p>
       </div>
@@ -31,7 +31,7 @@ export default function BeautyStoriesPage(): JSX.Element {
               <p className="text-[10px] font-bold mt-2">{s.technicianName as string}</p>
               <p className="text-[8px] opacity-70">{s.postedAt as string}</p>
               <span className="absolute top-2 end-2 rounded-full bg-surface-elevated/20 px-2 py-0.5 text-[9px]">
-                {s.viewers as number} ️
+                {s.viewers as number}
               </span>
             </button>
           ))}

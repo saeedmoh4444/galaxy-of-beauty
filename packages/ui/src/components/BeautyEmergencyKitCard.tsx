@@ -19,7 +19,7 @@ export function BeautyEmergencyKitCard({
       )}
     >
       <div className="flex items-center gap-2">
-        <span className="text-xl"></span>
+        <span className="text-xl">👜</span>
         <div>
           <h4 className="text-sm font-bold text-rose-700 dark:text-rose-300">{title}</h4>
           <p className="text-[10px] text-rose-500 dark:text-rose-400">{subtitle}</p>
@@ -28,12 +28,12 @@ export function BeautyEmergencyKitCard({
       <div className="mt-3 grid grid-cols-2 gap-1.5">
         {[
           {
-            emoji: '',
+            emoji: '💄',
             label: { ar: 'أحمر شفاه', en: 'Lipstick' },
             tip: { ar: 'لون محايد — يناسب كل شيء', en: 'Neutral shade — suits everything' },
           },
           {
-            emoji: '',
+            emoji: '🧻',
             label: { ar: 'ورق نشاف', en: 'Blotting paper' },
             tip: { ar: 'يزيل اللمعان بدون مكياج', en: 'Removes shine without makeup' },
           },
@@ -43,7 +43,7 @@ export function BeautyEmergencyKitCard({
             tip: { ar: 'للمسات السريعة', en: 'For quick touch-ups' },
           },
           {
-            emoji: '',
+            emoji: '🩹',
             label: { ar: 'لصقة حبوب', en: 'Spot patch' },
             tip: { ar: 'للطوارئ — غير مرئية', en: 'For emergencies — invisible' },
           },

@@ -19,7 +19,7 @@ export function BeautyChappedLipsCard({
       )}
     >
       <div className="flex items-center gap-2">
-        <span className="text-xl"></span>
+        <span className="text-xl">💋</span>
         <div>
           <h4 className="text-sm font-bold text-rose-700 dark:text-rose-300">{title}</h4>
           <p className="text-[10px] text-rose-500 dark:text-rose-400">{subtitle}</p>
@@ -28,28 +28,28 @@ export function BeautyChappedLipsCard({
       <div className="mt-3 space-y-1">
         {[
           {
-            emoji: '',
+            emoji: '🍯',
             text: {
               ar: 'مقشر سكر + عسل — مرة أسبوعياً',
               en: 'Sugar + honey scrub — once a week',
             },
           },
           {
-            emoji: '',
+            emoji: '🧴',
             text: {
               ar: 'بلسم بفيتامين E — كل ساعتين',
               en: 'Vitamin E balm — every two hours',
             },
           },
           {
-            emoji: '',
+            emoji: '💧',
             text: {
               ar: 'اشربي ماء — الجفاف يبدأ من الداخل',
               en: 'Drink water — dryness starts within',
             },
           },
           {
-            emoji: '',
+            emoji: '🚫',
             text: {
               ar: 'لا تلعقي شفاهكِ — اللعاب يزيد الجفاف',
               en: 'Do not lick your lips — saliva worsens dryness',

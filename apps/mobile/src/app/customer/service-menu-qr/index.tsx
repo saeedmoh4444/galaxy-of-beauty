@@ -54,7 +54,7 @@ export default function ServiceMenuQRScreen(): JSX.Element {
       ))}
       {result && (
         <View style={styles.rc}>
-          <Text style={styles.re}></Text>
+          <Text style={styles.re}>📱</Text>
           <Text style={styles.rt}>{t('mobile.serviceMenuQr.generated')}</Text>
           <Text style={styles.ru}>{result.qrUrl ?? result.url}</Text>
         </View>

@@ -12,7 +12,7 @@ import { cn } from '@galaxy/shared';
 
 const TIPS = [
   {
-    emoji: '',
+    emoji: '🧴',
     title: { ar: 'ترطيب يومي', en: 'Daily hydration' },
     desc: {
       ar: 'زيت الأظافر يومياً للحفاظ على الترطيب',
@@ -20,7 +20,7 @@ const TIPS = [
     },
   },
   {
-    emoji: '',
+    emoji: '💅',
     title: { ar: 'برد باتجاه واحد', en: 'File one direction' },
     desc: {
       ar: 'لا تبردي ذهاباً وإياباً — يضعف الظفر',
@@ -28,12 +28,12 @@ const TIPS = [
     },
   },
   {
-    emoji: '',
+    emoji: '🧤',
     title: { ar: 'قفازات الحماية', en: 'Protective gloves' },
     desc: { ar: 'احمي أظافركِ من المواد الكيميائية', en: 'Protect your nails from chemicals' },
   },
   {
-    emoji: '',
+    emoji: '🥗',
     title: { ar: 'تغذية', en: 'Nutrition' },
     desc: { ar: 'بيوتين وزنك وزنك — غذاء الأظافر', en: 'Biotin and zinc — nail food' },
   },
@@ -60,7 +60,9 @@ export function BeautyNailCareCard({
       )}
     >
       <div className="flex items-center gap-2">
-        <span className="text-xl" aria-hidden="true"></span>
+        <span className="text-xl" aria-hidden="true">
+          💅
+        </span>
         <div>
           <h4 className="text-sm font-bold text-pink-700 dark:text-pink-300">{title}</h4>
           <p className="text-[10px] text-pink-500 dark:text-pink-400">{subtitle}</p>

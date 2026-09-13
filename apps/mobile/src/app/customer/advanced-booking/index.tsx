@@ -7,9 +7,9 @@ import { trpc } from '@/lib/trpc-react';
 import { localize } from '@galaxy/shared';
 
 const REC = [
-  { key: 'WEEKLY', emoji: '' },
-  { key: 'BIWEEKLY', emoji: '' },
-  { key: 'MONTHLY', emoji: '️' },
+  { key: 'WEEKLY', emoji: '📅' },
+  { key: 'BIWEEKLY', emoji: '📆' },
+  { key: 'MONTHLY', emoji: '🗓️' },
 ] as const;
 
 interface ServiceRow {
@@ -102,7 +102,7 @@ export default function AdvancedBookingScreen(): JSX.Element {
       <ScrollView style={styles.c} contentContainerStyle={styles.i}>
         <Text style={styles.t}>{t('advancedBooking.recurringTitle')}</Text>
         <View style={[styles.card, styles.rc]}>
-          <Text style={styles.re}></Text>
+          <Text style={styles.re}>🔁</Text>
           <Text style={styles.rtt}>{t('advancedBooking.done')}</Text>
           <Text style={styles.rcnt}>
             {t('advancedBooking.bookings-count', {
@@ -135,7 +135,7 @@ export default function AdvancedBookingScreen(): JSX.Element {
           onPress={() => setSelectedSvc(s.id)}
           style={[styles.sc, selectedSvc === s.id && styles.sca]}
         >
-          <Text style={styles.se}>{s.emoji ?? '‍️'}</Text>
+          <Text style={styles.se}>{s.emoji ?? ''}</Text>
           <Text style={styles.sn}>{localize(s.titleJson, locale) || s.nameAr}</Text>
         </TouchableOpacity>
       ))}

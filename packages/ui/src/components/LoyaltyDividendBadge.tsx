@@ -63,7 +63,7 @@ interface TierDef {
 
 const TIERS: Record<'silver' | 'gold' | 'diamond', TierDef> = {
   silver: {
-    emoji: '',
+    emoji: '🥈',
     label: { ar: 'فضية', en: 'Silver' },
     minSpend: 1000,
     rate: 3,
@@ -72,7 +72,7 @@ const TIERS: Record<'silver' | 'gold' | 'diamond', TierDef> = {
     gradient: 'from-gray-400 to-slate-500',
   },
   gold: {
-    emoji: '',
+    emoji: '🥇',
     label: { ar: 'ذهبية', en: 'Gold' },
     minSpend: 3000,
     rate: 5,
@@ -81,7 +81,7 @@ const TIERS: Record<'silver' | 'gold' | 'diamond', TierDef> = {
     gradient: 'from-amber-400 to-yellow-500',
   },
   diamond: {
-    emoji: '',
+    emoji: '💎',
     label: { ar: 'ماسية', en: 'Diamond' },
     minSpend: 8000,
     rate: 8,

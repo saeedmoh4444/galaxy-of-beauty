@@ -44,7 +44,7 @@ export default function IngredientSubScreen(): JSX.Element {
       {((result.data as unknown as { subs?: string[] } | null)?.subs ?? []).map((alt, i) => (
         <View key={i} style={styles.card}>
           <Text style={styles.altName}>{alt}</Text>
-          <Text style={styles.altDesc}></Text>
+          <Text style={styles.altDesc}>🌿</Text>
         </View>
       ))}
     </ScreenState>

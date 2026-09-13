@@ -24,10 +24,10 @@ interface BeautyVoiceAssistantCardProps {
 }
 
 const COMMANDS = [
-  { emoji: '', text: { ar: 'احجزي لي مكياج يوم الخميس', en: 'Book me makeup on Thursday' } },
-  { emoji: '', text: { ar: 'ابحثي عن خبيرة قريبة مني', en: 'Find a technician near me' } },
-  { emoji: '', text: { ar: 'قيمي آخر جلسة لي', en: 'Rate my last session' } },
-  { emoji: '', text: { ar: 'متى موعدي القادم؟', en: 'When is my next appointment?' } },
+  { emoji: '💄', text: { ar: 'احجزي لي مكياج يوم الخميس', en: 'Book me makeup on Thursday' } },
+  { emoji: '📍', text: { ar: 'ابحثي عن خبيرة قريبة مني', en: 'Find a technician near me' } },
+  { emoji: '⭐', text: { ar: 'قيمي آخر جلسة لي', en: 'Rate my last session' } },
+  { emoji: '📅', text: { ar: 'متى موعدي القادم؟', en: 'When is my next appointment?' } },
 ];
 
 export function BeautyVoiceAssistantCard({
@@ -37,7 +37,7 @@ export function BeautyVoiceAssistantCard({
   title = 'المساعد الصوتي',
   subtitle = 'تحدثي — ونحن ننفذ',
   activateButtonText = 'اضغطي وتحدثي',
-  trySayLabel = ' جربي قول',
+  trySayLabel = 'جربي قول',
   arabicLabel = 'العربية',
   footerQuote = 'يداكِ مشغولتان — وصوتكِ يكفي',
 }: BeautyVoiceAssistantCardProps): JSX.Element {
@@ -49,7 +49,9 @@ export function BeautyVoiceAssistantCard({
       )}
     >
       <div className="text-center">
-        <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-full bg-gradient-to-br from-violet-200 to-brand-200 text-2xl dark:from-violet-800 dark:to-brand-800 animate-pulse"></div>
+        <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-full bg-gradient-to-br from-violet-200 to-brand-200 text-2xl dark:from-violet-800 dark:to-brand-800 animate-pulse">
+          🎤
+        </div>
         <h4 className="mt-2 text-sm font-bold text-violet-800 dark:text-violet-200">{title}</h4>
         <p className="text-[10px] text-violet-500 dark:text-violet-400">{subtitle}</p>
       </div>

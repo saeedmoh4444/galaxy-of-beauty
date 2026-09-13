@@ -3,7 +3,7 @@
 import { cn } from '@galaxy/shared';
 
 /**
- * Franchise Card — helps top technicians open their own Galaxy of Beauty franchise.
+ * Franchise Card — helps top technicians open their own Dalal franchise.
  * From Phase W10: Saudi Women Leadership — Franchise Program.
  *
  * Usage:
@@ -18,15 +18,15 @@ interface FranchiseBenefit {
 
 const BENEFITS: FranchiseBenefit[] = [
   {
-    emoji: '️',
+    emoji: '🏷️',
     title: { ar: 'العلامة التجارية', en: 'Brand' },
     description: {
       ar: 'استخدمي اسم جالاكسي بيوتي المعروف',
-      en: 'Use the well-known Galaxy Beauty name',
+      en: 'Use the well-known Dalal name',
     },
   },
   {
-    emoji: '',
+    emoji: '🎓',
     title: { ar: 'تدريب وتأهيل', en: 'Training' },
     description: {
       ar: 'برنامج تدريبي شامل لكِ ولفريقكِ',
@@ -34,7 +34,7 @@ const BENEFITS: FranchiseBenefit[] = [
     },
   },
   {
-    emoji: '',
+    emoji: '📅',
     title: { ar: 'نظام حجز متكامل', en: 'Integrated booking' },
     description: {
       ar: 'منصتنا التقنية مع حجوزات ومدفوعات',
@@ -42,7 +42,7 @@ const BENEFITS: FranchiseBenefit[] = [
     },
   },
   {
-    emoji: '',
+    emoji: '📣',
     title: { ar: 'تسويق ودعم', en: 'Marketing and support' },
     description: {
       ar: 'حملات تسويقية وإعلانات على حساب المنصة',
@@ -50,7 +50,7 @@ const BENEFITS: FranchiseBenefit[] = [
     },
   },
   {
-    emoji: '',
+    emoji: '💰',
     title: { ar: 'تمويل ميسر', en: 'Easy financing' },
     description: {
       ar: 'شراكة مع بنوك سعودية للتمويل الصغير',
@@ -58,7 +58,7 @@ const BENEFITS: FranchiseBenefit[] = [
     },
   },
   {
-    emoji: '‍',
+    emoji: '🧭',
     title: { ar: 'إرشاد مستمر', en: 'Ongoing mentorship' },
     description: {
       ar: 'مرشدة أعمال شخصية لمدة سنة كاملة',
@@ -117,7 +117,7 @@ export function FranchiseCard({
   investmentLabel = 'الاستثمار',
   revenueLabel = 'العائد المتوقع',
   existingFranchisesText = 'سيدة سبقوكِ وافتتحن فروعهنّ!',
-  qualifyTitle = ' شروط التأهل',
+  qualifyTitle = 'شروط التأهل',
   applyLabel = 'ابدئي رحلة الامتياز',
   footerText = 'نساعدكِ تبنين مشروعكِ الخاص وتحققين استقلالكِ المالي',
   locale = 'ar',
@@ -131,7 +131,9 @@ export function FranchiseCard({
     >
       {/* Header */}
       <div className="text-center">
-        <span className="text-3xl" aria-hidden="true"></span>
+        <span className="text-3xl" aria-hidden="true">
+          🏪
+        </span>
         <h4 className="mt-1 text-sm font-bold text-amber-800 dark:text-amber-200">{title}</h4>
         <p className="text-[10px] text-amber-600 dark:text-amber-400">{subtitle}</p>
       </div>

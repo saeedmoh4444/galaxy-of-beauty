@@ -32,7 +32,7 @@ export default function VideoPage(): JSX.Element {
           <CardListSkeleton count={3} />
         ) : bookings.length === 0 ? (
           <Card padding="lg" className="text-center py-8">
-            <p className="text-4xl mb-2"></p>
+            <p className="text-4xl mb-2">📹</p>
             <p className="text-text-secondary">{t('video.noBookings')}</p>
             <Link href="/bookings/create">
               <Button className="mt-4">{t('video.bookNow')}</Button>
@@ -44,7 +44,7 @@ export default function VideoPage(): JSX.Element {
               <Card key={b.id as number} padding="md">
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-3">
-                    <span className="text-3xl"></span>
+                    <span className="text-3xl">📹</span>
                     <div>
                       <p className="font-bold">
                         {t('video.bookingLabel')} #{b.id as number}

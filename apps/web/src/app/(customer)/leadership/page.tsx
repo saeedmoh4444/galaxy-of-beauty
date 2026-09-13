@@ -85,7 +85,7 @@ export default function LeadershipPage(): JSX.Element {
                 charity={{
                   name: t('leadership.charity.name'),
                   cause: t('leadership.charity.cause'),
-                  emoji: '',
+                  emoji: '💝',
                 }}
                 raised={45000}
               />
@@ -128,10 +128,10 @@ export default function LeadershipPage(): JSX.Element {
                 {
                   name: t('leadership.award.platform'),
                   year: '2026',
-                  emoji: '',
+                  emoji: '🏆',
                   description: t('leadership.award.description'),
                 },
-                { name: t('leadership.award.initiative'), year: '2025', emoji: '' },
+                { name: t('leadership.award.initiative'), year: '2025', emoji: '🏅' },
               ]}
             />
             <AlumniNetworkCard graduates={234} />

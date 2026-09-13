@@ -91,6 +91,7 @@ export default function LoginScreen() {
               onChangeText={setEmail}
               keyboardType="email-address"
               autoCapitalize="none"
+              testID="login-email"
             />
             <TextInput
               style={styles.input}
@@ -98,6 +99,7 @@ export default function LoginScreen() {
               value={password}
               onChangeText={setPassword}
               secureTextEntry
+              testID="login-password"
             />
           </>
         ) : (
@@ -127,6 +129,7 @@ export default function LoginScreen() {
           style={[styles.button, loginMut.isPending && styles.buttonDisabled]}
           onPress={handleLogin}
           disabled={loginMut.isPending}
+          testID="login-submit"
         >
           {loginMut.isPending ? (
             <ActivityIndicator color="#fff" />

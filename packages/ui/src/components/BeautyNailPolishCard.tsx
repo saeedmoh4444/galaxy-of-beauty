@@ -19,7 +19,7 @@ export function BeautyNailPolishCard({
       )}
     >
       <div className="flex items-center gap-2">
-        <span className="text-xl">️</span>
+        <span className="text-xl">💅</span>
         <div>
           <h4 className="text-sm font-bold text-brand-700 dark:text-brand-300">{title}</h4>
           <p className="text-[10px] text-brand-500 dark:text-brand-400">{subtitle}</p>
@@ -28,25 +28,25 @@ export function BeautyNailPolishCard({
       <div className="mt-3 space-y-1">
         {[
           {
-            emoji: '️',
+            emoji: '💅',
             text: {
               ar: '1. Base coat — يحمي الظفر من التصبغ',
               en: '1. Base coat — protects the nail from staining',
             },
           },
           {
-            emoji: '',
+            emoji: '🎨',
             text: {
               ar: '2. طبقتان رقيقتان — أفضل من طبقة سميكة',
               en: '2. Two thin coats — better than one thick one',
             },
           },
           {
-            emoji: '',
+            emoji: '✨',
             text: { ar: '3. Top coat — لمعان وحماية', en: '3. Top coat — shine and protection' },
           },
           {
-            emoji: '',
+            emoji: '⏳',
             text: {
               ar: '4. انتظري 2-3 دقائق بين الطبقات',
               en: '4. Wait 2-3 minutes between coats',

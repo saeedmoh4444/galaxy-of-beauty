@@ -5,7 +5,7 @@
  * these tests don't need Redis/BullMQ side effects.
  * (Coverage ratchet target: src/workers)
  */
-import { describe, it, expect, beforeAll, afterAll } from 'vitest';
+import { describe, it, expect, beforeAll, afterAll, vi } from 'vitest';
 import type { Job } from 'bullmq';
 import { prisma } from '@galaxy/db';
 import {
@@ -14,7 +14,23 @@ import {
   handleNotificationJob,
   handleIntegrationJob,
 } from '../workers/handlers';
-import { buildUser, buildWallet } from './factories';
+import { buildUser, buildWallet, buildCategory, buildService, buildBooking } from './factories';
+
+// The Google Calendar API is mocked at the module boundary — the handler
+// under test must go through these functions and never talk to Google.
+vi.mock('../lib/googleCalendar', () => ({
+  createGoogleCalendarEvent: vi.fn(),
+  updateGoogleCalendarEvent: vi.fn(),
+  deleteGoogleCalendarEvent: vi.fn(),
+  refreshGoogleToken: vi.fn(),
+}));
+
+import {
+  createGoogleCalendarEvent,
+  updateGoogleCalendarEvent,
+  deleteGoogleCalendarEvent,
+  refreshGoogleToken,
+} from '../lib/googleCalendar';
 
 function job<T>(data: T): Job<T> {
   return { data } as Job<T>;
@@ -221,15 +237,251 @@ describe('handleNotificationJob', () => {
   });
 });
 
-// ── Integration sync (calendar stub) ────────────────────────
+// ── Integration sync — booking auto-sync to Google Calendar ─
+// (E9 follow-up: the handler previously only logged. These tests pin the
+// real contract: create/update/cancel against both connected sides,
+// event-id persistence, token refresh, and graceful degradation.)
 
 describe('handleIntegrationJob', () => {
-  it('logs without throwing for all actions', async () => {
+  const createdBookingIds: number[] = [];
+  const createdUserIds: number[] = [];
+  const createdServiceIds: number[] = [];
+  const createdAddressIds: number[] = [];
+  const createdCategoryIds: number[] = [];
+
+  const mockedCreate = vi.mocked(createGoogleCalendarEvent);
+  const mockedUpdate = vi.mocked(updateGoogleCalendarEvent);
+  const mockedDelete = vi.mocked(deleteGoogleCalendarEvent);
+  const mockedRefresh = vi.mocked(refreshGoogleToken);
+
+  afterAll(async () => {
+    await prisma.booking.deleteMany({ where: { id: { in: createdBookingIds } } });
+    await prisma.beautyIntegration.deleteMany({ where: { userId: { in: createdUserIds } } });
+    await prisma.address.deleteMany({ where: { id: { in: createdAddressIds } } });
+    await prisma.service.deleteMany({ where: { id: { in: createdServiceIds } } });
+    await prisma.category.deleteMany({ where: { id: { in: createdCategoryIds } } });
+    await prisma.user.deleteMany({ where: { id: { in: createdUserIds } } });
+  });
+
+  beforeEach(() => {
+    mockedCreate.mockReset();
+    mockedUpdate.mockReset();
+    mockedDelete.mockReset();
+    mockedRefresh.mockReset();
+  });
+
+  async function createFixture(
+    sides: Array<'customer' | 'technician'>,
+    opts: {
+      googleEventId?: string | null;
+      technicianGoogleEventId?: string | null;
+      tokenExpiry?: Date;
+      integrationStatus?: string;
+    } = {},
+  ) {
+    const customer = await prisma.user.create({ data: buildUser({ role: 'CUSTOMER' }) });
+    const technician = await prisma.user.create({ data: buildUser({ role: 'TECHNICIAN' }) });
+    createdUserIds.push(customer.id, technician.id);
+    const category = await prisma.category.create({ data: buildCategory() });
+    createdCategoryIds.push(category.id);
+    const service = await prisma.service.create({
+      data: buildService({ categoryId: category.id }),
+    });
+    createdServiceIds.push(service.id);
+    const address = await prisma.address.create({
+      data: { userId: customer.id, label: 'منزل', city: 'الرياض', area: 'الملز', street: 'تجريبي' },
+    });
+    createdAddressIds.push(address.id);
+    const booking = await prisma.booking.create({
+      data: {
+        ...buildBooking({
+          customerId: customer.id,
+          technicianId: technician.id,
+          serviceId: service.id,
+          status: 'REQUESTED',
+        }),
+        addressId: address.id,
+        googleEventId: opts.googleEventId ?? null,
+        technicianGoogleEventId: opts.technicianGoogleEventId ?? null,
+      },
+    });
+    createdBookingIds.push(booking.id);
+    for (const side of sides) {
+      const userId = side === 'customer' ? customer.id : technician.id;
+      await prisma.beautyIntegration.create({
+        data: {
+          userId,
+          provider: 'google_calendar',
+          accessToken: 'tok',
+          refreshToken: 'ref',
+          tokenExpiry: opts.tokenExpiry ?? new Date(Date.now() + 3_600_000),
+          status: opts.integrationStatus ?? 'CONNECTED',
+        },
+      });
+    }
+    return { customer, technician, booking };
+  }
+
+  it('create pushes an event for every connected side and persists the ids', async () => {
+    const { customer, technician, booking } = await createFixture(['customer', 'technician']);
+    mockedCreate.mockResolvedValueOnce('evt-customer').mockResolvedValueOnce('evt-technician');
+
+    await handleIntegrationJob(
+      job({
+        bookingId: booking.id,
+        customerId: customer.id,
+        technicianId: technician.id,
+        action: 'create',
+      }),
+    );
+
+    expect(mockedCreate).toHaveBeenCalledTimes(2);
+    // customer processed first, then technician (deterministic order)
+    expect(mockedCreate.mock.calls[0]![0]).toBe('tok');
+    expect(mockedCreate.mock.calls[0]![1]?.summary).toContain(booking.bookingCode);
+    const updated = await prisma.booking.findUnique({ where: { id: booking.id } });
+    expect(updated?.googleEventId).toBe('evt-customer');
+    expect(updated?.technicianGoogleEventId).toBe('evt-technician');
+  });
+
+  it('cancel deletes the stored events and clears the ids', async () => {
+    const { customer, technician, booking } = await createFixture(['customer', 'technician'], {
+      googleEventId: 'evt-customer',
+      technicianGoogleEventId: 'evt-technician',
+    });
+    mockedDelete.mockResolvedValue(true);
+
+    await handleIntegrationJob(
+      job({
+        bookingId: booking.id,
+        customerId: customer.id,
+        technicianId: technician.id,
+        action: 'cancel',
+      }),
+    );
+
+    expect(mockedDelete).toHaveBeenCalledWith('tok', 'evt-customer');
+    expect(mockedDelete).toHaveBeenCalledWith('tok', 'evt-technician');
+    const updated = await prisma.booking.findUnique({ where: { id: booking.id } });
+    expect(updated?.googleEventId).toBeNull();
+    expect(updated?.technicianGoogleEventId).toBeNull();
+  });
+
+  it('update patches an existing event, and creates when no id is stored', async () => {
+    const { customer, technician, booking } = await createFixture(['customer', 'technician'], {
+      googleEventId: 'evt-customer',
+    });
+    mockedUpdate.mockResolvedValue(true);
+    mockedCreate.mockResolvedValue('evt-technician');
+
+    await handleIntegrationJob(
+      job({
+        bookingId: booking.id,
+        customerId: customer.id,
+        technicianId: technician.id,
+        action: 'update',
+        startAt: '2026-10-01T10:00:00.000Z',
+        endAt: '2026-10-01T11:00:00.000Z',
+      }),
+    );
+
+    // customer has a stored id → patched in place
+    expect(mockedUpdate).toHaveBeenCalledTimes(1);
+    expect(mockedUpdate.mock.calls[0]![0]).toBe('tok');
+    expect(mockedUpdate.mock.calls[0]![1]).toBe('evt-customer');
+    expect(mockedUpdate.mock.calls[0]![2]?.start).toBe('2026-10-01T10:00:00.000Z');
+
+    // technician is connected but has no stored id → falls back to create
+    expect(mockedCreate).toHaveBeenCalledTimes(1);
+    const updated = await prisma.booking.findUnique({ where: { id: booking.id } });
+    expect(updated?.technicianGoogleEventId).toBe('evt-technician');
+  });
+
+  it('skips silently when no integration is connected', async () => {
+    const { customer, technician, booking } = await createFixture([]);
+
+    await handleIntegrationJob(
+      job({
+        bookingId: booking.id,
+        customerId: customer.id,
+        technicianId: technician.id,
+        action: 'create',
+      }),
+    );
+
+    expect(mockedCreate).not.toHaveBeenCalled();
+    expect(mockedUpdate).not.toHaveBeenCalled();
+    expect(mockedDelete).not.toHaveBeenCalled();
+  });
+
+  it('ignores a non-CONNECTED integration', async () => {
+    const { customer, technician, booking } = await createFixture(['customer'], {
+      integrationStatus: 'DISCONNECTED',
+    });
+
+    await handleIntegrationJob(
+      job({
+        bookingId: booking.id,
+        customerId: customer.id,
+        technicianId: technician.id,
+        action: 'create',
+      }),
+    );
+
+    expect(mockedCreate).not.toHaveBeenCalled();
+  });
+
+  it('refreshes an expired token before calling Google', async () => {
+    const { customer, technician, booking } = await createFixture(['customer'], {
+      tokenExpiry: new Date(Date.now() - 60_000),
+    });
+    mockedRefresh.mockResolvedValue({
+      accessToken: 'fresh-token',
+      refreshToken: 'ref',
+      expiryDate: Date.now() + 3_600_000,
+    });
+    mockedCreate.mockResolvedValue('evt-customer');
+
+    await handleIntegrationJob(
+      job({
+        bookingId: booking.id,
+        customerId: customer.id,
+        technicianId: technician.id,
+        action: 'create',
+      }),
+    );
+
+    expect(mockedRefresh).toHaveBeenCalledWith('ref');
+    expect(mockedCreate.mock.calls[0]![0]).toBe('fresh-token');
+    const integration = await prisma.beautyIntegration.findUnique({
+      where: { userId_provider: { userId: customer.id, provider: 'google_calendar' } },
+    });
+    expect(integration?.accessToken).toBe('fresh-token');
+    expect(integration?.tokenExpiry?.getTime()).toBeGreaterThan(Date.now());
+  });
+
+  it('survives Google failures without throwing', async () => {
+    const { customer, technician, booking } = await createFixture(['customer']);
+    mockedCreate.mockResolvedValue(null);
+
     await expect(
-      handleIntegrationJob(job({ technicianId: 7, bookingId: 9201, action: 'create' })),
+      handleIntegrationJob(
+        job({
+          bookingId: booking.id,
+          customerId: customer.id,
+          technicianId: technician.id,
+          action: 'create',
+        }),
+      ),
     ).resolves.toBeUndefined();
+
+    const updated = await prisma.booking.findUnique({ where: { id: booking.id } });
+    expect(updated?.googleEventId).toBeNull();
+  });
+
+  it('resolves without throwing for an unknown booking', async () => {
     await expect(
-      handleIntegrationJob(job({ technicianId: 7, bookingId: 9201, action: 'delete' })),
+      handleIntegrationJob(job({ bookingId: 9_999_999, customerId: 1, action: 'create' })),
     ).resolves.toBeUndefined();
   });
 });

@@ -19,7 +19,7 @@ export function BeautyPieScarsCard({
       )}
     >
       <div className="flex items-center gap-2">
-        <span className="text-xl"></span>
+        <span className="text-xl">🔴</span>
         <div>
           <h4 className="text-sm font-bold text-rose-700 dark:text-rose-300">{title}</h4>
           <p className="text-[10px] text-rose-500 dark:text-rose-400">{subtitle}</p>
@@ -28,25 +28,25 @@ export function BeautyPieScarsCard({
       <div className="mt-3 space-y-1">
         {[
           {
-            emoji: '',
+            emoji: '🍊',
             text: {
               ar: 'PIH: تصبغ بني — فيتامين C وأربيوتين',
               en: 'PIH: brown pigmentation — vitamin C and arbutin',
             },
           },
           {
-            emoji: '',
+            emoji: '🔴',
             text: {
               ar: 'PIE: احمرار — نيوكسين، أزيليك أسيد',
               en: 'PIE: redness — niacinamide, azelaic acid',
             },
           },
           {
-            emoji: '',
+            emoji: '✨',
             text: { ar: 'ريتينول — يسرع تجدد الخلايا', en: 'Retinol — speeds up cell renewal' },
           },
           {
-            emoji: '️',
+            emoji: '🌞',
             text: {
               ar: 'SPF يومي — يمنع تفاقم التصبغات',
               en: 'Daily SPF — prevents pigmentation from worsening',

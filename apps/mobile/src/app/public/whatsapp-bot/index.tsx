@@ -26,7 +26,7 @@ export default function WhatsAppBotScreen(): JSX.Element {
       <Text style={styles.sub}>{t('mobile.public.whatsapp-bot.subtitle')}</Text>
 
       <View style={styles.card}>
-        <Text style={styles.emoji}></Text>
+        <Text style={styles.emoji}>💬</Text>
         <Text style={styles.ct}>{t('mobile.public.whatsapp-bot.card-title')}</Text>
         <Text style={styles.cd}>{t('mobile.public.whatsapp-bot.card-desc')}</Text>
       </View>
@@ -34,10 +34,10 @@ export default function WhatsAppBotScreen(): JSX.Element {
       <View style={styles.features}>
         <Text style={styles.ft}>{t('mobile.public.whatsapp-bot.features')}</Text>
         {[
-          { emoji: '', text: t('mobile.public.whatsapp-bot.feature-1') },
-          { emoji: '', text: t('mobile.public.whatsapp-bot.feature-2') },
-          { emoji: '', text: t('mobile.public.whatsapp-bot.feature-3') },
-          { emoji: '', text: t('mobile.public.whatsapp-bot.feature-4') },
+          { emoji: '📅', text: t('mobile.public.whatsapp-bot.feature-1') },
+          { emoji: '⏰', text: t('mobile.public.whatsapp-bot.feature-2') },
+          { emoji: '💬', text: t('mobile.public.whatsapp-bot.feature-3') },
+          { emoji: '💰', text: t('mobile.public.whatsapp-bot.feature-4') },
         ].map((f, i) => (
           <View key={i} style={styles.fr}>
             <Text style={styles.fe}>{f.emoji}</Text>

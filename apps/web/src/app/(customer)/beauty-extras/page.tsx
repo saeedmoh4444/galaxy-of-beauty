@@ -50,10 +50,10 @@ export default function BeautyExtrasPage(): JSX.Element {
             <div className="grid gap-4 sm:grid-cols-2">
               <BeautyDreamBoardCard
                 dreams={[
-                  { emoji: '', text: t('beautyExtras.dreamLongHair') },
-                  { emoji: '', text: t('beautyExtras.dreamBridalLook') },
-                  { emoji: '', text: t('beautyExtras.dreamMakeupMastery') },
-                  { emoji: '', text: t('beautyExtras.dreamDailyRoutine') },
+                  { emoji: '💇', text: t('beautyExtras.dreamLongHair') },
+                  { emoji: '👰', text: t('beautyExtras.dreamBridalLook') },
+                  { emoji: '💄', text: t('beautyExtras.dreamMakeupMastery') },
+                  { emoji: '🧴', text: t('beautyExtras.dreamDailyRoutine') },
                 ]}
               />
               <BeautySecretSantaCard
@@ -90,7 +90,7 @@ export default function BeautyExtrasPage(): JSX.Element {
             <div className="grid gap-4 sm:grid-cols-2">
               <BeautyReferralLeaderboardCard
                 leaders={[
-                  { name: 'نورة', referrals: 12, emoji: '' },
+                  { name: 'نورة', referrals: 12, emoji: '🥇' },
                   { name: 'مها', referrals: 8 },
                   { name: 'ريم', referrals: 5 },
                 ]}
@@ -109,16 +109,16 @@ export default function BeautyExtrasPage(): JSX.Element {
             <div className="grid gap-4 sm:grid-cols-2">
               <InspirationBoardCard
                 pins={[
-                  { emoji: '', title: t('beautyExtras.softHairstyle'), savedBy: 'نورة' },
-                  { emoji: '', title: t('beautyExtras.eveningMakeup'), savedBy: 'مها' },
-                  { emoji: '', title: t('beautyExtras.frenchNails'), savedBy: 'ريم' },
+                  { emoji: '💇', title: t('beautyExtras.softHairstyle'), savedBy: 'نورة' },
+                  { emoji: '💄', title: t('beautyExtras.eveningMakeup'), savedBy: 'مها' },
+                  { emoji: '💅', title: t('beautyExtras.frenchNails'), savedBy: 'ريم' },
                 ]}
                 collaborators={['نورة', 'مها']}
               />
               <SharedWishlistCard
                 items={[
-                  { name: t('beautyBudget.spaManicure'), price: 150, emoji: '' },
-                  { name: t('beautyCourses.path.title'), price: 350, emoji: '' },
+                  { name: t('beautyBudget.spaManicure'), price: 150, emoji: '💅' },
+                  { name: t('beautyCourses.path.title'), price: 350, emoji: '🎓' },
                 ]}
                 sharedWith={['نورة', t('beautyExtras.myMom')]}
               />
@@ -142,7 +142,7 @@ export default function BeautyExtrasPage(): JSX.Element {
               match={{
                 city: t('beautyExtras.jeddah'),
                 interest: t('beautyExtras.categoryMakeup'),
-                emoji: '',
+                emoji: '💄',
               }}
             />
             <ReferralRewardBadge referralCode="SARA123" referrals={5} discount={15} />

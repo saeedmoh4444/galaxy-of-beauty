@@ -19,7 +19,7 @@ export function BeautyTwentiesCard({
       )}
     >
       <div className="flex items-center gap-2">
-        <span className="text-xl"></span>
+        <span className="text-xl">🌱</span>
         <div>
           <h4 className="text-sm font-bold text-sky-700 dark:text-sky-300">{title}</h4>
           <p className="text-[10px] text-sky-500 dark:text-sky-400">{subtitle}</p>
@@ -28,28 +28,28 @@ export function BeautyTwentiesCard({
       <div className="mt-3 space-y-1">
         {[
           {
-            emoji: '️',
+            emoji: '🌞',
             text: {
               ar: 'واقي شمس يومي — أهم استثمار لبشرتك',
               en: 'Daily sunscreen — the most important investment for your skin',
             },
           },
           {
-            emoji: '',
+            emoji: '🧴',
             text: {
               ar: 'روتين أساسي — منظف، مرطب، واقي شمس',
               en: 'Basic routine — cleanser, moisturizer, sunscreen',
             },
           },
           {
-            emoji: '',
+            emoji: '🍊',
             text: {
               ar: 'فيتامين C — ابدئي مبكراً لمضادات الأكسدة',
               en: 'Vitamin C — start early for antioxidants',
             },
           },
           {
-            emoji: '',
+            emoji: '🚫',
             text: {
               ar: 'لا ريبتينول بعد — بشرتك تنتجه طبيعياً',
               en: 'No retinoids yet — your skin produces it naturally',

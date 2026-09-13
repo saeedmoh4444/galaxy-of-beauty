@@ -68,7 +68,7 @@ export default function ServiceCompareScreen(): JSX.Element {
             <View key={s.id} style={styles.cc}>
               <Text style={styles.ct}>{s.titleJson ? localize(s.titleJson, locale) : ''}</Text>
               <View style={styles.cr}>
-                <Text style={styles.cl}></Text>
+                <Text style={styles.cl}>💰</Text>
                 <Text style={styles.cv}>
                   {t('marketing.compare.price-sar', {
                     price: (s.basePrice ?? 0).toLocaleString(locale === 'en' ? 'en-GB' : 'ar-SA'),
@@ -76,7 +76,7 @@ export default function ServiceCompareScreen(): JSX.Element {
                 </Text>
               </View>
               <View style={styles.cr}>
-                <Text style={styles.cl}>️</Text>
+                <Text style={styles.cl}>🕐</Text>
                 <Text style={styles.cv}>
                   {t('marketing.compare.duration-min', { min: s.durationMin ?? 0 })}
                 </Text>

@@ -19,7 +19,7 @@ export function BeautyFaceShapeCard({
       )}
     >
       <div className="flex items-center gap-2">
-        <span className="text-xl"></span>
+        <span className="text-xl">👤</span>
         <div>
           <h4 className="text-sm font-bold text-rose-700 dark:text-rose-300">{title}</h4>
           <p className="text-[10px] text-rose-500 dark:text-rose-400">{subtitle}</p>
@@ -28,17 +28,17 @@ export function BeautyFaceShapeCard({
       <div className="mt-3 grid grid-cols-2 gap-1.5">
         {[
           {
-            emoji: '',
+            emoji: '🥚',
             label: { ar: 'بيضاوي', en: 'Oval' },
             tip: { ar: 'متناسق — يناسبه كل شيء', en: 'Symmetrical — suits everything' },
           },
           {
-            emoji: '️',
+            emoji: '💗',
             label: { ar: 'قلب', en: 'Heart' },
             tip: { ar: 'جبهة عريضة — ذقن مدبب', en: 'Wide forehead — pointed chin' },
           },
           {
-            emoji: '',
+            emoji: '⚪',
             label: { ar: 'دائري', en: 'Round' },
             tip: { ar: 'خدود ممتلئة — متساوي', en: 'Full cheeks — balanced' },
           },

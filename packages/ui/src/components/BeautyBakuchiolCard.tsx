@@ -19,7 +19,7 @@ export function BeautyBakuchiolCard({
       )}
     >
       <div className="flex items-center gap-2">
-        <span className="text-xl"></span>
+        <span className="text-xl">🍃</span>
         <div>
           <h4 className="text-sm font-bold text-emerald-700 dark:text-emerald-300">{title}</h4>
           <p className="text-[10px] text-emerald-500 dark:text-emerald-400">{subtitle}</p>
@@ -28,28 +28,28 @@ export function BeautyBakuchiolCard({
       <div className="mt-3 space-y-1">
         {[
           {
-            emoji: '',
+            emoji: '🌱',
             text: {
               ar: 'نباتي 100% — مستخلص من نبات البسوراليا',
               en: '100% plant-based — extracted from the Psoralea plant',
             },
           },
           {
-            emoji: '️',
+            emoji: '☀️',
             text: {
               ar: 'آمن نهاراً — لا يتحسس من الشمس',
               en: 'Safe for daytime — no sun sensitivity',
             },
           },
           {
-            emoji: '',
+            emoji: '🤰',
             text: {
               ar: 'آمن للحوامل — بديل ممتاز للريتينول',
               en: 'Safe for pregnancy — an excellent retinol alternative',
             },
           },
           {
-            emoji: '',
+            emoji: '✨',
             text: {
               ar: 'يحفز الكولاجين — بدون تهيج أو تقشير',
               en: 'Boosts collagen — without irritation or peeling',

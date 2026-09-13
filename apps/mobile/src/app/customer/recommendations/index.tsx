@@ -61,7 +61,7 @@ export default function RecommendationsScreen(): JSX.Element {
           onPress={() => getRelated(s.id)}
           style={[styles.sc, selectedId === s.id && styles.sca]}
         >
-          <Text style={styles.se}>{s.emoji ?? '‍️'}</Text>
+          <Text style={styles.se}>{s.emoji ?? ''}</Text>
           <Text style={styles.sn}>{s.titleJson ? localize(s.titleJson, locale) : s.nameAr}</Text>
         </TouchableOpacity>
       ))}
@@ -71,7 +71,7 @@ export default function RecommendationsScreen(): JSX.Element {
       )}
       {related.map((r) => (
         <View key={r.id} style={styles.card}>
-          <Text style={styles.re}></Text>
+          <Text style={styles.re}>💅</Text>
           <View style={{ flex: 1 }}>
             <Text style={styles.rn}>{r.title}</Text>
             <Text style={styles.rp}>

@@ -1,9 +1,23 @@
 'use client';
 
 import Link from 'next/link';
-import { localize } from '@galaxy/shared';
+import { localize, getHomeGreetingKey } from '@galaxy/shared';
 import { useLocale } from '@/components/LocaleProvider';
-import { Button, Card, ErrorAlert, EmptyState, ServiceImage } from '@galaxy/ui';
+import { api } from '@/lib/trpc';
+import {
+  Button,
+  Card,
+  ErrorAlert,
+  EmptyState,
+  ServiceImage,
+  FloatingBlob,
+  Marquee,
+  Sparkles,
+  TrustBadge,
+  TrustBadges,
+  ReelCard,
+} from '@galaxy/ui';
+import { heroImages, serviceKeyFromCategorySlug } from '@galaxy/shared';
 
 interface Category {
   id: number;
@@ -18,64 +32,212 @@ interface Service {
   durationMin: number;
 }
 
+interface ShortItem {
+  id: number;
+  titleJson: { ar?: string; en?: string };
+  videoUrl: string | null;
+  thumbnailUrl: string | null;
+  beforeImageUrl: string | null;
+  durationSec: number;
+  views: number;
+}
+
 export interface HomePageProps {
   initialCategories: Category[];
   initialServices: Service[];
   serviceTotal: number;
+  technicianTotal: number;
+  placeCount: number;
+  initialShorts: ShortItem[];
   fetchError?: string;
 }
 
-function categoryImageKey(slug: string): string {
-  const map: Record<string, string> = {
-    hair: 'hair',
-    nails: 'nails',
-    skincare: 'skincare',
-    makeup: 'makeup',
-    massage: 'massage',
-    henna: 'henna',
-    waxing: 'waxing',
-    lashes: 'lashes',
-    body: 'bodyTreatments',
-    spa: 'spa',
-    bridal: 'bridal',
-    men: 'mensGrooming',
+type HomeGreeting = {
+  stage: string;
+  pamper: {
+    isActive: boolean;
+    deals: Array<Record<string, unknown>>;
+    kits: Array<Record<string, unknown>>;
+    spaServices: Array<Record<string, unknown>>;
   };
-  return map[slug] ?? 'default';
-}
+};
 
 export function HomeClient({
   initialCategories,
   initialServices,
   serviceTotal,
+  technicianTotal,
+  placeCount,
+  initialShorts,
   fetchError,
 }: HomePageProps): JSX.Element {
   const { t, locale } = useLocale();
   const categories = initialCategories;
   const svcItems = initialServices;
+  const shorts = initialShorts;
+
+  // Stage-aware greeting (E6a) — guest-safe: back_to_me until the
+  // per-user stage arrives from the API.
+  const greetingQ = api.lifeStage.homeGreeting.useQuery();
+  const greeting = greetingQ.data as HomeGreeting | undefined;
+  const stage = greeting?.stage ?? 'back_to_me';
+  const pamper = greeting?.pamper;
 
   return (
     <div>
-      {/* Hero */}
-      <section className="bg-gradient-to-br from-brand-600 to-brand-800 px-4 py-24 text-center text-white">
-        <h1 className="text-3xl font-extrabold md:text-5xl">{t('marketing.home.hero-title')}</h1>
-        <p className="mt-4 text-lg text-brand-100">{t('marketing.home.hero-subtitle')}</p>
-        <div className="mt-8 flex justify-center gap-4">
-          <Link href="/bookings/create">
-            <Button size="lg" className="bg-white !text-brand-700 hover:bg-surface-muted">
-              {t('marketing.home.book-now')}
-            </Button>
-          </Link>
-          <Link href="/services/surprise-me">
-            <Button
-              size="lg"
-              variant="outline"
-              className="border-white !text-white hover:bg-white/10"
-            >
-              {t('marketing.home.surprise-me')}
-            </Button>
-          </Link>
+      {/* Hero — K-beauty flat design */}
+      <section className="relative overflow-hidden">
+        <div
+          aria-hidden
+          className="absolute inset-0 bg-gradient-to-b from-brand-50 via-surface to-accent-50"
+        />
+        <FloatingBlob
+          gradient="from-brand-200 to-accent-100"
+          className="-top-24 -start-24 h-72 w-72"
+          opacity={70}
+        />
+        <FloatingBlob
+          gradient="from-accent-200 to-brand-100"
+          className="top-1/3 -end-20 h-80 w-80"
+          animation="float-slow"
+          delay={-4}
+          opacity={60}
+        />
+        <FloatingBlob
+          gradient="from-brand-300 to-brand-100"
+          className="bottom-0 start-1/4 h-56 w-56"
+          animation="float"
+          delay={-2}
+          opacity={40}
+        />
+        <Sparkles
+          sparkles={[
+            { top: '12%', start: '8%', size: 18, delay: -0.5, color: '#e268a0' },
+            { top: '24%', start: '90%', size: 14, delay: -2.1, color: '#d98e4a' },
+            { top: '70%', start: '5%', size: 12, delay: -1.2, color: '#e268a0' },
+            { top: '78%', start: '94%', size: 20, delay: -3, color: '#d98e4a' },
+          ]}
+        />
+
+        <div className="relative mx-auto max-w-7xl px-4 py-16 md:py-24 lg:px-8">
+          <div className="grid items-center gap-12 md:grid-cols-2">
+            <div>
+              <TrustBadge variant="safeSpace" label={t('women.safeSpace')} />
+              <h1 className="mt-6 text-4xl font-extrabold leading-tight text-text-primary md:text-5xl lg:text-6xl">
+                {t('marketing.home.hero-title')}
+              </h1>
+              <p
+                data-testid="hero-greeting"
+                className="mt-5 max-w-xl text-lg text-text-secondary md:text-xl"
+              >
+                {t(getHomeGreetingKey(stage))}
+              </p>
+              <div className="mt-8 flex flex-wrap gap-4">
+                <Link href="/bookings/create">
+                  <Button size="lg" className="rounded-full px-8 shadow-lg shadow-brand-600/25">
+                    {t('marketing.home.book-now')}
+                  </Button>
+                </Link>
+                <Link href="/services/surprise-me">
+                  <Button
+                    size="lg"
+                    variant="outline"
+                    className="rounded-full border-brand-300 px-8 !text-brand-700 hover:bg-brand-50"
+                  >
+                    {t('marketing.home.surprise-me')}
+                  </Button>
+                </Link>
+              </div>
+              <TrustBadges
+                className="mt-8"
+                items={[
+                  { variant: 'womenOnly', label: t('trust.womenOnly') },
+                  { variant: 'private', label: t('vendorPortal.trust.private-suite') },
+                  { variant: 'rating', label: t('misc.rating'), value: '4.8' },
+                ]}
+              />
+            </div>
+
+            {/* media composition — blob-framed photo + floating cards */}
+            <div className="relative mx-auto w-full max-w-md">
+              <div
+                aria-hidden
+                className="absolute inset-0 rotate-6 rounded-[3rem] bg-gradient-to-br from-brand-200 to-accent-200"
+              />
+              <ServiceImage
+                src={heroImages.main}
+                alt={t('marketing.home.hero-title')}
+                className="relative h-72 w-full rounded-[3rem] object-cover shadow-2xl shadow-brand-600/20 md:h-96"
+              />
+              <div className="absolute -start-6 top-8 animate-float rounded-2xl bg-surface-elevated p-3 shadow-lg shadow-brand-600/10">
+                <div className="flex items-center gap-2">
+                  <span aria-hidden className="text-accent-500">
+                    ★
+                  </span>
+                  <span className="text-sm font-extrabold text-text-primary">4.8</span>
+                  <span className="text-xs text-text-tertiary">{t('misc.rating')}</span>
+                </div>
+              </div>
+              <div className="absolute -end-4 bottom-10 animate-float-slow rounded-2xl bg-surface-elevated p-3 shadow-lg shadow-brand-600/10">
+                <div className="flex items-center gap-2">
+                  <span aria-hidden>🌸</span>
+                  <span className="text-xs font-bold text-text-secondary">
+                    {t('trust.womenOnly')}
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <Marquee className="mt-16" items={categories.map((c) => localize(c.nameJson, locale))} />
         </div>
       </section>
+
+      {/* Pamper window banner (E6a) — period-relief offers, customers only */}
+      {pamper?.isActive && (
+        <section
+          aria-label={t('lifeStage.pamper.title')}
+          data-testid="pamper-banner"
+          className="mx-auto max-w-7xl px-4"
+        >
+          <Card
+            padding="lg"
+            className="border-2 border-pink-200 bg-pink-50/60 dark:border-pink-900 dark:bg-pink-950/30"
+          >
+            <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
+              <div>
+                <h2 className="font-bold">{t('lifeStage.pamper.title')}</h2>
+                <p className="mt-1 text-sm font-semibold text-pink-700 dark:text-pink-300">
+                  {t('lifeStage.pamper.active')}
+                </p>
+              </div>
+              <div className="flex flex-wrap items-center gap-2">
+                {pamper.deals.length > 0 && (
+                  <Link href="/flash-deals">
+                    <span className="rounded-full bg-pink-100 px-3 py-1 text-xs font-semibold text-pink-700 dark:bg-pink-900 dark:text-pink-200">
+                      {t('lifeStage.pamper.deals')}
+                    </span>
+                  </Link>
+                )}
+                {pamper.kits.length > 0 && (
+                  <Link href="/stores">
+                    <span className="rounded-full bg-pink-100 px-3 py-1 text-xs font-semibold text-pink-700 dark:bg-pink-900 dark:text-pink-200">
+                      {t('lifeStage.pamper.kits')}
+                    </span>
+                  </Link>
+                )}
+                {pamper.spaServices.length > 0 && (
+                  <Link href="/search">
+                    <span className="rounded-full bg-pink-100 px-3 py-1 text-xs font-semibold text-pink-700 dark:bg-pink-900 dark:text-pink-200">
+                      {t('lifeStage.pamper.spa')}
+                    </span>
+                  </Link>
+                )}
+              </div>
+            </div>
+          </Card>
+        </section>
+      )}
 
       {/* Categories */}
       <section className="mx-auto max-w-7xl px-4 py-16">
@@ -90,7 +252,7 @@ export function HomeClient({
               <Link key={c.id} href={`/services?categoryId=${c.id}`}>
                 <Card hover padding="lg" className="flex flex-col items-center text-center">
                   <ServiceImage
-                    service={categoryImageKey(c.slug)}
+                    service={serviceKeyFromCategorySlug(c.slug)}
                     size="lg"
                     alt={localize(c.nameJson, locale)}
                   />
@@ -138,17 +300,51 @@ export function HomeClient({
         </div>
       </section>
 
-      {/* Trust Section */}
-      <section className="mx-auto max-w-7xl px-4 py-16 text-center">
+      {/* Reels — real media "شاهدينا" (E7 home, Phase 3 sprint 1) */}
+      {shorts.length > 0 && (
+        <section data-testid="home-reels" className="mx-auto max-w-7xl px-4 py-16">
+          <div className="mb-8 flex items-center justify-between">
+            <h2 className="text-2xl font-bold">{t('marketing.home.reels-title')}</h2>
+            <Link
+              href="/beauty-shorts"
+              className="text-sm font-semibold text-brand-600 hover:text-brand-700"
+            >
+              {t('marketing.home.reels-view-all')}
+            </Link>
+          </div>
+          <div className="flex gap-4 overflow-x-auto pb-4 snap-x">
+            {shorts.map((s) => (
+              <Link
+                key={s.id}
+                href="/beauty-shorts"
+                className="shrink-0 snap-start"
+                aria-label={localize(s.titleJson, locale)}
+              >
+                <ReelCard
+                  title={localize(s.titleJson, locale)}
+                  videoUrl={s.videoUrl}
+                  thumbnailUrl={s.thumbnailUrl}
+                  beforeImageUrl={s.beforeImageUrl}
+                  durationSec={s.durationSec}
+                  views={s.views}
+                />
+              </Link>
+            ))}
+          </div>
+        </section>
+      )}
+
+      {/* Trust Section — API-derived stats (Phase 3 sprint 1) */}
+      <section data-testid="trust-stats" className="mx-auto max-w-7xl px-4 py-16 text-center">
         <div className="grid gap-8 md:grid-cols-4">
           {[
             {
               label: t('marketing.home.stat-beauty-sections'),
-              value: `+${categories.length || 12}`,
+              value: `+${categories.length}`,
             },
-            { label: t('marketing.home.stat-beauty-experts'), value: '+500' },
-            { label: t('marketing.home.stat-services'), value: `+${serviceTotal || 25}` },
-            { label: t('marketing.home.stat-saudi-cities'), value: '+24' },
+            { label: t('marketing.home.stat-beauty-experts'), value: `+${technicianTotal}` },
+            { label: t('marketing.home.stat-services'), value: `+${serviceTotal}` },
+            { label: t('marketing.home.stat-saudi-cities'), value: `+${placeCount}` },
           ].map((s) => (
             <div key={s.label}>
               <p className="text-3xl font-extrabold text-brand-600">{s.value}</p>

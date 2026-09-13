@@ -62,7 +62,7 @@ export function BlogPostClient({
   if (!slug) {
     return (
       <div className="mx-auto max-w-3xl px-4 py-24 text-center">
-        <span className="text-6xl"></span>
+        <span className="text-6xl">🔗</span>
         <h1 className="mt-4 text-2xl font-bold">{t('marketing.blog-post.invalid-link')}</h1>
         <Link href="/blog" className="mt-4 inline-block">
           <Button size="sm">{t('marketing.blog-post.back-to-blog')}</Button>
@@ -94,7 +94,7 @@ export function BlogPostClient({
   if (!post) {
     return (
       <div className="mx-auto max-w-3xl px-4 py-24 text-center">
-        <span className="text-6xl"></span>
+        <span className="text-6xl">🔍</span>
         <h1 className="mt-4 text-2xl font-bold">{t('marketing.blog-post.not-found')}</h1>
         <p className="mt-2 text-text-secondary">{t('marketing.blog-post.not-found-desc')}</p>
         <Link href="/blog" className="mt-4 inline-block">
@@ -139,7 +139,9 @@ export function BlogPostClient({
             className="mb-8 h-64 w-full rounded-2xl object-cover shadow-lg sm:h-80"
           />
         ) : (
-          <div className="mb-8 flex h-48 items-center justify-center rounded-2xl bg-gradient-to-br from-brand-100 to-accent-100 text-7xl dark:from-brand-900 dark:to-accent-900 sm:h-64"></div>
+          <div className="mb-8 flex h-48 items-center justify-center rounded-2xl bg-gradient-to-br from-brand-100 to-accent-100 text-7xl dark:from-brand-900 dark:to-accent-900 sm:h-64">
+            📰
+          </div>
         )}
 
         <div className="mb-4 flex flex-wrap gap-2">
@@ -159,7 +161,7 @@ export function BlogPostClient({
         </h1>
         <div className="mt-3 flex flex-wrap items-center gap-4 text-sm text-text-secondary">
           {date && <span> {date}</span>}
-          <span>️ {t('marketing.blog-post.reading-time', { minutes: readTime })}</span>
+          <span> {t('marketing.blog-post.reading-time', { minutes: readTime })}</span>
         </div>
 
         <div

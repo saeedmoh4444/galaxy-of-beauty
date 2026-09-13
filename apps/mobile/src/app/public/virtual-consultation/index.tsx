@@ -10,7 +10,7 @@ import { getAuthToken } from '@/lib/authToken';
 const CONSULTANTS = [
   {
     key: 'skincare',
-    emoji: '‍️',
+    emoji: '🧖',
     name: 'اخصائية بشرة',
     specialty: 'تحليل البشرة وتشخيص المشاكل',
     price: 150,
@@ -19,7 +19,7 @@ const CONSULTANTS = [
   },
   {
     key: 'makeup',
-    emoji: '',
+    emoji: '💄',
     name: 'خبيرة مكياج',
     specialty: 'استشارة مكياج للمناسبات',
     price: 120,
@@ -28,7 +28,7 @@ const CONSULTANTS = [
   },
   {
     key: 'hair',
-    emoji: '‍️',
+    emoji: '💇',
     name: 'مصففة شعر',
     specialty: 'استشارة تسريحات وعناية',
     price: 100,
@@ -37,7 +37,7 @@ const CONSULTANTS = [
   },
   {
     key: 'nutrition',
-    emoji: '',
+    emoji: '🥗',
     name: 'اخصائية تغذية',
     specialty: 'تغذية البشرة والشعر',
     price: 130,
@@ -99,7 +99,7 @@ export default function VirtualConsultationScreen(): JSX.Element {
 
         {booked && consultant ? (
           <View style={styles.confirmed}>
-            <Text style={styles.cfEmoji}></Text>
+            <Text style={styles.cfEmoji}>✅</Text>
             <Text style={styles.cfTitle}>
               {t('mobile.public.virtual-consultation.booked-title')}
             </Text>

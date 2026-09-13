@@ -19,7 +19,7 @@ export function BeautyFortiesCard({
       )}
     >
       <div className="flex items-center gap-2">
-        <span className="text-xl"></span>
+        <span className="text-xl">🌹</span>
         <div>
           <h4 className="text-sm font-bold text-rose-700 dark:text-rose-300">{title}</h4>
           <p className="text-[10px] text-rose-500 dark:text-rose-400">{subtitle}</p>
@@ -28,28 +28,28 @@ export function BeautyFortiesCard({
       <div className="mt-3 space-y-1">
         {[
           {
-            emoji: '',
+            emoji: '🧪',
             text: {
               ar: 'ببتيدات — تحفز الكولاجين وتشد البشرة',
               en: 'Peptides — boost collagen and firm the skin',
             },
           },
           {
-            emoji: '️',
+            emoji: '🧱',
             text: {
               ar: 'سيراميد — يقوي حاجز البشرة المترقق',
               en: 'Ceramides — strengthen the thinning skin barrier',
             },
           },
           {
-            emoji: '',
+            emoji: '💆',
             text: {
               ar: 'مساج وجه — يحسن الدورة ويرفع البشرة',
               en: 'Facial massage — improves circulation and lifts the skin',
             },
           },
           {
-            emoji: '',
+            emoji: '✨',
             text: {
               ar: 'علاجات احترافية — ميكرونيدلنغ أو ليزر',
               en: 'Professional treatments — microneedling or laser',

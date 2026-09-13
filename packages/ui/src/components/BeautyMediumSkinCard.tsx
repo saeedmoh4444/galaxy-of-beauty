@@ -19,7 +19,7 @@ export function BeautyMediumSkinCard({
       )}
     >
       <div className="flex items-center gap-2">
-        <span className="text-xl"></span>
+        <span className="text-xl">🫒</span>
         <div>
           <h4 className="text-sm font-bold text-amber-700 dark:text-amber-300">{title}</h4>
           <p className="text-[10px] text-amber-500 dark:text-amber-400">{subtitle}</p>
@@ -28,28 +28,28 @@ export function BeautyMediumSkinCard({
       <div className="mt-3 space-y-1">
         {[
           {
-            emoji: '️',
+            emoji: '🌞',
             text: {
               ar: 'SPF 30-50 — الميلانين يحمي ولكن ليس بالكامل',
               en: 'SPF 30-50 — melanin protects but not fully',
             },
           },
           {
-            emoji: '',
+            emoji: '🍊',
             text: {
               ar: 'ميل للتصبغات — فيتامين C أساسي',
               en: 'Prone to pigmentation — vitamin C is essential',
             },
           },
           {
-            emoji: '',
+            emoji: '🎨',
             text: {
               ar: 'ألوان: برونزي، خوخي، تيراكوتا — دافئة',
               en: 'Shades: bronze, peach, terracotta — warm tones',
             },
           },
           {
-            emoji: '',
+            emoji: '✨',
             text: {
               ar: 'هايلايتر ذهبي — يناسب الأندرتون الدافئ',
               en: 'Golden highlighter — suits warm undertones',

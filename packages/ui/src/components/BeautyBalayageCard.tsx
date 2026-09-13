@@ -19,7 +19,7 @@ export function BeautyBalayageCard({
       )}
     >
       <div className="flex items-center gap-2">
-        <span className="text-xl"></span>
+        <span className="text-xl">💇</span>
         <div>
           <h4 className="text-sm font-bold text-amber-700 dark:text-amber-300">{title}</h4>
           <p className="text-[10px] text-amber-500 dark:text-amber-400">{subtitle}</p>
@@ -28,28 +28,28 @@ export function BeautyBalayageCard({
       <div className="mt-3 space-y-1">
         {[
           {
-            emoji: '️',
+            emoji: '🎨',
             text: {
               ar: 'تلوين يدوي — خصل مرسومة بالفرشاة',
               en: 'Hand-painted color — strands painted with a brush',
             },
           },
           {
-            emoji: '',
+            emoji: '🍃',
             text: {
               ar: 'مظهر طبيعي — جذور أغمق وأطراف أفتح',
               en: 'Natural look — darker roots and lighter ends',
             },
           },
           {
-            emoji: '',
+            emoji: '⏳',
             text: {
               ar: 'يدوم 3-4 أشهر — نمو الجذور غير ملحوظ',
               en: 'Lasts 3-4 months — root growth is unnoticeable',
             },
           },
           {
-            emoji: '',
+            emoji: '💰',
             text: {
               ar: 'أغلى من الصبغة — لكن صيانة أقل',
               en: 'Pricier than dye — but less maintenance',

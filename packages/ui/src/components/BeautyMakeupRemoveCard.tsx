@@ -19,7 +19,7 @@ export function BeautyMakeupRemoveCard({
       )}
     >
       <div className="flex items-center gap-2">
-        <span className="text-xl"></span>
+        <span className="text-xl">🧼</span>
         <div>
           <h4 className="text-sm font-bold text-teal-700 dark:text-teal-300">{heading}</h4>
           <p className="text-[10px] text-teal-500 dark:text-teal-400">{subtitle}</p>
@@ -35,21 +35,21 @@ export function BeautyMakeupRemoveCard({
             },
           },
           {
-            emoji: '',
+            emoji: '💧',
             text: {
               ar: 'غسول مائي — الخطوة الثانية تنظف بعمق',
               en: 'Water-based cleanser — the second step cleans deeply',
             },
           },
           {
-            emoji: '️',
+            emoji: '👀',
             text: {
               ar: 'العين أولاً — اضغطي 10 ثوانٍ ثم امسحي',
               en: 'Eyes first — press for 10 seconds, then wipe',
             },
           },
           {
-            emoji: '',
+            emoji: '🧽',
             text: {
               ar: 'قطعة قماش ناعمة — وليس مناديل ورقية',
               en: 'A soft cloth — not paper tissues',

@@ -66,7 +66,7 @@ export default function AiChatScreen() {
   return (
     <View style={styles.container}>
       <View style={styles.chatHeader}>
-        <Text style={styles.avatar}></Text>
+        <Text style={styles.avatar}>🤖</Text>
         <View>
           <Text style={styles.chatTitle}>{t('aiChat.title')}</Text>
           <Text style={styles.chatSub}>{t('aiChat.smartBeautyAdvisor')}</Text>
@@ -80,7 +80,7 @@ export default function AiChatScreen() {
       >
         {messages.length === 0 && (
           <View style={styles.centered}>
-            <Text style={styles.emptyIcon}></Text>
+            <Text style={styles.emptyIcon}>💬</Text>
             <Text style={styles.empty}>{t('aiChat.welcomeTitle')}</Text>
             <Text style={styles.hint}>{t('aiChat.welcome-desc')}</Text>
           </View>

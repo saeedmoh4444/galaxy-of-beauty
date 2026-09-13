@@ -1,12 +1,21 @@
 'use client';
+import { useRouter } from 'next/navigation';
 import { api } from '@/lib/trpc';
-import { Card, CardListSkeleton, Button, formatCurrency } from '@galaxy/ui';
+import {
+  Card,
+  CardListSkeleton,
+  Button,
+  formatCurrency,
+  EmptyState,
+  ServiceImage,
+} from '@galaxy/ui';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
 import { useLocale } from '@/components/LocaleProvider';
 import { localize } from '@galaxy/shared';
 
 export default function CartPage(): JSX.Element {
   const { t, locale } = useLocale();
+  const router = useRouter();
   const { data, isLoading } = api.marketplace.cart.useQuery() as {
     data: Array<Record<string, unknown>> | undefined;
     isLoading: boolean;
@@ -38,10 +47,10 @@ export default function CartPage(): JSX.Element {
         {isLoading ? (
           <CardListSkeleton count={4} />
         ) : cartItems.length === 0 ? (
-          <Card padding="lg" className="text-center py-8">
-            <p className="text-4xl mb-2"></p>
-            <p className="text-text-secondary">{t('cart.empty')}</p>
-          </Card>
+          <EmptyState
+            title={t('cart.empty')}
+            action={{ label: t('cart.shop'), onPress: () => router.push('/marketplace') }}
+          />
         ) : (
           <>
             <div className="space-y-3">
@@ -51,7 +60,12 @@ export default function CartPage(): JSX.Element {
                   <Card key={item.id as number} padding="md">
                     <div className="flex items-center justify-between">
                       <div className="flex items-center gap-3">
-                        <span className="text-3xl"></span>
+                        <ServiceImage
+                          src={((product as Record<string, unknown>).imageUrl as string) ?? null}
+                          alt=""
+                          size="lg"
+                          className="h-14 w-14 shrink-0"
+                        />
                         <div>
                           <p className="font-bold">
                             {localize(product?.nameJson, locale) ||

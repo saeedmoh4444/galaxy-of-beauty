@@ -33,7 +33,7 @@ export default function FamilyAccountScreen(): JSX.Element {
       <Text style={styles.t}>{t('familyAccount.title')}</Text>
       {data.map((m, i) => (
         <View key={i} style={styles.card}>
-          <Text style={styles.avatar}></Text>
+          <Text style={styles.avatar}>👤</Text>
           <View style={{ flex: 1 }}>
             <Text style={styles.name}>{m.name}</Text>
             <Text style={styles.relation}>{m.relation}</Text>

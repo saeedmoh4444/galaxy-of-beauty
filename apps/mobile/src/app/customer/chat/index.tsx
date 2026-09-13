@@ -80,7 +80,7 @@ export default function ChatScreen(): JSX.Element {
           placeholderTextColor="#9ca3af"
         />
         <TouchableOpacity onPress={send} style={styles.sendBtn}>
-          <Text style={styles.sendBtnText}></Text>
+          <Text style={styles.sendBtnText}>📤</Text>
         </TouchableOpacity>
       </View>
     </View>

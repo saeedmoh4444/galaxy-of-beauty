@@ -19,7 +19,7 @@ export function BeautyPerfumeRoseCard({
       )}
     >
       <div className="flex items-center gap-2">
-        <span className="text-xl"></span>
+        <span className="text-xl">🌹</span>
         <div>
           <h4 className="text-sm font-bold text-rose-700 dark:text-rose-300">{title}</h4>
           <p className="text-[10px] text-rose-500 dark:text-rose-400">{subtitle}</p>
@@ -28,28 +28,28 @@ export function BeautyPerfumeRoseCard({
       <div className="mt-3 space-y-1">
         {[
           {
-            emoji: '️',
+            emoji: '🌄',
             text: {
               ar: 'يزرع في جبال الطائف — 2000 متر فوق البحر',
               en: 'Grown in the Taif mountains — 2,000 meters above sea level',
             },
           },
           {
-            emoji: '',
+            emoji: '🌅',
             text: {
               ar: 'يقطف عند الفجر — لأعلى تركيز عطري',
               en: 'Harvested at dawn — for the highest aromatic concentration',
             },
           },
           {
-            emoji: '',
+            emoji: '🌹',
             text: {
               ar: 'ماء الورد — تونر طبيعي ومنعش',
               en: 'Rose water — a natural, refreshing toner',
             },
           },
           {
-            emoji: '',
+            emoji: '💎',
             text: {
               ar: 'من أندر وأغلى الزيوت العطرية في العالم',
               en: 'Among the rarest and most precious essential oils in the world',

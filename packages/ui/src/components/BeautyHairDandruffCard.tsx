@@ -19,7 +19,7 @@ export function BeautyHairDandruffCard({
       )}
     >
       <div className="flex items-center gap-2">
-        <span className="text-xl">️</span>
+        <span className="text-xl">🩺</span>
         <div>
           <h4 className="text-sm font-bold text-sky-700 dark:text-sky-300">{title}</h4>
           <p className="text-[10px] text-sky-500 dark:text-sky-400">{subtitle}</p>
@@ -28,21 +28,21 @@ export function BeautyHairDandruffCard({
       <div className="mt-3 space-y-1">
         {[
           {
-            emoji: '',
+            emoji: '🧴',
             text: {
               ar: 'شامبو مضاد للقشرة — 2-3 مرات أسبوعياً',
               en: 'Anti-dandruff shampoo — 2-3 times a week',
             },
           },
           {
-            emoji: '',
+            emoji: '🌿',
             text: {
               ar: 'زيت شجرة الشاي — مضاد فطريات طبيعي',
               en: 'Tea tree oil — a natural antifungal',
             },
           },
           {
-            emoji: '',
+            emoji: '💆',
             text: {
               ar: 'دلكي فروة الرأس — يحسن الدورة',
               en: 'Massage the scalp — improves circulation',

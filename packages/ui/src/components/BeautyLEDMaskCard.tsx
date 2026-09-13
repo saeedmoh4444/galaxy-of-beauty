@@ -19,7 +19,7 @@ export function BeautyLEDMaskCard({
       )}
     >
       <div className="flex items-center gap-2">
-        <span className="text-xl"></span>
+        <span className="text-xl">💡</span>
         <div>
           <h4 className="text-sm font-bold text-sky-700 dark:text-sky-300">{heading}</h4>
           <p className="text-[10px] text-sky-500 dark:text-sky-400">{subtitle}</p>
@@ -28,22 +28,22 @@ export function BeautyLEDMaskCard({
       <div className="mt-3 grid grid-cols-2 gap-1.5">
         {[
           {
-            emoji: '',
+            emoji: '🔴',
             label: { ar: 'أحمر', en: 'Red' },
             tip: { ar: 'كولاجين — مضاد للشيخوخة', en: 'Collagen — anti-aging' },
           },
           {
-            emoji: '',
+            emoji: '🔵',
             label: { ar: 'أزرق', en: 'Blue' },
             tip: { ar: 'يقتل البكتيريا — لعلاج الحبوب', en: 'Kills bacteria — treats breakouts' },
           },
           {
-            emoji: '',
+            emoji: '🟡',
             label: { ar: 'أصفر', en: 'Yellow' },
             tip: { ar: 'يفتح البقع — يقلل التصبغات', en: 'Brightens spots — reduces pigmentation' },
           },
           {
-            emoji: '',
+            emoji: '🟢',
             label: { ar: 'أخضر', en: 'Green' },
             tip: { ar: 'مهدئ — يقلل الاحمرار', en: 'Calming — reduces redness' },
           },

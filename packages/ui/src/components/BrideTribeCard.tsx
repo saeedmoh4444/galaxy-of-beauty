@@ -85,9 +85,7 @@ export function BrideTribeCard({
     >
       {/* Header */}
       <div className="text-center">
-        <span className="text-3xl" aria-hidden="true">
-          ‍️
-        </span>
+        <span className="text-3xl" aria-hidden="true"></span>
         <h4 className="mt-1 text-sm font-bold text-rose-700 dark:text-rose-300">{title}</h4>
         <p className="text-[10px] text-rose-500 dark:text-rose-400">{subtitle}</p>
       </div>
@@ -95,7 +93,9 @@ export function BrideTribeCard({
       {/* Bride */}
       <div className="mt-3 rounded-xl bg-gradient-to-r from-rose-50 to-pink-50 p-3 dark:from-rose-950 dark:to-pink-950">
         <div className="flex items-center gap-2">
-          <span className="text-2xl" aria-hidden="true"></span>
+          <span className="text-2xl" aria-hidden="true">
+            👰
+          </span>
           <div>
             <p className="text-xs font-bold text-text-primary dark:text-gray-100">{bride}</p>
             <p className="text-[10px] text-rose-600 dark:text-rose-400">{brideLabel}</p>

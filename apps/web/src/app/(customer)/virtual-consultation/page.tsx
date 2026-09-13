@@ -17,7 +17,7 @@ const CONSULTANTS: {
 }[] = [
   {
     key: 'skincare',
-    emoji: '‍️',
+    emoji: '🧖',
     name: 'virtualConsultation.consultant.skincare.name',
     specialty: 'virtualConsultation.consultant.skincare.specialty',
     price: 150,
@@ -31,7 +31,7 @@ const CONSULTANTS: {
   },
   {
     key: 'makeup',
-    emoji: '',
+    emoji: '💄',
     name: 'virtualConsultation.consultant.makeup.name',
     specialty: 'virtualConsultation.consultant.makeup.specialty',
     price: 120,
@@ -45,7 +45,7 @@ const CONSULTANTS: {
   },
   {
     key: 'hair',
-    emoji: '‍️',
+    emoji: '💇',
     name: 'virtualConsultation.consultant.hair.name',
     specialty: 'virtualConsultation.consultant.hair.specialty',
     price: 100,
@@ -59,7 +59,7 @@ const CONSULTANTS: {
   },
   {
     key: 'nutrition',
-    emoji: '',
+    emoji: '🥗',
     name: 'virtualConsultation.consultant.nutrition.name',
     specialty: 'virtualConsultation.consultant.nutrition.specialty',
     price: 130,

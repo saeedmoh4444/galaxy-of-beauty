@@ -19,7 +19,7 @@ export function BeautyBodySculptingCard({
       )}
     >
       <div className="flex items-center gap-2">
-        <span className="text-xl"></span>
+        <span className="text-xl">💪</span>
         <div>
           <h4 className="text-sm font-bold text-teal-700 dark:text-teal-300">{title}</h4>
           <p className="text-[10px] text-teal-500 dark:text-teal-400">{subtitle}</p>
@@ -28,7 +28,7 @@ export function BeautyBodySculptingCard({
       <div className="mt-3 grid grid-cols-2 gap-1.5">
         {[
           {
-            emoji: '️',
+            emoji: '🧊',
             label: { ar: 'تجميد الدهون', en: 'Fat freezing' },
             tip: {
               ar: 'كريوليبوليسز — يقتل الخلايا الدهنية',
@@ -36,17 +36,17 @@ export function BeautyBodySculptingCard({
             },
           },
           {
-            emoji: '',
+            emoji: '📻',
             label: { ar: 'راديو فريكونسي', en: 'Radio frequency' },
             tip: { ar: 'حرارة — تشد الجلد', en: 'Heat — tightens the skin' },
           },
           {
-            emoji: '',
+            emoji: '🔊',
             label: { ar: 'ألتراساوند', en: 'Ultrasound' },
             tip: { ar: 'موجات صوتية — تذيب الدهون', en: 'Sound waves — melt fat' },
           },
           {
-            emoji: '',
+            emoji: '💉',
             label: { ar: 'حقن', en: 'Injections' },
             tip: { ar: 'إذابة دهون موضعية', en: 'Local fat dissolving' },
           },

@@ -19,7 +19,7 @@ export function BeautyAcneGuideCard({
       )}
     >
       <div className="flex items-center gap-2">
-        <span className="text-xl"></span>
+        <span className="text-xl">🧼</span>
         <div>
           <h4 className="text-sm font-bold text-teal-700 dark:text-teal-300">{title}</h4>
           <p className="text-[10px] text-teal-500 dark:text-teal-400">{subtitle}</p>
@@ -28,17 +28,17 @@ export function BeautyAcneGuideCard({
       <div className="mt-3 grid grid-cols-2 gap-1.5">
         {[
           {
-            emoji: '',
+            emoji: '⚪',
             label: { ar: 'رؤوس بيضاء', en: 'Whiteheads' },
             tip: { ar: 'مسام مسدودة — تقشير لطيف', en: 'Clogged pores — gentle exfoliation' },
           },
           {
-            emoji: '',
+            emoji: '⚫',
             label: { ar: 'رؤوس سوداء', en: 'Blackheads' },
             tip: { ar: 'حمض الساليسيليك', en: 'Salicylic acid' },
           },
           {
-            emoji: '',
+            emoji: '🔴',
             label: { ar: 'ملتهبة', en: 'Inflamed' },
             tip: { ar: 'بينزويل بيروكسايد', en: 'Benzoyl peroxide' },
           },

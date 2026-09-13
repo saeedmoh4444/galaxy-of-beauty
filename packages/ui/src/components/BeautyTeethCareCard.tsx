@@ -23,7 +23,7 @@ export function BeautyTeethCareCard({
       )}
     >
       <div className="flex items-center gap-2">
-        <span className="text-xl"></span>
+        <span className="text-xl">🦷</span>
         <div>
           <h4 className="text-sm font-bold text-sky-700 dark:text-sky-300">{title}</h4>
           <p className="text-[10px] text-sky-500 dark:text-sky-400">{subtitle}</p>
@@ -37,17 +37,17 @@ export function BeautyTeethCareCard({
             tip: { ar: 'صباحاً ومساءً — دقيقتان', en: 'Morning and night — two minutes' },
           },
           {
-            emoji: '',
+            emoji: '🦷',
             label: { ar: 'خيط الأسنان', en: 'Dental floss' },
             tip: { ar: 'يومياً — يمنع التسوس', en: 'Daily — prevents cavities' },
           },
           {
-            emoji: '',
+            emoji: '✨',
             label: { ar: 'تبييض طبيعي', en: 'Natural whitening' },
             tip: { ar: 'فراولة + بيكربونات', en: 'Strawberry + baking soda' },
           },
           {
-            emoji: '‍️',
+            emoji: '🦷',
             label: { ar: 'فحص دوري', en: 'Regular checkup' },
             tip: { ar: 'كل 6 أشهر عند الطبيب', en: 'Every 6 months at the dentist' },
           },

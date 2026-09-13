@@ -48,7 +48,7 @@ interface MommyAndMeCardProps {
 
 const EXPERIENCES = {
   mini_facial: {
-    emoji: '‍️',
+    emoji: '🧖',
     title: { ar: 'عناية بالبشرة المصغرة', en: 'Mini facial' },
     description: {
       ar: 'أول تجربة عناية بالبشرة للأم وابنتها',
@@ -64,7 +64,7 @@ const EXPERIENCES = {
     ],
   },
   manicure: {
-    emoji: '',
+    emoji: '💅',
     title: { ar: 'مانيكير الأم وابنتها', en: 'Mom & daughter manicure' },
     description: { ar: 'أظافر جميلة جنباً إلى جنب', en: 'Beautiful nails side by side' },
     ageMin: 6,
@@ -77,7 +77,7 @@ const EXPERIENCES = {
     ],
   },
   hair_braiding: {
-    emoji: '',
+    emoji: '🎀',
     title: { ar: 'تضفير الشعر', en: 'Hair braiding' },
     description: { ar: 'تسريحات شعر جميلة ومتناسقة', en: 'Beautiful matching hairstyles' },
     ageMin: 5,
@@ -89,7 +89,7 @@ const EXPERIENCES = {
     ],
   },
   spa_day: {
-    emoji: '',
+    emoji: '🛀',
     title: { ar: 'يوم سبا مصغر', en: 'Mini spa day' },
     description: {
       ar: 'يوم كامل من التدليل للأم وابنتها',
@@ -105,7 +105,7 @@ const EXPERIENCES = {
     ],
   },
   makeup_lesson: {
-    emoji: '',
+    emoji: '💄',
     title: { ar: 'درس مكياج أول', en: 'First makeup lesson' },
     description: {
       ar: 'تعلم أساسيات العناية والبشرة مع أمكِ',
@@ -157,7 +157,7 @@ export function MommyAndMeCard({
       {/* Header */}
       <div className="text-center">
         <span className="text-3xl" aria-hidden="true">
-          ‍
+          🎀
         </span>
         <h4 className="mt-1 text-sm font-bold text-pink-800 dark:text-pink-200">{title}</h4>
         <p className="text-[10px] text-pink-500 dark:text-pink-400">{subtitle}</p>
@@ -166,15 +166,21 @@ export function MommyAndMeCard({
       {/* Participants */}
       <div className="mt-3 flex items-center justify-center gap-3">
         <div className="text-center">
-          <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-gradient-to-br from-pink-200 to-rose-200 text-lg dark:from-pink-800 dark:to-rose-800"></div>
+          <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-gradient-to-br from-pink-200 to-rose-200 text-lg dark:from-pink-800 dark:to-rose-800">
+            👩
+          </div>
           <p className="mt-1 text-[10px] font-bold text-text-primary dark:text-gray-100">{mom}</p>
           <p className="text-[9px] text-text-tertiary dark:text-text-secondary">{momLabel}</p>
         </div>
 
-        <span className="text-pink-400 text-lg" aria-hidden="true"></span>
+        <span className="text-pink-400 text-lg" aria-hidden="true">
+          💗
+        </span>
 
         <div className="text-center">
-          <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-gradient-to-br from-brand-200 to-violet-200 text-lg dark:from-brand-800 dark:to-violet-800"></div>
+          <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-gradient-to-br from-brand-200 to-violet-200 text-lg dark:from-brand-800 dark:to-violet-800">
+            👧
+          </div>
           <p className="mt-1 text-[10px] font-bold text-text-primary dark:text-gray-100">
             {daughter}
           </p>

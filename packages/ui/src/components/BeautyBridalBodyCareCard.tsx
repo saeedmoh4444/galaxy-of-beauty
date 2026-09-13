@@ -19,7 +19,7 @@ export function BeautyBridalBodyCareCard({
       )}
     >
       <div className="flex items-center gap-2">
-        <span className="text-xl"></span>
+        <span className="text-xl">👰</span>
         <div>
           <h4 className="text-sm font-bold text-amber-700 dark:text-amber-300">{title}</h4>
           <p className="text-[10px] text-amber-500 dark:text-amber-400">{subtitle}</p>
@@ -28,28 +28,28 @@ export function BeautyBridalBodyCareCard({
       <div className="mt-3 space-y-1">
         {[
           {
-            emoji: '',
+            emoji: '🧽',
             text: {
               ar: 'تقشير الجسم — مرة أسبوعياً قبل الزفاف',
               en: 'Body exfoliation — once a week before the wedding',
             },
           },
           {
-            emoji: '',
+            emoji: '💆',
             text: {
               ar: 'مساج استرخاء — يخفف توتر التحضيرات',
               en: 'Relaxing massage — eases pre-wedding stress',
             },
           },
           {
-            emoji: '️',
+            emoji: '🪒',
             text: {
               ar: 'إزالة الشعر — قبل الزفاف بـ 3-5 أيام',
               en: 'Hair removal — 3-5 days before the wedding',
             },
           },
           {
-            emoji: '',
+            emoji: '🌞',
             text: {
               ar: 'تان لطيف — قبل الزفاف بيومين',
               en: 'A subtle tan — two days before the wedding',

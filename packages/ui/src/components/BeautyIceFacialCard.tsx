@@ -19,7 +19,7 @@ export function BeautyIceFacialCard({
       )}
     >
       <div className="flex items-center gap-2">
-        <span className="text-xl"></span>
+        <span className="text-xl">🧊</span>
         <div>
           <h4 className="text-sm font-bold text-sky-700 dark:text-sky-300">{heading}</h4>
           <p className="text-[10px] text-sky-500 dark:text-sky-400">{subtitle}</p>
@@ -28,28 +28,28 @@ export function BeautyIceFacialCard({
       <div className="mt-3 space-y-1">
         {[
           {
-            emoji: '',
+            emoji: '🧊',
             text: {
               ar: 'يقلص المسام — بشرة أنعم فوراً',
               en: 'Tightens pores — instantly smoother skin',
             },
           },
           {
-            emoji: '',
+            emoji: '🌅',
             text: {
               ar: 'صباحاً — يقلل الانتفاخ تحت العين',
               en: 'In the morning — reduces under-eye puffiness',
             },
           },
           {
-            emoji: '',
+            emoji: '🌹',
             text: {
               ar: 'ثلج ماء الورد — مهدئ للبشرة',
               en: 'Rose water ice — soothing for the skin',
             },
           },
           {
-            emoji: '️',
+            emoji: '⏱️',
             text: {
               ar: '30 ثانية لكل منطقة — لا تطيلي',
               en: "30 seconds per area — don't overdo it",

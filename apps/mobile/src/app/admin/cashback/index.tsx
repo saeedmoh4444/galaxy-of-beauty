@@ -4,7 +4,7 @@ const RULES = [
   {
     id: 1,
     service: 'مانيكير سبا',
-    emoji: '',
+    emoji: '💅',
     rate: 5,
     minSpend: 100,
     maxCashback: 50,
@@ -13,7 +13,7 @@ const RULES = [
   {
     id: 2,
     service: 'مكياج كامل',
-    emoji: '',
+    emoji: '💄',
     rate: 8,
     minSpend: 300,
     maxCashback: 100,
@@ -22,13 +22,13 @@ const RULES = [
   {
     id: 3,
     service: 'مساج استرخاء',
-    emoji: '',
+    emoji: '💆',
     rate: 10,
     minSpend: 200,
     maxCashback: 75,
     active: false,
   },
-  { id: 4, service: 'صبغ شعر', emoji: '', rate: 5, minSpend: 150, maxCashback: 60, active: true },
+  { id: 4, service: 'صبغ شعر', emoji: '💇', rate: 5, minSpend: 150, maxCashback: 60, active: true },
 ];
 // NO API: cashback router has no admin query for cashback rules (only customer
 // history/info + admin setRate mutation; the web admin page is a rate editor

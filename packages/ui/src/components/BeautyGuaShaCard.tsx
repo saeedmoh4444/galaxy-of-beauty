@@ -26,7 +26,7 @@ export function BeautyGuaShaCard({
       <div className="mt-3 space-y-1">
         {[
           {
-            emoji: '',
+            emoji: '🔼',
             text: { ar: 'حركات للأعلى وللخارج دائماً', en: 'Always move upward and outward' },
           },
           {
@@ -37,11 +37,11 @@ export function BeautyGuaShaCard({
             },
           },
           {
-            emoji: '',
+            emoji: '📐',
             text: { ar: 'زاوية 15 درجة — ليست عمودية', en: 'A 15-degree angle — not vertical' },
           },
           {
-            emoji: '',
+            emoji: '⏰',
             text: { ar: '5 دقائق — 3 مرات أسبوعياً', en: '5 minutes — 3 times a week' },
           },
         ].map((t, i) => (

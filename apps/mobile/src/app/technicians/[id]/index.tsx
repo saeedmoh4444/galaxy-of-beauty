@@ -45,7 +45,7 @@ export default function TechnicianDetailScreen(): JSX.Element {
         />
       }
     >
-      <Text style={styles.t}>‍ {data.name}</Text>
+      <Text style={styles.t}> {data.name}</Text>
       <View style={styles.card}>
         <Text style={styles.spec}>{data.specialtyAr ?? data.specialty}</Text>
         <Text style={styles.rating}> {data.rating ?? 0}</Text>

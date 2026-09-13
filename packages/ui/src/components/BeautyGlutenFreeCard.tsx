@@ -19,7 +19,7 @@ export function BeautyGlutenFreeCard({
       )}
     >
       <div className="flex items-center gap-2">
-        <span className="text-xl"></span>
+        <span className="text-xl">🌾</span>
         <div>
           <h4 className="text-sm font-bold text-amber-700 dark:text-amber-300">{title}</h4>
           <p className="text-[10px] text-amber-500 dark:text-amber-400">{subtitle}</p>
@@ -28,21 +28,21 @@ export function BeautyGlutenFreeCard({
       <div className="mt-3 space-y-1">
         {[
           {
-            emoji: '',
+            emoji: '🌾',
             text: {
               ar: 'بعض المنتجات تحتوي جلوتين — كريمات، بلسم، أحمر شفاه',
               en: 'Some products contain gluten — creams, conditioners, lipsticks',
             },
           },
           {
-            emoji: '',
+            emoji: '🔍',
             text: {
               ar: 'تأكدي من المكونات — قمح، شعير، شوفان',
               en: 'Check the ingredients — wheat, barley, oats',
             },
           },
           {
-            emoji: '',
+            emoji: '✅',
             text: {
               ar: 'معظم المنتجات خالية — لكن الجئي للمعتمد',
               en: 'Most products are free — but choose certified ones',

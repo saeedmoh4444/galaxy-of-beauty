@@ -53,7 +53,7 @@ export default function VideoSessionPage(): JSX.Element {
           <ErrorAlert message={t('videoSession.loadError')} onRetry={() => refetch()} />
         ) : !sess ? (
           <Card padding="md" className="text-center">
-            <div className="mb-4 text-5xl"></div>
+            <div className="mb-4 text-5xl">🎥</div>
             <h3 className="text-lg font-semibold text-text-primary">
               {t('videoSession.consultationTitle')}
             </h3>
@@ -69,7 +69,7 @@ export default function VideoSessionPage(): JSX.Element {
             padding="md"
             className="text-center border-brand-200 bg-brand-50 dark:border-brand-800 dark:bg-brand-950"
           >
-            <div className="mb-4 text-5xl"></div>
+            <div className="mb-4 text-5xl">⏳</div>
             <h3 className="font-semibold text-brand-700">{t('videoSession.waitingOther')}</h3>
             <p className="mt-2 text-sm text-brand-500">{t('videoSession.notificationSent')}</p>
             <div className="mt-4">
@@ -80,7 +80,7 @@ export default function VideoSessionPage(): JSX.Element {
           </Card>
         ) : sess.status === 'IN_PROGRESS' ? (
           <Card padding="md" className="text-center">
-            <div className="mb-4 text-5xl"></div>
+            <div className="mb-4 text-5xl">🟢</div>
             <h3 className="font-semibold text-green-700">{t('videoSession.sessionActive')}</h3>
             <div className="mt-4 flex gap-3 justify-center">
               <Button onClick={() => router.push(`/video/${bookingId}/room?room=${sess.roomId}`)}>
@@ -96,7 +96,7 @@ export default function VideoSessionPage(): JSX.Element {
           </Card>
         ) : (
           <Card padding="md" className="text-center">
-            <div className="mb-4 text-5xl"></div>
+            <div className="mb-4 text-5xl">🏁</div>
             <h3 className="font-semibold text-text-secondary">{t('videoSession.sessionEnded')}</h3>
             {sess.durationSec ? (
               <p className="mt-2 text-sm text-text-tertiary">

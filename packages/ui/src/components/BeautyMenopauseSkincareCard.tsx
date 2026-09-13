@@ -19,7 +19,7 @@ export function BeautyMenopauseSkincareCard({
       )}
     >
       <div className="flex items-center gap-2">
-        <span className="text-xl"></span>
+        <span className="text-xl">🌸</span>
         <div>
           <h4 className="text-sm font-bold text-rose-700 dark:text-rose-300">{title}</h4>
           <p className="text-[10px] text-rose-500 dark:text-rose-400">{subtitle}</p>
@@ -28,18 +28,18 @@ export function BeautyMenopauseSkincareCard({
       <div className="mt-3 space-y-1">
         {[
           {
-            emoji: '',
+            emoji: '💧',
             text: {
               ar: 'ترطيب مكثف — البشرة تفقد الرطوبة',
               en: 'Intense hydration — skin loses moisture',
             },
           },
           {
-            emoji: '',
+            emoji: '🧬',
             text: { ar: 'ببتيدات — تحفز الكولاجين', en: 'Peptides — stimulate collagen' },
           },
           {
-            emoji: '️',
+            emoji: '🌞',
             text: {
               ar: 'حماية من الشمس — التصبغات تزيد',
               en: 'Sun protection — pigmentation increases',

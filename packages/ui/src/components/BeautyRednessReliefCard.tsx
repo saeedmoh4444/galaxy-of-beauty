@@ -19,7 +19,7 @@ export function BeautyRednessReliefCard({
       )}
     >
       <div className="flex items-center gap-2">
-        <span className="text-xl"></span>
+        <span className="text-xl">🍃</span>
         <div>
           <h4 className="text-sm font-bold text-emerald-700 dark:text-emerald-300">{title}</h4>
           <p className="text-[10px] text-emerald-500 dark:text-emerald-400">{subtitle}</p>
@@ -28,28 +28,28 @@ export function BeautyRednessReliefCard({
       <div className="mt-3 space-y-1">
         {[
           {
-            emoji: '',
+            emoji: '🧊',
             text: {
               ar: 'ماء بارد — يغسل الوجه ويقلص الأوعية',
               en: 'Cold water — cleanses and constricts vessels',
             },
           },
           {
-            emoji: '',
+            emoji: '🌿',
             text: {
               ar: 'جل الألوفيرا — مهدئ طبيعي فوري',
               en: 'Aloe vera gel — an instant natural soother',
             },
           },
           {
-            emoji: '',
+            emoji: '🚫',
             text: {
               ar: 'أوقفي كل المنتجات النشطة — يوم راحة',
               en: 'Stop all active products — a rest day',
             },
           },
           {
-            emoji: '',
+            emoji: '🧴',
             text: {
               ar: 'مرطب بسيط — بدون عطور أو أحماض',
               en: 'A simple moisturizer — no fragrance or acids',

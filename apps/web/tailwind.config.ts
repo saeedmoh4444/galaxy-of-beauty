@@ -2,7 +2,12 @@ import type { Config } from 'tailwindcss';
 import shared from '@galaxy/config/tailwind';
 
 const config: Config = {
-  content: ['./src/**/*.{js,ts,jsx,tsx,mdx}', '../../packages/shared/src/**/*.{js,ts,jsx,tsx}'],
+  content: [
+    './src/**/*.{js,ts,jsx,tsx,mdx}',
+    '../../packages/shared/src/**/*.{js,ts,jsx,tsx}',
+    // @galaxy/ui ships raw source — its classes must be scanned here too.
+    '../../packages/ui/src/**/*.{js,ts,jsx,tsx}',
+  ],
   presets: [shared],
   theme: {
     extend: {

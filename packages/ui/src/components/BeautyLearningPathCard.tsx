@@ -7,7 +7,7 @@ import { cn } from '@galaxy/shared';
  * From Phase W6: Education & Empowerment — Galaxy Beauty Academy.
  *
  * Usage:
- *   <BeautyLearningPathCard path={{ title: 'مكياج احترافي', modules: 8, completed: 3, emoji: '' }} />
+ *   <BeautyLearningPathCard path={{ title: 'مكياج احترافي', modules: 8, completed: 3, emoji: '💄' }} />
  */
 
 interface LearningPath {
@@ -40,7 +40,7 @@ export function BeautyLearningPathCard({
   unitsText = 'وحدات',
   completedSuffix = 'مكتمل',
   startButtonText = 'ابدئي المسار',
-  completedButtonText = ' مكتمل — راجعي',
+  completedButtonText = 'مكتمل — راجعي',
   continueButtonText = 'واصلي التعلم ',
 }: BeautyLearningPathCardProps): JSX.Element {
   const pct = Math.round((path.completed / path.modules) * 100);
