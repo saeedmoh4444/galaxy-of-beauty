@@ -68,7 +68,7 @@ export function AddonSuggestions({ category, onSelect, selected }: Props): JSX.E
                 +{a.price} {t('misc.sar')}
               </Text>
             </View>
-            {isSelected && <Text style={{ color: '#7c3aed' }}></Text>}
+            {isSelected && <Text style={{ color: '#7c3aed' }}>✅</Text>}
           </TouchableOpacity>
         );
       })}

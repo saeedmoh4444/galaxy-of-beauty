@@ -26,7 +26,7 @@ export default function WhatsAppBotScreen(): JSX.Element {
       <Text style={styles.sub}>{t('mobile.public.whatsapp-bot.subtitle')}</Text>
 
       <View style={styles.card}>
-        <Text style={styles.emoji}></Text>
+        <Text style={styles.emoji}>💬</Text>
         <Text style={styles.ct}>{t('mobile.public.whatsapp-bot.card-title')}</Text>
         <Text style={styles.cd}>{t('mobile.public.whatsapp-bot.card-desc')}</Text>
       </View>

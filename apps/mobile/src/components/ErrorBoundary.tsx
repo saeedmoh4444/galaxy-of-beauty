@@ -27,7 +27,7 @@ function DefaultErrorFallback({
   return (
     <ScrollView contentContainerStyle={styles.container}>
       <View style={styles.iconCircle}>
-        <Text style={styles.iconEmoji}></Text>
+        <Text style={styles.iconEmoji}>⚠️</Text>
       </View>
       <Text style={styles.title}>{t('error.unexpected')}</Text>
       <Text style={styles.subtitle}>{t('mobile.core.errorBoundaryDesc')}</Text>

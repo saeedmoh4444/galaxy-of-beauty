@@ -24,7 +24,7 @@ export default function SurpriseMeScreen(): JSX.Element {
       <Text style={styles.t}>{t('mobile.public.surprise-me.title')}</Text>
       {!result ? (
         <View style={styles.centered}>
-          <Text style={styles.emoji}></Text>
+          <Text style={styles.emoji}>🎁</Text>
           <Text style={styles.hint}>{t('mobile.public.surprise-me.hint')}</Text>
           <TouchableOpacity onPress={surprise} style={styles.btn}>
             <Text style={styles.bt}>{t('mobile.public.surprise-me.choose')}</Text>

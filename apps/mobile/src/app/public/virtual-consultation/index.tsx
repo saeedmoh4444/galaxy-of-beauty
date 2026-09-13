@@ -99,7 +99,7 @@ export default function VirtualConsultationScreen(): JSX.Element {
 
         {booked && consultant ? (
           <View style={styles.confirmed}>
-            <Text style={styles.cfEmoji}></Text>
+            <Text style={styles.cfEmoji}>✅</Text>
             <Text style={styles.cfTitle}>
               {t('mobile.public.virtual-consultation.booked-title')}
             </Text>

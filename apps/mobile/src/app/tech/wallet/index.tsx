@@ -64,7 +64,7 @@ export default function TechWalletScreen(): JSX.Element {
             <Text style={s.ct}>{t('mobile.tech.wallet.recent-transactions')}</Text>
             {transactions.map((tx) => (
               <View key={tx.id} style={s.card}>
-                <Text style={s.ce}></Text>
+                <Text style={s.ce}>💳</Text>
                 <View style={{ flex: 1 }}>
                   <Text style={s.cn}>{tx.description ?? tx.source}</Text>
                   <Text style={s.cd}>
