@@ -1,4 +1,5 @@
 'use client';
+import type { JSX } from 'react';
 
 /**
  * TrustBadges — the platform's trust signals (Phase 3 sprint 1).

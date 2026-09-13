@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import type { JSX } from 'react';
 
 /**
  * Sisterhood Wall — women leaving anonymous compliments for each other.

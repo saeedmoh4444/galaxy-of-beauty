@@ -1,3 +1,4 @@
+import type { JSX } from 'react';
 /**
  * FloatingBlob — soft organic gradient blob for hero backgrounds.
  * Decorative only (aria-hidden), transform-only animation (RTL-safe).

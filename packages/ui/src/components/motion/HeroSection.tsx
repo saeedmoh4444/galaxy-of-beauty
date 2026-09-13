@@ -11,6 +11,7 @@ import { FloatingBlob } from './FloatingBlob';
 import { Marquee } from './Marquee';
 import { Sparkles, type SparkleSpec } from './Sparkles';
 import type { ReactNode } from 'react';
+import type { JSX } from 'react';
 
 interface HeroBlobSpec {
   gradient: string;
