@@ -5,6 +5,7 @@ import Image from 'next/image';
 import { api } from '@/lib/trpc';
 import { Card, GridSkeleton, ErrorAlert, EmptyState, Button, Modal } from '@galaxy/ui';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
+import { useLocale } from '@/components/LocaleProvider';
 import { SortableGrid } from '@/components/SortableGrid';
 interface Pin {
   id: number;
@@ -26,6 +27,7 @@ interface Board {
 }
 
 export default function MoodBoardPage(): JSX.Element {
+  const { t } = useLocale();
   const {
     data: boards,
     isLoading,
@@ -134,11 +136,10 @@ export default function MoodBoardPage(): JSX.Element {
         <div className="flex items-center justify-between">
           <div>
             <h1 className="text-2xl font-bold text-text-primary dark:text-gray-100">
-              لوحة الإلهام
+              {t('mood.title')}
             </h1>
-            <p className="mt-1 text-sm text-text-secondary dark:text-gray-400">
-              اجمعي صور إطلالاتكِ المفضلة ونظميها في لوحات — {totalPins} صورة في {allBoards.length}{' '}
-              لوحة
+            <p className="mt-1 text-sm text-text-secondary dark:text-text-tertiary">
+              {t('mood.subtitle', { totalPins, boards: allBoards.length })}
             </p>
           </div>
           <Button
@@ -148,19 +149,19 @@ export default function MoodBoardPage(): JSX.Element {
               setShowCreate(true);
             }}
           >
-            + لوحة جديدة
+            + {t('mood.newBoard')}
           </Button>
         </div>
 
         {isLoading ? (
           <GridSkeleton count={6} />
         ) : isError ? (
-          <ErrorAlert message="فشل تحميل اللوحات" onRetry={() => refetch()} />
+          <ErrorAlert message={t('mood.err.load')} onRetry={() => refetch()} />
         ) : allBoards.length === 0 ? (
           <EmptyState
-            title="لا توجد لوحات إلهام بعد"
-            description="أنشئي أول لوحة وابدئي بجمع إطلالاتكِ المفضلة! "
-            action={{ label: 'إنشاء لوحة', onPress: () => setShowCreate(true) }}
+            title={t('mood.empty.title')}
+            description={t('mood.empty.desc')}
+            action={{ label: t('mood.empty.action'), onPress: () => setShowCreate(true) }}
           />
         ) : (
           <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
@@ -176,11 +177,11 @@ export default function MoodBoardPage(): JSX.Element {
                       className="object-cover transition-transform group-hover:scale-105"
                     />
                   ) : (
-                    <div className="flex h-full items-center justify-center text-5xl"></div>
+                    <div className="flex h-full items-center justify-center text-5xl">🖼️</div>
                   )}
                   {/* Pin count badge */}
-                  <span className="absolute top-2 left-2 rounded-full bg-black/60 px-2 py-0.5 text-xs text-white backdrop-blur">
-                    {board.pins.length} صورة
+                  <span className="absolute top-2 start-2 rounded-full bg-black/60 px-2 py-0.5 text-xs text-white backdrop-blur">
+                    {t('mood.pinCount', { count: board.pins.length })}
                   </span>
                 </div>
 
@@ -218,7 +219,7 @@ export default function MoodBoardPage(): JSX.Element {
                       </SortableGrid>
                     </div>
                     {board.pins.length > 5 && (
-                      <div className="flex h-16 w-10 shrink-0 items-center justify-center rounded bg-gray-200 dark:bg-gray-700 text-xs text-text-secondary">
+                      <div className="flex h-16 w-10 shrink-0 items-center justify-center rounded bg-surface-muted text-xs text-text-secondary">
                         +{board.pins.length - 5}
                       </div>
                     )}
@@ -226,7 +227,7 @@ export default function MoodBoardPage(): JSX.Element {
                 )}
 
                 {/* Actions */}
-                <div className="mt-4 flex gap-2 border-t border-gray-100 pt-3 dark:border-gray-800">
+                <div className="mt-4 flex gap-2 border-t border-edge-muted pt-3 dark:border-gray-800">
                   <Button
                     size="sm"
                     className="flex-1"
@@ -238,18 +239,18 @@ export default function MoodBoardPage(): JSX.Element {
                       setPinTags('');
                     }}
                   >
-                    + إضافة صورة
+                    + {t('mood.addImage')}
                   </Button>
                   <Button
                     size="sm"
                     variant="ghost"
                     onClick={() => {
-                      if (!confirm(`هل أنتِ متأكدة من حذف لوحة "${board.name}"؟`)) return;
+                      if (!confirm(t('mood.confirmDelete', { name: board.name }))) return;
                       deleteBoardMut.mutate({ boardId: board.id });
                     }}
                     className="text-red-500 hover:text-red-700"
                   >
-                    ️
+                    🗑️
                   </Button>
                 </div>
               </Card>
@@ -258,22 +259,22 @@ export default function MoodBoardPage(): JSX.Element {
         )}
 
         {/* Create Board Modal */}
-        <Modal open={showCreate} onClose={() => setShowCreate(false)} title="لوحة جديدة">
+        <Modal open={showCreate} onClose={() => setShowCreate(false)} title={t('mood.modal.board')}>
           <div className="space-y-4">
             <div>
               <label
                 htmlFor="mb-name"
                 className="block text-sm font-semibold text-text-primary dark:text-gray-300 mb-1"
               >
-                اسم اللوحة
+                {t('mood.label.name')}
               </label>
               <input
                 id="mb-name"
                 type="text"
                 value={newBoardName}
                 onChange={(e) => setNewBoardName(e.target.value)}
-                placeholder="مثال: إطلالات زفافي"
-                className="w-full rounded-lg border border-gray-200 px-3 py-2 text-sm focus:border-brand-500 focus:outline-none dark:border-gray-700 dark:bg-gray-800"
+                placeholder={t('mood.placeholder.name')}
+                className="w-full rounded-lg border border-edge px-3 py-2 text-sm focus:border-brand-500 focus:outline-none dark:border-gray-700 dark:bg-gray-800"
               />
             </div>
             <div>
@@ -281,37 +282,37 @@ export default function MoodBoardPage(): JSX.Element {
                 htmlFor="mb-desc"
                 className="block text-sm font-semibold text-text-primary dark:text-gray-300 mb-1"
               >
-                الوصف (اختياري)
+                {t('mood.label.description')}
               </label>
               <textarea
                 id="mb-desc"
                 value={newBoardDesc}
                 onChange={(e) => setNewBoardDesc(e.target.value)}
-                placeholder="أفكار لإطلالة يوم الزفاف..."
+                placeholder={t('mood.placeholder.description')}
                 rows={2}
-                className="w-full rounded-lg border border-gray-200 px-3 py-2 text-sm focus:border-brand-500 focus:outline-none dark:border-gray-700 dark:bg-gray-800"
+                className="w-full rounded-lg border border-edge px-3 py-2 text-sm focus:border-brand-500 focus:outline-none dark:border-gray-700 dark:bg-gray-800"
               />
             </div>
             <div className="flex justify-end gap-3 pt-2">
               <Button variant="ghost" onClick={() => setShowCreate(false)}>
-                إلغاء
+                {t('mood.cancel')}
               </Button>
               <Button onClick={handleCreateBoard} loading={createBoardMut.isPending}>
-                إنشاء
+                {t('mood.create')}
               </Button>
             </div>
           </div>
         </Modal>
 
         {/* Add Pin Modal */}
-        <Modal open={showAddPin > 0} onClose={() => setShowAddPin(0)} title="إضافة صورة">
+        <Modal open={showAddPin > 0} onClose={() => setShowAddPin(0)} title={t('mood.modal.pin')}>
           <div className="space-y-4">
             <div>
               <label
                 htmlFor="mb-image"
                 className="block text-sm font-semibold text-text-primary dark:text-gray-300 mb-1"
               >
-                رابط الصورة
+                {t('mood.label.imageUrl')}
               </label>
               <input
                 id="mb-image"
@@ -319,14 +320,14 @@ export default function MoodBoardPage(): JSX.Element {
                 value={pinImageUrl}
                 onChange={(e) => setPinImageUrl(e.target.value)}
                 placeholder="https://example.com/image.jpg"
-                className="w-full rounded-lg border border-gray-200 px-3 py-2 text-sm focus:border-brand-500 focus:outline-none dark:border-gray-700 dark:bg-gray-800"
+                className="w-full rounded-lg border border-edge px-3 py-2 text-sm focus:border-brand-500 focus:outline-none dark:border-gray-700 dark:bg-gray-800"
               />
               {pinImageUrl && (
                 <div className="mt-2 h-32 rounded-xl bg-surface-muted dark:bg-gray-800 overflow-hidden">
                   {/* eslint-disable-next-line @next/next/no-img-element -- user-entered URL may not be an allowed remote host for the optimizer */}
                   <img
                     src={pinImageUrl}
-                    alt="معاينة"
+                    alt={t('mood.previewAlt')}
                     className="h-full w-full object-cover"
                     onError={(e) => {
                       (e.target as HTMLImageElement).style.display = 'none';
@@ -340,15 +341,15 @@ export default function MoodBoardPage(): JSX.Element {
                 htmlFor="mb-title"
                 className="block text-sm font-semibold text-text-primary dark:text-gray-300 mb-1"
               >
-                العنوان (اختياري)
+                {t('mood.label.title')}
               </label>
               <input
                 id="mb-title"
                 type="text"
                 value={pinTitle}
                 onChange={(e) => setPinTitle(e.target.value)}
-                placeholder="مكياج عيون سموكي"
-                className="w-full rounded-lg border border-gray-200 px-3 py-2 text-sm focus:border-brand-500 focus:outline-none dark:border-gray-700 dark:bg-gray-800"
+                placeholder={t('mood.placeholder.title')}
+                className="w-full rounded-lg border border-edge px-3 py-2 text-sm focus:border-brand-500 focus:outline-none dark:border-gray-700 dark:bg-gray-800"
               />
             </div>
             <div>
@@ -356,23 +357,23 @@ export default function MoodBoardPage(): JSX.Element {
                 htmlFor="mb-tags"
                 className="block text-sm font-semibold text-text-primary dark:text-gray-300 mb-1"
               >
-                وسوم (تفصل بفواصل)
+                {t('mood.label.tags')}
               </label>
               <input
                 id="mb-tags"
                 type="text"
                 value={pinTags}
                 onChange={(e) => setPinTags(e.target.value)}
-                placeholder="مكياج، سهرة، عيون"
-                className="w-full rounded-lg border border-gray-200 px-3 py-2 text-sm focus:border-brand-500 focus:outline-none dark:border-gray-700 dark:bg-gray-800"
+                placeholder={t('mood.placeholder.tags')}
+                className="w-full rounded-lg border border-edge px-3 py-2 text-sm focus:border-brand-500 focus:outline-none dark:border-gray-700 dark:bg-gray-800"
               />
             </div>
             <div className="flex justify-end gap-3 pt-2">
               <Button variant="ghost" onClick={() => setShowAddPin(0)}>
-                إلغاء
+                {t('mood.cancel')}
               </Button>
               <Button onClick={handleAddPin} loading={addPinMut.isPending}>
-                تثبيت
+                {t('mood.pin')}
               </Button>
             </div>
           </div>

@@ -4,8 +4,10 @@ import { useState } from 'react';
 import { api } from '@/lib/trpc';
 import { Card, CardSkeleton, CardListSkeleton, Button } from '@galaxy/ui';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
+import { useLocale } from '@/components/LocaleProvider';
 
 export default function ChatPage(): JSX.Element {
+  const { t, locale } = useLocale();
   const { data: conversations, isLoading: convLoading } = api.chat.conversations.useQuery() as {
     data: Array<Record<string, unknown>> | undefined;
     isLoading: boolean;
@@ -45,17 +47,17 @@ export default function ChatPage(): JSX.Element {
     <DashboardLayout userRole="CUSTOMER">
       <div className="mx-auto max-w-5xl space-y-6">
         <div>
-          <h1 className="text-2xl font-bold"> المحادثات</h1>
-          <p className="mt-1 text-sm text-text-secondary">تواصلي مع الفنيات مباشرة</p>
+          <h1 className="text-2xl font-bold">{t('chat.title')}</h1>
+          <p className="mt-1 text-sm text-text-secondary">{t('chat.subtitle')}</p>
         </div>
 
         <div className="grid gap-6 lg:grid-cols-3">
           <Card padding="lg" className="lg:col-span-1">
-            <h3 className="font-bold mb-3"> المحادثات النشطة</h3>
+            <h3 className="font-bold mb-3">{t('chat.activeConversations')}</h3>
             {convLoading ? (
               <CardListSkeleton count={3} />
             ) : convs.length === 0 ? (
-              <p className="text-sm text-text-tertiary">لا توجد محادثات</p>
+              <p className="text-sm text-text-tertiary">{t('chat.noConversations')}</p>
             ) : (
               <div className="space-y-1">
                 {convs.map((c: Record<string, unknown>) => {
@@ -64,9 +66,11 @@ export default function ChatPage(): JSX.Element {
                     <button
                       key={c.bookingId as number}
                       onClick={() => setSelectedConv(c.bookingId as number)}
-                      className={`w-full rounded-lg p-3 text-right transition-all ${selectedConv === c.bookingId ? 'bg-brand-50 border-l-4 border-brand-600' : 'hover:bg-surface-muted'}`}
+                      className={`w-full rounded-lg p-3 text-end transition-all ${selectedConv === c.bookingId ? 'bg-brand-50 border-s-4 border-brand-600' : 'hover:bg-surface-muted'}`}
                     >
-                      <p className="font-bold text-sm">{(other?.name as string) ?? 'محادثة'}</p>
+                      <p className="font-bold text-sm">
+                        {(other?.name as string) ?? t('chat.conversationFallback')}
+                      </p>
                       <p className="text-xs text-text-secondary">{c.bookingCode as string}</p>
                     </button>
                   );
@@ -78,7 +82,7 @@ export default function ChatPage(): JSX.Element {
           <Card padding="lg" className="lg:col-span-2 flex flex-col min-h-[400px]">
             {!selectedConv ? (
               <p className="text-sm text-text-tertiary text-center py-16">
-                اختاري محادثة من القائمة
+                {t('chat.selectConversation')}
               </p>
             ) : (
               <>
@@ -86,24 +90,28 @@ export default function ChatPage(): JSX.Element {
                   {msgLoading ? (
                     <CardSkeleton />
                   ) : selectedMsgs.length === 0 ? (
-                    <p className="text-sm text-text-tertiary text-center">لا توجد رسائل</p>
+                    <p className="text-sm text-text-tertiary text-center">{t('chat.noMessages')}</p>
                   ) : (
                     selectedMsgs.map((m: Record<string, unknown>) => {
                       const sender = m.sender as Record<string, unknown> | undefined;
+                      const currentUserId = m.currentUserId as number | undefined;
                       return (
                         <div
                           key={m.id as number}
-                          className={`flex ${sender?.id === (m as any).currentUserId ? 'justify-end' : 'justify-start'}`}
+                          className={`flex ${sender?.id === currentUserId ? 'justify-end' : 'justify-start'}`}
                         >
                           <div
-                            className={`max-w-[80%] rounded-xl p-3 ${sender?.id === (m as any).currentUserId ? 'bg-brand-600 text-white' : 'bg-surface-muted'}`}
+                            className={`max-w-[80%] rounded-xl p-3 ${sender?.id === currentUserId ? 'bg-brand-600 text-white' : 'bg-surface-muted'}`}
                           >
                             <p className="text-sm">{m.content as string}</p>
                             <p className="text-xs opacity-70 mt-1">
-                              {new Date(m.createdAt as string).toLocaleTimeString('ar-SA', {
-                                hour: '2-digit',
-                                minute: '2-digit',
-                              })}
+                              {new Date(m.createdAt as string).toLocaleTimeString(
+                                locale === 'en' ? 'en-GB' : 'ar-SA',
+                                {
+                                  hour: '2-digit',
+                                  minute: '2-digit',
+                                },
+                              )}
                             </p>
                           </div>
                         </div>
@@ -115,7 +123,7 @@ export default function ChatPage(): JSX.Element {
                   <input
                     value={content}
                     onChange={(e) => setContent(e.target.value)}
-                    placeholder="اكتبي رسالتكِ..."
+                    placeholder={t('chat.messagePlaceholder')}
                     className="flex-1 rounded-lg border px-3 py-2 text-sm dark:border-gray-700 dark:bg-gray-800"
                     onKeyDown={(e) => {
                       if (e.key === 'Enter' && content.trim()) {
@@ -139,7 +147,7 @@ export default function ChatPage(): JSX.Element {
                     }}
                     loading={sendMut.isPending}
                   >
-                    إرسال
+                    {t('chat.send')}
                   </Button>
                 </div>
               </>

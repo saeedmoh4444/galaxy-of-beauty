@@ -4,6 +4,8 @@ import { useState, useRef, useEffect, useCallback } from 'react';
 import { api } from '@/lib/trpc';
 import { Card, GridSkeleton, Button, formatCurrency } from '@galaxy/ui';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
+import { useLocale } from '@/components/LocaleProvider';
+import type { TranslationKey } from '@galaxy/shared';
 import Link from 'next/link';
 import Image from 'next/image';
 
@@ -29,11 +31,11 @@ interface ProductRec {
 
 type MakeupType = 'lips' | 'eyes' | 'blush' | 'nails';
 
-const TYPE_LABELS: Record<MakeupType, { label: string; emoji: string }> = {
-  lips: { label: 'أحمر شفاه', emoji: '' },
-  eyes: { label: 'ظلال عيون', emoji: '️' },
-  blush: { label: 'أحمر خدود', emoji: '' },
-  nails: { label: 'أظافر', emoji: '' },
+const TYPE_LABELS: Record<MakeupType, { label: TranslationKey; emoji: string }> = {
+  lips: { label: 'tryOn.type.lips', emoji: '💋' },
+  eyes: { label: 'tryOn.type.eyes', emoji: '👁️' },
+  blush: { label: 'tryOn.type.blush', emoji: '🌸' },
+  nails: { label: 'tryOn.type.nails', emoji: '💅' },
 };
 
 const TYPE_CATEGORIES: Record<MakeupType, 'lips' | 'eyes' | 'blush' | 'nails'> = {
@@ -50,6 +52,7 @@ function useCamera(
   videoRef: React.RefObject<HTMLVideoElement | null>,
   _canvasRef: React.RefObject<HTMLCanvasElement | null>,
 ) {
+  const { t } = useLocale();
   const [cameraReady, setCameraReady] = useState(false);
   const [cameraError, setCameraError] = useState('');
   const [facing, setFacing] = useState<'user' | 'environment'>('user');
@@ -76,7 +79,7 @@ function useCamera(
           setFacing(mode);
         }
       } catch {
-        setCameraError('تعذر الوصول للكاميرا — تأكدي من صلاحية الإذن');
+        setCameraError(t('tryOn.cameraError'));
       }
     },
     [videoRef],
@@ -236,11 +239,13 @@ function ColorPalette({
             className="h-9 w-9 rounded-full border-2 border-white shadow-md transition-transform group-hover:scale-110"
             style={{ backgroundColor: c.hex }}
           />
-          <span className="text-[10px] text-text-secondary dark:text-gray-400 leading-tight text-center max-w-[48px] truncate">
+          <span className="text-[10px] text-text-secondary dark:text-text-tertiary leading-tight text-center max-w-[48px] truncate">
             {c.nameAr}
           </span>
           {selectedId === c.id && (
-            <span className="absolute -top-1 -right-1 flex h-4 w-4 items-center justify-center rounded-full bg-brand-500 text-[10px] text-white"></span>
+            <span className="absolute -top-1 -end-1 flex h-4 w-4 items-center justify-center rounded-full bg-brand-500 text-[10px] text-white">
+              ✅
+            </span>
           )}
         </button>
       ))}
@@ -252,6 +257,7 @@ function ColorPalette({
 // Main Page
 // ---------------------------------------------------------------------------
 export default function VirtualTryOnPage(): JSX.Element {
+  const { t } = useLocale();
   const videoRef = useRef<HTMLVideoElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
@@ -388,12 +394,12 @@ export default function VirtualTryOnPage(): JSX.Element {
     <DashboardLayout userRole="CUSTOMER">
       <div className="mx-auto max-w-4xl space-y-6">
         {/* Header */}
-        <div className="text-center sm:text-right">
+        <div className="text-center sm:text-end">
           <h1 className="text-2xl font-bold text-text-primary dark:text-gray-100">
-            تجربة المكياج الافتراضية
+            {t('tryOn.title')}
           </h1>
-          <p className="mt-1 text-sm text-text-secondary dark:text-gray-400">
-            جربي ألوان المكياج مباشرة على وجهكِ قبل الشراء
+          <p className="mt-1 text-sm text-text-secondary dark:text-text-tertiary">
+            {t('tryOn.subtitle')}
           </p>
         </div>
 
@@ -403,24 +409,24 @@ export default function VirtualTryOnPage(): JSX.Element {
             {/* Makeup Type Selector */}
             <Card padding="md">
               <h3 className="text-sm font-semibold text-text-primary dark:text-gray-300 mb-3">
-                نوع المكياج
+                {t('tryOn.makeupType')}
               </h3>
               <div className="grid grid-cols-2 gap-2">
-                {typeKeys.map((t) => (
+                {typeKeys.map((typeKey) => (
                   <button
-                    key={t}
+                    key={typeKey}
                     onClick={() => {
-                      setMakeupType(t);
+                      setMakeupType(typeKey);
                       setSelectedColor(null);
                     }}
                     className={`flex items-center gap-2 rounded-xl px-3 py-2.5 text-sm font-medium transition-all ${
-                      makeupType === t
+                      makeupType === typeKey
                         ? 'bg-brand-100 text-brand-700 ring-2 ring-brand-300 dark:bg-brand-900 dark:text-brand-300'
-                        : 'bg-surface-muted text-text-secondary hover:bg-surface-muted dark:bg-gray-800 dark:text-gray-400'
+                        : 'bg-surface-muted text-text-secondary hover:bg-surface-muted dark:bg-gray-800 dark:text-text-tertiary'
                     }`}
                   >
-                    <span className="text-lg">{TYPE_LABELS[t].emoji}</span>
-                    {TYPE_LABELS[t].label}
+                    <span className="text-lg">{TYPE_LABELS[typeKey].emoji}</span>
+                    {t(TYPE_LABELS[typeKey].label)}
                   </button>
                 ))}
               </div>
@@ -429,13 +435,13 @@ export default function VirtualTryOnPage(): JSX.Element {
             {/* Color Palette */}
             <Card padding="md">
               <h3 className="text-sm font-semibold text-text-primary dark:text-gray-300 mb-3">
-                الألوان{' '}
+                {t('tryOn.colors')}{' '}
                 {selectedColor && <span className="text-brand-600">— {selectedColor.nameAr}</span>}
               </h3>
               {palettesLoading ? (
                 <div className="flex gap-2">
                   {Array.from({ length: 6 }, (_, i) => (
-                    <div key={i} className="h-9 w-9 rounded-full bg-gray-200 animate-pulse" />
+                    <div key={i} className="h-9 w-9 rounded-full bg-surface-muted animate-pulse" />
                   ))}
                 </div>
               ) : (
@@ -450,7 +456,7 @@ export default function VirtualTryOnPage(): JSX.Element {
             {/* Intensity Slider */}
             <Card padding="md">
               <h3 className="text-sm font-semibold text-text-primary dark:text-gray-300 mb-3">
-                الشفافية: <span className="text-brand-600">{intensity}%</span>
+                {t('tryOn.intensity')}: <span className="text-brand-600">{intensity}%</span>
               </h3>
               <input
                 type="range"
@@ -461,14 +467,14 @@ export default function VirtualTryOnPage(): JSX.Element {
                 className="w-full accent-brand-600"
               />
               <div className="flex justify-between text-[10px] text-text-tertiary mt-1">
-                <span>شفاف</span>
-                <span>كثيف</span>
+                <span>{t('tryOn.intensity.low')}</span>
+                <span>{t('tryOn.intensity.high')}</span>
               </div>
             </Card>
 
             {/* Capture Button */}
             <Button onClick={takePhoto} disabled={!cameraReady} className="w-full" size="lg">
-              التقطي صورة
+              {t('tryOn.takePhoto')}
             </Button>
           </div>
 
@@ -495,16 +501,16 @@ export default function VirtualTryOnPage(): JSX.Element {
                     {!selectedColor && (
                       <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
                         <div className="relative w-[65%] h-[55%] rounded-[50%] border-2 border-dashed border-white/40">
-                          <div className="absolute top-[15%] left-[25%] w-[20%] h-[10%] rounded-full border border-white/25" />
-                          <div className="absolute top-[15%] right-[25%] w-[20%] h-[10%] rounded-full border border-white/25" />
-                          <div className="absolute bottom-[12%] left-[35%] w-[30%] h-[8%] rounded-full border border-white/25" />
+                          <div className="absolute top-[15%] start-[25%] w-[20%] h-[10%] rounded-full border border-white/25" />
+                          <div className="absolute top-[15%] end-[25%] w-[20%] h-[10%] rounded-full border border-white/25" />
+                          <div className="absolute bottom-[12%] start-[35%] w-[30%] h-[8%] rounded-full border border-white/25" />
                         </div>
                       </div>
                     )}
 
                     {/* Selected color indicator */}
                     {selectedColor && (
-                      <div className="absolute top-3 left-3 flex items-center gap-2 rounded-full bg-black/50 px-3 py-1.5 text-white text-xs backdrop-blur">
+                      <div className="absolute top-3 start-3 flex items-center gap-2 rounded-full bg-black/50 px-3 py-1.5 text-white text-xs backdrop-blur">
                         <div
                           className="h-4 w-4 rounded-full border border-white/50"
                           style={{ backgroundColor: selectedColor.hex }}
@@ -514,11 +520,11 @@ export default function VirtualTryOnPage(): JSX.Element {
                     )}
 
                     {/* Camera controls */}
-                    <div className="absolute top-3 right-3 flex gap-2">
+                    <div className="absolute top-3 end-3 flex gap-2">
                       <button
                         onClick={flipCamera}
                         className="rounded-full bg-black/50 p-2 text-white text-sm backdrop-blur hover:bg-black/70 transition-colors"
-                        title="قلب الكاميرا"
+                        title={t('tryOn.flipCamera')}
                       ></button>
                     </div>
 
@@ -526,10 +532,10 @@ export default function VirtualTryOnPage(): JSX.Element {
                     {cameraError && (
                       <div className="absolute inset-0 flex items-center justify-center bg-black/80">
                         <div className="text-center p-6">
-                          <p className="text-white text-lg mb-2"></p>
+                          <p className="text-white text-lg mb-2">⚠️</p>
                           <p className="text-white/80 text-sm mb-3">{cameraError}</p>
                           <Button size="sm" onClick={() => startCamera('user')}>
-                            إعادة المحاولة
+                            {t('tryOn.retry')}
                           </Button>
                         </div>
                       </div>
@@ -541,10 +547,10 @@ export default function VirtualTryOnPage(): JSX.Element {
                         {/* eslint-disable-next-line @next/next/no-img-element -- canvas data: URL cannot be passed to next/image */}
                         <img
                           src={capturedPhoto}
-                          alt="لقطة"
+                          alt={t('tryOn.photoAlt')}
                           className="h-full w-full object-cover"
                         />
-                        <div className="absolute bottom-4 left-4 right-4 flex gap-2">
+                        <div className="absolute bottom-4 start-4 end-4 flex gap-2">
                           <Button
                             size="sm"
                             onClick={() => {
@@ -555,7 +561,7 @@ export default function VirtualTryOnPage(): JSX.Element {
                             }}
                             className="flex-1"
                           >
-                            تحميل
+                            {t('tryOn.download')}
                           </Button>
                           <Button
                             size="sm"
@@ -563,7 +569,7 @@ export default function VirtualTryOnPage(): JSX.Element {
                             onClick={() => setCapturedPhoto(null)}
                             className="flex-1 bg-white/20 text-white hover:bg-white/30"
                           >
-                            إعادة التصوير
+                            {t('tryOn.retake')}
                           </Button>
                         </div>
                       </div>
@@ -573,7 +579,7 @@ export default function VirtualTryOnPage(): JSX.Element {
                   <div className="absolute inset-0 flex items-center justify-center">
                     <div className="text-center text-white/60">
                       <div className="animate-spin mx-auto mb-3 h-8 w-8 rounded-full border-2 border-white/30 border-t-white" />
-                      <p className="text-sm">جاري تشغيل الكاميرا...</p>
+                      <p className="text-sm">{t('tryOn.cameraStarting')}</p>
                     </div>
                   </div>
                 )}
@@ -586,17 +592,15 @@ export default function VirtualTryOnPage(): JSX.Element {
         {selectedColor && (
           <Card padding="lg">
             <h3 className="text-lg font-bold text-text-primary dark:text-gray-100 mb-1">
-              ️ منتجات مقترحة
+              {t('tryOn.suggestedProducts')}
             </h3>
             <p className="text-sm text-text-secondary mb-4">
-              منتجات تناسب درجة &ldquo;{selectedColor.nameAr}&rdquo; من متجرنا
+              {t('tryOn.matchingProducts', { name: selectedColor.nameAr })}
             </p>
             {recsLoading ? (
               <GridSkeleton count={4} />
             ) : !products || products.length === 0 ? (
-              <p className="text-sm text-text-tertiary text-center py-4">
-                لا توجد منتجات مطابقة حالياً — تصفحي متجرنا للمزيد
-              </p>
+              <p className="text-sm text-text-tertiary text-center py-4">{t('tryOn.noMatching')}</p>
             ) : (
               <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
                 {products.map((p) => (
@@ -614,7 +618,7 @@ export default function VirtualTryOnPage(): JSX.Element {
                             className="rounded-xl object-cover"
                           />
                         ) : (
-                          <span className="text-4xl"></span>
+                          <span className="text-4xl">💄</span>
                         )}
                       </div>
                       {p.brand && (
@@ -626,7 +630,7 @@ export default function VirtualTryOnPage(): JSX.Element {
                         {p.nameAr}
                       </h4>
                       <p className="mt-1 text-sm font-extrabold text-brand-600">
-                        {formatCurrency(p.price)} ر.س
+                        {formatCurrency(p.price)} {t('misc.sar')}
                       </p>
                     </Card>
                   </Link>
@@ -636,7 +640,7 @@ export default function VirtualTryOnPage(): JSX.Element {
             <div className="mt-4 text-center">
               <Link href="/marketplace">
                 <Button variant="ghost" size="sm">
-                  تصفحي المتجر كاملاً →
+                  {t('tryOn.browseStore')} →
                 </Button>
               </Link>
             </div>
@@ -648,12 +652,14 @@ export default function VirtualTryOnPage(): JSX.Element {
           padding="lg"
           className="bg-gradient-to-r from-pink-50 to-rose-50 dark:from-pink-950 dark:to-rose-950 border-none"
         >
-          <h3 className="font-bold text-text-primary dark:text-gray-100 mb-3"> نصائح للتجربة</h3>
-          <div className="grid gap-2 text-sm text-text-secondary dark:text-gray-400 sm:grid-cols-2">
-            <p> تأكدي من إضاءة وجهكِ جيداً للحصول على أفضل نتيجة</p>
-            <p> التقطي صورة بعد اختيار اللون لمشاركتها مع صديقاتكِ</p>
-            <p> جربي كل أنواع المكياج — شفاه، عيون، خدود، وأظافر</p>
-            <p>️ بعد اختيار لونكِ المفضل، تصفحي المنتجات المتطابقة في متجرنا</p>
+          <h3 className="font-bold text-text-primary dark:text-gray-100 mb-3">
+            {t('tryOn.tipsTitle')}
+          </h3>
+          <div className="grid gap-2 text-sm text-text-secondary dark:text-text-tertiary sm:grid-cols-2">
+            <p>{t('tryOn.tip1')}</p>
+            <p>{t('tryOn.tip2')}</p>
+            <p>{t('tryOn.tip3')}</p>
+            <p>{t('tryOn.tip4')}</p>
           </div>
         </Card>
       </div>

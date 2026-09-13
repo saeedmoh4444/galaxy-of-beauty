@@ -7,7 +7,7 @@ import { cn } from '@galaxy/shared';
  * From Phase W6: Education & Empowerment — Knowledge Hub.
  *
  * Usage:
- *   <BeautyQuickTipCard tip={{ emoji: '', title: 'الماء أولاً', body: 'اشربي كوب ماء قبل قهوتك الصباحية.' }} />
+ *   <BeautyQuickTipCard tip={{ emoji: '💧', title: 'الماء أولاً', body: 'اشربي كوب ماء قبل قهوتك الصباحية.' }} />
  */
 
 interface QuickTip {
@@ -20,12 +20,14 @@ interface QuickTip {
 interface BeautyQuickTipCardProps {
   tip: QuickTip;
   onNextTip?: () => void;
+  nextTipText?: string;
   className?: string;
 }
 
 export function BeautyQuickTipCard({
   tip,
   onNextTip,
+  nextTipText = 'النصيحة التالية ←',
   className = '',
 }: BeautyQuickTipCardProps): JSX.Element {
   return (
@@ -49,9 +51,9 @@ export function BeautyQuickTipCard({
         <button
           type="button"
           onClick={onNextTip}
-          className="mt-3 w-full rounded-xl border border-teal-200 py-2 text-[10px] font-bold text-teal-700 hover:bg-white/60 dark:border-teal-800 dark:text-teal-300 transition-colors"
+          className="mt-3 w-full rounded-xl border border-teal-200 py-2 text-[10px] font-bold text-teal-700 hover:bg-white/60 dark:hover:bg-gray-800/60 dark:border-teal-800 dark:text-teal-300 transition-colors"
         >
-          النصيحة التالية ←
+          {nextTipText}
         </button>
       )}
     </div>

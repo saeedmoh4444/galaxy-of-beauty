@@ -2,6 +2,7 @@ import { View, Text, ScrollView, StyleSheet, TouchableOpacity, RefreshControl } 
 import { ErrorAlert } from '@/components/ErrorAlert';
 import { SkeletonList } from '@/components/SkeletonCard';
 import { trpc } from '@/lib/trpc-react';
+import { useLocale } from '@/components/LocaleProvider';
 
 interface SubscriptionBox {
   id?: number;
@@ -13,11 +14,17 @@ interface SubscriptionBox {
 }
 
 export default function SubscriptionBoxesScreen(): JSX.Element {
+  const { t } = useLocale();
   const boxesQ = trpc.subscriptionBoxes.plans.useQuery();
 
   if (boxesQ.isLoading) return <SkeletonList count={4} />;
   if (boxesQ.isError)
-    return <ErrorAlert message="فشل تحميل الصناديق" onRetry={() => boxesQ.refetch()} />;
+    return (
+      <ErrorAlert
+        message={t('mobile.public.subscription-boxes.load-error')}
+        onRetry={() => boxesQ.refetch()}
+      />
+    );
 
   const items = (boxesQ.data as unknown as SubscriptionBox[] | null) ?? [];
 
@@ -33,10 +40,10 @@ export default function SubscriptionBoxesScreen(): JSX.Element {
         />
       }
     >
-      <Text style={styles.t}> الصناديق الشهرية</Text>
-      <Text style={styles.sub}>صندوق جمال شهري لباب بيتكِ</Text>
+      <Text style={styles.t}>{t('mobile.public.subscription-boxes.title')}</Text>
+      <Text style={styles.sub}>{t('mobile.public.subscription-boxes.subtitle')}</Text>
       {items.length === 0 ? (
-        <Text style={styles.e}>لا توجد صناديق</Text>
+        <Text style={styles.e}>{t('mobile.public.subscription-boxes.empty')}</Text>
       ) : (
         items.map((b) => (
           <View key={b.id} style={styles.card}>
@@ -44,13 +51,21 @@ export default function SubscriptionBoxesScreen(): JSX.Element {
             <View style={{ flex: 1 }}>
               <Text style={styles.boxName}>{b.nameAr ?? ''}</Text>
               <Text style={styles.boxDesc}>{b.descAr?.substring(0, 80)}</Text>
-              <Text style={styles.boxItems}> {b.itemCount ?? 0} منتجات</Text>
+              <Text style={styles.boxItems}>
+                {t('mobile.public.products-count', { count: b.itemCount ?? 0 })}
+              </Text>
             </View>
             <View style={{ alignItems: 'flex-end' }}>
-              <Text style={styles.boxPrice}>{(b.price ?? 0).toLocaleString()} ر.س</Text>
-              <Text style={styles.boxPeriod}>/شهرياً</Text>
+              <Text style={styles.boxPrice}>
+                {t('mobile.public.currency', { price: (b.price ?? 0).toLocaleString() })}
+              </Text>
+              <Text style={styles.boxPeriod}>
+                {t('mobile.public.subscription-boxes.per-month')}
+              </Text>
               <TouchableOpacity style={styles.subBtn}>
-                <Text style={styles.subBtnText}>اشتراك</Text>
+                <Text style={styles.subBtnText}>
+                  {t('mobile.public.subscription-boxes.subscribe')}
+                </Text>
               </TouchableOpacity>
             </View>
           </View>

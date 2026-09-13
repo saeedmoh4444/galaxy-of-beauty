@@ -1,6 +1,8 @@
 import { View, Text, ScrollView, StyleSheet, RefreshControl } from 'react-native';
 import { SkeletonList } from '@/components/SkeletonCard';
 import { trpc } from '@/lib/trpc-react';
+import { useLocale } from '@/components/LocaleProvider';
+import { useAuthState } from '@/hooks/useAuthState';
 
 interface RoutineStep {
   id?: number;
@@ -11,7 +13,9 @@ interface RoutineStep {
 }
 
 export default function RoutineSchedulerScreen(): JSX.Element {
-  const routinesQ = trpc.routineScheduler.myRoutines.useQuery();
+  const { t } = useLocale();
+  const isAuthed = useAuthState();
+  const routinesQ = trpc.routineScheduler.myRoutines.useQuery(undefined, { enabled: isAuthed });
   const data: RoutineStep[] = (routinesQ.data as unknown as RoutineStep[] | undefined) ?? [];
 
   if (routinesQ.isLoading) return <SkeletonList count={4} />;
@@ -28,7 +32,7 @@ export default function RoutineSchedulerScreen(): JSX.Element {
         />
       }
     >
-      <Text style={styles.t}> جدول الروتين</Text>
+      <Text style={styles.t}>{t('mobile.routineScheduler.title')}</Text>
       {data.map((r, i) => (
         <View key={i} style={styles.card}>
           <Text style={styles.emoji}>{r.emoji ?? ''}</Text>

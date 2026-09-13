@@ -1,10 +1,11 @@
 import { View, Text, ScrollView, StyleSheet, TouchableOpacity } from 'react-native';
 import { useState } from 'react';
+import { useLocale } from '@/components/LocaleProvider';
 
 const DESTINATIONS = [
   {
     key: 'beach',
-    emoji: '️',
+    emoji: '🏖️',
     name: 'شاطئ',
     color: '#0891b2',
     essentials: [
@@ -21,7 +22,7 @@ const DESTINATIONS = [
   },
   {
     key: 'city',
-    emoji: '️',
+    emoji: '🏙️',
     name: 'مدينة',
     color: '#6366f1',
     essentials: [
@@ -38,7 +39,7 @@ const DESTINATIONS = [
   },
   {
     key: 'mountain',
-    emoji: '️',
+    emoji: '⛰️',
     name: 'جبال',
     color: '#059669',
     essentials: [
@@ -56,6 +57,7 @@ const DESTINATIONS = [
 ];
 
 export default function TravelChecklistScreen(): JSX.Element {
+  const { t } = useLocale();
   const [dest, setDest] = useState('beach');
   const [checked, setChecked] = useState<Set<string>>(new Set());
 
@@ -70,8 +72,8 @@ export default function TravelChecklistScreen(): JSX.Element {
 
   return (
     <ScrollView style={styles.c} contentContainerStyle={styles.i}>
-      <Text style={styles.t}> حقيبة السفر</Text>
-      <Text style={styles.sub}>قائمة مستلزمات الجمال للسفر</Text>
+      <Text style={styles.t}>{t('mobile.travelKit.title')}</Text>
+      <Text style={styles.sub}>{t('mobile.travelChecklist.subtitle')}</Text>
 
       <View style={styles.tabs}>
         {DESTINATIONS.map((dx) => (
@@ -90,13 +92,13 @@ export default function TravelChecklistScreen(): JSX.Element {
       </View>
 
       <View style={styles.progress}>
-        <Text style={styles.pt}> {progress}% جاهز</Text>
+        <Text style={styles.pt}>{t('mobile.travelChecklist.progress', { progress })}</Text>
         <View style={styles.bar}>
           <View style={[styles.fill, { width: `${progress}%`, backgroundColor: d.color }]} />
         </View>
       </View>
 
-      <Text style={styles.st}> القائمة</Text>
+      <Text style={styles.st}>{t('mobile.travelChecklist.list')}</Text>
       {d.essentials.map((e, i) => (
         <TouchableOpacity
           key={i}
@@ -118,7 +120,7 @@ export default function TravelChecklistScreen(): JSX.Element {
       ))}
 
       <View style={styles.tip}>
-        <Text style={styles.tipEmoji}></Text>
+        <Text style={styles.tipEmoji}>💡</Text>
         <Text style={styles.tipText}>{d.tips}</Text>
       </View>
     </ScrollView>

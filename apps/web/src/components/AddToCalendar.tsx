@@ -1,6 +1,7 @@
 'use client';
 
 import { GOOGLE_CALENDAR_URL } from '@galaxy/ui';
+import { useLocale } from '@/components/LocaleProvider';
 
 interface AddToCalendarProps {
   title: string;
@@ -17,6 +18,8 @@ export function AddToCalendar({
   endAt,
   location,
 }: AddToCalendarProps): JSX.Element {
+  const { t } = useLocale();
+
   const generateICS = () => {
     const start = new Date(startAt).toISOString().replace(/[-:]/g, '').split('.')[0] + 'Z';
     const end = new Date(endAt).toISOString().replace(/[-:]/g, '').split('.')[0] + 'Z';
@@ -61,15 +64,15 @@ export function AddToCalendar({
     <div className="flex gap-2">
       <button
         onClick={generateICS}
-        className="rounded-lg border border-gray-200 px-3 py-1.5 text-xs font-medium text-gray-600 hover:bg-gray-50 dark:border-gray-700 dark:text-gray-400"
+        className="rounded-lg border border-edge px-3 py-1.5 text-xs font-medium text-text-secondary hover:bg-surface-muted dark:border-gray-700 dark:text-text-tertiary"
       >
-        أضف للتقويم
+        {t('calendar.add-to-calendar')}
       </button>
       <a
         href={googleCalUrl()}
         target="_blank"
         rel="noopener noreferrer"
-        className="rounded-lg border border-gray-200 px-3 py-1.5 text-xs font-medium text-gray-600 hover:bg-gray-50 dark:border-gray-700 dark:text-gray-400"
+        className="rounded-lg border border-edge px-3 py-1.5 text-xs font-medium text-text-secondary hover:bg-surface-muted dark:border-gray-700 dark:text-text-tertiary"
       >
         Google
       </a>

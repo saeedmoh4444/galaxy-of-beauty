@@ -1,9 +1,9 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 'use client';
 
 import { useState, useCallback } from 'react';
 import Image from 'next/image';
 import { api } from '@/lib/trpc';
+import type { RouterOutputs } from '@galaxy/api';
 import {
   Card,
   ErrorAlert,
@@ -14,39 +14,42 @@ import {
   DashboardSkeleton,
 } from '@galaxy/ui';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
+import { useLocale } from '@/components/LocaleProvider';
 import { useToast } from '@galaxy/ui';
 import { SortableGrid } from '@/components/SortableGrid';
 
+type PinItem = RouterOutputs['inspiration']['list'][number];
+
 export default function InspirationPage(): JSX.Element {
+  const { t } = useLocale();
   const { addToast } = useToast();
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const { data, isLoading, isError, refetch } = api.inspiration.list.useQuery() as any;
+  const { data, isLoading, isError, refetch } = api.inspiration.list.useQuery();
   const createMut = api.inspiration.create.useMutation({
     onSuccess: () => {
       refetch();
       setShowAdd(false);
       setForm({ imageUrl: '', title: '', notes: '', tags: '' });
-      addToast('success', 'تمت الإضافة');
+      addToast('success', t('inspiration.toast.added'));
     },
   });
   const deleteMut = api.inspiration.delete.useMutation({
     onSuccess: () => {
       refetch();
-      addToast('success', 'تم الحذف');
+      addToast('success', t('inspiration.toast.deleted'));
     },
   });
   const reorderMut = api.inspiration.reorder.useMutation();
 
   const [showAdd, setShowAdd] = useState(false);
   const [form, setForm] = useState({ imageUrl: '', title: '', notes: '', tags: '' });
-  const [orderedPins, setOrderedPins] = useState<Array<Record<string, any>> | null>(null);
+  const [orderedPins, setOrderedPins] = useState<PinItem[] | null>(null);
 
-  const allPins = (data ?? []) as Array<Record<string, any>>;
+  const allPins = data ?? [];
   // Use local order when user has reordered, otherwise server order
   const pins = orderedPins && orderedPins.length === allPins.length ? orderedPins : allPins;
 
   const handleReorder = useCallback(
-    (newPins: Array<Record<string, any>>) => {
+    (newPins: PinItem[]) => {
       setOrderedPins(newPins);
       // Optimistic — persist the new order; the server list orders by sortOrder
       reorderMut.mutate({ pinIds: newPins.map((p) => p.id as number) });
@@ -59,23 +62,23 @@ export default function InspirationPage(): JSX.Element {
       <PageContainer width="wide">
         <div className="flex items-center justify-between">
           <div>
-            <h1 className="text-2xl font-bold text-text-primary">لوحة الإلهام</h1>
+            <h1 className="text-2xl font-bold text-text-primary">{t('inspiration.title')}</h1>
             <p className="mt-1 text-sm text-text-secondary">
-              اسحبي الصور لإعادة ترتيبها · {pins.length} صورة
+              {t('inspiration.subtitle', { count: pins.length })}
             </p>
           </div>
-          <Button onClick={() => setShowAdd(true)}>إضافة إلهام</Button>
+          <Button onClick={() => setShowAdd(true)}>{t('inspiration.add')}</Button>
         </div>
 
         {isLoading ? (
           <DashboardSkeleton />
         ) : isError ? (
-          <ErrorAlert message="فشل التحميل" onRetry={() => refetch()} />
+          <ErrorAlert message={t('inspiration.err.load')} onRetry={() => refetch()} />
         ) : pins.length === 0 ? (
           <EmptyState
-            title="لا توجد دبابيس"
-            description="احفظي الصور والأفكار اللي تعجبكِ لموعدكِ القادم"
-            action={{ label: 'أضيفي أول إلهام', onPress: () => setShowAdd(true) }}
+            title={t('inspiration.empty.title')}
+            description={t('inspiration.empty.desc')}
+            action={{ label: t('inspiration.empty.action'), onPress: () => setShowAdd(true) }}
           />
         ) : (
           <SortableGrid
@@ -85,7 +88,7 @@ export default function InspirationPage(): JSX.Element {
             columns="grid-cols-1 sm:grid-cols-2 lg:grid-cols-3"
             gap="gap-4"
           >
-            {(p: Record<string, any>) => (
+            {(p) => (
               <Card
                 key={p.id}
                 padding="md"
@@ -93,7 +96,7 @@ export default function InspirationPage(): JSX.Element {
               >
                 {/* Drag handle indicator */}
                 <div
-                  className="absolute top-2 left-2 z-10 flex items-center gap-1 rounded-full bg-black/40 px-2 py-0.5 text-xs text-white opacity-0 backdrop-blur transition-opacity group-hover:opacity-100"
+                  className="absolute top-2 start-2 z-10 flex items-center gap-1 rounded-full bg-black/40 px-2 py-0.5 text-xs text-white opacity-0 backdrop-blur transition-opacity group-hover:opacity-100"
                   aria-hidden="true"
                 >
                   <svg className="h-3 w-3" fill="currentColor" viewBox="0 0 24 24">
@@ -104,7 +107,7 @@ export default function InspirationPage(): JSX.Element {
                     <circle cx="9" cy="19" r="2" />
                     <circle cx="15" cy="19" r="2" />
                   </svg>
-                  اسحبي للترتيب
+                  {t('inspiration.dragHint')}
                 </div>
 
                 {p.imageUrl ? (
@@ -128,7 +131,7 @@ export default function InspirationPage(): JSX.Element {
                 )}
                 {p.tags?.length > 0 && (
                   <div className="mt-2 flex flex-wrap gap-1">
-                    {(p.tags as string[]).map((t: string) => (
+                    {p.tags.map((t: string) => (
                       <span
                         key={t}
                         className="rounded-full bg-brand-50 px-2 py-0.5 text-xs text-brand-600 dark:bg-brand-950 dark:text-brand-400"
@@ -145,8 +148,8 @@ export default function InspirationPage(): JSX.Element {
                     deleteMut.mutate({ id: p.id });
                     setOrderedPins(null);
                   }}
-                  className="absolute top-2 right-2 hidden rounded-full bg-red-500 p-1.5 text-white shadow-sm transition-colors hover:bg-red-600 group-hover:block"
-                  aria-label="حذف"
+                  className="absolute top-2 end-2 hidden rounded-full bg-red-500 p-1.5 text-white shadow-sm transition-colors hover:bg-red-600 group-hover:block"
+                  aria-label={t('inspiration.deleteLabel')}
                 >
                   <svg
                     className="h-3 w-3"
@@ -176,25 +179,27 @@ export default function InspirationPage(): JSX.Element {
             }}
           >
             <div className="w-full max-w-md rounded-2xl bg-white p-6 dark:bg-gray-900">
-              <h3 className="mb-4 text-lg font-bold text-text-primary">إضافة إلهام جديد</h3>
+              <h3 className="mb-4 text-lg font-bold text-text-primary">
+                {t('inspiration.modal.title')}
+              </h3>
               <div className="space-y-3">
                 <Input
-                  placeholder="رابط الصورة"
+                  placeholder={t('inspiration.imageUrlPlaceholder')}
                   value={form.imageUrl}
                   onChange={(e) => setForm({ ...form, imageUrl: e.target.value })}
                 />
                 <Input
-                  placeholder="العنوان"
+                  placeholder={t('inspiration.titlePlaceholder')}
                   value={form.title}
                   onChange={(e) => setForm({ ...form, title: e.target.value })}
                 />
                 <Input
-                  placeholder="ملاحظات"
+                  placeholder={t('inspiration.notesPlaceholder')}
                   value={form.notes}
                   onChange={(e) => setForm({ ...form, notes: e.target.value })}
                 />
                 <Input
-                  placeholder="وسوم (مفصولة بفواصل)"
+                  placeholder={t('inspiration.tagsPlaceholder')}
                   value={form.tags}
                   onChange={(e) => setForm({ ...form, tags: e.target.value })}
                 />
@@ -211,7 +216,7 @@ export default function InspirationPage(): JSX.Element {
                   loading={createMut.isPending}
                   className="w-full"
                 >
-                  حفظ
+                  {t('inspiration.save')}
                 </Button>
               </div>
             </div>

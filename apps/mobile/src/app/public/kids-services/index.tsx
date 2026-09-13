@@ -3,6 +3,7 @@ import { ErrorAlert } from '@/components/ErrorAlert';
 import { SkeletonList } from '@/components/SkeletonCard';
 import { useState } from 'react';
 import { trpc } from '@/lib/trpc-react';
+import { useLocale } from '@/components/LocaleProvider';
 
 interface KidsServiceItem {
   nameAr?: string;
@@ -11,12 +12,18 @@ interface KidsServiceItem {
 }
 
 export default function KidsServicesScreen(): JSX.Element {
+  const { t } = useLocale();
   const catsQ = trpc.kidsServices.categories.useQuery();
   const [selectedCat, setSelectedCat] = useState<Record<string, unknown> | null>(null);
 
   if (catsQ.isLoading) return <SkeletonList count={5} />;
   if (catsQ.isError)
-    return <ErrorAlert message="فشل تحميل الخدمات" onRetry={() => catsQ.refetch()} />;
+    return (
+      <ErrorAlert
+        message={t('mobile.public.kids-services.load-error')}
+        onRetry={() => catsQ.refetch()}
+      />
+    );
 
   const categories = (catsQ.data ?? []) as Record<string, unknown>[];
 
@@ -32,8 +39,8 @@ export default function KidsServicesScreen(): JSX.Element {
         />
       }
     >
-      <Text style={styles.t}> خدمات الأطفال</Text>
-      <Text style={styles.sub}>خدمات تجميل للأطفال والصغار</Text>
+      <Text style={styles.t}>{t('mobile.public.kids-services.title')}</Text>
+      <Text style={styles.sub}>{t('mobile.public.kids-services.subtitle')}</Text>
       <View style={styles.catGrid}>
         {categories.map((cat: Record<string, unknown>) => (
           <TouchableOpacity
@@ -57,7 +64,9 @@ export default function KidsServicesScreen(): JSX.Element {
                 <Text style={styles.svcName}>{s.nameAr as string}</Text>
                 <Text style={styles.svcAge}>{s.ageGroup as string}</Text>
               </View>
-              <Text style={styles.svcPrice}>{(s.price as number)?.toLocaleString()} ر.س</Text>
+              <Text style={styles.svcPrice}>
+                {(s.price as number)?.toLocaleString()} {t('misc.sar')}
+              </Text>
             </View>
           ))}
         </View>

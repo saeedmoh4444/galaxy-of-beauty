@@ -2,6 +2,7 @@ import { View, Text, ScrollView, StyleSheet } from 'react-native';
 import { SkeletonList } from '@/components/SkeletonCard';
 import { ErrorAlert } from '@/components/ErrorAlert';
 import { trpc } from '@/lib/trpc-react';
+import { useLocale } from '@/components/LocaleProvider';
 
 interface FeatureFlag {
   key?: string;
@@ -10,16 +11,23 @@ interface FeatureFlag {
 }
 
 export default function AdminToolsScreen(): JSX.Element {
+  const { t } = useLocale();
   const q = trpc.featureFlags.list.useQuery();
   const flags = (q.data as unknown as FeatureFlag[] | null) ?? [];
   if (q.isLoading) return <SkeletonList count={5} />;
-  if (q.isError) return <ErrorAlert message="فشل تحميل الميزات" onRetry={() => q.refetch()} />;
+  if (q.isError)
+    return (
+      <ErrorAlert
+        message={t('mobile.admin.feature-flags.load-error')}
+        onRetry={() => q.refetch()}
+      />
+    );
   return (
     <ScrollView style={s.c} contentContainerStyle={s.i}>
-      <Text style={s.h}>️ أدوات المشرف</Text>
-      <Text style={s.sub}>إدارة إعدادات المنصة والميزات</Text>
+      <Text style={s.h}>{t('mobile.admin.admin-tools.title')}</Text>
+      <Text style={s.sub}>{t('admin.admin-tools.subtitle')}</Text>
       <View style={s.card}>
-        <Text style={s.ct}> إدارة الميزات</Text>
+        <Text style={s.ct}>{t('mobile.admin.admin-tools.feature-flags')}</Text>
         {flags.map((f) => (
           <View key={f.key} style={s.row}>
             <View>
@@ -35,7 +43,7 @@ export default function AdminToolsScreen(): JSX.Element {
                 },
               ]}
             >
-              {f.enabled ? 'مفعل' : 'معطل'}
+              {f.enabled ? t('admin.enabled') : t('admin.disabled')}
             </Text>
           </View>
         ))}

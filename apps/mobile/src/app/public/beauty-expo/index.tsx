@@ -1,6 +1,8 @@
 import { View, Text, StyleSheet } from 'react-native';
 import { ScreenState } from '@/components/ScreenState';
 import { trpc } from '@/lib/trpc-react';
+import { localize } from '@galaxy/shared';
+import { useLocale } from '@/components/LocaleProvider';
 
 const COLORS = { brand: '#7c3aed', white: '#ffffff', gray400: '#6b7280', gray900: '#111827' };
 
@@ -12,6 +14,7 @@ interface ExpoEvent {
 }
 
 export default function BeautyExpoScreen(): JSX.Element {
+  const { locale, t } = useLocale();
   const expo = trpc.beautyExpo.booths.useQuery() ?? {
     data: null,
     isLoading: false,
@@ -25,17 +28,19 @@ export default function BeautyExpoScreen(): JSX.Element {
       isLoading={expo.isLoading}
       isError={expo.isError}
       isEmpty={!data || data.length === 0}
-      errorMessage="فشل تحميل المعرض"
-      emptyTitle="لا توجد فعاليات"
+      errorMessage={t('mobile.public.beauty-expo.load-error')}
+      emptyTitle={t('mobile.public.beauty-expo.empty')}
       onRetry={() => expo.refetch()}
     >
-      <Text style={styles.title}> معرض التجميل</Text>
+      <Text style={styles.title}>{t('mobile.public.beauty-expo.title')}</Text>
       {data?.map((e, i) => (
         <View key={i} style={styles.card}>
-          <Text style={styles.name}>{e.nameJson?.ar ?? ''}</Text>
-          <Text style={styles.desc}>{e.descriptionJson?.ar ?? ''}</Text>
+          <Text style={styles.name}>{localize(e.nameJson, locale)}</Text>
+          <Text style={styles.desc}>{localize(e.descriptionJson, locale)}</Text>
           <Text style={styles.date}>
-            {e.startsAt ? new Date(e.startsAt).toLocaleDateString('ar-SA') : ''}
+            {e.startsAt
+              ? new Date(e.startsAt).toLocaleDateString(locale === 'ar' ? 'ar-SA' : 'en-US')
+              : ''}
           </Text>
         </View>
       ))}

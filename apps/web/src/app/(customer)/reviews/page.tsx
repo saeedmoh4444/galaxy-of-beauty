@@ -3,18 +3,33 @@
 import { useState } from 'react';
 import Link from 'next/link';
 import { api } from '@/lib/trpc';
-import { Card, CardListSkeleton, ErrorAlert, EmptyState, Button, Modal, Input } from '@galaxy/ui';
+import {
+  Card,
+  CardListSkeleton,
+  ErrorAlert,
+  EmptyState,
+  Button,
+  Modal,
+  Input,
+  useAuth,
+} from '@galaxy/ui';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
+import { useLocale } from '@/components/LocaleProvider';
 
 const RATING_OPTIONS = [1, 2, 3, 4, 5];
 
 export default function ReviewsPage(): JSX.Element {
+  const { t, locale } = useLocale();
+  const { isAuthenticated } = useAuth();
   const [selectedBookingId, setSelectedBookingId] = useState<number | null>(null);
   const [rating, setRating] = useState(0);
   const [comment, setComment] = useState('');
   const [hoverRating, setHoverRating] = useState(0);
 
-  const { data, isLoading, isError, refetch } = api.bookings.list.useQuery({ limit: 50 });
+  const { data, isLoading, isError, refetch } = api.bookings.list.useQuery(
+    { limit: 50 },
+    { enabled: isAuthenticated },
+  );
   const createMut = api.reviews.create.useMutation({
     onSuccess: () => {
       setSelectedBookingId(null);
@@ -31,21 +46,18 @@ export default function ReviewsPage(): JSX.Element {
   return (
     <DashboardLayout userRole="CUSTOMER">
       <div className="mx-auto max-w-3xl space-y-6">
-        <h1 className="text-2xl font-bold">تقييماتي</h1>
+        <h1 className="text-2xl font-bold">{t('reviews.title')}</h1>
 
         {isLoading ? (
           <CardListSkeleton count={4} />
         ) : isError ? (
-          <ErrorAlert message="فشل تحميل التقييمات" onRetry={() => refetch()} />
+          <ErrorAlert message={t('reviews.err.load')} onRetry={() => refetch()} />
         ) : reviewed.length === 0 && unreviewed.length === 0 ? (
           <div>
-            <EmptyState
-              title="لا توجد تقييمات"
-              description="قم بإكمال حجز لتتمكن من تقييم الخدمة"
-            />
+            <EmptyState title={t('reviews.empty.title')} description={t('reviews.empty.desc')} />
             <div className="text-center">
               <Link href="/services">
-                <Button>تصفح الخدمات</Button>
+                <Button>{t('reviews.browseServices')}</Button>
               </Link>
             </div>
           </div>
@@ -53,17 +65,21 @@ export default function ReviewsPage(): JSX.Element {
           <>
             {unreviewed.length > 0 && (
               <div className="space-y-3">
-                <h2 className="text-lg font-semibold">حجوزات مكتملة بدون تقييم</h2>
+                <h2 className="text-lg font-semibold">{t('reviews.unreviewedTitle')}</h2>
                 {unreviewed.map((b: Record<string, unknown>) => (
                   <Card key={b.id as number} padding="md">
                     <div className="flex items-center justify-between">
                       <div>
-                        <p className="font-semibold">{(b.serviceName as string) ?? 'خدمة'}</p>
+                        <p className="font-semibold">
+                          {(b.serviceName as string) ?? t('reviews.serviceFallback')}
+                        </p>
                         <p className="text-sm text-text-secondary">
-                          {(b.technicianName as string) ?? 'فني'}
+                          {(b.technicianName as string) ?? t('reviews.technicianFallback')}
                         </p>
                         <p className="text-xs text-text-tertiary">
-                          {new Date(b.startAt as string).toLocaleDateString('ar-SA')}
+                          {new Date(b.startAt as string).toLocaleDateString(
+                            locale === 'en' ? 'en-GB' : 'ar-SA',
+                          )}
                         </p>
                       </div>
                       <Button
@@ -74,7 +90,7 @@ export default function ReviewsPage(): JSX.Element {
                           setComment('');
                         }}
                       >
-                        تقييم
+                        {t('reviews.rate')}
                       </Button>
                     </div>
                   </Card>
@@ -83,17 +99,19 @@ export default function ReviewsPage(): JSX.Element {
             )}
 
             <div className="space-y-3">
-              <h2 className="text-lg font-semibold">تقييماتي السابقة</h2>
+              <h2 className="text-lg font-semibold">{t('reviews.pastTitle')}</h2>
               {reviewed.length === 0 ? (
-                <EmptyState title="لا توجد تقييمات سابقة" />
+                <EmptyState title={t('reviews.pastEmpty')} />
               ) : (
                 reviewed.map((b: Record<string, unknown>) => (
                   <Card key={b.id as number} padding="md">
                     <div className="flex items-start justify-between">
                       <div className="space-y-1">
-                        <p className="font-semibold">{(b.serviceName as string) ?? 'خدمة'}</p>
+                        <p className="font-semibold">
+                          {(b.serviceName as string) ?? t('reviews.serviceFallback')}
+                        </p>
                         <p className="text-sm text-text-secondary">
-                          {(b.technicianName as string) ?? 'فني'}
+                          {(b.technicianName as string) ?? t('reviews.technicianFallback')}
                         </p>
                         <div className="flex gap-0.5">
                           {Array.from({ length: 5 }, (_, i) => (
@@ -106,14 +124,14 @@ export default function ReviewsPage(): JSX.Element {
                           ))}
                         </div>
                         {b.reviewComment ? (
-                          <p className="text-sm text-text-secondary dark:text-gray-400">
+                          <p className="text-sm text-text-secondary dark:text-text-tertiary">
                             &ldquo;{b.reviewComment as string}&rdquo;
                           </p>
                         ) : null}
                         <p className="text-xs text-text-tertiary">
                           {new Date(
                             (b.reviewDate as string) ?? (b.startAt as string),
-                          ).toLocaleDateString('ar-SA')}
+                          ).toLocaleDateString(locale === 'en' ? 'en-GB' : 'ar-SA')}
                         </p>
                       </div>
                     </div>
@@ -128,12 +146,12 @@ export default function ReviewsPage(): JSX.Element {
       <Modal
         open={selectedBookingId !== null}
         onClose={() => setSelectedBookingId(null)}
-        title="تقييم الخدمة"
+        title={t('reviews.modal.title')}
         size="sm"
       >
         <div className="space-y-4">
           <div>
-            <p className="mb-2 text-sm font-medium">التقييم</p>
+            <p className="mb-2 text-sm font-medium">{t('reviews.ratingLabel')}</p>
             <div className="flex gap-1">
               {RATING_OPTIONS.map((star) => (
                 <button
@@ -150,10 +168,10 @@ export default function ReviewsPage(): JSX.Element {
             </div>
           </div>
           <Input
-            label="التعليق"
+            label={t('reviews.commentLabel')}
             value={comment}
             onChange={(e) => setComment(e.target.value)}
-            placeholder="شارك تجربتك مع هذه الخدمة..."
+            placeholder={t('reviews.commentPlaceholder')}
           />
           <Button
             className="w-full"
@@ -165,7 +183,7 @@ export default function ReviewsPage(): JSX.Element {
               }
             }}
           >
-            إرسال التقييم
+            {t('reviews.submit')}
           </Button>
         </div>
       </Modal>

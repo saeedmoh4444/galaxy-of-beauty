@@ -1,18 +1,30 @@
 import { View, Text, ScrollView, StyleSheet, TouchableOpacity, RefreshControl } from 'react-native';
 import { useState } from 'react';
+import { useLocale } from '@/components/LocaleProvider';
+import { useAuthState } from '@/hooks/useAuthState';
 import { trpc } from '@/lib/trpc-react';
 
 const OCCASIONS = [
-  { key: 'birthday', emoji: '', name: 'عيد ميلاد' },
-  { key: 'eid', emoji: '', name: 'العيد' },
-  { key: 'wedding', emoji: '', name: 'زفاف' },
-  { key: 'graduation', emoji: '', name: 'تخرج' },
-  { key: 'valentine', emoji: '', name: 'عيد الحب' },
-  { key: 'mothersday', emoji: '', name: 'عيد الأم' },
+  { key: 'birthday', emoji: '🎂', name: 'عيد ميلاد' },
+  { key: 'eid', emoji: '🌙', name: 'العيد' },
+  { key: 'wedding', emoji: '💍', name: 'زفاف' },
+  { key: 'graduation', emoji: '🎓', name: 'تخرج' },
+  { key: 'valentine', emoji: '💖', name: 'عيد الحب' },
+  { key: 'mothersday', emoji: '💐', name: 'عيد الأم' },
 ];
 
 export default function BeautyWishlistGiftsScreen(): JSX.Element {
-  const q = trpc.wishlist.list.useQuery();
+  const { t } = useLocale();
+  const isAuthed = useAuthState();
+  const q = trpc.wishlist.list.useQuery(undefined, { enabled: isAuthed });
+  const occasionLabels: Record<string, string> = {
+    birthday: t('beautyWishlistGifts.occasion-birthday'),
+    eid: t('beautyWishlistGifts.occasion-eid'),
+    wedding: t('beautyWishlistGifts.occasion-wedding'),
+    graduation: t('beautyWishlistGifts.occasion-graduation'),
+    valentine: t('beautyWishlistGifts.occasion-valentine'),
+    mothersday: t('beautyWishlistGifts.occasion-mothersday'),
+  };
   const [selectedOccasion, setSelectedOccasion] = useState('birthday');
   const [shareMode, setShareMode] = useState(false);
 
@@ -30,10 +42,10 @@ export default function BeautyWishlistGiftsScreen(): JSX.Element {
         />
       }
     >
-      <Text style={styles.t}> قائمة الهدايا</Text>
-      <Text style={styles.sub}>شاركي قائمة أمنياتكِ مع الأصدقاء والعائلة</Text>
+      <Text style={styles.t}>{t('beautyWishlistGifts.title')}</Text>
+      <Text style={styles.sub}>{t('beautyWishlistGifts.subtitle')}</Text>
 
-      <Text style={styles.st}> المناسبة</Text>
+      <Text style={styles.st}>{t('beautyWishlistGifts.occasion')}</Text>
       <View style={styles.occasions}>
         {OCCASIONS.map((o) => (
           <TouchableOpacity
@@ -42,36 +54,45 @@ export default function BeautyWishlistGiftsScreen(): JSX.Element {
             style={[styles.oc, selectedOccasion === o.key && styles.oca]}
           >
             <Text style={styles.oe}>{o.emoji}</Text>
-            <Text style={[styles.on, selectedOccasion === o.key && styles.ona]}>{o.name}</Text>
+            <Text style={[styles.on, selectedOccasion === o.key && styles.ona]}>
+              {occasionLabels[o.key] ?? o.name}
+            </Text>
           </TouchableOpacity>
         ))}
       </View>
 
       <View style={styles.shareCard}>
-        <Text style={styles.shareTitle}> رابط المشاركة</Text>
+        <Text style={styles.shareTitle}>{t('beautyWishlistGifts.share-link')}</Text>
         <View style={styles.shareRow}>
           <Text style={styles.shareLink}>galaxyofbeauty.sa/wishlist/sara-{occasion.key}</Text>
           <TouchableOpacity onPress={() => setShareMode(!shareMode)} style={styles.shareBtn}>
-            <Text style={styles.shareBt}>{shareMode ? ' تم النسخ' : ' نسخ'}</Text>
+            <Text style={styles.shareBt}>
+              {shareMode ? t('beautyWishlistGifts.copied') : t('beautyWishlistGifts.copy')}
+            </Text>
           </TouchableOpacity>
         </View>
       </View>
 
       <Text style={styles.st}>
-        أمنياتي ({occasion.emoji} {occasion.name})
+        {t('beautyWishlistGifts.my-wishes', {
+          emoji: occasion.emoji,
+          name: occasionLabels[occasion.key] ?? occasion.name,
+        })}
       </Text>
       <View style={styles.gifts}>
         {[
-          { emoji: '‍️', name: 'جلسة مساج سويدي', price: 350, priority: 'أولوية' },
-          { emoji: '', name: 'مانيكير جل', price: 180, priority: 'مهم' },
-          { emoji: '‍️', name: 'جلسة عناية بالبشرة', price: 250, priority: 'جميل' },
-          { emoji: '‍️', name: 'تصفيف شعر', price: 200, priority: 'جميل' },
+          { emoji: '💆', name: 'جلسة مساج سويدي', price: 350, priority: 'أولوية' },
+          { emoji: '💅', name: 'مانيكير جل', price: 180, priority: 'مهم' },
+          { emoji: '🧖', name: 'جلسة عناية بالبشرة', price: 250, priority: 'جميل' },
+          { emoji: '💇', name: 'تصفيف شعر', price: 200, priority: 'جميل' },
         ].map((g, i) => (
           <View key={i} style={styles.gift}>
             <Text style={styles.ge}>{g.emoji}</Text>
             <View style={{ flex: 1 }}>
               <Text style={styles.gn}>{g.name}</Text>
-              <Text style={styles.gp}>{g.price.toLocaleString()} ر.س</Text>
+              <Text style={styles.gp}>
+                {t('beautyWishlistGifts.amount', { value: g.price.toLocaleString() })}
+              </Text>
             </View>
             <View
               style={[
@@ -93,7 +114,7 @@ export default function BeautyWishlistGiftsScreen(): JSX.Element {
       </View>
 
       <TouchableOpacity style={styles.btn}>
-        <Text style={styles.bt}>+ إضافة أمنية</Text>
+        <Text style={styles.bt}>{t('beautyWishlistGifts.add-wish')}</Text>
       </TouchableOpacity>
     </ScrollView>
   );

@@ -21,12 +21,18 @@ interface Vlog {
 interface BeautyVlogCardProps {
   vlog: Vlog;
   onWatch?: () => void;
+  viewsSuffix?: string;
+  watchText?: string;
+  footerText?: string;
   className?: string;
 }
 
 export function BeautyVlogCard({
   vlog,
   onWatch,
+  viewsSuffix = 'مشاهدة',
+  watchText = '▶️ شاهدي الفلوق',
+  footerText = 'يوميات خبيراتنا — من القلب مباشرة',
   className = '',
 }: BeautyVlogCardProps): JSX.Element {
   return (
@@ -38,7 +44,9 @@ export function BeautyVlogCard({
     >
       {/* Thumbnail placeholder */}
       <div className="relative rounded-xl bg-gradient-to-br from-rose-200 to-pink-200 p-8 text-center dark:from-rose-900 dark:to-pink-900">
-        <span className="text-4xl" aria-hidden="true"></span>
+        <span className="text-4xl" aria-hidden="true">
+          🎬
+        </span>
         <button
           type="button"
           onClick={onWatch}
@@ -48,7 +56,7 @@ export function BeautyVlogCard({
             ▶️
           </span>
         </button>
-        <span className="absolute bottom-2 right-2 rounded bg-black/60 px-1.5 py-0.5 text-[9px] font-bold text-white">
+        <span className="absolute bottom-2 end-2 rounded bg-black/60 px-1.5 py-0.5 text-[9px] font-bold text-white">
           {vlog.duration}
         </span>
       </div>
@@ -56,13 +64,13 @@ export function BeautyVlogCard({
       {/* Info */}
       <div className="mt-2">
         <p className="text-xs font-bold text-text-primary dark:text-gray-100">{vlog.title}</p>
-        <div className="mt-1 flex items-center gap-2 text-[10px] text-text-tertiary dark:text-gray-500">
-          <span>‍ {vlog.technician}</span>
+        <div className="mt-1 flex items-center gap-2 text-[10px] text-text-tertiary dark:text-text-secondary">
+          <span> {vlog.technician}</span>
           {vlog.category && <span>· {vlog.category}</span>}
         </div>
         {vlog.views && (
-          <p className="mt-0.5 text-[9px] text-text-tertiary dark:text-gray-500">
-            ️ {vlog.views.toLocaleString('ar-SA')} مشاهدة
+          <p className="mt-0.5 text-[9px] text-text-tertiary dark:text-text-secondary">
+            {vlog.views.toLocaleString('ar-SA')} {viewsSuffix}
           </p>
         )}
       </div>
@@ -73,11 +81,11 @@ export function BeautyVlogCard({
         onClick={onWatch}
         className="mt-2 w-full rounded-lg bg-rose-600 py-1.5 text-[10px] font-bold text-white hover:bg-rose-700 active:scale-[0.98] transition-all"
       >
-        ▶️ شاهدي الفلوق
+        {watchText}
       </button>
 
-      <p className="mt-1.5 text-center text-[9px] text-text-tertiary dark:text-gray-500">
-        يوميات خبيراتنا — من القلب مباشرة
+      <p className="mt-1.5 text-center text-[9px] text-text-tertiary dark:text-text-secondary">
+        {footerText}
       </p>
     </div>
   );

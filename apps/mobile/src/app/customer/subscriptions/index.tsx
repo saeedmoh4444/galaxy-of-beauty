@@ -2,6 +2,8 @@ import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import { ScreenState } from '@/components/ScreenState';
 import { trpc } from '@/lib/trpc-react';
 import { formatCurrency } from '@galaxy/ui';
+import { localize } from '@galaxy/shared';
+import { useLocale } from '@/components/LocaleProvider';
 
 const COLORS = {
   brand: '#7c3aed',
@@ -34,6 +36,7 @@ interface PlansQueryResult {
 }
 
 export default function SubscriptionsScreen(): JSX.Element {
+  const { t, locale } = useLocale();
   const sub: SubscriptionQueryResult = (trpc.subscriptions.getMySubscription.useQuery() as
     SubscriptionQueryResult | undefined) ?? {
     data: null,
@@ -52,36 +55,48 @@ export default function SubscriptionsScreen(): JSX.Element {
       isLoading={sub.isLoading ?? false}
       isError={sub.isError ?? false}
       isEmpty={false}
-      errorMessage="فشل تحميل الاشتراكات"
+      errorMessage={t('mobile.subscriptions.load-error')}
       onRetry={() => sub.refetch?.()}
     >
-      <Text style={styles.title}> اشتراكاتي</Text>
+      <Text style={styles.title}>{t('mobile.subscriptions.title')}</Text>
       {subscription ? (
         <View style={styles.activeCard}>
-          <Text style={styles.activeLabel}>الاشتراك الحالي</Text>
-          <Text style={styles.planName}>{subscription.plan?.nameJson?.ar ?? 'خطة'}</Text>
-          <Text style={styles.status}>{subscription.status === 'ACTIVE' ? ' نشط' : ' متوقف'}</Text>
+          <Text style={styles.activeLabel}>{t('mobile.subscriptions.current')}</Text>
+          <Text style={styles.planName}>
+            {localize(subscription.plan?.nameJson, locale) ?? t('mobile.subscriptions.plan')}
+          </Text>
+          <Text style={styles.status}>
+            {subscription.status === 'ACTIVE'
+              ? t('mobile.subscriptions.active')
+              : t('mobile.subscriptions.paused')}
+          </Text>
           <Text style={styles.date}>
-            ينتهي:{' '}
             {subscription.currentPeriodEnd
-              ? new Date(subscription.currentPeriodEnd).toLocaleDateString('ar-SA')
+              ? t('mobile.subscriptions.expires', {
+                  date: new Date(subscription.currentPeriodEnd).toLocaleDateString(
+                    locale === 'ar' ? 'ar-SA' : 'en-GB',
+                  ),
+                })
               : ''}
           </Text>
         </View>
       ) : (
         <View style={styles.activeCard}>
-          <Text style={styles.activeLabel}>لا يوجد اشتراك نشط</Text>
+          <Text style={styles.activeLabel}>{t('mobile.mySubscription.no-active')}</Text>
         </View>
       )}
       {plans && plans.length > 0 && (
         <>
-          <Text style={styles.sectionTitle}>الباقات المتاحة</Text>
+          <Text style={styles.sectionTitle}>{t('mobile.subscriptions.available-plans')}</Text>
           {plans.map((p, i) => (
             <View key={i} style={styles.planCard}>
-              <Text style={styles.planTitle}>{p.nameJson?.ar ?? ''}</Text>
-              <Text style={styles.planPrice}>{formatCurrency(Number(p.priceMonthly))} / شهر</Text>
+              <Text style={styles.planTitle}>{localize(p.nameJson, locale) ?? ''}</Text>
+              <Text style={styles.planPrice}>
+                {formatCurrency(Number(p.priceMonthly))}
+                {t('mobile.subscriptions.per-month')}
+              </Text>
               <TouchableOpacity style={styles.subscribeBtn}>
-                <Text style={styles.subscribeText}>اشتركي الآن</Text>
+                <Text style={styles.subscribeText}>{t('mobile.subscriptions.subscribe-now')}</Text>
               </TouchableOpacity>
             </View>
           ))}

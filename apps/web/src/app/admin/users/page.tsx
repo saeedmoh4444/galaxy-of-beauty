@@ -2,25 +2,32 @@
 
 import { useState } from 'react';
 import { api } from '@/lib/trpc';
-import { Card, CardListSkeleton, ErrorAlert, EmptyState, Button, Input } from '@galaxy/ui';
+import { Card, CardListSkeleton, ErrorAlert, EmptyState, Button, Input, useAuth } from '@galaxy/ui';
+import { useLocale } from '@/components/LocaleProvider';
 
 export default function AdminUsersPage(): JSX.Element {
+  const { t } = useLocale();
+  const { isAuthenticated } = useAuth();
   const [search, setSearch] = useState('');
-  const { data, isLoading, isError, refetch } = api.admin.listCustomers.useQuery({
-    search: search || undefined,
-    page: 1,
-    limit: 20,
-  });
+  const { data, isLoading, isError, refetch } = api.admin.listCustomers.useQuery(
+    {
+      search: search || undefined,
+      page: 1,
+      limit: 20,
+    },
+    { enabled: isAuthenticated },
+  );
   const suspendMut = api.admin.suspendUser.useMutation({ onSuccess: () => refetch() });
   const [, setSelected] = useState<Record<string, unknown> | null>(null);
 
-  const customers = (data as unknown as Record<string, unknown>[]) ?? [];
+  const customers =
+    (data as unknown as { items: Record<string, unknown>[] } | undefined)?.items ?? [];
 
   return (
     <div className="space-y-6">
-      <h1 className="text-2xl font-bold">إدارة المستخدمين</h1>
+      <h1 className="text-2xl font-bold">{t('admin.users.title')}</h1>
       <Input
-        placeholder="بحث عن مستخدم..."
+        placeholder={t('admin.users.search-placeholder')}
         value={search}
         onChange={(e) => setSearch(e.target.value)}
       />
@@ -28,9 +35,9 @@ export default function AdminUsersPage(): JSX.Element {
       {isLoading ? (
         <CardListSkeleton count={4} />
       ) : isError ? (
-        <ErrorAlert message="فشل تحميل المستخدمين" onRetry={() => refetch()} />
+        <ErrorAlert message={t('admin.users.load-error')} onRetry={() => refetch()} />
       ) : customers.length === 0 ? (
-        <EmptyState title="لا يوجد مستخدمين" />
+        <EmptyState title={t('admin.users.empty')} />
       ) : (
         <div className="space-y-2">
           {customers.map((c: Record<string, unknown>) => (
@@ -44,7 +51,7 @@ export default function AdminUsersPage(): JSX.Element {
                   <span
                     className={`rounded-full px-2 py-0.5 text-xs ${c.isActive ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700'}`}
                   >
-                    {c.isActive ? 'نشط' : 'معلق'}
+                    {c.isActive ? t('status.active') : t('admin.users.suspended')}
                   </span>
                   <Button
                     size="sm"
@@ -54,7 +61,7 @@ export default function AdminUsersPage(): JSX.Element {
                       suspendMut.mutate({ userId: c.id as number });
                     }}
                   >
-                    {c.isActive ? 'تعليق' : 'تفعيل'}
+                    {c.isActive ? t('admin.users.suspend') : t('admin.users.activate')}
                   </Button>
                 </div>
               </div>

@@ -1,13 +1,15 @@
 import { View, Text, ScrollView, StyleSheet, TouchableOpacity, RefreshControl } from 'react-native';
 import { SkeletonList } from '@/components/SkeletonCard';
 import { trpc } from '@/lib/trpc-react';
+import { useLocale } from '@/components/LocaleProvider';
+import { useAuthState } from '@/hooks/useAuthState';
 
 const CH: Record<string, { emoji: string; color: string }> = {
-  '7day_skincare': { emoji: '', color: '#ec4899' },
-  '5bookings': { emoji: '‍️', color: '#f59e0b' },
-  first_review: { emoji: '', color: '#3b82f6' },
-  streak_4weeks: { emoji: '', color: '#8b5cf6' },
-  refer_3friends: { emoji: '‍️', color: '#10b981' },
+  '7day_skincare': { emoji: '🧴', color: '#ec4899' },
+  '5bookings': { emoji: '📅', color: '#f59e0b' },
+  first_review: { emoji: '⭐', color: '#3b82f6' },
+  streak_4weeks: { emoji: '🔥', color: '#8b5cf6' },
+  refer_3friends: { emoji: '👥', color: '#10b981' },
 };
 
 interface ChallengeItem {
@@ -23,8 +25,10 @@ interface ChallengeProgress {
 }
 
 export default function ChallengesScreen(): JSX.Element {
+  const isAuthed = useAuthState();
+  const { t } = useLocale();
   const listQ = trpc.challenges.list.useQuery();
-  const progressQ = trpc.challenges.myProgress.useQuery();
+  const progressQ = trpc.challenges.myProgress.useQuery(undefined, { enabled: isAuthed });
   const joinMut = trpc.challenges.join.useMutation({
     onSuccess: () => {
       void listQ.refetch();
@@ -53,9 +57,9 @@ export default function ChallengesScreen(): JSX.Element {
         />
       }
     >
-      <Text style={styles.t}> تحديات الجمال</Text>
+      <Text style={styles.t}>{t('challenges.title')}</Text>
       {challenges.map((ch) => {
-        const s = CH[ch.id] ?? { emoji: '', color: '#6b7280' };
+        const s = CH[ch.id] ?? { emoji: '🏆', color: '#6b7280' };
         const pct = Math.min(100, ((progress?.bookingCount || 0) / (ch.target || 1)) * 100);
         return (
           <View key={ch.id} style={[styles.card, { borderLeftColor: s.color }]}>
@@ -75,7 +79,7 @@ export default function ChallengesScreen(): JSX.Element {
                 onPress={() => join(ch.id)}
                 style={[styles.jb, { backgroundColor: s.color }]}
               >
-                <Text style={styles.jt}>انضمام</Text>
+                <Text style={styles.jt}>{t('challenges.join')}</Text>
               </TouchableOpacity>
             </View>
           </View>

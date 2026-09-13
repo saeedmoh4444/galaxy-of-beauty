@@ -1,6 +1,7 @@
 import { View, Text, ScrollView, StyleSheet, Image, RefreshControl } from 'react-native';
 import { SkeletonList } from '@/components/SkeletonCard';
 import { trpc } from '@/lib/trpc-react';
+import { useLocale } from '@/components/LocaleProvider';
 
 interface GalleryPhoto {
   id?: number;
@@ -10,6 +11,7 @@ interface GalleryPhoto {
 }
 
 export default function GalleryScreen(): JSX.Element {
+  const { t } = useLocale();
   const photosQ = trpc.gallery.byTechnician.useQuery({ technicianId: 1 });
 
   if (photosQ.isLoading) return <SkeletonList count={6} />;
@@ -27,7 +29,7 @@ export default function GalleryScreen(): JSX.Element {
         />
       }
     >
-      <Text style={styles.t}>️ معرض الصور</Text>
+      <Text style={styles.t}>{t('mobile.public.gallery.title')}</Text>
       <View style={styles.grid}>
         {photos.map((p, i) => (
           <View key={p.id ?? i} style={styles.pc}>
@@ -35,12 +37,12 @@ export default function GalleryScreen(): JSX.Element {
               <Image source={{ uri: p.imageUrl }} style={styles.img} />
             ) : (
               <View style={styles.ph}>
-                <Text style={{ fontSize: 32 }}>️</Text>
+                <Text style={{ fontSize: 32 }}>🖼️</Text>
               </View>
             )}
             <View style={styles.pi}>
               <Text style={styles.pt}>{p.title ?? '—'}</Text>
-              <Text style={styles.pb}>‍ {p.technician ?? ''}</Text>
+              <Text style={styles.pb}> {p.technician ?? ''}</Text>
             </View>
           </View>
         ))}

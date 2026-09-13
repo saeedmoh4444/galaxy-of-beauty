@@ -22,12 +22,24 @@ interface BeautySavingsChallengeCardProps {
   challenge: SavingsChallenge;
   onAddSavings?: () => void;
   className?: string;
+  currencyText?: string;
+  dailyText?: string;
+  daysText?: string;
+  savedLabel?: string;
+  addPrefix?: string;
+  completedText?: string;
 }
 
 export function BeautySavingsChallengeCard({
   challenge,
   onAddSavings,
   className = '',
+  currencyText = 'ر.س',
+  dailyText = 'يومياً',
+  daysText = 'يوم',
+  savedLabel = 'تم الادخار',
+  addPrefix = 'أضيفي ',
+  completedText = 'أكملتِ التحدي!',
 }: BeautySavingsChallengeCardProps): JSX.Element {
   const pct = Math.min(100, Math.round((challenge.saved / challenge.target) * 100));
   const dailyTarget = Math.round(challenge.target / challenge.days);
@@ -48,15 +60,15 @@ export function BeautySavingsChallengeCard({
           {challenge.name}
         </h4>
         <p className="text-[10px] text-emerald-500 dark:text-emerald-400">
-          {dailyTarget} ر.س يومياً · {challenge.days} يوم
+          {dailyTarget} {currencyText} {dailyText} · {challenge.days} {daysText}
         </p>
       </div>
 
       <div className="mt-3 rounded-xl bg-emerald-50 p-4 text-center dark:bg-emerald-950">
         <div className="flex items-center justify-between text-[10px]">
-          <span className="text-emerald-600 dark:text-emerald-400">تم الادخار</span>
+          <span className="text-emerald-600 dark:text-emerald-400">{savedLabel}</span>
           <span className="font-bold text-emerald-700 dark:text-emerald-300">
-            {challenge.saved} / {challenge.target} ر.س
+            {challenge.saved} / {challenge.target} {currencyText}
           </span>
         </div>
         <div className="mt-2 h-3 rounded-full bg-emerald-100 dark:bg-emerald-900">
@@ -79,7 +91,7 @@ export function BeautySavingsChallengeCard({
                 'h-6 rounded text-[8px] flex items-center justify-center font-bold',
                 daySaved
                   ? 'bg-emerald-200 text-emerald-700 dark:bg-emerald-800 dark:text-emerald-300'
-                  : 'bg-gray-100 text-gray-400 dark:bg-gray-800',
+                  : 'bg-surface-muted text-text-tertiary dark:bg-gray-800',
               )}
             >
               {i + 1}
@@ -94,12 +106,15 @@ export function BeautySavingsChallengeCard({
           onClick={onAddSavings}
           className="mt-3 w-full rounded-xl bg-emerald-600 py-2 text-xs font-bold text-white hover:bg-emerald-700 active:scale-[0.98] transition-all"
         >
-          أضيفي {Math.min(dailyTarget, remaining)} ر.س
+          {addPrefix}
+          {Math.min(dailyTarget, remaining)} {currencyText}
         </button>
       )}
       {remaining <= 0 && (
         <div className="mt-3 rounded-lg bg-emerald-100 p-2 text-center dark:bg-emerald-900">
-          <p className="text-xs font-bold text-emerald-700 dark:text-emerald-300">أكملتِ التحدي!</p>
+          <p className="text-xs font-bold text-emerald-700 dark:text-emerald-300">
+            {completedText}
+          </p>
         </div>
       )}
     </div>

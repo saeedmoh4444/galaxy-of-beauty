@@ -15,6 +15,15 @@ interface BeautyTimeCapsuleCardProps {
   onSave?: () => void;
   onOpen?: () => void;
   className?: string;
+  title?: string;
+  willOpenPrefix?: string;
+  savedSincePrefix?: string;
+  openItSuffix?: string;
+  saveRoutineText?: string;
+  oldRoutineText?: string;
+  saveButtonText?: string;
+  openButtonText?: string;
+  footerText?: string;
 }
 
 export function BeautyTimeCapsuleCard({
@@ -22,13 +31,22 @@ export function BeautyTimeCapsuleCard({
   onSave,
   onOpen,
   className = '',
+  title = 'كبسولة الزمن',
+  willOpenPrefix = 'ستفتح في',
+  savedSincePrefix = 'محفوظة منذ',
+  openItSuffix = '— افتحيها!',
+  saveRoutineText = 'احفظي روتينكِ الحالي لتعودي إليه لاحقاً',
+  oldRoutineText = 'روتينكِ القديم بانتظاركِ',
+  saveButtonText = 'احفظي الروتين ',
+  openButtonText = 'افتحي الكبسولة ',
+  footerText = 'بعض الروتينات تستحق أن نتذكرها',
 }: BeautyTimeCapsuleCardProps): JSX.Element {
   const isFuture = new Date(savedDate) > new Date();
 
   return (
     <div
       className={cn(
-        'rounded-2xl border border-purple-100 bg-gradient-to-br from-purple-50 to-indigo-50 p-5 dark:border-purple-900 dark:from-purple-950 dark:to-indigo-950',
+        'rounded-2xl border border-brand-100 bg-gradient-to-br from-brand-50 to-indigo-50 p-5 dark:border-brand-900 dark:from-brand-950 dark:to-indigo-950',
         className,
       )}
     >
@@ -36,11 +54,11 @@ export function BeautyTimeCapsuleCard({
         <span className="text-3xl" aria-hidden="true">
           {isFuture ? '' : ''}
         </span>
-        <h4 className="mt-1 text-sm font-bold text-purple-800 dark:text-purple-200">
-          كبسولة الزمن
-        </h4>
-        <p className="text-[10px] text-purple-500 dark:text-purple-400">
-          {isFuture ? `ستفتح في ${savedDate}` : `محفوظة منذ ${savedDate} — افتحيها!`}
+        <h4 className="mt-1 text-sm font-bold text-brand-800 dark:text-brand-200">{title}</h4>
+        <p className="text-[10px] text-brand-500 dark:text-brand-400">
+          {isFuture
+            ? `${willOpenPrefix} ${savedDate}`
+            : `${savedSincePrefix} ${savedDate} ${openItSuffix}`}
         </p>
       </div>
 
@@ -49,21 +67,19 @@ export function BeautyTimeCapsuleCard({
           {isFuture ? '' : ''}
         </p>
         <p className="mt-1 text-xs text-text-secondary dark:text-gray-300">
-          {isFuture ? 'احفظي روتينكِ الحالي لتعودي إليه لاحقاً' : 'روتينكِ القديم بانتظاركِ'}
+          {isFuture ? saveRoutineText : oldRoutineText}
         </p>
       </div>
 
       <button
         type="button"
         onClick={isFuture ? onSave : onOpen}
-        className="mt-3 w-full rounded-xl bg-purple-600 py-2.5 text-xs font-bold text-white hover:bg-purple-700 active:scale-[0.98] transition-all"
+        className="mt-3 w-full rounded-xl bg-brand-600 py-2.5 text-xs font-bold text-white hover:bg-brand-700 active:scale-[0.98] transition-all"
       >
-        {isFuture ? 'احفظي الروتين ' : 'افتحي الكبسولة '}
+        {isFuture ? saveButtonText : openButtonText}
       </button>
 
-      <p className="mt-2 text-center text-[9px] text-purple-500 dark:text-purple-400">
-        بعض الروتينات تستحق أن نتذكرها
-      </p>
+      <p className="mt-2 text-center text-[9px] text-brand-500 dark:text-brand-400">{footerText}</p>
     </div>
   );
 }

@@ -1,6 +1,8 @@
 import { View, Text, ScrollView, StyleSheet, RefreshControl } from 'react-native';
 import { SkeletonList } from '@/components/SkeletonCard';
+import { useAuthState } from '@/hooks/useAuthState';
 import { trpc } from '@/lib/trpc-react';
+import { useLocale } from '@/components/LocaleProvider';
 
 interface VipStatus {
   currentTier?: string;
@@ -9,7 +11,9 @@ interface VipStatus {
 }
 
 export default function VIPMembershipScreen(): JSX.Element {
-  const tierQ = trpc.vipMembership.myTier.useQuery();
+  const { t } = useLocale();
+  const isAuthed = useAuthState();
+  const tierQ = trpc.vipMembership.myTier.useQuery(undefined, { enabled: isAuthed });
   const data = tierQ.data as unknown as VipStatus | null;
   if (tierQ.isLoading) return <SkeletonList count={3} />;
   return (
@@ -24,13 +28,15 @@ export default function VIPMembershipScreen(): JSX.Element {
         />
       }
     >
-      <Text style={styles.t}> العضوية المميزة</Text>
+      <Text style={styles.t}>{t('mobile.vipMembership.title')}</Text>
       {data?.currentTier ? (
         <View style={styles.card}>
           <Text style={styles.emoji}>⭐</Text>
           <Text style={styles.name}>{data.currentTier}</Text>
           <Text style={styles.price}>
-            {data.autoRenew ? 'تجديد تلقائي مفعل' : 'تجديد تلقائي معطل'}
+            {data.autoRenew
+              ? t('mobile.vipMembership.auto-renew-on')
+              : t('mobile.vipMembership.auto-renew-off')}
           </Text>
         </View>
       ) : null}

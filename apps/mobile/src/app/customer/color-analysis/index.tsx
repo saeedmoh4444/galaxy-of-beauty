@@ -1,10 +1,11 @@
 import { View, Text, ScrollView, StyleSheet, TouchableOpacity } from 'react-native';
 import { useState } from 'react';
+import { useLocale } from '@/components/LocaleProvider';
 
 const SEASONS_COLORS = [
   {
     key: 'winter',
-    emoji: '️',
+    emoji: '❄️',
     name: 'شتوية',
     desc: 'ألوان باردة وعميقة',
     colors: ['#1e1b4b', '#312e81', '#831843', '#ffffff', '#000000', '#dc2626', '#4c1d95'],
@@ -14,7 +15,7 @@ const SEASONS_COLORS = [
   },
   {
     key: 'summer',
-    emoji: '',
+    emoji: '☀️',
     name: 'صيفية',
     desc: 'ألوان ناعمة وباستيل',
     colors: ['#fbcfe8', '#ddd6fe', '#bfdbfe', '#d1d5db', '#ec4899', '#8b5cf6', '#93c5fd'],
@@ -24,7 +25,7 @@ const SEASONS_COLORS = [
   },
   {
     key: 'autumn',
-    emoji: '',
+    emoji: '🍂',
     name: 'خريفية',
     desc: 'ألوان دافئة وغنية',
     colors: ['#fef3c7', '#fed7aa', '#fde68a', '#d97706', '#b45309', '#92400e', '#78350f'],
@@ -34,7 +35,7 @@ const SEASONS_COLORS = [
   },
   {
     key: 'spring',
-    emoji: '',
+    emoji: '🌸',
     name: 'ربيعية',
     desc: 'ألوان مشرقة ودافئة',
     colors: ['#fef08a', '#fde047', '#86efac', '#fca5a5', '#fb923c', '#22c55e', '#fbbf24'],
@@ -45,13 +46,14 @@ const SEASONS_COLORS = [
 ];
 
 export default function ColorAnalysisScreen(): JSX.Element {
+  const { t } = useLocale();
   const [season, setSeason] = useState('summer');
   const s = SEASONS_COLORS.find((x) => x.key === season)!;
 
   return (
     <ScrollView style={styles.c} contentContainerStyle={styles.i}>
-      <Text style={styles.t}> تحليل الألوان</Text>
-      <Text style={styles.sub}>اكتشفي الألوان اللي تناسب بشرتكِ</Text>
+      <Text style={styles.t}>{t('colorAnalysis.title')}</Text>
+      <Text style={styles.sub}>{t('colorAnalysis.subtitle')}</Text>
 
       <View style={styles.tabs}>
         {SEASONS_COLORS.map((sc) => (
@@ -72,29 +74,29 @@ export default function ColorAnalysisScreen(): JSX.Element {
         </Text>
         <Text style={styles.cs}> {s.skin}</Text>
 
-        <Text style={styles.st}> لوحة الألوان</Text>
+        <Text style={styles.st}>{t('colorAnalysis.palette')}</Text>
         <View style={styles.palette}>
           {s.colors.map((c, i) => (
             <View key={i} style={[styles.swatch, { backgroundColor: c }]} />
           ))}
         </View>
 
-        <Text style={styles.st}> المكياج المناسب</Text>
+        <Text style={styles.st}>{t('colorAnalysis.makeup')}</Text>
         {s.makeup.map((m, i) => (
           <View key={i} style={styles.makeupItem}>
-            <Text style={styles.makeupEmoji}></Text>
+            <Text style={styles.makeupEmoji}>💄</Text>
             <Text style={styles.makeupText}>{m}</Text>
           </View>
         ))}
 
         <View style={styles.jewelryRow}>
-          <Text style={styles.jewelryLabel}> المجوهرات</Text>
+          <Text style={styles.jewelryLabel}>{t('colorAnalysis.jewelry')}</Text>
           <Text style={styles.jewelryValue}>{s.jewelry}</Text>
         </View>
       </View>
 
       <TouchableOpacity style={styles.btn}>
-        <Text style={styles.bt}> حللي بشرتكِ</Text>
+        <Text style={styles.bt}>{t('colorAnalysis.analyze')}</Text>
       </TouchableOpacity>
     </ScrollView>
   );

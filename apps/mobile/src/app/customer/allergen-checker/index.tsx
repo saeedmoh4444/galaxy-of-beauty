@@ -1,47 +1,48 @@
 import { View, Text, ScrollView, StyleSheet, TouchableOpacity, TextInput } from 'react-native';
 import { useState } from 'react';
+import { useLocale } from '@/components/LocaleProvider';
 
 const COMMON_ALLERGENS = [
   {
     key: 'fragrance',
-    emoji: '',
+    emoji: '🌸',
     name: 'العطور',
     risk: 'medium',
     desc: 'قد تسبب تهيج البشرة الحساسة',
   },
-  { key: 'alcohol', emoji: '', name: 'الكحول', risk: 'high', desc: 'يجفف البشرة ويهيجها' },
+  { key: 'alcohol', emoji: '🍸', name: 'الكحول', risk: 'high', desc: 'يجفف البشرة ويهيجها' },
   {
     key: 'parabens',
-    emoji: '',
+    emoji: '🧪',
     name: 'البارابين',
     risk: 'medium',
     desc: 'مواد حافظة قد تسبب حساسية',
   },
   {
     key: 'sulfates',
-    emoji: '',
+    emoji: '🫧',
     name: 'الكبريتات',
     risk: 'high',
     desc: 'منظفات قاسية على البشرة',
   },
-  { key: 'silicones', emoji: '', name: 'السيليكون', risk: 'low', desc: 'يسد المسام عند البعض' },
+  { key: 'silicones', emoji: '🧴', name: 'السيليكون', risk: 'low', desc: 'يسد المسام عند البعض' },
   {
     key: 'essential_oils',
-    emoji: '',
+    emoji: '🌿',
     name: 'زيوت عطرية',
     risk: 'medium',
     desc: 'قد تسبب حساسية للبشرة الحساسة',
   },
   {
     key: 'lanolin',
-    emoji: '',
+    emoji: '🐑',
     name: 'اللانولين',
     risk: 'medium',
     desc: 'دهن صوفي قد يسبب حساسية',
   },
   {
     key: 'formaldehyde',
-    emoji: '️',
+    emoji: '💀',
     name: 'الفورمالديهايد',
     risk: 'high',
     desc: 'مادة حافظة ضارة',
@@ -51,6 +52,7 @@ const COMMON_ALLERGENS = [
 const MY_ALLERGIES = ['alcohol', 'sulfates', 'fragrance'];
 
 export default function AllergenCheckerScreen(): JSX.Element {
+  const { t } = useLocale();
   const [query, setQuery] = useState('');
   const [checked, setChecked] = useState<string[]>(MY_ALLERGIES);
 
@@ -64,23 +66,23 @@ export default function AllergenCheckerScreen(): JSX.Element {
 
   return (
     <ScrollView style={styles.c} contentContainerStyle={styles.i}>
-      <Text style={styles.t}> فاحص الحساسية</Text>
-      <Text style={styles.sub}>تجنبي المكونات اللي تسبب حساسية لبشرتكِ</Text>
+      <Text style={styles.t}>{t('allergenChecker.title')}</Text>
+      <Text style={styles.sub}>{t('allergenChecker.subtitle')}</Text>
 
       <View style={styles.searchRow}>
         <TextInput
           value={query}
           onChangeText={setQuery}
-          placeholder="ابحثي عن منتج أو مكون..."
+          placeholder={t('allergenChecker.search-placeholder')}
           style={styles.inp}
           placeholderTextColor="#9ca3af"
         />
         <TouchableOpacity style={styles.sb}>
-          <Text style={styles.sbt}></Text>
+          <Text style={styles.sbt}>🔍</Text>
         </TouchableOpacity>
       </View>
 
-      <Text style={styles.st}> مسببات الحساسية لديّ</Text>
+      <Text style={styles.st}>{t('allergenChecker.my-allergies')}</Text>
       <View style={styles.grid}>
         {COMMON_ALLERGENS.map((a) => {
           const isChecked = checked.includes(a.key);
@@ -122,7 +124,11 @@ export default function AllergenCheckerScreen(): JSX.Element {
                     },
                   ]}
                 >
-                  {a.risk === 'high' ? 'عالي' : a.risk === 'medium' ? 'متوسط' : 'منخفض'}
+                  {a.risk === 'high'
+                    ? t('allergenChecker.risk-high')
+                    : a.risk === 'medium'
+                      ? t('allergenChecker.risk-medium')
+                      : t('allergenChecker.risk-low')}
                 </Text>
               </View>
             </TouchableOpacity>
@@ -132,7 +138,7 @@ export default function AllergenCheckerScreen(): JSX.Element {
 
       {highRisk.length > 0 && (
         <View style={styles.warning}>
-          <Text style={styles.wt}> منتجات يجب تجنبها</Text>
+          <Text style={styles.wt}>{t('allergenChecker.avoid-title')}</Text>
           {highRisk.map((a) => (
             <Text key={a.key} style={styles.wi}>
               • {a.name}: {a.desc}
@@ -143,7 +149,7 @@ export default function AllergenCheckerScreen(): JSX.Element {
 
       {mediumRisk.length > 0 && (
         <View style={styles.caution}>
-          <Text style={styles.ct}> الحذر مطلوب</Text>
+          <Text style={styles.ct}>{t('allergenChecker.caution-title')}</Text>
           {mediumRisk.map((a) => (
             <Text key={a.key} style={styles.ci}>
               • {a.name}: {a.desc}
@@ -152,12 +158,9 @@ export default function AllergenCheckerScreen(): JSX.Element {
         </View>
       )}
 
-      <Text style={styles.st}> نصيحة</Text>
+      <Text style={styles.st}>{t('allergenChecker.tip-title')}</Text>
       <View style={styles.tip}>
-        <Text style={styles.tipText}>
-          اقرئي المكونات دائماً قبل شراء أي منتج. المكونات مرتبة تنازلياً حسب النسبة — أول 5 مكونات
-          هي الأهم.
-        </Text>
+        <Text style={styles.tipText}>{t('allergenChecker.tip-text')}</Text>
       </View>
     </ScrollView>
   );

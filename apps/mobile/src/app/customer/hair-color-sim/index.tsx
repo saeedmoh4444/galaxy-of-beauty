@@ -1,6 +1,7 @@
 import { View, Text, ScrollView, TouchableOpacity, StyleSheet, RefreshControl } from 'react-native';
 import { SkeletonList } from '@/components/SkeletonCard';
 import { trpc } from '@/lib/trpc-react';
+import { useLocale } from '@/components/LocaleProvider';
 
 interface HairColor {
   id?: number;
@@ -9,6 +10,7 @@ interface HairColor {
 }
 
 export default function HairColorSimScreen(): JSX.Element {
+  const { t } = useLocale();
   const q = trpc.hairColorSim.colors.useQuery();
   const colors: HairColor[] = (q.data as unknown as HairColor[] | undefined) ?? [];
 
@@ -26,8 +28,8 @@ export default function HairColorSimScreen(): JSX.Element {
         />
       }
     >
-      <Text style={styles.t}>‍️ محاكي لون الشعر</Text>
-      <Text style={styles.sub}>اختاري لون شعرك الجديد</Text>
+      <Text style={styles.t}>{t('mobile.hairColorSim.title')}</Text>
+      <Text style={styles.sub}>{t('mobile.hairColorSim.subtitle')}</Text>
       <View style={styles.grid}>
         {colors.map((c, i) => (
           <TouchableOpacity key={i} style={[styles.color, { backgroundColor: c.hex ?? '#ccc' }]}>

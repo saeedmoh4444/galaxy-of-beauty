@@ -2,8 +2,10 @@
 import { api } from '@/lib/trpc';
 import { Card, CardListSkeleton, ErrorAlert, EmptyState, Button } from '@galaxy/ui';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
+import { useLocale } from '@/components/LocaleProvider';
 
 export default function TechWaitlistPage(): JSX.Element {
+  const { t, locale } = useLocale();
   const {
     data: popular,
     isLoading,
@@ -33,7 +35,7 @@ export default function TechWaitlistPage(): JSX.Element {
     return (
       <DashboardLayout userRole="CUSTOMER">
         <div className="mx-auto max-w-3xl space-y-6">
-          <ErrorAlert message="فشل تحميل البيانات" onRetry={() => refetch()} />
+          <ErrorAlert message={t('techWaitlist.loadError')} onRetry={() => refetch()} />
         </div>
       </DashboardLayout>
     );
@@ -45,24 +47,25 @@ export default function TechWaitlistPage(): JSX.Element {
     <DashboardLayout userRole="CUSTOMER">
       <div className="mx-auto max-w-3xl space-y-6">
         <div>
-          <h1 className="text-2xl font-bold"> قائمة الانتظار</h1>
-          <p className="mt-1 text-sm text-text-secondary">انضمي لقائمة انتظار الفنيات المشغولات</p>
+          <h1 className="text-2xl font-bold">{t('techWaitlist.title')}</h1>
+          <p className="mt-1 text-sm text-text-secondary">{t('techWaitlist.subtitle')}</p>
         </div>
 
         <Card padding="lg">
-          <h3 className="font-bold mb-4"> الفنيات الأكثر طلباً</h3>
+          <h3 className="font-bold mb-4">{t('techWaitlist.popularTitle')}</h3>
           <div className="space-y-3">
-            {techs.map((t: Record<string, unknown>) => (
+            {techs.map((tx: Record<string, unknown>) => (
               <div
-                key={t.id as number}
+                key={tx.id as number}
                 className="flex items-center justify-between rounded-xl bg-surface-muted dark:bg-gray-800 p-4"
               >
                 <div className="flex items-center gap-3">
-                  <span className="text-3xl">{t.emoji as string}</span>
+                  <span className="text-3xl">{tx.emoji as string}</span>
                   <div>
-                    <p className="font-bold">{t.name as string}</p>
+                    <p className="font-bold">{tx.name as string}</p>
                     <p className="text-xs text-text-secondary">
-                      {t.waitlistCount as number} في الانتظار · {t.avgWait as string}
+                      {tx.waitlistCount as number} {t('techWaitlist.waitingLabel')} ·{' '}
+                      {tx.avgWait as string}
                     </p>
                   </div>
                 </div>
@@ -70,21 +73,24 @@ export default function TechWaitlistPage(): JSX.Element {
                   size="sm"
                   onClick={() =>
                     joinMut.mutate({
-                      technicianId: t.id as number,
-                      technicianName: t.name as string,
+                      technicianId: tx.id as number,
+                      technicianName: tx.name as string,
                     })
                   }
                 >
-                  انضمي
+                  {t('techWaitlist.join')}
                 </Button>
               </div>
             ))}
           </div>
         </Card>
 
-        <h3 className="font-bold"> قوائم انتظاري</h3>
+        <h3 className="font-bold">{t('techWaitlist.myLists')}</h3>
         {my.length === 0 ? (
-          <EmptyState title="لا توجد قوائم انتظار" description="انضمي لقائمة انتظار فنية مشغولة" />
+          <EmptyState
+            title={t('techWaitlist.emptyTitle')}
+            description={t('techWaitlist.emptyDescription')}
+          />
         ) : (
           <div className="space-y-2">
             {my.map((w: Record<string, unknown>) => (
@@ -92,15 +98,20 @@ export default function TechWaitlistPage(): JSX.Element {
                 <div>
                   <p className="font-bold">{w.technicianName as string}</p>
                   <p className="text-xs text-text-secondary">
-                    {new Date(w.createdAt as string).toLocaleDateString('ar-SA')} ·{' '}
-                    {(w.status as string) === 'WAITING' ? ' في الانتظار' : (w.status as string)}
+                    {new Date(w.createdAt as string).toLocaleDateString(
+                      locale === 'en' ? 'en-GB' : 'ar-SA',
+                    )}{' '}
+                    ·{' '}
+                    {(w.status as string) === 'WAITING'
+                      ? t('techWaitlist.waitingLabel')
+                      : (w.status as string)}
                   </p>
                 </div>
                 <button
                   onClick={() => leaveMut.mutate({ id: w.id as number })}
                   className="text-red-400 text-sm"
                 >
-                  خروج
+                  {t('techWaitlist.leave')}
                 </button>
               </Card>
             ))}

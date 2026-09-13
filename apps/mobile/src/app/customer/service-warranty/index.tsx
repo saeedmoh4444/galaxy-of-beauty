@@ -1,6 +1,8 @@
 import { View, Text, ScrollView, StyleSheet, RefreshControl } from 'react-native';
 import { SkeletonList } from '@/components/SkeletonCard';
+import { useAuthState } from '@/hooks/useAuthState';
 import { trpc } from '@/lib/trpc-react';
+import { useLocale } from '@/components/LocaleProvider';
 
 interface ServiceWarranty {
   id?: number;
@@ -10,7 +12,9 @@ interface ServiceWarranty {
 }
 
 export default function ServiceWarrantyScreen(): JSX.Element {
-  const claimsQ = trpc.serviceWarranty.myClaims.useQuery();
+  const { t, locale } = useLocale();
+  const isAuthed = useAuthState();
+  const claimsQ = trpc.serviceWarranty.myClaims.useQuery(undefined, { enabled: isAuthed });
   const data: ServiceWarranty[] = (claimsQ.data as unknown as ServiceWarranty[] | undefined) ?? [];
   if (claimsQ.isLoading) return <SkeletonList count={4} />;
   return (
@@ -25,14 +29,18 @@ export default function ServiceWarrantyScreen(): JSX.Element {
         />
       }
     >
-      <Text style={styles.t}>️ ضمان الخدمة</Text>
+      <Text style={styles.t}>{t('mobile.serviceWarranty.title')}</Text>
       {data.map((w, i) => (
         <View key={i} style={styles.card}>
-          <Text style={styles.emoji}>{w.emoji ?? '️'}</Text>
+          <Text style={styles.emoji}>{w.emoji ?? ''}</Text>
           <View style={{ flex: 1 }}>
             <Text style={styles.name}>{w.serviceName}</Text>
             <Text style={styles.exp}>
-              ينتهي: {new Date(w.expiresAt ?? Date.now()).toLocaleDateString('ar-SA')}
+              {t('mobile.serviceWarranty.expires', {
+                date: new Date(w.expiresAt ?? Date.now()).toLocaleDateString(
+                  locale === 'en' ? 'en-GB' : 'ar-SA',
+                ),
+              })}
             </Text>
           </View>
         </View>

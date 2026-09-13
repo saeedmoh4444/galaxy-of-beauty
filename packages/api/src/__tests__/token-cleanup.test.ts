@@ -97,8 +97,8 @@ describe('Token cleanup worker', () => {
       data: {
         userId,
         type: 'old_read',
-        titleJson: { ar: 'قديم' },
-        bodyJson: { ar: 'قديم' },
+        titleJson: { ar: 'قديم', en: 'Old' },
+        bodyJson: { ar: 'قديم', en: 'Old' },
         sentVia: ['in_app'],
         isRead: true,
         createdAt: new Date(now - 31 * 86400000),
@@ -108,8 +108,8 @@ describe('Token cleanup worker', () => {
       data: {
         userId,
         type: 'recent_read',
-        titleJson: { ar: 'حديث' },
-        bodyJson: { ar: 'حديث' },
+        titleJson: { ar: 'حديث', en: 'Recent' },
+        bodyJson: { ar: 'حديث', en: 'Recent' },
         sentVia: ['in_app'],
         isRead: true,
         createdAt: new Date(now - 86400000),
@@ -119,8 +119,8 @@ describe('Token cleanup worker', () => {
       data: {
         userId,
         type: 'old_unread',
-        titleJson: { ar: 'غير مقروء' },
-        bodyJson: { ar: 'غير مقروء' },
+        titleJson: { ar: 'غير مقروء', en: 'Unread' },
+        bodyJson: { ar: 'غير مقروء', en: 'Unread' },
         sentVia: ['in_app'],
         isRead: false,
         createdAt: new Date(now - 31 * 86400000),

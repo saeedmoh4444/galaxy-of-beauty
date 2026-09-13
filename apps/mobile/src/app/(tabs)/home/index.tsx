@@ -1,22 +1,26 @@
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import { useRouter } from 'expo-router';
+import { localize } from '@galaxy/shared';
 import { ScreenState } from '@/components/ScreenState';
 import { trpc } from '@/lib/trpc-react';
 import { useHaptics } from '@/hooks/useHaptics';
-
-const COLORS = {
-  brand: '#7c3aed',
-  white: '#ffffff',
-  gray50: '#faf5ff',
-  gray700: '#374151',
-  gray900: '#111827',
-};
+import { useLocale } from '@/components/LocaleProvider';
+import { getAuthToken } from '@/lib/authToken';
+import { useTheme, themeColors } from '@/components/ThemeProvider';
 
 export default function HomeScreen(): JSX.Element {
   const router = useRouter();
   const { trigger } = useHaptics();
+  const { t, locale } = useLocale();
+  const { isDark } = useTheme();
+  const c = isDark ? themeColors.dark : themeColors.light;
+  const styles = makeStyles(c);
   const cats = trpc.categories.list.useQuery();
-  const kindness = trpc.kindnessPoints.getStatus.useQuery();
+  // Auth-gated: the public home tab must not fire the authenticated
+  // kindness query for guests (was surfacing "Authentication required").
+  const kindness = trpc.kindnessPoints.getStatus.useQuery(undefined, {
+    enabled: !!getAuthToken(),
+  });
   const dailyTip = trpc.dailyBeautyTip.today.useQuery();
   const compliments = trpc.sisterhoodCompliments.count.useQuery();
 
@@ -27,11 +31,23 @@ export default function HomeScreen(): JSX.Element {
       isLoading={cats.isLoading}
       isError={cats.isError}
       isEmpty={!data || data.length === 0}
-      errorMessage="فشل تحميل الأقسام"
-      emptyTitle="لا توجد أقسام"
+      errorMessage={t('mobile.core.categoriesLoadError')}
+      emptyTitle={t('marketing.home.no-categories')}
       onRetry={() => cats.refetch()}
     >
-      <Text style={styles.title}>جالكسي بيوتي</Text>
+      <View style={styles.headerRow}>
+        <Text style={styles.title}>{t('common.brandName')}</Text>
+        <TouchableOpacity
+          testID="home-more-button"
+          style={styles.moreBtn}
+          onPress={() => {
+            trigger();
+            router.push('/public/more');
+          }}
+        >
+          <Text style={styles.moreBtnText}>{t('nav.more')}</Text>
+        </TouchableOpacity>
+      </View>
 
       {/* Community Stats Bar */}
       <View style={styles.statsRow}>
@@ -40,7 +56,9 @@ export default function HomeScreen(): JSX.Element {
             <View style={styles.statIcon}>
               <Text style={styles.statIconText}>K</Text>
             </View>
-            <Text style={styles.statText}>{kindness.data.points} نقطة</Text>
+            <Text style={styles.statText}>
+              {t('mobile.core.kindnessPoints', { points: kindness.data.points })}
+            </Text>
           </View>
         )}
         {compliments?.data !== undefined && (
@@ -48,7 +66,9 @@ export default function HomeScreen(): JSX.Element {
             <View style={styles.statIcon}>
               <Text style={styles.statIconText}>M</Text>
             </View>
-            <Text style={styles.statText}>{compliments.data} رسالة</Text>
+            <Text style={styles.statText}>
+              {t('mobile.core.complimentMessages', { count: compliments.data })}
+            </Text>
           </View>
         )}
         {dailyTip?.data && (
@@ -76,11 +96,11 @@ export default function HomeScreen(): JSX.Element {
           >
             <View style={styles.cardIcon}>
               <Text style={styles.cardIconText}>
-                {(cat.nameJson as Record<string, string>)?.ar?.charAt(0) ?? 'B'}
+                {localize(cat.nameJson, locale).charAt(0) || 'B'}
               </Text>
             </View>
             <Text style={styles.name}>
-              {(cat.nameJson as Record<string, string>)?.ar ?? (cat.nameAr as string) ?? ''}
+              {localize(cat.nameJson, locale) || (cat.nameAr as string) || ''}
             </Text>
           </TouchableOpacity>
         ))}
@@ -89,79 +109,93 @@ export default function HomeScreen(): JSX.Element {
   );
 }
 
-const styles = StyleSheet.create({
-  title: {
-    fontSize: 24,
-    fontWeight: '800',
-    color: COLORS.brand,
-    textAlign: 'center',
-    marginBottom: 20,
-  },
-  grid: { flexDirection: 'row', flexWrap: 'wrap', gap: 10 },
-  card: {
-    width: '30%',
-    backgroundColor: COLORS.white,
-    borderRadius: 14,
-    padding: 14,
-    alignItems: 'center',
-    shadowColor: '#000',
-    shadowOpacity: 0.05,
-    shadowRadius: 4,
-    elevation: 2,
-  },
-  cardIcon: {
-    width: 50,
-    height: 50,
-    borderRadius: 25,
-    backgroundColor: '#f5f3ff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  cardIconText: { fontSize: 20, fontWeight: '700', color: COLORS.brand },
-  name: {
-    fontSize: 11,
-    fontWeight: '600',
-    color: COLORS.gray900,
-    marginTop: 6,
-    textAlign: 'center',
-  },
-  statsRow: { marginBottom: 16, gap: 8 },
-  statBadge: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    backgroundColor: COLORS.gray50,
-    borderRadius: 10,
-    padding: 8,
-    marginBottom: 4,
-  },
-  statIcon: {
-    width: 28,
-    height: 28,
-    borderRadius: 14,
-    backgroundColor: '#ede9fe',
-    alignItems: 'center',
-    justifyContent: 'center',
-    marginRight: 8,
-  },
-  statIconText: { fontSize: 12, fontWeight: '700', color: COLORS.brand },
-  statText: { fontSize: 12, fontWeight: '600', color: COLORS.gray700 },
-  tipBar: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    backgroundColor: '#fef3c7',
-    borderRadius: 10,
-    padding: 10,
-    marginTop: 4,
-  },
-  tipIcon: {
-    width: 24,
-    height: 24,
-    borderRadius: 12,
-    backgroundColor: '#fde68a',
-    alignItems: 'center',
-    justifyContent: 'center',
-    marginRight: 8,
-  },
-  tipIconText: { fontSize: 12, fontWeight: '700', color: '#92400e' },
-  tipText: { fontSize: 11, color: '#92400e', flex: 1 },
-});
+const makeStyles = (c: typeof themeColors.light | typeof themeColors.dark) =>
+  StyleSheet.create({
+    headerRow: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      justifyContent: 'space-between',
+      marginBottom: 20,
+    },
+    title: {
+      fontSize: 24,
+      fontWeight: '800',
+      color: c.brand,
+      textAlign: 'center',
+    },
+    moreBtn: {
+      borderColor: c.border,
+      borderWidth: 1,
+      borderRadius: 999,
+      paddingHorizontal: 12,
+      paddingVertical: 5,
+    },
+    moreBtnText: { fontSize: 12, fontWeight: '700', color: c.textSecondary },
+    grid: { flexDirection: 'row', flexWrap: 'wrap', gap: 10 },
+    card: {
+      width: '30%',
+      backgroundColor: c.surface,
+      borderRadius: 14,
+      padding: 14,
+      alignItems: 'center',
+      shadowColor: '#000',
+      shadowOpacity: 0.05,
+      shadowRadius: 4,
+      elevation: 2,
+    },
+    cardIcon: {
+      width: 50,
+      height: 50,
+      borderRadius: 25,
+      backgroundColor: c.border,
+      alignItems: 'center',
+      justifyContent: 'center',
+    },
+    cardIconText: { fontSize: 20, fontWeight: '700', color: c.brand },
+    name: {
+      fontSize: 11,
+      fontWeight: '600',
+      color: c.text,
+      marginTop: 6,
+      textAlign: 'center',
+    },
+    statsRow: { marginBottom: 16, gap: 8 },
+    statBadge: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      backgroundColor: c.surface,
+      borderRadius: 10,
+      padding: 8,
+      marginBottom: 4,
+    },
+    statIcon: {
+      width: 28,
+      height: 28,
+      borderRadius: 14,
+      backgroundColor: c.border,
+      alignItems: 'center',
+      justifyContent: 'center',
+      marginRight: 8,
+    },
+    statIconText: { fontSize: 12, fontWeight: '700', color: c.brand },
+    statText: { fontSize: 12, fontWeight: '600', color: c.text },
+    tipBar: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      backgroundColor: '#fef3c7',
+      borderRadius: 10,
+      padding: 10,
+      marginTop: 4,
+    },
+    tipIcon: {
+      width: 24,
+      height: 24,
+      borderRadius: 12,
+      backgroundColor: '#fde68a',
+      alignItems: 'center',
+      justifyContent: 'center',
+      marginRight: 8,
+    },
+    tipIconText: { fontSize: 12, fontWeight: '700', color: '#92400e' },
+    tipText: { fontSize: 11, color: '#92400e', flex: 1 },
+  });

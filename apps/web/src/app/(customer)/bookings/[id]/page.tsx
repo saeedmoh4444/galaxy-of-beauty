@@ -5,18 +5,21 @@ import Link from 'next/link';
 import { api } from '@/lib/trpc';
 import { Card, DetailSkeleton, ErrorAlert, Button, formatCurrency } from '@galaxy/ui';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
+import { useLocale } from '@/components/LocaleProvider';
+import type { TranslationKey } from '@galaxy/shared';
+import { localize } from '@galaxy/shared';
 
-const STATUS_LABELS: Record<string, string> = {
-  REQUESTED: 'قيد الطلب',
-  ACCEPTED: 'مقبول',
-  PAYMENT_AUTHORIZED: 'تم الدفع',
-  CONFIRMED_OFFLINE: 'مؤكد',
-  PAID: 'مدفوع',
-  IN_PROGRESS: 'قيد التنفيذ',
-  COMPLETED: 'مكتمل',
-  REJECTED: 'مرفوض',
-  CANCELLED: 'ملغي',
-  NO_SHOW: 'لم تحضر',
+const STATUS_LABELS: Record<string, TranslationKey> = {
+  REQUESTED: 'booking.status.REQUESTED',
+  ACCEPTED: 'booking.status.ACCEPTED',
+  PAYMENT_AUTHORIZED: 'booking.status.PAYMENT_AUTHORIZED',
+  CONFIRMED_OFFLINE: 'booking.status.CONFIRMED_OFFLINE',
+  PAID: 'booking.status.PAID',
+  IN_PROGRESS: 'booking.status.IN_PROGRESS',
+  COMPLETED: 'booking.status.COMPLETED',
+  REJECTED: 'booking.status.REJECTED',
+  CANCELLED: 'booking.status.CANCELLED',
+  NO_SHOW: 'booking.status.NO_SHOW',
 };
 
 const STATUS_COLORS: Record<string, string> = {
@@ -25,18 +28,15 @@ const STATUS_COLORS: Record<string, string> = {
   COMPLETED: 'bg-green-100 text-green-700',
   CANCELLED: 'bg-red-100 text-red-700',
   REJECTED: 'bg-red-100 text-red-700',
-  NO_SHOW: 'bg-gray-100 text-gray-700',
+  NO_SHOW: 'bg-surface-muted text-text-secondary dark:bg-gray-800 dark:text-gray-300',
 };
 
 export default function BookingDetailPage(): JSX.Element {
+  const { t, locale } = useLocale();
   const { id } = useParams<{ id: string }>();
   const bookingId = Number(id);
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const query = api.bookings.getById.useQuery(
-    { id: bookingId },
-    { enabled: !isNaN(bookingId) },
-  ) as any;
+  const query = api.bookings.getById.useQuery({ id: bookingId }, { enabled: !isNaN(bookingId) });
   const booking = query.data;
 
   if (query.isLoading)
@@ -48,7 +48,7 @@ export default function BookingDetailPage(): JSX.Element {
   if (query.isError || !booking)
     return (
       <DashboardLayout userRole="CUSTOMER">
-        <ErrorAlert message="فشل تحميل الحجز" onRetry={() => query.refetch()} />
+        <ErrorAlert message={t('booking.detail-error')} onRetry={() => query.refetch()} />
       </DashboardLayout>
     );
 
@@ -56,45 +56,48 @@ export default function BookingDetailPage(): JSX.Element {
     <DashboardLayout userRole="CUSTOMER">
       <div className="mx-auto max-w-3xl space-y-6">
         <div className="flex items-center justify-between">
-          <h1 className="text-2xl font-bold text-gray-900 dark:text-gray-100">تفاصيل الحجز</h1>
+          <h1 className="text-2xl font-bold text-text-primary">{t('booking.details')}</h1>
           <Link href="/bookings">
-            <Button variant="outline">العودة للحجوزات</Button>
+            <Button variant="outline">{t('booking.back-to-bookings')}</Button>
           </Link>
         </div>
 
         <Card padding="lg">
           <div className="space-y-4">
             <div className="flex items-center justify-between">
-              <span className="text-sm text-gray-500">رمز الحجز</span>
+              <span className="text-sm text-text-secondary">{t('booking.code')}</span>
               <span className="font-mono font-bold text-brand-600">
                 {booking.bookingCode ?? `GOB-${String(booking.id).padStart(6, '0')}`}
               </span>
             </div>
             <div className="flex items-center justify-between">
-              <span className="text-sm text-gray-500">الحالة</span>
+              <span className="text-sm text-text-secondary">{t('booking.status-label')}</span>
               <span
-                className={`rounded-full px-3 py-1 text-xs font-medium ${STATUS_COLORS[booking.status] || 'bg-gray-100 text-gray-700'}`}
+                className={`rounded-full px-3 py-1 text-xs font-medium ${STATUS_COLORS[booking.status] || 'bg-surface-muted text-text-secondary dark:bg-gray-800 dark:text-gray-300'}`}
               >
-                {STATUS_LABELS[booking.status] || booking.status}
+                {t(STATUS_LABELS[booking.status] ?? (booking.status as TranslationKey))}
               </span>
             </div>
             <div className="flex items-center justify-between">
-              <span className="text-sm text-gray-500">الخدمة</span>
-              {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
+              <span className="text-sm text-text-secondary">{t('booking.service')}</span>
               <span className="font-semibold">
-                {((booking.service as any)?.titleJson as Record<string, string>)?.ar || '—'}
+                {localize(
+                  (booking.service as unknown as { titleJson?: Record<string, string> } | null)
+                    ?.titleJson,
+                  locale,
+                ) || '—'}
               </span>
             </div>
             <div className="flex items-center justify-between">
-              <span className="text-sm text-gray-500">المبلغ</span>
+              <span className="text-sm text-text-secondary">{t('booking.amount')}</span>
               <span className="font-bold text-brand-600">
                 {formatCurrency(Number(booking.totalAmount || 0))}
               </span>
             </div>
             <div className="flex items-center justify-between">
-              <span className="text-sm text-gray-500">التاريخ</span>
+              <span className="text-sm text-text-secondary">{t('booking.date')}</span>
               <span className="text-sm">
-                {new Date(booking.startAt).toLocaleDateString('ar-SA', {
+                {new Date(booking.startAt).toLocaleDateString(locale === 'en' ? 'en-GB' : 'ar-SA', {
                   weekday: 'long',
                   year: 'numeric',
                   month: 'long',
@@ -103,9 +106,9 @@ export default function BookingDetailPage(): JSX.Element {
               </span>
             </div>
             <div className="flex items-center justify-between">
-              <span className="text-sm text-gray-500">الوقت</span>
+              <span className="text-sm text-text-secondary">{t('booking.time')}</span>
               <span className="text-sm">
-                {new Date(booking.startAt).toLocaleTimeString('ar-SA', {
+                {new Date(booking.startAt).toLocaleTimeString(locale === 'en' ? 'en-GB' : 'ar-SA', {
                   hour: '2-digit',
                   minute: '2-digit',
                 })}
@@ -113,8 +116,8 @@ export default function BookingDetailPage(): JSX.Element {
             </div>
             {booking.notes && (
               <div className="flex items-center justify-between">
-                <span className="text-sm text-gray-500">ملاحظات</span>
-                <span className="text-sm text-gray-700">{booking.notes}</span>
+                <span className="text-sm text-text-secondary">{t('booking.notes')}</span>
+                <span className="text-sm text-text-secondary">{booking.notes}</span>
               </div>
             )}
           </div>
@@ -123,7 +126,7 @@ export default function BookingDetailPage(): JSX.Element {
         {booking.status === 'REQUESTED' && (
           <div className="flex gap-3">
             <Button variant="danger" onClick={() => {}} className="flex-1">
-              إلغاء الحجز
+              {t('booking.cancel-booking')}
             </Button>
           </div>
         )}

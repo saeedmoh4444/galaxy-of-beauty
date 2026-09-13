@@ -1,71 +1,77 @@
 import { View, Text, ScrollView, StyleSheet, TouchableOpacity } from 'react-native';
-const PROMOS = [
-  {
-    id: 1,
-    code: 'SUMMER30',
-    emoji: '️',
-    discount: 30,
-    type: 'percentage',
-    uses: 45,
-    maxUses: 100,
-    active: true,
-    expires: '31 أغسطس',
-  },
-  {
-    id: 2,
-    code: 'WELCOME50',
-    emoji: '',
-    discount: 50,
-    type: 'fixed',
-    uses: 120,
-    maxUses: 200,
-    active: true,
-    expires: '31 ديسمبر',
-  },
-  {
-    id: 3,
-    code: 'RAMADAN20',
-    emoji: '',
-    discount: 20,
-    type: 'percentage',
-    uses: 200,
-    maxUses: 200,
-    active: false,
-    expires: 'انتهت',
-  },
-];
+import { ScreenState } from '@/components/ScreenState';
+import { trpc } from '@/lib/trpc-react';
+import { useLocale } from '@/components/LocaleProvider';
+
+interface Promo {
+  id?: number;
+  code?: string;
+  discountType?: string;
+  discountValue?: number;
+  maxUses?: number | null;
+  currentUses?: number;
+  validUntil?: string | null;
+  isActive?: boolean;
+  usages?: Array<Record<string, unknown>>;
+}
+
 export default function AdminPromoScreen(): JSX.Element {
+  const { t, locale } = useLocale();
+  const q = trpc.promo.list.useQuery();
+  const promos = (q.data as unknown as Promo[] | null) ?? [];
+
   return (
     <ScrollView style={s.c} contentContainerStyle={s.i}>
-      <Text style={s.h}> إدارة العروض</Text>
-      <Text style={s.sub}>أكواد خصم وحملات ترويجية</Text>
-      {PROMOS.map((p) => (
-        <View key={p.id} style={[s.card, { opacity: p.active ? 1 : 0.6 }]}>
-          <View style={{ flexDirection: 'row', alignItems: 'center', gap: 10 }}>
-            <Text style={s.ce}>{p.emoji}</Text>
-            <View style={{ flex: 1 }}>
-              <Text style={s.cc}>{p.code}</Text>
-              <Text style={s.cd}>
-                {p.type === 'percentage' ? `خصم ${p.discount}%` : `خصم ${p.discount} ر.س`} ·{' '}
-                {p.expires}
-              </Text>
+      <Text style={s.h}>{t('mobile.admin.promo.title')}</Text>
+      <Text style={s.sub}>{t('mobile.admin.promo.subtitle')}</Text>
+      <ScreenState
+        isLoading={q.isLoading}
+        isError={q.isError}
+        isEmpty={promos.length === 0}
+        emptyTitle={t('admin.promo.empty')}
+        onRetry={() => q.refetch()}
+      >
+        {promos.map((p) => {
+          const used = p.usages?.length ?? p.currentUses ?? 0;
+          const max = p.maxUses ?? 0;
+          const pct = max > 0 ? (used / max) * 100 : 0;
+          return (
+            <View key={p.id} style={[s.card, { opacity: p.isActive ? 1 : 0.6 }]}>
+              <View style={{ flexDirection: 'row', alignItems: 'center', gap: 10 }}>
+                <View style={{ flex: 1 }}>
+                  <Text style={s.cc}>{p.code}</Text>
+                  <Text style={s.cd}>
+                    {p.discountType === 'percent'
+                      ? t('mobile.admin.promo.discount-percent', {
+                          discount: Number(p.discountValue ?? 0).toLocaleString(),
+                        })
+                      : t('mobile.admin.promo.discount-fixed', {
+                          discount: Number(p.discountValue ?? 0).toLocaleString(),
+                        })}
+                    {' · '}
+                    {p.validUntil
+                      ? new Date(p.validUntil).toLocaleDateString(
+                          locale === 'ar' ? 'ar-SA' : 'en-GB',
+                        )
+                      : '—'}
+                  </Text>
+                </View>
+                <View style={[s.b, { backgroundColor: p.isActive ? '#d1fae5' : '#fee2e2' }]}>
+                  <Text style={[s.bt, { color: p.isActive ? '#059669' : '#dc2626' }]}>
+                    {p.isActive ? t('admin.enabled') : t('admin.promo.expired')}
+                  </Text>
+                </View>
+              </View>
+              <View style={s.pb}>
+                <View style={[s.pf, { width: `${pct}%` }]} />
+              </View>
+              <Text style={s.pu}>{t('mobile.admin.promo.uses', { used, max })}</Text>
             </View>
-            <View style={[s.b, { backgroundColor: p.active ? '#d1fae5' : '#fee2e2' }]}>
-              <Text style={[s.bt, { color: p.active ? '#059669' : '#dc2626' }]}>
-                {p.active ? 'مفعل' : 'منتهي'}
-              </Text>
-            </View>
-          </View>
-          <View style={s.pb}>
-            <View style={[s.pf, { width: `${(p.uses / p.maxUses) * 100}%` }]} />
-          </View>
-          <Text style={s.pu}>
-            {p.uses}/{p.maxUses} استخدام
-          </Text>
-        </View>
-      ))}
+          );
+        })}
+      </ScreenState>
       <TouchableOpacity style={s.btn}>
-        <Text style={s.btnText}> إضافة كود خصم</Text>
+        <Text style={s.btnText}>{t('mobile.admin.promo.add-code')}</Text>
       </TouchableOpacity>
     </ScrollView>
   );
@@ -76,7 +82,6 @@ const sc = StyleSheet.create({
   h: { fontSize: 24, fontWeight: '800', color: '#111827', textAlign: 'center' },
   sub: { fontSize: 14, color: '#6b7280', textAlign: 'center', marginBottom: 20 },
   card: { backgroundColor: '#fff', borderRadius: 14, padding: 14, marginBottom: 10 },
-  ce: { fontSize: 28 },
   cc: { fontSize: 18, fontWeight: '800', color: '#111827', fontFamily: 'monospace' },
   cd: { fontSize: 12, color: '#6b7280', marginTop: 2 },
   b: { borderRadius: 8, paddingHorizontal: 10, paddingVertical: 4 },

@@ -1,5 +1,7 @@
 import { View, Text, StyleSheet } from 'react-native';
 import { ScreenState } from '@/components/ScreenState';
+import { useLocale } from '@/components/LocaleProvider';
+import { useAuthState } from '@/hooks/useAuthState';
 import { trpc } from '@/lib/trpc-react';
 import { formatCurrency } from '@galaxy/ui';
 
@@ -14,14 +16,16 @@ const COLORS = {
 };
 
 export default function BeautyBudgetScreen(): JSX.Element {
-  const budget = trpc.beautyBudget.get.useQuery() ?? {
+  const { t } = useLocale();
+  const isAuthed = useAuthState();
+  const budget = trpc.beautyBudget.get.useQuery(undefined, { enabled: isAuthed }) ?? {
     data: null,
     isLoading: false,
     isError: false,
     refetch: () => {},
   };
-  const loyalty = trpc.loyalty.myAccount.useQuery();
-  const savings = trpc.savingsGoals.list.useQuery();
+  const loyalty = trpc.loyalty.myAccount.useQuery(undefined, { enabled: isAuthed });
+  const savings = trpc.savingsGoals.list.useQuery(undefined, { enabled: isAuthed });
   const data = budget.data as Record<string, unknown> | undefined;
 
   return (
@@ -29,26 +33,30 @@ export default function BeautyBudgetScreen(): JSX.Element {
       isLoading={budget.isLoading}
       isError={budget.isError}
       isEmpty={!data}
-      errorMessage="فشل تحميل الميزانية"
+      errorMessage={t('beautyBudget.load-error')}
       onRetry={() => budget.refetch()}
     >
-      <Text style={styles.title}> ميزانية الجمال</Text>
+      <Text style={styles.title}>{t('beautyBudget.title')}</Text>
       <View style={styles.card}>
-        <Text style={styles.label}>الميزانية الشهرية</Text>
+        <Text style={styles.label}>{t('beautyBudget.monthly-budget')}</Text>
         <Text style={styles.amount}>{formatCurrency(Number(data?.budget ?? 0))}</Text>
       </View>
       {loyalty?.data || savings?.data ? (
         <View style={styles.card}>
           {loyalty?.data && (
-            <Text style={styles.label}> نقاط الولاء: {loyalty.data.points ?? 0}</Text>
+            <Text style={styles.label}>
+              {t('beautyBudget.loyalty-points', { points: loyalty.data.points ?? 0 })}
+            </Text>
           )}
           {savings?.data && (
-            <Text style={styles.label}>أهداف الادخار: {savings.data?.length ?? 0}</Text>
+            <Text style={styles.label}>
+              {t('beautyBudget.savings-goals', { count: savings.data?.length ?? 0 })}
+            </Text>
           )}
         </View>
       ) : null}
       <View style={styles.card}>
-        <Text style={styles.label}>الإنفاق الحالي</Text>
+        <Text style={styles.label}>{t('beautyBudget.current-spending')}</Text>
         <Text
           style={[
             styles.amount,
@@ -64,7 +72,7 @@ export default function BeautyBudgetScreen(): JSX.Element {
         </Text>
       </View>
       <View style={styles.card}>
-        <Text style={styles.label}>المتبقي</Text>
+        <Text style={styles.label}>{t('beautyBudget.remaining')}</Text>
         <Text style={[styles.amount, { color: COLORS.brand }]}>
           {formatCurrency(Math.max(0, Number(data?.budget ?? 0) - Number(data?.spent ?? 0)))}
         </Text>

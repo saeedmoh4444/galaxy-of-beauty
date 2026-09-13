@@ -25,6 +25,11 @@ interface InspirationBoardCardProps {
   collaborators?: string[];
   onAddPin?: () => void;
   className?: string;
+  inspirationCountText?: string;
+  shareCountText?: string;
+  addPinAriaLabel?: string;
+  addPinText?: string;
+  footerText?: string;
 }
 
 export function InspirationBoardCard({
@@ -33,6 +38,11 @@ export function InspirationBoardCard({
   collaborators,
   onAddPin,
   className = '',
+  inspirationCountText = 'إلهام',
+  shareCountText = 'مشاركة',
+  addPinAriaLabel = 'أضيفي إلهاماً',
+  addPinText = 'أضيفي',
+  footerText = 'شاركي إلهاماتكِ مع صديقاتكِ في دائرة الجمال',
 }: InspirationBoardCardProps): JSX.Element {
   return (
     <div
@@ -44,12 +54,16 @@ export function InspirationBoardCard({
       {/* Header */}
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-2">
-          <span className="text-lg" aria-hidden="true"></span>
+          <span className="text-lg" aria-hidden="true">
+            ✨
+          </span>
           <div>
             <h4 className="text-sm font-bold text-rose-700 dark:text-rose-300">{boardName}</h4>
             <p className="text-[10px] text-rose-500 dark:text-rose-400">
-              {pins.length} إلهام
-              {collaborators && collaborators.length > 0 && ` · ${collaborators.length} مشاركة`}
+              {pins.length} {inspirationCountText}
+              {collaborators &&
+                collaborators.length > 0 &&
+                ` · ${collaborators.length} ${shareCountText}`}
             </p>
           </div>
         </div>
@@ -57,7 +71,7 @@ export function InspirationBoardCard({
           type="button"
           onClick={onAddPin}
           className="rounded-full bg-rose-100 p-1.5 text-rose-600 hover:bg-rose-200 dark:bg-rose-950 dark:text-rose-400"
-          aria-label="أضيفي إلهاماً"
+          aria-label={addPinAriaLabel}
         >
           <svg
             className="h-4 w-4"
@@ -74,7 +88,7 @@ export function InspirationBoardCard({
       {/* Collaborators */}
       {collaborators && collaborators.length > 0 && (
         <div className="mt-2 flex items-center gap-1.5">
-          <span className="text-[10px] text-text-tertiary dark:text-gray-500">‍️</span>
+          <span className="text-[10px] text-text-tertiary dark:text-text-secondary">👥</span>
           <div className="flex -space-x-1.5">
             {collaborators.slice(0, 4).map((name) => (
               <span
@@ -85,7 +99,7 @@ export function InspirationBoardCard({
               </span>
             ))}
             {collaborators.length > 4 && (
-              <span className="flex h-6 w-6 items-center justify-center rounded-full border-2 border-white bg-gray-100 text-[8px] text-gray-500 dark:border-gray-900 dark:bg-gray-700">
+              <span className="flex h-6 w-6 items-center justify-center rounded-full border-2 border-white bg-surface-muted text-[8px] text-text-secondary dark:border-gray-900 dark:bg-gray-700">
                 +{collaborators.length - 4}
               </span>
             )}
@@ -107,10 +121,13 @@ export function InspirationBoardCard({
               {pin.title}
             </p>
             {pin.savedBy && (
-              <p className="text-[9px] text-text-tertiary dark:text-gray-500"> {pin.savedBy}</p>
+              <p className="text-[9px] text-text-tertiary dark:text-text-secondary">
+                {' '}
+                {pin.savedBy}
+              </p>
             )}
             {pin.note && (
-              <p className="mt-0.5 text-[9px] italic text-text-tertiary dark:text-gray-500 truncate">
+              <p className="mt-0.5 text-[9px] italic text-text-tertiary dark:text-text-secondary truncate">
                 &ldquo;{pin.note}&rdquo;
               </p>
             )}
@@ -133,14 +150,14 @@ export function InspirationBoardCard({
             >
               <path strokeLinecap="round" strokeLinejoin="round" d="M12 5v14m-7-7h14" />
             </svg>
-            <span className="mt-1 text-[10px]">أضيفي</span>
+            <span className="mt-1 text-[10px]">{addPinText}</span>
           </button>
         )}
       </div>
 
       {/* Footer */}
-      <p className="mt-2 text-center text-[9px] text-text-tertiary dark:text-gray-500">
-        شاركي إلهاماتكِ مع صديقاتكِ في دائرة الجمال
+      <p className="mt-2 text-center text-[9px] text-text-tertiary dark:text-text-secondary">
+        {footerText}
       </p>
     </div>
   );

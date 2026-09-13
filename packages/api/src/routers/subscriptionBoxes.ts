@@ -92,10 +92,18 @@ export const subscriptionBoxRouter = router({
         price: z.number().positive(),
         servicesPerMonth: z.number().int().default(1),
         discountPercent: z.number().int().default(0),
+        // E3 — optional gym scope (membership plan for one gym).
+        gymId: z.number().int().positive().optional(),
       }),
     )
-    .mutation(async ({ input }) =>
-      prisma.subscriptionPlan.create({
+    .mutation(async ({ input }) => {
+      if (input.gymId) {
+        const gym = await prisma.vendor.findUnique({ where: { id: input.gymId } });
+        if (!gym || gym.type !== 'GYM') {
+          throw new TRPCError({ code: 'BAD_REQUEST', message: 'Plan gym must be a GYM vendor' });
+        }
+      }
+      return prisma.subscriptionPlan.create({
         data: {
           nameJson: { ar: input.nameAr, en: input.nameEn },
           descriptionJson: { ar: input.descriptionAr, en: input.descriptionEn },
@@ -103,9 +111,10 @@ export const subscriptionBoxRouter = router({
           price: input.price,
           servicesPerMonth: input.servicesPerMonth,
           discountPercent: input.discountPercent,
+          gymId: input.gymId,
         },
-      }),
-    ),
+      });
+    }),
 
   adminList: adminProcedure.query(() =>
     prisma.customerSubscription.findMany({

@@ -24,12 +24,14 @@ import {
   BeautyHormonalAcneCard,
 } from '@galaxy/ui';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
+import { useLocale } from '@/components/LocaleProvider';
 
 export default function LifeEventsPage(): JSX.Element {
+  const { t } = useLocale();
   return (
     <DashboardLayout userRole="CUSTOMER">
       <PageContainer width="wide">
-        <PageTitle title=" مراحل الحياة" subtitle="لكل مرحلة عمرية جمالها الخاص" />
+        <PageTitle title={t('lifeEvents.title')} subtitle={t('lifeEvents.subtitle')} />
 
         <div className="grid gap-6 lg:grid-cols-2">
           <BeautyJourneyTimeline userAge={28} />

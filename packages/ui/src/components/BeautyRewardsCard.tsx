@@ -13,24 +13,28 @@ import { cn } from '@galaxy/shared';
 type RewardTier = 'silver' | 'gold' | 'diamond';
 
 interface Reward {
-  name: string;
+  name: { ar: string; en: string };
   emoji: string;
   points: number;
 }
 
 const REWARDS: Reward[] = [
-  { name: 'مانيكير مجاني', emoji: '', points: 500 },
-  { name: 'قناع وجه', emoji: '', points: 300 },
-  { name: 'خصم 50 ر.س', emoji: '', points: 400 },
-  { name: 'خدمة سريعة', emoji: '', points: 250 },
-  { name: 'هدية شهرية', emoji: '', points: 800 },
-  { name: 'يوم سبا مصغر', emoji: '', points: 1500 },
+  { name: { ar: 'مانيكير مجاني', en: 'Free manicure' }, emoji: '💅', points: 500 },
+  { name: { ar: 'قناع وجه', en: 'Face mask' }, emoji: '🎭', points: 300 },
+  { name: { ar: 'خصم 50 ر.س', en: '50 SAR off' }, emoji: '💰', points: 400 },
+  { name: { ar: 'خدمة سريعة', en: 'Quick service' }, emoji: '⚡', points: 250 },
+  { name: { ar: 'هدية شهرية', en: 'Monthly gift' }, emoji: '🎁', points: 800 },
+  { name: { ar: 'يوم سبا مصغر', en: 'Mini spa day' }, emoji: '🧖', points: 1500 },
 ];
 
 interface BeautyRewardsCardProps {
   points: number;
   tier?: RewardTier;
   onRedeem?: (reward: string) => void;
+  /** Display language for built-in labels */
+  locale?: 'ar' | 'en';
+  myRewardsTitle?: string;
+  pointsSuffix?: string;
   className?: string;
 }
 
@@ -45,6 +49,9 @@ export function BeautyRewardsCard({
   tier = 'gold',
   onRedeem,
   className = '',
+  locale = 'ar',
+  myRewardsTitle = 'مكافآتي',
+  pointsSuffix = 'نقطة',
 }: BeautyRewardsCardProps): JSX.Element {
   return (
     <div
@@ -62,9 +69,12 @@ export function BeautyRewardsCard({
             )}
           ></div>
           <div>
-            <h4 className="text-sm font-bold text-amber-700 dark:text-amber-300">مكافآتي</h4>
+            <h4 className="text-sm font-bold text-amber-700 dark:text-amber-300">
+              {myRewardsTitle}
+            </h4>
             <p className="text-[10px] text-amber-500 dark:text-amber-400">
-              {points.toLocaleString('ar-SA')} نقطة
+              {points.toLocaleString('ar-SA')}
+              {pointsSuffix}
             </p>
           </div>
         </div>
@@ -75,23 +85,26 @@ export function BeautyRewardsCard({
           const canRedeem = points >= r.points;
           return (
             <button
-              key={r.name}
+              key={r.name.ar}
               type="button"
               disabled={!canRedeem}
-              onClick={() => onRedeem?.(r.name)}
+              onClick={() => onRedeem?.(r.name.ar)}
               className={cn(
-                'flex items-center gap-2 rounded-lg px-2.5 py-2 text-left transition-all',
+                'flex items-center gap-2 rounded-lg px-2.5 py-2 text-start transition-all',
                 canRedeem
                   ? 'bg-amber-50 hover:bg-amber-100 dark:bg-amber-950 dark:hover:bg-amber-900'
-                  : 'bg-gray-50 opacity-50 cursor-not-allowed dark:bg-gray-800',
+                  : 'bg-surface-muted opacity-50 cursor-not-allowed dark:bg-gray-800',
               )}
             >
               <span className="text-sm">{r.emoji}</span>
               <div>
                 <p className="text-[10px] font-bold text-text-primary dark:text-gray-100">
-                  {r.name}
+                  {r.name[locale]}
                 </p>
-                <p className="text-[9px] text-text-tertiary dark:text-gray-500">{r.points} نقطة</p>
+                <p className="text-[9px] text-text-tertiary dark:text-text-secondary">
+                  {r.points}
+                  {pointsSuffix}
+                </p>
               </div>
             </button>
           );

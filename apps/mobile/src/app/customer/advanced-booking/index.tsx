@@ -1,12 +1,15 @@
 import { View, Text, ScrollView, StyleSheet, TouchableOpacity, RefreshControl } from 'react-native';
 import { useState } from 'react';
 import { SkeletonList } from '@/components/SkeletonCard';
+import { useLocale } from '@/components/LocaleProvider';
+import { useAuthState } from '@/hooks/useAuthState';
 import { trpc } from '@/lib/trpc-react';
+import { localize } from '@galaxy/shared';
 
 const REC = [
-  { key: 'WEEKLY', emoji: '', label: 'أسبوعي' },
-  { key: 'BIWEEKLY', emoji: '', label: 'كل أسبوعين' },
-  { key: 'MONTHLY', emoji: '️', label: 'شهري' },
+  { key: 'WEEKLY', emoji: '📅' },
+  { key: 'BIWEEKLY', emoji: '📆' },
+  { key: 'MONTHLY', emoji: '🗓️' },
 ] as const;
 
 interface ServiceRow {
@@ -37,13 +40,21 @@ interface SlotRow {
 }
 
 export default function AdvancedBookingScreen(): JSX.Element {
+  const { locale, t } = useLocale();
+  const isAuthed = useAuthState();
   const [selectedSvc, setSelectedSvc] = useState<number | null>(null);
   const [recurrence, setRecurrence] = useState<'WEEKLY' | 'BIWEEKLY' | 'MONTHLY'>('WEEKLY');
   const [occurrences, setOccurrences] = useState(4);
   const [result, setResult] = useState<RecurringBookingResult | null>(null);
 
+  const recLabels: Record<string, string> = {
+    WEEKLY: t('advancedBooking.freq-weekly'),
+    BIWEEKLY: t('advancedBooking.freq.biweekly'),
+    MONTHLY: t('advancedBooking.freq-monthly'),
+  };
+
   const servicesQ = trpc.services.list.useQuery({});
-  const addressesQ = trpc.addresses.list.useQuery();
+  const addressesQ = trpc.addresses.list.useQuery(undefined, { enabled: isAuthed });
   const techniciansQ = trpc.technicians.list.useQuery({});
 
   // Resolve real IDs instead of hardcoded placeholders (audit fix B1/D1)
@@ -89,11 +100,15 @@ export default function AdvancedBookingScreen(): JSX.Element {
   if (result)
     return (
       <ScrollView style={styles.c} contentContainerStyle={styles.i}>
-        <Text style={styles.t}> حجز متكرر</Text>
+        <Text style={styles.t}>{t('advancedBooking.recurringTitle')}</Text>
         <View style={[styles.card, styles.rc]}>
-          <Text style={styles.re}></Text>
-          <Text style={styles.rtt}>تم!</Text>
-          <Text style={styles.rcnt}>{result.bookings?.length ?? occurrences} حجوزات</Text>
+          <Text style={styles.re}>🔁</Text>
+          <Text style={styles.rtt}>{t('advancedBooking.done')}</Text>
+          <Text style={styles.rcnt}>
+            {t('advancedBooking.bookings-count', {
+              count: result.bookings?.length ?? occurrences,
+            })}
+          </Text>
         </View>
       </ScrollView>
     );
@@ -113,18 +128,18 @@ export default function AdvancedBookingScreen(): JSX.Element {
         />
       }
     >
-      <Text style={styles.t}> حجز متكرر</Text>
+      <Text style={styles.t}>{t('advancedBooking.recurringTitle')}</Text>
       {services.slice(0, 10).map((s) => (
         <TouchableOpacity
           key={s.id}
           onPress={() => setSelectedSvc(s.id)}
           style={[styles.sc, selectedSvc === s.id && styles.sca]}
         >
-          <Text style={styles.se}>{s.emoji ?? '‍️'}</Text>
-          <Text style={styles.sn}>{s.titleJson?.ar ?? s.nameAr}</Text>
+          <Text style={styles.se}>{s.emoji ?? ''}</Text>
+          <Text style={styles.sn}>{localize(s.titleJson, locale) || s.nameAr}</Text>
         </TouchableOpacity>
       ))}
-      <Text style={styles.st}> التكرار</Text>
+      <Text style={styles.st}>{t('advancedBooking.recurrence')}</Text>
       <View style={styles.rg}>
         {REC.map((r) => (
           <TouchableOpacity
@@ -133,11 +148,15 @@ export default function AdvancedBookingScreen(): JSX.Element {
             style={[styles.rcrd, recurrence === r.key && styles.rca]}
           >
             <Text style={styles.rce}>{r.emoji}</Text>
-            <Text style={[styles.rcl, recurrence === r.key && styles.rcla]}>{r.label}</Text>
+            <Text style={[styles.rcl, recurrence === r.key && styles.rcla]}>
+              {recLabels[r.key]}
+            </Text>
           </TouchableOpacity>
         ))}
       </View>
-      <Text style={styles.st}> عدد المرات: {occurrences}</Text>
+      <Text style={styles.st}>
+        {t('advancedBooking.occurrences-count', { count: occurrences })}
+      </Text>
       <View style={styles.or}>
         {[2, 4, 6, 8, 12].map((n) => (
           <TouchableOpacity
@@ -154,7 +173,7 @@ export default function AdvancedBookingScreen(): JSX.Element {
         disabled={!selectedSvc}
         style={[styles.cb, !selectedSvc && { opacity: 0.5 }]}
       >
-        <Text style={styles.cbt}> إنشاء {occurrences} حجوزات</Text>
+        <Text style={styles.cbt}>{t('advancedBooking.create-count', { count: occurrences })}</Text>
       </TouchableOpacity>
     </ScrollView>
   );

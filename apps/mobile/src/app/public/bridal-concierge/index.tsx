@@ -1,12 +1,14 @@
 import { View, Text, ScrollView, StyleSheet, RefreshControl } from 'react-native';
 import { ErrorAlert } from '@/components/ErrorAlert';
 import { SkeletonList } from '@/components/SkeletonCard';
+import { useAuthState } from '@/hooks/useAuthState';
 import { trpc } from '@/lib/trpc-react';
+import { useLocale } from '@/components/LocaleProvider';
 
 const STEPS = [
-  { key: 'consultation', emoji: '', title: 'استشارة', desc: 'تحديد احتياجات العروس' },
-  { key: 'trial', emoji: '', title: 'تجربة', desc: 'تجربة المكياج والتسريحة' },
-  { key: 'final', emoji: '', title: 'اليوم الكبير', desc: 'يوم الزفاف' },
+  { key: 'consultation', emoji: '💬', title: 'استشارة', desc: 'تحديد احتياجات العروس' },
+  { key: 'trial', emoji: '💄', title: 'تجربة', desc: 'تجربة المكياج والتسريحة' },
+  { key: 'final', emoji: '💍', title: 'اليوم الكبير', desc: 'يوم الزفاف' },
 ];
 
 interface ConciergeStep {
@@ -22,11 +24,18 @@ interface BridalDashboard {
 }
 
 export default function BridalConciergeScreen(): JSX.Element {
-  const conciergeQ = trpc.bridalConcierge.get.useQuery();
+  const { locale, t } = useLocale();
+  const isAuthed = useAuthState();
+  const conciergeQ = trpc.bridalConcierge.get.useQuery(undefined, { enabled: isAuthed });
 
   if (conciergeQ.isLoading) return <SkeletonList count={4} />;
   if (conciergeQ.isError)
-    return <ErrorAlert message="فشل تحميل كونسيرج العروس" onRetry={() => conciergeQ.refetch()} />;
+    return (
+      <ErrorAlert
+        message={t('mobile.public.bridal-concierge.load-error')}
+        onRetry={() => conciergeQ.refetch()}
+      />
+    );
 
   const d = (conciergeQ.data as unknown as BridalDashboard | undefined) ?? {};
 
@@ -42,11 +51,11 @@ export default function BridalConciergeScreen(): JSX.Element {
         />
       }
     >
-      <Text style={styles.t}> كونسيرج العروس</Text>
-      <Text style={styles.sub}>خططي ليوم زفافك المثالي</Text>
+      <Text style={styles.t}>{t('mobile.public.bridal-concierge.title')}</Text>
+      <Text style={styles.sub}>{t('mobile.public.bridal-concierge.subtitle')}</Text>
       <View style={styles.progressCard}>
-        <Text style={styles.progressEmoji}></Text>
-        <Text style={styles.progressTitle}>تقدم التحضيرات</Text>
+        <Text style={styles.progressEmoji}>📋</Text>
+        <Text style={styles.progressTitle}>{t('mobile.public.bridal-concierge.progress')}</Text>
         <View style={styles.progressBar}>
           <View style={[styles.progressFill, { width: `${d.completionPercent ?? 0}%` }]} />
         </View>
@@ -64,18 +73,20 @@ export default function BridalConciergeScreen(): JSX.Element {
               <Text style={styles.stepDesc}>{step.desc}</Text>
               {stepData?.date && (
                 <Text style={styles.stepDate}>
-                  {new Date(stepData.date).toLocaleDateString('ar-SA')}
+                  {new Date(stepData.date).toLocaleDateString(locale === 'ar' ? 'ar-SA' : 'en-US')}
                 </Text>
               )}
             </View>
-            <Text style={styles.stepStatus}>{stepData?.completed ? '' : ''}</Text>
+            <Text style={styles.stepStatus}>{stepData?.completed ? '✅' : '⏳'}</Text>
           </View>
         );
       })}
       {d.weddingDate && (
         <View style={styles.countdown}>
-          <Text style={styles.countdownEmoji}></Text>
-          <Text style={styles.countdownText}>الأيام المتبقية: {d.daysUntil}</Text>
+          <Text style={styles.countdownEmoji}>💍</Text>
+          <Text style={styles.countdownText}>
+            {t('mobile.public.bridal-concierge.days-left', { days: d.daysUntil ?? 0 })}
+          </Text>
         </View>
       )}
     </ScrollView>

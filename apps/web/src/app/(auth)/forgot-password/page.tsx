@@ -4,8 +4,10 @@ import { useState } from 'react';
 import Link from 'next/link';
 import { api } from '@/lib/trpc';
 import { Button, Card, ErrorAlert, Input } from '@galaxy/ui';
+import { useLocale } from '@/components/LocaleProvider';
 
 export default function ForgotPasswordPage(): JSX.Element {
+  const { t } = useLocale();
   const [email, setEmail] = useState('');
   const mutation = api.auth.forgotPassword.useMutation({
     onError: () => {},
@@ -21,11 +23,9 @@ export default function ForgotPasswordPage(): JSX.Element {
     <div className="flex min-h-screen items-center justify-center px-4">
       <Card className="w-full max-w-md" padding="lg">
         <h1 className="mb-2 text-center text-2xl font-bold text-text-primary dark:text-gray-100">
-          نسيت كلمة المرور
+          {t('auth.forgot-title')}
         </h1>
-        <p className="mb-6 text-center text-sm text-text-secondary">
-          أدخل بريدك الإلكتروني وسنرسل لك رابط إعادة تعيين كلمة المرور
-        </p>
+        <p className="mb-6 text-center text-sm text-text-secondary">{t('auth.forgot-desc')}</p>
 
         {mutation.isError && (
           <div className="mb-4">
@@ -51,17 +51,14 @@ export default function ForgotPasswordPage(): JSX.Element {
               </svg>
             </div>
             <p className="text-green-700 dark:text-green-300 font-medium">
-              تم إرسال رابط إعادة تعيين كلمة المرور
+              {t('auth.forgot-sent')}
             </p>
-            <p className="text-sm text-text-secondary">
-              إذا كان البريد الإلكتروني مسجلاً لدينا، ستتلقى رسالة تحتوي على رابط إعادة تعيين كلمة
-              المرور.
-            </p>
+            <p className="text-sm text-text-secondary">{t('auth.forgot-sent-desc')}</p>
           </div>
         ) : (
           <form onSubmit={handleSubmit} className="space-y-4">
             <Input
-              label="البريد الإلكتروني"
+              label={t('auth.email')}
               type="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
@@ -69,14 +66,14 @@ export default function ForgotPasswordPage(): JSX.Element {
               disabled={mutation.isPending}
             />
             <Button type="submit" className="w-full" loading={mutation.isPending} disabled={!email}>
-              إرسال رابط إعادة التعيين
+              {t('auth.forgot-submit')}
             </Button>
           </form>
         )}
 
         <div className="mt-6 text-center text-sm text-text-secondary">
           <Link href="/login" className="text-brand-600 hover:underline">
-            العودة إلى تسجيل الدخول
+            {t('auth.back-to-login')}
           </Link>
         </div>
       </Card>

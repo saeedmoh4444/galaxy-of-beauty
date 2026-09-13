@@ -1,12 +1,23 @@
 import { View, Text, StyleSheet } from 'react-native';
 import { ScreenState } from '@/components/ScreenState';
 import { trpc } from '@/lib/trpc-react';
+import { useLocale } from '@/components/LocaleProvider';
+import type { TranslationKey } from '@galaxy/shared';
 
 const COLORS = { brand: '#7c3aed', white: '#ffffff', gray400: '#6b7280', gray900: '#111827' };
 
-const DAYS = ['الأحد', 'الإثنين', 'الثلاثاء', 'الأربعاء', 'الخميس', 'الجمعة', 'السبت'];
+const DAYS: TranslationKey[] = [
+  'mobile.tech.calendar.day-sunday',
+  'mobile.tech.calendar.day-monday',
+  'mobile.tech.calendar.day-tuesday',
+  'mobile.tech.calendar.day-wednesday',
+  'mobile.tech.calendar.day-thursday',
+  'mobile.tech.calendar.day-friday',
+  'mobile.tech.calendar.day-saturday',
+];
 
 export default function TechCalendarScreen(): JSX.Element {
+  const { t } = useLocale();
   const calendar = trpc.techCalendar.listWithAvailability.useQuery() ?? {
     data: null,
     isLoading: false,
@@ -20,18 +31,18 @@ export default function TechCalendarScreen(): JSX.Element {
       isLoading={calendar.isLoading}
       isError={calendar.isError}
       isEmpty={!data}
-      errorMessage="فشل تحميل التقويم"
+      errorMessage={t('mobile.tech.calendar.load-error')}
       onRetry={() => calendar.refetch()}
     >
-      <Text style={styles.title}> التقويم</Text>
+      <Text style={styles.title}>{t('mobile.tech.calendar.title')}</Text>
       <View style={styles.daysRow}>
         {DAYS.map((d, i) => (
           <View key={i} style={styles.dayHeader}>
-            <Text style={styles.dayText}>{d}</Text>
+            <Text style={styles.dayText}>{t(d)}</Text>
           </View>
         ))}
       </View>
-      <Text style={styles.syncNote}> تتم مزامنة الحجوزات تلقائياً مع تقويم قوقل</Text>
+      <Text style={styles.syncNote}>{t('mobile.tech.calendar.sync-note')}</Text>
     </ScreenState>
   );
 }

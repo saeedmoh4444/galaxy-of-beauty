@@ -4,7 +4,14 @@ import { useState } from 'react';
 import { api } from '@/lib/trpc';
 import { Card, CardListSkeleton, GridSkeleton, ErrorAlert, EmptyState, Button } from '@galaxy/ui';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
+import { useLocale } from '@/components/LocaleProvider';
+import type { TranslationKey } from '@galaxy/shared';
 import Link from 'next/link';
+
+const TABS: { key: 'plan' | 'library'; label: TranslationKey }[] = [
+  { key: 'plan', label: 'postCare.tab.plan' },
+  { key: 'library', label: 'postCare.tab.library' },
+];
 
 interface CareTip {
   id: string;
@@ -18,8 +25,10 @@ interface CareTip {
 
 interface CarePlan {
   bookingId: number;
-  serviceName: string;
-  category: string;
+  serviceNameAr: string;
+  serviceNameEn: string;
+  categoryAr: string;
+  categoryEn: string;
   completedAt: string;
   tips: CareTip[];
 }
@@ -47,6 +56,7 @@ const TIMEFRAME_ICONS: Record<string, string> = {
 };
 
 export default function PostCarePage(): JSX.Element {
+  const { t, locale } = useLocale();
   const [activeTab, setActiveTab] = useState<'plan' | 'library'>('plan');
 
   // My Plan
@@ -89,31 +99,28 @@ export default function PostCarePage(): JSX.Element {
     <DashboardLayout userRole="CUSTOMER">
       <div className="mx-auto max-w-4xl space-y-6">
         {/* Header */}
-        <div className="text-center sm:text-right">
+        <div className="text-center sm:text-end">
           <h1 className="text-2xl font-bold text-text-primary dark:text-gray-100">
-            ‍️ العناية بعد الخدمة
+            {t('postCare.title')}
           </h1>
-          <p className="mt-1 text-sm text-text-secondary dark:text-gray-400">
-            تعليمات مخصصة للعناية بنفسكِ بعد كل جلسة تجميل
+          <p className="mt-1 text-sm text-text-secondary dark:text-text-tertiary">
+            {t('postCare.subtitle')}
           </p>
         </div>
 
         {/* Tabs */}
         <div className="flex gap-2 rounded-xl bg-surface-muted p-1 dark:bg-gray-800">
-          {[
-            { key: 'plan' as const, label: ' خطتي الشخصية' },
-            { key: 'library' as const, label: ' مكتبة العناية' },
-          ].map((t) => (
+          {TABS.map((tab) => (
             <button
-              key={t.key}
-              onClick={() => setActiveTab(t.key)}
+              key={tab.key}
+              onClick={() => setActiveTab(tab.key)}
               className={`flex-1 rounded-lg py-2.5 text-sm font-semibold transition-all ${
-                activeTab === t.key
+                activeTab === tab.key
                   ? 'bg-white text-brand-700 shadow dark:bg-gray-700 dark:text-brand-300'
                   : 'text-text-secondary hover:text-text-primary dark:hover:text-gray-300'
               }`}
             >
-              {t.label}
+              {t(tab.label)}
             </button>
           ))}
         </div>
@@ -124,13 +131,13 @@ export default function PostCarePage(): JSX.Element {
             {planLoading ? (
               <CardListSkeleton count={2} />
             ) : planError ? (
-              <ErrorAlert message="فشل تحميل خطة العناية" onRetry={() => refetchPlan()} />
+              <ErrorAlert message={t('postCare.err.plan')} onRetry={() => refetchPlan()} />
             ) : plans.length === 0 ? (
               <EmptyState
-                title="لا توجد خدمات مكتملة بعد"
-                description="بعد إتمام أول حجز، ستظهر تعليمات العناية هنا تلقائياً "
+                title={t('postCare.empty.title')}
+                description={t('postCare.empty.desc')}
                 action={{
-                  label: 'احجزي الآن',
+                  label: t('postCare.empty.action'),
                   onPress: () => window.location.assign('/bookings/create'),
                 }}
               />
@@ -140,21 +147,21 @@ export default function PostCarePage(): JSX.Element {
                   <div key={plan.bookingId} className="space-y-3">
                     {/* Plan Header */}
                     <div className="flex items-center gap-3">
-                      <div className="flex h-10 w-10 items-center justify-center rounded-full bg-gradient-to-br from-brand-400 to-purple-500 text-white text-lg">
-                        ‍️
+                      <div className="flex h-10 w-10 items-center justify-center rounded-full bg-gradient-to-br from-brand-400 to-brand-500 text-white text-lg">
+                        💆
                       </div>
                       <div>
                         <h3 className="font-bold text-text-primary dark:text-gray-100">
-                          {plan.serviceName}
+                          {locale === 'en' ? plan.serviceNameEn : plan.serviceNameAr}
                         </h3>
                         <p className="text-xs text-text-secondary">
                           {plan.completedAt
-                            ? new Date(plan.completedAt).toLocaleDateString('ar-SA', {
-                                month: 'long',
-                                day: 'numeric',
-                              })
+                            ? new Date(plan.completedAt).toLocaleDateString(
+                                locale === 'en' ? 'en-GB' : 'ar-SA',
+                                { month: 'long', day: 'numeric' },
+                              )
                             : ''}{' '}
-                          · {plan.category}
+                          · {locale === 'en' ? plan.categoryEn : plan.categoryAr}
                         </p>
                       </div>
                     </div>
@@ -164,25 +171,23 @@ export default function PostCarePage(): JSX.Element {
                       const tfTips = plan.tips.filter((t) => t.timeframe === tf.key);
                       if (tfTips.length === 0) return null;
                       return (
-                        <div
-                          key={tf.key}
-                          className="rounded-xl border border-gray-200 dark:border-gray-700 overflow-hidden"
-                        >
+                        <div key={tf.key} className="rounded-xl border border-edge overflow-hidden">
                           <div
                             className={`bg-gradient-to-r ${tf.color} px-4 py-2 text-white text-sm font-bold`}
                           >
-                            {TIMEFRAME_ICONS[tf.key] ?? ''} {tf.labelAr}
+                            {TIMEFRAME_ICONS[tf.key] ?? ''}{' '}
+                            {locale === 'en' ? tf.labelEn : tf.labelAr}
                           </div>
-                          <div className="divide-y divide-gray-100 dark:divide-gray-800">
+                          <div className="divide-y divide-edge-muted">
                             {tfTips.map((tip) => (
                               <div key={tip.id} className="flex gap-3 p-4">
                                 <span className="text-2xl shrink-0">{tip.emoji}</span>
                                 <div>
                                   <h4 className="text-sm font-bold text-text-primary dark:text-gray-100">
-                                    {tip.titleAr}
+                                    {locale === 'en' ? tip.titleEn : tip.titleAr}
                                   </h4>
-                                  <p className="mt-1 text-sm text-text-secondary dark:text-gray-400 leading-relaxed">
-                                    {tip.bodyAr}
+                                  <p className="mt-1 text-sm text-text-secondary dark:text-text-tertiary leading-relaxed">
+                                    {locale === 'en' ? tip.bodyEn : tip.bodyAr}
                                   </p>
                                 </div>
                               </div>
@@ -204,7 +209,7 @@ export default function PostCarePage(): JSX.Element {
             {libLoading ? (
               <GridSkeleton count={6} />
             ) : libError ? (
-              <ErrorAlert message="فشل تحميل المكتبة" onRetry={() => refetchLib()} />
+              <ErrorAlert message={t('postCare.err.library')} onRetry={() => refetchLib()} />
             ) : (
               <>
                 {!selectedLibCat ? (
@@ -217,10 +222,10 @@ export default function PostCarePage(): JSX.Element {
                         >
                           <span className="text-4xl">{cat.emoji}</span>
                           <h3 className="mt-2 text-lg font-bold text-text-primary dark:text-gray-100">
-                            {cat.nameAr}
+                            {locale === 'en' ? cat.nameEn : cat.nameAr}
                           </h3>
                           <p className="text-xs text-text-secondary">
-                            {cat.tipsCount} نصائح للعناية
+                            {t('postCare.tipsCount', { count: cat.tipsCount })}
                           </p>
                         </Card>
                       </button>
@@ -232,7 +237,7 @@ export default function PostCarePage(): JSX.Element {
                       onClick={() => setSelectedLibCat(null)}
                       className="text-sm text-brand-600 hover:text-brand-700 font-medium mb-4 inline-block"
                     >
-                      ← العودة للمكتبة
+                      {t('postCare.backToLibrary')}
                     </button>
                     {libTips.map((tip) => (
                       <Card key={tip.id} padding="md" className="flex gap-4">
@@ -240,7 +245,7 @@ export default function PostCarePage(): JSX.Element {
                         <div>
                           <div className="flex items-center gap-2 mb-1">
                             <h4 className="font-bold text-text-primary dark:text-gray-100">
-                              {tip.titleAr}
+                              {locale === 'en' ? tip.titleEn : tip.titleAr}
                             </h4>
                             <span
                               className={`rounded-full px-2 py-0.5 text-[10px] font-medium ${
@@ -253,12 +258,15 @@ export default function PostCarePage(): JSX.Element {
                                       : 'bg-blue-100 text-blue-700'
                               }`}
                             >
-                              {timeframes.find((t) => t.key === tip.timeframe)?.labelAr ??
-                                tip.timeframe}
+                              {locale === 'en'
+                                ? (timeframes.find((t) => t.key === tip.timeframe)?.labelEn ??
+                                  tip.timeframe)
+                                : (timeframes.find((t) => t.key === tip.timeframe)?.labelAr ??
+                                  tip.timeframe)}
                             </span>
                           </div>
-                          <p className="text-sm text-text-secondary dark:text-gray-400 leading-relaxed">
-                            {tip.bodyAr}
+                          <p className="text-sm text-text-secondary dark:text-text-tertiary leading-relaxed">
+                            {locale === 'en' ? tip.bodyEn : tip.bodyAr}
                           </p>
                         </div>
                       </Card>
@@ -273,14 +281,16 @@ export default function PostCarePage(): JSX.Element {
         {/* Bottom tip */}
         <Card
           padding="lg"
-          className="bg-gradient-to-r from-brand-50 to-purple-50 dark:from-brand-950 dark:to-purple-950 border-none text-center"
+          className="bg-gradient-to-r from-brand-50 to-brand-50 dark:from-brand-950 dark:to-brand-950 border-none text-center"
         >
-          <p className="text-lg font-bold text-text-primary dark:text-gray-100"> تذكري</p>
-          <p className="mt-1 text-sm text-text-secondary dark:text-gray-400">
-            العناية بعد الخدمة تطيل من نتائج الجلسة وتحافظ على جمالكِ لفترة أطول
+          <p className="text-lg font-bold text-text-primary dark:text-gray-100">
+            {t('postCare.rememberTitle')}
+          </p>
+          <p className="mt-1 text-sm text-text-secondary dark:text-text-tertiary">
+            {t('postCare.rememberBody')}
           </p>
           <Link href="/bookings/create" className="mt-3 inline-block">
-            <Button size="sm">احجزي جلستكِ القادمة </Button>
+            <Button size="sm">{t('postCare.bookNext')}</Button>
           </Link>
         </Card>
       </div>

@@ -2,6 +2,7 @@
 
 import { api } from '@/lib/trpc';
 import { Card, TableSkeleton, ErrorAlert } from '@galaxy/ui';
+import { useLocale } from '@/components/LocaleProvider';
 
 const COLORS = [
   'bg-green-100 dark:bg-green-900/40',
@@ -17,6 +18,7 @@ const COLORS = [
 ];
 
 export default function BookingHeatmapPage(): JSX.Element {
+  const { t } = useLocale();
   const { data, isLoading, isError, refetch } = api.bookingHeatmap.data.useQuery({}) as {
     data: { days: string[]; hours: number[]; heatmap: number[][] } | undefined;
     isLoading: boolean;
@@ -27,15 +29,15 @@ export default function BookingHeatmapPage(): JSX.Element {
   return (
     <div className="mx-auto max-w-4xl px-4 py-12">
       <div className="mb-8 text-center">
-        <span className="text-6xl"></span>
-        <h1 className="mt-4 text-3xl font-bold">خريطة الحجوزات</h1>
-        <p className="mt-2 text-text-secondary">أوقات الذروة والمواعيد المتاحة</p>
+        <span className="text-6xl">🔥</span>
+        <h1 className="mt-4 text-3xl font-bold">{t('marketing.booking-heatmap.title')}</h1>
+        <p className="mt-2 text-text-secondary">{t('marketing.booking-heatmap.subtitle')}</p>
       </div>
 
       {isLoading ? (
         <TableSkeleton rows={5} cols={8} />
       ) : isError ? (
-        <ErrorAlert message="فشل التحميل" onRetry={() => refetch()} />
+        <ErrorAlert message={t('marketing.booking-heatmap.load-error')} onRetry={() => refetch()} />
       ) : data ? (
         <Card padding="lg">
           <div className="overflow-x-auto">
@@ -43,7 +45,7 @@ export default function BookingHeatmapPage(): JSX.Element {
               className="grid gap-0.5"
               style={{ gridTemplateColumns: `50px repeat(${data.hours.length}, 1fr)` }}
             >
-              <div className="text-xs font-medium text-text-tertiary p-1"></div>
+              <div className="text-xs font-medium text-text-tertiary p-1">⏰</div>
               {data.hours.map((h) => (
                 <div key={h} className="text-xs font-medium text-text-tertiary p-1 text-center">
                   {h}:00
@@ -58,7 +60,7 @@ export default function BookingHeatmapPage(): JSX.Element {
                     <div
                       key={hi}
                       className={`h-8 rounded ${COLORS[Math.min(9, val)] ?? COLORS[0]}`}
-                      title={`${val} حجوزات`}
+                      title={t('marketing.booking-heatmap.bookings-count', { count: val })}
                     />
                   ))}
                 </div>
@@ -66,12 +68,12 @@ export default function BookingHeatmapPage(): JSX.Element {
             </div>
           </div>
           <div className="mt-4 flex items-center justify-center gap-2 text-xs text-text-tertiary">
-            <span> هادئ</span>
+            <span>{t('marketing.booking-heatmap.quiet')}</span>
             <div className="w-4 h-3 rounded bg-green-200" />
             <div className="w-4 h-3 rounded bg-yellow-200" />
             <div className="w-4 h-3 rounded bg-orange-300" />
             <div className="w-4 h-3 rounded bg-red-400" />
-            <span> مزدحم</span>
+            <span>{t('marketing.booking-heatmap.busy')}</span>
           </div>
         </Card>
       ) : null}

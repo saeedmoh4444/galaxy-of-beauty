@@ -2,6 +2,8 @@ import { View, Text, ScrollView, StyleSheet, TouchableOpacity, RefreshControl } 
 import { useState } from 'react';
 import { SkeletonList } from '@/components/SkeletonCard';
 import { trpc } from '@/lib/trpc-react';
+import { useLocale } from '@/components/LocaleProvider';
+import { useAuthState } from '@/hooks/useAuthState';
 
 interface RideProvider {
   key: string;
@@ -19,8 +21,10 @@ interface BookingResult {
 }
 
 export default function RideHailingScreen(): JSX.Element {
+  const { t, locale } = useLocale();
+  const isAuthed = useAuthState();
   const [result, setResult] = useState<BookingResult | null>(null);
-  const providersQ = trpc.rideHailing.providers.useQuery();
+  const providersQ = trpc.rideHailing.providers.useQuery(undefined, { enabled: isAuthed });
   const providers: RideProvider[] =
     (providersQ.data as unknown as RideProvider[] | undefined) ?? [];
 
@@ -38,10 +42,10 @@ export default function RideHailingScreen(): JSX.Element {
   if (result)
     return (
       <ScrollView style={styles.c} contentContainerStyle={styles.i}>
-        <Text style={styles.t}> توصيل للموعد</Text>
+        <Text style={styles.t}>{t('mobile.rideHailing.title')}</Text>
         <View style={[styles.card, styles.rc]}>
-          <Text style={styles.re}></Text>
-          <Text style={styles.rt}>تم الحجز!</Text>
+          <Text style={styles.re}>🚗</Text>
+          <Text style={styles.rt}>{t('mobile.rideHailing.booked')}</Text>
           <Text style={styles.rn}>
             {result.driverName} · {result.carModel}
           </Text>
@@ -63,18 +67,22 @@ export default function RideHailingScreen(): JSX.Element {
         />
       }
     >
-      <Text style={styles.t}> توصيل للموعد</Text>
+      <Text style={styles.t}>{t('mobile.rideHailing.title')}</Text>
       {providers.map((p) => (
         <View key={p.key} style={styles.card}>
           <Text style={styles.pe}>{p.emoji}</Text>
           <View style={{ flex: 1 }}>
             <Text style={styles.pn}>{p.nameAr}</Text>
             <Text style={styles.pm}>
-              ️ {p.estimatedTime} · {p.estimatedPrice?.toLocaleString()} ر.س
+              {' '}
+              {t('mobile.rideHailing.eta', {
+                time: p.estimatedTime,
+                price: p.estimatedPrice?.toLocaleString(locale === 'en' ? 'en-GB' : 'ar-SA') ?? '',
+              })}
             </Text>
           </View>
           <TouchableOpacity onPress={() => book(p.key)} style={styles.bb}>
-            <Text style={styles.bt}>احجز</Text>
+            <Text style={styles.bt}>{t('mobile.rideHailing.book')}</Text>
           </TouchableOpacity>
         </View>
       ))}

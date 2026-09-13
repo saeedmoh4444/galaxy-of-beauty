@@ -30,7 +30,7 @@ export function ProgressBar({
       aria-valuemin={0}
       aria-valuemax={100}
       aria-label={label}
-      className={`h-1 w-full overflow-hidden rounded-full bg-gray-200 dark:bg-gray-700 ${className}`}
+      className={`h-1 w-full overflow-hidden rounded-full bg-surface-muted ${className}`}
     >
       <div
         className={`h-full rounded-full bg-brand-600 transition-all duration-300 dark:bg-brand-400 ${
@@ -42,7 +42,7 @@ export function ProgressBar({
   );
 
   if (sticky) {
-    return <div className="fixed top-0 left-0 right-0 z-50">{bar}</div>;
+    return <div className="fixed top-0 start-0 end-0 z-50">{bar}</div>;
   }
 
   return bar;

@@ -1,6 +1,8 @@
 import { View, Text, ScrollView, TextInput, TouchableOpacity, StyleSheet } from 'react-native';
 import { useState } from 'react';
 import { trpc } from '@/lib/trpc-react';
+import { useLocale } from '@/components/LocaleProvider';
+import { useAuthState } from '@/hooks/useAuthState';
 
 interface ChatMessage {
   message?: string;
@@ -9,8 +11,10 @@ interface ChatMessage {
 }
 
 export default function LiveChatScreen() {
+  const { t } = useLocale();
+  const isAuthed = useAuthState();
   const [msg, setMsg] = useState('');
-  const { data, refetch } = trpc.liveChat.history.useQuery() as {
+  const { data, refetch } = trpc.liveChat.history.useQuery(undefined, { enabled: isAuthed }) as {
     data?: ChatMessage[];
     refetch: () => void;
   };
@@ -30,7 +34,7 @@ export default function LiveChatScreen() {
 
   return (
     <View style={styles.c}>
-      <Text style={styles.t}> الدعم المباشر</Text>
+      <Text style={styles.t}>{t('mobile.liveChat.title')}</Text>
       <ScrollView style={styles.list} contentContainerStyle={{ padding: 12, paddingBottom: 8 }}>
         {messages.map((m, i) => (
           <View key={i} style={[styles.bubble, m.isAgent ? styles.agent : styles.user]}>
@@ -47,11 +51,11 @@ export default function LiveChatScreen() {
           value={msg}
           onChangeText={setMsg}
           onSubmitEditing={send}
-          placeholder="اكتبي..."
+          placeholder={t('mobile.liveChat.input-placeholder')}
           textAlign="right"
         />
         <TouchableOpacity style={styles.sendBtn} onPress={send}>
-          <Text style={styles.sendText}>إرسال</Text>
+          <Text style={styles.sendText}>{t('mobile.liveChat.send')}</Text>
         </TouchableOpacity>
       </View>
     </View>

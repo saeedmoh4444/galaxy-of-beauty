@@ -1,11 +1,18 @@
 'use client';
 import { useState } from 'react';
 import { api } from '@/lib/trpc';
-import { Card, CardListSkeleton, Button } from '@galaxy/ui';
+import { Card, CardListSkeleton, Button, useAuth } from '@galaxy/ui';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
+import { useLocale } from '@/components/LocaleProvider';
+import { bookingStatusLabelKey } from '@/lib/bookingStatus';
 
 export default function ReschedulePage(): JSX.Element {
-  const { data: bookingsData, isLoading } = api.bookings.list.useQuery({ page: 1, limit: 20 }) as {
+  const { t, locale } = useLocale();
+  const { isAuthenticated } = useAuth();
+  const { data: bookingsData, isLoading } = api.bookings.list.useQuery(
+    { page: 1, limit: 20 },
+    { enabled: isAuthenticated },
+  ) as {
     data: Record<string, unknown> | undefined;
     isLoading: boolean;
     isError: boolean;
@@ -44,14 +51,14 @@ export default function ReschedulePage(): JSX.Element {
     <DashboardLayout userRole="CUSTOMER">
       <div className="mx-auto max-w-3xl space-y-6">
         <div>
-          <h1 className="text-2xl font-bold"> إعادة جدولة</h1>
-          <p className="mt-1 text-sm text-text-secondary">غيري موعد حجوزاتكِ القادمة</p>
+          <h1 className="text-2xl font-bold">{t('reschedule.title')}</h1>
+          <p className="mt-1 text-sm text-text-secondary">{t('reschedule.subtitle')}</p>
         </div>
 
         {done && (
           <Card padding="lg" className="text-center border-2 border-green-300 bg-green-50">
-            <p className="text-2xl"></p>
-            <p className="font-bold text-green-700 mt-2">تمت إعادة الجدولة بنجاح</p>
+            <p className="text-2xl">✅</p>
+            <p className="font-bold text-green-700 mt-2">{t('reschedule.success')}</p>
           </Card>
         )}
 
@@ -59,8 +66,8 @@ export default function ReschedulePage(): JSX.Element {
           <CardListSkeleton count={3} />
         ) : activeBookings.length === 0 ? (
           <Card padding="lg" className="text-center py-8">
-            <p className="text-4xl mb-2"></p>
-            <p className="text-text-secondary">مافي حجوزات قابلة لإعادة الجدولة</p>
+            <p className="text-4xl mb-2">📅</p>
+            <p className="text-text-secondary">{t('reschedule.noneAvailable')}</p>
           </Card>
         ) : (
           <div className="space-y-3">
@@ -74,29 +81,34 @@ export default function ReschedulePage(): JSX.Element {
                     setSelectedId(isSelected ? null : (b.id as number));
                     setDone(false);
                   }}
-                  className={`w-full rounded-xl border-2 p-4 text-right transition-all ${isSelected ? 'border-brand-400 bg-brand-50' : 'border-gray-200'}`}
+                  className={`w-full rounded-xl border-2 p-4 text-end transition-all ${isSelected ? 'border-brand-400 bg-brand-50' : 'border-edge'}`}
                 >
                   <div className="flex justify-between items-center">
                     <div>
-                      <span className="font-bold">حجز #{b.id as number}</span>
-                      <span className="text-xs text-text-secondary mr-2">
+                      <span className="font-bold">
+                        {t('reschedule.bookingLabel', { id: b.id as number })}
+                      </span>
+                      <span className="text-xs text-text-secondary me-2">
                         {(service?.titleJson as Record<string, string>)?.ar ?? ''}
                       </span>
                     </div>
                     <span
                       className={`rounded-full px-2 py-0.5 text-xs ${b.status === 'ACCEPTED' ? 'bg-green-100 text-green-700' : 'bg-yellow-100 text-yellow-700'}`}
                     >
-                      {b.status as string}
+                      {t(bookingStatusLabelKey(b.status as string))}
                     </span>
                   </div>
                   <p className="text-xs text-text-secondary mt-1">
                     {' '}
-                    {new Date(b.startAt as string).toLocaleDateString('ar-SA', {
-                      day: 'numeric',
-                      month: 'long',
-                      hour: '2-digit',
-                      minute: '2-digit',
-                    })}
+                    {new Date(b.startAt as string).toLocaleDateString(
+                      locale === 'en' ? 'en-GB' : 'ar-SA',
+                      {
+                        day: 'numeric',
+                        month: 'long',
+                        hour: '2-digit',
+                        minute: '2-digit',
+                      },
+                    )}
                   </p>
                 </button>
               );
@@ -106,7 +118,7 @@ export default function ReschedulePage(): JSX.Element {
 
         {selectedId && (
           <Card padding="lg">
-            <h3 className="font-bold mb-4"> اختر الموعد الجديد</h3>
+            <h3 className="font-bold mb-4">{t('reschedule.chooseNewDate')}</h3>
             <div className="grid gap-3 sm:grid-cols-2">
               <input
                 type="date"
@@ -124,7 +136,7 @@ export default function ReschedulePage(): JSX.Element {
             <input
               value={reason}
               onChange={(e) => setReason(e.target.value)}
-              placeholder="سبب إعادة الجدولة (اختياري)"
+              placeholder={t('reschedule.reasonPlaceholder')}
               className="mt-3 w-full rounded-lg border px-3 py-2 text-sm dark:border-gray-700 dark:bg-gray-800"
             />
             <Button
@@ -133,7 +145,7 @@ export default function ReschedulePage(): JSX.Element {
               disabled={!newDate || !newTime}
               className="w-full mt-3"
             >
-              تأكيد إعادة الجدولة
+              {t('reschedule.confirm')}
             </Button>
           </Card>
         )}

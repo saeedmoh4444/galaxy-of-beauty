@@ -27,6 +27,11 @@ export const serviceRouter = router({
       where.categoryId = categoryId;
     }
 
+    // E6d — trust badge filters.
+    if (input.womenOnly) where.isWomenOnlyStaff = true;
+    if (input.privateSuite) where.isPrivateSuite = true;
+    if (input.pregnancySafe) where.isPregnancySafe = true;
+
     if (minPrice !== undefined || maxPrice !== undefined) {
       const priceFilter: Record<string, unknown> = {};
       if (minPrice !== undefined) priceFilter.gte = minPrice;
@@ -391,6 +396,9 @@ export const serviceRouter = router({
                   id: true,
                   ratingAvg: true,
                   totalReviews: true,
+                  // Phase 3 sprint 2.1 — the service-detail UI renders
+                  // per-card verified badges off this value.
+                  kycStatus: true,
                   user: {
                     select: {
                       id: true,

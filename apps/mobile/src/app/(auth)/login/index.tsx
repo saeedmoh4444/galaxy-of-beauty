@@ -16,10 +16,16 @@ import { setAuthToken } from '@/lib/authToken';
 import { setSocketToken } from '@/hooks/useSocket';
 import { useBiometric } from '@/hooks/useBiometric';
 import { useToast } from '@/components/Toast';
+import { useLocale } from '@/components/LocaleProvider';
+import { useTheme, themeColors } from '@/components/ThemeProvider';
 
 export default function LoginScreen() {
   const router = useRouter();
   const { showToast } = useToast();
+  const { t } = useLocale();
+  const { isDark } = useTheme();
+  const c = isDark ? themeColors.dark : themeColors.light;
+  const styles = makeStyles(c);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [totpToken, setTotpToken] = useState('');
@@ -29,7 +35,7 @@ export default function LoginScreen() {
   const handleBiometricLogin = async () => {
     const result = await authenticate();
     if (result.success) {
-      showToast('success', 'تم التحقق البيومتري بنجاح');
+      showToast('success', t('mobile.auth.biometricSuccess'));
     }
   };
 
@@ -49,7 +55,7 @@ export default function LoginScreen() {
       if (err.data?.code === 'PRECONDITION_FAILED' && err.message === '2FA_REQUIRED') {
         setTwoFactorRequired(true);
       } else {
-        showToast('error', err.message || 'فشل تسجيل الدخول');
+        showToast('error', err.message || t('mobile.auth.loginFailed'));
       }
     },
   });
@@ -74,31 +80,31 @@ export default function LoginScreen() {
       keyboardVerticalOffset={Platform.OS === 'ios' ? 90 : 0}
     >
       <ScrollView contentContainerStyle={styles.scrollContent} keyboardShouldPersistTaps="handled">
-        <Text style={styles.title}>تسجيل الدخول</Text>
+        <Text style={styles.title}>{t('auth.login')}</Text>
 
         {!twoFactorRequired ? (
           <>
             <TextInput
               style={styles.input}
-              placeholder="البريد الإلكتروني"
+              placeholder={t('auth.email')}
               value={email}
               onChangeText={setEmail}
               keyboardType="email-address"
               autoCapitalize="none"
+              testID="login-email"
             />
             <TextInput
               style={styles.input}
-              placeholder="كلمة المرور"
+              placeholder={t('auth.password')}
               value={password}
               onChangeText={setPassword}
               secureTextEntry
+              testID="login-password"
             />
           </>
         ) : (
           <View style={styles.totpContainer}>
-            <Text style={styles.totpLabel}>
-              تم تفعيل المصادقة الثنائية. أدخل رمز التحقق من تطبيق المصادقة:
-            </Text>
+            <Text style={styles.totpLabel}>{t('auth.totp-prompt')}</Text>
             <TextInput
               style={[styles.input, styles.totpInput]}
               placeholder="000000"
@@ -109,31 +115,34 @@ export default function LoginScreen() {
               autoFocus
             />
             <TouchableOpacity onPress={handleCancel2FA}>
-              <Text style={styles.cancelLink}>← العودة لتسجيل الدخول</Text>
+              <Text style={styles.cancelLink}>{t('auth.cancel-2fa')}</Text>
             </TouchableOpacity>
           </View>
         )}
 
         {isAvailable && !twoFactorRequired && (
           <TouchableOpacity onPress={handleBiometricLogin} style={styles.biometricBtn}>
-            <Text style={styles.biometricText}> دخول سريع</Text>
+            <Text style={styles.biometricText}>{t('mobile.auth.quickLogin')}</Text>
           </TouchableOpacity>
         )}
         <TouchableOpacity
           style={[styles.button, loginMut.isPending && styles.buttonDisabled]}
           onPress={handleLogin}
           disabled={loginMut.isPending}
+          testID="login-submit"
         >
           {loginMut.isPending ? (
             <ActivityIndicator color="#fff" />
           ) : (
-            <Text style={styles.buttonText}>{twoFactorRequired ? 'تحقق' : 'دخول'}</Text>
+            <Text style={styles.buttonText}>
+              {twoFactorRequired ? t('auth.verify') : t('auth.loginShort')}
+            </Text>
           )}
         </TouchableOpacity>
 
         {!twoFactorRequired && (
           <TouchableOpacity onPress={() => router.push('/(auth)/register')}>
-            <Text style={styles.link}>إنشاء حساب جديد</Text>
+            <Text style={styles.link}>{t('mobile.auth.createNewAccount')}</Text>
           </TouchableOpacity>
         )}
       </ScrollView>
@@ -141,48 +150,50 @@ export default function LoginScreen() {
   );
 }
 
-const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: '#fff' },
-  scrollContent: { flexGrow: 1, justifyContent: 'center', padding: 24 },
-  title: {
-    fontSize: 28,
-    fontWeight: '800',
-    color: '#7c3aed',
-    textAlign: 'center',
-    marginBottom: 32,
-  },
-  input: {
-    borderWidth: 1,
-    borderColor: '#d1d5db',
-    borderRadius: 12,
-    padding: 14,
-    fontSize: 16,
-    marginBottom: 16,
-    backgroundColor: '#f9fafb',
-  },
-  button: { backgroundColor: '#7c3aed', borderRadius: 12, padding: 16, alignItems: 'center' },
-  buttonDisabled: { opacity: 0.6 },
-  buttonText: { color: '#fff', fontSize: 16, fontWeight: '600' },
-  biometricBtn: {
-    backgroundColor: '#f5f3ff',
-    borderRadius: 12,
-    padding: 14,
-    alignItems: 'center',
-    borderWidth: 1,
-    borderColor: '#c4b5fd',
-    marginBottom: 8,
-  },
-  biometricText: { color: '#7c3aed', fontSize: 14, fontWeight: '600' },
-  link: { color: '#7c3aed', textAlign: 'center', marginTop: 16, fontSize: 14 },
-  totpContainer: {
-    backgroundColor: '#f5f3ff',
-    borderRadius: 12,
-    padding: 16,
-    marginBottom: 16,
-    borderWidth: 1,
-    borderColor: '#ddd6fe',
-  },
-  totpLabel: { fontSize: 14, color: '#5b21b6', textAlign: 'center', marginBottom: 12 },
-  totpInput: { textAlign: 'center', fontSize: 24, letterSpacing: 8 },
-  cancelLink: { color: '#7c3aed', textAlign: 'center', fontSize: 13, marginTop: 4 },
-});
+const makeStyles = (c: typeof themeColors.light | typeof themeColors.dark) =>
+  StyleSheet.create({
+    container: { flex: 1, backgroundColor: c.bg },
+    scrollContent: { flexGrow: 1, justifyContent: 'center', padding: 24 },
+    title: {
+      fontSize: 28,
+      fontWeight: '800',
+      color: c.brand,
+      textAlign: 'center',
+      marginBottom: 32,
+    },
+    input: {
+      borderWidth: 1,
+      borderColor: c.border,
+      borderRadius: 12,
+      padding: 14,
+      fontSize: 16,
+      marginBottom: 16,
+      backgroundColor: c.surface,
+      color: c.text,
+    },
+    button: { backgroundColor: c.brand, borderRadius: 12, padding: 16, alignItems: 'center' },
+    buttonDisabled: { opacity: 0.6 },
+    buttonText: { color: '#fff', fontSize: 16, fontWeight: '600' },
+    biometricBtn: {
+      backgroundColor: c.surface,
+      borderRadius: 12,
+      padding: 14,
+      alignItems: 'center',
+      borderWidth: 1,
+      borderColor: c.border,
+      marginBottom: 8,
+    },
+    biometricText: { color: c.brand, fontSize: 14, fontWeight: '600' },
+    link: { color: c.brand, textAlign: 'center', marginTop: 16, fontSize: 14 },
+    totpContainer: {
+      backgroundColor: c.surface,
+      borderRadius: 12,
+      padding: 16,
+      marginBottom: 16,
+      borderWidth: 1,
+      borderColor: c.border,
+    },
+    totpLabel: { fontSize: 14, color: c.brand, textAlign: 'center', marginBottom: 12 },
+    totpInput: { textAlign: 'center', fontSize: 24, letterSpacing: 8 },
+    cancelLink: { color: c.brand, textAlign: 'center', fontSize: 13, marginTop: 4 },
+  });

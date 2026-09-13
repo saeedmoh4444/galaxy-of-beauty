@@ -1,12 +1,17 @@
 import { View, Text, StyleSheet } from 'react-native';
 import { ScreenState } from '@/components/ScreenState';
+import { useAuthState } from '@/hooks/useAuthState';
 import { trpc } from '@/lib/trpc-react';
 import { formatCurrency } from '@galaxy/ui';
+import { localize } from '@galaxy/shared';
+import { useLocale } from '@/components/LocaleProvider';
 
 const COLORS = { brand: '#7c3aed', white: '#ffffff', gray400: '#6b7280', gray900: '#111827' };
 
 export default function ServiceRecommenderScreen(): JSX.Element {
-  const recs = trpc.serviceRecommender.myResults.useQuery() ?? {
+  const { locale, t } = useLocale();
+  const isAuthed = useAuthState();
+  const recs = trpc.serviceRecommender.myResults.useQuery(undefined, { enabled: isAuthed }) ?? {
     data: null,
     isLoading: false,
     isError: false,
@@ -19,17 +24,17 @@ export default function ServiceRecommenderScreen(): JSX.Element {
       isLoading={recs.isLoading}
       isError={recs.isError}
       isEmpty={!data || data.length === 0}
-      errorMessage="فشل تحميل التوصيات"
-      emptyTitle="لا توجد توصيات"
+      errorMessage={t('mobile.public.service-recommender.load-error')}
+      emptyTitle={t('mobile.public.service-recommender.empty')}
       onRetry={() => recs.refetch()}
     >
-      <Text style={styles.title}> توصيات لكِ</Text>
+      <Text style={styles.title}>{t('mobile.public.service-recommender.title')}</Text>
       {(data as Record<string, unknown>[])?.map((r: Record<string, unknown>, i: number) => (
         <View key={i} style={styles.card}>
           <Text style={styles.emoji}>{(r.emoji as string) ?? ''}</Text>
           <View style={styles.info}>
             <Text style={styles.name}>
-              {(r.nameJson as Record<string, string>)?.ar ?? (r.nameAr as string) ?? ''}
+              {localize(r.nameJson, locale) ?? (r.nameAr as string) ?? ''}
             </Text>
             <Text style={styles.price}>{r.price ? formatCurrency(Number(r.price)) : ''}</Text>
           </View>

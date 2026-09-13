@@ -5,6 +5,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { api } from '@/lib/trpc';
 import { Card, GridSkeleton, ErrorAlert, EmptyState, Pagination } from '@galaxy/ui';
+import { useLocale } from '@/components/LocaleProvider';
 
 interface Tutorial {
   id: number;
@@ -39,6 +40,7 @@ function formatViews(n: number): string {
 }
 
 export default function TutorialsPage(): JSX.Element {
+  const { t } = useLocale();
   const [page, setPage] = useState(1);
   const [category, setCategory] = useState<string | undefined>();
   const [difficulty, setDifficulty] = useState<string | undefined>();
@@ -69,12 +71,12 @@ export default function TutorialsPage(): JSX.Element {
     <div className="mx-auto max-w-6xl px-4 py-12">
       {/* Header */}
       <div className="mb-10 text-center">
-        <span className="text-6xl"></span>
+        <span className="text-6xl">🎓</span>
         <h1 className="mt-4 text-3xl font-bold text-text-primary dark:text-gray-100">
-          دروس الجمال
+          {t('marketing.tutorials.title')}
         </h1>
-        <p className="mt-2 text-text-secondary dark:text-gray-400">
-          تعلمي أسرار الجمال من خبراء معتمدين — دروس بالفيديو خطوة بخطوة
+        <p className="mt-2 text-text-secondary dark:text-text-tertiary">
+          {t('marketing.tutorials.subtitle')}
         </p>
       </div>
 
@@ -87,7 +89,7 @@ export default function TutorialsPage(): JSX.Element {
             setSearch(e.target.value);
             setPage(1);
           }}
-          placeholder=" ابحثي في الدروس..."
+          placeholder={t('marketing.tutorials.search-placeholder')}
           className="w-full max-w-md rounded-xl border border-edge bg-surface-muted px-4 py-2.5 text-sm focus:border-brand-500 focus:outline-none focus:ring-2 focus:ring-brand-100 dark:border-gray-700 dark:bg-gray-800 dark:placeholder:text-text-secondary"
         />
       </div>
@@ -104,10 +106,10 @@ export default function TutorialsPage(): JSX.Element {
             className={`rounded-full px-4 py-1.5 text-sm font-medium transition-all ${
               !category
                 ? 'bg-brand-600 text-white shadow-md'
-                : 'bg-surface-muted text-text-secondary hover:bg-gray-200 dark:bg-gray-800 dark:text-gray-400'
+                : 'bg-surface-muted text-text-secondary hover:bg-surface-muted dark:text-text-tertiary'
             }`}
           >
-            الكل
+            {t('marketing.tutorials.all')}
           </button>
           {categories.map((c) => (
             <button
@@ -119,7 +121,7 @@ export default function TutorialsPage(): JSX.Element {
               className={`rounded-full px-4 py-1.5 text-sm font-medium transition-all ${
                 category === c.key
                   ? 'bg-brand-600 text-white shadow-md'
-                  : 'bg-surface-muted text-text-secondary hover:bg-gray-200 dark:bg-gray-800 dark:text-gray-400'
+                  : 'bg-surface-muted text-text-secondary hover:bg-surface-muted dark:text-text-tertiary'
               }`}
             >
               {c.emoji} {c.nameAr}
@@ -137,8 +139,8 @@ export default function TutorialsPage(): JSX.Element {
               }}
               className={`rounded-full px-3 py-1 text-xs font-medium transition-all ${
                 difficulty === d.key
-                  ? 'bg-gray-800 text-white dark:bg-white dark:text-gray-800'
-                  : 'bg-surface-muted text-text-secondary hover:bg-gray-200 dark:bg-gray-800 dark:text-gray-400'
+                  ? 'bg-gray-800 text-white dark:bg-white dark:text-text-primary'
+                  : 'bg-surface-muted text-text-secondary hover:bg-surface-muted dark:text-text-tertiary'
               }`}
             >
               {d.nameAr}
@@ -151,19 +153,23 @@ export default function TutorialsPage(): JSX.Element {
       {isLoading ? (
         <GridSkeleton count={6} />
       ) : isError ? (
-        <ErrorAlert message="فشل تحميل الدروس" onRetry={() => refetch()} />
+        <ErrorAlert message={t('marketing.tutorials.load-error')} onRetry={() => refetch()} />
       ) : tutorials.length === 0 ? (
         <EmptyState
-          title={category || difficulty ? 'لا توجد دروس تطابق الفلتر' : 'لا توجد دروس بعد'}
+          title={
+            category || difficulty
+              ? t('marketing.tutorials.no-tutorials-filtered')
+              : t('marketing.tutorials.no-tutorials')
+          }
           description={
             category || difficulty
-              ? 'جربي تغيير معايير التصفية'
-              : 'لم ننشر أي دروس بعد. تابعي الصفحة قريباً!'
+              ? t('marketing.tutorials.no-tutorials-desc-filtered')
+              : t('marketing.tutorials.no-tutorials-desc')
           }
           action={
             category || difficulty
               ? {
-                  label: 'عرض الكل',
+                  label: t('marketing.tutorials.show-all'),
                   onPress: () => {
                     setCategory(undefined);
                     setDifficulty(undefined);
@@ -175,59 +181,61 @@ export default function TutorialsPage(): JSX.Element {
       ) : (
         <>
           <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-            {tutorials.map((t) => (
-              <Link key={t.id} href={`/tutorials/${t.id}`} className="group">
+            {tutorials.map((tut) => (
+              <Link key={tut.id} href={`/tutorials/${tut.id}`} className="group">
                 <Card
                   padding="none"
                   className="overflow-hidden transition-all hover:shadow-xl hover:-translate-y-1"
                 >
                   {/* Thumbnail */}
                   <div className="relative flex h-44 items-center justify-center bg-gradient-to-br from-gray-800 to-gray-900">
-                    {t.thumbnailUrl ? (
+                    {tut.thumbnailUrl ? (
                       <Image
-                        src={t.thumbnailUrl}
-                        alt={t.titleAr}
+                        src={tut.thumbnailUrl}
+                        alt={tut.titleAr}
                         fill
                         className="object-cover transition-transform group-hover:scale-105"
                       />
                     ) : (
                       <div className="text-center text-white/60">
-                        <span className="text-5xl block"></span>
-                        <span className="text-xs mt-1 block">{t.category}</span>
+                        <span className="text-5xl block">🎬</span>
+                        <span className="text-xs mt-1 block">{tut.category}</span>
                       </div>
                     )}
                     {/* Play overlay */}
                     <div className="absolute inset-0 flex items-center justify-center">
                       <div className="flex h-12 w-12 items-center justify-center rounded-full bg-white/90 text-text-primary shadow-lg transition-transform group-hover:scale-110">
-                        <svg className="h-5 w-5 mr-[-2px]" fill="currentColor" viewBox="0 0 24 24">
+                        <svg className="h-5 w-5 me-[-2px]" fill="currentColor" viewBox="0 0 24 24">
                           <path d="M8 5v14l11-7z" />
                         </svg>
                       </div>
                     </div>
                     {/* Duration badge */}
-                    <span className="absolute bottom-2 right-2 rounded bg-black/70 px-2 py-0.5 text-xs font-medium text-white">
-                      {t.duration}
+                    <span className="absolute bottom-2 end-2 rounded bg-black/70 px-2 py-0.5 text-xs font-medium text-white">
+                      {tut.duration}
                     </span>
                   </div>
 
                   <div className="p-4">
                     {/* Title */}
                     <h3 className="text-base font-bold text-text-primary dark:text-gray-100 line-clamp-2 group-hover:text-brand-600 transition-colors">
-                      {t.titleAr}
+                      {tut.titleAr}
                     </h3>
 
                     {/* Author */}
                     <div className="mt-2 flex items-center gap-2">
                       <div className="flex h-6 w-6 items-center justify-center rounded-full bg-brand-100 text-xs font-bold text-brand-600 dark:bg-brand-900">
-                        {t.authorName[0]}
+                        {tut.authorName[0]}
                       </div>
-                      <span className="text-xs text-text-secondary">{t.authorName}</span>
+                      <span className="text-xs text-text-secondary">{tut.authorName}</span>
                     </div>
 
                     {/* Meta row */}
                     <div className="mt-3 flex items-center justify-between text-xs text-text-tertiary">
-                      <span>{formatViews(t.views)} مشاهدة</span>
-                      <span>️ {t.likes}</span>
+                      <span>
+                        {t('marketing.tutorials.views-count', { count: formatViews(tut.views) })}
+                      </span>
+                      <span> {tut.likes}</span>
                     </div>
                   </div>
                 </Card>

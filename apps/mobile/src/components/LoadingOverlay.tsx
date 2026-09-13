@@ -1,4 +1,5 @@
 import { View, Text, ActivityIndicator, StyleSheet, Modal } from 'react-native';
+import { useLocale } from '@/components/LocaleProvider';
 
 interface LoadingOverlayProps {
   visible: boolean;
@@ -9,7 +10,8 @@ interface LoadingOverlayProps {
  * Full-screen loading overlay with spinner and message.
  * Used for blocking operations like payment processing or AI analysis.
  */
-export function LoadingOverlay({ visible, message = 'جاري التحميل...' }: LoadingOverlayProps) {
+export function LoadingOverlay({ visible, message }: LoadingOverlayProps) {
+  const { t } = useLocale();
   if (!visible) return null;
 
   return (
@@ -17,7 +19,7 @@ export function LoadingOverlay({ visible, message = 'جاري التحميل...'
       <View style={styles.overlay}>
         <View style={styles.card}>
           <ActivityIndicator color="#7c3aed" size="large" />
-          <Text style={styles.message}>{message}</Text>
+          <Text style={styles.message}>{message ?? t('state.loading')}</Text>
         </View>
       </View>
     </Modal>
@@ -27,11 +29,12 @@ export function LoadingOverlay({ visible, message = 'جاري التحميل...'
 /**
  * Inline loading state — less intrusive, for section-level loading.
  */
-export function InlineLoader({ message = 'جاري التحميل...' }: { message?: string }) {
+export function InlineLoader({ message }: { message?: string }) {
+  const { t } = useLocale();
   return (
     <View style={styles.inline}>
       <ActivityIndicator color="#7c3aed" size="small" />
-      <Text style={styles.inlineText}>{message}</Text>
+      <Text style={styles.inlineText}>{message ?? t('state.loading')}</Text>
     </View>
   );
 }

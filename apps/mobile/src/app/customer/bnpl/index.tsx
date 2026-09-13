@@ -1,6 +1,8 @@
 import { View, Text, ScrollView, StyleSheet, TouchableOpacity, RefreshControl } from 'react-native';
 import { useState } from 'react';
 import { SkeletonList } from '@/components/SkeletonCard';
+import { useLocale } from '@/components/LocaleProvider';
+import { useAuthState } from '@/hooks/useAuthState';
 import { trpc } from '@/lib/trpc-react';
 
 interface BnplProvider {
@@ -14,8 +16,10 @@ interface BnplPlanResult {
 }
 
 export default function BnplScreen(): JSX.Element {
-  const providersQ = trpc.bnpl.providers.useQuery();
-  const eligibilityQ = trpc.bnpl.eligibility.useQuery();
+  const { t } = useLocale();
+  const isAuthed = useAuthState();
+  const providersQ = trpc.bnpl.providers.useQuery(undefined, { enabled: isAuthed });
+  const eligibilityQ = trpc.bnpl.eligibility.useQuery(undefined, { enabled: isAuthed });
   const [provider, setProvider] = useState('tabby');
   const [amount] = useState(500);
   const [inst] = useState(4);
@@ -37,13 +41,15 @@ export default function BnplScreen(): JSX.Element {
   if (result)
     return (
       <ScrollView style={styles.c} contentContainerStyle={styles.i}>
-        <Text style={styles.t}> تقسيط المدفوعات</Text>
+        <Text style={styles.t}>{t('bnpl.title')}</Text>
         <View style={[styles.card, styles.sc]}>
-          <Text style={styles.se}></Text>
-          <Text style={styles.stt}>تمت الموافقة!</Text>
-          <Text style={styles.ta}>{result.totalAmount?.toLocaleString()} ر.س</Text>
+          <Text style={styles.se}>✅</Text>
+          <Text style={styles.stt}>{t('bnpl.approved')}</Text>
+          <Text style={styles.ta}>
+            {t('bnpl.amount', { amount: result.totalAmount?.toLocaleString() ?? '' })}
+          </Text>
           <TouchableOpacity onPress={() => setResult(null)} style={styles.rst}>
-            <Text style={styles.rstt}> إعادة</Text>
+            <Text style={styles.rstt}>{t('bnpl.reset')}</Text>
           </TouchableOpacity>
         </View>
       </ScrollView>
@@ -63,7 +69,7 @@ export default function BnplScreen(): JSX.Element {
         />
       }
     >
-      <Text style={styles.t}> تقسيط المدفوعات</Text>
+      <Text style={styles.t}>{t('bnpl.title')}</Text>
       <View style={styles.pr}>
         {providers.map((p) => (
           <TouchableOpacity
@@ -77,9 +83,11 @@ export default function BnplScreen(): JSX.Element {
         ))}
       </View>
       <View style={styles.card}>
-        <Text style={styles.me}>{Math.round(amount / inst).toLocaleString()} ر.س / شهرياً</Text>
+        <Text style={styles.me}>
+          {t('bnpl.monthly', { amount: Math.round(amount / inst).toLocaleString() })}
+        </Text>
         <TouchableOpacity onPress={submit} style={styles.sb}>
-          <Text style={styles.sbt}>تقديم الطلب</Text>
+          <Text style={styles.sbt}>{t('bnpl.submit')}</Text>
         </TouchableOpacity>
       </View>
     </ScrollView>

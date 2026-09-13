@@ -2,6 +2,7 @@ import { View, Text, ScrollView, StyleSheet, TouchableOpacity, RefreshControl } 
 import { ErrorAlert } from '@/components/ErrorAlert';
 import { SkeletonList } from '@/components/SkeletonCard';
 import { trpc } from '@/lib/trpc-react';
+import { useLocale } from '@/components/LocaleProvider';
 
 interface Campaign {
   id?: number;
@@ -15,11 +16,17 @@ interface Campaign {
 }
 
 export default function CampaignsScreen(): JSX.Element {
+  const { t } = useLocale();
   const campaignsQ = trpc.campaigns.active.useQuery();
 
   if (campaignsQ.isLoading) return <SkeletonList count={4} />;
   if (campaignsQ.isError)
-    return <ErrorAlert message="فشل تحميل الحملات" onRetry={() => campaignsQ.refetch()} />;
+    return (
+      <ErrorAlert
+        message={t('mobile.public.campaigns.load-error')}
+        onRetry={() => campaignsQ.refetch()}
+      />
+    );
 
   const items = (campaignsQ.data ?? []) as Campaign[];
 
@@ -35,10 +42,10 @@ export default function CampaignsScreen(): JSX.Element {
         />
       }
     >
-      <Text style={styles.t}> العروض والحملات</Text>
-      <Text style={styles.sub}>أحدث العروض والتخفيضات</Text>
+      <Text style={styles.t}>{t('mobile.public.campaigns.title')}</Text>
+      <Text style={styles.sub}>{t('mobile.public.campaigns.subtitle')}</Text>
       {items.length === 0 ? (
-        <Text style={styles.e}>لا توجد حملات</Text>
+        <Text style={styles.e}>{t('mobile.public.campaigns.empty')}</Text>
       ) : (
         items.map((c) => (
           <View key={c.id} style={styles.card}>
@@ -49,12 +56,16 @@ export default function CampaignsScreen(): JSX.Element {
                 {((c.descAr as string) ?? (c.description as string))?.substring(0, 80)}
               </Text>
               <View style={styles.campFooter}>
-                <Text style={styles.discount}>خصم {c.discount as number}%</Text>
-                <Text style={styles.code}>كود: {c.promoCode as string}</Text>
+                <Text style={styles.discount}>
+                  {t('mobile.public.campaigns.discount', { discount: c.discount as number })}
+                </Text>
+                <Text style={styles.code}>
+                  {t('mobile.public.campaigns.code', { code: c.promoCode as string })}
+                </Text>
               </View>
             </View>
             <TouchableOpacity style={styles.copyBtn}>
-              <Text style={styles.copyBtnText}>نسخ</Text>
+              <Text style={styles.copyBtnText}>{t('marketing.campaigns.copy')}</Text>
             </TouchableOpacity>
           </View>
         ))

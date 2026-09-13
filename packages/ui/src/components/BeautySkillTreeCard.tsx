@@ -20,12 +20,15 @@ interface Skill {
 interface BeautySkillTreeCardProps {
   skills: Skill[];
   onViewDetails?: () => void;
+  title?: string;
+  subtitle?: string;
+  detailsText?: string;
   className?: string;
 }
 
 const COLORS = [
   'from-pink-400 to-rose-400',
-  'from-purple-400 to-violet-400',
+  'from-brand-400 to-violet-400',
   'from-sky-400 to-blue-400',
   'from-emerald-400 to-green-400',
   'from-amber-400 to-orange-400',
@@ -34,6 +37,9 @@ const COLORS = [
 export function BeautySkillTreeCard({
   skills,
   onViewDetails,
+  title = 'شجرة المهارات',
+  subtitle = 'تقدمكِ في رحلة التعلم',
+  detailsText = 'تفاصيل المهارات',
   className = '',
 }: BeautySkillTreeCardProps): JSX.Element | null {
   if (!skills.length) return null;
@@ -47,10 +53,12 @@ export function BeautySkillTreeCard({
     >
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-2">
-          <span className="text-xl" aria-hidden="true"></span>
+          <span className="text-xl" aria-hidden="true">
+            🌳
+          </span>
           <div>
-            <h4 className="text-sm font-bold text-teal-700 dark:text-teal-300">شجرة المهارات</h4>
-            <p className="text-[10px] text-teal-500 dark:text-teal-400">تقدمكِ في رحلة التعلم</p>
+            <h4 className="text-sm font-bold text-teal-700 dark:text-teal-300">{title}</h4>
+            <p className="text-[10px] text-teal-500 dark:text-teal-400">{subtitle}</p>
           </div>
         </div>
       </div>
@@ -77,7 +85,7 @@ export function BeautySkillTreeCard({
                     'h-2 flex-1 rounded-full',
                     j < skill.level
                       ? `bg-gradient-to-r ${COLORS[i % COLORS.length]}`
-                      : 'bg-gray-200 dark:bg-gray-700',
+                      : 'bg-surface-muted',
                   )}
                 />
               ))}
@@ -91,7 +99,7 @@ export function BeautySkillTreeCard({
         onClick={onViewDetails}
         className="mt-3 w-full rounded-xl border border-teal-200 py-2 text-[10px] font-bold text-teal-700 hover:bg-teal-50 dark:border-teal-800 dark:text-teal-300"
       >
-        تفاصيل المهارات
+        {detailsText}
       </button>
     </div>
   );

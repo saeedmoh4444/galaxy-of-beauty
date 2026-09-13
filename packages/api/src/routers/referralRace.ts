@@ -3,11 +3,10 @@ import { prisma } from '@galaxy/db';
 import { BULK_PAGE_SIZE, DEFAULT_PAGE_SIZE, DEFAULT_APP_URL, MS_PER_DAY } from '@galaxy/shared';
 import { customerProcedure, publicProcedure, router } from '../trpc';
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-const db = prisma as any;
+const db = prisma;
 
 const CAMPAIGN_DURATION_DAYS = 14;
-const PRIZES = [' جلسة مجانية', ' خصم ٥٠٪', ' خصم ٣٠٪'];
+const PRIZES = ['جلسة مجانية', 'خصم ٥٠٪', 'خصم ٣٠٪'];
 
 /** Returns the fixed campaign end date. Uses REFERRAL_CAMPAIGN_START env var
  *  (ISO date string) to anchor the campaign, defaulting to the first time this
@@ -77,7 +76,7 @@ export const referralRaceRouter = router({
       const appUrl = process.env['NEXT_PUBLIC_APP_URL'] || DEFAULT_APP_URL;
       return {
         url: `${appUrl}/register?ref=${code?.referralCode || ctx.user.id}`,
-        message: 'انضمي لجالكسي بيوتي واكسبي جوائز!',
+        message: 'انضمي لدلال واكسبي جوائز!',
       };
     }),
 });

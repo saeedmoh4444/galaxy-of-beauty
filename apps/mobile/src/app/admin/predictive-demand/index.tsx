@@ -2,6 +2,7 @@ import { View, Text, ScrollView, StyleSheet, RefreshControl } from 'react-native
 import { SkeletonList } from '@/components/SkeletonCard';
 import { ErrorAlert } from '@/components/ErrorAlert';
 import { trpc } from '@/lib/trpc-react';
+import { useLocale } from '@/components/LocaleProvider';
 
 interface ForecastWindow {
   predictedBookings?: number;
@@ -24,11 +25,18 @@ interface DemandForecast {
 }
 
 export default function PredictiveDemandScreen(): JSX.Element {
+  const { t } = useLocale();
   const q = trpc.predictiveDemand.forecast.useQuery();
   const data = (q.data as unknown as DemandForecast | null) ?? {};
 
   if (q.isLoading) return <SkeletonList count={4} />;
-  if (q.isError) return <ErrorAlert message="فشل تحميل التوقعات" onRetry={() => q.refetch()} />;
+  if (q.isError)
+    return (
+      <ErrorAlert
+        message={t('mobile.admin.predictive-demand.load-error')}
+        onRetry={() => q.refetch()}
+      />
+    );
 
   const f = data ?? {};
   const nw = f.nextWeek ?? {};
@@ -47,17 +55,26 @@ export default function PredictiveDemandScreen(): JSX.Element {
         />
       }
     >
-      <Text style={styles.t}> توقعات الطلب</Text>
+      <Text style={styles.t}>{t('admin.predictive-demand.title')}</Text>
       <View style={styles.kpi}>
-        <Text style={styles.kpiTitle}> الأسبوع القادم</Text>
-        <Text style={styles.kpiVal}>{nw.predictedBookings ?? 0} حجز</Text>
-        <Text style={styles.kpiMeta}>الذروة: {nw.peakDay ?? ''}</Text>
+        <Text style={styles.kpiTitle}>{t('admin.predictive-demand.next-week')}</Text>
+        <Text style={styles.kpiVal}>
+          {t('admin.predictive-demand.bookings-count', { count: nw.predictedBookings ?? 0 })}
+        </Text>
+        <Text style={styles.kpiMeta}>
+          {t('admin.predictive-demand.peak', { peak: nw.peakDay ?? '' })}
+        </Text>
       </View>
       <View style={styles.kpi}>
-        <Text style={styles.kpiTitle}> الشهر القادم</Text>
-        <Text style={[styles.kpiVal, { color: '#059669' }]}>{nm.predictedBookings ?? 0} حجز</Text>
+        <Text style={styles.kpiTitle}>{t('admin.predictive-demand.next-month')}</Text>
+        <Text style={[styles.kpiVal, { color: '#059669' }]}>
+          {t('admin.predictive-demand.bookings-count', { count: nm.predictedBookings ?? 0 })}
+        </Text>
         <Text style={styles.kpiMeta}>
-          ثقة {nm.confidence ?? 0}% · نمو +{nm.growth ?? 0}%
+          {t('admin.predictive-demand.confidence-growth', {
+            confidence: nm.confidence ?? 0,
+            growth: nm.growth ?? 0,
+          })}
         </Text>
       </View>
       {bySvc.map((s, i) => (

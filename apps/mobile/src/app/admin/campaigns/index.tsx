@@ -2,6 +2,8 @@ import { View, Text, ScrollView, StyleSheet, RefreshControl } from 'react-native
 import { SkeletonList } from '@/components/SkeletonCard';
 import { ErrorAlert } from '@/components/ErrorAlert';
 import { trpc } from '@/lib/trpc-react';
+import { useLocale } from '@/components/LocaleProvider';
+import { localize } from '@galaxy/shared';
 
 interface Campaign {
   id?: number;
@@ -12,11 +14,15 @@ interface Campaign {
 }
 
 export default function AdminCampaignsScreen(): JSX.Element {
+  const { t, locale } = useLocale();
   const q = trpc.campaigns.listAll.useQuery();
   const data = (q.data as unknown as Campaign[] | null) ?? [];
 
   if (q.isLoading) return <SkeletonList count={5} />;
-  if (q.isError) return <ErrorAlert message="فشل تحميل الحملات" onRetry={() => q.refetch()} />;
+  if (q.isError)
+    return (
+      <ErrorAlert message={t('mobile.admin.campaigns.load-error')} onRetry={() => q.refetch()} />
+    );
 
   return (
     <ScrollView
@@ -30,19 +36,23 @@ export default function AdminCampaignsScreen(): JSX.Element {
         />
       }
     >
-      <Text style={styles.t}> الحملات</Text>
+      <Text style={styles.t}>{t('admin.campaigns.title')}</Text>
       {data.map((c, i) => (
         <View key={i} style={styles.card}>
           <View style={{ flex: 1 }}>
-            <Text style={styles.name}>{c.nameJson?.ar ?? ''}</Text>
+            <Text style={styles.name}>{localize(c.nameJson, locale)}</Text>
             <Text style={styles.discount}>
               {c.discountType === 'percent'
                 ? `-${c.discountValue ?? 0}%`
-                : `-${c.discountValue ?? 0} ر.س`}
+                : `-${c.discountValue ?? 0} ${t('misc.sar')}`}
             </Text>
           </View>
           <View style={[styles.badge, c.isActive ? styles.active : styles.inactive]}>
-            <Text style={styles.badgeText}>{c.isActive ? 'نشط' : 'غير نشط'}</Text>
+            <Text style={styles.badgeText}>
+              {c.isActive
+                ? t('mobile.admin.campaigns.active')
+                : t('mobile.admin.campaigns.inactive')}
+            </Text>
           </View>
         </View>
       ))}

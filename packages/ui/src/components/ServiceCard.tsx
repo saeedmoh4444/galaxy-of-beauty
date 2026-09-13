@@ -30,10 +30,18 @@ interface ServiceData {
 interface ServiceCardProps {
   service: ServiceData;
   onBook: (service: ServiceData) => void;
+  durationSuffix?: string;
+  bookText?: string;
   className?: string;
 }
 
-export function ServiceCard({ service, onBook, className = '' }: ServiceCardProps): JSX.Element {
+export function ServiceCard({
+  service,
+  onBook,
+  durationSuffix = 'دقيقة',
+  bookText = 'احجزي الآن',
+  className = '',
+}: ServiceCardProps): JSX.Element {
   return (
     <Card padding="md" hover className={`group ${className}`}>
       {/* Image / Emoji */}
@@ -55,7 +63,7 @@ export function ServiceCard({ service, onBook, className = '' }: ServiceCardProp
         {service.title}
       </h3>
       {service.description ? (
-        <p className="mt-1 text-xs text-text-secondary dark:text-gray-400 line-clamp-2">
+        <p className="mt-1 text-xs text-text-secondary dark:text-text-tertiary line-clamp-2">
           {service.description}
         </p>
       ) : null}
@@ -69,7 +77,9 @@ export function ServiceCard({ service, onBook, className = '' }: ServiceCardProp
 
       {/* Duration */}
       {service.durationMin ? (
-        <span className="mt-1 text-xs text-text-tertiary">{service.durationMin} دقيقة</span>
+        <span className="mt-1 text-xs text-text-tertiary">
+          {service.durationMin} {durationSuffix}
+        </span>
       ) : null}
 
       {/* Popularity + Price */}
@@ -87,7 +97,7 @@ export function ServiceCard({ service, onBook, className = '' }: ServiceCardProp
         onClick={() => onBook(service)}
         className="mt-3 w-full rounded-lg bg-brand-600 py-2 text-sm font-semibold text-white transition-all hover:bg-brand-700 active:scale-95"
       >
-        احجزي الآن
+        {bookText}
       </button>
     </Card>
   );

@@ -2,6 +2,8 @@ import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import { useState } from 'react';
 import { ScreenState } from '@/components/ScreenState';
 import { trpc } from '@/lib/trpc-react';
+import { useLocale } from '@/components/LocaleProvider';
+import { localize } from '@galaxy/shared';
 
 const COLORS = {
   brand: '#7c3aed',
@@ -17,6 +19,7 @@ interface ScannedProduct {
 }
 
 export default function ProductScannerScreen(): JSX.Element {
+  const { t, locale } = useLocale();
   const [barcode] = useState('');
   const [scanned, setScanned] = useState(false);
   const result = trpc.productScanner.lookup.useQuery(
@@ -30,21 +33,23 @@ export default function ProductScannerScreen(): JSX.Element {
       isLoading={scanned && result.isLoading}
       isError={scanned && result.isError}
       isEmpty={false}
-      errorMessage="لم يتم العثور على المنتج"
+      errorMessage={t('mobile.productScanner.not-found')}
       onRetry={() => result.refetch()}
     >
-      <Text style={styles.title}> فحص المنتجات</Text>
+      <Text style={styles.title}>{t('mobile.productScanner.title')}</Text>
       <TouchableOpacity
         style={styles.scanBtn}
         onPress={() => {
           setScanned(true);
         }}
       >
-        <Text style={styles.scanText}> مسح الباركود</Text>
+        <Text style={styles.scanText}>{t('mobile.productScanner.scan')}</Text>
       </TouchableOpacity>
       {product ? (
         <View style={styles.result}>
-          <Text style={styles.productName}>{product?.nameJson?.ar ?? product?.name ?? ''}</Text>
+          <Text style={styles.productName}>
+            {product?.nameJson ? localize(product.nameJson, locale) : (product?.name ?? '')}
+          </Text>
         </View>
       ) : null}
     </ScreenState>

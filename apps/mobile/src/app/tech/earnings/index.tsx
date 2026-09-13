@@ -2,6 +2,8 @@ import { View, Text, FlatList, StyleSheet } from 'react-native';
 import { ScreenState } from '@/components/ScreenState';
 import { trpc } from '@/lib/trpc-react';
 import { formatCurrency } from '@galaxy/ui';
+import { useLocale } from '@/components/LocaleProvider';
+import type { TranslationKey } from '@galaxy/shared';
 
 const COLORS = {
   brand: '#7c3aed',
@@ -11,7 +13,15 @@ const COLORS = {
   success: '#10b981',
 };
 
+const STATUS_MAP: Record<string, TranslationKey> = {
+  PENDING: 'tech.earnings.status-pending',
+  PROCESSING: 'tech.earnings.status-processing',
+  COMPLETED: 'tech.earnings.status-completed',
+  FAILED: 'tech.earnings.status-failed',
+};
+
 export default function TechEarningsScreen(): JSX.Element {
+  const { t } = useLocale();
   const earnings = trpc.technicianEarnings.summary.useQuery() ?? {
     data: null,
     isLoading: false,
@@ -27,12 +37,12 @@ export default function TechEarningsScreen(): JSX.Element {
       isLoading={earnings.isLoading}
       isError={earnings.isError}
       isEmpty={!data}
-      errorMessage="فشل تحميل الأرباح"
+      errorMessage={t('tech.earnings.earnings-load-error')}
       onRetry={() => earnings.refetch()}
     >
-      <Text style={styles.title}> أرباحي</Text>
+      <Text style={styles.title}>{t('mobile.tech.earnings.title')}</Text>
       <View style={styles.summaryCard}>
-        <Text style={styles.summaryLabel}>إجمالي الأرباح</Text>
+        <Text style={styles.summaryLabel}>{t('tech.wallet.total-earnings')}</Text>
         <Text style={styles.summaryAmount}>{formatCurrency(Number(data?.totalEarned ?? 0))}</Text>
       </View>
       {items && items.length > 0 && (
@@ -43,7 +53,11 @@ export default function TechEarningsScreen(): JSX.Element {
             <View style={styles.txnRow}>
               <View>
                 <Text style={styles.txnPeriod}>{item.month ? (item.month as string) : ''}</Text>
-                <Text style={styles.txnStatus}>{item.status as string}</Text>
+                <Text style={styles.txnStatus}>
+                  {STATUS_MAP[item.status as string]
+                    ? t(STATUS_MAP[item.status as string])
+                    : (item.status as string)}
+                </Text>
               </View>
               <Text style={styles.txnAmount}>{formatCurrency(Number(item.amount ?? 0))}</Text>
             </View>

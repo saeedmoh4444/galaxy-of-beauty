@@ -2,8 +2,7 @@ import { prisma } from '@galaxy/db';
 import { SMALL_PAGE_SIZE } from '@galaxy/shared';
 import { adminProcedure, router } from '../trpc';
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-const db = prisma as any;
+const db = prisma;
 
 function generateCSV(rows: Array<Record<string, unknown>>, columns: string[]): string {
   const header = columns.join(',');
@@ -131,7 +130,7 @@ export const adminReportsRouter = router({
       db.booking.aggregate({ _sum: { totalAmount: true } }),
     ]);
     return {
-      title: 'تقرير جالكسي بيوتي',
+      title: 'تقرير دلال',
       generatedAt: new Date().toISOString(),
       summary: {
         totalRevenue: Number(revenue._sum?.totalAmount || 0),
@@ -140,7 +139,7 @@ export const adminReportsRouter = router({
         customers: 0,
         avgRating: 0,
       },
-      sections: [' الإيرادات', ' الحجوزات', '‍ الفنيات', ' الخدمات', ' المدن'],
+      sections: ['الإيرادات', 'الحجوزات', 'الفنيات', 'الخدمات', 'المدن'],
     };
   }),
 });

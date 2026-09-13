@@ -1,6 +1,7 @@
 import { View, Text, ScrollView, StyleSheet, RefreshControl } from 'react-native';
 import { SkeletonList } from '@/components/SkeletonCard';
 import { trpc } from '@/lib/trpc-react';
+import { useLocale } from '@/components/LocaleProvider';
 
 interface PricingItem {
   service?: string;
@@ -12,6 +13,7 @@ interface PricingItem {
 }
 
 export default function SmartPricingScreen(): JSX.Element {
+  const { t } = useLocale();
   const itemsQ = trpc.smartPricing.current.useQuery();
 
   if (itemsQ.isLoading) return <SkeletonList count={4} />;
@@ -30,10 +32,10 @@ export default function SmartPricingScreen(): JSX.Element {
         />
       }
     >
-      <Text style={styles.t}> الأسعار الذكية</Text>
-      <Text style={styles.sub}>أسعار متغيرة حسب الطلب — احجزي في الوقت المناسب ووفري!</Text>
+      <Text style={styles.t}>{t('mobile.public.smart-pricing.title')}</Text>
+      <Text style={styles.sub}>{t('mobile.public.smart-pricing.subtitle')}</Text>
       {items.length === 0 ? (
-        <Text style={styles.e}>لا توجد خدمات</Text>
+        <Text style={styles.e}>{t('mobile.public.smart-pricing.empty')}</Text>
       ) : (
         items.map((s) => {
           const isDiscounted = (s.currentPrice ?? 0) < (s.basePrice ?? 0);
@@ -46,7 +48,9 @@ export default function SmartPricingScreen(): JSX.Element {
               </View>
               <View style={{ alignItems: 'flex-end' }}>
                 {isDiscounted && (
-                  <Text style={styles.basePrice}>{(s.basePrice ?? 0).toLocaleString()} ر.س</Text>
+                  <Text style={styles.basePrice}>
+                    {t('mobile.public.currency', { price: (s.basePrice ?? 0).toLocaleString() })}
+                  </Text>
                 )}
                 <Text
                   style={[
@@ -54,7 +58,7 @@ export default function SmartPricingScreen(): JSX.Element {
                     isDiscounted ? { color: '#059669' } : { color: '#d97706' },
                   ]}
                 >
-                  {(s.currentPrice ?? 0).toLocaleString()} ر.س
+                  {t('mobile.public.currency', { price: (s.currentPrice ?? 0).toLocaleString() })}
                 </Text>
                 {(s.discount ?? 0) > 0 && (
                   <Text style={styles.discountBadge}>-{s.discount ?? 0}%</Text>

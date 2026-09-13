@@ -22,13 +22,16 @@ interface MediaFeature {
 interface MediaFeatureCardProps {
   feature: MediaFeature;
   onRead?: () => void;
+  heading?: string;
+  readMoreText?: string;
+  footerText?: string;
   className?: string;
 }
 
 const TYPE_ICONS: Record<string, string> = {
   tv: '',
   newspaper: '',
-  podcast: '️',
+  podcast: '',
   magazine: '',
   online: '',
 };
@@ -36,6 +39,9 @@ const TYPE_ICONS: Record<string, string> = {
 export function MediaFeatureCard({
   feature,
   onRead,
+  heading = 'ذكرنا في الإعلام',
+  readMoreText = 'اقرئي التغطية كاملة',
+  footerText = 'قصتنا تُروى في الإعلام',
   className = '',
 }: MediaFeatureCardProps): JSX.Element {
   return (
@@ -50,11 +56,11 @@ export function MediaFeatureCard({
           {TYPE_ICONS[feature.type || 'online']}
         </div>
         <div className="min-w-0 flex-1">
-          <h4 className="text-sm font-bold text-sky-700 dark:text-sky-300">ذكرنا في الإعلام</h4>
+          <h4 className="text-sm font-bold text-sky-700 dark:text-sky-300">{heading}</h4>
           <p className="mt-0.5 text-xs font-bold text-text-primary dark:text-gray-100">
             {feature.title}
           </p>
-          <div className="mt-1 flex items-center gap-2 text-[10px] text-text-tertiary dark:text-gray-500">
+          <div className="mt-1 flex items-center gap-2 text-[10px] text-text-tertiary dark:text-text-secondary">
             <span>
               {TYPE_ICONS[feature.type || 'online']} {feature.outlet}
             </span>
@@ -68,11 +74,11 @@ export function MediaFeatureCard({
         onClick={onRead}
         className="mt-3 w-full rounded-xl border border-sky-200 py-2 text-[10px] font-bold text-sky-700 hover:bg-sky-50 dark:border-sky-800 dark:text-sky-300 dark:hover:bg-sky-950 transition-colors"
       >
-        اقرئي التغطية كاملة
+        {readMoreText}
       </button>
 
-      <p className="mt-1.5 text-center text-[9px] text-text-tertiary dark:text-gray-500">
-        قصتنا تُروى في الإعلام
+      <p className="mt-1.5 text-center text-[9px] text-text-tertiary dark:text-text-secondary">
+        {footerText}
       </p>
     </div>
   );

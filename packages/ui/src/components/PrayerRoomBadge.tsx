@@ -15,18 +15,46 @@ type PrayerAmenity =
 
 interface AmenityDef {
   emoji: string;
-  label: string;
-  description: string;
+  label: { ar: string; en: string };
+  description: { ar: string; en: string };
 }
 
 const AMENITIES: AmenityDef[] = [
-  { emoji: '', label: 'سجادات صلاة', description: 'سجادات نظيفة ومعطرة' },
-  { emoji: '', label: 'عبايات', description: 'عبايات نظيفة للإعارة' },
-  { emoji: '', label: 'مصحف', description: 'قرآن كريم متوفر' },
-  { emoji: '', label: 'اتجاه القبلة', description: 'علامة اتجاه القبلة واضحة' },
-  { emoji: '', label: 'مكان وضوء', description: 'مكان مخصص للوضوء' },
-  { emoji: '', label: 'مساحة خاصة', description: 'غرفة منفصلة للصلاة' },
-  { emoji: '', label: 'مواقيت الصلاة', description: 'منبه لمواقيت الصلاة' },
+  {
+    emoji: '🛐',
+    label: { ar: 'سجادات صلاة', en: 'Prayer mats' },
+    description: { ar: 'سجادات نظيفة ومعطرة', en: 'Clean and scented prayer mats' },
+  },
+  {
+    emoji: '🧥',
+    label: { ar: 'عبايات', en: 'Abayas' },
+    description: { ar: 'عبايات نظيفة للإعارة', en: 'Clean abayas available to borrow' },
+  },
+  {
+    emoji: '📖',
+    label: { ar: 'مصحف', en: 'Quran' },
+    description: { ar: 'قرآن كريم متوفر', en: 'Holy Quran available' },
+  },
+  {
+    emoji: '🧭',
+    label: { ar: 'اتجاه القبلة', en: 'Qibla direction' },
+    description: { ar: 'علامة اتجاه القبلة واضحة', en: 'Clear qibla direction marker' },
+  },
+  {
+    emoji: '🚰',
+    label: { ar: 'مكان وضوء', en: 'Wudu area' },
+    description: { ar: 'مكان مخصص للوضوء', en: 'Dedicated wudu area' },
+  },
+  {
+    emoji: '🚪',
+    label: { ar: 'مساحة خاصة', en: 'Private space' },
+    description: { ar: 'غرفة منفصلة للصلاة', en: 'Separate room for prayer' },
+  },
+  {
+    emoji: '⏰',
+    label: { ar: 'مواقيت الصلاة', en: 'Prayer times' },
+    description: { ar: 'منبه لمواقيت الصلاة', en: 'Prayer time reminder' },
+  },
 ];
 
 interface PrayerRoomBadgeProps {
@@ -34,12 +62,27 @@ interface PrayerRoomBadgeProps {
   /** Show next prayer time */
   nextPrayer?: { name: string; time: string };
   className?: string;
+  /** Header title */
+  title?: string;
+  /** Header subtitle */
+  subtitle?: string;
+  /** Label prefixing the next prayer time */
+  prayerDueLabel?: string;
+  /** Footer text */
+  footerText?: string;
+  /** Locale for internal amenity data strings */
+  locale?: 'ar' | 'en';
 }
 
 export function PrayerRoomBadge({
   amenities,
   nextPrayer,
   className = '',
+  title = 'مصلى متوفر',
+  subtitle = 'كل ما تحتاجينه للصلاة براحة',
+  prayerDueLabel = 'يحين بعد',
+  footerText = 'راحتكِ الروحية جزء من جمالكِ',
+  locale = 'ar',
 }: PrayerRoomBadgeProps): JSX.Element | null {
   if (!amenities.length) return null;
 
@@ -56,7 +99,7 @@ export function PrayerRoomBadge({
         private_area: 'مساحة خاصة',
         prayer_times: 'مواقيت الصلاة',
       };
-      return a.label === map[key];
+      return a.label.ar === map[key];
     });
 
   return (
@@ -68,12 +111,12 @@ export function PrayerRoomBadge({
     >
       {/* Header */}
       <div className="flex items-center gap-2">
-        <span className="text-lg" aria-hidden="true"></span>
+        <span className="text-lg" aria-hidden="true">
+          🕌
+        </span>
         <div>
-          <h4 className="text-sm font-bold text-emerald-700 dark:text-emerald-300">مصلى متوفر</h4>
-          <p className="text-[10px] text-emerald-500 dark:text-emerald-400">
-            كل ما تحتاجينه للصلاة براحة
-          </p>
+          <h4 className="text-sm font-bold text-emerald-700 dark:text-emerald-300">{title}</h4>
+          <p className="text-[10px] text-emerald-500 dark:text-emerald-400">{subtitle}</p>
         </div>
       </div>
 
@@ -92,7 +135,7 @@ export function PrayerRoomBadge({
                 {def.emoji}
               </span>
               <span className="text-[10px] font-medium text-emerald-800 dark:text-emerald-200">
-                {def.label}
+                {def.label[locale]}
               </span>
             </div>
           );
@@ -103,13 +146,15 @@ export function PrayerRoomBadge({
       {nextPrayer && (
         <div className="mt-3 flex items-center justify-between rounded-xl bg-gradient-to-r from-emerald-50 to-teal-50 p-2.5 dark:from-emerald-950 dark:to-teal-950">
           <div className="flex items-center gap-2">
-            <span className="text-sm" aria-hidden="true"></span>
+            <span className="text-sm" aria-hidden="true">
+              ⏰
+            </span>
             <div>
               <p className="text-[10px] font-bold text-emerald-800 dark:text-emerald-200">
                 {nextPrayer.name}
               </p>
               <p className="text-[10px] text-emerald-600 dark:text-emerald-400">
-                يحين بعد {nextPrayer.time}
+                {prayerDueLabel} {nextPrayer.time}
               </p>
             </div>
           </div>
@@ -120,8 +165,8 @@ export function PrayerRoomBadge({
       )}
 
       {/* Footer */}
-      <p className="mt-2 text-center text-[9px] text-text-tertiary dark:text-gray-500">
-        راحتكِ الروحية جزء من جمالكِ
+      <p className="mt-2 text-center text-[9px] text-text-tertiary dark:text-text-secondary">
+        {footerText}
       </p>
     </div>
   );

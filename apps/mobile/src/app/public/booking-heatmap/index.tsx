@@ -1,6 +1,7 @@
 import { View, Text, ScrollView, StyleSheet, RefreshControl } from 'react-native';
 import { SkeletonList } from '@/components/SkeletonCard';
 import { trpc } from '@/lib/trpc-react';
+import { useLocale } from '@/components/LocaleProvider';
 
 interface HeatmapData {
   hours?: string[];
@@ -9,6 +10,7 @@ interface HeatmapData {
 }
 
 export default function BookingHeatmapScreen(): JSX.Element {
+  const { t } = useLocale();
   const heatmapQ = trpc.bookingHeatmap.data.useQuery({});
   const data = heatmapQ.data as unknown as HeatmapData | null;
 
@@ -29,7 +31,7 @@ export default function BookingHeatmapScreen(): JSX.Element {
         />
       }
     >
-      <Text style={styles.t}> خريطة الحجوزات</Text>
+      <Text style={styles.t}>{t('mobile.public.booking-heatmap.title')}</Text>
       <ScrollView horizontal showsHorizontalScrollIndicator={false}>
         <View>
           <View style={styles.hr}>
@@ -79,15 +81,15 @@ export default function BookingHeatmapScreen(): JSX.Element {
       <View style={styles.legend}>
         <View style={styles.li}>
           <View style={[styles.ld, { backgroundColor: '#86efac' }]} />
-          <Text style={styles.ltx}>هادئ</Text>
+          <Text style={styles.ltx}>{t('mobile.public.booking-heatmap.low')}</Text>
         </View>
         <View style={styles.li}>
           <View style={[styles.ld, { backgroundColor: '#f59e0b' }]} />
-          <Text style={styles.ltx}>متوسط</Text>
+          <Text style={styles.ltx}>{t('mobile.public.booking-heatmap.medium')}</Text>
         </View>
         <View style={styles.li}>
           <View style={[styles.ld, { backgroundColor: '#ef4444' }]} />
-          <Text style={styles.ltx}>ذروة</Text>
+          <Text style={styles.ltx}>{t('mobile.public.booking-heatmap.peak')}</Text>
         </View>
       </View>
     </ScrollView>

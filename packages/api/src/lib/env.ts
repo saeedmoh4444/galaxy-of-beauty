@@ -1,4 +1,25 @@
 import { z } from 'zod';
+import dotenv from 'dotenv';
+import path from 'path';
+import fs from 'fs';
+
+// Standalone processes (socket server, scripts) don't get the framework
+// env loading that Next.js/Expo provide — walk up from cwd to load the
+// nearest .env. dotenv never overrides vars already present, so this is
+// a no-op when the framework has already loaded them.
+(function loadLocalEnv(): void {
+  let dir = process.cwd();
+  for (let i = 0; i < 5; i++) {
+    const candidate = path.join(dir, '.env');
+    if (fs.existsSync(candidate)) {
+      dotenv.config({ path: candidate });
+      return;
+    }
+    const parent = path.dirname(dir);
+    if (parent === dir) break;
+    dir = parent;
+  }
+})();
 
 const envSchema = z.object({
   // ── Required ──────────────────────────────────────────

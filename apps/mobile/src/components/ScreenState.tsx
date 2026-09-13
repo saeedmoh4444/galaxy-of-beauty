@@ -20,7 +20,7 @@
  *   </ScreenState>
  */
 
-import React from 'react';
+import React, { useMemo } from 'react';
 import {
   View,
   Text,
@@ -30,6 +30,8 @@ import {
   ScrollView,
   RefreshControl,
 } from 'react-native';
+import { useLocale } from '@/components/LocaleProvider';
+import { themeColors, useTheme } from '@/components/ThemeProvider';
 
 interface ScreenStateProps {
   isLoading: boolean;
@@ -45,25 +47,74 @@ interface ScreenStateProps {
   children: React.ReactNode;
 }
 
-const COLORS = {
-  brand: '#7c3aed',
-  brandLight: '#f5f3ff',
-  danger: '#dc2626',
-  dangerLight: '#fef2f2',
-  gray50: '#f9fafb',
-  gray200: '#e5e7eb',
-  gray400: '#9ca3af',
-  gray700: '#374151',
-  gray900: '#111827',
-  white: '#ffffff',
-};
+// Light-mode values below are today's exact colors; only the dark palette
+// swaps them. Colors outside the theme palette (screen bg #f9fafb, secondary
+// #9ca3af, danger tint #fef2f2/#fecaca) stay hardcoded so light renders
+// pixel-identical.
+function createStyles(isDark: boolean) {
+  const C = isDark ? themeColors.dark : themeColors.light;
+  return StyleSheet.create({
+    centered: {
+      flex: 1,
+      alignItems: 'center',
+      justifyContent: 'center',
+      padding: 24,
+      backgroundColor: isDark ? C.bg : '#f9fafb',
+    },
+    loadingText: {
+      marginTop: 12,
+      fontSize: 14,
+      color: isDark ? C.textSecondary : '#9ca3af',
+    },
+    errorEmoji: { fontSize: 48, marginBottom: 12 },
+    errorMessage: {
+      fontSize: 15,
+      fontWeight: '600',
+      color: C.danger,
+      textAlign: 'center',
+      marginBottom: 16,
+    },
+    retryBtn: {
+      backgroundColor: isDark ? C.surface : '#fef2f2',
+      borderRadius: 12,
+      paddingHorizontal: 20,
+      paddingVertical: 12,
+      borderWidth: 1,
+      borderColor: isDark ? C.border : '#fecaca',
+    },
+    retryText: { fontSize: 14, fontWeight: '600', color: C.danger },
+    emptyEmoji: { fontSize: 64, marginBottom: 16 },
+    emptyTitle: {
+      fontSize: 18,
+      fontWeight: '700',
+      color: C.text,
+      marginBottom: 8,
+    },
+    emptyDescription: {
+      fontSize: 14,
+      color: isDark ? C.textSecondary : '#9ca3af',
+      textAlign: 'center',
+      maxWidth: 280,
+      marginBottom: 20,
+    },
+    emptyBtn: {
+      backgroundColor: C.brand,
+      borderRadius: 12,
+      paddingHorizontal: 24,
+      paddingVertical: 14,
+    },
+    emptyBtnText: { fontSize: 14, fontWeight: '600', color: '#ffffff' },
+    scrollView: { flex: 1, backgroundColor: isDark ? C.bg : '#f9fafb' },
+    scrollContent: { padding: 16, paddingBottom: 40 },
+  });
+}
 
 export function ScreenState({
   isLoading,
   isError,
   isEmpty,
-  errorMessage = 'حدث خطأ ما',
-  emptyTitle = 'لا توجد بيانات',
+  errorMessage,
+  emptyTitle,
   emptyDescription,
   emptyAction,
   onRetry,
@@ -71,12 +122,19 @@ export function ScreenState({
   onRefresh,
   children,
 }: ScreenStateProps): JSX.Element {
+  const { t } = useLocale();
+  const { isDark } = useTheme();
+  const C = isDark ? themeColors.dark : themeColors.light;
+  const styles = useMemo(() => createStyles(isDark), [isDark]);
+  const errMsg = errorMessage ?? t('state.error');
+  const emptyT = emptyTitle ?? t('state.empty');
+
   // ── Loading ──
   if (isLoading) {
     return (
       <View style={styles.centered}>
-        <ActivityIndicator size="large" color={COLORS.brand} />
-        <Text style={styles.loadingText}>جاري التحميل...</Text>
+        <ActivityIndicator size="large" color={C.brand} />
+        <Text style={styles.loadingText}>{t('state.loading')}</Text>
       </View>
     );
   }
@@ -85,11 +143,11 @@ export function ScreenState({
   if (isError) {
     return (
       <View style={styles.centered}>
-        <Text style={styles.errorEmoji}></Text>
-        <Text style={styles.errorMessage}>{errorMessage}</Text>
+        <Text style={styles.errorEmoji}>⚠️</Text>
+        <Text style={styles.errorMessage}>{errMsg}</Text>
         {onRetry && (
           <TouchableOpacity onPress={onRetry} style={styles.retryBtn}>
-            <Text style={styles.retryText}> إعادة المحاولة</Text>
+            <Text style={styles.retryText}>{t('mobile.core.retryButton')}</Text>
           </TouchableOpacity>
         )}
       </View>
@@ -100,8 +158,8 @@ export function ScreenState({
   if (isEmpty) {
     return (
       <View style={styles.centered}>
-        <Text style={styles.emptyEmoji}></Text>
-        <Text style={styles.emptyTitle}>{emptyTitle}</Text>
+        <Text style={styles.emptyEmoji}>📭</Text>
+        <Text style={styles.emptyTitle}>{emptyT}</Text>
         {emptyDescription && <Text style={styles.emptyDescription}>{emptyDescription}</Text>}
         {emptyAction && (
           <TouchableOpacity onPress={emptyAction.onPress} style={styles.emptyBtn}>
@@ -122,8 +180,8 @@ export function ScreenState({
           <RefreshControl
             refreshing={refreshing}
             onRefresh={onRefresh}
-            colors={[COLORS.brand]}
-            tintColor={COLORS.brand}
+            colors={[C.brand]}
+            tintColor={C.brand}
           />
         }
       >
@@ -134,58 +192,3 @@ export function ScreenState({
 
   return <>{children}</>;
 }
-
-const styles = StyleSheet.create({
-  centered: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-    padding: 24,
-    backgroundColor: COLORS.gray50,
-  },
-  loadingText: {
-    marginTop: 12,
-    fontSize: 14,
-    color: COLORS.gray400,
-  },
-  errorEmoji: { fontSize: 48, marginBottom: 12 },
-  errorMessage: {
-    fontSize: 15,
-    fontWeight: '600',
-    color: COLORS.danger,
-    textAlign: 'center',
-    marginBottom: 16,
-  },
-  retryBtn: {
-    backgroundColor: COLORS.dangerLight,
-    borderRadius: 12,
-    paddingHorizontal: 20,
-    paddingVertical: 12,
-    borderWidth: 1,
-    borderColor: '#fecaca',
-  },
-  retryText: { fontSize: 14, fontWeight: '600', color: COLORS.danger },
-  emptyEmoji: { fontSize: 64, marginBottom: 16 },
-  emptyTitle: {
-    fontSize: 18,
-    fontWeight: '700',
-    color: COLORS.gray900,
-    marginBottom: 8,
-  },
-  emptyDescription: {
-    fontSize: 14,
-    color: COLORS.gray400,
-    textAlign: 'center',
-    maxWidth: 280,
-    marginBottom: 20,
-  },
-  emptyBtn: {
-    backgroundColor: COLORS.brand,
-    borderRadius: 12,
-    paddingHorizontal: 24,
-    paddingVertical: 14,
-  },
-  emptyBtnText: { fontSize: 14, fontWeight: '600', color: COLORS.white },
-  scrollView: { flex: 1, backgroundColor: COLORS.gray50 },
-  scrollContent: { padding: 16, paddingBottom: 40 },
-});

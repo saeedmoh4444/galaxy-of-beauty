@@ -2,6 +2,7 @@ import { View, Text, ScrollView, StyleSheet, TouchableOpacity, RefreshControl } 
 import { SkeletonList } from '@/components/SkeletonCard';
 import { trpc } from '@/lib/trpc-react';
 import { DEFAULT_SAUDI_CITY } from '@galaxy/shared';
+import { useLocale } from '@/components/LocaleProvider';
 
 interface GeofenceOffer {
   id?: number;
@@ -13,6 +14,7 @@ interface GeofenceOffer {
 }
 
 export default function GeofenceOffersScreen(): JSX.Element {
+  const { t } = useLocale();
   const q = trpc.geofenceOffers.nearMe.useQuery({
     city: DEFAULT_SAUDI_CITY /* TODO: from user location */,
   });
@@ -34,9 +36,9 @@ export default function GeofenceOffersScreen(): JSX.Element {
         />
       }
     >
-      <Text style={styles.t}> عروض بالقرب منك</Text>
+      <Text style={styles.t}>{t('geofenceOffers.title')}</Text>
       <TouchableOpacity onPress={optIn} style={styles.ob}>
-        <Text style={styles.ot}> فعلي التنبيهات القريبة</Text>
+        <Text style={styles.ot}>{t('geofenceOffers.opt-in')}</Text>
       </TouchableOpacity>
       {offers.map((o) => (
         <View key={o.id} style={styles.card}>

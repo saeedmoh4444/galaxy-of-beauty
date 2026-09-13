@@ -2,11 +2,13 @@ import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import { useRouter } from 'expo-router';
 import { ScreenState } from '@/components/ScreenState';
 import { trpc } from '@/lib/trpc-react';
+import { useLocale } from '@/components/LocaleProvider';
 
 const COLORS = { brand: '#7c3aed', white: '#ffffff', gray400: '#6b7280', gray900: '#111827' };
 
 export default function AdminDashboardScreen(): JSX.Element {
   const router = useRouter();
+  const { t } = useLocale();
   const stats = trpc.admin.dashboardStats.useQuery();
   const data = stats.data as Record<string, unknown> | undefined;
 
@@ -15,33 +17,33 @@ export default function AdminDashboardScreen(): JSX.Element {
       isLoading={stats.isLoading}
       isError={stats.isError}
       isEmpty={!data}
-      errorMessage="فشل تحميل لوحة الإدارة"
+      errorMessage={t('mobile.admin.dashboard.load-error')}
       onRetry={() => stats.refetch()}
     >
-      <Text style={styles.title}> لوحة الإدارة</Text>
+      <Text style={styles.title}>{t('mobile.admin.dashboard.title')}</Text>
       <View style={styles.statsGrid}>
         {['totalUsers', 'totalBookings', 'totalTechnicians', 'totalRevenue'].map((key) => (
           <View key={key} style={styles.statCard}>
             <Text style={styles.statNum}>{String(data?.[key] ?? 0)}</Text>
             <Text style={styles.statLabel}>
               {key === 'totalUsers'
-                ? ' مستخدمين'
+                ? t('mobile.admin.dashboard.users')
                 : key === 'totalBookings'
-                  ? ' حجوزات'
+                  ? t('mobile.admin.dashboard.bookings')
                   : key === 'totalTechnicians'
-                    ? ' فنيات'
-                    : ' إيرادات'}
+                    ? t('mobile.admin.dashboard.technicians')
+                    : t('mobile.admin.dashboard.revenue')}
             </Text>
           </View>
         ))}
       </View>
       <View style={styles.links}>
         {[
-          { h: '/admin/users', l: ' المستخدمين' },
-          { h: '/admin/bookings', l: ' الحجوزات' },
-          { h: '/admin/technicians', l: ' الفنيات' },
-          { h: '/admin/finance', l: ' المالية' },
-          { h: '/admin/analytics', l: ' التحليلات' },
+          { h: '/admin/users', l: t('mobile.admin.dashboard.link-users') },
+          { h: '/admin/bookings', l: t('mobile.admin.dashboard.link-bookings') },
+          { h: '/admin/technicians', l: t('mobile.admin.dashboard.link-technicians') },
+          { h: '/admin/finance', l: t('mobile.admin.dashboard.link-finance') },
+          { h: '/admin/analytics', l: t('mobile.admin.dashboard.link-analytics') },
         ].map((link, i) => (
           <TouchableOpacity
             key={i}

@@ -9,6 +9,8 @@ import {
 } from 'react-native';
 import { useState } from 'react';
 import { SkeletonList } from '@/components/SkeletonCard';
+import { useLocale } from '@/components/LocaleProvider';
+import { useAuthState } from '@/hooks/useAuthState';
 import { trpc } from '@/lib/trpc-react';
 
 interface AssistantMessage {
@@ -18,14 +20,16 @@ interface AssistantMessage {
 }
 
 export default function AIAssistantScreen(): JSX.Element {
+  const { t } = useLocale();
+  const isAuthed = useAuthState();
   const [input, setInput] = useState('');
-  const q = trpc.liveChat.history.useQuery();
+  const q = trpc.liveChat.history.useQuery(undefined, { enabled: isAuthed });
   const messages: AssistantMessage[] = (q.data as AssistantMessage[] | undefined) ?? [];
 
   if (q.isLoading)
     return (
       <View style={styles.c}>
-        <Text style={styles.t}> المساعد الذكي</Text>
+        <Text style={styles.t}>{t('aiAssistant.title')}</Text>
         <SkeletonList count={4} />
       </View>
     );
@@ -43,7 +47,7 @@ export default function AIAssistantScreen(): JSX.Element {
           />
         }
       >
-        <Text style={styles.t}> المساعد الذكي</Text>
+        <Text style={styles.t}>{t('aiAssistant.title')}</Text>
         {messages.map((m, i) => (
           <View key={i} style={[styles.msg, m.role === 'user' ? styles.user : styles.bot]}>
             <Text style={styles.msgText}>{m.content as string}</Text>
@@ -54,12 +58,12 @@ export default function AIAssistantScreen(): JSX.Element {
         <TextInput
           value={input}
           onChangeText={setInput}
-          placeholder="اسألي عن خدمات التجميل..."
+          placeholder={t('aiAssistant.placeholder')}
           style={styles.input}
           placeholderTextColor="#9ca3af"
         />
         <TouchableOpacity style={styles.sendBtn}>
-          <Text style={styles.sendBtnText}></Text>
+          <Text style={styles.sendBtnText}>📤</Text>
         </TouchableOpacity>
       </View>
     </View>

@@ -2,6 +2,9 @@ import { View, Text, ScrollView, StyleSheet, TouchableOpacity, RefreshControl } 
 import { useState } from 'react';
 import { SkeletonList } from '@/components/SkeletonCard';
 import { trpc } from '@/lib/trpc-react';
+import { useAuthState } from '@/hooks/useAuthState';
+import { useRouter } from 'expo-router';
+import { useLocale } from '@/components/LocaleProvider';
 
 interface DnaQuestion {
   id: string;
@@ -13,12 +16,21 @@ interface DnaResult {
 }
 
 export default function DNABeautyScreen(): JSX.Element {
+  const { t } = useLocale();
   const [answers, setAnswers] = useState<Record<string, boolean>>({});
   const utils = trpc.useUtils();
   const q = trpc.dnaBeauty.questions.useQuery();
   const questions: DnaQuestion[] = (q.data as unknown as DnaQuestion[] | undefined) ?? [];
   const analyzeQ = trpc.dnaBeauty.analyze.useQuery({ answers }, { enabled: false });
+  const isAuthed = useAuthState();
+  const router = useRouter();
   const analyze = () => {
+    // Guests can answer questions but analyzing is a protected procedure —
+    // send them to login instead of firing a 401.
+    if (!isAuthed) {
+      router.push('/(auth)/login');
+      return;
+    }
     void analyzeQ.refetch();
   };
   if (q.isLoading) return <SkeletonList count={4} />;
@@ -32,11 +44,11 @@ export default function DNABeautyScreen(): JSX.Element {
   if (result)
     return (
       <ScrollView style={styles.c} contentContainerStyle={styles.i}>
-        <Text style={styles.t}> تحليل الجينات</Text>
+        <Text style={styles.t}>{t('dnaBeauty.title')}</Text>
         <View style={[styles.card, styles.rc]}>
-          <Text style={styles.re}></Text>
-          <Text style={styles.rt}>نتيجة التحليل</Text>
-          <Text style={styles.score}>{result.score}% تطابق</Text>
+          <Text style={styles.re}>🧬</Text>
+          <Text style={styles.rt}>{t('dnaBeauty.result')}</Text>
+          <Text style={styles.score}>{t('dnaBeauty.match', { score: result.score })}</Text>
           <TouchableOpacity
             onPress={() => {
               setAnswers({});
@@ -44,7 +56,7 @@ export default function DNABeautyScreen(): JSX.Element {
             }}
             style={styles.rst}
           >
-            <Text style={styles.rstText}> إعادة</Text>
+            <Text style={styles.rstText}>{t('dnaBeauty.reset')}</Text>
           </TouchableOpacity>
         </View>
       </ScrollView>
@@ -61,9 +73,9 @@ export default function DNABeautyScreen(): JSX.Element {
         />
       }
     >
-      <Text style={styles.t}> تحليل الجينات</Text>
+      <Text style={styles.t}>{t('dnaBeauty.title')}</Text>
       <View style={styles.card}>
-        <Text style={styles.qt}>أكملي الاستبيان</Text>
+        <Text style={styles.qt}>{t('dnaBeauty.fill-survey')}</Text>
         {questions.map((q) => (
           <View key={q.id} style={styles.qr}>
             <Text style={styles.qq}>{q.q}</Text>
@@ -72,19 +84,23 @@ export default function DNABeautyScreen(): JSX.Element {
                 onPress={() => setAnswers({ ...answers, [q.id]: true })}
                 style={[styles.qbtn, answers[q.id] === true && styles.qy]}
               >
-                <Text style={[styles.qbt, answers[q.id] === true && styles.qat]}>نعم</Text>
+                <Text style={[styles.qbt, answers[q.id] === true && styles.qat]}>
+                  {t('dnaBeauty.yes')}
+                </Text>
               </TouchableOpacity>
               <TouchableOpacity
                 onPress={() => setAnswers({ ...answers, [q.id]: false })}
                 style={[styles.qbtn, answers[q.id] === false && styles.qn]}
               >
-                <Text style={[styles.qbt, answers[q.id] === false && styles.qat]}>لا</Text>
+                <Text style={[styles.qbt, answers[q.id] === false && styles.qat]}>
+                  {t('dnaBeauty.no')}
+                </Text>
               </TouchableOpacity>
             </View>
           </View>
         ))}
         <TouchableOpacity onPress={analyze} style={styles.ab}>
-          <Text style={styles.abt}> تحليل</Text>
+          <Text style={styles.abt}>{t('dnaBeauty.analyze')}</Text>
         </TouchableOpacity>
       </View>
     </ScrollView>

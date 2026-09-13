@@ -1,6 +1,8 @@
 import { View, Text, ScrollView, StyleSheet, RefreshControl } from 'react-native';
 import { SkeletonList } from '@/components/SkeletonCard';
 import { trpc } from '@/lib/trpc-react';
+import { useLocale } from '@/components/LocaleProvider';
+import { useAuthState } from '@/hooks/useAuthState';
 
 interface FeedResponse {
   items?: FeedItem[];
@@ -17,7 +19,9 @@ interface FeedItem {
 }
 
 export default function PersonalizedFeedScreen(): JSX.Element {
-  const feedQ = trpc.personalizedFeed.feed.useQuery();
+  const { t } = useLocale();
+  const isAuthed = useAuthState();
+  const feedQ = trpc.personalizedFeed.feed.useQuery(undefined, { enabled: isAuthed });
   if (feedQ.isLoading) return <SkeletonList count={5} />;
   const items = (feedQ.data as FeedResponse | null)?.items ?? [];
   return (
@@ -32,7 +36,7 @@ export default function PersonalizedFeedScreen(): JSX.Element {
         />
       }
     >
-      <Text style={styles.t}> خلاصتي</Text>
+      <Text style={styles.t}>{t('mobile.personalizedFeed.title')}</Text>
       {items.map((item) => (
         <View key={item.id} style={styles.card}>
           <Text style={styles.em}>{item.emoji}</Text>
@@ -40,10 +44,10 @@ export default function PersonalizedFeedScreen(): JSX.Element {
             <Text style={styles.nm}>{item.title}</Text>
             <Text style={styles.meta}>
               {item.technician
-                ? `‍ ${item.technician}`
+                ? ` ${item.technician}`
                 : item.brand
-                  ? `️ ${item.brand}`
-                  : ` ${item.price} ر.س`}
+                  ? ` ${item.brand}`
+                  : t('mobile.personalizedFeed.price', { price: item.price ?? 0 })}
             </Text>
           </View>
           <View style={styles.rb}>

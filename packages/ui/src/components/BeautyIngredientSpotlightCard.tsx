@@ -22,11 +22,15 @@ interface Ingredient {
 
 interface BeautyIngredientSpotlightCardProps {
   ingredient: Ingredient;
+  suitableLabel?: string;
+  avoidLabel?: string;
   className?: string;
 }
 
 export function BeautyIngredientSpotlightCard({
   ingredient,
+  suitableLabel = 'مناسب لـ',
+  avoidLabel = 'لا يخلط مع',
   className = '',
 }: BeautyIngredientSpotlightCardProps): JSX.Element {
   return (
@@ -59,7 +63,9 @@ export function BeautyIngredientSpotlightCard({
 
       {ingredient.suitableFor && (
         <div className="mt-2">
-          <p className="text-[10px] font-bold text-emerald-600 dark:text-emerald-400">مناسب لـ</p>
+          <p className="text-[10px] font-bold text-emerald-600 dark:text-emerald-400">
+            {suitableLabel}
+          </p>
           <div className="mt-1 flex flex-wrap gap-1">
             {ingredient.suitableFor.map((s) => (
               <span
@@ -75,7 +81,7 @@ export function BeautyIngredientSpotlightCard({
 
       {ingredient.avoidWith && (
         <div className="mt-2">
-          <p className="text-[10px] font-bold text-rose-600 dark:text-rose-400"> لا يخلط مع</p>
+          <p className="text-[10px] font-bold text-rose-600 dark:text-rose-400"> {avoidLabel}</p>
           <div className="mt-1 flex flex-wrap gap-1">
             {ingredient.avoidWith.map((a) => (
               <span

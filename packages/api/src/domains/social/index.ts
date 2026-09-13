@@ -24,7 +24,6 @@ export { gratitudeRouter } from '../../routers/gratitude';
 export { conciergeRouter } from '../../routers/concierge';
 export { timeCapsuleRouter } from '../../routers/timeCapsule';
 export { secretSantaRouter } from '../../routers/secretSanta';
-export { affirmationsRouter } from '../../routers/affirmations';
 export { socialImpactRouter } from '../../routers/socialImpact';
 export { dvSupportRouter } from '../../routers/dvSupport';
 export { subscriptionGiftRouter } from '../../routers/subscriptionGift';

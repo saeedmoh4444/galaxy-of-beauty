@@ -1,6 +1,8 @@
 import { View, Text, ScrollView, StyleSheet, RefreshControl } from 'react-native';
 import { SkeletonList } from '@/components/SkeletonCard';
+import { useAuthState } from '@/hooks/useAuthState';
 import { trpc } from '@/lib/trpc-react';
+import { useLocale } from '@/components/LocaleProvider';
 
 interface DiaryEntry {
   id?: number;
@@ -10,7 +12,9 @@ interface DiaryEntry {
 }
 
 export default function SkinDiaryScreen(): JSX.Element {
-  const entriesQ = trpc.skinDiary.entries.useQuery();
+  const { t, locale } = useLocale();
+  const isAuthed = useAuthState();
+  const entriesQ = trpc.skinDiary.entries.useQuery(undefined, { enabled: isAuthed });
   const data: DiaryEntry[] = (entriesQ.data as unknown as DiaryEntry[] | undefined) ?? [];
   if (entriesQ.isLoading) return <SkeletonList count={4} />;
   return (
@@ -25,14 +29,16 @@ export default function SkinDiaryScreen(): JSX.Element {
         />
       }
     >
-      <Text style={styles.t}> يوميات البشرة</Text>
+      <Text style={styles.t}>{t('mobile.skinDiary.title')}</Text>
       {data.map((e, i) => (
         <View key={i} style={styles.card}>
           <Text style={styles.emoji}>{e.emoji ?? ''}</Text>
           <View style={{ flex: 1 }}>
             <Text style={styles.name}>{e.title ?? ''}</Text>
             <Text style={styles.date}>
-              {e.createdAt ? new Date(e.createdAt).toLocaleDateString('ar-SA') : ''}
+              {e.createdAt
+                ? new Date(e.createdAt).toLocaleDateString(locale === 'en' ? 'en-GB' : 'ar-SA')
+                : ''}
             </Text>
           </View>
         </View>

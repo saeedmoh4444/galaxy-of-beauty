@@ -1,6 +1,8 @@
 import { View, Text, ScrollView, StyleSheet, RefreshControl } from 'react-native';
 import { SkeletonList } from '@/components/SkeletonCard';
 import { trpc } from '@/lib/trpc-react';
+import { useLocale } from '@/components/LocaleProvider';
+import { useAuthState } from '@/hooks/useAuthState';
 
 interface PenPalMatch {
   name?: string;
@@ -8,7 +10,9 @@ interface PenPalMatch {
 }
 
 export default function PenPalScreen(): JSX.Element {
-  const matchQ = trpc.penPal.match.useQuery();
+  const { t } = useLocale();
+  const isAuthed = useAuthState();
+  const matchQ = trpc.penPal.match.useQuery(undefined, { enabled: isAuthed });
   const data = (matchQ.data?.[0] ?? null) as unknown as PenPalMatch;
 
   if (matchQ.isLoading) return <SkeletonList count={3} />;
@@ -25,15 +29,15 @@ export default function PenPalScreen(): JSX.Element {
         />
       }
     >
-      <Text style={styles.t}> صديقة الجمال</Text>
+      <Text style={styles.t}>{t('mobile.penPal.title')}</Text>
       {data ? (
         <View style={styles.card}>
-          <Text style={styles.emoji}>‍</Text>
+          <Text style={styles.emoji}>💌</Text>
           <Text style={styles.name}>{data.name ?? ''}</Text>
           <Text style={styles.match}>{data.matchReason ?? ''}</Text>
         </View>
       ) : (
-        <Text style={styles.e}>لم تجدِ صديقة بعد</Text>
+        <Text style={styles.e}>{t('mobile.penPal.no-match')}</Text>
       )}
     </ScrollView>
   );

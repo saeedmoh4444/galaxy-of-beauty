@@ -2,6 +2,7 @@ import { View, Text, ScrollView, StyleSheet, RefreshControl } from 'react-native
 import { SkeletonList } from '@/components/SkeletonCard';
 import { ErrorAlert } from '@/components/ErrorAlert';
 import { trpc } from '@/lib/trpc-react';
+import { useLocale } from '@/components/LocaleProvider';
 
 interface ZatcaInvoiceItem {
   invoiceNumber?: string;
@@ -10,11 +11,13 @@ interface ZatcaInvoiceItem {
 }
 
 export default function AdminZatcaScreen(): JSX.Element {
+  const { t, locale } = useLocale();
   const q = trpc.zatca.listInvoices.useQuery({});
   const data = (q.data as unknown as { items?: ZatcaInvoiceItem[] } | null)?.items ?? [];
 
   if (q.isLoading) return <SkeletonList count={5} />;
-  if (q.isError) return <ErrorAlert message="فشل تحميل الفواتير" onRetry={() => q.refetch()} />;
+  if (q.isError)
+    return <ErrorAlert message={t('admin.zatca.load-error')} onRetry={() => q.refetch()} />;
 
   return (
     <ScrollView
@@ -28,15 +31,17 @@ export default function AdminZatcaScreen(): JSX.Element {
         />
       }
     >
-      <Text style={styles.t}> الفوترة (ZATCA)</Text>
+      <Text style={styles.t}>{t('mobile.admin.zatca.title')}</Text>
       {data.map((inv, i) => (
         <View key={i} style={styles.card}>
           <Text style={styles.invNum}>{inv.invoiceNumber}</Text>
           <View style={{ flex: 1 }}>
-            <Text style={styles.amount}>{inv.totalAmount?.toLocaleString()} ر.س</Text>
+            <Text style={styles.amount}>
+              {inv.totalAmount?.toLocaleString()} {t('misc.sar')}
+            </Text>
           </View>
           <Text style={styles.invDate}>
-            {new Date(inv.createdAt ?? '').toLocaleDateString('ar-SA')}
+            {new Date(inv.createdAt ?? '').toLocaleDateString(locale === 'en' ? 'en-US' : 'ar-SA')}
           </Text>
         </View>
       ))}

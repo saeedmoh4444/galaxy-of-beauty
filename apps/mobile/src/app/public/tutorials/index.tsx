@@ -1,6 +1,7 @@
 import { View, Text, ScrollView, StyleSheet, RefreshControl } from 'react-native';
 import { SkeletonList } from '@/components/SkeletonCard';
 import { trpc } from '@/lib/trpc-react';
+import { useLocale } from '@/components/LocaleProvider';
 
 interface Tutorial {
   id?: number;
@@ -13,6 +14,7 @@ interface Tutorial {
 }
 
 export default function TutorialsScreen(): JSX.Element {
+  const { t } = useLocale();
   const tutorialsQ = trpc.tutorials.list.useQuery({});
 
   if (tutorialsQ.isLoading) return <SkeletonList count={4} />;
@@ -32,14 +34,14 @@ export default function TutorialsScreen(): JSX.Element {
         />
       }
     >
-      <Text style={styles.t}> دروس الجمال</Text>
+      <Text style={styles.t}>{t('mobile.public.tutorials.title')}</Text>
       {tutorials.map((t) => (
         <View key={t.id} style={styles.card}>
           <Text style={styles.te}>{t.emoji ?? ''}</Text>
           <View style={{ flex: 1 }}>
             <Text style={styles.tt}>{t.titleAr}</Text>
             <Text style={styles.tm}>
-              {t.categoryAr} · {t.difficultyAr} · ️ {t.duration}
+              {t.categoryAr} · {t.difficultyAr} · {t.duration}
             </Text>
           </View>
           <Text style={styles.tv}> {t.views}</Text>

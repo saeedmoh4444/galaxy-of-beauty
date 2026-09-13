@@ -2,7 +2,9 @@ import { View, Text, ScrollView, StyleSheet, TouchableOpacity, RefreshControl } 
 import { useState } from 'react';
 import { ErrorAlert } from '@/components/ErrorAlert';
 import { SkeletonList } from '@/components/SkeletonCard';
+import { useAuthState } from '@/hooks/useAuthState';
 import { trpc } from '@/lib/trpc-react';
+import { useLocale } from '@/components/LocaleProvider';
 
 interface ConsultationBooking {
   consultantType?: string;
@@ -13,7 +15,7 @@ interface ConsultationBooking {
 const CONSULTANTS = [
   {
     key: 'skincare',
-    emoji: '‍️',
+    emoji: '🧖',
     name: 'اخصائية بشرة',
     specialty: 'تحليل البشرة وتشخيص المشاكل',
     price: 150,
@@ -22,7 +24,7 @@ const CONSULTANTS = [
   },
   {
     key: 'makeup',
-    emoji: '',
+    emoji: '💄',
     name: 'خبيرة مكياج',
     specialty: 'استشارة مكياج للمناسبات',
     price: 120,
@@ -31,7 +33,7 @@ const CONSULTANTS = [
   },
   {
     key: 'hair',
-    emoji: '‍️',
+    emoji: '💇',
     name: 'مصففة شعر',
     specialty: 'استشارة تسريحات وعناية',
     price: 100,
@@ -40,7 +42,7 @@ const CONSULTANTS = [
   },
   {
     key: 'nutrition',
-    emoji: '',
+    emoji: '🥗',
     name: 'اخصائية تغذية',
     specialty: 'تغذية البشرة والشعر',
     price: 130,
@@ -50,7 +52,11 @@ const CONSULTANTS = [
 ];
 
 export default function VirtualConsultationScreen(): JSX.Element {
-  const bookingsQ = trpc.virtualConsultation.myConsultations.useQuery();
+  const { t } = useLocale();
+  const isAuthed = useAuthState();
+  const bookingsQ = trpc.virtualConsultation.myConsultations.useQuery(undefined, {
+    enabled: isAuthed,
+  });
   const [selected, setSelected] = useState<string | null>(null);
   const [slot, setSlot] = useState<string | null>(null);
   const [booked, setBooked] = useState(false);
@@ -75,7 +81,12 @@ export default function VirtualConsultationScreen(): JSX.Element {
 
   if (bookingsQ.isLoading) return <SkeletonList count={3} />;
   if (bookingsQ.isError)
-    return <ErrorAlert message="فشل تحميل الاستشارات" onRetry={() => bookingsQ.refetch()} />;
+    return (
+      <ErrorAlert
+        message={t('mobile.virtualConsultation.load-error')}
+        onRetry={() => bookingsQ.refetch()}
+      />
+    );
 
   const myBookings = (bookingsQ.data ?? []) as ConsultationBooking[];
 
@@ -91,8 +102,8 @@ export default function VirtualConsultationScreen(): JSX.Element {
         />
       }
     >
-      <Text style={st.t}> استشارة افتراضية</Text>
-      <Text style={st.sub}>استشيري خبيرات التجميل عبر الفيديو</Text>
+      <Text style={st.t}>{t('mobile.virtualConsultation.title')}</Text>
+      <Text style={st.sub}>{t('mobile.virtualConsultation.subtitle')}</Text>
 
       {booked && (
         <View
@@ -104,8 +115,10 @@ export default function VirtualConsultationScreen(): JSX.Element {
             alignItems: 'center',
           }}
         >
-          <Text style={{ fontSize: 32 }}></Text>
-          <Text style={{ fontWeight: '700', color: '#059669', marginTop: 8 }}>تم الحجز بنجاح</Text>
+          <Text style={{ fontSize: 32 }}>✅</Text>
+          <Text style={{ fontWeight: '700', color: '#059669', marginTop: 8 }}>
+            {t('mobile.virtualConsultation.booked')}
+          </Text>
         </View>
       )}
 
@@ -141,7 +154,9 @@ export default function VirtualConsultationScreen(): JSX.Element {
       {consultant && (
         <View style={{ marginTop: 16 }}>
           <Text style={{ fontSize: 16, fontWeight: '700', color: '#111827', marginBottom: 8 }}>
-            اختر الوقت — {consultant.emoji} {consultant.name}
+            {t('mobile.virtualConsultation.choose-time', {
+              name: `${consultant.emoji} ${consultant.name}`,
+            })}
           </Text>
           <View style={{ flexDirection: 'row', flexWrap: 'wrap', gap: 8 }}>
             {consultant.slots.map((s) => (
@@ -156,7 +171,9 @@ export default function VirtualConsultationScreen(): JSX.Element {
           </View>
           {slot && (
             <TouchableOpacity onPress={handleBook} style={[st.btn, { marginTop: 12 }]}>
-              <Text style={st.btnText}> احجزي — {consultant.price} ر.س</Text>
+              <Text style={st.btnText}>
+                {t('mobile.virtualConsultation.book-cta', { price: consultant.price })}
+              </Text>
             </TouchableOpacity>
           )}
         </View>
@@ -165,7 +182,7 @@ export default function VirtualConsultationScreen(): JSX.Element {
       {myBookings.length > 0 && (
         <View style={{ marginTop: 20 }}>
           <Text style={{ fontSize: 16, fontWeight: '700', color: '#111827', marginBottom: 8 }}>
-            حجوزاتي
+            {t('mobile.virtualConsultation.my-bookings')}
           </Text>
           {myBookings.map((b, i) => (
             <View

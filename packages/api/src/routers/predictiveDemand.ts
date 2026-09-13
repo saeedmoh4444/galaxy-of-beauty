@@ -26,7 +26,7 @@ const FORECAST = {
 const flag = requireFeatureFlag(EXPERIMENTAL_FEATURES.PREDICTIVE_DEMAND);
 
 export const predictiveDemandRouter = router({
-  forecast: adminProcedure.query(() => FORECAST),
+  forecast: adminProcedure.use(flag).query(() => FORECAST),
   myInsights: customerProcedure.use(flag).query(() => ({
     bestTimeToBook: 'الثلاثاء ١٠ صباحاً — أقل ازدحاماً',
     popularThisWeek: ['مكياج طبيعي', 'تنظيف بشرة', 'مساج استرخائي'],

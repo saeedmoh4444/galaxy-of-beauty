@@ -1,6 +1,7 @@
 import { View, Text, ScrollView, StyleSheet, RefreshControl } from 'react-native';
 import { SkeletonList } from '@/components/SkeletonCard';
 import { trpc } from '@/lib/trpc-react';
+import { useLocale } from '@/components/LocaleProvider';
 
 interface VideoTestimonial {
   id?: number;
@@ -11,6 +12,7 @@ interface VideoTestimonial {
 }
 
 export default function VideoTestimonialsScreen(): JSX.Element {
+  const { t } = useLocale();
   const videosQ = trpc.videoTestimonials.feed.useQuery({});
 
   if (videosQ.isLoading) return <SkeletonList count={4} />;
@@ -30,14 +32,14 @@ export default function VideoTestimonialsScreen(): JSX.Element {
         />
       }
     >
-      <Text style={styles.t}> تقييمات العملاء</Text>
+      <Text style={styles.t}>{t('mobile.public.video-testimonials.title')}</Text>
       {videos.map((v, i) => (
         <View key={i} style={styles.card}>
           <Text style={styles.ve}>{v.emoji ?? ''}</Text>
           <View style={{ flex: 1 }}>
             <Text style={styles.vt}>{v.titleAr}</Text>
             <Text style={styles.vm}>
-              ‍ {v.technician} · {v.views}
+              {v.technician} · {v.views}
             </Text>
           </View>
         </View>

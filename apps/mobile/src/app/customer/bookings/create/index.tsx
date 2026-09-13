@@ -9,8 +9,11 @@ import {
 } from 'react-native';
 import { useRouter } from 'expo-router';
 import { trpc } from '@/lib/trpc-react';
+import { useAuthState } from '@/hooks/useAuthState';
 import { useState } from 'react';
 import { MAX_LIST_SIZE } from '@galaxy/ui';
+import { localize } from '@galaxy/shared';
+import { useLocale } from '@/components/LocaleProvider';
 import { useToast } from '@/components/Toast';
 
 interface ServiceListItem {
@@ -27,6 +30,13 @@ interface TechnicianService {
 interface ServiceVariant {
   id?: number;
   nameJson?: { ar?: string; en?: string };
+  priceDelta?: number;
+}
+
+interface AppliedPromo {
+  code: string;
+  discountAmount: number;
+  finalAmount: number;
 }
 
 interface ServiceDetail extends ServiceListItem {
@@ -40,18 +50,52 @@ interface AddressItem {
   city?: string;
 }
 
+// 08:00 → 20:30 in 30-minute steps
+const TIME_SLOTS: string[] = Array.from({ length: 26 }, (_, i) => {
+  const mins = 480 + i * 30;
+  return `${String(Math.floor(mins / 60)).padStart(2, '0')}:${String(mins % 60).padStart(2, '0')}`;
+});
+
+// Next 14 days, local-date ISO keys + locale-aware short labels.
+function buildNextDays(locale: 'ar' | 'en'): Array<{ iso: string; label: string }> {
+  const fmt = new Intl.DateTimeFormat(locale === 'ar' ? 'ar-SA' : 'en-GB', {
+    weekday: 'short',
+    day: 'numeric',
+  });
+  return Array.from({ length: 14 }, (_, i) => {
+    const d = new Date(Date.now() + (i + 1) * 86400000);
+    const iso = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(
+      d.getDate(),
+    ).padStart(2, '0')}`;
+    return { iso, label: fmt.format(d) };
+  });
+}
+
 export default function CreateBookingScreen() {
   const router = useRouter();
+  const { locale, t } = useLocale();
   const { showToast } = useToast();
   const [step, setStep] = useState(1);
   const [serviceId, setServiceId] = useState<number | undefined>();
   const [variantId, setVariantId] = useState<number | undefined>();
   const [addressId, setAddressId] = useState<number | undefined>();
-  const [promoCode, setPromoCode] = useState('');
   const [notes, setNotes] = useState('');
+  // Local-date defaults: tomorrow at 10:00. startAt is composed from these
+  // in handleSubmit (local time, not UTC) so the user controls the slot.
+  const [bookingDate, setBookingDate] = useState<string>(buildNextDays(locale)[0]?.iso ?? '');
+  const [bookingTime, setBookingTime] = useState<string>('10:00');
+  // B.2 — promo chain: validate at confirm, redeem after booking creation.
+  const [promoCode, setPromoCode] = useState('');
+  const [appliedPromo, setAppliedPromo] = useState<AppliedPromo | null>(null);
+  const [promoMsg, setPromoMsg] = useState('');
+  const [promoErr, setPromoErr] = useState(false);
+  const NEXT_DAYS = buildNextDays(locale);
 
+  const isAuthed = useAuthState();
+  const utils = trpc.useUtils();
   const servicesQ = trpc.services.list.useQuery({ page: 1, limit: MAX_LIST_SIZE });
-  const addressesQ = trpc.addresses.list.useQuery();
+  // Guests have no address book — gate to avoid a 401 on mount.
+  const addressesQ = trpc.addresses.list.useQuery(undefined, { enabled: isAuthed });
   const svcQ = trpc.services.getById.useQuery({ id: serviceId! }, { enabled: !!serviceId });
 
   const services: ServiceListItem[] =
@@ -60,28 +104,83 @@ export default function CreateBookingScreen() {
   const addresses: AddressItem[] = (addressesQ.data as AddressItem[] | undefined) ?? [];
   const loading = servicesQ.isLoading || addressesQ.isLoading;
 
+  const variants = svc?.variants ?? [];
+  // Displayed total: base price + selected variant delta.
+  const orderAmount =
+    Number(svc?.basePrice ?? 0) +
+    (variantId ? Number(variants.find((v) => v.id === variantId)?.priceDelta ?? 0) : 0);
+
+  const redeemMut = trpc.promo.redeemOnBooking.useMutation({
+    onError: () => showToast('error', t('promo.redeem-failed')),
+  });
+
   const createMut = trpc.bookings.create.useMutation({
-    onSuccess: () => {
-      showToast('success', 'تم إنشاء الحجز بنجاح!');
+    onSuccess: (result) => {
+      if (appliedPromo) {
+        const bookingId = Number((result as unknown as { id?: number | string })?.id ?? 0);
+        if (bookingId > 0) {
+          redeemMut.mutate({ code: appliedPromo.code, bookingId });
+        }
+      }
+      showToast('success', t('booking.created-success'));
       setTimeout(() => router.back(), 1000);
     },
     onError: () => {
-      showToast('error', 'فشل إنشاء الحجز');
+      showToast('error', t('booking.create-failed'));
     },
   });
 
+  const handleApplyPromo = async () => {
+    setPromoMsg('');
+    setPromoErr(false);
+    if (!promoCode.trim()) {
+      setPromoErr(true);
+      setPromoMsg(t('promo.err.required'));
+      return;
+    }
+    try {
+      const r = await utils.promo.validate.fetch({
+        code: promoCode.trim().toUpperCase(),
+        orderAmount,
+      });
+      setAppliedPromo({
+        code: r.code,
+        discountAmount: r.discountAmount,
+        finalAmount: r.finalAmount,
+      });
+      setPromoMsg(t('promo.applied'));
+    } catch {
+      setAppliedPromo(null);
+      setPromoErr(true);
+      setPromoMsg(t('promo.err.invalid'));
+    }
+  };
+
+  const handleRemovePromo = () => {
+    setAppliedPromo(null);
+    setPromoCode('');
+    setPromoMsg('');
+    setPromoErr(false);
+  };
+
   const handleSubmit = () => {
     if (!serviceId || !addressId) {
-      showToast('warning', 'الرجاء اختيار الخدمة والعنوان');
+      showToast('warning', t('booking.select-service-address'));
       return;
     }
     // Auto-assign first available technician for this service
     const techs = svc?.technicianServices ?? [];
     const technicianId = techs[0]?.technician?.userId ?? 0;
     if (!technicianId) {
-      showToast('warning', 'لا توجد فنيات متاحة لهذه الخدمة حالياً');
+      showToast('warning', t('booking.no-technicians'));
       return;
     }
+
+    // Compose the slot from the user's local date + time selection.
+    const [h, m] = bookingTime.split(':').map(Number);
+    const start = new Date(`${bookingDate}T00:00:00`);
+    start.setHours(h, m, 0, 0);
+    const durationMin = svc?.durationMin ?? 60;
 
     createMut.mutate({
       serviceId,
@@ -90,50 +189,53 @@ export default function CreateBookingScreen() {
       technicianId,
       idempotencyKey: `mob_${Date.now()}_${Math.random().toString(36).slice(2, 10)}`,
       notes: notes || undefined,
-      startAt: new Date(Date.now() + 86400000).toISOString(),
-      endAt: new Date(Date.now() + 86400000 + (svc?.durationMin ?? 60) * 60000).toISOString(),
+      startAt: start.toISOString(),
+      endAt: new Date(start.getTime() + durationMin * 60000).toISOString(),
     });
   };
-
-  const variants = svc?.variants ?? [];
 
   if (loading) return <ActivityIndicator color="#7c3aed" style={{ marginTop: 40 }} size="large" />;
 
   return (
     <ScrollView style={styles.container} contentContainerStyle={styles.inner}>
-      <Text style={styles.title}>حجز جديد</Text>
+      <Text style={styles.title}>{t('booking.new-booking')}</Text>
 
       {/* Steps indicator */}
       <View style={styles.steps}>
-        {['الخدمة', 'التفاصيل', 'التأكيد'].map((label, i) => (
-          <View key={i} style={styles.stepRow}>
-            <View
-              style={[
-                styles.stepCircle,
-                step > i + 1
-                  ? styles.stepDone
-                  : step === i + 1
-                    ? styles.stepActive
-                    : styles.stepInactive,
-              ]}
-            >
-              <Text style={[styles.stepNum, step === i + 1 && { color: '#fff' }]}>
-                {step > i + 1 ? '' : i + 1}
+        {[t('booking.service'), t('booking.step-details'), t('booking.step-confirm')].map(
+          (label, i) => (
+            <View key={i} style={styles.stepRow}>
+              <View
+                style={[
+                  styles.stepCircle,
+                  step > i + 1
+                    ? styles.stepDone
+                    : step === i + 1
+                      ? styles.stepActive
+                      : styles.stepInactive,
+                ]}
+              >
+                <Text style={[styles.stepNum, step === i + 1 && { color: '#fff' }]}>
+                  {step > i + 1 ? '' : i + 1}
+                </Text>
+              </View>
+              <Text
+                style={[
+                  styles.stepLabel,
+                  step === i + 1 && { color: '#7c3aed', fontWeight: '700' },
+                ]}
+              >
+                {label}
               </Text>
+              {i < 2 && <Text style={styles.stepArrow}>→</Text>}
             </View>
-            <Text
-              style={[styles.stepLabel, step === i + 1 && { color: '#7c3aed', fontWeight: '700' }]}
-            >
-              {label}
-            </Text>
-            {i < 2 && <Text style={styles.stepArrow}>→</Text>}
-          </View>
-        ))}
+          ),
+        )}
       </View>
 
       {step === 1 && (
         <View>
-          <Text style={styles.sectionTitle}>اختر الخدمة</Text>
+          <Text style={styles.sectionTitle}>{t('booking.choose-service')}</Text>
           {services.map((s, i) => (
             <TouchableOpacity
               key={s.id ?? i}
@@ -144,9 +246,12 @@ export default function CreateBookingScreen() {
               }}
               activeOpacity={0.7}
             >
-              <Text style={styles.serviceName}>{s.titleJson?.ar ?? ''}</Text>
+              <Text style={styles.serviceName}>{localize(s.titleJson, locale)}</Text>
               <Text style={styles.serviceMeta}>
-                {Number(s.basePrice).toFixed(0)} ر.س · {s.durationMin} دقيقة
+                {t('bookings.create.service-meta', {
+                  price: Number(s.basePrice).toFixed(0),
+                  duration: s.durationMin ?? '',
+                })}
               </Text>
             </TouchableOpacity>
           ))}
@@ -155,18 +260,20 @@ export default function CreateBookingScreen() {
 
       {step === 2 && svc && (
         <View>
-          <Text style={styles.sectionTitle}>تفاصيل الحجز</Text>
-          <Text style={styles.selectedService}>{svc.titleJson?.ar ?? ''}</Text>
+          <Text style={styles.sectionTitle}>{t('booking.details')}</Text>
+          <Text style={styles.selectedService}>{localize(svc.titleJson, locale)}</Text>
 
           {variants.length > 0 && (
             <View style={styles.field}>
-              <Text style={styles.label}>المتغير</Text>
+              <Text style={styles.label}>{t('bookings.create.variant-label')}</Text>
               <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.chipRow}>
                 <TouchableOpacity
                   style={[styles.chip, !variantId && styles.chipActive]}
                   onPress={() => setVariantId(undefined)}
                 >
-                  <Text style={[styles.chipText, !variantId && { color: '#fff' }]}>الأساسي</Text>
+                  <Text style={[styles.chipText, !variantId && { color: '#fff' }]}>
+                    {t('bookings.create.variant-basic')}
+                  </Text>
                 </TouchableOpacity>
                 {variants.map((v, i) => (
                   <TouchableOpacity
@@ -175,7 +282,7 @@ export default function CreateBookingScreen() {
                     onPress={() => setVariantId(v.id)}
                   >
                     <Text style={[styles.chipText, variantId === v.id && { color: '#fff' }]}>
-                      {v.nameJson?.ar ?? ''}
+                      {localize(v.nameJson, locale)}
                     </Text>
                   </TouchableOpacity>
                 ))}
@@ -184,7 +291,7 @@ export default function CreateBookingScreen() {
           )}
 
           <View style={styles.field}>
-            <Text style={styles.label}>العنوان</Text>
+            <Text style={styles.label}>{t('bookings.create.address-label')}</Text>
             {addresses.map((a, i) => (
               <TouchableOpacity
                 key={a.id ?? i}
@@ -199,24 +306,46 @@ export default function CreateBookingScreen() {
           </View>
 
           <View style={styles.field}>
-            <Text style={styles.label}>كود الخصم</Text>
-            <TextInput
-              style={styles.input}
-              value={promoCode}
-              onChangeText={(t) => setPromoCode(t.toUpperCase())}
-              placeholder="مثال: WELCOME20"
-              placeholderTextColor="#9ca3af"
-              autoCapitalize="characters"
-            />
+            <Text style={styles.label}>{t('booking.choose-date')}</Text>
+            <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.chipRow}>
+              {NEXT_DAYS.map((d) => (
+                <TouchableOpacity
+                  key={d.iso}
+                  style={[styles.chip, bookingDate === d.iso && styles.chipActive]}
+                  onPress={() => setBookingDate(d.iso)}
+                >
+                  <Text style={[styles.chipText, bookingDate === d.iso && { color: '#fff' }]}>
+                    {d.label}
+                  </Text>
+                </TouchableOpacity>
+              ))}
+            </ScrollView>
           </View>
 
           <View style={styles.field}>
-            <Text style={styles.label}>ملاحظات</Text>
+            <Text style={styles.label}>{t('booking.choose-time')}</Text>
+            <View style={styles.timeGrid}>
+              {TIME_SLOTS.map((slot) => (
+                <TouchableOpacity
+                  key={slot}
+                  style={[styles.chip, bookingTime === slot && styles.chipActive]}
+                  onPress={() => setBookingTime(slot)}
+                >
+                  <Text style={[styles.chipText, bookingTime === slot && { color: '#fff' }]}>
+                    {slot}
+                  </Text>
+                </TouchableOpacity>
+              ))}
+            </View>
+          </View>
+
+          <View style={styles.field}>
+            <Text style={styles.label}>{t('booking.notes')}</Text>
             <TextInput
               style={[styles.input, styles.textArea]}
               value={notes}
               onChangeText={setNotes}
-              placeholder="أي ملاحظات إضافية..."
+              placeholder={t('booking.notes-placeholder')}
               placeholderTextColor="#9ca3af"
               multiline
               numberOfLines={3}
@@ -225,10 +354,10 @@ export default function CreateBookingScreen() {
 
           <View style={styles.btnRow}>
             <TouchableOpacity style={styles.backBtn} onPress={() => setStep(1)}>
-              <Text style={styles.backText}>السابق</Text>
+              <Text style={styles.backText}>{t('booking.previous')}</Text>
             </TouchableOpacity>
             <TouchableOpacity style={styles.nextBtn} onPress={() => setStep(3)}>
-              <Text style={styles.nextText}>التالي</Text>
+              <Text style={styles.nextText}>{t('button.next')}</Text>
             </TouchableOpacity>
           </View>
         </View>
@@ -236,25 +365,82 @@ export default function CreateBookingScreen() {
 
       {step === 3 && svc && (
         <View>
-          <Text style={styles.sectionTitle}>تأكيد الحجز</Text>
+          <Text style={styles.sectionTitle}>{t('booking.confirm')}</Text>
           <View style={styles.summary}>
             <View style={styles.summaryRow}>
-              <Text style={styles.summaryLabel}>الخدمة</Text>
-              <Text style={styles.summaryValue}>{svc.titleJson?.ar ?? ''}</Text>
+              <Text style={styles.summaryLabel}>{t('booking.service')}</Text>
+              <Text style={styles.summaryValue}>{localize(svc.titleJson, locale)}</Text>
             </View>
             <View style={styles.summaryRow}>
-              <Text style={styles.summaryLabel}>السعر</Text>
-              <Text style={styles.summaryPrice}>{Number(svc.basePrice).toFixed(0)} ر.س</Text>
+              <Text style={styles.summaryLabel}>{t('booking.price')}</Text>
+              <Text style={styles.summaryPrice}>
+                {Number(svc.basePrice).toFixed(0)} {t('misc.sar')}
+              </Text>
             </View>
             <View style={styles.summaryRow}>
-              <Text style={styles.summaryLabel}>المدة</Text>
-              <Text style={styles.summaryValue}>{svc.durationMin} دقيقة</Text>
+              <Text style={styles.summaryLabel}>{t('booking.duration')}</Text>
+              <Text style={styles.summaryValue}>
+                {svc.durationMin} {t('misc.min')}
+              </Text>
             </View>
+            <View style={styles.summaryRow}>
+              <Text style={styles.summaryLabel}>{t('booking.choose-time')}</Text>
+              <Text style={styles.summaryValue}>
+                {t('booking.date-time-confirm', { date: bookingDate, time: bookingTime })}
+              </Text>
+            </View>
+            {appliedPromo && (
+              <>
+                <View style={styles.summaryRow}>
+                  <Text style={styles.summaryLabel}>
+                    {t('promo.field.discount')} ({appliedPromo.code})
+                  </Text>
+                  <Text style={styles.summaryDiscount}>
+                    −{appliedPromo.discountAmount.toFixed(0)} {t('misc.sar')}
+                  </Text>
+                </View>
+                <View style={styles.summaryRow}>
+                  <Text style={styles.summaryTotalLabel}>{t('promo.field.total')}</Text>
+                  <Text style={styles.summaryPrice}>
+                    {appliedPromo.finalAmount.toFixed(0)} {t('misc.sar')}
+                  </Text>
+                </View>
+              </>
+            )}
           </View>
-          <Text style={styles.note}>* ستقوم الفنية بتأكيد الموعد النهائي</Text>
+
+          {/* Promo code (B.2) */}
+          {appliedPromo ? (
+            <View style={styles.promoApplied}>
+              <Text style={styles.promoAppliedText}>
+                {t('promo.applied')}: {appliedPromo.code}
+              </Text>
+              <TouchableOpacity onPress={handleRemovePromo}>
+                <Text style={styles.promoRemove}>{t('promo.remove')}</Text>
+              </TouchableOpacity>
+            </View>
+          ) : (
+            <View style={styles.promoRow}>
+              <TextInput
+                style={[styles.input, styles.promoInput]}
+                value={promoCode}
+                onChangeText={(v) => setPromoCode(v.toUpperCase())}
+                placeholder={t('promo.codePlaceholder')}
+                placeholderTextColor="#9ca3af"
+                autoCapitalize="characters"
+              />
+              <TouchableOpacity style={styles.promoBtn} onPress={handleApplyPromo}>
+                <Text style={styles.promoBtnText}>{t('promo.apply')}</Text>
+              </TouchableOpacity>
+            </View>
+          )}
+          {promoMsg ? (
+            <Text style={[styles.promoMsg, promoErr && styles.promoMsgErr]}>{promoMsg}</Text>
+          ) : null}
+          <Text style={styles.note}>{t('bookings.create.technician-note')}</Text>
           <View style={styles.btnRow}>
             <TouchableOpacity style={styles.backBtn} onPress={() => setStep(2)}>
-              <Text style={styles.backText}>السابق</Text>
+              <Text style={styles.backText}>{t('booking.previous')}</Text>
             </TouchableOpacity>
             <TouchableOpacity
               style={styles.nextBtn}
@@ -264,7 +450,7 @@ export default function CreateBookingScreen() {
               {createMut.isPending ? (
                 <ActivityIndicator color="#fff" />
               ) : (
-                <Text style={styles.nextText}>تأكيد الحجز</Text>
+                <Text style={styles.nextText}>{t('booking.confirm')}</Text>
               )}
             </TouchableOpacity>
           </View>
@@ -332,6 +518,7 @@ const styles = StyleSheet.create({
   field: { marginBottom: 16 },
   label: { fontSize: 13, fontWeight: '600', color: '#6b7280', textAlign: 'right', marginBottom: 6 },
   chipRow: { flexDirection: 'row', gap: 6 },
+  timeGrid: { flexDirection: 'row', flexWrap: 'wrap', gap: 6 },
   chip: {
     paddingHorizontal: 14,
     paddingVertical: 8,
@@ -390,5 +577,32 @@ const styles = StyleSheet.create({
   summaryLabel: { fontSize: 13, color: '#6b7280' },
   summaryValue: { fontSize: 14, color: '#374151' },
   summaryPrice: { fontSize: 16, fontWeight: '700', color: '#7c3aed' },
+  summaryDiscount: { fontSize: 14, fontWeight: '600', color: '#16a34a' },
+  summaryTotalLabel: { fontSize: 13, fontWeight: '700', color: '#111827' },
+  promoApplied: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginTop: 12,
+    borderWidth: 1,
+    borderColor: '#bbf7d0',
+    backgroundColor: '#f0fdf4',
+    borderRadius: 10,
+    padding: 12,
+  },
+  promoAppliedText: { fontSize: 13, fontWeight: '600', color: '#15803d' },
+  promoRemove: { fontSize: 13, fontWeight: '600', color: '#7c3aed' },
+  promoRow: { flexDirection: 'row', gap: 8, marginTop: 12 },
+  promoInput: { flex: 1 },
+  promoBtn: {
+    borderWidth: 1,
+    borderColor: '#7c3aed',
+    borderRadius: 10,
+    paddingHorizontal: 16,
+    justifyContent: 'center',
+  },
+  promoBtnText: { fontSize: 14, fontWeight: '600', color: '#7c3aed' },
+  promoMsg: { fontSize: 12, color: '#16a34a', marginTop: 8, textAlign: 'right' },
+  promoMsgErr: { color: '#dc2626' },
   note: { fontSize: 11, color: '#9ca3af', textAlign: 'right', marginTop: 12 },
 });

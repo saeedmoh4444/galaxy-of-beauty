@@ -1,5 +1,7 @@
 import { View, Text, ScrollView, StyleSheet, RefreshControl } from 'react-native';
 import { SkeletonList } from '@/components/SkeletonCard';
+import { useLocale } from '@/components/LocaleProvider';
+import { useAuthState } from '@/hooks/useAuthState';
 import { trpc } from '@/lib/trpc-react';
 
 interface PlatformConfig {
@@ -14,8 +16,10 @@ interface CashbackInfo {
 }
 
 export default function AdminSettingsScreen(): JSX.Element {
+  const { t } = useLocale();
+  const isAuthed = useAuthState();
   const settingsQ = trpc.platform.getSettings.useQuery();
-  const cashbackQ = trpc.cashback.info.useQuery();
+  const cashbackQ = trpc.cashback.info.useQuery(undefined, { enabled: isAuthed });
   const config: PlatformConfig = {
     ...((settingsQ.data as unknown as PlatformConfig | null) ?? {}),
     cashbackRate: (cashbackQ.data as unknown as CashbackInfo | null)?.rate,
@@ -39,36 +43,38 @@ export default function AdminSettingsScreen(): JSX.Element {
         />
       }
     >
-      <Text style={styles.t}>️ الإعدادات</Text>
+      <Text style={styles.t}>{t('mobile.admin.settings.title')}</Text>
 
       <View style={styles.section}>
-        <Text style={styles.st}> رسوم المنصة</Text>
+        <Text style={styles.st}>{t('mobile.admin.settings.platform-fees')}</Text>
         <View style={styles.row}>
-          <Text style={styles.l}>نسبة المنصة</Text>
+          <Text style={styles.l}>{t('mobile.admin.settings.platform-rate')}</Text>
           <Text style={styles.v}>{config.platformFee ?? '10%'}</Text>
         </View>
         <View style={styles.row}>
-          <Text style={styles.l}>الحد الأدنى للسحب</Text>
-          <Text style={styles.v}>{(config.minPayout ?? 100).toLocaleString()} ر.س</Text>
+          <Text style={styles.l}>{t('mobile.admin.settings.min-withdrawal')}</Text>
+          <Text style={styles.v}>
+            {(config.minPayout ?? 100).toLocaleString()} {t('misc.sar')}
+          </Text>
         </View>
       </View>
 
       <View style={styles.section}>
-        <Text style={styles.st}> الكاش باك</Text>
+        <Text style={styles.st}>{t('mobile.admin.settings.cashback')}</Text>
         <View style={styles.row}>
-          <Text style={styles.l}>نسبة الاسترداد</Text>
+          <Text style={styles.l}>{t('mobile.admin.settings.cashback-rate')}</Text>
           <Text style={styles.v}>{config.cashbackRate ?? 5}%</Text>
         </View>
         <View style={styles.row}>
-          <Text style={styles.l}>مكافأة أول حجز</Text>
-          <Text style={styles.v}>50 ر.س</Text>
+          <Text style={styles.l}>{t('mobile.admin.settings.first-booking-bonus')}</Text>
+          <Text style={styles.v}>50 {t('misc.sar')}</Text>
         </View>
       </View>
 
       <View style={styles.section}>
-        <Text style={styles.st}> الصيانة</Text>
+        <Text style={styles.st}>{t('mobile.admin.settings.maintenance')}</Text>
         <View style={styles.row}>
-          <Text style={styles.l}>وضع الصيانة</Text>
+          <Text style={styles.l}>{t('mobile.admin.settings.maintenance-mode')}</Text>
           <View style={[styles.badge, config.maintenanceMode ? styles.bon : styles.boff]}>
             <Text
               style={[
@@ -76,7 +82,7 @@ export default function AdminSettingsScreen(): JSX.Element {
                 config.maintenanceMode ? { color: '#dc2626' } : { color: '#059669' },
               ]}
             >
-              {config.maintenanceMode ? 'مفعل' : 'معطل'}
+              {config.maintenanceMode ? t('admin.enabled') : t('admin.disabled')}
             </Text>
           </View>
         </View>

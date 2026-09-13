@@ -48,12 +48,14 @@ import {
   BeautyFootCareCard,
 } from '@galaxy/ui';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
+import { useLocale } from '@/components/LocaleProvider';
 
 export default function PersonalCarePage(): JSX.Element {
+  const { t } = useLocale();
   return (
     <DashboardLayout userRole="CUSTOMER">
       <PageContainer width="wide">
-        <PageTitle title=" العناية الشخصية" subtitle="تفاصيل صغيرة — تأثير كبير" />
+        <PageTitle title={t('personalCare.title')} subtitle={t('personalCare.subtitle')} />
 
         <div className="grid gap-6 lg:grid-cols-3">
           <div className="lg:col-span-2 space-y-6">

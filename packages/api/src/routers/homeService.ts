@@ -47,12 +47,32 @@ export const homeServiceRouter = router({
       const req = await prisma.homeServiceRequest.create({
         data: { userId: ctx.user.id, ...input },
       });
+
+      // E5 — assign a verified at-home salon provider covering the city
+      // (best-rated first). Unassigned when none covers it.
+      const provider = await prisma.vendor.findFirst({
+        where: { type: 'ATHOME', isVerified: true, isActive: true, homeCity: input.city },
+        orderBy: { ratingAvg: 'desc' },
+      });
+      let assigned = false;
+      let providerName: string | undefined;
+      if (provider) {
+        await prisma.homeServiceRequest.update({
+          where: { id: req.id },
+          data: { vendorId: provider.id, assignedAt: new Date() },
+        });
+        assigned = true;
+        providerName = provider.storeName;
+      }
+
       return {
         requestId: `HOME-${req.id}`,
         status: 'PENDING',
         ...input,
         estimatedArrival: 'خلال ٤٥-٦٠ دقيقة',
         confirmationSms: true,
+        assigned,
+        ...(assigned ? { vendorId: provider!.id, providerName } : {}),
       };
     }),
 });

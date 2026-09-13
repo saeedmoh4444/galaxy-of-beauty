@@ -2,12 +2,15 @@ import { View, Text, ScrollView, StyleSheet, TouchableOpacity, RefreshControl } 
 import { useState } from 'react';
 import { ErrorAlert } from '@/components/ErrorAlert';
 import { SkeletonList } from '@/components/SkeletonCard';
+import { useLocale } from '@/components/LocaleProvider';
+import { useAuthState } from '@/hooks/useAuthState';
 import { trpc } from '@/lib/trpc-react';
+import { localize } from '@galaxy/shared';
 
-const LEVELS: Record<string, { label: string; color: string }> = {
-  beginner: { label: 'مبتدئ', color: '#10b981' },
-  intermediate: { label: 'متوسط', color: '#f59e0b' },
-  advanced: { label: 'متقدم', color: '#ef4444' },
+const LEVELS: Record<string, { color: string }> = {
+  beginner: { color: '#10b981' },
+  intermediate: { color: '#f59e0b' },
+  advanced: { color: '#ef4444' },
 };
 
 interface CourseItem {
@@ -27,8 +30,15 @@ interface MyCourseItem {
 }
 
 export default function BeautyCoursesScreen(): JSX.Element {
+  const { locale, t } = useLocale();
+  const isAuthed = useAuthState();
+  const levelLabels: Record<string, string> = {
+    beginner: t('beautyCourses.level-beginner'),
+    intermediate: t('beautyCourses.level-intermediate'),
+    advanced: t('beautyCourses.level-advanced'),
+  };
   const coursesQ = trpc.beautyCourses.list.useQuery();
-  const myCoursesQ = trpc.beautyCourses.myCourses.useQuery();
+  const myCoursesQ = trpc.beautyCourses.myCourses.useQuery(undefined, { enabled: isAuthed });
   const [enrolled, setEnrolled] = useState<number[]>([]);
 
   const enrollMut = trpc.beautyCourses.enroll.useMutation();
@@ -43,7 +53,9 @@ export default function BeautyCoursesScreen(): JSX.Element {
 
   if (coursesQ.isLoading) return <SkeletonList count={4} />;
   if (coursesQ.isError)
-    return <ErrorAlert message="فشل تحميل الدورات" onRetry={() => coursesQ.refetch()} />;
+    return (
+      <ErrorAlert message={t('beautyCourses.load-error')} onRetry={() => coursesQ.refetch()} />
+    );
 
   const items = (coursesQ.data as CourseItem[] | undefined) ?? [];
   const myItems = (myCoursesQ.data as MyCourseItem[] | undefined) ?? [];
@@ -60,15 +72,15 @@ export default function BeautyCoursesScreen(): JSX.Element {
         />
       }
     >
-      <Text style={s.t}> دورات تجميل</Text>
-      <Text style={s.sub}>تعلمي مهارات التجميل من الخبيرات</Text>
+      <Text style={s.t}>{t('beautyCourses.title')}</Text>
+      <Text style={s.sub}>{t('beautyCourses.subtitle')}</Text>
 
       {myItems.length > 0 && (
         <View
           style={{ marginBottom: 16, backgroundColor: '#ecfdf5', borderRadius: 12, padding: 12 }}
         >
           <Text style={{ fontWeight: '700', color: '#059669', marginBottom: 8 }}>
-            دوراتي ({myItems.length})
+            {t('beautyCourses.my-courses', { count: myItems.length })}
           </Text>
           <View style={{ flexDirection: 'row', flexWrap: 'wrap', gap: 6 }}>
             {myItems.map((c, i) => (
@@ -82,7 +94,9 @@ export default function BeautyCoursesScreen(): JSX.Element {
                 }}
               >
                 <Text style={{ fontSize: 12, color: '#047857' }}>
-                  {c.course?.titleJson?.ar ?? `دورة #${c.courseId}`}
+                  {c.course?.titleJson
+                    ? localize(c.course.titleJson, locale)
+                    : t('beautyCourses.course-fallback', { id: c.courseId ?? 0 })}
                 </Text>
               </View>
             ))}
@@ -100,8 +114,10 @@ export default function BeautyCoursesScreen(): JSX.Element {
               <Text style={s.cTitle}>{c.titleAr}</Text>
               <Text style={s.cDesc}>{c.descAr}</Text>
               <View style={s.tags}>
-                <Text style={{ fontSize: 11, color: '#6b7280' }}>‍ {c.instructor}</Text>
-                <Text style={{ fontSize: 11, color: '#6b7280' }}> {c.lessons} دروس</Text>
+                <Text style={{ fontSize: 11, color: '#6b7280' }}> {c.instructor}</Text>
+                <Text style={{ fontSize: 11, color: '#6b7280' }}>
+                  {t('beautyCourses.lessons', { lessons: c.lessons ?? 0 })}
+                </Text>
                 <Text style={{ fontSize: 11, color: '#6b7280' }}>{c.rating}</Text>
                 <View
                   style={{
@@ -112,7 +128,7 @@ export default function BeautyCoursesScreen(): JSX.Element {
                   }}
                 >
                   <Text style={{ fontSize: 10, color: level.color, fontWeight: '600' }}>
-                    {level.label}
+                    {levelLabels[c.level ?? 'beginner']}
                   </Text>
                 </View>
               </View>
@@ -122,7 +138,7 @@ export default function BeautyCoursesScreen(): JSX.Element {
                 style={[s.btn, isEnrolled && { backgroundColor: '#d1fae5' }]}
               >
                 <Text style={[s.btnText, isEnrolled && { color: '#047857' }]}>
-                  {isEnrolled ? ' مسجلة' : ' سجلي الآن'}
+                  {isEnrolled ? t('beautyCourses.enrolled') : t('beautyCourses.enroll-now')}
                 </Text>
               </TouchableOpacity>
             </View>
