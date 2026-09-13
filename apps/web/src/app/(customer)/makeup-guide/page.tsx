@@ -1,34 +1,67 @@
 'use client';
 
 import {
-  PageContainer, PageTitle,
-  BeautyMakeupBrushCard, BeautyMakeupBaseCard, BeautyMakeupEyeCard,
-  BeautyMakeupLipCard, BeautyMakeupSettingCard, BeautyMakeupContourCard,
-  BeautyMakeupBlushCard, BeautyMakeupMascaraCard, BeautyMakeupEyelinerCard,
-  BeautyMakeupBrowsCard, BeautyMakeupRemoverCard, BeautyMakeupSpongeCard,
-  BeautyMakeupColorCard, BeautyMakeupDayCard, BeautyMakeupNightCard,
-  BeautyMakeupBridalCard, BeautyMakeupMinimalCard, BeautyMakeupGlitterCard,
-  BeautyMakeupMatteCard, BeautyMakeupDewyCard, BeautyMakeupConcealerCard,
-  BeautyMakeupPowderCard, BeautyMakeupPrimerCard, BeautyMakeupMistCard,
-  BeautyMakeupRemoveCard, BeautyMakeupOrganizeCard,
+  PageContainer,
+  PageTitle,
+  BeautyMakeupBrushCard,
+  BeautyMakeupBaseCard,
+  BeautyMakeupEyeCard,
+  BeautyMakeupLipCard,
+  BeautyMakeupSettingCard,
+  BeautyMakeupContourCard,
+  BeautyMakeupBlushCard,
+  BeautyMakeupMascaraCard,
+  BeautyMakeupEyelinerCard,
+  BeautyMakeupBrowsCard,
+  BeautyMakeupRemoverCard,
+  BeautyMakeupSpongeCard,
+  BeautyMakeupColorCard,
+  BeautyMakeupDayCard,
+  BeautyMakeupNightCard,
+  BeautyMakeupBridalCard,
+  BeautyMakeupMinimalCard,
+  BeautyMakeupGlitterCard,
+  BeautyMakeupMatteCard,
+  BeautyMakeupDewyCard,
+  BeautyMakeupConcealerCard,
+  BeautyMakeupPowderCard,
+  BeautyMakeupPrimerCard,
+  BeautyMakeupMistCard,
+  BeautyMakeupRemoveCard,
+  BeautyMakeupOrganizeCard,
   BeautyMakeupTipsCard,
-  BeautyFaceShapeCard, BeautyContourGuideCard, BeautyBlushPlacementCard,
-  BeautyBrowShapeCard, BeautyLipShapeCard,
-  BeautyPartyPrepCard, BeautyInterviewLookCard, BeautyGraduationLookCard,
-  BeautyDateNightCard, BeautyPhotoReadyCard,
-  BeautyFairSkinCard, BeautyMediumSkinCard, BeautyDarkSkinCard,
-  BeautyUndertoneCard, BeautySkinToneMatchCard,
-  BeautyGlassesMakeupCard, BeautyContactLensCareCard,
-  BeautySkincareVitaminCCard, BeautySkincareRetinolCard, BeautyNailCareCard,
-  BeautyPerfumeCard, BeautyLipsCareCard,
+  BeautyFaceShapeCard,
+  BeautyContourGuideCard,
+  BeautyBlushPlacementCard,
+  BeautyBrowShapeCard,
+  BeautyLipShapeCard,
+  BeautyPartyPrepCard,
+  BeautyInterviewLookCard,
+  BeautyGraduationLookCard,
+  BeautyDateNightCard,
+  BeautyPhotoReadyCard,
+  BeautyFairSkinCard,
+  BeautyMediumSkinCard,
+  BeautyDarkSkinCard,
+  BeautyUndertoneCard,
+  BeautySkinToneMatchCard,
+  BeautyGlassesMakeupCard,
+  BeautyContactLensCareCard,
+  BeautySkincareVitaminCCard,
+  BeautySkincareRetinolCard,
+  BeautyNailCareCard,
+  BeautyPerfumeCard,
+  BeautyLipsCareCard,
 } from '@galaxy/ui';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
+import { useLocale } from '@/components/LocaleProvider';
 
 export default function MakeupGuidePage(): JSX.Element {
+  const { t } = useLocale();
   return (
-    <DashboardLayout role="CUSTOMER">
+    <DashboardLayout userRole="CUSTOMER">
       <PageContainer width="wide">
-        <PageTitle title="💄 دليل المكياج" subtitle="كل ما تحتاجينه لإطلالة مثالية" />
+        <PageTitle title={t('makeupGuide.title')} subtitle={t('makeupGuide.subtitle')} />
 
         <div className="grid gap-6 lg:grid-cols-3">
           <div className="lg:col-span-2 space-y-6">

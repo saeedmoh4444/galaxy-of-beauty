@@ -8,7 +8,13 @@ import { emitToUser } from '../socket/index';
 export const chatRouter = router({
   // Get messages for a booking's chat room
   messages: protectedProcedure
-    .input(z.object({ bookingId: z.number().int().positive(), page: z.number().default(1), limit: z.number().default(50) }))
+    .input(
+      z.object({
+        bookingId: z.number().int().positive(),
+        page: z.number().default(1),
+        limit: z.number().default(50),
+      }),
+    )
     .query(async ({ ctx, input }) => {
       const booking = await prisma.booking.findUnique({ where: { id: input.bookingId } });
       if (!booking) throw new TRPCError({ code: 'NOT_FOUND' });
@@ -21,7 +27,8 @@ export const chatRouter = router({
         prisma.chatMessage.findMany({
           where: { receiverId: ctx.user.id },
           orderBy: { createdAt: 'desc' },
-          skip, take: input.limit,
+          skip,
+          take: input.limit,
         }),
         prisma.chatMessage.count({ where: { receiverId: ctx.user.id } }),
       ]);
@@ -31,11 +38,13 @@ export const chatRouter = router({
 
   // Send a message
   send: protectedProcedure
-    .input(z.object({
-      receiverId: z.number().int().positive(),
-      bookingId: z.number().int().positive().optional(),
-      content: z.string().min(1).max(2000),
-    }))
+    .input(
+      z.object({
+        receiverId: z.number().int().positive(),
+        bookingId: z.number().int().positive().optional(),
+        content: z.string().min(1).max(2000),
+      }),
+    )
     .mutation(async ({ ctx, input }) => {
       const msg = await prisma.chatMessage.create({
         data: {

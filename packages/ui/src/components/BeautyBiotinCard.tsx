@@ -1,1 +1,69 @@
-'use client';import { cn } from '@galaxy/shared';export function BeautyBiotinCard({ className = '' }: { className?: string }): JSX.Element {return (<div className={cn('rounded-2xl border border-emerald-100 bg-white p-4 dark:border-emerald-900 dark:bg-gray-900', className)}><div className="flex items-center gap-2"><span className="text-xl">💊</span><div><h4 className="text-sm font-bold text-emerald-700 dark:text-emerald-300">البيوتين</h4><p className="text-[10px] text-emerald-500 dark:text-emerald-400">فيتامين B7 — للشعر والأظافر</p></div></div><div className="mt-3 space-y-1">{[{ emoji: '💇', text: 'يقوي الشعر — يقلل التساقط ويزيد الكثافة' },{ emoji: '💅', text: 'يقوي الأظافر — يقلل التكسر والتقصف' },{ emoji: '🥚', text: 'موجود طبيعياً — بيض، مكسرات، أفوكادو' },{ emoji: '⏱️', text: '3-6 أشهر — لرؤية نتائج واضحة' }].map((t,i)=>(<div key={i} className="flex items-center gap-2 rounded-lg bg-emerald-50 px-3 py-2 dark:bg-emerald-950"><span className="text-sm shrink-0">{t.emoji}</span><span className="text-[10px] text-emerald-800 dark:text-emerald-200">{t.text}</span></div>))}</div></div>);}
+'use client';
+import { cn } from '@galaxy/shared';
+export function BeautyBiotinCard({
+  className = '',
+  title = 'البيوتين',
+  subtitle = 'فيتامين B7 — للشعر والأظافر',
+  locale = 'ar',
+}: {
+  className?: string;
+  title?: string;
+  subtitle?: string;
+  locale?: 'ar' | 'en';
+}): JSX.Element {
+  return (
+    <div
+      className={cn(
+        'rounded-2xl border border-emerald-100 bg-white p-4 dark:border-emerald-900 dark:bg-gray-900',
+        className,
+      )}
+    >
+      <div className="flex items-center gap-2">
+        <span className="text-xl">💊</span>
+        <div>
+          <h4 className="text-sm font-bold text-emerald-700 dark:text-emerald-300">{title}</h4>
+          <p className="text-[10px] text-emerald-500 dark:text-emerald-400">{subtitle}</p>
+        </div>
+      </div>
+      <div className="mt-3 space-y-1">
+        {[
+          {
+            emoji: '💇',
+            text: {
+              ar: 'يقوي الشعر — يقلل التساقط ويزيد الكثافة',
+              en: 'Strengthens hair — reduces shedding and boosts density',
+            },
+          },
+          {
+            emoji: '💅',
+            text: {
+              ar: 'يقوي الأظافر — يقلل التكسر والتقصف',
+              en: 'Strengthens nails — reduces breakage and splitting',
+            },
+          },
+          {
+            emoji: '🥑',
+            text: {
+              ar: 'موجود طبيعياً — بيض، مكسرات، أفوكادو',
+              en: 'Found naturally — eggs, nuts, avocado',
+            },
+          },
+          {
+            emoji: '⏳',
+            text: { ar: '3-6 أشهر — لرؤية نتائج واضحة', en: '3-6 months — to see clear results' },
+          },
+        ].map((t, i) => (
+          <div
+            key={i}
+            className="flex items-center gap-2 rounded-lg bg-emerald-50 px-3 py-2 dark:bg-emerald-950"
+          >
+            <span className="text-sm shrink-0">{t.emoji}</span>
+            <span className="text-[10px] text-emerald-800 dark:text-emerald-200">
+              {t.text[locale]}
+            </span>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}

@@ -12,7 +12,7 @@ import { cn } from '@galaxy/shared';
 
 interface ImpactMetric {
   emoji: string;
-  label: string;
+  label: { ar: string; en: string };
   current: number;
   target: number;
   suffix?: string;
@@ -27,6 +27,13 @@ interface SocialImpactCounterProps {
   survivorServices?: number;
   /** Rural women reached */
   ruralWomen?: number;
+  /** Display language for built-in labels */
+  locale?: 'ar' | 'en';
+  title?: string;
+  subtitle?: string;
+  goalPrefix?: string;
+  pctOf2028Text?: string;
+  pledgeText?: string;
   className?: string;
 }
 
@@ -36,32 +43,50 @@ export function SocialImpactCounter({
   survivorServices,
   ruralWomen,
   className = '',
+  locale = 'ar',
+  title = 'أثرنا الاجتماعي',
+  subtitle = 'معاً نحو تمكين 1000 امرأة بحلول 2028',
+  goalPrefix = 'الهدف',
+  pctOf2028Text = 'من هدف 2028',
+  pledgeText = 'نؤمن بأن تمكين المرأة اقتصادياً يبني مستقبلاً أفضل للجميع',
 }: SocialImpactCounterProps): JSX.Element {
   const metrics: ImpactMetric[] = [
     {
-      emoji: '👩‍🎨',
-      label: 'امرأة عاملة',
+      emoji: '💼',
+      label: { ar: 'امرأة عاملة', en: 'Women employed' },
       current: womenEmployed,
       target: 1000,
     },
-    ...(womenInTraining ? [{
-      emoji: '📚',
-      label: 'متدربة',
-      current: womenInTraining,
-      target: 500,
-    }] : []),
-    ...(survivorServices ? [{
-      emoji: '🤲',
-      label: 'خدمة مجانية',
-      current: survivorServices,
-      target: 500,
-    }] : []),
-    ...(ruralWomen ? [{
-      emoji: '🏡',
-      label: 'امرأة ريفية',
-      current: ruralWomen,
-      target: 200,
-    }] : []),
+    ...(womenInTraining
+      ? [
+          {
+            emoji: '🎓',
+            label: { ar: 'متدربة', en: 'In training' },
+            current: womenInTraining,
+            target: 500,
+          },
+        ]
+      : []),
+    ...(survivorServices
+      ? [
+          {
+            emoji: '🎁',
+            label: { ar: 'خدمة مجانية', en: 'Free services' },
+            current: survivorServices,
+            target: 500,
+          },
+        ]
+      : []),
+    ...(ruralWomen
+      ? [
+          {
+            emoji: '🌾',
+            label: { ar: 'امرأة ريفية', en: 'Rural women' },
+            current: ruralWomen,
+            target: 200,
+          },
+        ]
+      : []),
   ];
 
   return (
@@ -73,19 +98,15 @@ export function SocialImpactCounter({
     >
       {/* Header */}
       <div className="text-center">
-        <h4 className="text-sm font-bold text-amber-800 dark:text-amber-200">
-          🌍 أثرنا الاجتماعي
-        </h4>
-        <p className="mt-0.5 text-[10px] text-amber-600 dark:text-amber-400">
-          معاً نحو تمكين 1000 امرأة بحلول 2028
-        </p>
+        <h4 className="text-sm font-bold text-amber-800 dark:text-amber-200">{title}</h4>
+        <p className="mt-0.5 text-[10px] text-amber-600 dark:text-amber-400">{subtitle}</p>
       </div>
 
       {/* Metrics grid */}
       <div className="mt-4 grid grid-cols-2 gap-3">
         {metrics.map((metric, i) => {
           const pct = Math.min(100, Math.round((metric.current / metric.target) * 100));
-          const isMain = metric.label === 'امرأة عاملة';
+          const isMain = metric.label.ar === 'امرأة عاملة';
 
           return (
             <div
@@ -97,9 +118,11 @@ export function SocialImpactCounter({
             >
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-1.5">
-                  <span className="text-sm" aria-hidden="true">{metric.emoji}</span>
+                  <span className="text-sm" aria-hidden="true">
+                    {metric.emoji}
+                  </span>
                   <span className="text-[10px] font-bold text-text-primary dark:text-gray-100">
-                    {metric.label}
+                    {metric.label[locale]}
                   </span>
                 </div>
                 <span className="text-[10px] font-bold text-amber-700 dark:text-amber-300">
@@ -112,9 +135,7 @@ export function SocialImpactCounter({
                 <div
                   className={cn(
                     'h-full rounded-full bg-gradient-to-r transition-all duration-1000',
-                    isMain
-                      ? 'from-amber-500 to-yellow-500'
-                      : 'from-amber-400 to-amber-500',
+                    isMain ? 'from-amber-500 to-yellow-500' : 'from-amber-400 to-amber-500',
                   )}
                   style={{ width: `${pct}%` }}
                 />
@@ -122,14 +143,16 @@ export function SocialImpactCounter({
 
               {/* Count */}
               <div className="mt-1 flex items-baseline justify-between">
-                <span className={cn(
-                  'font-bold text-amber-800 dark:text-amber-200',
-                  isMain ? 'text-lg' : 'text-sm',
-                )}>
+                <span
+                  className={cn(
+                    'font-bold text-amber-800 dark:text-amber-200',
+                    isMain ? 'text-lg' : 'text-sm',
+                  )}
+                >
                   {metric.current.toLocaleString('ar-SA')}
                 </span>
-                <span className="text-[10px] text-text-tertiary dark:text-gray-500">
-                  الهدف {metric.target.toLocaleString('ar-SA')}
+                <span className="text-[10px] text-text-tertiary dark:text-text-secondary">
+                  {goalPrefix} {metric.target.toLocaleString('ar-SA')}
                 </span>
               </div>
             </div>
@@ -140,17 +163,17 @@ export function SocialImpactCounter({
       {/* Year target */}
       <div className="mt-3 text-center">
         <div className="inline-flex items-center gap-1 rounded-full bg-white/60 px-3 py-1 dark:bg-black/20">
-          <span className="text-xs" aria-hidden="true">🎯</span>
+          <span className="text-xs" aria-hidden="true">
+            🎯
+          </span>
           <span className="text-[10px] font-bold text-amber-800 dark:text-amber-200">
-            {Math.round((womenEmployed / 1000) * 100)}% من هدف 2028
+            {Math.round((womenEmployed / 1000) * 100)}% {pctOf2028Text}
           </span>
         </div>
       </div>
 
       {/* Pledge */}
-      <p className="mt-2 text-center text-[9px] text-amber-600 dark:text-amber-400">
-        💛 نؤمن بأن تمكين المرأة اقتصادياً يبني مستقبلاً أفضل للجميع
-      </p>
+      <p className="mt-2 text-center text-[9px] text-amber-600 dark:text-amber-400">{pledgeText}</p>
     </div>
   );
 }

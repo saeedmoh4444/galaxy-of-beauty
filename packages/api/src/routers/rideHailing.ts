@@ -22,7 +22,13 @@ export const rideHailingRouter = router({
       };
     }),
   book: customerProcedure
-    .input(z.object({ bookingId: z.number(), provider: z.enum(['uber', 'careem']), pickupAddress: z.string() }))
+    .input(
+      z.object({
+        bookingId: z.number(),
+        provider: z.enum(['uber', 'careem']),
+        pickupAddress: z.string(),
+      }),
+    )
     .mutation(async ({ input }) => ({
       rideId: `RIDE-${Date.now()}`,
       provider: input.provider,

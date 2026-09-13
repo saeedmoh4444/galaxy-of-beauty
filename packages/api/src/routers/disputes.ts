@@ -2,11 +2,7 @@ import { z } from 'zod';
 import { TRPCError } from '@trpc/server';
 import { prisma } from '@galaxy/db';
 import { notFound } from '../lib/errors';
-import {
-  router,
-  protectedProcedure,
-  adminProcedure,
-} from '../trpc';
+import { router, protectedProcedure, adminProcedure } from '../trpc';
 
 export const disputeRouter = router({
   // ── Create dispute ────────────────────────────────────────────────────────

@@ -21,18 +21,10 @@ const widthStyles: Record<NonNullable<PageContainerProps['width']>, string> = {
  * Standardised page container with consistent max-width, padding, and vertical rhythm.
  * Replaces ad-hoc `mx-auto max-w-3xl space-y-6 px-4` patterns across 80+ pages.
  */
-export function PageContainer({
-  children,
-  width = 'default',
-  className = '',
-}: PageContainerProps) {
+export function PageContainer({ children, width = 'default', className = '' }: PageContainerProps) {
   return (
     <div
-      className={cn(
-        'mx-auto space-y-6 px-4 py-8 sm:px-6 lg:px-8',
-        widthStyles[width],
-        className,
-      )}
+      className={cn('mx-auto space-y-6 px-4 py-8 sm:px-6 lg:px-8', widthStyles[width], className)}
     >
       {children}
     </div>

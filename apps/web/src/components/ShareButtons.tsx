@@ -1,6 +1,7 @@
 'use client';
 
 import { SHARE_URLS } from '@galaxy/ui';
+import { useLocale } from '@/components/LocaleProvider';
 
 interface ShareButtonsProps {
   title: string;
@@ -8,6 +9,7 @@ interface ShareButtonsProps {
 }
 
 export function ShareButtons({ title, url }: ShareButtonsProps): JSX.Element {
+  const { t } = useLocale();
   const shareUrl = url || (typeof window !== 'undefined' ? window.location.href : '');
 
   const share = (platform: string) => {
@@ -28,9 +30,27 @@ export function ShareButtons({ title, url }: ShareButtonsProps): JSX.Element {
 
   return (
     <div className="flex gap-2">
-      <button onClick={() => share('whatsapp')} className="rounded-lg bg-green-500 px-3 py-1.5 text-xs font-medium text-white hover:bg-green-600 transition-colors" title="مشاركة عبر واتساب">📱 واتساب</button>
-      <button onClick={() => share('twitter')} className="rounded-lg bg-blue-400 px-3 py-1.5 text-xs font-medium text-white hover:bg-blue-500 transition-colors" title="مشاركة عبر تويتر">🐦 تويتر</button>
-      <button onClick={() => share('copy')} className="rounded-lg border border-gray-200 px-3 py-1.5 text-xs font-medium text-gray-600 hover:bg-gray-50 dark:border-gray-700 dark:text-gray-400 transition-colors" title="نسخ الرابط">📋 نسخ</button>
+      <button
+        onClick={() => share('whatsapp')}
+        className="rounded-lg bg-green-500 px-3 py-1.5 text-xs font-medium text-white hover:bg-green-600 transition-colors"
+        title={t('share.via-whatsapp')}
+      >
+        {t('share.whatsapp')}
+      </button>
+      <button
+        onClick={() => share('twitter')}
+        className="rounded-lg bg-blue-400 px-3 py-1.5 text-xs font-medium text-white hover:bg-blue-500 transition-colors"
+        title={t('share.via-twitter')}
+      >
+        {t('share.twitter')}
+      </button>
+      <button
+        onClick={() => share('copy')}
+        className="rounded-lg border border-edge px-3 py-1.5 text-xs font-medium text-text-secondary hover:bg-surface-muted dark:border-gray-700 dark:text-text-tertiary transition-colors"
+        title={t('share.copy-link')}
+      >
+        {t('share.copy')}
+      </button>
     </div>
   );
 }

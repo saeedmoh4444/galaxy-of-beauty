@@ -1,21 +1,33 @@
 'use client';
 
 import {
-  PageContainer, PageTitle,
-  BeautyNailArtCard, BeautyNailShapeCard, BeautyNailHealthCard,
-  BeautyNailPolishCard, BeautyNailGelCard,
-  BeautyParaffinCard, BeautyHandMaskCard, BeautyFootSoakCard,
-  BeautyNailStrengthenCard, BeautyCallusCareCard,
-  BeautyHandsCareCard, BeautyFootCareCard, BeautyPerfumeCard,
-  BeautyLipsCareCard, BeautyJewelryCard,
+  PageContainer,
+  PageTitle,
+  BeautyNailArtCard,
+  BeautyNailShapeCard,
+  BeautyNailHealthCard,
+  BeautyNailPolishCard,
+  BeautyNailGelCard,
+  BeautyParaffinCard,
+  BeautyHandMaskCard,
+  BeautyFootSoakCard,
+  BeautyNailStrengthenCard,
+  BeautyCallusCareCard,
+  BeautyHandsCareCard,
+  BeautyFootCareCard,
+  BeautyPerfumeCard,
+  BeautyLipsCareCard,
+  BeautyJewelryCard,
 } from '@galaxy/ui';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
+import { useLocale } from '@/components/LocaleProvider';
 
 export default function NailCareGuidePage(): JSX.Element {
+  const { t } = useLocale();
   return (
-    <DashboardLayout role="CUSTOMER">
+    <DashboardLayout userRole="CUSTOMER">
       <PageContainer width="wide">
-        <PageTitle title="💅 دليل العناية بالأظافر" subtitle="كل ما تحتاجينه لأظافر جميلة وصحية" />
+        <PageTitle title={t('nailCareGuide.title')} subtitle={t('nailCareGuide.subtitle')} />
 
         <div className="grid gap-6 lg:grid-cols-3">
           <div className="lg:col-span-2 space-y-6">

@@ -1,21 +1,33 @@
 'use client';
 
 import {
-  PageContainer, PageTitle,
-  BeautyPerfumeLayerCard, BeautyPerfumeSeasonCard, BeautyPerfumeOudCard,
-  BeautyPerfumeMuskCard, BeautyPerfumeRoseCard, BeautyPerfumeAmberCard,
-  BeautyPerfumeSaffronCard, BeautyPerfumeMixingCard, BeautyPerfumeStorageCard,
+  PageContainer,
+  PageTitle,
+  BeautyPerfumeLayerCard,
+  BeautyPerfumeSeasonCard,
+  BeautyPerfumeOudCard,
+  BeautyPerfumeMuskCard,
+  BeautyPerfumeRoseCard,
+  BeautyPerfumeAmberCard,
+  BeautyPerfumeSaffronCard,
+  BeautyPerfumeMixingCard,
+  BeautyPerfumeStorageCard,
   BeautyPerfumeOccasionCard,
-  BeautySkincareMistCard, BeautyHairCareCard, BeautyNailCareCard,
-  BeautyLipsCareCard, BeautyJewelryCard,
+  BeautySkincareMistCard,
+  BeautyHairCareCard,
+  BeautyNailCareCard,
+  BeautyLipsCareCard,
+  BeautyJewelryCard,
 } from '@galaxy/ui';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
+import { useLocale } from '@/components/LocaleProvider';
 
 export default function PerfumeGuidePage(): JSX.Element {
+  const { t } = useLocale();
   return (
-    <DashboardLayout role="CUSTOMER">
+    <DashboardLayout userRole="CUSTOMER">
       <PageContainer width="wide">
-        <PageTitle title="🌸 دليل العطور" subtitle="كل ما تحتاجينه عن عالم العطور الشرقية والغربية" />
+        <PageTitle title={t('perfumeGuide.title')} subtitle={t('perfumeGuide.subtitle')} />
 
         <div className="grid gap-6 lg:grid-cols-3">
           <div className="lg:col-span-2 space-y-6">

@@ -13,6 +13,7 @@
   "scripts": {
     "build": "tsc",
     "clean": "rm -rf .turbo dist",
+    "postinstall": "prisma generate",
     "db:generate": "prisma generate",
     "db:push": "prisma db push",
     "db:migrate:dev": "prisma migrate dev",
@@ -21,7 +22,8 @@
     "db:seed": "tsx prisma/seed.ts",
     "db:seed:enrich": "tsx prisma/seed-enrich.ts",
     "db:studio": "prisma studio",
-    "type-check": "tsc --noEmit"
+    "type-check": "tsc --noEmit",
+    "lint": "eslint . --ext .ts --max-warnings 20"
   },
   "dependencies": {
     "@prisma/client": "^5.15.0"

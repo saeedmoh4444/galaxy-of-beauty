@@ -1,47 +1,90 @@
 'use client';
 
-import { api } from '@/lib/trpc';
 import {
-  PageContainer, PageTitle,
-  BeautyTonerCard, BeautySerumCard, BeautyMoisturizerCard,
-  BeautyExfoliationCard, BeautyMaskCard, BeautySunscreenCard,
-  BeautyNightRoutineCard, BeautyMorningRoutineCard, BeautyDoubleCleansingCard,
-  BeautyEyeCreamCard, BeautyFaceOilCard, BeautySpotTreatmentCard,
-  BeautyIceRollerCard, BeautyGuaShaCard, BeautyJadeRollerCard,
-  BeautyAntiAgingCard, BeautyPregnancySkincareCard, BeautyMenopauseSkincareCard,
-  BeautyAcneGuideCard, BeautyHyperpigmentationCard, BeautyRosaceaCard,
-  BeautySkinBarrierCard, BeautySkinCycleCard, BeautySkinFastingCard,
-  BeautySelfMassageCard, BeautyRoutineTimelineCard,
-  BeautySkincareMistCard, BeautySkincareOilCard, BeautySkincareRetinolCard,
-  BeautySkincareAcidCard, BeautySkincarePeptideCard,
-  BeautySkincareAzelaicCard, BeautySkincareCeramideCard, BeautySkincareHyaluronicCard,
-  BeautySkincareNiacinamideCard, BeautySkincareVitaminCCard,
+  PageContainer,
+  PageTitle,
+  BeautyTonerCard,
+  BeautySerumCard,
+  BeautyMoisturizerCard,
+  BeautyExfoliationCard,
+  BeautyMaskCard,
+  BeautySunscreenCard,
+  BeautyNightRoutineCard,
+  BeautyMorningRoutineCard,
+  BeautyDoubleCleansingCard,
+  BeautyEyeCreamCard,
+  BeautyFaceOilCard,
+  BeautySpotTreatmentCard,
+  BeautyIceRollerCard,
+  BeautyGuaShaCard,
+  BeautyJadeRollerCard,
+  BeautyAntiAgingCard,
+  BeautyPregnancySkincareCard,
+  BeautyMenopauseSkincareCard,
+  BeautyAcneGuideCard,
+  BeautyHyperpigmentationCard,
+  BeautyRosaceaCard,
+  BeautySkinBarrierCard,
+  BeautySkinCycleCard,
+  BeautySkinFastingCard,
+  BeautySelfMassageCard,
+  BeautyRoutineTimelineCard,
+  BeautySkincareMistCard,
+  BeautySkincareOilCard,
+  BeautySkincareRetinolCard,
+  BeautySkincareAcidCard,
+  BeautySkincarePeptideCard,
+  BeautySkincareAzelaicCard,
+  BeautySkincareCeramideCard,
+  BeautySkincareHyaluronicCard,
+  BeautySkincareNiacinamideCard,
+  BeautySkincareVitaminCCard,
   BeautySkinQuizCard,
-  BeautyGlassSkinCard, BeautySheetMaskCard, BeautyEssenceCard,
-  BeautySnailMucinCard, BeautyCentellaCard,
-  BeautyChemicalPeelCard, BeautyMicroneedlingCard, BeautyHydrofacialCard,
-  BeautyBakuchiolCard, BeautyIngredientMixingCard,
-  BeautyOxygenFacialCard, BeautyDiamondFacialCard, BeautyGoldFacialCard,
-  BeautyVampireFacialCard, BeautyCaviarFacialCard,
-  BeautyDarkCirclesCard, BeautyEyeBagsCard, BeautyCrowsFeetCard,
-  BeautyEyeMassageCard, BeautyEyeSerumCard,
-  BeautyAcneScarsCard, BeautyPieScarsCard, BeautyPoreRefiningCard,
-  BeautyPostAcneMarksCard, BeautyScarTreatmentCard,
+  BeautyGlassSkinCard,
+  BeautySheetMaskCard,
+  BeautyEssenceCard,
+  BeautySnailMucinCard,
+  BeautyCentellaCard,
+  BeautyChemicalPeelCard,
+  BeautyMicroneedlingCard,
+  BeautyHydrofacialCard,
+  BeautyBakuchiolCard,
+  BeautyIngredientMixingCard,
+  BeautyOxygenFacialCard,
+  BeautyDiamondFacialCard,
+  BeautyGoldFacialCard,
+  BeautyVampireFacialCard,
+  BeautyCaviarFacialCard,
+  BeautyDarkCirclesCard,
+  BeautyEyeBagsCard,
+  BeautyCrowsFeetCard,
+  BeautyEyeMassageCard,
+  BeautyEyeSerumCard,
+  BeautyAcneScarsCard,
+  BeautyPieScarsCard,
+  BeautyPoreRefiningCard,
+  BeautyPostAcneMarksCard,
+  BeautyScarTreatmentCard,
   BeautyMaskneCard,
-  BeautyKoreanRoutineCard, BeautyJapaneseRoutineCard,
-  BeautyPerfumeCard, BeautyHairCareCard, BeautyNailCareCard,
-  BeautyLipsCareCard, BeautyHandsCareCard, BeautyFootCareCard,
+  BeautyKoreanRoutineCard,
+  BeautyJapaneseRoutineCard,
+  BeautyPerfumeCard,
+  BeautyHairCareCard,
+  BeautyNailCareCard,
+  BeautyLipsCareCard,
+  BeautyHandsCareCard,
+  BeautyFootCareCard,
   BeautyTeethCareCard,
 } from '@galaxy/ui';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
+import { useLocale } from '@/components/LocaleProvider';
 
 export default function SkincareGuidePage(): JSX.Element {
-  const skinAnalysis = (api as any).skinAnalysis?.latest?.useQuery?.() as any;
-
+  const { t } = useLocale();
   return (
-    <DashboardLayout role="CUSTOMER">
+    <DashboardLayout userRole="CUSTOMER">
       <PageContainer width="wide">
-        <PageTitle title="🧴 دليل العناية بالبشرة" subtitle="كل ما تحتاجينه لبشرة صحية ومشرقة" />
+        <PageTitle title={t('skincareGuide.title')} subtitle={t('skincareGuide.subtitle')} />
 
         <div className="grid gap-6 lg:grid-cols-3">
           <div className="lg:col-span-2 space-y-6">
@@ -52,9 +95,21 @@ export default function SkincareGuidePage(): JSX.Element {
             </div>
             <BeautyDoubleCleansingCard />
             <BeautyRoutineTimelineCard
-              morning={['غسول', 'تونر', 'سيروم فيتامين سي', 'مرطب', 'واقي شمس']}
-              evening={['مزيل مكياج', 'غسول', 'تونر', 'سيروم ليلي', 'مرطب']}
-              skinType="مختلطة"
+              morning={[
+                t('skincareGuide.wash'),
+                t('skincareGuide.toner'),
+                t('skincareGuide.vitCSerum'),
+                t('skincareGuide.moisturizer'),
+                t('skincareGuide.sunscreen'),
+              ]}
+              evening={[
+                t('skincareGuide.makeupRemover'),
+                t('skincareGuide.wash'),
+                t('skincareGuide.toner'),
+                t('skincareGuide.nightSerum'),
+                t('skincareGuide.moisturizer'),
+              ]}
+              skinType={t('skincareGuide.mixedSkin')}
             />
 
             {/* Product guides */}

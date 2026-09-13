@@ -30,25 +30,42 @@ interface ServiceData {
 interface ServiceCardProps {
   service: ServiceData;
   onBook: (service: ServiceData) => void;
+  durationSuffix?: string;
+  bookText?: string;
   className?: string;
 }
 
-export function ServiceCard({ service, onBook, className = '' }: ServiceCardProps): JSX.Element {
+export function ServiceCard({
+  service,
+  onBook,
+  durationSuffix = 'دقيقة',
+  bookText = 'احجزي الآن',
+  className = '',
+}: ServiceCardProps): JSX.Element {
   return (
     <Card padding="md" hover className={`group ${className}`}>
       {/* Image / Emoji */}
       <div className="mb-3 flex aspect-square items-center justify-center rounded-xl bg-gradient-to-br from-brand-50 to-brand-100 text-5xl dark:from-brand-950 dark:to-brand-900">
         {service.imageUrl ? (
-          <img src={service.imageUrl} alt={service.title} className="h-full w-full rounded-xl object-cover" loading="lazy" />
+          <img
+            src={service.imageUrl}
+            alt={service.title}
+            className="h-full w-full rounded-xl object-cover"
+            loading="lazy"
+          />
         ) : (
-          <span>{service.emoji ?? '💄'}</span>
+          <span>{service.emoji ?? ''}</span>
         )}
       </div>
 
       {/* Title + Description */}
-      <h3 className="text-sm font-bold text-text-primary dark:text-gray-100 line-clamp-1">{service.title}</h3>
+      <h3 className="text-sm font-bold text-text-primary dark:text-gray-100 line-clamp-1">
+        {service.title}
+      </h3>
       {service.description ? (
-        <p className="mt-1 text-xs text-text-secondary dark:text-gray-400 line-clamp-2">{service.description}</p>
+        <p className="mt-1 text-xs text-text-secondary dark:text-text-tertiary line-clamp-2">
+          {service.description}
+        </p>
       ) : null}
 
       {/* Rating */}
@@ -60,7 +77,9 @@ export function ServiceCard({ service, onBook, className = '' }: ServiceCardProp
 
       {/* Duration */}
       {service.durationMin ? (
-        <span className="mt-1 text-xs text-text-tertiary">{service.durationMin} دقيقة</span>
+        <span className="mt-1 text-xs text-text-tertiary">
+          {service.durationMin} {durationSuffix}
+        </span>
       ) : null}
 
       {/* Popularity + Price */}
@@ -78,7 +97,7 @@ export function ServiceCard({ service, onBook, className = '' }: ServiceCardProp
         onClick={() => onBook(service)}
         className="mt-3 w-full rounded-lg bg-brand-600 py-2 text-sm font-semibold text-white transition-all hover:bg-brand-700 active:scale-95"
       >
-        احجزي الآن
+        {bookText}
       </button>
     </Card>
   );

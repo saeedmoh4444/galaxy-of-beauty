@@ -1,61 +1,61 @@
-import { useHaptics } from '@/hooks/useHaptics';
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
-import { useState, useCallback } from 'react';
+import { useState } from 'react';
 import { DEFAULT_PAGE_SIZE } from '@galaxy/ui';
+import type { TranslationKey } from '@galaxy/shared';
 import { ScreenState } from '@/components/ScreenState';
 import { trpc } from '@/lib/trpc-react';
+import { useAuthState } from '@/hooks/useAuthState';
+import { useLocale } from '@/components/LocaleProvider';
+import { useTheme, themeColors } from '@/components/ThemeProvider';
 
-const COLORS = {
-  brand: '#7c3aed',
-  white: '#ffffff',
-  gray50: '#faf5ff',
-  gray400: '#6b7280',
-  gray900: '#111827',
-  success: '#10b981',
-  danger: '#ef4444',
-  info: '#3b82f6',
-};
-
-const STATUS_LABELS: Record<string, string> = {
-  REQUESTED: 'قيد الانتظار',
-  ACCEPTED: 'مقبول',
-  COMPLETED: 'مكتمل',
-  CANCELLED: 'ملغي',
-  REJECTED: 'مرفوض',
-  IN_PROGRESS: 'جاري',
-  NO_SHOW: 'لم تحضر',
-};
-
-const STATUS_COLORS: Record<string, string> = {
-  COMPLETED: COLORS.success,
-  CANCELLED: COLORS.danger,
-  REJECTED: COLORS.danger,
-  DEFAULT: COLORS.info,
+const STATUS_LABELS: Record<string, TranslationKey> = {
+  REQUESTED: 'status.pending',
+  ACCEPTED: 'booking.status.ACCEPTED',
+  COMPLETED: 'booking.status.COMPLETED',
+  CANCELLED: 'booking.status.CANCELLED',
+  REJECTED: 'booking.status.REJECTED',
+  IN_PROGRESS: 'groupBookings.status.inProgress',
+  NO_SHOW: 'booking.status.NO_SHOW',
 };
 
 export default function BookingsScreen(): JSX.Element {
   const [page] = useState(1);
-  const bookings = trpc.bookings.list.useQuery({ page, limit: DEFAULT_PAGE_SIZE });
+  const { t, locale } = useLocale();
+  const { isDark } = useTheme();
+  const c = isDark ? themeColors.dark : themeColors.light;
+  const styles = makeStyles(c);
+  const statusColors: Record<string, string> = {
+    COMPLETED: c.success,
+    CANCELLED: c.danger,
+    REJECTED: c.danger,
+    // "Info" statuses (pending/accepted/in-progress) have no palette key — keep blue
+    DEFAULT: '#3b82f6',
+  };
+  // Guests see the empty/CTA state instead of firing 401s.
+  const isAuthed = useAuthState();
+  const bookings = trpc.bookings.list.useQuery(
+    { page, limit: DEFAULT_PAGE_SIZE },
+    { enabled: isAuthed },
+  );
   const data = bookings.data?.bookings as unknown[] | undefined;
-  const loyalty = (trpc as any).loyalty?.getAccount?.useQuery?.();
-  const safety = (trpc as any).safety?.getCheckInStatus?.useQuery?.({ bookingId: 0 }) as any;
+  const loyalty = trpc.loyalty.myAccount.useQuery(undefined, { enabled: isAuthed });
 
   return (
     <ScreenState
       isLoading={bookings.isLoading}
       isError={bookings.isError}
       isEmpty={!data || (data as unknown[]).length === 0}
-      errorMessage="فشل تحميل الحجوزات"
-      emptyTitle="لا توجد حجوزات"
-      emptyDescription="ابدئي رحلتكِ مع أول حجز"
-      emptyAction={{ label: 'احجزي الآن', onPress: () => {} }}
+      errorMessage={t('booking.load-error')}
+      emptyTitle={t('booking.no-bookings')}
+      emptyDescription={t('dashboard.start-journey')}
+      emptyAction={{ label: t('button.bookNow'), onPress: () => {} }}
       onRetry={() => bookings.refetch()}
     >
       <View style={styles.header}>
-        <Text style={styles.title}>📅 حجوزاتي</Text>
+        <Text style={styles.title}>{t('mobile.core.bookingsTitle')}</Text>
         {loyalty?.data && (
           <View style={styles.loyaltyBadge}>
-            <Text style={styles.loyaltyText}>⭐ {loyalty.data.points ?? 0}</Text>
+            <Text style={styles.loyaltyText}> {loyalty.data.points ?? 0}</Text>
           </View>
         )}
       </View>
@@ -65,23 +65,28 @@ export default function BookingsScreen(): JSX.Element {
             <View style={styles.left}>
               <Text style={styles.code}>{b.bookingCode as string}</Text>
               <Text style={styles.date}>
-                {new Date(b.startAt as string).toLocaleDateString('ar-SA', {
-                  weekday: 'long',
-                  year: 'numeric',
-                  month: 'long',
-                  day: 'numeric',
-                })}
+                {new Date(b.startAt as string).toLocaleDateString(
+                  locale === 'en' ? 'en-GB' : 'ar-SA',
+                  {
+                    weekday: 'long',
+                    year: 'numeric',
+                    month: 'long',
+                    day: 'numeric',
+                  },
+                )}
               </Text>
             </View>
             <Text
               style={[
                 styles.status,
                 {
-                  color: STATUS_COLORS[b.status as string] ?? STATUS_COLORS.DEFAULT,
+                  color: statusColors[b.status as string] ?? statusColors.DEFAULT,
                 },
               ]}
             >
-              {STATUS_LABELS[b.status as string] ?? (b.status as string)}
+              {STATUS_LABELS[b.status as string]
+                ? t(STATUS_LABELS[b.status as string])
+                : (b.status as string)}
             </Text>
           </View>
         </TouchableOpacity>
@@ -90,24 +95,32 @@ export default function BookingsScreen(): JSX.Element {
   );
 }
 
-const styles = StyleSheet.create({
-  header: { marginBottom: 12 },
-  title: { fontSize: 24, fontWeight: '800', color: COLORS.brand, textAlign: 'center' },
-  card: {
-    backgroundColor: COLORS.white,
-    borderRadius: 14,
-    padding: 16,
-    marginBottom: 8,
-    shadowColor: '#000',
-    shadowOpacity: 0.05,
-    shadowRadius: 4,
-    elevation: 2,
-  },
-  row: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' },
-  left: { flex: 1 },
-  code: { fontSize: 14, fontWeight: '700', color: COLORS.gray900 },
-  date: { fontSize: 12, color: COLORS.gray400, marginTop: 4 },
-  status: { fontSize: 13, fontWeight: '600' },
-  loyaltyBadge: { backgroundColor: '#fef3c7', borderRadius: 16, paddingHorizontal: 12, paddingVertical: 4, alignSelf: 'flex-start', marginTop: 4 },
-  loyaltyText: { fontSize: 13, fontWeight: '700', color: '#d97706' },
-});
+const makeStyles = (c: typeof themeColors.light | typeof themeColors.dark) =>
+  StyleSheet.create({
+    header: { marginBottom: 12 },
+    title: { fontSize: 24, fontWeight: '800', color: c.brand, textAlign: 'center' },
+    card: {
+      backgroundColor: c.surface,
+      borderRadius: 14,
+      padding: 16,
+      marginBottom: 8,
+      shadowColor: '#000',
+      shadowOpacity: 0.05,
+      shadowRadius: 4,
+      elevation: 2,
+    },
+    row: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' },
+    left: { flex: 1 },
+    code: { fontSize: 14, fontWeight: '700', color: c.text },
+    date: { fontSize: 12, color: c.textSecondary, marginTop: 4 },
+    status: { fontSize: 13, fontWeight: '600' },
+    loyaltyBadge: {
+      backgroundColor: '#fef3c7',
+      borderRadius: 16,
+      paddingHorizontal: 12,
+      paddingVertical: 4,
+      alignSelf: 'flex-start',
+      marginTop: 4,
+    },
+    loyaltyText: { fontSize: 13, fontWeight: '700', color: '#d97706' },
+  });

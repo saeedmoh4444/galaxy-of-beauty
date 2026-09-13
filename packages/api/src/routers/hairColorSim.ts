@@ -23,10 +23,21 @@ export const hairColorSimRouter = router({
     .input(z.object({ colorId: z.string(), imageUrl: z.string().optional() }))
     .mutation(async ({ ctx, input }) => {
       const color = HAIR_COLORS.find((c) => c.id === input.colorId);
-      await prisma.hairColorSim.create({ data: { userId: ctx.user.id, colorId: input.colorId, colorName: color?.nameAr || '', colorHex: color?.hex || '', imageUrl: input.imageUrl } });
+      await prisma.hairColorSim.create({
+        data: {
+          userId: ctx.user.id,
+          colorId: input.colorId,
+          colorName: color?.nameAr || '',
+          colorHex: color?.hex || '',
+          imageUrl: input.imageUrl,
+        },
+      });
       return { saved: true, color: color?.nameAr, colorHex: color?.hex };
     }),
   mySims: customerProcedure.query(({ ctx }) =>
-    prisma.hairColorSim.findMany({ where: { userId: ctx.user.id }, orderBy: { createdAt: 'desc' } })
+    prisma.hairColorSim.findMany({
+      where: { userId: ctx.user.id },
+      orderBy: { createdAt: 'desc' },
+    }),
   ),
 });

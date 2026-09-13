@@ -4,9 +4,23 @@ import { customerProcedure, publicProcedure, router } from '../trpc';
 
 export const dvSupportRouter = router({
   requestService: customerProcedure
-    .input(z.object({ serviceType: z.string().min(1).max(100), partnerShelter: z.string().optional(), message: z.string().max(500).optional() }))
+    .input(
+      z.object({
+        serviceType: z.string().min(1).max(100),
+        partnerShelter: z.string().optional(),
+        message: z.string().max(500).optional(),
+      }),
+    )
     .mutation(async ({ ctx, input }) => {
-      return prisma.dvSupportRequest.create({ data: { userId: ctx.user.id, serviceType: input.serviceType, partnerShelter: input.partnerShelter ?? null, message: input.message ?? null, confidential: true } });
+      return prisma.dvSupportRequest.create({
+        data: {
+          userId: ctx.user.id,
+          serviceType: input.serviceType,
+          partnerShelter: input.partnerShelter ?? null,
+          message: input.message ?? null,
+          confidential: true,
+        },
+      });
     }),
 
   stats: publicProcedure.query(async () => {
@@ -16,5 +30,11 @@ export const dvSupportRouter = router({
 
   myRequests: customerProcedure
     .input(z.object({ limit: z.number().int().min(1).max(20).default(5) }))
-    .query(async ({ ctx, input }) => prisma.dvSupportRequest.findMany({ where: { userId: ctx.user.id }, take: input.limit, orderBy: { createdAt: 'desc' } })),
+    .query(async ({ ctx, input }) =>
+      prisma.dvSupportRequest.findMany({
+        where: { userId: ctx.user.id },
+        take: input.limit,
+        orderBy: { createdAt: 'desc' },
+      }),
+    ),
 });

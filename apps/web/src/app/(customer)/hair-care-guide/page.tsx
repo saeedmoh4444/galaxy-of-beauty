@@ -1,26 +1,47 @@
 'use client';
 
 import {
-  PageContainer, PageTitle,
-  BeautyHairMaskCard, BeautyHairOilCard, BeautyHairWashCard,
-  BeautyHairBrushCard, BeautyHairHeatCard, BeautyHairColorCard,
-  BeautyHairCurlCard, BeautyHairStraightCard, BeautyHairWavyCard,
-  BeautyHairCoilyCard, BeautyHairDandruffCard, BeautyHairLossCard,
-  BeautyHairGrowthCard, BeautyHairTrimCard, BeautyHairScalpCard,
-  BeautyHairBrideCard, BeautyHairSummerCard, BeautyHairWinterCard,
+  PageContainer,
+  PageTitle,
+  BeautyHairMaskCard,
+  BeautyHairOilCard,
+  BeautyHairWashCard,
+  BeautyHairBrushCard,
+  BeautyHairHeatCard,
+  BeautyHairColorCard,
+  BeautyHairCurlCard,
+  BeautyHairStraightCard,
+  BeautyHairWavyCard,
+  BeautyHairCoilyCard,
+  BeautyHairDandruffCard,
+  BeautyHairLossCard,
+  BeautyHairGrowthCard,
+  BeautyHairTrimCard,
+  BeautyHairScalpCard,
+  BeautyHairBrideCard,
+  BeautyHairSummerCard,
+  BeautyHairWinterCard,
   BeautyHairHijabCard,
-  BeautyBalayageCard, BeautyHairGlossCard, BeautyHairBondRepairCard,
-  BeautyHeatlessCurlsCard, BeautyHairThinningCard,
-  BeautyPerfumeCard, BeautySkincareMistCard, BeautyNailCareCard,
-  BeautyLipsCareCard, BeautyHandsCareCard,
+  BeautyBalayageCard,
+  BeautyHairGlossCard,
+  BeautyHairBondRepairCard,
+  BeautyHeatlessCurlsCard,
+  BeautyHairThinningCard,
+  BeautyPerfumeCard,
+  BeautySkincareMistCard,
+  BeautyNailCareCard,
+  BeautyLipsCareCard,
+  BeautyHandsCareCard,
 } from '@galaxy/ui';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
+import { useLocale } from '@/components/LocaleProvider';
 
 export default function HairCareGuidePage(): JSX.Element {
+  const { t } = useLocale();
   return (
-    <DashboardLayout role="CUSTOMER">
+    <DashboardLayout userRole="CUSTOMER">
       <PageContainer width="wide">
-        <PageTitle title="💇‍♀️ دليل العناية بالشعر" subtitle="كل ما تحتاجينه لشعر صحي وجميل" />
+        <PageTitle title={'' + t('hairCareGuide.title')} subtitle={t('hairCareGuide.subtitle')} />
 
         <div className="grid gap-6 lg:grid-cols-3">
           <div className="lg:col-span-2 space-y-6">

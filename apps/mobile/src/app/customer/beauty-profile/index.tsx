@@ -1,32 +1,64 @@
 import { View, Text, ScrollView, StyleSheet, RefreshControl } from 'react-native';
-import { trpc } from '@/lib/api';
-import { useState, useEffect, useCallback } from 'react';
 import { SkeletonList } from '@/components/SkeletonCard';
+import { useLocale } from '@/components/LocaleProvider';
+import { useAuthState } from '@/hooks/useAuthState';
+import { trpc } from '@/lib/trpc-react';
+
+interface BeautyProfileData {
+  skinType?: string;
+  hairType?: string;
+  measurements?: { heightCm?: number; weightKg?: number; waistCm?: number } | null;
+  fitnessGoals?: string[];
+}
 
 export default function BeautyProfileScreen(): JSX.Element {
-  const [data, setData] = useState<any>(null);
-  const [loading, setLoading] = useState(true);
-  const [refreshing, setRefreshing] = useState(false);
-  const fetch = useCallback((isRefresh = false) => {
-    if (isRefresh) setRefreshing(true); else setLoading(true);
-    ((trpc as any).beautyProfile.get.query() as any).then((d: any) => { setData(d); setLoading(false); setRefreshing(false); }).catch(() => { setLoading(false); setRefreshing(false); });
-  }, []);
-  useEffect(() => { fetch(); }, [fetch]);
-  if (loading) return <SkeletonList count={3} />;
+  const { t } = useLocale();
+  const isAuthed = useAuthState();
+  const q = trpc.beautyProfile.get.useQuery(undefined, { enabled: isAuthed });
+  if (q.isLoading) return <SkeletonList count={3} />;
+  const data = q.data as unknown as BeautyProfileData | null;
+  const m = data?.measurements ?? {};
   return (
-    <ScrollView style={styles.c} contentContainerStyle={styles.i} refreshControl={<RefreshControl refreshing={refreshing} onRefresh={() => fetch(true)} colors={['#ec4899']} />}>
-      <Text style={styles.t}>💄 ملف الجمال</Text>
+    <ScrollView
+      style={styles.c}
+      contentContainerStyle={styles.i}
+      refreshControl={
+        <RefreshControl
+          refreshing={q.isRefetching}
+          onRefresh={() => q.refetch()}
+          colors={['#ec4899']}
+        />
+      }
+    >
+      <Text style={styles.t}>{t('beautyProfile.title')}</Text>
       {data && (
         <View style={styles.card}>
-          <Text style={styles.label}>نوع البشرة: {data.skinType as string}</Text>
-          <Text style={styles.label}>نوع الشعر: {data.hairType as string}</Text>
+          <Text style={styles.label}>
+            {t('beautyProfile.skin-type', { type: String(data.skinType ?? '') })}
+          </Text>
+          <Text style={styles.label}>
+            {t('beautyProfile.hair-type', { type: String(data.hairType ?? '') })}
+          </Text>
+          {(m.heightCm || m.weightKg || m.waistCm) && (
+            <Text style={styles.label}>
+              {t('profile.measurements.title')}: {m.heightCm ? `${m.heightCm}cm` : ''}{' '}
+              {m.weightKg ? `${m.weightKg}kg` : ''} {m.waistCm ? `${m.waistCm}cm` : ''}
+            </Text>
+          )}
+          {(data.fitnessGoals ?? []).length > 0 && (
+            <Text style={styles.label}>
+              {t('profile.measurements.goals')}: {(data.fitnessGoals ?? []).join('، ')}
+            </Text>
+          )}
         </View>
       )}
     </ScrollView>
   );
 }
 const styles = StyleSheet.create({
-  c: { flex: 1, backgroundColor: '#fdf2f8' }, i: { padding: 16, paddingTop: 30, paddingBottom: 40 },
+  c: { flex: 1, backgroundColor: '#fdf2f8' },
+  i: { padding: 16, paddingTop: 30, paddingBottom: 40 },
   t: { fontSize: 24, fontWeight: '800', color: '#db2777', textAlign: 'center', marginBottom: 20 },
-  card: { backgroundColor: '#fff', borderRadius: 16, padding: 20 }, label: { fontSize: 15, color: '#374151', paddingVertical: 6 },
+  card: { backgroundColor: '#fff', borderRadius: 16, padding: 20 },
+  label: { fontSize: 15, color: '#374151', paddingVertical: 6 },
 });

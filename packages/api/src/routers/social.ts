@@ -45,8 +45,11 @@ export const socialRouter = router({
     });
 
     return techs.map((t) => ({
-      id: t.userId, name: t.user.name, avatarUrl: t.user.avatarUrl,
-      city: t.city, ratingAvg: Number(t.ratingAvg),
+      id: t.userId,
+      name: t.user.name,
+      avatarUrl: t.user.avatarUrl,
+      city: t.city,
+      ratingAvg: Number(t.ratingAvg),
     }));
   }),
 
@@ -69,7 +72,16 @@ export const socialRouter = router({
     }),
 
   createTip: adminProcedure
-    .input(z.object({ titleAr: z.string(), titleEn: z.string(), bodyAr: z.string(), bodyEn: z.string(), category: z.string(), imageUrl: z.string().optional() }))
+    .input(
+      z.object({
+        titleAr: z.string(),
+        titleEn: z.string(),
+        bodyAr: z.string(),
+        bodyEn: z.string(),
+        category: z.string(),
+        imageUrl: z.string().optional(),
+      }),
+    )
     .mutation(async ({ ctx, input }) => {
       const id = `tip:${Date.now()}`;
       await prisma.platformConfig.create({
@@ -101,7 +113,8 @@ export const socialRouter = router({
           where: { isPublished: true },
           include: { technician: { select: { city: true, user: { select: { name: true } } } } },
           orderBy: { createdAt: 'desc' },
-          skip, take: input.limit,
+          skip,
+          take: input.limit,
         }),
         prisma.galleryImage.count({ where: { isPublished: true } }),
       ]);

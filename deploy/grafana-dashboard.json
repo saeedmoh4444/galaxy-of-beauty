@@ -7,16 +7,17 @@
       {
         "title": "Request Rate",
         "type": "graph",
-        "targets": [
-          { "expr": "rate(http_requests_total[1m])", "legendFormat": "{{status}}" }
-        ],
+        "targets": [{ "expr": "rate(http_requests_total[1m])", "legendFormat": "{{status}}" }],
         "gridPos": { "x": 0, "y": 0, "w": 12, "h": 8 }
       },
       {
         "title": "Error Rate",
         "type": "graph",
         "targets": [
-          { "expr": "rate(http_requests_total{status=\"5xx\"}[5m]) / rate(http_requests_total[5m])", "legendFormat": "error rate" }
+          {
+            "expr": "rate(http_requests_total{status=\"5xx\"}[5m]) / rate(http_requests_total[5m])",
+            "legendFormat": "error rate"
+          }
         ],
         "thresholds": [{ "value": 0.05, "color": "red" }],
         "gridPos": { "x": 12, "y": 0, "w": 12, "h": 8 }
@@ -25,7 +26,10 @@
         "title": "Response Time (p95)",
         "type": "graph",
         "targets": [
-          { "expr": "histogram_quantile(0.95, rate(http_request_duration_seconds_bucket[5m]))", "legendFormat": "p95" }
+          {
+            "expr": "histogram_quantile(0.95, rate(http_request_duration_seconds_bucket[5m]))",
+            "legendFormat": "p95"
+          }
         ],
         "gridPos": { "x": 0, "y": 8, "w": 8, "h": 8 }
       },
@@ -50,9 +54,7 @@
       {
         "title": "Redis Memory",
         "type": "graph",
-        "targets": [
-          { "expr": "redis_memory_used_bytes / 1024 / 1024", "legendFormat": "used MB" }
-        ],
+        "targets": [{ "expr": "redis_memory_used_bytes / 1024 / 1024", "legendFormat": "used MB" }],
         "gridPos": { "x": 0, "y": 16, "w": 8, "h": 8 }
       },
       {

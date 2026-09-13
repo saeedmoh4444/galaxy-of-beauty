@@ -13,13 +13,32 @@ export const ruralOutreachRouter = router({
   }),
 
   list: adminProcedure
-    .input(z.object({ status: z.string().optional(), limit: z.number().int().min(1).max(200).default(50) }))
+    .input(
+      z.object({
+        status: z.string().optional(),
+        limit: z.number().int().min(1).max(200).default(50),
+      }),
+    )
     .query(async ({ input }) => {
       const where = input.status ? { status: input.status } : {};
-      return prisma.ruralOutreach.findMany({ where, take: input.limit, orderBy: { createdAt: 'desc' } });
+      return prisma.ruralOutreach.findMany({
+        where,
+        take: input.limit,
+        orderBy: { createdAt: 'desc' },
+      });
     }),
 
   create: adminProcedure
-    .input(z.object({ name: z.string().min(2).max(100), village: z.string().min(1).max(100), status: z.string().default('TRAINED') }))
-    .mutation(async ({ input }) => prisma.ruralOutreach.create({ data: { name: input.name, village: input.village, status: input.status } })),
+    .input(
+      z.object({
+        name: z.string().min(2).max(100),
+        village: z.string().min(1).max(100),
+        status: z.string().default('TRAINED'),
+      }),
+    )
+    .mutation(async ({ input }) =>
+      prisma.ruralOutreach.create({
+        data: { name: input.name, village: input.village, status: input.status },
+      }),
+    ),
 });

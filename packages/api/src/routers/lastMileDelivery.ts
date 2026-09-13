@@ -3,7 +3,7 @@ import { customerProcedure, router } from '../trpc';
 
 const PRODUCTS = [
   { id: 1, nameAr: 'واقي شمس SPF50', emoji: '☀️', price: 120, deliveryTime: 'خلال ساعتين' },
-  { id: 2, nameAr: 'سيروم فيتامين C', emoji: '✨', price: 145, deliveryTime: 'خلال ساعة' },
+  { id: 2, nameAr: 'سيروم فيتامين C', emoji: '🍊', price: 145, deliveryTime: 'خلال ساعة' },
   { id: 3, nameAr: 'مرطب يومي', emoji: '🧴', price: 89, deliveryTime: 'خلال ساعتين' },
   { id: 4, nameAr: 'زيت شعر طبيعي', emoji: '🫒', price: 95, deliveryTime: 'خلال ساعة' },
 ];
@@ -24,7 +24,13 @@ export const lastMileDeliveryRouter = router({
       };
     }),
   order: customerProcedure
-    .input(z.object({ productId: z.number(), address: z.string(), paymentMethod: z.enum(['wallet', 'cod']) }))
+    .input(
+      z.object({
+        productId: z.number(),
+        address: z.string(),
+        paymentMethod: z.enum(['wallet', 'cod']),
+      }),
+    )
     .mutation(async ({ input }) => {
       const product = PRODUCTS.find((p) => p.id === input.productId);
       return {

@@ -60,16 +60,33 @@ export async function GET(request: NextRequest): Promise<NextResponse> {
 
   // CSV format
   const headers = [
-    'ID', 'Booking Code', 'Status', 'Customer ID', 'Technician ID',
-    'Service ID', 'Total Amount', 'Platform Fee', 'Start At', 'End At',
-    'Created At', 'Notes',
+    'ID',
+    'Booking Code',
+    'Status',
+    'Customer ID',
+    'Technician ID',
+    'Service ID',
+    'Total Amount',
+    'Platform Fee',
+    'Start At',
+    'End At',
+    'Created At',
+    'Notes',
   ];
 
   const rows = bookings.map((b) => [
-    b.id, b.bookingCode, b.status, b.customerId, b.technicianId,
-    b.serviceId, Number(b.totalAmount), Number(b.platformFee),
-    b.startAt?.toISOString(), b.endAt?.toISOString(),
-    b.createdAt.toISOString(), b.notes ?? '',
+    b.id,
+    b.bookingCode,
+    b.status,
+    b.customerId,
+    b.technicianId,
+    b.serviceId,
+    Number(b.totalAmount),
+    Number(b.platformFee),
+    b.startAt?.toISOString(),
+    b.endAt?.toISOString(),
+    b.createdAt.toISOString(),
+    b.notes ?? '',
   ]);
 
   const csv = [headers.join(','), ...rows.map((r) => r.map(escapeCsv).join(','))].join('\n');

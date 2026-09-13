@@ -14,9 +14,30 @@
     "db:migrate:dev": "turbo run db:migrate:dev",
     "db:migrate:deploy": "turbo run db:migrate:deploy",
     "db:migrate:status": "turbo run db:migrate:status",
-    "db:seed": "turbo run db:seed"
+    "db:seed": "turbo run db:seed",
+    "db:validate": "turbo run db:validate",
+    "test": "turbo run test",
+    "test:unit": "turbo run test:unit",
+    "test:integration": "turbo run test:integration",
+    "test:e2e": "turbo run test:e2e",
+    "audit:prod": "pnpm audit --prod",
+    "verify": "pnpm format:check && pnpm lint && pnpm type-check && pnpm db:validate && pnpm test:unit && pnpm build",
+    "prepare": "husky"
+  },
+  "lint-staged": {
+    "*.{ts,tsx,js,jsx,mjs,cjs}": "prettier --write",
+    "*.{json,md}": "prettier --write"
   },
   "devDependencies": {
+    "@typescript-eslint/eslint-plugin": "^8.65.0",
+    "@typescript-eslint/parser": "^8.65.0",
+    "eslint": "^8.57.1",
+    "eslint-config-prettier": "^10.1.8",
+    "eslint-plugin-jsx-a11y": "^6.10.2",
+    "eslint-plugin-react": "^7.37.5",
+    "eslint-plugin-react-hooks": "^7.1.1",
+    "husky": "^9.1.7",
+    "lint-staged": "^17.3.0",
     "prettier": "^3.3.0",
     "turbo": "^2.0.0",
     "typescript": "^5.5.0"
@@ -25,5 +46,14 @@
     "node": ">=20.0.0",
     "pnpm": ">=9.0.0"
   },
-  "packageManager": "pnpm@9.15.4"
+  "packageManager": "pnpm@9.15.4",
+  "pnpm": {
+    "overrides": {
+      "brace-expansion@<2": "1.1.18",
+      "postcss": ">=8.5.18",
+      "nanoid": ">=3.3.9",
+      "sharp": ">=0.35.0",
+      "socket.io-parser": ">=4.2.7"
+    }
+  }
 }

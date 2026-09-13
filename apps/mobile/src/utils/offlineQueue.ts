@@ -12,18 +12,27 @@
 // AsyncStorage from expo — try require to avoid type issues
 const AsyncStorage = (() => {
   try {
-    // eslint-disable-next-line @typescript-eslint/no-var-requires
+    // AsyncStorage is an optional dependency — require dynamically with in-memory fallback
+    // eslint-disable-next-line @typescript-eslint/no-require-imports
     return require('@react-native-async-storage/async-storage').default;
   } catch {
     // Fallback in-memory store if package not installed
     const store = new Map<string, string>();
     return {
       getItem: async (k: string) => store.get(k) ?? null,
-      setItem: async (k: string, v: string) => { store.set(k, v); },
-      removeItem: async (k: string) => { store.delete(k); },
+      setItem: async (k: string, v: string) => {
+        store.set(k, v);
+      },
+      removeItem: async (k: string) => {
+        store.delete(k);
+      },
     };
   }
-})() as { getItem(k: string): Promise<string | null>; setItem(k: string, v: string): Promise<void>; removeItem(k: string): Promise<void> };
+})() as {
+  getItem(k: string): Promise<string | null>;
+  setItem(k: string, v: string): Promise<void>;
+  removeItem(k: string): Promise<void>;
+};
 
 const QUEUE_KEY = 'gob_offline_queue';
 
@@ -33,6 +42,11 @@ interface QueuedAction {
   payload: Record<string, unknown>;
   createdAt: string;
   retries: number;
+}
+
+interface OfflineMutationClient {
+  create: { mutate(input: Record<string, unknown>): Promise<unknown> };
+  cancel: { mutate(input: Record<string, unknown>): Promise<unknown> };
 }
 
 let isOnline = true;
@@ -53,13 +67,12 @@ export function getOnlineStatus(): boolean {
 
 export function onSyncComplete(cb: () => void): () => void {
   listeners.push(cb);
-  return () => { listeners = listeners.filter((l) => l !== cb); };
+  return () => {
+    listeners = listeners.filter((l) => l !== cb);
+  };
 }
 
-export async function enqueueAction(
-  type: string,
-  payload: Record<string, unknown>,
-): Promise<void> {
+export async function enqueueAction(type: string, payload: Record<string, unknown>): Promise<void> {
   const queue = await getQueue();
   queue.push({
     id: `${Date.now()}_${Math.random().toString(36).slice(2, 9)}`,
@@ -106,12 +119,14 @@ export async function syncQueue(): Promise<void> {
         // Attempt to replay the action
         await replayAction(action);
         // Success — don't add to remaining
-      } catch (err: any) {
+      } catch (err: unknown) {
         // Failed — keep in queue if under max retries
         if (action.retries < 3) {
           remaining.push({ ...action, retries: action.retries + 1 });
         } else {
-          console.warn(`[OfflineQueue] Action ${action.id} failed after 3 retries: ${err.message}`);
+          console.warn(
+            `[OfflineQueue] Action ${action.id} failed after 3 retries: ${(err as Error).message}`,
+          );
         }
       }
     }
@@ -128,13 +143,14 @@ export async function syncQueue(): Promise<void> {
 async function replayAction(action: QueuedAction): Promise<void> {
   // Dynamic import to avoid circular dependency
   const { trpc } = await import('@/lib/trpc-react');
+  const bookings = trpc.bookings as unknown as OfflineMutationClient;
 
   switch (action.type) {
     case 'create_booking':
-      await (trpc as any).bookings.create.mutate(action.payload);
+      await bookings.create.mutate(action.payload);
       break;
     case 'cancel_booking':
-      await (trpc as any).bookings.cancel.mutate(action.payload);
+      await bookings.cancel.mutate(action.payload);
       break;
     default:
       console.warn(`[OfflineQueue] Unknown action type: ${action.type}`);

@@ -2,13 +2,14 @@ import { z } from 'zod';
 import { prisma } from '@galaxy/db';
 import { customerProcedure, publicProcedure, router } from '../trpc';
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-const db = prisma as any;
+const db = prisma;
 
 function formatCourse(c: any) {
   const titleJson = c.titleJson as Record<string, string> | undefined;
   const descJson = c.descJson as Record<string, string> | undefined;
-  const enrollmentCount = Array.isArray(c.enrollments) ? c.enrollments.length : (c._count?.enrollments ?? 0);
+  const enrollmentCount = Array.isArray(c.enrollments)
+    ? c.enrollments.length
+    : (c._count?.enrollments ?? 0);
   return {
     id: c.id,
     titleAr: titleJson?.ar ?? '',
@@ -36,16 +37,14 @@ export const beautyCoursesRouter = router({
     return courses.map(formatCourse);
   }),
 
-  get: publicProcedure
-    .input(z.object({ id: z.number() }))
-    .query(async ({ input }) => {
-      const course = await db.beautyCourse.findUnique({
-        where: { id: input.id },
-        include: { _count: { select: { enrollments: true } } },
-      });
-      if (!course) throw new Error('الدورة غير موجودة');
-      return formatCourse(course);
-    }),
+  get: publicProcedure.input(z.object({ id: z.number() })).query(async ({ input }) => {
+    const course = await db.beautyCourse.findUnique({
+      where: { id: input.id },
+      include: { _count: { select: { enrollments: true } } },
+    });
+    if (!course) throw new Error('الدورة غير موجودة');
+    return formatCourse(course);
+  }),
 
   enroll: customerProcedure
     .input(z.object({ courseId: z.number() }))
@@ -53,11 +52,22 @@ export const beautyCoursesRouter = router({
       const existing = await db.courseEnrollment.findUnique({
         where: { userId_courseId: { userId: ctx.user.id, courseId: input.courseId } },
       });
-      if (existing) return { enrollmentId: `ENR-${ctx.user.id}-${input.courseId}`, courseId: input.courseId, status: existing.status, progress: existing.progress };
+      if (existing)
+        return {
+          enrollmentId: `ENR-${ctx.user.id}-${input.courseId}`,
+          courseId: input.courseId,
+          status: existing.status,
+          progress: existing.progress,
+        };
       const enrollment = await db.courseEnrollment.create({
         data: { userId: ctx.user.id, courseId: input.courseId },
       });
-      return { enrollmentId: `ENR-${ctx.user.id}-${input.courseId}`, courseId: input.courseId, status: enrollment.status, progress: enrollment.progress };
+      return {
+        enrollmentId: `ENR-${ctx.user.id}-${input.courseId}`,
+        courseId: input.courseId,
+        status: enrollment.status,
+        progress: enrollment.progress,
+      };
     }),
 
   myCourses: customerProcedure.query(async ({ ctx }) => {

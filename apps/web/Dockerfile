@@ -1,22 +1,23 @@
 # =============================================================================
-# Galaxy of Beauty — Web (Next.js) Dockerfile
+# Galaxy of Beauty — Web (Next.js) Dockerfile — OPS-004
 # =============================================================================
 # Build:
 #   docker build -t gob-web --target production .
 #   docker build -t gob-web --target development .
+#
+# Security: Runs as non-root 'node' user in production.
 # =============================================================================
 
 # ---- Base ----
-FROM node:20-bullseye-slim AS base
+FROM node:20-alpine AS base
 WORKDIR /app
 
-# Install pnpm + Prisma deps
+# Install pnpm
 RUN corepack enable && corepack prepare pnpm@9.15.4 --activate
 
 # Copy workspace config and lockfile
 COPY pnpm-workspace.yaml package.json pnpm-lock.yaml turbo.json ./
 COPY packages/config/package.json ./packages/config/
-COPY packages/config/src ./packages/config/src
 COPY packages/db/package.json ./packages/db/
 COPY packages/db/prisma ./packages/db/prisma
 COPY packages/api/package.json ./packages/api/
@@ -31,19 +32,13 @@ COPY apps/web/tailwind.config.ts ./apps/web/
 
 # ---- Dependencies ----
 FROM base AS deps
-RUN pnpm install --frozen-lockfile
+RUN pnpm install --frozen-lockfile --prod=false
 
 # ---- Development ----
 FROM deps AS development
 ENV NODE_ENV=development
-
-# Copy source for Prisma generate
 COPY packages/db/src ./packages/db/src
-COPY packages/db/prisma ./packages/db/prisma
-
-# Generate Prisma client for current platform
-RUN cd /app/packages/db && npx prisma generate && npx prisma --version
-
+RUN cd /app/packages/db && npx prisma generate
 WORKDIR /app/apps/web
 EXPOSE 3000
 CMD ["pnpm", "dev"]
@@ -55,22 +50,32 @@ COPY packages/api/src ./packages/api/src
 COPY packages/shared/src ./packages/shared/src
 COPY apps/web/src ./apps/web/src
 COPY apps/web/public ./apps/web/public
-
-# Generate Prisma client for current platform
-RUN cd /app/packages/db && npx prisma generate && npx prisma --version
-
-# Build Next.js
+RUN cd /app/packages/db && npx prisma generate
 RUN cd /app/apps/web && npx next build
 
-# ---- Production ----
-FROM base AS production
+# ---- Production (OPS-004: non-root, minimal) ----
+FROM node:20-alpine AS production
 ENV NODE_ENV=production
-COPY --from=builder /app/apps/web/.next /app/apps/web/.next
-COPY --from=builder /app/apps/web/public /app/apps/web/public
-COPY --from=builder /app/apps/web/package.json /app/apps/web/
-COPY --from=builder /app/node_modules /app/node_modules
-COPY --from=builder /app/packages /app/packages
 
-WORKDIR /app/apps/web
+# Create non-root user
+RUN addgroup -g 1001 -S nodejs && \
+    adduser -S nextjs -u 1001 -G nodejs
+
+WORKDIR /app
+
+# Copy only production artifacts (not full monorepo)
+COPY --from=builder --chown=nextjs:nodejs /app/apps/web/.next /app/.next
+COPY --from=builder --chown=nextjs:nodejs /app/apps/web/public /app/public
+COPY --from=builder --chown=nextjs:nodejs /app/apps/web/package.json /app/
+COPY --from=builder --chown=nextjs:nodejs /app/apps/web/next.config.js /app/
+COPY --from=builder --chown=nextjs:nodejs /app/node_modules /app/node_modules
+
+# Copy only generated Prisma client (not full packages)
+COPY --from=builder --chown=nextjs:nodejs /app/node_modules/.pnpm/@prisma+client* /app/node_modules/.pnpm/
+COPY --from=builder --chown=nextjs:nodejs /app/node_modules/@prisma /app/node_modules/@prisma
+
+# Switch to non-root user
+USER nextjs
+
 EXPOSE 3000
 CMD ["npx", "next", "start"]

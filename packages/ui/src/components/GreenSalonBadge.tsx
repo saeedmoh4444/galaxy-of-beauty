@@ -10,32 +10,55 @@ import { cn } from '@galaxy/shared';
  *   <GreenSalonBadge practices={['recycled', 'organic', 'energy_efficient']} />
  */
 
-type GreenPractice = 'recycled' | 'organic' | 'energy_efficient' | 'water_saving' | 'vegan_products' | 'plastic_free' | 'local_sourcing' | 'carbon_neutral';
+type GreenPractice =
+  | 'recycled'
+  | 'organic'
+  | 'energy_efficient'
+  | 'water_saving'
+  | 'vegan_products'
+  | 'plastic_free'
+  | 'local_sourcing'
+  | 'carbon_neutral';
 
 interface PracticeDef {
   emoji: string;
-  label: string;
+  label: { ar: string; en: string };
 }
 
 const PRACTICES: Record<GreenPractice, PracticeDef> = {
-  recycled: { emoji: '♻️', label: 'إعادة تدوير' },
-  organic: { emoji: '🌿', label: 'منتجات عضوية' },
-  energy_efficient: { emoji: '💡', label: 'طاقة موفرة' },
-  water_saving: { emoji: '💧', label: 'ترشيد مياه' },
-  vegan_products: { emoji: '🌱', label: 'منتجات نباتية' },
-  plastic_free: { emoji: '🚫', label: 'خالٍ من البلاستيك' },
-  local_sourcing: { emoji: '🇸🇦', label: 'منتجات محلية' },
-  carbon_neutral: { emoji: '🌍', label: 'محايد كربونياً' },
+  recycled: { emoji: '♻️', label: { ar: 'إعادة تدوير', en: 'Recycling' } },
+  organic: { emoji: '🌿', label: { ar: 'منتجات عضوية', en: 'Organic products' } },
+  energy_efficient: { emoji: '⚡', label: { ar: 'طاقة موفرة', en: 'Energy efficient' } },
+  water_saving: { emoji: '💧', label: { ar: 'ترشيد مياه', en: 'Water saving' } },
+  vegan_products: { emoji: '🌱', label: { ar: 'منتجات نباتية', en: 'Vegan products' } },
+  plastic_free: { emoji: '🚫', label: { ar: 'خالٍ من البلاستيك', en: 'Plastic free' } },
+  local_sourcing: { emoji: '🚜', label: { ar: 'منتجات محلية', en: 'Local sourcing' } },
+  carbon_neutral: { emoji: '🌍', label: { ar: 'محايد كربونياً', en: 'Carbon neutral' } },
 };
 
 interface GreenSalonBadgeProps {
   practices: GreenPractice[];
   className?: string;
+  /** Card heading */
+  title?: string;
+  /** Subtitle under the heading */
+  subtitle?: string;
+  /** Sustainability pledge text */
+  pledgeText?: string;
+  /** Footer text */
+  footerText?: string;
+  /** Display locale for practice labels */
+  locale?: 'ar' | 'en';
 }
 
 export function GreenSalonBadge({
   practices,
   className = '',
+  title = 'صالون أخضر',
+  subtitle = 'نمارس الاستدامة في كل خطوة',
+  pledgeText = 'نلتزم بممارسات صديقة للبيئة — من المنتجات إلى التغليف إلى استهلاك الطاقة',
+  footerText = 'الجمال المستدام — لكِ وللأرض',
+  locale = 'ar',
 }: GreenSalonBadgeProps): JSX.Element | null {
   if (!practices.length) return null;
 
@@ -47,14 +70,12 @@ export function GreenSalonBadge({
       )}
     >
       <div className="flex items-center gap-2">
-        <span className="text-xl" aria-hidden="true">🌿</span>
+        <span className="text-xl" aria-hidden="true">
+          🌳
+        </span>
         <div>
-          <h4 className="text-sm font-bold text-green-700 dark:text-green-300">
-            صالون أخضر
-          </h4>
-          <p className="text-[10px] text-green-500 dark:text-green-400">
-            نمارس الاستدامة في كل خطوة
-          </p>
+          <h4 className="text-sm font-bold text-green-700 dark:text-green-300">{title}</h4>
+          <p className="text-[10px] text-green-500 dark:text-green-400">{subtitle}</p>
         </div>
       </div>
 
@@ -67,9 +88,11 @@ export function GreenSalonBadge({
               key={p}
               className="flex items-center gap-2 rounded-lg bg-white/60 px-2.5 py-2 dark:bg-gray-800/60"
             >
-              <span className="text-sm" aria-hidden="true">{def.emoji}</span>
+              <span className="text-sm" aria-hidden="true">
+                {def.emoji}
+              </span>
               <span className="text-[10px] font-medium text-green-800 dark:text-green-200">
-                {def.label}
+                {def.label[locale]}
               </span>
             </div>
           );
@@ -78,13 +101,11 @@ export function GreenSalonBadge({
 
       {/* Pledge */}
       <div className="mt-3 rounded-xl bg-white/60 p-3 text-center dark:bg-gray-800/60">
-        <p className="text-[10px] text-green-700 dark:text-green-300">
-          🌍 نلتزم بممارسات صديقة للبيئة — من المنتجات إلى التغليف إلى استهلاك الطاقة
-        </p>
+        <p className="text-[10px] text-green-700 dark:text-green-300">{pledgeText}</p>
       </div>
 
       <p className="mt-1.5 text-center text-[9px] text-green-600 dark:text-green-400">
-        🌿 الجمال المستدام — لكِ وللأرض
+        {footerText}
       </p>
     </div>
   );

@@ -41,19 +41,21 @@ export const geofenceOffersRouter = router({
 
   // Admin: create
   create: adminProcedure
-    .input(z.object({
-      titleJson: z.object({ ar: z.string(), en: z.string() }),
-      descriptionJson: z.object({ ar: z.string(), en: z.string() }).optional(),
-      city: z.string(),
-      lat: z.number().optional(),
-      lng: z.number().optional(),
-      radiusKm: z.number().default(5),
-      discountPct: z.number().min(1).max(100),
-      maxDiscount: z.number().optional(),
-      minOrderAmount: z.number().optional(),
-      startsAt: z.string().datetime(),
-      endsAt: z.string().datetime(),
-    }))
+    .input(
+      z.object({
+        titleJson: z.object({ ar: z.string(), en: z.string() }),
+        descriptionJson: z.object({ ar: z.string(), en: z.string() }).optional(),
+        city: z.string(),
+        lat: z.number().optional(),
+        lng: z.number().optional(),
+        radiusKm: z.number().default(5),
+        discountPct: z.number().min(1).max(100),
+        maxDiscount: z.number().optional(),
+        minOrderAmount: z.number().optional(),
+        startsAt: z.string().datetime(),
+        endsAt: z.string().datetime(),
+      }),
+    )
     .mutation(async ({ ctx, input }) => {
       return prisma.geoPromotion.create({ data: { ...input, createdBy: ctx.user.id } });
     }),

@@ -8,7 +8,7 @@ import { cn } from '@galaxy/shared';
  *
  * Usage:
  *   <BeautyCircleCard
- *     circle={{ name: 'عرايس الرياض 2026', topic: 'wedding', members: 34, cover: '🌸' }}
+ *     circle={{ name: 'عرايس الرياض 2026', topic: 'wedding', members: 34, cover: '' }}
  *   />
  */
 
@@ -26,21 +26,61 @@ type CircleTopic =
 
 interface TopicDef {
   emoji: string;
-  label: string;
+  label: { ar: string; en: string };
   color: string;
 }
 
 const TOPICS: Record<CircleTopic, TopicDef> = {
-  wedding: { emoji: '👰', label: 'عرايس', color: 'bg-rose-100 text-rose-700 dark:bg-rose-950 dark:text-rose-300' },
-  new_mom: { emoji: '👶', label: 'أمهات جدد', color: 'bg-sky-100 text-sky-700 dark:bg-sky-950 dark:text-sky-300' },
-  curly_hair: { emoji: '🦱', label: 'شعر مجعد', color: 'bg-amber-100 text-amber-700 dark:bg-amber-950 dark:text-amber-300' },
-  skincare: { emoji: '🧴', label: 'عناية بالبشرة', color: 'bg-emerald-100 text-emerald-700 dark:bg-emerald-950 dark:text-emerald-300' },
-  makeup: { emoji: '💄', label: 'مكياج', color: 'bg-pink-100 text-pink-700 dark:bg-pink-950 dark:text-pink-300' },
-  teen_beauty: { emoji: '🎀', label: 'جمال المراهقات', color: 'bg-purple-100 text-purple-700 dark:bg-purple-950 dark:text-purple-300' },
-  wellness: { emoji: '🧘', label: 'صحة شاملة', color: 'bg-teal-100 text-teal-700 dark:bg-teal-950 dark:text-teal-300' },
-  professional: { emoji: '💼', label: 'خبيرات تجميل', color: 'bg-indigo-100 text-indigo-700 dark:bg-indigo-950 dark:text-indigo-300' },
-  hijabi_beauty: { emoji: '🧕', label: 'جمال المحجبات', color: 'bg-violet-100 text-violet-700 dark:bg-violet-950 dark:text-violet-300' },
-  budget_beauty: { emoji: '💰', label: 'جمال اقتصادي', color: 'bg-lime-100 text-lime-700 dark:bg-lime-950 dark:text-lime-300' },
+  wedding: {
+    emoji: '👰',
+    label: { ar: 'عرايس', en: 'Brides' },
+    color: 'bg-rose-100 text-rose-700 dark:bg-rose-950 dark:text-rose-300',
+  },
+  new_mom: {
+    emoji: '👶',
+    label: { ar: 'أمهات جدد', en: 'New Moms' },
+    color: 'bg-sky-100 text-sky-700 dark:bg-sky-950 dark:text-sky-300',
+  },
+  curly_hair: {
+    emoji: '🦱',
+    label: { ar: 'شعر مجعد', en: 'Curly Hair' },
+    color: 'bg-amber-100 text-amber-700 dark:bg-amber-950 dark:text-amber-300',
+  },
+  skincare: {
+    emoji: '🧴',
+    label: { ar: 'عناية بالبشرة', en: 'Skincare' },
+    color: 'bg-emerald-100 text-emerald-700 dark:bg-emerald-950 dark:text-emerald-300',
+  },
+  makeup: {
+    emoji: '💄',
+    label: { ar: 'مكياج', en: 'Makeup' },
+    color: 'bg-pink-100 text-pink-700 dark:bg-pink-950 dark:text-pink-300',
+  },
+  teen_beauty: {
+    emoji: '🎀',
+    label: { ar: 'جمال المراهقات', en: 'Teen Beauty' },
+    color: 'bg-brand-100 text-brand-700 dark:bg-brand-950 dark:text-brand-300',
+  },
+  wellness: {
+    emoji: '🧘',
+    label: { ar: 'صحة شاملة', en: 'Wellness' },
+    color: 'bg-teal-100 text-teal-700 dark:bg-teal-950 dark:text-teal-300',
+  },
+  professional: {
+    emoji: '💼',
+    label: { ar: 'خبيرات تجميل', en: 'Beauty Experts' },
+    color: 'bg-indigo-100 text-indigo-700 dark:bg-indigo-950 dark:text-indigo-300',
+  },
+  hijabi_beauty: {
+    emoji: '🧕',
+    label: { ar: 'جمال المحجبات', en: 'Hijabi Beauty' },
+    color: 'bg-violet-100 text-violet-700 dark:bg-violet-950 dark:text-violet-300',
+  },
+  budget_beauty: {
+    emoji: '💰',
+    label: { ar: 'جمال اقتصادي', en: 'Budget Beauty' },
+    color: 'bg-lime-100 text-lime-700 dark:bg-lime-950 dark:text-lime-300',
+  },
 };
 
 interface BeautyCircle {
@@ -62,12 +102,36 @@ interface BeautyCircleCardProps {
   circle: BeautyCircle;
   onJoin?: () => void;
   className?: string;
+  /** Suffix after the member count */
+  membersLabel?: string;
+  /** New-circle badge text */
+  newBadgeText?: string;
+  /** Almost-full badge text */
+  almostFullText?: string;
+  /** Prefix before the next meetup date */
+  nextMeetupPrefix?: string;
+  /** Prefix before the group discount */
+  discountPrefix?: string;
+  /** Suffix after the group discount */
+  discountSuffix?: string;
+  /** Join button label */
+  joinButtonText?: string;
+  /** Display locale for topic labels */
+  locale?: 'ar' | 'en';
 }
 
 export function BeautyCircleCard({
   circle,
   onJoin,
   className = '',
+  membersLabel = 'عضوة',
+  newBadgeText = '🆕 جديدة',
+  almostFullText = 'أوشكت على الامتلاء',
+  nextMeetupPrefix = 'اللقاء القادم: ',
+  discountPrefix = 'خصم ',
+  discountSuffix = 'عند الحجز الجماعي',
+  joinButtonText = 'انضمي للدائرة',
+  locale = 'ar',
 }: BeautyCircleCardProps): JSX.Element {
   const topic = TOPICS[circle.topic];
   const isAlmostFull = circle.members >= 40;
@@ -96,11 +160,11 @@ export function BeautyCircleCard({
                 topic.color,
               )}
             >
-              {topic.emoji} {topic.label}
+              {topic.emoji} {topic.label[locale]}
             </span>
             {circle.city && (
-              <span className="text-[10px] text-text-tertiary dark:text-gray-500">
-                📍 {circle.city}
+              <span className="text-[10px] text-text-tertiary dark:text-text-secondary">
+                {circle.city}
               </span>
             )}
           </div>
@@ -122,14 +186,14 @@ export function BeautyCircleCard({
                 </span>
               ))}
               {circle.recentMembers.length > 4 && (
-                <span className="flex h-6 w-6 items-center justify-center rounded-full border-2 border-white bg-gray-100 text-[9px] font-bold text-gray-500 dark:border-gray-900 dark:bg-gray-800">
+                <span className="flex h-6 w-6 items-center justify-center rounded-full border-2 border-white bg-surface-muted text-[9px] font-bold text-text-secondary dark:border-gray-900 dark:bg-gray-800">
                   +{circle.recentMembers.length - 4}
                 </span>
               )}
             </div>
           )}
           <span className="text-xs font-semibold text-text-secondary dark:text-gray-300">
-            {circle.members} عضوة
+            {circle.members} {membersLabel}
           </span>
         </div>
 
@@ -137,12 +201,12 @@ export function BeautyCircleCard({
         <div className="flex items-center gap-1.5">
           {isNew && (
             <span className="rounded-full bg-emerald-50 px-2 py-0.5 text-[10px] font-bold text-emerald-600 dark:bg-emerald-950 dark:text-emerald-400">
-              🆕 جديدة
+              {newBadgeText}
             </span>
           )}
           {isAlmostFull && (
             <span className="rounded-full bg-amber-50 px-2 py-0.5 text-[10px] font-bold text-amber-600 dark:bg-amber-950 dark:text-amber-400">
-              🔥 أوشكت على الامتلاء
+              {almostFullText}
             </span>
           )}
         </div>
@@ -151,9 +215,12 @@ export function BeautyCircleCard({
       {/* Next meetup */}
       {circle.nextMeetup && (
         <div className="mt-2 flex items-center gap-1.5 rounded-lg bg-pink-50 px-2.5 py-1.5 dark:bg-pink-950">
-          <span className="text-xs" aria-hidden="true">📅</span>
+          <span className="text-xs" aria-hidden="true">
+            📅
+          </span>
           <span className="text-[10px] text-text-secondary dark:text-gray-300">
-            اللقاء القادم: {circle.nextMeetup}
+            {nextMeetupPrefix}
+            {circle.nextMeetup}
           </span>
         </div>
       )}
@@ -161,8 +228,9 @@ export function BeautyCircleCard({
       {/* Group discount */}
       {circle.groupDiscount && (
         <div className="mt-1.5 flex items-center gap-1.5 text-[10px] font-medium text-amber-700 dark:text-amber-400">
-          <span aria-hidden="true">🎁</span>
-          خصم {circle.groupDiscount}% عند الحجز الجماعي
+          <span aria-hidden="true">💰</span>
+          {discountPrefix}
+          {circle.groupDiscount}%{discountSuffix}
         </div>
       )}
 
@@ -177,7 +245,7 @@ export function BeautyCircleCard({
           'active:scale-[0.98]',
         )}
       >
-        انضمي للدائرة ✨
+        {joinButtonText}
       </button>
     </div>
   );

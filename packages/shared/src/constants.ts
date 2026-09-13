@@ -139,8 +139,18 @@ export const SWAGGER_JS_URL = 'https://cdn.jsdelivr.net/npm/swagger-ui-dist@5/sw
 
 /** Google OAuth 2.0 authorization endpoint. */
 export const GOOGLE_OAUTH_URL = 'https://accounts.google.com/o/oauth2/v2/auth';
+/** Google OAuth token exchange endpoint. */
+export const GOOGLE_TOKEN_URL = 'https://oauth2.googleapis.com/token';
+/** Google Calendar API base. */
+export const GOOGLE_CALENDAR_API_URL = 'https://www.googleapis.com/calendar/v3';
 /** Google OAuth default scopes. */
-export const GOOGLE_OAUTH_SCOPE = 'email profile';
+export const GOOGLE_OAUTH_SCOPE = 'email profile https://www.googleapis.com/auth/calendar.events';
+/** E9 — OAuth redirect URI (must match the Google Cloud console config).
+ *  The API layer may override via the GOOGLE_OAUTH_REDIRECT_URI env var. */
+export const GOOGLE_OAUTH_REDIRECT_URI = 'http://localhost:3000/calendar-sync';
+
+/** Twilio API base URL. */
+export const TWILIO_API_URL = 'https://api.twilio.com/2010-04-01';
 
 // ---------------------------------------------------------------------------
 // Social share URL templates
@@ -181,15 +191,39 @@ export const VAT_RATE = 0.15;
 
 /** Loyalty tier thresholds and multipliers — single source of truth for API + UI. */
 export const LOYALTY_TIERS = {
-  SILVER:   { minPoints: 0,    pointMultiplier: 1,   nameAr: 'فضية',     nameEn: 'Silver',   emoji: '🥈', color: 'from-gray-300 to-gray-400' },
-  GOLD:     { minPoints: 500,  pointMultiplier: 1.5, nameAr: 'ذهبية',   nameEn: 'Gold',     emoji: '🥇', color: 'from-yellow-400 to-amber-500' },
-  PLATINUM: { minPoints: 2000, pointMultiplier: 2,   nameAr: 'بلاتينية', nameEn: 'Platinum', emoji: '💎', color: 'from-purple-400 to-indigo-500' },
+  SILVER: {
+    minPoints: 0,
+    pointMultiplier: 1,
+    nameAr: 'فضية',
+    nameEn: 'Silver',
+    emoji: '🥈',
+    color: 'from-gray-300 to-gray-400',
+  },
+  GOLD: {
+    minPoints: 500,
+    pointMultiplier: 1.5,
+    nameAr: 'ذهبية',
+    nameEn: 'Gold',
+    emoji: '🥇',
+    color: 'from-yellow-400 to-amber-500',
+  },
+  PLATINUM: {
+    minPoints: 2000,
+    pointMultiplier: 2,
+    nameAr: 'بلاتينية',
+    nameEn: 'Platinum',
+    emoji: '💎',
+    color: 'from-purple-400 to-indigo-500',
+  },
 } as const;
 
 /** Wallet minimum withdrawal balance (SAR). */
 export const MIN_WITHDRAWAL_BALANCE = 200;
 /** Wallet withdrawal fee rate. */
 export const WITHDRAWAL_FEE_RATE = 0.05;
+/** Wallet top-up amount bounds (SAR). */
+export const TOP_UP_MIN_AMOUNT = 10;
+export const TOP_UP_MAX_AMOUNT = 5000;
 
 /** Emergency booking surcharge (SAR). */
 export const EMERGENCY_SURCHARGE_SAR = 50;
@@ -207,7 +241,7 @@ export const WARRANTY_CREDIT_RATE = 0.3; // 30% of booking value
 
 /** Box builder discount rates. */
 export const BOX_MONTHLY_DISCOUNT = 0.15; // 15% for monthly subscriptions
-export const BOX_REGULAR_DISCOUNT = 0.10; // 10% for one-time boxes
+export const BOX_REGULAR_DISCOUNT = 0.1; // 10% for one-time boxes
 
 /** BNPL (Buy Now Pay Later) limits. */
 export const BNPL_MIN_AMOUNT = 100;
@@ -219,14 +253,56 @@ export const BNPL_MAX_INSTALLMENTS = 4;
 export const MAX_IMAGE_SIZE = 5 * 1024 * 1024; // 5 MB
 export const MAX_DOC_SIZE = 10 * 1024 * 1024; // 10 MB
 
+/** Default city used when the user's location is unavailable. */
+export const DEFAULT_SAUDI_CITY = 'الرياض';
+
 /** Saudi cities (used across multiple routers). */
 export const SAUDI_CITIES = [
-  'الرياض', 'جدة', 'مكة المكرمة', 'المدينة المنورة', 'الدمام',
-  'الخبر', 'الظهران', 'الطائف', 'أبها', 'بريدة',
-  'تبوك', 'حائل', 'الجبيل', 'ينبع',
+  'الرياض',
+  'جدة',
+  'مكة المكرمة',
+  'المدينة المنورة',
+  'الدمام',
+  'الخبر',
+  'الظهران',
+  'الطائف',
+  'أبها',
+  'بريدة',
+  'تبوك',
+  'حائل',
+  'الجبيل',
+  'ينبع',
 ] as const;
 
 /** Default VAT number (ZATCA test — must be overridden in production). */
 export const ZATCA_TEST_VAT = '300000000000003';
+
+// ---------------------------------------------------------------------------
+// Feature Flags — Experimental / Beta Routes
+// ---------------------------------------------------------------------------
+
+/**
+ * Experimental routes that should be gated behind feature flags.
+ * Add new experimental routes here before deploying to production.
+ *
+ * Usage in a router:
+ *   import { requireFeatureFlag } from '../trpc';
+ *   myProcedure.use(requireFeatureFlag('ENABLE_SKIN_ANALYSIS'));
+ */
+export const EXPERIMENTAL_FEATURES = {
+  SKIN_ANALYSIS: 'ENABLE_SKIN_ANALYSIS',
+  VIRTUAL_TRY_ON: 'ENABLE_VIRTUAL_TRYON',
+  AI_CHAT: 'ENABLE_AI_CHAT',
+  PRODUCT_SCANNER: 'ENABLE_PRODUCT_SCANNER',
+  PREDICTIVE_DEMAND: 'ENABLE_PREDICTIVE_DEMAND',
+  BEAUTY_TRENDS: 'ENABLE_BEAUTY_TRENDS',
+  BEAUTY_INNOVATION: 'ENABLE_BEAUTY_INNOVATION',
+  SECRET_SANTA: 'ENABLE_SECRET_SANTA',
+  TIME_CAPSULE: 'ENABLE_TIME_CAPSULE',
+  CONCIERGE: 'ENABLE_CONCIERGE',
+  BEAUTY_METAVERSE: 'ENABLE_BEAUTY_METAVERSE',
+  BEAUTY_BINGO: 'ENABLE_BEAUTY_BINGO',
+  BRIDAL_CONCIERGE: 'ENABLE_BRIDAL_CONCIERGE',
+} as const;
 /** ZATCA API base URL. */
 export const ZATCA_API_URL = 'https://gw-fatoora.zatca.gov.sa/e-invoicing/developer-portal';

@@ -2,29 +2,66 @@ import { z } from 'zod';
 import { TRPCError } from '@trpc/server';
 import { prisma } from '@galaxy/db';
 import { LARGE_PAGE_SIZE, DEFAULT_PAGE_SIZE } from '@galaxy/shared';
-import { publicProcedure, protectedProcedure, customerProcedure, adminProcedure, router } from '../trpc';
+import {
+  publicProcedure,
+  protectedProcedure,
+  customerProcedure,
+  adminProcedure,
+  router,
+} from '../trpc';
 
 export const marketplaceRouter = router({
   // ── Products ──────────────────────────────────────────
   products: publicProcedure
-    .input(z.object({
-      categoryId: z.number().optional(), vendorId: z.number().optional(),
-      search: z.string().optional(), sortBy: z.enum(['price_asc','price_desc','newest','popular']).default('newest'),
-      page: z.number().default(1), limit: z.number().default(20),
-    }))
+    .input(
+      z.object({
+        categoryId: z.number().optional(),
+        vendorId: z.number().optional(),
+        search: z.string().optional(),
+        sortBy: z.enum(['price_asc', 'price_desc', 'newest', 'popular']).default('newest'),
+        page: z.number().default(1),
+        limit: z.number().default(20),
+      }),
+    )
     .query(async ({ input }) => {
       const where: Record<string, unknown> = { isActive: true };
       if (input.categoryId) where['categoryId'] = input.categoryId;
       if (input.vendorId) where['vendorId'] = input.vendorId;
       if (input.search) where['nameJson'] = { path: ['ar'], string_contains: input.search };
 
-      const orderBy: Record<string, string> = input.sortBy === 'price_asc' ? { price: 'asc' } : input.sortBy === 'price_desc' ? { price: 'desc' } : { createdAt: 'desc' };
+      const orderBy: Record<string, string> =
+        input.sortBy === 'price_asc'
+          ? { price: 'asc' }
+          : input.sortBy === 'price_desc'
+            ? { price: 'desc' }
+            : { createdAt: 'desc' };
       const skip = (input.page - 1) * input.limit;
       const [items, total] = await Promise.all([
-        prisma.product.findMany({ where: where as never, include: { vendor: { select: { storeName: true } } }, orderBy: orderBy as never, skip, take: input.limit }),
+        prisma.product.findMany({
+          where: where as never,
+          include: {
+            vendor: { select: { storeName: true } },
+            // Store plan Phase 4b — the active in-window deal, if any.
+            deals: {
+              where: { isActive: true, startsAt: { lte: new Date() }, endsAt: { gte: new Date() } },
+              orderBy: { createdAt: 'desc' },
+              take: 1,
+            },
+          },
+          orderBy: orderBy as never,
+          skip,
+          take: input.limit,
+        }),
         prisma.product.count({ where: where as never }),
       ]);
-      return { items, total, page: input.page };
+      return {
+        items: items.map(({ deals, ...item }) => ({
+          ...item,
+          activeDeal: deals[0] ?? null,
+        })),
+        total,
+        page: input.page,
+      };
     }),
 
   productDetail: publicProcedure
@@ -32,7 +69,14 @@ export const marketplaceRouter = router({
     .query(async ({ input }) => {
       const product = await prisma.product.findUnique({
         where: { id: input.id },
-        include: { vendor: true, category: true, reviews: { include: { user: { select: { name: true, avatarUrl: true } } }, take: DEFAULT_PAGE_SIZE } },
+        include: {
+          vendor: true,
+          category: true,
+          reviews: {
+            include: { user: { select: { name: true, avatarUrl: true } } },
+            take: DEFAULT_PAGE_SIZE,
+          },
+        },
       });
       if (!product) throw new TRPCError({ code: 'NOT_FOUND' });
       return product;
@@ -42,12 +86,16 @@ export const marketplaceRouter = router({
   cart: protectedProcedure.query(async ({ ctx }) => {
     return prisma.cartItem.findMany({
       where: { userId: ctx.user.id },
-      include: { product: { select: { id: true, nameJson: true, price: true, imageUrl: true, stock: true } } },
+      include: {
+        product: { select: { id: true, nameJson: true, price: true, imageUrl: true, stock: true } },
+      },
     });
   }),
 
   addToCart: customerProcedure
-    .input(z.object({ productId: z.number().int().positive(), quantity: z.number().min(1).default(1) }))
+    .input(
+      z.object({ productId: z.number().int().positive(), quantity: z.number().min(1).default(1) }),
+    )
     .mutation(async ({ ctx, input }) => {
       return prisma.cartItem.upsert({
         where: { userId_productId: { userId: ctx.user.id, productId: input.productId } },
@@ -59,9 +107,79 @@ export const marketplaceRouter = router({
   removeFromCart: protectedProcedure
     .input(z.object({ productId: z.number().int().positive() }))
     .mutation(async ({ ctx, input }) => {
-      await prisma.cartItem.deleteMany({ where: { userId: ctx.user.id, productId: input.productId } });
+      await prisma.cartItem.deleteMany({
+        where: { userId: ctx.user.id, productId: input.productId },
+      });
       return { success: true };
     }),
+
+  // ── Buy (B.3) ───────────────────────────────────────────
+  /**
+   * buyCart — purchase everything in the caller's cart.
+   * Transactionally checks stock, decrements it, increments product sales
+   * and vendor totalSales, then clears the cart. On insufficient stock the
+   * whole purchase is rejected and the cart is kept for correction.
+   */
+  buyCart: customerProcedure.input(z.object({})).mutation(async ({ ctx }) => {
+    const cartItems = await prisma.cartItem.findMany({
+      where: { userId: ctx.user.id },
+      include: {
+        product: { select: { id: true, price: true, stock: true, vendorId: true } },
+      },
+    });
+
+    if (cartItems.length === 0) {
+      throw new TRPCError({ code: 'BAD_REQUEST', message: 'Cart is empty' });
+    }
+
+    const shortage = cartItems.find((i) => i.product.stock < i.quantity);
+    if (shortage) {
+      throw new TRPCError({
+        code: 'BAD_REQUEST',
+        message: `Insufficient stock for product #${shortage.productId} (available: ${shortage.product.stock})`,
+      });
+    }
+
+    const total = cartItems.reduce((sum, i) => sum + Number(i.product.price) * i.quantity, 0);
+    const totalItems = cartItems.reduce((sum, i) => sum + i.quantity, 0);
+
+    await prisma.$transaction(async (tx) => {
+      // Store plan Phase 1 — one order record per store in the cart.
+      const byVendor = new Map<number, { amount: number; items: number }>();
+      for (const item of cartItems) {
+        const amount = Number(item.product.price) * item.quantity;
+        await tx.product.update({
+          where: { id: item.productId },
+          data: {
+            stock: { decrement: item.quantity },
+            sales: { increment: item.quantity },
+          },
+        });
+        await tx.vendor.update({
+          where: { id: item.product.vendorId },
+          data: { totalSales: { increment: amount } },
+        });
+        const agg = byVendor.get(item.product.vendorId) ?? { amount: 0, items: 0 };
+        agg.amount += amount;
+        agg.items += item.quantity;
+        byVendor.set(item.product.vendorId, agg);
+      }
+      for (const [vendorId, agg] of byVendor) {
+        await tx.storeOrder.create({
+          data: {
+            vendorId,
+            customerId: ctx.user.id,
+            totalAmount: agg.amount,
+            itemCount: agg.items,
+            status: 'PENDING_FULFILLMENT',
+          },
+        });
+      }
+      await tx.cartItem.deleteMany({ where: { userId: ctx.user.id } });
+    });
+
+    return { success: true, items: totalItems, total };
+  }),
 
   // ── Categories ────────────────────────────────────────
   productCategories: publicProcedure.query(async () => {
@@ -73,68 +191,460 @@ export const marketplaceRouter = router({
     .input(z.object({ page: z.number().default(1), limit: z.number().default(20) }))
     .query(async ({ input }) => {
       const skip = (input.page - 1) * input.limit;
+      // Store types only — clinics (E2) have their own listing.
+      const storeTypes = { in: ['STORE', 'VENDOR'] };
       const [items, total] = await Promise.all([
-        prisma.vendor.findMany({ where: { isActive: true, isVerified: true }, include: { user: { select: { name: true, avatarUrl: true } }, _count: { select: { products: true } } }, skip, take: input.limit }),
-        prisma.vendor.count({ where: { isActive: true } }),
+        prisma.vendor.findMany({
+          where: { isActive: true, isVerified: true, type: storeTypes },
+          include: {
+            user: { select: { name: true, avatarUrl: true } },
+            _count: { select: { products: true } },
+          },
+          skip,
+          take: input.limit,
+        }),
+        prisma.vendor.count({ where: { isActive: true, type: storeTypes } }),
       ]);
       return { items, total, page: input.page };
     }),
 
-  vendorDetail: publicProcedure
-    .input(z.object({ slug: z.string() }))
-    .query(async ({ input }) => {
-      const vendor = await prisma.vendor.findUnique({
-        where: { storeSlug: input.slug },
-        include: { products: { where: { isActive: true }, take: LARGE_PAGE_SIZE }, _count: { select: { products: true } } },
-      });
-      if (!vendor) throw new TRPCError({ code: 'NOT_FOUND' });
-      return vendor;
-    }),
+  vendorDetail: publicProcedure.input(z.object({ slug: z.string() })).query(async ({ input }) => {
+    const vendor = await prisma.vendor.findFirst({
+      where: { storeSlug: input.slug, type: { in: ['STORE', 'VENDOR'] } },
+      include: {
+        products: { where: { isActive: true }, take: LARGE_PAGE_SIZE },
+        _count: { select: { products: true } },
+      },
+    });
+    if (!vendor) throw new TRPCError({ code: 'NOT_FOUND' });
+    return vendor;
+  }),
 
-  // ── Become a vendor ───────────────────────────────────
+  // ── Become a vendor / store (Store plan Phase 1) ────────
+  /**
+   * becomeVendor — merchant registration. Creates an UNVERIFIED vendor and
+   * a PENDING_REVIEW ProviderSubmission (kind 'store') for the admin review
+   * queue. Products/orders are blocked until approval flips isVerified.
+   */
   becomeVendor: protectedProcedure
-    .input(z.object({ storeName: z.string().min(2), storeSlug: z.string().min(3), descriptionAr: z.string().optional(), descriptionEn: z.string().optional() }))
+    .input(
+      z.object({
+        storeName: z.string().min(2),
+        storeSlug: z.string().min(3),
+        descriptionAr: z.string().optional(),
+        descriptionEn: z.string().optional(),
+        logoUrl: z.string().optional(),
+        licenseNumber: z.string().min(1),
+        bankIban: z.string().optional(),
+        bankName: z.string().optional(),
+        // KSA merchant documents — required for admin approval.
+        documents: z.object({
+          crUrl: z.string().url(),
+          nationalIdUrl: z.string().url(),
+          bankLetterUrl: z.string().url(),
+        }),
+      }),
+    )
     .mutation(async ({ ctx, input }) => {
       const existing = await prisma.vendor.findUnique({ where: { userId: ctx.user.id } });
       if (existing) throw new TRPCError({ code: 'CONFLICT', message: 'Already a vendor' });
 
-      return prisma.vendor.create({
+      const vendor = await prisma.vendor.create({
         data: {
-          userId: ctx.user.id, storeName: input.storeName, storeSlug: input.storeSlug,
+          userId: ctx.user.id,
+          storeName: input.storeName,
+          storeSlug: input.storeSlug,
           descriptionJson: { ar: input.descriptionAr || '', en: input.descriptionEn || '' },
+          logoUrl: input.logoUrl,
+          licenseNumber: input.licenseNumber,
+          bankIban: input.bankIban,
+          bankName: input.bankName,
+          type: 'STORE',
+          isVerified: false,
         },
       });
+
+      await prisma.providerSubmission.create({
+        data: {
+          providerId: ctx.user.id,
+          kind: 'store',
+          status: 'PENDING_REVIEW',
+          payload: {
+            vendorId: vendor.id,
+            storeName: input.storeName,
+            storeSlug: input.storeSlug,
+            licenseNumber: input.licenseNumber,
+            bankIban: input.bankIban ?? '',
+            bankName: input.bankName ?? '',
+            documents: input.documents,
+          },
+        },
+      });
+
+      return vendor;
+    }),
+
+  // ── Become a clinic (E2 — medical beauty clinics) ───────
+  /**
+   * becomeClinic — medical clinic registration. Same unified provider
+   * pipeline: UNVERIFIED Vendor (type CLINIC) + PENDING_REVIEW submission
+   * (kind 'clinic'). KSA documents are required: MOH/SFDA license, CR,
+   * national ID.
+   */
+  becomeClinic: protectedProcedure
+    .input(
+      z.object({
+        storeName: z.string().min(2),
+        storeSlug: z.string().min(3),
+        clinicType: z.enum(['dermatology', 'laser', 'injectables', 'dental', 'nutrition']),
+        licenseNumber: z.string().min(4),
+        licenseAgency: z.enum(['MOH', 'SFDA']),
+        descriptionAr: z.string().optional(),
+        descriptionEn: z.string().optional(),
+        logoUrl: z.string().optional(),
+        documents: z.object({
+          medicalLicenseUrl: z.string().url(),
+          crUrl: z.string().url(),
+          nationalIdUrl: z.string().url(),
+        }),
+      }),
+    )
+    .mutation(async ({ ctx, input }) => {
+      const existing = await prisma.vendor.findUnique({ where: { userId: ctx.user.id } });
+      if (existing) throw new TRPCError({ code: 'CONFLICT', message: 'Already a vendor' });
+
+      const vendor = await prisma.vendor.create({
+        data: {
+          userId: ctx.user.id,
+          storeName: input.storeName,
+          storeSlug: input.storeSlug,
+          descriptionJson: { ar: input.descriptionAr || '', en: input.descriptionEn || '' },
+          logoUrl: input.logoUrl,
+          licenseNumber: input.licenseNumber,
+          licenseAgency: input.licenseAgency,
+          clinicType: input.clinicType,
+          type: 'CLINIC',
+          isVerified: false,
+        },
+      });
+
+      await prisma.providerSubmission.create({
+        data: {
+          providerId: ctx.user.id,
+          kind: 'clinic',
+          status: 'PENDING_REVIEW',
+          payload: {
+            vendorId: vendor.id,
+            clinicName: input.storeName,
+            clinicType: input.clinicType,
+            licenseNumber: input.licenseNumber,
+            licenseAgency: input.licenseAgency,
+            documents: input.documents,
+          },
+        },
+      });
+
+      return vendor;
+    }),
+
+  // ── Become a gym (E3 — fitness vertical) ───────────────
+  /**
+   * becomeGym — gym registration. Same unified provider pipeline:
+   * UNVERIFIED Vendor (type GYM) + PENDING_REVIEW submission (kind 'gym').
+   * KSA documents required: CR, national ID, license (MISA/municipality).
+   */
+  becomeGym: protectedProcedure
+    .input(
+      z.object({
+        storeName: z.string().min(2),
+        storeSlug: z.string().min(3),
+        gymType: z.enum(['ladies', 'family']),
+        licenseNumber: z.string().min(4),
+        licenseAgency: z.enum(['MISA', 'MUNICIPALITY']),
+        gymCity: z.string().min(2),
+        gymAddress: z.string().min(5),
+        descriptionAr: z.string().optional(),
+        descriptionEn: z.string().optional(),
+        logoUrl: z.string().optional(),
+        documents: z.object({
+          crUrl: z.string().url(),
+          nationalIdUrl: z.string().url(),
+          licenseUrl: z.string().url(),
+        }),
+      }),
+    )
+    .mutation(async ({ ctx, input }) => {
+      const existing = await prisma.vendor.findUnique({ where: { userId: ctx.user.id } });
+      if (existing) throw new TRPCError({ code: 'CONFLICT', message: 'Already a vendor' });
+
+      const vendor = await prisma.vendor.create({
+        data: {
+          userId: ctx.user.id,
+          storeName: input.storeName,
+          storeSlug: input.storeSlug,
+          descriptionJson: { ar: input.descriptionAr || '', en: input.descriptionEn || '' },
+          logoUrl: input.logoUrl,
+          licenseNumber: input.licenseNumber,
+          licenseAgency: input.licenseAgency,
+          gymType: input.gymType,
+          gymCity: input.gymCity,
+          gymAddress: input.gymAddress,
+          type: 'GYM',
+          isVerified: false,
+        },
+      });
+
+      await prisma.providerSubmission.create({
+        data: {
+          providerId: ctx.user.id,
+          kind: 'gym',
+          status: 'PENDING_REVIEW',
+          payload: {
+            vendorId: vendor.id,
+            gymName: input.storeName,
+            gymType: input.gymType,
+            gymCity: input.gymCity,
+            gymAddress: input.gymAddress,
+            licenseNumber: input.licenseNumber,
+            licenseAgency: input.licenseAgency,
+            documents: input.documents,
+          },
+        },
+      });
+
+      return vendor;
+    }),
+
+  /**
+   * becomeNailBar — E5 nail bar registration. Same unified provider
+   * pipeline: UNVERIFIED Vendor (type NAIL_BAR) + PENDING_REVIEW submission
+   * (kind 'nail_bar'). KSA documents required: CR, national ID, municipal
+   * license. Payment happens at the venue (record-only bookings).
+   */
+  becomeNailBar: protectedProcedure
+    .input(
+      z.object({
+        storeName: z.string().min(2),
+        storeSlug: z.string().min(3),
+        nailBarType: z.enum(['express', 'standard']),
+        nailBarCity: z.string().min(2),
+        nailBarAddress: z.string().min(5),
+        licenseNumber: z.string().min(4),
+        licenseAgency: z.enum(['MISA', 'MUNICIPALITY']),
+        descriptionAr: z.string().optional(),
+        descriptionEn: z.string().optional(),
+        logoUrl: z.string().optional(),
+        documents: z.object({
+          crUrl: z.string().url(),
+          nationalIdUrl: z.string().url(),
+          licenseUrl: z.string().url(),
+        }),
+      }),
+    )
+    .mutation(async ({ ctx, input }) => {
+      const existing = await prisma.vendor.findUnique({ where: { userId: ctx.user.id } });
+      if (existing) throw new TRPCError({ code: 'CONFLICT', message: 'Already a vendor' });
+
+      const vendor = await prisma.vendor.create({
+        data: {
+          userId: ctx.user.id,
+          storeName: input.storeName,
+          storeSlug: input.storeSlug,
+          descriptionJson: { ar: input.descriptionAr || '', en: input.descriptionEn || '' },
+          logoUrl: input.logoUrl,
+          licenseNumber: input.licenseNumber,
+          licenseAgency: input.licenseAgency,
+          nailBarType: input.nailBarType,
+          nailBarCity: input.nailBarCity,
+          nailBarAddress: input.nailBarAddress,
+          type: 'NAIL_BAR',
+          isVerified: false,
+        },
+      });
+
+      await prisma.providerSubmission.create({
+        data: {
+          providerId: ctx.user.id,
+          kind: 'nail_bar',
+          status: 'PENDING_REVIEW',
+          payload: {
+            vendorId: vendor.id,
+            nailBarName: input.storeName,
+            nailBarType: input.nailBarType,
+            nailBarCity: input.nailBarCity,
+            nailBarAddress: input.nailBarAddress,
+            licenseNumber: input.licenseNumber,
+            licenseAgency: input.licenseAgency,
+            documents: input.documents,
+          },
+        },
+      });
+
+      return vendor;
+    }),
+
+  /**
+   * becomeAthomeSalon — E5 at-home salon registration. Same pipeline:
+   * UNVERIFIED Vendor (type ATHOME) + PENDING_REVIEW submission
+   * (kind 'athome_salon'). Verified providers receive homeService requests
+   * covering their city.
+   */
+  becomeAthomeSalon: protectedProcedure
+    .input(
+      z.object({
+        storeName: z.string().min(2),
+        storeSlug: z.string().min(3),
+        homeCity: z.string().min(2),
+        homeAddress: z.string().min(5),
+        licenseNumber: z.string().min(4),
+        licenseAgency: z.enum(['MISA', 'MUNICIPALITY']),
+        descriptionAr: z.string().optional(),
+        descriptionEn: z.string().optional(),
+        logoUrl: z.string().optional(),
+        documents: z.object({
+          crUrl: z.string().url(),
+          nationalIdUrl: z.string().url(),
+          licenseUrl: z.string().url(),
+        }),
+      }),
+    )
+    .mutation(async ({ ctx, input }) => {
+      const existing = await prisma.vendor.findUnique({ where: { userId: ctx.user.id } });
+      if (existing) throw new TRPCError({ code: 'CONFLICT', message: 'Already a vendor' });
+
+      const vendor = await prisma.vendor.create({
+        data: {
+          userId: ctx.user.id,
+          storeName: input.storeName,
+          storeSlug: input.storeSlug,
+          descriptionJson: { ar: input.descriptionAr || '', en: input.descriptionEn || '' },
+          logoUrl: input.logoUrl,
+          licenseNumber: input.licenseNumber,
+          licenseAgency: input.licenseAgency,
+          homeCity: input.homeCity,
+          homeAddress: input.homeAddress,
+          type: 'ATHOME',
+          isVerified: false,
+        },
+      });
+
+      await prisma.providerSubmission.create({
+        data: {
+          providerId: ctx.user.id,
+          kind: 'athome_salon',
+          status: 'PENDING_REVIEW',
+          payload: {
+            vendorId: vendor.id,
+            salonName: input.storeName,
+            homeCity: input.homeCity,
+            homeAddress: input.homeAddress,
+            licenseNumber: input.licenseNumber,
+            licenseAgency: input.licenseAgency,
+            documents: input.documents,
+          },
+        },
+      });
+
+      return vendor;
     }),
 
   // ── Product Reviews ────────────────────────────────────
   addReview: customerProcedure
-    .input(z.object({ productId: z.number().int().positive(), rating: z.number().min(1).max(5), comment: z.string().max(500).optional() }))
+    .input(
+      z.object({
+        productId: z.number().int().positive(),
+        rating: z.number().min(1).max(5),
+        comment: z.string().max(500).optional(),
+      }),
+    )
     .mutation(async ({ ctx, input }) => {
-      return prisma.productReview.upsert({
+      const product = await prisma.product.findUnique({
+        where: { id: input.productId },
+        select: { vendorId: true },
+      });
+      if (!product) throw new TRPCError({ code: 'NOT_FOUND', message: 'Product not found' });
+
+      const review = await prisma.productReview.upsert({
         where: { productId_userId: { productId: input.productId, userId: ctx.user.id } },
         update: { rating: input.rating, comment: input.comment },
-        create: { productId: input.productId, userId: ctx.user.id, rating: input.rating, comment: input.comment },
+        create: {
+          productId: input.productId,
+          userId: ctx.user.id,
+          rating: input.rating,
+          comment: input.comment,
+        },
       });
+
+      // Store plan Phase 4 — keep the denormalized store rating fresh.
+      const agg = await prisma.productReview.aggregate({
+        where: { product: { vendorId: product.vendorId } },
+        _avg: { rating: true },
+        _count: true,
+      });
+      await prisma.vendor.update({
+        where: { id: product.vendorId },
+        data: {
+          ratingAvg: Math.round((agg._avg.rating ?? 0) * 100) / 100,
+          totalReviews: agg._count,
+        },
+      });
+
+      return review;
     }),
 
   productReviews: publicProcedure
-    .input(z.object({ productId: z.number().int().positive(), page: z.number().default(1), limit: z.number().default(20) }))
+    .input(
+      z.object({
+        productId: z.number().int().positive(),
+        page: z.number().default(1),
+        limit: z.number().default(20),
+      }),
+    )
     .query(async ({ input }) => {
       const skip = (input.page - 1) * input.limit;
       const [items, total] = await Promise.all([
-        prisma.productReview.findMany({ where: { productId: input.productId }, include: { user: { select: { name: true, avatarUrl: true } } }, orderBy: { createdAt: 'desc' }, skip, take: input.limit }),
+        prisma.productReview.findMany({
+          where: { productId: input.productId },
+          include: { user: { select: { name: true, avatarUrl: true } } },
+          orderBy: { createdAt: 'desc' },
+          skip,
+          take: input.limit,
+        }),
         prisma.productReview.count({ where: { productId: input.productId } }),
       ]);
       return { items, total };
     }),
 
   // ── Admin ─────────────────────────────────────────────
+  /** adminSetCommission — store plan Phase 3: per-store commission rate. */
+  adminSetCommission: adminProcedure
+    .input(
+      z.object({
+        vendorId: z.number().int().positive(),
+        commissionRate: z.number().min(0).max(100),
+      }),
+    )
+    .mutation(async ({ input }) => {
+      const vendor = await prisma.vendor.findUnique({ where: { id: input.vendorId } });
+      if (!vendor) throw new TRPCError({ code: 'NOT_FOUND', message: 'Store not found' });
+
+      return prisma.vendor.update({
+        where: { id: input.vendorId },
+        data: { commissionRate: input.commissionRate },
+      });
+    }),
+
   adminProducts: adminProcedure
     .input(z.object({ page: z.number().default(1), limit: z.number().default(50) }))
     .query(async ({ input }) => {
       const skip = (input.page - 1) * input.limit;
       const [items, total] = await Promise.all([
-        prisma.product.findMany({ include: { vendor: { select: { storeName: true } }, category: true }, skip, take: input.limit, orderBy: { createdAt: 'desc' } }),
+        prisma.product.findMany({
+          include: { vendor: { select: { storeName: true } }, category: true },
+          skip,
+          take: input.limit,
+          orderBy: { createdAt: 'desc' },
+        }),
         prisma.product.count(),
       ]);
       return { items, total };

@@ -6,14 +6,19 @@ import { protectedProcedure, customerProcedure, router } from '../trpc';
 export const advancedBookingRouter = router({
   // ── Recurring Booking ─────────────────────────────────
   createRecurring: customerProcedure
-    .input(z.object({
-      technicianId: z.number().int().positive(), serviceId: z.number().int().positive(), addressId: z.number().int().positive(),
-      slotId: z.number().int().positive(),
-      startAt: z.string().datetime(), endAt: z.string().datetime(),
-      recurrence: z.enum(['WEEKLY', 'BIWEEKLY', 'MONTHLY']),
-      occurrences: z.number().int().min(2).max(12),
-      notes: z.string().max(500).optional(),
-    }))
+    .input(
+      z.object({
+        technicianId: z.number().int().positive(),
+        serviceId: z.number().int().positive(),
+        addressId: z.number().int().positive(),
+        slotId: z.number().int().positive(),
+        startAt: z.string().datetime(),
+        endAt: z.string().datetime(),
+        recurrence: z.enum(['WEEKLY', 'BIWEEKLY', 'MONTHLY']),
+        occurrences: z.number().int().min(2).max(12),
+        notes: z.string().max(500).optional(),
+      }),
+    )
     .mutation(async ({ ctx, input }) => {
       const bookings = [];
       const startDate = new Date(input.startAt);
@@ -22,17 +27,28 @@ export const advancedBookingRouter = router({
       for (let i = 0; i < input.occurrences; i++) {
         const nextStart = new Date(startDate);
         switch (input.recurrence) {
-          case 'WEEKLY': nextStart.setDate(nextStart.getDate() + i * 7); break;
-          case 'BIWEEKLY': nextStart.setDate(nextStart.getDate() + i * 14); break;
-          case 'MONTHLY': nextStart.setMonth(nextStart.getMonth() + i); break;
+          case 'WEEKLY':
+            nextStart.setDate(nextStart.getDate() + i * 7);
+            break;
+          case 'BIWEEKLY':
+            nextStart.setDate(nextStart.getDate() + i * 14);
+            break;
+          case 'MONTHLY':
+            nextStart.setMonth(nextStart.getMonth() + i);
+            break;
         }
         const nextEnd = new Date(nextStart.getTime() + duration);
         const booking = await prisma.booking.create({
           data: {
-            customerId: ctx.user.id, technicianId: input.technicianId,
-            serviceId: input.serviceId, addressId: input.addressId,
-            startAt: nextStart, endAt: nextEnd, status: 'REQUESTED',
-            totalAmount: 0, bookingCode: `GOB-${Date.now().toString(36).toUpperCase().slice(-6)}${i}`,
+            customerId: ctx.user.id,
+            technicianId: input.technicianId,
+            serviceId: input.serviceId,
+            addressId: input.addressId,
+            startAt: nextStart,
+            endAt: nextEnd,
+            status: 'REQUESTED',
+            totalAmount: 0,
+            bookingCode: `GOB-${Date.now().toString(36).toUpperCase().slice(-6)}${i}`,
             notes: `${input.notes || ''} (Recurring #${i + 1}/${input.occurrences})`,
           },
         });
@@ -44,37 +60,47 @@ export const advancedBookingRouter = router({
 
   // ── Multi-Service Bundle ───────────────────────────────
   createBundle: customerProcedure
-    .input(z.object({
-      technicianId: z.number(), addressId: z.number(),
-      services: z.array(z.object({ serviceId: z.number(), variantId: z.number().optional() })),
-      startAt: z.string(), notes: z.string().optional(),
-    }))
+    .input(
+      z.object({
+        technicianId: z.number(),
+        addressId: z.number(),
+        services: z.array(z.object({ serviceId: z.number(), variantId: z.number().optional() })),
+        startAt: z.string(),
+        notes: z.string().optional(),
+      }),
+    )
     .mutation(async ({ ctx, input }) => {
       const bookings = await prisma.$transaction(
         input.services.map((svc, i) =>
           prisma.booking.create({
             data: {
-              customerId: ctx.user.id, technicianId: input.technicianId,
-              serviceId: svc.serviceId, variantId: svc.variantId,
+              customerId: ctx.user.id,
+              technicianId: input.technicianId,
+              serviceId: svc.serviceId,
+              variantId: svc.variantId,
               addressId: input.addressId,
               startAt: new Date(new Date(input.startAt).getTime() + i * 3600000),
               endAt: new Date(new Date(input.startAt).getTime() + (i + 1) * 3600000),
-              status: 'REQUESTED', totalAmount: 0,
+              status: 'REQUESTED',
+              totalAmount: 0,
               bookingCode: `GOB-BNDL-${Date.now().toString(36).toUpperCase().slice(-6)}`,
               notes: input.notes,
             },
-          })
-        )
+          }),
+        ),
       );
       return { created: bookings.length, bookings };
     }),
 
   // ── Express Booking (AI-assisted one-click) ────────────
   express: customerProcedure
-    .input(z.object({
-      serviceId: z.number(), preferredTime: z.enum(['morning', 'afternoon', 'evening', 'anytime']),
-      addressId: z.number(),
-    }))
+    .input(
+      z.object({
+        serviceId: z.number(),
+        preferredTime: z.enum(['morning', 'afternoon', 'evening', 'anytime']),
+        addressId: z.number(),
+      }),
+    )
     .mutation(async ({ ctx, input }) => {
       // Find best available technician + slot
       const hourMap = { morning: 9, afternoon: 14, evening: 18, anytime: 12 };
@@ -96,9 +122,14 @@ export const advancedBookingRouter = router({
 
       const booking = await prisma.booking.create({
         data: {
-          customerId: ctx.user.id, technicianId: techService.technicianId,
-          serviceId: input.serviceId, addressId: input.addressId,
-          startAt: today, endAt: endTime, status: 'REQUESTED', totalAmount: 0,
+          customerId: ctx.user.id,
+          technicianId: techService.technicianId,
+          serviceId: input.serviceId,
+          addressId: input.addressId,
+          startAt: today,
+          endAt: endTime,
+          status: 'REQUESTED',
+          totalAmount: 0,
           bookingCode: `GOB-EXP-${Date.now().toString(36).toUpperCase().slice(-6)}`,
           notes: 'Express booking (AI-assisted)',
         },
@@ -110,8 +141,20 @@ export const advancedBookingRouter = router({
   // ── Cancellation Protection ─────────────────────────────
   getInsuranceOptions: protectedProcedure.query(async () => {
     return [
-      { id: 'basic', nameAr: 'حماية أساسية', nameEn: 'Basic Protection', price: 10, coverage: '50% refund' },
-      { id: 'premium', nameAr: 'حماية مميزة', nameEn: 'Premium Protection', price: 25, coverage: '100% refund + reschedule' },
+      {
+        id: 'basic',
+        nameAr: 'حماية أساسية',
+        nameEn: 'Basic Protection',
+        price: 10,
+        coverage: '50% refund',
+      },
+      {
+        id: 'premium',
+        nameAr: 'حماية مميزة',
+        nameEn: 'Premium Protection',
+        price: 25,
+        coverage: '100% refund + reschedule',
+      },
     ];
   }),
 });

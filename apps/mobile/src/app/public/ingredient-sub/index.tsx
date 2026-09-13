@@ -2,30 +2,49 @@ import { View, Text, TextInput, TouchableOpacity, StyleSheet } from 'react-nativ
 import { useState } from 'react';
 import { ScreenState } from '@/components/ScreenState';
 import { trpc } from '@/lib/trpc-react';
+import { useLocale } from '@/components/LocaleProvider';
 
-const COLORS = { brand: '#7c3aed', white: '#ffffff', gray400: '#6b7280', gray900: '#111827', success: '#10b981' };
+const COLORS = {
+  brand: '#7c3aed',
+  white: '#ffffff',
+  gray400: '#6b7280',
+  gray900: '#111827',
+  success: '#10b981',
+};
 
 export default function IngredientSubScreen(): JSX.Element {
+  const { t } = useLocale();
   const [search, setSearch] = useState('');
   const [submitted, setSubmitted] = useState('');
-  const result = (trpc as any).ingredientSub?.findSubstitutes?.useQuery?.(
+  const result = trpc.ingredientSub.find.useQuery(
     { ingredient: submitted },
-    { enabled: submitted.length > 0 }
+    { enabled: submitted.length > 0 },
   ) ?? { data: null, isLoading: false, isError: false, refetch: () => {} };
 
   return (
-    <ScreenState isLoading={submitted.length > 0 && result.isLoading} isError={result.isError} isEmpty={false} errorMessage="فشل البحث عن بدائل" onRetry={() => result.refetch()}>
-      <Text style={styles.title}>🔄 بدائل المكونات</Text>
+    <ScreenState
+      isLoading={submitted.length > 0 && result.isLoading}
+      isError={result.isError}
+      isEmpty={false}
+      errorMessage={t('mobile.public.ingredient-sub.load-error')}
+      onRetry={() => result.refetch()}
+    >
+      <Text style={styles.title}>{t('mobile.public.ingredient-sub.title')}</Text>
       <View style={styles.inputRow}>
-        <TextInput style={styles.input} placeholder="أدخلي اسم المكون..." value={search} onChangeText={setSearch} />
+        <TextInput
+          style={styles.input}
+          placeholder={t('mobile.public.ingredient-sub.placeholder')}
+          value={search}
+          onChangeText={setSearch}
+        />
         <TouchableOpacity style={styles.searchBtn} onPress={() => setSubmitted(search)}>
-          <Text style={styles.searchText}>بحث</Text>
+          <Text style={styles.searchText}>{t('mobile.public.ingredient-sub.search')}</Text>
         </TouchableOpacity>
       </View>
-      {(result.data as unknown[] || []).map((alt: any, i: number) => (
+      {((result.data as unknown as { subs?: string[] } | null)?.subs ?? []).map((alt, i) => (
         <View key={i} style={styles.card}>
-          <Text style={styles.altName}>{alt.name ?? ''}</Text>
-          <Text style={styles.altDesc}>{alt.description ?? ''}</Text>
+          <Text style={styles.altName}>{alt}</Text>
+          <Text style={styles.altDesc}>🌿</Text>
         </View>
       ))}
     </ScreenState>
@@ -33,10 +52,29 @@ export default function IngredientSubScreen(): JSX.Element {
 }
 
 const styles = StyleSheet.create({
-  title: { fontSize: 24, fontWeight: '800', color: COLORS.brand, textAlign: 'center', marginBottom: 20 },
+  title: {
+    fontSize: 24,
+    fontWeight: '800',
+    color: COLORS.brand,
+    textAlign: 'center',
+    marginBottom: 20,
+  },
   inputRow: { flexDirection: 'row', gap: 8, marginBottom: 20 },
-  input: { flex: 1, borderWidth: 1, borderColor: '#e5e7eb', borderRadius: 12, padding: 12, fontSize: 14, backgroundColor: COLORS.white },
-  searchBtn: { backgroundColor: COLORS.brand, borderRadius: 12, paddingHorizontal: 20, justifyContent: 'center' },
+  input: {
+    flex: 1,
+    borderWidth: 1,
+    borderColor: '#e5e7eb',
+    borderRadius: 12,
+    padding: 12,
+    fontSize: 14,
+    backgroundColor: COLORS.white,
+  },
+  searchBtn: {
+    backgroundColor: COLORS.brand,
+    borderRadius: 12,
+    paddingHorizontal: 20,
+    justifyContent: 'center',
+  },
   searchText: { fontSize: 14, fontWeight: '600', color: COLORS.white },
   card: { backgroundColor: COLORS.white, borderRadius: 14, padding: 14, marginBottom: 8 },
   altName: { fontSize: 15, fontWeight: '700', color: COLORS.gray900 },

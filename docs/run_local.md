@@ -8,21 +8,21 @@
 
 ### Required Software
 
-| Tool | Version | Check | Install |
-|------|---------|-------|---------|
-| **Node.js** | 20+ | `node --version` | [nodejs.org](https://nodejs.org) |
-| **pnpm** | 9+ | `pnpm --version` | `corepack enable && corepack prepare pnpm@9 --activate` |
-| **PostgreSQL** | 15+ | `psql --version` | [postgresql.org](https://postgresql.org) or Docker |
-| **Redis** | 7+ | `redis-cli --version` | [redis.io](https://redis.io) or Docker |
-| **Git** | 2.40+ | `git --version` | [git-scm.com](https://git-scm.com) |
+| Tool           | Version | Check                 | Install                                                 |
+| -------------- | ------- | --------------------- | ------------------------------------------------------- |
+| **Node.js**    | 20+     | `node --version`      | [nodejs.org](https://nodejs.org)                        |
+| **pnpm**       | 9+      | `pnpm --version`      | `corepack enable && corepack prepare pnpm@9 --activate` |
+| **PostgreSQL** | 15+     | `psql --version`      | [postgresql.org](https://postgresql.org) or Docker      |
+| **Redis**      | 7+      | `redis-cli --version` | [redis.io](https://redis.io) or Docker                  |
+| **Git**        | 2.40+   | `git --version`       | [git-scm.com](https://git-scm.com)                      |
 
 ### Optional (for full platform)
 
-| Tool | Purpose |
-|------|---------|
+| Tool               | Purpose                                                        |
+| ------------------ | -------------------------------------------------------------- |
 | **Docker Desktop** | Containerized development (replaces manual PostgreSQL + Redis) |
-| **Expo CLI** | Mobile app development |
-| **Playwright** | E2E testing (`npx playwright install`) |
+| **Expo CLI**       | Mobile app development                                         |
+| **Playwright**     | E2E testing (`npx playwright install`)                         |
 
 ---
 
@@ -69,11 +69,16 @@ EXPO_PUBLIC_API_URL="http://localhost:3000/api/trpc"
 > ⚠️ **Prisma note:** `packages/db` also needs a `.env` with `DATABASE_URL` for Prisma Client runtime. The seed/generate scripts handle this — but if you get `Environment variable not found: DATABASE_URL`, create `packages/db/.env` with just that one line.
 
 # Optional: Email (SMTP)
+
 # SMTP_HOST=smtp.example.com
+
 # SMTP_PORT=587
+
 # SMTP_USER=user
+
 # SMTP_PASS=pass
-```
+
+````
 
 ### 2.3 Start Database (Choose One)
 
@@ -84,7 +89,7 @@ EXPO_PUBLIC_API_URL="http://localhost:3000/api/trpc"
 # macOS: brew services start postgresql@15 redis
 # Linux: sudo systemctl start postgresql redis
 # Windows: Start from Services or use Docker
-```
+````
 
 #### Option B: Docker (PostgreSQL + Redis only)
 
@@ -121,11 +126,11 @@ pnpm --filter @galaxy/web dev
 
 After running `pnpm db:seed`, use these credentials:
 
-| Role | Email | Password |
-|------|-------|----------|
-| **Admin** | `admin@galaxyofbeauty.sa` | `Admin@123456` |
-| **Customer** | `customer@test.com` | `Admin@123456` |
-| **Technician** | `tech1@test.com` | `Admin@123456` |
+| Role           | Email                     | Password       |
+| -------------- | ------------------------- | -------------- |
+| **Admin**      | `admin@galaxyofbeauty.sa` | `Admin@123456` |
+| **Customer**   | `customer@test.com`       | `Admin@123456` |
+| **Technician** | `tech1@test.com`          | `Admin@123456` |
 
 ---
 
@@ -135,13 +140,13 @@ After running `pnpm db:seed`, use these credentials:
 
 The `docker-compose.yml` provides 5 services:
 
-| Service | Container | Port | Description |
-|---------|-----------|------|-------------|
+| Service      | Container      | Port | Description                          |
+| ------------ | -------------- | ---- | ------------------------------------ |
 | **postgres** | `gob-postgres` | 5433 | PostgreSQL 15 with persistent volume |
-| **redis** | `gob-redis` | 6379 | Redis 7 with AOF persistence |
-| **web** | `gob-web` | 3000 | Next.js dev server with hot reload |
-| **socket** | `gob-socket` | 4001 | Socket.IO real-time server |
-| **mobile** | `gob-mobile` | 8081 | Expo web preview |
+| **redis**    | `gob-redis`    | 6379 | Redis 7 with AOF persistence         |
+| **web**      | `gob-web`      | 3000 | Next.js dev server with hot reload   |
+| **socket**   | `gob-socket`   | 4001 | Socket.IO real-time server           |
+| **mobile**   | `gob-mobile`   | 8081 | Expo web preview                     |
 
 ### 3.2 Start Everything
 
@@ -164,14 +169,14 @@ docker compose down -v
 
 ### 3.3 Service URLs
 
-| Service | URL |
-|---------|-----|
-| Web App | http://localhost:3000 |
-| API Health | http://localhost:3000/api/trpc/health |
-| Socket.IO | http://localhost:4001 |
-| Mobile (Web) | http://localhost:8081 |
-| PostgreSQL | localhost:5433 |
-| Redis | localhost:6379 |
+| Service      | URL                                   |
+| ------------ | ------------------------------------- |
+| Web App      | http://localhost:3000                 |
+| API Health   | http://localhost:3000/api/trpc/health |
+| Socket.IO    | http://localhost:4001                 |
+| Mobile (Web) | http://localhost:8081                 |
+| PostgreSQL   | localhost:5433                        |
+| Redis        | localhost:6379                        |
 
 ### 3.4 First-Time Docker Setup
 
@@ -221,30 +226,33 @@ pnpm db:seed             # Seed database with test data
 ### 4.3 Testing
 
 ```bash
-# Run all API tests (307 tests)
+# Run all API tests (543 tests)
 cd packages/api && pnpm test
 
 # Run specific test file
 cd packages/api && npx vitest run src/__tests__/auth-flow.test.ts
 
-# Run E2E tests (requires dev server running)
-cd apps/web && npx playwright test
+# Coverage with enforced ratchet (50/61/36/50)
+cd packages/api && pnpm test:coverage
+
+# Run E2E tests (auto-starts next start after a web build)
+cd apps/web && pnpm exec playwright test
 
 # Run E2E on specific browser
-cd apps/web && npx playwright test --project=chromium
+cd apps/web && pnpm exec playwright test --project=chromium
 
 # Run E2E with UI mode
-cd apps/web && npx playwright test --ui
+cd apps/web && pnpm exec playwright test --ui
 ```
 
 ### 4.4 Storybook
 
 ```bash
 # Start Storybook dev server
-cd packages/shared && pnpm storybook
+cd packages/ui && pnpm storybook
 
 # Build Storybook for production
-cd packages/shared && pnpm build-storybook
+cd packages/ui && pnpm build-storybook
 ```
 
 ### 4.5 Mobile App
@@ -264,9 +272,9 @@ cd apps/mobile && pnpm type-check
 ```
 galaxy-of-beauty/
 ├── apps/
-│   ├── web/                          # Next.js 14 App Router
+│   ├── web/                          # Next.js 15 App Router
 │   │   ├── src/
-│   │   │   ├── app/                  # 254 routes (pages, layouts, API)
+│   │   │   ├── app/                  # 280 routes (pages, layouts, API)
 │   │   │   │   ├── (auth)/           # Login, Register, 2FA, Forgot/Reset
 │   │   │   │   ├── (customer)/       # Dashboard, Bookings, Wallet, Profile...
 │   │   │   │   ├── (public)/         # Home, Services, Technicians, Blog...
@@ -275,22 +283,22 @@ galaxy-of-beauty/
 │   │   │   ├── components/           # App-specific components
 │   │   │   ├── lib/                  # tRPC client, server utilities
 │   │   │   └── hooks/                # useSocket, useRetry
-│   │   ├── e2e/                      # Playwright E2E tests (9 specs)
+│   │   ├── e2e/                      # Playwright E2E tests (9 specs, 168 tests)
 │   │   ├── tailwind.config.ts        # Tailwind + semantic token config
 │   │   └── playwright.config.ts      # Playwright config (3 browsers)
-│   └── mobile/                       # Expo SDK 54
+│   └── mobile/                       # Expo SDK 57
 │       └── src/
-│           ├── app/                  # Expo Router screens (47 screens)
+│           ├── app/                  # Expo Router screens
 │           ├── components/           # Mobile components
-│           └── lib/                  # API client, useQuery
+│           └── lib/                  # tRPC client (hooks + token store)
 ├── packages/
-│   ├── api/                          # tRPC API (176 routers, 400+ procedures)
+│   ├── api/                          # tRPC API (243 routers)
 │   │   └── src/
 │   │       ├── routers/              # All API routers
 │   │       ├── lib/                  # Auth, cache, rate-limit, CSRF, JWT...
 │   │       ├── validators/           # Zod schemas
-│   │       └── __tests__/            # 307 tests (15 files)
-│   ├── db/                           # Prisma (87 models)
+│   │       └── __tests__/            # 543 tests (38 files)
+│   ├── db/                           # Prisma (202 models)
 │   │   └── prisma/
 │   │       ├── schema.prisma         # Database schema
 │   │       └── seed.ts               # Seed data
@@ -324,6 +332,7 @@ galaxy-of-beauty/
 ### 6.1 Database Issues
 
 #### "Can't reach database server"
+
 ```bash
 # Check if PostgreSQL is running
 docker compose ps postgres
@@ -335,6 +344,7 @@ docker compose restart postgres
 ```
 
 #### "Database does not exist"
+
 ```bash
 # Create the database manually
 psql -h localhost -p 5433 -U gob_admin -c "CREATE DATABASE \"Galaxy_of_Beauty_db\";"
@@ -344,6 +354,7 @@ pnpm db:push
 ```
 
 #### "Migration failed" or schema out of sync
+
 ```bash
 # Reset database (WARNING: deletes all data)
 docker compose down -v postgres
@@ -353,6 +364,7 @@ pnpm db:seed
 ```
 
 #### "Unique constraint failed" during seed
+
 ```bash
 # The seed cleans existing data first — if it fails mid-way, re-run:
 pnpm db:seed
@@ -361,6 +373,7 @@ pnpm db:seed
 ### 6.2 Redis Issues
 
 #### "Stream isn't writeable" or Redis connection errors
+
 ```
 Redis isn't running or the app can't connect. The app gracefully degrades
 without Redis (cache operations will log warnings but won't crash).
@@ -372,6 +385,7 @@ redis-server
 ```
 
 #### Rate limiting not working
+
 ```
 Rate limiting requires Redis. Without Redis, rate limits are disabled
 (fail-open for availability). Start Redis to enable rate limiting.
@@ -380,6 +394,7 @@ Rate limiting requires Redis. Without Redis, rate limits are disabled
 ### 6.3 Build Issues
 
 #### TypeScript errors in packages
+
 ```bash
 # Check all packages
 pnpm type-check
@@ -395,6 +410,7 @@ pnpm build
 ```
 
 #### "Module not found" or import errors
+
 ```bash
 # Reinstall dependencies
 rm -rf node_modules apps/*/node_modules packages/*/node_modules
@@ -403,6 +419,7 @@ pnpm build
 ```
 
 #### Next.js build failures (a11y linting)
+
 ```
 The jsx-a11y rules are set to "warn" — they shouldn't block the build.
 If the build fails on lint, check apps/web/.eslintrc.json and ensure
@@ -412,6 +429,7 @@ rules are at "warn" level, not "error".
 ### 6.4 Runtime Issues
 
 #### "Only plain objects can be passed to Client Components" (Decimal warnings)
+
 ```
 This should be fixed. The serializeForClient() duck-type converter in
 apps/web/src/lib/server-trpc.ts converts Prisma Decimal to Number.
@@ -419,20 +437,28 @@ If you still see this, check that the server uses the latest code.
 ```
 
 #### "CSRF token missing or invalid" in API calls
+
 ```
-Mutations require a CSRF cookie + header. The TRPCProvider in the web app
-handles this automatically. For direct API testing, include:
+Mutations from browsers require a CSRF cookie + header. The TRPCProvider in
+the web app handles this automatically. For direct API testing, include:
 - Cookie: csrf-token=<64 hex chars>
 - Header: x-csrf-token=<same 64 hex chars>
+
+Non-browser clients (mobile app, curl) don't send an Origin header and are
+exempt from the CSRF guard — they authenticate via Authorization: Bearer.
+If you hit this error from a script, check that your tooling isn't adding
+an Origin header, or include the cookie+header pair above.
 ```
 
 #### 401 "Authentication required"
+
 ```
 The API endpoint requires authentication. Login first with the seeded
 credentials, then include the JWT in the Authorization header.
 ```
 
 #### "Login failed" or "Token refresh failed"
+
 ```
 This can happen if the refresh token unique constraint triggers.
 Re-seed the database: pnpm db:seed
@@ -440,6 +466,7 @@ The seed now handles this with deleteMany before create.
 ```
 
 #### Slow first page load (30+ seconds)
+
 ```
 Next.js compiles pages on first request in dev mode. The home page
 fetches categories + services via tRPC. First load is slow due to
@@ -449,6 +476,7 @@ compilation. Subsequent loads are fast (HMR).
 ### 6.5 Docker Issues
 
 #### "Port already in use"
+
 ```bash
 # Find what's using the port
 # Windows:
@@ -461,6 +489,7 @@ lsof -i :3000
 ```
 
 #### Container fails health check
+
 ```bash
 # Check logs
 docker compose logs postgres
@@ -473,6 +502,7 @@ docker compose ps
 ```
 
 #### Volume permission errors
+
 ```bash
 # Reset Docker volumes
 docker compose down -v
@@ -482,6 +512,7 @@ docker compose up -d
 ### 6.6 Mobile App Issues
 
 #### Expo can't connect to API
+
 ```
 The mobile app uses EXPO_PUBLIC_API_URL to connect to the tRPC API.
 For local development with Expo Go on a physical device:
@@ -491,6 +522,7 @@ For local development with Expo Go on a physical device:
 ```
 
 #### Metro bundler stuck
+
 ```bash
 # Clear Metro cache
 cd apps/mobile
@@ -503,36 +535,36 @@ npx expo start --clear
 
 ### Required
 
-| Variable | Purpose | Default (Dev) |
-|----------|---------|---------------|
-| `DATABASE_URL` | PostgreSQL connection | `postgresql://gob_admin:gob_secure_pass_2024@localhost:5433/Galaxy_of_Beauty_db` |
-| `JWT_ACCESS_SECRET` | Access token signing | None (must be set, min 32 chars) |
-| `JWT_REFRESH_SECRET` | Refresh token signing | None (must be set, min 32 chars) |
+| Variable             | Purpose               | Default (Dev)                                                                    |
+| -------------------- | --------------------- | -------------------------------------------------------------------------------- |
+| `DATABASE_URL`       | PostgreSQL connection | `postgresql://gob_admin:gob_secure_pass_2024@localhost:5433/Galaxy_of_Beauty_db` |
+| `JWT_ACCESS_SECRET`  | Access token signing  | None (must be set, min 32 chars)                                                 |
+| `JWT_REFRESH_SECRET` | Refresh token signing | None (must be set, min 32 chars)                                                 |
 
 ### Optional (with defaults)
 
-| Variable | Default | Purpose |
-|----------|---------|---------|
-| `REDIS_URL` | `redis://localhost:6379` | Redis connection |
-| `JWT_ACCESS_EXPIRY` | `15m` | Access token lifetime |
-| `JWT_REFRESH_EXPIRY` | `7d` | Refresh token lifetime |
-| `CORS_ORIGIN` | `http://localhost:3000` | Allowed CORS origin |
-| `NEXT_PUBLIC_APP_URL` | `http://localhost:3000` | Public app URL |
-| `NEXT_PUBLIC_SOCKET_URL` | `http://localhost:4001` | Socket.IO URL |
-| `PLATFORM_FEE_SAR` | `11` | Platform fee per booking |
-| `ZATCA_SIMULATE` | unset | Set to `true` to simulate ZATCA |
+| Variable                 | Default                  | Purpose                         |
+| ------------------------ | ------------------------ | ------------------------------- |
+| `REDIS_URL`              | `redis://localhost:6379` | Redis connection                |
+| `JWT_ACCESS_EXPIRY`      | `15m`                    | Access token lifetime           |
+| `JWT_REFRESH_EXPIRY`     | `7d`                     | Refresh token lifetime          |
+| `CORS_ORIGIN`            | `http://localhost:3000`  | Allowed CORS origin             |
+| `NEXT_PUBLIC_APP_URL`    | `http://localhost:3000`  | Public app URL                  |
+| `NEXT_PUBLIC_SOCKET_URL` | `http://localhost:4001`  | Socket.IO URL                   |
+| `PLATFORM_FEE_SAR`       | `11`                     | Platform fee per booking        |
+| `ZATCA_SIMULATE`         | unset                    | Set to `true` to simulate ZATCA |
 
 ### Optional Service Integrations
 
-| Variable | Purpose |
-|----------|---------|
-| `OPENAI_API_KEY` | AI features (chatbot, skin analysis) |
-| `SENTRY_DSN` | Error tracking |
-| `SENTRY_TRACES_SAMPLE_RATE` | Performance tracing (default: `0.1`) |
-| `ZATCA_VAT_NUMBER` | Real VAT number (uses test VAT in dev) |
-| `ZATCA_API_KEY` / `ZATCA_API_SECRET` | ZATCA production credentials |
-| `NEXT_PUBLIC_GOOGLE_CLIENT_ID` | Google OAuth login |
-| `REFERRAL_CAMPAIGN_START` | ISO date for referral campaign |
+| Variable                             | Purpose                                |
+| ------------------------------------ | -------------------------------------- |
+| `OPENAI_API_KEY`                     | AI features (chatbot, skin analysis)   |
+| `SENTRY_DSN`                         | Error tracking                         |
+| `SENTRY_TRACES_SAMPLE_RATE`          | Performance tracing (default: `0.1`)   |
+| `ZATCA_VAT_NUMBER`                   | Real VAT number (uses test VAT in dev) |
+| `ZATCA_API_KEY` / `ZATCA_API_SECRET` | ZATCA production credentials           |
+| `NEXT_PUBLIC_GOOGLE_CLIENT_ID`       | Google OAuth login                     |
+| `REFERRAL_CAMPAIGN_START`            | ISO date for referral campaign         |
 
 ---
 
@@ -607,4 +639,35 @@ docker push your-registry/galaxy-web:latest
 
 # Deploy (example with docker compose on server)
 docker compose -f docker-compose.prod.yml up -d
+```
+
+---
+
+## 16. Verification Commands (2026-08-16 snapshot)
+
+All commands verified locally and in CI (all 8 GitHub Actions jobs green):
+
+```bash
+# Quality gates
+pnpm format:check          # ✅ 0 warnings
+pnpm type-check            # ✅ 6/6 workspaces
+pnpm lint                  # ✅ 0 errors in all workspaces
+pnpm build                 # ✅ 6/6 workspaces
+
+# Tests
+pnpm --filter @galaxy/api test            # ✅ 543 tests (38 files)
+pnpm --filter @galaxy/api test:coverage   # ✅ exit 0 — ratchet 50/61/36/50 enforced
+pnpm --filter @galaxy/web exec playwright test  # ✅ 168/168 — chromium + firefox + mobile chrome
+#   (playwright install chromium firefox first; the config auto-starts `next start`
+#    after `pnpm --filter @galaxy/web build`)
+
+# Runtime smoke test (mobile HTTP contract against the dev server)
+pnpm --filter @galaxy/web dev   # terminal 1
+node apps/web/scripts/smoke-mobile-contract.mjs   # terminal 2 — ✅ 5/5
+
+# Component library
+pnpm --filter @galaxy/ui storybook   # http://localhost:6006
+
+# Dependency audit (baseline-enforced — only NEW findings fail)
+node scripts/audit-check.mjs
 ```

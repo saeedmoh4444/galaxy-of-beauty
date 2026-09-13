@@ -7,20 +7,26 @@ import { protectedProcedure, customerProcedure, adminProcedure, router } from '.
 // Generate a gift card code: GIFT-XXXX-XXXX
 function generateCode(): string {
   const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789'; // No I, O, 0, 1 to avoid confusion
-  const a = Array.from({ length: 4 }, () => chars[Math.floor(Math.random() * chars.length)]).join('');
-  const b = Array.from({ length: 4 }, () => chars[Math.floor(Math.random() * chars.length)]).join('');
+  const a = Array.from({ length: 4 }, () => chars[Math.floor(Math.random() * chars.length)]).join(
+    '',
+  );
+  const b = Array.from({ length: 4 }, () => chars[Math.floor(Math.random() * chars.length)]).join(
+    '',
+  );
   return `GIFT-${a}-${b}`;
 }
 
 export const giftCardRouter = router({
   // Purchase a gift card (customer)
   purchase: customerProcedure
-    .input(z.object({
-      amount: z.number().min(50).max(5000),
-      recipientEmail: z.string().email().optional(),
-      recipientName: z.string().max(100).optional(),
-      message: z.string().max(500).optional(),
-    }))
+    .input(
+      z.object({
+        amount: z.number().min(50).max(5000),
+        recipientEmail: z.string().email().optional(),
+        recipientName: z.string().max(100).optional(),
+        message: z.string().max(500).optional(),
+      }),
+    )
     .mutation(async ({ ctx, input }) => {
       const code = generateCode();
       const card = await prisma.giftCard.create({
@@ -35,7 +41,12 @@ export const giftCardRouter = router({
           expiresAt: new Date(Date.now() + 365 * MS_PER_DAY), // 1 year
         },
       });
-      return { id: card.id, code: card.code, amount: Number(card.amount), message: input.message || '' };
+      return {
+        id: card.id,
+        code: card.code,
+        amount: Number(card.amount),
+        message: input.message || '',
+      };
     }),
 
   // Check balance by code (public)
@@ -44,20 +55,36 @@ export const giftCardRouter = router({
     .query(async ({ input }) => {
       const card = await prisma.giftCard.findUnique({ where: { code: input.code.toUpperCase() } });
       if (!card) throw new TRPCError({ code: 'NOT_FOUND', message: 'بطاقة الهدية غير موجودة' });
-      if (card.status !== 'ACTIVE') throw new TRPCError({ code: 'BAD_REQUEST', message: 'البطاقة غير نشطة' });
-      if (card.expiresAt && card.expiresAt < new Date()) throw new TRPCError({ code: 'BAD_REQUEST', message: 'انتهت صلاحية البطاقة' });
-      return { code: card.code, balance: Number(card.balance), originalAmount: Number(card.amount), recipientName: card.recipientName };
+      if (card.status !== 'ACTIVE')
+        throw new TRPCError({ code: 'BAD_REQUEST', message: 'البطاقة غير نشطة' });
+      if (card.expiresAt && card.expiresAt < new Date())
+        throw new TRPCError({ code: 'BAD_REQUEST', message: 'انتهت صلاحية البطاقة' });
+      return {
+        code: card.code,
+        balance: Number(card.balance),
+        originalAmount: Number(card.amount),
+        recipientName: card.recipientName,
+      };
     }),
 
   // Redeem a gift card against a booking (customer)
   redeem: customerProcedure
-    .input(z.object({ code: z.string().min(1), amount: z.number().positive(), bookingId: z.number().optional() }))
+    .input(
+      z.object({
+        code: z.string().min(1),
+        amount: z.number().positive(),
+        bookingId: z.number().optional(),
+      }),
+    )
     .mutation(async ({ input }) => {
       const card = await prisma.giftCard.findUnique({ where: { code: input.code.toUpperCase() } });
       if (!card) throw new TRPCError({ code: 'NOT_FOUND', message: 'بطاقة الهدية غير موجودة' });
-      if (card.status !== 'ACTIVE') throw new TRPCError({ code: 'BAD_REQUEST', message: 'البطاقة غير نشطة أو مستخدمة' });
-      if (card.expiresAt && card.expiresAt < new Date()) throw new TRPCError({ code: 'BAD_REQUEST', message: 'انتهت صلاحية البطاقة' });
-      if (Number(card.balance) < input.amount) throw new TRPCError({ code: 'BAD_REQUEST', message: 'رصيد البطاقة غير كاف' });
+      if (card.status !== 'ACTIVE')
+        throw new TRPCError({ code: 'BAD_REQUEST', message: 'البطاقة غير نشطة أو مستخدمة' });
+      if (card.expiresAt && card.expiresAt < new Date())
+        throw new TRPCError({ code: 'BAD_REQUEST', message: 'انتهت صلاحية البطاقة' });
+      if (Number(card.balance) < input.amount)
+        throw new TRPCError({ code: 'BAD_REQUEST', message: 'رصيد البطاقة غير كاف' });
 
       const newBalance = Number(card.balance) - input.amount;
       await prisma.$transaction([
@@ -79,7 +106,7 @@ export const giftCardRouter = router({
       where: { purchaserId: ctx.user.id },
       orderBy: { createdAt: 'desc' },
     });
-    return cards.map(c => ({ ...c, amount: Number(c.amount), balance: Number(c.balance) }));
+    return cards.map((c) => ({ ...c, amount: Number(c.amount), balance: Number(c.balance) }));
   }),
 
   // Admin: list all gift cards
@@ -94,6 +121,11 @@ export const giftCardRouter = router({
         }),
         prisma.giftCard.count(),
       ]);
-      return { items: items.map(c => ({ ...c, amount: Number(c.amount), balance: Number(c.balance) })), total, page: input.page, limit: input.limit };
+      return {
+        items: items.map((c) => ({ ...c, amount: Number(c.amount), balance: Number(c.balance) })),
+        total,
+        page: input.page,
+        limit: input.limit,
+      };
     }),
 });

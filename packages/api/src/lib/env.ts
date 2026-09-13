@@ -1,4 +1,25 @@
 import { z } from 'zod';
+import dotenv from 'dotenv';
+import path from 'path';
+import fs from 'fs';
+
+// Standalone processes (socket server, scripts) don't get the framework
+// env loading that Next.js/Expo provide — walk up from cwd to load the
+// nearest .env. dotenv never overrides vars already present, so this is
+// a no-op when the framework has already loaded them.
+(function loadLocalEnv(): void {
+  let dir = process.cwd();
+  for (let i = 0; i < 5; i++) {
+    const candidate = path.join(dir, '.env');
+    if (fs.existsSync(candidate)) {
+      dotenv.config({ path: candidate });
+      return;
+    }
+    const parent = path.dirname(dir);
+    if (parent === dir) break;
+    dir = parent;
+  }
+})();
 
 const envSchema = z.object({
   // ── Required ──────────────────────────────────────────
@@ -74,14 +95,49 @@ export type Env = z.infer<typeof envSchema>;
 
 let _env: Env | null = null;
 
+/** Known weak/default secrets that must never be used in production. */
+const WEAK_SECRETS = [
+  'test-access-secret-at-least-32-chars-long!!',
+  'test-access-secret-at-least-32-characters-!!',
+  'test-refresh-secret-at-least-32-characters!!',
+  'dev-access-secret-change-me-in-production!!',
+  'dev-refresh-secret-change-me-in-production!!',
+  'change-me',
+  'secret',
+  'password',
+];
+
+function validateProductionSecrets(env: Env): void {
+  if (env.NODE_ENV !== 'production') return;
+
+  const weakAccess = WEAK_SECRETS.some((s) => env.JWT_ACCESS_SECRET.includes(s));
+  const weakRefresh = WEAK_SECRETS.some((s) => env.JWT_REFRESH_SECRET.includes(s));
+
+  if (weakAccess) {
+    console.error(' PRODUCTION SAFETY: JWT_ACCESS_SECRET contains a known weak/default value.');
+    process.exit(1);
+  }
+  if (weakRefresh) {
+    console.error(' PRODUCTION SAFETY: JWT_REFRESH_SECRET contains a known weak/default value.');
+    process.exit(1);
+  }
+  if (env.JWT_ACCESS_SECRET === env.JWT_REFRESH_SECRET) {
+    console.error(
+      ' PRODUCTION SAFETY: JWT_ACCESS_SECRET and JWT_REFRESH_SECRET must be different.',
+    );
+    process.exit(1);
+  }
+}
+
 export function getEnv(): Env {
   if (!_env) {
     const parsed = envSchema.safeParse(process.env);
     if (!parsed.success) {
-      console.error('❌ Invalid environment variables:', parsed.error.flatten().fieldErrors);
+      console.error(' Invalid environment variables:', parsed.error.flatten().fieldErrors);
       process.exit(1);
     }
     _env = parsed.data;
+    validateProductionSecrets(_env);
   }
   return _env;
 }

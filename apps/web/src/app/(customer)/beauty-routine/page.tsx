@@ -1,66 +1,258 @@
 'use client';
 
+import Link from 'next/link';
 import { api } from '@/lib/trpc';
-import { Card, CardSkeleton, ErrorAlert, Button } from '@galaxy/ui';
+import { Card, DetailSkeleton, ErrorAlert, Button } from '@galaxy/ui';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
+import { useLocale } from '@/components/LocaleProvider';
+import type { TranslationKey } from '@galaxy/shared';
 
-const SKIN_ROUTINES: Record<string, { morning: string[]; evening: string[]; weekly: string[] }> = {
-  oily: { morning: ['غسول منقي', 'تونر للتحكم بالزيوت', 'مرطب خفيف خالٍ من الزيوت', 'واقي شمس'], evening: ['مزيل مكياج', 'غسول منقي', 'تونر', 'سيروم نياسيناميد', 'مرطب ليلي خفيف'], weekly: ['ماسك طين مرة أسبوعياً', 'تقشير كيميائي خفيف'] },
-  dry: { morning: ['غسول كريمي', 'تونر مرطب', 'سيروم هيالورونيك أسيد', 'مرطب غني', 'واقي شمس'], evening: ['زيت تنظيف', 'غسول كريمي', 'تونر مرطب', 'سيروم فيتامين E', 'مرطب ليلي غني'], weekly: ['ماسك ترطيب مكثف', 'زيت وجه مغذٍ'] },
-  combination: { morning: ['غسول متوازن', 'تونر للبشرة المختلطة', 'مرطب خفيف للمنطقة الدهنية', 'مرطب أغنى للخدين', 'واقي شمس'], evening: ['مزيل مكياج', 'غسول متوازن', 'تونر', 'سيروم للبشرة', 'مرطب ليلي'], weekly: ['ماسك متعدد المناطق', 'تقشير لطيف'] },
-  sensitive: { morning: ['غسول لطيف خالٍ من العطور', 'تونر مهدئ', 'مرطب مهدئ', 'واقي شمس معدني'], evening: ['مزيل مكياج لطيف', 'غسول لطيف', 'سيروم مهدئ', 'مرطب ليلي مهدئ'], weekly: ['ماسك مهدئ بالألوفيرا', 'تجنب التقشير القوي'] },
-  normal: { morning: ['غسول لطيف', 'تونر', 'مرطب', 'واقي شمس'], evening: ['مزيل مكياج', 'غسول لطيف', 'سيروم مضاد للأكسدة', 'مرطب ليلي'], weekly: ['تقشير لطيف', 'ماسك ترطيب'] },
+const SKIN_ROUTINES: Record<
+  string,
+  { morning: TranslationKey[]; evening: TranslationKey[]; weekly: TranslationKey[] }
+> = {
+  oily: {
+    morning: [
+      'routine.step.cleansingFoam',
+      'routine.step.oilControlToner',
+      'routine.step.lightOilFreeMoisturizer',
+      'routine.step.sunscreen',
+    ],
+    evening: [
+      'routine.step.makeupRemover',
+      'routine.step.cleansingFoam',
+      'routine.step.toner',
+      'routine.step.niacinamideSerum',
+      'routine.step.lightNightMoisturizer',
+    ],
+    weekly: ['routine.step.clayMask', 'routine.step.chemicalExfoliation'],
+  },
+  dry: {
+    morning: [
+      'routine.step.creamyCleanser',
+      'routine.step.hydratingToner',
+      'routine.step.hyaluronicSerum',
+      'routine.step.richMoisturizer',
+      'routine.step.sunscreen',
+    ],
+    evening: [
+      'routine.step.cleansingOil',
+      'routine.step.creamyCleanser',
+      'routine.step.hydratingToner',
+      'routine.step.vitaminESerum',
+      'routine.step.richNightMoisturizer',
+    ],
+    weekly: ['routine.step.intenseHydrationMask', 'routine.step.nourishingFaceOil'],
+  },
+  combination: {
+    morning: [
+      'routine.step.balancedCleanser',
+      'routine.step.combinationToner',
+      'routine.step.lightMoisturizerTzone',
+      'routine.step.richerMoisturizerCheeks',
+      'routine.step.sunscreen',
+    ],
+    evening: [
+      'routine.step.makeupRemover',
+      'routine.step.balancedCleanser',
+      'routine.step.toner',
+      'routine.step.skinSerum',
+      'routine.step.nightMoisturizer',
+    ],
+    weekly: ['routine.step.zoneMask', 'routine.step.gentleExfoliation'],
+  },
+  sensitive: {
+    morning: [
+      'routine.step.fragranceFreeCleanser',
+      'routine.step.soothingToner',
+      'routine.step.soothingMoisturizer',
+      'routine.step.mineralSunscreen',
+    ],
+    evening: [
+      'routine.step.gentleMakeupRemover',
+      'routine.step.gentleCleanser',
+      'routine.step.soothingSerum',
+      'routine.step.soothingNightMoisturizer',
+    ],
+    weekly: ['routine.step.aloeMask', 'routine.step.avoidHarshExfoliation'],
+  },
+  normal: {
+    morning: [
+      'routine.step.gentleCleanser',
+      'routine.step.toner',
+      'routine.step.moisturizer',
+      'routine.step.sunscreen',
+    ],
+    evening: [
+      'routine.step.makeupRemover',
+      'routine.step.gentleCleanser',
+      'routine.step.antioxidantSerum',
+      'routine.step.nightMoisturizer',
+    ],
+    weekly: ['routine.step.gentleExfoliation', 'routine.step.moisturizingMask'],
+  },
 };
 
-const HAIR_ROUTINES: Record<string, string[]> = {
-  straight: ['شامبو خفيف', 'بلسم مرطب', 'سيروم لمعان', 'حماية من الحرارة قبل التصفيف'],
-  wavy: ['شامبو للشعر المموج', 'بلسم', 'كريم تصفيف للتمويجات', 'زيت أرغان للأطراف'],
-  curly: ['شامبو خالٍ من السلفات', 'بلسم عميق', 'كريم تجعيد', 'زيت جوز الهند', 'جل تصفيف'],
-  coily: ['شامبو مرطب', 'بلسم عميق', 'زبدة الشيا', 'زيت الخروع', 'واقي حراري'],
+const HAIR_ROUTINES: Record<string, TranslationKey[]> = {
+  straight: [
+    'routine.step.lightShampoo',
+    'routine.step.hydratingConditioner',
+    'routine.step.shineSerum',
+    'routine.step.heatProtection',
+  ],
+  wavy: [
+    'routine.step.wavyShampoo',
+    'routine.step.conditioner',
+    'routine.step.curlCream',
+    'routine.step.arganOil',
+  ],
+  curly: [
+    'routine.step.sulfateFreeShampoo',
+    'routine.step.deepConditioner',
+    'routine.step.curlDefiningCream',
+    'routine.step.coconutOil',
+    'routine.step.stylingGel',
+  ],
+  coily: [
+    'routine.step.hydratingShampoo',
+    'routine.step.deepConditioner',
+    'routine.step.sheaButter',
+    'routine.step.castorOil',
+    'routine.step.heatProtectant',
+  ],
 };
 
 export default function BeautyRoutinePage(): JSX.Element {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const { data: profile, isLoading, isError, refetch } = api.beautyProfile.get.useQuery() as any;
+  const { t } = useLocale();
+  const { data: profile, isLoading, isError, refetch } = api.beautyProfile.get.useQuery();
 
-  const skinRoutine = profile?.skinType ? (SKIN_ROUTINES[profile.skinType as string] || SKIN_ROUTINES['normal']) : null;
-  const hairRoutine = profile?.hairType ? (HAIR_ROUTINES[profile.hairType as string] || HAIR_ROUTINES['straight']) : null;
+  const skinRoutine = profile?.skinType
+    ? SKIN_ROUTINES[profile.skinType as string] || SKIN_ROUTINES['normal']
+    : null;
+  const hairRoutine = profile?.hairType
+    ? HAIR_ROUTINES[profile.hairType as string] || HAIR_ROUTINES['straight']
+    : null;
 
   return (
-    <DashboardLayout role="CUSTOMER">
+    <DashboardLayout userRole="CUSTOMER">
       <div className="mx-auto max-w-3xl space-y-6">
-        <h1 className="text-2xl font-bold text-text-primary dark:text-gray-100">🌅 روتيني الجمالي</h1>
-        <p className="text-sm text-text-secondary">روتين يومي مخصص لكِ بناءً على ملفكِ الجمالي</p>
+        <h1 className="text-2xl font-bold text-text-primary dark:text-gray-100">
+          {t('routine.title')}
+        </h1>
+        <p className="text-sm text-text-secondary">{t('routine.subtitle')}</p>
 
-        {isLoading ? <CardSkeleton /> : isError ? <ErrorAlert message="فشل تحميل الملف" onRetry={() => refetch()} /> : !profile ? (
+        {isLoading ? (
+          <DetailSkeleton />
+        ) : isError ? (
+          <ErrorAlert message={t('routine.loadError')} onRetry={() => refetch()} />
+        ) : !profile ? (
           <Card padding="lg" className="text-center">
-            <span className="text-5xl">💄</span>
-            <p className="mt-4 text-text-secondary">أكملي ملفكِ الجمالي للحصول على روتين مخصص</p>
-            {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
-            <a href="/beauty-profile" className="mt-4 inline-block"><Button>أكملي ملفكِ</Button></a>
+            <span className="text-5xl">📝</span>
+            <p className="mt-4 text-text-secondary">{t('routine.noProfile')}</p>
+            <a href="/beauty-profile" className="mt-4 inline-block">
+              <Button>{t('routine.completeProfile')}</Button>
+            </a>
           </Card>
         ) : (
           <>
             {/* Skin Routine */}
             <Card padding="lg">
-              <h3 className="text-lg font-bold mb-4">✨ روتين البشرة ({profile.skinType === 'oily' ? 'دهنية' : profile.skinType === 'dry' ? 'جافة' : profile.skinType === 'combination' ? 'مختلطة' : profile.skinType === 'sensitive' ? 'حساسة' : 'عادية'})</h3>
+              <h3 className="text-lg font-bold mb-4">
+                {t('routine.skinRoutineTitle')} (
+                {profile.skinType === 'oily'
+                  ? t('routine.skinType.oily')
+                  : profile.skinType === 'dry'
+                    ? t('routine.skinType.dry')
+                    : profile.skinType === 'combination'
+                      ? t('routine.skinType.combination')
+                      : profile.skinType === 'sensitive'
+                        ? t('routine.skinType.sensitive')
+                        : t('routine.skinType.normal')}
+                )
+              </h3>
               <div className="grid gap-4 sm:grid-cols-3">
-                <div><h4 className="font-semibold text-sm mb-2 text-amber-600">☀️ الصباح</h4><ul className="space-y-1">{skinRoutine?.morning.map((s, i) => <li key={i} className="text-sm text-text-secondary dark:text-gray-400 flex gap-2"><span>•</span> {s}</li>)}</ul></div>
-                <div><h4 className="font-semibold text-sm mb-2 text-indigo-600">🌙 المساء</h4><ul className="space-y-1">{skinRoutine?.evening.map((s, i) => <li key={i} className="text-sm text-text-secondary dark:text-gray-400 flex gap-2"><span>•</span> {s}</li>)}</ul></div>
-                <div><h4 className="font-semibold text-sm mb-2 text-purple-600">📅 أسبوعي</h4><ul className="space-y-1">{skinRoutine?.weekly.map((s, i) => <li key={i} className="text-sm text-text-secondary dark:text-gray-400 flex gap-2"><span>•</span> {s}</li>)}</ul></div>
+                <div>
+                  <h4 className="font-semibold text-sm mb-2 text-amber-600">
+                    {' '}
+                    {t('routine.morning')}
+                  </h4>
+                  <ul className="space-y-1">
+                    {skinRoutine?.morning.map((s, i) => (
+                      <li
+                        key={i}
+                        className="text-sm text-text-secondary dark:text-text-tertiary flex gap-2"
+                      >
+                        <span>•</span> {t(s)}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+                <div>
+                  <h4 className="font-semibold text-sm mb-2 text-indigo-600">
+                    {' '}
+                    {t('routine.evening')}
+                  </h4>
+                  <ul className="space-y-1">
+                    {skinRoutine?.evening.map((s, i) => (
+                      <li
+                        key={i}
+                        className="text-sm text-text-secondary dark:text-text-tertiary flex gap-2"
+                      >
+                        <span>•</span> {t(s)}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+                <div>
+                  <h4 className="font-semibold text-sm mb-2 text-brand-600">
+                    {' '}
+                    {t('routine.weekly')}
+                  </h4>
+                  <ul className="space-y-1">
+                    {skinRoutine?.weekly.map((s, i) => (
+                      <li
+                        key={i}
+                        className="text-sm text-text-secondary dark:text-text-tertiary flex gap-2"
+                      >
+                        <span>•</span> {t(s)}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
               </div>
             </Card>
 
             {/* Hair Routine */}
             {hairRoutine && (
               <Card padding="lg">
-                <h3 className="text-lg font-bold mb-4">💇‍♀️ روتين الشعر ({profile.hairType === 'straight' ? 'مستقيم' : profile.hairType === 'wavy' ? 'مموج' : profile.hairType === 'curly' ? 'مجعد' : 'حلزوني'})</h3>
-                <ul className="space-y-1">{hairRoutine.map((s, i) => <li key={i} className="text-sm text-text-secondary dark:text-gray-400 flex gap-2"><span>•</span> {s}</li>)}</ul>
+                <h3 className="text-lg font-bold mb-4">
+                  {t('routine.hairRoutineTitle')} (
+                  {profile.hairType === 'straight'
+                    ? t('routine.hairType.straight')
+                    : profile.hairType === 'wavy'
+                      ? t('routine.hairType.wavy')
+                      : profile.hairType === 'curly'
+                        ? t('routine.hairType.curly')
+                        : t('routine.hairType.coily')}
+                  )
+                </h3>
+                <ul className="space-y-1">
+                  {hairRoutine.map((s, i) => (
+                    <li
+                      key={i}
+                      className="text-sm text-text-secondary dark:text-text-tertiary flex gap-2"
+                    >
+                      <span>•</span> {t(s)}
+                    </li>
+                  ))}
+                </ul>
               </Card>
             )}
 
             <div className="text-center">
-              <a href="/services" className="inline-block"><Button variant="outline">احجزي خدمات العناية</Button></a>
+              <Link href="/services" className="inline-block">
+                <Button variant="outline">{t('routine.bookCareServices')}</Button>
+              </Link>
             </div>
           </>
         )}

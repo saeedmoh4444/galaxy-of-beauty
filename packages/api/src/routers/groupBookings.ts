@@ -5,16 +5,23 @@ import { customerProcedure, adminProcedure, router } from '../trpc';
 export const groupBookingRouter = router({
   // Create a group booking
   create: customerProcedure
-    .input(z.object({
-      name: z.string().min(2).max(200),
-      theme: z.enum(['bridal', 'birthday', 'girls_night', 'family', 'other']).optional(),
-      discountPercent: z.number().min(0).max(30).default(10),
-      members: z.array(z.object({
-        name: z.string().min(2),
-        serviceId: z.number().int().positive(),
-        technicianId: z.number().int().positive().optional(),
-      })).min(2).max(20),
-    }))
+    .input(
+      z.object({
+        name: z.string().min(2).max(200),
+        theme: z.enum(['bridal', 'birthday', 'girls_night', 'family', 'other']).optional(),
+        discountPercent: z.number().min(0).max(30).default(10),
+        members: z
+          .array(
+            z.object({
+              name: z.string().min(2),
+              serviceId: z.number().int().positive(),
+              technicianId: z.number().int().positive().optional(),
+            }),
+          )
+          .min(2)
+          .max(20),
+      }),
+    )
     .mutation(async ({ ctx, input }) => {
       const group = await prisma.groupBooking.create({
         data: {
@@ -23,7 +30,7 @@ export const groupBookingRouter = router({
           theme: input.theme || 'other',
           discountPercent: input.discountPercent,
           members: {
-            create: input.members.map(m => ({
+            create: input.members.map((m) => ({
               name: m.name,
               serviceId: m.serviceId,
               technicianId: m.technicianId,
@@ -42,7 +49,7 @@ export const groupBookingRouter = router({
       orderBy: { createdAt: 'desc' },
       include: { members: true },
     });
-    return groups.map(g => ({ ...g, totalAmount: Number(g.totalAmount) }));
+    return groups.map((g) => ({ ...g, totalAmount: Number(g.totalAmount) }));
   }),
 
   // Get group booking by ID
@@ -70,6 +77,6 @@ export const groupBookingRouter = router({
         }),
         prisma.groupBooking.count(),
       ]);
-      return { items: items.map(g => ({ ...g, totalAmount: Number(g.totalAmount) })), total };
+      return { items: items.map((g) => ({ ...g, totalAmount: Number(g.totalAmount) })), total };
     }),
 });

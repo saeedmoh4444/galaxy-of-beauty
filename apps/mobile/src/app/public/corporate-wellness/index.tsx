@@ -1,47 +1,82 @@
 import { View, Text, ScrollView, TouchableOpacity, StyleSheet, RefreshControl } from 'react-native';
-import { trpc } from '@/lib/api';
-import { useState, useEffect, useCallback } from 'react';
 import { SkeletonList } from '@/components/SkeletonCard';
+import { trpc } from '@/lib/trpc-react';
+import { useLocale } from '@/components/LocaleProvider';
+
+interface WellnessPlan {
+  id?: number;
+  emoji?: string;
+  nameAr?: string;
+  descAr?: string;
+}
 
 export default function CorporateWellnessScreen(): JSX.Element {
-  const [plans, setPlans] = useState<any[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [refreshing, setRefreshing] = useState(false);
+  const { t } = useLocale();
+  const plansQ = trpc.corporateWellness.plans.useQuery();
 
-  const fetch = useCallback((isRefresh = false) => {
-    if (isRefresh) setRefreshing(true); else setLoading(true);
-    ((trpc as any).corporateWellness.plans.query() as any).then((d: any) => { setPlans(d || []); setLoading(false); setRefreshing(false); }).catch(() => { setLoading(false); setRefreshing(false); });
-  }, []);
+  if (plansQ.isLoading) return <SkeletonList count={4} />;
 
-  useEffect(() => { fetch(); }, [fetch]);
-
-  if (loading) return <SkeletonList count={4} />;
+  const plans = (plansQ.data ?? []) as WellnessPlan[];
 
   return (
-    <ScrollView style={styles.c} contentContainerStyle={styles.i} refreshControl={<RefreshControl refreshing={refreshing} onRefresh={() => fetch(true)} colors={['#059669']} />}>
-      <Text style={styles.t}>🏢 عروض الشركات</Text>
-      <Text style={styles.sub}>باقات تجميل للشركات والمؤسسات</Text>
-      {plans.length === 0 ? <Text style={styles.e}>لا توجد باقات</Text> :
-        plans.map((p: any, i: number) => (
+    <ScrollView
+      style={styles.c}
+      contentContainerStyle={styles.i}
+      refreshControl={
+        <RefreshControl
+          refreshing={plansQ.isRefetching}
+          onRefresh={() => plansQ.refetch()}
+          colors={['#059669']}
+        />
+      }
+    >
+      <Text style={styles.t}>{t('mobile.public.corporate-wellness.title')}</Text>
+      <Text style={styles.sub}>{t('mobile.public.corporate-wellness.subtitle')}</Text>
+      {plans.length === 0 ? (
+        <Text style={styles.e}>{t('mobile.public.corporate-wellness.empty')}</Text>
+      ) : (
+        plans.map((p, i) => (
           <View key={i} style={styles.card}>
-            <Text style={styles.planEmoji}>{p.emoji as string ?? '🏢'}</Text>
-            <View style={{flex:1}}><Text style={styles.planName}>{p.nameAr as string}</Text><Text style={styles.planDesc}>{p.descAr as string}</Text></View>
-            <TouchableOpacity style={styles.inquireBtn}><Text style={styles.inquireText}>استفسار</Text></TouchableOpacity>
+            <Text style={styles.planEmoji}>{p.emoji ?? ''}</Text>
+            <View style={{ flex: 1 }}>
+              <Text style={styles.planName}>{p.nameAr}</Text>
+              <Text style={styles.planDesc}>{p.descAr}</Text>
+            </View>
+            <TouchableOpacity style={styles.inquireBtn}>
+              <Text style={styles.inquireText}>
+                {t('mobile.public.corporate-wellness.inquire')}
+              </Text>
+            </TouchableOpacity>
           </View>
         ))
-      }
+      )}
     </ScrollView>
   );
 }
 
 const styles = StyleSheet.create({
-  c: { flex: 1, backgroundColor: '#ecfdf5' }, i: { padding: 16, paddingTop: 30, paddingBottom: 40 },
+  c: { flex: 1, backgroundColor: '#ecfdf5' },
+  i: { padding: 16, paddingTop: 30, paddingBottom: 40 },
   t: { fontSize: 24, fontWeight: '800', color: '#059669', textAlign: 'center', marginBottom: 4 },
   sub: { fontSize: 13, color: '#9ca3af', textAlign: 'center', marginBottom: 20 },
   e: { fontSize: 14, color: '#9ca3af', textAlign: 'center', marginTop: 40 },
-  card: { flexDirection: 'row', alignItems: 'center', gap: 12, backgroundColor: '#fff', borderRadius: 14, padding: 14, marginBottom: 8 },
-  planEmoji: { fontSize: 36 }, planName: { fontSize: 15, fontWeight: '700', color: '#111827' },
+  card: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 12,
+    backgroundColor: '#fff',
+    borderRadius: 14,
+    padding: 14,
+    marginBottom: 8,
+  },
+  planEmoji: { fontSize: 36 },
+  planName: { fontSize: 15, fontWeight: '700', color: '#111827' },
   planDesc: { fontSize: 12, color: '#6b7280', marginTop: 2 },
-  inquireBtn: { backgroundColor: '#059669', borderRadius: 10, paddingHorizontal: 14, paddingVertical: 8 },
+  inquireBtn: {
+    backgroundColor: '#059669',
+    borderRadius: 10,
+    paddingHorizontal: 14,
+    paddingVertical: 8,
+  },
   inquireText: { color: '#fff', fontSize: 12, fontWeight: '600' },
 });

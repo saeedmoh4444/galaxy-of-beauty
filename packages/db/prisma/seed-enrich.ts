@@ -1,5 +1,5 @@
 /**
- * Galaxy of Beauty — Seed Data Enrichment
+ * Dalal — Seed Data Enrichment
  *
  * Generates realistic production-scale data on top of the base seed.
  * Run AFTER `pnpm db:seed`:
@@ -46,16 +46,52 @@ function randomDate(daysAgo: number, hour?: number): Date {
   return d;
 }
 
-const PASSWORD_HASH = '$2b$12$WLl1knNaSSoIuae5Pjcd9.5IlMOPSEb8w5dd/22Kyxmkw5Sei2Wvi'; // Admin@123456
+const PASSWORD_HASH = '$2b$12$3EEqTDqBmYkYZ2baueS0I.J2EohI/RLelIDPk5jgvumJmTceUTtJe'; // Admin@123456 (verified)
 
-const CITIES = ['الرياض', 'جدة', 'الدمام', 'الخبر', 'المدينة المنورة', 'الطائف', 'أبها', 'تبوك', 'بريدة', 'حائل'];
+const CITIES = [
+  'الرياض',
+  'جدة',
+  'الدمام',
+  'الخبر',
+  'المدينة المنورة',
+  'الطائف',
+  'أبها',
+  'تبوك',
+  'بريدة',
+  'حائل',
+];
 
 const CUSTOMER_NAMES = [
-  'نورة العمري', 'سارة الحربي', 'مها القحطاني', 'ريم المطيري', 'هند الشمري', 'لطيفة العتيبي',
-  'عبير الزهراني', 'منال الغامدي', 'دلال السبيعي', 'نوف الرشيد', 'أمل الخالدي', 'غادة الدوسري',
-  'شهد السالم', 'رغد العنزي', 'جواهر المالكي', 'بسمة الفيصل', 'أروى الشهري', 'دانه الجهني',
-  'هيا البلوي', 'نورة السديري', 'ملاك العسيري', 'لين القحطاني', 'سلمى المطيري', 'ديما الشمري',
-  'نوف العتيبي', 'رزان الحربي', 'أسيل الزهراني', 'جود الغامدي', 'تالا السبيعي', 'لمى الرشيد',
+  'نورة العمري',
+  'سارة الحربي',
+  'مها القحطاني',
+  'ريم المطيري',
+  'هند الشمري',
+  'لطيفة العتيبي',
+  'عبير الزهراني',
+  'منال الغامدي',
+  'دلال السبيعي',
+  'نوف الرشيد',
+  'أمل الخالدي',
+  'غادة الدوسري',
+  'شهد السالم',
+  'رغد العنزي',
+  'جواهر المالكي',
+  'بسمة الفيصل',
+  'أروى الشهري',
+  'دانه الجهني',
+  'هيا البلوي',
+  'نورة السديري',
+  'ملاك العسيري',
+  'لين القحطاني',
+  'سلمى المطيري',
+  'ديما الشمري',
+  'نوف العتيبي',
+  'رزان الحربي',
+  'أسيل الزهراني',
+  'جود الغامدي',
+  'تالا السبيعي',
+  'لمى الرشيد',
 ];
 
 const TECH_NAMES = [
@@ -74,7 +110,7 @@ const TECH_NAMES = [
 ];
 
 const REVIEW_COMMENTS_AR = [
-  'خدمة ممتازة وأنيقة! أنصح بها بشدة 🌟',
+  'خدمة ممتازة وأنيقة! أنصح بها بشدة ',
   'رائعة جداً، سأكرر التجربة بالتأكيد',
   'محترفة ونظيفة، شكراً جزيلاً',
   'أفضل فنية جربتها في الرياض',
@@ -92,28 +128,29 @@ const REVIEW_COMMENTS_AR = [
 ];
 
 async function main() {
-  console.log('🌱 Enriching Galaxy of Beauty database...\n');
+  console.log(' Enriching Dalal database...\n');
 
   // ── Get existing data ──
   const existingUsers = await db.user.findMany({ include: { wallet: true } });
   const existingCustomers = existingUsers.filter((u: any) => u.role === 'CUSTOMER');
   const existingTechs = await db.technician.findMany({ include: { user: true } });
   const allServices = await db.service.findMany({ include: { variants: true } });
-  const allCategories = await db.category.findMany();
+  await db.category.findMany();
 
-  console.log(`   Found: ${existingCustomers.length} customers, ${existingTechs.length} techs, ${allServices.length} services`);
+  console.log(
+    `   Found: ${existingCustomers.length} customers, ${existingTechs.length} techs, ${allServices.length} services`,
+  );
 
   // ═══════════════════════════════════════════════════════════════
   // 1. ADD 24 MORE CUSTOMERS
   // ═══════════════════════════════════════════════════════════════
   const remainingNames = CUSTOMER_NAMES.filter(
-    n => !existingCustomers.some((c: any) => c.name === n),
+    (n) => !existingCustomers.some((c: any) => c.name === n),
   );
   const newCustomerIds: number[] = [];
 
   for (let i = 0; i < 24 && i < remainingNames.length; i++) {
     const name = remainingNames[i]!;
-    const city = pick(CITIES);
     const email = `customer_enrich_${i + 1}@test.com`;
     const u = await db.user.create({
       data: {
@@ -134,13 +171,31 @@ async function main() {
     existingCustomers.push(u);
     newCustomerIds.push(u.id);
   }
-  console.log(`✅ ${newCustomerIds.length} new customers (total: ${existingCustomers.length})`);
+  console.log(` ${newCustomerIds.length} new customers (total: ${existingCustomers.length})`);
 
   // ═══════════════════════════════════════════════════════════════
   // 1b. CREATE ADDRESSES for all customers (required for bookings)
   // ═══════════════════════════════════════════════════════════════
-  const AREAS = ['الملز', 'الروضة', 'النسيم', 'الشفا', 'العليا', 'الحمراء', 'البحر', 'النخيل', 'الورود', 'المروج'];
-  const STREETS = ['شارع التحلية', 'طريق الملك فهد', 'شارع الأمير سلطان', 'طريق الملك عبدالله', 'شارع التخصصي', 'شارع العليا العام'];
+  const AREAS = [
+    'الملز',
+    'الروضة',
+    'النسيم',
+    'الشفا',
+    'العليا',
+    'الحمراء',
+    'البحر',
+    'النخيل',
+    'الورود',
+    'المروج',
+  ];
+  const STREETS = [
+    'شارع التحلية',
+    'طريق الملك فهد',
+    'شارع الأمير سلطان',
+    'طريق الملك عبدالله',
+    'شارع التخصصي',
+    'شارع العليا العام',
+  ];
 
   for (const cust of existingCustomers) {
     const hasAddress = await db.address.findFirst({ where: { userId: cust.id } });
@@ -161,16 +216,18 @@ async function main() {
           isDefault: true,
         },
       });
-    } catch { /* skip */ }
+    } catch {
+      /* skip */
+    }
   }
   const addressCount = await db.address.count();
-  console.log(`✅ Addresses created (total: ${addressCount})`);
+  console.log(` Addresses created (total: ${addressCount})`);
 
   // ═══════════════════════════════════════════════════════════════
   // 2. ADD 9 MORE TECHNICIANS (target: 12 total, 3 per city)
   // ═══════════════════════════════════════════════════════════════
   const remainingTechs = TECH_NAMES.filter(
-    t => !existingTechs.some((et: any) => et.user.name === t.name),
+    (t) => !existingTechs.some((et: any) => et.user.name === t.name),
   );
   const newTechRecords: any[] = [];
 
@@ -202,7 +259,10 @@ async function main() {
         completedBookings: randomInt(5, 200),
         kycStatus: Math.random() > 0.2 ? 'VERIFIED' : 'SUBMITTED',
         hourlyRate: randomInt(50, 200),
-        bioJson: { ar: `خبيرة ${td.speciality} مع ${randomInt(2, 10)} سنوات خبرة`, en: `${td.speciality} expert` },
+        bioJson: {
+          ar: `خبيرة ${td.speciality} مع ${randomInt(2, 10)} سنوات خبرة`,
+          en: `${td.speciality} expert`,
+        },
         bufferMinutes: 15,
         isEcoFriendly: Math.random() > 0.6,
       },
@@ -221,12 +281,14 @@ async function main() {
             isActive: true,
           },
         });
-      } catch { /* duplicate, skip */ }
+      } catch {
+        /* duplicate, skip */
+      }
     }
     newTechRecords.push({ ...tech, user: u });
   }
   const allTechs = [...existingTechs.map((t: any) => ({ ...t, user: t.user })), ...newTechRecords];
-  console.log(`✅ ${newTechRecords.length} new technicians (total: ${allTechs.length})`);
+  console.log(` ${newTechRecords.length} new technicians (total: ${allTechs.length})`);
 
   // ═══════════════════════════════════════════════════════════════
   // 3. GENERATE SLOTS for new techs (next 14 days)
@@ -248,14 +310,22 @@ async function main() {
         const end = new Date(start.getTime() + 60 * 60000);
         try {
           await db.availabilitySlot.create({
-            data: { technicianId: tech.id, startAt: start, endAt: end, isAvailable: true, isBooked: false },
+            data: {
+              technicianId: tech.id,
+              startAt: start,
+              endAt: end,
+              isAvailable: true,
+              isBooked: false,
+            },
           });
           newSlotCount++;
-        } catch { /* skip collisions */ }
+        } catch {
+          /* skip collisions */
+        }
       }
     }
   }
-  console.log(`✅ ${newSlotCount} new availability slots`);
+  console.log(` ${newSlotCount} new availability slots`);
 
   // ═══════════════════════════════════════════════════════════════
   // 4. GENERATE 500 BOOKINGS (realistic patterns)
@@ -282,12 +352,11 @@ async function main() {
         const customer = pick(existingCustomers);
         const tech = pick(allTechs);
         const service = pick(allServices);
-        const variant = service.variants?.length > 0 && Math.random() > 0.6
-          ? pick(service.variants)
-          : null;
+        const variant =
+          service.variants?.length > 0 && Math.random() > 0.6 ? pick(service.variants) : null;
 
         // Date/time with peak-hour bias
-        let daysAgo = randomInt(0, bucket.daysAgo);
+        const daysAgo = randomInt(0, bucket.daysAgo);
         const date = new Date();
         date.setDate(date.getDate() - daysAgo);
 
@@ -333,11 +402,11 @@ async function main() {
         newBookingCount++;
       } catch (err: any) {
         // Skip individual booking errors (missing address, etc.)
-        if (i < 5) console.log(`   ⚠️ Booking skipped: ${err.message?.slice(0, 60)}`);
+        if (i < 5) console.log(`    Booking skipped: ${err.message?.slice(0, 60)}`);
       }
     }
   }
-  console.log(`✅ ${newBookingCount} bookings (target: 500, across 30 days)`);
+  console.log(` ${newBookingCount} bookings (target: 500, across 30 days)`);
 
   // ═══════════════════════════════════════════════════════════════
   // 5. GENERATE 100 REVIEWS
@@ -362,9 +431,11 @@ async function main() {
         },
       });
       reviewCount++;
-    } catch { /* duplicate booking review, skip */ }
+    } catch {
+      /* duplicate booking review, skip */
+    }
   }
-  console.log(`✅ ${reviewCount} reviews`);
+  console.log(` ${reviewCount} reviews`);
 
   // ═══════════════════════════════════════════════════════════════
   // 6. GENERATE 80 WALLET TRANSACTIONS
@@ -399,10 +470,10 @@ async function main() {
       });
       walletTxCount++;
     } catch (err: any) {
-      if (i < 3) console.log(`   ⚠️ Wallet tx skipped: ${err.message?.slice(0, 60)}`);
+      if (i < 3) console.log(`    Wallet tx skipped: ${err.message?.slice(0, 60)}`);
     }
   }
-  console.log(`✅ ${walletTxCount} wallet transactions`);
+  console.log(` ${walletTxCount} wallet transactions`);
 
   // ═══════════════════════════════════════════════════════════════
   // 7. LOYALTY ACCOUNTS for all customers (1→20)
@@ -416,9 +487,12 @@ async function main() {
       if (existing) continue;
 
       const tier = pick(TIERS);
-      const lifetimePoints = tier === 'PLATINUM' ? randomInt(2000, 5000)
-        : tier === 'GOLD' ? randomInt(500, 1999)
-        : randomInt(0, 499);
+      const lifetimePoints =
+        tier === 'PLATINUM'
+          ? randomInt(2000, 5000)
+          : tier === 'GOLD'
+            ? randomInt(500, 1999)
+            : randomInt(0, 499);
 
       await db.loyaltyAccount.create({
         data: {
@@ -429,9 +503,11 @@ async function main() {
         },
       });
       loyaltyCount++;
-    } catch { /* already exists */ }
+    } catch {
+      /* already exists */
+    }
   }
-  console.log(`✅ ${loyaltyCount} loyalty accounts (total now ~${loyaltyCount + 1})`);
+  console.log(` ${loyaltyCount} loyalty accounts (total now ~${loyaltyCount + 1})`);
 
   // ═══════════════════════════════════════════════════════════════
   // 8. GENERATE 50 NOTIFICATIONS
@@ -454,7 +530,14 @@ async function main() {
           userId: customer.id,
           type: tmpl.type,
           titleJson: { ar: tmpl.titleAr, en: tmpl.titleAr },
-          bodyJson: { ar: tmpl.bodyAr.replace('{tech}', pick(TECH_NAMES).name).replace('{time}', `${randomInt(9, 21)}:00`).replace('{pct}', `${randomInt(10, 50)}`).replace('{amount}', `${randomInt(10, 100)}`), en: '' },
+          bodyJson: {
+            ar: tmpl.bodyAr
+              .replace('{tech}', pick(TECH_NAMES).name)
+              .replace('{time}', `${randomInt(9, 21)}:00`)
+              .replace('{pct}', `${randomInt(10, 50)}`)
+              .replace('{amount}', `${randomInt(10, 100)}`),
+            en: '',
+          },
           isRead: Math.random() > 0.4,
           readAt: Math.random() > 0.4 ? randomDate(7) : null,
           sentVia: pick([['in_app'], ['email', 'in_app'], ['push', 'in_app']]),
@@ -462,9 +545,11 @@ async function main() {
         },
       });
       notifCount++;
-    } catch { /* skip */ }
+    } catch {
+      /* skip */
+    }
   }
-  console.log(`✅ ${notifCount} notifications`);
+  console.log(` ${notifCount} notifications`);
 
   // ═══════════════════════════════════════════════════════════════
   // 9. GENERATE 40 PROMO CODE USAGES
@@ -487,9 +572,11 @@ async function main() {
         },
       });
       promoUsageCount++;
-    } catch { /* duplicate, skip */ }
+    } catch {
+      /* duplicate, skip */
+    }
   }
-  console.log(`✅ ${promoUsageCount} promo code usages`);
+  console.log(` ${promoUsageCount} promo code usages`);
 
   // ═══════════════════════════════════════════════════════════════
   // 10. GENERATE 10 GIFT CARD TRANSACTIONS
@@ -511,9 +598,11 @@ async function main() {
         },
       });
       giftCardTxCount++;
-    } catch { /* skip */ }
+    } catch {
+      /* skip */
+    }
   }
-  console.log(`✅ ${giftCardTxCount} gift card transactions`);
+  console.log(` ${giftCardTxCount} gift card transactions`);
 
   // ═══════════════════════════════════════════════════════════════
   // SUMMARY
@@ -529,7 +618,7 @@ async function main() {
   const finalPromoUsages = await db.promoUsage.count();
   const finalGiftCardTxs = await db.giftCardTransaction.count();
 
-  console.log('\n📊 FINAL COUNTS:');
+  console.log('\n FINAL COUNTS:');
   console.log(`   Customers:      ${finalCustomers}`);
   console.log(`   Technicians:    ${finalTechs}`);
   console.log(`   Bookings:       ${finalBookings}`);
@@ -539,11 +628,13 @@ async function main() {
   console.log(`   Notifications:  ${finalNotifs}`);
   console.log(`   Promo Usages:   ${finalPromoUsages}`);
   console.log(`   Gift Card Txns: ${finalGiftCardTxs}`);
-  console.log('\n🎉 Seed enrichment complete!\n');
+  console.log('\n Seed enrichment complete!\n');
 }
 
 main()
-  .then(async () => { await prisma.$disconnect(); })
+  .then(async () => {
+    await prisma.$disconnect();
+  })
   .catch(async (e) => {
     console.error('Enrichment failed:', e);
     await prisma.$disconnect();

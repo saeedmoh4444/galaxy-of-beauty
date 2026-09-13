@@ -57,11 +57,11 @@ pnpm lint           # Should be clean
 
 ## Test Credentials
 
-| Role | Email | Password |
-|------|-------|----------|
-| Admin | `admin@galaxyofbeauty.sa` | `Admin@123456` |
-| Customer | `customer@test.com` | `Admin@123456` |
-| Technician | `tech1@test.com` | `Admin@123456` |
+| Role       | Email                     | Password       |
+| ---------- | ------------------------- | -------------- |
+| Admin      | `admin@galaxyofbeauty.sa` | `Admin@123456` |
+| Customer   | `customer@test.com`       | `Admin@123456` |
+| Technician | `tech1@test.com`          | `Admin@123456` |
 
 All seed users use `Admin@123456`.
 
@@ -70,6 +70,7 @@ All seed users use `Admin@123456`.
 ## Adding a New Feature
 
 ### 1. Database (if needed)
+
 ```bash
 # Edit packages/db/prisma/schema.prisma
 # Add your model
@@ -79,6 +80,7 @@ pnpm db:generate           # Regenerate Prisma client
 ```
 
 ### 2. API Router
+
 ```typescript
 // packages/api/src/routers/myFeature.ts
 import { z } from 'zod';
@@ -94,6 +96,7 @@ export const myFeatureRouter = router({
 ```
 
 ### 3. Register Router
+
 ```typescript
 // packages/api/src/domains/<domain>/index.ts
 export { myFeatureRouter } from '../../routers/myFeature';
@@ -104,6 +107,7 @@ import { myFeatureRouter } from '../domains/<domain>';
 ```
 
 ### 4. Web Page
+
 ```typescript
 // apps/web/src/app/(customer)/my-feature/page.tsx
 'use client';
@@ -112,7 +116,7 @@ import { CardSkeleton, ErrorAlert, EmptyState } from '@galaxy/ui';
 
 export default function MyFeaturePage() {
   const { data, isLoading, isError, isEmpty, refetch } = useMyData();
-  
+
   if (isLoading) return <CardSkeleton />;
   if (isError) return <ErrorAlert message="..." onRetry={refetch} />;
   if (isEmpty) return <EmptyState title="..." />;
@@ -121,6 +125,7 @@ export default function MyFeaturePage() {
 ```
 
 ### 5. Mobile Screen
+
 ```typescript
 // apps/mobile/src/app/customer/my-feature/index.tsx
 import { ScreenState } from '@/components/ScreenState';
@@ -137,6 +142,7 @@ export default function MyFeatureScreen() {
 ```
 
 ### 6. Tests (MANDATORY)
+
 ```typescript
 // packages/api/src/__tests__/my-feature.test.ts
 import { describe, it, expect } from 'vitest';
@@ -149,6 +155,7 @@ describe('MyFeature', () => {
 ```
 
 ### 7. Verify and Commit
+
 ```bash
 pnpm type-check && pnpm test && pnpm build
 git add -A

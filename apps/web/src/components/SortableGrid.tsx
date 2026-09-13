@@ -32,14 +32,9 @@ interface SortableItemProps {
 }
 
 function SortableItem({ id, children, className }: SortableItemProps) {
-  const {
-    attributes,
-    listeners,
-    setNodeRef,
-    transform,
-    transition,
-    isDragging,
-  } = useSortable({ id });
+  const { attributes, listeners, setNodeRef, transform, transition, isDragging } = useSortable({
+    id,
+  });
 
   const style = {
     transform: CSS.Transform.toString(transform),
@@ -91,7 +86,7 @@ export function SortableGrid<T>({
   gap = 'gap-4',
   className = '',
 }: SortableGridProps<T>) {
-  const [_activeId, setActiveId] = useState<string | number | null>(null);
+  const [, setActiveId] = useState<string | number | null>(null);
 
   const sensors = useSensors(
     useSensor(PointerSensor, {
@@ -129,10 +124,7 @@ export function SortableGrid<T>({
       onDragStart={handleDragStart}
       onDragEnd={handleDragEnd}
     >
-      <SortableContext
-        items={items.map(getItemId)}
-        strategy={rectSortingStrategy}
-      >
+      <SortableContext items={items.map(getItemId)} strategy={rectSortingStrategy}>
         <div className={cn('grid', columns, gap, className)}>
           {items.map((item, index) => (
             <SortableItem key={getItemId(item)} id={getItemId(item)}>

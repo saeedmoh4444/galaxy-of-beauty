@@ -1,78 +1,103 @@
-import { View, Text, TextInput, TouchableOpacity, StyleSheet, ActivityIndicator } from 'react-native';
-import { trpc } from '@/lib/api';
-import { useState, useEffect } from 'react';
+import {
+  View,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  StyleSheet,
+  ActivityIndicator,
+} from 'react-native';
+import { trpc } from '@/lib/trpc-react';
+import { useState } from 'react';
+import { useLocale } from '@/components/LocaleProvider';
+
+interface TwoFactorSetup {
+  secret?: string;
+  otpauthUrl?: string;
+}
 
 export default function TwoFactorScreen() {
-  const [loading, setLoading] = useState(true);
+  const { t } = useLocale();
   const [error, setError] = useState('');
-  const [enabled, setEnabled] = useState(false);
-  const [setupData, setSetupData] = useState<Record<string, unknown> | null>(null);
+  const [setupData, setSetupData] = useState<TwoFactorSetup | null>(null);
   const [code, setCode] = useState('');
   const [verifyMsg, setVerifyMsg] = useState('');
-  const [actionLoading, setActionLoading] = useState(false);
+  const [enabledOverride, setEnabledOverride] = useState<boolean | null>(null);
 
-  const fetchStatus = () => {
-    setLoading(true);
-    (trpc.auth.me.query() as unknown as Promise<Record<string, unknown>>)
-      .then((u) => { setEnabled(Boolean(u.twoFactorEnabled)); setLoading(false); })
-      .catch(() => { setError('فشل تحميل حالة المصادقة'); setLoading(false); });
-  };
+  const status = trpc.auth.me.useQuery(undefined, {
+    select: (u) => Boolean(u.twoFactorEnabled),
+  });
+  const enabled = enabledOverride ?? status.data ?? false;
 
-  useEffect(() => { fetchStatus(); }, []);
+  const setupMut = trpc.auth.setup2FA.useMutation({
+    onSuccess: (res) => setSetupData(res),
+    onError: (e) => setError(e.message ?? t('mobile.auth.setupFailed')),
+  });
 
-  const handleSetup = async () => {
-    setActionLoading(true);
-    try {
-      const res = await (trpc.auth.setup2FA as any).mutate({});
-      setSetupData(res as Record<string, unknown>);
-    } catch (e: any) { setError(e?.message ?? 'فشل الإعداد'); }
-    finally { setActionLoading(false); }
-  };
-
-  const handleVerify = async () => {
-    if (code.length !== 6) { setVerifyMsg('يرجى إدخال رمز مكون من 6 أرقام'); return; }
-    setActionLoading(true);
-    setVerifyMsg('');
-    try {
-      await (trpc.auth.verify2FA as any).mutate({ token: code });
-      setEnabled(true);
+  const verifyMut = trpc.auth.verify2FA.useMutation({
+    onSuccess: () => {
+      setEnabledOverride(true);
       setSetupData(null);
       setCode('');
-    } catch (e: any) { setVerifyMsg(e?.message ?? 'رمز غير صحيح'); }
-    finally { setActionLoading(false); }
+    },
+    onError: (e) => setVerifyMsg(e.message ?? t('mobile.auth.invalidCode')),
+  });
+
+  const disableMut = trpc.auth.disable2FA.useMutation({
+    onSuccess: () => setEnabledOverride(false),
+    onError: (e) => setError(e.message ?? t('mobile.auth.disableFailed')),
+  });
+
+  const handleSetup = () => setupMut.mutate({});
+
+  const handleVerify = () => {
+    if (code.length !== 6) {
+      setVerifyMsg(t('auth.otp6-error'));
+      return;
+    }
+    setVerifyMsg('');
+    verifyMut.mutate({ token: code });
   };
 
-  const handleDisable = async () => {
-    setActionLoading(true);
-    try {
-      await (trpc.auth.disable2FA as any).mutate({});
-      setEnabled(false);
-    } catch (e: any) { setError(e?.message ?? 'فشل التعطيل'); }
-    finally { setActionLoading(false); }
-  };
+  const handleDisable = () => disableMut.mutate({});
 
-  if (loading) return <ActivityIndicator color="#7c3aed" style={{ marginTop: 80 }} />;
+  if (status.isLoading) return <ActivityIndicator color="#7c3aed" style={{ marginTop: 80 }} />;
+  if (status.isError)
+    return (
+      <View style={styles.container}>
+        <Text style={styles.error}>{t('mobile.auth.statusLoadFailed')}</Text>
+      </View>
+    );
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>المصادقة الثنائية</Text>
+      <Text style={styles.title}>{t('mobile.auth.twoFactorTitle')}</Text>
 
       {error ? <Text style={styles.error}>{error}</Text> : null}
 
       {enabled ? (
         <View style={styles.card}>
           <Text style={styles.checkIcon}>✅</Text>
-          <Text style={styles.successText}>المصادقة الثنائية مفعلة</Text>
-          <Text style={styles.hint}>حسابك محمي برمز تحقق إضافي عند تسجيل الدخول</Text>
-          <TouchableOpacity style={[styles.btn, styles.dangerBtn]} onPress={handleDisable} disabled={actionLoading}>
-            {actionLoading ? <ActivityIndicator color="#fff" /> : <Text style={styles.btnText}>تعطيل المصادقة الثنائية</Text>}
+          <Text style={styles.successText}>{t('auth.2fa-enabled')}</Text>
+          <Text style={styles.hint}>{t('mobile.auth.twoFactorActiveHint')}</Text>
+          <TouchableOpacity
+            style={[styles.btn, styles.dangerBtn]}
+            onPress={handleDisable}
+            disabled={disableMut.isPending}
+          >
+            {disableMut.isPending ? (
+              <ActivityIndicator color="#fff" />
+            ) : (
+              <Text style={styles.btnText}>{t('auth.2fa-disable')}</Text>
+            )}
           </TouchableOpacity>
         </View>
       ) : setupData ? (
         <View style={styles.card}>
-          <Text style={styles.label}>الرمز السري (Secret):</Text>
-          <Text style={styles.secret} selectable>{setupData.secret as string}</Text>
-          <Text style={styles.hint}>انسخ الرمز السري إلى تطبيق المصادقة، ثم أدخل رمز التحقق للتأكيد</Text>
+          <Text style={styles.label}>{t('auth.2fa-secret')}</Text>
+          <Text style={styles.secret} selectable>
+            {setupData.secret}
+          </Text>
+          <Text style={styles.hint}>{t('mobile.auth.secretHint')}</Text>
           {verifyMsg ? <Text style={styles.error}>{verifyMsg}</Text> : null}
           <TextInput
             style={styles.input}
@@ -82,17 +107,29 @@ export default function TwoFactorScreen() {
             keyboardType="number-pad"
             maxLength={6}
           />
-          <TouchableOpacity style={styles.btn} onPress={handleVerify} disabled={actionLoading || code.length !== 6}>
-            {actionLoading ? <ActivityIndicator color="#fff" /> : <Text style={styles.btnText}>تأكيد وتفعيل</Text>}
+          <TouchableOpacity
+            style={styles.btn}
+            onPress={handleVerify}
+            disabled={verifyMut.isPending || code.length !== 6}
+          >
+            {verifyMut.isPending ? (
+              <ActivityIndicator color="#fff" />
+            ) : (
+              <Text style={styles.btnText}>{t('auth.2fa-confirm-enable')}</Text>
+            )}
           </TouchableOpacity>
         </View>
       ) : (
         <View style={styles.card}>
-          <Text style={styles.lockIcon}>🔐</Text>
-          <Text style={styles.subTitle}>إعداد المصادقة الثنائية</Text>
-          <Text style={styles.hint}>أضف طبقة حماية إضافية لحسابك باستخدام تطبيق المصادقة</Text>
-          <TouchableOpacity style={styles.btn} onPress={handleSetup} disabled={actionLoading}>
-            {actionLoading ? <ActivityIndicator color="#fff" /> : <Text style={styles.btnText}>بدء الإعداد</Text>}
+          <Text style={styles.lockIcon}>🔒</Text>
+          <Text style={styles.subTitle}>{t('auth.2fa-setup-title')}</Text>
+          <Text style={styles.hint}>{t('mobile.auth.setupHint')}</Text>
+          <TouchableOpacity style={styles.btn} onPress={handleSetup} disabled={setupMut.isPending}>
+            {setupMut.isPending ? (
+              <ActivityIndicator color="#fff" />
+            ) : (
+              <Text style={styles.btnText}>{t('auth.2fa-start-setup')}</Text>
+            )}
           </TouchableOpacity>
         </View>
       )}
@@ -102,17 +139,54 @@ export default function TwoFactorScreen() {
 
 const styles = StyleSheet.create({
   container: { flex: 1, backgroundColor: '#fff', padding: 24, justifyContent: 'center' },
-  title: { fontSize: 28, fontWeight: '800', color: '#111827', textAlign: 'center', marginBottom: 24 },
-  card: { backgroundColor: '#f9fafb', borderRadius: 16, padding: 24, alignItems: 'center', gap: 12 },
+  title: {
+    fontSize: 28,
+    fontWeight: '800',
+    color: '#111827',
+    textAlign: 'center',
+    marginBottom: 24,
+  },
+  card: {
+    backgroundColor: '#f9fafb',
+    borderRadius: 16,
+    padding: 24,
+    alignItems: 'center',
+    gap: 12,
+  },
   checkIcon: { fontSize: 48 },
   lockIcon: { fontSize: 48 },
   subTitle: { fontSize: 18, fontWeight: '700', color: '#111827' },
   successText: { fontSize: 18, fontWeight: '700', color: '#10b981' },
   hint: { fontSize: 14, color: '#6b7280', textAlign: 'center' },
   label: { fontSize: 14, fontWeight: '600', color: '#374151' },
-  secret: { fontSize: 16, fontFamily: 'monospace', backgroundColor: '#e5e7eb', padding: 12, borderRadius: 8, color: '#111827' },
-  input: { borderWidth: 1, borderColor: '#d1d5db', borderRadius: 12, padding: 14, fontSize: 24, textAlign: 'center', backgroundColor: '#fff', width: '100%', letterSpacing: 8 },
-  btn: { backgroundColor: '#7c3aed', borderRadius: 12, padding: 14, alignItems: 'center', width: '100%', flexDirection: 'row', justifyContent: 'center' },
+  secret: {
+    fontSize: 16,
+    fontFamily: 'monospace',
+    backgroundColor: '#e5e7eb',
+    padding: 12,
+    borderRadius: 8,
+    color: '#111827',
+  },
+  input: {
+    borderWidth: 1,
+    borderColor: '#d1d5db',
+    borderRadius: 12,
+    padding: 14,
+    fontSize: 24,
+    textAlign: 'center',
+    backgroundColor: '#fff',
+    width: '100%',
+    letterSpacing: 8,
+  },
+  btn: {
+    backgroundColor: '#7c3aed',
+    borderRadius: 12,
+    padding: 14,
+    alignItems: 'center',
+    width: '100%',
+    flexDirection: 'row',
+    justifyContent: 'center',
+  },
   dangerBtn: { backgroundColor: '#ef4444' },
   btnText: { color: '#fff', fontSize: 16, fontWeight: '600' },
   error: { color: '#ef4444', textAlign: 'center', fontSize: 14, marginBottom: 8 },

@@ -24,23 +24,33 @@ let customerCaller: any;
 
 beforeAll(async () => {
   const anon = await anonCaller();
-  const adminLogin = await anon.auth.login({ email: 'admin@galaxyofbeauty.sa', password: 'Admin@123456' });
-  const customerLogin = await anon.auth.login({ email: 'customer@test.com', password: 'Admin@123456' });
-  adminCaller = await authCaller({ id: adminLogin.user.id, role: adminLogin.user.role, email: adminLogin.user.email });
-  customerCaller = await authCaller({ id: customerLogin.user.id, role: customerLogin.user.role, email: customerLogin.user.email });
+  const adminLogin = await anon.auth.login({
+    email: 'admin@galaxyofbeauty.sa',
+    password: 'Admin@123456',
+  });
+  const customerLogin = await anon.auth.login({
+    email: 'customer@test.com',
+    password: 'Admin@123456',
+  });
+  adminCaller = await authCaller({
+    id: adminLogin.user.id,
+    role: adminLogin.user.role,
+    email: adminLogin.user.email,
+  });
+  customerCaller = await authCaller({
+    id: customerLogin.user.id,
+    role: customerLogin.user.role,
+    email: customerLogin.user.email,
+  });
 }, 30000);
 
 describe('ZATCA — Invoice Generation', () => {
   it('should require admin role to generate', async () => {
-    await expect(
-      customerCaller.zatca.generateInvoice({ bookingId: 1 }),
-    ).rejects.toThrow();
+    await expect(customerCaller.zatca.generateInvoice({ bookingId: 1 })).rejects.toThrow();
   });
 
   it('should require admin role to list', async () => {
-    await expect(
-      customerCaller.zatca.listInvoices({ page: 1, limit: 10 }),
-    ).rejects.toThrow();
+    await expect(customerCaller.zatca.listInvoices({ page: 1, limit: 10 })).rejects.toThrow();
   });
 
   it('should list invoices (admin)', async () => {
@@ -55,9 +65,7 @@ describe('ZATCA — Invoice Generation', () => {
     if (bookings.bookings?.length > 0) {
       const bookingId = bookings.bookings[0].id;
       // Invoice may not exist yet — expect NOT_FOUND
-      await expect(
-        customerCaller.zatca.getInvoice({ bookingId }),
-      ).rejects.toThrow();
+      await expect(customerCaller.zatca.getInvoice({ bookingId })).rejects.toThrow();
     }
   });
 

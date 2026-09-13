@@ -1,6 +1,9 @@
 import type { Metadata, Viewport } from 'next';
 import type { ReactNode } from 'react';
+import { cookies } from 'next/headers';
+import type { Locale } from '@galaxy/shared';
 import Providers from '@/components/Providers';
+import { LocaleProvider } from '@/components/LocaleProvider';
 import { ErrorBoundary } from '@/components/ErrorBoundary';
 import { SkipLink } from '@/components/SkipLink';
 import { OfflineBanner } from '@/components/OfflineBanner';
@@ -15,8 +18,8 @@ export const viewport: Viewport = {
 
 export const metadata: Metadata = {
   title: {
-    default: 'Galaxy of Beauty | جالكسي بيوتي',
-    template: '%s | Galaxy of Beauty',
+    default: 'Dalal | دلال',
+    template: '%s | Dalal',
   },
   description:
     'Secure marketplace for beauty & grooming services in Saudi Arabia — book vetted female technicians for hair, nails, skincare, makeup, massage & henna.',
@@ -24,17 +27,17 @@ export const metadata: Metadata = {
   icons: { icon: '/logo.png', apple: '/logo.png' },
   manifest: '/manifest.json',
   openGraph: {
-    title: 'Galaxy of Beauty | جالكسي بيوتي',
+    title: 'Dalal | دلال',
     description:
       'Secure marketplace for beauty & grooming services in Saudi Arabia — book vetted female technicians.',
-    siteName: 'Galaxy of Beauty',
+    siteName: 'Dalal',
     locale: 'ar_SA',
     type: 'website',
     images: ['/logo.png'],
   },
   twitter: {
     card: 'summary',
-    title: 'Galaxy of Beauty | جالكسي بيوتي',
+    title: 'Dalal | دلال',
     description: 'Beauty & grooming marketplace — Saudi Arabia',
   },
   robots: {
@@ -50,16 +53,36 @@ export const metadata: Metadata = {
   },
 };
 
-export default function RootLayout({ children }: { children: ReactNode }): ReactNode {
+export default async function RootLayout({
+  children,
+}: {
+  children: ReactNode;
+}): Promise<ReactNode> {
+  // Read locale from cookie (default: Arabic) — cookies() is async in Next.js 15
+  const cookieStore = await cookies();
+  const locale: Locale = cookieStore.get('gob_lang')?.value === 'en' ? 'en' : 'ar';
+  const isRTL = locale === 'ar';
+
+  // Pre-paint theme application: read localStorage before first paint so
+  // dark-mode users never see a light flash. Touches only documentElement
+  // (server HTML never renders the class; suppressHydrationWarning is set).
+  const themeInitScript = `(function(){try{var s=localStorage.getItem('theme');var d=s==='dark'||(!s&&window.matchMedia('(prefers-color-scheme: dark)').matches);document.documentElement.classList.toggle('dark',d);}catch(e){}})();`;
+
   return (
-    <html lang="ar" dir="rtl" suppressHydrationWarning>
-      <body className="min-h-screen bg-white font-sans text-text-primary antialiased dark:bg-gray-950 dark:text-gray-100">
+    <html lang={locale} dir={isRTL ? 'rtl' : 'ltr'} suppressHydrationWarning>
+      <head>
+        {/* eslint-disable-next-line @next/next/no-sync-scripts */}
+        <script dangerouslySetInnerHTML={{ __html: themeInitScript }} />
+      </head>
+      <body className="min-h-screen bg-surface font-sans text-text-primary antialiased">
         <SkipLink />
         <OfflineBanner />
         <main id="main-content" tabIndex={-1}>
           <ErrorBoundary>
             <ToastProvider>
-              <Providers>{children}</Providers>
+              <LocaleProvider initialLocale={locale}>
+                <Providers>{children}</Providers>
+              </LocaleProvider>
             </ToastProvider>
           </ErrorBoundary>
         </main>

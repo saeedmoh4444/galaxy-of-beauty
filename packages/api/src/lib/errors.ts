@@ -1,5 +1,5 @@
 /**
- * Typed error catalog for the Galaxy of Beauty API.
+ * Typed error catalog for the Dalal API.
  *
  * Every tRPC procedure throws typed TRPCError instances.
  * Import from here to ensure consistent error codes and messages.

@@ -52,25 +52,25 @@ Galaxy of Beauty is a Saudi-compliant beauty services marketplace with 254 route
 
 ### 2.2 Recommended Providers
 
-| Service | Provider | Why |
-|---------|----------|-----|
-| **Compute** | AWS ECS Fargate / Railway / Vercel Pro | Managed containers, auto-scale, zero-downtime deploy |
-| **Database** | AWS RDS PostgreSQL 15 / Supabase | Automated backups, point-in-time recovery, read replicas |
-| **Cache** | AWS ElastiCache Redis 7 / Upstash | Managed Redis, cluster mode, automatic failover |
-| **Storage** | AWS S3 / Cloudflare R2 | User uploads, gallery images, KYC documents |
-| **CDN** | Cloudflare | DDoS protection, Saudi POPs, image optimization |
-| **DNS** | Cloudflare / AWS Route 53 | .sa domain management |
-| **Email** | AWS SES / Resend | Transactional emails (verification, reset, notifications) |
-| **Monitoring** | Sentry + AWS CloudWatch / Datadog | Error tracking, performance, uptime |
-| **CI/CD** | GitHub Actions (existing) + AWS ECR | Build → test → push image → deploy |
+| Service        | Provider                               | Why                                                       |
+| -------------- | -------------------------------------- | --------------------------------------------------------- |
+| **Compute**    | AWS ECS Fargate / Railway / Vercel Pro | Managed containers, auto-scale, zero-downtime deploy      |
+| **Database**   | AWS RDS PostgreSQL 15 / Supabase       | Automated backups, point-in-time recovery, read replicas  |
+| **Cache**      | AWS ElastiCache Redis 7 / Upstash      | Managed Redis, cluster mode, automatic failover           |
+| **Storage**    | AWS S3 / Cloudflare R2                 | User uploads, gallery images, KYC documents               |
+| **CDN**        | Cloudflare                             | DDoS protection, Saudi POPs, image optimization           |
+| **DNS**        | Cloudflare / AWS Route 53              | .sa domain management                                     |
+| **Email**      | AWS SES / Resend                       | Transactional emails (verification, reset, notifications) |
+| **Monitoring** | Sentry + AWS CloudWatch / Datadog      | Error tracking, performance, uptime                       |
+| **CI/CD**      | GitHub Actions (existing) + AWS ECR    | Build → test → push image → deploy                        |
 
 ### 2.3 Sizing Estimates (Saudi Market)
 
-| Tier | Users | Compute | Database | Cache | Monthly Cost (est.) |
-|------|-------|---------|----------|-------|---------------------|
-| **MVP** | < 1,000 | 2 vCPU, 4 GB × 2 | db.t4g.medium (2 vCPU, 4 GB) | cache.t4g.micro | ~$150-250/mo |
-| **Growth** | 1,000 - 10,000 | 4 vCPU, 8 GB × 3 | db.t4g.large (2 vCPU, 8 GB) + read replica | cache.t4g.small | ~$500-800/mo |
-| **Scale** | 10,000 - 100,000 | 8 vCPU, 16 GB × 4+ (auto-scale) | db.r6g.xlarge (4 vCPU, 32 GB) + read replicas | cache.m6g.large (cluster) | ~$1,500-3,000/mo |
+| Tier       | Users            | Compute                         | Database                                      | Cache                     | Monthly Cost (est.) |
+| ---------- | ---------------- | ------------------------------- | --------------------------------------------- | ------------------------- | ------------------- |
+| **MVP**    | < 1,000          | 2 vCPU, 4 GB × 2                | db.t4g.medium (2 vCPU, 4 GB)                  | cache.t4g.micro           | ~$150-250/mo        |
+| **Growth** | 1,000 - 10,000   | 4 vCPU, 8 GB × 3                | db.t4g.large (2 vCPU, 8 GB) + read replica    | cache.t4g.small           | ~$500-800/mo        |
+| **Scale**  | 10,000 - 100,000 | 8 vCPU, 16 GB × 4+ (auto-scale) | db.r6g.xlarge (4 vCPU, 32 GB) + read replicas | cache.m6g.large (cluster) | ~$1,500-3,000/mo    |
 
 ---
 
@@ -166,16 +166,17 @@ Galaxy of Beauty is a Saudi-compliant beauty services marketplace with 254 route
 
 The existing `.github/workflows/ci.yml` covers:
 
-| Job | Trigger | Time |
-|-----|---------|------|
-| Type Check | Push + PR to master/main | ~2 min |
-| Lint | Push + PR | ~1 min |
-| Unit Tests | Push + PR (PostgreSQL 15 service) | ~3 min |
-| Build | After type-check + lint | ~5 min |
-| E2E Tests | After build (PostgreSQL + Redis) | ~3 min |
-| Docker Build | After build | ~3 min |
+| Job          | Trigger                           | Time   |
+| ------------ | --------------------------------- | ------ |
+| Type Check   | Push + PR to master/main          | ~2 min |
+| Lint         | Push + PR                         | ~1 min |
+| Unit Tests   | Push + PR (PostgreSQL 15 service) | ~3 min |
+| Build        | After type-check + lint           | ~5 min |
+| E2E Tests    | After build (PostgreSQL + Redis)  | ~3 min |
+| Docker Build | After build                       | ~3 min |
 
 **Production additions needed:**
+
 - [ ] **Deploy Job** — push Docker image to ECR, update ECS service, run migrations
 - [ ] **Smoke Test** — after deploy, hit critical endpoints to verify health
 - [ ] **Rollback Job** — manual workflow_dispatch trigger to deploy previous image tag
@@ -187,11 +188,11 @@ The existing `.github/workflows/ci.yml` covers:
 
 ### 5.1 Environment Strategy
 
-| Environment | Purpose | Database | Domain |
-|-------------|---------|----------|--------|
-| **Development** | Local dev | Local PostgreSQL (Docker) | localhost:3000 |
-| **Staging** | Pre-production testing | RDS staging instance | staging.galaxyofbeauty.sa |
-| **Production** | Live | RDS production (Multi-AZ) | galaxyofbeauty.sa |
+| Environment     | Purpose                | Database                  | Domain                    |
+| --------------- | ---------------------- | ------------------------- | ------------------------- |
+| **Development** | Local dev              | Local PostgreSQL (Docker) | localhost:3000            |
+| **Staging**     | Pre-production testing | RDS staging instance      | staging.galaxyofbeauty.sa |
+| **Production**  | Live                   | RDS production (Multi-AZ) | galaxyofbeauty.sa         |
 
 ### 5.2 Deployment Process
 
@@ -221,12 +222,12 @@ The existing `.github/workflows/ci.yml` covers:
 
 ### 6.1 Horizontal Scaling
 
-| Component | Scaling Trigger | Action |
-|-----------|-----------------|--------|
-| Next.js Web | CPU > 70% or request latency > 500ms p95 | Add 1 instance (up to 8) |
-| Socket.IO | Connected clients > 500 | Add instance + Redis adapter |
-| PostgreSQL | Connection count > 80% of max | Add read replica |
-| Redis | Memory > 80% | Scale up instance / enable cluster |
+| Component   | Scaling Trigger                          | Action                             |
+| ----------- | ---------------------------------------- | ---------------------------------- |
+| Next.js Web | CPU > 70% or request latency > 500ms p95 | Add 1 instance (up to 8)           |
+| Socket.IO   | Connected clients > 500                  | Add instance + Redis adapter       |
+| PostgreSQL  | Connection count > 80% of max            | Add read replica                   |
+| Redis       | Memory > 80%                             | Scale up instance / enable cluster |
 
 ### 6.2 Database Scaling Path
 
@@ -237,13 +238,13 @@ The existing `.github/workflows/ci.yml` covers:
 
 ### 6.3 Caching Strategy
 
-| Data | TTL | Invalidation |
-|------|-----|--------------|
-| Category tree | 5 min | Invalidate on admin CRUD |
-| Service list (popular) | 5 min | Invalidate on service update |
-| Feature flags | 30 sec | Invalidate on flag toggle |
-| User session | JWT-based (stateless) | N/A |
-| Rate limit counters | 60 sec window | Auto-expire |
+| Data                   | TTL                   | Invalidation                 |
+| ---------------------- | --------------------- | ---------------------------- |
+| Category tree          | 5 min                 | Invalidate on admin CRUD     |
+| Service list (popular) | 5 min                 | Invalidate on service update |
+| Feature flags          | 30 sec                | Invalidate on flag toggle    |
+| User session           | JWT-based (stateless) | N/A                          |
+| Rate limit counters    | 60 sec window         | Auto-expire                  |
 
 ---
 
@@ -262,15 +263,16 @@ cdn.galaxyofbeauty.sa      → Cloudflare R2 / S3
 
 ## 8. Email Configuration
 
-| Email Type | Provider | From Address |
-|------------|----------|--------------|
-| Email Verification | AWS SES / Resend | no-reply@galaxyofbeauty.sa |
-| Password Reset | AWS SES / Resend | no-reply@galaxyofbeauty.sa |
-| Booking Confirmation | AWS SES / Resend | bookings@galaxyofbeauty.sa |
-| Notification Digest | AWS SES / Resend | notifications@galaxyofbeauty.sa |
-| Marketing | AWS SES / Resend | hello@galaxyofbeauty.sa |
+| Email Type           | Provider         | From Address                    |
+| -------------------- | ---------------- | ------------------------------- |
+| Email Verification   | AWS SES / Resend | no-reply@galaxyofbeauty.sa      |
+| Password Reset       | AWS SES / Resend | no-reply@galaxyofbeauty.sa      |
+| Booking Confirmation | AWS SES / Resend | bookings@galaxyofbeauty.sa      |
+| Notification Digest  | AWS SES / Resend | notifications@galaxyofbeauty.sa |
+| Marketing            | AWS SES / Resend | hello@galaxyofbeauty.sa         |
 
 **Note:** The current codebase has SMTP configured but not connected (`SMTP not configured — email not sent` in logs). Production requires:
+
 - [ ] AWS SES domain verification for galaxyofbeauty.sa
 - [ ] SMTP credentials in environment variables
 - [ ] Email templates translated to Arabic
@@ -279,21 +281,22 @@ cdn.galaxyofbeauty.sa      → Cloudflare R2 / S3
 
 ## 9. Risk Register
 
-| Risk | Probability | Impact | Mitigation |
-|------|-------------|--------|------------|
-| Database failure | Low | Critical | Multi-AZ RDS, automated backups, 5-min RPO |
-| Redis failure | Low | Medium | ElastiCache with automatic failover; app degrades gracefully |
-| ZATCA API outage | Medium | Medium | Retry with exponential backoff; manual invoice submission fallback |
-| Payment gateway outage | Low | High | Dual provider setup; offline payment fallback (cash) |
-| DDoS attack | Low | High | Cloudflare WAF + rate limiting |
-| Data breach | Low | Critical | Encryption at rest + transit; audit logs; PDPL compliance |
-| Mobile app rejection | Medium | Low | Follow Apple/Google guidelines; test on TestFlight first |
+| Risk                   | Probability | Impact   | Mitigation                                                         |
+| ---------------------- | ----------- | -------- | ------------------------------------------------------------------ |
+| Database failure       | Low         | Critical | Multi-AZ RDS, automated backups, 5-min RPO                         |
+| Redis failure          | Low         | Medium   | ElastiCache with automatic failover; app degrades gracefully       |
+| ZATCA API outage       | Medium      | Medium   | Retry with exponential backoff; manual invoice submission fallback |
+| Payment gateway outage | Low         | High     | Dual provider setup; offline payment fallback (cash)               |
+| DDoS attack            | Low         | High     | Cloudflare WAF + rate limiting                                     |
+| Data breach            | Low         | Critical | Encryption at rest + transit; audit logs; PDPL compliance          |
+| Mobile app rejection   | Medium      | Low      | Follow Apple/Google guidelines; test on TestFlight first           |
 
 ---
 
 ## 10. Launch Day Runbook
 
 ### T-7 Days
+
 - [ ] All security hardening checklist items complete
 - [ ] Load test passing with 2x expected peak traffic
 - [ ] Database backups verified with test restore
@@ -301,6 +304,7 @@ cdn.galaxyofbeauty.sa      → Cloudflare R2 / S3
 - [ ] Staging environment smoke tests passing
 
 ### T-3 Days
+
 - [ ] Production database provisioned, migrated, and seeded (admin user only)
 - [ ] DNS cutover tested with `/etc/hosts` or staging domain
 - [ ] SSL certificates provisioned and verified
@@ -308,6 +312,7 @@ cdn.galaxyofbeauty.sa      → Cloudflare R2 / S3
 - [ ] On-call schedule confirmed for launch week
 
 ### T-1 Day
+
 - [ ] Final code freeze on master
 - [ ] Full CI pipeline green (type-check, lint, test, build, E2E)
 - [ ] Database migration run against production (with backup)
@@ -315,6 +320,7 @@ cdn.galaxyofbeauty.sa      → Cloudflare R2 / S3
 - [ ] Rollback procedure documented and tested
 
 ### Launch Day (T+0)
+
 - [ ] Deploy latest image to production
 - [ ] Run smoke tests (home, login, services, bookings, wallet)
 - [ ] Verify ZATCA e-invoicing simulation → switch to production if ready
@@ -323,6 +329,7 @@ cdn.galaxyofbeauty.sa      → Cloudflare R2 / S3
 - [ ] Enable customer registration
 
 ### T+1 Day
+
 - [ ] Review error logs, performance metrics
 - [ ] Address any P0/P1 issues
 - [ ] Customer support team briefed on common issues
@@ -332,21 +339,21 @@ cdn.galaxyofbeauty.sa      → Cloudflare R2 / S3
 
 ## 11. Cost Estimate (Monthly — AWS Saudi Region / Bahrain Region)
 
-| Service | MVP | Growth | Scale |
-|---------|-----|--------|-------|
-| Compute (ECS Fargate) | $80 | $240 | $600 |
-| Load Balancer (ALB) | $25 | $25 | $25 |
-| RDS PostgreSQL | $60 | $180 | $500 |
-| ElastiCache Redis | $20 | $60 | $200 |
-| S3 Storage (10 GB) | $3 | $10 | $30 |
-| Cloudflare (Pro) | $20 | $20 | $200 |
-| SES (10K emails) | $1 | $10 | $50 |
-| Sentry (Team) | $26 | $26 | $90 |
-| GitHub Actions | Free | Free | $40 |
-| Domain (.sa) | $5 | $5 | $5 |
-| **Total** | **~$240/mo** | **~$576/mo** | **~$1,740/mo** |
+| Service               | MVP          | Growth       | Scale          |
+| --------------------- | ------------ | ------------ | -------------- |
+| Compute (ECS Fargate) | $80          | $240         | $600           |
+| Load Balancer (ALB)   | $25          | $25          | $25            |
+| RDS PostgreSQL        | $60          | $180         | $500           |
+| ElastiCache Redis     | $20          | $60          | $200           |
+| S3 Storage (10 GB)    | $3           | $10          | $30            |
+| Cloudflare (Pro)      | $20          | $20          | $200           |
+| SES (10K emails)      | $1           | $10          | $50            |
+| Sentry (Team)         | $26          | $26          | $90            |
+| GitHub Actions        | Free         | Free         | $40            |
+| Domain (.sa)          | $5           | $5           | $5             |
+| **Total**             | **~$240/mo** | **~$576/mo** | **~$1,740/mo** |
 
-*Costs are estimates for Bahrain (me-central-1) or UAE (me-central-1) AWS regions. Saudi region (me-central-1) pricing may differ slightly.*
+_Costs are estimates for Bahrain (me-central-1) or UAE (me-central-1) AWS regions. Saudi region (me-central-1) pricing may differ slightly._
 
 ---
 

@@ -23,6 +23,12 @@ interface CharityPartnerBadgeProps {
   raised?: number;
   onDonate?: () => void;
   className?: string;
+  title?: string;
+  withPrefix?: string;
+  raisedLabel?: string;
+  currencySuffix?: string;
+  donateButtonText?: string;
+  footerText?: string;
 }
 
 export function CharityPartnerBadge({
@@ -30,6 +36,12 @@ export function CharityPartnerBadge({
   raised,
   onDonate,
   className = '',
+  title = 'شراكة مجتمعية',
+  withPrefix = 'مع ',
+  raisedLabel = 'تم جمع',
+  currencySuffix = 'ر.س',
+  donateButtonText = 'تبرعي الآن',
+  footerText = 'معاً نصنع فرقاً في حياة النساء',
 }: CharityPartnerBadgeProps): JSX.Element {
   return (
     <div
@@ -39,30 +51,29 @@ export function CharityPartnerBadge({
       )}
     >
       <div className="flex items-center gap-2">
-        <span className="text-xl" aria-hidden="true">{charity.emoji || '🤝'}</span>
+        <span className="text-xl" aria-hidden="true">
+          {charity.emoji || ''}
+        </span>
         <div>
-          <h4 className="text-sm font-bold text-rose-700 dark:text-rose-300">
-            شراكة مجتمعية
-          </h4>
+          <h4 className="text-sm font-bold text-rose-700 dark:text-rose-300">{title}</h4>
           <p className="text-[10px] text-rose-500 dark:text-rose-400">
-            مع {charity.name}
+            {withPrefix}
+            {charity.name}
           </p>
         </div>
       </div>
 
       {/* Cause */}
       <div className="mt-3 rounded-xl bg-rose-50 p-3 text-center dark:bg-rose-950">
-        <p className="text-[10px] font-bold text-rose-700 dark:text-rose-300">
-          💜 {charity.cause}
-        </p>
+        <p className="text-[10px] font-bold text-rose-700 dark:text-rose-300"> {charity.cause}</p>
       </div>
 
       {/* Raised amount */}
       {raised !== undefined && (
         <div className="mt-2 rounded-xl bg-white/60 p-3 text-center dark:bg-gray-800/60">
-          <p className="text-[9px] text-text-tertiary dark:text-gray-500">تم جمع</p>
+          <p className="text-[9px] text-text-tertiary dark:text-text-secondary">{raisedLabel}</p>
           <p className="text-lg font-bold text-rose-700 dark:text-rose-300">
-            {raised.toLocaleString('ar-SA')} ر.س
+            {raised.toLocaleString('ar-SA')} {currencySuffix}
           </p>
         </div>
       )}
@@ -72,11 +83,11 @@ export function CharityPartnerBadge({
         onClick={onDonate}
         className="mt-3 w-full rounded-xl bg-rose-600 py-2 text-xs font-bold text-white hover:bg-rose-700 active:scale-[0.98] transition-all"
       >
-        تبرعي الآن 🤲
+        {donateButtonText}
       </button>
 
-      <p className="mt-1.5 text-center text-[9px] text-text-tertiary dark:text-gray-500">
-        💜 معاً نصنع فرقاً في حياة النساء
+      <p className="mt-1.5 text-center text-[9px] text-text-tertiary dark:text-text-secondary">
+        {footerText}
       </p>
     </div>
   );

@@ -1,30 +1,57 @@
 import { View, Text, ScrollView, StyleSheet, RefreshControl } from 'react-native';
-import { trpc } from '@/lib/api';
-import { useState, useEffect, useCallback } from 'react';
 import { BULK_PAGE_SIZE } from '@galaxy/ui';
 import { SkeletonList } from '@/components/SkeletonCard';
+import { ErrorAlert } from '@/components/ErrorAlert';
+import { trpc } from '@/lib/trpc-react';
+import { useLocale } from '@/components/LocaleProvider';
+
+interface GiftCardItem {
+  code?: string;
+  amount?: number;
+  status?: string;
+}
+
+interface GiftCardListResponse {
+  items?: GiftCardItem[];
+}
 
 export default function AdminGiftCardsScreen(): JSX.Element {
-  const [data, setData] = useState<any[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [refreshing, setRefreshing] = useState(false);
+  const { t } = useLocale();
+  const q = trpc.giftCards.listAll.useQuery({ page: 1, limit: BULK_PAGE_SIZE });
+  const data = (q.data as unknown as GiftCardListResponse | null)?.items ?? [];
 
-  const fetch = useCallback((isRefresh = false) => {
-    if (isRefresh) setRefreshing(true); else setLoading(true);
-    ((trpc as any).giftCards.listAll.query({ page: 1, limit: BULK_PAGE_SIZE }) as any).then((d: any) => { setData(d?.items || []); setLoading(false); setRefreshing(false); }).catch(() => { setLoading(false); setRefreshing(false); });
-  }, []);
-
-  useEffect(() => { fetch(); }, [fetch]);
-
-  if (loading) return <SkeletonList count={5} />;
+  if (q.isLoading) return <SkeletonList count={5} />;
+  if (q.isError)
+    return (
+      <ErrorAlert message={t('mobile.admin.gift-cards.load-error')} onRetry={() => q.refetch()} />
+    );
 
   return (
-    <ScrollView style={styles.c} contentContainerStyle={styles.i} refreshControl={<RefreshControl refreshing={refreshing} onRefresh={() => fetch(true)} colors={['#ec4899']} />}>
-      <Text style={styles.t}>🎁 بطاقات الهدية</Text>
-      {data.map((c: any, i: number) => (
+    <ScrollView
+      style={styles.c}
+      contentContainerStyle={styles.i}
+      refreshControl={
+        <RefreshControl
+          refreshing={q.isRefetching}
+          onRefresh={() => q.refetch()}
+          colors={['#ec4899']}
+        />
+      }
+    >
+      <Text style={styles.t}>{t('admin.gift-cards.title')}</Text>
+      {data.map((c, i) => (
         <View key={i} style={styles.card}>
-          <View style={{flex:1}}><Text style={styles.code}>{c.code as string}</Text><Text style={styles.meta}>{(c.amount as number)?.toLocaleString()} ر.س</Text></View>
-          <View style={[styles.badge, c.status === 'ACTIVE' ? styles.active : styles.used]}><Text style={styles.badgeText}>{c.status === 'ACTIVE' ? 'نشطة' : 'مستخدمة'}</Text></View>
+          <View style={{ flex: 1 }}>
+            <Text style={styles.code}>{c.code}</Text>
+            <Text style={styles.meta}>
+              {c.amount?.toLocaleString()} {t('misc.sar')}
+            </Text>
+          </View>
+          <View style={[styles.badge, c.status === 'ACTIVE' ? styles.active : styles.used]}>
+            <Text style={styles.badgeText}>
+              {c.status === 'ACTIVE' ? t('admin.gift-cards.active') : t('admin.gift-cards.used')}
+            </Text>
+          </View>
         </View>
       ))}
     </ScrollView>
@@ -32,11 +59,22 @@ export default function AdminGiftCardsScreen(): JSX.Element {
 }
 
 const styles = StyleSheet.create({
-  c: { flex: 1, backgroundColor: '#fdf2f8' }, i: { padding: 16, paddingTop: 30, paddingBottom: 40 },
+  c: { flex: 1, backgroundColor: '#fdf2f8' },
+  i: { padding: 16, paddingTop: 30, paddingBottom: 40 },
   t: { fontSize: 24, fontWeight: '800', color: '#db2777', textAlign: 'center', marginBottom: 20 },
-  card: { flexDirection: 'row', alignItems: 'center', gap: 12, backgroundColor: '#fff', borderRadius: 14, padding: 14, marginBottom: 6 },
+  card: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 12,
+    backgroundColor: '#fff',
+    borderRadius: 14,
+    padding: 14,
+    marginBottom: 6,
+  },
   code: { fontSize: 13, fontWeight: '700', color: '#db2777', fontFamily: 'monospace' },
   meta: { fontSize: 12, color: '#6b7280', marginTop: 2 },
-  badge: { borderRadius: 8, paddingHorizontal: 8, paddingVertical: 3 }, active: { backgroundColor: '#dcfce7' }, used: { backgroundColor: '#f3f4f6' },
+  badge: { borderRadius: 8, paddingHorizontal: 8, paddingVertical: 3 },
+  active: { backgroundColor: '#dcfce7' },
+  used: { backgroundColor: '#f3f4f6' },
   badgeText: { fontSize: 11, fontWeight: '600' },
 });

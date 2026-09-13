@@ -45,6 +45,7 @@ test-results/
 # Uploads (local dev)
 uploads/*
 !uploads/.gitkeep
+packages/api/uploads/
 
 # Certificates
 *.pem
@@ -77,3 +78,12 @@ apps/mobile/ios/
 
 *storybook.log
 storybook-static
+
+# Editor history
+.history/
+
+# Remediation backups
+backups/
+
+# Generated reports (local only)
+*.report.md.tmp

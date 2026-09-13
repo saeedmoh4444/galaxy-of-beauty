@@ -1,19 +1,15 @@
-import type { StorybookConfig } from "@storybook/react-vite";
-import { dirname, join } from "path";
+import type { StorybookConfig } from '@storybook/react-vite';
+import { dirname, join } from 'path';
 
 const config: StorybookConfig = {
-  stories: ["../src/**/*.stories.@(ts|tsx)"],
-  addons: [
-    "@storybook/addon-essentials",
-    "@storybook/addon-interactions",
-    "@storybook/addon-a11y",
-  ],
+  stories: ['../src/**/*.Stories.@(ts|tsx)'],
+  addons: ['@storybook/addon-essentials', '@storybook/addon-interactions', '@storybook/addon-a11y'],
   framework: {
-    name: "@storybook/react-vite",
+    name: '@storybook/react-vite',
     options: {},
   },
   docs: {
-    autodocs: "tag",
+    autodocs: 'tag',
   },
   viteFinal: (viteConfig) => {
     return {
@@ -22,7 +18,7 @@ const config: StorybookConfig = {
         ...viteConfig.resolve,
         alias: {
           ...viteConfig.resolve?.alias,
-          "@": join(dirname(__dirname), "src"),
+          '@': join(dirname(__dirname), 'src'),
         },
       },
     };

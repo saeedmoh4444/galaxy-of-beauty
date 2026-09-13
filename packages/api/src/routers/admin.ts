@@ -78,9 +78,7 @@ export const adminRouter = router({
     .input(
       z
         .object({
-          kycStatus: z
-            .enum(['PENDING', 'SUBMITTED', 'VERIFIED', 'REJECTED'])
-            .optional(),
+          kycStatus: z.enum(['PENDING', 'SUBMITTED', 'VERIFIED', 'REJECTED']).optional(),
           page: z.number().optional().default(1),
           limit: z.number().optional().default(20),
         })
@@ -88,9 +86,7 @@ export const adminRouter = router({
         .default({}),
     )
     .query(async ({ input }) => {
-      const where = input.kycStatus
-        ? { kycStatus: input.kycStatus as any }
-        : {};
+      const where = input.kycStatus ? { kycStatus: input.kycStatus as any } : {};
       const skip = (input.page - 1) * input.limit;
 
       const [items, total] = await Promise.all([
@@ -225,9 +221,7 @@ export const adminRouter = router({
         userId: updated.id,
         isActive: updated.isActive,
         suspendedAt: updated.suspendedAt,
-        message: isSuspended
-          ? 'User has been unsuspended'
-          : 'User has been suspended',
+        message: isSuspended ? 'User has been unsuspended' : 'User has been suspended',
       };
     }),
 
@@ -326,24 +320,23 @@ export const adminRouter = router({
     }),
 
   getFinancials: adminProcedure.query(async () => {
-    const [revenueAgg, platformFeeAgg, technicianEarningsAgg, payoutsAgg] =
-      await Promise.all([
-        prisma.payment.aggregate({
-          _sum: { amount: true },
-          where: { status: 'CAPTURED' },
-        }),
-        prisma.booking.aggregate({
-          _sum: { platformFee: true },
-        }),
-        prisma.booking.aggregate({
-          _sum: { totalAmount: true },
-          where: { status: 'COMPLETED' },
-        }),
-        prisma.payout.aggregate({
-          _sum: { amount: true },
-          where: { status: 'PENDING' },
-        }),
-      ]);
+    const [revenueAgg, platformFeeAgg, technicianEarningsAgg, payoutsAgg] = await Promise.all([
+      prisma.payment.aggregate({
+        _sum: { amount: true },
+        where: { status: 'CAPTURED' },
+      }),
+      prisma.booking.aggregate({
+        _sum: { platformFee: true },
+      }),
+      prisma.booking.aggregate({
+        _sum: { totalAmount: true },
+        where: { status: 'COMPLETED' },
+      }),
+      prisma.payout.aggregate({
+        _sum: { amount: true },
+        where: { status: 'PENDING' },
+      }),
+    ]);
 
     return {
       totalRevenue: revenueAgg._sum.amount?.toNumber() ?? 0,
@@ -443,9 +436,7 @@ export const adminRouter = router({
       },
     });
     if (negativeWallets.length > 0) {
-      issues.push(
-        `Found ${negativeWallets.length} wallet(s) with negative balance`,
-      );
+      issues.push(`Found ${negativeWallets.length} wallet(s) with negative balance`);
     }
 
     // Users who are CUSTOMER but have a Technician profile (role mismatch)

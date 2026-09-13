@@ -1,26 +1,37 @@
 'use client';
 
-import { api } from '@/lib/trpc';
 import {
-  PageContainer, PageTitle,
-  BeautyJourneyTimeline, LifeEventCard, BridalJourneyTimeline, BridalBeautyCountdown,
-  GoldenBeautyCard, CareerBeautyCard, PostpartumCareCard,
-  CyclePhaseCard, TeenSkincareGuide,
-  BeautyTwentiesCard, BeautyThirtiesCard, BeautyFortiesCard,
-  BeautyFiftiesCard, BeautySixtiesCard,
-  BeautyPcosSkincareCard, BeautyPregnancySafeCard, BeautyPostpartumHairCard,
-  BeautyPerimenopauseCard, BeautyHormonalAcneCard,
+  PageContainer,
+  PageTitle,
+  BeautyJourneyTimeline,
+  LifeEventCard,
+  BridalJourneyTimeline,
+  BridalBeautyCountdown,
+  GoldenBeautyCard,
+  CareerBeautyCard,
+  PostpartumCareCard,
+  CyclePhaseCard,
+  TeenSkincareGuide,
+  BeautyTwentiesCard,
+  BeautyThirtiesCard,
+  BeautyFortiesCard,
+  BeautyFiftiesCard,
+  BeautySixtiesCard,
+  BeautyPcosSkincareCard,
+  BeautyPregnancySafeCard,
+  BeautyPostpartumHairCard,
+  BeautyPerimenopauseCard,
+  BeautyHormonalAcneCard,
 } from '@galaxy/ui';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
+import { useLocale } from '@/components/LocaleProvider';
 
 export default function LifeEventsPage(): JSX.Element {
-  const journey = (api as any).customerJourney?.myStage?.useQuery?.() as any;
-  const events = (api as any).beautyEvents?.upcoming?.useQuery?.({ limit: 4 }) as any;
-
+  const { t } = useLocale();
   return (
-    <DashboardLayout role="CUSTOMER">
+    <DashboardLayout userRole="CUSTOMER">
       <PageContainer width="wide">
-        <PageTitle title="🌸 مراحل الحياة" subtitle="لكل مرحلة عمرية جمالها الخاص" />
+        <PageTitle title={t('lifeEvents.title')} subtitle={t('lifeEvents.subtitle')} />
 
         <div className="grid gap-6 lg:grid-cols-2">
           <BeautyJourneyTimeline userAge={28} />

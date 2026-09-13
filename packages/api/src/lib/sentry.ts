@@ -27,7 +27,11 @@ async function getSentry(): Promise<SentryClient | null> {
   try {
     const SentryNode = await Function('return import("@sentry/node")')();
     const sampleRate = parseFloat(process.env['SENTRY_TRACES_SAMPLE_RATE'] || '0.1');
-    SentryNode.init({ dsn, tracesSampleRate: sampleRate, environment: process.env['NODE_ENV'] || 'development' });
+    SentryNode.init({
+      dsn,
+      tracesSampleRate: sampleRate,
+      environment: process.env['NODE_ENV'] || 'development',
+    });
     _sentry = SentryNode as SentryClient;
     return _sentry;
   } catch {
@@ -48,7 +52,10 @@ export async function captureError(error: Error, context?: Record<string, unknow
   console.error('[Sentry]', error.message, context || '');
 }
 
-export async function captureMessage(message: string, level: 'info' | 'warning' | 'error' = 'error'): Promise<void> {
+export async function captureMessage(
+  message: string,
+  level: 'info' | 'warning' | 'error' = 'error',
+): Promise<void> {
   const sentry = await getSentry();
   if (sentry) {
     sentry.captureMessage(message, level);

@@ -1,30 +1,65 @@
 import { View, Text, ScrollView, StyleSheet, RefreshControl } from 'react-native';
-import { trpc } from '@/lib/api';
-import { useState, useEffect, useCallback } from 'react';
 import { SkeletonList } from '@/components/SkeletonCard';
+import { useAuthState } from '@/hooks/useAuthState';
+import { trpc } from '@/lib/trpc-react';
+import { useLocale } from '@/components/LocaleProvider';
+
+interface DiaryEntry {
+  id?: number;
+  emoji?: string;
+  title?: string;
+  createdAt?: string;
+}
 
 export default function SkinDiaryScreen(): JSX.Element {
-  const [data, setData] = useState<any[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [refreshing, setRefreshing] = useState(false);
-  const fetch = useCallback((isRefresh = false) => {
-    if (isRefresh) setRefreshing(true); else setLoading(true);
-    ((trpc as any).skinDiary.entries.query() as any).then((d: any) => { setData(d || []); setLoading(false); setRefreshing(false); }).catch(() => { setLoading(false); setRefreshing(false); });
-  }, []);
-  useEffect(() => { fetch(); }, [fetch]);
-  if (loading) return <SkeletonList count={4} />;
+  const { t, locale } = useLocale();
+  const isAuthed = useAuthState();
+  const entriesQ = trpc.skinDiary.entries.useQuery(undefined, { enabled: isAuthed });
+  const data: DiaryEntry[] = (entriesQ.data as unknown as DiaryEntry[] | undefined) ?? [];
+  if (entriesQ.isLoading) return <SkeletonList count={4} />;
   return (
-    <ScrollView style={styles.c} contentContainerStyle={styles.i} refreshControl={<RefreshControl refreshing={refreshing} onRefresh={() => fetch(true)} colors={['#ec4899']} />}>
-      <Text style={styles.t}>📸 يوميات البشرة</Text>
-      {data.map((e: any, i: number) => (
-        <View key={i} style={styles.card}><Text style={styles.emoji}>{e.emoji as string ?? '📸'}</Text><View style={{flex:1}}><Text style={styles.name}>{e.title as string}</Text><Text style={styles.date}>{new Date(e.createdAt as string).toLocaleDateString('ar-SA')}</Text></View></View>
+    <ScrollView
+      style={styles.c}
+      contentContainerStyle={styles.i}
+      refreshControl={
+        <RefreshControl
+          refreshing={entriesQ.isRefetching}
+          onRefresh={() => entriesQ.refetch()}
+          colors={['#ec4899']}
+        />
+      }
+    >
+      <Text style={styles.t}>{t('mobile.skinDiary.title')}</Text>
+      {data.map((e, i) => (
+        <View key={i} style={styles.card}>
+          <Text style={styles.emoji}>{e.emoji ?? ''}</Text>
+          <View style={{ flex: 1 }}>
+            <Text style={styles.name}>{e.title ?? ''}</Text>
+            <Text style={styles.date}>
+              {e.createdAt
+                ? new Date(e.createdAt).toLocaleDateString(locale === 'en' ? 'en-GB' : 'ar-SA')
+                : ''}
+            </Text>
+          </View>
+        </View>
       ))}
     </ScrollView>
   );
 }
 const styles = StyleSheet.create({
-  c: { flex: 1, backgroundColor: '#fdf2f8' }, i: { padding: 16, paddingTop: 30, paddingBottom: 40 },
+  c: { flex: 1, backgroundColor: '#fdf2f8' },
+  i: { padding: 16, paddingTop: 30, paddingBottom: 40 },
   t: { fontSize: 24, fontWeight: '800', color: '#db2777', textAlign: 'center', marginBottom: 20 },
-  card: { flexDirection: 'row', alignItems: 'center', gap: 12, backgroundColor: '#fff', borderRadius: 14, padding: 14, marginBottom: 6 },
-  emoji: { fontSize: 28 }, name: { fontSize: 14, fontWeight: '600', color: '#111827' }, date: { fontSize: 12, color: '#6b7280', marginTop: 2 },
+  card: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 12,
+    backgroundColor: '#fff',
+    borderRadius: 14,
+    padding: 14,
+    marginBottom: 6,
+  },
+  emoji: { fontSize: 28 },
+  name: { fontSize: 14, fontWeight: '600', color: '#111827' },
+  date: { fontSize: 12, color: '#6b7280', marginTop: 2 },
 });

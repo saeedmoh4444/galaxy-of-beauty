@@ -65,12 +65,12 @@ describe('API Integration Patterns', () => {
 
     it('should compute best value by price/duration ratio', () => {
       const services = [
-        { id: 1, basePrice: 80, durationMin: 45 },   // 1.78/min
-        { id: 2, basePrice: 120, durationMin: 60 },  // 2.00/min
-        { id: 3, basePrice: 250, durationMin: 90 },  // 2.78/min
+        { id: 1, basePrice: 80, durationMin: 45 }, // 1.78/min
+        { id: 2, basePrice: 120, durationMin: 60 }, // 2.00/min
+        { id: 3, basePrice: 250, durationMin: 90 }, // 2.78/min
       ];
       const best = [...services].sort(
-        (a, b) => (a.basePrice / a.durationMin) - (b.basePrice / b.durationMin),
+        (a, b) => a.basePrice / a.durationMin - b.basePrice / b.durationMin,
       )[0];
       expect(best!.id).toBe(1);
     });
@@ -105,7 +105,7 @@ describe('API Integration Patterns', () => {
 
       // Simulate 3 invoices
       for (let i = 1; i <= 3; i++) {
-        const invoiceData = `INV-00${i}|2026-07-${14 + i}T10:00:00.000Z|${i * 100}.00|${(i * 100 * 0.15 / 1.15).toFixed(2)}|${previous}`;
+        const invoiceData = `INV-00${i}|2026-07-${14 + i}T10:00:00.000Z|${i * 100}.00|${((i * 100 * 0.15) / 1.15).toFixed(2)}|${previous}`;
         const { createHash } = require('crypto');
         const hash = createHash('sha256').update(invoiceData, 'utf8').digest('hex');
         hashes.push(hash);
@@ -125,9 +125,16 @@ describe('API Integration Patterns', () => {
   describe('Booking Status Machine', () => {
     it('should define all 10 booking states', () => {
       const states = [
-        'REQUESTED', 'ACCEPTED', 'PAYMENT_AUTHORIZED',
-        'CONFIRMED_OFFLINE', 'PAID', 'IN_PROGRESS',
-        'COMPLETED', 'REJECTED', 'CANCELLED', 'NO_SHOW',
+        'REQUESTED',
+        'ACCEPTED',
+        'PAYMENT_AUTHORIZED',
+        'CONFIRMED_OFFLINE',
+        'PAID',
+        'IN_PROGRESS',
+        'COMPLETED',
+        'REJECTED',
+        'CANCELLED',
+        'NO_SHOW',
       ];
       expect(states).toHaveLength(10);
       // All unique

@@ -1,4 +1,19 @@
-export { Skeleton, CardSkeleton, ListSkeleton, TextLineSkeleton, AvatarSkeleton, TableRowSkeleton, DashboardSkeleton, CardListSkeleton, DetailSkeleton, FormSkeleton, TableSkeleton, GridSkeleton, TextSkeleton, KPIRowSkeleton } from './Skeleton';
+export {
+  Skeleton,
+  CardSkeleton,
+  ListSkeleton,
+  TextLineSkeleton,
+  AvatarSkeleton,
+  TableRowSkeleton,
+  DashboardSkeleton,
+  CardListSkeleton,
+  DetailSkeleton,
+  FormSkeleton,
+  TableSkeleton,
+  GridSkeleton,
+  TextSkeleton,
+  KPIRowSkeleton,
+} from './Skeleton';
 export { ErrorAlert } from './ErrorAlert';
 export { EmptyState } from './EmptyState';
 export { Button } from './Button';
@@ -34,6 +49,7 @@ export { WomenOnlySeal } from './WomenOnlySeal';
 export { FloatingActionButton } from './FloatingActionButton';
 export { VerifiedBadge } from './VerifiedBadge';
 export { StatsCounter } from './StatsCounter';
+export { ServiceImage } from './ServiceImage';
 export { TrustBar } from './TrustBar';
 export { RatingStars } from './RatingStars';
 export { CountdownTimer } from './CountdownTimer';
@@ -173,6 +189,7 @@ export { BeautyPenPalCard } from './BeautyPenPalCard';
 export { PersonalStylingCard } from './PersonalStylingCard';
 export { SaudiBeautyHeritageCard } from './SaudiBeautyHeritageCard';
 export { SkinAnalysisCard } from './SkinAnalysisCard';
+export type { SkinConcern } from './SkinAnalysisCard';
 export { BeautyInfographicCard } from './BeautyInfographicCard';
 export { HijabiBeautyCard } from './HijabiBeautyCard';
 export { BeautyFlashCard } from './BeautyFlashCard';
@@ -546,3 +563,15 @@ export { BeautyPerfumeSaffronCard } from './BeautyPerfumeSaffronCard';
 export { BeautyPerfumeMixingCard } from './BeautyPerfumeMixingCard';
 export { BeautyPerfumeStorageCard } from './BeautyPerfumeStorageCard';
 export { BeautyPerfumeOccasionCard } from './BeautyPerfumeOccasionCard';
+
+// Motion kit (beauty motion — Rose Blush)
+export { Reveal } from './motion/Reveal';
+export { FloatingBlob } from './motion/FloatingBlob';
+export { Sparkles, type SparkleSpec } from './motion/Sparkles';
+export { Marquee } from './motion/Marquee';
+export { HeroSection } from './motion/HeroSection';
+export { Walkthrough, type WalkthroughStep } from './motion/Walkthrough';
+
+// Trust layer (Phase 3 sprint 1)
+export { TrustBadge, TrustBadges, type TrustBadgeVariant } from './TrustBadges';
+export { ReelCard } from './ReelCard';

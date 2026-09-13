@@ -1,33 +1,61 @@
 'use client';
 
 import {
-  PageContainer, PageTitle,
-  BeautyEyebrowCard, BeautyLashCard,
-  BeautyBodyCareCard, BeautyTeethCareCard,
-  BeautySmileCard, BeautyGlowCard, BeautyConfidenceCard,
-  BeautySpaBathCard, BeautyAromatherapyCard, BeautyDryBrushingCard,
-  BeautyIceFacialCard, BeautySteamFacialCard,
-  BeautySilkPillowCard, BeautyHairRemovalCard, BeautyDetoxWaterCard,
-  BeautyLEDMaskCard, BeautyGuaShaRoutineCard,
-  BeautyMicrocurrentCard, BeautyRadioFrequencyCard, BeautyCryoStickCard,
-  BeautyUltrasonicCard, BeautyHighFrequencyCard,
-  BeautyCelluliteCard, BeautyStretchMarksCard, BeautyBodySculptingCard,
-  BeautyBodyWrapCard, BeautyLymphaticDrainageCard,
-  BeautyMakeupStorageCard, BeautyShelfLifeCard, BeautyVanityOrganizationCard,
-  BeautyTravelPackingCard, BeautyDeclutterCard,
-  BeautyNeckCareCard, BeautyDecolletageCard, BeautyTechNeckCard,
-  BeautyNeckMaskCard, BeautyNeckFirmingCard,
+  PageContainer,
+  PageTitle,
+  BeautyEyebrowCard,
+  BeautyLashCard,
+  BeautyBodyCareCard,
+  BeautyTeethCareCard,
+  BeautySmileCard,
+  BeautyGlowCard,
+  BeautyConfidenceCard,
+  BeautySpaBathCard,
+  BeautyAromatherapyCard,
+  BeautyDryBrushingCard,
+  BeautyIceFacialCard,
+  BeautySteamFacialCard,
+  BeautySilkPillowCard,
+  BeautyHairRemovalCard,
+  BeautyDetoxWaterCard,
+  BeautyLEDMaskCard,
+  BeautyGuaShaRoutineCard,
+  BeautyMicrocurrentCard,
+  BeautyRadioFrequencyCard,
+  BeautyCryoStickCard,
+  BeautyUltrasonicCard,
+  BeautyHighFrequencyCard,
+  BeautyCelluliteCard,
+  BeautyStretchMarksCard,
+  BeautyBodySculptingCard,
+  BeautyBodyWrapCard,
+  BeautyLymphaticDrainageCard,
+  BeautyMakeupStorageCard,
+  BeautyShelfLifeCard,
+  BeautyVanityOrganizationCard,
+  BeautyTravelPackingCard,
+  BeautyDeclutterCard,
+  BeautyNeckCareCard,
+  BeautyDecolletageCard,
+  BeautyTechNeckCard,
+  BeautyNeckMaskCard,
+  BeautyNeckFirmingCard,
   BeautyEmergencyKitCard,
-  BeautyJewelryCard, BeautyBagCard, BeautyScarfCard,
-  BeautyHandsCareCard, BeautyFootCareCard,
+  BeautyJewelryCard,
+  BeautyBagCard,
+  BeautyScarfCard,
+  BeautyHandsCareCard,
+  BeautyFootCareCard,
 } from '@galaxy/ui';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
+import { useLocale } from '@/components/LocaleProvider';
 
 export default function PersonalCarePage(): JSX.Element {
+  const { t } = useLocale();
   return (
-    <DashboardLayout role="CUSTOMER">
+    <DashboardLayout userRole="CUSTOMER">
       <PageContainer width="wide">
-        <PageTitle title="✨ العناية الشخصية" subtitle="تفاصيل صغيرة — تأثير كبير" />
+        <PageTitle title={t('personalCare.title')} subtitle={t('personalCare.subtitle')} />
 
         <div className="grid gap-6 lg:grid-cols-3">
           <div className="lg:col-span-2 space-y-6">

@@ -8,7 +8,8 @@ const CLEANUP_INTERVAL_MS = 3600_000; // 1 hour
 
 let intervalId: ReturnType<typeof setInterval> | null = null;
 
-async function cleanupTokens(): Promise<void> {
+/** Purge expired/revoked tokens and stale notifications. Exported for tests. */
+export async function cleanupTokens(): Promise<void> {
   try {
     const now = new Date();
 
@@ -38,7 +39,8 @@ async function cleanupTokens(): Promise<void> {
       where: { createdAt: { lt: thirtyDaysAgo }, isRead: true },
     });
 
-    const total = expired.count + revoked.count + resetExpired.count + resetUsed.count + oldNotifs.count;
+    const total =
+      expired.count + revoked.count + resetExpired.count + resetUsed.count + oldNotifs.count;
     if (total > 0) {
       console.log(
         `[Cleanup] Purged ${total} items (refresh: ${expired.count + revoked.count}, reset: ${resetExpired.count + resetUsed.count}, notifications: ${oldNotifs.count})`,
@@ -53,10 +55,10 @@ export function startTokenCleanup(): void {
   if (intervalId) return;
 
   // Run immediately on start
-  cleanupTokens();
+  void cleanupTokens();
 
   // Then every hour
-  intervalId = setInterval(cleanupTokens, CLEANUP_INTERVAL_MS);
+  intervalId = setInterval(() => void cleanupTokens(), CLEANUP_INTERVAL_MS);
   console.log(`[TokenCleanup] Scheduled every ${CLEANUP_INTERVAL_MS / 1000}s`);
 }
 

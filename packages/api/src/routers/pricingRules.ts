@@ -26,7 +26,8 @@ export const pricingRulesRouter = router({
       let multiplier = 1.0;
       for (const rule of rules) {
         if (rule.dayOfWeek !== null && rule.dayOfWeek !== dayOfWeek) continue;
-        if (rule.hourStart !== null && rule.hourStart !== undefined && hour < rule.hourStart) continue;
+        if (rule.hourStart !== null && rule.hourStart !== undefined && hour < rule.hourStart)
+          continue;
         if (rule.hourEnd !== null && rule.hourEnd !== undefined && hour > rule.hourEnd) continue;
         multiplier = Number(rule.priceMultiplier);
       }
@@ -41,16 +42,18 @@ export const pricingRulesRouter = router({
 
   // Admin: create
   create: adminProcedure
-    .input(z.object({
-      serviceId: z.number().optional(),
-      categoryId: z.number().optional(),
-      dayOfWeek: z.number().min(0).max(6).optional(),
-      hourStart: z.number().min(0).max(23).optional(),
-      hourEnd: z.number().min(0).max(23).optional(),
-      priceMultiplier: z.number().min(0.5).max(3.0),
-      technicianTier: z.string().optional(),
-      labelJson: z.object({ ar: z.string(), en: z.string() }).optional(),
-    }))
+    .input(
+      z.object({
+        serviceId: z.number().optional(),
+        categoryId: z.number().optional(),
+        dayOfWeek: z.number().min(0).max(6).optional(),
+        hourStart: z.number().min(0).max(23).optional(),
+        hourEnd: z.number().min(0).max(23).optional(),
+        priceMultiplier: z.number().min(0.5).max(3.0),
+        technicianTier: z.string().optional(),
+        labelJson: z.object({ ar: z.string(), en: z.string() }).optional(),
+      }),
+    )
     .mutation(async ({ input }) => {
       return prisma.pricingRule.create({ data: input });
     }),

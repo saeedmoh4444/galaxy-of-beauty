@@ -10,9 +10,54 @@
 import { useState, useEffect, useCallback } from 'react';
 import { Platform } from 'react-native';
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-let Notifications: any = null;
-try { Notifications = require('expo-notifications'); } catch { /* expo-notifications not installed */ }
+interface NotificationResponse {
+  notification?: {
+    request?: {
+      content?: {
+        data?: { bookingId?: number; type?: string };
+      };
+    };
+  };
+}
+
+interface NotificationsModule {
+  setNotificationHandler(config: {
+    handleNotification: () => Promise<{
+      shouldShowAlert: boolean;
+      shouldPlaySound: boolean;
+      shouldSetBadge: boolean;
+    }>;
+  }): void;
+  addNotificationReceivedListener(callback: (notification: unknown) => void): { remove(): void };
+  addNotificationResponseReceivedListener(callback: (response: NotificationResponse) => void): {
+    remove(): void;
+  };
+  scheduleNotificationAsync(options: {
+    content: {
+      title: string;
+      body: string;
+      data: { bookingId: number; type: string };
+    };
+    trigger: { date: Date };
+  }): Promise<void>;
+  getPermissionsAsync(): Promise<{ status: string }>;
+  requestPermissionsAsync(): Promise<{ status: string }>;
+  setNotificationChannelAsync(
+    channelId: string,
+    options: { name: string; importance: number },
+  ): Promise<void>;
+  getExpoPushTokenAsync(options: { projectId: string }): Promise<{ data: string }>;
+  AndroidImportance: { MAX: number };
+}
+
+let Notifications: NotificationsModule = null as unknown as NotificationsModule;
+try {
+  // expo-notifications is an optional dependency — require dynamically with fallback
+  // eslint-disable-next-line @typescript-eslint/no-require-imports
+  Notifications = require('expo-notifications');
+} catch {
+  /* expo-notifications not installed */
+}
 
 // Configure default notification behavior
 Notifications.setNotificationHandler({
@@ -30,32 +75,47 @@ export function useNotifications() {
   useEffect(() => {
     if (!Notifications) return;
     registerForPushNotifications()
-      .then((token) => { if (token) { setExpoPushToken(token); setPermissionGranted(true); } })
+      .then((token) => {
+        if (token) {
+          setExpoPushToken(token);
+          setPermissionGranted(true);
+        }
+      })
       .catch(() => {});
 
     const sub = Notifications.addNotificationReceivedListener(() => {});
-    const tapSub = Notifications.addNotificationResponseReceivedListener((response: any) => {
-      const data = response?.notification?.request?.content?.data;
-      if (data?.bookingId) { /* navigate to booking detail */ }
-    });
+    const tapSub = Notifications.addNotificationResponseReceivedListener(
+      (response: NotificationResponse) => {
+        const data = response?.notification?.request?.content?.data;
+        if (data?.bookingId) {
+          /* navigate to booking detail */
+        }
+      },
+    );
 
-    return () => { sub?.remove?.(); tapSub?.remove?.(); };
+    return () => {
+      sub?.remove?.();
+      tapSub?.remove?.();
+    };
   }, []);
 
-  const scheduleReminder = useCallback(async (bookingId: number, date: Date, title: string) => {
-    if (!permissionGranted || !Notifications) return;
-    const reminderTime = new Date(date.getTime() - 60 * 60 * 1000);
-    if (reminderTime <= new Date()) return;
+  const scheduleReminder = useCallback(
+    async (bookingId: number, date: Date, title: string) => {
+      if (!permissionGranted || !Notifications) return;
+      const reminderTime = new Date(date.getTime() - 60 * 60 * 1000);
+      if (reminderTime <= new Date()) return;
 
-    await Notifications.scheduleNotificationAsync({
-      content: {
-        title: '⏰ تذكير بالموعد',
-        body: `${title} - بعد ساعة من الآن`,
-        data: { bookingId, type: 'reminder' },
-      },
-      trigger: { date: reminderTime },
-    });
-  }, [permissionGranted]);
+      await Notifications.scheduleNotificationAsync({
+        content: {
+          title: 'تذكير بالموعد',
+          body: `${title} - بعد ساعة من الآن`,
+          data: { bookingId, type: 'reminder' },
+        },
+        trigger: { date: reminderTime },
+      });
+    },
+    [permissionGranted],
+  );
 
   return { expoPushToken, permissionGranted, scheduleReminder };
 }

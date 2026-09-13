@@ -30,7 +30,7 @@ export function OrganizationSchema(): JSX.Element {
   const data = {
     '@context': 'https://schema.org',
     '@type': 'BeautySalon',
-    name: 'Galaxy of Beauty | جالكسي بيوتي',
+    name: 'Dalal | دلال',
     description: 'Secure marketplace for beauty & grooming services in Saudi Arabia',
     url: 'https://galaxyofbeauty.sa',
     logo: 'https://galaxyofbeauty.sa/logo.png',
@@ -44,17 +44,11 @@ export function OrganizationSchema(): JSX.Element {
       contactType: 'customer service',
       availableLanguage: ['Arabic', 'English'],
     },
-    sameAs: [
-      'https://twitter.com/galaxyofbeauty',
-      'https://instagram.com/galaxyofbeauty',
-    ],
+    sameAs: ['https://twitter.com/galaxyofbeauty', 'https://instagram.com/galaxyofbeauty'],
   };
 
   return (
-    <script
-      type="application/ld+json"
-      dangerouslySetInnerHTML={{ __html: JSON.stringify(data) }}
-    />
+    <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(data) }} />
   );
 }
 
@@ -66,7 +60,7 @@ export function ServiceSchema({ service }: { service: ServiceData }): JSX.Elemen
     description: service.description,
     provider: {
       '@type': 'BeautySalon',
-      name: 'Galaxy of Beauty',
+      name: 'Dalal',
     },
     areaServed: { '@type': 'Country', name: 'SA' },
     offers: {
@@ -79,10 +73,7 @@ export function ServiceSchema({ service }: { service: ServiceData }): JSX.Elemen
   };
 
   return (
-    <script
-      type="application/ld+json"
-      dangerouslySetInnerHTML={{ __html: JSON.stringify(data) }}
-    />
+    <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(data) }} />
   );
 }
 
@@ -109,9 +100,6 @@ export function EventSchema({ event }: { event: EventData }): JSX.Element {
   };
 
   return (
-    <script
-      type="application/ld+json"
-      dangerouslySetInnerHTML={{ __html: JSON.stringify(data) }}
-    />
+    <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(data) }} />
   );
 }

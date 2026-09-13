@@ -2,14 +2,13 @@ import { z } from 'zod';
 import { prisma } from '@galaxy/db';
 import { publicProcedure, router } from '../trpc';
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-const db = prisma as any;
+const db = prisma;
 
 const CATEGORIES = [
   { key: 'rating', nameAr: 'الأعلى تقييماً', emoji: '⭐' },
-  { key: 'bookings', nameAr: 'الأكثر حجوزات', emoji: '🔥' },
+  { key: 'bookings', nameAr: 'الأكثر حجوزات', emoji: '📅' },
   { key: 'speed', nameAr: 'الأسرع استجابة', emoji: '⚡' },
-  { key: 'reviews', nameAr: 'الأكثر مراجعات', emoji: '📝' },
+  { key: 'reviews', nameAr: 'الأكثر مراجعات', emoji: '💬' },
 ];
 
 export const techLeaderboardRouter = router({
@@ -23,10 +22,19 @@ export const techLeaderboardRouter = router({
         include: { user: { select: { name: true } } },
         orderBy: input.category === 'rating' ? { ratingAvg: 'desc' } : { createdAt: 'desc' },
       });
-      const bookingCounts = await db.booking.groupBy({ by: ['technicianId'], _count: { id: true } });
-      const countMap = new Map((bookingCounts as any[]).map((b: any) => [b.technicianId, b._count.id]));
+      const bookingCounts = await db.booking.groupBy({
+        by: ['technicianId'],
+        _count: { id: true },
+      });
+      const countMap = new Map(
+        (bookingCounts as any[]).map((b: any) => [b.technicianId, b._count.id]),
+      );
       return (techs as any[]).map((t: any) => ({
-        id: t.id, name: t.user?.name || '', rating: Number(t.ratingAvg || 0), totalBookings: countMap.get(t.id) || 0, city: t.city || '',
+        id: t.id,
+        name: t.user?.name || '',
+        rating: Number(t.ratingAvg || 0),
+        totalBookings: countMap.get(t.id) || 0,
+        city: t.city || '',
       }));
     }),
 });

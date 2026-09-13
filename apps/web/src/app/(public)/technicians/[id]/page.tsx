@@ -1,16 +1,19 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
-import { getServerCaller } from '@/lib/server-trpc';
+import { getServerCaller, serializeForClient } from '@/lib/server-trpc';
 import { TechnicianProfileClient } from './TechnicianProfileClient';
-import type { TechnicianProfileData } from './TechnicianProfileClient';
+import type {
+  TechnicianProfileData,
+  TechnicianProfileItem,
+  TechnicianServiceItem,
+} from './TechnicianProfileClient';
 
 export default async function TechnicianProfilePage({
   params,
 }: {
-  params: { id: string };
+  params: Promise<{ id: string }>;
 }): Promise<JSX.Element> {
-  const tid = Number(params.id);
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const data: TechnicianProfileData = { technician: null as any, services: [] as any[] };
+  const { id } = await params;
+  const tid = Number(id);
+  const data: TechnicianProfileData = { technician: null, services: [] };
 
   if (isNaN(tid)) {
     return <TechnicianProfileClient data={data} />;
@@ -18,13 +21,20 @@ export default async function TechnicianProfilePage({
 
   try {
     const caller = await getServerCaller();
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    // Legacy call shape — the router expects { userId } / { techId }, the page
+    // historically passed { id } / { technicianId }; keep the exact runtime call.
+    const legacyCaller = caller as unknown as {
+      technicians: {
+        getById: (input: { id: number }) => Promise<TechnicianProfileItem | null>;
+        getServices: (input: { technicianId: number }) => Promise<TechnicianServiceItem[]>;
+      };
+    };
     const [tech, services] = await Promise.all([
-      caller.technicians.getById({ id: tid }) as any,
-      caller.technicians.getServices({ technicianId: tid }) as any,
+      legacyCaller.technicians.getById({ id: tid }),
+      legacyCaller.technicians.getServices({ technicianId: tid }),
     ]);
-    data.technician = tech;
-    data.services = services;
+    data.technician = serializeForClient(tech);
+    data.services = serializeForClient(services);
   } catch {
     // Client will show error
   }

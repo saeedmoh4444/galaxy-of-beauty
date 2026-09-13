@@ -13,6 +13,7 @@ interface ModalProps {
   size?: 'sm' | 'md' | 'lg' | 'xl';
   showClose?: boolean;
   closeOnBackdrop?: boolean;
+  closeLabel?: string;
   className?: string;
 }
 
@@ -40,6 +41,7 @@ export function Modal({
   size = 'md',
   showClose = true,
   closeOnBackdrop = true,
+  closeLabel = 'إغلاق',
   className,
 }: ModalProps) {
   const overlayRef = useRef<HTMLDivElement>(null);
@@ -152,24 +154,30 @@ export function Modal({
         {showClose && (
           <button
             onClick={onClose}
-            className="absolute end-3 top-3 flex h-11 w-11 items-center justify-center rounded-lg text-gray-400 transition-colors hover:bg-gray-100 hover:text-gray-600 dark:hover:bg-gray-800 dark:hover:text-gray-300"
-            aria-label="إغلاق"
+            className="absolute end-3 top-3 flex h-11 w-11 items-center justify-center rounded-lg text-text-tertiary transition-colors hover:bg-surface-muted hover:text-text-secondary dark:hover:bg-gray-800 dark:hover:text-gray-300"
+            aria-label={closeLabel}
           >
-            <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor">
+            <svg
+              className="h-5 w-5"
+              fill="none"
+              viewBox="0 0 24 24"
+              strokeWidth={2}
+              stroke="currentColor"
+            >
               <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
             </svg>
           </button>
         )}
 
         {(title || description) && (
-          <div className="border-b border-gray-200 px-6 py-4 dark:border-gray-700">
+          <div className="border-b border-edge px-6 py-4 dark:border-gray-700">
             {title && (
-              <h2 id="modal-title" className="text-lg font-semibold text-gray-900 dark:text-gray-100">
+              <h2 id="modal-title" className="text-lg font-semibold text-text-primary">
                 {title}
               </h2>
             )}
             {description && (
-              <p id="modal-desc" className="mt-1 text-sm text-gray-500 dark:text-gray-400">
+              <p id="modal-desc" className="mt-1 text-sm text-text-secondary">
                 {description}
               </p>
             )}

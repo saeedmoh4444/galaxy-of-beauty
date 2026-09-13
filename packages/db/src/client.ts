@@ -18,9 +18,7 @@ if (typeof process !== 'undefined') {
     const duration = performance.now() - t0;
 
     if (duration > SLOW_QUERY_THRESHOLD_MS) {
-      console.warn(
-        `[Prisma:SLO] ${params.model}.${params.action} took ${duration.toFixed(0)}ms`,
-      );
+      console.warn(`[Prisma:SLO] ${params.model}.${params.action} took ${duration.toFixed(0)}ms`);
     }
     return result;
   });

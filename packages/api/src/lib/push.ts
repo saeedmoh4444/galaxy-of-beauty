@@ -24,10 +24,7 @@ interface ExpoPushTicket {
  * Send a push notification via Expo's Push API.
  * Falls back to logging if EXPO_ACCESS_TOKEN is not configured.
  */
-async function sendExpoPush(
-  tokens: string[],
-  message: PushMessage,
-): Promise<void> {
+async function sendExpoPush(tokens: string[], message: PushMessage): Promise<void> {
   const accessToken = process.env['EXPO_ACCESS_TOKEN'];
 
   if (!accessToken) {
@@ -65,7 +62,10 @@ async function sendExpoPush(
     const errors = (tickets.data || []).filter((t) => t.status === 'error');
     if (errors.length > 0) {
       // Count only — never log individual ticket details (contains device tokens)
-      logger.error({ errorCount: errors.length, totalCount: tickets.data?.length }, 'Expo push ticket errors');
+      logger.error(
+        { errorCount: errors.length, totalCount: tickets.data?.length },
+        'Expo push ticket errors',
+      );
     }
   } catch (err) {
     logger.error({ err }, 'Failed to send Expo push');
@@ -80,10 +80,7 @@ async function sendExpoPush(
  * @param userId - The user to notify
  * @param message - The push notification payload
  */
-export async function sendPushToUser(
-  userId: number,
-  message: PushMessage,
-): Promise<void> {
+export async function sendPushToUser(userId: number, message: PushMessage): Promise<void> {
   try {
     const tokens = await prisma.pushToken.findMany({
       where: { userId },

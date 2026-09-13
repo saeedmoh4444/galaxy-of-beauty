@@ -14,11 +14,11 @@ type CyclePhase = 'menstrual' | 'follicular' | 'ovulation' | 'luteal';
 
 interface PhaseData {
   emoji: string;
-  title: string;
-  days: string;
-  description: string;
-  recommended: string[];
-  avoid: string[];
+  title: { ar: string; en: string };
+  days: { ar: string; en: string };
+  description: { ar: string; en: string };
+  recommended: { ar: string; en: string }[];
+  avoid: { ar: string; en: string }[];
   colorClass: string;
   gradientClass: string;
 }
@@ -26,43 +26,83 @@ interface PhaseData {
 const PHASES: Record<CyclePhase, PhaseData> = {
   menstrual: {
     emoji: '🩸',
-    title: 'الدورة الشهرية',
-    days: 'الأيام 1-5',
-    description: 'وقت الراحة والاسترخاء. جسمكِ يحتاج إلى عناية لطيفة.',
-    recommended: ['مساج خفيف', 'حمام دافئ', 'كمادات ساخنة', 'شاي أعشاب'],
-    avoid: ['إزالة الشعر', 'تقشير عميق', 'جلسات طويلة'],
+    title: { ar: 'الدورة الشهرية', en: 'Menstrual phase' },
+    days: { ar: 'الأيام 1-5', en: 'Days 1-5' },
+    description: {
+      ar: 'وقت الراحة والاسترخاء. جسمكِ يحتاج إلى عناية لطيفة.',
+      en: 'A time for rest and relaxation. Your body needs gentle care.',
+    },
+    recommended: [
+      { ar: 'مساج خفيف', en: 'Light massage' },
+      { ar: 'حمام دافئ', en: 'Warm bath' },
+      { ar: 'كمادات ساخنة', en: 'Warm compresses' },
+      { ar: 'شاي أعشاب', en: 'Herbal tea' },
+    ],
+    avoid: [
+      { ar: 'إزالة الشعر', en: 'Hair removal' },
+      { ar: 'تقشير عميق', en: 'Deep exfoliation' },
+      { ar: 'جلسات طويلة', en: 'Long sessions' },
+    ],
     colorClass: 'border-rose-200 bg-rose-50/50 dark:border-rose-900 dark:bg-rose-950/30',
     gradientClass: 'from-rose-200 to-rose-300 dark:from-rose-800 dark:to-rose-700',
   },
   follicular: {
-    emoji: '🌸',
-    title: 'المرحلة الجرابية',
-    days: 'الأيام 6-14',
-    description: 'طاقتكِ في ذروتها! أفضل وقت للعناية المكثفة والتجديد.',
-    recommended: ['تنظيف عميق للبشرة', 'تقشير', 'إزالة الشعر', 'علاجات مغذية'],
-    avoid: ['لا شيء — استمتعي!'],
+    emoji: '🌱',
+    title: { ar: 'المرحلة الجرابية', en: 'Follicular phase' },
+    days: { ar: 'الأيام 6-14', en: 'Days 6-14' },
+    description: {
+      ar: 'طاقتكِ في ذروتها! أفضل وقت للعناية المكثفة والتجديد.',
+      en: 'Your energy is at its peak! The best time for intensive care and renewal.',
+    },
+    recommended: [
+      { ar: 'تنظيف عميق للبشرة', en: 'Deep facial cleansing' },
+      { ar: 'تقشير', en: 'Exfoliation' },
+      { ar: 'إزالة الشعر', en: 'Hair removal' },
+      { ar: 'علاجات مغذية', en: 'Nourishing treatments' },
+    ],
+    avoid: [{ ar: 'لا شيء — استمتعي!', en: 'Nothing — enjoy!' }],
     colorClass: 'border-pink-200 bg-pink-50/50 dark:border-pink-900 dark:bg-pink-950/30',
     gradientClass: 'from-pink-300 to-rose-300 dark:from-pink-800 dark:to-rose-700',
   },
   ovulation: {
     emoji: '✨',
-    title: 'الإباضة',
-    days: 'اليوم 14 تقريباً',
-    description: 'بشرتكِ في أجمل حالاتها! الوقت المثالي للمناسبات والصور.',
-    recommended: ['مكياج للمناسبات', 'تصوير', 'تسريحة شعر', 'عناية بالأظافر'],
-    avoid: ['علاجات قوية غير ضرورية'],
+    title: { ar: 'الإباضة', en: 'Ovulation' },
+    days: { ar: 'اليوم 14 تقريباً', en: 'Around day 14' },
+    description: {
+      ar: 'بشرتكِ في أجمل حالاتها! الوقت المثالي للمناسبات والصور.',
+      en: 'Your skin is at its best! The perfect time for occasions and photos.',
+    },
+    recommended: [
+      { ar: 'مكياج للمناسبات', en: 'Occasion makeup' },
+      { ar: 'تصوير', en: 'Photo shoots' },
+      { ar: 'تسريحة شعر', en: 'Hair styling' },
+      { ar: 'عناية بالأظافر', en: 'Nail care' },
+    ],
+    avoid: [{ ar: 'علاجات قوية غير ضرورية', en: 'Unnecessary strong treatments' }],
     colorClass: 'border-amber-200 bg-amber-50/50 dark:border-amber-900 dark:bg-amber-950/30',
     gradientClass: 'from-amber-300 to-yellow-300 dark:from-amber-800 dark:to-yellow-700',
   },
   luteal: {
     emoji: '🌙',
-    title: 'المرحلة الأصفرية',
-    days: 'الأيام 15-28',
-    description: 'بشرتكِ قد تكون حساسة. اختاري علاجات مهدئة ولطيفة.',
-    recommended: ['ماسك مرطب', 'مساج استرخاء', 'تأمل', 'عناية بالقدمين'],
-    avoid: ['إزالة الشعر (البشرة حساسة)', 'تقشير قوي', 'منتجات جديدة'],
+    title: { ar: 'المرحلة الأصفرية', en: 'Luteal phase' },
+    days: { ar: 'الأيام 15-28', en: 'Days 15-28' },
+    description: {
+      ar: 'بشرتكِ قد تكون حساسة. اختاري علاجات مهدئة ولطيفة.',
+      en: 'Your skin may be sensitive. Choose soothing, gentle treatments.',
+    },
+    recommended: [
+      { ar: 'ماسك مرطب', en: 'Hydrating mask' },
+      { ar: 'مساج استرخاء', en: 'Relaxing massage' },
+      { ar: 'تأمل', en: 'Meditation' },
+      { ar: 'عناية بالقدمين', en: 'Foot care' },
+    ],
+    avoid: [
+      { ar: 'إزالة الشعر (البشرة حساسة)', en: 'Hair removal (skin is sensitive)' },
+      { ar: 'تقشير قوي', en: 'Strong exfoliation' },
+      { ar: 'منتجات جديدة', en: 'New products' },
+    ],
     colorClass: 'border-indigo-200 bg-indigo-50/50 dark:border-indigo-900 dark:bg-indigo-950/30',
-    gradientClass: 'from-indigo-300 to-purple-300 dark:from-indigo-800 dark:to-purple-700',
+    gradientClass: 'from-indigo-300 to-brand-300 dark:from-indigo-800 dark:to-brand-700',
   },
 };
 
@@ -73,6 +113,18 @@ interface CyclePhaseCardProps {
   /** Enable phase switching */
   onPhaseChange?: (phase: CyclePhase) => void;
   className?: string;
+  /** Label prefixing the day indicator */
+  dayLabel?: string;
+  /** Word prefixing the current day in the header */
+  todayLabel?: string;
+  /** Label for the recommended section */
+  recommendedLabel?: string;
+  /** Label for the avoid section */
+  avoidLabel?: string;
+  /** Footer tip text */
+  footerTip?: string;
+  /** Locale for internal phase data strings */
+  locale?: 'ar' | 'en';
 }
 
 export function CyclePhaseCard({
@@ -80,18 +132,18 @@ export function CyclePhaseCard({
   day,
   onPhaseChange,
   className = '',
+  dayLabel = 'يوم',
+  todayLabel = 'اليوم',
+  recommendedLabel = 'ينصح بها',
+  avoidLabel = 'تجنبي',
+  footerTip = 'CycleSync™ — لأن جمالكِ مرتبط بصحتكِ',
+  locale = 'ar',
 }: CyclePhaseCardProps): JSX.Element {
   const data = PHASES[phase];
   const phases: CyclePhase[] = ['menstrual', 'follicular', 'ovulation', 'luteal'];
 
   return (
-    <div
-      className={cn(
-        'rounded-2xl border p-5',
-        data.colorClass,
-        className,
-      )}
-    >
+    <div className={cn('rounded-2xl border p-5', data.colorClass, className)}>
       {/* Header */}
       <div className="flex items-start justify-between">
         <div className="flex items-center gap-2">
@@ -100,34 +152,30 @@ export function CyclePhaseCard({
           </span>
           <div>
             <h4 className="text-sm font-bold text-text-primary dark:text-gray-100">
-              {data.title}
+              {data.title[locale]}
             </h4>
-            <p className="text-[10px] text-text-tertiary dark:text-gray-400">
-              {data.days}
-              {day && ` — اليوم ${day}`}
+            <p className="text-[10px] text-text-tertiary dark:text-text-tertiary">
+              {data.days[locale]}
+              {day && ` — ${todayLabel} ${day}`}
             </p>
           </div>
         </div>
 
         {/* Cycle day indicator */}
         {day && (
-          <div className="text-right">
-            <span className="text-[10px] text-text-tertiary dark:text-gray-400">
-              يوم
+          <div className="text-end">
+            <span className="text-[10px] text-text-tertiary dark:text-text-tertiary">
+              {dayLabel}
             </span>
-            <div className="text-lg font-bold text-text-primary dark:text-gray-100">
-              {day}
-            </div>
-            <span className="text-[10px] text-text-tertiary dark:text-gray-400">
-              / 28
-            </span>
+            <div className="text-lg font-bold text-text-primary dark:text-gray-100">{day}</div>
+            <span className="text-[10px] text-text-tertiary dark:text-text-tertiary">/ 28</span>
           </div>
         )}
       </div>
 
       {/* Description */}
       <p className="mt-2 text-xs leading-relaxed text-text-secondary dark:text-gray-300">
-        {data.description}
+        {data.description[locale]}
       </p>
 
       {/* Cycle progress bar */}
@@ -138,26 +186,28 @@ export function CyclePhaseCard({
               key={p}
               className={cn(
                 'h-1.5 flex-1 rounded-full transition-all',
-                p === phase
-                  ? 'bg-current opacity-80'
-                  : 'bg-gray-200 dark:bg-gray-700',
+                p === phase ? 'bg-current opacity-80' : 'bg-surface-muted',
               )}
               style={{
                 backgroundColor: p === phase ? undefined : undefined,
-                color: p === phase
-                  ? phase === 'menstrual' ? '#e11d48'
-                  : phase === 'follicular' ? '#ec4899'
-                  : phase === 'ovulation' ? '#f59e0b'
-                  : '#6366f1'
-                  : undefined,
+                color:
+                  p === phase
+                    ? phase === 'menstrual'
+                      ? '#e11d48'
+                      : phase === 'follicular'
+                        ? '#ec4899'
+                        : phase === 'ovulation'
+                          ? '#f59e0b'
+                          : '#6366f1'
+                    : undefined,
               }}
             />
           ))}
         </div>
-        <div className="mt-1 flex justify-between text-[9px] text-text-tertiary dark:text-gray-500">
+        <div className="mt-1 flex justify-between text-[9px] text-text-tertiary dark:text-text-secondary">
           {phases.map((p) => (
             <span key={p} className={cn(p === phase && 'font-bold text-current')}>
-              {PHASES[p].title}
+              {PHASES[p].title[locale]}
             </span>
           ))}
         </div>
@@ -189,12 +239,12 @@ export function CyclePhaseCard({
         {/* Recommended */}
         <div className="rounded-xl bg-white/70 p-2.5 dark:bg-gray-800/70">
           <h5 className="text-[10px] font-bold text-success dark:text-green-400">
-            ✅ ينصح بها
+            {recommendedLabel}
           </h5>
           <ul className="mt-1 space-y-0.5">
             {data.recommended.map((r) => (
-              <li key={r} className="text-[10px] text-text-secondary dark:text-gray-300">
-                • {r}
+              <li key={r.ar} className="text-[10px] text-text-secondary dark:text-gray-300">
+                • {r[locale]}
               </li>
             ))}
           </ul>
@@ -202,13 +252,11 @@ export function CyclePhaseCard({
 
         {/* Avoid */}
         <div className="rounded-xl bg-white/70 p-2.5 dark:bg-gray-800/70">
-          <h5 className="text-[10px] font-bold text-danger dark:text-red-400">
-            ⚠️ تجنبي
-          </h5>
+          <h5 className="text-[10px] font-bold text-danger dark:text-red-400">{avoidLabel}</h5>
           <ul className="mt-1 space-y-0.5">
             {data.avoid.map((a) => (
-              <li key={a} className="text-[10px] text-text-secondary dark:text-gray-300">
-                • {a}
+              <li key={a.ar} className="text-[10px] text-text-secondary dark:text-gray-300">
+                • {a[locale]}
               </li>
             ))}
           </ul>
@@ -216,8 +264,8 @@ export function CyclePhaseCard({
       </div>
 
       {/* Footer tip */}
-      <p className="mt-2 text-center text-[9px] italic text-text-tertiary dark:text-gray-500">
-        💡 CycleSync™ — لأن جمالكِ مرتبط بصحتكِ
+      <p className="mt-2 text-center text-[9px] italic text-text-tertiary dark:text-text-secondary">
+        {footerTip}
       </p>
     </div>
   );

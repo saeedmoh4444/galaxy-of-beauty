@@ -67,9 +67,11 @@ export function simulateZatcaReporting(invoice: ZatcaInvoiceRequest): ZatcaInvoi
   };
 }
 
-export function simulateZatcaClearance(
-  clearanceId: string,
-): { clearanceId: string; status: 'CLEARED'; clearedAt: string } {
+export function simulateZatcaClearance(clearanceId: string): {
+  clearanceId: string;
+  status: 'CLEARED';
+  clearedAt: string;
+} {
   return {
     clearanceId,
     status: 'CLEARED',

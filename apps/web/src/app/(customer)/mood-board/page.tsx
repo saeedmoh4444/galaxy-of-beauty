@@ -1,9 +1,12 @@
 'use client';
 
 import { useState } from 'react';
+import Image from 'next/image';
 import { api } from '@/lib/trpc';
-import { Card, CardSkeleton, ErrorAlert, EmptyState, Button, Modal } from '@galaxy/ui';
+import { Card, GridSkeleton, ErrorAlert, EmptyState, Button, Modal } from '@galaxy/ui';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
+import { useLocale } from '@/components/LocaleProvider';
+import { SortableGrid } from '@/components/SortableGrid';
 interface Pin {
   id: number;
   imageUrl: string;
@@ -24,13 +27,67 @@ interface Board {
 }
 
 export default function MoodBoardPage(): JSX.Element {
-  const { data: boards, isLoading, isError, refetch } = api.moodBoard.list.useQuery() as {
-    data: Board[] | undefined; isLoading: boolean; isError: boolean; refetch: () => void;
+  const { t } = useLocale();
+  const {
+    data: boards,
+    isLoading,
+    isError,
+    refetch,
+  } = api.moodBoard.list.useQuery() as {
+    data: Board[] | undefined;
+    isLoading: boolean;
+    isError: boolean;
+    refetch: () => void;
   };
-  const createBoardMut = api.moodBoard.create.useMutation({ onSuccess: () => { setShowCreate(false); setNewBoardName(''); refetch(); } });
-  const addPinMut = api.moodBoard.addPin.useMutation({ onSuccess: () => { setShowAddPin(0); refetch(); } });
-  const _removePinMut = api.moodBoard.removePin.useMutation({ onSuccess: () => refetch() });
+  const createBoardMut = api.moodBoard.create.useMutation({
+    onSuccess: () => {
+      setShowCreate(false);
+      setNewBoardName('');
+      refetch();
+    },
+  });
+  const addPinMut = api.moodBoard.addPin.useMutation({
+    onSuccess: () => {
+      setShowAddPin(0);
+      refetch();
+    },
+  });
   const deleteBoardMut = api.moodBoard.delete.useMutation({ onSuccess: () => refetch() });
+
+  const utils = api.useUtils();
+  const reorderPinsMut = api.moodBoard.reorderPins.useMutation({
+    onMutate: async ({ boardId, pinIds }) => {
+      // Optimistic: apply the new pin order to the cached board list
+      await utils.moodBoard.list.cancel();
+      const prev = utils.moodBoard.list.getData();
+      utils.moodBoard.list.setData(undefined, (old) => {
+        if (!old) return old;
+        const order = new Map(pinIds.map((id, i) => [id, i]));
+        return old.map((b) =>
+          b.id === boardId
+            ? {
+                ...b,
+                pins: [...b.pins].sort(
+                  (a, b) => (order.get(a.id) ?? a.sortOrder) - (order.get(b.id) ?? b.sortOrder),
+                ),
+              }
+            : b,
+        );
+      });
+      return { prev };
+    },
+    onError: (_e, _v, ctx) => {
+      if (ctx?.prev) utils.moodBoard.list.setData(undefined, ctx.prev);
+    },
+  });
+
+  const handleReorderBoardPins = (board: Board) => (newVisible: Pin[]) => {
+    const hiddenIds = board.pins.slice(5).map((p) => p.id);
+    reorderPinsMut.mutate({
+      boardId: board.id,
+      pinIds: [...newVisible.map((p) => p.id), ...hiddenIds],
+    });
+  };
 
   const [showCreate, setShowCreate] = useState(false);
   const [newBoardName, setNewBoardName] = useState('');
@@ -46,7 +103,10 @@ export default function MoodBoardPage(): JSX.Element {
 
   const handleCreateBoard = () => {
     if (!newBoardName.trim()) return;
-    createBoardMut.mutate({ name: newBoardName.trim(), description: newBoardDesc.trim() || undefined });
+    createBoardMut.mutate({
+      name: newBoardName.trim(),
+      description: newBoardDesc.trim() || undefined,
+    });
   };
 
   const handleAddPin = () => {
@@ -56,34 +116,52 @@ export default function MoodBoardPage(): JSX.Element {
       imageUrl: pinImageUrl.trim(),
       title: pinTitle.trim() || undefined,
       note: pinNote.trim() || undefined,
-      tags: pinTags ? pinTags.split(',').map((t) => t.trim()).filter(Boolean) : [],
+      tags: pinTags
+        ? pinTags
+            .split(',')
+            .map((t) => t.trim())
+            .filter(Boolean)
+        : [],
     });
-    setPinImageUrl(''); setPinTitle(''); setPinNote(''); setPinTags('');
+    setPinImageUrl('');
+    setPinTitle('');
+    setPinNote('');
+    setPinTags('');
   };
 
   return (
-    <DashboardLayout role="CUSTOMER">
+    <DashboardLayout userRole="CUSTOMER">
       <div className="mx-auto max-w-5xl space-y-6">
         {/* Header */}
         <div className="flex items-center justify-between">
           <div>
-            <h1 className="text-2xl font-bold text-text-primary dark:text-gray-100">🎨 لوحة الإلهام</h1>
-            <p className="mt-1 text-sm text-text-secondary dark:text-gray-400">
-              اجمعي صور إطلالاتكِ المفضلة ونظميها في لوحات — {totalPins} صورة في {allBoards.length} لوحة
+            <h1 className="text-2xl font-bold text-text-primary dark:text-gray-100">
+              {t('mood.title')}
+            </h1>
+            <p className="mt-1 text-sm text-text-secondary dark:text-text-tertiary">
+              {t('mood.subtitle', { totalPins, boards: allBoards.length })}
             </p>
           </div>
-          <Button onClick={() => { setNewBoardName(''); setNewBoardDesc(''); setShowCreate(true); }}>+ لوحة جديدة</Button>
+          <Button
+            onClick={() => {
+              setNewBoardName('');
+              setNewBoardDesc('');
+              setShowCreate(true);
+            }}
+          >
+            + {t('mood.newBoard')}
+          </Button>
         </div>
 
         {isLoading ? (
-          <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">{Array.from({ length: 3 }, (_, i) => <CardSkeleton key={i} />)}</div>
+          <GridSkeleton count={6} />
         ) : isError ? (
-          <ErrorAlert message="فشل تحميل اللوحات" onRetry={() => refetch()} />
+          <ErrorAlert message={t('mood.err.load')} onRetry={() => refetch()} />
         ) : allBoards.length === 0 ? (
           <EmptyState
-            title="لا توجد لوحات إلهام بعد"
-            description="أنشئي أول لوحة وابدئي بجمع إطلالاتكِ المفضلة! 🎨"
-            action={{ label: 'إنشاء لوحة', onPress: () => setShowCreate(true) }}
+            title={t('mood.empty.title')}
+            description={t('mood.empty.desc')}
+            action={{ label: t('mood.empty.action'), onPress: () => setShowCreate(true) }}
           />
         ) : (
           <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
@@ -92,32 +170,56 @@ export default function MoodBoardPage(): JSX.Element {
                 {/* Cover */}
                 <div className="relative h-44 overflow-hidden rounded-xl bg-gradient-to-br from-gray-100 to-gray-200 dark:from-gray-800 dark:to-gray-700">
                   {board.coverUrl ? (
-                    <img src={board.coverUrl} alt={board.name} className="h-full w-full object-cover transition-transform group-hover:scale-105" loading="lazy" />
+                    <Image
+                      src={board.coverUrl}
+                      alt={board.name}
+                      fill
+                      className="object-cover transition-transform group-hover:scale-105"
+                    />
                   ) : (
-                    <div className="flex h-full items-center justify-center text-5xl">🎨</div>
+                    <div className="flex h-full items-center justify-center text-5xl">🖼️</div>
                   )}
                   {/* Pin count badge */}
-                  <span className="absolute top-2 left-2 rounded-full bg-black/60 px-2 py-0.5 text-xs text-white backdrop-blur">
-                    {board.pins.length} صورة
+                  <span className="absolute top-2 start-2 rounded-full bg-black/60 px-2 py-0.5 text-xs text-white backdrop-blur">
+                    {t('mood.pinCount', { count: board.pins.length })}
                   </span>
                 </div>
 
                 {/* Info */}
                 <div className="mt-3">
-                  <h3 className="text-lg font-bold text-text-primary dark:text-gray-100">{board.name}</h3>
-                  {board.description && <p className="text-xs text-text-secondary mt-0.5">{board.description}</p>}
+                  <h3 className="text-lg font-bold text-text-primary dark:text-gray-100">
+                    {board.name}
+                  </h3>
+                  {board.description && (
+                    <p className="text-xs text-text-secondary mt-0.5">{board.description}</p>
+                  )}
                 </div>
 
-                {/* Pin thumbnails */}
+                {/* Pin thumbnails — drag to reorder (UI/UX backlog 3.3) */}
                 {board.pins.length > 0 && (
                   <div className="mt-3 flex gap-1 overflow-hidden rounded-lg">
-                    {board.pins.slice(0, 5).map((pin) => (
-                      <div key={pin.id} className="h-16 flex-1 overflow-hidden bg-surface-muted dark:bg-gray-800 rounded">
-                        <img src={pin.imageUrl} alt={pin.title} className="h-full w-full object-cover" loading="lazy" />
-                      </div>
-                    ))}
+                    <div className="min-w-0 flex-1">
+                      <SortableGrid
+                        items={board.pins.slice(0, 5)}
+                        getItemId={(pin) => pin.id}
+                        onReorder={handleReorderBoardPins(board)}
+                        columns="grid-cols-5"
+                        gap="gap-1"
+                      >
+                        {(pin) => (
+                          <div className="relative h-16 overflow-hidden rounded bg-surface-muted dark:bg-gray-800">
+                            <Image
+                              src={pin.imageUrl}
+                              alt={pin.title}
+                              fill
+                              className="object-cover"
+                            />
+                          </div>
+                        )}
+                      </SortableGrid>
+                    </div>
                     {board.pins.length > 5 && (
-                      <div className="flex h-16 w-10 shrink-0 items-center justify-center rounded bg-gray-200 dark:bg-gray-700 text-xs text-text-secondary">
+                      <div className="flex h-16 w-10 shrink-0 items-center justify-center rounded bg-surface-muted text-xs text-text-secondary">
                         +{board.pins.length - 5}
                       </div>
                     )}
@@ -125,16 +227,29 @@ export default function MoodBoardPage(): JSX.Element {
                 )}
 
                 {/* Actions */}
-                <div className="mt-4 flex gap-2 border-t border-gray-100 pt-3 dark:border-gray-800">
-                  <Button size="sm" className="flex-1" onClick={() => {
-                    setShowAddPin(board.id); setPinImageUrl(''); setPinTitle(''); setPinNote(''); setPinTags('');
-                  }}>
-                    + إضافة صورة
+                <div className="mt-4 flex gap-2 border-t border-edge-muted pt-3 dark:border-gray-800">
+                  <Button
+                    size="sm"
+                    className="flex-1"
+                    onClick={() => {
+                      setShowAddPin(board.id);
+                      setPinImageUrl('');
+                      setPinTitle('');
+                      setPinNote('');
+                      setPinTags('');
+                    }}
+                  >
+                    + {t('mood.addImage')}
                   </Button>
-                  <Button size="sm" variant="ghost" onClick={() => {
-                    if (!confirm(`هل أنتِ متأكدة من حذف لوحة "${board.name}"؟`)) return;
-                    deleteBoardMut.mutate({ boardId: board.id });
-                  }} className="text-red-500 hover:text-red-700">
+                  <Button
+                    size="sm"
+                    variant="ghost"
+                    onClick={() => {
+                      if (!confirm(t('mood.confirmDelete', { name: board.name }))) return;
+                      deleteBoardMut.mutate({ boardId: board.id });
+                    }}
+                    className="text-red-500 hover:text-red-700"
+                  >
                     🗑️
                   </Button>
                 </div>
@@ -144,46 +259,122 @@ export default function MoodBoardPage(): JSX.Element {
         )}
 
         {/* Create Board Modal */}
-        <Modal open={showCreate} onClose={() => setShowCreate(false)} title="لوحة جديدة">
+        <Modal open={showCreate} onClose={() => setShowCreate(false)} title={t('mood.modal.board')}>
           <div className="space-y-4">
             <div>
-              <label className="block text-sm font-semibold text-text-primary dark:text-gray-300 mb-1">اسم اللوحة</label>
-              <input type="text" value={newBoardName} onChange={(e) => setNewBoardName(e.target.value)} placeholder="مثال: إطلالات زفافي" className="w-full rounded-lg border border-gray-200 px-3 py-2 text-sm focus:border-brand-500 focus:outline-none dark:border-gray-700 dark:bg-gray-800" />
+              <label
+                htmlFor="mb-name"
+                className="block text-sm font-semibold text-text-primary dark:text-gray-300 mb-1"
+              >
+                {t('mood.label.name')}
+              </label>
+              <input
+                id="mb-name"
+                type="text"
+                value={newBoardName}
+                onChange={(e) => setNewBoardName(e.target.value)}
+                placeholder={t('mood.placeholder.name')}
+                className="w-full rounded-lg border border-edge px-3 py-2 text-sm focus:border-brand-500 focus:outline-none dark:border-gray-700 dark:bg-gray-800"
+              />
             </div>
             <div>
-              <label className="block text-sm font-semibold text-text-primary dark:text-gray-300 mb-1">الوصف (اختياري)</label>
-              <textarea value={newBoardDesc} onChange={(e) => setNewBoardDesc(e.target.value)} placeholder="أفكار لإطلالة يوم الزفاف..." rows={2} className="w-full rounded-lg border border-gray-200 px-3 py-2 text-sm focus:border-brand-500 focus:outline-none dark:border-gray-700 dark:bg-gray-800" />
+              <label
+                htmlFor="mb-desc"
+                className="block text-sm font-semibold text-text-primary dark:text-gray-300 mb-1"
+              >
+                {t('mood.label.description')}
+              </label>
+              <textarea
+                id="mb-desc"
+                value={newBoardDesc}
+                onChange={(e) => setNewBoardDesc(e.target.value)}
+                placeholder={t('mood.placeholder.description')}
+                rows={2}
+                className="w-full rounded-lg border border-edge px-3 py-2 text-sm focus:border-brand-500 focus:outline-none dark:border-gray-700 dark:bg-gray-800"
+              />
             </div>
             <div className="flex justify-end gap-3 pt-2">
-              <Button variant="ghost" onClick={() => setShowCreate(false)}>إلغاء</Button>
-              <Button onClick={handleCreateBoard} loading={createBoardMut.isPending}>🎨 إنشاء</Button>
+              <Button variant="ghost" onClick={() => setShowCreate(false)}>
+                {t('mood.cancel')}
+              </Button>
+              <Button onClick={handleCreateBoard} loading={createBoardMut.isPending}>
+                {t('mood.create')}
+              </Button>
             </div>
           </div>
         </Modal>
 
         {/* Add Pin Modal */}
-        <Modal open={showAddPin > 0} onClose={() => setShowAddPin(0)} title="إضافة صورة">
+        <Modal open={showAddPin > 0} onClose={() => setShowAddPin(0)} title={t('mood.modal.pin')}>
           <div className="space-y-4">
             <div>
-              <label className="block text-sm font-semibold text-text-primary dark:text-gray-300 mb-1">رابط الصورة</label>
-              <input type="url" value={pinImageUrl} onChange={(e) => setPinImageUrl(e.target.value)} placeholder="https://example.com/image.jpg" className="w-full rounded-lg border border-gray-200 px-3 py-2 text-sm focus:border-brand-500 focus:outline-none dark:border-gray-700 dark:bg-gray-800" />
+              <label
+                htmlFor="mb-image"
+                className="block text-sm font-semibold text-text-primary dark:text-gray-300 mb-1"
+              >
+                {t('mood.label.imageUrl')}
+              </label>
+              <input
+                id="mb-image"
+                type="url"
+                value={pinImageUrl}
+                onChange={(e) => setPinImageUrl(e.target.value)}
+                placeholder="https://example.com/image.jpg"
+                className="w-full rounded-lg border border-edge px-3 py-2 text-sm focus:border-brand-500 focus:outline-none dark:border-gray-700 dark:bg-gray-800"
+              />
               {pinImageUrl && (
                 <div className="mt-2 h-32 rounded-xl bg-surface-muted dark:bg-gray-800 overflow-hidden">
-                  <img src={pinImageUrl} alt="معاينة" className="h-full w-full object-cover" onError={(e) => { (e.target as HTMLImageElement).style.display = 'none'; }} />
+                  {/* eslint-disable-next-line @next/next/no-img-element -- user-entered URL may not be an allowed remote host for the optimizer */}
+                  <img
+                    src={pinImageUrl}
+                    alt={t('mood.previewAlt')}
+                    className="h-full w-full object-cover"
+                    onError={(e) => {
+                      (e.target as HTMLImageElement).style.display = 'none';
+                    }}
+                  />
                 </div>
               )}
             </div>
             <div>
-              <label className="block text-sm font-semibold text-text-primary dark:text-gray-300 mb-1">العنوان (اختياري)</label>
-              <input type="text" value={pinTitle} onChange={(e) => setPinTitle(e.target.value)} placeholder="مكياج عيون سموكي" className="w-full rounded-lg border border-gray-200 px-3 py-2 text-sm focus:border-brand-500 focus:outline-none dark:border-gray-700 dark:bg-gray-800" />
+              <label
+                htmlFor="mb-title"
+                className="block text-sm font-semibold text-text-primary dark:text-gray-300 mb-1"
+              >
+                {t('mood.label.title')}
+              </label>
+              <input
+                id="mb-title"
+                type="text"
+                value={pinTitle}
+                onChange={(e) => setPinTitle(e.target.value)}
+                placeholder={t('mood.placeholder.title')}
+                className="w-full rounded-lg border border-edge px-3 py-2 text-sm focus:border-brand-500 focus:outline-none dark:border-gray-700 dark:bg-gray-800"
+              />
             </div>
             <div>
-              <label className="block text-sm font-semibold text-text-primary dark:text-gray-300 mb-1">وسوم (تفصل بفواصل)</label>
-              <input type="text" value={pinTags} onChange={(e) => setPinTags(e.target.value)} placeholder="مكياج، سهرة، عيون" className="w-full rounded-lg border border-gray-200 px-3 py-2 text-sm focus:border-brand-500 focus:outline-none dark:border-gray-700 dark:bg-gray-800" />
+              <label
+                htmlFor="mb-tags"
+                className="block text-sm font-semibold text-text-primary dark:text-gray-300 mb-1"
+              >
+                {t('mood.label.tags')}
+              </label>
+              <input
+                id="mb-tags"
+                type="text"
+                value={pinTags}
+                onChange={(e) => setPinTags(e.target.value)}
+                placeholder={t('mood.placeholder.tags')}
+                className="w-full rounded-lg border border-edge px-3 py-2 text-sm focus:border-brand-500 focus:outline-none dark:border-gray-700 dark:bg-gray-800"
+              />
             </div>
             <div className="flex justify-end gap-3 pt-2">
-              <Button variant="ghost" onClick={() => setShowAddPin(0)}>إلغاء</Button>
-              <Button onClick={handleAddPin} loading={addPinMut.isPending}>📌 تثبيت</Button>
+              <Button variant="ghost" onClick={() => setShowAddPin(0)}>
+                {t('mood.cancel')}
+              </Button>
+              <Button onClick={handleAddPin} loading={addPinMut.isPending}>
+                {t('mood.pin')}
+              </Button>
             </div>
           </div>
         </Modal>

@@ -4,9 +4,21 @@ interface PaginationProps {
   page: number;
   totalPages: number;
   onPageChange: (page: number) => void;
+  navLabel?: string;
+  prevLabel?: string;
+  nextLabel?: string;
+  pageLabel?: string;
 }
 
-export function Pagination({ page, totalPages, onPageChange }: PaginationProps): JSX.Element | null {
+export function Pagination({
+  page,
+  totalPages,
+  onPageChange,
+  navLabel = 'التنقل بين الصفحات',
+  prevLabel = 'الصفحة السابقة',
+  nextLabel = 'الصفحة التالية',
+  pageLabel = 'صفحة',
+}: PaginationProps): JSX.Element | null {
   if (totalPages <= 1) return null;
 
   const pages: (number | '...')[] = [];
@@ -19,18 +31,20 @@ export function Pagination({ page, totalPages, onPageChange }: PaginationProps):
   }
 
   return (
-    <nav aria-label="التنقل بين الصفحات" className="flex items-center justify-center gap-1">
+    <nav aria-label={navLabel} className="flex items-center justify-center gap-1">
       <button
         onClick={() => onPageChange(page - 1)}
         disabled={page <= 1}
-        className="flex h-11 w-11 items-center justify-center rounded-lg text-sm font-medium text-gray-600 transition-colors hover:bg-gray-100 disabled:cursor-not-allowed disabled:opacity-30 dark:text-gray-400 dark:hover:bg-gray-800"
-        aria-label="الصفحة السابقة"
+        className="flex h-11 w-11 items-center justify-center rounded-lg text-sm font-medium text-text-secondary transition-colors hover:bg-surface-muted disabled:cursor-not-allowed disabled:opacity-30 dark:text-text-tertiary dark:hover:bg-gray-800"
+        aria-label={prevLabel}
       >
         ‹
       </button>
       {pages.map((p, i) =>
         p === '...' ? (
-          <span key={`dots-${i}`} className="px-2 text-gray-400">…</span>
+          <span key={`dots-${i}`} className="px-2 text-text-tertiary">
+            …
+          </span>
         ) : (
           <button
             key={p}
@@ -38,9 +52,9 @@ export function Pagination({ page, totalPages, onPageChange }: PaginationProps):
             className={`flex h-11 w-11 items-center justify-center rounded-lg text-sm font-medium transition-colors ${
               p === page
                 ? 'bg-brand-600 text-white'
-                : 'text-gray-600 hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-800'
+                : 'text-text-secondary hover:bg-surface-muted dark:text-text-tertiary dark:hover:bg-gray-800'
             }`}
-            aria-label={`صفحة ${p}`}
+            aria-label={`${pageLabel} ${p}`}
             aria-current={p === page ? 'page' : undefined}
           >
             {p}
@@ -50,8 +64,8 @@ export function Pagination({ page, totalPages, onPageChange }: PaginationProps):
       <button
         onClick={() => onPageChange(page + 1)}
         disabled={page >= totalPages}
-        className="flex h-11 w-11 items-center justify-center rounded-lg text-sm font-medium text-gray-600 transition-colors hover:bg-gray-100 disabled:cursor-not-allowed disabled:opacity-30 dark:text-gray-400 dark:hover:bg-gray-800"
-        aria-label="الصفحة التالية"
+        className="flex h-11 w-11 items-center justify-center rounded-lg text-sm font-medium text-text-secondary transition-colors hover:bg-surface-muted disabled:cursor-not-allowed disabled:opacity-30 dark:text-text-tertiary dark:hover:bg-gray-800"
+        aria-label={nextLabel}
       >
         ›
       </button>

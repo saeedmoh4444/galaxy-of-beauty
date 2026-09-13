@@ -31,7 +31,9 @@ export const bookingHeatmapRouter = router({
 
       const heatmap = DAYS.map((_day, di) =>
         HOURS.map((hour) => ({
-          day: di, hour, value: buckets.get(`${di}-${hour}`) || 0,
+          day: di,
+          hour,
+          value: buckets.get(`${di}-${hour}`) || 0,
         })),
       );
       return { days: DAYS, hours: HOURS, heatmap };

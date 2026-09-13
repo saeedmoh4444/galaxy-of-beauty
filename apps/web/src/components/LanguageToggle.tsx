@@ -1,33 +1,29 @@
 'use client';
 
-import { useState, useEffect } from 'react';
-
-const LOCALE_KEY = 'gob_lang';
-
-function getStoredLocale(): string {
-  if (typeof window === 'undefined') return 'ar';
-  return localStorage.getItem(LOCALE_KEY) || 'ar';
-}
-
-function setStoredLocale(locale: string) {
-  localStorage.setItem(LOCALE_KEY, locale);
-  window.location.reload();
-}
+import { useRouter } from 'next/navigation';
+import { useLocale } from '@/components/LocaleProvider';
 
 export function LanguageToggle(): JSX.Element {
-  const [current, setCurrent] = useState('ar');
+  const router = useRouter();
+  const { locale, setLocale } = useLocale();
+  const next = locale === 'ar' ? 'en' : 'ar';
 
-  useEffect(() => {
-    setCurrent(getStoredLocale());
-  }, []);
+  const toggle = () => {
+    // Context change re-renders every useLocale() consumer instantly;
+    // router.refresh() re-runs the server tree (root layout re-reads the
+    // cookie and re-emits <html lang/dir> for the next paint).
+    setLocale(next);
+    router.refresh();
+  };
 
   return (
     <button
-      onClick={() => setStoredLocale(current === 'ar' ? 'en' : 'ar')}
-      className="flex items-center gap-1 rounded-lg px-2 py-1.5 text-xs font-bold text-gray-600 transition-colors hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-800"
-      title={current === 'ar' ? 'Switch to English' : 'التبديل إلى العربية'}
+      onClick={toggle}
+      className="flex items-center gap-1 rounded-lg px-2 py-1.5 text-xs font-bold text-text-secondary transition-colors hover:bg-surface-muted dark:text-text-tertiary dark:hover:bg-gray-800"
+      title={locale === 'ar' ? 'Switch to English' : 'التبديل إلى العربية'}
+      aria-label={locale === 'ar' ? 'Switch to English' : 'Switch to Arabic'}
     >
-      <span>{current === 'ar' ? '🇸🇦 AR' : '🇬🇧 EN'}</span>
+      <span>{locale === 'ar' ? ' AR' : ' EN'}</span>
     </button>
   );
 }

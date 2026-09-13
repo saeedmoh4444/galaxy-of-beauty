@@ -2,8 +2,7 @@ import { z } from 'zod';
 import { prisma } from '@galaxy/db';
 import { publicProcedure, router } from '../trpc';
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-const db = prisma as any;
+const db = prisma;
 
 function formatQuestion(q: any) {
   return {
@@ -36,7 +35,10 @@ function formatRecommendation(r: any) {
 
 export const giftQuizRouter = router({
   questions: publicProcedure.query(async () => {
-    const questions = await db.giftQuizQuestion.findMany({ where: { isActive: true }, orderBy: { sortOrder: 'asc' } });
+    const questions = await db.giftQuizQuestion.findMany({
+      where: { isActive: true },
+      orderBy: { sortOrder: 'asc' },
+    });
     return questions.map(formatQuestion);
   }),
 

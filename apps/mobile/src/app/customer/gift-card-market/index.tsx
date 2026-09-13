@@ -1,42 +1,94 @@
 import { View, Text, ScrollView, StyleSheet, TouchableOpacity, RefreshControl } from 'react-native';
-import { trpc } from '@/lib/api';
-import { useState, useEffect, useCallback } from 'react';
 import { SkeletonList } from '@/components/SkeletonCard';
+import { trpc } from '@/lib/trpc-react';
+import { useLocale } from '@/components/LocaleProvider';
+import { useAuthState } from '@/hooks/useAuthState';
+
+interface GiftCardListing {
+  id: number;
+  value?: number;
+  sellingPrice?: number;
+  discount?: number;
+}
 
 export default function GiftCardMarketScreen(): JSX.Element {
-  const [listings, setListings] = useState<any[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [refreshing, setRefreshing] = useState(false);
-  const fetch = useCallback((isRefresh = false) => {
-    if (isRefresh) setRefreshing(true); else setLoading(true);
-    ((trpc as any).giftCardMarket.listings.query() as any).then((d: any) => { setListings(d || []); setLoading(false); setRefreshing(false); }).catch(() => { setLoading(false); setRefreshing(false); });
-  }, []);
-  useEffect(() => { fetch(); }, [fetch]);
-  const buy = (listingId: number) => { ((trpc as any).giftCardMarket.buy.mutate({ listingId }) as any).then(() => fetch()); };
-  if (loading) return <SkeletonList count={4} />;
+  const isAuthed = useAuthState();
+  const { t } = useLocale();
+  const q = trpc.giftCardMarket.listings.useQuery(undefined, { enabled: isAuthed });
+  const listings: GiftCardListing[] = (q.data as unknown as GiftCardListing[] | undefined) ?? [];
+  const buyMut = trpc.giftCardMarket.buy.useMutation({
+    onSuccess: () => {
+      void q.refetch();
+    },
+  });
+  const buy = (listingId: number) => {
+    buyMut.mutate({ listingId });
+  };
+  if (q.isLoading) return <SkeletonList count={4} />;
   return (
-    <ScrollView style={styles.c} contentContainerStyle={styles.i} refreshControl={<RefreshControl refreshing={refreshing} onRefresh={() => fetch(true)} colors={['#7c3aed']} />}>
-      <Text style={styles.t}>💳 سوق البطاقات</Text>
+    <ScrollView
+      style={styles.c}
+      contentContainerStyle={styles.i}
+      refreshControl={
+        <RefreshControl
+          refreshing={q.isRefetching}
+          onRefresh={() => q.refetch()}
+          colors={['#7c3aed']}
+        />
+      }
+    >
+      <Text style={styles.t}>{t('mobile.giftCardMarket.title')}</Text>
       <View style={styles.grid}>
-        {listings.map((l: any) => (
-          <View key={l.id} style={styles.card}><Text style={styles.ce}>🎁</Text><Text style={styles.cv}>{(l.value as number)?.toLocaleString()} ر.س</Text>
-            <Text style={styles.op}>{(l.value as number)?.toLocaleString()}</Text><Text style={styles.sp}>{(l.sellingPrice as number)?.toLocaleString()} ر.س</Text>
-            <Text style={styles.db}>وفر {l.discount as number}%</Text>
-            <TouchableOpacity onPress={() => buy(l.id as number)} style={styles.bb}><Text style={styles.bt}>💳 شراء</Text></TouchableOpacity></View>
+        {listings.map((l) => (
+          <View key={l.id} style={styles.card}>
+            <Text style={styles.ce}>🎁</Text>
+            <Text style={styles.cv}>{l.value?.toLocaleString()} ر.س</Text>
+            <Text style={styles.op}>{l.value?.toLocaleString()}</Text>
+            <Text style={styles.sp}>{l.sellingPrice?.toLocaleString()} ر.س</Text>
+            <Text style={styles.db}>
+              {t('mobile.giftCardMarket.save', { percent: l.discount ?? 0 })}
+            </Text>
+            <TouchableOpacity onPress={() => buy(l.id)} style={styles.bb}>
+              <Text style={styles.bt}>{t('mobile.giftCardMarket.buy')}</Text>
+            </TouchableOpacity>
+          </View>
         ))}
       </View>
     </ScrollView>
   );
 }
 const styles = StyleSheet.create({
-  c: { flex: 1, backgroundColor: '#faf5ff' }, i: { padding: 16, paddingTop: 30, paddingBottom: 40 },
+  c: { flex: 1, backgroundColor: '#faf5ff' },
+  i: { padding: 16, paddingTop: 30, paddingBottom: 40 },
   t: { fontSize: 24, fontWeight: '800', color: '#7c3aed', textAlign: 'center', marginBottom: 20 },
   grid: { flexDirection: 'row', flexWrap: 'wrap', gap: 10 },
-  card: { width: '47%', backgroundColor: '#fff', borderRadius: 16, padding: 14, alignItems: 'center' },
-  ce: { fontSize: 36 }, cv: { fontSize: 14, fontWeight: '600', color: '#111827', marginTop: 6 },
+  card: {
+    width: '47%',
+    backgroundColor: '#fff',
+    borderRadius: 16,
+    padding: 14,
+    alignItems: 'center',
+  },
+  ce: { fontSize: 36 },
+  cv: { fontSize: 14, fontWeight: '600', color: '#111827', marginTop: 6 },
   op: { fontSize: 12, color: '#9ca3af', textDecorationLine: 'line-through', marginTop: 2 },
   sp: { fontSize: 20, fontWeight: '800', color: '#7c3aed', marginTop: 2 },
-  db: { fontSize: 11, fontWeight: '700', color: '#059669', backgroundColor: '#dcfce7', borderRadius: 8, paddingHorizontal: 8, paddingVertical: 2, marginTop: 4 },
-  bb: { backgroundColor: '#7c3aed', borderRadius: 10, paddingVertical: 8, paddingHorizontal: 20, marginTop: 8 },
+  db: {
+    fontSize: 11,
+    fontWeight: '700',
+    color: '#059669',
+    backgroundColor: '#dcfce7',
+    borderRadius: 8,
+    paddingHorizontal: 8,
+    paddingVertical: 2,
+    marginTop: 4,
+  },
+  bb: {
+    backgroundColor: '#7c3aed',
+    borderRadius: 10,
+    paddingVertical: 8,
+    paddingHorizontal: 20,
+    marginTop: 8,
+  },
   bt: { color: '#fff', fontSize: 13, fontWeight: '600' },
 });

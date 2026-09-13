@@ -3,21 +3,35 @@
 import { useParams } from 'next/navigation';
 import Link from 'next/link';
 import { api } from '@/lib/trpc';
-import { Card, CardSkeleton, ErrorAlert, Button } from '@galaxy/ui';
+import { Card, DetailSkeleton, ErrorAlert, Button } from '@galaxy/ui';
 import { Breadcrumbs } from '@/components/Breadcrumbs';
+import { useLocale } from '@/components/LocaleProvider';
+import type { TranslationKey } from '@galaxy/shared';
 
-const DEFAULT_DIFFICULTY = { label: 'غير معروف', color: 'bg-gray-100 text-gray-700' };
-const DIFFICULTY_META: Record<string, { label: string; color: string }> = {
-  beginner: { label: 'مبتدئ', color: 'bg-green-100 text-green-700 dark:bg-green-900 dark:text-green-300' },
-  intermediate: { label: 'متوسط', color: 'bg-amber-100 text-amber-700 dark:bg-amber-900 dark:text-amber-300' },
-  advanced: { label: 'متقدم', color: 'bg-red-100 text-red-700 dark:bg-red-900 dark:text-red-300' },
+const DEFAULT_DIFFICULTY = {
+  label: 'marketing.tutorials.difficulty-unknown' as TranslationKey,
+  color: 'bg-surface-muted text-text-secondary',
+};
+const DIFFICULTY_META: Record<string, { label: TranslationKey; color: string }> = {
+  beginner: {
+    label: 'marketing.tutorials.difficulty-beginner',
+    color: 'bg-green-100 text-green-700 dark:bg-green-900 dark:text-green-300',
+  },
+  intermediate: {
+    label: 'marketing.tutorials.difficulty-intermediate',
+    color: 'bg-amber-100 text-amber-700 dark:bg-amber-900 dark:text-amber-300',
+  },
+  advanced: {
+    label: 'marketing.tutorials.difficulty-advanced',
+    color: 'bg-red-100 text-red-700 dark:bg-red-900 dark:text-red-300',
+  },
 };
 
-const CATEGORY_META: Record<string, { label: string; emoji: string }> = {
-  makeup: { label: 'مكياج', emoji: '💄' },
-  hair: { label: 'شعر', emoji: '💇‍♀️' },
-  skincare: { label: 'عناية بالبشرة', emoji: '✨' },
-  nails: { label: 'أظافر', emoji: '💅' },
+const CATEGORY_META: Record<string, { label: TranslationKey; emoji: string }> = {
+  makeup: { label: 'marketing.tutorials.cat-makeup', emoji: '💄' },
+  hair: { label: 'marketing.tutorials.cat-hair', emoji: '💇' },
+  skincare: { label: 'marketing.tutorials.cat-skincare', emoji: '🧴' },
+  nails: { label: 'marketing.tutorials.cat-nails', emoji: '💅' },
 };
 
 function formatViews(n: number): string {
@@ -26,13 +40,16 @@ function formatViews(n: number): string {
 }
 
 export default function TutorialDetailPage(): JSX.Element {
+  const { t } = useLocale();
   const params = useParams();
   const id = parseInt(params?.id as string, 10);
 
-  const { data: tutorial, isLoading, isError, refetch } = api.tutorials.getById.useQuery(
-    { id },
-    { enabled: !isNaN(id) },
-  ) as {
+  const {
+    data: tutorial,
+    isLoading,
+    isError,
+    refetch,
+  } = api.tutorials.getById.useQuery({ id }, { enabled: !isNaN(id) }) as {
     data: Record<string, unknown> | null | undefined;
     isLoading: boolean;
     isError: boolean;
@@ -42,8 +59,10 @@ export default function TutorialDetailPage(): JSX.Element {
   if (isNaN(id)) {
     return (
       <div className="mx-auto max-w-4xl px-4 py-24 text-center">
-        <ErrorAlert message="معرف الدرس غير صالح" />
-        <Link href="/tutorials" className="mt-4 inline-block"><Button size="sm">العودة للدروس</Button></Link>
+        <ErrorAlert message={t('marketing.tutorials.invalid-id')} />
+        <Link href="/tutorials" className="mt-4 inline-block">
+          <Button size="sm">{t('marketing.tutorials.back-to-lessons')}</Button>
+        </Link>
       </div>
     );
   }
@@ -51,8 +70,7 @@ export default function TutorialDetailPage(): JSX.Element {
   if (isLoading) {
     return (
       <div className="mx-auto max-w-4xl px-4 py-12 space-y-6">
-        <CardSkeleton />
-        <CardSkeleton />
+        <DetailSkeleton />
       </div>
     );
   }
@@ -60,8 +78,15 @@ export default function TutorialDetailPage(): JSX.Element {
   if (isError || !tutorial) {
     return (
       <div className="mx-auto max-w-4xl px-4 py-24 text-center">
-        <ErrorAlert message={isError ? 'فشل تحميل الدرس' : 'الدرس غير موجود'} onRetry={isError ? () => refetch() : undefined} />
-        <Link href="/tutorials" className="mt-4 inline-block"><Button size="sm">العودة للدروس</Button></Link>
+        <ErrorAlert
+          message={
+            isError ? t('marketing.tutorials.load-error') : t('marketing.tutorials.not-found')
+          }
+          onRetry={isError ? () => refetch() : undefined}
+        />
+        <Link href="/tutorials" className="mt-4 inline-block">
+          <Button size="sm">{t('marketing.tutorials.back-to-lessons')}</Button>
+        </Link>
       </div>
     );
   }
@@ -78,14 +103,22 @@ export default function TutorialDetailPage(): JSX.Element {
   const views = (tutorial.views as number) ?? 0;
   const likes = (tutorial.likes as number) ?? 0;
   const diffMeta = DIFFICULTY_META[difficulty] ?? DEFAULT_DIFFICULTY;
-  const catMeta = CATEGORY_META[category] ?? { label: category, emoji: '📹' };
+  const catMeta = CATEGORY_META[category] ?? { label: category as TranslationKey, emoji: '✨' };
 
   return (
     <div className="mx-auto max-w-4xl px-4 py-12">
-      <Breadcrumbs items={[{ label: 'الدروس', href: '/tutorials' }, { label: title }]} />
+      <Breadcrumbs
+        items={[
+          { label: t('marketing.tutorials.lessons-label'), href: '/tutorials' },
+          { label: title },
+        ]}
+      />
 
       {/* Video Player */}
-      <div className="relative w-full overflow-hidden rounded-2xl bg-black shadow-2xl" style={{ paddingBottom: '56.25%' }}>
+      <div
+        className="relative w-full overflow-hidden rounded-2xl bg-black shadow-2xl"
+        style={{ paddingBottom: '56.25%' }}
+      >
         {videoUrl ? (
           <iframe
             src={videoUrl}
@@ -97,8 +130,8 @@ export default function TutorialDetailPage(): JSX.Element {
         ) : (
           <div className="absolute inset-0 flex items-center justify-center text-white/40">
             <div className="text-center">
-              <span className="text-6xl">📹</span>
-              <p className="mt-2">الفيديو غير متوفر</p>
+              <span className="text-6xl">🎬</span>
+              <p className="mt-2">{t('marketing.tutorials.video-unavailable')}</p>
             </div>
           </div>
         )}
@@ -109,19 +142,19 @@ export default function TutorialDetailPage(): JSX.Element {
         {/* Title & Meta */}
         <div className="flex flex-wrap items-start justify-between gap-4">
           <div className="flex-1">
-            <h1 className="text-2xl font-extrabold text-gray-900 dark:text-gray-100 sm:text-3xl">
-              {title}
-            </h1>
+            <h1 className="text-2xl font-extrabold text-text-primary sm:text-3xl">{title}</h1>
             <div className="mt-3 flex flex-wrap items-center gap-3">
               <span className={`rounded-full px-3 py-0.5 text-xs font-medium ${diffMeta.color}`}>
-                {diffMeta.label}
+                {t(diffMeta.label)}
               </span>
-              <span className="text-sm text-gray-500">
-                {catMeta.emoji} {catMeta.label}
+              <span className="text-sm text-text-secondary">
+                {catMeta.emoji} {t(catMeta.label)}
               </span>
-              <span className="text-sm text-gray-500">⏱️ {duration}</span>
-              <span className="text-sm text-gray-500">👁️ {formatViews(views)} مشاهدة</span>
-              <span className="text-sm text-gray-500">❤️ {likes}</span>
+              <span className="text-sm text-text-secondary"> {duration}</span>
+              <span className="text-sm text-text-secondary">
+                {t('marketing.tutorials.views-label', { count: formatViews(views) })}
+              </span>
+              <span className="text-sm text-text-secondary"> {likes}</span>
             </div>
           </div>
         </div>
@@ -132,17 +165,20 @@ export default function TutorialDetailPage(): JSX.Element {
             {authorName[0]}
           </div>
           <div>
-            <p className="font-bold text-gray-900 dark:text-gray-100">{authorName}</p>
-            {authorTitle && <p className="text-xs text-gray-500">{authorTitle}</p>}
+            <p className="font-bold text-text-primary">{authorName}</p>
+            {authorTitle && <p className="text-xs text-text-secondary">{authorTitle}</p>}
           </div>
         </Card>
 
         {/* Tags */}
         {tags.length > 0 && (
           <div className="mt-4 flex flex-wrap gap-2">
-            {tags.map((t) => (
-              <span key={t} className="rounded-full bg-gray-100 px-3 py-1 text-xs text-gray-600 dark:bg-gray-800 dark:text-gray-400">
-                #{t}
+            {tags.map((tag) => (
+              <span
+                key={tag}
+                className="rounded-full bg-surface-muted px-3 py-1 text-xs text-text-secondary dark:bg-gray-800 dark:text-text-tertiary"
+              >
+                #{tag}
               </span>
             ))}
           </div>
@@ -150,20 +186,24 @@ export default function TutorialDetailPage(): JSX.Element {
 
         {/* Description */}
         {desc && (
-          <div className="mt-6 rounded-2xl bg-gray-50 p-5 dark:bg-gray-900">
-            <h3 className="text-sm font-bold text-gray-700 dark:text-gray-300 mb-2">📝 وصف الدرس</h3>
-            <p className="text-sm text-gray-600 dark:text-gray-400 leading-relaxed whitespace-pre-wrap">{desc}</p>
+          <div className="mt-6 rounded-2xl bg-surface-muted p-5 dark:bg-gray-900">
+            <h3 className="text-sm font-bold text-text-secondary mb-2">
+              {t('marketing.tutorials.desc-title')}
+            </h3>
+            <p className="text-sm text-text-secondary leading-relaxed whitespace-pre-wrap">
+              {desc}
+            </p>
           </div>
         )}
       </div>
 
       {/* Bottom CTA */}
-      <div className="mt-10 rounded-2xl bg-gradient-to-r from-brand-500 to-purple-500 p-6 text-center text-white">
-        <p className="text-xl font-bold">🎓 تعلمي المزيد!</p>
-        <p className="mt-1 text-white/80">تصفحي جميع دروس الجمال وتعلمي من أفضل الخبراء</p>
+      <div className="mt-10 rounded-2xl bg-gradient-to-r from-brand-500 to-brand-500 p-6 text-center text-white">
+        <p className="text-xl font-bold">{t('marketing.tutorials.cta-title')}</p>
+        <p className="mt-1 text-white/80">{t('marketing.tutorials.cta-desc')}</p>
         <Link href="/tutorials" className="mt-4 inline-block">
           <span className="inline-flex items-center gap-2 rounded-xl bg-white/20 px-5 py-2 text-sm font-bold backdrop-blur hover:bg-white/30 transition-colors">
-            تصفحي الدروس ←
+            {t('marketing.tutorials.cta-link')}
           </span>
         </Link>
       </div>

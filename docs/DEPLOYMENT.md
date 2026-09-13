@@ -2,15 +2,15 @@
 
 ## Infrastructure Overview
 
-| Component | Technology | Port | Purpose |
-|-----------|-----------|------|---------|
-| Web Server | Next.js 14 (PM2) | 3000 | Customer/Admin/Technician web app |
-| Mobile | Expo (PM2) | 8081 | React Native mobile app |
-| API | tRPC v11 (embedded in Next.js) | 3000 | Type-safe API layer |
-| Database | PostgreSQL 15 | 5432 | Primary data store |
-| Cache | Redis 7 | 6379 | Sessions, rate limiting, caching |
-| WebSocket | Socket.IO (PM2) | 4001 | Real-time notifications |
-| Proxy | Nginx | 80/443 | Reverse proxy, TLS termination |
+| Component  | Technology                     | Port   | Purpose                           |
+| ---------- | ------------------------------ | ------ | --------------------------------- |
+| Web Server | Next.js 15 (PM2)               | 3000   | Customer/Admin/Technician web app |
+| Mobile     | Expo (PM2)                     | 8081   | React Native mobile app           |
+| API        | tRPC v11 (embedded in Next.js) | 3000   | Type-safe API layer               |
+| Database   | PostgreSQL 15                  | 5432   | Primary data store                |
+| Cache      | Redis 7                        | 6379   | Sessions, rate limiting, caching  |
+| WebSocket  | Socket.IO (PM2)                | 4001   | Real-time notifications           |
+| Proxy      | Nginx                          | 80/443 | Reverse proxy, TLS termination    |
 
 ## Prerequisites
 
@@ -211,3 +211,41 @@ pg_dump $DATABASE_URL | gzip > /backups/gob-$(date +%Y%m%d).sql.gz
 # Restore
 gunzip -c backup.sql.gz | psql $DATABASE_URL
 ```
+
+### Backup/Restore Drill — verified 2026-08-17 ✅
+
+Procedure (run against dev/staging; identical on production):
+
+```bash
+# 1. Dump
+pg_dump "$DATABASE_URL" -Fc -f gob-drill.dump
+
+# 2. Restore into a scratch database
+psql "$ADMIN_URL" -c 'CREATE DATABASE gob_drill_restore'
+pg_restore -d gob_drill_restore gob-drill.dump
+
+# 3. Verify — exact row counts must match on every table
+for db in "$DATABASE_URL" gob_drill_restore; do
+  psql "$db" -t -A -F'|' -c "
+    SELECT table_name || '|' || (xpath('/row/cnt/text()',
+      query_to_xml('SELECT count(*) AS cnt FROM ' || quote_ident(table_name),
+                   false, true, '')))[1]::text::int
+    FROM information_schema.tables
+    WHERE table_schema='public' AND table_type='BASE TABLE'
+    ORDER BY table_name"
+done  # diff the two outputs — must be identical
+
+# 4. Clean up
+psql "$ADMIN_URL" -c 'DROP DATABASE gob_drill_restore'
+```
+
+**Drill result (2026-08-17, dev DB)**: 220 tables dumped, restored, exact
+row counts identical across all tables. Note: `reltuples` is only the
+planner's estimate — never use it for verification; `count(*)` per table
+is the reliable check.
+
+**Gotcha**: a `pg_dump` newer than the server emits
+`SET transaction_timeout = 0` in the dump header; on older servers this
+prints one benign "unrecognized configuration parameter" warning during
+restore. Data is unaffected — match pg_dump major version to the server
+to silence it.

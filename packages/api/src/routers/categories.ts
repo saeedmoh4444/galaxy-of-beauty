@@ -31,7 +31,7 @@ export const categoryRouter = router({
             orderBy: { sortOrder: 'asc' },
           },
         },
-      })
+      }),
     );
   }),
 
@@ -85,32 +85,30 @@ export const categoryRouter = router({
    * getBySlug — find a single category by its slug.
    * Public.
    */
-  getBySlug: publicProcedure
-    .input(z.object({ slug: z.string() }))
-    .query(async ({ input }) => {
-      const category = await prisma.category.findUnique({
-        where: { slug: input.slug },
-        include: {
-          children: {
-            where: { isActive: true },
-            orderBy: { sortOrder: 'asc' },
-            include: {
-              _count: { select: { services: true } },
-            },
+  getBySlug: publicProcedure.input(z.object({ slug: z.string() })).query(async ({ input }) => {
+    const category = await prisma.category.findUnique({
+      where: { slug: input.slug },
+      include: {
+        children: {
+          where: { isActive: true },
+          orderBy: { sortOrder: 'asc' },
+          include: {
+            _count: { select: { services: true } },
           },
-          _count: { select: { services: true } },
         },
+        _count: { select: { services: true } },
+      },
+    });
+
+    if (!category) {
+      throw new TRPCError({
+        code: 'NOT_FOUND',
+        message: 'Category not found',
       });
+    }
 
-      if (!category) {
-        throw new TRPCError({
-          code: 'NOT_FOUND',
-          message: 'Category not found',
-        });
-      }
-
-      return category;
-    }),
+    return category;
+  }),
 
   /**
    * create — create a new category.
@@ -132,7 +130,9 @@ export const categoryRouter = router({
       });
 
       // Invalidate category cache after mutation
-      invalidateCachePrefix('categories:').catch(() => {});
+      invalidateCachePrefix('categories:').catch((err) => {
+        console.warn('[Cache] failed to invalidate categories:', (err as Error).message);
+      });
       return category;
     }),
 
@@ -168,7 +168,9 @@ export const categoryRouter = router({
         data,
       });
 
-      invalidateCachePrefix('categories:').catch(() => {});
+      invalidateCachePrefix('categories:').catch((err) => {
+        console.warn('[Cache] failed to invalidate categories:', (err as Error).message);
+      });
       return category;
     }),
 
@@ -194,7 +196,9 @@ export const categoryRouter = router({
         data: { isActive: false },
       });
 
-      invalidateCachePrefix('categories:').catch(() => {});
+      invalidateCachePrefix('categories:').catch((err) => {
+        console.warn('[Cache] failed to invalidate categories:', (err as Error).message);
+      });
       return { success: true };
     }),
 });

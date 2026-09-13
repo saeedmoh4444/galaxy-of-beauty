@@ -24,6 +24,12 @@ interface BeautyPodcastCardProps {
   onListen?: () => void;
   onSubscribe?: () => void;
   className?: string;
+  title?: string;
+  subtitle?: string;
+  episodeLabel?: string;
+  listenText?: string;
+  subscribeText?: string;
+  availabilityText?: string;
 }
 
 export function BeautyPodcastCard({
@@ -31,6 +37,12 @@ export function BeautyPodcastCard({
   onListen,
   onSubscribe,
   className = '',
+  title = 'نساء سعوديات في الجمال',
+  subtitle = 'بودكاست — قصص ملهمة من قلب المملكة',
+  episodeLabel = 'حلقة',
+  listenText = '▶️ استمعي',
+  subscribeText = 'تابعي البودكاست',
+  availabilityText = 'متوفر على أبل بودكاست، سبوتيفاي، وجميع المنصات',
 }: BeautyPodcastCardProps): JSX.Element {
   return (
     <div
@@ -42,40 +54,34 @@ export function BeautyPodcastCard({
       {/* Podcast badge */}
       <div className="flex items-center gap-2">
         <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-rose-200 to-pink-200 text-lg dark:from-rose-800 dark:to-pink-800">
-          🎙️
+          🎧
         </div>
         <div>
-          <h4 className="text-sm font-bold text-rose-700 dark:text-rose-300">
-            نساء سعوديات في الجمال
-          </h4>
-          <p className="text-[10px] text-rose-500 dark:text-rose-400">
-            بودكاست — قصص ملهمة من قلب المملكة
-          </p>
+          <h4 className="text-sm font-bold text-rose-700 dark:text-rose-300">{title}</h4>
+          <p className="text-[10px] text-rose-500 dark:text-rose-400">{subtitle}</p>
         </div>
         {episode.episodeNumber && (
-          <span className="ml-auto shrink-0 rounded-full bg-rose-50 px-2 py-0.5 text-[10px] font-bold text-rose-600 dark:bg-rose-950 dark:text-rose-400">
-            حلقة {episode.episodeNumber}
+          <span className="ms-auto shrink-0 rounded-full bg-rose-50 px-2 py-0.5 text-[10px] font-bold text-rose-600 dark:bg-rose-950 dark:text-rose-400">
+            {episodeLabel} {episode.episodeNumber}
           </span>
         )}
       </div>
 
       {/* Episode card */}
       <div className="mt-3 rounded-xl bg-rose-50 p-3 dark:bg-rose-950">
-        <p className="text-xs font-bold text-text-primary dark:text-gray-100">
-          {episode.title}
-        </p>
+        <p className="text-xs font-bold text-text-primary dark:text-gray-100">{episode.title}</p>
 
         {/* Guest */}
         <div className="mt-1.5 flex items-center gap-2">
           <div className="flex h-8 w-8 items-center justify-center rounded-full bg-white text-sm dark:bg-gray-700">
-            👩‍🎨
+            👤
           </div>
           <div>
             <p className="text-[10px] font-bold text-text-primary dark:text-gray-100">
               {episode.guest}
             </p>
             {episode.guestTitle && (
-              <p className="text-[9px] text-text-tertiary dark:text-gray-500">
+              <p className="text-[9px] text-text-tertiary dark:text-text-secondary">
                 {episode.guestTitle}
               </p>
             )}
@@ -91,15 +97,15 @@ export function BeautyPodcastCard({
 
         {/* Duration + Listen */}
         <div className="mt-2 flex items-center justify-between">
-          <span className="text-[10px] text-text-tertiary dark:text-gray-500">
-            ⏱️ {episode.duration}
+          <span className="text-[10px] text-text-tertiary dark:text-text-secondary">
+            {episode.duration}
           </span>
           <button
             type="button"
             onClick={onListen}
             className="flex items-center gap-1 rounded-full bg-rose-600 px-3 py-1 text-[10px] font-bold text-white hover:bg-rose-700 active:scale-95 transition-all"
           >
-            ▶️ استمعي
+            {listenText}
           </button>
         </div>
       </div>
@@ -110,11 +116,11 @@ export function BeautyPodcastCard({
         onClick={onSubscribe}
         className="mt-2 w-full rounded-xl border border-rose-200 py-2 text-[10px] font-bold text-rose-600 hover:bg-rose-50 dark:border-rose-800 dark:text-rose-400 dark:hover:bg-rose-950 transition-colors"
       >
-        🎧 تابعي البودكاست
+        {subscribeText}
       </button>
 
-      <p className="mt-1.5 text-center text-[9px] text-text-tertiary dark:text-gray-500">
-        🎙️ متوفر على أبل بودكاست، سبوتيفاي، وجميع المنصات
+      <p className="mt-1.5 text-center text-[9px] text-text-tertiary dark:text-text-secondary">
+        {availabilityText}
       </p>
     </div>
   );

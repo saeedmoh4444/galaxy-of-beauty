@@ -1,25 +1,42 @@
 'use client';
 
 import {
-  PageContainer, PageTitle,
-  BeautySeasonalReminderCard, BeautyIngredientSpotlightCard,
-  BeautyTrendAlertCard, BeautyStyleMatchCard,
-  BeautyMicroChallengeCard, BeautyQuickTipCard,
-  BeautyMakeupTipsCard, BeautySuncareReminderCard,
-  BeautyWaterIntakeCard, BeautyDailyCheckInCard,
-  BeautyHumidClimateCard, BeautyDryClimateCard, BeautyHotClimateCard,
-  BeautyColdClimateCard, BeautyTravelClimateCard,
-  BeautySkincareMistakesCard, BeautyMakeupMistakesCard, BeautyHairMistakesCard,
-  BeautyOverExfoliatingCard, BeautyProductOverloadCard,
-  BeautyEidGlowCard, BeautyEidHairCard, BeautyEidNailsCard, BeautyEidPerfumeCard,
+  PageContainer,
+  PageTitle,
+  BeautySeasonalReminderCard,
+  BeautyIngredientSpotlightCard,
+  BeautyTrendAlertCard,
+  BeautyStyleMatchCard,
+  BeautyMicroChallengeCard,
+  BeautyQuickTipCard,
+  BeautyMakeupTipsCard,
+  BeautySuncareReminderCard,
+  BeautyWaterIntakeCard,
+  BeautyDailyCheckInCard,
+  BeautyHumidClimateCard,
+  BeautyDryClimateCard,
+  BeautyHotClimateCard,
+  BeautyColdClimateCard,
+  BeautyTravelClimateCard,
+  BeautySkincareMistakesCard,
+  BeautyMakeupMistakesCard,
+  BeautyHairMistakesCard,
+  BeautyOverExfoliatingCard,
+  BeautyProductOverloadCard,
+  BeautyEidGlowCard,
+  BeautyEidHairCard,
+  BeautyEidNailsCard,
+  BeautyEidPerfumeCard,
 } from '@galaxy/ui';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
+import { useLocale } from '@/components/LocaleProvider';
 
 export default function BeautyTipsPage(): JSX.Element {
+  const { t } = useLocale();
   return (
-    <DashboardLayout role="CUSTOMER">
+    <DashboardLayout userRole="CUSTOMER">
       <PageContainer width="wide">
-        <PageTitle title="💡 نصائح وإرشادات" subtitle="كل ما تحتاجينه للعناية بجمالك" />
+        <PageTitle title={t('beautyTips.title')} subtitle={t('beautyTips.subtitle')} />
 
         <div className="grid gap-6 lg:grid-cols-3">
           <div className="lg:col-span-2 space-y-6">
@@ -31,36 +48,57 @@ export default function BeautyTipsPage(): JSX.Element {
 
             {/* Trends & Style */}
             <div className="grid gap-4 sm:grid-cols-2">
-              <BeautyTrendAlertCard trends={[
-                { name: 'ألوان الباستيل', emoji: '🎨', heat: '🔥🔥' },
-                { name: 'البشرة الزجاجية', emoji: '✨', heat: '🔥🔥🔥' },
-                { name: 'العناية بالشفاه', emoji: '💋', heat: '🔥' },
-                { name: 'المكياج الطبيعي', emoji: '🌿', heat: '🔥🔥' },
-              ]} />
-              <BeautyStyleMatchCard matches={[
-                { style: 'كلاسيكي', emoji: '👗', match: 92 },
-                { style: 'عصري', emoji: '✨', match: 78 },
-                { style: 'بوهيمي', emoji: '🌿', match: 65 },
-              ]} />
+              <BeautyTrendAlertCard
+                trends={[
+                  { name: t('beautyTips.trend.pastel'), emoji: '🌸', heat: '' },
+                  { name: t('beautyTips.trend.glassSkin'), emoji: '✨', heat: '' },
+                  { name: t('beautyTips.trend.lipCare'), emoji: '💋', heat: '' },
+                  { name: t('beautyTips.trend.naturalMakeup'), emoji: '🌿', heat: '' },
+                ]}
+              />
+              <BeautyStyleMatchCard
+                matches={[
+                  { style: t('beautyTips.style.classic'), emoji: '🎀', match: 92 },
+                  { style: t('beautyTips.style.modern'), emoji: '🌟', match: 78 },
+                  { style: t('beautyTips.style.boho'), emoji: '🍃', match: 65 },
+                ]}
+              />
             </div>
 
             {/* Ingredients */}
-            <BeautyIngredientSpotlightCard ingredient={{
-              name: 'حمض الهيالورونيك', emoji: '💧', type: 'مرطب', rating: 'A+',
-              description: 'يحمل 1000 ضعف وزنه ماء. يوجد طبيعياً في البشرة. يرطب بدون انسداد المسام.',
-              suitableFor: ['جميع أنواع البشرة', 'البشرة الجافة', 'البشرة الحساسة'],
-              avoidWith: [],
-            }} />
+            <BeautyIngredientSpotlightCard
+              ingredient={{
+                name: t('beautyTips.ingredient.name'),
+                emoji: '🧪',
+                type: t('beautyTips.ingredient.type'),
+                rating: 'A+',
+                description: t('beautyTips.ingredient.desc'),
+                suitableFor: [
+                  t('beautyTips.ingredient.suitable.all'),
+                  t('beautyTips.ingredient.suitable.dry'),
+                  t('beautyTips.ingredient.suitable.sensitive'),
+                ],
+                avoidWith: [],
+              }}
+            />
 
             {/* Tips & Challenges */}
             <div className="grid gap-4 sm:grid-cols-2">
-              <BeautyQuickTipCard tip={{
-                emoji: '☀️', title: 'واقي الشمس', body: 'ضعي واقي الشمس كل ساعتين عند التعرض للشمس المباشرة. الكمية المناسبة: نصف ملعقة صغيرة للوجه.',
-                source: 'غالاكسي بيوتي',
-              }} />
-              <BeautyMicroChallengeCard challenge={{
-                title: 'تحدي الترطيب', emoji: '💧', duration: '5 دقائق',
-              }} />
+              <BeautyQuickTipCard
+                tip={{
+                  emoji: '☀️',
+                  title: t('beautyTips.tip.title'),
+                  body: t('beautyTips.tip.body'),
+                  source: t('beautyTips.tip.source'),
+                }}
+              />
+              <BeautyMicroChallengeCard
+                challenge={{
+                  title: t('beautyTips.challenge.title'),
+                  emoji: '🏆',
+                  duration: t('beautyTips.challenge.duration'),
+                }}
+              />
             </div>
 
             <BeautyMakeupTipsCard />

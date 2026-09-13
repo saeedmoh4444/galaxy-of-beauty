@@ -39,11 +39,17 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - uses: pnpm/action-setup@v4
-        with: { version: '9' }
+        with: {}
       - uses: actions/setup-node@v4
         with: { node-version: '20', cache: 'pnpm' }
       - run: pnpm install --frozen-lockfile
       - run: pnpm --filter @galaxy/mobile type-check
+      # Catch SDK/package drift (KNOWN_ISSUES #8): react-native pinned to a
+      # version the installed Expo SDK rejects makes hermesc crash here —
+      # this step turns that class of regression into a CI failure.
+      - name: Verify expo export (hermesc bundle)
+        working-directory: apps/mobile
+        run: npx expo export --platform android
 
   # ── EAS Build (iOS) ──
   build-ios:
@@ -54,7 +60,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - uses: pnpm/action-setup@v4
-        with: { version: '9' }
+        with: {}
       - uses: actions/setup-node@v4
         with: { node-version: '20', cache: 'pnpm' }
       - run: pnpm install --frozen-lockfile
@@ -76,7 +82,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - uses: pnpm/action-setup@v4
-        with: { version: '9' }
+        with: {}
       - uses: actions/setup-node@v4
         with: { node-version: '20', cache: 'pnpm' }
       - run: pnpm install --frozen-lockfile
@@ -98,7 +104,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - uses: pnpm/action-setup@v4
-        with: { version: '9' }
+        with: {}
       - uses: actions/setup-node@v4
         with: { node-version: '20', cache: 'pnpm' }
       - run: pnpm install --frozen-lockfile

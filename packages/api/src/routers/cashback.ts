@@ -2,8 +2,7 @@ import { z } from 'zod';
 import { prisma } from '@galaxy/db';
 import { customerProcedure, adminProcedure, router } from '../trpc';
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-const db = prisma as any;
+const db = prisma;
 
 const CASHBACK_RATE = 5; // 5% cashback on every booking
 const FIRST_BOOKING_BONUS = 50; // Extra 50 SAR on first booking

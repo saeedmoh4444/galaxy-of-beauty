@@ -6,30 +6,43 @@ import { technicianProcedure, publicProcedure, adminProcedure, router } from '..
 export const galleryRouter = router({
   // Public: view a technician's gallery
   byTechnician: publicProcedure
-    .input(z.object({ technicianId: z.number().int().positive(), page: z.number().default(1), limit: z.number().default(20) }))
+    .input(
+      z.object({
+        technicianId: z.number().int().positive(),
+        page: z.number().default(1),
+        limit: z.number().default(20),
+      }),
+    )
     .query(async ({ input }) => {
       const skip = (input.page - 1) * input.limit;
       const [items, total] = await Promise.all([
         prisma.galleryImage.findMany({
           where: { technicianId: input.technicianId, isPublished: true },
           orderBy: [{ sortOrder: 'asc' }, { createdAt: 'desc' }],
-          skip, take: input.limit,
+          skip,
+          take: input.limit,
         }),
-        prisma.galleryImage.count({ where: { technicianId: input.technicianId, isPublished: true } }),
+        prisma.galleryImage.count({
+          where: { technicianId: input.technicianId, isPublished: true },
+        }),
       ]);
       return { items, total, page: input.page };
     }),
 
   // Technician: upload a gallery image
   upload: technicianProcedure
-    .input(z.object({
-      imageUrl: z.string().url(),
-      captionAr: z.string().optional(),
-      captionEn: z.string().optional(),
-      category: z.enum(['hair', 'nails', 'makeup', 'skin', 'massage', 'henna', 'other']).optional(),
-      isBefore: z.boolean().default(false),
-      pairId: z.number().int().positive().optional(),
-    }))
+    .input(
+      z.object({
+        imageUrl: z.string().url(),
+        captionAr: z.string().optional(),
+        captionEn: z.string().optional(),
+        category: z
+          .enum(['hair', 'nails', 'makeup', 'skin', 'massage', 'henna', 'other'])
+          .optional(),
+        isBefore: z.boolean().default(false),
+        pairId: z.number().int().positive().optional(),
+      }),
+    )
     .mutation(async ({ ctx, input }) => {
       return prisma.galleryImage.create({
         data: {
@@ -61,6 +74,9 @@ export const galleryRouter = router({
     .mutation(async ({ input }) => {
       const img = await prisma.galleryImage.findUnique({ where: { id: input.id } });
       if (!img) throw new TRPCError({ code: 'NOT_FOUND' });
-      return prisma.galleryImage.update({ where: { id: input.id }, data: { isPublished: !img.isPublished } });
+      return prisma.galleryImage.update({
+        where: { id: input.id },
+        data: { isPublished: !img.isPublished },
+      });
     }),
 });

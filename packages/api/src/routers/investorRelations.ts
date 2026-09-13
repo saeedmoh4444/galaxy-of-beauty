@@ -14,9 +14,26 @@ export const investorRelationsRouter = router({
 
   list: publicProcedure
     .input(z.object({ limit: z.number().int().min(1).max(50).default(20) }))
-    .query(async ({ input }) => prisma.investmentPitch.findMany({ take: input.limit, orderBy: { createdAt: 'desc' } })),
+    .query(async ({ input }) =>
+      prisma.investmentPitch.findMany({ take: input.limit, orderBy: { createdAt: 'desc' } }),
+    ),
 
   submit: customerProcedure
-    .input(z.object({ name: z.string().min(2).max(200), amount: z.number().int().positive(), description: z.string().max(1000) }))
-    .mutation(async ({ ctx, input }) => prisma.investmentPitch.create({ data: { name: input.name, amount: input.amount, description: input.description, ownerId: ctx.user.id } })),
+    .input(
+      z.object({
+        name: z.string().min(2).max(200),
+        amount: z.number().int().positive(),
+        description: z.string().max(1000),
+      }),
+    )
+    .mutation(async ({ ctx, input }) =>
+      prisma.investmentPitch.create({
+        data: {
+          name: input.name,
+          amount: input.amount,
+          description: input.description,
+          ownerId: ctx.user.id,
+        },
+      }),
+    ),
 });

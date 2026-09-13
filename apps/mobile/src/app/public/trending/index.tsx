@@ -1,57 +1,133 @@
 import { View, Text, ScrollView, StyleSheet, RefreshControl } from 'react-native';
-import { trpc } from '@/lib/api';
-import { useQuery } from '@/lib/useQuery';
 import { ErrorAlert } from '@/components/ErrorAlert';
 import { SkeletonList } from '@/components/SkeletonCard';
+import { trpc } from '@/lib/trpc-react';
+import { localize } from '@galaxy/shared';
+import { useLocale } from '@/components/LocaleProvider';
+
+interface TrendingService {
+  id?: number;
+  titleJson?: { ar?: string; en?: string };
+  name?: string;
+  bookingCount?: number;
+  basePrice?: number;
+}
+
+interface SpotlightTech {
+  id?: number;
+  name?: string;
+  city?: string;
+  ratingAvg?: number;
+}
 
 export default function TrendingScreen(): JSX.Element {
-  const { data: trending, loading, error, refreshing, refetch, refresh } = useQuery(() => (trpc as any).social.trending.query());
-  const { data: spotlight } = useQuery(() => (trpc as any).social.spotlight.query());
+  const { locale, t } = useLocale();
+  const trendingQ = trpc.social.trending.useQuery();
+  const spotlightQ = trpc.social.spotlight.useQuery();
 
-  if (loading) return <SkeletonList count={5} />;
-  if (error) return <ErrorAlert message="فشل تحميل المحتوى" onRetry={refetch} />;
+  if (trendingQ.isLoading) return <SkeletonList count={5} />;
+  if (trendingQ.isError)
+    return (
+      <ErrorAlert
+        message={t('mobile.public.discover.load-error')}
+        onRetry={() => trendingQ.refetch()}
+      />
+    );
 
-  const trendingItems = (trending ?? []) as any[];
-  const spotlightItems = (spotlight ?? []) as any[];
+  const trendingItems = (trendingQ.data as unknown as TrendingService[] | undefined) ?? [];
+  const spotlightItems = (spotlightQ.data as unknown as SpotlightTech[] | undefined) ?? [];
 
   return (
-    <ScrollView style={styles.c} contentContainerStyle={styles.i} refreshControl={<RefreshControl refreshing={refreshing} onRefresh={refresh} colors={['#db2777']} />}>
-      <Text style={styles.t}>🔥 الأكثر رواجاً</Text>
-      <Text style={styles.sub}>الخدمات والفنيات الأكثر طلباً هذا الشهر</Text>
-      {trendingItems.length > 0 && <>
-        <Text style={styles.sectionTitle}>💆‍♀️ الخدمات الرائجة</Text>
-        {trendingItems.map((s: any, i: number) => (
-          <View key={s.id ?? i} style={styles.card}>
-            <View style={styles.rank}><Text style={styles.rankText}>#{i + 1}</Text></View>
-            <View style={{flex:1}}><Text style={styles.svcName}>{(s.titleJson as any)?.ar as string ?? s.name as string}</Text><Text style={styles.svcBookings}>{s.bookingCount as number} حجز</Text></View>
-            <Text style={styles.svcPrice}>{(s.basePrice as number)?.toLocaleString()} ر.س</Text>
-          </View>
-        ))}
-      </>}
-      {spotlightItems.length > 0 && <>
-        <Text style={styles.sectionTitle}>⭐ فنيات مميزات</Text>
-        {spotlightItems.map((t: any, i: number) => (
-          <View key={t.id ?? i} style={styles.card}>
-            <Text style={styles.techEmoji}>{i === 0 ? '🥇' : i === 1 ? '🥈' : i === 2 ? '🥉' : '👩‍🎨'}</Text>
-            <View style={{flex:1}}><Text style={styles.techName}>{t.name as string}</Text><Text style={styles.techMeta}>📍 {t.city as string} · ⭐ {t.ratingAvg as number}</Text></View>
-          </View>
-        ))}
-      </>}
+    <ScrollView
+      style={styles.c}
+      contentContainerStyle={styles.i}
+      refreshControl={
+        <RefreshControl
+          refreshing={trendingQ.isRefetching}
+          onRefresh={() => trendingQ.refetch()}
+          colors={['#db2777']}
+        />
+      }
+    >
+      <Text style={styles.t}>{t('mobile.public.discover.trending')}</Text>
+      <Text style={styles.sub}>{t('mobile.public.trending.subtitle')}</Text>
+      {trendingItems.length > 0 && (
+        <>
+          <Text style={styles.sectionTitle}>{t('mobile.public.trending.services')}</Text>
+          {trendingItems.map((s, i) => (
+            <View key={s.id ?? i} style={styles.card}>
+              <View style={styles.rank}>
+                <Text style={styles.rankText}>#{i + 1}</Text>
+              </View>
+              <View style={{ flex: 1 }}>
+                <Text style={styles.svcName}>{localize(s.titleJson, locale) ?? s.name}</Text>
+                <Text style={styles.svcBookings}>
+                  {t('mobile.public.bookings-count', { count: s.bookingCount ?? 0 })}
+                </Text>
+              </View>
+              <Text style={styles.svcPrice}>
+                {t('mobile.public.currency', { price: s.basePrice?.toLocaleString() ?? '' })}
+              </Text>
+            </View>
+          ))}
+        </>
+      )}
+      {spotlightItems.length > 0 && (
+        <>
+          <Text style={styles.sectionTitle}>{t('mobile.public.trending.spotlight')}</Text>
+          {spotlightItems.map((t, i) => (
+            <View key={t.id ?? i} style={styles.card}>
+              <Text style={styles.techEmoji}>
+                {i === 0 ? '' : i === 1 ? '' : i === 2 ? '' : ''}
+              </Text>
+              <View style={{ flex: 1 }}>
+                <Text style={styles.techName}>{t.name}</Text>
+                <Text style={styles.techMeta}>
+                  {t.city} · {t.ratingAvg}
+                </Text>
+              </View>
+            </View>
+          ))}
+        </>
+      )}
     </ScrollView>
   );
 }
 
 const styles = StyleSheet.create({
-  c: { flex: 1, backgroundColor: '#fdf2f8' }, i: { padding: 16, paddingTop: 30, paddingBottom: 40 },
+  c: { flex: 1, backgroundColor: '#fdf2f8' },
+  i: { padding: 16, paddingTop: 30, paddingBottom: 40 },
   t: { fontSize: 24, fontWeight: '800', color: '#db2777', textAlign: 'center', marginBottom: 4 },
   sub: { fontSize: 13, color: '#9ca3af', textAlign: 'center', marginBottom: 20 },
-  sectionTitle: { fontSize: 16, fontWeight: '700', color: '#111827', marginBottom: 10, marginTop: 8 },
-  card: { flexDirection: 'row', alignItems: 'center', gap: 10, backgroundColor: '#fff', borderRadius: 14, padding: 14, marginBottom: 6 },
-  rank: { width: 32, height: 32, borderRadius: 16, backgroundColor: '#fdf2f8', alignItems: 'center', justifyContent: 'center' },
+  sectionTitle: {
+    fontSize: 16,
+    fontWeight: '700',
+    color: '#111827',
+    marginBottom: 10,
+    marginTop: 8,
+  },
+  card: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 10,
+    backgroundColor: '#fff',
+    borderRadius: 14,
+    padding: 14,
+    marginBottom: 6,
+  },
+  rank: {
+    width: 32,
+    height: 32,
+    borderRadius: 16,
+    backgroundColor: '#fdf2f8',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
   rankText: { fontSize: 12, fontWeight: '700', color: '#db2777' },
   svcName: { fontSize: 14, fontWeight: '600', color: '#111827' },
   svcBookings: { fontSize: 12, color: '#6b7280', marginTop: 2 },
   svcPrice: { fontSize: 14, fontWeight: '700', color: '#db2777' },
-  techEmoji: { fontSize: 28 }, techName: { fontSize: 14, fontWeight: '600', color: '#111827' },
+  techEmoji: { fontSize: 28 },
+  techName: { fontSize: 14, fontWeight: '600', color: '#111827' },
   techMeta: { fontSize: 12, color: '#6b7280', marginTop: 2 },
 });

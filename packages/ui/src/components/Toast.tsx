@@ -25,7 +25,23 @@ const ToastContext = createContext<ToastContextValue | null>(null);
 
 let nextId = 0;
 
-export function ToastProvider({ children }: { children: ReactNode }): JSX.Element {
+export function ToastProvider({
+  children,
+  ariaLabel = 'الإشعارات',
+  successText = 'نجاح',
+  errorText = 'خطأ',
+  warningText = 'تحذير',
+  infoText = 'معلومة',
+  closeLabel = 'إغلاق',
+}: {
+  children: ReactNode;
+  ariaLabel?: string;
+  successText?: string;
+  errorText?: string;
+  warningText?: string;
+  infoText?: string;
+  closeLabel?: string;
+}): JSX.Element {
   const [toasts, setToasts] = useState<Toast[]>([]);
 
   const removeToast = useCallback((id: number) => {
@@ -42,9 +58,7 @@ export function ToastProvider({ children }: { children: ReactNode }): JSX.Elemen
       setToasts((prev) => [...prev.slice(-4), { id, type, message, entering: true }]);
       // After a frame, clear entering to trigger the enter transition
       requestAnimationFrame(() => {
-        setToasts((prev) =>
-          prev.map((t) => (t.id === id ? { ...t, entering: false } : t)),
-        );
+        setToasts((prev) => prev.map((t) => (t.id === id ? { ...t, entering: false } : t)));
       });
       setTimeout(() => removeToast(id), TOAST_DURATION_MS);
     },
@@ -57,8 +71,8 @@ export function ToastProvider({ children }: { children: ReactNode }): JSX.Elemen
       {/* Toast container */}
       <div
         aria-live="polite"
-        aria-label="الإشعارات"
-        className="pointer-events-none fixed bottom-4 left-1/2 z-50 flex -translate-x-1/2 flex-col-reverse gap-2"
+        aria-label={ariaLabel}
+        className="pointer-events-none fixed bottom-4 start-1/2 z-50 flex -translate-x-1/2 flex-col-reverse gap-2"
       >
         {toasts.map((toast) => (
           <div
@@ -77,23 +91,33 @@ export function ToastProvider({ children }: { children: ReactNode }): JSX.Elemen
                   ? 'bg-red-600 text-white'
                   : toast.type === 'warning'
                     ? 'bg-amber-500 text-white'
-                    : 'bg-gray-800 text-white dark:bg-gray-200 dark:text-gray-900'
+                    : 'bg-gray-800 text-white dark:bg-surface-muted dark:text-text-primary'
             }`}
           >
             <span aria-hidden="true">
-              {toast.type === 'success' ? '✅' : toast.type === 'error' ? '❌' : toast.type === 'warning' ? '⚠️' : 'ℹ️'}
+              {toast.type === 'success'
+                ? ''
+                : toast.type === 'error'
+                  ? ''
+                  : toast.type === 'warning'
+                    ? ''
+                    : 'ℹ️'}
             </span>
             <span className="sr-only">
-              {toast.type === 'success' ? 'نجاح' : toast.type === 'error' ? 'خطأ' : toast.type === 'warning' ? 'تحذير' : 'معلومة'}
+              {toast.type === 'success'
+                ? successText
+                : toast.type === 'error'
+                  ? errorText
+                  : toast.type === 'warning'
+                    ? warningText
+                    : infoText}
             </span>
             <span>{toast.message}</span>
             <button
               onClick={() => removeToast(toast.id)}
-              className="ml-2 opacity-70 hover:opacity-100"
-              aria-label="إغلاق"
-            >
-              ✕
-            </button>
+              className="ms-2 opacity-70 hover:opacity-100"
+              aria-label={closeLabel}
+            ></button>
           </div>
         ))}
       </div>

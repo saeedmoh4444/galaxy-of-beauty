@@ -11,18 +11,41 @@ interface BookAgainProps {
   serviceName?: string;
   technicianName?: string;
   onBook: () => void;
+  rebookPrefix?: string;
+  rebookSuffix?: string;
+  withPrefix?: string;
   className?: string;
 }
 
-export function BookAgain({ serviceName, technicianName, onBook, className = '' }: BookAgainProps): JSX.Element {
+export function BookAgain({
+  serviceName,
+  technicianName,
+  onBook,
+  rebookPrefix = 'احجزي',
+  rebookSuffix = 'مرة أخرى',
+  withPrefix = 'مع',
+  className = '',
+}: BookAgainProps): JSX.Element {
   return (
     <button
       onClick={onBook}
       className={`inline-flex items-center gap-2 rounded-xl bg-brand-600 px-5 py-2.5 text-sm font-semibold text-white transition-all hover:bg-brand-700 hover:scale-105 active:scale-95 ${className}`}
     >
       <span>🔄</span>
-      {serviceName ? <span>احجزي {serviceName} مرة أخرى</span> : <span>احجزي مرة أخرى</span>}
-      {technicianName ? <span className="text-xs text-brand-200">مع {technicianName}</span> : null}
+      {serviceName ? (
+        <span>
+          {rebookPrefix} {serviceName} {rebookSuffix}
+        </span>
+      ) : (
+        <span>
+          {rebookPrefix} {rebookSuffix}
+        </span>
+      )}
+      {technicianName ? (
+        <span className="text-xs text-brand-200">
+          {withPrefix} {technicianName}
+        </span>
+      ) : null}
     </button>
   );
 }

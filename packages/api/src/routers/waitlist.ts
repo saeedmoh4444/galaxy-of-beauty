@@ -2,12 +2,7 @@ import { z } from 'zod';
 import { TRPCError } from '@trpc/server';
 import { prisma } from '@galaxy/db';
 import { notFound } from '../lib/errors';
-import {
-  router,
-  publicProcedure,
-  customerProcedure,
-  technicianProcedure,
-} from '../trpc';
+import { router, publicProcedure, customerProcedure, technicianProcedure } from '../trpc';
 import { sendPushToUser } from '../lib/push';
 
 export const waitlistRouter = router({
@@ -31,7 +26,9 @@ export const waitlistRouter = router({
         throw notFound('Technician');
       }
 
-      // Check not already on waitlist for this technician
+      // Check not already on waitlist for this technician — any status
+      // (WAITING/NOTIFIED/CLAIMED) blocks a rejoin: the compound unique
+      // index would otherwise surface a raw P2002.
       const existing = await prisma.waitlistEntry.findUnique({
         where: {
           technicianId_customerId: {
@@ -41,7 +38,7 @@ export const waitlistRouter = router({
         },
       });
 
-      if (existing && existing.status === 'WAITING') {
+      if (existing) {
         throw new TRPCError({
           code: 'CONFLICT',
           message: 'You are already on the waitlist for this technician',
@@ -59,6 +56,9 @@ export const waitlistRouter = router({
       const entry = await prisma.waitlistEntry.create({
         data: {
           customerId: ctx.user.id,
+          // Internal FK stores the Technician *profile* id; the public
+          // contract uses the technician's USER id everywhere (see
+          // listMyEntries/notifyNext below).
           technicianId: technician.id,
           serviceId,
           position: waitingCount + 1,
@@ -68,6 +68,7 @@ export const waitlistRouter = router({
 
       return {
         ...entry,
+        technicianId, // public contract: the user id the caller passed in
         position: waitingCount + 1,
       };
     }),
@@ -127,30 +128,31 @@ export const waitlistRouter = router({
     }),
 
   // ── List my waitlist entries ──────────────────────────────────────────────
-  listMyEntries: customerProcedure
-    .query(async ({ ctx }) => {
-      const entries = await prisma.waitlistEntry.findMany({
-        where: { customerId: ctx.user.id },
-        orderBy: { createdAt: 'desc' },
-        include: {
-          technician: {
-            include: {
-              user: { select: { id: true, name: true } },
-            },
+  listMyEntries: customerProcedure.query(async ({ ctx }) => {
+    const entries = await prisma.waitlistEntry.findMany({
+      where: { customerId: ctx.user.id },
+      orderBy: { createdAt: 'desc' },
+      include: {
+        technician: {
+          include: {
+            user: { select: { id: true, name: true } },
           },
         },
-      });
+      },
+    });
 
-      return entries.map((e) => ({
-        id: e.id,
-        status: e.status,
-        position: e.position,
-        createdAt: e.createdAt,
-        technicianId: e.technicianId,
-        technicianName: e.technician.user.name,
-        serviceName: null as string | null,
-      }));
-    }),
+    return entries.map((e) => ({
+      id: e.id,
+      status: e.status,
+      position: e.position,
+      createdAt: e.createdAt,
+      // Public contract: technician USER id (matches join/leave/getMyPosition/
+      // getStatus inputs) — the raw entry.technicianId is the profile id.
+      technicianId: e.technician.user.id,
+      technicianName: e.technician.user.name,
+      serviceName: null as string | null,
+    }));
+  }),
 
   // ── Get my position ───────────────────────────────────────────────────────
   getMyPosition: customerProcedure
@@ -251,11 +253,13 @@ export const waitlistRouter = router({
       });
 
       sendPushToUser(entry.customerId, {
-        title: 'تم توفر موعد! 🔔',
+        title: 'تم توفر موعد! ',
         body: technician?.name
           ? `الفنية ${technician.name} أصبحت متاحة للحجز. بادري بحجز موعدك الآن!`
           : 'أصبحت الفنية متاحة للحجز. بادري بحجز موعدك الآن!',
-        data: { screen: 'waitlist', technicianId: String(entry.technicianId) },
+        // App routes by USER id (/technicians/[userId]) — the profile id
+        // would 404 on navigation.
+        data: { screen: 'waitlist', technicianId: String(entry.technician.userId) },
       });
 
       // Create in-app notification
@@ -270,9 +274,9 @@ export const waitlistRouter = router({
         data: {
           userId: entry.customerId,
           type: 'WAITLIST',
-          titleJson: { ar: 'تم توفر موعد! 🔔', en: 'Slot Available! 🔔' },
+          titleJson: { ar: 'تم توفر موعد! ', en: 'Slot Available! ' },
           bodyJson: { ar: bodyAr, en: bodyEn },
-          link: `/technicians/${entry.technicianId}`,
+          link: `/technicians/${entry.technician.userId}`,
           sentVia: ['push', 'in_app'],
           isRead: false,
         },

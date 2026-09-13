@@ -93,14 +93,13 @@ export function getPerformanceStats(): PerformanceStats {
   }
 
   const sorted = [...allTimings].sort((a, b) => a - b);
-  const avg = allTimings.length > 0
-    ? Math.round(allTimings.reduce((a, b) => a + b, 0) / allTimings.length)
-    : 0;
+  const avg =
+    allTimings.length > 0
+      ? Math.round(allTimings.reduce((a, b) => a + b, 0) / allTimings.length)
+      : 0;
 
   // Top 3 slowest endpoints
-  const slowest = endpointAvgs
-    .sort((a, b) => b.avgMs - a.avgMs)
-    .slice(0, 5);
+  const slowest = endpointAvgs.sort((a, b) => b.avgMs - a.avgMs).slice(0, 5);
 
   return {
     avgResponseTime: `${avg}ms`,

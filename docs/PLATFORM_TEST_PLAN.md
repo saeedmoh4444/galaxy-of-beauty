@@ -8,49 +8,51 @@
 
 ## Current State
 
-| Metric | Status |
-|--------|--------|
-| TypeScript errors | **0** across 6 packages |
-| ESLint errors | **0** |
-| ESLint warnings | **0** |
-| Unit + Integration tests | **307** (15 test files in API package) |
-| E2E tests | **9** Playwright specs (~50 tests) |
-| CI pipeline | Type-check, lint, unit tests, build, E2E, Docker |
-| Prisma models | **87** |
-| Next.js routes | **254** |
-| Shared UI components | **15** |
+| Metric                   | Status                                           |
+| ------------------------ | ------------------------------------------------ |
+| TypeScript errors        | **0** across 6 packages                          |
+| ESLint errors            | **0**                                            |
+| ESLint warnings          | **0**                                            |
+| Unit + Integration tests | **307** (15 test files in API package)           |
+| E2E tests                | **9** Playwright specs (~50 tests)               |
+| CI pipeline              | Type-check, lint, unit tests, build, E2E, Docker |
+| Prisma models            | **87**                                           |
+| Next.js routes           | **254**                                          |
+| Shared UI components     | **15**                                           |
 
 ---
 
 ## Phase 1: Seed Data (2-3 hours)
 
 ### 1.1 Create realistic seed script
+
 **File:** `packages/db/prisma/seed.ts` (extended)
 
 **Data to generate:**
 
-| Entity | Count | Notes | Status |
-|--------|-------|-------|--------|
-| Users (CUSTOMER) | 15 | Arabic names, varied emails | [x] 6 created — tested via login |
-| Users (TECHNICIAN) | 8 | With KYC, service portfolios | [x] 3 created — tested via booking |
-| Users (ADMIN) | 2 | Platform admins | [x] 1 created — tested via admin endpoints |
-| Categories | 6 | Hair, Nails, Skincare, Makeup, Massage, Henna | [x] 6 root + 10 subs |
-| Services | 30 | 5 per category, variants, pricing | [x] 7 created + 5 variants |
-| Technicians | 8 | With ratings, cities, services | [x] 3 verified with service assignments |
-| Availability Slots | 200+ | 14 days, 8am-9pm | [x] 168 created (7d x 8h x 3 techs) |
-| Bookings | 50 | All statuses across 30 days | [x] 6 created (one per status) |
-| Reviews | 30 | Arabic comments, ratings 3-5 | [x] 2 created (linked to completed bookings) |
-| Wallet Transactions | 40 | Credits, debits, cashback | [x] 2 created (CREDIT + CASHBACK) |
-| Loyalty Accounts | 12 | Points at different tiers | [x] 1 GOLD tier account |
-| Promo Codes | 5 | Active + expired | [ ] |
-| Gift Cards | 8 | Purchased + redeemed | [ ] |
-| Wishlist Items | 20 | Services + products | [x] 1 created |
-| Notifications | 30 | Various types | [x] 2 created |
-| Flash Deals | 4 | Active + upcoming | [x] 1 created |
-| Campaigns | 3 | Active | [x] 1 created |
-| Beauty Events | 3 | Upcoming | [x] 1 created |
+| Entity              | Count | Notes                                         | Status                                       |
+| ------------------- | ----- | --------------------------------------------- | -------------------------------------------- |
+| Users (CUSTOMER)    | 15    | Arabic names, varied emails                   | [x] 6 created — tested via login             |
+| Users (TECHNICIAN)  | 8     | With KYC, service portfolios                  | [x] 3 created — tested via booking           |
+| Users (ADMIN)       | 2     | Platform admins                               | [x] 1 created — tested via admin endpoints   |
+| Categories          | 6     | Hair, Nails, Skincare, Makeup, Massage, Henna | [x] 6 root + 10 subs                         |
+| Services            | 30    | 5 per category, variants, pricing             | [x] 7 created + 5 variants                   |
+| Technicians         | 8     | With ratings, cities, services                | [x] 3 verified with service assignments      |
+| Availability Slots  | 200+  | 14 days, 8am-9pm                              | [x] 168 created (7d x 8h x 3 techs)          |
+| Bookings            | 50    | All statuses across 30 days                   | [x] 6 created (one per status)               |
+| Reviews             | 30    | Arabic comments, ratings 3-5                  | [x] 2 created (linked to completed bookings) |
+| Wallet Transactions | 40    | Credits, debits, cashback                     | [x] 2 created (CREDIT + CASHBACK)            |
+| Loyalty Accounts    | 12    | Points at different tiers                     | [x] 1 GOLD tier account                      |
+| Promo Codes         | 5     | Active + expired                              | [ ]                                          |
+| Gift Cards          | 8     | Purchased + redeemed                          | [ ]                                          |
+| Wishlist Items      | 20    | Services + products                           | [x] 1 created                                |
+| Notifications       | 30    | Various types                                 | [x] 2 created                                |
+| Flash Deals         | 4     | Active + upcoming                             | [x] 1 created                                |
+| Campaigns           | 3     | Active                                        | [x] 1 created                                |
+| Beauty Events       | 3     | Upcoming                                      | [x] 1 created                                |
 
 **Acceptance criteria:**
+
 - [x] `pnpm db:seed` runs successfully
 - [x] Core models have data — foreign keys satisfied
 - [x] Arabic user-facing data throughout
@@ -63,6 +65,7 @@
 ### 2.1 Critical business flows — hitting real database with seed data
 
 #### 2.1.1 Auth flow (`auth-flow.test.ts`) — 14 tests
+
 - [x] Register new customer
 - [x] Login with email + password → receive JWT
 - [x] Login with wrong password → error
@@ -73,6 +76,7 @@
 - [ ] Rate limiting: 5 failed attempts → lockout
 
 #### 2.1.2 Booking flow (`booking-flow.test.ts`) — 13 tests
+
 - [x] Browse services by category
 - [x] Search services (Arabic query)
 - [x] View service detail
@@ -85,6 +89,7 @@
 - [ ] Group booking
 
 #### 2.1.3 Wallet flow (`wallet-loyalty-flow.test.ts`) — 11 tests
+
 - [x] View wallet balance
 - [ ] Top-up wallet
 - [ ] Cashback credited after booking (5%)
@@ -93,6 +98,7 @@
 - [x] Transaction history
 
 #### 2.1.4 Loyalty flow (`wallet-loyalty-flow.test.ts`)
+
 - [ ] Points earned per booking (10 pts / 1 SAR)
 - [x] Tier validation: SILVER → GOLD → PLATINUM
 - [x] Point multiplier per tier (1x/1.5x/2x)
@@ -100,12 +106,14 @@
 - [ ] Admin credit/debit points
 
 #### 2.1.5 Referral flow (`referral-admin-errors.test.ts`) — 16 tests
+
 - [ ] Generate referral code
 - [ ] Register with referral code → referrer credit
 - [x] Referral race leaderboard (public)
 - [x] Share link generates correct URL
 
 #### 2.1.6 Admin flows (`referral-admin-errors.test.ts`)
+
 - [x] List users (admin)
 - [ ] Suspend users
 - [x] List all categories (admin)
@@ -115,12 +123,14 @@
 - [ ] Export data
 
 #### 2.1.7 ZATCA e-invoicing (`zatca-flow.test.ts`) — 10 tests
+
 - [x] SHA-256 hash utility validation
 - [ ] QR code generation
 - [ ] Simulation mode (ZATCA_SIMULATE=true)
 - [ ] Production mode graceful failure
 
 #### 2.1.8 Error & edge cases (`referral-admin-errors.test.ts`)
+
 - [x] Unauthorized → 401
 - [x] Forbidden role → 403
 - [x] Not found (invalid ID) → 404
@@ -132,6 +142,7 @@
 - [ ] Expired gift card rejection
 
 ### 2.2 Acceptance criteria
+
 - [x] All 15 test files pass — 307/307 (100%)
 - [ ] Coverage ≥ 70% on critical paths — not measured
 - [x] Real Prisma with seed data (no mocks)
@@ -143,6 +154,7 @@
 ### 3.1 Playwright specs
 
 #### 3.1.1 Auth (`e2e/auth.spec.ts`)
+
 - [x] Login page displays (heading, fields, button)
 - [ ] Register with valid data → redirected
 - [x] Login with credentials → redirected (authenticated.spec.ts)
@@ -152,22 +164,26 @@
 - [ ] Logout
 
 #### 3.1.2 Customer booking (`e2e/booking.spec.ts`)
+
 - [x] Services page loads with categories
 - [x] Navigate to service detail
 - [ ] Full booking flow: variant → tech → slot → confirm
 - [ ] View booking list → cancel
 
 #### 3.1.3 Wallet (`e2e/customer-flows.spec.ts`)
+
 - [~] Wallet page loads after login (checks body visibility)
 - [ ] Top-up flow
 - [ ] Withdraw flow
 
 #### 3.1.4 Admin (`e2e/authenticated.spec.ts`)
+
 - [x] Admin login → admin dashboard
 - [ ] User management (search/suspend)
 - [ ] Category/service CRUD
 
 #### 3.1.5 RTL & a11y (`e2e/a11y-responsive.spec.ts`)
+
 - [x] RTL direction on home, login, services
 - [x] Keyboard tab navigation
 - [x] Skip link present
@@ -176,15 +192,18 @@
 - [~] Image alt text (a11y linting configured)
 
 #### 3.1.6 Responsive (`e2e/a11y-responsive.spec.ts`)
+
 - [x] Mobile (375px), Tablet (768px), Desktop (1280px) — all render
 - [ ] Dark mode toggle visual check
 
 #### 3.1.7 Performance
+
 - [ ] Lighthouse audit
 - [ ] CLS measurement on skeleton-to-content
 - [ ] FCP measurement
 
 ### 3.2 Acceptance criteria
+
 - [x] 9 Playwright specs, 50+ tests pass
 - [ ] 3 consecutive green runs (flakiness check)
 - [ ] HTML report with screenshots
@@ -196,12 +215,14 @@
 ### 4.1 Critical screens — ALL MANUAL (not run)
 
 #### Auth screens
+
 - [ ] Login RTL + Arabic
 - [ ] Register validation
 - [ ] Forgot password
 - [ ] 2FA
 
 #### Customer screens
+
 - [ ] Home tab
 - [ ] Bookings tab
 - [ ] Wallet tab
@@ -211,11 +232,13 @@
 - [ ] Notifications
 
 #### Admin screens
+
 - [ ] Dashboard
 - [ ] User management
 - [ ] Service CRUD
 
 #### Shared constants (automated verification)
+
 - [x] DEFAULT_PAGE_SIZE used — grep confirmed (20 files)
 - [x] SAUDI_CITIES referenced
 - [x] LOYALTY_TIERS referenced
@@ -223,6 +246,7 @@
 - [x] No raw URLs — only placeholder text remains
 
 ### 4.2 Acceptance criteria
+
 - [x] `tsc --noEmit` passes
 - [x] 24 files import from @galaxy/shared
 - [ ] Expo dev server test — not run
@@ -234,25 +258,25 @@
 
 ### 5.1 Component visual check — ALL `[~]`
 
-| Component | Light | Dark | RTL | Responsive | Notes |
-|-----------|-------|------|-----|------------|-------|
-| Button (5 variants) | [~] | [~] | [~] | [~] | dark: variants coded |
-| Card | [~] | [~] | [~] | [~] | semantic bg-surface |
-| Input (normal/error/disabled) | [~] | [~] | [~] | [~] | focus ring coded |
-| Modal | [~] | [~] | [~] | [~] | focus trap coded |
-| EmptyState | [~] | [~] | [~] | [~] | default icon + CTA |
-| ErrorAlert | [~] | [~] | [~] | [~] | Arabic default title |
-| Spinner/PageSpinner | [~] | [~] | [~] | [~] | border animation |
-| ProgressBar | [~] | [~] | [~] | [~] | indeterminate mode |
-| Pagination | [~] | [~] | [~] | [~] | 44px touch targets |
-| StatCard | [~] | [~] | [~] | [~] | icon + trend support |
-| PageContainer | [~] | [~] | [~] | [~] | 4 width presets |
-| Icon (30 SVGs) | [~] | [~] | [~] | [~] | stroke-based |
-| InlineEdit | [~] | [~] | [~] | [~] | save/cancel/validate |
-| Toast | [~] | [~] | [~] | [~] | enter + exit animations |
-| Skeleton (11 variants) | [~] | [~] | [~] | [~] | sized to content |
+| Component                     | Light | Dark | RTL | Responsive | Notes                   |
+| ----------------------------- | ----- | ---- | --- | ---------- | ----------------------- |
+| Button (5 variants)           | [~]   | [~]  | [~] | [~]        | dark: variants coded    |
+| Card                          | [~]   | [~]  | [~] | [~]        | semantic bg-surface     |
+| Input (normal/error/disabled) | [~]   | [~]  | [~] | [~]        | focus ring coded        |
+| Modal                         | [~]   | [~]  | [~] | [~]        | focus trap coded        |
+| EmptyState                    | [~]   | [~]  | [~] | [~]        | default icon + CTA      |
+| ErrorAlert                    | [~]   | [~]  | [~] | [~]        | Arabic default title    |
+| Spinner/PageSpinner           | [~]   | [~]  | [~] | [~]        | border animation        |
+| ProgressBar                   | [~]   | [~]  | [~] | [~]        | indeterminate mode      |
+| Pagination                    | [~]   | [~]  | [~] | [~]        | 44px touch targets      |
+| StatCard                      | [~]   | [~]  | [~] | [~]        | icon + trend support    |
+| PageContainer                 | [~]   | [~]  | [~] | [~]        | 4 width presets         |
+| Icon (30 SVGs)                | [~]   | [~]  | [~] | [~]        | stroke-based            |
+| InlineEdit                    | [~]   | [~]  | [~] | [~]        | save/cancel/validate    |
+| Toast                         | [~]   | [~]  | [~] | [~]        | enter + exit animations |
+| Skeleton (11 variants)        | [~]   | [~]  | [~] | [~]        | sized to content        |
 
-*All components built with dark: variants + semantic tokens. Code-level verification done. Human visual walkthrough pending.*
+_All components built with dark: variants + semantic tokens. Code-level verification done. Human visual walkthrough pending._
 
 ### 5.2 Interaction audit
 
@@ -276,6 +300,7 @@
 - [ ] Dark mode visual verification — CSS vars coded, not toggled and confirmed
 
 ### 5.4 Acceptance criteria
+
 - [~] All 15 components built with proper variants — code complete
 - [x] Sized skeletons prevent layout shift — dimensions match Card/PageContainer
 - [x] Arabic text throughout — Tajawal font, RTL direction, Arabic defaults
@@ -311,16 +336,16 @@
 
 ## Honest Summary (not what the individual marks suggest)
 
-| Phase | File Marks | Actual | Why the gap |
-|-------|-----------|--------|-------------|
-| 1. Seed data | 96% | **~65%** | Core flows work. Counts are 10-40% of plan (6 bookings × 50, 6 customers × 15, 2 reviews × 30). Missing: promo usage, gift card transactions, loyalty transactions. |
-| 2. API integration | 82% | **~60%** | 54 new tests pass. But they're mostly read-operations and auth gating. Missing: full booking lifecycle (accept→start→complete), wallet transactional flows (top-up→spend→withdraw), loyalty earn→redeem cycle. |
-| 3. Web E2E | 78% | **~40%** | 50+ tests pass but most are smoke tests (`expect body to be visible`). No full booking flow, no wallet top-up flow, no admin CRUD flow through Playwright. |
-| 4. Mobile | 50% | **~25%** | Only grep + type-check. Zero screens visually verified. Expo dev server never started. |
-| 5. UI/UX audit | 88% | **~50%** | All code is written (components, tokens, animations, focus trap, drag-drop). Zero components visually checked by a human in any mode (light/dark/RTL/responsive). The `[~]` marks tell the real story — coded, not seen. |
-| 6. Bug fixes | 100% | **100%** | Real. 6 bugs found by running tests, 6 fixed, all verified by tests passing. |
-| 7. Verification | 96% | **90%** | Type-check, build, lint, tests all green. Storybook builds. Only gap: Lighthouse audit not run. |
-| **OVERALL** | **~82%** | **~55%** | |
+| Phase              | File Marks | Actual   | Why the gap                                                                                                                                                                                                              |
+| ------------------ | ---------- | -------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| 1. Seed data       | 96%        | **~65%** | Core flows work. Counts are 10-40% of plan (6 bookings × 50, 6 customers × 15, 2 reviews × 30). Missing: promo usage, gift card transactions, loyalty transactions.                                                      |
+| 2. API integration | 82%        | **~60%** | 54 new tests pass. But they're mostly read-operations and auth gating. Missing: full booking lifecycle (accept→start→complete), wallet transactional flows (top-up→spend→withdraw), loyalty earn→redeem cycle.           |
+| 3. Web E2E         | 78%        | **~40%** | 50+ tests pass but most are smoke tests (`expect body to be visible`). No full booking flow, no wallet top-up flow, no admin CRUD flow through Playwright.                                                               |
+| 4. Mobile          | 50%        | **~25%** | Only grep + type-check. Zero screens visually verified. Expo dev server never started.                                                                                                                                   |
+| 5. UI/UX audit     | 88%        | **~50%** | All code is written (components, tokens, animations, focus trap, drag-drop). Zero components visually checked by a human in any mode (light/dark/RTL/responsive). The `[~]` marks tell the real story — coded, not seen. |
+| 6. Bug fixes       | 100%       | **100%** | Real. 6 bugs found by running tests, 6 fixed, all verified by tests passing.                                                                                                                                             |
+| 7. Verification    | 96%        | **90%**  | Type-check, build, lint, tests all green. Storybook builds. Only gap: Lighthouse audit not run.                                                                                                                          |
+| **OVERALL**        | **~82%**   | **~55%** |                                                                                                                                                                                                                          |
 
 **What "55%" actually means:** The platform's automated foundation is solid — 0 TS errors, 307 tests, clean build, all code written. But "done" requires human verification that hasn't happened: visual walkthrough, dark mode check, screen reader pass, mobile screen check, full E2E flows through a browser. The code is production-ready. The testing isn't.
 

@@ -13,32 +13,34 @@ Organize routers into 14 domain modules using barrel files (`domains/<name>/inde
 
 ## Domains
 
-| Domain | Routers | Responsibility |
-|--------|---------|----------------|
-| auth | 3 | Registration, login, JWT, 2FA, uploads |
-| booking | 12 | Booking lifecycle, slots, calendar, reschedule, recurring, emergency, group |
-| catalog | 14 | Categories, services, variants, search, gallery, recommendations |
-| payments | 9 | Wallet, transactions, PayFort, saved cards, promo, gift cards, cashback |
-| loyalty | 8 | Points, tiers, streaks, achievements, referrals, birthday rewards, VIP |
-| social | 12 | Reviews, disputes, community, inspiration, challenges, follows, Q&A |
-| admin | 13 | Dashboard, analytics, users, disputes, KYC, reports, settings, CMS |
-| ai | 10 | Chatbot, skin analysis, virtual try-on, AI routines, personalized feed |
-| zatca | 1 | E-invoicing compliance |
-| realtime | 7 | Notifications, chat, live chat, video, WhatsApp bot, audio rooms |
-| content | 15 | Blog, campaigns, events, tutorials, live stream, courses, stories |
-| market | 13 | Marketplace, subscriptions, flash deals, group buy, bridal, gift registry |
-| wellness | 21 | Self-care, tracking, budget, diary, cycle, spa, routines, reminders |
-| operations | 18 | Addresses, home service, salon, ride hailing, corporate, franchise, IoT |
+| Domain     | Routers | Responsibility                                                              |
+| ---------- | ------- | --------------------------------------------------------------------------- |
+| auth       | 3       | Registration, login, JWT, 2FA, uploads                                      |
+| booking    | 12      | Booking lifecycle, slots, calendar, reschedule, recurring, emergency, group |
+| catalog    | 14      | Categories, services, variants, search, gallery, recommendations            |
+| payments   | 9       | Wallet, transactions, PayFort, saved cards, promo, gift cards, cashback     |
+| loyalty    | 8       | Points, tiers, streaks, achievements, referrals, birthday rewards, VIP      |
+| social     | 12      | Reviews, disputes, community, inspiration, challenges, follows, Q&A         |
+| admin      | 13      | Dashboard, analytics, users, disputes, KYC, reports, settings, CMS          |
+| ai         | 10      | Chatbot, skin analysis, virtual try-on, AI routines, personalized feed      |
+| zatca      | 1       | E-invoicing compliance                                                      |
+| realtime   | 7       | Notifications, chat, live chat, video, WhatsApp bot, audio rooms            |
+| content    | 15      | Blog, campaigns, events, tutorials, live stream, courses, stories           |
+| market     | 13      | Marketplace, subscriptions, flash deals, group buy, bridal, gift registry   |
+| wellness   | 21      | Self-care, tracking, budget, diary, cycle, spa, routines, reminders         |
+| operations | 18      | Addresses, home service, salon, ride hailing, corporate, franchise, IoT     |
 
 ## Consequences
 
 **Positive:**
+
 - Clear ownership — a developer can own `booking/` without touching `loyalty/`
 - Enables future microservice extraction — move a domain to its own service
 - Imports are readable and maintainable
 - New routers drop into the right domain immediately
 
 **Negative:**
+
 - Physical files still in flat `routers/` directory (barrel pattern, not full move)
 - Some routers span multiple domains conceptually (e.g., reviews touches both social and booking)
 

@@ -25,7 +25,12 @@ export async function cached<T>(
       return JSON.parse(cached) as T;
     }
   } catch (err) {
-    logger.warn({ err, key: cacheKey }, 'Redis cache read failed — falling back to fetcher');
+    // Message-only: cache failures are benign (DB fallback), and logging
+    // the full error object dumps noisy stack traces on every request
+    // while Redis is down.
+    logger.warn(
+      `Redis cache read failed (${(err as Error).message}) — falling back to fetcher: ${cacheKey}`,
+    );
   }
 
   const data = await fetcher();
@@ -33,7 +38,7 @@ export async function cached<T>(
   try {
     await redis.setex(cacheKey, ttl, JSON.stringify(data));
   } catch (err) {
-    logger.warn({ err, key: cacheKey }, 'Redis cache write failed');
+    logger.warn(`Redis cache write failed (${(err as Error).message}): ${cacheKey}`);
   }
 
   return data;
@@ -49,7 +54,7 @@ export async function invalidateCache(key: string): Promise<void> {
   try {
     await redis.del(`cache:${key}`);
   } catch (err) {
-    logger.warn({ err, key }, 'Redis cache invalidation failed');
+    logger.warn(`Redis cache invalidation failed (${(err as Error).message}): ${key}`);
   }
 }
 
@@ -67,6 +72,6 @@ export async function invalidateCachePrefix(prefix: string): Promise<void> {
       await redis.del(...keys);
     }
   } catch (err) {
-    logger.warn({ err, prefix }, 'Redis cache prefix invalidation failed');
+    logger.warn(`Redis cache prefix invalidation failed (${(err as Error).message}): ${prefix}`);
   }
 }

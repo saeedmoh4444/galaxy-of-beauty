@@ -64,9 +64,7 @@ export const platformRouter = router({
 
     return {
       maintenanceMode: updated.value === 'true',
-      message: updated.value === 'true'
-        ? 'Maintenance mode enabled'
-        : 'Maintenance mode disabled',
+      message: updated.value === 'true' ? 'Maintenance mode enabled' : 'Maintenance mode disabled',
     };
   }),
 
@@ -203,41 +201,39 @@ export const platformRouter = router({
     }));
   }),
 
-  getAreas: publicProcedure
-    .input(z.object({ cityName: z.string() }))
-    .query(async ({ input }) => {
-      const city = await prisma.saudiCity.findFirst({
-        where: {
-          OR: [
-            { nameAr: input.cityName },
-            { nameEn: { equals: input.cityName, mode: 'insensitive' } },
-          ],
+  getAreas: publicProcedure.input(z.object({ cityName: z.string() })).query(async ({ input }) => {
+    const city = await prisma.saudiCity.findFirst({
+      where: {
+        OR: [
+          { nameAr: input.cityName },
+          { nameEn: { equals: input.cityName, mode: 'insensitive' } },
+        ],
+      },
+      include: {
+        areas: {
+          where: { isActive: true },
+          orderBy: { nameAr: 'asc' },
         },
-        include: {
-          areas: {
-            where: { isActive: true },
-            orderBy: { nameAr: 'asc' },
-          },
-        },
-      });
+      },
+    });
 
-      if (!city) {
-        throw new TRPCError({ code: 'NOT_FOUND', message: 'City not found' });
-      }
+    if (!city) {
+      throw new TRPCError({ code: 'NOT_FOUND', message: 'City not found' });
+    }
 
-      return {
-        city: {
-          id: city.id,
-          nameAr: city.nameAr,
-          nameEn: city.nameEn,
-        },
-        areas: city.areas.map((a) => ({
-          id: a.id,
-          nameAr: a.nameAr,
-          nameEn: a.nameEn,
-        })),
-      };
-    }),
+    return {
+      city: {
+        id: city.id,
+        nameAr: city.nameAr,
+        nameEn: city.nameEn,
+      },
+      areas: city.areas.map((a) => ({
+        id: a.id,
+        nameAr: a.nameAr,
+        nameEn: a.nameEn,
+      })),
+    };
+  }),
 
   exportBookings: adminProcedure
     .input(
@@ -324,7 +320,13 @@ export const platformRouter = router({
     }),
 
   createArea: adminProcedure
-    .input(z.object({ cityId: z.number().int().positive(), nameAr: z.string().min(2), nameEn: z.string().min(2) }))
+    .input(
+      z.object({
+        cityId: z.number().int().positive(),
+        nameAr: z.string().min(2),
+        nameEn: z.string().min(2),
+      }),
+    )
     .mutation(async ({ input }) => {
       return prisma.area.create({
         data: { cityId: input.cityId, nameAr: input.nameAr, nameEn: input.nameEn },
@@ -332,7 +334,14 @@ export const platformRouter = router({
     }),
 
   updateArea: adminProcedure
-    .input(z.object({ id: z.number().int().positive(), nameAr: z.string().min(2).optional(), nameEn: z.string().min(2).optional(), isActive: z.boolean().optional() }))
+    .input(
+      z.object({
+        id: z.number().int().positive(),
+        nameAr: z.string().min(2).optional(),
+        nameEn: z.string().min(2).optional(),
+        isActive: z.boolean().optional(),
+      }),
+    )
     .mutation(async ({ input }) => {
       const { id, ...data } = input;
       return prisma.area.update({ where: { id }, data });
@@ -399,6 +408,12 @@ export const platformRouter = router({
       prisma.technician.count(),
       prisma.saudiCity.count(),
     ]);
-    return { totalBookings, totalCustomers, totalTechnicians, totalCities, happyCustomers: totalBookings };
+    return {
+      totalBookings,
+      totalCustomers,
+      totalTechnicians,
+      totalCities,
+      happyCustomers: totalBookings,
+    };
   }),
 });

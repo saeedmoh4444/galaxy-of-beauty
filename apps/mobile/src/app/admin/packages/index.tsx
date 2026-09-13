@@ -1,30 +1,61 @@
 import { View, Text, ScrollView, StyleSheet, RefreshControl } from 'react-native';
-import { trpc } from '@/lib/api';
-import { useState, useEffect, useCallback } from 'react';
 import { SkeletonList } from '@/components/SkeletonCard';
+import { ErrorAlert } from '@/components/ErrorAlert';
+import { trpc } from '@/lib/trpc-react';
+import { useLocale } from '@/components/LocaleProvider';
+import { localize } from '@galaxy/shared';
+
+interface BeautyPackage {
+  id?: number;
+  nameJson?: { ar?: string };
+  discountPercent?: number;
+  services?: unknown[];
+  isActive?: boolean;
+}
 
 export default function AdminPackagesScreen(): JSX.Element {
-  const [data, setData] = useState<any[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [refreshing, setRefreshing] = useState(false);
+  const { t, locale } = useLocale();
+  const q = trpc.beautyPackages.listAll.useQuery();
+  const data = (q.data as unknown as BeautyPackage[] | null) ?? [];
 
-  const fetch = useCallback((isRefresh = false) => {
-    if (isRefresh) setRefreshing(true); else setLoading(true);
-    ((trpc as any).beautyPackages.listAll.query() as any).then((d: any) => { setData(d || []); setLoading(false); setRefreshing(false); }).catch(() => { setLoading(false); setRefreshing(false); });
-  }, []);
-
-  useEffect(() => { fetch(); }, [fetch]);
-
-  if (loading) return <SkeletonList count={4} />;
+  if (q.isLoading) return <SkeletonList count={4} />;
+  if (q.isError)
+    return (
+      <ErrorAlert message={t('mobile.admin.packages.load-error')} onRetry={() => q.refetch()} />
+    );
 
   return (
-    <ScrollView style={styles.c} contentContainerStyle={styles.i} refreshControl={<RefreshControl refreshing={refreshing} onRefresh={() => fetch(true)} colors={['#ec4899']} />}>
-      <Text style={styles.t}>💅 الباقات</Text>
-      {data.map((p: any, i: number) => (
+    <ScrollView
+      style={styles.c}
+      contentContainerStyle={styles.i}
+      refreshControl={
+        <RefreshControl
+          refreshing={q.isRefetching}
+          onRefresh={() => q.refetch()}
+          colors={['#ec4899']}
+        />
+      }
+    >
+      <Text style={styles.t}>{t('admin.packages.title')}</Text>
+      {data.map((p, i) => (
         <View key={i} style={styles.card}>
-          <Text style={styles.emoji}>📦</Text>
-          <View style={{flex:1}}><Text style={styles.name}>{(p.nameJson as any)?.ar as string}</Text><Text style={styles.discount}>-{p.discountPercent as number}% · {p.services?.length || 0} خدمات</Text></View>
-          <View style={[styles.badge, p.isActive ? styles.active : styles.inactive]}><Text style={styles.badgeText}>{p.isActive ? 'نشط' : 'غير نشط'}</Text></View>
+          <Text style={styles.emoji}>🎁</Text>
+          <View style={{ flex: 1 }}>
+            <Text style={styles.name}>{localize(p.nameJson, locale)}</Text>
+            <Text style={styles.discount}>
+              {t('admin.packages.meta', {
+                pct: p.discountPercent ?? 0,
+                count: p.services?.length || 0,
+              })}
+            </Text>
+          </View>
+          <View style={[styles.badge, p.isActive ? styles.active : styles.inactive]}>
+            <Text style={styles.badgeText}>
+              {p.isActive
+                ? t('mobile.admin.campaigns.active')
+                : t('mobile.admin.campaigns.inactive')}
+            </Text>
+          </View>
         </View>
       ))}
     </ScrollView>
@@ -32,11 +63,23 @@ export default function AdminPackagesScreen(): JSX.Element {
 }
 
 const styles = StyleSheet.create({
-  c: { flex: 1, backgroundColor: '#fdf2f8' }, i: { padding: 16, paddingTop: 30, paddingBottom: 40 },
+  c: { flex: 1, backgroundColor: '#fdf2f8' },
+  i: { padding: 16, paddingTop: 30, paddingBottom: 40 },
   t: { fontSize: 24, fontWeight: '800', color: '#db2777', textAlign: 'center', marginBottom: 20 },
-  card: { flexDirection: 'row', alignItems: 'center', gap: 12, backgroundColor: '#fff', borderRadius: 14, padding: 14, marginBottom: 6 },
-  emoji: { fontSize: 28 }, name: { fontSize: 14, fontWeight: '600', color: '#111827' },
+  card: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 12,
+    backgroundColor: '#fff',
+    borderRadius: 14,
+    padding: 14,
+    marginBottom: 6,
+  },
+  emoji: { fontSize: 28 },
+  name: { fontSize: 14, fontWeight: '600', color: '#111827' },
   discount: { fontSize: 12, color: '#dc2626', marginTop: 2 },
-  badge: { borderRadius: 8, paddingHorizontal: 8, paddingVertical: 3 }, active: { backgroundColor: '#dcfce7' }, inactive: { backgroundColor: '#fee2e2' },
+  badge: { borderRadius: 8, paddingHorizontal: 8, paddingVertical: 3 },
+  active: { backgroundColor: '#dcfce7' },
+  inactive: { backgroundColor: '#fee2e2' },
   badgeText: { fontSize: 11, fontWeight: '600' },
 });

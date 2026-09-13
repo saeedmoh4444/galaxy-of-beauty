@@ -3,10 +3,25 @@ import { z } from 'zod';
 
 // Replicate the password schema from validators/auth.ts for unit testing
 const COMMON_PASSWORDS = new Set([
-  'password', 'password123', '12345678', '123456789', 'qwerty123',
-  'admin123', 'letmein1', 'welcome1', 'football1', 'iloveyou1',
-  'Password1', 'Password123', 'Qwerty123', 'Admin1234', 'Welcome123',
-  'Pa$$w0rd', 'P@ssword1', 'Galaxy123', 'Beauty123',
+  'password',
+  'password123',
+  '12345678',
+  '123456789',
+  'qwerty123',
+  'admin123',
+  'letmein1',
+  'welcome1',
+  'football1',
+  'iloveyou1',
+  'Password1',
+  'Password123',
+  'Qwerty123',
+  'Admin1234',
+  'Welcome123',
+  'Pa$$w0rd',
+  'P@ssword1',
+  'Galaxy123',
+  'Beauty123',
 ]);
 
 const passwordSchema = z

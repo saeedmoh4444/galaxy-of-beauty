@@ -1,8 +1,16 @@
 import { View, Text, ScrollView, StyleSheet, TouchableOpacity, RefreshControl } from 'react-native';
-import { trpc } from '@/lib/api';
-import { useQuery } from '@/lib/useQuery';
 import { ErrorAlert } from '@/components/ErrorAlert';
 import { SkeletonList } from '@/components/SkeletonCard';
+import { trpc } from '@/lib/trpc-react';
+import { useLocale } from '@/components/LocaleProvider';
+
+interface Challenge {
+  id?: string;
+  emoji?: string;
+  nameAr?: string;
+  descAr?: string;
+  reward?: string;
+}
 
 const GRADIENTS: Record<string, string[]> = {
   '7day_skincare': ['#f43f5e', '#ec4899'],
@@ -13,42 +21,75 @@ const GRADIENTS: Record<string, string[]> = {
 };
 
 export default function ChallengesScreen(): JSX.Element {
-  const { data: challenges, loading, error, refreshing, refetch, refresh } = useQuery(() => (trpc as any).challenges.list.query());
+  const { t } = useLocale();
+  const challengesQ = trpc.challenges.list.useQuery();
 
-  if (loading) return <SkeletonList count={4} />;
-  if (error) return <ErrorAlert message="فشل تحميل التحديات" onRetry={refetch} />;
+  if (challengesQ.isLoading) return <SkeletonList count={4} />;
+  if (challengesQ.isError)
+    return (
+      <ErrorAlert
+        message={t('mobile.public.challenges.load-error')}
+        onRetry={() => challengesQ.refetch()}
+      />
+    );
 
-  const items = (challenges ?? []) as any[];
+  const items = (challengesQ.data ?? []) as Challenge[];
 
   return (
-    <ScrollView style={styles.c} contentContainerStyle={styles.i} refreshControl={<RefreshControl refreshing={refreshing} onRefresh={refresh} colors={['#f59e0b']} />}>
-      <Text style={styles.t}>🏆 تحديات الجمال</Text>
-      <Text style={styles.sub}>أكملي التحديات واكسبي مكافآت</Text>
-      {items.length === 0 ? <Text style={styles.e}>لا توجد تحديات</Text> :
-        items.map((ch: any) => {
+    <ScrollView
+      style={styles.c}
+      contentContainerStyle={styles.i}
+      refreshControl={
+        <RefreshControl
+          refreshing={challengesQ.isRefetching}
+          onRefresh={() => challengesQ.refetch()}
+          colors={['#f59e0b']}
+        />
+      }
+    >
+      <Text style={styles.t}>{t('mobile.public.challenges.title')}</Text>
+      <Text style={styles.sub}>{t('mobile.public.challenges.subtitle')}</Text>
+      {items.length === 0 ? (
+        <Text style={styles.e}>{t('mobile.public.challenges.empty')}</Text>
+      ) : (
+        items.map((ch) => {
           const colors = GRADIENTS[ch.id as string] ?? ['#6b7280', '#9ca3af'];
           return (
-            <TouchableOpacity key={ch.id} style={[styles.card, {borderLeftColor: colors[0], borderLeftWidth: 4}]}>
-              <Text style={styles.chEmoji}>{ch.emoji as string ?? '🎯'}</Text>
-              <View style={{flex:1}}>
+            <TouchableOpacity
+              key={ch.id}
+              style={[styles.card, { borderLeftColor: colors[0], borderLeftWidth: 4 }]}
+            >
+              <Text style={styles.chEmoji}>{(ch.emoji as string) ?? ''}</Text>
+              <View style={{ flex: 1 }}>
                 <Text style={styles.chName}>{ch.nameAr as string}</Text>
                 <Text style={styles.chDesc}>{ch.descAr as string}</Text>
-                <Text style={styles.chReward}>🎁 {ch.reward as string}</Text>
+                <Text style={styles.chReward}> {ch.reward as string}</Text>
               </View>
             </TouchableOpacity>
           );
         })
-      }
+      )}
     </ScrollView>
   );
 }
 
 const styles = StyleSheet.create({
-  c: { flex: 1, backgroundColor: '#fffbeb' }, i: { padding: 16, paddingTop: 30, paddingBottom: 40 },
+  c: { flex: 1, backgroundColor: '#fffbeb' },
+  i: { padding: 16, paddingTop: 30, paddingBottom: 40 },
   t: { fontSize: 24, fontWeight: '800', color: '#d97706', textAlign: 'center', marginBottom: 4 },
   sub: { fontSize: 13, color: '#9ca3af', textAlign: 'center', marginBottom: 20 },
   e: { fontSize: 14, color: '#9ca3af', textAlign: 'center', marginTop: 40 },
-  card: { flexDirection: 'row', alignItems: 'center', gap: 12, backgroundColor: '#fff', borderRadius: 14, padding: 14, marginBottom: 8 },
-  chEmoji: { fontSize: 32 }, chName: { fontSize: 14, fontWeight: '700', color: '#111827' },
-  chDesc: { fontSize: 12, color: '#6b7280', marginTop: 2 }, chReward: { fontSize: 12, fontWeight: '600', color: '#059669', marginTop: 4 },
+  card: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 12,
+    backgroundColor: '#fff',
+    borderRadius: 14,
+    padding: 14,
+    marginBottom: 8,
+  },
+  chEmoji: { fontSize: 32 },
+  chName: { fontSize: 14, fontWeight: '700', color: '#111827' },
+  chDesc: { fontSize: 12, color: '#6b7280', marginTop: 2 },
+  chReward: { fontSize: 12, fontWeight: '600', color: '#059669', marginTop: 4 },
 });

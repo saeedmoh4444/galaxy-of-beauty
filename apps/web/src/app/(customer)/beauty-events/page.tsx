@@ -1,28 +1,44 @@
 'use client';
 
-import { api } from '@/lib/trpc';
 import {
-  PageContainer, PageTitle,
-  CommunityEventCard, GalentinesCard, BrideTribeCard, PromReadyCard,
-  BabyShowerCard, BeautySeasonalLookbookCard, RandomActOfBeauty,
+  PageContainer,
+  PageTitle,
+  CommunityEventCard,
+  GalentinesCard,
+  BrideTribeCard,
+  PromReadyCard,
+  BabyShowerCard,
+  BeautySeasonalLookbookCard,
+  RandomActOfBeauty,
   BirthdayMonthBadge,
 } from '@galaxy/ui';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
+import { useLocale } from '@/components/LocaleProvider';
 
 export default function BeautyEventsPage(): JSX.Element {
-  const events = (api as any).beautyEvents?.upcoming?.useQuery?.({ limit: 4 }) as any;
-  const registrations = (api as any).beautyEvents?.myRegistrations?.useQuery?.() as any;
-
+  const { t } = useLocale();
   return (
-    <DashboardLayout role="CUSTOMER">
+    <DashboardLayout userRole="CUSTOMER">
       <PageContainer width="wide">
-        <PageTitle title="🎉 المناسبات" subtitle="احتفلي بكل لحظة جميلة" />
+        <PageTitle title={t('beautyEvents.title')} subtitle={t('beautyEvents.subtitle')} />
         <div className="grid gap-6 lg:grid-cols-3">
           <div className="lg:col-span-2 space-y-6">
             <BeautySeasonalLookbookCard season="eid" />
             <div className="grid gap-4 sm:grid-cols-2">
-              <GalentinesCard friends={['نورة', 'مها']} date="13 فبراير" discount={20} totalPrice={450} />
-              <BrideTribeCard bride="سارة" bridesmaids={[{ name: 'نورة', role: 'وصيفة أولى' }, { name: 'مها', lookAssigned: true }, { name: 'ريم' }]} />
+              <GalentinesCard
+                friends={['نورة', 'مها']}
+                date={t('beautyEvents.galentinesDate')}
+                discount={20}
+                totalPrice={450}
+              />
+              <BrideTribeCard
+                bride="سارة"
+                bridesmaids={[
+                  { name: 'نورة', role: t('beautyEvents.maidOfHonor') },
+                  { name: 'مها', lookAssigned: true },
+                  { name: 'ريم' },
+                ]}
+              />
             </div>
             <div className="grid gap-4 sm:grid-cols-3">
               <PromReadyCard event="graduation" age={17} />
@@ -30,11 +46,21 @@ export default function BeautyEventsPage(): JSX.Element {
               <PromReadyCard event="birthday_party" age={18} />
             </div>
             <BabyShowerCard momName="نورة" guests={12} />
-            <CommunityEventCard event={{ title: 'لقاء عرايس الرياض', date: '15 أغسطس', city: 'الرياض', time: '6:00 مساءً', attendees: 23, maxAttendees: 30, host: 'صالون الياسمين' }} />
+            <CommunityEventCard
+              event={{
+                title: t('beautyEvents.meetupTitle'),
+                date: t('beautyEvents.meetupDate'),
+                city: t('beautyEvents.meetupCity'),
+                time: t('beautyEvents.meetupTime'),
+                attendees: 23,
+                maxAttendees: 30,
+                host: t('beautyEvents.meetupHost'),
+              }}
+            />
           </div>
           <div className="space-y-6">
             <RandomActOfBeauty />
-            <BirthdayMonthBadge month="مارس" discount={15} daysRemaining={22} />
+            <BirthdayMonthBadge month={t('beautyEvents.march')} discount={15} daysRemaining={22} />
           </div>
         </div>
       </PageContainer>

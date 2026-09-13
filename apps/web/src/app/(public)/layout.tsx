@@ -4,28 +4,43 @@ import { MainLayout } from '@/components/layout/MainLayout';
 
 export const metadata: Metadata = {
   title: {
-    default: 'Galaxy of Beauty | جالكسي بيوتي — منصة خدمات التجميل',
-    template: '%s | Galaxy of Beauty',
+    default: 'Dalal | دلال — منصة خدمات التجميل',
+    template: '%s | Dalal',
   },
   description:
     'احجزي خدمات التجميل المنزلية بكل سهولة — شعر، بشرة، مكياج، مساج، حناء والمزيد. منصة سعودية تربطك بأفضل فنيات التجميل المعتمدات.',
   keywords: [
-    'تجميل', 'خدمات تجميل', 'صالون متنقل', 'مكياج', 'شعر', 'بشرة', 'مساج',
-    'حناء', 'عناية بالبشرة', 'فنيات تجميل', 'السعودية', 'beauty', 'salon',
-    'makeup', 'hair', 'skincare', 'massage', 'henna', 'Saudi Arabia',
+    'تجميل',
+    'خدمات تجميل',
+    'صالون متنقل',
+    'مكياج',
+    'شعر',
+    'بشرة',
+    'مساج',
+    'حناء',
+    'عناية بالبشرة',
+    'فنيات تجميل',
+    'السعودية',
+    'beauty',
+    'salon',
+    'makeup',
+    'hair',
+    'skincare',
+    'massage',
+    'henna',
+    'Saudi Arabia',
   ],
   openGraph: {
-    title: 'Galaxy of Beauty | جالكسي بيوتي — منصة خدمات التجميل',
-    description:
-      'احجزي خدمات التجميل المنزلية بكل سهولة — شعر، بشرة، مكياج، مساج، حناء والمزيد.',
-    siteName: 'Galaxy of Beauty',
+    title: 'Dalal | دلال — منصة خدمات التجميل',
+    description: 'احجزي خدمات التجميل المنزلية بكل سهولة — شعر، بشرة، مكياج، مساج، حناء والمزيد.',
+    siteName: 'Dalal',
     locale: 'ar_SA',
     type: 'website',
     images: ['/logo.png'],
   },
   twitter: {
     card: 'summary',
-    title: 'Galaxy of Beauty | جالكسي بيوتي',
+    title: 'Dalal | دلال',
     description: 'منصة خدمات التجميل المنزلية في السعودية',
   },
   robots: {
