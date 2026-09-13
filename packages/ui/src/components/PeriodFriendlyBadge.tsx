@@ -1,4 +1,5 @@
 'use client';
+import type { JSX } from 'react';
 
 /**
  * Period Friendly Badge — signals the salon provides period care kits.

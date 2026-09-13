@@ -1,4 +1,5 @@
 'use client';
+import type { JSX } from 'react';
 
 /**
  * Seasonal badge — shows time-limited/seasonal offers.

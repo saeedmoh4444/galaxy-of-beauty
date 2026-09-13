@@ -1,4 +1,5 @@
 'use client';
+import type { JSX } from 'react';
 
 /**
  * Salon Amenities — shows what each salon offers for women's comfort.

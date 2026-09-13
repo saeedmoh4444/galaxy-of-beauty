@@ -1,4 +1,5 @@
 'use client';
+import type { JSX } from 'react';
 
 /**
  * Self-Care Reminder — daily prompt encouraging women to take care of themselves.

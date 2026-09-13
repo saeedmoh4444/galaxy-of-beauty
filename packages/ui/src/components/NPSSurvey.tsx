@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import type { JSX } from 'react';
 
 /**
  * Net Promoter Score (NPS) survey — "How likely to recommend?"

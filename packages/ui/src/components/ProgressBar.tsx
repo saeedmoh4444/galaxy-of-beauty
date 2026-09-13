@@ -1,4 +1,5 @@
 'use client';
+import type { JSX } from 'react';
 
 interface ProgressBarProps {
   /** 0-100 progress value; omit for indeterminate mode */
