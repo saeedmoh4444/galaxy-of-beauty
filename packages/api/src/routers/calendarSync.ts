@@ -109,7 +109,59 @@ export const calendarSyncRouter = router({
       date: b.startAt.toISOString(),
       technician: b.technician?.name ?? '',
       emoji: '💅',
+      // Booking auto-sync (E9 follow-up): true when the event already
+      // lives on the customer's Google Calendar.
+      synced: !!b.googleEventId,
     }));
+  }),
+
+  /**
+   * syncBookings — backfill push of the caller's upcoming active bookings
+   * that are not yet on their Google Calendar (googleEventId IS NULL —
+   * e.g. bookings made before the auto-sync feature). Synchronous so the
+   * UI can show a per-run count; each Google failure is swallowed.
+   */
+  syncBookings: customerProcedure.mutation(async ({ ctx }) => {
+    const integration = await db.beautyIntegration.findUnique({
+      where: { userId_provider: { userId: ctx.user.id, provider: PROVIDER } },
+    });
+    if (!integration || integration.status !== 'CONNECTED' || !integration.accessToken) {
+      return { connected: false, synced: 0 };
+    }
+
+    const bookings = await db.booking.findMany({
+      where: {
+        customerId: ctx.user.id,
+        status: { in: ['ACCEPTED', 'CONFIRMED_OFFLINE', 'PAID', 'IN_PROGRESS'] },
+        startAt: { gte: new Date() },
+        googleEventId: null,
+      },
+      orderBy: { startAt: 'asc' },
+      include: { service: { select: { titleJson: true } } },
+    });
+
+    let synced = 0;
+    for (const b of bookings) {
+      try {
+        const title = ((b.service?.titleJson as Record<string, string> | null)?.ar ?? '') || 'حجز';
+        const eventId = await createGoogleCalendarEvent(integration.accessToken, {
+          summary: `💅 ${title} — ${b.bookingCode}`,
+          description: 'حجز من منصة دلال — Dalal booking',
+          start: b.startAt.toISOString(),
+          end: b.endAt.toISOString(),
+        });
+        if (eventId) {
+          await db.booking.update({
+            where: { id: b.id },
+            data: { googleEventId: eventId },
+          });
+          synced++;
+        }
+      } catch (err) {
+        console.log(`[CalendarSync] backfill failed for booking #${b.id}:`, err);
+      }
+    }
+    return { connected: true, synced };
   }),
 
   /**

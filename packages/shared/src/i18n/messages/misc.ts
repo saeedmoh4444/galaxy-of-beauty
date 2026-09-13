@@ -2931,6 +2931,9 @@ export const miscMessages = {
   'calendarSync.disconnect': { ar: 'قطع الاتصال', en: 'Disconnect' },
   'calendarSync.connect': { ar: 'ربط تقويم قوقل', en: 'Connect Google Calendar' },
   'calendarSync.upcoming': { ar: 'مواعيد قادمة', en: 'Upcoming appointments' },
+  'calendarSync.syncBookings': { ar: 'مزامنة الحجوزات', en: 'Sync bookings' },
+  'calendarSync.syncedBookings': { ar: 'تمت إضافة {n} حجوزات', en: '{n} bookings added' },
+  'calendarSync.onCalendar': { ar: 'في التقويم', en: 'On calendar' },
   // E9 — real calendar sync
   'calendarSync.syncPeriods': { ar: 'مزامنة توقعات الدورة', en: 'Sync period predictions' },
   'calendarSync.synced': { ar: 'تمت إضافة {n} أحداث', en: '{n} events added' },

@@ -77,6 +77,7 @@ describe('customer calendar sync (E9)', () => {
     await expect(anon.calendarSync.disconnect()).rejects.toThrow();
     await expect(anon.calendarSync.upcoming()).rejects.toThrow();
     await expect(anon.calendarSync.syncCycleEvents()).rejects.toThrow();
+    await expect(anon.calendarSync.syncBookings()).rejects.toThrow();
   });
 
   it('status defaults to disconnected for a fresh user', async () => {
@@ -86,12 +87,45 @@ describe('customer calendar sync (E9)', () => {
     expect(status.provider).toBe('google');
   });
 
-  it('upcoming returns the caller real bookings, not the mock', async () => {
+  it('upcoming returns the caller real bookings with a synced flag', async () => {
     const c = await caller(user);
     const upcoming = await c.calendarSync.upcoming();
     expect(upcoming.length).toBeGreaterThanOrEqual(1);
     expect(upcoming.every((e: any) => e.date)).toBe(true);
     expect(upcoming[0].technician).toBeTruthy();
+    // googleEventId is null for this fixture → not yet on the calendar
+    expect(upcoming.every((e: any) => typeof e.synced === 'boolean')).toBe(true);
+    expect(upcoming[0].synced).toBe(false);
+  });
+
+  it('syncBookings reports connected=false without an integration', async () => {
+    const c = await caller(user);
+    const res = await c.calendarSync.syncBookings();
+    expect(res.connected).toBe(false);
+    expect(res.synced).toBe(0);
+  });
+
+  it('syncBookings stays graceful with a fake token (Google unreachable)', async () => {
+    try {
+      await prisma.beautyIntegration.create({
+        data: {
+          userId: user.id,
+          provider: 'google_calendar',
+          accessToken: 'fake-token',
+          refreshToken: 'rt',
+          status: 'CONNECTED',
+        },
+      });
+      const c = await caller(user);
+      const res = await c.calendarSync.syncBookings();
+      // connected integration, but each event push fails → synced 0, no throw
+      expect(res.connected).toBe(true);
+      expect(res.synced).toBe(0);
+    } finally {
+      await prisma.beautyIntegration.deleteMany({
+        where: { userId: user.id, provider: 'google_calendar' },
+      });
+    }
   });
 
   it('connect without Google credentials fails cleanly (NOT_IMPLEMENTED)', async () => {
