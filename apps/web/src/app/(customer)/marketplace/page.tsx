@@ -2,6 +2,7 @@
 
 import { api } from '@/lib/trpc';
 import { useState } from 'react';
+import type { JSX } from 'react';
 import {
   PageContainer,
   PageTitle,

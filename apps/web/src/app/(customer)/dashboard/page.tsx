@@ -2,6 +2,7 @@
 
 import Link from 'next/link';
 import { useCallback, useEffect, useMemo, useState, type ComponentProps } from 'react';
+import type { JSX } from 'react';
 import { api } from '@/lib/trpc';
 import {
   Card,
