@@ -20,12 +20,14 @@ interface TechnicianQuote {
 interface BeautyTechnicianQuoteCardProps {
   quote: TechnicianQuote;
   onNextQuote?: () => void;
+  nextQuoteText?: string;
   className?: string;
 }
 
 export function BeautyTechnicianQuoteCard({
   quote,
   onNextQuote,
+  nextQuoteText = 'اقتباس آخر ←',
   className = '',
 }: BeautyTechnicianQuoteCardProps): JSX.Element {
   return (
@@ -45,7 +47,7 @@ export function BeautyTechnicianQuoteCard({
           </p>
           <div className="mt-2 flex items-center gap-2">
             <div className="h-8 w-8 rounded-full bg-amber-200 dark:bg-amber-800 flex items-center justify-center text-sm">
-              ‍
+              👩
             </div>
             <div>
               <p className="text-xs font-bold text-amber-700 dark:text-amber-300">{quote.author}</p>
@@ -58,9 +60,9 @@ export function BeautyTechnicianQuoteCard({
         <button
           type="button"
           onClick={onNextQuote}
-          className="mt-3 w-full rounded-lg border border-amber-200 py-1.5 text-[10px] font-bold text-amber-700 hover:bg-white/60 dark:border-amber-800 dark:text-amber-300 transition-colors"
+          className="mt-3 w-full rounded-lg border border-amber-200 py-1.5 text-[10px] font-bold text-amber-700 hover:bg-white/60 dark:hover:bg-gray-800/60 dark:border-amber-800 dark:text-amber-300 transition-colors"
         >
-          اقتباس آخر ←
+          {nextQuoteText}
         </button>
       )}
     </div>

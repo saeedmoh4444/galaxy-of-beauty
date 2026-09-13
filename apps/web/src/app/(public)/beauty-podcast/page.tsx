@@ -2,8 +2,10 @@
 
 import { api } from '@/lib/trpc';
 import { Card, CardListSkeleton, ErrorAlert } from '@galaxy/ui';
+import { useLocale } from '@/components/LocaleProvider';
 
 export default function BeautyPodcastPage(): JSX.Element {
+  const { t } = useLocale();
   const { data, isLoading, isError, refetch } = api.beautyPodcast.episodes.useQuery() as {
     data: Array<Record<string, unknown>> | undefined;
     isLoading: boolean;
@@ -15,15 +17,15 @@ export default function BeautyPodcastPage(): JSX.Element {
   return (
     <div className="mx-auto max-w-3xl px-4 py-12">
       <div className="mb-8 text-center">
-        <span className="text-6xl">️</span>
-        <h1 className="mt-4 text-3xl font-bold">بودكاست الجمال</h1>
-        <p className="mt-2 text-text-secondary">استمعي لأحدث حلقات خبراء التجميل</p>
+        <span className="text-6xl">🎧</span>
+        <h1 className="mt-4 text-3xl font-bold">{t('marketing.beauty-podcast.title')}</h1>
+        <p className="mt-2 text-text-secondary">{t('marketing.beauty-podcast.subtitle')}</p>
       </div>
 
       {isLoading ? (
         <CardListSkeleton count={4} />
       ) : isError ? (
-        <ErrorAlert message="فشل التحميل" onRetry={() => refetch()} />
+        <ErrorAlert message={t('marketing.beauty-podcast.load-error')} onRetry={() => refetch()} />
       ) : (
         <div className="space-y-4">
           {episodes.map((ep: Record<string, unknown>) => (
@@ -37,11 +39,11 @@ export default function BeautyPodcastPage(): JSX.Element {
                   {
                     skincare: '',
                     makeup: '',
-                    hair: '‍️',
+                    hair: '',
                     natural: '',
                     bridal: '',
                   } as Record<string, string>
-                )[ep.category as string] ?? '️'}
+                )[ep.category as string] ?? ''}
               </span>
               <div className="flex-1">
                 <div className="flex items-center gap-2">

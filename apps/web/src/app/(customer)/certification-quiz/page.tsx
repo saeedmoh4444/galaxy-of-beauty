@@ -1,15 +1,23 @@
 'use client';
 import { useState } from 'react';
 import { api } from '@/lib/trpc';
-import { Card, CardListSkeleton, Button } from '@galaxy/ui';
+import { Card, CardListSkeleton, Button, useAuth } from '@galaxy/ui';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
+import { useLocale } from '@/components/LocaleProvider';
 
 export default function CertificationQuizPage(): JSX.Element {
+  const { t, locale } = useLocale();
+  // /certification-quiz is not middleware-protected — gate the protected
+  // certificates query on auth so anonymous visitors don't 401 + bounce.
+  const { isAuthenticated, isLoading: authLoading } = useAuth();
   const { data: quizzes, isLoading } = api.certificationQuiz.quizzes.useQuery() as {
     data: Array<Record<string, unknown>> | undefined;
     isLoading: boolean;
   };
-  const { data: certs } = api.certificationQuiz.myCertificates.useQuery() as {
+  const { data: certs } = api.certificationQuiz.myCertificates.useQuery(undefined, {
+    enabled: !authLoading && isAuthenticated,
+    retry: false,
+  }) as {
     data: Array<Record<string, unknown>> | undefined;
   };
   const [quizId, setQuizId] = useState<string | null>(null);
@@ -29,28 +37,30 @@ export default function CertificationQuizPage(): JSX.Element {
     <DashboardLayout userRole="CUSTOMER">
       <div className="mx-auto max-w-3xl space-y-6">
         <div>
-          <h1 className="text-2xl font-bold"> اختبارات الشهادات</h1>
-          <p className="mt-1 text-sm text-text-secondary">
-            اختاري معلوماتكِ في التجميل واحصلي على شهادة
-          </p>
+          <h1 className="text-2xl font-bold">{t('certificationQuiz.title')}</h1>
+          <p className="mt-1 text-sm text-text-secondary">{t('certificationQuiz.subtitle')}</p>
         </div>
 
         {result ? (
           <Card padding="lg" className="text-center border-2 border-green-300">
             <span className="text-6xl">{(result.passed as boolean) ? '' : ''}</span>
             <h2 className="mt-4 text-xl font-bold">
-              {(result.passed as boolean) ? 'مبروك! اجتزتِ الاختبار ' : 'حاولي مرة أخرى!'}
+              {(result.passed as boolean)
+                ? t('certificationQuiz.passed')
+                : t('certificationQuiz.failed')}
             </h2>
             <p className="text-2xl font-extrabold text-brand-600 mt-2">{result.score as number}%</p>
             {(result.certificate as Record<string, unknown>) ? (
               <div className="mt-4 rounded-xl bg-green-50 dark:bg-green-950 p-4">
                 <p className="font-bold">
-                  شهادة: {(result.certificate as Record<string, unknown>).quizName as string}
+                  {t('certificationQuiz.certificate', {
+                    name: (result.certificate as Record<string, unknown>).quizName as string,
+                  })}
                 </p>
                 <p className="text-xs text-text-secondary mt-1">
                   {new Date(
                     (result.certificate as Record<string, unknown>).date as string,
-                  ).toLocaleDateString('ar-SA')}
+                  ).toLocaleDateString(locale === 'en' ? 'en-GB' : 'ar-SA')}
                 </p>
               </div>
             ) : null}
@@ -62,7 +72,7 @@ export default function CertificationQuizPage(): JSX.Element {
                 setResult(null);
               }}
             >
-              اختبار آخر
+              {t('certificationQuiz.another')}
             </Button>
           </Card>
         ) : quizId ? (
@@ -81,7 +91,7 @@ export default function CertificationQuizPage(): JSX.Element {
                           a[qi] = oi;
                           setAnswers(a);
                         }}
-                        className={`w-full text-right rounded-lg border p-3 text-sm transition-all ${answers[qi] === oi ? 'border-brand-400 bg-brand-50 dark:bg-brand-950' : 'border-gray-200 dark:border-gray-700'}`}
+                        className={`w-full text-end rounded-lg border p-3 text-sm transition-all ${answers[qi] === oi ? 'border-brand-400 bg-brand-50 dark:bg-brand-950' : 'border-edge'}`}
                       >
                         {opt}
                       </button>
@@ -100,7 +110,7 @@ export default function CertificationQuizPage(): JSX.Element {
               loading={submitMut.isPending}
               className="w-full mt-4"
             >
-              تقديم
+              {t('certificationQuiz.submit')}
             </Button>
           </Card>
         ) : isLoading ? (
@@ -112,7 +122,9 @@ export default function CertificationQuizPage(): JSX.Element {
                 <Card padding="lg" className="text-center hover:shadow-lg transition-all">
                   <span className="text-4xl">{q.emoji as string}</span>
                   <h3 className="mt-2 font-bold">{q.nameAr as string}</h3>
-                  <p className="text-xs text-text-secondary">{q.questionCount as number} أسئلة</p>
+                  <p className="text-xs text-text-secondary">
+                    {t('certificationQuiz.questionsCount', { count: q.questionCount as number })}
+                  </p>
                 </Card>
               </button>
             ))}
@@ -121,7 +133,7 @@ export default function CertificationQuizPage(): JSX.Element {
 
         {myCerts.length > 0 && (
           <Card padding="lg">
-            <h3 className="font-bold mb-3"> شهاداتي</h3>
+            <h3 className="font-bold mb-3">{t('certificationQuiz.myCertificates')}</h3>
             <div className="space-y-2">
               {myCerts.map((c: Record<string, unknown>) => (
                 <div
@@ -131,7 +143,9 @@ export default function CertificationQuizPage(): JSX.Element {
                   <div>
                     <p className="font-bold text-sm">{c.quizName as string}</p>
                     <p className="text-xs text-text-secondary">
-                      {new Date(c.date as string).toLocaleDateString('ar-SA')}
+                      {new Date(c.date as string).toLocaleDateString(
+                        locale === 'en' ? 'en-GB' : 'ar-SA',
+                      )}
                     </p>
                   </div>
                   <span className="font-bold text-green-700">{c.score as number}%</span>

@@ -1,5 +1,7 @@
 import { View, Text, ScrollView, StyleSheet, RefreshControl } from 'react-native';
 import { SkeletonList } from '@/components/SkeletonCard';
+import { useLocale } from '@/components/LocaleProvider';
+import { useAuthState } from '@/hooks/useAuthState';
 import { trpc } from '@/lib/trpc-react';
 
 interface AnalyticsSummary {
@@ -21,9 +23,11 @@ interface MonthlyTrend {
 }
 
 export default function BeautyAnalyticsScreen(): JSX.Element {
-  const summaryQ = trpc.beautyAnalytics.summary.useQuery();
-  const byCatQ = trpc.beautyAnalytics.byCategory.useQuery();
-  const trendQ = trpc.beautyAnalytics.monthlyTrend.useQuery();
+  const { t } = useLocale();
+  const isAuthed = useAuthState();
+  const summaryQ = trpc.beautyAnalytics.summary.useQuery(undefined, { enabled: isAuthed });
+  const byCatQ = trpc.beautyAnalytics.byCategory.useQuery(undefined, { enabled: isAuthed });
+  const trendQ = trpc.beautyAnalytics.monthlyTrend.useQuery(undefined, { enabled: isAuthed });
 
   if (summaryQ.isLoading || byCatQ.isLoading || trendQ.isLoading) return <SkeletonList count={4} />;
   const s = (summaryQ.data as unknown as AnalyticsSummary | null) ?? {
@@ -50,32 +54,32 @@ export default function BeautyAnalyticsScreen(): JSX.Element {
         />
       }
     >
-      <Text style={styles.t}> تحليلات الجمال</Text>
+      <Text style={styles.t}>{t('beautyAnalytics.title')}</Text>
       <View style={styles.kr}>
         <View style={styles.k}>
-          <Text style={styles.ke}></Text>
+          <Text style={styles.ke}>📅</Text>
           <Text style={styles.kv}>{s.totalBookings}</Text>
-          <Text style={styles.kl}>حجوزات</Text>
+          <Text style={styles.kl}>{t('beautyAnalytics.bookings')}</Text>
         </View>
         <View style={styles.k}>
-          <Text style={styles.ke}></Text>
+          <Text style={styles.ke}>✅</Text>
           <Text style={[styles.kv, { color: '#059669' }]}>{s.completedBookings}</Text>
-          <Text style={styles.kl}>مكتملة</Text>
+          <Text style={styles.kl}>{t('beautyAnalytics.completed')}</Text>
         </View>
         <View style={styles.k}>
-          <Text style={styles.ke}></Text>
+          <Text style={styles.ke}>📈</Text>
           <Text style={[styles.kv, { color: '#2563eb' }]}>{s.completionRate}%</Text>
-          <Text style={styles.kl}>نسبة</Text>
+          <Text style={styles.kl}>{t('beautyAnalytics.rate')}</Text>
         </View>
         <View style={styles.k}>
-          <Text style={styles.ke}></Text>
+          <Text style={styles.ke}>💰</Text>
           <Text style={[styles.kv, { color: '#7c3aed' }]}>{s.totalSpent?.toLocaleString()}</Text>
-          <Text style={styles.kl}>ر.س</Text>
+          <Text style={styles.kl}>{t('beautyAnalytics.currency')}</Text>
         </View>
       </View>
       {byCat.length > 0 && (
         <View style={styles.sec}>
-          <Text style={styles.st}> الحجوزات حسب الفئة</Text>
+          <Text style={styles.st}>{t('beautyAnalytics.by-category')}</Text>
           {byCat.map((cat, i) => (
             <View key={i} style={styles.cr}>
               <Text style={styles.cn}>{cat.category}</Text>
@@ -89,7 +93,7 @@ export default function BeautyAnalyticsScreen(): JSX.Element {
       )}
       {trend.length > 0 && (
         <View style={styles.sec}>
-          <Text style={styles.st}> الاتجاه الشهري</Text>
+          <Text style={styles.st}>{t('beautyAnalytics.monthly-trend')}</Text>
           <View style={styles.tr}>
             {trend.map((m, i) => (
               <View key={i} style={styles.tb}>

@@ -2,6 +2,7 @@ import { View, Text, ScrollView, TouchableOpacity, StyleSheet, RefreshControl } 
 import { SkeletonList } from '@/components/SkeletonCard';
 import { trpc } from '@/lib/trpc-react';
 import { DEFAULT_SAUDI_CITY } from '@galaxy/shared';
+import { useLocale } from '@/components/LocaleProvider';
 
 interface SalonLocation {
   id?: number;
@@ -12,6 +13,7 @@ interface SalonLocation {
 }
 
 export default function SalonMapScreen(): JSX.Element {
+  const { t } = useLocale();
   const salonsQ = trpc.salonMap.explore.useQuery({ city: DEFAULT_SAUDI_CITY });
 
   if (salonsQ.isLoading) return <SkeletonList count={5} />;
@@ -29,17 +31,17 @@ export default function SalonMapScreen(): JSX.Element {
         />
       }
     >
-      <Text style={styles.t}> خريطة الصالونات</Text>
+      <Text style={styles.t}>{t('mobile.public.salon-map.title')}</Text>
       {salons.map((s) => (
         <View key={s.id} style={styles.card}>
-          <Text style={styles.se}>‍️</Text>
+          <Text style={styles.se}>💇</Text>
           <View style={{ flex: 1 }}>
             <Text style={styles.sn}>{s.nameAr ?? s.name}</Text>
             <Text style={styles.sm}> {s.city}</Text>
             <Text style={styles.sr}> {s.rating ?? 0}</Text>
           </View>
           <TouchableOpacity style={styles.vb}>
-            <Text style={styles.vt}>عرض</Text>
+            <Text style={styles.vt}>{t('mobile.public.salon-map.view')}</Text>
           </TouchableOpacity>
         </View>
       ))}

@@ -8,7 +8,7 @@ import { cn } from '@galaxy/shared';
  * From Phase W3: Health & Wellness — Mental Wellness & Beauty.
  *
  * Usage:
- *   <BeautyHabitTrackerCard habits={[{ name: 'واقي شمس', emoji: '️', done: true }]} />
+ *   <BeautyHabitTrackerCard habits={[{ name: 'واقي شمس', emoji: '🌞', done: true }]} />
  */
 
 interface Habit {
@@ -20,12 +20,14 @@ interface Habit {
 interface BeautyHabitTrackerCardProps {
   habits: Habit[];
   onToggle?: (name: string) => void;
+  title?: string;
   className?: string;
 }
 
 export function BeautyHabitTrackerCard({
   habits,
   onToggle,
+  title = 'عاداتي اليومية',
   className = '',
 }: BeautyHabitTrackerCardProps): JSX.Element {
   const [items, setItems] = useState(habits);
@@ -46,11 +48,11 @@ export function BeautyHabitTrackerCard({
     >
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-2">
-          <span className="text-xl" aria-hidden="true"></span>
+          <span className="text-xl" aria-hidden="true">
+            📆
+          </span>
           <div>
-            <h4 className="text-sm font-bold text-emerald-700 dark:text-emerald-300">
-              عاداتي اليومية
-            </h4>
+            <h4 className="text-sm font-bold text-emerald-700 dark:text-emerald-300">{title}</h4>
             <p className="text-[10px] text-emerald-500 dark:text-emerald-400">
               {done}/{items.length} · {pct}%
             </p>
@@ -58,7 +60,7 @@ export function BeautyHabitTrackerCard({
         </div>
       </div>
 
-      <div className="mt-1 h-1.5 rounded-full bg-gray-100 dark:bg-gray-700">
+      <div className="mt-1 h-1.5 rounded-full bg-surface-muted dark:bg-gray-700">
         <div
           className="h-full rounded-full bg-gradient-to-r from-emerald-400 to-green-500 transition-all"
           style={{ width: `${pct}%` }}
@@ -73,13 +75,13 @@ export function BeautyHabitTrackerCard({
             onClick={() => toggle(h.name)}
             className={cn(
               'flex w-full items-center gap-2 rounded-lg px-3 py-2 transition-all',
-              h.done ? 'bg-emerald-50 dark:bg-emerald-950' : 'bg-gray-50 dark:bg-gray-800',
+              h.done ? 'bg-emerald-50 dark:bg-emerald-950' : 'bg-surface-muted',
             )}
           >
             <span className="text-sm">{h.emoji}</span>
             <span
               className={cn(
-                'flex-1 text-left text-[10px]',
+                'flex-1 text-start text-[10px]',
                 h.done
                   ? 'text-emerald-700 dark:text-emerald-300 line-through'
                   : 'text-text-primary dark:text-gray-100',
@@ -87,12 +89,7 @@ export function BeautyHabitTrackerCard({
             >
               {h.name}
             </span>
-            <span
-              className={cn(
-                'text-xs',
-                h.done ? 'text-emerald-500' : 'text-gray-300 dark:text-gray-600',
-              )}
-            >
+            <span className={cn('text-xs', h.done ? 'text-emerald-500' : 'text-text-tertiary')}>
               {h.done ? '' : '○'}
             </span>
           </button>

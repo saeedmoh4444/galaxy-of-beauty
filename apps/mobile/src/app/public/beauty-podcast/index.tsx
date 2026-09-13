@@ -2,13 +2,20 @@ import { View, Text, ScrollView, StyleSheet, RefreshControl } from 'react-native
 import { ErrorAlert } from '@/components/ErrorAlert';
 import { SkeletonList } from '@/components/SkeletonCard';
 import { trpc } from '@/lib/trpc-react';
+import { useLocale } from '@/components/LocaleProvider';
 
 export default function BeautyPodcastScreen(): JSX.Element {
+  const { t } = useLocale();
   const epsQ = trpc.beautyPodcast.episodes.useQuery();
 
   if (epsQ.isLoading) return <SkeletonList count={4} />;
   if (epsQ.isError)
-    return <ErrorAlert message="فشل تحميل البودكاست" onRetry={() => epsQ.refetch()} />;
+    return (
+      <ErrorAlert
+        message={t('mobile.public.beauty-podcast.load-error')}
+        onRetry={() => epsQ.refetch()}
+      />
+    );
 
   const items = (epsQ.data ?? []) as Record<string, unknown>[];
 
@@ -24,18 +31,18 @@ export default function BeautyPodcastScreen(): JSX.Element {
         />
       }
     >
-      <Text style={styles.t}>️ بودكاست الجمال</Text>
-      <Text style={styles.sub}>حلقات شيقة عن الجمال والعناية</Text>
+      <Text style={styles.t}>{t('mobile.public.beauty-podcast.title')}</Text>
+      <Text style={styles.sub}>{t('mobile.public.beauty-podcast.subtitle')}</Text>
       {items.length === 0 ? (
-        <Text style={styles.e}>لا توجد حلقات</Text>
+        <Text style={styles.e}>{t('mobile.public.beauty-podcast.empty')}</Text>
       ) : (
         items.map((e: Record<string, unknown>, i: number) => (
           <View key={i} style={styles.card}>
-            <Text style={styles.epEmoji}>{(e.emoji as string) ?? '️'}</Text>
+            <Text style={styles.epEmoji}>{(e.emoji as string) ?? ''}</Text>
             <View style={{ flex: 1 }}>
               <Text style={styles.epTitle}>{e.titleAr as string}</Text>
               <Text style={styles.epHost}> {e.host as string}</Text>
-              <Text style={styles.epDuration}>️ {e.duration as string}</Text>
+              <Text style={styles.epDuration}> {e.duration as string}</Text>
             </View>
           </View>
         ))

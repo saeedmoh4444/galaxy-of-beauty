@@ -7,7 +7,7 @@ import { cn } from '@galaxy/shared';
  * From Phase W9: The Small Details & W4: Sisterhood.
  *
  * Usage:
- *   <BeautyMoodBoardCard items={[{ emoji: '', label: 'أزرق محيطي', color: '#0ea5e9' }]} />
+ *   <BeautyMoodBoardCard items={[{ emoji: '🌊', label: 'أزرق محيطي', color: '#0ea5e9' }]} />
  */
 
 interface MoodItem {
@@ -19,12 +19,18 @@ interface MoodItem {
 interface BeautyMoodBoardCardProps {
   items: MoodItem[];
   onAddItem?: () => void;
+  title?: string;
+  countSuffix?: string;
+  addText?: string;
   className?: string;
 }
 
 export function BeautyMoodBoardCard({
   items,
   onAddItem,
+  title = 'لوحة المزاج',
+  countSuffix = 'عنصر',
+  addText = 'أضيفي',
   className = '',
 }: BeautyMoodBoardCardProps): JSX.Element {
   return (
@@ -36,10 +42,14 @@ export function BeautyMoodBoardCard({
     >
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-2">
-          <span className="text-xl" aria-hidden="true"></span>
+          <span className="text-xl" aria-hidden="true">
+            🎨
+          </span>
           <div>
-            <h4 className="text-sm font-bold text-violet-700 dark:text-violet-300">لوحة المزاج</h4>
-            <p className="text-[10px] text-violet-500 dark:text-violet-400">{items.length} عنصر</p>
+            <h4 className="text-sm font-bold text-violet-700 dark:text-violet-300">{title}</h4>
+            <p className="text-[10px] text-violet-500 dark:text-violet-400">
+              {items.length} {countSuffix}
+            </p>
           </div>
         </div>
         <button
@@ -78,7 +88,7 @@ export function BeautyMoodBoardCard({
             className="flex flex-col items-center justify-center gap-1 rounded-xl border-2 border-dashed border-violet-200 p-3 text-violet-400 dark:border-violet-800"
           >
             <span className="text-2xl">+</span>
-            <span className="text-[9px]">أضيفي</span>
+            <span className="text-[9px]">{addText}</span>
           </button>
         )}
       </div>

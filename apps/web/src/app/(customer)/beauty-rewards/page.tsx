@@ -17,18 +17,24 @@ import {
   KindnessPointsBadge,
 } from '@galaxy/ui';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
+import { useLocale } from '@/components/LocaleProvider';
 
 export default function BeautyRewardsPage(): JSX.Element {
+  const { t } = useLocale();
   return (
     <DashboardLayout userRole="CUSTOMER">
       <PageContainer width="wide">
-        <PageTitle title=" المكافآت" subtitle="تقديراً لكونكِ جزءاً من عائلتنا" />
+        <PageTitle title={t('beautyRewards.title')} subtitle={t('beautyRewards.subtitle')} />
         <div className="grid gap-6 lg:grid-cols-3">
           <div className="lg:col-span-2 space-y-6">
             <BeautyRewardsCard points={1250} tier="gold" />
             <div className="grid gap-4 sm:grid-cols-2">
               <LoyaltyDividendBadge yearlySpend={4500} cashbackRate={5} tier="gold" />
-              <LoyaltyAnniversaryCard years={2} joinedDate="أغسطس 2024" totalBookings={48} />
+              <LoyaltyAnniversaryCard
+                years={2}
+                joinedDate={t('beautyLifestyle.august2024')}
+                totalBookings={48}
+              />
             </div>
             <BeautyReferralLeaderboardCard
               leaders={[
@@ -43,16 +49,16 @@ export default function BeautyRewardsPage(): JSX.Element {
               <GroupDiscountBadge
                 groupSize={3}
                 discount={15}
-                serviceName="مانيكير سبا"
+                serviceName={t('beautyBudget.spaManicure')}
                 originalPrice={150}
               />
             </div>
-            <StudentDiscountBadge discount={15} university="جامعة الملك سعود" />
+            <StudentDiscountBadge discount={15} university={t('beautyLifestyle.ksu')} />
             <KindnessPointsBadge points={340} />
           </div>
           <div className="space-y-6">
             <HandwrittenNote bookingCount={10} technicianName="نورة" />
-            <BirthdayMonthBadge month="مارس" discount={15} daysRemaining={22} />
+            <BirthdayMonthBadge month={t('beautyEvents.march')} discount={15} daysRemaining={22} />
             <RandomActOfBeauty />
             <JustBecauseFlowers bookingsCount={15} />
           </div>

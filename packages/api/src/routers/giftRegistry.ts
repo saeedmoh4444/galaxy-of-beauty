@@ -3,8 +3,7 @@ import { prisma } from '@galaxy/db';
 import { MEDIUM_PAGE_SIZE } from '@galaxy/shared';
 import { customerProcedure, protectedProcedure, router } from '../trpc';
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-const db = prisma as any;
+const db = prisma;
 
 export const giftRegistryRouter = router({
   myRegistries: customerProcedure.query(async ({ ctx }) =>

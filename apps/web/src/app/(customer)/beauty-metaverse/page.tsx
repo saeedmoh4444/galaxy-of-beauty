@@ -3,8 +3,10 @@ import { useState } from 'react';
 import { api } from '@/lib/trpc';
 import { Card, GridSkeleton, ErrorAlert, Button } from '@galaxy/ui';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
+import { useLocale } from '@/components/LocaleProvider';
 
 export default function BeautyMetaversePage(): JSX.Element {
+  const { t } = useLocale();
   const {
     data: salons,
     isLoading,
@@ -32,7 +34,7 @@ export default function BeautyMetaversePage(): JSX.Element {
     return (
       <DashboardLayout userRole="CUSTOMER">
         <div className="mx-auto max-w-4xl space-y-6">
-          <ErrorAlert message="فشل تحميل البيانات" onRetry={() => refetch()} />
+          <ErrorAlert message={t('beautyExpenses.loadError')} onRetry={() => refetch()} />
         </div>
       </DashboardLayout>
     );
@@ -41,32 +43,30 @@ export default function BeautyMetaversePage(): JSX.Element {
     <DashboardLayout userRole="CUSTOMER">
       <div className="mx-auto max-w-4xl space-y-6">
         <div>
-          <h1 className="text-2xl font-bold"> عالم الجمال الافتراضي</h1>
-          <p className="mt-1 text-sm text-text-secondary">
-            تجولي في صالونات افتراضية ثلاثية الأبعاد
-          </p>
+          <h1 className="text-2xl font-bold">{t('beautyMetaverse.title')}</h1>
+          <p className="mt-1 text-sm text-text-secondary">{t('beautyMetaverse.subtitle')}</p>
         </div>
         {result ? (
-          <Card padding="lg" className="text-center border-2 border-purple-300">
-            <span className="text-6xl"></span>
+          <Card padding="lg" className="text-center border-2 border-brand-300">
+            <span className="text-6xl">🌐</span>
             <h2 className="mt-4 text-xl font-bold">{result.welcomeMessage as string}</h2>
             <div className="mt-3 flex flex-wrap justify-center gap-2">
               {(result.availableActions as string[])?.map((a: string) => (
                 <span
                   key={a}
-                  className="rounded-full bg-purple-100 dark:bg-purple-900 px-3 py-1 text-sm"
+                  className="rounded-full bg-brand-100 dark:bg-brand-900 px-3 py-1 text-sm"
                 >
                   {a}
                 </span>
               ))}
             </div>
             <Button variant="ghost" className="mt-4" onClick={() => setResult(null)}>
-              خروج
+              {t('beautyMetaverse.exit')}
             </Button>
           </Card>
         ) : (
           <Card padding="lg">
-            <h3 className="font-bold mb-4"> اختر صالوناً</h3>
+            <h3 className="font-bold mb-4">{t('beautyMetaverse.chooseSalon')}</h3>
             <div className="grid gap-3 sm:grid-cols-3">
               {list.map((s: Record<string, unknown>) => (
                 <button
@@ -77,12 +77,12 @@ export default function BeautyMetaversePage(): JSX.Element {
                       { onSuccess: (d) => setResult(d as Record<string, unknown>) },
                     )
                   }
-                  className="rounded-xl border-2 border-gray-200 dark:border-gray-700 p-4 text-center hover:border-purple-400 transition-all"
+                  className="rounded-xl border-2 border-edge p-4 text-center hover:border-brand-400 transition-all"
                 >
                   <span className="text-4xl">{s.emoji as string}</span>
                   <p className="font-bold mt-2">{s.name as string}</p>
                   <p className="text-xs text-text-secondary">
-                    ‍ {s.technician as string} · {s.rating as number} · {s.visitors as number}
+                    {s.technician as string} · {s.rating as number} · {s.visitors as number}
                   </p>
                 </button>
               ))}

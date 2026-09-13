@@ -1,6 +1,7 @@
 import { View, Text, ScrollView, StyleSheet, RefreshControl } from 'react-native';
 import { SkeletonList } from '@/components/SkeletonCard';
 import { trpc } from '@/lib/trpc-react';
+import { useLocale } from '@/components/LocaleProvider';
 
 interface GroupDeal {
   id?: number;
@@ -12,6 +13,7 @@ interface GroupDeal {
 }
 
 export default function GroupBuyScreen(): JSX.Element {
+  const { t } = useLocale();
   const dealsQ = trpc.groupBuy.deals.useQuery();
 
   if (dealsQ.isLoading) return <SkeletonList count={4} />;
@@ -29,15 +31,17 @@ export default function GroupBuyScreen(): JSX.Element {
         />
       }
     >
-      <Text style={styles.t}> شراء جماعي</Text>
+      <Text style={styles.t}>{t('mobile.public.group-buy.title')}</Text>
       {deals.map((d) => (
         <View key={d.id} style={styles.card}>
           <Text style={styles.de}>{d.emoji ?? ''}</Text>
           <View style={{ flex: 1 }}>
             <Text style={styles.dn}>{d.nameAr ?? ''}</Text>
-            <Text style={styles.dp}>{(d.price ?? 0).toLocaleString()} ر.س</Text>
+            <Text style={styles.dp}>
+              {(d.price ?? 0).toLocaleString()} {t('misc.sar')}
+            </Text>
             <Text style={styles.dm}>
-              {d.buyers ?? 0} / {d.minBuyers ?? 0} مشترين
+              {t('mobile.public.group-buy.buyers', { count: d.buyers ?? 0, min: d.minBuyers ?? 0 })}
             </Text>
           </View>
         </View>

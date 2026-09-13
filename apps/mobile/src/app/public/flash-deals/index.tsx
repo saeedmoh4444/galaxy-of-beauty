@@ -2,13 +2,20 @@ import { View, Text, ScrollView, StyleSheet, RefreshControl } from 'react-native
 import { ErrorAlert } from '@/components/ErrorAlert';
 import { SkeletonList } from '@/components/SkeletonCard';
 import { trpc } from '@/lib/trpc-react';
+import { useLocale } from '@/components/LocaleProvider';
 
 export default function FlashDealsScreen(): JSX.Element {
+  const { t } = useLocale();
   const dealsQ = trpc.flashDeals.active.useQuery();
 
   if (dealsQ.isLoading) return <SkeletonList count={4} />;
   if (dealsQ.isError)
-    return <ErrorAlert message="فشل تحميل العروض" onRetry={() => dealsQ.refetch()} />;
+    return (
+      <ErrorAlert
+        message={t('mobile.public.flash-deals.load-error')}
+        onRetry={() => dealsQ.refetch()}
+      />
+    );
 
   const items = (dealsQ.data ?? []) as Record<string, unknown>[];
 
@@ -24,10 +31,10 @@ export default function FlashDealsScreen(): JSX.Element {
         />
       }
     >
-      <Text style={styles.t}> عروض فلاش</Text>
-      <Text style={styles.sub}>عروض لفترة محدودة — سارعي!</Text>
+      <Text style={styles.t}>{t('mobile.public.flash-deals.title')}</Text>
+      <Text style={styles.sub}>{t('mobile.public.flash-deals.subtitle')}</Text>
       {items.length === 0 ? (
-        <Text style={styles.e}>لا توجد عروض حالية</Text>
+        <Text style={styles.e}>{t('mobile.public.flash-deals.empty')}</Text>
       ) : (
         items.map((d: Record<string, unknown>, i: number) => (
           <View key={i} style={styles.card}>
@@ -36,9 +43,11 @@ export default function FlashDealsScreen(): JSX.Element {
               <Text style={styles.dealName}>{d.nameAr as string}</Text>
               <View style={styles.priceRow}>
                 <Text style={styles.oldPrice}>
-                  {(d.originalPrice as number)?.toLocaleString()} ر.س
+                  {(d.originalPrice as number)?.toLocaleString()} {t('misc.sar')}
                 </Text>
-                <Text style={styles.newPrice}>{(d.price as number)?.toLocaleString()} ر.س</Text>
+                <Text style={styles.newPrice}>
+                  {(d.price as number)?.toLocaleString()} {t('misc.sar')}
+                </Text>
               </View>
             </View>
             <View style={styles.discountBadge}>

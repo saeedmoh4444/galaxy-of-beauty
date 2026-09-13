@@ -65,8 +65,8 @@ export async function sendBookingConfirmationSms(
 ): Promise<void> {
   const message =
     locale === 'ar'
-      ? `تم تأكيد حجزك في جالكسي بيوتي!\nرمز الحجز: ${bookingCode}\nالتاريخ: ${date}\nشكراً لثقتك`
-      : `Your Galaxy of Beauty booking is confirmed!\nBooking code: ${bookingCode}\nDate: ${date}\nThank you!`;
+      ? `تم تأكيد حجزك في دلال!\nرمز الحجز: ${bookingCode}\nالتاريخ: ${date}\nشكراً لثقتك`
+      : `Your Dalal booking is confirmed!\nBooking code: ${bookingCode}\nDate: ${date}\nThank you!`;
 
   await sendSms(phone, message);
 }
@@ -79,13 +79,13 @@ export async function sendBookingReminderSms(
 ): Promise<void> {
   const message =
     locale === 'ar'
-      ? `تذكير: حجزك (${bookingCode}) بعد ${hoursUntil} ساعة. جالكسي بيوتي`
-      : `Reminder: Your booking (${bookingCode}) is in ${hoursUntil} hours. Galaxy of Beauty`;
+      ? `تذكير: حجزك (${bookingCode}) بعد ${hoursUntil} ساعة. دلال`
+      : `Reminder: Your booking (${bookingCode}) is in ${hoursUntil} hours. Dalal`;
 
   await sendSms(phone, message);
 }
 
 export async function sendOtpSms(phone: string, code: string): Promise<void> {
-  const message = `رمز التحقق الخاص بك في جالكسي بيوتي: ${code}\nYour Galaxy of Beauty verification code: ${code}`;
+  const message = `رمز التحقق الخاص بك في دلال: ${code}\nYour Dalal verification code: ${code}`;
   await sendSms(phone, message);
 }

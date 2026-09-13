@@ -6,7 +6,13 @@ export default async function EventsPage(): Promise<JSX.Element> {
 
   try {
     const caller = await getServerCaller();
-    initialEvents = serializeForClient(await (caller as any).beautyEvents.list({}));
+    initialEvents = serializeForClient(
+      await (
+        caller as unknown as {
+          beautyEvents: { list: (input: Record<string, never>) => Promise<unknown[]> };
+        }
+      ).beautyEvents.list({}),
+    );
   } catch {
     /* client will retry */
   }

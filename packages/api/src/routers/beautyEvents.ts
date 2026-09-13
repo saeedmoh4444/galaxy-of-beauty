@@ -3,7 +3,7 @@ import { prisma } from '@galaxy/db';
 import { DEFAULT_PAGE_SIZE } from '@galaxy/shared';
 import { publicProcedure, adminProcedure, customerProcedure, router } from '../trpc';
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
+// eslint-disable-next-line @typescript-eslint/no-explicit-any -- EventRegistration has no relations in Prisma schema (legacy include)
 const db = prisma as any;
 
 export const beautyEventRouter = router({
@@ -12,6 +12,15 @@ export const beautyEventRouter = router({
       where: { isPublished: true, startsAt: { gte: new Date() } },
       orderBy: { startsAt: 'asc' },
       take: DEFAULT_PAGE_SIZE,
+    }),
+  ),
+  // Public: ALL published events — the /events page filters client-side
+  // by type and shows past + upcoming (was missing entirely: the page
+  // called beautyEvents.list and every visit 404ed the procedure).
+  list: publicProcedure.query(async () =>
+    db.beautyEvent.findMany({
+      where: { isPublished: true },
+      orderBy: { startsAt: 'asc' },
     }),
   ),
   listAll: adminProcedure.query(async () =>

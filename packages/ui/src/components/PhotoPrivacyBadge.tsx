@@ -14,37 +14,40 @@ type PrivacyLevel = 'PUBLIC' | 'TECHNICIAN_ONLY' | 'PRIVATE' | 'VIEW_ONCE';
 
 interface PrivacyConfig {
   emoji: string;
-  label: string;
-  description: string;
+  label: { ar: string; en: string };
+  description: { ar: string; en: string };
   colorClass: string;
 }
 
 const PRIVACY: Record<PrivacyLevel, PrivacyConfig> = {
   PUBLIC: {
-    emoji: '',
-    label: 'عام',
-    description: 'ظاهرة في المعرض العام',
+    emoji: '🌍',
+    label: { ar: 'عام', en: 'Public' },
+    description: { ar: 'ظاهرة في المعرض العام', en: 'Visible in the public gallery' },
     colorClass:
       'bg-emerald-50 text-emerald-700 border-emerald-200 dark:bg-emerald-950 dark:text-emerald-300 dark:border-emerald-800',
   },
   TECHNICIAN_ONLY: {
-    emoji: '‍',
-    label: 'للخبيرة فقط',
-    description: 'لا تظهر إلا للخبيرة المعتمدة',
+    emoji: '💼',
+    label: { ar: 'للخبيرة فقط', en: 'Technician only' },
+    description: {
+      ar: 'لا تظهر إلا للخبيرة المعتمدة',
+      en: 'Only visible to the certified technician',
+    },
     colorClass:
       'bg-blue-50 text-blue-700 border-blue-200 dark:bg-blue-950 dark:text-blue-300 dark:border-blue-800',
   },
   PRIVATE: {
-    emoji: '',
-    label: 'خاصة',
-    description: 'لكِ فقط — غير مرئية لأحد',
+    emoji: '🔒',
+    label: { ar: 'خاصة', en: 'Private' },
+    description: { ar: 'لكِ فقط — غير مرئية لأحد', en: 'Just for you — visible to no one' },
     colorClass:
-      'bg-purple-50 text-purple-700 border-purple-200 dark:bg-purple-950 dark:text-purple-300 dark:border-purple-800',
+      'bg-brand-50 text-brand-700 border-brand-200 dark:bg-brand-950 dark:text-brand-300 dark:border-brand-800',
   },
   VIEW_ONCE: {
-    emoji: '️',
-    label: 'مرة واحدة',
-    description: 'تختفي بعد مشاهدتها',
+    emoji: '👀',
+    label: { ar: 'مرة واحدة', en: 'View once' },
+    description: { ar: 'تختفي بعد مشاهدتها', en: 'Disappears after viewing' },
     colorClass:
       'bg-rose-50 text-rose-700 border-rose-200 dark:bg-rose-950 dark:text-rose-300 dark:border-rose-800',
   },
@@ -58,6 +61,12 @@ interface PhotoPrivacyBadgeProps {
   showDescription?: boolean;
   /** Visual size variant */
   size?: 'sm' | 'md';
+  /** Display language for built-in labels */
+  locale?: 'ar' | 'en';
+  deletedTomorrowText?: string;
+  deletesAfterPrefix?: string;
+  deletesAfterSuffix?: string;
+  indefiniteText?: string;
   className?: string;
 }
 
@@ -67,6 +76,11 @@ export function PhotoPrivacyBadge({
   showDescription = false,
   size = 'md',
   className = '',
+  locale = 'ar',
+  deletedTomorrowText = 'تحذف غداً',
+  deletesAfterPrefix = 'تحذف بعد ',
+  deletesAfterSuffix = 'يوم',
+  indefiniteText = 'لا تنتهي',
 }: PhotoPrivacyBadgeProps): JSX.Element {
   const config = PRIVACY[level];
   const isSm = size === 'sm';
@@ -87,7 +101,9 @@ export function PhotoPrivacyBadge({
         <span className={cn('shrink-0', isSm ? 'text-xs' : 'text-sm')} aria-hidden="true">
           {config.emoji}
         </span>
-        <span className={cn('font-bold', isSm ? 'text-[10px]' : 'text-xs')}>{config.label}</span>
+        <span className={cn('font-bold', isSm ? 'text-[10px]' : 'text-xs')}>
+          {config.label[locale]}
+        </span>
         {level === 'VIEW_ONCE' && (
           <span
             className="inline-flex h-1.5 w-1.5 rounded-full bg-rose-500 animate-pulse"
@@ -98,7 +114,9 @@ export function PhotoPrivacyBadge({
 
       {/* Description */}
       {showDescription && (
-        <p className={cn('text-[10px] opacity-70', isSm && 'text-[9px]')}>{config.description}</p>
+        <p className={cn('text-[10px] opacity-70', isSm && 'text-[9px]')}>
+          {config.description[locale]}
+        </p>
       )}
 
       {/* Auto-delete countdown */}
@@ -110,7 +128,7 @@ export function PhotoPrivacyBadge({
           )}
         >
           <span className="text-[10px]" aria-hidden="true">
-            {isExpiringSoon ? '' : '️'}
+            {isExpiringSoon ? '' : ''}
           </span>
           <span
             className={cn(
@@ -118,7 +136,9 @@ export function PhotoPrivacyBadge({
               isExpiringSoon ? 'text-rose-700 dark:text-rose-300' : 'opacity-70',
             )}
           >
-            {expiresInDays === 1 ? 'تحذف غداً' : `تحذف بعد ${expiresInDays} يوم`}
+            {expiresInDays === 1
+              ? deletedTomorrowText
+              : `${deletesAfterPrefix}${expiresInDays}${deletesAfterSuffix}`}
           </span>
         </div>
       )}
@@ -126,10 +146,8 @@ export function PhotoPrivacyBadge({
       {/* Indefinite badge */}
       {!hasExpiry && level !== 'VIEW_ONCE' && (
         <div className="flex items-center gap-1 rounded-full bg-white/60 px-2 py-0.5 dark:bg-black/20">
-          <span className="text-[10px]" aria-hidden="true">
-            ️
-          </span>
-          <span className="text-[10px] font-medium opacity-70">لا تنتهي</span>
+          <span className="text-[10px]" aria-hidden="true"></span>
+          <span className="text-[10px] font-medium opacity-70">{indefiniteText}</span>
         </div>
       )}
     </div>

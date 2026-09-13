@@ -1,68 +1,202 @@
+/* CSS spec: @import must precede all other statements (was below the
+   @tailwind directives, where browsers ignore it). */
+@import url('https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800&family=Inter:wght@400;500;600;700&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-@import url('https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800&family=Inter:wght@400;500;600;700&display=swap');
-
 @layer base {
+  /* ── Typography: Arabic-first ──────────────────────────
+     Arabic needs taller leading (deep ascenders/descenders) and ZERO
+     letter-spacing (spacing breaks cursive letter joining). Latin gets
+     subtle negative tracking on display headings for the premium feel. */
   html[dir='rtl'] {
-    font-family: 'Tajawal', sans-serif;
+    font-family: 'Tajawal', 'Inter', system-ui, sans-serif;
+    line-height: 1.7;
+    letter-spacing: 0;
   }
   html[dir='ltr'] {
-    font-family: 'Inter', sans-serif;
+    font-family: 'Inter', 'Tajawal', system-ui, sans-serif;
   }
 
-  /* ── Semantic colour tokens ─────────────────────────── */
+  /* Tracking utilities would corrupt Arabic letter joining — neutralize
+     them in RTL (specificity 0-2-1 beats the utility's 0-1-0). */
+  html[dir='rtl'] .tracking-tighter,
+  html[dir='rtl'] .tracking-tight,
+  html[dir='rtl'] .tracking-wide,
+  html[dir='rtl'] .tracking-widest {
+    letter-spacing: 0;
+  }
+
+  html[dir='ltr'] h1,
+  html[dir='ltr'] h2,
+  html[dir='ltr'] h3 {
+    letter-spacing: -0.015em;
+  }
+
+  /* ── Semantic colour tokens — Rose Blush direction ──── */
   :root {
-    /* Surface */
-    --color-surface: #ffffff;
-    --color-surface-muted: #f9fafb;
+    /* Surface — warm cream ground, white cards */
+    --color-surface: #fdf9f7;
+    --color-surface-muted: #f8f0ee;
     --color-surface-elevated: #ffffff;
 
-    /* Text */
-    --color-text-primary: #111827;
-    --color-text-secondary: #6b7280;
-    --color-text-tertiary: #9ca3af;
+    /* Text — warm near-blacks, never pure */
+    --color-text-primary: #2d1b22;
+    --color-text-secondary: #8a6e78;
+    --color-text-tertiary: #b3a0ab;
 
-    /* Border */
-    --color-border-default: #e5e7eb;
-    --color-border-muted: #f3f4f6;
+    /* Border — soft blush edges */
+    --color-border-default: #f0e4e8;
+    --color-border-muted: #f6ecef;
 
     /* Semantic status */
     --color-success: #10b981;
-    --color-success-subtle: #ecfdf5;
+    --color-success-subtle: #ecf7f1;
     --color-warning: #f59e0b;
-    --color-warning-subtle: #fffbeb;
-    --color-danger: #ef4444;
-    --color-danger-subtle: #fef2f2;
+    --color-warning-subtle: #fdf6ec;
+    --color-danger: #e5484d;
+    --color-danger-subtle: #fdefef;
     --color-info: #3b82f6;
-    --color-info-subtle: #eff6ff;
+    --color-info-subtle: #eff5fc;
   }
 
   .dark {
-    --color-surface: #111827;
-    --color-surface-muted: #1f2937;
-    --color-surface-elevated: #1f2937;
+    /* Deep plum-black surfaces with a rose glow */
+    --color-surface: #1f1418;
+    --color-surface-muted: #271a20;
+    --color-surface-elevated: #2e1f26;
 
-    --color-text-primary: #f9fafb;
-    --color-text-secondary: #9ca3af;
-    --color-text-tertiary: #6b7280;
+    --color-text-primary: #f7eef2;
+    --color-text-secondary: #c9aeb9;
+    --color-text-tertiary: #8a6e78;
 
-    --color-border-default: #374151;
-    --color-border-muted: #1f2937;
+    --color-border-default: #3d2b32;
+    --color-border-muted: #2e1f26;
 
-    --color-success: #34d399;
-    --color-success-subtle: #064e3b;
+    --color-success: #4ade80;
+    --color-success-subtle: #103326;
     --color-warning: #fbbf24;
-    --color-warning-subtle: #78350f;
+    --color-warning-subtle: #4a3410;
     --color-danger: #f87171;
-    --color-danger-subtle: #7f1d1d;
+    --color-danger-subtle: #4a1b1b;
     --color-info: #60a5fa;
-    --color-info-subtle: #1e3a5f;
+    --color-info-subtle: #16283f;
   }
 }
 
 @layer components {
+  /* ── Beauty motion kit (Rose Blush) ─────────────────────
+     Transform/opacity only (GPU-friendly, RTL-safe — nothing depends
+     on reading direction). prefers-reduced-motion short-circuits all
+     of these globally at the bottom of this file. */
+  @keyframes float {
+    0%,
+    100% {
+      transform: translateY(0) rotate(0deg);
+    }
+    50% {
+      transform: translateY(-14px) rotate(3deg);
+    }
+  }
+  @keyframes float-slow {
+    0%,
+    100% {
+      transform: translateY(0) rotate(0deg) scale(1);
+    }
+    50% {
+      transform: translateY(-22px) rotate(-4deg) scale(1.04);
+    }
+  }
+  @keyframes blob-drift {
+    0%,
+    100% {
+      transform: translate(0, 0) scale(1);
+    }
+    33% {
+      transform: translate(18px, -14px) scale(1.06);
+    }
+    66% {
+      transform: translate(-12px, 10px) scale(0.97);
+    }
+  }
+  @keyframes twinkle {
+    0%,
+    100% {
+      opacity: 0.15;
+      transform: scale(0.7) rotate(0deg);
+    }
+    50% {
+      opacity: 0.9;
+      transform: scale(1.15) rotate(18deg);
+    }
+  }
+  @keyframes marquee-x {
+    from {
+      transform: translateX(0);
+    }
+    to {
+      transform: translateX(-50%);
+    }
+  }
+  @keyframes marquee-x-reverse {
+    from {
+      transform: translateX(-50%);
+    }
+    to {
+      transform: translateX(0);
+    }
+  }
+  @keyframes spotlight-pulse {
+    0%,
+    100% {
+      box-shadow:
+        0 0 0 9999px rgba(20, 12, 16, 0.55),
+        0 0 0 0 rgba(194, 37, 92, 0.4);
+    }
+    50% {
+      box-shadow:
+        0 0 0 9999px rgba(20, 12, 16, 0.55),
+        0 0 0 10px rgba(194, 37, 92, 0.12);
+    }
+  }
+
+  .animate-float {
+    animation: float 6s ease-in-out infinite;
+  }
+  .animate-float-slow {
+    animation: float-slow 9s ease-in-out infinite;
+  }
+  .animate-blob {
+    animation: blob-drift 16s ease-in-out infinite;
+  }
+  .animate-twinkle {
+    animation: twinkle 3.5s ease-in-out infinite;
+  }
+  .animate-marquee {
+    animation: marquee-x 28s linear infinite;
+  }
+  .animate-marquee-reverse {
+    animation: marquee-x-reverse 34s linear infinite;
+  }
+  .animate-spotlight {
+    animation: spotlight-pulse 2.4s ease-in-out infinite;
+  }
+
+  /* Scroll-reveal (driven by the Reveal component) */
+  .reveal {
+    opacity: 0;
+    transform: translateY(16px);
+    transition:
+      opacity 0.6s ease-out,
+      transform 0.6s ease-out;
+  }
+  .reveal-visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
   /* Shimmer animation for skeletons */
   .shimmer {
     background: linear-gradient(
@@ -127,5 +261,11 @@
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
     scroll-behavior: auto !important;
+  }
+
+  /* Content must never stay hidden waiting for a reveal animation */
+  .reveal {
+    opacity: 1;
+    transform: none;
   }
 }

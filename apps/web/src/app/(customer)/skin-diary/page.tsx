@@ -5,10 +5,21 @@ import Image from 'next/image';
 import { api } from '@/lib/trpc';
 import { Card, GridSkeleton, ErrorAlert, EmptyState, Button, Modal } from '@galaxy/ui';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
+import { useLocale } from '@/components/LocaleProvider';
+import type { TranslationKey } from '@galaxy/shared';
 
-const CONDITIONS = ['جافة', 'دهنية', 'مختلطة', 'متهيجة', 'صحية', 'مجعدة', 'مرطبة'];
+const CONDITIONS: TranslationKey[] = [
+  'skinDiary.condition.dry',
+  'skinDiary.condition.oily',
+  'skinDiary.condition.mixed',
+  'skinDiary.condition.irritated',
+  'skinDiary.condition.healthy',
+  'skinDiary.condition.textured',
+  'skinDiary.condition.hydrated',
+];
 
 export default function SkinDiaryPage(): JSX.Element {
+  const { t, locale } = useLocale();
   const {
     data: entries,
     isLoading,
@@ -33,7 +44,7 @@ export default function SkinDiaryPage(): JSX.Element {
 
   const [showAdd, setShowAdd] = useState(false);
   const [imageUrl, setImageUrl] = useState('');
-  const [condition, setCondition] = useState('صحية');
+  const [condition, setCondition] = useState<TranslationKey>('skinDiary.condition.healthy');
   const [hydration, setHydration] = useState(5);
   const [notes, setNotes] = useState('');
 
@@ -45,18 +56,16 @@ export default function SkinDiaryPage(): JSX.Element {
       <div className="mx-auto max-w-4xl space-y-6">
         <div className="flex items-center justify-between">
           <div>
-            <h1 className="text-2xl font-bold"> يوميات البشرة</h1>
-            <p className="mt-1 text-sm text-text-secondary">
-              تابعي تطور بشرتكِ مع الوقت — صور وملاحظات أسبوعية
-            </p>
+            <h1 className="text-2xl font-bold">{t('skinDiary.title')}</h1>
+            <p className="mt-1 text-sm text-text-secondary">{t('skinDiary.subtitle')}</p>
           </div>
-          <Button onClick={() => setShowAdd(true)}>+ إضافة</Button>
+          <Button onClick={() => setShowAdd(true)}>{t('skinDiary.add')}</Button>
         </div>
 
         {/* Timeline Chart */}
         {timelineData.length > 1 && (
           <Card padding="lg">
-            <h3 className="font-bold mb-4"> مستوى الترطيب</h3>
+            <h3 className="font-bold mb-4">{t('skinDiary.hydrationTitle')}</h3>
             <div className="flex items-end gap-1 h-24">
               {timelineData
                 .slice(0, 14)
@@ -70,10 +79,10 @@ export default function SkinDiaryPage(): JSX.Element {
                         style={{ height: `${h}%` }}
                       />
                       <span className="text-[9px] text-text-tertiary">
-                        {new Date(d.date as string).toLocaleDateString('ar-SA', {
-                          month: 'short',
-                          day: 'numeric',
-                        })}
+                        {new Date(d.date as string).toLocaleDateString(
+                          locale === 'en' ? 'en-GB' : 'ar-SA',
+                          { month: 'short', day: 'numeric' },
+                        )}
                       </span>
                     </div>
                   );
@@ -85,12 +94,12 @@ export default function SkinDiaryPage(): JSX.Element {
         {isLoading ? (
           <GridSkeleton count={6} />
         ) : isError ? (
-          <ErrorAlert message="فشل التحميل" onRetry={() => refetch()} />
+          <ErrorAlert message={t('skinDiary.err.load')} onRetry={() => refetch()} />
         ) : items.length === 0 ? (
           <EmptyState
-            title="لا توجد إدخالات"
-            description="أضيفي أول صورة لبشرتكِ لبدء تتبع التحسن"
-            action={{ label: 'إضافة', onPress: () => setShowAdd(true) }}
+            title={t('skinDiary.empty.title')}
+            description={t('skinDiary.empty.desc')}
+            action={{ label: t('skinDiary.empty.action'), onPress: () => setShowAdd(true) }}
           />
         ) : (
           <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
@@ -104,7 +113,9 @@ export default function SkinDiaryPage(): JSX.Element {
                     {e.skinCondition as string}
                   </span>
                   <span className="text-xs text-text-tertiary">
-                    {new Date(e.date as string).toLocaleDateString('ar-SA')}
+                    {new Date(e.date as string).toLocaleDateString(
+                      locale === 'en' ? 'en-GB' : 'ar-SA',
+                    )}
                   </span>
                 </div>
                 <div className="mt-1 flex items-center gap-1">
@@ -124,18 +135,18 @@ export default function SkinDiaryPage(): JSX.Element {
                   onClick={() => deleteMut.mutate({ id: e.id as number })}
                   className="mt-2 text-xs text-red-400 hover:text-red-600"
                 >
-                  ️ حذف
+                  {t('skinDiary.delete')}
                 </button>
               </Card>
             ))}
           </div>
         )}
 
-        <Modal open={showAdd} onClose={() => setShowAdd(false)} title="إضافة للبوميات">
+        <Modal open={showAdd} onClose={() => setShowAdd(false)} title={t('skinDiary.modal.title')}>
           <div className="space-y-3">
             <div>
               <label htmlFor="skd-image" className="text-sm font-semibold">
-                رابط الصورة
+                {t('skinDiary.imageUrlLabel')}
               </label>
               <input
                 id="skd-image"
@@ -147,21 +158,25 @@ export default function SkinDiaryPage(): JSX.Element {
             </div>
             <div>
               <label htmlFor="skd-condition" className="text-sm font-semibold">
-                حالة البشرة
+                {t('skinDiary.conditionLabel')}
               </label>
               <select
                 id="skd-condition"
                 value={condition}
-                onChange={(e) => setCondition(e.target.value)}
+                onChange={(e) => setCondition(e.target.value as TranslationKey)}
                 className="w-full rounded-lg border px-3 py-2 text-sm dark:border-gray-700 dark:bg-gray-800 mt-1"
               >
                 {CONDITIONS.map((c) => (
-                  <option key={c}>{c}</option>
+                  <option key={c} value={c}>
+                    {t(c)}
+                  </option>
                 ))}
               </select>
             </div>
             <div>
-              <label className="text-sm font-semibold">الترطيب: {hydration}/10</label>
+              <label className="text-sm font-semibold">
+                {t('skinDiary.hydrationLabel', { hydration })}
+              </label>
               <input
                 type="range"
                 min={1}
@@ -173,7 +188,7 @@ export default function SkinDiaryPage(): JSX.Element {
             </div>
             <div>
               <label htmlFor="skd-notes" className="text-sm font-semibold">
-                ملاحظات
+                {t('skinDiary.notesLabel')}
               </label>
               <textarea
                 id="skd-notes"
@@ -188,7 +203,7 @@ export default function SkinDiaryPage(): JSX.Element {
                 if (imageUrl)
                   addMut.mutate({
                     imageUrl,
-                    skinCondition: condition,
+                    skinCondition: t(condition),
                     hydration,
                     notes: notes || undefined,
                   });
@@ -196,7 +211,7 @@ export default function SkinDiaryPage(): JSX.Element {
               loading={addMut.isPending}
               className="w-full"
             >
-              حفظ
+              {t('skinDiary.save')}
             </Button>
           </div>
         </Modal>

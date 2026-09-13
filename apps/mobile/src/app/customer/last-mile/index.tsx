@@ -2,6 +2,8 @@ import { View, Text, ScrollView, StyleSheet, TouchableOpacity, RefreshControl } 
 import { useState } from 'react';
 import { SkeletonList } from '@/components/SkeletonCard';
 import { trpc } from '@/lib/trpc-react';
+import { useLocale } from '@/components/LocaleProvider';
+import { useAuthState } from '@/hooks/useAuthState';
 
 interface LastMileProduct {
   id: number;
@@ -18,9 +20,11 @@ interface OrderResult {
 }
 
 export default function LastMileScreen(): JSX.Element {
+  const { t } = useLocale();
+  const isAuthed = useAuthState();
   const [result, setResult] = useState<OrderResult | null>(null);
 
-  const productsQ = trpc.lastMileDelivery.products.useQuery();
+  const productsQ = trpc.lastMileDelivery.products.useQuery(undefined, { enabled: isAuthed });
   const products: LastMileProduct[] = (productsQ.data as LastMileProduct[] | undefined) ?? [];
 
   const orderMut = trpc.lastMileDelivery.order.useMutation({
@@ -37,13 +41,16 @@ export default function LastMileScreen(): JSX.Element {
   if (result)
     return (
       <ScrollView style={styles.c} contentContainerStyle={styles.i}>
-        <Text style={styles.t}> توصيل سريع</Text>
+        <Text style={styles.t}>{t('mobile.lastMile.title')}</Text>
         <View style={[styles.card, styles.rc]}>
-          <Text style={styles.re}></Text>
-          <Text style={styles.rtt}>تم الطلب!</Text>
+          <Text style={styles.re}>✅</Text>
+          <Text style={styles.rtt}>{t('mobile.lastMile.ordered')}</Text>
           <Text style={styles.rp}>{result.product}</Text>
           <Text style={styles.rm}>
-            {result.estimatedDelivery} · {result.total?.toLocaleString()} ر.س
+            {t('mobile.lastMile.summary', {
+              estimated: result.estimatedDelivery ?? '',
+              total: result.total?.toLocaleString() ?? '',
+            })}
           </Text>
         </View>
       </ScrollView>
@@ -60,18 +67,18 @@ export default function LastMileScreen(): JSX.Element {
         />
       }
     >
-      <Text style={styles.t}> توصيل سريع</Text>
+      <Text style={styles.t}>{t('mobile.lastMile.title')}</Text>
       {products.map((p) => (
         <View key={p.id} style={styles.card}>
           <Text style={styles.pe}>{p.emoji}</Text>
           <View style={{ flex: 1 }}>
             <Text style={styles.pn}>{p.nameAr}</Text>
-            <Text style={styles.pd}>️ {p.deliveryTime}</Text>
+            <Text style={styles.pd}> {p.deliveryTime}</Text>
           </View>
           <View style={{ alignItems: 'flex-end' }}>
             <Text style={styles.pp}>{p.price?.toLocaleString()} ر.س</Text>
             <TouchableOpacity onPress={() => order(p.id)} style={styles.ob}>
-              <Text style={styles.ot}>اطلب</Text>
+              <Text style={styles.ot}>{t('mobile.lastMile.order')}</Text>
             </TouchableOpacity>
           </View>
         </View>

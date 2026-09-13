@@ -11,6 +11,8 @@ import { useState } from 'react';
 import { ErrorAlert } from '@/components/ErrorAlert';
 import { SkeletonList } from '@/components/SkeletonCard';
 import { trpc } from '@/lib/trpc-react';
+import { useLocale } from '@/components/LocaleProvider';
+import { useAuthState } from '@/hooks/useAuthState';
 
 interface CorporatePlan {
   id?: string;
@@ -28,8 +30,10 @@ interface CorporateEnquiry {
 }
 
 export default function CorporateWellnessScreen(): JSX.Element {
+  const isAuthed = useAuthState();
+  const { t } = useLocale();
   const plansQ = trpc.corporateWellness.plans.useQuery();
-  const enquiriesQ = trpc.corporateWellness.myEnquiries.useQuery();
+  const enquiriesQ = trpc.corporateWellness.myEnquiries.useQuery(undefined, { enabled: isAuthed });
   const [planId, setPlanId] = useState('growth');
   const [companyName, setCompanyName] = useState('');
   const [contactName, setContactName] = useState('');
@@ -55,7 +59,9 @@ export default function CorporateWellnessScreen(): JSX.Element {
 
   if (plansQ.isLoading) return <SkeletonList count={3} />;
   if (plansQ.isError)
-    return <ErrorAlert message="فشل تحميل الباقات" onRetry={() => plansQ.refetch()} />;
+    return (
+      <ErrorAlert message={t('corporateWellness.load-error')} onRetry={() => plansQ.refetch()} />
+    );
 
   const items = (plansQ.data ?? []) as CorporatePlan[];
   const enquiryItems = (enquiriesQ.data as CorporateEnquiry[] | undefined) ?? [];
@@ -75,8 +81,8 @@ export default function CorporateWellnessScreen(): JSX.Element {
         />
       }
     >
-      <Text style={s.t}> عافية الشركات</Text>
-      <Text style={s.sub}>باقات تجميل وعناية لمنسوبات الشركات</Text>
+      <Text style={s.t}>{t('corporateWellness.title')}</Text>
+      <Text style={s.sub}>{t('corporateWellness.subtitle')}</Text>
 
       {submitted && (
         <View
@@ -88,9 +94,9 @@ export default function CorporateWellnessScreen(): JSX.Element {
             alignItems: 'center',
           }}
         >
-          <Text style={{ fontSize: 32 }}></Text>
+          <Text style={{ fontSize: 32 }}>✅</Text>
           <Text style={{ fontWeight: '700', color: '#059669', marginTop: 8 }}>
-            تم استلام طلبكِ وسنتواصل معكِ
+            {t('corporateWellness.request-received')}
           </Text>
         </View>
       )}
@@ -107,8 +113,10 @@ export default function CorporateWellnessScreen(): JSX.Element {
           <Text style={{ fontSize: 40 }}>{p.emoji}</Text>
           <View style={{ flex: 1 }}>
             <Text style={s.cTitle}>{p.nameAr}</Text>
-            <Text style={s.cPrice}>{(p.price ?? 0).toLocaleString()} ر.س / سنوياً</Text>
-            <Text style={s.cSub}> حتى {p.employees} موظفة</Text>
+            <Text style={s.cPrice}>{t('corporateWellness.price', { price: p.price ?? 0 })}</Text>
+            <Text style={s.cSub}>
+              {t('corporateWellness.employees', { count: p.employees ?? 0 })}
+            </Text>
             <View style={{ flexDirection: 'row', flexWrap: 'wrap', gap: 4, marginTop: 6 }}>
               {(p.services ?? []).map((svc, i) => (
                 <Text key={i} style={{ fontSize: 11, color: '#059669' }}>
@@ -121,7 +129,9 @@ export default function CorporateWellnessScreen(): JSX.Element {
       ))}
 
       <TouchableOpacity onPress={() => setShowForm(!showForm)} style={[s.btn, { marginTop: 16 }]}>
-        <Text style={s.btnText}>{showForm ? ' إغلاق' : ' تقديم طلب'}</Text>
+        <Text style={s.btnText}>
+          {showForm ? t('corporateWellness.close') : t('corporateWellness.submit-request')}
+        </Text>
       </TouchableOpacity>
 
       {showForm && (
@@ -129,27 +139,27 @@ export default function CorporateWellnessScreen(): JSX.Element {
           <TextInput
             value={companyName}
             onChangeText={setCompanyName}
-            placeholder="اسم الشركة"
+            placeholder={t('corporateWellness.company-name-ph')}
             style={s.inp}
             placeholderTextColor="#9ca3af"
           />
           <TextInput
             value={contactName}
             onChangeText={setContactName}
-            placeholder="اسم المسؤولة"
+            placeholder={t('corporateWellness.contact-name-ph')}
             style={s.inp}
             placeholderTextColor="#9ca3af"
           />
           <TextInput
             value={email}
             onChangeText={setEmail}
-            placeholder="البريد الإلكتروني"
+            placeholder={t('corporateWellness.email-ph')}
             style={s.inp}
             placeholderTextColor="#9ca3af"
             keyboardType="email-address"
           />
           <TouchableOpacity onPress={handleEnquire} style={s.btn}>
-            <Text style={s.btnText}>إرسال الطلب</Text>
+            <Text style={s.btnText}>{t('corporateWellness.send-request')}</Text>
           </TouchableOpacity>
         </View>
       )}
@@ -157,7 +167,7 @@ export default function CorporateWellnessScreen(): JSX.Element {
       {enquiryItems.length > 0 && (
         <View style={{ marginTop: 20 }}>
           <Text style={{ fontSize: 16, fontWeight: '700', color: '#111827', marginBottom: 8 }}>
-            طلباتي السابقة
+            {t('corporateWellness.my-enquiries')}
           </Text>
           {enquiryItems.map((e, i) => (
             <View

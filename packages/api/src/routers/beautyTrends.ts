@@ -70,6 +70,7 @@ export const beautyTrendsRouter = router({
     }),
 
   record: adminProcedure
+    .use(flag)
     .input(z.object({ type: z.string(), data: z.record(z.unknown()) }))
     .mutation(async ({ input }) =>
       prisma.beautyTrend.create({ data: { type: input.type, data: input.data as any } }),

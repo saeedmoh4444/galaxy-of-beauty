@@ -1,6 +1,8 @@
 import { View, Text, ScrollView, StyleSheet, RefreshControl } from 'react-native';
 import { SkeletonList } from '@/components/SkeletonCard';
 import { trpc } from '@/lib/trpc-react';
+import { useLocale } from '@/components/LocaleProvider';
+import { useAuthState } from '@/hooks/useAuthState';
 
 interface RegistryGift {
   id?: number;
@@ -10,7 +12,9 @@ interface RegistryGift {
 }
 
 export default function GiftRegistryScreen(): JSX.Element {
-  const q = trpc.giftRegistry.myRegistries.useQuery();
+  const isAuthed = useAuthState();
+  const { t } = useLocale();
+  const q = trpc.giftRegistry.myRegistries.useQuery(undefined, { enabled: isAuthed });
   const data: RegistryGift[] = (q.data as unknown as RegistryGift[] | undefined) ?? [];
 
   if (q.isLoading) return <SkeletonList count={4} />;
@@ -27,7 +31,7 @@ export default function GiftRegistryScreen(): JSX.Element {
         />
       }
     >
-      <Text style={styles.t}> سجل الهدايا</Text>
+      <Text style={styles.t}>{t('mobile.giftRegistry.title')}</Text>
       {data.map((g, i) => (
         <View key={i} style={styles.card}>
           <Text style={styles.emoji}>{g.emoji ?? ''}</Text>

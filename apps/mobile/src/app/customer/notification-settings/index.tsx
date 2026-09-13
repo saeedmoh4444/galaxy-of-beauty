@@ -1,6 +1,8 @@
 import { View, Text, ScrollView, Switch, StyleSheet, RefreshControl } from 'react-native';
 import { SkeletonList } from '@/components/SkeletonCard';
 import { trpc } from '@/lib/trpc-react';
+import { useLocale } from '@/components/LocaleProvider';
+import { useAuthState } from '@/hooks/useAuthState';
 
 interface NotificationPrefs {
   bookings?: boolean;
@@ -10,7 +12,9 @@ interface NotificationPrefs {
 }
 
 export default function NotificationSettingsScreen(): JSX.Element {
-  const prefsQ = trpc.notificationPrefs.get.useQuery();
+  const { t } = useLocale();
+  const isAuthed = useAuthState();
+  const prefsQ = trpc.notificationPrefs.get.useQuery(undefined, { enabled: isAuthed });
   const data = (prefsQ.data as NotificationPrefs | undefined) ?? {};
 
   if (prefsQ.isLoading) return <SkeletonList count={3} />;
@@ -27,17 +31,17 @@ export default function NotificationSettingsScreen(): JSX.Element {
         />
       }
     >
-      <Text style={styles.t}> إعدادات الإشعارات</Text>
+      <Text style={styles.t}>{t('mobile.notificationSettings.title')}</Text>
       {(['bookings', 'promo', 'chat', 'reviews'] as const).map((key) => (
         <View key={key} style={styles.row}>
           <Text style={styles.label}>
             {key === 'bookings'
-              ? ' الحجوزات'
+              ? t('mobile.notificationSettings.bookings')
               : key === 'promo'
-                ? ' العروض'
+                ? t('mobile.notificationSettings.promo')
                 : key === 'chat'
-                  ? ' المحادثة'
-                  : ' التقييمات'}
+                  ? t('mobile.notificationSettings.chat')
+                  : t('mobile.notificationSettings.reviews')}
           </Text>
           <Switch
             value={data[key] ?? true}

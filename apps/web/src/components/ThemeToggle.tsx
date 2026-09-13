@@ -1,30 +1,31 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useEffect, useState } from 'react';
+import { applyTheme, isDarkApplied, THEME_CHANGE_EVENT } from '@/lib/theme';
 
 export function ThemeToggle(): JSX.Element {
+  // Two-phase init: server/first paint renders the light icon, an effect
+  // flips to the real state after mount. Reading the DOM class in the
+  // initializer would cause a hydration mismatch; the pre-paint script in
+  // the root layout already applied the class, so the flip is invisible.
   const [dark, setDark] = useState(false);
 
   useEffect(() => {
-    const stored = localStorage.getItem('theme');
-    const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-    const shouldBeDark = stored === 'dark' || (!stored && prefersDark);
-    setDark(shouldBeDark);
-    document.documentElement.classList.toggle('dark', shouldBeDark);
+    setDark(isDarkApplied());
+    const onChange = (e: Event) => {
+      setDark(Boolean((e as CustomEvent<{ dark?: boolean }>).detail?.dark));
+    };
+    window.addEventListener(THEME_CHANGE_EVENT, onChange);
+    return () => window.removeEventListener(THEME_CHANGE_EVENT, onChange);
   }, []);
 
-  const toggle = () => {
-    const next = !dark;
-    setDark(next);
-    document.documentElement.classList.toggle('dark', next);
-    localStorage.setItem('theme', next ? 'dark' : 'light');
-  };
+  const toggle = () => applyTheme(!dark);
 
   return (
     <button
       onClick={toggle}
       aria-label={dark ? 'تفعيل الوضع النهاري' : 'تفعيل الوضع الليلي'}
-      className="rounded-lg p-2 text-gray-500 transition-colors hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-brand-500"
+      className="rounded-lg p-2 text-text-secondary transition-colors hover:bg-surface-muted dark:text-text-tertiary dark:hover:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-brand-500"
     >
       {dark ? (
         <svg

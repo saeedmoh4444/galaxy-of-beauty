@@ -19,11 +19,15 @@ interface FriendActivity {
 
 interface BeautyFriendActivityCardProps {
   activities: FriendActivity[];
+  title?: string;
+  countSuffix?: string;
   className?: string;
 }
 
 export function BeautyFriendActivityCard({
   activities,
+  title = 'نشاط الصديقات',
+  countSuffix = 'نشاط حديث',
   className = '',
 }: BeautyFriendActivityCardProps): JSX.Element | null {
   if (!activities.length) return null;
@@ -36,15 +40,11 @@ export function BeautyFriendActivityCard({
       )}
     >
       <div className="flex items-center gap-2">
-        <span className="text-xl" aria-hidden="true">
-          ‍️
-        </span>
+        <span className="text-xl" aria-hidden="true"></span>
         <div>
-          <h4 className="text-sm font-bold text-fuchsia-700 dark:text-fuchsia-300">
-            نشاط الصديقات
-          </h4>
+          <h4 className="text-sm font-bold text-fuchsia-700 dark:text-fuchsia-300">{title}</h4>
           <p className="text-[10px] text-fuchsia-500 dark:text-fuchsia-400">
-            {activities.length} نشاط حديث
+            {activities.length} {countSuffix}
           </p>
         </div>
       </div>

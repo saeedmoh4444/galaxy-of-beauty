@@ -1,6 +1,8 @@
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import { ScreenState } from '@/components/ScreenState';
 import { trpc } from '@/lib/trpc-react';
+import { useLocale } from '@/components/LocaleProvider';
+import { useAuthState } from '@/hooks/useAuthState';
 
 const COLORS = {
   brand: '#7c3aed',
@@ -20,8 +22,12 @@ interface ReferralStats {
 }
 
 export default function ReferralsScreen(): JSX.Element {
-  const code = trpc.referrals.getMyCode.useQuery();
-  const stats = trpc.referrals.getStats.useQuery() ?? { data: null };
+  const { t } = useLocale();
+  const isAuthed = useAuthState();
+  const code = trpc.referrals.getMyCode.useQuery(undefined, { enabled: isAuthed });
+  const stats = trpc.referrals.getStats.useQuery(undefined, { enabled: isAuthed }) ?? {
+    data: null,
+  };
   const codeData = code.data as ReferralCodeData | null;
   const statsData = stats.data as ReferralStats | null;
 
@@ -30,26 +36,26 @@ export default function ReferralsScreen(): JSX.Element {
       isLoading={code.isLoading}
       isError={code.isError}
       isEmpty={!code.data}
-      errorMessage="فشل تحميل الإحالات"
+      errorMessage={t('mobile.referrals.load-error')}
       onRetry={() => code.refetch()}
     >
-      <Text style={styles.title}> الإحالات</Text>
+      <Text style={styles.title}>{t('mobile.referrals.title')}</Text>
       <View style={styles.codeCard}>
-        <Text style={styles.codeLabel}>كود الإحالة الخاص بكِ</Text>
+        <Text style={styles.codeLabel}>{t('mobile.referrals.your-code')}</Text>
         <Text style={styles.codeValue}>{codeData?.referralCode ?? '———'}</Text>
         <TouchableOpacity style={styles.copyBtn} onPress={() => {}}>
-          <Text style={styles.copyText}> نسخ الكود</Text>
+          <Text style={styles.copyText}>{t('mobile.referrals.copy-code')}</Text>
         </TouchableOpacity>
       </View>
       {stats.data && (
         <View style={styles.statsRow}>
           <View style={styles.statCard}>
             <Text style={styles.statNum}>{String(statsData?.totalReferrals ?? 0)}</Text>
-            <Text style={styles.statLabel}>إحالات</Text>
+            <Text style={styles.statLabel}>{t('mobile.referrals.referrals')}</Text>
           </View>
           <View style={styles.statCard}>
             <Text style={styles.statNum}>{String(statsData?.totalEarnings ?? 0)} ر.س</Text>
-            <Text style={styles.statLabel}>مكافآت</Text>
+            <Text style={styles.statLabel}>{t('mobile.referrals.rewards')}</Text>
           </View>
         </View>
       )}

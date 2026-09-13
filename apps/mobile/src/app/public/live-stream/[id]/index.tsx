@@ -2,7 +2,9 @@ import { View, Text, ScrollView, StyleSheet, TextInput, TouchableOpacity } from 
 import { useState } from 'react';
 import { useLocalSearchParams } from 'expo-router';
 import { SkeletonList } from '@/components/SkeletonCard';
+import { useAuthState } from '@/hooks/useAuthState';
 import { trpc } from '@/lib/trpc-react';
+import { useLocale } from '@/components/LocaleProvider';
 
 interface StreamDetail {
   titleAr?: string;
@@ -18,11 +20,13 @@ interface StreamMessage {
 }
 
 export default function LiveStreamDetailScreen(): JSX.Element {
+  const { t } = useLocale();
+  const isAuthed = useAuthState();
   const { id } = useLocalSearchParams<{ id: string }>();
   const [chatText, setChatText] = useState('');
 
   const upcomingQ = trpc.liveStream.upcoming.useQuery({});
-  const historyQ = trpc.liveChat.history.useQuery();
+  const historyQ = trpc.liveChat.history.useQuery(undefined, { enabled: isAuthed });
 
   const sendMut = trpc.liveChat.send.useMutation({
     onSuccess: () => setChatText(''),
@@ -48,7 +52,7 @@ export default function LiveStreamDetailScreen(): JSX.Element {
   if (!stream)
     return (
       <View style={styles.c}>
-        <Text style={styles.e}>تعذر تحميل البث</Text>
+        <Text style={styles.e}>{t('mobile.public.live-stream.load-error')}</Text>
       </View>
     );
 
@@ -62,7 +66,7 @@ export default function LiveStreamDetailScreen(): JSX.Element {
             {stream.host ?? ''} · {stream.viewers ?? 0}
           </Text>
         </View>
-        <Text style={styles.chatTitle}> المحادثة المباشرة</Text>
+        <Text style={styles.chatTitle}>{t('mobile.public.live-stream.chat-title')}</Text>
         {messages.map((m, i) => (
           <View key={m.id ?? i} style={styles.msg}>
             <Text style={styles.msgUser}>{m.user ?? ''}: </Text>
@@ -74,12 +78,12 @@ export default function LiveStreamDetailScreen(): JSX.Element {
         <TextInput
           value={chatText}
           onChangeText={setChatText}
-          placeholder="اكتبي رسالة..."
+          placeholder={t('mobile.public.live-stream.chat-placeholder')}
           style={styles.input}
           placeholderTextColor="#9ca3af"
         />
         <TouchableOpacity onPress={sendMsg} style={styles.sendBtn}>
-          <Text style={styles.sendBtnText}></Text>
+          <Text style={styles.sendBtnText}>📤</Text>
         </TouchableOpacity>
       </View>
     </View>

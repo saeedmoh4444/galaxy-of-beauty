@@ -1,6 +1,8 @@
 import { View, Text, ScrollView, StyleSheet, RefreshControl } from 'react-native';
 import { SkeletonList } from '@/components/SkeletonCard';
+import { useAuthState } from '@/hooks/useAuthState';
 import { trpc } from '@/lib/trpc-react';
+import { useLocale } from '@/components/LocaleProvider';
 
 interface SelfCareActivity {
   id?: number;
@@ -10,7 +12,9 @@ interface SelfCareActivity {
 }
 
 export default function SelfCareScreen(): JSX.Element {
-  const historyQ = trpc.selfCare.history.useQuery({});
+  const { t } = useLocale();
+  const isAuthed = useAuthState();
+  const historyQ = trpc.selfCare.history.useQuery({}, { enabled: isAuthed });
   const data: SelfCareActivity[] =
     (historyQ.data as unknown as SelfCareActivity[] | undefined) ?? [];
   if (historyQ.isLoading) return <SkeletonList count={4} />;
@@ -26,13 +30,15 @@ export default function SelfCareScreen(): JSX.Element {
         />
       }
     >
-      <Text style={styles.t}> العناية الذاتية</Text>
+      <Text style={styles.t}>{t('mobile.selfCare.title')}</Text>
       {data.map((a, i) => (
         <View key={i} style={styles.card}>
           <Text style={styles.emoji}>{a.emoji ?? ''}</Text>
           <View style={{ flex: 1 }}>
             <Text style={styles.name}>{a.nameAr}</Text>
-            <Text style={styles.dur}>️ {a.duration}</Text>
+            <Text style={styles.dur}>
+              {t('mobile.selfCare.duration', { duration: a.duration ?? '' })}
+            </Text>
           </View>
         </View>
       ))}

@@ -4,8 +4,10 @@ import { useState } from 'react';
 import { api } from '@/lib/trpc';
 import { Card, CardListSkeleton } from '@galaxy/ui';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
+import { useLocale } from '@/components/LocaleProvider';
 
 export default function RoutineSchedulerPage(): JSX.Element {
+  const { t } = useLocale();
   const { data: routines, isLoading } = api.routineScheduler.myRoutines.useQuery() as {
     data: Array<Record<string, unknown>> | undefined;
     isLoading: boolean;
@@ -20,8 +22,8 @@ export default function RoutineSchedulerPage(): JSX.Element {
     <DashboardLayout userRole="CUSTOMER">
       <div className="mx-auto max-w-2xl space-y-6">
         <div>
-          <h1 className="text-2xl font-bold"> جدول الروتين</h1>
-          <p className="mt-1 text-sm text-text-secondary">نظمي روتين العناية اليومي والأسبوعي</p>
+          <h1 className="text-2xl font-bold">{t('routineScheduler.title')}</h1>
+          <p className="mt-1 text-sm text-text-secondary">{t('routineScheduler.subtitle')}</p>
         </div>
 
         {isLoading ? (

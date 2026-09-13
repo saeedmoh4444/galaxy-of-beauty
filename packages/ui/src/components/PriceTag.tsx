@@ -29,7 +29,7 @@ export function PriceTag({
       <span className="text-lg font-extrabold text-brand-600 dark:text-brand-400">
         {formatCurrency(price)}
       </span>
-      <span className="text-xs text-text-secondary dark:text-gray-400">{currency}</span>
+      <span className="text-xs text-text-secondary dark:text-text-tertiary">{currency}</span>
       {hasDiscount ? (
         <>
           <span className="text-sm text-text-tertiary line-through">

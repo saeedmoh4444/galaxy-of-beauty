@@ -1,6 +1,7 @@
 import { z } from 'zod';
 import { TRPCError } from '@trpc/server';
 import { prisma } from '@galaxy/db';
+import type { Prisma } from '@galaxy/db';
 import { OPENAI_API_URL, OPENAI_MODEL, EXPERIMENTAL_FEATURES } from '@galaxy/shared';
 import { protectedProcedure, router, requireFeatureFlag } from '../trpc';
 
@@ -56,12 +57,11 @@ export const skinAnalysisRouter = router({
         analysisResult = { skinType: 'unknown', concerns: [], note: 'OpenAI key not configured' };
       }
 
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      return (prisma as any).skinAnalysis.create({
+      return prisma.skinAnalysis.create({
         data: {
           userId: ctx.user.id,
           imageUrl: input.imageUrl,
-          resultJson: analysisResult,
+          resultJson: analysisResult as unknown as Prisma.InputJsonValue,
           skinType: (analysisResult['skinType'] as string) || null,
           concerns: (analysisResult['concerns'] as string[]) || [],
           recommendations: analysisResult['recommendations'] || undefined,

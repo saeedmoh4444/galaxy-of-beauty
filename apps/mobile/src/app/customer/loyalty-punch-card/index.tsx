@@ -1,6 +1,8 @@
 import { View, Text, ScrollView, StyleSheet, RefreshControl } from 'react-native';
 import { SkeletonList } from '@/components/SkeletonCard';
 import { trpc } from '@/lib/trpc-react';
+import { useLocale } from '@/components/LocaleProvider';
+import { useAuthState } from '@/hooks/useAuthState';
 
 interface PunchCardStatus {
   punches?: number;
@@ -8,7 +10,9 @@ interface PunchCardStatus {
 }
 
 export default function LoyaltyPunchCardScreen(): JSX.Element {
-  const cardQ = trpc.loyaltyPunchCard.myCard.useQuery();
+  const { t } = useLocale();
+  const isAuthed = useAuthState();
+  const cardQ = trpc.loyaltyPunchCard.myCard.useQuery(undefined, { enabled: isAuthed });
 
   if (cardQ.isLoading) return <SkeletonList count={3} />;
 
@@ -27,7 +31,7 @@ export default function LoyaltyPunchCardScreen(): JSX.Element {
         />
       }
     >
-      <Text style={styles.t}> بطاقة الولاء</Text>
+      <Text style={styles.t}>{t('mobile.loyaltyPunchCard.title')}</Text>
       <View style={styles.card}>
         <Text style={styles.count}>
           {punches}/{total}

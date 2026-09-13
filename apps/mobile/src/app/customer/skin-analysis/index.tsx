@@ -7,22 +7,29 @@ import {
   StyleSheet,
   ActivityIndicator,
 } from 'react-native';
-import { trpc } from '@/lib/trpc-react';
+import { useAuthState } from '@/hooks/useAuthState';
 import { useCamera } from '@/hooks/useCamera';
+import { trpc } from '@/lib/trpc-react';
 import { useState } from 'react';
 import { DEFAULT_PAGE_SIZE } from '@galaxy/ui';
 import { useToast } from '@/components/Toast';
+import { useLocale } from '@/components/LocaleProvider';
 
 export default function SkinAnalysisScreen() {
+  const { t, locale } = useLocale();
+  const isAuthed = useAuthState();
   const [imageUrl, setImageUrl] = useState('');
   const { showToast } = useToast();
   const [showCamera, setShowCamera] = useState(false);
   const { hasPermission, requestPermission, takePhoto } = useCamera();
 
-  const historyQ = trpc.skinAnalysis.history.useQuery({
-    page: 1,
-    limit: DEFAULT_PAGE_SIZE,
-  });
+  const historyQ = trpc.skinAnalysis.history.useQuery(
+    {
+      page: 1,
+      limit: DEFAULT_PAGE_SIZE,
+    },
+    { enabled: isAuthed },
+  );
   const history: Record<string, unknown>[] =
     ((historyQ.data as Record<string, unknown> | null)?.items as Record<string, unknown>[]) ?? [];
 
@@ -31,7 +38,7 @@ export default function SkinAnalysisScreen() {
       void historyQ.refetch();
     },
     onError: () => {
-      showToast('error', 'فشل تحليل الصورة. حاولي مجدداً.');
+      showToast('error', t('mobile.skinAnalysis.analyze-error'));
     },
   });
   // Clear the previous result while a new analysis is in flight (previous behavior)
@@ -52,45 +59,53 @@ export default function SkinAnalysisScreen() {
     setShowCamera(false);
     if (photo?.uri) {
       setImageUrl(photo.uri);
-      showToast('success', 'تم التقاط الصورة بنجاح. اضغطي على تحليل للمتابعة.');
+      showToast('success', t('mobile.skinAnalysis.capture-success'));
     }
   };
 
   const handleAnalyze = () => {
     if (!imageUrl) {
-      showToast('error', 'الرجاء إدخال رابط الصورة');
+      showToast('error', t('mobile.skinAnalysis.url-required'));
       return;
     }
     analyzeMut.mutate({ imageUrl });
   };
 
-  const skinTypeLabels: Record<string, string> = {
-    dry: 'جافة',
-    oily: 'دهنية',
-    combination: 'مختلطة',
-    normal: 'عادية',
-    sensitive: 'حساسة',
-    unknown: 'غير محدد',
+  const skinTypeLabel = (type: string): string => {
+    switch (type) {
+      case 'dry':
+        return t('mobile.skinAnalysis.type-dry');
+      case 'oily':
+        return t('mobile.skinAnalysis.type-oily');
+      case 'combination':
+        return t('mobile.skinAnalysis.type-combination');
+      case 'normal':
+        return t('mobile.skinAnalysis.type-normal');
+      case 'sensitive':
+        return t('mobile.skinAnalysis.type-sensitive');
+      default:
+        return t('mobile.skinAnalysis.type-unknown');
+    }
   };
 
   return (
     <ScrollView style={styles.container} contentContainerStyle={styles.contentInner}>
-      <Text style={styles.title}>تحليل البشرة بالذكاء الاصطناعي</Text>
+      <Text style={styles.title}>{t('mobile.skinAnalysis.title')}</Text>
 
       {/* Upload / URL input card */}
       <View style={styles.card}>
-        <Text style={styles.cardTitle}>حملي صورة لبشرتك</Text>
+        <Text style={styles.cardTitle}>{t('mobile.skinAnalysis.upload-title')}</Text>
 
         <View style={styles.uploadZone}>
-          <Text style={styles.uploadEmoji}></Text>
-          <Text style={styles.uploadHint}>التقطي صورة أو أدخلي رابط الصورة</Text>
+          <Text style={styles.uploadEmoji}>📷</Text>
+          <Text style={styles.uploadHint}>{t('mobile.skinAnalysis.upload-hint')}</Text>
           <TouchableOpacity
             style={styles.cameraBtn}
             onPress={handleCameraCapture}
             activeOpacity={0.8}
           >
             <Text style={styles.cameraBtnText}>
-              {showCamera ? ' جاري التصوير...' : ' التقاط صورة'}
+              {showCamera ? t('mobile.skinAnalysis.capturing') : t('mobile.skinAnalysis.capture')}
             </Text>
           </TouchableOpacity>
         </View>
@@ -117,7 +132,7 @@ export default function SkinAnalysisScreen() {
           {analyzeMut.isPending ? (
             <ActivityIndicator color="#fff" size="small" />
           ) : (
-            <Text style={styles.analyzeBtnText}>تحليل</Text>
+            <Text style={styles.analyzeBtnText}>{t('mobile.skinAnalysis.analyze')}</Text>
           )}
         </TouchableOpacity>
       </View>
@@ -125,19 +140,17 @@ export default function SkinAnalysisScreen() {
       {/* Results card */}
       {result && (
         <View style={[styles.card, styles.resultCard]}>
-          <Text style={styles.resultTitle}>نتائج التحليل</Text>
+          <Text style={styles.resultTitle}>{t('mobile.skinAnalysis.results')}</Text>
 
           <View style={styles.resultGrid}>
             <View style={styles.resultItem}>
-              <Text style={styles.resultLabel}>نوع البشرة</Text>
+              <Text style={styles.resultLabel}>{t('mobile.skinAnalysis.skin-type')}</Text>
               <Text style={styles.resultValue}>
-                {skinTypeLabels[(result.skinType as string) || 'unknown'] ||
-                  (result.skinType as string) ||
-                  'غير محدد'}
+                {skinTypeLabel((result.skinType as string) || 'unknown')}
               </Text>
             </View>
             <View style={styles.resultItem}>
-              <Text style={styles.resultLabel}>المشاكل</Text>
+              <Text style={styles.resultLabel}>{t('mobile.skinAnalysis.concerns')}</Text>
               <Text style={styles.resultValue}>
                 {(result.concerns as string[])?.length
                   ? (result.concerns as string[]).join('، ')
@@ -145,22 +158,22 @@ export default function SkinAnalysisScreen() {
               </Text>
             </View>
             <View style={styles.resultItem}>
-              <Text style={styles.resultLabel}>مستوى الترطيب</Text>
+              <Text style={styles.resultLabel}>{t('mobile.skinAnalysis.hydration')}</Text>
               <Text style={styles.resultValue}>{(result.hydrationLevel as string) || '-'}</Text>
             </View>
             <View style={styles.resultItem}>
-              <Text style={styles.resultLabel}>مستوى الحساسية</Text>
+              <Text style={styles.resultLabel}>{t('mobile.skinAnalysis.sensitivity')}</Text>
               <Text style={styles.resultValue}>{(result.sensitivityLevel as string) || '-'}</Text>
             </View>
             <View style={styles.resultItem}>
-              <Text style={styles.resultLabel}>العمر التقديري</Text>
+              <Text style={styles.resultLabel}>{t('mobile.skinAnalysis.age-estimate')}</Text>
               <Text style={styles.resultValue}>{(result.ageEstimate as string) || '-'}</Text>
             </View>
           </View>
 
           {result.recommendations ? (
             <View style={styles.recos}>
-              <Text style={styles.recosTitle}>التوصيات</Text>
+              <Text style={styles.recosTitle}>{t('mobile.skinAnalysis.recommendations')}</Text>
               <Text style={styles.recosText}>
                 {typeof result.recommendations === 'string'
                   ? result.recommendations
@@ -172,34 +185,37 @@ export default function SkinAnalysisScreen() {
       )}
 
       {/* History */}
-      <Text style={styles.sectionTitle}>التحليلات السابقة</Text>
+      <Text style={styles.sectionTitle}>{t('mobile.skinAnalysis.history')}</Text>
 
       {historyQ.isLoading ? (
         <ActivityIndicator color="#7c3aed" style={{ marginTop: 20 }} />
       ) : history.length === 0 ? (
         <View style={styles.empty}>
-          <Text style={styles.emptyIcon}></Text>
-          <Text style={styles.emptyTitle}>لا توجد تحليلات سابقة</Text>
-          <Text style={styles.emptySub}>حملي أول صورة لتحليل بشرتك</Text>
+          <Text style={styles.emptyIcon}>🔍</Text>
+          <Text style={styles.emptyTitle}>{t('mobile.skinAnalysis.empty-title')}</Text>
+          <Text style={styles.emptySub}>{t('mobile.skinAnalysis.empty-desc')}</Text>
         </View>
       ) : (
         history.map((a) => (
           <TouchableOpacity key={a.id as number} style={styles.historyCard} activeOpacity={0.7}>
             <View style={styles.histIcon}>
-              <Text style={styles.histEmoji}></Text>
+              <Text style={styles.histEmoji}>🧴</Text>
             </View>
             <View style={styles.histInfo}>
               <Text style={styles.histType}>
-                {skinTypeLabels[
-                  ((a.resultJson as Record<string, unknown>)?.skinType as string) || 'unknown'
-                ] || 'تحليل'}
+                {skinTypeLabel(
+                  ((a.resultJson as Record<string, unknown>)?.skinType as string) || 'unknown',
+                )}
               </Text>
               <Text style={styles.histDate}>
-                {new Date(a.createdAt as string).toLocaleDateString('ar-SA', {
-                  year: 'numeric',
-                  month: 'long',
-                  day: 'numeric',
-                })}
+                {new Date(a.createdAt as string).toLocaleDateString(
+                  locale === 'ar' ? 'ar-SA' : 'en-GB',
+                  {
+                    year: 'numeric',
+                    month: 'long',
+                    day: 'numeric',
+                  },
+                )}
               </Text>
             </View>
             <Text style={styles.histArrow}>›</Text>

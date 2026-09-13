@@ -36,14 +36,18 @@ export function RatingStars({
       aria-label={`${rating} out of ${max} stars`}
     >
       {Array.from({ length: full }, (_, i) => (
-        <span key={`f-${i}`} className="text-amber-400"></span>
+        <span key={`f-${i}`} className="text-amber-400">
+          ⭐
+        </span>
       ))}
-      {hasHalf ? <span className="text-amber-400"></span> : null}
+      {hasHalf ? <span className="text-amber-400">⭐</span> : null}
       {Array.from({ length: empty }, (_, i) => (
-        <span key={`e-${i}`} className="text-gray-300 dark:text-gray-600"></span>
+        <span key={`e-${i}`} className="text-text-tertiary">
+          ⭐
+        </span>
       ))}
       {showNumeric ? (
-        <span className="ml-1 text-xs text-text-secondary dark:text-gray-400">
+        <span className="ms-1 text-xs text-text-secondary dark:text-text-tertiary">
           {rating.toFixed(1)}
         </span>
       ) : null}

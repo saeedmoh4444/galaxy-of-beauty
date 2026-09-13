@@ -26,10 +26,12 @@ test.describe('Keyboard Navigation', () => {
   test('login form is keyboard accessible', async ({ page }) => {
     await page.goto('/login');
 
-    // Skip link may take first tab, then email field
-    await page.keyboard.press('Tab');
-    await page.keyboard.press('Tab');
-    const emailField = page.getByPlaceholder('example@email.com');
+    // Tab through the skip link + header toggles until an input receives
+    // focus (the header now hosts the language/theme toggles).
+    for (let i = 0; i < 6; i++) {
+      await page.keyboard.press('Tab');
+      if ((await page.locator('input:focus').count()) > 0) break;
+    }
     // Either email or password field should be focusable
     await expect(page.locator('input:focus').first()).toBeVisible();
   });
@@ -77,5 +79,26 @@ test.describe('Touch Targets', () => {
     if (box) {
       expect(box.height).toBeGreaterThanOrEqual(36); // minimum touch target
     }
+  });
+});
+
+test.describe('Reduced Motion (FE-005)', () => {
+  test('page transition animates normally by default', async ({ page }) => {
+    await page.goto('/');
+    const el = page.locator('.animate-page-in').first();
+    await expect(el).toBeVisible();
+    const duration = await el.evaluate((node) => getComputedStyle(node).animationDuration);
+    // 0.18s page transition (UI/UX backlog 3.1)
+    expect(parseFloat(duration)).toBeGreaterThanOrEqual(0.17);
+  });
+
+  test('reduced-motion preference neutralizes animations', async ({ page }) => {
+    await page.emulateMedia({ reducedMotion: 'reduce' });
+    await page.goto('/');
+    const el = page.locator('.animate-page-in').first();
+    await expect(el).toBeVisible();
+    const duration = await el.evaluate((node) => getComputedStyle(node).animationDuration);
+    // The FE-005 global gate clamps animations to 0.01ms
+    expect(parseFloat(duration)).toBeLessThanOrEqual(0.001);
   });
 });

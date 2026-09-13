@@ -1,7 +1,9 @@
 import { View, Text, ScrollView, TouchableOpacity, StyleSheet, RefreshControl } from 'react-native';
 import { useState } from 'react';
 import { SkeletonList } from '@/components/SkeletonCard';
+import { useAuthState } from '@/hooks/useAuthState';
 import { trpc } from '@/lib/trpc-react';
+import { useLocale } from '@/components/LocaleProvider';
 
 interface TravelDestination {
   emoji?: string;
@@ -20,8 +22,10 @@ interface TravelKit {
 }
 
 export default function TravelKitScreen(): JSX.Element {
+  const { t } = useLocale();
+  const isAuthed = useAuthState();
   const [kit, setKit] = useState<TravelKit | null>(null);
-  const destsQ = trpc.travelKit.destinations.useQuery();
+  const destsQ = trpc.travelKit.destinations.useQuery(undefined, { enabled: isAuthed });
   const dests: TravelDestination[] =
     (destsQ.data as unknown as TravelDestination[] | undefined) ?? [];
   if (destsQ.isLoading) return <SkeletonList count={4} />;
@@ -37,7 +41,7 @@ export default function TravelKitScreen(): JSX.Element {
         />
       }
     >
-      <Text style={styles.t}> حقيبة السفر</Text>
+      <Text style={styles.t}>{t('mobile.travelKit.title')}</Text>
       {dests.map((d, i) => (
         <TouchableOpacity key={i} style={styles.card} onPress={() => setKit(d)}>
           <Text style={styles.de}>{d.emoji ?? ''}</Text>
@@ -49,7 +53,9 @@ export default function TravelKitScreen(): JSX.Element {
       ))}
       {kit && (
         <View style={styles.kc}>
-          <Text style={styles.kt}> محتويات الحقيبة - {kit.nameAr}</Text>
+          <Text style={styles.kt}>
+            {t('mobile.travelKit.kit-contents', { name: kit.nameAr ?? '' })}
+          </Text>
           {kit.items?.map((item, i) => (
             <View key={i} style={styles.ki}>
               <Text style={styles.kie}>{item.emoji}</Text>

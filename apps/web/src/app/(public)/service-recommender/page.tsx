@@ -3,8 +3,10 @@ import { useState } from 'react';
 import { api } from '@/lib/trpc';
 import { Card, CardListSkeleton, Button } from '@galaxy/ui';
 import Link from 'next/link';
+import { useLocale } from '@/components/LocaleProvider';
 
 export default function ServiceRecommenderPage(): JSX.Element {
+  const { t } = useLocale();
   const [step, setStep] = useState(0);
   const [answers, setAnswers] = useState<Record<string, string>>({});
   const [searchAnswers, setSearchAnswers] = useState<Record<string, string> | null>(null);
@@ -31,11 +33,9 @@ export default function ServiceRecommenderPage(): JSX.Element {
   return (
     <div className="mx-auto max-w-3xl px-4 py-12">
       <div className="mb-8 text-center">
-        <span className="text-6xl"></span>
-        <h1 className="mt-4 text-3xl font-bold">اكتشفي خدماتكِ المثالية</h1>
-        <p className="mt-2 text-text-secondary">
-          أجيبي على ٣ أسئلة وسنقترح عليكِ أفضل خدمات الجمال المناسبة لكِ
-        </p>
+        <span className="text-6xl">🎯</span>
+        <h1 className="mt-4 text-3xl font-bold">{t('marketing.service-recommender.title')}</h1>
+        <p className="mt-2 text-text-secondary">{t('marketing.service-recommender.subtitle')}</p>
       </div>
 
       {searchAnswers ? (
@@ -49,14 +49,14 @@ export default function ServiceRecommenderPage(): JSX.Element {
                   <Card padding="lg" className="hover:shadow-lg transition-all text-center">
                     <span className="text-4xl">{r.emoji as string}</span>
                     <h3 className="font-bold mt-2">{r.nameAr as string}</h3>
-                    <div className="mt-2 h-2 rounded-full bg-gray-200 dark:bg-gray-700">
+                    <div className="mt-2 h-2 rounded-full bg-surface-muted">
                       <div
                         className="h-2 rounded-full bg-brand-500"
                         style={{ width: `${r.matchPct as number}%` }}
                       />
                     </div>
                     <span className="text-xs font-bold text-brand-600 mt-1">
-                      {r.matchPct as number}% تطابق
+                      {t('marketing.service-recommender.match-pct', { pct: r.matchPct as number })}
                     </span>
                   </Card>
                 </Link>
@@ -71,7 +71,7 @@ export default function ServiceRecommenderPage(): JSX.Element {
                   setSearchAnswers(null);
                 }}
               >
-                إعادة
+                {t('marketing.service-recommender.retry')}
               </Button>
             </div>
           </div>
@@ -82,12 +82,15 @@ export default function ServiceRecommenderPage(): JSX.Element {
             {qs.map((_, i) => (
               <div
                 key={i}
-                className={`h-1.5 flex-1 rounded-full ${i <= step ? 'bg-brand-500' : 'bg-gray-200 dark:bg-gray-700'}`}
+                className={`h-1.5 flex-1 rounded-full ${i <= step ? 'bg-brand-500' : 'bg-surface-muted'}`}
               />
             ))}
           </div>
           <p className="text-xs text-text-tertiary mb-1">
-            السؤال {step + 1} من {qs.length}
+            {t('marketing.service-recommender.question-of', {
+              current: step + 1,
+              total: qs.length,
+            })}
           </p>
           <h2 className="text-xl font-bold mb-6">{currentQ.q as string}</h2>
           <div className="space-y-2">
@@ -95,7 +98,7 @@ export default function ServiceRecommenderPage(): JSX.Element {
               <button
                 key={o.k as string}
                 onClick={() => handleAnswer(o.k as string)}
-                className="w-full rounded-xl border-2 border-edge dark:border-gray-700 p-4 text-right hover:border-brand-400 hover:bg-brand-50 dark:hover:bg-brand-950 transition-all"
+                className="w-full rounded-xl border-2 border-edge dark:border-gray-700 p-4 text-end hover:border-brand-400 hover:bg-brand-50 dark:hover:bg-brand-950 transition-all"
               >
                 {o.l as string}
               </button>

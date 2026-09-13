@@ -1,6 +1,7 @@
 import { View, Text, ScrollView, StyleSheet, Switch, RefreshControl } from 'react-native';
 import { useState, useEffect, useCallback } from 'react';
 import { SkeletonList } from '@/components/SkeletonCard';
+import { useLocale } from '@/components/LocaleProvider';
 
 let _nightModeEnabled = false;
 
@@ -9,6 +10,7 @@ export function isNightModeEnabled(): boolean {
 }
 
 export default function NightModeScreen(): JSX.Element {
+  const { t } = useLocale();
   const [enabled, setEnabled] = useState(_nightModeEnabled);
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
@@ -46,10 +48,12 @@ export default function NightModeScreen(): JSX.Element {
         />
       }
     >
-      <Text style={[styles.t, enabled && styles.tDark]}> الوضع الليلي</Text>
+      <Text style={[styles.t, enabled && styles.tDark]}>{t('mobile.nightMode.title')}</Text>
 
       <View style={[styles.row, enabled && styles.rowDark]}>
-        <Text style={[styles.label, enabled && styles.labelDark]}>تفعيل الوضع الليلي</Text>
+        <Text style={[styles.label, enabled && styles.labelDark]}>
+          {t('mobile.nightMode.enable')}
+        </Text>
         <Switch
           value={enabled}
           onValueChange={toggle}
@@ -58,22 +62,18 @@ export default function NightModeScreen(): JSX.Element {
       </View>
 
       <View style={[styles.section, enabled && styles.sectionDark]}>
-        <Text style={[styles.st, enabled && styles.stDark]}> الألوان</Text>
-        <Text style={[styles.desc, enabled && styles.descDark]}>
-          خلفيات داكنة ونصوص فاتحة لتجربة مريحة للعين في الإضاءة المنخفضة
-        </Text>
+        <Text style={[styles.st, enabled && styles.stDark]}>{t('mobile.nightMode.colors')}</Text>
+        <Text style={[styles.desc, enabled && styles.descDark]}>{t('mobile.nightMode.desc')}</Text>
         <View style={styles.preview}>
           <View style={[styles.previewCard, enabled && styles.previewCardDark]}>
             <Text style={[styles.previewText, enabled && styles.previewTextDark]}>
-              معاينة للوضع الليلي
+              {t('mobile.nightMode.preview')}
             </Text>
           </View>
         </View>
       </View>
 
-      <Text style={[styles.hint, enabled && styles.hintDark]}>
-        الوضع الليلي يقلل إجهاد العين ويوفر البطارية
-      </Text>
+      <Text style={[styles.hint, enabled && styles.hintDark]}>{t('mobile.nightMode.hint')}</Text>
     </ScrollView>
   );
 }

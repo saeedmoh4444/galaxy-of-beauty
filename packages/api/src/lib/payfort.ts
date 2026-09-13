@@ -12,7 +12,9 @@ interface PayFortConfig {
 
 function getConfig(): PayFortConfig | null {
   const merchantId = process.env['PAYFORT_MERCHANT_ID'];
-  const accessCode = process.env['PAYFORT_ACCESS_KEY'];
+  // Must match the Zod schema + .env.example (PAYFORT_ACCESS_CODE) — the
+  // old PAYFORT_ACCESS_KEY name silently kept the gateway unconfigured.
+  const accessCode = process.env['PAYFORT_ACCESS_CODE'];
   const shaRequest = process.env['PAYFORT_SHA_REQUEST_PHRASE'];
   const shaResponse = process.env['PAYFORT_SHA_RESPONSE_PHRASE'];
   const sandbox = process.env['PAYFORT_SANDBOX'] !== 'false';
@@ -67,7 +69,11 @@ export function verifyResponseSignature(
   receivedSignature: string,
 ): boolean {
   const calculated = generateRequestSignature(params, phrase);
-  return crypto.timingSafeEqual(Buffer.from(calculated), Buffer.from(receivedSignature));
+  const received = Buffer.from(receivedSignature);
+  // timingSafeEqual throws on length mismatch — treat malformed
+  // signatures as invalid instead of crashing webhook handling.
+  if (received.length !== calculated.length) return false;
+  return crypto.timingSafeEqual(Buffer.from(calculated), received);
 }
 
 // ── Authorization ──────────────────────────────────────────

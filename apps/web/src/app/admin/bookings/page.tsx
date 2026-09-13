@@ -1,28 +1,78 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 'use client';
 
 import { useState } from 'react';
 import { api } from '@/lib/trpc';
-import { Card, CardListSkeleton, ErrorAlert, EmptyState, Button, formatCurrency } from '@galaxy/ui';
+import {
+  Card,
+  CardListSkeleton,
+  ErrorAlert,
+  EmptyState,
+  Button,
+  formatCurrency,
+  useAuth,
+} from '@galaxy/ui';
+import { useLocale } from '@/components/LocaleProvider';
 
 const STATUSES = ['ALL', 'REQUESTED', 'ACCEPTED', 'PAID', 'IN_PROGRESS', 'COMPLETED', 'CANCELLED'];
 
+type BookingStatus =
+  | 'REQUESTED'
+  | 'ACCEPTED'
+  | 'PAYMENT_AUTHORIZED'
+  | 'CONFIRMED_OFFLINE'
+  | 'PAID'
+  | 'IN_PROGRESS'
+  | 'COMPLETED'
+  | 'REJECTED'
+  | 'CANCELLED'
+  | 'NO_SHOW';
+
+interface AdminBooking {
+  id: number;
+  bookingCode: string;
+  createdAt: string;
+  status: string;
+  totalAmount: number;
+}
+
 export default function AdminBookingsPage(): JSX.Element {
+  const { t, locale } = useLocale();
+  const { isAuthenticated } = useAuth();
   const [status, setStatus] = useState<string | undefined>(undefined);
-  // Cast to avoid TS2589 from deeply nested admin RouterOutput in Next.js build
-  const bookingsQuery = api.admin.getAllBookings.useQuery({
-    status: (status || undefined) as any,
-    page: 1,
-    limit: 20,
-  }) as any;
+  // Structural cast instead of RouterOutput — avoids TS2589 from deeply
+  // nested admin RouterOutput in Next.js build
+  const bookingsQuery = (
+    api as unknown as {
+      admin: {
+        getAllBookings: {
+          useQuery: (
+            input: { status?: BookingStatus; page: number; limit: number },
+            opts?: { enabled: boolean },
+          ) => {
+            data: { items: AdminBooking[] } | undefined;
+            isLoading: boolean;
+            isError: boolean;
+            refetch: () => void;
+          };
+        };
+      };
+    }
+  ).admin.getAllBookings.useQuery(
+    {
+      status: (status || undefined) as BookingStatus | undefined,
+      page: 1,
+      limit: 20,
+    },
+    { enabled: isAuthenticated },
+  );
   const { data, isLoading, isError, refetch } = bookingsQuery;
   const cancelMut = api.bookings.transition.useMutation({ onSuccess: () => refetch() });
 
-  const bookings: any[] = data?.items ?? [];
+  const bookings: AdminBooking[] = data?.items ?? [];
 
   return (
     <div className="space-y-6">
-      <h1 className="text-2xl font-bold">جميع الحجوزات</h1>
+      <h1 className="text-2xl font-bold">{t('admin.bookings.title')}</h1>
       <div className="flex flex-wrap gap-2">
         {STATUSES.map((s) => (
           <button
@@ -38,18 +88,18 @@ export default function AdminBookingsPage(): JSX.Element {
       {isLoading ? (
         <CardListSkeleton count={4} />
       ) : isError ? (
-        <ErrorAlert message="فشل تحميل الحجوزات" onRetry={() => refetch()} />
+        <ErrorAlert message={t('admin.bookings.load-error')} onRetry={() => refetch()} />
       ) : bookings.length === 0 ? (
-        <EmptyState title="لا توجد حجوزات" />
+        <EmptyState title={t('admin.bookings.empty')} />
       ) : (
         <div className="space-y-2">
-          {bookings.map((b: any) => (
+          {bookings.map((b) => (
             <Card key={b.id} padding="md">
               <div className="flex items-center justify-between">
                 <div>
                   <p className="font-semibold">{b.bookingCode}</p>
                   <p className="text-sm text-text-secondary">
-                    {new Date(b.createdAt).toLocaleDateString('ar-SA')}
+                    {new Date(b.createdAt).toLocaleDateString(locale === 'en' ? 'en-GB' : 'ar-SA')}
                   </p>
                 </div>
                 <span
@@ -64,7 +114,7 @@ export default function AdminBookingsPage(): JSX.Element {
                     variant="danger"
                     onClick={() => cancelMut.mutate({ id: b.id, action: 'cancel' })}
                   >
-                    إلغاء
+                    {t('button.cancel')}
                   </Button>
                 )}
               </div>

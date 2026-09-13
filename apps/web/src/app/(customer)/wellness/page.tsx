@@ -55,17 +55,20 @@ import {
   BeautyFitnessGlowCard,
   BeautySleepPositionCard,
   BeautySleepRoutineCard,
+  type SkinConcern,
 } from '@galaxy/ui';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
+import { useLocale } from '@/components/LocaleProvider';
 
 export default function WellnessPage(): JSX.Element {
-  const cycleSettings = (api as any).cycleTracker?.settings?.useQuery?.() as any;
-  const skinAnalysis = (api as any).skinAnalysis?.latest?.useQuery?.() as any;
+  const { t } = useLocale();
+  const cycleSettings = api.cycleTracker.settings.useQuery();
+  const skinAnalysis = api.skinAnalysis.history.useQuery({});
 
   return (
     <DashboardLayout userRole="CUSTOMER">
       <PageContainer width="wide">
-        <PageTitle title=" الصحة والعافية" subtitle="جمالكِ يبدأ من صحتكِ" />
+        <PageTitle title={t('wellness.title')} subtitle={t('wellness.subtitle')} />
 
         <div className="grid gap-6 lg:grid-cols-3">
           {/* Main */}
@@ -76,8 +79,14 @@ export default function WellnessPage(): JSX.Element {
             </div>
 
             <CyclePhaseCard
-              phase={cycleSettings?.data?.currentPhase ?? 'follicular'}
-              day={cycleSettings?.data?.cycleDay ?? 14}
+              phase={
+                (
+                  cycleSettings?.data as
+                    | { currentPhase?: 'menstrual' | 'follicular' | 'ovulation' | 'luteal' }
+                    | undefined
+                )?.currentPhase ?? 'follicular'
+              }
+              day={(cycleSettings?.data as { cycleDay?: number } | undefined)?.cycleDay ?? 14}
             />
 
             <div className="grid gap-4 sm:grid-cols-3">
@@ -89,7 +98,10 @@ export default function WellnessPage(): JSX.Element {
             <div className="grid gap-4 sm:grid-cols-2">
               <SkinAnalysisCard
                 concerns={
-                  ((skinAnalysis?.data?.concerns as string[]) ?? ['dryness', 'dark_spots']) as any
+                  (skinAnalysis?.data as unknown as { concerns?: SkinConcern[] })?.concerns ?? [
+                    'dryness',
+                    'dark_spots',
+                  ]
                 }
               />
               <CycleResourceCard phase="follicular" />

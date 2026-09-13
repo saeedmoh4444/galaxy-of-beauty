@@ -1,15 +1,29 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 'use client';
 import { api } from '@/lib/trpc';
-import { Card, CardListSkeleton, ErrorAlert, EmptyState, Button, Input, Modal } from '@galaxy/ui';
+import {
+  Card,
+  CardListSkeleton,
+  ErrorAlert,
+  EmptyState,
+  Button,
+  Input,
+  Modal,
+  useAuth,
+} from '@galaxy/ui';
 import { useState } from 'react';
+import { useLocale } from '@/components/LocaleProvider';
+import { localize } from '@galaxy/shared';
 
 export default function AdminBlogPage(): JSX.Element {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const { data, isLoading, isError, refetch } = api.blog.listAll.useQuery({
-    page: 1,
-    limit: 50,
-  }) as any;
+  const { t, locale } = useLocale();
+  const { isAuthenticated } = useAuth();
+  const { data, isLoading, isError, refetch } = api.blog.listAll.useQuery(
+    {
+      page: 1,
+      limit: 50,
+    },
+    { enabled: isAuthenticated },
+  );
   const posts = data?.items ?? [];
   const [showCreate, setShowCreate] = useState(false);
   const [form, setForm] = useState({
@@ -31,22 +45,22 @@ export default function AdminBlogPage(): JSX.Element {
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between">
-        <h1 className="text-2xl font-bold"> المدونة</h1>
-        <Button onClick={() => setShowCreate(true)}>مقال جديد</Button>
+        <h1 className="text-2xl font-bold">{t('admin.blog.title')}</h1>
+        <Button onClick={() => setShowCreate(true)}>{t('admin.blog.new-post')}</Button>
       </div>
       {isLoading ? (
         <CardListSkeleton count={4} />
       ) : isError ? (
-        <ErrorAlert message="فشل التحميل" onRetry={() => refetch()} />
+        <ErrorAlert message={t('admin.blog.load-error')} onRetry={() => refetch()} />
       ) : posts.length === 0 ? (
-        <EmptyState title="لا توجد مقالات" />
+        <EmptyState title={t('admin.blog.empty')} />
       ) : (
         <div className="space-y-3">
-          {posts.map((p: Record<string, any>) => (
+          {posts.map((p) => (
             <Card key={p.id} padding="md">
               <div className="flex items-center justify-between">
                 <div>
-                  <h3 className="font-bold">{(p.titleJson as Record<string, string>)?.ar}</h3>
+                  <h3 className="font-bold">{localize(p.titleJson, locale)}</h3>
                   <p className="text-xs text-text-tertiary">
                     {p.slug} · {p.tags?.join(', ')}
                   </p>
@@ -54,33 +68,38 @@ export default function AdminBlogPage(): JSX.Element {
                 <span
                   className={`rounded px-2 py-0.5 text-xs ${p.isPublished ? 'bg-green-100 text-green-700' : 'bg-amber-100 text-amber-700'}`}
                 >
-                  {p.isPublished ? 'منشور' : 'مسودة'}
+                  {p.isPublished ? t('admin.beauty-events.published') : t('admin.blog.draft')}
                 </span>
               </div>
             </Card>
           ))}
         </div>
       )}
-      <Modal open={showCreate} onClose={() => setShowCreate(false)} title="مقال جديد" size="lg">
+      <Modal
+        open={showCreate}
+        onClose={() => setShowCreate(false)}
+        title={t('admin.blog.new-post')}
+        size="lg"
+      >
         <div className="space-y-3">
           <Input
-            label="العنوان (عربي)"
+            label={t('admin.blog.title-ar')}
             value={form.titleAr}
             onChange={(e) => setForm({ ...form, titleAr: e.target.value })}
           />
           <Input
-            label="العنوان (إنجليزي)"
+            label={t('admin.blog.title-en')}
             value={form.titleEn}
             onChange={(e) => setForm({ ...form, titleEn: e.target.value })}
           />
           <Input
-            label="المعرف (slug)"
+            label={t('admin.blog.slug-label')}
             value={form.slug}
             onChange={(e) => setForm({ ...form, slug: e.target.value })}
           />
           <div>
             <label htmlFor="ab-body-ar" className="mb-1 block text-sm font-medium">
-              المحتوى (عربي)
+              {t('admin.blog.body-ar')}
             </label>
             <textarea
               id="ab-body-ar"
@@ -92,7 +111,7 @@ export default function AdminBlogPage(): JSX.Element {
           </div>
           <div>
             <label htmlFor="ab-body-en" className="mb-1 block text-sm font-medium">
-              المحتوى (إنجليزي)
+              {t('admin.blog.body-en')}
             </label>
             <textarea
               id="ab-body-en"
@@ -103,7 +122,7 @@ export default function AdminBlogPage(): JSX.Element {
             />
           </div>
           <Input
-            label="الوسوم (مفصولة بفواصل)"
+            label={t('admin.blog.tags-label')}
             value={form.tags}
             onChange={(e) => setForm({ ...form, tags: e.target.value })}
             placeholder="skincare, makeup"
@@ -114,7 +133,7 @@ export default function AdminBlogPage(): JSX.Element {
               checked={form.isPublished}
               onChange={(e) => setForm({ ...form, isPublished: e.target.checked })}
             />{' '}
-            نشر مباشر
+            {t('admin.blog.publish-immediately')}
           </label>
           <Button
             onClick={() =>
@@ -128,7 +147,7 @@ export default function AdminBlogPage(): JSX.Element {
             }
             loading={createMut.isPending}
           >
-            نشر
+            {t('admin.blog.publish-button')}
           </Button>
         </div>
       </Modal>

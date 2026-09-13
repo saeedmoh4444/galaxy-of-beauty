@@ -32,6 +32,14 @@ const httpServer = http.createServer((req, res) => {
 
 initializeSocket(httpServer);
 
+// Fail-safe: a down/flapping Redis adapter must not take the realtime
+// server down — log and keep serving (connections simply fall back to
+// single-instance delivery).
+process.on('unhandledRejection', (reason) => {
+  // eslint-disable-next-line no-console
+  console.error('[Socket] Unhandled rejection:', (reason as Error)?.message ?? reason);
+});
+
 // Graceful shutdown
 function shutdown(signal: string) {
   // eslint-disable-next-line no-console

@@ -77,12 +77,14 @@ import {
   BeautyTeethCareCard,
 } from '@galaxy/ui';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
+import { useLocale } from '@/components/LocaleProvider';
 
 export default function SkincareGuidePage(): JSX.Element {
+  const { t } = useLocale();
   return (
     <DashboardLayout userRole="CUSTOMER">
       <PageContainer width="wide">
-        <PageTitle title=" دليل العناية بالبشرة" subtitle="كل ما تحتاجينه لبشرة صحية ومشرقة" />
+        <PageTitle title={t('skincareGuide.title')} subtitle={t('skincareGuide.subtitle')} />
 
         <div className="grid gap-6 lg:grid-cols-3">
           <div className="lg:col-span-2 space-y-6">
@@ -93,9 +95,21 @@ export default function SkincareGuidePage(): JSX.Element {
             </div>
             <BeautyDoubleCleansingCard />
             <BeautyRoutineTimelineCard
-              morning={['غسول', 'تونر', 'سيروم فيتامين سي', 'مرطب', 'واقي شمس']}
-              evening={['مزيل مكياج', 'غسول', 'تونر', 'سيروم ليلي', 'مرطب']}
-              skinType="مختلطة"
+              morning={[
+                t('skincareGuide.wash'),
+                t('skincareGuide.toner'),
+                t('skincareGuide.vitCSerum'),
+                t('skincareGuide.moisturizer'),
+                t('skincareGuide.sunscreen'),
+              ]}
+              evening={[
+                t('skincareGuide.makeupRemover'),
+                t('skincareGuide.wash'),
+                t('skincareGuide.toner'),
+                t('skincareGuide.nightSerum'),
+                t('skincareGuide.moisturizer'),
+              ]}
+              skinType={t('skincareGuide.mixedSkin')}
             />
 
             {/* Product guides */}

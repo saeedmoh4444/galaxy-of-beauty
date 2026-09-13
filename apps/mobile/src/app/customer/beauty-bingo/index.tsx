@@ -1,6 +1,8 @@
 import { View, Text, ScrollView, StyleSheet, TouchableOpacity, RefreshControl } from 'react-native';
-import { trpc } from '@/lib/trpc-react';
 import { SkeletonList } from '@/components/SkeletonCard';
+import { useLocale } from '@/components/LocaleProvider';
+import { useAuthState } from '@/hooks/useAuthState';
+import { trpc } from '@/lib/trpc-react';
 
 interface BingoTask {
   id?: number;
@@ -15,7 +17,9 @@ interface BingoCard {
 }
 
 export default function BeautyBingoScreen(): JSX.Element {
-  const q = trpc.beautyBingo.card.useQuery();
+  const { t } = useLocale();
+  const isAuthed = useAuthState();
+  const q = trpc.beautyBingo.card.useQuery(undefined, { enabled: isAuthed });
   const markMut = trpc.beautyBingo.mark.useMutation({
     onSuccess: () => {
       void q.refetch();
@@ -39,11 +43,11 @@ export default function BeautyBingoScreen(): JSX.Element {
         />
       }
     >
-      <Text style={styles.t}> Beauty Bingo</Text>
+      <Text style={styles.t}>{t('beautyBingo.title')}</Text>
       <View style={styles.card}>
-        <Text style={styles.em}></Text>
+        <Text style={styles.em}>🎯</Text>
         <Text style={styles.pr}>
-          {data?.completed ?? 0}/{data?.total ?? 9} مكتملة
+          {t('beautyBingo.completed', { done: data?.completed ?? 0, total: data?.total ?? 9 })}
         </Text>
         <View style={styles.grid}>
           {tasks.map((t) => (

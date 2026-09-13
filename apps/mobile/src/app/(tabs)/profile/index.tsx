@@ -1,9 +1,13 @@
 import { View, Text, TouchableOpacity, StyleSheet, ScrollView } from 'react-native';
 import { useRouter } from 'expo-router';
+import type { TranslationKey } from '@galaxy/shared';
 import { ScreenState } from '@/components/ScreenState';
 import { trpc } from '@/lib/trpc-react';
 import { setAuthToken } from '@/lib/authToken';
+import { useAuthState } from '@/hooks/useAuthState';
 import { setSocketToken } from '@/hooks/useSocket';
+import { useLocale } from '@/components/LocaleProvider';
+import { useTheme, type ThemeMode } from '@/components/ThemeProvider';
 
 const COLORS = {
   brand: '#7c3aed',
@@ -14,19 +18,31 @@ const COLORS = {
   danger: '#dc2626',
 };
 
-const MENU_ITEMS = [
-  { label: ' حجوزاتي', href: '/customer/bookings' },
-  { label: '️ المفضلة', href: '/customer/wishlist' },
-  { label: ' الولاء', href: '/customer/loyalty' },
-  { label: ' تعديل الملف', href: '/customer/profile' },
-  { label: ' العناوين', href: '/customer/addresses' },
-  { label: ' البطاقات المحفوظة', href: '/customer/saved-cards' },
-  { label: ' الإحالات', href: '/customer/referrals' },
-  { label: '‍️ مجتمع الجمال', href: '/customer/community' },
-  { label: ' أكاديمية الجمال', href: '/customer/beauty-academy' },
-  { label: ' الصحة والعافية', href: '/customer/wellness' },
-  { label: ' الإشعارات', href: '/customer/notifications' },
-  { label: ' مجرة الجمال - المساعدة الذكية', href: '/customer/ai-chat' },
+const THEME_MODES: ThemeMode[] = ['light', 'dark', 'system'];
+
+// Mode labels are not in the i18n catalog (theme keys are web-only), so the
+// current mode is shown as icon + short English label.
+const MODE_DISPLAY: Record<ThemeMode, { icon: string; label: string }> = {
+  light: { icon: '☀️', label: 'Light' },
+  dark: { icon: '🌙', label: 'Dark' },
+  system: { icon: '⚙️', label: 'System' },
+};
+
+const MENU_ITEMS: { labelKey: TranslationKey; href: string }[] = [
+  { labelKey: 'mobile.core.bookingsTitle', href: '/customer/bookings' },
+  { labelKey: 'mobile.core.menuWishlist', href: '/customer/wishlist' },
+  { labelKey: 'mobile.core.menuLoyalty', href: '/customer/loyalty' },
+  { labelKey: 'tech.dashboard.edit-profile', href: '/customer/profile' },
+  { labelKey: 'mobile.core.menuAddresses', href: '/customer/addresses' },
+  { labelKey: 'mobile.core.menuSavedCards', href: '/customer/saved-cards' },
+  { labelKey: 'mobile.core.menuReferrals', href: '/customer/referrals' },
+  { labelKey: 'mobile.core.menuBeautyDashboard', href: '/customer/beauty-dashboard' },
+  { labelKey: 'mobile.core.menuCommunity', href: '/customer/community' },
+  { labelKey: 'mobile.core.menuAcademy', href: '/customer/beauty-academy' },
+  { labelKey: 'wellness.title', href: '/customer/wellness' },
+  { labelKey: 'mobile.core.menuNotifications', href: '/customer/notifications' },
+  { labelKey: 'nav.more', href: '/public/more' },
+  { labelKey: 'mobile.core.aiAssistantHelp', href: '/customer/ai-chat' },
 ];
 
 interface ProfileUser {
@@ -36,14 +52,21 @@ interface ProfileUser {
 
 export default function ProfileScreen(): JSX.Element {
   const router = useRouter();
-  const profile = trpc.users.getMe.useQuery() ?? {
+  const { locale, t, setLocale } = useLocale();
+  const { mode, setMode } = useTheme();
+  const isAuthed = useAuthState();
+  const profile = trpc.users.getMe.useQuery(undefined, { enabled: isAuthed }) ?? {
     data: null,
     isLoading: false,
     isError: false,
     refetch: () => {},
   };
-  const loyalty = trpc.loyalty.myAccount.useQuery();
-  const kindness = trpc.kindnessPoints.getStatus.useQuery();
+  const loyalty = trpc.loyalty.myAccount.useQuery(undefined, { enabled: isAuthed });
+  // Auth-gated: the profile tab renders for guests too (pre-login state)
+  // and must not fire the authenticated kindness query for them.
+  const kindness = trpc.kindnessPoints.getStatus.useQuery(undefined, {
+    enabled: isAuthed,
+  });
   const p = profile.data as ProfileUser | null;
 
   const logout = trpc.auth.logout.useMutation({
@@ -60,33 +83,51 @@ export default function ProfileScreen(): JSX.Element {
       isLoading={profile.isLoading}
       isError={profile.isError}
       isEmpty={false}
-      errorMessage="فشل تحميل الملف الشخصي"
+      errorMessage={t('profile.load-error')}
       onRetry={() => profile.refetch()}
     >
-      <Text style={styles.title}> حسابي</Text>
+      <Text style={styles.title}>{t('mobile.core.profileTitle')}</Text>
       <View style={styles.profileCard}>
         <View style={styles.avatar}>
           <Text style={styles.avatarText}>{p?.name?.[0] ?? ''}</Text>
         </View>
-        <Text style={styles.userName}>{p?.name ?? 'مستخدمة جالكسي بيوتي'}</Text>
+        <Text style={styles.userName}>{p?.name ?? t('mobile.core.beautyGalaxyUser')}</Text>
         <Text style={styles.userEmail}>{p?.email ?? ''}</Text>
         {/* Loyalty + Kindness Stats */}
         <View style={styles.statsRow}>
           {loyalty?.data && (
             <View style={styles.statItem}>
               <Text style={styles.statVal}>{loyalty.data.points ?? 0}</Text>
-              <Text style={styles.statLbl}> نقاط</Text>
+              <Text style={styles.statLbl}>{t('mobile.core.pointsLabel')}</Text>
             </View>
           )}
           {kindness?.data && (
             <View style={styles.statItem}>
               <Text style={styles.statVal}>{kindness.data.points ?? 0}</Text>
-              <Text style={styles.statLbl}> لطف</Text>
+              <Text style={styles.statLbl}>{t('mobile.core.kindnessLabel')}</Text>
             </View>
           )}
         </View>
       </View>
-      <ScrollView style={styles.menuList}>
+      <TouchableOpacity
+        style={styles.langRow}
+        onPress={() => setLocale(locale === 'ar' ? 'en' : 'ar')}
+        activeOpacity={0.6}
+      >
+        <Text style={styles.langLabel}>{t('profile.language')}</Text>
+        <Text style={styles.langValue}>{locale === 'ar' ? t('profile.arabic') : 'English'}</Text>
+      </TouchableOpacity>
+      <TouchableOpacity
+        style={styles.langRow}
+        onPress={() => setMode(THEME_MODES[(THEME_MODES.indexOf(mode) + 1) % THEME_MODES.length])}
+        activeOpacity={0.6}
+      >
+        <Text style={styles.langLabel}>{t('mobile.nightMode.title')}</Text>
+        <Text style={styles.langValue}>
+          {MODE_DISPLAY[mode].icon} {MODE_DISPLAY[mode].label}
+        </Text>
+      </TouchableOpacity>
+      <ScrollView style={styles.menuList} testID="profile-menu">
         {MENU_ITEMS.map((item, i) => (
           <TouchableOpacity
             key={i}
@@ -94,13 +135,13 @@ export default function ProfileScreen(): JSX.Element {
             onPress={() => router.push(item.href as never)}
             activeOpacity={0.6}
           >
-            <Text style={styles.menuLabel}>{item.label}</Text>
+            <Text style={styles.menuLabel}>{t(item.labelKey)}</Text>
             <Text style={styles.menuArrow}>›</Text>
           </TouchableOpacity>
         ))}
       </ScrollView>
       <TouchableOpacity style={styles.logoutBtn} onPress={() => logout.mutate({})}>
-        <Text style={styles.logoutText}> تسجيل الخروج</Text>
+        <Text style={styles.logoutText}>{t('mobile.core.logoutLabel')}</Text>
       </TouchableOpacity>
     </ScreenState>
   );
@@ -137,6 +178,26 @@ const styles = StyleSheet.create({
   avatarText: { fontSize: 28, color: COLORS.white, fontWeight: '700' },
   userName: { fontSize: 18, fontWeight: '700', color: COLORS.gray900 },
   userEmail: { fontSize: 13, color: COLORS.gray400, marginTop: 4 },
+  langRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    backgroundColor: COLORS.white,
+    borderRadius: 12,
+    paddingHorizontal: 16,
+    paddingVertical: 14,
+    marginBottom: 12,
+  },
+  langLabel: {
+    fontSize: 15,
+    fontWeight: '600',
+    color: COLORS.gray900,
+  },
+  langValue: {
+    fontSize: 14,
+    color: COLORS.brand,
+    fontWeight: '700',
+  },
   menuList: { marginBottom: 16 },
   menuItem: {
     flexDirection: 'row',

@@ -1,6 +1,8 @@
 import { View, Text, ScrollView, StyleSheet, RefreshControl, Image } from 'react-native';
 import { SkeletonList } from '@/components/SkeletonCard';
 import { trpc } from '@/lib/trpc-react';
+import { useLocale } from '@/components/LocaleProvider';
+import { useAuthState } from '@/hooks/useAuthState';
 
 interface MoodPin {
   id?: number;
@@ -8,7 +10,9 @@ interface MoodPin {
 }
 
 export default function MoodBoardScreen(): JSX.Element {
-  const pinsQ = trpc.moodBoard.list.useQuery();
+  const { t } = useLocale();
+  const isAuthed = useAuthState();
+  const pinsQ = trpc.moodBoard.list.useQuery(undefined, { enabled: isAuthed });
   const data: MoodPin[] = (pinsQ.data as unknown as MoodPin[] | undefined) ?? [];
 
   if (pinsQ.isLoading) return <SkeletonList count={6} />;
@@ -25,7 +29,7 @@ export default function MoodBoardScreen(): JSX.Element {
         />
       }
     >
-      <Text style={styles.t}> لوحة المود</Text>
+      <Text style={styles.t}>{t('mobile.moodBoard.title')}</Text>
       <View style={styles.grid}>
         {data.map((p, i) => (
           <View key={i} style={styles.pin}>
@@ -33,7 +37,7 @@ export default function MoodBoardScreen(): JSX.Element {
               <Image source={{ uri: p.imageUrl }} style={styles.img} />
             ) : (
               <View style={styles.placeholder}>
-                <Text style={{ fontSize: 28 }}>️</Text>
+                <Text style={{ fontSize: 28 }}>🌸</Text>
               </View>
             )}
           </View>

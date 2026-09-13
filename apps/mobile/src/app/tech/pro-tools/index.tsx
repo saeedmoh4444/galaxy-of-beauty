@@ -3,6 +3,7 @@ import { useRouter } from 'expo-router';
 import { ScreenState } from '@/components/ScreenState';
 import { trpc } from '@/lib/trpc-react';
 import { formatCurrency } from '@galaxy/ui';
+import { useLocale } from '@/components/LocaleProvider';
 
 const COLORS = {
   brand: '#7c3aed',
@@ -36,6 +37,7 @@ function ToolCard({ title, value, subtitle, onPress }: ToolCardProps): JSX.Eleme
 
 export default function ProToolsScreen(): JSX.Element {
   const router = useRouter();
+  const { t } = useLocale();
   const crm = trpc.technicianPerformance.myStats.useQuery() as unknown as {
     data?: Record<string, unknown> | null;
     isLoading: boolean;
@@ -54,56 +56,64 @@ export default function ProToolsScreen(): JSX.Element {
       isLoading={crm?.isLoading || earnings?.isLoading}
       isError={crm?.isError || earnings?.isError}
       isEmpty={false}
-      errorMessage="فشل تحميل الأدوات"
+      errorMessage={t('mobile.tech.pro-tools.load-error')}
       onRetry={() => {
         crm?.refetch?.();
         earnings?.refetch?.();
       }}
     >
       <ScrollView style={styles.container} contentContainerStyle={styles.content}>
-        <Text style={styles.title}>أدوات المحترفات</Text>
-        <Text style={styles.subtitle}>أدوات احترافية لإدارة أعمالكِ</Text>
+        <Text style={styles.title}>{t('mobile.tech.pro-tools.title')}</Text>
+        <Text style={styles.subtitle}>{t('mobile.tech.pro-tools.subtitle')}</Text>
 
         <View style={styles.grid}>
           <ToolCard
-            title="إجمالي العملاء"
+            title={t('mobile.tech.pro-tools.total-clients')}
             value={String(crm?.data?.totalCustomers ?? 45)}
-            subtitle={`${crm?.data?.regularCustomers ?? 18} عميلات دائمات`}
+            subtitle={t('mobile.tech.pro-tools.regular-clients', {
+              count: Number(crm?.data?.regularCustomers ?? 18),
+            })}
           />
           <ToolCard
-            title="الإيرادات الشهرية"
+            title={t('mobile.tech.pro-tools.monthly-revenue')}
             value={formatCurrency(Number(earnings?.data?.thisMonth ?? 8500))}
-            subtitle={`الشهر الماضي: ${formatCurrency(Number(earnings?.data?.lastMonth ?? 7200))}`}
+            subtitle={t('mobile.tech.pro-tools.last-month', {
+              amount: formatCurrency(Number(earnings?.data?.lastMonth ?? 7200)),
+            })}
           />
           <ToolCard
-            title="متوسط التقييم"
+            title={t('mobile.tech.pro-tools.avg-rating')}
             value={Number(crm?.data?.avgRating ?? 4.8).toFixed(1)}
-            subtitle="من 5 نجوم"
+            subtitle={t('mobile.tech.pro-tools.out-of-five')}
             onPress={() => router.push('/tech/reviews' as never)}
           />
-          <ToolCard title="المصروفات" value={formatCurrency(3200)} subtitle="هذا الشهر" />
           <ToolCard
-            title="سجل الحجوزات"
+            title={t('mobile.tech.pro-tools.expenses')}
+            value={formatCurrency(3200)}
+            subtitle={t('mobile.tech.pro-tools.this-month')}
+          />
+          <ToolCard
+            title={t('mobile.tech.pro-tools.bookings-log')}
             value={`${crm?.data?.totalBookings ?? 128}+`}
-            subtitle="عرض كل الحجوزات"
+            subtitle={t('mobile.tech.pro-tools.view-all-bookings')}
             onPress={() => router.push('/tech/bookings' as never)}
           />
           <ToolCard
-            title="المحفظة والأرباح"
+            title={t('mobile.tech.pro-tools.wallet-earnings')}
             value={formatCurrency(Number(earnings?.data?.availableBalance ?? 0))}
-            subtitle="الرصيد المتاح للسحب"
+            subtitle={t('mobile.tech.pro-tools.available-balance')}
             onPress={() => router.push('/tech/earnings' as never)}
           />
           <ToolCard
-            title="المعرض"
+            title={t('mobile.tech.pro-tools.gallery')}
             value={`${crm?.data?.galleryPhotos ?? 12}+`}
-            subtitle="صور وأعمال"
+            subtitle={t('mobile.tech.pro-tools.photos-work')}
             onPress={() => router.push('/tech/gallery' as never)}
           />
           <ToolCard
-            title="التقويم"
-            value="المواعيد"
-            subtitle="إدارة جدول المواعيد"
+            title={t('mobile.calendar')}
+            value={t('mobile.slots')}
+            subtitle={t('mobile.tech.pro-tools.manage-schedule')}
             onPress={() => router.push('/tech/calendar' as never)}
           />
         </View>

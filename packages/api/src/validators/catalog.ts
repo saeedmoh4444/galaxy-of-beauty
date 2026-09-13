@@ -40,6 +40,14 @@ export const createTagSchema = z.object({
   slug: z.string().min(1),
 });
 
+/** Query-string-safe boolean: accepts real booleans (typed callers) AND
+ *  'true'/'false' strings (HTTP query params — z.coerce.boolean() would
+ *  read the string "false" as TRUE). */
+export const queryBool = z
+  .union([z.boolean(), z.enum(['true', 'false'])])
+  .optional()
+  .transform((v) => v === true || v === 'true');
+
 export const serviceQuerySchema = z.object({
   search: z.string().optional(),
   categoryId: z.coerce.number().int().positive().optional(),
@@ -47,7 +55,13 @@ export const serviceQuerySchema = z.object({
   maxPrice: z.coerce.number().optional(),
   sort: z.enum(['newest', 'price_asc', 'price_desc', 'popular', 'duration']).default('newest'),
   page: z.coerce.number().int().positive().default(1),
-  limit: z.coerce.number().int().min(1).max(50).default(12),
+  // 100 = MAX_LIST_SIZE (@galaxy/ui): the booking-create picker needs the full
+  // active catalog — a 50 cap silently hides services from the dropdown.
+  limit: z.coerce.number().int().min(1).max(100).default(12),
+  // E6d — trust badge filters (Tier 2).
+  womenOnly: queryBool,
+  privateSuite: queryBool,
+  pregnancySafe: queryBool,
 });
 
 export const addTechnicianServiceSchema = z.object({

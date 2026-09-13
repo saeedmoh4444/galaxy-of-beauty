@@ -38,7 +38,7 @@ const socketMessageCounts = new Map<string, { count: number; resetAt: number }>(
 const SOCKET_MSG_LIMIT = 30; // max 30 messages per second per socket
 const SOCKET_MSG_WINDOW_MS = 1000;
 
-function checkSocketRateLimit(socketId: string): boolean {
+export function checkSocketRateLimit(socketId: string): boolean {
   const now = Date.now();
   const entry = socketMessageCounts.get(socketId);
 
@@ -149,9 +149,33 @@ export function initializeSocket(httpServer: HttpServer): Server {
     },
     pingTimeout: 60000,
     pingInterval: 25000,
-    // ── RT-005: Redis adapter for multi-instance ──────────
-    ...(getRedis() ? { adapter: createAdapter(getRedis()!, getRedis()!.duplicate()) } : {}),
   });
+
+  // ── RT-005: Redis adapter for multi-instance ──────────
+  // Attach after server construction so a down/flapping Redis can't
+  // take the whole socket process with it: the duplicated subscriber
+  // needs its own error listener, otherwise ioredis rejections are
+  // unhandled and crash the process (Node 20 default).
+  const redis = getRedis();
+  if (redis) {
+    // The adapter needs clients that queue commands while the connection
+    // is still opening (or reconnecting): the shared app client is created
+    // with enableOfflineQueue:false (fail-fast semantics), so subscribe on
+    // a duplicate inherits it and throws synchronously at boot whenever
+    // Redis hasn't finished connecting yet. Give the adapter its own
+    // pub/sub pair with the queue enabled.
+    const pub = redis.duplicate({ enableOfflineQueue: true });
+    const sub = redis.duplicate({ enableOfflineQueue: true });
+    pub.on('error', (err) => {
+      // eslint-disable-next-line no-console
+      console.error('[Socket] Redis adapter error:', err.message);
+    });
+    sub.on('error', (err) => {
+      // eslint-disable-next-line no-console
+      console.error('[Socket] Redis adapter error:', err.message);
+    });
+    io.adapter(createAdapter(pub, sub));
+  }
 
   // ── Authentication middleware ──────────────────────────
   io.use((socket, next) => {

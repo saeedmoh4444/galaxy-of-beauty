@@ -2,6 +2,8 @@ import { View, Text, ScrollView, StyleSheet, TouchableOpacity, RefreshControl } 
 import { useState } from 'react';
 import { SkeletonList } from '@/components/SkeletonCard';
 import { trpc } from '@/lib/trpc-react';
+import { useLocale } from '@/components/LocaleProvider';
+import { useAuthState } from '@/hooks/useAuthState';
 
 interface CalendarSyncStatus {
   connected?: boolean;
@@ -13,12 +15,18 @@ interface CalendarEvent {
   title?: string;
   technician?: string;
   date: string;
+  synced?: boolean;
 }
 
 export default function CalendarSyncScreen(): JSX.Element {
+  const isAuthed = useAuthState();
+  const { locale, t } = useLocale();
   const [error, setError] = useState('');
-  const statusQ = trpc.calendarSync.status.useQuery();
-  const upcomingQ = trpc.calendarSync.upcoming.useQuery();
+  const statusQ = trpc.calendarSync.status.useQuery(undefined, { enabled: isAuthed });
+  const upcomingQ = trpc.calendarSync.upcoming.useQuery(undefined, { enabled: isAuthed });
+  const bookingsSyncMut = trpc.calendarSync.syncBookings.useMutation({
+    onSuccess: () => void upcomingQ.refetch(),
+  });
   const disconnectMut = trpc.calendarSync.disconnect.useMutation({
     onSuccess: () => {
       void statusQ.refetch();
@@ -28,7 +36,7 @@ export default function CalendarSyncScreen(): JSX.Element {
   const connect = () => {
     // Google OAuth flow not wired on mobile yet — surface a clear message
     // instead of silently failing with a fake auth code.
-    setError('مزامنة تقويم Google غير متوفرة في التطبيق حالياً');
+    setError(t('calendarSync.error'));
   };
   const disconnect = () => {
     disconnectMut.mutate();
@@ -53,31 +61,48 @@ export default function CalendarSyncScreen(): JSX.Element {
         />
       }
     >
-      <Text style={styles.t}> مزامنة التقويم</Text>
+      <Text style={styles.t}>{t('calendarSync.title')}</Text>
       {error ? <Text style={styles.errText}>{error}</Text> : null}
       <View style={styles.card}>
-        <Text style={styles.se}>{connected ? '' : ''}</Text>
-        <Text style={styles.st}>{connected ? 'التقويم مربوط' : 'لم يتم ربط التقويم بعد'}</Text>
+        <Text style={styles.se}>{connected ? '📅' : '🔗'}</Text>
+        <Text style={styles.st}>
+          {connected ? t('calendarSync.connected') : t('calendarSync.not-connected')}
+        </Text>
         <TouchableOpacity
           onPress={connected ? disconnect : connect}
           style={[styles.cb, connected && styles.cbd]}
         >
           <Text style={[styles.cbt, connected && styles.cbdt]}>
-            {connected ? 'قطع الاتصال' : ' ربط تقويم قوقل'}
+            {connected ? t('calendarSync.disconnect') : t('calendarSync.connect')}
           </Text>
         </TouchableOpacity>
       </View>
       {upcoming.length > 0 && (
         <View style={styles.card}>
+          {connected && (
+            <TouchableOpacity
+              style={styles.syncBtn}
+              onPress={() => bookingsSyncMut.mutate()}
+              disabled={bookingsSyncMut.isPending}
+            >
+              <Text style={styles.syncBtnText}>📅 {t('calendarSync.syncBookings')}</Text>
+            </TouchableOpacity>
+          )}
+          {bookingsSyncMut.data && (
+            <Text style={styles.syncResult}>
+              {t('calendarSync.syncedBookings', { n: bookingsSyncMut.data.synced as number })}
+            </Text>
+          )}
           {upcoming.map((e) => (
             <View key={e.id} style={styles.ev}>
               <Text style={styles.ee}>{e.emoji}</Text>
               <View style={{ flex: 1 }}>
                 <Text style={styles.et}>{e.title}</Text>
-                <Text style={styles.em}>‍ {e.technician}</Text>
+                <Text style={styles.em}> {e.technician}</Text>
               </View>
+              {e.synced && <Text style={styles.syncedBadge}>✓ {t('calendarSync.onCalendar')}</Text>}
               <Text style={styles.ed}>
-                {new Date(e.date).toLocaleDateString('ar-SA', {
+                {new Date(e.date).toLocaleDateString(locale === 'ar' ? 'ar-SA' : 'en-US', {
                   month: 'short',
                   day: 'numeric',
                 })}
@@ -114,6 +139,26 @@ const styles = StyleSheet.create({
   cbt: { color: '#fff', fontSize: 14, fontWeight: '600' },
   cbd: { backgroundColor: '#fef2f2' },
   cbdt: { color: '#ef4444' },
+  syncBtn: {
+    backgroundColor: '#ecfeff',
+    borderColor: '#67e8f9',
+    borderWidth: 1,
+    borderRadius: 12,
+    paddingVertical: 10,
+    alignItems: 'center',
+    marginBottom: 10,
+  },
+  syncBtnText: { color: '#0891b2', fontSize: 13, fontWeight: '700' },
+  syncResult: { color: '#64748b', fontSize: 12, textAlign: 'center', marginBottom: 8 },
+  syncedBadge: {
+    backgroundColor: '#dcfce7',
+    borderRadius: 999,
+    paddingHorizontal: 8,
+    paddingVertical: 2,
+    fontSize: 10,
+    color: '#15803d',
+    fontWeight: '700',
+  },
   ev: {
     flexDirection: 'row',
     alignItems: 'center',

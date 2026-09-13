@@ -1,6 +1,8 @@
 import { View, Text, ScrollView, StyleSheet, RefreshControl } from 'react-native';
 import { SkeletonList } from '@/components/SkeletonCard';
 import { trpc } from '@/lib/trpc-react';
+import { useLocale } from '@/components/LocaleProvider';
+import { useAuthState } from '@/hooks/useAuthState';
 
 interface PriceDropAlert {
   id?: number;
@@ -10,7 +12,9 @@ interface PriceDropAlert {
 }
 
 export default function PriceDropAlertsScreen(): JSX.Element {
-  const alertsQ = trpc.priceDropAlerts.myAlerts.useQuery();
+  const { t, locale } = useLocale();
+  const isAuthed = useAuthState();
+  const alertsQ = trpc.priceDropAlerts.myAlerts.useQuery(undefined, { enabled: isAuthed });
   const data: PriceDropAlert[] = (alertsQ.data as unknown as PriceDropAlert[] | undefined) ?? [];
 
   if (alertsQ.isLoading) return <SkeletonList count={4} />;
@@ -27,13 +31,17 @@ export default function PriceDropAlertsScreen(): JSX.Element {
         />
       }
     >
-      <Text style={styles.t}> تنبيهات الأسعار</Text>
+      <Text style={styles.t}>{t('mobile.priceDropAlerts.title')}</Text>
       {data.map((a, i) => (
         <View key={i} style={styles.card}>
           <Text style={styles.emoji}>{a.emoji ?? ''}</Text>
           <View style={{ flex: 1 }}>
             <Text style={styles.name}>{a.serviceName ?? ''}</Text>
-            <Text style={styles.drop}> {(a.droppedBy ?? 0).toLocaleString()} ر.س</Text>
+            <Text style={styles.drop}>
+              {t('mobile.priceDropAlerts.dropped', {
+                price: (a.droppedBy ?? 0).toLocaleString(locale === 'en' ? 'en-GB' : 'ar-SA'),
+              })}
+            </Text>
           </View>
         </View>
       ))}

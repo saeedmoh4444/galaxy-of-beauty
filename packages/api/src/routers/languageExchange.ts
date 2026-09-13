@@ -3,12 +3,12 @@ import { prisma } from '@galaxy/db';
 import { publicProcedure, customerProcedure, router } from '../trpc';
 
 const DEFAULT_TERMS = [
-  { ar: 'مكياج', en: 'Makeup', emoji: '' },
-  { ar: 'عناية بالبشرة', en: 'Skincare', emoji: '' },
-  { ar: 'حناء', en: 'Henna', emoji: '' },
-  { ar: 'عطر', en: 'Perfume', emoji: '' },
+  { ar: 'مكياج', en: 'Makeup', emoji: '💄' },
+  { ar: 'عناية بالبشرة', en: 'Skincare', emoji: '🧴' },
+  { ar: 'حناء', en: 'Henna', emoji: '🌿' },
+  { ar: 'عطر', en: 'Perfume', emoji: '🌸' },
   { ar: 'زيت', en: 'Oil', emoji: '🫒' },
-  { ar: 'جمال', en: 'Beauty', emoji: '' },
+  { ar: 'جمال', en: 'Beauty', emoji: '✨' },
 ];
 
 export const languageExchangeRouter = router({

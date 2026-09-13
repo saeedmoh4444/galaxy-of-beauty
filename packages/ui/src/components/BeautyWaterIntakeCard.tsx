@@ -13,11 +13,17 @@ import { cn } from '@galaxy/shared';
 
 interface BeautyWaterIntakeCardProps {
   goal?: number;
+  title?: string;
+  cupsSuffix?: string;
+  addCupText?: string;
   className?: string;
 }
 
 export function BeautyWaterIntakeCard({
   goal = 8,
+  title = 'الماء',
+  cupsSuffix = 'أكواب',
+  addCupText = '+ كوب',
   className = '',
 }: BeautyWaterIntakeCardProps): JSX.Element {
   const [cups, setCups] = useState(3);
@@ -33,11 +39,11 @@ export function BeautyWaterIntakeCard({
     >
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-2">
-          <span className="text-xl"></span>
+          <span className="text-xl">💧</span>
           <div>
-            <h4 className="text-sm font-bold text-sky-700 dark:text-sky-300">الماء</h4>
+            <h4 className="text-sm font-bold text-sky-700 dark:text-sky-300">{title}</h4>
             <p className="text-[10px] text-sky-500 dark:text-sky-400">
-              {cups}/{goal} أكواب
+              {cups}/{goal} {cupsSuffix}
             </p>
           </div>
         </div>
@@ -53,7 +59,7 @@ export function BeautyWaterIntakeCard({
               'h-7 w-7 rounded-lg text-xs transition-all',
               i < cups
                 ? 'bg-sky-200 text-sky-700 dark:bg-sky-900 dark:text-sky-300'
-                : 'bg-gray-100 text-gray-400 hover:bg-sky-50 dark:bg-gray-800',
+                : 'bg-surface-muted text-text-tertiary hover:bg-sky-50 dark:bg-gray-800',
             )}
           ></button>
         ))}
@@ -64,7 +70,7 @@ export function BeautyWaterIntakeCard({
         disabled={cups >= goal}
         className="mt-3 w-full rounded-xl bg-sky-600 py-2 text-xs font-bold text-white hover:bg-sky-700 disabled:opacity-50 transition-all"
       >
-        + كوب
+        {addCupText}
       </button>
     </div>
   );

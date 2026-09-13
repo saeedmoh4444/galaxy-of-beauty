@@ -1,6 +1,7 @@
 import { View, Text, StyleSheet } from 'react-native';
 import { ScreenState } from '@/components/ScreenState';
 import { trpc } from '@/lib/trpc-react';
+import { useLocale } from '@/components/LocaleProvider';
 
 const COLORS = {
   brand: '#7c3aed',
@@ -12,6 +13,7 @@ const COLORS = {
 };
 
 export default function TechSlotsScreen(): JSX.Element {
+  const { t, locale } = useLocale();
   const slots = trpc.slots.getMySlots.useQuery({}) ?? {
     data: null,
     isLoading: false,
@@ -25,21 +27,23 @@ export default function TechSlotsScreen(): JSX.Element {
       isLoading={slots.isLoading}
       isError={slots.isError}
       isEmpty={!data || data.length === 0}
-      errorMessage="فشل تحميل المواعيد"
-      emptyTitle="لا توجد مواعيد"
-      emptyDescription="أضيفي مواعيدك المتاحة"
+      errorMessage={t('tech.slots.load-error')}
+      emptyTitle={t('tech.slots.empty')}
+      emptyDescription={t('mobile.tech.slots.empty-desc')}
       onRetry={() => slots.refetch()}
     >
-      <Text style={styles.title}> المواعيد المتاحة</Text>
+      <Text style={styles.title}>{t('mobile.tech.slots.title')}</Text>
       {(data as Record<string, unknown>[])?.map((s: Record<string, unknown>, i: number) => (
         <View
           key={i}
           style={[styles.card, { borderLeftColor: s.isBooked ? COLORS.booked : COLORS.available }]}
         >
           <View style={styles.row}>
-            <Text style={styles.time}>{new Date(s.startAt as string).toLocaleString('ar-SA')}</Text>
+            <Text style={styles.time}>
+              {new Date(s.startAt as string).toLocaleString(locale === 'en' ? 'en-US' : 'ar-SA')}
+            </Text>
             <Text style={[styles.status, { color: s.isBooked ? COLORS.booked : COLORS.available }]}>
-              {s.isBooked ? ' محجوز' : ' متاح'}
+              {s.isBooked ? t('mobile.tech.slots.booked') : t('mobile.tech.slots.available')}
             </Text>
           </View>
         </View>

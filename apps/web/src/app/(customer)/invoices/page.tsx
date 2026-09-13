@@ -1,10 +1,17 @@
 'use client';
 import { api } from '@/lib/trpc';
-import { Card, CardListSkeleton, formatCurrency } from '@galaxy/ui';
+import { Card, CardListSkeleton, formatCurrency, useAuth } from '@galaxy/ui';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
+import { useLocale } from '@/components/LocaleProvider';
+import { localize } from '@galaxy/shared';
 
 export default function InvoicesPage(): JSX.Element {
-  const { data: bookingsData, isLoading } = api.bookings.list.useQuery({ page: 1, limit: 50 }) as {
+  const { t, locale } = useLocale();
+  const { isAuthenticated } = useAuth();
+  const { data: bookingsData, isLoading } = api.bookings.list.useQuery(
+    { page: 1, limit: 50 },
+    { enabled: isAuthenticated },
+  ) as {
     data: Record<string, unknown> | undefined;
     isLoading: boolean;
     isError: boolean;
@@ -21,18 +28,18 @@ export default function InvoicesPage(): JSX.Element {
     <DashboardLayout userRole="CUSTOMER">
       <div className="mx-auto max-w-3xl space-y-6">
         <div>
-          <h1 className="text-2xl font-bold"> الفواتير</h1>
-          <p className="mt-1 text-sm text-text-secondary">سجل مدفوعاتكِ وفواتيركِ</p>
+          <h1 className="text-2xl font-bold">{t('invoices.title')}</h1>
+          <p className="mt-1 text-sm text-text-secondary">{t('invoices.subtitle')}</p>
         </div>
 
         <div className="grid gap-4 sm:grid-cols-2">
           <Card padding="lg" className="text-center">
             <p className="text-2xl font-extrabold">{completed.length}</p>
-            <p className="text-xs text-text-secondary">فواتير مدفوعة</p>
+            <p className="text-xs text-text-secondary">{t('invoices.paidCount')}</p>
           </Card>
           <Card padding="lg" className="text-center">
             <p className="text-2xl font-extrabold text-green-600">{formatCurrency(totalSpent)}</p>
-            <p className="text-xs text-text-secondary">إجمالي المدفوعات</p>
+            <p className="text-xs text-text-secondary">{t('invoices.totalSpent')}</p>
           </Card>
         </div>
 
@@ -40,8 +47,8 @@ export default function InvoicesPage(): JSX.Element {
           <CardListSkeleton count={4} />
         ) : completed.length === 0 ? (
           <Card padding="lg" className="text-center py-8">
-            <p className="text-4xl mb-2"></p>
-            <p className="text-text-secondary">لا توجد فواتير بعد</p>
+            <p className="text-4xl mb-2">🧾</p>
+            <p className="text-text-secondary">{t('invoices.empty')}</p>
           </Card>
         ) : (
           <div className="space-y-2">
@@ -53,22 +60,23 @@ export default function InvoicesPage(): JSX.Element {
                   <div className="flex items-center justify-between">
                     <div>
                       <p className="font-bold text-sm">
-                        {(service?.titleJson as Record<string, string>)?.ar ?? `حجز #${b.id}`}
+                        {localize(service?.titleJson, locale) ||
+                          t('invoices.bookingFallback', { id: String(b.id) })}
                       </p>
                       <p className="text-xs text-text-secondary">
                         {new Date((slot?.startAt ?? b.createdAt) as string).toLocaleDateString(
-                          'ar-SA',
+                          locale === 'en' ? 'en-GB' : 'ar-SA',
                           { day: 'numeric', month: 'long', year: 'numeric' },
                         )}{' '}
                         · {b.bookingCode as string}
                       </p>
                     </div>
-                    <div className="text-right">
+                    <div className="text-end">
                       <p className="font-bold text-green-600">
                         {formatCurrency(Number(b.totalAmount) || 0)}
                       </p>
                       <span className="rounded-full bg-green-100 px-2 py-0.5 text-xs text-green-700">
-                        مدفوعة
+                        {t('invoices.paidBadge')}
                       </span>
                     </div>
                   </div>

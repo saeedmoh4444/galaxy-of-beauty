@@ -94,7 +94,6 @@ import {
   conciergeRouter,
   timeCapsuleRouter,
   secretSantaRouter,
-  affirmationsRouter,
   socialImpactRouter,
   dvSupportRouter,
   subscriptionGiftRouter,
@@ -141,6 +140,7 @@ import {
 import {
   aiRouter,
   aiAssistantRouter,
+  lifestyleAIRouter,
   aiFeaturesRouter,
   aiRoutineRouter,
   skinAnalysisRouter,
@@ -210,9 +210,14 @@ import {
   bridalConciergeRouter,
   giftRegistryRouter,
   giftQuizRouter,
+  providerReviewRouter,
+  promotionRouter,
   beautyBingoRouter,
   eventTicketsRouter,
   beautyCouponsRouter,
+  clinicsRouter,
+  gymsRouter,
+  nailBarsRouter,
 } from '../domains/market';
 
 // Wellness
@@ -220,6 +225,10 @@ import {
   selfCareRouter,
   wellnessTrackerRouter,
   wellnessHubRouter,
+  wellnessContentRouter,
+  lifeStageRouter,
+  postpartumRouter,
+  menopauseRouter,
   beautyBudgetRouter,
   beautyBudgetPlannerRouter,
   beautyDashboardRouter,
@@ -315,10 +324,13 @@ export const appRouter = router({
       checks.database = 'error';
     }
 
-    // Redis check
+    // Redis check — only report 'ok' when the connection is ready AND the
+    // ping succeeds. With enableOfflineQueue disabled, pinging during the
+    // 'connecting' handshake rejects instantly and would falsely read as
+    // an error, so that state reports 'unavailable' instead.
     try {
       const redis = getRedis();
-      if (redis && (redis.status === 'ready' || redis.status === 'connecting')) {
+      if (redis?.status === 'ready') {
         await redis.ping();
         checks.redis = 'ok';
       } else {
@@ -420,7 +432,6 @@ export const appRouter = router({
   concierge: conciergeRouter,
   timeCapsule: timeCapsuleRouter,
   secretSanta: secretSantaRouter,
-  affirmations: affirmationsRouter,
   socialImpact: socialImpactRouter,
   dvSupport: dvSupportRouter,
   subscriptionGift: subscriptionGiftRouter,
@@ -466,6 +477,7 @@ export const appRouter = router({
   // AI
   ai: aiRouter,
   aiAssistant: aiAssistantRouter,
+  lifestyleAI: lifestyleAIRouter,
   aiFeatures: aiFeaturesRouter,
   aiRoutine: aiRoutineRouter,
   skinAnalysis: skinAnalysisRouter,
@@ -526,17 +538,26 @@ export const appRouter = router({
   flashDeals: flashDealRouter,
   groupBuy: groupBuyRouter,
   beautyPackages: beautyPackageRouter,
+  providerReview: providerReviewRouter,
+  promotions: promotionRouter,
   bridalConcierge: bridalConciergeRouter,
   giftRegistry: giftRegistryRouter,
   giftQuiz: giftQuizRouter,
   beautyBingo: beautyBingoRouter,
   eventTickets: eventTicketsRouter,
   beautyCoupons: beautyCouponsRouter,
+  clinics: clinicsRouter,
+  gyms: gymsRouter,
+  nailBars: nailBarsRouter,
 
   // Wellness
   selfCare: selfCareRouter,
   wellnessTracker: wellnessTrackerRouter,
   wellnessHub: wellnessHubRouter,
+  wellnessContent: wellnessContentRouter,
+  lifeStage: lifeStageRouter,
+  postpartum: postpartumRouter,
+  menopause: menopauseRouter,
   beautyBudget: beautyBudgetRouter,
   beautyBudgetPlanner: beautyBudgetPlannerRouter,
   beautyDashboard: beautyDashboardRouter,

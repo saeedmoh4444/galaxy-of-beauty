@@ -15,13 +15,19 @@ interface BeautySavingsMilestoneCardProps {
   milestones: number[];
   onViewSavings?: () => void;
   className?: string;
+  title?: string;
+  savedAmountText?: string;
+  milestoneSuffix?: string;
+  nextMilestonePrefix?: string;
+  remainingPrefix?: string;
+  buttonText?: string;
 }
 
 const COLORS = [
   'from-amber-400 to-yellow-400',
   'from-amber-500 to-orange-500',
   'from-rose-400 to-pink-500',
-  'from-purple-400 to-violet-500',
+  'from-brand-400 to-violet-500',
   'from-emerald-400 to-green-500',
 ];
 
@@ -30,6 +36,12 @@ export function BeautySavingsMilestoneCard({
   milestones,
   onViewSavings,
   className = '',
+  title = 'محطات الادخار',
+  savedAmountText = 'ر.س مدخرة',
+  milestoneSuffix = 'ر.س',
+  nextMilestonePrefix = 'المحطة القادمة: ',
+  remainingPrefix = ' — باقي',
+  buttonText = 'تفقدي مدخراتكِ',
 }: BeautySavingsMilestoneCardProps): JSX.Element | null {
   if (!milestones.length) return null;
   const nextMilestone = milestones.find((m) => m > saved);
@@ -42,12 +54,12 @@ export function BeautySavingsMilestoneCard({
       )}
     >
       <div className="text-center">
-        <span className="text-3xl" aria-hidden="true"></span>
-        <h4 className="mt-1 text-sm font-bold text-emerald-700 dark:text-emerald-300">
-          محطات الادخار
-        </h4>
+        <span className="text-3xl" aria-hidden="true">
+          🎉
+        </span>
+        <h4 className="mt-1 text-sm font-bold text-emerald-700 dark:text-emerald-300">{title}</h4>
         <p className="text-[10px] text-emerald-500 dark:text-emerald-400">
-          {saved.toLocaleString('ar-SA')} ر.س مدخرة
+          {saved.toLocaleString('ar-SA')} {savedAmountText}
         </p>
       </div>
 
@@ -59,7 +71,7 @@ export function BeautySavingsMilestoneCard({
                 'flex h-8 w-8 shrink-0 items-center justify-center rounded-full text-xs font-bold text-white',
                 saved >= m
                   ? `bg-gradient-to-br ${COLORS[i % COLORS.length]}`
-                  : 'bg-gray-200 dark:bg-gray-700 text-gray-400',
+                  : 'bg-surface-muted text-text-tertiary',
               )}
             >
               {saved >= m ? '' : m / 1000 + 'k'}
@@ -69,7 +81,7 @@ export function BeautySavingsMilestoneCard({
                 'flex-1 h-2 rounded-full',
                 saved >= m
                   ? `bg-gradient-to-r ${COLORS[i % COLORS.length]}`
-                  : 'bg-gray-100 dark:bg-gray-700',
+                  : 'bg-surface-muted dark:bg-gray-700',
               )}
             >
               <div
@@ -79,13 +91,11 @@ export function BeautySavingsMilestoneCard({
             </div>
             <span
               className={cn(
-                'text-[10px] font-bold w-16 text-right',
-                saved >= m
-                  ? 'text-emerald-700 dark:text-emerald-300'
-                  : 'text-gray-400 dark:text-gray-600',
+                'text-[10px] font-bold w-16 text-end',
+                saved >= m ? 'text-emerald-700 dark:text-emerald-300' : 'text-text-tertiary',
               )}
             >
-              {m.toLocaleString('ar-SA')} ر.س
+              {m.toLocaleString('ar-SA')} {milestoneSuffix}
             </span>
           </div>
         ))}
@@ -94,8 +104,9 @@ export function BeautySavingsMilestoneCard({
       {nextMilestone && (
         <div className="mt-2 rounded-lg bg-amber-50 p-2 text-center dark:bg-amber-950">
           <p className="text-[10px] text-amber-700 dark:text-amber-300">
-            المحطة القادمة: {nextMilestone.toLocaleString('ar-SA')} ر.س — باقي{' '}
-            {nextMilestone - saved} ر.س
+            {nextMilestonePrefix}
+            {nextMilestone.toLocaleString('ar-SA')} {milestoneSuffix}
+            {remainingPrefix} {nextMilestone - saved} {milestoneSuffix}
           </p>
         </div>
       )}
@@ -105,7 +116,7 @@ export function BeautySavingsMilestoneCard({
         onClick={onViewSavings}
         className="mt-3 w-full rounded-xl bg-emerald-600 py-2 text-xs font-bold text-white hover:bg-emerald-700 active:scale-[0.98] transition-all"
       >
-        تفقدي مدخراتكِ
+        {buttonText}
       </button>
     </div>
   );

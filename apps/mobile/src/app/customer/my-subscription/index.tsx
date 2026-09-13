@@ -1,6 +1,7 @@
 import { View, Text, ScrollView, StyleSheet, RefreshControl } from 'react-native';
 import { SkeletonList } from '@/components/SkeletonCard';
 import { trpc } from '@/lib/trpc-react';
+import { useLocale } from '@/components/LocaleProvider';
 
 interface SubscriptionData {
   planName?: string;
@@ -8,6 +9,7 @@ interface SubscriptionData {
 }
 
 export default function MySubscriptionScreen(): JSX.Element {
+  const { t } = useLocale();
   const subQ = trpc.subscriptions.getMySubscription.useQuery();
   const data = subQ.data as SubscriptionData | null;
 
@@ -25,14 +27,20 @@ export default function MySubscriptionScreen(): JSX.Element {
         />
       }
     >
-      <Text style={styles.t}> اشتراكي</Text>
+      <Text style={styles.t}>{t('mobile.mySubscription.title')}</Text>
       {data ? (
         <View style={styles.card}>
-          <Text style={styles.plan}>{data.planName ?? 'غير مشترك'}</Text>
-          <Text style={styles.status}>{data.autoRenew ? 'تجديد تلقائي' : 'بدون تجديد'}</Text>
+          <Text style={styles.plan}>
+            {data.planName ?? t('mobile.mySubscription.not-subscribed')}
+          </Text>
+          <Text style={styles.status}>
+            {data.autoRenew
+              ? t('mobile.mySubscription.auto-renew')
+              : t('mobile.mySubscription.no-renewal')}
+          </Text>
         </View>
       ) : (
-        <Text style={styles.e}>لا يوجد اشتراك نشط</Text>
+        <Text style={styles.e}>{t('mobile.mySubscription.no-active')}</Text>
       )}
     </ScrollView>
   );

@@ -1,6 +1,8 @@
 import { View, Text, ScrollView, StyleSheet, TouchableOpacity, RefreshControl } from 'react-native';
 import { SkeletonList } from '@/components/SkeletonCard';
 import { trpc } from '@/lib/trpc-react';
+import { useLocale } from '@/components/LocaleProvider';
+import { useAuthState } from '@/hooks/useAuthState';
 
 interface GiftCardListing {
   id: number;
@@ -10,7 +12,9 @@ interface GiftCardListing {
 }
 
 export default function GiftCardMarketScreen(): JSX.Element {
-  const q = trpc.giftCardMarket.listings.useQuery();
+  const isAuthed = useAuthState();
+  const { t } = useLocale();
+  const q = trpc.giftCardMarket.listings.useQuery(undefined, { enabled: isAuthed });
   const listings: GiftCardListing[] = (q.data as unknown as GiftCardListing[] | undefined) ?? [];
   const buyMut = trpc.giftCardMarket.buy.useMutation({
     onSuccess: () => {
@@ -33,17 +37,19 @@ export default function GiftCardMarketScreen(): JSX.Element {
         />
       }
     >
-      <Text style={styles.t}> سوق البطاقات</Text>
+      <Text style={styles.t}>{t('mobile.giftCardMarket.title')}</Text>
       <View style={styles.grid}>
         {listings.map((l) => (
           <View key={l.id} style={styles.card}>
-            <Text style={styles.ce}></Text>
+            <Text style={styles.ce}>🎁</Text>
             <Text style={styles.cv}>{l.value?.toLocaleString()} ر.س</Text>
             <Text style={styles.op}>{l.value?.toLocaleString()}</Text>
             <Text style={styles.sp}>{l.sellingPrice?.toLocaleString()} ر.س</Text>
-            <Text style={styles.db}>وفر {l.discount}%</Text>
+            <Text style={styles.db}>
+              {t('mobile.giftCardMarket.save', { percent: l.discount ?? 0 })}
+            </Text>
             <TouchableOpacity onPress={() => buy(l.id)} style={styles.bb}>
-              <Text style={styles.bt}> شراء</Text>
+              <Text style={styles.bt}>{t('mobile.giftCardMarket.buy')}</Text>
             </TouchableOpacity>
           </View>
         ))}

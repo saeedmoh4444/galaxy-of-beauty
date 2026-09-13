@@ -2,6 +2,7 @@ import { View, Text, ScrollView, StyleSheet, TouchableOpacity, RefreshControl } 
 import { useState } from 'react';
 import { SkeletonList } from '@/components/SkeletonCard';
 import { trpc } from '@/lib/trpc-react';
+import { useLocale } from '@/components/LocaleProvider';
 
 interface EstimatorService {
   id: number;
@@ -17,6 +18,7 @@ interface PriceEstimate {
 }
 
 export default function PriceEstimatorScreen(): JSX.Element {
+  const { t } = useLocale();
   const [selected, setSelected] = useState<number | null>(null);
   const [promo] = useState('');
   const servicesQ = trpc.services.list.useQuery({});
@@ -44,7 +46,7 @@ export default function PriceEstimatorScreen(): JSX.Element {
         />
       }
     >
-      <Text style={styles.t}> مقدّر الأسعار</Text>
+      <Text style={styles.t}>{t('mobile.public.price-estimator.title')}</Text>
       {services.map((s) => (
         <TouchableOpacity
           key={s.id}
@@ -55,7 +57,9 @@ export default function PriceEstimatorScreen(): JSX.Element {
         >
           <Text style={styles.se}>{s.emoji ?? ''}</Text>
           <Text style={styles.sn}>{s.nameAr ?? ''}</Text>
-          <Text style={styles.sp}>{(s.basePrice ?? 0).toLocaleString()} ر.س</Text>
+          <Text style={styles.sp}>
+            {(s.basePrice ?? 0).toLocaleString()} {t('misc.sar')}
+          </Text>
         </TouchableOpacity>
       ))}
       <TouchableOpacity
@@ -63,27 +67,31 @@ export default function PriceEstimatorScreen(): JSX.Element {
         disabled={!selected}
         style={[styles.eb, !selected && { opacity: 0.5 }]}
       >
-        <Text style={styles.et}> احسب التكلفة</Text>
+        <Text style={styles.et}>{t('mobile.public.price-estimator.calculate')}</Text>
       </TouchableOpacity>
       {estimate && (
         <View style={styles.ec}>
           <View style={styles.er}>
-            <Text style={styles.el}>السعر الأساسي</Text>
-            <Text style={styles.ev}>{(estimate.basePrice ?? 0).toLocaleString()} ر.س</Text>
+            <Text style={styles.el}>{t('mobile.public.price-estimator.base-price')}</Text>
+            <Text style={styles.ev}>
+              {(estimate.basePrice ?? 0).toLocaleString()} {t('misc.sar')}
+            </Text>
           </View>
           {(estimate.discount ?? 0) > 0 && (
             <View style={styles.er}>
-              <Text style={styles.el}>الخصم</Text>
+              <Text style={styles.el}>{t('mobile.public.price-estimator.discount')}</Text>
               <Text style={[styles.ev, { color: '#059669' }]}>
-                -{(estimate.discount ?? 0).toLocaleString()} ر.س
+                -{(estimate.discount ?? 0).toLocaleString()} {t('misc.sar')}
               </Text>
             </View>
           )}
           <View style={styles.ed} />
           <View style={styles.er}>
-            <Text style={[styles.el, { fontWeight: '700' }]}>الإجمالي</Text>
+            <Text style={[styles.el, { fontWeight: '700' }]}>
+              {t('mobile.public.price-estimator.total')}
+            </Text>
             <Text style={[styles.ev, { fontWeight: '800', fontSize: 20 }]}>
-              {(estimate.total ?? 0).toLocaleString()} ر.س
+              {(estimate.total ?? 0).toLocaleString()} {t('misc.sar')}
             </Text>
           </View>
         </View>

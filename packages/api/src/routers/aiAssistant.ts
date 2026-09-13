@@ -79,7 +79,7 @@ export const aiAssistantRouter = router({
       .filter((k) => k !== 'default')
       .map((k) => ({
         key: k,
-        emoji: { روتين: '', بشرة: '', مكياج: '', شعر: '‍️', زواج: '', صيف: '️' }[k] ?? '',
+        emoji: { روتين: '📅', بشرة: '🧖', مكياج: '💄', شعر: '💇', زواج: '💍', صيف: '☀️' }[k] ?? '',
         label: k,
       })),
   ),

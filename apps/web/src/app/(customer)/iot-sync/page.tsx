@@ -2,8 +2,10 @@
 import { api } from '@/lib/trpc';
 import { Card, GridSkeleton, ErrorAlert, Button } from '@galaxy/ui';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
+import { useLocale } from '@/components/LocaleProvider';
 
 export default function IoTSyncPage(): JSX.Element {
+  const { t } = useLocale();
   const {
     data: devices,
     isLoading,
@@ -30,7 +32,7 @@ export default function IoTSyncPage(): JSX.Element {
     return (
       <DashboardLayout userRole="CUSTOMER">
         <div className="mx-auto max-w-3xl space-y-6">
-          <ErrorAlert message="فشل تحميل البيانات" onRetry={() => refetch()} />
+          <ErrorAlert message={t('iotSync.loadError')} onRetry={() => refetch()} />
         </div>
       </DashboardLayout>
     );
@@ -41,10 +43,8 @@ export default function IoTSyncPage(): JSX.Element {
     <DashboardLayout userRole="CUSTOMER">
       <div className="mx-auto max-w-3xl space-y-6">
         <div>
-          <h1 className="text-2xl font-bold"> الأجهزة الذكية</h1>
-          <p className="mt-1 text-sm text-text-secondary">
-            اربطي أجهزة العناية الذكية لمتابعة بشرتكِ
-          </p>
+          <h1 className="text-2xl font-bold">{t('iotSync.title')}</h1>
+          <p className="mt-1 text-sm text-text-secondary">{t('iotSync.subtitle')}</p>
         </div>
         <div className="grid gap-4 sm:grid-cols-3">
           {list.map((d: Record<string, unknown>) => (
@@ -54,7 +54,7 @@ export default function IoTSyncPage(): JSX.Element {
               <p
                 className={`text-xs mt-1 ${d.status === 'connected' ? 'text-green-600' : 'text-text-tertiary'}`}
               >
-                {d.status === 'connected' ? ' متصل' : ' غير متصل'}
+                {d.status === 'connected' ? t('iotSync.connected') : t('iotSync.disconnected')}
               </p>
               <div className="mt-2">
                 {(d.features as string[])?.slice(0, 2).map((f: string) => (
@@ -69,7 +69,7 @@ export default function IoTSyncPage(): JSX.Element {
                   className="mt-3"
                   onClick={() => syncMut.mutate({ deviceKey: d.key as string })}
                 >
-                  مزامنة
+                  {t('iotSync.sync')}
                 </Button>
               ) : (
                 <Button
@@ -77,7 +77,7 @@ export default function IoTSyncPage(): JSX.Element {
                   className="mt-3"
                   onClick={() => connectMut.mutate({ deviceKey: d.key as string })}
                 >
-                  ربط
+                  {t('iotSync.connect')}
                 </Button>
               )}
             </Card>

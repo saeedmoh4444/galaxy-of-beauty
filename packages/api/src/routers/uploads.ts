@@ -2,7 +2,7 @@ import { z } from 'zod';
 import { TRPCError } from '@trpc/server';
 import { prisma } from '@galaxy/db';
 import { MAX_IMAGE_SIZE, MAX_DOC_SIZE } from '@galaxy/shared';
-import { protectedProcedure, technicianProcedure, adminProcedure, router } from '../trpc';
+import { protectedProcedure, adminProcedure, router } from '../trpc';
 import { uploadFile, deleteFile, generatePresignedUrl } from '../lib/storage';
 
 // ── Allowed MIME types ────────────────────────────────────
@@ -78,9 +78,12 @@ export const uploadRouter = router({
     }),
 
   // ────────────────────────────────────────────────────────
-  // Upload KYC document (technician only)
+  // Upload KYC / provider document (technicians, vendors, clinics).
+  // Vendors and clinics upload KSA papers here and pass the returned URLs
+  // to becomeVendor/becomeClinic; technician uploads are appended to the
+  // technician's kycDocuments and flip KYC to SUBMITTED.
   // ────────────────────────────────────────────────────────
-  uploadKycDocument: technicianProcedure
+  uploadKycDocument: protectedProcedure
     .input(
       z.object({
         file: z.object({
@@ -89,7 +92,17 @@ export const uploadRouter = router({
           size: z.number().max(MAX_DOC_SIZE, 'Document must be under 10 MB'),
           base64: z.string(),
         }),
-        documentType: z.enum(['id_front', 'id_back', 'certificate', 'selfie']),
+        documentType: z.enum([
+          'id_front',
+          'id_back',
+          'certificate',
+          'selfie',
+          'cr',
+          'national_id',
+          'bank_letter',
+          'medical_license',
+          'license',
+        ]),
       }),
     )
     .mutation(async ({ ctx, input }) => {
@@ -108,19 +121,61 @@ export const uploadRouter = router({
         input.file.type,
       );
 
-      // Update KYC status to SUBMITTED if pending
+      // Technicians: append the document to kycDocuments and flip PENDING
+      // → SUBMITTED so the admin KYC review queue picks it up.
       const technician = await prisma.technician.findUnique({
         where: { userId: ctx.user.id },
       });
 
-      if (technician && technician.kycStatus === 'PENDING') {
+      if (technician) {
+        const docs = ((technician.kycDocuments ?? []) as Array<{ type: string; url: string }>)
+          .filter((d) => d.type !== input.documentType)
+          .concat([{ type: input.documentType, url: result.url }]);
         await prisma.technician.update({
           where: { userId: ctx.user.id },
-          data: { kycStatus: 'SUBMITTED' },
+          data: {
+            kycDocuments: docs,
+            ...(technician.kycStatus === 'PENDING' ? { kycStatus: 'SUBMITTED' as const } : {}),
+          },
         });
       }
 
       return result;
+    }),
+
+  // ────────────────────────────────────────────────────────
+  // E7 — upload media (shorts videos / gallery images / product shots).
+  // Reuses the storage pipeline; images ≤ 5 MB, videos ≤ 25 MB.
+  // ────────────────────────────────────────────────────────
+  uploadMedia: protectedProcedure
+    .input(
+      z.object({
+        mediaType: z.enum(['image', 'video']),
+        file: z.object({
+          name: z.string(),
+          type: z.string(),
+          size: z.number().max(25 * 1024 * 1024, 'Video must be under 25 MB'),
+          base64: z.string(),
+        }),
+      }),
+    )
+    .mutation(async ({ ctx, input }) => {
+      const ALLOWED_MEDIA = [...ALLOWED_IMAGE_TYPES, 'video/mp4', 'video/webm', 'video/quicktime'];
+      if (!ALLOWED_MEDIA.includes(input.file.type)) {
+        throw new TRPCError({
+          code: 'BAD_REQUEST',
+          message: `Unsupported file type: ${input.file.type}. Allowed: images, MP4, WebM`,
+        });
+      }
+      if (input.mediaType === 'image' && !ALLOWED_IMAGE_TYPES.includes(input.file.type)) {
+        throw new TRPCError({
+          code: 'BAD_REQUEST',
+          message: 'Image uploads must be JPEG, PNG, WebP or AVIF',
+        });
+      }
+
+      const { buffer } = decodeBase64File(input.file);
+      return uploadFile(buffer, input.file.name, `media/${ctx.user.id}`, input.file.type);
     }),
 
   // ────────────────────────────────────────────────────────

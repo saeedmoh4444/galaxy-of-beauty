@@ -1,6 +1,7 @@
 import { View, Text, ScrollView, StyleSheet, RefreshControl } from 'react-native';
 import { SkeletonList } from '@/components/SkeletonCard';
 import { trpc } from '@/lib/trpc-react';
+import { useLocale } from '@/components/LocaleProvider';
 
 interface BehindScenesVideo {
   emoji?: string;
@@ -9,6 +10,7 @@ interface BehindScenesVideo {
 }
 
 export default function BehindScenesScreen(): JSX.Element {
+  const { t } = useLocale();
   const videosQ = trpc.behindScenes.feed.useQuery();
   const videos = (videosQ.data as BehindScenesVideo[] | undefined) ?? [];
 
@@ -26,17 +28,17 @@ export default function BehindScenesScreen(): JSX.Element {
         />
       }
     >
-      <Text style={styles.t}> كواليس الجمال</Text>
-      <Text style={styles.sub}>لقطات من وراء الكواليس</Text>
+      <Text style={styles.t}>{t('mobile.public.behind-scenes.title')}</Text>
+      <Text style={styles.sub}>{t('mobile.public.behind-scenes.subtitle')}</Text>
       {videos.length === 0 ? (
-        <Text style={styles.e}>لا توجد فيديوهات</Text>
+        <Text style={styles.e}>{t('mobile.public.behind-scenes.empty')}</Text>
       ) : (
         videos.map((v, i) => (
           <View key={i} style={styles.card}>
             <Text style={styles.vidEmoji}>{(v.emoji as string) ?? ''}</Text>
             <View style={{ flex: 1 }}>
               <Text style={styles.vidTitle}>{v.titleAr as string}</Text>
-              <Text style={styles.vidDur}>️ {v.duration as string}</Text>
+              <Text style={styles.vidDur}> {v.duration as string}</Text>
             </View>
           </View>
         ))

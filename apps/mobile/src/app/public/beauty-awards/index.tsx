@@ -2,13 +2,20 @@ import { View, Text, ScrollView, StyleSheet, RefreshControl } from 'react-native
 import { ErrorAlert } from '@/components/ErrorAlert';
 import { SkeletonList } from '@/components/SkeletonCard';
 import { trpc } from '@/lib/trpc-react';
+import { useLocale } from '@/components/LocaleProvider';
 
 export default function BeautyAwardsScreen(): JSX.Element {
+  const { t } = useLocale();
   const awardsQ = trpc.beautyAwards.current.useQuery();
 
   if (awardsQ.isLoading) return <SkeletonList count={4} />;
   if (awardsQ.isError)
-    return <ErrorAlert message="فشل تحميل الجوائز" onRetry={() => awardsQ.refetch()} />;
+    return (
+      <ErrorAlert
+        message={t('mobile.public.beauty-awards.load-error')}
+        onRetry={() => awardsQ.refetch()}
+      />
+    );
 
   const items = ((awardsQ.data as unknown as { categories?: Record<string, unknown>[] } | null)
     ?.categories ?? []) as Record<string, unknown>[];
@@ -25,10 +32,10 @@ export default function BeautyAwardsScreen(): JSX.Element {
         />
       }
     >
-      <Text style={styles.t}> جوائز التجميل</Text>
-      <Text style={styles.sub}>أفضل الخدمات والفنيات لهذا العام</Text>
+      <Text style={styles.t}>{t('mobile.public.beauty-awards.title')}</Text>
+      <Text style={styles.sub}>{t('mobile.public.beauty-awards.subtitle')}</Text>
       {items.length === 0 ? (
-        <Text style={styles.e}>لا توجد جوائز</Text>
+        <Text style={styles.e}>{t('mobile.public.beauty-awards.empty')}</Text>
       ) : (
         items.map((a: Record<string, unknown>, i: number) => (
           <View key={i} style={styles.card}>

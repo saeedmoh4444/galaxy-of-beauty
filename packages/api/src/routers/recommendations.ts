@@ -3,8 +3,7 @@ import { prisma } from '@galaxy/db';
 import { MAX_LIST_SIZE } from '@galaxy/shared';
 import { publicProcedure, router } from '../trpc';
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-const db = prisma as any;
+const db = prisma;
 
 export const recommendationsRouter = router({
   // "Frequently booked together" — services often booked with this one

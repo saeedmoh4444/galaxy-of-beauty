@@ -1,35 +1,49 @@
 'use client';
 import { api } from '@/lib/trpc';
-import { Card, KPIRowSkeleton, ErrorAlert, EmptyState, PageContainer, StatCard } from '@galaxy/ui';
+import {
+  Card,
+  KPIRowSkeleton,
+  ErrorAlert,
+  EmptyState,
+  PageContainer,
+  StatCard,
+  useAuth,
+} from '@galaxy/ui';
+import { useLocale } from '@/components/LocaleProvider';
+import { type TranslationKey } from '@galaxy/shared';
 
 const STATUS_COLORS: Record<string, string> = {
   healthy: 'text-green-600 bg-green-100 dark:bg-green-900 dark:text-green-300',
   warning: 'text-amber-600 bg-amber-100 dark:bg-amber-900 dark:text-amber-300',
   error: 'text-red-600 bg-red-100 dark:bg-red-900 dark:text-red-300',
-  unknown: 'text-gray-500 bg-gray-100 dark:bg-gray-800 dark:text-gray-400',
+  unknown: 'text-text-secondary bg-surface-muted dark:text-text-tertiary',
 };
 
-const SERVICE_LABELS_AR: Record<string, string> = {
-  database: '️ قاعدة البيانات',
-  redis: ' Redis',
-  api: ' API',
-  socket: ' Socket.IO',
-  payments: ' المدفوعات',
+const SERVICE_LABEL_KEYS: Record<string, TranslationKey> = {
+  database: 'admin.monitoring.svc-database',
+  redis: 'admin.monitoring.svc-redis',
+  api: 'admin.monitoring.svc-api',
+  socket: 'admin.monitoring.svc-socket',
+  payments: 'admin.monitoring.svc-payments',
 };
 
 export default function MonitoringPage(): JSX.Element {
+  const { t, locale } = useLocale();
+  const { isAuthenticated } = useAuth();
   const {
     data: health,
     isLoading,
     isError,
     refetch,
-  } = api.monitoring.health.useQuery() as {
+  } = api.monitoring.health.useQuery(undefined, { enabled: isAuthenticated }) as {
     data: Record<string, unknown> | undefined;
     isLoading: boolean;
     isError: boolean;
     refetch: () => void;
   };
-  const { data: errors } = api.monitoring.errorsFeed.useQuery() as {
+  const { data: errors } = api.monitoring.errorsFeed.useQuery(undefined, {
+    enabled: isAuthenticated,
+  }) as {
     data: Record<string, unknown> | undefined;
   };
 
@@ -45,18 +59,21 @@ export default function MonitoringPage(): JSX.Element {
     <PageContainer width="wide">
       <div className="space-y-6">
         <div>
-          <h1 className="text-2xl font-bold"> مراقبة المنصة</h1>
+          <h1 className="text-2xl font-bold">{t('admin.monitoring.title')}</h1>
           <p className="mt-1 text-sm text-text-secondary">
-            صحة المنصة في الوقت الحقيقي — يعمل منذ {(h.uptime as string) ?? '...'}
+            {t('admin.monitoring.subtitle', { uptime: (h.uptime as string) ?? '...' })}
           </p>
         </div>
 
         {isLoading ? (
           <KPIRowSkeleton count={5} />
         ) : isError ? (
-          <ErrorAlert message="فشل تحميل بيانات المراقبة" onRetry={() => refetch()} />
+          <ErrorAlert message={t('admin.monitoring.load-error')} onRetry={() => refetch()} />
         ) : !health ? (
-          <EmptyState title="لا توجد بيانات" description="لم يتم تحميل بيانات المراقبة بعد" />
+          <EmptyState
+            title={t('admin.monitoring.empty')}
+            description={t('admin.monitoring.empty-desc')}
+          />
         ) : (
           <>
             {/* ── Service Status Cards ── */}
@@ -66,14 +83,19 @@ export default function MonitoringPage(): JSX.Element {
                   <span
                     className={`inline-flex items-center justify-center h-10 w-10 rounded-full text-lg ${STATUS_COLORS[(svc.status as string) ?? 'unknown']}`}
                   >
-                    {svc.status === 'healthy' ? '' : svc.status === 'warning' ? '' : ''}
+                    {svc.status === 'healthy' ? '🟢' : svc.status === 'warning' ? '🟡' : '🔴'}
                   </span>
-                  <p className="font-bold text-sm mt-2">{SERVICE_LABELS_AR[key] ?? key}</p>
+                  <p className="font-bold text-sm mt-2">
+                    {t(SERVICE_LABEL_KEYS[key] ?? (key as unknown as TranslationKey))}
+                  </p>
                   <p className="text-xs text-text-secondary mt-1">{svc.latency as string}</p>
                   {/* Extra detail per service */}
                   {key === 'database' && svc.connections !== undefined && (
                     <p className="text-[10px] text-text-tertiary mt-0.5">
-                      {svc.connections as number} / {svc.maxConnections as number} اتصال
+                      {t('admin.monitoring.connections', {
+                        count: svc.connections as number,
+                        max: svc.maxConnections as number,
+                      })}
                     </p>
                   )}
                   {key === 'redis' &&
@@ -85,12 +107,14 @@ export default function MonitoringPage(): JSX.Element {
                     )}
                   {key === 'api' && svc.requestsPerMinute !== undefined && (
                     <p className="text-[10px] text-text-tertiary mt-0.5">
-                      {svc.requestsPerMinute as number} طلب/دقيقة
+                      {t('admin.monitoring.requests-per-minute', {
+                        req: svc.requestsPerMinute as number,
+                      })}
                     </p>
                   )}
                   {key === 'payments' && svc.successRate !== undefined && (
                     <p className="text-[10px] text-text-tertiary mt-0.5">
-                      نسبة النجاح: {svc.successRate as number}%
+                      {t('admin.monitoring.success-rate', { rate: svc.successRate as number })}
                     </p>
                   )}
                 </Card>
@@ -99,30 +123,42 @@ export default function MonitoringPage(): JSX.Element {
 
             {/* ── Real-time Stats Row ── */}
             <div className="grid gap-4 sm:grid-cols-4">
-              <StatCard label="الحجوزات اليوم" value={today.bookings ?? 0} icon="" />
-              <StatCard label="تسجيلات الدخول" value={today.logins ?? 0} icon="" />
-              <StatCard label="المدفوعات اليوم" value={today.payments ?? 0} icon="" />
               <StatCard
-                label="معدل الأخطاء"
+                label={t('admin.monitoring.bookings-today')}
+                value={today.bookings ?? 0}
+                icon="📅"
+              />
+              <StatCard
+                label={t('admin.monitoring.logins-today')}
+                value={today.logins ?? 0}
+                icon="👥"
+              />
+              <StatCard
+                label={t('admin.monitoring.payments-today')}
+                value={today.payments ?? 0}
+                icon="💰"
+              />
+              <StatCard
+                label={t('admin.monitoring.error-rate')}
                 value={`${(errData.apiErrorsToday as number) ?? 0}`}
-                icon=""
+                icon="⚠️"
               />
             </div>
 
             {/* ── Performance ── */}
             <div className="grid gap-4 sm:grid-cols-3">
               <Card padding="lg" className="text-center">
-                <p className="text-3xl"></p>
+                <p className="text-3xl">⚡</p>
                 <p className="text-2xl font-bold">{perf.avgResponseTime as string}</p>
-                <p className="text-xs text-text-secondary">متوسط الاستجابة</p>
+                <p className="text-xs text-text-secondary">{t('admin.monitoring.avg-response')}</p>
               </Card>
               <Card padding="lg" className="text-center">
-                <p className="text-3xl"></p>
+                <p className="text-3xl">📊</p>
                 <p className="text-2xl font-bold">{perf.p95ResponseTime as string}</p>
                 <p className="text-xs text-text-secondary">p95</p>
               </Card>
               <Card padding="lg" className="text-center">
-                <p className="text-3xl"></p>
+                <p className="text-3xl">📈</p>
                 <p className="text-2xl font-bold">{perf.p99ResponseTime as string}</p>
                 <p className="text-xs text-text-secondary">p99</p>
               </Card>
@@ -132,14 +168,16 @@ export default function MonitoringPage(): JSX.Element {
             <div className="grid gap-4 sm:grid-cols-2">
               <Card padding="lg">
                 <h3 className="font-bold mb-3">
-                  الأخطاء (آخر ٢٤ ساعة: {(errData.last24h as number) ?? 0})
+                  {t('admin.monitoring.errors-title', {
+                    count: (errData.last24h as number) ?? 0,
+                  })}
                 </h3>
                 <div className="space-y-2">
                   {(errData.byType as Array<Record<string, unknown>>)?.map(
                     (e: Record<string, unknown>, i: number) => (
                       <div key={i} className="flex items-center gap-2">
                         <span className="text-sm w-32">{e.type as string}</span>
-                        <div className="flex-1 h-3 rounded-full bg-gray-200 dark:bg-gray-700">
+                        <div className="flex-1 h-3 rounded-full bg-surface-muted">
                           <div
                             className="h-3 rounded-full bg-red-500"
                             style={{ width: `${e.pct as number}%` }}
@@ -150,12 +188,12 @@ export default function MonitoringPage(): JSX.Element {
                     ),
                   )}
                   {(!errData.byType || (errData.byType as unknown[]).length === 0) && (
-                    <p className="text-sm text-text-secondary">لا توجد أخطاء مسجلة </p>
+                    <p className="text-sm text-text-secondary">{t('admin.monitoring.no-errors')}</p>
                   )}
                 </div>
               </Card>
               <Card padding="lg">
-                <h3 className="font-bold mb-3"> السجل الأخير</h3>
+                <h3 className="font-bold mb-3">{t('admin.monitoring.recent-feed')}</h3>
                 <div className="space-y-2 max-h-64 overflow-y-auto">
                   {recentErrors.map((e: Record<string, unknown>, i: number) => (
                     <div
@@ -170,12 +208,16 @@ export default function MonitoringPage(): JSX.Element {
                     >
                       {e.message as string}
                       <span className="block text-text-tertiary mt-0.5">
-                        {new Date(e.timestamp as string).toLocaleTimeString('ar-SA')}
+                        {new Date(e.timestamp as string).toLocaleTimeString(
+                          locale === 'en' ? 'en-GB' : 'ar-SA',
+                        )}
                       </span>
                     </div>
                   ))}
                   {recentErrors.length === 0 && (
-                    <p className="text-sm text-text-secondary">لا توجد أحداث حديثة</p>
+                    <p className="text-sm text-text-secondary">
+                      {t('admin.monitoring.no-recent-events')}
+                    </p>
                   )}
                 </div>
               </Card>
@@ -183,7 +225,7 @@ export default function MonitoringPage(): JSX.Element {
 
             {/* ── Activity Chart (7-day bookings) ── */}
             <Card padding="lg">
-              <h3 className="font-bold mb-4"> النشاط اليومي (آخر ٧ أيام)</h3>
+              <h3 className="font-bold mb-4">{t('admin.monitoring.daily-activity')}</h3>
               {(activity.chart as number[])?.length > 0 ? (
                 <div className="flex items-end gap-1 h-24">
                   {(activity.chart as number[]).map((v: number, i: number) => (
@@ -199,7 +241,9 @@ export default function MonitoringPage(): JSX.Element {
                   ))}
                 </div>
               ) : (
-                <p className="text-sm text-text-secondary">لا توجد بيانات كافية بعد</p>
+                <p className="text-sm text-text-secondary">
+                  {t('admin.monitoring.insufficient-data')}
+                </p>
               )}
             </Card>
           </>

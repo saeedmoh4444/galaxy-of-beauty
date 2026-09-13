@@ -11,20 +11,36 @@ import {
   Modal,
   PageContainer,
   CardListSkeleton,
+  useAuth,
 } from '@galaxy/ui';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
+import { useLocale } from '@/components/LocaleProvider';
+import { bookingStatusLabelKey } from '@/lib/bookingStatus';
 
-const STATUS_TABS = ['ALL', 'REQUESTED', 'ACCEPTED', 'IN_PROGRESS', 'COMPLETED', 'CANCELLED'];
+const STATUS_TABS = [
+  'ALL',
+  'REQUESTED',
+  'ACCEPTED',
+  'PAID',
+  'IN_PROGRESS',
+  'COMPLETED',
+  'CANCELLED',
+];
 
 export default function BookingsPage(): JSX.Element {
+  const { t, locale } = useLocale();
+  const { isAuthenticated } = useAuth();
   const [status, setStatus] = useState<string | undefined>(undefined);
   const [page, setPage] = useState(1);
   const [cancelId, setCancelId] = useState<number | null>(null);
-  const { data, isLoading, isError, refetch } = api.bookings.list.useQuery({
-    status,
-    page,
-    limit: 10,
-  });
+  const { data, isLoading, isError, refetch } = api.bookings.list.useQuery(
+    {
+      status,
+      page,
+      limit: 10,
+    },
+    { enabled: isAuthenticated },
+  );
   const cancelMut = api.bookings.transition.useMutation({
     onSuccess: () => {
       setCancelId(null);
@@ -37,7 +53,7 @@ export default function BookingsPage(): JSX.Element {
   return (
     <DashboardLayout userRole="CUSTOMER">
       <PageContainer width="default">
-        <h1 className="text-2xl font-bold text-text-primary">حجوزاتي</h1>
+        <h1 className="text-2xl font-bold text-text-primary">{t('booking.my-bookings')}</h1>
         <div className="flex flex-wrap gap-2">
           {STATUS_TABS.map((s) => (
             <button
@@ -49,10 +65,10 @@ export default function BookingsPage(): JSX.Element {
               className={`rounded-full px-4 py-1.5 text-sm font-medium transition-colors ${
                 (s === 'ALL' && !status) || s === status
                   ? 'bg-brand-600 text-white'
-                  : 'bg-surface-muted text-text-secondary hover:bg-gray-200 dark:bg-gray-800 dark:hover:bg-gray-700'
+                  : 'bg-surface-muted text-text-secondary hover:bg-surface-muted dark:hover:bg-gray-700'
               }`}
             >
-              {s === 'ALL' ? 'الكل' : s}
+              {t(bookingStatusLabelKey(s))}
             </button>
           ))}
         </div>
@@ -60,13 +76,13 @@ export default function BookingsPage(): JSX.Element {
         {isLoading ? (
           <CardListSkeleton count={4} />
         ) : isError ? (
-          <ErrorAlert message="فشل تحميل الحجوزات" onRetry={() => refetch()} />
+          <ErrorAlert message={t('booking.load-error')} onRetry={() => refetch()} />
         ) : bookings.length === 0 ? (
           <div>
-            <EmptyState title="لا توجد حجوزات" />
+            <EmptyState title={t('booking.no-bookings')} />
             <div className="text-center">
               <Link href="/services">
-                <Button>تصفح الخدمات</Button>
+                <Button>{t('booking.browse-services')}</Button>
               </Link>
             </div>
           </div>
@@ -78,7 +94,9 @@ export default function BookingsPage(): JSX.Element {
                   <div>
                     <p className="font-semibold text-text-primary">{b.bookingCode as string}</p>
                     <p className="text-sm text-text-secondary">
-                      {new Date(b.startAt as string).toLocaleDateString('ar-SA')}
+                      {new Date(b.startAt as string).toLocaleDateString(
+                        locale === 'en' ? 'en-GB' : 'ar-SA',
+                      )}
                     </p>
                   </div>
                   <span
@@ -90,19 +108,19 @@ export default function BookingsPage(): JSX.Element {
                           : 'bg-info-subtle text-info'
                     }`}
                   >
-                    {b.status as string}
+                    {t(bookingStatusLabelKey(b.status as string))}
                   </span>
                   {(b.status === 'REQUESTED' || b.status === 'ACCEPTED') && (
                     <Button size="sm" variant="danger" onClick={() => setCancelId(b.id as number)}>
-                      إلغاء
+                      {t('button.cancel')}
                     </Button>
                   )}
                   {(b.status === 'PAID' || b.status === 'IN_PROGRESS') && (
                     <Link
                       href={`/video/${b.id}`}
-                      className="rounded-lg bg-purple-600 px-3 py-1 text-xs font-medium text-white hover:bg-purple-700"
+                      className="rounded-lg bg-brand-600 px-3 py-1 text-xs font-medium text-white hover:bg-brand-700"
                     >
-                      فيديو
+                      {t('booking.video')}
                     </Link>
                   )}
                 </div>
@@ -114,15 +132,15 @@ export default function BookingsPage(): JSX.Element {
       <Modal
         open={cancelId !== null}
         onClose={() => setCancelId(null)}
-        title="تأكيد الإلغاء"
+        title={t('booking.confirm-cancel')}
         size="sm"
       >
-        <p className="text-sm text-text-secondary dark:text-gray-400">
-          هل أنت متأكد من إلغاء هذا الحجز؟
+        <p className="text-sm text-text-secondary dark:text-text-tertiary">
+          {t('booking.confirm-cancel-question')}
         </p>
         <div className="mt-4 flex gap-3">
           <Button variant="outline" onClick={() => setCancelId(null)} className="flex-1">
-            رجوع
+            {t('button.back')}
           </Button>
           <Button
             variant="danger"
@@ -130,7 +148,7 @@ export default function BookingsPage(): JSX.Element {
             loading={cancelMut.isPending}
             className="flex-1"
           >
-            تأكيد الإلغاء
+            {t('booking.confirm-cancel')}
           </Button>
         </div>
       </Modal>

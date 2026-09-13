@@ -3,9 +3,11 @@
 import { api } from '@/lib/trpc';
 import { Card, CardListSkeleton, ErrorAlert, formatCurrency } from '@galaxy/ui';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
+import { useLocale } from '@/components/LocaleProvider';
 import { useToast } from '@galaxy/ui';
 
 export default function ReferralDashboardPage(): JSX.Element {
+  const { t, locale } = useLocale();
   const { addToast } = useToast();
   const { data: codeData } = api.referrals.getMyCode.useQuery() as {
     data: { code: string } | undefined;
@@ -52,11 +54,13 @@ export default function ReferralDashboardPage(): JSX.Element {
     `${typeof window !== 'undefined' ? window.location.origin : ''}/register?ref=${code}`;
 
   const copyCode = () => {
-    navigator.clipboard.writeText(code).then(() => addToast('success', 'تم نسخ الكود'));
+    navigator.clipboard
+      .writeText(code)
+      .then(() => addToast('success', t('referralDashboard.toast.copied')));
   };
   const shareWhatsApp = () => {
     window.open(
-      `https://wa.me/?text=${encodeURIComponent((share?.shareText ?? 'انضمي لجالكسي بيوتي') + ' — استخدمي كود: ' + code + '\n' + shareUrl)}`,
+      `https://wa.me/?text=${encodeURIComponent((share?.shareText ?? t('referralDashboard.share.join')) + t('referralDashboard.share.usageLabel') + code + '\n' + shareUrl)}`,
       '_blank',
     );
   };
@@ -75,46 +79,44 @@ export default function ReferralDashboardPage(): JSX.Element {
     <DashboardLayout userRole="CUSTOMER">
       <div className="mx-auto max-w-4xl space-y-6">
         <div>
-          <h1 className="text-2xl font-bold"> برنامج الإحالة</h1>
-          <p className="mt-1 text-sm text-text-secondary">
-            ادعي صديقاتكِ واربحوا معاً — ٢٠ ر.س لكل من تسجل وتحجز
-          </p>
+          <h1 className="text-2xl font-bold">{t('referralDashboard.title')}</h1>
+          <p className="mt-1 text-sm text-text-secondary">{t('referralDashboard.subtitle')}</p>
         </div>
 
         {/* Stats Cards */}
         <div className="grid gap-4 sm:grid-cols-4">
           <Card padding="md" className="text-center">
-            <p className="text-3xl">‍️</p>
+            <p className="text-3xl">👥</p>
             <p className="mt-1 text-2xl font-bold">{s.totalReferred}</p>
-            <p className="text-xs text-text-secondary">مدعوة</p>
+            <p className="text-xs text-text-secondary">{t('referralDashboard.stat.invited')}</p>
           </Card>
           <Card padding="md" className="text-center">
-            <p className="text-3xl"></p>
+            <p className="text-3xl">✅</p>
             <p className="mt-1 text-2xl font-bold text-green-600">{s.completedReferrals}</p>
-            <p className="text-xs text-text-secondary">مكتملة</p>
+            <p className="text-xs text-text-secondary">{t('referrals.stat.completed')}</p>
           </Card>
           <Card padding="md" className="text-center">
-            <p className="text-3xl"></p>
+            <p className="text-3xl">💰</p>
             <p className="mt-1 text-2xl font-bold text-brand-600">
               {formatCurrency(s.totalEarned)}
             </p>
-            <p className="text-xs text-text-secondary">ربح</p>
+            <p className="text-xs text-text-secondary">{t('referralDashboard.stat.earned')}</p>
           </Card>
           <Card padding="md" className="text-center">
-            <p className="text-3xl"></p>
+            <p className="text-3xl">🎁</p>
             <p className="mt-1 text-2xl font-bold text-amber-600">
               {formatCurrency(s.pendingRewards)}
             </p>
-            <p className="text-xs text-text-secondary">معلق</p>
+            <p className="text-xs text-text-secondary">{t('referralDashboard.stat.pending')}</p>
           </Card>
         </div>
 
         {/* Share Card */}
         <Card
           padding="lg"
-          className="bg-gradient-to-r from-brand-500 to-purple-500 text-white text-center"
+          className="bg-gradient-to-r from-brand-500 to-brand-500 text-white text-center"
         >
-          <p className="text-2xl font-bold"> كود الإحالة الخاص بكِ</p>
+          <p className="text-2xl font-bold">{t('referralDashboard.yourCode')}</p>
           <div className="mt-3 inline-block rounded-xl bg-white/20 px-8 py-3 backdrop-blur">
             <p className="text-4xl font-mono font-extrabold tracking-[0.3em]">{code}</p>
           </div>
@@ -123,41 +125,47 @@ export default function ReferralDashboardPage(): JSX.Element {
               onClick={copyCode}
               className="rounded-lg bg-white/20 px-4 py-2 text-sm font-bold hover:bg-white/30 transition-colors"
             >
-              نسخ الكود
+              {t('referralDashboard.copyCode')}
             </button>
             <button
               onClick={shareWhatsApp}
               className="rounded-lg bg-green-500/50 px-4 py-2 text-sm font-bold hover:bg-green-500/70 transition-colors"
             >
-              واتساب
+              {t('referralDashboard.whatsapp')}
             </button>
           </div>
         </Card>
 
         {/* Referral History */}
-        <h3 className="text-lg font-bold"> سجل الإحالات</h3>
+        <h3 className="text-lg font-bold">{t('referralDashboard.historyTitle')}</h3>
         {isLoading ? (
           <CardListSkeleton count={4} />
         ) : isError ? (
-          <ErrorAlert message="فشل التحميل" onRetry={() => refetch()} />
+          <ErrorAlert message={t('referralDashboard.err.load')} onRetry={() => refetch()} />
         ) : s.referrals.length === 0 ? (
           <p className="text-sm text-text-tertiary text-center py-8">
-            لم تحيلي أحداً بعد — شاركي كودكِ!
+            {t('referralDashboard.empty.desc')}
           </p>
         ) : (
           <div className="space-y-2">
             {s.referrals.map((r) => (
               <Card key={r.id} padding="md" className="flex items-center justify-between">
                 <div className="flex items-center gap-3">
-                  <div className="flex h-10 w-10 items-center justify-center rounded-full bg-brand-100 dark:bg-brand-900 text-lg"></div>
+                  <div className="flex h-10 w-10 items-center justify-center rounded-full bg-brand-100 dark:bg-brand-900 text-lg">
+                    👤
+                  </div>
                   <div>
-                    <p className="font-semibold text-sm">{r.referred?.name ?? 'مستخدم'}</p>
+                    <p className="font-semibold text-sm">
+                      {r.referred?.name ?? t('referralDashboard.userFallback')}
+                    </p>
                     <p className="text-xs text-text-secondary">
-                      {new Date(r.createdAt).toLocaleDateString('ar-SA')}
+                      {new Date(r.createdAt).toLocaleDateString(
+                        locale === 'en' ? 'en-GB' : 'ar-SA',
+                      )}
                     </p>
                   </div>
                 </div>
-                <div className="text-right">
+                <div className="text-end">
                   <span
                     className={`rounded-full px-2.5 py-0.5 text-xs font-medium ${
                       r.status === 'COMPLETED'
@@ -168,9 +176,9 @@ export default function ReferralDashboardPage(): JSX.Element {
                     }`}
                   >
                     {r.status === 'COMPLETED'
-                      ? 'مكتمل'
+                      ? t('referralDashboard.status.completed')
                       : r.status === 'PENDING'
-                        ? 'معلق'
+                        ? t('referralDashboard.status.pending')
                         : r.status}
                   </span>
                   <p className="text-xs font-bold text-brand-600 mt-0.5">
@@ -183,9 +191,11 @@ export default function ReferralDashboardPage(): JSX.Element {
         )}
 
         {/* Leaderboard */}
-        <h3 className="text-lg font-bold"> أكثر الأعضاء إحالة</h3>
+        <h3 className="text-lg font-bold">{t('referralDashboard.leaderboardTitle')}</h3>
         {topReferrers.length === 0 ? (
-          <p className="text-sm text-text-tertiary text-center py-4">لا توجد بيانات كافية بعد</p>
+          <p className="text-sm text-text-tertiary text-center py-4">
+            {t('referralDashboard.leaderboardEmpty')}
+          </p>
         ) : (
           <Card padding="md">
             <div className="space-y-2">
@@ -196,13 +206,13 @@ export default function ReferralDashboardPage(): JSX.Element {
                   </span>
                   <div className="flex-1 h-4 rounded-full bg-surface-muted dark:bg-gray-800 overflow-hidden">
                     <div
-                      className="h-full rounded-full bg-gradient-to-r from-brand-400 to-purple-500"
+                      className="h-full rounded-full bg-gradient-to-r from-brand-400 to-brand-500"
                       style={{
                         width: `${Math.min(100, (entry._count.id / Math.max(1, topReferrers[0]?._count?.id ?? 1)) * 100)}%`,
                       }}
                     />
                   </div>
-                  <span className="text-sm font-semibold w-12 text-right">{entry._count.id}</span>
+                  <span className="text-sm font-semibold w-12 text-end">{entry._count.id}</span>
                 </div>
               ))}
             </div>

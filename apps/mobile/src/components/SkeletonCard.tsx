@@ -1,12 +1,29 @@
 import { View, StyleSheet, Animated, Easing } from 'react-native';
-import { useEffect, useRef } from 'react';
+import { useEffect, useMemo, useRef } from 'react';
+import { themeColors, useTheme } from '@/components/ThemeProvider';
 
 interface SkeletonCardProps {
   lines?: number;
   height?: number;
 }
 
+// Light values (surface #ffffff, border #e5e7eb) match today's hardcoded
+// colors exactly.
+function createStyles(isDark: boolean) {
+  const C = isDark ? themeColors.dark : themeColors.light;
+  return StyleSheet.create({
+    list: { padding: 16, paddingTop: 10 },
+    card: { backgroundColor: C.surface, borderRadius: 14, padding: 14, marginBottom: 8 },
+    row: { flexDirection: 'row', alignItems: 'center', gap: 12 },
+    avatar: { width: 40, height: 40, borderRadius: 20, backgroundColor: C.border },
+    textCol: { flex: 1, gap: 8 },
+    line: { height: 12, borderRadius: 6, backgroundColor: C.border },
+  });
+}
+
 export function SkeletonCard({ lines = 3, height = 80 }: SkeletonCardProps): JSX.Element {
+  const { isDark } = useTheme();
+  const styles = useMemo(() => createStyles(isDark), [isDark]);
   const pulse = useRef(new Animated.Value(0)).current;
 
   useEffect(() => {
@@ -47,6 +64,8 @@ export function SkeletonCard({ lines = 3, height = 80 }: SkeletonCardProps): JSX
 }
 
 export function SkeletonList({ count = 4 }: { count?: number }): JSX.Element {
+  const { isDark } = useTheme();
+  const styles = useMemo(() => createStyles(isDark), [isDark]);
   return (
     <View style={styles.list}>
       {Array.from({ length: count }).map((_, i) => (
@@ -55,12 +74,3 @@ export function SkeletonList({ count = 4 }: { count?: number }): JSX.Element {
     </View>
   );
 }
-
-const styles = StyleSheet.create({
-  list: { padding: 16, paddingTop: 10 },
-  card: { backgroundColor: '#fff', borderRadius: 14, padding: 14, marginBottom: 8 },
-  row: { flexDirection: 'row', alignItems: 'center', gap: 12 },
-  avatar: { width: 40, height: 40, borderRadius: 20, backgroundColor: '#e5e7eb' },
-  textCol: { flex: 1, gap: 8 },
-  line: { height: 12, borderRadius: 6, backgroundColor: '#e5e7eb' },
-});

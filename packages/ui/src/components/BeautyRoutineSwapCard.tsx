@@ -19,11 +19,15 @@ interface RoutineSwap {
 
 interface BeautyRoutineSwapCardProps {
   swaps: RoutineSwap[];
+  title?: string;
+  subtitle?: string;
   className?: string;
 }
 
 export function BeautyRoutineSwapCard({
   swaps,
+  title = 'تبديل الروتين',
+  subtitle = 'حدثي روتينكِ مع المواسم',
   className = '',
 }: BeautyRoutineSwapCardProps): JSX.Element | null {
   if (!swaps.length) return null;
@@ -36,10 +40,12 @@ export function BeautyRoutineSwapCard({
       )}
     >
       <div className="flex items-center gap-2">
-        <span className="text-xl" aria-hidden="true"></span>
+        <span className="text-xl" aria-hidden="true">
+          🔄
+        </span>
         <div>
-          <h4 className="text-sm font-bold text-amber-700 dark:text-amber-300">تبديل الروتين</h4>
-          <p className="text-[10px] text-amber-500 dark:text-amber-400">حدثي روتينكِ مع المواسم</p>
+          <h4 className="text-sm font-bold text-amber-700 dark:text-amber-300">{title}</h4>
+          <p className="text-[10px] text-amber-500 dark:text-amber-400">{subtitle}</p>
         </div>
       </div>
       <div className="mt-3 space-y-2">
@@ -50,7 +56,7 @@ export function BeautyRoutineSwapCard({
           >
             <span className="text-sm shrink-0">{s.emoji || ''}</span>
             <div className="flex-1 min-w-0 text-center">
-              <span className="text-[10px] text-gray-400 line-through dark:text-gray-600">
+              <span className="text-[10px] text-text-tertiary line-through dark:text-text-secondary">
                 {s.from}
               </span>
               <span className="mx-2 text-amber-400">→</span>

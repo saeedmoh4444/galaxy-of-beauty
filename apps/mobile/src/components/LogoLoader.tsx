@@ -1,4 +1,5 @@
 import { View, Text, Image, ActivityIndicator, StyleSheet } from 'react-native';
+import { useLocale } from '@/components/LocaleProvider';
 
 // eslint-disable-next-line @typescript-eslint/no-require-imports -- Expo static asset imports must use require() (Metro bundler)
 const LOGO_SOURCE = require('../../assets/logo.png');
@@ -11,12 +12,14 @@ interface LogoLoaderProps {
   label?: string;
 }
 
-export function LogoLoader({ label = 'جاري التحميل...' }: LogoLoaderProps) {
+export function LogoLoader({ label }: LogoLoaderProps) {
+  const { t } = useLocale();
+  const resolved = label ?? t('state.loading');
   return (
-    <View style={styles.container} accessibilityRole="progressbar" accessibilityLabel={label}>
+    <View style={styles.container} accessibilityRole="progressbar" accessibilityLabel={resolved}>
       <Image source={LOGO_SOURCE} style={styles.logo} accessibilityIgnoresInvertColors />
       <ActivityIndicator color="#7c3aed" size="large" style={styles.spinner} />
-      <Text style={styles.label}>{label}</Text>
+      <Text style={styles.label}>{resolved}</Text>
     </View>
   );
 }
