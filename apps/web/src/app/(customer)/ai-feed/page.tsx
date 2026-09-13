@@ -98,7 +98,7 @@ export default function AiFeedPage(): JSX.Element {
 
             {wishlistItems.length === 0 && recommendations.length === 0 && (
               <Card padding="lg" className="text-center py-8">
-                <p className="text-4xl mb-2"></p>
+                <p className="text-4xl mb-2">✨</p>
                 <p className="text-text-secondary">{t('aiFeed.empty')}</p>
               </Card>
             )}

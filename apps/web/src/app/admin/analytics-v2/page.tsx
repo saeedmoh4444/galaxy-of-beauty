@@ -25,14 +25,14 @@ export default function AdminAnalyticsV2Page(): JSX.Element {
         <>
           <div className="grid gap-4 sm:grid-cols-4">
             <Card padding="lg" className="text-center">
-              <p className="text-3xl"></p>
+              <p className="text-3xl">💰</p>
               <p className="text-2xl font-bold text-brand-600">
                 {formatCurrency((d.revenue as Record<string, number>)?.today ?? 0)}
               </p>
               <p className="text-xs text-text-secondary">{t('admin.analytics-v2.revenue-today')}</p>
             </Card>
             <Card padding="lg" className="text-center">
-              <p className="text-3xl"></p>
+              <p className="text-3xl">📅</p>
               <p className="text-2xl font-bold">
                 {(d.bookings as Record<string, number>)?.today ?? 0}
               </p>
@@ -41,14 +41,14 @@ export default function AdminAnalyticsV2Page(): JSX.Element {
               </p>
             </Card>
             <Card padding="lg" className="text-center">
-              <p className="text-3xl"></p>
+              <p className="text-3xl">👥</p>
               <p className="text-2xl font-bold">
                 {(d.users as Record<string, number>)?.activeToday ?? 0}
               </p>
               <p className="text-xs text-text-secondary">{t('admin.analytics-v2.active-users')}</p>
             </Card>
             <Card padding="lg" className="text-center">
-              <p className="text-3xl"></p>
+              <p className="text-3xl">💅</p>
               <p className="text-2xl font-bold">
                 {(d.technicians as Record<string, number>)?.active ?? 0}
               </p>

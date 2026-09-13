@@ -79,26 +79,26 @@ export default function BeautyAnalyticsPage(): JSX.Element {
             {/* KPI Cards */}
             <div className="grid gap-4 sm:grid-cols-4">
               <Card padding="lg" className="text-center">
-                <p className="text-4xl"></p>
+                <p className="text-4xl">📅</p>
                 <p className="mt-2 text-3xl font-extrabold text-brand-600">{s.totalBookings}</p>
                 <p className="text-xs text-text-secondary">
                   {t('beautyAnalytics.kpi.totalBookings')}
                 </p>
               </Card>
               <Card padding="lg" className="text-center">
-                <p className="text-4xl"></p>
+                <p className="text-4xl">✅</p>
                 <p className="mt-2 text-3xl font-extrabold text-green-600">{s.completedBookings}</p>
                 <p className="text-xs text-text-secondary">{t('beautyAnalytics.kpi.completed')}</p>
               </Card>
               <Card padding="lg" className="text-center">
-                <p className="text-4xl"></p>
+                <p className="text-4xl">📈</p>
                 <p className="mt-2 text-3xl font-extrabold text-blue-600">{s.completionRate}%</p>
                 <p className="text-xs text-text-secondary">
                   {t('beautyAnalytics.kpi.completionRate')}
                 </p>
               </Card>
               <Card padding="lg" className="text-center">
-                <p className="text-4xl"></p>
+                <p className="text-4xl">💰</p>
                 <p className="mt-2 text-3xl font-extrabold text-brand-600">
                   {formatCurrency(s.totalSpent)}
                 </p>

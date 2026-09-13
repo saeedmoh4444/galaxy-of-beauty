@@ -86,24 +86,24 @@ export default function ReferralDashboardPage(): JSX.Element {
         {/* Stats Cards */}
         <div className="grid gap-4 sm:grid-cols-4">
           <Card padding="md" className="text-center">
-            <p className="text-3xl"></p>
+            <p className="text-3xl">👥</p>
             <p className="mt-1 text-2xl font-bold">{s.totalReferred}</p>
             <p className="text-xs text-text-secondary">{t('referralDashboard.stat.invited')}</p>
           </Card>
           <Card padding="md" className="text-center">
-            <p className="text-3xl"></p>
+            <p className="text-3xl">✅</p>
             <p className="mt-1 text-2xl font-bold text-green-600">{s.completedReferrals}</p>
             <p className="text-xs text-text-secondary">{t('referrals.stat.completed')}</p>
           </Card>
           <Card padding="md" className="text-center">
-            <p className="text-3xl"></p>
+            <p className="text-3xl">💰</p>
             <p className="mt-1 text-2xl font-bold text-brand-600">
               {formatCurrency(s.totalEarned)}
             </p>
             <p className="text-xs text-text-secondary">{t('referralDashboard.stat.earned')}</p>
           </Card>
           <Card padding="md" className="text-center">
-            <p className="text-3xl"></p>
+            <p className="text-3xl">🎁</p>
             <p className="mt-1 text-2xl font-bold text-amber-600">
               {formatCurrency(s.pendingRewards)}
             </p>
@@ -151,7 +151,9 @@ export default function ReferralDashboardPage(): JSX.Element {
             {s.referrals.map((r) => (
               <Card key={r.id} padding="md" className="flex items-center justify-between">
                 <div className="flex items-center gap-3">
-                  <div className="flex h-10 w-10 items-center justify-center rounded-full bg-brand-100 dark:bg-brand-900 text-lg"></div>
+                  <div className="flex h-10 w-10 items-center justify-center rounded-full bg-brand-100 dark:bg-brand-900 text-lg">
+                    👤
+                  </div>
                   <div>
                     <p className="font-semibold text-sm">
                       {r.referred?.name ?? t('referralDashboard.userFallback')}

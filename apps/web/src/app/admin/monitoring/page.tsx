@@ -83,7 +83,7 @@ export default function MonitoringPage(): JSX.Element {
                   <span
                     className={`inline-flex items-center justify-center h-10 w-10 rounded-full text-lg ${STATUS_COLORS[(svc.status as string) ?? 'unknown']}`}
                   >
-                    {svc.status === 'healthy' ? '' : svc.status === 'warning' ? '' : ''}
+                    {svc.status === 'healthy' ? '🟢' : svc.status === 'warning' ? '🟡' : '🔴'}
                   </span>
                   <p className="font-bold text-sm mt-2">
                     {t(SERVICE_LABEL_KEYS[key] ?? (key as unknown as TranslationKey))}
@@ -126,39 +126,39 @@ export default function MonitoringPage(): JSX.Element {
               <StatCard
                 label={t('admin.monitoring.bookings-today')}
                 value={today.bookings ?? 0}
-                icon=""
+                icon="📅"
               />
               <StatCard
                 label={t('admin.monitoring.logins-today')}
                 value={today.logins ?? 0}
-                icon=""
+                icon="👥"
               />
               <StatCard
                 label={t('admin.monitoring.payments-today')}
                 value={today.payments ?? 0}
-                icon=""
+                icon="💰"
               />
               <StatCard
                 label={t('admin.monitoring.error-rate')}
                 value={`${(errData.apiErrorsToday as number) ?? 0}`}
-                icon=""
+                icon="⚠️"
               />
             </div>
 
             {/* ── Performance ── */}
             <div className="grid gap-4 sm:grid-cols-3">
               <Card padding="lg" className="text-center">
-                <p className="text-3xl"></p>
+                <p className="text-3xl">⚡</p>
                 <p className="text-2xl font-bold">{perf.avgResponseTime as string}</p>
                 <p className="text-xs text-text-secondary">{t('admin.monitoring.avg-response')}</p>
               </Card>
               <Card padding="lg" className="text-center">
-                <p className="text-3xl"></p>
+                <p className="text-3xl">📊</p>
                 <p className="text-2xl font-bold">{perf.p95ResponseTime as string}</p>
                 <p className="text-xs text-text-secondary">p95</p>
               </Card>
               <Card padding="lg" className="text-center">
-                <p className="text-3xl"></p>
+                <p className="text-3xl">📈</p>
                 <p className="text-2xl font-bold">{perf.p99ResponseTime as string}</p>
                 <p className="text-xs text-text-secondary">p99</p>
               </Card>

@@ -70,7 +70,7 @@ export default function AdvancedBookingPage(): JSX.Element {
 
         {done ? (
           <Card padding="lg" className="text-center border-2 border-green-300 bg-green-50">
-            <p className="text-3xl"></p>
+            <p className="text-3xl">✅</p>
             <p className="font-bold text-green-700 mt-2">{t('advancedBooking.success')}</p>
           </Card>
         ) : (

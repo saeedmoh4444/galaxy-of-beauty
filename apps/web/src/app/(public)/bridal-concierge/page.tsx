@@ -256,7 +256,7 @@ function BridalDashboard(): JSX.Element {
             <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
               {concierge?.weddingDate && (
                 <div className="rounded-xl bg-brand-50 p-3 text-center dark:bg-brand-950">
-                  <p className="text-3xl"></p>
+                  <p className="text-3xl">💍</p>
                   <p className="mt-1 text-xs text-text-secondary">
                     {t('marketing.bridal-concierge.wedding-date')}
                   </p>
@@ -279,7 +279,7 @@ function BridalDashboard(): JSX.Element {
               )}
               {concierge?.venue && (
                 <div className="rounded-xl bg-brand-50 p-3 text-center dark:bg-brand-950">
-                  <p className="text-3xl"></p>
+                  <p className="text-3xl">🏰</p>
                   <p className="mt-1 text-xs text-text-secondary">
                     {t('marketing.bridal-concierge.venue')}
                   </p>
@@ -288,7 +288,7 @@ function BridalDashboard(): JSX.Element {
               )}
               {concierge?.guestCount && (
                 <div className="rounded-xl bg-pink-50 p-3 text-center dark:bg-pink-950">
-                  <p className="text-3xl"></p>
+                  <p className="text-3xl">👥</p>
                   <p className="mt-1 text-xs text-text-secondary">
                     {t('marketing.bridal-concierge.guests')}
                   </p>
@@ -299,7 +299,7 @@ function BridalDashboard(): JSX.Element {
               )}
               {concierge?.budget && (
                 <div className="rounded-xl bg-green-50 p-3 text-center dark:bg-green-950">
-                  <p className="text-3xl"></p>
+                  <p className="text-3xl">💰</p>
                   <p className="mt-1 text-xs text-text-secondary">
                     {t('marketing.bridal-concierge.budget')}
                   </p>
@@ -359,7 +359,7 @@ function BridalDashboard(): JSX.Element {
                   <div
                     className={`flex h-10 w-10 items-center justify-center rounded-full text-lg ${svc.isTrialDone ? 'bg-green-100 dark:bg-green-900' : 'bg-surface-muted dark:bg-gray-800'}`}
                   >
-                    {svc.isTrialDone ? '' : ''}
+                    {svc.isTrialDone ? '✅' : '⏳'}
                   </div>
                   <div>
                     <p className="text-sm font-semibold">

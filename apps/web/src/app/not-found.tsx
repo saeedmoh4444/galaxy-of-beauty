@@ -23,7 +23,7 @@ export default async function NotFound(): Promise<JSX.Element> {
         height={80}
         className="mb-8 h-20 w-20 rounded-2xl object-cover shadow-lg opacity-60"
       />
-      <div className="mb-4 text-7xl"></div>
+      <div className="mb-4 text-7xl">🔍</div>
       <h1 className="text-4xl font-extrabold text-text-primary">
         {t('error.not-found-code', locale)}
       </h1>

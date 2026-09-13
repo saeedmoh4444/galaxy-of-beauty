@@ -64,7 +64,7 @@ export default function SmartSchedulePage(): JSX.Element {
           <CardListSkeleton count={4} />
         ) : suggestions.length === 0 ? (
           <Card padding="lg" className="text-center py-8">
-            <p className="text-4xl mb-2"></p>
+            <p className="text-4xl mb-2">📅</p>
             <p className="text-text-secondary">{t('smartSchedule.noSlots')}</p>
           </Card>
         ) : (

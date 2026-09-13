@@ -17,7 +17,7 @@ export default function VideoRoomPage(): JSX.Element {
         <h1 className="text-2xl font-bold text-text-primary">{t('videoRoom.title')}</h1>
 
         <Card padding="lg" className="text-center">
-          <div className="mb-6 text-6xl"></div>
+          <div className="mb-6 text-6xl">📹</div>
           <p className="text-sm text-text-secondary mb-2">
             {t('videoRoom.roomNumber')}{' '}
             <code className="rounded bg-surface-muted px-2 py-1 text-xs dark:bg-gray-800">

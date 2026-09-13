@@ -41,24 +41,24 @@ export default function SalonManagementPage(): JSX.Element {
 
         <div className="grid gap-4 sm:grid-cols-4">
           <Card padding="md" className="text-center">
-            <p className="text-3xl"></p>
+            <p className="text-3xl">📅</p>
             <p className="text-2xl font-bold">{(dash?.todayBookings as number) ?? 0}</p>
             <p className="text-xs text-text-secondary">{t('salonManagement.todayBookings')}</p>
           </Card>
           <Card padding="md" className="text-center">
-            <p className="text-3xl"></p>
+            <p className="text-3xl">💰</p>
             <p className="text-2xl font-bold">
               {formatCurrency((dash?.todayRevenue as number) ?? 0)}
             </p>
             <p className="text-xs text-text-secondary">{t('salonManagement.todayRevenue')}</p>
           </Card>
           <Card padding="md" className="text-center">
-            <p className="text-3xl"></p>
+            <p className="text-3xl">👥</p>
             <p className="text-2xl font-bold">{(dash?.activeStaff as number) ?? 0}</p>
             <p className="text-xs text-text-secondary">{t('salonManagement.staff')}</p>
           </Card>
           <Card padding="md" className="text-center">
-            <p className="text-3xl"></p>
+            <p className="text-3xl">⭐</p>
             <p className="text-2xl font-bold">{(dash?.avgRating as number) ?? 0}</p>
             <p className="text-xs text-text-secondary">{t('salonManagement.rating')}</p>
           </Card>

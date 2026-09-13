@@ -32,7 +32,7 @@ export default function VideoPage(): JSX.Element {
           <CardListSkeleton count={3} />
         ) : bookings.length === 0 ? (
           <Card padding="lg" className="text-center py-8">
-            <p className="text-4xl mb-2"></p>
+            <p className="text-4xl mb-2">📹</p>
             <p className="text-text-secondary">{t('video.noBookings')}</p>
             <Link href="/bookings/create">
               <Button className="mt-4">{t('video.bookNow')}</Button>

@@ -532,7 +532,7 @@ export default function VirtualTryOnPage(): JSX.Element {
                     {cameraError && (
                       <div className="absolute inset-0 flex items-center justify-center bg-black/80">
                         <div className="text-center p-6">
-                          <p className="text-white text-lg mb-2"></p>
+                          <p className="text-white text-lg mb-2">⚠️</p>
                           <p className="text-white/80 text-sm mb-3">{cameraError}</p>
                           <Button size="sm" onClick={() => startCamera('user')}>
                             {t('tryOn.retry')}
