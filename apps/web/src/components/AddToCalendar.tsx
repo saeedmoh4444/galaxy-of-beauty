@@ -1,4 +1,5 @@
 'use client';
+import type { JSX } from 'react';
 
 import { GOOGLE_CALENDAR_URL } from '@galaxy/ui';
 import { useLocale } from '@/components/LocaleProvider';

@@ -9,6 +9,7 @@ import {
   useState,
   type ReactNode,
 } from 'react';
+import type { JSX } from 'react';
 import { isRTL, t as tBase, type Locale, type TranslationKey } from '@galaxy/shared';
 import { LOCALE_COOKIE } from '@/lib/locale';
 

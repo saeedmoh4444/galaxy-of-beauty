@@ -1,4 +1,5 @@
 'use client';
+import type { JSX } from 'react';
 
 import { formatCurrency } from '@galaxy/ui';
 import type { TranslationKey } from '@galaxy/shared';
