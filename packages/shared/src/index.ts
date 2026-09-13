@@ -61,3 +61,12 @@ export {
   serviceKeyFromCategorySlug,
   womensCategoryImageKey,
 } from './images';
+
+// Service detail trust layer (shared by web + RN mirror)
+export { buildServiceTrust } from './serviceDetail';
+export type {
+  ServiceTrustItem,
+  ServiceTrustInput,
+  ServiceTrustResult,
+  TrustItemVariant,
+} from './serviceDetail';

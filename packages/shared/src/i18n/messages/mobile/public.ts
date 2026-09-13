@@ -592,6 +592,44 @@ export const mobilePublicMessages = {
     ar: ' {minutes} دقيقة',
     en: '{minutes} minutes',
   },
+  'mobile.public.service-detail.price': { ar: 'السعر', en: 'Price' },
+  'mobile.public.service-detail.options': { ar: 'الخيارات', en: 'Options' },
+  'mobile.public.service-detail.book-now': { ar: 'احجزي الآن', en: 'Book now' },
+  'mobile.public.service-detail.available-technicians': {
+    ar: 'المقدمات المتاحات',
+    en: 'Available providers',
+  },
+  'mobile.public.service-detail.book': { ar: 'احجزي', en: 'Book' },
+  'mobile.public.service-detail.no-technicians': {
+    ar: 'لا توجد مقدمات لهذه الخدمة حالياً',
+    en: 'No providers for this service yet',
+  },
+  'mobile.public.service-detail.related-services': { ar: 'خدمات مشابهة', en: 'Related services' },
+  'mobile.public.service-detail.view-full-gallery': {
+    ar: 'عرض المعرض الكامل',
+    en: 'View full gallery',
+  },
+  'mobile.public.service-detail.share': { ar: 'مشاركة', en: 'Share' },
+  'mobile.public.service-detail.gallery-title': {
+    ar: 'قبل وبعد',
+    en: 'Before & after',
+  },
+  'mobile.public.service-detail.trust.safeSpace': { ar: 'مساحة آمنة', en: 'Safe space' },
+  'mobile.public.service-detail.trust.womenOnly': {
+    ar: 'فريق نسائي بالكامل',
+    en: 'Women-only staff',
+  },
+  'mobile.public.service-detail.trust.privateSuite': { ar: 'جناح خاص', en: 'Private suite' },
+  'mobile.public.service-detail.trust.verified': { ar: 'موثقة', en: 'Verified' },
+  'mobile.public.service-detail.trust.rating': { ar: 'التقييم', en: 'Rating' },
+  'mobile.public.service-detail.trust.pregnancySafe': {
+    ar: 'آمن أثناء الحمل',
+    en: 'Pregnancy-safe',
+  },
+  'mobile.public.service-detail.trust.mommyFriendly': {
+    ar: 'مناسب للأمهات',
+    en: 'Mommy-friendly',
+  },
   // Technician detail
   'mobile.public.technician-detail.load-error': {
     ar: 'فشل تحميل بيانات مقدمة الخدمة',
