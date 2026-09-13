@@ -1,7 +1,7 @@
 'use client';
 import { useState } from 'react';
 import { api } from '@/lib/trpc';
-import { Card, Button, Modal } from '@galaxy/ui';
+import { Card, Button, Modal, Reveal } from '@galaxy/ui';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
 import { useLocale } from '@/components/LocaleProvider';
 
@@ -28,49 +28,56 @@ export default function TechOnboardingPage(): JSX.Element {
   return (
     <DashboardLayout userRole="CUSTOMER">
       <div className="mx-auto max-w-2xl space-y-6">
-        <div>
+        <Reveal>
           <h1 className="text-2xl font-bold">{t('techOnboarding.title')}</h1>
           <p className="mt-1 text-sm text-text-secondary">{t('techOnboarding.subtitle')}</p>
-        </div>
-        <Card padding="lg">
-          <div className="mb-4 h-2 rounded-full bg-surface-muted">
-            <div
-              className="h-2 rounded-full bg-brand-500"
-              style={{ width: `${(completed / total) * 100}%` }}
-            />
-          </div>
-          <p className="text-sm text-center mb-4">
-            {completed}/{total} {t('techOnboarding.completedLabel')}
-          </p>
-          <div className="space-y-3">
-            {steps.map((s: Record<string, unknown>) => (
+        </Reveal>
+        <Reveal delay={100}>
+          <Card padding="lg">
+            <div className="mb-4 h-2 rounded-full bg-surface-muted">
               <div
-                key={s.key as string}
-                className={`flex items-center gap-3 rounded-lg p-3 ${s.completed ? 'bg-green-50 dark:bg-green-950' : 'bg-surface-muted dark:bg-gray-800'}`}
-              >
-                <span className="text-2xl">{s.emoji as string}</span>
-                <div className="flex-1">
-                  <p className="font-bold text-sm">{s.nameAr as string}</p>
-                  <p className="text-xs text-text-secondary">{s.desc as string}</p>
-                </div>
-                {s.completed ? (
-                  <span className="text-green-600">✅</span>
-                ) : (
-                  <Button
-                    size="sm"
-                    variant="ghost"
-                    onClick={() => {
-                      setStepKey(s.key as string);
-                      setShow(true);
-                    }}
-                  >
-                    {t('techOnboarding.upload')}
-                  </Button>
-                )}
-              </div>
-            ))}
-          </div>
-        </Card>
+                className="h-2 rounded-full bg-brand-500 transition-all duration-700"
+                style={{ width: `${(completed / total) * 100}%` }}
+              />
+            </div>
+            <p className="text-sm text-center mb-4">
+              {completed}/{total} {t('techOnboarding.completedLabel')}
+            </p>
+            <div className="space-y-3">
+              {steps.map((s: Record<string, unknown>, i) => (
+                <Reveal
+                  key={s.key as string}
+                  delay={150 + i * 60}
+                  className={`flex items-center gap-3 rounded-lg p-3 ${
+                    s.completed
+                      ? 'bg-green-50 dark:bg-green-950'
+                      : 'bg-surface-muted dark:bg-gray-800'
+                  }`}
+                >
+                  <span className="text-2xl">{s.emoji as string}</span>
+                  <div className="flex-1">
+                    <p className="font-bold text-sm">{s.nameAr as string}</p>
+                    <p className="text-xs text-text-secondary">{s.desc as string}</p>
+                  </div>
+                  {s.completed ? (
+                    <span className="text-green-600">✅</span>
+                  ) : (
+                    <Button
+                      size="sm"
+                      variant="ghost"
+                      onClick={() => {
+                        setStepKey(s.key as string);
+                        setShow(true);
+                      }}
+                    >
+                      {t('techOnboarding.upload')}
+                    </Button>
+                  )}
+                </Reveal>
+              ))}
+            </div>
+          </Card>
+        </Reveal>
         <Modal
           open={show}
           onClose={() => setShow(false)}
