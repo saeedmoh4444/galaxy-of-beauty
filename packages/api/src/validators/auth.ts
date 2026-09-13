@@ -3,13 +3,43 @@ import { z } from 'zod';
 // Saudi phone: +9665xxxxxxxx
 const saudiPhone = z.string().regex(/^\+9665\d{8}$/, 'Invalid Saudi phone number');
 
-// Password: 8+ chars, uppercase, lowercase, digit
+// Common passwords blocklist (top 25 most breached)
+const COMMON_PASSWORDS = new Set([
+  'password',
+  'password123',
+  '12345678',
+  '123456789',
+  'qwerty123',
+  'admin123',
+  'letmein1',
+  'welcome1',
+  'football1',
+  'iloveyou1',
+  'Password1',
+  'Password123',
+  'Qwerty123',
+  'Admin1234',
+  'Welcome123',
+  'Pa$$w0rd',
+  'P@ssword1',
+  'Galaxy123',
+  'Beauty123',
+]);
+
+// Password: 8+ chars, uppercase, lowercase, digit, special char
 const password = z
   .string()
-  .min(8, 'Password must be at least 8 characters')
-  .regex(/[A-Z]/, 'Must contain an uppercase letter')
-  .regex(/[a-z]/, 'Must contain a lowercase letter')
-  .regex(/[0-9]/, 'Must contain a digit');
+  .min(8, 'كلمة المرور يجب أن تكون ٨ أحرف على الأقل')
+  .max(128, 'Password must be at most 128 characters')
+  .regex(/[A-Z]/, 'يجب أن تحتوي على حرف كبير (A-Z)')
+  .regex(/[a-z]/, 'يجب أن تحتوي على حرف صغير (a-z)')
+  .regex(/[0-9]/, 'يجب أن تحتوي على رقم')
+  .regex(/[!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?`~]/, 'يجب أن تحتوي على رمز خاص')
+  .refine(
+    (pwd) => !COMMON_PASSWORDS.has(pwd),
+    'كلمة المرور شائعة جدا. الرجاء اختيار كلمة مرور أقوى.',
+  )
+  .refine((pwd) => !/(.)\1{2,}/.test(pwd), 'يجب ألا تحتوي على أحرف متكررة (٣ مرات متتالية)');
 
 export const registerSchema = z.object({
   email: z.string().email(),

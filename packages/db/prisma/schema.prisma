@@ -155,6 +155,14 @@ model User {
   resetTokens       ResetToken[]
   pushTokens        PushToken[]
   loyaltyAccount    LoyaltyAccount?
+  savedCards        SavedCard[]
+  subscriptions     CustomerSubscription[]
+  promoUsages       PromoUsage[]
+  skinAnalyses       SkinAnalysis[]
+  vendor             Vendor?
+  productReviews     ProductReview[]
+  cartItems          CartItem[]
+  storeOrders        StoreOrder[]
   sentMessages      ChatMessage[]      @relation("SenderMessages")
   auditLogs         AuditLog[]
   wishlistItems     WishlistItem[]
@@ -163,9 +171,12 @@ model User {
   achievements      UserAchievement[]
   referralsMade     Referral[]         @relation("ReferralsMade")
   referralsReceived Referral[]         @relation("ReferralsReceived")
+  kindnessAccount   KindnessAccount?
+  beautyCircleMembers BeautyCircleMember[]
+  clinicConsultations ClinicConsultation[]
+  gymClassBookings  GymClassBooking[]
 
   @@index([role, isActive])
-  @@index([phone])
   @@index([createdAt])
   @@map("users")
 }
@@ -173,6 +184,7 @@ model User {
 model RefreshToken {
   id        Int      @id @default(autoincrement())
   token     String   @unique
+  familyId  String   @default(uuid())
   userId    Int
   expiresAt DateTime
   createdAt DateTime @default(now())
@@ -181,8 +193,8 @@ model RefreshToken {
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@index([userId])
-  @@index([token])
   @@index([expiresAt])
+  @@index([familyId])
   @@map("refresh_tokens")
 }
 
@@ -197,7 +209,6 @@ model ResetToken {
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@index([userId])
-  @@index([token])
   @@index([expiresAt])
   @@map("reset_tokens")
 }
@@ -298,6 +309,7 @@ model Technician {
   technicianServices    TechnicianService[]
   waitlistEntries       WaitlistEntry[]
   wishlistItems         WishlistItem[]
+  galleryImages         GalleryImage[]
 
   @@index([city, kycStatus])
   @@index([ratingAvg])
@@ -403,6 +415,11 @@ model Service {
   slug            String?   @unique
   isActive        Boolean  @default(true)
   isPopular       Boolean  @default(false)
+  isPregnancySafe  Boolean @default(false) // Safe for pregnant women
+  isMommyFriendly  Boolean @default(false) // Suitable for mother+child
+  // E6d — trust badges (Tier 2): modesty is the #1 purchase driver in KSA.
+  isWomenOnlyStaff Boolean @default(false) // female staff only
+  isPrivateSuite   Boolean @default(false) // fully private suite
   sortOrder       Int      @default(0)
   createdAt       DateTime @default(now())
   updatedAt       DateTime @updatedAt
@@ -537,7 +554,9 @@ model Booking {
   idempotencyKey     String?       @unique
   cancelledAt        DateTime?
   cancelReason       String?
-  googleEventId      String?
+  // Booking auto-sync (E9 follow-up): Google Calendar event ids per side.
+  googleEventId             String? // the CUSTOMER's calendar event
+  technicianGoogleEventId   String? // the TECHNICIAN's calendar event
   createdAt          DateTime      @default(now())
   updatedAt          DateTime      @updatedAt
 
@@ -550,11 +569,11 @@ model Booking {
   review     Review?
   dispute    Dispute?
   zatcaInvoice ZatcaInvoice?
+  chatMessages ChatMessage[]
+  videoSession VideoSession?
 
   @@index([customerId, status, createdAt])
   @@index([technicianId, status, startAt])
-  @@index([bookingCode])
-  @@index([idempotencyKey])
   @@index([status, createdAt])
   @@map("bookings")
 }
@@ -591,7 +610,8 @@ model Payment {
 
 model Payout {
   id           Int          @id @default(autoincrement())
-  technicianId Int          // References User.id (technician's user ID)
+  technicianId Int?         // References User.id (technician's user ID); null for store payouts
+  vendorId     Int?         // Store plan Phase 3 — store payouts
   periodStart  DateTime
   periodEnd    DateTime
   amount       Decimal      @db.Decimal(10, 2)
@@ -603,9 +623,11 @@ model Payout {
   createdAt    DateTime     @default(now())
   updatedAt    DateTime     @updatedAt
 
-  technician User @relation(fields: [technicianId], references: [id])
+  technician User?   @relation(fields: [technicianId], references: [id])
+  vendor     Vendor? @relation(fields: [vendorId], references: [id])
 
   @@index([technicianId, status])
+  @@index([vendorId, status])
   @@index([periodStart, periodEnd])
   @@map("payouts")
 }
@@ -681,6 +703,24 @@ model Notification {
   @@map("notifications")
 }
 
+// B.26 — notification framework templates. Rendered via lib/notify.ts with
+// {{placeholder}} interpolation. category maps to a notificationPreference
+// toggle (bookingReminders / promotions / tips / community).
+model NotificationTemplate {
+  id        Int      @id @default(autoincrement())
+  key       String   @unique // e.g. 'booking_created', 'booking_reminder'
+  category  String   // bookingReminders | promotions | tips | community
+  channels  String[] // default channels: ['in_app','push','sms','email']
+  titleJson Json     // { ar: "...", en: "..." } with {{placeholders}}
+  bodyJson  Json     // { ar: "...", en: "..." } with {{placeholders}}
+  isActive  Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([category, isActive])
+  @@map("notification_templates")
+}
+
 // =============================================================================
 // Waitlist
 // =============================================================================
@@ -736,6 +776,7 @@ model ZatcaInvoice {
   invoiceHash         String?     // Cryptographic hash
   cryptographicStamp  String?     // ZATCA signed stamp
   qrCode              String?     // Base64 encoded QR code
+  clearanceId         String?     // ZATCA clearance UUID from reporting
   status              ZatcaStatus @default(PENDING)
   reportedAt          DateTime?
   clearedAt           DateTime?
@@ -824,21 +865,24 @@ model AiUsage {
 }
 
 // =============================================================================
-// AI Chatbot (Layla)
+// AI Chatbot (Beauty Galaxy)
 // =============================================================================
 
 model ChatMessage {
   id         Int      @id @default(autoincrement())
   senderId   Int
   receiverId Int?     // Null if talking to AI chatbot
+  bookingId  Int?
   content    String
   isAi       Boolean  @default(false)
   metadata   Json?
   createdAt  DateTime @default(now())
 
-  sender User @relation("SenderMessages", fields: [senderId], references: [id])
+  sender  User     @relation("SenderMessages", fields: [senderId], references: [id])
+  booking Booking? @relation(fields: [bookingId], references: [id])
 
   @@index([senderId, createdAt])
+  @@index([bookingId])
   @@map("chat_messages")
 }
 
@@ -902,10 +946,26 @@ model SaudiCity {
   regionEn  String
   isActive  Boolean @default(true)
 
+  areas Area[]
+
   @@unique([nameAr, regionAr])
   @@index([nameAr])
   @@index([regionAr])
   @@map("saudi_cities")
+}
+
+model Area {
+  id       Int    @id @default(autoincrement())
+  cityId   Int
+  nameAr   String
+  nameEn   String
+  isActive Boolean @default(true)
+
+  city SaudiCity @relation(fields: [cityId], references: [id], onDelete: Cascade)
+
+  @@unique([cityId, nameAr])
+  @@index([cityId])
+  @@map("areas")
 }
 
 // =============================================================================
@@ -961,7 +1021,7 @@ model Referral {
   id             Int      @id @default(autoincrement())
   referrerId     Int      // User who referred
   referredId     Int      // User who was referred (must complete first booking)
-  referralCode   String   @unique // Unique code for sharing
+  referralCode   String   // Referrer's share code (deterministic; many referrals may carry it)
   status         String   @default("PENDING") // PENDING, COMPLETED, EXPIRED
   rewardCredited Boolean  @default(false)
   referrerReward Decimal  @default(20) @db.Decimal(10, 2)
@@ -992,4 +1052,2891 @@ model PlatformConfig {
   createdAt    DateTime @default(now())
 
   @@map("platform_configs")
+}
+
+// =============================================================================
+// Saved Payment Methods
+// =============================================================================
+
+model SavedCard {
+  id           Int      @id @default(autoincrement())
+  userId       Int
+  cardToken    String   // PayFort/APS token
+  lastFour     String   // Last 4 digits
+  brand        String   // visa, mastercard, mada, amex
+  expMonth     Int
+  expYear      Int
+  cardholderName String
+  isDefault    Boolean  @default(false)
+  createdAt    DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, cardToken])
+  @@index([userId])
+  @@map("saved_cards")
+}
+
+// =============================================================================
+// Portfolio / Before & After Gallery
+// =============================================================================
+
+model GalleryImage {
+  id           Int      @id @default(autoincrement())
+  technicianId Int
+  imageUrl     String
+  captionJson  Json?    // { ar: "...", en: "..." }
+  category     String?  // hair, nails, makeup, etc.
+  isBefore     Boolean  @default(false) // Before/after pair indicator
+  pairId       Int?     // Links before→after images
+  sortOrder    Int      @default(0)
+  isPublished  Boolean  @default(true)
+  createdAt    DateTime @default(now())
+
+  technician Technician @relation(fields: [technicianId], references: [userId])
+
+  @@index([technicianId, isPublished])
+  @@map("gallery_images")
+}
+
+// =============================================================================
+// Promo Codes & Flash Deals
+// =============================================================================
+
+model PromoCode {
+  id              Int      @id @default(autoincrement())
+  code            String   @unique
+  discountType    String   // percent, fixed
+  discountValue   Decimal  @db.Decimal(10, 2)
+  minOrderAmount  Decimal? @db.Decimal(10, 2)
+  maxDiscount     Decimal? @db.Decimal(10, 2)
+  maxUses         Int?
+  currentUses     Int      @default(0)
+  validFrom       DateTime @default(now())
+  validUntil      DateTime?
+  isActive        Boolean  @default(true)
+  appliesTo       String?  // "all", "category:3", "service:5"
+  createdBy       Int
+  createdAt       DateTime @default(now())
+
+  usages PromoUsage[]
+
+  @@index([code, isActive])
+  @@index([validUntil])
+  @@map("promo_codes")
+}
+
+model PromoUsage {
+  id          Int      @id @default(autoincrement())
+  promoCodeId Int
+  userId      Int
+  bookingId   Int?
+  discountAmount Decimal @db.Decimal(10, 2)
+  createdAt   DateTime @default(now())
+
+  promoCode PromoCode @relation(fields: [promoCodeId], references: [id])
+  user      User      @relation(fields: [userId], references: [id])
+
+  @@unique([promoCodeId, userId, bookingId])
+  @@map("promo_usages")
+}
+
+// =============================================================================
+// Subscription Boxes (Monthly Beauty Packages)
+// =============================================================================
+
+model SubscriptionPlan {
+  id              Int      @id @default(autoincrement())
+  nameJson        Json     // { ar: "الباقة الذهبية", en: "Gold Package" }
+  descriptionJson Json
+  interval        String   @default("MONTHLY") // MONTHLY, BIWEEKLY, WEEKLY
+  price           Decimal  @db.Decimal(10, 2)
+  servicesPerMonth Int     @default(1)
+  discountPercent Int      @default(0) // vs individual bookings
+  isActive        Boolean  @default(true)
+  // E3 — gym-scoped membership plan (null = global beauty-box plan).
+  gymId           Int?
+  createdAt       DateTime @default(now())
+
+  gym           Vendor?  @relation(fields: [gymId], references: [id])
+  subscriptions CustomerSubscription[]
+
+  @@map("subscription_plans")
+}
+
+model CustomerSubscription {
+  id              Int      @id @default(autoincrement())
+  userId          Int
+  planId          Int
+  status          String   @default("ACTIVE") // ACTIVE, PAUSED, CANCELLED, EXPIRED
+  currentPeriodStart DateTime
+  currentPeriodEnd   DateTime
+  bookingsThisMonth  Int      @default(0)
+  cancelledAt     DateTime?
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  user User              @relation(fields: [userId], references: [id])
+  plan SubscriptionPlan  @relation(fields: [planId], references: [id])
+
+  @@unique([userId, planId])
+  @@index([userId, status])
+  @@map("customer_subscriptions")
+}
+
+// =============================================================================
+// Feature Flags
+// =============================================================================
+
+model FeatureFlag {
+  id          Int      @id @default(autoincrement())
+  key         String   @unique
+  name        String
+  description String?
+  enabled     Boolean  @default(false)
+  rolloutPercent Int   @default(0) // 0-100, 0=off, 100=all
+  enabledFor  Json?    // Specific user IDs or role-based: { "roles": ["ADMIN"], "userIds": [1,2] }
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@map("feature_flags")
+}
+
+// =============================================================================
+// Video Consultations
+// =============================================================================
+
+model VideoSession {
+  id          Int      @id @default(autoincrement())
+  bookingId   Int      @unique
+  roomId      String   @unique // Unique WebRTC room identifier
+  initiatorId Int      // User who started the call
+  status      String   @default("WAITING") // WAITING, IN_PROGRESS, ENDED
+  startedAt   DateTime?
+  endedAt     DateTime?
+  durationSec Int?
+  recordingUrl String?
+  createdAt   DateTime @default(now())
+
+  booking Booking @relation(fields: [bookingId], references: [id])
+
+  @@index([roomId])
+  @@index([bookingId])
+  @@map("video_sessions")
+}
+
+// =============================================================================
+// AI Skin Analysis
+// =============================================================================
+
+model SkinAnalysis {
+  id          Int      @id @default(autoincrement())
+  userId      Int
+  imageUrl    String
+  resultJson  Json     // AI analysis results: { skinType, concerns, recommendations }
+  skinType    String?  // oily, dry, combination, sensitive, normal
+  concerns    String[] // acne, wrinkles, dark_spots, redness, etc.
+  recommendations Json? // { services: [id], products: [id], routine: [...] }
+  createdAt   DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [id])
+
+  @@index([userId, createdAt])
+  @@map("skin_analyses")
+}
+
+// =============================================================================
+// Beauty Product Marketplace
+// =============================================================================
+
+model ProductCategory {
+  id        Int      @id @default(autoincrement())
+  nameJson  Json     // { ar: "عناية بالبشرة", en: "Skincare" }
+  slug      String   @unique
+  imageUrl  String?
+  sortOrder Int      @default(0)
+  createdAt DateTime @default(now())
+
+  products Product[]
+
+  @@map("product_categories")
+}
+
+model Product {
+  id          Int      @id @default(autoincrement())
+  vendorId    Int
+  categoryId  Int
+  nameJson    Json
+  descriptionJson Json
+  price       Decimal  @db.Decimal(10, 2)
+  comparePrice Decimal? @db.Decimal(10, 2) // "Was" price for discounts
+  stock       Int      @default(0)
+  sales       Int      @default(0) // B.3: units sold (vendor portal metric)
+  imageUrl    String?
+  images      String[] // Additional images
+  brand       String?
+  emoji       String   @default("") // B.3: product card icon
+  isActive    Boolean  @default(true)
+  isFeatured  Boolean  @default(false)
+  tags        String[] // organic, vegan, cruelty-free, etc.
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  vendor   Vendor           @relation(fields: [vendorId], references: [id])
+  category ProductCategory  @relation(fields: [categoryId], references: [id])
+  reviews  ProductReview[]
+  cartItems CartItem[]
+  deals    StoreDeal[]
+
+  @@index([vendorId, isActive])
+  @@index([categoryId, isActive])
+  @@index([price])
+  @@map("products")
+}
+
+model Vendor {
+  id          Int      @id @default(autoincrement())
+  userId      Int      @unique
+  storeName   String
+  storeSlug   String   @unique
+  descriptionJson Json?
+  logoUrl     String?
+  bannerUrl   String?
+  // Store plan Phase 1 — merchant registration + KYC-ish approval.
+  type            String  @default("STORE") // STORE | VENDOR | CLINIC | GYM | NAIL_BAR | ATHOME (unified provider model)
+  licenseNumber   String? // commercial registration / CR number, or clinic medical license
+  bankIban        String?
+  bankName        String?
+  isVerified  Boolean  @default(false)
+  isActive    Boolean  @default(true)
+  commissionRate Decimal @default(10) @db.Decimal(5, 2) // Platform commission %
+  totalSales  Decimal  @default(0) @db.Decimal(12, 2)
+  // Store plan Phase 4 — denormalized store rating (aggregate of product reviews).
+  ratingAvg   Decimal  @default(0) @db.Decimal(3, 2)
+  totalReviews Int     @default(0)
+  // E2 — medical beauty clinics (first vertical pilot).
+  clinicType        String? // dermatology | laser | injectables | dental | nutrition
+  licenseAgency     String? // MOH | SFDA | MISA | MUNICIPALITY
+  licenseVerifiedAt DateTime?
+  consultationPrice Decimal  @default(0) @db.Decimal(10, 2)
+  // E3 — fitness vertical (gyms).
+  gymType    String? // ladies | family
+  gymCity    String?
+  gymAddress String?
+  // E5 — nail bars (venue vertical, station-capacity slots).
+  nailBarType    String? // express | standard
+  nailBarCity    String?
+  nailBarAddress String?
+  // E5 — at-home salons (homeService requests get assigned to providers).
+  homeCity    String?
+  homeAddress String?
+  // E6b — postpartum: baby-friendly at-home salons (home visits with baby).
+  babyFriendly Boolean @default(false)
+  // E6d — trust badges at the venue level (clinics/gyms/nail bars).
+  womenOnlyStaff Boolean @default(false)
+  privateSuite   Boolean @default(false)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  user     User      @relation(fields: [userId], references: [id])
+  products Product[]
+  orders   StoreOrder[]
+  deals    StoreDeal[]
+  payouts  Payout[]
+  clinicSlots         ClinicSlot[]
+  clinicConsultations ClinicConsultation[]
+  clinicPackages      BeautyPackage[]
+  gymClasses          GymClass[]
+  gymPlans            SubscriptionPlan[]
+  gymDayPasses        ClassPass[]
+  nailBarSlots        NailBarSlot[]
+
+  @@index([storeSlug])
+  @@index([isVerified, isActive])
+  @@index([type, isVerified, isActive])
+  @@map("vendors")
+}
+
+// E2 — clinic consultation slots (clinic-managed, claimed by consultations).
+model ClinicSlot {
+  id             Int      @id @default(autoincrement())
+  clinicId       Int
+  startAt        DateTime
+  endAt          DateTime
+  isBooked       Boolean  @default(false)
+  consultationId Int?     @unique
+  createdAt      DateTime @default(now())
+
+  clinic        Vendor               @relation(fields: [clinicId], references: [id], onDelete: Cascade)
+  consultation  ClinicConsultation?  @relation("ConsultationSlot", fields: [consultationId], references: [id])
+
+  @@index([clinicId, startAt])
+  @@map("clinic_slots")
+}
+
+// E2 — clinic consultations (light parallel booking flow; the core Booking
+// engine stays technician-only for the pilot). Payment happens at the clinic.
+model ClinicConsultation {
+  id                Int      @id @default(autoincrement())
+  code              String   @unique // GOC-XXXXXX
+  clinicId          Int
+  customerId        Int
+  slotId            Int      @unique
+  treatmentType     String   // dermatology | laser | injectables | dental | nutrition
+  price             Decimal  @db.Decimal(10, 2)
+  status            String   @default("REQUESTED") // REQUESTED | CONFIRMED | CANCELLED | COMPLETED
+  notes             String?
+  consentAcceptedAt DateTime?
+  scheduledAt       DateTime
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+
+  clinic   Vendor      @relation(fields: [clinicId], references: [id], onDelete: Cascade)
+  customer User        @relation(fields: [customerId], references: [id], onDelete: Cascade)
+  slot     ClinicSlot? @relation("ConsultationSlot")
+
+  @@index([clinicId, status])
+  @@index([customerId, scheduledAt])
+  @@map("clinic_consultations")
+}
+
+// E3 — gym classes (capacity-based bookings; seats claimed atomically).
+model GymClass {
+  id              Int      @id @default(autoincrement())
+  gymId           Int
+  nameJson        Json
+  descriptionJson Json?
+  startsAt        DateTime
+  endsAt          DateTime
+  capacity        Int
+  enrolledCount   Int      @default(0)
+  price           Decimal  @default(0) @db.Decimal(10, 2) // 0 = pay at the gym
+  isActive        Boolean  @default(true)
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  gym      Vendor            @relation(fields: [gymId], references: [id], onDelete: Cascade)
+  bookings GymClassBooking[]
+
+  @@index([gymId, startsAt])
+  @@map("gym_classes")
+}
+
+// E3 — per-member class bookings (one per customer per class).
+model GymClassBooking {
+  id          Int       @id @default(autoincrement())
+  code        String    @unique // GYM-XXXXXX
+  classId     Int
+  customerId  Int
+  status      String    @default("BOOKED") // BOOKED | CANCELLED
+  createdAt   DateTime  @default(now())
+  cancelledAt DateTime?
+
+  class    GymClass @relation(fields: [classId], references: [id], onDelete: Cascade)
+  customer User     @relation(fields: [customerId], references: [id], onDelete: Cascade)
+
+  @@unique([classId, customerId])
+  @@index([classId, status])
+  @@index([customerId])
+  @@map("gym_class_bookings")
+}
+
+// Store plan Phase 1 — per-store order records (store-managed fulfillment).
+model StoreOrder {
+  id          Int      @id @default(autoincrement())
+  vendorId    Int
+  customerId  Int
+  totalAmount Decimal  @db.Decimal(10, 2)
+  itemCount   Int      @default(1)
+  status      String   @default("PENDING_FULFILLMENT") // PENDING_FULFILLMENT | FULFILLED
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  vendor   Vendor @relation(fields: [vendorId], references: [id], onDelete: Cascade)
+  customer User   @relation(fields: [customerId], references: [id])
+
+  @@index([vendorId, status, createdAt])
+  @@index([customerId, createdAt])
+  @@map("store_orders")
+}
+
+// Store plan Phase 4b — store-proposed product deals (approved via the
+// provider-submission queue; windows materialize into comparePrice on the
+// product for the public listing).
+model StoreDeal {
+  id            Int      @id @default(autoincrement())
+  productId     Int
+  vendorId      Int
+  originalPrice Decimal  @db.Decimal(10, 2)
+  dealPrice     Decimal  @db.Decimal(10, 2)
+  startsAt      DateTime
+  endsAt        DateTime
+  isActive      Boolean  @default(true)
+  createdAt     DateTime @default(now())
+
+  product Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+  vendor  Vendor  @relation(fields: [vendorId], references: [id], onDelete: Cascade)
+
+  @@index([productId, isActive, startsAt, endsAt])
+  @@index([vendorId, isActive])
+  @@map("store_deals")
+}
+
+model ProductReview {
+  id        Int      @id @default(autoincrement())
+  productId Int
+  userId    Int
+  rating    Int      // 1-5
+  comment   String?
+  createdAt DateTime @default(now())
+
+  product Product @relation(fields: [productId], references: [id])
+  user    User    @relation(fields: [userId], references: [id])
+
+  @@unique([productId, userId])
+  @@index([productId])
+  @@map("product_reviews")
+}
+
+model CartItem {
+  id        Int      @id @default(autoincrement())
+  userId    Int
+  productId Int
+  quantity  Int      @default(1)
+  createdAt DateTime @default(now())
+
+  user    User    @relation(fields: [userId], references: [id])
+  product Product @relation(fields: [productId], references: [id])
+
+  @@unique([userId, productId])
+  @@index([userId])
+  @@map("cart_items")
+}
+
+// =============================================================================
+// Gift Cards / Beauty Vouchers
+// =============================================================================
+
+model GiftCard {
+  id          String   @id @default(uuid())
+  code        String   @unique
+  amount      Decimal  @db.Decimal(10, 2)
+  balance     Decimal  @db.Decimal(10, 2)
+  purchaserId Int
+  recipientEmail String?
+  recipientName  String?
+  message     String?
+  status      String   @default("ACTIVE")
+  expiresAt   DateTime?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@index([code])
+  @@index([purchaserId])
+  @@index([status])
+  @@map("gift_cards")
+}
+
+model GiftCardTransaction {
+  id          String   @id @default(uuid())
+  giftCardId  String
+  bookingId   Int?
+  amount      Decimal  @db.Decimal(10, 2)
+  createdAt   DateTime @default(now())
+
+  @@index([giftCardId])
+  @@map("gift_card_transactions")
+}
+
+// =============================================================================
+// Group / Party Bookings
+// =============================================================================
+
+model GroupBooking {
+  id          Int      @id @default(autoincrement())
+  organizerId Int      // Customer who created the group
+  name        String   // e.g. "حفلة توديع العزوبية"
+  theme       String?  // e.g. "bridal", "birthday", "girls_night"
+  discountPercent Int  @default(10) // Group discount %
+  status      String   @default("PENDING") // PENDING, CONFIRMED, IN_PROGRESS, COMPLETED, CANCELLED
+  totalAmount Decimal  @db.Decimal(10, 2) @default(0)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  members     GroupBookingMember[]
+
+  @@index([organizerId])
+  @@map("group_bookings")
+}
+
+model GroupBookingMember {
+  id             Int      @id @default(autoincrement())
+  groupBookingId Int
+  name           String   // Member's name
+  serviceId      Int
+  technicianId   Int?
+  status         String   @default("PENDING")
+  createdAt      DateTime @default(now())
+
+  groupBooking   GroupBooking @relation(fields: [groupBookingId], references: [id], onDelete: Cascade)
+
+  @@index([groupBookingId])
+  @@map("group_booking_members")
+}
+
+// =============================================================================
+// Beauty Packages (curated service bundles)
+// =============================================================================
+
+model BeautyPackage {
+  id              Int      @id @default(autoincrement())
+  nameJson        Json     // { ar, en }
+  descriptionJson Json?
+  imageUrl        String?
+  discountPercent Int      @default(15) // % off vs individual booking
+  isActive        Boolean  @default(true)
+  sortOrder       Int      @default(0)
+  // B.6 — provider-proposed packages behind an approval gate.
+  // Admin-created packages are created APPROVED. DRAFT → PENDING_REVIEW →
+  // APPROVED | REJECTED for proposals; edits to a live proposal send it
+  // back to PENDING_REVIEW.
+  status          String   @default("APPROVED")
+  createdByUserId Int?     // null = admin-created
+  reviewNotes     String?
+  reviewedBy      Int?
+  reviewedAt      DateTime?
+  // E2 — clinic-proposed treatment packages (null for tech/admin packages).
+  clinicId        Int?
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  clinic          Vendor?  @relation(fields: [clinicId], references: [id])
+  services        BeautyPackageService[]
+
+  @@index([status, isActive])
+  @@map("beauty_packages")
+}
+
+// B.6/B.7 — generic provider submission review queue (packages, promotions,
+// vendor products). Admin approves/rejects with notes; the provider gets a
+// notification either way. payload holds the submitted entity snapshot.
+model ProviderSubmission {
+  id          Int      @id @default(autoincrement())
+  providerId  Int      // submitting provider's User.id (no FK — generic)
+  kind        String   // 'package' | 'promotion' | 'product'
+  status      String   @default("PENDING_REVIEW") // PENDING_REVIEW | APPROVED | REJECTED
+  payload     Json     // submitted entity snapshot
+  reviewNotes String?
+  reviewedBy  Int?
+  reviewedAt  DateTime?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@index([kind, status])
+  @@index([providerId, createdAt])
+  @@map("provider_submissions")
+}
+
+model BeautyPackageService {
+  id          Int     @id @default(autoincrement())
+  packageId   Int
+  serviceId   Int
+  sortOrder   Int     @default(0)
+
+  package     BeautyPackage @relation(fields: [packageId], references: [id], onDelete: Cascade)
+
+  @@unique([packageId, serviceId])
+  @@index([packageId])
+  @@map("beauty_package_services")
+}
+
+// =============================================================================
+// Customer Favorites (quick rebooking)
+// =============================================================================
+
+model CustomerFavorite {
+  id           Int      @id @default(autoincrement())
+  userId       Int
+  label        String   @default("مفضل") // Custom label for this favorite
+  serviceId    Int
+  technicianId Int?
+  createdAt    DateTime @default(now())
+
+  @@unique([userId, serviceId, technicianId])
+  @@index([userId])
+  @@map("customer_favorites")
+}
+
+// =============================================================================
+// Seasonal Campaigns (Ramadan, Eid, wedding season, etc.)
+// =============================================================================
+
+model Campaign {
+  id              Int      @id @default(autoincrement())
+  nameJson        Json     // { ar, en }
+  descriptionJson Json?
+  imageUrl        String?
+  discountType    String   @default("percent") // percent, fixed
+  discountValue   Decimal  @db.Decimal(10, 2)
+  promoCode       String?  @unique // Optional linked promo code
+  startsAt        DateTime
+  endsAt          DateTime
+  isActive        Boolean  @default(true)
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  @@index([startsAt, endsAt])
+  @@index([isActive])
+  @@map("campaigns")
+}
+
+// =============================================================================
+// Beauty Blog / Tips
+// =============================================================================
+
+model BlogPost {
+  id          Int      @id @default(autoincrement())
+  titleJson   Json     // { ar, en }
+  bodyJson    Json     // { ar, en } — HTML content
+  slug        String   @unique
+  imageUrl    String?
+  tags        String[] // skincare, haircare, makeup, wellness, etc.
+  isPublished Boolean  @default(false)
+  publishedAt DateTime?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@index([slug])
+  @@index([isPublished, publishedAt])
+  @@map("blog_posts")
+}
+
+// =============================================================================
+// Beauty Profile — Personalized Customer Preferences
+// =============================================================================
+
+model BeautyProfile {
+  id          Int      @id @default(autoincrement())
+  userId      Int      @unique
+  skinType    String?  // oily, dry, combination, sensitive, normal
+  hairType    String?  // straight, wavy, curly, coily
+  hairLength  String?  // short, medium, long
+  skinTone    String?  // fair, medium, olive, tan, deep
+  allergies   String[] // e.g. ["latex", "fragrance", "nuts"]
+  preferredScents String[] // floral, citrus, woody, etc.
+  makeupStyle String?  // natural, glam, soft, bold
+  concerns    String[] // acne, aging, dark_spots, redness, etc.
+  notes       String?
+  // E3 — fitness data feeding trainer recommendations (B.25 profile).
+  measurements Json?     // { heightCm, weightKg, waistCm, hipCm, ... }
+  fitnessGoals String[]  @default([]) // lose-weight, tone, endurance, ...
+  // E6a — life-stage journeys (manual override; auto-derivation otherwise).
+  lifeStage   String?    // bride | trying | pregnant | new_mom | back_to_me
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@map("beauty_profiles")
+}
+
+// =============================================================================
+// Bridal Concierge — Wedding Beauty Planning
+// =============================================================================
+
+model BridalConcierge {
+  id            Int      @id @default(autoincrement())
+  userId        Int      @unique
+  weddingDate   DateTime?
+  venue         String?
+  guestCount    Int?
+  budget        Decimal? @db.Decimal(10, 2)
+  status        String   @default("PLANNING") // PLANNING, TRIAL, CONFIRMED, COMPLETED
+  notes         String?
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  services      BridalService[]
+
+  @@map("bridal_concierges")
+}
+
+model BridalService {
+  id            Int      @id @default(autoincrement())
+  conciergeId   Int
+  serviceId     Int
+  trialDate     DateTime?
+  isTrialDone   Boolean  @default(false)
+  status        String   @default("PENDING")
+  notes         String?
+
+  concierge     BridalConcierge @relation(fields: [conciergeId], references: [id], onDelete: Cascade)
+
+  @@index([conciergeId])
+  @@map("bridal_services")
+}
+
+// =============================================================================
+// Technician Skill Badges
+// =============================================================================
+
+model TechnicianBadge {
+  id          Int    @id @default(autoincrement())
+  key         String @unique // "bridal_specialist", "organic_products", "celebrity_stylist"
+  nameJson    Json   // { ar, en }
+  iconUrl     String?
+
+  technicians TechnicianBadgeAssignment[]
+
+  @@map("technician_badges")
+}
+
+model TechnicianBadgeAssignment {
+  id            Int      @id @default(autoincrement())
+  technicianId  Int
+  badgeId       Int
+  awardedAt     DateTime @default(now())
+
+  badge         TechnicianBadge @relation(fields: [badgeId], references: [id], onDelete: Cascade)
+
+  @@unique([technicianId, badgeId])
+  @@index([technicianId])
+  @@map("technician_badge_assignments")
+}
+
+// =============================================================================
+// Beauty Events — Workshops, Masterclasses
+// =============================================================================
+
+model BeautyEvent {
+  id            Int      @id @default(autoincrement())
+  nameJson      Json     // { ar, en }
+  descriptionJson Json?
+  eventType     String   // workshop, masterclass, launch, seasonal
+  location      String?
+  price         Decimal? @db.Decimal(10, 2) // 0 = free
+  maxAttendees  Int?
+  startsAt      DateTime
+  endsAt        DateTime
+  imageUrl      String?
+  isPublished   Boolean  @default(false)
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  @@index([startsAt])
+  @@index([isPublished])
+  @@map("beauty_events")
+}
+
+// =============================================================================
+// Self-Care Tracker — Daily Wellness Check-ins
+// =============================================================================
+
+model SelfCareCheckin {
+  id          Int      @id @default(autoincrement())
+  userId      Int
+  mood        Int      // 1-5 scale
+  energy      Int?     // 1-5 scale
+  sleepHours  Decimal? @db.Decimal(3, 1)
+  waterGlasses Int?    // glasses of water
+  notes       String?
+  createdAt   DateTime @default(now())
+
+  @@index([userId, createdAt])
+  @@map("self_care_checkins")
+}
+
+// =============================================================================
+// Beauty Budget — Monthly Spending Overview
+// =============================================================================
+
+model BeautyBudget {
+  id          Int      @id @default(autoincrement())
+  userId      Int
+  month       String   // "2026-07"
+  budget      Decimal  @db.Decimal(10, 2) // Planned budget
+  spent       Decimal  @default(0) @db.Decimal(10, 2)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@unique([userId, month])
+  @@map("beauty_budgets")
+}
+
+// =============================================================================
+// Beauty Inspiration Board — Save looks & ideas
+// =============================================================================
+
+model InspirationPin {
+  id          Int      @id @default(autoincrement())
+  userId      Int
+  imageUrl    String?
+  title       String?
+  notes       String?
+  tags        String[] // e.g. ["bridal", "nails", "haircolor"]
+  serviceId   Int?     // Link to a service
+  sortOrder   Int      @default(0)
+  createdAt   DateTime @default(now())
+
+  @@index([userId])
+  @@map("inspiration_pins")
+}
+
+// =============================================================================
+// Recurring Bookings — Automated repeat appointments
+// =============================================================================
+
+model RecurringBooking {
+  id            Int      @id @default(autoincrement())
+  userId        Int
+  serviceId     Int
+  technicianId  Int?
+  addressId     Int
+  frequency     String   // WEEKLY, BIWEEKLY, MONTHLY
+  nextDate      DateTime
+  status        String   @default("ACTIVE") // ACTIVE, PAUSED, CANCELLED
+  notes         String?
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  @@index([userId, status])
+  @@map("recurring_bookings")
+}
+
+// =============================================================================
+// Beauty Community — Social Feed
+// =============================================================================
+
+model CommunityPost {
+  id          Int      @id @default(autoincrement())
+  userId      Int
+  content     String
+  imageUrl    String?
+  likes       Int      @default(0)
+  createdAt   DateTime @default(now())
+
+  @@index([createdAt])
+  @@map("community_posts")
+}
+
+model CommunityLike {
+  id          Int      @id @default(autoincrement())
+  postId      Int
+  userId      Int
+  createdAt   DateTime @default(now())
+
+  @@unique([postId, userId])
+  @@map("community_likes")
+}
+
+model CommunityComment {
+  id        Int      @id @default(autoincrement())
+  postId    Int
+  userId    Int
+  content   String
+  createdAt DateTime @default(now())
+  @@index([postId])
+  @@map("community_comments")
+}
+
+model EventRegistration {
+  id        Int      @id @default(autoincrement())
+  eventId   Int
+  userId    Int
+  status    String   @default("REGISTERED")
+  createdAt DateTime @default(now())
+  @@unique([eventId, userId])
+  @@map("event_registrations")
+}
+
+model HomeServiceRequest {
+  id              Int      @id @default(autoincrement())
+  userId          Int
+  serviceId       Int
+  city            String
+  address         String
+  preferredDate   String
+  preferredTime   String
+  notes           String?
+  // E5 — assigned to a verified at-home salon provider (ATHOME vendor).
+  vendorId        Int?
+  assignedAt      DateTime?
+
+  @@index([userId])
+  @@index([vendorId, status])
+  status          String   @default("PENDING")
+  createdAt       DateTime @default(now())
+  @@map("home_service_requests")
+}
+
+model VipMembership {
+  id        Int      @id @default(autoincrement())
+  userId    Int      @unique
+  tier      String   @default("silver")
+  expiresAt DateTime?
+  autoRenew Boolean  @default(false)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  @@map("vip_memberships")
+}
+
+// E7 — persisted beauty shorts (reels + before/after), moderation-gated.
+model Short {
+  id            Int      @id @default(autoincrement())
+  type          String   @default("reel") // reel | before_after
+  technicianId  Int?
+  titleJson     Json     // { ar, en }
+  videoUrl      String?
+  thumbnailUrl  String?
+  beforeImageUrl String? // before_after: the "before" side
+  durationSec   Int      @default(0)
+  views         Int      @default(0)
+  category      String   @default("general")
+  isActive      Boolean  @default(true)
+  isApproved    Boolean  @default(false) // moderation queue until approved
+  faceBlurred   Boolean  @default(false) // privacy option on upload
+  consentGiven  Boolean  @default(false) // required consent on upload
+  createdAt     DateTime @default(now())
+
+  @@index([isApproved, isActive])
+  @@index([technicianId])
+  @@map("shorts")
+}
+
+model ShortLike {
+  id      Int      @id @default(autoincrement())
+  shortId Int
+  userId  Int
+  createdAt DateTime @default(now())
+  @@unique([shortId, userId])
+  @@map("short_likes")
+}
+
+model PriceDropAlert {
+  id           Int      @id @default(autoincrement())
+  userId       Int
+  serviceName  String
+  targetPrice  Float
+  currentPrice Float
+  emoji        String   @default("💅")
+  active       Boolean  @default(true)
+  createdAt    DateTime @default(now())
+
+  @@index([userId])
+  @@map("price_drop_alerts")
+}
+
+model WarrantyClaim {
+  id          Int      @id @default(autoincrement())
+  userId      Int
+  bookingId   Int
+  reason      String
+  status      String   @default("PENDING")
+  compensation Float  @default(0)
+  createdAt   DateTime @default(now())
+
+  @@index([userId])
+  @@map("warranty_claims")
+}
+
+model SpaPlan {
+  id        Int      @id @default(autoincrement())
+  userId    Int
+  name      String
+  items     Json
+  createdAt DateTime @default(now())
+
+  @@index([userId])
+  @@map("spa_plans")
+}
+
+model RoutineStep {
+  id        Int      @id @default(autoincrement())
+  userId    Int
+  routineId String
+  stepIndex Int
+  done      Boolean  @default(false)
+  createdAt DateTime @default(now())
+  @@unique([userId, routineId, stepIndex])
+  @@map("routine_steps")
+}
+
+model QuizCertificate {
+  id        Int      @id @default(autoincrement())
+  userId    Int
+  quizId    String
+  quizName  String
+  score     Int
+  createdAt DateTime @default(now())
+  @@index([userId])
+  @@map("quiz_certificates")
+}
+
+model BeautyBox {
+  id        Int      @id @default(autoincrement())
+  userId    Int
+  name      String
+  products  Json
+  frequency String
+  subtotal  Float
+  discount  Float
+  total     Float
+  createdAt DateTime @default(now())
+  @@index([userId])
+  @@map("beauty_boxes")
+}
+
+model NewsletterSubscriber {
+  id        Int      @id @default(autoincrement())
+  email     String   @unique
+  active    Boolean  @default(true)
+  createdAt DateTime @default(now())
+  @@map("newsletter_subscribers")
+}
+
+model SaleAlert {
+  id          Int      @id @default(autoincrement())
+  userId      Int
+  categories  Json
+  maxDiscount Int
+  active      Boolean  @default(true)
+  createdAt   DateTime @default(now())
+
+  @@index([userId])
+  @@map("sale_alerts")
+}
+
+model VideoTestimonial {
+  id             Int      @id @default(autoincrement())
+  userId         Int
+  userName       String
+  videoUrl       String
+  rating         Int
+  comment        String
+  technicianName String
+  serviceName    String
+  likes          Int      @default(0)
+  createdAt      DateTime @default(now())
+  @@map("video_testimonials")
+}
+
+model HairColorSim {
+  id        Int      @id @default(autoincrement())
+  userId    Int
+  colorId   String
+  colorName String
+  colorHex  String
+  imageUrl  String?
+  createdAt DateTime @default(now())
+  @@index([userId])
+  @@map("hair_color_sims")
+}
+
+model AiRoutine {
+  id        Int      @id @default(autoincrement())
+  userId    Int
+  name      String
+  steps     Json
+  createdAt DateTime @default(now())
+  @@index([userId])
+  @@map("ai_routines")
+}
+
+model DnaAnalysis {
+  id          Int      @id @default(autoincrement())
+  userId      Int
+  traits      Json
+  recommendations Json
+  bestRoutine String
+  createdAt   DateTime @default(now())
+  @@index([userId])
+  @@map("dna_analyses")
+}
+
+model BeforeAfter {
+  id             Int      @id @default(autoincrement())
+  userId         Int
+  userName       String
+  beforeUrl      String
+  afterUrl       String
+  serviceType    String
+  technicianName String
+  description    String
+  likes          Int      @default(0)
+  createdAt      DateTime @default(now())
+  @@map("before_after")
+}
+
+model BingoProgress {
+  id        Int      @id @default(autoincrement())
+  userId    Int
+  taskId    Int
+  completed Boolean  @default(true)
+  createdAt DateTime @default(now())
+  @@unique([userId, taskId])
+  @@map("bingo_progress")
+}
+
+model IngredientScan {
+  id         Int      @id @default(autoincrement())
+  userId     Int
+  barcode    String
+  productName String
+  safetyScore Int
+  createdAt  DateTime @default(now())
+  @@index([userId])
+  @@map("ingredient_scans")
+}
+
+model BeautyFaq {
+  id        Int      @id @default(autoincrement())
+  question  String
+  answer    String
+  category  String   @default("general")
+  sortOrder Int      @default(0)
+  createdAt DateTime @default(now())
+  @@map("beauty_faqs")
+}
+
+model ServiceRecommendation {
+  id        Int      @id @default(autoincrement())
+  userId    Int
+  answers   Json
+  result    Json
+  createdAt DateTime @default(now())
+  @@index([userId])
+  @@map("service_recommendations")
+}
+
+model NightModeSetting {
+  id        Int      @id @default(autoincrement())
+  userId    Int      @unique
+  enabled   Boolean  @default(false)
+  startTime String   @default("21:00")
+  createdAt DateTime @default(now())
+  @@map("night_mode_settings")
+}
+
+model TravelKitItem {
+  id        Int      @id @default(autoincrement())
+  userId    Int
+  destination String
+  days      Int
+  items     Json
+  createdAt DateTime @default(now())
+  @@index([userId])
+  @@map("travel_kit_items")
+}
+
+// =============================================================================
+// Beauty Gift Registry — Friends contribute to service funds
+// =============================================================================
+
+model GiftRegistry {
+  id          Int      @id @default(autoincrement())
+  userId      Int
+  title       String   // e.g. "زفافي" or "عيد ميلادي"
+  occasion    String   // wedding, birthday, baby_shower, other
+  targetAmount Decimal @db.Decimal(10, 2)
+  raisedAmount Decimal @default(0) @db.Decimal(10, 2)
+  serviceIds  Int[]    // Services the registry is for
+  message     String?
+  status      String   @default("ACTIVE") // ACTIVE, COMPLETED, CLOSED
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@index([userId])
+  @@map("gift_registries")
+}
+
+model GiftRegistryContribution {
+  id          Int      @id @default(autoincrement())
+  registryId  Int
+  contributorName String
+  amount      Decimal  @db.Decimal(10, 2)
+  message     String?
+  createdAt   DateTime @default(now())
+
+  @@index([registryId])
+  @@map("gift_registry_contributions")
+}
+
+// =============================================================================
+// Notification Preferences
+// =============================================================================
+
+model NotificationPreference {
+  id          Int      @id @default(autoincrement())
+  userId      Int      @unique
+  bookingReminders Boolean @default(true)
+  promotions   Boolean @default(true)
+  tips        Boolean @default(true)
+  community   Boolean @default(true)
+  emailDigest Boolean @default(false)
+  smsAlerts   Boolean @default(false)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@map("notification_preferences")
+}
+
+// =============================================================================
+// Birthday Rewards
+// =============================================================================
+
+model BirthdayReward {
+  id          Int      @id @default(autoincrement())
+  userId      Int
+  year        Int      // Year the reward was claimed (2026, 2027...)
+  rewardType  String   // "discount_percent", "gift_card", "free_service"
+  rewardValue Decimal  @db.Decimal(10, 2)
+  promoCode   String?  @unique
+  claimed     Boolean  @default(false)
+  claimedAt   DateTime?
+  createdAt   DateTime @default(now())
+
+  @@unique([userId, year])
+  @@map("birthday_rewards")
+}
+
+// =============================================================================
+// Beauty Savings Goals
+// =============================================================================
+
+model SavingsGoal {
+  id          Int      @id @default(autoincrement())
+  userId      Int
+  serviceId   Int?
+  title       String   // e.g. "تسريحة العروس" or "باقة العناية"
+  targetAmount Decimal @db.Decimal(10, 2)
+  savedAmount  Decimal @default(0) @db.Decimal(10, 2)
+  status      String   @default("ACTIVE") // ACTIVE, COMPLETED, CANCELLED
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@index([userId])
+  @@map("savings_goals")
+}
+
+// =============================================================================
+// Technician Follow System
+// =============================================================================
+
+model TechnicianFollow {
+  id            Int      @id @default(autoincrement())
+  customerId    Int
+  technicianId  Int
+  createdAt     DateTime @default(now())
+
+  @@unique([customerId, technicianId])
+  @@index([customerId])
+  @@index([technicianId])
+  @@map("technician_follows")
+}
+
+// =============================================================================
+// Beauty Journal — Track your beauty journey
+// =============================================================================
+
+model BeautyJournal {
+  id          Int      @id @default(autoincrement())
+  userId      Int
+  title       String?
+  content     String
+  mood        Int?     // 1-5
+  imageUrl    String?
+  serviceType String?  // hair, skin, makeup, nails, body
+  bookingId   Int?
+  createdAt   DateTime @default(now())
+
+  @@index([userId, createdAt])
+  @@map("beauty_journals")
+}
+
+// =============================================================================
+// Flash Deals — Limited-Time Offers
+// =============================================================================
+
+model FlashDeal {
+  id                Int      @id @default(autoincrement())
+  serviceId         Int
+  titleAr           String?
+  titleEn           String?
+  discountPercent   Int      // e.g. 40 = 40% off
+  originalPrice     Decimal  @db.Decimal(10, 2)
+  dealPrice         Decimal  @db.Decimal(10, 2)
+  discountValue     Decimal  @db.Decimal(10, 2)
+  maxRedemptions    Int      @default(20)
+  currentRedemptions Int     @default(0)
+  startsAt          DateTime
+  endsAt            DateTime
+  isActive          Boolean  @default(true)
+  createdAt         DateTime @default(now())
+
+  @@index([isActive, startsAt, endsAt])
+  @@map("flash_deals")
+}
+
+// =============================================================================
+// Family Account — Family members for booking on behalf
+// =============================================================================
+
+model FamilyMember {
+  id           Int      @id @default(autoincrement())
+  userId       Int
+  name         String
+  relationship String   // child, spouse, parent, sibling, other
+  ageGroup     String   // infant, child, teen, adult, senior
+  preferences  String[] // gentle, hypoallergenic, fragrance_free, etc.
+  notes        String   @default("")
+  createdAt    DateTime @default(now())
+
+  @@index([userId])
+  @@map("family_members")
+}
+
+// =============================================================================
+// Skin Diary — Photo timeline tracking skin changes
+// =============================================================================
+
+model SkinDiaryEntry {
+  id             Int      @id @default(autoincrement())
+  userId         Int
+  imageUrl       String
+  skinCondition  String
+  hydration      Int      @default(5)
+  concerns       String[] @default([])
+  notes          String   @default("")
+  createdAt      DateTime @default(now())
+
+  @@index([userId, createdAt])
+  @@map("skin_diary_entries")
+}
+
+// =============================================================================
+// Wellness Tracker — Daily health & beauty check-ins
+// =============================================================================
+
+model WellnessCheckin {
+  id        Int      @id @default(autoincrement())
+  userId    Int
+  date      String   // YYYY-MM-DD
+  water     Int      @default(0)  // glasses
+  sleep     Float    @default(0)  // hours
+  mood      Int      @default(3)  // 1-5
+  steps     Int      @default(0)
+  skincare  Boolean  @default(false)
+  notes     String   @default("")
+  createdAt DateTime @default(now())
+
+  @@unique([userId, date])
+  @@index([userId])
+  @@map("wellness_checkins")
+}
+
+// =============================================================================
+// Beauty Pen Pal — Interest-based beauty buddy matching
+// =============================================================================
+
+model PenPalProfile {
+  id        Int      @id @default(autoincrement())
+  userId    Int      @unique
+  interests String[] // skincare, makeup, hair, nails, etc.
+  bio       String   @default("")
+  createdAt DateTime @default(now())
+
+  @@map("pen_pal_profiles")
+}
+
+// =============================================================================
+// Live Chat — Customer support chat messages
+// =============================================================================
+
+model LiveChatMessage {
+  id        Int      @id @default(autoincrement())
+  userId    Int
+  userName  String
+  message   String
+  isAgent   Boolean  @default(false)
+  createdAt DateTime @default(now())
+
+  @@index([userId, createdAt])
+  @@map("live_chat_messages")
+}
+
+// =============================================================================
+// Technician Q&A — Customer questions + technician answers
+// =============================================================================
+
+model QAQuestion {
+  id              Int      @id @default(autoincrement())
+  userId          Int
+  userName        String
+  question        String
+  answer          String?
+  technicianName  String?
+  category        String   @default("general")
+  isAnswered      Boolean  @default(false)
+  createdAt       DateTime @default(now())
+
+  @@index([category, isAnswered])
+  @@map("qa_questions")
+}
+
+// =============================================================================
+// Mood Board — Visual inspiration boards + pins
+// =============================================================================
+
+model MoodBoard {
+  id          Int      @id @default(autoincrement())
+  userId      Int
+  name        String
+  description String   @default("")
+  coverUrl    String?
+  createdAt   DateTime @default(now())
+
+  pins        MoodBoardPin[]
+
+  @@index([userId])
+  @@map("mood_boards")
+}
+
+model MoodBoardPin {
+  id        Int      @id @default(autoincrement())
+  boardId   Int
+  imageUrl  String
+  title     String   @default("")
+  note      String   @default("")
+  tags      String[] @default([])
+  serviceId Int?
+  sortOrder Int      @default(0)
+  createdAt DateTime @default(now())
+
+  board     MoodBoard @relation(fields: [boardId], references: [id], onDelete: Cascade)
+
+  @@index([boardId])
+  @@map("mood_board_pins")
+}
+
+// =============================================================================
+// Service Wishlist — Price tracking for desired services
+// =============================================================================
+
+model ServiceWishlistItem {
+  id              Int      @id @default(autoincrement())
+  userId          Int
+  serviceName     String
+  currentPrice    Int
+  prevPrice       Int      @default(0)
+  lowestPrice     Int      @default(0)
+  emoji           String   @default("💅")
+  createdAt       DateTime @default(now())
+
+  @@index([userId])
+  @@map("service_wishlist_items")
+}
+
+// =============================================================================
+// Gift Card Market — P2P gift card listings
+// =============================================================================
+
+model GiftCardListing {
+  id           Int      @id @default(autoincrement())
+  sellerId     Int
+  sellerName   String
+  value        Int
+  sellingPrice Int
+  discount     Int
+  emoji        String   @default("🎁")
+  createdAt    DateTime @default(now())
+
+  @@index([sellerId])
+
+  @@map("gift_card_listings")
+}
+
+// =============================================================================
+// Expiry Tracker — Product expiration tracking
+// =============================================================================
+
+model ExpiryTrackerItem {
+  id            Int      @id @default(autoincrement())
+  userId        Int
+  productName   String
+  category      String
+  openDate      DateTime @default(now())
+  expiryMonths  Int      @default(12)
+  emoji         String   @default("📦")
+  createdAt     DateTime @default(now())
+
+  @@index([userId])
+  @@map("expiry_tracker_items")
+}
+
+// =============================================================================
+// Restock Reminder — Product repurchase tracking
+// =============================================================================
+
+model RestockReminderItem {
+  id            Int      @id @default(autoincrement())
+  userId        Int
+  productName   String
+  category      String
+  purchaseDate  DateTime @default(now())
+  lifespanDays  Int      @default(60)
+  notifyDays    Int      @default(7)
+  emoji         String   @default("📦")
+  createdAt     DateTime @default(now())
+
+  @@index([userId])
+  @@map("restock_reminder_items")
+}
+
+// ── Cycle Entries ─────────────────────────────────────────
+model CycleEntry {
+  id        Int      @id @default(autoincrement())
+  userId    Int
+  dayNumber Int
+  phase     String
+  mood      String?
+  notes     String?
+  // E4a — symptom logging (accepted by logDay before, now actually stored).
+  flowIntensity String? // light | medium | heavy | spotting
+  symptoms      String[]
+  temperature   Float?
+  beautyNotes   String?
+  createdAt DateTime @default(now())
+  @@index([userId])
+  @@map("cycle_entries")
+}
+
+// ── Cycle Settings ────────────────────────────────────────
+model CycleSettings {
+  id              Int      @id @default(autoincrement())
+  userId          Int      @unique
+  cycleLength     Int      @default(28)
+  periodLength    Int      @default(5)
+  lastPeriodStart DateTime?
+  isActive        Boolean  @default(true)
+  // E4a — history-aware predictions + pregnancy mode.
+  avgCycleLength  Int?     // learned from logged periods (mean of last 3)
+  pregnancyMode   Boolean  @default(false)
+  dueDate         DateTime?
+  // E6c — menopause/perimenopause mode (pregnancy-mode pattern).
+  menopauseMode   Boolean  @default(false)
+  lastPeriodAt    DateTime? // perimenopause tracking: last recorded period
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+  @@map("cycle_settings")
+}
+
+// E4a — logged period history (feeds the prediction average).
+model CyclePeriod {
+  id        Int      @id @default(autoincrement())
+  userId    Int
+  startDate DateTime
+  length    Int?     // actual cycle length, set when the next period starts
+  createdAt DateTime @default(now())
+
+  @@index([userId, startDate])
+  @@map("cycle_periods")
+}
+
+// ── Beauty Closet ─────────────────────────────────────────
+model BeautyClosetProduct {
+  id           Int      @id @default(autoincrement())
+  userId       Int
+  name         String
+  emoji        String   @default("🧴")
+  category     String   @default("skincare")
+  openDate     DateTime?
+  expiryMonths Int?
+  usagePct     Int      @default(100)
+  notes        String?
+  createdAt    DateTime @default(now())
+  @@index([userId])
+  @@map("beauty_closet_products")
+}
+
+// ── Beauty Parties ────────────────────────────────────────
+model BeautyParty {
+  id          Int      @id @default(autoincrement())
+  userId      Int
+  theme       String
+  guestCount  Int
+  totalAmount Float
+  discountPct Int      @default(0)
+  status      String   @default("PENDING")
+  scheduledAt DateTime?
+  createdAt   DateTime @default(now())
+  @@index([userId])
+  @@map("beauty_parties")
+}
+
+// ── Allergen Profiles ─────────────────────────────────────
+model AllergenProfile {
+  id        Int      @id @default(autoincrement())
+  userId    Int      @unique
+  allergens String[] @default([])
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  @@map("allergen_profiles")
+}
+
+// ── Beauty Budget Items ───────────────────────────────────
+model BeautyBudgetItem {
+  id           Int      @id @default(autoincrement())
+  userId       Int
+  category     String
+  monthlyLimit Float
+  spent        Float    @default(0)
+  month        String
+  year         Int
+  createdAt    DateTime @default(now())
+  @@index([userId])
+  @@map("beauty_budget_items")
+}
+
+// ── Challenge Participants ────────────────────────────────
+model ChallengeParticipant {
+  id           Int       @id @default(autoincrement())
+  userId       Int
+  challengeKey String
+  joinedAt     DateTime  @default(now())
+  completedAt  DateTime?
+  progress     Int       @default(0)
+  @@unique([userId, challengeKey])
+  @@map("challenge_participants")
+}
+
+// ── Virtual Consultations ─────────────────────────────────
+model VirtualConsultation {
+  id             Int      @id @default(autoincrement())
+  userId         Int
+  consultantType String
+  scheduledAt    DateTime
+  slot           String
+  price          Float
+  status         String   @default("CONFIRMED")
+  meetingLink    String?
+  createdAt      DateTime @default(now())
+  @@index([userId])
+  @@map("virtual_consultations")
+}
+
+// ── Salon Memberships ─────────────────────────────────────
+model SalonMembership {
+  id        Int      @id @default(autoincrement())
+  userId    Int      @unique
+  tier      String   @default("basic")
+  startedAt DateTime @default(now())
+  expiresAt DateTime?
+  autoRenew Boolean  @default(false)
+  status    String   @default("ACTIVE")
+  @@map("salon_memberships")
+}
+
+  // ── Beauty Courses ────────────────────────────────────────
+  model BeautyCourse {
+    id        Int      @id @default(autoincrement())
+    titleJson Json
+    descJson  Json?
+    instructor String
+    lessons    Int     @default(1)
+    duration   String  @default("1 ساعة")
+    level      String  @default("beginner")
+    category   String  @default("skincare")
+    emoji      String  @default("📚")
+    rating     Float   @default(0)
+    isActive   Boolean @default(true)
+    createdAt  DateTime @default(now())
+    updatedAt  DateTime @updatedAt
+    enrollments CourseEnrollment[]
+    @@map("beauty_courses")
+  }
+
+  model CourseEnrollment {
+    id        Int      @id @default(autoincrement())
+    courseId  Int
+    userId    Int
+    status    String   @default("ENROLLED")
+    progress  Int      @default(0)
+    enrolledAt DateTime @default(now())
+    completedAt DateTime?
+    course    BeautyCourse @relation(fields: [courseId], references: [id], onDelete: Cascade)
+    @@unique([userId, courseId])
+    @@map("course_enrollments")
+  }
+
+  // ── Corporate Wellness ────────────────────────────────────
+  model CorporatePlan {
+    id        Int      @id @default(autoincrement())
+    key       String   @unique
+    nameJson  Json
+    price     Float
+    employees Int
+    services  Json
+    emoji     String   @default("🌱")
+    isActive  Boolean  @default(true)
+    sortOrder Int      @default(0)
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+    @@map("corporate_plans")
+  }
+
+  model CorporateEnquiry {
+    id          Int      @id @default(autoincrement())
+    userId      Int?
+    companyName String
+    contactName String
+    email       String
+    planId      String
+    createdAt   DateTime @default(now())
+    @@map("corporate_enquiries")
+  }
+
+  // ── Gift Quiz ─────────────────────────────────────────────
+  model GiftQuizQuestion {
+    id       Int    @id @default(autoincrement())
+    questionKey String @unique
+    questionJson Json
+    options  Json
+    sortOrder Int  @default(0)
+    isActive  Boolean @default(true)
+    createdAt DateTime @default(now())
+    @@map("gift_quiz_questions")
+  }
+
+  model GiftQuizRecommendation {
+    id        Int    @id @default(autoincrement())
+    nameJson  Json
+    descJson  Json?
+    price     Float
+    category  String
+    emoji     String @default("🎁")
+    tags      Json
+    sortOrder Int    @default(0)
+    isActive  Boolean @default(true)
+    createdAt DateTime @default(now())
+    @@map("gift_quiz_recommendations")
+  }
+
+  // ── Group Buy ─────────────────────────────────────────────
+  model GroupBuyDeal {
+    id             Int      @id @default(autoincrement())
+    service        String
+    originalPrice  Float
+    groupPrice     Float
+    minBuyers      Int      @default(3)
+    currentBuyers  Int      @default(0)
+    endsIn         String   @default("٣ أيام")
+    emoji          String   @default("💄")
+    savings        Float
+    isActive       Boolean  @default(true)
+    createdAt      DateTime @default(now())
+    updatedAt      DateTime @updatedAt
+    @@map("group_buy_deals")
+  }
+
+  // ── Look of the Day ───────────────────────────────────────
+  model CommunityLook {
+    id             Int      @id @default(autoincrement())
+    userName       String
+    imageUrl       String   @default("")
+    title          String
+    technicianName String
+    votes          Int      @default(0)
+    category       String   @default("makeup")
+    date           DateTime @default(now())
+    isPublished    Boolean  @default(true)
+    createdAt      DateTime @default(now())
+    @@map("community_looks")
+  }
+
+  // ── Product Compare ───────────────────────────────────────
+  model CompareProduct {
+    id          Int      @id @default(autoincrement())
+    nameJson    Json
+    brand       String
+    price       Float
+    rating      Float    @default(0)
+    category    String   @default("skincare")
+    emoji       String   @default("🧴")
+    features    Json
+    ingredients Int      @default(0)
+    crueltyFree Boolean  @default(false)
+    vegan       Boolean  @default(false)
+    isActive    Boolean  @default(true)
+    createdAt   DateTime @default(now())
+    @@map("compare_products")
+  }
+
+  // ── Service Matchmaker ────────────────────────────────────
+  model MatchmakerQuestion {
+    id       Int    @id @default(autoincrement())
+    questionKey String @unique
+    question   String
+    options   Json
+    sortOrder Int    @default(0)
+    isActive  Boolean @default(true)
+    createdAt DateTime @default(now())
+    @@map("matchmaker_questions")
+  }
+
+  model MatchmakerService {
+    id       Int     @id @default(autoincrement())
+    nameAr   String
+    emoji    String  @default("💅")
+    price    Float
+    tags     Json
+    isActive Boolean @default(true)
+    createdAt DateTime @default(now())
+    @@map("matchmaker_services")
+  }
+
+  // ── Beauty Reminders ──────────────────────────────────────
+  model BeautyReminder {
+    id              Int      @id @default(autoincrement())
+    userId          Int
+    title           String
+    category        String   @default("other")
+    intervalDays    Int      @default(30)
+    nextDate        DateTime
+    lastCompletedAt DateTime?
+    createdAt       DateTime @default(now())
+    @@map("beauty_reminders")
+  }
+
+  // ── Geo Promotions (location-based offers) ────────────────
+  model GeoPromotion {
+    id             Int      @id @default(autoincrement())
+    titleJson      Json     // { ar, en }
+    descriptionJson Json?
+    city           String   // Target city
+    lat            Float?
+    lng            Float?
+    radiusKm       Float    @default(5)
+    discountPct    Int
+    maxDiscount    Decimal? @db.Decimal(10, 2)
+    minOrderAmount Decimal? @db.Decimal(10, 2)
+    startsAt       DateTime
+    endsAt         DateTime
+    isActive       Boolean  @default(true)
+    createdBy      Int
+    createdAt      DateTime @default(now())
+    updatedAt      DateTime @updatedAt
+
+    @@index([city, isActive])
+    @@index([startsAt, endsAt])
+    @@map("geo_promotions")
+  }
+
+  // ── Live Streams ──────────────────────────────────────────
+  model LiveStream {
+    id             Int      @id @default(autoincrement())
+    technicianId   Int
+    titleJson      Json     // { ar, en }
+    descriptionJson Json?
+    category       String   @default("makeup")
+    streamUrl      String?  // YouTube/MUX embed URL
+    thumbnailUrl   String?
+    status         String   @default("SCHEDULED") // SCHEDULED, LIVE, ENDED, CANCELLED
+    viewerCount    Int      @default(0)
+    scheduledAt    DateTime
+    startedAt      DateTime?
+    endedAt        DateTime?
+    recordingUrl   String?
+    isFeatured     Boolean  @default(false)
+    createdAt      DateTime @default(now())
+    updatedAt      DateTime @updatedAt
+
+    @@index([status, scheduledAt])
+    @@index([technicianId])
+    @@map("live_streams")
+  }
+
+  // ── Dynamic Pricing ──────────────────────────────────────
+  model PricingRule {
+    id            Int      @id @default(autoincrement())
+    serviceId     Int?
+    categoryId    Int?
+    dayOfWeek     Int?     // 0=Sun, 6=Sat (null=all days)
+    hourStart     Int?     // 0-23 (null=all hours)
+    hourEnd       Int?     // 0-23
+    priceMultiplier Decimal @db.Decimal(3, 2) @default(1.0) // 1.0=normal, 1.3=30% surge
+    technicianTier String? // NEW, EXPERIENCED, PREMIUM, CELEBRITY
+    labelJson     Json?    // { ar, en } — e.g. "أسعار نهاية الأسبوع"
+    isActive      Boolean  @default(true)
+    createdAt     DateTime @default(now())
+    updatedAt     DateTime @updatedAt
+
+    @@index([serviceId, dayOfWeek, isActive])
+    @@map("pricing_rules")
+  }
+
+  // ── Service Bundles ──────────────────────────────────────
+  model BeautyBundle {
+    id            Int      @id @default(autoincrement())
+    titleJson     Json     // { ar, en }
+    descriptionJson Json?
+    serviceIds    Int[]    // Array of service IDs bundled together
+    discountPct   Int      @default(10) // e.g. 20 = 20% off
+    totalPrice    Decimal  @db.Decimal(10, 2) // Final price after discount
+    originalPrice Decimal  @db.Decimal(10, 2) // Sum of individual service prices
+    imageUrl      String?  // Bundle hero image
+    isActive      Boolean  @default(true)
+    isSeasonal    Boolean  @default(false)
+    season        String?  // EID, RAMADAN, GRADUATION, WEDDING, WEEKEND
+    validFrom     DateTime?
+    validUntil    DateTime?
+    sortOrder     Int      @default(0)
+    createdAt     DateTime @default(now())
+    updatedAt     DateTime @updatedAt
+
+    @@index([isActive, sortOrder])
+    @@map("beauty_bundles")
+  }
+
+  // ── Beauty Subscriptions ──────────────────────────────────
+  model BeautyPlan {
+    id            Int      @id @default(autoincrement())
+    nameJson      Json     // { ar, en }
+    descriptionJson Json?
+    priceMonthly  Decimal  @db.Decimal(10, 2)
+    priceAnnual   Decimal? @db.Decimal(10, 2)
+    maxBookings   Int      @default(4) // Bookings per month
+    discountPct   Int      @default(10) // Percent off additional services
+    features      Json     // ["priority_booking", "free_home_service", "dedicated_tech"]
+    isActive      Boolean  @default(true)
+    sortOrder     Int      @default(0)
+    createdAt     DateTime @default(now())
+    updatedAt     DateTime @updatedAt
+
+    @@map("beauty_plans")
+  }
+
+
+
+// =============================================================================
+// Beauty Circles — Private women-only groups (W4 Sisterhood)
+// =============================================================================
+
+model BeautyCircle {
+  id        Int      @id @default(autoincrement())
+  name      String
+  topic     String
+  city      String?
+  cover     String   @default("🌸")
+  members   Int      @default(0)
+  creatorId Int
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  circleMembers BeautyCircleMember[]
+
+  @@index([topic])
+  @@index([members])
+  @@map("beauty_circles")
+}
+
+model BeautyCircleMember {
+  id        Int      @id @default(autoincrement())
+  circleId  Int
+  userId    Int
+  joinedAt  DateTime @default(now())
+
+  circle BeautyCircle @relation(fields: [circleId], references: [id], onDelete: Cascade)
+  user   User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([circleId, userId])
+  @@index([userId])
+  @@map("beauty_circle_members")
+}
+
+model KindnessAccount {
+  id             Int    @id @default(autoincrement())
+  userId         Int    @unique
+  points         Int    @default(0)
+  lifetimePoints Int    @default(0)
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+
+  user           User                  @relation(fields: [userId], references: [id], onDelete: Cascade)
+  transactions   KindnessTransaction[]
+
+  @@index([points])
+  @@map("kindness_accounts")
+}
+
+model KindnessTransaction {
+  id          Int      @id @default(autoincrement())
+  accountId   Int
+  points      Int
+  reason      String
+  createdAt   DateTime @default(now())
+
+  account     KindnessAccount @relation(fields: [accountId], references: [id], onDelete: Cascade)
+
+  @@index([accountId])
+  @@map("kindness_transactions")
+}
+
+model SisterhoodCompliment {
+  id         Int      @id @default(autoincrement())
+  emoji      String   @default("💌")
+  text       String
+  senderId   Int
+  senderName String
+  createdAt  DateTime @default(now())
+
+  @@index([createdAt])
+  @@map("sisterhood_compliments")
+}
+
+model EmergencyContact {
+  id       Int    @id @default(autoincrement())
+  userId   Int
+  name     String
+  phone    String
+  relation String?
+  createdAt DateTime @default(now())
+
+  @@index([userId])
+  @@map("emergency_contacts")
+}
+
+model PanicAlert {
+  id        Int      @id @default(autoincrement())
+  userId    Int
+  latitude  Float?
+  longitude Float?
+  bookingId Int?
+  createdAt DateTime @default(now())
+
+  @@map("panic_alerts")
+}
+
+model EscortRequest {
+  id            Int      @id @default(autoincrement())
+  userId        Int
+  bookingId     Int
+  technicianId  Int
+  status        String   @default("REQUESTED")
+  createdAt     DateTime @default(now())
+
+  @@index([userId])
+  @@map("escort_requests")
+}
+
+model LocationShare {
+  id        Int      @id @default(autoincrement())
+  userId    Int
+  bookingId Int
+  active    Boolean  @default(true)
+  endedAt   DateTime?
+  createdAt DateTime @default(now())
+
+  @@map("location_shares")
+}
+
+model SafetyCheckIn {
+  id        Int      @id @default(autoincrement())
+  userId    Int
+  bookingId Int
+  type      String
+  createdAt DateTime @default(now())
+
+  @@map("safety_checkins")
+}
+
+model BeautyHeritagePractice {
+  id          Int      @id @default(autoincrement())
+  name        String   @unique
+  origin      String
+  description String
+  modernUse   String
+  createdAt   DateTime @default(now())
+
+  @@map("beauty_heritage_practices")
+}
+
+model GreenSalon {
+  id         Int      @id @default(autoincrement())
+  name       String
+  practices  Json
+  city       String?
+  isVerified Boolean  @default(false)
+  ownerId    Int
+  createdAt  DateTime @default(now())
+
+  @@index([isVerified])
+  @@map("green_salons")
+}
+
+model BeautyBank {
+  id        Int      @id @default(autoincrement())
+  donorId   Int
+  amount    Int
+  message   String?
+  createdAt DateTime @default(now())
+
+  @@map("beauty_bank_donations")
+}
+
+model SheLeadsMember {
+  id                Int      @id @default(autoincrement())
+  userId            Int      @unique
+  role              String
+  city              String?
+  yearsOfExperience Int?
+  status            String   @default("PENDING")
+  isActive          Boolean  @default(true)
+  createdAt         DateTime @default(now())
+
+  @@index([isActive])
+  @@index([role])
+  @@map("she_leads_members")
+}
+
+model CommunityEvent {
+  id            Int      @id @default(autoincrement())
+  title         String
+  date          String
+  city          String
+  time          String?
+  maxAttendees  Int?
+  hostId        Int
+  createdAt     DateTime @default(now())
+
+  attendees     CommunityEventAttendee[]
+
+  @@index([date])
+  @@map("community_events")
+}
+
+model CommunityEventAttendee {
+  id        Int      @id @default(autoincrement())
+  eventId   Int
+  userId    Int
+  createdAt DateTime @default(now())
+
+  event     CommunityEvent @relation(fields: [eventId], references: [id], onDelete: Cascade)
+
+  @@unique([eventId, userId])
+  @@map("community_event_attendees")
+}
+
+model SensoryFriendlySalon {
+  id          Int      @id @default(autoincrement())
+  name        String
+  features    Json
+  city        String?
+  isCertified Boolean  @default(false)
+  ownerId     Int
+  createdAt   DateTime @default(now())
+
+  @@index([isCertified])
+  @@map("sensory_friendly_salons")
+}
+
+model BeautyMyth {
+  id       Int    @id @default(autoincrement())
+  myth     String
+  fact     String
+  category String @default("general")
+  source   String?
+  createdAt DateTime @default(now())
+
+  @@index([category])
+  @@map("beauty_myths")
+}
+
+model BeautyQuizQuestion {
+  id           Int    @id @default(autoincrement())
+  question     String
+  optionsJson  Json
+  correctIndex Int
+  explanation  String
+  createdAt    DateTime @default(now())
+
+  @@map("beauty_quiz_questions")
+}
+
+model BeautyQuizAttempt {
+  id            Int      @id @default(autoincrement())
+  userId        Int
+  questionId    Int
+  selectedIndex Int
+  isCorrect     Boolean
+  createdAt     DateTime @default(now())
+
+  @@index([userId])
+  @@map("beauty_quiz_attempts")
+}
+
+model DailyBeautyTip {
+  id        Int      @id @default(autoincrement())
+  emoji     String   @default("💡")
+  tip       String
+  category  String   @default("عناية")
+  createdAt DateTime @default(now())
+
+  @@map("daily_beauty_tips")
+}
+
+model SeasonalLook {
+  id          Int      @id @default(autoincrement())
+  season      String
+  name        String
+  description String
+  emoji       String   @default("✨")
+  isPublished Boolean  @default(true)
+  sortOrder   Int      @default(0)
+  createdAt   DateTime @default(now())
+
+  @@index([season])
+  @@map("seasonal_looks")
+}
+
+model BeautyHabit {
+  id        Int      @id @default(autoincrement())
+  userId    Int
+  name      String
+  emoji     String   @default("✅")
+  doneToday Boolean  @default(false)
+  streak    Int      @default(0)
+  sortOrder Int      @default(0)
+  createdAt DateTime @default(now())
+
+  @@index([userId])
+  @@map("beauty_habits")
+}
+
+model AccountabilityPartner {
+  id            Int      @id @default(autoincrement())
+  userId        Int
+  goal          String
+  partnerUserId Int?
+  status        String   @default("SEEKING")
+  streak        Int      @default(0)
+  lastCheckIn   DateTime?
+  createdAt     DateTime @default(now())
+
+  @@index([userId])
+  @@index([goal])
+  @@map("accountability_partners")
+}
+
+model VisionGoal {
+  id        Int      @id @default(autoincrement())
+  userId    Int
+  emoji     String   @default("🌟")
+  text      String
+  year      String
+  achieved  Boolean  @default(false)
+  createdAt DateTime @default(now())
+
+  @@index([userId])
+  @@map("vision_goals")
+}
+
+model GratitudeNote {
+  id         Int      @id @default(autoincrement())
+  authorId   Int
+  authorName String
+  toName     String
+  message    String
+  emoji      String   @default("💕")
+  createdAt  DateTime @default(now())
+
+  @@index([createdAt])
+  @@map("gratitude_notes")
+}
+
+model SleepLog {
+  id       Int      @id @default(autoincrement())
+  userId   Int
+  date     String
+  hours    Float
+  quality  Int?
+  bedtime  String?
+  wakeTime String?
+  createdAt DateTime @default(now())
+
+  @@unique([userId, date])
+  @@index([userId])
+  @@map("sleep_logs")
+}
+
+model ConciergeRequest {
+  id        Int      @id @default(autoincrement())
+  userId    Int
+  request   String
+  category  String   @default("booking")
+  status    String   @default("PENDING")
+  createdAt DateTime @default(now())
+
+  @@index([userId])
+  @@map("concierge_requests")
+}
+
+model TimeCapsule {
+  id          Int      @id @default(autoincrement())
+  userId      Int
+  name        String
+  routineJson Json
+  openDate    String
+  opened      Boolean  @default(false)
+  createdAt   DateTime @default(now())
+
+  @@index([userId])
+  @@map("time_capsules")
+}
+
+model SecretSantaGroup {
+  id        Int      @id @default(autoincrement())
+  name      String
+  budget    Int
+  creatorId Int
+  drawDate  String?
+  drawn     Boolean  @default(false)
+  createdAt DateTime @default(now())
+
+  participants SecretSantaParticipant[]
+
+  @@map("secret_santa_groups")
+}
+
+model SecretSantaParticipant {
+  id         Int      @id @default(autoincrement())
+  groupId    Int
+  userId     Int
+  assignedTo Int?
+  createdAt  DateTime @default(now())
+
+  group      SecretSantaGroup @relation(fields: [groupId], references: [id], onDelete: Cascade)
+
+  @@unique([groupId, userId])
+  @@map("secret_santa_participants")
+}
+
+model BeautySkill {
+  id        Int      @id @default(autoincrement())
+  userId    Int
+  name      String
+  emoji     String   @default("⭐")
+  level     Int      @default(0)
+  maxLevel  Int      @default(5)
+  createdAt DateTime @default(now())
+
+  @@index([userId])
+  @@map("beauty_skills")
+}
+
+model BeautyPlaylist {
+  id         Int      @id @default(autoincrement())
+  title      String
+  mood       String
+  tracksJson Json
+  createdAt  DateTime @default(now())
+
+  @@index([mood])
+  @@map("beauty_playlists")
+}
+
+model BeautyRecipe {
+  id             Int      @id @default(autoincrement())
+  title          String
+  ingredientsJson Json
+  stepsJson      Json
+  duration       String
+  forSkin        String?
+  emoji          String   @default("🥣")
+  createdAt      DateTime @default(now())
+
+  @@map("beauty_recipes")
+}
+
+model BookClub {
+  id        Int      @id @default(autoincrement())
+  title     String
+  author    String
+  emoji     String   @default("📖")
+  members   Int      @default(0)
+  currentChapter String?
+  nextMeeting    String?
+  createdAt DateTime @default(now())
+
+  membersRel BookClubMember[]
+
+  @@map("book_clubs")
+}
+
+model BookClubMember {
+  id       Int      @id @default(autoincrement())
+  clubId   Int
+  userId   Int
+  joinedAt DateTime @default(now())
+
+  club     BookClub @relation(fields: [clubId], references: [id], onDelete: Cascade)
+
+  @@unique([clubId, userId])
+  @@map("book_club_members")
+}
+
+model BeautyTerm {
+  id    Int    @id @default(autoincrement())
+  ar    String
+  en    String
+  emoji String @default("📝")
+  createdAt DateTime @default(now())
+
+  @@map("beauty_terms")
+}
+
+model SavingsMilestone {
+  id         Int       @id @default(autoincrement())
+  userId     Int
+  name       String
+  amount     Int
+  emoji      String    @default("💰")
+  achieved   Boolean   @default(false)
+  achievedAt DateTime?
+  createdAt  DateTime  @default(now())
+
+  @@index([userId])
+  @@map("savings_milestones")
+}
+
+model RuralOutreach {
+  id        Int      @id @default(autoincrement())
+  name      String
+  village   String
+  status    String   @default("TRAINED")
+  createdAt DateTime @default(now())
+
+  @@map("rural_outreach")
+}
+
+model ExportProduct {
+  id          Int      @id @default(autoincrement())
+  name        String
+  country     String
+  description String?
+  ownerId     Int
+  createdAt   DateTime @default(now())
+
+  @@map("export_products")
+}
+
+model InvestmentPitch {
+  id          Int      @id @default(autoincrement())
+  name        String
+  amount      Int
+  description String
+  status      String   @default("PENDING")
+  ownerId     Int
+  createdAt   DateTime @default(now())
+
+  @@map("investment_pitches")
+}
+
+model ExpertTalk {
+  id       Int      @id @default(autoincrement())
+  title    String
+  expert   String
+  date     String
+  seats    Int?
+  isFree   Boolean  @default(true)
+  emoji    String   @default("🎤")
+  createdAt DateTime @default(now())
+
+  @@map("expert_talks")
+}
+
+model CertificationPath {
+  id          Int      @id @default(autoincrement())
+  title       String
+  emoji       String   @default("📜")
+  levelsJson  Json
+  duration    String
+  accredited  Boolean  @default(false)
+  isActive    Boolean  @default(true)
+  createdAt   DateTime @default(now())
+
+  enrollments CertificationEnrollment[]
+
+  @@map("certification_paths")
+}
+
+model CertificationEnrollment {
+  id        Int      @id @default(autoincrement())
+  userId    Int
+  pathId    Int
+  createdAt DateTime @default(now())
+
+  path      CertificationPath @relation(fields: [pathId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, pathId])
+  @@map("certification_enrollments")
+}
+
+model SocialImpact {
+  id        Int      @id @default(autoincrement())
+  category  String
+  count     Int      @default(0)
+  createdAt DateTime @default(now())
+
+  @@map("social_impact")
+}
+
+model DvSupportRequest {
+  id              Int      @id @default(autoincrement())
+  userId          Int
+  serviceType     String
+  partnerShelter  String?
+  message         String?
+  confidential    Boolean  @default(true)
+  createdAt       DateTime @default(now())
+
+  @@map("dv_support_requests")
+}
+
+model SubscriptionGift {
+  id         Int      @id @default(autoincrement())
+  senderId   Int
+  friendName String
+  months     Int
+  price      Int
+  message    String?
+  createdAt  DateTime @default(now())
+
+  @@map("subscription_gifts")
+}
+
+model CustomerAchievement {
+  id             Int      @id @default(autoincrement())
+  userId         Int
+  achievementKey String
+  earnedAt       DateTime @default(now())
+
+  @@unique([userId, achievementKey])
+  @@map("customer_achievements")
+}
+
+model CustomerFeedback {
+  id        Int      @id @default(autoincrement())
+  userId    Int
+  category  String
+  message   String
+  rating    Int?
+  createdAt DateTime @default(now())
+
+  @@index([category])
+  @@map("customer_feedback")
+}
+
+model BeautySurvey {
+  id            Int      @id @default(autoincrement())
+  title         String
+  questionsJson Json
+  isActive      Boolean  @default(true)
+  createdAt     DateTime @default(now())
+
+  responses     SurveyResponse[]
+
+  @@map("beauty_surveys")
+}
+
+model SurveyResponse {
+  id          Int      @id @default(autoincrement())
+  userId      Int
+  surveyId    Int
+  answersJson Json
+  createdAt   DateTime @default(now())
+
+  survey      BeautySurvey @relation(fields: [surveyId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, surveyId])
+  @@map("survey_responses")
+}
+
+model BeautyMemory {
+  id        Int      @id @default(autoincrement())
+  userId    Int
+  title     String
+  date      String
+  emoji     String   @default("📸")
+  imageUrl  String?
+  notes     String?
+  tags      Json     @default("[]")
+  createdAt DateTime @default(now())
+
+  @@index([userId])
+  @@map("beauty_memories")
+}
+
+model ClassPass {
+  id        Int      @id @default(autoincrement())
+  name      String
+  classes   Int
+  price     Int
+  isActive  Boolean  @default(true)
+  // E3 — gym-scoped day pass (null = generic platform pass).
+  gymId     Int?
+  createdAt DateTime @default(now())
+
+  gym       Vendor?  @relation(fields: [gymId], references: [id])
+  purchases ClassPassPurchase[]
+
+  @@map("class_passes")
+}
+
+model ClassPassPurchase {
+  id               Int      @id @default(autoincrement())
+  userId           Int
+  passId           Int
+  classesRemaining Int
+  expiresAt        DateTime
+  createdAt        DateTime @default(now())
+
+  pass             ClassPass @relation(fields: [passId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@map("class_pass_purchases")
+}
+
+model TechnicianSpotlight {
+  id            Int      @id @default(autoincrement())
+  technicianId  Int
+  story         String
+  achievement   String
+  emoji         String   @default("👩‍🎨")
+  isPublished   Boolean  @default(true)
+  createdAt     DateTime @default(now())
+
+  @@map("technician_spotlights")
+}
+
+model BeautyPartner {
+  id        Int      @id @default(autoincrement())
+  userId    Int      @unique
+  interest  String
+  city      String?
+  status    String   @default("SEEKING")
+  createdAt DateTime @default(now())
+
+  @@map("beauty_partners")
+}
+
+model BeautyPartnerMatch {
+  id         Int      @id @default(autoincrement())
+  partner1Id Int
+  partner2Id Int
+  interest   String
+  createdAt  DateTime @default(now())
+
+  @@map("beauty_partner_matches")
+}
+
+model OnboardingResponse {
+  id        Int      @id @default(autoincrement())
+  userId    Int      @unique
+  answers   Json
+  completed Boolean  @default(false)
+  createdAt DateTime @default(now())
+
+  @@map("onboarding_responses")
+}
+
+model CustomerPreference {
+  id          Int      @id @default(autoincrement())
+  userId      Int      @unique
+  preferences Json
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@map("customer_preferences")
+}
+
+model TechnicianRating {
+  id            Int      @id @default(autoincrement())
+  userId        Int
+  technicianId  Int
+  bookingId     Int      @unique
+  overall       Int
+  skill         Int?
+  punctuality   Int?
+  cleanliness   Int?
+  communication Int?
+  comment       String?
+  createdAt     DateTime @default(now())
+
+  @@index([technicianId])
+  @@map("technician_ratings")
+}
+
+model BeautyTrend {
+  id        Int      @id @default(autoincrement())
+  type      String
+  data      Json
+  createdAt DateTime @default(now())
+
+  @@map("beauty_trends")
+}
+
+model BeautyIntegration {
+  id           Int      @id @default(autoincrement())
+  userId       Int
+  provider     String
+  accessToken  String?
+  // E9 — Google Calendar sync: OAuth refresh token + expiry.
+  refreshToken String?
+  tokenExpiry  DateTime?
+  status       String   @default("CONNECTED")
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  @@unique([userId, provider])
+  @@map("beauty_integrations")
+}
+
+model CustomerMilestone {
+  id          Int      @id @default(autoincrement())
+  userId      Int
+  type        String
+  description String?
+  achievedAt  DateTime @default(now())
+
+  @@index([userId])
+  @@map("customer_milestones")
+}
+
+model BeautyReport {
+  id        Int      @id @default(autoincrement())
+  type      String
+  data      Json
+  createdAt DateTime @default(now())
+
+  @@map("beauty_reports")
+}
+
+model BeautyCoupon {
+  id              Int      @id @default(autoincrement())
+  code            String   @unique
+  discountPercent Int
+  maxUses         Int      @default(100)
+  used            Int      @default(0)
+  isActive        Boolean  @default(true)
+  expiresAt       DateTime
+  createdAt       DateTime @default(now())
+
+  @@map("beauty_coupons")
+}
+
+model ServiceQueueEntry {
+  id            Int      @id @default(autoincrement())
+  userId        Int
+  technicianId  Int
+  serviceId     Int
+  status        String   @default("WAITING")
+  notes         String?
+  createdAt     DateTime @default(now())
+
+  @@index([technicianId, status])
+  @@map("service_queue_entries")
+}
+
+model CustomerSegment {
+  id          Int      @id @default(autoincrement())
+  name        String
+  criteria    Json
+  description String?
+  createdAt   DateTime @default(now())
+
+  @@map("customer_segments")
+}
+
+// =============================================================================
+// E4b — Measurement History + BNPL Installment Plans
+// =============================================================================
+
+// E4b — body measurement history (progress tracking toward beauty/fitness goals).
+model MeasurementLog {
+  id         Int      @id @default(autoincrement())
+  userId     Int
+  weightKg   Float?
+  waistCm    Float?
+  hipCm      Float?
+  bustCm     Float?
+  thighCm    Float?
+  bodyFatPct Float?
+  notes      String?
+  createdAt  DateTime @default(now())
+
+  @@index([userId, createdAt])
+  @@map("measurement_logs")
+}
+
+// E6c — menopause symptom log (self-reported, per-day entries).
+model MenopauseLog {
+  id        Int      @id @default(autoincrement())
+  userId    Int
+  symptom   String   // hot_flash | night_sweats | mood | sleep | dryness | brain_fog
+  severity  Int      @default(2) // 1-3
+  notes     String?
+  createdAt DateTime @default(now())
+
+  @@index([userId, createdAt])
+  @@map("menopause_logs")
+}
+
+// E4b — persisted installment plans (bnpl.createPlan used to compute only).
+model BnplPlan {
+  id             Int      @id @default(autoincrement())
+  userId         Int
+  provider       String   // tabby | tamara
+  totalAmount    Decimal  @db.Decimal(10, 2)
+  installments   Int
+  monthlyPayment Decimal  @db.Decimal(10, 2)
+  paidCount      Int      @default(0)
+  status         String   @default("ACTIVE") // ACTIVE | COMPLETED | CANCELLED
+  schedule       Json     // [{ month, amount, dueDate, paid }]
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+
+  @@index([userId, status])
+  @@map("bnpl_plans")
+}
+
+// =============================================================================
+// E5 — Nail bars (venue vertical: station-capacity slots, pay-at-venue)
+// =============================================================================
+
+model NailBarSlot {
+  id          Int      @id @default(autoincrement())
+  nailBarId   Int
+  startAt     DateTime
+  endAt       DateTime
+  capacity    Int      @default(1) // nail stations
+  bookedCount Int      @default(0)
+  createdAt   DateTime @default(now())
+
+  nailBar  Vendor          @relation(fields: [nailBarId], references: [id], onDelete: Cascade)
+  bookings NailBarBooking[]
+
+  @@index([nailBarId, startAt])
+  @@map("nail_bar_slots")
+}
+
+model NailBarBooking {
+  id         Int      @id @default(autoincrement())
+  code       String   @unique // GON-XXXXXX
+  slotId     Int
+  customerId Int
+  createdAt  DateTime @default(now())
+
+  slot NailBarSlot @relation(fields: [slotId], references: [id], onDelete: Cascade)
+
+  @@unique([slotId, customerId])
+  @@index([customerId])
+  @@map("nail_bar_bookings")
 }

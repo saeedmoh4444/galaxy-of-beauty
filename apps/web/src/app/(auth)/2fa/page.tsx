@@ -2,10 +2,12 @@
 
 import { useState } from 'react';
 import { api } from '@/lib/trpc';
-import { Button, Card, CardSkeleton, ErrorAlert, Input } from '@galaxy/shared';
+import { Button, Card, CardSkeleton, ErrorAlert, Input } from '@galaxy/ui';
+import { useLocale } from '@/components/LocaleProvider';
 
 export default function TwoFactorPage(): JSX.Element {
-  const { data, isLoading, isError, refetch } = api.auth.me.useQuery({} as never);
+  const { data, isLoading, isError, refetch } = api.auth.me.useQuery();
+  const { t } = useLocale();
 
   const setupMut = api.auth.setup2FA.useMutation({
     onSuccess: () => refetch(),
@@ -20,15 +22,15 @@ export default function TwoFactorPage(): JSX.Element {
   const [verifyCode, setVerifyCode] = useState('');
   const [verifyError, setVerifyError] = useState('');
 
-  const me = data as unknown as Record<string, unknown>;
-  const twoFactorEnabled = (me?.twoFactorEnabled as boolean) ?? false;
+  const me = data as { twoFactorEnabled?: boolean } | undefined;
+  const twoFactorEnabled = me?.twoFactorEnabled ?? false;
 
   // Setup result data (secret, otpauthUrl)
-  const setupData = setupMut.data as unknown as Record<string, unknown> | undefined;
+  const setupData = setupMut.data;
 
   const handleVerify = () => {
     if (verifyCode.length !== 6) {
-      setVerifyError('يرجى إدخال رمز مكون من 6 أرقام');
+      setVerifyError(t('auth.otp6-error'));
       return;
     }
     setVerifyError('');
@@ -38,20 +40,16 @@ export default function TwoFactorPage(): JSX.Element {
   return (
     <div className="flex min-h-screen items-center justify-center px-4">
       <Card className="w-full max-w-md" padding="lg">
-        <h1 className="mb-2 text-center text-2xl font-bold text-gray-900 dark:text-gray-100">
-          المصادقة الثنائية
+        <h1 className="mb-2 text-center text-2xl font-bold text-text-primary dark:text-gray-100">
+          {t('auth.2fa-title')}
         </h1>
-        <p className="mb-6 text-center text-sm text-gray-500">
-          أضف طبقة أمان إضافية لحسابك
-        </p>
+        <p className="mb-6 text-center text-sm text-text-secondary">{t('auth.2fa-subtitle')}</p>
 
         {/* Loading */}
         {isLoading && <CardSkeleton />}
 
         {/* Error */}
-        {isError && (
-          <ErrorAlert message="فشل تحميل معلومات المستخدم" onRetry={() => refetch()} />
-        )}
+        {isError && <ErrorAlert message={t('auth.2fa-load-error')} onRetry={() => refetch()} />}
 
         {/* Data */}
         {!isLoading && !isError && (
@@ -63,120 +61,102 @@ export default function TwoFactorPage(): JSX.Element {
                   ✅
                 </div>
                 <p className="text-lg font-semibold text-green-700 dark:text-green-300">
-                  المصادقة الثنائية مفعلة
+                  {t('auth.2fa-enabled')}
                 </p>
-                <p className="text-sm text-gray-500">
-                  حسابك محمي بالمصادقة الثنائية. سيُطلب منك رمز التحقق عند تسجيل الدخول.
-                </p>
+                <p className="text-sm text-text-secondary">{t('auth.2fa-enabled-desc')}</p>
 
-                {disableMut.isError && (
-                  <ErrorAlert message={disableMut.error.message} />
-                )}
+                {disableMut.isError && <ErrorAlert message={disableMut.error.message} />}
                 {disableMut.isSuccess && (
-                  <p className="text-sm text-green-600">تم تعطيل المصادقة الثنائية</p>
+                  <p className="text-sm text-green-600">{t('auth.2fa-disabled')}</p>
                 )}
 
                 <Button
                   variant="danger"
                   className="w-full"
-                  onClick={() => disableMut.mutate({} as never)}
+                  onClick={() => disableMut.mutate({})}
                   loading={disableMut.isPending}
                 >
-                  تعطيل المصادقة الثنائية
+                  {t('auth.2fa-disable')}
+                </Button>
+              </div>
+            ) : /* ── Not set up ── */
+
+            /* Step 1: Show setup button until clicked */
+            !setupMut.isSuccess ? (
+              <div className="space-y-4 text-center">
+                <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-brand-100 text-3xl dark:bg-brand-900">
+                  🔐
+                </div>
+                <p className="text-lg font-semibold">{t('auth.2fa-setup-title')}</p>
+                <p className="text-sm text-text-secondary">{t('auth.2fa-setup-desc')}</p>
+
+                {setupMut.isError && <ErrorAlert message={setupMut.error.message} />}
+
+                <Button
+                  className="w-full"
+                  onClick={() => setupMut.mutate({})}
+                  loading={setupMut.isPending}
+                >
+                  {t('auth.2fa-start-setup')}
                 </Button>
               </div>
             ) : (
-              /* ── Not set up ── */
-
-              /* Step 1: Show setup button until clicked */
-              !setupMut.isSuccess ? (
-                <div className="space-y-4 text-center">
-                  <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-brand-100 text-3xl dark:bg-brand-900">
-                    🔐
-                  </div>
-                  <p className="text-lg font-semibold">إعداد المصادقة الثنائية</p>
-                  <p className="text-sm text-gray-500">
-                    المصادقة الثنائية تضيف طبقة حماية إضافية لحسابك. عند تفعيلها، ستحتاج إلى إدخال رمز
-                    تحقق من تطبيق المصادقة بالإضافة إلى كلمة المرور.
+              /* Step 2: Show QR code placeholder + secret + verify input */
+              <div className="space-y-4">
+                <div className="rounded-lg bg-surface-muted p-4 text-center dark:bg-gray-800">
+                  <p className="mb-2 text-sm font-medium text-text-primary dark:text-gray-300">
+                    {t('auth.2fa-scan-qr')}
                   </p>
+                  {/* QR Code placeholder */}
+                  <div className="mx-auto flex h-40 w-40 items-center justify-center rounded-xl border-2 border-dashed border-edge bg-white dark:border-gray-600 dark:bg-gray-900">
+                    <span className="text-xs text-text-tertiary">QR Code</span>
+                  </div>
+                </div>
 
-                  {setupMut.isError && (
-                    <ErrorAlert message={setupMut.error.message} />
+                <div className="rounded-lg bg-surface-muted p-3 dark:bg-gray-800">
+                  <p className="mb-1 text-xs font-medium text-text-secondary">
+                    {t('auth.2fa-secret')}
+                  </p>
+                  <p className="select-all font-mono text-sm text-text-primary" dir="ltr">
+                    {setupData?.secret as string}
+                  </p>
+                  <p className="mt-1 text-xs text-text-tertiary">{t('auth.2fa-manual-entry')}</p>
+                </div>
+
+                <div className="border-t border-edge pt-4 dark:border-gray-700">
+                  <p className="mb-3 text-sm font-medium">{t('auth.2fa-verify-prompt')}</p>
+
+                  {verifyMut.isError && (
+                    <div className="mb-3">
+                      <ErrorAlert message={verifyMut.error.message} />
+                    </div>
+                  )}
+                  {verifyError && <p className="mb-2 text-sm text-red-600">{verifyError}</p>}
+                  {verifyMut.isSuccess && (
+                    <p className="mb-2 text-sm text-green-600">{t('auth.2fa-verify-success')}</p>
                   )}
 
+                  <Input
+                    label={t('auth.2fa-code-label')}
+                    placeholder="000000"
+                    value={verifyCode}
+                    onChange={(e) => {
+                      setVerifyCode(e.target.value.replace(/\D/g, '').slice(0, 6));
+                      setVerifyError('');
+                    }}
+                    maxLength={6}
+                    disabled={verifyMut.isSuccess}
+                  />
                   <Button
-                    className="w-full"
-                    onClick={() => setupMut.mutate({} as never)}
-                    loading={setupMut.isPending}
+                    className="mt-3 w-full"
+                    onClick={handleVerify}
+                    loading={verifyMut.isPending}
+                    disabled={verifyCode.length !== 6 || verifyMut.isSuccess}
                   >
-                    بدء الإعداد
+                    {t('auth.2fa-confirm-enable')}
                   </Button>
                 </div>
-              ) : (
-                /* Step 2: Show QR code placeholder + secret + verify input */
-                <div className="space-y-4">
-                  <div className="rounded-lg bg-gray-50 p-4 text-center dark:bg-gray-800">
-                    <p className="mb-2 text-sm font-medium text-gray-700 dark:text-gray-300">
-                      امسح رمز QR باستخدام تطبيق المصادقة
-                    </p>
-                    {/* QR Code placeholder */}
-                    <div className="mx-auto flex h-40 w-40 items-center justify-center rounded-xl border-2 border-dashed border-gray-300 bg-white dark:border-gray-600 dark:bg-gray-900">
-                      <span className="text-xs text-gray-400">QR Code</span>
-                    </div>
-                  </div>
-
-                  <div className="rounded-lg bg-gray-50 p-3 dark:bg-gray-800">
-                    <p className="mb-1 text-xs font-medium text-gray-500">الرمز السري (Secret):</p>
-                    <p
-                      className="select-all font-mono text-sm text-gray-800 dark:text-gray-200"
-                      dir="ltr"
-                    >
-                      {setupData?.secret as string}
-                    </p>
-                    <p className="mt-1 text-xs text-gray-400">
-                      أو أدخل الرمز السري يدوياً في التطبيق
-                    </p>
-                  </div>
-
-                  <div className="border-t border-gray-200 pt-4 dark:border-gray-700">
-                    <p className="mb-3 text-sm font-medium">
-                      أدخل رمز التحقق من التطبيق لتأكيد الإعداد:
-                    </p>
-
-                    {verifyMut.isError && (
-                      <div className="mb-3">
-                        <ErrorAlert message={verifyMut.error.message} />
-                      </div>
-                    )}
-                    {verifyError && (
-                      <p className="mb-2 text-sm text-red-600">{verifyError}</p>
-                    )}
-                    {verifyMut.isSuccess && (
-                      <p className="mb-2 text-sm text-green-600">تم تفعيل المصادقة الثنائية بنجاح</p>
-                    )}
-
-                    <Input
-                      label="رمز التحقق"
-                      placeholder="000000"
-                      value={verifyCode}
-                      onChange={(e) => {
-                        setVerifyCode(e.target.value.replace(/\D/g, '').slice(0, 6));
-                        setVerifyError('');
-                      }}
-                      maxLength={6}
-                      disabled={verifyMut.isSuccess}
-                    />
-                    <Button
-                      className="mt-3 w-full"
-                      onClick={handleVerify}
-                      loading={verifyMut.isPending}
-                      disabled={verifyCode.length !== 6 || verifyMut.isSuccess}
-                    >
-                      تأكيد وتفعيل
-                    </Button>
-                  </div>
-                </div>
-              )
+              </div>
             )}
           </>
         )}

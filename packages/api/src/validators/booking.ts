@@ -20,11 +20,11 @@ export const createBookingSchema = z.object({
   serviceId: z.number().int().positive(),
   variantId: z.number().int().positive().optional(),
   addressId: z.number().int().positive(),
-  slotId: z.number().int().positive(),
+  slotId: z.number().int().positive().optional(),
   startAt: z.string().datetime(),
   endAt: z.string().datetime(),
   notes: z.string().max(500).optional(),
-  idempotencyKey: z.string().uuid(),
+  idempotencyKey: z.string().min(8).max(128),
 });
 
 export const bookingStatusSchema = z.object({

@@ -1,0 +1,38 @@
+'use client';
+
+import { getSaudiSeason } from '@galaxy/shared';
+
+/**
+ * Ramadan/Eid themed banner — shows during Islamic seasons.
+ *
+ * Usage:
+ *   <RamadanBanner />
+ */
+
+interface RamadanBannerProps {
+  ramadanHoursText?: string;
+  eidDiscountText?: string;
+}
+
+export function RamadanBanner({
+  ramadanHoursText = 'أوقات العمل: ١٠ صباحاً — ٤ مساءً و ٩ مساءً — ٢ صباحاً',
+  eidDiscountText = 'خصم خاص بمناسبة العيد — استخدمي كود EID20',
+}: RamadanBannerProps): JSX.Element | null {
+  const season = getSaudiSeason();
+
+  if (!season.seasonLabel) return null;
+
+  const isEid = season.isEidAlFitr || season.isEidAlAdha;
+  const bg = isEid ? 'from-amber-500 to-orange-600' : 'from-indigo-700 to-brand-800';
+
+  return (
+    <div className={`bg-gradient-to-r ${bg} px-4 py-3 text-center text-white`}>
+      <span className="text-lg">{season.seasonEmoji}</span>
+      <span className="mx-2 text-sm font-semibold">{season.seasonLabel}</span>
+      {season.isRamadan ? (
+        <span className="block text-xs text-white/70">{ramadanHoursText}</span>
+      ) : null}
+      {isEid ? <span className="block text-xs text-white/70">{eidDiscountText}</span> : null}
+    </div>
+  );
+}

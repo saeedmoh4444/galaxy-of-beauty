@@ -1,6 +1,7 @@
 import { z } from 'zod';
 import { TRPCError } from '@trpc/server';
 import { prisma } from '@galaxy/db';
+import { notFound, forbidden } from '../lib/errors';
 import {
   router,
   publicProcedure,
@@ -28,7 +29,7 @@ export const reviewRouter = router({
       });
 
       if (!booking) {
-        throw new TRPCError({ code: 'NOT_FOUND', message: 'Booking not found' });
+        throw notFound('Booking');
       }
 
       if (booking.customerId !== ctx.user.id) {
@@ -144,7 +145,7 @@ export const reviewRouter = router({
       });
 
       if (!review) {
-        throw new TRPCError({ code: 'NOT_FOUND', message: 'Review not found' });
+        throw notFound('Review');
       }
 
       // Verify caller is a participant on the booking
@@ -153,12 +154,8 @@ export const reviewRouter = router({
         select: { customerId: true, technicianId: true },
       });
 
-      if (
-        booking &&
-        booking.customerId !== ctx.user.id &&
-        booking.technicianId !== ctx.user.id
-      ) {
-        throw new TRPCError({ code: 'FORBIDDEN', message: 'Access denied' });
+      if (booking && booking.customerId !== ctx.user.id && booking.technicianId !== ctx.user.id) {
+        throw forbidden('Access denied');
       }
 
       return { ...review };
@@ -182,7 +179,7 @@ export const reviewRouter = router({
       });
 
       if (!existing) {
-        throw new TRPCError({ code: 'NOT_FOUND', message: 'Review not found' });
+        throw notFound('Review');
       }
 
       if (existing.customerId !== ctx.user.id) {
@@ -235,51 +232,49 @@ export const reviewRouter = router({
     }),
 
   // ── Toggle review visibility (admin) ──────────────────────────────────────
-  hide: adminProcedure
-    .input(z.object({ reviewId: z.number() }))
-    .mutation(async ({ input }) => {
-      const review = await prisma.review.findUnique({
-        where: { id: input.reviewId },
-        select: { id: true, isVisible: true, booking: { select: { technicianId: true } } },
+  hide: adminProcedure.input(z.object({ reviewId: z.number() })).mutation(async ({ input }) => {
+    const review = await prisma.review.findUnique({
+      where: { id: input.reviewId },
+      select: { id: true, isVisible: true, booking: { select: { technicianId: true } } },
+    });
+
+    if (!review) {
+      throw notFound('Review');
+    }
+
+    const updated = await prisma.review.update({
+      where: { id: input.reviewId },
+      data: { isVisible: !review.isVisible },
+    });
+
+    // Recalculate technician rating aggregate
+    if (review.booking) {
+      const technician = await prisma.technician.findUnique({
+        where: { userId: review.booking.technicianId },
       });
 
-      if (!review) {
-        throw new TRPCError({ code: 'NOT_FOUND', message: 'Review not found' });
-      }
-
-      const updated = await prisma.review.update({
-        where: { id: input.reviewId },
-        data: { isVisible: !review.isVisible },
-      });
-
-      // Recalculate technician rating aggregate
-      if (review.booking) {
-        const technician = await prisma.technician.findUnique({
-          where: { userId: review.booking.technicianId },
+      if (technician) {
+        const agg = await prisma.review.aggregate({
+          where: {
+            booking: { technicianId: review.booking.technicianId },
+            isVisible: true,
+          },
+          _avg: { rating: true },
+          _count: { id: true },
         });
 
-        if (technician) {
-          const agg = await prisma.review.aggregate({
-            where: {
-              booking: { technicianId: review.booking.technicianId },
-              isVisible: true,
-            },
-            _avg: { rating: true },
-            _count: { id: true },
-          });
-
-          await prisma.technician.update({
-            where: { id: technician.id },
-            data: {
-              ratingAvg: agg._avg.rating ?? 0,
-              totalReviews: agg._count.id,
-            },
-          });
-        }
+        await prisma.technician.update({
+          where: { id: technician.id },
+          data: {
+            ratingAvg: agg._avg.rating ?? 0,
+            totalReviews: agg._count.id,
+          },
+        });
       }
+    }
 
-      return updated;
-    }),
+    return updated;
+  }),
 
   // ── List reviews (public, filterable) ─────────────────────────────────────
   list: publicProcedure

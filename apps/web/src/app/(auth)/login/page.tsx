@@ -4,12 +4,17 @@ import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { api } from '@/lib/trpc';
-import { Button, Input, Card, ErrorAlert } from '@galaxy/shared';
-import { useAuth } from '@galaxy/shared';
+import { Button, Input, Card, ErrorAlert } from '@galaxy/ui';
+import { useAuth } from '@galaxy/ui';
+import { SocialLogin } from '@/components/SocialLogin';
+import { useLocale } from '@/components/LocaleProvider';
 
 export default function LoginPage(): JSX.Element {
   const router = useRouter();
   const { login } = useAuth();
+  const { t } = useLocale();
+  // Pre-warm CSRF cookie by calling a public tRPC query
+  api.health.useQuery();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [totpToken, setTotpToken] = useState('');
@@ -18,14 +23,22 @@ export default function LoginPage(): JSX.Element {
 
   const mutation = api.auth.login.useMutation({
     onSuccess: async (data) => {
-      const u = data.user as unknown as Record<string, unknown>;
-      localStorage.setItem('gob_access', data.accessToken);
-      localStorage.setItem('gob_refresh', data.refreshToken);
+      // Tokens are now set as HttpOnly cookies by the server — no localStorage needed.
+      // Hydrate user state from the response body (server no longer returns tokens in body).
+      const userData = data.user as unknown as Record<string, unknown>;
       await login(
-        { accessToken: data.accessToken, refreshToken: data.refreshToken },
-        { id: u.id as number, email: u.email as string, name: u.name as string, role: (u.role as string) as 'CUSTOMER' | 'TECHNICIAN' | 'ADMIN', preferredLanguage: 'ar' },
+        { accessToken: '', refreshToken: '' }, // Tokens are in HttpOnly cookies now
+        {
+          id: userData.id as number,
+          email: userData.email as string,
+          name: userData.name as string,
+          role: userData.role as string as 'CUSTOMER' | 'TECHNICIAN' | 'ADMIN',
+          preferredLanguage: (userData.preferredLanguage as 'ar' | 'en') || 'ar',
+          phone: userData.phone as string | undefined,
+          avatarUrl: userData.avatarUrl as string | undefined,
+        },
       );
-      const role = u.role as string;
+      const role = userData.role as string;
       if (role === 'ADMIN') router.push('/admin/dashboard');
       else if (role === 'TECHNICIAN') router.push('/tech/dashboard');
       else router.push('/dashboard');
@@ -48,7 +61,7 @@ export default function LoginPage(): JSX.Element {
     if (twoFactorRequired) {
       // Re-submit with TOTP token included
       if (totpToken.length !== 6) {
-        setError('يرجى إدخال رمز التحقق المكون من 6 أرقام');
+        setError(t('auth.otp-invalid'));
         return;
       }
       mutation.mutate({ email, password, totpToken });
@@ -67,8 +80,8 @@ export default function LoginPage(): JSX.Element {
   return (
     <div className="flex min-h-screen items-center justify-center px-4">
       <Card className="w-full max-w-md" padding="lg">
-        <h1 className="mb-6 text-center text-2xl font-bold text-gray-900 dark:text-gray-100">
-          تسجيل الدخول
+        <h1 className="mb-6 text-center text-2xl font-bold text-text-primary dark:text-gray-100">
+          {t('auth.login')}
         </h1>
 
         {error && (
@@ -82,7 +95,7 @@ export default function LoginPage(): JSX.Element {
           {!twoFactorRequired && (
             <>
               <Input
-                label="البريد الإلكتروني"
+                label={t('auth.email')}
                 type="email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
@@ -90,7 +103,7 @@ export default function LoginPage(): JSX.Element {
                 required
               />
               <Input
-                label="كلمة المرور"
+                label={t('auth.password')}
                 type="password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
@@ -102,18 +115,19 @@ export default function LoginPage(): JSX.Element {
 
           {/* 2FA TOTP input — shown when 2FA required */}
           {twoFactorRequired && (
-            <div className="rounded-lg border border-brand-200 bg-brand-50 p-4 dark:border-brand-800 dark:bg-brand-950">
-              <p className="mb-3 text-sm font-medium text-brand-800 dark:text-brand-200">
-                تم تفعيل المصادقة الثنائية. أدخل رمز التحقق من تطبيق المصادقة:
+            <div className="rounded-lg border border-info/30 bg-info-subtle p-4 dark:border-brand-800 dark:bg-brand-950">
+              <p className="mb-3 text-sm font-medium text-info dark:text-brand-200">
+                {t('auth.totp-prompt')}
               </p>
               <Input
-                label="رمز التحقق (6 أرقام)"
+                label={t('auth.totp-code-label')}
                 type="text"
                 inputMode="numeric"
                 maxLength={6}
                 value={totpToken}
                 onChange={(e) => setTotpToken(e.target.value.replace(/\D/g, '').slice(0, 6))}
                 placeholder="000000"
+                // eslint-disable-next-line jsx-a11y/no-autofocus -- auto-focus 2FA input for UX
                 autoFocus
                 dir="ltr"
               />
@@ -122,24 +136,29 @@ export default function LoginPage(): JSX.Element {
                 onClick={handleCancel2FA}
                 className="mt-3 text-sm text-brand-600 hover:underline dark:text-brand-400"
               >
-                ← العودة لتسجيل الدخول
+                {t('auth.cancel-2fa')}
               </button>
             </div>
           )}
 
           <Button type="submit" className="w-full" loading={mutation.isPending}>
-            {twoFactorRequired ? 'تحقق' : 'دخول'}
+            {twoFactorRequired ? t('auth.verify') : t('auth.loginShort')}
           </Button>
         </form>
 
         {!twoFactorRequired && (
-          <div className="mt-4 text-center text-sm text-gray-500">
+          <div className="mt-6">
+            <SocialLogin />
+          </div>
+        )}
+        {!twoFactorRequired && (
+          <div className="mt-4 text-center text-sm text-text-secondary">
             <Link href="/forgot-password" className="text-brand-600 hover:underline">
-              نسيت كلمة المرور؟
+              {t('auth.forgotPassword')}
             </Link>
             <span className="mx-2">|</span>
             <Link href="/register" className="text-brand-600 hover:underline">
-              إنشاء حساب
+              {t('auth.register')}
             </Link>
           </div>
         )}

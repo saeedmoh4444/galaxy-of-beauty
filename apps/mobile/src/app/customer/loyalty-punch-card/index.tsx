@@ -1,0 +1,74 @@
+import { View, Text, ScrollView, StyleSheet, RefreshControl } from 'react-native';
+import { SkeletonList } from '@/components/SkeletonCard';
+import { trpc } from '@/lib/trpc-react';
+import { useLocale } from '@/components/LocaleProvider';
+import { useAuthState } from '@/hooks/useAuthState';
+
+interface PunchCardStatus {
+  punches?: number;
+  total?: number;
+}
+
+export default function LoyaltyPunchCardScreen(): JSX.Element {
+  const { t } = useLocale();
+  const isAuthed = useAuthState();
+  const cardQ = trpc.loyaltyPunchCard.myCard.useQuery(undefined, { enabled: isAuthed });
+
+  if (cardQ.isLoading) return <SkeletonList count={3} />;
+
+  const punches = (cardQ.data as unknown as PunchCardStatus | null)?.punches ?? 0;
+  const total = (cardQ.data as unknown as PunchCardStatus | null)?.total ?? 10;
+
+  return (
+    <ScrollView
+      style={styles.c}
+      contentContainerStyle={styles.i}
+      refreshControl={
+        <RefreshControl
+          refreshing={cardQ.isRefetching}
+          onRefresh={() => cardQ.refetch()}
+          colors={['#f59e0b']}
+        />
+      }
+    >
+      <Text style={styles.t}>{t('mobile.loyaltyPunchCard.title')}</Text>
+      <View style={styles.card}>
+        <Text style={styles.count}>
+          {punches}/{total}
+        </Text>
+        <View style={styles.grid}>
+          {Array.from({ length: total }, (_, i) => (
+            <View key={i} style={[styles.punch, i < punches && styles.punched]}>
+              <Text style={styles.punchText}>{i < punches ? '' : '○'}</Text>
+            </View>
+          ))}
+        </View>
+      </View>
+    </ScrollView>
+  );
+}
+
+const styles = StyleSheet.create({
+  c: { flex: 1, backgroundColor: '#fffbeb' },
+  i: { padding: 16, paddingTop: 30, alignItems: 'center', paddingBottom: 40 },
+  t: { fontSize: 24, fontWeight: '800', color: '#d97706', textAlign: 'center', marginBottom: 20 },
+  card: {
+    backgroundColor: '#fff',
+    borderRadius: 20,
+    padding: 24,
+    alignItems: 'center',
+    width: '100%',
+  },
+  count: { fontSize: 28, fontWeight: '800', color: '#d97706', marginBottom: 16 },
+  grid: { flexDirection: 'row', flexWrap: 'wrap', gap: 8, justifyContent: 'center' },
+  punch: {
+    width: 44,
+    height: 44,
+    borderRadius: 22,
+    backgroundColor: '#f3f4f6',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  punched: { backgroundColor: '#fef3c7', borderWidth: 2, borderColor: '#f59e0b' },
+  punchText: { fontSize: 16 },
+});

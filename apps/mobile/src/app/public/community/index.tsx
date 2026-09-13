@@ -1,0 +1,169 @@
+import {
+  View,
+  Text,
+  ScrollView,
+  StyleSheet,
+  TextInput,
+  TouchableOpacity,
+  RefreshControl,
+} from 'react-native';
+import { EXTENDED_PAGE_SIZE } from '@galaxy/ui';
+import { ErrorAlert } from '@/components/ErrorAlert';
+import { SkeletonList } from '@/components/SkeletonCard';
+import { useState } from 'react';
+import { trpc } from '@/lib/trpc-react';
+import { useLocale } from '@/components/LocaleProvider';
+
+interface CommunityPost {
+  id?: number;
+  userName?: string;
+  createdAt?: string;
+  content?: string;
+  likes?: number;
+}
+
+interface CommunityFeed {
+  posts?: CommunityPost[];
+}
+
+export default function CommunityScreen(): JSX.Element {
+  const { locale, t } = useLocale();
+  const postsQ = trpc.community.feed.useQuery({ page: 1, limit: EXTENDED_PAGE_SIZE });
+  const [content, setContent] = useState('');
+
+  const createMut = trpc.community.create.useMutation({
+    onSuccess: () => {
+      setContent('');
+      void postsQ.refetch();
+    },
+    onError: () => {},
+  });
+
+  const likeMut = trpc.community.toggleLike.useMutation({
+    onSuccess: () => postsQ.refetch(),
+  });
+
+  const create = () => {
+    if (!content.trim()) return;
+    createMut.mutate({ content: content.trim() });
+  };
+
+  const toggleLike = (postId: number) => likeMut.mutate({ postId });
+
+  if (postsQ.isLoading) return <SkeletonList count={5} />;
+  if (postsQ.isError)
+    return (
+      <ErrorAlert
+        message={t('mobile.public.community.load-error')}
+        onRetry={() => postsQ.refetch()}
+      />
+    );
+
+  const items = (postsQ.data as CommunityFeed | null)?.posts ?? [];
+
+  return (
+    <View style={styles.c}>
+      <ScrollView
+        style={{ flex: 1 }}
+        contentContainerStyle={styles.i}
+        refreshControl={
+          <RefreshControl
+            refreshing={postsQ.isRefetching}
+            onRefresh={() => postsQ.refetch()}
+            colors={['#7c3aed']}
+          />
+        }
+      >
+        <Text style={styles.t}>{t('mobile.public.community.title')}</Text>
+        <Text style={styles.sub}>{t('mobile.public.community.subtitle')}</Text>
+        <View style={styles.composer}>
+          <TextInput
+            placeholder={t('mobile.public.community.placeholder')}
+            value={content}
+            onChangeText={setContent}
+            multiline
+            style={styles.input}
+            placeholderTextColor="#9ca3af"
+          />
+          <TouchableOpacity
+            onPress={create}
+            disabled={createMut.isPending || !content.trim()}
+            style={[styles.postBtn, !content.trim() && { opacity: 0.5 }]}
+          >
+            <Text style={styles.postBtnText}>
+              {createMut.isPending ? '...' : t('mobile.public.community.post')}
+            </Text>
+          </TouchableOpacity>
+        </View>
+        {items.length === 0 ? (
+          <Text style={styles.e}>{t('mobile.public.community.empty')}</Text>
+        ) : (
+          items.map((p) => (
+            <View key={p.id} style={styles.card}>
+              <View style={styles.cardHeader}>
+                <Text style={styles.avatar}>👤</Text>
+                <View style={{ flex: 1 }}>
+                  <Text style={styles.userName}>
+                    {p.userName ?? t('mobile.public.community.user')}
+                  </Text>
+                  <Text style={styles.date}>
+                    {new Date(p.createdAt ?? '').toLocaleDateString(
+                      locale === 'ar' ? 'ar-SA' : 'en-US',
+                    )}
+                  </Text>
+                </View>
+              </View>
+              <Text style={styles.postContent}>{p.content}</Text>
+              <TouchableOpacity onPress={() => toggleLike(p.id ?? 0)} style={styles.likeBtn}>
+                <Text style={styles.likeText}>
+                  {t('mobile.public.community.likes', { count: p.likes ?? 0 })}
+                </Text>
+              </TouchableOpacity>
+            </View>
+          ))
+        )}
+      </ScrollView>
+    </View>
+  );
+}
+
+const styles = StyleSheet.create({
+  c: { flex: 1, backgroundColor: '#faf5ff' },
+  i: { padding: 16, paddingTop: 30, paddingBottom: 40 },
+  t: { fontSize: 24, fontWeight: '800', color: '#7c3aed', textAlign: 'center', marginBottom: 4 },
+  sub: { fontSize: 13, color: '#9ca3af', textAlign: 'center', marginBottom: 16 },
+  e: { fontSize: 14, color: '#9ca3af', textAlign: 'center', marginTop: 40 },
+  composer: { flexDirection: 'row', gap: 8, marginBottom: 20 },
+  input: {
+    flex: 1,
+    borderWidth: 1,
+    borderColor: '#d1d5db',
+    borderRadius: 12,
+    padding: 12,
+    fontSize: 14,
+    color: '#111827',
+    textAlign: 'right',
+    minHeight: 50,
+  },
+  postBtn: {
+    backgroundColor: '#7c3aed',
+    paddingHorizontal: 20,
+    borderRadius: 12,
+    justifyContent: 'center',
+  },
+  postBtnText: { color: '#fff', fontSize: 14, fontWeight: '700' },
+  card: { backgroundColor: '#fff', borderRadius: 16, padding: 16, marginBottom: 10 },
+  cardHeader: { flexDirection: 'row', alignItems: 'center', gap: 10, marginBottom: 10 },
+  avatar: { fontSize: 28 },
+  userName: { fontSize: 14, fontWeight: '600', color: '#111827' },
+  date: { fontSize: 11, color: '#9ca3af' },
+  postContent: {
+    fontSize: 14,
+    color: '#374151',
+    lineHeight: 22,
+    textAlign: 'right',
+    marginBottom: 10,
+  },
+  likeBtn: { paddingVertical: 4 },
+  likeText: { fontSize: 13, color: '#6b7280' },
+});

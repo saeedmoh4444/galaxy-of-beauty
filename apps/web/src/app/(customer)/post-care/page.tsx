@@ -1,0 +1,299 @@
+'use client';
+
+import { useState } from 'react';
+import { api } from '@/lib/trpc';
+import { Card, CardListSkeleton, GridSkeleton, ErrorAlert, EmptyState, Button } from '@galaxy/ui';
+import { DashboardLayout } from '@/components/layout/DashboardLayout';
+import { useLocale } from '@/components/LocaleProvider';
+import type { TranslationKey } from '@galaxy/shared';
+import Link from 'next/link';
+
+const TABS: { key: 'plan' | 'library'; label: TranslationKey }[] = [
+  { key: 'plan', label: 'postCare.tab.plan' },
+  { key: 'library', label: 'postCare.tab.library' },
+];
+
+interface CareTip {
+  id: string;
+  titleAr: string;
+  titleEn: string;
+  bodyAr: string;
+  bodyEn: string;
+  timeframe: string;
+  emoji: string;
+}
+
+interface CarePlan {
+  bookingId: number;
+  serviceNameAr: string;
+  serviceNameEn: string;
+  categoryAr: string;
+  categoryEn: string;
+  completedAt: string;
+  tips: CareTip[];
+}
+
+interface TimeframeMeta {
+  key: string;
+  labelAr: string;
+  labelEn: string;
+  color: string;
+}
+
+interface LibraryCategory {
+  key: string;
+  nameAr: string;
+  nameEn: string;
+  emoji: string;
+  tipsCount: number;
+}
+
+const TIMEFRAME_ICONS: Record<string, string> = {
+  '24h': '',
+  '48h': '',
+  '1w': '',
+  ongoing: '',
+};
+
+export default function PostCarePage(): JSX.Element {
+  const { t, locale } = useLocale();
+  const [activeTab, setActiveTab] = useState<'plan' | 'library'>('plan');
+
+  // My Plan
+  const {
+    data: planData,
+    isLoading: planLoading,
+    isError: planError,
+    refetch: refetchPlan,
+  } = api.postCare.myPlan.useQuery() as {
+    data: { plans: CarePlan[]; timeframes: TimeframeMeta[] } | undefined;
+    isLoading: boolean;
+    isError: boolean;
+    refetch: () => void;
+  };
+
+  // Care Library
+  const {
+    data: libData,
+    isLoading: libLoading,
+    isError: libError,
+    refetch: refetchLib,
+  } = api.postCare.library.useQuery() as {
+    data: { categories: LibraryCategory[]; timeframes: TimeframeMeta[] } | undefined;
+    isLoading: boolean;
+    isError: boolean;
+    refetch: () => void;
+  };
+  const [selectedLibCat, setSelectedLibCat] = useState<string | null>(null);
+  const { data: catData } = api.postCare.byCategory.useQuery(
+    { category: selectedLibCat ?? 'skincare' },
+    { enabled: !!selectedLibCat },
+  ) as { data: { tips: CareTip[] } | undefined };
+
+  const plans: CarePlan[] = planData?.plans ?? [];
+  const timeframes: TimeframeMeta[] = planData?.timeframes ?? [];
+  const categories: LibraryCategory[] = libData?.categories ?? [];
+  const libTips: CareTip[] = catData?.tips ?? [];
+
+  return (
+    <DashboardLayout userRole="CUSTOMER">
+      <div className="mx-auto max-w-4xl space-y-6">
+        {/* Header */}
+        <div className="text-center sm:text-end">
+          <h1 className="text-2xl font-bold text-text-primary dark:text-gray-100">
+            {t('postCare.title')}
+          </h1>
+          <p className="mt-1 text-sm text-text-secondary dark:text-text-tertiary">
+            {t('postCare.subtitle')}
+          </p>
+        </div>
+
+        {/* Tabs */}
+        <div className="flex gap-2 rounded-xl bg-surface-muted p-1 dark:bg-gray-800">
+          {TABS.map((tab) => (
+            <button
+              key={tab.key}
+              onClick={() => setActiveTab(tab.key)}
+              className={`flex-1 rounded-lg py-2.5 text-sm font-semibold transition-all ${
+                activeTab === tab.key
+                  ? 'bg-white text-brand-700 shadow dark:bg-gray-700 dark:text-brand-300'
+                  : 'text-text-secondary hover:text-text-primary dark:hover:text-gray-300'
+              }`}
+            >
+              {t(tab.label)}
+            </button>
+          ))}
+        </div>
+
+        {/* My Plan Tab */}
+        {activeTab === 'plan' && (
+          <>
+            {planLoading ? (
+              <CardListSkeleton count={2} />
+            ) : planError ? (
+              <ErrorAlert message={t('postCare.err.plan')} onRetry={() => refetchPlan()} />
+            ) : plans.length === 0 ? (
+              <EmptyState
+                title={t('postCare.empty.title')}
+                description={t('postCare.empty.desc')}
+                action={{
+                  label: t('postCare.empty.action'),
+                  onPress: () => window.location.assign('/bookings/create'),
+                }}
+              />
+            ) : (
+              <div className="space-y-6">
+                {plans.map((plan) => (
+                  <div key={plan.bookingId} className="space-y-3">
+                    {/* Plan Header */}
+                    <div className="flex items-center gap-3">
+                      <div className="flex h-10 w-10 items-center justify-center rounded-full bg-gradient-to-br from-brand-400 to-brand-500 text-white text-lg">
+                        💆
+                      </div>
+                      <div>
+                        <h3 className="font-bold text-text-primary dark:text-gray-100">
+                          {locale === 'en' ? plan.serviceNameEn : plan.serviceNameAr}
+                        </h3>
+                        <p className="text-xs text-text-secondary">
+                          {plan.completedAt
+                            ? new Date(plan.completedAt).toLocaleDateString(
+                                locale === 'en' ? 'en-GB' : 'ar-SA',
+                                { month: 'long', day: 'numeric' },
+                              )
+                            : ''}{' '}
+                          · {locale === 'en' ? plan.categoryEn : plan.categoryAr}
+                        </p>
+                      </div>
+                    </div>
+
+                    {/* Tips grouped by timeframe */}
+                    {timeframes.map((tf) => {
+                      const tfTips = plan.tips.filter((t) => t.timeframe === tf.key);
+                      if (tfTips.length === 0) return null;
+                      return (
+                        <div key={tf.key} className="rounded-xl border border-edge overflow-hidden">
+                          <div
+                            className={`bg-gradient-to-r ${tf.color} px-4 py-2 text-white text-sm font-bold`}
+                          >
+                            {TIMEFRAME_ICONS[tf.key] ?? ''}{' '}
+                            {locale === 'en' ? tf.labelEn : tf.labelAr}
+                          </div>
+                          <div className="divide-y divide-edge-muted">
+                            {tfTips.map((tip) => (
+                              <div key={tip.id} className="flex gap-3 p-4">
+                                <span className="text-2xl shrink-0">{tip.emoji}</span>
+                                <div>
+                                  <h4 className="text-sm font-bold text-text-primary dark:text-gray-100">
+                                    {locale === 'en' ? tip.titleEn : tip.titleAr}
+                                  </h4>
+                                  <p className="mt-1 text-sm text-text-secondary dark:text-text-tertiary leading-relaxed">
+                                    {locale === 'en' ? tip.bodyEn : tip.bodyAr}
+                                  </p>
+                                </div>
+                              </div>
+                            ))}
+                          </div>
+                        </div>
+                      );
+                    })}
+                  </div>
+                ))}
+              </div>
+            )}
+          </>
+        )}
+
+        {/* Library Tab */}
+        {activeTab === 'library' && (
+          <>
+            {libLoading ? (
+              <GridSkeleton count={6} />
+            ) : libError ? (
+              <ErrorAlert message={t('postCare.err.library')} onRetry={() => refetchLib()} />
+            ) : (
+              <>
+                {!selectedLibCat ? (
+                  <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+                    {categories.map((cat) => (
+                      <button key={cat.key} onClick={() => setSelectedLibCat(cat.key)}>
+                        <Card
+                          padding="lg"
+                          className="text-center transition-all hover:shadow-lg hover:-translate-y-0.5 cursor-pointer"
+                        >
+                          <span className="text-4xl">{cat.emoji}</span>
+                          <h3 className="mt-2 text-lg font-bold text-text-primary dark:text-gray-100">
+                            {locale === 'en' ? cat.nameEn : cat.nameAr}
+                          </h3>
+                          <p className="text-xs text-text-secondary">
+                            {t('postCare.tipsCount', { count: cat.tipsCount })}
+                          </p>
+                        </Card>
+                      </button>
+                    ))}
+                  </div>
+                ) : (
+                  <div className="space-y-3">
+                    <button
+                      onClick={() => setSelectedLibCat(null)}
+                      className="text-sm text-brand-600 hover:text-brand-700 font-medium mb-4 inline-block"
+                    >
+                      {t('postCare.backToLibrary')}
+                    </button>
+                    {libTips.map((tip) => (
+                      <Card key={tip.id} padding="md" className="flex gap-4">
+                        <span className="text-3xl shrink-0">{tip.emoji}</span>
+                        <div>
+                          <div className="flex items-center gap-2 mb-1">
+                            <h4 className="font-bold text-text-primary dark:text-gray-100">
+                              {locale === 'en' ? tip.titleEn : tip.titleAr}
+                            </h4>
+                            <span
+                              className={`rounded-full px-2 py-0.5 text-[10px] font-medium ${
+                                tip.timeframe === '24h'
+                                  ? 'bg-red-100 text-red-700'
+                                  : tip.timeframe === '48h'
+                                    ? 'bg-amber-100 text-amber-700'
+                                    : tip.timeframe === '1w'
+                                      ? 'bg-green-100 text-green-700'
+                                      : 'bg-blue-100 text-blue-700'
+                              }`}
+                            >
+                              {locale === 'en'
+                                ? (timeframes.find((t) => t.key === tip.timeframe)?.labelEn ??
+                                  tip.timeframe)
+                                : (timeframes.find((t) => t.key === tip.timeframe)?.labelAr ??
+                                  tip.timeframe)}
+                            </span>
+                          </div>
+                          <p className="text-sm text-text-secondary dark:text-text-tertiary leading-relaxed">
+                            {locale === 'en' ? tip.bodyEn : tip.bodyAr}
+                          </p>
+                        </div>
+                      </Card>
+                    ))}
+                  </div>
+                )}
+              </>
+            )}
+          </>
+        )}
+
+        {/* Bottom tip */}
+        <Card
+          padding="lg"
+          className="bg-gradient-to-r from-brand-50 to-brand-50 dark:from-brand-950 dark:to-brand-950 border-none text-center"
+        >
+          <p className="text-lg font-bold text-text-primary dark:text-gray-100">
+            {t('postCare.rememberTitle')}
+          </p>
+          <p className="mt-1 text-sm text-text-secondary dark:text-text-tertiary">
+            {t('postCare.rememberBody')}
+          </p>
+          <Link href="/bookings/create" className="mt-3 inline-block">
+            <Button size="sm">{t('postCare.bookNext')}</Button>
+          </Link>
+        </Card>
+      </div>
+    </DashboardLayout>
+  );
+}

@@ -1,28 +1,247 @@
 import { z } from 'zod';
 import { TRPCError } from '@trpc/server';
-import {
-  router,
-  publicProcedure,
-  protectedProcedure,
-  technicianProcedure,
-} from '../trpc';
+import { router, publicProcedure, protectedProcedure, technicianProcedure } from '../trpc';
 import { prisma } from '@galaxy/db';
+import {
+  OPENAI_API_URL,
+  OPENAI_MODEL,
+  OPENAI_DEFAULT_MAX_TOKENS,
+  OPENAI_DEFAULT_TEMPERATURE,
+  DEFAULT_PAGE_SIZE,
+  LARGE_PAGE_SIZE,
+  MAX_LIST_SIZE,
+} from '@galaxy/shared';
+
+// ── OpenAI API helper ─────────────────────────────────────
+const BEAUTY_GALAXY_SYSTEM_PROMPT = `أنتِ "مجرة الجمال"، مستشارة تجميل ذكية لمنصة "دلال" السعودية. تقدمين نصائح عن:
+
+- العناية بالبشرة والشعر والأظافر
+- خدمات التجميل المتوفرة (شعر، مساج، مكياج، عناية بالبشرة، حناء، أظافر)
+- اختيار الخدمات المناسبة حسب نوع البشرة، المناسبة، والميزانية
+- الإجابة باللغة العربية الفصحى المبسطة أو اللهجة السعودية اللطيفة
+- أنتِ خبيرة تجميل أنثى، ودودة، محترفة، وتفهمين احتياجات المرأة السعودية
+- لا تجيبين على أسئلة خارج نطاق التجميل والعناية الشخصية. اعتذري بلطف.
+
+معلومات عن المنصة:
+- دلال تربط العميلات بفنيات تجميل محترفات في السعودية
+- الخدمات: تصفيف شعر، عناية بالبشرة، مكياج، مساج، حناء، أظافر
+- الأسعار تبدأ من 50 ريال وتصل إلى 500+ ريال حسب الخدمة
+- الحجز يتم عبر التطبيق أو الموقع`;
+
+async function callOpenAI(
+  messages: Array<{ role: string; content: string }>,
+  maxTokens = OPENAI_DEFAULT_MAX_TOKENS,
+): Promise<string | null> {
+  const key = process.env['OPENAI_API_KEY'];
+  if (!key) return null;
+
+  try {
+    const response = await fetch(OPENAI_API_URL, {
+      method: 'POST',
+      headers: { Authorization: `Bearer ${key}`, 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        model: OPENAI_MODEL,
+        messages: [{ role: 'system', content: BEAUTY_GALAXY_SYSTEM_PROMPT }, ...messages],
+        max_tokens: maxTokens,
+        temperature: OPENAI_DEFAULT_TEMPERATURE,
+      }),
+    });
+
+    if (!response.ok) return null;
+
+    const data = (await response.json()) as Record<string, unknown>;
+    const content = (data['choices'] as Array<Record<string, unknown>>)?.[0]?.['message'] as
+      Record<string, unknown> | undefined;
+    return (content?.['content'] as string) || null;
+  } catch {
+    return null;
+  }
+}
+
+async function checkAiQuota(
+  userId: number,
+  feature: string,
+): Promise<{ allowed: boolean; subscription?: Record<string, unknown> }> {
+  const sub = await prisma.customerAiSubscription.findUnique({
+    where: { userId },
+    include: { plan: true, usage: true },
+  });
+
+  if (!sub || sub.status !== 'ACTIVE') {
+    return { allowed: false };
+  }
+
+  // Plans cover a single feature (AiFeature) — a subscription can only
+  // spend quota on the feature it was bought for.
+  if (sub.plan.feature !== feature) {
+    return {
+      allowed: false,
+      subscription: { planName: sub.plan.nameJson, feature: sub.plan.feature },
+    };
+  }
+
+  const now = new Date();
+  const startOfMonth = new Date(now.getFullYear(), now.getMonth(), 1);
+  // Count only the matching feature's usage — the previous sum across
+  // all features diluted the quota.
+  const monthlyRequests = sub.usage
+    .filter((u) => u.createdAt >= startOfMonth && u.feature === feature)
+    .reduce((sum, u) => sum + u.requestCount, 0);
+
+  // monthlyLimit <= 0 means unlimited (the old `0 >= 0` comparison made
+  // zero-limit plans permanently exhausted).
+  if (sub.plan.monthlyLimit > 0 && monthlyRequests >= sub.plan.monthlyLimit) {
+    return {
+      allowed: false,
+      subscription: {
+        planName: sub.plan.nameJson,
+        limit: sub.plan.monthlyLimit,
+        used: monthlyRequests,
+      },
+    };
+  }
+
+  return { allowed: true, subscription: { id: sub.id, planId: sub.planId } };
+}
+
+async function trackAiUsage(
+  subscriptionId: number,
+  feature: 'CHATBOT' | 'RECOMMENDATIONS' | 'ONBOARDING_QUIZ',
+  tokens: number,
+): Promise<void> {
+  try {
+    await prisma.aiUsage.create({
+      data: { subscriptionId, feature, tokensUsed: tokens, requestCount: 1 },
+    });
+  } catch {
+    /* non-critical */
+  }
+}
+
+// ── Helper: create a unique conversation slug ─────────────
+function convSlug(): string {
+  return `layla_${Date.now().toString(36)}_${Math.random().toString(36).slice(2, 8)}`;
+}
 
 export const aiRouter = router({
   chat: protectedProcedure
     .input(
       z.object({
-        message: z.string(),
+        message: z.string().min(1).max(2000),
         conversationId: z.string().optional(),
       }),
     )
-    .mutation(async ({ input }) => {
-      // TODO: Integrate with OpenAI / Claude API for Layla chatbot
-      return {
-        reply:
-          'مرحباً! أنا ليلى، مستشارة الجمال الخاصة بك. كيف يمكنني مساعدتك اليوم؟',
-        conversationId: input.conversationId ?? crypto.randomUUID(),
-      };
+    .mutation(async ({ ctx, input }) => {
+      const userId = ctx.user.id;
+
+      // Check AI subscription quota for this feature
+      const quota = await checkAiQuota(userId, 'CHATBOT');
+      if (!quota.allowed) {
+        const used = (quota.subscription?.['used'] as number) || 0;
+        const limit = (quota.subscription?.['limit'] as number) || 0;
+        const featureMismatch = quota.subscription?.['feature'];
+        throw new TRPCError({
+          code: 'PRECONDITION_FAILED',
+          message: quota.subscription
+            ? featureMismatch
+              ? 'باقتك لا تشمل هذه الميزة. راجعي خطط الاشتراك المتاحة واختاري الباقة المناسبة.'
+              : `لقد استنفدت الحد الشهري (${used}/${limit}). انتظري التجديد الشهري أو قومي بالترقية.`
+            : 'يلزمك اشتراك في باقة الذكاء الاصطناعي لاستخدام مجرة الجمال.',
+        });
+      }
+
+      const convId = input.conversationId || convSlug();
+
+      // Fetch recent conversation context (last 10 messages)
+      const history = await prisma.chatMessage.findMany({
+        where: {
+          senderId: userId,
+          isAi: false,
+          metadata: { path: ['convId'], equals: convId },
+        } as never,
+        orderBy: { createdAt: 'desc' },
+        take: DEFAULT_PAGE_SIZE,
+      });
+
+      // Get AI replies for context
+      const aiReplies = await prisma.chatMessage.findMany({
+        where: {
+          receiverId: userId,
+          isAi: true,
+          metadata: { path: ['convId'], equals: convId },
+        } as never,
+        orderBy: { createdAt: 'desc' },
+        take: DEFAULT_PAGE_SIZE,
+      });
+
+      // Interleave user + AI messages chronologically
+      const allContext: Array<{ role: string; content: string }> = [];
+      const allUser = history.reverse();
+      const allAi = aiReplies.reverse();
+      const maxLen = Math.max(allUser.length, allAi.length);
+      for (let i = 0; i < maxLen; i++) {
+        const u = allUser[i];
+        const a = allAi[i];
+        if (u) allContext.push({ role: 'user', content: u.content });
+        if (a) allContext.push({ role: 'assistant', content: a.content });
+      }
+
+      // Add current message
+      allContext.push({ role: 'user', content: input.message });
+
+      // Call OpenAI
+      const aiReply = await callOpenAI(allContext, 600);
+
+      if (!aiReply) {
+        // Fallback reply when API is unavailable
+        const fallback =
+          'عذراً، أواجه مشكلة تقنية حالياً. يرجى المحاولة لاحقاً أو التواصل مع خدمة العملاء للمساعدة الفورية. ';
+        await prisma.chatMessage.create({
+          data: {
+            senderId: userId,
+            content: input.message,
+            isAi: false,
+            metadata: { convId },
+          },
+        });
+        await prisma.chatMessage.create({
+          data: {
+            senderId: userId,
+            receiverId: userId,
+            content: fallback,
+            isAi: true,
+            metadata: { convId },
+          },
+        });
+        return { reply: fallback, conversationId: convId, fallback: true };
+      }
+
+      // Store user message + AI response
+      await prisma.chatMessage.create({
+        data: {
+          senderId: userId,
+          content: input.message,
+          isAi: false,
+          metadata: { convId },
+        },
+      });
+      await prisma.chatMessage.create({
+        data: {
+          senderId: userId,
+          receiverId: userId,
+          content: aiReply,
+          isAi: true,
+          metadata: { convId },
+        },
+      });
+
+      // Track usage
+      const estimatedTokens = Math.ceil((input.message.length + aiReply.length) / 3);
+      if (quota.subscription?.['id']) {
+        await trackAiUsage(quota.subscription['id'] as number, 'CHATBOT', estimatedTokens);
+      }
+
+      return { reply: aiReply, conversationId: convId };
     }),
 
   getRecommendations: protectedProcedure
@@ -32,27 +251,107 @@ export const aiRouter = router({
         .optional()
         .default({}),
     )
-    .query(async ({ input }) => {
-      // TODO: Implement ML-based recommendation engine
-      // For now, return random active services
-      const count = await prisma.service.count({ where: { isActive: true } });
-      if (count === 0) return { recommendations: [] };
+    .query(async ({ ctx, input }) => {
+      const userId = ctx.user.id;
+      const limit = input.limit;
+      // No AI quota gate/tracking here: this procedure is pure scoring
+      // over local data (no external AI call), so it must not consume
+      // the subscriber's CHATBOT quota.
 
-      // Get some random services
-      const take = Math.min(input.limit, count);
-      const skip = Math.max(0, Math.floor(Math.random() * (count - take)));
-
-      const services = await prisma.service.findMany({
-        where: { isActive: true },
-        skip,
-        take,
-        include: {
-          category: { select: { id: true, nameJson: true, slug: true } },
-        },
+      // 1. Get user's booking history for category preferences
+      const recentBookings = await prisma.booking.findMany({
+        where: { customerId: userId, status: { in: ['COMPLETED', 'PAID'] } },
+        include: { service: { select: { id: true, categoryId: true } } },
+        orderBy: { createdAt: 'desc' },
+        take: LARGE_PAGE_SIZE,
       });
 
+      const bookedServiceIds = new Set(recentBookings.map((b) => b.serviceId));
+      const categoryFreq: Record<number, number> = {};
+      for (const b of recentBookings) {
+        categoryFreq[b.service.categoryId] = (categoryFreq[b.service.categoryId] || 0) + 1;
+      }
+      const preferredCatIds = Object.entries(categoryFreq)
+        .sort(([, a], [, b]) => b - a)
+        .slice(0, 5)
+        .map(([id]) => Number(id));
+
+      // 2. Get wishlist for signals
+      const wishlist = await prisma.wishlistItem.findMany({
+        where: { userId },
+        include: {
+          service: { select: { id: true, categoryId: true, titleJson: true, basePrice: true } },
+        },
+        take: DEFAULT_PAGE_SIZE,
+      });
+      const wishedServiceIds = new Set(wishlist.filter((w) => w.service).map((w) => w.service!.id));
+      const wishedCatIds = [
+        ...new Set(wishlist.filter((w) => w.service).map((w) => w.service!.categoryId)),
+      ];
+
+      // 3. Get skin analysis profile
+      const lastAnalysis = await prisma.skinAnalysis.findFirst({
+        where: { userId },
+        orderBy: { createdAt: 'desc' },
+      });
+
+      // 4. Build scoring function
+      const services = await prisma.service.findMany({
+        where: { isActive: true },
+        include: { category: { select: { id: true, nameJson: true, slug: true } } },
+        take: 200,
+      });
+
+      const scored = services.map((s) => {
+        let score = 0;
+
+        // Prefer categories the user has booked before
+        if (preferredCatIds.includes(s.categoryId)) score += 30;
+
+        // Boost wishlist categories
+        if (wishedCatIds.includes(s.categoryId)) score += 20;
+
+        // Penalize already-booked services
+        if (bookedServiceIds.has(s.id)) score -= 15;
+
+        // Boost wishlisted services
+        if (wishedServiceIds.has(s.id)) score += 25;
+
+        // Skin-type-aware boosting
+        if (lastAnalysis?.skinType && s.titleJson) {
+          const titleAr = (s.titleJson as Record<string, string>)?.ar || '';
+          const titleEn = (s.titleJson as Record<string, string>)?.en || '';
+          const skinType = lastAnalysis.skinType?.toLowerCase() || '';
+
+          if (
+            skinType === 'dry' &&
+            (titleAr.includes('ترطيب') || titleEn.toLowerCase().includes('moistur'))
+          )
+            score += 15;
+          if (
+            skinType === 'oily' &&
+            (titleAr.includes('تنظيف') || titleEn.toLowerCase().includes('deep clean'))
+          )
+            score += 15;
+          if (
+            skinType === 'sensitive' &&
+            (titleAr.includes('لطيف') || titleEn.toLowerCase().includes('gentle'))
+          )
+            score += 15;
+        }
+
+        // Small randomness for diversity
+        score += Math.random() * 10;
+
+        return { service: s, score };
+      });
+
+      // Sort by score desc and take top N
+      scored.sort((a, b) => b.score - a.score);
+      const top = scored.slice(0, Math.min(limit, scored.length));
+
       return {
-        recommendations: services.map((s) => ({
+        recommendations: top.map(({ service: s, score }) => ({
           id: s.id,
           titleJson: s.titleJson,
           descriptionJson: s.descriptionJson,
@@ -60,7 +359,15 @@ export const aiRouter = router({
           durationMin: s.durationMin,
           imageUrl: s.imageUrl,
           category: s.category,
+          relevanceScore: Math.round(score),
         })),
+        context: {
+          preferredCategories: preferredCatIds.length,
+          wishlistItems: wishedServiceIds.size,
+          skinProfile: lastAnalysis
+            ? { skinType: lastAnalysis.skinType, concerns: lastAnalysis.concerns }
+            : null,
+        },
       };
     }),
 
@@ -214,7 +521,7 @@ export const aiRouter = router({
         plan: true,
         usage: {
           orderBy: { createdAt: 'desc' },
-          take: 100,
+          take: MAX_LIST_SIZE,
         },
       },
     });
@@ -229,13 +536,8 @@ export const aiRouter = router({
     // Calculate current month usage
     const now = new Date();
     const startOfMonth = new Date(now.getFullYear(), now.getMonth(), 1);
-    const monthlyUsage = subscription.usage.filter(
-      (u) => u.createdAt >= startOfMonth,
-    );
-    const totalRequests = monthlyUsage.reduce(
-      (sum, u) => sum + u.requestCount,
-      0,
-    );
+    const monthlyUsage = subscription.usage.filter((u) => u.createdAt >= startOfMonth);
+    const totalRequests = monthlyUsage.reduce((sum, u) => sum + u.requestCount, 0);
 
     return {
       id: subscription.id,
@@ -253,9 +555,10 @@ export const aiRouter = router({
       usage: {
         currentMonth: totalRequests,
         limit: subscription.plan.monthlyLimit,
-        percentage: subscription.plan.monthlyLimit > 0
-          ? Math.round((totalRequests / subscription.plan.monthlyLimit) * 100)
-          : 0,
+        percentage:
+          subscription.plan.monthlyLimit > 0
+            ? Math.round((totalRequests / subscription.plan.monthlyLimit) * 100)
+            : 0,
       },
       recentActivity: monthlyUsage.slice(0, 10).map((u) => ({
         feature: u.feature,

@@ -1,0 +1,128 @@
+import { View, Text, ScrollView, StyleSheet, TouchableOpacity, RefreshControl } from 'react-native';
+import { useState } from 'react';
+import { SkeletonList } from '@/components/SkeletonCard';
+import { trpc } from '@/lib/trpc-react';
+import { useLocale } from '@/components/LocaleProvider';
+import { useAuthState } from '@/hooks/useAuthState';
+
+const PAYMENT_METHODS = [
+  { key: 'wallet', emoji: '👛', label: 'المحفظة' },
+  { key: 'card', emoji: '💳', label: 'بطاقة' },
+  { key: 'apple_pay', emoji: '🍎', label: 'Apple Pay' },
+  { key: 'bnpl', emoji: '🧾', label: 'تقسيط' },
+];
+
+export default function CheckoutScreen(): JSX.Element {
+  const isAuthed = useAuthState();
+  const { t } = useLocale();
+  const [method, setMethod] = useState('wallet');
+  const methodLabels: Record<string, string> = {
+    wallet: t('checkout.method-wallet'),
+    card: t('checkout.method-card'),
+    apple_pay: 'Apple Pay',
+    bnpl: t('checkout.method-bnpl'),
+  };
+
+  const balanceQ = trpc.wallet.getBalance.useQuery(undefined, { enabled: isAuthed });
+
+  if (balanceQ.isLoading) return <SkeletonList count={4} />;
+
+  return (
+    <ScrollView
+      style={styles.c}
+      contentContainerStyle={styles.i}
+      refreshControl={
+        <RefreshControl
+          refreshing={balanceQ.isRefetching}
+          onRefresh={() => balanceQ.refetch()}
+          colors={['#059669']}
+        />
+      }
+    >
+      <Text style={styles.t}>{t('checkout.title')}</Text>
+
+      <View style={styles.bc}>
+        <Text style={styles.bl}>{t('checkout.wallet-balance')}</Text>
+        <Text style={styles.ba}>
+          {t('checkout.amount-sar', { value: (balanceQ.data?.balance ?? 0).toLocaleString() })}
+        </Text>
+      </View>
+
+      <Text style={styles.st}>{t('checkout.payment-method')}</Text>
+      <View style={styles.pms}>
+        {PAYMENT_METHODS.map((p) => (
+          <TouchableOpacity
+            key={p.key}
+            onPress={() => setMethod(p.key)}
+            style={[styles.pm, method === p.key && styles.pma]}
+          >
+            <Text style={styles.pe}>{p.emoji}</Text>
+            <Text style={[styles.pl, method === p.key && styles.pla]}>
+              {methodLabels[p.key] ?? p.label}
+            </Text>
+          </TouchableOpacity>
+        ))}
+      </View>
+
+      <View style={styles.summary}>
+        <Text style={styles.st}>{t('checkout.summary')}</Text>
+        <View style={styles.sr}>
+          <Text style={styles.sl}>{t('checkout.amount-label')}</Text>
+          <Text style={styles.sv}>{t('checkout.amount-sar', { value: '200' })}</Text>
+        </View>
+        <View style={styles.sr}>
+          <Text style={styles.sl}>{t('checkout.tax')}</Text>
+          <Text style={styles.sv}>{t('checkout.amount-sar', { value: '30' })}</Text>
+        </View>
+        <View style={styles.sd} />
+        <View style={styles.sr}>
+          <Text style={[styles.sl, { fontWeight: '700' }]}>{t('checkout.total')}</Text>
+          <Text style={[styles.sv, { fontWeight: '800', fontSize: 20 }]}>
+            {t('checkout.amount-sar', { value: '230' })}
+          </Text>
+        </View>
+      </View>
+
+      <TouchableOpacity style={styles.btn}>
+        <Text style={styles.bt}>{t('checkout.pay-now', { amount: '230' })}</Text>
+      </TouchableOpacity>
+    </ScrollView>
+  );
+}
+
+const styles = StyleSheet.create({
+  c: { flex: 1, backgroundColor: '#ecfdf5' },
+  i: { padding: 16, paddingTop: 30, paddingBottom: 40 },
+  t: { fontSize: 24, fontWeight: '800', color: '#059669', textAlign: 'center', marginBottom: 20 },
+  bc: {
+    backgroundColor: '#059669',
+    borderRadius: 16,
+    padding: 20,
+    alignItems: 'center',
+    marginBottom: 20,
+  },
+  bl: { fontSize: 13, color: '#a7f3d0' },
+  ba: { fontSize: 28, fontWeight: '800', color: '#fff', marginTop: 4 },
+  st: { fontSize: 16, fontWeight: '700', color: '#111827', marginBottom: 10, marginTop: 8 },
+  pms: { flexDirection: 'row', gap: 8, marginBottom: 20 },
+  pm: {
+    flex: 1,
+    backgroundColor: '#fff',
+    borderRadius: 14,
+    padding: 12,
+    alignItems: 'center',
+    borderWidth: 2,
+    borderColor: '#e5e7eb',
+  },
+  pma: { borderColor: '#059669', backgroundColor: '#ecfdf5' },
+  pe: { fontSize: 24 },
+  pl: { fontSize: 11, fontWeight: '600', color: '#6b7280', marginTop: 4 },
+  pla: { color: '#059669' },
+  summary: { backgroundColor: '#fff', borderRadius: 16, padding: 16, marginBottom: 20 },
+  sr: { flexDirection: 'row', justifyContent: 'space-between', paddingVertical: 6 },
+  sl: { fontSize: 14, color: '#374151' },
+  sv: { fontSize: 14, fontWeight: '600', color: '#111827' },
+  sd: { height: 1, backgroundColor: '#e5e7eb', marginVertical: 8 },
+  btn: { backgroundColor: '#059669', borderRadius: 14, padding: 16, alignItems: 'center' },
+  bt: { color: '#fff', fontSize: 16, fontWeight: '700' },
+});

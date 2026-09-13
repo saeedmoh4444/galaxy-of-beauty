@@ -1,0 +1,36 @@
+// ── Wellness Domain ──
+// Self-care, wellness tracking, beauty budget, skin diary, cycle tracking, spa, routines
+export { selfCareRouter } from '../../routers/selfCare';
+export { wellnessTrackerRouter } from '../../routers/wellnessTracker';
+export { wellnessHubRouter } from '../../routers/wellnessHub';
+export { wellnessContentRouter } from '../../routers/wellnessContent';
+export { lifeStageRouter } from '../../routers/lifeStage';
+export { postpartumRouter } from '../../routers/postpartum';
+export { menopauseRouter } from '../../routers/menopause';
+export { beautyBudgetRouter } from '../../routers/beautyBudget';
+export { beautyBudgetPlannerRouter } from '../../routers/beautyBudgetPlanner';
+export { beautyDashboardRouter } from '../../routers/beautyDashboard';
+export { beautyDiscoveryRouter } from '../../routers/beautyDiscovery';
+export { beautyExpensesRouter } from '../../routers/beautyExpenses';
+export { beautyJournalRouter } from '../../routers/beautyJournal';
+export { beautyProfileRouter } from '../../routers/beautyProfile';
+export { beautyRemindersRouter } from '../../routers/beautyReminders';
+export { beautyClosetRouter } from '../../routers/beautyCloset';
+export { skinDiaryRouter } from '../../routers/skinDiary';
+export { cycleTrackerRouter } from '../../routers/cycleTracker';
+export { spaPlannerRouter } from '../../routers/spaPlanner';
+export { routineSchedulerRouter } from '../../routers/routineScheduler';
+export { expiryTrackerRouter } from '../../routers/expiryTracker';
+export { restockReminderRouter } from '../../routers/restockReminder';
+export { allergenCheckerRouter } from '../../routers/allergenChecker';
+export { savingsGoalRouter } from '../../routers/savingsGoals';
+export { nightModeRouter } from '../../routers/nightMode';
+export { beautyHabitsRouter } from '../../routers/beautyHabits';
+export { sleepTrackerRouter } from '../../routers/sleepTracker';
+export { skillTreeRouter } from '../../routers/skillTree';
+export { careerBeautyRouter } from '../../routers/careerBeauty';
+export { savingsMilestonesRouter } from '../../routers/savingsMilestones';
+export { beautyAchievementsRouter } from '../../routers/beautyAchievements';
+export { beautyInsightsRouter } from '../../routers/beautyInsights';
+export { beautyOnboardingRouter } from '../../routers/beautyOnboarding';
+export { customerPreferencesRouter } from '../../routers/customerPreferences';

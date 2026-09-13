@@ -1,57 +1,201 @@
-import { View, Text, ScrollView, TouchableOpacity, StyleSheet, ActivityIndicator } from 'react-native';
+import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import { useRouter } from 'expo-router';
-import { trpc } from '@/lib/api';
-import { useState, useEffect } from 'react';
+import { localize } from '@galaxy/shared';
+import { ScreenState } from '@/components/ScreenState';
+import { trpc } from '@/lib/trpc-react';
+import { useHaptics } from '@/hooks/useHaptics';
+import { useLocale } from '@/components/LocaleProvider';
+import { getAuthToken } from '@/lib/authToken';
+import { useTheme, themeColors } from '@/components/ThemeProvider';
 
-export default function HomeScreen() {
+export default function HomeScreen(): JSX.Element {
   const router = useRouter();
-  const [cats, setCats] = useState<Record<string, unknown>[]>([]);
-  const [loading, setLoading] = useState(true);
+  const { trigger } = useHaptics();
+  const { t, locale } = useLocale();
+  const { isDark } = useTheme();
+  const c = isDark ? themeColors.dark : themeColors.light;
+  const styles = makeStyles(c);
+  const cats = trpc.categories.list.useQuery();
+  // Auth-gated: the public home tab must not fire the authenticated
+  // kindness query for guests (was surfacing "Authentication required").
+  const kindness = trpc.kindnessPoints.getStatus.useQuery(undefined, {
+    enabled: !!getAuthToken(),
+  });
+  const dailyTip = trpc.dailyBeautyTip.today.useQuery();
+  const compliments = trpc.sisterhoodCompliments.count.useQuery();
 
-  useEffect(() => {
-    (trpc.categories.list.query() as unknown as Promise<Record<string, unknown>[]>).then((d: Record<string, unknown>[]) => { setCats(d); setLoading(false); }).catch(() => setLoading(false));
-  }, []);
+  const data = cats.data as unknown[] | undefined;
 
   return (
-    <ScrollView style={styles.container}>
-      <View style={styles.hero}>
-        <Text style={styles.heroTitle}>جالكسي بيوتي</Text>
-        <Text style={styles.heroSub}>منصة خدمات التجميل الأولى في السعودية</Text>
+    <ScreenState
+      isLoading={cats.isLoading}
+      isError={cats.isError}
+      isEmpty={!data || data.length === 0}
+      errorMessage={t('mobile.core.categoriesLoadError')}
+      emptyTitle={t('marketing.home.no-categories')}
+      onRetry={() => cats.refetch()}
+    >
+      <View style={styles.headerRow}>
+        <Text style={styles.title}>{t('common.brandName')}</Text>
+        <TouchableOpacity
+          testID="home-more-button"
+          style={styles.moreBtn}
+          onPress={() => {
+            trigger();
+            router.push('/public/more');
+          }}
+        >
+          <Text style={styles.moreBtnText}>{t('nav.more')}</Text>
+        </TouchableOpacity>
       </View>
 
-      <Text style={styles.sectionTitle}>الأقسام</Text>
-      {loading ? <ActivityIndicator color="#7c3aed" /> : (
-        <View style={styles.grid}>
-          {cats.slice(0, 6).map((c: Record<string, unknown>, i: number) => (
-            <TouchableOpacity key={i} style={styles.catCard} onPress={() => router.push('/(tabs)/services')}>
-              <View style={styles.catIcon}><Text style={styles.catEmoji}>✨</Text></View>
-              <Text style={styles.catName}>{((c.nameJson as Record<string, string>)?.ar ?? '').slice(0, 15)}</Text>
-            </TouchableOpacity>
-          ))}
-        </View>
-      )}
-
-      <View style={styles.quickActions}>
-        <TouchableOpacity style={styles.qaBtn} onPress={() => router.push('/(tabs)/services')}><Text style={styles.qaText}>تصفح الخدمات</Text></TouchableOpacity>
-        <TouchableOpacity style={[styles.qaBtn, styles.qaOutline]} onPress={() => router.push('/services/surprise-me')}><Text style={[styles.qaText, { color: '#7c3aed' }]}>فاجئيني</Text></TouchableOpacity>
+      {/* Community Stats Bar */}
+      <View style={styles.statsRow}>
+        {kindness?.data?.points !== undefined && (
+          <View style={styles.statBadge}>
+            <View style={styles.statIcon}>
+              <Text style={styles.statIconText}>K</Text>
+            </View>
+            <Text style={styles.statText}>
+              {t('mobile.core.kindnessPoints', { points: kindness.data.points })}
+            </Text>
+          </View>
+        )}
+        {compliments?.data !== undefined && (
+          <View style={styles.statBadge}>
+            <View style={styles.statIcon}>
+              <Text style={styles.statIconText}>M</Text>
+            </View>
+            <Text style={styles.statText}>
+              {t('mobile.core.complimentMessages', { count: compliments.data })}
+            </Text>
+          </View>
+        )}
+        {dailyTip?.data && (
+          <View style={styles.tipBar}>
+            <View style={styles.tipIcon}>
+              <Text style={styles.tipIconText}>!</Text>
+            </View>
+            <Text style={styles.tipText} numberOfLines={1}>
+              {dailyTip.data.tip ?? ''}
+            </Text>
+          </View>
+        )}
       </View>
-    </ScrollView>
+
+      <View style={styles.grid}>
+        {(data as Record<string, unknown>[])?.map((cat: Record<string, unknown>, i: number) => (
+          <TouchableOpacity
+            key={i}
+            style={styles.card}
+            activeOpacity={0.7}
+            onPress={() => {
+              trigger('light');
+              router.push('/public/services' as never);
+            }}
+          >
+            <View style={styles.cardIcon}>
+              <Text style={styles.cardIconText}>
+                {localize(cat.nameJson, locale).charAt(0) || 'B'}
+              </Text>
+            </View>
+            <Text style={styles.name}>
+              {localize(cat.nameJson, locale) || (cat.nameAr as string) || ''}
+            </Text>
+          </TouchableOpacity>
+        ))}
+      </View>
+    </ScreenState>
   );
 }
 
-const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: '#fff' },
-  hero: { backgroundColor: '#7c3aed', padding: 32, alignItems: 'center' },
-  heroTitle: { fontSize: 32, fontWeight: '800', color: '#fff' },
-  heroSub: { fontSize: 16, color: '#ede9fe', marginTop: 8 },
-  sectionTitle: { fontSize: 20, fontWeight: '700', margin: 16, marginBottom: 8 },
-  grid: { flexDirection: 'row', flexWrap: 'wrap', padding: 8 },
-  catCard: { width: '30%', margin: '1.5%', alignItems: 'center', padding: 12, backgroundColor: '#f9fafb', borderRadius: 12 },
-  catIcon: { width: 48, height: 48, borderRadius: 24, backgroundColor: '#f5f3ff', justifyContent: 'center', alignItems: 'center', marginBottom: 8 },
-  catEmoji: { fontSize: 20 },
-  catName: { fontSize: 12, fontWeight: '600', textAlign: 'center', color: '#374151' },
-  quickActions: { padding: 16, gap: 8 },
-  qaBtn: { backgroundColor: '#7c3aed', borderRadius: 12, padding: 14, alignItems: 'center' },
-  qaOutline: { backgroundColor: '#fff', borderWidth: 1, borderColor: '#7c3aed' },
-  qaText: { color: '#fff', fontSize: 16, fontWeight: '600' },
-});
+const makeStyles = (c: typeof themeColors.light | typeof themeColors.dark) =>
+  StyleSheet.create({
+    headerRow: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      justifyContent: 'space-between',
+      marginBottom: 20,
+    },
+    title: {
+      fontSize: 24,
+      fontWeight: '800',
+      color: c.brand,
+      textAlign: 'center',
+    },
+    moreBtn: {
+      borderColor: c.border,
+      borderWidth: 1,
+      borderRadius: 999,
+      paddingHorizontal: 12,
+      paddingVertical: 5,
+    },
+    moreBtnText: { fontSize: 12, fontWeight: '700', color: c.textSecondary },
+    grid: { flexDirection: 'row', flexWrap: 'wrap', gap: 10 },
+    card: {
+      width: '30%',
+      backgroundColor: c.surface,
+      borderRadius: 14,
+      padding: 14,
+      alignItems: 'center',
+      shadowColor: '#000',
+      shadowOpacity: 0.05,
+      shadowRadius: 4,
+      elevation: 2,
+    },
+    cardIcon: {
+      width: 50,
+      height: 50,
+      borderRadius: 25,
+      backgroundColor: c.border,
+      alignItems: 'center',
+      justifyContent: 'center',
+    },
+    cardIconText: { fontSize: 20, fontWeight: '700', color: c.brand },
+    name: {
+      fontSize: 11,
+      fontWeight: '600',
+      color: c.text,
+      marginTop: 6,
+      textAlign: 'center',
+    },
+    statsRow: { marginBottom: 16, gap: 8 },
+    statBadge: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      backgroundColor: c.surface,
+      borderRadius: 10,
+      padding: 8,
+      marginBottom: 4,
+    },
+    statIcon: {
+      width: 28,
+      height: 28,
+      borderRadius: 14,
+      backgroundColor: c.border,
+      alignItems: 'center',
+      justifyContent: 'center',
+      marginRight: 8,
+    },
+    statIconText: { fontSize: 12, fontWeight: '700', color: c.brand },
+    statText: { fontSize: 12, fontWeight: '600', color: c.text },
+    tipBar: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      backgroundColor: '#fef3c7',
+      borderRadius: 10,
+      padding: 10,
+      marginTop: 4,
+    },
+    tipIcon: {
+      width: 24,
+      height: 24,
+      borderRadius: 12,
+      backgroundColor: '#fde68a',
+      alignItems: 'center',
+      justifyContent: 'center',
+      marginRight: 8,
+    },
+    tipIconText: { fontSize: 12, fontWeight: '700', color: '#92400e' },
+    tipText: { fontSize: 11, color: '#92400e', flex: 1 },
+  });

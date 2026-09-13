@@ -1,41 +1,66 @@
-'use client';
+import { getServerCaller, serializeForClient } from '@/lib/server-trpc';
+import { ServiceDetailClient } from './ServiceDetailClient';
+import type { ServiceDetailData } from './ServiceDetailClient';
+import { getServerLocale } from '@/lib/i18n';
+import { t } from '@galaxy/shared';
 
-import { useParams } from 'next/navigation';
-import { api } from '@/lib/trpc';
-import { Button, Card, CardSkeleton, ErrorAlert, EmptyState, formatCurrency } from '@galaxy/shared';
+export default async function ServiceDetailPage({
+  params,
+}: {
+  params: Promise<{ id: string }>;
+}): Promise<JSX.Element> {
+  const { id } = await params;
+  const locale = await getServerLocale();
 
-export default function ServiceDetailPage(): JSX.Element {
-  const params = useParams();
-  const id = Number(params.id);
-  const query = api.services.getById.useQuery({ id });
-  const data = query.data as unknown as Record<string, unknown> | undefined;
+  const data: ServiceDetailData = {
+    id: Number(id),
+    titleJson: {},
+    descriptionJson: null,
+    basePrice: 0,
+    durationMin: 0,
+    imageUrl: null,
+    isWomenOnlyStaff: false,
+    isPrivateSuite: false,
+    isPregnancySafe: false,
+    isMommyFriendly: false,
+    category: {} as ServiceDetailData['category'],
+    variants: [],
+    technicianServices: [],
+    tags: [],
+    related: [],
+  };
 
-  if (query.isLoading) return <div className="mx-auto max-w-4xl px-4 py-8"><CardSkeleton /></div>;
-  if (query.isError || !data) return <div className="mx-auto max-w-4xl px-4 py-8"><ErrorAlert message="فشل تحميل الخدمة" onRetry={() => query.refetch()} /></div>;
+  if (isNaN(Number(id))) {
+    data.fetchError = t('marketing.services.invalid-id', locale);
+    return <ServiceDetailClient svc={data} />;
+  }
 
-  const svc = data;
-  const title = (svc.titleJson as Record<string, string>)?.ar ?? '';
-  const desc = (svc.descriptionJson as Record<string, string>)?.ar ?? '';
-  const variants = (svc.variants as Record<string, unknown>[]) ?? [];
-  const techs = (svc.technicianServices as Record<string, unknown>[]) ?? [];
+  try {
+    const caller = await getServerCaller();
+    const serviceId = Number(id);
+    const svc = (await caller.services.getById({ id: serviceId })) as Record<string, unknown>;
+    const relatedResult = await caller.services.getRelated({ serviceId, limit: 4 });
 
-  return (
-    <div className="mx-auto max-w-4xl px-4 py-8">
-      <div className="h-64 rounded-2xl bg-gradient-to-br from-brand-200 to-accent-200 dark:from-brand-900 dark:to-accent-900" />
-      <h1 className="mt-6 text-3xl font-bold">{title}</h1>
-      {desc && <p className="mt-2 text-gray-600 dark:text-gray-400">{desc}</p>}
-      <div className="mt-4 flex gap-6">
-        <div><span className="text-sm text-gray-500">السعر</span><p className="text-2xl font-bold text-brand-600">{formatCurrency(Number(svc.basePrice))}</p></div>
-        <div><span className="text-sm text-gray-500">المدة</span><p className="text-2xl font-bold">{svc.durationMin as number} دقيقة</p></div>
-      </div>
+    data.id = serviceId;
+    data.titleJson = (svc.titleJson ?? {}) as ServiceDetailData['titleJson'];
+    data.descriptionJson = svc.descriptionJson as ServiceDetailData['descriptionJson'];
+    data.basePrice = Number(svc.basePrice ?? 0);
+    data.durationMin = Number(svc.durationMin ?? 0);
+    data.imageUrl = (svc.imageUrl as string | null) ?? null;
+    data.isWomenOnlyStaff = Boolean(svc.isWomenOnlyStaff);
+    data.isPrivateSuite = Boolean(svc.isPrivateSuite);
+    data.isPregnancySafe = Boolean(svc.isPregnancySafe);
+    data.isMommyFriendly = Boolean(svc.isMommyFriendly);
+    data.category = serializeForClient(svc.category as ServiceDetailData['category']);
+    data.variants = serializeForClient((svc.variants as ServiceDetailData['variants']) ?? []);
+    data.technicianServices = serializeForClient(
+      (svc.technicianServices as ServiceDetailData['technicianServices']) ?? [],
+    );
+    data.tags = serializeForClient((svc.tags as ServiceDetailData['tags']) ?? []);
+    data.related = serializeForClient((relatedResult as ServiceDetailData['related']) ?? []);
+  } catch (e) {
+    data.fetchError = (e as Error).message || t('marketing.services.load-error', locale);
+  }
 
-      {variants.length > 0 && <div className="mt-6"><h2 className="text-lg font-semibold">الخيارات</h2><div className="mt-2 flex flex-wrap gap-2">{variants.map((v: Record<string, unknown>) => <span key={v.id as number} className="rounded-full bg-gray-100 px-3 py-1 text-sm dark:bg-gray-800">{(v.nameJson as Record<string, string>)?.ar} {Number(v.priceDelta) > 0 ? `(+${formatCurrency(Number(v.priceDelta))})` : ''}</span>)}</div></div>}
-
-      {techs.length > 0 && <div className="mt-8"><h2 className="mb-4 text-lg font-semibold">الفنيات المتاحات</h2><div className="grid gap-4 md:grid-cols-2">{techs.map((ts: Record<string, unknown>) => {
-        const tech = (ts.technician as Record<string, unknown>) ?? {};
-        return <Card key={ts.id as number} padding="md"><div className="flex items-center justify-between"><div><p className="font-semibold">{(tech.user as Record<string, string>)?.name}</p><p className="text-sm text-gray-500">{tech.city as string} ⭐ {Number(tech.ratingAvg ?? 0).toFixed(1)}</p></div><Button size="sm" onClick={() => window.location.href = `/book?serviceId=${id}`}>احجز</Button></div></Card>;
-      })}</div></div>}
-      {techs.length === 0 && <div className="mt-8"><EmptyState title="لا توجد فنيات متاحة لهذه الخدمة حالياً" /></div>}
-    </div>
-  );
+  return <ServiceDetailClient svc={data} />;
 }

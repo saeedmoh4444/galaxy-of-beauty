@@ -1,64 +1,129 @@
 'use client';
 
 import { api } from '@/lib/trpc';
-import { Card, CardSkeleton, ErrorAlert, EmptyState, formatCurrency } from '@galaxy/shared';
+import type { RouterOutput } from '@galaxy/api/client';
+import {
+  Card,
+  KPIRowSkeleton,
+  CardListSkeleton,
+  ErrorAlert,
+  EmptyState,
+  formatCurrency,
+  useAuth,
+} from '@galaxy/ui';
+import { useLocale } from '@/components/LocaleProvider';
 
-function StatCard({ title, value, color }: { title: string; value: string; color: string }): JSX.Element {
+type RevenueDay = NonNullable<RouterOutput['analytics']['revenueChart']>['dailyRevenue'][number];
+type BookingStats = RouterOutput['analytics']['bookingStats'];
+type TopTechnician = RouterOutput['analytics']['topTechnicians'][number];
+type UserGrowthDay = NonNullable<RouterOutput['analytics']['userGrowth']>['dailyGrowth'][number];
+
+function StatCard({
+  title,
+  value,
+  color,
+}: {
+  title: string;
+  value: string;
+  color: string;
+}): JSX.Element {
   return (
     <Card className="text-center">
-      <p className="text-sm text-gray-500">{title}</p>
+      <p className="text-sm text-text-secondary">{title}</p>
       <p className={`text-2xl font-bold ${color}`}>{value}</p>
     </Card>
   );
 }
 
 export default function AdminAnalyticsPage(): JSX.Element {
-  const revenueQuery = api.analytics.revenueChart.useQuery({ days: 30 } as never);
-  const bookingStatsQuery = api.analytics.bookingStats.useQuery({} as never);
-  const topTechQuery = api.analytics.topTechnicians.useQuery({ limit: 10 } as never);
-  const userGrowthQuery = api.analytics.userGrowth.useQuery({ days: 30 } as never);
+  const { t } = useLocale();
+  const { isAuthenticated } = useAuth();
+  const revenueQuery = api.analytics.revenueChart.useQuery(
+    { days: 30 },
+    { enabled: isAuthenticated },
+  );
+  const bookingStatsQuery = api.analytics.bookingStats.useQuery(undefined, {
+    enabled: isAuthenticated,
+  });
+  const topTechQuery = api.analytics.topTechnicians.useQuery(
+    { limit: 10 },
+    { enabled: isAuthenticated },
+  );
+  const userGrowthQuery = api.analytics.userGrowth.useQuery(
+    { days: 30 },
+    { enabled: isAuthenticated },
+  );
 
-  const revenueData = (revenueQuery.data as unknown as Record<string, unknown>[]) ?? [];
-  const bookingStats = bookingStatsQuery.data as Record<string, unknown>;
-  const topTechs = (topTechQuery.data as unknown as Record<string, unknown>[]) ?? [];
-  const userGrowth = (userGrowthQuery.data as unknown as Record<string, unknown>[]) ?? [];
+  const revenueData = revenueQuery.data?.dailyRevenue ?? [];
+  const bookingStats = bookingStatsQuery.data as BookingStats | undefined;
+  const topTechs = topTechQuery.data ?? [];
+  const userGrowth = userGrowthQuery.data?.dailyGrowth ?? [];
 
-  const maxRevenue = Math.max(...revenueData.map((r) => Number(r.amount ?? 0)), 1);
+  const maxRevenue = Math.max(...revenueData.map((r) => Number(r.revenue ?? 0)), 1);
+
+  const byStatusMap: Record<string, number> = {};
+  if (bookingStats) {
+    for (const entry of bookingStats.byStatus) {
+      byStatusMap[entry.status] = entry.count;
+    }
+  }
 
   return (
     <div className="space-y-6">
-      <h1 className="text-2xl font-bold">الإحصائيات</h1>
+      <h1 className="text-2xl font-bold">{t('admin.analytics.title')}</h1>
 
       {/* Booking Stats */}
       <div>
-        <h2 className="mb-3 text-lg font-semibold">إحصائيات الحجوزات</h2>
+        <h2 className="mb-3 text-lg font-semibold">{t('admin.analytics.booking-stats-title')}</h2>
         {bookingStatsQuery.isLoading ? (
-          <div className="grid gap-4 md:grid-cols-4">{Array.from({ length: 4 }, (_, i) => <CardSkeleton key={i} />)}</div>
+          <KPIRowSkeleton count={4} />
         ) : bookingStatsQuery.isError ? (
-          <ErrorAlert message="فشل تحميل إحصائيات الحجوزات" onRetry={() => bookingStatsQuery.refetch()} />
+          <ErrorAlert
+            message={t('admin.analytics.booking-stats-error')}
+            onRetry={() => bookingStatsQuery.refetch()}
+          />
         ) : (
           <div className="grid gap-4 md:grid-cols-4">
-            <StatCard title="إجمالي الحجوزات" value={String(bookingStats?.total ?? 0)} color="text-brand-600" />
-            <StatCard title="حسب الحالة" value={JSON.stringify((bookingStats?.byStatus as Record<string, number>) ?? {})} color="text-amber-600" />
-            <StatCard title="نسبة الإكمال" value={`${Number(bookingStats?.completionRate ?? 0).toFixed(1)}%`} color="text-green-600" />
-            <StatCard title="نسبة الإلغاء" value={`${Number(bookingStats?.cancellationRate ?? 0).toFixed(1)}%`} color="text-red-600" />
+            <StatCard
+              title={t('admin.analytics.total-bookings')}
+              value={String(bookingStats?.total ?? 0)}
+              color="text-brand-600"
+            />
+            <StatCard
+              title={t('admin.analytics.completed')}
+              value={String(byStatusMap['COMPLETED'] ?? 0)}
+              color="text-green-600"
+            />
+            <StatCard
+              title={t('admin.analytics.pending')}
+              value={String(byStatusMap['REQUESTED'] ?? 0)}
+              color="text-amber-600"
+            />
+            <StatCard
+              title={t('admin.analytics.cancelled')}
+              value={String(byStatusMap['CANCELLED'] ?? 0)}
+              color="text-red-600"
+            />
           </div>
         )}
       </div>
 
       {/* Revenue Chart */}
       <Card>
-        <h2 className="mb-3 text-lg font-semibold">الإيرادات (آخر 30 يوم)</h2>
+        <h2 className="mb-3 text-lg font-semibold">{t('admin.analytics.revenue-title')}</h2>
         {revenueQuery.isLoading ? (
-          <CardSkeleton />
+          <CardListSkeleton count={4} />
         ) : revenueQuery.isError ? (
-          <ErrorAlert message="فشل تحميل الإيرادات" onRetry={() => revenueQuery.refetch()} />
+          <ErrorAlert
+            message={t('admin.analytics.revenue-error')}
+            onRetry={() => revenueQuery.refetch()}
+          />
         ) : revenueData.length === 0 ? (
-          <EmptyState title="لا توجد بيانات إيرادات" />
+          <EmptyState title={t('admin.analytics.revenue-empty')} />
         ) : (
           <div className="flex items-end gap-1" style={{ height: 200 }}>
-            {revenueData.map((r: Record<string, unknown>, i: number) => {
-              const amount = Number(r.amount ?? 0);
+            {revenueData.map((r: RevenueDay, i: number) => {
+              const amount = Number(r.revenue ?? 0);
               const pct = (amount / maxRevenue) * 100;
               return (
                 <div
@@ -69,10 +134,10 @@ export default function AdminAnalyticsPage(): JSX.Element {
                   <div
                     className="w-full rounded-t bg-brand-500 transition-all hover:bg-brand-600"
                     style={{ height: `${Math.max(pct, 2)}%`, minHeight: 4 }}
-                    title={`${r.date as string ?? ''}: ${formatCurrency(amount)}`}
+                    title={`${r.date ?? ''}: ${formatCurrency(amount)}`}
                   />
-                  <span className="mt-1 text-[10px] text-gray-400">
-                    {r.label as string ?? (r.date as string)?.slice(5, 10) ?? ''}
+                  <span className="mt-1 text-[10px] text-text-tertiary">
+                    {r.date?.slice(5, 10) ?? ''}
                   </span>
                 </div>
               );
@@ -83,29 +148,38 @@ export default function AdminAnalyticsPage(): JSX.Element {
 
       {/* Top Technicians */}
       <Card>
-        <h2 className="mb-3 text-lg font-semibold">أفضل الفنيات</h2>
+        <h2 className="mb-3 text-lg font-semibold">{t('admin.analytics.top-technicians')}</h2>
         {topTechQuery.isLoading ? (
-          <CardSkeleton />
+          <CardListSkeleton count={4} />
         ) : topTechQuery.isError ? (
-          <ErrorAlert message="فشل تحميل أفضل الفنيات" onRetry={() => topTechQuery.refetch()} />
+          <ErrorAlert
+            message={t('admin.analytics.top-tech-error')}
+            onRetry={() => topTechQuery.refetch()}
+          />
         ) : topTechs.length === 0 ? (
-          <EmptyState title="لا توجد فنيات" />
+          <EmptyState title={t('admin.analytics.no-technicians')} />
         ) : (
           <div className="overflow-x-auto">
             <table className="w-full text-sm">
               <thead>
-                <tr className="border-b border-gray-200 text-right dark:border-gray-800">
-                  <th className="pb-2 font-medium text-gray-500">الاسم</th>
-                  <th className="pb-2 font-medium text-gray-500">الحجوزات المكتملة</th>
-                  <th className="pb-2 font-medium text-gray-500">التقييم</th>
+                <tr className="border-b border-edge text-end dark:border-gray-800">
+                  <th className="pb-2 font-medium text-text-secondary">
+                    {t('admin.analytics.name-header')}
+                  </th>
+                  <th className="pb-2 font-medium text-text-secondary">
+                    {t('admin.analytics.completed-bookings-header')}
+                  </th>
+                  <th className="pb-2 font-medium text-text-secondary">
+                    {t('admin.analytics.rating-header')}
+                  </th>
                 </tr>
               </thead>
               <tbody>
-                {topTechs.map((t: Record<string, unknown>, i: number) => (
-                  <tr key={t.id as number ?? i} className="border-b border-gray-100 dark:border-gray-800">
-                    <td className="py-2 font-medium">{t.name as string}</td>
+                {topTechs.map((t: TopTechnician, i: number) => (
+                  <tr key={t.id ?? i} className="border-b border-edge-muted">
+                    <td className="py-2 font-medium">{t.name}</td>
                     <td className="py-2">{String(t.completedBookings ?? 0)}</td>
-                    <td className="py-2">⭐ {Number(t.ratingAvg ?? 0).toFixed(1)}</td>
+                    <td className="py-2"> {Number(t.ratingAvg ?? 0).toFixed(1)}</td>
                   </tr>
                 ))}
               </tbody>
@@ -116,19 +190,25 @@ export default function AdminAnalyticsPage(): JSX.Element {
 
       {/* User Growth */}
       <Card>
-        <h2 className="mb-3 text-lg font-semibold">نمو المستخدمين (آخر 30 يوم)</h2>
+        <h2 className="mb-3 text-lg font-semibold">{t('admin.analytics.user-growth-title')}</h2>
         {userGrowthQuery.isLoading ? (
-          <CardSkeleton />
+          <CardListSkeleton count={4} />
         ) : userGrowthQuery.isError ? (
-          <ErrorAlert message="فشل تحميل نمو المستخدمين" onRetry={() => userGrowthQuery.refetch()} />
+          <ErrorAlert
+            message={t('admin.analytics.user-growth-error')}
+            onRetry={() => userGrowthQuery.refetch()}
+          />
         ) : userGrowth.length === 0 ? (
-          <EmptyState title="لا توجد بيانات نمو" />
+          <EmptyState title={t('admin.analytics.user-growth-empty')} />
         ) : (
           <div className="space-y-1">
-            {userGrowth.map((u: Record<string, unknown>, i: number) => (
-              <div key={i} className="flex items-center justify-between border-b border-gray-100 pb-1 text-sm dark:border-gray-800">
-                <span>{u.date as string ?? '—'}</span>
-                <span className="font-medium text-brand-600">+{String(u.count ?? 0)}</span>
+            {userGrowth.map((u: UserGrowthDay, i: number) => (
+              <div
+                key={i}
+                className="flex items-center justify-between border-b border-edge-muted pb-1 text-sm dark:border-gray-800"
+              >
+                <span>{u.date ?? '—'}</span>
+                <span className="font-medium text-brand-600">+{String(u.total ?? 0)}</span>
               </div>
             ))}
           </div>

@@ -1,0 +1,281 @@
+'use client';
+
+import { useState, useEffect, useCallback } from 'react';
+import { api } from '@/lib/trpc';
+import {
+  Card,
+  CardListSkeleton,
+  ErrorAlert,
+  EmptyState,
+  Button,
+  ProgressBar,
+  formatCurrency,
+  ServiceImage,
+  COUNTDOWN_INTERVAL_MS,
+} from '@galaxy/ui';
+import { useAuth } from '@galaxy/ui';
+import Link from 'next/link';
+import { useLocale } from '@/components/LocaleProvider';
+
+interface Deal {
+  id: number;
+  serviceId: number;
+  titleAr: string | null;
+  titleEn: string | null;
+  discountPercent: number;
+  originalPrice: number;
+  dealPrice: number;
+  discountValue: number;
+  maxRedemptions: number;
+  currentRedemptions: number;
+  startsAt: string;
+  endsAt: string;
+  isActive: boolean;
+  serviceNameAr: string;
+  serviceNameEn: string;
+  serviceEmoji: string;
+}
+
+function CountdownTimer({ endsAt }: { endsAt: string }): JSX.Element {
+  const { t } = useLocale();
+  const [timeLeft, setTimeLeft] = useState('');
+  const [isEnded, setIsEnded] = useState(false);
+
+  useEffect(() => {
+    const update = () => {
+      const now = Date.now();
+      const end = new Date(endsAt).getTime();
+      const diff = end - now;
+
+      if (diff <= 0) {
+        setIsEnded(true);
+        setTimeLeft(t('marketing.flash-deals.ended'));
+        return;
+      }
+
+      setIsEnded(false);
+      const hours = Math.floor(diff / 3600000);
+      const minutes = Math.floor((diff % 3600000) / 60000);
+      const seconds = Math.floor((diff % 60000) / 1000);
+
+      if (hours > 0) {
+        setTimeLeft(t('marketing.flash-deals.time-hms', { h: hours, m: minutes, s: seconds }));
+      } else if (minutes > 0) {
+        setTimeLeft(t('marketing.flash-deals.time-ms', { m: minutes, s: seconds }));
+      } else {
+        setTimeLeft(t('marketing.flash-deals.time-s', { s: seconds }));
+      }
+    };
+
+    update();
+    const interval = setInterval(update, COUNTDOWN_INTERVAL_MS);
+    return () => clearInterval(interval);
+  }, [endsAt, t]);
+
+  return (
+    <span
+      className={`inline-flex items-center gap-1 text-xs font-semibold ${isEnded ? 'text-text-tertiary' : 'text-orange-600 animate-pulse'}`}
+    >
+      {timeLeft}
+    </span>
+  );
+}
+
+export default function FlashDealsPage(): JSX.Element {
+  const { user } = useAuth();
+  const { t, locale } = useLocale();
+  const {
+    data: deals,
+    isLoading,
+    isError,
+    refetch,
+  } = api.flashDeals.active.useQuery() as {
+    data: Deal[] | undefined;
+    isLoading: boolean;
+    isError: boolean;
+    refetch: () => void;
+  };
+  const claimMut = api.flashDeals.claim.useMutation({ onSuccess: () => refetch() });
+  const [claimedIds, setClaimedIds] = useState<Set<number>>(new Set());
+  const [claimingId, setClaimingId] = useState<number | null>(null);
+
+  const handleClaim = useCallback(
+    (dealId: number) => {
+      if (!user) return;
+      setClaimingId(dealId);
+      claimMut.mutate(
+        { dealId },
+        {
+          onSuccess: () => {
+            setClaimedIds((prev) => new Set(prev).add(dealId));
+            setClaimingId(null);
+          },
+          onError: () => setClaimingId(null),
+        },
+      );
+    },
+    [user, claimMut],
+  );
+
+  const allDeals = deals ?? [];
+
+  return (
+    <div className="mx-auto max-w-5xl px-4 py-12">
+      {/* Header */}
+      <div className="mb-10 text-center">
+        <span className="text-6xl">⚡</span>
+        <h1 className="mt-4 text-3xl font-bold text-text-primary dark:text-gray-100">
+          {t('marketing.flash-deals.title')}
+        </h1>
+        <p className="mt-2 text-text-secondary dark:text-text-tertiary">
+          {t('marketing.flash-deals.subtitle')}
+        </p>
+      </div>
+
+      {/* Content */}
+      {isLoading ? (
+        <CardListSkeleton count={4} />
+      ) : isError ? (
+        <ErrorAlert message={t('marketing.flash-deals.load-error')} onRetry={() => refetch()} />
+      ) : allDeals.length === 0 ? (
+        <EmptyState
+          title={t('marketing.flash-deals.no-deals')}
+          description={t('marketing.flash-deals.no-deals-desc')}
+          action={{
+            label: t('marketing.flash-deals.browse-services'),
+            onPress: () => window.location.assign('/services'),
+          }}
+        />
+      ) : (
+        <div className="space-y-6">
+          {allDeals.map((deal) => {
+            const pct =
+              deal.maxRedemptions > 0 ? (deal.currentRedemptions / deal.maxRedemptions) * 100 : 0;
+            const soldOut = deal.currentRedemptions >= deal.maxRedemptions;
+            const isClaimed = claimedIds.has(deal.id);
+            const savings = deal.originalPrice - deal.dealPrice;
+            const title =
+              locale === 'ar'
+                ? deal.titleAr || deal.serviceNameAr
+                : deal.titleEn || deal.serviceNameEn;
+
+            return (
+              <Card
+                key={deal.id}
+                padding="lg"
+                className={`relative overflow-hidden transition-all hover:shadow-lg ${
+                  soldOut ? 'opacity-60' : ''
+                }`}
+              >
+                {/* Flash badge */}
+                <div
+                  className={`absolute top-3 end-3 rounded-full px-3 py-1 text-xs font-bold text-white ${
+                    soldOut ? 'bg-gray-400' : 'bg-red-500 animate-pulse'
+                  }`}
+                >
+                  {soldOut
+                    ? t('marketing.flash-deals.sold-out')
+                    : t('marketing.flash-deals.flash-badge')}
+                </div>
+
+                <div className="flex flex-col sm:flex-row items-start gap-5">
+                  {/* Service image */}
+                  <div className="h-20 w-20 shrink-0 overflow-hidden rounded-2xl bg-gradient-to-br from-red-50 to-orange-100 dark:from-red-950 dark:to-orange-900">
+                    <ServiceImage
+                      src={(deal as { serviceImageUrl?: string }).serviceImageUrl || null}
+                      alt={title}
+                      size="full"
+                      className="h-20 w-20 object-cover"
+                    />
+                  </div>
+
+                  <div className="flex-1 min-w-0">
+                    {/* Title */}
+                    <h3 className="text-xl font-bold text-text-primary dark:text-gray-100">
+                      {title}
+                    </h3>
+                    <p className="mt-0.5 text-xs text-text-secondary">
+                      {deal.serviceNameEn && deal.serviceNameEn !== title ? deal.serviceNameEn : ''}
+                    </p>
+
+                    {/* Pricing */}
+                    <div className="mt-3 flex flex-wrap items-center gap-3">
+                      <span className="text-3xl font-extrabold text-red-600 dark:text-red-400">
+                        {formatCurrency(deal.dealPrice)}
+                      </span>
+                      <span className="text-lg text-text-tertiary line-through">
+                        {formatCurrency(deal.originalPrice)}
+                      </span>
+                      <span className="rounded-full bg-red-100 px-2.5 py-0.5 text-xs font-bold text-red-600 dark:bg-red-900 dark:text-red-300">
+                        -{deal.discountPercent}%
+                      </span>
+                      <span className="rounded-full bg-green-100 px-2.5 py-0.5 text-xs font-bold text-green-700 dark:bg-green-900 dark:text-green-300">
+                        {t('marketing.flash-deals.save-amount', {
+                          amount: formatCurrency(savings),
+                        })}
+                      </span>
+                    </div>
+
+                    {/* Timer + Redemption Stats */}
+                    <div className="mt-3 flex flex-wrap items-center gap-4 text-xs text-text-secondary">
+                      <CountdownTimer endsAt={deal.endsAt} />
+                      <span>
+                        {t('marketing.flash-deals.redemption-stats', {
+                          current: deal.currentRedemptions,
+                          max: deal.maxRedemptions,
+                        })}
+                      </span>
+                    </div>
+
+                    {/* Progress Bar */}
+                    <div className="mt-2">
+                      <ProgressBar value={pct} className="[&>div]:bg-red-500" />
+                    </div>
+
+                    {/* Action */}
+                    <div className="mt-4 flex flex-wrap items-center gap-3">
+                      {soldOut ? (
+                        <span className="rounded-lg bg-surface-muted px-4 py-2 text-sm font-semibold text-text-secondary dark:bg-gray-800">
+                          {t('marketing.flash-deals.sold-out')}
+                        </span>
+                      ) : isClaimed ? (
+                        <span className="rounded-lg bg-green-100 px-4 py-2 text-sm font-semibold text-green-700 dark:bg-green-900 dark:text-green-300">
+                          {t('marketing.flash-deals.claimed')}
+                        </span>
+                      ) : user ? (
+                        <Button
+                          onClick={() => handleClaim(deal.id)}
+                          loading={claimingId === deal.id}
+                          size="sm"
+                        >
+                          {t('marketing.flash-deals.book-now')}
+                        </Button>
+                      ) : (
+                        <Link href={`/login?redirect=/flash-deals`}>
+                          <Button size="sm">{t('marketing.flash-deals.login-to-claim')}</Button>
+                        </Link>
+                      )}
+                      <Link href={`/services/${deal.serviceId}`}>
+                        <Button variant="ghost" size="sm">
+                          {t('marketing.flash-deals.service-details')}
+                        </Button>
+                      </Link>
+                    </div>
+                  </div>
+                </div>
+              </Card>
+            );
+          })}
+        </div>
+      )}
+
+      {/* Bottom CTA */}
+      {allDeals.length > 0 && (
+        <div className="mt-10 rounded-2xl bg-gradient-to-r from-red-500 to-orange-500 p-6 text-center text-white">
+          <p className="text-2xl font-bold">{t('marketing.flash-deals.dont-miss')}</p>
+          <p className="mt-1 text-white/80">{t('marketing.flash-deals.daily-refresh')}</p>
+        </div>
+      )}
+    </div>
+  );
+}

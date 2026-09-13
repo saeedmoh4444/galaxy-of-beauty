@@ -1,0 +1,54 @@
+'use client';
+import { api } from '@/lib/trpc';
+import { Card, CardListSkeleton, Button } from '@galaxy/ui';
+import { DashboardLayout } from '@/components/layout/DashboardLayout';
+import { useLocale } from '@/components/LocaleProvider';
+
+export default function BeautyBingoPage(): JSX.Element {
+  const { t } = useLocale();
+  const { data, isLoading } = api.beautyBingo.card.useQuery() as {
+    data: Record<string, unknown> | undefined;
+    isLoading: boolean;
+  };
+  const markMut = api.beautyBingo.mark.useMutation();
+
+  const tasks = (data?.tasks ?? []) as Array<Record<string, unknown>>;
+  const completed = (data?.completed as number) ?? 0;
+  const total = (data?.total as number) ?? 9;
+
+  return (
+    <DashboardLayout userRole="CUSTOMER">
+      <div className="mx-auto max-w-2xl space-y-6">
+        <div>
+          <h1 className="text-2xl font-bold">{t('beautyBingo.title')}</h1>
+          <p className="mt-1 text-sm text-text-secondary">{t('beautyBingo.subtitle')}</p>
+        </div>
+        {isLoading ? (
+          <CardListSkeleton count={1} />
+        ) : (
+          <Card padding="lg" className="text-center">
+            <span className="text-5xl">🎉</span>
+            <p className="mt-2 font-bold">{t('beautyBingo.completed', { completed, total })}</p>
+            <p className="text-xs text-brand-600 mt-1">{data?.reward as string}</p>
+            <div className="mt-4 grid grid-cols-3 gap-2">
+              {tasks.map((t: Record<string, unknown>) => (
+                <button
+                  key={t.id as number}
+                  onClick={() => markMut.mutate({ taskId: t.id as number })}
+                  className={`rounded-xl p-3 text-xs font-medium transition-all ${t.completed ? 'bg-green-100 dark:bg-green-900 text-green-700 line-through' : 'bg-surface-muted dark:bg-gray-800 hover:bg-brand-50'}`}
+                >
+                  {t.completed ? '' : '⬜'} {t.task as string}
+                </button>
+              ))}
+            </div>
+          </Card>
+        )}
+        <div className="text-center">
+          <Button variant="ghost" onClick={() => markMut.mutate({ taskId: 1 })}>
+            {t('beautyBingo.refresh')}
+          </Button>
+        </div>
+      </div>
+    </DashboardLayout>
+  );
+}

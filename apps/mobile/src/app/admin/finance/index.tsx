@@ -1,87 +1,80 @@
-import { View, Text, ScrollView, TouchableOpacity, StyleSheet, ActivityIndicator } from 'react-native';
-import { trpc } from '@/lib/api';
-import { useState, useEffect } from 'react';
+import { View, Text, ScrollView, StyleSheet, RefreshControl } from 'react-native';
+import { SkeletonList } from '@/components/SkeletonCard';
+import { ErrorAlert } from '@/components/ErrorAlert';
+import { trpc } from '@/lib/trpc-react';
+import { useLocale } from '@/components/LocaleProvider';
 
-export default function AdminFinanceScreen() {
-  const [payouts, setPayouts] = useState<Record<string, unknown>[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState('');
+interface AdminFinanceDashboard {
+  totalRevenue?: number;
+  totalPayouts?: number;
+  platformFees?: number;
+}
 
-  const fetch = () => {
-    setLoading(true);
-    setError('');
-    (trpc.payouts.listForAdmin as any).query({ page: 1, limit: 50 } as never)
-      .then((d: Record<string, unknown>) => { setPayouts((d?.payouts ?? []) as Record<string, unknown>[]); setLoading(false); })
-      .catch(() => { setError('فشل تحميل البيانات المالية'); setLoading(false); });
-  };
+export default function AdminFinanceScreen(): JSX.Element {
+  const { t } = useLocale();
+  const q = trpc.admin.dashboardStats.useQuery();
+  const data = (q.data as unknown as AdminFinanceDashboard | null) ?? {};
 
-  useEffect(() => { fetch(); }, []);
+  if (q.isLoading) return <SkeletonList count={4} />;
+  if (q.isError)
+    return (
+      <ErrorAlert message={t('mobile.admin.finance.load-error')} onRetry={() => q.refetch()} />
+    );
 
-  const handleProcess = async (id: number, action: string) => {
-    try { await (trpc.payouts.process as any).mutate({ id, action }); fetch(); } catch {}
-  };
-
-  const statusColours: Record<string, string> = { PENDING: '#f59e0b', PROCESSING: '#3b82f6', COMPLETED: '#10b981', FAILED: '#ef4444' };
-  const statusLabels: Record<string, string> = { PENDING: 'قيد الانتظار', PROCESSING: 'قيد المعالجة', COMPLETED: 'مكتمل', FAILED: 'فشل' };
+  const d: AdminFinanceDashboard = data ?? {};
 
   return (
-    <ScrollView style={styles.container}>
-      <Text style={styles.title}>الإدارة المالية</Text>
-
-      {loading ? <ActivityIndicator color="#7c3aed" style={{ marginTop: 40 }} /> :
-       error ? (
-        <View style={styles.centered}>
-          <Text style={styles.error}>{error}</Text>
-          <TouchableOpacity style={styles.retryBtn} onPress={fetch}><Text style={styles.retryText}>إعادة المحاولة</Text></TouchableOpacity>
+    <ScrollView
+      style={styles.c}
+      contentContainerStyle={styles.i}
+      refreshControl={
+        <RefreshControl
+          refreshing={q.isRefetching}
+          onRefresh={() => q.refetch()}
+          colors={['#059669']}
+        />
+      }
+    >
+      <Text style={styles.t}>{t('mobile.admin.finance.title')}</Text>
+      <View style={styles.kpiRow}>
+        <View style={styles.kpi}>
+          <Text style={styles.kpiEmoji}>💰</Text>
+          <Text style={styles.kpiVal}>{(d.totalRevenue ?? 0).toLocaleString()}</Text>
+          <Text style={styles.kpiLabel}>{t('admin.finance.revenue')}</Text>
         </View>
-       ) : payouts.length === 0 ? (
-        <View style={styles.centered}><Text style={styles.empty}>لا توجد طلبات سحب</Text></View>
-       ) : (
-        payouts.map((p: Record<string, unknown>) => {
-          const st = (p.status as string) ?? 'PENDING';
-          return (
-            <View key={p.id as number} style={styles.card}>
-              <View style={{ flex: 1 }}>
-                <Text style={styles.amount}>{Number(p.amount ?? 0).toFixed(0)} ر.س</Text>
-                <Text style={styles.user}>{p.userName as string ?? `#${p.userId as string}`}</Text>
-                <Text style={styles.date}>{new Date(p.createdAt as string).toLocaleDateString('ar-SA')}</Text>
-              </View>
-              <View style={{ alignItems: 'flex-end', gap: 8 }}>
-                <View style={[styles.badge, { backgroundColor: statusColours[st] + '20' }]}>
-                  <Text style={{ color: statusColours[st], fontSize: 12, fontWeight: '600' }}>{statusLabels[st] ?? st}</Text>
-                </View>
-                {st === 'PENDING' && (
-                  <View style={{ flexDirection: 'row', gap: 4 }}>
-                    <TouchableOpacity style={styles.approveBtn} onPress={() => handleProcess(p.id as number, 'approve')}>
-                      <Text style={{ color: '#10b981', fontSize: 12, fontWeight: '600' }}>موافقة</Text>
-                    </TouchableOpacity>
-                    <TouchableOpacity style={styles.rejectBtn} onPress={() => handleProcess(p.id as number, 'reject')}>
-                      <Text style={{ color: '#ef4444', fontSize: 12, fontWeight: '600' }}>رفض</Text>
-                    </TouchableOpacity>
-                  </View>
-                )}
-              </View>
-            </View>
-          );
-        })
-      )}
+        <View style={styles.kpi}>
+          <Text style={styles.kpiEmoji}>💸</Text>
+          <Text style={[styles.kpiVal, { color: '#dc2626' }]}>
+            {(d.totalPayouts ?? 0).toLocaleString()}
+          </Text>
+          <Text style={styles.kpiLabel}>{t('mobile.admin.finance.payouts')}</Text>
+        </View>
+        <View style={styles.kpi}>
+          <Text style={styles.kpiEmoji}>🏦</Text>
+          <Text style={[styles.kpiVal, { color: '#059669' }]}>
+            {(d.platformFees ?? 0).toLocaleString()}
+          </Text>
+          <Text style={styles.kpiLabel}>{t('admin.finance.platform-fees')}</Text>
+        </View>
+      </View>
     </ScrollView>
   );
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: '#fff', padding: 16 },
-  title: { fontSize: 24, fontWeight: '800', color: '#111827', marginBottom: 16 },
-  centered: { alignItems: 'center', marginTop: 40 },
-  empty: { fontSize: 18, fontWeight: '600', color: '#6b7280' },
-  error: { color: '#ef4444', fontSize: 16, marginBottom: 12 },
-  retryBtn: { backgroundColor: '#7c3aed', borderRadius: 12, paddingHorizontal: 24, paddingVertical: 10 },
-  retryText: { color: '#fff', fontSize: 14, fontWeight: '600' },
-  card: { flexDirection: 'row', alignItems: 'center', padding: 16, marginBottom: 8, borderRadius: 12, borderWidth: 1, borderColor: '#e5e7eb' },
-  amount: { fontSize: 18, fontWeight: '700', color: '#111827' },
-  user: { fontSize: 13, color: '#6b7280', marginTop: 2 },
-  date: { fontSize: 12, color: '#9ca3af', marginTop: 2 },
-  badge: { paddingHorizontal: 10, paddingVertical: 4, borderRadius: 12 },
-  approveBtn: { borderWidth: 1, borderColor: '#10b981', borderRadius: 6, paddingHorizontal: 10, paddingVertical: 4 },
-  rejectBtn: { borderWidth: 1, borderColor: '#ef4444', borderRadius: 6, paddingHorizontal: 10, paddingVertical: 4 },
+  c: { flex: 1, backgroundColor: '#ecfdf5' },
+  i: { padding: 16, paddingTop: 30, paddingBottom: 40 },
+  t: { fontSize: 24, fontWeight: '800', color: '#059669', textAlign: 'center', marginBottom: 20 },
+  kpiRow: { flexDirection: 'row', flexWrap: 'wrap', gap: 8 },
+  kpi: {
+    flex: 1,
+    minWidth: '30%',
+    backgroundColor: '#fff',
+    borderRadius: 14,
+    padding: 14,
+    alignItems: 'center',
+  },
+  kpiEmoji: { fontSize: 28, marginBottom: 4 },
+  kpiVal: { fontSize: 20, fontWeight: '800', color: '#111827' },
+  kpiLabel: { fontSize: 11, color: '#9ca3af' },
 });

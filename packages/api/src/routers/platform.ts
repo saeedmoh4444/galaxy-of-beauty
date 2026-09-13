@@ -41,7 +41,7 @@ export const platformRouter = router({
       };
     }),
 
-  toggleMaintenance: adminProcedure.mutation(async () => {
+  toggleMaintenance: adminProcedure.input(z.object({})).mutation(async () => {
     const config = await prisma.platformConfig.findUnique({
       where: { key: 'MAINTENANCE_MODE' },
     });
@@ -64,25 +64,85 @@ export const platformRouter = router({
 
     return {
       maintenanceMode: updated.value === 'true',
-      message: updated.value === 'true'
-        ? 'Maintenance mode enabled'
-        : 'Maintenance mode disabled',
+      message: updated.value === 'true' ? 'Maintenance mode enabled' : 'Maintenance mode disabled',
     };
   }),
 
   getTerms: publicProcedure.query(async () => {
-    // Return the latest terms acceptance version
-    const latestAcceptance = await prisma.termsAcceptance.findFirst({
-      orderBy: { acceptedAt: 'desc' },
-      select: { termsVersion: true },
-    });
+    // Return the latest terms version + content from PlatformConfig
+    const [latestAcceptance, termsConfig] = await Promise.all([
+      prisma.termsAcceptance.findFirst({
+        orderBy: { acceptedAt: 'desc' },
+        select: { termsVersion: true },
+      }),
+      prisma.platformConfig.findUnique({
+        where: { key: 'TERMS_CONTENT' },
+      }),
+    ]);
+
+    let content: { ar: string; en: string } | null = null;
+    if (termsConfig?.value) {
+      try {
+        content = JSON.parse(termsConfig.value);
+      } catch {
+        content = { ar: termsConfig.value, en: termsConfig.value };
+      }
+    }
 
     return {
       version: latestAcceptance?.termsVersion ?? 'v1.0',
-      content: null, // TODO: Store terms content in DB or S3
-      updatedAt: null,
+      content,
+      updatedAt: termsConfig?.updatedAt ?? null,
     };
   }),
+
+  updateTerms: adminProcedure
+    .input(
+      z.object({
+        version: z.string().min(1),
+        contentAr: z.string().min(1),
+        contentEn: z.string().min(1),
+      }),
+    )
+    .mutation(async ({ input, ctx }) => {
+      // Store terms content as JSON in PlatformConfig
+      const contentJson = JSON.stringify({ ar: input.contentAr, en: input.contentEn });
+
+      await prisma.platformConfig.upsert({
+        where: { key: 'TERMS_CONTENT' },
+        create: {
+          key: 'TERMS_CONTENT',
+          value: contentJson,
+          description: `Terms & Conditions v${input.version}`,
+          updatedBy: ctx.user.id,
+        },
+        update: {
+          value: contentJson,
+          description: `Terms & Conditions v${input.version}`,
+          updatedBy: ctx.user.id,
+        },
+      });
+
+      // Also store the version explicitly
+      await prisma.platformConfig.upsert({
+        where: { key: 'TERMS_VERSION' },
+        create: {
+          key: 'TERMS_VERSION',
+          value: input.version,
+          description: 'Current terms & conditions version',
+          updatedBy: ctx.user.id,
+        },
+        update: {
+          value: input.version,
+          updatedBy: ctx.user.id,
+        },
+      });
+
+      return {
+        version: input.version,
+        message: 'Terms content updated successfully',
+      };
+    }),
 
   acceptTerms: protectedProcedure
     .input(
@@ -141,44 +201,39 @@ export const platformRouter = router({
     }));
   }),
 
-  getAreas: publicProcedure
-    .input(z.object({ cityName: z.string() }))
-    .query(async ({ input }) => {
-      // TODO: Store areas in DB — for now return sample areas per city
-      const city = await prisma.saudiCity.findFirst({
-        where: {
-          OR: [
-            { nameAr: input.cityName },
-            { nameEn: { equals: input.cityName, mode: 'insensitive' } },
-          ],
+  getAreas: publicProcedure.input(z.object({ cityName: z.string() })).query(async ({ input }) => {
+    const city = await prisma.saudiCity.findFirst({
+      where: {
+        OR: [
+          { nameAr: input.cityName },
+          { nameEn: { equals: input.cityName, mode: 'insensitive' } },
+        ],
+      },
+      include: {
+        areas: {
+          where: { isActive: true },
+          orderBy: { nameAr: 'asc' },
         },
-      });
+      },
+    });
 
-      if (!city) {
-        throw new TRPCError({
-          code: 'NOT_FOUND',
-          message: 'City not found',
-        });
-      }
+    if (!city) {
+      throw new TRPCError({ code: 'NOT_FOUND', message: 'City not found' });
+    }
 
-      // Stub: return sample areas based on city
-      const sampleAreas = [
-        { nameAr: 'المركز', nameEn: 'Downtown' },
-        { nameAr: 'الحي الشمالي', nameEn: 'Northern District' },
-        { nameAr: 'الحي الجنوبي', nameEn: 'Southern District' },
-        { nameAr: 'الحي الشرقي', nameEn: 'Eastern District' },
-        { nameAr: 'الحي الغربي', nameEn: 'Western District' },
-      ];
-
-      return {
-        city: {
-          id: city.id,
-          nameAr: city.nameAr,
-          nameEn: city.nameEn,
-        },
-        areas: sampleAreas,
-      };
-    }),
+    return {
+      city: {
+        id: city.id,
+        nameAr: city.nameAr,
+        nameEn: city.nameEn,
+      },
+      areas: city.areas.map((a) => ({
+        id: a.id,
+        nameAr: a.nameAr,
+        nameEn: a.nameEn,
+      })),
+    };
+  }),
 
   exportBookings: adminProcedure
     .input(
@@ -252,6 +307,53 @@ export const platformRouter = router({
       return { format: 'json', data: users, total: users.length };
     }),
 
+  // ── Area Management ──────────────────────────────────
+  listAreas: adminProcedure
+    .input(z.object({ cityId: z.number().int().positive().optional() }))
+    .query(async ({ input }) => {
+      const where = input.cityId ? { cityId: input.cityId } : {};
+      return prisma.area.findMany({
+        where,
+        include: { city: { select: { nameAr: true } } },
+        orderBy: [{ cityId: 'asc' }, { nameAr: 'asc' }],
+      });
+    }),
+
+  createArea: adminProcedure
+    .input(
+      z.object({
+        cityId: z.number().int().positive(),
+        nameAr: z.string().min(2),
+        nameEn: z.string().min(2),
+      }),
+    )
+    .mutation(async ({ input }) => {
+      return prisma.area.create({
+        data: { cityId: input.cityId, nameAr: input.nameAr, nameEn: input.nameEn },
+      });
+    }),
+
+  updateArea: adminProcedure
+    .input(
+      z.object({
+        id: z.number().int().positive(),
+        nameAr: z.string().min(2).optional(),
+        nameEn: z.string().min(2).optional(),
+        isActive: z.boolean().optional(),
+      }),
+    )
+    .mutation(async ({ input }) => {
+      const { id, ...data } = input;
+      return prisma.area.update({ where: { id }, data });
+    }),
+
+  deleteArea: adminProcedure
+    .input(z.object({ id: z.number().int().positive() }))
+    .mutation(async ({ input }) => {
+      await prisma.area.update({ where: { id: input.id }, data: { isActive: false } });
+      return { success: true };
+    }),
+
   getAuditLogs: adminProcedure
     .input(
       z
@@ -297,4 +399,21 @@ export const platformRouter = router({
         totalPages: Math.ceil(total / input.limit),
       };
     }),
+
+  // Public stats — social proof for landing page
+  publicStats: publicProcedure.query(async () => {
+    const [totalBookings, totalCustomers, totalTechnicians, totalCities] = await Promise.all([
+      prisma.booking.count(),
+      prisma.user.count({ where: { role: 'CUSTOMER' } }),
+      prisma.technician.count(),
+      prisma.saudiCity.count(),
+    ]);
+    return {
+      totalBookings,
+      totalCustomers,
+      totalTechnicians,
+      totalCities,
+      happyCustomers: totalBookings,
+    };
+  }),
 });

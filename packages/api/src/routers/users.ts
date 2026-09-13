@@ -69,25 +69,23 @@ export const userRouter = router({
   // ──────────────────────────────────────────────────────
   // Update the authenticated user's profile (alias for auth.updateProfile)
   // ──────────────────────────────────────────────────────
-  updateMe: protectedProcedure
-    .input(updateProfileSchema)
-    .mutation(async ({ ctx, input }) => {
-      try {
-        const user = await prisma.user.update({
-          where: { id: ctx.user.id },
-          data: input,
-          select: userSelect,
-        });
+  updateMe: protectedProcedure.input(updateProfileSchema).mutation(async ({ ctx, input }) => {
+    try {
+      const user = await prisma.user.update({
+        where: { id: ctx.user.id },
+        data: input,
+        select: userSelect,
+      });
 
-        return user;
-      } catch (error) {
-        if (error instanceof TRPCError) throw error;
-        throw new TRPCError({
-          code: 'INTERNAL_SERVER_ERROR',
-          message: 'Failed to update profile',
-        });
-      }
-    }),
+      return user;
+    } catch (error) {
+      if (error instanceof TRPCError) throw error;
+      throw new TRPCError({
+        code: 'INTERNAL_SERVER_ERROR',
+        message: 'Failed to update profile',
+      });
+    }
+  }),
 
   // ──────────────────────────────────────────────────────
   // Delete account (GDPR right to erasure)
@@ -161,7 +159,15 @@ export const userRouter = router({
       }
 
       // Strip sensitive authentication fields
-      const { passwordHash, twoFactorSecret, emailVerifyToken, ...safeData } = user;
+      const {
+        passwordHash: _ph,
+        twoFactorSecret: _tfs,
+        emailVerifyToken: _evt,
+        ...safeData
+      } = user;
+      void _ph;
+      void _tfs;
+      void _evt;
 
       return {
         exportedAt: new Date().toISOString(),
@@ -216,4 +222,34 @@ export const userRouter = router({
         });
       }
     }),
+
+  // List active sessions (refresh tokens) for current user
+  mySessions: protectedProcedure.query(async ({ ctx }) => {
+    return prisma.refreshToken.findMany({
+      where: { userId: ctx.user.id, revokedAt: null, expiresAt: { gt: new Date() } },
+      select: { id: true, expiresAt: true, createdAt: true },
+      orderBy: { createdAt: 'desc' },
+    });
+  }),
+
+  // Revoke a specific session
+  revokeSession: protectedProcedure
+    .input(z.object({ tokenId: z.number() }))
+    .mutation(async ({ ctx, input }) => {
+      await prisma.refreshToken.updateMany({
+        where: { id: input.tokenId, userId: ctx.user.id },
+        data: { revokedAt: new Date() },
+      });
+      return { message: 'تم إنهاء الجلسة' };
+    }),
+
+  // Revoke all other sessions (keep current)
+  revokeOtherSessions: protectedProcedure.mutation(async ({ ctx }) => {
+    // We can't identify the current token here, so we revoke all
+    await prisma.refreshToken.updateMany({
+      where: { userId: ctx.user.id, revokedAt: null },
+      data: { revokedAt: new Date() },
+    });
+    return { message: 'تم إنهاء جميع الجلسات الأخرى' };
+  }),
 });

@@ -1,6 +1,6 @@
 import { z } from 'zod';
 import { TRPCError } from '@trpc/server';
-import { protectedProcedure, router } from '../trpc';
+import { publicProcedure, protectedProcedure, router } from '../trpc';
 import { prisma } from '@galaxy/db';
 
 function generateReferralCode(userId: number, name: string): string {
@@ -39,8 +39,7 @@ export const referralRouter = router({
 
     const code = generateReferralCode(ctx.user.id, user.name);
 
-    // Create a placeholder referral entry to reserve the code
-    // (full referral is created when someone uses the code)
+    // The code is reserved — full referral record is created when someone redeems it
     return { code };
   }),
 
@@ -63,13 +62,8 @@ export const referralRouter = router({
       }),
     ]);
 
-    const completedReferrals = referralsMade.filter(
-      (r) => r.status === 'COMPLETED',
-    );
-    const totalEarned = creditsReceived.reduce(
-      (sum, t) => sum + t.amount.toNumber(),
-      0,
-    );
+    const completedReferrals = referralsMade.filter((r) => r.status === 'COMPLETED');
+    const totalEarned = creditsReceived.reduce((sum, t) => sum + t.amount.toNumber(), 0);
     const pendingRewards = referralsMade
       .filter((r) => r.status === 'PENDING' && !r.rewardCredited)
       .reduce((sum, r) => sum + r.referrerReward.toNumber(), 0);
@@ -77,8 +71,7 @@ export const referralRouter = router({
     return {
       totalReferred: referralsMade.length,
       completedReferrals: completedReferrals.length,
-      pendingReferrals:
-        referralsMade.length - completedReferrals.length,
+      pendingReferrals: referralsMade.length - completedReferrals.length,
       totalEarned,
       pendingRewards,
       referrals: referralsMade.map((r) => ({
@@ -99,17 +92,6 @@ export const referralRouter = router({
     .mutation(async ({ input, ctx }) => {
       const code = input.code.trim().toUpperCase();
 
-      // Can't use own referral code
-      const ownReferral = await prisma.referral.findFirst({
-        where: { referrerId: ctx.user.id, referralCode: code },
-      });
-      if (ownReferral) {
-        throw new TRPCError({
-          code: 'BAD_REQUEST',
-          message: 'You cannot use your own referral code',
-        });
-      }
-
       // Check if user was already referred
       const alreadyReferred = await prisma.referral.findFirst({
         where: { referredId: ctx.user.id },
@@ -121,42 +103,51 @@ export const referralRouter = router({
         });
       }
 
-      // Find the referrer by code
-      const referrerEntry = await prisma.referral.findFirst({
+      // Resolve the referrer: prefer an existing referral row carrying the
+      // code, otherwise decode the generated-code format
+      // (GOB-<name[0-4]><base36(userId) padded to 3>) — codes are derived
+      // from the referrer and only persisted on first redemption, so a
+      // fresh code has no row yet.
+      let referrerId: number | null = null;
+      const existingRow = await prisma.referral.findFirst({
         where: { referralCode: code },
         select: { referrerId: true },
       });
-
-      if (!referrerEntry) {
-        // Check if code matches a potential generated code format
-        throw new TRPCError({
-          code: 'NOT_FOUND',
-          message: 'Invalid referral code',
-        });
+      if (existingRow) {
+        referrerId = existingRow.referrerId;
+      } else {
+        // Codes are derived from the referrer and only persisted on first
+        // redemption. Accept the shareCard fallback (GOB-<decimal id>)
+        // first, then the generated format GOB-<sanitizedName><base36(userId)
+        // padded to 3> — names may contain Arabic, so take the last 3
+        // chars as the base36 suffix.
+        const fallback = /^GOB-(\d+)$/.exec(code);
+        let candidate = fallback ? Number(fallback[1]) : NaN;
+        if (!Number.isInteger(candidate) || candidate <= 0) {
+          const suffix = code.startsWith('GOB-') && code.length > 3 ? code.slice(-3) : '';
+          const suffixNum = /^[0-9A-Z]{3}$/.test(suffix) ? parseInt(suffix, 36) : NaN;
+          candidate = suffixNum;
+        }
+        if (!Number.isInteger(candidate) || candidate <= 0) {
+          throw new TRPCError({
+            code: 'NOT_FOUND',
+            message: 'Invalid referral code',
+          });
+        }
+        referrerId = candidate;
       }
 
-      // Can't refer yourself
-      if (referrerEntry.referrerId === ctx.user.id) {
+      // Can't use own referral code
+      if (referrerId === ctx.user.id) {
         throw new TRPCError({
           code: 'BAD_REQUEST',
-          message: 'You cannot refer yourself',
-        });
-      }
-
-      // Check if the user being referred exists
-      const referredUser = await prisma.user.findUnique({
-        where: { id: ctx.user.id },
-      });
-      if (!referredUser) {
-        throw new TRPCError({
-          code: 'NOT_FOUND',
-          message: 'User not found',
+          message: 'You cannot use your own referral code',
         });
       }
 
       // Check that the referrer exists
       const referrer = await prisma.user.findUnique({
-        where: { id: referrerEntry.referrerId },
+        where: { id: referrerId },
       });
       if (!referrer) {
         throw new TRPCError({
@@ -168,7 +159,7 @@ export const referralRouter = router({
       // Create the referral
       const referral = await prisma.referral.create({
         data: {
-          referrerId: referrerEntry.referrerId,
+          referrerId,
           referredId: ctx.user.id,
           referralCode: code,
           status: 'PENDING',
@@ -178,9 +169,85 @@ export const referralRouter = router({
       return {
         id: referral.id,
         status: referral.status,
-        message: 'Referral code applied successfully! You will both receive a reward once your first booking is completed.',
+        message: 'Referral code applied successfully!',
         referrerBonus: referral.referrerReward.toNumber(),
         referredBonus: referral.referredReward.toNumber(),
       };
     }),
+
+  // ── Leaderboard ───────────────────────────────────────
+  leaderboard: publicProcedure
+    .input(z.object({ limit: z.number().default(10) }))
+    .query(async ({ input }) => {
+      const topReferrers = await prisma.referral.groupBy({
+        by: ['referrerId'],
+        where: { status: 'COMPLETED' },
+        _count: { id: true },
+        orderBy: { _count: { id: 'desc' } },
+        take: input.limit,
+      });
+      return topReferrers;
+    }),
+
+  // ── Share card ────────────────────────────────────────
+  shareCard: protectedProcedure.query(async ({ ctx }) => {
+    const ref = await prisma.referral.findFirst({
+      where: { referrerId: ctx.user.id },
+      select: { referralCode: true },
+    });
+    const code = ref?.referralCode || `GOB-${ctx.user.id}`;
+    return {
+      code,
+      shareUrl: `${process.env['NEXT_PUBLIC_APP_URL'] || 'http://localhost:3000'}/register?ref=${code}`,
+      shareText: 'انضمي إلى دلال واحصلي على خصم ٢٠ ريال!',
+    };
+  }),
+
+  // Enhanced stats with tiered rewards
+  getEnhancedStats: protectedProcedure.query(async ({ ctx }) => {
+    const referrals = await prisma.referral.findMany({
+      where: { referrerId: ctx.user.id },
+      orderBy: { createdAt: 'desc' },
+    });
+
+    const completed = referrals.filter((r) => r.rewardCredited);
+    const totalEarnings = completed.reduce((sum, r) => sum + Number(r.referrerReward), 0);
+    const referralCode = referrals[0]?.referralCode ?? '——';
+
+    // Tiered rewards
+    const count = completed.length;
+    const tier = count >= 10 ? 'الماسي' : count >= 5 ? 'ذهبي' : count >= 1 ? 'فضي' : 'مبتدئ';
+    const nextTier =
+      count >= 10
+        ? null
+        : count >= 5
+          ? 'الماسي (١٠ إحالات)'
+          : count >= 1
+            ? 'ذهبي (٥ إحالات)'
+            : 'فضي (إحالة واحدة)';
+    const nextCount = count >= 10 ? 0 : count >= 5 ? 10 - count : count >= 1 ? 5 - count : 1;
+
+    // Double-sided rewards
+    const referrerBonus = count >= 10 ? 50 : count >= 5 ? 30 : 20;
+    const referredBonus = 20; // New user always gets 20 SAR
+
+    return {
+      referralCode,
+      totalReferrals: referrals.length,
+      completedReferrals: count,
+      totalEarnings,
+      tier,
+      nextTier,
+      nextCount,
+      referrerBonus,
+      referredBonus,
+      recentReferrals: referrals.slice(0, 5).map((r) => ({
+        referredId: r.referredId,
+        date: r.createdAt,
+        rewarded: r.rewardCredited,
+        referrerReward: Number(r.referrerReward),
+        referredReward: Number(r.referredReward),
+      })),
+    };
+  }),
 });

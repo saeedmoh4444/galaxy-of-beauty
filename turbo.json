@@ -4,23 +4,17 @@
   "tasks": {
     "build": {
       "dependsOn": ["^build"],
-      "outputs": [
-        ".next/**",
-        "!.next/cache/**",
-        "dist/**",
-        "build/**",
-        ".expo/**"
-      ]
+      "outputs": [".next/**", "!.next/cache/**", "dist/**", "build/**", ".expo/**"]
     },
     "dev": {
       "cache": false,
       "persistent": true
     },
     "lint": {
-      "dependsOn": ["^build"]
+      "dependsOn": []
     },
     "type-check": {
-      "dependsOn": ["^build"]
+      "dependsOn": []
     },
     "db:generate": {
       "cache": false
@@ -30,6 +24,26 @@
     },
     "db:seed": {
       "cache": false
+    },
+    "db:validate": {
+      "cache": false
+    },
+    "db:migrate:dev": {
+      "cache": false
+    },
+    "db:migrate:deploy": {
+      "cache": false
+    },
+    "db:migrate:status": {
+      "cache": false
+    },
+    "test:unit": {
+      "dependsOn": ["^build"],
+      "outputs": ["coverage/**"]
+    },
+    "test:integration": {
+      "dependsOn": ["^build"],
+      "outputs": ["coverage/**"]
     },
     "clean": {
       "cache": false
@@ -41,6 +55,13 @@
     "test:e2e": {
       "dependsOn": ["^build"],
       "outputs": ["playwright-report/**", "test-results/**"]
+    },
+    "build-storybook": {
+      "outputs": ["storybook-static/**"]
+    },
+    "worker": {
+      "cache": false,
+      "persistent": true
     }
   }
 }

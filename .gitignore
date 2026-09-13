@@ -42,12 +42,10 @@ test-results/
 # Turbo
 .turbo/
 
-# Prisma
-packages/db/prisma/migrations/
-
 # Uploads (local dev)
 uploads/*
 !uploads/.gitkeep
+packages/api/uploads/
 
 # Certificates
 *.pem
@@ -77,3 +75,15 @@ models/
 # Mobile
 apps/mobile/android/
 apps/mobile/ios/
+
+*storybook.log
+storybook-static
+
+# Editor history
+.history/
+
+# Remediation backups
+backups/
+
+# Generated reports (local only)
+*.report.md.tmp

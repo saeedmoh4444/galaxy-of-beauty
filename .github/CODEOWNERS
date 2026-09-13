@@ -1,0 +1,28 @@
+# CODEOWNERS — Galaxy of Beauty
+# Requires review from listed owners before merge into master.
+
+# Auth & Security
+packages/api/src/routers/auth.ts         @saeedmoh4444
+packages/api/src/lib/jwt.ts              @saeedmoh4444
+packages/api/src/lib/csrf.ts             @saeedmoh4444
+packages/api/src/lib/audit.ts            @saeedmoh4444
+packages/api/src/trpc.ts                 @saeedmoh4444
+
+# Database & Migrations
+packages/db/prisma/schema.prisma         @saeedmoh4444
+packages/db/prisma/migrations/**         @saeedmoh4444
+
+# Payments & Wallet
+packages/api/src/routers/payments.ts     @saeedmoh4444
+packages/api/src/routers/wallet.ts       @saeedmoh4444
+packages/api/src/routers/payouts.ts      @saeedmoh4444
+
+# Deployment
+.github/workflows/deploy-production.yml  @saeedmoh4444
+docker-compose.yml                       @saeedmoh4444
+docker-compose.prod.yml                  @saeedmoh4444
+apps/web/Dockerfile                      @saeedmoh4444
+
+# Shared packages (breaking changes affect all workspaces)
+packages/shared/**                       @saeedmoh4444
+packages/config/**                       @saeedmoh4444

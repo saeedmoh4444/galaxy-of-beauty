@@ -2,6 +2,7 @@ import { z } from 'zod';
 import { TRPCError } from '@trpc/server';
 import { router, publicProcedure, technicianProcedure } from '../trpc';
 import { prisma } from '@galaxy/db';
+import { MAX_LIST_SIZE } from '@galaxy/shared';
 
 export const subscriptionRouter = router({
   getPlans: publicProcedure.query(async () => {
@@ -44,7 +45,8 @@ export const subscriptionRouter = router({
       if (existing && existing.status === 'ACTIVE') {
         throw new TRPCError({
           code: 'CONFLICT',
-          message: 'You already have an active subscription. Cancel it first or wait for it to expire.',
+          message:
+            'You already have an active subscription. Cancel it first or wait for it to expire.',
         });
       }
 
@@ -85,7 +87,7 @@ export const subscriptionRouter = router({
         plan: true,
         usage: {
           orderBy: { createdAt: 'desc' },
-          take: 100,
+          take: MAX_LIST_SIZE,
         },
       },
     });
@@ -100,13 +102,8 @@ export const subscriptionRouter = router({
     // Calculate current month usage
     const now = new Date();
     const startOfMonth = new Date(now.getFullYear(), now.getMonth(), 1);
-    const monthlyUsage = subscription.usage.filter(
-      (u) => u.createdAt >= startOfMonth,
-    );
-    const totalRequests = monthlyUsage.reduce(
-      (sum, u) => sum + u.requestCount,
-      0,
-    );
+    const monthlyUsage = subscription.usage.filter((u) => u.createdAt >= startOfMonth);
+    const totalRequests = monthlyUsage.reduce((sum, u) => sum + u.requestCount, 0);
 
     return {
       id: subscription.id,
@@ -126,9 +123,7 @@ export const subscriptionRouter = router({
         limit: subscription.plan.monthlyLimit,
         percentage:
           subscription.plan.monthlyLimit > 0
-            ? Math.round(
-                (totalRequests / subscription.plan.monthlyLimit) * 100,
-              )
+            ? Math.round((totalRequests / subscription.plan.monthlyLimit) * 100)
             : 0,
       },
       recentActivity: monthlyUsage.slice(0, 10).map((u) => ({
@@ -187,17 +182,11 @@ export const subscriptionRouter = router({
       orderBy: { createdAt: 'desc' },
     });
 
-    const totalRequests = usageRecords.reduce(
-      (sum, u) => sum + u.requestCount,
-      0,
-    );
+    const totalRequests = usageRecords.reduce((sum, u) => sum + u.requestCount, 0);
     const totalTokens = usageRecords.reduce((sum, u) => sum + u.tokensUsed, 0);
 
     // Group by feature
-    const byFeature = new Map<
-      string,
-      { requests: number; tokens: number }
-    >();
+    const byFeature = new Map<string, { requests: number; tokens: number }>();
     for (const u of usageRecords) {
       const feature = u.feature;
       const existing = byFeature.get(feature) ?? { requests: 0, tokens: 0 };
@@ -219,9 +208,7 @@ export const subscriptionRouter = router({
         limit: subscription.plan.monthlyLimit,
         percentage:
           subscription.plan.monthlyLimit > 0
-            ? Math.round(
-                (totalRequests / subscription.plan.monthlyLimit) * 100,
-              )
+            ? Math.round((totalRequests / subscription.plan.monthlyLimit) * 100)
             : 0,
       },
       byFeature: Array.from(byFeature.entries()).map(([feature, data]) => ({

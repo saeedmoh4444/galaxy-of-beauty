@@ -1,12 +1,9 @@
 import { z } from 'zod';
 import { prisma } from '@galaxy/db';
-import {
-  router,
-  protectedProcedure,
-  adminProcedure,
-} from '../trpc';
+import { router, protectedProcedure, adminProcedure } from '../trpc';
 import { emitToUser } from '../socket/index';
 import { sendPushToUser } from '../lib/push';
+import { sendEmail } from '../lib/email';
 
 export const notificationRouter = router({
   // ── List notifications (paginated, newest first) ──────────────────────────
@@ -84,7 +81,7 @@ export const notificationRouter = router({
     }),
 
   // ── Mark all as read ──────────────────────────────────────────────────────
-  markAllRead: protectedProcedure.mutation(async ({ ctx }) => {
+  markAllRead: protectedProcedure.input(z.object({})).mutation(async ({ ctx }) => {
     await prisma.notification.updateMany({
       where: {
         userId: ctx.user.id,
@@ -134,7 +131,7 @@ export const notificationRouter = router({
       return { success: true };
     }),
 
-  // ── Send notification (admin, multi-channel stub) ─────────────────────────
+  // ── Send notification (admin, multi-channel) ──────────────────────────────
   send: adminProcedure
     .input(
       z.object({
@@ -150,6 +147,14 @@ export const notificationRouter = router({
     .mutation(async ({ input }) => {
       const { userId, type, titleAr, titleEn, bodyAr, bodyEn, link } = input;
 
+      // Fetch user for language preference + email
+      const user = await prisma.user.findUnique({
+        where: { id: userId },
+        select: { email: true, preferredLanguage: true },
+      });
+
+      const channels: string[] = ['in_app'];
+
       const notification = await prisma.notification.create({
         data: {
           userId,
@@ -157,7 +162,7 @@ export const notificationRouter = router({
           titleJson: { ar: titleAr, en: titleEn },
           bodyJson: { ar: bodyAr, en: bodyEn },
           link,
-          sentVia: ['in_app'],
+          sentVia: channels,
         },
       });
 
@@ -173,12 +178,34 @@ export const notificationRouter = router({
         createdAt: notification.createdAt,
       });
 
-      // Send push notification to the user's devices
-      // Determine locale from user preference
-      const user = await prisma.user.findUnique({
-        where: { id: userId },
-        select: { preferredLanguage: true },
+      // Send push notification
+      sendPushToUser(userId, {
+        title: user?.preferredLanguage === 'en' ? titleEn : titleAr,
+        body: user?.preferredLanguage === 'en' ? bodyEn : bodyAr,
+        data: link ? { link } : undefined,
       });
+      channels.push('push');
+
+      // Send email if user has one
+      if (user?.email) {
+        const locale = (user.preferredLanguage as 'ar' | 'en') || 'ar';
+        sendEmail({
+          to: user.email,
+          subject: locale === 'en' ? titleEn : titleAr,
+          html: `<div dir="${locale === 'ar' ? 'rtl' : 'ltr'}" style="font-family:sans-serif;padding:20px;max-width:600px"><h2>${locale === 'en' ? titleEn : titleAr}</h2><p>${locale === 'en' ? bodyEn : bodyAr}</p>${link ? `<p><a href="${link}">${locale === 'en' ? 'View details' : 'عرض التفاصيل'}</a></p>` : ''}</div>`,
+        }).catch(() => {
+          /* non-critical */
+        });
+        channels.push('email');
+      }
+
+      // Update channels that were actually used
+      await prisma.notification.update({
+        where: { id: notification.id },
+        data: { sentVia: channels },
+      });
+
+      // Send push notification to the user's devices
       const locale = (user?.preferredLanguage as 'ar' | 'en') || 'ar';
       sendPushToUser(userId, {
         title: locale === 'ar' ? titleAr : titleEn,
@@ -191,4 +218,12 @@ export const notificationRouter = router({
 
       return notification;
     }),
+
+  // Delete all read notifications
+  deleteAllRead: protectedProcedure.input(z.object({})).mutation(async ({ ctx }) => {
+    const result = await prisma.notification.deleteMany({
+      where: { userId: ctx.user.id, isRead: true },
+    });
+    return { message: `تم حذف ${result.count} إشعار`, count: result.count };
+  }),
 });

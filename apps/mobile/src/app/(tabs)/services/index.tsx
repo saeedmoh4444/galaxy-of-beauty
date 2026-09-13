@@ -1,48 +1,99 @@
-import { View, Text, ScrollView, TextInput, TouchableOpacity, StyleSheet, ActivityIndicator } from 'react-native';
-import { useRouter } from 'expo-router';
-import { trpc } from '@/lib/api';
-import { useState, useEffect } from 'react';
+import { View, Text, TouchableOpacity, StyleSheet, TextInput } from 'react-native';
+import { useState } from 'react';
+import { localize } from '@galaxy/shared';
+import { ScreenState } from '@/components/ScreenState';
+import { trpc } from '@/lib/trpc-react';
+import { formatCurrency } from '@galaxy/ui';
+import { useLocale } from '@/components/LocaleProvider';
 
-export default function ServicesScreen() {
-  const router = useRouter();
-  const [data, setData] = useState<Record<string, unknown>[]>([]);
-  const [loading, setLoading] = useState(true);
+const COLORS = {
+  brand: '#7c3aed',
+  white: '#ffffff',
+  gray50: '#faf5ff',
+  gray400: '#6b7280',
+  gray900: '#111827',
+};
+
+export default function ServicesScreen(): JSX.Element {
   const [search, setSearch] = useState('');
-
-  useEffect(() => {
-    setLoading(true);
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    (trpc.services.list as any).query({ search: search || undefined, sort: 'newest', page: 1, limit: 20 })
-      .then((d: Record<string, unknown>) => { setData((d.items ?? []) as Record<string, unknown>[]); setLoading(false); })
-      .catch(() => setLoading(false));
-  }, [search]);
+  const { t, locale } = useLocale();
+  const services = trpc.services.list.useQuery({
+    sort: 'popular',
+    limit: 20,
+    search: search || undefined,
+  });
+  const data = services.data?.items as unknown[] | undefined;
 
   return (
-    <View style={styles.container}>
-      <TextInput style={styles.search} placeholder="بحث عن خدمة..." value={search} onChangeText={setSearch} />
-      {loading ? <ActivityIndicator color="#7c3aed" style={{ marginTop: 20 }} /> : (
-        <ScrollView>
-          {data.map((svc: Record<string, unknown>, i: number) => (
-            <TouchableOpacity key={i} style={styles.card} onPress={() => router.push(`/services/${svc.id}`)}>
-              <View style={styles.cardLeft}>
-                <Text style={styles.cardTitle}>{(svc.titleJson as Record<string, string>)?.ar ?? ''}</Text>
-                <Text style={styles.cardMeta}>{svc.durationMin as number} دقيقة</Text>
-              </View>
-              <Text style={styles.cardPrice}>{svc.basePrice as number} ر.س</Text>
-            </TouchableOpacity>
-          ))}
-        </ScrollView>
-      )}
-    </View>
+    <ScreenState
+      isLoading={services.isLoading}
+      isError={services.isError}
+      isEmpty={!data || data.length === 0}
+      errorMessage={t('marketing.services.load-error')}
+      emptyTitle={t('marketing.services.no-services')}
+      onRetry={() => services.refetch()}
+    >
+      <Text style={styles.title}>{t('mobile.core.servicesTitle')}</Text>
+      <TextInput
+        style={styles.search}
+        placeholder={t('mobile.core.searchServicePlaceholder')}
+        value={search}
+        onChangeText={(t) => {
+          setSearch(t);
+          services.refetch();
+        }}
+        placeholderTextColor={COLORS.gray400}
+      />
+      {(data as Record<string, unknown>[])?.map((s: Record<string, unknown>, i: number) => (
+        <TouchableOpacity key={i} style={styles.card} activeOpacity={0.7}>
+          <View style={styles.row}>
+            <View style={styles.left}>
+              <Text style={styles.name}>
+                {localize(s.titleJson, locale) || (s.titleAr as string) || ''}
+              </Text>
+              <Text style={styles.desc} numberOfLines={2}>
+                {localize(s.descriptionJson, locale).slice(0, 80)}
+              </Text>
+            </View>
+            <Text style={styles.price}>{formatCurrency(Number(s.basePrice))}</Text>
+          </View>
+        </TouchableOpacity>
+      ))}
+    </ScreenState>
   );
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: '#fff' },
-  search: { margin: 16, borderWidth: 1, borderColor: '#d1d5db', borderRadius: 12, padding: 12, fontSize: 16, backgroundColor: '#f9fafb' },
-  card: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', padding: 16, marginHorizontal: 16, marginBottom: 8, backgroundColor: '#fff', borderRadius: 12, borderWidth: 1, borderColor: '#e5e7eb' },
-  cardLeft: { flex: 1 },
-  cardTitle: { fontSize: 16, fontWeight: '600', color: '#111827' },
-  cardMeta: { fontSize: 13, color: '#6b7280', marginTop: 4 },
-  cardPrice: { fontSize: 16, fontWeight: '700', color: '#7c3aed' },
+  title: {
+    fontSize: 24,
+    fontWeight: '800',
+    color: COLORS.brand,
+    textAlign: 'center',
+    marginBottom: 16,
+  },
+  search: {
+    backgroundColor: COLORS.white,
+    borderRadius: 12,
+    padding: 12,
+    marginBottom: 12,
+    fontSize: 14,
+    color: COLORS.gray900,
+    borderWidth: 1,
+    borderColor: '#e5e7eb',
+  },
+  card: {
+    backgroundColor: COLORS.white,
+    borderRadius: 14,
+    padding: 16,
+    marginBottom: 8,
+    shadowColor: '#000',
+    shadowOpacity: 0.05,
+    shadowRadius: 4,
+    elevation: 2,
+  },
+  row: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' },
+  left: { flex: 1, marginRight: 12 },
+  name: { fontSize: 15, fontWeight: '700', color: COLORS.gray900 },
+  desc: { fontSize: 12, color: COLORS.gray400, marginTop: 3 },
+  price: { fontSize: 14, fontWeight: '700', color: COLORS.brand },
 });

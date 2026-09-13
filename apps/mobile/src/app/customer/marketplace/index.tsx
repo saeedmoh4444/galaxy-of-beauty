@@ -1,0 +1,166 @@
+import {
+  View,
+  Text,
+  ScrollView,
+  StyleSheet,
+  TouchableOpacity,
+  TextInput,
+  RefreshControl,
+} from 'react-native';
+import { useState } from 'react';
+import { ErrorAlert } from '@/components/ErrorAlert';
+import { SkeletonList } from '@/components/SkeletonCard';
+import { trpc } from '@/lib/trpc-react';
+import { localize } from '@galaxy/shared';
+import { useLocale } from '@/components/LocaleProvider';
+import { useAuthState } from '@/hooks/useAuthState';
+
+interface MarketProduct {
+  id?: number;
+  nameJson?: { ar?: string };
+  brand?: string;
+  price?: number;
+}
+
+interface MarketProductsResponse {
+  items?: MarketProduct[];
+}
+
+interface CartItem {
+  id?: number;
+}
+
+export default function MarketplaceScreen(): JSX.Element {
+  const { locale, t } = useLocale();
+  const isAuthed = useAuthState();
+  const [search, setSearch] = useState('');
+  const productsQ = trpc.marketplace.products.useQuery({
+    search: search || undefined,
+    page: 1,
+    limit: 24,
+  });
+  const cartQ = trpc.marketplace.cart.useQuery(undefined, { enabled: isAuthed });
+  const productItems = (productsQ.data as unknown as MarketProductsResponse | null)?.items;
+  const products: MarketProduct[] = Array.isArray(productItems) ? productItems : [];
+  const cartCount = ((cartQ.data ?? []) as CartItem[]).length;
+
+  const addToCartMut = trpc.marketplace.addToCart.useMutation({ onError: () => {} });
+  const handleAddToCart = (pid: number) => {
+    addToCartMut.mutate({ productId: pid });
+  };
+
+  if (productsQ.isLoading) return <SkeletonList count={6} />;
+  if (productsQ.isError)
+    return <ErrorAlert message={t('marketplace.load-error')} onRetry={() => productsQ.refetch()} />;
+
+  return (
+    <ScrollView
+      style={s.c}
+      contentContainerStyle={s.i}
+      refreshControl={
+        <RefreshControl
+          refreshing={productsQ.isRefetching}
+          onRefresh={() => productsQ.refetch()}
+          colors={['#db2777']}
+        />
+      }
+    >
+      <View
+        style={{
+          flexDirection: 'row',
+          justifyContent: 'space-between',
+          alignItems: 'center',
+          marginBottom: 16,
+        }}
+      >
+        <View>
+          <Text style={s.t}>{t('marketplace.title')}</Text>
+          <Text style={s.sub}>{t('marketplace.subtitle')}</Text>
+        </View>
+        <TouchableOpacity
+          style={{
+            backgroundColor: '#f3f4f6',
+            borderRadius: 20,
+            paddingHorizontal: 14,
+            paddingVertical: 6,
+          }}
+        >
+          <Text> {cartCount}</Text>
+        </TouchableOpacity>
+      </View>
+
+      <TextInput
+        value={search}
+        onChangeText={setSearch}
+        placeholder={t('marketplace.searchPlaceholder')}
+        style={s.inp}
+        placeholderTextColor="#9ca3af"
+      />
+
+      {products.length === 0 && (
+        <View style={{ alignItems: 'center', padding: 30 }}>
+          <Text style={{ fontSize: 40 }}>🛒</Text>
+          <Text style={{ color: '#6b7280', marginTop: 8 }}>{t('marketplace.noProducts')}</Text>
+        </View>
+      )}
+
+      <View style={s.grid}>
+        {products.map((p) => (
+          <TouchableOpacity key={p.id} style={s.prod} onPress={() => handleAddToCart(p.id ?? 0)}>
+            <Text style={{ fontSize: 36, textAlign: 'center' }}>🧴</Text>
+            <Text
+              style={{ fontWeight: '600', fontSize: 13, textAlign: 'center', marginTop: 6 }}
+              numberOfLines={1}
+            >
+              {localize(p.nameJson, locale) || t('cart.productFallback', { id: p.id ?? '' })}
+            </Text>
+            <Text style={{ fontSize: 11, color: '#6b7280', textAlign: 'center' }}>{p.brand}</Text>
+            <Text
+              style={{
+                fontWeight: '800',
+                fontSize: 15,
+                color: '#db2777',
+                textAlign: 'center',
+                marginTop: 4,
+              }}
+            >
+              {(p.price ?? 0).toLocaleString()} {t('misc.sar')}
+            </Text>
+            <View
+              style={{
+                backgroundColor: '#db2777',
+                borderRadius: 8,
+                paddingVertical: 6,
+                marginTop: 8,
+              }}
+            >
+              <Text style={{ color: '#fff', textAlign: 'center', fontSize: 12, fontWeight: '600' }}>
+                {t('marketplace.add')}
+              </Text>
+            </View>
+          </TouchableOpacity>
+        ))}
+      </View>
+    </ScrollView>
+  );
+}
+
+const s = StyleSheet.create({
+  c: { flex: 1, backgroundColor: '#fdf2f8' },
+  i: { padding: 16, paddingBottom: 40 },
+  t: { fontSize: 22, fontWeight: '800', color: '#111827' },
+  sub: { fontSize: 13, color: '#6b7280', marginTop: 2 },
+  inp: {
+    backgroundColor: '#fff',
+    borderRadius: 12,
+    borderWidth: 1,
+    borderColor: '#e5e7eb',
+    paddingHorizontal: 14,
+    paddingVertical: 12,
+    fontSize: 14,
+    textAlign: 'right',
+    marginBottom: 16,
+  },
+  grid: { flexDirection: 'row', flexWrap: 'wrap', gap: 8 },
+  prod: { width: '48%', backgroundColor: '#fff', borderRadius: 14, padding: 12, marginBottom: 4 },
+});

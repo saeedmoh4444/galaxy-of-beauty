@@ -3,6 +3,7 @@ import { z } from 'zod';
 import { prisma } from '@galaxy/db';
 import { publicProcedure, adminProcedure, router } from '../trpc';
 import { createCategorySchema, updateCategorySchema } from '../validators/catalog';
+import { cached, invalidateCachePrefix } from '../lib/cache';
 
 /** Simple slugify helper for auto-generating slugs from English names. */
 function slugify(text: string): string {
@@ -20,17 +21,18 @@ export const categoryRouter = router({
    * Public (no auth required).
    */
   list: publicProcedure.query(async () => {
-    const categories = await prisma.category.findMany({
-      where: { parentId: null, isActive: true },
-      orderBy: { sortOrder: 'asc' },
-      include: {
-        children: {
-          where: { isActive: true },
-          orderBy: { sortOrder: 'asc' },
+    return cached('categories:list', () =>
+      prisma.category.findMany({
+        where: { parentId: null, isActive: true },
+        orderBy: { sortOrder: 'asc' },
+        include: {
+          children: {
+            where: { isActive: true },
+            orderBy: { sortOrder: 'asc' },
+          },
         },
-      },
-    });
-    return categories;
+      }),
+    );
   }),
 
   /**
@@ -83,32 +85,30 @@ export const categoryRouter = router({
    * getBySlug — find a single category by its slug.
    * Public.
    */
-  getBySlug: publicProcedure
-    .input(z.object({ slug: z.string() }))
-    .query(async ({ input }) => {
-      const category = await prisma.category.findUnique({
-        where: { slug: input.slug },
-        include: {
-          children: {
-            where: { isActive: true },
-            orderBy: { sortOrder: 'asc' },
-            include: {
-              _count: { select: { services: true } },
-            },
+  getBySlug: publicProcedure.input(z.object({ slug: z.string() })).query(async ({ input }) => {
+    const category = await prisma.category.findUnique({
+      where: { slug: input.slug },
+      include: {
+        children: {
+          where: { isActive: true },
+          orderBy: { sortOrder: 'asc' },
+          include: {
+            _count: { select: { services: true } },
           },
-          _count: { select: { services: true } },
         },
+        _count: { select: { services: true } },
+      },
+    });
+
+    if (!category) {
+      throw new TRPCError({
+        code: 'NOT_FOUND',
+        message: 'Category not found',
       });
+    }
 
-      if (!category) {
-        throw new TRPCError({
-          code: 'NOT_FOUND',
-          message: 'Category not found',
-        });
-      }
-
-      return category;
-    }),
+    return category;
+  }),
 
   /**
    * create — create a new category.
@@ -129,6 +129,10 @@ export const categoryRouter = router({
         },
       });
 
+      // Invalidate category cache after mutation
+      invalidateCachePrefix('categories:').catch((err) => {
+        console.warn('[Cache] failed to invalidate categories:', (err as Error).message);
+      });
       return category;
     }),
 
@@ -164,6 +168,9 @@ export const categoryRouter = router({
         data,
       });
 
+      invalidateCachePrefix('categories:').catch((err) => {
+        console.warn('[Cache] failed to invalidate categories:', (err as Error).message);
+      });
       return category;
     }),
 
@@ -189,6 +196,9 @@ export const categoryRouter = router({
         data: { isActive: false },
       });
 
+      invalidateCachePrefix('categories:').catch((err) => {
+        console.warn('[Cache] failed to invalidate categories:', (err as Error).message);
+      });
       return { success: true };
     }),
 });
