@@ -14,7 +14,7 @@
 **Response**:
 
 1. Check JWT secrets are set and consistent: `echo $JWT_ACCESS_SECRET | wc -c` (must be ≥32)
-2. Check database connectivity: `pnpm --filter @galaxy/db exec prisma db push --skip-generate` (dry-run)
+2. Check database connectivity: `pnpm --filter @galaxy/db exec prisma db push` (dry-run)
 3. Check Redis connectivity: `redis-cli -u $REDIS_URL PING`
 4. Roll back last auth-related deployment: `git log --oneline -5`
 5. If JWT secrets rotated: update environment, restart all instances
