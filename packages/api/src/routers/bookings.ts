@@ -55,6 +55,7 @@ const bookingDetailInclude = {
   address: true,
   slot: true,
   payment: true,
+  familyMember: { select: { id: true, name: true, relationship: true, ageGroup: true } },
 } as const;
 
 const bookingListInclude = {
@@ -63,6 +64,7 @@ const bookingListInclude = {
   customer: { select: { id: true, name: true } },
   address: true,
   slot: true,
+  familyMember: { select: { id: true, name: true, relationship: true, ageGroup: true } },
 } as const;
 
 // ---------------------------------------------------------------------------
@@ -101,34 +103,57 @@ export const bookingRouter = router({
       });
     }
 
-    // 2b. Look up slot
-    const slot = await prisma.availabilitySlot.findUnique({
-      where: { id: input.slotId },
-    });
-    if (!slot) {
-      throw notFound('Slot');
-    }
-    if (slot.technicianId !== technician.id) {
-      throw forbidden('Slot does not belong to the specified technician');
-    }
-    if (slot.isBooked) {
-      throw new TRPCError({
-        code: 'CONFLICT',
-        message: 'Slot is already booked',
+    // 2b. Look up slot — only when the client books against one. The date/
+    // time picker flows compose startAt/endAt directly and pass no slotId,
+    // so an unguarded lookup here used to 500 on every such booking.
+    if (input.slotId) {
+      const slot = await prisma.availabilitySlot.findUnique({
+        where: { id: input.slotId },
       });
+      if (!slot) {
+        throw notFound('Slot');
+      }
+      if (slot.technicianId !== technician.id) {
+        throw forbidden('Slot does not belong to the specified technician');
+      }
+      if (slot.isBooked) {
+        throw new TRPCError({
+          code: 'CONFLICT',
+          message: 'Slot is already booked',
+        });
+      }
+    }
+
+    // 2c. Family member (K1): optional "book on behalf of" link — the member
+    // must exist and belong to the booking customer.
+    if (input.familyMemberId) {
+      const member = await prisma.familyMember.findUnique({
+        where: { id: input.familyMemberId },
+      });
+      if (!member) {
+        throw new TRPCError({ code: 'NOT_FOUND', message: 'Family member not found' });
+      }
+      if (member.userId !== customerId) {
+        throw new TRPCError({
+          code: 'FORBIDDEN',
+          message: 'Family member belongs to another customer',
+        });
+      }
     }
 
     // 3. Atomic create
     const booking = await prisma.$transaction(async (tx) => {
-      // Re-check slot inside transaction to avoid races
-      const currentSlot = await tx.availabilitySlot.findUnique({
-        where: { id: input.slotId },
-      });
-      if (!currentSlot || currentSlot.isBooked) {
-        throw new TRPCError({
-          code: 'CONFLICT',
-          message: 'Slot is no longer available',
+      // Re-check slot inside transaction to avoid races (slot flows only)
+      if (input.slotId) {
+        const currentSlot = await tx.availabilitySlot.findUnique({
+          where: { id: input.slotId },
         });
+        if (!currentSlot || currentSlot.isBooked) {
+          throw new TRPCError({
+            code: 'CONFLICT',
+            message: 'Slot is no longer available',
+          });
+        }
       }
 
       // 4. Calculate totalAmount
@@ -178,17 +203,20 @@ export const bookingRouter = router({
           cashHandlingFee: 0,
           notes: input.notes ?? null,
           idempotencyKey: input.idempotencyKey,
+          familyMemberId: input.familyMemberId ?? null,
         },
       });
 
-      // 7. Mark slot as booked and link to booking
-      await tx.availabilitySlot.update({
-        where: { id: input.slotId },
-        data: {
-          isBooked: true,
-          bookingId: newBooking.id,
-        },
-      });
+      // 7. Mark slot as booked and link to booking (slot flows only)
+      if (input.slotId) {
+        await tx.availabilitySlot.update({
+          where: { id: input.slotId },
+          data: {
+            isBooked: true,
+            bookingId: newBooking.id,
+          },
+        });
+      }
 
       return newBooking;
     });
