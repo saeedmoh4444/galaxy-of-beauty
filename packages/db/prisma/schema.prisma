@@ -2307,10 +2307,13 @@ model SavingsGoal {
   targetAmount Decimal @db.Decimal(10, 2)
   savedAmount  Decimal @default(0) @db.Decimal(10, 2)
   status      String   @default("ACTIVE") // ACTIVE, COMPLETED, CANCELLED
+  bnplPlanId  Int?     // C3: goal-linked installment plan (Tier 3 #8)
+  bnplPlan    BnplPlan? @relation(fields: [bnplPlanId], references: [id])
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
 
   @@index([userId])
+  @@index([bnplPlanId])
   @@map("savings_goals")
 }
 
@@ -3900,6 +3903,7 @@ model BnplPlan {
   schedule       Json     // [{ month, amount, dueDate, paid }]
   createdAt      DateTime @default(now())
   updatedAt      DateTime @updatedAt
+  savingsGoals   SavingsGoal[]
 
   @@index([userId, status])
   @@map("bnpl_plans")
