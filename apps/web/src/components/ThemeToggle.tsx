@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import type { JSX } from 'react';
 import { applyTheme, isDarkApplied, THEME_CHANGE_EVENT } from '@/lib/theme';
 
 export function ThemeToggle(): JSX.Element {

@@ -1,4 +1,5 @@
 'use client';
+import type { JSX } from 'react';
 /**
  * E6a — life-stage journeys + period pampering on the wellness hub:
  * a stage card (auto-derived with manual override chips) and a pamper card

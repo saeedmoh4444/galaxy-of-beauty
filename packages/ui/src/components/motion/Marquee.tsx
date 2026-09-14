@@ -1,3 +1,4 @@
+import type { JSX } from 'react';
 /**
  * Marquee — infinite soft scrolling strip of pill chips.
  * The inner track is forced dir="ltr" so the motion direction is

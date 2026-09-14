@@ -2,6 +2,7 @@
 
 import { forwardRef } from 'react';
 import type { InputHTMLAttributes, SelectHTMLAttributes, TextareaHTMLAttributes } from 'react';
+import type { JSX } from 'react';
 import { cn } from '@galaxy/shared';
 
 // ── FormField (Input) ──

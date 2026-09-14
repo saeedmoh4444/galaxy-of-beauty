@@ -1,3 +1,4 @@
+import type { JSX } from 'react';
 /**
  * Section Heading — consistent page section titles with optional action link.
  *

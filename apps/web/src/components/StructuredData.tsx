@@ -1,3 +1,4 @@
+import type { JSX } from 'react';
 /**
  * JSON-LD Structured Data for SEO.
  *

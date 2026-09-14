@@ -1,3 +1,4 @@
+import type { JSX } from 'react';
 import { getServerCaller, serializeForClient } from '@/lib/server-trpc';
 import { GalleryClient } from './GalleryClient';
 import type { GalleryPageData } from './GalleryClient';

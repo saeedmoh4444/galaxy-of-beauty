@@ -1,4 +1,5 @@
 'use client';
+import type { JSX } from 'react';
 
 /**
  * Trust Bar — horizontal stats showing platform credibility.

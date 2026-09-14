@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useCallback } from 'react';
+import type { JSX } from 'react';
 import Image from 'next/image';
 import { api } from '@/lib/trpc';
 import type { RouterOutputs } from '@galaxy/api';

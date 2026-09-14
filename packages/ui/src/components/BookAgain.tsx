@@ -1,4 +1,5 @@
 'use client';
+import type { JSX } from 'react';
 
 /**
  * "Book Again" one-click button for re-booking a previous service.

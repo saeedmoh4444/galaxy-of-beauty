@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import type { JSX } from 'react';
 
 /**
  * Beauty Tip — rotating beauty tips for loading states and empty pages.

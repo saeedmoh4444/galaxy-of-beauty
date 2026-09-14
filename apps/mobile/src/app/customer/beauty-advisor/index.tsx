@@ -9,6 +9,7 @@ import {
   Platform,
 } from 'react-native';
 import { useState, useRef } from 'react';
+import type { JSX } from 'react';
 import { trpc } from '@/lib/trpc-react';
 import { useLocale } from '@/components/LocaleProvider';
 

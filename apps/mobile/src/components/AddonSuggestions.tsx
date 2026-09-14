@@ -1,3 +1,4 @@
+import type { JSX } from 'react';
 import { View, Text, TouchableOpacity } from 'react-native';
 import type { TranslationKey } from '@galaxy/shared';
 import { useLocale } from '@/components/LocaleProvider';

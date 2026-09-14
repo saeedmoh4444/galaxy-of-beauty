@@ -1,6 +1,7 @@
 'use client';
 
 import type { ComponentProps } from 'react';
+import type { JSX } from 'react';
 import { api } from '@/lib/trpc';
 import {
   PageContainer,

@@ -1,6 +1,7 @@
 'use client';
 
 import { useMemo } from 'react';
+import type { JSX } from 'react';
 import { api } from '@/lib/trpc';
 import { Card, Button, ErrorAlert, EmptyState, useToast, useAuth } from '@galaxy/ui';
 import { useLocale } from '@/components/LocaleProvider';

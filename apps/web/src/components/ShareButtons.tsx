@@ -1,4 +1,5 @@
 'use client';
+import type { JSX } from 'react';
 
 import { SHARE_URLS } from '@galaxy/ui';
 import { useLocale } from '@/components/LocaleProvider';

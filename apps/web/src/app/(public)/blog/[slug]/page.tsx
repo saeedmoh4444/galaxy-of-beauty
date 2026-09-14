@@ -1,3 +1,4 @@
+import type { JSX } from 'react';
 import type { Metadata } from 'next';
 import { getServerCaller, serializeForClient } from '@/lib/server-trpc';
 import { BlogPostClient } from './BlogPostClient';

@@ -1,6 +1,7 @@
 'use client';
 
 import { useId, useRef, useState } from 'react';
+import type { JSX } from 'react';
 
 /**
  * Tabs — horizontal tab navigation (WAI-ARIA tabs pattern).

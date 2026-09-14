@@ -1,4 +1,5 @@
 'use client';
+import type { JSX } from 'react';
 
 import { api } from '@/lib/trpc';
 import { Card, CardSkeleton, ErrorAlert, Button, useAuth } from '@galaxy/ui';

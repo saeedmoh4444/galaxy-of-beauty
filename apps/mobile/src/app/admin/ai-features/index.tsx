@@ -1,3 +1,4 @@
+import type { JSX } from 'react';
 import { View, Text, ScrollView, StyleSheet, TouchableOpacity } from 'react-native';
 import { useLocale } from '@/components/LocaleProvider';
 // NO API: aiFeatures router has no procedure that lists AI feature flags/toggles

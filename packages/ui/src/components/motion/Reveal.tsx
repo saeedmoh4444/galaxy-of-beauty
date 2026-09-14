@@ -8,6 +8,7 @@
  */
 
 import { useEffect, useRef, useState, type ReactNode } from 'react';
+import type { JSX } from 'react';
 
 interface RevealProps {
   children: ReactNode;

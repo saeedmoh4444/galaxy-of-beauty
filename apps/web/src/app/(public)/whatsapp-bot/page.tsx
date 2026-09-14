@@ -1,3 +1,4 @@
+import type { JSX } from 'react';
 import { Card } from '@galaxy/ui';
 import { getServerLocale } from '@/lib/i18n';
 import { t } from '@galaxy/shared';

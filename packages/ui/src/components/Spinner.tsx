@@ -1,4 +1,5 @@
 'use client';
+import type { JSX } from 'react';
 
 interface SpinnerProps {
   size?: 'sm' | 'md' | 'lg';

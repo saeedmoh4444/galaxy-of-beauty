@@ -8,6 +8,7 @@ import {
   useState,
   type ReactNode,
 } from 'react';
+import type { JSX } from 'react';
 import {
   AccessibilityInfo,
   Animated,

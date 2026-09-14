@@ -1,3 +1,4 @@
+import type { JSX } from 'react';
 import { View, Text, ScrollView, StyleSheet, RefreshControl } from 'react-native';
 import { ScreenState } from '@/components/ScreenState';
 import { SkeletonList } from '@/components/SkeletonCard';

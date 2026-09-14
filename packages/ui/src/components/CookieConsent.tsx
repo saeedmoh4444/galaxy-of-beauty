@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import type { JSX } from 'react';
 
 /**
  * Saudi PDPL-compliant cookie consent banner.

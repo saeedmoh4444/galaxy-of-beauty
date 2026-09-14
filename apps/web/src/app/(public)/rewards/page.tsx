@@ -1,3 +1,4 @@
+import type { JSX } from 'react';
 import { getServerCaller } from '@/lib/server-trpc';
 import type { RouterOutputs } from '@galaxy/api';
 import { Card } from '@galaxy/ui';

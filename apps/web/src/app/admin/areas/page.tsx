@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import type { JSX } from 'react';
 import { api } from '@/lib/trpc';
 import type { RouterOutput } from '@galaxy/api/client';
 import { Card, TableSkeleton, ErrorAlert, EmptyState, Button, Input, useAuth } from '@galaxy/ui';

@@ -1,3 +1,4 @@
+import type { JSX } from 'react';
 import { View, Text, FlatList, StyleSheet } from 'react-native';
 import { ScreenState } from '@/components/ScreenState';
 import { useAuthState } from '@/hooks/useAuthState';

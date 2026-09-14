@@ -1,4 +1,5 @@
 'use client';
+import type { JSX } from 'react';
 
 /**
  * Smart add-on suggestions — "Customers who booked this also added..."

@@ -6,6 +6,7 @@ import { Card, KPIRowSkeleton, ErrorAlert, Button } from '@galaxy/ui';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
 import { useLocale } from '@/components/LocaleProvider';
 import { useState } from 'react';
+import type { JSX } from 'react';
 
 export default function VideoSessionPage(): JSX.Element {
   const { t } = useLocale();

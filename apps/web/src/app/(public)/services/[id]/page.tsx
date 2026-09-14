@@ -1,3 +1,4 @@
+import type { JSX } from 'react';
 import { getServerCaller, serializeForClient } from '@/lib/server-trpc';
 import { ServiceDetailClient } from './ServiceDetailClient';
 import type { ServiceDetailData } from './ServiceDetailClient';

@@ -4,6 +4,7 @@
  * profile), browse the history, and see first-vs-latest progress deltas.
  */
 import { useState } from 'react';
+import type { JSX } from 'react';
 import { api } from '@/lib/trpc';
 import { Card, Button } from '@galaxy/ui';
 import { useLocale } from '@/components/LocaleProvider';
