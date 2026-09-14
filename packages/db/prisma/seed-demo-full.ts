@@ -2,8 +2,6 @@
 // Run: pnpm --filter @galaxy/db exec tsx prisma/seed-demo-full.ts
 import { prisma } from '../src/client';
 
-
-
 async function main() {
   console.log(' Seeding Dalal demo data...');
 

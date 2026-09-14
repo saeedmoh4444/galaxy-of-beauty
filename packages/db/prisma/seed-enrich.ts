@@ -20,7 +20,6 @@
 import { prisma } from '../src/client';
 import crypto from 'crypto';
 
-
 const db = prisma as any;
 
 function generateBookingCode(): string {
