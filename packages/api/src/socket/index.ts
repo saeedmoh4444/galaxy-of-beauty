@@ -6,6 +6,7 @@ import { z } from 'zod';
 import { prisma } from '@galaxy/db';
 import { verifyAccessToken } from '../lib/jwt';
 import { getEnv } from '../lib/env';
+import { buildIceServers } from '../lib/webrtc';
 import { getRedis } from '../lib/redis';
 import { logger } from '../lib/logger';
 import type { JwtPayload } from '../lib/jwt';
@@ -308,7 +309,11 @@ export function initializeSocket(httpServer: HttpServer): Server {
       await socket.join(`video:${data.bookingId}`);
       socket.to(`video:${data.bookingId}`).emit('video:participant', { userId, joined: true });
       const room = io?.sockets.adapter.rooms.get(`video:${data.bookingId}`);
-      ack?.({ ok: true, participants: room ? room.size : 1 });
+      ack?.({
+        ok: true,
+        participants: room ? room.size : 1,
+        iceServers: buildIceServers(getEnv()),
+      });
     });
 
     // Relay an SDP/ICE signal to the booking's room. Peers filter by from/to.

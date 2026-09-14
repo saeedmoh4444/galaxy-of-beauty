@@ -16,17 +16,24 @@ import { getSocketToken } from '@/hooks/useSocket';
 
 // A4b — real WebRTC call on mobile. Same signaling contract as the web
 // room (video:join/signal/leave over the authenticated socket server);
-// media flows peer-to-peer. STUN only until a TURN relay is provisioned.
+// media flows peer-to-peer. ICE servers (STUN/TURN) come from the server
+// in the video:join ack — the constant below is only a fallback.
 
 const SOCKET_URL =
   (typeof process !== 'undefined' &&
     (process.env as Record<string, string>)['EXPO_PUBLIC_SOCKET_URL']) ||
   `http://localhost:${SOCKET_DEFAULT_PORT}`;
 
-const ICE_SERVERS = [
+const DEFAULT_ICE_SERVERS = [
   { urls: 'stun:stun.l.google.com:19302' },
   { urls: 'stun:stun1.l.google.com:19302' },
 ];
+
+type IceServerConfig = {
+  urls: string | string[];
+  username?: string;
+  credential?: string;
+};
 
 type VideoSignal = {
   from: number;
@@ -65,44 +72,59 @@ export default function VideoRoomScreen() {
     });
     socketRef.current = socket;
 
-    const pc = new RTCPeerConnection({ iceServers: ICE_SERVERS });
-    pcRef.current = pc;
-
     const endCall = () => {
       if (disposed) return;
       disposed = true;
       setStatus('ended');
       socket.emit('video:leave', { bookingId: bookingIdNum });
       localStreamRef.current?.getTracks().forEach((tr) => tr.stop());
-      pc.close();
+      pcRef.current?.close();
       socket.disconnect();
     };
 
-    pc.onicecandidate = (event: { candidate: { toJSON: () => unknown } | null }) => {
-      if (event.candidate) {
-        socket.emit('video:signal', {
-          bookingId: bookingIdNum,
-          kind: 'ice',
-          payload: event.candidate.toJSON?.() ?? event.candidate,
-        });
-      }
+    const attachLocalTracks = (pc: RTCPeerConnection) => {
+      const stream = localStreamRef.current;
+      if (!stream) return;
+      stream.getTracks().forEach((tr) => pc.addTrack(tr, stream));
     };
-    pc.ontrack = (event: { streams: RTCMediaStream[] }) => {
-      const stream = event.streams[0];
-      if (stream) setRemoteStreamUrl(stream.toURL());
-      setStatus('live');
-    };
-    pc.onconnectionstatechange = () => {
-      if (
-        (pc as unknown as { connectionState: string }).connectionState === 'failed' &&
-        !disposed
-      ) {
-        setError(t('mobile.video.peer-left'));
-        endCall();
-      }
+
+    // The peer connection is created only once the server hands us the ICE
+    // config (STUN/TURN) in the video:join ack.
+    const startPeer = (iceServers: IceServerConfig[]) => {
+      if (disposed || pcRef.current) return;
+      const pc = new RTCPeerConnection({ iceServers });
+      pcRef.current = pc;
+
+      pc.onicecandidate = (event: { candidate: { toJSON: () => unknown } | null }) => {
+        if (event.candidate) {
+          socket.emit('video:signal', {
+            bookingId: bookingIdNum,
+            kind: 'ice',
+            payload: event.candidate.toJSON?.() ?? event.candidate,
+          });
+        }
+      };
+      pc.ontrack = (event: { streams: RTCMediaStream[] }) => {
+        const stream = event.streams[0];
+        if (stream) setRemoteStreamUrl(stream.toURL());
+        setStatus('live');
+      };
+      pc.onconnectionstatechange = () => {
+        if (
+          (pc as unknown as { connectionState: string }).connectionState === 'failed' &&
+          !disposed
+        ) {
+          setError(t('mobile.video.peer-left'));
+          endCall();
+        }
+      };
+
+      attachLocalTracks(pc);
     };
 
     const createOffer = async () => {
+      const pc = pcRef.current;
+      if (!pc) return;
       try {
         const offer = await pc.createOffer({});
         await pc.setLocalDescription(offer);
@@ -113,6 +135,8 @@ export default function VideoRoomScreen() {
     };
 
     socket.on('video:signal', async (signal: VideoSignal) => {
+      const pc = pcRef.current;
+      if (!pc) return;
       try {
         if (signal.kind === 'offer') {
           await pc.setRemoteDescription(new RTCSessionDescription(signal.payload as never));
@@ -146,7 +170,12 @@ export default function VideoRoomScreen() {
       socket.emit(
         'video:join',
         { bookingId: bookingIdNum },
-        (ack: { ok?: boolean; participants?: number; error?: string }) => {
+        (ack: {
+          ok?: boolean;
+          participants?: number;
+          error?: string;
+          iceServers?: IceServerConfig[];
+        }) => {
           if (disposed) return;
           if (ack?.error) {
             setError(ack.error === 'FORBIDDEN' ? t('mobile.video.permission-denied') : ack.error);
@@ -154,6 +183,7 @@ export default function VideoRoomScreen() {
             socket.disconnect();
             return;
           }
+          startPeer(ack?.iceServers ?? DEFAULT_ICE_SERVERS);
           if ((ack?.participants ?? 1) >= 2) {
             void createOffer();
           } else {
@@ -174,7 +204,9 @@ export default function VideoRoomScreen() {
           return;
         }
         localStreamRef.current = stream;
-        stream.getTracks().forEach((tr) => pc.addTrack(tr, stream));
+        if (pcRef.current) {
+          attachLocalTracks(pcRef.current);
+        }
       } catch {
         setError(t('mobile.video.permission-denied'));
         setStatus('ended');

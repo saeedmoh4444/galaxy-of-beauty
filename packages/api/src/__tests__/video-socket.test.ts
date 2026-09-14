@@ -118,6 +118,14 @@ describe('video room signaling (A4)', () => {
     expect(ack2.participants).toBeGreaterThanOrEqual(2);
   });
 
+  it('acks the ICE server list (TURN relay support)', async () => {
+    const c = await connect(customer);
+    const ack = await emitAck(c, 'video:join', { bookingId });
+    expect(Array.isArray(ack.iceServers)).toBe(true);
+    expect(ack.iceServers.length).toBeGreaterThanOrEqual(2);
+    expect(ack.iceServers[0]).toHaveProperty('urls');
+  });
+
   it('rejects a non-participant with FORBIDDEN', async () => {
     const c3 = await connect(stranger);
     const ack = await emitAck(c3, 'video:join', { bookingId });

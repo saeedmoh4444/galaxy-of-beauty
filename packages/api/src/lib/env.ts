@@ -86,6 +86,17 @@ const envSchema = z.object({
   // ── Socket.IO ─────────────────────────────────────────
   SOCKET_PORT: z.string().optional(),
 
+  // ── WebRTC video calls (TURN relay) ────────────────────
+  // Missing → calls fall back to the public Google STUN pair (P2P only —
+  // symmetric-NAT users need TURN for media to flow). TURN_URLS is
+  // comma-separated, e.g. turn:relay.example.com:3478?transport=udp,
+  // turns:relay.example.com:5349?transport=tcp
+  TURN_URLS: z.string().optional(),
+  TURN_USERNAME: z.string().optional(),
+  TURN_CREDENTIAL: z.string().optional(),
+  // Comma-separated override for the STUN defaults.
+  STUN_URLS: z.string().optional(),
+
   // ── Business Config ───────────────────────────────────
   BUSINESS_NAME_AR: z.string().optional(),
   UPLOAD_DIR: z.string().optional(),
