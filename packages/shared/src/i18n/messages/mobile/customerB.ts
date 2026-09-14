@@ -605,6 +605,8 @@ export const mobileCustomerBMessages = {
   'mobile.booking.family-member-none': { ar: 'لا (حجز لنفسي)', en: 'No (book for myself)' },
   'mobile.booking.on-behalf-of': { ar: 'على حساب: {name}', en: 'On behalf of: {name}' },
   'mobile.video.unavailable': { ar: 'الجلسة غير متاحة', en: 'Session unavailable' },
+  'mobile.video.start': { ar: 'بدء الاستشارة', en: 'Start consultation' },
+  'mobile.video.start-failed': { ar: 'تعذر بدء الجلسة', en: 'Failed to start session' },
   'mobile.video.title': { ar: 'جلسة فيديو', en: ' Video Session' },
   'mobile.video.join-room': { ar: 'دخول الغرفة', en: ' Enter Room' },
   'mobile.video.room-toast': { ar: 'رقم الغرفة: {room}', en: 'Room number: {room}' },
