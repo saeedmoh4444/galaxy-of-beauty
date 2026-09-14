@@ -193,7 +193,7 @@ export default function WellnessTrackerPage(): JSX.Element {
                 return (
                   <div key={d.date as string} className="flex-1 flex flex-col items-center gap-1">
                     <div
-                      className="w-full rounded-t bg-gradient-to-t from-brand-400 to-brand-400"
+                      className="w-full rounded-t bg-linear-to-t from-brand-400 to-brand-400"
                       style={{ height: `${h}%` }}
                     />
                     <span className="text-[10px] text-text-tertiary">{t(DAYS[dayIdx])}</span>

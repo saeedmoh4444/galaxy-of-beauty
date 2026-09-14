@@ -144,7 +144,7 @@ export default function WomensServicesPage(): JSX.Element {
 
           <Card
             padding="lg"
-            className="bg-gradient-to-r from-pink-50 to-brand-50 dark:from-pink-950 dark:to-brand-950 border-none"
+            className="bg-linear-to-r from-pink-50 to-brand-50 dark:from-pink-950 dark:to-brand-950 border-none"
           >
             <div className="flex items-center gap-4">
               <ServiceImage
@@ -217,7 +217,7 @@ export default function WomensServicesPage(): JSX.Element {
           {safetyTips.length > 0 && (
             <Card
               padding="lg"
-              className="bg-gradient-to-r from-green-50 to-emerald-50 dark:from-green-950 dark:to-emerald-950 border-none"
+              className="bg-linear-to-r from-green-50 to-emerald-50 dark:from-green-950 dark:to-emerald-950 border-none"
             >
               <h3 className="font-bold mb-3 text-text-primary dark:text-gray-100">
                 {t('marketing.womens-services.tips-title')}

@@ -305,7 +305,7 @@ export default function CustomerDashboardPage(): JSX.Element {
                   {pins.data.slice(0, 3).map((p) => (
                     <div
                       key={p.id}
-                      className="relative h-20 w-20 flex-shrink-0 overflow-hidden rounded-xl bg-surface-muted dark:bg-gray-800"
+                      className="relative h-20 w-20 shrink-0 overflow-hidden rounded-xl bg-surface-muted dark:bg-gray-800"
                     >
                       <ServiceImage
                         src={p.imageUrl ?? null}

@@ -166,7 +166,7 @@ export default function SeasonalCalendarPage(): JSX.Element {
           ))}
         </div>
 
-        <div className={`rounded-2xl bg-gradient-to-br ${s.bg} p-6`}>
+        <div className={`rounded-2xl bg-linear-to-br ${s.bg} p-6`}>
           <h3 className="text-xl font-bold text-text-primary dark:text-gray-100">
             {s.emoji} {t(s.name)}
           </h3>

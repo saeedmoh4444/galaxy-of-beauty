@@ -124,7 +124,7 @@ export default function TechnicianBadgesPage(): JSX.Element {
                 className="group text-center transition-all hover:shadow-xl hover:-translate-y-1"
               >
                 <div
-                  className={`relative mx-auto flex h-20 w-20 items-center justify-center rounded-2xl bg-gradient-to-br ${meta.gradient} text-4xl shadow-lg transition-transform group-hover:scale-110`}
+                  className={`relative mx-auto flex h-20 w-20 items-center justify-center rounded-2xl bg-linear-to-br ${meta.gradient} text-4xl shadow-lg transition-transform group-hover:scale-110`}
                 >
                   {badge.iconUrl ? (
                     <Image src={badge.iconUrl} alt={name} fill className="object-contain p-4" />
@@ -139,7 +139,7 @@ export default function TechnicianBadgesPage(): JSX.Element {
                   {desc}
                 </p>
                 <div
-                  className={`mt-3 inline-block rounded-full bg-gradient-to-r ${meta.gradient} px-3 py-0.5 text-[10px] font-bold text-white`}
+                  className={`mt-3 inline-block rounded-full bg-linear-to-r ${meta.gradient} px-3 py-0.5 text-[10px] font-bold text-white`}
                 >
                   {badge.key.replace(/_/g, ' ').toUpperCase()}
                 </div>
@@ -150,7 +150,7 @@ export default function TechnicianBadgesPage(): JSX.Element {
       )}
 
       {/* Bottom CTA */}
-      <div className="mt-12 rounded-2xl bg-gradient-to-r from-amber-400 to-yellow-500 p-6 text-center text-white">
+      <div className="mt-12 rounded-2xl bg-linear-to-r from-amber-400 to-yellow-500 p-6 text-center text-white">
         <p className="text-2xl font-bold">{t('marketing.technician-badges.cta-title')}</p>
         <p className="mt-1 text-white/80">{t('marketing.technician-badges.cta-desc')}</p>
         <Link href="/technicians" className="mt-4 inline-block">

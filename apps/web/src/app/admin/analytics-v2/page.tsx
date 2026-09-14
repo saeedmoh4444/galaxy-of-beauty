@@ -64,7 +64,7 @@ export default function AdminAnalyticsV2Page(): JSX.Element {
               {(d.revenue as Record<string, number[]>)?.chart?.map((v: number, i: number) => (
                 <div key={i} className="flex-1 flex flex-col items-center gap-1">
                   <div
-                    className="w-full rounded-t bg-gradient-to-t from-brand-400 to-brand-600"
+                    className="w-full rounded-t bg-linear-to-t from-brand-400 to-brand-600"
                     style={{ height: `${Math.max(4, (v / 600) * 100)}%` }}
                   />
                   <span className="text-[9px] text-text-tertiary">{v}</span>

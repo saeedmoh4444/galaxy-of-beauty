@@ -67,7 +67,7 @@ export default function AdminReportsPage(): JSX.Element {
                 {(revenueData.data as number[])?.map((v: number, i: number) => (
                   <div key={i} className="flex-1 flex flex-col items-center gap-1">
                     <div
-                      className="w-full rounded-t bg-gradient-to-t from-brand-400 to-brand-600"
+                      className="w-full rounded-t bg-linear-to-t from-brand-400 to-brand-600"
                       style={{ height: `${Math.max(4, (v / 500000) * 100)}%` }}
                     />
                     <span className="text-[8px] text-text-tertiary">
@@ -83,7 +83,7 @@ export default function AdminReportsPage(): JSX.Element {
                 {(bookingsData.data as number[])?.map((v: number, i: number) => (
                   <div key={i} className="flex-1 flex flex-col items-center gap-1">
                     <div
-                      className="w-full rounded-t bg-gradient-to-t from-green-400 to-emerald-600"
+                      className="w-full rounded-t bg-linear-to-t from-green-400 to-emerald-600"
                       style={{ height: `${Math.max(4, (v / 2000) * 100)}%` }}
                     />
                     <span className="text-[8px] text-text-tertiary">

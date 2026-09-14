@@ -31,7 +31,7 @@ export default function LookOfTheDayPage(): JSX.Element {
       ) : today ? (
         <Card
           padding="lg"
-          className="mb-8 border-2 border-amber-300 dark:border-amber-700 bg-gradient-to-br from-amber-50 to-yellow-50 dark:from-amber-950 dark:to-yellow-950 text-center"
+          className="mb-8 border-2 border-amber-300 dark:border-amber-700 bg-linear-to-br from-amber-50 to-yellow-50 dark:from-amber-950 dark:to-yellow-950 text-center"
         >
           <span className="text-5xl">🌟</span>
           <h2 className="mt-2 text-xl font-bold">{t('marketing.look-of-the-day.title')}</h2>
@@ -54,7 +54,7 @@ export default function LookOfTheDayPage(): JSX.Element {
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
         {looks.map((l: Record<string, unknown>) => (
           <Card key={l.id as number} padding="md" className="text-center">
-            <div className="h-36 rounded-xl bg-gradient-to-br from-brand-100 to-brand-100 dark:from-brand-900 dark:to-brand-900 flex items-center justify-center text-4xl">
+            <div className="h-36 rounded-xl bg-linear-to-br from-brand-100 to-brand-100 dark:from-brand-900 dark:to-brand-900 flex items-center justify-center text-4xl">
               💇
             </div>
             <h3 className="font-bold mt-2">{l.title as string}</h3>

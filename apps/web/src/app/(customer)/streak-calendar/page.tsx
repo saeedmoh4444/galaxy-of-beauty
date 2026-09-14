@@ -82,7 +82,7 @@ export default function StreakCalendarPage(): JSX.Element {
             {/* Current Streak */}
             <Card
               padding="lg"
-              className="text-center bg-gradient-to-r from-amber-50 to-orange-50 dark:from-amber-950 dark:to-orange-950"
+              className="text-center bg-linear-to-r from-amber-50 to-orange-50 dark:from-amber-950 dark:to-orange-950"
             >
               <p className="text-6xl">🔥</p>
               <p className="mt-2 text-sm text-text-secondary">

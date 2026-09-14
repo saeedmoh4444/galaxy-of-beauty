@@ -225,7 +225,7 @@ function BridalDashboard(): JSX.Element {
         </div>
         <div className="mt-4 h-2 rounded-full bg-surface-muted">
           <div
-            className="h-2 rounded-full bg-gradient-to-r from-brand-400 to-brand-600 transition-all duration-700"
+            className="h-2 rounded-full bg-linear-to-r from-brand-400 to-brand-600 transition-all duration-700"
             style={{ width: `${Math.min(100, (currentStep / 3) * 100)}%` }}
           />
         </div>
@@ -402,7 +402,7 @@ function BridalDashboard(): JSX.Element {
       {/* Tips */}
       <Card
         padding="lg"
-        className="bg-gradient-to-r from-pink-50 to-brand-50 dark:from-pink-950 dark:to-brand-950 border-none"
+        className="bg-linear-to-r from-pink-50 to-brand-50 dark:from-pink-950 dark:to-brand-950 border-none"
       >
         <h3 className="font-bold text-text-primary dark:text-gray-100 mb-3">
           {t('marketing.bridal-concierge.bride-tips')}
@@ -627,7 +627,7 @@ function MarketingLanding(): JSX.Element {
         ))}
       </div>
 
-      <div className="mt-16 rounded-2xl bg-gradient-to-r from-pink-500 to-brand-500 p-8 text-white text-center">
+      <div className="mt-16 rounded-2xl bg-linear-to-r from-pink-500 to-brand-500 p-8 text-white text-center">
         <p className="text-3xl font-bold">{t('marketing.bridal-concierge.journey-title')}</p>
         <div className="mt-8 grid gap-4 sm:grid-cols-4">
           {STEPS.map((s, idx) => (

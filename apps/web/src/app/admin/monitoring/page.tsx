@@ -232,7 +232,7 @@ export default function MonitoringPage(): JSX.Element {
                   {(activity.chart as number[]).map((v: number, i: number) => (
                     <div key={i} className="flex-1 flex flex-col items-center gap-1">
                       <div
-                        className="w-full rounded-t bg-gradient-to-t from-brand-400 to-brand-600"
+                        className="w-full rounded-t bg-linear-to-t from-brand-400 to-brand-600"
                         style={{
                           height: `${Math.max(4, ((v || 1) / Math.max(...(activity.chart as number[]), 1)) * 100)}%`,
                         }}

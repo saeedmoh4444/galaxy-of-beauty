@@ -46,7 +46,7 @@ export default function BeautyShortsPage(): JSX.Element {
           {shorts.map((s) => (
             <div
               key={s.id}
-              className="relative h-96 overflow-hidden rounded-2xl bg-gradient-to-br from-gray-800 to-gray-900 text-white"
+              className="relative h-96 overflow-hidden rounded-2xl bg-linear-to-br from-gray-800 to-gray-900 text-white"
             >
               {s.videoUrl ? (
                 <video

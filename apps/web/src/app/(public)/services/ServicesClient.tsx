@@ -176,7 +176,7 @@ export function ServicesClient({ data }: { data: ServicesPageData }): JSX.Elemen
                       readOnly
                       className="absolute start-3 top-3 h-5 w-5 accent-brand-600"
                     />
-                    <div className="h-40 rounded-xl bg-gradient-to-br from-brand-100 to-accent-100 dark:from-brand-900 dark:to-accent-900" />
+                    <div className="h-40 rounded-xl bg-linear-to-br from-brand-100 to-accent-100 dark:from-brand-900 dark:to-accent-900" />
                     <h3 className="mt-3 font-semibold text-text-primary dark:text-gray-100">
                       {localize(svc.titleJson, locale)}
                     </h3>
@@ -206,7 +206,7 @@ export function ServicesClient({ data }: { data: ServicesPageData }): JSX.Elemen
                   className="cursor-pointer"
                 >
                   <Card hover>
-                    <div className="h-40 rounded-xl bg-gradient-to-br from-brand-100 to-accent-100" />
+                    <div className="h-40 rounded-xl bg-linear-to-br from-brand-100 to-accent-100" />
                     <h3 className="mt-3 font-semibold">{localize(svc.titleJson, locale)}</h3>
                     <p className="mt-1 text-sm text-text-secondary">
                       {t('marketing.services.duration-min', { min: svc.durationMin })}

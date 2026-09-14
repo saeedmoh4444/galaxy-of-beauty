@@ -162,7 +162,7 @@ export default function TutorialDetailPage(): JSX.Element {
 
         {/* Author Card */}
         <Card padding="md" className="mt-5 inline-flex items-center gap-4">
-          <div className="flex h-12 w-12 items-center justify-center rounded-full bg-gradient-to-br from-brand-400 to-brand-600 text-white text-lg font-bold">
+          <div className="flex h-12 w-12 items-center justify-center rounded-full bg-linear-to-br from-brand-400 to-brand-600 text-white text-lg font-bold">
             {authorName[0]}
           </div>
           <div>
@@ -199,7 +199,7 @@ export default function TutorialDetailPage(): JSX.Element {
       </div>
 
       {/* Bottom CTA */}
-      <div className="mt-10 rounded-2xl bg-gradient-to-r from-brand-500 to-brand-500 p-6 text-center text-white">
+      <div className="mt-10 rounded-2xl bg-linear-to-r from-brand-500 to-brand-500 p-6 text-center text-white">
         <p className="text-xl font-bold">{t('marketing.tutorials.cta-title')}</p>
         <p className="mt-1 text-white/80">{t('marketing.tutorials.cta-desc')}</p>
         <Link href="/tutorials" className="mt-4 inline-block">

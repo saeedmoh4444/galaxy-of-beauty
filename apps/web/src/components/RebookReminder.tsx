@@ -31,7 +31,7 @@ export function RebookReminder({ enabled = true }: { enabled?: boolean }): JSX.E
   return (
     <Card
       padding="md"
-      className="bg-gradient-to-r from-brand-50 to-accent-50 border border-brand-200 dark:from-brand-950 dark:to-accent-950 dark:border-brand-800"
+      className="bg-linear-to-r from-brand-50 to-accent-50 border border-brand-200 dark:from-brand-950 dark:to-accent-950 dark:border-brand-800"
     >
       <div className="flex items-center gap-4">
         <Icon name="calendar" size="lg" className="text-brand-600" />

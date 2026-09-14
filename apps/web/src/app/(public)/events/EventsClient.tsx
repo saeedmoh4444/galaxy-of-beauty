@@ -134,7 +134,7 @@ export function EventsClient({ initialEvents }: { initialEvents: unknown[] }): J
 
               return (
                 <Card key={event.id} padding="md" className="flex flex-col">
-                  <div className="relative mb-4 flex h-40 items-center justify-center rounded-xl bg-gradient-to-br from-brand-100 to-accent-100 text-5xl dark:from-brand-900 dark:to-accent-900">
+                  <div className="relative mb-4 flex h-40 items-center justify-center rounded-xl bg-linear-to-br from-brand-100 to-accent-100 text-5xl dark:from-brand-900 dark:to-accent-900">
                     {event.imageUrl ? (
                       <Image
                         src={event.imageUrl}

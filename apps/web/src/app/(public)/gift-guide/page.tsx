@@ -164,7 +164,7 @@ export default function GiftGuidePage(): JSX.Element {
         </div>
       ))}
 
-      <div className="text-center mt-12 p-8 bg-gradient-to-r from-pink-50 to-brand-50 rounded-3xl dark:from-pink-950 dark:to-brand-950">
+      <div className="text-center mt-12 p-8 bg-linear-to-r from-pink-50 to-brand-50 rounded-3xl dark:from-pink-950 dark:to-brand-950">
         <h2 className="text-xl font-bold text-text-primary dark:text-gray-100">
           {t('marketing.gift-guide.not-found-title')}
         </h2>

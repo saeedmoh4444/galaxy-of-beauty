@@ -165,7 +165,7 @@ export default function ProductScannerPage(): JSX.Element {
             {/* Product Card */}
             <Card padding="lg" className="border-2 border-brand-200 dark:border-brand-800">
               <div className="flex items-start gap-4">
-                <div className="flex h-16 w-16 shrink-0 items-center justify-center rounded-2xl bg-gradient-to-br from-brand-100 to-brand-100 text-3xl dark:from-brand-900 dark:to-brand-900">
+                <div className="flex h-16 w-16 shrink-0 items-center justify-center rounded-2xl bg-linear-to-br from-brand-100 to-brand-100 text-3xl dark:from-brand-900 dark:to-brand-900">
                   {product.category === 'skincare' ? '' : product.category === 'makeup' ? '' : ''}
                 </div>
                 <div className="flex-1">
@@ -270,7 +270,7 @@ export default function ProductScannerPage(): JSX.Element {
         {/* Quick Tips */}
         <Card
           padding="lg"
-          className="bg-gradient-to-r from-green-50 to-emerald-50 dark:from-green-950 dark:to-emerald-950 border-none"
+          className="bg-linear-to-r from-green-50 to-emerald-50 dark:from-green-950 dark:to-emerald-950 border-none"
         >
           <h3 className="font-bold mb-3">{t('scanner.tipsTitle')}</h3>
           <div className="grid gap-2 text-sm text-text-secondary dark:text-text-tertiary sm:grid-cols-2">
