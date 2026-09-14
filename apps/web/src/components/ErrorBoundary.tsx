@@ -2,6 +2,7 @@
 
 import { Component, useEffect, useState } from 'react';
 import type { ReactNode, ErrorInfo } from 'react';
+import type { JSX } from 'react';
 import type { Locale } from '@galaxy/shared';
 import { t } from '@galaxy/shared';
 import { LOCALE_CHANGE_EVENT } from '@/components/LocaleProvider';

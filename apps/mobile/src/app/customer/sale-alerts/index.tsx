@@ -1,3 +1,4 @@
+import type { JSX } from 'react';
 import { View, Text, ScrollView, StyleSheet, RefreshControl } from 'react-native';
 import { SkeletonList } from '@/components/SkeletonCard';
 import { trpc } from '@/lib/trpc-react';
@@ -26,7 +27,9 @@ export default function SaleAlertsScreen(): JSX.Element {
       refreshControl={
         <RefreshControl
           refreshing={alertsQ.isRefetching}
-          onRefresh={() => alertsQ.refetch()}
+          onRefresh={async () => {
+            await alertsQ.refetch();
+          }}
           colors={['#dc2626']}
         />
       }

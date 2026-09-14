@@ -1,3 +1,4 @@
+import type { JSX } from 'react';
 import { View, Text, ScrollView, StyleSheet, RefreshControl, Image } from 'react-native';
 import { SkeletonList } from '@/components/SkeletonCard';
 import { trpc } from '@/lib/trpc-react';
@@ -24,7 +25,9 @@ export default function MoodBoardScreen(): JSX.Element {
       refreshControl={
         <RefreshControl
           refreshing={pinsQ.isRefetching}
-          onRefresh={() => pinsQ.refetch()}
+          onRefresh={async () => {
+            await pinsQ.refetch();
+          }}
           colors={['#ec4899']}
         />
       }

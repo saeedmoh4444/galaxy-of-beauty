@@ -1,3 +1,4 @@
+import type { JSX } from 'react';
 import { View, Text, ScrollView, StyleSheet, TouchableOpacity, RefreshControl } from 'react-native';
 import { useRouter } from 'expo-router';
 import { ErrorAlert } from '@/components/ErrorAlert';
@@ -37,7 +38,12 @@ export default function ClinicsScreen(): JSX.Element {
       style={s.c}
       contentContainerStyle={s.i}
       refreshControl={
-        <RefreshControl refreshing={clinicsQ.isRefetching} onRefresh={() => clinicsQ.refetch()} />
+        <RefreshControl
+          refreshing={clinicsQ.isRefetching}
+          onRefresh={async () => {
+            await clinicsQ.refetch();
+          }}
+        />
       }
     >
       <Text style={s.title}>{t('mobile.clinics.title')}</Text>

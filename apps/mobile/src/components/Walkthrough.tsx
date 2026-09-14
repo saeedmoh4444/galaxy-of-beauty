@@ -8,6 +8,7 @@ import {
   useState,
   type ReactNode,
 } from 'react';
+import type { JSX } from 'react';
 import {
   AccessibilityInfo,
   Animated,
@@ -142,7 +143,7 @@ export function TourStep({
   style?: StyleProp<ViewStyle>;
 }): JSX.Element {
   const ctx = useContext(TourRegistryContext);
-  const ref = useRef<View | null>(null);
+  const ref = useRef<React.ElementRef<typeof View> | null>(null);
 
   const onLayout = useCallback(
     (_e: LayoutChangeEvent) => {

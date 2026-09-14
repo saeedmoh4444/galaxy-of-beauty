@@ -1,3 +1,4 @@
+import type { JSX } from 'react';
 import { View, Text, ScrollView, StyleSheet, TouchableOpacity, RefreshControl } from 'react-native';
 import { useLocalSearchParams } from 'expo-router';
 import { ErrorAlert } from '@/components/ErrorAlert';
@@ -67,7 +68,12 @@ export default function GymDetailScreen(): JSX.Element {
       style={s.c}
       contentContainerStyle={s.i}
       refreshControl={
-        <RefreshControl refreshing={detailQ.isRefetching} onRefresh={() => detailQ.refetch()} />
+        <RefreshControl
+          refreshing={detailQ.isRefetching}
+          onRefresh={async () => {
+            await detailQ.refetch();
+          }}
+        />
       }
     >
       <Text style={s.name}>{gym.storeName}</Text>

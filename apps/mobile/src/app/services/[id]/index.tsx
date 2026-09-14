@@ -1,3 +1,4 @@
+import type { JSX } from 'react';
 import {
   View,
   Text,
@@ -134,7 +135,9 @@ export default function ServiceDetailScreen(): JSX.Element {
       refreshControl={
         <RefreshControl
           refreshing={q.isRefetching}
-          onRefresh={() => q.refetch()}
+          onRefresh={async () => {
+            await q.refetch();
+          }}
           colors={['#db2777']}
         />
       }

@@ -1,3 +1,4 @@
+import type { JSX } from 'react';
 import { View, Text, ScrollView, StyleSheet, RefreshControl } from 'react-native';
 import { ErrorAlert } from '@/components/ErrorAlert';
 import { SkeletonList } from '@/components/SkeletonCard';
@@ -37,7 +38,9 @@ export default function TechniciansScreen(): JSX.Element {
       refreshControl={
         <RefreshControl
           refreshing={techsQ.isRefetching}
-          onRefresh={() => techsQ.refetch()}
+          onRefresh={async () => {
+            await techsQ.refetch();
+          }}
           colors={['#db2777']}
         />
       }

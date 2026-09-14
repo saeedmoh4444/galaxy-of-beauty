@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import type { JSX } from 'react';
 import { Image, View, Text, StyleSheet, type ImageStyle, type StyleProp } from 'react-native';
 import { getServiceImage } from '@galaxy/shared';
 

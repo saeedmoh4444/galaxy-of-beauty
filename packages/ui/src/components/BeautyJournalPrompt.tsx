@@ -1,4 +1,5 @@
 'use client';
+import type { JSX } from 'react';
 
 /**
  * Beauty Journal Prompt — daily reflection connecting beauty and mood.

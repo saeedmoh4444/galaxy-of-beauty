@@ -5,6 +5,7 @@ import Image from 'next/image';
 import { usePathname, useRouter } from 'next/navigation';
 import { useEffect, useRef, useState } from 'react';
 import type { ReactNode } from 'react';
+import type { JSX } from 'react';
 import type { TranslationKey } from '@galaxy/shared';
 import { Icon } from '@galaxy/ui';
 import { ThemeToggle } from '@/components/ThemeToggle';

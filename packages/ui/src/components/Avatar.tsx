@@ -1,4 +1,5 @@
 'use client';
+import type { JSX } from 'react';
 
 /**
  * Avatar component with image, initials fallback, and online indicator.

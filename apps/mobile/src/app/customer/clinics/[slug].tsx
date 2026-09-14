@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import type { JSX } from 'react';
 import {
   View,
   Text,
@@ -74,7 +75,12 @@ export default function ClinicDetailScreen(): JSX.Element {
       style={s.c}
       contentContainerStyle={s.i}
       refreshControl={
-        <RefreshControl refreshing={detailQ.isRefetching} onRefresh={() => detailQ.refetch()} />
+        <RefreshControl
+          refreshing={detailQ.isRefetching}
+          onRefresh={async () => {
+            await detailQ.refetch();
+          }}
+        />
       }
     >
       <Text style={s.name}>{clinic.storeName}</Text>

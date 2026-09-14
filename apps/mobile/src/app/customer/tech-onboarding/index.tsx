@@ -1,3 +1,4 @@
+import type { JSX } from 'react';
 import { View, Text, ScrollView, StyleSheet, TouchableOpacity, RefreshControl } from 'react-native';
 import { SkeletonList } from '@/components/SkeletonCard';
 import { useAuthState } from '@/hooks/useAuthState';
@@ -48,7 +49,9 @@ export default function TechOnboardingScreen(): JSX.Element {
       refreshControl={
         <RefreshControl
           refreshing={dataQ.isRefetching}
-          onRefresh={() => dataQ.refetch()}
+          onRefresh={async () => {
+            await dataQ.refetch();
+          }}
           colors={['#059669']}
         />
       }

@@ -1,3 +1,4 @@
+import type { JSX } from 'react';
 /**
  * Sparkles — twinkling four-point stars for hero sections.
  * Decorative only (aria-hidden). Positions are logical (start/end)

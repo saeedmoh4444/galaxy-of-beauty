@@ -1,3 +1,4 @@
+import type { JSX } from 'react';
 /**
  * Divider — horizontal separator with optional label.
  *

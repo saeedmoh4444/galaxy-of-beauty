@@ -1,3 +1,4 @@
+import type { JSX } from 'react';
 import { View, Text, ScrollView, TouchableOpacity, StyleSheet, RefreshControl } from 'react-native';
 import { SkeletonList } from '@/components/SkeletonCard';
 import { trpc } from '@/lib/trpc-react';
@@ -26,7 +27,9 @@ export default function SalonMapScreen(): JSX.Element {
       refreshControl={
         <RefreshControl
           refreshing={salonsQ.isRefetching}
-          onRefresh={() => salonsQ.refetch()}
+          onRefresh={async () => {
+            await salonsQ.refetch();
+          }}
           colors={['#059669']}
         />
       }

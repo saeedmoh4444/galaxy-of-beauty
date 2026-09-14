@@ -1,3 +1,4 @@
+import type { JSX } from 'react';
 import { View, Text, ScrollView, StyleSheet, RefreshControl } from 'react-native';
 import { SkeletonList } from '@/components/SkeletonCard';
 import { trpc } from '@/lib/trpc-react';
@@ -27,7 +28,9 @@ export default function VideoTestimonialsScreen(): JSX.Element {
       refreshControl={
         <RefreshControl
           refreshing={videosQ.isRefetching}
-          onRefresh={() => videosQ.refetch()}
+          onRefresh={async () => {
+            await videosQ.refetch();
+          }}
           colors={['#dc2626']}
         />
       }

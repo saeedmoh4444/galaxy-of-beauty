@@ -1,3 +1,4 @@
+import type { JSX } from 'react';
 import {
   View,
   Text,
@@ -39,7 +40,9 @@ export default function InspirationScreen(): JSX.Element {
       refreshControl={
         <RefreshControl
           refreshing={q.isRefetching}
-          onRefresh={() => q.refetch()}
+          onRefresh={async () => {
+            await q.refetch();
+          }}
           colors={['#ec4899']}
         />
       }

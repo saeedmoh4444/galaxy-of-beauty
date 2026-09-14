@@ -1,5 +1,6 @@
 import { View, Text, ScrollView, StyleSheet, TouchableOpacity, RefreshControl } from 'react-native';
 import { useState } from 'react';
+import type { JSX } from 'react';
 import { ErrorAlert } from '@/components/ErrorAlert';
 import { SkeletonList } from '@/components/SkeletonCard';
 import { useAuthState } from '@/hooks/useAuthState';
@@ -110,7 +111,9 @@ export default function WellnessHubScreen(): JSX.Element {
       refreshControl={
         <RefreshControl
           refreshing={dashQ.isRefetching}
-          onRefresh={() => dashQ.refetch()}
+          onRefresh={async () => {
+            await dashQ.refetch();
+          }}
           colors={['#db2777']}
         />
       }

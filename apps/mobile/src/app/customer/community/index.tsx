@@ -8,6 +8,7 @@ import {
   RefreshControl,
 } from 'react-native';
 import { useState } from 'react';
+import type { JSX } from 'react';
 import { LARGE_PAGE_SIZE } from '@galaxy/ui';
 import { ErrorAlert } from '@/components/ErrorAlert';
 import { SkeletonList } from '@/components/SkeletonCard';
@@ -106,7 +107,9 @@ export default function CommunityScreen(): JSX.Element {
       refreshControl={
         <RefreshControl
           refreshing={feedQ.isRefetching}
-          onRefresh={() => feedQ.refetch()}
+          onRefresh={async () => {
+            await feedQ.refetch();
+          }}
           colors={['#db2777']}
         />
       }

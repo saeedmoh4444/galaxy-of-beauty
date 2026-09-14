@@ -1,3 +1,4 @@
+import type { JSX } from 'react';
 import { View, Text, ScrollView, StyleSheet, RefreshControl } from 'react-native';
 import { SkeletonList } from '@/components/SkeletonCard';
 import { trpc } from '@/lib/trpc-react';
@@ -26,7 +27,9 @@ export default function LoyaltyPunchCardScreen(): JSX.Element {
       refreshControl={
         <RefreshControl
           refreshing={cardQ.isRefetching}
-          onRefresh={() => cardQ.refetch()}
+          onRefresh={async () => {
+            await cardQ.refetch();
+          }}
           colors={['#f59e0b']}
         />
       }

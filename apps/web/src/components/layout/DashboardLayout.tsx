@@ -7,6 +7,7 @@ import Image from 'next/image';
 import { usePathname, useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import type { ReactNode } from 'react';
+import type { JSX } from 'react';
 import { useAuth, Icon } from '@galaxy/ui';
 import { api } from '@/lib/trpc';
 import { useLocale } from '@/components/LocaleProvider';

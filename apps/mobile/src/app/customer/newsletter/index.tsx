@@ -8,6 +8,7 @@ import {
   RefreshControl,
 } from 'react-native';
 import { useState } from 'react';
+import type { JSX } from 'react';
 import { SkeletonList } from '@/components/SkeletonCard';
 import { trpc } from '@/lib/trpc-react';
 import { useLocale } from '@/components/LocaleProvider';
@@ -33,7 +34,9 @@ export default function NewsletterScreen(): JSX.Element {
       refreshControl={
         <RefreshControl
           refreshing={issuesQ.isRefetching}
-          onRefresh={() => issuesQ.refetch()}
+          onRefresh={async () => {
+            await issuesQ.refetch();
+          }}
           colors={['#2563eb']}
         />
       }

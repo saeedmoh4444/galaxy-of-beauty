@@ -1,3 +1,4 @@
+import type { JSX } from 'react';
 import { View, Text, ScrollView, TouchableOpacity, StyleSheet, RefreshControl } from 'react-native';
 import { SkeletonList } from '@/components/SkeletonCard';
 import { trpc } from '@/lib/trpc-react';
@@ -25,7 +26,9 @@ export default function CorporateWellnessScreen(): JSX.Element {
       refreshControl={
         <RefreshControl
           refreshing={plansQ.isRefetching}
-          onRefresh={() => plansQ.refetch()}
+          onRefresh={async () => {
+            await plansQ.refetch();
+          }}
           colors={['#059669']}
         />
       }

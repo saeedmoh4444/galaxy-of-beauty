@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import type { JSX } from 'react';
 import { useLocale } from '@/components/LocaleProvider';
 import { Card, Button, FORTUNE_ANIMATION_MS } from '@galaxy/ui';
 import Link from 'next/link';

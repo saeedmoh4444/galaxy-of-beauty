@@ -1,3 +1,4 @@
+import type { JSX } from 'react';
 import { View, Text, ScrollView, StyleSheet, RefreshControl } from 'react-native';
 import { SkeletonList } from '@/components/SkeletonCard';
 import { trpc } from '@/lib/trpc-react';
@@ -27,7 +28,9 @@ export default function RoutineSchedulerScreen(): JSX.Element {
       refreshControl={
         <RefreshControl
           refreshing={routinesQ.isRefetching}
-          onRefresh={() => routinesQ.refetch()}
+          onRefresh={async () => {
+            await routinesQ.refetch();
+          }}
           colors={['#8b5cf6']}
         />
       }

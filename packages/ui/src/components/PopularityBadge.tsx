@@ -1,4 +1,5 @@
 'use client';
+import type { JSX } from 'react';
 
 /**
  * Social proof badge — shows how many people booked/viewed a service.

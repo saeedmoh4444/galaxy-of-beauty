@@ -1,4 +1,5 @@
 'use client';
+import type { JSX } from 'react';
 
 import { Button, GOOGLE_OAUTH_URL, GOOGLE_OAUTH_SCOPE } from '@galaxy/ui';
 import { useLocale } from '@/components/LocaleProvider';

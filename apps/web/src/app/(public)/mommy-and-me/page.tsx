@@ -1,3 +1,4 @@
+import type { JSX } from 'react';
 import Link from 'next/link';
 import { Card, Button } from '@galaxy/ui';
 import { getServerLocale } from '@/lib/i18n';

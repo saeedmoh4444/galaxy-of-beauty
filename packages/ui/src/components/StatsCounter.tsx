@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import type { JSX } from 'react';
 
 /**
  * Animated stats counter — counts up to target when visible.

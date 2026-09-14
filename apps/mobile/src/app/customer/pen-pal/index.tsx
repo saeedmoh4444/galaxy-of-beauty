@@ -1,3 +1,4 @@
+import type { JSX } from 'react';
 import { View, Text, ScrollView, StyleSheet, RefreshControl } from 'react-native';
 import { SkeletonList } from '@/components/SkeletonCard';
 import { trpc } from '@/lib/trpc-react';
@@ -24,7 +25,9 @@ export default function PenPalScreen(): JSX.Element {
       refreshControl={
         <RefreshControl
           refreshing={matchQ.isRefetching}
-          onRefresh={() => matchQ.refetch()}
+          onRefresh={async () => {
+            await matchQ.refetch();
+          }}
           colors={['#ec4899']}
         />
       }

@@ -1,4 +1,5 @@
 'use client';
+import type { JSX } from 'react';
 
 /**
  * Mother-Daughter Badge — for family-friendly services.

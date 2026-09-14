@@ -1,4 +1,5 @@
 'use client';
+import type { JSX } from 'react';
 
 /**
  * Beauty Goal Tracker — visual progress for beauty learning goals.

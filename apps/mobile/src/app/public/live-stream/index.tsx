@@ -1,3 +1,4 @@
+import type { JSX } from 'react';
 import { View, Text, ScrollView, StyleSheet, TouchableOpacity, RefreshControl } from 'react-native';
 import { SkeletonList } from '@/components/SkeletonCard';
 import { trpc } from '@/lib/trpc-react';
@@ -26,7 +27,9 @@ export default function LiveStreamScreen(): JSX.Element {
       refreshControl={
         <RefreshControl
           refreshing={upcomingQ.isRefetching}
-          onRefresh={() => upcomingQ.refetch()}
+          onRefresh={async () => {
+            await upcomingQ.refetch();
+          }}
           colors={['#ef4444']}
         />
       }

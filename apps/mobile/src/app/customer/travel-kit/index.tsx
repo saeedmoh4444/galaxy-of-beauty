@@ -1,5 +1,6 @@
 import { View, Text, ScrollView, TouchableOpacity, StyleSheet, RefreshControl } from 'react-native';
 import { useState } from 'react';
+import type { JSX } from 'react';
 import { SkeletonList } from '@/components/SkeletonCard';
 import { useAuthState } from '@/hooks/useAuthState';
 import { trpc } from '@/lib/trpc-react';
@@ -36,7 +37,9 @@ export default function TravelKitScreen(): JSX.Element {
       refreshControl={
         <RefreshControl
           refreshing={destsQ.isRefetching}
-          onRefresh={() => destsQ.refetch()}
+          onRefresh={async () => {
+            await destsQ.refetch();
+          }}
           colors={['#0891b2']}
         />
       }

@@ -1,3 +1,4 @@
+import type { JSX } from 'react';
 import { View, Text, ScrollView, StyleSheet, RefreshControl } from 'react-native';
 import { SkeletonList } from '@/components/SkeletonCard';
 import { trpc } from '@/lib/trpc-react';
@@ -27,7 +28,9 @@ export default function PostCareScreen(): JSX.Element {
       refreshControl={
         <RefreshControl
           refreshing={libraryQ.isRefetching}
-          onRefresh={() => libraryQ.refetch()}
+          onRefresh={async () => {
+            await libraryQ.refetch();
+          }}
           colors={['#059669']}
         />
       }

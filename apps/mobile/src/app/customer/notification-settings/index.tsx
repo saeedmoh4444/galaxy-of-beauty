@@ -1,3 +1,4 @@
+import type { JSX } from 'react';
 import { View, Text, ScrollView, Switch, StyleSheet, RefreshControl } from 'react-native';
 import { SkeletonList } from '@/components/SkeletonCard';
 import { trpc } from '@/lib/trpc-react';
@@ -26,7 +27,9 @@ export default function NotificationSettingsScreen(): JSX.Element {
       refreshControl={
         <RefreshControl
           refreshing={prefsQ.isRefetching}
-          onRefresh={() => prefsQ.refetch()}
+          onRefresh={async () => {
+            await prefsQ.refetch();
+          }}
           colors={['#6366f1']}
         />
       }

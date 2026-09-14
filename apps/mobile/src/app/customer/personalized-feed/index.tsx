@@ -1,3 +1,4 @@
+import type { JSX } from 'react';
 import { View, Text, ScrollView, StyleSheet, RefreshControl } from 'react-native';
 import { SkeletonList } from '@/components/SkeletonCard';
 import { trpc } from '@/lib/trpc-react';
@@ -31,7 +32,9 @@ export default function PersonalizedFeedScreen(): JSX.Element {
       refreshControl={
         <RefreshControl
           refreshing={feedQ.isRefetching}
-          onRefresh={() => feedQ.refetch()}
+          onRefresh={async () => {
+            await feedQ.refetch();
+          }}
           colors={['#ec4899']}
         />
       }

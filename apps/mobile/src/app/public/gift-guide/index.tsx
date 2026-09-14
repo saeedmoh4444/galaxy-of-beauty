@@ -1,3 +1,4 @@
+import type { JSX } from 'react';
 import { View, Text, ScrollView, StyleSheet, TouchableOpacity, RefreshControl } from 'react-native';
 import { ErrorAlert } from '@/components/ErrorAlert';
 import { SkeletonList } from '@/components/SkeletonCard';
@@ -35,7 +36,9 @@ export default function GiftGuideScreen(): JSX.Element {
       refreshControl={
         <RefreshControl
           refreshing={guidesQ.isRefetching}
-          onRefresh={() => guidesQ.refetch()}
+          onRefresh={async () => {
+            await guidesQ.refetch();
+          }}
           colors={['#db2777']}
         />
       }

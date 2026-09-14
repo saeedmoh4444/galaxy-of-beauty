@@ -1,6 +1,7 @@
 import { View, Text, ScrollView, StyleSheet, TouchableOpacity, RefreshControl } from 'react-native';
 import { useLocalSearchParams } from 'expo-router';
 import { useMemo } from 'react';
+import type { JSX } from 'react';
 import { ErrorAlert } from '@/components/ErrorAlert';
 import { SkeletonList } from '@/components/SkeletonCard';
 import { useAuthState } from '@/hooks/useAuthState';
@@ -41,7 +42,12 @@ export default function NailBarScreen(): JSX.Element {
       style={s.c}
       contentContainerStyle={s.i}
       refreshControl={
-        <RefreshControl refreshing={slotsQ.isRefetching} onRefresh={() => slotsQ.refetch()} />
+        <RefreshControl
+          refreshing={slotsQ.isRefetching}
+          onRefresh={async () => {
+            await slotsQ.refetch();
+          }}
+        />
       }
     >
       <Text style={s.title}>{bar.storeName ?? ''}</Text>

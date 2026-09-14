@@ -1,3 +1,4 @@
+import type { JSX } from 'react';
 import { View, Text, ScrollView, StyleSheet, TouchableOpacity, RefreshControl } from 'react-native';
 import { useRouter } from 'expo-router';
 import { ErrorAlert } from '@/components/ErrorAlert';
@@ -32,7 +33,12 @@ export default function BarberettesScreen(): JSX.Element {
       style={s.c}
       contentContainerStyle={s.i}
       refreshControl={
-        <RefreshControl refreshing={listQ.isRefetching} onRefresh={() => listQ.refetch()} />
+        <RefreshControl
+          refreshing={listQ.isRefetching}
+          onRefresh={async () => {
+            await listQ.refetch();
+          }}
+        />
       }
     >
       <Text style={s.title}>{t('mobile.barberettes.title')}</Text>

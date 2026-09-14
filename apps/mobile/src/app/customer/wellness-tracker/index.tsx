@@ -1,3 +1,4 @@
+import type { JSX } from 'react';
 import { View, Text, ScrollView, StyleSheet, RefreshControl } from 'react-native';
 import { SkeletonList } from '@/components/SkeletonCard';
 import { useAuthState } from '@/hooks/useAuthState';
@@ -23,7 +24,9 @@ export default function WellnessTrackerScreen(): JSX.Element {
       refreshControl={
         <RefreshControl
           refreshing={todayQ.isRefetching}
-          onRefresh={() => todayQ.refetch()}
+          onRefresh={async () => {
+            await todayQ.refetch();
+          }}
           colors={['#059669']}
         />
       }

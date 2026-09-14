@@ -1,5 +1,6 @@
 import { View, Text, ScrollView, StyleSheet, TouchableOpacity, RefreshControl } from 'react-native';
 import { useState } from 'react';
+import type { JSX } from 'react';
 import { ErrorAlert } from '@/components/ErrorAlert';
 import { SkeletonList } from '@/components/SkeletonCard';
 import { trpc } from '@/lib/trpc-react';
@@ -55,7 +56,9 @@ export default function ServicesScreen(): JSX.Element {
       refreshControl={
         <RefreshControl
           refreshing={categoriesQ.isRefetching}
-          onRefresh={() => categoriesQ.refetch()}
+          onRefresh={async () => {
+            await categoriesQ.refetch();
+          }}
           colors={['#db2777']}
         />
       }

@@ -1,3 +1,4 @@
+import type { JSX } from 'react';
 import { View, Text, ScrollView, StyleSheet, TouchableOpacity, RefreshControl } from 'react-native';
 import { ErrorAlert } from '@/components/ErrorAlert';
 import { SkeletonList } from '@/components/SkeletonCard';
@@ -41,7 +42,9 @@ export default function AudioRoomsScreen(): JSX.Element {
       refreshControl={
         <RefreshControl
           refreshing={roomsQ.isRefetching}
-          onRefresh={() => roomsQ.refetch()}
+          onRefresh={async () => {
+            await roomsQ.refetch();
+          }}
           colors={['#dc2626']}
         />
       }

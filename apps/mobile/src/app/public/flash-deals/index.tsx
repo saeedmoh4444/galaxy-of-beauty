@@ -1,3 +1,4 @@
+import type { JSX } from 'react';
 import { View, Text, ScrollView, StyleSheet, RefreshControl } from 'react-native';
 import { ErrorAlert } from '@/components/ErrorAlert';
 import { SkeletonList } from '@/components/SkeletonCard';
@@ -26,7 +27,9 @@ export default function FlashDealsScreen(): JSX.Element {
       refreshControl={
         <RefreshControl
           refreshing={dealsQ.isRefetching}
-          onRefresh={() => dealsQ.refetch()}
+          onRefresh={async () => {
+            await dealsQ.refetch();
+          }}
           colors={['#dc2626']}
         />
       }

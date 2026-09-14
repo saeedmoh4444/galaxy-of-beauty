@@ -1,5 +1,6 @@
 import { View, StyleSheet, Animated, Easing } from 'react-native';
 import { useEffect, useMemo, useRef } from 'react';
+import type { JSX } from 'react';
 import { themeColors, useTheme } from '@/components/ThemeProvider';
 
 interface SkeletonCardProps {

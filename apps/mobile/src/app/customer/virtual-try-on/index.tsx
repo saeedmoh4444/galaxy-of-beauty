@@ -1,3 +1,4 @@
+import type { JSX } from 'react';
 import { View, Text, ScrollView, TouchableOpacity, StyleSheet, RefreshControl } from 'react-native';
 import { SkeletonList } from '@/components/SkeletonCard';
 import { trpc } from '@/lib/trpc-react';
@@ -21,7 +22,9 @@ export default function VirtualTryOnScreen(): JSX.Element {
       refreshControl={
         <RefreshControl
           refreshing={palettesQ.isRefetching}
-          onRefresh={() => palettesQ.refetch()}
+          onRefresh={async () => {
+            await palettesQ.refetch();
+          }}
           colors={['#ec4899']}
         />
       }

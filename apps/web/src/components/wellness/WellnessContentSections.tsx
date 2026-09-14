@@ -6,6 +6,7 @@
  * wellnessContent router (@galaxy/shared libraries).
  */
 import { useEffect, useMemo, useState } from 'react';
+import type { JSX } from 'react';
 import Link from 'next/link';
 import { api } from '@/lib/trpc';
 import { Card, Button } from '@galaxy/ui';

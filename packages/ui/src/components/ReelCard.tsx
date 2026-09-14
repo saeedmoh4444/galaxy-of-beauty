@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import type { JSX } from 'react';
 
 /**
  * ReelCard — a vertical beauty reel tile (Phase 3 sprint 1, E7 home).

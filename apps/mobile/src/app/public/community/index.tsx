@@ -11,6 +11,7 @@ import { EXTENDED_PAGE_SIZE } from '@galaxy/ui';
 import { ErrorAlert } from '@/components/ErrorAlert';
 import { SkeletonList } from '@/components/SkeletonCard';
 import { useState } from 'react';
+import type { JSX } from 'react';
 import { trpc } from '@/lib/trpc-react';
 import { useLocale } from '@/components/LocaleProvider';
 
@@ -69,7 +70,9 @@ export default function CommunityScreen(): JSX.Element {
         refreshControl={
           <RefreshControl
             refreshing={postsQ.isRefetching}
-            onRefresh={() => postsQ.refetch()}
+            onRefresh={async () => {
+              await postsQ.refetch();
+            }}
             colors={['#7c3aed']}
           />
         }

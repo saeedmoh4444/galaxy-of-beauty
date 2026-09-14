@@ -1,3 +1,4 @@
+import type { JSX } from 'react';
 import { View, Text, ScrollView, StyleSheet, RefreshControl } from 'react-native';
 import { SkeletonList } from '@/components/SkeletonCard';
 import { useAuthState } from '@/hooks/useAuthState';
@@ -24,7 +25,9 @@ export default function ServiceWarrantyScreen(): JSX.Element {
       refreshControl={
         <RefreshControl
           refreshing={claimsQ.isRefetching}
-          onRefresh={() => claimsQ.refetch()}
+          onRefresh={async () => {
+            await claimsQ.refetch();
+          }}
           colors={['#2563eb']}
         />
       }

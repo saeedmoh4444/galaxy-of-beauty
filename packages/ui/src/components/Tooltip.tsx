@@ -1,6 +1,7 @@
 'use client';
 
 import { cloneElement, useId, isValidElement, type ReactElement, type ReactNode } from 'react';
+import type { JSX } from 'react';
 
 /**
  * Tooltip — hover/focus helper label (§3.6 secondary layer).

@@ -1,3 +1,4 @@
+import type { JSX } from 'react';
 import { View, Text, ScrollView, StyleSheet, RefreshControl } from 'react-native';
 import { SkeletonList } from '@/components/SkeletonCard';
 import { useAuthState } from '@/hooks/useAuthState';
@@ -25,7 +26,9 @@ export default function SavingsGoalsScreen(): JSX.Element {
       refreshControl={
         <RefreshControl
           refreshing={goalsQ.isRefetching}
-          onRefresh={() => goalsQ.refetch()}
+          onRefresh={async () => {
+            await goalsQ.refetch();
+          }}
           colors={['#059669']}
         />
       }

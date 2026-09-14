@@ -1,4 +1,5 @@
 'use client';
+import type { JSX } from 'react';
 
 /**
  * Friend Package Badge — "Bring a friend" group booking indicator.

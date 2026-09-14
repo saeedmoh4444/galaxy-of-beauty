@@ -1,3 +1,4 @@
+import type { JSX } from 'react';
 /**
  * Page Title — consistent page header with optional breadcrumb.
  *

@@ -1,5 +1,6 @@
 import { View, Text, ScrollView, StyleSheet, TouchableOpacity, RefreshControl } from 'react-native';
 import { useState } from 'react';
+import type { JSX } from 'react';
 import { ErrorAlert } from '@/components/ErrorAlert';
 import { SkeletonList } from '@/components/SkeletonCard';
 import { useLocale } from '@/components/LocaleProvider';
@@ -67,7 +68,9 @@ export default function BeautyCoursesScreen(): JSX.Element {
       refreshControl={
         <RefreshControl
           refreshing={coursesQ.isRefetching}
-          onRefresh={() => coursesQ.refetch()}
+          onRefresh={async () => {
+            await coursesQ.refetch();
+          }}
           colors={['#db2777']}
         />
       }

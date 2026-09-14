@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import type { JSX } from 'react';
 
 /**
  * Lightweight CSS celebration animation — confetti sparkles.

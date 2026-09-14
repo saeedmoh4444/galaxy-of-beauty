@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, type ReactNode } from 'react';
+import type { JSX } from 'react';
 
 /**
  * Alert banner — info/success/warning messages.

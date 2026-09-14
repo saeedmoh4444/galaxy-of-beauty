@@ -1,3 +1,4 @@
+import type { JSX } from 'react';
 import { View, Text, ScrollView, StyleSheet, TouchableOpacity, RefreshControl } from 'react-native';
 import { SkeletonList } from '@/components/SkeletonCard';
 import { useAuthState } from '@/hooks/useAuthState';
@@ -33,7 +34,9 @@ export default function ServiceWishlistScreen(): JSX.Element {
       refreshControl={
         <RefreshControl
           refreshing={itemsQ.isRefetching}
-          onRefresh={() => itemsQ.refetch()}
+          onRefresh={async () => {
+            await itemsQ.refetch();
+          }}
           colors={['#7c3aed']}
         />
       }

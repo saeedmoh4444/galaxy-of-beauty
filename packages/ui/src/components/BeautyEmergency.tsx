@@ -1,4 +1,5 @@
 'use client';
+import type { JSX } from 'react';
 
 /**
  * Beauty Emergency — quick-booking for urgent beauty needs.

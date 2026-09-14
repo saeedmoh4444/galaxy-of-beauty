@@ -1,3 +1,4 @@
+import type { JSX } from 'react';
 import { View, Text, ScrollView, StyleSheet, TouchableOpacity, RefreshControl } from 'react-native';
 import { useRouter } from 'expo-router';
 import { ErrorAlert } from '@/components/ErrorAlert';
@@ -30,7 +31,12 @@ export default function TrainersScreen(): JSX.Element {
       style={s.c}
       contentContainerStyle={s.i}
       refreshControl={
-        <RefreshControl refreshing={trainersQ.isRefetching} onRefresh={() => trainersQ.refetch()} />
+        <RefreshControl
+          refreshing={trainersQ.isRefetching}
+          onRefresh={async () => {
+            await trainersQ.refetch();
+          }}
+        />
       }
     >
       <Text style={s.title}>{t('mobile.trainers.title')}</Text>

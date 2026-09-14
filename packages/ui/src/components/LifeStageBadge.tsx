@@ -1,4 +1,5 @@
 'use client';
+import type { JSX } from 'react';
 
 /**
  * Life Stage Badge — shows which life stage a service/package is designed for.

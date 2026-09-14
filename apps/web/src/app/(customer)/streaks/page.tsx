@@ -1,4 +1,5 @@
 'use client';
+import type { JSX } from 'react';
 
 import Image from 'next/image';
 import { api } from '@/lib/trpc';
