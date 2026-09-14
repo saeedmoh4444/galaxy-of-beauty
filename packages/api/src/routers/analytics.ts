@@ -8,7 +8,7 @@ export const analyticsRouter = router({
       z
         .object({ days: z.number().optional().default(30) })
         .optional()
-        .default({}),
+        .default({} as never),
     )
     .query(async ({ input }) => {
       const since = new Date();
@@ -83,7 +83,7 @@ export const analyticsRouter = router({
       z
         .object({ limit: z.number().optional().default(10) })
         .optional()
-        .default({}),
+        .default({} as never),
     )
     .query(async ({ input }) => {
       const technicians = await prisma.technician.findMany({
@@ -116,7 +116,7 @@ export const analyticsRouter = router({
       z
         .object({ limit: z.number().optional().default(10) })
         .optional()
-        .default({}),
+        .default({} as never),
     )
     .query(async ({ input }) => {
       const bookings = await prisma.booking.groupBy({
@@ -158,7 +158,7 @@ export const analyticsRouter = router({
       z
         .object({ days: z.number().optional().default(30) })
         .optional()
-        .default({}),
+        .default({} as never),
     )
     .query(async ({ input }) => {
       const since = new Date();
@@ -218,7 +218,7 @@ export const analyticsRouter = router({
       z
         .object({ days: z.number().optional().default(30) })
         .optional()
-        .default({}),
+        .default({} as never),
     )
     .query(async ({ input, ctx }) => {
       const since = new Date();

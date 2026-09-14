@@ -13,7 +13,7 @@ export const customerSegmentsRouter = router({
     .input(
       z.object({
         name: z.string().min(2).max(100),
-        criteria: z.record(z.unknown()),
+        criteria: z.record(z.string(), z.unknown()),
         description: z.string().max(500).optional(),
       }),
     )

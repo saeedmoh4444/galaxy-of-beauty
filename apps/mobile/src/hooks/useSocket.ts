@@ -64,8 +64,10 @@ export function useSocket(): void {
       const token = storedToken;
       if (!token || !mounted) return;
 
-      // Don't reconnect if already connected
-      if (socketRef.current?.connected) return;
+      // Don't reconnect if already connected OR still connecting
+      // (a poll firing during the connecting phase used to create an
+      // orphaned second socket with duplicate event handlers)
+      if (socketRef.current?.active) return;
 
       socket = io(SOCKET_URL, {
         auth: { token },
@@ -108,7 +110,7 @@ export function useSocket(): void {
 
     // Poll for token availability (every 2s for the first 30s)
     const interval = setInterval(() => {
-      if (!socketRef.current?.connected && storedToken) {
+      if (!socketRef.current?.active && storedToken) {
         connect();
       }
     }, 2000);

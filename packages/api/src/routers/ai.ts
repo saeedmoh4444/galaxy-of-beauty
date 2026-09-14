@@ -249,7 +249,7 @@ export const aiRouter = router({
       z
         .object({ limit: z.number().optional().default(5) })
         .optional()
-        .default({}),
+        .default({} as never),
     )
     .query(async ({ ctx, input }) => {
       const userId = ctx.user.id;
@@ -374,7 +374,7 @@ export const aiRouter = router({
   submitQuiz: protectedProcedure
     .input(
       z.object({
-        responses: z.record(z.unknown()),
+        responses: z.record(z.string(), z.unknown()),
       }),
     )
     .mutation(async ({ input, ctx }) => {
