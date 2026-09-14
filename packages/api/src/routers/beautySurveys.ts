@@ -14,7 +14,12 @@ export const beautySurveysRouter = router({
     ),
 
   respond: customerProcedure
-    .input(z.object({ surveyId: z.number().int().positive(), answersJson: z.record(z.string(), z.unknown()) }))
+    .input(
+      z.object({
+        surveyId: z.number().int().positive(),
+        answersJson: z.record(z.string(), z.unknown()),
+      }),
+    )
     .mutation(async ({ ctx, input }) => {
       const existing = await prisma.surveyResponse.findUnique({
         where: { userId_surveyId: { userId: ctx.user.id, surveyId: input.surveyId } },
