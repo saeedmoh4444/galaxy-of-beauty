@@ -1,15 +1,21 @@
 'use client';
+import type { JSX } from 'react';
 import { api } from '@/lib/trpc';
-import { Card, DashboardSkeleton, Button, formatCurrency } from '@galaxy/ui';
+import { Card, DashboardSkeleton, Button, formatCurrency, useAuth } from '@galaxy/ui';
 import { useLocale } from '@/components/LocaleProvider';
 
 export default function AdminReportsPage(): JSX.Element {
   const { t } = useLocale();
-  const { data, isLoading } = api.adminReports.dashboard.useQuery() as {
+  const { isAuthenticated } = useAuth();
+  const { data, isLoading } = api.adminReports.dashboard.useQuery(undefined, {
+    enabled: isAuthenticated,
+  }) as {
     data: Record<string, unknown> | undefined;
     isLoading: boolean;
   };
-  const { data: csv } = api.adminReports.exportCSV.useQuery() as {
+  const { data: csv } = api.adminReports.exportCSV.useQuery(undefined, {
+    enabled: isAuthenticated,
+  }) as {
     data: Record<string, string> | undefined;
   };
 
@@ -93,7 +99,7 @@ export default function AdminReportsPage(): JSX.Element {
             <div className="overflow-x-auto">
               <table className="w-full text-sm">
                 <thead>
-                  <tr className="text-right text-text-secondary border-b dark:border-gray-700">
+                  <tr className="text-end text-text-secondary border-b dark:border-gray-700">
                     <th className="py-2 px-3">{t('admin.reports.name-header')}</th>
                     <th className="py-2 px-3">{t('admin.reports.revenue-header')}</th>
                     <th className="py-2 px-3">{t('admin.reports.bookings-header')}</th>
@@ -120,7 +126,7 @@ export default function AdminReportsPage(): JSX.Element {
                 {byService.map((s: Record<string, unknown>, i: number) => (
                   <div key={i} className="flex items-center gap-2">
                     <span className="w-20 text-xs">{s.name as string}</span>
-                    <div className="flex-1 h-3 rounded-full bg-gray-200 dark:bg-gray-700">
+                    <div className="flex-1 h-3 rounded-full bg-surface-muted">
                       <div
                         className="h-3 rounded-full bg-brand-500"
                         style={{ width: `${s.pct as number}%` }}

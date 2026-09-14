@@ -1,5 +1,7 @@
+import type { JSX } from 'react';
 import { View, Text, ScrollView, StyleSheet, RefreshControl } from 'react-native';
 import { SkeletonList } from '@/components/SkeletonCard';
+import { useAuthState } from '@/hooks/useAuthState';
 import { trpc } from '@/lib/trpc-react';
 import { useLocale } from '@/components/LocaleProvider';
 
@@ -12,7 +14,8 @@ interface DiaryEntry {
 
 export default function SkinDiaryScreen(): JSX.Element {
   const { t, locale } = useLocale();
-  const entriesQ = trpc.skinDiary.entries.useQuery();
+  const isAuthed = useAuthState();
+  const entriesQ = trpc.skinDiary.entries.useQuery(undefined, { enabled: isAuthed });
   const data: DiaryEntry[] = (entriesQ.data as unknown as DiaryEntry[] | undefined) ?? [];
   if (entriesQ.isLoading) return <SkeletonList count={4} />;
   return (
@@ -22,7 +25,9 @@ export default function SkinDiaryScreen(): JSX.Element {
       refreshControl={
         <RefreshControl
           refreshing={entriesQ.isRefetching}
-          onRefresh={() => entriesQ.refetch()}
+          onRefresh={async () => {
+            await entriesQ.refetch();
+          }}
           colors={['#ec4899']}
         />
       }

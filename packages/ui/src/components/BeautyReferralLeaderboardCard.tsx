@@ -1,4 +1,5 @@
 'use client';
+import type { JSX } from 'react';
 
 import { cn } from '@galaxy/shared';
 
@@ -7,7 +8,7 @@ import { cn } from '@galaxy/shared';
  * From Phase W4: Sisterhood & Community — Referral Program.
  *
  * Usage:
- *   <BeautyReferralLeaderboardCard leaders={[{ name: 'نورة', referrals: 12, emoji: '' }]} />
+ *   <BeautyReferralLeaderboardCard leaders={[{ name: 'نورة', referrals: 12, emoji: '🏆' }]} />
  */
 
 interface Leader {
@@ -33,7 +34,7 @@ export function BeautyReferralLeaderboardCard({
   title = 'قائمة الإحالات',
   subtitle = 'الأكثر دعوة لصديقاتهن',
   referralsText = 'إحالة',
-  rankText = ' ترتيبكِ: #',
+  rankText = 'ترتيبكِ: #',
 }: BeautyReferralLeaderboardCardProps): JSX.Element | null {
   if (!leaders.length) return null;
 
@@ -47,7 +48,9 @@ export function BeautyReferralLeaderboardCard({
       )}
     >
       <div className="flex items-center gap-2">
-        <span className="text-xl" aria-hidden="true"></span>
+        <span className="text-xl" aria-hidden="true">
+          🥇
+        </span>
         <div>
           <h4 className="text-sm font-bold text-amber-700 dark:text-amber-300">{title}</h4>
           <p className="text-[10px] text-amber-500 dark:text-amber-400">{subtitle}</p>
@@ -60,7 +63,7 @@ export function BeautyReferralLeaderboardCard({
             key={l.name}
             className={cn(
               'flex items-center gap-2 rounded-lg px-3 py-2',
-              i === 0 ? 'bg-amber-50 dark:bg-amber-950' : 'bg-gray-50 dark:bg-gray-800',
+              i === 0 ? 'bg-amber-50 dark:bg-amber-950' : 'bg-surface-muted',
             )}
           >
             <span className="text-sm w-6 text-center">{medals[i] || `${i + 1}.`}</span>

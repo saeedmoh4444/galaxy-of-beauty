@@ -1,5 +1,6 @@
 'use client';
 import { useState } from 'react';
+import type { JSX } from 'react';
 import { api } from '@/lib/trpc';
 import { Card, CardListSkeleton, ErrorAlert, Button, formatCurrency } from '@galaxy/ui';
 import { useAuth } from '@galaxy/ui';
@@ -39,14 +40,14 @@ export default function KidsServicesPage(): JSX.Element {
   return (
     <div className="mx-auto max-w-5xl px-4 py-12">
       <div className="mb-10 text-center">
-        <span className="text-6xl"></span>
+        <span className="text-6xl">🧸</span>
         <h1 className="mt-4 text-3xl font-bold">{t('marketing.kids-services.title')}</h1>
         <p className="mt-2 text-text-secondary">{t('marketing.kids-services.subtitle')}</p>
       </div>
 
       {result ? (
         <Card padding="lg" className="text-center border-2 border-green-300">
-          <span className="text-6xl"></span>
+          <span className="text-6xl">🎉</span>
           <h2 className="mt-4 text-xl font-bold">{result.message as string}</h2>
           <p className="text-2xl font-extrabold text-brand-600 mt-2">
             {t('marketing.kids-services.price-sar', {
@@ -54,7 +55,7 @@ export default function KidsServicesPage(): JSX.Element {
             })}
           </p>
           <p className="text-sm text-text-secondary mt-1">
-            {result.childName as string} · ️{' '}
+            {result.childName as string} ·{' '}
             {t('marketing.kids-services.duration-min', { min: result.durationMin as number })} ·{' '}
             {result.tip as string}
           </p>
@@ -101,7 +102,7 @@ export default function KidsServicesPage(): JSX.Element {
           </button>
           <Card
             padding="lg"
-            className="bg-gradient-to-r from-blue-50 to-purple-50 dark:from-blue-950 dark:to-purple-950 border-none"
+            className="bg-gradient-to-r from-blue-50 to-brand-50 dark:from-blue-950 dark:to-brand-950 border-none"
           >
             <span className="text-5xl">{category?.emoji as string}</span>
             <h2 className="text-xl font-bold mt-2">{category?.nameAr as string}</h2>
@@ -147,7 +148,7 @@ export default function KidsServicesPage(): JSX.Element {
                     </p>
                   </div>
                 </div>
-                <div className="text-right">
+                <div className="text-end">
                   <p className="text-xl font-extrabold text-brand-600">
                     {t('marketing.kids-services.price-sar', {
                       price: formatCurrency(s.price as number),

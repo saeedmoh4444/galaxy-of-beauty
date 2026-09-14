@@ -133,7 +133,7 @@ const ALTERNATIVES = [
     nameEn: 'Organic Fragrance-Free Moisturizer',
     price: 95,
     brand: 'Organic Beauty',
-    emoji: '',
+    emoji: '🧴',
   },
   {
     id: 2,
@@ -141,7 +141,7 @@ const ALTERNATIVES = [
     nameEn: 'Hyaluronic Acid Serum',
     price: 145,
     brand: 'Pure Glow',
-    emoji: '',
+    emoji: '💧',
   },
   {
     id: 3,
@@ -149,7 +149,7 @@ const ALTERNATIVES = [
     nameEn: 'Natural Lipstick',
     price: 85,
     brand: 'Clean Beauty',
-    emoji: '',
+    emoji: '💄',
   },
   {
     id: 4,

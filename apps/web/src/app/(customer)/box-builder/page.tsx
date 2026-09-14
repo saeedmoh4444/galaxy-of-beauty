@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import type { JSX } from 'react';
 import { api } from '@/lib/trpc';
 import { Card, GridSkeleton, Button, formatCurrency } from '@galaxy/ui';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
@@ -39,7 +40,7 @@ export default function BoxBuilderPage(): JSX.Element {
             padding="lg"
             className="text-center border-2 border-green-300 dark:border-green-700"
           >
-            <span className="text-6xl"></span>
+            <span className="text-6xl">📦</span>
             <h2 className="mt-4 text-xl font-bold">{t('boxBuilder.built')}</h2>
             <p className="text-2xl font-extrabold text-brand-600 mt-2">
               {formatCurrency(result.total as number)} {t('beautyParty.currency')} /{' '}
@@ -63,7 +64,7 @@ export default function BoxBuilderPage(): JSX.Element {
         ) : (
           <>
             <Card padding="lg">
-              <h3 className="font-bold mb-3">️{t('boxBuilder.pickProducts')}</h3>
+              <h3 className="font-bold mb-3">{t('boxBuilder.pickProducts')}</h3>
               {isLoading ? (
                 <GridSkeleton count={8} />
               ) : (
@@ -72,7 +73,7 @@ export default function BoxBuilderPage(): JSX.Element {
                     <button
                       key={p.id as number}
                       onClick={() => toggle(p.id as number)}
-                      className={`rounded-xl border-2 p-3 text-center transition-all ${selected.includes(p.id as number) ? 'border-brand-400 bg-brand-50 dark:bg-brand-950 scale-105' : 'border-gray-200 dark:border-gray-700'}`}
+                      className={`rounded-xl border-2 p-3 text-center transition-all ${selected.includes(p.id as number) ? 'border-brand-400 bg-brand-50 dark:bg-brand-950 scale-105' : 'border-edge'}`}
                     >
                       <span className="text-3xl">{p.emoji as string}</span>
                       <p className="text-xs font-bold mt-1">{p.nameAr as string}</p>
@@ -100,7 +101,7 @@ export default function BoxBuilderPage(): JSX.Element {
                       <button
                         key={f}
                         onClick={() => setFreq(f)}
-                        className={`flex-1 rounded-lg border py-2 text-sm font-medium ${freq === f ? 'border-brand-400 bg-brand-50 dark:bg-brand-950' : 'border-gray-200 dark:border-gray-700'}`}
+                        className={`flex-1 rounded-lg border py-2 text-sm font-medium ${freq === f ? 'border-brand-400 bg-brand-50 dark:bg-brand-950' : 'border-edge'}`}
                       >
                         {f === 'monthly'
                           ? t('boxBuilder.monthlyDiscount')

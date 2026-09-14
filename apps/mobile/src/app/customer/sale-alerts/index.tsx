@@ -1,7 +1,9 @@
+import type { JSX } from 'react';
 import { View, Text, ScrollView, StyleSheet, RefreshControl } from 'react-native';
 import { SkeletonList } from '@/components/SkeletonCard';
 import { trpc } from '@/lib/trpc-react';
 import { useLocale } from '@/components/LocaleProvider';
+import { useAuthState } from '@/hooks/useAuthState';
 
 interface SaleAlert {
   id?: number;
@@ -12,7 +14,8 @@ interface SaleAlert {
 
 export default function SaleAlertsScreen(): JSX.Element {
   const { t } = useLocale();
-  const alertsQ = trpc.saleAlerts.myAlerts.useQuery();
+  const isAuthed = useAuthState();
+  const alertsQ = trpc.saleAlerts.myAlerts.useQuery(undefined, { enabled: isAuthed });
   const data: SaleAlert[] = (alertsQ.data as unknown as SaleAlert[] | undefined) ?? [];
 
   if (alertsQ.isLoading) return <SkeletonList count={4} />;
@@ -24,7 +27,9 @@ export default function SaleAlertsScreen(): JSX.Element {
       refreshControl={
         <RefreshControl
           refreshing={alertsQ.isRefetching}
-          onRefresh={() => alertsQ.refetch()}
+          onRefresh={async () => {
+            await alertsQ.refetch();
+          }}
           colors={['#dc2626']}
         />
       }
@@ -32,7 +37,7 @@ export default function SaleAlertsScreen(): JSX.Element {
       <Text style={styles.t}>{t('mobile.saleAlerts.title')}</Text>
       {data.map((a, i) => (
         <View key={i} style={styles.card}>
-          <Text style={styles.emoji}>{a.emoji ?? '️'}</Text>
+          <Text style={styles.emoji}>{a.emoji ?? ''}</Text>
           <View style={{ flex: 1 }}>
             <Text style={styles.name}>{a.serviceName}</Text>
             <Text style={styles.discount}>-{a.discount}%</Text>

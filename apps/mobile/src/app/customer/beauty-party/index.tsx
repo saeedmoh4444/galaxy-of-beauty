@@ -1,14 +1,15 @@
 import { View, Text, ScrollView, StyleSheet, TouchableOpacity, RefreshControl } from 'react-native';
 import { useState } from 'react';
+import type { JSX } from 'react';
 import { trpc } from '@/lib/trpc-react';
 import { useLocale } from '@/components/LocaleProvider';
 
 const THEMES = [
-  { key: 'spa', emoji: '‍️', name: 'سبا منزلي', desc: 'مساج وأقنعة واسترخاء' },
-  { key: 'makeup', emoji: '', name: 'حفلة مكياج', desc: 'تجربة مكياج جماعي' },
-  { key: 'nails', emoji: '', name: 'صالون أظافر', desc: 'مانيكير وباديكير جماعي' },
-  { key: 'bridal', emoji: '', name: 'توديع عزوبية', desc: 'عناية متكاملة للعروس' },
-  { key: 'skincare', emoji: '', name: 'روتين عناية', desc: 'أقنعة وعناية بالبشرة' },
+  { key: 'spa', emoji: '💆', name: 'سبا منزلي', desc: 'مساج وأقنعة واسترخاء' },
+  { key: 'makeup', emoji: '💄', name: 'حفلة مكياج', desc: 'تجربة مكياج جماعي' },
+  { key: 'nails', emoji: '💅', name: 'صالون أظافر', desc: 'مانيكير وباديكير جماعي' },
+  { key: 'bridal', emoji: '👰', name: 'توديع عزوبية', desc: 'عناية متكاملة للعروس' },
+  { key: 'skincare', emoji: '🧴', name: 'روتين عناية', desc: 'أقنعة وعناية بالبشرة' },
 ];
 
 export default function BeautyPartyScreen(): JSX.Element {
@@ -44,7 +45,9 @@ export default function BeautyPartyScreen(): JSX.Element {
       refreshControl={
         <RefreshControl
           refreshing={q.isRefetching}
-          onRefresh={() => q.refetch()}
+          onRefresh={async () => {
+            await q.refetch();
+          }}
           colors={['#ec4899']}
         />
       }

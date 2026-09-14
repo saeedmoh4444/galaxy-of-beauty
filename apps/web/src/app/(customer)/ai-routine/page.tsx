@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import type { JSX } from 'react';
 import { api } from '@/lib/trpc';
 import { Card, GridSkeleton, Button } from '@galaxy/ui';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
@@ -15,25 +16,25 @@ const SKIN_TYPES: {
 }[] = [
   {
     key: 'dry',
-    emoji: '️',
+    emoji: '🌵',
     label: 'aiRoutine.skinType.dry.label',
     desc: 'aiRoutine.skinType.dry.desc',
   },
   {
     key: 'oily',
-    emoji: '',
+    emoji: '✨',
     label: 'aiRoutine.skinType.oily.label',
     desc: 'aiRoutine.skinType.oily.desc',
   },
   {
     key: 'combination',
-    emoji: '',
+    emoji: '🌗',
     label: 'aiRoutine.skinType.combination.label',
     desc: 'aiRoutine.skinType.combination.desc',
   },
   {
     key: 'normal',
-    emoji: '',
+    emoji: '🌿',
     label: 'aiRoutine.skinType.normal.label',
     desc: 'aiRoutine.skinType.normal.desc',
   },
@@ -74,7 +75,7 @@ export default function AIRoutinePage(): JSX.Element {
                 <button
                   key={s.key}
                   onClick={() => setSkinType(s.key)}
-                  className={`rounded-xl border-2 p-4 text-right transition-all ${skinType === s.key ? 'border-brand-400 bg-brand-50 dark:bg-brand-950' : 'border-gray-200 dark:border-gray-700'}`}
+                  className={`rounded-xl border-2 p-4 text-end transition-all ${skinType === s.key ? 'border-brand-400 bg-brand-50 dark:bg-brand-950' : 'border-edge'}`}
                 >
                   <span className="text-3xl">{s.emoji}</span>
                   <p className="font-bold mt-1">{t(s.label)}</p>
@@ -139,7 +140,7 @@ export default function AIRoutinePage(): JSX.Element {
             {tips.length > 0 && (
               <Card
                 padding="lg"
-                className="bg-gradient-to-r from-brand-50 to-purple-50 dark:from-brand-950 dark:to-purple-950 border-none"
+                className="bg-gradient-to-r from-brand-50 to-brand-50 dark:from-brand-950 dark:to-brand-950 border-none"
               >
                 <h3 className="font-bold mb-3">{t('aiRoutine.tipsTitle')}</h3>
                 <div className="space-y-2">

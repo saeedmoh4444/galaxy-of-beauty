@@ -1,3 +1,4 @@
+import type { JSX } from 'react';
 import { View, Text, ScrollView, StyleSheet, RefreshControl } from 'react-native';
 import { ErrorAlert } from '@/components/ErrorAlert';
 import { SkeletonList } from '@/components/SkeletonCard';
@@ -26,7 +27,9 @@ export default function BeautyPodcastScreen(): JSX.Element {
       refreshControl={
         <RefreshControl
           refreshing={epsQ.isRefetching}
-          onRefresh={() => epsQ.refetch()}
+          onRefresh={async () => {
+            await epsQ.refetch();
+          }}
           colors={['#7c3aed']}
         />
       }
@@ -38,11 +41,11 @@ export default function BeautyPodcastScreen(): JSX.Element {
       ) : (
         items.map((e: Record<string, unknown>, i: number) => (
           <View key={i} style={styles.card}>
-            <Text style={styles.epEmoji}>{(e.emoji as string) ?? '️'}</Text>
+            <Text style={styles.epEmoji}>{(e.emoji as string) ?? ''}</Text>
             <View style={{ flex: 1 }}>
               <Text style={styles.epTitle}>{e.titleAr as string}</Text>
               <Text style={styles.epHost}> {e.host as string}</Text>
-              <Text style={styles.epDuration}>️ {e.duration as string}</Text>
+              <Text style={styles.epDuration}> {e.duration as string}</Text>
             </View>
           </View>
         ))

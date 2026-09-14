@@ -1,7 +1,9 @@
+import type { JSX } from 'react';
 import { View, Text, ScrollView, StyleSheet, RefreshControl } from 'react-native';
 import { SkeletonList } from '@/components/SkeletonCard';
 import { trpc } from '@/lib/trpc-react';
 import { useLocale } from '@/components/LocaleProvider';
+import { useAuthState } from '@/hooks/useAuthState';
 
 interface FranchiseDashboard {
   totalRevenue?: number;
@@ -19,9 +21,10 @@ interface FranchiseLocation {
 }
 
 export default function FranchisePortalScreen(): JSX.Element {
+  const isAuthed = useAuthState();
   const { t } = useLocale();
-  const dashQ = trpc.franchisePortal.dashboard.useQuery();
-  const locationsQ = trpc.franchisePortal.locations.useQuery();
+  const dashQ = trpc.franchisePortal.dashboard.useQuery(undefined, { enabled: isAuthed });
+  const locationsQ = trpc.franchisePortal.locations.useQuery(undefined, { enabled: isAuthed });
   if (dashQ.isLoading || locationsQ.isLoading) return <SkeletonList count={4} />;
   const dash = dashQ.data as unknown as FranchiseDashboard | null;
   const locations: FranchiseLocation[] =
@@ -44,14 +47,14 @@ export default function FranchisePortalScreen(): JSX.Element {
       <Text style={styles.t}>{t('franchisePortal.title')}</Text>
       <View style={styles.kr}>
         <View style={styles.k}>
-          <Text style={styles.ke}></Text>
+          <Text style={styles.ke}>💰</Text>
           <Text style={styles.kv}>
             {t('franchisePortal.amount', { value: (dash?.totalRevenue ?? 0).toLocaleString() })}
           </Text>
           <Text style={styles.kl}>{t('franchisePortal.revenue')}</Text>
         </View>
         <View style={styles.k}>
-          <Text style={styles.ke}></Text>
+          <Text style={styles.ke}>📅</Text>
           <Text style={[styles.kv, { color: '#2563eb' }]}>{dash?.totalBookings ?? 0}</Text>
           <Text style={styles.kl}>{t('franchisePortal.bookings')}</Text>
         </View>

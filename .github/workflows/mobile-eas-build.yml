@@ -38,12 +38,18 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - uses: pnpm/action-setup@v4
+      - uses: pnpm/action-setup@v6
         with: {}
-      - uses: actions/setup-node@v4
-        with: { node-version: '20', cache: 'pnpm' }
+      - uses: actions/setup-node@v7
+        with: { node-version: '22', cache: 'pnpm' }
       - run: pnpm install --frozen-lockfile
       - run: pnpm --filter @galaxy/mobile type-check
+      # Catch SDK/package drift (KNOWN_ISSUES #8): react-native pinned to a
+      # version the installed Expo SDK rejects makes hermesc crash here —
+      # this step turns that class of regression into a CI failure.
+      - name: Verify expo export (hermesc bundle)
+        working-directory: apps/mobile
+        run: npx expo export --platform android
 
   # ── EAS Build (iOS) ──
   build-ios:
@@ -53,13 +59,13 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - uses: pnpm/action-setup@v4
+      - uses: pnpm/action-setup@v6
         with: {}
-      - uses: actions/setup-node@v4
-        with: { node-version: '20', cache: 'pnpm' }
+      - uses: actions/setup-node@v7
+        with: { node-version: '22', cache: 'pnpm' }
       - run: pnpm install --frozen-lockfile
       - name: Setup Expo
-        uses: expo/expo-github-action@v8
+        uses: expo/expo-github-action@v9
         with:
           eas-version: latest
           token: ${{ secrets.EXPO_TOKEN }}
@@ -75,13 +81,13 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - uses: pnpm/action-setup@v4
+      - uses: pnpm/action-setup@v6
         with: {}
-      - uses: actions/setup-node@v4
-        with: { node-version: '20', cache: 'pnpm' }
+      - uses: actions/setup-node@v7
+        with: { node-version: '22', cache: 'pnpm' }
       - run: pnpm install --frozen-lockfile
       - name: Setup Expo
-        uses: expo/expo-github-action@v8
+        uses: expo/expo-github-action@v9
         with:
           eas-version: latest
           token: ${{ secrets.EXPO_TOKEN }}
@@ -97,13 +103,13 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - uses: pnpm/action-setup@v4
+      - uses: pnpm/action-setup@v6
         with: {}
-      - uses: actions/setup-node@v4
-        with: { node-version: '20', cache: 'pnpm' }
+      - uses: actions/setup-node@v7
+        with: { node-version: '22', cache: 'pnpm' }
       - run: pnpm install --frozen-lockfile
       - name: Setup Expo
-        uses: expo/expo-github-action@v8
+        uses: expo/expo-github-action@v9
         with:
           eas-version: latest
           token: ${{ secrets.EXPO_TOKEN }}

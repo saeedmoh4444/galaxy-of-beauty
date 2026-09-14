@@ -1,4 +1,5 @@
 'use client';
+import type { JSX } from 'react';
 import { api } from '@/lib/trpc';
 import { Card, CardListSkeleton, formatCurrency } from '@galaxy/ui';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
@@ -37,7 +38,7 @@ export default function PaymentsPage(): JSX.Element {
           <CardListSkeleton count={5} />
         ) : transactions.length === 0 ? (
           <Card padding="lg" className="text-center py-8">
-            <p className="text-4xl mb-2"></p>
+            <p className="text-4xl mb-2">💳</p>
             <p className="text-text-secondary">{t('payments.empty')}</p>
           </Card>
         ) : (

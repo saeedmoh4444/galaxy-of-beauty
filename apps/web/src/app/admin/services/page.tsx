@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import type { JSX } from 'react';
 import { api } from '@/lib/trpc';
 import type { RouterOutputs } from '@galaxy/api';
 import {
@@ -12,6 +13,7 @@ import {
   Input,
   Modal,
   formatCurrency,
+  useAuth,
 } from '@galaxy/ui';
 import { useLocale } from '@/components/LocaleProvider';
 
@@ -62,6 +64,7 @@ const STATUSES = ['ALL', 'ACTIVE', 'INACTIVE'] as const;
 
 export default function AdminServicesPage(): JSX.Element {
   const { t } = useLocale();
+  const { isAuthenticated } = useAuth();
   const [search, setSearch] = useState('');
   const [catFilter, setCatFilter] = useState<number | null>(null);
   const [statusFilter, setStatusFilter] = useState<string>('ALL');
@@ -72,7 +75,10 @@ export default function AdminServicesPage(): JSX.Element {
   const [expandedId, setExpandedId] = useState<number | null>(null);
   const [variantForm, setVariantForm] = useState<VariantForm>(emptyVariantForm);
 
-  const { data, isLoading, isError, refetch } = api.services.list.useQuery({ limit: 50 });
+  const { data, isLoading, isError, refetch } = api.services.list.useQuery(
+    { limit: 50 },
+    { enabled: isAuthenticated },
+  );
   const createMut = api.services.create.useMutation({
     onSuccess: () => {
       refetch();
@@ -91,7 +97,7 @@ export default function AdminServicesPage(): JSX.Element {
   const addVariantMut = api.services.createVariant.useMutation({ onSuccess: () => refetch() });
   const removeVariantMut = api.services.deleteVariant.useMutation({ onSuccess: () => refetch() });
 
-  const catsQuery = api.categories.all.useQuery();
+  const catsQuery = api.categories.all.useQuery(undefined, { enabled: isAuthenticated });
   const categories: CategoryItem[] = catsQuery.data ?? [];
   const services: ServiceItem[] = data?.items ?? [];
 
@@ -219,7 +225,7 @@ export default function AdminServicesPage(): JSX.Element {
             <button
               key={s}
               onClick={() => setStatusFilter(s)}
-              className={`rounded-full px-3 py-1 text-xs font-medium ${statusFilter === s ? 'bg-brand-600 text-white' : 'bg-surface-muted text-text-secondary dark:bg-gray-800 dark:text-gray-400'}`}
+              className={`rounded-full px-3 py-1 text-xs font-medium ${statusFilter === s ? 'bg-brand-600 text-white' : 'bg-surface-muted text-text-secondary dark:bg-gray-800 dark:text-text-tertiary'}`}
             >
               {s === 'ALL'
                 ? t('admin.all')
@@ -300,7 +306,7 @@ export default function AdminServicesPage(): JSX.Element {
                   </div>
 
                   {expandedId === svc.id && (
-                    <div className="mt-4 border-t border-gray-100 pt-3 dark:border-gray-800">
+                    <div className="mt-4 border-t border-edge-muted pt-3 dark:border-gray-800">
                       <h4 className="mb-2 text-sm font-semibold">{t('admin.services.variants')}</h4>
                       {variantCount === 0 ? (
                         <p className="mb-2 text-xs text-text-secondary">

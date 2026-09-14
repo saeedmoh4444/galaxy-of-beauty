@@ -1,4 +1,5 @@
 'use client';
+import type { JSX } from 'react';
 
 import { cn } from '@galaxy/shared';
 
@@ -22,12 +23,12 @@ interface PressKitCardProps {
 }
 
 const KIT_ITEMS = [
-  { emoji: '️', label: { ar: 'شعار المنصة', en: 'Platform logo' }, format: 'PNG, SVG' },
-  { emoji: '', label: { ar: 'صور عالية الدقة', en: 'High-res photos' }, format: '10 صور' },
-  { emoji: '', label: { ar: 'البيان الصحفي', en: 'Press release' }, format: 'PDF' },
-  { emoji: '', label: { ar: 'إحصائيات وأرقام', en: 'Stats & figures' }, format: 'PDF' },
-  { emoji: '‍', label: { ar: 'صور المؤسسات', en: 'Founder photos' }, format: '5 صور' },
-  { emoji: '', label: { ar: 'دليل الهوية البصرية', en: 'Brand guidelines' }, format: 'PDF' },
+  { emoji: '🏷️', label: { ar: 'شعار المنصة', en: 'Platform logo' }, format: 'PNG, SVG' },
+  { emoji: '📷', label: { ar: 'صور عالية الدقة', en: 'High-res photos' }, format: '10 صور' },
+  { emoji: '📰', label: { ar: 'البيان الصحفي', en: 'Press release' }, format: 'PDF' },
+  { emoji: '📊', label: { ar: 'إحصائيات وأرقام', en: 'Stats & figures' }, format: 'PDF' },
+  { emoji: '👤', label: { ar: 'صور المؤسسات', en: 'Founder photos' }, format: '5 صور' },
+  { emoji: '🎨', label: { ar: 'دليل الهوية البصرية', en: 'Brand guidelines' }, format: 'PDF' },
 ];
 
 export function PressKitCard({
@@ -47,7 +48,9 @@ export function PressKitCard({
       )}
     >
       <div className="flex items-center gap-2">
-        <span className="text-xl" aria-hidden="true"></span>
+        <span className="text-xl" aria-hidden="true">
+          📰
+        </span>
         <div>
           <h4 className="text-sm font-bold text-sky-700 dark:text-sky-300">{title}</h4>
           <p className="text-[10px] text-sky-500 dark:text-sky-400">{subtitle}</p>

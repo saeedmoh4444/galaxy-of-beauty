@@ -30,7 +30,7 @@ export function StatCard({ label, value, icon, trend, className = '' }: StatCard
         </div>
       )}
       <p className="text-3xl font-extrabold text-brand-600 dark:text-brand-400">{value}</p>
-      <p className="mt-1 text-sm text-gray-500 dark:text-gray-400">{label}</p>
+      <p className="mt-1 text-sm text-text-secondary">{label}</p>
       {trend && (
         <p
           className={`mt-1 text-xs font-medium ${

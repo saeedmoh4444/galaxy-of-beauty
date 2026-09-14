@@ -1,4 +1,5 @@
 'use client';
+import type { JSX } from 'react';
 import { cn } from '@galaxy/shared';
 export function BeautyGlassSkinCard({
   className = '',
@@ -19,7 +20,7 @@ export function BeautyGlassSkinCard({
       )}
     >
       <div className="flex items-center gap-2">
-        <span className="text-xl"></span>
+        <span className="text-xl">💎</span>
         <div>
           <h4 className="text-sm font-bold text-sky-700 dark:text-sky-300">{title}</h4>
           <p className="text-[10px] text-sky-500 dark:text-sky-400">{subtitle}</p>
@@ -28,28 +29,28 @@ export function BeautyGlassSkinCard({
       <div className="mt-3 space-y-1">
         {[
           {
-            emoji: '',
+            emoji: '💧',
             text: {
               ar: '7 طبقات ترطيب — تونر خفيف يطبق 7 مرات',
               en: '7 layers of hydration — a light toner applied 7 times',
             },
           },
           {
-            emoji: '',
+            emoji: '✨',
             text: {
               ar: 'طبقات رقيقة — كل طبقة تمتص قبل التالية',
               en: 'Thin layers — each one absorbs before the next',
             },
           },
           {
-            emoji: '',
+            emoji: '🪞',
             text: {
               ar: 'تقشير منتظم — أساس البشرة الزجاجية',
               en: 'Regular exfoliation — the foundation of glass skin',
             },
           },
           {
-            emoji: '️',
+            emoji: '🌞',
             text: {
               ar: 'واقي شمس يومي — حماية من التصبغات',
               en: 'Daily sunscreen — protection against pigmentation',

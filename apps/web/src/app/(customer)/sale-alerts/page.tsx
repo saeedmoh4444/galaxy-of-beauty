@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import type { JSX } from 'react';
 import { api } from '@/lib/trpc';
 import { Card, CardListSkeleton, ErrorAlert, EmptyState, Button, Modal } from '@galaxy/ui';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
@@ -65,7 +66,7 @@ export default function SaleAlertsPage(): JSX.Element {
               {activeDeals.map((d: Record<string, unknown>) => (
                 <div
                   key={d.id as number}
-                  className="rounded-xl bg-white dark:bg-gray-800 p-3 text-center"
+                  className="rounded-xl bg-surface-elevated p-3 text-center"
                 >
                   <span className="text-2xl">{d.emoji as string}</span>
                   <p className="font-bold text-sm mt-1">{d.titleAr as string}</p>
@@ -122,9 +123,7 @@ export default function SaleAlertsPage(): JSX.Element {
                   <button
                     onClick={() => deleteMut.mutate({ id: a.id as number })}
                     className="text-red-400 text-sm"
-                  >
-                    ️
-                  </button>
+                  ></button>
                 </div>
               </Card>
             ))}

@@ -1,11 +1,12 @@
 'use client';
+import type { JSX } from 'react';
 
 /**
  * WhatsApp share button — opens WhatsApp with pre-filled message.
  * Critical for Saudi market where WhatsApp is the primary communication channel.
  *
  * Usage:
- *   <WhatsAppShare text="I just booked a facial at Galaxy of Beauty!" />
+ *   <WhatsAppShare text="I just booked a facial at Dalal!" />
  */
 
 interface WhatsAppShareProps {

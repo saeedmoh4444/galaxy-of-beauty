@@ -1,4 +1,5 @@
 'use client';
+import type { JSX } from 'react';
 
 import { cn } from '@galaxy/shared';
 
@@ -47,27 +48,27 @@ interface JustBecauseFlowersProps {
 
 const BOUQUETS = [
   {
-    emoji: '',
+    emoji: '🌹',
     name: { ar: 'باقة ورد جوري', en: 'Rose bouquet' },
     color: { ar: 'من حدائق الطائف', en: 'From Taif gardens' },
   },
   {
-    emoji: '',
+    emoji: '🌹',
     name: { ar: 'وردة حمراء', en: 'Red rose' },
     color: { ar: 'ملكة الزهور', en: 'Queen of flowers' },
   },
   {
-    emoji: '',
+    emoji: '💐',
     name: { ar: 'باقة زهور الربيع', en: 'Spring flower bouquet' },
     color: { ar: 'ألوان مبهجة', en: 'Cheerful colors' },
   },
   {
-    emoji: '',
+    emoji: '🌺',
     name: { ar: 'زهرة استوائية', en: 'Tropical flower' },
     color: { ar: 'لون دافئ', en: 'Warm color' },
   },
   {
-    emoji: '',
+    emoji: '🌻',
     name: { ar: 'عباد شمس', en: 'Sunflower' },
     color: { ar: 'إشراقة صفراء', en: 'Yellow radiance' },
   },
@@ -83,11 +84,11 @@ export function JustBecauseFlowers({
   receivedPrefix = 'استلمتِ ',
   surpriseDescription = 'باقة زهور قد تصلكِ في أي يوم — بدون مناسبة!',
   sentToPrefix = 'أرسلنا لكِ ',
-  inPrefix = ' في ',
+  inPrefix = 'في ',
   thankYouText = 'شكراً لأنكِ جزء من عائلتنا',
-  loyaltyText = ' أنتِ من أكثر عميلاتنا وفاءً — توقعي مفاجأة قريباً!',
-  greatCustomerText = ' أنتِ عميلة رائعة — باقة زهور في طريقها إليكِ!',
-  anyMomentText = ' قد تصلكِ باقة زهور في أي لحظة — فقط لأنكِ رائعة',
+  loyaltyText = 'أنتِ من أكثر عميلاتنا وفاءً — توقعي مفاجأة قريباً!',
+  greatCustomerText = 'أنتِ عميلة رائعة — باقة زهور في طريقها إليكِ!',
+  anyMomentText = 'قد تصلكِ باقة زهور في أي لحظة — فقط لأنكِ رائعة',
   bookingCountSuffix = 'حجز',
   footerText = 'بعض الأيام تحتاج زهوراً — بدون سبب',
   locale = 'ar',

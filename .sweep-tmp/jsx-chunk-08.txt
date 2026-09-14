@@ -1,0 +1,12 @@
+apps/mobile/src/app/tech/wallet/index.tsx
+apps/mobile/src/app/technicians/[id]/index.tsx
+apps/mobile/src/app/technicians/index.tsx
+apps/mobile/src/components/AddonSuggestions.tsx
+apps/mobile/src/components/ErrorAlert.tsx
+apps/mobile/src/components/ErrorBoundary.tsx
+apps/mobile/src/components/LocaleProvider.tsx
+apps/mobile/src/components/ScreenState.tsx
+apps/mobile/src/components/ServiceImage.tsx
+apps/mobile/src/components/SkeletonCard.tsx
+apps/mobile/src/components/ThemeProvider.tsx
+apps/mobile/src/components/Walkthrough.tsx

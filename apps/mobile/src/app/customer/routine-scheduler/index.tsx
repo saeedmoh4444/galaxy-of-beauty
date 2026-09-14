@@ -1,7 +1,9 @@
+import type { JSX } from 'react';
 import { View, Text, ScrollView, StyleSheet, RefreshControl } from 'react-native';
 import { SkeletonList } from '@/components/SkeletonCard';
 import { trpc } from '@/lib/trpc-react';
 import { useLocale } from '@/components/LocaleProvider';
+import { useAuthState } from '@/hooks/useAuthState';
 
 interface RoutineStep {
   id?: number;
@@ -13,7 +15,8 @@ interface RoutineStep {
 
 export default function RoutineSchedulerScreen(): JSX.Element {
   const { t } = useLocale();
-  const routinesQ = trpc.routineScheduler.myRoutines.useQuery();
+  const isAuthed = useAuthState();
+  const routinesQ = trpc.routineScheduler.myRoutines.useQuery(undefined, { enabled: isAuthed });
   const data: RoutineStep[] = (routinesQ.data as unknown as RoutineStep[] | undefined) ?? [];
 
   if (routinesQ.isLoading) return <SkeletonList count={4} />;
@@ -25,7 +28,9 @@ export default function RoutineSchedulerScreen(): JSX.Element {
       refreshControl={
         <RefreshControl
           refreshing={routinesQ.isRefetching}
-          onRefresh={() => routinesQ.refetch()}
+          onRefresh={async () => {
+            await routinesQ.refetch();
+          }}
           colors={['#8b5cf6']}
         />
       }

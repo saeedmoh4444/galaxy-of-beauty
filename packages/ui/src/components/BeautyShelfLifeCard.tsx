@@ -1,4 +1,5 @@
 'use client';
+import type { JSX } from 'react';
 import { cn } from '@galaxy/shared';
 export function BeautyShelfLifeCard({
   className = '',
@@ -19,7 +20,7 @@ export function BeautyShelfLifeCard({
       )}
     >
       <div className="flex items-center gap-2">
-        <span className="text-xl"></span>
+        <span className="text-xl">⌛</span>
         <div>
           <h4 className="text-sm font-bold text-amber-700 dark:text-amber-300">{title}</h4>
           <p className="text-[10px] text-amber-500 dark:text-amber-400">{subtitle}</p>
@@ -28,22 +29,22 @@ export function BeautyShelfLifeCard({
       <div className="mt-3 grid grid-cols-2 gap-1.5">
         {[
           {
-            emoji: '',
+            emoji: '💄',
             label: { ar: 'ماسكارا', en: 'Mascara' },
             tip: { ar: '3-6 أشهر — الأسرع تلوثاً', en: '3-6 months — fastest to contaminate' },
           },
           {
-            emoji: '',
+            emoji: '🧴',
             label: { ar: 'كريمات', en: 'Creams' },
             tip: { ar: '6-12 شهر — بعد الفتح', en: '6-12 months — after opening' },
           },
           {
-            emoji: '',
+            emoji: '🪞',
             label: { ar: 'بودرة', en: 'Powder' },
             tip: { ar: 'سنتان — الأطول عمراً', en: '2 years — the longest lasting' },
           },
           {
-            emoji: '',
+            emoji: '💅',
             label: { ar: 'طلاء أظافر', en: 'Nail polish' },
             tip: { ar: 'سنة — يسمك مع الوقت', en: '1 year — thickens over time' },
           },

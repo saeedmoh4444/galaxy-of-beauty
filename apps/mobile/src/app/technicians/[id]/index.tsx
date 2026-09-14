@@ -1,3 +1,4 @@
+import type { JSX } from 'react';
 import { View, Text, ScrollView, StyleSheet, RefreshControl } from 'react-native';
 import { useLocalSearchParams } from 'expo-router';
 import { SkeletonList } from '@/components/SkeletonCard';
@@ -40,12 +41,14 @@ export default function TechnicianDetailScreen(): JSX.Element {
       refreshControl={
         <RefreshControl
           refreshing={q.isRefetching}
-          onRefresh={() => q.refetch()}
+          onRefresh={async () => {
+            await q.refetch();
+          }}
           colors={['#db2777']}
         />
       }
     >
-      <Text style={styles.t}>‍ {data.name}</Text>
+      <Text style={styles.t}> {data.name}</Text>
       <View style={styles.card}>
         <Text style={styles.spec}>{data.specialtyAr ?? data.specialty}</Text>
         <Text style={styles.rating}> {data.rating ?? 0}</Text>

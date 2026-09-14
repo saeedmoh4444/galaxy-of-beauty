@@ -1,5 +1,6 @@
 'use client';
 import { useState } from 'react';
+import type { JSX } from 'react';
 import { api } from '@/lib/trpc';
 import { Card, Button, formatCurrency } from '@galaxy/ui';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
@@ -19,6 +20,11 @@ export default function BNPLPage(): JSX.Element {
   const [inst, setInst] = useState(4);
   const [result, setResult] = useState<Record<string, unknown> | null>(null);
 
+  // E4b — persisted plans: list own plans and advance installments.
+  const plansQ = api.bnpl.myPlans.useQuery();
+  const markPaidMut = api.bnpl.markPaid.useMutation({ onSuccess: () => plansQ.refetch() });
+  const plans = (plansQ.data ?? []) as Array<Record<string, any>>;
+
   const list = (providers ?? []) as Array<Record<string, unknown>>;
 
   return (
@@ -30,7 +36,7 @@ export default function BNPLPage(): JSX.Element {
         </div>
         {result ? (
           <Card padding="lg" className="text-center border-2 border-green-300">
-            <span className="text-6xl"></span>
+            <span className="text-6xl">✅</span>
             <h2 className="mt-4 text-xl font-bold">{t('bnpl.approved')}</h2>
             <p className="text-2xl font-extrabold mt-2">
               {formatCurrency(result.totalAmount as number)} {t('beautyParty.currency')}
@@ -112,6 +118,43 @@ export default function BNPLPage(): JSX.Element {
             >
               {t('bnpl.submit')}
             </Button>
+          </Card>
+        )}
+
+        {/* E4b — persisted installment plans */}
+        {plans.length > 0 && (
+          <Card padding="lg">
+            <h2 className="font-bold mb-3">{t('bnpl.myPlans')}</h2>
+            <div className="space-y-4">
+              {plans.map((p) => (
+                <div key={p.id} className="rounded-xl bg-surface-muted p-3">
+                  <div className="flex items-center justify-between">
+                    <p className="font-bold">
+                      {p.provider === 'tabby' ? 'Tabby' : 'Tamara'} ·{' '}
+                      {t(('bnpl.status.' + p.status) as any)}
+                    </p>
+                    <p className="text-sm text-text-secondary">
+                      {t('bnpl.paidOf', { paid: p.paidCount, total: p.installments })}
+                    </p>
+                  </div>
+                  <p className="text-sm text-text-secondary mt-1">
+                    {formatCurrency(Number(p.totalAmount))} {t('beautyParty.currency')} ·{' '}
+                    {formatCurrency(Number(p.monthlyPayment))} × {p.installments}
+                  </p>
+                  {p.status === 'ACTIVE' && (
+                    <Button
+                      size="sm"
+                      variant="outline"
+                      className="mt-2"
+                      loading={markPaidMut.isPending}
+                      onClick={() => markPaidMut.mutate({ planId: p.id })}
+                    >
+                      {t('bnpl.markPaid')}
+                    </Button>
+                  )}
+                </div>
+              ))}
+            </div>
           </Card>
         )}
       </div>

@@ -8,11 +8,13 @@ import {
   RefreshControl,
 } from 'react-native';
 import { useState } from 'react';
+import type { JSX } from 'react';
 import { LARGE_PAGE_SIZE } from '@galaxy/ui';
 import { ErrorAlert } from '@/components/ErrorAlert';
 import { SkeletonList } from '@/components/SkeletonCard';
 import { trpc } from '@/lib/trpc-react';
 import { useLocale } from '@/components/LocaleProvider';
+import { useAuthState } from '@/hooks/useAuthState';
 import { localize } from '@galaxy/shared';
 
 interface Booking {
@@ -28,7 +30,11 @@ interface BookingsData {
 
 export default function RescheduleScreen(): JSX.Element {
   const { t, locale } = useLocale();
-  const bookingsQ = trpc.bookings.list.useQuery({ page: 1, limit: LARGE_PAGE_SIZE });
+  const isAuthed = useAuthState();
+  const bookingsQ = trpc.bookings.list.useQuery(
+    { page: 1, limit: LARGE_PAGE_SIZE },
+    { enabled: isAuthed },
+  );
   const [selectedId, setSelectedId] = useState<number | null>(null);
   const [newDate, setNewDate] = useState('');
   const [newTime, setNewTime] = useState('');
@@ -65,7 +71,9 @@ export default function RescheduleScreen(): JSX.Element {
       refreshControl={
         <RefreshControl
           refreshing={bookingsQ.isRefetching}
-          onRefresh={() => bookingsQ.refetch()}
+          onRefresh={async () => {
+            await bookingsQ.refetch();
+          }}
           colors={['#db2777']}
         />
       }
@@ -83,7 +91,7 @@ export default function RescheduleScreen(): JSX.Element {
             alignItems: 'center',
           }}
         >
-          <Text style={{ fontSize: 32 }}></Text>
+          <Text style={{ fontSize: 32 }}>✅</Text>
           <Text style={{ fontWeight: '700', color: '#059669', marginTop: 8 }}>
             {t('mobile.reschedule.success')}
           </Text>
@@ -92,7 +100,7 @@ export default function RescheduleScreen(): JSX.Element {
 
       {active.length === 0 && (
         <View style={{ alignItems: 'center', padding: 30 }}>
-          <Text style={{ fontSize: 40 }}></Text>
+          <Text style={{ fontSize: 40 }}>📅</Text>
           <Text style={{ color: '#6b7280', marginTop: 8 }}>
             {t('mobile.reschedule.no-reschedulable')}
           </Text>

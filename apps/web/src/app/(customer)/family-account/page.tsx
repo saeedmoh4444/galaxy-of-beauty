@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import type { JSX } from 'react';
 import { api } from '@/lib/trpc';
 import { Card, CardListSkeleton, ErrorAlert, EmptyState, Button, Modal } from '@galaxy/ui';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
@@ -147,7 +148,7 @@ export default function FamilyAccountPage(): JSX.Element {
             <h1 className="text-2xl font-bold text-text-primary dark:text-gray-100">
               {t('family.title')}
             </h1>
-            <p className="mt-1 text-sm text-text-secondary dark:text-gray-400">
+            <p className="mt-1 text-sm text-text-secondary dark:text-text-tertiary">
               {t('family.subtitle')}
             </p>
           </div>
@@ -164,9 +165,9 @@ export default function FamilyAccountPage(): JSX.Element {
         {/* Benefits */}
         <div className="grid gap-4 sm:grid-cols-3">
           {[
-            { emoji: '', title: t('family.benefit1.title'), desc: t('family.benefit1.desc') },
-            { emoji: '', title: t('family.benefit2.title'), desc: t('family.benefit2.desc') },
-            { emoji: '', title: t('family.benefit3.title'), desc: t('family.benefit3.desc') },
+            { emoji: '🧒', title: t('family.benefit1.title'), desc: t('family.benefit1.desc') },
+            { emoji: '👵', title: t('family.benefit2.title'), desc: t('family.benefit2.desc') },
+            { emoji: '🧔', title: t('family.benefit3.title'), desc: t('family.benefit3.desc') },
           ].map((b) => (
             <Card key={b.title} padding="md" className="text-center">
               <span className="text-3xl">{b.emoji}</span>
@@ -192,12 +193,12 @@ export default function FamilyAccountPage(): JSX.Element {
             {allMembers.map((m) => (
               <Card key={m.id} padding="lg" className="relative">
                 {/* Relationship badge */}
-                <span className="absolute top-3 right-3 text-2xl">
+                <span className="absolute top-3 end-3 text-2xl">
                   {RELATIONSHIP_EMOJI[m.relationship] ?? ''}
                 </span>
 
                 <div className="flex items-start gap-4">
-                  <div className="flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl bg-gradient-to-br from-brand-100 to-purple-100 text-2xl dark:from-brand-900 dark:to-purple-900">
+                  <div className="flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl bg-gradient-to-br from-brand-100 to-brand-100 text-2xl dark:from-brand-900 dark:to-brand-900">
                     {AGE_EMOJI[m.ageGroup] ?? ''}
                   </div>
                   <div className="flex-1 min-w-0">
@@ -218,7 +219,7 @@ export default function FamilyAccountPage(): JSX.Element {
                           return (
                             <span
                               key={p}
-                              className="inline-flex items-center gap-0.5 rounded-full bg-surface-muted px-2 py-0.5 text-[10px] text-text-secondary dark:bg-gray-800 dark:text-gray-400"
+                              className="inline-flex items-center gap-0.5 rounded-full bg-surface-muted px-2 py-0.5 text-[10px] text-text-secondary dark:bg-gray-800 dark:text-text-tertiary"
                             >
                               {pref?.emoji} {pref?.nameAr ?? p}
                             </span>
@@ -238,7 +239,7 @@ export default function FamilyAccountPage(): JSX.Element {
                 </div>
 
                 {/* Actions */}
-                <div className="mt-4 flex gap-2 border-t border-gray-100 pt-3 dark:border-gray-800">
+                <div className="mt-4 flex gap-2 border-t border-edge-muted pt-3 dark:border-gray-800">
                   <Link
                     href={`/bookings/create?for=${encodeURIComponent(m.name)}`}
                     className="flex-1"
@@ -248,7 +249,7 @@ export default function FamilyAccountPage(): JSX.Element {
                     </Button>
                   </Link>
                   <Button size="sm" variant="ghost" onClick={() => openEdit(m)}>
-                    ️
+                    ✏️
                   </Button>
                   <Button
                     size="sm"
@@ -256,7 +257,7 @@ export default function FamilyAccountPage(): JSX.Element {
                     onClick={() => handleRemove(m.id, m.name)}
                     className="text-red-500 hover:text-red-700"
                   >
-                    ️
+                    🗑️
                   </Button>
                 </div>
               </Card>
@@ -290,7 +291,7 @@ export default function FamilyAccountPage(): JSX.Element {
                 value={formName}
                 onChange={(e) => setFormName(e.target.value)}
                 placeholder={t('family.placeholder.fullName')}
-                className="w-full rounded-lg border border-gray-200 px-3 py-2 text-sm focus:border-brand-500 focus:outline-none focus:ring-1 focus:ring-brand-500 dark:border-gray-700 dark:bg-gray-800"
+                className="w-full rounded-lg border border-edge px-3 py-2 text-sm focus:border-brand-500 focus:outline-none focus:ring-1 focus:ring-brand-500 dark:border-gray-700 dark:bg-gray-800"
               />
             </div>
 
@@ -306,7 +307,7 @@ export default function FamilyAccountPage(): JSX.Element {
                   id="fa-relation"
                   value={formRelation}
                   onChange={(e) => setFormRelation(e.target.value)}
-                  className="w-full rounded-lg border border-gray-200 px-3 py-2 text-sm focus:border-brand-500 focus:outline-none dark:border-gray-700 dark:bg-gray-800"
+                  className="w-full rounded-lg border border-edge px-3 py-2 text-sm focus:border-brand-500 focus:outline-none dark:border-gray-700 dark:bg-gray-800"
                 >
                   {relationships.map((r) => (
                     <option key={r.key} value={r.key}>
@@ -326,7 +327,7 @@ export default function FamilyAccountPage(): JSX.Element {
                   id="fa-age"
                   value={formAge}
                   onChange={(e) => setFormAge(e.target.value)}
-                  className="w-full rounded-lg border border-gray-200 px-3 py-2 text-sm focus:border-brand-500 focus:outline-none dark:border-gray-700 dark:bg-gray-800"
+                  className="w-full rounded-lg border border-edge px-3 py-2 text-sm focus:border-brand-500 focus:outline-none dark:border-gray-700 dark:bg-gray-800"
                 >
                   {ageGroups.map((a) => (
                     <option key={a.key} value={a.key}>
@@ -351,7 +352,7 @@ export default function FamilyAccountPage(): JSX.Element {
                     className={`inline-flex items-center gap-1 rounded-full px-3 py-1.5 text-xs font-medium transition-all ${
                       formPrefs.includes(p.key)
                         ? 'bg-brand-100 text-brand-700 ring-1 ring-brand-300 dark:bg-brand-900 dark:text-brand-300'
-                        : 'bg-surface-muted text-text-secondary hover:bg-gray-200 dark:bg-gray-800 dark:text-gray-400'
+                        : 'bg-surface-muted text-text-secondary hover:bg-surface-muted dark:text-text-tertiary'
                     }`}
                   >
                     {p.emoji} {p.nameAr}
@@ -373,7 +374,7 @@ export default function FamilyAccountPage(): JSX.Element {
                 onChange={(e) => setFormNotes(e.target.value)}
                 placeholder={t('family.placeholder.notes')}
                 rows={2}
-                className="w-full rounded-lg border border-gray-200 px-3 py-2 text-sm focus:border-brand-500 focus:outline-none focus:ring-1 focus:ring-brand-500 dark:border-gray-700 dark:bg-gray-800"
+                className="w-full rounded-lg border border-edge px-3 py-2 text-sm focus:border-brand-500 focus:outline-none focus:ring-1 focus:ring-brand-500 dark:border-gray-700 dark:bg-gray-800"
               />
             </div>
 

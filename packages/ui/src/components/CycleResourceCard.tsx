@@ -1,4 +1,5 @@
 'use client';
+import type { JSX } from 'react';
 
 import { cn } from '@galaxy/shared';
 
@@ -29,7 +30,7 @@ const RESOURCES: Record<CyclePhase, Resource[]> = {
       },
     },
     {
-      emoji: '',
+      emoji: '🥬',
       title: { ar: 'تغذية', en: 'Nutrition' },
       detail: {
         ar: 'أطعمة غنية بالحديد: سبانخ، عدس، لحم أحمر',
@@ -37,7 +38,7 @@ const RESOURCES: Record<CyclePhase, Resource[]> = {
       },
     },
     {
-      emoji: '',
+      emoji: '🧘',
       title: { ar: 'حركة', en: 'Movement' },
       detail: {
         ar: 'مشي خفيف ويوغا لطيفة — لا تمارين قاسية',
@@ -47,7 +48,7 @@ const RESOURCES: Record<CyclePhase, Resource[]> = {
   ],
   follicular: [
     {
-      emoji: '',
+      emoji: '⚡',
       title: { ar: 'طاقة متجددة', en: 'Renewed energy' },
       detail: {
         ar: 'الإستروجين يرتفع — طاقتكِ في الذروة',
@@ -55,12 +56,12 @@ const RESOURCES: Record<CyclePhase, Resource[]> = {
       },
     },
     {
-      emoji: '',
+      emoji: '🥗',
       title: { ar: 'تغذية', en: 'Nutrition' },
       detail: { ar: 'بروتينات خفيفة وخضروات طازجة', en: 'Light proteins and fresh vegetables' },
     },
     {
-      emoji: '',
+      emoji: '🏃',
       title: { ar: 'حركة', en: 'Movement' },
       detail: {
         ar: 'أفضل وقت للتمارين القوية والنشاط',
@@ -70,7 +71,7 @@ const RESOURCES: Record<CyclePhase, Resource[]> = {
   ],
   ovulation: [
     {
-      emoji: '',
+      emoji: '✨',
       title: { ar: 'إشراقة', en: 'Radiance' },
       detail: {
         ar: 'البشرة في أفضل حالاتها — وقت المناسبات',
@@ -78,7 +79,7 @@ const RESOURCES: Record<CyclePhase, Resource[]> = {
       },
     },
     {
-      emoji: '',
+      emoji: '💧',
       title: { ar: 'ترطيب', en: 'Hydration' },
       detail: {
         ar: 'اشربي ماء كثيراً — بشرتكِ تشكركِ',
@@ -86,7 +87,7 @@ const RESOURCES: Record<CyclePhase, Resource[]> = {
       },
     },
     {
-      emoji: '',
+      emoji: '💃',
       title: { ar: 'ثقة', en: 'Confidence' },
       detail: {
         ar: 'أعلى درجات الثقة — وقت التصوير والمناسبات',
@@ -96,7 +97,7 @@ const RESOURCES: Record<CyclePhase, Resource[]> = {
   ],
   luteal: [
     {
-      emoji: '',
+      emoji: '📅',
       title: { ar: 'استعداد', en: 'Preparation' },
       detail: {
         ar: 'الجسم يستعد للدورة القادمة — خذي الأمور بهدوء',
@@ -104,7 +105,7 @@ const RESOURCES: Record<CyclePhase, Resource[]> = {
       },
     },
     {
-      emoji: '',
+      emoji: '🍫',
       title: { ar: 'تغذية', en: 'Nutrition' },
       detail: {
         ar: 'مغنيسيوم: مكسرات، موز، شوكولاتة داكنة',
@@ -112,7 +113,7 @@ const RESOURCES: Record<CyclePhase, Resource[]> = {
       },
     },
     {
-      emoji: '',
+      emoji: '🛁',
       title: { ar: 'استرخاء', en: 'Relaxation' },
       detail: {
         ar: 'حمام دافئ، تأمل، قراءة — دللي نفسكِ',
@@ -133,9 +134,9 @@ interface CycleResourceCardProps {
 
 const PHASE_LABELS: Record<CyclePhase, { emoji: string; title: { ar: string; en: string } }> = {
   menstrual: { emoji: '🩸', title: { ar: 'الدورة الشهرية', en: 'Menstrual phase' } },
-  follicular: { emoji: '', title: { ar: 'المرحلة الجرابية', en: 'Follicular phase' } },
-  ovulation: { emoji: '', title: { ar: 'الإباضة', en: 'Ovulation' } },
-  luteal: { emoji: '', title: { ar: 'المرحلة الأصفرية', en: 'Luteal phase' } },
+  follicular: { emoji: '🌱', title: { ar: 'المرحلة الجرابية', en: 'Follicular phase' } },
+  ovulation: { emoji: '✨', title: { ar: 'الإباضة', en: 'Ovulation' } },
+  luteal: { emoji: '🌙', title: { ar: 'المرحلة الأصفرية', en: 'Luteal phase' } },
 };
 
 export function CycleResourceCard({
@@ -150,31 +151,31 @@ export function CycleResourceCard({
   return (
     <div
       className={cn(
-        'rounded-2xl border border-purple-100 bg-white p-4 dark:border-purple-900 dark:bg-gray-900',
+        'rounded-2xl border border-brand-100 bg-white p-4 dark:border-brand-900 dark:bg-gray-900',
         className,
       )}
     >
       <div className="flex items-center gap-2">
         <span className="text-xl">{label.emoji}</span>
         <div>
-          <h4 className="text-sm font-bold text-purple-700 dark:text-purple-300">
+          <h4 className="text-sm font-bold text-brand-700 dark:text-brand-300">
             {label.title[locale]}
           </h4>
-          <p className="text-[10px] text-purple-500 dark:text-purple-400">{subtitle}</p>
+          <p className="text-[10px] text-brand-500 dark:text-brand-400">{subtitle}</p>
         </div>
       </div>
       <div className="mt-3 space-y-2">
         {resources.map((r) => (
           <div
             key={r.title.ar}
-            className="flex items-start gap-2 rounded-lg bg-purple-50 px-3 py-2.5 dark:bg-purple-950"
+            className="flex items-start gap-2 rounded-lg bg-brand-50 px-3 py-2.5 dark:bg-brand-950"
           >
             <span className="text-sm shrink-0">{r.emoji}</span>
             <div>
-              <p className="text-[10px] font-bold text-purple-800 dark:text-purple-200">
+              <p className="text-[10px] font-bold text-brand-800 dark:text-brand-200">
                 {r.title[locale]}
               </p>
-              <p className="text-[9px] text-purple-600 dark:text-purple-400">{r.detail[locale]}</p>
+              <p className="text-[9px] text-brand-600 dark:text-brand-400">{r.detail[locale]}</p>
             </div>
           </div>
         ))}

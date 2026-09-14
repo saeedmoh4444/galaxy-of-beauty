@@ -1,10 +1,10 @@
 'use client';
 
 import { useState } from 'react';
+import type { JSX } from 'react';
 import { api } from '@/lib/trpc';
 import type { RouterOutput } from '@galaxy/api/client';
-import { Card, TableSkeleton, ErrorAlert, EmptyState, Button, Input } from '@galaxy/ui';
-import { DashboardLayout } from '@/components/layout/DashboardLayout';
+import { Card, TableSkeleton, ErrorAlert, EmptyState, Button, Input, useAuth } from '@galaxy/ui';
 import { useToast } from '@galaxy/ui';
 import { useLocale } from '@/components/LocaleProvider';
 
@@ -13,6 +13,7 @@ type CityItem = RouterOutput['platform']['getCities'][number];
 
 export default function AdminAreasPage(): JSX.Element {
   const { t } = useLocale();
+  const { isAuthenticated } = useAuth();
   const { addToast } = useToast();
   const [cityFilter, setCityFilter] = useState<number | undefined>();
   const [showAdd, setShowAdd] = useState(false);
@@ -23,8 +24,12 @@ export default function AdminAreasPage(): JSX.Element {
     isLoading,
     isError,
     refetch,
-  } = api.platform.listAreas.useQuery(cityFilter ? { cityId: cityFilter } : {});
-  const { data: citiesData } = api.platform.getCities.useQuery();
+  } = api.platform.listAreas.useQuery(cityFilter ? { cityId: cityFilter } : {}, {
+    enabled: isAuthenticated,
+  });
+  const { data: citiesData } = api.platform.getCities.useQuery(undefined, {
+    enabled: isAuthenticated,
+  });
   const areas: AreaItem[] = areasData ?? [];
   const cities: CityItem[] = citiesData ?? [];
 
@@ -56,7 +61,7 @@ export default function AdminAreasPage(): JSX.Element {
   };
 
   return (
-    <DashboardLayout userRole="ADMIN">
+    <>
       <div className="mx-auto max-w-5xl space-y-6 px-4 py-8">
         <div className="flex items-center justify-between">
           <h1 className="text-2xl font-bold text-text-primary dark:text-gray-100">
@@ -90,15 +95,15 @@ export default function AdminAreasPage(): JSX.Element {
         ) : (
           <Card padding="none">
             <table className="w-full text-sm">
-              <thead className="bg-surface-muted text-text-secondary dark:bg-gray-800 dark:text-gray-400">
+              <thead className="bg-surface-muted text-text-secondary dark:bg-gray-800 dark:text-text-tertiary">
                 <tr>
-                  <th className="p-3 text-right">{t('admin.areas.area-header')}</th>
-                  <th className="p-3 text-right">{t('admin.areas.city-header')}</th>
-                  <th className="p-3 text-right">{t('admin.areas.status-header')}</th>
-                  <th className="p-3 text-right">{t('admin.areas.actions-header')}</th>
+                  <th className="p-3 text-end">{t('admin.areas.area-header')}</th>
+                  <th className="p-3 text-end">{t('admin.areas.city-header')}</th>
+                  <th className="p-3 text-end">{t('admin.areas.status-header')}</th>
+                  <th className="p-3 text-end">{t('admin.areas.actions-header')}</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-gray-100 dark:divide-gray-800">
+              <tbody className="divide-y divide-edge-muted">
                 {areas.map((a) => (
                   <tr key={a.id} className="hover:bg-surface-muted dark:hover:bg-gray-900">
                     <td className="p-3 font-medium">{a.nameAr}</td>
@@ -179,6 +184,6 @@ export default function AdminAreasPage(): JSX.Element {
           </div>
         )}
       </div>
-    </DashboardLayout>
+    </>
   );
 }

@@ -1,5 +1,6 @@
 import { View, Text, ScrollView, StyleSheet, TouchableOpacity, RefreshControl } from 'react-native';
 import { useState } from 'react';
+import type { JSX } from 'react';
 import { SkeletonList } from '@/components/SkeletonCard';
 import { trpc } from '@/lib/trpc-react';
 import { useLocale } from '@/components/LocaleProvider';
@@ -36,7 +37,9 @@ export default function BundlesScreen(): JSX.Element {
       refreshControl={
         <RefreshControl
           refreshing={servicesQ.isRefetching}
-          onRefresh={() => servicesQ.refetch()}
+          onRefresh={async () => {
+            await servicesQ.refetch();
+          }}
           colors={['#f59e0b']}
         />
       }
@@ -55,7 +58,7 @@ export default function BundlesScreen(): JSX.Element {
             onPress={() => toggle(s.id)}
             style={[styles.card, isSel && styles.ca]}
           >
-            <Text style={styles.se}>{s.emoji ?? '‍️'}</Text>
+            <Text style={styles.se}>{s.emoji ?? ''}</Text>
             <View style={{ flex: 1 }}>
               <Text style={styles.sn}>{s.nameJson?.ar ?? s.nameAr ?? s.slug}</Text>
               <Text style={styles.sm}>

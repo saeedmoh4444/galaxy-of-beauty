@@ -1,4 +1,5 @@
 'use client';
+import type { JSX } from 'react';
 
 import { cn } from '@galaxy/shared';
 
@@ -51,20 +52,24 @@ export function BeautySecretSantaCard({
       )}
     >
       <div className="text-center">
-        <span className="text-3xl" aria-hidden="true"></span>
+        <span className="text-3xl" aria-hidden="true">
+          🎁
+        </span>
         <h4 className="mt-1 text-sm font-bold text-red-700 dark:text-red-300">{title}</h4>
         <p className="text-[10px] text-red-500 dark:text-red-400">{group}</p>
       </div>
 
       <div className="mt-3 grid grid-cols-2 gap-2">
         <div className="rounded-xl bg-white/60 p-3 text-center dark:bg-gray-800/60">
-          <p className="text-[9px] text-text-tertiary dark:text-gray-500">{budgetLabel}</p>
+          <p className="text-[9px] text-text-tertiary dark:text-text-secondary">{budgetLabel}</p>
           <p className="text-lg font-bold text-red-700 dark:text-red-300">
             {budget} {currencySuffix}
           </p>
         </div>
         <div className="rounded-xl bg-white/60 p-3 text-center dark:bg-gray-800/60">
-          <p className="text-[9px] text-text-tertiary dark:text-gray-500">{participantsLabel}</p>
+          <p className="text-[9px] text-text-tertiary dark:text-text-secondary">
+            {participantsLabel}
+          </p>
           <p className="text-lg font-bold text-red-700 dark:text-red-300">{participants}</p>
         </div>
       </div>
@@ -87,7 +92,7 @@ export function BeautySecretSantaCard({
         </button>
       )}
 
-      <p className="mt-2 text-center text-[9px] text-text-tertiary dark:text-gray-500">
+      <p className="mt-2 text-center text-[9px] text-text-tertiary dark:text-text-secondary">
         {footerText}
       </p>
     </div>

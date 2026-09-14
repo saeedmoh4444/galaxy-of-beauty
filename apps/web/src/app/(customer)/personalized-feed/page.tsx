@@ -1,4 +1,5 @@
 'use client';
+import type { JSX } from 'react';
 import { api } from '@/lib/trpc';
 import { Card, CardListSkeleton } from '@galaxy/ui';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
@@ -34,9 +35,9 @@ export default function PersonalizedFeedPage(): JSX.Element {
                   <p className="font-bold text-sm">{item.title as string}</p>
                   <p className="text-xs text-text-secondary">
                     {item.technician
-                      ? `‍ ${item.technician}`
+                      ? ` ${item.technician}`
                       : item.brand
-                        ? `️ ${item.brand}`
+                        ? ` ${item.brand}`
                         : ` ${item.price as number} ${t('beautyParty.currency')}`}
                   </p>
                 </div>

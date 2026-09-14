@@ -1,4 +1,5 @@
 'use client';
+import type { JSX } from 'react';
 import { cn } from '@galaxy/shared';
 export function BeautyTravelKitCard({
   className = '',
@@ -19,7 +20,7 @@ export function BeautyTravelKitCard({
       )}
     >
       <div className="flex items-center gap-2">
-        <span className="text-xl"></span>
+        <span className="text-xl">🧳</span>
         <div>
           <h4 className="text-sm font-bold text-indigo-700 dark:text-indigo-300">{title}</h4>
           <p className="text-[10px] text-indigo-500 dark:text-indigo-400">{subtitle}</p>
@@ -28,28 +29,28 @@ export function BeautyTravelKitCard({
       <div className="mt-3 space-y-1">
         {[
           {
-            emoji: '',
+            emoji: '🧳',
             text: {
               ar: 'عبوات صغيرة — أقل من 100 مل للطائرة',
               en: 'Small bottles — under 100 ml for flights',
             },
           },
           {
-            emoji: '️',
+            emoji: '🌞',
             text: {
               ar: 'واقي شمس — أهم منتج في أي سفر',
               en: 'Sunscreen — the most important travel product',
             },
           },
           {
-            emoji: '',
+            emoji: '💄',
             text: {
               ar: 'منتجات متعددة الاستخدام — أحمر شفاه = بلاشر',
               en: 'Multi-use products — lipstick = blush',
             },
           },
           {
-            emoji: '',
+            emoji: '🧻',
             text: {
               ar: 'مناديل ميسيلار — للتنظيف بدون ماء',
               en: 'Micellar wipes — cleansing without water',

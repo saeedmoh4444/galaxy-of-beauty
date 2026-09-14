@@ -1,3 +1,4 @@
+import type { JSX } from 'react';
 import { View, Text, ScrollView, StyleSheet, RefreshControl } from 'react-native';
 import { SkeletonList } from '@/components/SkeletonCard';
 import { trpc } from '@/lib/trpc-react';
@@ -40,7 +41,9 @@ export default function TechCalendarScreen(): JSX.Element {
       refreshControl={
         <RefreshControl
           refreshing={slotsQ.isRefetching}
-          onRefresh={() => slotsQ.refetch()}
+          onRefresh={async () => {
+            await slotsQ.refetch();
+          }}
           colors={['#059669']}
         />
       }
@@ -60,7 +63,7 @@ export default function TechCalendarScreen(): JSX.Element {
                   },
                 )}
               </Text>
-              <Text style={styles.st}>‍ {s.technician as string}</Text>
+              <Text style={styles.st}> {s.technician as string}</Text>
               <View style={[styles.sb, s.available ? styles.sf : styles.su]}>
                 <Text style={styles.sbt}>
                   {s.available

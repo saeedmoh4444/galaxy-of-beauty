@@ -1,7 +1,9 @@
+import type { JSX } from 'react';
 import { View, Text, ScrollView, StyleSheet, TouchableOpacity, RefreshControl } from 'react-native';
 import { SkeletonList } from '@/components/SkeletonCard';
 import { trpc } from '@/lib/trpc-react';
 import { useLocale } from '@/components/LocaleProvider';
+import { useAuthState } from '@/hooks/useAuthState';
 
 interface FollowEntry {
   id?: number;
@@ -10,8 +12,9 @@ interface FollowEntry {
 }
 
 export default function FollowingScreen(): JSX.Element {
+  const isAuthed = useAuthState();
   const { locale, t } = useLocale();
-  const q = trpc.technicianFollows.myFollows.useQuery();
+  const q = trpc.technicianFollows.myFollows.useQuery(undefined, { enabled: isAuthed });
   const follows: FollowEntry[] = (q.data as unknown as FollowEntry[] | undefined) ?? [];
   const unfollowMut = trpc.technicianFollows.unfollow.useMutation({
     onSuccess: () => {
@@ -29,7 +32,9 @@ export default function FollowingScreen(): JSX.Element {
       refreshControl={
         <RefreshControl
           refreshing={q.isRefetching}
-          onRefresh={() => q.refetch()}
+          onRefresh={async () => {
+            await q.refetch();
+          }}
           colors={['#7c3aed']}
         />
       }
@@ -37,7 +42,7 @@ export default function FollowingScreen(): JSX.Element {
       <Text style={styles.t}>{t('following.title')}</Text>
       {follows.map((f) => (
         <View key={f.technicianId} style={styles.card}>
-          <Text style={styles.av}>‍</Text>
+          <Text style={styles.av}>👤</Text>
           <View style={{ flex: 1 }}>
             <Text style={styles.nm}>{t('following.technician', { id: f.technicianId })}</Text>
             <Text style={styles.meta}>

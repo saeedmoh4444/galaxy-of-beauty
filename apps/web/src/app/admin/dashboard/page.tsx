@@ -1,4 +1,5 @@
 'use client';
+import type { JSX } from 'react';
 
 import Link from 'next/link';
 import { api } from '@/lib/trpc';
@@ -10,8 +11,8 @@ import {
   formatCurrency,
   StatCard,
   PageContainer,
+  useAuth,
 } from '@galaxy/ui';
-import { DashboardLayout } from '@/components/layout/DashboardLayout';
 import { useLocale } from '@/components/LocaleProvider';
 import { type TranslationKey } from '@galaxy/shared';
 
@@ -19,7 +20,7 @@ type AdminHealth = RouterOutput['adminTools']['health'];
 
 const QUICK_LINKS: Array<{ href: string; labelKey: TranslationKey; icon: string }> = [
   { href: '/admin/users', labelKey: 'admin.dashboard.quick-users', icon: '' },
-  { href: '/admin/technicians', labelKey: 'admin.dashboard.quick-technicians', icon: '‍' },
+  { href: '/admin/technicians', labelKey: 'admin.dashboard.quick-technicians', icon: '' },
   { href: '/admin/services', labelKey: 'admin.dashboard.quick-services', icon: '' },
   { href: '/admin/categories', labelKey: 'admin.dashboard.quick-categories', icon: '' },
   { href: '/admin/bookings', labelKey: 'admin.dashboard.quick-bookings', icon: '' },
@@ -27,36 +28,39 @@ const QUICK_LINKS: Array<{ href: string; labelKey: TranslationKey; icon: string 
   { href: '/admin/disputes', labelKey: 'admin.dashboard.quick-disputes', icon: '' },
   { href: '/admin/zatca', labelKey: 'admin.dashboard.quick-zatca', icon: '' },
   { href: '/admin/analytics', labelKey: 'admin.dashboard.quick-analytics', icon: '' },
-  { href: '/admin/settings', labelKey: 'admin.dashboard.quick-settings', icon: '️' },
+  { href: '/admin/settings', labelKey: 'admin.dashboard.quick-settings', icon: '' },
 ];
 
 export default function AdminDashboardPage(): JSX.Element {
   const { t, locale } = useLocale();
-  const { data, isLoading, isError, refetch } = api.adminTools.health.useQuery();
+  const { isAuthenticated } = useAuth();
+  const { data, isLoading, isError, refetch } = api.adminTools.health.useQuery(undefined, {
+    enabled: isAuthenticated,
+  });
   const stats = data as AdminHealth;
 
   if (isLoading) {
     return (
-      <DashboardLayout userRole="ADMIN">
+      <>
         <PageContainer width="wide">
           <DashboardSkeleton />
         </PageContainer>
-      </DashboardLayout>
+      </>
     );
   }
 
   if (isError) {
     return (
-      <DashboardLayout userRole="ADMIN">
+      <>
         <PageContainer width="wide">
           <ErrorAlert message={t('admin.dashboard.load-error')} onRetry={() => refetch()} />
         </PageContainer>
-      </DashboardLayout>
+      </>
     );
   }
 
   return (
-    <DashboardLayout userRole="ADMIN">
+    <>
       <PageContainer width="wide">
         <h1 className="text-2xl font-bold text-text-primary">{t('admin.dashboard.title')}</h1>
 
@@ -72,7 +76,7 @@ export default function AdminDashboardPage(): JSX.Element {
             value={Number(stats?.technicians ?? 0).toLocaleString(
               locale === 'en' ? 'en-GB' : 'ar-SA',
             )}
-            icon="‍"
+            icon=""
           />
           <StatCard
             label={t('admin.dashboard.active-services')}
@@ -163,6 +167,6 @@ export default function AdminDashboardPage(): JSX.Element {
           </div>
         </Card>
       </PageContainer>
-    </DashboardLayout>
+    </>
   );
 }

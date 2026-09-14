@@ -1,7 +1,9 @@
+import type { JSX } from 'react';
 import { View, Text, ScrollView, StyleSheet, RefreshControl } from 'react-native';
 import { SkeletonList } from '@/components/SkeletonCard';
 import { trpc } from '@/lib/trpc-react';
 import { useLocale } from '@/components/LocaleProvider';
+import { useAuthState } from '@/hooks/useAuthState';
 
 interface RecurringBooking {
   id?: number;
@@ -12,7 +14,8 @@ interface RecurringBooking {
 
 export default function RecurringScreen(): JSX.Element {
   const { t } = useLocale();
-  const bookingsQ = trpc.recurringBookings.list.useQuery();
+  const isAuthed = useAuthState();
+  const bookingsQ = trpc.recurringBookings.list.useQuery(undefined, { enabled: isAuthed });
   const data: RecurringBooking[] =
     (bookingsQ.data as unknown as RecurringBooking[] | undefined) ?? [];
 
@@ -25,7 +28,9 @@ export default function RecurringScreen(): JSX.Element {
       refreshControl={
         <RefreshControl
           refreshing={bookingsQ.isRefetching}
-          onRefresh={() => bookingsQ.refetch()}
+          onRefresh={async () => {
+            await bookingsQ.refetch();
+          }}
           colors={['#7c3aed']}
         />
       }
@@ -33,7 +38,7 @@ export default function RecurringScreen(): JSX.Element {
       <Text style={styles.t}>{t('mobile.recurring.title')}</Text>
       {data.map((r, i) => (
         <View key={i} style={styles.card}>
-          <Text style={styles.emoji}></Text>
+          <Text style={styles.emoji}>🔁</Text>
           <View style={{ flex: 1 }}>
             <Text style={styles.name}>{r.serviceName ?? ''}</Text>
             <Text style={styles.freq}>

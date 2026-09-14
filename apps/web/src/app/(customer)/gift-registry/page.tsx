@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import type { JSX } from 'react';
 import { api } from '@/lib/trpc';
 import type { RouterOutputs } from '@galaxy/api';
 import {
@@ -18,10 +19,10 @@ import { useToast } from '@galaxy/ui';
 import type { TranslationKey } from '@galaxy/shared';
 
 const OCCASIONS: Record<string, { label: TranslationKey; emoji: string }> = {
-  wedding: { label: 'giftRegistry.occasion.wedding', emoji: '' },
-  birthday: { label: 'giftRegistry.occasion.birthday', emoji: '' },
-  baby_shower: { label: 'giftRegistry.occasion.babyShower', emoji: '' },
-  other: { label: 'giftRegistry.occasion.other', emoji: '' },
+  wedding: { label: 'giftRegistry.occasion.wedding', emoji: '💍' },
+  birthday: { label: 'giftRegistry.occasion.birthday', emoji: '🎂' },
+  baby_shower: { label: 'giftRegistry.occasion.babyShower', emoji: '👶' },
+  other: { label: 'giftRegistry.occasion.other', emoji: '🎁' },
 };
 
 type RegistryItem = RouterOutputs['giftRegistry']['myRegistries'][number] & {
@@ -97,7 +98,7 @@ export default function GiftRegistryPage(): JSX.Element {
                       <span>{t('giftRegistry.target')}</span>
                       <span>{formatCurrency(Number(r.targetAmount))}</span>
                     </div>
-                    <div className="mt-2 h-2 rounded-full bg-gray-200 dark:bg-gray-700">
+                    <div className="mt-2 h-2 rounded-full bg-surface-muted">
                       <div
                         className="h-2 rounded-full bg-brand-500 transition-all"
                         style={{ width: `${pct}%` }}
@@ -139,7 +140,7 @@ export default function GiftRegistryPage(): JSX.Element {
                 <select
                   value={form.occasion}
                   onChange={(e) => setForm({ ...form, occasion: e.target.value })}
-                  className="w-full rounded-lg border border-gray-300 p-2 dark:border-gray-600 dark:bg-gray-800"
+                  className="w-full rounded-lg border border-edge p-2 dark:border-gray-600 dark:bg-gray-800"
                 >
                   <option value="wedding">{t('giftRegistry.occasion.wedding')}</option>
                   <option value="birthday">{t('giftRegistry.occasion.birthday')}</option>

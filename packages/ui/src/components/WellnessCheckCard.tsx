@@ -1,4 +1,5 @@
 'use client';
+import type { JSX } from 'react';
 
 import { cn } from '@galaxy/shared';
 
@@ -23,28 +24,32 @@ interface WellnessCheckCardProps {
 
 const CHECKS = [
   {
-    emoji: '',
+    emoji: '💧',
     label: { ar: 'شرب الماء', en: 'Water intake' },
     desc: { ar: '8 أكواب يومياً', en: '8 cups daily' },
   },
   {
-    emoji: '',
+    emoji: '😴',
     label: { ar: 'جودة النوم', en: 'Sleep quality' },
     desc: { ar: '7-8 ساعات', en: '7-8 hours' },
   },
   {
-    emoji: '',
+    emoji: '🧴',
     label: { ar: 'روتين العناية', en: 'Skincare routine' },
     desc: { ar: 'صباح ومساء', en: 'Morning & evening' },
   },
-  { emoji: '️', label: { ar: 'واقي شمس', en: 'Sunscreen' }, desc: { ar: 'SPF 30+', en: 'SPF 30+' } },
   {
-    emoji: '',
+    emoji: '🌞',
+    label: { ar: 'واقي شمس', en: 'Sunscreen' },
+    desc: { ar: 'SPF 30+', en: 'SPF 30+' },
+  },
+  {
+    emoji: '🧘',
     label: { ar: 'صحة نفسية', en: 'Mental health' },
     desc: { ar: 'تأمل أو راحة', en: 'Meditation or rest' },
   },
   {
-    emoji: '',
+    emoji: '🥗',
     label: { ar: 'تغذية', en: 'Nutrition' },
     desc: { ar: 'طعام صحي متوازن', en: 'Balanced healthy food' },
   },
@@ -68,7 +73,9 @@ export function WellnessCheckCard({
     >
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-2">
-          <span className="text-2xl" aria-hidden="true"></span>
+          <span className="text-2xl" aria-hidden="true">
+            🩺
+          </span>
           <div>
             <h4 className="text-sm font-bold text-emerald-700 dark:text-emerald-300">{title}</h4>
             <p className="text-[10px] text-emerald-500 dark:text-emerald-400">{subtitle}</p>

@@ -1,4 +1,5 @@
 'use client';
+import type { JSX } from 'react';
 import { cn } from '@galaxy/shared';
 export function BeautyFragranceFreeCard({
   className = '',
@@ -19,7 +20,7 @@ export function BeautyFragranceFreeCard({
       )}
     >
       <div className="flex items-center gap-2">
-        <span className="text-xl"></span>
+        <span className="text-xl">🌿</span>
         <div>
           <h4 className="text-sm font-bold text-sky-700 dark:text-sky-300">{title}</h4>
           <p className="text-[10px] text-sky-500 dark:text-sky-400">{subtitle}</p>
@@ -28,28 +29,28 @@ export function BeautyFragranceFreeCard({
       <div className="mt-3 space-y-1">
         {[
           {
-            emoji: '',
+            emoji: '🌸',
             text: {
               ar: 'العطور — السبب الأول لتحسس البشرة',
               en: 'Fragrance — the number one cause of skin sensitivity',
             },
           },
           {
-            emoji: '',
+            emoji: '🚫',
             text: {
               ar: 'Fragrance-free ≠ Unscented — انتبهي للفرق',
               en: 'Fragrance-free ≠ Unscented — mind the difference',
             },
           },
           {
-            emoji: '',
+            emoji: '🌿',
             text: {
               ar: 'مناسب للبشرة الحساسة والإكزيما',
               en: 'Suitable for sensitive skin and eczema',
             },
           },
           {
-            emoji: '',
+            emoji: '🩺',
             text: {
               ar: 'منتجات طبية — غالباً خالية من العطور',
               en: 'Medical products — usually fragrance-free',

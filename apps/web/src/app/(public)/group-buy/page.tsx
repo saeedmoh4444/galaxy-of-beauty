@@ -1,4 +1,5 @@
 'use client';
+import type { JSX } from 'react';
 import { api } from '@/lib/trpc';
 import { Card, GridSkeleton, Button, formatCurrency } from '@galaxy/ui';
 import { useAuth } from '@galaxy/ui';
@@ -17,7 +18,7 @@ export default function GroupBuyPage(): JSX.Element {
   return (
     <div className="mx-auto max-w-4xl px-4 py-12">
       <div className="mb-8 text-center">
-        <span className="text-6xl"></span>
+        <span className="text-6xl">👥</span>
         <h1 className="mt-4 text-3xl font-bold">{t('marketing.group-buy.title')}</h1>
         <p className="mt-2 text-text-secondary">{t('marketing.group-buy.subtitle')}</p>
       </div>
@@ -37,13 +38,13 @@ export default function GroupBuyPage(): JSX.Element {
                 <span className="text-text-tertiary line-through">
                   {formatCurrency(d.originalPrice as number)}
                 </span>
-                <span className="text-2xl font-extrabold text-green-600 ml-2">
+                <span className="text-2xl font-extrabold text-green-600 ms-2">
                   {t('marketing.group-buy.price-sar', {
                     price: formatCurrency(d.groupPrice as number),
                   })}
                 </span>
               </div>
-              <div className="mt-2 h-2 rounded-full bg-gray-200 dark:bg-gray-700">
+              <div className="mt-2 h-2 rounded-full bg-surface-muted">
                 <div
                   className="h-2 rounded-full bg-brand-500"
                   style={{

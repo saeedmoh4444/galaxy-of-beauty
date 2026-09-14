@@ -1,3 +1,4 @@
+import type { JSX } from 'react';
 import { View, Text, ScrollView, StyleSheet, RefreshControl } from 'react-native';
 import { SkeletonList } from '@/components/SkeletonCard';
 import { ErrorAlert } from '@/components/ErrorAlert';
@@ -31,7 +32,9 @@ export default function AdminPackagesScreen(): JSX.Element {
       refreshControl={
         <RefreshControl
           refreshing={q.isRefetching}
-          onRefresh={() => q.refetch()}
+          onRefresh={async () => {
+            await q.refetch();
+          }}
           colors={['#ec4899']}
         />
       }
@@ -39,7 +42,7 @@ export default function AdminPackagesScreen(): JSX.Element {
       <Text style={styles.t}>{t('admin.packages.title')}</Text>
       {data.map((p, i) => (
         <View key={i} style={styles.card}>
-          <Text style={styles.emoji}></Text>
+          <Text style={styles.emoji}>🎁</Text>
           <View style={{ flex: 1 }}>
             <Text style={styles.name}>{localize(p.nameJson, locale)}</Text>
             <Text style={styles.discount}>

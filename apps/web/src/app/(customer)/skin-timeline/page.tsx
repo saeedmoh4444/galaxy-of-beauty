@@ -1,4 +1,5 @@
 'use client';
+import type { JSX } from 'react';
 import { api } from '@/lib/trpc';
 import { Card, CardListSkeleton } from '@galaxy/ui';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
@@ -18,7 +19,7 @@ export default function SkinTimelinePage(): JSX.Element {
     <DashboardLayout userRole="CUSTOMER">
       <div className="mx-auto max-w-3xl space-y-6">
         <div>
-          <h1 className="text-2xl font-bold">️{t('skinTimeline.title')}</h1>
+          <h1 className="text-2xl font-bold">{t('skinTimeline.title')}</h1>
           <p className="mt-1 text-sm text-text-secondary">{t('skinTimeline.subtitle')}</p>
         </div>
 
@@ -26,21 +27,21 @@ export default function SkinTimelinePage(): JSX.Element {
           <CardListSkeleton count={4} />
         ) : entries.length === 0 ? (
           <Card padding="lg" className="text-center py-8">
-            <p className="text-4xl mb-2">️</p>
+            <p className="text-4xl mb-2">📷</p>
             <p className="text-text-secondary">{t('skinTimeline.empty')}</p>
           </Card>
         ) : (
           <div className="relative">
-            <div className="absolute right-4 top-0 bottom-0 w-0.5 bg-brand-200" />
+            <div className="absolute end-4 top-0 bottom-0 w-0.5 bg-brand-200" />
             <div className="space-y-6">
               {entries.map((e: Record<string, unknown>, i: number) => (
-                <div key={i} className="relative pr-10">
+                <div key={i} className="relative pe-10">
                   <div
-                    className={`absolute right-2.5 top-4 w-3 h-3 rounded-full border-2 border-brand-600 bg-white dark:bg-gray-900`}
+                    className={`absolute end-2.5 top-4 w-3 h-3 rounded-full border-2 border-brand-600 bg-surface-elevated`}
                   />
                   <Card padding="md">
                     <div className="flex items-start gap-3">
-                      <span className="text-2xl"></span>
+                      <span className="text-2xl">🧖</span>
                       <div className="flex-1">
                         <p className="font-bold text-sm">
                           {(e.skinCondition as string) ?? t('skinTimeline.unspecified')}

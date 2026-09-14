@@ -1,12 +1,13 @@
+import type { JSX } from 'react';
 import { View, Text, ScrollView, StyleSheet, RefreshControl } from 'react-native';
 import { SkeletonList } from '@/components/SkeletonCard';
 import { trpc } from '@/lib/trpc-react';
 import { useLocale } from '@/components/LocaleProvider';
 
 const TL: Record<string, { name: string; emoji: string; color: string }> = {
-  SILVER: { name: 'الفضية', emoji: '', color: '#9ca3af' },
-  GOLD: { name: 'الذهبية', emoji: '', color: '#f59e0b' },
-  PLATINUM: { name: 'البلاتينية', emoji: '', color: '#7c3aed' },
+  SILVER: { name: 'الفضية', emoji: '🥈', color: '#9ca3af' },
+  GOLD: { name: 'الذهبية', emoji: '🥇', color: '#f59e0b' },
+  PLATINUM: { name: 'البلاتينية', emoji: '💎', color: '#7c3aed' },
 };
 
 interface Reward {
@@ -31,7 +32,9 @@ export default function RewardsScreen(): JSX.Element {
       refreshControl={
         <RefreshControl
           refreshing={rewardsQ.isRefetching}
-          onRefresh={() => rewardsQ.refetch()}
+          onRefresh={async () => {
+            await rewardsQ.refetch();
+          }}
           colors={['#f59e0b']}
         />
       }

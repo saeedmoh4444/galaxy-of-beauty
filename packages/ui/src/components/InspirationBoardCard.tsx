@@ -1,4 +1,5 @@
 'use client';
+import type { JSX } from 'react';
 
 import { cn } from '@galaxy/shared';
 
@@ -54,7 +55,9 @@ export function InspirationBoardCard({
       {/* Header */}
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-2">
-          <span className="text-lg" aria-hidden="true"></span>
+          <span className="text-lg" aria-hidden="true">
+            ✨
+          </span>
           <div>
             <h4 className="text-sm font-bold text-rose-700 dark:text-rose-300">{boardName}</h4>
             <p className="text-[10px] text-rose-500 dark:text-rose-400">
@@ -86,7 +89,7 @@ export function InspirationBoardCard({
       {/* Collaborators */}
       {collaborators && collaborators.length > 0 && (
         <div className="mt-2 flex items-center gap-1.5">
-          <span className="text-[10px] text-text-tertiary dark:text-gray-500">‍️</span>
+          <span className="text-[10px] text-text-tertiary dark:text-text-secondary">👥</span>
           <div className="flex -space-x-1.5">
             {collaborators.slice(0, 4).map((name) => (
               <span
@@ -97,7 +100,7 @@ export function InspirationBoardCard({
               </span>
             ))}
             {collaborators.length > 4 && (
-              <span className="flex h-6 w-6 items-center justify-center rounded-full border-2 border-white bg-gray-100 text-[8px] text-gray-500 dark:border-gray-900 dark:bg-gray-700">
+              <span className="flex h-6 w-6 items-center justify-center rounded-full border-2 border-white bg-surface-muted text-[8px] text-text-secondary dark:border-gray-900 dark:bg-gray-700">
                 +{collaborators.length - 4}
               </span>
             )}
@@ -119,10 +122,13 @@ export function InspirationBoardCard({
               {pin.title}
             </p>
             {pin.savedBy && (
-              <p className="text-[9px] text-text-tertiary dark:text-gray-500"> {pin.savedBy}</p>
+              <p className="text-[9px] text-text-tertiary dark:text-text-secondary">
+                {' '}
+                {pin.savedBy}
+              </p>
             )}
             {pin.note && (
-              <p className="mt-0.5 text-[9px] italic text-text-tertiary dark:text-gray-500 truncate">
+              <p className="mt-0.5 text-[9px] italic text-text-tertiary dark:text-text-secondary truncate">
                 &ldquo;{pin.note}&rdquo;
               </p>
             )}
@@ -151,7 +157,7 @@ export function InspirationBoardCard({
       </div>
 
       {/* Footer */}
-      <p className="mt-2 text-center text-[9px] text-text-tertiary dark:text-gray-500">
+      <p className="mt-2 text-center text-[9px] text-text-tertiary dark:text-text-secondary">
         {footerText}
       </p>
     </div>

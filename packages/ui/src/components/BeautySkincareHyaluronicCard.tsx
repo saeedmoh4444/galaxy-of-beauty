@@ -1,4 +1,5 @@
 'use client';
+import type { JSX } from 'react';
 import { cn } from '@galaxy/shared';
 export function BeautySkincareHyaluronicCard({
   className = '',
@@ -19,7 +20,7 @@ export function BeautySkincareHyaluronicCard({
       )}
     >
       <div className="flex items-center gap-2">
-        <span className="text-xl"></span>
+        <span className="text-xl">💧</span>
         <div>
           <h4 className="text-sm font-bold text-sky-700 dark:text-sky-300">{title}</h4>
           <p className="text-[10px] text-sky-500 dark:text-sky-400">{subtitle}</p>
@@ -28,18 +29,21 @@ export function BeautySkincareHyaluronicCard({
       <div className="mt-3 space-y-1">
         {[
           {
-            emoji: '',
+            emoji: '💧',
             text: { ar: 'يحمل 1000 ضعف وزنه ماء', en: 'Holds 1,000 times its weight in water' },
           },
           {
-            emoji: '',
+            emoji: '💦',
             text: { ar: 'يطبق على بشرة رطبة — وليس جافة', en: 'Apply to damp skin — not dry skin' },
           },
           {
-            emoji: '',
+            emoji: '🍊',
             text: { ar: 'مع فيتامين سي — ثنائي رائع', en: 'With vitamin C — a wonderful duo' },
           },
-          { emoji: '', text: { ar: 'يناسب جميع أنواع البشرة', en: 'Suitable for all skin types' } },
+          {
+            emoji: '✅',
+            text: { ar: 'يناسب جميع أنواع البشرة', en: 'Suitable for all skin types' },
+          },
         ].map((t, i) => (
           <div
             key={i}

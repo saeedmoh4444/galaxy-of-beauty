@@ -1,3 +1,4 @@
+import type { JSX } from 'react';
 import { View, Text, ScrollView, StyleSheet, RefreshControl } from 'react-native';
 import { ErrorAlert } from '@/components/ErrorAlert';
 import { SkeletonList } from '@/components/SkeletonCard';
@@ -27,7 +28,9 @@ export default function BeautyAwardsScreen(): JSX.Element {
       refreshControl={
         <RefreshControl
           refreshing={awardsQ.isRefetching}
-          onRefresh={() => awardsQ.refetch()}
+          onRefresh={async () => {
+            await awardsQ.refetch();
+          }}
           colors={['#f59e0b']}
         />
       }

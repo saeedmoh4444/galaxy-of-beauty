@@ -1,4 +1,5 @@
 'use client';
+import type { JSX } from 'react';
 import { cn } from '@galaxy/shared';
 export function BeautyRosaceaCard({
   className = '',
@@ -19,7 +20,7 @@ export function BeautyRosaceaCard({
       )}
     >
       <div className="flex items-center gap-2">
-        <span className="text-xl"></span>
+        <span className="text-xl">😳</span>
         <div>
           <h4 className="text-sm font-bold text-rose-700 dark:text-rose-300">{title}</h4>
           <p className="text-[10px] text-rose-500 dark:text-rose-400">{subtitle}</p>
@@ -28,25 +29,25 @@ export function BeautyRosaceaCard({
       <div className="mt-3 space-y-1">
         {[
           {
-            emoji: '',
+            emoji: '🌿',
             text: {
               ar: 'منتجات مهدئة — ألوفيرا، سيراميد',
               en: 'Soothing products — aloe vera, ceramides',
             },
           },
           {
-            emoji: '',
+            emoji: '🚫',
             text: {
               ar: 'تجنبي: كحول، عطور، مقشرات قوية',
               en: 'Avoid: alcohol, fragrances, harsh exfoliants',
             },
           },
           {
-            emoji: '',
+            emoji: '🧊',
             text: { ar: 'كمادات باردة — عند الالتهاب', en: 'Cold compresses — during flare-ups' },
           },
           {
-            emoji: '️',
+            emoji: '☀️',
             text: {
               ar: 'واقي شمس معدني — ألطف على البشرة',
               en: 'Mineral sunscreen — gentler on skin',

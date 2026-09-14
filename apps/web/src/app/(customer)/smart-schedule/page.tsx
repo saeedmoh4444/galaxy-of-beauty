@@ -1,5 +1,6 @@
 'use client';
 import { useState } from 'react';
+import type { JSX } from 'react';
 import { api } from '@/lib/trpc';
 import { Card, CardListSkeleton, Button } from '@galaxy/ui';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
@@ -7,12 +8,12 @@ import { useLocale } from '@/components/LocaleProvider';
 import type { TranslationKey } from '@galaxy/shared';
 
 const POPULAR_SERVICES: { id: number; name: TranslationKey; emoji: string }[] = [
-  { id: 1, name: 'recommendations.manicure', emoji: '' },
-  { id: 2, name: 'recommendations.pedicure', emoji: '' },
-  { id: 3, name: 'recommendations.facialCleaning', emoji: '' },
-  { id: 4, name: 'recommendations.massage', emoji: '‍️' },
-  { id: 5, name: 'recommendations.hairDye', emoji: '' },
-  { id: 6, name: 'recommendations.makeup', emoji: '' },
+  { id: 1, name: 'recommendations.manicure', emoji: '💅' },
+  { id: 2, name: 'recommendations.pedicure', emoji: '🦶' },
+  { id: 3, name: 'recommendations.facialCleaning', emoji: '🧖' },
+  { id: 4, name: 'recommendations.massage', emoji: '💆' },
+  { id: 5, name: 'recommendations.hairDye', emoji: '🎨' },
+  { id: 6, name: 'recommendations.makeup', emoji: '💄' },
 ];
 
 export default function SmartSchedulePage(): JSX.Element {
@@ -64,7 +65,7 @@ export default function SmartSchedulePage(): JSX.Element {
           <CardListSkeleton count={4} />
         ) : suggestions.length === 0 ? (
           <Card padding="lg" className="text-center py-8">
-            <p className="text-4xl mb-2"></p>
+            <p className="text-4xl mb-2">📅</p>
             <p className="text-text-secondary">{t('smartSchedule.noSlots')}</p>
           </Card>
         ) : (
@@ -79,7 +80,7 @@ export default function SmartSchedulePage(): JSX.Element {
                 return (
                   <div key={i} className="flex items-center justify-between rounded-lg border p-3">
                     <div className="flex items-center gap-3">
-                      <span className="text-2xl">‍</span>
+                      <span className="text-2xl">💇</span>
                       <div>
                         <p className="font-bold text-sm">
                           {t('smartSchedule.technicianLabel', { id: s.technicianId as number })}
@@ -103,7 +104,7 @@ export default function SmartSchedulePage(): JSX.Element {
                         </p>
                       </div>
                     </div>
-                    <div className="text-right">
+                    <div className="text-end">
                       <span className="text-xs text-amber-500">{s.rating as number}</span>
                       <Button size="sm" className="mt-1 block">
                         {t('smartSchedule.book')}

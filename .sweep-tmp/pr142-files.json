@@ -1,0 +1,97 @@
+[
+  {
+    "sha": "abd9f502d0e9f30051644545413c421f6310bc79",
+    "filename": "apps/mobile/package.json",
+    "status": "modified",
+    "additions": 9,
+    "deletions": 9,
+    "changes": 18,
+    "blob_url": "https://github.com/saeedmoh4444/galaxy-of-beauty/blob/cd15c583fece6858ad8094a51a3dce4e1d8180ae/apps%2Fmobile%2Fpackage.json",
+    "raw_url": "https://github.com/saeedmoh4444/galaxy-of-beauty/raw/cd15c583fece6858ad8094a51a3dce4e1d8180ae/apps%2Fmobile%2Fpackage.json",
+    "contents_url": "https://api.github.com/repos/saeedmoh4444/galaxy-of-beauty/contents/apps%2Fmobile%2Fpackage.json?ref=cd15c583fece6858ad8094a51a3dce4e1d8180ae",
+    "patch": "@@ -17,15 +17,15 @@\n     \"clean\": \"rm -rf .expo .turbo dist\"\n   },\n   \"dependencies\": {\n-    \"@expo/metro-runtime\": \"~57.0.14\",\n+    \"@expo/metro-runtime\": \"~57.0.15\",\n     \"@galaxy/api\": \"workspace:*\",\n     \"@galaxy/db\": \"workspace:*\",\n     \"@galaxy/shared\": \"workspace:*\",\n     \"@galaxy/ui\": \"workspace:^\",\n-    \"@tanstack/react-query\": \"^5.45.0\",\n+    \"@tanstack/react-query\": \"^5.102.8\",\n     \"@trpc/client\": \"^11.0.0\",\n     \"@trpc/react-query\": \"^11.0.0\",\n-    \"expo\": \"~57.0.17\",\n+    \"expo\": \"~57.0.21\",\n     \"expo-camera\": \"~57.0.4\",\n     \"expo-constants\": \"~57.0.15\",\n     \"expo-haptics\": \"~57.0.2\",\n@@ -35,19 +35,19 @@\n     \"expo-notifications\": \"~57.0.15\",\n     \"expo-router\": \"~57.0.17\",\n     \"expo-status-bar\": \"~57.0.1\",\n-    \"react\": \"19.2.3\",\n-    \"react-dom\": \"19.2.3\",\n-    \"react-native\": \"0.86.3\",\n-    \"react-native-safe-area-context\": \"~5.7.0\",\n-    \"react-native-screens\": \"~4.26.2\",\n+    \"react\": \"19.3.0\",\n+    \"react-dom\": \"19.3.0\",\n+    \"react-native\": \"0.87.1\",\n+    \"react-native-safe-area-context\": \"~5.9.1\",\n+    \"react-native-screens\": \"~4.27.0\",\n     \"react-native-web\": \"^0.21.2\",\n     \"socket.io-client\": \"^4.8.3\",\n     \"superjson\": \"^2.2.6\",\n     \"zod\": \"^3.23.0\"\n   },\n   \"devDependencies\": {\n     \"@galaxy/config\": \"workspace:*\",\n-    \"@types/react\": \"~19.2.18\",\n+    \"@types/react\": \"~19.3.0\",\n     \"@types/react-dom\": \"^19\",\n     \"typescript\": \"^6.0.3\"\n   }"
+  },
+  {
+    "sha": "ca69334582a99d82e3573a981be024465dd8c77f",
+    "filename": "apps/web/package.json",
+    "status": "modified",
+    "additions": 12,
+    "deletions": 12,
+    "changes": 24,
+    "blob_url": "https://github.com/saeedmoh4444/galaxy-of-beauty/blob/cd15c583fece6858ad8094a51a3dce4e1d8180ae/apps%2Fweb%2Fpackage.json",
+    "raw_url": "https://github.com/saeedmoh4444/galaxy-of-beauty/raw/cd15c583fece6858ad8094a51a3dce4e1d8180ae/apps%2Fweb%2Fpackage.json",
+    "contents_url": "https://api.github.com/repos/saeedmoh4444/galaxy-of-beauty/contents/apps%2Fweb%2Fpackage.json?ref=cd15c583fece6858ad8094a51a3dce4e1d8180ae",
+    "patch": "@@ -20,34 +20,34 @@\n     \"@galaxy/db\": \"workspace:*\",\n     \"@galaxy/shared\": \"workspace:*\",\n     \"@galaxy/ui\": \"workspace:^\",\n-    \"@sentry/nextjs\": \"^10.65.0\",\n-    \"@t3-oss/env-nextjs\": \"^0.10.0\",\n-    \"@tanstack/react-query\": \"^5.45.0\",\n+    \"@sentry/nextjs\": \"^10.74.0\",\n+    \"@t3-oss/env-nextjs\": \"^0.13.11\",\n+    \"@tanstack/react-query\": \"^5.102.8\",\n     \"@trpc/client\": \"^11.0.0\",\n     \"@trpc/next\": \"^11.0.0\",\n     \"@trpc/react-query\": \"^11.0.0\",\n     \"@trpc/server\": \"^11.0.0\",\n     \"next\": \"^15.5.24\",\n-    \"react\": \"^19.0.0\",\n-    \"react-dom\": \"^19.0.0\",\n+    \"react\": \"^19.3.0\",\n+    \"react-dom\": \"^19.3.0\",\n     \"socket.io-client\": \"^4.8.3\",\n     \"superjson\": \"^2.2.6\",\n     \"zod\": \"^3.23.0\"\n   },\n   \"devDependencies\": {\n     \"@galaxy/config\": \"workspace:*\",\n     \"@next/eslint-plugin-next\": \"^15.5.0\",\n-    \"@playwright/test\": \"^1.61.1\",\n+    \"@playwright/test\": \"^1.63.0\",\n     \"@types/node\": \"^20.14.0\",\n-    \"@types/react\": \"^19.0.0\",\n-    \"@types/react-dom\": \"^19.0.0\",\n-    \"@typescript-eslint/eslint-plugin\": \"^8.65.0\",\n-    \"@typescript-eslint/parser\": \"^8.65.0\",\n-    \"autoprefixer\": \"^10.4.19\",\n+    \"@types/react\": \"^19.3.0\",\n+    \"@types/react-dom\": \"^19.3.0\",\n+    \"@typescript-eslint/eslint-plugin\": \"^8.70.0\",\n+    \"@typescript-eslint/parser\": \"^8.70.0\",\n+    \"autoprefixer\": \"^10.5.6\",\n     \"eslint\": \"^8.57.1\",\n     \"eslint-config-next\": \"^15.5.0\",\n     \"eslint-plugin-jsx-a11y\": \"^6.10.2\",\n-    \"postcss\": \"^8.4.38\",\n+    \"postcss\": \"^8.5.28\",\n     \"tailwindcss\": \"^3.4.4\",\n     \"typescript\": \"^5.5.0\"\n   }"
+  },
+  {
+    "sha": "52972398a49c7505665b65ae7825d8bf0730043d",
+    "filename": "package.json",
+    "status": "modified",
+    "additions": 5,
+    "deletions": 5,
+    "changes": 10,
+    "blob_url": "https://github.com/saeedmoh4444/galaxy-of-beauty/blob/cd15c583fece6858ad8094a51a3dce4e1d8180ae/package.json",
+    "raw_url": "https://github.com/saeedmoh4444/galaxy-of-beauty/raw/cd15c583fece6858ad8094a51a3dce4e1d8180ae/package.json",
+    "contents_url": "https://api.github.com/repos/saeedmoh4444/galaxy-of-beauty/contents/package.json?ref=cd15c583fece6858ad8094a51a3dce4e1d8180ae",
+    "patch": "@@ -29,17 +29,17 @@\n     \"*.{json,md}\": \"prettier --write\"\n   },\n   \"devDependencies\": {\n-    \"@typescript-eslint/eslint-plugin\": \"^8.65.0\",\n-    \"@typescript-eslint/parser\": \"^8.65.0\",\n+    \"@typescript-eslint/eslint-plugin\": \"^8.70.0\",\n+    \"@typescript-eslint/parser\": \"^8.70.0\",\n     \"eslint\": \"^8.57.1\",\n     \"eslint-config-prettier\": \"^10.1.8\",\n     \"eslint-plugin-jsx-a11y\": \"^6.10.2\",\n     \"eslint-plugin-react\": \"^7.37.5\",\n     \"eslint-plugin-react-hooks\": \"^7.1.1\",\n     \"husky\": \"^9.1.7\",\n-    \"lint-staged\": \"^17.3.0\",\n-    \"prettier\": \"^3.3.0\",\n-    \"turbo\": \"^2.0.0\",\n+    \"lint-staged\": \"^17.5.1\",\n+    \"prettier\": \"^3.9.6\",\n+    \"turbo\": \"^2.10.12\",\n     \"typescript\": \"^5.5.0\"\n   },\n   \"engines\": {"
+  },
+  {
+    "sha": "114d7fd170e508621705cf516e204041b09e2f50",
+    "filename": "packages/api/package.json",
+    "status": "modified",
+    "additions": 2,
+    "deletions": 2,
+    "changes": 4,
+    "blob_url": "https://github.com/saeedmoh4444/galaxy-of-beauty/blob/cd15c583fece6858ad8094a51a3dce4e1d8180ae/packages%2Fapi%2Fpackage.json",
+    "raw_url": "https://github.com/saeedmoh4444/galaxy-of-beauty/raw/cd15c583fece6858ad8094a51a3dce4e1d8180ae/packages%2Fapi%2Fpackage.json",
+    "contents_url": "https://api.github.com/repos/saeedmoh4444/galaxy-of-beauty/contents/packages%2Fapi%2Fpackage.json?ref=cd15c583fece6858ad8094a51a3dce4e1d8180ae",
+    "patch": "@@ -27,7 +27,7 @@\n     \"@socket.io/redis-adapter\": \"^8.3.0\",\n     \"@trpc/server\": \"^11.0.0\",\n     \"bcryptjs\": \"^3.0.3\",\n-    \"bullmq\": \"^6.0.7\",\n+    \"bullmq\": \"^6.3.4\",\n     \"ioredis\": \"^5.11.1\",\n     \"jsonwebtoken\": \"^9.0.3\",\n     \"nodemailer\": \"^9.0.3\",\n@@ -44,7 +44,7 @@\n     \"dotenv\": \"^17.4.2\",\n     \"pino-pretty\": \"^13.1.3\",\n     \"socket.io-client\": \"^4.8.3\",\n-    \"tsx\": \"^4.23.0\",\n+    \"tsx\": \"^4.23.13\",\n     \"typescript\": \"^5.5.0\",\n     \"vitest\": \"^3.1.1\"\n   }"
+  },
+  {
+    "sha": "c7382b3d1f91602a99e29030910150f2c7b45084",
+    "filename": "packages/db/package.json",
+    "status": "modified",
+    "additions": 1,
+    "deletions": 1,
+    "changes": 2,
+    "blob_url": "https://github.com/saeedmoh4444/galaxy-of-beauty/blob/cd15c583fece6858ad8094a51a3dce4e1d8180ae/packages%2Fdb%2Fpackage.json",
+    "raw_url": "https://github.com/saeedmoh4444/galaxy-of-beauty/raw/cd15c583fece6858ad8094a51a3dce4e1d8180ae/packages%2Fdb%2Fpackage.json",
+    "contents_url": "https://api.github.com/repos/saeedmoh4444/galaxy-of-beauty/contents/packages%2Fdb%2Fpackage.json?ref=cd15c583fece6858ad8094a51a3dce4e1d8180ae",
+    "patch": "@@ -32,7 +32,7 @@\n     \"@galaxy/config\": \"workspace:*\",\n     \"@types/node\": \"^20.14.0\",\n     \"prisma\": \"^5.15.0\",\n-    \"tsx\": \"^4.23.0\",\n+    \"tsx\": \"^4.23.13\",\n     \"typescript\": \"^5.5.0\"\n   }\n }"
+  },
+  {
+    "sha": "69850887b0e196776118b1bcc3c209a2b32f1992",
+    "filename": "packages/shared/package.json",
+    "status": "modified",
+    "additions": 2,
+    "deletions": 2,
+    "changes": 4,
+    "blob_url": "https://github.com/saeedmoh4444/galaxy-of-beauty/blob/cd15c583fece6858ad8094a51a3dce4e1d8180ae/packages%2Fshared%2Fpackage.json",
+    "raw_url": "https://github.com/saeedmoh4444/galaxy-of-beauty/raw/cd15c583fece6858ad8094a51a3dce4e1d8180ae/packages%2Fshared%2Fpackage.json",
+    "contents_url": "https://api.github.com/repos/saeedmoh4444/galaxy-of-beauty/contents/packages%2Fshared%2Fpackage.json?ref=cd15c583fece6858ad8094a51a3dce4e1d8180ae",
+    "patch": "@@ -31,8 +31,8 @@\n     \"@storybook/react\": \"^8.6.18\",\n     \"@storybook/react-vite\": \"^8.6.18\",\n     \"@storybook/test\": \"^8.6.18\",\n-    \"@types/react\": \"^18.3.0\",\n-    \"@types/react-dom\": \"^18.3.0\",\n+    \"@types/react\": \"^19.3.0\",\n+    \"@types/react-dom\": \"^19.3.0\",\n     \"@vitejs/plugin-react\": \"^4.7.0\",\n     \"storybook\": \"^8.6.18\",\n     \"typescript\": \"^5.5.0\","
+  },
+  {
+    "sha": "7faaba156a73fb561ab9522d36f495f3e9be23c7",
+    "filename": "packages/ui/package.json",
+    "status": "modified",
+    "additions": 4,
+    "deletions": 4,
+    "changes": 8,
+    "blob_url": "https://github.com/saeedmoh4444/galaxy-of-beauty/blob/cd15c583fece6858ad8094a51a3dce4e1d8180ae/packages%2Fui%2Fpackage.json",
+    "raw_url": "https://github.com/saeedmoh4444/galaxy-of-beauty/raw/cd15c583fece6858ad8094a51a3dce4e1d8180ae/packages%2Fui%2Fpackage.json",
+    "contents_url": "https://api.github.com/repos/saeedmoh4444/galaxy-of-beauty/contents/packages%2Fui%2Fpackage.json?ref=cd15c583fece6858ad8094a51a3dce4e1d8180ae",
+    "patch": "@@ -38,11 +38,11 @@\n     \"@storybook/react\": \"^8.6.18\",\n     \"@storybook/react-vite\": \"^8.6.18\",\n     \"@storybook/test\": \"^8.6.18\",\n-    \"@types/react\": \"^19.0.0\",\n-    \"@types/react-dom\": \"^19.0.0\",\n+    \"@types/react\": \"^19.3.0\",\n+    \"@types/react-dom\": \"^19.3.0\",\n     \"@vitejs/plugin-react\": \"^4.7.0\",\n-    \"autoprefixer\": \"^10.4.19\",\n-    \"postcss\": \"^8.4.38\",\n+    \"autoprefixer\": \"^10.5.6\",\n+    \"postcss\": \"^8.5.28\",\n     \"storybook\": \"^8.6.18\",\n     \"tailwindcss\": \"^3.4.4\",\n     \"typescript\": \"^5.5.0\","
+  },
+  {
+    "sha": "bf542bb99c8bfc2742ab06c5385f5f3b40a9bd68",
+    "filename": "pnpm-lock.yaml",
+    "status": "modified",
+    "additions": 1805,
+    "deletions": 1684,
+    "changes": 3489,
+    "blob_url": "https://github.com/saeedmoh4444/galaxy-of-beauty/blob/cd15c583fece6858ad8094a51a3dce4e1d8180ae/pnpm-lock.yaml",
+    "raw_url": "https://github.com/saeedmoh4444/galaxy-of-beauty/raw/cd15c583fece6858ad8094a51a3dce4e1d8180ae/pnpm-lock.yaml",
+    "contents_url": "https://api.github.com/repos/saeedmoh4444/galaxy-of-beauty/contents/pnpm-lock.yaml?ref=cd15c583fece6858ad8094a51a3dce4e1d8180ae"
+  }
+]

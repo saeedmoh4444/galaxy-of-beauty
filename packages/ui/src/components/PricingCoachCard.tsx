@@ -1,4 +1,5 @@
 'use client';
+import type { JSX } from 'react';
 
 import { cn } from '@galaxy/shared';
 
@@ -51,19 +52,19 @@ const DEMAND_LABELS: Record<
   { emoji: string; label: { ar: string; en: string }; color: string }
 > = {
   high: {
-    emoji: '',
+    emoji: '📈',
     label: { ar: 'طلب عالي', en: 'High demand' },
     color: 'text-rose-600 dark:text-rose-400',
   },
   medium: {
-    emoji: '',
+    emoji: '📊',
     label: { ar: 'طلب متوسط', en: 'Medium demand' },
     color: 'text-amber-600 dark:text-amber-400',
   },
   low: {
-    emoji: '',
+    emoji: '📉',
     label: { ar: 'طلب منخفض', en: 'Low demand' },
-    color: 'text-gray-500 dark:text-gray-400',
+    color: 'text-text-secondary',
   },
 };
 
@@ -94,7 +95,9 @@ export function PricingCoachCard({
       )}
     >
       <div className="flex items-center gap-2">
-        <span className="text-xl" aria-hidden="true"></span>
+        <span className="text-xl" aria-hidden="true">
+          💹
+        </span>
         <div>
           <h4 className="text-sm font-bold text-blue-700 dark:text-blue-300">{title}</h4>
           <p className="text-[10px] text-blue-500 dark:text-blue-400">{subtitle}</p>
@@ -106,7 +109,9 @@ export function PricingCoachCard({
         <p className="text-xs font-bold text-text-primary dark:text-gray-100">{service.name}</p>
         <div className="mt-2 flex items-center justify-between">
           <div className="text-center">
-            <p className="text-[9px] text-text-tertiary dark:text-gray-500">{currentPriceLabel}</p>
+            <p className="text-[9px] text-text-tertiary dark:text-text-secondary">
+              {currentPriceLabel}
+            </p>
             <p className="text-lg font-bold text-text-primary dark:text-gray-100">
               {service.currentPrice} {currencySuffix}
             </p>
@@ -126,13 +131,15 @@ export function PricingCoachCard({
       {/* Analysis */}
       <div className="mt-2 grid grid-cols-2 gap-2 text-center">
         <div className="rounded-lg bg-emerald-50 p-2 dark:bg-emerald-950">
-          <p className="text-[9px] text-text-tertiary dark:text-gray-500">{increaseLabel}</p>
+          <p className="text-[9px] text-text-tertiary dark:text-text-secondary">{increaseLabel}</p>
           <p className="text-xs font-bold text-emerald-700 dark:text-emerald-300">
             +{diff} {currencySuffix} (+{pctIncrease}%)
           </p>
         </div>
-        <div className="rounded-lg bg-gray-50 p-2 dark:bg-gray-800">
-          <p className="text-[9px] text-text-tertiary dark:text-gray-500">{competitorAvgLabel}</p>
+        <div className="rounded-lg bg-surface-muted p-2 dark:bg-gray-800">
+          <p className="text-[9px] text-text-tertiary dark:text-text-secondary">
+            {competitorAvgLabel}
+          </p>
           <p className="text-xs font-bold text-text-primary dark:text-gray-100">
             {service.competitorAvg ? `${service.competitorAvg} ${currencySuffix}` : '—'}
           </p>
@@ -141,7 +148,7 @@ export function PricingCoachCard({
 
       {/* Demand indicator */}
       {demand && (
-        <div className="mt-2 flex items-center gap-1.5 rounded-lg bg-gray-50 p-2 dark:bg-gray-800">
+        <div className="mt-2 flex items-center gap-1.5 rounded-lg bg-surface-muted p-2 dark:bg-gray-800">
           <span>{demand.emoji}</span>
           <span className={cn('text-[10px] font-medium', demand.color)}>
             {demand.label[locale]}
@@ -158,7 +165,7 @@ export function PricingCoachCard({
         {applyButtonText}
       </button>
 
-      <p className="mt-1.5 text-center text-[9px] text-text-tertiary dark:text-gray-500">
+      <p className="mt-1.5 text-center text-[9px] text-text-tertiary dark:text-text-secondary">
         {footerText}
       </p>
     </div>

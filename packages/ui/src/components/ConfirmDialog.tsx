@@ -1,4 +1,5 @@
 'use client';
+import type { JSX } from 'react';
 
 import { Button } from './Button';
 import { Modal } from './Modal';
@@ -45,10 +46,10 @@ export function ConfirmDialog({
     <Modal open={open} onClose={onCancel}>
       <div className="text-center">
         <span className="text-4xl">
-          {variant === 'danger' ? '️' : variant === 'warning' ? '' : ''}
+          {variant === 'danger' ? '' : variant === 'warning' ? '' : ''}
         </span>
         <h3 className="mt-3 text-lg font-bold text-text-primary dark:text-gray-100">{title}</h3>
-        <p className="mt-2 text-sm text-text-secondary dark:text-gray-400">{message}</p>
+        <p className="mt-2 text-sm text-text-secondary dark:text-text-tertiary">{message}</p>
         <div className="mt-6 flex gap-3">
           <Button variant="outline" onClick={onCancel} className="flex-1">
             {cancelLabel}

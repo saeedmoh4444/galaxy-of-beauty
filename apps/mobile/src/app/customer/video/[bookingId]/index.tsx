@@ -1,6 +1,8 @@
+import type { JSX } from 'react';
 import { View, Text, ScrollView, TouchableOpacity, StyleSheet, RefreshControl } from 'react-native';
 import { useLocalSearchParams, useRouter } from 'expo-router';
 import { SkeletonList } from '@/components/SkeletonCard';
+import { useAuthState } from '@/hooks/useAuthState';
 import { trpc } from '@/lib/trpc-react';
 import { useLocale } from '@/components/LocaleProvider';
 
@@ -11,9 +13,13 @@ interface VideoSession {
 
 export default function VideoBookingScreen(): JSX.Element {
   const { t } = useLocale();
+  const isAuthed = useAuthState();
   const { bookingId } = useLocalSearchParams<{ bookingId: string }>();
   const router = useRouter();
-  const dataQ = trpc.video.getByBooking.useQuery({ bookingId: parseInt(bookingId, 10) });
+  const dataQ = trpc.video.getByBooking.useQuery(
+    { bookingId: parseInt(bookingId, 10) },
+    { enabled: isAuthed },
+  );
   if (dataQ.isLoading) return <SkeletonList count={3} />;
   const data = dataQ.data as VideoSession | null;
   if (!data)
@@ -29,7 +35,9 @@ export default function VideoBookingScreen(): JSX.Element {
       refreshControl={
         <RefreshControl
           refreshing={dataQ.isRefetching}
-          onRefresh={() => dataQ.refetch()}
+          onRefresh={async () => {
+            await dataQ.refetch();
+          }}
           colors={['#7c3aed']}
         />
       }

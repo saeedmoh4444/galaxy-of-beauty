@@ -1,3 +1,4 @@
+import type { JSX } from 'react';
 import { View, Text, ScrollView, StyleSheet, TouchableOpacity, RefreshControl } from 'react-native';
 import { ErrorAlert } from '@/components/ErrorAlert';
 import { SkeletonList } from '@/components/SkeletonCard';
@@ -35,7 +36,9 @@ export default function SubscriptionBoxesScreen(): JSX.Element {
       refreshControl={
         <RefreshControl
           refreshing={boxesQ.isRefetching}
-          onRefresh={() => boxesQ.refetch()}
+          onRefresh={async () => {
+            await boxesQ.refetch();
+          }}
           colors={['#7c3aed']}
         />
       }

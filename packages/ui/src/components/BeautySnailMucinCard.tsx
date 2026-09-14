@@ -1,4 +1,5 @@
 'use client';
+import type { JSX } from 'react';
 import { cn } from '@galaxy/shared';
 export function BeautySnailMucinCard({
   className = '',
@@ -19,7 +20,7 @@ export function BeautySnailMucinCard({
       )}
     >
       <div className="flex items-center gap-2">
-        <span className="text-xl"></span>
+        <span className="text-xl">🐌</span>
         <div>
           <h4 className="text-sm font-bold text-emerald-700 dark:text-emerald-300">{title}</h4>
           <p className="text-[10px] text-emerald-500 dark:text-emerald-400">{subtitle}</p>
@@ -28,28 +29,28 @@ export function BeautySnailMucinCard({
       <div className="mt-3 space-y-1">
         {[
           {
-            emoji: '',
+            emoji: '✨',
             text: {
               ar: 'غني بالجليكوليك أسيد — مقشر لطيف طبيعي',
               en: 'Rich in glycolic acid — a gentle natural exfoliant',
             },
           },
           {
-            emoji: '',
+            emoji: '💧',
             text: {
               ar: 'ألانتوين — يهدئ ويرطب بعمق',
               en: 'Allantoin — soothes and deeply hydrates',
             },
           },
           {
-            emoji: '',
+            emoji: '🩹',
             text: {
               ar: 'يعالج الندبات والتصبغات — بشرة موحدة',
               en: 'Treats scars and hyperpigmentation — even skin tone',
             },
           },
           {
-            emoji: '',
+            emoji: '🤝',
             text: {
               ar: 'آمن مع معظم المكونات — صباح ومساء',
               en: 'Safe with most ingredients — morning and night',

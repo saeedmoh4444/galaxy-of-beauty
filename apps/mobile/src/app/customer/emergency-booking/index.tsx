@@ -1,8 +1,10 @@
 import { View, Text, ScrollView, StyleSheet, TouchableOpacity, RefreshControl } from 'react-native';
 import { useState } from 'react';
+import type { JSX } from 'react';
 import { SkeletonList } from '@/components/SkeletonCard';
 import { trpc } from '@/lib/trpc-react';
 import { useLocale } from '@/components/LocaleProvider';
+import { useAuthState } from '@/hooks/useAuthState';
 import { localize } from '@galaxy/shared';
 
 interface EmergencyService {
@@ -28,6 +30,7 @@ interface BookingResult {
 }
 
 export default function EmergencyBookingScreen(): JSX.Element {
+  const isAuthed = useAuthState();
   const { locale, t } = useLocale();
   const [selectedSvc, setSelectedSvc] = useState<number | null>(null);
   const [result, setResult] = useState<BookingResult | null>(null);
@@ -43,7 +46,7 @@ export default function EmergencyBookingScreen(): JSX.Element {
   );
   const availability = (availabilityQ.data as AvailabilityResult | undefined) ?? null;
 
-  const addressesQ = trpc.addresses.list.useQuery();
+  const addressesQ = trpc.addresses.list.useQuery(undefined, { enabled: isAuthed });
 
   const createMut = trpc.emergencyBooking.create.useMutation({
     onSuccess: (d) => setResult(d as unknown as BookingResult),
@@ -67,7 +70,7 @@ export default function EmergencyBookingScreen(): JSX.Element {
       <ScrollView style={styles.c} contentContainerStyle={styles.i}>
         <Text style={styles.t}>{t('emergencyBooking.title')}</Text>
         <View style={[styles.card, styles.rc]}>
-          <Text style={styles.re}></Text>
+          <Text style={styles.re}>✅</Text>
           <Text style={styles.rt}>{t('emergencyBooking.success')}</Text>
           <Text style={styles.rcode}>{result.bookingCode ?? '—'}</Text>
         </View>
@@ -81,7 +84,9 @@ export default function EmergencyBookingScreen(): JSX.Element {
         refreshControl={
           <RefreshControl
             refreshing={servicesQ.isRefetching}
-            onRefresh={() => servicesQ.refetch()}
+            onRefresh={async () => {
+              await servicesQ.refetch();
+            }}
             colors={['#ef4444']}
           />
         }
@@ -113,7 +118,7 @@ export default function EmergencyBookingScreen(): JSX.Element {
       </View>
       {(availability.available ?? []).map((tech) => (
         <View key={tech.technicianId} style={styles.card}>
-          <Text style={styles.te}></Text>
+          <Text style={styles.te}>👤</Text>
           <View style={{ flex: 1 }}>
             <Text style={styles.tn}>{tech.name ?? ''}</Text>
             <Text style={styles.tm}> {tech.rating ?? ''}</Text>

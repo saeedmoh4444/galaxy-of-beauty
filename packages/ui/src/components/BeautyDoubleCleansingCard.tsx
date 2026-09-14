@@ -1,4 +1,5 @@
 'use client';
+import type { JSX } from 'react';
 import { cn } from '@galaxy/shared';
 export function BeautyDoubleCleansingCard({
   className = '',
@@ -19,7 +20,7 @@ export function BeautyDoubleCleansingCard({
       )}
     >
       <div className="flex items-center gap-2">
-        <span className="text-xl"></span>
+        <span className="text-xl">🧼</span>
         <div>
           <h4 className="text-sm font-bold text-sky-700 dark:text-sky-300">{title}</h4>
           <p className="text-[10px] text-sky-500 dark:text-sky-400">{subtitle}</p>
@@ -35,21 +36,21 @@ export function BeautyDoubleCleansingCard({
             },
           },
           {
-            emoji: '',
+            emoji: '💧',
             text: {
               ar: 'الخطوة 2: منظف مائي — ينظف البشرة بعمق',
               en: 'Step 2: water cleanser — deeply cleanses skin',
             },
           },
           {
-            emoji: '',
+            emoji: '🌙',
             text: {
               ar: 'مساءً فقط — صباحاً اكتفي بغسول واحد',
               en: 'Evenings only — one cleanser in the morning',
             },
           },
           {
-            emoji: '',
+            emoji: '✨',
             text: {
               ar: 'النتيجة: بشرة أنظف وأكثر إشراقاً',
               en: 'Result: cleaner, more radiant skin',

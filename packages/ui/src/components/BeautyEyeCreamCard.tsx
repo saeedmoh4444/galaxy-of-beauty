@@ -1,4 +1,5 @@
 'use client';
+import type { JSX } from 'react';
 import { cn } from '@galaxy/shared';
 export function BeautyEyeCreamCard({
   className = '',
@@ -19,7 +20,7 @@ export function BeautyEyeCreamCard({
       )}
     >
       <div className="flex items-center gap-2">
-        <span className="text-xl">️</span>
+        <span className="text-xl">👀</span>
         <div>
           <h4 className="text-sm font-bold text-violet-700 dark:text-violet-300">{title}</h4>
           <p className="text-[10px] text-violet-500 dark:text-violet-400">{subtitle}</p>
@@ -28,28 +29,28 @@ export function BeautyEyeCreamCard({
       <div className="mt-3 space-y-1">
         {[
           {
-            emoji: '',
+            emoji: '🍚',
             text: {
               ar: 'الكمية: حبة أرز — لا أكثر',
               en: 'Amount: a grain of rice — no more',
             },
           },
           {
-            emoji: '️',
+            emoji: '👆',
             text: {
               ar: 'الطريقة: تربيت بالبنصر — لا تفركي',
               en: 'Method: tap with ring finger — do not rub',
             },
           },
           {
-            emoji: '',
+            emoji: '⏰',
             text: {
               ar: 'الوقت: صباح ومساء',
               en: 'When: morning and evening',
             },
           },
           {
-            emoji: '',
+            emoji: '🧪',
             text: {
               ar: 'المكونات: كافيين، ببتيدات، فيتامين K',
               en: 'Ingredients: caffeine, peptides, vitamin K',

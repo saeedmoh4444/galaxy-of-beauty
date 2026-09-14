@@ -1,4 +1,5 @@
 'use client';
+import type { JSX } from 'react';
 import { cn } from '@galaxy/shared';
 export function BeautyMakeupColorCard({
   className = '',
@@ -19,7 +20,7 @@ export function BeautyMakeupColorCard({
       )}
     >
       <div className="flex items-center gap-2">
-        <span className="text-xl"></span>
+        <span className="text-xl">🎨</span>
         <div>
           <h4 className="text-sm font-bold text-violet-700 dark:text-violet-300">{heading}</h4>
           <p className="text-[10px] text-violet-500 dark:text-violet-400">{subtitle}</p>
@@ -28,28 +29,28 @@ export function BeautyMakeupColorCard({
       <div className="mt-3 space-y-1">
         {[
           {
-            emoji: '',
+            emoji: '🧡',
             text: {
               ar: 'البشرة الدافئة: ألوان ذهبية، برونزية، خوخية',
               en: 'Warm skin: golds, bronzes, peaches',
             },
           },
           {
-            emoji: '',
+            emoji: '💜',
             text: {
               ar: 'البشرة الباردة: وردي، بنفسجي، فضي',
               en: 'Cool skin: pinks, purples, silvers',
             },
           },
           {
-            emoji: '',
+            emoji: '💚',
             text: {
               ar: 'البشرة الزيتونية: ألوان ترابية، زيتوني',
               en: 'Olive skin: earthy tones, olives',
             },
           },
           {
-            emoji: '',
+            emoji: '🎨',
             text: {
               ar: 'البشرة المحايدة: جميع الألوان تناسبك',
               en: 'Neutral skin: every color suits you',

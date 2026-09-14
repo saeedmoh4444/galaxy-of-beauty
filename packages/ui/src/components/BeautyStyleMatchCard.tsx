@@ -1,4 +1,5 @@
 'use client';
+import type { JSX } from 'react';
 
 import { cn } from '@galaxy/shared';
 
@@ -7,7 +8,7 @@ import { cn } from '@galaxy/shared';
  * From Phase W9: The Small Details.
  *
  * Usage:
- *   <BeautyStyleMatchCard matches={[{ style: 'كلاسيكي', emoji: '', match: 92 }]} />
+ *   <BeautyStyleMatchCard matches={[{ style: 'كلاسيكي', emoji: '👗', match: 92 }]} />
  */
 
 interface StyleMatch {
@@ -44,7 +45,9 @@ export function BeautyStyleMatchCard({
       )}
     >
       <div className="text-center">
-        <span className="text-3xl" aria-hidden="true"></span>
+        <span className="text-3xl" aria-hidden="true">
+          👗
+        </span>
         <h4 className="mt-1 text-sm font-bold text-fuchsia-700 dark:text-fuchsia-300">{heading}</h4>
         <p className="text-[10px] text-fuchsia-500 dark:text-fuchsia-400">{subtitle}</p>
       </div>
@@ -62,7 +65,7 @@ export function BeautyStyleMatchCard({
         {matches.slice(1).map((m, i) => (
           <div
             key={i}
-            className="flex items-center gap-2 rounded-lg bg-gray-50 px-3 py-2 dark:bg-gray-800"
+            className="flex items-center gap-2 rounded-lg bg-surface-muted px-3 py-2 dark:bg-gray-800"
           >
             <span className="text-sm">{m.emoji}</span>
             <span className="flex-1 text-[10px] text-text-primary dark:text-gray-100">

@@ -1,7 +1,9 @@
+import type { JSX } from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import { ScreenState } from '@/components/ScreenState';
 import { trpc } from '@/lib/trpc-react';
 import { useLocale } from '@/components/LocaleProvider';
+import { useAuthState } from '@/hooks/useAuthState';
 import { formatCurrency } from '@galaxy/ui';
 
 const COLORS = {
@@ -14,8 +16,9 @@ const COLORS = {
 };
 
 export default function GiftCardsScreen(): JSX.Element {
+  const isAuthed = useAuthState();
   const { t } = useLocale();
-  const cards = trpc.giftCards.myCards.useQuery() ?? {
+  const cards = trpc.giftCards.myCards.useQuery(undefined, { enabled: isAuthed }) ?? {
     data: null,
     isLoading: false,
     isError: false,

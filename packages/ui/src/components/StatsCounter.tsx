@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import type { JSX } from 'react';
 
 /**
  * Animated stats counter — counts up to target when visible.
@@ -61,7 +62,7 @@ function CountUpItem({ stat }: { stat: Stat }) {
         {count.toLocaleString('ar-SA')}
         {stat.suffix ?? '+'}
       </div>
-      <div className="mt-1 text-sm font-medium text-text-secondary dark:text-gray-400">
+      <div className="mt-1 text-sm font-medium text-text-secondary dark:text-text-tertiary">
         {stat.label}
       </div>
     </div>

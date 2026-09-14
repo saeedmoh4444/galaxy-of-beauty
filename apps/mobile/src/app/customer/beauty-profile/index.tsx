@@ -1,18 +1,24 @@
+import type { JSX } from 'react';
 import { View, Text, ScrollView, StyleSheet, RefreshControl } from 'react-native';
 import { SkeletonList } from '@/components/SkeletonCard';
-import { trpc } from '@/lib/trpc-react';
 import { useLocale } from '@/components/LocaleProvider';
+import { useAuthState } from '@/hooks/useAuthState';
+import { trpc } from '@/lib/trpc-react';
 
 interface BeautyProfileData {
   skinType?: string;
   hairType?: string;
+  measurements?: { heightCm?: number; weightKg?: number; waistCm?: number } | null;
+  fitnessGoals?: string[];
 }
 
 export default function BeautyProfileScreen(): JSX.Element {
   const { t } = useLocale();
-  const q = trpc.beautyProfile.get.useQuery();
+  const isAuthed = useAuthState();
+  const q = trpc.beautyProfile.get.useQuery(undefined, { enabled: isAuthed });
   if (q.isLoading) return <SkeletonList count={3} />;
   const data = q.data as unknown as BeautyProfileData | null;
+  const m = data?.measurements ?? {};
   return (
     <ScrollView
       style={styles.c}
@@ -20,7 +26,9 @@ export default function BeautyProfileScreen(): JSX.Element {
       refreshControl={
         <RefreshControl
           refreshing={q.isRefetching}
-          onRefresh={() => q.refetch()}
+          onRefresh={async () => {
+            await q.refetch();
+          }}
           colors={['#ec4899']}
         />
       }
@@ -34,6 +42,17 @@ export default function BeautyProfileScreen(): JSX.Element {
           <Text style={styles.label}>
             {t('beautyProfile.hair-type', { type: String(data.hairType ?? '') })}
           </Text>
+          {(m.heightCm || m.weightKg || m.waistCm) && (
+            <Text style={styles.label}>
+              {t('profile.measurements.title')}: {m.heightCm ? `${m.heightCm}cm` : ''}{' '}
+              {m.weightKg ? `${m.weightKg}kg` : ''} {m.waistCm ? `${m.waistCm}cm` : ''}
+            </Text>
+          )}
+          {(data.fitnessGoals ?? []).length > 0 && (
+            <Text style={styles.label}>
+              {t('profile.measurements.goals')}: {(data.fitnessGoals ?? []).join('، ')}
+            </Text>
+          )}
         </View>
       )}
     </ScrollView>

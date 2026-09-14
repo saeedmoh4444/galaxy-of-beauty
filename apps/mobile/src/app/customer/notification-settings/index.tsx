@@ -1,7 +1,9 @@
+import type { JSX } from 'react';
 import { View, Text, ScrollView, Switch, StyleSheet, RefreshControl } from 'react-native';
 import { SkeletonList } from '@/components/SkeletonCard';
 import { trpc } from '@/lib/trpc-react';
 import { useLocale } from '@/components/LocaleProvider';
+import { useAuthState } from '@/hooks/useAuthState';
 
 interface NotificationPrefs {
   bookings?: boolean;
@@ -12,7 +14,8 @@ interface NotificationPrefs {
 
 export default function NotificationSettingsScreen(): JSX.Element {
   const { t } = useLocale();
-  const prefsQ = trpc.notificationPrefs.get.useQuery();
+  const isAuthed = useAuthState();
+  const prefsQ = trpc.notificationPrefs.get.useQuery(undefined, { enabled: isAuthed });
   const data = (prefsQ.data as NotificationPrefs | undefined) ?? {};
 
   if (prefsQ.isLoading) return <SkeletonList count={3} />;
@@ -24,7 +27,9 @@ export default function NotificationSettingsScreen(): JSX.Element {
       refreshControl={
         <RefreshControl
           refreshing={prefsQ.isRefetching}
-          onRefresh={() => prefsQ.refetch()}
+          onRefresh={async () => {
+            await prefsQ.refetch();
+          }}
           colors={['#6366f1']}
         />
       }

@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import type { JSX } from 'react';
 import { api } from '@/lib/trpc';
 import { Card, CardListSkeleton } from '@galaxy/ui';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
@@ -55,7 +56,7 @@ export default function BookingChecklistPage(): JSX.Element {
                     <p className="font-semibold">{item.textAr as string}</p>
                     <p className="text-xs text-text-secondary">{item.textEn as string}</p>
                   </div>
-                  <input type="checkbox" className="ml-auto h-5 w-5 accent-brand-600" />
+                  <input type="checkbox" className="ms-auto h-5 w-5 accent-brand-600" />
                 </div>
               ))}
             </div>

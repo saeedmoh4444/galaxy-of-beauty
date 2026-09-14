@@ -1,4 +1,5 @@
 'use client';
+import type { JSX } from 'react';
 
 import { cn } from '@galaxy/shared';
 
@@ -72,12 +73,12 @@ export function AnnualSummitCard({
   editionLabel = 'النسخة السنوية',
   cityLabel = 'المدينة',
   dateLabel = 'التاريخ',
-  topicsLabel = ' محاور الملتقى',
-  speakersLabel = '️ متحدثات',
-  attendeesLabel = ' سيدة مسجلة حتى الآن',
-  earlyBirdLabel = ' الحجز المبكر',
+  topicsLabel = 'محاور الملتقى',
+  speakersLabel = 'متحدثات',
+  attendeesLabel = 'سيدة مسجلة حتى الآن',
+  earlyBirdLabel = 'الحجز المبكر',
   currencySuffix = 'ر.س',
-  registerLabel = 'سجّلي الآن ️',
+  registerLabel = 'سجّلي الآن ',
   sponsorLabel = 'راعي الملتقى',
   footerText = 'معاً نبني مستقبل المرأة السعودية في قطاع التجميل',
   locale = 'ar',
@@ -91,7 +92,9 @@ export function AnnualSummitCard({
     >
       {/* Header */}
       <div className="text-center">
-        <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-full bg-gradient-to-br from-amber-200 to-yellow-200 text-2xl dark:from-amber-800 dark:to-yellow-800"></div>
+        <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-full bg-gradient-to-br from-amber-200 to-yellow-200 text-2xl dark:from-amber-800 dark:to-yellow-800">
+          🌟
+        </div>
         <h4 className="mt-2 text-sm font-bold text-amber-800 dark:text-amber-200">{title}</h4>
         <p className="text-[10px] text-amber-600 dark:text-amber-400">
           {editionLabel} {year}
@@ -101,11 +104,11 @@ export function AnnualSummitCard({
       {/* Event details */}
       <div className="mt-3 grid grid-cols-2 gap-2">
         <div className="rounded-xl bg-white/60 p-2.5 text-center dark:bg-gray-800/60">
-          <p className="text-[9px] text-text-tertiary dark:text-gray-500">{cityLabel}</p>
+          <p className="text-[9px] text-text-tertiary dark:text-text-secondary">{cityLabel}</p>
           <p className="text-xs font-bold text-amber-800 dark:text-amber-200"> {city}</p>
         </div>
         <div className="rounded-xl bg-white/60 p-2.5 text-center dark:bg-gray-800/60">
-          <p className="text-[9px] text-text-tertiary dark:text-gray-500">{dateLabel}</p>
+          <p className="text-[9px] text-text-tertiary dark:text-text-secondary">{dateLabel}</p>
           <p className="text-xs font-bold text-amber-800 dark:text-amber-200"> {date}</p>
         </div>
       </div>
@@ -148,7 +151,9 @@ export function AnnualSummitCard({
                   <p className="text-[10px] font-bold text-text-primary dark:text-gray-100">
                     {s.name}
                   </p>
-                  <p className="text-[9px] text-text-tertiary dark:text-gray-500">{s.title}</p>
+                  <p className="text-[9px] text-text-tertiary dark:text-text-secondary">
+                    {s.title}
+                  </p>
                 </div>
               </div>
             ))}
@@ -160,7 +165,7 @@ export function AnnualSummitCard({
       {attendees && (
         <div className="mt-2 rounded-lg bg-white/60 p-2 text-center dark:bg-gray-800/60">
           <p className="text-[10px] text-amber-700 dark:text-amber-300">
-            ️ {attendees.toLocaleString('ar-SA')}
+            {attendees.toLocaleString('ar-SA')}
             {attendeesLabel}
           </p>
         </div>
@@ -169,7 +174,7 @@ export function AnnualSummitCard({
       {/* Pricing + CTA */}
       <div className="mt-3 flex items-center justify-between">
         <div>
-          <p className="text-[9px] text-text-tertiary dark:text-gray-500">{earlyBirdLabel}</p>
+          <p className="text-[9px] text-text-tertiary dark:text-text-secondary">{earlyBirdLabel}</p>
           <p className="text-lg font-bold text-amber-800 dark:text-amber-200">
             {earlyBirdPrice} {currencySuffix}
           </p>

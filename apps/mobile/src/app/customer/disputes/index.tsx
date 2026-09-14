@@ -1,11 +1,14 @@
+import type { JSX } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import { ScreenState } from '@/components/ScreenState';
 import { trpc } from '@/lib/trpc-react';
 import { useLocale } from '@/components/LocaleProvider';
+import { useAuthState } from '@/hooks/useAuthState';
 
 const COLORS = { brand: '#7c3aed', white: '#ffffff', gray400: '#6b7280', gray900: '#111827' };
 
 export default function DisputesScreen(): JSX.Element {
+  const isAuthed = useAuthState();
   const { locale, t } = useLocale();
   const statusLabels: Record<string, string> = {
     OPEN: t('disputes.status-open'),
@@ -14,7 +17,7 @@ export default function DisputesScreen(): JSX.Element {
     RESOLVED_TECHNICIAN: t('disputes.status-resolved'),
     CLOSED: t('disputes.status-closed'),
   };
-  const disputes = trpc.disputes.list.useQuery({}) ?? {
+  const disputes = trpc.disputes.list.useQuery({}, { enabled: isAuthed }) ?? {
     data: null,
     isLoading: false,
     isError: false,

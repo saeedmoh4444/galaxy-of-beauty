@@ -1,4 +1,5 @@
 'use client';
+import type { JSX } from 'react';
 import { api } from '@/lib/trpc';
 import { Card, GridSkeleton, formatCurrency } from '@galaxy/ui';
 import { localize } from '@galaxy/shared';
@@ -30,12 +31,12 @@ export default function AiFeedPage(): JSX.Element {
         ) : (
           <>
             {skinProfile && (
-              <Card padding="lg" className="border-2 border-purple-200 bg-purple-50">
+              <Card padding="lg" className="border-2 border-brand-200 bg-brand-50">
                 <div className="flex items-center gap-3">
-                  <span className="text-3xl"></span>
+                  <span className="text-3xl">🧬</span>
                   <div>
-                    <p className="font-bold text-purple-700">{t('aiFeed.skinProfile')}</p>
-                    <p className="text-sm text-purple-600">
+                    <p className="font-bold text-brand-700">{t('aiFeed.skinProfile')}</p>
+                    <p className="text-sm text-brand-600">
                       {t('aiFeed.skinTypeLine', {
                         type: skinProfile.skinType as string,
                         concerns:
@@ -79,7 +80,7 @@ export default function AiFeedPage(): JSX.Element {
                 <div className="grid gap-4 sm:grid-cols-3">
                   {recommendations.map((r: Record<string, unknown>) => (
                     <Card key={r.id as number} padding="md" className="text-center">
-                      <span className="text-3xl"></span>
+                      <span className="text-3xl">✨</span>
                       <h4 className="font-bold mt-2 text-sm">
                         {localize(r.titleJson, locale) ??
                           t('aiFeed.serviceFallback', { id: r.id as number })}
@@ -98,7 +99,7 @@ export default function AiFeedPage(): JSX.Element {
 
             {wishlistItems.length === 0 && recommendations.length === 0 && (
               <Card padding="lg" className="text-center py-8">
-                <p className="text-4xl mb-2"></p>
+                <p className="text-4xl mb-2">✨</p>
                 <p className="text-text-secondary">{t('aiFeed.empty')}</p>
               </Card>
             )}

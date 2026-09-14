@@ -1,13 +1,19 @@
 'use client';
 import { useState } from 'react';
+import type { JSX } from 'react';
 import { api } from '@/lib/trpc';
-import { Card, CardListSkeleton, Button } from '@galaxy/ui';
+import { Card, CardListSkeleton, Button, useAuth } from '@galaxy/ui';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
 import { useLocale } from '@/components/LocaleProvider';
+import { bookingStatusLabelKey } from '@/lib/bookingStatus';
 
 export default function ReschedulePage(): JSX.Element {
   const { t, locale } = useLocale();
-  const { data: bookingsData, isLoading } = api.bookings.list.useQuery({ page: 1, limit: 20 }) as {
+  const { isAuthenticated } = useAuth();
+  const { data: bookingsData, isLoading } = api.bookings.list.useQuery(
+    { page: 1, limit: 20 },
+    { enabled: isAuthenticated },
+  ) as {
     data: Record<string, unknown> | undefined;
     isLoading: boolean;
     isError: boolean;
@@ -52,7 +58,7 @@ export default function ReschedulePage(): JSX.Element {
 
         {done && (
           <Card padding="lg" className="text-center border-2 border-green-300 bg-green-50">
-            <p className="text-2xl"></p>
+            <p className="text-2xl">✅</p>
             <p className="font-bold text-green-700 mt-2">{t('reschedule.success')}</p>
           </Card>
         )}
@@ -61,7 +67,7 @@ export default function ReschedulePage(): JSX.Element {
           <CardListSkeleton count={3} />
         ) : activeBookings.length === 0 ? (
           <Card padding="lg" className="text-center py-8">
-            <p className="text-4xl mb-2"></p>
+            <p className="text-4xl mb-2">📅</p>
             <p className="text-text-secondary">{t('reschedule.noneAvailable')}</p>
           </Card>
         ) : (
@@ -76,21 +82,21 @@ export default function ReschedulePage(): JSX.Element {
                     setSelectedId(isSelected ? null : (b.id as number));
                     setDone(false);
                   }}
-                  className={`w-full rounded-xl border-2 p-4 text-right transition-all ${isSelected ? 'border-brand-400 bg-brand-50' : 'border-gray-200'}`}
+                  className={`w-full rounded-xl border-2 p-4 text-end transition-all ${isSelected ? 'border-brand-400 bg-brand-50' : 'border-edge'}`}
                 >
                   <div className="flex justify-between items-center">
                     <div>
                       <span className="font-bold">
                         {t('reschedule.bookingLabel', { id: b.id as number })}
                       </span>
-                      <span className="text-xs text-text-secondary mr-2">
+                      <span className="text-xs text-text-secondary me-2">
                         {(service?.titleJson as Record<string, string>)?.ar ?? ''}
                       </span>
                     </div>
                     <span
                       className={`rounded-full px-2 py-0.5 text-xs ${b.status === 'ACCEPTED' ? 'bg-green-100 text-green-700' : 'bg-yellow-100 text-yellow-700'}`}
                     >
-                      {b.status as string}
+                      {t(bookingStatusLabelKey(b.status as string))}
                     </span>
                   </div>
                   <p className="text-xs text-text-secondary mt-1">

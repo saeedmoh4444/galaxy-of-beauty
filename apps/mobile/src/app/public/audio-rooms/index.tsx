@@ -1,3 +1,4 @@
+import type { JSX } from 'react';
 import { View, Text, ScrollView, StyleSheet, TouchableOpacity, RefreshControl } from 'react-native';
 import { ErrorAlert } from '@/components/ErrorAlert';
 import { SkeletonList } from '@/components/SkeletonCard';
@@ -41,7 +42,9 @@ export default function AudioRoomsScreen(): JSX.Element {
       refreshControl={
         <RefreshControl
           refreshing={roomsQ.isRefetching}
-          onRefresh={() => roomsQ.refetch()}
+          onRefresh={async () => {
+            await roomsQ.refetch();
+          }}
           colors={['#dc2626']}
         />
       }
@@ -53,7 +56,7 @@ export default function AudioRoomsScreen(): JSX.Element {
       )}
       {live.map((r) => (
         <View key={r.id} style={[styles.card, styles.liveCard]}>
-          <Text style={styles.roomEmoji}></Text>
+          <Text style={styles.roomEmoji}>🎤</Text>
           <View style={{ flex: 1 }}>
             <Text style={styles.roomTitle}>{r.title ?? ''}</Text>
             <Text style={styles.roomMeta}>
@@ -71,7 +74,7 @@ export default function AudioRoomsScreen(): JSX.Element {
       )}
       {upcoming.map((r) => (
         <View key={r.id} style={styles.card}>
-          <Text style={styles.roomEmoji}></Text>
+          <Text style={styles.roomEmoji}>🎧</Text>
           <View style={{ flex: 1 }}>
             <Text style={styles.roomTitle}>{r.title ?? ''}</Text>
             <Text style={styles.roomMeta}>

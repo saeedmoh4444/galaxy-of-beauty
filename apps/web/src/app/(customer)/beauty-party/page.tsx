@@ -1,5 +1,6 @@
 'use client';
 import { useState } from 'react';
+import type { JSX } from 'react';
 import { api } from '@/lib/trpc';
 import { Card, Button, formatCurrency } from '@galaxy/ui';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
@@ -7,11 +8,11 @@ import { useLocale } from '@/components/LocaleProvider';
 import type { TranslationKey } from '@galaxy/shared';
 
 const THEMES: { key: string; emoji: string; name: TranslationKey }[] = [
-  { key: 'spa', emoji: '‍️', name: 'beautyParty.theme.homeSpa' },
-  { key: 'makeup', emoji: '', name: 'beautyParty.theme.makeupParty' },
-  { key: 'nails', emoji: '', name: 'beautyParty.theme.nailSalon' },
-  { key: 'bridal', emoji: '', name: 'beautyParty.theme.bachelorette' },
-  { key: 'skincare', emoji: '', name: 'beautyParty.theme.skincareRoutine' },
+  { key: 'spa', emoji: '🧖', name: 'beautyParty.theme.homeSpa' },
+  { key: 'makeup', emoji: '💄', name: 'beautyParty.theme.makeupParty' },
+  { key: 'nails', emoji: '💅', name: 'beautyParty.theme.nailSalon' },
+  { key: 'bridal', emoji: '👰', name: 'beautyParty.theme.bachelorette' },
+  { key: 'skincare', emoji: '🧖', name: 'beautyParty.theme.skincareRoutine' },
 ];
 
 export default function BeautyPartyPage(): JSX.Element {
@@ -38,7 +39,7 @@ export default function BeautyPartyPage(): JSX.Element {
               <button
                 key={th.key}
                 onClick={() => setTheme(th.key)}
-                className={`w-full rounded-xl p-4 text-right border-2 transition-all ${theme === th.key ? 'border-brand-400 bg-brand-50' : 'border-gray-200'}`}
+                className={`w-full rounded-xl p-4 text-end border-2 transition-all ${theme === th.key ? 'border-brand-400 bg-brand-50' : 'border-edge'}`}
               >
                 <span className="text-2xl">{th.emoji}</span>{' '}
                 <span className="font-bold">{t(th.name)}</span>
@@ -47,7 +48,7 @@ export default function BeautyPartyPage(): JSX.Element {
           </div>
         </Card>
         <Card padding="lg">
-          <h3 className="font-bold mb-4">‍️ {t('beautyParty.guestsCount', { guests })}</h3>
+          <h3 className="font-bold mb-4"> {t('beautyParty.guestsCount', { guests })}</h3>
           <div className="flex gap-2">
             {[2, 3, 4, 5, 6, 8, 10].map((g) => (
               <button

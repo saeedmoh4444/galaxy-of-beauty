@@ -77,8 +77,12 @@ export const loyaltyRouter = router({
     }),
 
   // ── Available rewards ───────────────────────────────────
-  rewards: protectedProcedure.query(async ({ ctx }) => {
-    const account = await prisma.loyaltyAccount.findUnique({ where: { userId: ctx.user.id } });
+  // Public catalog (web + mobile public /rewards pages). Eligibility flags
+  // fall back to guest defaults when no user is signed in.
+  rewards: publicProcedure.query(async ({ ctx }) => {
+    const account = ctx.user
+      ? await prisma.loyaltyAccount.findUnique({ where: { userId: ctx.user.id } })
+      : null;
     const userTier = account?.tier || 'SILVER';
 
     const rewards = await prisma.loyaltyReward.findMany({

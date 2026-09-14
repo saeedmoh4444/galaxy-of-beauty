@@ -1,6 +1,7 @@
 'use client';
 
 import type { ComponentProps } from 'react';
+import type { JSX } from 'react';
 import { api } from '@/lib/trpc';
 import {
   PageContainer,
@@ -19,14 +20,20 @@ import {
   GroupDiscountBadge,
   BeautyPenPalCard,
   HijabiBeautyCard,
+  useAuth,
 } from '@galaxy/ui';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
 import { useLocale } from '@/components/LocaleProvider';
 
 export default function CommunityPage(): JSX.Element {
   const { t } = useLocale();
+  const { isAuthenticated } = useAuth();
   const circles = api.beautyCircles.list.useQuery({ limit: 6 });
-  const kindness = api.kindnessPoints.getStatus.useQuery();
+  // Auth-gated: an expired cookie still passes the middleware, so gate
+  // the query on the real session to avoid an error banner for guests.
+  const kindness = api.kindnessPoints.getStatus.useQuery(undefined, {
+    enabled: isAuthenticated,
+  });
   const events = api.communityEvents.list.useQuery({ limit: 3 });
   // beautyCircles.getHero doesn't exist — the hero badge shows its
   // built-in fallback member until product decides the intended source.
@@ -128,8 +135,8 @@ export default function CommunityPage(): JSX.Element {
                 />
                 <InspirationBoardCard
                   pins={[
-                    { emoji: '', title: t('community.pinSoftHairstyle'), savedBy: 'نورة' },
-                    { emoji: '', title: t('community.pinPartyMakeup'), savedBy: 'مها' },
+                    { emoji: '💇', title: t('community.pinSoftHairstyle'), savedBy: 'نورة' },
+                    { emoji: '💄', title: t('community.pinPartyMakeup'), savedBy: 'مها' },
                   ]}
                 />
               </div>
@@ -152,7 +159,7 @@ export default function CommunityPage(): JSX.Element {
               />
               <MentorBadge />
               <BeautyPenPalCard
-                match={{ city: 'جدة', interest: t('community.interestMakeup'), emoji: '' }}
+                match={{ city: 'جدة', interest: t('community.interestMakeup'), emoji: '💄' }}
               />
               <HijabiBeautyCard />
             </div>

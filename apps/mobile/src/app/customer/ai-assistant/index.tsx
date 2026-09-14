@@ -8,9 +8,11 @@ import {
   RefreshControl,
 } from 'react-native';
 import { useState } from 'react';
+import type { JSX } from 'react';
 import { SkeletonList } from '@/components/SkeletonCard';
-import { trpc } from '@/lib/trpc-react';
 import { useLocale } from '@/components/LocaleProvider';
+import { useAuthState } from '@/hooks/useAuthState';
+import { trpc } from '@/lib/trpc-react';
 
 interface AssistantMessage {
   id?: number;
@@ -20,8 +22,9 @@ interface AssistantMessage {
 
 export default function AIAssistantScreen(): JSX.Element {
   const { t } = useLocale();
+  const isAuthed = useAuthState();
   const [input, setInput] = useState('');
-  const q = trpc.liveChat.history.useQuery();
+  const q = trpc.liveChat.history.useQuery(undefined, { enabled: isAuthed });
   const messages: AssistantMessage[] = (q.data as AssistantMessage[] | undefined) ?? [];
 
   if (q.isLoading)
@@ -40,7 +43,9 @@ export default function AIAssistantScreen(): JSX.Element {
         refreshControl={
           <RefreshControl
             refreshing={q.isRefetching}
-            onRefresh={() => q.refetch()}
+            onRefresh={async () => {
+              await q.refetch();
+            }}
             colors={['#7c3aed']}
           />
         }
@@ -61,7 +66,7 @@ export default function AIAssistantScreen(): JSX.Element {
           placeholderTextColor="#9ca3af"
         />
         <TouchableOpacity style={styles.sendBtn}>
-          <Text style={styles.sendBtnText}></Text>
+          <Text style={styles.sendBtnText}>📤</Text>
         </TouchableOpacity>
       </View>
     </View>

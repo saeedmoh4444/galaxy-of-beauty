@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import type { JSX } from 'react';
 import { api } from '@/lib/trpc';
 import { Button, Card, CardSkeleton, ErrorAlert, Input } from '@galaxy/ui';
 import { useLocale } from '@/components/LocaleProvider';
@@ -57,7 +58,9 @@ export default function TwoFactorPage(): JSX.Element {
             {twoFactorEnabled ? (
               /* ── Already enabled ── */
               <div className="space-y-4 text-center">
-                <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-green-100 text-3xl dark:bg-green-900"></div>
+                <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-green-100 text-3xl dark:bg-green-900">
+                  ✅
+                </div>
                 <p className="text-lg font-semibold text-green-700 dark:text-green-300">
                   {t('auth.2fa-enabled')}
                 </p>
@@ -82,7 +85,9 @@ export default function TwoFactorPage(): JSX.Element {
             /* Step 1: Show setup button until clicked */
             !setupMut.isSuccess ? (
               <div className="space-y-4 text-center">
-                <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-brand-100 text-3xl dark:bg-brand-900"></div>
+                <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-brand-100 text-3xl dark:bg-brand-900">
+                  🔐
+                </div>
                 <p className="text-lg font-semibold">{t('auth.2fa-setup-title')}</p>
                 <p className="text-sm text-text-secondary">{t('auth.2fa-setup-desc')}</p>
 
@@ -104,7 +109,7 @@ export default function TwoFactorPage(): JSX.Element {
                     {t('auth.2fa-scan-qr')}
                   </p>
                   {/* QR Code placeholder */}
-                  <div className="mx-auto flex h-40 w-40 items-center justify-center rounded-xl border-2 border-dashed border-gray-300 bg-white dark:border-gray-600 dark:bg-gray-900">
+                  <div className="mx-auto flex h-40 w-40 items-center justify-center rounded-xl border-2 border-dashed border-edge bg-white dark:border-gray-600 dark:bg-gray-900">
                     <span className="text-xs text-text-tertiary">QR Code</span>
                   </div>
                 </div>
@@ -113,16 +118,13 @@ export default function TwoFactorPage(): JSX.Element {
                   <p className="mb-1 text-xs font-medium text-text-secondary">
                     {t('auth.2fa-secret')}
                   </p>
-                  <p
-                    className="select-all font-mono text-sm text-gray-800 dark:text-gray-200"
-                    dir="ltr"
-                  >
+                  <p className="select-all font-mono text-sm text-text-primary" dir="ltr">
                     {setupData?.secret as string}
                   </p>
                   <p className="mt-1 text-xs text-text-tertiary">{t('auth.2fa-manual-entry')}</p>
                 </div>
 
-                <div className="border-t border-gray-200 pt-4 dark:border-gray-700">
+                <div className="border-t border-edge pt-4 dark:border-gray-700">
                   <p className="mb-3 text-sm font-medium">{t('auth.2fa-verify-prompt')}</p>
 
                   {verifyMut.isError && (

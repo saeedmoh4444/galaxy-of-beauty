@@ -1,5 +1,7 @@
+import type { JSX } from 'react';
 import { View, Text, ScrollView, StyleSheet, TouchableOpacity, RefreshControl } from 'react-native';
 import { SkeletonList } from '@/components/SkeletonCard';
+import { useAuthState } from '@/hooks/useAuthState';
 import { trpc } from '@/lib/trpc-react';
 import { useLocale } from '@/components/LocaleProvider';
 
@@ -22,7 +24,8 @@ interface OnboardingData {
 
 export default function TechOnboardingScreen(): JSX.Element {
   const { t } = useLocale();
-  const dataQ = trpc.techOnboarding.steps.useQuery();
+  const isAuthed = useAuthState();
+  const dataQ = trpc.techOnboarding.steps.useQuery(undefined, { enabled: isAuthed });
   const submitDocMut = trpc.techOnboarding.submitDoc.useMutation({
     onSuccess: () => {
       void dataQ.refetch();
@@ -46,14 +49,16 @@ export default function TechOnboardingScreen(): JSX.Element {
       refreshControl={
         <RefreshControl
           refreshing={dataQ.isRefetching}
-          onRefresh={() => dataQ.refetch()}
+          onRefresh={async () => {
+            await dataQ.refetch();
+          }}
           colors={['#059669']}
         />
       }
     >
       <Text style={styles.t}>{t('mobile.techOnboarding.title')}</Text>
       <View style={styles.pc}>
-        <Text style={styles.pe}></Text>
+        <Text style={styles.pe}>✅</Text>
         <Text style={styles.pt}>{t('mobile.techOnboarding.completed', { completed, total })}</Text>
         <View style={styles.pb}>
           <View style={[styles.pf, { width: `${(completed / total) * 100}%` }]} />

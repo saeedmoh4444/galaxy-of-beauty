@@ -1,4 +1,5 @@
 'use client';
+import type { JSX } from 'react';
 
 import { api } from '@/lib/trpc';
 import {
@@ -59,9 +60,9 @@ export default function FamilyBeautyPage(): JSX.Element {
               />
               <ThreeGenerationsCard
                 generations={{
-                  grandma: { name: 'أم خالد', emoji: '' },
-                  mom: { name: 'نورة', emoji: '' },
-                  daughter: { name: 'سارة', emoji: '' },
+                  grandma: { name: 'أم خالد', emoji: '👵' },
+                  mom: { name: 'نورة', emoji: '👩' },
+                  daughter: { name: 'سارة', emoji: '👧' },
                 }}
               />
             </div>
@@ -73,7 +74,7 @@ export default function FamilyBeautyPage(): JSX.Element {
                   name: t('familyBeauty.makeupLesson'),
                   ageRange: '12-15',
                   price: 150,
-                  emoji: '',
+                  emoji: '💄',
                   description: t('familyBeauty.makeupLessonDesc'),
                   learningPoints: [
                     t('familyBeauty.learning.cleanse'),

@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import type { JSX } from 'react';
 import { api } from '@/lib/trpc';
 import {
   Card,
@@ -11,6 +12,7 @@ import {
   Button,
   Pagination,
   PageContainer,
+  useAuth,
 } from '@galaxy/ui';
 import { useLocale } from '@/components/LocaleProvider';
 import { type TranslationKey } from '@galaxy/shared';
@@ -30,6 +32,7 @@ const ACTION_OPTIONS: Array<{ value: string; labelKey: TranslationKey }> = [
 
 export default function AuditLogPage(): JSX.Element {
   const { t, locale } = useLocale();
+  const { isAuthenticated } = useAuth();
   const [page, setPage] = useState(1);
   const [actionFilter, setActionFilter] = useState('');
   const [targetFilter, setTargetFilter] = useState('');
@@ -43,7 +46,9 @@ export default function AuditLogPage(): JSX.Element {
     adminId: adminFilter ? Number(adminFilter) : undefined,
   };
 
-  const { data, isLoading, isError, refetch } = api.admin.auditLogs.useQuery(input) ?? {
+  const { data, isLoading, isError, refetch } = api.admin.auditLogs.useQuery(input, {
+    enabled: isAuthenticated,
+  }) ?? {
     data: undefined,
     isLoading: false,
     isError: false,
@@ -140,12 +145,12 @@ export default function AuditLogPage(): JSX.Element {
                 <table className="w-full text-sm">
                   <thead className="border-b border-edge bg-surface-muted text-xs text-text-secondary">
                     <tr>
-                      <th className="px-4 py-3 text-right">#</th>
-                      <th className="px-4 py-3 text-right">{t('admin.audit-log.action-header')}</th>
-                      <th className="px-4 py-3 text-right">{t('admin.audit-log.type-header')}</th>
-                      <th className="px-4 py-3 text-right">{t('admin.audit-log.target-header')}</th>
-                      <th className="px-4 py-3 text-right">{t('admin.audit-log.admin-header')}</th>
-                      <th className="px-4 py-3 text-right">{t('admin.audit-log.date-header')}</th>
+                      <th className="px-4 py-3 text-end">#</th>
+                      <th className="px-4 py-3 text-end">{t('admin.audit-log.action-header')}</th>
+                      <th className="px-4 py-3 text-end">{t('admin.audit-log.type-header')}</th>
+                      <th className="px-4 py-3 text-end">{t('admin.audit-log.target-header')}</th>
+                      <th className="px-4 py-3 text-end">{t('admin.audit-log.admin-header')}</th>
+                      <th className="px-4 py-3 text-end">{t('admin.audit-log.date-header')}</th>
                     </tr>
                   </thead>
                   <tbody className="divide-y divide-edge-muted">

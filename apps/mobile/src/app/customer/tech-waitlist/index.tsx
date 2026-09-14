@@ -1,5 +1,7 @@
+import type { JSX } from 'react';
 import { View, Text, ScrollView, StyleSheet, TouchableOpacity, RefreshControl } from 'react-native';
 import { SkeletonList } from '@/components/SkeletonCard';
+import { useAuthState } from '@/hooks/useAuthState';
 import { trpc } from '@/lib/trpc-react';
 import { useLocale } from '@/components/LocaleProvider';
 
@@ -24,8 +26,9 @@ interface MyWaitlist {
 
 export default function TechWaitlistScreen(): JSX.Element {
   const { t } = useLocale();
+  const isAuthed = useAuthState();
   const popularQ = trpc.techWaitlist.popular.useQuery();
-  const myListQ = trpc.techWaitlist.myWaitlists.useQuery();
+  const myListQ = trpc.techWaitlist.myWaitlists.useQuery(undefined, { enabled: isAuthed });
   const popular: WaitlistTech[] = (popularQ.data as unknown as WaitlistTech[] | undefined) ?? [];
   const myList: MyWaitlist[] = (myListQ.data as unknown as MyWaitlist[] | undefined) ?? [];
 
@@ -74,7 +77,7 @@ export default function TechWaitlistScreen(): JSX.Element {
       {myList.length > 0 && <Text style={styles.st}>{t('mobile.techWaitlist.my-lists')}</Text>}
       {myList.map((w) => (
         <View key={w.id} style={styles.card}>
-          <Text style={styles.te}>‍</Text>
+          <Text style={styles.te}>💇</Text>
           <View style={{ flex: 1 }}>
             <Text style={styles.tn}>{w.name}</Text>
             <Text style={styles.tm}>
@@ -89,7 +92,7 @@ export default function TechWaitlistScreen(): JSX.Element {
       <Text style={styles.st}>{t('mobile.techWaitlist.popular')}</Text>
       {popular.map((p) => (
         <View key={p.id} style={styles.card}>
-          <Text style={styles.te}>‍</Text>
+          <Text style={styles.te}>💇</Text>
           <View style={{ flex: 1 }}>
             <Text style={styles.tn}>{p.name}</Text>
             <Text style={styles.tm}>

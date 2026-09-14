@@ -1,4 +1,5 @@
 'use client';
+import type { JSX } from 'react';
 
 import { cn } from '@galaxy/shared';
 
@@ -26,7 +27,7 @@ interface FeatureDef {
 
 const FEATURES: FeatureDef[] = [
   {
-    emoji: '',
+    emoji: '📷',
     label: { ar: 'صور حقيقية', en: 'Real photos' },
     detail: {
       ar: 'نستخدم صور نساء حقيقيات — بدون تعديل أو فوتوشوب',
@@ -34,7 +35,7 @@ const FEATURES: FeatureDef[] = [
     },
   },
   {
-    emoji: '',
+    emoji: '📏',
     label: { ar: 'شامل الأحجام', en: 'Size inclusive' },
     detail: {
       ar: 'روبات، كراسي، ومناشف لكل أحجام الأجسام',
@@ -42,7 +43,7 @@ const FEATURES: FeatureDef[] = [
     },
   },
   {
-    emoji: '',
+    emoji: '🎨',
     label: { ar: 'كل ألوان البشرة', en: 'All skin tones' },
     detail: {
       ar: 'خبيرات متدربات على كل درجات البشرة',
@@ -50,7 +51,7 @@ const FEATURES: FeatureDef[] = [
     },
   },
   {
-    emoji: '',
+    emoji: '🌟',
     label: { ar: 'إيجابية العمر', en: 'Age positive' },
     detail: {
       ar: 'الجمال ليس له عمر — كل مرحلة عمرية جميلة',
@@ -58,7 +59,7 @@ const FEATURES: FeatureDef[] = [
     },
   },
   {
-    emoji: '',
+    emoji: '🤍',
     label: { ar: 'صديق للندبات', en: 'Scar friendly' },
     detail: {
       ar: 'لا نحكم على الندبات أو علامات التمدد — بل نحتضنها',
@@ -66,7 +67,7 @@ const FEATURES: FeatureDef[] = [
     },
   },
   {
-    emoji: '',
+    emoji: '🪞',
     label: { ar: 'بدون تنقيح', en: 'No retouching' },
     detail: {
       ar: 'صور قبل/بعد حقيقية 100% — لا فوتوشوب',
@@ -97,7 +98,7 @@ export function BodyPositiveBadge({
   className = '',
   title = 'إيجابية الجسد',
   subtitle = 'كل امرأة، كل جسد، كل جمال — كما أنتِ، بدون تغيير',
-  pledgeTitle = ' تعهدنا لكِ',
+  pledgeTitle = 'تعهدنا لكِ',
   pledgeText = 'نؤمن أن الجمال الحقيقي هو أن تكوني على طبيعتكِ. لن نطلب منكِ أبداً تغيير شكل جسدكِ أو لون بشرتكِ أو ملامحكِ. نحن هنا لنبرز جمالكِ الطبيعي — ليس لنغيره.',
   affirmation = 'أنتِ جميلة كما أنتِ',
   locale = 'ar',
@@ -120,15 +121,17 @@ export function BodyPositiveBadge({
   return (
     <div
       className={cn(
-        'rounded-2xl border border-rose-100 bg-gradient-to-br from-rose-50 via-purple-50 to-blue-50 p-5 dark:border-rose-900 dark:from-rose-950 dark:via-purple-950 dark:to-blue-950',
+        'rounded-2xl border border-rose-100 bg-gradient-to-br from-rose-50 via-brand-50 to-blue-50 p-5 dark:border-rose-900 dark:from-rose-950 dark:via-brand-950 dark:to-blue-950',
         className,
       )}
     >
       {/* Header */}
       <div className="text-center">
-        <span className="text-3xl" aria-hidden="true"></span>
-        <h4 className="mt-1 text-sm font-bold text-purple-700 dark:text-purple-300">{title}</h4>
-        <p className="text-[10px] text-purple-500 dark:text-purple-400">{subtitle}</p>
+        <span className="text-3xl" aria-hidden="true">
+          💗
+        </span>
+        <h4 className="mt-1 text-sm font-bold text-brand-700 dark:text-brand-300">{title}</h4>
+        <p className="text-[10px] text-brand-500 dark:text-brand-400">{subtitle}</p>
       </div>
 
       {/* Features */}
@@ -155,14 +158,14 @@ export function BodyPositiveBadge({
 
       {/* Pledge */}
       <div className="mt-3 rounded-xl bg-white/60 p-3 text-center dark:bg-gray-800/60">
-        <p className="text-xs font-bold text-purple-700 dark:text-purple-300">{pledgeTitle}</p>
-        <p className="mt-1 text-[10px] leading-relaxed text-purple-600 dark:text-purple-400">
+        <p className="text-xs font-bold text-brand-700 dark:text-brand-300">{pledgeTitle}</p>
+        <p className="mt-1 text-[10px] leading-relaxed text-brand-600 dark:text-brand-400">
           {pledgeText}
         </p>
       </div>
 
       {/* Affirmation */}
-      <p className="mt-2 text-center text-[9px] italic text-purple-500 dark:text-purple-400">
+      <p className="mt-2 text-center text-[9px] italic text-brand-500 dark:text-brand-400">
         &ldquo;{affirmation}&rdquo;
       </p>
     </div>

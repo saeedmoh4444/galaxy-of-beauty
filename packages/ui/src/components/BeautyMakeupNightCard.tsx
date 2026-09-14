@@ -1,4 +1,5 @@
 'use client';
+import type { JSX } from 'react';
 import { cn } from '@galaxy/shared';
 export function BeautyMakeupNightCard({
   className = '',
@@ -19,7 +20,7 @@ export function BeautyMakeupNightCard({
       )}
     >
       <div className="flex items-center gap-2">
-        <span className="text-xl"></span>
+        <span className="text-xl">💃</span>
         <div>
           <h4 className="text-sm font-bold text-indigo-700 dark:text-indigo-300">{heading}</h4>
           <p className="text-[10px] text-indigo-500 dark:text-indigo-400">{subtitle}</p>
@@ -28,25 +29,25 @@ export function BeautyMakeupNightCard({
       <div className="mt-3 space-y-1">
         {[
           {
-            emoji: '',
+            emoji: '💄',
             text: {
               ar: 'فاونديشن كامل التغطية — يتحمل التصوير',
               en: 'Full-coverage foundation — camera-proof',
             },
           },
           {
-            emoji: '',
+            emoji: '👁',
             text: { ar: 'سموكي آيز — جريء وجذاب', en: 'Smoky eyes — bold and captivating' },
           },
           {
-            emoji: '',
+            emoji: '✨',
             text: {
               ar: 'هايلايتر — على أعلى نقاط الوجه',
               en: 'Highlighter — on the highest points of the face',
             },
           },
           {
-            emoji: '',
+            emoji: '💋',
             text: {
               ar: 'أحمر شفاه مطفي — يدوم طوال السهرة',
               en: 'Matte lipstick — lasts the whole evening',

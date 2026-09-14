@@ -1,4 +1,5 @@
 'use client';
+import type { JSX } from 'react';
 
 import { cn } from '@galaxy/shared';
 
@@ -33,7 +34,7 @@ const STAGES: LifeStage[] = [
 
 const STAGE_DEFS: Record<LifeStage, StageDef> = {
   first_steps: {
-    emoji: '',
+    emoji: '🌱',
     title: { ar: 'خطواتي الأولى', en: 'First steps' },
     ageRange: '15-18',
     services: [
@@ -45,7 +46,7 @@ const STAGE_DEFS: Record<LifeStage, StageDef> = {
     gradient: 'from-pink-400 to-rose-400',
   },
   discovery: {
-    emoji: '',
+    emoji: '🎨',
     title: { ar: 'اكتشاف وتعبير', en: 'Discovery and expression' },
     ageRange: '18-25',
     services: [
@@ -53,11 +54,11 @@ const STAGE_DEFS: Record<LifeStage, StageDef> = {
       { ar: 'تجربة ألوان الشعر', en: 'Experimenting with hair colors' },
       { ar: 'ميزانية الجمال', en: 'Beauty budget' },
     ],
-    color: 'text-purple-600 dark:text-purple-300',
-    gradient: 'from-purple-400 to-violet-400',
+    color: 'text-brand-600 dark:text-brand-300',
+    gradient: 'from-brand-400 to-violet-400',
   },
   career: {
-    emoji: '',
+    emoji: '💼',
     title: { ar: 'مهنة وثقة', en: 'Career and confidence' },
     ageRange: '25-35',
     services: [
@@ -69,7 +70,7 @@ const STAGE_DEFS: Record<LifeStage, StageDef> = {
     gradient: 'from-blue-400 to-sky-400',
   },
   wedding_motherhood: {
-    emoji: '',
+    emoji: '👰',
     title: { ar: 'زواج وأمومة', en: 'Marriage and motherhood' },
     ageRange: '25-40',
     services: [
@@ -81,7 +82,7 @@ const STAGE_DEFS: Record<LifeStage, StageDef> = {
     gradient: 'from-rose-400 to-pink-400',
   },
   confidence: {
-    emoji: '',
+    emoji: '👑',
     title: { ar: 'ثقة وأناقة', en: 'Confidence and elegance' },
     ageRange: '40-55',
     services: [
@@ -93,7 +94,7 @@ const STAGE_DEFS: Record<LifeStage, StageDef> = {
     gradient: 'from-amber-400 to-orange-400',
   },
   golden: {
-    emoji: '',
+    emoji: '🌟',
     title: { ar: 'الجمال الذهبي', en: 'Golden beauty' },
     ageRange: '55+',
     services: [
@@ -154,7 +155,7 @@ export function BeautyJourneyTimeline({
       {/* Header */}
       <div className="text-center">
         <h4 className="text-sm font-bold text-text-primary dark:text-gray-100">{title}</h4>
-        <p className="mt-0.5 text-[10px] text-text-tertiary dark:text-gray-400">{subtitle}</p>
+        <p className="mt-0.5 text-[10px] text-text-tertiary dark:text-text-tertiary">{subtitle}</p>
       </div>
 
       {/* Timeline */}
@@ -177,7 +178,7 @@ export function BeautyJourneyTimeline({
                       ? 'border-current bg-white shadow-sm dark:bg-gray-800'
                       : isPast
                         ? 'border-emerald-300 bg-emerald-50 dark:border-emerald-800 dark:bg-emerald-950'
-                        : 'border-gray-200 bg-gray-50 dark:border-gray-700 dark:bg-gray-800',
+                        : 'border-edge bg-surface-muted dark:border-gray-700 dark:bg-gray-800',
                   )}
                   style={{
                     borderColor: isActive ? undefined : undefined,
@@ -192,9 +193,7 @@ export function BeautyJourneyTimeline({
                   <div
                     className={cn(
                       'h-full min-h-[24px] w-0.5',
-                      isPast
-                        ? 'bg-emerald-200 dark:bg-emerald-800'
-                        : 'bg-gray-200 dark:bg-gray-700',
+                      isPast ? 'bg-emerald-200 dark:bg-emerald-800' : 'bg-surface-muted',
                     )}
                   />
                 )}
@@ -204,7 +203,7 @@ export function BeautyJourneyTimeline({
               <div
                 className={cn(
                   'pb-3 flex-1 rounded-lg px-3 py-1.5 transition-all',
-                  isActive && 'bg-gray-50 dark:bg-gray-800',
+                  isActive && 'bg-surface-muted',
                 )}
               >
                 <div className="flex items-center justify-between">
@@ -215,13 +214,13 @@ export function BeautyJourneyTimeline({
                         isActive
                           ? def.color
                           : isFuture
-                            ? 'text-text-tertiary dark:text-gray-500'
+                            ? 'text-text-tertiary dark:text-text-secondary'
                             : 'text-text-secondary dark:text-gray-300',
                       )}
                     >
                       {def.title[locale]}
                     </span>
-                    <span className="ml-2 text-[10px] text-text-tertiary dark:text-gray-500">
+                    <span className="ms-2 text-[10px] text-text-tertiary dark:text-text-secondary">
                       {def.ageRange} {ageSuffix}
                     </span>
                   </div>
@@ -231,7 +230,7 @@ export function BeautyJourneyTimeline({
                     </span>
                   )}
                   {isPast && (
-                    <span className="text-[10px] text-emerald-500 dark:text-emerald-400"></span>
+                    <span className="text-[10px] text-emerald-500 dark:text-emerald-400">✅</span>
                   )}
                 </div>
 
@@ -244,7 +243,7 @@ export function BeautyJourneyTimeline({
                         className={cn(
                           'rounded-full px-2 py-0.5 text-[9px] font-medium',
                           isActive
-                            ? 'bg-gray-100 text-text-secondary dark:bg-gray-700 dark:text-gray-300'
+                            ? 'bg-surface-muted text-text-secondary dark:bg-gray-700 dark:text-gray-300'
                             : 'bg-emerald-50 text-emerald-700 dark:bg-emerald-950 dark:text-emerald-300',
                         )}
                       >
@@ -260,7 +259,7 @@ export function BeautyJourneyTimeline({
       </div>
 
       {/* Footer */}
-      <p className="mt-2 text-center text-[9px] italic text-text-tertiary dark:text-gray-500">
+      <p className="mt-2 text-center text-[9px] italic text-text-tertiary dark:text-text-secondary">
         {footerText}
       </p>
     </div>

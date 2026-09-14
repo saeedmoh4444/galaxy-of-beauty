@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import type { JSX } from 'react';
 import { PageContainer, PageTitle } from '@galaxy/ui';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
 import { useLocale } from '@/components/LocaleProvider';
@@ -18,7 +19,7 @@ const SEASONS: {
 }[] = [
   {
     key: 'winter',
-    emoji: '️',
+    emoji: '⛄',
     name: 'seasonal.season.winter',
     months: 'seasonal.months.winter',
     color: '#3b82f6',
@@ -26,22 +27,22 @@ const SEASONS: {
     tips: 'seasonal.tips.winter',
     services: [
       {
-        emoji: '',
+        emoji: '💧',
         name: 'seasonal.svc.winter.deepHydration',
         why: 'seasonal.svc.winter.deepHydrationWhy',
       },
       {
-        emoji: '',
+        emoji: '💆',
         name: 'seasonal.svc.winter.oilMassage',
         why: 'seasonal.svc.winter.oilMassageWhy',
       },
       {
-        emoji: '',
+        emoji: '💇',
         name: 'seasonal.svc.winter.hairTreatment',
         why: 'seasonal.svc.winter.hairTreatmentWhy',
       },
       {
-        emoji: '',
+        emoji: '💅',
         name: 'seasonal.svc.winter.winterNails',
         why: 'seasonal.svc.winter.winterNailsWhy',
       },
@@ -49,7 +50,7 @@ const SEASONS: {
   },
   {
     key: 'spring',
-    emoji: '',
+    emoji: '🌸',
     name: 'seasonal.season.spring',
     months: 'seasonal.months.spring',
     color: '#ec4899',
@@ -57,18 +58,18 @@ const SEASONS: {
     tips: 'seasonal.tips.spring',
     services: [
       {
-        emoji: '',
+        emoji: '✨',
         name: 'seasonal.svc.spring.exfoliation',
         why: 'seasonal.svc.spring.exfoliationWhy',
       },
-      { emoji: '', name: 'seasonal.svc.spring.hairTrim', why: 'seasonal.svc.spring.hairTrimWhy' },
+      { emoji: '✂️', name: 'seasonal.svc.spring.hairTrim', why: 'seasonal.svc.spring.hairTrimWhy' },
       {
-        emoji: '',
+        emoji: '💄',
         name: 'seasonal.svc.spring.springMakeup',
         why: 'seasonal.svc.spring.springMakeupWhy',
       },
       {
-        emoji: '',
+        emoji: '🌿',
         name: 'seasonal.svc.spring.naturalTreatments',
         why: 'seasonal.svc.spring.naturalTreatmentsWhy',
       },
@@ -76,7 +77,7 @@ const SEASONS: {
   },
   {
     key: 'summer',
-    emoji: '️',
+    emoji: '🌞',
     name: 'seasonal.season.summer',
     months: 'seasonal.months.summer',
     color: '#f59e0b',
@@ -84,22 +85,22 @@ const SEASONS: {
     tips: 'seasonal.tips.summer',
     services: [
       {
-        emoji: '',
+        emoji: '🧴',
         name: 'seasonal.svc.summer.medicalSunscreen',
         why: 'seasonal.svc.summer.medicalSunscreenWhy',
       },
       {
-        emoji: '',
+        emoji: '🦶',
         name: 'seasonal.svc.summer.summerPedicure',
         why: 'seasonal.svc.summer.summerPedicureWhy',
       },
       {
-        emoji: '️',
+        emoji: '🪒',
         name: 'seasonal.svc.summer.hairRemoval',
         why: 'seasonal.svc.summer.hairRemovalWhy',
       },
       {
-        emoji: '',
+        emoji: '🌊',
         name: 'seasonal.svc.summer.summerHairstyles',
         why: 'seasonal.svc.summer.summerHairstylesWhy',
       },
@@ -107,7 +108,7 @@ const SEASONS: {
   },
   {
     key: 'autumn',
-    emoji: '',
+    emoji: '🍂',
     name: 'seasonal.season.autumn',
     months: 'seasonal.months.autumn',
     color: '#d97706',
@@ -115,22 +116,22 @@ const SEASONS: {
     tips: 'seasonal.tips.autumn',
     services: [
       {
-        emoji: '',
+        emoji: '🍋',
         name: 'seasonal.svc.autumn.pigmentation',
         why: 'seasonal.svc.autumn.pigmentationWhy',
       },
       {
-        emoji: '',
+        emoji: '💆',
         name: 'seasonal.svc.autumn.relaxingMassage',
         why: 'seasonal.svc.autumn.relaxingMassageWhy',
       },
       {
-        emoji: '',
+        emoji: '💇',
         name: 'seasonal.svc.winter.hairTreatment',
         why: 'seasonal.svc.autumn.hairTreatmentWhy',
       },
       {
-        emoji: '',
+        emoji: '🧖',
         name: 'seasonal.svc.autumn.nourishingMask',
         why: 'seasonal.svc.autumn.nourishingMaskWhy',
       },
@@ -154,7 +155,7 @@ export default function SeasonalCalendarPage(): JSX.Element {
               key={sc.key}
               type="button"
               onClick={() => setSeason(sc.key)}
-              className={`flex-1 rounded-2xl border-2 p-3 text-center transition-all ${season === sc.key ? 'border-current bg-white dark:bg-gray-900' : 'border-gray-100 bg-white dark:border-gray-800 dark:bg-gray-900'}`}
+              className={`flex-1 rounded-2xl border-2 p-3 text-center transition-all ${season === sc.key ? 'border-current bg-surface-elevated' : 'border-edge-muted bg-white dark:border-gray-800 dark:bg-gray-900'}`}
               style={season === sc.key ? { borderColor: sc.color } : {}}
             >
               <span className="text-2xl">{sc.emoji}</span>
@@ -169,7 +170,7 @@ export default function SeasonalCalendarPage(): JSX.Element {
           <h3 className="text-xl font-bold text-text-primary dark:text-gray-100">
             {s.emoji} {t(s.name)}
           </h3>
-          <p className="mt-1 text-sm text-text-secondary dark:text-gray-400">{t(s.months)}</p>
+          <p className="mt-1 text-sm text-text-secondary dark:text-text-tertiary">{t(s.months)}</p>
           <p className="mt-4 rounded-xl bg-white/60 p-3 text-sm text-text-primary dark:bg-gray-800/60 dark:text-gray-200">
             {t(s.tips)}
           </p>
@@ -185,7 +186,9 @@ export default function SeasonalCalendarPage(): JSX.Element {
                   <p className="text-sm font-bold text-text-primary dark:text-gray-100">
                     {t(svc.name)}
                   </p>
-                  <p className="text-xs text-text-tertiary dark:text-gray-500">{t(svc.why)}</p>
+                  <p className="text-xs text-text-tertiary dark:text-text-secondary">
+                    {t(svc.why)}
+                  </p>
                 </div>
               </div>
             ))}

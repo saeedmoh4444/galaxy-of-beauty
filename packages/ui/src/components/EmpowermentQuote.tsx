@@ -1,4 +1,5 @@
 'use client';
+import type { JSX } from 'react';
 
 /**
  * Empowerment Quote — rotating inspirational quotes from Saudi and Arab women.
@@ -25,7 +26,7 @@ const QUOTES = [
       ar: 'كل امرأة تستحق أن تشعر بالتميز — ليس لأنها جميلة، بل لأنها هي.',
       en: 'Every woman deserves to feel special — not because she is beautiful, but because she is herself.',
     },
-    author: { ar: 'فريق جالكسي بيوتي', en: 'Galaxy Beauty team' },
+    author: { ar: 'فريق دلال', en: 'Dalal team' },
   },
   {
     text: {
@@ -63,12 +64,12 @@ export function EmpowermentQuote({
 
   return (
     <div
-      className={`rounded-xl border border-purple-100 bg-gradient-to-r from-purple-50 to-pink-50 p-5 text-center dark:border-purple-900 dark:from-purple-950 dark:to-pink-950 ${className}`}
+      className={`rounded-xl border border-brand-100 bg-gradient-to-r from-brand-50 to-pink-50 p-5 text-center dark:border-brand-900 dark:from-brand-950 dark:to-pink-950 ${className}`}
     >
-      <p className="text-lg leading-relaxed text-purple-800 dark:text-purple-200">
+      <p className="text-lg leading-relaxed text-brand-800 dark:text-brand-200">
         &quot;{quote.text[locale]}&quot;
       </p>
-      <p className="mt-3 text-xs font-semibold text-purple-500 dark:text-purple-400">
+      <p className="mt-3 text-xs font-semibold text-brand-500 dark:text-brand-400">
         — {quote.author[locale]}
       </p>
     </div>

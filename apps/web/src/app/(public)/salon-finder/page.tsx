@@ -1,5 +1,6 @@
 'use client';
 import { useState } from 'react';
+import type { JSX } from 'react';
 import { api } from '@/lib/trpc';
 import { Card, GridSkeleton, formatCurrency, ErrorAlert } from '@galaxy/ui';
 import { useLocale } from '@/components/LocaleProvider';
@@ -57,7 +58,7 @@ export default function SalonFinderPage(): JSX.Element {
         <GridSkeleton count={6} />
       ) : !(results ?? []).length ? (
         <Card padding="lg" className="text-center py-8">
-          <p className="text-4xl mb-2"></p>
+          <p className="text-4xl mb-2">💇</p>
           <p className="text-text-secondary">{t('marketing.salon-finder.no-salons')}</p>
         </Card>
       ) : (
@@ -67,7 +68,7 @@ export default function SalonFinderPage(): JSX.Element {
             const services = (item.services as Array<Record<string, unknown>>) ?? [];
             return (
               <Card key={item.id as number} padding="lg" className="text-center">
-                <span className="text-5xl">‍️</span>
+                <span className="text-5xl">💇</span>
                 <h3 className="font-bold mt-3">
                   {(user?.name as string) ??
                     t('marketing.salon-finder.tech-fallback', { id: item.id as number })}

@@ -1,4 +1,5 @@
 'use client';
+import type { JSX } from 'react';
 import { cn } from '@galaxy/shared';
 export function BeautyUpcycledCard({
   className = '',
@@ -19,7 +20,7 @@ export function BeautyUpcycledCard({
       )}
     >
       <div className="flex items-center gap-2">
-        <span className="text-xl"></span>
+        <span className="text-xl">🔄</span>
         <div>
           <h4 className="text-sm font-bold text-amber-700 dark:text-amber-300">{title}</h4>
           <p className="text-[10px] text-amber-500 dark:text-amber-400">{subtitle}</p>
@@ -28,22 +29,22 @@ export function BeautyUpcycledCard({
       <div className="mt-3 grid grid-cols-2 gap-1.5">
         {[
           {
-            emoji: '',
+            emoji: '☕',
             label: { ar: 'بقايا القهوة', en: 'Coffee grounds' },
             tip: { ar: 'مقشر طبيعي للجسم', en: 'Natural body scrub' },
           },
           {
-            emoji: '',
+            emoji: '🍊',
             label: { ar: 'قشور الحمضيات', en: 'Citrus peels' },
             tip: { ar: 'زيوت عطرية طبيعية', en: 'Natural essential oils' },
           },
           {
-            emoji: '',
+            emoji: '🥑',
             label: { ar: 'بذور الأفوكادو', en: 'Avocado seeds' },
             tip: { ar: 'صبغة وردية طبيعية', en: 'Natural pink dye' },
           },
           {
-            emoji: '',
+            emoji: '🌾',
             label: { ar: 'نخالة الأرز', en: 'Rice bran' },
             tip: { ar: 'مقشر لطيف للوجه', en: 'Gentle facial exfoliant' },
           },

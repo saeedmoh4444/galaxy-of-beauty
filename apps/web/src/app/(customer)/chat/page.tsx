@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 'use client';
 import { useState } from 'react';
+import type { JSX } from 'react';
 import { api } from '@/lib/trpc';
 import { Card, CardSkeleton, CardListSkeleton, Button } from '@galaxy/ui';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
@@ -66,7 +67,7 @@ export default function ChatPage(): JSX.Element {
                     <button
                       key={c.bookingId as number}
                       onClick={() => setSelectedConv(c.bookingId as number)}
-                      className={`w-full rounded-lg p-3 text-right transition-all ${selectedConv === c.bookingId ? 'bg-brand-50 border-l-4 border-brand-600' : 'hover:bg-surface-muted'}`}
+                      className={`w-full rounded-lg p-3 text-end transition-all ${selectedConv === c.bookingId ? 'bg-brand-50 border-s-4 border-brand-600' : 'hover:bg-surface-muted'}`}
                     >
                       <p className="font-bold text-sm">
                         {(other?.name as string) ?? t('chat.conversationFallback')}

@@ -1,4 +1,5 @@
 'use client';
+import type { JSX } from 'react';
 
 import { cn } from '@galaxy/shared';
 
@@ -22,28 +23,28 @@ interface LevelDef {
 
 const LEVELS: Record<KindnessLevel, LevelDef> = {
   helper: {
-    emoji: '',
+    emoji: '🌱',
     title: { ar: 'مساعدة', en: 'Helper' },
     minPoints: 0,
     color: 'text-pink-600 dark:text-pink-300',
     gradient: 'from-pink-400 to-rose-400',
   },
   supporter: {
-    emoji: '',
+    emoji: '💗',
     title: { ar: 'داعمة', en: 'Supporter' },
     minPoints: 100,
     color: 'text-rose-600 dark:text-rose-300',
     gradient: 'from-rose-400 to-red-400',
   },
   generous: {
-    emoji: '',
+    emoji: '💎',
     title: { ar: 'كريمة', en: 'Generous' },
     minPoints: 300,
-    color: 'text-purple-600 dark:text-purple-300',
-    gradient: 'from-purple-400 to-violet-400',
+    color: 'text-brand-600 dark:text-brand-300',
+    gradient: 'from-brand-400 to-violet-400',
   },
   angel: {
-    emoji: '',
+    emoji: '👼',
     title: { ar: 'ملاك', en: 'Angel' },
     minPoints: 1000,
     color: 'text-amber-600 dark:text-amber-300',
@@ -162,7 +163,7 @@ export function KindnessPointsBadge({
           <p className="text-xl font-bold text-pink-700 dark:text-pink-300">
             {points.toLocaleString('ar-SA')}
           </p>
-          <p className="text-[9px] text-text-tertiary dark:text-gray-500">{pointsLabel}</p>
+          <p className="text-[9px] text-text-tertiary dark:text-text-secondary">{pointsLabel}</p>
         </div>
       </div>
 
@@ -185,7 +186,7 @@ export function KindnessPointsBadge({
               style={{ width: `${progressToNext}%` }}
             />
           </div>
-          <p className="mt-1 text-[9px] text-text-tertiary dark:text-gray-500">
+          <p className="mt-1 text-[9px] text-text-tertiary dark:text-text-secondary">
             {remainingPrefix}
             {nextDef.minPoints - points} {remainingSuffix}
           </p>
@@ -200,7 +201,7 @@ export function KindnessPointsBadge({
         {ACTIVITIES.map((a) => (
           <div
             key={a.action.ar}
-            className="flex items-center justify-between rounded-lg bg-gray-50 px-2.5 py-1.5 dark:bg-gray-800"
+            className="flex items-center justify-between rounded-lg bg-surface-muted px-2.5 py-1.5 dark:bg-gray-800"
           >
             <span className="text-[10px] text-text-secondary dark:text-gray-300">
               {a.action[locale]}
@@ -222,7 +223,7 @@ export function KindnessPointsBadge({
       </button>
 
       {/* Sisterhood message */}
-      <p className="mt-2 text-center text-[9px] text-text-tertiary dark:text-gray-500">
+      <p className="mt-2 text-center text-[9px] text-text-tertiary dark:text-text-secondary">
         {footerText}
       </p>
     </div>

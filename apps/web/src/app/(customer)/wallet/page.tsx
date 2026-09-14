@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import type { JSX } from 'react';
 import { api } from '@/lib/trpc';
 import type { RouterOutput } from '@galaxy/api/client';
 import {
@@ -84,7 +85,10 @@ export default function WalletPage(): JSX.Element {
         ) : txs.isError ? (
           <ErrorAlert message={t('wallet.transactions-error')} onRetry={() => txs.refetch()} />
         ) : transactions.length === 0 ? (
-          <EmptyState title={t('wallet.no-transactions')} />
+          <EmptyState
+            title={t('wallet.no-transactions')}
+            description={t('wallet.no-transactions-desc')}
+          />
         ) : (
           <div className="space-y-2">
             {transactions.map((tx) => (

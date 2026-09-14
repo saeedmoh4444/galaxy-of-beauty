@@ -4,49 +4,53 @@
  */
 
 // ---- Brand Colors ----
+// Rose Blush direction (2026-09-09): warm cream surfaces, rose primary,
+// champagne gold accent, warm rose-tinted neutrals. Replaces the stock
+// violet/gray "generic startup" palette.
 export const colors = {
   brand: {
-    50: '#f5f3ff',
-    100: '#ede9fe',
-    200: '#ddd6fe',
-    300: '#c4b5fd',
-    400: '#a78bfa',
-    500: '#8b5cf6',
-    600: '#7c3aed', // primary
-    700: '#6d28d9',
-    800: '#5b21b6',
-    900: '#4c1d95',
-    950: '#2e1065',
+    50: '#fdf2f8', // blush wash (heroes, highlights)
+    100: '#fbe3ee',
+    200: '#f6c9de',
+    300: '#ef9dc4',
+    400: '#e268a0',
+    500: '#d13d80',
+    600: '#c2255c', // primary — rich rose
+    700: '#a01b4c',
+    800: '#841741',
+    900: '#6c1437',
+    950: '#42081f',
   },
   accent: {
-    50: '#fdf2f8',
-    100: '#fce7f3',
-    200: '#fbcfe8',
-    300: '#f9a8d4',
-    400: '#f472b6',
-    500: '#ec4899',
-    600: '#db2777',
-    700: '#be185d',
-    800: '#9d174d',
-    900: '#831843',
-    950: '#500724',
+    50: '#fdf8f0',
+    100: '#faeedd',
+    200: '#f4dbb9',
+    300: '#ebc08c',
+    400: '#e2a766',
+    500: '#d98e4a', // champagne gold (VIP, rewards)
+    600: '#c27333',
+    700: '#a05b28',
+    800: '#824a25',
+    900: '#6a3d21',
+    950: '#391d0c',
   },
   success: '#10b981',
   warning: '#f59e0b',
-  error: '#ef4444',
+  error: '#e5484d',
   info: '#3b82f6',
+  // Warm rose-tinted neutrals — 900/950 are warm near-blacks, never pure.
   gray: {
-    50: '#f9fafb',
-    100: '#f3f4f6',
-    200: '#e5e7eb',
-    300: '#d1d5db',
-    400: '#9ca3af',
-    500: '#6b7280',
-    600: '#4b5563',
-    700: '#374151',
-    800: '#1f2937',
-    900: '#111827',
-    950: '#030712',
+    50: '#fbf8f9',
+    100: '#f4ecef',
+    200: '#eadde2',
+    300: '#d8c9ce',
+    400: '#b3a0ab',
+    500: '#8a6e78',
+    600: '#6f5a62',
+    700: '#57454d',
+    800: '#413138',
+    900: '#2d1b22',
+    950: '#1f1418',
   },
 } as const;
 
@@ -108,12 +112,13 @@ export const borderRadius = {
 } as const;
 
 // ---- Shadows ----
+// Warm-tinted, soft, generous blur — "soft premium" over harsh grays.
 export const shadows = {
-  sm: '0 1px 2px 0 rgb(0 0 0 / 0.05)',
-  md: '0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1)',
-  lg: '0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1)',
-  xl: '0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1)',
-  card: '0 1px 3px rgba(0,0,0,0.06), 0 1px 2px rgba(0,0,0,0.04)',
+  sm: '0 1px 2px 0 rgb(45 27 34 / 0.06)',
+  md: '0 4px 12px -2px rgb(45 27 34 / 0.08), 0 2px 4px -2px rgb(194 37 92 / 0.05)',
+  lg: '0 12px 24px -4px rgb(45 27 34 / 0.1), 0 4px 8px -4px rgb(194 37 92 / 0.06)',
+  xl: '0 24px 48px -8px rgb(45 27 34 / 0.14), 0 8px 16px -8px rgb(194 37 92 / 0.08)',
+  card: '0 1px 3px rgb(194 37 92 / 0.06), 0 1px 2px rgb(45 27 34 / 0.05)',
 } as const;
 
 // ---- Breakpoints ----

@@ -1,5 +1,6 @@
 'use client';
 import { useState } from 'react';
+import type { JSX } from 'react';
 import Link from 'next/link';
 import { api } from '@/lib/trpc';
 import { Card, FormSkeleton, Button, formatCurrency } from '@galaxy/ui';
@@ -7,7 +8,7 @@ import { useLocale } from '@/components/LocaleProvider';
 const OCCASIONS = [
   {
     id: 'birthday',
-    emoji: '',
+    emoji: '🎂',
     name: 'marketing.gift-guide.occasion-birthday-name',
     desc: 'marketing.gift-guide.occasion-birthday-desc',
     gifts: [
@@ -15,28 +16,28 @@ const OCCASIONS = [
         title: 'marketing.gift-guide.gift-birthday-skin-title',
         price: 'marketing.gift-guide.gift-birthday-skin-price',
         desc: 'marketing.gift-guide.gift-birthday-skin-desc',
-        emoji: '',
+        emoji: '🧴',
         link: '/services',
       },
       {
         title: 'marketing.gift-guide.gift-birthday-card-title',
         price: 'marketing.gift-guide.gift-birthday-card-price',
         desc: 'marketing.gift-guide.gift-birthday-card-desc',
-        emoji: '',
+        emoji: '💳',
         link: '/gift-cards',
       },
       {
         title: 'marketing.gift-guide.gift-birthday-nails-title',
         price: 'marketing.gift-guide.gift-birthday-nails-price',
         desc: 'marketing.gift-guide.gift-birthday-nails-desc',
-        emoji: '',
+        emoji: '💅',
         link: '/services',
       },
     ],
   },
   {
     id: 'wedding',
-    emoji: '',
+    emoji: '💍',
     name: 'marketing.gift-guide.occasion-wedding-name',
     desc: 'marketing.gift-guide.occasion-wedding-desc',
     gifts: [
@@ -44,28 +45,28 @@ const OCCASIONS = [
         title: 'marketing.gift-guide.gift-wedding-bride-title',
         price: 'marketing.gift-guide.gift-wedding-bride-price',
         desc: 'marketing.gift-guide.gift-wedding-bride-desc',
-        emoji: '',
+        emoji: '👰',
         link: '/bridal-concierge',
       },
       {
         title: 'marketing.gift-guide.gift-wedding-photo-title',
         price: 'marketing.gift-guide.gift-wedding-photo-price',
         desc: 'marketing.gift-guide.gift-wedding-photo-desc',
-        emoji: '',
+        emoji: '📸',
         link: '/services',
       },
       {
         title: 'marketing.gift-guide.gift-wedding-bride-card-title',
         price: 'marketing.gift-guide.gift-wedding-bride-card-price',
         desc: 'marketing.gift-guide.gift-wedding-bride-card-desc',
-        emoji: '',
+        emoji: '💳',
         link: '/gift-cards',
       },
     ],
   },
   {
     id: 'mom',
-    emoji: '‍',
+    emoji: '💐',
     name: 'marketing.gift-guide.occasion-mom-name',
     desc: 'marketing.gift-guide.occasion-mom-desc',
     gifts: [
@@ -73,28 +74,28 @@ const OCCASIONS = [
         title: 'marketing.gift-guide.gift-mom-day-title',
         price: 'marketing.gift-guide.gift-mom-day-price',
         desc: 'marketing.gift-guide.gift-mom-day-desc',
-        emoji: '‍️',
+        emoji: '💆',
         link: '/mommy-and-me',
       },
       {
         title: 'marketing.gift-guide.gift-mom-duo-title',
         price: 'marketing.gift-guide.gift-mom-duo-price',
         desc: 'marketing.gift-guide.gift-mom-duo-desc',
-        emoji: '‍',
+        emoji: '👭',
         link: '/mommy-and-me',
       },
       {
         title: 'marketing.gift-guide.gift-mom-registry-title',
         price: 'marketing.gift-guide.gift-mom-registry-price',
         desc: 'marketing.gift-guide.gift-mom-registry-desc',
-        emoji: '',
+        emoji: '📋',
         link: '/gift-registry',
       },
     ],
   },
   {
     id: 'eid',
-    emoji: '',
+    emoji: '🌙',
     name: 'marketing.gift-guide.occasion-eid-name',
     desc: 'marketing.gift-guide.occasion-eid-desc',
     gifts: [
@@ -102,21 +103,21 @@ const OCCASIONS = [
         title: 'marketing.gift-guide.gift-eid-card-title',
         price: 'marketing.gift-guide.gift-eid-card-price',
         desc: 'marketing.gift-guide.gift-eid-card-desc',
-        emoji: '',
+        emoji: '💳',
         link: '/gift-cards',
       },
       {
         title: 'marketing.gift-guide.gift-eid-henna-title',
         price: 'marketing.gift-guide.gift-eid-henna-price',
         desc: 'marketing.gift-guide.gift-eid-henna-desc',
-        emoji: '',
+        emoji: '✋',
         link: '/services',
       },
       {
         title: 'marketing.gift-guide.gift-eid-makeup-title',
         price: 'marketing.gift-guide.gift-eid-makeup-price',
         desc: 'marketing.gift-guide.gift-eid-makeup-desc',
-        emoji: '',
+        emoji: '💄',
         link: '/services',
       },
     ],
@@ -128,7 +129,7 @@ export default function GiftGuidePage(): JSX.Element {
   return (
     <div className="mx-auto max-w-5xl px-4 py-12">
       <div className="text-center mb-12">
-        <span className="text-6xl"></span>
+        <span className="text-6xl">🎁</span>
         <h1 className="mt-4 text-3xl font-bold text-text-primary dark:text-gray-100">
           {t('marketing.gift-guide.title')}
         </h1>
@@ -163,7 +164,7 @@ export default function GiftGuidePage(): JSX.Element {
         </div>
       ))}
 
-      <div className="text-center mt-12 p-8 bg-gradient-to-r from-pink-50 to-purple-50 rounded-3xl dark:from-pink-950 dark:to-purple-950">
+      <div className="text-center mt-12 p-8 bg-gradient-to-r from-pink-50 to-brand-50 rounded-3xl dark:from-pink-950 dark:to-brand-950">
         <h2 className="text-xl font-bold text-text-primary dark:text-gray-100">
           {t('marketing.gift-guide.not-found-title')}
         </h2>
@@ -250,7 +251,7 @@ function GiftQuizWidget(): JSX.Element {
             {qs.map((_: unknown, i: number) => (
               <div
                 key={i}
-                className={`h-1.5 flex-1 rounded-full ${i <= step ? 'bg-brand-600' : 'bg-gray-200'}`}
+                className={`h-1.5 flex-1 rounded-full ${i <= step ? 'bg-brand-600' : 'bg-surface-muted'}`}
               />
             ))}
           </div>
@@ -264,7 +265,7 @@ function GiftQuizWidget(): JSX.Element {
                     setAnswers((prev) => ({ ...prev, [currentQ.id as string]: o.key as string }));
                     if (step < qs.length - 1) setStep(step + 1);
                   }}
-                  className="w-full rounded-xl border-2 border-edge p-3 text-right hover:border-brand-400 hover:bg-brand-50 transition-all"
+                  className="w-full rounded-xl border-2 border-edge p-3 text-end hover:border-brand-400 hover:bg-brand-50 transition-all"
                 >
                   {o.labelAr as string}
                 </button>

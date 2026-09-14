@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import type { JSX } from 'react';
 import { api } from '@/lib/trpc';
 import { Card, CardListSkeleton, ErrorAlert, EmptyState, Button, Modal } from '@galaxy/ui';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
@@ -88,7 +89,7 @@ export default function RestockReminderPage(): JSX.Element {
                         )}
                       </div>
                       <div className="mt-1 flex items-center gap-2">
-                        <div className="h-2 flex-1 rounded-full bg-gray-200 dark:bg-gray-700 overflow-hidden">
+                        <div className="h-2 flex-1 rounded-full bg-surface-muted overflow-hidden">
                           <div
                             className={`h-full rounded-full ${needsRestock ? 'bg-red-500' : 'bg-green-500'}`}
                             style={{ width: `${pct}%` }}
@@ -102,9 +103,7 @@ export default function RestockReminderPage(): JSX.Element {
                     <button
                       onClick={() => deleteMut.mutate({ id: item.id as number })}
                       className="text-text-tertiary hover:text-red-500"
-                    >
-                      ️
-                    </button>
+                    ></button>
                   </div>
                 </Card>
               );

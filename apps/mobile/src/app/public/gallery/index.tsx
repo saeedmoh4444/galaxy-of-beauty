@@ -1,3 +1,4 @@
+import type { JSX } from 'react';
 import { View, Text, ScrollView, StyleSheet, Image, RefreshControl } from 'react-native';
 import { SkeletonList } from '@/components/SkeletonCard';
 import { trpc } from '@/lib/trpc-react';
@@ -24,7 +25,9 @@ export default function GalleryScreen(): JSX.Element {
       refreshControl={
         <RefreshControl
           refreshing={photosQ.isRefetching}
-          onRefresh={() => photosQ.refetch()}
+          onRefresh={async () => {
+            await photosQ.refetch();
+          }}
           colors={['#7c3aed']}
         />
       }
@@ -37,12 +40,12 @@ export default function GalleryScreen(): JSX.Element {
               <Image source={{ uri: p.imageUrl }} style={styles.img} />
             ) : (
               <View style={styles.ph}>
-                <Text style={{ fontSize: 32 }}>️</Text>
+                <Text style={{ fontSize: 32 }}>🖼️</Text>
               </View>
             )}
             <View style={styles.pi}>
               <Text style={styles.pt}>{p.title ?? '—'}</Text>
-              <Text style={styles.pb}>‍ {p.technician ?? ''}</Text>
+              <Text style={styles.pb}> {p.technician ?? ''}</Text>
             </View>
           </View>
         ))}

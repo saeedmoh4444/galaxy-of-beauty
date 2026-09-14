@@ -1,3 +1,4 @@
+import type { JSX } from 'react';
 import { LogoLoader } from '@/components/LogoLoader';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
 

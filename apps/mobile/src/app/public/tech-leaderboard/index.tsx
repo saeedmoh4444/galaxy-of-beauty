@@ -1,3 +1,4 @@
+import type { JSX } from 'react';
 import { View, Text, ScrollView, StyleSheet, RefreshControl } from 'react-native';
 import { SkeletonList } from '@/components/SkeletonCard';
 import { trpc } from '@/lib/trpc-react';
@@ -37,7 +38,9 @@ export default function TechLeaderboardScreen(): JSX.Element {
       refreshControl={
         <RefreshControl
           refreshing={boardQ.isRefetching}
-          onRefresh={() => boardQ.refetch()}
+          onRefresh={async () => {
+            await boardQ.refetch();
+          }}
           colors={['#f59e0b']}
         />
       }
@@ -52,7 +55,9 @@ export default function TechLeaderboardScreen(): JSX.Element {
             <View style={[styles.rank, i === 0 && styles.rankTop]}>
               <Text style={[styles.rankText, i === 0 && styles.rankTextTop]}>{i + 1}</Text>
             </View>
-            <Text style={styles.rankEmoji}>{i === 0 ? '' : i === 1 ? '' : i === 2 ? '' : '‍'}</Text>
+            <Text style={styles.rankEmoji}>
+              {i === 0 ? '🥇' : i === 1 ? '🥈' : i === 2 ? '🥉' : ''}
+            </Text>
             <View style={{ flex: 1 }}>
               <Text style={styles.techName}>{item.name ?? ''}</Text>
               <Text style={styles.techMeta}>
@@ -60,7 +65,7 @@ export default function TechLeaderboardScreen(): JSX.Element {
                 {t('mobile.public.bookings-count', { count: item.bookings ?? 0 })}
               </Text>
             </View>
-            {i === 0 && <Text style={styles.crown}></Text>}
+            {i === 0 && <Text style={styles.crown}>👑</Text>}
           </View>
         ))
       )}

@@ -1,3 +1,4 @@
+import type { JSX } from 'react';
 import { View, Text, ScrollView, StyleSheet, RefreshControl } from 'react-native';
 import { SkeletonList } from '@/components/SkeletonCard';
 import { trpc } from '@/lib/trpc-react';
@@ -19,7 +20,9 @@ export default function ApiDocsScreen(): JSX.Element {
       refreshControl={
         <RefreshControl
           refreshing={docsQ.isRefetching}
-          onRefresh={() => docsQ.refetch()}
+          onRefresh={async () => {
+            await docsQ.refetch();
+          }}
           colors={['#6366f1']}
         />
       }

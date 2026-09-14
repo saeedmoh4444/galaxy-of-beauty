@@ -1,7 +1,9 @@
 import { View, Text, ScrollView, StyleSheet, TouchableOpacity, RefreshControl } from 'react-native';
 import { useState } from 'react';
+import type { JSX } from 'react';
 import { ErrorAlert } from '@/components/ErrorAlert';
 import { SkeletonList } from '@/components/SkeletonCard';
+import { useAuthState } from '@/hooks/useAuthState';
 import { trpc } from '@/lib/trpc-react';
 import { useLocale } from '@/components/LocaleProvider';
 
@@ -14,7 +16,7 @@ interface ConsultationBooking {
 const CONSULTANTS = [
   {
     key: 'skincare',
-    emoji: '‍️',
+    emoji: '🧖',
     name: 'اخصائية بشرة',
     specialty: 'تحليل البشرة وتشخيص المشاكل',
     price: 150,
@@ -23,7 +25,7 @@ const CONSULTANTS = [
   },
   {
     key: 'makeup',
-    emoji: '',
+    emoji: '💄',
     name: 'خبيرة مكياج',
     specialty: 'استشارة مكياج للمناسبات',
     price: 120,
@@ -32,7 +34,7 @@ const CONSULTANTS = [
   },
   {
     key: 'hair',
-    emoji: '‍️',
+    emoji: '💇',
     name: 'مصففة شعر',
     specialty: 'استشارة تسريحات وعناية',
     price: 100,
@@ -41,7 +43,7 @@ const CONSULTANTS = [
   },
   {
     key: 'nutrition',
-    emoji: '',
+    emoji: '🥗',
     name: 'اخصائية تغذية',
     specialty: 'تغذية البشرة والشعر',
     price: 130,
@@ -52,7 +54,10 @@ const CONSULTANTS = [
 
 export default function VirtualConsultationScreen(): JSX.Element {
   const { t } = useLocale();
-  const bookingsQ = trpc.virtualConsultation.myConsultations.useQuery();
+  const isAuthed = useAuthState();
+  const bookingsQ = trpc.virtualConsultation.myConsultations.useQuery(undefined, {
+    enabled: isAuthed,
+  });
   const [selected, setSelected] = useState<string | null>(null);
   const [slot, setSlot] = useState<string | null>(null);
   const [booked, setBooked] = useState(false);
@@ -93,7 +98,9 @@ export default function VirtualConsultationScreen(): JSX.Element {
       refreshControl={
         <RefreshControl
           refreshing={bookingsQ.isRefetching}
-          onRefresh={() => bookingsQ.refetch()}
+          onRefresh={async () => {
+            await bookingsQ.refetch();
+          }}
           colors={['#db2777']}
         />
       }
@@ -111,7 +118,7 @@ export default function VirtualConsultationScreen(): JSX.Element {
             alignItems: 'center',
           }}
         >
-          <Text style={{ fontSize: 32 }}></Text>
+          <Text style={{ fontSize: 32 }}>✅</Text>
           <Text style={{ fontWeight: '700', color: '#059669', marginTop: 8 }}>
             {t('mobile.virtualConsultation.booked')}
           </Text>

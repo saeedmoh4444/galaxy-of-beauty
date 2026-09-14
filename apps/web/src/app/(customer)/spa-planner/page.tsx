@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import type { JSX } from 'react';
 import { api } from '@/lib/trpc';
 import { Card, Button, formatCurrency } from '@galaxy/ui';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
@@ -31,13 +32,13 @@ export default function SpaPlannerPage(): JSX.Element {
     <DashboardLayout userRole="CUSTOMER">
       <div className="mx-auto max-w-4xl space-y-6">
         <div>
-          <h1 className="text-2xl font-bold">️{t('spaPlanner.title')}</h1>
+          <h1 className="text-2xl font-bold">{t('spaPlanner.title')}</h1>
           <p className="mt-1 text-sm text-text-secondary">{t('spaPlanner.subtitle')}</p>
         </div>
 
         {result ? (
           <Card padding="lg" className="text-center border-2 border-green-300">
-            <span className="text-6xl">‍️</span>
+            <span className="text-6xl">🧖</span>
             <h2 className="mt-4 text-xl font-bold">{t('spaPlanner.planned')}</h2>
             <p className="text-2xl font-extrabold text-brand-600 mt-2">
               {t('serviceCompare.minutes', { count: result.totalMin as number })} ·{' '}
@@ -63,17 +64,17 @@ export default function SpaPlannerPage(): JSX.Element {
         ) : (
           <>
             <Card padding="lg">
-              <h3 className="font-bold mb-3">‍️{t('spaPlanner.chooseServices')}</h3>
+              <h3 className="font-bold mb-3">{t('spaPlanner.chooseServices')}</h3>
               <div className="grid gap-2 sm:grid-cols-2">
                 {svcs.map((s: Record<string, unknown>) => (
                   <button
                     key={s.id as number}
                     onClick={() => toggleSvc(s.id as number)}
-                    className={`rounded-xl border-2 p-3 text-right transition-all ${selectedSvcs.includes(s.id as number) ? 'border-brand-400 bg-brand-50 dark:bg-brand-950' : 'border-gray-200 dark:border-gray-700'}`}
+                    className={`rounded-xl border-2 p-3 text-end transition-all ${selectedSvcs.includes(s.id as number) ? 'border-brand-400 bg-brand-50 dark:bg-brand-950' : 'border-edge'}`}
                   >
                     <span className="text-2xl">{s.emoji as string}</span>
-                    <span className="font-bold text-sm mr-2">{s.nameAr as string}</span>
-                    <span className="text-xs text-text-secondary mr-2">
+                    <span className="font-bold text-sm me-2">{s.nameAr as string}</span>
+                    <span className="text-xs text-text-secondary me-2">
                       {t('nightMode.minutes', { count: s.durationMin as number })} ·{' '}
                       {formatCurrency(s.price as number)} {t('beautyParty.currency')}
                     </span>
@@ -114,7 +115,7 @@ export default function SpaPlannerPage(): JSX.Element {
                 }}
                 loading={createMut.isPending}
               >
-                ️{t('spaPlanner.planMyDay')}
+                {t('spaPlanner.planMyDay')}
               </Button>
             </div>
           </>

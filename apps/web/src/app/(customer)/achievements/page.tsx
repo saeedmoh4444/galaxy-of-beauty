@@ -1,4 +1,5 @@
 'use client';
+import type { JSX } from 'react';
 import { api } from '@/lib/trpc';
 import { Card, DashboardSkeleton, formatCurrency, ErrorAlert } from '@galaxy/ui';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
@@ -69,7 +70,7 @@ export default function AchievementsPage(): JSX.Element {
                 <p className="text-xs text-text-secondary">{t('achievements.streakDays')}</p>
               </Card>
               <Card padding="md" className="text-center">
-                <p className="text-xl font-extrabold text-purple-600">
+                <p className="text-xl font-extrabold text-brand-600">
                   {(stats?.uniqueServices as number) ?? 0}
                 </p>
                 <p className="text-xs text-text-secondary">{t('achievements.uniqueServices')}</p>

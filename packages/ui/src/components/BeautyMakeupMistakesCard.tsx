@@ -1,4 +1,5 @@
 'use client';
+import type { JSX } from 'react';
 import { cn } from '@galaxy/shared';
 export function BeautyMakeupMistakesCard({
   className = '',
@@ -19,7 +20,7 @@ export function BeautyMakeupMistakesCard({
       )}
     >
       <div className="flex items-center gap-2">
-        <span className="text-xl"></span>
+        <span className="text-xl">🙅</span>
         <div>
           <h4 className="text-sm font-bold text-rose-700 dark:text-rose-300">{heading}</h4>
           <p className="text-[10px] text-rose-500 dark:text-rose-400">{subtitle}</p>
@@ -28,28 +29,28 @@ export function BeautyMakeupMistakesCard({
       <div className="mt-3 space-y-1">
         {[
           {
-            emoji: '',
+            emoji: '❌',
             text: {
               ar: 'اختيار لون فاونديشن أفتح — جربي على خط الفك',
               en: 'Choosing a lighter foundation shade — test on the jawline',
             },
           },
           {
-            emoji: '️',
+            emoji: '🧼',
             text: {
               ar: 'عدم تنظيف الفرش — بكتيريا تسبب الحبوب',
               en: 'Not cleaning brushes — bacteria cause breakouts',
             },
           },
           {
-            emoji: '',
+            emoji: '🚫',
             text: {
               ar: 'تحديد الشفاه بلون أغمق بكثير — نفس درجة الروج',
               en: 'Lining lips much darker — match the lipstick shade',
             },
           },
           {
-            emoji: '️',
+            emoji: '⚖️',
             text: {
               ar: 'مكياج عيون ثقيل + شفاه ثقيلة — اختاري واحداً',
               en: 'Heavy eyes + heavy lips — pick just one',

@@ -1,4 +1,5 @@
 'use client';
+import type { JSX } from 'react';
 import { api } from '@/lib/trpc';
 import { Card, CardListSkeleton, ErrorAlert } from '@galaxy/ui';
 import { useLocale } from '@/components/LocaleProvider';
@@ -26,7 +27,7 @@ export default function ServiceTrendsPage(): JSX.Element {
   return (
     <div className="mx-auto max-w-5xl px-4 py-12">
       <div className="mb-8 text-center">
-        <span className="text-6xl"></span>
+        <span className="text-6xl">📈</span>
         <h1 className="mt-4 text-3xl font-bold">{t('marketing.service-trends.title')}</h1>
         <p className="mt-2 text-text-secondary">{t('marketing.service-trends.subtitle')}</p>
       </div>

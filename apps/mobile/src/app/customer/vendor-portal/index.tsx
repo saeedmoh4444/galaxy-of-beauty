@@ -1,5 +1,7 @@
+import type { JSX } from 'react';
 import { View, Text, ScrollView, StyleSheet, TouchableOpacity, RefreshControl } from 'react-native';
 import { SkeletonList } from '@/components/SkeletonCard';
+import { useAuthState } from '@/hooks/useAuthState';
 import { trpc } from '@/lib/trpc-react';
 import { useLocale } from '@/components/LocaleProvider';
 
@@ -25,8 +27,9 @@ interface VendorProduct {
 
 export default function VendorPortalScreen(): JSX.Element {
   const { t, locale } = useLocale();
-  const dashQ = trpc.vendorPortal.dashboard.useQuery();
-  const productsQ = trpc.vendorPortal.myProducts.useQuery();
+  const isAuthed = useAuthState();
+  const dashQ = trpc.vendorPortal.dashboard.useQuery(undefined, { enabled: isAuthed });
+  const productsQ = trpc.vendorPortal.myProducts.useQuery(undefined, { enabled: isAuthed });
   const dash = dashQ.data as VendorDashboard | null;
   const products: VendorProduct[] =
     (productsQ.data as unknown as VendorProduct[] | undefined) ?? [];
@@ -59,12 +62,12 @@ export default function VendorPortalScreen(): JSX.Element {
       <Text style={styles.t}>{t('mobile.vendorPortal.title')}</Text>
       <View style={styles.kr}>
         <View style={styles.k}>
-          <Text style={styles.ke}></Text>
+          <Text style={styles.ke}>📦</Text>
           <Text style={styles.kv}>{dash?.totalProducts ?? 0}</Text>
           <Text style={styles.kl}>{t('mobile.vendorPortal.products')}</Text>
         </View>
         <View style={styles.k}>
-          <Text style={styles.ke}></Text>
+          <Text style={styles.ke}>💰</Text>
           <Text style={[styles.kv, { color: '#059669' }]}>
             {(dash?.totalRevenue ?? 0)?.toLocaleString(locale === 'en' ? 'en-GB' : 'ar-SA')}
           </Text>
@@ -73,7 +76,7 @@ export default function VendorPortalScreen(): JSX.Element {
       </View>
       {products.map((p) => (
         <View key={p.id} style={styles.card}>
-          <Text style={styles.em}></Text>
+          <Text style={styles.em}>🧴</Text>
           <View style={{ flex: 1 }}>
             <Text style={styles.nm}>{p.name}</Text>
             <Text style={styles.meta}>
@@ -83,7 +86,7 @@ export default function VendorPortalScreen(): JSX.Element {
             </Text>
           </View>
           <TouchableOpacity onPress={() => remove(p.id)}>
-            <Text style={styles.del}>️</Text>
+            <Text style={styles.del}>🗑️</Text>
           </TouchableOpacity>
         </View>
       ))}

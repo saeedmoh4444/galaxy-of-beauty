@@ -1,11 +1,14 @@
+import type { JSX } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, ScrollView } from 'react-native';
 import { useRouter } from 'expo-router';
 import type { TranslationKey } from '@galaxy/shared';
 import { ScreenState } from '@/components/ScreenState';
 import { trpc } from '@/lib/trpc-react';
 import { setAuthToken } from '@/lib/authToken';
+import { useAuthState } from '@/hooks/useAuthState';
 import { setSocketToken } from '@/hooks/useSocket';
 import { useLocale } from '@/components/LocaleProvider';
+import { useTheme, type ThemeMode } from '@/components/ThemeProvider';
 
 const COLORS = {
   brand: '#7c3aed',
@@ -16,6 +19,16 @@ const COLORS = {
   danger: '#dc2626',
 };
 
+const THEME_MODES: ThemeMode[] = ['light', 'dark', 'system'];
+
+// Mode labels are not in the i18n catalog (theme keys are web-only), so the
+// current mode is shown as icon + short English label.
+const MODE_DISPLAY: Record<ThemeMode, { icon: string; label: string }> = {
+  light: { icon: '☀️', label: 'Light' },
+  dark: { icon: '🌙', label: 'Dark' },
+  system: { icon: '⚙️', label: 'System' },
+};
+
 const MENU_ITEMS: { labelKey: TranslationKey; href: string }[] = [
   { labelKey: 'mobile.core.bookingsTitle', href: '/customer/bookings' },
   { labelKey: 'mobile.core.menuWishlist', href: '/customer/wishlist' },
@@ -24,10 +37,12 @@ const MENU_ITEMS: { labelKey: TranslationKey; href: string }[] = [
   { labelKey: 'mobile.core.menuAddresses', href: '/customer/addresses' },
   { labelKey: 'mobile.core.menuSavedCards', href: '/customer/saved-cards' },
   { labelKey: 'mobile.core.menuReferrals', href: '/customer/referrals' },
+  { labelKey: 'mobile.core.menuBeautyDashboard', href: '/customer/beauty-dashboard' },
   { labelKey: 'mobile.core.menuCommunity', href: '/customer/community' },
   { labelKey: 'mobile.core.menuAcademy', href: '/customer/beauty-academy' },
   { labelKey: 'wellness.title', href: '/customer/wellness' },
   { labelKey: 'mobile.core.menuNotifications', href: '/customer/notifications' },
+  { labelKey: 'nav.more', href: '/public/more' },
   { labelKey: 'mobile.core.aiAssistantHelp', href: '/customer/ai-chat' },
 ];
 
@@ -39,14 +54,20 @@ interface ProfileUser {
 export default function ProfileScreen(): JSX.Element {
   const router = useRouter();
   const { locale, t, setLocale } = useLocale();
-  const profile = trpc.users.getMe.useQuery() ?? {
+  const { mode, setMode } = useTheme();
+  const isAuthed = useAuthState();
+  const profile = trpc.users.getMe.useQuery(undefined, { enabled: isAuthed }) ?? {
     data: null,
     isLoading: false,
     isError: false,
     refetch: () => {},
   };
-  const loyalty = trpc.loyalty.myAccount.useQuery();
-  const kindness = trpc.kindnessPoints.getStatus.useQuery();
+  const loyalty = trpc.loyalty.myAccount.useQuery(undefined, { enabled: isAuthed });
+  // Auth-gated: the profile tab renders for guests too (pre-login state)
+  // and must not fire the authenticated kindness query for them.
+  const kindness = trpc.kindnessPoints.getStatus.useQuery(undefined, {
+    enabled: isAuthed,
+  });
   const p = profile.data as ProfileUser | null;
 
   const logout = trpc.auth.logout.useMutation({
@@ -97,7 +118,17 @@ export default function ProfileScreen(): JSX.Element {
         <Text style={styles.langLabel}>{t('profile.language')}</Text>
         <Text style={styles.langValue}>{locale === 'ar' ? t('profile.arabic') : 'English'}</Text>
       </TouchableOpacity>
-      <ScrollView style={styles.menuList}>
+      <TouchableOpacity
+        style={styles.langRow}
+        onPress={() => setMode(THEME_MODES[(THEME_MODES.indexOf(mode) + 1) % THEME_MODES.length])}
+        activeOpacity={0.6}
+      >
+        <Text style={styles.langLabel}>{t('mobile.nightMode.title')}</Text>
+        <Text style={styles.langValue}>
+          {MODE_DISPLAY[mode].icon} {MODE_DISPLAY[mode].label}
+        </Text>
+      </TouchableOpacity>
+      <ScrollView style={styles.menuList} testID="profile-menu">
         {MENU_ITEMS.map((item, i) => (
           <TouchableOpacity
             key={i}
