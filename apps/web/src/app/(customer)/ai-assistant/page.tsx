@@ -96,7 +96,7 @@ export default function AIAssistantPage(): JSX.Element {
         ) : (answer as Record<string, unknown>) ? (
           <Card
             padding="lg"
-            className="border-2 border-brand-200 dark:border-brand-800 bg-gradient-to-br from-brand-50 to-brand-50 dark:from-brand-950 dark:to-brand-950"
+            className="border-2 border-brand-200 dark:border-brand-800 bg-linear-to-br from-brand-50 to-brand-50 dark:from-brand-950 dark:to-brand-950"
           >
             <div className="flex items-start gap-3">
               <span className="text-3xl">{lifestyleMut.data?.handled ? '🌱' : '💄'}</span>

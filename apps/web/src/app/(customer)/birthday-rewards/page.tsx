@@ -84,7 +84,7 @@ export default function BirthdayRewardsPage(): JSX.Element {
             {/* Main Reward Card */}
             <Card
               padding="lg"
-              className="relative overflow-hidden bg-gradient-to-br from-pink-50 to-brand-50 dark:from-pink-950 dark:to-brand-950 border-2 border-pink-200 dark:border-pink-800"
+              className="relative overflow-hidden bg-linear-to-br from-pink-50 to-brand-50 dark:from-pink-950 dark:to-brand-950 border-2 border-pink-200 dark:border-pink-800"
             >
               {/* Decorative */}
               <div className="absolute -top-6 -end-6 text-6xl opacity-20">🎈</div>
@@ -220,7 +220,7 @@ export default function BirthdayRewardsPage(): JSX.Element {
             {/* Birthday Tips */}
             <Card
               padding="lg"
-              className="bg-gradient-to-r from-pink-100 to-rose-100 dark:from-pink-950 dark:to-rose-950 border-none"
+              className="bg-linear-to-r from-pink-100 to-rose-100 dark:from-pink-950 dark:to-rose-950 border-none"
             >
               <h3 className="font-bold text-text-primary dark:text-gray-100 mb-3">
                 {t('birthday.ideasTitle')}

@@ -75,7 +75,7 @@ export default function NightModePage(): JSX.Element {
         {allTips.length > 0 && (
           <Card
             padding="lg"
-            className="bg-gradient-to-r from-indigo-50 to-brand-50 dark:from-indigo-950 dark:to-brand-950 border-none"
+            className="bg-linear-to-r from-indigo-50 to-brand-50 dark:from-indigo-950 dark:to-brand-950 border-none"
           >
             <h3 className="font-bold mb-3">{t('nightMode.tipsTitle')}</h3>
             <div className="space-y-2">

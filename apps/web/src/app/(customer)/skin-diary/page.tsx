@@ -76,7 +76,7 @@ export default function SkinDiaryPage(): JSX.Element {
                   return (
                     <div key={d.date as string} className="flex-1 flex flex-col items-center gap-1">
                       <div
-                        className="w-full rounded-t bg-gradient-to-t from-blue-400 to-cyan-400"
+                        className="w-full rounded-t bg-linear-to-t from-blue-400 to-cyan-400"
                         style={{ height: `${h}%` }}
                       />
                       <span className="text-[9px] text-text-tertiary">

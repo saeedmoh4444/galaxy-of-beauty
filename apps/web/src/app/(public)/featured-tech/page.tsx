@@ -40,10 +40,10 @@ export default function FeaturedTechPage(): JSX.Element {
       ) : current ? (
         <Card
           padding="lg"
-          className="border-2 border-amber-300 dark:border-amber-700 bg-gradient-to-br from-amber-50 to-yellow-50 dark:from-amber-950 dark:to-yellow-950"
+          className="border-2 border-amber-300 dark:border-amber-700 bg-linear-to-br from-amber-50 to-yellow-50 dark:from-amber-950 dark:to-yellow-950"
         >
           <div className="text-center">
-            <div className="mx-auto flex h-24 w-24 items-center justify-center rounded-full bg-gradient-to-br from-amber-400 to-yellow-500 text-5xl shadow-xl">
+            <div className="mx-auto flex h-24 w-24 items-center justify-center rounded-full bg-linear-to-br from-amber-400 to-yellow-500 text-5xl shadow-xl">
               {current.emoji as string}
             </div>
             <p className="text-xs text-amber-600 font-bold mt-3">

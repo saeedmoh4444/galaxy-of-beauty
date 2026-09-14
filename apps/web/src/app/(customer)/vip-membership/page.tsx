@@ -57,7 +57,7 @@ export default function VIPMembershipPage(): JSX.Element {
                   className={`relative text-center ${isCurrent ? 'border-2 border-brand-400 ring-2 ring-brand-100 dark:ring-brand-900' : ''}`}
                 >
                   {isCurrent && (
-                    <span className="absolute -top-3 start-1/2 -translate-x-1/2 rounded-full bg-brand-600 px-4 py-0.5 text-xs font-bold text-white">
+                    <span className="absolute -top-3 inset-s-1/2 -translate-x-1/2 rounded-full bg-brand-600 px-4 py-0.5 text-xs font-bold text-white">
                       {t('vipMembership.current')}
                     </span>
                   )}

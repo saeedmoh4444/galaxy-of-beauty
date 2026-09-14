@@ -85,7 +85,7 @@ export default function MySubscriptionPage(): JSX.Element {
         {/* Status Card */}
         <Card
           padding="lg"
-          className="bg-gradient-to-r from-brand-50 to-brand-50 dark:from-brand-950 dark:to-brand-950"
+          className="bg-linear-to-r from-brand-50 to-brand-50 dark:from-brand-950 dark:to-brand-950"
         >
           <div className="text-center">
             <span className="text-5xl">💳</span>

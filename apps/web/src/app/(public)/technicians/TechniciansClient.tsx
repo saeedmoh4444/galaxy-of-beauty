@@ -82,7 +82,7 @@ export function TechniciansClient({ data }: { data: TechniciansPageData }): JSX.
               return (
                 <Link key={tech.id} href={`/technicians/${tech.id}`}>
                   <Card hover padding="lg" className="flex flex-col items-center text-center">
-                    <div className="relative flex h-24 w-24 items-center justify-center overflow-hidden rounded-full bg-gradient-to-br from-brand-100 to-accent-100 dark:from-brand-900 dark:to-accent-900">
+                    <div className="relative flex h-24 w-24 items-center justify-center overflow-hidden rounded-full bg-linear-to-br from-brand-100 to-accent-100 dark:from-brand-900 dark:to-accent-900">
                       <ServiceImage
                         src={avatarUrl || null}
                         alt={name}

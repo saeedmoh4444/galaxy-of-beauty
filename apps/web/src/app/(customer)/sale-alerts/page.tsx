@@ -59,7 +59,7 @@ export default function SaleAlertsPage(): JSX.Element {
         {activeDeals.length > 0 && (
           <Card
             padding="lg"
-            className="bg-gradient-to-r from-red-50 to-orange-50 dark:from-red-950 dark:to-orange-950 border-none"
+            className="bg-linear-to-r from-red-50 to-orange-50 dark:from-red-950 dark:to-orange-950 border-none"
           >
             <h3 className="font-bold mb-3">{t('saleAlerts.activeDealsTitle')}</h3>
             <div className="grid gap-3 sm:grid-cols-3">

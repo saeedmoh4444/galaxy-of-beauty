@@ -131,7 +131,7 @@ export default function BeautyAnalyticsPage(): JSX.Element {
                       </div>
                       <div className="h-3 rounded-full bg-surface-muted dark:bg-gray-800 overflow-hidden">
                         <div
-                          className="h-full rounded-full bg-gradient-to-r from-brand-400 to-brand-500 transition-all"
+                          className="h-full rounded-full bg-linear-to-r from-brand-400 to-brand-500 transition-all"
                           style={{ width: `${cat.pct}%` }}
                         />
                       </div>
@@ -158,7 +158,7 @@ export default function BeautyAnalyticsPage(): JSX.Element {
                           {m.count}
                         </span>
                         <div
-                          className="w-full rounded-t-lg bg-gradient-to-t from-brand-400 to-brand-400 transition-all"
+                          className="w-full rounded-t-lg bg-linear-to-t from-brand-400 to-brand-400 transition-all"
                           style={{ height: `${height}%` }}
                         />
                         <span className="text-[10px] text-text-tertiary">{m.month}</span>

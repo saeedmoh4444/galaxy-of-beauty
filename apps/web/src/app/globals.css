@@ -1,10 +1,11 @@
+@config "../../tailwind.config.ts";
+
 /* CSS spec: @import must precede all other statements (was below the
    @tailwind directives, where browsers ignore it). */
-@import url('https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800&family=Inter:wght@400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800&family=Inter:wght@400;500;600;700&display=swap')
+layer(base);
 
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import 'tailwindcss';
 
 @layer base {
   /* ── Typography: Arabic-first ──────────────────────────

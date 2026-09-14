@@ -56,7 +56,7 @@ export default function LoyaltyDashboardPage(): JSX.Element {
         ) : (
           <>
             {/* Current Tier Card */}
-            <Card padding="lg" className={`bg-gradient-to-r ${tier.color} text-white`}>
+            <Card padding="lg" className={`bg-linear-to-r ${tier.color} text-white`}>
               <div className="flex items-center justify-between">
                 <div>
                   <p className="text-sm opacity-80">{t('loyalty.membershipLevel')}</p>

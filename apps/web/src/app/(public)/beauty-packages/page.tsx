@@ -54,7 +54,7 @@ export default async function BeautyPackagesPage(): Promise<JSX.Element> {
                 key={pkg.id}
                 className="overflow-hidden rounded-2xl border border-edge bg-white dark:border-gray-800 dark:bg-gray-900"
               >
-                <div className="relative flex h-40 items-center justify-center bg-gradient-to-br from-brand-200 to-accent-200 text-5xl dark:from-brand-900 dark:to-accent-900">
+                <div className="relative flex h-40 items-center justify-center bg-linear-to-br from-brand-200 to-accent-200 text-5xl dark:from-brand-900 dark:to-accent-900">
                   {pkg.imageUrl ? (
                     <Image src={pkg.imageUrl} alt={name} fill className="object-cover" />
                   ) : (

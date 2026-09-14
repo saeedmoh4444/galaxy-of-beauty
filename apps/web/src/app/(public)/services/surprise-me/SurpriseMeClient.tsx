@@ -89,7 +89,7 @@ function ServiceCard({ svc }: { svc: ServiceItem }): JSX.Element {
   const { t, locale } = useLocale();
   return (
     <Card padding="lg" className="mx-auto max-w-sm text-center">
-      <div className="mx-auto flex h-32 w-32 items-center justify-center rounded-full bg-gradient-to-br from-brand-100 to-accent-100 text-5xl dark:from-brand-900 dark:to-accent-900">
+      <div className="mx-auto flex h-32 w-32 items-center justify-center rounded-full bg-linear-to-br from-brand-100 to-accent-100 text-5xl dark:from-brand-900 dark:to-accent-900">
         🎁
       </div>
       <h2 className="mt-4 text-xl font-bold text-text-primary dark:text-gray-100">

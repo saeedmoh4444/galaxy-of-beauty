@@ -157,7 +157,7 @@ export default function LookbookPage(): JSX.Element {
           <button
             key={s.id}
             onClick={() => setSeason(s.id)}
-            className={`flex items-center gap-2 rounded-full px-5 py-2.5 text-sm font-medium transition-all ${season === s.id ? `bg-gradient-to-r ${s.color} text-white shadow-lg` : 'bg-surface-muted text-text-secondary hover:bg-surface-muted dark:text-text-tertiary'}`}
+            className={`flex items-center gap-2 rounded-full px-5 py-2.5 text-sm font-medium transition-all ${season === s.id ? `bg-linear-to-r ${s.color} text-white shadow-lg` : 'bg-surface-muted text-text-secondary hover:bg-surface-muted dark:text-text-tertiary'}`}
           >
             <span>{s.emoji}</span> {t(locale === 'ar' ? s.nameAr : s.nameEn)}
           </button>
@@ -175,7 +175,7 @@ export default function LookbookPage(): JSX.Element {
           <Link key={i} href={look.link}>
             <Card hover padding="lg" className="group h-full">
               <div
-                className={`flex h-48 items-center justify-center rounded-xl bg-gradient-to-br ${currentSeason.color} text-7xl`}
+                className={`flex h-48 items-center justify-center rounded-xl bg-linear-to-br ${currentSeason.color} text-7xl`}
               >
                 <span>{look.image}</span>
               </div>

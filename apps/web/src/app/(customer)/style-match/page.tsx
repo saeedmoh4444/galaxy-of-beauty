@@ -208,7 +208,7 @@ export default function StyleMatchPage(): JSX.Element {
                   padding="lg"
                   className="group hover:shadow-xl transition-all"
                 >
-                  <div className="flex h-36 items-center justify-center rounded-xl bg-gradient-to-br from-brand-100 to-brand-100 dark:from-brand-900 dark:to-brand-900 text-5xl">
+                  <div className="flex h-36 items-center justify-center rounded-xl bg-linear-to-br from-brand-100 to-brand-100 dark:from-brand-900 dark:to-brand-900 text-5xl">
                     {[
                       'daily',
                       'evening',

@@ -169,7 +169,7 @@ export default function MoodBoardPage(): JSX.Element {
             {allBoards.map((board) => (
               <Card key={board.id} padding="lg" className="group">
                 {/* Cover */}
-                <div className="relative h-44 overflow-hidden rounded-xl bg-gradient-to-br from-gray-100 to-gray-200 dark:from-gray-800 dark:to-gray-700">
+                <div className="relative h-44 overflow-hidden rounded-xl bg-linear-to-br from-gray-100 to-gray-200 dark:from-gray-800 dark:to-gray-700">
                   {board.coverUrl ? (
                     <Image
                       src={board.coverUrl}

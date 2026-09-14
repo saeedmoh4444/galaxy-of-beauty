@@ -107,7 +107,7 @@ export default function TravelChecklistPage(): JSX.Element {
           ))}
         </div>
 
-        <div className={`rounded-2xl bg-gradient-to-br ${d.bg} p-6`}>
+        <div className={`rounded-2xl bg-linear-to-br ${d.bg} p-6`}>
           <h3 className="text-lg font-bold text-text-primary dark:text-gray-100">
             {d.emoji} {t(d.name)}
           </h3>
