@@ -34,7 +34,9 @@ export default function WomensServicesScreen(): JSX.Element {
       refreshControl={
         <RefreshControl
           refreshing={catsQ.isRefetching}
-          onRefresh={() => catsQ.refetch()}
+          onRefresh={async () => {
+            await catsQ.refetch();
+          }}
           colors={['#be185d']}
         />
       }

@@ -35,7 +35,12 @@ export default function GymsScreen(): JSX.Element {
       style={s.c}
       contentContainerStyle={s.i}
       refreshControl={
-        <RefreshControl refreshing={gymsQ.isRefetching} onRefresh={() => gymsQ.refetch()} />
+        <RefreshControl
+          refreshing={gymsQ.isRefetching}
+          onRefresh={async () => {
+            await gymsQ.refetch();
+          }}
+        />
       }
     >
       <Text style={s.title}>{t('mobile.gyms.title')}</Text>

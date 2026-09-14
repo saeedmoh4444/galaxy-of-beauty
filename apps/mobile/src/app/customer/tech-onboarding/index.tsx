@@ -49,7 +49,9 @@ export default function TechOnboardingScreen(): JSX.Element {
       refreshControl={
         <RefreshControl
           refreshing={dataQ.isRefetching}
-          onRefresh={() => dataQ.refetch()}
+          onRefresh={async () => {
+            await dataQ.refetch();
+          }}
           colors={['#059669']}
         />
       }

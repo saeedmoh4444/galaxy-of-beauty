@@ -26,7 +26,9 @@ export default function CorporateWellnessScreen(): JSX.Element {
       refreshControl={
         <RefreshControl
           refreshing={plansQ.isRefetching}
-          onRefresh={() => plansQ.refetch()}
+          onRefresh={async () => {
+            await plansQ.refetch();
+          }}
           colors={['#059669']}
         />
       }

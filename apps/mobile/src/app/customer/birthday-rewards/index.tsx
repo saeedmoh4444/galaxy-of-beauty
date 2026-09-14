@@ -24,7 +24,9 @@ export default function BirthdayRewardsScreen(): JSX.Element {
       refreshControl={
         <RefreshControl
           refreshing={q.isRefetching}
-          onRefresh={() => q.refetch()}
+          onRefresh={async () => {
+            await q.refetch();
+          }}
           colors={['#ec4899']}
         />
       }

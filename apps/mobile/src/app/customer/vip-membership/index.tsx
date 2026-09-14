@@ -24,7 +24,9 @@ export default function VIPMembershipScreen(): JSX.Element {
       refreshControl={
         <RefreshControl
           refreshing={tierQ.isRefetching}
-          onRefresh={() => tierQ.refetch()}
+          onRefresh={async () => {
+            await tierQ.refetch();
+          }}
           colors={['#7c3aed']}
         />
       }

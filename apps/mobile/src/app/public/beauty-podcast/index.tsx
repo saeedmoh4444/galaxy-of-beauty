@@ -27,7 +27,9 @@ export default function BeautyPodcastScreen(): JSX.Element {
       refreshControl={
         <RefreshControl
           refreshing={epsQ.isRefetching}
-          onRefresh={() => epsQ.refetch()}
+          onRefresh={async () => {
+            await epsQ.refetch();
+          }}
           colors={['#7c3aed']}
         />
       }

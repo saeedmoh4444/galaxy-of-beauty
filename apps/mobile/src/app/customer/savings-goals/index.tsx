@@ -26,7 +26,9 @@ export default function SavingsGoalsScreen(): JSX.Element {
       refreshControl={
         <RefreshControl
           refreshing={goalsQ.isRefetching}
-          onRefresh={() => goalsQ.refetch()}
+          onRefresh={async () => {
+            await goalsQ.refetch();
+          }}
           colors={['#059669']}
         />
       }

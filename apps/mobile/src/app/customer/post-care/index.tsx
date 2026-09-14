@@ -28,7 +28,9 @@ export default function PostCareScreen(): JSX.Element {
       refreshControl={
         <RefreshControl
           refreshing={libraryQ.isRefetching}
-          onRefresh={() => libraryQ.refetch()}
+          onRefresh={async () => {
+            await libraryQ.refetch();
+          }}
           colors={['#059669']}
         />
       }

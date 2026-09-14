@@ -38,7 +38,9 @@ export default function EventsScreen(): JSX.Element {
       refreshControl={
         <RefreshControl
           refreshing={eventsQ.isRefetching}
-          onRefresh={() => eventsQ.refetch()}
+          onRefresh={async () => {
+            await eventsQ.refetch();
+          }}
           colors={['#7c3aed']}
         />
       }

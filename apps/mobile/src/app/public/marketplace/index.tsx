@@ -25,7 +25,9 @@ export default function MarketplaceScreen(): JSX.Element {
       refreshControl={
         <RefreshControl
           refreshing={productsQ.isRefetching}
-          onRefresh={() => productsQ.refetch()}
+          onRefresh={async () => {
+            await productsQ.refetch();
+          }}
           colors={['#db2777']}
         />
       }

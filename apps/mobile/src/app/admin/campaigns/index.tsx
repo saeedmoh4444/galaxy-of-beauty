@@ -32,7 +32,9 @@ export default function AdminCampaignsScreen(): JSX.Element {
       refreshControl={
         <RefreshControl
           refreshing={q.isRefetching}
-          onRefresh={() => q.refetch()}
+          onRefresh={async () => {
+            await q.refetch();
+          }}
           colors={['#f59e0b']}
         />
       }

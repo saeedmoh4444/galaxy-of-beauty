@@ -30,7 +30,9 @@ export default function ReferralRaceScreen(): JSX.Element {
       refreshControl={
         <RefreshControl
           refreshing={leaderboardQ.isRefetching}
-          onRefresh={() => leaderboardQ.refetch()}
+          onRefresh={async () => {
+            await leaderboardQ.refetch();
+          }}
           colors={['#7c3aed']}
         />
       }

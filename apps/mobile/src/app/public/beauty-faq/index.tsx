@@ -22,7 +22,9 @@ export default function BeautyFaqScreen(): JSX.Element {
       refreshControl={
         <RefreshControl
           refreshing={faqsQ.isRefetching}
-          onRefresh={() => faqsQ.refetch()}
+          onRefresh={async () => {
+            await faqsQ.refetch();
+          }}
           colors={['#7c3aed']}
         />
       }

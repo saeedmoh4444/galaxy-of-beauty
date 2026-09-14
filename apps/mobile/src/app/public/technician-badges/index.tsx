@@ -28,7 +28,9 @@ export default function TechnicianBadgesScreen(): JSX.Element {
       refreshControl={
         <RefreshControl
           refreshing={q.isRefetching}
-          onRefresh={() => q.refetch()}
+          onRefresh={async () => {
+            await q.refetch();
+          }}
           colors={['#8b5cf6']}
         />
       }

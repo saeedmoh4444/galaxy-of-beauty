@@ -36,7 +36,12 @@ export default function StoresScreen(): JSX.Element {
       style={s.c}
       contentContainerStyle={s.i}
       refreshControl={
-        <RefreshControl refreshing={storesQ.isRefetching} onRefresh={() => storesQ.refetch()} />
+        <RefreshControl
+          refreshing={storesQ.isRefetching}
+          onRefresh={async () => {
+            await storesQ.refetch();
+          }}
+        />
       }
     >
       <Text style={s.title}>{t('mobile.stores.title')}</Text>

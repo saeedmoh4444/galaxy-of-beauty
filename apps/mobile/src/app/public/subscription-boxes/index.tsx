@@ -36,7 +36,9 @@ export default function SubscriptionBoxesScreen(): JSX.Element {
       refreshControl={
         <RefreshControl
           refreshing={boxesQ.isRefetching}
-          onRefresh={() => boxesQ.refetch()}
+          onRefresh={async () => {
+            await boxesQ.refetch();
+          }}
           colors={['#7c3aed']}
         />
       }

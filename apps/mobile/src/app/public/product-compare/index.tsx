@@ -33,7 +33,9 @@ export default function ProductCompareScreen(): JSX.Element {
       refreshControl={
         <RefreshControl
           refreshing={productsQ.isRefetching}
-          onRefresh={() => productsQ.refetch()}
+          onRefresh={async () => {
+            await productsQ.refetch();
+          }}
           colors={['#0891b2']}
         />
       }

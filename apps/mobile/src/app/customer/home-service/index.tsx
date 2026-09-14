@@ -27,7 +27,9 @@ export default function HomeServiceScreen(): JSX.Element {
       refreshControl={
         <RefreshControl
           refreshing={estimateQ.isRefetching}
-          onRefresh={() => estimateQ.refetch()}
+          onRefresh={async () => {
+            await estimateQ.refetch();
+          }}
           colors={['#059669']}
         />
       }

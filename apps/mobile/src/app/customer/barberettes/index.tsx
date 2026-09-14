@@ -33,7 +33,12 @@ export default function BarberettesScreen(): JSX.Element {
       style={s.c}
       contentContainerStyle={s.i}
       refreshControl={
-        <RefreshControl refreshing={listQ.isRefetching} onRefresh={() => listQ.refetch()} />
+        <RefreshControl
+          refreshing={listQ.isRefetching}
+          onRefresh={async () => {
+            await listQ.refetch();
+          }}
+        />
       }
     >
       <Text style={s.title}>{t('mobile.barberettes.title')}</Text>

@@ -7,6 +7,7 @@ import {
   ActivityIndicator,
   TextInput,
 } from 'react-native';
+import type { ScrollViewInstance } from 'react-native';
 import { trpc } from '@/lib/trpc-react';
 import { useLocale } from '@/components/LocaleProvider';
 import { useState, useRef } from 'react';
@@ -17,7 +18,7 @@ export default function AiChatScreen() {
     { id: string; role: string; content: string; time: string }[]
   >([]);
   const [input, setInput] = useState('');
-  const scrollRef = useRef<ScrollView>(null);
+  const scrollRef = useRef<ScrollViewInstance>(null);
 
   const now = () =>
     new Date().toLocaleTimeString(locale === 'ar' ? 'ar-SA' : 'en-GB', {

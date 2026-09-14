@@ -38,7 +38,9 @@ export default function TechLeaderboardScreen(): JSX.Element {
       refreshControl={
         <RefreshControl
           refreshing={boardQ.isRefetching}
-          onRefresh={() => boardQ.refetch()}
+          onRefresh={async () => {
+            await boardQ.refetch();
+          }}
           colors={['#f59e0b']}
         />
       }

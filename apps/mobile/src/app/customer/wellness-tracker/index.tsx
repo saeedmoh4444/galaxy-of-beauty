@@ -24,7 +24,9 @@ export default function WellnessTrackerScreen(): JSX.Element {
       refreshControl={
         <RefreshControl
           refreshing={todayQ.isRefetching}
-          onRefresh={() => todayQ.refetch()}
+          onRefresh={async () => {
+            await todayQ.refetch();
+          }}
           colors={['#059669']}
         />
       }

@@ -36,7 +36,9 @@ export default function ServiceMenuQRScreen(): JSX.Element {
       refreshControl={
         <RefreshControl
           refreshing={techsQ.isRefetching}
-          onRefresh={() => techsQ.refetch()}
+          onRefresh={async () => {
+            await techsQ.refetch();
+          }}
           colors={['#059669']}
         />
       }

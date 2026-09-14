@@ -28,7 +28,9 @@ export default function RecurringScreen(): JSX.Element {
       refreshControl={
         <RefreshControl
           refreshing={bookingsQ.isRefetching}
-          onRefresh={() => bookingsQ.refetch()}
+          onRefresh={async () => {
+            await bookingsQ.refetch();
+          }}
           colors={['#7c3aed']}
         />
       }

@@ -52,7 +52,9 @@ export default function AdminAnalyticsV2Screen(): JSX.Element {
       refreshControl={
         <RefreshControl
           refreshing={q.isRefetching}
-          onRefresh={() => q.refetch()}
+          onRefresh={async () => {
+            await q.refetch();
+          }}
           colors={['#6366f1']}
         />
       }

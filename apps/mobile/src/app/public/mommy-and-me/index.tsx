@@ -25,7 +25,9 @@ export default function MommyAndMeScreen(): JSX.Element {
       refreshControl={
         <RefreshControl
           refreshing={servicesQ.isRefetching}
-          onRefresh={() => servicesQ.refetch()}
+          onRefresh={async () => {
+            await servicesQ.refetch();
+          }}
           colors={['#ec4899']}
         />
       }

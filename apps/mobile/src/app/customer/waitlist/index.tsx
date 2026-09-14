@@ -24,7 +24,9 @@ export default function WaitlistScreen(): JSX.Element {
       refreshControl={
         <RefreshControl
           refreshing={entriesQ.isRefetching}
-          onRefresh={() => entriesQ.refetch()}
+          onRefresh={async () => {
+            await entriesQ.refetch();
+          }}
           colors={['#f59e0b']}
         />
       }

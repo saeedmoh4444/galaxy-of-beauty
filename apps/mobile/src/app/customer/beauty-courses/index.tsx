@@ -68,7 +68,9 @@ export default function BeautyCoursesScreen(): JSX.Element {
       refreshControl={
         <RefreshControl
           refreshing={coursesQ.isRefetching}
-          onRefresh={() => coursesQ.refetch()}
+          onRefresh={async () => {
+            await coursesQ.refetch();
+          }}
           colors={['#db2777']}
         />
       }

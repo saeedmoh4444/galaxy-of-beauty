@@ -37,7 +37,9 @@ export default function BeautyStoriesScreen(): JSX.Element {
       refreshControl={
         <RefreshControl
           refreshing={storiesQ.isRefetching}
-          onRefresh={() => storiesQ.refetch()}
+          onRefresh={async () => {
+            await storiesQ.refetch();
+          }}
           colors={['#7c3aed']}
         />
       }

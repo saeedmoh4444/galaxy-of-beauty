@@ -32,7 +32,9 @@ export default function RewardsScreen(): JSX.Element {
       refreshControl={
         <RefreshControl
           refreshing={rewardsQ.isRefetching}
-          onRefresh={() => rewardsQ.refetch()}
+          onRefresh={async () => {
+            await rewardsQ.refetch();
+          }}
           colors={['#f59e0b']}
         />
       }

@@ -65,7 +65,9 @@ export default function RescheduleScreen(): JSX.Element {
       refreshControl={
         <RefreshControl
           refreshing={bookingsQ.isRefetching}
-          onRefresh={() => bookingsQ.refetch()}
+          onRefresh={async () => {
+            await bookingsQ.refetch();
+          }}
           colors={['#2563eb']}
         />
       }

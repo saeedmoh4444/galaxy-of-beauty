@@ -26,7 +26,9 @@ export default function SelfCareScreen(): JSX.Element {
       refreshControl={
         <RefreshControl
           refreshing={historyQ.isRefetching}
-          onRefresh={() => historyQ.refetch()}
+          onRefresh={async () => {
+            await historyQ.refetch();
+          }}
           colors={['#ec4899']}
         />
       }

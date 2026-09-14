@@ -43,7 +43,9 @@ export default function ChallengesScreen(): JSX.Element {
       refreshControl={
         <RefreshControl
           refreshing={challengesQ.isRefetching}
-          onRefresh={() => challengesQ.refetch()}
+          onRefresh={async () => {
+            await challengesQ.refetch();
+          }}
           colors={['#f59e0b']}
         />
       }

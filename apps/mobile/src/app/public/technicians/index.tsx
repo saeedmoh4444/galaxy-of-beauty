@@ -38,7 +38,9 @@ export default function TechniciansScreen(): JSX.Element {
       refreshControl={
         <RefreshControl
           refreshing={techsQ.isRefetching}
-          onRefresh={() => techsQ.refetch()}
+          onRefresh={async () => {
+            await techsQ.refetch();
+          }}
           colors={['#db2777']}
         />
       }

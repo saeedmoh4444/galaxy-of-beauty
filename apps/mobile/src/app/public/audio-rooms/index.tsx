@@ -42,7 +42,9 @@ export default function AudioRoomsScreen(): JSX.Element {
       refreshControl={
         <RefreshControl
           refreshing={roomsQ.isRefetching}
-          onRefresh={() => roomsQ.refetch()}
+          onRefresh={async () => {
+            await roomsQ.refetch();
+          }}
           colors={['#dc2626']}
         />
       }

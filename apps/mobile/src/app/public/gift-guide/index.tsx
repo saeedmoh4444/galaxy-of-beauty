@@ -36,7 +36,9 @@ export default function GiftGuideScreen(): JSX.Element {
       refreshControl={
         <RefreshControl
           refreshing={guidesQ.isRefetching}
-          onRefresh={() => guidesQ.refetch()}
+          onRefresh={async () => {
+            await guidesQ.refetch();
+          }}
           colors={['#db2777']}
         />
       }

@@ -27,7 +27,9 @@ export default function RestockReminderScreen(): JSX.Element {
       refreshControl={
         <RefreshControl
           refreshing={itemsQ.isRefetching}
-          onRefresh={() => itemsQ.refetch()}
+          onRefresh={async () => {
+            await itemsQ.refetch();
+          }}
           colors={['#f59e0b']}
         />
       }

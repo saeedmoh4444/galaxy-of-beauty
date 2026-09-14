@@ -27,7 +27,9 @@ export default function FlashDealsScreen(): JSX.Element {
       refreshControl={
         <RefreshControl
           refreshing={dealsQ.isRefetching}
-          onRefresh={() => dealsQ.refetch()}
+          onRefresh={async () => {
+            await dealsQ.refetch();
+          }}
           colors={['#dc2626']}
         />
       }

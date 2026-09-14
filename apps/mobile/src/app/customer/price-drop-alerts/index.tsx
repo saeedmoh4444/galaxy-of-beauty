@@ -27,7 +27,9 @@ export default function PriceDropAlertsScreen(): JSX.Element {
       refreshControl={
         <RefreshControl
           refreshing={alertsQ.isRefetching}
-          onRefresh={() => alertsQ.refetch()}
+          onRefresh={async () => {
+            await alertsQ.refetch();
+          }}
           colors={['#dc2626']}
         />
       }

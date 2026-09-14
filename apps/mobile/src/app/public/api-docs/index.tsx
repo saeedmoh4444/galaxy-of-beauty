@@ -20,7 +20,9 @@ export default function ApiDocsScreen(): JSX.Element {
       refreshControl={
         <RefreshControl
           refreshing={docsQ.isRefetching}
-          onRefresh={() => docsQ.refetch()}
+          onRefresh={async () => {
+            await docsQ.refetch();
+          }}
           colors={['#6366f1']}
         />
       }

@@ -99,7 +99,9 @@ export default function SalonMembershipScreen(): JSX.Element {
       refreshControl={
         <RefreshControl
           refreshing={membershipQ.isRefetching}
-          onRefresh={() => membershipQ.refetch()}
+          onRefresh={async () => {
+            await membershipQ.refetch();
+          }}
           colors={['#db2777']}
         />
       }

@@ -25,7 +25,9 @@ export default function ServiceWarrantyScreen(): JSX.Element {
       refreshControl={
         <RefreshControl
           refreshing={claimsQ.isRefetching}
-          onRefresh={() => claimsQ.refetch()}
+          onRefresh={async () => {
+            await claimsQ.refetch();
+          }}
           colors={['#2563eb']}
         />
       }

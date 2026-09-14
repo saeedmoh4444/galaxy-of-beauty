@@ -50,7 +50,9 @@ export default function RecommendationsScreen(): JSX.Element {
       refreshControl={
         <RefreshControl
           refreshing={servicesQ.isRefetching}
-          onRefresh={() => servicesQ.refetch()}
+          onRefresh={async () => {
+            await servicesQ.refetch();
+          }}
           colors={['#ec4899']}
         />
       }

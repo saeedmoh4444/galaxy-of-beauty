@@ -38,7 +38,9 @@ export default function CampaignsScreen(): JSX.Element {
       refreshControl={
         <RefreshControl
           refreshing={campaignsQ.isRefetching}
-          onRefresh={() => campaignsQ.refetch()}
+          onRefresh={async () => {
+            await campaignsQ.refetch();
+          }}
           colors={['#f59e0b']}
         />
       }

@@ -63,7 +63,9 @@ export default function LastMileScreen(): JSX.Element {
       refreshControl={
         <RefreshControl
           refreshing={productsQ.isRefetching}
-          onRefresh={() => productsQ.refetch()}
+          onRefresh={async () => {
+            await productsQ.refetch();
+          }}
           colors={['#f59e0b']}
         />
       }

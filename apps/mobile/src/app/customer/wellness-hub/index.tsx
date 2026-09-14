@@ -111,7 +111,9 @@ export default function WellnessHubScreen(): JSX.Element {
       refreshControl={
         <RefreshControl
           refreshing={dashQ.isRefetching}
-          onRefresh={() => dashQ.refetch()}
+          onRefresh={async () => {
+            await dashQ.refetch();
+          }}
           colors={['#db2777']}
         />
       }

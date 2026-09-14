@@ -56,7 +56,9 @@ export default function ServicesScreen(): JSX.Element {
       refreshControl={
         <RefreshControl
           refreshing={categoriesQ.isRefetching}
-          onRefresh={() => categoriesQ.refetch()}
+          onRefresh={async () => {
+            await categoriesQ.refetch();
+          }}
           colors={['#db2777']}
         />
       }

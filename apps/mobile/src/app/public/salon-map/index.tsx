@@ -27,7 +27,9 @@ export default function SalonMapScreen(): JSX.Element {
       refreshControl={
         <RefreshControl
           refreshing={salonsQ.isRefetching}
-          onRefresh={() => salonsQ.refetch()}
+          onRefresh={async () => {
+            await salonsQ.refetch();
+          }}
           colors={['#059669']}
         />
       }

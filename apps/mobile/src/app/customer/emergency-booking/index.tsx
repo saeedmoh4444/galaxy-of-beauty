@@ -84,7 +84,9 @@ export default function EmergencyBookingScreen(): JSX.Element {
         refreshControl={
           <RefreshControl
             refreshing={servicesQ.isRefetching}
-            onRefresh={() => servicesQ.refetch()}
+            onRefresh={async () => {
+              await servicesQ.refetch();
+            }}
             colors={['#ef4444']}
           />
         }

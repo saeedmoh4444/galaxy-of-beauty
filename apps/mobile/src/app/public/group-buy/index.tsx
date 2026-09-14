@@ -27,7 +27,9 @@ export default function GroupBuyScreen(): JSX.Element {
       refreshControl={
         <RefreshControl
           refreshing={dealsQ.isRefetching}
-          onRefresh={() => dealsQ.refetch()}
+          onRefresh={async () => {
+            await dealsQ.refetch();
+          }}
           colors={['#059669']}
         />
       }

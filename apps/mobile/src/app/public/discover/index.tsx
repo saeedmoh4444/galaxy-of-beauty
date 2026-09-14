@@ -48,7 +48,9 @@ export default function DiscoverScreen(): JSX.Element {
       refreshControl={
         <RefreshControl
           refreshing={trendingQ.isRefetching}
-          onRefresh={() => trendingQ.refetch()}
+          onRefresh={async () => {
+            await trendingQ.refetch();
+          }}
           colors={['#db2777']}
         />
       }

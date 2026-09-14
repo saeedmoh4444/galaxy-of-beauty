@@ -35,7 +35,12 @@ export default function NailBarsScreen(): JSX.Element {
       style={s.c}
       contentContainerStyle={s.i}
       refreshControl={
-        <RefreshControl refreshing={barsQ.isRefetching} onRefresh={() => barsQ.refetch()} />
+        <RefreshControl
+          refreshing={barsQ.isRefetching}
+          onRefresh={async () => {
+            await barsQ.refetch();
+          }}
+        />
       }
     >
       <Text style={s.title}>{t('mobile.nailBars.title')}</Text>

@@ -28,7 +28,9 @@ export default function RoutineSchedulerScreen(): JSX.Element {
       refreshControl={
         <RefreshControl
           refreshing={routinesQ.isRefetching}
-          onRefresh={() => routinesQ.refetch()}
+          onRefresh={async () => {
+            await routinesQ.refetch();
+          }}
           colors={['#8b5cf6']}
         />
       }

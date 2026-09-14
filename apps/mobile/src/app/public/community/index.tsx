@@ -70,7 +70,9 @@ export default function CommunityScreen(): JSX.Element {
         refreshControl={
           <RefreshControl
             refreshing={postsQ.isRefetching}
-            onRefresh={() => postsQ.refetch()}
+            onRefresh={async () => {
+              await postsQ.refetch();
+            }}
             colors={['#7c3aed']}
           />
         }

@@ -26,7 +26,9 @@ export default function ReferralDashboardScreen(): JSX.Element {
       refreshControl={
         <RefreshControl
           refreshing={statsQ.isRefetching}
-          onRefresh={() => statsQ.refetch()}
+          onRefresh={async () => {
+            await statsQ.refetch();
+          }}
           colors={['#7c3aed']}
         />
       }

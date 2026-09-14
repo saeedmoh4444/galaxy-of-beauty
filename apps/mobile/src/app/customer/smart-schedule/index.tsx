@@ -49,7 +49,9 @@ export default function SmartScheduleScreen(): JSX.Element {
         refreshControl={
           <RefreshControl
             refreshing={servicesQ.isRefetching}
-            onRefresh={() => servicesQ.refetch()}
+            onRefresh={async () => {
+              await servicesQ.refetch();
+            }}
             colors={['#059669']}
           />
         }

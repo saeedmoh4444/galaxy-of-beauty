@@ -27,7 +27,9 @@ export default function SkinTimelineScreen(): JSX.Element {
       refreshControl={
         <RefreshControl
           refreshing={entriesQ.isRefetching}
-          onRefresh={() => entriesQ.refetch()}
+          onRefresh={async () => {
+            await entriesQ.refetch();
+          }}
           colors={['#8b5cf6']}
         />
       }

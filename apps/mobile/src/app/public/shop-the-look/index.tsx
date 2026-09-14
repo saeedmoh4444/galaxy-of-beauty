@@ -43,7 +43,9 @@ export default function ShopTheLookScreen(): JSX.Element {
       refreshControl={
         <RefreshControl
           refreshing={looksQ.isRefetching}
-          onRefresh={() => looksQ.refetch()}
+          onRefresh={async () => {
+            await looksQ.refetch();
+          }}
           colors={['#ec4899']}
         />
       }

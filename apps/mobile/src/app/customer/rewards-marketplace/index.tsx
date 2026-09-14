@@ -93,7 +93,9 @@ export default function RewardsMarketplaceScreen(): JSX.Element {
       refreshControl={
         <RefreshControl
           refreshing={accountQ.isRefetching}
-          onRefresh={() => accountQ.refetch()}
+          onRefresh={async () => {
+            await accountQ.refetch();
+          }}
           colors={['#db2777']}
         />
       }

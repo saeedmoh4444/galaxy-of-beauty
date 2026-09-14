@@ -24,7 +24,9 @@ export default function BehindScenesScreen(): JSX.Element {
       refreshControl={
         <RefreshControl
           refreshing={videosQ.isRefetching}
-          onRefresh={() => videosQ.refetch()}
+          onRefresh={async () => {
+            await videosQ.refetch();
+          }}
           colors={['#f59e0b']}
         />
       }

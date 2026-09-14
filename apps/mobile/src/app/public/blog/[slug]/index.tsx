@@ -38,7 +38,9 @@ export default function BlogPostScreen(): JSX.Element {
       refreshControl={
         <RefreshControl
           refreshing={postQ.isRefetching}
-          onRefresh={() => postQ.refetch()}
+          onRefresh={async () => {
+            await postQ.refetch();
+          }}
           colors={['#7c3aed']}
         />
       }

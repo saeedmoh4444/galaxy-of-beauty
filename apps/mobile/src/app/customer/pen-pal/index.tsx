@@ -25,7 +25,9 @@ export default function PenPalScreen(): JSX.Element {
       refreshControl={
         <RefreshControl
           refreshing={matchQ.isRefetching}
-          onRefresh={() => matchQ.refetch()}
+          onRefresh={async () => {
+            await matchQ.refetch();
+          }}
           colors={['#ec4899']}
         />
       }

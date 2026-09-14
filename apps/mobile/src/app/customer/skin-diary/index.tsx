@@ -25,7 +25,9 @@ export default function SkinDiaryScreen(): JSX.Element {
       refreshControl={
         <RefreshControl
           refreshing={entriesQ.isRefetching}
-          onRefresh={() => entriesQ.refetch()}
+          onRefresh={async () => {
+            await entriesQ.refetch();
+          }}
           colors={['#ec4899']}
         />
       }

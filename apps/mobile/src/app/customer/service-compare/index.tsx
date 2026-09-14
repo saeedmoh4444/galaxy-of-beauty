@@ -34,7 +34,9 @@ export default function ServiceCompareScreen(): JSX.Element {
       refreshControl={
         <RefreshControl
           refreshing={servicesQ.isRefetching}
-          onRefresh={() => servicesQ.refetch()}
+          onRefresh={async () => {
+            await servicesQ.refetch();
+          }}
           colors={['#0891b2']}
         />
       }

@@ -35,7 +35,9 @@ export default function CheckoutScreen(): JSX.Element {
       refreshControl={
         <RefreshControl
           refreshing={balanceQ.isRefetching}
-          onRefresh={() => balanceQ.refetch()}
+          onRefresh={async () => {
+            await balanceQ.refetch();
+          }}
           colors={['#059669']}
         />
       }

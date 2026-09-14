@@ -35,7 +35,9 @@ export default function KidsServicesScreen(): JSX.Element {
       refreshControl={
         <RefreshControl
           refreshing={catsQ.isRefetching}
-          onRefresh={() => catsQ.refetch()}
+          onRefresh={async () => {
+            await catsQ.refetch();
+          }}
           colors={['#f59e0b']}
         />
       }

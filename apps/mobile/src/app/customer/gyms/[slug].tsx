@@ -68,7 +68,12 @@ export default function GymDetailScreen(): JSX.Element {
       style={s.c}
       contentContainerStyle={s.i}
       refreshControl={
-        <RefreshControl refreshing={detailQ.isRefetching} onRefresh={() => detailQ.refetch()} />
+        <RefreshControl
+          refreshing={detailQ.isRefetching}
+          onRefresh={async () => {
+            await detailQ.refetch();
+          }}
+        />
       }
     >
       <Text style={s.name}>{gym.storeName}</Text>

@@ -27,7 +27,9 @@ export default function BookingHeatmapScreen(): JSX.Element {
       refreshControl={
         <RefreshControl
           refreshing={heatmapQ.isRefetching}
-          onRefresh={() => heatmapQ.refetch()}
+          onRefresh={async () => {
+            await heatmapQ.refetch();
+          }}
           colors={['#ef4444']}
         />
       }

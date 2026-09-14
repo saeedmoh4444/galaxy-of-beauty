@@ -25,7 +25,9 @@ export default function GalleryScreen(): JSX.Element {
       refreshControl={
         <RefreshControl
           refreshing={photosQ.isRefetching}
-          onRefresh={() => photosQ.refetch()}
+          onRefresh={async () => {
+            await photosQ.refetch();
+          }}
           colors={['#7c3aed']}
         />
       }

@@ -27,7 +27,9 @@ export default function NotificationSettingsScreen(): JSX.Element {
       refreshControl={
         <RefreshControl
           refreshing={prefsQ.isRefetching}
-          onRefresh={() => prefsQ.refetch()}
+          onRefresh={async () => {
+            await prefsQ.refetch();
+          }}
           colors={['#6366f1']}
         />
       }

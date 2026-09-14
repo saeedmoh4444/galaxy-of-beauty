@@ -52,7 +52,9 @@ export default function BeautyShortsScreen(): JSX.Element {
       refreshControl={
         <RefreshControl
           refreshing={shortsQ.isRefetching}
-          onRefresh={() => shortsQ.refetch()}
+          onRefresh={async () => {
+            await shortsQ.refetch();
+          }}
           colors={['#db2777']}
         />
       }

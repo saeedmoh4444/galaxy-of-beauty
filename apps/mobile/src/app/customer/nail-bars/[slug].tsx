@@ -42,7 +42,12 @@ export default function NailBarScreen(): JSX.Element {
       style={s.c}
       contentContainerStyle={s.i}
       refreshControl={
-        <RefreshControl refreshing={slotsQ.isRefetching} onRefresh={() => slotsQ.refetch()} />
+        <RefreshControl
+          refreshing={slotsQ.isRefetching}
+          onRefresh={async () => {
+            await slotsQ.refetch();
+          }}
+        />
       }
     >
       <Text style={s.title}>{bar.storeName ?? ''}</Text>

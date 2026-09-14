@@ -30,7 +30,9 @@ export default function TutorialsScreen(): JSX.Element {
       refreshControl={
         <RefreshControl
           refreshing={tutorialsQ.isRefetching}
-          onRefresh={() => tutorialsQ.refetch()}
+          onRefresh={async () => {
+            await tutorialsQ.refetch();
+          }}
           colors={['#7c3aed']}
         />
       }

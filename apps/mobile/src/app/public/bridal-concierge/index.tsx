@@ -47,7 +47,9 @@ export default function BridalConciergeScreen(): JSX.Element {
       refreshControl={
         <RefreshControl
           refreshing={conciergeQ.isRefetching}
-          onRefresh={() => conciergeQ.refetch()}
+          onRefresh={async () => {
+            await conciergeQ.refetch();
+          }}
           colors={['#db2777']}
         />
       }

@@ -28,7 +28,9 @@ export default function BeautyAwardsScreen(): JSX.Element {
       refreshControl={
         <RefreshControl
           refreshing={awardsQ.isRefetching}
-          onRefresh={() => awardsQ.refetch()}
+          onRefresh={async () => {
+            await awardsQ.refetch();
+          }}
           colors={['#f59e0b']}
         />
       }

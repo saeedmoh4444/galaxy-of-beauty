@@ -27,7 +27,9 @@ export default function LoyaltyPunchCardScreen(): JSX.Element {
       refreshControl={
         <RefreshControl
           refreshing={cardQ.isRefetching}
-          onRefresh={() => cardQ.refetch()}
+          onRefresh={async () => {
+            await cardQ.refetch();
+          }}
           colors={['#f59e0b']}
         />
       }

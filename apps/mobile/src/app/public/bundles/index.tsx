@@ -37,7 +37,9 @@ export default function BundlesScreen(): JSX.Element {
       refreshControl={
         <RefreshControl
           refreshing={servicesQ.isRefetching}
-          onRefresh={() => servicesQ.refetch()}
+          onRefresh={async () => {
+            await servicesQ.refetch();
+          }}
           colors={['#f59e0b']}
         />
       }

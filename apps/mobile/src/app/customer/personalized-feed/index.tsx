@@ -32,7 +32,9 @@ export default function PersonalizedFeedScreen(): JSX.Element {
       refreshControl={
         <RefreshControl
           refreshing={feedQ.isRefetching}
-          onRefresh={() => feedQ.refetch()}
+          onRefresh={async () => {
+            await feedQ.refetch();
+          }}
           colors={['#ec4899']}
         />
       }

@@ -29,7 +29,9 @@ export default function SalonFinderScreen(): JSX.Element {
       refreshControl={
         <RefreshControl
           refreshing={salonsQ.isRefetching}
-          onRefresh={() => salonsQ.refetch()}
+          onRefresh={async () => {
+            await salonsQ.refetch();
+          }}
           colors={['#db2777']}
         />
       }

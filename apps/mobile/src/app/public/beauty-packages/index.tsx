@@ -38,7 +38,9 @@ export default function BeautyPackagesScreen(): JSX.Element {
       refreshControl={
         <RefreshControl
           refreshing={packagesQ.isRefetching}
-          onRefresh={() => packagesQ.refetch()}
+          onRefresh={async () => {
+            await packagesQ.refetch();
+          }}
           colors={['#db2777']}
         />
       }

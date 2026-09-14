@@ -98,7 +98,9 @@ export default function VirtualConsultationScreen(): JSX.Element {
       refreshControl={
         <RefreshControl
           refreshing={bookingsQ.isRefetching}
-          onRefresh={() => bookingsQ.refetch()}
+          onRefresh={async () => {
+            await bookingsQ.refetch();
+          }}
           colors={['#db2777']}
         />
       }

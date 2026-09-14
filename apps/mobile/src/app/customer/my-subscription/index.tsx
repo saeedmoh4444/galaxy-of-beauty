@@ -23,7 +23,9 @@ export default function MySubscriptionScreen(): JSX.Element {
       refreshControl={
         <RefreshControl
           refreshing={subQ.isRefetching}
-          onRefresh={() => subQ.refetch()}
+          onRefresh={async () => {
+            await subQ.refetch();
+          }}
           colors={['#7c3aed']}
         />
       }

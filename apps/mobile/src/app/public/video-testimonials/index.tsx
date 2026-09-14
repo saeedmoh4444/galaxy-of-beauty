@@ -28,7 +28,9 @@ export default function VideoTestimonialsScreen(): JSX.Element {
       refreshControl={
         <RefreshControl
           refreshing={videosQ.isRefetching}
-          onRefresh={() => videosQ.refetch()}
+          onRefresh={async () => {
+            await videosQ.refetch();
+          }}
           colors={['#dc2626']}
         />
       }

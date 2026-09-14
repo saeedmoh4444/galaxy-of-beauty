@@ -34,7 +34,9 @@ export default function ServiceWishlistScreen(): JSX.Element {
       refreshControl={
         <RefreshControl
           refreshing={itemsQ.isRefetching}
-          onRefresh={() => itemsQ.refetch()}
+          onRefresh={async () => {
+            await itemsQ.refetch();
+          }}
           colors={['#7c3aed']}
         />
       }

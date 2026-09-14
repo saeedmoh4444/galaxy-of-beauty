@@ -37,7 +37,9 @@ export default function TravelKitScreen(): JSX.Element {
       refreshControl={
         <RefreshControl
           refreshing={destsQ.isRefetching}
-          onRefresh={() => destsQ.refetch()}
+          onRefresh={async () => {
+            await destsQ.refetch();
+          }}
           colors={['#0891b2']}
         />
       }

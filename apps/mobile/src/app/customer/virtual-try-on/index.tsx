@@ -22,7 +22,9 @@ export default function VirtualTryOnScreen(): JSX.Element {
       refreshControl={
         <RefreshControl
           refreshing={palettesQ.isRefetching}
-          onRefresh={() => palettesQ.refetch()}
+          onRefresh={async () => {
+            await palettesQ.refetch();
+          }}
           colors={['#ec4899']}
         />
       }

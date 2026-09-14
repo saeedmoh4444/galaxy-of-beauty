@@ -63,7 +63,9 @@ export default function RideHailingScreen(): JSX.Element {
       refreshControl={
         <RefreshControl
           refreshing={providersQ.isRefetching}
-          onRefresh={() => providersQ.refetch()}
+          onRefresh={async () => {
+            await providersQ.refetch();
+          }}
           colors={['#2563eb']}
         />
       }

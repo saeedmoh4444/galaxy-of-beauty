@@ -25,7 +25,9 @@ export default function ServiceTrendsScreen(): JSX.Element {
       refreshControl={
         <RefreshControl
           refreshing={dataQ.isRefetching}
-          onRefresh={() => dataQ.refetch()}
+          onRefresh={async () => {
+            await dataQ.refetch();
+          }}
           colors={['#ec4899']}
         />
       }

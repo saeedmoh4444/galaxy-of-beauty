@@ -41,7 +41,9 @@ export default function TechCalendarScreen(): JSX.Element {
       refreshControl={
         <RefreshControl
           refreshing={slotsQ.isRefetching}
-          onRefresh={() => slotsQ.refetch()}
+          onRefresh={async () => {
+            await slotsQ.refetch();
+          }}
           colors={['#059669']}
         />
       }
