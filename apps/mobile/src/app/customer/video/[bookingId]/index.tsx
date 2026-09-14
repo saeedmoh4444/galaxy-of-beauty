@@ -5,6 +5,7 @@ import { SkeletonList } from '@/components/SkeletonCard';
 import { useAuthState } from '@/hooks/useAuthState';
 import { trpc } from '@/lib/trpc-react';
 import { useLocale } from '@/components/LocaleProvider';
+import { useToast } from '@/components/Toast';
 
 interface VideoSession {
   roomId?: string;
@@ -13,19 +14,34 @@ interface VideoSession {
 
 export default function VideoBookingScreen(): JSX.Element {
   const { t } = useLocale();
+  const { showToast } = useToast();
   const isAuthed = useAuthState();
   const { bookingId } = useLocalSearchParams<{ bookingId: string }>();
   const router = useRouter();
-  const dataQ = trpc.video.getByBooking.useQuery(
-    { bookingId: parseInt(bookingId, 10) },
-    { enabled: isAuthed },
-  );
+  const bid = parseInt(bookingId, 10);
+  const dataQ = trpc.video.getByBooking.useQuery({ bookingId: bid }, { enabled: isAuthed });
+  // Web parity: a participant can START the session from here (the web
+  // session page has this flow; mobile previously dead-ended).
+  const startMut = trpc.video.startSession.useMutation({
+    onSuccess: () => dataQ.refetch(),
+    onError: () => showToast('error', t('mobile.video.start-failed')),
+  });
   if (dataQ.isLoading) return <SkeletonList count={3} />;
   const data = dataQ.data as VideoSession | null;
   if (!data)
     return (
       <View style={styles.c}>
+        <Text style={styles.t}>{t('mobile.video.title')}</Text>
         <Text style={styles.e}>{t('mobile.video.unavailable')}</Text>
+        {Number.isFinite(bid) && (
+          <TouchableOpacity
+            onPress={() => startMut.mutate({ bookingId: bid })}
+            style={styles.btn}
+            disabled={startMut.isPending}
+          >
+            <Text style={styles.bt}>{t('mobile.video.start')}</Text>
+          </TouchableOpacity>
+        )}
       </View>
     );
   return (
