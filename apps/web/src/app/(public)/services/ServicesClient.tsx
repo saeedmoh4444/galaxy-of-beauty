@@ -183,6 +183,11 @@ export function ServicesClient({ data }: { data: ServicesPageData }): JSX.Elemen
                     <p className="mt-1 text-sm text-text-secondary">
                       {t('marketing.services.duration-min', { min: svc.durationMin })}
                     </p>
+                    {svc.isMommyFriendly && (
+                      <span className="mt-2 inline-block rounded-full bg-brand-50 px-2 py-0.5 text-xs text-brand-700 dark:bg-brand-950 dark:text-brand-300">
+                        👶 {t('trust.mommyFriendly')}
+                      </span>
+                    )}
                     <p className="mt-1 font-bold text-brand-600">
                       {t('marketing.services.price-sar', { price: Number(svc.basePrice) })}
                     </p>
@@ -211,6 +216,11 @@ export function ServicesClient({ data }: { data: ServicesPageData }): JSX.Elemen
                     <p className="mt-1 text-sm text-text-secondary">
                       {t('marketing.services.duration-min', { min: svc.durationMin })}
                     </p>
+                    {svc.isMommyFriendly && (
+                      <span className="mt-2 inline-block rounded-full bg-brand-50 px-2 py-0.5 text-xs text-brand-700 dark:bg-brand-950 dark:text-brand-300">
+                        👶 {t('trust.mommyFriendly')}
+                      </span>
+                    )}
                     <div className="mt-2 flex items-center justify-between">
                       <p className="font-bold text-brand-600">
                         {t('marketing.services.price-sar', { price: Number(svc.basePrice) })}

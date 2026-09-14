@@ -370,6 +370,15 @@ async function main() {
         iconUrl: '/icons/hijab.svg',
       },
     }),
+    // K2 (kids plan) — child-friendly beauty & grooming.
+    prisma.category.create({
+      data: {
+        nameJson: { ar: 'خدمات الأطفال', en: 'Kids Care' },
+        slug: 'kids-care',
+        sortOrder: 17,
+        iconUrl: '/icons/kids.svg',
+      },
+    }),
   ]);
   console.log(` ${categories.length} root categories`);
 
@@ -1107,6 +1116,67 @@ async function main() {
         durationMin: 180,
         slug: 'bridal-henna-night',
         sortOrder: 2,
+      },
+    }),
+    // K2 (kids plan) — child services, all mommy/kid-friendly.
+    prisma.service.create({
+      data: {
+        categoryId: categories[16]!.id,
+        titleJson: { ar: 'باقة قصة الشعر الأولى', en: 'First Haircut Package' },
+        descriptionJson: {
+          ar: 'تجربة أول قصة شعر للصغار مع شهادة تذكارية وهدية',
+          en: 'A gentle first haircut experience with a keepsake certificate and gift',
+        },
+        basePrice: 80,
+        durationMin: 30,
+        slug: 'first-haircut-package',
+        sortOrder: 1,
+        isMommyFriendly: true,
+      },
+    }),
+    prisma.service.create({
+      data: {
+        categoryId: categories[16]!.id,
+        titleJson: { ar: 'قصة شعر للأطفال', en: 'Kids Haircut' },
+        descriptionJson: {
+          ar: 'قصة شعر مريحة للأطفال مع منتجات لطيفة على فروة الرأس',
+          en: 'A comfortable kids haircut with scalp-gentle products',
+        },
+        basePrice: 60,
+        durationMin: 30,
+        slug: 'kids-haircut',
+        sortOrder: 2,
+        isMommyFriendly: true,
+      },
+    }),
+    prisma.service.create({
+      data: {
+        categoryId: categories[16]!.id,
+        titleJson: { ar: 'عناية أظافر آمنة للأطفال', en: 'Kid-Safe Nail Care' },
+        descriptionJson: {
+          ar: 'تقليم وتنظيف الأظافر بمنتجات آمنة وخالية من العطور',
+          en: 'Kid-safe nail trimming and care with fragrance-free products',
+        },
+        basePrice: 50,
+        durationMin: 20,
+        slug: 'kid-safe-nail-care',
+        sortOrder: 3,
+        isMommyFriendly: true,
+      },
+    }),
+    prisma.service.create({
+      data: {
+        categoryId: categories[16]!.id,
+        titleJson: { ar: 'جلسة عناية لطيفة للوجه', en: 'Gentle Kids Facial' },
+        descriptionJson: {
+          ar: 'تنظيف لطيف للوجه بمنتجات مضادة للحساسية',
+          en: 'A gentle facial cleanse with hypoallergenic products',
+        },
+        basePrice: 90,
+        durationMin: 25,
+        slug: 'gentle-kids-facial',
+        sortOrder: 4,
+        isMommyFriendly: true,
       },
     }),
   ]);

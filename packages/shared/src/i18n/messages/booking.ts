@@ -31,6 +31,12 @@ export const bookingMessages = {
   'booking.family-member': { ar: 'حجز لصالح فرد من العائلة', en: 'Book for a family member' },
   'booking.family-member-placeholder': { ar: 'لا (حجز لنفسي)', en: 'No (book for myself)' },
   'booking.on-behalf-of': { ar: 'على حساب: {name}', en: 'On behalf of: {name}' },
+  'booking.pref.gentle': { ar: 'منتجات لطيفة', en: 'Gentle products' },
+  'booking.pref.hypoallergenic': { ar: 'مضاد للحساسية', en: 'Hypoallergenic' },
+  'booking.pref.fragrance_free': { ar: 'خالٍ من العطور', en: 'Fragrance-free' },
+  'booking.pref.natural': { ar: 'منتجات طبيعية', en: 'Natural products' },
+  'booking.pref.quick': { ar: 'جلسات سريعة', en: 'Quick sessions' },
+  'booking.pref.quiet': { ar: 'بيئة هادئة', en: 'Quiet environment' },
   'booking.confirm-cancel': { ar: 'تأكيد الإلغاء', en: 'Confirm Cancellation' },
   'booking.cancel-booking': { ar: 'إلغاء الحجز', en: 'Cancel Booking' },
   'booking.confirm-cancel-question': {
