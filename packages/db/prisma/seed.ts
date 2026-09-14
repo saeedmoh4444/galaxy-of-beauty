@@ -361,6 +361,15 @@ async function main() {
         iconUrl: '/icons/postpartum.svg',
       },
     }),
+    // C3 (Tier 3 #7) — hijab-care: scalp health under hijab, henna nights.
+    prisma.category.create({
+      data: {
+        nameJson: { ar: 'العناية بالحجاب', en: 'Hijab Care' },
+        slug: 'hijab-care',
+        sortOrder: 16,
+        iconUrl: '/icons/hijab.svg',
+      },
+    }),
   ]);
   console.log(` ${categories.length} root categories`);
 
@@ -1069,6 +1078,35 @@ async function main() {
         durationMin: 60,
         slug: 'nursing-safe-hair-care',
         sortOrder: 3,
+      },
+    }),
+    // C3 (Tier 3 #7) — hijab-care services.
+    prisma.service.create({
+      data: {
+        categoryId: categories[15]!.id,
+        titleJson: { ar: 'علاج فروة الرأس تحت الحجاب', en: 'Under-Hijab Scalp Treatment' },
+        descriptionJson: {
+          ar: 'عناية متخصصة بفروة الرأس للنساء المحجبات — ترطيب وتقوية',
+          en: 'Specialized scalp care for hijabi women — hydration and strengthening',
+        },
+        basePrice: 120,
+        durationMin: 45,
+        slug: 'under-hijab-scalp-treatment',
+        sortOrder: 1,
+      },
+    }),
+    prisma.service.create({
+      data: {
+        categoryId: categories[15]!.id,
+        titleJson: { ar: 'ليلة حناء للعرايس', en: 'Bridal Henna Night' },
+        descriptionJson: {
+          ar: 'جلسة حناء كاملة مع نقوش عصرية وتحضير ما قبل الزفاف',
+          en: 'Full henna session with modern designs and pre-wedding prep',
+        },
+        basePrice: 350,
+        durationMin: 180,
+        slug: 'bridal-henna-night',
+        sortOrder: 2,
       },
     }),
   ]);

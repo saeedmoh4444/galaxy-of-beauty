@@ -10,11 +10,19 @@ export const savingsGoalRouter = router({
       where: { userId: ctx.user.id },
       orderBy: { createdAt: 'desc' },
       take: 20,
+      include: { bnplPlan: true },
     });
     return goals.map((g: any) => ({
       ...g,
       targetAmount: Number(g.targetAmount),
       savedAmount: Number(g.savedAmount),
+      bnplPlan: g.bnplPlan
+        ? {
+            ...g.bnplPlan,
+            totalAmount: Number(g.bnplPlan.totalAmount),
+            monthlyPayment: Number(g.bnplPlan.monthlyPayment),
+          }
+        : null,
     }));
   }),
   create: customerProcedure
@@ -44,4 +52,20 @@ export const savingsGoalRouter = router({
     await db.savingsGoal.deleteMany({ where: { id: input.id, userId: ctx.user.id } });
     return { success: true };
   }),
+  // C3 (Tier 3 #8): attach a persisted BnplPlan to a savings goal
+  // ("laser course by wedding day" — goal-funded installments).
+  attachBnpl: customerProcedure
+    .input(z.object({ goalId: z.number(), bnplPlanId: z.number() }))
+    .mutation(async ({ ctx, input }) => {
+      const [goal, plan] = await Promise.all([
+        db.savingsGoal.findUnique({ where: { id: input.goalId } }),
+        db.bnplPlan.findUnique({ where: { id: input.bnplPlanId } }),
+      ]);
+      if (!goal || goal.userId !== ctx.user.id) throw new Error('الهدف غير موجود');
+      if (!plan || plan.userId !== ctx.user.id) throw new Error('خطة التقسيط غير موجودة');
+      return db.savingsGoal.update({
+        where: { id: input.goalId },
+        data: { bnplPlanId: input.bnplPlanId },
+      });
+    }),
 });
