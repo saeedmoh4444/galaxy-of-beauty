@@ -7,7 +7,7 @@
     "dev": "next dev --port 3000",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint . --ext .ts,.tsx --max-warnings 250",
+    "lint": "eslint . --max-warnings 250",
     "type-check": "tsc --noEmit",
     "clean": "rm -rf .next .turbo",
     "test:e2e": "playwright test"
@@ -36,7 +36,7 @@
   },
   "devDependencies": {
     "@galaxy/config": "workspace:*",
-    "@next/eslint-plugin-next": "^15.5.0",
+    "@next/eslint-plugin-next": "^16.3.5",
     "@playwright/test": "^1.63.0",
     "@tailwindcss/postcss": "^4.3.3",
     "@types/node": "^20.14.0",
@@ -45,8 +45,7 @@
     "@typescript-eslint/eslint-plugin": "^8.70.0",
     "@typescript-eslint/parser": "^8.70.0",
     "autoprefixer": "^10.5.6",
-    "eslint": "^8.57.1",
-    "eslint-config-next": "^15.5.0",
+    "eslint": "^9.39.5",
     "eslint-plugin-jsx-a11y": "^6.10.2",
     "postcss": "^8.5.28",
     "tailwindcss": "^4.3.3",
