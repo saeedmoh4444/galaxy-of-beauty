@@ -8,7 +8,7 @@ const config: Config = {
     // @galaxy/ui ships raw source — its classes must be scanned here too.
     '../../packages/ui/src/**/*.{js,ts,jsx,tsx}',
   ],
-  darkMode: "class",
+  darkMode: 'class',
   theme: {
     extend: {
       ...shared.theme?.extend,
