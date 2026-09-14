@@ -38,7 +38,17 @@ export type {
 export { ar, en } from './types/index';
 
 // i18n
-export { defaultLocale, supportedLocales, isRTL, localize, sharedMessages, t } from './i18n';
+export {
+  defaultLocale,
+  supportedLocales,
+  isRTL,
+  localize,
+  sharedMessages,
+  webMessages,
+  mobileMessages,
+  t,
+  tFrom,
+} from './i18n';
 export type { Locale, TranslationKey } from './i18n';
 
 // Theme
