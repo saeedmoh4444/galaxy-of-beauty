@@ -598,6 +598,12 @@ export const mobileCustomerBMessages = {
 
   // ---- video ----
   'mobile.booking.video-call': { ar: 'مكالمة فيديو', en: 'Video call' },
+  'mobile.booking.family-member': {
+    ar: 'حجز لصالح فرد من العائلة',
+    en: 'Book for a family member',
+  },
+  'mobile.booking.family-member-none': { ar: 'لا (حجز لنفسي)', en: 'No (book for myself)' },
+  'mobile.booking.on-behalf-of': { ar: 'على حساب: {name}', en: 'On behalf of: {name}' },
   'mobile.video.unavailable': { ar: 'الجلسة غير متاحة', en: 'Session unavailable' },
   'mobile.video.title': { ar: 'جلسة فيديو', en: ' Video Session' },
   'mobile.video.join-room': { ar: 'دخول الغرفة', en: ' Enter Room' },

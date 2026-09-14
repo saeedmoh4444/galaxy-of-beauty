@@ -28,6 +28,9 @@ export const bookingMessages = {
   'booking.no-bookings': { ar: 'لا توجد حجوزات', en: 'No bookings yet' },
   'booking.browse-services': { ar: 'تصفح الخدمات', en: 'Browse Services' },
   'booking.video': { ar: 'فيديو', en: 'Video' },
+  'booking.family-member': { ar: 'حجز لصالح فرد من العائلة', en: 'Book for a family member' },
+  'booking.family-member-placeholder': { ar: 'لا (حجز لنفسي)', en: 'No (book for myself)' },
+  'booking.on-behalf-of': { ar: 'على حساب: {name}', en: 'On behalf of: {name}' },
   'booking.confirm-cancel': { ar: 'تأكيد الإلغاء', en: 'Confirm Cancellation' },
   'booking.cancel-booking': { ar: 'إلغاء الحجز', en: 'Cancel Booking' },
   'booking.confirm-cancel-question': {

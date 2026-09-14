@@ -79,6 +79,8 @@ export default function CreateBookingScreen() {
   const [serviceId, setServiceId] = useState<number | undefined>();
   const [variantId, setVariantId] = useState<number | undefined>();
   const [addressId, setAddressId] = useState<number | undefined>();
+  // K1 (kids plan): optional "book on behalf of" family member.
+  const [familyMemberId, setFamilyMemberId] = useState<number | undefined>();
   const [notes, setNotes] = useState('');
   // Local-date defaults: tomorrow at 10:00. startAt is composed from these
   // in handleSubmit (local time, not UTC) so the user controls the slot.
@@ -96,12 +98,15 @@ export default function CreateBookingScreen() {
   const servicesQ = trpc.services.list.useQuery({ page: 1, limit: MAX_LIST_SIZE });
   // Guests have no address book — gate to avoid a 401 on mount.
   const addressesQ = trpc.addresses.list.useQuery(undefined, { enabled: isAuthed });
+  const membersQ = trpc.familyAccount.list.useQuery(undefined, { enabled: isAuthed });
   const svcQ = trpc.services.getById.useQuery({ id: serviceId! }, { enabled: !!serviceId });
 
   const services: ServiceListItem[] =
     (servicesQ.data as unknown as { items?: ServiceListItem[] })?.items ?? [];
   const svc: ServiceDetail | null = svcQ.data as unknown as ServiceDetail | null;
   const addresses: AddressItem[] = (addressesQ.data as AddressItem[] | undefined) ?? [];
+  const members: Record<string, unknown>[] =
+    (membersQ.data as unknown as Record<string, unknown>[] | undefined) ?? [];
   const loading = servicesQ.isLoading || addressesQ.isLoading;
 
   const variants = svc?.variants ?? [];
@@ -191,6 +196,7 @@ export default function CreateBookingScreen() {
       notes: notes || undefined,
       startAt: start.toISOString(),
       endAt: new Date(start.getTime() + durationMin * 60000).toISOString(),
+      familyMemberId,
     });
   };
 
@@ -304,6 +310,29 @@ export default function CreateBookingScreen() {
               </TouchableOpacity>
             ))}
           </View>
+
+          {members.length > 0 && (
+            <View style={styles.field}>
+              <Text style={styles.label}>{t('mobile.booking.family-member')}</Text>
+              <TouchableOpacity
+                style={[styles.optionCard, !familyMemberId && styles.optionCardActive]}
+                onPress={() => setFamilyMemberId(undefined)}
+              >
+                <Text style={styles.optionText}>{t('mobile.booking.family-member-none')}</Text>
+              </TouchableOpacity>
+              {members.map((m, i) => (
+                <TouchableOpacity
+                  key={(m.id as number) ?? i}
+                  style={[styles.optionCard, familyMemberId === m.id && styles.optionCardActive]}
+                  onPress={() => setFamilyMemberId(m.id as number)}
+                >
+                  <Text style={styles.optionText}>
+                    {String(m.name)} ({String(m.relationship)} · {String(m.ageGroup)})
+                  </Text>
+                </TouchableOpacity>
+              ))}
+            </View>
+          )}
 
           <View style={styles.field}>
             <Text style={styles.label}>{t('booking.choose-date')}</Text>

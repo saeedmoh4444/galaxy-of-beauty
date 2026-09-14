@@ -38,6 +38,8 @@ export default function CreateBookingPage(): JSX.Element {
   const [serviceId, setServiceId] = useState<number | undefined>(preselectedServiceId);
   const [variantId, setVariantId] = useState<number | undefined>();
   const [addressId, setAddressId] = useState<number | undefined>();
+  // K1 (kids plan): optional "book on behalf of" family member.
+  const [familyMemberId, setFamilyMemberId] = useState<number | undefined>();
   const [notes, setNotes] = useState('');
   const [submitting, setSubmitting] = useState(false);
   // B.2 — promo chain: validate at confirm, redeem after booking creation.
@@ -59,11 +61,13 @@ export default function CreateBookingPage(): JSX.Element {
     { enabled: !!serviceId },
   );
   const { data: addressesData } = api.addresses.list.useQuery();
+  const { data: familyMembers } = api.familyAccount.list.useQuery();
 
   const services = servicesData?.items ?? [];
   const svc = serviceDetail;
   const variants = svc?.variants ?? [];
   const addresses = addressesData ?? [];
+  const members = (familyMembers as unknown as Array<Record<string, unknown>> | undefined) ?? [];
 
   // Displayed total: base price + selected variant delta.
   const variantDelta = variantId ? num(variants.find((v) => v.id === variantId)?.priceDelta) : 0;
@@ -162,6 +166,7 @@ export default function CreateBookingPage(): JSX.Element {
       notes: notes || undefined,
       startAt: start.toISOString(),
       endAt: new Date(start.getTime() + durationMin * 60000).toISOString(),
+      familyMemberId,
     });
   };
 
@@ -317,6 +322,27 @@ export default function CreateBookingPage(): JSX.Element {
               </select>
             </div>
 
+            {members.length > 0 && (
+              <div className="mb-4">
+                <label htmlFor="bc-member" className="mb-2 block text-sm text-text-secondary">
+                  {t('booking.family-member')}
+                </label>
+                <select
+                  id="bc-member"
+                  className="w-full rounded-lg border border-edge p-2 text-sm dark:border-gray-600 dark:bg-gray-800"
+                  value={familyMemberId || ''}
+                  onChange={(e) => setFamilyMemberId(Number(e.target.value) || undefined)}
+                >
+                  <option value="">{t('booking.family-member-placeholder')}</option>
+                  {members.map((m) => (
+                    <option key={m.id as number} value={m.id as number}>
+                      {String(m.name)} ({String(m.relationship)} · {String(m.ageGroup)})
+                    </option>
+                  ))}
+                </select>
+              </div>
+            )}
+
             <div className="mb-4">
               <label htmlFor="bc-notes" className="mb-2 block text-sm text-text-secondary">
                 {t('booking.notes')}
@@ -376,6 +402,14 @@ export default function CreateBookingPage(): JSX.Element {
                   {t('booking.date-time-confirm', { date: bookingDate, time: bookingTime })}
                 </span>
               </div>
+              {familyMemberId && (
+                <div className="flex justify-between border-b pb-2">
+                  <span className="text-text-secondary">{t('booking.family-member')}</span>
+                  <span className="font-semibold">
+                    {String(members.find((m) => m.id === familyMemberId)?.name ?? '')}
+                  </span>
+                </div>
+              )}
               {appliedPromo && (
                 <>
                   <div className="flex justify-between border-b pb-2">

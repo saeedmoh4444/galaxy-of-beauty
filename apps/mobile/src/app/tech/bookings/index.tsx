@@ -69,6 +69,13 @@ export default function TechBookingsScreen(): JSX.Element {
           <Text style={styles.date}>
             {new Date(b.startAt as string).toLocaleString(locale === 'en' ? 'en-US' : 'ar-SA')}
           </Text>
+          {b.familyMember ? (
+            <Text style={styles.onBehalf}>
+              {t('mobile.booking.on-behalf-of', {
+                name: (b.familyMember as Record<string, unknown>).name as string,
+              })}
+            </Text>
+          ) : null}
           {(b.status === 'PAID' || b.status === 'IN_PROGRESS') && (
             <TouchableOpacity
               style={styles.videoBtn}
@@ -101,6 +108,7 @@ const styles = StyleSheet.create({
   code: { fontSize: 14, fontWeight: '700', color: COLORS.gray900 },
   statusBadge: { fontSize: 12, fontWeight: '600' },
   date: { fontSize: 12, color: COLORS.gray400 },
+  onBehalf: { fontSize: 12, color: COLORS.brand, marginTop: 2, fontWeight: '600' },
   videoBtn: {
     marginTop: 10,
     backgroundColor: COLORS.brand,

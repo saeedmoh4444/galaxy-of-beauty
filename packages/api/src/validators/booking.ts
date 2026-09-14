@@ -25,6 +25,9 @@ export const createBookingSchema = z.object({
   endAt: z.string().datetime(),
   notes: z.string().max(500).optional(),
   idempotencyKey: z.string().min(8).max(128),
+  // K1 (kids plan): optional "book on behalf of" family member (must be
+  // owned by the booking customer — enforced in the router).
+  familyMemberId: z.number().int().positive().optional(),
 });
 
 export const bookingStatusSchema = z.object({

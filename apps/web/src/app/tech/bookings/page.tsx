@@ -69,6 +69,13 @@ export default function TechBookingsPage(): JSX.Element {
                         locale === 'en' ? 'en-GB' : 'ar-SA',
                       )}
                     </p>
+                    {b.familyMember ? (
+                      <p className="text-xs text-text-tertiary">
+                        {t('booking.on-behalf-of', {
+                          name: (b.familyMember as Record<string, unknown>).name as string,
+                        })}
+                      </p>
+                    ) : null}
                   </div>
                   <span
                     className={`rounded-full px-3 py-1 text-xs font-medium ${b.status === 'COMPLETED' ? 'bg-green-100 text-green-700' : b.status === 'CANCELLED' ? 'bg-red-100 text-red-700' : 'bg-brand-100 text-brand-700'}`}

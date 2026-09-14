@@ -555,6 +555,8 @@ model Booking {
   // Booking auto-sync (E9 follow-up): Google Calendar event ids per side.
   googleEventId             String? // the CUSTOMER's calendar event
   technicianGoogleEventId   String? // the TECHNICIAN's calendar event
+  // K1 (kids plan): optional "book on behalf of" family member link.
+  familyMemberId            Int?
   createdAt          DateTime      @default(now())
   updatedAt          DateTime      @updatedAt
 
@@ -569,6 +571,7 @@ model Booking {
   zatcaInvoice ZatcaInvoice?
   chatMessages ChatMessage[]
   videoSession VideoSession?
+  familyMember FamilyMember?   @relation(fields: [familyMemberId], references: [id], onDelete: SetNull)
 
   @@index([customerId, status, createdAt])
   @@index([technicianId, status, startAt])
@@ -2389,6 +2392,8 @@ model FamilyMember {
   preferences  String[] // gentle, hypoallergenic, fragrance_free, etc.
   notes        String   @default("")
   createdAt    DateTime @default(now())
+
+  bookings Booking[]
 
   @@index([userId])
   @@map("family_members")
