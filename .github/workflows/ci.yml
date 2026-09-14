@@ -106,7 +106,7 @@ jobs:
         env:
           DATABASE_URL: 'postgresql://gob_admin:gob_test_pass@localhost:5432/Galaxy_of_Beauty_db?schema=public'
       - name: Push Schema (CI)
-        run: pnpm --filter @galaxy/db exec prisma db push --skip-generate
+        run: pnpm --filter @galaxy/db exec prisma db push
         env:
           DATABASE_URL: 'postgresql://gob_admin:gob_test_pass@localhost:5432/Galaxy_of_Beauty_db?schema=public'
       - name: Seed Test Data
@@ -166,7 +166,7 @@ jobs:
       - name: Generate Prisma Client
         run: pnpm --filter @galaxy/db exec prisma generate
       - name: Push Schema (CI)
-        run: pnpm --filter @galaxy/db exec prisma db push --skip-generate
+        run: pnpm --filter @galaxy/db exec prisma db push
         env:
           DATABASE_URL: 'postgresql://gob_admin:gob_test_pass@localhost:5432/Galaxy_of_Beauty_db?schema=public'
       - name: Seed Test Data

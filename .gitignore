@@ -93,3 +93,4 @@ backups/
 postman/
 .dependabot-merge.sh
 .screenshots/heroes/
+packages/db/generated/
