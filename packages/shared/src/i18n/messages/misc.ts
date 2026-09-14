@@ -3995,6 +3995,21 @@ export const miscMessages = {
   },
   'videoRoom.back': { ar: 'العودة', en: 'Back' },
   'videoRoom.copyRoomNumber': { ar: 'نسخ رقم الغرفة', en: 'Copy room number' },
+  'videoRoom.connecting': { ar: 'جارٍ الاتصال…', en: 'Connecting…' },
+  'videoRoom.waitingPeer': {
+    ar: 'بانتظار انضمام الطرف الآخر…',
+    en: 'Waiting for the other side to join…',
+  },
+  'videoRoom.peerLeft': { ar: 'غادر الطرف الآخر الغرفة', en: 'The other side left the room' },
+  'videoRoom.mute': { ar: 'كتم الصوت', en: 'Mute' },
+  'videoRoom.unmute': { ar: 'تشغيل الصوت', en: 'Unmute' },
+  'videoRoom.cameraOn': { ar: 'إيقاف الكاميرا', en: 'Stop camera' },
+  'videoRoom.cameraOff': { ar: 'تشغيل الكاميرا', en: 'Start camera' },
+  'videoRoom.endCall': { ar: 'إنهاء المكالمة', en: 'End call' },
+  'videoRoom.permissionDenied': {
+    ar: 'تعذر الوصول إلى الكاميرا أو الميكروفون',
+    en: 'Could not access camera or microphone',
+  },
   'vipMembership.title': { ar: 'عضوية VIP', en: 'VIP Membership' },
   'vipMembership.subtitle': {
     ar: 'ارتقِ بعضويتكِ واحصلي على مميزات حصرية',

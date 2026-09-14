@@ -3,6 +3,7 @@ import { Server } from 'socket.io';
 import type { Server as HttpServer } from 'http';
 import { createAdapter } from '@socket.io/redis-adapter';
 import { z } from 'zod';
+import { prisma } from '@galaxy/db';
 import { verifyAccessToken } from '../lib/jwt';
 import { getEnv } from '../lib/env';
 import { getRedis } from '../lib/redis';
@@ -26,6 +27,19 @@ const JoinWaitlistSchema = z.object({
 
 const LeaveWaitlistSchema = z.object({
   technicianId: z.number().int().positive(),
+});
+
+const VideoJoinSchema = z.object({
+  bookingId: z.number().int().positive(),
+});
+const VideoSignalSchema = z.object({
+  bookingId: z.number().int().positive(),
+  to: z.number().int().positive().nullable().optional(),
+  kind: z.enum(['offer', 'answer', 'ice']),
+  payload: z.unknown(),
+});
+const VideoLeaveSchema = z.object({
+  bookingId: z.number().int().positive(),
 });
 
 // ── Server Instance ────────────────────────────────────────
@@ -271,6 +285,46 @@ export function initializeSocket(httpServer: HttpServer): Server {
     validatedOn(socket, 'leave:waitlist', LeaveWaitlistSchema, (data, ack) => {
       socket.leave(`waitlist:${data.technicianId}`);
       ack?.({ ok: true });
+    });
+
+    // ── A4: video room signaling (relay-only — peers negotiate WebRTC) ──
+
+    // Join the signaling room for a booking. Only the booking's customer
+    // or technician may join; the room id is the booking id.
+    validatedOn(socket, 'video:join', VideoJoinSchema, async (data, ack) => {
+      const booking = await prisma.booking.findUnique({
+        where: { id: data.bookingId },
+        select: { customerId: true, technicianId: true },
+      });
+      if (!booking) {
+        ack?.({ error: 'NOT_FOUND', message: 'Booking not found' });
+        return;
+      }
+      if (booking.customerId !== userId && booking.technicianId !== userId) {
+        logger.warn({ userId, bookingId: data.bookingId }, '[Socket] Unauthorized video room join');
+        ack?.({ error: 'FORBIDDEN', message: 'Not a participant of this booking' });
+        return;
+      }
+      await socket.join(`video:${data.bookingId}`);
+      socket.to(`video:${data.bookingId}`).emit('video:participant', { userId, joined: true });
+      const room = io?.sockets.adapter.rooms.get(`video:${data.bookingId}`);
+      ack?.({ ok: true, participants: room ? room.size : 1 });
+    });
+
+    // Relay an SDP/ICE signal to the booking's room. Peers filter by from/to.
+    validatedOn(socket, 'video:signal', VideoSignalSchema, (data) => {
+      socket.to(`video:${data.bookingId}`).emit('video:signal', {
+        from: userId,
+        to: data.to ?? null,
+        kind: data.kind,
+        payload: data.payload,
+      });
+    });
+
+    // Leave the signaling room and notify remaining peers.
+    validatedOn(socket, 'video:leave', VideoLeaveSchema, (data) => {
+      socket.leave(`video:${data.bookingId}`);
+      socket.to(`video:${data.bookingId}`).emit('video:participant', { userId, joined: false });
     });
 
     // ── RT-004: Token-expiry check on reconnect ──────────
