@@ -5,17 +5,16 @@ import { useParams, useSearchParams } from 'next/navigation';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
 import { VideoRoom } from '@/components/video/VideoRoom';
 
-// A4 — customer-side WebRTC room. All socket/WebRTC logic lives in the
-// shared VideoRoom component; this page only supplies the route params
-// and the customer dashboard layout.
+// A4 — technician-side WebRTC room. Shares the VideoRoom component with
+// the customer room; only the dashboard layout differs.
 
-export default function VideoRoomPage(): JSX.Element {
+export default function TechVideoRoomPage(): JSX.Element {
   const { bookingId } = useParams<{ bookingId: string }>();
   const searchParams = useSearchParams();
   const roomId = searchParams.get('room') || 'unknown';
 
   return (
-    <DashboardLayout userRole="CUSTOMER">
+    <DashboardLayout userRole="TECHNICIAN">
       <VideoRoom bookingId={bookingId} roomId={roomId} />
     </DashboardLayout>
   );

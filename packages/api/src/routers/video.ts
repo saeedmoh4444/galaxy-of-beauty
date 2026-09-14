@@ -20,11 +20,10 @@ export const videoRouter = router({
         where: { bookingId: input.bookingId },
       });
       if (existing) {
-        await prisma.videoSession.update({
+        return prisma.videoSession.update({
           where: { id: existing.id },
           data: { status: 'IN_PROGRESS', startedAt: new Date() },
         });
-        return existing;
       }
 
       const roomId = `video-${crypto.randomUUID().slice(0, 12)}`;
