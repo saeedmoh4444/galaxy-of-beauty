@@ -1,4 +1,5 @@
 'use client';
+import type { JSX } from 'react';
 
 import { cn } from '@galaxy/shared';
 
@@ -20,7 +21,7 @@ interface WorkoutDef {
 
 const WORKOUTS: Record<WorkoutType, WorkoutDef> = {
   gym: {
-    emoji: '️',
+    emoji: '🏋️',
     title: { ar: 'تمارين القوة', en: 'Strength training' },
     tips: [
       { ar: 'اغسلي وجهكِ فوراً بعد التمرين', en: 'Wash your face right after the workout' },
@@ -30,7 +31,7 @@ const WORKOUTS: Record<WorkoutType, WorkoutDef> = {
     ],
   },
   yoga: {
-    emoji: '',
+    emoji: '🧘',
     title: { ar: 'يوغا', en: 'Yoga' },
     tips: [
       { ar: 'نظفي بشرتكِ قبل الجلسة', en: 'Cleanse your skin before the session' },
@@ -40,7 +41,7 @@ const WORKOUTS: Record<WorkoutType, WorkoutDef> = {
     ],
   },
   running: {
-    emoji: '',
+    emoji: '🏃',
     title: { ar: 'جري', en: 'Running' },
     tips: [
       { ar: 'ضعي واقي شمس قبل الخروج', en: 'Apply sunscreen before going out' },
@@ -50,7 +51,7 @@ const WORKOUTS: Record<WorkoutType, WorkoutDef> = {
     ],
   },
   swimming: {
-    emoji: '',
+    emoji: '🏊',
     title: { ar: 'سباحة', en: 'Swimming' },
     tips: [
       { ar: 'اشطفي شعركِ قبل النزول للمسبح', en: 'Rinse your hair before entering the pool' },
@@ -60,7 +61,7 @@ const WORKOUTS: Record<WorkoutType, WorkoutDef> = {
     ],
   },
   crossfit: {
-    emoji: '',
+    emoji: '💪',
     title: { ar: 'تدريب مكثف', en: 'Intense training' },
     tips: [
       { ar: 'اربطي شعركِ بإحكام', en: 'Tie your hair tightly' },
@@ -157,7 +158,7 @@ export function FitnessBeautyCard({
         </div>
       </div>
 
-      <p className="mt-2 text-center text-[9px] text-text-tertiary dark:text-gray-500">
+      <p className="mt-2 text-center text-[9px] text-text-tertiary dark:text-text-secondary">
         {footerText}
       </p>
     </div>

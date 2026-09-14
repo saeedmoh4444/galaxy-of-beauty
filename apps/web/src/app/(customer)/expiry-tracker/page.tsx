@@ -1,14 +1,18 @@
 'use client';
 
 import { useState } from 'react';
+import type { JSX } from 'react';
 import { api } from '@/lib/trpc';
-import { Card, CardListSkeleton, ErrorAlert, EmptyState, Button, Modal } from '@galaxy/ui';
+import { Card, CardListSkeleton, ErrorAlert, EmptyState, Button, Modal, useAuth } from '@galaxy/ui';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
 import { useLocale } from '@/components/LocaleProvider';
 
 export default function ExpiryTrackerPage(): JSX.Element {
   const { t, locale } = useLocale();
-  const { data: cats } = api.expiryTracker.categories.useQuery() as {
+  const { isAuthenticated } = useAuth();
+  const { data: cats } = api.expiryTracker.categories.useQuery(undefined, {
+    enabled: isAuthenticated,
+  }) as {
     data: Array<Record<string, unknown>> | undefined;
   };
   const {
@@ -16,7 +20,7 @@ export default function ExpiryTrackerPage(): JSX.Element {
     isLoading,
     isError,
     refetch,
-  } = api.expiryTracker.myItems.useQuery() as {
+  } = api.expiryTracker.myItems.useQuery(undefined, { enabled: isAuthenticated }) as {
     data: Array<Record<string, unknown>> | undefined;
     isLoading: boolean;
     isError: boolean;
@@ -84,7 +88,7 @@ export default function ExpiryTrackerPage(): JSX.Element {
                       })}
                     </p>
                   </div>
-                  <div className="text-right">
+                  <div className="text-end">
                     {(i.expired as boolean) ? (
                       <span className="rounded-full bg-red-100 dark:bg-red-900 px-2.5 py-0.5 text-xs font-bold text-red-700">
                         {t('expiryTracker.expired')}
@@ -101,9 +105,7 @@ export default function ExpiryTrackerPage(): JSX.Element {
                     <button
                       onClick={() => deleteMut.mutate({ id: i.id as number })}
                       className="block mt-1 text-xs text-red-400"
-                    >
-                      ️
-                    </button>
+                    ></button>
                   </div>
                 </div>
               </Card>

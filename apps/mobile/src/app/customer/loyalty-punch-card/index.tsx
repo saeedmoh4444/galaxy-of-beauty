@@ -1,7 +1,9 @@
+import type { JSX } from 'react';
 import { View, Text, ScrollView, StyleSheet, RefreshControl } from 'react-native';
 import { SkeletonList } from '@/components/SkeletonCard';
 import { trpc } from '@/lib/trpc-react';
 import { useLocale } from '@/components/LocaleProvider';
+import { useAuthState } from '@/hooks/useAuthState';
 
 interface PunchCardStatus {
   punches?: number;
@@ -10,7 +12,8 @@ interface PunchCardStatus {
 
 export default function LoyaltyPunchCardScreen(): JSX.Element {
   const { t } = useLocale();
-  const cardQ = trpc.loyaltyPunchCard.myCard.useQuery();
+  const isAuthed = useAuthState();
+  const cardQ = trpc.loyaltyPunchCard.myCard.useQuery(undefined, { enabled: isAuthed });
 
   if (cardQ.isLoading) return <SkeletonList count={3} />;
 
@@ -24,7 +27,9 @@ export default function LoyaltyPunchCardScreen(): JSX.Element {
       refreshControl={
         <RefreshControl
           refreshing={cardQ.isRefetching}
-          onRefresh={() => cardQ.refetch()}
+          onRefresh={async () => {
+            await cardQ.refetch();
+          }}
           colors={['#f59e0b']}
         />
       }

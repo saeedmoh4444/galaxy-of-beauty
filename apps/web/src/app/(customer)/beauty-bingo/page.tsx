@@ -1,4 +1,5 @@
 'use client';
+import type { JSX } from 'react';
 import { api } from '@/lib/trpc';
 import { Card, CardListSkeleton, Button } from '@galaxy/ui';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
@@ -20,14 +21,14 @@ export default function BeautyBingoPage(): JSX.Element {
     <DashboardLayout userRole="CUSTOMER">
       <div className="mx-auto max-w-2xl space-y-6">
         <div>
-          <h1 className="text-2xl font-bold"> Beauty Bingo</h1>
+          <h1 className="text-2xl font-bold">{t('beautyBingo.title')}</h1>
           <p className="mt-1 text-sm text-text-secondary">{t('beautyBingo.subtitle')}</p>
         </div>
         {isLoading ? (
           <CardListSkeleton count={1} />
         ) : (
           <Card padding="lg" className="text-center">
-            <span className="text-5xl"></span>
+            <span className="text-5xl">🎉</span>
             <p className="mt-2 font-bold">{t('beautyBingo.completed', { completed, total })}</p>
             <p className="text-xs text-brand-600 mt-1">{data?.reward as string}</p>
             <div className="mt-4 grid grid-cols-3 gap-2">

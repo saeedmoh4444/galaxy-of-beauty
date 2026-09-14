@@ -1,3 +1,4 @@
+import type { JSX } from 'react';
 import { View, Text, ScrollView, StyleSheet, RefreshControl } from 'react-native';
 import { ErrorAlert } from '@/components/ErrorAlert';
 import { SkeletonList } from '@/components/SkeletonCard';
@@ -44,7 +45,9 @@ export default function TrendingScreen(): JSX.Element {
       refreshControl={
         <RefreshControl
           refreshing={trendingQ.isRefetching}
-          onRefresh={() => trendingQ.refetch()}
+          onRefresh={async () => {
+            await trendingQ.refetch();
+          }}
           colors={['#db2777']}
         />
       }
@@ -78,7 +81,7 @@ export default function TrendingScreen(): JSX.Element {
           {spotlightItems.map((t, i) => (
             <View key={t.id ?? i} style={styles.card}>
               <Text style={styles.techEmoji}>
-                {i === 0 ? '' : i === 1 ? '' : i === 2 ? '' : '‍'}
+                {i === 0 ? '' : i === 1 ? '' : i === 2 ? '' : ''}
               </Text>
               <View style={{ flex: 1 }}>
                 <Text style={styles.techName}>{t.name}</Text>

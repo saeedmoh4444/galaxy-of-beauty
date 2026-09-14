@@ -1,17 +1,20 @@
 import { View, Text, ScrollView, StyleSheet, TouchableOpacity, RefreshControl } from 'react-native';
 import { useState } from 'react';
+import type { JSX } from 'react';
 import { SkeletonList } from '@/components/SkeletonCard';
 import { trpc } from '@/lib/trpc-react';
 import { useLocale } from '@/components/LocaleProvider';
+import { useAuthState } from '@/hooks/useAuthState';
 
 const PAYMENT_METHODS = [
-  { key: 'wallet', emoji: '', label: 'المحفظة' },
-  { key: 'card', emoji: '', label: 'بطاقة' },
-  { key: 'apple_pay', emoji: '', label: 'Apple Pay' },
-  { key: 'bnpl', emoji: '', label: 'تقسيط' },
+  { key: 'wallet', emoji: '👛', label: 'المحفظة' },
+  { key: 'card', emoji: '💳', label: 'بطاقة' },
+  { key: 'apple_pay', emoji: '🍎', label: 'Apple Pay' },
+  { key: 'bnpl', emoji: '🧾', label: 'تقسيط' },
 ];
 
 export default function CheckoutScreen(): JSX.Element {
+  const isAuthed = useAuthState();
   const { t } = useLocale();
   const [method, setMethod] = useState('wallet');
   const methodLabels: Record<string, string> = {
@@ -21,7 +24,7 @@ export default function CheckoutScreen(): JSX.Element {
     bnpl: t('checkout.method-bnpl'),
   };
 
-  const balanceQ = trpc.wallet.getBalance.useQuery();
+  const balanceQ = trpc.wallet.getBalance.useQuery(undefined, { enabled: isAuthed });
 
   if (balanceQ.isLoading) return <SkeletonList count={4} />;
 
@@ -32,7 +35,9 @@ export default function CheckoutScreen(): JSX.Element {
       refreshControl={
         <RefreshControl
           refreshing={balanceQ.isRefetching}
-          onRefresh={() => balanceQ.refetch()}
+          onRefresh={async () => {
+            await balanceQ.refetch();
+          }}
           colors={['#059669']}
         />
       }

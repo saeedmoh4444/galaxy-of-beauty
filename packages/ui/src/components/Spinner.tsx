@@ -1,4 +1,5 @@
 'use client';
+import type { JSX } from 'react';
 
 interface SpinnerProps {
   size?: 'sm' | 'md' | 'lg';
@@ -28,7 +29,7 @@ export function Spinner({
       className={`inline-flex flex-col items-center gap-2 ${className}`}
     >
       <div
-        className={`${sizeMap[size]} animate-spin rounded-full border-gray-200 border-t-brand-600 dark:border-gray-700 dark:border-t-brand-400`}
+        className={`${sizeMap[size]} animate-spin rounded-full border-edge border-t-brand-600 dark:border-gray-700 dark:border-t-brand-400`}
         aria-hidden="true"
       />
       <span className="sr-only">{label}</span>
@@ -47,7 +48,7 @@ export function PageSpinner({ message = 'جاري التحميل...' }: { messag
       className="flex min-h-[60vh] flex-col items-center justify-center gap-4"
     >
       <Spinner size="lg" label={message} />
-      <p className="text-sm text-gray-500 dark:text-gray-400">{message}</p>
+      <p className="text-sm text-text-secondary">{message}</p>
     </div>
   );
 }

@@ -1,0 +1,20 @@
+diff --git a/build/ExpoMetroConfig.js b/build/ExpoMetroConfig.js
+index 2d200233b9838a29a1f9e2c5b7fa0ff0b8523adf..859bb3aa39607e83b085a659a13d8dfcd1ae7dd6 100644
+--- a/build/ExpoMetroConfig.js
++++ b/build/ExpoMetroConfig.js
+@@ -295,7 +295,14 @@ function getDefaultConfig(projectRoot, { mode, isCSSEnabled = true, unstable_bef
+                 if (!platform) {
+                     return [];
+                 }
+-                return require(path_1.default.join(getReactNativeHostPath(projectRoot, platform), 'rn-get-polyfills'))();
++                try {
++                    return require(path_1.default.join(getReactNativeHostPath(projectRoot, platform), 'rn-get-polyfills'))();
++                }
++                catch (e) {
++                    // RN 0.87 removed the rn-get-polyfills root entry (upstream expo fix pending).
++                    debug('rn-get-polyfills not found, falling back to no extra polyfills:', e.message);
++                    return [];
++                }
+             },
+         },
+         server: {

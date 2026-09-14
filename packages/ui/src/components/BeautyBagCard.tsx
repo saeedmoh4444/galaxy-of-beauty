@@ -1,4 +1,5 @@
 'use client';
+import type { JSX } from 'react';
 
 import { cn } from '@galaxy/shared';
 
@@ -27,7 +28,7 @@ export function BeautyBagCard({
       )}
     >
       <div className="flex items-center gap-2">
-        <span className="text-xl"></span>
+        <span className="text-xl">👜</span>
         <div>
           <h4 className="text-sm font-bold text-indigo-700 dark:text-indigo-300">{title}</h4>
           <p className="text-[10px] text-indigo-500 dark:text-indigo-400">{subtitle}</p>
@@ -36,7 +37,7 @@ export function BeautyBagCard({
       <div className="mt-3 grid grid-cols-2 gap-1.5">
         {[
           {
-            emoji: '',
+            emoji: '💄',
             label: { ar: 'أحمر شفاه', en: 'Lipstick' },
             tip: { ar: 'لون ناعم للإطلالة اليومية', en: 'A soft shade for everyday looks' },
           },
@@ -46,12 +47,12 @@ export function BeautyBagCard({
             tip: { ar: 'للمسات السريعة', en: 'For quick touch-ups' },
           },
           {
-            emoji: '',
+            emoji: '🧴',
             label: { ar: 'مرطب سفر', en: 'Travel moisturizer' },
             tip: { ar: 'حجم صغير للطوارئ', en: 'A travel size for emergencies' },
           },
           {
-            emoji: '️',
+            emoji: '☀️',
             label: { ar: 'واقي شمس', en: 'Sunscreen' },
             tip: { ar: 'Mini size للشنطة', en: 'A mini size for your bag' },
           },

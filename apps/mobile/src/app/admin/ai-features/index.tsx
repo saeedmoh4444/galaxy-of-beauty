@@ -1,32 +1,37 @@
+import type { JSX } from 'react';
 import { View, Text, ScrollView, StyleSheet, TouchableOpacity } from 'react-native';
 import { useLocale } from '@/components/LocaleProvider';
+// NO API: aiFeatures router has no procedure that lists AI feature flags/toggles
+// (only generateDescription/analyzeSentiment admin mutations + customer-side
+// personalizedFeed/smartSchedule queries; web admin page is mutation-only with
+// local state) — the feature list stays static.
 export default function AIFeaturesScreen(): JSX.Element {
   const { t } = useLocale();
   const features = [
     {
       key: 'ai_routine',
-      emoji: '',
+      emoji: '🧴',
       name: 'روتين ذكي',
       desc: 'توليد روتين عناية مخصص',
       enabled: true,
     },
     {
       key: 'ai_advisor',
-      emoji: '',
+      emoji: '💬',
       name: 'مستشارة AI',
       desc: 'محادثات ذكية للإجابة',
       enabled: true,
     },
     {
       key: 'ai_color',
-      emoji: '',
+      emoji: '🎨',
       name: 'تحليل ألوان AI',
       desc: 'تحليل لون البشرة آلياً',
       enabled: false,
     },
     {
       key: 'ai_skin',
-      emoji: '',
+      emoji: '🔬',
       name: 'تحليل بشرة AI',
       desc: 'تشخيص مشاكل البشرة',
       enabled: true,

@@ -1,4 +1,5 @@
 'use client';
+import type { JSX } from 'react';
 import { api } from '@/lib/trpc';
 import { Card, CardListSkeleton, formatCurrency } from '@galaxy/ui';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
@@ -12,20 +13,26 @@ const CATEGORIES: {
   budget: number;
   color: string;
 }[] = [
-  { key: 'hair', emoji: '‍️', name: 'beautyBudgetPlanner.catHair', budget: 200, color: '#ec4899' },
-  { key: 'skin', emoji: '', name: 'beautyBudgetPlanner.catSkin', budget: 300, color: '#8b5cf6' },
-  { key: 'nails', emoji: '', name: 'beautyBudgetPlanner.catNails', budget: 100, color: '#f59e0b' },
+  { key: 'hair', emoji: '💇', name: 'beautyBudgetPlanner.catHair', budget: 200, color: '#ec4899' },
+  { key: 'skin', emoji: '🧴', name: 'beautyBudgetPlanner.catSkin', budget: 300, color: '#8b5cf6' },
+  {
+    key: 'nails',
+    emoji: '💅',
+    name: 'beautyBudgetPlanner.catNails',
+    budget: 100,
+    color: '#f59e0b',
+  },
   {
     key: 'makeup',
-    emoji: '',
+    emoji: '💄',
     name: 'beautyBudgetPlanner.catMakeup',
     budget: 150,
     color: '#db2777',
   },
-  { key: 'spa', emoji: '‍️', name: 'beautyBudgetPlanner.catSpa', budget: 250, color: '#059669' },
+  { key: 'spa', emoji: '💆', name: 'beautyBudgetPlanner.catSpa', budget: 250, color: '#059669' },
   {
     key: 'products',
-    emoji: '',
+    emoji: '🛍️',
     name: 'beautyBudgetPlanner.catProducts',
     budget: 200,
     color: '#0891b2',

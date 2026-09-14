@@ -1,3 +1,4 @@
+import type { JSX } from 'react';
 import {
   View,
   Text,
@@ -42,7 +43,9 @@ export default function ShopTheLookScreen(): JSX.Element {
       refreshControl={
         <RefreshControl
           refreshing={looksQ.isRefetching}
-          onRefresh={() => looksQ.refetch()}
+          onRefresh={async () => {
+            await looksQ.refetch();
+          }}
           colors={['#ec4899']}
         />
       }
@@ -59,12 +62,12 @@ export default function ShopTheLookScreen(): JSX.Element {
                 <Image source={{ uri: l.imageUrl }} style={styles.lookImage} />
               ) : (
                 <View style={styles.lookPlaceholder}>
-                  <Text style={{ fontSize: 32 }}>️</Text>
+                  <Text style={{ fontSize: 32 }}>👗</Text>
                 </View>
               )}
               <View style={{ flex: 1 }}>
                 <Text style={styles.lookTitle}>{l.titleAr ?? ''}</Text>
-                <Text style={styles.lookBy}>‍ {l.technician ?? ''}</Text>
+                <Text style={styles.lookBy}> {l.technician ?? ''}</Text>
               </View>
             </View>
             <Text style={styles.productsTitle}>{t('mobile.public.shop-the-look.products')}</Text>

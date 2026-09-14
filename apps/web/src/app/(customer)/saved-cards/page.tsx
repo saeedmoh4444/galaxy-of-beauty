@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import type { JSX } from 'react';
 import { api } from '@/lib/trpc';
 import type { RouterOutput } from '@galaxy/api/client';
 import { Card, CardListSkeleton, ErrorAlert, EmptyState, Button, Input, Modal } from '@galaxy/ui';
@@ -129,7 +130,7 @@ export default function SavedCardsPage(): JSX.Element {
               />
               <div className="flex gap-3">
                 <select
-                  className="flex-1 rounded-lg border border-gray-300 p-2 dark:border-gray-600 dark:bg-gray-800"
+                  className="flex-1 rounded-lg border border-edge p-2 dark:border-gray-600 dark:bg-gray-800"
                   value={form.brand}
                   onChange={(e) => setForm({ ...form, brand: e.target.value as typeof form.brand })}
                 >
@@ -139,7 +140,7 @@ export default function SavedCardsPage(): JSX.Element {
                   <option value="amex">Amex</option>
                 </select>
                 <select
-                  className="w-20 rounded-lg border border-gray-300 p-2 dark:border-gray-600 dark:bg-gray-800"
+                  className="w-20 rounded-lg border border-edge p-2 dark:border-gray-600 dark:bg-gray-800"
                   value={form.expMonth}
                   onChange={(e) => setForm({ ...form, expMonth: e.target.value })}
                 >
@@ -150,7 +151,7 @@ export default function SavedCardsPage(): JSX.Element {
                   ))}
                 </select>
                 <select
-                  className="w-24 rounded-lg border border-gray-300 p-2 dark:border-gray-600 dark:bg-gray-800"
+                  className="w-24 rounded-lg border border-edge p-2 dark:border-gray-600 dark:bg-gray-800"
                   value={form.expYear}
                   onChange={(e) => setForm({ ...form, expYear: e.target.value })}
                 >

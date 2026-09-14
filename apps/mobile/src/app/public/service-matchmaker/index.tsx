@@ -7,6 +7,7 @@ import {
   TouchableOpacity,
 } from 'react-native';
 import { useState } from 'react';
+import type { JSX } from 'react';
 import { trpc } from '@/lib/trpc-react';
 import { useLocale } from '@/components/LocaleProvider';
 
@@ -15,29 +16,29 @@ const QUESTIONS = [
     id: 'mood',
     text: 'ما مزاجك اليوم؟',
     options: [
-      { label: 'استرخاء', value: 'relax', emoji: '‍️' },
-      { label: 'تجديد', value: 'refresh', emoji: '' },
-      { label: 'جرأة', value: 'bold', emoji: '' },
-      { label: 'عناية', value: 'care', emoji: '‍️' },
+      { label: 'استرخاء', value: 'relax', emoji: '🧘' },
+      { label: 'تجديد', value: 'refresh', emoji: '✨' },
+      { label: 'جرأة', value: 'bold', emoji: '🔥' },
+      { label: 'عناية', value: 'care', emoji: '🤍' },
     ],
   },
   {
     id: 'focus',
     text: 'على ماذا تركزين؟',
     options: [
-      { label: 'البشرة', value: 'skin', emoji: '' },
-      { label: 'الشعر', value: 'hair', emoji: '‍️' },
-      { label: 'الأظافر', value: 'nails', emoji: '' },
-      { label: 'المكياج', value: 'makeup', emoji: '' },
+      { label: 'البشرة', value: 'skin', emoji: '🧴' },
+      { label: 'الشعر', value: 'hair', emoji: '💇' },
+      { label: 'الأظافر', value: 'nails', emoji: '💅' },
+      { label: 'المكياج', value: 'makeup', emoji: '💄' },
     ],
   },
   {
     id: 'budget',
     text: 'ميزانيتك؟',
     options: [
-      { label: 'اقتصادية', value: 'low', emoji: '' },
-      { label: 'متوسطة', value: 'mid', emoji: '' },
-      { label: 'فاخرة', value: 'high', emoji: '' },
+      { label: 'اقتصادية', value: 'low', emoji: '🪙' },
+      { label: 'متوسطة', value: 'mid', emoji: '💰' },
+      { label: 'فاخرة', value: 'high', emoji: '💎' },
     ],
   },
 ];
@@ -91,13 +92,13 @@ export default function ServiceMatchmakerScreen(): JSX.Element {
       <ScrollView style={styles.c} contentContainerStyle={styles.i}>
         <Text style={styles.t}>{t('mobile.public.service-matchmaker.results')}</Text>
         <View style={styles.resultCard}>
-          <Text style={styles.resultEmoji}></Text>
+          <Text style={styles.resultEmoji}>✨</Text>
           <Text style={styles.resultTitle}>
             {t('mobile.public.service-matchmaker.your-perfect-services')}
           </Text>
           {result.matches?.map((m, i) => (
             <View key={i} style={styles.match}>
-              <Text style={styles.matchEmoji}>{m.emoji ?? '‍️'}</Text>
+              <Text style={styles.matchEmoji}>{m.emoji ?? ''}</Text>
               <View style={{ flex: 1 }}>
                 <Text style={styles.matchName}>{m.nameAr}</Text>
                 <Text style={styles.matchWhy}>{m.whyAr}</Text>

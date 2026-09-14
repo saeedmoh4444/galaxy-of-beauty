@@ -1,4 +1,5 @@
 'use client';
+import type { JSX } from 'react';
 import { cn } from '@galaxy/shared';
 export function BeautyHyperpigmentationCard({
   className = '',
@@ -19,7 +20,7 @@ export function BeautyHyperpigmentationCard({
       )}
     >
       <div className="flex items-center gap-2">
-        <span className="text-xl"></span>
+        <span className="text-xl">🍊</span>
         <div>
           <h4 className="text-sm font-bold text-amber-700 dark:text-amber-300">{heading}</h4>
           <p className="text-[10px] text-amber-500 dark:text-amber-400">{subtitle}</p>
@@ -28,28 +29,28 @@ export function BeautyHyperpigmentationCard({
       <div className="mt-3 space-y-1">
         {[
           {
-            emoji: '️',
+            emoji: '🌞',
             text: {
               ar: 'السبب: الشمس — واقي الشمس هو الحل الأول',
               en: 'Cause: the sun — sunscreen is the first solution',
             },
           },
           {
-            emoji: '',
+            emoji: '🍊',
             text: {
               ar: 'فيتامين سي — يفتح التصبغات صباحاً',
               en: 'Vitamin C — brightens spots in the morning',
             },
           },
           {
-            emoji: '',
+            emoji: '🧪',
             text: {
               ar: 'نياسيناميد — يقلل إنتاج الميلانين',
               en: 'Niacinamide — reduces melanin production',
             },
           },
           {
-            emoji: '',
+            emoji: '⏳',
             text: {
               ar: 'الصبر — النتائج تحتاج 8-12 أسبوع',
               en: 'Patience — results take 8-12 weeks',

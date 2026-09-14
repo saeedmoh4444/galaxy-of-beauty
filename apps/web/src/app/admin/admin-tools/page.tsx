@@ -1,18 +1,21 @@
 'use client';
+import type { JSX } from 'react';
 import { api } from '@/lib/trpc';
-import { Card, CardListSkeleton } from '@galaxy/ui';
-import { DashboardLayout } from '@/components/layout/DashboardLayout';
+import { Card, CardListSkeleton, useAuth } from '@galaxy/ui';
 import { useLocale } from '@/components/LocaleProvider';
 
 export default function AdminToolsPage(): JSX.Element {
   const { t } = useLocale();
-  const { data: flags, isLoading } = api.featureFlags.list.useQuery() as {
+  const { isAuthenticated } = useAuth();
+  const { data: flags, isLoading } = api.featureFlags.list.useQuery(undefined, {
+    enabled: isAuthenticated,
+  }) as {
     data: Array<Record<string, unknown>> | undefined;
     isLoading: boolean;
   };
 
   return (
-    <DashboardLayout userRole="ADMIN">
+    <>
       <div className="mx-auto max-w-4xl space-y-6">
         <div>
           <h1 className="text-2xl font-bold">{t('admin.admin-tools.title')}</h1>
@@ -47,6 +50,6 @@ export default function AdminToolsPage(): JSX.Element {
           )}
         </Card>
       </div>
-    </DashboardLayout>
+    </>
   );
 }

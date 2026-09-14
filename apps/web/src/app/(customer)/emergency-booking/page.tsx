@@ -1,5 +1,6 @@
 'use client';
 import { useState } from 'react';
+import type { JSX } from 'react';
 import { api } from '@/lib/trpc';
 import { Card, CardListSkeleton, Button, formatCurrency } from '@galaxy/ui';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
@@ -7,12 +8,12 @@ import { useLocale } from '@/components/LocaleProvider';
 import type { TranslationKey } from '@galaxy/shared';
 
 const POPULAR_SERVICES: { id: number; name: TranslationKey; emoji: string }[] = [
-  { id: 1, name: 'advancedBooking.service.manicure', emoji: '' },
-  { id: 2, name: 'advancedBooking.service.pedicure', emoji: '' },
-  { id: 3, name: 'advancedBooking.service.facial', emoji: '' },
-  { id: 4, name: 'advancedBooking.service.massage', emoji: '‍️' },
-  { id: 5, name: 'emergencyBooking.service.dyeHair', emoji: '' },
-  { id: 6, name: 'advancedBooking.service.makeup', emoji: '' },
+  { id: 1, name: 'advancedBooking.service.manicure', emoji: '💅' },
+  { id: 2, name: 'advancedBooking.service.pedicure', emoji: '🦶' },
+  { id: 3, name: 'advancedBooking.service.facial', emoji: '🧖' },
+  { id: 4, name: 'advancedBooking.service.massage', emoji: '💆' },
+  { id: 5, name: 'emergencyBooking.service.dyeHair', emoji: '🎨' },
+  { id: 6, name: 'advancedBooking.service.makeup', emoji: '💄' },
 ];
 
 export default function EmergencyBookingPage(): JSX.Element {
@@ -41,7 +42,7 @@ export default function EmergencyBookingPage(): JSX.Element {
 
         <Card padding="lg" className="border-2 border-red-300 bg-red-50">
           <div className="flex items-center gap-3">
-            <span className="text-3xl"></span>
+            <span className="text-3xl">🚨</span>
             <div>
               <p className="font-bold text-red-700">
                 {t('emergencyBooking.surcharge', {
@@ -88,7 +89,7 @@ export default function EmergencyBookingPage(): JSX.Element {
                 <button
                   key={tech.technicianId as number}
                   onClick={() => setSelectedTech(tech.technicianId as number)}
-                  className={`w-full rounded-xl border-2 p-3 text-right transition-all ${selectedTech === tech.technicianId ? 'border-red-400 bg-red-50' : 'border-gray-200'}`}
+                  className={`w-full rounded-xl border-2 p-3 text-end transition-all ${selectedTech === tech.technicianId ? 'border-red-400 bg-red-50' : 'border-edge'}`}
                 >
                   <div className="flex justify-between items-center">
                     <span className="font-bold">{tech.name as string}</span>
@@ -121,7 +122,7 @@ export default function EmergencyBookingPage(): JSX.Element {
 
         {bookingCode ? (
           <Card padding="lg" className="text-center border-2 border-green-300 bg-green-50">
-            <p className="text-3xl"></p>
+            <p className="text-3xl">✅</p>
             <p className="font-bold text-green-700 mt-2">{t('emergencyBooking.success')}</p>
             <p className="text-sm text-text-secondary">
               {t('emergencyBooking.codeLabel')}{' '}

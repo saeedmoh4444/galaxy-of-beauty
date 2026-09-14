@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import type { JSX } from 'react';
 
 /**
  * Beauty Tip — rotating beauty tips for loading states and empty pages.
@@ -12,56 +13,56 @@ import { useState, useEffect } from 'react';
 
 const TIPS = [
   {
-    emoji: '',
+    emoji: '💧',
     text: {
       ar: 'اشربي ٨ أكواب من الماء يومياً لبشرة متوهجة',
       en: 'Drink 8 glasses of water daily for glowing skin',
     },
   },
   {
-    emoji: '',
+    emoji: '😴',
     text: {
       ar: 'النوم ٧-٨ ساعات يومياً هو سر الجمال',
       en: 'Sleeping 7-8 hours a day is the secret to beauty',
     },
   },
   {
-    emoji: '',
+    emoji: '🌞',
     text: {
       ar: 'لا تنسي واقي الشمس حتى في الأيام الغائمة',
       en: 'Do not forget sunscreen even on cloudy days',
     },
   },
   {
-    emoji: '',
+    emoji: '💄',
     text: {
       ar: 'جددّي مكياجكِ كل ٦-١٢ شهر للوقاية من البكتيريا',
       en: 'Refresh your makeup every 6-12 months to prevent bacteria',
     },
   },
   {
-    emoji: '',
+    emoji: '📅',
     text: {
       ar: 'احجزي خدماتكِ قبل العيد بأسبوعين لتجنب الازدحام',
       en: 'Book your services two weeks before Eid to avoid the rush',
     },
   },
   {
-    emoji: '',
+    emoji: '🌙',
     text: {
       ar: 'في رمضان: احجزي بعد الإفطار للحصول على أفضل النتائج',
       en: 'In Ramadan: book after iftar for the best results',
     },
   },
   {
-    emoji: '‍️',
+    emoji: '💆',
     text: {
       ar: 'التدليك المنتظم يقلل التوتر ويحسن الدورة الدموية',
       en: 'Regular massage reduces stress and improves circulation',
     },
   },
   {
-    emoji: '',
+    emoji: '🧽',
     text: { ar: 'قشري بشرتكِ مرة واحدة أسبوعياً فقط', en: 'Exfoliate your skin only once a week' },
   },
   {
@@ -72,42 +73,42 @@ const TIPS = [
     },
   },
   {
-    emoji: '',
+    emoji: '🤰',
     text: {
       ar: 'أثناء الحمل: تجنبي العلاجات بالحرارة العالية والزيوت القوية',
       en: 'During pregnancy: avoid high-heat treatments and strong oils',
     },
   },
   {
-    emoji: '‍️',
+    emoji: '✂️',
     text: {
       ar: 'قصي أطراف شعركِ كل ٦-٨ أسابيع للمحافظة على صحته',
       en: 'Trim your hair ends every 6-8 weeks to keep it healthy',
     },
   },
   {
-    emoji: '‍️',
+    emoji: '🧼',
     text: {
       ar: 'نظفي فرش المكياج أسبوعياً — البكتيريا تتراكم بسرعة!',
       en: 'Clean your makeup brushes weekly — bacteria build up fast!',
     },
   },
   {
-    emoji: '',
+    emoji: '👰',
     text: {
       ar: 'العروس: ابدأي روتين العناية بالبشرة قبل ٦ أشهر من الزفاف',
       en: 'Bride: start your skincare routine 6 months before the wedding',
     },
   },
   {
-    emoji: '',
+    emoji: '🍵',
     text: {
       ar: 'الشاي الأخضر يقلل الهالات السوداء — ضعي الأكياس الباردة على عينيكِ',
       en: 'Green tea reduces dark circles — place cold tea bags on your eyes',
     },
   },
   {
-    emoji: '',
+    emoji: '💅',
     text: {
       ar: 'الأظافر تحتاج تنفساً — اتركيها بدون طلاء يومين بين الجلسات',
       en: 'Nails need to breathe — leave them polish-free two days between sessions',
@@ -117,7 +118,7 @@ const TIPS = [
 
 export function BeautyTip({
   className = '',
-  heading = ' نصيحة جمال',
+  heading = 'نصيحة جمال',
   locale = 'ar',
 }: {
   className?: string;
@@ -142,7 +143,7 @@ export function BeautyTip({
     >
       <p className="text-xs font-semibold text-pink-600 dark:text-pink-400">{heading}</p>
       <p className="mt-2 text-sm text-pink-800 dark:text-pink-200">
-        <span className="mr-2 text-lg">{tip.emoji}</span>
+        <span className="me-2 text-lg">{tip.emoji}</span>
         {tip.text[locale]}
       </p>
     </div>

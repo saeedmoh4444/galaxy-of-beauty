@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import type { JSX } from 'react';
 import Link from 'next/link';
 import { api } from '@/lib/trpc';
 import {
@@ -11,22 +12,36 @@ import {
   Modal,
   PageContainer,
   CardListSkeleton,
+  useAuth,
 } from '@galaxy/ui';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
 import { useLocale } from '@/components/LocaleProvider';
+import { bookingStatusLabelKey } from '@/lib/bookingStatus';
 
-const STATUS_TABS = ['ALL', 'REQUESTED', 'ACCEPTED', 'IN_PROGRESS', 'COMPLETED', 'CANCELLED'];
+const STATUS_TABS = [
+  'ALL',
+  'REQUESTED',
+  'ACCEPTED',
+  'PAID',
+  'IN_PROGRESS',
+  'COMPLETED',
+  'CANCELLED',
+];
 
 export default function BookingsPage(): JSX.Element {
   const { t, locale } = useLocale();
+  const { isAuthenticated } = useAuth();
   const [status, setStatus] = useState<string | undefined>(undefined);
   const [page, setPage] = useState(1);
   const [cancelId, setCancelId] = useState<number | null>(null);
-  const { data, isLoading, isError, refetch } = api.bookings.list.useQuery({
-    status,
-    page,
-    limit: 10,
-  });
+  const { data, isLoading, isError, refetch } = api.bookings.list.useQuery(
+    {
+      status,
+      page,
+      limit: 10,
+    },
+    { enabled: isAuthenticated },
+  );
   const cancelMut = api.bookings.transition.useMutation({
     onSuccess: () => {
       setCancelId(null);
@@ -51,10 +66,10 @@ export default function BookingsPage(): JSX.Element {
               className={`rounded-full px-4 py-1.5 text-sm font-medium transition-colors ${
                 (s === 'ALL' && !status) || s === status
                   ? 'bg-brand-600 text-white'
-                  : 'bg-surface-muted text-text-secondary hover:bg-gray-200 dark:bg-gray-800 dark:hover:bg-gray-700'
+                  : 'bg-surface-muted text-text-secondary hover:bg-surface-muted dark:hover:bg-gray-700'
               }`}
             >
-              {s === 'ALL' ? t('booking.all') : s}
+              {t(bookingStatusLabelKey(s))}
             </button>
           ))}
         </div>
@@ -94,7 +109,7 @@ export default function BookingsPage(): JSX.Element {
                           : 'bg-info-subtle text-info'
                     }`}
                   >
-                    {b.status as string}
+                    {t(bookingStatusLabelKey(b.status as string))}
                   </span>
                   {(b.status === 'REQUESTED' || b.status === 'ACCEPTED') && (
                     <Button size="sm" variant="danger" onClick={() => setCancelId(b.id as number)}>
@@ -104,7 +119,7 @@ export default function BookingsPage(): JSX.Element {
                   {(b.status === 'PAID' || b.status === 'IN_PROGRESS') && (
                     <Link
                       href={`/video/${b.id}`}
-                      className="rounded-lg bg-purple-600 px-3 py-1 text-xs font-medium text-white hover:bg-purple-700"
+                      className="rounded-lg bg-brand-600 px-3 py-1 text-xs font-medium text-white hover:bg-brand-700"
                     >
                       {t('booking.video')}
                     </Link>
@@ -121,7 +136,7 @@ export default function BookingsPage(): JSX.Element {
         title={t('booking.confirm-cancel')}
         size="sm"
       >
-        <p className="text-sm text-text-secondary dark:text-gray-400">
+        <p className="text-sm text-text-secondary dark:text-text-tertiary">
           {t('booking.confirm-cancel-question')}
         </p>
         <div className="mt-4 flex gap-3">

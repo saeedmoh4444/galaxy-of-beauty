@@ -1,4 +1,5 @@
 'use client';
+import type { JSX } from 'react';
 
 import { cn } from '@galaxy/shared';
 
@@ -22,7 +23,7 @@ interface Milestone {
 const MILESTONES: Milestone[] = [
   {
     month: 6,
-    emoji: '',
+    emoji: '📋',
     title: { ar: 'خطة العناية', en: 'Care plan' },
     description: {
       ar: 'نضع خطة عناية متكاملة لبشرتكِ قبل الزفاف',
@@ -40,7 +41,7 @@ const MILESTONES: Milestone[] = [
   },
   {
     month: 5,
-    emoji: '',
+    emoji: '🧴',
     title: { ar: 'روتين العناية', en: 'Care routine' },
     description: {
       ar: 'بناء روتين عناية يومي بالبشرة',
@@ -58,7 +59,7 @@ const MILESTONES: Milestone[] = [
   },
   {
     month: 4,
-    emoji: '‍️',
+    emoji: '💉',
     title: { ar: 'علاجات متقدمة', en: 'Advanced treatments' },
     description: {
       ar: 'بدء العلاجات التجميلية المتقدمة',
@@ -76,7 +77,7 @@ const MILESTONES: Milestone[] = [
   },
   {
     month: 3,
-    emoji: '',
+    emoji: '💄',
     title: { ar: 'تجربة الإطلالة', en: 'Look trial' },
     description: {
       ar: 'تجربة كاملة لإطلالة الزفاف',
@@ -94,7 +95,7 @@ const MILESTONES: Milestone[] = [
   },
   {
     month: 2,
-    emoji: '',
+    emoji: '✨',
     title: { ar: 'اللمسات النهائية', en: 'Final touches' },
     description: {
       ar: 'التركيز على التفاصيل الدقيقة',
@@ -112,7 +113,7 @@ const MILESTONES: Milestone[] = [
   },
   {
     month: 1,
-    emoji: '',
+    emoji: '👰',
     title: { ar: 'الأسبوع الأخير', en: 'The final week' },
     description: {
       ar: 'الاستعداد النهائي والاسترخاء',
@@ -174,9 +175,7 @@ export function BridalJourneyTimeline({
     <div className={cn('rounded-2xl bg-white p-5 dark:bg-gray-900', className)}>
       {/* Header */}
       <div className="text-center">
-        <span className="text-3xl" aria-hidden="true">
-          ‍️
-        </span>
+        <span className="text-3xl" aria-hidden="true"></span>
         <h4 className="mt-1 text-sm font-bold text-rose-700 dark:text-rose-300">{title}</h4>
         <p className="text-[10px] text-rose-500 dark:text-rose-400">{subtitle}</p>
         {weddingDate && (
@@ -209,7 +208,7 @@ export function BridalJourneyTimeline({
                         ? 'border-emerald-300 bg-emerald-50 dark:border-emerald-800 dark:bg-emerald-950'
                         : isCurrent
                           ? 'border-rose-400 bg-rose-50 dark:border-rose-800 dark:bg-rose-950'
-                          : 'border-gray-200 bg-gray-50 dark:border-gray-700 dark:bg-gray-800',
+                          : 'border-edge bg-surface-muted dark:border-gray-700 dark:bg-gray-800',
                     )}
                   >
                     <span className={cn(isPast && !isCurrent && 'opacity-40')}>
@@ -220,9 +219,7 @@ export function BridalJourneyTimeline({
                     <div
                       className={cn(
                         'h-full min-h-[16px] w-0.5',
-                        isCompleted
-                          ? 'bg-emerald-200 dark:bg-emerald-800'
-                          : 'bg-gray-200 dark:bg-gray-700',
+                        isCompleted ? 'bg-emerald-200 dark:bg-emerald-800' : 'bg-surface-muted',
                       )}
                     />
                   )}
@@ -235,7 +232,7 @@ export function BridalJourneyTimeline({
                       <span className="text-xs font-bold text-text-primary dark:text-gray-100">
                         {beforeLabel} {m.month} {monthsWord}
                       </span>
-                      <span className="ml-2 text-[10px] text-text-tertiary dark:text-gray-500">
+                      <span className="ms-2 text-[10px] text-text-tertiary dark:text-text-secondary">
                         {m.title[locale]}
                       </span>
                     </div>
@@ -263,7 +260,7 @@ export function BridalJourneyTimeline({
                   </div>
 
                   {/* Tip */}
-                  <p className="mt-1 text-[9px] italic text-text-tertiary dark:text-gray-500">
+                  <p className="mt-1 text-[9px] italic text-text-tertiary dark:text-text-secondary">
                     {m.tip[locale]}
                   </p>
 

@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useRef } from 'react';
+import type { JSX } from 'react';
 import { api } from '@/lib/trpc';
 import { Card, GridSkeleton, ErrorAlert, EmptyState, Button } from '@galaxy/ui';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
@@ -18,12 +19,12 @@ const PALETTE_PRESETS: { label: TranslationKey; colors: string[] }[] = [
 ];
 
 const CATEGORIES: { key: string; label: TranslationKey; emoji: string }[] = [
-  { key: '', label: 'styleMatch.category.all', emoji: '' },
-  { key: 'daily', label: 'styleMatch.category.daily', emoji: '️' },
-  { key: 'evening', label: 'styleMatch.category.evening', emoji: '' },
-  { key: 'party', label: 'styleMatch.category.party', emoji: '' },
-  { key: 'bridal', label: 'styleMatch.category.bridal', emoji: '' },
-  { key: 'traditional', label: 'styleMatch.category.traditional', emoji: '' },
+  { key: '', label: 'styleMatch.category.all', emoji: '✨' },
+  { key: 'daily', label: 'styleMatch.category.daily', emoji: '🌞' },
+  { key: 'evening', label: 'styleMatch.category.evening', emoji: '🌙' },
+  { key: 'party', label: 'styleMatch.category.party', emoji: '🎉' },
+  { key: 'bridal', label: 'styleMatch.category.bridal', emoji: '👰' },
+  { key: 'traditional', label: 'styleMatch.category.traditional', emoji: '🏺' },
 ];
 
 export default function StyleMatchPage(): JSX.Element {
@@ -92,7 +93,7 @@ export default function StyleMatchPage(): JSX.Element {
                 type="file"
                 accept="image/*"
                 onChange={handleFileUpload}
-                className="block w-full text-sm text-text-secondary file:mr-4 file:rounded-lg file:border-0 file:bg-brand-600 file:px-4 file:py-2 file:text-sm file:font-semibold file:text-white"
+                className="block w-full text-sm text-text-secondary file:me-4 file:rounded-lg file:border-0 file:bg-brand-600 file:px-4 file:py-2 file:text-sm file:font-semibold file:text-white"
               />
               {photoPreview && (
                 <div className="mt-3 rounded-xl overflow-hidden h-40 bg-surface-muted dark:bg-gray-800">
@@ -115,7 +116,7 @@ export default function StyleMatchPage(): JSX.Element {
                   <button
                     key={p.label}
                     onClick={() => applyPreset(p.colors, p.label)}
-                    className={`rounded-full px-3 py-1 text-xs font-medium transition-all ${activePreset === p.label ? 'bg-brand-600 text-white' : 'bg-surface-muted dark:bg-gray-800 hover:bg-gray-200'}`}
+                    className={`rounded-full px-3 py-1 text-xs font-medium transition-all ${activePreset === p.label ? 'bg-brand-600 text-white' : 'bg-surface-muted dark:bg-gray-800 hover:bg-surface-muted'}`}
                   >
                     <span className="flex items-center gap-1.5">
                       {p.colors.map((c) => (
@@ -150,7 +151,7 @@ export default function StyleMatchPage(): JSX.Element {
                 {customColors.length < 5 && (
                   <button
                     onClick={addColor}
-                    className="flex h-8 w-8 items-center justify-center rounded-lg border-2 border-dashed border-gray-300 dark:border-gray-600 text-text-tertiary hover:border-brand-400 text-lg"
+                    className="flex h-8 w-8 items-center justify-center rounded-lg border-2 border-dashed border-edge text-text-tertiary hover:border-brand-400 text-lg"
                   >
                     +
                   </button>
@@ -178,7 +179,7 @@ export default function StyleMatchPage(): JSX.Element {
                 <button
                   key={c.key}
                   onClick={() => setCategory(c.key === category ? '' : c.key)}
-                  className={`rounded-full px-4 py-2 text-sm font-medium transition-all ${category === c.key ? 'bg-brand-600 text-white shadow-md' : category === '' && c.key === '' ? 'bg-brand-600 text-white shadow-md' : 'bg-surface-muted dark:bg-gray-800 hover:bg-gray-200'}`}
+                  className={`rounded-full px-4 py-2 text-sm font-medium transition-all ${category === c.key ? 'bg-brand-600 text-white shadow-md' : category === '' && c.key === '' ? 'bg-brand-600 text-white shadow-md' : 'bg-surface-muted dark:bg-gray-800 hover:bg-surface-muted'}`}
                 >
                   {c.emoji} {t(c.label)}
                 </button>
@@ -207,7 +208,7 @@ export default function StyleMatchPage(): JSX.Element {
                   padding="lg"
                   className="group hover:shadow-xl transition-all"
                 >
-                  <div className="flex h-36 items-center justify-center rounded-xl bg-gradient-to-br from-brand-100 to-purple-100 dark:from-brand-900 dark:to-purple-900 text-5xl">
+                  <div className="flex h-36 items-center justify-center rounded-xl bg-gradient-to-br from-brand-100 to-brand-100 dark:from-brand-900 dark:to-brand-900 text-5xl">
                     {[
                       'daily',
                       'evening',
@@ -219,12 +220,12 @@ export default function StyleMatchPage(): JSX.Element {
                     ].includes(r.category as string)
                       ? (
                           {
-                            daily: '️',
+                            daily: '',
                             evening: '',
                             party: '',
                             bridal: '',
                             summer: '',
-                            winter: '️',
+                            winter: '',
                             traditional: '',
                           } as Record<string, string>
                         )[r.category as string]
@@ -253,7 +254,7 @@ export default function StyleMatchPage(): JSX.Element {
                         {(r.dominantColors as string[])?.map((c: string) => (
                           <span
                             key={c}
-                            className="h-3 w-3 rounded-full border border-gray-300 dark:border-gray-600"
+                            className="h-3 w-3 rounded-full border border-edge"
                             style={{ backgroundColor: c }}
                           />
                         ))}

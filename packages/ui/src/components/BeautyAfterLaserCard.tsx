@@ -1,4 +1,5 @@
 'use client';
+import type { JSX } from 'react';
 import { cn } from '@galaxy/shared';
 export function BeautyAfterLaserCard({
   className = '',
@@ -19,7 +20,7 @@ export function BeautyAfterLaserCard({
       )}
     >
       <div className="flex items-center gap-2">
-        <span className="text-xl"></span>
+        <span className="text-xl">🩹</span>
         <div>
           <h4 className="text-sm font-bold text-red-700 dark:text-red-300">{title}</h4>
           <p className="text-[10px] text-red-500 dark:text-red-400">{subtitle}</p>
@@ -28,22 +29,22 @@ export function BeautyAfterLaserCard({
       <div className="mt-3 space-y-1">
         {[
           {
-            emoji: '️',
+            emoji: '🌞',
             text: {
               ar: 'تجنبي الشمس — أسبوع كامل بعد الجلسة',
               en: 'Avoid the sun — a full week after the session',
             },
           },
-          { emoji: '', text: { ar: 'SPF 50+ — ضرورة مطلقة', en: 'SPF 50+ — an absolute must' } },
+          { emoji: '🧴', text: { ar: 'SPF 50+ — ضرورة مطلقة', en: 'SPF 50+ — an absolute must' } },
           {
-            emoji: '',
+            emoji: '🚫',
             text: {
               ar: 'لا تقشري — لا منتجات قوية 5 أيام',
               en: 'No exfoliation — no strong products for 5 days',
             },
           },
           {
-            emoji: '',
+            emoji: '💧',
             text: {
               ar: 'مرطب لطيف — ألوفيرا أو بانثينول',
               en: 'Gentle moisturizer — aloe vera or panthenol',

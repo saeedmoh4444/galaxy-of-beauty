@@ -1,4 +1,5 @@
 'use client';
+import type { JSX } from 'react';
 
 import { cn } from '@galaxy/shared';
 
@@ -38,7 +39,7 @@ export function BreastHealthCard({
   examTip1 = '• مرة شهرياً — بعد انتهاء الدورة',
   examTip2 = '• 5 دقائق فقط قد تنقذ حياتكِ',
   examTip3 = '• الكشف المبكر = شفاء 98%',
-  lastExamLabel = ' آخر فحص: ',
+  lastExamLabel = 'آخر فحص: ',
   nextReminderLabel = 'التذكير القادم: ',
   learnButtonText = 'تعلمي طريقة الفحص',
   footerText = 'صحتكِ أغلى ما تملكين',
@@ -51,7 +52,9 @@ export function BreastHealthCard({
       )}
     >
       <div className="text-center">
-        <span className="text-3xl" aria-hidden="true"></span>
+        <span className="text-3xl" aria-hidden="true">
+          🎀
+        </span>
         <h4 className="mt-1 text-sm font-bold text-pink-800 dark:text-pink-200">{title}</h4>
         <p className="text-[10px] text-pink-500 dark:text-pink-400">{subtitle}</p>
       </div>

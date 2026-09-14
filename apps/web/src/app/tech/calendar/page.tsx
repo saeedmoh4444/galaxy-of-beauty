@@ -1,13 +1,15 @@
 'use client';
+import type { JSX } from 'react';
 
 import { api } from '@/lib/trpc';
-import { Card, CardSkeleton, ErrorAlert, Button } from '@galaxy/ui';
+import { Card, CardSkeleton, ErrorAlert, Button, useAuth } from '@galaxy/ui';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
 import { useLocale } from '@/components/LocaleProvider';
 
 export default function TechCalendarPage(): JSX.Element {
   const { t } = useLocale();
-  const status = api.calendar.status.useQuery();
+  const { isAuthenticated } = useAuth();
+  const status = api.calendar.status.useQuery(undefined, { enabled: isAuthenticated });
   const connectMut = api.calendar.connect.useMutation({ onSuccess: () => status.refetch() });
   const disconnectMut = api.calendar.disconnect.useMutation({ onSuccess: () => status.refetch() });
   const syncMut = api.calendar.sync.useMutation({ onSuccess: () => status.refetch() });
@@ -27,7 +29,9 @@ export default function TechCalendarPage(): JSX.Element {
           <Card>
             <div className="space-y-4">
               <div className="flex items-center gap-3">
-                <div className="flex h-12 w-12 items-center justify-center rounded-full bg-green-100 text-xl dark:bg-green-900"></div>
+                <div className="flex h-12 w-12 items-center justify-center rounded-full bg-green-100 text-xl dark:bg-green-900">
+                  📅
+                </div>
                 <div>
                   <p className="font-semibold text-green-700 dark:text-green-300">
                     {t('tech.calendar.connected')}
@@ -35,7 +39,7 @@ export default function TechCalendarPage(): JSX.Element {
                   <p className="text-sm text-text-secondary">{st.email as string}</p>
                 </div>
               </div>
-              <p className="text-sm text-text-secondary dark:text-gray-400">
+              <p className="text-sm text-text-secondary dark:text-text-tertiary">
                 {t('tech.calendar.connected-desc')}
               </p>
               <div className="flex flex-wrap gap-3">
@@ -62,7 +66,9 @@ export default function TechCalendarPage(): JSX.Element {
         ) : (
           <Card>
             <div className="space-y-4 text-center">
-              <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-surface-muted text-3xl dark:bg-gray-800"></div>
+              <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-surface-muted text-3xl dark:bg-gray-800">
+                🔗
+              </div>
               <h2 className="text-lg font-semibold">{t('tech.calendar.connect-title')}</h2>
               <p className="text-sm text-text-secondary">{t('tech.calendar.connect-desc')}</p>
               <Button

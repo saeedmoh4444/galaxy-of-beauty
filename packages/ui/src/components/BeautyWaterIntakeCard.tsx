@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import type { JSX } from 'react';
 import { cn } from '@galaxy/shared';
 
 /**
@@ -39,7 +40,7 @@ export function BeautyWaterIntakeCard({
     >
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-2">
-          <span className="text-xl"></span>
+          <span className="text-xl">💧</span>
           <div>
             <h4 className="text-sm font-bold text-sky-700 dark:text-sky-300">{title}</h4>
             <p className="text-[10px] text-sky-500 dark:text-sky-400">
@@ -59,7 +60,7 @@ export function BeautyWaterIntakeCard({
               'h-7 w-7 rounded-lg text-xs transition-all',
               i < cups
                 ? 'bg-sky-200 text-sky-700 dark:bg-sky-900 dark:text-sky-300'
-                : 'bg-gray-100 text-gray-400 hover:bg-sky-50 dark:bg-gray-800',
+                : 'bg-surface-muted text-text-tertiary hover:bg-sky-50 dark:bg-gray-800',
             )}
           ></button>
         ))}

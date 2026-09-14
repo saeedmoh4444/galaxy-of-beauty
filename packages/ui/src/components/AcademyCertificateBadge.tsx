@@ -1,9 +1,10 @@
 'use client';
+import type { JSX } from 'react';
 
 import { cn } from '@galaxy/shared';
 
 /**
- * Academy Certificate Badge — course completion certification from Galaxy Beauty Academy.
+ * Academy Certificate Badge — course completion certification from Dalal Beauty Academy.
  * From Phase W6: Education & Empowerment — Paid Certifications.
  *
  * Usage:
@@ -23,22 +24,22 @@ interface LevelDef {
 
 const CERTS: Record<CertLevel, LevelDef> = {
   foundation: {
-    emoji: '',
+    emoji: '🌱',
     label: { ar: 'أساسي', en: 'Foundation' },
     color: 'text-emerald-600 dark:text-emerald-300',
     gradient: 'from-emerald-500 to-teal-500',
   },
   professional: {
-    emoji: '',
+    emoji: '🎓',
     label: { ar: 'احترافي', en: 'Professional' },
     color: 'text-blue-600 dark:text-blue-300',
     gradient: 'from-blue-500 to-sky-500',
   },
   master: {
-    emoji: '',
+    emoji: '🏆',
     label: { ar: 'ماستر', en: 'Master' },
-    color: 'text-purple-600 dark:text-purple-300',
-    gradient: 'from-purple-500 to-violet-500',
+    color: 'text-brand-600 dark:text-brand-300',
+    gradient: 'from-brand-500 to-violet-500',
   },
 };
 
@@ -89,7 +90,7 @@ export function AcademyCertificateBadge({
   verifiedText = 'شهادتكِ محمية ولا يمكن تزويرها',
   shareLabel = 'مشاركة',
   verifyLabel = 'تحقق',
-  accreditationText = '️ معتمدة من المؤسسة العامة للتدريب التقني والمهني',
+  accreditationText = 'معتمدة من المؤسسة العامة للتدريب التقني والمهني',
   locale = 'ar',
 }: AcademyCertificateBadgeProps): JSX.Element {
   const level = CERTS[certificate.level];
@@ -104,7 +105,9 @@ export function AcademyCertificateBadge({
       {/* Certificate seal */}
       <div className="text-center">
         <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-gradient-to-br from-blue-100 to-sky-100 dark:from-blue-800 dark:to-sky-800">
-          <span className="text-3xl" aria-hidden="true"></span>
+          <span className="text-3xl" aria-hidden="true">
+            🏆
+          </span>
         </div>
         <h4 className="mt-2 text-sm font-bold text-blue-800 dark:text-blue-200">{title}</h4>
         <p className="text-[10px] text-blue-500 dark:text-blue-400">{academyName}</p>
@@ -120,7 +123,7 @@ export function AcademyCertificateBadge({
             className={cn(
               'inline-flex items-center gap-1 rounded-full px-2.5 py-0.5 text-[10px] font-medium',
               certificate.level === 'master'
-                ? 'bg-purple-100 text-purple-700 dark:bg-purple-900 dark:text-purple-300'
+                ? 'bg-brand-100 text-brand-700 dark:bg-brand-900 dark:text-brand-300'
                 : certificate.level === 'professional'
                   ? 'bg-blue-100 text-blue-700 dark:bg-blue-900 dark:text-blue-300'
                   : 'bg-emerald-100 text-emerald-700 dark:bg-emerald-900 dark:text-emerald-300',
@@ -128,7 +131,7 @@ export function AcademyCertificateBadge({
           >
             {level.emoji} {level.label[locale]}
           </span>
-          <span className="text-[10px] text-text-tertiary dark:text-gray-500">
+          <span className="text-[10px] text-text-tertiary dark:text-text-secondary">
             {certificate.date}
           </span>
         </div>
@@ -137,7 +140,7 @@ export function AcademyCertificateBadge({
       {/* Certificate ID */}
       {certificate.certId && (
         <div className="mt-2 rounded-lg bg-white/60 p-2 text-center dark:bg-gray-800/60">
-          <p className="text-[9px] text-text-tertiary dark:text-gray-500">{certIdLabel}</p>
+          <p className="text-[9px] text-text-tertiary dark:text-text-secondary">{certIdLabel}</p>
           <p className="text-xs font-mono font-bold text-text-primary dark:text-gray-100" dir="ltr">
             {certificate.certId}
           </p>
@@ -147,7 +150,9 @@ export function AcademyCertificateBadge({
       {/* Blockchain verification */}
       {certificate.isBlockchainVerified && (
         <div className="mt-2 flex items-center gap-1.5 rounded-lg bg-emerald-50 px-2.5 py-1.5 dark:bg-emerald-950">
-          <span className="text-xs" aria-hidden="true"></span>
+          <span className="text-xs" aria-hidden="true">
+            🔗
+          </span>
           <div>
             <p className="text-[10px] font-bold text-emerald-700 dark:text-emerald-300">
               {verifiedTitle}

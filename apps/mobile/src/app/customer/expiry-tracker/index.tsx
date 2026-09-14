@@ -1,7 +1,9 @@
+import type { JSX } from 'react';
 import { View, Text, ScrollView, StyleSheet, TouchableOpacity, RefreshControl } from 'react-native';
 import { SkeletonList } from '@/components/SkeletonCard';
 import { trpc } from '@/lib/trpc-react';
 import { useLocale } from '@/components/LocaleProvider';
+import { useAuthState } from '@/hooks/useAuthState';
 
 interface ExpiryItem {
   id?: number;
@@ -13,8 +15,9 @@ interface ExpiryItem {
 }
 
 export default function ExpiryTrackerScreen(): JSX.Element {
+  const isAuthed = useAuthState();
   const { t } = useLocale();
-  const q = trpc.expiryTracker.myItems.useQuery();
+  const q = trpc.expiryTracker.myItems.useQuery(undefined, { enabled: isAuthed });
   const items: ExpiryItem[] = (q.data as unknown as ExpiryItem[] | undefined) ?? [];
   const deleteMut = trpc.expiryTracker.delete.useMutation({
     onSuccess: () => {
@@ -32,7 +35,9 @@ export default function ExpiryTrackerScreen(): JSX.Element {
       refreshControl={
         <RefreshControl
           refreshing={q.isRefetching}
-          onRefresh={() => q.refetch()}
+          onRefresh={async () => {
+            await q.refetch();
+          }}
           colors={['#ef4444']}
         />
       }
@@ -48,7 +53,7 @@ export default function ExpiryTrackerScreen(): JSX.Element {
             </Text>
           </View>
           <TouchableOpacity onPress={() => remove(i.id ?? 0)}>
-            <Text style={styles.del}>️</Text>
+            <Text style={styles.del}>🗑️</Text>
           </TouchableOpacity>
         </View>
       ))}

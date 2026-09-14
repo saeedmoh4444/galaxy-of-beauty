@@ -1,4 +1,5 @@
 'use client';
+import type { JSX } from 'react';
 import { cn } from '@galaxy/shared';
 export function BeautyDryBrushingCard({
   className = '',
@@ -28,28 +29,28 @@ export function BeautyDryBrushingCard({
       <div className="mt-3 space-y-1">
         {[
           {
-            emoji: '️',
+            emoji: '🔼',
             text: {
               ar: 'من الأسفل للأعلى — دائماً باتجاه القلب',
               en: 'Bottom to top — always toward the heart',
             },
           },
           {
-            emoji: '️',
+            emoji: '🚿',
             text: {
               ar: 'قبل الاستحمام — على بشرة جافة تماماً',
               en: 'Before showering — on completely dry skin',
             },
           },
           {
-            emoji: '',
+            emoji: '📅',
             text: {
               ar: '2-3 مرات أسبوعياً — لا يومياً',
               en: '2-3 times a week — not daily',
             },
           },
           {
-            emoji: '',
+            emoji: '🧴',
             text: {
               ar: 'بعدها — زيت أو كريم مرطب فوراً',
               en: 'Afterwards — oil or moisturizer immediately',

@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect, useCallback } from 'react';
+import type { JSX } from 'react';
 import { api } from '@/lib/trpc';
 import {
   Card,
@@ -10,6 +11,7 @@ import {
   Button,
   ProgressBar,
   formatCurrency,
+  ServiceImage,
   COUNTDOWN_INTERVAL_MS,
 } from '@galaxy/ui';
 import { useAuth } from '@galaxy/ui';
@@ -122,11 +124,11 @@ export default function FlashDealsPage(): JSX.Element {
     <div className="mx-auto max-w-5xl px-4 py-12">
       {/* Header */}
       <div className="mb-10 text-center">
-        <span className="text-6xl"></span>
+        <span className="text-6xl">⚡</span>
         <h1 className="mt-4 text-3xl font-bold text-text-primary dark:text-gray-100">
           {t('marketing.flash-deals.title')}
         </h1>
-        <p className="mt-2 text-text-secondary dark:text-gray-400">
+        <p className="mt-2 text-text-secondary dark:text-text-tertiary">
           {t('marketing.flash-deals.subtitle')}
         </p>
       </div>
@@ -168,7 +170,7 @@ export default function FlashDealsPage(): JSX.Element {
               >
                 {/* Flash badge */}
                 <div
-                  className={`absolute top-3 right-3 rounded-full px-3 py-1 text-xs font-bold text-white ${
+                  className={`absolute top-3 end-3 rounded-full px-3 py-1 text-xs font-bold text-white ${
                     soldOut ? 'bg-gray-400' : 'bg-red-500 animate-pulse'
                   }`}
                 >
@@ -178,9 +180,14 @@ export default function FlashDealsPage(): JSX.Element {
                 </div>
 
                 <div className="flex flex-col sm:flex-row items-start gap-5">
-                  {/* Emoji / Service icon */}
-                  <div className="flex h-20 w-20 shrink-0 items-center justify-center rounded-2xl bg-gradient-to-br from-red-50 to-orange-100 text-5xl dark:from-red-950 dark:to-orange-900">
-                    {deal.serviceEmoji}
+                  {/* Service image */}
+                  <div className="h-20 w-20 shrink-0 overflow-hidden rounded-2xl bg-gradient-to-br from-red-50 to-orange-100 dark:from-red-950 dark:to-orange-900">
+                    <ServiceImage
+                      src={(deal as { serviceImageUrl?: string }).serviceImageUrl || null}
+                      alt={title}
+                      size="full"
+                      className="h-20 w-20 object-cover"
+                    />
                   </div>
 
                   <div className="flex-1 min-w-0">

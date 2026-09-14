@@ -1,5 +1,6 @@
 'use client';
 import { useState } from 'react';
+import type { JSX } from 'react';
 import { api } from '@/lib/trpc';
 import { Card, CardListSkeleton, Button, formatCurrency } from '@galaxy/ui';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
@@ -87,7 +88,7 @@ export default function BeautyWishlistGiftsPage(): JSX.Element {
 
         {created && (
           <Card padding="lg" className="text-center border-2 border-green-300 bg-green-50">
-            <p className="text-2xl"></p>
+            <p className="text-2xl">✅</p>
             <p className="font-bold text-green-700 mt-2">{t('wishlistGifts.created')}</p>
           </Card>
         )}
@@ -96,7 +97,7 @@ export default function BeautyWishlistGiftsPage(): JSX.Element {
           <CardListSkeleton count={4} />
         ) : !(registries ?? []).length ? (
           <Card padding="lg" className="text-center py-8">
-            <p className="text-4xl mb-2"></p>
+            <p className="text-4xl mb-2">🎁</p>
             <p className="text-text-secondary">{t('wishlistGifts.empty')}</p>
           </Card>
         ) : (
@@ -113,7 +114,7 @@ export default function BeautyWishlistGiftsPage(): JSX.Element {
                       )}
                     </p>
                   </div>
-                  <div className="text-right">
+                  <div className="text-end">
                     <p className="text-sm text-text-secondary">
                       {formatCurrency(r.raisedAmount as number)} /{' '}
                       {formatCurrency(r.targetAmount as number)}

@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import type { JSX } from 'react';
 import { api } from '@/lib/trpc';
 import {
   Card,
@@ -24,19 +25,19 @@ const COMPENSATION_TYPES: {
 }[] = [
   {
     key: 'redo',
-    emoji: '',
+    emoji: '🔄',
     label: 'warranty.comp.redo',
     desc: 'warranty.comp.redoDesc',
   },
   {
     key: 'refund',
-    emoji: '',
+    emoji: '💰',
     label: 'warranty.comp.refund',
     desc: 'warranty.comp.refundDesc',
   },
   {
     key: 'credit',
-    emoji: '',
+    emoji: '🎫',
     label: 'warranty.comp.credit',
     desc: 'warranty.comp.creditDesc',
   },
@@ -177,7 +178,7 @@ export default function ServiceWarrantyPage(): JSX.Element {
                     </p>
                     <p className="text-xs text-text-secondary mt-0.5">{c.reason as string}</p>
                   </div>
-                  <div className="text-right">
+                  <div className="text-end">
                     <span
                       className={`rounded-full px-2.5 py-0.5 text-xs font-medium ${
                         c.status === 'APPROVED'
@@ -224,7 +225,7 @@ export default function ServiceWarrantyPage(): JSX.Element {
                     key={comp.key}
                     type="button"
                     onClick={() => setCompType(comp.key)}
-                    className={`w-full text-right rounded-xl border p-3 text-sm transition-all ${compType === comp.key ? 'border-brand-400 bg-brand-50 dark:bg-brand-950' : 'border-gray-200 dark:border-gray-700'}`}
+                    className={`w-full text-end rounded-xl border p-3 text-sm transition-all ${compType === comp.key ? 'border-brand-400 bg-brand-50 dark:bg-brand-950' : 'border-edge'}`}
                   >
                     <span className="font-bold">
                       {comp.emoji} {t(comp.label)}

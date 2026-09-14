@@ -1,10 +1,12 @@
 import { View, Text, ScrollView, StyleSheet, TouchableOpacity, RefreshControl } from 'react-native';
 import { useState } from 'react';
+import type { JSX } from 'react';
 import { LARGE_PAGE_SIZE } from '@galaxy/ui';
 import { ErrorAlert } from '@/components/ErrorAlert';
 import { SkeletonList } from '@/components/SkeletonCard';
 import { trpc } from '@/lib/trpc-react';
 import { useLocale } from '@/components/LocaleProvider';
+import { useAuthState } from '@/hooks/useAuthState';
 import { localize } from '@galaxy/shared';
 
 const TIER_COLORS: Record<string, string[]> = {
@@ -48,9 +50,13 @@ interface TransactionsResult {
 
 export default function RewardsMarketplaceScreen(): JSX.Element {
   const { t, locale } = useLocale();
-  const accountQ = trpc.loyalty.myAccount.useQuery();
+  const isAuthed = useAuthState();
+  const accountQ = trpc.loyalty.myAccount.useQuery(undefined, { enabled: isAuthed });
   const rewardsQ = trpc.loyalty.rewards.useQuery();
-  const txsQ = trpc.loyalty.myTransactions.useQuery({ page: 1, limit: LARGE_PAGE_SIZE });
+  const txsQ = trpc.loyalty.myTransactions.useQuery(
+    { page: 1, limit: LARGE_PAGE_SIZE },
+    { enabled: isAuthed },
+  );
   const [redeemed, setRedeemed] = useState<number | null>(null);
 
   const redeemMut = trpc.loyalty.redeem.useMutation({
@@ -87,7 +93,9 @@ export default function RewardsMarketplaceScreen(): JSX.Element {
       refreshControl={
         <RefreshControl
           refreshing={accountQ.isRefetching}
-          onRefresh={() => accountQ.refetch()}
+          onRefresh={async () => {
+            await accountQ.refetch();
+          }}
           colors={['#db2777']}
         />
       }
@@ -138,10 +146,10 @@ export default function RewardsMarketplaceScreen(): JSX.Element {
             <View style={{ alignItems: 'center' }}>
               <Text style={{ fontSize: 36 }}>
                 {r.rewardType === 'free_service'
-                  ? '‍️'
+                  ? '🎁'
                   : r.rewardType === 'discount_percent'
-                    ? '️'
-                    : ''}
+                    ? '🏷️'
+                    : '✨'}
               </Text>
               <Text style={{ fontWeight: '700', fontSize: 16, marginTop: 8 }}>
                 {r.nameJson ? localize(r.nameJson, locale) : ''}

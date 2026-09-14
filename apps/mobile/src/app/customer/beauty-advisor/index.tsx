@@ -8,27 +8,29 @@ import {
   KeyboardAvoidingView,
   Platform,
 } from 'react-native';
+import type { ScrollViewInstance } from 'react-native';
 import { useState, useRef } from 'react';
+import type { JSX } from 'react';
 import { trpc } from '@/lib/trpc-react';
 import { useLocale } from '@/components/LocaleProvider';
 
 const TOPICS = [
-  { key: 'روتين', emoji: '', q: 'كيف أبني روتين عناية يومي؟' },
-  { key: 'بشرة', emoji: '', q: 'كيف أحدد نوع بشرتي؟' },
-  { key: 'مكياج', emoji: '', q: 'كيف أختار كريم الأساس المناسب؟' },
-  { key: 'شعر', emoji: '‍️', q: 'كيف أعتني بشعري حسب نوعه؟' },
-  { key: 'زواج', emoji: '', q: 'كيف أخطط لجمالي قبل الزفاف؟' },
-  { key: 'صيف', emoji: '️', q: 'كيف أحمي بشرتي في الصيف؟' },
+  { key: 'روتين', emoji: '🧴', q: 'كيف أبني روتين عناية يومي؟' },
+  { key: 'بشرة', emoji: '✨', q: 'كيف أحدد نوع بشرتي؟' },
+  { key: 'مكياج', emoji: '💄', q: 'كيف أختار كريم الأساس المناسب؟' },
+  { key: 'شعر', emoji: '💇', q: 'كيف أعتني بشعري حسب نوعه؟' },
+  { key: 'زواج', emoji: '👰', q: 'كيف أخطط لجمالي قبل الزفاف؟' },
+  { key: 'صيف', emoji: '🌞', q: 'كيف أحمي بشرتي في الصيف؟' },
 ];
 
 export default function BeautyAdvisorScreen(): JSX.Element {
   const { t } = useLocale();
-  const scrollRef = useRef<ScrollView>(null);
+  const scrollRef = useRef<ScrollViewInstance>(null);
   const [messages, setMessages] = useState([
     {
       role: 'assistant',
       content:
-        ' مرحباً! أنا مجرة الجمال، مستشارة جمالكِ الشخصية. اسأليني أي سؤال عن العناية والتجميل!',
+        'مرحباً! أنا مجرة الجمال، مستشارة جمالكِ الشخصية. اسأليني أي سؤال عن العناية والتجميل!',
     },
   ]);
   const [input, setInput] = useState('');
@@ -114,7 +116,7 @@ export default function BeautyAdvisorScreen(): JSX.Element {
           onSubmitEditing={() => handleSend()}
         />
         <TouchableOpacity onPress={() => handleSend()} style={s.sendBtn}>
-          <Text style={s.sendText}></Text>
+          <Text style={s.sendText}>📤</Text>
         </TouchableOpacity>
       </View>
     </KeyboardAvoidingView>

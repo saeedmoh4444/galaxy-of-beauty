@@ -1,3 +1,4 @@
+import type { JSX } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import type { ErrorBoundaryProps } from 'expo-router';
 import { useLocale } from '@/components/LocaleProvider';
@@ -6,7 +7,7 @@ export default function RootError({ error, retry }: ErrorBoundaryProps): JSX.Ele
   const { t } = useLocale();
   return (
     <View style={styles.c}>
-      <Text style={styles.emoji}></Text>
+      <Text style={styles.emoji}>⚠️</Text>
       <Text style={styles.t}>{t('mobile.rootError.title')}</Text>
       <Text style={styles.desc}>{error.message || t('mobile.rootError.desc')}</Text>
       <TouchableOpacity onPress={retry} style={styles.btn}>

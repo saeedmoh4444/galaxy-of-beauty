@@ -1,5 +1,6 @@
 import { View, Text, ScrollView, StyleSheet, TouchableOpacity, RefreshControl } from 'react-native';
 import { useState } from 'react';
+import type { JSX } from 'react';
 import { SkeletonList } from '@/components/SkeletonCard';
 import { trpc } from '@/lib/trpc-react';
 import { useLocale } from '@/components/LocaleProvider';
@@ -48,7 +49,9 @@ export default function SmartScheduleScreen(): JSX.Element {
         refreshControl={
           <RefreshControl
             refreshing={servicesQ.isRefetching}
-            onRefresh={() => servicesQ.refetch()}
+            onRefresh={async () => {
+              await servicesQ.refetch();
+            }}
             colors={['#059669']}
           />
         }
@@ -60,7 +63,7 @@ export default function SmartScheduleScreen(): JSX.Element {
             onPress={() => findSlots(s.id)}
             style={[styles.sc, selectedSvc === s.id && styles.sca]}
           >
-            <Text style={styles.se}>{s.emoji ?? '‍️'}</Text>
+            <Text style={styles.se}>{s.emoji ?? ''}</Text>
             <Text style={styles.sn}>{s.titleJson ? localize(s.titleJson, locale) : s.nameAr}</Text>
           </TouchableOpacity>
         ))}

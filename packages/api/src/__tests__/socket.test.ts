@@ -36,10 +36,7 @@ const technician = { id: 5, role: 'TECHNICIAN', email: 'tech@test.local' };
 const admin = { id: 1, role: 'ADMIN', email: 'admin@test.local' };
 
 /** Sign an access token with the same shape as lib/jwt (verified by the middleware). */
-function signToken(
-  payload: { id: number; role: string; email: string },
-  expiresIn = '1h',
-): string {
+function signToken(payload: { id: number; role: string; email: string }, expiresIn = '1h'): string {
   return jwt.sign(
     { ...payload, jti: 'test-jti', iss: ISSUER, aud: AUDIENCE, type: 'access' },
     getEnv().JWT_ACCESS_SECRET,

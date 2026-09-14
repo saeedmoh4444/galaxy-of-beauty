@@ -1,3 +1,4 @@
+import type { JSX } from 'react';
 import { View, Text, ScrollView, StyleSheet, TouchableOpacity, RefreshControl } from 'react-native';
 import { SkeletonList } from '@/components/SkeletonCard';
 import { trpc } from '@/lib/trpc-react';
@@ -26,7 +27,9 @@ export default function LiveStreamScreen(): JSX.Element {
       refreshControl={
         <RefreshControl
           refreshing={upcomingQ.isRefetching}
-          onRefresh={() => upcomingQ.refetch()}
+          onRefresh={async () => {
+            await upcomingQ.refetch();
+          }}
           colors={['#ef4444']}
         />
       }
@@ -35,7 +38,7 @@ export default function LiveStreamScreen(): JSX.Element {
       {live.length > 0 && <Text style={styles.st}>{t('mobile.public.live-stream.live-now')}</Text>}
       {live.map((s) => (
         <View key={s.id} style={[styles.card, styles.lc]}>
-          <Text style={styles.se}></Text>
+          <Text style={styles.se}>🔴</Text>
           <View style={{ flex: 1 }}>
             <Text style={styles.sn}>{s.titleAr ?? s.title ?? ''}</Text>
             <Text style={styles.sm}>
@@ -52,7 +55,7 @@ export default function LiveStreamScreen(): JSX.Element {
       )}
       {upcoming.map((s) => (
         <View key={s.id} style={styles.card}>
-          <Text style={styles.se}></Text>
+          <Text style={styles.se}>📅</Text>
           <View style={{ flex: 1 }}>
             <Text style={styles.sn}>{s.titleAr ?? s.title ?? ''}</Text>
             <Text style={styles.sm}>
@@ -68,7 +71,7 @@ export default function LiveStreamScreen(): JSX.Element {
             </Text>
           </View>
           <View style={styles.rb}>
-            <Text style={styles.rt}></Text>
+            <Text style={styles.rt}>🔔</Text>
           </View>
         </View>
       ))}

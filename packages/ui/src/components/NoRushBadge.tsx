@@ -1,4 +1,5 @@
 'use client';
+import type { JSX } from 'react';
 
 import { cn } from '@galaxy/shared';
 
@@ -56,7 +57,9 @@ export function NoRushBadge({
     >
       {/* Header */}
       <div className="flex items-center gap-2">
-        <span className="text-xl" aria-hidden="true"></span>
+        <span className="text-xl" aria-hidden="true">
+          🐢
+        </span>
         <div>
           <h4 className="text-sm font-bold text-teal-700 dark:text-teal-300">{title}</h4>
           <p className="text-[10px] text-teal-500 dark:text-teal-400">
@@ -64,7 +67,7 @@ export function NoRushBadge({
             {bufferMinutes} {bufferSuffix}
           </p>
         </div>
-        <span className="ml-auto rounded-full bg-teal-50 px-2.5 py-0.5 text-[10px] font-bold text-teal-700 dark:bg-teal-950 dark:text-teal-300">
+        <span className="ms-auto rounded-full bg-teal-50 px-2.5 py-0.5 text-[10px] font-bold text-teal-700 dark:bg-teal-950 dark:text-teal-300">
           {comfortBadgeText}
         </span>
       </div>
@@ -73,7 +76,7 @@ export function NoRushBadge({
       <div className="mt-3 space-y-2">
         {[
           {
-            emoji: '️',
+            emoji: '⏰',
             title: {
               ar: `${bufferMinutes} دقيقة إضافية`,
               en: `${bufferMinutes} extra minutes`,
@@ -84,7 +87,7 @@ export function NoRushBadge({
             },
           },
           {
-            emoji: '',
+            emoji: '☕',
             title: hasRefreshments
               ? { ar: 'مشروبات مجانية', en: 'Free drinks' }
               : { ar: 'بيئة مريحة', en: 'Comfortable environment' },
@@ -99,7 +102,7 @@ export function NoRushBadge({
                 },
           },
           {
-            emoji: '',
+            emoji: '🔌',
             title: { ar: 'شاحن جوال', en: 'Phone charger' },
             description: {
               ar: 'شاحن متوفر في كل محطة — لا داعي للقلق على بطاريتكِ',
@@ -107,7 +110,7 @@ export function NoRushBadge({
             },
           },
           {
-            emoji: '‍️',
+            emoji: '🐢',
             title: { ar: 'لا داعي للعجلة', en: 'No need to hurry' },
             description: {
               ar: 'استرخي بعد الخدمة — لا نطلب منكِ المغادرة فوراً',
@@ -144,7 +147,7 @@ export function NoRushBadge({
       )}
 
       {/* Footer */}
-      <p className="mt-2 text-center text-[9px] text-text-tertiary dark:text-gray-500">
+      <p className="mt-2 text-center text-[9px] text-text-tertiary dark:text-text-secondary">
         {footerText}
       </p>
     </div>

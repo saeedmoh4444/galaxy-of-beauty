@@ -1,4 +1,5 @@
 'use client';
+import type { JSX } from 'react';
 import { cn } from '@galaxy/shared';
 export function BeautySpaBathCard({
   className = '',
@@ -19,7 +20,7 @@ export function BeautySpaBathCard({
       )}
     >
       <div className="flex items-center gap-2">
-        <span className="text-xl"></span>
+        <span className="text-xl">🛁</span>
         <div>
           <h4 className="text-sm font-bold text-teal-700 dark:text-teal-300">{title}</h4>
           <p className="text-[10px] text-teal-500 dark:text-teal-400">{subtitle}</p>
@@ -28,28 +29,28 @@ export function BeautySpaBathCard({
       <div className="mt-3 space-y-1">
         {[
           {
-            emoji: '',
+            emoji: '🧼',
             text: {
               ar: 'الصابون البلدي — أساس الحمام المغربي',
               en: 'Beldy soap — the base of the Moroccan bath',
             },
           },
           {
-            emoji: '',
+            emoji: '🧤',
             text: {
               ar: 'الليفة المغربية — تقشير عميق للجسم',
               en: 'Moroccan kessa glove — deep body exfoliation',
             },
           },
           {
-            emoji: '',
+            emoji: '🧖',
             text: {
               ar: 'طين الغاسول — ينقي ويشد البشرة',
               en: 'Ghassoul clay — purifies and tightens the skin',
             },
           },
           {
-            emoji: '',
+            emoji: '🌹',
             text: {
               ar: 'ماء الورد — لإنعاش البعد عن الحمام',
               en: 'Rose water — to refresh after the bath',

@@ -1,4 +1,5 @@
 'use client';
+import type { JSX } from 'react';
 import { cn } from '@galaxy/shared';
 export function BeautyVampireFacialCard({
   className = '',
@@ -28,27 +29,30 @@ export function BeautyVampireFacialCard({
       <div className="mt-3 space-y-1">
         {[
           {
-            emoji: '',
+            emoji: '🩸',
             text: {
               ar: 'تسحب عينة دم — ثم تستخلص البلازما',
               en: 'A blood sample is drawn — then plasma is extracted',
             },
           },
           {
-            emoji: '',
+            emoji: '💉',
             text: {
               ar: 'حقن البلازما — تحفز الكولاجين بقوة',
               en: 'Plasma injection — strongly boosts collagen',
             },
           },
           {
-            emoji: '',
+            emoji: '✨',
             text: {
               ar: 'نتائج طبيعية 100% — من جسمكِ',
               en: '100% natural results — from your own body',
             },
           },
-          { emoji: '️', text: { ar: '3-4 جلسات — بينها شهر', en: '3-4 sessions — a month apart' } },
+          {
+            emoji: '📅',
+            text: { ar: '3-4 جلسات — بينها شهر', en: '3-4 sessions — a month apart' },
+          },
         ].map((t, i) => (
           <div
             key={i}

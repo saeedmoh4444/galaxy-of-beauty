@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import type { JSX } from 'react';
 import { cn } from '@galaxy/shared';
 
 /**
@@ -62,8 +63,8 @@ export function IAmHomeSafe({
   confirmedText = 'تم التأكيد — شكراً لاستخدامكِ جالاكسي بيوتي',
   rateExperienceText = 'قيّمي تجربتكِ',
   alertContactPrefix = 'سيتم إشعار ',
-  alertContactSuffix = ' إذا لم تؤكدي وصولكِ',
-  remainingTimeLabel = ' وقت التأكيد المتبقي',
+  alertContactSuffix = 'إذا لم تؤكدي وصولكِ',
+  remainingTimeLabel = 'وقت التأكيد المتبقي',
 }: IAmHomeSafeProps): JSX.Element {
   const [checkedIn, setCheckedIn] = useState(false);
 
@@ -96,13 +97,13 @@ export function IAmHomeSafe({
       {/* Status */}
       <div className="flex items-center gap-2">
         <span className="text-2xl" aria-hidden="true">
-          {checkedIn ? '' : ''}
+          {checkedIn ? '✅' : '🏠'}
         </span>
         <div>
           <h4 className="text-sm font-bold text-text-primary dark:text-gray-100">
             {checkedIn ? checkedInTitle : confirmTitle}
           </h4>
-          <p className="text-[10px] text-text-tertiary dark:text-gray-400">
+          <p className="text-[10px] text-text-tertiary dark:text-text-tertiary">
             {checkedIn ? checkedInSubtitle : `${alertSubtitlePrefix}${getAlertTime()}`}
           </p>
         </div>
@@ -123,7 +124,9 @@ export function IAmHomeSafe({
       {checkedIn && (
         <div className="mt-3 space-y-2">
           <div className="rounded-xl bg-emerald-100 p-3 text-center dark:bg-emerald-900">
-            <p className="text-lg" aria-hidden="true"></p>
+            <p className="text-lg" aria-hidden="true">
+              ✅
+            </p>
             <p className="text-xs font-bold text-emerald-800 dark:text-emerald-200">{safeTitle}</p>
             <p className="mt-0.5 text-[10px] text-emerald-600 dark:text-emerald-400">
               {confirmedText}
@@ -143,7 +146,9 @@ export function IAmHomeSafe({
       {/* Alert contact info */}
       {alertContact && !checkedIn && (
         <div className="mt-2 flex items-center gap-1.5 rounded-lg bg-white/60 p-2 dark:bg-black/20">
-          <span className="text-xs" aria-hidden="true"></span>
+          <span className="text-xs" aria-hidden="true">
+            📞
+          </span>
           <span className="text-[10px] text-text-secondary dark:text-gray-300">
             {alertContactPrefix}
             {alertContact.name} ({alertContact.phone}){alertContactSuffix}
@@ -154,7 +159,7 @@ export function IAmHomeSafe({
       {/* Timer indicator */}
       {!checkedIn && (
         <div className="mt-2">
-          <div className="flex items-center justify-between text-[9px] text-text-tertiary dark:text-gray-500">
+          <div className="flex items-center justify-between text-[9px] text-text-tertiary dark:text-text-secondary">
             <span>{remainingTimeLabel}</span>
             <span>
               {graceMinutes} {graceMinutesSuffix}

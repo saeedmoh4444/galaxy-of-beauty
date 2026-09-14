@@ -1,5 +1,6 @@
 'use client';
 import { useState } from 'react';
+import type { JSX } from 'react';
 import { api } from '@/lib/trpc';
 import { Card, Button } from '@galaxy/ui';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
@@ -59,7 +60,7 @@ export default function TechGalleryPage(): JSX.Element {
 
         {uploaded && (
           <Card padding="lg" className="text-center border-2 border-green-300 bg-green-50">
-            <p className="text-2xl"></p>
+            <p className="text-2xl">✅</p>
             <p className="font-bold text-green-700 mt-2">{t('tech.gallery.upload-success')}</p>
           </Card>
         )}

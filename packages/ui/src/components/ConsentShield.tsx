@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import type { JSX } from 'react';
 import { cn } from '@galaxy/shared';
 
 /**
@@ -31,7 +32,7 @@ interface PermDef {
 
 const PERMISSIONS: Record<Permission, PermDef> = {
   photo_gallery: {
-    emoji: '️',
+    emoji: '🖼️',
     label: { ar: 'صور المعرض', en: 'Gallery photos' },
     description: {
       ar: 'السماح بعرض صوري في المعرض العام للمنصة',
@@ -39,7 +40,7 @@ const PERMISSIONS: Record<Permission, PermDef> = {
     },
   },
   before_after: {
-    emoji: '',
+    emoji: '📷',
     label: { ar: 'صور قبل/بعد', en: 'Before/after photos' },
     description: {
       ar: 'السماح بمشاركة صور التحول (يمكن تعتيم الوجه)',
@@ -47,7 +48,7 @@ const PERMISSIONS: Record<Permission, PermDef> = {
     },
   },
   testimonial: {
-    emoji: '',
+    emoji: '💬',
     label: { ar: 'شهادة', en: 'Testimonial' },
     description: {
       ar: 'السماح بنشر تقييمي وشهادتي على المنصة',
@@ -55,7 +56,7 @@ const PERMISSIONS: Record<Permission, PermDef> = {
     },
   },
   data_analytics: {
-    emoji: '',
+    emoji: '📊',
     label: { ar: 'تحليل البيانات', en: 'Data analytics' },
     description: {
       ar: 'استخدام بياناتي بشكل مجهول لتحسين الخدمات',
@@ -63,7 +64,7 @@ const PERMISSIONS: Record<Permission, PermDef> = {
     },
   },
   marketing_email: {
-    emoji: '',
+    emoji: '📧',
     label: { ar: 'رسائل تسويقية', en: 'Marketing emails' },
     description: {
       ar: 'استلام عروض وخصومات عبر البريد الإلكتروني',
@@ -71,7 +72,7 @@ const PERMISSIONS: Record<Permission, PermDef> = {
     },
   },
   location_sharing: {
-    emoji: '',
+    emoji: '📍',
     label: { ar: 'مشاركة الموقع', en: 'Location sharing' },
     description: {
       ar: 'مشاركة موقعي مع الخبيرة أثناء الخدمة المنزلية',
@@ -136,14 +137,12 @@ export function ConsentShield({
     >
       {/* Header */}
       <div className="flex items-center gap-2">
-        <span className="text-xl" aria-hidden="true">
-          ️
-        </span>
+        <span className="text-xl" aria-hidden="true"></span>
         <div>
           <h4 className="text-sm font-bold text-emerald-700 dark:text-emerald-300">{title}</h4>
           <p className="text-[10px] text-emerald-500 dark:text-emerald-400">{subtitle}</p>
         </div>
-        <span className="ml-auto rounded-full bg-emerald-50 px-2.5 py-0.5 text-[10px] font-bold text-emerald-700 dark:bg-emerald-950 dark:text-emerald-300">
+        <span className="ms-auto rounded-full bg-emerald-50 px-2.5 py-0.5 text-[10px] font-bold text-emerald-700 dark:bg-emerald-950 dark:text-emerald-300">
           {granted}/{total}
         </span>
       </div>
@@ -161,7 +160,7 @@ export function ConsentShield({
                 'flex items-center gap-3 rounded-xl border p-3 transition-all',
                 isGranted
                   ? 'border-emerald-200 bg-emerald-50 dark:border-emerald-800 dark:bg-emerald-950'
-                  : 'border-gray-100 bg-gray-50 dark:border-gray-800 dark:bg-gray-800',
+                  : 'border-edge-muted bg-surface-muted dark:border-gray-800 dark:bg-gray-800',
               )}
             >
               <span className="text-lg shrink-0" aria-hidden="true">
@@ -178,7 +177,7 @@ export function ConsentShield({
                     </span>
                   )}
                 </div>
-                <p className="text-[10px] text-text-tertiary dark:text-gray-400">
+                <p className="text-[10px] text-text-tertiary dark:text-text-tertiary">
                   {def.description[locale]}
                 </p>
               </div>

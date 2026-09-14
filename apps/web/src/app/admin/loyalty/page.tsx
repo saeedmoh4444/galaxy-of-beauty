@@ -1,18 +1,21 @@
 'use client';
+import type { JSX } from 'react';
 import { api } from '@/lib/trpc';
-import { Card, CardListSkeleton } from '@galaxy/ui';
-import { DashboardLayout } from '@/components/layout/DashboardLayout';
+import { Card, CardListSkeleton, useAuth } from '@galaxy/ui';
 import { useLocale } from '@/components/LocaleProvider';
 
 export default function AdminLoyaltyPage(): JSX.Element {
   const { t } = useLocale();
-  const { data: rewards, isLoading: rwLoading } = api.loyalty.listRewards.useQuery() as {
+  const { isAuthenticated } = useAuth();
+  const { data: rewards, isLoading: rwLoading } = api.loyalty.listRewards.useQuery(undefined, {
+    enabled: isAuthenticated,
+  }) as {
     data: Array<Record<string, unknown>> | undefined;
     isLoading: boolean;
   };
 
   return (
-    <DashboardLayout userRole="ADMIN">
+    <>
       <div className="mx-auto max-w-5xl space-y-6">
         <div>
           <h1 className="text-2xl font-bold">{t('admin.loyalty.title')}</h1>
@@ -51,6 +54,6 @@ export default function AdminLoyaltyPage(): JSX.Element {
           </Card>
         </div>
       </div>
-    </DashboardLayout>
+    </>
   );
 }

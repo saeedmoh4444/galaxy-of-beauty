@@ -1,4 +1,5 @@
 'use client';
+import type { JSX } from 'react';
 import { api } from '@/lib/trpc';
 import { Card, CardListSkeleton, formatCurrency } from '@galaxy/ui';
 import { useLocale } from '@/components/LocaleProvider';
@@ -14,7 +15,7 @@ export default function SmartPricingPage(): JSX.Element {
   return (
     <div className="mx-auto max-w-3xl px-4 py-12">
       <div className="mb-8 text-center">
-        <span className="text-6xl"></span>
+        <span className="text-6xl">💰</span>
         <h1 className="mt-4 text-3xl font-bold">{t('marketing.smart-pricing.title')}</h1>
         <p className="mt-2 text-text-secondary">{t('marketing.smart-pricing.subtitle')}</p>
       </div>
@@ -29,7 +30,7 @@ export default function SmartPricingPage(): JSX.Element {
                 <h3 className="font-bold text-lg">{s.service as string}</h3>
                 <p className="text-xs text-text-secondary">{s.reason as string}</p>
               </div>
-              <div className="text-right">
+              <div className="text-end">
                 {s.currentPrice !== s.basePrice && (
                   <span className="text-sm text-text-tertiary line-through">
                     {formatCurrency(s.basePrice as number)}

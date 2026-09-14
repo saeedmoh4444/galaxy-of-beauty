@@ -1,5 +1,7 @@
+import type { JSX } from 'react';
 import { View, Text, ScrollView, StyleSheet, RefreshControl } from 'react-native';
 import { SkeletonList } from '@/components/SkeletonCard';
+import { useAuthState } from '@/hooks/useAuthState';
 import { trpc } from '@/lib/trpc-react';
 import { useLocale } from '@/components/LocaleProvider';
 
@@ -11,7 +13,8 @@ interface TodayHealthData {
 
 export default function WellnessTrackerScreen(): JSX.Element {
   const { t } = useLocale();
-  const todayQ = trpc.wellnessTracker.today.useQuery();
+  const isAuthed = useAuthState();
+  const todayQ = trpc.wellnessTracker.today.useQuery(undefined, { enabled: isAuthed });
   if (todayQ.isLoading) return <SkeletonList count={3} />;
   const d: TodayHealthData = (todayQ.data as unknown as TodayHealthData) ?? {};
   return (
@@ -21,7 +24,9 @@ export default function WellnessTrackerScreen(): JSX.Element {
       refreshControl={
         <RefreshControl
           refreshing={todayQ.isRefetching}
-          onRefresh={() => todayQ.refetch()}
+          onRefresh={async () => {
+            await todayQ.refetch();
+          }}
           colors={['#059669']}
         />
       }
@@ -29,17 +34,17 @@ export default function WellnessTrackerScreen(): JSX.Element {
       <Text style={styles.t}>{t('mobile.wellnessTracker.title')}</Text>
       <View style={styles.kpiRow}>
         <View style={styles.kpi}>
-          <Text style={styles.kpiEmoji}></Text>
+          <Text style={styles.kpiEmoji}>💧</Text>
           <Text style={styles.kpiVal}>{d.water ?? 0}</Text>
           <Text style={styles.kpiLabel}>{t('mobile.wellnessTracker.cups')}</Text>
         </View>
         <View style={styles.kpi}>
-          <Text style={styles.kpiEmoji}></Text>
+          <Text style={styles.kpiEmoji}>😴</Text>
           <Text style={[styles.kpiVal, { color: '#2563eb' }]}>{d.sleep ?? 0}h</Text>
           <Text style={styles.kpiLabel}>{t('mobile.wellnessTracker.sleep')}</Text>
         </View>
         <View style={styles.kpi}>
-          <Text style={styles.kpiEmoji}></Text>
+          <Text style={styles.kpiEmoji}>👟</Text>
           <Text style={[styles.kpiVal, { color: '#059669' }]}>{d.steps ?? 0}</Text>
           <Text style={styles.kpiLabel}>{t('mobile.wellnessTracker.steps')}</Text>
         </View>

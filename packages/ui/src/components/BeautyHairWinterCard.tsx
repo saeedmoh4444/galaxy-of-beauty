@@ -1,4 +1,5 @@
 'use client';
+import type { JSX } from 'react';
 import { cn } from '@galaxy/shared';
 export function BeautyHairWinterCard({
   className = '',
@@ -19,7 +20,7 @@ export function BeautyHairWinterCard({
       )}
     >
       <div className="flex items-center gap-2">
-        <span className="text-xl">️</span>
+        <span className="text-xl">⛄</span>
         <div>
           <h4 className="text-sm font-bold text-sky-700 dark:text-sky-300">{title}</h4>
           <p className="text-[10px] text-sky-500 dark:text-sky-400">{subtitle}</p>
@@ -28,28 +29,28 @@ export function BeautyHairWinterCard({
       <div className="mt-3 space-y-1">
         {[
           {
-            emoji: '',
+            emoji: '🧴',
             text: {
               ar: 'زيت شعر قبل الغسيل — لمقاومة الجفاف',
               en: 'Oil your hair before washing — to fight dryness',
             },
           },
           {
-            emoji: '',
+            emoji: '🚫',
             text: {
               ar: 'لا تخرجي بشعر مبلل — يتجمد ويتكسر',
               en: 'Do not go out with wet hair — it freezes and breaks',
             },
           },
           {
-            emoji: '',
+            emoji: '💧',
             text: {
               ar: 'بلسم يترك على الشعر — حماية إضافية',
               en: 'Leave-in conditioner — extra protection',
             },
           },
           {
-            emoji: '',
+            emoji: '💇',
             text: { ar: 'مشط خشب — يقلل الكهرباء الساكنة', en: 'A wooden comb — reduces static' },
           },
         ].map((t, i) => (

@@ -1,8 +1,8 @@
 'use client';
 import { useState } from 'react';
+import type { JSX } from 'react';
 import { api } from '@/lib/trpc';
-import { Card, CardListSkeleton, Button, formatCurrency } from '@galaxy/ui';
-import { DashboardLayout } from '@/components/layout/DashboardLayout';
+import { Card, CardListSkeleton, Button, formatCurrency, useAuth } from '@galaxy/ui';
 import { useLocale } from '@/components/LocaleProvider';
 import { localize, type TranslationKey } from '@galaxy/shared';
 
@@ -15,7 +15,10 @@ const EVENT_TYPES: Array<{ key: string; labelKey: TranslationKey }> = [
 
 export default function AdminBeautyEventsPage(): JSX.Element {
   const { t, locale } = useLocale();
-  const { data: events, isLoading } = api.beautyEvents.listAll.useQuery() as {
+  const { isAuthenticated } = useAuth();
+  const { data: events, isLoading } = api.beautyEvents.listAll.useQuery(undefined, {
+    enabled: isAuthenticated,
+  }) as {
     data: Array<Record<string, unknown>> | undefined;
     isLoading: boolean;
   };
@@ -56,7 +59,7 @@ export default function AdminBeautyEventsPage(): JSX.Element {
   };
 
   return (
-    <DashboardLayout userRole="ADMIN">
+    <>
       <div className="mx-auto max-w-4xl space-y-6">
         <div>
           <h1 className="text-2xl font-bold">{t('admin.beauty-events.title')}</h1>
@@ -149,7 +152,7 @@ export default function AdminBeautyEventsPage(): JSX.Element {
                       )}
                     </p>
                   </div>
-                  <div className="text-right">
+                  <div className="text-end">
                     <p className="font-bold">
                       {e.price ? formatCurrency(Number(e.price)) : t('admin.beauty-events.free')}
                     </p>
@@ -167,6 +170,6 @@ export default function AdminBeautyEventsPage(): JSX.Element {
           )}
         </Card>
       </div>
-    </DashboardLayout>
+    </>
   );
 }

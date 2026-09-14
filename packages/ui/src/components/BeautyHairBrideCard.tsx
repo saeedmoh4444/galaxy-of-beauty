@@ -1,4 +1,5 @@
 'use client';
+import type { JSX } from 'react';
 import { cn } from '@galaxy/shared';
 export function BeautyHairBrideCard({
   className = '',
@@ -19,7 +20,7 @@ export function BeautyHairBrideCard({
       )}
     >
       <div className="flex items-center gap-2">
-        <span className="text-xl"></span>
+        <span className="text-xl">💇</span>
         <div>
           <h4 className="text-sm font-bold text-pink-700 dark:text-pink-300">{title}</h4>
           <p className="text-[10px] text-pink-500 dark:text-pink-400">{subtitle}</p>
@@ -28,28 +29,28 @@ export function BeautyHairBrideCard({
       <div className="mt-3 space-y-1">
         {[
           {
-            emoji: '',
+            emoji: '📅',
             text: {
               ar: 'ابدئي العناية قبل 6 أشهر من الزفاف',
               en: 'Start your care routine 6 months before the wedding',
             },
           },
           {
-            emoji: '',
+            emoji: '🫒',
             text: {
               ar: 'حمام زيت أسبوعي — لتغذية عميقة',
               en: 'A weekly oil treatment — for deep nourishment',
             },
           },
           {
-            emoji: '️',
+            emoji: '✂️',
             text: {
               ar: 'قص الأطراف قبل الزفاف بشهر',
               en: 'Trim the ends a month before the wedding',
             },
           },
           {
-            emoji: '',
+            emoji: '💇',
             text: {
               ar: 'تجربة التسريحة قبل الزفاف بأسبوعين',
               en: 'Try the hairstyle two weeks before the wedding',

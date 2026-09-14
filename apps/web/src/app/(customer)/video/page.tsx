@@ -1,13 +1,19 @@
 'use client';
+import type { JSX } from 'react';
 import Link from 'next/link';
 import { api } from '@/lib/trpc';
-import { Card, CardListSkeleton, Button } from '@galaxy/ui';
+import { Card, CardListSkeleton, Button, useAuth } from '@galaxy/ui';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
 import { useLocale } from '@/components/LocaleProvider';
+import { bookingStatusLabelKey } from '@/lib/bookingStatus';
 
 export default function VideoPage(): JSX.Element {
   const { t, locale } = useLocale();
-  const { data: bookingsData, isLoading } = api.bookings.list.useQuery({ page: 1, limit: 20 }) as {
+  const { isAuthenticated } = useAuth();
+  const { data: bookingsData, isLoading } = api.bookings.list.useQuery(
+    { page: 1, limit: 20 },
+    { enabled: isAuthenticated },
+  ) as {
     data: Record<string, unknown> | undefined;
     isLoading: boolean;
     isError: boolean;
@@ -27,7 +33,7 @@ export default function VideoPage(): JSX.Element {
           <CardListSkeleton count={3} />
         ) : bookings.length === 0 ? (
           <Card padding="lg" className="text-center py-8">
-            <p className="text-4xl mb-2"></p>
+            <p className="text-4xl mb-2">📹</p>
             <p className="text-text-secondary">{t('video.noBookings')}</p>
             <Link href="/bookings/create">
               <Button className="mt-4">{t('video.bookNow')}</Button>
@@ -39,7 +45,7 @@ export default function VideoPage(): JSX.Element {
               <Card key={b.id as number} padding="md">
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-3">
-                    <span className="text-3xl"></span>
+                    <span className="text-3xl">📹</span>
                     <div>
                       <p className="font-bold">
                         {t('video.bookingLabel')} #{b.id as number}
@@ -48,7 +54,7 @@ export default function VideoPage(): JSX.Element {
                         {new Date(b.createdAt as string).toLocaleDateString(
                           locale === 'en' ? 'en-GB' : 'ar-SA',
                         )}{' '}
-                        · {b.status as string}
+                        · {t(bookingStatusLabelKey(b.status as string))}
                       </p>
                     </div>
                   </div>

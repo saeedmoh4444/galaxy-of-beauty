@@ -1,4 +1,5 @@
 'use client';
+import type { JSX } from 'react';
 import { cn } from '@galaxy/shared';
 export function BeautyHandMaskCard({
   className = '',
@@ -19,7 +20,7 @@ export function BeautyHandMaskCard({
       )}
     >
       <div className="flex items-center gap-2">
-        <span className="text-xl"></span>
+        <span className="text-xl">🧤</span>
         <div>
           <h4 className="text-sm font-bold text-rose-700 dark:text-rose-300">{title}</h4>
           <p className="text-[10px] text-rose-500 dark:text-rose-400">{subtitle}</p>
@@ -28,25 +29,25 @@ export function BeautyHandMaskCard({
       <div className="mt-3 space-y-1">
         {[
           {
-            emoji: '',
+            emoji: '🧴',
             text: {
               ar: 'كريم كثيف — طبقة سميكة على اليدين',
               en: 'Thick cream — a generous layer on your hands',
             },
           },
           {
-            emoji: '',
+            emoji: '🧤',
             text: { ar: 'قفازات قطنية — للنوم طوال الليل', en: 'Cotton gloves — worn overnight' },
           },
           {
-            emoji: '',
+            emoji: '✨',
             text: {
               ar: 'صباحاً — أيدي ناعمة كالحرير',
               en: 'In the morning — hands as soft as silk',
             },
           },
           {
-            emoji: '',
+            emoji: '📅',
             text: {
               ar: 'مرة أسبوعياً — أو قبل المناسبات',
               en: 'Once a week — or before special occasions',

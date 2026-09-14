@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import type { JSX } from 'react';
 import { api } from '@/lib/trpc';
 import { Card, CardListSkeleton, ErrorAlert, EmptyState, Button, Modal, Input } from '@galaxy/ui';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
@@ -11,7 +12,7 @@ const STATUS_STYLES: Record<string, string> = {
   WAITING: 'bg-amber-100 text-amber-700 dark:bg-amber-900 dark:text-amber-300',
   NOTIFIED: 'bg-blue-100 text-blue-700 dark:bg-blue-900 dark:text-blue-300',
   CLAIMED: 'bg-green-100 text-green-700 dark:bg-green-900 dark:text-green-300',
-  EXPIRED: 'bg-surface-muted text-text-secondary dark:bg-gray-800 dark:text-gray-400',
+  EXPIRED: 'bg-surface-muted text-text-secondary dark:bg-gray-800 dark:text-text-tertiary',
 };
 
 const STATUS_LABELS: Record<string, TranslationKey> = {
@@ -130,16 +131,23 @@ export default function WaitlistPage(): JSX.Element {
             </label>
             <select
               id="wl-tech"
-              className="w-full rounded-lg border border-gray-300 bg-white p-2.5 text-sm outline-none focus:border-brand-500 dark:border-gray-600 dark:bg-gray-800"
+              className="w-full rounded-lg border border-edge bg-white p-2.5 text-sm outline-none focus:border-brand-500 dark:border-gray-600 dark:bg-gray-800"
               value={selectedTechId}
               onChange={(e) => setSelectedTechId(e.target.value)}
             >
               <option value="">{t('waitlist.placeholder.tech')}</option>
-              {technicians.map((t: Record<string, unknown>) => (
-                <option key={t.id as number} value={t.id as number}>
-                  {t.name as string}
-                </option>
-              ))}
+              {technicians.map((t: Record<string, unknown>) => {
+                // technicians.list returns raw profile rows — the public
+                // waitlist contract takes the technician USER id (profile
+                // ids 404 in join/leave lookups), and the name lives on
+                // the nested user object.
+                const user = t.user as Record<string, unknown> | undefined;
+                return (
+                  <option key={user?.id as number} value={user?.id as number}>
+                    {user?.name as string}
+                  </option>
+                );
+              })}
             </select>
           </div>
           <Input

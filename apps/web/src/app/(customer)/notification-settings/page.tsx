@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import type { JSX } from 'react';
 import { api } from '@/lib/trpc';
 import { Card, CardListSkeleton } from '@galaxy/ui';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
@@ -76,7 +77,7 @@ export default function NotificationSettingsPage(): JSX.Element {
             {TOGGLES.map((item) => (
               <div
                 key={item.key}
-                className="flex items-center justify-between border-b border-gray-100 p-4 last:border-0 dark:border-gray-800"
+                className="flex items-center justify-between border-b border-edge-muted p-4 last:border-0 dark:border-gray-800"
               >
                 <div>
                   <p className="font-medium text-text-primary dark:text-gray-100">

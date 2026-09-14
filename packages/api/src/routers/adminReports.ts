@@ -130,7 +130,7 @@ export const adminReportsRouter = router({
       db.booking.aggregate({ _sum: { totalAmount: true } }),
     ]);
     return {
-      title: 'تقرير جالكسي بيوتي',
+      title: 'تقرير دلال',
       generatedAt: new Date().toISOString(),
       summary: {
         totalRevenue: Number(revenue._sum?.totalAmount || 0),
@@ -139,7 +139,7 @@ export const adminReportsRouter = router({
         customers: 0,
         avgRating: 0,
       },
-      sections: [' الإيرادات', ' الحجوزات', '‍ الفنيات', ' الخدمات', ' المدن'],
+      sections: ['الإيرادات', 'الحجوزات', 'الفنيات', 'الخدمات', 'المدن'],
     };
   }),
 });

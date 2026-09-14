@@ -1,4 +1,5 @@
 'use client';
+import type { JSX } from 'react';
 import { api } from '@/lib/trpc';
 import { Card, CardListSkeleton, Button, ErrorAlert } from '@galaxy/ui';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
@@ -16,7 +17,7 @@ const CHALLENGES: {
 }[] = [
   {
     key: '7day_mask',
-    emoji: '',
+    emoji: '🧖',
     name: 'socialChallenge.chal.mask',
     desc: 'socialChallenge.desc.mask',
     participants: 234,
@@ -25,7 +26,7 @@ const CHALLENGES: {
   },
   {
     key: 'selfie_30',
-    emoji: '',
+    emoji: '🚫',
     name: 'socialChallenge.chal.noMakeup',
     desc: 'socialChallenge.desc.noMakeup',
     participants: 156,
@@ -34,7 +35,7 @@ const CHALLENGES: {
   },
   {
     key: 'water_challenge',
-    emoji: '',
+    emoji: '💧',
     name: 'socialChallenge.chal.water',
     desc: 'socialChallenge.desc.water',
     participants: 412,
@@ -43,7 +44,7 @@ const CHALLENGES: {
   },
   {
     key: 'night_routine',
-    emoji: '',
+    emoji: '🌙',
     name: 'socialChallenge.chal.nightRoutine',
     desc: 'socialChallenge.desc.nightRoutine',
     participants: 189,
@@ -52,7 +53,7 @@ const CHALLENGES: {
   },
   {
     key: 'natural_hair',
-    emoji: '‍️',
+    emoji: '💇',
     name: 'socialChallenge.chal.naturalHair',
     desc: 'socialChallenge.desc.naturalHair',
     participants: 98,
@@ -132,7 +133,7 @@ export default function SocialChallengesPage(): JSX.Element {
                     <p className="text-sm text-text-secondary">{t(c.desc)}</p>
                     <div className="mt-2 flex gap-4 text-xs text-text-secondary">
                       <span> {c.participants}</span>
-                      <span>️ {t(c.duration)}</span>
+                      <span> {t(c.duration)}</span>
                       <span> {t(c.prize)}</span>
                     </div>
                   </div>

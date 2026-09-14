@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import type { JSX } from 'react';
 
 /**
  * Sisterhood Wall — women leaving anonymous compliments for each other.
@@ -9,18 +10,18 @@ import { useState } from 'react';
 
 const SEED_COMPLIMENTS = [
   {
-    emoji: '',
+    emoji: '💪',
     text: {
       ar: 'أنتِ أقوى مما تتصورين. استمري!',
       en: 'You are stronger than you think. Keep going!',
     },
   },
   {
-    emoji: '',
+    emoji: '😊',
     text: { ar: 'ابتسامتكِ تضيء العالم من حولكِ', en: 'Your smile lights up the world around you' },
   },
   {
-    emoji: '',
+    emoji: '✨',
     text: { ar: 'جمالكِ الداخلي هو ما يجعلكِ مميزة', en: 'Your inner beauty makes you special' },
   },
   {
@@ -35,7 +36,7 @@ const SEED_COMPLIMENTS = [
 export function SisterhoodWall({
   className = '',
   locale = 'ar',
-  title = '‍️ جدار الأختية',
+  title = 'جدار الأختية',
   subtitle = 'اتركي رسالة إيجابية لأخت مجهولة',
   placeholder = 'اكتبي رسالة تشجيع...',
   sendButtonText = 'إرسال',
@@ -55,7 +56,7 @@ export function SisterhoodWall({
   const send = () => {
     if (!input.trim()) return;
     setCompliments([
-      { emoji: '', text: { ar: input.trim(), en: input.trim() } },
+      { emoji: '💌', text: { ar: input.trim(), en: input.trim() } },
       ...compliments.slice(0, 9),
     ]);
     setInput('');

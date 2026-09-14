@@ -1,4 +1,5 @@
 'use client';
+import type { JSX } from 'react';
 
 import { cn } from '@galaxy/shared';
 
@@ -22,7 +23,7 @@ interface TierDef {
 
 const TIERS: Record<SubTier, TierDef> = {
   basic: {
-    emoji: '',
+    emoji: '🌱',
     label: { ar: 'أساسية', en: 'Basic' },
     price: 99,
     includes: [
@@ -33,7 +34,7 @@ const TIERS: Record<SubTier, TierDef> = {
     color: 'bg-pink-50 border-pink-200 dark:bg-pink-950 dark:border-pink-800',
   },
   premium: {
-    emoji: '',
+    emoji: '⭐',
     label: { ar: 'مميزة', en: 'Premium' },
     price: 199,
     includes: [
@@ -42,10 +43,10 @@ const TIERS: Record<SubTier, TierDef> = {
       { ar: 'أولوية حجز 48 ساعة', en: '48-hour booking priority' },
       { ar: 'هدية شهرية', en: 'Monthly gift' },
     ],
-    color: 'bg-purple-50 border-purple-200 dark:bg-purple-950 dark:border-purple-800',
+    color: 'bg-brand-50 border-brand-200 dark:bg-brand-950 dark:border-brand-800',
   },
   vip: {
-    emoji: '',
+    emoji: '👑',
     label: { ar: 'VIP', en: 'VIP' },
     price: 399,
     includes: [
@@ -87,7 +88,7 @@ export function BeautySubscriptionCard({
   planPrefix = 'الباقة ',
   currencySuffix = 'ر.س',
   monthlySuffix = '/ شهرياً',
-  includesTitle = ' يشمل',
+  includesTitle = 'يشمل',
   subscribeButtonText = 'اشتركي الآن',
   locale = 'ar',
 }: BeautySubscriptionCardProps): JSX.Element {
@@ -100,7 +101,7 @@ export function BeautySubscriptionCard({
           {t.emoji}
         </span>
         <h4 className="mt-1 text-sm font-bold text-text-primary dark:text-gray-100">{title}</h4>
-        <p className="text-[10px] text-text-tertiary dark:text-gray-400">
+        <p className="text-[10px] text-text-tertiary dark:text-text-tertiary">
           {planPrefix}
           {t.label[locale]}
         </p>
@@ -111,7 +112,7 @@ export function BeautySubscriptionCard({
         <p className="text-3xl font-bold text-text-primary dark:text-gray-100">
           {t.price} {currencySuffix}
         </p>
-        <p className="text-[10px] text-text-tertiary dark:text-gray-500">{monthlySuffix}</p>
+        <p className="text-[10px] text-text-tertiary dark:text-text-secondary">{monthlySuffix}</p>
       </div>
 
       {/* Includes */}
@@ -122,7 +123,7 @@ export function BeautySubscriptionCard({
         <div className="mt-1 space-y-0.5">
           {t.includes.map((item) => (
             <div key={item.ar} className="flex items-center gap-1.5">
-              <span className="text-[10px] text-emerald-500"></span>
+              <span className="text-[10px] text-emerald-500">✅</span>
               <span className="text-[10px] text-text-secondary dark:text-gray-300">
                 {item[locale]}
               </span>
@@ -152,7 +153,7 @@ export function BeautySubscriptionCard({
       <button
         type="button"
         onClick={onSubscribe}
-        className="mt-3 w-full rounded-xl bg-gradient-to-r from-pink-500 to-purple-500 py-2.5 text-xs font-bold text-white hover:from-pink-600 hover:to-purple-600 active:scale-[0.98] transition-all shadow-sm"
+        className="mt-3 w-full rounded-xl bg-gradient-to-r from-pink-500 to-brand-500 py-2.5 text-xs font-bold text-white hover:from-pink-600 hover:to-brand-600 active:scale-[0.98] transition-all shadow-sm"
       >
         {subscribeButtonText}
       </button>

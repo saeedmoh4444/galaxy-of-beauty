@@ -1,9 +1,11 @@
+import type { JSX } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import { ScreenState } from '@/components/ScreenState';
 import { trpc } from '@/lib/trpc-react';
 import { formatCurrency } from '@galaxy/ui';
 import { localize } from '@galaxy/shared';
 import { useLocale } from '@/components/LocaleProvider';
+import { useAuthState } from '@/hooks/useAuthState';
 
 const COLORS = {
   brand: '#7c3aed',
@@ -14,8 +16,9 @@ const COLORS = {
 };
 
 export default function CartScreen(): JSX.Element {
+  const isAuthed = useAuthState();
   const { locale, t } = useLocale();
-  const cart = trpc.marketplace.cart.useQuery() ?? {
+  const cart = trpc.marketplace.cart.useQuery(undefined, { enabled: isAuthed }) ?? {
     data: null,
     isLoading: false,
     isError: false,

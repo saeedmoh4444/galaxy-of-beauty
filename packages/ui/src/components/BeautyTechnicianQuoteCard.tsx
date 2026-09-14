@@ -1,4 +1,5 @@
 'use client';
+import type { JSX } from 'react';
 
 import { cn } from '@galaxy/shared';
 
@@ -47,7 +48,7 @@ export function BeautyTechnicianQuoteCard({
           </p>
           <div className="mt-2 flex items-center gap-2">
             <div className="h-8 w-8 rounded-full bg-amber-200 dark:bg-amber-800 flex items-center justify-center text-sm">
-              ‍
+              👩
             </div>
             <div>
               <p className="text-xs font-bold text-amber-700 dark:text-amber-300">{quote.author}</p>

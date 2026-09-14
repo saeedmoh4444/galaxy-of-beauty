@@ -1,4 +1,5 @@
 'use client';
+import type { JSX } from 'react';
 import { api } from '@/lib/trpc';
 import { Card, CardListSkeleton, Button } from '@galaxy/ui';
 import { useAuth } from '@galaxy/ui';
@@ -20,7 +21,7 @@ export default function AudioRoomsPage(): JSX.Element {
   return (
     <div className="mx-auto max-w-2xl px-4 py-12">
       <div className="mb-8 text-center">
-        <span className="text-6xl">️</span>
+        <span className="text-6xl">🎤</span>
         <h1 className="mt-4 text-3xl font-bold">{t('marketing.audio-rooms.title')}</h1>
         <p className="mt-2 text-text-secondary">{t('marketing.audio-rooms.subtitle')}</p>
       </div>
@@ -38,7 +39,7 @@ export default function AudioRoomsPage(): JSX.Element {
               className="mb-3 border-2 border-red-200 dark:border-red-800"
             >
               <div className="flex items-center gap-4">
-                <span className="text-3xl">️</span>
+                <span className="text-3xl">🔴</span>
                 <div className="flex-1">
                   <h3 className="font-bold">{r.title as string}</h3>
                   <p className="text-xs text-text-secondary">
@@ -60,7 +61,7 @@ export default function AudioRoomsPage(): JSX.Element {
           {upcoming.map((r: Record<string, unknown>) => (
             <Card key={r.id as number} padding="lg" className="mb-3 opacity-70">
               <div className="flex items-center gap-4">
-                <span className="text-3xl">️</span>
+                <span className="text-3xl">📅</span>
                 <div className="flex-1">
                   <h3 className="font-bold">{r.title as string}</h3>
                   <p className="text-xs text-text-secondary">

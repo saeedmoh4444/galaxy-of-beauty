@@ -1,4 +1,5 @@
 'use client';
+import type { JSX } from 'react';
 
 import { useSearchParams } from 'next/navigation';
 import { api } from '@/lib/trpc';
@@ -47,13 +48,15 @@ export default function ComparePage(): JSX.Element {
           <table className="w-full border-collapse rounded-xl border border-edge dark:border-gray-700">
             <thead>
               <tr className="bg-surface-muted dark:bg-gray-800">
-                <th className="p-4 text-right text-sm font-semibold text-text-secondary dark:text-gray-400 min-w-[140px]">
+                <th className="p-4 text-end text-sm font-semibold text-text-secondary dark:text-text-tertiary min-w-[140px]">
                   {t('marketing.compare.feature-col')}
                 </th>
                 {services.map((s) => (
                   <th key={s.id as number} className="p-4 text-center min-w-[200px]">
                     <div className="flex flex-col items-center gap-2">
-                      <div className="flex h-16 w-16 items-center justify-center rounded-xl bg-brand-50 text-2xl dark:bg-brand-950"></div>
+                      <div className="flex h-16 w-16 items-center justify-center rounded-xl bg-brand-50 text-2xl dark:bg-brand-950">
+                        💅
+                      </div>
                       <p className="text-sm font-bold text-text-primary dark:text-gray-100">
                         {localize(s.titleJson as Record<string, string>, locale)}
                       </p>
@@ -62,7 +65,7 @@ export default function ComparePage(): JSX.Element {
                 ))}
               </tr>
             </thead>
-            <tbody className="divide-y divide-gray-100 dark:divide-gray-800">
+            <tbody className="divide-y divide-edge-muted">
               {/* Price row */}
               <tr className="hover:bg-surface-muted dark:hover:bg-gray-900">
                 <td className="p-4 text-sm font-medium text-text-primary dark:text-gray-300">
@@ -85,7 +88,7 @@ export default function ComparePage(): JSX.Element {
                 {services.map((s) => (
                   <td
                     key={s.id as number}
-                    className="p-4 text-center text-sm text-text-secondary dark:text-gray-400"
+                    className="p-4 text-center text-sm text-text-secondary dark:text-text-tertiary"
                   >
                     {t('marketing.compare.duration-min', { min: s.durationMin as number })}
                   </td>
@@ -99,7 +102,7 @@ export default function ComparePage(): JSX.Element {
                 {services.map((s) => (
                   <td
                     key={s.id as number}
-                    className="p-4 text-center text-sm text-text-secondary dark:text-gray-400"
+                    className="p-4 text-center text-sm text-text-secondary dark:text-text-tertiary"
                   >
                     {s.category as string}
                   </td>
@@ -113,7 +116,7 @@ export default function ComparePage(): JSX.Element {
                 {services.map((s) => (
                   <td
                     key={s.id as number}
-                    className="p-4 text-center text-sm text-text-secondary dark:text-gray-400"
+                    className="p-4 text-center text-sm text-text-secondary dark:text-text-tertiary"
                   >
                     {s.bookingCount as number}
                   </td>
@@ -148,7 +151,7 @@ export default function ComparePage(): JSX.Element {
                   <td key={s.id as number} className="p-4 text-center">
                     <div className="space-y-1">
                       {((s.variants as Array<Record<string, unknown>>) || []).map((v, i) => (
-                        <p key={i} className="text-xs text-text-secondary dark:text-gray-400">
+                        <p key={i} className="text-xs text-text-secondary dark:text-text-tertiary">
                           {localize(v.nameJson as Record<string, string>, locale)}
                           {Number(v.priceDelta) > 0
                             ? t('marketing.compare.price-delta', {

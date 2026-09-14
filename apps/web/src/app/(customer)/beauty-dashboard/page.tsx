@@ -1,4 +1,5 @@
 'use client';
+import type { JSX } from 'react';
 import Link from 'next/link';
 import { api } from '@/lib/trpc';
 import { Card, DashboardSkeleton, Button, formatCurrency, ErrorAlert } from '@galaxy/ui';
@@ -55,7 +56,7 @@ export default function BeautyDashboardPage(): JSX.Element {
                 <p className="text-xs text-text-secondary">{t('beautyDashboard.streakDays')}</p>
               </Card>
               <Card padding="lg" className="text-center">
-                <p className="text-2xl font-extrabold text-purple-600">
+                <p className="text-2xl font-extrabold text-brand-600">
                   {formatCurrency((data?.walletBalance as number) ?? 0)}
                 </p>
                 <p className="text-xs text-text-secondary">{t('beautyDashboard.wallet')}</p>
@@ -104,7 +105,7 @@ export default function BeautyDashboardPage(): JSX.Element {
                         {(data.skinConcerns as string[]).map((c: string) => (
                           <span
                             key={c}
-                            className="rounded-full bg-purple-100 px-2 py-0.5 text-xs text-purple-700"
+                            className="rounded-full bg-brand-100 px-2 py-0.5 text-xs text-brand-700"
                           >
                             {c}
                           </span>
@@ -135,21 +136,21 @@ export default function BeautyDashboardPage(): JSX.Element {
             <div className="grid gap-4 sm:grid-cols-3">
               <Link href="/beauty-journal">
                 <Card hover padding="md" className="text-center">
-                  <span className="text-3xl"></span>
+                  <span className="text-3xl">📔</span>
                   <p className="font-bold mt-2">{(data?.journalCount as number) ?? 0}</p>
                   <p className="text-xs text-text-secondary">{t('beautyDashboard.journal')}</p>
                 </Card>
               </Link>
               <Link href="/wishlist">
                 <Card hover padding="md" className="text-center">
-                  <span className="text-3xl">️</span>
+                  <span className="text-3xl">💖</span>
                   <p className="font-bold mt-2">{(data?.wishlistCount as number) ?? 0}</p>
                   <p className="text-xs text-text-secondary">{t('beautyDashboard.wishlist')}</p>
                 </Card>
               </Link>
               <Link href="/wallet">
                 <Card hover padding="md" className="text-center">
-                  <span className="text-3xl"></span>
+                  <span className="text-3xl">💰</span>
                   <p className="font-bold mt-2">
                     {formatCurrency((data?.bonusBalance as number) ?? 0)}
                   </p>

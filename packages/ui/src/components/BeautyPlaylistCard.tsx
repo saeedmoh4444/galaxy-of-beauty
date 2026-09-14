@@ -1,4 +1,5 @@
 'use client';
+import type { JSX } from 'react';
 
 import { cn } from '@galaxy/shared';
 
@@ -17,10 +18,10 @@ interface Track {
 }
 
 const TRACKS: Track[] = [
-  { title: { ar: 'أمواج البحر', en: 'Sea waves' }, duration: '4:30', emoji: '' },
-  { title: { ar: 'صوت المطر', en: 'Rain sounds' }, duration: '5:15', emoji: '️' },
-  { title: { ar: 'عود هادئ', en: 'Calm oud' }, duration: '3:45', emoji: '' },
-  { title: { ar: 'تأمل الصباح', en: 'Morning meditation' }, duration: '6:00', emoji: '' },
+  { title: { ar: 'أمواج البحر', en: 'Sea waves' }, duration: '4:30', emoji: '🌊' },
+  { title: { ar: 'صوت المطر', en: 'Rain sounds' }, duration: '5:15', emoji: '☔' },
+  { title: { ar: 'عود هادئ', en: 'Calm oud' }, duration: '3:45', emoji: '🎵' },
+  { title: { ar: 'تأمل الصباح', en: 'Morning meditation' }, duration: '6:00', emoji: '🧘' },
 ];
 
 interface BeautyPlaylistCardProps {
@@ -47,7 +48,9 @@ export function BeautyPlaylistCard({
       )}
     >
       <div className="flex items-center gap-2">
-        <span className="text-xl" aria-hidden="true"></span>
+        <span className="text-xl" aria-hidden="true">
+          🎵
+        </span>
         <div>
           <h4 className="text-sm font-bold text-violet-700 dark:text-violet-300">{title}</h4>
           <p className="text-[10px] text-violet-500 dark:text-violet-400">{subtitle}</p>
@@ -86,7 +89,7 @@ export function BeautyPlaylistCard({
         ))}
       </div>
 
-      <p className="mt-2 text-center text-[9px] text-text-tertiary dark:text-gray-500">
+      <p className="mt-2 text-center text-[9px] text-text-tertiary dark:text-text-secondary">
         {footerText}
       </p>
     </div>

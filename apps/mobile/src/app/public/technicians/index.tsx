@@ -1,3 +1,4 @@
+import type { JSX } from 'react';
 import { View, Text, ScrollView, StyleSheet, RefreshControl } from 'react-native';
 import { ErrorAlert } from '@/components/ErrorAlert';
 import { SkeletonList } from '@/components/SkeletonCard';
@@ -37,7 +38,9 @@ export default function TechniciansScreen(): JSX.Element {
       refreshControl={
         <RefreshControl
           refreshing={techsQ.isRefetching}
-          onRefresh={() => techsQ.refetch()}
+          onRefresh={async () => {
+            await techsQ.refetch();
+          }}
           colors={['#db2777']}
         />
       }
@@ -49,7 +52,7 @@ export default function TechniciansScreen(): JSX.Element {
       ) : (
         items.map((item) => (
           <View key={item.id} style={styles.card}>
-            <Text style={styles.avatar}>‍</Text>
+            <Text style={styles.avatar}>👤</Text>
             <View style={{ flex: 1 }}>
               <Text style={styles.techName}>{item.name as string}</Text>
               <Text style={styles.techSpecialty}>

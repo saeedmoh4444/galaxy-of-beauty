@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import type { JSX } from 'react';
 import { api } from '@/lib/trpc';
 import { Card, Button } from '@galaxy/ui';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
@@ -8,11 +9,11 @@ import { useLocale } from '@/components/LocaleProvider';
 import type { TranslationKey } from '@galaxy/shared';
 
 const MOODS: { value: number; emoji: string; label: TranslationKey }[] = [
-  { value: 1, emoji: '', label: 'wellnessTracker.mood.bad' },
-  { value: 2, emoji: '', label: 'wellnessTracker.mood.okay' },
-  { value: 3, emoji: '', label: 'wellnessTracker.mood.normal' },
-  { value: 4, emoji: '', label: 'wellnessTracker.mood.good' },
-  { value: 5, emoji: '', label: 'wellnessTracker.mood.excellent' },
+  { value: 1, emoji: '😢', label: 'wellnessTracker.mood.bad' },
+  { value: 2, emoji: '😐', label: 'wellnessTracker.mood.okay' },
+  { value: 3, emoji: '🙂', label: 'wellnessTracker.mood.normal' },
+  { value: 4, emoji: '😊', label: 'wellnessTracker.mood.good' },
+  { value: 5, emoji: '🤩', label: 'wellnessTracker.mood.excellent' },
 ];
 
 const DAYS: TranslationKey[] = [
@@ -115,7 +116,7 @@ export default function WellnessTrackerPage(): JSX.Element {
               <label className="text-sm font-semibold">{t('wellnessTracker.skincareLabel')}</label>
               <button
                 onClick={() => setSkincare(!skincare)}
-                className={`mt-1 w-full rounded-lg border px-3 py-2 text-sm font-medium transition-colors ${skincare ? 'bg-green-100 border-green-400 text-green-700 dark:bg-green-900 dark:text-green-300' : 'bg-surface-muted border-gray-200 text-text-secondary dark:bg-gray-800 dark:border-gray-700'}`}
+                className={`mt-1 w-full rounded-lg border px-3 py-2 text-sm font-medium transition-colors ${skincare ? 'bg-green-100 border-green-400 text-green-700 dark:bg-green-900 dark:text-green-300' : 'bg-surface-muted border-edge text-text-secondary dark:bg-gray-800 dark:border-gray-700'}`}
               >
                 {skincare ? t('wellnessTracker.done') : t('wellnessTracker.notDone')}
               </button>
@@ -128,7 +129,7 @@ export default function WellnessTrackerPage(): JSX.Element {
                   <button
                     key={m.value}
                     onClick={() => setMood(m.value)}
-                    className={`flex-1 rounded-lg border py-2 text-center text-sm transition-all ${mood === m.value ? 'border-brand-400 bg-brand-50 dark:bg-brand-950 scale-105' : 'border-gray-200 dark:border-gray-700'}`}
+                    className={`flex-1 rounded-lg border py-2 text-center text-sm transition-all ${mood === m.value ? 'border-brand-400 bg-brand-50 dark:bg-brand-950 scale-105' : 'border-edge'}`}
                   >
                     <span className="text-2xl block">{m.emoji}</span>
                     <span className="text-[10px]">{t(m.label)}</span>
@@ -152,29 +153,29 @@ export default function WellnessTrackerPage(): JSX.Element {
         {w && (
           <div className="grid gap-4 sm:grid-cols-5">
             <Card padding="md" className="text-center">
-              <p className="text-3xl"></p>
+              <p className="text-3xl">💧</p>
               <p className="text-2xl font-bold text-blue-600">{w.avgWater}</p>
               <p className="text-xs text-text-secondary">{t('wellnessTracker.avgWater')}</p>
             </Card>
             <Card padding="md" className="text-center">
-              <p className="text-3xl"></p>
-              <p className="text-2xl font-bold text-purple-600">{w.avgSleep}</p>
+              <p className="text-3xl">😴</p>
+              <p className="text-2xl font-bold text-brand-600">{w.avgSleep}</p>
               <p className="text-xs text-text-secondary">{t('wellnessTracker.avgSleep')}</p>
             </Card>
             <Card padding="md" className="text-center">
-              <p className="text-3xl"></p>
+              <p className="text-3xl">😊</p>
               <p className="text-2xl font-bold text-amber-600">{w.avgMood}</p>
               <p className="text-xs text-text-secondary">{t('wellnessHub.avgMood')}</p>
             </Card>
             <Card padding="md" className="text-center">
-              <p className="text-3xl">‍️</p>
+              <p className="text-3xl">👟</p>
               <p className="text-2xl font-bold text-green-600">
                 {(w.totalSteps / 1000).toFixed(1)}k
               </p>
               <p className="text-xs text-text-secondary">{t('wellnessTracker.totalSteps')}</p>
             </Card>
             <Card padding="md" className="text-center">
-              <p className="text-3xl"></p>
+              <p className="text-3xl">🧴</p>
               <p className="text-2xl font-bold text-pink-600">{w.skincareDays}/7</p>
               <p className="text-xs text-text-secondary">{t('wellnessTracker.skincareDays')}</p>
             </Card>
@@ -192,7 +193,7 @@ export default function WellnessTrackerPage(): JSX.Element {
                 return (
                   <div key={d.date as string} className="flex-1 flex flex-col items-center gap-1">
                     <div
-                      className="w-full rounded-t bg-gradient-to-t from-brand-400 to-purple-400"
+                      className="w-full rounded-t bg-gradient-to-t from-brand-400 to-brand-400"
                       style={{ height: `${h}%` }}
                     />
                     <span className="text-[10px] text-text-tertiary">{t(DAYS[dayIdx])}</span>

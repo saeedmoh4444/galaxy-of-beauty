@@ -1,4 +1,5 @@
 'use client';
+import type { JSX } from 'react';
 
 import { cn } from '@galaxy/shared';
 
@@ -30,12 +31,12 @@ interface BeautyConciergeCardProps {
 }
 
 const SERVICES = [
-  { emoji: '', label: { ar: 'تنظيم المواعيد', en: 'Appointment scheduling' } },
-  { emoji: '', label: { ar: 'اقتراح خدمات', en: 'Service suggestions' } },
-  { emoji: '', label: { ar: 'تنسيق المفاجآت', en: 'Surprise coordination' } },
-  { emoji: '', label: { ar: 'ترتيب التوصيل', en: 'Delivery arrangement' } },
-  { emoji: '', label: { ar: 'استشارة سريعة', en: 'Quick consultation' } },
-  { emoji: '', label: { ar: 'أولوية الحجز', en: 'Booking priority' } },
+  { emoji: '📅', label: { ar: 'تنظيم المواعيد', en: 'Appointment scheduling' } },
+  { emoji: '💡', label: { ar: 'اقتراح خدمات', en: 'Service suggestions' } },
+  { emoji: '🎉', label: { ar: 'تنسيق المفاجآت', en: 'Surprise coordination' } },
+  { emoji: '🚚', label: { ar: 'ترتيب التوصيل', en: 'Delivery arrangement' } },
+  { emoji: '💬', label: { ar: 'استشارة سريعة', en: 'Quick consultation' } },
+  { emoji: '⭐', label: { ar: 'أولوية الحجز', en: 'Booking priority' } },
 ];
 
 export function BeautyConciergeCard({
@@ -59,7 +60,7 @@ export function BeautyConciergeCard({
     >
       <div className="text-center">
         <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-gradient-to-br from-amber-200 to-yellow-200 text-3xl dark:from-amber-800 dark:to-yellow-800">
-          ‍
+          💁
         </div>
         <h4 className="mt-2 text-sm font-bold text-amber-800 dark:text-amber-200">{title}</h4>
         <p className="text-[10px] text-amber-600 dark:text-amber-400">

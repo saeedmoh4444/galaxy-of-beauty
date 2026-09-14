@@ -1,4 +1,5 @@
 'use client';
+import type { JSX } from 'react';
 
 import { cn } from '@galaxy/shared';
 
@@ -28,22 +29,22 @@ interface AmenityDef {
 
 const AMENITIES: AmenityDef[] = [
   {
-    emoji: '',
+    emoji: '🎀',
     label: { ar: 'ربطة شعر', en: 'Hair tie' },
     detail: { ar: 'ربطات شعر جديدة', en: 'Fresh hair ties' },
   },
   {
-    emoji: '',
+    emoji: '📌',
     label: { ar: 'دبابيس شعر', en: 'Bobby pins' },
     detail: { ar: 'بكل الأحجام', en: 'In all sizes' },
   },
   {
-    emoji: '',
+    emoji: '🧴',
     label: { ar: 'مزيل عرق', en: 'Deodorant' },
     detail: { ar: 'أنواع خالية من العطور', en: 'Fragrance-free options' },
   },
   {
-    emoji: '',
+    emoji: '🔌',
     label: { ar: 'شاحن جوال', en: 'Phone charger' },
     detail: { ar: 'جميع أنواع الشواحن', en: 'All charger types' },
   },
@@ -53,12 +54,12 @@ const AMENITIES: AmenityDef[] = [
     detail: { ar: 'مجاناً في دورة المياه', en: 'Free in the restroom' },
   },
   {
-    emoji: '',
+    emoji: '🌸',
     label: { ar: 'عطر', en: 'Perfume' },
     detail: { ar: 'عطور فاخرة للمسة أخيرة', en: 'Luxury scents for a final touch' },
   },
   {
-    emoji: '',
+    emoji: '🧻',
     label: { ar: 'مناديل مبللة', en: 'Wet wipes' },
     detail: { ar: 'مناديل منعشة', en: 'Refreshing wipes' },
   },
@@ -115,7 +116,9 @@ export function ComplimentaryAmenityBadge({
       )}
     >
       <div className="flex items-center gap-2">
-        <span className="text-xl" aria-hidden="true"></span>
+        <span className="text-xl" aria-hidden="true">
+          🎁
+        </span>
         <div>
           <h4 className="text-sm font-bold text-pink-700 dark:text-pink-300">{title}</h4>
           <p className="text-[10px] text-pink-500 dark:text-pink-400">{subtitle}</p>
@@ -144,7 +147,7 @@ export function ComplimentaryAmenityBadge({
         ))}
       </div>
 
-      <p className="mt-2 text-center text-[9px] text-text-tertiary dark:text-gray-500">
+      <p className="mt-2 text-center text-[9px] text-text-tertiary dark:text-text-secondary">
         {footerText}
       </p>
     </div>

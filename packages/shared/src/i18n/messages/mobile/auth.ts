@@ -8,7 +8,7 @@ export const mobileAuthMessages = {
   'mobile.auth.resetTitle': { ar: 'إعادة تعيين كلمة المرور', en: 'Reset Password' },
   'mobile.auth.verifyTitle': { ar: 'توثيق البريد الإلكتروني', en: 'Verify Email' },
   'mobile.auth.twoFactorTitle': { ar: 'المصادقة الثنائية', en: 'Two-Factor Authentication' },
-  'mobile.auth.quickLogin': { ar: ' دخول سريع', en: 'Quick Login' },
+  'mobile.auth.quickLogin': { ar: 'دخول سريع', en: 'Quick Login' },
   'mobile.auth.createNewAccount': { ar: 'إنشاء حساب جديد', en: 'Create New Account' },
   'mobile.auth.biometricSuccess': {
     ar: 'تم التحقق البيومتري بنجاح',

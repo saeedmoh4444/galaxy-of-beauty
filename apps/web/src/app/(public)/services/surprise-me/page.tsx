@@ -1,4 +1,5 @@
-import { getServerCaller } from '@/lib/server-trpc';
+import type { JSX } from 'react';
+import { getServerCaller, serializeForClient } from '@/lib/server-trpc';
 import { SurpriseMeClient } from './SurpriseMeClient';
 import type { SurpriseMePageData } from './SurpriseMeClient';
 
@@ -11,7 +12,7 @@ export default async function SurpriseMePage(): Promise<JSX.Element> {
     const items = services.items;
     if (items.length > 0) {
       // Pick a random service on the server
-      data.initialService = items[Math.floor(Math.random() * items.length)];
+      data.initialService = serializeForClient(items[Math.floor(Math.random() * items.length)]);
     }
   } catch {
     // Client will retry

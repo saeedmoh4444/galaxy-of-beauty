@@ -1,4 +1,5 @@
 'use client';
+import type { JSX } from 'react';
 
 import { cn } from '@galaxy/shared';
 
@@ -30,14 +31,14 @@ interface ItemDef {
 const ITEMS: Record<KitItem, ItemDef> = {
   pads: { emoji: '🩹', label: { ar: 'فوط صحية', en: 'Sanitary pads' } },
   tampons: { emoji: '🩹', label: { ar: 'سدادات قطنية', en: 'Tampons' } },
-  hair_spray: { emoji: '', label: { ar: 'مثبت شعر', en: 'Hairspray' } },
-  bobby_pins: { emoji: '', label: { ar: 'دبابيس شعر', en: 'Bobby pins' } },
-  hair_tie: { emoji: '', label: { ar: 'ربطة شعر', en: 'Hair tie' } },
-  deodorant: { emoji: '', label: { ar: 'مزيل عرق', en: 'Deodorant' } },
+  hair_spray: { emoji: '💇', label: { ar: 'مثبت شعر', en: 'Hairspray' } },
+  bobby_pins: { emoji: '📎', label: { ar: 'دبابيس شعر', en: 'Bobby pins' } },
+  hair_tie: { emoji: '🎀', label: { ar: 'ربطة شعر', en: 'Hair tie' } },
+  deodorant: { emoji: '💨', label: { ar: 'مزيل عرق', en: 'Deodorant' } },
   sewing_kit: { emoji: '🪡', label: { ar: 'عدة خياطة', en: 'Sewing kit' } },
-  stain_remover: { emoji: '', label: { ar: 'مزيل بقع', en: 'Stain remover' } },
-  nail_file: { emoji: '', label: { ar: 'مبرد أظافر', en: 'Nail file' } },
-  mints: { emoji: '', label: { ar: 'منعش نفس', en: 'Breath mints' } },
+  stain_remover: { emoji: '🧼', label: { ar: 'مزيل بقع', en: 'Stain remover' } },
+  nail_file: { emoji: '💅', label: { ar: 'مبرد أظافر', en: 'Nail file' } },
+  mints: { emoji: '🍬', label: { ar: 'منعش نفس', en: 'Breath mints' } },
 };
 
 interface BeautyEmergencyKitProps {
@@ -74,7 +75,9 @@ export function BeautyEmergencyKit({
       )}
     >
       <div className="flex items-center gap-2">
-        <span className="text-xl" aria-hidden="true"></span>
+        <span className="text-xl" aria-hidden="true">
+          🩹
+        </span>
         <div>
           <h4 className="text-sm font-bold text-rose-700 dark:text-rose-300">{title}</h4>
           <p className="text-[10px] text-rose-500 dark:text-rose-400">{subtitle}</p>
@@ -106,7 +109,7 @@ export function BeautyEmergencyKit({
         <p className="text-[10px] font-bold text-rose-700 dark:text-rose-300">{freeText}</p>
       </div>
 
-      <p className="mt-1.5 text-center text-[9px] text-text-tertiary dark:text-gray-500">
+      <p className="mt-1.5 text-center text-[9px] text-text-tertiary dark:text-text-secondary">
         {footerText}
       </p>
     </div>

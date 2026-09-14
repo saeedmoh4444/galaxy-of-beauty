@@ -1,4 +1,5 @@
 'use client';
+import type { JSX } from 'react';
 
 import { cn } from '@galaxy/shared';
 
@@ -18,12 +19,12 @@ export function BeautyMeditationCard({
   return (
     <div
       className={cn(
-        'rounded-2xl border border-violet-100 bg-gradient-to-br from-violet-50 to-purple-50 p-5 dark:border-violet-900 dark:from-violet-950 dark:to-purple-950',
+        'rounded-2xl border border-violet-100 bg-gradient-to-br from-violet-50 to-brand-50 p-5 dark:border-violet-900 dark:from-violet-950 dark:to-brand-950',
         className,
       )}
     >
       <div className="text-center">
-        <span className="text-3xl">‍️</span>
+        <span className="text-3xl">🧘</span>
         <h4 className="mt-1 text-sm font-bold text-violet-800 dark:text-violet-200">{title}</h4>
         <p className="text-[10px] text-violet-500 dark:text-violet-400">{subtitle}</p>
       </div>
@@ -37,21 +38,21 @@ export function BeautyMeditationCard({
             },
           },
           {
-            emoji: '',
+            emoji: '🌸',
             text: {
               ar: 'ركزي على شيء جميل في نفسكِ — داخلياً أو خارجياً',
               en: 'Focus on something beautiful about yourself — inside or out',
             },
           },
           {
-            emoji: '',
+            emoji: '💪',
             text: {
               ar: 'كرري: "أنا جميلة، أنا قوية، أنا كافية"',
               en: 'Repeat: "I am beautiful, I am strong, I am enough"',
             },
           },
           {
-            emoji: '',
+            emoji: '😊',
             text: { ar: 'افتحي عينيكِ ببطء — وابتسمي', en: 'Slowly open your eyes — and smile' },
           },
         ].map((s, i) => (

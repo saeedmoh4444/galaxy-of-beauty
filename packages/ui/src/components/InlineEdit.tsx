@@ -171,7 +171,7 @@ export function InlineEdit({
             rows={type === 'textarea' ? 3 : undefined}
           />
           {saving && (
-            <span className="ml-1.5 inline-block h-4 w-4 animate-spin rounded-full border-2 border-brand-600 border-t-transparent" />
+            <span className="ms-1.5 inline-block h-4 w-4 animate-spin rounded-full border-2 border-brand-600 border-t-transparent" />
           )}
         </span>
       ) : (
@@ -225,7 +225,7 @@ export function InlineEdit({
       )}
 
       {error && (
-        <span className="ml-1 text-xs text-danger" role="alert">
+        <span className="ms-1 text-xs text-danger" role="alert">
           {error}
         </span>
       )}

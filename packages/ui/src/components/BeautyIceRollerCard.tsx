@@ -1,4 +1,5 @@
 'use client';
+import type { JSX } from 'react';
 import { cn } from '@galaxy/shared';
 export function BeautyIceRollerCard({
   className = '',
@@ -19,7 +20,7 @@ export function BeautyIceRollerCard({
       )}
     >
       <div className="flex items-center gap-2">
-        <span className="text-xl"></span>
+        <span className="text-xl">🧊</span>
         <div>
           <h4 className="text-sm font-bold text-sky-700 dark:text-sky-300">{heading}</h4>
           <p className="text-[10px] text-sky-500 dark:text-sky-400">{subtitle}</p>
@@ -28,22 +29,22 @@ export function BeautyIceRollerCard({
       <div className="mt-3 grid grid-cols-2 gap-1.5">
         {[
           {
-            emoji: '️',
+            emoji: '🧽',
             label: { ar: 'يقلص المسام', en: 'Tightens pores' },
             tip: { ar: 'يغلق المسام بعد التنظيف', en: 'Closes pores after cleansing' },
           },
           {
-            emoji: '',
+            emoji: '🧊',
             label: { ar: 'يهدئ البشرة', en: 'Calms the skin' },
             tip: { ar: 'يخفف الاحمرار والالتهاب', en: 'Reduces redness and inflammation' },
           },
           {
-            emoji: '',
+            emoji: '✨',
             label: { ar: 'ينشط الدورة', en: 'Boosts circulation' },
             tip: { ar: 'يمنح البشرة إشراقة فورية', en: 'Gives an instant glow' },
           },
           {
-            emoji: '',
+            emoji: '⏰',
             label: { ar: '3 دقائق', en: '3 minutes' },
             tip: { ar: 'صباحاً — قبل المكياج', en: 'In the morning — before makeup' },
           },

@@ -1,4 +1,5 @@
 'use client';
+import type { JSX } from 'react';
 import { cn } from '@galaxy/shared';
 export function BeautyDarkSkinCard({
   className = '',
@@ -19,7 +20,7 @@ export function BeautyDarkSkinCard({
       )}
     >
       <div className="flex items-center gap-2">
-        <span className="text-xl"></span>
+        <span className="text-xl">🤎</span>
         <div>
           <h4 className="text-sm font-bold text-amber-700 dark:text-amber-300">{title}</h4>
           <p className="text-[10px] text-amber-500 dark:text-amber-400">{subtitle}</p>
@@ -28,28 +29,28 @@ export function BeautyDarkSkinCard({
       <div className="mt-3 space-y-1">
         {[
           {
-            emoji: '',
+            emoji: '🧴',
             text: {
               ar: 'ميل للجفاف — ترطيب مكثف بزبدة الشيا',
               en: 'Prone to dryness — intense hydration with shea butter',
             },
           },
           {
-            emoji: '',
+            emoji: '🍊',
             text: {
               ar: 'تصبغات — فيتامين C وهيالورونيك أسيد',
               en: 'Hyperpigmentation — vitamin C and hyaluronic acid',
             },
           },
           {
-            emoji: '',
+            emoji: '🎨',
             text: {
               ar: 'ألوان: برقوقي، عنابي، ذهبي — غنية وعميقة',
               en: 'Shades: plum, maroon, gold — rich and deep',
             },
           },
           {
-            emoji: '️',
+            emoji: '🌞',
             text: {
               ar: 'SPF 30+ — الميلانين يحمي ولكن ليس 100%',
               en: 'SPF 30+ — melanin protects, but not 100%',

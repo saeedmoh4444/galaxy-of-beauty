@@ -45,6 +45,7 @@ test-results/
 # Uploads (local dev)
 uploads/*
 !uploads/.gitkeep
+packages/api/uploads/
 
 # Certificates
 *.pem

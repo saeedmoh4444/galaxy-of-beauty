@@ -1,4 +1,5 @@
 'use client';
+import type { JSX } from 'react';
 import { cn } from '@galaxy/shared';
 export function BeautyTurmericLatteCard({
   className = '',
@@ -19,7 +20,7 @@ export function BeautyTurmericLatteCard({
       )}
     >
       <div className="flex items-center gap-2">
-        <span className="text-xl"></span>
+        <span className="text-xl">🥛</span>
         <div>
           <h4 className="text-sm font-bold text-amber-700 dark:text-amber-300">{title}</h4>
           <p className="text-[10px] text-amber-500 dark:text-amber-400">{subtitle}</p>
@@ -28,28 +29,28 @@ export function BeautyTurmericLatteCard({
       <div className="mt-3 space-y-1">
         {[
           {
-            emoji: '',
+            emoji: '🟡',
             text: {
               ar: 'كركمين — أقوى مضاد التهاب طبيعي',
               en: 'Curcumin — a powerful natural anti-inflammatory',
             },
           },
           {
-            emoji: '',
+            emoji: '😌',
             text: {
               ar: 'يهدئ البشرة — ممتاز للحبوب والوردية',
               en: 'Calms the skin — great for breakouts and rosacea',
             },
           },
           {
-            emoji: '',
+            emoji: '🥛',
             text: {
               ar: 'حليب + كركم + فلفل أسود + عسل',
               en: 'Milk + turmeric + black pepper + honey',
             },
           },
           {
-            emoji: '',
+            emoji: '🌙',
             text: {
               ar: 'قبل النوم — يهدئ ويساعد على الاسترخاء',
               en: 'Before bed — soothing and relaxing',

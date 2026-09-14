@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import type { JSX } from 'react';
 
 /**
  * Countdown Timer — for flash deals, limited offers, campaign expiry.

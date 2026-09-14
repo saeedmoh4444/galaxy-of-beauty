@@ -1,48 +1,49 @@
 import { View, Text, ScrollView, StyleSheet, TouchableOpacity, TextInput } from 'react-native';
 import { useState } from 'react';
+import type { JSX } from 'react';
 import { useLocale } from '@/components/LocaleProvider';
 
 const COMMON_ALLERGENS = [
   {
     key: 'fragrance',
-    emoji: '',
+    emoji: '🌸',
     name: 'العطور',
     risk: 'medium',
     desc: 'قد تسبب تهيج البشرة الحساسة',
   },
-  { key: 'alcohol', emoji: '', name: 'الكحول', risk: 'high', desc: 'يجفف البشرة ويهيجها' },
+  { key: 'alcohol', emoji: '🍸', name: 'الكحول', risk: 'high', desc: 'يجفف البشرة ويهيجها' },
   {
     key: 'parabens',
-    emoji: '',
+    emoji: '🧪',
     name: 'البارابين',
     risk: 'medium',
     desc: 'مواد حافظة قد تسبب حساسية',
   },
   {
     key: 'sulfates',
-    emoji: '',
+    emoji: '🫧',
     name: 'الكبريتات',
     risk: 'high',
     desc: 'منظفات قاسية على البشرة',
   },
-  { key: 'silicones', emoji: '', name: 'السيليكون', risk: 'low', desc: 'يسد المسام عند البعض' },
+  { key: 'silicones', emoji: '🧴', name: 'السيليكون', risk: 'low', desc: 'يسد المسام عند البعض' },
   {
     key: 'essential_oils',
-    emoji: '',
+    emoji: '🌿',
     name: 'زيوت عطرية',
     risk: 'medium',
     desc: 'قد تسبب حساسية للبشرة الحساسة',
   },
   {
     key: 'lanolin',
-    emoji: '',
+    emoji: '🐑',
     name: 'اللانولين',
     risk: 'medium',
     desc: 'دهن صوفي قد يسبب حساسية',
   },
   {
     key: 'formaldehyde',
-    emoji: '️',
+    emoji: '💀',
     name: 'الفورمالديهايد',
     risk: 'high',
     desc: 'مادة حافظة ضارة',
@@ -78,7 +79,7 @@ export default function AllergenCheckerScreen(): JSX.Element {
           placeholderTextColor="#9ca3af"
         />
         <TouchableOpacity style={styles.sb}>
-          <Text style={styles.sbt}></Text>
+          <Text style={styles.sbt}>🔍</Text>
         </TouchableOpacity>
       </View>
 

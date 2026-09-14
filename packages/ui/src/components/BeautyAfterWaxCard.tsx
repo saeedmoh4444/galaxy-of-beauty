@@ -1,4 +1,5 @@
 'use client';
+import type { JSX } from 'react';
 import { cn } from '@galaxy/shared';
 export function BeautyAfterWaxCard({
   className = '',
@@ -19,7 +20,7 @@ export function BeautyAfterWaxCard({
       )}
     >
       <div className="flex items-center gap-2">
-        <span className="text-xl">️</span>
+        <span className="text-xl">🪒</span>
         <div>
           <h4 className="text-sm font-bold text-pink-700 dark:text-pink-300">{title}</h4>
           <p className="text-[10px] text-pink-500 dark:text-pink-400">{subtitle}</p>
@@ -28,28 +29,28 @@ export function BeautyAfterWaxCard({
       <div className="mt-3 space-y-1">
         {[
           {
-            emoji: '',
+            emoji: '🧴',
             text: {
               ar: 'كريم مهدئ — ألوفيرا أو بانثينول',
               en: 'Soothing cream — aloe vera or panthenol',
             },
           },
           {
-            emoji: '',
+            emoji: '🚫',
             text: {
               ar: 'لا تعرقي — 24 ساعة بدون رياضة',
               en: 'Avoid sweating — no exercise for 24 hours',
             },
           },
           {
-            emoji: '',
+            emoji: '👕',
             text: {
               ar: 'ملابس قطنية واسعة — للتهوية',
               en: 'Loose cotton clothing — for breathability',
             },
           },
           {
-            emoji: '',
+            emoji: '🧽',
             text: {
               ar: 'تقشير لطيف — بعد 3 أيام لمنع الشعر تحت الجلد',
               en: 'Gentle exfoliation — after 3 days to prevent ingrown hairs',

@@ -1,4 +1,5 @@
 'use client';
+import type { JSX } from 'react';
 import { cn } from '@galaxy/shared';
 export function BeautyMakeupPowderCard({
   className = '',
@@ -19,7 +20,7 @@ export function BeautyMakeupPowderCard({
       )}
     >
       <div className="flex items-center gap-2">
-        <span className="text-xl"></span>
+        <span className="text-xl">🪞</span>
         <div>
           <h4 className="text-sm font-bold text-pink-700 dark:text-pink-300">{heading}</h4>
           <p className="text-[10px] text-pink-500 dark:text-pink-400">{subtitle}</p>
@@ -28,22 +29,22 @@ export function BeautyMakeupPowderCard({
       <div className="mt-3 grid grid-cols-2 gap-1.5">
         {[
           {
-            emoji: '',
+            emoji: '🤍',
             label: { ar: 'شفافة', en: 'Translucent' },
             tip: { ar: 'تثبت بدون لون', en: 'Sets makeup without color' },
           },
           {
-            emoji: '',
+            emoji: '🎨',
             label: { ar: 'ملونة', en: 'Tinted' },
             tip: { ar: 'تغطية إضافية', en: 'Extra coverage' },
           },
           {
-            emoji: '',
+            emoji: '🪶',
             label: { ar: 'مدمجة', en: 'Pressed' },
             tip: { ar: 'كريم + بودرة', en: 'Cream + powder' },
           },
           {
-            emoji: '',
+            emoji: '🌿',
             label: { ar: 'طبيعية', en: 'Natural' },
             tip: { ar: 'مكونات نباتية', en: 'Plant-based ingredients' },
           },

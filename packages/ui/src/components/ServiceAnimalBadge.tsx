@@ -1,4 +1,5 @@
 'use client';
+import type { JSX } from 'react';
 
 import { cn } from '@galaxy/shared';
 
@@ -30,7 +31,7 @@ export function ServiceAnimalBadge({
   item2 = '• ماء متوفر لحيوانكِ',
   item3 = '• فريق مدرب على التعامل مع حيوانات الخدمة',
   item4 = '• مساحة كافية للكرسي المتحرك وحيوان الخدمة معاً',
-  proofNoteText = '‍ لا نحتاج إثبات — وجودكِ مع حيوانكِ يكفي',
+  proofNoteText = 'لا نحتاج إثبات — وجودكِ مع حيوانكِ يكفي',
   footerText = 'الوصول حق للجميع',
 }: ServiceAnimalBadgeProps): JSX.Element {
   return (
@@ -41,9 +42,7 @@ export function ServiceAnimalBadge({
       )}
     >
       <div className="flex items-center gap-2">
-        <span className="text-xl" aria-hidden="true">
-          ‍
-        </span>
+        <span className="text-xl" aria-hidden="true"></span>
         <div>
           <h4 className="text-sm font-bold text-blue-700 dark:text-blue-300">{title}</h4>
           <p className="text-[10px] text-blue-500 dark:text-blue-400">{subtitle}</p>
@@ -59,13 +58,13 @@ export function ServiceAnimalBadge({
         </div>
       </div>
 
-      <div className="mt-2 rounded-lg bg-gray-50 p-2 dark:bg-gray-800">
+      <div className="mt-2 rounded-lg bg-surface-muted p-2 dark:bg-gray-800">
         <p className="text-center text-[10px] text-text-secondary dark:text-gray-300">
           {proofNoteText}
         </p>
       </div>
 
-      <p className="mt-1.5 text-center text-[9px] text-text-tertiary dark:text-gray-500">
+      <p className="mt-1.5 text-center text-[9px] text-text-tertiary dark:text-text-secondary">
         {footerText}
       </p>
     </div>

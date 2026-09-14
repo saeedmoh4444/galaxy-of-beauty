@@ -1,8 +1,9 @@
 'use client';
+import type { JSX } from 'react';
 
 /**
  * Beauty Goal Tracker — visual progress for beauty learning goals.
- * From Phase W6: Galaxy Beauty Academy.
+ * From Phase W6: Dalal Beauty Academy.
  *
  * Usage:
  *   <BeautyGoalTracker goals={[{ label: 'تعلم أساسيات المكياج', progress: 60 }]} />
@@ -41,7 +42,7 @@ export function BeautyGoalTracker({
               {goal.progress}%
             </span>
           </div>
-          <div className="h-2 overflow-hidden rounded-full bg-gray-100 dark:bg-gray-800">
+          <div className="h-2 overflow-hidden rounded-full bg-surface-muted">
             <div
               className="h-full rounded-full bg-gradient-to-r from-brand-500 to-pink-500 transition-all duration-700"
               style={{ width: `${goal.progress}%` }}

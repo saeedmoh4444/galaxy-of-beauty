@@ -1,8 +1,8 @@
 'use client';
 import { useState } from 'react';
+import type { JSX } from 'react';
 import { api } from '@/lib/trpc';
 import { Card, Button } from '@galaxy/ui';
-import { DashboardLayout } from '@/components/layout/DashboardLayout';
 import { useLocale } from '@/components/LocaleProvider';
 
 export default function AdminCashbackPage(): JSX.Element {
@@ -11,7 +11,7 @@ export default function AdminCashbackPage(): JSX.Element {
   const setRateMut = api.cashback.setRate.useMutation();
 
   return (
-    <DashboardLayout userRole="ADMIN">
+    <>
       <div className="mx-auto max-w-3xl space-y-6">
         <div>
           <h1 className="text-2xl font-bold">{t('admin.cashback.title')}</h1>
@@ -19,7 +19,7 @@ export default function AdminCashbackPage(): JSX.Element {
         </div>
 
         <Card padding="lg" className="text-center">
-          <p className="text-6xl mb-4"></p>
+          <p className="text-6xl mb-4">💸</p>
           <p className="text-sm text-text-secondary">{t('admin.cashback.current-rate')}</p>
           <p className="text-4xl font-extrabold text-brand-600 mt-2">{rate}%</p>
         </Card>
@@ -42,6 +42,6 @@ export default function AdminCashbackPage(): JSX.Element {
           <p className="text-xs text-text-tertiary mt-2">{t('admin.cashback.range-hint')}</p>
         </Card>
       </div>
-    </DashboardLayout>
+    </>
   );
 }

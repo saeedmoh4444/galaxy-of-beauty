@@ -76,7 +76,11 @@ export function middleware(request: NextRequest) {
     );
 
     const origin = request.headers.get('origin');
-    if (origin && allowedOrigins.includes(origin)) {
+    // Dev origins: the Expo web build (Metro on :8081/:8083) calls the API
+    // cross-origin — without this the browser discards every response and
+    // the app renders blank. localhost-only, production unaffected.
+    const isDevLocalOrigin = !!origin && /^http:\/\/localhost(:\d+)?$/.test(origin);
+    if (origin && (allowedOrigins.includes(origin) || isDevLocalOrigin)) {
       response.headers.set('Access-Control-Allow-Origin', origin);
       response.headers.set('Access-Control-Allow-Credentials', 'true');
       response.headers.set('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
@@ -101,7 +105,7 @@ export function middleware(request: NextRequest) {
 
   // Redirect authenticated users away from auth pages
   const token = request.cookies.get('gob_access')?.value;
-  if (token && AUTH_PATHS.some((p) => pathname.startsWith(p))) {
+  if (token && AUTH_PATHS.some((p) => pathname === p || pathname.startsWith(`${p}/`))) {
     const redirect = NextResponse.redirect(new URL('/dashboard', request.url));
     redirect.headers.set(
       'Strict-Transport-Security',
@@ -110,8 +114,10 @@ export function middleware(request: NextRequest) {
     return redirect;
   }
 
-  // Protected routes: check for auth cookie
-  if (PROTECTED_PATHS.some((p) => pathname.startsWith(p))) {
+  // Protected routes: check for auth cookie.
+  // Segment-aware match — '/tech' must gate /tech/* but NOT '/technicians'
+  // (public page) or '/tech-calendar' (public page).
+  if (PROTECTED_PATHS.some((p) => pathname === p || pathname.startsWith(`${p}/`))) {
     if (!token) {
       const redirect = NextResponse.redirect(new URL('/login', request.url));
       redirect.headers.set(

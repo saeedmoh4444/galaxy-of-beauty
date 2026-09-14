@@ -1,4 +1,5 @@
 'use client';
+import type { JSX } from 'react';
 
 import { api } from '@/lib/trpc';
 import { Card, DashboardSkeleton, ErrorAlert, EmptyState, formatCurrency } from '@galaxy/ui';
@@ -56,7 +57,7 @@ export default function BeautyAnalyticsPage(): JSX.Element {
           <h1 className="text-2xl font-bold text-text-primary dark:text-gray-100">
             {t('beautyAnalytics.title')}
           </h1>
-          <p className="mt-1 text-sm text-text-secondary dark:text-gray-400">
+          <p className="mt-1 text-sm text-text-secondary dark:text-text-tertiary">
             {t('beautyAnalytics.subtitle')}
           </p>
         </div>
@@ -79,27 +80,27 @@ export default function BeautyAnalyticsPage(): JSX.Element {
             {/* KPI Cards */}
             <div className="grid gap-4 sm:grid-cols-4">
               <Card padding="lg" className="text-center">
-                <p className="text-4xl"></p>
+                <p className="text-4xl">📅</p>
                 <p className="mt-2 text-3xl font-extrabold text-brand-600">{s.totalBookings}</p>
                 <p className="text-xs text-text-secondary">
                   {t('beautyAnalytics.kpi.totalBookings')}
                 </p>
               </Card>
               <Card padding="lg" className="text-center">
-                <p className="text-4xl"></p>
+                <p className="text-4xl">✅</p>
                 <p className="mt-2 text-3xl font-extrabold text-green-600">{s.completedBookings}</p>
                 <p className="text-xs text-text-secondary">{t('beautyAnalytics.kpi.completed')}</p>
               </Card>
               <Card padding="lg" className="text-center">
-                <p className="text-4xl"></p>
+                <p className="text-4xl">📈</p>
                 <p className="mt-2 text-3xl font-extrabold text-blue-600">{s.completionRate}%</p>
                 <p className="text-xs text-text-secondary">
                   {t('beautyAnalytics.kpi.completionRate')}
                 </p>
               </Card>
               <Card padding="lg" className="text-center">
-                <p className="text-4xl"></p>
-                <p className="mt-2 text-3xl font-extrabold text-purple-600">
+                <p className="text-4xl">💰</p>
+                <p className="mt-2 text-3xl font-extrabold text-brand-600">
                   {formatCurrency(s.totalSpent)}
                 </p>
                 <p className="text-xs text-text-secondary">{t('beautyAnalytics.kpi.totalSpent')}</p>
@@ -130,7 +131,7 @@ export default function BeautyAnalyticsPage(): JSX.Element {
                       </div>
                       <div className="h-3 rounded-full bg-surface-muted dark:bg-gray-800 overflow-hidden">
                         <div
-                          className="h-full rounded-full bg-gradient-to-r from-brand-400 to-purple-500 transition-all"
+                          className="h-full rounded-full bg-gradient-to-r from-brand-400 to-brand-500 transition-all"
                           style={{ width: `${cat.pct}%` }}
                         />
                       </div>
@@ -153,11 +154,11 @@ export default function BeautyAnalyticsPage(): JSX.Element {
                     const height = Math.max(8, (m.count / maxMonthly) * 100);
                     return (
                       <div key={m.month} className="flex-1 flex flex-col items-center gap-1">
-                        <span className="text-xs font-semibold text-text-secondary dark:text-gray-400">
+                        <span className="text-xs font-semibold text-text-secondary dark:text-text-tertiary">
                           {m.count}
                         </span>
                         <div
-                          className="w-full rounded-t-lg bg-gradient-to-t from-brand-400 to-purple-400 transition-all"
+                          className="w-full rounded-t-lg bg-gradient-to-t from-brand-400 to-brand-400 transition-all"
                           style={{ height: `${height}%` }}
                         />
                         <span className="text-[10px] text-text-tertiary">{m.month}</span>

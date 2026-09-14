@@ -1,3 +1,4 @@
+import type { JSX } from 'react';
 import { View, Text, ScrollView, StyleSheet } from 'react-native';
 import { SkeletonList } from '@/components/SkeletonCard';
 import { ErrorAlert } from '@/components/ErrorAlert';

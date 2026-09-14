@@ -1,9 +1,17 @@
 'use client';
+import type { JSX } from 'react';
 
 import { api } from '@/lib/trpc';
 import type { RouterOutput } from '@galaxy/api/client';
-import { Card, TableSkeleton, ErrorAlert, EmptyState, Button, formatCurrency } from '@galaxy/ui';
-import { DashboardLayout } from '@/components/layout/DashboardLayout';
+import {
+  Card,
+  TableSkeleton,
+  ErrorAlert,
+  EmptyState,
+  Button,
+  formatCurrency,
+  useAuth,
+} from '@galaxy/ui';
 import { useToast } from '@galaxy/ui';
 import { useLocale } from '@/components/LocaleProvider';
 import { type TranslationKey } from '@galaxy/shared';
@@ -12,8 +20,12 @@ type PayoutItem = NonNullable<RouterOutput['payouts']['listForAdmin']>['payouts'
 
 export default function PayoutsPage(): JSX.Element {
   const { t, locale } = useLocale();
+  const { isAuthenticated } = useAuth();
   const { addToast } = useToast();
-  const { data, isLoading, isError, refetch } = api.payouts.listForAdmin.useQuery({});
+  const { data, isLoading, isError, refetch } = api.payouts.listForAdmin.useQuery(
+    {},
+    { enabled: isAuthenticated },
+  );
   const items: PayoutItem[] = data?.payouts ?? [];
   const processMut = api.payouts.process.useMutation({
     onSuccess: () => {
@@ -44,7 +56,7 @@ export default function PayoutsPage(): JSX.Element {
   };
 
   return (
-    <DashboardLayout userRole="ADMIN">
+    <>
       <div className="mx-auto max-w-5xl space-y-6 px-4 py-8">
         <h1 className="text-2xl font-bold text-text-primary dark:text-gray-100">
           {t('admin.payouts.title')}
@@ -58,19 +70,22 @@ export default function PayoutsPage(): JSX.Element {
         ) : (
           <Card padding="none">
             <table className="w-full text-sm">
-              <thead className="bg-surface-muted text-text-secondary dark:bg-gray-800 dark:text-gray-400">
+              <thead className="bg-surface-muted text-text-secondary dark:bg-gray-800 dark:text-text-tertiary">
                 <tr>
-                  <th className="p-3 text-right">{t('admin.payouts.technician-header')}</th>
-                  <th className="p-3 text-right">{t('admin.payouts.amount-header')}</th>
-                  <th className="p-3 text-right">{t('admin.payouts.status-header')}</th>
-                  <th className="p-3 text-right">{t('admin.payouts.date-header')}</th>
-                  <th className="p-3 text-right">{t('admin.payouts.action-header')}</th>
+                  <th className="p-3 text-end">{t('admin.payouts.technician-header')}</th>
+                  <th className="p-3 text-end">{t('admin.payouts.amount-header')}</th>
+                  <th className="p-3 text-end">{t('admin.payouts.status-header')}</th>
+                  <th className="p-3 text-end">{t('admin.payouts.date-header')}</th>
+                  <th className="p-3 text-end">{t('admin.payouts.action-header')}</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-gray-100 dark:divide-gray-800">
+              <tbody className="divide-y divide-edge-muted">
                 {items.map((p: PayoutItem) => (
                   <tr key={p.id}>
-                    <td className="p-3 font-medium">{p.technician?.name ?? '-'}</td>
+                    <td className="p-3 font-medium">
+                      {/* Store plan Phase 3 — store payouts carry a vendor. */}
+                      {p.vendor?.storeName ?? p.technician?.name ?? '-'}
+                    </td>
                     <td className="p-3 font-bold">{formatCurrency(Number(p.amount ?? 0))}</td>
                     <td className="p-3">{statusBadge(p.status)}</td>
                     <td className="p-3 text-text-tertiary">
@@ -92,6 +107,6 @@ export default function PayoutsPage(): JSX.Element {
           </Card>
         )}
       </div>
-    </DashboardLayout>
+    </>
   );
 }

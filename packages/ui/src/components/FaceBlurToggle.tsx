@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import type { JSX } from 'react';
 import { cn } from '@galaxy/shared';
 
 /**
@@ -34,11 +35,11 @@ export function FaceBlurToggle({
   title = 'تعتيم الوجه',
   enabledStatusText = 'يتم تعتيم الوجوه تلقائياً — خصوصيتكِ أولاً',
   disabledStatusText = 'الوجوه ظاهرة — أنتِ تتحكمين',
-  howItWorksLabel = ' كيف يعمل؟',
+  howItWorksLabel = 'كيف يعمل؟',
   howItWorksDescription = 'ذكاء اصطناعي على جهازكِ يتعرف على الوجوه ويعتمها تلقائياً. لا يتم رفع صوركِ إلى أي خادم — كل شيء على جهازكِ.',
-  photosAffectedText = ' صورة متأثرة بهذا الإعداد',
-  enabledFooterText = ' الوجوه معتمة تلقائياً في المعرض العام',
-  disabledFooterText = ' الوجوه غير معتمة — ننصح بتفعيل التعتيم للخصوصية',
+  photosAffectedText = 'صورة متأثرة بهذا الإعداد',
+  enabledFooterText = 'الوجوه معتمة تلقائياً في المعرض العام',
+  disabledFooterText = 'الوجوه غير معتمة — ننصح بتفعيل التعتيم للخصوصية',
   footerNoteText = 'معالجة محلية بالكامل — خصوصيتكِ في جهازكِ فقط',
 }: FaceBlurToggleProps): JSX.Element {
   const [enabled, setEnabled] = useState(true);
@@ -58,9 +59,7 @@ export function FaceBlurToggle({
     >
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-2">
-          <span className="text-xl" aria-hidden="true">
-            ‍️
-          </span>
+          <span className="text-xl" aria-hidden="true"></span>
           <div>
             <h4 className="text-sm font-bold text-blue-700 dark:text-blue-300">{title}</h4>
             <p className="text-[10px] text-blue-500 dark:text-blue-400">
@@ -105,13 +104,13 @@ export function FaceBlurToggle({
       )}
 
       {/* Status */}
-      <div className="mt-2 rounded-lg bg-gray-50 p-2 dark:bg-gray-800">
+      <div className="mt-2 rounded-lg bg-surface-muted p-2 dark:bg-gray-800">
         <p className="text-center text-[10px] text-text-secondary dark:text-gray-300">
           {enabled ? enabledFooterText : disabledFooterText}
         </p>
       </div>
 
-      <p className="mt-1.5 text-center text-[9px] text-text-tertiary dark:text-gray-500">
+      <p className="mt-1.5 text-center text-[9px] text-text-tertiary dark:text-text-secondary">
         {footerNoteText}
       </p>
     </div>

@@ -1,8 +1,10 @@
 import { View, Text, ScrollView, StyleSheet, TouchableOpacity, RefreshControl } from 'react-native';
 import { useState } from 'react';
+import type { JSX } from 'react';
 import { LARGE_PAGE_SIZE } from '@galaxy/ui';
-import { trpc } from '@/lib/trpc-react';
 import { useLocale } from '@/components/LocaleProvider';
+import { useAuthState } from '@/hooks/useAuthState';
+import { trpc } from '@/lib/trpc-react';
 
 const MOODS = ['', '', '', '', '', '', '', ''];
 
@@ -14,8 +16,12 @@ interface DiaryEntry {
 
 export default function BeautyDiaryScreen(): JSX.Element {
   const { locale, t } = useLocale();
+  const isAuthed = useAuthState();
   const [todayMood, setTodayMood] = useState('');
-  const q = trpc.beautyJournal.list.useQuery({ page: 1, limit: LARGE_PAGE_SIZE });
+  const q = trpc.beautyJournal.list.useQuery(
+    { page: 1, limit: LARGE_PAGE_SIZE },
+    { enabled: isAuthed },
+  );
   const entries: DiaryEntry[] = (q.data as DiaryEntry[] | undefined) ?? [];
 
   return (
@@ -25,7 +31,9 @@ export default function BeautyDiaryScreen(): JSX.Element {
       refreshControl={
         <RefreshControl
           refreshing={q.isRefetching}
-          onRefresh={() => q.refetch()}
+          onRefresh={async () => {
+            await q.refetch();
+          }}
           colors={['#8b5cf6']}
         />
       }
@@ -52,22 +60,22 @@ export default function BeautyDiaryScreen(): JSX.Element {
         <Text style={styles.st}>{t('beautyDiary.mood-stats')}</Text>
         <View style={styles.statRow}>
           <View style={styles.stat}>
-            <Text style={styles.statVal}></Text>
+            <Text style={styles.statVal}>😊</Text>
             <Text style={styles.statPct}>45%</Text>
             <Text style={styles.statLabel}>{t('beautyDiary.mood-happy')}</Text>
           </View>
           <View style={styles.stat}>
-            <Text style={styles.statVal}></Text>
+            <Text style={styles.statVal}>😌</Text>
             <Text style={styles.statPct}>30%</Text>
             <Text style={styles.statLabel}>{t('beautyDiary.mood-calm')}</Text>
           </View>
           <View style={styles.stat}>
-            <Text style={styles.statVal}></Text>
+            <Text style={styles.statVal}>🤩</Text>
             <Text style={styles.statPct}>15%</Text>
             <Text style={styles.statLabel}>{t('beautyDiary.mood-excited')}</Text>
           </View>
           <View style={styles.stat}>
-            <Text style={styles.statVal}></Text>
+            <Text style={styles.statVal}>😴</Text>
             <Text style={styles.statPct}>10%</Text>
             <Text style={styles.statLabel}>{t('beautyDiary.mood-tired')}</Text>
           </View>
@@ -78,7 +86,7 @@ export default function BeautyDiaryScreen(): JSX.Element {
       {entries.slice(0, 5).map((e, i) => (
         <View key={i} style={styles.entry}>
           <View style={styles.entryHeader}>
-            <Text style={styles.entryMood}></Text>
+            <Text style={styles.entryMood}>📝</Text>
             <Text style={styles.entryDate}>
               {new Date(e.createdAt ?? Date.now()).toLocaleDateString(
                 locale === 'ar' ? 'ar-SA' : 'en-US',

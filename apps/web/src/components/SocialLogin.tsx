@@ -1,4 +1,5 @@
 'use client';
+import type { JSX } from 'react';
 
 import { Button, GOOGLE_OAUTH_URL, GOOGLE_OAUTH_SCOPE } from '@galaxy/ui';
 import { useLocale } from '@/components/LocaleProvider';
@@ -26,9 +27,9 @@ export function SocialLogin({ onSuccess: _onSuccess }: SocialLoginProps): JSX.El
   return (
     <div className="space-y-3">
       <div className="flex items-center gap-3">
-        <div className="flex-1 border-t border-gray-200 dark:border-gray-700" />
-        <span className="text-xs text-gray-400">{t('auth.login-or')}</span>
-        <div className="flex-1 border-t border-gray-200 dark:border-gray-700" />
+        <div className="flex-1 border-t border-edge" />
+        <span className="text-xs text-text-tertiary">{t('auth.login-or')}</span>
+        <div className="flex-1 border-t border-edge" />
       </div>
       <Button
         onClick={handleGoogleLogin}

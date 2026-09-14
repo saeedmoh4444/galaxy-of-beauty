@@ -1,4 +1,5 @@
 'use client';
+import type { JSX } from 'react';
 
 import { cn } from '@galaxy/shared';
 
@@ -37,7 +38,7 @@ export function AllergyTestCard({
   patchTestSubtitle = 'اختبار رقعة قبل العلاجات الجديدة',
   lastTestLabel = 'آخر اختبار',
   nextDueLabel = 'الاختبار القادم',
-  dueButtonText = ' موعد الاختبار',
+  dueButtonText = 'موعد الاختبار',
   bookButtonText = 'احجزي اختبار حساسية',
   footerText = '🩺 سلامتكِ أولاً — اختبار الحساسية مجاني',
 }: AllergyTestCardProps): JSX.Element {
@@ -79,7 +80,7 @@ export function AllergyTestCard({
               isDue ? 'bg-amber-100 dark:bg-amber-900' : 'bg-emerald-50 dark:bg-emerald-950',
             )}
           >
-            <p className="text-[9px] text-text-tertiary dark:text-gray-500">{nextDueLabel}</p>
+            <p className="text-[9px] text-text-tertiary dark:text-text-secondary">{nextDueLabel}</p>
             <p
               className={cn(
                 'text-sm font-bold',
@@ -107,7 +108,7 @@ export function AllergyTestCard({
         {isDue ? dueButtonText : bookButtonText}
       </button>
 
-      <p className="mt-1.5 text-center text-[9px] text-text-tertiary dark:text-gray-500">
+      <p className="mt-1.5 text-center text-[9px] text-text-tertiary dark:text-text-secondary">
         {footerText}
       </p>
     </div>

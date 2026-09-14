@@ -1,4 +1,5 @@
 'use client';
+import type { JSX } from 'react';
 
 import { cn } from '@galaxy/shared';
 
@@ -18,12 +19,12 @@ export function BeautyConfidenceCard({
   return (
     <div
       className={cn(
-        'rounded-2xl border border-fuchsia-100 bg-gradient-to-br from-fuchsia-50 to-purple-50 p-5 dark:border-fuchsia-900 dark:from-fuchsia-950 dark:to-purple-950',
+        'rounded-2xl border border-fuchsia-100 bg-gradient-to-br from-fuchsia-50 to-brand-50 p-5 dark:border-fuchsia-900 dark:from-fuchsia-950 dark:to-brand-950',
         className,
       )}
     >
       <div className="text-center">
-        <span className="text-4xl"></span>
+        <span className="text-4xl">💖</span>
         <h4 className="mt-1 text-sm font-bold text-fuchsia-800 dark:text-fuchsia-200">{title}</h4>
         <p className="mt-2 text-xs leading-relaxed text-fuchsia-700 dark:text-fuchsia-300">
           {subtitle}

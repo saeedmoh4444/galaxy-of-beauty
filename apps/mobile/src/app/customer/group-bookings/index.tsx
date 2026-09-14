@@ -1,14 +1,16 @@
+import type { JSX } from 'react';
 import { View, Text, ScrollView, StyleSheet, RefreshControl } from 'react-native';
 import { SkeletonList } from '@/components/SkeletonCard';
 import { trpc } from '@/lib/trpc-react';
 import { useLocale } from '@/components/LocaleProvider';
+import { useAuthState } from '@/hooks/useAuthState';
 
 const TE: Record<string, string> = {
-  bridal: '',
-  birthday: '',
-  girls_night: '',
-  family: '‍‍‍',
-  other: '',
+  bridal: '👰',
+  birthday: '🎂',
+  girls_night: '💃',
+  family: '👪',
+  other: '✨',
 };
 
 interface GroupBookingSummary {
@@ -21,8 +23,9 @@ interface GroupBookingSummary {
 }
 
 export default function GroupBookingsScreen(): JSX.Element {
+  const isAuthed = useAuthState();
   const { t } = useLocale();
-  const q = trpc.groupBookings.myGroups.useQuery();
+  const q = trpc.groupBookings.myGroups.useQuery(undefined, { enabled: isAuthed });
   const groups: GroupBookingSummary[] =
     (q.data as unknown as GroupBookingSummary[] | undefined) ?? [];
 
@@ -34,7 +37,9 @@ export default function GroupBookingsScreen(): JSX.Element {
       refreshControl={
         <RefreshControl
           refreshing={q.isRefetching}
-          onRefresh={() => q.refetch()}
+          onRefresh={async () => {
+            await q.refetch();
+          }}
           colors={['#7c3aed']}
         />
       }

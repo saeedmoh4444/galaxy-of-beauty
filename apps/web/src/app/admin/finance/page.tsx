@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import type { JSX } from 'react';
 import { api } from '@/lib/trpc';
 import type { RouterOutput } from '@galaxy/api/client';
 import {
@@ -12,6 +13,7 @@ import {
   Button,
   Input,
   formatCurrency,
+  useAuth,
 } from '@galaxy/ui';
 import { useLocale } from '@/components/LocaleProvider';
 
@@ -20,8 +22,14 @@ type PayoutItem = NonNullable<RouterOutput['payouts']['listForAdmin']>['payouts'
 
 export default function AdminFinancePage(): JSX.Element {
   const { t } = useLocale();
-  const financials = api.admin.getFinancials.useQuery();
-  const payouts = api.payouts.listForAdmin.useQuery({ page: 1, limit: 20 });
+  const { isAuthenticated } = useAuth();
+  const financials = api.admin.getFinancials.useQuery(undefined, {
+    enabled: isAuthenticated,
+  });
+  const payouts = api.payouts.listForAdmin.useQuery(
+    { page: 1, limit: 20 },
+    { enabled: isAuthenticated },
+  );
   const calculateMut = api.payouts.calculate.useMutation();
   const [periodStart, setPeriodStart] = useState('');
   const [periodEnd, setPeriodEnd] = useState('');
@@ -58,7 +66,7 @@ export default function AdminFinancePage(): JSX.Element {
           </Card>
           <Card className="text-center">
             <p className="text-sm text-text-secondary">{t('admin.finance.pending-payouts')}</p>
-            <p className="text-2xl font-bold text-purple-600">
+            <p className="text-2xl font-bold text-brand-600">
               {formatCurrency(Number(fin?.pendingPayouts ?? 0))}
             </p>
           </Card>
@@ -111,7 +119,7 @@ export default function AdminFinancePage(): JSX.Element {
             {payouts.data.payouts.map((p: PayoutItem) => (
               <div
                 key={p.id}
-                className="flex items-center justify-between border-b border-gray-100 pb-2 dark:border-gray-800"
+                className="flex items-center justify-between border-b border-edge-muted pb-2 dark:border-gray-800"
               >
                 <span>{formatCurrency(Number(p.amount))}</span>
                 <span className="text-sm text-text-secondary">{p.status}</span>

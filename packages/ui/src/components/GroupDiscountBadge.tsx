@@ -1,4 +1,5 @@
 'use client';
+import type { JSX } from 'react';
 
 import { cn } from '@galaxy/shared';
 
@@ -58,15 +59,13 @@ export function GroupDiscountBadge({
   return (
     <div
       className={cn(
-        'rounded-2xl border border-violet-100 bg-gradient-to-br from-violet-50 to-purple-50 p-5 dark:border-violet-900 dark:from-violet-950 dark:to-purple-950',
+        'rounded-2xl border border-violet-100 bg-gradient-to-br from-violet-50 to-brand-50 p-5 dark:border-violet-900 dark:from-violet-950 dark:to-brand-950',
         className,
       )}
     >
       {/* Header */}
       <div className="text-center">
-        <span className="text-3xl" aria-hidden="true">
-          ‍️
-        </span>
+        <span className="text-3xl" aria-hidden="true"></span>
         <h4 className="mt-1 text-sm font-bold text-violet-800 dark:text-violet-200">{title}</h4>
         <p className="text-[10px] text-violet-500 dark:text-violet-400">{subtitle}</p>
       </div>
@@ -122,7 +121,7 @@ export function GroupDiscountBadge({
             </p>
           )}
           <div className="mt-1 flex items-center justify-center gap-2 text-[10px]">
-            <span className="text-text-tertiary line-through dark:text-gray-500">
+            <span className="text-text-tertiary line-through dark:text-text-secondary">
               {originalPrice} {currencySuffix}
             </span>
             <span className="text-violet-400">→</span>

@@ -1,4 +1,5 @@
 'use client';
+import type { JSX } from 'react';
 
 import { cn } from '@galaxy/shared';
 
@@ -82,7 +83,9 @@ export function RuralOutreachCard({
     >
       {/* Header */}
       <div className="text-center">
-        <span className="text-3xl" aria-hidden="true"></span>
+        <span className="text-3xl" aria-hidden="true">
+          🌾
+        </span>
         <h4 className="mt-1 text-sm font-bold text-emerald-800 dark:text-emerald-200">{title}</h4>
         <p className="text-[10px] text-emerald-600 dark:text-emerald-400">{subtitle}</p>
       </div>
@@ -90,17 +93,23 @@ export function RuralOutreachCard({
       {/* Stats */}
       <div className="mt-3 grid grid-cols-3 gap-2">
         <div className="rounded-xl bg-white/60 p-3 text-center dark:bg-gray-800/60">
-          <p className="text-lg" aria-hidden="true"></p>
+          <p className="text-lg" aria-hidden="true">
+            🎓
+          </p>
           <p className="text-lg font-bold text-emerald-800 dark:text-emerald-200">{trained}</p>
           <p className="text-[9px] text-emerald-600 dark:text-emerald-400">{trainedLabel}</p>
         </div>
         <div className="rounded-xl bg-white/60 p-3 text-center dark:bg-gray-800/60">
-          <p className="text-lg" aria-hidden="true"></p>
+          <p className="text-lg" aria-hidden="true">
+            💼
+          </p>
           <p className="text-lg font-bold text-emerald-800 dark:text-emerald-200">{employed}</p>
           <p className="text-[9px] text-emerald-600 dark:text-emerald-400">{employedLabel}</p>
         </div>
         <div className="rounded-xl bg-white/60 p-3 text-center dark:bg-gray-800/60">
-          <p className="text-lg" aria-hidden="true"></p>
+          <p className="text-lg" aria-hidden="true">
+            🏡
+          </p>
           <p className="text-lg font-bold text-emerald-800 dark:text-emerald-200">{villages}</p>
           <p className="text-[9px] text-emerald-600 dark:text-emerald-400">{villagesLabel}</p>
         </div>

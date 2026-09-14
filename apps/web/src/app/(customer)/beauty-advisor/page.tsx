@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 'use client';
 import { useState, useRef, useEffect } from 'react';
+import type { JSX } from 'react';
 import { api } from '@/lib/trpc';
 import { Button } from '@galaxy/ui';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
@@ -13,12 +14,22 @@ const TOPICS: {
   label: TranslationKey;
   q: TranslationKey;
 }[] = [
-  { key: 'routine', emoji: '', label: 'beautyAdvisor.topic.routine', q: 'beautyAdvisor.q.routine' },
-  { key: 'skin', emoji: '', label: 'beautyAdvisor.topic.skin', q: 'beautyAdvisor.q.skin' },
-  { key: 'makeup', emoji: '', label: 'beautyAdvisor.topic.makeup', q: 'beautyAdvisor.q.makeup' },
-  { key: 'hair', emoji: '‍️', label: 'beautyAdvisor.topic.hair', q: 'beautyAdvisor.q.hair' },
-  { key: 'wedding', emoji: '', label: 'beautyAdvisor.topic.wedding', q: 'beautyAdvisor.q.wedding' },
-  { key: 'summer', emoji: '️', label: 'beautyAdvisor.topic.summer', q: 'beautyAdvisor.q.summer' },
+  {
+    key: 'routine',
+    emoji: '🧴',
+    label: 'beautyAdvisor.topic.routine',
+    q: 'beautyAdvisor.q.routine',
+  },
+  { key: 'skin', emoji: '🧖', label: 'beautyAdvisor.topic.skin', q: 'beautyAdvisor.q.skin' },
+  { key: 'makeup', emoji: '💄', label: 'beautyAdvisor.topic.makeup', q: 'beautyAdvisor.q.makeup' },
+  { key: 'hair', emoji: '💇', label: 'beautyAdvisor.topic.hair', q: 'beautyAdvisor.q.hair' },
+  {
+    key: 'wedding',
+    emoji: '👰',
+    label: 'beautyAdvisor.topic.wedding',
+    q: 'beautyAdvisor.q.wedding',
+  },
+  { key: 'summer', emoji: '🌞', label: 'beautyAdvisor.topic.summer', q: 'beautyAdvisor.q.summer' },
 ];
 
 export default function BeautyAdvisorPage(): JSX.Element {

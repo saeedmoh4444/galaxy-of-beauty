@@ -1,4 +1,5 @@
 'use client';
+import type { JSX } from 'react';
 import { cn } from '@galaxy/shared';
 export function BeautyHairCoilyCard({
   className = '',
@@ -19,7 +20,7 @@ export function BeautyHairCoilyCard({
       )}
     >
       <div className="flex items-center gap-2">
-        <span className="text-xl"></span>
+        <span className="text-xl">💇</span>
         <div>
           <h4 className="text-sm font-bold text-amber-700 dark:text-amber-300">{title}</h4>
           <p className="text-[10px] text-amber-500 dark:text-amber-400">{subtitle}</p>
@@ -28,22 +29,22 @@ export function BeautyHairCoilyCard({
       <div className="mt-3 space-y-1">
         {[
           {
-            emoji: '',
+            emoji: '💧',
             text: {
               ar: 'ترطيب مكثف — أهم خطوة',
               en: 'Intense hydration — the most important step',
             },
           },
           {
-            emoji: '',
+            emoji: '🧴',
             text: { ar: 'زبدة الشيا — للترطيب العميق', en: 'Shea butter — for deep moisture' },
           },
           {
-            emoji: '',
+            emoji: '💇',
             text: { ar: 'تقسيم الشعر لأجزاء — للعناية', en: 'Section the hair — for easier care' },
           },
           {
-            emoji: '️',
+            emoji: '🍍',
             text: {
               ar: 'Pineapple — رفع الشعر قبل النوم',
               en: 'Pineapple — pile the hair up before bed',

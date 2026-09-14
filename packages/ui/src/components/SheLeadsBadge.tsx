@@ -1,4 +1,5 @@
 'use client';
+import type { JSX } from 'react';
 
 import { cn } from '@galaxy/shared';
 
@@ -29,7 +30,7 @@ interface RoleDef {
 
 const ROLES: Record<LeadershipRole, RoleDef> = {
   franchise_owner: {
-    emoji: '',
+    emoji: '🏪',
     title: { ar: 'مالكة امتياز', en: 'Franchise owner' },
     description: {
       ar: 'تملك وتدير فرعها الخاص من جالاكسي بيوتي',
@@ -38,7 +39,7 @@ const ROLES: Record<LeadershipRole, RoleDef> = {
     tier: 'gold',
   },
   salon_manager: {
-    emoji: '',
+    emoji: '💼',
     title: { ar: 'مديرة صالون', en: 'Salon manager' },
     description: {
       ar: 'تقود فريقاً من الخبيرات في صالونها',
@@ -47,7 +48,7 @@ const ROLES: Record<LeadershipRole, RoleDef> = {
     tier: 'silver',
   },
   master_technician: {
-    emoji: '',
+    emoji: '🏆',
     title: { ar: 'خبيرة رئيسية', en: 'Master technician' },
     description: {
       ar: 'أعلى مستوى من المهارة والخبرة',
@@ -56,7 +57,7 @@ const ROLES: Record<LeadershipRole, RoleDef> = {
     tier: 'gold',
   },
   academy_instructor: {
-    emoji: '',
+    emoji: '🎓',
     title: { ar: 'مدربة أكاديمية', en: 'Academy instructor' },
     description: {
       ar: 'تعلّم الجيل القادم من خبيرات التجميل',
@@ -65,7 +66,7 @@ const ROLES: Record<LeadershipRole, RoleDef> = {
     tier: 'silver',
   },
   mentor: {
-    emoji: '',
+    emoji: '🤝',
     title: { ar: 'مرشدة', en: 'Mentor' },
     description: {
       ar: 'تشارك خبرتها مع الأخت الصغرى في برنامج الإرشاد',
@@ -74,7 +75,7 @@ const ROLES: Record<LeadershipRole, RoleDef> = {
     tier: 'bronze',
   },
   advisory_board: {
-    emoji: '️',
+    emoji: '👑',
     title: { ar: 'المجلس الاستشاري', en: 'Advisory board' },
     description: {
       ar: 'قائدة في مجال التجميل والأعمال والتقنية',
@@ -83,7 +84,7 @@ const ROLES: Record<LeadershipRole, RoleDef> = {
     tier: 'gold',
   },
   community_leader: {
-    emoji: '',
+    emoji: '🌟',
     title: { ar: 'قائدة مجتمعية', en: 'Community leader' },
     description: {
       ar: 'تنظم فعاليات المجتمع وتدعم الأخوات',
@@ -92,7 +93,7 @@ const ROLES: Record<LeadershipRole, RoleDef> = {
     tier: 'bronze',
   },
   top_earner: {
-    emoji: '',
+    emoji: '💰',
     title: { ar: 'الأعلى دخلاً', en: 'Top earner' },
     description: {
       ar: 'من بين الأعلى دخلاً على المنصة هذا الشهر',
@@ -105,7 +106,7 @@ const ROLES: Record<LeadershipRole, RoleDef> = {
 const TIER_STYLES: Record<RoleDef['tier'], string> = {
   gold: 'border-amber-300 bg-gradient-to-br from-amber-50 to-yellow-50 dark:border-amber-800 dark:from-amber-950 dark:to-yellow-950',
   silver:
-    'border-gray-300 bg-gradient-to-br from-gray-50 to-slate-50 dark:border-gray-700 dark:from-gray-900 dark:to-slate-900',
+    'border-edge bg-gradient-to-br from-gray-50 to-slate-50 dark:border-gray-700 dark:from-gray-900 dark:to-slate-900',
   bronze:
     'border-orange-300 bg-gradient-to-br from-orange-50 to-amber-50 dark:border-orange-800 dark:from-orange-950 dark:to-amber-950',
 };
@@ -115,17 +116,17 @@ const TIER_BADGE: Record<
   { emoji: string; label: { ar: string; en: string }; className: string }
 > = {
   gold: {
-    emoji: '',
+    emoji: '🥇',
     label: { ar: 'ذهبي', en: 'Gold' },
     className: 'bg-amber-100 text-amber-800 dark:bg-amber-900 dark:text-amber-200',
   },
   silver: {
-    emoji: '',
+    emoji: '🥈',
     label: { ar: 'فضي', en: 'Silver' },
-    className: 'bg-gray-100 text-gray-700 dark:bg-gray-800 dark:text-gray-300',
+    className: 'bg-surface-muted text-text-secondary dark:bg-gray-800 dark:text-gray-300',
   },
   bronze: {
-    emoji: '',
+    emoji: '🥉',
     label: { ar: 'برونزي', en: 'Bronze' },
     className: 'bg-orange-100 text-orange-800 dark:bg-orange-900 dark:text-orange-200',
   },
@@ -200,7 +201,7 @@ export function SheLeadsBadge({
         >
           {name}
         </h4>
-        <p className="text-[10px] font-medium text-text-tertiary dark:text-gray-400">
+        <p className="text-[10px] font-medium text-text-tertiary dark:text-text-tertiary">
           {roleDef.emoji} {roleDef.title[locale]}
         </p>
       </div>
@@ -224,7 +225,7 @@ export function SheLeadsBadge({
         )}
         {yearsOfExperience && (
           <span className="inline-flex items-center gap-1 rounded-full bg-white/60 px-2 py-0.5 text-[10px] dark:bg-black/20 dark:text-gray-300">
-            ️ {yearsOfExperience} {yearsExperienceText}
+            {yearsOfExperience} {yearsExperienceText}
           </span>
         )}
         {teamSize && (

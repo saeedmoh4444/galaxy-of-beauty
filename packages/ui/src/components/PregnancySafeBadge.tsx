@@ -1,4 +1,5 @@
 'use client';
+import type { JSX } from 'react';
 
 import { cn } from '@galaxy/shared';
 
@@ -23,7 +24,7 @@ interface TrimesterDef {
 
 const TRIMESTERS: Record<Trimester, TrimesterDef> = {
   1: {
-    emoji: '',
+    emoji: '🌱',
     label: { ar: 'الثلث الأول', en: 'First trimester' },
     description: {
       ar: 'الأشهر 1-3 — فترة حساسة، عناية لطيفة فقط',
@@ -43,7 +44,7 @@ const TRIMESTERS: Record<Trimester, TrimesterDef> = {
     color: 'border-rose-200 bg-rose-50/50 dark:border-rose-900 dark:bg-rose-950/30',
   },
   2: {
-    emoji: '',
+    emoji: '🌸',
     label: { ar: 'الثلث الثاني', en: 'Second trimester' },
     description: {
       ar: 'الأشهر 4-6 — الفترة الذهبية للعناية',
@@ -63,7 +64,7 @@ const TRIMESTERS: Record<Trimester, TrimesterDef> = {
     color: 'border-emerald-200 bg-emerald-50/50 dark:border-emerald-900 dark:bg-emerald-950/30',
   },
   3: {
-    emoji: '',
+    emoji: '🤰',
     label: { ar: 'الثلث الثالث', en: 'Third trimester' },
     description: {
       ar: 'الأشهر 7-9 — راحة واستعداد للولادة',
@@ -80,10 +81,10 @@ const TRIMESTERS: Record<Trimester, TrimesterDef> = {
       { ar: 'وقت طويل', en: 'Long sessions' },
       { ar: 'علاجات قوية', en: 'Strong treatments' },
     ],
-    color: 'border-purple-200 bg-purple-50/50 dark:border-purple-900 dark:bg-purple-950/30',
+    color: 'border-brand-200 bg-purple-50/50 dark:border-brand-900 dark:bg-purple-950/30',
   },
   postpartum: {
-    emoji: '',
+    emoji: '🍼',
     label: { ar: 'ما بعد الولادة', en: 'Postpartum' },
     description: {
       ar: 'الأربعين يوماً — عناية النفاس التقليدية',
@@ -134,8 +135,8 @@ export function PregnancySafeBadge({
   className = '',
   safeLabel = 'آمن للحمل',
   currencySuffix = 'ر.س',
-  allowedLabel = ' مسموح',
-  avoidLabel = ' غير مناسب',
+  allowedLabel = 'مسموح',
+  avoidLabel = 'غير مناسب',
   disclaimerText = '🩺 استشيري طبيبكِ قبل أي علاج تجميلي أثناء الحمل',
   locale = 'ar',
 }: PregnancySafeBadgeProps): JSX.Element {
@@ -152,11 +153,11 @@ export function PregnancySafeBadge({
           <h4 className="text-sm font-bold text-text-primary dark:text-gray-100">
             {t.label[locale]}
           </h4>
-          <p className="text-[10px] text-text-tertiary dark:text-gray-400">
+          <p className="text-[10px] text-text-tertiary dark:text-text-tertiary">
             {t.description[locale]}
           </p>
         </div>
-        <span className="ml-auto shrink-0 rounded-full bg-white/70 px-2.5 py-0.5 text-[10px] font-bold text-emerald-700 dark:bg-black/20 dark:text-emerald-300">
+        <span className="ms-auto shrink-0 rounded-full bg-white/70 px-2.5 py-0.5 text-[10px] font-bold text-emerald-700 dark:bg-black/20 dark:text-emerald-300">
           {safeLabel}
         </span>
       </div>
@@ -171,8 +172,8 @@ export function PregnancySafeBadge({
             </span>
           </div>
           {service.duration && (
-            <p className="mt-0.5 text-[10px] text-text-tertiary dark:text-gray-400">
-              ️ {service.duration}
+            <p className="mt-0.5 text-[10px] text-text-tertiary dark:text-text-tertiary">
+              {service.duration}
             </p>
           )}
         </div>
@@ -205,7 +206,7 @@ export function PregnancySafeBadge({
       </div>
 
       {/* Disclaimer */}
-      <p className="mt-2 text-center text-[9px] text-text-tertiary dark:text-gray-500">
+      <p className="mt-2 text-center text-[9px] text-text-tertiary dark:text-text-secondary">
         {disclaimerText}
       </p>
     </div>

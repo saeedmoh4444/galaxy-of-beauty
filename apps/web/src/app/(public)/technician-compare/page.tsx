@@ -1,5 +1,6 @@
 'use client';
 import { useState } from 'react';
+import type { JSX } from 'react';
 import { Card } from '@galaxy/ui';
 import { useLocale } from '@/components/LocaleProvider';
 
@@ -13,7 +14,7 @@ const TECHNICIANS = [
     price: 300,
     experience: 'marketing.technician-compare.exp-8',
     city: 'الرياض',
-    emoji: '',
+    emoji: '💄',
     services: [
       'marketing.technician-compare.svc-bridal-makeup',
       'marketing.technician-compare.svc-evening-makeup',
@@ -30,7 +31,7 @@ const TECHNICIANS = [
     price: 250,
     experience: 'marketing.technician-compare.exp-6',
     city: 'جدة',
-    emoji: '‍️',
+    emoji: '💇',
     services: [
       'marketing.technician-compare.svc-hairstyles',
       'marketing.technician-compare.svc-dyes',
@@ -47,7 +48,7 @@ const TECHNICIANS = [
     price: 180,
     experience: 'marketing.technician-compare.exp-5',
     city: 'الدمام',
-    emoji: '',
+    emoji: '💅',
     services: [
       'marketing.technician-compare.svc-manicure',
       'marketing.technician-compare.svc-pedicure',
@@ -64,7 +65,7 @@ const TECHNICIANS = [
     price: 350,
     experience: 'marketing.technician-compare.exp-12',
     city: 'الرياض',
-    emoji: '',
+    emoji: '🧖',
     services: [
       'marketing.technician-compare.svc-facial',
       'marketing.technician-compare.svc-peeling',
@@ -94,7 +95,7 @@ export default function TechnicianComparePage(): JSX.Element {
   return (
     <div className="mx-auto max-w-6xl px-4 py-12">
       <div className="text-center mb-10">
-        <span className="text-6xl">‍</span>
+        <span className="text-6xl">🆚</span>
         <h1 className="mt-4 text-3xl font-bold">{t('marketing.technician-compare.title')}</h1>
         <p className="mt-2 text-text-secondary">{t('marketing.technician-compare.subtitle')}</p>
       </div>
@@ -107,7 +108,7 @@ export default function TechnicianComparePage(): JSX.Element {
               <button
                 key={tech.id}
                 onClick={() => toggle(tech.id)}
-                className={`rounded-xl border-2 p-4 text-right transition-all ${isSel ? 'border-brand-400 bg-brand-50' : 'border-edge hover:border-edge'}`}
+                className={`rounded-xl border-2 p-4 text-end transition-all ${isSel ? 'border-brand-400 bg-brand-50' : 'border-edge hover:border-edge'}`}
               >
                 <div className="flex items-center gap-3">
                   <span className="text-3xl">{tech.emoji}</span>
@@ -117,7 +118,7 @@ export default function TechnicianComparePage(): JSX.Element {
                       {t(tech.specialty)} · {tech.city} · {tech.rating} · {t(tech.experience)}
                     </p>
                   </div>
-                  {isSel && <span className="mr-auto text-brand-600 text-xl"></span>}
+                  {isSel && <span className="me-auto text-brand-600 text-xl">✅</span>}
                 </div>
               </button>
             );
@@ -134,7 +135,7 @@ export default function TechnicianComparePage(): JSX.Element {
             <table className="w-full text-sm">
               <thead>
                 <tr className="border-b">
-                  <th className="p-3 text-right">
+                  <th className="p-3 text-end">
                     {t('marketing.technician-compare.feature-column')}
                   </th>
                   {techs.map((tech) => (

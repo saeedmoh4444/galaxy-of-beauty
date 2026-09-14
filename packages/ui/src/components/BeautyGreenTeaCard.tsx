@@ -1,4 +1,5 @@
 'use client';
+import type { JSX } from 'react';
 import { cn } from '@galaxy/shared';
 export function BeautyGreenTeaCard({
   className = '',
@@ -19,7 +20,7 @@ export function BeautyGreenTeaCard({
       )}
     >
       <div className="flex items-center gap-2">
-        <span className="text-xl"></span>
+        <span className="text-xl">🍵</span>
         <div>
           <h4 className="text-sm font-bold text-emerald-700 dark:text-emerald-300">{title}</h4>
           <p className="text-[10px] text-emerald-500 dark:text-emerald-400">{subtitle}</p>
@@ -28,25 +29,25 @@ export function BeautyGreenTeaCard({
       <div className="mt-3 space-y-1">
         {[
           {
-            emoji: '️',
+            emoji: '🛡️',
             text: {
               ar: 'مضاد أكسدة قوي — يحمي البشرة من التلف',
               en: 'A powerful antioxidant — protects skin from damage',
             },
           },
           {
-            emoji: '',
+            emoji: '🌿',
             text: {
               ar: 'يقلل الالتهابات — ممتاز للحبوب والاحمرار',
               en: 'Reduces inflammation — great for pimples and redness',
             },
           },
           {
-            emoji: '',
+            emoji: '☕',
             text: { ar: '2-3 أكواب يومياً — بدون سكر', en: '2-3 cups a day — without sugar' },
           },
           {
-            emoji: '',
+            emoji: '🧊',
             text: {
               ar: 'مثلج أو ساخن — أكياس الشاي للعيون المنتفخة',
               en: 'Iced or hot — tea bags for puffy eyes',

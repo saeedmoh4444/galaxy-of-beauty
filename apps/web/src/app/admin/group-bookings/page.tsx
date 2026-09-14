@@ -1,19 +1,23 @@
 'use client';
+import type { JSX } from 'react';
 import { api } from '@/lib/trpc';
-import { Card, CardListSkeleton, formatCurrency } from '@galaxy/ui';
-import { DashboardLayout } from '@/components/layout/DashboardLayout';
+import { Card, CardListSkeleton, formatCurrency, useAuth } from '@galaxy/ui';
 import { useLocale } from '@/components/LocaleProvider';
 
 export default function AdminGroupBookingsPage(): JSX.Element {
   const { t } = useLocale();
-  const { data: groupData, isLoading } = api.groupBookings.listAll.useQuery({
-    page: 1,
-    limit: 20,
-  }) as { data: Record<string, unknown> | undefined; isLoading: boolean };
+  const { isAuthenticated } = useAuth();
+  const { data: groupData, isLoading } = api.groupBookings.listAll.useQuery(
+    {
+      page: 1,
+      limit: 20,
+    },
+    { enabled: isAuthenticated },
+  ) as { data: Record<string, unknown> | undefined; isLoading: boolean };
   const groups = (groupData?.items as Array<Record<string, unknown>>) ?? [];
 
   return (
-    <DashboardLayout userRole="ADMIN">
+    <>
       <div className="mx-auto max-w-4xl space-y-6">
         <div>
           <h1 className="text-2xl font-bold">{t('admin.group-bookings.title')}</h1>
@@ -24,7 +28,7 @@ export default function AdminGroupBookingsPage(): JSX.Element {
           <CardListSkeleton count={4} />
         ) : groups.length === 0 ? (
           <Card padding="lg" className="text-center py-8">
-            <p className="text-4xl mb-2"></p>
+            <p className="text-4xl mb-2">📋</p>
             <p className="text-text-secondary">{t('admin.group-bookings.empty')}</p>
           </Card>
         ) : (
@@ -44,7 +48,7 @@ export default function AdminGroupBookingsPage(): JSX.Element {
                       })}
                     </p>
                   </div>
-                  <div className="text-right">
+                  <div className="text-end">
                     <p className="font-bold text-brand-600">
                       {formatCurrency(Number(g.totalAmount ?? 0))}
                     </p>
@@ -60,6 +64,6 @@ export default function AdminGroupBookingsPage(): JSX.Element {
           </div>
         )}
       </div>
-    </DashboardLayout>
+    </>
   );
 }

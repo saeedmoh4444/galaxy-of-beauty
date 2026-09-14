@@ -42,11 +42,13 @@ export interface BuildUserOverrides {
 
 export function buildUser(overrides?: BuildUserOverrides) {
   const s = seq();
+  const u = uid();
   return {
-    email: overrides?.email ?? `test-${uid()}-${s}@example.com`,
-    // Timestamp-based digits: the old `+9665${seq}` pattern collided with
-    // seeded users (+966500000001) on a fresh file's first buildUser call.
-    phone: overrides?.phone ?? `+9665${String(Date.now() % 100000000).padStart(8, '0')}`,
+    email: overrides?.email ?? `test-${u}-${s}@example.com`,
+    // Timestamp-based digits collided with seeded users (+966500000001)
+    // on a fresh file's first buildUser call; millisecond resolution
+    // also collided ACROSS parallel files. Random hex suffix instead.
+    phone: overrides?.phone ?? `+9665${(u + String(s).padStart(3, '0')).slice(0, 8)}`,
     name: overrides?.name ?? `مستخدم تجريبي ${s}`,
     role: overrides?.role ?? 'CUSTOMER',
     passwordHash: overrides?.passwordHash ?? '$2b$10$placeholderhashfortestingpurposesonly', // bcrypt hash for 'TestPass123!'
@@ -63,8 +65,6 @@ export interface BuildTechnicianOverrides {
   userId: number;
   city?: string;
   bioJson?: { ar: string; en: string };
-  isAvailable?: boolean;
-  isVerified?: boolean;
 }
 
 export function buildTechnician(overrides: BuildTechnicianOverrides) {
@@ -72,8 +72,6 @@ export function buildTechnician(overrides: BuildTechnicianOverrides) {
     userId: overrides.userId,
     city: overrides.city ?? 'الرياض',
     bioJson: overrides.bioJson ?? { ar: 'خبيرة تجميل محترفة', en: 'Professional beautician' },
-    isAvailable: overrides.isAvailable ?? true,
-    isVerified: overrides.isVerified ?? true,
   };
 }
 
@@ -82,7 +80,7 @@ export function buildTechnician(overrides: BuildTechnicianOverrides) {
 export interface BuildCategoryOverrides {
   nameJson?: { ar: string; en: string };
   slug?: string;
-  icon?: string;
+  iconUrl?: string;
 }
 
 export function buildCategory(overrides?: BuildCategoryOverrides) {
@@ -90,7 +88,7 @@ export function buildCategory(overrides?: BuildCategoryOverrides) {
   return {
     nameJson: overrides?.nameJson ?? { ar: `تصنيف ${s}`, en: `Category ${s}` },
     slug: overrides?.slug ?? `category-${uid()}-${s}`,
-    icon: overrides?.icon ?? '',
+    iconUrl: overrides?.iconUrl ?? null,
   };
 }
 
@@ -98,26 +96,26 @@ export function buildCategory(overrides?: BuildCategoryOverrides) {
 
 export interface BuildServiceOverrides {
   categoryId: number;
-  nameJson?: { ar: string; en: string };
+  titleJson?: { ar: string; en: string };
   descriptionJson?: { ar: string; en: string };
-  price?: number;
-  durationMinutes?: number;
+  basePrice?: number;
+  durationMin?: number;
   isActive?: boolean;
-  isWomenOnly?: boolean;
-  homeServiceAvailable?: boolean;
+  isPregnancySafe?: boolean;
+  isMommyFriendly?: boolean;
 }
 
 export function buildService(overrides: BuildServiceOverrides) {
   const s = seq();
   return {
     categoryId: overrides.categoryId,
-    nameJson: overrides.nameJson ?? { ar: `خدمة ${s}`, en: `Service ${s}` },
+    titleJson: overrides.titleJson ?? { ar: `خدمة ${s}`, en: `Service ${s}` },
     descriptionJson: overrides.descriptionJson ?? { ar: 'وصف الخدمة', en: 'Service description' },
-    price: overrides.price ?? 150.0,
-    durationMinutes: overrides.durationMinutes ?? 60,
+    basePrice: overrides.basePrice ?? 150.0,
+    durationMin: overrides.durationMin ?? 60,
     isActive: overrides.isActive ?? true,
-    isWomenOnly: overrides.isWomenOnly ?? true,
-    homeServiceAvailable: overrides.homeServiceAvailable ?? false,
+    isPregnancySafe: overrides.isPregnancySafe ?? false,
+    isMommyFriendly: overrides.isMommyFriendly ?? false,
   };
 }
 

@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import type { JSX } from 'react';
 import { PageContainer, PageTitle } from '@galaxy/ui';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
 import { useLocale } from '@/components/LocaleProvider';
@@ -17,7 +18,7 @@ const DESTINATIONS: {
 }[] = [
   {
     key: 'beach',
-    emoji: '️',
+    emoji: '🏖️',
     name: 'travel.dest.beach',
     color: '#0891b2',
     bg: 'from-cyan-50 to-teal-50 dark:from-cyan-950 dark:to-teal-950',
@@ -35,7 +36,7 @@ const DESTINATIONS: {
   },
   {
     key: 'city',
-    emoji: '️',
+    emoji: '🏙️',
     name: 'travel.dest.city',
     color: '#6366f1',
     bg: 'from-indigo-50 to-violet-50 dark:from-indigo-950 dark:to-violet-950',
@@ -53,7 +54,7 @@ const DESTINATIONS: {
   },
   {
     key: 'mountain',
-    emoji: '️',
+    emoji: '⛰️',
     name: 'travel.dest.mountain',
     color: '#059669',
     bg: 'from-emerald-50 to-green-50 dark:from-emerald-950 dark:to-green-950',
@@ -95,7 +96,7 @@ export default function TravelChecklistPage(): JSX.Element {
               key={dt.key}
               type="button"
               onClick={() => setDest(dt.key)}
-              className={`flex-1 rounded-2xl border-2 p-3 text-center transition-all ${dest === dt.key ? 'bg-white dark:bg-gray-900' : 'bg-white dark:bg-gray-900'}`}
+              className={`flex-1 rounded-2xl border-2 p-3 text-center transition-all ${dest === dt.key ? 'bg-surface-elevated' : 'bg-surface-elevated'}`}
               style={dest === dt.key ? { borderColor: dt.color } : { borderColor: '#e5e7eb' }}
             >
               <span className="text-2xl">{dt.emoji}</span>
@@ -123,10 +124,10 @@ export default function TravelChecklistPage(): JSX.Element {
                 key={i}
                 type="button"
                 onClick={() => toggle(item)}
-                className={`flex w-full items-center gap-3 rounded-xl p-3 text-right transition-all ${checked.has(item) ? 'bg-emerald-100 dark:bg-emerald-900' : 'bg-white/60 dark:bg-gray-800/60'}`}
+                className={`flex w-full items-center gap-3 rounded-xl p-3 text-end transition-all ${checked.has(item) ? 'bg-emerald-100 dark:bg-emerald-900' : 'bg-white/60 dark:bg-gray-800/60'}`}
               >
                 <span
-                  className={`flex h-6 w-6 shrink-0 items-center justify-center rounded-md text-sm ${checked.has(item) ? 'bg-emerald-500 text-white' : 'border-2 border-gray-300 dark:border-gray-600'}`}
+                  className={`flex h-6 w-6 shrink-0 items-center justify-center rounded-md text-sm ${checked.has(item) ? 'bg-emerald-500 text-white' : 'border-2 border-edge'}`}
                 >
                   {checked.has(item) ? '' : ''}
                 </span>

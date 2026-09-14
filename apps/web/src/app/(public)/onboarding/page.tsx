@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import type { JSX } from 'react';
 import Link from 'next/link';
 import { Button, Card } from '@galaxy/ui';
 import { useLocale } from '@/components/LocaleProvider';
@@ -56,12 +57,12 @@ export default function OnboardingPage(): JSX.Element {
           {STEPS.map((_, i) => (
             <div
               key={i}
-              className={`h-1.5 w-8 rounded-full transition-all ${i <= step ? 'bg-brand-600' : 'bg-gray-200 dark:bg-gray-700'}`}
+              className={`h-1.5 w-8 rounded-full transition-all ${i <= step ? 'bg-brand-600' : 'bg-surface-muted'}`}
             />
           ))}
         </div>
         <h1 className="text-2xl font-bold text-text-primary dark:text-gray-100">{t(s.title)}</h1>
-        <p className="mt-4 text-text-secondary dark:text-gray-400">{t(s.desc)}</p>
+        <p className="mt-4 text-text-secondary dark:text-text-tertiary">{t(s.desc)}</p>
         <div className="mt-8 flex gap-3 justify-center">
           {s.link ? (
             <Link href={s.link}>

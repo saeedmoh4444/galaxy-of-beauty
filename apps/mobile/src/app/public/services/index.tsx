@@ -1,5 +1,6 @@
 import { View, Text, ScrollView, StyleSheet, TouchableOpacity, RefreshControl } from 'react-native';
 import { useState } from 'react';
+import type { JSX } from 'react';
 import { ErrorAlert } from '@/components/ErrorAlert';
 import { SkeletonList } from '@/components/SkeletonCard';
 import { trpc } from '@/lib/trpc-react';
@@ -55,7 +56,9 @@ export default function ServicesScreen(): JSX.Element {
       refreshControl={
         <RefreshControl
           refreshing={categoriesQ.isRefetching}
-          onRefresh={() => categoriesQ.refetch()}
+          onRefresh={async () => {
+            await categoriesQ.refetch();
+          }}
           colors={['#db2777']}
         />
       }
@@ -89,7 +92,7 @@ export default function ServicesScreen(): JSX.Element {
           ) : (
             svcItems.map((s) => (
               <View key={s.id} style={styles.card}>
-                <Text style={styles.svcEmoji}>{s.emoji ?? '‍️'}</Text>
+                <Text style={styles.svcEmoji}>{s.emoji ?? ''}</Text>
                 <View style={{ flex: 1 }}>
                   <Text style={styles.svcName}>{s.nameAr}</Text>
                   <Text style={styles.svcDesc}>{s.descAr?.substring(0, 80)}</Text>
@@ -97,7 +100,7 @@ export default function ServicesScreen(): JSX.Element {
                     <Text style={styles.svcPrice}>
                       {t('mobile.public.currency', { price: s.price?.toLocaleString() ?? '' })}
                     </Text>
-                    <Text style={styles.svcDuration}>️ {s.duration}</Text>
+                    <Text style={styles.svcDuration}> {s.duration}</Text>
                   </View>
                 </View>
               </View>

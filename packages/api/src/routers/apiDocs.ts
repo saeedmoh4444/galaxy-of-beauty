@@ -5,8 +5,8 @@ const API_BASE_URL = process.env['NEXT_PUBLIC_APP_URL'] || DEFAULT_APP_URL;
 
 const API_REFERENCE = {
   version: '2.2.0',
-  title: 'Galaxy of Beauty API',
-  description: 'REST-like tRPC API for the Galaxy of Beauty platform',
+  title: 'Dalal API',
+  description: 'REST-like tRPC API for the Dalal platform',
   baseUrl: `${API_BASE_URL}/api/trpc`,
   authentication: {
     type: 'JWT Bearer Token',
@@ -17,7 +17,7 @@ const API_REFERENCE = {
   categories: [
     {
       name: 'Auth & Users',
-      emoji: '',
+      emoji: '🔐',
       routers: [
         'auth',
         'users',
@@ -31,7 +31,7 @@ const API_REFERENCE = {
     },
     {
       name: 'Core Booking',
-      emoji: '',
+      emoji: '📅',
       routers: [
         'bookings',
         'slots',
@@ -47,7 +47,7 @@ const API_REFERENCE = {
     },
     {
       name: 'Services & Marketplace',
-      emoji: '',
+      emoji: '🛒',
       routers: [
         'services',
         'categories',
@@ -66,7 +66,7 @@ const API_REFERENCE = {
     },
     {
       name: 'Payments & Finance',
-      emoji: '',
+      emoji: '💳',
       routers: [
         'payments',
         'wallet',
@@ -81,7 +81,7 @@ const API_REFERENCE = {
     },
     {
       name: 'Social & Community',
-      emoji: '',
+      emoji: '👥',
       routers: [
         'community',
         'reviews',
@@ -99,7 +99,7 @@ const API_REFERENCE = {
     },
     {
       name: 'Content & Learning',
-      emoji: '',
+      emoji: '📚',
       routers: [
         'blog',
         'tutorials',
@@ -114,7 +114,7 @@ const API_REFERENCE = {
     },
     {
       name: 'AI & Innovation',
-      emoji: '',
+      emoji: '🤖',
       routers: [
         'ai',
         'aiFeatures',
@@ -131,7 +131,7 @@ const API_REFERENCE = {
     },
     {
       name: 'Wellness & Self-Care',
-      emoji: '',
+      emoji: '🌿',
       routers: [
         'selfCare',
         'beautyBudget',
@@ -148,7 +148,7 @@ const API_REFERENCE = {
     },
     {
       name: 'Loyalty & Gamification',
-      emoji: '',
+      emoji: '🏆',
       routers: [
         'loyalty',
         'loyaltyPunchCard',
@@ -164,7 +164,7 @@ const API_REFERENCE = {
     },
     {
       name: 'Business & B2B',
-      emoji: '',
+      emoji: '💼',
       routers: [
         'corporateWellness',
         'vendorPortal',
@@ -180,7 +180,7 @@ const API_REFERENCE = {
     },
     {
       name: 'Admin & Operations',
-      emoji: '️',
+      emoji: '🔧',
       routers: [
         'admin',
         'adminTools',
@@ -212,7 +212,7 @@ export const apiDocsRouter = router({
   openapi: publicProcedure.query(() => ({
     openapi: '3.0.3',
     info: {
-      title: 'Galaxy of Beauty API',
+      title: 'Dalal API',
       version: '2.2.0',
       description: 'Beauty marketplace tRPC API — 145 routers, 300+ procedures',
     },

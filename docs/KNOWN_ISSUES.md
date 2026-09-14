@@ -4,14 +4,14 @@
 
 ---
 
-## 1. Expo Dev Server — Windows undici Bug (Medium)
+## 1. Expo Dev Server — Windows undici Bug (Medium) — RESOLVED 2026-08-19
 
 **Symptom:** `expo start` fails with `TypeError: Body is unusable: Body has already been read`
 **Root Cause:** Expo SDK 54 CLI reads HTTP response bodies twice, incompatible with Node 20/22 undici
 **Affects:** Windows only (`expo start --android`, `expo start --ios`)
-**Workaround:** `expo export --platform android` works (2021 modules, 5.72 MB bundle)
-**Fix:** Upgrade to Expo SDK 55+ when available
-**Status:** Open — affects dev workflow only, production build not impacted
+**Resolution:** SDK 57 upgrade (2026-08-19) — `expo start` now reaches
+"Waiting on http://localhost:8099" cleanly; `expo export --platform
+android` produces a 6.1MB Hermes bundle.
 
 ---
 
@@ -22,39 +22,46 @@
 
 ---
 
-## 3. Seed Warnings (Low)
+## 3. Seed Warnings (Low) — RESOLVED 2026-08-19
 
-**Symptom:** `⚠️ Extra data: Invalid createMany()` for notifications, promo codes, gift cards
-**Root Cause:** Field name mismatches between seed script and Prisma schema (e.g., `title` vs `titleJson`)
-**Impact:** None — caught in try/catch, seed completes successfully
-**Status:** Deferred — cosmetic only
+**Symptom:** `Invalid createMany()` warnings for notifications, promo codes, gift cards
+**Root Causes (all fixed):**
+
+1. Notification seed wrote `title`/`body` — schema fields are `titleJson`/`bodyJson` (+ `sentVia`)
+2. Promo codes & gift cards were never deleted in the seed's cleanup transaction → unique-violation on `code` on re-seed (the real source of the recurring warnings)
+3. ar-only Json literals violating the P3-02 i18n CHECK constraints: giftQuizRecommendation.descJson ×4, compareProduct.nameJson ×4
+   **Verified:** seed runs clean twice in a row (idempotent, zero warnings).
 
 ---
 
 ## 4. Test Coverage Gap (Medium)
 
-**Current (2026-08-16):** 38 test files, 543 tests (passing), coverage ratchet enforced at 50/61/36/50
-**Gap:** The remaining 0%-covered surfaces are `payfort` gateway integration, the socket server, and `workers/index`; untested procedure handlers across ~150 feature routers
-**Plan:** Gradual — ratchet upward toward 55% statements (see `packages/api/vitest.config.ts`)
-**Status:** In progress — auth 2FA, payments, booking lifecycle, wallet, and token-cleanup suites added since the 08-08 snapshot
+**Current (2026-08-19):** 65 test files, 820 tests (passing), coverage ratchet enforced at 62/74/69/62 (actuals 63.72/75.74/70.17/63.72) — the 60% statements goal is met.
+**Gap:** Untested procedure handlers across ~130 feature routers; entry scripts (socket server.ts, workers run.ts)
+**Plan:** Gradual — ratchet upward toward 65 → 70 (see `packages/api/vitest.config.ts`). Test files now run serially (fileParallelism: false) — 65 files sharing one dev DB had cross-file races under parallel + coverage instrumentation.
+**Status:** In progress — the "push toward 60" campaign covered 17 routers (+188 tests) and fixed six real router bugs found by the new tests (referrals circular applyCode, beautyDiscovery emoji selects, payouts idempotency, technicianEarnings wrong id filter, waitlist rejoin P2002, calendar.pull fetch errors).
 
 ---
 
-## 5. Reduced Motion Support (Low)
+## 5. Reduced Motion Support (Low) — RESOLVED 2026-08-19
 
-**Coverage:** Only 2/547 components use `prefers-reduced-motion`
-**Impact:** Motion-sensitive users may experience discomfort from animations
-**Fix:** Add `motion-safe:` prefixes or CSS media query to globals.css
-**Status:** Deferred — non-blocking
+**Fix:** The FE-005 global gate in `apps/web/src/app/globals.css` (a
+`@media (prefers-reduced-motion: reduce)` override clamping all
+animations/transitions to 0.01ms) already covers every component —
+the original "2/547 components" audit predated it (landed in Phase 10).
+**Verified 2026-08-19:** two e2e assertions in a11y-responsive.spec.ts —
+the 0.18s page transition animates by default and is clamped to ≤0.001s
+under `emulateMedia({ reducedMotion: 'reduce' })`. 11/11 a11y specs pass.
 
 ---
 
-## 6. ESLint Build Warnings (Low)
+## 6. ESLint Build Warnings (Low) — RESOLVED 2026-08-19
 
 **Symptom:** `react/no-unescaped-entities` during production build
-**Workaround:** `eslint: { ignoreDuringBuilds: true }` in next.config.js
-**Fix:** Escape `"` characters in JSX text content
-**Status:** Workaround in place — TypeScript and tests catch real errors
+**Root Cause:** historical unescaped quotes in JSX text content (fixed in earlier cleanups)
+**Resolution:** web lint is now 0 errors / 7 warnings — removed the
+`eslint: { ignoreDuringBuilds: true }` workaround; `next build` passes
+with the ESLint gate restored.
 
 ## 7. i18n English Coverage (Low) — RESOLVED 2026-08-19
 

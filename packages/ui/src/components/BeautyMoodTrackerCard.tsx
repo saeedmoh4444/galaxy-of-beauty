@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import type { JSX } from 'react';
 import { cn } from '@galaxy/shared';
 
 /**
@@ -12,11 +13,11 @@ import { cn } from '@galaxy/shared';
  */
 
 const MOODS = [
-  { emoji: '', label: { ar: 'سعيدة', en: 'Happy' }, value: 5 },
-  { emoji: '', label: { ar: 'مرتاحة', en: 'Relaxed' }, value: 4 },
-  { emoji: '', label: { ar: 'عادية', en: 'Neutral' }, value: 3 },
-  { emoji: '', label: { ar: 'حزينة', en: 'Sad' }, value: 2 },
-  { emoji: '', label: { ar: 'متوترة', en: 'Anxious' }, value: 1 },
+  { emoji: '😊', label: { ar: 'سعيدة', en: 'Happy' }, value: 5 },
+  { emoji: '😌', label: { ar: 'مرتاحة', en: 'Relaxed' }, value: 4 },
+  { emoji: '😐', label: { ar: 'عادية', en: 'Neutral' }, value: 3 },
+  { emoji: '😢', label: { ar: 'حزينة', en: 'Sad' }, value: 2 },
+  { emoji: '😰', label: { ar: 'متوترة', en: 'Anxious' }, value: 1 },
 ];
 
 interface BeautyMoodTrackerCardProps {
@@ -56,7 +57,9 @@ export function BeautyMoodTrackerCard({
     >
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-2">
-          <span className="text-xl" aria-hidden="true"></span>
+          <span className="text-xl" aria-hidden="true">
+            💭
+          </span>
           <div>
             <h4 className="text-sm font-bold text-violet-700 dark:text-violet-300">{title}</h4>
             <p className="text-[10px] text-violet-500 dark:text-violet-400">
@@ -79,7 +82,7 @@ export function BeautyMoodTrackerCard({
               'flex flex-col items-center gap-1 rounded-xl px-3 py-2.5 transition-all active:scale-95',
               selected === mood.value
                 ? 'bg-violet-100 ring-2 ring-violet-300 dark:bg-violet-900 dark:ring-violet-700'
-                : 'bg-gray-50 hover:bg-violet-50 dark:bg-gray-800 dark:hover:bg-violet-950',
+                : 'bg-surface-muted hover:bg-violet-50 dark:bg-gray-800 dark:hover:bg-violet-950',
             )}
           >
             <span className="text-2xl">{mood.emoji}</span>
@@ -90,7 +93,7 @@ export function BeautyMoodTrackerCard({
         ))}
       </div>
 
-      <p className="mt-2 text-center text-[9px] text-text-tertiary dark:text-gray-500">
+      <p className="mt-2 text-center text-[9px] text-text-tertiary dark:text-text-secondary">
         {footerText}
       </p>
     </div>

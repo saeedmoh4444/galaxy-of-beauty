@@ -1,4 +1,5 @@
 'use client';
+import type { JSX } from 'react';
 import { cn } from '@galaxy/shared';
 export function BeautyPregnancySkincareCard({
   className = '',
@@ -19,7 +20,7 @@ export function BeautyPregnancySkincareCard({
       )}
     >
       <div className="flex items-center gap-2">
-        <span className="text-xl"></span>
+        <span className="text-xl">🤰</span>
         <div>
           <h4 className="text-sm font-bold text-pink-700 dark:text-pink-300">{title}</h4>
           <p className="text-[10px] text-pink-500 dark:text-pink-400">{subtitle}</p>
@@ -28,7 +29,7 @@ export function BeautyPregnancySkincareCard({
       <div className="mt-3 grid grid-cols-2 gap-1.5">
         {[
           {
-            emoji: '',
+            emoji: '✅',
             label: { ar: 'آمن', en: 'Safe' },
             tip: {
               ar: 'فيتامين سي، هيالورونيك، أزيليك',
@@ -36,12 +37,12 @@ export function BeautyPregnancySkincareCard({
             },
           },
           {
-            emoji: '',
+            emoji: '🟡',
             label: { ar: 'بحذر', en: 'With caution' },
             tip: { ar: 'ساليليك أقل من 2%', en: 'Salicylic acid under 2%' },
           },
           {
-            emoji: '',
+            emoji: '⛔',
             label: { ar: 'تجنبي', en: 'Avoid' },
             tip: { ar: 'ريتينول، هيدروكينون', en: 'Retinol, hydroquinone' },
           },

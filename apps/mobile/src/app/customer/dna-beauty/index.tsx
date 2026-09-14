@@ -1,7 +1,10 @@
 import { View, Text, ScrollView, StyleSheet, TouchableOpacity, RefreshControl } from 'react-native';
 import { useState } from 'react';
+import type { JSX } from 'react';
 import { SkeletonList } from '@/components/SkeletonCard';
 import { trpc } from '@/lib/trpc-react';
+import { useAuthState } from '@/hooks/useAuthState';
+import { useRouter } from 'expo-router';
 import { useLocale } from '@/components/LocaleProvider';
 
 interface DnaQuestion {
@@ -20,7 +23,15 @@ export default function DNABeautyScreen(): JSX.Element {
   const q = trpc.dnaBeauty.questions.useQuery();
   const questions: DnaQuestion[] = (q.data as unknown as DnaQuestion[] | undefined) ?? [];
   const analyzeQ = trpc.dnaBeauty.analyze.useQuery({ answers }, { enabled: false });
+  const isAuthed = useAuthState();
+  const router = useRouter();
   const analyze = () => {
+    // Guests can answer questions but analyzing is a protected procedure —
+    // send them to login instead of firing a 401.
+    if (!isAuthed) {
+      router.push('/(auth)/login');
+      return;
+    }
     void analyzeQ.refetch();
   };
   if (q.isLoading) return <SkeletonList count={4} />;
@@ -36,7 +47,7 @@ export default function DNABeautyScreen(): JSX.Element {
       <ScrollView style={styles.c} contentContainerStyle={styles.i}>
         <Text style={styles.t}>{t('dnaBeauty.title')}</Text>
         <View style={[styles.card, styles.rc]}>
-          <Text style={styles.re}></Text>
+          <Text style={styles.re}>🧬</Text>
           <Text style={styles.rt}>{t('dnaBeauty.result')}</Text>
           <Text style={styles.score}>{t('dnaBeauty.match', { score: result.score })}</Text>
           <TouchableOpacity
@@ -58,7 +69,9 @@ export default function DNABeautyScreen(): JSX.Element {
       refreshControl={
         <RefreshControl
           refreshing={q.isRefetching}
-          onRefresh={() => q.refetch()}
+          onRefresh={async () => {
+            await q.refetch();
+          }}
           colors={['#7c3aed']}
         />
       }

@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import type { JSX } from 'react';
 import { api } from '@/lib/trpc';
 import { Card, Button, Modal, formatCurrency } from '@galaxy/ui';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
@@ -80,7 +81,7 @@ export default function PriceDropAlertsPage(): JSX.Element {
                   className="flex items-center justify-between rounded-lg bg-surface-muted dark:bg-gray-800 p-3"
                 >
                   <div>
-                    <span className="text-lg mr-2">{a.emoji as string}</span>
+                    <span className="text-lg me-2">{a.emoji as string}</span>
                     <span className="font-bold">{a.serviceName as string}</span>
                   </div>
                   <div className="flex items-center gap-3">
@@ -92,9 +93,7 @@ export default function PriceDropAlertsPage(): JSX.Element {
                     <button
                       onClick={() => deleteMut.mutate({ id: a.id as number })}
                       className="text-red-400"
-                    >
-                      ️
-                    </button>
+                    ></button>
                   </div>
                 </div>
               ))}

@@ -1,3 +1,4 @@
+import type { JSX } from 'react';
 import { View, Text, ScrollView, StyleSheet, RefreshControl } from 'react-native';
 import { SkeletonList } from '@/components/SkeletonCard';
 import { trpc } from '@/lib/trpc-react';
@@ -29,7 +30,9 @@ export default function ReferralRaceScreen(): JSX.Element {
       refreshControl={
         <RefreshControl
           refreshing={leaderboardQ.isRefetching}
-          onRefresh={() => leaderboardQ.refetch()}
+          onRefresh={async () => {
+            await leaderboardQ.refetch();
+          }}
           colors={['#7c3aed']}
         />
       }
@@ -46,7 +49,7 @@ export default function ReferralRaceScreen(): JSX.Element {
               {t('mobile.public.referral-race.referral', { count: r.referrals ?? 0 })}
             </Text>
           </View>
-          {i === 0 && <Text style={styles.cr}></Text>}
+          {i === 0 && <Text style={styles.cr}>🏆</Text>}
         </View>
       ))}
     </ScrollView>

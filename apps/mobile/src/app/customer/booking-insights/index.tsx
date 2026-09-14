@@ -1,7 +1,9 @@
+import type { JSX } from 'react';
 import { View, Text, ScrollView, StyleSheet, RefreshControl } from 'react-native';
 import { SkeletonList } from '@/components/SkeletonCard';
 import { trpc } from '@/lib/trpc-react';
 import { useLocale } from '@/components/LocaleProvider';
+import { useAuthState } from '@/hooks/useAuthState';
 
 interface AnalyticsSummary {
   totalSpent?: number;
@@ -15,9 +17,10 @@ interface CategoryStat {
 }
 
 export default function BookingInsightsScreen(): JSX.Element {
+  const isAuthed = useAuthState();
   const { t } = useLocale();
-  const analyticsQ = trpc.beautyAnalytics.summary.useQuery();
-  const byCatQ = trpc.beautyAnalytics.byCategory.useQuery();
+  const analyticsQ = trpc.beautyAnalytics.summary.useQuery(undefined, { enabled: isAuthed });
+  const byCatQ = trpc.beautyAnalytics.byCategory.useQuery(undefined, { enabled: isAuthed });
   if (analyticsQ.isLoading || byCatQ.isLoading) return <SkeletonList count={3} />;
   const s: AnalyticsSummary = (analyticsQ.data as unknown as AnalyticsSummary | null) ?? {};
   const totalSpent = s.totalSpent ?? 0;
@@ -42,17 +45,17 @@ export default function BookingInsightsScreen(): JSX.Element {
       <Text style={styles.t}>{t('bookingInsights.title')}</Text>
       <View style={styles.kr}>
         <View style={styles.k}>
-          <Text style={styles.ke}></Text>
+          <Text style={styles.ke}>💰</Text>
           <Text style={styles.kv}>{totalSpent.toLocaleString()}</Text>
           <Text style={styles.kl}>{t('bookingInsights.spent-label')}</Text>
         </View>
         <View style={styles.k}>
-          <Text style={styles.ke}></Text>
+          <Text style={styles.ke}>📅</Text>
           <Text style={[styles.kv, { color: '#2563eb' }]}>{totalBookings}</Text>
           <Text style={styles.kl}>{t('bookingInsights.booking-label')}</Text>
         </View>
         <View style={styles.k}>
-          <Text style={styles.ke}></Text>
+          <Text style={styles.ke}>📊</Text>
           <Text style={[styles.kv, { color: '#059669' }]}>{avgPerBooking.toLocaleString()}</Text>
           <Text style={styles.kl}>{t('bookingInsights.avg-label')}</Text>
         </View>
@@ -75,7 +78,7 @@ export default function BookingInsightsScreen(): JSX.Element {
         </View>
       )}
       <View style={styles.ic}>
-        <Text style={styles.ie}></Text>
+        <Text style={styles.ie}>💡</Text>
         <Text style={styles.it}>{t('bookingInsights.smart-tip')}</Text>
         <Text style={styles.ix}>
           {totalBookings < 5

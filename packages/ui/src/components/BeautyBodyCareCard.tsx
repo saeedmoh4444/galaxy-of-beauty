@@ -1,15 +1,16 @@
 'use client';
+import type { JSX } from 'react';
 
 import { cn } from '@galaxy/shared';
 
 const TIPS = [
   {
-    emoji: '',
+    emoji: '🧽',
     title: { ar: 'تقشير أسبوعي', en: 'Weekly exfoliation' },
     desc: { ar: 'يزيل الخلايا الميتة ويجدد البشرة', en: 'Removes dead cells and renews the skin' },
   },
   {
-    emoji: '',
+    emoji: '🧴',
     title: { ar: 'ترطيب بعد الاستحمام', en: 'Moisturize after showering' },
     desc: {
       ar: 'البشرة تمتص المرطب أفضل وهي رطبة',
@@ -17,12 +18,12 @@ const TIPS = [
     },
   },
   {
-    emoji: '️',
+    emoji: '☀️',
     title: { ar: 'واقي للجسم', en: 'Body sunscreen' },
     desc: { ar: 'لا تنسي رقبتك ويديك وقدميك', en: "Don't forget your neck, hands and feet" },
   },
   {
-    emoji: '',
+    emoji: '💧',
     title: { ar: 'شرب الماء', en: 'Drink water' },
     desc: { ar: 'بشرة الجسم تحتاج ترطيب من الداخل', en: 'Body skin needs hydration from within' },
   },
@@ -49,7 +50,7 @@ export function BeautyBodyCareCard({
       )}
     >
       <div className="flex items-center gap-2">
-        <span className="text-xl"></span>
+        <span className="text-xl">🧴</span>
         <div>
           <h4 className="text-sm font-bold text-teal-700 dark:text-teal-300">{title}</h4>
           <p className="text-[10px] text-teal-500 dark:text-teal-400">{subtitle}</p>

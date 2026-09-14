@@ -1,9 +1,9 @@
 'use client';
+import type { JSX } from 'react';
 
 import { api } from '@/lib/trpc';
 import type { RouterOutputs } from '@galaxy/api';
-import { Card, TableSkeleton, ErrorAlert, Button } from '@galaxy/ui';
-import { DashboardLayout } from '@/components/layout/DashboardLayout';
+import { Card, TableSkeleton, ErrorAlert, Button, useAuth } from '@galaxy/ui';
 import { useToast } from '@galaxy/ui';
 import { useLocale } from '@/components/LocaleProvider';
 
@@ -11,8 +11,11 @@ type FlagItem = RouterOutputs['featureFlags']['list'][number];
 
 export default function FeatureFlagsPage(): JSX.Element {
   const { t } = useLocale();
+  const { isAuthenticated } = useAuth();
   const { addToast } = useToast();
-  const { data, isLoading, isError, refetch } = api.featureFlags.list.useQuery();
+  const { data, isLoading, isError, refetch } = api.featureFlags.list.useQuery(undefined, {
+    enabled: isAuthenticated,
+  });
   const flags: FlagItem[] = data ?? [];
   const toggleMut = api.featureFlags.toggle.useMutation({
     onSuccess: () => {
@@ -23,7 +26,7 @@ export default function FeatureFlagsPage(): JSX.Element {
   });
 
   return (
-    <DashboardLayout userRole="ADMIN">
+    <>
       <div className="mx-auto max-w-3xl space-y-6 px-4 py-8">
         <h1 className="text-2xl font-bold text-text-primary dark:text-gray-100">Feature Flags</h1>
         {isLoading ? (
@@ -33,15 +36,15 @@ export default function FeatureFlagsPage(): JSX.Element {
         ) : (
           <Card padding="none">
             <table className="w-full text-sm">
-              <thead className="bg-surface-muted text-text-secondary dark:bg-gray-800 dark:text-gray-400">
+              <thead className="bg-surface-muted text-text-secondary dark:bg-gray-800 dark:text-text-tertiary">
                 <tr>
-                  <th className="p-3 text-right">{t('admin.feature-flags.feature-header')}</th>
-                  <th className="p-3 text-right">{t('admin.feature-flags.status-header')}</th>
-                  <th className="p-3 text-right">{t('admin.feature-flags.rollout-header')}</th>
-                  <th className="p-3 text-right">{t('admin.feature-flags.action-header')}</th>
+                  <th className="p-3 text-end">{t('admin.feature-flags.feature-header')}</th>
+                  <th className="p-3 text-end">{t('admin.feature-flags.status-header')}</th>
+                  <th className="p-3 text-end">{t('admin.feature-flags.rollout-header')}</th>
+                  <th className="p-3 text-end">{t('admin.feature-flags.action-header')}</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-gray-100 dark:divide-gray-800">
+              <tbody className="divide-y divide-edge-muted">
                 {flags.map((f: FlagItem) => (
                   <tr key={f.key}>
                     <td className="p-3 font-medium">
@@ -75,6 +78,6 @@ export default function FeatureFlagsPage(): JSX.Element {
           </Card>
         )}
       </div>
-    </DashboardLayout>
+    </>
   );
 }

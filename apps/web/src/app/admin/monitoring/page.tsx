@@ -1,6 +1,15 @@
 'use client';
+import type { JSX } from 'react';
 import { api } from '@/lib/trpc';
-import { Card, KPIRowSkeleton, ErrorAlert, EmptyState, PageContainer, StatCard } from '@galaxy/ui';
+import {
+  Card,
+  KPIRowSkeleton,
+  ErrorAlert,
+  EmptyState,
+  PageContainer,
+  StatCard,
+  useAuth,
+} from '@galaxy/ui';
 import { useLocale } from '@/components/LocaleProvider';
 import { type TranslationKey } from '@galaxy/shared';
 
@@ -8,7 +17,7 @@ const STATUS_COLORS: Record<string, string> = {
   healthy: 'text-green-600 bg-green-100 dark:bg-green-900 dark:text-green-300',
   warning: 'text-amber-600 bg-amber-100 dark:bg-amber-900 dark:text-amber-300',
   error: 'text-red-600 bg-red-100 dark:bg-red-900 dark:text-red-300',
-  unknown: 'text-gray-500 bg-gray-100 dark:bg-gray-800 dark:text-gray-400',
+  unknown: 'text-text-secondary bg-surface-muted dark:text-text-tertiary',
 };
 
 const SERVICE_LABEL_KEYS: Record<string, TranslationKey> = {
@@ -21,18 +30,21 @@ const SERVICE_LABEL_KEYS: Record<string, TranslationKey> = {
 
 export default function MonitoringPage(): JSX.Element {
   const { t, locale } = useLocale();
+  const { isAuthenticated } = useAuth();
   const {
     data: health,
     isLoading,
     isError,
     refetch,
-  } = api.monitoring.health.useQuery() as {
+  } = api.monitoring.health.useQuery(undefined, { enabled: isAuthenticated }) as {
     data: Record<string, unknown> | undefined;
     isLoading: boolean;
     isError: boolean;
     refetch: () => void;
   };
-  const { data: errors } = api.monitoring.errorsFeed.useQuery() as {
+  const { data: errors } = api.monitoring.errorsFeed.useQuery(undefined, {
+    enabled: isAuthenticated,
+  }) as {
     data: Record<string, unknown> | undefined;
   };
 
@@ -72,7 +84,7 @@ export default function MonitoringPage(): JSX.Element {
                   <span
                     className={`inline-flex items-center justify-center h-10 w-10 rounded-full text-lg ${STATUS_COLORS[(svc.status as string) ?? 'unknown']}`}
                   >
-                    {svc.status === 'healthy' ? '' : svc.status === 'warning' ? '' : ''}
+                    {svc.status === 'healthy' ? '🟢' : svc.status === 'warning' ? '🟡' : '🔴'}
                   </span>
                   <p className="font-bold text-sm mt-2">
                     {t(SERVICE_LABEL_KEYS[key] ?? (key as unknown as TranslationKey))}
@@ -115,39 +127,39 @@ export default function MonitoringPage(): JSX.Element {
               <StatCard
                 label={t('admin.monitoring.bookings-today')}
                 value={today.bookings ?? 0}
-                icon=""
+                icon="📅"
               />
               <StatCard
                 label={t('admin.monitoring.logins-today')}
                 value={today.logins ?? 0}
-                icon=""
+                icon="👥"
               />
               <StatCard
                 label={t('admin.monitoring.payments-today')}
                 value={today.payments ?? 0}
-                icon=""
+                icon="💰"
               />
               <StatCard
                 label={t('admin.monitoring.error-rate')}
                 value={`${(errData.apiErrorsToday as number) ?? 0}`}
-                icon=""
+                icon="⚠️"
               />
             </div>
 
             {/* ── Performance ── */}
             <div className="grid gap-4 sm:grid-cols-3">
               <Card padding="lg" className="text-center">
-                <p className="text-3xl"></p>
+                <p className="text-3xl">⚡</p>
                 <p className="text-2xl font-bold">{perf.avgResponseTime as string}</p>
                 <p className="text-xs text-text-secondary">{t('admin.monitoring.avg-response')}</p>
               </Card>
               <Card padding="lg" className="text-center">
-                <p className="text-3xl"></p>
+                <p className="text-3xl">📊</p>
                 <p className="text-2xl font-bold">{perf.p95ResponseTime as string}</p>
                 <p className="text-xs text-text-secondary">p95</p>
               </Card>
               <Card padding="lg" className="text-center">
-                <p className="text-3xl"></p>
+                <p className="text-3xl">📈</p>
                 <p className="text-2xl font-bold">{perf.p99ResponseTime as string}</p>
                 <p className="text-xs text-text-secondary">p99</p>
               </Card>
@@ -166,7 +178,7 @@ export default function MonitoringPage(): JSX.Element {
                     (e: Record<string, unknown>, i: number) => (
                       <div key={i} className="flex items-center gap-2">
                         <span className="text-sm w-32">{e.type as string}</span>
-                        <div className="flex-1 h-3 rounded-full bg-gray-200 dark:bg-gray-700">
+                        <div className="flex-1 h-3 rounded-full bg-surface-muted">
                           <div
                             className="h-3 rounded-full bg-red-500"
                             style={{ width: `${e.pct as number}%` }}

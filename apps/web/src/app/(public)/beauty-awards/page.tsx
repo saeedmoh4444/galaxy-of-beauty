@@ -1,4 +1,5 @@
 'use client';
+import type { JSX } from 'react';
 import { api } from '@/lib/trpc';
 import { Card, CardListSkeleton, Button } from '@galaxy/ui';
 import { useAuth } from '@galaxy/ui';
@@ -18,7 +19,7 @@ export default function BeautyAwardsPage(): JSX.Element {
   return (
     <div className="mx-auto max-w-3xl px-4 py-12">
       <div className="mb-8 text-center">
-        <span className="text-6xl"></span>
+        <span className="text-6xl">🏆</span>
         <h1 className="mt-4 text-3xl font-bold">{t('marketing.beauty-awards.title')}</h1>
         <p className="mt-2 text-text-secondary">
           {t('marketing.beauty-awards.vote-cta', { month: (data?.month as string) ?? '' })}
@@ -43,7 +44,7 @@ export default function BeautyAwardsPage(): JSX.Element {
                       <div>
                         <span className="font-bold">{n.name as string}</span>
                         {(n.desc as string) ? (
-                          <span className="text-xs text-text-secondary mr-2">
+                          <span className="text-xs text-text-secondary me-2">
                             — {n.desc as string}
                           </span>
                         ) : null}

@@ -1,7 +1,9 @@
+import type { JSX } from 'react';
 import { View, Text, ScrollView, StyleSheet, RefreshControl } from 'react-native';
 import { SkeletonList } from '@/components/SkeletonCard';
 import { trpc } from '@/lib/trpc-react';
 import { useLocale } from '@/components/LocaleProvider';
+import { useAuthState } from '@/hooks/useAuthState';
 
 interface RestockItem {
   id?: number;
@@ -12,7 +14,8 @@ interface RestockItem {
 
 export default function RestockReminderScreen(): JSX.Element {
   const { t, locale } = useLocale();
-  const itemsQ = trpc.restockReminder.myItems.useQuery();
+  const isAuthed = useAuthState();
+  const itemsQ = trpc.restockReminder.myItems.useQuery(undefined, { enabled: isAuthed });
   const data: RestockItem[] = (itemsQ.data as unknown as RestockItem[] | undefined) ?? [];
 
   if (itemsQ.isLoading) return <SkeletonList count={4} />;
@@ -24,7 +27,9 @@ export default function RestockReminderScreen(): JSX.Element {
       refreshControl={
         <RefreshControl
           refreshing={itemsQ.isRefetching}
-          onRefresh={() => itemsQ.refetch()}
+          onRefresh={async () => {
+            await itemsQ.refetch();
+          }}
           colors={['#f59e0b']}
         />
       }

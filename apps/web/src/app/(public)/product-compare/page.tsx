@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import type { JSX } from 'react';
 import { api } from '@/lib/trpc';
 import { Card, GridSkeleton, TableSkeleton, formatCurrency } from '@galaxy/ui';
 import { useLocale } from '@/components/LocaleProvider';
@@ -42,7 +43,7 @@ export default function ProductComparePage(): JSX.Element {
   return (
     <div className="mx-auto max-w-5xl px-4 py-12">
       <div className="mb-8 text-center">
-        <span className="text-6xl">️</span>
+        <span className="text-6xl">🆚</span>
         <h1 className="mt-4 text-3xl font-bold">{t('marketing.product-compare.title')}</h1>
         <p className="mt-2 text-text-secondary">{t('marketing.product-compare.subtitle')}</p>
       </div>
@@ -85,7 +86,7 @@ export default function ProductComparePage(): JSX.Element {
           <table className="w-full text-sm">
             <thead>
               <tr>
-                <th className="text-right py-3 px-4 text-text-secondary font-semibold w-32">
+                <th className="text-end py-3 px-4 text-text-secondary font-semibold w-32">
                   {t('marketing.product-compare.feature-column')}
                 </th>
                 {compared.map((p: Record<string, unknown>) => (
@@ -134,7 +135,7 @@ export default function ProductComparePage(): JSX.Element {
                     return (
                       <td key={p.id as number} className="text-center py-3 px-4">
                         <div className="flex items-center gap-2 justify-center">
-                          <div className="h-2 flex-1 max-w-[80px] rounded-full bg-gray-200 dark:bg-gray-700 overflow-hidden">
+                          <div className="h-2 flex-1 max-w-[80px] rounded-full bg-surface-muted overflow-hidden">
                             <div
                               className={`h-full rounded-full ${val >= 85 ? 'bg-green-500' : val >= 70 ? 'bg-amber-500' : 'bg-red-500'}`}
                               style={{ width: `${val}%` }}

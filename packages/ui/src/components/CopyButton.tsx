@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import type { JSX } from 'react';
 
 /**
  * Copy to Clipboard button with feedback animation.
@@ -19,7 +20,7 @@ interface CopyButtonProps {
 export function CopyButton({
   text,
   label = 'نسخ',
-  copiedText = ' تم النسخ',
+  copiedText = 'تم النسخ',
   className = '',
 }: CopyButtonProps): JSX.Element {
   const [copied, setCopied] = useState(false);

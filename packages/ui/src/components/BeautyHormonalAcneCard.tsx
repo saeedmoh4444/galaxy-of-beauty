@@ -1,4 +1,5 @@
 'use client';
+import type { JSX } from 'react';
 import { cn } from '@galaxy/shared';
 export function BeautyHormonalAcneCard({
   className = '',
@@ -19,7 +20,7 @@ export function BeautyHormonalAcneCard({
       )}
     >
       <div className="flex items-center gap-2">
-        <span className="text-xl"></span>
+        <span className="text-xl">🧬</span>
         <div>
           <h4 className="text-sm font-bold text-red-700 dark:text-red-300">{title}</h4>
           <p className="text-[10px] text-red-500 dark:text-red-400">{subtitle}</p>
@@ -28,21 +29,21 @@ export function BeautyHormonalAcneCard({
       <div className="mt-3 space-y-1">
         {[
           {
-            emoji: '',
+            emoji: '📍',
             text: {
               ar: 'مكانها: الذقن والفك — علامة أنها هرمونية',
               en: 'Location: chin and jawline — a sign they are hormonal',
             },
           },
           {
-            emoji: '',
+            emoji: '🧪',
             text: {
               ar: 'علاج موضعي: بنزويل بيروكسايد أو ساليسيليك',
               en: 'Topical treatment: benzoyl peroxide or salicylic acid',
             },
           },
           {
-            emoji: '',
+            emoji: '🍬',
             text: {
               ar: 'قللي السكر والألبان — تزيد الالتهاب',
               en: 'Cut back on sugar and dairy — they increase inflammation',
