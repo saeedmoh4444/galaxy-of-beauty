@@ -1,4 +1,4 @@
-import { defineConfig, env } from "prisma/config";
+import { defineConfig } from "prisma/config";
 import { config as loadEnv } from "dotenv";
 
 loadEnv(); // load ./.env (Prisma 7 config does not auto-load it)
@@ -11,6 +11,7 @@ export default defineConfig({
     path: "prisma/migrations",
   },
   datasource: {
-    url: env("DATABASE_URL"),
+    // Tolerate missing env: generate/postinstall need no live DB; migrate jobs set it.
+    url: process.env.DATABASE_URL ?? "postgresql://localhost:5432/placeholder",
   },
 });
