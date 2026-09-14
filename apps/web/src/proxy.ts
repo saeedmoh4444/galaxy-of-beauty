@@ -2,6 +2,8 @@ import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
 
 // Only these prefixes REQUIRE authentication — everything else is public
+// Exception: /marketplace is a guest-browsable storefront (its API is
+// publicProcedure by design) — auth is enforced at checkout, not browsing.
 const PROTECTED_PATHS = [
   '/accessories-guide',
   '/achievements',
@@ -90,7 +92,6 @@ const PROTECTED_PATHS = [
   '/loyalty',
   '/loyalty-punch-card',
   '/makeup-guide',
-  '/marketplace',
   '/mood-board',
   '/my-journey',
   '/my-subscription',
