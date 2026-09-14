@@ -54,7 +54,7 @@ jobs:
 
       - name: Push Schema + Seed (ephemeral DB)
         run: |
-          pnpm --filter @galaxy/db exec prisma db push --skip-generate
+          pnpm --filter @galaxy/db exec prisma db push
           pnpm --filter @galaxy/db db:seed
         env:
           DATABASE_URL: 'postgresql://gob_admin:gob_test_pass@localhost:5432/Galaxy_of_Beauty_db'
@@ -117,7 +117,7 @@ jobs:
 
       - name: Push Schema + Seed
         run: |
-          pnpm --filter @galaxy/db exec prisma db push --skip-generate
+          pnpm --filter @galaxy/db exec prisma db push
           pnpm --filter @galaxy/db db:seed
         env:
           DATABASE_URL: postgresql://gob_admin:gob_test_pass@localhost:5432/Galaxy_of_Beauty_db
