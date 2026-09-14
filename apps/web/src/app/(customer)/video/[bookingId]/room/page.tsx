@@ -252,6 +252,8 @@ export default function VideoRoomPage(): JSX.Element {
               </span>
             </div>
             <div className="relative overflow-hidden rounded-xl bg-black">
+              {/* Live WebRTC stream — captions/track elements don't apply */}
+              {/* eslint-disable-next-line jsx-a11y/media-has-caption */}
               <video
                 ref={remoteVideoRef}
                 autoPlay
