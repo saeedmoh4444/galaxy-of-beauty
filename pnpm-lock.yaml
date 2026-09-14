@@ -11,6 +11,11 @@ overrides:
   sharp: '>=0.35.0'
   socket.io-parser: '>=4.2.7'
 
+patchedDependencies:
+  '@expo/metro-config@57.0.12':
+    hash: cpffd6zndndiwgwit7dcnxpi5e
+    path: patches/@expo__metro-config@57.0.12.patch
+
 importers:
 
   .:
@@ -8140,7 +8145,7 @@ snapshots:
       '@expo/json-file': 11.0.1
       '@expo/log-box': 57.0.4(@expo/dom-webview@57.0.0)(expo@57.0.21)(react-native@0.87.1(@babel/core@7.29.7)(@react-native/metro-config@0.87.0(@babel/core@7.29.7))(@types/react@19.3.0)(react@19.3.0))(react@19.3.0)
       '@expo/metro': 56.0.2
-      '@expo/metro-config': 57.0.12(expo@57.0.21)(typescript@6.0.3)
+      '@expo/metro-config': 57.0.12(patch_hash=cpffd6zndndiwgwit7dcnxpi5e)(expo@57.0.21)(typescript@6.0.3)
       '@expo/metro-file-map': 57.0.3
       '@expo/osascript': 2.7.1
       '@expo/package-manager': 1.13.1
@@ -8343,7 +8348,7 @@ snapshots:
       react-native: 0.87.1(@babel/core@7.29.7)(@react-native/metro-config@0.87.0(@babel/core@7.29.7))(@types/react@19.3.0)(react@19.3.0)
       stacktrace-parser: 0.1.11
 
-  '@expo/metro-config@57.0.12(expo@57.0.21)(typescript@6.0.3)':
+  '@expo/metro-config@57.0.12(patch_hash=cpffd6zndndiwgwit7dcnxpi5e)(expo@57.0.21)(typescript@6.0.3)':
     dependencies:
       '@babel/code-frame': 7.29.7
       '@babel/core': 7.29.7
@@ -11870,7 +11875,7 @@ snapshots:
       '@expo/local-build-cache-provider': 57.0.8(typescript@6.0.3)
       '@expo/log-box': 57.0.4(@expo/dom-webview@57.0.0)(expo@57.0.21)(react-native@0.87.1(@babel/core@7.29.7)(@react-native/metro-config@0.87.0(@babel/core@7.29.7))(@types/react@19.3.0)(react@19.3.0))(react@19.3.0)
       '@expo/metro': 56.0.2
-      '@expo/metro-config': 57.0.12(expo@57.0.21)(typescript@6.0.3)
+      '@expo/metro-config': 57.0.12(patch_hash=cpffd6zndndiwgwit7dcnxpi5e)(expo@57.0.21)(typescript@6.0.3)
       '@ungap/structured-clone': 1.4.0
       babel-preset-expo: 57.0.11(@babel/core@7.29.7)(@babel/runtime@7.29.7)(expo@57.0.21)(react-refresh@0.14.2)
       expo-asset: 57.0.17(expo@57.0.21)(react-native@0.87.1(@babel/core@7.29.7)(@react-native/metro-config@0.87.0(@babel/core@7.29.7))(@types/react@19.3.0)(react@19.3.0))(react@19.3.0)(typescript@6.0.3)
