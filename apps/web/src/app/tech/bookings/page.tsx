@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import type { JSX } from 'react';
+import Link from 'next/link';
 import { api } from '@/lib/trpc';
 import { Card, CardSkeleton, ErrorAlert, EmptyState, Button, useAuth } from '@galaxy/ui';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
@@ -113,6 +114,14 @@ export default function TechBookingsPage(): JSX.Element {
                       >
                         {t('tech.bookings.complete')}
                       </Button>
+                    )}
+                    {(b.status === 'PAID' || b.status === 'IN_PROGRESS') && (
+                      <Link
+                        href={`/tech/video/${b.id}`}
+                        className="rounded-lg bg-brand-600 px-3 py-1 text-xs font-medium text-white hover:bg-brand-700"
+                      >
+                        {t('booking.video')}
+                      </Link>
                     )}
                   </div>
                 </div>

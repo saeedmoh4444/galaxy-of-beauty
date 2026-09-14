@@ -150,6 +150,14 @@ function RootNavigator() {
               <Stack.Screen name="tech/earnings/index" options={{ title: t('mobile.earnings') }} />
               <Stack.Screen name="tech/profile/index" options={{ title: t('mobile.myProfile') }} />
               <Stack.Screen name="tech/calendar/index" options={{ title: t('mobile.calendar') }} />
+              <Stack.Screen
+                name="tech/video/[bookingId]/index"
+                options={{ title: t('mobile.videoConsult') }}
+              />
+              <Stack.Screen
+                name="tech/video/[bookingId]/room/index"
+                options={{ title: t('mobile.videoRoom') }}
+              />
 
               {/* Admin screens */}
               <Stack.Screen

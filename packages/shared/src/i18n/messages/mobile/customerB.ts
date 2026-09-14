@@ -597,6 +597,7 @@ export const mobileCustomerBMessages = {
   'mobile.topUp.amount-placeholder': { ar: 'أدخلي المبلغ', en: 'Enter amount' },
 
   // ---- video ----
+  'mobile.booking.video-call': { ar: 'مكالمة فيديو', en: 'Video call' },
   'mobile.video.unavailable': { ar: 'الجلسة غير متاحة', en: 'Session unavailable' },
   'mobile.video.title': { ar: 'جلسة فيديو', en: ' Video Session' },
   'mobile.video.join-room': { ar: 'دخول الغرفة', en: ' Enter Room' },

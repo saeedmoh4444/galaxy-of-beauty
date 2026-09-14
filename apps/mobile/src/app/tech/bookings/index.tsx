@@ -1,5 +1,6 @@
 import type { JSX } from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
+import { useRouter } from 'expo-router';
 import { ScreenState } from '@/components/ScreenState';
 import { useAuthState } from '@/hooks/useAuthState';
 import { trpc } from '@/lib/trpc-react';
@@ -32,6 +33,7 @@ const STATUS_COLORS: Record<string, string> = {
 
 export default function TechBookingsScreen(): JSX.Element {
   const { t, locale } = useLocale();
+  const router = useRouter();
   const isAuthed = useAuthState();
   const bookings = trpc.bookings.list.useQuery({ limit: 20 }, { enabled: isAuthed }) ?? {
     data: null,
@@ -67,6 +69,14 @@ export default function TechBookingsScreen(): JSX.Element {
           <Text style={styles.date}>
             {new Date(b.startAt as string).toLocaleString(locale === 'en' ? 'en-US' : 'ar-SA')}
           </Text>
+          {(b.status === 'PAID' || b.status === 'IN_PROGRESS') && (
+            <TouchableOpacity
+              style={styles.videoBtn}
+              onPress={() => router.push(`/tech/video/${b.id}` as never)}
+            >
+              <Text style={styles.videoBtnText}>{t('mobile.booking.video-call')}</Text>
+            </TouchableOpacity>
+          )}
         </View>
       ))}
     </ScreenState>
@@ -91,4 +101,12 @@ const styles = StyleSheet.create({
   code: { fontSize: 14, fontWeight: '700', color: COLORS.gray900 },
   statusBadge: { fontSize: 12, fontWeight: '600' },
   date: { fontSize: 12, color: COLORS.gray400 },
+  videoBtn: {
+    marginTop: 10,
+    backgroundColor: COLORS.brand,
+    borderRadius: 10,
+    paddingVertical: 8,
+    alignItems: 'center',
+  },
+  videoBtnText: { color: COLORS.white, fontSize: 13, fontWeight: '700' },
 });
