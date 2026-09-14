@@ -1,6 +1,0 @@
-chore(deps): apply minor-patch group with react 19 types pin (JSX migration enabler)
-
-Dependabot #103: minor/patch bumps + web/ui react 19.2.8 + types ^19.2.18;
-mobile RN/expo majors reverted (RN 0.87 migration deferred).
-
-Co-Authored-By: Claude Code <noreply@anthropic.com>
