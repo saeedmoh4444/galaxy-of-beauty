@@ -51,7 +51,7 @@ export const featureFlagRouter = router({
         description: z.string().optional(),
         enabled: z.boolean(),
         rolloutPercent: z.number().int().min(0).max(100).default(0),
-        enabledFor: z.record(z.unknown()).optional(),
+        enabledFor: z.record(z.string(), z.unknown()).optional(),
       }),
     )
     .mutation(async ({ input }) => {

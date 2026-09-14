@@ -31,7 +31,7 @@ export const technicianVerificationRouter = router({
   createBadge: adminProcedure
     .input(
       z.object({
-        nameJson: z.record(z.string()),
+        nameJson: z.record(z.string(), z.string()),
         emoji: z.string().default(''),
         criteria: z.string().optional(),
       }),
