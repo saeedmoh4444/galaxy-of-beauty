@@ -148,7 +148,7 @@ export default function PostCarePage(): JSX.Element {
                   <div key={plan.bookingId} className="space-y-3">
                     {/* Plan Header */}
                     <div className="flex items-center gap-3">
-                      <div className="flex h-10 w-10 items-center justify-center rounded-full bg-gradient-to-br from-brand-400 to-brand-500 text-white text-lg">
+                      <div className="flex h-10 w-10 items-center justify-center rounded-full bg-linear-to-br from-brand-400 to-brand-500 text-white text-lg">
                         💆
                       </div>
                       <div>
@@ -174,7 +174,7 @@ export default function PostCarePage(): JSX.Element {
                       return (
                         <div key={tf.key} className="rounded-xl border border-edge overflow-hidden">
                           <div
-                            className={`bg-gradient-to-r ${tf.color} px-4 py-2 text-white text-sm font-bold`}
+                            className={`bg-linear-to-r ${tf.color} px-4 py-2 text-white text-sm font-bold`}
                           >
                             {TIMEFRAME_ICONS[tf.key] ?? ''}{' '}
                             {locale === 'en' ? tf.labelEn : tf.labelAr}
@@ -282,7 +282,7 @@ export default function PostCarePage(): JSX.Element {
         {/* Bottom tip */}
         <Card
           padding="lg"
-          className="bg-gradient-to-r from-brand-50 to-brand-50 dark:from-brand-950 dark:to-brand-950 border-none text-center"
+          className="bg-linear-to-r from-brand-50 to-brand-50 dark:from-brand-950 dark:to-brand-950 border-none text-center"
         >
           <p className="text-lg font-bold text-text-primary dark:text-gray-100">
             {t('postCare.rememberTitle')}

@@ -48,7 +48,7 @@ export default function RewardsMarketplacePage(): JSX.Element {
         ) : (
           <Card
             padding="lg"
-            className={`text-center bg-gradient-to-r ${TIER_COLORS[tier] ?? TIER_COLORS['SILVER']!} text-white`}
+            className={`text-center bg-linear-to-r ${TIER_COLORS[tier] ?? TIER_COLORS['SILVER']!} text-white`}
           >
             <p className="text-sm opacity-80">{t('rewardsMarketplace.pointsBalance')}</p>
             <p className="text-4xl font-extrabold mt-2">

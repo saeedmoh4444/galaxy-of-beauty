@@ -77,7 +77,7 @@ export default function BeforeAfterPage(): JSX.Element {
                   <p className="text-[10px] text-text-tertiary mb-1 text-center">
                     {t('marketing.before-after.after-label')}
                   </p>
-                  <div className="h-32 rounded-xl bg-gradient-to-br from-brand-100 to-brand-100 dark:from-brand-900 dark:to-brand-900 flex items-center justify-center text-3xl">
+                  <div className="h-32 rounded-xl bg-linear-to-br from-brand-100 to-brand-100 dark:from-brand-900 dark:to-brand-900 flex items-center justify-center text-3xl">
                     ✨
                   </div>
                 </div>

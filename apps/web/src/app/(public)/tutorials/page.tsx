@@ -189,7 +189,7 @@ export default function TutorialsPage(): JSX.Element {
                   className="overflow-hidden transition-all hover:shadow-xl hover:-translate-y-1"
                 >
                   {/* Thumbnail */}
-                  <div className="relative flex h-44 items-center justify-center bg-gradient-to-br from-gray-800 to-gray-900">
+                  <div className="relative flex h-44 items-center justify-center bg-linear-to-br from-gray-800 to-gray-900">
                     {tut.thumbnailUrl ? (
                       <Image
                         src={tut.thumbnailUrl}

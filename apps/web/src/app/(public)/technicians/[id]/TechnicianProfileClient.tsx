@@ -56,7 +56,7 @@ export function TechnicianProfileClient({ data }: { data: TechnicianProfileData 
 
       <Card padding="lg" className="mt-6">
         <div className="flex flex-col items-center gap-6 sm:flex-row sm:items-start">
-          <div className="relative flex h-32 w-32 items-center justify-center rounded-full bg-gradient-to-br from-brand-100 to-accent-100 text-5xl dark:from-brand-900 dark:to-accent-900">
+          <div className="relative flex h-32 w-32 items-center justify-center rounded-full bg-linear-to-br from-brand-100 to-accent-100 text-5xl dark:from-brand-900 dark:to-accent-900">
             {user.avatarUrl ? (
               <Image src={user.avatarUrl} alt={name} fill className="rounded-full object-cover" />
             ) : (

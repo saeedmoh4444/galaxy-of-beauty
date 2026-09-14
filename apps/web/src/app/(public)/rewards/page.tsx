@@ -45,7 +45,7 @@ export default async function RewardsPage(): Promise<JSX.Element> {
           <Card
             key={key}
             padding="lg"
-            className={`bg-gradient-to-br ${tier.color} text-white text-center`}
+            className={`bg-linear-to-br ${tier.color} text-white text-center`}
           >
             <span className="text-4xl">{tier.emoji}</span>
             <h3 className="mt-2 text-xl font-bold">{t(tier.name, locale)}</h3>

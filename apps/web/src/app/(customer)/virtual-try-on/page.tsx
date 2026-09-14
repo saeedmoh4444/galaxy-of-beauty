@@ -482,7 +482,7 @@ export default function VirtualTryOnPage(): JSX.Element {
           {/* Right — Camera Viewfinder */}
           <div className="lg:col-span-3">
             <Card padding="none" className="overflow-hidden">
-              <div ref={containerRef} className="relative aspect-[9/16] max-h-[70vh] bg-black">
+              <div ref={containerRef} className="relative aspect-9/16 max-h-[70vh] bg-black">
                 {/* Camera view */}
                 {cameraReady ? (
                   <>
@@ -502,9 +502,9 @@ export default function VirtualTryOnPage(): JSX.Element {
                     {!selectedColor && (
                       <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
                         <div className="relative w-[65%] h-[55%] rounded-[50%] border-2 border-dashed border-white/40">
-                          <div className="absolute top-[15%] start-[25%] w-[20%] h-[10%] rounded-full border border-white/25" />
-                          <div className="absolute top-[15%] end-[25%] w-[20%] h-[10%] rounded-full border border-white/25" />
-                          <div className="absolute bottom-[12%] start-[35%] w-[30%] h-[8%] rounded-full border border-white/25" />
+                          <div className="absolute top-[15%] inset-s-[25%] w-[20%] h-[10%] rounded-full border border-white/25" />
+                          <div className="absolute top-[15%] inset-e-[25%] w-[20%] h-[10%] rounded-full border border-white/25" />
+                          <div className="absolute bottom-[12%] inset-s-[35%] w-[30%] h-[8%] rounded-full border border-white/25" />
                         </div>
                       </div>
                     )}
@@ -610,7 +610,7 @@ export default function VirtualTryOnPage(): JSX.Element {
                       padding="md"
                       className="h-full transition-all hover:shadow-lg hover:-translate-y-0.5 cursor-pointer"
                     >
-                      <div className="relative flex h-32 items-center justify-center rounded-xl bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-800 dark:to-gray-900 mb-3">
+                      <div className="relative flex h-32 items-center justify-center rounded-xl bg-linear-to-br from-gray-50 to-gray-100 dark:from-gray-800 dark:to-gray-900 mb-3">
                         {p.imageUrl ? (
                           <Image
                             src={p.imageUrl}
@@ -651,7 +651,7 @@ export default function VirtualTryOnPage(): JSX.Element {
         {/* Tips */}
         <Card
           padding="lg"
-          className="bg-gradient-to-r from-pink-50 to-rose-50 dark:from-pink-950 dark:to-rose-950 border-none"
+          className="bg-linear-to-r from-pink-50 to-rose-50 dark:from-pink-950 dark:to-rose-950 border-none"
         >
           <h3 className="font-bold text-text-primary dark:text-gray-100 mb-3">
             {t('tryOn.tipsTitle')}

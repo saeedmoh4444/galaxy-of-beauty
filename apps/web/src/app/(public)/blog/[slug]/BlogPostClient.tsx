@@ -140,7 +140,7 @@ export function BlogPostClient({
             className="mb-8 h-64 w-full rounded-2xl object-cover shadow-lg sm:h-80"
           />
         ) : (
-          <div className="mb-8 flex h-48 items-center justify-center rounded-2xl bg-gradient-to-br from-brand-100 to-accent-100 text-7xl dark:from-brand-900 dark:to-accent-900 sm:h-64">
+          <div className="mb-8 flex h-48 items-center justify-center rounded-2xl bg-linear-to-br from-brand-100 to-accent-100 text-7xl dark:from-brand-900 dark:to-accent-900 sm:h-64">
             📰
           </div>
         )}

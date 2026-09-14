@@ -51,7 +51,7 @@ export default function OnboardingPage(): JSX.Element {
   const s = STEPS[step]!;
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-gradient-to-br from-brand-50 via-white to-accent-50 px-4 dark:from-gray-950 dark:via-gray-900 dark:to-gray-950">
+    <div className="flex min-h-screen items-center justify-center bg-linear-to-br from-brand-50 via-white to-accent-50 px-4 dark:from-gray-950 dark:via-gray-900 dark:to-gray-950">
       <Card padding="lg" className="w-full max-w-md text-center">
         <div className="mb-6 flex justify-center gap-1">
           {STEPS.map((_, i) => (

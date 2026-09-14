@@ -181,7 +181,7 @@ export default function FlashDealsPage(): JSX.Element {
 
                 <div className="flex flex-col sm:flex-row items-start gap-5">
                   {/* Service image */}
-                  <div className="h-20 w-20 shrink-0 overflow-hidden rounded-2xl bg-gradient-to-br from-red-50 to-orange-100 dark:from-red-950 dark:to-orange-900">
+                  <div className="h-20 w-20 shrink-0 overflow-hidden rounded-2xl bg-linear-to-br from-red-50 to-orange-100 dark:from-red-950 dark:to-orange-900">
                     <ServiceImage
                       src={(deal as { serviceImageUrl?: string }).serviceImageUrl || null}
                       alt={title}
@@ -272,7 +272,7 @@ export default function FlashDealsPage(): JSX.Element {
 
       {/* Bottom CTA */}
       {allDeals.length > 0 && (
-        <div className="mt-10 rounded-2xl bg-gradient-to-r from-red-500 to-orange-500 p-6 text-center text-white">
+        <div className="mt-10 rounded-2xl bg-linear-to-r from-red-500 to-orange-500 p-6 text-center text-white">
           <p className="text-2xl font-bold">{t('marketing.flash-deals.dont-miss')}</p>
           <p className="mt-1 text-white/80">{t('marketing.flash-deals.daily-refresh')}</p>
         </div>

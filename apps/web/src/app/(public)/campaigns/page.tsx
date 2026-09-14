@@ -112,7 +112,7 @@ export default function CampaignsPage(): JSX.Element {
                     padding="none"
                     className="overflow-hidden border-2 border-red-200 dark:border-red-800 hover:shadow-xl transition-all"
                   >
-                    <div className="relative flex h-36 items-center justify-center bg-gradient-to-br from-red-100 to-amber-100 dark:from-red-950 dark:to-amber-950 text-5xl">
+                    <div className="relative flex h-36 items-center justify-center bg-linear-to-br from-red-100 to-amber-100 dark:from-red-950 dark:to-amber-950 text-5xl">
                       {c.imageUrl ? (
                         <Image src={c.imageUrl} alt="" fill className="object-cover" />
                       ) : (
@@ -176,7 +176,7 @@ export default function CampaignsPage(): JSX.Element {
                     padding="none"
                     className="overflow-hidden opacity-70 hover:opacity-100 transition-all"
                   >
-                    <div className="flex h-36 items-center justify-center bg-gradient-to-br from-blue-100 to-brand-100 dark:from-blue-950 dark:to-brand-950 text-5xl">
+                    <div className="flex h-36 items-center justify-center bg-linear-to-br from-blue-100 to-brand-100 dark:from-blue-950 dark:to-brand-950 text-5xl">
                       <span>📅</span>
                     </div>
                     <div className="p-5">

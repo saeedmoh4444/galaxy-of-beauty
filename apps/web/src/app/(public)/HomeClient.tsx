@@ -90,7 +90,7 @@ export function HomeClient({
       <section className="relative overflow-hidden">
         <div
           aria-hidden
-          className="absolute inset-0 bg-gradient-to-b from-brand-50 via-surface to-accent-50"
+          className="absolute inset-0 bg-linear-to-b from-brand-50 via-surface to-accent-50"
         />
         <FloatingBlob
           gradient="from-brand-200 to-accent-100"
@@ -106,7 +106,7 @@ export function HomeClient({
         />
         <FloatingBlob
           gradient="from-brand-300 to-brand-100"
-          className="bottom-0 start-1/4 h-56 w-56"
+          className="bottom-0 inset-s-1/4 h-56 w-56"
           animation="float"
           delay={-2}
           opacity={40}
@@ -163,7 +163,7 @@ export function HomeClient({
             <div className="relative mx-auto w-full max-w-md">
               <div
                 aria-hidden
-                className="absolute inset-0 rotate-6 rounded-[3rem] bg-gradient-to-br from-brand-200 to-accent-200"
+                className="absolute inset-0 rotate-6 rounded-[3rem] bg-linear-to-br from-brand-200 to-accent-200"
               />
               <ServiceImage
                 src={heroImages.main}
@@ -356,7 +356,7 @@ export function HomeClient({
       </section>
 
       {/* Testimonials */}
-      <section className="bg-gradient-to-r from-brand-50 to-brand-50 dark:from-brand-950 dark:to-brand-950 px-4 py-16">
+      <section className="bg-linear-to-r from-brand-50 to-brand-50 dark:from-brand-950 dark:to-brand-950 px-4 py-16">
         <div className="mx-auto max-w-5xl">
           <h2 className="mb-8 text-center text-2xl font-bold">
             {t('marketing.home.testimonials-title')}
@@ -446,7 +446,7 @@ export function HomeClient({
           ].map((f) => (
             <Link key={f.href} href={f.href}>
               <Card hover padding="lg" className="flex items-start gap-3 transition-all">
-                <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-gradient-to-br from-brand-100 to-brand-100 dark:from-brand-900 dark:to-brand-900">
+                <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-linear-to-br from-brand-100 to-brand-100 dark:from-brand-900 dark:to-brand-900">
                   <span className="text-lg font-bold text-brand-600 dark:text-brand-300">
                     {f.title.charAt(0)}
                   </span>

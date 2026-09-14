@@ -142,7 +142,7 @@ export default async function ShopTheLookPage(): Promise<JSX.Element> {
           const total = look.services.reduce((sum, s) => sum + s.price, 0);
           const totalDuration = look.services.reduce((sum, s) => sum + s.duration, 0);
           return (
-            <Card key={look.id} padding="lg" className={`bg-gradient-to-br ${look.color}`}>
+            <Card key={look.id} padding="lg" className={`bg-linear-to-br ${look.color}`}>
               <div className="flex items-center gap-3 mb-4">
                 <span className="text-4xl">{look.emoji}</span>
                 <div>

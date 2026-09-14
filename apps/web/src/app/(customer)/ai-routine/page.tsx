@@ -140,7 +140,7 @@ export default function AIRoutinePage(): JSX.Element {
             {tips.length > 0 && (
               <Card
                 padding="lg"
-                className="bg-gradient-to-r from-brand-50 to-brand-50 dark:from-brand-950 dark:to-brand-950 border-none"
+                className="bg-linear-to-r from-brand-50 to-brand-50 dark:from-brand-950 dark:to-brand-950 border-none"
               >
                 <h3 className="font-bold mb-3">{t('aiRoutine.tipsTitle')}</h3>
                 <div className="space-y-2">

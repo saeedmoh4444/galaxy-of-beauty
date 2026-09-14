@@ -214,7 +214,7 @@ export default function SkinAnalysisPage(): JSX.Element {
                   padding="md"
                   className={`flex items-center gap-4 ${idx === 0 ? 'border-s-4 border-brand-500' : ''}`}
                 >
-                  <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-brand-100 to-brand-100 dark:from-brand-900 dark:to-brand-900 text-lg">
+                  <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-linear-to-br from-brand-100 to-brand-100 dark:from-brand-900 dark:to-brand-900 text-lg">
                     🧪
                   </div>
                   <div className="flex-1 min-w-0">

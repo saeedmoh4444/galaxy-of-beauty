@@ -63,7 +63,7 @@ export default function LiveStreamPage(): JSX.Element {
                       padding="none"
                       className="overflow-hidden hover:shadow-xl transition-all group"
                     >
-                      <div className="relative flex h-44 items-center justify-center bg-gradient-to-br from-gray-800 to-gray-900">
+                      <div className="relative flex h-44 items-center justify-center bg-linear-to-br from-gray-800 to-gray-900">
                         <div className="text-center text-white/60">
                           <span className="text-6xl">📹</span>
                         </div>
