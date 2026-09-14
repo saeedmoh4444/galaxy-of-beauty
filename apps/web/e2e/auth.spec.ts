@@ -58,7 +58,7 @@ test.describe('Registration', () => {
 
 test.describe('Route gating (proxy)', () => {
   test('unauthenticated customer routes redirect to login', async ({ page }) => {
-    for (const route of ['/beauty-bingo', '/pro-tools', '/marketplace', '/ai-chat']) {
+    for (const route of ['/beauty-bingo', '/pro-tools', '/family-account', '/ai-chat']) {
       await page.goto(route);
       await page.waitForURL('**/login', { timeout: 10000 });
       await expect(page).toHaveURL(/\/login/);
