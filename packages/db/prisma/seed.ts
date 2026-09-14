@@ -1,7 +1,7 @@
-import { PrismaClient } from '@prisma/client';
+import { prisma } from '../src/client';
 import crypto from 'crypto';
 
-const prisma = new PrismaClient();
+
 
 function generateBookingCode(): string {
   return `GOB-${crypto.randomBytes(4).toString('hex').toUpperCase()}`;

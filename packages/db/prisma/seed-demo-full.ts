@@ -1,8 +1,8 @@
 // Dalal — Full Demo Seed
 // Run: pnpm --filter @galaxy/db exec tsx prisma/seed-demo-full.ts
-import { PrismaClient } from '@prisma/client';
+import { prisma } from '../src/client';
 
-const prisma = new PrismaClient();
+
 
 async function main() {
   console.log(' Seeding Dalal demo data...');

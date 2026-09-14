@@ -17,10 +17,10 @@
  *   Gift Card Txns: 0 → 10
  */
 
-import { PrismaClient } from '@prisma/client';
+import { prisma } from '../src/client';
 import crypto from 'crypto';
 
-const prisma = new PrismaClient();
+
 const db = prisma as any;
 
 function generateBookingCode(): string {
