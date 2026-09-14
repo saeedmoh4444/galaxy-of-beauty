@@ -1,4 +1,5 @@
 'use client';
+import type { JSX } from 'react';
 
 import { cn } from '@galaxy/shared';
 
@@ -37,12 +38,12 @@ interface PersonalStylingCardProps {
 }
 
 const INCLUDES = [
-  { emoji: '', label: { ar: 'تحليل لون البشرة', en: 'Skin tone analysis' } },
-  { emoji: '', label: { ar: 'تحديد نمط الملابس', en: 'Determine clothing style' } },
-  { emoji: '', label: { ar: 'ألوان المكياج المناسبة', en: 'Suitable makeup colors' } },
-  { emoji: '', label: { ar: 'تسريحات تناسب وجهكِ', en: 'Hairstyles that suit your face' } },
-  { emoji: '', label: { ar: 'جلسة تصوير للإطلالة', en: 'Outfit photo session' } },
-  { emoji: '', label: { ar: 'تقرير شخصي شامل', en: 'Comprehensive personal report' } },
+  { emoji: '🎨', label: { ar: 'تحليل لون البشرة', en: 'Skin tone analysis' } },
+  { emoji: '👗', label: { ar: 'تحديد نمط الملابس', en: 'Determine clothing style' } },
+  { emoji: '💄', label: { ar: 'ألوان المكياج المناسبة', en: 'Suitable makeup colors' } },
+  { emoji: '💇', label: { ar: 'تسريحات تناسب وجهكِ', en: 'Hairstyles that suit your face' } },
+  { emoji: '📸', label: { ar: 'جلسة تصوير للإطلالة', en: 'Outfit photo session' } },
+  { emoji: '📋', label: { ar: 'تقرير شخصي شامل', en: 'Comprehensive personal report' } },
 ];
 
 export function PersonalStylingCard({
@@ -53,7 +54,7 @@ export function PersonalStylingCard({
   className = '',
   title = 'استشارة الإطلالة',
   subtitle = 'اكتشفي ألوانكِ وأسلوبكِ الخاص',
-  withStylistPrefix = '‍ مع خبيرة الإطلالة: ',
+  withStylistPrefix = 'مع خبيرة الإطلالة: ',
   priceLabel = 'السعر',
   currencySuffix = 'ر.س',
   durationLabel = 'المدة',
@@ -69,11 +70,13 @@ export function PersonalStylingCard({
       )}
     >
       <div className="text-center">
-        <span className="text-3xl" aria-hidden="true"></span>
+        <span className="text-3xl" aria-hidden="true">
+          👗
+        </span>
         <h4 className="mt-1 text-sm font-bold text-fuchsia-700 dark:text-fuchsia-300">{title}</h4>
         <p className="text-[10px] text-fuchsia-500 dark:text-fuchsia-400">{subtitle}</p>
         {stylist && (
-          <p className="mt-0.5 text-[10px] text-text-tertiary dark:text-gray-500">
+          <p className="mt-0.5 text-[10px] text-text-tertiary dark:text-text-secondary">
             {withStylistPrefix}
             {stylist}
           </p>
@@ -119,7 +122,7 @@ export function PersonalStylingCard({
         {bookButtonText}
       </button>
 
-      <p className="mt-2 text-center text-[9px] text-text-tertiary dark:text-gray-500">
+      <p className="mt-2 text-center text-[9px] text-text-tertiary dark:text-text-secondary">
         {footerText}
       </p>
     </div>

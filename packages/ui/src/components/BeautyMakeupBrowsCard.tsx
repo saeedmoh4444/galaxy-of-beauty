@@ -1,4 +1,5 @@
 'use client';
+import type { JSX } from 'react';
 import { cn } from '@galaxy/shared';
 export function BeautyMakeupBrowsCard({
   className = '',
@@ -19,7 +20,7 @@ export function BeautyMakeupBrowsCard({
       )}
     >
       <div className="flex items-center gap-2">
-        <span className="text-xl">️</span>
+        <span className="text-xl">💄</span>
         <div>
           <h4 className="text-sm font-bold text-amber-700 dark:text-amber-300">{heading}</h4>
           <p className="text-[10px] text-amber-500 dark:text-amber-400">{subtitle}</p>
@@ -28,25 +29,25 @@ export function BeautyMakeupBrowsCard({
       <div className="mt-3 space-y-1">
         {[
           {
-            emoji: '',
+            emoji: '📏',
             text: {
               ar: 'بداية الحاجب = عند طرف الأنف',
               en: 'Brow start = at the edge of the nose',
             },
           },
           {
-            emoji: '️',
+            emoji: '📐',
             text: { ar: 'القوس = فوق البؤبؤ مباشرة', en: 'The arch = directly above the pupil' },
           },
           {
-            emoji: '️',
+            emoji: '🎯',
             text: {
               ar: 'النهاية = زاوية الأنف لطرف العين',
               en: 'The tail = from nose corner to outer eye corner',
             },
           },
           {
-            emoji: '️',
+            emoji: '🖌️',
             text: {
               ar: 'حركات خفيفة تشبه الشعر — وليس خطاً واحداً',
               en: 'Light hair-like strokes — not one solid line',

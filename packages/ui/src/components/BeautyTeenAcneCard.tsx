@@ -1,4 +1,5 @@
 'use client';
+import type { JSX } from 'react';
 import { cn } from '@galaxy/shared';
 export function BeautyTeenAcneCard({
   className = '',
@@ -19,7 +20,7 @@ export function BeautyTeenAcneCard({
       )}
     >
       <div className="flex items-center gap-2">
-        <span className="text-xl"></span>
+        <span className="text-xl">🔴</span>
         <div>
           <h4 className="text-sm font-bold text-teal-700 dark:text-teal-300">{title}</h4>
           <p className="text-[10px] text-teal-500 dark:text-teal-400">{subtitle}</p>
@@ -28,18 +29,18 @@ export function BeautyTeenAcneCard({
       <div className="mt-3 space-y-1">
         {[
           {
-            emoji: '',
+            emoji: '🧼',
             text: { ar: 'غسول لطيف — مرتين يومياً', en: 'Gentle cleanser — twice daily' },
           },
           {
-            emoji: '',
+            emoji: '🚫',
             text: {
               ar: 'لا تضغطي — تترك أثراً وندبات',
               en: "Don't squeeze — it leaves marks and scars",
             },
           },
           {
-            emoji: '',
+            emoji: '🧴',
             text: { ar: 'مرطب خالٍ من الزيوت — ضروري', en: 'Oil-free moisturizer — essential' },
           },
           {

@@ -1,4 +1,5 @@
 'use client';
+import type { JSX } from 'react';
 import { cn } from '@galaxy/shared';
 export function BeautyZeroWasteCard({
   className = '',
@@ -19,7 +20,7 @@ export function BeautyZeroWasteCard({
       )}
     >
       <div className="flex items-center gap-2">
-        <span className="text-xl">️</span>
+        <span className="text-xl">🌍</span>
         <div>
           <h4 className="text-sm font-bold text-emerald-700 dark:text-emerald-300">{title}</h4>
           <p className="text-[10px] text-emerald-500 dark:text-emerald-400">{subtitle}</p>
@@ -28,28 +29,28 @@ export function BeautyZeroWasteCard({
       <div className="mt-3 space-y-1">
         {[
           {
-            emoji: '',
+            emoji: '🧼',
             text: {
               ar: 'شامبو صلب — يدوم 3 شهور بدون بلاستيك',
               en: 'Solid shampoo — lasts 3 months, no plastic',
             },
           },
           {
-            emoji: '',
+            emoji: '🧺',
             text: {
               ar: 'فوط قماش — بدل القطن أحادي الاستخدام',
               en: 'Cloth pads — instead of single-use cotton',
             },
           },
           {
-            emoji: '',
+            emoji: '🔄',
             text: {
               ar: 'اشتري عبوات كبيرة — وأعيدي تعبئة الصغيرة',
               en: 'Buy large refills — and refill small containers',
             },
           },
           {
-            emoji: '',
+            emoji: '🌿',
             text: {
               ar: 'منتجات قابلة للتحلل — تغليف ورقي',
               en: 'Biodegradable products — paper packaging',

@@ -1,4 +1,5 @@
 'use client';
+import type { JSX } from 'react';
 import { cn } from '@galaxy/shared';
 export function BeautyHydrofacialCard({
   className = '',
@@ -19,7 +20,7 @@ export function BeautyHydrofacialCard({
       )}
     >
       <div className="flex items-center gap-2">
-        <span className="text-xl"></span>
+        <span className="text-xl">💦</span>
         <div>
           <h4 className="text-sm font-bold text-sky-700 dark:text-sky-300">{heading}</h4>
           <p className="text-[10px] text-sky-500 dark:text-sky-400">{subtitle}</p>
@@ -28,25 +29,25 @@ export function BeautyHydrofacialCard({
       <div className="mt-3 space-y-1">
         {[
           {
-            emoji: '',
+            emoji: '🫧',
             text: {
               ar: 'ينظف المسام بعمق — بدون ألم أو احمرار',
               en: 'Deeply cleans pores — painless, no redness',
             },
           },
           {
-            emoji: '',
+            emoji: '💧',
             text: {
               ar: 'يرطب ويغذي — في نفس الجلسة',
               en: 'Hydrates and nourishes — in the same session',
             },
           },
           {
-            emoji: '️',
+            emoji: '⏰',
             text: { ar: '30-45 دقيقة — نتائج فورية', en: '30-45 minutes — instant results' },
           },
           {
-            emoji: '',
+            emoji: '📅',
             text: {
               ar: 'مرة شهرياً — للحفاظ على النتائج',
               en: 'Once a month — to maintain results',

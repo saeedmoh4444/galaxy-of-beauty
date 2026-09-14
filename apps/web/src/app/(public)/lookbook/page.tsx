@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import type { JSX } from 'react';
 import Link from 'next/link';
 import { api } from '@/lib/trpc';
 import { Card, GridSkeleton } from '@galaxy/ui';
@@ -10,29 +11,29 @@ const SEASONS = [
     id: 'summer',
     nameAr: 'marketing.lookbook.season-summer-ar',
     nameEn: 'marketing.lookbook.season-summer-en',
-    emoji: '️',
+    emoji: '☀️',
     color: 'from-amber-400 to-orange-500',
   },
   {
     id: 'eid',
     nameAr: 'marketing.lookbook.season-eid-ar',
     nameEn: 'marketing.lookbook.season-eid-en',
-    emoji: '',
+    emoji: '✨',
     color: 'from-emerald-400 to-teal-600',
   },
   {
     id: 'wedding',
     nameAr: 'marketing.lookbook.season-wedding-ar',
     nameEn: 'marketing.lookbook.season-wedding-en',
-    emoji: '',
+    emoji: '💍',
     color: 'from-pink-400 to-rose-500',
   },
   {
     id: 'ramadan',
     nameAr: 'marketing.lookbook.season-ramadan-ar',
     nameEn: 'marketing.lookbook.season-ramadan-en',
-    emoji: '',
-    color: 'from-purple-400 to-indigo-600',
+    emoji: '🌙',
+    color: 'from-brand-400 to-indigo-600',
   },
 ] as const;
 
@@ -156,7 +157,7 @@ export default function LookbookPage(): JSX.Element {
           <button
             key={s.id}
             onClick={() => setSeason(s.id)}
-            className={`flex items-center gap-2 rounded-full px-5 py-2.5 text-sm font-medium transition-all ${season === s.id ? `bg-gradient-to-r ${s.color} text-white shadow-lg` : 'bg-surface-muted text-text-secondary hover:bg-gray-200 dark:bg-gray-800 dark:text-gray-400'}`}
+            className={`flex items-center gap-2 rounded-full px-5 py-2.5 text-sm font-medium transition-all ${season === s.id ? `bg-gradient-to-r ${s.color} text-white shadow-lg` : 'bg-surface-muted text-text-secondary hover:bg-surface-muted dark:text-text-tertiary'}`}
           >
             <span>{s.emoji}</span> {t(locale === 'ar' ? s.nameAr : s.nameEn)}
           </button>
@@ -228,17 +229,17 @@ function CommunityLooks(): JSX.Element {
                 {l.category === 'makeup'
                   ? ''
                   : l.category === 'hair'
-                    ? '‍️'
+                    ? ''
                     : l.category === 'nails'
                       ? ''
                       : ''}
               </span>
               <h3 className="font-bold mt-3">{l.title as string}</h3>
               <p className="text-xs text-text-secondary mt-1">
-                {l.userName as string} · ‍ {l.technicianName as string}
+                {l.userName as string} · {l.technicianName as string}
               </p>
               <p className="text-xs text-text-tertiary mt-1">
-                ️ {l.votes as number} ·{' '}
+                {l.votes as number} ·{' '}
                 {new Date(l.date as string).toLocaleDateString(locale === 'ar' ? 'ar-SA' : 'en-GB')}
               </p>
             </Card>

@@ -1,17 +1,45 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import type { JSX } from 'react';
 import Link from 'next/link';
 import { api } from '@/lib/trpc';
 import { localize } from '@galaxy/shared';
 import { useLocale } from '@/components/LocaleProvider';
-import { Input, Card, GridSkeleton, Button, formatCurrency } from '@galaxy/ui';
+import {
+  Input,
+  Card,
+  GridSkeleton,
+  Button,
+  formatCurrency,
+  ServiceImage,
+  EmptyState,
+} from '@galaxy/ui';
 export default function SearchPage(): JSX.Element {
   const { t, locale } = useLocale();
   const [query, setQuery] = useState('');
   const [searched, setSearched] = useState(false);
+
+  // Nav search box deep-link: /search?q=... pre-fills and auto-searches.
+  useEffect(() => {
+    const q = new URLSearchParams(window.location.search).get('q');
+    if (q && q.trim().length > 1) {
+      setQuery(q.trim());
+      setSearched(true);
+    }
+  }, []);
+  // E6d — trust badge filters.
+  const [womenOnly, setWomenOnly] = useState(false);
+  const [privateSuite, setPrivateSuite] = useState(false);
+  const [pregnancySafe, setPregnancySafe] = useState(false);
   const { data: services, isLoading: svcLoading } = api.services.list.useQuery(
-    { search: query || undefined, limit: 12 },
+    {
+      search: query || undefined,
+      limit: 12,
+      womenOnly,
+      privateSuite,
+      pregnancySafe,
+    },
     { enabled: searched && query.length > 1 },
   );
   const { data: products, isLoading: prodLoading } = api.marketplace.products.useQuery(
@@ -57,6 +85,33 @@ export default function SearchPage(): JSX.Element {
 
       {searched && (
         <>
+          {/* E6d — trust badge filter chips */}
+          <div className="mb-4 flex flex-wrap justify-center gap-2">
+            <button
+              onClick={() => setWomenOnly(!womenOnly)}
+              className={`rounded-full px-3 py-1 text-xs font-medium ${
+                womenOnly ? 'bg-brand-600 text-white' : 'bg-surface-muted text-text-secondary'
+              }`}
+            >
+              🙋‍♀️ {t('trust.womenOnly')}
+            </button>
+            <button
+              onClick={() => setPrivateSuite(!privateSuite)}
+              className={`rounded-full px-3 py-1 text-xs font-medium ${
+                privateSuite ? 'bg-brand-600 text-white' : 'bg-surface-muted text-text-secondary'
+              }`}
+            >
+              🚪 {t('trust.privateSuite')}
+            </button>
+            <button
+              onClick={() => setPregnancySafe(!pregnancySafe)}
+              className={`rounded-full px-3 py-1 text-xs font-medium ${
+                pregnancySafe ? 'bg-brand-600 text-white' : 'bg-surface-muted text-text-secondary'
+              }`}
+            >
+              🤰 {t('trust.pregnancySafe')}
+            </button>
+          </div>
           <p className="mb-6 text-sm text-text-secondary">
             {isLoading
               ? t('marketing.search.searching')
@@ -65,10 +120,7 @@ export default function SearchPage(): JSX.Element {
           {isLoading ? (
             <GridSkeleton count={8} />
           ) : totalResults === 0 ? (
-            <div className="py-16 text-center text-text-tertiary">
-              <span className="text-5xl"></span>
-              <p className="mt-4">{t('marketing.search.no-results')}</p>
-            </div>
+            <EmptyState title={t('marketing.search.no-results')} />
           ) : (
             <div className="space-y-8">
               {svcItems.length > 0 && (
@@ -80,12 +132,34 @@ export default function SearchPage(): JSX.Element {
                     {svcItems.map((s) => (
                       <Link key={s.id} href={`/services/${s.id}`}>
                         <Card hover padding="md">
-                          <div className="h-32 rounded-xl bg-gradient-to-br from-brand-100 to-accent-100 flex items-center justify-center text-3xl"></div>
+                          <ServiceImage
+                            src={s.imageUrl}
+                            alt={localize(s.titleJson, locale)}
+                            size="full"
+                            className="h-32 w-full"
+                          />
                           <h3 className="mt-2 font-semibold">{localize(s.titleJson, locale)}</h3>
                           <p className="text-sm text-text-secondary">
                             {t('marketing.search.duration-min', { min: s.durationMin })} ·{' '}
                             {formatCurrency(Number(s.basePrice))}
                           </p>
+                          <div className="mt-1 flex flex-wrap gap-1">
+                            {s.isWomenOnlyStaff && (
+                              <span className="rounded-full bg-pink-100 px-2 py-0.5 text-[10px] text-pink-700">
+                                🙋‍♀️ {t('trust.womenOnly')}
+                              </span>
+                            )}
+                            {s.isPrivateSuite && (
+                              <span className="rounded-full bg-brand-100 px-2 py-0.5 text-[10px] text-brand-700">
+                                🚪 {t('trust.privateSuite')}
+                              </span>
+                            )}
+                            {s.isPregnancySafe && (
+                              <span className="rounded-full bg-green-100 px-2 py-0.5 text-[10px] text-green-700">
+                                🤰 {t('trust.pregnancySafe')}
+                              </span>
+                            )}
+                          </div>
                         </Card>
                       </Link>
                     ))}
@@ -101,7 +175,12 @@ export default function SearchPage(): JSX.Element {
                     {prodItems.map((p) => (
                       <Link key={p.id} href={`/marketplace`}>
                         <Card hover padding="sm">
-                          <div className="h-24 rounded-lg bg-surface-muted flex items-center justify-center text-2xl"></div>
+                          <ServiceImage
+                            src={p.imageUrl ?? null}
+                            alt={localize(p.nameJson, locale)}
+                            size="full"
+                            className="h-24 w-full"
+                          />
                           <p className="mt-2 text-sm font-semibold truncate">
                             {localize(p.nameJson, locale)}
                           </p>
@@ -124,8 +203,13 @@ export default function SearchPage(): JSX.Element {
                       <Link key={t.id} href={`/technicians/${t.id}`}>
                         <Card hover padding="md">
                           <div className="text-center">
-                            <div className="mx-auto h-16 w-16 rounded-full bg-brand-100 flex items-center justify-center text-2xl">
-                              ‍
+                            <div className="mx-auto h-16 w-16 overflow-hidden rounded-full bg-brand-100">
+                              <ServiceImage
+                                src={t.user?.avatarUrl ?? null}
+                                alt={t.user?.name ?? ''}
+                                size="full"
+                                className="h-16 w-16 object-cover"
+                              />
                             </div>
                             <p className="mt-2 font-semibold">{t.user?.name}</p>
                             <p className="text-sm text-text-secondary">

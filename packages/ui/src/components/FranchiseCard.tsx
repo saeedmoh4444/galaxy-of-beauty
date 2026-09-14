@@ -1,9 +1,10 @@
 'use client';
+import type { JSX } from 'react';
 
 import { cn } from '@galaxy/shared';
 
 /**
- * Franchise Card — helps top technicians open their own Galaxy of Beauty franchise.
+ * Franchise Card — helps top technicians open their own Dalal franchise.
  * From Phase W10: Saudi Women Leadership — Franchise Program.
  *
  * Usage:
@@ -18,15 +19,15 @@ interface FranchiseBenefit {
 
 const BENEFITS: FranchiseBenefit[] = [
   {
-    emoji: '️',
+    emoji: '🏷️',
     title: { ar: 'العلامة التجارية', en: 'Brand' },
     description: {
       ar: 'استخدمي اسم جالاكسي بيوتي المعروف',
-      en: 'Use the well-known Galaxy Beauty name',
+      en: 'Use the well-known Dalal name',
     },
   },
   {
-    emoji: '',
+    emoji: '🎓',
     title: { ar: 'تدريب وتأهيل', en: 'Training' },
     description: {
       ar: 'برنامج تدريبي شامل لكِ ولفريقكِ',
@@ -34,7 +35,7 @@ const BENEFITS: FranchiseBenefit[] = [
     },
   },
   {
-    emoji: '',
+    emoji: '📅',
     title: { ar: 'نظام حجز متكامل', en: 'Integrated booking' },
     description: {
       ar: 'منصتنا التقنية مع حجوزات ومدفوعات',
@@ -42,7 +43,7 @@ const BENEFITS: FranchiseBenefit[] = [
     },
   },
   {
-    emoji: '',
+    emoji: '📣',
     title: { ar: 'تسويق ودعم', en: 'Marketing and support' },
     description: {
       ar: 'حملات تسويقية وإعلانات على حساب المنصة',
@@ -50,7 +51,7 @@ const BENEFITS: FranchiseBenefit[] = [
     },
   },
   {
-    emoji: '',
+    emoji: '💰',
     title: { ar: 'تمويل ميسر', en: 'Easy financing' },
     description: {
       ar: 'شراكة مع بنوك سعودية للتمويل الصغير',
@@ -58,7 +59,7 @@ const BENEFITS: FranchiseBenefit[] = [
     },
   },
   {
-    emoji: '‍',
+    emoji: '🧭',
     title: { ar: 'إرشاد مستمر', en: 'Ongoing mentorship' },
     description: {
       ar: 'مرشدة أعمال شخصية لمدة سنة كاملة',
@@ -117,7 +118,7 @@ export function FranchiseCard({
   investmentLabel = 'الاستثمار',
   revenueLabel = 'العائد المتوقع',
   existingFranchisesText = 'سيدة سبقوكِ وافتتحن فروعهنّ!',
-  qualifyTitle = ' شروط التأهل',
+  qualifyTitle = 'شروط التأهل',
   applyLabel = 'ابدئي رحلة الامتياز',
   footerText = 'نساعدكِ تبنين مشروعكِ الخاص وتحققين استقلالكِ المالي',
   locale = 'ar',
@@ -131,7 +132,9 @@ export function FranchiseCard({
     >
       {/* Header */}
       <div className="text-center">
-        <span className="text-3xl" aria-hidden="true"></span>
+        <span className="text-3xl" aria-hidden="true">
+          🏪
+        </span>
         <h4 className="mt-1 text-sm font-bold text-amber-800 dark:text-amber-200">{title}</h4>
         <p className="text-[10px] text-amber-600 dark:text-amber-400">{subtitle}</p>
       </div>
@@ -139,11 +142,13 @@ export function FranchiseCard({
       {/* Stats */}
       <div className="mt-3 grid grid-cols-2 gap-2">
         <div className="rounded-xl bg-white/60 p-2.5 text-center dark:bg-gray-800/60">
-          <p className="text-[9px] text-text-tertiary dark:text-gray-500">{investmentLabel}</p>
+          <p className="text-[9px] text-text-tertiary dark:text-text-secondary">
+            {investmentLabel}
+          </p>
           <p className="text-xs font-bold text-amber-800 dark:text-amber-200">{investmentRange}</p>
         </div>
         <div className="rounded-xl bg-white/60 p-2.5 text-center dark:bg-gray-800/60">
-          <p className="text-[9px] text-text-tertiary dark:text-gray-500">{revenueLabel}</p>
+          <p className="text-[9px] text-text-tertiary dark:text-text-secondary">{revenueLabel}</p>
           <p className="text-xs font-bold text-emerald-700 dark:text-emerald-300">
             {expectedRevenue}
           </p>
@@ -167,7 +172,7 @@ export function FranchiseCard({
             <p className="mt-0.5 text-[10px] font-bold text-text-primary dark:text-gray-100">
               {b.title[locale]}
             </p>
-            <p className="text-[9px] text-text-tertiary dark:text-gray-400">
+            <p className="text-[9px] text-text-tertiary dark:text-text-tertiary">
               {b.description[locale]}
             </p>
           </div>

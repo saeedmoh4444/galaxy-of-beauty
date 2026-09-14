@@ -1,16 +1,22 @@
+// NO API: this welcome walkthrough is marketing slides (emoji/title/desc)
+// with no backend procedure. The beautyOnboarding router
+// (questions/submit/status) is an auth-gated (customerProcedure) post-signup
+// preferences questionnaire — a different flow with no public counterpart,
+// and the web page is static too.
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import { useState } from 'react';
+import type { JSX } from 'react';
 import { useLocale } from '@/components/LocaleProvider';
 
 const slides = [
   {
-    emoji: '‍️',
-    title: 'أهلاً بكِ في جالكسي بيوتي',
+    emoji: '🌸',
+    title: 'أهلاً بكِ في دلال',
     desc: 'منصتكِ الشاملة لكل خدمات التجميل والعناية',
   },
-  { emoji: '', title: 'احجزي بسهولة', desc: 'تصفحي الخدمات واحجزي موعدكِ في دقائق' },
-  { emoji: '‍', title: 'أفضل الفنيات', desc: 'اختاري من نخبة الفنيات المحترفات في منطقتكِ' },
-  { emoji: '', title: 'مكافآت وخصومات', desc: 'اكسبي نقاط واستمتعي بعروض حصرية' },
+  { emoji: '📅', title: 'احجزي بسهولة', desc: 'تصفحي الخدمات واحجزي موعدكِ في دقائق' },
+  { emoji: '💇', title: 'أفضل الفنيات', desc: 'اختاري من نخبة الفنيات المحترفات في منطقتكِ' },
+  { emoji: '🎁', title: 'مكافآت وخصومات', desc: 'اكسبي نقاط واستمتعي بعروض حصرية' },
 ];
 
 export default function OnboardingScreen(): JSX.Element {

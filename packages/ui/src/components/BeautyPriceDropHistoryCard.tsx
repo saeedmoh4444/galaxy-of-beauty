@@ -1,4 +1,5 @@
 'use client';
+import type { JSX } from 'react';
 
 import { cn } from '@galaxy/shared';
 
@@ -45,7 +46,9 @@ export function BeautyPriceDropHistoryCard({
     >
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-2">
-          <span className="text-xl" aria-hidden="true"></span>
+          <span className="text-xl" aria-hidden="true">
+            📉
+          </span>
           <div>
             <h4 className="text-sm font-bold text-emerald-700 dark:text-emerald-300">{title}</h4>
             <p className="text-[10px] text-emerald-500 dark:text-emerald-400">
@@ -65,7 +68,7 @@ export function BeautyPriceDropHistoryCard({
             <span className="flex-1 text-[10px] text-text-primary dark:text-gray-100 truncate">
               {d.service}
             </span>
-            <span className="text-[10px] text-text-tertiary line-through dark:text-gray-500">
+            <span className="text-[10px] text-text-tertiary line-through dark:text-text-secondary">
               {d.oldPrice}
             </span>
             <span className="text-[10px] font-bold text-emerald-700 dark:text-emerald-300">

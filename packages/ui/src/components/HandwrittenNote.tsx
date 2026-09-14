@@ -1,4 +1,5 @@
 'use client';
+import type { JSX } from 'react';
 
 import { cn } from '@galaxy/shared';
 
@@ -32,7 +33,7 @@ const MILESTONE_MESSAGES: Record<
   { emoji: string; title: { ar: string; en: string }; message: { ar: string; en: string } }
 > = {
   10: {
-    emoji: '',
+    emoji: '🎉',
     title: { ar: '10 حجوزات!', en: '10 bookings!' },
     message: {
       ar: 'شكراً لكِ على ثقتكِ بنا. أنتِ جزء من عائلة جالاكسي بيوتي الآن.',
@@ -40,7 +41,7 @@ const MILESTONE_MESSAGES: Record<
     },
   },
   25: {
-    emoji: '',
+    emoji: '🌟',
     title: { ar: '25 حجوزات!', en: '25 bookings!' },
     message: {
       ar: 'أنتِ من أروع عميلاتنا. شكراً لوجودكِ معنا في كل مرة.',
@@ -48,7 +49,7 @@ const MILESTONE_MESSAGES: Record<
     },
   },
   50: {
-    emoji: '',
+    emoji: '👑',
     title: { ar: '50 حجوزات!', en: '50 bookings!' },
     message: {
       ar: 'لا نجد كلمات توفيكِ حقكِ. شكراً من القلب — أنتِ ملكة جالاكسي بيوتي.',
@@ -56,7 +57,7 @@ const MILESTONE_MESSAGES: Record<
     },
   },
   100: {
-    emoji: '',
+    emoji: '🏆',
     title: { ar: '100 حجوزات!', en: '100 bookings!' },
     message: {
       ar: 'مئة مرة! أنتِ لستِ عميلة — أنتِ أخت وصديقة. شكراً لكل مرة.',
@@ -70,7 +71,7 @@ export function HandwrittenNote({
   technicianName,
   message,
   className = '',
-  withLovePrefix = '️ مع حب، ',
+  withLovePrefix = 'مع حب، ',
   bookingCountPrefix = 'حجز #',
   nextMilestoneSuffix = 'حجوزات متبقية لمفاجأتكِ القادمة',
   footerText = 'لأن كل حجز هو قصة جميلة بيننا',
@@ -113,7 +114,7 @@ export function HandwrittenNote({
           &ldquo;{displayMessage}&rdquo;
         </p>
         {technicianName && (
-          <p className="mt-2 text-center text-xs text-text-tertiary dark:text-gray-400">
+          <p className="mt-2 text-center text-xs text-text-tertiary dark:text-text-tertiary">
             {withLovePrefix}
             {technicianName}
           </p>
@@ -130,7 +131,7 @@ export function HandwrittenNote({
 
       {/* Next milestone */}
       {bookingCount < 100 && (
-        <p className="mt-2 text-center text-[9px] text-text-tertiary dark:text-gray-500">
+        <p className="mt-2 text-center text-[9px] text-text-tertiary dark:text-text-secondary">
           {milestone + 15 - bookingCount} {nextMilestoneSuffix}
         </p>
       )}

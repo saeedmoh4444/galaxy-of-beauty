@@ -1,4 +1,5 @@
 'use client';
+import type { JSX } from 'react';
 import { cn } from '@galaxy/shared';
 export function BeautyHairScalpCard({
   className = '',
@@ -19,7 +20,7 @@ export function BeautyHairScalpCard({
       )}
     >
       <div className="flex items-center gap-2">
-        <span className="text-xl">‍️</span>
+        <span className="text-xl">💆</span>
         <div>
           <h4 className="text-sm font-bold text-teal-700 dark:text-teal-300">{title}</h4>
           <p className="text-[10px] text-teal-500 dark:text-teal-400">{subtitle}</p>
@@ -28,19 +29,19 @@ export function BeautyHairScalpCard({
       <div className="mt-3 space-y-1">
         {[
           {
-            emoji: '',
+            emoji: '✨',
             text: { ar: 'تقشير فروة الرأس — مرة شهرياً', en: 'Scalp exfoliation — once a month' },
           },
           {
-            emoji: '',
+            emoji: '💆',
             text: {
               ar: 'تدليك يومي — 5 دقائق بزيت دافئ',
               en: 'Daily massage — 5 minutes with warm oil',
             },
           },
-          { emoji: '️', text: { ar: 'ماء فاتر — ليس ساخناً', en: 'Lukewarm water — not hot' } },
+          { emoji: '🚿', text: { ar: 'ماء فاتر — ليس ساخناً', en: 'Lukewarm water — not hot' } },
           {
-            emoji: '',
+            emoji: '🌙',
             text: { ar: 'سيروم لفروة الرأس — قبل النوم', en: 'Scalp serum — before bed' },
           },
         ].map((t, i) => (

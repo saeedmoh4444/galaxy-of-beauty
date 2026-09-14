@@ -1,3 +1,4 @@
+import type { JSX } from 'react';
 import { View, Text, ScrollView, StyleSheet, TouchableOpacity, RefreshControl } from 'react-native';
 import { ErrorAlert } from '@/components/ErrorAlert';
 import { SkeletonList } from '@/components/SkeletonCard';
@@ -47,7 +48,9 @@ export default function DiscoverScreen(): JSX.Element {
       refreshControl={
         <RefreshControl
           refreshing={trendingQ.isRefetching}
-          onRefresh={() => trendingQ.refetch()}
+          onRefresh={async () => {
+            await trendingQ.refetch();
+          }}
           colors={['#db2777']}
         />
       }

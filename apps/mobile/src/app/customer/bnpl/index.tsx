@@ -1,8 +1,10 @@
 import { View, Text, ScrollView, StyleSheet, TouchableOpacity, RefreshControl } from 'react-native';
 import { useState } from 'react';
+import type { JSX } from 'react';
 import { SkeletonList } from '@/components/SkeletonCard';
-import { trpc } from '@/lib/trpc-react';
 import { useLocale } from '@/components/LocaleProvider';
+import { useAuthState } from '@/hooks/useAuthState';
+import { trpc } from '@/lib/trpc-react';
 
 interface BnplProvider {
   key: string;
@@ -16,8 +18,9 @@ interface BnplPlanResult {
 
 export default function BnplScreen(): JSX.Element {
   const { t } = useLocale();
-  const providersQ = trpc.bnpl.providers.useQuery();
-  const eligibilityQ = trpc.bnpl.eligibility.useQuery();
+  const isAuthed = useAuthState();
+  const providersQ = trpc.bnpl.providers.useQuery(undefined, { enabled: isAuthed });
+  const eligibilityQ = trpc.bnpl.eligibility.useQuery(undefined, { enabled: isAuthed });
   const [provider, setProvider] = useState('tabby');
   const [amount] = useState(500);
   const [inst] = useState(4);
@@ -41,7 +44,7 @@ export default function BnplScreen(): JSX.Element {
       <ScrollView style={styles.c} contentContainerStyle={styles.i}>
         <Text style={styles.t}>{t('bnpl.title')}</Text>
         <View style={[styles.card, styles.sc]}>
-          <Text style={styles.se}></Text>
+          <Text style={styles.se}>✅</Text>
           <Text style={styles.stt}>{t('bnpl.approved')}</Text>
           <Text style={styles.ta}>
             {t('bnpl.amount', { amount: result.totalAmount?.toLocaleString() ?? '' })}

@@ -1,4 +1,5 @@
 'use client';
+import type { JSX } from 'react';
 import { api } from '@/lib/trpc';
 import { Card, CardListSkeleton, formatCurrency, ErrorAlert } from '@galaxy/ui';
 import { useLocale } from '@/components/LocaleProvider';
@@ -79,7 +80,7 @@ export default function TrendingPage(): JSX.Element {
             <div className="space-y-3">
               {(spotlight ?? []).map((t: Record<string, unknown>) => (
                 <div key={t.id as number} className="flex items-center gap-4 rounded-lg border p-3">
-                  <span className="text-4xl">‍</span>
+                  <span className="text-4xl">🔥</span>
                   <div>
                     <p className="font-bold">{t.name as string}</p>
                     <p className="text-xs text-text-secondary">

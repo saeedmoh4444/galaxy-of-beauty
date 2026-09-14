@@ -1,4 +1,5 @@
 'use client';
+import type { JSX } from 'react';
 import { cn } from '@galaxy/shared';
 export function BeautyPostAcneMarksCard({
   className = '',
@@ -19,7 +20,7 @@ export function BeautyPostAcneMarksCard({
       )}
     >
       <div className="flex items-center gap-2">
-        <span className="text-xl"></span>
+        <span className="text-xl">✨</span>
         <div>
           <h4 className="text-sm font-bold text-amber-700 dark:text-amber-300">{title}</h4>
           <p className="text-[10px] text-amber-500 dark:text-amber-400">{subtitle}</p>
@@ -28,25 +29,25 @@ export function BeautyPostAcneMarksCard({
       <div className="mt-3 space-y-1">
         {[
           {
-            emoji: '',
+            emoji: '🍊',
             text: {
               ar: 'فيتامين C — صباحاً لتفتيح التصبغات',
               en: 'Vitamin C — in the morning to fade hyperpigmentation',
             },
           },
           {
-            emoji: '',
+            emoji: '🧪',
             text: { ar: 'أزيليك أسيد — آمن للحوامل', en: 'Azelaic acid — pregnancy-safe' },
           },
           {
-            emoji: '',
+            emoji: '🧽',
             text: {
               ar: 'أحماض ألفا هيدروكسي — تقشير كيميائي',
               en: 'Alpha hydroxy acids — chemical exfoliation',
             },
           },
           {
-            emoji: '️',
+            emoji: '⏳',
             text: {
               ar: 'الصبر — النتائج تحتاج 8-12 أسبوعاً',
               en: 'Patience — results take 8-12 weeks',

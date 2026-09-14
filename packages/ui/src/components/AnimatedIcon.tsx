@@ -1,4 +1,5 @@
 'use client';
+import type { JSX } from 'react';
 
 /**
  * Animated icons for confirmation, success, and notification states.

@@ -1,15 +1,16 @@
 import { View, Text, ScrollView, StyleSheet, TouchableOpacity, RefreshControl } from 'react-native';
 import { useState } from 'react';
+import type { JSX } from 'react';
 import { SkeletonList } from '@/components/SkeletonCard';
 import { trpc } from '@/lib/trpc-react';
 import { localize } from '@galaxy/shared';
 import { useLocale } from '@/components/LocaleProvider';
 
 const ET: Record<string, { label: string; emoji: string }> = {
-  workshop: { label: 'ورشة عمل', emoji: '' },
-  masterclass: { label: 'ماستر كلاس', emoji: '' },
-  launch: { label: 'إطلاق منتج', emoji: '' },
-  seasonal: { label: 'موسمي', emoji: '' },
+  workshop: { label: 'ورشة عمل', emoji: '🔧' },
+  masterclass: { label: 'ماستر كلاس', emoji: '🎓' },
+  launch: { label: 'إطلاق منتج', emoji: '🚀' },
+  seasonal: { label: 'موسمي', emoji: '🍂' },
 };
 
 interface BeautyEvent {
@@ -37,7 +38,9 @@ export default function EventsScreen(): JSX.Element {
       refreshControl={
         <RefreshControl
           refreshing={eventsQ.isRefetching}
-          onRefresh={() => eventsQ.refetch()}
+          onRefresh={async () => {
+            await eventsQ.refetch();
+          }}
           colors={['#7c3aed']}
         />
       }
@@ -65,7 +68,7 @@ export default function EventsScreen(): JSX.Element {
         </View>
       </ScrollView>
       {filtered.map((e) => {
-        const et = ET[e.eventType ?? ''] ?? { label: e.eventType ?? '', emoji: '' };
+        const et = ET[e.eventType ?? ''] ?? { label: e.eventType ?? '', emoji: '🎉' };
         return (
           <View key={e.id} style={styles.card}>
             <Text style={styles.ee}>{et.emoji}</Text>

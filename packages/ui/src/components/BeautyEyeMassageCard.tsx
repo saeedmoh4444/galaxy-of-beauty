@@ -1,4 +1,5 @@
 'use client';
+import type { JSX } from 'react';
 import { cn } from '@galaxy/shared';
 export function BeautyEyeMassageCard({
   className = '',
@@ -19,7 +20,7 @@ export function BeautyEyeMassageCard({
       )}
     >
       <div className="flex items-center gap-2">
-        <span className="text-xl"></span>
+        <span className="text-xl">💆</span>
         <div>
           <h4 className="text-sm font-bold text-teal-700 dark:text-teal-300">{title}</h4>
           <p className="text-[10px] text-teal-500 dark:text-teal-400">{subtitle}</p>
@@ -28,28 +29,28 @@ export function BeautyEyeMassageCard({
       <div className="mt-3 space-y-1">
         {[
           {
-            emoji: '️',
+            emoji: '👆',
             text: {
               ar: 'البنصر — الأخف للتربيت على محيط العين',
               en: 'Ring finger — the gentlest for tapping around the eye',
             },
           },
           {
-            emoji: '',
+            emoji: '🔄',
             text: {
               ar: 'من الداخل للخارج — بحركة دائرية',
               en: 'From inner to outer corner — in a circular motion',
             },
           },
           {
-            emoji: '',
+            emoji: '🧴',
             text: {
               ar: 'مع كريم أو زيت — لتزلق الأصابع',
               en: 'With cream or oil — so fingers glide',
             },
           },
           {
-            emoji: '️',
+            emoji: '⏰',
             text: {
               ar: '3 دقائق — صباحاً لتقليل الانتفاخ',
               en: '3 minutes — in the morning to reduce puffiness',

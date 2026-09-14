@@ -1,4 +1,5 @@
 'use client';
+import type { JSX } from 'react';
 
 import { cn } from '@galaxy/shared';
 
@@ -29,7 +30,7 @@ interface FeatureDef {
 
 const FEATURES: FeatureDef[] = [
   {
-    emoji: '',
+    emoji: '♿',
     label: { ar: 'كرسي متحرك', en: 'Wheelchair accessible' },
     detail: {
       ar: 'مداخل واسعة، مصعد، حمام مجهز',
@@ -39,7 +40,7 @@ const FEATURES: FeatureDef[] = [
       'bg-blue-50 text-blue-700 border-blue-200 dark:bg-blue-950 dark:text-blue-300 dark:border-blue-800',
   },
   {
-    emoji: '',
+    emoji: '🎨',
     label: { ar: 'كل ألوان البشرة', en: 'All skin tones' },
     detail: {
       ar: 'خبيرات مدربات على كل ألوان البشرة (فيتزباتريك I-VI)',
@@ -49,7 +50,7 @@ const FEATURES: FeatureDef[] = [
       'bg-amber-50 text-amber-700 border-amber-200 dark:bg-amber-950 dark:text-amber-300 dark:border-amber-800',
   },
   {
-    emoji: '',
+    emoji: '💇',
     label: { ar: 'كل أنواع الشعر', en: 'All hair types' },
     detail: {
       ar: 'مصففات مدربات على كل أنماط التجعيد (1A إلى 4C)',
@@ -59,17 +60,17 @@ const FEATURES: FeatureDef[] = [
       'bg-rose-50 text-rose-700 border-rose-200 dark:bg-rose-950 dark:text-rose-300 dark:border-rose-800',
   },
   {
-    emoji: '',
+    emoji: '🫶',
     label: { ar: 'إيجابية الجسد', en: 'Body positive' },
     detail: {
       ar: 'صور حقيقية، روبات وكراسي لجميع الأحجام',
       en: 'Real photos, robes and chairs for all sizes',
     },
     color:
-      'bg-purple-50 text-purple-700 border-purple-200 dark:bg-purple-950 dark:text-purple-300 dark:border-purple-800',
+      'bg-brand-50 text-brand-700 border-brand-200 dark:bg-brand-950 dark:text-brand-300 dark:border-brand-800',
   },
   {
-    emoji: '',
+    emoji: '🤟',
     label: { ar: 'لغة الإشارة', en: 'Sign language' },
     detail: {
       ar: 'خبيرات مدربات على لغة الإشارة (قريباً)',
@@ -79,7 +80,7 @@ const FEATURES: FeatureDef[] = [
       'bg-sky-50 text-sky-700 border-sky-200 dark:bg-sky-950 dark:text-sky-300 dark:border-sky-800',
   },
   {
-    emoji: '',
+    emoji: '🦯',
     label: { ar: 'قائمة برايل', en: 'Braille menu' },
     detail: {
       ar: 'قائمة خدمات بطريقة برايل للمكفوفات',
@@ -89,7 +90,7 @@ const FEATURES: FeatureDef[] = [
       'bg-teal-50 text-teal-700 border-teal-200 dark:bg-teal-950 dark:text-teal-300 dark:border-teal-800',
   },
   {
-    emoji: '‍',
+    emoji: '🦮',
     label: { ar: 'حيوان الخدمة', en: 'Service animal' },
     detail: {
       ar: 'نرحب بحيوانات الخدمة في الصالون',
@@ -99,7 +100,7 @@ const FEATURES: FeatureDef[] = [
       'bg-emerald-50 text-emerald-700 border-emerald-200 dark:bg-emerald-950 dark:text-emerald-300 dark:border-emerald-800',
   },
   {
-    emoji: '',
+    emoji: '🛗',
     label: { ar: 'مصعد', en: 'Elevator' },
     detail: { ar: 'مصعد متاح لجميع الطوابق', en: 'Elevator available on all floors' },
     color:
@@ -154,7 +155,9 @@ export function AccessibleSalonBadge({
     >
       {/* Header */}
       <div className="flex items-center gap-2">
-        <span className="text-lg" aria-hidden="true"></span>
+        <span className="text-lg" aria-hidden="true">
+          ♿
+        </span>
         <div>
           <h4 className="text-sm font-bold text-blue-700 dark:text-blue-300">{title}</h4>
           <p className="text-[10px] text-blue-500 dark:text-blue-400">
@@ -187,7 +190,7 @@ export function AccessibleSalonBadge({
       </div>
 
       {/* Footer pledge */}
-      <div className="mt-3 rounded-xl bg-gradient-to-r from-blue-50 to-purple-50 p-3 dark:from-blue-950 dark:to-purple-950">
+      <div className="mt-3 rounded-xl bg-gradient-to-r from-blue-50 to-brand-50 p-3 dark:from-blue-950 dark:to-brand-950">
         <p className="text-center text-[10px] font-medium text-blue-700 dark:text-blue-300">
           {pledgeText}
         </p>

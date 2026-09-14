@@ -1,5 +1,6 @@
 'use client';
 import { useState } from 'react';
+import type { JSX } from 'react';
 import { api } from '@/lib/trpc';
 import { Card, KPIRowSkeleton, Button, Modal, formatCurrency } from '@galaxy/ui';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
@@ -36,24 +37,24 @@ export default function FranchisePortalPage(): JSX.Element {
         ) : (
           <div className="grid gap-4 sm:grid-cols-4">
             <Card padding="md" className="text-center">
-              <p className="text-3xl"></p>
+              <p className="text-3xl">💰</p>
               <p className="text-2xl font-bold text-brand-600">
                 {formatCurrency((dash?.totalRevenue as number) ?? 0)}
               </p>
               <p className="text-xs text-text-secondary">{t('franchisePortal.revenue')}</p>
             </Card>
             <Card padding="md" className="text-center">
-              <p className="text-3xl"></p>
+              <p className="text-3xl">📅</p>
               <p className="text-2xl font-bold">{(dash?.totalBookings as number) ?? 0}</p>
               <p className="text-xs text-text-secondary">{t('franchisePortal.bookings')}</p>
             </Card>
             <Card padding="md" className="text-center">
-              <p className="text-3xl">‍</p>
+              <p className="text-3xl">👥</p>
               <p className="text-2xl font-bold">{(dash?.totalStaff as number) ?? 0}</p>
               <p className="text-xs text-text-secondary">{t('franchisePortal.staff')}</p>
             </Card>
             <Card padding="md" className="text-center">
-              <p className="text-3xl"></p>
+              <p className="text-3xl">📈</p>
               <p className="text-2xl font-bold text-green-600">+{(dash?.growth as number) ?? 0}%</p>
               <p className="text-xs text-text-secondary">{t('franchisePortal.growth')}</p>
             </Card>
@@ -69,7 +70,7 @@ export default function FranchisePortalPage(): JSX.Element {
                   {t('franchisePortal.staffCount', { count: l.staff as number })}
                 </p>
               </div>
-              <div className="text-right flex items-center gap-4">
+              <div className="text-end flex items-center gap-4">
                 <span>{t('franchisePortal.bookingsCount', { count: l.bookings as number })}</span>
                 <span className="font-bold text-brand-600">
                   {formatCurrency(l.revenue as number)}

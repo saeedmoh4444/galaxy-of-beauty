@@ -1,4 +1,5 @@
 'use client';
+import type { JSX } from 'react';
 import { cn } from '@galaxy/shared';
 export function BeautyHairTrimCard({
   className = '',
@@ -19,7 +20,7 @@ export function BeautyHairTrimCard({
       )}
     >
       <div className="flex items-center gap-2">
-        <span className="text-xl">️</span>
+        <span className="text-xl">💈</span>
         <div>
           <h4 className="text-sm font-bold text-pink-700 dark:text-pink-300">{title}</h4>
           <p className="text-[10px] text-pink-500 dark:text-pink-400">{subtitle}</p>
@@ -28,28 +29,28 @@ export function BeautyHairTrimCard({
       <div className="mt-3 space-y-1">
         {[
           {
-            emoji: '',
+            emoji: '📅',
             text: {
               ar: 'كل 8-12 أسبوع — حتى لو تطولينه',
               en: 'Every 8-12 weeks — even if you are growing it out',
             },
           },
           {
-            emoji: '',
+            emoji: '✂',
             text: {
               ar: 'الأطراف المتقصفة لا تصلح — قصيها',
               en: 'Split ends cannot be repaired — trim them',
             },
           },
           {
-            emoji: '',
+            emoji: '💇',
             text: {
               ar: 'القص المنتظم = شعر أكثر كثافة',
               en: 'Regular trims = thicker-looking hair',
             },
           },
           {
-            emoji: '',
+            emoji: '🏠',
             text: {
               ar: 'لا تحتاجين صالون — يمكنكِ قصه في البيت',
               en: 'No salon needed — you can trim it at home',

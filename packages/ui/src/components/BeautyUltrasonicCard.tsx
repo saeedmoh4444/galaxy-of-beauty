@@ -1,4 +1,5 @@
 'use client';
+import type { JSX } from 'react';
 import { cn } from '@galaxy/shared';
 export function BeautyUltrasonicCard({
   className = '',
@@ -19,7 +20,7 @@ export function BeautyUltrasonicCard({
       )}
     >
       <div className="flex items-center gap-2">
-        <span className="text-xl"></span>
+        <span className="text-xl">📳</span>
         <div>
           <h4 className="text-sm font-bold text-teal-700 dark:text-teal-300">{title}</h4>
           <p className="text-[10px] text-teal-500 dark:text-teal-400">{subtitle}</p>
@@ -28,22 +29,22 @@ export function BeautyUltrasonicCard({
       <div className="mt-3 space-y-1">
         {[
           {
-            emoji: '',
+            emoji: '📳',
             text: {
               ar: 'اهتزازات عالية — تطرد الرؤوس السوداء',
               en: 'High vibrations — drive out blackheads',
             },
           },
           {
-            emoji: '',
+            emoji: '💧',
             text: { ar: 'على بشرة رطبة — أفضل نتائج', en: 'On damp skin — best results' },
           },
           {
-            emoji: '️',
+            emoji: '⬆️',
             text: { ar: 'حركي للأعلى — بطول المسام', en: 'Move upward — along the pores' },
           },
           {
-            emoji: '',
+            emoji: '📅',
             text: {
               ar: 'مرة أسبوعياً — لا تفرطي في الاستخدام',
               en: "Once a week — don't overuse it",

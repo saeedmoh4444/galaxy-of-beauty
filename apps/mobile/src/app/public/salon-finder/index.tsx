@@ -1,3 +1,4 @@
+import type { JSX } from 'react';
 import { View, Text, ScrollView, StyleSheet, TouchableOpacity, RefreshControl } from 'react-native';
 import { SkeletonList } from '@/components/SkeletonCard';
 import { trpc } from '@/lib/trpc-react';
@@ -28,7 +29,9 @@ export default function SalonFinderScreen(): JSX.Element {
       refreshControl={
         <RefreshControl
           refreshing={salonsQ.isRefetching}
-          onRefresh={() => salonsQ.refetch()}
+          onRefresh={async () => {
+            await salonsQ.refetch();
+          }}
           colors={['#db2777']}
         />
       }
@@ -36,7 +39,7 @@ export default function SalonFinderScreen(): JSX.Element {
       <Text style={styles.t}>{t('mobile.public.salon-finder.title')}</Text>
       {salons.map((s) => (
         <View key={s.id} style={styles.card}>
-          <Text style={styles.se}>‍️</Text>
+          <Text style={styles.se}>💇</Text>
           <View style={{ flex: 1 }}>
             <Text style={styles.sn}>{s.nameAr ?? s.name}</Text>
             <Text style={styles.sm}>
@@ -44,7 +47,7 @@ export default function SalonFinderScreen(): JSX.Element {
               {s.distance ? ` · ${s.distance}` : ''}
             </Text>
             <Text style={styles.sr}>
-              {s.rating ?? 0} · ‍{' '}
+              {s.rating ?? 0} ·{' '}
               {t('mobile.public.salon-finder.technicians', { count: s.technicianCount ?? 0 })}
             </Text>
           </View>

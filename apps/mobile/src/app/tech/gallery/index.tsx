@@ -1,12 +1,18 @@
+import type { JSX } from 'react';
 import { View, Text, ScrollView, StyleSheet } from 'react-native';
 import { useLocale } from '@/components/LocaleProvider';
+
+// NO API: no tech-side gallery-list procedure — the gallery router only has
+// upload/delete (technician) and byTechnician (public, keyed by technician
+// profile id); the web gallery page is upload-only, and there is no likes
+// data in the GalleryImage model. Left static.
 const PHOTOS = [
-  { id: 1, emoji: '', name: 'تسريحة عروس', client: 'سارة', date: '15 يوليو', likes: 24 },
-  { id: 2, emoji: '', name: 'مكياج سهرة', client: 'نورة', date: '20 يوليو', likes: 18 },
-  { id: 3, emoji: '', name: 'أظافر فرنسي', client: 'مها', date: '1 أغسطس', likes: 32 },
-  { id: 4, emoji: '', name: 'صبغ شعر', client: 'ريم', date: '5 أغسطس', likes: 15 },
-  { id: 5, emoji: '', name: 'تنظيف بشرة', client: 'سارة', date: '10 أغسطس', likes: 28 },
-  { id: 6, emoji: '', name: 'مساج استرخاء', client: 'نورة', date: '12 أغسطس', likes: 20 },
+  { id: 1, emoji: '💇', name: 'تسريحة عروس', client: 'سارة', date: '15 يوليو', likes: 24 },
+  { id: 2, emoji: '💄', name: 'مكياج سهرة', client: 'نورة', date: '20 يوليو', likes: 18 },
+  { id: 3, emoji: '💅', name: 'أظافر فرنسي', client: 'مها', date: '1 أغسطس', likes: 32 },
+  { id: 4, emoji: '🎨', name: 'صبغ شعر', client: 'ريم', date: '5 أغسطس', likes: 15 },
+  { id: 5, emoji: '🧖', name: 'تنظيف بشرة', client: 'سارة', date: '10 أغسطس', likes: 28 },
+  { id: 6, emoji: '💆', name: 'مساج استرخاء', client: 'نورة', date: '12 أغسطس', likes: 20 },
 ];
 export default function TechGalleryScreen(): JSX.Element {
   const { t } = useLocale();

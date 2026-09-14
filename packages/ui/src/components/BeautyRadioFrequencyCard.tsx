@@ -1,4 +1,5 @@
 'use client';
+import type { JSX } from 'react';
 import { cn } from '@galaxy/shared';
 export function BeautyRadioFrequencyCard({
   className = '',
@@ -19,7 +20,7 @@ export function BeautyRadioFrequencyCard({
       )}
     >
       <div className="flex items-center gap-2">
-        <span className="text-xl"></span>
+        <span className="text-xl">📡</span>
         <div>
           <h4 className="text-sm font-bold text-rose-700 dark:text-rose-300">{title}</h4>
           <p className="text-[10px] text-rose-500 dark:text-rose-400">{subtitle}</p>
@@ -28,28 +29,28 @@ export function BeautyRadioFrequencyCard({
       <div className="mt-3 space-y-1">
         {[
           {
-            emoji: '',
+            emoji: '🔥',
             text: {
               ar: 'يسخن الأدمة — يحفز إنتاج الكولاجين',
               en: 'Heats the dermis — stimulates collagen production',
             },
           },
           {
-            emoji: '',
+            emoji: '✨',
             text: {
               ar: 'يشد الجلد — يقلل الترهلات والخطوط',
               en: 'Tightens skin — reduces sagging and lines',
             },
           },
           {
-            emoji: '️',
+            emoji: '📅',
             text: {
               ar: 'جلسة 30-45 دقيقة — مرة شهرياً',
               en: 'A 30-45 minute session — once a month',
             },
           },
           {
-            emoji: '',
+            emoji: '⏰',
             text: {
               ar: 'احمرار مؤقت — يختفي خلال ساعات',
               en: 'Temporary redness — fades within hours',

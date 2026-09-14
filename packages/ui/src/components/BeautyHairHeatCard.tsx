@@ -1,4 +1,5 @@
 'use client';
+import type { JSX } from 'react';
 import { cn } from '@galaxy/shared';
 export function BeautyHairHeatCard({
   className = '',
@@ -19,7 +20,7 @@ export function BeautyHairHeatCard({
       )}
     >
       <div className="flex items-center gap-2">
-        <span className="text-xl"></span>
+        <span className="text-xl">🔥</span>
         <div>
           <h4 className="text-sm font-bold text-orange-700 dark:text-orange-300">{title}</h4>
           <p className="text-[10px] text-orange-500 dark:text-orange-400">{subtitle}</p>
@@ -28,25 +29,25 @@ export function BeautyHairHeatCard({
       <div className="mt-3 space-y-1">
         {[
           {
-            emoji: '️',
+            emoji: '🧴',
             text: {
               ar: 'واقي حراري — دائماً قبل المجفف أو المكواة',
               en: 'Heat protectant — always before the dryer or straightener',
             },
           },
           {
-            emoji: '️',
+            emoji: '🌡️',
             text: { ar: 'حرارة متوسطة — لا القصوى', en: 'Medium heat — not the maximum' },
           },
           {
-            emoji: '',
+            emoji: '🚫',
             text: {
               ar: 'لا تمرري المكواة على نفس الخصلة مرتين',
               en: 'Do not run the straightener over the same strand twice',
             },
           },
           {
-            emoji: '',
+            emoji: '📅',
             text: { ar: 'يوم بدون حرارة في الأسبوع', en: 'One heat-free day per week' },
           },
         ].map((t, i) => (

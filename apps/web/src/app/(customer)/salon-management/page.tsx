@@ -1,5 +1,6 @@
 'use client';
 import { useState } from 'react';
+import type { JSX } from 'react';
 import { api } from '@/lib/trpc';
 import { Card, Button, Modal, formatCurrency } from '@galaxy/ui';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
@@ -41,31 +42,31 @@ export default function SalonManagementPage(): JSX.Element {
 
         <div className="grid gap-4 sm:grid-cols-4">
           <Card padding="md" className="text-center">
-            <p className="text-3xl"></p>
+            <p className="text-3xl">📅</p>
             <p className="text-2xl font-bold">{(dash?.todayBookings as number) ?? 0}</p>
             <p className="text-xs text-text-secondary">{t('salonManagement.todayBookings')}</p>
           </Card>
           <Card padding="md" className="text-center">
-            <p className="text-3xl"></p>
+            <p className="text-3xl">💰</p>
             <p className="text-2xl font-bold">
               {formatCurrency((dash?.todayRevenue as number) ?? 0)}
             </p>
             <p className="text-xs text-text-secondary">{t('salonManagement.todayRevenue')}</p>
           </Card>
           <Card padding="md" className="text-center">
-            <p className="text-3xl">‍</p>
+            <p className="text-3xl">👥</p>
             <p className="text-2xl font-bold">{(dash?.activeStaff as number) ?? 0}</p>
             <p className="text-xs text-text-secondary">{t('salonManagement.staff')}</p>
           </Card>
           <Card padding="md" className="text-center">
-            <p className="text-3xl"></p>
+            <p className="text-3xl">⭐</p>
             <p className="text-2xl font-bold">{(dash?.avgRating as number) ?? 0}</p>
             <p className="text-xs text-text-secondary">{t('salonManagement.rating')}</p>
           </Card>
         </div>
 
         <Card padding="lg">
-          <h3 className="font-bold mb-4">‍{t('salonManagement.team')}</h3>
+          <h3 className="font-bold mb-4">{t('salonManagement.team')}</h3>
           <div className="space-y-2">
             {s.map((m: Record<string, unknown>) => (
               <div
@@ -85,9 +86,7 @@ export default function SalonManagementPage(): JSX.Element {
                 <button
                   onClick={() => removeMut.mutate({ id: m.id as number })}
                   className="text-red-400"
-                >
-                  ️
-                </button>
+                ></button>
               </div>
             ))}
           </div>
@@ -119,7 +118,7 @@ export default function SalonManagementPage(): JSX.Element {
               loading={addMut.isPending}
               className="w-full"
             >
-              ‍{t('salonManagement.add')}
+              {t('salonManagement.add')}
             </Button>
           </div>
         </Modal>

@@ -1,11 +1,15 @@
 'use client';
+import type { JSX } from 'react';
 import { api } from '@/lib/trpc';
-import { Card, KPIRowSkeleton, formatCurrency } from '@galaxy/ui';
+import { Card, KPIRowSkeleton, formatCurrency, useAuth } from '@galaxy/ui';
 import { useLocale } from '@/components/LocaleProvider';
 
 export default function AdminAnalyticsV2Page(): JSX.Element {
   const { t } = useLocale();
-  const { data, isLoading } = api.adminAnalyticsV2.dashboard.useQuery() as {
+  const { isAuthenticated } = useAuth();
+  const { data, isLoading } = api.adminAnalyticsV2.dashboard.useQuery(undefined, {
+    enabled: isAuthenticated,
+  }) as {
     data: Record<string, unknown> | undefined;
     isLoading: boolean;
   };
@@ -22,14 +26,14 @@ export default function AdminAnalyticsV2Page(): JSX.Element {
         <>
           <div className="grid gap-4 sm:grid-cols-4">
             <Card padding="lg" className="text-center">
-              <p className="text-3xl"></p>
+              <p className="text-3xl">💰</p>
               <p className="text-2xl font-bold text-brand-600">
                 {formatCurrency((d.revenue as Record<string, number>)?.today ?? 0)}
               </p>
               <p className="text-xs text-text-secondary">{t('admin.analytics-v2.revenue-today')}</p>
             </Card>
             <Card padding="lg" className="text-center">
-              <p className="text-3xl"></p>
+              <p className="text-3xl">📅</p>
               <p className="text-2xl font-bold">
                 {(d.bookings as Record<string, number>)?.today ?? 0}
               </p>
@@ -38,14 +42,14 @@ export default function AdminAnalyticsV2Page(): JSX.Element {
               </p>
             </Card>
             <Card padding="lg" className="text-center">
-              <p className="text-3xl"></p>
+              <p className="text-3xl">👥</p>
               <p className="text-2xl font-bold">
                 {(d.users as Record<string, number>)?.activeToday ?? 0}
               </p>
               <p className="text-xs text-text-secondary">{t('admin.analytics-v2.active-users')}</p>
             </Card>
             <Card padding="lg" className="text-center">
-              <p className="text-3xl">‍</p>
+              <p className="text-3xl">💅</p>
               <p className="text-2xl font-bold">
                 {(d.technicians as Record<string, number>)?.active ?? 0}
               </p>
@@ -82,7 +86,7 @@ export default function AdminAnalyticsV2Page(): JSX.Element {
                     <span>
                       {t('admin.analytics-v2.bookings-count', { count: s.bookings as number })}
                     </span>
-                    <span className="text-green-600 font-bold ml-4">
+                    <span className="text-green-600 font-bold ms-4">
                       {formatCurrency(s.revenue as number)}
                     </span>
                     <span className="rounded-full bg-green-100 dark:bg-green-900 px-2 py-0.5 text-xs">

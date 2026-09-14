@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import type { JSX } from 'react';
 import { cn } from '@galaxy/shared';
 
 /**
@@ -32,10 +33,10 @@ interface BeautyMythBusterCardProps {
 }
 
 const CAT_EMOJIS = {
-  skincare: '',
-  haircare: '',
-  makeup: '',
-  general: '',
+  skincare: '🧖',
+  haircare: '💇',
+  makeup: '💄',
+  general: '✨',
 };
 
 export function BeautyMythBusterCard({
@@ -47,7 +48,7 @@ export function BeautyMythBusterCard({
   className = '',
   mythOrFactTitle = 'خرافة أم حقيقة؟',
   subtitle = 'نكشف لكِ الحقيقة العلمية',
-  mythLabel = '️ الخرافة الشائعة',
+  mythLabel = 'الخرافة الشائعة',
   revealButtonText = 'اكشفي الحقيقة',
   verdictText = 'خرافة!',
   sourcePrefix = 'المصدر: ',
@@ -65,7 +66,9 @@ export function BeautyMythBusterCard({
     >
       {/* Header */}
       <div className="flex items-center gap-2">
-        <span className="text-lg" aria-hidden="true"></span>
+        <span className="text-lg" aria-hidden="true">
+          ❓
+        </span>
         <div>
           <h4 className="text-sm font-bold text-rose-700 dark:text-rose-300">
             {CAT_EMOJIS[category]} {mythOrFactTitle}
@@ -100,7 +103,9 @@ export function BeautyMythBusterCard({
         <div className="mt-3 space-y-3">
           {/* Verdict */}
           <div className="rounded-xl bg-emerald-50 p-4 text-center dark:bg-emerald-950">
-            <p className="text-2xl" aria-hidden="true"></p>
+            <p className="text-2xl" aria-hidden="true">
+              ❌
+            </p>
             <p className="mt-1 text-sm font-bold text-emerald-800 dark:text-emerald-200">
               {verdictText}
             </p>
@@ -111,8 +116,8 @@ export function BeautyMythBusterCard({
 
           {/* Source */}
           {source && (
-            <div className="rounded-lg bg-gray-50 p-2 dark:bg-gray-800">
-              <p className="text-[10px] text-text-tertiary dark:text-gray-500">
+            <div className="rounded-lg bg-surface-muted p-2 dark:bg-gray-800">
+              <p className="text-[10px] text-text-tertiary dark:text-text-secondary">
                 {sourcePrefix}
                 {source}
               </p>
@@ -134,7 +139,7 @@ export function BeautyMythBusterCard({
           )}
 
           {/* Knowledge tip */}
-          <p className="text-center text-[9px] text-text-tertiary dark:text-gray-500">
+          <p className="text-center text-[9px] text-text-tertiary dark:text-text-secondary">
             {footerText}
           </p>
         </div>

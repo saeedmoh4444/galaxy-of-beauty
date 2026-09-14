@@ -1,4 +1,5 @@
 'use client';
+import type { JSX } from 'react';
 
 import { cn } from '@galaxy/shared';
 
@@ -75,9 +76,7 @@ export function TechnicianCRMCard({
       )}
     >
       <div className="flex items-center gap-2">
-        <span className="text-xl" aria-hidden="true">
-          ‍
-        </span>
+        <span className="text-xl" aria-hidden="true"></span>
         <div>
           <h4 className="text-sm font-bold text-blue-700 dark:text-blue-300">{title}</h4>
           <p className="text-[10px] text-blue-500 dark:text-blue-400">{subtitle}</p>
@@ -107,16 +106,16 @@ export function TechnicianCRMCard({
       {/* Additional metrics */}
       <div className="mt-2 grid grid-cols-2 gap-2">
         {revenueThisMonth !== undefined && (
-          <div className="rounded-xl bg-gray-50 p-2.5 text-center dark:bg-gray-800">
-            <p className="text-[9px] text-text-tertiary dark:text-gray-500">{revenueLabel}</p>
+          <div className="rounded-xl bg-surface-muted p-2.5 text-center dark:bg-gray-800">
+            <p className="text-[9px] text-text-tertiary dark:text-text-secondary">{revenueLabel}</p>
             <p className="text-sm font-bold text-emerald-700 dark:text-emerald-300">
               {revenueThisMonth.toLocaleString('ar-SA')} {currencySuffix}
             </p>
           </div>
         )}
         {avgRating !== undefined && (
-          <div className="rounded-xl bg-gray-50 p-2.5 text-center dark:bg-gray-800">
-            <p className="text-[9px] text-text-tertiary dark:text-gray-500">{ratingLabel}</p>
+          <div className="rounded-xl bg-surface-muted p-2.5 text-center dark:bg-gray-800">
+            <p className="text-[9px] text-text-tertiary dark:text-text-secondary">{ratingLabel}</p>
             <p className="text-sm font-bold text-amber-700 dark:text-amber-300"> {avgRating}</p>
           </div>
         )}
@@ -125,10 +124,10 @@ export function TechnicianCRMCard({
       {/* Quick actions */}
       <div className="mt-3 grid grid-cols-2 gap-1.5">
         {[
-          { emoji: '', label: { ar: actionSendOffer, en: 'Send offer' } },
-          { emoji: '', label: { ar: actionBirthdayWish, en: 'Birthday wish' } },
-          { emoji: '', label: { ar: actionAskRating, en: 'Ask for rating' } },
-          { emoji: '', label: { ar: actionFullReport, en: 'Full report' } },
+          { emoji: '🎁', label: { ar: actionSendOffer, en: 'Send offer' } },
+          { emoji: '🎂', label: { ar: actionBirthdayWish, en: 'Birthday wish' } },
+          { emoji: '⭐', label: { ar: actionAskRating, en: 'Ask for rating' } },
+          { emoji: '📊', label: { ar: actionFullReport, en: 'Full report' } },
         ].map((a) => (
           <button
             key={a.label.ar}

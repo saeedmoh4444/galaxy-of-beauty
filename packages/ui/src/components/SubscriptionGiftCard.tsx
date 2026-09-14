@@ -1,4 +1,5 @@
 'use client';
+import type { JSX } from 'react';
 
 import { cn } from '@galaxy/shared';
 
@@ -26,16 +27,16 @@ interface SubscriptionGiftCardProps {
 }
 
 const GIFT_OPTIONS = [
-  { emoji: '', months: 1, price: 99, label: { ar: 'شهر واحد', en: '1 month' } },
+  { emoji: '🎁', months: 1, price: 99, label: { ar: 'شهر واحد', en: '1 month' } },
   {
-    emoji: '',
+    emoji: '🎀',
     months: 3,
     price: 269,
     label: { ar: '3 أشهر', en: '3 months' },
     discount: { ar: 'وفر 10%', en: 'Save 10%' },
   },
   {
-    emoji: '',
+    emoji: '👑',
     months: 6,
     price: 499,
     label: { ar: '6 أشهر', en: '6 months' },
@@ -64,7 +65,9 @@ export function SubscriptionGiftCard({
       )}
     >
       <div className="text-center">
-        <span className="text-3xl" aria-hidden="true"></span>
+        <span className="text-3xl" aria-hidden="true">
+          🎁
+        </span>
         <h4 className="mt-1 text-sm font-bold text-pink-800 dark:text-pink-200">{title}</h4>
         <p className="text-[10px] text-pink-500 dark:text-pink-400">
           {friendName ? `${sendToPrefix}${friendName} ${sendGiftSuffix}` : sendGiftText}

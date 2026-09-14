@@ -1,3 +1,4 @@
+import type { JSX } from 'react';
 import { View, Text, ScrollView, StyleSheet, RefreshControl } from 'react-native';
 import { SkeletonList } from '@/components/SkeletonCard';
 import { trpc } from '@/lib/trpc-react';
@@ -29,7 +30,9 @@ export default function TutorialsScreen(): JSX.Element {
       refreshControl={
         <RefreshControl
           refreshing={tutorialsQ.isRefetching}
-          onRefresh={() => tutorialsQ.refetch()}
+          onRefresh={async () => {
+            await tutorialsQ.refetch();
+          }}
           colors={['#7c3aed']}
         />
       }
@@ -41,7 +44,7 @@ export default function TutorialsScreen(): JSX.Element {
           <View style={{ flex: 1 }}>
             <Text style={styles.tt}>{t.titleAr}</Text>
             <Text style={styles.tm}>
-              {t.categoryAr} · {t.difficultyAr} · ️ {t.duration}
+              {t.categoryAr} · {t.difficultyAr} · {t.duration}
             </Text>
           </View>
           <Text style={styles.tv}> {t.views}</Text>

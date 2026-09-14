@@ -1,4 +1,5 @@
 'use client';
+import type { JSX } from 'react';
 import { cn } from '@galaxy/shared';
 export function BeautyRefillableCard({
   className = '',
@@ -19,7 +20,7 @@ export function BeautyRefillableCard({
       )}
     >
       <div className="flex items-center gap-2">
-        <span className="text-xl"></span>
+        <span className="text-xl">🫙</span>
         <div>
           <h4 className="text-sm font-bold text-teal-700 dark:text-teal-300">{title}</h4>
           <p className="text-[10px] text-teal-500 dark:text-teal-400">{subtitle}</p>
@@ -28,25 +29,25 @@ export function BeautyRefillableCard({
       <div className="mt-3 space-y-1">
         {[
           {
-            emoji: '',
+            emoji: '💰',
             text: {
               ar: 'أوفر — العبوة الأصلية مرة واحدة فقط',
               en: 'More affordable — buy the original container only once',
             },
           },
           {
-            emoji: '',
+            emoji: '🌍',
             text: {
               ar: 'تقلل النفايات — 70% أقل من البلاستيك',
               en: 'Reduces waste — 70% less plastic',
             },
           },
           {
-            emoji: '',
+            emoji: '💄',
             text: { ar: 'أحمر شفاه — كريم أساس — عطور', en: 'Lipstick — foundation — fragrances' },
           },
           {
-            emoji: '️',
+            emoji: '🔄',
             text: {
               ar: 'ارجعي العبوة الفارغة — لخصم على القادمة',
               en: 'Return the empty container — for a discount on the next',

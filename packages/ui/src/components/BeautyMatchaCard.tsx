@@ -1,4 +1,5 @@
 'use client';
+import type { JSX } from 'react';
 import { cn } from '@galaxy/shared';
 export function BeautyMatchaCard({
   className = '',
@@ -19,7 +20,7 @@ export function BeautyMatchaCard({
       )}
     >
       <div className="flex items-center gap-2">
-        <span className="text-xl"></span>
+        <span className="text-xl">🍵</span>
         <div>
           <h4 className="text-sm font-bold text-green-700 dark:text-green-300">{title}</h4>
           <p className="text-[10px] text-green-500 dark:text-green-400">{subtitle}</p>
@@ -28,28 +29,28 @@ export function BeautyMatchaCard({
       <div className="mt-3 space-y-1">
         {[
           {
-            emoji: '',
+            emoji: '🍵',
             text: {
               ar: 'مركز 10x — مضادات أكسدة أكثر من الشاي العادي',
               en: '10x concentrated — more antioxidants than regular tea',
             },
           },
           {
-            emoji: '',
+            emoji: '🌿',
             text: {
               ar: 'كلوروفيل — ينقي البشرة من الداخل',
               en: 'Chlorophyll — purifies the skin from within',
             },
           },
           {
-            emoji: '',
+            emoji: '😌',
             text: {
               ar: 'L-Theanine — استرخاء بدون نعاس',
               en: 'L-Theanine — relaxation without drowsiness',
             },
           },
           {
-            emoji: '',
+            emoji: '🥛',
             text: {
               ar: 'مع الحليب — لاتيه ماتشا لذيذ',
               en: 'With milk — a delicious matcha latte',

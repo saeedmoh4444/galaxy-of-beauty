@@ -1,4 +1,5 @@
 'use client';
+import type { JSX } from 'react';
 
 import { api } from '@/lib/trpc';
 import { Card, TableSkeleton, ErrorAlert } from '@galaxy/ui';
@@ -29,7 +30,7 @@ export default function BookingHeatmapPage(): JSX.Element {
   return (
     <div className="mx-auto max-w-4xl px-4 py-12">
       <div className="mb-8 text-center">
-        <span className="text-6xl"></span>
+        <span className="text-6xl">🔥</span>
         <h1 className="mt-4 text-3xl font-bold">{t('marketing.booking-heatmap.title')}</h1>
         <p className="mt-2 text-text-secondary">{t('marketing.booking-heatmap.subtitle')}</p>
       </div>
@@ -45,7 +46,7 @@ export default function BookingHeatmapPage(): JSX.Element {
               className="grid gap-0.5"
               style={{ gridTemplateColumns: `50px repeat(${data.hours.length}, 1fr)` }}
             >
-              <div className="text-xs font-medium text-text-tertiary p-1"></div>
+              <div className="text-xs font-medium text-text-tertiary p-1">⏰</div>
               {data.hours.map((h) => (
                 <div key={h} className="text-xs font-medium text-text-tertiary p-1 text-center">
                   {h}:00

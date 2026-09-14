@@ -1,4 +1,5 @@
 'use client';
+import type { JSX } from 'react';
 
 import { cn } from '@galaxy/shared';
 
@@ -35,7 +36,7 @@ export function ExportProgramCard({
   subtitle = 'منتجات سعودية إلى العالم',
   productLabel = 'منتج سعودي',
   countryLabel = 'دولة',
-  offerLabel = ' نقدم لكِ',
+  offerLabel = 'نقدم لكِ',
   item1 = '• شهادات مطابقة دولية',
   item2 = '• دعم لوجستي وشحن',
   item3 = '• تسجيل في الأسواق العالمية',
@@ -49,7 +50,9 @@ export function ExportProgramCard({
       )}
     >
       <div className="text-center">
-        <span className="text-3xl" aria-hidden="true"></span>
+        <span className="text-3xl" aria-hidden="true">
+          🌍
+        </span>
         <h4 className="mt-1 text-sm font-bold text-emerald-800 dark:text-emerald-200">{title}</h4>
         <p className="text-[10px] text-emerald-600 dark:text-emerald-400">{subtitle}</p>
       </div>

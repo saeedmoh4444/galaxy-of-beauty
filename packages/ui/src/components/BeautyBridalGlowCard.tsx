@@ -1,4 +1,5 @@
 'use client';
+import type { JSX } from 'react';
 import { cn } from '@galaxy/shared';
 export function BeautyBridalGlowCard({
   className = '',
@@ -19,7 +20,7 @@ export function BeautyBridalGlowCard({
       )}
     >
       <div className="flex items-center gap-2">
-        <span className="text-xl"></span>
+        <span className="text-xl">👰</span>
         <div>
           <h4 className="text-sm font-bold text-emerald-700 dark:text-emerald-300">{title}</h4>
           <p className="text-[10px] text-emerald-500 dark:text-emerald-400">{subtitle}</p>
@@ -28,28 +29,28 @@ export function BeautyBridalGlowCard({
       <div className="mt-3 space-y-1">
         {[
           {
-            emoji: '',
+            emoji: '💧',
             text: {
               ar: '8 أكواب ماء يومياً — لمدة شهر قبل الزفاف',
               en: '8 cups of water daily — for a month before the wedding',
             },
           },
           {
-            emoji: '',
+            emoji: '🥑',
             text: {
               ar: 'غذاء صحي — أفوكادو، سلمون، مكسرات',
               en: 'Healthy food — avocado, salmon, nuts',
             },
           },
           {
-            emoji: '',
+            emoji: '😴',
             text: {
               ar: '8 ساعات نوم — أهم سر للبشرة',
               en: '8 hours of sleep — the biggest secret for your skin',
             },
           },
           {
-            emoji: '',
+            emoji: '🧘',
             text: {
               ar: 'تأمل 10 دقائق — هدوء وثقة في يومكِ',
               en: '10 minutes of meditation — calm and confidence on your big day',

@@ -1,5 +1,6 @@
 import { View, Text, ScrollView, StyleSheet, TouchableOpacity, RefreshControl } from 'react-native';
 import { useState } from 'react';
+import type { JSX } from 'react';
 import { SkeletonList } from '@/components/SkeletonCard';
 import { trpc } from '@/lib/trpc-react';
 import { useLocale } from '@/components/LocaleProvider';
@@ -31,7 +32,7 @@ export default function BeautyMetaverseScreen(): JSX.Element {
       <ScrollView style={styles.c} contentContainerStyle={styles.i}>
         <Text style={styles.t}>{t('beautyMetaverse.title')}</Text>
         <View style={[styles.card, styles.resultCard]}>
-          <Text style={styles.resultEmoji}></Text>
+          <Text style={styles.resultEmoji}>🌐</Text>
           <Text style={styles.resultTitle}>{result.welcomeMessage}</Text>
           <TouchableOpacity onPress={() => setResult(null)} style={styles.exitBtn}>
             <Text style={styles.exitBtnText}>{t('beautyMetaverse.exit')}</Text>
@@ -46,7 +47,9 @@ export default function BeautyMetaverseScreen(): JSX.Element {
       refreshControl={
         <RefreshControl
           refreshing={q.isRefetching}
-          onRefresh={() => q.refetch()}
+          onRefresh={async () => {
+            await q.refetch();
+          }}
           colors={['#7c3aed']}
         />
       }

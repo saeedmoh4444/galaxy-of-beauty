@@ -1,4 +1,5 @@
 'use client';
+import type { JSX } from 'react';
 
 import { cn } from '@galaxy/shared';
 
@@ -26,14 +27,14 @@ interface PracticeDef {
 }
 
 const PRACTICES: Record<GreenPractice, PracticeDef> = {
-  recycled: { emoji: '️', label: { ar: 'إعادة تدوير', en: 'Recycling' } },
-  organic: { emoji: '', label: { ar: 'منتجات عضوية', en: 'Organic products' } },
-  energy_efficient: { emoji: '', label: { ar: 'طاقة موفرة', en: 'Energy efficient' } },
-  water_saving: { emoji: '', label: { ar: 'ترشيد مياه', en: 'Water saving' } },
-  vegan_products: { emoji: '', label: { ar: 'منتجات نباتية', en: 'Vegan products' } },
-  plastic_free: { emoji: '', label: { ar: 'خالٍ من البلاستيك', en: 'Plastic free' } },
-  local_sourcing: { emoji: '', label: { ar: 'منتجات محلية', en: 'Local sourcing' } },
-  carbon_neutral: { emoji: '', label: { ar: 'محايد كربونياً', en: 'Carbon neutral' } },
+  recycled: { emoji: '♻️', label: { ar: 'إعادة تدوير', en: 'Recycling' } },
+  organic: { emoji: '🌿', label: { ar: 'منتجات عضوية', en: 'Organic products' } },
+  energy_efficient: { emoji: '⚡', label: { ar: 'طاقة موفرة', en: 'Energy efficient' } },
+  water_saving: { emoji: '💧', label: { ar: 'ترشيد مياه', en: 'Water saving' } },
+  vegan_products: { emoji: '🌱', label: { ar: 'منتجات نباتية', en: 'Vegan products' } },
+  plastic_free: { emoji: '🚫', label: { ar: 'خالٍ من البلاستيك', en: 'Plastic free' } },
+  local_sourcing: { emoji: '🚜', label: { ar: 'منتجات محلية', en: 'Local sourcing' } },
+  carbon_neutral: { emoji: '🌍', label: { ar: 'محايد كربونياً', en: 'Carbon neutral' } },
 };
 
 interface GreenSalonBadgeProps {
@@ -70,7 +71,9 @@ export function GreenSalonBadge({
       )}
     >
       <div className="flex items-center gap-2">
-        <span className="text-xl" aria-hidden="true"></span>
+        <span className="text-xl" aria-hidden="true">
+          🌳
+        </span>
         <div>
           <h4 className="text-sm font-bold text-green-700 dark:text-green-300">{title}</h4>
           <p className="text-[10px] text-green-500 dark:text-green-400">{subtitle}</p>

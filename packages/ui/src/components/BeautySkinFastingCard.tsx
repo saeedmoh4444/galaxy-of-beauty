@@ -1,4 +1,5 @@
 'use client';
+import type { JSX } from 'react';
 import { cn } from '@galaxy/shared';
 export function BeautySkinFastingCard({
   className = '',
@@ -19,7 +20,7 @@ export function BeautySkinFastingCard({
       )}
     >
       <div className="flex items-center gap-2">
-        <span className="text-xl"></span>
+        <span className="text-xl">💨</span>
         <div>
           <h4 className="text-sm font-bold text-sky-700 dark:text-sky-300">{title}</h4>
           <p className="text-[10px] text-sky-500 dark:text-sky-400">{subtitle}</p>
@@ -28,19 +29,19 @@ export function BeautySkinFastingCard({
       <div className="mt-3 space-y-1">
         {[
           {
-            emoji: '',
+            emoji: '📅',
             text: {
               ar: 'يوم في الأسبوع — بدون أي منتجات',
               en: 'One day a week — with no products at all',
             },
           },
-          { emoji: '', text: { ar: 'ماء فقط — للتنظيف', en: 'Water only — for cleansing' } },
+          { emoji: '💧', text: { ar: 'ماء فقط — للتنظيف', en: 'Water only — for cleansing' } },
           {
-            emoji: '',
+            emoji: '🌿',
             text: { ar: 'دعي بشرتك تتوازن طبيعياً', en: 'Let your skin rebalance naturally' },
           },
           {
-            emoji: '',
+            emoji: '✅',
             text: { ar: 'مناسب لجميع أنواع البشرة', en: 'Suitable for all skin types' },
           },
         ].map((t, i) => (

@@ -1,8 +1,10 @@
+import type { JSX } from 'react';
 import { View, Text, ScrollView, StyleSheet, RefreshControl } from 'react-native';
 import { ErrorAlert } from '@/components/ErrorAlert';
 import { SkeletonList } from '@/components/SkeletonCard';
-import { trpc } from '@/lib/trpc-react';
 import { useLocale } from '@/components/LocaleProvider';
+import { useAuthState } from '@/hooks/useAuthState';
+import { trpc } from '@/lib/trpc-react';
 
 interface ExpenseCategory {
   categoryId?: number;
@@ -25,7 +27,8 @@ interface ExpensesSummary {
 
 export default function BeautyExpensesScreen(): JSX.Element {
   const { t } = useLocale();
-  const q = trpc.beautyExpenses.summary.useQuery();
+  const isAuthed = useAuthState();
+  const q = trpc.beautyExpenses.summary.useQuery(undefined, { enabled: isAuthed });
 
   if (q.isLoading) return <SkeletonList count={4} />;
   if (q.isError)
@@ -43,7 +46,9 @@ export default function BeautyExpensesScreen(): JSX.Element {
       refreshControl={
         <RefreshControl
           refreshing={q.isRefetching}
-          onRefresh={() => q.refetch()}
+          onRefresh={async () => {
+            await q.refetch();
+          }}
           colors={['#db2777']}
         />
       }

@@ -1,4 +1,5 @@
 'use client';
+import type { JSX } from 'react';
 
 /**
  * Women-Only Trust Seal — visible on every page.

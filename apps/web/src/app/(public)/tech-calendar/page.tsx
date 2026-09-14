@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import type { JSX } from 'react';
 import { api } from '@/lib/trpc';
 import { Card, CardListSkeleton, TableSkeleton, ErrorAlert, Button } from '@galaxy/ui';
 import Link from 'next/link';
@@ -69,7 +70,7 @@ export default function TechCalendarPage(): JSX.Element {
   return (
     <div className="mx-auto max-w-4xl px-4 py-12">
       <div className="mb-8 text-center">
-        <span className="text-6xl"></span>
+        <span className="text-6xl">📅</span>
         <h1 className="mt-4 text-3xl font-bold">{t('marketing.tech-calendar.title')}</h1>
         <p className="mt-2 text-text-secondary">{t('marketing.tech-calendar.subtitle')}</p>
       </div>
@@ -144,16 +145,16 @@ export default function TechCalendarPage(): JSX.Element {
                 <button
                   key={tech.id as number}
                   onClick={() => setTechId(String(tech.id))}
-                  className={`w-full text-right rounded-lg p-3 transition-all flex items-center gap-3 ${String(tech.id) === techId ? 'bg-brand-50 dark:bg-brand-950 ring-2 ring-brand-300' : 'hover:bg-surface-muted dark:hover:bg-gray-800'}`}
+                  className={`w-full text-end rounded-lg p-3 transition-all flex items-center gap-3 ${String(tech.id) === techId ? 'bg-brand-50 dark:bg-brand-950 ring-2 ring-brand-300' : 'hover:bg-surface-muted dark:hover:bg-gray-800'}`}
                 >
-                  <div className="flex h-8 w-8 items-center justify-center rounded-full bg-gradient-to-br from-brand-400 to-purple-500 text-white text-sm font-bold">
+                  <div className="flex h-8 w-8 items-center justify-center rounded-full bg-gradient-to-br from-brand-400 to-brand-500 text-white text-sm font-bold">
                     {(tech.name as string)?.[0] ?? ''}
                   </div>
                   <div className="flex-1 min-w-0">
                     <p className="text-sm font-bold truncate">{tech.name as string}</p>
                     <p className="text-xs text-text-secondary"> {tech.rating as number}</p>
                   </div>
-                  {String(tech.id) === techId && <span className="text-brand-500 text-xs"></span>}
+                  {String(tech.id) === techId && <span className="text-brand-500 text-xs">✅</span>}
                 </button>
               ))}
             </div>

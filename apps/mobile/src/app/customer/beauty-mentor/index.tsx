@@ -1,11 +1,12 @@
 import { View, Text, ScrollView, StyleSheet, TouchableOpacity } from 'react-native';
 import { useState } from 'react';
+import type { JSX } from 'react';
 import { useLocale } from '@/components/LocaleProvider';
 
 const MENTOR_LEVELS = [
-  { key: 'beginner', emoji: '', name: 'مبتدئة', desc: 'اكتشفي أساسيات العناية' },
-  { key: 'intermediate', emoji: '', name: 'متوسطة', desc: 'طوري روتينكِ' },
-  { key: 'advanced', emoji: '', name: 'متقدمة', desc: 'أتقني فنون التجميل' },
+  { key: 'beginner', emoji: '🌱', name: 'مبتدئة', desc: 'اكتشفي أساسيات العناية' },
+  { key: 'intermediate', emoji: '🌿', name: 'متوسطة', desc: 'طوري روتينكِ' },
+  { key: 'advanced', emoji: '🌳', name: 'متقدمة', desc: 'أتقني فنون التجميل' },
 ];
 
 const TOPICS = ['العناية بالبشرة', 'المكياج', 'العناية بالشعر', 'الأظافر', 'العطور', 'التغذية'];

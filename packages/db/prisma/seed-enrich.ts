@@ -1,5 +1,5 @@
 /**
- * Galaxy of Beauty — Seed Data Enrichment
+ * Dalal — Seed Data Enrichment
  *
  * Generates realistic production-scale data on top of the base seed.
  * Run AFTER `pnpm db:seed`:
@@ -46,7 +46,7 @@ function randomDate(daysAgo: number, hour?: number): Date {
   return d;
 }
 
-const PASSWORD_HASH = '$2b$12$WLl1knNaSSoIuae5Pjcd9.5IlMOPSEb8w5dd/22Kyxmkw5Sei2Wvi'; // Admin@123456
+const PASSWORD_HASH = '$2b$12$3EEqTDqBmYkYZ2baueS0I.J2EohI/RLelIDPk5jgvumJmTceUTtJe'; // Admin@123456 (verified)
 
 const CITIES = [
   'الرياض',
@@ -128,7 +128,7 @@ const REVIEW_COMMENTS_AR = [
 ];
 
 async function main() {
-  console.log(' Enriching Galaxy of Beauty database...\n');
+  console.log(' Enriching Dalal database...\n');
 
   // ── Get existing data ──
   const existingUsers = await db.user.findMany({ include: { wallet: true } });

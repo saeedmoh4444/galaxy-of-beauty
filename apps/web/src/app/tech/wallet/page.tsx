@@ -1,22 +1,31 @@
 'use client';
 import { useState } from 'react';
+import type { JSX } from 'react';
 import { api } from '@/lib/trpc';
-import { Card, CardSkeleton, Button, formatCurrency } from '@galaxy/ui';
+import { Card, CardSkeleton, Button, formatCurrency, useAuth } from '@galaxy/ui';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
 import { useLocale } from '@/components/LocaleProvider';
 
 export default function TechWalletPage(): JSX.Element {
   const { t, locale } = useLocale();
-  const { data: wallet, isLoading } = api.wallet.getBalance.useQuery() as {
+  const { isAuthenticated } = useAuth();
+  const { data: wallet, isLoading } = api.wallet.getBalance.useQuery(undefined, {
+    enabled: isAuthenticated,
+  }) as {
     data: Record<string, unknown> | undefined;
     isLoading: boolean;
   };
-  const { data: txData } = api.wallet.getTransactions.useQuery({ page: 1, limit: 30 }) as {
+  const { data: txData } = api.wallet.getTransactions.useQuery(
+    { page: 1, limit: 30 },
+    { enabled: isAuthenticated },
+  ) as {
     data: Record<string, unknown> | undefined;
   };
   const withdrawMut = api.wallet.withdraw.useMutation();
   const [amount, setAmount] = useState('');
-  const transactions = (txData?.items as Array<Record<string, unknown>>) ?? [];
+  // wallet.getTransactions returns { transactions, pagination } — the
+  // old `.items` read rendered an empty list forever.
+  const transactions = (txData?.transactions as Array<Record<string, unknown>>) ?? [];
 
   return (
     <DashboardLayout userRole="TECHNICIAN">
@@ -37,7 +46,7 @@ export default function TechWalletPage(): JSX.Element {
               <p className="text-xs text-text-secondary">{t('tech.wallet.balance')}</p>
             </Card>
             <Card padding="lg" className="text-center">
-              <p className="text-2xl font-extrabold text-purple-600">
+              <p className="text-2xl font-extrabold text-brand-600">
                 {formatCurrency(Number(wallet?.bonusBalance ?? 0))}
               </p>
               <p className="text-xs text-text-secondary">{t('tech.wallet.bonus')}</p>
@@ -88,10 +97,10 @@ export default function TechWalletPage(): JSX.Element {
                     )}
                   </span>
                   <span
-                    className={`font-bold ${(tx.amount as number) > 0 ? 'text-green-600' : 'text-red-600'}`}
+                    className={`font-bold ${Number(tx.amount) > 0 ? 'text-green-600' : 'text-red-600'}`}
                   >
-                    {(tx.amount as number) > 0 ? '+' : ''}
-                    {formatCurrency(Math.abs(tx.amount as number))}
+                    {Number(tx.amount) > 0 ? '+' : ''}
+                    {formatCurrency(Math.abs(Number(tx.amount)))}
                   </span>
                 </div>
               ))}

@@ -1,8 +1,8 @@
 'use client';
 
 import Link from 'next/link';
-import Image from 'next/image';
-import type { ComponentProps } from 'react';
+import { useCallback, useEffect, useMemo, useState, type ComponentProps } from 'react';
+import type { JSX } from 'react';
 import { api } from '@/lib/trpc';
 import {
   Card,
@@ -23,23 +23,109 @@ import {
   BeautyBudgetCard,
   BeautyCircleCard,
   BeautySavingsGoal,
+  useAuth,
+  Walkthrough,
+  ServiceImage,
+  type WalkthroughStep,
+  Tooltip,
 } from '@galaxy/ui';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
 import { RebookReminder } from '@/components/RebookReminder';
 import { useLocale } from '@/components/LocaleProvider';
 import { localize } from '@galaxy/shared';
 
+/** §3.6 — first-run tour storage key (written on skip or complete). */
+const TOUR_STORAGE_KEY = 'gob_tour_v1';
+
+// i18n keys as const literals — resolved via t() at render so locale
+// switches mid-tour stay correct.
+const TOUR_STEP_KEYS = [
+  { target: '[data-tour="book"]', title: 'tour.bookTitle', body: 'tour.bookBody' },
+  { target: '[data-tour="wallet"]', title: 'tour.walletTitle', body: 'tour.walletBody' },
+  { target: 'aside a[href="/ai-assistant"]', title: 'tour.aiTitle', body: 'tour.aiBody' },
+  {
+    target: 'aside a[href="/wellness-hub"]',
+    title: 'tour.wellnessTitle',
+    body: 'tour.wellnessBody',
+  },
+  {
+    target: 'aside a[href="/referrals"]',
+    title: 'tour.referralsTitle',
+    body: 'tour.referralsBody',
+  },
+] as const;
+
 export default function CustomerDashboardPage(): JSX.Element {
   const { t, locale } = useLocale();
-  const bookings = api.bookings.list.useQuery({ limit: 3 });
-  const insights = api.analytics.customerInsights.useQuery();
-  const budget = api.beautyBudget.get.useQuery();
-  const pins = api.inspiration.list.useQuery();
-  const registries = api.giftRegistry.myRegistries.useQuery();
-  // New wired components
-  const kindnessStatus = api.kindnessPoints.getStatus.useQuery();
-  const circles = api.beautyCircles.list.useQuery({ limit: 3 });
-  const savingsGoals = api.savingsGoals.list.useQuery();
+  const { isAuthenticated } = useAuth();
+  const [tourOpen, setTourOpen] = useState(false);
+
+  // Phase 3 sprint 4 — tell the shell when the tour opens/closes so the
+  // grouped sidebar expands every group (tour steps 3–5 target sidebar links).
+  useEffect(() => {
+    window.dispatchEvent(new CustomEvent('gob:tour', { detail: { open: tourOpen } }));
+  }, [tourOpen]);
+
+  // First-run auto-start: once per browser, md+ viewports only (the
+  // mobile RN app gets its own engine later — plan §3.6).
+  useEffect(() => {
+    if (!isAuthenticated) return;
+    if (typeof window === 'undefined') return;
+    if (window.matchMedia('(max-width: 767px)').matches) return;
+    let stored: string | null = null;
+    try {
+      stored = localStorage.getItem(TOUR_STORAGE_KEY);
+    } catch {
+      // private mode — fall through and skip auto-start
+      return;
+    }
+    if (stored === 'done') return;
+    const timer = setTimeout(() => {
+      // Re-check at fire time: the user may have skipped/completed the
+      // tour during the settle delay (or a re-hydrated auth state
+      // re-armed this effect) — re-opening then would yank them back
+      // to step 1 mid-session.
+      try {
+        if (localStorage.getItem(TOUR_STORAGE_KEY) === 'done') return;
+      } catch {
+        // private mode — fall through and open
+      }
+      setTourOpen(true);
+    }, 800);
+    return () => clearTimeout(timer);
+  }, [isAuthenticated]);
+
+  // Stable identity so Walkthrough's settle effect doesn't re-run (and
+  // reset to step 1) on every query-driven parent re-render.
+  const closeTour = useCallback((_reason: 'complete' | 'skip') => {
+    try {
+      localStorage.setItem(TOUR_STORAGE_KEY, 'done');
+    } catch {
+      // non-fatal — private mode
+    }
+    setTourOpen(false);
+  }, []);
+
+  const tourSteps: WalkthroughStep[] = useMemo(
+    () => TOUR_STEP_KEYS.map((s) => ({ target: s.target, title: t(s.title), body: t(s.body) })),
+    [t],
+  );
+  const bookings = api.bookings.list.useQuery({ limit: 3 }, { enabled: isAuthenticated });
+  const insights = api.analytics.customerInsights.useQuery(undefined, {
+    enabled: isAuthenticated,
+  });
+  const budget = api.beautyBudget.get.useQuery(undefined, { enabled: isAuthenticated });
+  const pins = api.inspiration.list.useQuery(undefined, { enabled: isAuthenticated });
+  const registries = api.giftRegistry.myRegistries.useQuery(undefined, {
+    enabled: isAuthenticated,
+  });
+  // New wired components — kindness gated on the real session (an
+  // expired cookie still passes the middleware and would error-banner).
+  const kindnessStatus = api.kindnessPoints.getStatus.useQuery(undefined, {
+    enabled: isAuthenticated,
+  });
+  const circles = api.beautyCircles.list.useQuery({ limit: 3 }, { enabled: isAuthenticated });
+  const savingsGoals = api.savingsGoals.list.useQuery(undefined, { enabled: isAuthenticated });
   // Budget services under 100 SAR
   const budgetServices = api.services.list.useQuery({
     limit: 5,
@@ -51,15 +137,31 @@ export default function CustomerDashboardPage(): JSX.Element {
   return (
     <DashboardLayout userRole="CUSTOMER">
       <PageContainer width="wide">
-        <div className="flex items-center justify-between">
+        <div className="flex items-center justify-between gap-3">
           <h1 className="text-2xl font-bold text-text-primary">{t('dashboard.title')}</h1>
-          <RebookReminder />
-          <Link href="/self-care">
-            <Button variant="outline" size="sm">
-              <Icon name="sparkle" size="sm" />
-              {t('dashboard.daily-assessment')}
-            </Button>
-          </Link>
+          <div className="flex items-center gap-2">
+            <RebookReminder enabled={isAuthenticated} />
+            <Tooltip content={t('tooltip.replay')} className="hidden md:inline-flex">
+              <Button
+                variant="ghost"
+                size="sm"
+                data-testid="tour-replay"
+                onClick={() => setTourOpen(true)}
+                aria-label={t('tour.replay')}
+              >
+                <Icon name="sparkle" size="sm" />
+                {t('tour.replay')}
+              </Button>
+            </Tooltip>
+            <Tooltip content={t('tooltip.dailyAssessment')}>
+              <Link href="/self-care">
+                <Button variant="outline" size="sm">
+                  <Icon name="sparkle" size="sm" />
+                  {t('dashboard.daily-assessment')}
+                </Button>
+              </Link>
+            </Tooltip>
+          </div>
         </div>
 
         {/* Stats */}
@@ -68,27 +170,27 @@ export default function CustomerDashboardPage(): JSX.Element {
         ) : insights.isError ? (
           <ErrorAlert message={t('dashboard.stats-error')} onRetry={() => insights.refetch()} />
         ) : (
-          <div className="grid gap-4 md:grid-cols-4">
+          <div className="grid gap-4 md:grid-cols-4" data-tour="wallet">
             <StatCard
               label={t('dashboard.bookings')}
               value={insights.data?.bookingCount ?? 0}
-              icon=""
+              icon={<Icon name="calendar" size="md" />}
             />
             <StatCard
               label={t('dashboard.spending')}
               value={formatCurrency(Number(insights.data?.totalSpent ?? 0))}
-              icon=""
+              icon={<Icon name="wallet" size="md" />}
             />
             <StatCard
               label={t('dashboard.continuity')}
               value={` ${streakInfo?.currentStreak ?? 0} ${t('dashboard.weeks')}`}
-              icon=""
+              icon={<Icon name="sparkle" size="md" />}
             />
             {budget?.data ? (
               <StatCard
                 label={t('dashboard.budget')}
                 value={formatCurrency(Number(budget.data.remaining))}
-                icon=""
+                icon={<Icon name="clock" size="md" />}
               />
             ) : (
               <CardSkeleton />
@@ -98,30 +200,38 @@ export default function CustomerDashboardPage(): JSX.Element {
 
         {/* Quick Actions */}
         <div className="flex flex-wrap gap-2">
-          <Link href="/bookings/create">
-            <Button size="lg">
-              <Icon name="sparkle" size="sm" />
-              {t('button.bookNow')}
-            </Button>
-          </Link>
-          <Link href="/gift-cards">
-            <Button variant="outline">
-              <Icon name="gift" size="sm" />
-              {t('dashboard.gift-cards')}
-            </Button>
-          </Link>
-          <Link href="/inspiration">
-            <Button variant="outline">
-              <Icon name="bookmark" size="sm" />
-              {t('dashboard.inspiration-board')}
-            </Button>
-          </Link>
-          <Link href="/services/surprise-me">
-            <Button variant="outline">
-              <Icon name="sparkle" size="sm" />
-              {t('dashboard.surprise-me')}
-            </Button>
-          </Link>
+          <Tooltip content={t('tooltip.bookNow')}>
+            <Link href="/bookings/create" data-tour="book">
+              <Button size="lg">
+                <Icon name="sparkle" size="sm" />
+                {t('button.bookNow')}
+              </Button>
+            </Link>
+          </Tooltip>
+          <Tooltip content={t('tooltip.giftCards')}>
+            <Link href="/gift-cards">
+              <Button variant="outline">
+                <Icon name="gift" size="sm" />
+                {t('dashboard.gift-cards')}
+              </Button>
+            </Link>
+          </Tooltip>
+          <Tooltip content={t('tooltip.inspiration')}>
+            <Link href="/inspiration">
+              <Button variant="outline">
+                <Icon name="bookmark" size="sm" />
+                {t('dashboard.inspiration-board')}
+              </Button>
+            </Link>
+          </Tooltip>
+          <Tooltip content={t('tooltip.surpriseMe')}>
+            <Link href="/services/surprise-me">
+              <Button variant="outline">
+                <Icon name="sparkle" size="sm" />
+                {t('dashboard.surprise-me')}
+              </Button>
+            </Link>
+          </Tooltip>
         </div>
 
         <div className="grid gap-6 lg:grid-cols-2">
@@ -197,14 +307,12 @@ export default function CustomerDashboardPage(): JSX.Element {
                       key={p.id}
                       className="relative h-20 w-20 flex-shrink-0 overflow-hidden rounded-xl bg-surface-muted dark:bg-gray-800"
                     >
-                      {p.imageUrl ? (
-                        <Image src={p.imageUrl} alt="" fill className="object-cover" />
-                      ) : (
-                        <div
-                          className="flex h-full items-center justify-center text-2xl"
-                          aria-hidden="true"
-                        ></div>
-                      )}
+                      <ServiceImage
+                        src={p.imageUrl ?? null}
+                        alt=""
+                        size="full"
+                        className="h-full w-full object-cover"
+                      />
                     </div>
                   ))}
                 </div>
@@ -302,6 +410,20 @@ export default function CustomerDashboardPage(): JSX.Element {
           ) : null}
         </div>
       </PageContainer>
+
+      <Walkthrough
+        open={tourOpen}
+        steps={tourSteps}
+        onClose={closeTour}
+        labels={{
+          next: t('tour.next'),
+          back: t('tour.back'),
+          skip: t('tour.skip'),
+          done: t('tour.done'),
+          progress: (current, total) =>
+            t('tour.progress', { current: String(current), total: String(total) }),
+        }}
+      />
     </DashboardLayout>
   );
 }

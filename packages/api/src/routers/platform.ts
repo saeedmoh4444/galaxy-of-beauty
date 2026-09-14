@@ -240,7 +240,7 @@ export const platformRouter = router({
       z
         .object({ format: z.enum(['csv', 'json']).optional().default('json') })
         .optional()
-        .default({}),
+        .default({} as never),
     )
     .query(async ({ input }) => {
       const bookings = await prisma.booking.findMany({
@@ -282,7 +282,7 @@ export const platformRouter = router({
       z
         .object({ format: z.enum(['csv', 'json']).optional().default('json') })
         .optional()
-        .default({}),
+        .default({} as never),
     )
     .query(async ({ input }) => {
       const users = await prisma.user.findMany({
@@ -362,7 +362,7 @@ export const platformRouter = router({
           limit: z.number().optional().default(20),
         })
         .optional()
-        .default({}),
+        .default({} as never),
     )
     .query(async ({ input }) => {
       const skip = (input.page - 1) * input.limit;

@@ -1,4 +1,5 @@
 'use client';
+import type { JSX } from 'react';
 
 import { cn } from '@galaxy/shared';
 
@@ -23,7 +24,7 @@ export function BeautyStretchCard({
       )}
     >
       <div className="flex items-center gap-2">
-        <span className="text-xl"></span>
+        <span className="text-xl">🤸</span>
         <div>
           <h4 className="text-sm font-bold text-teal-700 dark:text-teal-300">{title}</h4>
           <p className="text-[10px] text-teal-500 dark:text-teal-400">{subtitle}</p>
@@ -32,7 +33,7 @@ export function BeautyStretchCard({
       <div className="mt-3 space-y-1.5">
         {[
           {
-            emoji: '',
+            emoji: '🧘',
             name: { ar: 'إطالة الرقبة', en: 'Neck stretch' },
             desc: {
               ar: 'إمالة بطيئة يمين ويسار — 30 ثانية',
@@ -40,12 +41,12 @@ export function BeautyStretchCard({
             },
           },
           {
-            emoji: '',
+            emoji: '🔄',
             name: { ar: 'إطالة الكتف', en: 'Shoulder stretch' },
             desc: { ar: 'لف الكتفين للخلف 10 مرات', en: 'Roll shoulders back 10 times' },
           },
           {
-            emoji: '',
+            emoji: '🦵',
             name: { ar: 'لمس القدمين', en: 'Toe touch' },
             desc: { ar: 'انحناء للأمام — 20 ثانية', en: 'Bend forward — 20 seconds' },
           },

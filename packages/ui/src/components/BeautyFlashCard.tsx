@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import type { JSX } from 'react';
 import { cn } from '@galaxy/shared';
 
 /**
@@ -21,7 +22,7 @@ interface FlashCard {
 const CARDS: FlashCard[] = [
   {
     term: { ar: 'كولاجين', en: 'Collagen' },
-    emoji: '',
+    emoji: '🧬',
     definition: {
       ar: 'بروتين طبيعي في البشرة يمنحها المرونة والشباب. يقل إنتاجه مع التقدم في العمر.',
       en: 'A natural protein in the skin that gives it elasticity and youth. Its production decreases with age.',
@@ -30,7 +31,7 @@ const CARDS: FlashCard[] = [
   },
   {
     term: { ar: 'هيالورونيك أسيد', en: 'Hyaluronic acid' },
-    emoji: '',
+    emoji: '💧',
     definition: {
       ar: 'مادة طبيعية في البشرة تجذب الرطوبة وتحتفظ بها. الملعقة الواحدة تحمل 6 لترات ماء!',
       en: 'A natural substance in the skin that attracts and retains moisture. One teaspoon holds 6 liters of water!',
@@ -39,7 +40,7 @@ const CARDS: FlashCard[] = [
   },
   {
     term: { ar: 'نياسيناميد', en: 'Niacinamide' },
-    emoji: '',
+    emoji: '🧪',
     definition: {
       ar: 'فيتامين B3 — يعالج حبوب الشباب، يفتح التصبغات، يقلص المسام، ويقوي حاجز البشرة.',
       en: 'Vitamin B3 — treats acne, brightens pigmentation, tightens pores, and strengthens the skin barrier.',
@@ -48,7 +49,7 @@ const CARDS: FlashCard[] = [
   },
   {
     term: { ar: 'ريتينول', en: 'Retinol' },
-    emoji: '',
+    emoji: '🌙',
     definition: {
       ar: 'فيتامين A — أقوى مضاد للتجاعيد. يستخدم مساءً فقط لأنه حساس للشمس.',
       en: 'Vitamin A — the most powerful anti-wrinkle ingredient. Used only at night as it is sun-sensitive.',
@@ -57,7 +58,7 @@ const CARDS: FlashCard[] = [
   },
   {
     term: { ar: 'SPF', en: 'SPF' },
-    emoji: '️',
+    emoji: '🌞',
     definition: {
       ar: 'Sun Protection Factor — مقياس حماية من أشعة الشمس. الحد الأدنى الموصى به: SPF 30.',
       en: 'Sun Protection Factor — a measure of sun protection. Recommended minimum: SPF 30.',
@@ -66,7 +67,7 @@ const CARDS: FlashCard[] = [
   },
   {
     term: { ar: 'فيتزباتريك', en: 'Fitzpatrick' },
-    emoji: '',
+    emoji: '🎨',
     definition: {
       ar: 'مقياس يقسم ألوان البشرة إلى 6 أنواع. البشرة السعودية غالباً من النوع 3-5.',
       en: 'A scale dividing skin tones into 6 types. Saudi skin is usually type 3-5.',
@@ -110,7 +111,7 @@ export function BeautyFlashCard({
   return (
     <div
       className={cn(
-        'rounded-2xl border border-purple-100 bg-white p-4 dark:border-purple-900 dark:bg-gray-900',
+        'rounded-2xl border border-brand-100 bg-white p-4 dark:border-brand-900 dark:bg-gray-900',
         className,
       )}
     >
@@ -120,13 +121,13 @@ export function BeautyFlashCard({
             🃏
           </span>
           <div>
-            <h4 className="text-sm font-bold text-purple-700 dark:text-purple-300">{title}</h4>
-            <p className="text-[10px] text-purple-500 dark:text-purple-400">
+            <h4 className="text-sm font-bold text-brand-700 dark:text-brand-300">{title}</h4>
+            <p className="text-[10px] text-brand-500 dark:text-brand-400">
               {index + 1}/{CARDS.length}
             </p>
           </div>
         </div>
-        <span className="rounded-full bg-purple-50 px-2 py-0.5 text-[10px] text-purple-600 dark:bg-purple-950 dark:text-purple-400">
+        <span className="rounded-full bg-brand-50 px-2 py-0.5 text-[10px] text-brand-600 dark:bg-brand-950 dark:text-brand-400">
           {card.category[locale]}
         </span>
       </div>
@@ -138,8 +139,8 @@ export function BeautyFlashCard({
         className={cn(
           'mt-3 w-full rounded-xl border-2 p-6 text-center transition-all duration-300 min-h-[120px] flex flex-col items-center justify-center',
           flipped
-            ? 'border-purple-200 bg-purple-50 dark:border-purple-800 dark:bg-purple-950'
-            : 'border-dashed border-purple-200 bg-white hover:bg-purple-50 dark:border-purple-800 dark:bg-gray-800 dark:hover:bg-purple-950',
+            ? 'border-brand-200 bg-brand-50 dark:border-brand-800 dark:bg-brand-950'
+            : 'border-dashed border-brand-200 bg-white hover:bg-brand-50 dark:border-brand-800 dark:bg-gray-800 dark:hover:bg-brand-950',
         )}
       >
         {!flipped ? (
@@ -147,13 +148,15 @@ export function BeautyFlashCard({
             <span className="text-3xl" aria-hidden="true">
               {card.emoji}
             </span>
-            <p className="mt-2 text-lg font-bold text-purple-800 dark:text-purple-200">
+            <p className="mt-2 text-lg font-bold text-brand-800 dark:text-brand-200">
               {card.term[locale]}
             </p>
-            <p className="mt-1 text-[9px] text-text-tertiary dark:text-gray-500">{flipHint}</p>
+            <p className="mt-1 text-[9px] text-text-tertiary dark:text-text-secondary">
+              {flipHint}
+            </p>
           </>
         ) : (
-          <p className="text-sm leading-relaxed text-purple-800 dark:text-purple-200">
+          <p className="text-sm leading-relaxed text-brand-800 dark:text-brand-200">
             {card.definition[locale]}
           </p>
         )}
@@ -167,14 +170,14 @@ export function BeautyFlashCard({
             setFlipped(false);
             setIndex((p) => (p - 1 + CARDS.length) % CARDS.length);
           }}
-          className="flex-1 rounded-lg border border-purple-200 py-1.5 text-[10px] font-bold text-purple-600 hover:bg-purple-50 dark:border-purple-800 dark:text-purple-400"
+          className="flex-1 rounded-lg border border-brand-200 py-1.5 text-[10px] font-bold text-brand-600 hover:bg-brand-50 dark:border-brand-800 dark:text-brand-400"
         >
           {prevLabel}
         </button>
         <button
           type="button"
           onClick={next}
-          className="flex-1 rounded-lg bg-purple-600 py-1.5 text-[10px] font-bold text-white hover:bg-purple-700"
+          className="flex-1 rounded-lg bg-brand-600 py-1.5 text-[10px] font-bold text-white hover:bg-brand-700"
         >
           {nextLabel}
         </button>

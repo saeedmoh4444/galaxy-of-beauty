@@ -1,3 +1,4 @@
+import type { JSX } from 'react';
 import { View, Text, ScrollView, StyleSheet, RefreshControl } from 'react-native';
 import { SkeletonList } from '@/components/SkeletonCard';
 import { ErrorAlert } from '@/components/ErrorAlert';
@@ -28,7 +29,9 @@ export default function AdminCMSScreen(): JSX.Element {
       refreshControl={
         <RefreshControl
           refreshing={q.isRefetching}
-          onRefresh={() => q.refetch()}
+          onRefresh={async () => {
+            await q.refetch();
+          }}
           colors={['#7c3aed']}
         />
       }
@@ -36,7 +39,7 @@ export default function AdminCMSScreen(): JSX.Element {
       <Text style={styles.t}>{t('admin.cms.title')}</Text>
       {data.map((cat, i) => (
         <View key={i} style={styles.card}>
-          <Text style={styles.emoji}></Text>
+          <Text style={styles.emoji}>📁</Text>
           <View style={{ flex: 1 }}>
             <Text style={styles.name}>{localize(cat.nameJson, locale)}</Text>
             <Text style={styles.meta}>

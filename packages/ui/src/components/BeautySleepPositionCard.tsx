@@ -1,4 +1,5 @@
 'use client';
+import type { JSX } from 'react';
 import { cn } from '@galaxy/shared';
 export function BeautySleepPositionCard({
   className = '',
@@ -19,7 +20,7 @@ export function BeautySleepPositionCard({
       )}
     >
       <div className="flex items-center gap-2">
-        <span className="text-xl"></span>
+        <span className="text-xl">🛌</span>
         <div>
           <h4 className="text-sm font-bold text-indigo-700 dark:text-indigo-300">{title}</h4>
           <p className="text-[10px] text-indigo-500 dark:text-indigo-400">{subtitle}</p>
@@ -28,7 +29,7 @@ export function BeautySleepPositionCard({
       <div className="mt-3 space-y-1">
         {[
           {
-            emoji: '️',
+            emoji: '🛏️',
             text: {
               ar: 'على الظهر — الأفضل للبشرة والرقبة',
               en: 'On your back — best for skin and neck',
@@ -42,14 +43,14 @@ export function BeautySleepPositionCard({
             },
           },
           {
-            emoji: '',
+            emoji: '🛌',
             text: {
               ar: 'على البطن — الأسوأ للرقبة والظهر',
               en: 'On your stomach — worst for neck and back',
             },
           },
           {
-            emoji: '',
+            emoji: '💤',
             text: {
               ar: 'وسادة حرير — تقلل احتكاك البشرة',
               en: 'Silk pillow — reduces skin friction',

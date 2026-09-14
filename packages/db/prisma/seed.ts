@@ -8,14 +8,16 @@ function generateBookingCode(): string {
 }
 
 async function main() {
-  console.log(' Seeding Galaxy of Beauty database...\n');
+  console.log(' Seeding Dalal database...\n');
 
   // ---- Clean existing data (in dependency order) ----
   const db = prisma as any;
   await prisma.$transaction([
     // FK children first
     db.giftCardTransaction.deleteMany(),
+    db.giftCard.deleteMany(),
     db.promoUsage.deleteMany(),
+    db.promoCode.deleteMany(),
     db.geoPromotion.deleteMany(),
     db.liveStream.deleteMany(),
     db.eventRegistration.deleteMany(),
@@ -73,6 +75,9 @@ async function main() {
     db.campaign.deleteMany(),
     db.flashDeal.deleteMany(),
     db.beautyCourse.deleteMany(),
+    db.beautyQuizAttempt.deleteMany(),
+    db.beautyQuizQuestion.deleteMany(),
+    db.dailyBeautyTip.deleteMany(),
     db.corporatePlan.deleteMany(),
     db.giftQuizRecommendation.deleteMany(),
     db.giftQuizQuestion.deleteMany(),
@@ -80,6 +85,35 @@ async function main() {
     db.communityLook.deleteMany(),
     db.compareProduct.deleteMany(),
     db.matchmakerQuestion.deleteMany(),
+    db.notificationTemplate.deleteMany(),
+    // Marketplace + provider submission tables (B.3/B.6) — vendor rows
+    // reference users, so they must be wiped before db.user.deleteMany().
+    db.cartItem.deleteMany(),
+    db.productReview.deleteMany(),
+    db.product.deleteMany(),
+    db.beautyPackage.deleteMany(),
+    // E2 — clinic tables reference vendors (and users), wipe before both.
+    db.clinicConsultation.deleteMany(),
+    db.clinicSlot.deleteMany(),
+    // E3 — gym tables reference vendors (and users), wipe before both.
+    db.gymClassBooking.deleteMany(),
+    db.gymClass.deleteMany(),
+    // E5 — nail bar tables reference vendors, wipe before both.
+    db.nailBarBooking.deleteMany(),
+    db.nailBarSlot.deleteMany(),
+    db.vendor.deleteMany(),
+    db.productCategory.deleteMany(),
+    db.providerSubmission.deleteMany(),
+    // E4a — cycle tables reference users, wipe before user.deleteMany().
+    db.cyclePeriod.deleteMany(),
+    db.cycleEntry.deleteMany(),
+    db.cycleSettings.deleteMany(),
+    // E4b — measurement history + installment plans (user-owned rows).
+    db.measurementLog.deleteMany(),
+    db.bnplPlan.deleteMany(),
+    // E7 — media layer (shorts + likes).
+    db.shortLike.deleteMany(),
+    db.short.deleteMany(),
     db.user.deleteMany(),
     db.saudiCity.deleteMany(),
   ]);
@@ -121,8 +155,9 @@ async function main() {
   console.log(` ${cities.length} Saudi cities`);
 
   // ---- Admin User ----
-  // Password: Admin@123456
-  const adminPasswordHash = '$2b$12$WLl1knNaSSoIuae5Pjcd9.5IlMOPSEb8w5dd/22Kyxmkw5Sei2Wvi'; // Admin@123456
+  // Password: Admin@123456 (hash verified 2026-08-28 — the previous literal
+  // never matched the documented password, so every seeded account was unloggable)
+  const adminPasswordHash = '$2b$12$3EEqTDqBmYkYZ2baueS0I.J2EohI/RLelIDPk5jgvumJmTceUTtJe'; // Admin@123456
 
   const admin = await prisma.user.create({
     data: {
@@ -299,6 +334,33 @@ async function main() {
         slug: 'spa-wellness',
         sortOrder: 12,
         iconUrl: '/icons/spa.svg',
+      },
+    }),
+    // E3 — fitness vertical (trainers attach these via addService).
+    prisma.category.create({
+      data: {
+        nameJson: { ar: 'اللياقة البدنية', en: 'Fitness' },
+        slug: 'fitness',
+        sortOrder: 13,
+        iconUrl: '/icons/fitness.svg',
+      },
+    }),
+    // E5 — barberettes (women's barbershops ride the technician engine).
+    prisma.category.create({
+      data: {
+        nameJson: { ar: 'باربيريت — قصات عصرية', en: 'Barberette' },
+        slug: 'barberette',
+        sortOrder: 14,
+        iconUrl: '/icons/barberette.svg',
+      },
+    }),
+    // E6b — postpartum care (rides technicians/clinics/ATHOME vendors).
+    prisma.category.create({
+      data: {
+        nameJson: { ar: 'رعاية ما بعد الولادة', en: 'Postpartum Care' },
+        slug: 'postpartum-care',
+        sortOrder: 15,
+        iconUrl: '/icons/postpartum.svg',
       },
     }),
   ]);
@@ -906,6 +968,111 @@ async function main() {
         sortOrder: 8,
       },
     }),
+    // E3 — fitness services (trainers attach these; the Booking engine
+    // handles 1:1 sessions unchanged).
+    prisma.service.create({
+      data: {
+        categoryId: categories[12]!.id,
+        titleJson: { ar: 'جلسة تدريب شخصي', en: 'Personal Training Session' },
+        descriptionJson: {
+          ar: 'جلسة تدريب فردية مع مدربة معتمدة',
+          en: 'One-on-one session with a certified trainer',
+        },
+        basePrice: 150,
+        durationMin: 60,
+        isPopular: true,
+        slug: 'personal-training',
+        sortOrder: 1,
+      },
+    }),
+    prisma.service.create({
+      data: {
+        categoryId: categories[12]!.id,
+        titleJson: { ar: 'بيلاتس', en: 'Pilates' },
+        basePrice: 120,
+        durationMin: 45,
+        slug: 'pilates',
+        sortOrder: 2,
+      },
+    }),
+    prisma.service.create({
+      data: {
+        categoryId: categories[12]!.id,
+        titleJson: { ar: 'يوغا', en: 'Yoga' },
+        basePrice: 100,
+        durationMin: 60,
+        slug: 'yoga',
+        sortOrder: 3,
+      },
+    }),
+    // E5 — barberette services (ride the technician Booking engine unchanged).
+    prisma.service.create({
+      data: {
+        categoryId: categories[13]!.id,
+        titleJson: { ar: 'قصة بيكسي', en: 'Pixie Cut' },
+        descriptionJson: { ar: 'قصة قصيرة عصرية جريئة', en: 'A bold modern short cut' },
+        basePrice: 90,
+        durationMin: 45,
+        slug: 'pixie-cut',
+        sortOrder: 1,
+      },
+    }),
+    prisma.service.create({
+      data: {
+        categoryId: categories[13]!.id,
+        titleJson: { ar: 'قص مدرج قصير', en: 'Layered Bob' },
+        basePrice: 110,
+        durationMin: 60,
+        slug: 'layered-bob',
+        sortOrder: 2,
+      },
+    }),
+    prisma.service.create({
+      data: {
+        categoryId: categories[13]!.id,
+        titleJson: { ar: 'حلاقة ناعمة', en: 'Clean Fade' },
+        basePrice: 70,
+        durationMin: 30,
+        slug: 'clean-fade',
+        sortOrder: 3,
+      },
+    }),
+    // E6b — postpartum care services (bookable through the existing engines).
+    prisma.service.create({
+      data: {
+        categoryId: categories[14]!.id,
+        titleJson: { ar: 'تدليك التعافي بعد الولادة', en: 'Postpartum Recovery Massage' },
+        descriptionJson: {
+          ar: 'تدليك لطيف يساعد على الاسترخاء والتعافي',
+          en: 'Gentle massage supporting relaxation and recovery',
+        },
+        basePrice: 200,
+        durationMin: 60,
+        isPopular: true,
+        slug: 'postpartum-recovery-massage',
+        sortOrder: 1,
+      },
+    }),
+    prisma.service.create({
+      data: {
+        categoryId: categories[14]!.id,
+        titleJson: { ar: 'عناية بالبشرة بعد الولادة', en: 'Postpartum Skin Care' },
+        basePrice: 150,
+        durationMin: 45,
+        slug: 'postpartum-skin-care',
+        sortOrder: 2,
+      },
+    }),
+    prisma.service.create({
+      data: {
+        categoryId: categories[14]!.id,
+        titleJson: { ar: 'عناية بالشعر آمنة مع الرضاعة', en: 'Nursing-Safe Hair Care' },
+        basePrice: 130,
+        durationMin: 60,
+        slug: 'nursing-safe-hair-care',
+        sortOrder: 3,
+      },
+    }),
   ]);
   console.log(` ${services.length} services`);
 
@@ -1302,7 +1469,7 @@ async function main() {
         duration: '٤ ساعات',
         level: 'beginner',
         category: 'makeup',
-        emoji: '',
+        emoji: '💄',
         rating: 4.8,
       },
     }),
@@ -1314,7 +1481,7 @@ async function main() {
         duration: '٣ ساعات',
         level: 'beginner',
         category: 'skincare',
-        emoji: '',
+        emoji: '🧴',
         rating: 4.9,
       },
     }),
@@ -1326,7 +1493,7 @@ async function main() {
         duration: '٥ ساعات',
         level: 'intermediate',
         category: 'hair',
-        emoji: '‍️',
+        emoji: '💇',
         rating: 4.7,
       },
     }),
@@ -1338,7 +1505,7 @@ async function main() {
         duration: '٢.٥ ساعة',
         level: 'advanced',
         category: 'nails',
-        emoji: '',
+        emoji: '💅',
         rating: 4.6,
       },
     }),
@@ -1354,7 +1521,7 @@ async function main() {
         price: 5000,
         employees: 10,
         services: ['مانيكير', 'مساج سريع', 'استشارة عناية'],
-        emoji: '',
+        emoji: '🌱',
       },
       {
         key: 'growth',
@@ -1362,7 +1529,7 @@ async function main() {
         price: 12000,
         employees: 50,
         services: ['مانيكير', 'باديكير', 'مساج', 'تنظيف بشرة', 'استشارة'],
-        emoji: '',
+        emoji: '📈',
       },
       {
         key: 'enterprise',
@@ -1370,7 +1537,7 @@ async function main() {
         price: 25000,
         employees: 200,
         services: ['كل الخدمات', 'يوم سبا', 'ورش عناية', 'مدير حساب'],
-        emoji: '',
+        emoji: '🏢',
       },
     ],
   });
@@ -1409,8 +1576,8 @@ async function main() {
         questionKey: 'recipient',
         questionJson: { ar: 'لمن الهدية؟', en: 'Who is the gift for?' },
         options: [
-          { key: 'friend', labelAr: 'صديقة ‍️', labelEn: 'Friend', tags: ['عصري', 'مرح'] },
-          { key: 'mom', labelAr: 'أمي ‍', labelEn: 'Mom', tags: ['فخم', 'عناية'] },
+          { key: 'friend', labelAr: 'صديقة ', labelEn: 'Friend', tags: ['عصري', 'مرح'] },
+          { key: 'mom', labelAr: 'أمي ', labelEn: 'Mom', tags: ['فخم', 'عناية'] },
           { key: 'sister', labelAr: 'أختي ', labelEn: 'Sister', tags: ['شبابي', 'شخصي'] },
           { key: 'wife', labelAr: 'زوجتي ', labelEn: 'Wife', tags: ['رومانسي', 'فخم'] },
           { key: 'self', labelAr: 'نفسي ', labelEn: 'Myself', tags: ['شخصي', 'متنوع'] },
@@ -1453,7 +1620,7 @@ async function main() {
           { key: 'makeup', labelAr: 'المكياج ', labelEn: 'Makeup', tags: ['مكياج', 'عصري'] },
           {
             key: 'hair',
-            labelAr: 'العناية بالشعر ‍️',
+            labelAr: 'العناية بالشعر ',
             labelEn: 'Hair Care',
             tags: ['شعر', 'عناية'],
           },
@@ -1473,34 +1640,43 @@ async function main() {
     data: [
       {
         nameJson: { ar: 'باقة عناية بالبشرة فاخرة', en: 'Premium Skincare Set' },
-        descJson: { ar: 'مجموعة متكاملة من كريم وسيروم وتونر' },
+        descJson: {
+          ar: 'مجموعة متكاملة من كريم وسيروم وتونر',
+          en: 'A complete set of cream, serum, and toner',
+        },
         price: 450,
         category: 'skincare',
-        emoji: '',
+        emoji: '🧴',
         tags: ['فاخر', 'عناية', 'بشرة'],
       },
       {
         nameJson: { ar: 'علبة مكياج احترافية', en: 'Pro Makeup Kit' },
-        descJson: { ar: '١٨ لون ظلال عيون + ٦ ألوان أحمر شفاه' },
+        descJson: {
+          ar: '١٨ لون ظلال عيون + ٦ ألوان أحمر شفاه',
+          en: '18 eyeshadow shades + 6 lipstick colors',
+        },
         price: 320,
         category: 'makeup',
-        emoji: '',
+        emoji: '💄',
         tags: ['مكياج', 'عصري', 'شبابي'],
       },
       {
         nameJson: { ar: 'جلسة مساج استرخائية', en: 'Relaxation Massage' },
-        descJson: { ar: 'جلسة مساج ٦٠ دقيقة مع زيوت عطرية' },
+        descJson: {
+          ar: 'جلسة مساج ٦٠ دقيقة مع زيوت عطرية',
+          en: 'A 60-minute massage with aromatic oils',
+        },
         price: 250,
         category: 'wellness',
-        emoji: '‍️',
+        emoji: '💆',
         tags: ['استرخاء', 'صحة'],
       },
       {
-        nameJson: { ar: 'بطاقة هدية جالكسي بيوتي', en: 'Galaxy Gift Card' },
-        descJson: { ar: 'قيمة ٣٠٠ ر.س' },
+        nameJson: { ar: 'بطاقة هدية دلال', en: 'Dalal Gift Card' },
+        descJson: { ar: 'قيمة ٣٠٠ ر.س', en: 'Value: 300 SAR' },
         price: 300,
         category: 'giftcard',
-        emoji: '',
+        emoji: '🎁',
         tags: ['مرن', 'شخصي', 'متوسط'],
       },
     ],
@@ -1516,7 +1692,7 @@ async function main() {
         minBuyers: 5,
         currentBuyers: 3,
         endsIn: '٣ أيام',
-        emoji: '',
+        emoji: '💄',
         savings: 100,
       },
       {
@@ -1526,7 +1702,7 @@ async function main() {
         minBuyers: 3,
         currentBuyers: 2,
         endsIn: 'يومين',
-        emoji: '',
+        emoji: '🧖',
         savings: 60,
       },
       {
@@ -1536,7 +1712,7 @@ async function main() {
         minBuyers: 4,
         currentBuyers: 4,
         endsIn: 'يوم',
-        emoji: '‍️',
+        emoji: '💆',
         savings: 70,
       },
     ],
@@ -1573,48 +1749,48 @@ async function main() {
   await prisma.compareProduct.createMany({
     data: [
       {
-        nameJson: { ar: 'كريم ترطيب يومي' },
+        nameJson: { ar: 'كريم ترطيب يومي', en: 'Daily Moisturizing Cream' },
         brand: 'Nivea',
         price: 89,
         rating: 4.5,
         category: 'skincare',
-        emoji: '',
+        emoji: '🧴',
         features: { hydration: 85, absorption: 80, value: 90, gentle: 75 },
         ingredients: 12,
         crueltyFree: false,
         vegan: false,
       },
       {
-        nameJson: { ar: 'مرطب طبيعي' },
+        nameJson: { ar: 'مرطب طبيعي', en: 'Natural Moisturizer' },
         brand: 'Organic Beauty',
         price: 120,
         rating: 4.8,
         category: 'skincare',
-        emoji: '',
+        emoji: '🌿',
         features: { hydration: 92, absorption: 88, value: 75, gentle: 95 },
         ingredients: 6,
         crueltyFree: true,
         vegan: true,
       },
       {
-        nameJson: { ar: 'سيروم فيتامين C' },
+        nameJson: { ar: 'سيروم فيتامين C', en: 'Vitamin C Serum' },
         brand: 'The Ordinary',
         price: 145,
         rating: 4.9,
         category: 'skincare',
-        emoji: '',
+        emoji: '🍊',
         features: { hydration: 70, absorption: 95, value: 85, gentle: 80 },
         ingredients: 8,
         crueltyFree: true,
         vegan: true,
       },
       {
-        nameJson: { ar: 'أحمر شفاه مطفي' },
+        nameJson: { ar: 'أحمر شفاه مطفي', en: 'Matte Lipstick' },
         brand: 'MAC',
         price: 110,
         rating: 4.3,
         category: 'makeup',
-        emoji: '',
+        emoji: '💄',
         features: { hydration: 60, absorption: 70, value: 65, gentle: 60 },
         ingredients: 18,
         crueltyFree: false,
@@ -1630,7 +1806,7 @@ async function main() {
         questionKey: 'occasion',
         question: 'ما هي المناسبة؟',
         options: [
-          { k: 'daily', l: 'يومي ️', t: ['basic'] },
+          { k: 'daily', l: 'يومي ', t: ['basic'] },
           { k: 'work', l: 'عمل ', t: ['natural'] },
           { k: 'party', l: 'حفلة ', t: ['glam'] },
           { k: 'wedding', l: 'زفاف ', t: ['luxury'] },
@@ -1651,8 +1827,8 @@ async function main() {
         question: 'ما تهتمين به؟',
         options: [
           { k: 'face', l: 'وجه ', t: ['skincare', 'makeup'] },
-          { k: 'hair', l: 'شعر ‍️', t: ['hair'] },
-          { k: 'body', l: 'جسم ‍️', t: ['massage', 'spa'] },
+          { k: 'hair', l: 'شعر ', t: ['hair'] },
+          { k: 'body', l: 'جسم ', t: ['massage', 'spa'] },
           { k: 'nails', l: 'أظافر ', t: ['nails'] },
           { k: 'all', l: 'كل شيء ', t: ['full'] },
         ],
@@ -1664,29 +1840,29 @@ async function main() {
     data: [
       {
         nameAr: 'مكياج احترافي',
-        emoji: '',
+        emoji: '💄',
         price: 300,
         tags: ['glam', 'luxury', 'makeup', 'premium'],
       },
       {
         nameAr: 'تنظيف بشرة عميق',
-        emoji: '',
+        emoji: '🧖',
         price: 200,
         tags: ['skincare', 'standard', 'basic'],
       },
-      { nameAr: 'تسريحة شعر', emoji: '‍️', price: 200, tags: ['hair', 'elegant', 'standard'] },
-      { nameAr: 'مساج استرخائي', emoji: '‍️', price: 250, tags: ['massage', 'spa', 'standard'] },
-      { nameAr: 'مانيكير وباديكير', emoji: '', price: 180, tags: ['nails', 'basic', 'budget'] },
-      { nameAr: 'حمام مغربي', emoji: '‍️', price: 350, tags: ['spa', 'luxury', 'full', 'premium'] },
+      { nameAr: 'تسريحة شعر', emoji: '💇', price: 200, tags: ['hair', 'elegant', 'standard'] },
+      { nameAr: 'مساج استرخائي', emoji: '💆', price: 250, tags: ['massage', 'spa', 'standard'] },
+      { nameAr: 'مانيكير وباديكير', emoji: '💅', price: 180, tags: ['nails', 'basic', 'budget'] },
+      { nameAr: 'حمام مغربي', emoji: '🛁', price: 350, tags: ['spa', 'luxury', 'full', 'premium'] },
       {
         nameAr: 'مكياج طبيعي',
-        emoji: '',
+        emoji: '🌿',
         price: 200,
         tags: ['natural', 'makeup', 'daily', 'budget'],
       },
       {
         nameAr: 'عناية بالبشرة',
-        emoji: '',
+        emoji: '🧴',
         price: 150,
         tags: ['skincare', 'basic', 'daily', 'budget'],
       },
@@ -1703,7 +1879,7 @@ async function main() {
   // E2E Test Data — customers, technicians, bookings, reviews
   // ──────────────────────────────────────────────────────────
 
-  const customerPasswordHash = '$2b$12$WLl1knNaSSoIuae5Pjcd9.5IlMOPSEb8w5dd/22Kyxmkw5Sei2Wvi'; // Admin@123456
+  const customerPasswordHash = '$2b$12$3EEqTDqBmYkYZ2baueS0I.J2EohI/RLelIDPk5jgvumJmTceUTtJe'; // Admin@123456 (verified)
 
   // Test customer
   const customer = await prisma.user.create({
@@ -2063,16 +2239,21 @@ async function main() {
       data: [
         {
           userId: customer.id,
-          title: 'تم تأكيد حجزك',
-          body: 'تم قبول حجزك من قبل نورة العمري',
+          titleJson: { ar: 'تم تأكيد حجزك', en: 'Your booking is confirmed' },
+          bodyJson: {
+            ar: 'تم قبول حجزك من قبل نورة العمري',
+            en: 'Your booking was accepted by Noura Alomari',
+          },
           type: 'booking_accepted',
+          sentVia: ['in_app'],
           isRead: false,
         },
         {
           userId: customer.id,
-          title: 'عرض خاص',
-          body: 'خصم ٢٠٪ على خدمات المساج',
+          titleJson: { ar: 'عرض خاص', en: 'Special offer' },
+          bodyJson: { ar: 'خصم ٢٠٪ على خدمات المساج', en: '20% off massage services' },
           type: 'promo',
+          sentVia: ['in_app'],
           isRead: false,
         },
       ],
@@ -2189,7 +2370,7 @@ async function main() {
     });
     console.log(' 5 promo codes (active + expired)');
   } catch (err: any) {
-    console.log(`    Promo codes: ${err.message?.slice(0, 60)}`);
+    console.log(`    Promo codes: ${err.message?.slice(0, 700)}`);
   }
 
   // Gift cards
@@ -2253,7 +2434,7 @@ async function main() {
           balance: 1000,
           purchaserId: customers[0]!.id,
           recipientName: 'أمي الحبيبة',
-          message: 'كل عام وأنتِ بألف خير ️',
+          message: 'كل عام وأنتِ بألف خير ',
           status: 'ACTIVE',
           expiresAt: new Date(Date.now() + 365 * 86400000),
         },
@@ -2261,7 +2442,7 @@ async function main() {
     });
     console.log(' 3 gift cards (active + redeemed)');
   } catch (err: any) {
-    console.log(`    Gift cards: ${err.message?.slice(0, 60)}`);
+    console.log(`    Gift cards: ${err.message?.slice(0, 700)}`);
   }
 
   // ── Geo Promotions ──
@@ -2624,6 +2805,287 @@ async function main() {
     console.log(` ${FEATURE_FLAGS.length} feature flags`);
   } catch (err: any) {
     console.log(`    Feature flags: ${err.message?.slice(0, 60)}`);
+  }
+
+  // ---- Product marketplace categories (B.3: vendor products need a home) ----
+  // 'general' is the fallback category for vendor-added products.
+  try {
+    const PRODUCT_CATEGORIES = [
+      { nameJson: { ar: 'عام', en: 'General' }, slug: 'general', sortOrder: 0 },
+      {
+        nameJson: { ar: 'العناية بالبشرة', en: 'Skincare' },
+        slug: 'product-skincare',
+        sortOrder: 1,
+      },
+      {
+        nameJson: { ar: 'العناية بالشعر', en: 'Hair Care' },
+        slug: 'product-haircare',
+        sortOrder: 2,
+      },
+      { nameJson: { ar: 'المكياج', en: 'Makeup' }, slug: 'product-makeup', sortOrder: 3 },
+      { nameJson: { ar: 'العطور', en: 'Fragrance' }, slug: 'product-fragrance', sortOrder: 4 },
+    ] as const;
+
+    await prisma.productCategory.createMany({
+      data: PRODUCT_CATEGORIES.map((c) => ({ ...c })),
+      skipDuplicates: true,
+    });
+    console.log(` ${PRODUCT_CATEGORIES.length} product categories`);
+  } catch (err: any) {
+    console.log(`    Product categories: ${err.message?.slice(0, 60)}`);
+  }
+
+  // ---- Notification templates (B.26 framework) ----
+  // Rendered by lib/notify.ts with {{placeholder}} interpolation; category
+  // maps to the notificationPreference toggle of the same name.
+  try {
+    const NOTIFICATION_TEMPLATES = [
+      {
+        key: 'booking_created',
+        category: 'bookingReminders',
+        channels: ['in_app', 'push'],
+        titleJson: { ar: 'تم استلام طلب الحجز', en: 'Booking Request Received' },
+        bodyJson: {
+          ar: 'أهلًا {{customerName}}، تم استلام طلب حجزك لخدمة {{serviceName}}. سنخبرك فور تأكيده.',
+          en: 'Hi {{customerName}}, your booking request for {{serviceName}} has been received. We will notify you once it is confirmed.',
+        },
+      },
+      {
+        key: 'booking_accepted',
+        category: 'bookingReminders',
+        channels: ['in_app', 'push', 'sms'],
+        titleJson: { ar: 'تم تأكيد حجزك', en: 'Your Booking is Confirmed' },
+        bodyJson: {
+          ar: 'ممتاز {{customerName}}! تم تأكيد حجزك لخدمة {{serviceName}} مع {{techName}} بتاريخ {{date}} الساعة {{time}}.',
+          en: 'Great news {{customerName}}! Your {{serviceName}} booking with {{techName}} is confirmed for {{date}} at {{time}}.',
+        },
+      },
+      {
+        key: 'booking_reminder',
+        category: 'bookingReminders',
+        channels: ['in_app', 'push'],
+        titleJson: { ar: 'تذكير بموعدك', en: 'Upcoming Appointment Reminder' },
+        bodyJson: {
+          ar: 'تذكير: موعدك لخدمة {{serviceName}} بتاريخ {{date}} الساعة {{time}}. نراكم قريبًا!',
+          en: 'Reminder: your {{serviceName}} appointment is on {{date}} at {{time}}. See you soon!',
+        },
+      },
+      {
+        key: 'booking_request_tech',
+        category: 'bookingReminders',
+        channels: ['in_app', 'push'],
+        titleJson: { ar: 'طلب حجز جديد', en: 'New Booking Request' },
+        bodyJson: {
+          ar: 'لديك طلب حجز جديد لخدمة {{serviceName}} من {{customerName}} بتاريخ {{date}} الساعة {{time}}.',
+          en: 'New booking request for {{serviceName}} from {{customerName}} on {{date}} at {{time}}.',
+        },
+      },
+      {
+        key: 'booking_followup',
+        category: 'tips',
+        channels: ['in_app', 'push'],
+        titleJson: { ar: 'كيف كانت خدمتك؟', en: 'How Was Your Service?' },
+        bodyJson: {
+          ar: 'أهلًا {{customerName}}، نتمنى أن تكون خدمة {{serviceName}} نالت إعجابك. شاركينا تقييمك واحجزي جلستك القادمة!',
+          en: 'Hi {{customerName}}, we hope you enjoyed your {{serviceName}} session. Share your review and book your next visit!',
+        },
+      },
+      {
+        key: 'loyalty_nudge',
+        category: 'promotions',
+        channels: ['in_app', 'push'],
+        titleJson: { ar: 'نقاطك تناديك', en: 'Your Points Are Waiting' },
+        bodyJson: {
+          ar: '{{customerName}}، باقي {{pointsNeeded}} نقطة فقط لتصلي إلى مستوى {{nextTier}}!',
+          en: '{{customerName}}, only {{pointsNeeded}} points to reach {{nextTier}} tier!',
+        },
+      },
+      // B.6/B.7 — provider submission decisions. Category 'provider' is not
+      // a preference toggle → always delivered.
+      {
+        key: 'submission_approved',
+        category: 'provider',
+        channels: ['in_app', 'push'],
+        titleJson: { ar: 'تمت الموافقة على طلبك', en: 'Your Submission Was Approved' },
+        bodyJson: {
+          ar: 'تهانينا {{providerName}}! تمت الموافقة على {{subjectName}} من قبل فريق دلال.',
+          en: 'Congratulations {{providerName}}! Your {{subjectName}} was approved by the Dalal team.',
+        },
+      },
+      {
+        key: 'submission_rejected',
+        category: 'provider',
+        channels: ['in_app', 'push'],
+        titleJson: { ar: 'تم رفض طلبك', en: 'Your Submission Was Rejected' },
+        bodyJson: {
+          ar: 'عذرًا {{providerName}}، تم رفض {{subjectName}}.{{reason}}',
+          en: 'Sorry {{providerName}}, your {{subjectName}} was rejected.{{reason}}',
+        },
+      },
+      // E2 — clinic consultation decisions. Category 'provider' is not a
+      // preference toggle → always delivered.
+      {
+        key: 'consultation_confirmed',
+        category: 'provider',
+        channels: ['in_app', 'push'],
+        titleJson: { ar: 'تم تأكيد استشارتك', en: 'Your Consultation Is Confirmed' },
+        bodyJson: {
+          ar: 'أكدت {{clinicName}} استشارتك {{when}} (رقم الحجز: {{code}}). نراكِ قريباً!',
+          en: '{{clinicName}} confirmed your consultation on {{when}} (code: {{code}}). See you soon!',
+        },
+      },
+      {
+        key: 'consultation_cancelled',
+        category: 'provider',
+        channels: ['in_app', 'push'],
+        titleJson: { ar: 'تم إلغاء استشارتك', en: 'Your Consultation Was Cancelled' },
+        bodyJson: {
+          ar: 'عذرًا، ألغت {{clinicName}} استشارتك {{when}} (رقم الحجز: {{code}}). يمكنك حجز موعد آخر.',
+          en: 'Sorry, {{clinicName}} cancelled your consultation on {{when}} (code: {{code}}). You can book another slot.',
+        },
+      },
+    ] as const;
+
+    await prisma.notificationTemplate.createMany({
+      data: NOTIFICATION_TEMPLATES.map((t) => ({ ...t })),
+      skipDuplicates: true,
+    });
+    console.log(` ${NOTIFICATION_TEMPLATES.length} notification templates`);
+  } catch (err: any) {
+    console.log(`    Notification templates: ${err.message?.slice(0, 60)}`);
+  }
+
+  // ---- Daily beauty tips + beauty quiz (feed the mobile public screens) ----
+  try {
+    await db.dailyBeautyTip.createMany({
+      data: [
+        { emoji: '💧', tip: 'اشربي 8 أكواب ماء يومياً لبشرة نضرة', category: 'عناية' },
+        { emoji: '🧴', tip: 'لا تنسي واقي الشمس حتى في الأيام الغائمة', category: 'حماية' },
+        { emoji: '😴', tip: 'النوم 7-8 ساعات هو سر البشرة المتوهجة', category: 'عناية' },
+        { emoji: '💆', tip: 'دلكي وجهك بحركات دائرية لتنشيط الدورة الدموية', category: 'تدليك' },
+        { emoji: '🍊', tip: 'فيتامين C صباحاً لبشرة مشرقة طوال اليوم', category: 'تغذية' },
+        { emoji: '🚿', tip: 'استخدمي ماء فاتراً بدلاً من الساخن لغسل الوجه', category: 'عناية' },
+        { emoji: '🌿', tip: 'ماسك الطين مرة أسبوعياً لتنظيف المسام', category: 'عناية' },
+        { emoji: '💄', tip: 'أزيلي المكياج دائماً قبل النوم مهما كنتِ متعبة', category: 'عناية' },
+      ],
+    });
+    await db.beautyQuizQuestion.createMany({
+      data: [
+        {
+          question: 'ما هو نوع بشرتكِ؟',
+          optionsJson: ['جافة', 'دهنية', 'مختلطة', 'حساسة'],
+          correctIndex: 0,
+          explanation: 'كل نوع يحتاج روتيناً مختلفاً',
+        },
+        {
+          question: 'كم مرة تستخدمين واقي الشمس؟',
+          optionsJson: ['يومياً', 'أحياناً', 'أبداً'],
+          correctIndex: 0,
+          explanation: 'الوقاية اليومية أساس العناية',
+        },
+        {
+          question: 'ما هي أهم خطوة في الروتين المسائي؟',
+          optionsJson: ['إزالة المكياج', 'الترطيب', 'التقشير'],
+          correctIndex: 0,
+          explanation: 'النوم بمكياج يسبب انسداد المسام',
+        },
+        {
+          question: 'متى يكون أفضل وقت لتطبيق السيروم؟',
+          optionsJson: ['بعد التنظيف وقبل الترطيب', 'بعد الترطيب', 'قبل النوم فقط'],
+          correctIndex: 0,
+          explanation: 'السيروم يخترق البشرة النظيفة أفضل',
+        },
+        {
+          question: 'كم ساعة نوم تحتاجينها لبشرة صحية؟',
+          optionsJson: ['7-8 ساعات', '5-6 ساعات', '4 ساعات'],
+          correctIndex: 0,
+          explanation: 'النوم الكافي يعزز تجدد الخلايا',
+        },
+      ],
+    });
+    console.log(' Daily tips + beauty quiz questions');
+  } catch (err: any) {
+    console.log(`    Tips/quiz: ${err.message?.slice(0, 60)}`);
+  }
+
+  // ---- E6d — trust badges: flag the spa/wellness catalog as women-only
+  // with private suites (modesty-first demo data).
+  try {
+    await prisma.service.updateMany({
+      where: { category: { slug: 'spa-wellness' } },
+      data: { isWomenOnlyStaff: true, isPrivateSuite: true },
+    });
+    console.log(' Trust badges: spa-wellness flagged women-only + private suite');
+  } catch (err: any) {
+    console.log(`    Trust badges: ${err.message?.slice(0, 60)}`);
+  }
+
+  // ---- E7 — beauty shorts (persisted media, pre-approved for the demo) ----
+  const SAMPLE_VIDEOS = [
+    'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4',
+    'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerJoyrides.mp4',
+  ];
+  const SHORT_SEEDS = [
+    {
+      type: 'reel',
+      titleJson: { ar: 'طريقة تطبيق الآيلاينر بسهولة', en: 'Easy eyeliner application' },
+      videoUrl: SAMPLE_VIDEOS[0],
+      durationSec: 32,
+      views: 5200,
+      category: 'makeup',
+      isApproved: true,
+    },
+    {
+      type: 'reel',
+      titleJson: { ar: 'روتين عناية بالبشرة في دقيقة', en: 'One-minute skincare routine' },
+      videoUrl: SAMPLE_VIDEOS[1],
+      durationSec: 45,
+      views: 3800,
+      category: 'skincare',
+      isApproved: true,
+    },
+    {
+      type: 'reel',
+      titleJson: { ar: 'تسريحة شعر سريعة للمناسبات', en: 'Quick event hairstyle' },
+      durationSec: 28,
+      views: 4100,
+      category: 'hair',
+      isApproved: true,
+    },
+    {
+      type: 'reel',
+      titleJson: { ar: 'مانيكير في ٣٠ ثانية', en: 'Manicure in 30 seconds' },
+      durationSec: 35,
+      views: 2900,
+      category: 'nails',
+      isApproved: true,
+    },
+    {
+      type: 'before_after',
+      titleJson: { ar: 'نتيجة صبغ الشعر البلاتيني', en: 'Platinum hair color result' },
+      beforeImageUrl: null,
+      durationSec: 0,
+      views: 1200,
+      category: 'hair',
+      isApproved: true,
+      consentGiven: true,
+    },
+    {
+      type: 'before_after',
+      titleJson: { ar: 'علاج حب الشباب — بعد ٣ جلسات', en: 'Acne treatment — after 3 sessions' },
+      beforeImageUrl: null,
+      durationSec: 0,
+      views: 2100,
+      category: 'skincare',
+      isApproved: true,
+      consentGiven: true,
+    },
+  ];
+  try {
+    await prisma.short.createMany({ data: SHORT_SEEDS });
+    console.log(` ${SHORT_SEEDS.length} beauty shorts`);
+  } catch (err: any) {
+    console.log(`    Shorts: ${err.message?.slice(0, 60)}`);
   }
 
   console.log('\n Seed complete! Test login: customer@test.com / Admin@123456\n');

@@ -1,4 +1,5 @@
 'use client';
+import type { JSX } from 'react';
 import { cn } from '@galaxy/shared';
 export function BeautyLipShapeCard({
   className = '',
@@ -19,7 +20,7 @@ export function BeautyLipShapeCard({
       )}
     >
       <div className="flex items-center gap-2">
-        <span className="text-xl"></span>
+        <span className="text-xl">💋</span>
         <div>
           <h4 className="text-sm font-bold text-rose-700 dark:text-rose-300">{heading}</h4>
           <p className="text-[10px] text-rose-500 dark:text-rose-400">{subtitle}</p>
@@ -28,28 +29,28 @@ export function BeautyLipShapeCard({
       <div className="mt-3 space-y-1">
         {[
           {
-            emoji: '️',
+            emoji: '✏️',
             text: {
               ar: 'تحديد فوق الخط الطبيعي بقليل — شفاه ممتلئة',
               en: 'Line just above your natural lip line — fuller lips',
             },
           },
           {
-            emoji: '',
+            emoji: '✨',
             text: {
               ar: 'هايلايتر فوق قوس كيوبيد — يبرز الشفاه',
               en: "Highlighter on the cupid's bow — accentuates the lips",
             },
           },
           {
-            emoji: '',
+            emoji: '🎨',
             text: {
               ar: 'لونين — فاتح بالوسط وداكن بالأطراف',
               en: 'Two tones — light in the center, darker at the edges',
             },
           },
           {
-            emoji: '',
+            emoji: '💎',
             text: {
               ar: 'غلوس على المركز فقط — يعطي عمقاً بصرياً',
               en: 'Gloss only on the center — adds visual depth',

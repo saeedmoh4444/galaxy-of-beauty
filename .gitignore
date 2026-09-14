@@ -45,6 +45,7 @@ test-results/
 # Uploads (local dev)
 uploads/*
 !uploads/.gitkeep
+packages/api/uploads/
 
 # Certificates
 *.pem
@@ -86,3 +87,9 @@ backups/
 
 # Generated reports (local only)
 *.report.md.tmp
+# local scratch / tooling
+.sweep-tmp/
+.postman/
+postman/
+.dependabot-merge.sh
+.screenshots/heroes/

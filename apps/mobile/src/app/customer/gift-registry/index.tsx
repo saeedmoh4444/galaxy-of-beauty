@@ -1,7 +1,9 @@
+import type { JSX } from 'react';
 import { View, Text, ScrollView, StyleSheet, RefreshControl } from 'react-native';
 import { SkeletonList } from '@/components/SkeletonCard';
 import { trpc } from '@/lib/trpc-react';
 import { useLocale } from '@/components/LocaleProvider';
+import { useAuthState } from '@/hooks/useAuthState';
 
 interface RegistryGift {
   id?: number;
@@ -11,8 +13,9 @@ interface RegistryGift {
 }
 
 export default function GiftRegistryScreen(): JSX.Element {
+  const isAuthed = useAuthState();
   const { t } = useLocale();
-  const q = trpc.giftRegistry.myRegistries.useQuery();
+  const q = trpc.giftRegistry.myRegistries.useQuery(undefined, { enabled: isAuthed });
   const data: RegistryGift[] = (q.data as unknown as RegistryGift[] | undefined) ?? [];
 
   if (q.isLoading) return <SkeletonList count={4} />;
@@ -24,7 +27,9 @@ export default function GiftRegistryScreen(): JSX.Element {
       refreshControl={
         <RefreshControl
           refreshing={q.isRefetching}
-          onRefresh={() => q.refetch()}
+          onRefresh={async () => {
+            await q.refetch();
+          }}
           colors={['#ec4899']}
         />
       }

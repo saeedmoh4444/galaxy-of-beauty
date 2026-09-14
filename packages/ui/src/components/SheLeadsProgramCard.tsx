@@ -1,4 +1,5 @@
 'use client';
+import type { JSX } from 'react';
 
 import { cn } from '@galaxy/shared';
 
@@ -35,32 +36,32 @@ interface SheLeadsProgramCardProps {
 
 const MODULES = [
   {
-    emoji: '',
+    emoji: '📊',
     title: { ar: 'إدارة الأعمال', en: 'Business Management' },
     desc: { ar: 'محاسبة، تسعير، إدارة المخزون', en: 'Accounting, pricing, inventory management' },
   },
   {
-    emoji: '',
+    emoji: '👥',
     title: { ar: 'قيادة الفريق', en: 'Team Leadership' },
     desc: { ar: 'توظيف، تدريب، تحفيز الخبيرات', en: 'Hiring, training, motivating technicians' },
   },
   {
-    emoji: '',
+    emoji: '📣',
     title: { ar: 'التسويق', en: 'Marketing' },
     desc: { ar: 'وسائل التواصل، العلامة التجارية', en: 'Social media, branding' },
   },
   {
-    emoji: '',
+    emoji: '💻',
     title: { ar: 'التقنية', en: 'Technology' },
     desc: { ar: 'نظام الحجز، التحليلات، التقارير', en: 'Booking system, analytics, reports' },
   },
   {
-    emoji: '',
+    emoji: '🤝',
     title: { ar: 'خدمة العملاء', en: 'Customer Service' },
     desc: { ar: 'بناء العلاقات، حل المشكلات', en: 'Building relationships, problem solving' },
   },
   {
-    emoji: '',
+    emoji: '💡',
     title: { ar: 'الابتكار', en: 'Innovation' },
     desc: { ar: 'تطوير خدمات جديدة، التميز', en: 'Developing new services, excellence' },
   },
@@ -88,7 +89,9 @@ export function SheLeadsProgramCard({
       )}
     >
       <div className="text-center">
-        <span className="text-3xl" aria-hidden="true"></span>
+        <span className="text-3xl" aria-hidden="true">
+          🚀
+        </span>
         <h4 className="mt-1 text-sm font-bold text-amber-800 dark:text-amber-200">She Leads</h4>
         <p className="text-[10px] text-amber-600 dark:text-amber-400">{subtitle}</p>
       </div>
@@ -96,11 +99,13 @@ export function SheLeadsProgramCard({
       {/* Stats */}
       <div className="mt-3 grid grid-cols-2 gap-2">
         <div className="rounded-xl bg-white/60 p-2.5 text-center dark:bg-gray-800/60">
-          <p className="text-[9px] text-text-tertiary dark:text-gray-500">{durationLabel}</p>
+          <p className="text-[9px] text-text-tertiary dark:text-text-secondary">{durationLabel}</p>
           <p className="text-sm font-bold text-amber-800 dark:text-amber-200">{duration}</p>
         </div>
         <div className="rounded-xl bg-white/60 p-2.5 text-center dark:bg-gray-800/60">
-          <p className="text-[9px] text-text-tertiary dark:text-gray-500">{participantsLabel}</p>
+          <p className="text-[9px] text-text-tertiary dark:text-text-secondary">
+            {participantsLabel}
+          </p>
           <p className="text-sm font-bold text-amber-800 dark:text-amber-200">{participants}+</p>
         </div>
       </div>
@@ -115,7 +120,9 @@ export function SheLeadsProgramCard({
             <p className="mt-0.5 text-[10px] font-bold text-text-primary dark:text-gray-100">
               {m.title[locale]}
             </p>
-            <p className="text-[9px] text-text-tertiary dark:text-gray-400">{m.desc[locale]}</p>
+            <p className="text-[9px] text-text-tertiary dark:text-text-tertiary">
+              {m.desc[locale]}
+            </p>
           </div>
         ))}
       </div>
@@ -125,7 +132,7 @@ export function SheLeadsProgramCard({
         <p className="text-center text-[10px] italic text-amber-700 dark:text-amber-300">
           {testimonial}
         </p>
-        <p className="mt-1 text-center text-[9px] text-text-tertiary dark:text-gray-500">
+        <p className="mt-1 text-center text-[9px] text-text-tertiary dark:text-text-secondary">
           {testimonialAuthor}
         </p>
       </div>

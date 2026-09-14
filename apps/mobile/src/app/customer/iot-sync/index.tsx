@@ -1,7 +1,9 @@
+import type { JSX } from 'react';
 import { View, Text, ScrollView, StyleSheet, TouchableOpacity, RefreshControl } from 'react-native';
 import { SkeletonList } from '@/components/SkeletonCard';
 import { trpc } from '@/lib/trpc-react';
 import { useLocale } from '@/components/LocaleProvider';
+import { useAuthState } from '@/hooks/useAuthState';
 
 interface IoTDevice {
   key?: string;
@@ -12,7 +14,8 @@ interface IoTDevice {
 
 export default function IoTSyncScreen(): JSX.Element {
   const { t } = useLocale();
-  const q = trpc.iotSync.devices.useQuery();
+  const isAuthed = useAuthState();
+  const q = trpc.iotSync.devices.useQuery(undefined, { enabled: isAuthed });
   const devices: IoTDevice[] = (q.data as unknown as IoTDevice[] | undefined) ?? [];
   const connectMut = trpc.iotSync.connect.useMutation();
   const connect = (dk: string) => {
@@ -26,7 +29,9 @@ export default function IoTSyncScreen(): JSX.Element {
       refreshControl={
         <RefreshControl
           refreshing={q.isRefetching}
-          onRefresh={() => q.refetch()}
+          onRefresh={async () => {
+            await q.refetch();
+          }}
           colors={['#0891b2']}
         />
       }

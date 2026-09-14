@@ -1,4 +1,5 @@
 'use client';
+import type { JSX } from 'react';
 import { cn } from '@galaxy/shared';
 export function BeautySkincarePeptideCard({
   className = '',
@@ -19,7 +20,7 @@ export function BeautySkincarePeptideCard({
       )}
     >
       <div className="flex items-center gap-2">
-        <span className="text-xl"></span>
+        <span className="text-xl">🔬</span>
         <div>
           <h4 className="text-sm font-bold text-emerald-700 dark:text-emerald-300">{title}</h4>
           <p className="text-[10px] text-emerald-500 dark:text-emerald-400">{subtitle}</p>
@@ -28,21 +29,21 @@ export function BeautySkincarePeptideCard({
       <div className="mt-3 space-y-1">
         {[
           {
-            emoji: '',
+            emoji: '✨',
             text: {
               ar: 'تحفز الكولاجين — بشرة أكثر شباباً',
               en: 'Stimulate collagen — more youthful skin',
             },
           },
           {
-            emoji: '️',
+            emoji: '🌅',
             text: { ar: 'يمكن استخدامها صباحاً ومساءً', en: 'Can be used morning and evening' },
           },
           {
-            emoji: '',
+            emoji: '✅',
             text: { ar: 'آمنة مع معظم المكونات الأخرى', en: 'Safe with most other ingredients' },
           },
-          { emoji: '', text: { ar: 'النتائج تحتاج 4-8 أسابيع', en: 'Results take 4-8 weeks' } },
+          { emoji: '📅', text: { ar: 'النتائج تحتاج 4-8 أسابيع', en: 'Results take 4-8 weeks' } },
         ].map((t, i) => (
           <div
             key={i}

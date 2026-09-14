@@ -7,6 +7,7 @@ import {
   useState,
   type ReactNode,
 } from 'react';
+import type { JSX } from 'react';
 import { isRTL, t as tBase, type Locale, type TranslationKey } from '@galaxy/shared';
 import { loadStoredLocale, persistLocale } from '@/lib/locale';
 

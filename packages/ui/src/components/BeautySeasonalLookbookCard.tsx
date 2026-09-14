@@ -1,4 +1,5 @@
 'use client';
+import type { JSX } from 'react';
 
 import { cn } from '@galaxy/shared';
 
@@ -7,7 +8,7 @@ import { cn } from '@galaxy/shared';
  * From Phase W9: The Small Details — Delightful Surprises.
  *
  * Usage:
- *   <BeautySeasonalLookbookCard season="summer" looks={[{ emoji: '️', name: 'إطلالة الصيف' }]} />
+ *   <BeautySeasonalLookbookCard season="summer" looks={[{ emoji: '🌴', name: 'إطلالة الصيف' }]} />
  */
 
 type Season = 'spring' | 'summer' | 'autumn' | 'winter' | 'ramadan' | 'eid';
@@ -23,11 +24,11 @@ const SEASONAL: Record<
   { emoji: string; title: { ar: string; en: string }; looks: Look[] }
 > = {
   spring: {
-    emoji: '',
+    emoji: '🌸',
     title: { ar: 'ربيع 2026', en: 'Spring 2026' },
     looks: [
       {
-        emoji: '',
+        emoji: '🌷',
         name: { ar: 'إطلالة زهرية', en: 'Floral look' },
         description: {
           ar: 'ألوان باستيل ومكياج وردي ناعم',
@@ -35,71 +36,71 @@ const SEASONAL: Record<
         },
       },
       {
-        emoji: '',
+        emoji: '✨',
         name: { ar: 'بشرة متوهجة', en: 'Glowing skin' },
         description: { ar: 'ترطيب عميق وإشراقة طبيعية', en: 'Deep hydration and natural radiance' },
       },
     ],
   },
   summer: {
-    emoji: '️',
+    emoji: '☀️',
     title: { ar: 'صيف 2026', en: 'Summer 2026' },
     looks: [
       {
-        emoji: '️',
+        emoji: '🏖️',
         name: { ar: 'إطلالة الشاطئ', en: 'Beach look' },
         description: { ar: 'مكياج مقاوم للماء وواقي شمس', en: 'Waterproof makeup and sunscreen' },
       },
       {
-        emoji: '',
+        emoji: '💇',
         name: { ar: 'شعر منعش', en: 'Fresh hair' },
         description: { ar: 'تسريحات مرفوعة وخفيفة', en: 'Light, updo styles' },
       },
     ],
   },
   autumn: {
-    emoji: '',
+    emoji: '🍂',
     title: { ar: 'خريف 2026', en: 'Autumn 2026' },
     looks: [
       {
-        emoji: '',
+        emoji: '🎨',
         name: { ar: 'ألوان دافئة', en: 'Warm colors' },
         description: { ar: 'درجات برونزية وبنية في المكياج', en: 'Bronzy brown tones in makeup' },
       },
       {
-        emoji: '',
+        emoji: '🧴',
         name: { ar: 'عناية بالشعر', en: 'Hair care' },
         description: { ar: 'ترطيب عميق بعد الصيف', en: 'Deep hydration after summer' },
       },
     ],
   },
   winter: {
-    emoji: '️',
+    emoji: '❄️',
     title: { ar: 'شتاء 2026', en: 'Winter 2026' },
     looks: [
       {
-        emoji: '',
+        emoji: '🧣',
         name: { ar: 'إطلالة الشتاء', en: 'Winter look' },
         description: { ar: 'مكياج دخاني وألوان داكنة', en: 'Smoky makeup and dark colors' },
       },
       {
-        emoji: '',
+        emoji: '🧴',
         name: { ar: 'حماية البشرة', en: 'Skin protection' },
         description: { ar: 'مرطبات غنية ضد الجفاف', en: 'Rich moisturizers against dryness' },
       },
     ],
   },
   ramadan: {
-    emoji: '',
+    emoji: '🌙',
     title: { ar: 'رمضان', en: 'Ramadan' },
     looks: [
       {
-        emoji: '',
+        emoji: '💄',
         name: { ar: 'إطلالة رمضانية', en: 'Ramadan look' },
         description: { ar: 'مكياج خفيف يدوم طويلاً', en: 'Light long-lasting makeup' },
       },
       {
-        emoji: '',
+        emoji: '🌜',
         name: { ar: 'عناية ليلية', en: 'Night care' },
         description: {
           ar: 'روتين عناية مكثف بعد الإفطار',
@@ -109,16 +110,16 @@ const SEASONAL: Record<
     ],
   },
   eid: {
-    emoji: '',
+    emoji: '🎉',
     title: { ar: 'العيد', en: 'Eid' },
     looks: [
       {
-        emoji: '',
+        emoji: '💋',
         name: { ar: 'إطلالة العيد', en: 'Eid look' },
         description: { ar: 'مكياج احتفالي جريء', en: 'Bold festive makeup' },
       },
       {
-        emoji: '',
+        emoji: '💇',
         name: { ar: 'تسريحة العيد', en: 'Eid hairstyle' },
         description: { ar: 'تسريحات أنيقة للمناسبات', en: 'Elegant occasion hairstyles' },
       },

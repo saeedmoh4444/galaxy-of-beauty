@@ -1,11 +1,12 @@
 import { View, Text, ScrollView, StyleSheet, TouchableOpacity } from 'react-native';
 import { useState } from 'react';
+import type { JSX } from 'react';
 import { useLocale } from '@/components/LocaleProvider';
 
 const SEASONS_COLORS = [
   {
     key: 'winter',
-    emoji: '️',
+    emoji: '❄️',
     name: 'شتوية',
     desc: 'ألوان باردة وعميقة',
     colors: ['#1e1b4b', '#312e81', '#831843', '#ffffff', '#000000', '#dc2626', '#4c1d95'],
@@ -15,7 +16,7 @@ const SEASONS_COLORS = [
   },
   {
     key: 'summer',
-    emoji: '',
+    emoji: '☀️',
     name: 'صيفية',
     desc: 'ألوان ناعمة وباستيل',
     colors: ['#fbcfe8', '#ddd6fe', '#bfdbfe', '#d1d5db', '#ec4899', '#8b5cf6', '#93c5fd'],
@@ -25,7 +26,7 @@ const SEASONS_COLORS = [
   },
   {
     key: 'autumn',
-    emoji: '',
+    emoji: '🍂',
     name: 'خريفية',
     desc: 'ألوان دافئة وغنية',
     colors: ['#fef3c7', '#fed7aa', '#fde68a', '#d97706', '#b45309', '#92400e', '#78350f'],
@@ -35,7 +36,7 @@ const SEASONS_COLORS = [
   },
   {
     key: 'spring',
-    emoji: '',
+    emoji: '🌸',
     name: 'ربيعية',
     desc: 'ألوان مشرقة ودافئة',
     colors: ['#fef08a', '#fde047', '#86efac', '#fca5a5', '#fb923c', '#22c55e', '#fbbf24'],
@@ -84,7 +85,7 @@ export default function ColorAnalysisScreen(): JSX.Element {
         <Text style={styles.st}>{t('colorAnalysis.makeup')}</Text>
         {s.makeup.map((m, i) => (
           <View key={i} style={styles.makeupItem}>
-            <Text style={styles.makeupEmoji}></Text>
+            <Text style={styles.makeupEmoji}>💄</Text>
             <Text style={styles.makeupText}>{m}</Text>
           </View>
         ))}

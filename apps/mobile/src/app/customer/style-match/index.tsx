@@ -1,5 +1,6 @@
 import { View, Text, ScrollView, TouchableOpacity, StyleSheet } from 'react-native';
 import { useState } from 'react';
+import type { JSX } from 'react';
 import { SkeletonList } from '@/components/SkeletonCard';
 import { trpc } from '@/lib/trpc-react';
 import { useLocale } from '@/components/LocaleProvider';
@@ -25,7 +26,7 @@ export default function StyleMatchScreen(): JSX.Element {
       <Text style={styles.t}>{t('mobile.styleMatch.title')}</Text>
       {!result ? (
         <View style={styles.centered}>
-          <Text style={styles.emoji}></Text>
+          <Text style={styles.emoji}>✨</Text>
           <Text style={styles.hint}>{t('mobile.styleMatch.hint')}</Text>
           <TouchableOpacity onPress={match} style={styles.btn}>
             <Text style={styles.bt}>{t('mobile.styleMatch.analyze')}</Text>

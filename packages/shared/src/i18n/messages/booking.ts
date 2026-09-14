@@ -2,7 +2,7 @@
 
 export const bookingMessages = {
   'booking.selectService': { ar: 'اختيار الخدمة', en: 'Select Service' },
-  'booking.selectTechnician': { ar: 'اختيار الفنية', en: 'Select Technician' },
+  'booking.selectTechnician': { ar: 'اختيار مقدمة الخدمة', en: 'Select Service Provider' },
   'booking.selectTime': { ar: 'اختيار الوقت', en: 'Select Time' },
   'booking.confirm': { ar: 'تأكيد الحجز', en: 'Confirm Booking' },
   'booking.status.REQUESTED': { ar: 'قيد الطلب', en: 'Requested' },
@@ -16,7 +16,7 @@ export const bookingMessages = {
   'booking.status.NO_SHOW': { ar: 'لم تحضر', en: 'No Show' },
   'booking.status.PAYMENT_AUTHORIZED': { ar: 'تم الدفع', en: 'Payment Authorized' },
   'booking.service': { ar: 'الخدمة', en: 'Service' },
-  'booking.technician': { ar: 'الفنية', en: 'Technician' },
+  'booking.technician': { ar: 'مقدمة الخدمة', en: 'Service Provider' },
   'booking.dateTime': { ar: 'التاريخ والوقت', en: 'Date & Time' },
   'booking.summary': { ar: 'ملخص الحجز', en: 'Booking Summary' },
   'booking.discount': { ar: 'الخصم', en: 'Discount' },
@@ -56,7 +56,19 @@ export const bookingMessages = {
   },
   'booking.no-technicians': {
     ar: 'لا توجد فنيات متاحة لهذه الخدمة حالياً',
-    en: 'No technicians are currently available for this service',
+    en: 'No service providers are currently available for this service',
+  },
+  // Phase 3 sprint 2 — payment clarity (pay-at-venue vs online)
+  'booking.payment.title': { ar: 'طريقة الدفع', en: 'Payment method' },
+  'booking.payment.online-label': { ar: 'ادفعي إلكترونياً', en: 'Pay online' },
+  'booking.payment.online-desc': {
+    ar: 'من محفظتك بعد قبول مقدم الخدمة للحجز',
+    en: 'From your wallet once the provider accepts the booking',
+  },
+  'booking.payment.venue-label': { ar: 'ادفعي عند الوصول', en: 'Pay at venue' },
+  'booking.payment.venue-desc': {
+    ar: 'نقداً أو بالبطاقة في الموقع',
+    en: 'Cash or card at the venue',
   },
   'booking.step-details': { ar: 'التفاصيل', en: 'Details' },
   'booking.step-confirm': { ar: 'التأكيد', en: 'Confirmation' },
@@ -64,6 +76,12 @@ export const bookingMessages = {
   'booking.choose-variant': { ar: 'اختر المتغير', en: 'Choose Variant' },
   'booking.base-service': { ar: 'الخدمة الأساسية', en: 'Base Service' },
   'booking.choose-address': { ar: 'اختر العنوان', en: 'Choose Address' },
+  'booking.choose-date': { ar: 'اختر التاريخ', en: 'Choose Date' },
+  'booking.choose-time': { ar: 'اختر الوقت', en: 'Choose Time' },
+  'booking.date-time-confirm': {
+    ar: 'التاريخ والوقت: {date} {time}',
+    en: 'Date & Time: {date} {time}',
+  },
   'booking.choose-address-placeholder': { ar: 'اختر عنواناً...', en: 'Select an address...' },
   'booking.promo-code': { ar: 'كود الخصم (اختياري)', en: 'Promo Code (optional)' },
   'booking.promo-example': { ar: 'مثال: WELCOME20', en: 'e.g. WELCOME20' },
@@ -72,19 +90,19 @@ export const bookingMessages = {
   'booking.price': { ar: 'السعر', en: 'Price' },
   'booking.duration': { ar: 'المدة', en: 'Duration' },
   'booking.technician-confirm-note': {
-    ar: '* ستقوم الفنية بتأكيد الموعد النهائي بعد مراجعة الحجز.',
-    en: '* The technician will confirm the final appointment after reviewing your booking.',
+    ar: '* ستقوم مقدمة الخدمة بتأكيد الموعد النهائي بعد مراجعة الحجز.',
+    en: '* The service provider will confirm the final appointment after reviewing your booking.',
   },
 
   // Booking confirmation page
   'booking.success-title': { ar: 'تم الحجز بنجاح!', en: 'Booking Confirmed!' },
   'booking.success-message': {
-    ar: 'تم إنشاء حجزكِ بنجاح. سيتم تأكيد الموعد من قبل الفنية قريباً.',
-    en: 'Your booking was created successfully. The technician will confirm the appointment shortly.',
+    ar: 'تم إنشاء حجزكِ بنجاح. سيتم تأكيد الموعد من قبل مقدمة الخدمة قريباً.',
+    en: 'Your booking was created successfully. The service provider will confirm the appointment shortly.',
   },
   'booking.calendar-title': {
-    ar: 'حجز جالكسي بيوتي - {code}',
-    en: 'Galaxy of Beauty booking - {code}',
+    ar: 'حجز دلال - {code}',
+    en: 'Dalal booking - {code}',
   },
   'booking.view-my-bookings': { ar: 'عرض حجوزاتي', en: 'View My Bookings' },
   'booking.book-another-service': { ar: 'احجزي خدمة أخرى', en: 'Book Another Service' },

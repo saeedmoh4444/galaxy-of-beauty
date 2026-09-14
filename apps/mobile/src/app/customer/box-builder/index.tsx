@@ -1,8 +1,10 @@
 import { View, Text, ScrollView, TouchableOpacity, StyleSheet, RefreshControl } from 'react-native';
 import { useState } from 'react';
+import type { JSX } from 'react';
 import { SkeletonList } from '@/components/SkeletonCard';
 import { trpc } from '@/lib/trpc-react';
 import { useLocale } from '@/components/LocaleProvider';
+import { useAuthState } from '@/hooks/useAuthState';
 
 interface BoxProduct {
   id: number;
@@ -12,9 +14,10 @@ interface BoxProduct {
 }
 
 export default function BoxBuilderScreen(): JSX.Element {
+  const isAuthed = useAuthState();
   const { t } = useLocale();
   const [selected, setSelected] = useState<Set<number>>(new Set());
-  const q = trpc.boxBuilder.catalog.useQuery();
+  const q = trpc.boxBuilder.catalog.useQuery(undefined, { enabled: isAuthed });
   const products: BoxProduct[] = (q.data as unknown as BoxProduct[] | undefined) ?? [];
 
   const toggle = (id: number) => {
@@ -33,7 +36,9 @@ export default function BoxBuilderScreen(): JSX.Element {
       refreshControl={
         <RefreshControl
           refreshing={q.isRefetching}
-          onRefresh={() => q.refetch()}
+          onRefresh={async () => {
+            await q.refetch();
+          }}
           colors={['#7c3aed']}
         />
       }

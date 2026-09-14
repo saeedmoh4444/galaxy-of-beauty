@@ -1,4 +1,5 @@
 'use client';
+import type { JSX } from 'react';
 
 import {
   PageContainer,
@@ -41,7 +42,7 @@ export default function HairCareGuidePage(): JSX.Element {
   return (
     <DashboardLayout userRole="CUSTOMER">
       <PageContainer width="wide">
-        <PageTitle title={'‍️' + t('hairCareGuide.title')} subtitle={t('hairCareGuide.subtitle')} />
+        <PageTitle title={'' + t('hairCareGuide.title')} subtitle={t('hairCareGuide.subtitle')} />
 
         <div className="grid gap-6 lg:grid-cols-3">
           <div className="lg:col-span-2 space-y-6">

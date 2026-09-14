@@ -1,4 +1,5 @@
 'use client';
+import type { JSX } from 'react';
 import { cn } from '@galaxy/shared';
 export function BeautyCryoStickCard({
   className = '',
@@ -19,7 +20,7 @@ export function BeautyCryoStickCard({
       )}
     >
       <div className="flex items-center gap-2">
-        <span className="text-xl">️</span>
+        <span className="text-xl">🧊</span>
         <div>
           <h4 className="text-sm font-bold text-indigo-700 dark:text-indigo-300">{title}</h4>
           <p className="text-[10px] text-indigo-500 dark:text-indigo-400">{subtitle}</p>
@@ -28,28 +29,28 @@ export function BeautyCryoStickCard({
       <div className="mt-3 space-y-1">
         {[
           {
-            emoji: '',
+            emoji: '✨',
             text: {
               ar: 'يقلص المسام — بشرة أنعم وأكثر إشراقاً',
               en: 'Tightens pores — smoother, brighter skin',
             },
           },
           {
-            emoji: '',
+            emoji: '🧊',
             text: {
               ar: 'تدليك بارد — يقلل الانتفاخ تحت العين',
               en: 'Cold massage — reduces under-eye puffiness',
             },
           },
           {
-            emoji: '',
+            emoji: '🌅',
             text: {
               ar: 'صباحاً — ينشط الدورة الدموية',
               en: 'In the morning — boosts circulation',
             },
           },
           {
-            emoji: '️',
+            emoji: '⏳',
             text: {
               ar: '3-5 دقائق — لا تطيلي على منطقة واحدة',
               en: '3-5 minutes — do not linger on one area',

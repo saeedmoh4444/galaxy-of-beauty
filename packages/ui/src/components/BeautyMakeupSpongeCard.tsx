@@ -1,4 +1,5 @@
 'use client';
+import type { JSX } from 'react';
 import { cn } from '@galaxy/shared';
 export function BeautyMakeupSpongeCard({
   className = '',
@@ -19,7 +20,7 @@ export function BeautyMakeupSpongeCard({
       )}
     >
       <div className="flex items-center gap-2">
-        <span className="text-xl"></span>
+        <span className="text-xl">🧽</span>
         <div>
           <h4 className="text-sm font-bold text-pink-700 dark:text-pink-300">{heading}</h4>
           <p className="text-[10px] text-pink-500 dark:text-pink-400">{subtitle}</p>
@@ -28,22 +29,22 @@ export function BeautyMakeupSpongeCard({
       <div className="mt-3 space-y-1">
         {[
           {
-            emoji: '',
+            emoji: '💧',
             text: {
               ar: 'بلليها بالماء — تصبح أكبر وأنعم',
               en: 'Wet it with water — it expands and turns softer',
             },
           },
           {
-            emoji: '',
+            emoji: '👆',
             text: { ar: 'اضغطي — لا تمسحي', en: "Dab — don't rub" },
           },
           {
-            emoji: '',
+            emoji: '🧼',
             text: { ar: 'اغسليها بعد كل استخدام', en: 'Wash it after every use' },
           },
           {
-            emoji: '',
+            emoji: '🔄',
             text: { ar: 'استبدليها كل 3 أشهر', en: 'Replace it every 3 months' },
           },
         ].map((t, i) => (

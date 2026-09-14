@@ -1,17 +1,23 @@
 'use client';
+import type { JSX } from 'react';
 
 import { api } from '@/lib/trpc';
-import { Card, GridSkeleton, ErrorAlert, Button, formatCurrency } from '@galaxy/ui';
+import { Card, GridSkeleton, ErrorAlert, Button, formatCurrency, useAuth } from '@galaxy/ui';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
 import { useLocale } from '@/components/LocaleProvider';
 
 export default function VIPMembershipPage(): JSX.Element {
   const { t } = useLocale();
-  const { data: tiers, isLoading } = api.vipMembership.tiers.useQuery() as {
+  const { isAuthenticated } = useAuth();
+  const { data: tiers, isLoading } = api.vipMembership.tiers.useQuery(undefined, {
+    enabled: isAuthenticated,
+  }) as {
     data: Array<Record<string, unknown>> | undefined;
     isLoading: boolean;
   };
-  const { data: myTier } = api.vipMembership.myTier.useQuery() as {
+  const { data: myTier } = api.vipMembership.myTier.useQuery(undefined, {
+    enabled: isAuthenticated,
+  }) as {
     data: Record<string, unknown> | undefined;
   };
   const upgradeMut = api.vipMembership.upgrade.useMutation();
@@ -23,7 +29,7 @@ export default function VIPMembershipPage(): JSX.Element {
     <DashboardLayout userRole="CUSTOMER">
       <div className="mx-auto max-w-4xl space-y-6">
         <div className="text-center">
-          <span className="text-6xl"></span>
+          <span className="text-6xl">👑</span>
           <h1 className="mt-4 text-3xl font-bold">{t('vipMembership.title')}</h1>
           <p className="mt-2 text-text-secondary">{t('vipMembership.subtitle')}</p>
           {current !== 'silver' && (
@@ -51,7 +57,7 @@ export default function VIPMembershipPage(): JSX.Element {
                   className={`relative text-center ${isCurrent ? 'border-2 border-brand-400 ring-2 ring-brand-100 dark:ring-brand-900' : ''}`}
                 >
                   {isCurrent && (
-                    <span className="absolute -top-3 left-1/2 -translate-x-1/2 rounded-full bg-brand-600 px-4 py-0.5 text-xs font-bold text-white">
+                    <span className="absolute -top-3 start-1/2 -translate-x-1/2 rounded-full bg-brand-600 px-4 py-0.5 text-xs font-bold text-white">
                       {t('vipMembership.current')}
                     </span>
                   )}
@@ -66,10 +72,10 @@ export default function VIPMembershipPage(): JSX.Element {
                       / {t('vipMembership.perYear')}
                     </span>
                   </p>
-                  <ul className="mt-4 space-y-2 text-right">
+                  <ul className="mt-4 space-y-2 text-end">
                     {benefits.map((b: string, i: number) => (
                       <li key={i} className="flex items-center gap-2 text-sm">
-                        <span className="text-brand-500"></span>{' '}
+                        <span className="text-brand-500">✨</span>{' '}
                         <span className="text-text-primary dark:text-gray-300">{b}</span>
                       </li>
                     ))}

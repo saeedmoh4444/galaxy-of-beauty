@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import type { JSX } from 'react';
 import { api } from '@/lib/trpc';
 import type { RouterOutput } from '@galaxy/api/client';
 import {
@@ -12,6 +13,7 @@ import {
   Input,
   Modal,
   formatCurrency,
+  useAuth,
 } from '@galaxy/ui';
 import { useLocale } from '@/components/LocaleProvider';
 import { type TranslationKey } from '@galaxy/shared';
@@ -43,11 +45,15 @@ export default function AdminZatcaPage(): JSX.Element {
   const [statusTab, setStatusTab] = useState<string>('PENDING');
   const [generateOpen, setGenerateOpen] = useState(false);
   const [bookingId, setBookingId] = useState('');
+  const { isAuthenticated } = useAuth();
 
-  const { data, isLoading, isError, refetch } = api.zatca.listInvoices.useQuery({
-    page: 1,
-    limit: 20,
-  });
+  const { data, isLoading, isError, refetch } = api.zatca.listInvoices.useQuery(
+    {
+      page: 1,
+      limit: 20,
+    },
+    { enabled: isAuthenticated },
+  );
   const generateMut = api.zatca.generateInvoice.useMutation({
     onSuccess: () => {
       refetch();

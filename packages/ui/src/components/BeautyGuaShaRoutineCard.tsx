@@ -1,4 +1,5 @@
 'use client';
+import type { JSX } from 'react';
 import { cn } from '@galaxy/shared';
 export function BeautyGuaShaRoutineCard({
   className = '',
@@ -19,7 +20,7 @@ export function BeautyGuaShaRoutineCard({
       )}
     >
       <div className="flex items-center gap-2">
-        <span className="text-xl"></span>
+        <span className="text-xl">💆</span>
         <div>
           <h4 className="text-sm font-bold text-teal-700 dark:text-teal-300">{title}</h4>
           <p className="text-[10px] text-teal-500 dark:text-teal-400">{subtitle}</p>
@@ -28,28 +29,28 @@ export function BeautyGuaShaRoutineCard({
       <div className="mt-3 space-y-1">
         {[
           {
-            emoji: '',
+            emoji: '🫒',
             text: {
               ar: '1. زيت أو سيروم — لتزلق الأداة على البشرة',
               en: '1. Oil or serum — so the tool glides over the skin',
             },
           },
           {
-            emoji: '️',
+            emoji: '🔼',
             text: {
               ar: '2. دائماً للأعلى وللخارج — ضد الجاذبية',
               en: '2. Always upward and outward — against gravity',
             },
           },
           {
-            emoji: '',
+            emoji: '✋',
             text: {
               ar: '3. 5 تمريرات لكل منطقة — بلطف وليس بقوة',
               en: '3. 5 passes per area — gently, not forcefully',
             },
           },
           {
-            emoji: '️',
+            emoji: '🧊',
             text: {
               ar: '4. خزني الحجر في الثلاجة — لانتعاش إضافي',
               en: '4. Keep the stone in the fridge — for extra refreshment',

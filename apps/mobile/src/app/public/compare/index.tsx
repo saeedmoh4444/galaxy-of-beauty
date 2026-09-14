@@ -1,5 +1,6 @@
 import { View, Text, ScrollView, StyleSheet, TouchableOpacity, RefreshControl } from 'react-native';
 import { useState } from 'react';
+import type { JSX } from 'react';
 import { SkeletonList } from '@/components/SkeletonCard';
 import { trpc } from '@/lib/trpc-react';
 import { useLocale } from '@/components/LocaleProvider';
@@ -33,7 +34,9 @@ export default function CompareScreen(): JSX.Element {
       refreshControl={
         <RefreshControl
           refreshing={servicesQ.isRefetching}
-          onRefresh={() => servicesQ.refetch()}
+          onRefresh={async () => {
+            await servicesQ.refetch();
+          }}
           colors={['#6366f1']}
         />
       }
@@ -67,13 +70,13 @@ export default function CompareScreen(): JSX.Element {
             <View key={s.id} style={styles.compareCard}>
               <Text style={styles.cTitle}>{s.nameAr ?? ''}</Text>
               <View style={styles.cRow}>
-                <Text style={styles.cLabel}></Text>
+                <Text style={styles.cLabel}>💰</Text>
                 <Text style={styles.cVal}>
                   {(s.price ?? 0).toLocaleString()} {t('misc.sar')}
                 </Text>
               </View>
               <View style={styles.cRow}>
-                <Text style={styles.cLabel}></Text>
+                <Text style={styles.cLabel}>⏳</Text>
                 <Text style={styles.cVal}>{s.duration ?? ''}</Text>
               </View>
             </View>

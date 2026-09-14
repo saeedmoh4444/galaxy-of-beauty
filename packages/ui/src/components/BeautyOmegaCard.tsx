@@ -1,4 +1,5 @@
 'use client';
+import type { JSX } from 'react';
 import { cn } from '@galaxy/shared';
 export function BeautyOmegaCard({
   className = '',
@@ -19,7 +20,7 @@ export function BeautyOmegaCard({
       )}
     >
       <div className="flex items-center gap-2">
-        <span className="text-xl"></span>
+        <span className="text-xl">🐟</span>
         <div>
           <h4 className="text-sm font-bold text-sky-700 dark:text-sky-300">{title}</h4>
           <p className="text-[10px] text-sky-500 dark:text-sky-400">{subtitle}</p>
@@ -28,28 +29,28 @@ export function BeautyOmegaCard({
       <div className="mt-3 space-y-1">
         {[
           {
-            emoji: '',
+            emoji: '💧',
             text: {
               ar: 'يرطب البشرة — يقوي حاجز الدهون الطبيعي',
               en: 'Hydrates the skin — strengthens the natural lipid barrier',
             },
           },
           {
-            emoji: '',
+            emoji: '🌿',
             text: {
               ar: 'يقلل الالتهابات — ممتاز لحبوب والوردية',
               en: 'Reduces inflammation — great for breakouts and rosacea',
             },
           },
           {
-            emoji: '',
+            emoji: '🐟',
             text: {
               ar: 'سلمون، تونة، سردين — أو كبسولات',
               en: 'Salmon, tuna, sardines — or capsules',
             },
           },
           {
-            emoji: '',
+            emoji: '🌰',
             text: {
               ar: 'مصادر نباتية — جوز، بذور كتان، شيا',
               en: 'Plant sources — walnuts, flaxseed, chia',

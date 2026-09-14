@@ -362,7 +362,7 @@ export const zatcaRouter = router({
           limit: z.number().optional().default(20),
         })
         .optional()
-        .default({}),
+        .default({} as never),
     )
     .query(async ({ input }) => {
       const where: any = {};

@@ -1,7 +1,9 @@
+import type { JSX } from 'react';
 import { View, Text, ScrollView, StyleSheet, TouchableOpacity, RefreshControl } from 'react-native';
 import { SkeletonList } from '@/components/SkeletonCard';
 import { trpc } from '@/lib/trpc-react';
 import { useLocale } from '@/components/LocaleProvider';
+import { useAuthState } from '@/hooks/useAuthState';
 
 interface GiftCardListing {
   id: number;
@@ -11,8 +13,9 @@ interface GiftCardListing {
 }
 
 export default function GiftCardMarketScreen(): JSX.Element {
+  const isAuthed = useAuthState();
   const { t } = useLocale();
-  const q = trpc.giftCardMarket.listings.useQuery();
+  const q = trpc.giftCardMarket.listings.useQuery(undefined, { enabled: isAuthed });
   const listings: GiftCardListing[] = (q.data as unknown as GiftCardListing[] | undefined) ?? [];
   const buyMut = trpc.giftCardMarket.buy.useMutation({
     onSuccess: () => {
@@ -30,7 +33,9 @@ export default function GiftCardMarketScreen(): JSX.Element {
       refreshControl={
         <RefreshControl
           refreshing={q.isRefetching}
-          onRefresh={() => q.refetch()}
+          onRefresh={async () => {
+            await q.refetch();
+          }}
           colors={['#7c3aed']}
         />
       }
@@ -39,7 +44,7 @@ export default function GiftCardMarketScreen(): JSX.Element {
       <View style={styles.grid}>
         {listings.map((l) => (
           <View key={l.id} style={styles.card}>
-            <Text style={styles.ce}></Text>
+            <Text style={styles.ce}>🎁</Text>
             <Text style={styles.cv}>{l.value?.toLocaleString()} ر.س</Text>
             <Text style={styles.op}>{l.value?.toLocaleString()}</Text>
             <Text style={styles.sp}>{l.sellingPrice?.toLocaleString()} ر.س</Text>

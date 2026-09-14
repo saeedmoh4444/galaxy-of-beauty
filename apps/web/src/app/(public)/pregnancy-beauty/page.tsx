@@ -1,5 +1,6 @@
 'use client';
 import { useState } from 'react';
+import type { JSX } from 'react';
 import { Card } from '@galaxy/ui';
 import { useLocale } from '@/components/LocaleProvider';
 
@@ -7,7 +8,7 @@ const TRIMESTERS = [
   {
     key: 'first',
     nameAr: 'marketing.pregnancy-beauty.trimester-first',
-    emoji: '',
+    emoji: '🌱',
     tips: [
       {
         title: 'marketing.pregnancy-beauty.tip-chem-title',
@@ -22,7 +23,7 @@ const TRIMESTERS = [
       {
         title: 'marketing.pregnancy-beauty.tip-morning-title',
         desc: 'marketing.pregnancy-beauty.tip-morning-desc',
-        icon: '‍️',
+        icon: '',
       },
       {
         title: 'marketing.pregnancy-beauty.tip-hydration-title',
@@ -39,12 +40,12 @@ const TRIMESTERS = [
   {
     key: 'second',
     nameAr: 'marketing.pregnancy-beauty.trimester-second',
-    emoji: '',
+    emoji: '🌸',
     tips: [
       {
         title: 'marketing.pregnancy-beauty.tip-pregnancy-massage-title',
         desc: 'marketing.pregnancy-beauty.tip-pregnancy-massage-desc',
-        icon: '‍️',
+        icon: '',
       },
       {
         title: 'marketing.pregnancy-beauty.tip-nails-title',
@@ -59,7 +60,7 @@ const TRIMESTERS = [
       {
         title: 'marketing.pregnancy-beauty.tip-safe-dye-title',
         desc: 'marketing.pregnancy-beauty.tip-safe-dye-desc',
-        icon: '‍️',
+        icon: '',
       },
       {
         title: 'marketing.pregnancy-beauty.tip-warm-bath-title',
@@ -71,7 +72,7 @@ const TRIMESTERS = [
   {
     key: 'third',
     nameAr: 'marketing.pregnancy-beauty.trimester-third',
-    emoji: '',
+    emoji: '🍼',
     tips: [
       {
         title: 'marketing.pregnancy-beauty.tip-relax-title',
@@ -96,7 +97,7 @@ const TRIMESTERS = [
       {
         title: 'marketing.pregnancy-beauty.tip-haircut-title',
         desc: 'marketing.pregnancy-beauty.tip-haircut-desc',
-        icon: '️',
+        icon: '',
       },
     ],
   },
@@ -129,7 +130,7 @@ export default function PregnancyBeautyPage(): JSX.Element {
   return (
     <div className="mx-auto max-w-5xl px-4 py-12">
       <div className="text-center mb-10">
-        <span className="text-6xl"></span>
+        <span className="text-6xl">🤰</span>
         <h1 className="mt-4 text-3xl font-bold text-text-primary dark:text-gray-100">
           {t('marketing.pregnancy-beauty.title')}
         </h1>
@@ -141,7 +142,7 @@ export default function PregnancyBeautyPage(): JSX.Element {
           <button
             key={tri.key}
             onClick={() => setTrimester(tri.key)}
-            className={`rounded-full px-6 py-2.5 text-sm font-medium transition-all ${trimester === tri.key ? 'bg-brand-600 text-white' : 'bg-surface-muted hover:bg-gray-200'}`}
+            className={`rounded-full px-6 py-2.5 text-sm font-medium transition-all ${trimester === tri.key ? 'bg-brand-600 text-white' : 'bg-surface-muted hover:bg-surface-muted'}`}
           >
             {tri.emoji} {t(tri.nameAr)}
           </button>

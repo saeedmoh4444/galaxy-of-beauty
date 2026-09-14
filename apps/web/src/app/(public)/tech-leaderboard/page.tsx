@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import type { JSX } from 'react';
 import { api } from '@/lib/trpc';
 import { Card, CardListSkeleton, ErrorAlert } from '@galaxy/ui';
 import Link from 'next/link';
@@ -30,7 +31,7 @@ export default function TechLeaderboardPage(): JSX.Element {
   return (
     <div className="mx-auto max-w-3xl px-4 py-12">
       <div className="mb-8 text-center">
-        <span className="text-6xl"></span>
+        <span className="text-6xl">🏆</span>
         <h1 className="mt-4 text-3xl font-bold">{t('marketing.tech-leaderboard.title')}</h1>
         <p className="mt-2 text-text-secondary">{t('marketing.tech-leaderboard.subtitle')}</p>
       </div>
@@ -62,7 +63,7 @@ export default function TechLeaderboardPage(): JSX.Element {
                 <span className="text-2xl w-10 text-center font-bold">
                   {['', '', ''][idx] ?? `#${idx + 1}`}
                 </span>
-                <div className="flex h-10 w-10 items-center justify-center rounded-full bg-gradient-to-br from-brand-400 to-purple-500 text-white font-bold">
+                <div className="flex h-10 w-10 items-center justify-center rounded-full bg-gradient-to-br from-brand-400 to-brand-500 text-white font-bold">
                   {((item.name as string) || '')[0]}
                 </div>
                 <div className="flex-1">
@@ -74,7 +75,7 @@ export default function TechLeaderboardPage(): JSX.Element {
                     })}
                   </p>
                 </div>
-                <div className="text-right">
+                <div className="text-end">
                   <p className="font-bold text-brand-600">
                     {category === 'bookings'
                       ? t('marketing.tech-leaderboard.bookings-count', {

@@ -1,4 +1,5 @@
 'use client';
+import type { JSX } from 'react';
 import { cn } from '@galaxy/shared';
 export function BeautyMakeupMatteCard({
   className = '',
@@ -14,36 +15,36 @@ export function BeautyMakeupMatteCard({
   return (
     <div
       className={cn(
-        'rounded-2xl border border-gray-100 bg-white p-4 dark:border-gray-800 dark:bg-gray-900',
+        'rounded-2xl border border-edge-muted bg-white p-4 dark:border-gray-800 dark:bg-gray-900',
         className,
       )}
     >
       <div className="flex items-center gap-2">
-        <span className="text-xl"></span>
+        <span className="text-xl">💄</span>
         <div>
-          <h4 className="text-sm font-bold text-gray-700 dark:text-gray-300">{heading}</h4>
-          <p className="text-[10px] text-gray-500 dark:text-gray-400">{subtitle}</p>
+          <h4 className="text-sm font-bold text-text-secondary">{heading}</h4>
+          <p className="text-[10px] text-text-secondary">{subtitle}</p>
         </div>
       </div>
       <div className="mt-3 space-y-1">
         {[
           {
-            emoji: '',
+            emoji: '🧴',
             text: { ar: 'برايمر مطفي — يتحكم باللمعان', en: 'Matte primer — controls shine' },
           },
           {
-            emoji: '',
+            emoji: '✨',
             text: {
               ar: 'بودرة شفافة — لتثبيت المكياج',
               en: 'Translucent powder — to set the makeup',
             },
           },
           {
-            emoji: '',
+            emoji: '💄',
             text: { ar: 'أحمر شفاه مطفي — يدوم ساعات', en: 'Matte lipstick — lasts for hours' },
           },
           {
-            emoji: '',
+            emoji: '🧻',
             text: {
               ar: 'ورق نشاف — بدل إضافة بودرة',
               en: 'Blotting paper — instead of adding powder',
@@ -52,10 +53,10 @@ export function BeautyMakeupMatteCard({
         ].map((t, i) => (
           <div
             key={i}
-            className="flex items-center gap-2 rounded-lg bg-gray-50 px-3 py-2 dark:bg-gray-800"
+            className="flex items-center gap-2 rounded-lg bg-surface-muted px-3 py-2 dark:bg-gray-800"
           >
             <span className="text-sm shrink-0">{t.emoji}</span>
-            <span className="text-[10px] text-gray-800 dark:text-gray-200">{t.text[locale]}</span>
+            <span className="text-[10px] text-text-primary">{t.text[locale]}</span>
           </div>
         ))}
       </div>

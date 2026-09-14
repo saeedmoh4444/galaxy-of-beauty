@@ -1,5 +1,6 @@
 'use client';
 import { useState } from 'react';
+import type { JSX } from 'react';
 import { api } from '@/lib/trpc';
 import { Card, EmptyState, Button, Modal, formatCurrency } from '@galaxy/ui';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
@@ -55,7 +56,7 @@ export default function ServiceWishlistPage(): JSX.Element {
                     </p>
                   </div>
                 </div>
-                <div className="text-right">
+                <div className="text-end">
                   <p className="font-bold text-brand-600">
                     {formatCurrency(i.currentPrice as number)}
                   </p>
@@ -67,9 +68,7 @@ export default function ServiceWishlistPage(): JSX.Element {
                   <button
                     onClick={() => removeMut.mutate({ id: i.id as number })}
                     className="block mt-1 text-xs text-red-400"
-                  >
-                    ️
-                  </button>
+                  ></button>
                 </div>
               </Card>
             ))}

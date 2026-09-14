@@ -1,5 +1,6 @@
 import { View, Text, TextInput, TouchableOpacity, StyleSheet } from 'react-native';
 import { useState } from 'react';
+import type { JSX } from 'react';
 import { ScreenState } from '@/components/ScreenState';
 import { trpc } from '@/lib/trpc-react';
 import { formatCurrency } from '@galaxy/ui';

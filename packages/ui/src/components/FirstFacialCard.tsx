@@ -1,4 +1,5 @@
 'use client';
+import type { JSX } from 'react';
 
 import { cn } from '@galaxy/shared';
 
@@ -64,17 +65,17 @@ const SKIN_TIPS: Record<string, { ar: string; en: string }> = {
 };
 
 const STEPS: { emoji: string; text: { ar: string; en: string } }[] = [
-  { emoji: '', text: { ar: 'تحليل بشرتكِ بلطف', en: 'Gentle skin analysis' } },
+  { emoji: '🔍', text: { ar: 'تحليل بشرتكِ بلطف', en: 'Gentle skin analysis' } },
   {
-    emoji: '',
+    emoji: '🧼',
     text: { ar: 'تنظيف لطيف بدون مواد قاسية', en: 'Gentle cleansing without harsh ingredients' },
   },
   {
-    emoji: '‍️',
+    emoji: '💆',
     text: { ar: 'تدليك خفيف للوجه (3 دقائق)', en: 'Light facial massage (3 minutes)' },
   },
-  { emoji: '', text: { ar: 'ترطيب وواقي شمس', en: 'Moisturizer and sunscreen' } },
-  { emoji: '', text: { ar: 'نصائح للعناية اليومية', en: 'Daily care tips' } },
+  { emoji: '🧴', text: { ar: 'ترطيب وواقي شمس', en: 'Moisturizer and sunscreen' } },
+  { emoji: '💡', text: { ar: 'نصائح للعناية اليومية', en: 'Daily care tips' } },
 ];
 
 export function FirstFacialCard({
@@ -86,8 +87,8 @@ export function FirstFacialCard({
   title = 'أول عناية بالبشرة',
   subtitle = 'تجربة لطيفة وممتعة لأول مرة',
   ageNote = 'مناسب للأعمار 10-17 سنة',
-  stepsLabel = ' ماذا سنفعل',
-  momPrefix = '‍ ',
+  stepsLabel = 'ماذا سنفعل',
+  momPrefix = ' ',
   momWithText = 'تستطيعين الحضور معها ومشاهدة التجربة',
   pledgeText = 'لا كريم أساس ثقيل · لا مقشرات قوية · منتجات آمنة فقط',
   bookWithMomLabel = 'احجزي مع أمكِ ',
@@ -106,7 +107,9 @@ export function FirstFacialCard({
       )}
     >
       <div className="text-center">
-        <span className="text-3xl" aria-hidden="true"></span>
+        <span className="text-3xl" aria-hidden="true">
+          ✨
+        </span>
         <h4 className="mt-1 text-sm font-bold text-pink-700 dark:text-pink-300">{title}</h4>
         <p className="text-[10px] text-pink-500 dark:text-pink-400">{subtitle}</p>
         {!isAgeAppropriate && (
@@ -138,8 +141,8 @@ export function FirstFacialCard({
 
       {/* Mom section */}
       {momName && (
-        <div className="mt-2 rounded-xl bg-purple-50 p-3 dark:bg-purple-950">
-          <p className="text-center text-[10px] text-purple-700 dark:text-purple-300">
+        <div className="mt-2 rounded-xl bg-brand-50 p-3 dark:bg-brand-950">
+          <p className="text-center text-[10px] text-brand-700 dark:text-brand-300">
             {momPrefix}
             {momName} {momWithText}
           </p>
@@ -162,7 +165,7 @@ export function FirstFacialCard({
         {momName ? bookWithMomLabel : bookAloneLabel}
       </button>
 
-      <p className="mt-2 text-center text-[9px] text-text-tertiary dark:text-gray-500">
+      <p className="mt-2 text-center text-[9px] text-text-tertiary dark:text-text-secondary">
         {footerText}
       </p>
     </div>

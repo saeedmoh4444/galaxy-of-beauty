@@ -1,8 +1,10 @@
 import { View, Text, ScrollView, StyleSheet, TouchableOpacity, RefreshControl } from 'react-native';
 import { useState } from 'react';
+import type { JSX } from 'react';
 import { SkeletonList } from '@/components/SkeletonCard';
 import { trpc } from '@/lib/trpc-react';
 import { useLocale } from '@/components/LocaleProvider';
+import { useAuthState } from '@/hooks/useAuthState';
 
 interface LastMileProduct {
   id: number;
@@ -20,9 +22,10 @@ interface OrderResult {
 
 export default function LastMileScreen(): JSX.Element {
   const { t } = useLocale();
+  const isAuthed = useAuthState();
   const [result, setResult] = useState<OrderResult | null>(null);
 
-  const productsQ = trpc.lastMileDelivery.products.useQuery();
+  const productsQ = trpc.lastMileDelivery.products.useQuery(undefined, { enabled: isAuthed });
   const products: LastMileProduct[] = (productsQ.data as LastMileProduct[] | undefined) ?? [];
 
   const orderMut = trpc.lastMileDelivery.order.useMutation({
@@ -41,7 +44,7 @@ export default function LastMileScreen(): JSX.Element {
       <ScrollView style={styles.c} contentContainerStyle={styles.i}>
         <Text style={styles.t}>{t('mobile.lastMile.title')}</Text>
         <View style={[styles.card, styles.rc]}>
-          <Text style={styles.re}></Text>
+          <Text style={styles.re}>✅</Text>
           <Text style={styles.rtt}>{t('mobile.lastMile.ordered')}</Text>
           <Text style={styles.rp}>{result.product}</Text>
           <Text style={styles.rm}>
@@ -60,7 +63,9 @@ export default function LastMileScreen(): JSX.Element {
       refreshControl={
         <RefreshControl
           refreshing={productsQ.isRefetching}
-          onRefresh={() => productsQ.refetch()}
+          onRefresh={async () => {
+            await productsQ.refetch();
+          }}
           colors={['#f59e0b']}
         />
       }
@@ -71,7 +76,7 @@ export default function LastMileScreen(): JSX.Element {
           <Text style={styles.pe}>{p.emoji}</Text>
           <View style={{ flex: 1 }}>
             <Text style={styles.pn}>{p.nameAr}</Text>
-            <Text style={styles.pd}>️ {p.deliveryTime}</Text>
+            <Text style={styles.pd}> {p.deliveryTime}</Text>
           </View>
           <View style={{ alignItems: 'flex-end' }}>
             <Text style={styles.pp}>{p.price?.toLocaleString()} ر.س</Text>

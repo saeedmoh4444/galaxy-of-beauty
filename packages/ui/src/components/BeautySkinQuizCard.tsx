@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import type { JSX } from 'react';
 import { cn } from '@galaxy/shared';
 
 /**
@@ -20,7 +21,7 @@ interface Question {
 const QUESTIONS: Question[] = [
   {
     question: { ar: 'كيف تبدو بشرتكِ بعد غسلها؟', en: 'How does your skin feel after washing?' },
-    emoji: '',
+    emoji: '🧼',
     options: [
       { text: { ar: 'مشدودة وجافة', en: 'Tight and dry' }, score: { dry: 3 } },
       { text: { ar: 'لامعة ودهنية', en: 'Shiny and oily' }, score: { oily: 3 } },
@@ -36,7 +37,7 @@ const QUESTIONS: Question[] = [
       ar: 'كيف تتصرف بشرتكِ في الطقس الحار؟',
       en: 'How does your skin behave in hot weather?',
     },
-    emoji: '️',
+    emoji: '🥵',
     options: [
       { text: { ar: 'تصبح دهنية جداً', en: 'Becomes very oily' }, score: { oily: 3 } },
       { text: { ar: 'تبقى جافة', en: 'Stays dry' }, score: { dry: 3 } },
@@ -52,7 +53,7 @@ const QUESTIONS: Question[] = [
       ar: 'هل بشرتكِ حساسة للمنتجات الجديدة؟',
       en: 'Is your skin sensitive to new products?',
     },
-    emoji: '',
+    emoji: '🌸',
     options: [
       { text: { ar: 'نعم، تحمر بسرعة', en: 'Yes, it reddens quickly' }, score: { sensitive: 4 } },
       { text: { ar: 'أحياناً', en: 'Sometimes' }, score: { sensitive: 2 } },
@@ -118,7 +119,9 @@ export function BeautySkinQuizCard({
           className,
         )}
       >
-        <span className="text-4xl" aria-hidden="true"></span>
+        <span className="text-4xl" aria-hidden="true">
+          🔬
+        </span>
         <h4 className="mt-2 text-sm font-bold text-teal-700 dark:text-teal-300">{resultTitle}</h4>
         <p className="mt-2 text-2xl font-bold text-teal-800 dark:text-teal-200">{result}</p>
         <button
@@ -147,7 +150,7 @@ export function BeautySkinQuizCard({
     >
       <div className="flex items-center justify-between">
         <span className="text-lg">{q.emoji}</span>
-        <span className="text-[10px] text-text-tertiary dark:text-gray-500">
+        <span className="text-[10px] text-text-tertiary dark:text-text-secondary">
           {step + 1}/{QUESTIONS.length}
         </span>
       </div>
@@ -160,7 +163,7 @@ export function BeautySkinQuizCard({
             key={i}
             type="button"
             onClick={() => handleAnswer(opt.score)}
-            className="w-full rounded-lg bg-teal-50 px-3 py-2.5 text-left text-[10px] font-medium text-teal-800 hover:bg-teal-100 dark:bg-teal-950 dark:text-teal-200 dark:hover:bg-teal-900 transition-colors"
+            className="w-full rounded-lg bg-teal-50 px-3 py-2.5 text-start text-[10px] font-medium text-teal-800 hover:bg-teal-100 dark:bg-teal-950 dark:text-teal-200 dark:hover:bg-teal-900 transition-colors"
           >
             {opt.text[locale]}
           </button>

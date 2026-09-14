@@ -1,4 +1,5 @@
 'use client';
+import type { JSX } from 'react';
 
 import { cn } from '@galaxy/shared';
 
@@ -47,7 +48,7 @@ export function BeautySuncareReminderCard({
       )}
     >
       <div className="flex items-center gap-3">
-        <span className="text-3xl shrink-0">️</span>
+        <span className="text-3xl shrink-0">🌞</span>
         <div className="flex-1 min-w-0">
           <h4 className="text-sm font-bold text-amber-700 dark:text-amber-300">{title}</h4>
           <p className="text-[10px] text-amber-500 dark:text-amber-400">
@@ -67,8 +68,8 @@ export function BeautySuncareReminderCard({
       >
         {buttonText}
       </button>
-      <p className="mt-1.5 text-center text-[9px] text-text-tertiary dark:text-gray-500">
-        ️ {footerText}
+      <p className="mt-1.5 text-center text-[9px] text-text-tertiary dark:text-text-secondary">
+        {footerText}
       </p>
     </div>
   );

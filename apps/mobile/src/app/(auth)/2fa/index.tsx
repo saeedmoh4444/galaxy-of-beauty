@@ -76,7 +76,7 @@ export default function TwoFactorScreen() {
 
       {enabled ? (
         <View style={styles.card}>
-          <Text style={styles.checkIcon}></Text>
+          <Text style={styles.checkIcon}>✅</Text>
           <Text style={styles.successText}>{t('auth.2fa-enabled')}</Text>
           <Text style={styles.hint}>{t('mobile.auth.twoFactorActiveHint')}</Text>
           <TouchableOpacity
@@ -121,7 +121,7 @@ export default function TwoFactorScreen() {
         </View>
       ) : (
         <View style={styles.card}>
-          <Text style={styles.lockIcon}></Text>
+          <Text style={styles.lockIcon}>🔒</Text>
           <Text style={styles.subTitle}>{t('auth.2fa-setup-title')}</Text>
           <Text style={styles.hint}>{t('mobile.auth.setupHint')}</Text>
           <TouchableOpacity style={styles.btn} onPress={handleSetup} disabled={setupMut.isPending}>

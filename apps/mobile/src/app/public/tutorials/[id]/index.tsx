@@ -1,3 +1,4 @@
+import type { JSX } from 'react';
 import { View, Text, ScrollView, StyleSheet, RefreshControl } from 'react-native';
 import { useLocalSearchParams } from 'expo-router';
 import { SkeletonList } from '@/components/SkeletonCard';
@@ -39,7 +40,9 @@ export default function TutorialDetailScreen(): JSX.Element {
       refreshControl={
         <RefreshControl
           refreshing={q.isRefetching}
-          onRefresh={() => q.refetch()}
+          onRefresh={async () => {
+            await q.refetch();
+          }}
           colors={['#7c3aed']}
         />
       }
@@ -53,7 +56,7 @@ export default function TutorialDetailScreen(): JSX.Element {
       <View style={styles.meta}>
         <Text style={styles.mi}>{data.categoryAr}</Text>
         <Text style={styles.mi}>{data.difficultyAr}</Text>
-        <Text style={styles.mi}>️ {data.duration}</Text>
+        <Text style={styles.mi}> {data.duration}</Text>
       </View>
       <Text style={styles.desc}>{data.descAr}</Text>
       {data.steps && (

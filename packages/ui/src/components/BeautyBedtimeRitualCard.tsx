@@ -1,4 +1,5 @@
 'use client';
+import type { JSX } from 'react';
 import { cn } from '@galaxy/shared';
 export function BeautyBedtimeRitualCard({
   className = '',
@@ -19,7 +20,7 @@ export function BeautyBedtimeRitualCard({
       )}
     >
       <div className="flex items-center gap-2">
-        <span className="text-xl"></span>
+        <span className="text-xl">🌙</span>
         <div>
           <h4 className="text-sm font-bold text-violet-700 dark:text-violet-300">{title}</h4>
           <p className="text-[10px] text-violet-500 dark:text-violet-400">{subtitle}</p>
@@ -28,28 +29,28 @@ export function BeautyBedtimeRitualCard({
       <div className="mt-3 space-y-1">
         {[
           {
-            emoji: '',
+            emoji: '🧼',
             text: {
               ar: 'نظفي وجهك — مزدوج: زيت + غسول',
               en: 'Cleanse your face — double cleanse: oil + cleanser',
             },
           },
           {
-            emoji: '',
+            emoji: '🌙',
             text: {
               ar: 'سيروم ليلي — وقت الإصلاح أثناء النوم',
               en: 'Night serum — repair time while you sleep',
             },
           },
           {
-            emoji: '',
+            emoji: '💆',
             text: {
               ar: 'تدليك 3 دقائق — يحفز الدورة الدموية',
               en: '3-minute massage — boosts circulation',
             },
           },
           {
-            emoji: '',
+            emoji: '📵',
             text: {
               ar: 'أطفئي الجوال — الضوء الأزرق يمنع الميلاتونين',
               en: 'Turn off your phone — blue light blocks melatonin',

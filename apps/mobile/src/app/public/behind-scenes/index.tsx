@@ -1,3 +1,4 @@
+import type { JSX } from 'react';
 import { View, Text, ScrollView, StyleSheet, RefreshControl } from 'react-native';
 import { SkeletonList } from '@/components/SkeletonCard';
 import { trpc } from '@/lib/trpc-react';
@@ -23,7 +24,9 @@ export default function BehindScenesScreen(): JSX.Element {
       refreshControl={
         <RefreshControl
           refreshing={videosQ.isRefetching}
-          onRefresh={() => videosQ.refetch()}
+          onRefresh={async () => {
+            await videosQ.refetch();
+          }}
           colors={['#f59e0b']}
         />
       }
@@ -38,7 +41,7 @@ export default function BehindScenesScreen(): JSX.Element {
             <Text style={styles.vidEmoji}>{(v.emoji as string) ?? ''}</Text>
             <View style={{ flex: 1 }}>
               <Text style={styles.vidTitle}>{v.titleAr as string}</Text>
-              <Text style={styles.vidDur}>️ {v.duration as string}</Text>
+              <Text style={styles.vidDur}> {v.duration as string}</Text>
             </View>
           </View>
         ))

@@ -1,4 +1,5 @@
 'use client';
+import type { JSX } from 'react';
 
 import { cn } from '@galaxy/shared';
 
@@ -7,7 +8,7 @@ import { cn } from '@galaxy/shared';
  * From Phase W9: The Small Details — Delightful Surprises.
  *
  * Usage:
- *   <BeautyDreamBoardCard dreams={[{ emoji: '', text: 'شعر طويل صحي' }]} />
+ *   <BeautyDreamBoardCard dreams={[{ emoji: '💇', text: 'شعر طويل صحي' }]} />
  */
 
 interface Dream {
@@ -42,7 +43,9 @@ export function BeautyDreamBoardCard({
       )}
     >
       <div className="text-center">
-        <span className="text-3xl" aria-hidden="true"></span>
+        <span className="text-3xl" aria-hidden="true">
+          🌟
+        </span>
         <h4 className="mt-1 text-sm font-bold text-violet-800 dark:text-violet-200">{title}</h4>
         <p className="text-[10px] text-violet-500 dark:text-violet-400">
           {dreams.length} {dreamCountText}

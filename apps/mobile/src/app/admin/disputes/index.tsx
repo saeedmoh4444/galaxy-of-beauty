@@ -1,8 +1,10 @@
+import type { JSX } from 'react';
 import { View, Text, ScrollView, StyleSheet, RefreshControl } from 'react-native';
 import { SkeletonList } from '@/components/SkeletonCard';
 import { ErrorAlert } from '@/components/ErrorAlert';
-import { trpc } from '@/lib/trpc-react';
 import { useLocale } from '@/components/LocaleProvider';
+import { useAuthState } from '@/hooks/useAuthState';
+import { trpc } from '@/lib/trpc-react';
 import type { TranslationKey } from '@galaxy/shared';
 
 interface DisputeItem {
@@ -21,7 +23,8 @@ const STATUS_MAP: Record<string, TranslationKey> = {
 
 export default function AdminDisputesScreen(): JSX.Element {
   const { t, locale } = useLocale();
-  const q = trpc.disputes.list.useQuery({});
+  const isAuthed = useAuthState();
+  const q = trpc.disputes.list.useQuery({}, { enabled: isAuthed });
   const data = (q.data as unknown as { items?: DisputeItem[] } | null)?.items ?? [];
 
   if (q.isLoading) return <SkeletonList count={5} />;
@@ -35,7 +38,9 @@ export default function AdminDisputesScreen(): JSX.Element {
       refreshControl={
         <RefreshControl
           refreshing={q.isRefetching}
-          onRefresh={() => q.refetch()}
+          onRefresh={async () => {
+            await q.refetch();
+          }}
           colors={['#dc2626']}
         />
       }

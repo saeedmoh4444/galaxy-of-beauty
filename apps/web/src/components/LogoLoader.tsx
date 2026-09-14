@@ -35,7 +35,7 @@ export async function LogoLoader({
       aria-live="polite"
       aria-label={label}
       className={`flex flex-col items-center justify-center ${
-        fullHeight ? 'min-h-screen bg-white dark:bg-gray-950' : 'py-24'
+        fullHeight ? 'min-h-screen bg-surface-elevated' : 'py-24'
       } ${className}`}
     >
       <div className="animate-pulse">
@@ -52,7 +52,7 @@ export async function LogoLoader({
         <div className="h-2.5 w-2.5 animate-bounce rounded-full bg-brand-500 [animation-delay:150ms]" />
         <div className="h-2.5 w-2.5 animate-bounce rounded-full bg-brand-400 [animation-delay:300ms]" />
       </div>
-      <p className="mt-4 text-sm font-medium text-gray-400">
+      <p className="mt-4 text-sm font-medium text-text-tertiary">
         {label ?? t('state.loading', locale)}
       </p>
     </div>

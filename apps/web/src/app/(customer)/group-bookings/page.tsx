@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import type { JSX } from 'react';
 import { api } from '@/lib/trpc';
 import {
   Card,
@@ -17,11 +18,11 @@ import type { TranslationKey } from '@galaxy/shared';
 import Link from 'next/link';
 
 const THEMES: { value: string; label: TranslationKey; emoji: string }[] = [
-  { value: 'bridal', label: 'groupBookings.theme.bridal', emoji: '' },
-  { value: 'birthday', label: 'groupBookings.theme.birthday', emoji: '' },
-  { value: 'girls_night', label: 'groupBookings.theme.girlsNight', emoji: '' },
-  { value: 'family', label: 'groupBookings.theme.family', emoji: '‍‍‍' },
-  { value: 'other', label: 'groupBookings.theme.other', emoji: '' },
+  { value: 'bridal', label: 'groupBookings.theme.bridal', emoji: '👰' },
+  { value: 'birthday', label: 'groupBookings.theme.birthday', emoji: '🎂' },
+  { value: 'girls_night', label: 'groupBookings.theme.girlsNight', emoji: '👭' },
+  { value: 'family', label: 'groupBookings.theme.family', emoji: '👪' },
+  { value: 'other', label: 'groupBookings.theme.other', emoji: '✨' },
 ];
 
 interface MemberInput {
@@ -78,7 +79,7 @@ const THEME_EMOJI: Record<string, string> = {
   bridal: '',
   birthday: '',
   girls_night: '',
-  family: '‍‍‍',
+  family: '',
   other: '',
 };
 
@@ -176,9 +177,9 @@ export default function GroupBookingsPage(): JSX.Element {
         <div className="flex items-center justify-between">
           <div>
             <h1 className="text-2xl font-bold text-text-primary dark:text-gray-100">
-              ‍️ {t('groupBookings.title')}
+              {t('groupBookings.title')}
             </h1>
-            <p className="mt-1 text-sm text-text-secondary dark:text-gray-400">
+            <p className="mt-1 text-sm text-text-secondary dark:text-text-tertiary">
               {t('groupBookings.subtitle')}
             </p>
           </div>
@@ -189,17 +190,17 @@ export default function GroupBookingsPage(): JSX.Element {
         <div className="grid gap-4 sm:grid-cols-3">
           {[
             {
-              emoji: '',
+              emoji: '💰',
               title: t('groupBookings.benefit1.title'),
               desc: t('groupBookings.benefit1.desc'),
             },
             {
-              emoji: '‍️',
+              emoji: '👥',
               title: t('groupBookings.benefit2.title'),
               desc: t('groupBookings.benefit2.desc'),
             },
             {
-              emoji: '',
+              emoji: '🎉',
               title: t('groupBookings.benefit3.title'),
               desc: t('groupBookings.benefit3.desc'),
             },
@@ -255,7 +256,7 @@ export default function GroupBookingsPage(): JSX.Element {
                           </div>
                         </div>
                       </div>
-                      <div className="text-right">
+                      <div className="text-end">
                         {Number(group.totalAmount) > 0 && (
                           <p className="text-lg font-bold text-brand-600">
                             {formatCurrency(Number(group.totalAmount))}
@@ -304,7 +305,7 @@ export default function GroupBookingsPage(): JSX.Element {
                 value={formName}
                 onChange={(e) => setFormName(e.target.value)}
                 placeholder={t('groupBookings.placeholder.name')}
-                className="w-full rounded-lg border border-gray-200 px-3 py-2 text-sm focus:border-brand-500 focus:outline-none focus:ring-1 focus:ring-brand-500 dark:border-gray-700 dark:bg-gray-800"
+                className="w-full rounded-lg border border-edge px-3 py-2 text-sm focus:border-brand-500 focus:outline-none focus:ring-1 focus:ring-brand-500 dark:border-gray-700 dark:bg-gray-800"
               />
             </div>
 
@@ -320,7 +321,7 @@ export default function GroupBookingsPage(): JSX.Element {
                 id="gb-theme"
                 value={formTheme}
                 onChange={(e) => setFormTheme(e.target.value)}
-                className="w-full rounded-lg border border-gray-200 px-3 py-2 text-sm focus:border-brand-500 focus:outline-none focus:ring-1 focus:ring-brand-500 dark:border-gray-700 dark:bg-gray-800"
+                className="w-full rounded-lg border border-edge px-3 py-2 text-sm focus:border-brand-500 focus:outline-none focus:ring-1 focus:ring-brand-500 dark:border-gray-700 dark:bg-gray-800"
               >
                 {THEMES.map((themeOpt) => (
                   <option key={themeOpt.value} value={themeOpt.value}>
@@ -367,11 +368,11 @@ export default function GroupBookingsPage(): JSX.Element {
                   + {t('groupBookings.addMember')}
                 </button>
               </div>
-              <div className="space-y-3 max-h-64 overflow-y-auto pr-1">
+              <div className="space-y-3 max-h-64 overflow-y-auto pe-1">
                 {members.map((m, idx) => (
                   <div
                     key={idx}
-                    className="flex items-center gap-2 rounded-lg border border-gray-100 p-2 dark:border-gray-700"
+                    className="flex items-center gap-2 rounded-lg border border-edge-muted p-2 dark:border-gray-700"
                   >
                     <span className="text-xs font-bold text-text-tertiary w-5">{idx + 1}</span>
                     <input
@@ -379,14 +380,14 @@ export default function GroupBookingsPage(): JSX.Element {
                       value={m.name}
                       onChange={(e) => updateMember(idx, 'name', e.target.value)}
                       placeholder={t('groupBookings.placeholder.memberName')}
-                      className="flex-1 min-w-0 rounded border border-gray-200 px-2 py-1.5 text-sm focus:border-brand-500 focus:outline-none dark:border-gray-700 dark:bg-gray-800"
+                      className="flex-1 min-w-0 rounded border border-edge px-2 py-1.5 text-sm focus:border-brand-500 focus:outline-none dark:border-gray-700 dark:bg-gray-800"
                     />
                     <input
                       type="number"
                       value={m.serviceId}
                       onChange={(e) => updateMember(idx, 'serviceId', e.target.value)}
                       placeholder={t('groupBookings.placeholder.serviceId')}
-                      className="w-24 rounded border border-gray-200 px-2 py-1.5 text-sm focus:border-brand-500 focus:outline-none dark:border-gray-700 dark:bg-gray-800"
+                      className="w-24 rounded border border-edge px-2 py-1.5 text-sm focus:border-brand-500 focus:outline-none dark:border-gray-700 dark:bg-gray-800"
                     />
                     {members.length > 2 && (
                       <button

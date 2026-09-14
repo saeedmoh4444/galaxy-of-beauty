@@ -1,3 +1,4 @@
+import type { JSX } from 'react';
 import { View, Text, ScrollView, StyleSheet } from 'react-native';
 import { trpc } from '@/lib/trpc-react';
 import { useLocale } from '@/components/LocaleProvider';
@@ -29,33 +30,33 @@ export default function BeautyStatsScreen(): JSX.Element {
 
   return (
     <ScrollView style={s.c} contentContainerStyle={s.i}>
-      <Text style={s.b}></Text>
+      <Text style={s.b}>📊</Text>
       <Text style={s.h}>{t('mobile.public.beauty-stats.title')}</Text>
       <Text style={s.sub}>{t('mobile.public.beauty-stats.subtitle')}</Text>
       <View style={s.grid}>
         <View style={s.card}>
-          <Text style={s.ce}></Text>
+          <Text style={s.ce}>📅</Text>
           <Text style={s.cv}>
             {stats.totalBookings.toLocaleString(locale === 'ar' ? 'ar-SA' : 'en-US')}+
           </Text>
           <Text style={s.cl}>{t('mobile.public.beauty-stats.completed-bookings')}</Text>
         </View>
         <View style={s.card}>
-          <Text style={s.ce}>‍</Text>
+          <Text style={s.ce}>💇</Text>
           <Text style={s.cv}>
             {stats.totalTechnicians.toLocaleString(locale === 'ar' ? 'ar-SA' : 'en-US')}+
           </Text>
           <Text style={s.cl}>{t('mobile.public.beauty-stats.certified-tech')}</Text>
         </View>
         <View style={s.card}>
-          <Text style={s.ce}></Text>
+          <Text style={s.ce}>💅</Text>
           <Text style={s.cv}>
             {stats.totalServices.toLocaleString(locale === 'ar' ? 'ar-SA' : 'en-US')}+
           </Text>
           <Text style={s.cl}>{t('mobile.public.beauty-stats.beauty-services')}</Text>
         </View>
         <View style={s.card}>
-          <Text style={s.ce}></Text>
+          <Text style={s.ce}>😊</Text>
           <Text style={s.cv}>
             {stats.happyCustomers.toLocaleString(locale === 'ar' ? 'ar-SA' : 'en-US')}+
           </Text>
@@ -63,7 +64,7 @@ export default function BeautyStatsScreen(): JSX.Element {
         </View>
       </View>
       <View style={[s.card, { marginTop: 12 }]}>
-        <Text style={s.ce}></Text>
+        <Text style={s.ce}>⭐</Text>
         <Text style={s.cv}>{stats.avgRating}</Text>
         <Text style={s.cl}>
           {t('mobile.public.beauty-stats.avg-rating', {
@@ -72,7 +73,7 @@ export default function BeautyStatsScreen(): JSX.Element {
         </Text>
       </View>
       <View style={[s.card, { marginTop: 8 }]}>
-        <Text style={s.ce}></Text>
+        <Text style={s.ce}>📍</Text>
         <Text style={s.cv}>{stats.citiesCount}+</Text>
         <Text style={s.cl}>{t('mobile.public.beauty-stats.saudi-cities')}</Text>
       </View>

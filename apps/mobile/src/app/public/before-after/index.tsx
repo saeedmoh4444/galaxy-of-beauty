@@ -1,3 +1,4 @@
+import type { JSX } from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import { ScreenState } from '@/components/ScreenState';
 import { trpc } from '@/lib/trpc-react';
@@ -30,7 +31,7 @@ export default function BeforeAfterScreen(): JSX.Element {
         {(data as Record<string, unknown>[])?.map((item: Record<string, unknown>, i: number) => (
           <View key={i} style={styles.card}>
             <View style={styles.imagePlaceholder}>
-              <Text style={styles.imageText}></Text>
+              <Text style={styles.imageText}>📷</Text>
             </View>
             <Text style={styles.label}>{localize(item.titleJson, locale)}</Text>
           </View>

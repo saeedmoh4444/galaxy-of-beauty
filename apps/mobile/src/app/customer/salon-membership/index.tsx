@@ -1,8 +1,10 @@
+import type { JSX } from 'react';
 import { View, Text, ScrollView, StyleSheet, TouchableOpacity, RefreshControl } from 'react-native';
 import { ErrorAlert } from '@/components/ErrorAlert';
 import { SkeletonList } from '@/components/SkeletonCard';
 import { trpc } from '@/lib/trpc-react';
 import { useLocale } from '@/components/LocaleProvider';
+import { useAuthState } from '@/hooks/useAuthState';
 
 interface MembershipInfo {
   tier?: string;
@@ -12,7 +14,7 @@ interface MembershipInfo {
 const MEMBERSHIPS = [
   {
     key: 'basic',
-    emoji: '',
+    emoji: '🎫',
     name: 'الأساسية',
     price: 0,
     color: '#9ca3af',
@@ -21,7 +23,7 @@ const MEMBERSHIPS = [
   },
   {
     key: 'premium',
-    emoji: '',
+    emoji: '💎',
     name: 'المميزة',
     price: 99,
     color: '#f59e0b',
@@ -37,7 +39,7 @@ const MEMBERSHIPS = [
   },
   {
     key: 'platinum',
-    emoji: '',
+    emoji: '👑',
     name: 'البلاتينية',
     price: 299,
     color: '#7c3aed',
@@ -57,7 +59,8 @@ const MEMBERSHIPS = [
 
 export default function SalonMembershipScreen(): JSX.Element {
   const { t } = useLocale();
-  const membershipQ = trpc.salonMembership.myMembership.useQuery();
+  const isAuthed = useAuthState();
+  const membershipQ = trpc.salonMembership.myMembership.useQuery(undefined, { enabled: isAuthed });
 
   const subscribeMut = trpc.salonMembership.subscribe.useMutation({
     onSuccess: () => {
@@ -96,7 +99,9 @@ export default function SalonMembershipScreen(): JSX.Element {
       refreshControl={
         <RefreshControl
           refreshing={membershipQ.isRefetching}
-          onRefresh={() => membershipQ.refetch()}
+          onRefresh={async () => {
+            await membershipQ.refetch();
+          }}
           colors={['#db2777']}
         />
       }

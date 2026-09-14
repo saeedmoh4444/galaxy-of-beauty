@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import type { JSX } from 'react';
 import Link from 'next/link';
 import { api } from '@/lib/trpc';
 import type { RouterOutput } from '@galaxy/api/client';
@@ -129,13 +130,13 @@ export default function ProfilePage(): JSX.Element {
         <h1 className="text-2xl font-bold">{t('profile.title')}</h1>
 
         {/* Tabs */}
-        <div className="flex gap-2 border-b border-gray-200 dark:border-gray-700">
+        <div className="flex gap-2 border-b border-edge">
           <button
             onClick={() => setActiveTab('profile')}
             className={`px-4 py-2 text-sm font-medium transition-colors ${
               activeTab === 'profile'
                 ? 'border-b-2 border-brand-600 text-brand-600'
-                : 'text-text-secondary hover:text-text-primary dark:text-gray-400'
+                : 'text-text-secondary hover:text-text-primary dark:text-text-tertiary'
             }`}
           >
             {t('profile.personal-info')}
@@ -145,7 +146,7 @@ export default function ProfilePage(): JSX.Element {
             className={`px-4 py-2 text-sm font-medium transition-colors ${
               activeTab === 'addresses'
                 ? 'border-b-2 border-brand-600 text-brand-600'
-                : 'text-text-secondary hover:text-text-primary dark:text-gray-400'
+                : 'text-text-secondary hover:text-text-primary dark:text-text-tertiary'
             }`}
           >
             {t('profile.addresses')}
@@ -213,7 +214,7 @@ export default function ProfilePage(): JSX.Element {
                       id="pf-lang"
                       value={(userData.preferredLanguage as string) ?? 'ar'}
                       onChange={(e) => saveLanguage(e.target.value as 'ar' | 'en')}
-                      className="w-full rounded-lg border border-gray-300 bg-white px-3 py-2 text-sm dark:border-gray-700 dark:bg-gray-900"
+                      className="w-full rounded-lg border border-edge bg-white px-3 py-2 text-sm dark:border-gray-700 dark:bg-gray-900"
                     >
                       <option value="ar">{t('profile.arabic')}</option>
                       <option value="en">English</option>

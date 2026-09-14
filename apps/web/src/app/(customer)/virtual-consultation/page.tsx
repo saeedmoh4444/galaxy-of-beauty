@@ -1,5 +1,6 @@
 'use client';
 import { useState } from 'react';
+import type { JSX } from 'react';
 import { api } from '@/lib/trpc';
 import { Card, Button, formatCurrency } from '@galaxy/ui';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
@@ -17,7 +18,7 @@ const CONSULTANTS: {
 }[] = [
   {
     key: 'skincare',
-    emoji: '‍️',
+    emoji: '🧖',
     name: 'virtualConsultation.consultant.skincare.name',
     specialty: 'virtualConsultation.consultant.skincare.specialty',
     price: 150,
@@ -31,7 +32,7 @@ const CONSULTANTS: {
   },
   {
     key: 'makeup',
-    emoji: '',
+    emoji: '💄',
     name: 'virtualConsultation.consultant.makeup.name',
     specialty: 'virtualConsultation.consultant.makeup.specialty',
     price: 120,
@@ -45,7 +46,7 @@ const CONSULTANTS: {
   },
   {
     key: 'hair',
-    emoji: '‍️',
+    emoji: '💇',
     name: 'virtualConsultation.consultant.hair.name',
     specialty: 'virtualConsultation.consultant.hair.specialty',
     price: 100,
@@ -59,7 +60,7 @@ const CONSULTANTS: {
   },
   {
     key: 'nutrition',
-    emoji: '',
+    emoji: '🥗',
     name: 'virtualConsultation.consultant.nutrition.name',
     specialty: 'virtualConsultation.consultant.nutrition.specialty',
     price: 130,
@@ -98,7 +99,7 @@ export default function VirtualConsultationPage(): JSX.Element {
                 setSelected(c.key);
                 setSlot(null);
               }}
-              className={`rounded-xl border-2 p-4 text-center transition-all ${selected === c.key ? 'border-brand-400 bg-brand-50' : 'border-gray-200'}`}
+              className={`rounded-xl border-2 p-4 text-center transition-all ${selected === c.key ? 'border-brand-400 bg-brand-50' : 'border-edge'}`}
             >
               <span className="text-5xl">{c.emoji}</span>
               <h3 className="font-bold mt-2">{t(c.name)}</h3>

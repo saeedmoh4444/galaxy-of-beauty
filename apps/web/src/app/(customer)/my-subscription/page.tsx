@@ -1,17 +1,24 @@
 'use client';
 
 import { useState } from 'react';
+import type { JSX } from 'react';
 import Link from 'next/link';
 import { api } from '@/lib/trpc';
 import { Card, DetailSkeleton, ErrorAlert, EmptyState, Button, formatCurrency } from '@galaxy/ui';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
 import { useLocale } from '@/components/LocaleProvider';
-import { useToast } from '@galaxy/ui';
+import { useToast, useAuth } from '@galaxy/ui';
 
 export default function MySubscriptionPage(): JSX.Element {
   const { t, locale } = useLocale();
   const { addToast } = useToast();
-  const { data: sub, isLoading, isError, refetch } = api.subscriptions.getMySubscription.useQuery();
+  const { isAuthenticated } = useAuth();
+  const {
+    data: sub,
+    isLoading,
+    isError,
+    refetch,
+  } = api.subscriptions.getMySubscription.useQuery(undefined, { enabled: isAuthenticated });
   const [paused, setPaused] = useState(false);
 
   const handlePause = () => {
@@ -78,10 +85,10 @@ export default function MySubscriptionPage(): JSX.Element {
         {/* Status Card */}
         <Card
           padding="lg"
-          className="bg-gradient-to-r from-brand-50 to-purple-50 dark:from-brand-950 dark:to-purple-950"
+          className="bg-gradient-to-r from-brand-50 to-brand-50 dark:from-brand-950 dark:to-brand-950"
         >
           <div className="text-center">
-            <span className="text-5xl"></span>
+            <span className="text-5xl">💳</span>
             <h2 className="mt-3 text-xl font-bold text-text-primary dark:text-gray-100">
               {planName}
             </h2>
@@ -106,7 +113,7 @@ export default function MySubscriptionPage(): JSX.Element {
                 <p className="text-text-secondary">{t('mySubscription.booked')}</p>
               </div>
               <div className="text-center">
-                <p className="font-bold text-purple-600">{remaining}</p>
+                <p className="font-bold text-brand-600">{remaining}</p>
                 <p className="text-text-secondary">{t('mySubscription.remaining')}</p>
               </div>
               <div className="text-center">
@@ -143,7 +150,7 @@ export default function MySubscriptionPage(): JSX.Element {
             </div>
             <div className="flex justify-between">
               <span className="text-text-secondary">{t('mySubscription.remainingBookings')}</span>
-              <span className="font-bold text-purple-600">
+              <span className="font-bold text-brand-600">
                 {t('mySubscription.remainingOf', { remaining, total: servicesPerMonth })}
               </span>
             </div>

@@ -1,25 +1,26 @@
 'use client';
+import type { JSX } from 'react';
 
 import { cn } from '@galaxy/shared';
 
 const TIPS = [
   {
-    emoji: '',
+    emoji: '💓',
     title: { ar: 'نقاط النبض', en: 'Pulse points' },
     desc: { ar: 'المعصم، خلف الأذن، المرفق', en: 'Wrist, behind the ears, inner elbow' },
   },
   {
-    emoji: '',
+    emoji: '💧',
     title: { ar: 'رطبي أولاً', en: 'Moisturize first' },
     desc: { ar: 'البشرة المرطبة تثبت العطر أطول', en: 'Moisturized skin holds fragrance longer' },
   },
   {
-    emoji: '',
+    emoji: '🚫',
     title: { ar: 'لا تفركي', en: 'Do not rub' },
     desc: { ar: 'الفرك يكسر جزيئات العطر', en: 'Rubbing breaks down fragrance molecules' },
   },
   {
-    emoji: '️',
+    emoji: '📦',
     title: { ar: 'تخزين صحيح', en: 'Proper storage' },
     desc: { ar: 'مكان بارد ومظلم — ليس الحمام', en: 'A cool, dark place — not the bathroom' },
   },
@@ -46,7 +47,7 @@ export function BeautyPerfumeCard({
       )}
     >
       <div className="flex items-center gap-2">
-        <span className="text-xl"></span>
+        <span className="text-xl">🌹</span>
         <div>
           <h4 className="text-sm font-bold text-fuchsia-700 dark:text-fuchsia-300">{title}</h4>
           <p className="text-[10px] text-fuchsia-500 dark:text-fuchsia-400">{subtitle}</p>

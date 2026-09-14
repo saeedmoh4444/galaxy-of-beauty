@@ -1,5 +1,6 @@
 'use client';
 import { useState } from 'react';
+import type { JSX } from 'react';
 import { api } from '@/lib/trpc';
 import { Card, CardListSkeleton, Button } from '@galaxy/ui';
 import Link from 'next/link';
@@ -33,7 +34,7 @@ export default function ServiceRecommenderPage(): JSX.Element {
   return (
     <div className="mx-auto max-w-3xl px-4 py-12">
       <div className="mb-8 text-center">
-        <span className="text-6xl"></span>
+        <span className="text-6xl">🎯</span>
         <h1 className="mt-4 text-3xl font-bold">{t('marketing.service-recommender.title')}</h1>
         <p className="mt-2 text-text-secondary">{t('marketing.service-recommender.subtitle')}</p>
       </div>
@@ -49,7 +50,7 @@ export default function ServiceRecommenderPage(): JSX.Element {
                   <Card padding="lg" className="hover:shadow-lg transition-all text-center">
                     <span className="text-4xl">{r.emoji as string}</span>
                     <h3 className="font-bold mt-2">{r.nameAr as string}</h3>
-                    <div className="mt-2 h-2 rounded-full bg-gray-200 dark:bg-gray-700">
+                    <div className="mt-2 h-2 rounded-full bg-surface-muted">
                       <div
                         className="h-2 rounded-full bg-brand-500"
                         style={{ width: `${r.matchPct as number}%` }}
@@ -82,7 +83,7 @@ export default function ServiceRecommenderPage(): JSX.Element {
             {qs.map((_, i) => (
               <div
                 key={i}
-                className={`h-1.5 flex-1 rounded-full ${i <= step ? 'bg-brand-500' : 'bg-gray-200 dark:bg-gray-700'}`}
+                className={`h-1.5 flex-1 rounded-full ${i <= step ? 'bg-brand-500' : 'bg-surface-muted'}`}
               />
             ))}
           </div>
@@ -98,7 +99,7 @@ export default function ServiceRecommenderPage(): JSX.Element {
               <button
                 key={o.k as string}
                 onClick={() => handleAnswer(o.k as string)}
-                className="w-full rounded-xl border-2 border-edge dark:border-gray-700 p-4 text-right hover:border-brand-400 hover:bg-brand-50 dark:hover:bg-brand-950 transition-all"
+                className="w-full rounded-xl border-2 border-edge dark:border-gray-700 p-4 text-end hover:border-brand-400 hover:bg-brand-50 dark:hover:bg-brand-950 transition-all"
               >
                 {o.l as string}
               </button>

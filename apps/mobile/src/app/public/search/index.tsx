@@ -1,5 +1,6 @@
 import { View, Text, ScrollView, StyleSheet, TextInput, TouchableOpacity } from 'react-native';
 import { useState } from 'react';
+import type { JSX } from 'react';
 import { SkeletonList } from '@/components/SkeletonCard';
 import { trpc } from '@/lib/trpc-react';
 import { useLocale } from '@/components/LocaleProvider';
@@ -38,7 +39,7 @@ export default function SearchScreen(): JSX.Element {
           returnKeyType="search"
         />
         <TouchableOpacity onPress={doSearch} style={styles.sb}>
-          <Text style={styles.sbt}></Text>
+          <Text style={styles.sbt}>🔍</Text>
         </TouchableOpacity>
       </View>
       {resultsQ.isLoading && <SkeletonList count={4} />}

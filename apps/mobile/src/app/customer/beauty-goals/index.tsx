@@ -1,18 +1,21 @@
+import type { JSX } from 'react';
 import { View, Text, ScrollView, StyleSheet, TouchableOpacity, RefreshControl } from 'react-native';
 import { SkeletonList } from '@/components/SkeletonCard';
-import { trpc } from '@/lib/trpc-react';
 import { useLocale } from '@/components/LocaleProvider';
+import { useAuthState } from '@/hooks/useAuthState';
+import { trpc } from '@/lib/trpc-react';
 
 const GT = [
-  { key: 'glowing_skin', emoji: '', title: 'بشرة متألقة', target: 12 },
-  { key: 'hair_care', emoji: '‍️', title: 'عناية بالشعر', target: 8 },
-  { key: 'selfcare', emoji: '‍️', title: 'عناية ذاتية', target: 20 },
-  { key: 'nails', emoji: '', title: 'أظافر مثالية', target: 24 },
+  { key: 'glowing_skin', emoji: '✨', title: 'بشرة متألقة', target: 12 },
+  { key: 'hair_care', emoji: '💇', title: 'عناية بالشعر', target: 8 },
+  { key: 'selfcare', emoji: '🧘', title: 'عناية ذاتية', target: 20 },
+  { key: 'nails', emoji: '💅', title: 'أظافر مثالية', target: 24 },
 ];
 
 export default function BeautyGoalsScreen(): JSX.Element {
   const { t } = useLocale();
-  const q = trpc.beautyBudget.get.useQuery();
+  const isAuthed = useAuthState();
+  const q = trpc.beautyBudget.get.useQuery(undefined, { enabled: isAuthed });
   if (q.isLoading) return <SkeletonList count={4} />;
   return (
     <ScrollView
@@ -21,7 +24,9 @@ export default function BeautyGoalsScreen(): JSX.Element {
       refreshControl={
         <RefreshControl
           refreshing={q.isRefetching}
-          onRefresh={() => q.refetch()}
+          onRefresh={async () => {
+            await q.refetch();
+          }}
           colors={['#059669']}
         />
       }

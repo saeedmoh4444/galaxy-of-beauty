@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import type { JSX } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { api } from '@/lib/trpc';
@@ -71,11 +72,11 @@ export default function TutorialsPage(): JSX.Element {
     <div className="mx-auto max-w-6xl px-4 py-12">
       {/* Header */}
       <div className="mb-10 text-center">
-        <span className="text-6xl"></span>
+        <span className="text-6xl">🎓</span>
         <h1 className="mt-4 text-3xl font-bold text-text-primary dark:text-gray-100">
           {t('marketing.tutorials.title')}
         </h1>
-        <p className="mt-2 text-text-secondary dark:text-gray-400">
+        <p className="mt-2 text-text-secondary dark:text-text-tertiary">
           {t('marketing.tutorials.subtitle')}
         </p>
       </div>
@@ -106,7 +107,7 @@ export default function TutorialsPage(): JSX.Element {
             className={`rounded-full px-4 py-1.5 text-sm font-medium transition-all ${
               !category
                 ? 'bg-brand-600 text-white shadow-md'
-                : 'bg-surface-muted text-text-secondary hover:bg-gray-200 dark:bg-gray-800 dark:text-gray-400'
+                : 'bg-surface-muted text-text-secondary hover:bg-surface-muted dark:text-text-tertiary'
             }`}
           >
             {t('marketing.tutorials.all')}
@@ -121,7 +122,7 @@ export default function TutorialsPage(): JSX.Element {
               className={`rounded-full px-4 py-1.5 text-sm font-medium transition-all ${
                 category === c.key
                   ? 'bg-brand-600 text-white shadow-md'
-                  : 'bg-surface-muted text-text-secondary hover:bg-gray-200 dark:bg-gray-800 dark:text-gray-400'
+                  : 'bg-surface-muted text-text-secondary hover:bg-surface-muted dark:text-text-tertiary'
               }`}
             >
               {c.emoji} {c.nameAr}
@@ -139,8 +140,8 @@ export default function TutorialsPage(): JSX.Element {
               }}
               className={`rounded-full px-3 py-1 text-xs font-medium transition-all ${
                 difficulty === d.key
-                  ? 'bg-gray-800 text-white dark:bg-white dark:text-gray-800'
-                  : 'bg-surface-muted text-text-secondary hover:bg-gray-200 dark:bg-gray-800 dark:text-gray-400'
+                  ? 'bg-gray-800 text-white dark:bg-white dark:text-text-primary'
+                  : 'bg-surface-muted text-text-secondary hover:bg-surface-muted dark:text-text-tertiary'
               }`}
             >
               {d.nameAr}
@@ -198,20 +199,20 @@ export default function TutorialsPage(): JSX.Element {
                       />
                     ) : (
                       <div className="text-center text-white/60">
-                        <span className="text-5xl block"></span>
+                        <span className="text-5xl block">🎬</span>
                         <span className="text-xs mt-1 block">{tut.category}</span>
                       </div>
                     )}
                     {/* Play overlay */}
                     <div className="absolute inset-0 flex items-center justify-center">
                       <div className="flex h-12 w-12 items-center justify-center rounded-full bg-white/90 text-text-primary shadow-lg transition-transform group-hover:scale-110">
-                        <svg className="h-5 w-5 mr-[-2px]" fill="currentColor" viewBox="0 0 24 24">
+                        <svg className="h-5 w-5 me-[-2px]" fill="currentColor" viewBox="0 0 24 24">
                           <path d="M8 5v14l11-7z" />
                         </svg>
                       </div>
                     </div>
                     {/* Duration badge */}
-                    <span className="absolute bottom-2 right-2 rounded bg-black/70 px-2 py-0.5 text-xs font-medium text-white">
+                    <span className="absolute bottom-2 end-2 rounded bg-black/70 px-2 py-0.5 text-xs font-medium text-white">
                       {tut.duration}
                     </span>
                   </div>
@@ -235,7 +236,7 @@ export default function TutorialsPage(): JSX.Element {
                       <span>
                         {t('marketing.tutorials.views-count', { count: formatViews(tut.views) })}
                       </span>
-                      <span>️ {tut.likes}</span>
+                      <span> {tut.likes}</span>
                     </div>
                   </div>
                 </Card>

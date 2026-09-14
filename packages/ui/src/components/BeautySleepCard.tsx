@@ -1,4 +1,5 @@
 'use client';
+import type { JSX } from 'react';
 
 import { cn } from '@galaxy/shared';
 
@@ -20,37 +21,37 @@ interface NightRoutine {
 const ROUTINE: NightRoutine[] = [
   {
     time: '21:00',
-    emoji: '',
+    emoji: '📵',
     action: { ar: 'إطفاء الشاشات', en: 'Turn off screens' },
     duration: { ar: '—', en: '—' },
   },
   {
     time: '21:15',
-    emoji: '',
+    emoji: '🧴',
     action: { ar: 'روتين العناية الليلي', en: 'Night skincare routine' },
     duration: { ar: '15 دقيقة', en: '15 min' },
   },
   {
     time: '21:30',
-    emoji: '️',
+    emoji: '🧘',
     action: { ar: 'استرخاء وتأمل', en: 'Relax and meditate' },
     duration: { ar: '10 دقيقة', en: '10 min' },
   },
   {
     time: '21:45',
-    emoji: '',
+    emoji: '📖',
     action: { ar: 'قراءة هادئة', en: 'Quiet reading' },
     duration: { ar: '20 دقيقة', en: '20 min' },
   },
   {
     time: '22:15',
-    emoji: '',
+    emoji: '🍵',
     action: { ar: 'شاي أعشاب', en: 'Herbal tea' },
     duration: { ar: '10 دقيقة', en: '10 min' },
   },
   {
     time: '22:30',
-    emoji: '',
+    emoji: '😴',
     action: { ar: 'نوم عميق', en: 'Deep sleep' },
     duration: { ar: '8 ساعات', en: '8 hours' },
   },
@@ -97,13 +98,15 @@ export function BeautySleepCard({
   return (
     <div
       className={cn(
-        'rounded-2xl border border-indigo-100 bg-gradient-to-br from-indigo-50 to-purple-50 p-5 dark:border-indigo-900 dark:from-indigo-950 dark:to-purple-950',
+        'rounded-2xl border border-indigo-100 bg-gradient-to-br from-indigo-50 to-brand-50 p-5 dark:border-indigo-900 dark:from-indigo-950 dark:to-brand-950',
         className,
       )}
     >
       {/* Header */}
       <div className="text-center">
-        <span className="text-3xl" aria-hidden="true"></span>
+        <span className="text-3xl" aria-hidden="true">
+          🌙
+        </span>
         <h4 className="mt-1 text-sm font-bold text-indigo-800 dark:text-indigo-200">{title}</h4>
         <p className="text-[10px] text-indigo-500 dark:text-indigo-400">{subtitle}</p>
       </div>
@@ -111,11 +114,11 @@ export function BeautySleepCard({
       {/* Sleep stats */}
       <div className="mt-3 grid grid-cols-2 gap-2">
         <div className="rounded-xl bg-white/60 p-2.5 text-center dark:bg-gray-800/60">
-          <p className="text-[9px] text-text-tertiary dark:text-gray-500">{bedtimeLabel}</p>
+          <p className="text-[9px] text-text-tertiary dark:text-text-secondary">{bedtimeLabel}</p>
           <p className="text-lg font-bold text-indigo-800 dark:text-indigo-200">{bedtime}</p>
         </div>
         <div className="rounded-xl bg-white/60 p-2.5 text-center dark:bg-gray-800/60">
-          <p className="text-[9px] text-text-tertiary dark:text-gray-500">{wakeTimeLabel}</p>
+          <p className="text-[9px] text-text-tertiary dark:text-text-secondary">{wakeTimeLabel}</p>
           <p className="text-lg font-bold text-amber-600 dark:text-amber-400">{wakeTime}</p>
         </div>
       </div>
@@ -140,15 +143,15 @@ export function BeautySleepCard({
               <span className="flex-1 text-[10px] text-text-primary dark:text-gray-100">
                 {step.action[locale]}
               </span>
-              <span className="text-[10px] text-text-tertiary dark:text-gray-500 w-12 text-right">
+              <span className="text-[10px] text-text-tertiary dark:text-text-secondary w-12 text-end">
                 {step.duration[locale]}
               </span>
-              <span className="text-[9px] font-bold text-indigo-600 dark:text-indigo-400 w-12 text-right">
+              <span className="text-[9px] font-bold text-indigo-600 dark:text-indigo-400 w-12 text-end">
                 {step.time}
               </span>
               {/* Connector dot */}
               {i < ROUTINE.length - 1 && (
-                <div className="absolute right-0 translate-x-1/2" aria-hidden="true" />
+                <div className="absolute end-0 translate-x-1/2" aria-hidden="true" />
               )}
             </div>
           );
