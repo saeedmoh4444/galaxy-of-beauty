@@ -41,7 +41,7 @@ jobs:
       - uses: pnpm/action-setup@v6
         with: {}
       - uses: actions/setup-node@v7
-        with: { node-version: '20', cache: 'pnpm' }
+        with: { node-version: '22', cache: 'pnpm' }
       - run: pnpm install --frozen-lockfile
       - run: pnpm --filter @galaxy/mobile type-check
       # Catch SDK/package drift (KNOWN_ISSUES #8): react-native pinned to a
@@ -62,7 +62,7 @@ jobs:
       - uses: pnpm/action-setup@v6
         with: {}
       - uses: actions/setup-node@v7
-        with: { node-version: '20', cache: 'pnpm' }
+        with: { node-version: '22', cache: 'pnpm' }
       - run: pnpm install --frozen-lockfile
       - name: Setup Expo
         uses: expo/expo-github-action@v9
@@ -84,7 +84,7 @@ jobs:
       - uses: pnpm/action-setup@v6
         with: {}
       - uses: actions/setup-node@v7
-        with: { node-version: '20', cache: 'pnpm' }
+        with: { node-version: '22', cache: 'pnpm' }
       - run: pnpm install --frozen-lockfile
       - name: Setup Expo
         uses: expo/expo-github-action@v9
@@ -106,7 +106,7 @@ jobs:
       - uses: pnpm/action-setup@v6
         with: {}
       - uses: actions/setup-node@v7
-        with: { node-version: '20', cache: 'pnpm' }
+        with: { node-version: '22', cache: 'pnpm' }
       - run: pnpm install --frozen-lockfile
       - name: Setup Expo
         uses: expo/expo-github-action@v9
