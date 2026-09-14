@@ -55,3 +55,21 @@ test.describe('Registration', () => {
     await expect(page.getByRole('button', { name: 'إنشاء حساب' })).toBeVisible();
   });
 });
+
+test.describe('Route gating (proxy)', () => {
+  test('unauthenticated customer routes redirect to login', async ({ page }) => {
+    for (const route of ['/beauty-bingo', '/pro-tools', '/family-account', '/ai-chat']) {
+      await page.goto(route);
+      await page.waitForURL('**/login', { timeout: 10000 });
+      await expect(page).toHaveURL(/\/login/);
+    }
+  });
+
+  test('public routes stay accessible (segment-aware match)', async ({ page }) => {
+    for (const route of ['/technicians', '/tech-calendar', '/services']) {
+      await page.goto(route);
+      await page.waitForLoadState('domcontentloaded');
+      await expect(page).not.toHaveURL(/\/login/);
+    }
+  });
+});
