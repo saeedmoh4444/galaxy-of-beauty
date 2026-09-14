@@ -1,4 +1,5 @@
 'use client';
+import type { JSX } from 'react';
 import { api } from '@/lib/trpc';
 import { Card, CardListSkeleton, Button } from '@galaxy/ui';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
@@ -27,7 +28,7 @@ export default function FavoritesPage(): JSX.Element {
           <CardListSkeleton count={4} />
         ) : favorites.length === 0 ? (
           <Card padding="lg" className="text-center py-8">
-            <p className="text-4xl mb-2"></p>
+            <p className="text-4xl mb-2">💖</p>
             <p className="text-text-secondary">{t('favorites.empty')}</p>
           </Card>
         ) : (
@@ -36,7 +37,7 @@ export default function FavoritesPage(): JSX.Element {
               <Card key={f.id as number} padding="md">
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-3">
-                    <span className="text-2xl"></span>
+                    <span className="text-2xl">💖</span>
                     <div>
                       <p className="font-bold">{f.label as string}</p>
                       <p className="text-xs text-text-secondary">

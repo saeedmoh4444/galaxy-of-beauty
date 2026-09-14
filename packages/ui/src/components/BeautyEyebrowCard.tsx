@@ -1,4 +1,5 @@
 'use client';
+import type { JSX } from 'react';
 
 import { cn } from '@galaxy/shared';
 
@@ -28,7 +29,7 @@ export function BeautyEyebrowCard({
       )}
     >
       <div className="flex items-center gap-2">
-        <span className="text-xl"></span>
+        <span className="text-xl">🤨</span>
         <div>
           <h4 className="text-sm font-bold text-amber-700 dark:text-amber-300">{title}</h4>
           <p className="text-[10px] text-amber-500 dark:text-amber-400">{subtitle}</p>
@@ -37,7 +38,7 @@ export function BeautyEyebrowCard({
       <div className="mt-3 grid grid-cols-2 gap-1.5">
         {[
           {
-            emoji: '',
+            emoji: '📏',
             label: { ar: 'تحديد الشكل', en: 'Shape them' },
             tip: {
               ar: 'لا تتبعي الصيحة — اتبعي شكل وجهك',
@@ -50,12 +51,12 @@ export function BeautyEyebrowCard({
             tip: { ar: 'الشعر قد لا ينمو مجدداً', en: 'Hair may not grow back' },
           },
           {
-            emoji: '️',
+            emoji: '✏️',
             label: { ar: 'تعبئة الفراغات', en: 'Fill gaps' },
             tip: { ar: 'قلم حواجب بلون مطابق', en: 'A brow pencil in a matching shade' },
           },
           {
-            emoji: '',
+            emoji: '🧴',
             label: { ar: 'زيت الخروع', en: 'Castor oil' },
             tip: { ar: 'يساعد على تكثيف الحواجب', en: 'Helps thicken brows' },
           },

@@ -1,4 +1,5 @@
 'use client';
+import type { JSX } from 'react';
 
 import { api } from '@/lib/trpc';
 import type { RouterOutput } from '@galaxy/api/client';
@@ -9,6 +10,7 @@ import {
   ErrorAlert,
   EmptyState,
   formatCurrency,
+  useAuth,
 } from '@galaxy/ui';
 import { useLocale } from '@/components/LocaleProvider';
 
@@ -36,10 +38,22 @@ function StatCard({
 
 export default function AdminAnalyticsPage(): JSX.Element {
   const { t } = useLocale();
-  const revenueQuery = api.analytics.revenueChart.useQuery({ days: 30 });
-  const bookingStatsQuery = api.analytics.bookingStats.useQuery();
-  const topTechQuery = api.analytics.topTechnicians.useQuery({ limit: 10 });
-  const userGrowthQuery = api.analytics.userGrowth.useQuery({ days: 30 });
+  const { isAuthenticated } = useAuth();
+  const revenueQuery = api.analytics.revenueChart.useQuery(
+    { days: 30 },
+    { enabled: isAuthenticated },
+  );
+  const bookingStatsQuery = api.analytics.bookingStats.useQuery(undefined, {
+    enabled: isAuthenticated,
+  });
+  const topTechQuery = api.analytics.topTechnicians.useQuery(
+    { limit: 10 },
+    { enabled: isAuthenticated },
+  );
+  const userGrowthQuery = api.analytics.userGrowth.useQuery(
+    { days: 30 },
+    { enabled: isAuthenticated },
+  );
 
   const revenueData = revenueQuery.data?.dailyRevenue ?? [];
   const bookingStats = bookingStatsQuery.data as BookingStats | undefined;
@@ -149,7 +163,7 @@ export default function AdminAnalyticsPage(): JSX.Element {
           <div className="overflow-x-auto">
             <table className="w-full text-sm">
               <thead>
-                <tr className="border-b border-edge text-right dark:border-gray-800">
+                <tr className="border-b border-edge text-end dark:border-gray-800">
                   <th className="pb-2 font-medium text-text-secondary">
                     {t('admin.analytics.name-header')}
                   </th>
@@ -163,7 +177,7 @@ export default function AdminAnalyticsPage(): JSX.Element {
               </thead>
               <tbody>
                 {topTechs.map((t: TopTechnician, i: number) => (
-                  <tr key={t.id ?? i} className="border-b border-gray-100 dark:border-gray-800">
+                  <tr key={t.id ?? i} className="border-b border-edge-muted">
                     <td className="py-2 font-medium">{t.name}</td>
                     <td className="py-2">{String(t.completedBookings ?? 0)}</td>
                     <td className="py-2"> {Number(t.ratingAvg ?? 0).toFixed(1)}</td>
@@ -192,7 +206,7 @@ export default function AdminAnalyticsPage(): JSX.Element {
             {userGrowth.map((u: UserGrowthDay, i: number) => (
               <div
                 key={i}
-                className="flex items-center justify-between border-b border-gray-100 pb-1 text-sm dark:border-gray-800"
+                className="flex items-center justify-between border-b border-edge-muted pb-1 text-sm dark:border-gray-800"
               >
                 <span>{u.date ?? '—'}</span>
                 <span className="font-medium text-brand-600">+{String(u.total ?? 0)}</span>

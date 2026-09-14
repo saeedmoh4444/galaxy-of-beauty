@@ -1,4 +1,5 @@
 'use client';
+import type { JSX } from 'react';
 import { api } from '@/lib/trpc';
 import { Card, CardListSkeleton, Button } from '@galaxy/ui';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
@@ -19,7 +20,7 @@ export default function FollowingPage(): JSX.Element {
     <DashboardLayout userRole="CUSTOMER">
       <div className="mx-auto max-w-3xl space-y-6">
         <div>
-          <h1 className="text-2xl font-bold">‍{t('following.title')}</h1>
+          <h1 className="text-2xl font-bold">{t('following.title')}</h1>
           <p className="mt-1 text-sm text-text-secondary">{t('following.subtitle')}</p>
         </div>
 
@@ -27,7 +28,7 @@ export default function FollowingPage(): JSX.Element {
           <CardListSkeleton count={4} />
         ) : follows.length === 0 ? (
           <Card padding="lg" className="text-center py-8">
-            <p className="text-4xl mb-2">‍</p>
+            <p className="text-4xl mb-2">👥</p>
             <p className="text-text-secondary">{t('following.empty')}</p>
           </Card>
         ) : (
@@ -36,7 +37,7 @@ export default function FollowingPage(): JSX.Element {
               <Card key={f.id as number} padding="md">
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-3">
-                    <span className="text-3xl">‍</span>
+                    <span className="text-3xl">💇</span>
                     <div>
                       <p className="font-bold">
                         {t('following.technicianLabel', { id: f.technicianId as number })}

@@ -1,4 +1,5 @@
 'use client';
+import type { JSX } from 'react';
 import { cn } from '@galaxy/shared';
 export function BeautyFaceOilCard({
   className = '',
@@ -28,17 +29,17 @@ export function BeautyFaceOilCard({
       <div className="mt-3 grid grid-cols-2 gap-1.5">
         {[
           {
-            emoji: '',
+            emoji: '💧',
             label: { ar: 'دهنية', en: 'Oily' },
             tip: { ar: 'تجنبي — أو زيت خفيف جداً', en: 'Avoid — or a very light oil' },
           },
           {
-            emoji: '',
+            emoji: '🌵',
             label: { ar: 'جافة', en: 'Dry' },
             tip: { ar: 'ممتاز — زيوت غنية', en: 'Excellent — rich oils' },
           },
           {
-            emoji: '',
+            emoji: '🌙',
             label: { ar: 'وقت الاستخدام', en: 'When to use' },
             tip: { ar: 'آخر خطوة في المساء', en: 'Last step in the evening' },
           },

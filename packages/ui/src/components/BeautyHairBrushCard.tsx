@@ -1,4 +1,5 @@
 'use client';
+import type { JSX } from 'react';
 import { cn } from '@galaxy/shared';
 export function BeautyHairBrushCard({
   className = '',
@@ -28,27 +29,27 @@ export function BeautyHairBrushCard({
       <div className="mt-3 space-y-1">
         {[
           {
-            emoji: '',
+            emoji: '💇',
             text: {
               ar: 'فكي التشابك من الأطراف للجذور',
               en: 'Detangle from the ends toward the roots',
             },
           },
           {
-            emoji: '',
+            emoji: '🚫',
             text: {
               ar: 'لا تمشطي الشعر وهو مبلل — يتكسر',
               en: 'Do not brush wet hair — it breaks',
             },
           },
           {
-            emoji: '️',
+            emoji: '🛡️',
             text: {
               ar: 'رذاذ حماية من الحرارة قبل التصفيف',
               en: 'Heat protectant spray before styling',
             },
           },
-          { emoji: '', text: { ar: 'ضفيرة فضفاضة قبل النوم', en: 'A loose braid before bed' } },
+          { emoji: '💤', text: { ar: 'ضفيرة فضفاضة قبل النوم', en: 'A loose braid before bed' } },
         ].map((t, i) => (
           <div
             key={i}

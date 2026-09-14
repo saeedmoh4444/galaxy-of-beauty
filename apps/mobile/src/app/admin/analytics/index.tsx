@@ -1,3 +1,4 @@
+import type { JSX } from 'react';
 import { View, Text, ScrollView, StyleSheet, RefreshControl } from 'react-native';
 import { SkeletonList } from '@/components/SkeletonCard';
 import { ErrorAlert } from '@/components/ErrorAlert';
@@ -30,7 +31,9 @@ export default function AdminAnalyticsScreen(): JSX.Element {
       refreshControl={
         <RefreshControl
           refreshing={q.isRefetching}
-          onRefresh={() => q.refetch()}
+          onRefresh={async () => {
+            await q.refetch();
+          }}
           colors={['#6366f1']}
         />
       }
@@ -38,17 +41,17 @@ export default function AdminAnalyticsScreen(): JSX.Element {
       <Text style={styles.t}>{t('mobile.admin.analytics.title')}</Text>
       <View style={styles.kpiRow}>
         <View style={styles.kpi}>
-          <Text style={styles.kpiEmoji}></Text>
+          <Text style={styles.kpiEmoji}>👥</Text>
           <Text style={styles.kpiVal}>{d.totalUsers ?? 0}</Text>
           <Text style={styles.kpiLabel}>{t('mobile.admin.analytics.users')}</Text>
         </View>
         <View style={styles.kpi}>
-          <Text style={styles.kpiEmoji}></Text>
+          <Text style={styles.kpiEmoji}>📅</Text>
           <Text style={[styles.kpiVal, { color: '#2563eb' }]}>{d.totalBookings ?? 0}</Text>
           <Text style={styles.kpiLabel}>{t('mobile.admin.analytics.bookings')}</Text>
         </View>
         <View style={styles.kpi}>
-          <Text style={styles.kpiEmoji}></Text>
+          <Text style={styles.kpiEmoji}>💰</Text>
           <Text style={[styles.kpiVal, { color: '#059669' }]}>
             {(d.totalRevenue ?? 0).toLocaleString()}
           </Text>

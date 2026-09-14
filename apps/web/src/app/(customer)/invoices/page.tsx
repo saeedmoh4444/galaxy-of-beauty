@@ -1,13 +1,18 @@
 'use client';
+import type { JSX } from 'react';
 import { api } from '@/lib/trpc';
-import { Card, CardListSkeleton, formatCurrency } from '@galaxy/ui';
+import { Card, CardListSkeleton, formatCurrency, useAuth } from '@galaxy/ui';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
 import { useLocale } from '@/components/LocaleProvider';
 import { localize } from '@galaxy/shared';
 
 export default function InvoicesPage(): JSX.Element {
   const { t, locale } = useLocale();
-  const { data: bookingsData, isLoading } = api.bookings.list.useQuery({ page: 1, limit: 50 }) as {
+  const { isAuthenticated } = useAuth();
+  const { data: bookingsData, isLoading } = api.bookings.list.useQuery(
+    { page: 1, limit: 50 },
+    { enabled: isAuthenticated },
+  ) as {
     data: Record<string, unknown> | undefined;
     isLoading: boolean;
     isError: boolean;
@@ -43,7 +48,7 @@ export default function InvoicesPage(): JSX.Element {
           <CardListSkeleton count={4} />
         ) : completed.length === 0 ? (
           <Card padding="lg" className="text-center py-8">
-            <p className="text-4xl mb-2"></p>
+            <p className="text-4xl mb-2">🧾</p>
             <p className="text-text-secondary">{t('invoices.empty')}</p>
           </Card>
         ) : (
@@ -67,7 +72,7 @@ export default function InvoicesPage(): JSX.Element {
                         · {b.bookingCode as string}
                       </p>
                     </div>
-                    <div className="text-right">
+                    <div className="text-end">
                       <p className="font-bold text-green-600">
                         {formatCurrency(Number(b.totalAmount) || 0)}
                       </p>

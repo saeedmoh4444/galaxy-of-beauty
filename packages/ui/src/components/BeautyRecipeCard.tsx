@@ -1,4 +1,5 @@
 'use client';
+import type { JSX } from 'react';
 
 import { cn } from '@galaxy/shared';
 
@@ -34,8 +35,8 @@ export function BeautyRecipeCard({
   recipe,
   className = '',
   naturalText = 'طبيعي 100%',
-  ingredientsLabel = ' المكونات',
-  stepsLabel = ' الطريقة',
+  ingredientsLabel = 'المكونات',
+  stepsLabel = 'الطريقة',
   cautionText = 'اختبري على جزء صغير من بشرتكِ قبل الاستخدام',
 }: BeautyRecipeCardProps): JSX.Element {
   return (
@@ -46,7 +47,9 @@ export function BeautyRecipeCard({
       )}
     >
       <div className="flex items-center gap-2">
-        <span className="text-xl" aria-hidden="true"></span>
+        <span className="text-xl" aria-hidden="true">
+          🍯
+        </span>
         <div>
           <h4 className="text-sm font-bold text-emerald-700 dark:text-emerald-300">
             {recipe.title}
@@ -91,7 +94,7 @@ export function BeautyRecipeCard({
       </div>
 
       {/* Caution */}
-      <p className="mt-2 text-center text-[9px] text-text-tertiary dark:text-gray-500">
+      <p className="mt-2 text-center text-[9px] text-text-tertiary dark:text-text-secondary">
         {cautionText}
       </p>
     </div>

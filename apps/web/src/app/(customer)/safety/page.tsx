@@ -1,4 +1,5 @@
 'use client';
+import type { JSX } from 'react';
 
 import { api } from '@/lib/trpc';
 import {
@@ -13,21 +14,25 @@ import {
   FaceBlurToggle,
   IncognitoModeBadge,
   ConsentShield,
+  useAuth,
 } from '@galaxy/ui';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
 import { useLocale } from '@/components/LocaleProvider';
 
 export default function SafetyPage(): JSX.Element {
   const { t, locale } = useLocale();
-  const emergencyContacts = api.safety.getContacts.useQuery();
-  const latestBooking = api.bookings.list.useQuery({ limit: 1 });
+  const { isAuthenticated } = useAuth();
+  const emergencyContacts = api.safety.getContacts.useQuery(undefined, {
+    enabled: isAuthenticated,
+  });
+  const latestBooking = api.bookings.list.useQuery({ limit: 1 }, { enabled: isAuthenticated });
 
   const booking = latestBooking?.data?.bookings?.[0];
 
   return (
     <DashboardLayout userRole="CUSTOMER">
       <PageContainer width="wide">
-        <PageTitle title={'️' + t('safety.title')} subtitle={t('safety.subtitle')} />
+        <PageTitle title={'' + t('safety.title')} subtitle={t('safety.subtitle')} />
 
         <div className="grid gap-6 lg:grid-cols-3">
           <div className="lg:col-span-2 space-y-6">

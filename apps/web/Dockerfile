@@ -17,6 +17,7 @@ RUN corepack enable && corepack prepare pnpm@9.15.4 --activate
 
 # Copy workspace config and lockfile
 COPY pnpm-workspace.yaml package.json pnpm-lock.yaml turbo.json ./
+COPY patches ./patches
 COPY packages/config/package.json ./packages/config/
 COPY packages/db/package.json ./packages/db/
 COPY packages/db/prisma ./packages/db/prisma

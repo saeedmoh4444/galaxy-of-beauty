@@ -1,3 +1,4 @@
+import type { JSX } from 'react';
 import { View, Text, ScrollView, StyleSheet, TouchableOpacity, RefreshControl } from 'react-native';
 import { ErrorAlert } from '@/components/ErrorAlert';
 import { SkeletonList } from '@/components/SkeletonCard';
@@ -42,7 +43,9 @@ export default function ChallengesScreen(): JSX.Element {
       refreshControl={
         <RefreshControl
           refreshing={challengesQ.isRefetching}
-          onRefresh={() => challengesQ.refetch()}
+          onRefresh={async () => {
+            await challengesQ.refetch();
+          }}
           colors={['#f59e0b']}
         />
       }

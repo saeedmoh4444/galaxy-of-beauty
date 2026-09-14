@@ -1,7 +1,9 @@
+import type { JSX } from 'react';
 import { View, Text, ScrollView, StyleSheet, RefreshControl } from 'react-native';
 import { SkeletonList } from '@/components/SkeletonCard';
 import { trpc } from '@/lib/trpc-react';
 import { useLocale } from '@/components/LocaleProvider';
+import { useAuthState } from '@/hooks/useAuthState';
 
 interface SalonDashboard {
   todayBookings?: number;
@@ -17,8 +19,9 @@ interface SalonStaff {
 
 export default function SalonManagementScreen(): JSX.Element {
   const { t, locale } = useLocale();
-  const dashQ = trpc.salonManagement.dashboard.useQuery();
-  const staffQ = trpc.salonManagement.staff.useQuery();
+  const isAuthed = useAuthState();
+  const dashQ = trpc.salonManagement.dashboard.useQuery(undefined, { enabled: isAuthed });
+  const staffQ = trpc.salonManagement.staff.useQuery(undefined, { enabled: isAuthed });
   const dash = dashQ.data as SalonDashboard | null;
   const staff: SalonStaff[] = (staffQ.data as SalonStaff[] | undefined) ?? [];
   if (dashQ.isLoading || staffQ.isLoading) return <SkeletonList count={4} />;
@@ -40,12 +43,12 @@ export default function SalonManagementScreen(): JSX.Element {
       <Text style={styles.t}>{t('mobile.salonManagement.title')}</Text>
       <View style={styles.kr}>
         <View style={styles.k}>
-          <Text style={styles.ke}></Text>
+          <Text style={styles.ke}>📅</Text>
           <Text style={styles.kv}>{dash?.todayBookings ?? 0}</Text>
           <Text style={styles.kl}>{t('mobile.salonManagement.today-bookings')}</Text>
         </View>
         <View style={styles.k}>
-          <Text style={styles.ke}></Text>
+          <Text style={styles.ke}>💰</Text>
           <Text style={[styles.kv, { color: '#059669' }]}>
             {(dash?.todayRevenue ?? 0).toLocaleString(locale === 'en' ? 'en-GB' : 'ar-SA')}
           </Text>
@@ -54,7 +57,7 @@ export default function SalonManagementScreen(): JSX.Element {
       </View>
       {staff.map((s) => (
         <View key={s.id} style={styles.card}>
-          <Text style={styles.em}>‍</Text>
+          <Text style={styles.em}>👩</Text>
           <View style={{ flex: 1 }}>
             <Text style={styles.nm}>{s.name ?? ''}</Text>
             <Text style={styles.role}>{s.role ?? ''}</Text>

@@ -1,4 +1,5 @@
 'use client';
+import type { JSX } from 'react';
 
 import { api } from '@/lib/trpc';
 import {
@@ -62,13 +63,13 @@ export default function BeautyLifestylePage(): JSX.Element {
                 drops={[
                   {
                     service: t('beautyBudget.spaManicure'),
-                    emoji: '',
+                    emoji: '💅',
                     oldPrice: 150,
                     newPrice: 99,
                   },
                   {
                     service: t('beautyExtras.categoryMakeup'),
-                    emoji: '',
+                    emoji: '💄',
                     oldPrice: 350,
                     newPrice: 299,
                   },
@@ -99,14 +100,14 @@ export default function BeautyLifestylePage(): JSX.Element {
                   target: 500,
                   saved: 325,
                   monthly: 100,
-                  emoji: '',
+                  emoji: '🧴',
                 },
                 {
                   label: t('beautyLifestyle.makeupDevice'),
                   target: 1200,
                   saved: 450,
                   monthly: 200,
-                  emoji: '',
+                  emoji: '💄',
                 },
               ]}
             />

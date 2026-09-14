@@ -2,6 +2,7 @@ import { View, Text, ScrollView, TouchableOpacity, StyleSheet, RefreshControl } 
 import { ErrorAlert } from '@/components/ErrorAlert';
 import { SkeletonList } from '@/components/SkeletonCard';
 import { useState } from 'react';
+import type { JSX } from 'react';
 import { trpc } from '@/lib/trpc-react';
 import { useLocale } from '@/components/LocaleProvider';
 
@@ -34,7 +35,9 @@ export default function KidsServicesScreen(): JSX.Element {
       refreshControl={
         <RefreshControl
           refreshing={catsQ.isRefetching}
-          onRefresh={() => catsQ.refetch()}
+          onRefresh={async () => {
+            await catsQ.refetch();
+          }}
           colors={['#f59e0b']}
         />
       }

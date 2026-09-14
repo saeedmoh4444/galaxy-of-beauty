@@ -1,4 +1,5 @@
 'use client';
+import type { JSX } from 'react';
 import { cn } from '@galaxy/shared';
 export function BeautyFirstMakeupCard({
   className = '',
@@ -19,7 +20,7 @@ export function BeautyFirstMakeupCard({
       )}
     >
       <div className="flex items-center gap-2">
-        <span className="text-xl"></span>
+        <span className="text-xl">🌸</span>
         <div>
           <h4 className="text-sm font-bold text-pink-700 dark:text-pink-300">{title}</h4>
           <p className="text-[10px] text-pink-500 dark:text-pink-400">{subtitle}</p>
@@ -28,22 +29,22 @@ export function BeautyFirstMakeupCard({
       <div className="mt-3 space-y-1">
         {[
           {
-            emoji: '',
+            emoji: '💄',
             text: {
               ar: 'BB كريم — بدل الفاونديشن الثقيل',
               en: 'BB cream — instead of heavy foundation',
             },
           },
           {
-            emoji: '️',
+            emoji: '👀',
             text: { ar: 'ماسكارا شفافة — طبيعية وناعمة', en: 'Clear mascara — natural and soft' },
           },
           {
-            emoji: '',
+            emoji: '💋',
             text: { ar: 'بلسم شفاه ملون — بدل الروج', en: 'Tinted lip balm — instead of lipstick' },
           },
           {
-            emoji: '',
+            emoji: '✨',
             text: {
               ar: 'الأقل هو الأكثر — بشرة شابة جميلة',
               en: 'Less is more — young, beautiful skin',

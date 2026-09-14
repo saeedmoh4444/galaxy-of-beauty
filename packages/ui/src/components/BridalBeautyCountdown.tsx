@@ -1,4 +1,5 @@
 'use client';
+import type { JSX } from 'react';
 
 import { cn } from '@galaxy/shared';
 
@@ -32,13 +33,13 @@ interface BridalBeautyCountdownProps {
 }
 
 const MILESTONES: Omit<Milestone, 'done'>[] = [
-  { label: { ar: 'خطة العناية', en: 'Care plan' }, emoji: '', daysBefore: 180 },
-  { label: { ar: 'روتين يومي', en: 'Daily routine' }, emoji: '', daysBefore: 150 },
-  { label: { ar: 'علاجات متقدمة', en: 'Advanced treatments' }, emoji: '‍️', daysBefore: 120 },
-  { label: { ar: 'تجربة الإطلالة', en: 'Look trial' }, emoji: '', daysBefore: 90 },
-  { label: { ar: 'اللمسات النهائية', en: 'Final touches' }, emoji: '', daysBefore: 60 },
-  { label: { ar: 'الاستعداد الأخير', en: 'Last preparations' }, emoji: '', daysBefore: 30 },
-  { label: { ar: 'يوم الزفاف', en: 'Wedding day' }, emoji: '', daysBefore: 0 },
+  { label: { ar: 'خطة العناية', en: 'Care plan' }, emoji: '📋', daysBefore: 180 },
+  { label: { ar: 'روتين يومي', en: 'Daily routine' }, emoji: '🧴', daysBefore: 150 },
+  { label: { ar: 'علاجات متقدمة', en: 'Advanced treatments' }, emoji: '💉', daysBefore: 120 },
+  { label: { ar: 'تجربة الإطلالة', en: 'Look trial' }, emoji: '💄', daysBefore: 90 },
+  { label: { ar: 'اللمسات النهائية', en: 'Final touches' }, emoji: '✨', daysBefore: 60 },
+  { label: { ar: 'الاستعداد الأخير', en: 'Last preparations' }, emoji: '🎀', daysBefore: 30 },
+  { label: { ar: 'يوم الزفاف', en: 'Wedding day' }, emoji: '👰', daysBefore: 0 },
 ];
 
 export function BridalBeautyCountdown({
@@ -92,7 +93,7 @@ export function BridalBeautyCountdown({
               key={m.label.ar}
               className={cn(
                 'flex items-center gap-2 rounded-lg px-3 py-2',
-                m.done ? 'bg-emerald-50 dark:bg-emerald-950' : 'bg-gray-50 dark:bg-gray-800',
+                m.done ? 'bg-emerald-50 dark:bg-emerald-950' : 'bg-surface-muted',
               )}
             >
               <span
@@ -100,7 +101,7 @@ export function BridalBeautyCountdown({
                   'flex h-6 w-6 shrink-0 items-center justify-center rounded-full text-xs',
                   m.done
                     ? 'bg-emerald-200 text-emerald-700 dark:bg-emerald-800 dark:text-emerald-300'
-                    : 'bg-gray-200 text-gray-500 dark:bg-gray-700',
+                    : 'bg-surface-muted text-text-secondary dark:bg-gray-700',
                 )}
               >
                 {m.done ? '' : m.emoji}
@@ -115,7 +116,7 @@ export function BridalBeautyCountdown({
               >
                 {m.label[locale]}
               </span>
-              <span className="text-[9px] text-text-tertiary dark:text-gray-500">
+              <span className="text-[9px] text-text-tertiary dark:text-text-secondary">
                 {m.daysBefore} {daysSuffix}
               </span>
             </div>
@@ -125,7 +126,9 @@ export function BridalBeautyCountdown({
 
       {isPast && (
         <div className="mt-3 rounded-xl bg-rose-50 p-4 text-center dark:bg-rose-950">
-          <p className="text-lg" aria-hidden="true"></p>
+          <p className="text-lg" aria-hidden="true">
+            🎉
+          </p>
           <p className="text-xs font-bold text-rose-700 dark:text-rose-300">
             {journeyCompleteText}
           </p>

@@ -1,4 +1,5 @@
 'use client';
+import type { JSX } from 'react';
 
 import { cn } from '@galaxy/shared';
 
@@ -34,7 +35,7 @@ export function BeautyVirtualConsultationCard({
   price = 150,
   duration = '30 دقيقة',
   availableSlots = ['10:00', '14:00', '16:30'],
-  emoji = '‍️',
+  emoji = '',
   onBook,
   className = '',
   title = 'استشارة عن بُعد',
@@ -42,7 +43,7 @@ export function BeautyVirtualConsultationCard({
   priceLabel = 'السعر',
   durationLabel = 'المدة',
   currencySuffix = 'ر.س',
-  availableSlotsLabel = ' مواعيد متاحة',
+  availableSlotsLabel = 'مواعيد متاحة',
   bookButtonText = 'احجزي استشارة',
 }: BeautyVirtualConsultationCardProps): JSX.Element {
   return (
@@ -59,7 +60,7 @@ export function BeautyVirtualConsultationCard({
         <div className="min-w-0 flex-1">
           <h4 className="text-sm font-bold text-blue-700 dark:text-blue-300">{title}</h4>
           <p className="text-xs font-bold text-text-primary dark:text-gray-100">{specialist}</p>
-          <p className="text-[10px] text-text-tertiary dark:text-gray-500">{specialty}</p>
+          <p className="text-[10px] text-text-tertiary dark:text-text-secondary">{specialty}</p>
         </div>
         <span className="shrink-0 rounded-full bg-blue-50 px-2.5 py-0.5 text-[10px] font-bold text-blue-700 dark:bg-blue-950 dark:text-blue-300">
           {onlineBadgeText}

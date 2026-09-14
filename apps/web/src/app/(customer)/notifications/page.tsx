@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import type { JSX } from 'react';
 import Link from 'next/link';
 import { api } from '@/lib/trpc';
 import { Card, CardListSkeleton, ErrorAlert, EmptyState, Button } from '@galaxy/ui';
@@ -75,14 +76,14 @@ export default function NotificationsPage(): JSX.Element {
                     className={
                       isRead
                         ? ''
-                        : 'border-r-4 border-r-brand-500 bg-brand-50/30 dark:bg-brand-950/20'
+                        : 'border-e-4 border-e-brand-500 bg-brand-50/30 dark:bg-brand-950/20'
                     }
                   >
                     <div className="flex items-start gap-3">
                       <span className="mt-1 text-xl">{TYPE_ICONS[n.type as string] ?? ''}</span>
                       <div className="min-w-0 flex-1">
                         <p
-                          className={`text-sm ${isRead ? 'text-text-secondary dark:text-gray-400' : 'font-semibold text-text-primary dark:text-gray-100'}`}
+                          className={`text-sm ${isRead ? 'text-text-secondary dark:text-text-tertiary' : 'font-semibold text-text-primary dark:text-gray-100'}`}
                         >
                           {localize(titleJson, locale)}
                         </p>

@@ -1,14 +1,19 @@
 'use client';
 import { useState } from 'react';
+import type { JSX } from 'react';
 import { api } from '@/lib/trpc';
-import { Card, CardListSkeleton, Button, formatCurrency } from '@galaxy/ui';
+import { Card, CardListSkeleton, Button, formatCurrency, EmptyState, Icon } from '@galaxy/ui';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
 import { useLocale } from '@/components/LocaleProvider';
 import { localize } from '@galaxy/shared';
 
 export default function CheckoutPage(): JSX.Element {
   const { t, locale } = useLocale();
-  const { data: cart, isLoading } = api.marketplace.cart.useQuery() as {
+  const {
+    data: cart,
+    isLoading,
+    refetch,
+  } = api.marketplace.cart.useQuery() as {
     data: Array<Record<string, unknown>> | undefined;
     isLoading: boolean;
     isError: boolean;
@@ -17,6 +22,15 @@ export default function CheckoutPage(): JSX.Element {
   const { data: wallet } = api.wallet.getBalance.useQuery() as {
     data: Record<string, unknown> | undefined;
   };
+  // B.3: the pay button used to be setPlaced(true) — now it completes the
+  // real purchase (stock/sales/vendor revenue) via marketplace.buyCart.
+  // Payment processing (wallet debit / payfort) remains separate work.
+  const buyMut = api.marketplace.buyCart.useMutation({
+    onSuccess: () => {
+      setPlaced(true);
+      refetch();
+    },
+  });
   const [method, setMethod] = useState<'wallet' | 'online'>('online');
   const [placed, setPlaced] = useState(false);
   const cartItems = cart ?? [];
@@ -40,13 +54,10 @@ export default function CheckoutPage(): JSX.Element {
         {isLoading ? (
           <CardListSkeleton count={4} />
         ) : cartItems.length === 0 ? (
-          <Card padding="lg" className="text-center py-8">
-            <p className="text-4xl mb-2"></p>
-            <p className="text-text-secondary">{t('wallet.empty-cart')}</p>
-          </Card>
+          <EmptyState title={t('wallet.empty-cart')} />
         ) : placed ? (
           <Card padding="lg" className="text-center border-2 border-green-300 bg-green-50">
-            <p className="text-3xl"></p>
+            <Icon name="check" size="xl" className="mx-auto text-green-600" />
             <p className="font-bold text-green-700 mt-2">{t('wallet.order-placed')}</p>
             <p className="text-sm text-text-secondary mt-1">{t('wallet.order-confirm-message')}</p>
           </Card>
@@ -91,14 +102,14 @@ export default function CheckoutPage(): JSX.Element {
               <div className="space-y-2">
                 <button
                   onClick={() => setMethod('online')}
-                  className={`w-full rounded-xl border-2 p-3 text-right ${method === 'online' ? 'border-brand-400 bg-brand-50' : 'border-gray-200'}`}
+                  className={`w-full rounded-xl border-2 p-3 text-end ${method === 'online' ? 'border-brand-400 bg-brand-50' : 'border-edge'}`}
                 >
                   <span className="font-bold">{t('wallet.online-payment')}</span>
                   <p className="text-xs text-text-secondary">{t('wallet.card-brands')}</p>
                 </button>
                 <button
                   onClick={() => setMethod('wallet')}
-                  className={`w-full rounded-xl border-2 p-3 text-right ${method === 'wallet' ? 'border-brand-400 bg-brand-50' : 'border-gray-200'}`}
+                  className={`w-full rounded-xl border-2 p-3 text-end ${method === 'wallet' ? 'border-brand-400 bg-brand-50' : 'border-edge'}`}
                   disabled={walletBalance < total}
                 >
                   <span className="font-bold">{t('wallet.title')}</span>
@@ -110,7 +121,13 @@ export default function CheckoutPage(): JSX.Element {
               </div>
             </Card>
 
-            <Button onClick={() => setPlaced(true)} className="w-full" size="lg">
+            {buyMut.isError && <p className="text-sm text-red-600">{buyMut.error.message}</p>}
+            <Button
+              onClick={() => buyMut.mutate({})}
+              loading={buyMut.isPending}
+              className="w-full"
+              size="lg"
+            >
               {t('wallet.pay-now', { amount: formatCurrency(total) })}
             </Button>
           </>

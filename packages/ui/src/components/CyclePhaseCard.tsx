@@ -1,4 +1,5 @@
 'use client';
+import type { JSX } from 'react';
 
 import { cn } from '@galaxy/shared';
 
@@ -47,7 +48,7 @@ const PHASES: Record<CyclePhase, PhaseData> = {
     gradientClass: 'from-rose-200 to-rose-300 dark:from-rose-800 dark:to-rose-700',
   },
   follicular: {
-    emoji: '',
+    emoji: '🌱',
     title: { ar: 'المرحلة الجرابية', en: 'Follicular phase' },
     days: { ar: 'الأيام 6-14', en: 'Days 6-14' },
     description: {
@@ -65,7 +66,7 @@ const PHASES: Record<CyclePhase, PhaseData> = {
     gradientClass: 'from-pink-300 to-rose-300 dark:from-pink-800 dark:to-rose-700',
   },
   ovulation: {
-    emoji: '',
+    emoji: '✨',
     title: { ar: 'الإباضة', en: 'Ovulation' },
     days: { ar: 'اليوم 14 تقريباً', en: 'Around day 14' },
     description: {
@@ -83,7 +84,7 @@ const PHASES: Record<CyclePhase, PhaseData> = {
     gradientClass: 'from-amber-300 to-yellow-300 dark:from-amber-800 dark:to-yellow-700',
   },
   luteal: {
-    emoji: '',
+    emoji: '🌙',
     title: { ar: 'المرحلة الأصفرية', en: 'Luteal phase' },
     days: { ar: 'الأيام 15-28', en: 'Days 15-28' },
     description: {
@@ -102,7 +103,7 @@ const PHASES: Record<CyclePhase, PhaseData> = {
       { ar: 'منتجات جديدة', en: 'New products' },
     ],
     colorClass: 'border-indigo-200 bg-indigo-50/50 dark:border-indigo-900 dark:bg-indigo-950/30',
-    gradientClass: 'from-indigo-300 to-purple-300 dark:from-indigo-800 dark:to-purple-700',
+    gradientClass: 'from-indigo-300 to-brand-300 dark:from-indigo-800 dark:to-brand-700',
   },
 };
 
@@ -134,8 +135,8 @@ export function CyclePhaseCard({
   className = '',
   dayLabel = 'يوم',
   todayLabel = 'اليوم',
-  recommendedLabel = ' ينصح بها',
-  avoidLabel = ' تجنبي',
+  recommendedLabel = 'ينصح بها',
+  avoidLabel = 'تجنبي',
   footerTip = 'CycleSync™ — لأن جمالكِ مرتبط بصحتكِ',
   locale = 'ar',
 }: CyclePhaseCardProps): JSX.Element {
@@ -154,7 +155,7 @@ export function CyclePhaseCard({
             <h4 className="text-sm font-bold text-text-primary dark:text-gray-100">
               {data.title[locale]}
             </h4>
-            <p className="text-[10px] text-text-tertiary dark:text-gray-400">
+            <p className="text-[10px] text-text-tertiary dark:text-text-tertiary">
               {data.days[locale]}
               {day && ` — ${todayLabel} ${day}`}
             </p>
@@ -163,10 +164,12 @@ export function CyclePhaseCard({
 
         {/* Cycle day indicator */}
         {day && (
-          <div className="text-right">
-            <span className="text-[10px] text-text-tertiary dark:text-gray-400">{dayLabel}</span>
+          <div className="text-end">
+            <span className="text-[10px] text-text-tertiary dark:text-text-tertiary">
+              {dayLabel}
+            </span>
             <div className="text-lg font-bold text-text-primary dark:text-gray-100">{day}</div>
-            <span className="text-[10px] text-text-tertiary dark:text-gray-400">/ 28</span>
+            <span className="text-[10px] text-text-tertiary dark:text-text-tertiary">/ 28</span>
           </div>
         )}
       </div>
@@ -184,7 +187,7 @@ export function CyclePhaseCard({
               key={p}
               className={cn(
                 'h-1.5 flex-1 rounded-full transition-all',
-                p === phase ? 'bg-current opacity-80' : 'bg-gray-200 dark:bg-gray-700',
+                p === phase ? 'bg-current opacity-80' : 'bg-surface-muted',
               )}
               style={{
                 backgroundColor: p === phase ? undefined : undefined,
@@ -202,7 +205,7 @@ export function CyclePhaseCard({
             />
           ))}
         </div>
-        <div className="mt-1 flex justify-between text-[9px] text-text-tertiary dark:text-gray-500">
+        <div className="mt-1 flex justify-between text-[9px] text-text-tertiary dark:text-text-secondary">
           {phases.map((p) => (
             <span key={p} className={cn(p === phase && 'font-bold text-current')}>
               {PHASES[p].title[locale]}
@@ -262,7 +265,7 @@ export function CyclePhaseCard({
       </div>
 
       {/* Footer tip */}
-      <p className="mt-2 text-center text-[9px] italic text-text-tertiary dark:text-gray-500">
+      <p className="mt-2 text-center text-[9px] italic text-text-tertiary dark:text-text-secondary">
         {footerTip}
       </p>
     </div>

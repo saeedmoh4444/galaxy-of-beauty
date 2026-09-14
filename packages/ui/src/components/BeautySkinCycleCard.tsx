@@ -1,4 +1,5 @@
 'use client';
+import type { JSX } from 'react';
 import { cn } from '@galaxy/shared';
 export function BeautySkinCycleCard({
   className = '',
@@ -17,7 +18,7 @@ export function BeautySkinCycleCard({
       )}
     >
       <div className="flex items-center gap-2">
-        <span className="text-xl"></span>
+        <span className="text-xl">🔄</span>
         <div>
           <h4 className="text-sm font-bold text-violet-700 dark:text-violet-300">Skin Cycling</h4>
           <p className="text-[10px] text-violet-500 dark:text-violet-400">{subtitle}</p>
@@ -26,19 +27,19 @@ export function BeautySkinCycleCard({
       <div className="mt-3 space-y-1">
         {[
           {
-            emoji: '',
+            emoji: '✨',
             text: { ar: 'ليلة 1: تقشير — AHA/BHA', en: 'Night 1: Exfoliate — AHA/BHA' },
           },
           {
-            emoji: '',
+            emoji: '🌙',
             text: { ar: 'ليلة 2: ريتينول — مكافحة الشيخوخة', en: 'Night 2: Retinol — anti-aging' },
           },
           {
-            emoji: '',
+            emoji: '💧',
             text: { ar: 'ليلة 3: ترطيب — إصلاح البشرة', en: 'Night 3: Moisturize — skin repair' },
           },
           {
-            emoji: '',
+            emoji: '💧',
             text: { ar: 'ليلة 4: ترطيب — إصلاح البشرة', en: 'Night 4: Moisturize — skin repair' },
           },
         ].map((t, i) => (

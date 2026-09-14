@@ -1,5 +1,7 @@
+import type { JSX } from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import { ScreenState } from '@/components/ScreenState';
+import { useAuthState } from '@/hooks/useAuthState';
 import { trpc } from '@/lib/trpc-react';
 import { useLocale } from '@/components/LocaleProvider';
 
@@ -13,7 +15,8 @@ const COLORS = {
 
 export default function StreakCalendarScreen(): JSX.Element {
   const { t } = useLocale();
-  const streak = trpc.streaks.get.useQuery();
+  const isAuthed = useAuthState();
+  const streak = trpc.streaks.get.useQuery(undefined, { enabled: isAuthed });
 
   return (
     <ScreenState
@@ -25,7 +28,7 @@ export default function StreakCalendarScreen(): JSX.Element {
     >
       <Text style={styles.title}>{t('mobile.streakCalendar.title')}</Text>
       <View style={styles.card}>
-        <Text style={styles.fire}></Text>
+        <Text style={styles.fire}>🔥</Text>
         <Text style={styles.current}>
           {t('mobile.streakCalendar.current-week', {
             days: String(streak.data?.currentStreak ?? 0),

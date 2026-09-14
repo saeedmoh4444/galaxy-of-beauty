@@ -1,5 +1,7 @@
+import type { JSX } from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import { ScreenState } from '@/components/ScreenState';
+import { useAuthState } from '@/hooks/useAuthState';
 import { trpc } from '@/lib/trpc-react';
 import { useLocale } from '@/components/LocaleProvider';
 
@@ -7,7 +9,8 @@ const COLORS = { brand: '#7c3aed', white: '#ffffff', gray400: '#6b7280', gray900
 
 export default function StreaksScreen(): JSX.Element {
   const { t } = useLocale();
-  const streak = trpc.streaks.get.useQuery();
+  const isAuthed = useAuthState();
+  const streak = trpc.streaks.get.useQuery(undefined, { enabled: isAuthed });
   const data = streak.data as Record<string, unknown> | undefined;
 
   return (
@@ -20,7 +23,7 @@ export default function StreaksScreen(): JSX.Element {
     >
       <Text style={styles.title}>{t('mobile.streaks.title')}</Text>
       <View style={styles.card}>
-        <Text style={styles.fire}></Text>
+        <Text style={styles.fire}>🔥</Text>
         <Text style={styles.current}>
           {t('mobile.streaks.current', { days: String(data?.currentStreak ?? 0) })}
         </Text>

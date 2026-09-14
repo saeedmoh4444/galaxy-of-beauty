@@ -1,9 +1,19 @@
 'use client';
 
 import { useState } from 'react';
+import type { JSX } from 'react';
 import { api } from '@/lib/trpc';
 import type { RouterOutputs } from '@galaxy/api';
-import { Button, Card, CardListSkeleton, ErrorAlert, EmptyState, Input, Modal } from '@galaxy/ui';
+import {
+  Button,
+  Card,
+  CardListSkeleton,
+  ErrorAlert,
+  EmptyState,
+  Input,
+  Modal,
+  useAuth,
+} from '@galaxy/ui';
 import { useLocale } from '@/components/LocaleProvider';
 
 type CategoryItem = RouterOutputs['categories']['all'][number];
@@ -15,7 +25,10 @@ function getCatName(cat: CategoryItem, lang: 'ar' | 'en'): string {
 
 export default function AdminCategoriesPage(): JSX.Element {
   const { t } = useLocale();
-  const { data, isLoading, isError, refetch } = api.categories.all.useQuery();
+  const { isAuthenticated } = useAuth();
+  const { data, isLoading, isError, refetch } = api.categories.all.useQuery(undefined, {
+    enabled: isAuthenticated,
+  });
   const createMut = api.categories.create.useMutation({
     onSuccess: () => {
       refetch();
@@ -133,7 +146,7 @@ export default function AdminCategoriesPage(): JSX.Element {
                 </div>
               </Card>
               {childrenOf(cat.id).map((child: CategoryItem) => (
-                <div key={child.id} className="mr-6">
+                <div key={child.id} className="me-6">
                   <Card padding="md">
                     <div className="flex items-center justify-between">
                       <div>

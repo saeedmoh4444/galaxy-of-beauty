@@ -1,4 +1,5 @@
 'use client';
+import type { JSX } from 'react';
 
 import { cn } from '@galaxy/shared';
 
@@ -17,17 +18,17 @@ const LEVELS: Record<
   { emoji: string; label: { ar: string; en: string }; color: string }
 > = {
   basic: {
-    emoji: '',
+    emoji: '👋',
     label: { ar: 'أساسي', en: 'Basic' },
     color: 'bg-sky-50 text-sky-700 dark:bg-sky-950 dark:text-sky-300',
   },
   intermediate: {
-    emoji: '',
+    emoji: '🤙',
     label: { ar: 'متوسط', en: 'Intermediate' },
     color: 'bg-blue-50 text-blue-700 dark:bg-blue-950 dark:text-blue-300',
   },
   fluent: {
-    emoji: '',
+    emoji: '🤟',
     label: { ar: 'متقن', en: 'Fluent' },
     color: 'bg-indigo-50 text-indigo-700 dark:bg-indigo-950 dark:text-indigo-300',
   },
@@ -75,7 +76,9 @@ export function SignLanguageBadge({
     >
       {/* Header */}
       <div className="flex items-center gap-2">
-        <span className="text-xl" aria-hidden="true"></span>
+        <span className="text-xl" aria-hidden="true">
+          🤟
+        </span>
         <div>
           <h4 className="text-sm font-bold text-sky-700 dark:text-sky-300">{title}</h4>
           <p className="text-[10px] text-sky-500 dark:text-sky-400">
@@ -94,14 +97,14 @@ export function SignLanguageBadge({
               className="flex items-center gap-3 rounded-xl bg-sky-50 p-3 dark:bg-sky-950"
             >
               <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-white text-sm dark:bg-gray-700">
-                ‍
+                👩
               </div>
               <div className="min-w-0 flex-1">
                 <p className="text-xs font-bold text-text-primary dark:text-gray-100">
                   {tech.name}
                 </p>
                 {tech.specialty && (
-                  <p className="text-[10px] text-text-tertiary dark:text-gray-500">
+                  <p className="text-[10px] text-text-tertiary dark:text-text-secondary">
                     {tech.specialty}
                   </p>
                 )}

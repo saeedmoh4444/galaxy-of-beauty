@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useMemo } from 'react';
+import type { JSX } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { api } from '@/lib/trpc';
@@ -73,11 +74,11 @@ export function BlogClient({
   return (
     <div className="mx-auto max-w-6xl px-4 py-12">
       <div className="mb-10 text-center">
-        <span className="text-6xl"></span>
+        <span className="text-6xl">📰</span>
         <h1 className="mt-4 text-3xl font-bold text-text-primary dark:text-gray-100">
           {t('marketing.blog.title')}
         </h1>
-        <p className="mt-2 text-text-secondary dark:text-gray-400">
+        <p className="mt-2 text-text-secondary dark:text-text-tertiary">
           {t('marketing.blog.subtitle')}
         </p>
       </div>
@@ -101,7 +102,7 @@ export function BlogClient({
             setActiveTag(null);
             setPage(1);
           }}
-          className={`rounded-full px-4 py-1.5 text-sm font-medium transition-all ${!activeTag ? 'bg-brand-600 text-white shadow-md' : 'bg-surface-muted text-text-secondary hover:bg-gray-200 dark:bg-gray-800 dark:text-gray-400'}`}
+          className={`rounded-full px-4 py-1.5 text-sm font-medium transition-all ${!activeTag ? 'bg-brand-600 text-white shadow-md' : 'bg-surface-muted text-text-secondary hover:bg-surface-muted dark:text-text-tertiary'}`}
         >
           {t('marketing.blog.all')}
         </button>
@@ -112,7 +113,7 @@ export function BlogClient({
               setActiveTag(tag.value === activeTag ? null : tag.value);
               setPage(1);
             }}
-            className={`rounded-full px-4 py-1.5 text-sm font-medium transition-all ${activeTag === tag.value ? 'bg-brand-600 text-white shadow-md' : 'bg-surface-muted text-text-secondary hover:bg-gray-200 dark:bg-gray-800 dark:text-gray-400'}`}
+            className={`rounded-full px-4 py-1.5 text-sm font-medium transition-all ${activeTag === tag.value ? 'bg-brand-600 text-white shadow-md' : 'bg-surface-muted text-text-secondary hover:bg-surface-muted dark:text-text-tertiary'}`}
           >
             {t(tag.labelKey)}
           </button>
@@ -162,7 +163,7 @@ export function BlogClient({
                           className="object-cover transition-transform group-hover:scale-105"
                         />
                       ) : (
-                        <span></span>
+                        <span>📰</span>
                       )}
                     </div>
                     <div className="p-5">
@@ -173,7 +174,7 @@ export function BlogClient({
                         {date && <span> {date}</span>}
                         {body && (
                           <span>
-                            ️ {t('marketing.blog.reading-time', { minutes: readingMinutes(body) })}
+                            {t('marketing.blog.reading-time', { minutes: readingMinutes(body) })}
                           </span>
                         )}
                       </div>

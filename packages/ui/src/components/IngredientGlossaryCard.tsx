@@ -1,4 +1,5 @@
 'use client';
+import type { JSX } from 'react';
 
 import { cn } from '@galaxy/shared';
 
@@ -23,27 +24,27 @@ interface TypeDef {
 
 const TYPES: Record<IngredientType, TypeDef> = {
   active: {
-    emoji: '',
+    emoji: '⚡',
     label: { ar: 'مادة فعالة', en: 'Active ingredient' },
     color: 'bg-amber-50 text-amber-700 dark:bg-amber-950 dark:text-amber-300',
   },
   moisturizer: {
-    emoji: '',
+    emoji: '💧',
     label: { ar: 'مرطب', en: 'Moisturizer' },
     color: 'bg-sky-50 text-sky-700 dark:bg-sky-950 dark:text-sky-300',
   },
   exfoliant: {
-    emoji: '',
+    emoji: '🧪',
     label: { ar: 'مقشر', en: 'Exfoliant' },
     color: 'bg-orange-50 text-orange-700 dark:bg-orange-950 dark:text-orange-300',
   },
   antioxidant: {
-    emoji: '️',
+    emoji: '🫐',
     label: { ar: 'مضاد أكسدة', en: 'Antioxidant' },
     color: 'bg-emerald-50 text-emerald-700 dark:bg-emerald-950 dark:text-emerald-300',
   },
   sunscreen: {
-    emoji: '️',
+    emoji: '🌞',
     label: { ar: 'واقي شمس', en: 'Sunscreen' },
     color: 'bg-yellow-50 text-yellow-700 dark:bg-yellow-950 dark:text-yellow-300',
   },
@@ -53,7 +54,7 @@ const TYPES: Record<IngredientType, TypeDef> = {
     color: 'bg-lime-50 text-lime-700 dark:bg-lime-950 dark:text-lime-300',
   },
   natural: {
-    emoji: '',
+    emoji: '🌿',
     label: { ar: 'طبيعي', en: 'Natural' },
     color: 'bg-green-50 text-green-700 dark:bg-green-950 dark:text-green-300',
   },
@@ -88,9 +89,9 @@ export function IngredientGlossaryCard({
   ingredient,
   locale = 'ar',
   className = '',
-  benefitsLabel = ' الفوائد',
-  suitableForLabel = ' مناسب لـ',
-  warningsLabel = ' تحذيرات',
+  benefitsLabel = 'الفوائد',
+  suitableForLabel = 'مناسب لـ',
+  warningsLabel = 'تحذيرات',
   arabicContentText = 'محتوى عربي — لأن المعرفة حق للجميع',
 }: IngredientGlossaryCardProps): JSX.Element {
   const type = TYPES[ingredient.type];
@@ -104,13 +105,15 @@ export function IngredientGlossaryCard({
     >
       {/* Ingredient name + type */}
       <div className="flex items-start gap-3">
-        <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-teal-100 to-emerald-100 text-lg dark:from-teal-900 dark:to-emerald-900"></div>
+        <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-teal-100 to-emerald-100 text-lg dark:from-teal-900 dark:to-emerald-900">
+          🧴
+        </div>
         <div className="min-w-0 flex-1">
           <h4 className="text-sm font-bold text-text-primary dark:text-gray-100">
             {ingredient.name}
           </h4>
           {ingredient.arabicName && (
-            <p className="text-[10px] text-text-tertiary dark:text-gray-500">
+            <p className="text-[10px] text-text-tertiary dark:text-text-secondary">
               {ingredient.arabicName}
             </p>
           )}
@@ -168,7 +171,7 @@ export function IngredientGlossaryCard({
 
       {/* Safety note */}
       {ingredient.safetyNote && (
-        <div className="mt-2 rounded-lg bg-gray-50 p-2 dark:bg-gray-800">
+        <div className="mt-2 rounded-lg bg-surface-muted p-2 dark:bg-gray-800">
           <p className="text-[10px] text-text-secondary dark:text-gray-300">
             {ingredient.safetyNote}
           </p>
@@ -176,8 +179,8 @@ export function IngredientGlossaryCard({
       )}
 
       {/* Arabic content badge */}
-      <div className="mt-2 flex items-center gap-1 text-[9px] text-text-tertiary dark:text-gray-500">
-        <span></span>
+      <div className="mt-2 flex items-center gap-1 text-[9px] text-text-tertiary dark:text-text-secondary">
+        <span>📖</span>
         <span>{arabicContentText}</span>
       </div>
     </div>

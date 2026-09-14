@@ -69,6 +69,65 @@ export const profileMessages = {
   'dashboard.title': { ar: 'لوحة التحكم', en: 'Dashboard' },
   'dashboard.daily-assessment': { ar: 'تقييم اليوم', en: "Today's Assessment" },
   'dashboard.stats-error': { ar: 'فشل تحميل الإحصائيات', en: 'Failed to load statistics' },
+
+  // Onboarding tour (§3.6 — first-run guided tour)
+  'tour.bookTitle': { ar: 'احجزي أول خدمة', en: 'Book your first service' },
+  'tour.bookBody': {
+    ar: 'من زر «احجزي الآن» تختارين الخدمة والفنية والوقت — الدفع عند الوصول أو أونلاين، وأنتِ تتحكمين بكل التفاصيل.',
+    en: 'From “Book now” pick a service, technician and time — pay at the venue or online, with full control over the details.',
+  },
+  'tour.walletTitle': { ar: 'محفظتك وميزانيتك', en: 'Your wallet & budget' },
+  'tour.walletBody': {
+    ar: 'رصيدك، بطاقات الهدايا، والميزانية الشهرية في مكان واحد — اشحني وتابعي مصاريفك من هذه البطاقة.',
+    en: 'Balance, gift cards and monthly budget in one place — top up and track spending from this card.',
+  },
+  'tour.aiTitle': { ar: 'بيوتي AI — مستشارتك', en: 'Beauty AI, your advisor' },
+  'tour.aiBody': {
+    ar: 'اسألي مستشارة الذكاء الاصطناعي عن روتينك، بشرتك، أو أي سؤال تجميلي — متاحة على مدار الساعة وبخصوصية كاملة.',
+    en: 'Ask the AI advisor about your routine, skin or any beauty question — available 24/7 with complete privacy.',
+  },
+  'tour.wellnessTitle': { ar: 'مركز العافية', en: 'Your wellness hub' },
+  'tour.wellnessBody': {
+    ar: 'دورتك، حالتك المزاجية، نصائح ما بعد الجلسات والمزيد — كل رحلتك الصحية في صفحة واحدة تتبع مرحلة حياتك.',
+    en: 'Your cycle, mood, post-treatment care and more — your whole wellness journey in one life-stage-aware page.',
+  },
+  'tour.referralsTitle': { ar: 'دعوة الصديقات', en: 'Invite your friends' },
+  'tour.referralsBody': {
+    ar: 'شاركي رابطك الخاص واكسبي مكافآت عندما تنضم صديقاتك — جمال مشترك، مكافآت مشتركة.',
+    en: 'Share your personal link and earn rewards when friends join — shared beauty, shared rewards.',
+  },
+  'tour.next': { ar: 'التالي', en: 'Next' },
+  'tour.back': { ar: 'السابق', en: 'Back' },
+  'tour.skip': { ar: 'تخطي', en: 'Skip' },
+  'tour.done': { ar: 'تمام، لنبدأ!', en: 'Done, let’s go!' },
+  'tour.replay': { ar: 'جولة تعريفية', en: 'Guided tour' },
+  'tour.progress': { ar: '{current} من {total}', en: '{current} of {total}' },
+
+  // Hover tooltips (§3.6 secondary layer)
+  'tooltip.bookNow': {
+    ar: 'احجزي خدمة مع الفنية الأنسب لكِ',
+    en: 'Book a service with the provider that fits you',
+  },
+  'tooltip.giftCards': {
+    ar: 'بطاقات هدايا لصديقاتكِ',
+    en: 'Gift cards for your friends',
+  },
+  'tooltip.inspiration': {
+    ar: 'لوحة إلهام لحفظ أفكارك الجمالية',
+    en: 'A pin board for your beauty ideas',
+  },
+  'tooltip.surpriseMe': {
+    ar: 'دعينا نختار لكِ تجربة مميزة',
+    en: 'Let us pick a surprise experience for you',
+  },
+  'tooltip.dailyAssessment': {
+    ar: 'تقييم يومي سريع لحالتك',
+    en: 'A quick daily wellness check-in',
+  },
+  'tooltip.replay': {
+    ar: 'إعادة الجولة التعريفية',
+    en: 'Replay the guided tour',
+  },
   'dashboard.bookings': { ar: 'الحجوزات', en: 'Bookings' },
   'dashboard.spending': { ar: 'الإنفاق', en: 'Spending' },
   'dashboard.continuity': { ar: 'الاستمرارية', en: 'Continuity' },

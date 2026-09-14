@@ -1,3 +1,4 @@
+import type { JSX } from 'react';
 import {
   View,
   Text,
@@ -10,6 +11,7 @@ import {
 import { SkeletonList } from '@/components/SkeletonCard';
 import { trpc } from '@/lib/trpc-react';
 import { useLocale } from '@/components/LocaleProvider';
+import { useAuthState } from '@/hooks/useAuthState';
 
 interface InspirationPin {
   id?: number;
@@ -19,7 +21,8 @@ interface InspirationPin {
 
 export default function InspirationScreen(): JSX.Element {
   const { t } = useLocale();
-  const q = trpc.inspiration.list.useQuery();
+  const isAuthed = useAuthState();
+  const q = trpc.inspiration.list.useQuery(undefined, { enabled: isAuthed });
   const pins: InspirationPin[] = (q.data as unknown as InspirationPin[] | undefined) ?? [];
   const delMut = trpc.inspiration.delete.useMutation({
     onSuccess: () => {
@@ -37,7 +40,9 @@ export default function InspirationScreen(): JSX.Element {
       refreshControl={
         <RefreshControl
           refreshing={q.isRefetching}
-          onRefresh={() => q.refetch()}
+          onRefresh={async () => {
+            await q.refetch();
+          }}
           colors={['#ec4899']}
         />
       }
@@ -50,13 +55,13 @@ export default function InspirationScreen(): JSX.Element {
               <Image source={{ uri: p.imageUrl }} style={styles.img} />
             ) : (
               <View style={styles.ph}>
-                <Text style={{ fontSize: 36 }}>️</Text>
+                <Text style={{ fontSize: 36 }}>🖼️</Text>
               </View>
             )}
             <View style={styles.cb}>
               <Text style={styles.pt}>{p.title ?? ''}</Text>
               <TouchableOpacity onPress={() => p.id && remove(p.id)}>
-                <Text>️</Text>
+                <Text>🗑️</Text>
               </TouchableOpacity>
             </View>
           </View>

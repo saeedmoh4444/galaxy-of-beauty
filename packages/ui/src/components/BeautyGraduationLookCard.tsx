@@ -1,4 +1,5 @@
 'use client';
+import type { JSX } from 'react';
 import { cn } from '@galaxy/shared';
 export function BeautyGraduationLookCard({
   className = '',
@@ -19,7 +20,7 @@ export function BeautyGraduationLookCard({
       )}
     >
       <div className="flex items-center gap-2">
-        <span className="text-xl"></span>
+        <span className="text-xl">🎓</span>
         <div>
           <h4 className="text-sm font-bold text-amber-700 dark:text-amber-300">{title}</h4>
           <p className="text-[10px] text-amber-500 dark:text-amber-400">{subtitle}</p>
@@ -28,28 +29,28 @@ export function BeautyGraduationLookCard({
       <div className="mt-3 space-y-1">
         {[
           {
-            emoji: '',
+            emoji: '💄',
             text: {
               ar: 'مكياج ثابت — الصور تبقى للأبد',
               en: 'Long-lasting makeup — the photos last forever',
             },
           },
           {
-            emoji: '',
+            emoji: '💋',
             text: {
               ar: 'أحمر شفاه مات — يدوم ولا ينتقل للشهادة',
               en: 'Matte lipstick — lasts and will not smudge on your certificate',
             },
           },
           {
-            emoji: '',
+            emoji: '💇',
             text: {
               ar: 'تسريحة تتحمل القبعة — وتبدو جميلة بدونها',
               en: 'A style that works with the cap — and looks great without it',
             },
           },
           {
-            emoji: '️',
+            emoji: '🌞',
             text: {
               ar: 'واقي شمس — الحفل في النهار غالباً',
               en: 'Sunscreen — the ceremony is usually during the day',

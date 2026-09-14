@@ -1,5 +1,6 @@
 'use client';
 import { useState } from 'react';
+import type { JSX } from 'react';
 import { api } from '@/lib/trpc';
 import { Card, KPIRowSkeleton, GridSkeleton, Button, formatCurrency } from '@galaxy/ui';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
@@ -8,7 +9,7 @@ import { useLocale } from '@/components/LocaleProvider';
 const TIER_COLORS: Record<string, string> = {
   SILVER: 'from-gray-300 to-gray-400',
   GOLD: 'from-yellow-400 to-amber-500',
-  PLATINUM: 'from-purple-400 to-indigo-500',
+  PLATINUM: 'from-brand-400 to-indigo-500',
 };
 
 export default function RewardsMarketplacePage(): JSX.Element {
@@ -58,7 +59,7 @@ export default function RewardsMarketplacePage(): JSX.Element {
               {account?.multiplier as number}
             </p>
             {(account?.nextTier as Record<string, unknown>) && (
-              <p className="text-xs mt-2 bg-white dark:bg-gray-900/20 rounded-full px-3 py-1 inline-block">
+              <p className="text-xs mt-2 bg-surface-elevated/20 rounded-full px-3 py-1 inline-block">
                 {t('rewardsMarketplace.nextTier', {
                   count: (account!.nextTier as Record<string, unknown>).pointsNeeded as number,
                   name: (account!.nextTier as Record<string, unknown>).name as string,
@@ -87,9 +88,9 @@ export default function RewardsMarketplacePage(): JSX.Element {
                 >
                   <span className="text-4xl">
                     {r.rewardType === 'free_service'
-                      ? '‍️'
+                      ? ''
                       : r.rewardType === 'discount_percent'
-                        ? '️'
+                        ? ''
                         : ''}
                   </span>
                   <h3 className="font-bold mt-3">{(r.nameJson as Record<string, string>)?.ar}</h3>

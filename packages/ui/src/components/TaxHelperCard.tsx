@@ -1,4 +1,5 @@
 'use client';
+import type { JSX } from 'react';
 
 import { cn } from '@galaxy/shared';
 
@@ -54,12 +55,12 @@ export function TaxHelperCard({
   monthlyRevenueLabel = 'الإيراد الشهري',
   vatLabel = 'ضريبة القيمة المضافة',
   currencySuffix = 'ر.س',
-  growthPositivePrefix = ' نمو ',
-  growthNegativePrefix = ' انخفاض ',
-  comparedPrefix = ' عن ',
+  growthPositivePrefix = 'نمو ',
+  growthNegativePrefix = 'انخفاض ',
+  comparedPrefix = 'عن ',
   downloadButtonText = 'تقرير ZATCA',
   detailsButtonText = 'التفاصيل',
-  footerText = '️ متوافق مع متطلبات هيئة الزكاة والضريبة والجمارك السعودية',
+  footerText = 'متوافق مع متطلبات هيئة الزكاة والضريبة والجمارك السعودية',
 }: TaxHelperCardProps): JSX.Element {
   const growth = previousQuarter
     ? Math.round(((revenue.monthly - previousQuarter) / previousQuarter) * 100)
@@ -73,7 +74,9 @@ export function TaxHelperCard({
       )}
     >
       <div className="flex items-center gap-2">
-        <span className="text-xl" aria-hidden="true"></span>
+        <span className="text-xl" aria-hidden="true">
+          🧾
+        </span>
         <div>
           <h4 className="text-sm font-bold text-emerald-700 dark:text-emerald-300">{title}</h4>
           <p className="text-[10px] text-emerald-500 dark:text-emerald-400">{subtitle}</p>
@@ -138,7 +141,7 @@ export function TaxHelperCard({
         </button>
       </div>
 
-      <p className="mt-2 text-center text-[9px] text-text-tertiary dark:text-gray-500">
+      <p className="mt-2 text-center text-[9px] text-text-tertiary dark:text-text-secondary">
         {footerText}
       </p>
     </div>

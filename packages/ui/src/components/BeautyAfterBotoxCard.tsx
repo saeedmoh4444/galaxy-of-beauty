@@ -1,4 +1,5 @@
 'use client';
+import type { JSX } from 'react';
 import { cn } from '@galaxy/shared';
 export function BeautyAfterBotoxCard({
   className = '',
@@ -19,7 +20,7 @@ export function BeautyAfterBotoxCard({
       )}
     >
       <div className="flex items-center gap-2">
-        <span className="text-xl"></span>
+        <span className="text-xl">💉</span>
         <div>
           <h4 className="text-sm font-bold text-sky-700 dark:text-sky-300">{title}</h4>
           <p className="text-[10px] text-sky-500 dark:text-sky-400">{subtitle}</p>
@@ -28,22 +29,22 @@ export function BeautyAfterBotoxCard({
       <div className="mt-3 space-y-1">
         {[
           {
-            emoji: '',
+            emoji: '🤚',
             text: {
               ar: 'لا تلمسي — لا تدلكي المنطقة 24 ساعة',
               en: "Don't touch — don't massage the area for 24 hours",
             },
           },
           {
-            emoji: '',
+            emoji: '🛏',
             text: {
               ar: 'ابقِ رأسك مرفوعاً — 4 ساعات بعد الحقن',
               en: 'Keep your head elevated — for 4 hours after the injections',
             },
           },
-          { emoji: '', text: { ar: 'لا رياضة — 24 ساعة', en: 'No exercise — for 24 hours' } },
+          { emoji: '🏃', text: { ar: 'لا رياضة — 24 ساعة', en: 'No exercise — for 24 hours' } },
           {
-            emoji: '️',
+            emoji: '✨',
             text: { ar: 'النتيجة النهائية — بعد 10-14 يوم', en: 'Final result — after 10-14 days' },
           },
         ].map((t, i) => (

@@ -1,4 +1,5 @@
 'use client';
+import type { JSX } from 'react';
 
 import { cn } from '@galaxy/shared';
 
@@ -23,7 +24,7 @@ export function BeautyExerciseCard({
       )}
     >
       <div className="flex items-center gap-2">
-        <span className="text-xl">‍️</span>
+        <span className="text-xl">🏃</span>
         <div>
           <h4 className="text-sm font-bold text-orange-700 dark:text-orange-300">{title}</h4>
           <p className="text-[10px] text-orange-500 dark:text-orange-400">{subtitle}</p>
@@ -32,22 +33,22 @@ export function BeautyExerciseCard({
       <div className="mt-3 grid grid-cols-2 gap-1.5">
         {[
           {
-            emoji: '',
+            emoji: '🚶',
             label: { ar: 'مشي 30 دقيقة', en: '30-minute walk' },
             tip: { ar: 'ينشط الدورة الدموية', en: 'Boosts circulation' },
           },
           {
-            emoji: '',
+            emoji: '🧘',
             label: { ar: 'يوغا', en: 'Yoga' },
             tip: { ar: 'تقلل التوتر = بشرة أفضل', en: 'Reduces stress = better skin' },
           },
           {
-            emoji: '',
+            emoji: '🏊',
             label: { ar: 'سباحة', en: 'Swimming' },
             tip: { ar: 'تمرين كامل للجسم', en: 'Full-body workout' },
           },
           {
-            emoji: '',
+            emoji: '💃',
             label: { ar: 'رقص', en: 'Dancing' },
             tip: { ar: 'يفرز هرمونات السعادة', en: 'Releases happiness hormones' },
           },

@@ -1,4 +1,5 @@
 'use client';
+import type { JSX } from 'react';
 
 import { cn } from '@galaxy/shared';
 
@@ -18,12 +19,12 @@ interface TypeDef {
 }
 
 const TYPES: Record<ProductType, TypeDef> = {
-  facial: { emoji: '', label: { ar: 'عناية بالبشرة', en: 'Skincare' } },
-  hair: { emoji: '', label: { ar: 'عناية بالشعر', en: 'Haircare' } },
-  body: { emoji: '', label: { ar: 'عناية بالجسم', en: 'Body care' } },
-  makeup: { emoji: '', label: { ar: 'مكياج', en: 'Makeup' } },
-  nail: { emoji: '', label: { ar: 'أظافر', en: 'Nails' } },
-  wax: { emoji: '️', label: { ar: 'إزالة شعر', en: 'Hair removal' } },
+  facial: { emoji: '🧴', label: { ar: 'عناية بالبشرة', en: 'Skincare' } },
+  hair: { emoji: '💇', label: { ar: 'عناية بالشعر', en: 'Haircare' } },
+  body: { emoji: '🧼', label: { ar: 'عناية بالجسم', en: 'Body care' } },
+  makeup: { emoji: '💄', label: { ar: 'مكياج', en: 'Makeup' } },
+  nail: { emoji: '💅', label: { ar: 'أظافر', en: 'Nails' } },
+  wax: { emoji: '🪒', label: { ar: 'إزالة شعر', en: 'Hair removal' } },
 };
 
 interface ScentFreeBadgeProps {
@@ -79,7 +80,9 @@ export function ScentFreeBadge({
     >
       {/* Header */}
       <div className="flex items-center gap-2">
-        <span className="text-xl" aria-hidden="true"></span>
+        <span className="text-xl" aria-hidden="true">
+          🍃
+        </span>
         <div>
           <h4 className="text-sm font-bold text-green-700 dark:text-green-300">{title}</h4>
           <p className="text-[10px] text-green-500 dark:text-green-400">
@@ -87,7 +90,7 @@ export function ScentFreeBadge({
           </p>
         </div>
         {fullyScentFree && (
-          <span className="ml-auto shrink-0 rounded-full bg-green-100 px-2 py-0.5 text-[10px] font-bold text-green-700 dark:bg-green-950 dark:text-green-300">
+          <span className="ms-auto shrink-0 rounded-full bg-green-100 px-2 py-0.5 text-[10px] font-bold text-green-700 dark:bg-green-950 dark:text-green-300">
             100%
           </span>
         )}
@@ -128,7 +131,7 @@ export function ScentFreeBadge({
         </div>
       )}
 
-      <p className="mt-2 text-center text-[9px] text-text-tertiary dark:text-gray-500">
+      <p className="mt-2 text-center text-[9px] text-text-tertiary dark:text-text-secondary">
         {footerText}
       </p>
     </div>

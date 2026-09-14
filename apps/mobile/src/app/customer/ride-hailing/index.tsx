@@ -1,8 +1,10 @@
 import { View, Text, ScrollView, StyleSheet, TouchableOpacity, RefreshControl } from 'react-native';
 import { useState } from 'react';
+import type { JSX } from 'react';
 import { SkeletonList } from '@/components/SkeletonCard';
 import { trpc } from '@/lib/trpc-react';
 import { useLocale } from '@/components/LocaleProvider';
+import { useAuthState } from '@/hooks/useAuthState';
 
 interface RideProvider {
   key: string;
@@ -21,8 +23,9 @@ interface BookingResult {
 
 export default function RideHailingScreen(): JSX.Element {
   const { t, locale } = useLocale();
+  const isAuthed = useAuthState();
   const [result, setResult] = useState<BookingResult | null>(null);
-  const providersQ = trpc.rideHailing.providers.useQuery();
+  const providersQ = trpc.rideHailing.providers.useQuery(undefined, { enabled: isAuthed });
   const providers: RideProvider[] =
     (providersQ.data as unknown as RideProvider[] | undefined) ?? [];
 
@@ -42,7 +45,7 @@ export default function RideHailingScreen(): JSX.Element {
       <ScrollView style={styles.c} contentContainerStyle={styles.i}>
         <Text style={styles.t}>{t('mobile.rideHailing.title')}</Text>
         <View style={[styles.card, styles.rc]}>
-          <Text style={styles.re}></Text>
+          <Text style={styles.re}>🚗</Text>
           <Text style={styles.rt}>{t('mobile.rideHailing.booked')}</Text>
           <Text style={styles.rn}>
             {result.driverName} · {result.carModel}
@@ -60,7 +63,9 @@ export default function RideHailingScreen(): JSX.Element {
       refreshControl={
         <RefreshControl
           refreshing={providersQ.isRefetching}
-          onRefresh={() => providersQ.refetch()}
+          onRefresh={async () => {
+            await providersQ.refetch();
+          }}
           colors={['#2563eb']}
         />
       }
@@ -72,7 +77,7 @@ export default function RideHailingScreen(): JSX.Element {
           <View style={{ flex: 1 }}>
             <Text style={styles.pn}>{p.nameAr}</Text>
             <Text style={styles.pm}>
-              ️{' '}
+              {' '}
               {t('mobile.rideHailing.eta', {
                 time: p.estimatedTime,
                 price: p.estimatedPrice?.toLocaleString(locale === 'en' ? 'en-GB' : 'ar-SA') ?? '',

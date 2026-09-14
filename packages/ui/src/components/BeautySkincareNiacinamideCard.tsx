@@ -1,4 +1,5 @@
 'use client';
+import type { JSX } from 'react';
 import { cn } from '@galaxy/shared';
 export function BeautySkincareNiacinamideCard({
   className = '',
@@ -19,7 +20,7 @@ export function BeautySkincareNiacinamideCard({
       )}
     >
       <div className="flex items-center gap-2">
-        <span className="text-xl"></span>
+        <span className="text-xl">💊</span>
         <div>
           <h4 className="text-sm font-bold text-teal-700 dark:text-teal-300">{title}</h4>
           <p className="text-[10px] text-teal-500 dark:text-teal-400">{subtitle}</p>
@@ -28,19 +29,19 @@ export function BeautySkincareNiacinamideCard({
       <div className="mt-3 space-y-1">
         {[
           {
-            emoji: '',
+            emoji: '🧪',
             text: { ar: 'يقلص المسام — بشرة أنعم', en: 'Minimizes pores — smoother skin' },
           },
           {
-            emoji: '',
+            emoji: '✨',
             text: {
               ar: 'يوحد اللون — يقلل التصبغات',
               en: 'Evens tone — reduces hyperpigmentation',
             },
           },
-          { emoji: '️', text: { ar: 'يقوي حاجز البشرة', en: 'Strengthens the skin barrier' } },
+          { emoji: '🧱', text: { ar: 'يقوي حاجز البشرة', en: 'Strengthens the skin barrier' } },
           {
-            emoji: '',
+            emoji: '✅',
             text: {
               ar: 'آمن مع معظم المكونات — صباح ومساء',
               en: 'Safe with most ingredients — morning and night',

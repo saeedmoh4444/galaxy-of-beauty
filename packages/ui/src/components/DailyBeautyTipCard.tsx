@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import type { JSX } from 'react';
 import { cn } from '@galaxy/shared';
 
 /**
@@ -13,7 +14,7 @@ import { cn } from '@galaxy/shared';
 
 const TIPS = [
   {
-    emoji: '',
+    emoji: '💧',
     tip: {
       ar: 'اشربي كوب ماء قبل قهوتكِ الصباحية — بشرتكِ ستشكركِ',
       en: 'Drink a glass of water before your morning coffee — your skin will thank you',
@@ -21,7 +22,7 @@ const TIPS = [
     category: { ar: 'عناية', en: 'Care' },
   },
   {
-    emoji: '️',
+    emoji: '🌞',
     tip: {
       ar: 'واقي الشمس حتى في الأيام الغائمة — الأشعة فوق البنفسجية تخترق الغيوم',
       en: 'Sunscreen even on cloudy days — UV rays penetrate clouds',
@@ -29,7 +30,7 @@ const TIPS = [
     category: { ar: 'حماية', en: 'Protection' },
   },
   {
-    emoji: '',
+    emoji: '🛌',
     tip: {
       ar: 'نامي على ظهركِ — يمنع تجاعيد الوجه ويحافظ على نضارة البشرة',
       en: 'Sleep on your back — it prevents facial wrinkles and keeps skin fresh',
@@ -37,7 +38,7 @@ const TIPS = [
     category: { ar: 'صحة', en: 'Health' },
   },
   {
-    emoji: '',
+    emoji: '🧴',
     tip: {
       ar: 'طبقي المرطب على بشرة رطبة — يمتص بشكل أفضل',
       en: 'Apply moisturizer on damp skin — it absorbs better',
@@ -45,7 +46,7 @@ const TIPS = [
     category: { ar: 'عناية', en: 'Care' },
   },
   {
-    emoji: '',
+    emoji: '💄',
     tip: {
       ar: 'جددِي مكياجكِ كل 6 أشهر — المنتجات القديمة تجمع البكتيريا',
       en: 'Refresh your makeup every 6 months — old products collect bacteria',
@@ -53,7 +54,7 @@ const TIPS = [
     category: { ar: 'صحة', en: 'Health' },
   },
   {
-    emoji: '',
+    emoji: '🥒',
     tip: {
       ar: 'شرائح الخيار الباردة تقلل انتفاخ العينين في 10 دقائق',
       en: 'Cold cucumber slices reduce eye puffiness in 10 minutes',
@@ -61,7 +62,7 @@ const TIPS = [
     category: { ar: 'طبيعي', en: 'Natural' },
   },
   {
-    emoji: '‍️',
+    emoji: '🚿',
     tip: {
       ar: 'لا تغسلي وجهكِ بالماء الساخن — الماء الفاتر أفضل للبشرة',
       en: 'Do not wash your face with hot water — lukewarm water is better for skin',
@@ -69,7 +70,7 @@ const TIPS = [
     category: { ar: 'عناية', en: 'Care' },
   },
   {
-    emoji: '',
+    emoji: '🍵',
     tip: {
       ar: 'الشاي الأخضر قبل النوم يساعد في محاربة الالتهابات وتجديد البشرة',
       en: 'Green tea before bed helps fight inflammation and renew skin',
@@ -105,7 +106,9 @@ export function DailyBeautyTipCard({
       )}
     >
       <div className="flex items-center gap-2">
-        <span className="text-lg" aria-hidden="true"></span>
+        <span className="text-lg" aria-hidden="true">
+          💡
+        </span>
         <div>
           <h4 className="text-sm font-bold text-amber-700 dark:text-amber-300">{title}</h4>
           <p className="text-[10px] text-amber-500 dark:text-amber-400">{tip.category[locale]}</p>
@@ -135,7 +138,7 @@ export function DailyBeautyTipCard({
         ))}
       </div>
 
-      <p className="mt-1.5 text-center text-[9px] text-text-tertiary dark:text-gray-500">
+      <p className="mt-1.5 text-center text-[9px] text-text-tertiary dark:text-text-secondary">
         {footerText}
       </p>
     </div>

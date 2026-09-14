@@ -1,24 +1,36 @@
 'use client';
+import type { JSX } from 'react';
 
 import { api } from '@/lib/trpc';
-import { Card, KPIRowSkeleton, ErrorAlert, Button } from '@galaxy/ui';
+import { Card, KPIRowSkeleton, ErrorAlert, Button, useAuth } from '@galaxy/ui';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
 import { useLocale } from '@/components/LocaleProvider';
 import type { TranslationKey } from '@galaxy/shared';
 import Link from 'next/link';
 
 const MILESTONES: Record<number, { emoji: string; reward: TranslationKey }> = {
-  5: { emoji: '', reward: 'streakCalendar.reward.m5' },
-  10: { emoji: '', reward: 'streakCalendar.reward.m10' },
-  20: { emoji: '', reward: 'streakCalendar.reward.m20' },
-  30: { emoji: '', reward: 'streakCalendar.reward.m30' },
-  50: { emoji: '', reward: 'streakCalendar.reward.m50' },
+  5: { emoji: '🔖', reward: 'streakCalendar.reward.m5' },
+  10: { emoji: '💆', reward: 'streakCalendar.reward.m10' },
+  20: { emoji: '🎁', reward: 'streakCalendar.reward.m20' },
+  30: { emoji: '🥇', reward: 'streakCalendar.reward.m30' },
+  50: { emoji: '👑', reward: 'streakCalendar.reward.m50' },
 };
 
 export default function StreakCalendarPage(): JSX.Element {
   const { t, locale } = useLocale();
-  const { data: streakData, isLoading, isError, refetch } = api.streaks.get.useQuery();
-  const { data: bookings } = api.bookings.list.useQuery({ limit: 100 });
+  const { isAuthenticated } = useAuth();
+  const {
+    data: streakData,
+    isLoading,
+    isError,
+    refetch,
+  } = api.streaks.get.useQuery(undefined, {
+    enabled: isAuthenticated,
+  });
+  const { data: bookings } = api.bookings.list.useQuery(
+    { limit: 100 },
+    { enabled: isAuthenticated },
+  );
 
   const currentStreak = streakData?.currentStreak || 0;
   const longestStreak = streakData?.longestStreak || 0;
@@ -72,7 +84,7 @@ export default function StreakCalendarPage(): JSX.Element {
               padding="lg"
               className="text-center bg-gradient-to-r from-amber-50 to-orange-50 dark:from-amber-950 dark:to-orange-950"
             >
-              <p className="text-6xl"></p>
+              <p className="text-6xl">🔥</p>
               <p className="mt-2 text-sm text-text-secondary">
                 {t('streakCalendar.currentStreak')}
               </p>
@@ -90,7 +102,7 @@ export default function StreakCalendarPage(): JSX.Element {
                   <p className="text-xs text-brand-600 mt-1">
                     {milestone.emoji} {t(milestone.reward)}
                   </p>
-                  <div className="mt-2 h-2 rounded-full bg-gray-200 dark:bg-gray-700">
+                  <div className="mt-2 h-2 rounded-full bg-surface-muted">
                     <div
                       className="h-2 rounded-full bg-brand-500"
                       style={{ width: `${(currentStreak / nextMilestone!) * 100}%` }}
@@ -107,7 +119,7 @@ export default function StreakCalendarPage(): JSX.Element {
                 {weeks.map((w, i) => (
                   <div
                     key={i}
-                    className={`rounded-lg p-3 text-center text-xs transition-all ${w.booked ? 'bg-green-100 dark:bg-green-900/30 border border-green-300 dark:border-green-700' : 'bg-surface-muted dark:bg-gray-800 border border-gray-200 dark:border-gray-700'} ${w.isCurrent ? 'ring-2 ring-brand-500' : ''}`}
+                    className={`rounded-lg p-3 text-center text-xs transition-all ${w.booked ? 'bg-green-100 dark:bg-green-900/30 border border-green-300 dark:border-green-700' : 'bg-surface-muted dark:bg-gray-800 border border-edge'} ${w.isCurrent ? 'ring-2 ring-brand-500' : ''}`}
                   >
                     <div className="text-lg">{w.booked ? '' : '—'}</div>
                     <div className="mt-1 text-text-secondary">{w.label}</div>

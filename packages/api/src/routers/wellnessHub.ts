@@ -1,22 +1,8 @@
 import { prisma } from '@galaxy/db';
+import { PMS_LIBRARY, computeCyclePredictions } from '@galaxy/shared';
 import { customerProcedure, router } from '../trpc';
 
 const db = prisma;
-
-const PHASES = [
-  { key: 'menstrual', emoji: '🩸', name: 'الدورة', color: '#ec4899' },
-  { key: 'follicular', emoji: '', name: 'الجريبي', color: '#f59e0b' },
-  { key: 'ovulation', emoji: '', name: 'الإباضة', color: '#8b5cf6' },
-  { key: 'luteal', emoji: '', name: 'الأصفري', color: '#059669' },
-];
-
-function getPhase(day: number, cycleLength: number = 28) {
-  const adj = ((day - 1) % cycleLength) + 1;
-  if (adj <= 5) return PHASES[0]!;
-  if (adj <= 13) return PHASES[1]!;
-  if (adj <= 16) return PHASES[2]!;
-  return PHASES[3]!;
-}
 
 export const wellnessHubRouter = router({
   dashboard: customerProcedure.query(async ({ ctx }) => {
@@ -37,16 +23,18 @@ export const wellnessHubRouter = router({
       (async () => {
         const s = await db.cycleSettings.findUnique({ where: { userId } });
         if (!s?.lastPeriodStart) return null;
-        const diff = Math.floor((Date.now() - new Date(s.lastPeriodStart).getTime()) / 86400000);
-        const day = (diff % (s.cycleLength || 28)) + 1;
-        const phase = getPhase(day, s.cycleLength || 28);
-        const daysUntilNext = (s.cycleLength || 28) - (day - 1);
-        return {
-          currentDay: day,
+        const predictions = computeCyclePredictions({
           cycleLength: s.cycleLength || 28,
-          phase,
-          daysUntilNext,
-          nextPeriodDate: new Date(Date.now() + daysUntilNext * 86400000).toISOString(),
+          lastPeriodStart: s.lastPeriodStart,
+          avgCycleLength: s.avgCycleLength,
+        });
+        return {
+          currentDay: predictions.currentDay,
+          cycleLength: predictions.cycleLength,
+          phase: predictions.phase,
+          daysUntilNext: predictions.daysUntilNext,
+          nextPeriodDate: predictions.nextPeriodDate,
+          predictionSource: predictions.predictionSource,
         };
       })(),
       db.selfCareCheckin.findFirst({
@@ -118,6 +106,8 @@ export const wellnessHubRouter = router({
           }
         : null,
       weekly: { avgMood, avgEnergy, checkinCount: weeklyCheckins.length },
+      // E4a — PMS self-care tips surface on the hub in the luteal phase.
+      pmsTips: todayCycle?.phase?.key === 'luteal' ? PMS_LIBRARY : [],
       journalCount,
       recentJournals: (recentJournals as any[]).map((j: any) => ({
         id: j.id,

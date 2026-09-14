@@ -1,5 +1,6 @@
 'use client';
 import { useState } from 'react';
+import type { JSX } from 'react';
 import { api } from '@/lib/trpc';
 import { Card, CardListSkeleton, Button } from '@galaxy/ui';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
@@ -60,7 +61,9 @@ export default function ServiceMenuQrPage(): JSX.Element {
             <h3 className="font-bold mb-3">
               {t('serviceMenuQr.qrForMenu', { name: result.technicianName as string })}
             </h3>
-            <div className="mx-auto flex h-40 w-40 items-center justify-center rounded-xl bg-surface-muted dark:bg-gray-800 text-6xl"></div>
+            <div className="mx-auto flex h-40 w-40 items-center justify-center rounded-xl bg-surface-muted dark:bg-gray-800 text-6xl">
+              📱
+            </div>
             <p className="text-xs text-text-secondary mt-2 break-all">{result.menuUrl as string}</p>
             <div className="flex gap-2 justify-center mt-3">
               <Button

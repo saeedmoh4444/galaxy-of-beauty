@@ -6,7 +6,8 @@ import { notFound, forbidden } from '../lib/errors';
 import { protectedProcedure, customerProcedure, technicianProcedure, router } from '../trpc';
 import { createBookingSchema, bookingQuerySchema } from '../validators/booking';
 import { emitToUser, emitToTechnician, emitToAdmin } from '../socket/index';
-import type { CashbackJob, LoyaltyPointsJob, NotificationJob, CalendarSyncJob } from '../workers';
+import type { CashbackJob, LoyaltyPointsJob, CalendarSyncJob } from '../workers';
+import { notifyUser } from '../lib/notify';
 import {
   getWalletQueue,
   getLoyaltyQueue,
@@ -211,6 +212,35 @@ export const bookingRouter = router({
       const cashback = Math.round(Number(booking.totalAmount) * 0.05 * 100) / 100;
       const points = Math.round(Number(booking.totalAmount));
 
+      // B.26 — template-driven notifications (prefs-respecting). In-app rows
+      // are created synchronously; external channels ride the queue.
+      const customer = await prisma.user.findUnique({
+        where: { id: customerId },
+        select: { name: true, preferredLanguage: true },
+      });
+      const serviceRow = await prisma.service.findUnique({
+        where: { id: input.serviceId },
+        select: { titleJson: true },
+      });
+      const serviceTitle = (serviceRow?.titleJson ?? {}) as { ar?: string; en?: string };
+      const customerLocale = customer?.preferredLanguage === 'en' ? 'en' : 'ar';
+      const fmt = new Intl.DateTimeFormat(customerLocale === 'ar' ? 'ar-SA' : 'en-GB', {
+        weekday: 'long',
+        month: 'long',
+        day: 'numeric',
+      });
+      const fmtTime = new Intl.DateTimeFormat(customerLocale === 'ar' ? 'ar-SA' : 'en-GB', {
+        hour: '2-digit',
+        minute: '2-digit',
+      });
+      const startDate = new Date(input.startAt);
+      const notifVars = {
+        customerName: customer?.name ?? '',
+        serviceName: serviceTitle[customerLocale] ?? '',
+        date: fmt.format(startDate),
+        time: fmtTime.format(startDate),
+      };
+
       await Promise.allSettled([
         // Wallet cashback
         getWalletQueue()?.add('cashback.accrue', {
@@ -229,33 +259,27 @@ export const bookingRouter = router({
           idempotencyKey: idemKey ? `${idemKey}_loyalty` : undefined,
         } as LoyaltyPointsJob),
 
-        // Notification to technician
-        getNotificationQueue()?.add('booking.requested', {
+        // Notification to technician (template-driven)
+        notifyUser({
           userId: input.technicianId,
-          type: 'booking_requested',
-          titleAr: 'طلب حجز جديد',
-          titleEn: 'New Booking Request',
-          bodyAr: `لديك طلب حجز جديد من ${ctx.user.email}`,
-          bodyEn: `New booking request from ${ctx.user.email}`,
-          channels: ['in_app', 'push'],
-          idempotencyKey: idemKey ? `${idemKey}_notif_tech` : undefined,
-        } as NotificationJob),
+          templateKey: 'booking_request_tech',
+          vars: notifVars,
+          link: `/tech/bookings`,
+        }),
 
-        // Notification to customer
-        getNotificationQueue()?.add('booking.confirmed', {
+        // Notification to customer (template-driven)
+        notifyUser({
           userId: customerId,
-          type: 'booking_created',
-          titleAr: 'تم استلام طلب الحجز',
-          titleEn: 'Booking Request Received',
-          bodyAr: 'تم إرسال طلبك إلى الفنية. سنخطرك عند القبول.',
-          bodyEn: 'Your request has been sent. We will notify you upon acceptance.',
-          channels: ['in_app'],
-          idempotencyKey: idemKey ? `${idemKey}_notif_cust` : undefined,
-        } as NotificationJob),
+          templateKey: 'booking_created',
+          vars: notifVars,
+          link: `/bookings/${booking.id}`,
+        }),
 
-        // Calendar sync (if technician has Google Calendar)
+        // Booking auto-sync (E9 follow-up): push the event to the Google
+        // Calendars of the customer AND the technician when connected.
         getIntegrationQueue()?.add('calendar.create', {
           technicianId: input.technicianId,
+          customerId,
           bookingId: booking.id,
           action: 'create',
           startAt: input.startAt,
@@ -264,6 +288,24 @@ export const bookingRouter = router({
           idempotencyKey: idemKey ? `${idemKey}_calendar` : undefined,
         } as CalendarSyncJob),
       ]);
+
+      // B.26 — schedule 48h and 24h pre-appointment reminders (BullMQ delays).
+      // If the appointment is sooner than a window, that reminder is skipped;
+      // the worker re-checks the status so cancelled bookings never get one.
+      const reminderQueue = getNotificationQueue();
+      if (reminderQueue) {
+        const now = Date.now();
+        for (const hoursBefore of [48, 24]) {
+          const delay = startDate.getTime() - hoursBefore * 3_600_000 - now;
+          if (delay > 0) {
+            await reminderQueue.add(
+              'booking.reminder',
+              { bookingId: booking.id, date: notifVars.date, time: notifVars.time },
+              { delay, jobId: `reminder_${booking.id}_${hoursBefore}h` },
+            );
+          }
+        }
+      }
     } catch {
       // Fire-and-forget — enqueue failures should never fail the booking creation
     }
@@ -492,6 +534,52 @@ export const bookingRouter = router({
         booking: updatedBooking,
       });
 
+      // Booking auto-sync (E9 follow-up): cancel/reject removes the
+      // Google Calendar events for both sides.
+      if (input.action === 'cancel' || input.action === 'reject') {
+        getIntegrationQueue()?.add('calendar.cancel', {
+          technicianId: booking.technicianId,
+          customerId: booking.customerId ?? undefined,
+          bookingId: booking.id,
+          action: 'cancel',
+        } as CalendarSyncJob);
+      }
+
+      // B.26 — template-driven notification on acceptance (fire-and-forget).
+      if (input.action === 'accept') {
+        try {
+          const svc = updatedBooking.service as { titleJson?: { ar?: string; en?: string } } | null;
+          const customerLocale =
+            (updatedBooking.customer as { preferredLanguage?: string } | null)
+              ?.preferredLanguage === 'en'
+              ? 'en'
+              : 'ar';
+          const fmt = new Intl.DateTimeFormat(customerLocale === 'ar' ? 'ar-SA' : 'en-GB', {
+            weekday: 'long',
+            month: 'long',
+            day: 'numeric',
+          });
+          const fmtTime = new Intl.DateTimeFormat(customerLocale === 'ar' ? 'ar-SA' : 'en-GB', {
+            hour: '2-digit',
+            minute: '2-digit',
+          });
+          await notifyUser({
+            userId: booking.customerId,
+            templateKey: 'booking_accepted',
+            vars: {
+              customerName: updatedBooking.customer?.name ?? '',
+              serviceName: svc?.titleJson?.[customerLocale] ?? '',
+              techName: updatedBooking.technician?.name ?? '',
+              date: fmt.format(updatedBooking.startAt),
+              time: fmtTime.format(updatedBooking.startAt),
+            },
+            link: `/bookings/${booking.id}`,
+          });
+        } catch {
+          // Notification failure must never fail the transition
+        }
+      }
+
       return updatedBooking;
     }),
 
@@ -624,6 +712,17 @@ export const bookingRouter = router({
           include: bookingDetailInclude,
         });
       });
+
+      // Booking auto-sync (E9 follow-up): move the Google Calendar events
+      // to the new time for both sides.
+      getIntegrationQueue()?.add('calendar.update', {
+        technicianId: booking.technicianId,
+        customerId: booking.customerId,
+        bookingId: booking.id,
+        action: 'update',
+        startAt: input.newStartAt,
+        endAt: input.newEndAt,
+      } as CalendarSyncJob);
 
       return updatedBooking;
     }),

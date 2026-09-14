@@ -1,4 +1,5 @@
 'use client';
+import type { JSX } from 'react';
 
 import { cn } from '@galaxy/shared';
 
@@ -33,22 +34,22 @@ const YEAR_MESSAGES: Record<
   { emoji: string; title: { ar: string; en: string }; gift: { ar: string; en: string } }
 > = {
   1: {
-    emoji: '',
+    emoji: '🥉',
     title: { ar: 'ذكرى سنوية أولى', en: 'First anniversary' },
     gift: { ar: 'خصم 20% على خدمتكِ القادمة', en: '20% off your next service' },
   },
   2: {
-    emoji: '',
+    emoji: '🥈',
     title: { ar: 'ذكرى سنوية ثانية', en: 'Second anniversary' },
     gift: { ar: 'خدمة مجانية صغيرة من اختياركِ', en: 'A small free service of your choice' },
   },
   3: {
-    emoji: '',
+    emoji: '🥇',
     title: { ar: 'ذكرى سنوية ثالثة', en: 'Third anniversary' },
     gift: { ar: 'يوم سبا مصغر مجاني', en: 'A free mini spa day' },
   },
   5: {
-    emoji: '',
+    emoji: '👑',
     title: { ar: '5 سنوات من الجمال', en: '5 years of beauty' },
     gift: { ar: 'باقة VIP شاملة', en: 'Full VIP package' },
   },
@@ -65,8 +66,8 @@ export function LoyaltyAnniversaryCard({
   yearSingular = 'سنة',
   yearPlural = 'سنوات',
   withYouText = 'من جمالكِ معنا',
-  bookingsSuffix = ' حجز',
-  giftLabel = ' هديتكِ',
+  bookingsSuffix = 'حجز',
+  giftLabel = 'هديتكِ',
   claimGiftButtonText = 'استلمي هديتكِ',
   footerText = 'شكراً لأنكِ جزء من عائلتنا',
 }: LoyaltyAnniversaryCardProps): JSX.Element {
@@ -103,7 +104,7 @@ export function LoyaltyAnniversaryCard({
           {years === 1 ? yearSingular : years <= 10 ? yearPlural : yearSingular} {withYouText}
         </p>
         {totalBookings && (
-          <p className="mt-1 text-[10px] text-text-tertiary dark:text-gray-500">
+          <p className="mt-1 text-[10px] text-text-tertiary dark:text-text-secondary">
             {totalBookings}
             {bookingsSuffix}
           </p>

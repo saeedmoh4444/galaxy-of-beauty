@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import type { JSX } from 'react';
 import { api } from '@/lib/trpc';
 import { useLocale } from '@/components/LocaleProvider';
 import { Card, CardListSkeleton } from '@galaxy/ui';
@@ -25,7 +26,7 @@ export default function BeautyFaqPage(): JSX.Element {
   return (
     <div className="mx-auto max-w-3xl px-4 py-12">
       <div className="mb-8 text-center">
-        <span className="text-6xl"></span>
+        <span className="text-6xl">❓</span>
         <h1 className="mt-4 text-3xl font-bold">Beauty FAQ</h1>
         <p className="mt-2 text-text-secondary">{t('marketing.beauty-faq.subtitle')}</p>
       </div>
@@ -75,7 +76,7 @@ export default function BeautyFaqPage(): JSX.Element {
                 <summary className="cursor-pointer font-bold text-text-primary dark:text-gray-100 hover:text-brand-600 transition-colors">
                   {f.q as string}
                 </summary>
-                <p className="mt-3 text-sm text-text-secondary dark:text-gray-400 leading-relaxed border-t border-gray-100 dark:border-gray-800 pt-3">
+                <p className="mt-3 text-sm text-text-secondary dark:text-text-tertiary leading-relaxed border-t border-edge-muted pt-3">
                   {f.a as string}
                 </p>
               </details>

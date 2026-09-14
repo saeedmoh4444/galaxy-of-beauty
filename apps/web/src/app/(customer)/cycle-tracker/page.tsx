@@ -1,22 +1,23 @@
 'use client';
 import { useState } from 'react';
+import type { JSX } from 'react';
 import { api } from '@/lib/trpc';
 import { Card, KPIRowSkeleton, Button } from '@galaxy/ui';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
 import { useLocale } from '@/components/LocaleProvider';
 import type { TranslationKey } from '@galaxy/shared';
 
-const SYMPTOMS_LIST: TranslationKey[] = [
-  'cycleTracker.symptom.cramps',
-  'cycleTracker.symptom.headache',
-  'cycleTracker.symptom.fatigue',
-  'cycleTracker.symptom.bloating',
-  'cycleTracker.symptom.nausea',
-  'cycleTracker.symptom.insomnia',
-  'cycleTracker.symptom.increasedAppetite',
-  'cycleTracker.symptom.backPain',
-  'cycleTracker.symptom.breastTenderness',
-  'cycleTracker.symptom.moodSwings',
+const SYMPTOMS_LIST: Array<{ slug: string; key: TranslationKey }> = [
+  { slug: 'cramps', key: 'cycleTracker.symptom.cramps' },
+  { slug: 'headache', key: 'cycleTracker.symptom.headache' },
+  { slug: 'fatigue', key: 'cycleTracker.symptom.fatigue' },
+  { slug: 'bloating', key: 'cycleTracker.symptom.bloating' },
+  { slug: 'nausea', key: 'cycleTracker.symptom.nausea' },
+  { slug: 'insomnia', key: 'cycleTracker.symptom.insomnia' },
+  { slug: 'increasedAppetite', key: 'cycleTracker.symptom.increasedAppetite' },
+  { slug: 'backPain', key: 'cycleTracker.symptom.backPain' },
+  { slug: 'breastTenderness', key: 'cycleTracker.symptom.breastTenderness' },
+  { slug: 'moodSwings', key: 'cycleTracker.symptom.moodSwings' },
 ];
 const MOODS = ['', '', '', '', ''];
 
@@ -44,16 +45,29 @@ export default function CycleTrackerPage(): JSX.Element {
   const [showLog, setShowLog] = useState(false);
   const [mood, setMood] = useState('');
   const [flow, setFlow] = useState('');
-  const [symptoms, setSymptoms] = useState<TranslationKey[]>([]);
+  const [symptoms, setSymptoms] = useState<string[]>([]);
+  const [temperature, setTemperature] = useState('');
   const [notes, setNotes] = useState('');
   const [showSettings, setShowSettings] = useState(false);
   const [cycleLen, setCycleLen] = useState(28);
   const [periodLen, setPeriodLen] = useState(5);
   const [lastStart, setLastStart] = useState('');
+  // E4a — pregnancy mode.
+  const [pregnancyMode, setPregnancyMode] = useState(false);
+  const [dueDate, setDueDate] = useState('');
+  // E6c — menopause/perimenopause mode.
+  const [menopauseMode, setMenopauseMode] = useState(false);
+  const [lastPeriodAt, setLastPeriodAt] = useState('');
 
   const phase = today?.phase as Record<string, unknown> | undefined;
   const entries = (entriesData?.entries as Array<Record<string, unknown>>) ?? [];
   const cycleLength = (entriesData?.cycleLength as number) ?? 28;
+  const fertileWindowRaw = today?.fertileWindow as Record<string, unknown> | undefined;
+  const fertileWindow =
+    fertileWindowRaw && (fertileWindowRaw.ovulationDate as string | undefined)
+      ? fertileWindowRaw
+      : null;
+  const pmsTips = (today?.pmsTips as Array<{ ar: string; en: string; emoji: string }>) ?? [];
 
   const handleLog = () => {
     logMut.mutate(
@@ -61,7 +75,8 @@ export default function CycleTrackerPage(): JSX.Element {
         dayNumber: (today?.currentDay as number) ?? 1,
         mood,
         flowIntensity: (flow || undefined) as 'light' | undefined,
-        symptoms: symptoms.length > 0 ? symptoms.map((s) => t(s)) : undefined,
+        symptoms: symptoms.length > 0 ? symptoms : undefined,
+        temperature: temperature ? Number(temperature) : undefined,
         notes: notes || undefined,
       },
       {
@@ -94,16 +109,28 @@ export default function CycleTrackerPage(): JSX.Element {
                     ? new Date(settings.lastPeriodStart as string).toISOString().slice(0, 10)
                     : '',
                 );
+                setPregnancyMode((settings.pregnancyMode as boolean) ?? false);
+                setDueDate(
+                  settings.dueDate
+                    ? new Date(settings.dueDate as string).toISOString().slice(0, 10)
+                    : '',
+                );
+                setMenopauseMode((settings.menopauseMode as boolean) ?? false);
+                setLastPeriodAt(
+                  settings.lastPeriodAt
+                    ? new Date(settings.lastPeriodAt as string).toISOString().slice(0, 10)
+                    : '',
+                );
               }
             }}
           >
-            ️
+            ⚙️
           </Button>
         </div>
 
         {showSettings && (
           <Card padding="lg">
-            <h3 className="font-bold mb-3">️ {t('cycleTracker.settingsTitle')}</h3>
+            <h3 className="font-bold mb-3"> {t('cycleTracker.settingsTitle')}</h3>
             <div className="grid gap-3 sm:grid-cols-3">
               <div>
                 <label htmlFor="ct-cycleLen" className="text-xs text-text-secondary">
@@ -142,6 +169,56 @@ export default function CycleTrackerPage(): JSX.Element {
                 />
               </div>
             </div>
+            {/* E4a — pregnancy mode */}
+            <div className="mt-3 rounded-lg border p-3">
+              <label className="flex items-center gap-2 text-sm font-semibold">
+                <input
+                  type="checkbox"
+                  checked={pregnancyMode}
+                  onChange={(e) => setPregnancyMode(e.target.checked)}
+                />
+                {t('cycleTracker.pregnancyMode')}
+              </label>
+              {pregnancyMode && (
+                <div className="mt-2">
+                  <label htmlFor="ct-dueDate" className="text-xs text-text-secondary">
+                    {t('cycleTracker.dueDate')}
+                  </label>
+                  <input
+                    id="ct-dueDate"
+                    type="date"
+                    value={dueDate}
+                    onChange={(e) => setDueDate(e.target.value)}
+                    className="w-full rounded-lg border px-3 py-2 text-sm dark:border-gray-700 dark:bg-gray-800"
+                  />
+                </div>
+              )}
+            </div>
+            {/* E6c — menopause mode */}
+            <div className="mt-3 rounded-lg border p-3">
+              <label className="flex items-center gap-2 text-sm font-semibold">
+                <input
+                  type="checkbox"
+                  checked={menopauseMode}
+                  onChange={(e) => setMenopauseMode(e.target.checked)}
+                />
+                {t('menopause.title')}
+              </label>
+              {menopauseMode && (
+                <div className="mt-2">
+                  <label htmlFor="ct-lastPeriodAt" className="text-xs text-text-secondary">
+                    {t('menopause.lastPeriodAt')}
+                  </label>
+                  <input
+                    id="ct-lastPeriodAt"
+                    type="date"
+                    value={lastPeriodAt}
+                    onChange={(e) => setLastPeriodAt(e.target.value)}
+                    className="w-full rounded-lg border px-3 py-2 text-sm dark:border-gray-700 dark:bg-gray-800"
+                  />
+                </div>
+              )}
+            </div>
             <Button
               onClick={() =>
                 settingsMut.mutate(
@@ -149,6 +226,10 @@ export default function CycleTrackerPage(): JSX.Element {
                     cycleLength: cycleLen,
                     periodLength: periodLen,
                     lastPeriodStart: lastStart || undefined,
+                    pregnancyMode,
+                    dueDate: pregnancyMode && dueDate ? dueDate : undefined,
+                    menopauseMode,
+                    lastPeriodAt: menopauseMode && lastPeriodAt ? lastPeriodAt : undefined,
                   },
                   { onSuccess: () => setShowSettings(false) },
                 )
@@ -163,6 +244,20 @@ export default function CycleTrackerPage(): JSX.Element {
 
         {todayLoading ? (
           <KPIRowSkeleton count={1} />
+        ) : (today?.pregnancyMode as boolean) ? (
+          /* E4a — pregnancy timeline card replaces period predictions. */
+          <Card padding="lg" className="text-center border-2 border-pink-300">
+            <span className="text-5xl">🤰</span>
+            <h2 className="text-xl font-bold mt-2">{t('cycleTracker.pregnancyMode')}</h2>
+            <p className="text-sm text-text-secondary">
+              {t('cycleTracker.pregnancyWeeks', { weeks: today?.weeksPregnant as number })} ·{' '}
+              {t(`cycleTracker.trimester.${today?.trimester as number}` as never)}
+            </p>
+            <p className="text-xs text-text-secondary mt-1">
+              {t('cycleTracker.dueDate')}:{' '}
+              {new Date(today?.dueDate as string).toLocaleDateString('ar-SA')}
+            </p>
+          </Card>
         ) : (
           <Card padding="lg" className={`text-center border-2`}>
             <span className="text-5xl">{(phase?.emoji as string) ?? ''}</span>
@@ -172,12 +267,36 @@ export default function CycleTrackerPage(): JSX.Element {
             </p>
             {(today?.hasSettings as boolean) && (today?.daysUntilNext as number) != null && (
               <p className="text-xs text-brand-600 mt-1">
-                ️ {t('cycleTracker.daysUntilNext', { days: today?.daysUntilNext as number })}
+                {t('cycleTracker.daysUntilNext', { days: today?.daysUntilNext as number })}
               </p>
             )}
             {!today?.hasSettings && (
               <p className="text-xs text-amber-600 mt-2">{t('cycleTracker.noSettings')}</p>
             )}
+            {/* E4a — fertile window + prediction source */}
+            {fertileWindow && (
+              <div className="mt-3 border-t pt-2 text-xs text-text-secondary">
+                <p>
+                  {t('cycleTracker.ovulation')}:{' '}
+                  {new Date(fertileWindow.ovulationDate as string).toLocaleDateString('ar-SA')}
+                </p>
+                <p>
+                  {t('cycleTracker.fertileWindow')}:{' '}
+                  {new Date(fertileWindow.fertileStart as string).toLocaleDateString('ar-SA')} —{' '}
+                  {new Date(fertileWindow.fertileEnd as string).toLocaleDateString('ar-SA')}
+                </p>
+                {(fertileWindow.isFertileToday as boolean) && (
+                  <p className="text-brand-600 font-semibold mt-1">
+                    {t('cycleTracker.fertileToday')}
+                  </p>
+                )}
+              </div>
+            )}
+            <p className="text-[11px] text-text-tertiary mt-2">
+              {today?.predictionSource === 'average'
+                ? t('cycleTracker.predictionSource.average')
+                : t('cycleTracker.predictionSource.default')}
+            </p>
           </Card>
         )}
 
@@ -238,18 +357,34 @@ export default function CycleTrackerPage(): JSX.Element {
                 <div className="flex flex-wrap gap-1">
                   {SYMPTOMS_LIST.map((s) => (
                     <button
-                      key={s}
+                      key={s.slug}
                       onClick={() =>
                         setSymptoms((prev) =>
-                          prev.includes(s) ? prev.filter((x) => x !== s) : [...prev, s],
+                          prev.includes(s.slug)
+                            ? prev.filter((x) => x !== s.slug)
+                            : [...prev, s.slug],
                         )
                       }
-                      className={`rounded-full px-3 py-1 text-xs ${symptoms.includes(s) ? 'bg-purple-100 text-purple-700' : 'bg-surface-muted'}`}
+                      className={`rounded-full px-3 py-1 text-xs ${symptoms.includes(s.slug) ? 'bg-brand-100 text-brand-700' : 'bg-surface-muted'}`}
                     >
-                      {t(s)}
+                      {t(s.key)}
                     </button>
                   ))}
                 </div>
+              </div>
+              {/* E4a — basal body temperature */}
+              <div>
+                <label htmlFor="ct-temp" className="text-xs text-text-secondary mb-1 block">
+                  {t('cycleTracker.label.temperature')}
+                </label>
+                <input
+                  id="ct-temp"
+                  type="number"
+                  step="0.1"
+                  value={temperature}
+                  onChange={(e) => setTemperature(e.target.value)}
+                  className="w-full rounded-lg border px-3 py-2 text-sm dark:border-gray-700 dark:bg-gray-800"
+                />
               </div>
               <textarea
                 value={notes}
@@ -278,6 +413,20 @@ export default function CycleTrackerPage(): JSX.Element {
           </div>
         </Card>
 
+        {/* E4a — PMS self-care tips (luteal phase only) */}
+        {pmsTips.length > 0 && (
+          <Card padding="lg" className="border-brand-200 bg-brand-50 dark:bg-brand-950">
+            <h3 className="font-bold mb-3"> {t('cycleTracker.pmsTips')}</h3>
+            <div className="space-y-2">
+              {pmsTips.map((tip, i) => (
+                <p key={i} className="text-sm text-text-secondary">
+                  {tip.emoji} {tip.ar}
+                </p>
+              ))}
+            </div>
+          </Card>
+        )}
+
         {entriesLoading ? (
           <div className="space-y-1">
             {Array.from({ length: 28 }, (_, i) => (
@@ -286,7 +435,7 @@ export default function CycleTrackerPage(): JSX.Element {
           </div>
         ) : (
           <Card padding="lg">
-            <h3 className="font-bold mb-3">️ {t('cycleTracker.daysTitle')}</h3>
+            <h3 className="font-bold mb-3"> {t('cycleTracker.daysTitle')}</h3>
             <div className="flex flex-wrap gap-1">
               {Array.from({ length: cycleLength }, (_, i) => i + 1).map((d) => {
                 const p = (() => {

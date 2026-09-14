@@ -1,3 +1,4 @@
+import type { JSX } from 'react';
 import { getServerCaller } from '@/lib/server-trpc';
 import { Card } from '@galaxy/ui';
 import { getServerLocale } from '@/lib/i18n';
@@ -24,7 +25,7 @@ export default async function BeautyStatsPage(): Promise<JSX.Element> {
   return (
     <div className="mx-auto max-w-5xl px-4 py-16">
       <div className="text-center mb-16">
-        <span className="text-7xl"></span>
+        <span className="text-7xl">📊</span>
         <h1 className="mt-6 text-4xl font-extrabold">
           {t('marketing.beauty-stats.title', locale)}
         </h1>
@@ -35,7 +36,7 @@ export default async function BeautyStatsPage(): Promise<JSX.Element> {
 
       <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
         <Card padding="lg" className="text-center">
-          <span className="text-4xl"></span>
+          <span className="text-4xl">📅</span>
           <p className="text-3xl font-extrabold mt-3">
             {stats.totalBookings.toLocaleString(locale === 'ar' ? 'ar-SA' : 'en-GB')}+
           </p>
@@ -44,7 +45,7 @@ export default async function BeautyStatsPage(): Promise<JSX.Element> {
           </p>
         </Card>
         <Card padding="lg" className="text-center">
-          <span className="text-4xl">‍</span>
+          <span className="text-4xl">💇</span>
           <p className="text-3xl font-extrabold mt-3">
             {stats.totalTechnicians.toLocaleString(locale === 'ar' ? 'ar-SA' : 'en-GB')}+
           </p>
@@ -53,7 +54,7 @@ export default async function BeautyStatsPage(): Promise<JSX.Element> {
           </p>
         </Card>
         <Card padding="lg" className="text-center">
-          <span className="text-4xl"></span>
+          <span className="text-4xl">💅</span>
           <p className="text-3xl font-extrabold mt-3">
             {stats.totalServices.toLocaleString(locale === 'ar' ? 'ar-SA' : 'en-GB')}+
           </p>
@@ -62,7 +63,7 @@ export default async function BeautyStatsPage(): Promise<JSX.Element> {
           </p>
         </Card>
         <Card padding="lg" className="text-center">
-          <span className="text-4xl"></span>
+          <span className="text-4xl">😊</span>
           <p className="text-3xl font-extrabold mt-3">
             {stats.happyCustomers.toLocaleString(locale === 'ar' ? 'ar-SA' : 'en-GB')}+
           </p>
@@ -74,7 +75,7 @@ export default async function BeautyStatsPage(): Promise<JSX.Element> {
 
       <div className="mt-12 grid gap-6 sm:grid-cols-3">
         <Card padding="lg" className="text-center">
-          <span className="text-3xl"></span>
+          <span className="text-3xl">⭐</span>
           <p className="text-2xl font-extrabold mt-2">{stats.avgRating}</p>
           <p className="text-sm text-text-secondary">
             {t('marketing.beauty-stats.stat-avg-rating', locale)}
@@ -86,14 +87,14 @@ export default async function BeautyStatsPage(): Promise<JSX.Element> {
           </p>
         </Card>
         <Card padding="lg" className="text-center">
-          <span className="text-3xl"></span>
+          <span className="text-3xl">📍</span>
           <p className="text-2xl font-extrabold mt-2">{stats.citiesCount}+</p>
           <p className="text-sm text-text-secondary">
             {t('marketing.beauty-stats.stat-cities', locale)}
           </p>
         </Card>
         <Card padding="lg" className="text-center">
-          <span className="text-3xl"></span>
+          <span className="text-3xl">⏰</span>
           <p className="text-2xl font-extrabold mt-2">
             {t('marketing.beauty-stats.stat-247', locale)}
           </p>

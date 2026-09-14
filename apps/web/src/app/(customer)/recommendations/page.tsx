@@ -1,5 +1,6 @@
 'use client';
 import { useState } from 'react';
+import type { JSX } from 'react';
 import { api } from '@/lib/trpc';
 import { Card, GridSkeleton, formatCurrency } from '@galaxy/ui';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
@@ -7,12 +8,12 @@ import { useLocale } from '@/components/LocaleProvider';
 import type { TranslationKey } from '@galaxy/shared';
 
 const POPULAR_SERVICES: { id: number; name: TranslationKey; emoji: string }[] = [
-  { id: 1, name: 'recommendations.manicure', emoji: '' },
-  { id: 2, name: 'recommendations.pedicure', emoji: '' },
-  { id: 3, name: 'recommendations.facialCleaning', emoji: '' },
-  { id: 4, name: 'recommendations.massage', emoji: '‍️' },
-  { id: 5, name: 'recommendations.hairDye', emoji: '' },
-  { id: 6, name: 'recommendations.makeup', emoji: '' },
+  { id: 1, name: 'recommendations.manicure', emoji: '💅' },
+  { id: 2, name: 'recommendations.pedicure', emoji: '🦶' },
+  { id: 3, name: 'recommendations.facialCleaning', emoji: '🧖' },
+  { id: 4, name: 'recommendations.massage', emoji: '💆' },
+  { id: 5, name: 'recommendations.hairDye', emoji: '💈' },
+  { id: 6, name: 'recommendations.makeup', emoji: '💄' },
 ];
 
 export default function RecommendationsPage(): JSX.Element {

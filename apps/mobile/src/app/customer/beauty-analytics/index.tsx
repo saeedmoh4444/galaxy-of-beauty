@@ -1,7 +1,9 @@
+import type { JSX } from 'react';
 import { View, Text, ScrollView, StyleSheet, RefreshControl } from 'react-native';
 import { SkeletonList } from '@/components/SkeletonCard';
-import { trpc } from '@/lib/trpc-react';
 import { useLocale } from '@/components/LocaleProvider';
+import { useAuthState } from '@/hooks/useAuthState';
+import { trpc } from '@/lib/trpc-react';
 
 interface AnalyticsSummary {
   totalBookings: number;
@@ -23,9 +25,10 @@ interface MonthlyTrend {
 
 export default function BeautyAnalyticsScreen(): JSX.Element {
   const { t } = useLocale();
-  const summaryQ = trpc.beautyAnalytics.summary.useQuery();
-  const byCatQ = trpc.beautyAnalytics.byCategory.useQuery();
-  const trendQ = trpc.beautyAnalytics.monthlyTrend.useQuery();
+  const isAuthed = useAuthState();
+  const summaryQ = trpc.beautyAnalytics.summary.useQuery(undefined, { enabled: isAuthed });
+  const byCatQ = trpc.beautyAnalytics.byCategory.useQuery(undefined, { enabled: isAuthed });
+  const trendQ = trpc.beautyAnalytics.monthlyTrend.useQuery(undefined, { enabled: isAuthed });
 
   if (summaryQ.isLoading || byCatQ.isLoading || trendQ.isLoading) return <SkeletonList count={4} />;
   const s = (summaryQ.data as unknown as AnalyticsSummary | null) ?? {
@@ -55,22 +58,22 @@ export default function BeautyAnalyticsScreen(): JSX.Element {
       <Text style={styles.t}>{t('beautyAnalytics.title')}</Text>
       <View style={styles.kr}>
         <View style={styles.k}>
-          <Text style={styles.ke}></Text>
+          <Text style={styles.ke}>📅</Text>
           <Text style={styles.kv}>{s.totalBookings}</Text>
           <Text style={styles.kl}>{t('beautyAnalytics.bookings')}</Text>
         </View>
         <View style={styles.k}>
-          <Text style={styles.ke}></Text>
+          <Text style={styles.ke}>✅</Text>
           <Text style={[styles.kv, { color: '#059669' }]}>{s.completedBookings}</Text>
           <Text style={styles.kl}>{t('beautyAnalytics.completed')}</Text>
         </View>
         <View style={styles.k}>
-          <Text style={styles.ke}></Text>
+          <Text style={styles.ke}>📈</Text>
           <Text style={[styles.kv, { color: '#2563eb' }]}>{s.completionRate}%</Text>
           <Text style={styles.kl}>{t('beautyAnalytics.rate')}</Text>
         </View>
         <View style={styles.k}>
-          <Text style={styles.ke}></Text>
+          <Text style={styles.ke}>💰</Text>
           <Text style={[styles.kv, { color: '#7c3aed' }]}>{s.totalSpent?.toLocaleString()}</Text>
           <Text style={styles.kl}>{t('beautyAnalytics.currency')}</Text>
         </View>

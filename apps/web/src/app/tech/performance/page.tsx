@@ -1,12 +1,16 @@
 'use client';
+import type { JSX } from 'react';
 import { api } from '@/lib/trpc';
-import { Card, CardSkeleton, formatCurrency } from '@galaxy/ui';
+import { Card, CardSkeleton, formatCurrency, useAuth } from '@galaxy/ui';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
 import { useLocale } from '@/components/LocaleProvider';
 
 export default function TechPerformancePage(): JSX.Element {
   const { t } = useLocale();
-  const { data, isLoading } = api.performance.myDashboard.useQuery() as {
+  const { isAuthenticated } = useAuth();
+  const { data, isLoading } = api.performance.myDashboard.useQuery(undefined, {
+    enabled: isAuthenticated,
+  }) as {
     data: Record<string, unknown> | undefined;
     isLoading: boolean;
   };
@@ -39,7 +43,7 @@ export default function TechPerformancePage(): JSX.Element {
                 <p className="text-xs text-text-secondary">{t('tech.performance.completed')}</p>
               </Card>
               <Card padding="lg" className="text-center">
-                <p className="text-2xl font-extrabold text-purple-600">
+                <p className="text-2xl font-extrabold text-brand-600">
                   {data?.completionRate as number}%
                 </p>
                 <p className="text-xs text-text-secondary">

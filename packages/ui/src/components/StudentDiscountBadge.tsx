@@ -1,4 +1,5 @@
 'use client';
+import type { JSX } from 'react';
 
 import { cn } from '@galaxy/shared';
 
@@ -59,7 +60,9 @@ export function StudentDiscountBadge({
       {/* Header */}
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-2">
-          <span className="text-lg" aria-hidden="true"></span>
+          <span className="text-lg" aria-hidden="true">
+            🎓
+          </span>
           <div>
             <h4 className="text-sm font-bold text-orange-700 dark:text-orange-300">{title}</h4>
             <p className="text-[10px] text-orange-500 dark:text-orange-400">
@@ -76,10 +79,10 @@ export function StudentDiscountBadge({
       {originalPrice && discountedPrice && (
         <div className="mt-3 flex items-center justify-center gap-3 rounded-xl bg-orange-50 p-3 dark:bg-orange-950">
           <div className="text-center">
-            <p className="text-[10px] text-text-tertiary dark:text-gray-500">
+            <p className="text-[10px] text-text-tertiary dark:text-text-secondary">
               {originalPriceLabel}
             </p>
-            <p className="text-sm text-text-tertiary line-through dark:text-gray-400">
+            <p className="text-sm text-text-tertiary line-through dark:text-text-tertiary">
               {originalPrice} {currencySuffix}
             </p>
           </div>
@@ -99,7 +102,7 @@ export function StudentDiscountBadge({
       {university && (
         <div className="mt-2 flex items-center gap-1.5 rounded-lg bg-orange-50 px-2.5 py-1.5 dark:bg-orange-950">
           <span className="text-xs" aria-hidden="true">
-            ️
+            🏫
           </span>
           <span className="text-[10px] text-orange-700 dark:text-orange-300">{university}</span>
         </div>
@@ -108,7 +111,9 @@ export function StudentDiscountBadge({
       {/* Verification */}
       {requiresVerification && (
         <div className="mt-2 flex items-start gap-1.5 rounded-lg bg-amber-50 p-2 dark:bg-amber-950">
-          <span className="text-xs shrink-0" aria-hidden="true"></span>
+          <span className="text-xs shrink-0" aria-hidden="true">
+            📧
+          </span>
           <div>
             <p className="text-[10px] font-bold text-amber-700 dark:text-amber-300">
               {verificationTitle}
@@ -129,7 +134,7 @@ export function StudentDiscountBadge({
       </button>
 
       {/* Footer */}
-      <p className="mt-2 text-center text-[9px] text-text-tertiary dark:text-gray-500">
+      <p className="mt-2 text-center text-[9px] text-text-tertiary dark:text-text-secondary">
         {footerText}
       </p>
     </div>

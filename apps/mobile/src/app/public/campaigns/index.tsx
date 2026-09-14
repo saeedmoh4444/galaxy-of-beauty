@@ -1,3 +1,4 @@
+import type { JSX } from 'react';
 import { View, Text, ScrollView, StyleSheet, TouchableOpacity, RefreshControl } from 'react-native';
 import { ErrorAlert } from '@/components/ErrorAlert';
 import { SkeletonList } from '@/components/SkeletonCard';
@@ -37,7 +38,9 @@ export default function CampaignsScreen(): JSX.Element {
       refreshControl={
         <RefreshControl
           refreshing={campaignsQ.isRefetching}
-          onRefresh={() => campaignsQ.refetch()}
+          onRefresh={async () => {
+            await campaignsQ.refetch();
+          }}
           colors={['#f59e0b']}
         />
       }

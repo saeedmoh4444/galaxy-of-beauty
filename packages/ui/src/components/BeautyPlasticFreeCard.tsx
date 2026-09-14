@@ -1,4 +1,5 @@
 'use client';
+import type { JSX } from 'react';
 import { cn } from '@galaxy/shared';
 export function BeautyPlasticFreeCard({
   className = '',
@@ -19,7 +20,7 @@ export function BeautyPlasticFreeCard({
       )}
     >
       <div className="flex items-center gap-2">
-        <span className="text-xl"></span>
+        <span className="text-xl">🌍</span>
         <div>
           <h4 className="text-sm font-bold text-indigo-700 dark:text-indigo-300">{title}</h4>
           <p className="text-[10px] text-indigo-500 dark:text-indigo-400">{subtitle}</p>
@@ -33,7 +34,7 @@ export function BeautyPlasticFreeCard({
             tip: { ar: 'قابلة للتحلل — بدل البلاستيك', en: 'Biodegradable — instead of plastic' },
           },
           {
-            emoji: '',
+            emoji: '🥛',
             label: { ar: 'زجاج وألمنيوم', en: 'Glass and aluminum' },
             tip: { ar: 'قابلة للتدوير للأبد', en: 'Recyclable forever' },
           },
@@ -43,7 +44,7 @@ export function BeautyPlasticFreeCard({
             tip: { ar: 'تدوم سنوات — ليس للرمي', en: 'Lasts for years — not for throwing away' },
           },
           {
-            emoji: '',
+            emoji: '🧼',
             label: { ar: 'صابون صلب', en: 'Solid soap' },
             tip: { ar: 'بدون تغليف — ورق فقط', en: 'No packaging — paper only' },
           },

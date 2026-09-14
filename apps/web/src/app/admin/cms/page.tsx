@@ -1,25 +1,30 @@
 'use client';
 import { useState } from 'react';
+import type { JSX } from 'react';
 import { api } from '@/lib/trpc';
-import { Card, CardListSkeleton, GridSkeleton } from '@galaxy/ui';
-import { DashboardLayout } from '@/components/layout/DashboardLayout';
+import { Card, CardListSkeleton, GridSkeleton, useAuth } from '@galaxy/ui';
 import { useLocale } from '@/components/LocaleProvider';
 import { localize } from '@galaxy/shared';
 
 export default function AdminCmsPage(): JSX.Element {
   const { t, locale } = useLocale();
-  const { data: categories, isLoading: catLoading } = api.cms.listCategories.useQuery() as {
+  const { isAuthenticated } = useAuth();
+  const { data: categories, isLoading: catLoading } = api.cms.listCategories.useQuery(undefined, {
+    enabled: isAuthenticated,
+  }) as {
     data: Array<Record<string, unknown>> | undefined;
     isLoading: boolean;
   };
-  const { data: services, isLoading: svcLoading } = api.cms.listServices.useQuery() as {
+  const { data: services, isLoading: svcLoading } = api.cms.listServices.useQuery(undefined, {
+    enabled: isAuthenticated,
+  }) as {
     data: Array<Record<string, unknown>> | undefined;
     isLoading: boolean;
   };
   const [tab, setTab] = useState<'categories' | 'services'>('categories');
 
   return (
-    <DashboardLayout userRole="ADMIN">
+    <>
       <div className="mx-auto max-w-6xl space-y-6">
         <div>
           <h1 className="text-2xl font-bold">{t('admin.cms.title')}</h1>
@@ -90,6 +95,6 @@ export default function AdminCmsPage(): JSX.Element {
             </div>
           ))}
       </div>
-    </DashboardLayout>
+    </>
   );
 }

@@ -1,5 +1,6 @@
 import { View, Text, ScrollView, StyleSheet, TouchableOpacity, RefreshControl } from 'react-native';
 import { useState } from 'react';
+import type { JSX } from 'react';
 import { SkeletonList } from '@/components/SkeletonCard';
 import { trpc } from '@/lib/trpc-react';
 import { useLocale } from '@/components/LocaleProvider';
@@ -32,7 +33,9 @@ export default function ProductCompareScreen(): JSX.Element {
       refreshControl={
         <RefreshControl
           refreshing={productsQ.isRefetching}
-          onRefresh={() => productsQ.refetch()}
+          onRefresh={async () => {
+            await productsQ.refetch();
+          }}
           colors={['#0891b2']}
         />
       }
@@ -63,17 +66,17 @@ export default function ProductCompareScreen(): JSX.Element {
             <View key={p.id} style={styles.tc}>
               <Text style={styles.tcn}>{p.nameAr ?? ''}</Text>
               <View style={styles.tr}>
-                <Text style={styles.tl}></Text>
+                <Text style={styles.tl}>💰</Text>
                 <Text style={styles.tv}>
                   {(p.price ?? 0).toLocaleString()} {t('misc.sar')}
                 </Text>
               </View>
               <View style={styles.tr}>
-                <Text style={styles.tl}>️</Text>
+                <Text style={styles.tl}>🏷️</Text>
                 <Text style={styles.tv}>{p.brand ?? ''}</Text>
               </View>
               <View style={styles.tr}>
-                <Text style={styles.tl}></Text>
+                <Text style={styles.tl}>⭐</Text>
                 <Text style={styles.tv}>{p.rating ?? ''}</Text>
               </View>
             </View>

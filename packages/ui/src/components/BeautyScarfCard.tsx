@@ -1,4 +1,5 @@
 'use client';
+import type { JSX } from 'react';
 
 import { cn } from '@galaxy/shared';
 
@@ -27,7 +28,7 @@ export function BeautyScarfCard({
       )}
     >
       <div className="flex items-center gap-2">
-        <span className="text-xl"></span>
+        <span className="text-xl">🧕</span>
         <div>
           <h4 className="text-sm font-bold text-emerald-700 dark:text-emerald-300">{title}</h4>
           <p className="text-[10px] text-emerald-500 dark:text-emerald-400">{subtitle}</p>
@@ -36,22 +37,22 @@ export function BeautyScarfCard({
       <div className="mt-3 grid grid-cols-2 gap-1.5">
         {[
           {
-            emoji: '',
+            emoji: '🎨',
             label: { ar: 'ألوان متناسقة', en: 'Matching colors' },
             tip: { ar: 'الحجاب مع لون الفستان', en: 'Scarf matching the dress color' },
           },
           {
-            emoji: '',
+            emoji: '📌',
             label: { ar: 'تثبيت محكم', en: 'Secure pinning' },
             tip: { ar: 'دبابيس غير ظاهرة', en: 'Invisible pins' },
           },
           {
-            emoji: '',
+            emoji: '🧣',
             label: { ar: 'بطانة حرير', en: 'Silk lining' },
             tip: { ar: 'تحمي الشعر من التكسر', en: 'Protects hair from breakage' },
           },
           {
-            emoji: '',
+            emoji: '🔄',
             label: { ar: 'تغيير الأسلوب', en: 'Switch up your style' },
             tip: { ar: 'جربي لفات جديدة', en: 'Try new wrapping styles' },
           },

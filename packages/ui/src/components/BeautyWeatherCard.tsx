@@ -1,4 +1,5 @@
 'use client';
+import type { JSX } from 'react';
 
 import { cn } from '@galaxy/shared';
 
@@ -20,7 +21,7 @@ interface WeatherAdvice {
 
 const ADVICE: Record<WeatherCondition, WeatherAdvice> = {
   hot: {
-    emoji: '️',
+    emoji: '🔥',
     title: { ar: 'حار', en: 'Hot' },
     tips: {
       ar: ['SPF 50+ ضروري', 'مرطب جل خفيف', 'ماء كثير', 'تجنبي المكياج الثقيل'],
@@ -33,7 +34,7 @@ const ADVICE: Record<WeatherCondition, WeatherAdvice> = {
     },
   },
   mild: {
-    emoji: '️',
+    emoji: '🌤️',
     title: { ar: 'معتدل', en: 'Mild' },
     tips: {
       ar: ['SPF 30 كافي', 'روتينكِ المعتاد', 'جربي إطلالة جديدة'],
@@ -41,7 +42,7 @@ const ADVICE: Record<WeatherCondition, WeatherAdvice> = {
     },
   },
   cold: {
-    emoji: '️',
+    emoji: '❄️',
     title: { ar: 'بارد', en: 'Cold' },
     tips: {
       ar: ['مرطب غني', 'بلسم شفاه', 'قناع ترطيب', 'ماء دافئ للغسيل'],
@@ -49,7 +50,7 @@ const ADVICE: Record<WeatherCondition, WeatherAdvice> = {
     },
   },
   humid: {
-    emoji: '',
+    emoji: '💦',
     title: { ar: 'رطب', en: 'Humid' },
     tips: {
       ar: ['منتجات خالية من الزيوت', 'مثبت مكياج', 'ورق نشاف', 'تونر قابض'],
@@ -57,7 +58,7 @@ const ADVICE: Record<WeatherCondition, WeatherAdvice> = {
     },
   },
   dusty: {
-    emoji: '️',
+    emoji: '🌫️',
     title: { ar: 'مغبر', en: 'Dusty' },
     tips: {
       ar: ['غسول عميق مساءً', 'قناع منقي', 'تجنبي التقشير', 'أحكمي إغلاق المسام'],
@@ -83,7 +84,7 @@ export function BeautyWeatherCard({
   temp,
   className = '',
   title = 'طقس الجمال',
-  footerText = '️ روتينكِ يتغير مع الطقس — ونحن نذكركِ',
+  footerText = 'روتينكِ يتغير مع الطقس — ونحن نذكركِ',
   locale = 'ar',
 }: BeautyWeatherCardProps): JSX.Element {
   const a = ADVICE[condition];
@@ -124,7 +125,7 @@ export function BeautyWeatherCard({
         ))}
       </div>
 
-      <p className="mt-2 text-center text-[9px] text-text-tertiary dark:text-gray-500">
+      <p className="mt-2 text-center text-[9px] text-text-tertiary dark:text-text-secondary">
         {footerText}
       </p>
     </div>

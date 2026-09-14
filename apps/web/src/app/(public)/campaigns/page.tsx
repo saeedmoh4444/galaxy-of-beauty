@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import type { JSX } from 'react';
 import Image from 'next/image';
 import { api } from '@/lib/trpc';
 import {
@@ -77,11 +78,11 @@ export default function CampaignsPage(): JSX.Element {
   return (
     <div className="mx-auto max-w-6xl px-4 py-12">
       <div className="mb-10 text-center">
-        <span className="text-6xl"></span>
+        <span className="text-6xl">📣</span>
         <h1 className="mt-4 text-3xl font-bold text-text-primary dark:text-gray-100">
           {t('marketing.campaigns.title')}
         </h1>
-        <p className="mt-2 text-text-secondary dark:text-gray-400">
+        <p className="mt-2 text-text-secondary dark:text-text-tertiary">
           {t('marketing.campaigns.subtitle')}
         </p>
       </div>
@@ -115,9 +116,9 @@ export default function CampaignsPage(): JSX.Element {
                       {c.imageUrl ? (
                         <Image src={c.imageUrl} alt="" fill className="object-cover" />
                       ) : (
-                        <span></span>
+                        <span>🎉</span>
                       )}
-                      <span className="absolute top-3 right-3 rounded-full bg-red-500 px-3 py-1 text-xs font-bold text-white animate-pulse">
+                      <span className="absolute top-3 end-3 rounded-full bg-red-500 px-3 py-1 text-xs font-bold text-white animate-pulse">
                         {t('marketing.campaigns.active')}
                       </span>
                     </div>
@@ -146,7 +147,7 @@ export default function CampaignsPage(): JSX.Element {
                             onClick={() => {
                               navigator.clipboard.writeText(c.promoCode ?? '');
                             }}
-                            className="mr-auto text-xs text-brand-500 hover:text-brand-700"
+                            className="me-auto text-xs text-brand-500 hover:text-brand-700"
                           >
                             {t('marketing.campaigns.copy')}
                           </button>
@@ -175,8 +176,8 @@ export default function CampaignsPage(): JSX.Element {
                     padding="none"
                     className="overflow-hidden opacity-70 hover:opacity-100 transition-all"
                   >
-                    <div className="flex h-36 items-center justify-center bg-gradient-to-br from-blue-100 to-purple-100 dark:from-blue-950 dark:to-purple-950 text-5xl">
-                      <span></span>
+                    <div className="flex h-36 items-center justify-center bg-gradient-to-br from-blue-100 to-brand-100 dark:from-blue-950 dark:to-brand-950 text-5xl">
+                      <span>📅</span>
                     </div>
                     <div className="p-5">
                       <h3 className="text-lg font-bold">{localize(c.nameJson, locale)}</h3>

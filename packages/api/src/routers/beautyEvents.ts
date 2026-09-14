@@ -14,6 +14,15 @@ export const beautyEventRouter = router({
       take: DEFAULT_PAGE_SIZE,
     }),
   ),
+  // Public: ALL published events — the /events page filters client-side
+  // by type and shows past + upcoming (was missing entirely: the page
+  // called beautyEvents.list and every visit 404ed the procedure).
+  list: publicProcedure.query(async () =>
+    db.beautyEvent.findMany({
+      where: { isPublished: true },
+      orderBy: { startsAt: 'asc' },
+    }),
+  ),
   listAll: adminProcedure.query(async () =>
     db.beautyEvent.findMany({ orderBy: { startsAt: 'desc' }, take: 100 }),
   ),

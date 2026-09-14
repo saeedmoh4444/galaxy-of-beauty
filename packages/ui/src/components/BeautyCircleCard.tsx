@@ -1,4 +1,5 @@
 'use client';
+import type { JSX } from 'react';
 
 import { cn } from '@galaxy/shared';
 
@@ -32,52 +33,52 @@ interface TopicDef {
 
 const TOPICS: Record<CircleTopic, TopicDef> = {
   wedding: {
-    emoji: '',
+    emoji: '👰',
     label: { ar: 'عرايس', en: 'Brides' },
     color: 'bg-rose-100 text-rose-700 dark:bg-rose-950 dark:text-rose-300',
   },
   new_mom: {
-    emoji: '',
+    emoji: '👶',
     label: { ar: 'أمهات جدد', en: 'New Moms' },
     color: 'bg-sky-100 text-sky-700 dark:bg-sky-950 dark:text-sky-300',
   },
   curly_hair: {
-    emoji: '',
+    emoji: '🦱',
     label: { ar: 'شعر مجعد', en: 'Curly Hair' },
     color: 'bg-amber-100 text-amber-700 dark:bg-amber-950 dark:text-amber-300',
   },
   skincare: {
-    emoji: '',
+    emoji: '🧴',
     label: { ar: 'عناية بالبشرة', en: 'Skincare' },
     color: 'bg-emerald-100 text-emerald-700 dark:bg-emerald-950 dark:text-emerald-300',
   },
   makeup: {
-    emoji: '',
+    emoji: '💄',
     label: { ar: 'مكياج', en: 'Makeup' },
     color: 'bg-pink-100 text-pink-700 dark:bg-pink-950 dark:text-pink-300',
   },
   teen_beauty: {
-    emoji: '',
+    emoji: '🎀',
     label: { ar: 'جمال المراهقات', en: 'Teen Beauty' },
-    color: 'bg-purple-100 text-purple-700 dark:bg-purple-950 dark:text-purple-300',
+    color: 'bg-brand-100 text-brand-700 dark:bg-brand-950 dark:text-brand-300',
   },
   wellness: {
-    emoji: '',
+    emoji: '🧘',
     label: { ar: 'صحة شاملة', en: 'Wellness' },
     color: 'bg-teal-100 text-teal-700 dark:bg-teal-950 dark:text-teal-300',
   },
   professional: {
-    emoji: '',
+    emoji: '💼',
     label: { ar: 'خبيرات تجميل', en: 'Beauty Experts' },
     color: 'bg-indigo-100 text-indigo-700 dark:bg-indigo-950 dark:text-indigo-300',
   },
   hijabi_beauty: {
-    emoji: '',
+    emoji: '🧕',
     label: { ar: 'جمال المحجبات', en: 'Hijabi Beauty' },
     color: 'bg-violet-100 text-violet-700 dark:bg-violet-950 dark:text-violet-300',
   },
   budget_beauty: {
-    emoji: '',
+    emoji: '💰',
     label: { ar: 'جمال اقتصادي', en: 'Budget Beauty' },
     color: 'bg-lime-100 text-lime-700 dark:bg-lime-950 dark:text-lime-300',
   },
@@ -129,7 +130,7 @@ export function BeautyCircleCard({
   almostFullText = 'أوشكت على الامتلاء',
   nextMeetupPrefix = 'اللقاء القادم: ',
   discountPrefix = 'خصم ',
-  discountSuffix = ' عند الحجز الجماعي',
+  discountSuffix = 'عند الحجز الجماعي',
   joinButtonText = 'انضمي للدائرة',
   locale = 'ar',
 }: BeautyCircleCardProps): JSX.Element {
@@ -163,7 +164,7 @@ export function BeautyCircleCard({
               {topic.emoji} {topic.label[locale]}
             </span>
             {circle.city && (
-              <span className="text-[10px] text-text-tertiary dark:text-gray-500">
+              <span className="text-[10px] text-text-tertiary dark:text-text-secondary">
                 {circle.city}
               </span>
             )}
@@ -186,7 +187,7 @@ export function BeautyCircleCard({
                 </span>
               ))}
               {circle.recentMembers.length > 4 && (
-                <span className="flex h-6 w-6 items-center justify-center rounded-full border-2 border-white bg-gray-100 text-[9px] font-bold text-gray-500 dark:border-gray-900 dark:bg-gray-800">
+                <span className="flex h-6 w-6 items-center justify-center rounded-full border-2 border-white bg-surface-muted text-[9px] font-bold text-text-secondary dark:border-gray-900 dark:bg-gray-800">
                   +{circle.recentMembers.length - 4}
                 </span>
               )}
@@ -215,7 +216,9 @@ export function BeautyCircleCard({
       {/* Next meetup */}
       {circle.nextMeetup && (
         <div className="mt-2 flex items-center gap-1.5 rounded-lg bg-pink-50 px-2.5 py-1.5 dark:bg-pink-950">
-          <span className="text-xs" aria-hidden="true"></span>
+          <span className="text-xs" aria-hidden="true">
+            📅
+          </span>
           <span className="text-[10px] text-text-secondary dark:text-gray-300">
             {nextMeetupPrefix}
             {circle.nextMeetup}
@@ -226,7 +229,7 @@ export function BeautyCircleCard({
       {/* Group discount */}
       {circle.groupDiscount && (
         <div className="mt-1.5 flex items-center gap-1.5 text-[10px] font-medium text-amber-700 dark:text-amber-400">
-          <span aria-hidden="true"></span>
+          <span aria-hidden="true">💰</span>
           {discountPrefix}
           {circle.groupDiscount}%{discountSuffix}
         </div>

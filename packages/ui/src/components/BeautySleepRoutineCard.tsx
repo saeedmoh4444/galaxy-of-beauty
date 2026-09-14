@@ -1,4 +1,5 @@
 'use client';
+import type { JSX } from 'react';
 import { cn } from '@galaxy/shared';
 export function BeautySleepRoutineCard({
   className = '',
@@ -19,7 +20,7 @@ export function BeautySleepRoutineCard({
       )}
     >
       <div className="flex items-center gap-2">
-        <span className="text-xl"></span>
+        <span className="text-xl">🌙</span>
         <div>
           <h4 className="text-sm font-bold text-violet-700 dark:text-violet-300">{title}</h4>
           <p className="text-[10px] text-violet-500 dark:text-violet-400">{subtitle}</p>
@@ -28,28 +29,28 @@ export function BeautySleepRoutineCard({
       <div className="mt-3 space-y-1">
         {[
           {
-            emoji: '',
+            emoji: '🧼',
             text: {
               ar: 'نظفي وجهك — إزالة المكياج بالكامل',
               en: 'Cleanse your face — remove makeup completely',
             },
           },
           {
-            emoji: '',
+            emoji: '🧴',
             text: {
               ar: 'سيروم + مرطب ليلي — بشرة تتجدد ليلاً',
               en: 'Serum + night moisturizer — skin renews overnight',
             },
           },
           {
-            emoji: '',
+            emoji: '📵',
             text: {
               ar: 'أطفئي الجوال — 30 دقيقة قبل النوم',
               en: 'Turn off your phone — 30 minutes before bed',
             },
           },
           {
-            emoji: '️',
+            emoji: '🧘',
             text: {
               ar: 'أجواء هادئة — شمعة، كتاب، تأمل',
               en: 'Calm atmosphere — candle, book, meditation',

@@ -1,4 +1,5 @@
 'use client';
+import type { JSX } from 'react';
 import { cn } from '@galaxy/shared';
 export function BeautyHairThinningCard({
   className = '',
@@ -19,7 +20,7 @@ export function BeautyHairThinningCard({
       )}
     >
       <div className="flex items-center gap-2">
-        <span className="text-xl"></span>
+        <span className="text-xl">💇</span>
         <div>
           <h4 className="text-sm font-bold text-sky-700 dark:text-sky-300">{title}</h4>
           <p className="text-[10px] text-sky-500 dark:text-sky-400">{subtitle}</p>
@@ -35,21 +36,21 @@ export function BeautyHairThinningCard({
             },
           },
           {
-            emoji: '',
+            emoji: '💆',
             text: {
               ar: 'تدليك الفروة — 5 دقائق يومياً بزيت دافئ',
               en: 'Scalp massage — 5 minutes daily with warm oil',
             },
           },
           {
-            emoji: '',
+            emoji: '🥗',
             text: {
               ar: 'تغذية — بروتين، حديد، زنك، فيتامين D',
               en: 'Nutrition — protein, iron, zinc, vitamin D',
             },
           },
           {
-            emoji: '',
+            emoji: '💊',
             text: {
               ar: 'مينوكسيديل — العلاج الوحيد المثبت علمياً',
               en: 'Minoxidil — the only scientifically proven treatment',

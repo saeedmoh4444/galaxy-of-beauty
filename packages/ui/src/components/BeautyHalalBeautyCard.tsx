@@ -1,4 +1,5 @@
 'use client';
+import type { JSX } from 'react';
 import { cn } from '@galaxy/shared';
 export function BeautyHalalBeautyCard({
   className = '',
@@ -19,7 +20,7 @@ export function BeautyHalalBeautyCard({
       )}
     >
       <div className="flex items-center gap-2">
-        <span className="text-xl">️</span>
+        <span className="text-xl">🌙</span>
         <div>
           <h4 className="text-sm font-bold text-emerald-700 dark:text-emerald-300">{title}</h4>
           <p className="text-[10px] text-emerald-500 dark:text-emerald-400">{subtitle}</p>
@@ -28,28 +29,28 @@ export function BeautyHalalBeautyCard({
       <div className="mt-3 space-y-1">
         {[
           {
-            emoji: '',
+            emoji: '🚫',
             text: {
               ar: 'خالٍ من الكحول والمواد المحرمة',
               en: 'Free of alcohol and forbidden ingredients',
             },
           },
           {
-            emoji: '',
+            emoji: '💧',
             text: {
               ar: 'قابل للوضوء — يسمح بمرور الماء للبشرة',
               en: 'Wudu-friendly — lets water reach the skin',
             },
           },
           {
-            emoji: '',
+            emoji: '✅',
             text: {
               ar: 'ابحثي عن شهادة حلال معتمدة',
               en: 'Look for a certified halal certificate',
             },
           },
           {
-            emoji: '',
+            emoji: '📈',
             text: {
               ar: 'يزداد الطلب — منتجات حلال سعودية',
               en: 'Growing in demand — Saudi halal products',

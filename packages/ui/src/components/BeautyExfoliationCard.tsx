@@ -1,4 +1,5 @@
 'use client';
+import type { JSX } from 'react';
 import { cn } from '@galaxy/shared';
 export function BeautyExfoliationCard({
   className = '',
@@ -19,7 +20,7 @@ export function BeautyExfoliationCard({
       )}
     >
       <div className="flex items-center gap-2">
-        <span className="text-xl"></span>
+        <span className="text-xl">🧽</span>
         <div>
           <h4 className="text-sm font-bold text-amber-700 dark:text-amber-300">{title}</h4>
           <p className="text-[10px] text-amber-500 dark:text-amber-400">{subtitle}</p>
@@ -28,7 +29,7 @@ export function BeautyExfoliationCard({
       <div className="mt-3 grid grid-cols-2 gap-1.5">
         {[
           {
-            emoji: '',
+            emoji: '🧪',
             label: { ar: 'كيميائي', en: 'Chemical' },
             tip: { ar: 'AHA/BHA — مرة أسبوعياً', en: 'AHA/BHA — once a week' },
           },
@@ -38,12 +39,12 @@ export function BeautyExfoliationCard({
             tip: { ar: 'حبيبات — مرة أسبوعياً', en: 'Granules — once a week' },
           },
           {
-            emoji: '',
+            emoji: '🌙',
             label: { ar: 'مساءً فقط', en: 'Evenings only' },
             tip: { ar: 'البشرة حساسة بعد التقشير', en: 'Skin is sensitive after exfoliating' },
           },
           {
-            emoji: '️',
+            emoji: '🌞',
             label: { ar: 'واقي شمس', en: 'Sunscreen' },
             tip: { ar: 'ضروري جداً بعد التقشير', en: 'Absolutely essential after exfoliating' },
           },

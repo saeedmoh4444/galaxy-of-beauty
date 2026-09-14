@@ -1,4 +1,5 @@
 'use client';
+import type { JSX } from 'react';
 
 import { api } from '@/lib/trpc';
 import { Card, DetailSkeleton, ErrorAlert, Button } from '@galaxy/ui';
@@ -27,7 +28,7 @@ export default function FeaturedTechPage(): JSX.Element {
   return (
     <div className="mx-auto max-w-3xl px-4 py-12">
       <div className="mb-8 text-center">
-        <span className="text-6xl"></span>
+        <span className="text-6xl">🌟</span>
         <h1 className="mt-4 text-3xl font-bold">{t('marketing.featured-tech.title')}</h1>
         <p className="mt-2 text-text-secondary">{t('marketing.featured-tech.subtitle')}</p>
       </div>
@@ -65,7 +66,7 @@ export default function FeaturedTechPage(): JSX.Element {
               {(current.highlights as string[])?.map((h: string, i: number) => (
                 <span
                   key={i}
-                  className="rounded-full bg-white dark:bg-gray-800 px-3 py-1 text-xs font-medium shadow-sm"
+                  className="rounded-full bg-surface-elevated px-3 py-1 text-xs font-medium shadow-sm"
                 >
                   {h}
                 </span>
@@ -87,7 +88,7 @@ export default function FeaturedTechPage(): JSX.Element {
             </div>
           </div>
 
-          <div className="mt-6 rounded-xl bg-white dark:bg-gray-800 p-4">
+          <div className="mt-6 rounded-xl bg-surface-elevated p-4">
             <p className="text-sm font-bold text-brand-600">
               {t('marketing.featured-tech.quick-interview')}
             </p>
@@ -117,7 +118,7 @@ export default function FeaturedTechPage(): JSX.Element {
           <div className="flex flex-wrap gap-3">
             {pastTechs.map((t: Record<string, unknown>) => (
               <Link key={t.id as number} href={`/technicians/${t.id}`}>
-                <span className="inline-flex items-center gap-2 rounded-full bg-surface-muted dark:bg-gray-800 px-4 py-2 text-sm hover:bg-gray-200 transition-colors">
+                <span className="inline-flex items-center gap-2 rounded-full bg-surface-muted dark:bg-gray-800 px-4 py-2 text-sm hover:bg-surface-muted transition-colors">
                   <span>{t.emoji as string}</span>
                   <span className="font-medium">{t.name as string}</span>
                   <span className="text-xs text-text-tertiary">

@@ -1,18 +1,21 @@
 'use client';
+import type { JSX } from 'react';
 import { api } from '@/lib/trpc';
-import { Card, GridSkeleton, formatCurrency } from '@galaxy/ui';
-import { DashboardLayout } from '@/components/layout/DashboardLayout';
+import { Card, GridSkeleton, formatCurrency, useAuth } from '@galaxy/ui';
 import { useLocale } from '@/components/LocaleProvider';
 
 export default function AdminSubscriptionsPage(): JSX.Element {
   const { t } = useLocale();
-  const { data: plans, isLoading } = api.subscriptions.getPlans.useQuery() as {
+  const { isAuthenticated } = useAuth();
+  const { data: plans, isLoading } = api.subscriptions.getPlans.useQuery(undefined, {
+    enabled: isAuthenticated,
+  }) as {
     data: Array<Record<string, unknown>> | undefined;
     isLoading: boolean;
   };
 
   return (
-    <DashboardLayout userRole="ADMIN">
+    <>
       <div className="mx-auto max-w-4xl space-y-6">
         <div>
           <h1 className="text-2xl font-bold">{t('admin.subscriptions.title')}</h1>
@@ -23,14 +26,14 @@ export default function AdminSubscriptionsPage(): JSX.Element {
           <GridSkeleton count={6} />
         ) : !(plans ?? []).length ? (
           <Card padding="lg" className="text-center py-8">
-            <p className="text-4xl mb-2"></p>
+            <p className="text-4xl mb-2">💳</p>
             <p className="text-text-secondary">{t('admin.subscriptions.empty')}</p>
           </Card>
         ) : (
           <div className="grid gap-4 sm:grid-cols-3">
             {(plans ?? []).map((p: Record<string, unknown>) => (
               <Card key={p.id as number} padding="lg" className="text-center">
-                <span className="text-4xl"></span>
+                <span className="text-4xl">💳</span>
                 <h3 className="font-bold mt-3">{(p.nameJson as Record<string, string>)?.ar}</h3>
                 <p className="text-xs text-text-secondary mt-1">{p.feature as string}</p>
                 <p className="text-2xl font-extrabold mt-3">
@@ -47,6 +50,6 @@ export default function AdminSubscriptionsPage(): JSX.Element {
           </div>
         )}
       </div>
-    </DashboardLayout>
+    </>
   );
 }

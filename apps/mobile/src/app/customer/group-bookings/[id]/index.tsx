@@ -1,15 +1,17 @@
+import type { JSX } from 'react';
 import { View, Text, ScrollView, StyleSheet, RefreshControl } from 'react-native';
 import { useLocalSearchParams } from 'expo-router';
 import { SkeletonList } from '@/components/SkeletonCard';
 import { trpc } from '@/lib/trpc-react';
 import { useLocale } from '@/components/LocaleProvider';
+import { useAuthState } from '@/hooks/useAuthState';
 
 const TE: Record<string, string> = {
-  bridal: '',
-  birthday: '',
-  girls_night: '',
-  family: '‍‍‍',
-  other: '',
+  bridal: '👰',
+  birthday: '🎂',
+  girls_night: '💃',
+  family: '👪',
+  other: '✨',
 };
 const SM: Record<string, { color: string; bg: string }> = {
   PENDING: { color: '#d97706', bg: '#fef3c7' },
@@ -36,9 +38,10 @@ interface GroupBookingMember {
 }
 
 export default function GroupBookingDetailScreen(): JSX.Element {
+  const isAuthed = useAuthState();
   const { id } = useLocalSearchParams<{ id: string }>();
   const { t } = useLocale();
-  const q = trpc.groupBookings.getById.useQuery({ id: parseInt(id, 10) });
+  const q = trpc.groupBookings.getById.useQuery({ id: parseInt(id, 10) }, { enabled: isAuthed });
   const data = q.data as GroupBookingDetail | null;
   if (q.isLoading) return <SkeletonList count={4} />;
   if (!data)
@@ -71,7 +74,9 @@ export default function GroupBookingDetailScreen(): JSX.Element {
       refreshControl={
         <RefreshControl
           refreshing={q.isRefetching}
-          onRefresh={() => q.refetch()}
+          onRefresh={async () => {
+            await q.refetch();
+          }}
           colors={['#7c3aed']}
         />
       }

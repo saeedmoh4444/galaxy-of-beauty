@@ -1,7 +1,10 @@
+import type { JSX } from 'react';
 import { View, Text, ScrollView, StyleSheet, TouchableOpacity } from 'react-native';
 import { useLocalSearchParams } from 'expo-router';
 import { useLocale } from '@/components/LocaleProvider';
 
+// NO API: booking confirm is params-driven (code/date passed from the booking
+// flow URL), identical to the web page — no lookup-by-code procedure exists.
 export default function BookingConfirmScreen(): JSX.Element {
   const { code, date } = useLocalSearchParams<{ code?: string; date?: string }>();
   const { locale, t } = useLocale();
@@ -11,7 +14,7 @@ export default function BookingConfirmScreen(): JSX.Element {
   return (
     <ScrollView style={styles.c} contentContainerStyle={styles.i}>
       <View style={styles.iconCircle}>
-        <Text style={styles.iconEmoji}></Text>
+        <Text style={styles.iconEmoji}>✅</Text>
       </View>
       <Text style={styles.t}>{t('booking.success-title')}</Text>
       <Text style={styles.sub}>{t('booking.success-message')}</Text>

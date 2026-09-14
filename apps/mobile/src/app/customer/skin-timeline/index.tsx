@@ -1,5 +1,7 @@
 import { View, Text, ScrollView, StyleSheet, TouchableOpacity, RefreshControl } from 'react-native';
 import { useState } from 'react';
+import type { JSX } from 'react';
+import { useAuthState } from '@/hooks/useAuthState';
 import { trpc } from '@/lib/trpc-react';
 import { useLocale } from '@/components/LocaleProvider';
 
@@ -13,8 +15,9 @@ interface SkinEntry {
 
 export default function SkinTimelineScreen(): JSX.Element {
   const { t, locale } = useLocale();
+  const isAuthed = useAuthState();
   const [compareMode, setCompareMode] = useState(false);
-  const entriesQ = trpc.skinDiary.entries.useQuery();
+  const entriesQ = trpc.skinDiary.entries.useQuery(undefined, { enabled: isAuthed });
   const entries: SkinEntry[] = (entriesQ.data as unknown as SkinEntry[] | undefined) ?? [];
 
   return (
@@ -24,7 +27,9 @@ export default function SkinTimelineScreen(): JSX.Element {
       refreshControl={
         <RefreshControl
           refreshing={entriesQ.isRefetching}
-          onRefresh={() => entriesQ.refetch()}
+          onRefresh={async () => {
+            await entriesQ.refetch();
+          }}
           colors={['#8b5cf6']}
         />
       }
@@ -45,14 +50,14 @@ export default function SkinTimelineScreen(): JSX.Element {
           <View style={[styles.compareCard, styles.before]}>
             <Text style={styles.compareLabel}>{t('mobile.skinTimeline.last-week')}</Text>
             <View style={styles.imgPlaceholder}>
-              <Text style={{ fontSize: 40 }}></Text>
+              <Text style={{ fontSize: 40 }}>📷</Text>
             </View>
           </View>
           <Text style={styles.compareVs}>VS</Text>
           <View style={[styles.compareCard, styles.after]}>
             <Text style={styles.compareLabel}>{t('mobile.skinTimeline.this-week')}</Text>
             <View style={styles.imgPlaceholder}>
-              <Text style={{ fontSize: 40 }}></Text>
+              <Text style={{ fontSize: 40 }}>📷</Text>
             </View>
           </View>
         </View>
@@ -89,17 +94,17 @@ export default function SkinTimelineScreen(): JSX.Element {
         <Text style={styles.st}>{t('mobile.skinTimeline.stats')}</Text>
         <View style={styles.statRow}>
           <View style={styles.stat}>
-            <Text style={styles.statVal}></Text>
+            <Text style={styles.statVal}>💧</Text>
             <Text style={styles.statLabel}>{t('mobile.skinTimeline.hydration-improvement')}</Text>
             <Text style={styles.statPct}>+15%</Text>
           </View>
           <View style={styles.stat}>
-            <Text style={styles.statVal}></Text>
+            <Text style={styles.statVal}>✨</Text>
             <Text style={styles.statLabel}>{t('mobile.skinTimeline.glow-improvement')}</Text>
             <Text style={styles.statPct}>+20%</Text>
           </View>
           <View style={styles.stat}>
-            <Text style={styles.statVal}></Text>
+            <Text style={styles.statVal}>📝</Text>
             <Text style={styles.statLabel}>{t('mobile.skinTimeline.updates')}</Text>
             <Text style={styles.statPct}>{entries.length}</Text>
           </View>

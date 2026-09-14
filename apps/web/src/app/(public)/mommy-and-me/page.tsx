@@ -1,3 +1,4 @@
+import type { JSX } from 'react';
 import Link from 'next/link';
 import { Card, Button } from '@galaxy/ui';
 import { getServerLocale } from '@/lib/i18n';
@@ -5,28 +6,28 @@ import { t } from '@galaxy/shared';
 
 const PACKAGES = [
   {
-    emoji: '',
+    emoji: '💅',
     title: 'marketing.mommy-and-me.pkg-mani-title',
     desc: 'marketing.mommy-and-me.pkg-mani-desc',
     price: 150,
     services: ['marketing.mommy-and-me.svc-manicure', 'marketing.mommy-and-me.svc-nail-polish'],
   },
   {
-    emoji: '‍️',
+    emoji: '💇',
     title: 'marketing.mommy-and-me.pkg-hair-title',
     desc: 'marketing.mommy-and-me.pkg-hair-desc',
     price: 200,
     services: ['marketing.mommy-and-me.svc-hairstyle'],
   },
   {
-    emoji: '',
+    emoji: '🧖',
     title: 'marketing.mommy-and-me.pkg-skin-title',
     desc: 'marketing.mommy-and-me.pkg-skin-desc',
     price: 250,
     services: ['marketing.mommy-and-me.svc-facial', 'marketing.mommy-and-me.svc-mask'],
   },
   {
-    emoji: '',
+    emoji: '👰',
     title: 'marketing.mommy-and-me.pkg-wedding-title',
     desc: 'marketing.mommy-and-me.pkg-wedding-desc',
     price: 500,
@@ -37,7 +38,7 @@ const PACKAGES = [
     ],
   },
   {
-    emoji: '',
+    emoji: '🎂',
     title: 'marketing.mommy-and-me.pkg-birthday-title',
     desc: 'marketing.mommy-and-me.pkg-birthday-desc',
     price: 300,
@@ -48,7 +49,7 @@ const PACKAGES = [
     ],
   },
   {
-    emoji: '‍️',
+    emoji: '💆',
     title: 'marketing.mommy-and-me.pkg-spa-title',
     desc: 'marketing.mommy-and-me.pkg-spa-desc',
     price: 600,
@@ -67,7 +68,7 @@ export default async function MommyAndMePage(): Promise<JSX.Element> {
   return (
     <div className="mx-auto max-w-5xl px-4 py-12">
       <div className="text-center mb-10">
-        <span className="text-7xl">‍</span>
+        <span className="text-7xl">🤱</span>
         <h1 className="mt-6 text-4xl font-extrabold text-text-primary dark:text-gray-100">
           Mommy & Me
         </h1>
@@ -109,7 +110,7 @@ export default async function MommyAndMePage(): Promise<JSX.Element> {
         ))}
       </div>
 
-      <div className="mt-16 text-center bg-gradient-to-r from-pink-50 to-purple-50 rounded-3xl p-12 dark:from-pink-950 dark:to-purple-950">
+      <div className="mt-16 text-center bg-gradient-to-r from-pink-50 to-brand-50 rounded-3xl p-12 dark:from-pink-950 dark:to-brand-950">
         <h2 className="text-2xl font-bold text-text-primary dark:text-gray-100">
           {t('marketing.mommy-and-me.gift-ideal', locale)}
         </h2>

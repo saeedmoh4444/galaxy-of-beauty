@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import type { JSX } from 'react';
 import { cn } from '@galaxy/shared';
 
 /**
@@ -12,12 +13,12 @@ import { cn } from '@galaxy/shared';
  */
 
 const RITUALS = [
-  { emoji: '', label: { ar: '8 أكواب ماء', en: '8 glasses of water' } },
-  { emoji: '', label: { ar: 'روتين عناية', en: 'Skincare routine' } },
-  { emoji: '️', label: { ar: 'واقي شمس', en: 'Sunscreen' } },
-  { emoji: '', label: { ar: 'نوم كافٍ', en: 'Enough sleep' } },
-  { emoji: '', label: { ar: 'تأمل', en: 'Meditation' } },
-  { emoji: '', label: { ar: 'تغذية صحية', en: 'Healthy eating' } },
+  { emoji: '💧', label: { ar: '8 أكواب ماء', en: '8 glasses of water' } },
+  { emoji: '🧴', label: { ar: 'روتين عناية', en: 'Skincare routine' } },
+  { emoji: '🌞', label: { ar: 'واقي شمس', en: 'Sunscreen' } },
+  { emoji: '😴', label: { ar: 'نوم كافٍ', en: 'Enough sleep' } },
+  { emoji: '🧘', label: { ar: 'تأمل', en: 'Meditation' } },
+  { emoji: '🥗', label: { ar: 'تغذية صحية', en: 'Healthy eating' } },
 ];
 
 interface BeautyDailyCheckInCardProps {
@@ -53,7 +54,7 @@ export function BeautyDailyCheckInCard({
     >
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-2">
-          <span className="text-xl"></span>
+          <span className="text-xl">✅</span>
           <div>
             <h4 className="text-sm font-bold text-emerald-700 dark:text-emerald-300">{title}</h4>
             <p className="text-[10px] text-emerald-500 dark:text-emerald-400">
@@ -72,16 +73,14 @@ export function BeautyDailyCheckInCard({
               'flex flex-col items-center gap-1 rounded-xl px-2 py-2.5 transition-all',
               checked.has(i)
                 ? 'bg-emerald-50 ring-1 ring-emerald-300 dark:bg-emerald-950 dark:ring-emerald-700'
-                : 'bg-gray-50 dark:bg-gray-800',
+                : 'bg-surface-muted',
             )}
           >
             <span className="text-lg">{r.emoji}</span>
             <span
               className={cn(
                 'text-[9px] font-medium',
-                checked.has(i)
-                  ? 'text-emerald-700 dark:text-emerald-300'
-                  : 'text-gray-400 dark:text-gray-600',
+                checked.has(i) ? 'text-emerald-700 dark:text-emerald-300' : 'text-text-tertiary',
               )}
             >
               {r.label[locale]}

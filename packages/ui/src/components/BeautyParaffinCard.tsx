@@ -1,4 +1,5 @@
 'use client';
+import type { JSX } from 'react';
 import { cn } from '@galaxy/shared';
 export function BeautyParaffinCard({
   className = '',
@@ -19,7 +20,7 @@ export function BeautyParaffinCard({
       )}
     >
       <div className="flex items-center gap-2">
-        <span className="text-xl">️</span>
+        <span className="text-xl">🛁</span>
         <div>
           <h4 className="text-sm font-bold text-amber-700 dark:text-amber-300">{title}</h4>
           <p className="text-[10px] text-amber-500 dark:text-amber-400">{subtitle}</p>
@@ -28,28 +29,28 @@ export function BeautyParaffinCard({
       <div className="mt-3 space-y-1">
         {[
           {
-            emoji: '',
+            emoji: '🕯',
             text: {
               ar: 'شمع دافئ — يفتح المسام ويرطب بعمق',
               en: 'Warm wax — opens pores and deeply hydrates',
             },
           },
           {
-            emoji: '',
+            emoji: '🧴',
             text: {
               ar: 'يعالج الجفاف — ممتاز للشتاء',
               en: 'Treats dryness — excellent for winter',
             },
           },
           {
-            emoji: '️',
+            emoji: '⏰',
             text: {
               ar: '15-20 دقيقة — تغمس الأيدي 3-5 مرات',
               en: '15-20 minutes — dip hands 3-5 times',
             },
           },
           {
-            emoji: '',
+            emoji: '🧤',
             text: {
               ar: 'بعد الجلسة — كريم مرطب لليدين',
               en: 'After the session — moisturizing hand cream',

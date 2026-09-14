@@ -1,3 +1,4 @@
+import type { JSX } from 'react';
 import { View, Text, ScrollView, StyleSheet, RefreshControl } from 'react-native';
 import { SkeletonList } from '@/components/SkeletonCard';
 import { trpc } from '@/lib/trpc-react';
@@ -26,7 +27,9 @@ export default function GroupBuyScreen(): JSX.Element {
       refreshControl={
         <RefreshControl
           refreshing={dealsQ.isRefetching}
-          onRefresh={() => dealsQ.refetch()}
+          onRefresh={async () => {
+            await dealsQ.refetch();
+          }}
           colors={['#059669']}
         />
       }

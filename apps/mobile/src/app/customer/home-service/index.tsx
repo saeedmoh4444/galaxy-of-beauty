@@ -1,3 +1,4 @@
+import type { JSX } from 'react';
 import { View, Text, ScrollView, TouchableOpacity, StyleSheet, RefreshControl } from 'react-native';
 import { SkeletonList } from '@/components/SkeletonCard';
 import { trpc } from '@/lib/trpc-react';
@@ -26,7 +27,9 @@ export default function HomeServiceScreen(): JSX.Element {
       refreshControl={
         <RefreshControl
           refreshing={estimateQ.isRefetching}
-          onRefresh={() => estimateQ.refetch()}
+          onRefresh={async () => {
+            await estimateQ.refetch();
+          }}
           colors={['#059669']}
         />
       }
@@ -38,7 +41,7 @@ export default function HomeServiceScreen(): JSX.Element {
       {estimate && (
         <View style={styles.card}>
           <Text style={styles.ep}>{(estimate.totalEstimate ?? 0).toLocaleString()} ر.س</Text>
-          <Text style={styles.em}>️ {estimate.estimatedDuration ?? ''}</Text>
+          <Text style={styles.em}> {estimate.estimatedDuration ?? ''}</Text>
         </View>
       )}
     </ScrollView>

@@ -1,20 +1,23 @@
 import { View, Text, ScrollView, StyleSheet, TouchableOpacity, RefreshControl } from 'react-native';
 import { useState } from 'react';
-import { trpc } from '@/lib/trpc-react';
+import type { JSX } from 'react';
 import { useLocale } from '@/components/LocaleProvider';
+import { useAuthState } from '@/hooks/useAuthState';
+import { trpc } from '@/lib/trpc-react';
 
 const OCCASIONS = [
-  { key: 'birthday', emoji: '', name: 'عيد ميلاد' },
-  { key: 'eid', emoji: '', name: 'العيد' },
-  { key: 'wedding', emoji: '', name: 'زفاف' },
-  { key: 'graduation', emoji: '', name: 'تخرج' },
-  { key: 'valentine', emoji: '', name: 'عيد الحب' },
-  { key: 'mothersday', emoji: '', name: 'عيد الأم' },
+  { key: 'birthday', emoji: '🎂', name: 'عيد ميلاد' },
+  { key: 'eid', emoji: '🌙', name: 'العيد' },
+  { key: 'wedding', emoji: '💍', name: 'زفاف' },
+  { key: 'graduation', emoji: '🎓', name: 'تخرج' },
+  { key: 'valentine', emoji: '💖', name: 'عيد الحب' },
+  { key: 'mothersday', emoji: '💐', name: 'عيد الأم' },
 ];
 
 export default function BeautyWishlistGiftsScreen(): JSX.Element {
   const { t } = useLocale();
-  const q = trpc.wishlist.list.useQuery();
+  const isAuthed = useAuthState();
+  const q = trpc.wishlist.list.useQuery(undefined, { enabled: isAuthed });
   const occasionLabels: Record<string, string> = {
     birthday: t('beautyWishlistGifts.occasion-birthday'),
     eid: t('beautyWishlistGifts.occasion-eid'),
@@ -35,7 +38,9 @@ export default function BeautyWishlistGiftsScreen(): JSX.Element {
       refreshControl={
         <RefreshControl
           refreshing={q.isRefetching}
-          onRefresh={() => q.refetch()}
+          onRefresh={async () => {
+            await q.refetch();
+          }}
           colors={['#ec4899']}
         />
       }
@@ -79,10 +84,10 @@ export default function BeautyWishlistGiftsScreen(): JSX.Element {
       </Text>
       <View style={styles.gifts}>
         {[
-          { emoji: '‍️', name: 'جلسة مساج سويدي', price: 350, priority: 'أولوية' },
-          { emoji: '', name: 'مانيكير جل', price: 180, priority: 'مهم' },
-          { emoji: '‍️', name: 'جلسة عناية بالبشرة', price: 250, priority: 'جميل' },
-          { emoji: '‍️', name: 'تصفيف شعر', price: 200, priority: 'جميل' },
+          { emoji: '💆', name: 'جلسة مساج سويدي', price: 350, priority: 'أولوية' },
+          { emoji: '💅', name: 'مانيكير جل', price: 180, priority: 'مهم' },
+          { emoji: '🧖', name: 'جلسة عناية بالبشرة', price: 250, priority: 'جميل' },
+          { emoji: '💇', name: 'تصفيف شعر', price: 200, priority: 'جميل' },
         ].map((g, i) => (
           <View key={i} style={styles.gift}>
             <Text style={styles.ge}>{g.emoji}</Text>

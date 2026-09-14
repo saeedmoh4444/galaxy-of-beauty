@@ -1,5 +1,5 @@
 /**
- * Galaxy of Beauty — Mobile Detox E2E Tests (Comprehensive)
+ * Dalal — Mobile Detox E2E Tests (Comprehensive)
  *
  * Prerequisites:
  *   1. Detox CLI:  npm i -g detox-cli
@@ -12,7 +12,7 @@ import { device, element, by, expect as detoxExpect } from 'detox';
 const DEMO_EMAIL = 'admin@galaxyofbeauty.sa';
 const DEMO_PASSWORD = 'Admin@123456';
 
-describe('Galaxy of Beauty Mobile App', () => {
+describe('Dalal Mobile App', () => {
   beforeAll(async () => {
     await device.launchApp({ newInstance: true });
   });
@@ -36,7 +36,7 @@ describe('Galaxy of Beauty Mobile App', () => {
       await detoxExpect(element(by.text('بحث عن خدمة...'))).toBeVisible();
 
       await element(by.text('الرئيسية')).tap();
-      await detoxExpect(element(by.text('جالكسي بيوتي'))).toBeVisible();
+      await detoxExpect(element(by.text('دلال'))).toBeVisible();
     });
   });
 
@@ -44,7 +44,7 @@ describe('Galaxy of Beauty Mobile App', () => {
   describe('Home Screen', () => {
     it('should display hero with brand name', async () => {
       await element(by.text('الرئيسية')).tap();
-      await detoxExpect(element(by.text('جالكسي بيوتي'))).toBeVisible();
+      await detoxExpect(element(by.text('دلال'))).toBeVisible();
     });
 
     it('should display quick action buttons', async () => {
@@ -52,6 +52,15 @@ describe('Galaxy of Beauty Mobile App', () => {
       await detoxExpect(element(by.text('فاجئيني'))).toBeVisible();
       await detoxExpect(element(by.text('🛍️ متجر المنتجات'))).toBeVisible();
       await detoxExpect(element(by.text('🔬 تحليل البشرة'))).toBeVisible();
+    });
+
+    it('should open the More screen from home', async () => {
+      await detoxExpect(element(by.id('home-more-button'))).toBeVisible();
+      await element(by.id('home-more-button')).tap();
+      await detoxExpect(element(by.text('الوجهات'))).toBeVisible();
+      await detoxExpect(element(by.text('استكشفي'))).toBeVisible();
+      // back to home
+      await device.pressBack();
     });
 
     it('should navigate to marketplace from home', async () => {
@@ -95,6 +104,12 @@ describe('Galaxy of Beauty Mobile App', () => {
       const searchField = element(by.text('بحث عن خدمة...'));
       await searchField.clearText();
       await new Promise((r) => setTimeout(r, 2000));
+      // Tap the first service card
+      await element(by.type('react-native.View')).atIndex(0).tap();
+      await new Promise((r) => setTimeout(r, 3000));
+      // RN mirror: detail screen shows trust layer + book CTA (web parity)
+      await detoxExpect(element(by.id('service-book-now'))).toBeVisible();
+      await detoxExpect(element(by.id('service-image'))).toBeVisible();
     });
   });
 
@@ -215,7 +230,7 @@ describe('Galaxy of Beauty Mobile App', () => {
     it('should load home screen within 5 seconds', async () => {
       const start = Date.now();
       await device.launchApp({ newInstance: true });
-      await detoxExpect(element(by.text('جالكسي بيوتي'))).toBeVisible();
+      await detoxExpect(element(by.text('دلال'))).toBeVisible();
       const loadTime = Date.now() - start;
       // eslint-disable-next-line no-console
       console.log(`Home screen load time: ${loadTime}ms`);

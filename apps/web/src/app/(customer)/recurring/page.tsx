@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import type { JSX } from 'react';
 import { api } from '@/lib/trpc';
 import { Card, CardListSkeleton, ErrorAlert, EmptyState, Button, Input } from '@galaxy/ui';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
@@ -148,7 +149,7 @@ export default function RecurringPage(): JSX.Element {
                 <select
                   value={form.frequency}
                   onChange={(e) => setForm({ ...form, frequency: e.target.value })}
-                  className="w-full rounded-lg border border-gray-300 p-2 dark:border-gray-600 dark:bg-gray-800"
+                  className="w-full rounded-lg border border-edge p-2 dark:border-gray-600 dark:bg-gray-800"
                 >
                   <option value="WEEKLY">{t('recurring.freq.weekly')}</option>
                   <option value="BIWEEKLY">{t('recurring.freq.biweekly')}</option>

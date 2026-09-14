@@ -1,4 +1,5 @@
 'use client';
+import type { JSX } from 'react';
 
 import { cn } from '@galaxy/shared';
 
@@ -23,7 +24,7 @@ export function BeautyLipsCareCard({
       )}
     >
       <div className="flex items-center gap-2">
-        <span className="text-xl"></span>
+        <span className="text-xl">💋</span>
         <div>
           <h4 className="text-sm font-bold text-rose-700 dark:text-rose-300">{heading}</h4>
           <p className="text-[10px] text-rose-500 dark:text-rose-400">{subtitle}</p>
@@ -32,22 +33,22 @@ export function BeautyLipsCareCard({
       <div className="mt-3 grid grid-cols-2 gap-1.5">
         {[
           {
-            emoji: '',
+            emoji: '💧',
             label: { ar: 'ترطيب دائم', en: 'Constant hydration' },
             tip: { ar: 'بلسم شفاه كل ساعتين', en: 'Lip balm every two hours' },
           },
           {
-            emoji: '️',
+            emoji: '☀️',
             label: { ar: 'حماية SPF', en: 'SPF protection' },
             tip: { ar: 'الشفاه تحتاج واقي شمس', en: 'Lips need sunscreen too' },
           },
           {
-            emoji: '',
+            emoji: '🚫',
             label: { ar: 'لا تلعقي', en: "Don't lick" },
             tip: { ar: 'اللعاب يجفف الشفاه', en: 'Saliva dries out the lips' },
           },
           {
-            emoji: '',
+            emoji: '🍯',
             label: { ar: 'ماسك عسل', en: 'Honey mask' },
             tip: { ar: 'عسل + سكر = تقشير لطيف', en: 'Honey + sugar = gentle exfoliation' },
           },

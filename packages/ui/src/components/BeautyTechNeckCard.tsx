@@ -1,4 +1,5 @@
 'use client';
+import type { JSX } from 'react';
 import { cn } from '@galaxy/shared';
 export function BeautyTechNeckCard({
   className = '',
@@ -19,7 +20,7 @@ export function BeautyTechNeckCard({
       )}
     >
       <div className="flex items-center gap-2">
-        <span className="text-xl"></span>
+        <span className="text-xl">📱</span>
         <div>
           <h4 className="text-sm font-bold text-sky-700 dark:text-sky-300">{title}</h4>
           <p className="text-[10px] text-sky-500 dark:text-sky-400">{subtitle}</p>
@@ -28,7 +29,7 @@ export function BeautyTechNeckCard({
       <div className="mt-3 space-y-1">
         {[
           {
-            emoji: '',
+            emoji: '📱',
             text: {
               ar: 'ارفعي الجوال — لمستوى العين وليس للأسفل',
               en: 'Raise your phone — to eye level, not down',
@@ -42,14 +43,14 @@ export function BeautyTechNeckCard({
             },
           },
           {
-            emoji: '',
+            emoji: '🤸',
             text: {
               ar: 'تمارين الرقبة — مد وإطالة يومياً',
               en: 'Neck exercises — stretching daily',
             },
           },
           {
-            emoji: '',
+            emoji: '🧬',
             text: { ar: 'كريمات الببتيد — تحفز الكولاجين', en: 'Peptide creams — boost collagen' },
           },
         ].map((t, i) => (

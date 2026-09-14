@@ -1,3 +1,4 @@
+import type { JSX } from 'react';
 import { View, Text, ScrollView, StyleSheet, RefreshControl } from 'react-native';
 import { SkeletonList } from '@/components/SkeletonCard';
 import { trpc } from '@/lib/trpc-react';
@@ -22,7 +23,9 @@ export default function MySubscriptionScreen(): JSX.Element {
       refreshControl={
         <RefreshControl
           refreshing={subQ.isRefetching}
-          onRefresh={() => subQ.refetch()}
+          onRefresh={async () => {
+            await subQ.refetch();
+          }}
           colors={['#7c3aed']}
         />
       }

@@ -1,5 +1,7 @@
+import type { JSX } from 'react';
 import { View, Text, ScrollView, StyleSheet, TouchableOpacity, RefreshControl } from 'react-native';
 import { SkeletonList } from '@/components/SkeletonCard';
+import { useAuthState } from '@/hooks/useAuthState';
 import { trpc } from '@/lib/trpc-react';
 import { useLocale } from '@/components/LocaleProvider';
 
@@ -13,7 +15,8 @@ interface WishlistItem {
 
 export default function ServiceWishlistScreen(): JSX.Element {
   const { t, locale } = useLocale();
-  const itemsQ = trpc.serviceWishlist.myWishlist.useQuery();
+  const isAuthed = useAuthState();
+  const itemsQ = trpc.serviceWishlist.myWishlist.useQuery(undefined, { enabled: isAuthed });
   const items: WishlistItem[] = (itemsQ.data as unknown as WishlistItem[] | undefined) ?? [];
   const removeMut = trpc.serviceWishlist.remove.useMutation({
     onSuccess: () => {
@@ -31,7 +34,9 @@ export default function ServiceWishlistScreen(): JSX.Element {
       refreshControl={
         <RefreshControl
           refreshing={itemsQ.isRefetching}
-          onRefresh={() => itemsQ.refetch()}
+          onRefresh={async () => {
+            await itemsQ.refetch();
+          }}
           colors={['#7c3aed']}
         />
       }
@@ -55,7 +60,7 @@ export default function ServiceWishlistScreen(): JSX.Element {
               })}
             </Text>
             <TouchableOpacity onPress={() => remove(i.id ?? 0)}>
-              <Text style={styles.del}>️</Text>
+              <Text style={styles.del}>🗑️</Text>
             </TouchableOpacity>
           </View>
         </View>

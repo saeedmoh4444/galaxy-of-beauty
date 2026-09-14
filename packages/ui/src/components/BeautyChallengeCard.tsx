@@ -1,10 +1,11 @@
 'use client';
+import type { JSX } from 'react';
 
 import { cn } from '@galaxy/shared';
 
 /**
  * Beauty Challenge Card — 30-day beauty & self-care challenge.
- * From Phase W6: Education & Empowerment — Galaxy Beauty Academy.
+ * From Phase W6: Education & Empowerment — Dalal Beauty Academy.
  *
  * Usage:
  *   <BeautyChallengeCard
@@ -19,29 +20,29 @@ interface ChallengeDay {
 }
 
 const CHALLENGES: ChallengeDay[] = [
-  { day: 1, task: { ar: 'اشربي 8 أكواب ماء', en: 'Drink 8 glasses of water' }, emoji: '' },
-  { day: 2, task: { ar: 'نظفي بشرتكِ مرتين', en: 'Cleanse your skin twice' }, emoji: '' },
-  { day: 3, task: { ar: 'طبقي واقي شمس', en: 'Apply sunscreen' }, emoji: '️' },
-  { day: 4, task: { ar: 'تأملي 10 دقائق', en: 'Meditate for 10 minutes' }, emoji: '' },
-  { day: 5, task: { ar: 'قناع وجه طبيعي', en: 'Use a natural face mask' }, emoji: '' },
-  { day: 6, task: { ar: 'امشي 30 دقيقة', en: 'Walk for 30 minutes' }, emoji: '‍️' },
-  { day: 7, task: { ar: 'دللي شعركِ', en: 'Pamper your hair' }, emoji: '' },
-  { day: 8, task: { ar: 'نامي 8 ساعات', en: 'Sleep for 8 hours' }, emoji: '' },
-  { day: 9, task: { ar: 'لا سكر اليوم', en: 'No sugar today' }, emoji: '' },
+  { day: 1, task: { ar: 'اشربي 8 أكواب ماء', en: 'Drink 8 glasses of water' }, emoji: '💧' },
+  { day: 2, task: { ar: 'نظفي بشرتكِ مرتين', en: 'Cleanse your skin twice' }, emoji: '🧼' },
+  { day: 3, task: { ar: 'طبقي واقي شمس', en: 'Apply sunscreen' }, emoji: '☀️' },
+  { day: 4, task: { ar: 'تأملي 10 دقائق', en: 'Meditate for 10 minutes' }, emoji: '🧘' },
+  { day: 5, task: { ar: 'قناع وجه طبيعي', en: 'Use a natural face mask' }, emoji: '🥒' },
+  { day: 6, task: { ar: 'امشي 30 دقيقة', en: 'Walk for 30 minutes' }, emoji: '🚶' },
+  { day: 7, task: { ar: 'دللي شعركِ', en: 'Pamper your hair' }, emoji: '💇' },
+  { day: 8, task: { ar: 'نامي 8 ساعات', en: 'Sleep for 8 hours' }, emoji: '😴' },
+  { day: 9, task: { ar: 'لا سكر اليوم', en: 'No sugar today' }, emoji: '🚫' },
   {
     day: 10,
     task: { ar: 'اكتبي 3 أشياء تحبينها في نفسكِ', en: 'Write 3 things you love about yourself' },
-    emoji: '',
+    emoji: '📝',
   },
-  { day: 11, task: { ar: 'تقشير لطيف للبشرة', en: 'Gentle skin exfoliation' }, emoji: '' },
-  { day: 12, task: { ar: 'جربي تسريحة جديدة', en: 'Try a new hairstyle' }, emoji: '‍️' },
-  { day: 13, task: { ar: 'اشربي شاي أخضر', en: 'Drink green tea' }, emoji: '' },
+  { day: 11, task: { ar: 'تقشير لطيف للبشرة', en: 'Gentle skin exfoliation' }, emoji: '🧽' },
+  { day: 12, task: { ar: 'جربي تسريحة جديدة', en: 'Try a new hairstyle' }, emoji: '💇' },
+  { day: 13, task: { ar: 'اشربي شاي أخضر', en: 'Drink green tea' }, emoji: '🍵' },
   {
     day: 14,
     task: { ar: 'صوري بشرتكِ (قبل/بعد)', en: 'Photo your skin (before/after)' },
-    emoji: '',
+    emoji: '📸',
   },
-  { day: 15, task: { ar: 'جلسة تأمل مسائية', en: 'Evening meditation session' }, emoji: '️' },
+  { day: 15, task: { ar: 'جلسة تأمل مسائية', en: 'Evening meditation session' }, emoji: '🧘' },
 ];
 
 interface BeautyChallengeCardProps {
@@ -78,7 +79,7 @@ export function BeautyChallengeCard({
   subtitle = 'رحلة 30 يوم للعناية بنفسكِ',
   dayLabel = 'اليوم',
   ofLabel = 'من',
-  taskLabel = ' مهمة اليوم',
+  taskLabel = 'مهمة اليوم',
   doneLabel = 'أنجزتها!',
   dayWordLabel = 'يوم',
   daysRemainingLabel = 'يوم متبقي — أنتِ قادرة!',
@@ -97,7 +98,9 @@ export function BeautyChallengeCard({
     >
       {/* Header */}
       <div className="text-center">
-        <span className="text-3xl" aria-hidden="true"></span>
+        <span className="text-3xl" aria-hidden="true">
+          🏆
+        </span>
         <h4 className="mt-1 text-sm font-bold text-emerald-700 dark:text-emerald-300">{title}</h4>
         <p className="text-[10px] text-emerald-500 dark:text-emerald-400">{subtitle}</p>
       </div>
@@ -157,12 +160,12 @@ export function BeautyChallengeCard({
                     ? 'bg-emerald-100 text-emerald-600 dark:bg-emerald-900 dark:text-emerald-400'
                     : isToday
                       ? 'bg-emerald-500 text-white ring-2 ring-emerald-300'
-                      : 'bg-gray-100 text-gray-400 dark:bg-gray-800 dark:text-gray-600',
+                      : 'bg-surface-muted text-text-tertiary dark:bg-gray-800 dark:text-text-secondary',
                 )}
               >
                 {isCompleted ? '' : d.emoji}
               </div>
-              <p className="mt-0.5 text-[8px] text-text-tertiary dark:text-gray-500">
+              <p className="mt-0.5 text-[8px] text-text-tertiary dark:text-text-secondary">
                 {dayWordLabel} {d.day}
               </p>
             </div>
@@ -171,7 +174,7 @@ export function BeautyChallengeCard({
       </div>
 
       {/* Motivation */}
-      <p className="mt-3 text-center text-[9px] text-text-tertiary dark:text-gray-500">
+      <p className="mt-3 text-center text-[9px] text-text-tertiary dark:text-text-secondary">
         {30 - completedDays} {daysRemainingLabel}
       </p>
     </div>

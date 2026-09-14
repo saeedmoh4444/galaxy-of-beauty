@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import type { JSX } from 'react';
 import { api } from '@/lib/trpc';
 import { Card, FormSkeleton, GridSkeleton, Button, formatCurrency } from '@galaxy/ui';
 import Link from 'next/link';
@@ -71,7 +72,7 @@ export default function GiftQuizPage(): JSX.Element {
     return (
       <div className="mx-auto max-w-4xl px-4 py-12">
         <div className="text-center mb-10">
-          <span className="text-6xl"></span>
+          <span className="text-6xl">🎁</span>
           <h1 className="mt-4 text-3xl font-bold">{t('marketing.gift-quiz.title')}</h1>
           <p className="mt-2 text-text-secondary">{t('marketing.gift-quiz.subtitle')}</p>
         </div>
@@ -125,7 +126,7 @@ export default function GiftQuizPage(): JSX.Element {
   return (
     <div className="mx-auto max-w-lg px-4 py-12">
       <div className="text-center mb-8">
-        <span className="text-6xl"></span>
+        <span className="text-6xl">🎁</span>
         <h1 className="mt-4 text-3xl font-bold">{t('marketing.gift-quiz.quiz-title')}</h1>
         <p className="mt-2 text-text-secondary">{t('marketing.gift-quiz.quiz-subtitle')}</p>
       </div>
@@ -137,7 +138,7 @@ export default function GiftQuizPage(): JSX.Element {
             {qs.map((_, i) => (
               <div
                 key={i}
-                className={`h-1.5 flex-1 rounded-full ${i <= step ? 'bg-brand-500' : 'bg-gray-200 dark:bg-gray-700'}`}
+                className={`h-1.5 flex-1 rounded-full ${i <= step ? 'bg-brand-500' : 'bg-surface-muted'}`}
               />
             ))}
           </div>
@@ -150,7 +151,7 @@ export default function GiftQuizPage(): JSX.Element {
               <button
                 key={opt.key}
                 onClick={() => handleAnswer(opt.key)}
-                className="w-full rounded-xl border-2 border-edge dark:border-gray-700 p-4 text-right hover:border-brand-400 hover:bg-brand-50 dark:hover:bg-brand-950 transition-all"
+                className="w-full rounded-xl border-2 border-edge dark:border-gray-700 p-4 text-end hover:border-brand-400 hover:bg-brand-50 dark:hover:bg-brand-950 transition-all"
               >
                 {opt.labelAr}
               </button>

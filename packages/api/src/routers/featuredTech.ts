@@ -13,7 +13,7 @@ export const featuredTechRouter = router({
         id: 0,
         name: '',
         titleAr: '',
-        emoji: '',
+        emoji: '👩',
         bio: '',
         highlights: [],
         services: [],
@@ -27,7 +27,7 @@ export const featuredTechRouter = router({
       id: top.id,
       name: top.user.name,
       titleAr: 'خبيرة تجميل',
-      emoji: '',
+      emoji: '👩',
       bio: `${top.user.name} خبيرة تجميل سعودية معتمدة بتقييم ${Number(top.ratingAvg).toFixed(1)} `,
       highlights: [
         `تقييم ${Number(top.ratingAvg).toFixed(1)} `,
@@ -50,7 +50,7 @@ export const featuredTechRouter = router({
       id: t.id,
       name: t.user.name,
       titleAr: 'خبيرة تجميل',
-      emoji: '',
+      emoji: '👩',
       weekOf: t.createdAt.toISOString().slice(0, 10),
     }));
   }),

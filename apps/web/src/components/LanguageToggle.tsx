@@ -1,4 +1,5 @@
 'use client';
+import type { JSX } from 'react';
 
 import { useRouter } from 'next/navigation';
 import { useLocale } from '@/components/LocaleProvider';
@@ -19,7 +20,7 @@ export function LanguageToggle(): JSX.Element {
   return (
     <button
       onClick={toggle}
-      className="flex items-center gap-1 rounded-lg px-2 py-1.5 text-xs font-bold text-gray-600 transition-colors hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-800"
+      className="flex items-center gap-1 rounded-lg px-2 py-1.5 text-xs font-bold text-text-secondary transition-colors hover:bg-surface-muted dark:text-text-tertiary dark:hover:bg-gray-800"
       title={locale === 'ar' ? 'Switch to English' : 'التبديل إلى العربية'}
       aria-label={locale === 'ar' ? 'Switch to English' : 'Switch to Arabic'}
     >

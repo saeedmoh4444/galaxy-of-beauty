@@ -1,4 +1,5 @@
 'use client';
+import type { JSX } from 'react';
 
 import { cn } from '@galaxy/shared';
 
@@ -7,7 +8,7 @@ import { cn } from '@galaxy/shared';
  * From Phase W6: Education & Empowerment — Galaxy Beauty Academy.
  *
  * Usage:
- *   <BeautyLearningPathCard path={{ title: 'مكياج احترافي', modules: 8, completed: 3, emoji: '' }} />
+ *   <BeautyLearningPathCard path={{ title: 'مكياج احترافي', modules: 8, completed: 3, emoji: '💄' }} />
  */
 
 interface LearningPath {
@@ -40,7 +41,7 @@ export function BeautyLearningPathCard({
   unitsText = 'وحدات',
   completedSuffix = 'مكتمل',
   startButtonText = 'ابدئي المسار',
-  completedButtonText = ' مكتمل — راجعي',
+  completedButtonText = 'مكتمل — راجعي',
   continueButtonText = 'واصلي التعلم ',
 }: BeautyLearningPathCardProps): JSX.Element {
   const pct = Math.round((path.completed / path.modules) * 100);
@@ -59,7 +60,7 @@ export function BeautyLearningPathCard({
         <div className="min-w-0 flex-1">
           <h4 className="text-sm font-bold text-indigo-700 dark:text-indigo-300">{heading}</h4>
           <p className="text-xs font-bold text-text-primary dark:text-gray-100">{path.title}</p>
-          <p className="text-[10px] text-text-tertiary dark:text-gray-500">
+          <p className="text-[10px] text-text-tertiary dark:text-text-secondary">
             {path.duration || selfPacedText} · {path.modules} {unitsText}
           </p>
         </div>
@@ -72,7 +73,7 @@ export function BeautyLearningPathCard({
           </span>
           <span className="font-bold text-indigo-700 dark:text-indigo-300">{pct}%</span>
         </div>
-        <div className="mt-1 h-2 rounded-full bg-gray-100 dark:bg-gray-700">
+        <div className="mt-1 h-2 rounded-full bg-surface-muted dark:bg-gray-700">
           <div
             className="h-full rounded-full bg-gradient-to-r from-indigo-400 to-blue-500 transition-all"
             style={{ width: `${pct}%` }}

@@ -1,4 +1,5 @@
 'use client';
+import type { JSX } from 'react';
 import { cn } from '@galaxy/shared';
 export function BeautyMakeupOrganizeCard({
   className = '',
@@ -19,7 +20,7 @@ export function BeautyMakeupOrganizeCard({
       )}
     >
       <div className="flex items-center gap-2">
-        <span className="text-xl"></span>
+        <span className="text-xl">🧺</span>
         <div>
           <h4 className="text-sm font-bold text-amber-700 dark:text-amber-300">{heading}</h4>
           <p className="text-[10px] text-amber-500 dark:text-amber-400">{subtitle}</p>
@@ -28,19 +29,19 @@ export function BeautyMakeupOrganizeCard({
       <div className="mt-3 space-y-1">
         {[
           {
-            emoji: '',
+            emoji: '🚮',
             text: { ar: 'تخلصي من المكياج منتهي الصلاحية', en: 'Throw away expired makeup' },
           },
           {
-            emoji: '',
+            emoji: '🧽',
             text: { ar: 'نظفي الدرج مرة في الشهر', en: 'Clean the drawer once a month' },
           },
           {
-            emoji: '',
+            emoji: '📦',
             text: { ar: 'قسمي حسب النوع — عيون، شفاه، وجه', en: 'Sort by type — eyes, lips, face' },
           },
           {
-            emoji: '️',
+            emoji: '🧊',
             text: {
               ar: 'احفظيه في مكان بارد — وليس الحمام',
               en: 'Store it in a cool place — not the bathroom',

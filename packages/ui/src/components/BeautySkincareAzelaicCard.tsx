@@ -1,4 +1,5 @@
 'use client';
+import type { JSX } from 'react';
 import { cn } from '@galaxy/shared';
 export function BeautySkincareAzelaicCard({
   className = '',
@@ -19,7 +20,7 @@ export function BeautySkincareAzelaicCard({
       )}
     >
       <div className="flex items-center gap-2">
-        <span className="text-xl"></span>
+        <span className="text-xl">🧴</span>
         <div>
           <h4 className="text-sm font-bold text-rose-700 dark:text-rose-300">{title}</h4>
           <p className="text-[10px] text-rose-500 dark:text-rose-400">{subtitle}</p>
@@ -27,20 +28,23 @@ export function BeautySkincareAzelaicCard({
       </div>
       <div className="mt-3 space-y-1">
         {[
-          { emoji: '', text: { ar: 'يعالج حبوب الشباب والوردية', en: 'Treats acne and rosacea' } },
           {
-            emoji: '',
+            emoji: '🧪',
+            text: { ar: 'يعالج حبوب الشباب والوردية', en: 'Treats acne and rosacea' },
+          },
+          {
+            emoji: '✨',
             text: {
               ar: 'يفتح التصبغات — آمن للحوامل',
               en: 'Fades hyperpigmentation — pregnancy-safe',
             },
           },
           {
-            emoji: '',
+            emoji: '🌿',
             text: { ar: 'لطيف — مناسب للبشرة الحساسة', en: 'Gentle — suitable for sensitive skin' },
           },
           {
-            emoji: '',
+            emoji: '🤝',
             text: { ar: 'مع النياسيناميد — ثنائي مهدئ', en: 'With niacinamide — a soothing duo' },
           },
         ].map((t, i) => (

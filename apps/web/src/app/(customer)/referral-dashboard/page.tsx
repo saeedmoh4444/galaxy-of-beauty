@@ -1,4 +1,5 @@
 'use client';
+import type { JSX } from 'react';
 
 import { api } from '@/lib/trpc';
 import { Card, CardListSkeleton, ErrorAlert, formatCurrency } from '@galaxy/ui';
@@ -86,24 +87,24 @@ export default function ReferralDashboardPage(): JSX.Element {
         {/* Stats Cards */}
         <div className="grid gap-4 sm:grid-cols-4">
           <Card padding="md" className="text-center">
-            <p className="text-3xl">‍️</p>
+            <p className="text-3xl">👥</p>
             <p className="mt-1 text-2xl font-bold">{s.totalReferred}</p>
             <p className="text-xs text-text-secondary">{t('referralDashboard.stat.invited')}</p>
           </Card>
           <Card padding="md" className="text-center">
-            <p className="text-3xl"></p>
+            <p className="text-3xl">✅</p>
             <p className="mt-1 text-2xl font-bold text-green-600">{s.completedReferrals}</p>
             <p className="text-xs text-text-secondary">{t('referrals.stat.completed')}</p>
           </Card>
           <Card padding="md" className="text-center">
-            <p className="text-3xl"></p>
+            <p className="text-3xl">💰</p>
             <p className="mt-1 text-2xl font-bold text-brand-600">
               {formatCurrency(s.totalEarned)}
             </p>
             <p className="text-xs text-text-secondary">{t('referralDashboard.stat.earned')}</p>
           </Card>
           <Card padding="md" className="text-center">
-            <p className="text-3xl"></p>
+            <p className="text-3xl">🎁</p>
             <p className="mt-1 text-2xl font-bold text-amber-600">
               {formatCurrency(s.pendingRewards)}
             </p>
@@ -114,7 +115,7 @@ export default function ReferralDashboardPage(): JSX.Element {
         {/* Share Card */}
         <Card
           padding="lg"
-          className="bg-gradient-to-r from-brand-500 to-purple-500 text-white text-center"
+          className="bg-gradient-to-r from-brand-500 to-brand-500 text-white text-center"
         >
           <p className="text-2xl font-bold">{t('referralDashboard.yourCode')}</p>
           <div className="mt-3 inline-block rounded-xl bg-white/20 px-8 py-3 backdrop-blur">
@@ -151,7 +152,9 @@ export default function ReferralDashboardPage(): JSX.Element {
             {s.referrals.map((r) => (
               <Card key={r.id} padding="md" className="flex items-center justify-between">
                 <div className="flex items-center gap-3">
-                  <div className="flex h-10 w-10 items-center justify-center rounded-full bg-brand-100 dark:bg-brand-900 text-lg"></div>
+                  <div className="flex h-10 w-10 items-center justify-center rounded-full bg-brand-100 dark:bg-brand-900 text-lg">
+                    👤
+                  </div>
                   <div>
                     <p className="font-semibold text-sm">
                       {r.referred?.name ?? t('referralDashboard.userFallback')}
@@ -163,7 +166,7 @@ export default function ReferralDashboardPage(): JSX.Element {
                     </p>
                   </div>
                 </div>
-                <div className="text-right">
+                <div className="text-end">
                   <span
                     className={`rounded-full px-2.5 py-0.5 text-xs font-medium ${
                       r.status === 'COMPLETED'
@@ -204,13 +207,13 @@ export default function ReferralDashboardPage(): JSX.Element {
                   </span>
                   <div className="flex-1 h-4 rounded-full bg-surface-muted dark:bg-gray-800 overflow-hidden">
                     <div
-                      className="h-full rounded-full bg-gradient-to-r from-brand-400 to-purple-500"
+                      className="h-full rounded-full bg-gradient-to-r from-brand-400 to-brand-500"
                       style={{
                         width: `${Math.min(100, (entry._count.id / Math.max(1, topReferrers[0]?._count?.id ?? 1)) * 100)}%`,
                       }}
                     />
                   </div>
-                  <span className="text-sm font-semibold w-12 text-right">{entry._count.id}</span>
+                  <span className="text-sm font-semibold w-12 text-end">{entry._count.id}</span>
                 </div>
               ))}
             </div>

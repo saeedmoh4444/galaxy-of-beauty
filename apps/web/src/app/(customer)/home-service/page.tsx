@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import type { JSX } from 'react';
 import { api } from '@/lib/trpc';
 import { Card, Button, formatCurrency } from '@galaxy/ui';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
@@ -108,7 +109,7 @@ export default function HomeServicePage(): JSX.Element {
             padding="lg"
             className="text-center border-2 border-green-300 dark:border-green-700"
           >
-            <span className="text-6xl"></span>
+            <span className="text-6xl">✅</span>
             <h2 className="mt-4 text-xl font-bold text-green-700 dark:text-green-300">
               {t('homeService.success.title')}
             </h2>
@@ -229,9 +230,9 @@ export default function HomeServicePage(): JSX.Element {
 
         <div className="grid gap-4 sm:grid-cols-3">
           {[
-            { emoji: '', title: t('homeService.feat1.title'), desc: t('homeService.feat1.desc') },
-            { emoji: '️', title: t('homeService.feat2.title'), desc: t('homeService.feat2.desc') },
-            { emoji: '️', title: t('homeService.feat3.title'), desc: t('homeService.feat3.desc') },
+            { emoji: '🏠', title: t('homeService.feat1.title'), desc: t('homeService.feat1.desc') },
+            { emoji: '⏰', title: t('homeService.feat2.title'), desc: t('homeService.feat2.desc') },
+            { emoji: '✅', title: t('homeService.feat3.title'), desc: t('homeService.feat3.desc') },
           ].map((b, i) => (
             <Card key={i} padding="md" className="text-center">
               <span className="text-3xl">{b.emoji}</span>

@@ -1,5 +1,6 @@
 import { View, Text, ScrollView, StyleSheet, TouchableOpacity, RefreshControl } from 'react-native';
 import { useState } from 'react';
+import type { JSX } from 'react';
 import { SkeletonList } from '@/components/SkeletonCard';
 import { trpc } from '@/lib/trpc-react';
 import { useLocale } from '@/components/LocaleProvider';
@@ -35,7 +36,9 @@ export default function ServiceMenuQRScreen(): JSX.Element {
       refreshControl={
         <RefreshControl
           refreshing={techsQ.isRefetching}
-          onRefresh={() => techsQ.refetch()}
+          onRefresh={async () => {
+            await techsQ.refetch();
+          }}
           colors={['#059669']}
         />
       }
@@ -54,7 +57,7 @@ export default function ServiceMenuQRScreen(): JSX.Element {
       ))}
       {result && (
         <View style={styles.rc}>
-          <Text style={styles.re}></Text>
+          <Text style={styles.re}>📱</Text>
           <Text style={styles.rt}>{t('mobile.serviceMenuQr.generated')}</Text>
           <Text style={styles.ru}>{result.qrUrl ?? result.url}</Text>
         </View>

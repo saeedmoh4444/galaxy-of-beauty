@@ -1,5 +1,6 @@
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import { useState } from 'react';
+import type { JSX } from 'react';
 import { ScreenState } from '@/components/ScreenState';
 import { trpc } from '@/lib/trpc-react';
 import { localize } from '@galaxy/shared';
@@ -17,14 +18,14 @@ const QUESTIONS = [
   {
     key: 'occasion',
     q: 'ما هي المناسبة؟',
-    options: [' عيد ميلاد', ' زفاف', ' تخرج', ' شكر', ' بدون مناسبة'],
+    options: ['عيد ميلاد', 'زفاف', 'تخرج', 'شكر', 'بدون مناسبة'],
   },
   {
     key: 'recipient',
     q: 'لمن الهدية؟',
-    options: ['‍️ صديقة', '‍ أمي', ' أختي', ' زوجتي', ' نفسي'],
+    options: ['صديقة', 'أمي', 'أختي', 'زوجتي', 'نفسي'],
   },
-  { key: 'budget', q: 'ميزانيتك؟', options: [' اقتصادية', ' متوسطة', ' فاخرة'] },
+  { key: 'budget', q: 'ميزانيتك؟', options: ['اقتصادية', 'متوسطة', 'فاخرة'] },
 ];
 
 export default function GiftQuizScreen(): JSX.Element {

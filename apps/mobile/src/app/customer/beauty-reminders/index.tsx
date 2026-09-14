@@ -8,18 +8,20 @@ import {
   RefreshControl,
 } from 'react-native';
 import { useState } from 'react';
+import type { JSX } from 'react';
 import { ErrorAlert } from '@/components/ErrorAlert';
 import { SkeletonList } from '@/components/SkeletonCard';
-import { trpc } from '@/lib/trpc-react';
 import { useLocale } from '@/components/LocaleProvider';
+import { useAuthState } from '@/hooks/useAuthState';
+import { trpc } from '@/lib/trpc-react';
 
 const CATS: Record<string, string> = {
-  hair: '‍️ شعر',
-  nails: ' أظافر',
-  skincare: ' بشرة',
-  makeup: ' مكياج',
-  body: ' جسم',
-  other: ' أخرى',
+  hair: 'شعر',
+  nails: 'أظافر',
+  skincare: 'بشرة',
+  makeup: 'مكياج',
+  body: 'جسم',
+  other: 'أخرى',
 };
 const INTERVALS = [7, 14, 30, 60, 90];
 
@@ -33,7 +35,8 @@ interface BeautyReminder {
 
 export default function BeautyRemindersScreen(): JSX.Element {
   const { locale, t } = useLocale();
-  const q = trpc.beautyReminders.myReminders.useQuery();
+  const isAuthed = useAuthState();
+  const q = trpc.beautyReminders.myReminders.useQuery(undefined, { enabled: isAuthed });
   const catLabels: Record<string, string> = {
     hair: t('beautyReminders.cat-hair'),
     nails: t('beautyReminders.cat-nails'),
@@ -95,7 +98,9 @@ export default function BeautyRemindersScreen(): JSX.Element {
       refreshControl={
         <RefreshControl
           refreshing={q.isRefetching}
-          onRefresh={() => q.refetch()}
+          onRefresh={async () => {
+            await q.refetch();
+          }}
           colors={['#db2777']}
         />
       }
@@ -178,7 +183,7 @@ export default function BeautyRemindersScreen(): JSX.Element {
 
       {reminders.length === 0 && (
         <View style={{ alignItems: 'center', padding: 30 }}>
-          <Text style={{ fontSize: 40 }}></Text>
+          <Text style={{ fontSize: 40 }}>🔔</Text>
           <Text style={{ color: '#6b7280', marginTop: 8 }}>{t('beautyReminders.empty')}</Text>
         </View>
       )}
@@ -209,7 +214,7 @@ export default function BeautyRemindersScreen(): JSX.Element {
                 </Text>
               </TouchableOpacity>
               <TouchableOpacity onPress={() => handleDelete(r.id)}>
-                <Text style={{ color: '#ef4444', fontSize: 18, marginLeft: 6 }}></Text>
+                <Text style={{ color: '#ef4444', fontSize: 18, marginLeft: 6 }}>🗑️</Text>
               </TouchableOpacity>
             </View>
           ))}
@@ -236,7 +241,7 @@ export default function BeautyRemindersScreen(): JSX.Element {
                 </Text>
               </View>
               <TouchableOpacity onPress={() => handleDelete(r.id)}>
-                <Text style={{ color: '#ef4444', fontSize: 18 }}></Text>
+                <Text style={{ color: '#ef4444', fontSize: 18 }}>🗑️</Text>
               </TouchableOpacity>
             </View>
           ))}

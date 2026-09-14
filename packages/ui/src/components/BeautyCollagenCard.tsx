@@ -1,4 +1,5 @@
 'use client';
+import type { JSX } from 'react';
 import { cn } from '@galaxy/shared';
 export function BeautyCollagenCard({
   className = '',
@@ -19,7 +20,7 @@ export function BeautyCollagenCard({
       )}
     >
       <div className="flex items-center gap-2">
-        <span className="text-xl"></span>
+        <span className="text-xl">🧬</span>
         <div>
           <h4 className="text-sm font-bold text-rose-700 dark:text-rose-300">{title}</h4>
           <p className="text-[10px] text-rose-500 dark:text-rose-400">{subtitle}</p>
@@ -28,28 +29,28 @@ export function BeautyCollagenCard({
       <div className="mt-3 space-y-1">
         {[
           {
-            emoji: '',
+            emoji: '🥤',
             text: {
               ar: 'كولاجين سائل — أسرع امتصاصاً من الحبوب',
               en: 'Liquid collagen — absorbed faster than pills',
             },
           },
           {
-            emoji: '',
+            emoji: '🍊',
             text: {
               ar: 'مع فيتامين C — ضروري لامتصاص الكولاجين',
               en: 'With vitamin C — essential for collagen absorption',
             },
           },
           {
-            emoji: '',
+            emoji: '📉',
             text: {
               ar: 'بعد 25 سنة — الإنتاج الطبيعي يبدأ بالانخفاض',
               en: 'After 25 — natural production starts declining',
             },
           },
           {
-            emoji: '',
+            emoji: '✨',
             text: {
               ar: 'يفيد البشرة، الشعر، الأظافر والمفاصل',
               en: 'Benefits skin, hair, nails, and joints',

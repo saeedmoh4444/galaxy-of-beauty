@@ -8,11 +8,13 @@ import {
   RefreshControl,
 } from 'react-native';
 import { useState } from 'react';
+import type { JSX } from 'react';
 import { ErrorAlert } from '@/components/ErrorAlert';
 import { SkeletonList } from '@/components/SkeletonCard';
 import { trpc } from '@/lib/trpc-react';
 import { localize } from '@galaxy/shared';
 import { useLocale } from '@/components/LocaleProvider';
+import { useAuthState } from '@/hooks/useAuthState';
 
 interface MarketProduct {
   id?: number;
@@ -31,13 +33,14 @@ interface CartItem {
 
 export default function MarketplaceScreen(): JSX.Element {
   const { locale, t } = useLocale();
+  const isAuthed = useAuthState();
   const [search, setSearch] = useState('');
   const productsQ = trpc.marketplace.products.useQuery({
     search: search || undefined,
     page: 1,
     limit: 24,
   });
-  const cartQ = trpc.marketplace.cart.useQuery();
+  const cartQ = trpc.marketplace.cart.useQuery(undefined, { enabled: isAuthed });
   const productItems = (productsQ.data as unknown as MarketProductsResponse | null)?.items;
   const products: MarketProduct[] = Array.isArray(productItems) ? productItems : [];
   const cartCount = ((cartQ.data ?? []) as CartItem[]).length;
@@ -58,7 +61,9 @@ export default function MarketplaceScreen(): JSX.Element {
       refreshControl={
         <RefreshControl
           refreshing={productsQ.isRefetching}
-          onRefresh={() => productsQ.refetch()}
+          onRefresh={async () => {
+            await productsQ.refetch();
+          }}
           colors={['#db2777']}
         />
       }
@@ -97,7 +102,7 @@ export default function MarketplaceScreen(): JSX.Element {
 
       {products.length === 0 && (
         <View style={{ alignItems: 'center', padding: 30 }}>
-          <Text style={{ fontSize: 40 }}>️</Text>
+          <Text style={{ fontSize: 40 }}>🛒</Text>
           <Text style={{ color: '#6b7280', marginTop: 8 }}>{t('marketplace.noProducts')}</Text>
         </View>
       )}
@@ -105,7 +110,7 @@ export default function MarketplaceScreen(): JSX.Element {
       <View style={s.grid}>
         {products.map((p) => (
           <TouchableOpacity key={p.id} style={s.prod} onPress={() => handleAddToCart(p.id ?? 0)}>
-            <Text style={{ fontSize: 36, textAlign: 'center' }}></Text>
+            <Text style={{ fontSize: 36, textAlign: 'center' }}>🧴</Text>
             <Text
               style={{ fontWeight: '600', fontSize: 13, textAlign: 'center', marginTop: 6 }}
               numberOfLines={1}

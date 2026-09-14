@@ -1,4 +1,5 @@
 'use client';
+import type { JSX } from 'react';
 import { cn } from '@galaxy/shared';
 export function BeautyAcneScarsCard({
   className = '',
@@ -28,7 +29,7 @@ export function BeautyAcneScarsCard({
       <div className="mt-3 grid grid-cols-2 gap-1.5">
         {[
           {
-            emoji: '️',
+            emoji: '🩹',
             label: { ar: 'حفر', en: 'Pitted' },
             tip: {
               ar: 'ندبات عميقة — تحتاج ليزر أو فيلر',
@@ -36,12 +37,12 @@ export function BeautyAcneScarsCard({
             },
           },
           {
-            emoji: '',
+            emoji: '⏳',
             label: { ar: 'حمراء', en: 'Red' },
             tip: { ar: 'حديثة — تختفي مع الوقت', en: 'Recent — fade with time' },
           },
           {
-            emoji: '',
+            emoji: '🍊',
             label: { ar: 'بنية', en: 'Brown' },
             tip: {
               ar: 'تصبغات — تقشير وفيتامين C',
@@ -49,7 +50,7 @@ export function BeautyAcneScarsCard({
             },
           },
           {
-            emoji: '',
+            emoji: '💊',
             label: { ar: 'بارزة', en: 'Raised' },
             tip: {
               ar: 'ندبات متضخمة — كورتيزون موضعي',

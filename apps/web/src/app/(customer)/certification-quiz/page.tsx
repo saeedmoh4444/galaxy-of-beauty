@@ -1,17 +1,24 @@
 'use client';
 import { useState } from 'react';
+import type { JSX } from 'react';
 import { api } from '@/lib/trpc';
-import { Card, CardListSkeleton, Button } from '@galaxy/ui';
+import { Card, CardListSkeleton, Button, useAuth } from '@galaxy/ui';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
 import { useLocale } from '@/components/LocaleProvider';
 
 export default function CertificationQuizPage(): JSX.Element {
   const { t, locale } = useLocale();
+  // /certification-quiz is not middleware-protected — gate the protected
+  // certificates query on auth so anonymous visitors don't 401 + bounce.
+  const { isAuthenticated, isLoading: authLoading } = useAuth();
   const { data: quizzes, isLoading } = api.certificationQuiz.quizzes.useQuery() as {
     data: Array<Record<string, unknown>> | undefined;
     isLoading: boolean;
   };
-  const { data: certs } = api.certificationQuiz.myCertificates.useQuery() as {
+  const { data: certs } = api.certificationQuiz.myCertificates.useQuery(undefined, {
+    enabled: !authLoading && isAuthenticated,
+    retry: false,
+  }) as {
     data: Array<Record<string, unknown>> | undefined;
   };
   const [quizId, setQuizId] = useState<string | null>(null);
@@ -85,7 +92,7 @@ export default function CertificationQuizPage(): JSX.Element {
                           a[qi] = oi;
                           setAnswers(a);
                         }}
-                        className={`w-full text-right rounded-lg border p-3 text-sm transition-all ${answers[qi] === oi ? 'border-brand-400 bg-brand-50 dark:bg-brand-950' : 'border-gray-200 dark:border-gray-700'}`}
+                        className={`w-full text-end rounded-lg border p-3 text-sm transition-all ${answers[qi] === oi ? 'border-brand-400 bg-brand-50 dark:bg-brand-950' : 'border-edge'}`}
                       >
                         {opt}
                       </button>

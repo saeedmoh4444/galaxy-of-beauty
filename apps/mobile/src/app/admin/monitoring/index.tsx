@@ -1,3 +1,4 @@
+import type { JSX } from 'react';
 import { View, Text, ScrollView, StyleSheet, RefreshControl } from 'react-native';
 import { SkeletonList } from '@/components/SkeletonCard';
 import { ErrorAlert } from '@/components/ErrorAlert';
@@ -46,7 +47,9 @@ export default function MonitoringScreen(): JSX.Element {
       refreshControl={
         <RefreshControl
           refreshing={q.isRefetching}
-          onRefresh={() => q.refetch()}
+          onRefresh={async () => {
+            await q.refetch();
+          }}
           colors={['#059669']}
         />
       }
@@ -59,7 +62,7 @@ export default function MonitoringScreen(): JSX.Element {
             key={key}
             style={[styles.svcCard, { borderColor: STATUS_COLORS[svc.status ?? ''] ?? '#6b7280' }]}
           >
-            <Text style={styles.svcEmoji}>{svc.status === 'healthy' ? '' : ''}</Text>
+            <Text style={styles.svcEmoji}>{svc.status === 'healthy' ? '🟢' : '🔴'}</Text>
             <Text style={styles.svcKey}>{key}</Text>
             <Text style={styles.svcPing}>{svc.ping ?? 0}ms</Text>
           </View>
@@ -67,12 +70,12 @@ export default function MonitoringScreen(): JSX.Element {
       </View>
       <View style={styles.kpiRow}>
         <View style={styles.kpi}>
-          <Text style={styles.kpiEmoji}></Text>
+          <Text style={styles.kpiEmoji}>⚡</Text>
           <Text style={styles.kpiVal}>{perf.avgResponseMs ?? 0}ms</Text>
           <Text style={styles.kpiLabel}>{t('mobile.admin.monitoring.response')}</Text>
         </View>
         <View style={styles.kpi}>
-          <Text style={styles.kpiEmoji}></Text>
+          <Text style={styles.kpiEmoji}>👥</Text>
           <Text style={[styles.kpiVal, { color: '#2563eb' }]}>{perf.activeSessions ?? 0}</Text>
           <Text style={styles.kpiLabel}>{t('mobile.admin.monitoring.sessions')}</Text>
         </View>

@@ -1,5 +1,6 @@
 'use client';
 import { useState } from 'react';
+import type { JSX } from 'react';
 import { api } from '@/lib/trpc';
 import { Card, GridSkeleton, Button, Modal } from '@galaxy/ui';
 import { useAuth } from '@galaxy/ui';
@@ -25,7 +26,7 @@ export default function VideoTestimonialsPage(): JSX.Element {
   return (
     <div className="mx-auto max-w-4xl px-4 py-12">
       <div className="mb-8 text-center">
-        <span className="text-6xl"></span>
+        <span className="text-6xl">🎥</span>
         <h1 className="mt-4 text-3xl font-bold">{t('marketing.video-testimonials.title')}</h1>
         <p className="mt-2 text-text-secondary">{t('marketing.video-testimonials.subtitle')}</p>
       </div>
@@ -51,7 +52,7 @@ export default function VideoTestimonialsPage(): JSX.Element {
               </div>
               <p className="text-sm mt-1">{t.comment as string}</p>
               <p className="text-xs text-text-secondary mt-1">
-                ‍ {t.technicianName as string} · {t.serviceName as string} · ️ {t.likes as number}
+                {t.technicianName as string} · {t.serviceName as string} · {t.likes as number}
               </p>
             </Card>
           ))}

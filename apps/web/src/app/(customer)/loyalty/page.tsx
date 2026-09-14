@@ -1,4 +1,5 @@
 'use client';
+import type { JSX } from 'react';
 
 import { api } from '@/lib/trpc';
 import { Card, CardListSkeleton, ErrorAlert, EmptyState, LOYALTY_TIERS } from '@galaxy/ui';
@@ -97,7 +98,7 @@ export default function LoyaltyDashboardPage(): JSX.Element {
                     key={i}
                     className="flex items-center gap-3 rounded-lg bg-surface-muted p-3 text-sm dark:bg-gray-800"
                   >
-                    <span className="text-brand-600"></span> {t(b)}
+                    <span className="text-brand-600">✅</span> {t(b)}
                   </div>
                 ))}
               </div>
@@ -110,7 +111,7 @@ export default function LoyaltyDashboardPage(): JSX.Element {
                 {Object.entries(LOYALTY_TIERS).map(([key, tierObj]) => (
                   <div
                     key={key}
-                    className={`rounded-xl border-2 p-4 ${currentTier === key ? 'border-brand-500 bg-brand-50 dark:bg-brand-950' : 'border-gray-200 dark:border-gray-700'}`}
+                    className={`rounded-xl border-2 p-4 ${currentTier === key ? 'border-brand-500 bg-brand-50 dark:bg-brand-950' : 'border-edge'}`}
                   >
                     <div className="flex items-center justify-between">
                       <div className="flex items-center gap-3">
