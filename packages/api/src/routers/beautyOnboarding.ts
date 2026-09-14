@@ -29,7 +29,7 @@ export const beautyOnboardingRouter = router({
   questions: customerProcedure.query(() => QUESTIONS),
 
   submit: customerProcedure
-    .input(z.object({ answers: z.record(z.string()) }))
+    .input(z.object({ answers: z.record(z.string(), z.string()) }))
     .mutation(async ({ ctx, input }) => {
       const existing = await prisma.onboardingResponse.findUnique({
         where: { userId: ctx.user.id },

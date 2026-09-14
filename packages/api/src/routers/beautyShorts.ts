@@ -79,9 +79,7 @@ export const beautyShortsRouter = router({
         durationSec: z.number().int().min(0).max(600).default(0),
         category: z.string().min(2).max(40).default('general'),
         faceBlurred: z.boolean().default(false),
-        consent: z.literal(true, {
-          errorMap: () => ({ message: 'consent is required to publish media' }),
-        }),
+        consent: z.literal(true, 'consent is required to publish media'),
       }),
     )
     .mutation(async ({ ctx, input }) => {

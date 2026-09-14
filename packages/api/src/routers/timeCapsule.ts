@@ -11,7 +11,7 @@ export const timeCapsuleRouter = router({
     .input(
       z.object({
         name: z.string().min(2).max(100),
-        routineJson: z.record(z.unknown()),
+        routineJson: z.record(z.string(), z.unknown()),
         openDate: z.string(),
       }),
     )

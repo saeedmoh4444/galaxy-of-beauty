@@ -83,7 +83,7 @@ export const adminRouter = router({
           limit: z.number().optional().default(20),
         })
         .optional()
-        .default({}),
+        .default({} as never),
     )
     .query(async ({ input }) => {
       const where = input.kycStatus ? { kycStatus: input.kycStatus as any } : {};
@@ -144,7 +144,7 @@ export const adminRouter = router({
           search: z.string().optional(),
         })
         .optional()
-        .default({}),
+        .default({} as never),
     )
     .query(async ({ input }) => {
       const where: any = { role: 'CUSTOMER' };
@@ -274,7 +274,7 @@ export const adminRouter = router({
           limit: z.number().optional().default(20),
         })
         .optional()
-        .default({}),
+        .default({} as never),
     )
     .query(async ({ input }) => {
       const where: any = {};
