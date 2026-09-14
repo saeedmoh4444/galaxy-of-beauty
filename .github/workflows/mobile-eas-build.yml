@@ -57,6 +57,8 @@ jobs:
     needs: verify
     if: github.event.inputs.platform == 'all' || github.event.inputs.platform == 'ios'
     runs-on: ubuntu-latest
+    env:
+      HAS_EXPO_TOKEN: ${{ secrets.EXPO_TOKEN != '' }}
     steps:
       - uses: actions/checkout@v4
       - uses: pnpm/action-setup@v6
@@ -70,8 +72,12 @@ jobs:
           eas-version: latest
           token: ${{ secrets.EXPO_TOKEN }}
       - name: EAS Build iOS
+        if: env.HAS_EXPO_TOKEN == 'true'
         working-directory: apps/mobile
         run: eas build --platform ios --profile ${{ github.event.inputs.profile || 'preview' }} --non-interactive --wait
+      - name: Skip build (EXPO_TOKEN not configured)
+        if: env.HAS_EXPO_TOKEN != 'true'
+        run: echo "::notice::Skipping EAS iOS build — EXPO_TOKEN secret is not configured in this repo"
 
   # ── EAS Build (Android) ──
   build-android:
@@ -79,6 +85,8 @@ jobs:
     needs: verify
     if: github.event.inputs.platform == 'all' || github.event.inputs.platform == 'android'
     runs-on: ubuntu-latest
+    env:
+      HAS_EXPO_TOKEN: ${{ secrets.EXPO_TOKEN != '' }}
     steps:
       - uses: actions/checkout@v4
       - uses: pnpm/action-setup@v6
@@ -92,8 +100,12 @@ jobs:
           eas-version: latest
           token: ${{ secrets.EXPO_TOKEN }}
       - name: EAS Build Android
+        if: env.HAS_EXPO_TOKEN == 'true'
         working-directory: apps/mobile
         run: eas build --platform android --profile ${{ github.event.inputs.profile || 'preview' }} --non-interactive --wait
+      - name: Skip build (EXPO_TOKEN not configured)
+        if: env.HAS_EXPO_TOKEN != 'true'
+        run: echo "::notice::Skipping EAS Android build — EXPO_TOKEN secret is not configured in this repo"
 
   # ── EAS Update (OTA) ──
   update-ota:
@@ -101,6 +113,9 @@ jobs:
     needs: verify
     if: github.ref == 'refs/heads/master'
     runs-on: ubuntu-latest
+    env:
+      # Secrets can't be referenced in step `if:` directly — proxy through an env var.
+      HAS_EXPO_TOKEN: ${{ secrets.EXPO_TOKEN != '' }}
     steps:
       - uses: actions/checkout@v4
       - uses: pnpm/action-setup@v6
@@ -114,5 +129,13 @@ jobs:
           eas-version: latest
           token: ${{ secrets.EXPO_TOKEN }}
       - name: Publish OTA Update
+        if: env.HAS_EXPO_TOKEN == 'true'
         working-directory: apps/mobile
-        run: eas update --branch production --message "${{ github.event.head_commit.message }}"
+        env:
+          # Pass via env, never inline into the shell command: commit messages
+          # contain backticks/newlines that break `run:` interpolation.
+          OTA_MESSAGE: ${{ github.event.head_commit.message || 'OTA update from CI' }}
+        run: eas update --branch production --message "$OTA_MESSAGE"
+      - name: Skip OTA (EXPO_TOKEN not configured)
+        if: env.HAS_EXPO_TOKEN != 'true'
+        run: echo "::notice::Skipping EAS OTA publish — EXPO_TOKEN secret is not configured in this repo"
