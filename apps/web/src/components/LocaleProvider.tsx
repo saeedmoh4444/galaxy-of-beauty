@@ -10,7 +10,7 @@ import {
   type ReactNode,
 } from 'react';
 import type { JSX } from 'react';
-import { isRTL, t as tBase, type Locale, type TranslationKey } from '@galaxy/shared';
+import { isRTL, tFrom, webMessages, type Locale, type TranslationKey } from '@galaxy/shared';
 import { LOCALE_COOKIE } from '@/lib/locale';
 
 export const LOCALE_CHANGE_EVENT = 'gob:locale-change';
@@ -58,7 +58,8 @@ export function LocaleProvider({
     () => ({
       locale,
       isRTL: isRTL(locale),
-      t: (key: TranslationKey, vars?: Record<string, string | number>) => tBase(key, locale, vars),
+      t: (key: TranslationKey, vars?: Record<string, string | number>) =>
+        tFrom(webMessages, key, locale, vars),
       setLocale,
     }),
     [locale, setLocale],

@@ -8,7 +8,7 @@ import {
   type ReactNode,
 } from 'react';
 import type { JSX } from 'react';
-import { isRTL, t as tBase, type Locale, type TranslationKey } from '@galaxy/shared';
+import { isRTL, tFrom, mobileMessages, type Locale, type TranslationKey } from '@galaxy/shared';
 import { loadStoredLocale, persistLocale } from '@/lib/locale';
 
 interface LocaleContextValue {
@@ -40,7 +40,8 @@ export function LocaleProvider({ children }: { children: ReactNode }): JSX.Eleme
     () => ({
       locale,
       isRTL: isRTL(locale),
-      t: (key: TranslationKey, vars?: Record<string, string | number>) => tBase(key, locale, vars),
+      t: (key: TranslationKey, vars?: Record<string, string | number>) =>
+        tFrom(mobileMessages, key, locale, vars),
       setLocale,
     }),
     [locale, setLocale],
