@@ -19,6 +19,11 @@ export default function AiChatScreen() {
   >([]);
   const [input, setInput] = useState('');
   const scrollRef = useRef<ScrollViewInstance>(null);
+  // One conversation per screen visit — the server reuses it for history/context.
+  const [convId] = useState(() => `mobile-${Date.now().toString(36)}`);
+  const idSeq = useRef(0);
+  const sendingRef = useRef(false);
+  const nextId = () => `m${Date.now().toString(36)}-${(idSeq.current += 1)}`;
 
   const now = () =>
     new Date().toLocaleTimeString(locale === 'ar' ? 'ar-SA' : 'en-GB', {
@@ -28,11 +33,10 @@ export default function AiChatScreen() {
 
   const chatMut = trpc.ai.chat.useMutation({
     onSuccess: (res) => {
-      const r = res as unknown as { response?: string; message?: string };
       const reply = {
-        id: (Date.now() + 1).toString(),
+        id: nextId(),
         role: 'assistant',
-        content: (r.response ?? r.message ?? '') as string,
+        content: res.reply,
         time: now(),
       };
       setMessages((prev) => [...prev, reply]);
@@ -41,27 +45,31 @@ export default function AiChatScreen() {
       setMessages((prev) => [
         ...prev,
         {
-          id: (Date.now() + 1).toString(),
+          id: nextId(),
           role: 'assistant',
           content: t('aiChat.error'),
           time: now(),
         },
       ]);
     },
+    onSettled: () => {
+      sendingRef.current = false;
+    },
   });
 
   const handleSend = () => {
     const text = input.trim();
-    if (!text || chatMut.isPending) return;
+    if (!text || sendingRef.current) return;
+    sendingRef.current = true;
     const userMsg = {
-      id: Date.now().toString(),
+      id: nextId(),
       role: 'user',
       content: text,
       time: now(),
     };
     setMessages((prev) => [...prev, userMsg]);
     setInput('');
-    chatMut.mutate({ message: text });
+    chatMut.mutate({ message: text, conversationId: convId });
   };
 
   return (

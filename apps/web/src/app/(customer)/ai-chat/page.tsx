@@ -21,19 +21,24 @@ export default function AiChatPage(): JSX.Element {
   const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [input, setInput] = useState('');
   const messagesEndRef = useRef<HTMLDivElement>(null);
+  // One conversation per page visit — the server reuses it for history/context.
+  const [convId] = useState(() => crypto.randomUUID());
+  const sendingRef = useRef(false);
 
   const sendMut = api.ai.chat.useMutation({
     onSuccess: (res) => {
-      const reply = res as unknown as Record<string, unknown>;
       setMessages((prev) => [
         ...prev,
         {
           id: crypto.randomUUID(),
           role: 'assistant',
-          content: (reply.response as string) ?? (reply.message as string) ?? '',
+          content: res.reply,
           createdAt: new Date().toISOString(),
         },
       ]);
+    },
+    onSettled: () => {
+      sendingRef.current = false;
     },
   });
 
@@ -43,7 +48,8 @@ export default function AiChatPage(): JSX.Element {
 
   const handleSend = () => {
     const trimmed = input.trim();
-    if (!trimmed || sendMut.isPending) return;
+    if (!trimmed || sendingRef.current) return;
+    sendingRef.current = true;
     const userMsg: ChatMessage = {
       id: crypto.randomUUID(),
       role: 'user',
@@ -52,7 +58,7 @@ export default function AiChatPage(): JSX.Element {
     };
     setMessages((prev) => [...prev, userMsg]);
     setInput('');
-    sendMut.mutate({ message: trimmed });
+    sendMut.mutate({ message: trimmed, conversationId: convId });
   };
 
   const handleKeyDown = (e: React.KeyboardEvent) => {
