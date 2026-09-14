@@ -41,7 +41,7 @@ const PROTECTED_PATHS = [
 ];
 const AUTH_PATHS = ['/login', '/register', '/forgot-password', '/reset-password'];
 
-export function middleware(request: NextRequest) {
+export default function proxy(request: NextRequest) {
   const { pathname } = request.nextUrl;
 
   // ── Request ID for traceability ──

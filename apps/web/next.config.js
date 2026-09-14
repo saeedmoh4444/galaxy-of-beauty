@@ -106,6 +106,9 @@ const nextConfig = {
 
   // ── Bundle Optimization ────────────────────────────────
   poweredByHeader: false,
+  // Turbopack is the default bundler in Next 16; the webpack block below
+  // still serves --webpack / ANALYZE builds.
+  turbopack: {},
   reactStrictMode: true,
 
   webpack(config, { isServer, dev }) {
