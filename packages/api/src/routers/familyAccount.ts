@@ -50,6 +50,9 @@ export const familyAccountRouter = router({
         ageGroup: z.string(),
         preferences: z.array(z.string()).default([]),
         notes: z.string().optional(),
+        // K4 (kids plan): babysitting safety fields.
+        emergencyContact: z.string().max(200).optional(),
+        allergies: z.string().max(200).optional(),
       }),
     )
     .mutation(async ({ ctx, input }) =>
@@ -61,6 +64,8 @@ export const familyAccountRouter = router({
           ageGroup: input.ageGroup,
           preferences: input.preferences,
           notes: input.notes ?? '',
+          emergencyContact: input.emergencyContact ?? null,
+          allergies: input.allergies ?? null,
         },
       }),
     ),
@@ -74,6 +79,8 @@ export const familyAccountRouter = router({
         ageGroup: z.string().optional(),
         preferences: z.array(z.string()).optional(),
         notes: z.string().optional(),
+        emergencyContact: z.string().max(200).nullable().optional(),
+        allergies: z.string().max(200).nullable().optional(),
       }),
     )
     .mutation(async ({ ctx, input }) => {

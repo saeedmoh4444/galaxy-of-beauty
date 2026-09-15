@@ -32,6 +32,17 @@ export const bookingMessages = {
   'booking.family-member-placeholder': { ar: 'لا (حجز لنفسي)', en: 'No (book for myself)' },
   'booking.on-behalf-of': { ar: 'على حساب: {name}', en: 'On behalf of: {name}' },
   'booking.bundle': { ar: 'الباقة', en: 'Bundle' },
+  'booking.per-hour': { ar: 'لكل ساعة', en: 'per hour' },
+  'booking.hourly-total': {
+    ar: 'الإجمالي ({hours} ساعة × {rate} ر.س)',
+    en: 'Total ({hours}h × {rate} SAR)',
+  },
+  'booking.babysitting-disclaimer': {
+    ar: 'تنبيه: خدمة جليسة أطفال — يُرجى إضافة جهة اتصال للطوارئ في ملف الطفل. نتحقق من مقدمات الخدمة، ويبقى الأهل مسؤولين عن الإشراف النهائي.',
+    en: 'Note: babysitting service — please add an emergency contact to the child profile. Providers are verified, but parents retain final supervision responsibility.',
+  },
+  'familyAccount.emergency-contact': { ar: 'جهة اتصال للطوارئ', en: 'Emergency contact' },
+  'familyAccount.allergies': { ar: 'الحساسية', en: 'Allergies' },
   'booking.bundle-selected': { ar: 'باقة ماما وأنا: {name}', en: 'Mommy & Me bundle: {name}' },
   'booking.pref.gentle': { ar: 'منتجات لطيفة', en: 'Gentle products' },
   'booking.pref.hypoallergenic': { ar: 'مضاد للحساسية', en: 'Hypoallergenic' },

@@ -186,6 +186,14 @@ export const bookingRouter = router({
 
       let totalAmount = bundle ? Number(bundle.bundlePrice) : Number(service.basePrice);
 
+      // K4 (kids plan): hourly services (babysitting) price by the booked
+      // duration — rate × ceil(hours), minimum one hour.
+      if (!bundle && service.isHourly) {
+        const bookedMs = new Date(input.endAt).getTime() - new Date(input.startAt).getTime();
+        const hours = Math.max(1, Math.ceil(bookedMs / 3_600_000));
+        totalAmount = Number(service.basePrice) * hours;
+      }
+
       if (!bundle && input.variantId) {
         const variant = await tx.serviceVariant.findUnique({
           where: { id: input.variantId },

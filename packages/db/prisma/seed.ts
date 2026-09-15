@@ -379,6 +379,15 @@ async function main() {
         iconUrl: '/icons/kids.svg',
       },
     }),
+    // K4 (kids plan) — babysitting vertical (hourly, verified technicians).
+    prisma.category.create({
+      data: {
+        nameJson: { ar: 'جليسة أطفال', en: 'Babysitting' },
+        slug: 'babysitting',
+        sortOrder: 18,
+        iconUrl: '/icons/babysitting.svg',
+      },
+    }),
   ]);
   console.log(` ${categories.length} root categories`);
 
@@ -1184,6 +1193,63 @@ async function main() {
     }),
   ]);
   console.log(` ${services.length} services`);
+
+  // ---- K4 (kids plan) — babysitting services: hourly pricing
+  // (basePrice = hourly rate), women-only staff, kid-safe environment.
+  await Promise.all([
+    prisma.service.create({
+      data: {
+        categoryId: categories[17]!.id,
+        titleJson: { ar: 'جليسة أطفال موثقة', en: 'Verified Babysitter' },
+        descriptionJson: {
+          ar: 'جليسة موثقة بخبرة مع الأطفال — بالمنزل، مع أنشطة آمنة وترفيهية',
+          en: 'A verified babysitter with childcare experience — at home, with safe and fun activities',
+        },
+        basePrice: 50,
+        durationMin: 60,
+        slug: 'verified-babysitter',
+        sortOrder: 1,
+        isHourly: true,
+        isWomenOnlyStaff: true,
+        isMommyFriendly: true,
+      },
+    }),
+    prisma.service.create({
+      data: {
+        categoryId: categories[17]!.id,
+        titleJson: { ar: 'جليسة مسائية', en: 'Evening Babysitter' },
+        descriptionJson: {
+          ar: 'رعاية مسائية هادئة — عشاء وقصة قبل النوم وإشراف كامل',
+          en: 'Calm evening care — dinner, bedtime story, and full supervision',
+        },
+        basePrice: 60,
+        durationMin: 60,
+        slug: 'evening-babysitter',
+        sortOrder: 2,
+        isHourly: true,
+        isWomenOnlyStaff: true,
+        isMommyFriendly: true,
+      },
+    }),
+    prisma.service.create({
+      data: {
+        categoryId: categories[17]!.id,
+        titleJson: { ar: 'جليسة رضع', en: 'Infant Babysitter' },
+        descriptionJson: {
+          ar: 'رعاية متخصصة للرضع — تغذية وتغيير ونوم آمن',
+          en: 'Specialized infant care — feeding, changing, and safe sleep',
+        },
+        basePrice: 80,
+        durationMin: 60,
+        slug: 'infant-babysitter',
+        sortOrder: 3,
+        isHourly: true,
+        isWomenOnlyStaff: true,
+        isMommyFriendly: true,
+      },
+    }),
+  ]);
+  console.log(' 3 babysitting services (hourly)');
 
   // ---- K3 (kids plan) — Mommy & Me bundles: mother service + child
   // service booked as ONE booking at the bundle price.

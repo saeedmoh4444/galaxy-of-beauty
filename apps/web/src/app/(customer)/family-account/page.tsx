@@ -15,6 +15,8 @@ interface FamilyMember {
   ageGroup: string;
   preferences: string[];
   notes: string;
+  emergencyContact?: string | null;
+  allergies?: string | null;
   bookingCount?: number;
   createdAt: string;
 }
@@ -77,6 +79,8 @@ export default function FamilyAccountPage(): JSX.Element {
   const [formAge, setFormAge] = useState('adult');
   const [formPrefs, setFormPrefs] = useState<string[]>([]);
   const [formNotes, setFormNotes] = useState('');
+  const [formEmergency, setFormEmergency] = useState('');
+  const [formAllergies, setFormAllergies] = useState('');
   const [formError, setFormError] = useState('');
 
   const resetForm = () => {
@@ -95,6 +99,8 @@ export default function FamilyAccountPage(): JSX.Element {
     setFormAge(m.ageGroup);
     setFormPrefs(m.preferences);
     setFormNotes(m.notes);
+    setFormEmergency(m.emergencyContact ?? '');
+    setFormAllergies(m.allergies ?? '');
   };
 
   const togglePref = (key: string) => {
@@ -113,6 +119,8 @@ export default function FamilyAccountPage(): JSX.Element {
       ageGroup: formAge,
       preferences: formPrefs,
       notes: formNotes.trim() || undefined,
+      emergencyContact: formEmergency.trim() || undefined,
+      allergies: formAllergies.trim() || undefined,
     });
   };
 
@@ -126,6 +134,8 @@ export default function FamilyAccountPage(): JSX.Element {
       ageGroup: formAge,
       preferences: formPrefs,
       notes: formNotes.trim() || undefined,
+      emergencyContact: formEmergency.trim() || undefined,
+      allergies: formAllergies.trim() || undefined,
     });
   };
 
@@ -374,6 +384,37 @@ export default function FamilyAccountPage(): JSX.Element {
                 onChange={(e) => setFormNotes(e.target.value)}
                 placeholder={t('family.placeholder.notes')}
                 rows={2}
+                className="w-full rounded-lg border border-edge px-3 py-2 text-sm focus:border-brand-500 focus:outline-none focus:ring-1 focus:ring-brand-500 dark:border-gray-700 dark:bg-gray-800"
+              />
+            </div>
+
+            {/* K4 — babysitting safety fields */}
+            <div>
+              <label
+                htmlFor="fa-emergency"
+                className="block text-sm font-semibold text-text-primary dark:text-gray-300 mb-1"
+              >
+                {t('familyAccount.emergency-contact')}
+              </label>
+              <input
+                id="fa-emergency"
+                value={formEmergency}
+                onChange={(e) => setFormEmergency(e.target.value)}
+                className="w-full rounded-lg border border-edge px-3 py-2 text-sm focus:border-brand-500 focus:outline-none focus:ring-1 focus:ring-brand-500 dark:border-gray-700 dark:bg-gray-800"
+              />
+            </div>
+
+            <div>
+              <label
+                htmlFor="fa-allergies"
+                className="block text-sm font-semibold text-text-primary dark:text-gray-300 mb-1"
+              >
+                {t('familyAccount.allergies')}
+              </label>
+              <input
+                id="fa-allergies"
+                value={formAllergies}
+                onChange={(e) => setFormAllergies(e.target.value)}
                 className="w-full rounded-lg border border-edge px-3 py-2 text-sm focus:border-brand-500 focus:outline-none focus:ring-1 focus:ring-brand-500 dark:border-gray-700 dark:bg-gray-800"
               />
             </div>

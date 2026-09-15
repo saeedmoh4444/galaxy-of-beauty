@@ -80,14 +80,33 @@ contacts, live session tracking, cancel/safety rules.
   child attached via family member).
 - Salon "child-friendly corner" flag (W9) as a filter.
 
-### Phase K4 — Babysitting vertical (GATED)
+### Phase K4 — Babysitting vertical (green-lit 2026-09-15)
 
-Only after core verticals are profitable (per the expansion plan scope
-guard). If/when green-lit:
+User green-lit K4 ("start K4"), overriding the expansion plan's
+"core verticals profitable first" gate.
 
-- Provider model decision (unified provider vs new caregiver role).
-- Hourly pricing model, session tracking (reuse video/socket infra for
-  live check-ins?), vetting flow, PDPL review, liability disclaimers.
+**Execution design (decided):**
+
+- **Provider model** — unified provider vertical: babysitters are
+  TECHNICIANS under a new `babysitting` service category. No new
+  caregiver role. Vetting = the existing technician `kycStatus`
+  (VERIFIED badge) + babysitting services flagged `isWomenOnlyStaff`.
+- **Hourly pricing** — `Service.isHourly` flag: basePrice = hourly rate;
+  booking total = rate × ceil(durationMin/60), min one hour. Display
+  "per hour" on cards/detail and a live total preview in the create
+  flows.
+- **Child record** — K1 `FamilyMember` (attached to the booking) gains
+  `emergencyContact` + `allergies` fields, edited in the family-account
+  forms.
+- **Live check-in** — the A4 video room (already booking-based) doubles
+  as the session check-in; tech bookings cards already carry the video
+  button.
+- **PDPL/liability** — draft disclaimer copy shown on babysitting
+  service details + booking confirm (AR/EN); flagged for the user's
+  legal review.
+
+Deliberately NOT in scope: GPS tracking, per-minute billing, caregiver
+background-check integration, cancellation insurance.
 
 ## 5. Decisions (2026-09-15)
 

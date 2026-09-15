@@ -49,6 +49,7 @@ export interface ServiceDetailData {
   isPrivateSuite: boolean;
   isPregnancySafe: boolean;
   isMommyFriendly: boolean;
+  isHourly: boolean;
   category: ServiceDetailCategory;
   variants: ServiceDetailVariant[];
   technicianServices: ServiceDetailTechService[];
@@ -186,6 +187,7 @@ export function ServiceDetailClient({ svc }: { svc: ServiceDetailData }): JSX.El
           <span className="text-sm text-text-secondary">{t('marketing.service-detail.price')}</span>
           <p className="text-2xl font-bold text-brand-600">
             {formatCurrency(Number(svc.basePrice))}
+            {svc.isHourly ? ` / ${t('booking.per-hour')}` : ''}
           </p>
         </div>
         <div>
