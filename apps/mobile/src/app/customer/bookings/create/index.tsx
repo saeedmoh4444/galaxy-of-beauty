@@ -7,10 +7,10 @@ import {
   ActivityIndicator,
   TextInput,
 } from 'react-native';
-import { useRouter } from 'expo-router';
+import { useRouter, useLocalSearchParams } from 'expo-router';
 import { trpc } from '@/lib/trpc-react';
 import { useAuthState } from '@/hooks/useAuthState';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { MAX_LIST_SIZE } from '@galaxy/ui';
 import { localize } from '@galaxy/shared';
 import { useLocale } from '@/components/LocaleProvider';
@@ -73,6 +73,8 @@ function buildNextDays(locale: 'ar' | 'en'): Array<{ iso: string; label: string 
 
 export default function CreateBookingScreen() {
   const router = useRouter();
+  const params = useLocalSearchParams<{ bundleId?: string }>();
+  const preselectedBundleId = Number(params.bundleId) || undefined;
   const { locale, t } = useLocale();
   const { showToast } = useToast();
   const [step, setStep] = useState(1);
@@ -81,6 +83,9 @@ export default function CreateBookingScreen() {
   const [addressId, setAddressId] = useState<number | undefined>();
   // K1 (kids plan): optional "book on behalf of" family member.
   const [familyMemberId, setFamilyMemberId] = useState<number | undefined>();
+  // K3 (kids plan): optional Mommy & Me bundle preselected (?bundleId=) —
+  // fixed for the lifetime of the flow.
+  const bundleId = preselectedBundleId;
   const [notes, setNotes] = useState('');
   // Local-date defaults: tomorrow at 10:00. startAt is composed from these
   // in handleSubmit (local time, not UTC) so the user controls the slot.
@@ -99,6 +104,7 @@ export default function CreateBookingScreen() {
   // Guests have no address book — gate to avoid a 401 on mount.
   const addressesQ = trpc.addresses.list.useQuery(undefined, { enabled: isAuthed });
   const membersQ = trpc.familyAccount.list.useQuery(undefined, { enabled: isAuthed });
+  const bundlesQ = trpc.bundles.list.useQuery();
   const svcQ = trpc.services.getById.useQuery({ id: serviceId! }, { enabled: !!serviceId });
 
   const services: ServiceListItem[] =
@@ -107,6 +113,21 @@ export default function CreateBookingScreen() {
   const addresses: AddressItem[] = (addressesQ.data as AddressItem[] | undefined) ?? [];
   const members: Record<string, unknown>[] =
     (membersQ.data as unknown as Record<string, unknown>[] | undefined) ?? [];
+  const bundles: Record<string, unknown>[] =
+    (bundlesQ.data as unknown as Record<string, unknown>[] | undefined) ?? [];
+  const activeBundle = bundles.find((b) => b.id === bundleId);
+
+  // A preselected bundle drives the primary (mother) service — jump the
+  // customer straight to the details step.
+  useEffect(() => {
+    if (activeBundle && !serviceId) {
+      const primary = activeBundle.primaryService as Record<string, unknown>;
+      if (primary?.id) {
+        setServiceId(primary.id as number);
+        setStep((s) => (s < 2 ? 2 : s));
+      }
+    }
+  }, [activeBundle, serviceId]);
   const loading = servicesQ.isLoading || addressesQ.isLoading;
 
   const variants = svc?.variants ?? [];
@@ -197,6 +218,7 @@ export default function CreateBookingScreen() {
       startAt: start.toISOString(),
       endAt: new Date(start.getTime() + durationMin * 60000).toISOString(),
       familyMemberId,
+      bundleId,
     });
   };
 
@@ -269,7 +291,20 @@ export default function CreateBookingScreen() {
           <Text style={styles.sectionTitle}>{t('booking.details')}</Text>
           <Text style={styles.selectedService}>{localize(svc.titleJson, locale)}</Text>
 
-          {variants.length > 0 && (
+          {activeBundle && (
+            <View style={styles.bundleBanner}>
+              <Text style={styles.bundleBannerText}>
+                {t('mobile.booking.bundle-selected', {
+                  name: localize(activeBundle.nameJson, locale),
+                })}
+              </Text>
+              <Text style={styles.bundleBannerPrice}>
+                {Number(activeBundle.bundlePrice).toLocaleString()} {t('misc.sar')}
+              </Text>
+            </View>
+          )}
+
+          {!activeBundle && variants.length > 0 && (
             <View style={styles.field}>
               <Text style={styles.label}>{t('bookings.create.variant-label')}</Text>
               <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.chipRow}>
@@ -544,6 +579,14 @@ const styles = StyleSheet.create({
     textAlign: 'right',
     marginBottom: 16,
   },
+  bundleBanner: {
+    backgroundColor: '#f3e8ff',
+    borderRadius: 12,
+    padding: 12,
+    marginBottom: 16,
+  },
+  bundleBannerText: { fontSize: 13, fontWeight: '700', color: '#7c3aed', textAlign: 'right' },
+  bundleBannerPrice: { fontSize: 12, color: '#6b7280', marginTop: 4, textAlign: 'right' },
   field: { marginBottom: 16 },
   label: { fontSize: 13, fontWeight: '600', color: '#6b7280', textAlign: 'right', marginBottom: 6 },
   chipRow: { flexDirection: 'row', gap: 6 },

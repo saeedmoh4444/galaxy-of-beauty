@@ -604,6 +604,11 @@ export const mobileCustomerBMessages = {
   },
   'mobile.booking.family-member-none': { ar: 'لا (حجز لنفسي)', en: 'No (book for myself)' },
   'mobile.booking.on-behalf-of': { ar: 'على حساب: {name}', en: 'On behalf of: {name}' },
+  'mobile.booking.bundle': { ar: 'الباقة', en: 'Bundle' },
+  'mobile.booking.bundle-selected': {
+    ar: 'باقة ماما وأنا: {name}',
+    en: 'Mommy & Me bundle: {name}',
+  },
   'mobile.booking.pref.gentle': { ar: 'منتجات لطيفة', en: 'Gentle products' },
   'mobile.booking.pref.hypoallergenic': { ar: 'مضاد للحساسية', en: 'Hypoallergenic' },
   'mobile.booking.pref.fragrance_free': { ar: 'خالٍ من العطور', en: 'Fragrance-free' },

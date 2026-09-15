@@ -58,6 +58,7 @@ const bookingDetailInclude = {
   familyMember: {
     select: { id: true, name: true, relationship: true, ageGroup: true, preferences: true },
   },
+  bundle: { select: { id: true, nameJson: true } },
 } as const;
 
 const bookingListInclude = {
@@ -69,6 +70,7 @@ const bookingListInclude = {
   familyMember: {
     select: { id: true, name: true, relationship: true, ageGroup: true, preferences: true },
   },
+  bundle: { select: { id: true, nameJson: true } },
 } as const;
 
 // ---------------------------------------------------------------------------
@@ -145,6 +147,16 @@ export const bookingRouter = router({
       }
     }
 
+    // 2d. Bundle (K3): optional Mommy & Me bundle — must exist and be active.
+    const bundle = input.bundleId
+      ? await prisma.serviceBundle.findFirst({
+          where: { id: input.bundleId, isActive: true },
+        })
+      : null;
+    if (input.bundleId && !bundle) {
+      throw new TRPCError({ code: 'NOT_FOUND', message: 'Bundle not found or inactive' });
+    }
+
     // 3. Atomic create
     const booking = await prisma.$transaction(async (tx) => {
       // Re-check slot inside transaction to avoid races (slot flows only)
@@ -160,9 +172,10 @@ export const bookingRouter = router({
         }
       }
 
-      // 4. Calculate totalAmount
+      // 4. Calculate totalAmount — bundles ride the primary (mother) service
+      // and price at the bundle price; variant deltas only apply otherwise.
       const service = await tx.service.findUnique({
-        where: { id: input.serviceId },
+        where: { id: bundle ? bundle.primaryServiceId : input.serviceId },
       });
       if (!service) {
         throw new TRPCError({
@@ -171,9 +184,9 @@ export const bookingRouter = router({
         });
       }
 
-      let totalAmount = Number(service.basePrice);
+      let totalAmount = bundle ? Number(bundle.bundlePrice) : Number(service.basePrice);
 
-      if (input.variantId) {
+      if (!bundle && input.variantId) {
         const variant = await tx.serviceVariant.findUnique({
           where: { id: input.variantId },
         });
@@ -195,7 +208,7 @@ export const bookingRouter = router({
           bookingCode,
           customerId,
           technicianId: input.technicianId,
-          serviceId: input.serviceId,
+          serviceId: bundle ? bundle.primaryServiceId : input.serviceId,
           variantId: input.variantId ?? null,
           addressId: input.addressId,
           startAt: new Date(input.startAt),
@@ -208,6 +221,7 @@ export const bookingRouter = router({
           notes: input.notes ?? null,
           idempotencyKey: input.idempotencyKey,
           familyMemberId: input.familyMemberId ?? null,
+          bundleId: input.bundleId ?? null,
         },
       });
 

@@ -28,6 +28,9 @@ export const createBookingSchema = z.object({
   // K1 (kids plan): optional "book on behalf of" family member (must be
   // owned by the booking customer — enforced in the router).
   familyMemberId: z.number().int().positive().optional(),
+  // K3 (kids plan): optional Mommy & Me bundle — prices the booking at the
+  // bundle price and uses the primary (mother) service.
+  bundleId: z.number().int().positive().optional(),
 });
 
 export const bookingStatusSchema = z.object({

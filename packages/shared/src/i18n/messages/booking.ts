@@ -31,6 +31,8 @@ export const bookingMessages = {
   'booking.family-member': { ar: 'حجز لصالح فرد من العائلة', en: 'Book for a family member' },
   'booking.family-member-placeholder': { ar: 'لا (حجز لنفسي)', en: 'No (book for myself)' },
   'booking.on-behalf-of': { ar: 'على حساب: {name}', en: 'On behalf of: {name}' },
+  'booking.bundle': { ar: 'الباقة', en: 'Bundle' },
+  'booking.bundle-selected': { ar: 'باقة ماما وأنا: {name}', en: 'Mommy & Me bundle: {name}' },
   'booking.pref.gentle': { ar: 'منتجات لطيفة', en: 'Gentle products' },
   'booking.pref.hypoallergenic': { ar: 'مضاد للحساسية', en: 'Hypoallergenic' },
   'booking.pref.fragrance_free': { ar: 'خالٍ من العطور', en: 'Fragrance-free' },

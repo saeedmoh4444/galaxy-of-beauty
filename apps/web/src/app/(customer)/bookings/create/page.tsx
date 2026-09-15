@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import type { JSX } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { api } from '@/lib/trpc';
@@ -32,6 +32,7 @@ export default function CreateBookingPage(): JSX.Element {
   const router = useRouter();
   const params = useSearchParams();
   const preselectedServiceId = Number(params.get('serviceId')) || undefined;
+  const preselectedBundleId = Number(params.get('bundleId')) || undefined;
   const { addToast } = useToast();
 
   const [step, setStep] = useState(1);
@@ -40,6 +41,9 @@ export default function CreateBookingPage(): JSX.Element {
   const [addressId, setAddressId] = useState<number | undefined>();
   // K1 (kids plan): optional "book on behalf of" family member.
   const [familyMemberId, setFamilyMemberId] = useState<number | undefined>();
+  // K3 (kids plan): optional Mommy & Me bundle preselected from the
+  // mommy-and-me page (?bundleId=) — fixed for the lifetime of the flow.
+  const bundleId = preselectedBundleId;
   const [notes, setNotes] = useState('');
   const [submitting, setSubmitting] = useState(false);
   // B.2 — promo chain: validate at confirm, redeem after booking creation.
@@ -62,12 +66,27 @@ export default function CreateBookingPage(): JSX.Element {
   );
   const { data: addressesData } = api.addresses.list.useQuery();
   const { data: familyMembers } = api.familyAccount.list.useQuery();
+  const { data: bundlesData } = api.bundles.list.useQuery();
 
   const services = servicesData?.items ?? [];
   const svc = serviceDetail;
   const variants = svc?.variants ?? [];
   const addresses = addressesData ?? [];
   const members = (familyMembers as unknown as Array<Record<string, unknown>> | undefined) ?? [];
+  const bundles = (bundlesData as unknown as Array<Record<string, unknown>> | undefined) ?? [];
+  const activeBundle = bundles.find((b) => b.id === bundleId);
+
+  // A preselected bundle drives the primary (mother) service — jump the
+  // customer straight to the details step.
+  useEffect(() => {
+    if (activeBundle && !serviceId) {
+      const primary = activeBundle.primaryService as Record<string, unknown>;
+      if (primary?.id) {
+        setServiceId(primary.id as number);
+        setStep((s) => (s < 2 ? 2 : s));
+      }
+    }
+  }, [activeBundle, serviceId]);
 
   // Displayed total: base price + selected variant delta.
   const variantDelta = variantId ? num(variants.find((v) => v.id === variantId)?.priceDelta) : 0;
@@ -167,6 +186,7 @@ export default function CreateBookingPage(): JSX.Element {
       startAt: start.toISOString(),
       endAt: new Date(start.getTime() + durationMin * 60000).toISOString(),
       familyMemberId,
+      bundleId,
     });
   };
 
@@ -248,7 +268,21 @@ export default function CreateBookingPage(): JSX.Element {
               {localize((svc as unknown as { titleJson: unknown }).titleJson, locale)}
             </p>
 
-            {variants.length > 0 && (
+            {activeBundle && (
+              <div className="mb-4 rounded-lg border border-brand-200 bg-brand-50 p-3 text-sm dark:border-brand-800 dark:bg-brand-950">
+                <p className="font-semibold text-brand-700">
+                  {t('booking.bundle-selected', {
+                    name: localize(activeBundle.nameJson, locale),
+                  })}
+                </p>
+                <p className="mt-1 text-brand-600">
+                  {t('marketing.mommy-and-me.per-two')} ·{' '}
+                  {Number(activeBundle.bundlePrice).toFixed(0)} {t('misc.sar')}
+                </p>
+              </div>
+            )}
+
+            {!activeBundle && variants.length > 0 && (
               <div className="mb-4">
                 <label htmlFor="bc-variant" className="mb-2 block text-sm text-text-secondary">
                   {t('booking.choose-variant')}
@@ -408,6 +442,12 @@ export default function CreateBookingPage(): JSX.Element {
                   <span className="font-semibold">
                     {String(members.find((m) => m.id === familyMemberId)?.name ?? '')}
                   </span>
+                </div>
+              )}
+              {activeBundle && (
+                <div className="flex justify-between border-b pb-2">
+                  <span className="text-text-secondary">{t('booking.bundle')}</span>
+                  <span className="font-semibold">{localize(activeBundle.nameJson, locale)}</span>
                 </div>
               )}
               {appliedPromo && (
