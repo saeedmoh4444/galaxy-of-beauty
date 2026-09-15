@@ -61,7 +61,7 @@ export default function ServicesScreen(): JSX.Element {
             </View>
             <Text style={styles.price}>
               {formatCurrency(Number(s.basePrice))}
-              {Boolean(s.isHourly) ? ` / ${t('mobile.booking.per-hour')}` : ''}
+              {s.isHourly ? ` / ${t('mobile.booking.per-hour')}` : ''}
             </Text>
           </View>
         </TouchableOpacity>
