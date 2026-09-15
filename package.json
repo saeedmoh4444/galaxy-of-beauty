@@ -58,6 +58,7 @@
       "socket.io-parser": ">=4.2.7"
     },
     "patchedDependencies": {
+      "@expo/cli@57.0.24": "patches/@expo__cli@57.0.24.patch",
       "@expo/metro-config@57.0.12": "patches/@expo__metro-config@57.0.12.patch"
     }
   }
