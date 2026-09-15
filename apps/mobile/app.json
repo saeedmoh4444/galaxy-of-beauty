@@ -43,7 +43,7 @@
     ],
     "extra": {
       "eas": {
-        "projectId": "galaxy-of-beauty"
+        "projectId": "fe529822-25a6-4c65-9bec-38fe925d1ae3"
       }
     },
     "notification": {
@@ -51,7 +51,7 @@
       "color": "#7c3aed"
     },
     "updates": {
-      "url": "https://u.expo.dev/galaxy-of-beauty",
+      "url": "https://u.expo.dev/fe529822-25a6-4c65-9bec-38fe925d1ae3",
       "enabled": true,
       "checkAutomatically": "ON_LOAD",
       "fallbackToCacheTimeout": 0
