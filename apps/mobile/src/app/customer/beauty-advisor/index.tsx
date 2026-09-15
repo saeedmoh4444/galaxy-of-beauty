@@ -8,9 +8,8 @@ import {
   KeyboardAvoidingView,
   Platform,
 } from 'react-native';
-import type { ScrollViewInstance } from 'react-native';
 import { useState, useRef } from 'react';
-import type { JSX } from 'react';
+import type { JSX, ElementRef } from 'react';
 import { trpc } from '@/lib/trpc-react';
 import { useLocale } from '@/components/LocaleProvider';
 
@@ -25,7 +24,7 @@ const TOPICS = [
 
 export default function BeautyAdvisorScreen(): JSX.Element {
   const { t } = useLocale();
-  const scrollRef = useRef<ScrollViewInstance>(null);
+  const scrollRef = useRef<ElementRef<typeof ScrollView>>(null);
   const [messages, setMessages] = useState([
     {
       role: 'assistant',

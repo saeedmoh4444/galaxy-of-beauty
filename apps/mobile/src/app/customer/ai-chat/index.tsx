@@ -7,10 +7,9 @@ import {
   ActivityIndicator,
   TextInput,
 } from 'react-native';
-import type { ScrollViewInstance } from 'react-native';
 import { trpc } from '@/lib/trpc-react';
 import { useLocale } from '@/components/LocaleProvider';
-import { useState, useRef } from 'react';
+import { useState, useRef, type ElementRef } from 'react';
 
 export default function AiChatScreen() {
   const { locale, t } = useLocale();
@@ -18,7 +17,7 @@ export default function AiChatScreen() {
     { id: string; role: string; content: string; time: string }[]
   >([]);
   const [input, setInput] = useState('');
-  const scrollRef = useRef<ScrollViewInstance>(null);
+  const scrollRef = useRef<ElementRef<typeof ScrollView>>(null);
   // One conversation per screen visit — the server reuses it for history/context.
   const [convId] = useState(() => `mobile-${Date.now().toString(36)}`);
   const idSeq = useRef(0);
