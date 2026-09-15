@@ -1,0 +1,31 @@
+name: EAS Project Init (one-off)
+
+# One-off helper: creates/links the EAS project for the mobile app and
+# prints the real projectId UUID (app.json currently carries the invalid
+# slug "galaxy-of-beauty" → EAS rejects it with "Invalid UUID appId").
+# Delete this workflow once the UUID is committed to app.json.
+
+on:
+  workflow_dispatch:
+
+jobs:
+  init:
+    name: Init EAS project
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v7
+        with: { node-version: '22' }
+      - name: Setup Expo
+        uses: expo/expo-github-action@v9
+        with:
+          eas-version: latest
+          token: ${{ secrets.EXPO_TOKEN }}
+      - name: Init EAS project
+        working-directory: apps/mobile
+        run: |
+          sed -i '/"projectId"/d' app.json
+          eas init --non-interactive
+      - name: Show projectId
+        working-directory: apps/mobile
+        run: grep -o '"projectId"[^,]*' app.json
