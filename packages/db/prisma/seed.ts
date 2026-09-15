@@ -533,6 +533,7 @@ async function main() {
       data: {
         categoryId: categories[1]!.id,
         titleJson: { ar: 'مانيكير جل', en: 'Gel Manicure' },
+        slug: 'manicure',
         basePrice: 100,
         durationMin: 60,
         isPopular: true,
@@ -543,6 +544,7 @@ async function main() {
       data: {
         categoryId: categories[2]!.id,
         titleJson: { ar: 'تنظيف بشرة عميق', en: 'Deep Facial Cleansing' },
+        slug: 'facial-cleansing',
         basePrice: 150,
         durationMin: 75,
         isPopular: true,
@@ -678,6 +680,7 @@ async function main() {
       data: {
         categoryId: categories[0]!.id,
         titleJson: { ar: 'تسريحة عرايس', en: 'Bridal Hairstyling' },
+        slug: 'hairstyling',
         descriptionJson: {
           ar: 'تسريحة شعر فاخرة للعروس مع تجربة قبل الزفاف',
           en: 'Luxury bridal hairstyle with pre-wedding trial',
