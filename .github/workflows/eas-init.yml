@@ -14,8 +14,12 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v6
+        with: {}
       - uses: actions/setup-node@v7
-        with: { node-version: '22' }
+        with: { node-version: '22', cache: 'pnpm' }
+      # eas init resolves app config plugins (expo-router) — needs deps.
+      - run: pnpm install --frozen-lockfile
       - name: Setup Expo
         uses: expo/expo-github-action@v9
         with:
