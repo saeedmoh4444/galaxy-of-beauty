@@ -190,6 +190,7 @@ export function ServicesClient({ data }: { data: ServicesPageData }): JSX.Elemen
                     )}
                     <p className="mt-1 font-bold text-brand-600">
                       {t('marketing.services.price-sar', { price: Number(svc.basePrice) })}
+                      {svc.isHourly ? ` / ${t('booking.per-hour')}` : ''}
                     </p>
                   </Card>
                 </button>
@@ -224,6 +225,7 @@ export function ServicesClient({ data }: { data: ServicesPageData }): JSX.Elemen
                     <div className="mt-2 flex items-center justify-between">
                       <p className="font-bold text-brand-600">
                         {t('marketing.services.price-sar', { price: Number(svc.basePrice) })}
+                        {svc.isHourly ? ` / ${t('booking.per-hour')}` : ''}
                       </p>
                       <Link
                         href={`/bookings/create?serviceId=${svc.id}`}

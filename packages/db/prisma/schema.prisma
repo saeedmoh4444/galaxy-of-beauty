@@ -415,6 +415,9 @@ model Service {
   isPopular       Boolean  @default(false)
   isPregnancySafe  Boolean @default(false) // Safe for pregnant women
   isMommyFriendly  Boolean @default(false) // Suitable for mother+child
+  // K4 (kids plan): babysitting-style hourly services — basePrice is the
+  // hourly rate; the booking total is rate × ceil(durationMin/60).
+  isHourly        Boolean  @default(false)
   // E6d — trust badges (Tier 2): modesty is the #1 purchase driver in KSA.
   isWomenOnlyStaff Boolean @default(false) // female staff only
   isPrivateSuite   Boolean @default(false) // fully private suite
@@ -2423,6 +2426,9 @@ model FamilyMember {
   ageGroup     String   // infant, child, teen, adult, senior
   preferences  String[] // gentle, hypoallergenic, fragrance_free, etc.
   notes        String   @default("")
+  // K4 (kids plan): babysitting safety fields.
+  emergencyContact String? // name + phone of who to call
+  allergies     String? // allergy notes (e.g. peanut)
   createdAt    DateTime @default(now())
 
   bookings Booking[]

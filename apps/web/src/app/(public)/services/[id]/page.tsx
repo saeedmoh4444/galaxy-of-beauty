@@ -24,6 +24,7 @@ export default async function ServiceDetailPage({
     isPrivateSuite: false,
     isPregnancySafe: false,
     isMommyFriendly: false,
+    isHourly: false,
     category: {} as ServiceDetailData['category'],
     variants: [],
     technicianServices: [],
@@ -52,6 +53,7 @@ export default async function ServiceDetailPage({
     data.isPrivateSuite = Boolean(svc.isPrivateSuite);
     data.isPregnancySafe = Boolean(svc.isPregnancySafe);
     data.isMommyFriendly = Boolean(svc.isMommyFriendly);
+    data.isHourly = Boolean(svc.isHourly);
     data.category = serializeForClient(svc.category as ServiceDetailData['category']);
     data.variants = serializeForClient((svc.variants as ServiceDetailData['variants']) ?? []);
     data.technicianServices = serializeForClient(

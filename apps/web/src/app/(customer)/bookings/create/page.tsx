@@ -90,7 +90,17 @@ export default function CreateBookingPage(): JSX.Element {
 
   // Displayed total: base price + selected variant delta.
   const variantDelta = variantId ? num(variants.find((v) => v.id === variantId)?.priceDelta) : 0;
-  const orderAmount = num((svc as unknown as { basePrice?: unknown })?.basePrice) + variantDelta;
+  // K4 (kids plan): hourly services (babysitting) price by duration.
+  const isHourly = Boolean((svc as unknown as { isHourly?: boolean })?.isHourly);
+  const hourlyHours = isHourly
+    ? Math.max(
+        1,
+        Math.ceil(num((svc as unknown as { durationMin?: number })?.durationMin, 60) / 60),
+      )
+    : 0;
+  const orderAmount = isHourly
+    ? num((svc as unknown as { basePrice?: unknown })?.basePrice) * hourlyHours
+    : num((svc as unknown as { basePrice?: unknown })?.basePrice) + variantDelta;
 
   const redeemMut = api.promo.redeemOnBooking.useMutation({
     onError: () => addToast('error', t('promo.redeem-failed')),
@@ -430,6 +440,24 @@ export default function CreateBookingPage(): JSX.Element {
                   {num((svc as unknown as { durationMin?: unknown })?.durationMin)} {t('misc.min')}
                 </span>
               </div>
+              {isHourly && (
+                <>
+                  <div className="flex justify-between border-b pb-2">
+                    <span className="text-text-secondary">
+                      {t('booking.hourly-total', {
+                        hours: hourlyHours,
+                        rate: num((svc as unknown as { basePrice?: unknown })?.basePrice),
+                      })}
+                    </span>
+                    <span className="font-bold text-brand-600">
+                      {orderAmount.toFixed(0)} {t('misc.sar')}
+                    </span>
+                  </div>
+                  <p className="mt-2 rounded-lg bg-amber-50 p-2 text-xs text-amber-800 dark:bg-amber-950 dark:text-amber-300">
+                    {t('booking.babysitting-disclaimer')}
+                  </p>
+                </>
+              )}
               <div className="flex justify-between border-b pb-2">
                 <span className="text-text-secondary">{t('booking.choose-time')}</span>
                 <span className="font-semibold">

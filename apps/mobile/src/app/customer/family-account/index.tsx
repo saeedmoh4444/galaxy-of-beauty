@@ -9,6 +9,8 @@ interface FamilyMember {
   id?: number;
   name?: string;
   relation?: string;
+  emergencyContact?: string | null;
+  allergies?: string | null;
 }
 
 export default function FamilyAccountScreen(): JSX.Element {
@@ -40,6 +42,17 @@ export default function FamilyAccountScreen(): JSX.Element {
           <View style={{ flex: 1 }}>
             <Text style={styles.name}>{m.name}</Text>
             <Text style={styles.relation}>{m.relation}</Text>
+            {/* K4 — babysitting safety fields */}
+            {m.emergencyContact ? (
+              <Text style={styles.safety}>
+                🚨 {t('mobile.familyAccount.emergency-contact')}: {m.emergencyContact}
+              </Text>
+            ) : null}
+            {m.allergies ? (
+              <Text style={styles.safety}>
+                ⚠️ {t('mobile.familyAccount.allergies')}: {m.allergies}
+              </Text>
+            ) : null}
           </View>
         </View>
       ))}
@@ -63,4 +76,5 @@ const styles = StyleSheet.create({
   avatar: { fontSize: 32 },
   name: { fontSize: 14, fontWeight: '600', color: '#111827' },
   relation: { fontSize: 12, color: '#6b7280', marginTop: 2 },
+  safety: { fontSize: 11, color: '#92400e', marginTop: 2 },
 });

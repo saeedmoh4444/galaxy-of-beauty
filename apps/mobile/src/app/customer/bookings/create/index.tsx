@@ -131,10 +131,14 @@ export default function CreateBookingScreen() {
   const loading = servicesQ.isLoading || addressesQ.isLoading;
 
   const variants = svc?.variants ?? [];
-  // Displayed total: base price + selected variant delta.
-  const orderAmount =
-    Number(svc?.basePrice ?? 0) +
-    (variantId ? Number(variants.find((v) => v.id === variantId)?.priceDelta ?? 0) : 0);
+  // Displayed total: base price + selected variant delta. K4: hourly
+  // services (babysitting) price by duration instead.
+  const isHourly = Boolean((svc as unknown as { isHourly?: boolean })?.isHourly);
+  const hourlyHours = isHourly ? Math.max(1, Math.ceil((svc?.durationMin ?? 60) / 60)) : 0;
+  const orderAmount = isHourly
+    ? Number(svc?.basePrice ?? 0) * hourlyHours
+    : Number(svc?.basePrice ?? 0) +
+      (variantId ? Number(variants.find((v) => v.id === variantId)?.priceDelta ?? 0) : 0);
 
   const redeemMut = trpc.promo.redeemOnBooking.useMutation({
     onError: () => showToast('error', t('promo.redeem-failed')),
@@ -439,8 +443,22 @@ export default function CreateBookingScreen() {
               <Text style={styles.summaryLabel}>{t('booking.price')}</Text>
               <Text style={styles.summaryPrice}>
                 {Number(svc.basePrice).toFixed(0)} {t('misc.sar')}
+                {isHourly ? ` / ${t('mobile.booking.per-hour')}` : ''}
               </Text>
             </View>
+            {isHourly && (
+              <>
+                <View style={styles.summaryRow}>
+                  <Text style={styles.summaryLabel}>
+                    {t('booking.hourly-total', { hours: hourlyHours, rate: Number(svc.basePrice) })}
+                  </Text>
+                  <Text style={styles.summaryPrice}>
+                    {orderAmount.toFixed(0)} {t('misc.sar')}
+                  </Text>
+                </View>
+                <Text style={styles.disclaimer}>{t('mobile.booking.babysitting-disclaimer')}</Text>
+              </>
+            )}
             <View style={styles.summaryRow}>
               <Text style={styles.summaryLabel}>{t('booking.duration')}</Text>
               <Text style={styles.summaryValue}>
@@ -649,6 +667,15 @@ const styles = StyleSheet.create({
   summaryLabel: { fontSize: 13, color: '#6b7280' },
   summaryValue: { fontSize: 14, color: '#374151' },
   summaryPrice: { fontSize: 16, fontWeight: '700', color: '#7c3aed' },
+  disclaimer: {
+    fontSize: 11,
+    color: '#92400e',
+    backgroundColor: '#fffbeb',
+    borderRadius: 8,
+    padding: 8,
+    marginTop: 8,
+    textAlign: 'right',
+  },
   summaryDiscount: { fontSize: 14, fontWeight: '600', color: '#16a34a' },
   summaryTotalLabel: { fontSize: 13, fontWeight: '700', color: '#111827' },
   promoApplied: {

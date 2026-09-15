@@ -605,6 +605,13 @@ export const mobileCustomerBMessages = {
   'mobile.booking.family-member-none': { ar: 'لا (حجز لنفسي)', en: 'No (book for myself)' },
   'mobile.booking.on-behalf-of': { ar: 'على حساب: {name}', en: 'On behalf of: {name}' },
   'mobile.booking.bundle': { ar: 'الباقة', en: 'Bundle' },
+  'mobile.booking.per-hour': { ar: 'لكل ساعة', en: 'per hour' },
+  'mobile.booking.babysitting-disclaimer': {
+    ar: 'تنبيه: خدمة جليسة أطفال — يُرجى إضافة جهة اتصال للطوارئ في ملف الطفل. نتحقق من مقدمات الخدمة، ويبقى الأهل مسؤولين عن الإشراف النهائي.',
+    en: 'Note: babysitting service — please add an emergency contact to the child profile. Providers are verified, but parents retain final supervision responsibility.',
+  },
+  'mobile.familyAccount.emergency-contact': { ar: 'جهة اتصال للطوارئ', en: 'Emergency contact' },
+  'mobile.familyAccount.allergies': { ar: 'الحساسية', en: 'Allergies' },
   'mobile.booking.bundle-selected': {
     ar: 'باقة ماما وأنا: {name}',
     en: 'Mommy & Me bundle: {name}',

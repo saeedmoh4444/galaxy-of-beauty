@@ -59,7 +59,10 @@ export default function ServicesScreen(): JSX.Element {
                 {localize(s.descriptionJson, locale).slice(0, 80)}
               </Text>
             </View>
-            <Text style={styles.price}>{formatCurrency(Number(s.basePrice))}</Text>
+            <Text style={styles.price}>
+              {formatCurrency(Number(s.basePrice))}
+              {Boolean(s.isHourly) ? ` / ${t('mobile.booking.per-hour')}` : ''}
+            </Text>
           </View>
         </TouchableOpacity>
       ))}
