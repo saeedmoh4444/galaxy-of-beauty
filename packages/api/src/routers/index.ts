@@ -306,6 +306,7 @@ import { newsletterRouter } from './newsletter';
 import { certificationQuizRouter } from './certificationQuiz';
 import { travelKitRouter } from './travelKit';
 import { familyAccountRouter } from './familyAccount';
+import { bundlesRouter } from './bundles';
 import { postCareRouter } from './postCare';
 import { womensServicesRouter } from './womensServices';
 import { kidsServicesRouter } from './kidsServices';
@@ -627,6 +628,7 @@ export const appRouter = router({
   certificationQuiz: certificationQuizRouter,
   travelKit: travelKitRouter,
   familyAccount: familyAccountRouter,
+  bundles: bundlesRouter,
   postCare: postCareRouter,
   womensServices: womensServicesRouter,
   kidsServices: kidsServicesRouter,

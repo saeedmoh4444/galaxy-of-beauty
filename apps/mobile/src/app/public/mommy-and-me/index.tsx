@@ -1,56 +1,61 @@
 import type { JSX } from 'react';
 import { View, Text, ScrollView, StyleSheet, TouchableOpacity, RefreshControl } from 'react-native';
+import { useRouter } from 'expo-router';
 import { SkeletonList } from '@/components/SkeletonCard';
 import { trpc } from '@/lib/trpc-react';
 import { useLocale } from '@/components/LocaleProvider';
+import { localize } from '@galaxy/shared';
 
-interface MommyService {
-  id?: number;
-  emoji?: string;
-  nameAr?: string;
-  descAr?: string;
-  price?: number;
-  duration?: string;
-}
+// K3 (kids plan) — data-driven Mommy & Me bundles (ServiceBundle rows).
+// Book routes into the booking flow with the bundle preselected.
+
+const BUNDLE_EMOJI = ['💅', '💇', '🧖', '👰'];
 
 export default function MommyAndMeScreen(): JSX.Element {
-  const { t } = useLocale();
-  const servicesQ = trpc.womensServices.categories.useQuery();
-  const services: MommyService[] = (servicesQ.data as unknown as MommyService[] | undefined) ?? [];
-  if (servicesQ.isLoading) return <SkeletonList count={4} />;
+  const { t, locale } = useLocale();
+  const router = useRouter();
+  const bundlesQ = trpc.bundles.list.useQuery();
+  const bundles = (bundlesQ.data as unknown as Record<string, unknown>[] | undefined) ?? [];
+  if (bundlesQ.isLoading) return <SkeletonList count={4} />;
   return (
     <ScrollView
       style={styles.c}
       contentContainerStyle={styles.i}
       refreshControl={
         <RefreshControl
-          refreshing={servicesQ.isRefetching}
+          refreshing={bundlesQ.isRefetching}
           onRefresh={async () => {
-            await servicesQ.refetch();
+            await bundlesQ.refetch();
           }}
           colors={['#ec4899']}
         />
       }
     >
       <Text style={styles.t}>{t('mobile.public.mommy-and-me.title')}</Text>
-      {services.map((s) => (
-        <View key={s.id} style={styles.card}>
-          <Text style={styles.se}>{s.emoji ?? ''}</Text>
-          <View style={{ flex: 1 }}>
-            <Text style={styles.sn}>{s.nameAr}</Text>
-            <Text style={styles.sd}>{s.descAr}</Text>
-            <View style={styles.sm}>
-              <Text style={styles.sp}>
-                {s.price?.toLocaleString()} {t('misc.sar')}
-              </Text>
-              <Text style={styles.sdu}> {s.duration}</Text>
+      {bundles.map((b, i) => {
+        const child = b.childService as Record<string, unknown>;
+        return (
+          <View key={b.id as number} style={styles.card}>
+            <Text style={styles.se}>{BUNDLE_EMOJI[i] ?? '🎀'}</Text>
+            <View style={{ flex: 1 }}>
+              <Text style={styles.sn}>{localize(b.nameJson, locale)}</Text>
+              <Text style={styles.sd}>{localize(b.descriptionJson, locale)}</Text>
+              <View style={styles.sm}>
+                <Text style={styles.sp}>
+                  {Number(b.bundlePrice).toLocaleString()} {t('misc.sar')}
+                </Text>
+                <Text style={styles.sdu}>👶 {localize(child?.titleJson, locale)}</Text>
+              </View>
             </View>
+            <TouchableOpacity
+              style={styles.bb}
+              onPress={() => router.push(`/customer/bookings/create?bundleId=${b.id}` as never)}
+            >
+              <Text style={styles.bt}>{t('mobile.public.mommy-and-me.book')}</Text>
+            </TouchableOpacity>
           </View>
-          <TouchableOpacity style={styles.bb}>
-            <Text style={styles.bt}>{t('mobile.public.mommy-and-me.book')}</Text>
-          </TouchableOpacity>
-        </View>
-      ))}
+        );
+      })}
     </ScrollView>
   );
 }
@@ -70,7 +75,7 @@ const styles = StyleSheet.create({
   se: { fontSize: 32 },
   sn: { fontSize: 14, fontWeight: '600', color: '#111827' },
   sd: { fontSize: 12, color: '#6b7280', marginTop: 2 },
-  sm: { flexDirection: 'row', gap: 12, marginTop: 4 },
+  sm: { flexDirection: 'row', gap: 12, marginTop: 4, flexWrap: 'wrap' },
   sp: { fontSize: 14, fontWeight: '700', color: '#db2777' },
   sdu: { fontSize: 12, color: '#9ca3af' },
   bb: { backgroundColor: '#db2777', borderRadius: 10, paddingHorizontal: 14, paddingVertical: 8 },

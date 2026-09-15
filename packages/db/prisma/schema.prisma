@@ -430,6 +430,8 @@ model Service {
   bookings          Booking[]
   tags              ServiceTagAssignment[]
   wishlistItems     WishlistItem[]
+  bundlesAsPrimary  ServiceBundle[] @relation("BundlePrimary")
+  bundlesAsChild    ServiceBundle[] @relation("BundleChild")
 
   @@index([categoryId, isActive])
   @@index([basePrice])
@@ -448,6 +450,33 @@ model ServiceVariant {
 
   @@index([serviceId])
   @@map("service_variants")
+}
+
+// =============================================================================
+// K3 (kids plan) — Mommy & Me bundles: mother service + child service booked
+// as ONE booking with a bundle price.
+// =============================================================================
+
+model ServiceBundle {
+  id             Int     @id @default(autoincrement())
+  slug           String  @unique
+  nameJson       Json    // { ar, en }
+  descriptionJson Json
+  bundlePrice    Decimal @db.Decimal(10, 2)
+  isMommyAndMe   Boolean @default(true)
+  isActive       Boolean @default(true)
+  sortOrder      Int     @default(0)
+  primaryServiceId Int
+  childServiceId   Int
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+
+  primaryService Service @relation("BundlePrimary", fields: [primaryServiceId], references: [id])
+  childService   Service @relation("BundleChild", fields: [childServiceId], references: [id])
+  bookings       Booking[]
+
+  @@index([isActive, sortOrder])
+  @@map("service_bundles")
 }
 
 model ServiceAddon {
@@ -557,6 +586,8 @@ model Booking {
   technicianGoogleEventId   String? // the TECHNICIAN's calendar event
   // K1 (kids plan): optional "book on behalf of" family member link.
   familyMemberId            Int?
+  // K3 (kids plan): optional Mommy & Me bundle link.
+  bundleId                  Int?
   createdAt          DateTime      @default(now())
   updatedAt          DateTime      @updatedAt
 
@@ -572,6 +603,7 @@ model Booking {
   chatMessages ChatMessage[]
   videoSession VideoSession?
   familyMember FamilyMember?   @relation(fields: [familyMemberId], references: [id], onDelete: SetNull)
+  bundle      ServiceBundle?   @relation(fields: [bundleId], references: [id], onDelete: SetNull)
 
   @@index([customerId, status, createdAt])
   @@index([technicianId, status, startAt])

@@ -533,6 +533,7 @@ async function main() {
       data: {
         categoryId: categories[1]!.id,
         titleJson: { ar: 'مانيكير جل', en: 'Gel Manicure' },
+        slug: 'manicure',
         basePrice: 100,
         durationMin: 60,
         isPopular: true,
@@ -543,6 +544,7 @@ async function main() {
       data: {
         categoryId: categories[2]!.id,
         titleJson: { ar: 'تنظيف بشرة عميق', en: 'Deep Facial Cleansing' },
+        slug: 'facial-cleansing',
         basePrice: 150,
         durationMin: 75,
         isPopular: true,
@@ -678,6 +680,7 @@ async function main() {
       data: {
         categoryId: categories[0]!.id,
         titleJson: { ar: 'تسريحة عرايس', en: 'Bridal Hairstyling' },
+        slug: 'hairstyling',
         descriptionJson: {
           ar: 'تسريحة شعر فاخرة للعروس مع تجربة قبل الزفاف',
           en: 'Luxury bridal hairstyle with pre-wedding trial',
@@ -1181,6 +1184,78 @@ async function main() {
     }),
   ]);
   console.log(` ${services.length} services`);
+
+  // ---- K3 (kids plan) — Mommy & Me bundles: mother service + child
+  // service booked as ONE booking at the bundle price.
+  const svcBySlug = (slug: string) => {
+    const svc = services.find((s) => s.slug === slug);
+    if (!svc) throw new Error(`Seed: service slug not found: ${slug}`);
+    return svc;
+  };
+  const bundleData = [
+    {
+      slug: 'mommy-and-me-mani',
+      nameJson: { ar: 'باقة ماما وأنا — مانيكير', en: 'Mommy & Me — Manicure' },
+      descriptionJson: {
+        ar: 'مانيكير للأم وعناية أظافر آمنة للطفلة في جلسة واحدة',
+        en: 'A manicure for mom and kid-safe nail care for the little one, in one session',
+      },
+      bundlePrice: 150,
+      primary: 'manicure',
+      child: 'kid-safe-nail-care',
+    },
+    {
+      slug: 'mommy-and-me-hair',
+      nameJson: { ar: 'باقة ماما وأنا — تسريحة', en: 'Mommy & Me — Hairstyle' },
+      descriptionJson: {
+        ar: 'تسريحة شعر للأم وقصة شعر مريحة للطفلة',
+        en: 'A hairstyle for mom and a comfortable haircut for the child',
+      },
+      bundlePrice: 200,
+      primary: 'hairstyling',
+      child: 'kids-haircut',
+    },
+    {
+      slug: 'mommy-and-me-skin',
+      nameJson: { ar: 'باقة ماما وأنا — بشرة', en: 'Mommy & Me — Skin' },
+      descriptionJson: {
+        ar: 'تنظيف وجه للأم وجلسة عناية لطيفة لوجه الطفلة',
+        en: 'A facial cleanse for mom and a gentle facial for the child',
+      },
+      bundlePrice: 250,
+      primary: 'facial-cleansing',
+      child: 'gentle-kids-facial',
+    },
+    {
+      slug: 'mommy-and-me-wedding',
+      nameJson: { ar: 'باقة ماما وأنا — زفاف', en: 'Mommy & Me — Wedding' },
+      descriptionJson: {
+        ar: 'ليلة حناء للأم وباقة قصة الشعر الأولى للصغيرة',
+        en: "A henna night for mom and the little one's first haircut package",
+      },
+      bundlePrice: 500,
+      primary: 'bridal-henna-night',
+      child: 'first-haircut-package',
+    },
+  ];
+  await Promise.all(
+    bundleData.map((b, i) =>
+      prisma.serviceBundle.create({
+        data: {
+          slug: b.slug,
+          nameJson: b.nameJson,
+          descriptionJson: b.descriptionJson,
+          bundlePrice: b.bundlePrice,
+          isMommyAndMe: true,
+          isActive: true,
+          sortOrder: i + 1,
+          primaryServiceId: svcBySlug(b.primary).id,
+          childServiceId: svcBySlug(b.child).id,
+        },
+      }),
+    ),
+  );
+  console.log(` ${bundleData.length} mommy-and-me bundles`);
 
   // ---- Service Variants ----
   await prisma.serviceVariant.createMany({
