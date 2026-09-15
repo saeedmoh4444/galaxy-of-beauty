@@ -52,6 +52,9 @@ export default function ServicesScreen(): JSX.Element {
               <Text style={styles.name}>
                 {localize(s.titleJson, locale) || (s.titleAr as string) || ''}
               </Text>
+              {Boolean(s.isMommyFriendly) && (
+                <Text style={styles.mommyBadge}>👶 {t('mobile.services.mommy-friendly')}</Text>
+              )}
               <Text style={styles.desc} numberOfLines={2}>
                 {localize(s.descriptionJson, locale).slice(0, 80)}
               </Text>
@@ -96,5 +99,11 @@ const styles = StyleSheet.create({
   left: { flex: 1, marginRight: 12 },
   name: { fontSize: 15, fontWeight: '700', color: COLORS.gray900 },
   desc: { fontSize: 12, color: COLORS.gray400, marginTop: 3 },
+  mommyBadge: {
+    fontSize: 11,
+    color: COLORS.brand,
+    fontWeight: '700',
+    marginTop: 3,
+  },
   price: { fontSize: 14, fontWeight: '700', color: COLORS.brand },
 });

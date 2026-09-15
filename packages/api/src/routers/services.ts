@@ -31,6 +31,8 @@ export const serviceRouter = router({
     if (input.womenOnly) where.isWomenOnlyStaff = true;
     if (input.privateSuite) where.isPrivateSuite = true;
     if (input.pregnancySafe) where.isPregnancySafe = true;
+    // K2 (kids plan) — mommy/kid-friendly filter.
+    if (input.mommyFriendly) where.isMommyFriendly = true;
 
     if (minPrice !== undefined || maxPrice !== undefined) {
       const priceFilter: Record<string, unknown> = {};

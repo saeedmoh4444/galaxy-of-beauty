@@ -62,6 +62,8 @@ export const serviceQuerySchema = z.object({
   womenOnly: queryBool,
   privateSuite: queryBool,
   pregnancySafe: queryBool,
+  // K2 (kids plan) — mommy/kid-friendly services filter.
+  mommyFriendly: queryBool,
 });
 
 export const addTechnicianServiceSchema = z.object({

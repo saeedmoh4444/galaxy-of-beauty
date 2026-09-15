@@ -8,6 +8,17 @@ import { Card, CardSkeleton, ErrorAlert, EmptyState, Button, useAuth } from '@ga
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
 import { useLocale } from '@/components/LocaleProvider';
 import { bookingStatusLabelKey } from '@/lib/bookingStatus';
+import type { TranslationKey } from '@galaxy/shared';
+
+// K2 (kids plan) — family member preference → localized label mapping.
+const PREF_LABEL_KEYS: Record<string, string> = {
+  gentle: 'booking.pref.gentle',
+  hypoallergenic: 'booking.pref.hypoallergenic',
+  fragrance_free: 'booking.pref.fragrance_free',
+  natural: 'booking.pref.natural',
+  quick: 'booking.pref.quick',
+  quiet: 'booking.pref.quiet',
+};
 
 const STATUS_TABS = [
   'ALL',
@@ -70,11 +81,27 @@ export default function TechBookingsPage(): JSX.Element {
                       )}
                     </p>
                     {b.familyMember ? (
-                      <p className="text-xs text-text-tertiary">
-                        {t('booking.on-behalf-of', {
-                          name: (b.familyMember as Record<string, unknown>).name as string,
-                        })}
-                      </p>
+                      <>
+                        <p className="text-xs text-text-tertiary">
+                          {t('booking.on-behalf-of', {
+                            name: (b.familyMember as Record<string, unknown>).name as string,
+                          })}
+                        </p>
+                        {/* K2 — gentle/hypoallergenic hints from the member profile */}
+                        {(
+                          (b.familyMember as Record<string, unknown>).preferences as
+                            string[] | undefined
+                        )?.map((pref) => (
+                          <span
+                            key={pref}
+                            className="mt-1 inline-block rounded-full bg-brand-50 px-2 py-0.5 text-[11px] text-brand-700 dark:bg-brand-950 dark:text-brand-300"
+                          >
+                            {t(
+                              (PREF_LABEL_KEYS[pref] as TranslationKey) ?? 'booking.family-member',
+                            )}
+                          </span>
+                        ))}
+                      </>
                     ) : null}
                   </div>
                   <span

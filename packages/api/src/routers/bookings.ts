@@ -55,7 +55,9 @@ const bookingDetailInclude = {
   address: true,
   slot: true,
   payment: true,
-  familyMember: { select: { id: true, name: true, relationship: true, ageGroup: true } },
+  familyMember: {
+    select: { id: true, name: true, relationship: true, ageGroup: true, preferences: true },
+  },
 } as const;
 
 const bookingListInclude = {
@@ -64,7 +66,9 @@ const bookingListInclude = {
   customer: { select: { id: true, name: true } },
   address: true,
   slot: true,
-  familyMember: { select: { id: true, name: true, relationship: true, ageGroup: true } },
+  familyMember: {
+    select: { id: true, name: true, relationship: true, ageGroup: true, preferences: true },
+  },
 } as const;
 
 // ---------------------------------------------------------------------------

@@ -32,6 +32,7 @@ export default function SearchPage(): JSX.Element {
   const [womenOnly, setWomenOnly] = useState(false);
   const [privateSuite, setPrivateSuite] = useState(false);
   const [pregnancySafe, setPregnancySafe] = useState(false);
+  const [mommyFriendly, setMommyFriendly] = useState(false);
   const { data: services, isLoading: svcLoading } = api.services.list.useQuery(
     {
       search: query || undefined,
@@ -39,6 +40,7 @@ export default function SearchPage(): JSX.Element {
       womenOnly,
       privateSuite,
       pregnancySafe,
+      mommyFriendly,
     },
     { enabled: searched && query.length > 1 },
   );
@@ -110,6 +112,15 @@ export default function SearchPage(): JSX.Element {
               }`}
             >
               🤰 {t('trust.pregnancySafe')}
+            </button>
+            {/* K2 (kids plan) — mommy/kid-friendly filter */}
+            <button
+              onClick={() => setMommyFriendly(!mommyFriendly)}
+              className={`rounded-full px-3 py-1 text-xs font-medium ${
+                mommyFriendly ? 'bg-brand-600 text-white' : 'bg-surface-muted text-text-secondary'
+              }`}
+            >
+              👶 {t('trust.mommyFriendly')}
             </button>
           </div>
           <p className="mb-6 text-sm text-text-secondary">

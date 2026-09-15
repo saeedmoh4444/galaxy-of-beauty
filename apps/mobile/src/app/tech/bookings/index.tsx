@@ -7,6 +7,16 @@ import { trpc } from '@/lib/trpc-react';
 import { useLocale } from '@/components/LocaleProvider';
 import type { TranslationKey } from '@galaxy/shared';
 
+// K2 (kids plan) — family member preference → localized label mapping.
+const PREF_LABEL_KEYS: Record<string, string> = {
+  gentle: 'mobile.booking.pref.gentle',
+  hypoallergenic: 'mobile.booking.pref.hypoallergenic',
+  fragrance_free: 'mobile.booking.pref.fragrance_free',
+  natural: 'mobile.booking.pref.natural',
+  quick: 'mobile.booking.pref.quick',
+  quiet: 'mobile.booking.pref.quiet',
+};
+
 const COLORS = {
   brand: '#7c3aed',
   white: '#ffffff',
@@ -70,11 +80,21 @@ export default function TechBookingsScreen(): JSX.Element {
             {new Date(b.startAt as string).toLocaleString(locale === 'en' ? 'en-US' : 'ar-SA')}
           </Text>
           {b.familyMember ? (
-            <Text style={styles.onBehalf}>
-              {t('mobile.booking.on-behalf-of', {
-                name: (b.familyMember as Record<string, unknown>).name as string,
-              })}
-            </Text>
+            <>
+              <Text style={styles.onBehalf}>
+                {t('mobile.booking.on-behalf-of', {
+                  name: (b.familyMember as Record<string, unknown>).name as string,
+                })}
+              </Text>
+              {/* K2 — gentle/hypoallergenic hints from the member profile */}
+              {(
+                (b.familyMember as Record<string, unknown>).preferences as string[] | undefined
+              )?.map((pref) => (
+                <Text key={pref} style={styles.prefChip}>
+                  {t((PREF_LABEL_KEYS[pref] as TranslationKey) ?? 'mobile.booking.family-member')}
+                </Text>
+              ))}
+            </>
           ) : null}
           {(b.status === 'PAID' || b.status === 'IN_PROGRESS') && (
             <TouchableOpacity
@@ -109,6 +129,7 @@ const styles = StyleSheet.create({
   statusBadge: { fontSize: 12, fontWeight: '600' },
   date: { fontSize: 12, color: COLORS.gray400 },
   onBehalf: { fontSize: 12, color: COLORS.brand, marginTop: 2, fontWeight: '600' },
+  prefChip: { fontSize: 11, color: COLORS.gray400, marginTop: 2 },
   videoBtn: {
     marginTop: 10,
     backgroundColor: COLORS.brand,
