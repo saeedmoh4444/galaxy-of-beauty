@@ -12,6 +12,7 @@ import {
   EmptyState,
   ServiceImage,
   FloatingBlob,
+  Icon,
   Marquee,
   Sparkles,
   TrustBadge,
@@ -181,7 +182,7 @@ export function HomeClient({
               </div>
               <div className="absolute -end-4 bottom-10 animate-float-slow rounded-2xl bg-surface-elevated p-3 shadow-lg shadow-brand-600/10">
                 <div className="flex items-center gap-2">
-                  <span aria-hidden>🌸</span>
+                  <Icon name="sparkle" className="text-brand-400" />
                   <span className="text-xs font-bold text-text-secondary">
                     {t('trust.womenOnly')}
                   </span>

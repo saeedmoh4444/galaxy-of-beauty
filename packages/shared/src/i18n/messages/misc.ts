@@ -3859,6 +3859,7 @@ export const miscMessages = {
   'nailBars.type.express': { ar: 'سريع', en: 'Express' },
   'nailBars.pay-at-venue': { ar: 'الدفع في الصالون', en: 'Pay at venue' },
   'nailBars.verified': { ar: 'مرخص من {agency}', en: 'Licensed by {agency}' },
+  'nailBars.verified-badge': { ar: 'مصرح', en: 'Licensed' },
   'nailBars.slots': { ar: 'المحطات المتاحة', en: 'Available stations' },
   'nailBars.noSlots': { ar: 'لا توجد مواعيد متاحة', en: 'No slots available' },
   'nailBars.spotsLeft': { ar: 'المتبقي: {n} محطة', en: '{n} stations left' },

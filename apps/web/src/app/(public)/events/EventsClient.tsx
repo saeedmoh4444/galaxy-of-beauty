@@ -2,7 +2,6 @@
 
 import { useState } from 'react';
 import type { JSX } from 'react';
-import Image from 'next/image';
 import { api } from '@/lib/trpc';
 import { localize } from '@galaxy/shared';
 import { useLocale } from '@/components/LocaleProvider';
@@ -14,6 +13,7 @@ import {
   Button,
   formatCurrency,
   HeroSection,
+  ServiceImage,
 } from '@galaxy/ui';
 import Link from 'next/link';
 
@@ -134,17 +134,8 @@ export function EventsClient({ initialEvents }: { initialEvents: unknown[] }): J
 
               return (
                 <Card key={event.id} padding="md" className="flex flex-col">
-                  <div className="relative mb-4 flex h-40 items-center justify-center rounded-xl bg-linear-to-br from-brand-100 to-accent-100 text-5xl dark:from-brand-900 dark:to-accent-900">
-                    {event.imageUrl ? (
-                      <Image
-                        src={event.imageUrl}
-                        alt={name}
-                        fill
-                        className="rounded-xl object-cover"
-                      />
-                    ) : (
-                      ''
-                    )}
+                  <div className="relative mb-4 flex h-40 items-center justify-center overflow-hidden rounded-xl bg-linear-to-br from-brand-100 to-accent-100 dark:from-brand-900 dark:to-accent-900">
+                    <ServiceImage src={event.imageUrl ?? null} alt={name} size="full" />
                   </div>
                   <h3 className="text-lg font-bold text-text-primary">{name}</h3>
                   {desc && <p className="mt-1 text-sm text-text-secondary line-clamp-2">{desc}</p>}

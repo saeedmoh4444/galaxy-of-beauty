@@ -28,6 +28,7 @@ export interface NailBarPageData {
     licenseVerifiedAt: string | null;
     descriptionJson: { ar?: string; en?: string } | null;
     logoUrl: string | null;
+    bannerUrl: string | null;
     ratingAvg: number | null;
     totalReviews: number;
     womenOnlyStaff?: boolean;
@@ -123,6 +124,18 @@ export function NailBarClient({ data }: { data: NailBarPageData }): JSX.Element 
           <p className="mt-4 text-sm text-text-secondary">{localize(n.descriptionJson, locale)}</p>
         )}
       </Card>
+
+      {/* Nail bar banner — E7 KYC banner media */}
+      {n.bannerUrl ? (
+        <div className="overflow-hidden rounded-3xl">
+          <ServiceImage
+            src={n.bannerUrl}
+            alt={n.storeName ?? ''}
+            size="full"
+            className="h-48 w-full object-cover md:h-64"
+          />
+        </div>
+      ) : null}
 
       {/* Station slots */}
       <Card padding="lg">

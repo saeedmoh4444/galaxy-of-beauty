@@ -3,7 +3,6 @@
 import { useState, useMemo } from 'react';
 import type { JSX } from 'react';
 import Link from 'next/link';
-import Image from 'next/image';
 import { api } from '@/lib/trpc';
 import { localize, pageHeroKey, type TranslationKey } from '@galaxy/shared';
 import { useLocale } from '@/components/LocaleProvider';
@@ -157,17 +156,13 @@ export function BlogClient({
               return (
                 <Link key={post.id} href={`/blog/${post.slug}`} className="group">
                   <article className="overflow-hidden rounded-2xl border border-edge bg-surface-elevated transition-all hover:shadow-xl hover:-translate-y-1">
-                    <div className="relative flex h-48 items-center justify-center bg-linear-to-br from-brand-100 to-accent-100 text-5xl dark:from-brand-900 dark:to-accent-900">
-                      {post.imageUrl ? (
-                        <Image
-                          src={post.imageUrl}
-                          alt={title}
-                          fill
-                          className="object-cover transition-transform group-hover:scale-105"
-                        />
-                      ) : (
-                        <span>📰</span>
-                      )}
+                    <div className="relative flex h-48 items-center justify-center overflow-hidden bg-linear-to-br from-brand-100 to-accent-100 dark:from-brand-900 dark:to-accent-900">
+                      <ServiceImage
+                        src={post.imageUrl ?? null}
+                        alt={title}
+                        size="full"
+                        className="transition-transform group-hover:scale-105"
+                      />
                     </div>
                     <div className="p-5">
                       <h2 className="text-lg font-bold text-text-primary group-hover:text-brand-600 line-clamp-2">

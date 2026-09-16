@@ -29,6 +29,7 @@ export interface ClinicPageData {
     consultationPrice: number | null;
     descriptionJson: { ar?: string; en?: string } | null;
     logoUrl: string | null;
+    bannerUrl: string | null;
     ratingAvg: number | null;
     totalReviews: number;
   } | null;
@@ -135,6 +136,18 @@ export function ClinicClient({ data }: { data: ClinicPageData }): JSX.Element {
           />
         </div>
       </div>
+
+      {/* Clinic banner — E7 KYC banner media */}
+      {clinic.bannerUrl ? (
+        <div className="overflow-hidden rounded-3xl">
+          <ServiceImage
+            src={clinic.bannerUrl}
+            alt={clinic.storeName ?? ''}
+            size="full"
+            className="h-48 w-full object-cover md:h-64"
+          />
+        </div>
+      ) : null}
 
       {bio[locale] ? (
         <p className="max-w-2xl text-sm leading-relaxed text-text-secondary">{bio[locale]}</p>
