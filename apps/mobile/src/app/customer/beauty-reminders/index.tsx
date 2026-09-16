@@ -10,6 +10,7 @@ import {
 import { useState } from 'react';
 import type { JSX } from 'react';
 import { ErrorAlert } from '@/components/ErrorAlert';
+import { EmptyState } from '@/components/EmptyState';
 import { SkeletonList } from '@/components/SkeletonCard';
 import { useLocale } from '@/components/LocaleProvider';
 import { useAuthState } from '@/hooks/useAuthState';
@@ -181,12 +182,7 @@ export default function BeautyRemindersScreen(): JSX.Element {
         </View>
       )}
 
-      {reminders.length === 0 && (
-        <View style={{ alignItems: 'center', padding: 30 }}>
-          <Text style={{ fontSize: 40 }}>🔔</Text>
-          <Text style={{ color: '#6b7280', marginTop: 8 }}>{t('beautyReminders.empty')}</Text>
-        </View>
-      )}
+      {reminders.length === 0 && <EmptyState emoji="🔔" title={t('beautyReminders.empty')} />}
 
       {overdue.length > 0 && (
         <View style={{ marginBottom: 16 }}>
