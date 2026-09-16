@@ -1,5 +1,6 @@
 import type { JSX } from 'react';
-import { View, Text, ScrollView, Image, StyleSheet, RefreshControl } from 'react-native';
+import { View, Text, ScrollView, StyleSheet, RefreshControl } from 'react-native';
+import { ServiceImage } from '@/components/ServiceImage';
 import { useLocalSearchParams } from 'expo-router';
 import { SkeletonList } from '@/components/SkeletonCard';
 import { ErrorAlert } from '@/components/ErrorAlert';
@@ -43,13 +44,12 @@ export default function GalleryDetailScreen(): JSX.Element {
       <View style={styles.grid}>
         {photos.map((p, i) => (
           <View key={p.id ?? i} style={styles.pc}>
-            {p.imageUrl ? (
-              <Image source={{ uri: p.imageUrl }} style={styles.img} />
-            ) : (
-              <View style={styles.ph}>
-                <Text style={{ fontSize: 32 }}>🖼️</Text>
-              </View>
-            )}
+            <ServiceImage
+              src={p.imageUrl ?? null}
+              alt={p.title ?? ''}
+              height={150}
+              style={{ width: '100%' }}
+            />
             <Text style={styles.pt}>{p.title ?? '—'}</Text>
           </View>
         ))}

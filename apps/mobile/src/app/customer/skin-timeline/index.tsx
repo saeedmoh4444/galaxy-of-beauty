@@ -1,6 +1,7 @@
 import { View, Text, ScrollView, StyleSheet, TouchableOpacity, RefreshControl } from 'react-native';
 import { useState } from 'react';
 import type { JSX } from 'react';
+import { ServiceImage } from '@/components/ServiceImage';
 import { useAuthState } from '@/hooks/useAuthState';
 import { trpc } from '@/lib/trpc-react';
 import { useLocale } from '@/components/LocaleProvider';
@@ -49,16 +50,24 @@ export default function SkinTimelineScreen(): JSX.Element {
         <View style={styles.compareGrid}>
           <View style={[styles.compareCard, styles.before]}>
             <Text style={styles.compareLabel}>{t('mobile.skinTimeline.last-week')}</Text>
-            <View style={styles.imgPlaceholder}>
-              <Text style={{ fontSize: 40 }}>📷</Text>
-            </View>
+            <ServiceImage
+              src={null}
+              alt={t('mobile.skinTimeline.last-week')}
+              height={100}
+              borderRadius={10}
+              style={{ width: '100%' }}
+            />
           </View>
           <Text style={styles.compareVs}>VS</Text>
           <View style={[styles.compareCard, styles.after]}>
             <Text style={styles.compareLabel}>{t('mobile.skinTimeline.this-week')}</Text>
-            <View style={styles.imgPlaceholder}>
-              <Text style={{ fontSize: 40 }}>📷</Text>
-            </View>
+            <ServiceImage
+              src={null}
+              alt={t('mobile.skinTimeline.this-week')}
+              height={100}
+              borderRadius={10}
+              style={{ width: '100%' }}
+            />
           </View>
         </View>
       ) : (

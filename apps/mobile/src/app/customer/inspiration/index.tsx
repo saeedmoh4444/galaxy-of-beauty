@@ -1,13 +1,6 @@
 import type { JSX } from 'react';
-import {
-  View,
-  Text,
-  ScrollView,
-  StyleSheet,
-  TouchableOpacity,
-  Image,
-  RefreshControl,
-} from 'react-native';
+import { View, Text, ScrollView, StyleSheet, TouchableOpacity, RefreshControl } from 'react-native';
+import { ServiceImage } from '@/components/ServiceImage';
 import { SkeletonList } from '@/components/SkeletonCard';
 import { trpc } from '@/lib/trpc-react';
 import { useLocale } from '@/components/LocaleProvider';
@@ -51,13 +44,12 @@ export default function InspirationScreen(): JSX.Element {
       <View style={styles.grid}>
         {pins.map((p) => (
           <View key={p.id} style={styles.card}>
-            {p.imageUrl ? (
-              <Image source={{ uri: p.imageUrl }} style={styles.img} />
-            ) : (
-              <View style={styles.ph}>
-                <Text style={{ fontSize: 36 }}>🖼️</Text>
-              </View>
-            )}
+            <ServiceImage
+              src={p.imageUrl ?? null}
+              alt={p.title ?? ''}
+              height={120}
+              style={{ width: '100%' }}
+            />
             <View style={styles.cb}>
               <Text style={styles.pt}>{p.title ?? ''}</Text>
               <TouchableOpacity onPress={() => p.id && remove(p.id)}>
