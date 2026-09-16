@@ -60,13 +60,13 @@ export function BeautySecretSantaCard({
       </div>
 
       <div className="mt-3 grid grid-cols-2 gap-2">
-        <div className="rounded-xl bg-white/60 p-3 text-center dark:bg-gray-800/60">
+        <div className="rounded-xl bg-surface-elevated/60 p-3 text-center">
           <p className="text-[9px] text-text-tertiary dark:text-text-secondary">{budgetLabel}</p>
           <p className="text-lg font-bold text-red-700 dark:text-red-300">
             {budget} {currencySuffix}
           </p>
         </div>
-        <div className="rounded-xl bg-white/60 p-3 text-center dark:bg-gray-800/60">
+        <div className="rounded-xl bg-surface-elevated/60 p-3 text-center">
           <p className="text-[9px] text-text-tertiary dark:text-text-secondary">
             {participantsLabel}
           </p>

@@ -51,7 +51,7 @@ export function BeautySelfCareReminderCard({
         <button
           type="button"
           onClick={onSnooze}
-          className="mt-2 w-full rounded-lg border border-brand-200 py-1.5 text-[10px] font-bold text-brand-600 hover:bg-white/60 dark:hover:bg-gray-800/60 dark:border-brand-800 dark:text-brand-400 transition-colors"
+          className="mt-2 w-full rounded-lg border border-brand-200 py-1.5 text-[10px] font-bold text-brand-600 hover:bg-surface-elevated/60 dark:hover:bg-gray-800/60 dark:border-brand-800 dark:text-brand-400 transition-colors"
         >
           {snoozeText}
         </button>

@@ -67,13 +67,13 @@ export function BeautyVoiceAssistantCard({
       </button>
 
       {/* Example commands */}
-      <div className="mt-3 rounded-xl bg-white/60 p-3 dark:bg-gray-800/60">
+      <div className="mt-3 rounded-xl bg-surface-elevated/60 p-3">
         <p className="text-[10px] font-bold text-violet-700 dark:text-violet-300">{trySayLabel}</p>
         <div className="mt-1.5 space-y-1">
           {COMMANDS.map((cmd) => (
             <div
               key={cmd.text.ar}
-              className="flex items-center gap-2 rounded-lg bg-white/50 px-2.5 py-1.5 dark:bg-gray-800/50"
+              className="flex items-center gap-2 rounded-lg bg-surface-elevated/50 px-2.5 py-1.5"
             >
               <span className="text-xs" aria-hidden="true">
                 {cmd.emoji}
@@ -88,10 +88,10 @@ export function BeautyVoiceAssistantCard({
 
       {/* Languages */}
       <div className="mt-2 flex justify-center gap-1.5">
-        <span className="rounded-full bg-white/60 px-2 py-0.5 text-[9px] text-violet-600 dark:bg-gray-800/60 dark:text-violet-400">
+        <span className="rounded-full bg-surface-elevated/60 px-2 py-0.5 text-[9px] text-violet-600 dark:text-violet-400">
           {arabicLabel}
         </span>
-        <span className="rounded-full bg-white/60 px-2 py-0.5 text-[9px] text-violet-600 dark:bg-gray-800/60 dark:text-violet-400">
+        <span className="rounded-full bg-surface-elevated/60 px-2 py-0.5 text-[9px] text-violet-600 dark:text-violet-400">
           English
         </span>
       </div>

@@ -172,7 +172,7 @@ export function BridalJourneyTimeline({
   locale = 'ar',
 }: BridalJourneyTimelineProps): JSX.Element {
   return (
-    <div className={cn('rounded-2xl bg-white p-5 dark:bg-gray-900', className)}>
+    <div className={cn('rounded-2xl bg-surface-elevated p-5', className)}>
       {/* Header */}
       <div className="text-center">
         <span className="text-3xl" aria-hidden="true"></span>

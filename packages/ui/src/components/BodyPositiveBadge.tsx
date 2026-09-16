@@ -139,7 +139,7 @@ export function BodyPositiveBadge({
         {active.map((f) => (
           <div
             key={f.label.ar}
-            className="flex items-start gap-2.5 rounded-xl bg-white/60 p-3 dark:bg-gray-800/60"
+            className="flex items-start gap-2.5 rounded-xl bg-surface-elevated/60 p-3"
           >
             <span className="text-lg shrink-0" aria-hidden="true">
               {f.emoji}
@@ -153,7 +153,7 @@ export function BodyPositiveBadge({
       </div>
 
       {/* Pledge */}
-      <div className="mt-3 rounded-xl bg-white/60 p-3 text-center dark:bg-gray-800/60">
+      <div className="mt-3 rounded-xl bg-surface-elevated/60 p-3 text-center">
         <p className="text-xs font-bold text-brand-700 dark:text-brand-300">{pledgeTitle}</p>
         <p className="mt-1 text-[10px] leading-relaxed text-brand-600 dark:text-brand-400">
           {pledgeText}

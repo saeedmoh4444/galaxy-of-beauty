@@ -131,7 +131,7 @@ export function ConsentShield({
   return (
     <div
       className={cn(
-        'rounded-2xl border border-emerald-100 bg-white p-5 dark:border-emerald-900 dark:bg-gray-900',
+        'rounded-2xl border border-emerald-100 bg-surface-elevated p-5 dark:border-emerald-900',
         className,
       )}
     >
@@ -193,7 +193,7 @@ export function ConsentShield({
               >
                 <span
                   className={cn(
-                    'inline-block h-3.5 w-3.5 rounded-full bg-white transition-transform',
+                    'inline-block h-3.5 w-3.5 rounded-full bg-surface-elevated transition-transform',
                     isGranted || isRequired ? 'translate-x-4' : 'translate-x-0.5',
                   )}
                 />

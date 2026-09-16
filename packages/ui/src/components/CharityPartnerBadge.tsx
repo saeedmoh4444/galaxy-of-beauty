@@ -47,7 +47,7 @@ export function CharityPartnerBadge({
   return (
     <div
       className={cn(
-        'rounded-2xl border border-rose-100 bg-white p-4 dark:border-rose-900 dark:bg-gray-900',
+        'rounded-2xl border border-rose-100 bg-surface-elevated p-4 dark:border-rose-900',
         className,
       )}
     >
@@ -71,7 +71,7 @@ export function CharityPartnerBadge({
 
       {/* Raised amount */}
       {raised !== undefined && (
-        <div className="mt-2 rounded-xl bg-white/60 p-3 text-center dark:bg-gray-800/60">
+        <div className="mt-2 rounded-xl bg-surface-elevated/60 p-3 text-center">
           <p className="text-[9px] text-text-tertiary dark:text-text-secondary">{raisedLabel}</p>
           <p className="text-lg font-bold text-rose-700 dark:text-rose-300">
             {raised.toLocaleString('ar-SA')} {currencySuffix}
