@@ -2,7 +2,7 @@
 import type { JSX } from 'react';
 
 import Link from 'next/link';
-import { Card, ErrorAlert, EmptyState, HeroSection, ServiceImage } from '@galaxy/ui';
+import { Card, ErrorAlert, EmptyState, HeroSection, ServiceImage, TrustBadges } from '@galaxy/ui';
 import { useLocale } from '@/components/LocaleProvider';
 
 export interface StoresPageData {
@@ -58,6 +58,21 @@ export function StoresClient({ data }: { data: StoresPageData }): JSX.Element {
                         </p>
                       </div>
                     </div>
+                    <TrustBadges
+                      className="mt-3"
+                      items={[
+                        { variant: 'verified' as const, label: t('stores.verified') },
+                        ...(Number(s.totalReviews ?? 0) > 0
+                          ? [
+                              {
+                                variant: 'rating' as const,
+                                label: t('misc.rating'),
+                                value: Number(s.ratingAvg ?? 0).toFixed(1),
+                              },
+                            ]
+                          : []),
+                      ]}
+                    />
                   </Card>
                 </Link>
               );

@@ -2,7 +2,7 @@
 import type { JSX } from 'react';
 
 import Link from 'next/link';
-import { Card, ErrorAlert, EmptyState, HeroSection, ServiceImage } from '@galaxy/ui';
+import { Card, ErrorAlert, EmptyState, HeroSection, ServiceImage, TrustBadges } from '@galaxy/ui';
 import { useLocale } from '@/components/LocaleProvider';
 
 export interface GymsPageData {
@@ -54,11 +54,32 @@ export function GymsClient({ data }: { data: GymsPageData }): JSX.Element {
                       <p className="text-xs text-text-secondary">
                         {t(`gyms.type.${g.gymType as string}` as never)} · {g.gymCity as string}
                       </p>
-                      <span className="mt-1 inline-block rounded-full bg-green-100 px-2 py-0.5 text-xs font-medium text-green-700">
-                        {t('gyms.verified-badge', { agency: 'MISA' })}
-                      </span>
                     </div>
                   </div>
+                  <TrustBadges
+                    className="mt-3"
+                    items={[
+                      {
+                        variant: 'verified' as const,
+                        label: t('gyms.verified-badge', { agency: 'MISA' }),
+                      },
+                      ...(Number(g.totalReviews ?? 0) > 0
+                        ? [
+                            {
+                              variant: 'rating' as const,
+                              label: t('misc.rating'),
+                              value: Number(g.ratingAvg ?? 0).toFixed(1),
+                            },
+                          ]
+                        : []),
+                      ...(g.womenOnlyStaff
+                        ? [{ variant: 'womenOnly' as const, label: t('trust.womenOnly') }]
+                        : []),
+                      ...(g.privateSuite
+                        ? [{ variant: 'private' as const, label: t('trust.privateSuite') }]
+                        : []),
+                    ]}
+                  />
                 </Card>
               </Link>
             ))}
