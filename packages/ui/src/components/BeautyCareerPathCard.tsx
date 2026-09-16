@@ -133,7 +133,7 @@ export function BeautyCareerPathCard({
   return (
     <div
       className={cn(
-        'rounded-2xl border border-teal-100 bg-white p-4 dark:border-teal-900 dark:bg-gray-900',
+        'rounded-2xl border border-teal-100 bg-surface-elevated p-4 dark:border-teal-900',
         className,
       )}
     >
@@ -166,7 +166,7 @@ export function BeautyCareerPathCard({
           {p.courses.map((c) => (
             <span
               key={c.ar}
-              className="rounded-full bg-white px-2 py-0.5 text-[9px] text-teal-700 dark:bg-gray-800 dark:text-teal-300"
+              className="rounded-full bg-surface-elevated px-2 py-0.5 text-[9px] text-teal-700 dark:text-teal-300"
             >
               {c[locale]}
             </span>

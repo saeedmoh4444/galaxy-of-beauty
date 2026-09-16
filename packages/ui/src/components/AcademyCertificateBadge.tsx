@@ -114,7 +114,7 @@ export function AcademyCertificateBadge({
       </div>
 
       {/* Course name */}
-      <div className="mt-3 rounded-xl bg-white/60 p-3 text-center dark:bg-gray-800/60">
+      <div className="mt-3 rounded-xl bg-surface-elevated/60 p-3 text-center">
         <p className="text-xs font-bold text-text-primary">{certificate.course}</p>
         <div className="mt-1.5 flex items-center justify-center gap-2">
           <span
@@ -137,7 +137,7 @@ export function AcademyCertificateBadge({
 
       {/* Certificate ID */}
       {certificate.certId && (
-        <div className="mt-2 rounded-lg bg-white/60 p-2 text-center dark:bg-gray-800/60">
+        <div className="mt-2 rounded-lg bg-surface-elevated/60 p-2 text-center">
           <p className="text-[9px] text-text-tertiary dark:text-text-secondary">{certIdLabel}</p>
           <p className="text-xs font-mono font-bold text-text-primary" dir="ltr">
             {certificate.certId}
@@ -172,7 +172,7 @@ export function AcademyCertificateBadge({
         <button
           type="button"
           onClick={onVerify}
-          className="flex-1 rounded-xl border border-blue-200 bg-white py-2 text-[10px] font-bold text-blue-700 hover:bg-blue-50 dark:border-blue-800 dark:bg-gray-800 dark:text-blue-300"
+          className="flex-1 rounded-xl border border-blue-200 bg-surface-elevated py-2 text-[10px] font-bold text-blue-700 hover:bg-blue-50 dark:border-blue-800 dark:text-blue-300"
         >
           {verifyLabel}
         </button>

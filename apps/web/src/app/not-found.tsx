@@ -16,7 +16,7 @@ export default async function NotFound(): Promise<JSX.Element> {
   const locale = await getServerLocale();
 
   return (
-    <div className="flex min-h-screen flex-col items-center justify-center bg-white px-4 text-center dark:bg-gray-950">
+    <div className="flex min-h-screen flex-col items-center justify-center bg-surface-elevated px-4 text-center">
       <Image
         src="/logo.png"
         alt={t('common.brandName', locale)}

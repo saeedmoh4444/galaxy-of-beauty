@@ -65,7 +65,7 @@ export function MeasurementHistory(): JSX.Element {
             placeholder={t(f.label)}
             value={values[f.key] ?? ''}
             onChange={(e) => setValues({ ...values, [f.key]: e.target.value })}
-            className="w-full rounded-lg border border-edge p-3 text-sm dark:bg-gray-800"
+            className="w-full rounded-lg border border-edge p-3 text-sm bg-surface-elevated"
           />
         ))}
       </div>
@@ -74,7 +74,7 @@ export function MeasurementHistory(): JSX.Element {
         placeholder={t('measurements.notes')}
         value={notes}
         onChange={(e) => setNotes(e.target.value)}
-        className="mt-3 w-full rounded-lg border border-edge p-3 text-sm dark:bg-gray-800"
+        className="mt-3 w-full rounded-lg border border-edge p-3 text-sm bg-surface-elevated"
       />
       <Button size="sm" className="mt-3" onClick={submit} loading={logMut.isPending}>
         {t('measurements.add')}

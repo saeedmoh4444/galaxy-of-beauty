@@ -239,7 +239,7 @@ export default function TechProfilePage(): JSX.Element {
                     <select
                       value={docType}
                       onChange={(e) => setDocType(e.target.value)}
-                      className="rounded-lg border border-edge bg-white px-3 py-2 text-sm dark:bg-gray-900"
+                      className="rounded-lg border border-edge bg-surface-elevated px-3 py-2 text-sm"
                     >
                       <option value="NATIONAL_ID">{t('tech.profile.doc-national-id')}</option>
                       <option value="PASSPORT">{t('tech.profile.doc-passport')}</option>
@@ -392,7 +392,7 @@ export default function TechProfilePage(): JSX.Element {
                 <select
                   value={selectedServiceId ?? ''}
                   onChange={(e) => setSelectedServiceId(Number(e.target.value))}
-                  className="flex-1 rounded-lg border border-edge bg-white px-3 py-2 text-sm dark:bg-gray-900"
+                  className="flex-1 rounded-lg border border-edge bg-surface-elevated px-3 py-2 text-sm"
                 >
                   <option value="">{t('tech.profile.select-service')}</option>
                   {allServices.map((s) => (

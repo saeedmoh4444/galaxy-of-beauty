@@ -15,7 +15,7 @@ export function BeautyBreakoutSOSCard({
   return (
     <div
       className={cn(
-        'rounded-2xl border border-red-100 bg-white p-4 dark:border-red-900 dark:bg-gray-900',
+        'rounded-2xl border border-red-100 bg-surface-elevated p-4 dark:border-red-900',
         className,
       )}
     >

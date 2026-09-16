@@ -79,7 +79,7 @@ export function BeautyBudgetCard({
   return (
     <div
       className={cn(
-        'rounded-2xl border border-lime-100 bg-white p-5 dark:border-lime-900 dark:bg-gray-900',
+        'rounded-2xl border border-lime-100 bg-surface-elevated p-5 dark:border-lime-900',
         className,
       )}
     >
@@ -117,7 +117,7 @@ export function BeautyBudgetCard({
             >
               {/* Category icon */}
               <span
-                className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-white text-sm dark:bg-gray-700"
+                className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-surface-elevated text-sm"
                 aria-label={cat.label[locale]}
               >
                 {cat.emoji}

@@ -54,7 +54,7 @@ export function BeautyAffirmationCard({
         <h4 className="mt-1 text-sm font-bold text-pink-800 dark:text-pink-200">{title}</h4>
       </div>
 
-      <div className="mt-3 rounded-xl bg-white/60 p-5 text-center dark:bg-gray-800/60">
+      <div className="mt-3 rounded-xl bg-surface-elevated/60 p-5 text-center">
         <p className="text-lg font-bold leading-relaxed text-pink-800 dark:text-pink-200">
           &ldquo;{affirmation[locale]}&rdquo;
         </p>
@@ -78,7 +78,7 @@ export function BeautyAffirmationCard({
       <button
         type="button"
         onClick={() => setIndex((p) => (p + 1) % AFFIRMATIONS.length)}
-        className="mt-3 w-full rounded-xl border border-pink-200 py-2 text-[10px] font-bold text-pink-700 hover:bg-white/60 dark:hover:bg-gray-800/60 dark:border-pink-800 dark:text-pink-300 transition-colors"
+        className="mt-3 w-full rounded-xl border border-pink-200 py-2 text-[10px] font-bold text-pink-700 hover:bg-surface-elevated/60 dark:hover:bg-gray-800/60 dark:border-pink-800 dark:text-pink-300 transition-colors"
       >
         {nextButtonText}
       </button>

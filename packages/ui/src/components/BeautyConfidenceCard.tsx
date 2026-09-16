@@ -41,7 +41,7 @@ export function BeautyConfidenceCard({
           ].map((t, i) => (
             <div
               key={i}
-              className="flex items-center gap-2 rounded-lg bg-white/60 px-3 py-2 dark:bg-gray-800/60"
+              className="flex items-center gap-2 rounded-lg bg-surface-elevated/60 px-3 py-2"
             >
               <span className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-fuchsia-200 text-[9px] font-bold text-fuchsia-700 dark:bg-fuchsia-800 dark:text-fuchsia-300">
                 {i + 1}

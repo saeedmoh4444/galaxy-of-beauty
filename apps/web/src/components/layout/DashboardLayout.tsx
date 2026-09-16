@@ -133,7 +133,7 @@ export function DashboardLayout({
   return (
     <div className="flex min-h-screen">
       {/* Sidebar */}
-      <aside className="hidden w-64 border-e border-edge bg-white p-4 md:block dark:bg-gray-950">
+      <aside className="hidden w-64 border-e border-edge bg-surface-elevated p-4 md:block">
         <Link href="/" className="mb-8 flex shrink-0 items-center gap-2">
           <Image
             src="/logo.png"
@@ -223,7 +223,7 @@ export function DashboardLayout({
 
       {/* Content — header strip hosts the language/theme toggles on all breakpoints */}
       <div className="flex flex-1 flex-col overflow-auto">
-        <header className="sticky top-0 z-30 flex items-center justify-end gap-2 border-b border-edge bg-white/80 px-4 py-2 backdrop-blur dark:bg-gray-950/80">
+        <header className="sticky top-0 z-30 flex items-center justify-end gap-2 border-b border-edge bg-surface-elevated/80 px-4 py-2 backdrop-blur">
           <LanguageToggle />
           <ThemeToggle />
         </header>
@@ -236,7 +236,7 @@ export function DashboardLayout({
       </div>
 
       {/* Mobile Bottom Navigation */}
-      <nav className="fixed bottom-0 start-0 end-0 z-50 border-t border-edge bg-white dark:bg-gray-950 md:hidden">
+      <nav className="fixed bottom-0 start-0 end-0 z-50 border-t border-edge bg-surface-elevated md:hidden">
         <div className="flex overflow-x-auto">
           {links.slice(0, 5).map((link) => (
             <Link

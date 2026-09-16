@@ -57,7 +57,7 @@ export function AlumniNetworkCard({
         </p>
       </div>
 
-      <div className="mt-3 rounded-xl bg-white/60 p-3 dark:bg-gray-800/60">
+      <div className="mt-3 rounded-xl bg-surface-elevated/60 p-3">
         <p className="text-[10px] font-bold text-brand-800 dark:text-brand-200">{benefitsLabel}</p>
         <div className="mt-1.5 space-y-0.5 text-[10px] text-brand-700 dark:text-brand-300">
           <p>{item1}</p>

@@ -103,18 +103,18 @@ export function AnnualSummitCard({
 
       {/* Event details */}
       <div className="mt-3 grid grid-cols-2 gap-2">
-        <div className="rounded-xl bg-white/60 p-2.5 text-center dark:bg-gray-800/60">
+        <div className="rounded-xl bg-surface-elevated/60 p-2.5 text-center">
           <p className="text-[9px] text-text-tertiary dark:text-text-secondary">{cityLabel}</p>
           <p className="text-xs font-bold text-amber-800 dark:text-amber-200"> {city}</p>
         </div>
-        <div className="rounded-xl bg-white/60 p-2.5 text-center dark:bg-gray-800/60">
+        <div className="rounded-xl bg-surface-elevated/60 p-2.5 text-center">
           <p className="text-[9px] text-text-tertiary dark:text-text-secondary">{dateLabel}</p>
           <p className="text-xs font-bold text-amber-800 dark:text-amber-200"> {date}</p>
         </div>
       </div>
 
       {/* Topics */}
-      <div className="mt-2 rounded-xl bg-white/60 p-3 dark:bg-gray-800/60">
+      <div className="mt-2 rounded-xl bg-surface-elevated/60 p-3">
         <p className="text-[10px] font-bold text-amber-800 dark:text-amber-200">{topicsLabel}</p>
         <div className="mt-1 flex flex-wrap gap-1">
           {[
@@ -137,7 +137,7 @@ export function AnnualSummitCard({
 
       {/* Speakers */}
       {speakers.length > 0 && (
-        <div className="mt-2 rounded-xl bg-white/60 p-3 dark:bg-gray-800/60">
+        <div className="mt-2 rounded-xl bg-surface-elevated/60 p-3">
           <p className="text-[10px] font-bold text-amber-800 dark:text-amber-200">
             {speakersLabel}
           </p>
@@ -161,7 +161,7 @@ export function AnnualSummitCard({
 
       {/* Attendees */}
       {attendees && (
-        <div className="mt-2 rounded-lg bg-white/60 p-2 text-center dark:bg-gray-800/60">
+        <div className="mt-2 rounded-lg bg-surface-elevated/60 p-2 text-center">
           <p className="text-[10px] text-amber-700 dark:text-amber-300">
             {attendees.toLocaleString('ar-SA')}
             {attendeesLabel}
@@ -190,7 +190,7 @@ export function AnnualSummitCard({
       <button
         type="button"
         onClick={onSponsor}
-        className="mt-2 w-full rounded-lg border border-amber-200 bg-white/60 py-1.5 text-[10px] font-medium text-amber-700 hover:bg-white dark:border-amber-800 dark:bg-gray-800/60 dark:text-amber-300"
+        className="mt-2 w-full rounded-lg border border-amber-200 bg-surface-elevated/60 py-1.5 text-[10px] font-medium text-amber-700 hover:bg-surface-elevated dark:border-amber-800 dark:text-amber-300"
       >
         {sponsorLabel}
       </button>
