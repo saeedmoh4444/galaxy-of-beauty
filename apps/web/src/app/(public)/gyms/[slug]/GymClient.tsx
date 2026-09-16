@@ -11,6 +11,8 @@ import {
   EmptyState,
   useToast,
   useAuth,
+  TrustBadges,
+  ServiceImage,
 } from '@galaxy/ui';
 import { useLocale } from '@/components/LocaleProvider';
 import { localize } from '@galaxy/shared';
@@ -104,18 +106,9 @@ export function GymClient({ data }: { data: GymPageData }): JSX.Element {
     <div className="mx-auto max-w-5xl space-y-8 px-4 py-8">
       {/* Gym header */}
       <div className="flex items-center gap-4">
-        {gym.logoUrl ? (
-          // eslint-disable-next-line @next/next/no-img-element
-          <img
-            src={gym.logoUrl}
-            alt={gym.storeName}
-            className="h-20 w-20 rounded-2xl object-cover"
-          />
-        ) : (
-          <div className="flex h-20 w-20 items-center justify-center rounded-2xl bg-brand-100 text-4xl">
-            💪
-          </div>
-        )}
+        <div className="h-20 w-20 overflow-hidden rounded-2xl">
+          <ServiceImage src={gym.logoUrl ?? null} alt={gym.storeName ?? ''} size="full" />
+        </div>
         <div>
           <h1 className="text-2xl font-bold text-text-primary dark:text-gray-100">
             {gym.storeName}
@@ -123,25 +116,35 @@ export function GymClient({ data }: { data: GymPageData }): JSX.Element {
           <p className="mt-1 text-sm text-text-secondary">
             {gym.gymType ? t(`gyms.type.${gym.gymType}` as never) : ''} · {gym.gymCity ?? ''} ·{' '}
             {gym.gymAddress ?? ''}
-            {gym.totalReviews > 0 ? ` · ⭐ ${Number(gym.ratingAvg ?? 0).toFixed(1)}` : ''}
           </p>
-          {gym.licenseVerifiedAt && (
-            <span className="mt-2 inline-block rounded-full bg-green-100 px-2 py-0.5 text-xs font-semibold text-green-700">
-              {t('gyms.verified-badge', { agency: gym.licenseAgency ?? 'MISA' })}
-            </span>
-          )}
-          <div className="mt-2 flex flex-wrap gap-1">
-            {(gym.womenOnlyStaff as boolean) && (
-              <span className="rounded-full bg-pink-100 px-2 py-0.5 text-[10px] text-pink-700">
-                🙋‍♀️ {t('trust.womenOnly')}
-              </span>
-            )}
-            {(gym.privateSuite as boolean) && (
-              <span className="rounded-full bg-brand-100 px-2 py-0.5 text-[10px] text-brand-700">
-                🚪 {t('trust.privateSuite')}
-              </span>
-            )}
-          </div>
+          <TrustBadges
+            className="mt-3"
+            items={[
+              ...(gym.licenseVerifiedAt
+                ? [
+                    {
+                      variant: 'verified' as const,
+                      label: t('gyms.verified-badge', { agency: gym.licenseAgency ?? 'MISA' }),
+                    },
+                  ]
+                : []),
+              ...(gym.totalReviews > 0
+                ? [
+                    {
+                      variant: 'rating' as const,
+                      label: t('misc.rating'),
+                      value: Number(gym.ratingAvg ?? 0).toFixed(1),
+                    },
+                  ]
+                : []),
+              ...(gym.womenOnlyStaff
+                ? [{ variant: 'womenOnly' as const, label: t('trust.womenOnly') }]
+                : []),
+              ...(gym.privateSuite
+                ? [{ variant: 'private' as const, label: t('trust.privateSuite') }]
+                : []),
+            ]}
+          />
         </div>
       </div>
 
