@@ -149,7 +149,7 @@ export function AccessibleSalonBadge({
   return (
     <div
       className={cn(
-        'rounded-2xl border border-blue-100 bg-white p-4 dark:border-blue-900 dark:bg-gray-900',
+        'rounded-2xl border border-blue-100 bg-surface-elevated p-4 dark:border-blue-900',
         className,
       )}
     >

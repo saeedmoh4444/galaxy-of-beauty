@@ -56,7 +56,7 @@ export default function AIAssistantPage(): JSX.Element {
               onChange={(e) => setQ(e.target.value)}
               onKeyDown={(e) => e.key === 'Enter' && ask(q)}
               placeholder={t('aiAssistant.placeholder')}
-              className="flex-1 rounded-lg border px-3 py-2 text-sm dark:border-gray-700 dark:bg-gray-800"
+              className="flex-1 rounded-lg border px-3 py-2 text-sm border-edge bg-surface-elevated"
             />
             <Button onClick={() => ask(q)}>{t('aiAssistant.ask')}</Button>
           </div>
@@ -111,7 +111,7 @@ export default function AIAssistantPage(): JSX.Element {
                   <div className="mt-3 flex flex-wrap gap-2">
                     {links.map((l) => (
                       <Link key={l.href} href={l.href}>
-                        <span className="rounded-full bg-white/60 px-3 py-1 text-xs font-semibold text-brand-700 dark:bg-white/10 dark:text-brand-300">
+                        <span className="rounded-full bg-surface-elevated/60 px-3 py-1 text-xs font-semibold text-brand-700 dark:bg-white/10 dark:text-brand-300">
                           {t(l.key as never)} ←
                         </span>
                       </Link>

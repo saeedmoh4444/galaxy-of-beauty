@@ -49,7 +49,7 @@ export function BeautyVirtualConsultationCard({
   return (
     <div
       className={cn(
-        'rounded-2xl border border-blue-100 bg-white p-5 dark:border-blue-900 dark:bg-gray-900',
+        'rounded-2xl border border-blue-100 bg-surface-elevated p-5 dark:border-blue-900',
         className,
       )}
     >
@@ -88,7 +88,7 @@ export function BeautyVirtualConsultationCard({
           {availableSlots.map((slot) => (
             <span
               key={slot}
-              className="rounded-full bg-white px-2.5 py-1 text-[10px] font-medium text-blue-700 dark:bg-gray-800 dark:text-blue-300"
+              className="rounded-full bg-surface-elevated px-2.5 py-1 text-[10px] font-medium text-blue-700 dark:text-blue-300"
             >
               {slot}
             </span>

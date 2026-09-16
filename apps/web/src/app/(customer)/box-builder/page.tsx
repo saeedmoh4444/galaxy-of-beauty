@@ -94,7 +94,7 @@ export default function BoxBuilderPage(): JSX.Element {
                     value={boxName}
                     onChange={(e) => setBoxName(e.target.value)}
                     placeholder={t('boxBuilder.namePlaceholder')}
-                    className="w-full rounded-lg border px-3 py-2 text-sm dark:border-gray-700 dark:bg-gray-800"
+                    className="w-full rounded-lg border px-3 py-2 text-sm border-edge bg-surface-elevated"
                   />
                   <div className="flex gap-2">
                     {(['monthly', 'quarterly'] as const).map((f) => (

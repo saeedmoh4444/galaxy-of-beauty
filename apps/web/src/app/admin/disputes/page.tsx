@@ -202,7 +202,7 @@ export default function AdminDisputesPage(): JSX.Element {
               </label>
               <select
                 id="ad-resolve-status"
-                className="w-full rounded-lg border border-edge bg-white p-2 text-sm dark:bg-gray-900"
+                className="w-full rounded-lg border border-edge bg-surface-elevated p-2 text-sm"
                 value={resolveStatus}
                 onChange={(e) => setResolveStatus(e.target.value)}
               >
@@ -221,7 +221,7 @@ export default function AdminDisputesPage(): JSX.Element {
               </label>
               <textarea
                 id="ad-resolution"
-                className="w-full rounded-lg border border-edge bg-white p-2 text-sm dark:bg-gray-900"
+                className="w-full rounded-lg border border-edge bg-surface-elevated p-2 text-sm"
                 rows={4}
                 value={resolutionText}
                 onChange={(e) => setResolutionText(e.target.value)}

@@ -109,7 +109,7 @@ export default function TravelChecklistPage(): JSX.Element {
           <h3 className="text-lg font-bold text-text-primary">
             {d.emoji} {t(d.name)}
           </h3>
-          <p className="mt-2 rounded-xl bg-white/60 p-3 text-sm text-text-secondary dark:bg-gray-800/60">
+          <p className="mt-2 rounded-xl bg-surface-elevated/60 p-3 text-sm text-text-secondary">
             {t(d.tips)}
           </p>
 
@@ -122,7 +122,7 @@ export default function TravelChecklistPage(): JSX.Element {
                 key={i}
                 type="button"
                 onClick={() => toggle(item)}
-                className={`flex w-full items-center gap-3 rounded-xl p-3 text-end transition-all ${checked.has(item) ? 'bg-emerald-100 dark:bg-emerald-900' : 'bg-white/60 dark:bg-gray-800/60'}`}
+                className={`flex w-full items-center gap-3 rounded-xl p-3 text-end transition-all ${checked.has(item) ? 'bg-emerald-100 dark:bg-emerald-900' : 'bg-surface-elevated/60'}`}
               >
                 <span
                   className={`flex h-6 w-6 shrink-0 items-center justify-center rounded-md text-sm ${checked.has(item) ? 'bg-emerald-500 text-white' : 'border-2 border-edge'}`}

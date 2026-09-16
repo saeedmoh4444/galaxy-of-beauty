@@ -124,7 +124,7 @@ export function CareerBeautyCard({
   return (
     <div
       className={cn(
-        'rounded-2xl border border-sky-100 bg-white p-5 dark:border-sky-900 dark:bg-gray-900',
+        'rounded-2xl border border-sky-100 bg-surface-elevated p-5 dark:border-sky-900',
         className,
       )}
     >
@@ -147,7 +147,7 @@ export function CareerBeautyCard({
           {prof.services.map((s) => (
             <span
               key={s.ar}
-              className="rounded-full bg-white px-2 py-0.5 text-[9px] text-sky-700 dark:bg-gray-800 dark:text-sky-300"
+              className="rounded-full bg-surface-elevated px-2 py-0.5 text-[9px] text-sky-700 dark:text-sky-300"
             >
               {s[locale]}
             </span>
@@ -167,7 +167,7 @@ export function CareerBeautyCard({
               <p className="text-[10px] text-sky-600 dark:text-sky-400">{lunchNote}</p>
             </div>
           </div>
-          <span className="rounded-full bg-white px-2 py-0.5 text-[10px] font-bold text-sky-700 dark:bg-gray-800 dark:text-sky-300">
+          <span className="rounded-full bg-surface-elevated px-2 py-0.5 text-[10px] font-bold text-sky-700 dark:text-sky-300">
             {lunchPrice}
           </span>
         </div>

@@ -28,8 +28,8 @@ export function HeroBanner({
       className={`relative overflow-hidden rounded-3xl bg-gradient-to-br from-brand-600 via-brand-700 to-accent-600 px-8 py-16 text-center text-white md:py-24 ${className}`}
     >
       {/* Decorative circles */}
-      <div className="pointer-events-none absolute -end-20 -top-20 h-64 w-64 rounded-full bg-white/5" />
-      <div className="pointer-events-none absolute -bottom-10 -start-10 h-40 w-40 rounded-full bg-white/5" />
+      <div className="pointer-events-none absolute -end-20 -top-20 h-64 w-64 rounded-full bg-surface-elevated/5" />
+      <div className="pointer-events-none absolute -bottom-10 -start-10 h-40 w-40 rounded-full bg-surface-elevated/5" />
 
       <h1 className="relative text-3xl font-extrabold md:text-5xl">{title}</h1>
       {subtitle ? (
@@ -38,7 +38,7 @@ export function HeroBanner({
       {cta && onCta ? (
         <button
           onClick={onCta}
-          className="relative mt-8 rounded-xl bg-white px-8 py-3.5 text-lg font-bold text-brand-700 transition-all hover:bg-brand-50 hover:scale-105 active:scale-95"
+          className="relative mt-8 rounded-xl bg-surface-elevated px-8 py-3.5 text-lg font-bold text-brand-700 transition-all hover:bg-brand-50 hover:scale-105 active:scale-95"
         >
           {cta}
         </button>

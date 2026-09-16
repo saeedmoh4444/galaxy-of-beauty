@@ -71,7 +71,7 @@ export default function AdminAreasPage(): JSX.Element {
         {/* City filter */}
         <div className="flex gap-3">
           <select
-            className="rounded-lg border border-edge p-2 text-sm dark:bg-gray-800"
+            className="rounded-lg border border-edge p-2 text-sm bg-surface-elevated"
             value={cityFilter || ''}
             onChange={(e) => setCityFilter(Number(e.target.value) || undefined)}
           >
@@ -142,13 +142,13 @@ export default function AdminAreasPage(): JSX.Element {
               if (e.key === 'Escape') setShowAdd(false);
             }}
           >
-            <div className="w-full max-w-md rounded-2xl bg-white p-6 shadow-xl dark:bg-gray-900">
+            <div className="w-full max-w-md rounded-2xl bg-surface-elevated p-6 shadow-xl">
               <h3 className="mb-4 text-lg font-bold text-text-primary">
                 {t('admin.areas.add-title')}
               </h3>
               <div className="space-y-3">
                 <select
-                  className="w-full rounded-lg border border-edge p-2 text-sm dark:bg-gray-800"
+                  className="w-full rounded-lg border border-edge p-2 text-sm bg-surface-elevated"
                   value={newArea.cityId}
                   onChange={(e) => setNewArea({ ...newArea, cityId: e.target.value })}
                 >

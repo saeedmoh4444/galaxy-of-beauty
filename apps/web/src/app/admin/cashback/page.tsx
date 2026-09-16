@@ -33,7 +33,7 @@ export default function AdminCashbackPage(): JSX.Element {
               onChange={(e) => setRate(Number(e.target.value))}
               min={1}
               max={20}
-              className="flex-1 rounded-lg border px-3 py-2 text-sm dark:border-gray-700 dark:bg-gray-800"
+              className="flex-1 rounded-lg border px-3 py-2 text-sm border-edge bg-surface-elevated"
             />
             <Button onClick={() => setRateMut.mutate({ rate })} loading={setRateMut.isPending}>
               {t('button.save')}

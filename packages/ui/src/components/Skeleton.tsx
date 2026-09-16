@@ -251,7 +251,7 @@ export function GridSkeleton({
       className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4"
     >
       {Array.from({ length: count }, (_, i) => (
-        <div key={i} className="rounded-2xl border border-edge bg-white p-4 dark:bg-gray-900">
+        <div key={i} className="rounded-2xl border border-edge bg-surface-elevated p-4">
           <div className="animate-pulse space-y-3">
             <div className="aspect-square w-full rounded-xl bg-surface-muted" />
             <div className="h-4 w-3/4 rounded bg-surface-muted" />

@@ -58,17 +58,17 @@ export function ExportProgramCard({
       </div>
 
       <div className="mt-3 grid grid-cols-2 gap-2">
-        <div className="rounded-xl bg-white/60 p-3 text-center dark:bg-gray-800/60">
+        <div className="rounded-xl bg-surface-elevated/60 p-3 text-center">
           <p className="text-2xl font-bold text-emerald-800 dark:text-emerald-200">{products}</p>
           <p className="text-[9px] text-emerald-600 dark:text-emerald-400">{productLabel}</p>
         </div>
-        <div className="rounded-xl bg-white/60 p-3 text-center dark:bg-gray-800/60">
+        <div className="rounded-xl bg-surface-elevated/60 p-3 text-center">
           <p className="text-2xl font-bold text-emerald-800 dark:text-emerald-200">{countries}</p>
           <p className="text-[9px] text-emerald-600 dark:text-emerald-400">{countryLabel}</p>
         </div>
       </div>
 
-      <div className="mt-2 rounded-xl bg-white/60 p-3 dark:bg-gray-800/60">
+      <div className="mt-2 rounded-xl bg-surface-elevated/60 p-3">
         <p className="text-[10px] font-bold text-emerald-800 dark:text-emerald-200">{offerLabel}</p>
         <div className="mt-1 space-y-0.5 text-[10px] text-emerald-700 dark:text-emerald-300">
           <p>{item1}</p>

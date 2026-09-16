@@ -78,7 +78,7 @@ export function BabyShowerCard({
         )}
       </div>
 
-      <div className="mt-3 rounded-xl bg-white/60 p-3 dark:bg-gray-800/60">
+      <div className="mt-3 rounded-xl bg-surface-elevated/60 p-3">
         <p className="text-[10px] font-bold text-sky-800 dark:text-sky-200">{includesTitle}</p>
         <div className="mt-1 grid grid-cols-2 gap-1 text-[10px] text-sky-700 dark:text-sky-300">
           <span>{include1}</span>

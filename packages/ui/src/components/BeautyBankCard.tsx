@@ -86,7 +86,7 @@ export function BeautyBankCard({
       </div>
 
       {/* Progress */}
-      <div className="mt-3 rounded-xl bg-white/60 p-3 dark:bg-gray-800/60">
+      <div className="mt-3 rounded-xl bg-surface-elevated/60 p-3">
         <div className="flex items-center justify-between">
           <span className="text-[10px] font-bold text-pink-700 dark:text-pink-300">
             {fundedLabel}
@@ -112,7 +112,7 @@ export function BeautyBankCard({
 
       {/* Waitlist */}
       {waitlist !== undefined && waitlist > 0 && (
-        <div className="mt-2 rounded-xl bg-white/60 p-2.5 dark:bg-gray-800/60">
+        <div className="mt-2 rounded-xl bg-surface-elevated/60 p-2.5">
           <div className="flex items-center justify-between">
             <span className="text-[10px] text-text-secondary">{waitlistLabel}</span>
             <span className="text-xs font-bold text-rose-700 dark:text-rose-400">
@@ -126,21 +126,21 @@ export function BeautyBankCard({
       <div className="mt-2 space-y-1">
         <p className="text-[10px] font-bold text-pink-700 dark:text-pink-300">{howTitle}</p>
         <div className="grid grid-cols-3 gap-1.5 text-center text-[9px]">
-          <div className="rounded-lg bg-white/60 p-2 dark:bg-gray-800/60">
+          <div className="rounded-lg bg-surface-elevated/60 p-2">
             <p className="text-lg" aria-hidden="true">
               💇
             </p>
             <p className="font-bold text-pink-800 dark:text-pink-200">50 {currencySuffix}</p>
             <p className="text-pink-500 dark:text-pink-400">{example1}</p>
           </div>
-          <div className="rounded-lg bg-white/60 p-2 dark:bg-gray-800/60">
+          <div className="rounded-lg bg-surface-elevated/60 p-2">
             <p className="text-lg" aria-hidden="true">
               💄
             </p>
             <p className="font-bold text-pink-800 dark:text-pink-200">150 {currencySuffix}</p>
             <p className="text-pink-500 dark:text-pink-400">{example2}</p>
           </div>
-          <div className="rounded-lg bg-white/60 p-2 dark:bg-gray-800/60">
+          <div className="rounded-lg bg-surface-elevated/60 p-2">
             <p className="text-lg" aria-hidden="true">
               🧖
             </p>

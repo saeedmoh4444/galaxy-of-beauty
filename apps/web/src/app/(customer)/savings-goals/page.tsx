@@ -156,7 +156,7 @@ export default function SavingsGoalsPage(): JSX.Element {
               if (e.key === 'Escape') setShowAdd(false);
             }}
           >
-            <div className="w-full max-w-md rounded-2xl bg-white p-6 dark:bg-gray-900">
+            <div className="w-full max-w-md rounded-2xl bg-surface-elevated p-6">
               <h3 className="mb-4 text-lg font-bold">{t('savingsGoals.modal.title')}</h3>
               <div className="space-y-3">
                 <Input

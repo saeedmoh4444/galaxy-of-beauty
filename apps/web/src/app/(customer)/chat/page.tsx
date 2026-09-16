@@ -125,7 +125,7 @@ export default function ChatPage(): JSX.Element {
                     value={content}
                     onChange={(e) => setContent(e.target.value)}
                     placeholder={t('chat.messagePlaceholder')}
-                    className="flex-1 rounded-lg border px-3 py-2 text-sm dark:border-gray-700 dark:bg-gray-800"
+                    className="flex-1 rounded-lg border px-3 py-2 text-sm border-edge bg-surface-elevated"
                     onKeyDown={(e) => {
                       if (e.key === 'Enter' && content.trim()) {
                         const conv = convs.find((c) => c.bookingId === selectedConv);

@@ -102,13 +102,13 @@ export default function SalonManagementPage(): JSX.Element {
               value={name}
               onChange={(e) => setName(e.target.value)}
               placeholder={t('salonManagement.namePlaceholder')}
-              className="w-full rounded-lg border px-3 py-2 text-sm dark:border-gray-700 dark:bg-gray-800"
+              className="w-full rounded-lg border px-3 py-2 text-sm border-edge bg-surface-elevated"
             />
             <input
               value={role}
               onChange={(e) => setRole(e.target.value)}
               placeholder={t('salonManagement.rolePlaceholder')}
-              className="w-full rounded-lg border px-3 py-2 text-sm dark:border-gray-700 dark:bg-gray-800"
+              className="w-full rounded-lg border px-3 py-2 text-sm border-edge bg-surface-elevated"
             />
             <Button
               onClick={() => {

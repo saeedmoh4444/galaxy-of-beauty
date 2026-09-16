@@ -111,7 +111,7 @@ export function BeautyFlashCard({
   return (
     <div
       className={cn(
-        'rounded-2xl border border-brand-100 bg-white p-4 dark:border-brand-900 dark:bg-gray-900',
+        'rounded-2xl border border-brand-100 bg-surface-elevated p-4 dark:border-brand-900',
         className,
       )}
     >
@@ -140,7 +140,7 @@ export function BeautyFlashCard({
           'mt-3 w-full rounded-xl border-2 p-6 text-center transition-all duration-300 min-h-[120px] flex flex-col items-center justify-center',
           flipped
             ? 'border-brand-200 bg-brand-50 dark:border-brand-800 dark:bg-brand-950'
-            : 'border-dashed border-brand-200 bg-white hover:bg-brand-50 dark:border-brand-800 dark:bg-gray-800 dark:hover:bg-brand-950',
+            : 'border-dashed border-brand-200 bg-surface-elevated hover:bg-brand-50 dark:border-brand-800 dark:hover:bg-brand-950',
         )}
       >
         {!flipped ? (

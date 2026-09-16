@@ -190,7 +190,7 @@ export function MommyAndMeCard({
       </div>
 
       {/* Experience card */}
-      <div className="mt-3 rounded-xl bg-white/60 p-3 dark:bg-gray-800/60">
+      <div className="mt-3 rounded-xl bg-surface-elevated/60 p-3">
         <div className="flex items-center gap-2">
           <span className="text-xl" aria-hidden="true">
             {exp.emoji}
@@ -235,11 +235,11 @@ export function MommyAndMeCard({
 
       {/* Details */}
       <div className="mt-3 grid grid-cols-2 gap-2">
-        <div className="rounded-xl bg-white/60 p-2 text-center dark:bg-gray-800/60">
+        <div className="rounded-xl bg-surface-elevated/60 p-2 text-center">
           <p className="text-[9px] text-text-tertiary dark:text-text-secondary">{durationLabel}</p>
           <p className="text-xs font-bold text-text-primary">{duration}</p>
         </div>
-        <div className="rounded-xl bg-white/60 p-2 text-center dark:bg-gray-800/60">
+        <div className="rounded-xl bg-surface-elevated/60 p-2 text-center">
           <p className="text-[9px] text-text-tertiary dark:text-text-secondary">{priceLabel}</p>
           <p className="text-xs font-bold text-pink-700 dark:text-pink-400">
             {totalPrice} {currencySuffix}

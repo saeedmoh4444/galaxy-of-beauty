@@ -73,7 +73,7 @@ export function BeautyConciergeCard({
         {SERVICES.map((s) => (
           <div
             key={s.label.ar}
-            className="flex items-center gap-2 rounded-xl bg-white/60 px-2.5 py-2 dark:bg-gray-800/60"
+            className="flex items-center gap-2 rounded-xl bg-surface-elevated/60 px-2.5 py-2"
           >
             <span className="text-sm" aria-hidden="true">
               {s.emoji}
@@ -97,7 +97,7 @@ export function BeautyConciergeCard({
         <button
           type="button"
           onClick={onCall}
-          className="rounded-xl border border-amber-200 bg-white px-4 py-2.5 text-xs font-bold text-amber-700 hover:bg-amber-50 dark:border-amber-800 dark:bg-gray-800 dark:text-amber-300"
+          className="rounded-xl border border-amber-200 bg-surface-elevated px-4 py-2.5 text-xs font-bold text-amber-700 hover:bg-amber-50 dark:border-amber-800 dark:text-amber-300"
         >
           {callButtonText}
         </button>

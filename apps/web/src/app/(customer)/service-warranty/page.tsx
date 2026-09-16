@@ -134,7 +134,7 @@ export default function ServiceWarrantyPage(): JSX.Element {
               value={bookingId}
               onChange={(e) => setBookingId(e.target.value)}
               placeholder={t('warranty.bookingId')}
-              className="flex-1 rounded-lg border px-3 py-2 text-sm dark:border-gray-700 dark:bg-gray-800"
+              className="flex-1 rounded-lg border px-3 py-2 text-sm border-edge bg-surface-elevated"
             />
             <Button onClick={handleCheck}>{t('warranty.check')}</Button>
           </div>
@@ -242,7 +242,7 @@ export default function ServiceWarrantyPage(): JSX.Element {
                 onChange={(e) => setReason(e.target.value)}
                 rows={3}
                 placeholder={t('warranty.reasonPlaceholder')}
-                className="w-full rounded-lg border px-3 py-2 text-sm dark:border-gray-700 dark:bg-gray-800"
+                className="w-full rounded-lg border px-3 py-2 text-sm border-edge bg-surface-elevated"
               />
             </div>
             {claimError && (

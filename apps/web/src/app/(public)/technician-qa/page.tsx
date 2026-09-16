@@ -147,7 +147,7 @@ export default function TechnicianQAPage(): JSX.Element {
               id="tqa-category"
               value={qCategory}
               onChange={(e) => setQCategory(e.target.value)}
-              className="w-full rounded-lg border px-3 py-2 text-sm dark:border-gray-700 dark:bg-gray-800"
+              className="w-full rounded-lg border px-3 py-2 text-sm border-edge bg-surface-elevated"
             >
               {categories.map((c) => (
                 <option key={c.key} value={c.key}>
@@ -166,7 +166,7 @@ export default function TechnicianQAPage(): JSX.Element {
               onChange={(e) => setQuestion(e.target.value)}
               rows={3}
               placeholder={t('marketing.technician-qa.question-placeholder')}
-              className="w-full rounded-lg border px-3 py-2 text-sm dark:border-gray-700 dark:bg-gray-800"
+              className="w-full rounded-lg border px-3 py-2 text-sm border-edge bg-surface-elevated"
               maxLength={500}
             />
           </div>

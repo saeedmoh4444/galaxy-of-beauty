@@ -143,12 +143,12 @@ export default function PriceEstimatorPage(): JSX.Element {
                   className="w-full rounded-xl border border-edge bg-surface-muted px-4 py-3 text-sm focus:border-brand-500 focus:outline-none focus:ring-2 focus:ring-brand-100 dark:placeholder:text-text-secondary"
                 />
                 {servicesLoading && search.length > 0 && (
-                  <div className="absolute top-full mt-1 w-full rounded-xl border border-edge bg-white p-4 text-center text-sm text-text-tertiary dark:bg-gray-900 z-10 shadow-lg">
+                  <div className="absolute top-full mt-1 w-full rounded-xl border border-edge bg-surface-elevated p-4 text-center text-sm text-text-tertiary z-10 shadow-lg">
                     {t('marketing.price-estimator.searching')}
                   </div>
                 )}
                 {search.length > 0 && !servicesLoading && serviceList.length > 0 && (
-                  <div className="absolute top-full mt-1 w-full rounded-xl border border-edge bg-white dark:bg-gray-900 z-10 shadow-xl max-h-64 overflow-y-auto">
+                  <div className="absolute top-full mt-1 w-full rounded-xl border border-edge bg-surface-elevated z-10 shadow-xl max-h-64 overflow-y-auto">
                     {serviceList.map((s) => (
                       <button
                         key={s.id}

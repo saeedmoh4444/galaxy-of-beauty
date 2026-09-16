@@ -136,7 +136,7 @@ export default function HomeServicePage(): JSX.Element {
                     id="hs-city"
                     value={city}
                     onChange={(e) => setCity(e.target.value)}
-                    className="w-full rounded-lg border px-3 py-2 text-sm dark:border-gray-700 dark:bg-gray-800"
+                    className="w-full rounded-lg border px-3 py-2 text-sm border-edge bg-surface-elevated"
                   >
                     {CITIES.map((c) => (
                       <option key={c} value={c}>
@@ -155,7 +155,7 @@ export default function HomeServicePage(): JSX.Element {
                     value={serviceId}
                     onChange={(e) => setServiceId(e.target.value)}
                     placeholder={t('homeService.placeholder.serviceId')}
-                    className="w-full rounded-lg border px-3 py-2 text-sm dark:border-gray-700 dark:bg-gray-800"
+                    className="w-full rounded-lg border px-3 py-2 text-sm border-edge bg-surface-elevated"
                   />
                 </div>
               </div>
@@ -169,7 +169,7 @@ export default function HomeServicePage(): JSX.Element {
                   value={address}
                   onChange={(e) => setAddress(e.target.value)}
                   placeholder={t('homeService.placeholder.address')}
-                  className="w-full rounded-lg border px-3 py-2 text-sm dark:border-gray-700 dark:bg-gray-800"
+                  className="w-full rounded-lg border px-3 py-2 text-sm border-edge bg-surface-elevated"
                 />
               </div>
               <div className="grid gap-4 sm:grid-cols-2">
@@ -182,7 +182,7 @@ export default function HomeServicePage(): JSX.Element {
                     type="date"
                     value={prefDate}
                     onChange={(e) => setPrefDate(e.target.value)}
-                    className="w-full rounded-lg border px-3 py-2 text-sm dark:border-gray-700 dark:bg-gray-800"
+                    className="w-full rounded-lg border px-3 py-2 text-sm border-edge bg-surface-elevated"
                   />
                 </div>
                 <div>
@@ -194,7 +194,7 @@ export default function HomeServicePage(): JSX.Element {
                     type="time"
                     value={prefTime}
                     onChange={(e) => setPrefTime(e.target.value)}
-                    className="w-full rounded-lg border px-3 py-2 text-sm dark:border-gray-700 dark:bg-gray-800"
+                    className="w-full rounded-lg border px-3 py-2 text-sm border-edge bg-surface-elevated"
                   />
                 </div>
               </div>
@@ -208,7 +208,7 @@ export default function HomeServicePage(): JSX.Element {
                   onChange={(e) => setNotes(e.target.value)}
                   placeholder={t('homeService.placeholder.notes')}
                   rows={2}
-                  className="w-full rounded-lg border px-3 py-2 text-sm dark:border-gray-700 dark:bg-gray-800"
+                  className="w-full rounded-lg border px-3 py-2 text-sm border-edge bg-surface-elevated"
                 />
               </div>
               {error && (

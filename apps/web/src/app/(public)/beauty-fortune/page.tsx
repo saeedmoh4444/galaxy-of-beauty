@@ -124,7 +124,7 @@ export default function BeautyFortunePage(): JSX.Element {
         )}
 
         {fortune && !opening && (
-          <Card padding="lg" className="bg-white/90 backdrop-blur dark:bg-gray-900/90">
+          <Card padding="lg" className="bg-surface-elevated/90 backdrop-blur">
             <span className="text-6xl">{fortune.emoji}</span>
             <p className="mt-6 text-2xl font-bold text-text-primary leading-relaxed">
               {t(fortune.text)}

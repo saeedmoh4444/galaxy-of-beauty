@@ -105,7 +105,7 @@ export function ServicesClient({ data }: { data: ServicesPageData }): JSX.Elemen
               setSort(e.target.value);
               setPage(1);
             }}
-            className="rounded-lg border border-edge px-3 py-2 text-sm dark:bg-gray-900"
+            className="rounded-lg border border-edge px-3 py-2 text-sm bg-surface-elevated"
           >
             <option value="newest">{t('marketing.services.sort-newest')}</option>
             <option value="price_asc">{t('marketing.services.sort-price-asc')}</option>

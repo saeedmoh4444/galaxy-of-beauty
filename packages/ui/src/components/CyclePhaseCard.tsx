@@ -221,8 +221,8 @@ export function CyclePhaseCard({
               className={cn(
                 'flex-1 rounded-full px-2 py-1 text-[10px] font-medium transition-all',
                 p === phase
-                  ? 'bg-white text-text-primary shadow-sm dark:bg-gray-800'
-                  : 'text-text-tertiary hover:bg-white/50 dark:hover:bg-gray-800/50',
+                  ? 'bg-surface-elevated text-text-primary shadow-sm'
+                  : 'text-text-tertiary hover:bg-surface-elevated/50 dark:hover:bg-gray-800/50',
               )}
             >
               {PHASES[p].emoji}
@@ -234,7 +234,7 @@ export function CyclePhaseCard({
       {/* Recommendations & Avoid */}
       <div className="mt-3 grid grid-cols-2 gap-2">
         {/* Recommended */}
-        <div className="rounded-xl bg-white/70 p-2.5 dark:bg-gray-800/70">
+        <div className="rounded-xl bg-surface-elevated/70 p-2.5">
           <h5 className="text-[10px] font-bold text-success dark:text-green-400">
             {recommendedLabel}
           </h5>
@@ -248,7 +248,7 @@ export function CyclePhaseCard({
         </div>
 
         {/* Avoid */}
-        <div className="rounded-xl bg-white/70 p-2.5 dark:bg-gray-800/70">
+        <div className="rounded-xl bg-surface-elevated/70 p-2.5">
           <h5 className="text-[10px] font-bold text-danger dark:text-red-400">{avoidLabel}</h5>
           <ul className="mt-1 space-y-0.5">
             {data.avoid.map((a) => (

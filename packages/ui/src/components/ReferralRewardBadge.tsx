@@ -64,7 +64,7 @@ export function ReferralRewardBadge({
       </div>
 
       {/* Referral code */}
-      <div className="mt-3 rounded-xl bg-white/60 p-3 dark:bg-gray-800/60">
+      <div className="mt-3 rounded-xl bg-surface-elevated/60 p-3">
         <p className="text-center text-[10px] text-text-tertiary dark:text-text-secondary">
           {codeLabel}
         </p>
@@ -82,11 +82,11 @@ export function ReferralRewardBadge({
 
       {/* Stats */}
       <div className="mt-3 grid grid-cols-2 gap-2">
-        <div className="rounded-xl bg-white/60 p-3 text-center dark:bg-gray-800/60">
+        <div className="rounded-xl bg-surface-elevated/60 p-3 text-center">
           <p className="text-lg font-bold text-fuchsia-700 dark:text-fuchsia-300">{referrals}</p>
           <p className="text-[9px] text-text-tertiary dark:text-text-secondary">{referralsLabel}</p>
         </div>
-        <div className="rounded-xl bg-white/60 p-3 text-center dark:bg-gray-800/60">
+        <div className="rounded-xl bg-surface-elevated/60 p-3 text-center">
           <p className="text-lg font-bold text-emerald-700 dark:text-emerald-300">
             {referrals * discount}%
           </p>

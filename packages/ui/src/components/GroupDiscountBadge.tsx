@@ -71,7 +71,7 @@ export function GroupDiscountBadge({
       </div>
 
       {/* Discount visual */}
-      <div className="mt-3 rounded-xl bg-white/60 p-4 text-center dark:bg-gray-800/60">
+      <div className="mt-3 rounded-xl bg-surface-elevated/60 p-4 text-center">
         <div className="inline-flex items-baseline gap-1">
           <span className="text-3xl font-bold text-violet-700 dark:text-violet-300">
             {discount}%
@@ -99,7 +99,7 @@ export function GroupDiscountBadge({
               'flex-1 rounded-lg p-2 text-center transition-all',
               groupSize >= tier.size
                 ? 'bg-violet-100 dark:bg-violet-900'
-                : 'bg-white/40 dark:bg-gray-800/40',
+                : 'bg-surface-elevated/40',
             )}
           >
             <p className="text-[10px] font-bold text-text-primary">{tier.size}+</p>
@@ -112,7 +112,7 @@ export function GroupDiscountBadge({
 
       {/* Price comparison */}
       {originalPrice && priceAfterDiscount && savingsPerPerson && (
-        <div className="mt-2 rounded-xl bg-white/60 p-3 dark:bg-gray-800/60">
+        <div className="mt-2 rounded-xl bg-surface-elevated/60 p-3">
           {serviceName && (
             <p className="text-center text-[10px] font-bold text-text-primary">{serviceName}</p>
           )}

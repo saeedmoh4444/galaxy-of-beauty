@@ -71,7 +71,7 @@ export default function LoyaltyDashboardPage(): JSX.Element {
                 <div className="text-6xl">{tier.emoji}</div>
               </div>
               {nextTier && (
-                <div className="mt-4 rounded-lg bg-white/20 p-3">
+                <div className="mt-4 rounded-lg bg-surface-elevated/20 p-3">
                   <div className="flex justify-between text-sm">
                     <span>
                       {t('loyalty.progressToward')} {nextTier.emoji} {nextTier.nameAr}
@@ -80,8 +80,11 @@ export default function LoyaltyDashboardPage(): JSX.Element {
                       {Math.ceil(nextTier.minPoints - points)} {t('loyalty.pointsRemaining')}
                     </span>
                   </div>
-                  <div className="mt-2 h-2 rounded-full bg-white/30">
-                    <div className="h-2 rounded-full bg-white" style={{ width: `${progress}%` }} />
+                  <div className="mt-2 h-2 rounded-full bg-surface-elevated/30">
+                    <div
+                      className="h-2 rounded-full bg-surface-elevated"
+                      style={{ width: `${progress}%` }}
+                    />
                   </div>
                 </div>
               )}

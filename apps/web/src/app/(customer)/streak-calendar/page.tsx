@@ -93,7 +93,7 @@ export default function StreakCalendarPage(): JSX.Element {
                 {t('streakCalendar.longestStreak', { count: longestStreak })}
               </p>
               {milestone && (
-                <div className="mt-4 rounded-lg bg-white/80 p-3 dark:bg-gray-800/80">
+                <div className="mt-4 rounded-lg bg-surface-elevated/80 p-3">
                   <p className="text-sm">
                     {t('streakCalendar.nextMilestone', { count: nextMilestone as number })}
                   </p>

@@ -434,7 +434,7 @@ function BridalDashboard(): JSX.Element {
               type="datetime-local"
               value={weddingDate}
               onChange={(e) => setWeddingDate(e.target.value)}
-              className="w-full rounded-lg border border-edge px-3 py-2 text-sm focus:border-brand-500 focus:outline-none focus:ring-1 focus:ring-brand-500 dark:bg-gray-800"
+              className="w-full rounded-lg border border-edge px-3 py-2 text-sm focus:border-brand-500 focus:outline-none focus:ring-1 focus:ring-brand-500 bg-surface-elevated"
             />
           </div>
           <div className="grid gap-4 sm:grid-cols-2">
@@ -451,7 +451,7 @@ function BridalDashboard(): JSX.Element {
                 value={venue}
                 onChange={(e) => setVenue(e.target.value)}
                 placeholder={t('marketing.bridal-concierge.venue-placeholder')}
-                className="w-full rounded-lg border border-edge px-3 py-2 text-sm focus:border-brand-500 focus:outline-none focus:ring-1 focus:ring-brand-500 dark:bg-gray-800"
+                className="w-full rounded-lg border border-edge px-3 py-2 text-sm focus:border-brand-500 focus:outline-none focus:ring-1 focus:ring-brand-500 bg-surface-elevated"
               />
             </div>
             <div>
@@ -467,7 +467,7 @@ function BridalDashboard(): JSX.Element {
                 value={guestCount}
                 onChange={(e) => setGuestCount(e.target.value)}
                 placeholder={t('marketing.bridal-concierge.guests-placeholder')}
-                className="w-full rounded-lg border border-edge px-3 py-2 text-sm focus:border-brand-500 focus:outline-none focus:ring-1 focus:ring-brand-500 dark:bg-gray-800"
+                className="w-full rounded-lg border border-edge px-3 py-2 text-sm focus:border-brand-500 focus:outline-none focus:ring-1 focus:ring-brand-500 bg-surface-elevated"
               />
             </div>
           </div>
@@ -484,7 +484,7 @@ function BridalDashboard(): JSX.Element {
               value={budget}
               onChange={(e) => setBudget(e.target.value)}
               placeholder={t('marketing.bridal-concierge.budget-placeholder')}
-              className="w-full rounded-lg border border-edge px-3 py-2 text-sm focus:border-brand-500 focus:outline-none focus:ring-1 focus:ring-brand-500 dark:bg-gray-800"
+              className="w-full rounded-lg border border-edge px-3 py-2 text-sm focus:border-brand-500 focus:outline-none focus:ring-1 focus:ring-brand-500 bg-surface-elevated"
             />
           </div>
           <div>
@@ -500,7 +500,7 @@ function BridalDashboard(): JSX.Element {
               onChange={(e) => setNotes(e.target.value)}
               placeholder={t('marketing.bridal-concierge.notes-placeholder')}
               rows={3}
-              className="w-full rounded-lg border border-edge px-3 py-2 text-sm focus:border-brand-500 focus:outline-none focus:ring-1 focus:ring-brand-500 dark:bg-gray-800"
+              className="w-full rounded-lg border border-edge px-3 py-2 text-sm focus:border-brand-500 focus:outline-none focus:ring-1 focus:ring-brand-500 bg-surface-elevated"
             />
           </div>
           {formError && (
@@ -538,7 +538,7 @@ function BridalDashboard(): JSX.Element {
               value={newServiceId}
               onChange={(e) => setNewServiceId(e.target.value)}
               placeholder={t('marketing.bridal-concierge.service-id-placeholder')}
-              className="w-full rounded-lg border border-edge px-3 py-2 text-sm focus:border-brand-500 focus:outline-none focus:ring-1 focus:ring-brand-500 dark:bg-gray-800"
+              className="w-full rounded-lg border border-edge px-3 py-2 text-sm focus:border-brand-500 focus:outline-none focus:ring-1 focus:ring-brand-500 bg-surface-elevated"
             />
           </div>
           <div>
@@ -553,7 +553,7 @@ function BridalDashboard(): JSX.Element {
               type="datetime-local"
               value={newTrialDate}
               onChange={(e) => setNewTrialDate(e.target.value)}
-              className="w-full rounded-lg border border-edge px-3 py-2 text-sm focus:border-brand-500 focus:outline-none focus:ring-1 focus:ring-brand-500 dark:bg-gray-800"
+              className="w-full rounded-lg border border-edge px-3 py-2 text-sm focus:border-brand-500 focus:outline-none focus:ring-1 focus:ring-brand-500 bg-surface-elevated"
             />
           </div>
           <div>
@@ -569,7 +569,7 @@ function BridalDashboard(): JSX.Element {
               onChange={(e) => setNewServiceNotes(e.target.value)}
               placeholder={t('marketing.bridal-concierge.service-notes-placeholder')}
               rows={2}
-              className="w-full rounded-lg border border-edge px-3 py-2 text-sm focus:border-brand-500 focus:outline-none focus:ring-1 focus:ring-brand-500 dark:bg-gray-800"
+              className="w-full rounded-lg border border-edge px-3 py-2 text-sm focus:border-brand-500 focus:outline-none focus:ring-1 focus:ring-brand-500 bg-surface-elevated"
             />
           </div>
           {serviceError && (
@@ -634,7 +634,7 @@ function MarketingLanding(): JSX.Element {
         <p className="text-3xl font-bold">{t('marketing.bridal-concierge.journey-title')}</p>
         <div className="mt-8 grid gap-4 sm:grid-cols-4">
           {STEPS.map((s, idx) => (
-            <div key={s.key} className="rounded-xl bg-white/20 p-4 backdrop-blur">
+            <div key={s.key} className="rounded-xl bg-surface-elevated/20 p-4 backdrop-blur">
               <p className="text-4xl">{s.emoji}</p>
               <p className="mt-2 text-lg font-bold">
                 {t('marketing.bridal-concierge.step-number', { number: idx + 1 })}

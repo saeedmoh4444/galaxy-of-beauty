@@ -46,7 +46,7 @@ export function BeautyWellnessCornerCard({
         ].map((t) => (
           <div
             key={t.text.ar}
-            className="flex items-center gap-2 rounded-lg bg-white/60 px-3 py-2.5 dark:bg-gray-800/60"
+            className="flex items-center gap-2 rounded-lg bg-surface-elevated/60 px-3 py-2.5"
           >
             <span className="text-sm">{t.emoji}</span>
             <span className="text-[10px] text-emerald-800 dark:text-emerald-200">

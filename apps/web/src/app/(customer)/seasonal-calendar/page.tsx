@@ -155,7 +155,7 @@ export default function SeasonalCalendarPage(): JSX.Element {
               key={sc.key}
               type="button"
               onClick={() => setSeason(sc.key)}
-              className={`flex-1 rounded-2xl border-2 p-3 text-center transition-all ${season === sc.key ? 'border-current bg-surface-elevated' : 'border-edge-muted bg-white dark:bg-gray-900'}`}
+              className={`flex-1 rounded-2xl border-2 p-3 text-center transition-all ${season === sc.key ? 'border-current bg-surface-elevated' : 'border-edge-muted bg-surface-elevated'}`}
               style={season === sc.key ? { borderColor: sc.color } : {}}
             >
               <span className="text-2xl">{sc.emoji}</span>
@@ -169,7 +169,7 @@ export default function SeasonalCalendarPage(): JSX.Element {
             {s.emoji} {t(s.name)}
           </h3>
           <p className="mt-1 text-sm text-text-secondary dark:text-text-tertiary">{t(s.months)}</p>
-          <p className="mt-4 rounded-xl bg-white/60 p-3 text-sm text-text-primary dark:bg-gray-800/60">
+          <p className="mt-4 rounded-xl bg-surface-elevated/60 p-3 text-sm text-text-primary">
             {t(s.tips)}
           </p>
 
@@ -178,7 +178,7 @@ export default function SeasonalCalendarPage(): JSX.Element {
           </h4>
           <div className="mt-3 grid gap-3 sm:grid-cols-2">
             {s.services.map((svc, i) => (
-              <div key={i} className="flex gap-3 rounded-xl bg-white/60 p-3 dark:bg-gray-800/60">
+              <div key={i} className="flex gap-3 rounded-xl bg-surface-elevated/60 p-3">
                 <span className="text-xl shrink-0">{svc.emoji}</span>
                 <div>
                   <p className="text-sm font-bold text-text-primary">{t(svc.name)}</p>

@@ -95,7 +95,7 @@ export function BeautySubscriptionCard({
   const t = TIERS[tier];
 
   return (
-    <div className={cn('rounded-2xl border bg-white p-5 dark:bg-gray-900', t.color, className)}>
+    <div className={cn('rounded-2xl border bg-surface-elevated p-5', t.color, className)}>
       <div className="text-center">
         <span className="text-3xl" aria-hidden="true">
           {t.emoji}
@@ -108,7 +108,7 @@ export function BeautySubscriptionCard({
       </div>
 
       {/* Price */}
-      <div className="mt-3 rounded-xl bg-white/60 p-4 text-center dark:bg-gray-800/60">
+      <div className="mt-3 rounded-xl bg-surface-elevated/60 p-4 text-center">
         <p className="text-3xl font-bold text-text-primary">
           {t.price} {currencySuffix}
         </p>
@@ -116,7 +116,7 @@ export function BeautySubscriptionCard({
       </div>
 
       {/* Includes */}
-      <div className="mt-2 rounded-xl bg-white/60 p-3 dark:bg-gray-800/60">
+      <div className="mt-2 rounded-xl bg-surface-elevated/60 p-3">
         <p className="text-[10px] font-bold text-text-primary">{includesTitle}</p>
         <div className="mt-1 space-y-0.5">
           {t.includes.map((item) => (
@@ -137,8 +137,8 @@ export function BeautySubscriptionCard({
             className={cn(
               'flex-1 rounded-lg py-1.5 text-[10px] font-bold transition-colors',
               key === tier
-                ? 'bg-white text-text-primary shadow-sm dark:bg-gray-700'
-                : 'text-text-tertiary hover:bg-white/50 dark:hover:bg-gray-700/50',
+                ? 'bg-surface-elevated text-text-primary shadow-sm'
+                : 'text-text-tertiary hover:bg-surface-elevated/50 dark:hover:bg-gray-700/50',
             )}
           >
             {TIERS[key].emoji} {TIERS[key].label[locale]}

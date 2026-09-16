@@ -94,7 +94,7 @@ export function DadApprovalBadge({
 
       {/* Age context */}
       {age !== undefined && (
-        <div className="mt-2 rounded-lg bg-white/60 p-2 text-center dark:bg-black/20">
+        <div className="mt-2 rounded-lg bg-surface-elevated/60 p-2 text-center dark:bg-black/20">
           <p className="text-[10px] text-text-secondary">
             {age} {yearsSeparatorText}
             {needsApproval ? approvalRequiredText : approvalNotRequiredText}
@@ -105,7 +105,7 @@ export function DadApprovalBadge({
       {/* Approval flow */}
       {!parentApproved && (
         <>
-          <div className="mt-2 rounded-xl bg-white/60 p-3 dark:bg-black/20">
+          <div className="mt-2 rounded-xl bg-surface-elevated/60 p-3 dark:bg-black/20">
             <p className="text-[10px] font-bold text-text-primary">{approvalHowTitle}</p>
             <div className="mt-1 space-y-0.5 text-[10px] text-text-secondary">
               <p>

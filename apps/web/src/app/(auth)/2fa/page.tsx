@@ -109,7 +109,7 @@ export default function TwoFactorPage(): JSX.Element {
                     {t('auth.2fa-scan-qr')}
                   </p>
                   {/* QR Code placeholder */}
-                  <div className="mx-auto flex h-40 w-40 items-center justify-center rounded-xl border-2 border-dashed border-edge bg-white dark:bg-gray-900">
+                  <div className="mx-auto flex h-40 w-40 items-center justify-center rounded-xl border-2 border-dashed border-edge bg-surface-elevated">
                     <span className="text-xs text-text-tertiary">QR Code</span>
                   </div>
                 </div>

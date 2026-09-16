@@ -59,7 +59,7 @@ export function BreastHealthCard({
         <p className="text-[10px] text-pink-500 dark:text-pink-400">{subtitle}</p>
       </div>
 
-      <div className="mt-3 rounded-xl bg-white/60 p-4 text-center dark:bg-gray-800/60">
+      <div className="mt-3 rounded-xl bg-surface-elevated/60 p-4 text-center">
         <p className="text-[10px] font-bold text-pink-700 dark:text-pink-300">{examTitle}</p>
         <div className="mt-2 space-y-1 text-[10px] text-pink-600 dark:text-pink-400">
           <p>{examTip1}</p>
@@ -69,7 +69,7 @@ export function BreastHealthCard({
       </div>
 
       {lastExam && (
-        <div className="mt-2 rounded-lg bg-white/60 p-2 text-center dark:bg-gray-800/60">
+        <div className="mt-2 rounded-lg bg-surface-elevated/60 p-2 text-center">
           <p className="text-[10px] text-pink-700 dark:text-pink-300">
             {lastExamLabel}
             {lastExam}
@@ -77,7 +77,7 @@ export function BreastHealthCard({
         </div>
       )}
       {nextReminder && (
-        <div className="mt-1 rounded-lg bg-white/60 p-2 text-center dark:bg-gray-800/60">
+        <div className="mt-1 rounded-lg bg-surface-elevated/60 p-2 text-center">
           <p className="text-[10px] text-pink-700 dark:text-pink-300">
             {nextReminderLabel}
             {nextReminder}

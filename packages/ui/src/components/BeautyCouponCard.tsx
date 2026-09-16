@@ -64,7 +64,7 @@ export function BeautyCouponCard({
         )}
       </div>
 
-      <div className="mt-3 flex items-center gap-2 rounded-xl bg-white/60 p-2.5 dark:bg-gray-800/60">
+      <div className="mt-3 flex items-center gap-2 rounded-xl bg-surface-elevated/60 p-2.5">
         <code className="flex-1 text-center text-sm font-bold tracking-wider text-amber-800 dark:text-amber-200">
           {code}
         </code>

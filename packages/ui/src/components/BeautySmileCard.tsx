@@ -34,15 +34,15 @@ export function BeautySmileCard({
           {description}
         </p>
         <div className="mt-3 grid grid-cols-3 gap-2 text-center">
-          <div className="rounded-lg bg-white/60 p-2 dark:bg-gray-800/60">
+          <div className="rounded-lg bg-surface-elevated/60 p-2">
             <p className="text-lg">😊</p>
             <p className="text-[9px] text-amber-700 dark:text-amber-300">{happinessText}</p>
           </div>
-          <div className="rounded-lg bg-white/60 p-2 dark:bg-gray-800/60">
+          <div className="rounded-lg bg-surface-elevated/60 p-2">
             <p className="text-lg">💪</p>
             <p className="text-[9px] text-amber-700 dark:text-amber-300">{confidenceText}</p>
           </div>
-          <div className="rounded-lg bg-white/60 p-2 dark:bg-gray-800/60">
+          <div className="rounded-lg bg-surface-elevated/60 p-2">
             <p className="text-lg">✨</p>
             <p className="text-[9px] text-amber-700 dark:text-amber-300">{attractivenessText}</p>
           </div>

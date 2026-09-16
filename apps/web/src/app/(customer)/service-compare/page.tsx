@@ -45,7 +45,7 @@ export default function ServiceComparePage(): JSX.Element {
                 key={s.id as number}
                 type="button"
                 onClick={() => toggle(s.id as number)}
-                className={`rounded-2xl border-2 p-4 text-center transition-all ${isSel ? 'border-cyan-400 bg-cyan-50 dark:border-cyan-600 dark:bg-cyan-950' : 'border-edge-muted bg-white dark:bg-gray-900'}`}
+                className={`rounded-2xl border-2 p-4 text-center transition-all ${isSel ? 'border-cyan-400 bg-cyan-50 dark:border-cyan-600 dark:bg-cyan-950' : 'border-edge-muted bg-surface-elevated'}`}
               >
                 <span className="text-3xl">{(s.emoji as string) ?? ''}</span>
                 <p className="mt-2 text-xs font-bold text-text-primary">
@@ -60,7 +60,7 @@ export default function ServiceComparePage(): JSX.Element {
         </div>
 
         {compareItems.length >= 2 && (
-          <div className="rounded-2xl border border-edge-muted bg-white p-6 dark:bg-gray-900">
+          <div className="rounded-2xl border border-edge-muted bg-surface-elevated p-6">
             <h3 className="text-lg font-bold text-text-primary">
               {t('serviceCompare.comparison')}
             </h3>

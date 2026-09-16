@@ -56,11 +56,11 @@ export function ProBonoLessonCard({
       </div>
 
       <div className="mt-3 grid grid-cols-2 gap-2">
-        <div className="rounded-xl bg-white/60 p-3 text-center dark:bg-gray-800/60">
+        <div className="rounded-xl bg-surface-elevated/60 p-3 text-center">
           <p className="text-2xl font-bold text-teal-800 dark:text-teal-200">{lessons}</p>
           <p className="text-[9px] text-teal-600 dark:text-teal-400">{lessonsLabel}</p>
         </div>
-        <div className="rounded-xl bg-white/60 p-3 text-center dark:bg-gray-800/60">
+        <div className="rounded-xl bg-surface-elevated/60 p-3 text-center">
           <p className="text-2xl font-bold text-teal-800 dark:text-teal-200">{volunteers}</p>
           <p className="text-[9px] text-teal-600 dark:text-teal-400">{volunteersLabel}</p>
         </div>
@@ -77,7 +77,7 @@ export function ProBonoLessonCard({
         <button
           type="button"
           onClick={onVolunteer}
-          className="rounded-xl border border-teal-200 bg-white px-3 py-2 text-[10px] font-bold text-teal-700 hover:bg-teal-50 dark:border-teal-800 dark:bg-gray-800 dark:text-teal-300"
+          className="rounded-xl border border-teal-200 bg-surface-elevated px-3 py-2 text-[10px] font-bold text-teal-700 hover:bg-teal-50 dark:border-teal-800 dark:text-teal-300"
         >
           {volunteerButtonText}
         </button>

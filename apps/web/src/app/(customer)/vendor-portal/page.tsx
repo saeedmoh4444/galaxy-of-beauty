@@ -299,7 +299,7 @@ export default function VendorPortalPage(): JSX.Element {
                   <select
                     value={applyClinicType}
                     onChange={(e) => setApplyClinicType(e.target.value)}
-                    className="w-full rounded-lg border px-3 py-2 text-sm dark:border-gray-700 dark:bg-gray-800"
+                    className="w-full rounded-lg border px-3 py-2 text-sm border-edge bg-surface-elevated"
                   >
                     {['dermatology', 'laser', 'injectables', 'dental', 'nutrition'].map((tt) => (
                       <option key={tt} value={tt}>
@@ -317,7 +317,7 @@ export default function VendorPortalPage(): JSX.Element {
                     <select
                       value={applyAgency}
                       onChange={(e) => setApplyAgency(e.target.value)}
-                      className="w-full rounded-lg border px-3 py-2 text-sm dark:border-gray-700 dark:bg-gray-800"
+                      className="w-full rounded-lg border px-3 py-2 text-sm border-edge bg-surface-elevated"
                     >
                       <option value="MOH">MOH</option>
                       <option value="SFDA">SFDA</option>
@@ -329,7 +329,7 @@ export default function VendorPortalPage(): JSX.Element {
                   <select
                     value={applyGymType}
                     onChange={(e) => setApplyGymType(e.target.value)}
-                    className="w-full rounded-lg border px-3 py-2 text-sm dark:border-gray-700 dark:bg-gray-800"
+                    className="w-full rounded-lg border px-3 py-2 text-sm border-edge bg-surface-elevated"
                   >
                     <option value="ladies">{t('gyms.type.ladies')}</option>
                     <option value="family">{t('gyms.type.family')}</option>
@@ -357,7 +357,7 @@ export default function VendorPortalPage(): JSX.Element {
                     <select
                       value={applyNailBarType}
                       onChange={(e) => setApplyNailBarType(e.target.value)}
-                      className="w-full rounded-lg border px-3 py-2 text-sm dark:border-gray-700 dark:bg-gray-800"
+                      className="w-full rounded-lg border px-3 py-2 text-sm border-edge bg-surface-elevated"
                     >
                       <option value="standard">{t('nailBars.type.standard')}</option>
                       <option value="express">{t('nailBars.type.express')}</option>
@@ -786,7 +786,7 @@ export default function VendorPortalPage(): JSX.Element {
             <select
               value={dealProductId ?? ''}
               onChange={(e) => setDealProductId(Number(e.target.value) || undefined)}
-              className="w-full rounded-lg border px-3 py-2 text-sm dark:border-gray-700 dark:bg-gray-800"
+              className="w-full rounded-lg border px-3 py-2 text-sm border-edge bg-surface-elevated"
             >
               <option value="">—</option>
               {prods.map((p: Record<string, unknown>) => (
@@ -839,21 +839,21 @@ export default function VendorPortalPage(): JSX.Element {
               value={name}
               onChange={(e) => setName(e.target.value)}
               placeholder={t('vendorPortal.productNamePlaceholder')}
-              className="w-full rounded-lg border px-3 py-2 text-sm dark:border-gray-700 dark:bg-gray-800"
+              className="w-full rounded-lg border px-3 py-2 text-sm border-edge bg-surface-elevated"
             />
             <input
               type="number"
               value={price}
               onChange={(e) => setPrice(parseInt(e.target.value) || 0)}
               placeholder={t('vendorPortal.pricePlaceholder')}
-              className="w-full rounded-lg border px-3 py-2 text-sm dark:border-gray-700 dark:bg-gray-800"
+              className="w-full rounded-lg border px-3 py-2 text-sm border-edge bg-surface-elevated"
             />
             <input
               type="number"
               value={stock}
               onChange={(e) => setStock(parseInt(e.target.value) || 0)}
               placeholder={t('vendorPortal.stockPlaceholder')}
-              className="w-full rounded-lg border px-3 py-2 text-sm dark:border-gray-700 dark:bg-gray-800"
+              className="w-full rounded-lg border px-3 py-2 text-sm border-edge bg-surface-elevated"
             />
             <input
               type="file"

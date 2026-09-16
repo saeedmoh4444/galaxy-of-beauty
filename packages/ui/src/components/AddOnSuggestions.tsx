@@ -49,7 +49,7 @@ export function AddOnSuggestions({
         {addOns.map((addOn) => (
           <div
             key={addOn.id}
-            className="flex items-center justify-between rounded-lg bg-white p-3 dark:bg-gray-800"
+            className="flex items-center justify-between rounded-lg bg-surface-elevated p-3"
           >
             <div>
               <span className="text-sm font-medium text-text-primary">

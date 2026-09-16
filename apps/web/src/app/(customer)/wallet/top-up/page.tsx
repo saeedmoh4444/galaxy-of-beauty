@@ -74,7 +74,7 @@ export default function WalletTopUpPage(): JSX.Element {
               setAmount(e.target.value);
               setSelected(null);
             }}
-            className="w-full rounded-lg border border-edge p-3 text-center text-lg dark:bg-gray-800"
+            className="w-full rounded-lg border border-edge p-3 text-center text-lg bg-surface-elevated"
           />
           <Button onClick={handleTopUp} size="lg" className="w-full mt-4">
             {t('wallet.top-up-button', { amount: formatCurrency(selected || Number(amount) || 0) })}

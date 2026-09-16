@@ -351,7 +351,7 @@ export default function TechDashboardPage(): JSX.Element {
               <select
                 value={shortType}
                 onChange={(e) => setShortType(e.target.value as 'reel' | 'before_after')}
-                className="w-full rounded-lg border px-3 py-2 text-sm dark:border-gray-700 dark:bg-gray-800"
+                className="w-full rounded-lg border px-3 py-2 text-sm border-edge bg-surface-elevated"
               >
                 <option value="reel">{t('tech.shorts.type-reel')}</option>
                 <option value="before_after">{t('tech.shorts.type-before-after')}</option>
@@ -374,7 +374,7 @@ export default function TechDashboardPage(): JSX.Element {
               <select
                 value={shortCategory}
                 onChange={(e) => setShortCategory(e.target.value)}
-                className="w-full rounded-lg border px-3 py-2 text-sm dark:border-gray-700 dark:bg-gray-800"
+                className="w-full rounded-lg border px-3 py-2 text-sm border-edge bg-surface-elevated"
               >
                 {['makeup', 'hair', 'skincare', 'nails', 'general'].map((c) => (
                   <option key={c} value={c}>
@@ -469,7 +469,7 @@ export default function TechDashboardPage(): JSX.Element {
                 <select
                   value={promoSvcId ?? ''}
                   onChange={(e) => setPromoSvcId(Number(e.target.value) || undefined)}
-                  className="w-full rounded-lg border border-edge p-2 text-sm dark:bg-gray-800"
+                  className="w-full rounded-lg border border-edge p-2 text-sm bg-surface-elevated"
                 >
                   <option value="">—</option>
                   {myServices.map((mapping: Record<string, unknown>) => {

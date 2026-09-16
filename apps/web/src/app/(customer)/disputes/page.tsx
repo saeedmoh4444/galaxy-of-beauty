@@ -124,7 +124,7 @@ export default function DisputesPage(): JSX.Element {
             </label>
             <textarea
               id="dp-reason"
-              className="w-full rounded-lg border border-edge bg-white p-3 text-sm outline-none focus:border-brand-500 dark:bg-gray-800"
+              className="w-full rounded-lg border border-edge bg-surface-elevated p-3 text-sm outline-none focus:border-brand-500"
               rows={4}
               value={reason}
               onChange={(e) => setReason(e.target.value)}

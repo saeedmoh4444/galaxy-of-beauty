@@ -70,7 +70,7 @@ export function SignLanguageBadge({
   return (
     <div
       className={cn(
-        'rounded-2xl border border-sky-100 bg-white p-4 dark:border-sky-900 dark:bg-gray-900',
+        'rounded-2xl border border-sky-100 bg-surface-elevated p-4 dark:border-sky-900',
         className,
       )}
     >
@@ -96,7 +96,7 @@ export function SignLanguageBadge({
               key={tech.name}
               className="flex items-center gap-3 rounded-xl bg-sky-50 p-3 dark:bg-sky-950"
             >
-              <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-white text-sm dark:bg-gray-700">
+              <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-surface-elevated text-sm">
                 👩
               </div>
               <div className="min-w-0 flex-1">

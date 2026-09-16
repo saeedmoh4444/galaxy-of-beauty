@@ -98,7 +98,7 @@ export default function AdvancedBookingPage(): JSX.Element {
                   <select
                     value={svcId}
                     onChange={(e) => setSvcId(Number(e.target.value))}
-                    className="w-full rounded-lg border px-3 py-2 text-sm dark:border-gray-700 dark:bg-gray-800"
+                    className="w-full rounded-lg border px-3 py-2 text-sm border-edge bg-surface-elevated"
                   >
                     {SERVICES.map((s) => (
                       <option key={s.id} value={s.id}>
@@ -124,13 +124,13 @@ export default function AdvancedBookingPage(): JSX.Element {
                     min={2}
                     max={12}
                     placeholder={t('advancedBooking.placeholder.occurrences')}
-                    className="w-full rounded-lg border px-3 py-2 text-sm dark:border-gray-700 dark:bg-gray-800"
+                    className="w-full rounded-lg border px-3 py-2 text-sm border-edge bg-surface-elevated"
                   />
                   <input
                     type="date"
                     value={startDate}
                     onChange={(e) => setStartDate(e.target.value)}
-                    className="w-full rounded-lg border px-3 py-2 text-sm dark:border-gray-700 dark:bg-gray-800"
+                    className="w-full rounded-lg border px-3 py-2 text-sm border-edge bg-surface-elevated"
                   />
                   <p className="text-sm text-text-secondary">
                     {t('advancedBooking.total', {

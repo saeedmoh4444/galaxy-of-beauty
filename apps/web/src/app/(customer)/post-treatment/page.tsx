@@ -103,7 +103,7 @@ export default function PostTreatmentPage(): JSX.Element {
                 setSelected(key);
                 setCompleted([]);
               }}
-              className={`flex-1 rounded-2xl border-2 p-3 text-center transition-all ${selected === key ? 'border-rose-400 bg-rose-50 dark:border-rose-600 dark:bg-rose-950' : 'border-edge-muted bg-white dark:bg-gray-900'}`}
+              className={`flex-1 rounded-2xl border-2 p-3 text-center transition-all ${selected === key ? 'border-rose-400 bg-rose-50 dark:border-rose-600 dark:bg-rose-950' : 'border-edge-muted bg-surface-elevated'}`}
             >
               <span className="text-2xl">{val.emoji}</span>
               <p className="mt-1 text-xs font-semibold text-text-primary">{t(val.label)}</p>
@@ -111,7 +111,7 @@ export default function PostTreatmentPage(): JSX.Element {
           ))}
         </div>
 
-        <div className="rounded-2xl border border-edge-muted bg-white p-6 dark:bg-gray-900">
+        <div className="rounded-2xl border border-edge-muted bg-surface-elevated p-6">
           <h3 className="text-lg font-bold text-text-primary">
             {treat.emoji} {t(treat.label)}
           </h3>

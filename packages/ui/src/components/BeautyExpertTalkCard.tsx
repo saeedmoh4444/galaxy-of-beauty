@@ -40,7 +40,7 @@ export function BeautyExpertTalkCard({
   return (
     <div
       className={cn(
-        'rounded-2xl border border-indigo-100 bg-white p-4 dark:border-indigo-900 dark:bg-gray-900',
+        'rounded-2xl border border-indigo-100 bg-surface-elevated p-4 dark:border-indigo-900',
         className,
       )}
     >

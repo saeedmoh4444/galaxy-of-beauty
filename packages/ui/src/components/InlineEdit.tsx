@@ -162,10 +162,10 @@ export function InlineEdit({
             placeholder={placeholder}
             aria-label={label}
             className={cn(
-              'rounded-lg border border-brand-400 bg-white px-2 py-1 text-sm text-text-primary outline-none ring-2 ring-brand-200 transition-shadow',
+              'rounded-lg border border-brand-400 bg-surface-elevated px-2 py-1 text-sm text-text-primary outline-none ring-2 ring-brand-200 transition-shadow',
               'focus:border-brand-500 focus:ring-brand-500',
               'disabled:opacity-50',
-              'dark:bg-gray-900 dark:text-gray-100',
+              'bg-surface-elevated dark:text-gray-100',
               type === 'textarea' ? 'min-h-[60px] resize-y' : 'min-w-[120px]',
             )}
             rows={type === 'textarea' ? 3 : undefined}

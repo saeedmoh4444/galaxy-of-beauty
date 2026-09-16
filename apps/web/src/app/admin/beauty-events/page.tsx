@@ -73,18 +73,18 @@ export default function AdminBeautyEventsPage(): JSX.Element {
               value={nameAr}
               onChange={(e) => setNameAr(e.target.value)}
               placeholder={t('admin.beauty-events.name-ar')}
-              className="rounded-lg border px-3 py-2 text-sm dark:border-gray-700 dark:bg-gray-800"
+              className="rounded-lg border px-3 py-2 text-sm border-edge bg-surface-elevated"
             />
             <input
               value={nameEn}
               onChange={(e) => setNameEn(e.target.value)}
               placeholder={t('admin.beauty-events.name-en')}
-              className="rounded-lg border px-3 py-2 text-sm dark:border-gray-700 dark:bg-gray-800"
+              className="rounded-lg border px-3 py-2 text-sm border-edge bg-surface-elevated"
             />
             <select
               value={eventType}
               onChange={(e) => setEventType(e.target.value)}
-              className="rounded-lg border px-3 py-2 text-sm dark:border-gray-700 dark:bg-gray-800"
+              className="rounded-lg border px-3 py-2 text-sm border-edge bg-surface-elevated"
             >
               {EVENT_TYPES.map((et) => (
                 <option key={et.key} value={et.key}>
@@ -96,33 +96,33 @@ export default function AdminBeautyEventsPage(): JSX.Element {
               value={location}
               onChange={(e) => setLocation(e.target.value)}
               placeholder={t('admin.beauty-events.location')}
-              className="rounded-lg border px-3 py-2 text-sm dark:border-gray-700 dark:bg-gray-800"
+              className="rounded-lg border px-3 py-2 text-sm border-edge bg-surface-elevated"
             />
             <input
               value={price}
               onChange={(e) => setPrice(e.target.value)}
               type="number"
               placeholder={t('admin.beauty-events.price')}
-              className="rounded-lg border px-3 py-2 text-sm dark:border-gray-700 dark:bg-gray-800"
+              className="rounded-lg border px-3 py-2 text-sm border-edge bg-surface-elevated"
             />
             <input
               value={maxAttendees}
               onChange={(e) => setMaxAttendees(e.target.value)}
               type="number"
               placeholder={t('admin.beauty-events.max-attendees')}
-              className="rounded-lg border px-3 py-2 text-sm dark:border-gray-700 dark:bg-gray-800"
+              className="rounded-lg border px-3 py-2 text-sm border-edge bg-surface-elevated"
             />
             <input
               value={startsAt}
               onChange={(e) => setStartsAt(e.target.value)}
               type="datetime-local"
-              className="rounded-lg border px-3 py-2 text-sm dark:border-gray-700 dark:bg-gray-800"
+              className="rounded-lg border px-3 py-2 text-sm border-edge bg-surface-elevated"
             />
             <input
               value={endsAt}
               onChange={(e) => setEndsAt(e.target.value)}
               type="datetime-local"
-              className="rounded-lg border px-3 py-2 text-sm dark:border-gray-700 dark:bg-gray-800"
+              className="rounded-lg border px-3 py-2 text-sm border-edge bg-surface-elevated"
             />
           </div>
           <Button onClick={handleCreate} loading={createMut.isPending} className="w-full mt-3">

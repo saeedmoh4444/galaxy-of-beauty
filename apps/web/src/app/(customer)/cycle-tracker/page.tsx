@@ -141,7 +141,7 @@ export default function CycleTrackerPage(): JSX.Element {
                   type="number"
                   value={cycleLen}
                   onChange={(e) => setCycleLen(Number(e.target.value))}
-                  className="w-full rounded-lg border px-3 py-2 text-sm dark:border-gray-700 dark:bg-gray-800"
+                  className="w-full rounded-lg border px-3 py-2 text-sm border-edge bg-surface-elevated"
                 />
               </div>
               <div>
@@ -153,7 +153,7 @@ export default function CycleTrackerPage(): JSX.Element {
                   type="number"
                   value={periodLen}
                   onChange={(e) => setPeriodLen(Number(e.target.value))}
-                  className="w-full rounded-lg border px-3 py-2 text-sm dark:border-gray-700 dark:bg-gray-800"
+                  className="w-full rounded-lg border px-3 py-2 text-sm border-edge bg-surface-elevated"
                 />
               </div>
               <div>
@@ -165,7 +165,7 @@ export default function CycleTrackerPage(): JSX.Element {
                   type="date"
                   value={lastStart}
                   onChange={(e) => setLastStart(e.target.value)}
-                  className="w-full rounded-lg border px-3 py-2 text-sm dark:border-gray-700 dark:bg-gray-800"
+                  className="w-full rounded-lg border px-3 py-2 text-sm border-edge bg-surface-elevated"
                 />
               </div>
             </div>
@@ -189,7 +189,7 @@ export default function CycleTrackerPage(): JSX.Element {
                     type="date"
                     value={dueDate}
                     onChange={(e) => setDueDate(e.target.value)}
-                    className="w-full rounded-lg border px-3 py-2 text-sm dark:border-gray-700 dark:bg-gray-800"
+                    className="w-full rounded-lg border px-3 py-2 text-sm border-edge bg-surface-elevated"
                   />
                 </div>
               )}
@@ -214,7 +214,7 @@ export default function CycleTrackerPage(): JSX.Element {
                     type="date"
                     value={lastPeriodAt}
                     onChange={(e) => setLastPeriodAt(e.target.value)}
-                    className="w-full rounded-lg border px-3 py-2 text-sm dark:border-gray-700 dark:bg-gray-800"
+                    className="w-full rounded-lg border px-3 py-2 text-sm border-edge bg-surface-elevated"
                   />
                 </div>
               )}
@@ -383,7 +383,7 @@ export default function CycleTrackerPage(): JSX.Element {
                   step="0.1"
                   value={temperature}
                   onChange={(e) => setTemperature(e.target.value)}
-                  className="w-full rounded-lg border px-3 py-2 text-sm dark:border-gray-700 dark:bg-gray-800"
+                  className="w-full rounded-lg border px-3 py-2 text-sm border-edge bg-surface-elevated"
                 />
               </div>
               <textarea
@@ -391,7 +391,7 @@ export default function CycleTrackerPage(): JSX.Element {
                 onChange={(e) => setNotes(e.target.value)}
                 placeholder={t('cycleTracker.placeholder.notes')}
                 rows={2}
-                className="w-full rounded-lg border px-3 py-2 text-xs dark:border-gray-700 dark:bg-gray-800"
+                className="w-full rounded-lg border px-3 py-2 text-xs border-edge bg-surface-elevated"
               />
               <Button onClick={handleLog} loading={logMut.isPending} className="w-full">
                 {t('cycleTracker.saveDay')}

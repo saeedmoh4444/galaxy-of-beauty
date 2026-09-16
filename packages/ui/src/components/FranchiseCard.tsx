@@ -141,13 +141,13 @@ export function FranchiseCard({
 
       {/* Stats */}
       <div className="mt-3 grid grid-cols-2 gap-2">
-        <div className="rounded-xl bg-white/60 p-2.5 text-center dark:bg-gray-800/60">
+        <div className="rounded-xl bg-surface-elevated/60 p-2.5 text-center">
           <p className="text-[9px] text-text-tertiary dark:text-text-secondary">
             {investmentLabel}
           </p>
           <p className="text-xs font-bold text-amber-800 dark:text-amber-200">{investmentRange}</p>
         </div>
-        <div className="rounded-xl bg-white/60 p-2.5 text-center dark:bg-gray-800/60">
+        <div className="rounded-xl bg-surface-elevated/60 p-2.5 text-center">
           <p className="text-[9px] text-text-tertiary dark:text-text-secondary">{revenueLabel}</p>
           <p className="text-xs font-bold text-emerald-700 dark:text-emerald-300">
             {expectedRevenue}
@@ -156,7 +156,7 @@ export function FranchiseCard({
       </div>
 
       {/* Existing franchises */}
-      <div className="mt-2 rounded-xl bg-white/60 p-2.5 text-center dark:bg-gray-800/60">
+      <div className="mt-2 rounded-xl bg-surface-elevated/60 p-2.5 text-center">
         <p className="text-[10px] text-amber-700 dark:text-amber-300">
           {existingFranchises} {existingFranchisesText}
         </p>
@@ -165,7 +165,7 @@ export function FranchiseCard({
       {/* Benefits grid */}
       <div className="mt-3 grid grid-cols-2 gap-1.5">
         {BENEFITS.map((b) => (
-          <div key={b.title.ar} className="rounded-xl bg-white/60 p-2.5 dark:bg-gray-800/60">
+          <div key={b.title.ar} className="rounded-xl bg-surface-elevated/60 p-2.5">
             <span className="text-lg" aria-hidden="true">
               {b.emoji}
             </span>

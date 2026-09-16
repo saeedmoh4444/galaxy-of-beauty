@@ -73,7 +73,7 @@ export function DVSupportBadge({
   return (
     <div
       className={cn(
-        'rounded-2xl border border-brand-100 bg-white p-5 dark:border-brand-900 dark:bg-gray-900',
+        'rounded-2xl border border-brand-100 bg-surface-elevated p-5 dark:border-brand-900',
         className,
       )}
     >
@@ -102,7 +102,7 @@ export function DVSupportBadge({
       </div>
 
       {/* Partner */}
-      <div className="mt-2 rounded-xl bg-white/60 p-2.5 dark:bg-gray-800/60">
+      <div className="mt-2 rounded-xl bg-surface-elevated/60 p-2.5">
         <div className="flex items-center gap-2">
           <span className="text-lg" aria-hidden="true">
             🤝
@@ -143,7 +143,7 @@ export function DVSupportBadge({
         <button
           type="button"
           onClick={onLearnMore}
-          className="rounded-xl border border-brand-200 bg-white px-3 py-2.5 text-xs font-bold text-brand-700 hover:bg-brand-50 dark:border-brand-800 dark:bg-gray-800 dark:text-brand-300"
+          className="rounded-xl border border-brand-200 bg-surface-elevated px-3 py-2.5 text-xs font-bold text-brand-700 hover:bg-brand-50 dark:border-brand-800 dark:text-brand-300"
         >
           {learnMoreText}
         </button>

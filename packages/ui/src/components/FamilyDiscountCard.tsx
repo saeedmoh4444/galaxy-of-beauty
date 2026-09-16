@@ -72,8 +72,8 @@ export function FamilyDiscountCard({
             className={cn(
               'flex-1 rounded-lg p-2 text-center transition-all',
               familySize >= tier.size
-                ? 'bg-white/80 dark:bg-gray-800/80'
-                : 'bg-white/30 dark:bg-gray-800/30 opacity-50',
+                ? 'bg-surface-elevated/80'
+                : 'bg-surface-elevated/30 opacity-50',
             )}
           >
             <p className="text-[10px] font-bold text-text-primary">

@@ -113,11 +113,11 @@ export function BeautySleepCard({
 
       {/* Sleep stats */}
       <div className="mt-3 grid grid-cols-2 gap-2">
-        <div className="rounded-xl bg-white/60 p-2.5 text-center dark:bg-gray-800/60">
+        <div className="rounded-xl bg-surface-elevated/60 p-2.5 text-center">
           <p className="text-[9px] text-text-tertiary dark:text-text-secondary">{bedtimeLabel}</p>
           <p className="text-lg font-bold text-indigo-800 dark:text-indigo-200">{bedtime}</p>
         </div>
-        <div className="rounded-xl bg-white/60 p-2.5 text-center dark:bg-gray-800/60">
+        <div className="rounded-xl bg-surface-elevated/60 p-2.5 text-center">
           <p className="text-[9px] text-text-tertiary dark:text-text-secondary">{wakeTimeLabel}</p>
           <p className="text-lg font-bold text-amber-600 dark:text-amber-400">{wakeTime}</p>
         </div>
@@ -134,7 +134,7 @@ export function BeautySleepCard({
               key={step.action.ar}
               className={cn(
                 'flex items-center gap-2 rounded-lg px-2.5 py-2',
-                isBedtime ? 'bg-indigo-100 dark:bg-indigo-900' : 'bg-white/40 dark:bg-gray-800/40',
+                isBedtime ? 'bg-indigo-100 dark:bg-indigo-900' : 'bg-surface-elevated/40',
               )}
             >
               <span className="text-sm w-6 text-center shrink-0" aria-hidden="true">
@@ -157,7 +157,7 @@ export function BeautySleepCard({
       </div>
 
       {/* Beauty sleep tip */}
-      <div className="mt-3 rounded-xl bg-white/60 p-3 dark:bg-gray-800/60">
+      <div className="mt-3 rounded-xl bg-surface-elevated/60 p-3">
         <p className="text-[10px] font-bold text-indigo-700 dark:text-indigo-300">{whyTitle}</p>
         <p className="mt-0.5 text-[10px] text-indigo-600 dark:text-indigo-400">{sleepTipText}</p>
       </div>

@@ -217,7 +217,7 @@ export default function AdminTechniciansPage(): JSX.Element {
               </label>
               <textarea
                 id="at-review-note"
-                className="w-full rounded-lg border border-edge bg-white p-2 text-sm dark:bg-gray-900"
+                className="w-full rounded-lg border border-edge bg-surface-elevated p-2 text-sm"
                 rows={3}
                 value={reviewNote}
                 onChange={(e) => setReviewNote(e.target.value)}

@@ -137,7 +137,7 @@ export function GoldenBeautyCard({
       </div>
 
       {/* Special discount */}
-      <div className="mt-3 rounded-xl bg-white/60 p-3 text-center dark:bg-gray-800/60">
+      <div className="mt-3 rounded-xl bg-surface-elevated/60 p-3 text-center">
         <p className="text-lg" aria-hidden="true">
           ⏰
         </p>
@@ -151,7 +151,7 @@ export function GoldenBeautyCard({
         {SERVICES.map((s) => (
           <div
             key={s.name.ar}
-            className="flex items-center gap-3 rounded-xl bg-white/60 p-3 dark:bg-gray-800/60"
+            className="flex items-center gap-3 rounded-xl bg-surface-elevated/60 p-3"
           >
             <span className="text-xl shrink-0" aria-hidden="true">
               {s.emoji}
@@ -179,7 +179,7 @@ export function GoldenBeautyCard({
       </div>
 
       {/* Gentle promise */}
-      <div className="mt-3 rounded-xl bg-white/60 p-3 dark:bg-gray-800/60">
+      <div className="mt-3 rounded-xl bg-surface-elevated/60 p-3">
         <p className="text-center text-[10px] font-medium text-amber-700 dark:text-amber-300">
           {promiseText}
         </p>

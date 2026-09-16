@@ -54,7 +54,7 @@ export function BeautyDreamBoardCard({
 
       <div className="mt-3 grid grid-cols-2 gap-2">
         {dreams.slice(0, 6).map((dream, i) => (
-          <div key={i} className="rounded-xl bg-white/60 p-3 text-center dark:bg-gray-800/60">
+          <div key={i} className="rounded-xl bg-surface-elevated/60 p-3 text-center">
             <span className="text-2xl">{dream.emoji}</span>
             <p className="mt-1 text-[10px] font-medium text-violet-800 dark:text-violet-200">
               {dream.text}

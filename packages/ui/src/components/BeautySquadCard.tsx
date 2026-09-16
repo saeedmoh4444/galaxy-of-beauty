@@ -61,7 +61,7 @@ export function BeautySquadCard({
       </div>
 
       {squad.nextEvent && (
-        <div className="mt-3 rounded-xl bg-white/60 p-2.5 text-center dark:bg-gray-800/60">
+        <div className="mt-3 rounded-xl bg-surface-elevated/60 p-2.5 text-center">
           <p className="text-[10px] text-fuchsia-700 dark:text-fuchsia-300">{nextEventLabel}</p>
           <p className="text-xs font-bold text-fuchsia-800 dark:text-fuchsia-200">
             {squad.nextEvent}
@@ -80,7 +80,7 @@ export function BeautySquadCard({
         <button
           type="button"
           onClick={onInvite}
-          className="rounded-xl border border-fuchsia-200 bg-white px-4 py-2 text-[10px] font-bold text-fuchsia-700 hover:bg-fuchsia-50 dark:border-fuchsia-800 dark:bg-gray-800 dark:text-fuchsia-300"
+          className="rounded-xl border border-fuchsia-200 bg-surface-elevated px-4 py-2 text-[10px] font-bold text-fuchsia-700 hover:bg-fuchsia-50 dark:border-fuchsia-800 dark:text-fuchsia-300"
         >
           {inviteText}
         </button>

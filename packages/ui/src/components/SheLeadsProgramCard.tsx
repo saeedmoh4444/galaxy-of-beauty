@@ -98,11 +98,11 @@ export function SheLeadsProgramCard({
 
       {/* Stats */}
       <div className="mt-3 grid grid-cols-2 gap-2">
-        <div className="rounded-xl bg-white/60 p-2.5 text-center dark:bg-gray-800/60">
+        <div className="rounded-xl bg-surface-elevated/60 p-2.5 text-center">
           <p className="text-[9px] text-text-tertiary dark:text-text-secondary">{durationLabel}</p>
           <p className="text-sm font-bold text-amber-800 dark:text-amber-200">{duration}</p>
         </div>
-        <div className="rounded-xl bg-white/60 p-2.5 text-center dark:bg-gray-800/60">
+        <div className="rounded-xl bg-surface-elevated/60 p-2.5 text-center">
           <p className="text-[9px] text-text-tertiary dark:text-text-secondary">
             {participantsLabel}
           </p>
@@ -113,7 +113,7 @@ export function SheLeadsProgramCard({
       {/* Modules */}
       <div className="mt-3 grid grid-cols-2 gap-1.5">
         {MODULES.map((m) => (
-          <div key={m.title.ar} className="rounded-xl bg-white/60 p-2.5 dark:bg-gray-800/60">
+          <div key={m.title.ar} className="rounded-xl bg-surface-elevated/60 p-2.5">
             <span className="text-lg" aria-hidden="true">
               {m.emoji}
             </span>
@@ -126,7 +126,7 @@ export function SheLeadsProgramCard({
       </div>
 
       {/* Testimonial */}
-      <div className="mt-3 rounded-xl bg-white/60 p-3 dark:bg-gray-800/60">
+      <div className="mt-3 rounded-xl bg-surface-elevated/60 p-3">
         <p className="text-center text-[10px] italic text-amber-700 dark:text-amber-300">
           {testimonial}
         </p>

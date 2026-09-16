@@ -118,13 +118,13 @@ export default function ReferralDashboardPage(): JSX.Element {
           className="bg-linear-to-r from-brand-500 to-brand-500 text-white text-center"
         >
           <p className="text-2xl font-bold">{t('referralDashboard.yourCode')}</p>
-          <div className="mt-3 inline-block rounded-xl bg-white/20 px-8 py-3 backdrop-blur">
+          <div className="mt-3 inline-block rounded-xl bg-surface-elevated/20 px-8 py-3 backdrop-blur">
             <p className="text-4xl font-mono font-extrabold tracking-[0.3em]">{code}</p>
           </div>
           <div className="mt-4 flex justify-center gap-3">
             <button
               onClick={copyCode}
-              className="rounded-lg bg-white/20 px-4 py-2 text-sm font-bold hover:bg-white/30 transition-colors"
+              className="rounded-lg bg-surface-elevated/20 px-4 py-2 text-sm font-bold hover:bg-surface-elevated/30 transition-colors"
             >
               {t('referralDashboard.copyCode')}
             </button>

@@ -50,7 +50,7 @@ export function IncognitoModeBadge({
         'rounded-2xl border p-4 transition-all',
         active
           ? 'border-indigo-200 bg-indigo-50/50 dark:border-indigo-900 dark:bg-indigo-950/30'
-          : 'border-edge-muted bg-white dark:bg-gray-900',
+          : 'border-edge-muted bg-surface-elevated',
         className,
       )}
     >
@@ -80,7 +80,7 @@ export function IncognitoModeBadge({
         >
           <span
             className={cn(
-              'inline-block h-4 w-4 rounded-full bg-white shadow-sm transition-transform',
+              'inline-block h-4 w-4 rounded-full bg-surface-elevated shadow-sm transition-transform',
               active ? 'translate-x-6' : 'translate-x-1',
             )}
           />
@@ -99,7 +99,7 @@ export function IncognitoModeBadge({
             ].map((f) => (
               <div
                 key={f.label.ar}
-                className="flex items-center gap-1.5 rounded-lg bg-white/60 px-2.5 py-1.5 dark:bg-gray-800/60"
+                className="flex items-center gap-1.5 rounded-lg bg-surface-elevated/60 px-2.5 py-1.5"
               >
                 <span className="text-xs" aria-hidden="true">
                   {f.emoji}
@@ -112,7 +112,7 @@ export function IncognitoModeBadge({
           </div>
 
           {/* Expiry info */}
-          <div className="rounded-lg bg-white/60 p-2 dark:bg-gray-800/60">
+          <div className="rounded-lg bg-surface-elevated/60 p-2">
             <p className="text-center text-[10px] text-indigo-600 dark:text-indigo-400">
               {expiryText}
             </p>

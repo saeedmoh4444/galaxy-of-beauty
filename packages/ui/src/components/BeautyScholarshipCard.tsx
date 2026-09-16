@@ -71,7 +71,7 @@ export function BeautyScholarshipCard({
   return (
     <div
       className={cn(
-        'rounded-2xl border border-teal-100 bg-white p-5 dark:border-teal-900 dark:bg-gray-900',
+        'rounded-2xl border border-teal-100 bg-surface-elevated p-5 dark:border-teal-900',
         className,
       )}
     >
@@ -113,7 +113,7 @@ export function BeautyScholarshipCard({
             {program.includes.map((item) => (
               <span
                 key={item}
-                className="rounded-full bg-white px-2 py-0.5 text-[9px] text-text-secondary dark:bg-gray-700"
+                className="rounded-full bg-surface-elevated px-2 py-0.5 text-[9px] text-text-secondary"
               >
                 {item}
               </span>
@@ -168,7 +168,7 @@ export function BeautyScholarshipCard({
         <button
           type="button"
           onClick={onSponsor}
-          className="rounded-xl border border-teal-200 bg-white px-3 py-2 text-[10px] font-bold text-teal-700 hover:bg-teal-50 dark:border-teal-800 dark:bg-gray-800 dark:text-teal-300"
+          className="rounded-xl border border-teal-200 bg-surface-elevated px-3 py-2 text-[10px] font-bold text-teal-700 hover:bg-teal-50 dark:border-teal-800 dark:text-teal-300"
         >
           {sponsorButtonText}
         </button>

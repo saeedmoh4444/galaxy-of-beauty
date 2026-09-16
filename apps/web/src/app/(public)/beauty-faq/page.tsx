@@ -44,7 +44,7 @@ export default function BeautyFaqPage(): JSX.Element {
           onChange={(e) => setQuery(e.target.value)}
           onKeyDown={(e) => e.key === 'Enter' && setSearch(query.trim())}
           placeholder={t('marketing.beauty-faq.search-placeholder')}
-          className="flex-1 rounded-lg border px-3 py-2 text-sm dark:border-gray-700 dark:bg-gray-800"
+          className="flex-1 rounded-lg border px-3 py-2 text-sm border-edge bg-surface-elevated"
         />
         <button
           onClick={() => setSearch(query.trim())}

@@ -104,7 +104,7 @@ export default function ProductComparePage(): JSX.Element {
               </tr>
             </thead>
             <tbody>
-              <tr className="border-t dark:border-gray-700">
+              <tr className="border-t border-edge">
                 <td className="py-3 px-4 text-text-secondary font-semibold">
                   {t('marketing.product-compare.row-price')}
                 </td>
@@ -119,7 +119,7 @@ export default function ProductComparePage(): JSX.Element {
                   </td>
                 ))}
               </tr>
-              <tr className="border-t dark:border-gray-700">
+              <tr className="border-t border-edge">
                 <td className="py-3 px-4 text-text-secondary font-semibold">
                   {t('marketing.product-compare.row-rating')}
                 </td>
@@ -130,7 +130,7 @@ export default function ProductComparePage(): JSX.Element {
                 ))}
               </tr>
               {dimensions.map((dim) => (
-                <tr key={dim} className="border-t dark:border-gray-700">
+                <tr key={dim} className="border-t border-edge">
                   <td className="py-3 px-4 text-text-secondary font-semibold">
                     {t((DIM_LABELS[dim] ?? dim) as TranslationKey)}
                   </td>
@@ -153,7 +153,7 @@ export default function ProductComparePage(): JSX.Element {
                   })}
                 </tr>
               ))}
-              <tr className="border-t dark:border-gray-700">
+              <tr className="border-t border-edge">
                 <td className="py-3 px-4 text-text-secondary font-semibold">
                   {t('marketing.product-compare.row-cruelty-free')}
                 </td>
@@ -163,7 +163,7 @@ export default function ProductComparePage(): JSX.Element {
                   </td>
                 ))}
               </tr>
-              <tr className="border-t dark:border-gray-700">
+              <tr className="border-t border-edge">
                 <td className="py-3 px-4 text-text-secondary font-semibold">
                   {t('marketing.product-compare.row-vegan')}
                 </td>

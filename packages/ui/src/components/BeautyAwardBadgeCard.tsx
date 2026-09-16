@@ -52,7 +52,7 @@ export function BeautyAwardBadgeCard({
         {awards.map((a) => (
           <div
             key={a.name}
-            className="flex items-center gap-3 rounded-xl bg-white/60 p-3 dark:bg-gray-800/60"
+            className="flex items-center gap-3 rounded-xl bg-surface-elevated/60 p-3"
           >
             <span className="text-2xl shrink-0">{a.emoji}</span>
             <div>

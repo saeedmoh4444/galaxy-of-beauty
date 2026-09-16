@@ -39,7 +39,7 @@ export function BeautyVlogCard({
   return (
     <div
       className={cn(
-        'rounded-2xl border border-rose-100 bg-white p-4 dark:border-rose-900 dark:bg-gray-900',
+        'rounded-2xl border border-rose-100 bg-surface-elevated p-4 dark:border-rose-900',
         className,
       )}
     >
@@ -53,7 +53,7 @@ export function BeautyVlogCard({
           onClick={onWatch}
           className="absolute inset-0 flex items-center justify-center"
         >
-          <span className="flex h-12 w-12 items-center justify-center rounded-full bg-white/80 text-xl shadow-lg hover:bg-white transition-all active:scale-95 dark:bg-gray-800/80">
+          <span className="flex h-12 w-12 items-center justify-center rounded-full bg-surface-elevated/80 text-xl shadow-lg hover:bg-surface-elevated transition-all active:scale-95">
             ▶️
           </span>
         </button>

@@ -40,12 +40,12 @@ export default function BeautyWishlistGiftsPage(): JSX.Element {
               value={title}
               onChange={(e) => setTitle(e.target.value)}
               placeholder={t('wishlistGifts.namePlaceholder')}
-              className="w-full rounded-lg border px-3 py-2 text-sm mb-3 dark:border-gray-700 dark:bg-gray-800"
+              className="w-full rounded-lg border px-3 py-2 text-sm mb-3 border-edge bg-surface-elevated"
             />
             <select
               value={occasion}
               onChange={(e) => setOccasion(e.target.value)}
-              className="w-full rounded-lg border px-3 py-2 text-sm mb-3 dark:border-gray-700 dark:bg-gray-800"
+              className="w-full rounded-lg border px-3 py-2 text-sm mb-3 border-edge bg-surface-elevated"
             >
               <option value="wedding">{t('wishlistGifts.occasion.wedding')}</option>
               <option value="birthday">{t('wishlistGifts.occasion.birthday')}</option>
@@ -57,7 +57,7 @@ export default function BeautyWishlistGiftsPage(): JSX.Element {
               value={targetAmount}
               onChange={(e) => setTarget(Number(e.target.value))}
               placeholder={t('wishlistGifts.targetPlaceholder')}
-              className="w-full rounded-lg border px-3 py-2 text-sm mb-3 dark:border-gray-700 dark:bg-gray-800"
+              className="w-full rounded-lg border px-3 py-2 text-sm mb-3 border-edge bg-surface-elevated"
             />
             <Button
               onClick={() => {

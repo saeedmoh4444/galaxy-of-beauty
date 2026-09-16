@@ -74,7 +74,7 @@ export function ScentFreeBadge({
   return (
     <div
       className={cn(
-        'rounded-2xl border border-green-100 bg-white p-4 dark:border-green-900 dark:bg-gray-900',
+        'rounded-2xl border border-green-100 bg-surface-elevated p-4 dark:border-green-900',
         className,
       )}
     >

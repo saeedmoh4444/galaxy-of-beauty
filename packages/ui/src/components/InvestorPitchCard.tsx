@@ -58,15 +58,15 @@ export function InvestorPitchCard({
       </div>
 
       <div className="mt-3 grid grid-cols-3 gap-2">
-        <div className="rounded-xl bg-white/60 p-2.5 text-center dark:bg-gray-800/60">
+        <div className="rounded-xl bg-surface-elevated/60 p-2.5 text-center">
           <p className="text-lg font-bold text-emerald-800 dark:text-emerald-200">{startups}</p>
           <p className="text-[9px] text-emerald-600 dark:text-emerald-400">{projectsLabel}</p>
         </div>
-        <div className="rounded-xl bg-white/60 p-2.5 text-center dark:bg-gray-800/60">
+        <div className="rounded-xl bg-surface-elevated/60 p-2.5 text-center">
           <p className="text-lg font-bold text-emerald-800 dark:text-emerald-200">{funded}</p>
           <p className="text-[9px] text-emerald-600 dark:text-emerald-400">{fundedLabel}</p>
         </div>
-        <div className="rounded-xl bg-white/60 p-2.5 text-center dark:bg-gray-800/60">
+        <div className="rounded-xl bg-surface-elevated/60 p-2.5 text-center">
           <p className="text-sm font-bold text-emerald-800 dark:text-emerald-200">{totalRaised}</p>
           <p className="text-[9px] text-emerald-600 dark:text-emerald-400">{currencyLabel}</p>
         </div>
@@ -83,7 +83,7 @@ export function InvestorPitchCard({
         <button
           type="button"
           onClick={onInvest}
-          className="rounded-xl border border-emerald-200 bg-white px-3 py-2 text-[10px] font-bold text-emerald-700 hover:bg-emerald-50 dark:border-emerald-800 dark:bg-gray-800 dark:text-emerald-300"
+          className="rounded-xl border border-emerald-200 bg-surface-elevated px-3 py-2 text-[10px] font-bold text-emerald-700 hover:bg-emerald-50 dark:border-emerald-800 dark:text-emerald-300"
         >
           {investButtonText}
         </button>

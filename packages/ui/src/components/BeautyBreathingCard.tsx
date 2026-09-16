@@ -55,7 +55,7 @@ export function BeautyBreathingCard({
         ].map((s, i) => (
           <div
             key={i}
-            className="flex items-center justify-between rounded-lg bg-white/60 px-3 py-2.5 dark:bg-gray-800/60"
+            className="flex items-center justify-between rounded-lg bg-surface-elevated/60 px-3 py-2.5"
           >
             <div className="flex items-center gap-2">
               <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-sky-200 text-[10px] font-bold text-sky-700 dark:bg-sky-800 dark:text-sky-300">

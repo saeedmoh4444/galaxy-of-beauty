@@ -123,7 +123,7 @@ export default function RecurringPage(): JSX.Element {
               if (e.key === 'Escape') setShowAdd(false);
             }}
           >
-            <div className="w-full max-w-md rounded-2xl bg-white p-6 dark:bg-gray-900">
+            <div className="w-full max-w-md rounded-2xl bg-surface-elevated p-6">
               <h3 className="mb-4 text-lg font-bold">{t('recurring.modal.title')}</h3>
               <div className="space-y-3">
                 <Input
@@ -147,7 +147,7 @@ export default function RecurringPage(): JSX.Element {
                 <select
                   value={form.frequency}
                   onChange={(e) => setForm({ ...form, frequency: e.target.value })}
-                  className="w-full rounded-lg border border-edge p-2 dark:bg-gray-800"
+                  className="w-full rounded-lg border border-edge p-2 bg-surface-elevated"
                 >
                   <option value="WEEKLY">{t('recurring.freq.weekly')}</option>
                   <option value="BIWEEKLY">{t('recurring.freq.biweekly')}</option>

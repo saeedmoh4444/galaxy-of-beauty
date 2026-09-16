@@ -86,7 +86,7 @@ export default function NotificationSettingsPage(): JSX.Element {
                   className={`h-6 w-11 rounded-full transition-colors ${prefs[item.key] ? 'bg-brand-600' : 'bg-gray-300 dark:bg-gray-600'}`}
                 >
                   <div
-                    className={`h-5 w-5 rounded-full bg-white shadow transition-transform ${prefs[item.key] ? 'translate-x-5' : 'translate-x-0.5'}`}
+                    className={`h-5 w-5 rounded-full bg-surface-elevated shadow transition-transform ${prefs[item.key] ? 'translate-x-5' : 'translate-x-0.5'}`}
                   />
                 </button>
               </div>

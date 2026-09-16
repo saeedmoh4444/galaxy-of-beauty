@@ -125,20 +125,20 @@ export default function ReschedulePage(): JSX.Element {
                 type="date"
                 value={newDate}
                 onChange={(e) => setNewDate(e.target.value)}
-                className="rounded-lg border px-3 py-2 text-sm dark:border-gray-700 dark:bg-gray-800"
+                className="rounded-lg border px-3 py-2 text-sm border-edge bg-surface-elevated"
               />
               <input
                 type="time"
                 value={newTime}
                 onChange={(e) => setNewTime(e.target.value)}
-                className="rounded-lg border px-3 py-2 text-sm dark:border-gray-700 dark:bg-gray-800"
+                className="rounded-lg border px-3 py-2 text-sm border-edge bg-surface-elevated"
               />
             </div>
             <input
               value={reason}
               onChange={(e) => setReason(e.target.value)}
               placeholder={t('reschedule.reasonPlaceholder')}
-              className="mt-3 w-full rounded-lg border px-3 py-2 text-sm dark:border-gray-700 dark:bg-gray-800"
+              className="mt-3 w-full rounded-lg border px-3 py-2 text-sm border-edge bg-surface-elevated"
             />
             <Button
               onClick={handleReschedule}

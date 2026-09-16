@@ -53,7 +53,7 @@ export function FaceBlurToggle({
   return (
     <div
       className={cn(
-        'rounded-2xl border border-blue-100 bg-white p-4 dark:border-blue-900 dark:bg-gray-900',
+        'rounded-2xl border border-blue-100 bg-surface-elevated p-4 dark:border-blue-900',
         className,
       )}
     >
@@ -78,7 +78,7 @@ export function FaceBlurToggle({
         >
           <span
             className={cn(
-              'inline-block h-4 w-4 rounded-full bg-white shadow-sm transition-transform',
+              'inline-block h-4 w-4 rounded-full bg-surface-elevated shadow-sm transition-transform',
               enabled ? 'translate-x-6' : 'translate-x-1',
             )}
           />

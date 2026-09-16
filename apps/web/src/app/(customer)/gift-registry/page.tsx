@@ -129,7 +129,7 @@ export default function GiftRegistryPage(): JSX.Element {
               if (e.key === 'Escape') setShowAdd(false);
             }}
           >
-            <div className="w-full max-w-md rounded-2xl bg-white p-6 dark:bg-gray-900">
+            <div className="w-full max-w-md rounded-2xl bg-surface-elevated p-6">
               <h3 className="mb-4 text-lg font-bold">{t('giftRegistry.modal.title')}</h3>
               <div className="space-y-3">
                 <Input
@@ -140,7 +140,7 @@ export default function GiftRegistryPage(): JSX.Element {
                 <select
                   value={form.occasion}
                   onChange={(e) => setForm({ ...form, occasion: e.target.value })}
-                  className="w-full rounded-lg border border-edge p-2 dark:bg-gray-800"
+                  className="w-full rounded-lg border border-edge p-2 bg-surface-elevated"
                 >
                   <option value="wedding">{t('giftRegistry.occasion.wedding')}</option>
                   <option value="birthday">{t('giftRegistry.occasion.birthday')}</option>

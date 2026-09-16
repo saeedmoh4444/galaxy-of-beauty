@@ -66,14 +66,14 @@ export function BirthdayMonthBadge({
 
       {/* Countdown */}
       {daysRemaining !== undefined && daysRemaining > 0 && (
-        <div className="mt-3 rounded-xl bg-white/60 p-4 text-center dark:bg-gray-800/60">
+        <div className="mt-3 rounded-xl bg-surface-elevated/60 p-4 text-center">
           <p className="text-3xl font-bold text-pink-700 dark:text-pink-300">{daysRemaining}</p>
           <p className="text-[10px] text-pink-500 dark:text-pink-400">{daysLeftText}</p>
         </div>
       )}
 
       {/* What's included */}
-      <div className="mt-3 rounded-xl bg-white/60 p-3 dark:bg-gray-800/60">
+      <div className="mt-3 rounded-xl bg-surface-elevated/60 p-3">
         <p className="text-[10px] font-bold text-pink-700 dark:text-pink-300">{giftsTitle}</p>
         <div className="mt-1.5 space-y-1 text-[10px] text-text-secondary">
           <p>

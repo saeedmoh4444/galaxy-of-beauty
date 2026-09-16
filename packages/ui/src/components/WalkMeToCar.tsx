@@ -81,7 +81,7 @@ export function WalkMeToCar({
         'rounded-2xl border p-4 transition-all',
         isDark
           ? 'border-indigo-200 bg-indigo-50/50 dark:border-indigo-900 dark:bg-indigo-950/30'
-          : 'border-edge-muted bg-white dark:bg-gray-900',
+          : 'border-edge-muted bg-surface-elevated',
         className,
       )}
     >

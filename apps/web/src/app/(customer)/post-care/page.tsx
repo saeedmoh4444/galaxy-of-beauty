@@ -115,7 +115,7 @@ export default function PostCarePage(): JSX.Element {
               onClick={() => setActiveTab(tab.key)}
               className={`flex-1 rounded-lg py-2.5 text-sm font-semibold transition-all ${
                 activeTab === tab.key
-                  ? 'bg-white text-brand-700 shadow dark:bg-gray-700 dark:text-brand-300'
+                  ? 'bg-surface-elevated text-brand-700 shadow dark:text-brand-300'
                   : 'text-text-secondary hover:text-text-primary dark:hover:text-gray-300'
               }`}
             >

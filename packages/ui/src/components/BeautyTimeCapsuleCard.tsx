@@ -63,7 +63,7 @@ export function BeautyTimeCapsuleCard({
         </p>
       </div>
 
-      <div className="mt-3 rounded-xl bg-white/60 p-4 text-center dark:bg-gray-800/60">
+      <div className="mt-3 rounded-xl bg-surface-elevated/60 p-4 text-center">
         <p className="text-2xl" aria-hidden="true">
           {isFuture ? '' : ''}
         </p>

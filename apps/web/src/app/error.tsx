@@ -34,7 +34,7 @@ export default function RootError({
   const locale = usePageLocale();
 
   return (
-    <div className="flex min-h-screen flex-col items-center justify-center bg-white px-4 dark:bg-gray-950">
+    <div className="flex min-h-screen flex-col items-center justify-center bg-surface-elevated px-4">
       <Image
         src="/logo.png"
         alt={t('common.brandName', locale)}

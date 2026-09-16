@@ -297,7 +297,7 @@ export default function FamilyAccountPage(): JSX.Element {
                 value={formName}
                 onChange={(e) => setFormName(e.target.value)}
                 placeholder={t('family.placeholder.fullName')}
-                className="w-full rounded-lg border border-edge px-3 py-2 text-sm focus:border-brand-500 focus:outline-none focus:ring-1 focus:ring-brand-500 dark:bg-gray-800"
+                className="w-full rounded-lg border border-edge px-3 py-2 text-sm focus:border-brand-500 focus:outline-none focus:ring-1 focus:ring-brand-500 bg-surface-elevated"
               />
             </div>
 
@@ -313,7 +313,7 @@ export default function FamilyAccountPage(): JSX.Element {
                   id="fa-relation"
                   value={formRelation}
                   onChange={(e) => setFormRelation(e.target.value)}
-                  className="w-full rounded-lg border border-edge px-3 py-2 text-sm focus:border-brand-500 focus:outline-none dark:bg-gray-800"
+                  className="w-full rounded-lg border border-edge px-3 py-2 text-sm focus:border-brand-500 focus:outline-none bg-surface-elevated"
                 >
                   {relationships.map((r) => (
                     <option key={r.key} value={r.key}>
@@ -333,7 +333,7 @@ export default function FamilyAccountPage(): JSX.Element {
                   id="fa-age"
                   value={formAge}
                   onChange={(e) => setFormAge(e.target.value)}
-                  className="w-full rounded-lg border border-edge px-3 py-2 text-sm focus:border-brand-500 focus:outline-none dark:bg-gray-800"
+                  className="w-full rounded-lg border border-edge px-3 py-2 text-sm focus:border-brand-500 focus:outline-none bg-surface-elevated"
                 >
                   {ageGroups.map((a) => (
                     <option key={a.key} value={a.key}>
@@ -380,7 +380,7 @@ export default function FamilyAccountPage(): JSX.Element {
                 onChange={(e) => setFormNotes(e.target.value)}
                 placeholder={t('family.placeholder.notes')}
                 rows={2}
-                className="w-full rounded-lg border border-edge px-3 py-2 text-sm focus:border-brand-500 focus:outline-none focus:ring-1 focus:ring-brand-500 dark:bg-gray-800"
+                className="w-full rounded-lg border border-edge px-3 py-2 text-sm focus:border-brand-500 focus:outline-none focus:ring-1 focus:ring-brand-500 bg-surface-elevated"
               />
             </div>
 
@@ -396,7 +396,7 @@ export default function FamilyAccountPage(): JSX.Element {
                 id="fa-emergency"
                 value={formEmergency}
                 onChange={(e) => setFormEmergency(e.target.value)}
-                className="w-full rounded-lg border border-edge px-3 py-2 text-sm focus:border-brand-500 focus:outline-none focus:ring-1 focus:ring-brand-500 dark:bg-gray-800"
+                className="w-full rounded-lg border border-edge px-3 py-2 text-sm focus:border-brand-500 focus:outline-none focus:ring-1 focus:ring-brand-500 bg-surface-elevated"
               />
             </div>
 
@@ -411,7 +411,7 @@ export default function FamilyAccountPage(): JSX.Element {
                 id="fa-allergies"
                 value={formAllergies}
                 onChange={(e) => setFormAllergies(e.target.value)}
-                className="w-full rounded-lg border border-edge px-3 py-2 text-sm focus:border-brand-500 focus:outline-none focus:ring-1 focus:ring-brand-500 dark:bg-gray-800"
+                className="w-full rounded-lg border border-edge px-3 py-2 text-sm focus:border-brand-500 focus:outline-none focus:ring-1 focus:ring-brand-500 bg-surface-elevated"
               />
             </div>
 

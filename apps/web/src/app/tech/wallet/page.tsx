@@ -68,7 +68,7 @@ export default function TechWalletPage(): JSX.Element {
               value={amount}
               onChange={(e) => setAmount(e.target.value)}
               placeholder={t('tech.wallet.amount-placeholder')}
-              className="flex-1 rounded-lg border px-3 py-2 text-sm dark:border-gray-700 dark:bg-gray-800"
+              className="flex-1 rounded-lg border px-3 py-2 text-sm border-edge bg-surface-elevated"
             />
             <Button
               onClick={() =>

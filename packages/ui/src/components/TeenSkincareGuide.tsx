@@ -172,7 +172,7 @@ export function TeenSkincareGuide({
   return (
     <div
       className={cn(
-        'rounded-2xl border border-pink-100 bg-white p-5 dark:border-pink-900 dark:bg-gray-900',
+        'rounded-2xl border border-pink-100 bg-surface-elevated p-5 dark:border-pink-900',
         className,
       )}
     >
@@ -198,7 +198,7 @@ export function TeenSkincareGuide({
           {routine.morning.map((step, i) => (
             <span
               key={i}
-              className="inline-flex items-center gap-1 rounded-full bg-white px-2 py-0.5 text-[9px] text-amber-800 dark:bg-gray-800 dark:text-amber-200"
+              className="inline-flex items-center gap-1 rounded-full bg-surface-elevated px-2 py-0.5 text-[9px] text-amber-800 dark:text-amber-200"
             >
               {i + 1}. {step[locale]}
             </span>
@@ -213,7 +213,7 @@ export function TeenSkincareGuide({
           {routine.evening.map((step, i) => (
             <span
               key={i}
-              className="inline-flex items-center gap-1 rounded-full bg-white px-2 py-0.5 text-[9px] text-indigo-800 dark:bg-gray-800 dark:text-indigo-200"
+              className="inline-flex items-center gap-1 rounded-full bg-surface-elevated px-2 py-0.5 text-[9px] text-indigo-800 dark:text-indigo-200"
             >
               {i + 1}. {step[locale]}
             </span>

@@ -15,7 +15,7 @@ export function BeautyMakeupMascaraCard({
   return (
     <div
       className={cn(
-        'rounded-2xl border border-brand-100 bg-white p-4 dark:border-brand-900 dark:bg-gray-900',
+        'rounded-2xl border border-brand-100 bg-surface-elevated p-4 dark:border-brand-900',
         className,
       )}
     >

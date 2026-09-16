@@ -55,18 +55,18 @@ export function QuietHoursBadge({
 
       {/* Schedule */}
       <div className="mt-3 grid grid-cols-2 gap-2">
-        <div className="rounded-xl bg-white/60 p-3 text-center dark:bg-gray-800/60">
+        <div className="rounded-xl bg-surface-elevated/60 p-3 text-center">
           <p className="text-[9px] text-brand-600 dark:text-brand-400">{timeLabel}</p>
           <p className="text-sm font-bold text-brand-800 dark:text-brand-200"> {hours}</p>
         </div>
-        <div className="rounded-xl bg-white/60 p-3 text-center dark:bg-gray-800/60">
+        <div className="rounded-xl bg-surface-elevated/60 p-3 text-center">
           <p className="text-[9px] text-brand-600 dark:text-brand-400">{daysLabel}</p>
           <p className="text-sm font-bold text-brand-800 dark:text-brand-200"> {days}</p>
         </div>
       </div>
 
       {/* Features */}
-      <div className="mt-2 rounded-xl bg-white/60 p-3 dark:bg-gray-800/60">
+      <div className="mt-2 rounded-xl bg-surface-elevated/60 p-3">
         <p className="text-[10px] font-bold text-brand-700 dark:text-brand-300">{featuresTitle}</p>
         <div className="mt-1.5 flex flex-wrap gap-1.5">
           {features.map((f) => (

@@ -92,21 +92,21 @@ export function RuralOutreachCard({
 
       {/* Stats */}
       <div className="mt-3 grid grid-cols-3 gap-2">
-        <div className="rounded-xl bg-white/60 p-3 text-center dark:bg-gray-800/60">
+        <div className="rounded-xl bg-surface-elevated/60 p-3 text-center">
           <p className="text-lg" aria-hidden="true">
             🎓
           </p>
           <p className="text-lg font-bold text-emerald-800 dark:text-emerald-200">{trained}</p>
           <p className="text-[9px] text-emerald-600 dark:text-emerald-400">{trainedLabel}</p>
         </div>
-        <div className="rounded-xl bg-white/60 p-3 text-center dark:bg-gray-800/60">
+        <div className="rounded-xl bg-surface-elevated/60 p-3 text-center">
           <p className="text-lg" aria-hidden="true">
             💼
           </p>
           <p className="text-lg font-bold text-emerald-800 dark:text-emerald-200">{employed}</p>
           <p className="text-[9px] text-emerald-600 dark:text-emerald-400">{employedLabel}</p>
         </div>
-        <div className="rounded-xl bg-white/60 p-3 text-center dark:bg-gray-800/60">
+        <div className="rounded-xl bg-surface-elevated/60 p-3 text-center">
           <p className="text-lg" aria-hidden="true">
             🏡
           </p>
@@ -116,7 +116,7 @@ export function RuralOutreachCard({
       </div>
 
       {/* Progress */}
-      <div className="mt-3 rounded-xl bg-white/60 p-3 dark:bg-gray-800/60">
+      <div className="mt-3 rounded-xl bg-surface-elevated/60 p-3">
         <div className="flex items-center justify-between text-[10px]">
           <span className="text-emerald-700 dark:text-emerald-300">
             {targetPrefix}
@@ -133,7 +133,7 @@ export function RuralOutreachCard({
       </div>
 
       {/* How it works */}
-      <div className="mt-2 rounded-xl bg-white/60 p-3 dark:bg-gray-800/60">
+      <div className="mt-2 rounded-xl bg-surface-elevated/60 p-3">
         <p className="text-[10px] font-bold text-emerald-800 dark:text-emerald-200">{howTitle}</p>
         <div className="mt-1 space-y-1 text-[10px] text-emerald-700 dark:text-emerald-300">
           <p>{step1}</p>
@@ -155,7 +155,7 @@ export function RuralOutreachCard({
         <button
           type="button"
           onClick={onDonate}
-          className="flex-1 rounded-xl border border-emerald-200 bg-white py-2 text-[10px] font-bold text-emerald-700 hover:bg-emerald-50 dark:border-emerald-800 dark:bg-gray-800 dark:text-emerald-300"
+          className="flex-1 rounded-xl border border-emerald-200 bg-surface-elevated py-2 text-[10px] font-bold text-emerald-700 hover:bg-emerald-50 dark:border-emerald-800 dark:text-emerald-300"
         >
           {donateText}
         </button>

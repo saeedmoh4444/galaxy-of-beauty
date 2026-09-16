@@ -48,7 +48,7 @@ export function BeautyEmergency({
           <button
             key={i}
             onClick={() => onBook(e.label[locale])}
-            className="rounded-lg bg-white px-3 py-2 text-xs font-semibold text-pink-700 shadow-sm transition-all hover:bg-pink-100 active:scale-95 dark:bg-pink-900 dark:text-pink-200 dark:hover:bg-pink-800"
+            className="rounded-lg bg-surface-elevated px-3 py-2 text-xs font-semibold text-pink-700 shadow-sm transition-all hover:bg-pink-100 active:scale-95 dark:bg-pink-900 dark:text-pink-200 dark:hover:bg-pink-800"
           >
             {e.emoji} {e.label[locale]}
           </button>

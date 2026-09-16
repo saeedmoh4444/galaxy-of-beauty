@@ -47,7 +47,7 @@ export function PrayerTimeReminder({
         'rounded-2xl border p-4 transition-all',
         isSoon
           ? 'border-amber-200 bg-amber-50 dark:border-amber-900 dark:bg-amber-950'
-          : 'border-emerald-100 bg-white dark:border-emerald-900 dark:bg-gray-900',
+          : 'border-emerald-100 bg-surface-elevated dark:border-emerald-900',
         className,
       )}
     >

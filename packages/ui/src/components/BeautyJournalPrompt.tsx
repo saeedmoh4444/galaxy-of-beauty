@@ -70,7 +70,7 @@ export function BeautyJournalPrompt({
       <textarea
         placeholder={placeholder}
         rows={2}
-        className="mt-3 w-full rounded-lg border border-indigo-200 bg-white p-2 text-sm dark:border-indigo-800 dark:bg-indigo-900 dark:text-indigo-100 dark:placeholder:text-indigo-500"
+        className="mt-3 w-full rounded-lg border border-indigo-200 bg-surface-elevated p-2 text-sm dark:border-indigo-800 dark:bg-indigo-900 dark:text-indigo-100 dark:placeholder:text-indigo-500"
       />
     </div>
   );

@@ -112,10 +112,7 @@ export function SocialImpactCounter({
           return (
             <div
               key={i}
-              className={cn(
-                'rounded-xl bg-white/70 p-3 dark:bg-gray-800/70',
-                isMain && 'col-span-2',
-              )}
+              className={cn('rounded-xl bg-surface-elevated/70 p-3', isMain && 'col-span-2')}
             >
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-1.5">
@@ -163,7 +160,7 @@ export function SocialImpactCounter({
 
       {/* Year target */}
       <div className="mt-3 text-center">
-        <div className="inline-flex items-center gap-1 rounded-full bg-white/60 px-3 py-1 dark:bg-black/20">
+        <div className="inline-flex items-center gap-1 rounded-full bg-surface-elevated/60 px-3 py-1 dark:bg-black/20">
           <span className="text-xs" aria-hidden="true">
             🎯
           </span>

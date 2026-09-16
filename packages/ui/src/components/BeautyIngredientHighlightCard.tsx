@@ -35,7 +35,7 @@ export function BeautyIngredientHighlightCard({
   return (
     <div
       className={cn(
-        'rounded-2xl border border-amber-100 bg-white p-4 dark:border-amber-900 dark:bg-gray-900',
+        'rounded-2xl border border-amber-100 bg-surface-elevated p-4 dark:border-amber-900',
         className,
       )}
     >
@@ -57,7 +57,7 @@ export function BeautyIngredientHighlightCard({
           {ingredient.benefits.map((b) => (
             <span
               key={b}
-              className="rounded-full bg-white px-2 py-0.5 text-[9px] text-amber-700 dark:bg-gray-800 dark:text-amber-300"
+              className="rounded-full bg-surface-elevated px-2 py-0.5 text-[9px] text-amber-700 dark:text-amber-300"
             >
               {b}
             </span>

@@ -106,7 +106,7 @@ export function PrayerRoomBadge({
   return (
     <div
       className={cn(
-        'rounded-2xl border border-emerald-100 bg-white p-4 dark:border-emerald-900 dark:bg-gray-900',
+        'rounded-2xl border border-emerald-100 bg-surface-elevated p-4 dark:border-emerald-900',
         className,
       )}
     >
@@ -159,7 +159,7 @@ export function PrayerRoomBadge({
               </p>
             </div>
           </div>
-          <span className="rounded-full bg-white/70 px-2 py-0.5 text-[10px] font-bold text-emerald-700 dark:bg-black/30 dark:text-emerald-300">
+          <span className="rounded-full bg-surface-elevated/70 px-2 py-0.5 text-[10px] font-bold text-emerald-700 dark:bg-black/30 dark:text-emerald-300">
             {nextPrayer.time}
           </span>
         </div>

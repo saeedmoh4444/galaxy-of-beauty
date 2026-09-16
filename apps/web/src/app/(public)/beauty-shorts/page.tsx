@@ -75,7 +75,7 @@ export default function BeautyShortsPage(): JSX.Element {
                   )}
                   <p className="mt-4 px-4 text-center font-bold">{title(s)}</p>
                   {s.faceBlurred && (
-                    <span className="mt-2 rounded-full bg-white/10 px-2 py-0.5 text-xs">
+                    <span className="mt-2 rounded-full bg-surface-elevated/10 px-2 py-0.5 text-xs">
                       {t('beautyShorts.faceBlurred')}
                     </span>
                   )}
@@ -86,7 +86,7 @@ export default function BeautyShortsPage(): JSX.Element {
                 <button
                   disabled={!isAuthenticated || likeMut.isPending}
                   onClick={() => likeMut.mutate({ shortId: s.id })}
-                  className="rounded-full bg-white/10 px-3 py-1 backdrop-blur disabled:opacity-50"
+                  className="rounded-full bg-surface-elevated/10 px-3 py-1 backdrop-blur disabled:opacity-50"
                 >
                   ❤️ {t('beautyShorts.like')}
                 </button>

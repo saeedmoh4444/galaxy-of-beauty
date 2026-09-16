@@ -84,7 +84,7 @@ export function BeautyNightOutCard({
         {SERVICES.map((s) => (
           <div
             key={s.name.ar}
-            className="flex items-center gap-2 rounded-xl bg-white/60 px-3 py-2.5 dark:bg-gray-800/60"
+            className="flex items-center gap-2 rounded-xl bg-surface-elevated/60 px-3 py-2.5"
           >
             <span className="text-lg shrink-0">{s.emoji}</span>
             <div className="flex-1">

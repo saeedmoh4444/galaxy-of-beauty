@@ -72,17 +72,17 @@ export function StartupMentorshipCard({
       </div>
 
       <div className="mt-3 grid grid-cols-2 gap-2">
-        <div className="rounded-xl bg-white/60 p-3 text-center dark:bg-gray-800/60">
+        <div className="rounded-xl bg-surface-elevated/60 p-3 text-center">
           <p className="text-[9px] text-text-tertiary dark:text-text-secondary">{mentorsLabel}</p>
           <p className="text-xl font-bold text-amber-800 dark:text-amber-200">{mentors}</p>
         </div>
-        <div className="rounded-xl bg-white/60 p-3 text-center dark:bg-gray-800/60">
+        <div className="rounded-xl bg-surface-elevated/60 p-3 text-center">
           <p className="text-[9px] text-text-tertiary dark:text-text-secondary">{startupsLabel}</p>
           <p className="text-xl font-bold text-amber-800 dark:text-amber-200">{startups}</p>
         </div>
       </div>
 
-      <div className="mt-2 rounded-xl bg-white/60 p-3 dark:bg-gray-800/60">
+      <div className="mt-2 rounded-xl bg-surface-elevated/60 p-3">
         <p className="text-[10px] font-bold text-amber-800 dark:text-amber-200">{weOfferTitle}</p>
         <div className="mt-1 space-y-0.5 text-[10px] text-amber-700 dark:text-amber-300">
           <p>{offer1}</p>
@@ -103,7 +103,7 @@ export function StartupMentorshipCard({
         <button
           type="button"
           onClick={onApplyMentor}
-          className="rounded-xl border border-amber-200 bg-white px-3 py-2 text-[10px] font-bold text-amber-700 hover:bg-amber-50 dark:border-amber-800 dark:bg-gray-800 dark:text-amber-300"
+          className="rounded-xl border border-amber-200 bg-surface-elevated px-3 py-2 text-[10px] font-bold text-amber-700 hover:bg-amber-50 dark:border-amber-800 dark:text-amber-300"
         >
           {applyMentorButtonText}
         </button>

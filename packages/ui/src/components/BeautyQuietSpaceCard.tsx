@@ -60,7 +60,7 @@ export function BeautyQuietSpaceCard({
           return def ? (
             <div
               key={f}
-              className="flex items-center gap-2 rounded-lg bg-white/60 px-2.5 py-2 dark:bg-gray-800/60"
+              className="flex items-center gap-2 rounded-lg bg-surface-elevated/60 px-2.5 py-2"
             >
               <span className="text-sm">{def.emoji}</span>
               <span className="text-[10px] font-medium text-brand-800 dark:text-brand-200">

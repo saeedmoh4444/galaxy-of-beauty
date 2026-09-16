@@ -110,7 +110,7 @@ export function MainLayout({ children }: { children: ReactNode }): JSX.Element {
   return (
     <div className="min-h-screen bg-surface">
       {/* Navbar */}
-      <header className="sticky top-0 z-40 border-b border-edge bg-white/80 backdrop-blur dark:bg-gray-950/80">
+      <header className="sticky top-0 z-40 border-b border-edge bg-surface-elevated/80 backdrop-blur">
         <div className="mx-auto flex h-16 max-w-7xl items-center justify-between gap-4 px-4">
           <div className="flex items-center gap-3">
             {/* Mobile drawer toggle */}
@@ -186,7 +186,7 @@ export function MainLayout({ children }: { children: ReactNode }): JSX.Element {
                 <div
                   id="nav-more-menu"
                   data-testid="nav-more-menu"
-                  className="absolute end-0 top-full mt-2 w-64 rounded-2xl border border-edge bg-white p-2 shadow-xl dark:bg-gray-900"
+                  className="absolute end-0 top-full mt-2 w-64 rounded-2xl border border-edge bg-surface-elevated p-2 shadow-xl"
                 >
                   {moreLinks.map((link) => (
                     <Link
@@ -250,7 +250,7 @@ export function MainLayout({ children }: { children: ReactNode }): JSX.Element {
           aria-label={t('nav.menu')}
         >
           <div aria-hidden className="absolute inset-0 bg-black/40" />
-          <div className="absolute inset-y-0 start-0 w-72 overflow-y-auto bg-white p-4 dark:bg-gray-950">
+          <div className="absolute inset-y-0 start-0 w-72 overflow-y-auto bg-surface-elevated p-4">
             <div className="mb-4 flex items-center justify-between">
               <span className="text-lg font-bold text-brand-600">{t('common.brandName')}</span>
               <button
@@ -281,7 +281,7 @@ export function MainLayout({ children }: { children: ReactNode }): JSX.Element {
       <BackToTop />
 
       {/* Footer */}
-      <footer className="border-t border-edge bg-white dark:bg-gray-950">
+      <footer className="border-t border-edge bg-surface-elevated">
         <div className="mx-auto max-w-7xl px-4 py-12">
           <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-4">
             <div>

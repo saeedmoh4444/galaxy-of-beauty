@@ -78,7 +78,7 @@ export default function BeautyCoursesPage(): JSX.Element {
                 return (
                   <div
                     key={c.id}
-                    className="flex gap-4 rounded-2xl border border-edge-muted bg-white p-5 dark:bg-gray-900"
+                    className="flex gap-4 rounded-2xl border border-edge-muted bg-surface-elevated p-5"
                   >
                     <span className="text-5xl shrink-0">{c.emoji}</span>
                     <div className="flex-1">

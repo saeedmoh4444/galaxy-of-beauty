@@ -62,14 +62,14 @@ export default function BeautyJournalPage(): JSX.Element {
               placeholder={t('beautyJournal.titlePlaceholder')}
               value={title}
               onChange={(e) => setTitle(e.target.value)}
-              className="w-full rounded-lg border border-edge p-2 text-sm dark:bg-gray-800"
+              className="w-full rounded-lg border border-edge p-2 text-sm bg-surface-elevated"
             />
             <textarea
               placeholder={t('beautyDiary.placeholder')}
               value={content}
               onChange={(e) => setContent(e.target.value)}
               rows={3}
-              className="w-full rounded-lg border border-edge p-3 text-sm dark:bg-gray-800"
+              className="w-full rounded-lg border border-edge p-3 text-sm bg-surface-elevated"
             />
             <div className="flex gap-4 flex-wrap">
               <div className="flex gap-1">
@@ -86,7 +86,7 @@ export default function BeautyJournalPage(): JSX.Element {
               <select
                 value={serviceType}
                 onChange={(e) => setServiceType(e.target.value)}
-                className="rounded-lg border border-edge p-2 text-xs dark:bg-gray-800"
+                className="rounded-lg border border-edge p-2 text-xs bg-surface-elevated"
               >
                 <option value="">{t('beautyJournal.serviceTypeLabel')}</option>
                 {SERVICE_TYPES.map((s) => (
