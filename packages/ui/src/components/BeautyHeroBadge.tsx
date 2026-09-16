@@ -66,7 +66,7 @@ export function BeautyHeroBadge({
       </div>
 
       {/* Hero card */}
-      <div className="mt-3 rounded-xl bg-white/60 p-4 text-center dark:bg-gray-800/60">
+      <div className="mt-3 rounded-xl bg-surface-elevated/60 p-4 text-center">
         <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-gradient-to-br from-amber-200 to-yellow-200 text-3xl dark:from-amber-800 dark:to-yellow-800">
           {member.emoji || ''}
         </div>
@@ -106,7 +106,7 @@ export function BeautyHeroBadge({
         <button
           type="button"
           onClick={onNominate}
-          className="flex-1 rounded-xl border border-amber-200 bg-white py-2 text-[10px] font-bold text-amber-700 hover:bg-amber-50 dark:border-amber-800 dark:bg-gray-800 dark:text-amber-300"
+          className="flex-1 rounded-xl border border-amber-200 bg-surface-elevated py-2 text-[10px] font-bold text-amber-700 hover:bg-amber-50 dark:border-amber-800 dark:text-amber-300"
         >
           {nominateText}
         </button>

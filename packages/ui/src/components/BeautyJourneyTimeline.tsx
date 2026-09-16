@@ -151,7 +151,7 @@ export function BeautyJourneyTimeline({
   const currentIndex = STAGES.indexOf(currentStage);
 
   return (
-    <div className={cn('rounded-2xl bg-white p-5 dark:bg-gray-900', className)}>
+    <div className={cn('rounded-2xl bg-surface-elevated p-5', className)}>
       {/* Header */}
       <div className="text-center">
         <h4 className="text-sm font-bold text-text-primary">{title}</h4>
@@ -175,7 +175,7 @@ export function BeautyJourneyTimeline({
                   className={cn(
                     'relative z-10 flex h-7 w-7 shrink-0 items-center justify-center rounded-full border-2 text-xs transition-all',
                     isActive
-                      ? 'border-current bg-white shadow-sm dark:bg-gray-800'
+                      ? 'border-current bg-surface-elevated shadow-sm'
                       : isPast
                         ? 'border-emerald-300 bg-emerald-50 dark:border-emerald-800 dark:bg-emerald-950'
                         : 'border-edge bg-surface-muted',

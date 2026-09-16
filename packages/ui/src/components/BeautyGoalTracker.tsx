@@ -32,7 +32,7 @@ export function BeautyGoalTracker({
     <div className={`space-y-3 ${className}`}>
       <h4 className="text-sm font-bold text-text-primary">{title}</h4>
       {goals.map((goal, i) => (
-        <div key={i} className="rounded-lg bg-white p-3 dark:bg-gray-900">
+        <div key={i} className="rounded-lg bg-surface-elevated p-3">
           <div className="mb-1.5 flex items-center justify-between">
             <span className="text-xs font-semibold text-text-primary">
               {goal.emoji ? `${goal.emoji} ` : ''}
