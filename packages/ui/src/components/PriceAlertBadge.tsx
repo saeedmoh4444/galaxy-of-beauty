@@ -200,7 +200,7 @@ export function PriceAlertBadge({
             onChange={(e) => setTarget(Number(e.target.value))}
             min={1}
             max={currentPrice}
-            className="flex-1 rounded-lg border border-edge px-2 py-1 text-[10px] bg-surface-elevated dark:text-gray-100"
+            className="flex-1 rounded-lg border border-edge px-2 py-1 text-[10px] bg-surface-elevated text-text-primary"
           />
           <span className="text-[10px] text-text-tertiary dark:text-text-secondary">
             {currencySuffix}

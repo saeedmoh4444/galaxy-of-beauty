@@ -30,7 +30,7 @@ export const FormField = forwardRef<HTMLInputElement, FormFieldProps>(
             'disabled:cursor-not-allowed disabled:bg-surface-muted dark:disabled:bg-gray-800',
             error
               ? 'border-red-500 focus:ring-red-500'
-              : 'border-edge bg-surface-elevated dark:text-gray-100',
+              : 'border-edge bg-surface-elevated text-text-primary',
             className,
           )}
           aria-invalid={error ? 'true' : undefined}
@@ -83,7 +83,7 @@ export function FormSelect({
           'w-full rounded-lg border px-3 py-2 text-sm transition-colors',
           'focus:outline-none focus:ring-2 focus:ring-brand-500 focus:border-transparent',
           'disabled:cursor-not-allowed disabled:bg-surface-muted dark:disabled:bg-gray-800',
-          error ? 'border-red-500' : 'border-edge bg-surface-elevated dark:text-gray-100',
+          error ? 'border-red-500' : 'border-edge bg-surface-elevated text-text-primary',
           className,
         )}
         aria-invalid={error ? 'true' : undefined}
@@ -131,7 +131,7 @@ export function FormTextarea({
           'disabled:cursor-not-allowed disabled:bg-surface-muted dark:disabled:bg-gray-800',
           error
             ? 'border-red-500 focus:ring-red-500'
-            : 'border-edge bg-surface-elevated dark:text-gray-100',
+            : 'border-edge bg-surface-elevated text-text-primary',
           className,
         )}
         aria-invalid={error ? 'true' : undefined}

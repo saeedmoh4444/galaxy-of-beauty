@@ -87,7 +87,7 @@ export function NPSSurvey({
             value={feedback}
             onChange={(e) => setFeedback(e.target.value)}
             rows={3}
-            className="w-full rounded-lg border border-edge bg-surface-muted px-3 py-2 text-sm dark:text-gray-100"
+            className="w-full rounded-lg border border-edge bg-surface-muted px-3 py-2 text-sm text-text-primary"
           />
           <div className="flex gap-2">
             <button

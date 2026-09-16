@@ -165,7 +165,7 @@ export function InlineEdit({
               'rounded-lg border border-brand-400 bg-surface-elevated px-2 py-1 text-sm text-text-primary outline-none ring-2 ring-brand-200 transition-shadow',
               'focus:border-brand-500 focus:ring-brand-500',
               'disabled:opacity-50',
-              'bg-surface-elevated dark:text-gray-100',
+              'bg-surface-elevated',
               type === 'textarea' ? 'min-h-[60px] resize-y' : 'min-w-[120px]',
             )}
             rows={type === 'textarea' ? 3 : undefined}
