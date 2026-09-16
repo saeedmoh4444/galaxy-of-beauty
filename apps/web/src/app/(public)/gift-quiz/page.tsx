@@ -3,9 +3,10 @@
 import { useState } from 'react';
 import type { JSX } from 'react';
 import { api } from '@/lib/trpc';
-import { Card, FormSkeleton, GridSkeleton, Button, formatCurrency } from '@galaxy/ui';
+import { Card, FormSkeleton, GridSkeleton, Button, formatCurrency, ServiceImage } from '@galaxy/ui';
 import Link from 'next/link';
 import { useLocale } from '@/components/LocaleProvider';
+import { pageHeroKey } from '@galaxy/shared';
 
 interface Question {
   id: string;
@@ -72,7 +73,12 @@ export default function GiftQuizPage(): JSX.Element {
     return (
       <div className="mx-auto max-w-4xl px-4 py-12">
         <div className="text-center mb-10">
-          <span className="text-6xl">🎁</span>
+          <ServiceImage
+            service={pageHeroKey('gift-quiz')}
+            alt=""
+            size="xl"
+            className="mx-auto rounded-3xl"
+          />
           <h1 className="mt-4 text-3xl font-bold">{t('marketing.gift-quiz.title')}</h1>
           <p className="mt-2 text-text-secondary">{t('marketing.gift-quiz.subtitle')}</p>
         </div>
@@ -126,7 +132,12 @@ export default function GiftQuizPage(): JSX.Element {
   return (
     <div className="mx-auto max-w-lg px-4 py-12">
       <div className="text-center mb-8">
-        <span className="text-6xl">🎁</span>
+        <ServiceImage
+          service={pageHeroKey('gift-quiz')}
+          alt=""
+          size="xl"
+          className="mx-auto rounded-3xl"
+        />
         <h1 className="mt-4 text-3xl font-bold">{t('marketing.gift-quiz.quiz-title')}</h1>
         <p className="mt-2 text-text-secondary">{t('marketing.gift-quiz.quiz-subtitle')}</p>
       </div>

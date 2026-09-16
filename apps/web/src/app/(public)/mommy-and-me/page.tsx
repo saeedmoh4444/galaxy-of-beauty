@@ -1,8 +1,8 @@
 import type { JSX } from 'react';
 import Link from 'next/link';
-import { Button } from '@galaxy/ui';
+import { Button, ServiceImage } from '@galaxy/ui';
 import { getServerLocale } from '@/lib/i18n';
-import { t } from '@galaxy/shared';
+import { pageHeroKey, t } from '@galaxy/shared';
 import { MommyAndMeBundles } from './MommyAndMeBundles';
 
 export default async function MommyAndMePage(): Promise<JSX.Element> {
@@ -10,7 +10,12 @@ export default async function MommyAndMePage(): Promise<JSX.Element> {
   return (
     <div className="mx-auto max-w-5xl px-4 py-12">
       <div className="text-center mb-10">
-        <span className="text-7xl">🤱</span>
+        <ServiceImage
+          service={pageHeroKey('mommy-and-me')}
+          alt=""
+          size="xl"
+          className="mx-auto rounded-3xl"
+        />
         <h1 className="mt-6 text-4xl font-extrabold text-text-primary">Mommy & Me</h1>
         <p className="mt-4 text-lg text-text-secondary max-w-2xl mx-auto">
           {t('marketing.mommy-and-me.subtitle', locale)}

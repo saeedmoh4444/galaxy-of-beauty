@@ -1,8 +1,8 @@
 import type { JSX } from 'react';
 import Link from 'next/link';
-import { Card, Button, formatCurrency } from '@galaxy/ui';
+import { Card, Button, formatCurrency, ServiceImage } from '@galaxy/ui';
 import { getServerLocale } from '@/lib/i18n';
-import { t } from '@galaxy/shared';
+import { pageHeroKey, t } from '@galaxy/shared';
 
 const LOOKS = [
   {
@@ -130,7 +130,12 @@ export default async function ShopTheLookPage(): Promise<JSX.Element> {
   return (
     <div className="mx-auto max-w-6xl px-4 py-12">
       <div className="text-center mb-12">
-        <span className="text-6xl">👗</span>
+        <ServiceImage
+          service={pageHeroKey('shop-the-look')}
+          alt=""
+          size="xl"
+          className="mx-auto rounded-3xl"
+        />
         <h1 className="mt-4 text-3xl font-bold text-text-primary">
           {t('marketing.shop-the-look.title', locale)}
         </h1>

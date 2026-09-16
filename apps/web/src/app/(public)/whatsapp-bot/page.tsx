@@ -1,7 +1,7 @@
 import type { JSX } from 'react';
-import { Card } from '@galaxy/ui';
+import { Card, ServiceImage } from '@galaxy/ui';
 import { getServerLocale } from '@/lib/i18n';
-import { t } from '@galaxy/shared';
+import { pageHeroKey, t } from '@galaxy/shared';
 
 const FEATURES = [
   {
@@ -41,7 +41,12 @@ export default async function WhatsAppBotPage(): Promise<JSX.Element> {
   return (
     <div className="mx-auto max-w-4xl px-4 py-16">
       <div className="text-center mb-12">
-        <span className="text-7xl">💬</span>
+        <ServiceImage
+          service={pageHeroKey('whatsapp-bot')}
+          alt=""
+          size="xl"
+          className="mx-auto rounded-3xl"
+        />
         <h1 className="mt-6 text-4xl font-extrabold">
           {t('marketing.whatsapp-bot.title', locale)}
         </h1>

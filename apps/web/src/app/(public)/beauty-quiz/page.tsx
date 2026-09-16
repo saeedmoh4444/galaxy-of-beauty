@@ -3,7 +3,8 @@
 import { useState } from 'react';
 import type { JSX } from 'react';
 import Link from 'next/link';
-import { Button, Card } from '@galaxy/ui';
+import { Button, Card, ServiceImage } from '@galaxy/ui';
+import { pageHeroKey } from '@galaxy/shared';
 import { useLocale } from '@/components/LocaleProvider';
 
 const questions = [
@@ -138,7 +139,12 @@ export default function BeautyQuizPage(): JSX.Element {
   if (result) {
     return (
       <div className="mx-auto max-w-lg px-4 py-16 text-center">
-        <span className="text-6xl">✨</span>
+        <ServiceImage
+          service={pageHeroKey('beauty-quiz')}
+          alt=""
+          size="xl"
+          className="mx-auto rounded-3xl"
+        />
         <h1 className="mt-4 text-3xl font-bold text-text-primary">{t(result.title)}</h1>
         <p className="mt-2 text-text-secondary">{t('marketing.beauty-quiz.result-title')}</p>
         <div className="mt-6 space-y-2">

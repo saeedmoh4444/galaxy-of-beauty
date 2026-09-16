@@ -3,8 +3,9 @@ import { useState } from 'react';
 import type { JSX } from 'react';
 import Link from 'next/link';
 import { api } from '@/lib/trpc';
-import { Card, FormSkeleton, Button, formatCurrency } from '@galaxy/ui';
+import { Card, FormSkeleton, Button, formatCurrency, ServiceImage } from '@galaxy/ui';
 import { useLocale } from '@/components/LocaleProvider';
+import { pageHeroKey } from '@galaxy/shared';
 const OCCASIONS = [
   {
     id: 'birthday',
@@ -129,7 +130,12 @@ export default function GiftGuidePage(): JSX.Element {
   return (
     <div className="mx-auto max-w-5xl px-4 py-12">
       <div className="text-center mb-12">
-        <span className="text-6xl">🎁</span>
+        <ServiceImage
+          service={pageHeroKey('gift-guide')}
+          alt=""
+          size="xl"
+          className="mx-auto rounded-3xl"
+        />
         <h1 className="mt-4 text-3xl font-bold text-text-primary">
           {t('marketing.gift-guide.title')}
         </h1>

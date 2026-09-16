@@ -1,7 +1,8 @@
 'use client';
 import { useState } from 'react';
 import type { JSX } from 'react';
-import { Card } from '@galaxy/ui';
+import { Card, ServiceImage } from '@galaxy/ui';
+import { pageHeroKey } from '@galaxy/shared';
 import { useLocale } from '@/components/LocaleProvider';
 
 const TRIMESTERS = [
@@ -130,7 +131,12 @@ export default function PregnancyBeautyPage(): JSX.Element {
   return (
     <div className="mx-auto max-w-5xl px-4 py-12">
       <div className="text-center mb-10">
-        <span className="text-6xl">🤰</span>
+        <ServiceImage
+          service={pageHeroKey('pregnancy-beauty')}
+          alt=""
+          size="xl"
+          className="mx-auto rounded-3xl"
+        />
         <h1 className="mt-4 text-3xl font-bold text-text-primary">
           {t('marketing.pregnancy-beauty.title')}
         </h1>

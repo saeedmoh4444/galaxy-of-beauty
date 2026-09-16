@@ -1,7 +1,8 @@
 'use client';
 import type { JSX } from 'react';
 import { api } from '@/lib/trpc';
-import { Card, CardListSkeleton } from '@galaxy/ui';
+import { Card, CardListSkeleton, ServiceImage } from '@galaxy/ui';
+import { pageHeroKey } from '@galaxy/shared';
 export default function ApiDocsPage(): JSX.Element {
   const { data, isLoading } = api.apiDocs.reference.useQuery() as {
     data: Record<string, unknown> | undefined;
@@ -26,7 +27,12 @@ export default function ApiDocsPage(): JSX.Element {
   return (
     <div className="mx-auto max-w-5xl px-4 py-12">
       <div className="mb-8 text-center">
-        <span className="text-6xl">🔌</span>
+        <ServiceImage
+          service={pageHeroKey('api-docs')}
+          alt=""
+          size="xl"
+          className="mx-auto rounded-3xl"
+        />
         <h1 className="mt-4 text-3xl font-bold">API Documentation</h1>
         <p className="mt-2 text-text-secondary">{data?.description as string}</p>
       </div>

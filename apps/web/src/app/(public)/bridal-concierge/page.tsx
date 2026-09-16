@@ -12,7 +12,9 @@ import {
   Button,
   Modal,
   formatCurrency,
+  ServiceImage,
 } from '@galaxy/ui';
+import { pageHeroKey } from '@galaxy/shared';
 import { useAuth } from '@galaxy/ui';
 import { useLocale } from '@/components/LocaleProvider';
 
@@ -597,7 +599,12 @@ function MarketingLanding(): JSX.Element {
   return (
     <>
       <div className="text-center">
-        <span className="text-7xl">👰</span>
+        <ServiceImage
+          service={pageHeroKey('bridal-concierge')}
+          alt=""
+          size="xl"
+          className="mx-auto rounded-3xl"
+        />
         <h1 className="mt-6 text-4xl font-extrabold text-text-primary">
           {t('marketing.bridal-concierge.landing-title')}
         </h1>

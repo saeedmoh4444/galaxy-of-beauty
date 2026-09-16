@@ -5,9 +5,9 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { api } from '@/lib/trpc';
 import type { RouterOutputs } from '@galaxy/api';
-import { localize } from '@galaxy/shared';
+import { localize, pageHeroKey } from '@galaxy/shared';
 import { useLocale } from '@/components/LocaleProvider';
-import { ErrorAlert, Button, Skeleton, TextLineSkeleton } from '@galaxy/ui';
+import { ErrorAlert, Button, Skeleton, TextLineSkeleton, ServiceImage } from '@galaxy/ui';
 import { ShareButtons } from '@/components/ShareButtons';
 import { Breadcrumbs } from '@/components/Breadcrumbs';
 
@@ -63,7 +63,12 @@ export function BlogPostClient({
   if (!slug) {
     return (
       <div className="mx-auto max-w-3xl px-4 py-24 text-center">
-        <span className="text-6xl">🔗</span>
+        <ServiceImage
+          service={pageHeroKey('blog-post')}
+          alt=""
+          size="xl"
+          className="mx-auto rounded-3xl"
+        />
         <h1 className="mt-4 text-2xl font-bold">{t('marketing.blog-post.invalid-link')}</h1>
         <Link href="/blog" className="mt-4 inline-block">
           <Button size="sm">{t('marketing.blog-post.back-to-blog')}</Button>
@@ -97,7 +102,12 @@ export function BlogPostClient({
   if (!post) {
     return (
       <div className="mx-auto max-w-3xl px-4 py-24 text-center">
-        <span className="text-6xl">🔍</span>
+        <ServiceImage
+          service={pageHeroKey('blog-post')}
+          alt=""
+          size="xl"
+          className="mx-auto rounded-3xl"
+        />
         <h1 className="mt-4 text-2xl font-bold">{t('marketing.blog-post.not-found')}</h1>
         <p className="mt-2 text-text-secondary">{t('marketing.blog-post.not-found-desc')}</p>
         <Link href="/blog" className="mt-4 inline-block">

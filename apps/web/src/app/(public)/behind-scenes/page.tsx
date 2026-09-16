@@ -1,7 +1,8 @@
 'use client';
 import type { JSX } from 'react';
 import { api } from '@/lib/trpc';
-import { Card, GridSkeleton } from '@galaxy/ui';
+import { Card, GridSkeleton, ServiceImage } from '@galaxy/ui';
+import { pageHeroKey } from '@galaxy/shared';
 import { useLocale } from '@/components/LocaleProvider';
 
 export default function BehindScenesPage(): JSX.Element {
@@ -15,7 +16,12 @@ export default function BehindScenesPage(): JSX.Element {
   return (
     <div className="mx-auto max-w-5xl px-4 py-12">
       <div className="mb-8 text-center">
-        <span className="text-6xl">🎬</span>
+        <ServiceImage
+          service={pageHeroKey('behind-scenes')}
+          alt=""
+          size="xl"
+          className="mx-auto rounded-3xl"
+        />
         <h1 className="mt-4 text-3xl font-bold">{t('marketing.behind-scenes.title')}</h1>
         <p className="mt-2 text-text-secondary">{t('marketing.behind-scenes.subtitle')}</p>
       </div>

@@ -2,11 +2,11 @@
 import type { JSX } from 'react';
 
 import { api } from '@/lib/trpc';
-import { Card, GridSkeleton, ErrorAlert, EmptyState } from '@galaxy/ui';
+import { Card, GridSkeleton, ErrorAlert, EmptyState, ServiceImage } from '@galaxy/ui';
 import Link from 'next/link';
 import Image from 'next/image';
 import { useLocale } from '@/components/LocaleProvider';
-import type { TranslationKey } from '@galaxy/shared';
+import { pageHeroKey, type TranslationKey } from '@galaxy/shared';
 
 interface Badge {
   id: number;
@@ -89,7 +89,12 @@ export default function TechnicianBadgesPage(): JSX.Element {
     <div className="mx-auto max-w-5xl px-4 py-12">
       {/* Header */}
       <div className="mb-10 text-center">
-        <span className="text-6xl">🏅</span>
+        <ServiceImage
+          service={pageHeroKey('technician-badges')}
+          alt=""
+          size="xl"
+          className="mx-auto rounded-3xl"
+        />
         <h1 className="mt-4 text-3xl font-bold text-text-primary">
           {t('marketing.technician-badges.title')}
         </h1>

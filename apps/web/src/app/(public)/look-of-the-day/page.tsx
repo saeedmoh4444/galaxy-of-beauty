@@ -1,7 +1,8 @@
 'use client';
 import type { JSX } from 'react';
 import { api } from '@/lib/trpc';
-import { Card, FormSkeleton, Button } from '@galaxy/ui';
+import { Card, FormSkeleton, Button, ServiceImage } from '@galaxy/ui';
+import { pageHeroKey } from '@galaxy/shared';
 import { useAuth } from '@galaxy/ui';
 import { useLocale } from '@/components/LocaleProvider';
 
@@ -22,7 +23,12 @@ export default function LookOfTheDayPage(): JSX.Element {
   return (
     <div className="mx-auto max-w-5xl px-4 py-12">
       <div className="mb-8 text-center">
-        <span className="text-6xl">👗</span>
+        <ServiceImage
+          service={pageHeroKey('look-of-the-day')}
+          alt=""
+          size="xl"
+          className="mx-auto rounded-3xl"
+        />
         <h1 className="mt-4 text-3xl font-bold">{t('marketing.look-of-the-day.title')}</h1>
         <p className="mt-2 text-text-secondary">{t('marketing.look-of-the-day.subtitle')}</p>
       </div>
