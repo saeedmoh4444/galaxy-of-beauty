@@ -183,10 +183,10 @@ export default function SalonMapPage(): JSX.Element {
       />
 
       {/* City Selector Bar */}
-      <div className="absolute top-0 start-0 end-0 z-1000 bg-white/90 dark:bg-gray-900/90 backdrop-blur border-b border-edge dark:border-gray-800">
+      <div className="absolute top-0 start-0 end-0 z-1000 bg-white/90 dark:bg-gray-900/90 backdrop-blur border-b border-edge">
         <div className="mx-auto max-w-6xl px-4 py-3">
           <div className="flex items-center gap-3 overflow-x-auto pb-1">
-            <span className="text-sm font-bold text-text-primary dark:text-gray-300 shrink-0">
+            <span className="text-sm font-bold text-text-primary shrink-0">
               {t('marketing.salon-map.cities-label')}
             </span>
             {cities?.slice(0, 10).map((c) => (
@@ -212,7 +212,7 @@ export default function SalonMapPage(): JSX.Element {
       {/* Map */}
       <div className="h-full w-full pt-[52px]">
         {!leafletLoaded || isLoading ? (
-          <div className="flex h-full items-center justify-center bg-surface-muted dark:bg-gray-900">
+          <div className="flex h-full items-center justify-center bg-surface-muted">
             <div className="text-center">
               <div className="mx-auto h-10 w-10 animate-spin rounded-full border-2 border-brand-300 border-t-brand-600" />
               <p className="mt-4 text-text-secondary">
@@ -223,7 +223,7 @@ export default function SalonMapPage(): JSX.Element {
             </div>
           </div>
         ) : isError ? (
-          <div className="flex h-full items-center justify-center bg-surface-muted dark:bg-gray-900">
+          <div className="flex h-full items-center justify-center bg-surface-muted">
             <ErrorAlert message={t('marketing.salon-map.load-error')} onRetry={() => refetch()} />
           </div>
         ) : (
@@ -258,9 +258,7 @@ export default function SalonMapPage(): JSX.Element {
                 )}
               </div>
               <div>
-                <h3 className="font-bold text-text-primary dark:text-gray-100">
-                  {selectedTechnician.name}
-                </h3>
+                <h3 className="font-bold text-text-primary">{selectedTechnician.name}</h3>
                 <div className="flex items-center gap-2 text-xs text-text-secondary">
                   <span> {selectedTechnician.rating}</span>
                   <span>({selectedTechnician.reviewCount})</span>
@@ -279,7 +277,7 @@ export default function SalonMapPage(): JSX.Element {
             <div className="mt-3 space-y-1.5 max-h-32 overflow-y-auto">
               {selectedTechnician.services.slice(0, 5).map((s) => (
                 <div key={s.id} className="flex justify-between text-xs">
-                  <span className="text-text-primary dark:text-gray-300">{s.nameAr}</span>
+                  <span className="text-text-primary">{s.nameAr}</span>
                   <span className="font-semibold text-brand-600">
                     {t('marketing.salon-map.price-sar', { price: formatCurrency(s.price) })}
                   </span>

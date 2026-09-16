@@ -32,7 +32,7 @@ export function MommyAndMeBundles(): JSX.Element {
           <Card key={b.id as number} padding="lg" hover>
             <div className="text-center">
               <span className="text-5xl">{BUNDLE_EMOJI[i] ?? '🎀'}</span>
-              <h3 className="mt-4 text-lg font-bold text-text-primary dark:text-gray-100">
+              <h3 className="mt-4 text-lg font-bold text-text-primary">
                 {localize(b.nameJson, locale)}
               </h3>
               <p className="mt-2 text-sm text-text-secondary">

@@ -82,7 +82,7 @@ export default function PriceEstimatorPage(): JSX.Element {
       {/* Header */}
       <div className="mb-8 text-center">
         <span className="text-6xl">🧮</span>
-        <h1 className="mt-4 text-3xl font-bold text-text-primary dark:text-gray-100">
+        <h1 className="mt-4 text-3xl font-bold text-text-primary">
           {t('marketing.price-estimator.title')}
         </h1>
         <p className="mt-2 text-text-secondary dark:text-text-tertiary">
@@ -97,7 +97,7 @@ export default function PriceEstimatorPage(): JSX.Element {
           <div>
             <label
               htmlFor="pe-service"
-              className="block text-sm font-semibold text-text-primary dark:text-gray-300 mb-1.5"
+              className="block text-sm font-semibold text-text-primary mb-1.5"
             >
               {t('marketing.price-estimator.service-label')}
               <span className="text-red-500">*</span>
@@ -108,7 +108,7 @@ export default function PriceEstimatorPage(): JSX.Element {
                 <div className="flex items-center gap-3">
                   <span className="text-2xl">💆</span>
                   <div>
-                    <p className="text-sm font-bold text-text-primary dark:text-gray-100">
+                    <p className="text-sm font-bold text-text-primary">
                       {selectedService.titleJson?.ar ??
                         selectedService.titleJson?.en ??
                         t('marketing.price-estimator.service-fallback', {
@@ -134,22 +134,22 @@ export default function PriceEstimatorPage(): JSX.Element {
                   value={search}
                   onChange={(e) => handleSearchChange(e.target.value)}
                   placeholder={t('marketing.price-estimator.search-placeholder')}
-                  className="w-full rounded-xl border border-edge bg-surface-muted px-4 py-3 text-sm focus:border-brand-500 focus:outline-none focus:ring-2 focus:ring-brand-100 dark:border-gray-700 dark:bg-gray-800 dark:placeholder:text-text-secondary"
+                  className="w-full rounded-xl border border-edge bg-surface-muted px-4 py-3 text-sm focus:border-brand-500 focus:outline-none focus:ring-2 focus:ring-brand-100 dark:placeholder:text-text-secondary"
                 />
                 {servicesLoading && search.length > 0 && (
-                  <div className="absolute top-full mt-1 w-full rounded-xl border border-edge bg-white p-4 text-center text-sm text-text-tertiary dark:border-gray-700 dark:bg-gray-900 z-10 shadow-lg">
+                  <div className="absolute top-full mt-1 w-full rounded-xl border border-edge bg-white p-4 text-center text-sm text-text-tertiary dark:bg-gray-900 z-10 shadow-lg">
                     {t('marketing.price-estimator.searching')}
                   </div>
                 )}
                 {search.length > 0 && !servicesLoading && serviceList.length > 0 && (
-                  <div className="absolute top-full mt-1 w-full rounded-xl border border-edge bg-white dark:border-gray-700 dark:bg-gray-900 z-10 shadow-xl max-h-64 overflow-y-auto">
+                  <div className="absolute top-full mt-1 w-full rounded-xl border border-edge bg-white dark:bg-gray-900 z-10 shadow-xl max-h-64 overflow-y-auto">
                     {serviceList.map((s) => (
                       <button
                         key={s.id}
                         onClick={() => handleServiceSelect(s.id)}
-                        className="flex w-full items-center justify-between px-4 py-3 text-sm hover:bg-brand-50 dark:hover:bg-brand-950 transition-colors border-b border-edge-muted dark:border-gray-800 last:border-0"
+                        className="flex w-full items-center justify-between px-4 py-3 text-sm hover:bg-brand-50 dark:hover:bg-brand-950 transition-colors border-b border-edge-muted last:border-0"
                       >
-                        <span className="text-text-primary dark:text-gray-100">
+                        <span className="text-text-primary">
                           {s.titleJson?.ar ??
                             s.titleJson?.en ??
                             t('marketing.price-estimator.service-fallback', { id: s.id })}
@@ -169,7 +169,7 @@ export default function PriceEstimatorPage(): JSX.Element {
           <div>
             <label
               htmlFor="pe-promo"
-              className="block text-sm font-semibold text-text-primary dark:text-gray-300 mb-1.5"
+              className="block text-sm font-semibold text-text-primary mb-1.5"
             >
               {t('marketing.price-estimator.promo-label')}{' '}
               <span className="text-text-tertiary font-normal">
@@ -183,7 +183,7 @@ export default function PriceEstimatorPage(): JSX.Element {
                 value={promoCode}
                 onChange={(e) => setPromoCode(e.target.value.toUpperCase())}
                 placeholder={t('marketing.price-estimator.promo-placeholder')}
-                className="w-full rounded-xl border border-edge bg-surface-muted px-4 py-3 text-sm uppercase tracking-wider focus:border-brand-500 focus:outline-none focus:ring-2 focus:ring-brand-100 dark:border-gray-700 dark:bg-gray-800 dark:placeholder:text-text-secondary"
+                className="w-full rounded-xl border border-edge bg-surface-muted px-4 py-3 text-sm uppercase tracking-wider focus:border-brand-500 focus:outline-none focus:ring-2 focus:ring-brand-100 dark:placeholder:text-text-secondary"
               />
               {promoCode && estimate?.promoValid && (
                 <span className="absolute start-3 top-1/2 -translate-y-1/2 text-green-500 text-sm font-bold">
@@ -199,7 +199,7 @@ export default function PriceEstimatorPage(): JSX.Element {
           </div>
 
           {/* Quick Info */}
-          <div className="rounded-xl bg-surface-muted p-3 dark:bg-gray-800 text-xs text-text-secondary space-y-1">
+          <div className="rounded-xl bg-surface-muted p-3 text-xs text-text-secondary space-y-1">
             <p>
               <strong>{t('marketing.price-estimator.base-price-label')}</strong> —{' '}
               {t('marketing.price-estimator.base-price-hint')}
@@ -243,9 +243,7 @@ export default function PriceEstimatorPage(): JSX.Element {
         >
           {/* Service Title */}
           <div className="text-center mb-5">
-            <h3 className="text-lg font-bold text-text-primary dark:text-gray-100">
-              {estimate.serviceName}
-            </h3>
+            <h3 className="text-lg font-bold text-text-primary">{estimate.serviceName}</h3>
             {estimate.variantDelta > 0 && estimate.variantName && (
               <span className="inline-block mt-1 rounded-full bg-brand-100 px-2.5 py-0.5 text-xs font-medium text-brand-700 dark:bg-brand-900 dark:text-brand-300">
                 {estimate.variantName}
@@ -259,7 +257,7 @@ export default function PriceEstimatorPage(): JSX.Element {
               <span className="text-text-secondary">
                 {t('marketing.price-estimator.base-price-label')}
               </span>
-              <span className="font-medium text-text-primary dark:text-gray-300">
+              <span className="font-medium text-text-primary">
                 {formatCurrency(estimate.basePrice)}
               </span>
             </div>
@@ -315,7 +313,7 @@ export default function PriceEstimatorPage(): JSX.Element {
 
             {/* Total */}
             <div className="flex justify-between text-lg pt-1">
-              <span className="font-bold text-text-primary dark:text-gray-100">
+              <span className="font-bold text-text-primary">
                 {t('marketing.price-estimator.total-label')}
               </span>
               <span className="font-extrabold text-brand-600">

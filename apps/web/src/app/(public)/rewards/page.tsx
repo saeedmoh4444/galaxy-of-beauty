@@ -33,7 +33,7 @@ export default async function RewardsPage(): Promise<JSX.Element> {
   return (
     <div className="mx-auto max-w-5xl px-4 py-12">
       <div className="text-center mb-10">
-        <h1 className="text-3xl font-bold text-text-primary dark:text-gray-100">
+        <h1 className="text-3xl font-bold text-text-primary">
           {t('marketing.rewards.title', locale)}
         </h1>
         <p className="mt-2 text-text-secondary">{t('marketing.rewards.subtitle', locale)}</p>
@@ -61,7 +61,7 @@ export default async function RewardsPage(): Promise<JSX.Element> {
       </div>
 
       {/* Rewards */}
-      <h2 className="text-xl font-bold mb-6 text-text-primary dark:text-gray-100">
+      <h2 className="text-xl font-bold mb-6 text-text-primary">
         {t('marketing.rewards.rewards-title', locale)}
       </h2>
       {rewards.length === 0 ? (

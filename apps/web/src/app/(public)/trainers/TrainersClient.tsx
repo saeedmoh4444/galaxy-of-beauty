@@ -54,7 +54,7 @@ export function TrainersClient({ data }: { data: TrainersPageData }): JSX.Elemen
                         />
                       </div>
                       <div className="min-w-0">
-                        <p className="truncate font-bold text-text-primary dark:text-gray-100">
+                        <p className="truncate font-bold text-text-primary">
                           {user.name as string}
                         </p>
                         <p className="text-xs text-text-secondary">

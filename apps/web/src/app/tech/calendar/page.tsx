@@ -66,7 +66,7 @@ export default function TechCalendarPage(): JSX.Element {
         ) : (
           <Card>
             <div className="space-y-4 text-center">
-              <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-surface-muted text-3xl dark:bg-gray-800">
+              <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-surface-muted text-3xl">
                 🔗
               </div>
               <h2 className="text-lg font-semibold">{t('tech.calendar.connect-title')}</h2>

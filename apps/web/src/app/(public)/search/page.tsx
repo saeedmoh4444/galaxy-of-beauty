@@ -68,9 +68,7 @@ export default function SearchPage(): JSX.Element {
   return (
     <div className="mx-auto max-w-5xl px-4 py-8">
       <div className="mb-8 text-center">
-        <h1 className="text-3xl font-bold text-text-primary dark:text-gray-100">
-          {t('marketing.search.title')}
-        </h1>
+        <h1 className="text-3xl font-bold text-text-primary">{t('marketing.search.title')}</h1>
       </div>
       <div className="mx-auto mb-8 flex max-w-xl gap-2">
         <Input

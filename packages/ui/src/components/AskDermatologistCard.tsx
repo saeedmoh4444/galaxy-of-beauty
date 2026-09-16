@@ -88,8 +88,8 @@ export function AskDermatologistCard({
           👩
         </div>
         <div className="min-w-0 flex-1">
-          <h4 className="text-sm font-bold text-text-primary dark:text-gray-100">{doctor.name}</h4>
-          <p className="text-[10px] text-text-secondary dark:text-gray-300">{doctor.specialty}</p>
+          <h4 className="text-sm font-bold text-text-primary">{doctor.name}</h4>
+          <p className="text-[10px] text-text-secondary">{doctor.specialty}</p>
           {doctor.credentials && (
             <p className="text-[9px] text-text-tertiary dark:text-text-secondary">
               {doctor.credentials}
@@ -123,11 +123,11 @@ export function AskDermatologistCard({
       </div>
 
       {/* Questions counter */}
-      <div className="mt-2 flex items-center gap-2 rounded-lg bg-surface-muted p-2 dark:bg-gray-800">
+      <div className="mt-2 flex items-center gap-2 rounded-lg bg-surface-muted p-2">
         <span className="text-sm" aria-hidden="true">
           ❓
         </span>
-        <span className="text-[10px] text-text-secondary dark:text-gray-300">
+        <span className="text-[10px] text-text-secondary">
           {questionsCount > 0 ? `${questionsCount} ${questionsSubmittedSuffix}` : firstQuestionText}
         </span>
       </div>

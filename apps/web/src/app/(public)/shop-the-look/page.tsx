@@ -131,7 +131,7 @@ export default async function ShopTheLookPage(): Promise<JSX.Element> {
     <div className="mx-auto max-w-6xl px-4 py-12">
       <div className="text-center mb-12">
         <span className="text-6xl">👗</span>
-        <h1 className="mt-4 text-3xl font-bold text-text-primary dark:text-gray-100">
+        <h1 className="mt-4 text-3xl font-bold text-text-primary">
           {t('marketing.shop-the-look.title', locale)}
         </h1>
         <p className="mt-2 text-text-secondary">{t('marketing.shop-the-look.subtitle', locale)}</p>
@@ -146,9 +146,7 @@ export default async function ShopTheLookPage(): Promise<JSX.Element> {
               <div className="flex items-center gap-3 mb-4">
                 <span className="text-4xl">{look.emoji}</span>
                 <div>
-                  <h2 className="text-xl font-bold text-text-primary dark:text-gray-100">
-                    {t(look.name, locale)}
-                  </h2>
+                  <h2 className="text-xl font-bold text-text-primary">{t(look.name, locale)}</h2>
                   <p className="text-sm text-text-secondary dark:text-text-tertiary">
                     {t(look.desc, locale)}
                   </p>
@@ -162,7 +160,7 @@ export default async function ShopTheLookPage(): Promise<JSX.Element> {
                   >
                     <div className="flex items-center gap-2">
                       <span>{s.emoji}</span>
-                      <span className="text-sm font-medium text-text-primary dark:text-gray-100">
+                      <span className="text-sm font-medium text-text-primary">
                         {t(s.name, locale)}
                       </span>
                       <span className="text-xs text-text-secondary">
@@ -175,9 +173,9 @@ export default async function ShopTheLookPage(): Promise<JSX.Element> {
                   </div>
                 ))}
               </div>
-              <div className="flex items-center justify-between border-t border-edge/50 dark:border-gray-700/50 pt-4">
+              <div className="flex items-center justify-between border-t border-edge/50 pt-4">
                 <div>
-                  <p className="text-lg font-extrabold text-text-primary dark:text-gray-100">
+                  <p className="text-lg font-extrabold text-text-primary">
                     {formatCurrency(total)}
                   </p>
                   <p className="text-xs text-text-secondary">

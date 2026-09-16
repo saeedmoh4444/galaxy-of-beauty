@@ -77,10 +77,7 @@ export default function AdminAnalyticsV2Page(): JSX.Element {
             <div className="space-y-2">
               {(d.topServices as Array<Record<string, unknown>>)?.map(
                 (s: Record<string, unknown>, i: number) => (
-                  <div
-                    key={i}
-                    className="flex items-center gap-3 rounded-lg bg-surface-muted dark:bg-gray-800 p-3"
-                  >
+                  <div key={i} className="flex items-center gap-3 rounded-lg bg-surface-muted p-3">
                     <span className="text-xl w-8">#{i + 1}</span>
                     <span className="flex-1 font-bold">{s.name as string}</span>
                     <span>

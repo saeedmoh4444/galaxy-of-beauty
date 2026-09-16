@@ -48,9 +48,7 @@ export function BeautyAlumniCard({
         </div>
         <div className="min-w-0 flex-1">
           <h4 className="text-sm font-bold text-brand-700 dark:text-brand-300">{alumna.name}</h4>
-          <p className="text-xs font-bold text-text-primary dark:text-gray-100">
-            {alumna.currentRole}
-          </p>
+          <p className="text-xs font-bold text-text-primary">{alumna.currentRole}</p>
           <p className="text-[10px] text-text-tertiary dark:text-text-secondary">
             {graduatePrefix} {alumna.graduationYear}
             {alumna.city && ` ·  ${alumna.city}`}

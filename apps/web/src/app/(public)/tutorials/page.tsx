@@ -73,7 +73,7 @@ export default function TutorialsPage(): JSX.Element {
       {/* Header */}
       <div className="mb-10 text-center">
         <span className="text-6xl">🎓</span>
-        <h1 className="mt-4 text-3xl font-bold text-text-primary dark:text-gray-100">
+        <h1 className="mt-4 text-3xl font-bold text-text-primary">
           {t('marketing.tutorials.title')}
         </h1>
         <p className="mt-2 text-text-secondary dark:text-text-tertiary">
@@ -91,7 +91,7 @@ export default function TutorialsPage(): JSX.Element {
             setPage(1);
           }}
           placeholder={t('marketing.tutorials.search-placeholder')}
-          className="w-full max-w-md rounded-xl border border-edge bg-surface-muted px-4 py-2.5 text-sm focus:border-brand-500 focus:outline-none focus:ring-2 focus:ring-brand-100 dark:border-gray-700 dark:bg-gray-800 dark:placeholder:text-text-secondary"
+          className="w-full max-w-md rounded-xl border border-edge bg-surface-muted px-4 py-2.5 text-sm focus:border-brand-500 focus:outline-none focus:ring-2 focus:ring-brand-100 dark:placeholder:text-text-secondary"
         />
       </div>
 
@@ -219,7 +219,7 @@ export default function TutorialsPage(): JSX.Element {
 
                   <div className="p-4">
                     {/* Title */}
-                    <h3 className="text-base font-bold text-text-primary dark:text-gray-100 line-clamp-2 group-hover:text-brand-600 transition-colors">
+                    <h3 className="text-base font-bold text-text-primary line-clamp-2 group-hover:text-brand-600 transition-colors">
                       {tut.titleAr}
                     </h3>
 

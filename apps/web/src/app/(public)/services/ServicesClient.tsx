@@ -105,7 +105,7 @@ export function ServicesClient({ data }: { data: ServicesPageData }): JSX.Elemen
               setSort(e.target.value);
               setPage(1);
             }}
-            className="rounded-lg border border-edge px-3 py-2 text-sm dark:border-gray-600 dark:bg-gray-900"
+            className="rounded-lg border border-edge px-3 py-2 text-sm dark:bg-gray-900"
           >
             <option value="newest">{t('marketing.services.sort-newest')}</option>
             <option value="price_asc">{t('marketing.services.sort-price-asc')}</option>
@@ -118,7 +118,7 @@ export function ServicesClient({ data }: { data: ServicesPageData }): JSX.Elemen
                 <Link
                   key={c.id}
                   href={`/services?categoryId=${c.id}`}
-                  className="rounded-full bg-surface-muted px-3 py-1 text-xs dark:bg-gray-800"
+                  className="rounded-full bg-surface-muted px-3 py-1 text-xs"
                 >
                   {localize(c.nameJson, locale)}
                 </Link>
@@ -133,7 +133,7 @@ export function ServicesClient({ data }: { data: ServicesPageData }): JSX.Elemen
             className={`rounded-lg px-4 py-2 text-sm font-medium transition-colors ${
               compareMode
                 ? 'bg-brand-600 text-white'
-                : 'border border-edge text-text-secondary hover:bg-surface-muted dark:border-gray-600 dark:text-text-tertiary'
+                : 'border border-edge text-text-secondary hover:bg-surface-muted dark:text-text-tertiary'
             }`}
           >
             {t('marketing.services.compare')}{' '}
@@ -185,7 +185,7 @@ export function ServicesClient({ data }: { data: ServicesPageData }): JSX.Elemen
                         alt={localize(svc.titleJson, locale)}
                       />
                     </div>
-                    <h3 className="mt-3 font-semibold text-text-primary dark:text-gray-100">
+                    <h3 className="mt-3 font-semibold text-text-primary">
                       {localize(svc.titleJson, locale)}
                     </h3>
                     <p className="mt-1 text-sm text-text-secondary">
@@ -262,7 +262,7 @@ export function ServicesClient({ data }: { data: ServicesPageData }): JSX.Elemen
               <button
                 key={i}
                 onClick={() => setPage(i + 1)}
-                className={`rounded-lg px-3 py-1 text-sm ${page === i + 1 ? 'bg-brand-600 text-white' : 'bg-surface-muted dark:bg-gray-800'}`}
+                className={`rounded-lg px-3 py-1 text-sm ${page === i + 1 ? 'bg-brand-600 text-white' : 'bg-surface-muted'}`}
               >
                 {i + 1}
               </button>

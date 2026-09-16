@@ -78,10 +78,7 @@ export default function ServiceTrendsPage(): JSX.Element {
             <h3 className="font-bold mb-4">{t('marketing.service-trends.top-this-month')}</h3>
             <div className="space-y-2">
               {top.map((t: Record<string, unknown>, i: number) => (
-                <div
-                  key={i}
-                  className="flex items-center gap-3 rounded-lg bg-surface-muted dark:bg-gray-800 p-3"
-                >
+                <div key={i} className="flex items-center gap-3 rounded-lg bg-surface-muted p-3">
                   <span className="text-2xl w-10 text-center">{['', '', '', '4️⃣', '5️⃣'][i]}</span>
                   <span className="text-2xl">{t.emoji as string}</span>
                   <span className="flex-1 font-bold">{t.nameAr as string}</span>

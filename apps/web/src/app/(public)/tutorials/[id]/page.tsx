@@ -177,7 +177,7 @@ export default function TutorialDetailPage(): JSX.Element {
             {tags.map((tag) => (
               <span
                 key={tag}
-                className="rounded-full bg-surface-muted px-3 py-1 text-xs text-text-secondary dark:bg-gray-800 dark:text-text-tertiary"
+                className="rounded-full bg-surface-muted px-3 py-1 text-xs text-text-secondary dark:text-text-tertiary"
               >
                 #{tag}
               </span>
@@ -187,7 +187,7 @@ export default function TutorialDetailPage(): JSX.Element {
 
         {/* Description */}
         {desc && (
-          <div className="mt-6 rounded-2xl bg-surface-muted p-5 dark:bg-gray-900">
+          <div className="mt-6 rounded-2xl bg-surface-muted p-5">
             <h3 className="text-sm font-bold text-text-secondary mb-2">
               {t('marketing.tutorials.desc-title')}
             </h3>

@@ -151,9 +151,7 @@ export function BeautyCircleCard({
           {circle.cover}
         </div>
         <div className="min-w-0 flex-1">
-          <h4 className="truncate text-sm font-bold text-text-primary dark:text-gray-100">
-            {circle.name}
-          </h4>
+          <h4 className="truncate text-sm font-bold text-text-primary">{circle.name}</h4>
           <div className="mt-0.5 flex items-center gap-1.5">
             <span
               className={cn(
@@ -187,13 +185,13 @@ export function BeautyCircleCard({
                 </span>
               ))}
               {circle.recentMembers.length > 4 && (
-                <span className="flex h-6 w-6 items-center justify-center rounded-full border-2 border-white bg-surface-muted text-[9px] font-bold text-text-secondary dark:border-gray-900 dark:bg-gray-800">
+                <span className="flex h-6 w-6 items-center justify-center rounded-full border-2 border-white bg-surface-muted text-[9px] font-bold text-text-secondary dark:border-gray-900">
                   +{circle.recentMembers.length - 4}
                 </span>
               )}
             </div>
           )}
-          <span className="text-xs font-semibold text-text-secondary dark:text-gray-300">
+          <span className="text-xs font-semibold text-text-secondary">
             {circle.members} {membersLabel}
           </span>
         </div>
@@ -219,7 +217,7 @@ export function BeautyCircleCard({
           <span className="text-xs" aria-hidden="true">
             📅
           </span>
-          <span className="text-[10px] text-text-secondary dark:text-gray-300">
+          <span className="text-[10px] text-text-secondary">
             {nextMeetupPrefix}
             {circle.nextMeetup}
           </span>

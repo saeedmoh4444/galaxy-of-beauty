@@ -130,7 +130,7 @@ export default function TechEarningsPage(): JSX.Element {
             <EmptyState title={t('tech.earnings.earnings-empty')} />
           ) : (
             <div className="space-y-1">
-              <div className="flex items-center justify-between border-b border-edge-muted pb-2 text-sm font-medium text-text-secondary dark:border-gray-700">
+              <div className="flex items-center justify-between border-b border-edge-muted pb-2 text-sm font-medium text-text-secondary">
                 <span>{t('tech.earnings.date')}</span>
                 <span>{t('tech.earnings.earnings-header')}</span>
                 <span>{t('tech.earnings.booking-count')}</span>
@@ -140,14 +140,14 @@ export default function TechEarningsPage(): JSX.Element {
                   key={day.date as string}
                   className="flex items-center justify-between py-1.5 text-sm"
                 >
-                  <span className="text-text-primary dark:text-gray-300">{day.date as string}</span>
+                  <span className="text-text-primary">{day.date as string}</span>
                   <span className="font-medium text-green-600">
                     {formatCurrency(Number(day.earnings ?? 0))}
                   </span>
                   <span className="text-text-secondary">{String(day.count ?? 0)}</span>
                 </div>
               ))}
-              <div className="flex items-center justify-between border-t border-edge pt-3 font-semibold dark:border-gray-700">
+              <div className="flex items-center justify-between border-t border-edge pt-3 font-semibold">
                 <span>{t('tech.earnings.total')}</span>
                 <span className="text-green-600">
                   {formatCurrency(Number(earnings?.totalEarnings ?? 0))}

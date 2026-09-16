@@ -114,9 +114,7 @@ export function BeautyBankCard({
       {waitlist !== undefined && waitlist > 0 && (
         <div className="mt-2 rounded-xl bg-white/60 p-2.5 dark:bg-gray-800/60">
           <div className="flex items-center justify-between">
-            <span className="text-[10px] text-text-secondary dark:text-gray-300">
-              {waitlistLabel}
-            </span>
+            <span className="text-[10px] text-text-secondary">{waitlistLabel}</span>
             <span className="text-xs font-bold text-rose-700 dark:text-rose-400">
               {waitlist} {waitlistCountSuffix}
             </span>

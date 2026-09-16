@@ -48,7 +48,7 @@ export function NailBarsClient({ data }: { data: NailBarsPageData }): JSX.Elemen
                       size="md"
                     />
                     <div className="min-w-0">
-                      <p className="truncate font-bold text-text-primary dark:text-gray-100">
+                      <p className="truncate font-bold text-text-primary">
                         {n.storeName as string}
                       </p>
                       <p className="text-xs text-text-secondary">

@@ -110,9 +110,7 @@ export function GymClient({ data }: { data: GymPageData }): JSX.Element {
           <ServiceImage src={gym.logoUrl ?? null} alt={gym.storeName ?? ''} size="full" />
         </div>
         <div>
-          <h1 className="text-2xl font-bold text-text-primary dark:text-gray-100">
-            {gym.storeName}
-          </h1>
+          <h1 className="text-2xl font-bold text-text-primary">{gym.storeName}</h1>
           <p className="mt-1 text-sm text-text-secondary">
             {gym.gymType ? t(`gyms.type.${gym.gymType}` as never) : ''} · {gym.gymCity ?? ''} ·{' '}
             {gym.gymAddress ?? ''}

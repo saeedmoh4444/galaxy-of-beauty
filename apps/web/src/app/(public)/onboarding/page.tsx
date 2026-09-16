@@ -61,7 +61,7 @@ export default function OnboardingPage(): JSX.Element {
             />
           ))}
         </div>
-        <h1 className="text-2xl font-bold text-text-primary dark:text-gray-100">{t(s.title)}</h1>
+        <h1 className="text-2xl font-bold text-text-primary">{t(s.title)}</h1>
         <p className="mt-4 text-text-secondary dark:text-text-tertiary">{t(s.desc)}</p>
         <div className="mt-8 flex gap-3 justify-center">
           {s.link ? (

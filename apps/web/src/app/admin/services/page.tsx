@@ -205,7 +205,7 @@ export default function AdminServicesPage(): JSX.Element {
           </label>
           <select
             id="as-cat-filter"
-            className="rounded-lg border border-edge bg-white p-2 text-sm dark:border-gray-700 dark:bg-gray-900"
+            className="rounded-lg border border-edge bg-white p-2 text-sm dark:bg-gray-900"
             value={catFilter ?? ''}
             onChange={(e) => setCatFilter(e.target.value ? Number(e.target.value) : null)}
           >
@@ -225,7 +225,7 @@ export default function AdminServicesPage(): JSX.Element {
             <button
               key={s}
               onClick={() => setStatusFilter(s)}
-              className={`rounded-full px-3 py-1 text-xs font-medium ${statusFilter === s ? 'bg-brand-600 text-white' : 'bg-surface-muted text-text-secondary dark:bg-gray-800 dark:text-text-tertiary'}`}
+              className={`rounded-full px-3 py-1 text-xs font-medium ${statusFilter === s ? 'bg-brand-600 text-white' : 'bg-surface-muted text-text-secondary dark:text-text-tertiary'}`}
             >
               {s === 'ALL'
                 ? t('admin.all')
@@ -306,7 +306,7 @@ export default function AdminServicesPage(): JSX.Element {
                   </div>
 
                   {expandedId === svc.id && (
-                    <div className="mt-4 border-t border-edge-muted pt-3 dark:border-gray-800">
+                    <div className="mt-4 border-t border-edge-muted pt-3">
                       <h4 className="mb-2 text-sm font-semibold">{t('admin.services.variants')}</h4>
                       {variantCount === 0 ? (
                         <p className="mb-2 text-xs text-text-secondary">
@@ -319,7 +319,7 @@ export default function AdminServicesPage(): JSX.Element {
                             return (
                               <div
                                 key={v.id}
-                                className="flex items-center justify-between rounded bg-surface-muted px-3 py-1.5 text-sm dark:bg-gray-900"
+                                className="flex items-center justify-between rounded bg-surface-muted px-3 py-1.5 text-sm"
                               >
                                 <span>
                                   {vNames.ar ?? ''} / {vNames.en ?? ''}
@@ -440,13 +440,13 @@ export default function AdminServicesPage(): JSX.Element {
           <div>
             <label
               htmlFor="as-cat-create"
-              className="mb-1 block text-sm font-medium text-text-primary dark:text-gray-300"
+              className="mb-1 block text-sm font-medium text-text-primary"
             >
               {t('admin.services.category')}
             </label>
             <select
               id="as-cat-create"
-              className="w-full rounded-lg border border-edge bg-white p-2 text-sm dark:border-gray-700 dark:bg-gray-900"
+              className="w-full rounded-lg border border-edge bg-white p-2 text-sm dark:bg-gray-900"
               value={form.categoryId || ''}
               onChange={(e) => setForm({ ...form, categoryId: Number(e.target.value) || 0 })}
             >
@@ -527,13 +527,13 @@ export default function AdminServicesPage(): JSX.Element {
           <div>
             <label
               htmlFor="as-cat-edit"
-              className="mb-1 block text-sm font-medium text-text-primary dark:text-gray-300"
+              className="mb-1 block text-sm font-medium text-text-primary"
             >
               {t('admin.services.category')}
             </label>
             <select
               id="as-cat-edit"
-              className="w-full rounded-lg border border-edge bg-white p-2 text-sm dark:border-gray-700 dark:bg-gray-900"
+              className="w-full rounded-lg border border-edge bg-white p-2 text-sm dark:bg-gray-900"
               value={form.categoryId || ''}
               onChange={(e) => setForm({ ...form, categoryId: Number(e.target.value) || 0 })}
             >

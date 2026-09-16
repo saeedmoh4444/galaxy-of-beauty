@@ -90,7 +90,7 @@ export function BeautyBudgetCard({
             💰
           </span>
           <div>
-            <h4 className="text-sm font-bold text-text-primary dark:text-gray-100">{title}</h4>
+            <h4 className="text-sm font-bold text-text-primary">{title}</h4>
             <p className="text-[10px] text-text-tertiary dark:text-text-tertiary">
               {curatedPrefix}
               {maxPrice} {riyalSuffix}
@@ -113,7 +113,7 @@ export function BeautyBudgetCard({
           return (
             <div
               key={i}
-              className="flex items-center gap-3 rounded-xl bg-surface-muted p-2.5 transition-colors hover:bg-lime-50 dark:bg-gray-800 dark:hover:bg-lime-950"
+              className="flex items-center gap-3 rounded-xl bg-surface-muted p-2.5 transition-colors hover:bg-lime-50 dark:hover:bg-lime-950"
             >
               {/* Category icon */}
               <span
@@ -125,9 +125,7 @@ export function BeautyBudgetCard({
 
               {/* Name + meta */}
               <div className="min-w-0 flex-1">
-                <p className="truncate text-xs font-semibold text-text-primary dark:text-gray-100">
-                  {service.name}
-                </p>
+                <p className="truncate text-xs font-semibold text-text-primary">{service.name}</p>
                 <div className="flex items-center gap-1.5 text-[10px] text-text-tertiary dark:text-text-secondary">
                   <span>{cat.label[locale]}</span>
                   {service.duration && (

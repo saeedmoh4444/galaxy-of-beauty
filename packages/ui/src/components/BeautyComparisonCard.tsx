@@ -77,9 +77,7 @@ export function BeautyComparisonCard({
                 {item.emoji}
               </span>
             )}
-            <p className="mt-1 text-[10px] font-bold text-text-primary dark:text-gray-100">
-              {item.name}
-            </p>
+            <p className="mt-1 text-[10px] font-bold text-text-primary">{item.name}</p>
             <p className="text-xs font-bold text-blue-700 dark:text-blue-300">
               {item.price} {currency}
             </p>

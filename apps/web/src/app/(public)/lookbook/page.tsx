@@ -146,9 +146,7 @@ export default function LookbookPage(): JSX.Element {
   return (
     <div className="mx-auto max-w-6xl px-4 py-8">
       <div className="text-center mb-10">
-        <h1 className="text-3xl font-bold text-text-primary dark:text-gray-100">
-          {t('marketing.lookbook.title')}
-        </h1>
+        <h1 className="text-3xl font-bold text-text-primary">{t('marketing.lookbook.title')}</h1>
         <p className="mt-2 text-text-secondary">{t('marketing.lookbook.subtitle')}</p>
       </div>
 
@@ -165,7 +163,7 @@ export default function LookbookPage(): JSX.Element {
       </div>
 
       <div className="text-center mb-8">
-        <h2 className="text-2xl font-bold text-text-primary dark:text-gray-100">
+        <h2 className="text-2xl font-bold text-text-primary">
           {currentSeason.emoji} {t(locale === 'ar' ? currentSeason.nameAr : currentSeason.nameEn)}
         </h2>
       </div>
@@ -179,7 +177,7 @@ export default function LookbookPage(): JSX.Element {
               >
                 <span>{look.image}</span>
               </div>
-              <h3 className="mt-4 text-lg font-bold text-text-primary group-hover:text-brand-600 dark:text-gray-100">
+              <h3 className="mt-4 text-lg font-bold text-text-primary group-hover:text-brand-600">
                 {t(look.title)}
               </h3>
               <p className="mt-1 text-sm text-text-secondary">{t(look.desc)}</p>

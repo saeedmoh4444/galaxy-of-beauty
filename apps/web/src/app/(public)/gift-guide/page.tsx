@@ -130,7 +130,7 @@ export default function GiftGuidePage(): JSX.Element {
     <div className="mx-auto max-w-5xl px-4 py-12">
       <div className="text-center mb-12">
         <span className="text-6xl">🎁</span>
-        <h1 className="mt-4 text-3xl font-bold text-text-primary dark:text-gray-100">
+        <h1 className="mt-4 text-3xl font-bold text-text-primary">
           {t('marketing.gift-guide.title')}
         </h1>
         <p className="mt-2 text-text-secondary">{t('marketing.gift-guide.subtitle')}</p>
@@ -141,9 +141,7 @@ export default function GiftGuidePage(): JSX.Element {
           <div className="mb-4 flex items-center gap-3">
             <span className="text-3xl">{occ.emoji}</span>
             <div>
-              <h2 className="text-xl font-bold text-text-primary dark:text-gray-100">
-                {t(occ.name)}
-              </h2>
+              <h2 className="text-xl font-bold text-text-primary">{t(occ.name)}</h2>
               <p className="text-sm text-text-secondary">{t(occ.desc)}</p>
             </div>
           </div>
@@ -152,9 +150,7 @@ export default function GiftGuidePage(): JSX.Element {
               <Link key={i} href={g.link}>
                 <Card hover padding="lg" className="h-full text-center">
                   <span className="text-4xl">{g.emoji}</span>
-                  <h3 className="mt-3 font-bold text-text-primary dark:text-gray-100">
-                    {t(g.title)}
-                  </h3>
+                  <h3 className="mt-3 font-bold text-text-primary">{t(g.title)}</h3>
                   <p className="mt-1 text-sm text-text-secondary">{t(g.desc)}</p>
                   <p className="mt-3 text-lg font-extrabold text-brand-600">{t(g.price)}</p>
                 </Card>
@@ -165,7 +161,7 @@ export default function GiftGuidePage(): JSX.Element {
       ))}
 
       <div className="text-center mt-12 p-8 bg-linear-to-r from-pink-50 to-brand-50 rounded-3xl dark:from-pink-950 dark:to-brand-950">
-        <h2 className="text-xl font-bold text-text-primary dark:text-gray-100">
+        <h2 className="text-xl font-bold text-text-primary">
           {t('marketing.gift-guide.not-found-title')}
         </h2>
         <p className="mt-2 text-text-secondary">{t('marketing.gift-guide.not-found-desc')}</p>

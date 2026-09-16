@@ -11,9 +11,7 @@ export default async function MommyAndMePage(): Promise<JSX.Element> {
     <div className="mx-auto max-w-5xl px-4 py-12">
       <div className="text-center mb-10">
         <span className="text-7xl">🤱</span>
-        <h1 className="mt-6 text-4xl font-extrabold text-text-primary dark:text-gray-100">
-          Mommy & Me
-        </h1>
+        <h1 className="mt-6 text-4xl font-extrabold text-text-primary">Mommy & Me</h1>
         <p className="mt-4 text-lg text-text-secondary max-w-2xl mx-auto">
           {t('marketing.mommy-and-me.subtitle', locale)}
         </p>
@@ -23,7 +21,7 @@ export default async function MommyAndMePage(): Promise<JSX.Element> {
       <MommyAndMeBundles />
 
       <div className="mt-16 text-center bg-linear-to-r from-pink-50 to-brand-50 rounded-3xl p-12 dark:from-pink-950 dark:to-brand-950">
-        <h2 className="text-2xl font-bold text-text-primary dark:text-gray-100">
+        <h2 className="text-2xl font-bold text-text-primary">
           {t('marketing.mommy-and-me.gift-ideal', locale)}
         </h2>
         <p className="mt-3 text-text-secondary max-w-md mx-auto">

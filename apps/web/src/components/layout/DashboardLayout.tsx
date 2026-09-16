@@ -133,7 +133,7 @@ export function DashboardLayout({
   return (
     <div className="flex min-h-screen">
       {/* Sidebar */}
-      <aside className="hidden w-64 border-e border-edge bg-white p-4 md:block dark:border-gray-800 dark:bg-gray-950">
+      <aside className="hidden w-64 border-e border-edge bg-white p-4 md:block dark:bg-gray-950">
         <Link href="/" className="mb-8 flex shrink-0 items-center gap-2">
           <Image
             src="/logo.png"
@@ -159,7 +159,7 @@ export function DashboardLayout({
                     className={`flex w-full items-center justify-between rounded-lg px-3 py-2 text-sm font-semibold transition-colors hover:bg-surface-muted focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-500 dark:hover:bg-gray-900 ${
                       group.links.some((link) => pathname.startsWith(link.href))
                         ? 'text-brand-700 dark:text-brand-300'
-                        : 'text-text-primary dark:text-gray-100'
+                        : 'text-text-primary'
                     }`}
                   >
                     <span className="flex items-center gap-2">
@@ -178,7 +178,7 @@ export function DashboardLayout({
                   {groupOpen(group.key) && (
                     <div
                       id={`nav-group-${group.key}`}
-                      className="mt-1 ms-3 space-y-1 border-s border-edge ps-3 dark:border-gray-800"
+                      className="mt-1 ms-3 space-y-1 border-s border-edge ps-3"
                     >
                       {group.links.map((link) => (
                         <Link
@@ -223,20 +223,20 @@ export function DashboardLayout({
 
       {/* Content — header strip hosts the language/theme toggles on all breakpoints */}
       <div className="flex flex-1 flex-col overflow-auto">
-        <header className="sticky top-0 z-30 flex items-center justify-end gap-2 border-b border-edge bg-white/80 px-4 py-2 backdrop-blur dark:border-gray-800 dark:bg-gray-950/80">
+        <header className="sticky top-0 z-30 flex items-center justify-end gap-2 border-b border-edge bg-white/80 px-4 py-2 backdrop-blur dark:bg-gray-950/80">
           <LanguageToggle />
           <ThemeToggle />
         </header>
         <main
           data-testid="dashboard-content"
-          className="flex-1 overflow-auto bg-surface-muted p-4 pb-20 md:p-6 md:pb-6 dark:bg-gray-950 animate-fade-in"
+          className="flex-1 overflow-auto bg-surface-muted p-4 pb-20 md:p-6 md:pb-6 animate-fade-in"
         >
           {children}
         </main>
       </div>
 
       {/* Mobile Bottom Navigation */}
-      <nav className="fixed bottom-0 start-0 end-0 z-50 border-t border-edge bg-white dark:border-gray-800 dark:bg-gray-950 md:hidden">
+      <nav className="fixed bottom-0 start-0 end-0 z-50 border-t border-edge bg-white dark:bg-gray-950 md:hidden">
         <div className="flex overflow-x-auto">
           {links.slice(0, 5).map((link) => (
             <Link

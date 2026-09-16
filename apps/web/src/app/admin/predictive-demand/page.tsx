@@ -70,7 +70,7 @@ export default function PredictiveDemandPage(): JSX.Element {
                 (s: Record<string, unknown>, i: number) => (
                   <div
                     key={i}
-                    className="flex items-center justify-between rounded-lg bg-surface-muted dark:bg-gray-800 p-3"
+                    className="flex items-center justify-between rounded-lg bg-surface-muted p-3"
                   >
                     <span className="font-bold">{s.name as string}</span>
                     <span>

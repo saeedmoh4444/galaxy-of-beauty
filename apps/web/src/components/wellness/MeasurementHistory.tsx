@@ -52,9 +52,7 @@ export function MeasurementHistory(): JSX.Element {
 
   return (
     <Card padding="md">
-      <h3 className="mb-3 font-semibold text-text-primary dark:text-gray-100">
-        {t('measurements.title')}
-      </h3>
+      <h3 className="mb-3 font-semibold text-text-primary">{t('measurements.title')}</h3>
 
       {/* Log form */}
       <div className="grid gap-3 sm:grid-cols-3">
@@ -67,7 +65,7 @@ export function MeasurementHistory(): JSX.Element {
             placeholder={t(f.label)}
             value={values[f.key] ?? ''}
             onChange={(e) => setValues({ ...values, [f.key]: e.target.value })}
-            className="w-full rounded-lg border border-edge p-3 text-sm dark:border-gray-600 dark:bg-gray-800"
+            className="w-full rounded-lg border border-edge p-3 text-sm dark:bg-gray-800"
           />
         ))}
       </div>
@@ -76,7 +74,7 @@ export function MeasurementHistory(): JSX.Element {
         placeholder={t('measurements.notes')}
         value={notes}
         onChange={(e) => setNotes(e.target.value)}
-        className="mt-3 w-full rounded-lg border border-edge p-3 text-sm dark:border-gray-600 dark:bg-gray-800"
+        className="mt-3 w-full rounded-lg border border-edge p-3 text-sm dark:bg-gray-800"
       />
       <Button size="sm" className="mt-3" onClick={submit} loading={logMut.isPending}>
         {t('measurements.add')}

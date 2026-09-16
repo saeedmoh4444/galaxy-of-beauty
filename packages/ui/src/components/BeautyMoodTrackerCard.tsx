@@ -82,13 +82,11 @@ export function BeautyMoodTrackerCard({
               'flex flex-col items-center gap-1 rounded-xl px-3 py-2.5 transition-all active:scale-95',
               selected === mood.value
                 ? 'bg-violet-100 ring-2 ring-violet-300 dark:bg-violet-900 dark:ring-violet-700'
-                : 'bg-surface-muted hover:bg-violet-50 dark:bg-gray-800 dark:hover:bg-violet-950',
+                : 'bg-surface-muted hover:bg-violet-50 dark:hover:bg-violet-950',
             )}
           >
             <span className="text-2xl">{mood.emoji}</span>
-            <span className="text-[9px] font-medium text-text-secondary dark:text-gray-300">
-              {mood.label[locale]}
-            </span>
+            <span className="text-[9px] font-medium text-text-secondary">{mood.label[locale]}</span>
           </button>
         ))}
       </div>

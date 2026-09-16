@@ -90,9 +90,7 @@ export function TechniciansClient({ data }: { data: TechniciansPageData }): JSX.
                         className="h-24 w-24 rounded-full object-cover"
                       />
                     </div>
-                    <h3 className="mt-4 text-lg font-bold text-text-primary dark:text-gray-100">
-                      {name}
-                    </h3>
+                    <h3 className="mt-4 text-lg font-bold text-text-primary">{name}</h3>
                     <p className="text-sm text-text-secondary">{cityName}</p>
                     {bio && <p className="mt-1 line-clamp-2 text-xs text-text-tertiary">{bio}</p>}
                     <div className="mt-3 flex items-center gap-3 text-sm">

@@ -108,7 +108,7 @@ export default function KidsServicesPage(): JSX.Element {
             <h2 className="text-xl font-bold mt-2">{category?.nameAr as string}</h2>
             <p className="text-sm text-text-secondary">{category?.description as string}</p>
           </Card>
-          <div className="flex gap-3 items-end bg-surface-muted dark:bg-gray-800 rounded-xl p-4">
+          <div className="flex gap-3 items-end bg-surface-muted rounded-xl p-4">
             <div>
               <label htmlFor="ks-child-name" className="text-xs font-semibold">
                 {t('marketing.kids-services.child-name')}

@@ -163,7 +163,7 @@ export default function AdminAnalyticsPage(): JSX.Element {
           <div className="overflow-x-auto">
             <table className="w-full text-sm">
               <thead>
-                <tr className="border-b border-edge text-end dark:border-gray-800">
+                <tr className="border-b border-edge text-end">
                   <th className="pb-2 font-medium text-text-secondary">
                     {t('admin.analytics.name-header')}
                   </th>
@@ -206,7 +206,7 @@ export default function AdminAnalyticsPage(): JSX.Element {
             {userGrowth.map((u: UserGrowthDay, i: number) => (
               <div
                 key={i}
-                className="flex items-center justify-between border-b border-edge-muted pb-1 text-sm dark:border-gray-800"
+                className="flex items-center justify-between border-b border-edge-muted pb-1 text-sm"
               >
                 <span>{u.date ?? '—'}</span>
                 <span className="font-medium text-brand-600">+{String(u.total ?? 0)}</span>

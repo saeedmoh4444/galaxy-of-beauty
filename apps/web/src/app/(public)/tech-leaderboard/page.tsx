@@ -41,7 +41,7 @@ export default function TechLeaderboardPage(): JSX.Element {
           <button
             key={c.key as string}
             onClick={() => setCategory(c.key as string)}
-            className={`rounded-full px-4 py-2 text-sm font-medium ${category === c.key ? 'bg-brand-600 text-white' : 'bg-surface-muted dark:bg-gray-800'}`}
+            className={`rounded-full px-4 py-2 text-sm font-medium ${category === c.key ? 'bg-brand-600 text-white' : 'bg-surface-muted'}`}
           >
             {c.emoji as string} {c.nameAr as string}
           </button>

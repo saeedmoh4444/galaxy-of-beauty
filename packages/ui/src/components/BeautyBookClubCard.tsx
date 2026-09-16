@@ -60,9 +60,7 @@ export function BeautyBookClubCard({
         </div>
         <div className="min-w-0 flex-1">
           <h4 className="text-sm font-bold text-amber-700 dark:text-amber-300">{title}</h4>
-          <p className="text-xs font-bold text-text-primary dark:text-gray-100 mt-0.5">
-            {book.title}
-          </p>
+          <p className="text-xs font-bold text-text-primary mt-0.5">{book.title}</p>
           <p className="text-[10px] text-text-tertiary dark:text-text-secondary"> {book.author}</p>
         </div>
       </div>
