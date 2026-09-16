@@ -11,6 +11,8 @@ import { useState } from 'react';
 import type { JSX } from 'react';
 import { LARGE_PAGE_SIZE } from '@galaxy/ui';
 import { ErrorAlert } from '@/components/ErrorAlert';
+import { EmptyState } from '@/components/EmptyState';
+import { ServiceImage } from '@/components/ServiceImage';
 import { SkeletonList } from '@/components/SkeletonCard';
 import { trpc } from '@/lib/trpc-react';
 import { useLocale } from '@/components/LocaleProvider';
@@ -178,17 +180,18 @@ export default function CommunityScreen(): JSX.Element {
         </View>
       )}
 
-      {posts.length === 0 && (
-        <View style={{ alignItems: 'center', padding: 30 }}>
-          <Text style={{ fontSize: 40 }}>💬</Text>
-          <Text style={{ color: '#6b7280', marginTop: 8 }}>{t('community.empty')}</Text>
-        </View>
-      )}
+      {posts.length === 0 && <EmptyState emoji="💬" title={t('community.empty')} />}
 
       {posts.map((p) => (
         <View key={p.id} style={s.card}>
           <View style={{ flexDirection: 'row', alignItems: 'center', gap: 10, marginBottom: 8 }}>
-            <Text style={{ fontSize: 30 }}>👤</Text>
+            <ServiceImage
+              src={(p.user?.avatarUrl as string | null | undefined) ?? null}
+              alt={(p.user?.name as string | undefined) ?? ''}
+              height={30}
+              width={30}
+              borderRadius={15}
+            />
             <View>
               <Text style={{ fontWeight: '600', fontSize: 14 }}>
                 {p.user?.name ?? t('community.user-fallback')}

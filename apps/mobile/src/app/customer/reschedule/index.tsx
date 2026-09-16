@@ -11,6 +11,7 @@ import { useState } from 'react';
 import type { JSX } from 'react';
 import { LARGE_PAGE_SIZE } from '@galaxy/ui';
 import { ErrorAlert } from '@/components/ErrorAlert';
+import { EmptyState } from '@/components/EmptyState';
 import { SkeletonList } from '@/components/SkeletonCard';
 import { trpc } from '@/lib/trpc-react';
 import { useLocale } from '@/components/LocaleProvider';
@@ -99,12 +100,7 @@ export default function RescheduleScreen(): JSX.Element {
       )}
 
       {active.length === 0 && (
-        <View style={{ alignItems: 'center', padding: 30 }}>
-          <Text style={{ fontSize: 40 }}>📅</Text>
-          <Text style={{ color: '#6b7280', marginTop: 8 }}>
-            {t('mobile.reschedule.no-reschedulable')}
-          </Text>
-        </View>
+        <EmptyState emoji="📅" title={t('mobile.reschedule.no-reschedulable')} />
       )}
 
       {active.map((b) => {
