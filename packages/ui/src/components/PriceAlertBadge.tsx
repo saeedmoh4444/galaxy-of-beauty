@@ -96,7 +96,7 @@ export function PriceAlertBadge({
         'rounded-2xl border p-4 transition-all',
         isActive
           ? 'border-green-200 bg-green-50/50 dark:border-green-900 dark:bg-green-950/30'
-          : 'border-edge-muted bg-white dark:bg-gray-900',
+          : 'border-edge-muted bg-surface-elevated',
         className,
       )}
     >
@@ -123,7 +123,7 @@ export function PriceAlertBadge({
         >
           <span
             className={cn(
-              'inline-block h-4 w-4 rounded-full bg-white transition-transform',
+              'inline-block h-4 w-4 rounded-full bg-surface-elevated transition-transform',
               isActive ? 'translate-x-6' : 'translate-x-1',
             )}
           />
@@ -200,7 +200,7 @@ export function PriceAlertBadge({
             onChange={(e) => setTarget(Number(e.target.value))}
             min={1}
             max={currentPrice}
-            className="flex-1 rounded-lg border border-edge px-2 py-1 text-[10px] dark:bg-gray-800 dark:text-gray-100"
+            className="flex-1 rounded-lg border border-edge px-2 py-1 text-[10px] bg-surface-elevated dark:text-gray-100"
           />
           <span className="text-[10px] text-text-tertiary dark:text-text-secondary">
             {currencySuffix}

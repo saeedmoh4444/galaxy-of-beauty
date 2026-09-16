@@ -69,7 +69,7 @@ export function TaxHelperCard({
   return (
     <div
       className={cn(
-        'rounded-2xl border border-emerald-100 bg-white p-4 dark:border-emerald-900 dark:bg-gray-900',
+        'rounded-2xl border border-emerald-100 bg-surface-elevated p-4 dark:border-emerald-900',
         className,
       )}
     >
@@ -101,7 +101,7 @@ export function TaxHelperCard({
 
       {/* Growth */}
       {growth !== null && (
-        <div className="mt-2 rounded-lg bg-white/60 p-2 text-center dark:bg-gray-800/60">
+        <div className="mt-2 rounded-lg bg-surface-elevated/60 p-2 text-center">
           <p
             className={cn(
               'text-[10px] font-bold',
@@ -135,7 +135,7 @@ export function TaxHelperCard({
         </button>
         <button
           type="button"
-          className="rounded-xl border border-emerald-200 bg-white px-3 py-2 text-[10px] font-bold text-emerald-700 hover:bg-emerald-50 dark:border-emerald-800 dark:bg-gray-800 dark:text-emerald-300"
+          className="rounded-xl border border-emerald-200 bg-surface-elevated px-3 py-2 text-[10px] font-bold text-emerald-700 hover:bg-emerald-50 dark:border-emerald-800 dark:text-emerald-300"
         >
           {detailsButtonText}
         </button>

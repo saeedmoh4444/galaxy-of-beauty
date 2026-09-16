@@ -136,7 +136,7 @@ export function IAmHomeSafe({
           {/* Rate experience */}
           <button
             type="button"
-            className="w-full rounded-xl border border-emerald-200 bg-white py-2 text-[10px] font-bold text-emerald-700 hover:bg-emerald-50 dark:border-emerald-800 dark:bg-gray-800 dark:text-emerald-300"
+            className="w-full rounded-xl border border-emerald-200 bg-surface-elevated py-2 text-[10px] font-bold text-emerald-700 hover:bg-emerald-50 dark:border-emerald-800 dark:text-emerald-300"
           >
             {rateExperienceText}
           </button>
@@ -145,7 +145,7 @@ export function IAmHomeSafe({
 
       {/* Alert contact info */}
       {alertContact && !checkedIn && (
-        <div className="mt-2 flex items-center gap-1.5 rounded-lg bg-white/60 p-2 dark:bg-black/20">
+        <div className="mt-2 flex items-center gap-1.5 rounded-lg bg-surface-elevated/60 p-2 dark:bg-black/20">
           <span className="text-xs" aria-hidden="true">
             📞
           </span>
@@ -165,7 +165,7 @@ export function IAmHomeSafe({
               {graceMinutes} {graceMinutesSuffix}
             </span>
           </div>
-          <div className="mt-1 h-1.5 overflow-hidden rounded-full bg-white/60 dark:bg-gray-800">
+          <div className="mt-1 h-1.5 overflow-hidden rounded-full bg-surface-elevated/60">
             <div
               className="h-full rounded-full bg-gradient-to-r from-amber-400 to-amber-500 transition-all duration-1000"
               style={{ width: `${(graceMinutes / graceMinutes) * 100}%` }}

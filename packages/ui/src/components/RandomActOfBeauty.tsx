@@ -94,7 +94,7 @@ export function RandomActOfBeauty({
       </div>
 
       {/* Surprise reveal */}
-      <div className="mt-3 rounded-xl bg-white/60 p-4 text-center dark:bg-gray-800/60">
+      <div className="mt-3 rounded-xl bg-surface-elevated/60 p-4 text-center">
         {hasWon ? (
           <>
             <span className="text-4xl" aria-hidden="true">
@@ -126,7 +126,7 @@ export function RandomActOfBeauty({
       </div>
 
       {/* Stats */}
-      <div className="mt-2 rounded-lg bg-white/60 p-2 text-center dark:bg-gray-800/60">
+      <div className="mt-2 rounded-lg bg-surface-elevated/60 p-2 text-center">
         <p className="text-[10px] text-amber-700 dark:text-amber-300">
           {givenThisMonth} {actsSuffix}
         </p>

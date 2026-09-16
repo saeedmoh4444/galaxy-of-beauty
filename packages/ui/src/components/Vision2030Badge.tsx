@@ -55,7 +55,7 @@ export function Vision2030Badge({
       </div>
 
       {/* Progress */}
-      <div className="mt-3 rounded-xl bg-white/60 p-4 text-center dark:bg-gray-800/60">
+      <div className="mt-3 rounded-xl bg-surface-elevated/60 p-4 text-center">
         <p className="text-[10px] text-emerald-600 dark:text-emerald-400">
           {goalLabel}
           {target} {womenTargetText}
@@ -81,7 +81,7 @@ export function Vision2030Badge({
           { emoji: '📈', label: { ar: 'تنويع الاقتصاد', en: 'Economic diversification' } },
           { emoji: '🌍', label: { ar: 'ريادة عالمية', en: 'Global leadership' } },
         ].map((p) => (
-          <div key={p.label.ar} className="rounded-lg bg-white/60 p-2 dark:bg-gray-800/60">
+          <div key={p.label.ar} className="rounded-lg bg-surface-elevated/60 p-2">
             <span className="text-lg" aria-hidden="true">
               {p.emoji}
             </span>

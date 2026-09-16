@@ -81,7 +81,7 @@ export function PrayerTimes({
             className={`flex-1 rounded-md px-1 py-1 text-center text-[9px] font-medium ${
               prayer.current === p.name
                 ? 'bg-brand-100 text-brand-700 dark:bg-brand-950 dark:text-brand-300'
-                : 'bg-white text-text-tertiary dark:bg-gray-800 dark:text-text-secondary'
+                : 'bg-surface-elevated text-text-tertiary dark:text-text-secondary'
             }`}
           >
             <div>{p.name[locale]}</div>

@@ -106,7 +106,7 @@ export function HandwrittenNote({
       </div>
 
       {/* Handwritten-style message */}
-      <div className="mt-3 rounded-xl bg-white/80 p-4 dark:bg-gray-800/80">
+      <div className="mt-3 rounded-xl bg-surface-elevated/80 p-4">
         <p
           className="text-center text-sm leading-relaxed text-rose-800 dark:text-rose-200"
           style={{ fontFamily: "'Noto Naskh Arabic', serif" }}

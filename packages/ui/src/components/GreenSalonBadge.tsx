@@ -87,7 +87,7 @@ export function GreenSalonBadge({
           return (
             <div
               key={p}
-              className="flex items-center gap-2 rounded-lg bg-white/60 px-2.5 py-2 dark:bg-gray-800/60"
+              className="flex items-center gap-2 rounded-lg bg-surface-elevated/60 px-2.5 py-2"
             >
               <span className="text-sm" aria-hidden="true">
                 {def.emoji}
@@ -101,7 +101,7 @@ export function GreenSalonBadge({
       </div>
 
       {/* Pledge */}
-      <div className="mt-3 rounded-xl bg-white/60 p-3 text-center dark:bg-gray-800/60">
+      <div className="mt-3 rounded-xl bg-surface-elevated/60 p-3 text-center">
         <p className="text-[10px] text-green-700 dark:text-green-300">{pledgeText}</p>
       </div>
 

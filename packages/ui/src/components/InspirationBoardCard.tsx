@@ -48,7 +48,7 @@ export function InspirationBoardCard({
   return (
     <div
       className={cn(
-        'rounded-2xl border border-rose-100 bg-white p-4 dark:border-rose-900 dark:bg-gray-900',
+        'rounded-2xl border border-rose-100 bg-surface-elevated p-4 dark:border-rose-900',
         className,
       )}
     >
@@ -115,7 +115,7 @@ export function InspirationBoardCard({
             key={i}
             className="rounded-xl bg-rose-50 p-3 transition-all hover:shadow-sm dark:bg-rose-950"
           >
-            <div className="flex h-12 items-center justify-center rounded-lg bg-white text-2xl dark:bg-gray-800">
+            <div className="flex h-12 items-center justify-center rounded-lg bg-surface-elevated text-2xl">
               {pin.emoji}
             </div>
             <p className="mt-1.5 text-[10px] font-bold text-text-primary truncate">{pin.title}</p>

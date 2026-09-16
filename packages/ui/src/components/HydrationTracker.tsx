@@ -51,7 +51,7 @@ export function HydrationTracker({
   return (
     <div
       className={cn(
-        'rounded-2xl border border-sky-100 bg-white p-4 dark:border-sky-900 dark:bg-gray-900',
+        'rounded-2xl border border-sky-100 bg-surface-elevated p-4 dark:border-sky-900',
         className,
       )}
     >

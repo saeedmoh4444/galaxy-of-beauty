@@ -69,7 +69,7 @@ export function EmailCapture({
               placeholder={placeholder}
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              className="flex-1 rounded-lg border-0 bg-white/20 px-3 py-2 text-sm text-white placeholder:text-white/60"
+              className="flex-1 rounded-lg border-0 bg-surface-elevated/20 px-3 py-2 text-sm text-white placeholder:text-white/60"
             />
             <Button
               variant="secondary"

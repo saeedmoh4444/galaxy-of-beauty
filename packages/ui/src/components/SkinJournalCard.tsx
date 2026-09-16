@@ -47,7 +47,7 @@ export function SkinJournalCard({
   return (
     <div
       className={cn(
-        'rounded-2xl border border-brand-100 bg-white p-5 dark:border-brand-900 dark:bg-gray-900',
+        'rounded-2xl border border-brand-100 bg-surface-elevated p-5 dark:border-brand-900',
         className,
       )}
     >
@@ -89,7 +89,7 @@ export function SkinJournalCard({
             <button
               key={mood}
               type="button"
-              className="flex h-10 w-10 items-center justify-center rounded-full bg-white text-lg hover:bg-brand-100 dark:bg-gray-800 dark:hover:bg-brand-900 transition-colors active:scale-95"
+              className="flex h-10 w-10 items-center justify-center rounded-full bg-surface-elevated text-lg hover:bg-brand-100 dark:hover:bg-brand-900 transition-colors active:scale-95"
             >
               {mood}
             </button>

@@ -155,14 +155,14 @@ export function PregnancySafeBadge({
             {t.description[locale]}
           </p>
         </div>
-        <span className="ms-auto shrink-0 rounded-full bg-white/70 px-2.5 py-0.5 text-[10px] font-bold text-emerald-700 dark:bg-black/20 dark:text-emerald-300">
+        <span className="ms-auto shrink-0 rounded-full bg-surface-elevated/70 px-2.5 py-0.5 text-[10px] font-bold text-emerald-700 dark:bg-black/20 dark:text-emerald-300">
           {safeLabel}
         </span>
       </div>
 
       {/* Service info */}
       {service && (
-        <div className="mt-3 rounded-xl bg-white/70 p-3 dark:bg-gray-800/70">
+        <div className="mt-3 rounded-xl bg-surface-elevated/70 p-3">
           <div className="flex items-center justify-between">
             <p className="text-xs font-bold text-text-primary">{service.name}</p>
             <span className="text-xs font-bold text-emerald-700 dark:text-emerald-400">
@@ -179,7 +179,7 @@ export function PregnancySafeBadge({
 
       {/* Allowed & Avoid */}
       <div className="mt-3 grid grid-cols-2 gap-2">
-        <div className="rounded-xl bg-white/70 p-2.5 dark:bg-gray-800/70">
+        <div className="rounded-xl bg-surface-elevated/70 p-2.5">
           <h5 className="text-[10px] font-bold text-emerald-600 dark:text-emerald-400">
             {allowedLabel}
           </h5>
@@ -191,7 +191,7 @@ export function PregnancySafeBadge({
             ))}
           </ul>
         </div>
-        <div className="rounded-xl bg-white/70 p-2.5 dark:bg-gray-800/70">
+        <div className="rounded-xl bg-surface-elevated/70 p-2.5">
           <h5 className="text-[10px] font-bold text-rose-600 dark:text-rose-400">{avoidLabel}</h5>
           <ul className="mt-1 space-y-0.5">
             {t.avoid.map((item) => (

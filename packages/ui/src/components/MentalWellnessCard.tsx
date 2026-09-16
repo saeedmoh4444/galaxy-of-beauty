@@ -182,12 +182,7 @@ export function MentalWellnessCard({
   const m = MOODS[mood];
 
   return (
-    <div
-      className={cn(
-        'rounded-2xl border border-edge-muted bg-white p-5 dark:bg-gray-900',
-        className,
-      )}
-    >
+    <div className={cn('rounded-2xl border border-edge-muted bg-surface-elevated p-5', className)}>
       {/* Mood indicator */}
       <div className={cn('rounded-xl bg-gradient-to-br p-4', m.color)}>
         <div className="flex items-center gap-3">

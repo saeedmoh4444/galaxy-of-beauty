@@ -56,7 +56,7 @@ export function NPSSurvey({
   const [feedback, setFeedback] = useState('');
 
   return (
-    <div className={`rounded-2xl border border-edge bg-white p-6 dark:bg-gray-900 ${className}`}>
+    <div className={`rounded-2xl border border-edge bg-surface-elevated p-6 ${className}`}>
       <h3 className="text-lg font-bold text-text-primary">{questionTitle}</h3>
       <p className="mt-1 text-sm text-text-secondary dark:text-text-tertiary">{questionSubtitle}</p>
 

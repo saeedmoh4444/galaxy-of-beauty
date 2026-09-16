@@ -108,7 +108,7 @@ export function FitnessBeautyCard({
   return (
     <div
       className={cn(
-        'rounded-2xl border border-emerald-100 bg-white p-4 dark:border-emerald-900 dark:bg-gray-900',
+        'rounded-2xl border border-emerald-100 bg-surface-elevated p-4 dark:border-emerald-900',
         className,
       )}
     >
@@ -150,7 +150,7 @@ export function FitnessBeautyCard({
           {PRODUCT_RECS.map((p) => (
             <span
               key={p.ar}
-              className="rounded-full bg-white px-2 py-0.5 text-[9px] text-emerald-700 dark:bg-gray-800 dark:text-emerald-300"
+              className="rounded-full bg-surface-elevated px-2 py-0.5 text-[9px] text-emerald-700 dark:text-emerald-300"
             >
               {p[locale]}
             </span>

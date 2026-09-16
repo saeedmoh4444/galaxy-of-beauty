@@ -51,7 +51,7 @@ export function WomenEmployerBadge({
         'rounded-2xl border p-4',
         isChampion
           ? 'border-amber-200 bg-gradient-to-br from-amber-50 to-yellow-50 dark:border-amber-900 dark:from-amber-950 dark:to-yellow-950'
-          : 'border-emerald-100 bg-white dark:border-emerald-900 dark:bg-gray-900',
+          : 'border-emerald-100 bg-surface-elevated dark:border-emerald-900',
         className,
       )}
     >

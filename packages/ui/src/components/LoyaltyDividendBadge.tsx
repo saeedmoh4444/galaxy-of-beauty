@@ -131,7 +131,7 @@ export function LoyaltyDividendBadge({
     : 100;
 
   return (
-    <div className={cn('rounded-2xl border bg-white p-5 dark:bg-gray-900', className)}>
+    <div className={cn('rounded-2xl border bg-surface-elevated p-5', className)}>
       {/* Tier header */}
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-2">
@@ -165,17 +165,17 @@ export function LoyaltyDividendBadge({
 
       {/* Yearly spend summary */}
       <div className="mt-3 grid grid-cols-3 gap-2">
-        <div className="rounded-xl bg-white/60 p-2 text-center dark:bg-gray-800/60">
+        <div className="rounded-xl bg-surface-elevated/60 p-2 text-center">
           <p className="text-[9px] text-text-tertiary dark:text-text-secondary">{spendLabel}</p>
           <p className="text-xs font-bold text-text-primary">
             {yearlySpend.toLocaleString('ar-SA')} {currencySuffix}
           </p>
         </div>
-        <div className="rounded-xl bg-white/60 p-2 text-center dark:bg-gray-800/60">
+        <div className="rounded-xl bg-surface-elevated/60 p-2 text-center">
           <p className="text-[9px] text-text-tertiary dark:text-text-secondary">{refundLabel}</p>
           <p className="text-xs font-bold text-emerald-600 dark:text-emerald-400">{rate}%</p>
         </div>
-        <div className="rounded-xl bg-white/60 p-2 text-center dark:bg-gray-800/60">
+        <div className="rounded-xl bg-surface-elevated/60 p-2 text-center">
           <p className="text-[9px] text-text-tertiary dark:text-text-secondary">{payoutLabel}</p>
           <p className="text-xs font-bold text-text-primary">{payoutMonth}</p>
         </div>
@@ -183,7 +183,7 @@ export function LoyaltyDividendBadge({
 
       {/* Next tier progress */}
       {nextTier && (
-        <div className="mt-3 rounded-xl bg-white/60 p-2.5 dark:bg-gray-800/60">
+        <div className="mt-3 rounded-xl bg-surface-elevated/60 p-2.5">
           <div className="flex items-center justify-between text-[10px]">
             <span className="text-text-secondary">
               {toNextTierPrefix}

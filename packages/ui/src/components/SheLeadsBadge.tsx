@@ -207,17 +207,17 @@ export function SheLeadsBadge({
       {/* Meta pills */}
       <div className="mt-2 flex flex-wrap gap-1.5">
         {city && (
-          <span className="inline-flex items-center gap-1 rounded-full bg-white/60 px-2 py-0.5 text-[10px] dark:bg-black/20 dark:text-gray-300">
+          <span className="inline-flex items-center gap-1 rounded-full bg-surface-elevated/60 px-2 py-0.5 text-[10px] dark:bg-black/20 dark:text-gray-300">
             {city}
           </span>
         )}
         {yearsOfExperience && (
-          <span className="inline-flex items-center gap-1 rounded-full bg-white/60 px-2 py-0.5 text-[10px] dark:bg-black/20 dark:text-gray-300">
+          <span className="inline-flex items-center gap-1 rounded-full bg-surface-elevated/60 px-2 py-0.5 text-[10px] dark:bg-black/20 dark:text-gray-300">
             {yearsOfExperience} {yearsExperienceText}
           </span>
         )}
         {teamSize && (
-          <span className="inline-flex items-center gap-1 rounded-full bg-white/60 px-2 py-0.5 text-[10px] dark:bg-black/20 dark:text-gray-300">
+          <span className="inline-flex items-center gap-1 rounded-full bg-surface-elevated/60 px-2 py-0.5 text-[10px] dark:bg-black/20 dark:text-gray-300">
             {teamOfLabel} {teamSize}
           </span>
         )}

@@ -66,7 +66,7 @@ export function SisterhoodWall({
 
   return (
     <div
-      className={`rounded-2xl border border-pink-100 bg-white p-5 dark:border-pink-900 dark:bg-gray-900 ${className}`}
+      className={`rounded-2xl border border-pink-100 bg-surface-elevated p-5 dark:border-pink-900 ${className}`}
     >
       <h3 className="text-sm font-bold text-pink-700 dark:text-pink-300">{title}</h3>
       <p className="mt-1 text-xs text-pink-500 dark:text-pink-400">{subtitle}</p>

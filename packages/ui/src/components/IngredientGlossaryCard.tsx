@@ -99,7 +99,7 @@ export function IngredientGlossaryCard({
   return (
     <div
       className={cn(
-        'rounded-2xl border border-teal-100 bg-white p-4 dark:border-teal-900 dark:bg-gray-900',
+        'rounded-2xl border border-teal-100 bg-surface-elevated p-4 dark:border-teal-900',
         className,
       )}
     >
@@ -135,7 +135,7 @@ export function IngredientGlossaryCard({
           {ingredient.benefits.map((b) => (
             <span
               key={b}
-              className="rounded-full bg-white/70 px-2 py-0.5 text-[9px] font-medium text-emerald-800 dark:bg-black/20 dark:text-emerald-200"
+              className="rounded-full bg-surface-elevated/70 px-2 py-0.5 text-[9px] font-medium text-emerald-800 dark:bg-black/20 dark:text-emerald-200"
             >
               {b}
             </span>

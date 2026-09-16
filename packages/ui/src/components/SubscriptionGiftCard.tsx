@@ -78,7 +78,7 @@ export function SubscriptionGiftCard({
         {GIFT_OPTIONS.map((opt) => (
           <div
             key={opt.months}
-            className="flex items-center justify-between rounded-xl bg-white/60 px-3 py-2.5 dark:bg-gray-800/60"
+            className="flex items-center justify-between rounded-xl bg-surface-elevated/60 px-3 py-2.5"
           >
             <div className="flex items-center gap-2">
               <span className="text-lg">{opt.emoji}</span>

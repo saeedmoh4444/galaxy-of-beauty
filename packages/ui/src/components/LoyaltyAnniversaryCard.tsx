@@ -98,7 +98,7 @@ export function LoyaltyAnniversaryCard({
       </div>
 
       {/* Years */}
-      <div className="mt-3 rounded-xl bg-white/60 p-4 text-center dark:bg-gray-800/60">
+      <div className="mt-3 rounded-xl bg-surface-elevated/60 p-4 text-center">
         <p className="text-3xl font-bold text-pink-700 dark:text-pink-300">{years}</p>
         <p className="text-[10px] text-pink-500 dark:text-pink-400">
           {years === 1 ? yearSingular : years <= 10 ? yearPlural : yearSingular} {withYouText}
@@ -112,7 +112,7 @@ export function LoyaltyAnniversaryCard({
       </div>
 
       {/* Gift */}
-      <div className="mt-3 rounded-xl bg-white/60 p-3 text-center dark:bg-gray-800/60">
+      <div className="mt-3 rounded-xl bg-surface-elevated/60 p-3 text-center">
         <p className="text-[10px] font-bold text-pink-700 dark:text-pink-300">{giftLabel}</p>
         <p className="mt-1 text-sm font-bold text-pink-800 dark:text-pink-200">
           {celebration.gift[locale]}

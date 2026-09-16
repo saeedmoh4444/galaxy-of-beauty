@@ -173,7 +173,7 @@ export function SaudiBeautyHeritageCard({
       </div>
 
       {/* History */}
-      <div className="mt-3 rounded-xl bg-white/60 p-3 dark:bg-gray-800/60">
+      <div className="mt-3 rounded-xl bg-surface-elevated/60 p-3">
         <p className="text-[10px] font-bold text-amber-800 dark:text-amber-200">{historyLabel}</p>
         <p className="mt-1 text-[10px] leading-relaxed text-amber-700 dark:text-amber-300">
           {p.description[locale]}
@@ -181,7 +181,7 @@ export function SaudiBeautyHeritageCard({
       </div>
 
       {/* Modern use */}
-      <div className="mt-2 rounded-xl bg-white/60 p-3 dark:bg-gray-800/60">
+      <div className="mt-2 rounded-xl bg-surface-elevated/60 p-3">
         <p className="text-[10px] font-bold text-amber-800 dark:text-amber-200">{modernUseLabel}</p>
         <p className="mt-1 text-[10px] text-amber-700 dark:text-amber-300">{p.modernUse[locale]}</p>
       </div>

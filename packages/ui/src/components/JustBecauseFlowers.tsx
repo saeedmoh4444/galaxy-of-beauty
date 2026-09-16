@@ -101,7 +101,7 @@ export function JustBecauseFlowers({
   return (
     <div
       className={cn(
-        'rounded-2xl border border-rose-100 bg-white p-5 dark:border-rose-900 dark:bg-gray-900',
+        'rounded-2xl border border-rose-100 bg-surface-elevated p-5 dark:border-rose-900',
         className,
       )}
     >

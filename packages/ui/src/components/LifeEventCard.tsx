@@ -212,7 +212,7 @@ export function LifeEventCard({
       </div>
 
       {/* Package name */}
-      <div className="mt-3 rounded-xl bg-white/60 p-3 dark:bg-gray-800/60">
+      <div className="mt-3 rounded-xl bg-surface-elevated/60 p-3">
         <p className="text-[10px] font-bold text-text-primary">{e.packageName[locale]}</p>
         <ul className="mt-1.5 grid grid-cols-2 gap-x-2 gap-y-0.5">
           {e.contents.map((item) => (

@@ -116,7 +116,7 @@ export function HijabiBeautyCard({
         {TIPS.map((tip) => (
           <div
             key={tip.title.ar}
-            className="flex items-start gap-2.5 rounded-xl bg-white/60 p-3 dark:bg-gray-800/60"
+            className="flex items-start gap-2.5 rounded-xl bg-surface-elevated/60 p-3"
           >
             <span className="text-lg shrink-0 mt-0.5" aria-hidden="true">
               {tip.emoji}
@@ -130,7 +130,7 @@ export function HijabiBeautyCard({
       </div>
 
       {/* Private room */}
-      <div className="mt-3 rounded-xl bg-white/60 p-3 text-center dark:bg-gray-800/60">
+      <div className="mt-3 rounded-xl bg-surface-elevated/60 p-3 text-center">
         <p className="text-[10px] font-bold text-teal-800 dark:text-teal-200">{privateRoomTitle}</p>
         <p className="mt-0.5 text-[10px] text-teal-600 dark:text-teal-400">{privateRoomNote}</p>
       </div>

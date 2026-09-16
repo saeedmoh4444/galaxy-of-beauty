@@ -124,7 +124,7 @@ export function PhotoPrivacyBadge({
       {hasExpiry && (
         <div
           className={cn(
-            'flex items-center gap-1 rounded-full bg-white/60 px-2 py-0.5 dark:bg-black/20',
+            'flex items-center gap-1 rounded-full bg-surface-elevated/60 px-2 py-0.5 dark:bg-black/20',
             isExpiringSoon && 'bg-rose-100 dark:bg-rose-900/40',
           )}
         >
@@ -146,7 +146,7 @@ export function PhotoPrivacyBadge({
 
       {/* Indefinite badge */}
       {!hasExpiry && level !== 'VIEW_ONCE' && (
-        <div className="flex items-center gap-1 rounded-full bg-white/60 px-2 py-0.5 dark:bg-black/20">
+        <div className="flex items-center gap-1 rounded-full bg-surface-elevated/60 px-2 py-0.5 dark:bg-black/20">
           <span className="text-[10px]" aria-hidden="true"></span>
           <span className="text-[10px] font-medium opacity-70">{indefiniteText}</span>
         </div>

@@ -145,17 +145,17 @@ export function ThreeGenerationsCard({
 
       {/* Package details */}
       <div className="mt-3 grid grid-cols-3 gap-2 text-center">
-        <div className="rounded-xl bg-white/60 p-2 dark:bg-gray-800/60">
+        <div className="rounded-xl bg-surface-elevated/60 p-2">
           <p className="text-[9px] text-text-tertiary dark:text-text-secondary">{durationLabel}</p>
           <p className="text-xs font-bold text-text-primary">{duration}</p>
         </div>
-        <div className="rounded-xl bg-white/60 p-2 dark:bg-gray-800/60">
+        <div className="rounded-xl bg-surface-elevated/60 p-2">
           <p className="text-[9px] text-text-tertiary dark:text-text-secondary">{priceLabel}</p>
           <p className="text-xs font-bold text-rose-700 dark:text-rose-400">
             {totalPrice} {currencySuffix}
           </p>
         </div>
-        <div className="rounded-xl bg-white/60 p-2 dark:bg-gray-800/60">
+        <div className="rounded-xl bg-surface-elevated/60 p-2">
           <p className="text-[9px] text-text-tertiary dark:text-text-secondary">{perPersonLabel}</p>
           <p className="text-xs font-bold text-text-primary">
             {Math.round(totalPrice / 3)} {currencySuffix}
@@ -164,7 +164,7 @@ export function ThreeGenerationsCard({
       </div>
 
       {/* What's included */}
-      <div className="mt-3 rounded-xl bg-white/60 p-3 dark:bg-gray-800/60">
+      <div className="mt-3 rounded-xl bg-surface-elevated/60 p-3">
         <p className="text-[10px] font-bold text-text-primary">{includesLabel}</p>
         <div className="mt-1.5 grid grid-cols-2 gap-1 text-[10px] text-text-secondary">
           {INCLUDED_ITEMS.map((item) => (

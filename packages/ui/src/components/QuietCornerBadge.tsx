@@ -121,7 +121,7 @@ export function QuietCornerBadge({
   return (
     <div
       className={cn(
-        'rounded-2xl border border-orange-100 bg-white p-4 dark:border-orange-900 dark:bg-gray-900',
+        'rounded-2xl border border-orange-100 bg-surface-elevated p-4 dark:border-orange-900',
         className,
       )}
     >

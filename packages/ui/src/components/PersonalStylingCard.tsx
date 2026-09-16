@@ -65,7 +65,7 @@ export function PersonalStylingCard({
   return (
     <div
       className={cn(
-        'rounded-2xl border border-fuchsia-100 bg-white p-5 dark:border-fuchsia-900 dark:bg-gray-900',
+        'rounded-2xl border border-fuchsia-100 bg-surface-elevated p-5 dark:border-fuchsia-900',
         className,
       )}
     >
