@@ -1,8 +1,9 @@
 import { View, Text, TouchableOpacity, StyleSheet, TextInput } from 'react-native';
 import { useState } from 'react';
 import type { JSX } from 'react';
-import { localize } from '@galaxy/shared';
+import { localize, serviceKeyFromCategorySlug } from '@galaxy/shared';
 import { ScreenState } from '@/components/ScreenState';
+import { ServiceImage } from '@/components/ServiceImage';
 import { trpc } from '@/lib/trpc-react';
 import { formatCurrency } from '@galaxy/ui';
 import { useLocale } from '@/components/LocaleProvider';
@@ -48,6 +49,15 @@ export default function ServicesScreen(): JSX.Element {
       {(data as Record<string, unknown>[])?.map((s: Record<string, unknown>, i: number) => (
         <TouchableOpacity key={i} style={styles.card} activeOpacity={0.7}>
           <View style={styles.row}>
+            <ServiceImage
+              src={(s.imageUrl as string | null) ?? null}
+              service={serviceKeyFromCategorySlug(
+                (s.category as { slug?: string } | undefined)?.slug,
+              )}
+              alt={localize(s.titleJson, locale) || (s.titleAr as string) || ''}
+              height={44}
+              width={44}
+            />
             <View style={styles.left}>
               <Text style={styles.name}>
                 {localize(s.titleJson, locale) || (s.titleAr as string) || ''}
@@ -99,7 +109,7 @@ const styles = StyleSheet.create({
     elevation: 2,
   },
   row: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' },
-  left: { flex: 1, marginRight: 12 },
+  left: { flex: 1, marginStart: 12 },
   name: { fontSize: 15, fontWeight: '700', color: COLORS.gray900 },
   desc: { fontSize: 12, color: COLORS.gray400, marginTop: 3 },
   mommyBadge: {

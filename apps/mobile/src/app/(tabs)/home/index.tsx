@@ -1,8 +1,9 @@
 import type { JSX } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import { useRouter } from 'expo-router';
-import { localize } from '@galaxy/shared';
+import { localize, serviceKeyFromCategorySlug } from '@galaxy/shared';
 import { ScreenState } from '@/components/ScreenState';
+import { ServiceImage } from '@/components/ServiceImage';
 import { trpc } from '@/lib/trpc-react';
 import { useHaptics } from '@/hooks/useHaptics';
 import { useLocale } from '@/components/LocaleProvider';
@@ -95,11 +96,13 @@ export default function HomeScreen(): JSX.Element {
               router.push('/public/services' as never);
             }}
           >
-            <View style={styles.cardIcon}>
-              <Text style={styles.cardIconText}>
-                {localize(cat.nameJson, locale).charAt(0) || 'B'}
-              </Text>
-            </View>
+            <ServiceImage
+              service={serviceKeyFromCategorySlug(cat.slug as string)}
+              alt={localize(cat.nameJson, locale) || (cat.nameAr as string) || ''}
+              height={50}
+              width={50}
+              borderRadius={25}
+            />
             <Text style={styles.name}>
               {localize(cat.nameJson, locale) || (cat.nameAr as string) || ''}
             </Text>
@@ -144,15 +147,6 @@ const makeStyles = (c: typeof themeColors.light | typeof themeColors.dark) =>
       shadowRadius: 4,
       elevation: 2,
     },
-    cardIcon: {
-      width: 50,
-      height: 50,
-      borderRadius: 25,
-      backgroundColor: c.border,
-      alignItems: 'center',
-      justifyContent: 'center',
-    },
-    cardIconText: { fontSize: 20, fontWeight: '700', color: c.brand },
     name: {
       fontSize: 11,
       fontWeight: '600',
