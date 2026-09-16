@@ -214,7 +214,7 @@ export default function ProfilePage(): JSX.Element {
                       id="pf-lang"
                       value={(userData.preferredLanguage as string) ?? 'ar'}
                       onChange={(e) => saveLanguage(e.target.value as 'ar' | 'en')}
-                      className="w-full rounded-lg border border-edge bg-white px-3 py-2 text-sm dark:bg-gray-900"
+                      className="w-full rounded-lg border border-edge bg-surface-elevated px-3 py-2 text-sm"
                     >
                       <option value="ar">{t('profile.arabic')}</option>
                       <option value="en">English</option>

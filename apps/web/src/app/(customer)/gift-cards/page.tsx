@@ -158,7 +158,7 @@ export default function GiftCardsPage(): JSX.Element {
                 </label>
                 <textarea
                   id="gc-message"
-                  className="w-full rounded-lg border border-edge p-2 text-sm dark:bg-gray-800"
+                  className="w-full rounded-lg border border-edge p-2 text-sm bg-surface-elevated"
                   rows={3}
                   value={giftMessage}
                   onChange={(e) => setGiftMessage(e.target.value)}

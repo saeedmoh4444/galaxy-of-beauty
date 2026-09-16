@@ -566,7 +566,7 @@ export default function VirtualTryOnPage(): JSX.Element {
                             size="sm"
                             variant="ghost"
                             onClick={() => setCapturedPhoto(null)}
-                            className="flex-1 bg-white/20 text-white hover:bg-white/30"
+                            className="flex-1 bg-surface-elevated/20 text-white hover:bg-surface-elevated/30"
                           >
                             {t('tryOn.retake')}
                           </Button>

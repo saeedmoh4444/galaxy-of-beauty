@@ -99,7 +99,7 @@ export default function AdminReportsPage(): JSX.Element {
             <div className="overflow-x-auto">
               <table className="w-full text-sm">
                 <thead>
-                  <tr className="text-end text-text-secondary border-b dark:border-gray-700">
+                  <tr className="text-end text-text-secondary border-b border-edge">
                     <th className="py-2 px-3">{t('admin.reports.name-header')}</th>
                     <th className="py-2 px-3">{t('admin.reports.revenue-header')}</th>
                     <th className="py-2 px-3">{t('admin.reports.bookings-header')}</th>
@@ -108,7 +108,7 @@ export default function AdminReportsPage(): JSX.Element {
                 </thead>
                 <tbody>
                   {topTechs.map((tech: Record<string, unknown>, i: number) => (
-                    <tr key={i} className="border-b dark:border-gray-700">
+                    <tr key={i} className="border-b border-edge">
                       <td className="py-2 px-3 font-bold">{tech.name as string}</td>
                       <td className="py-2 px-3">{formatCurrency(tech.revenue as number)}</td>
                       <td className="py-2 px-3">{tech.bookings as number}</td>

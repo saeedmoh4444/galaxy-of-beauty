@@ -74,20 +74,20 @@ export default function VideoTestimonialsPage(): JSX.Element {
             value={vUrl}
             onChange={(e) => setVUrl(e.target.value)}
             placeholder={t('marketing.video-testimonials.video-url-placeholder')}
-            className="w-full rounded-lg border px-3 py-2 text-sm dark:border-gray-700 dark:bg-gray-800"
+            className="w-full rounded-lg border px-3 py-2 text-sm border-edge bg-surface-elevated"
           />
           <div className="grid grid-cols-2 gap-3">
             <input
               value={techName}
               onChange={(e) => setTechName(e.target.value)}
               placeholder={t('marketing.video-testimonials.tech-name-placeholder')}
-              className="w-full rounded-lg border px-3 py-2 text-sm dark:border-gray-700 dark:bg-gray-800"
+              className="w-full rounded-lg border px-3 py-2 text-sm border-edge bg-surface-elevated"
             />
             <input
               value={svcName}
               onChange={(e) => setSvcName(e.target.value)}
               placeholder={t('marketing.video-testimonials.service-placeholder')}
-              className="w-full rounded-lg border px-3 py-2 text-sm dark:border-gray-700 dark:bg-gray-800"
+              className="w-full rounded-lg border px-3 py-2 text-sm border-edge bg-surface-elevated"
             />
           </div>
           <div className="flex items-center gap-2">
@@ -105,7 +105,7 @@ export default function VideoTestimonialsPage(): JSX.Element {
             onChange={(e) => setComment(e.target.value)}
             maxLength={300}
             placeholder={t('marketing.video-testimonials.comment-placeholder')}
-            className="w-full rounded-lg border px-3 py-2 text-sm dark:border-gray-700 dark:bg-gray-800"
+            className="w-full rounded-lg border px-3 py-2 text-sm border-edge bg-surface-elevated"
             rows={2}
           />
           <Button

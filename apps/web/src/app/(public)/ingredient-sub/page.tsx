@@ -38,7 +38,7 @@ export default function IngredientSubPage(): JSX.Element {
           onChange={(e) => setSearch(e.target.value)}
           onKeyDown={(e) => e.key === 'Enter' && setQ(search.trim())}
           placeholder={t('marketing.ingredient-sub.search-placeholder')}
-          className="flex-1 rounded-lg border px-3 py-2 text-sm dark:border-gray-700 dark:bg-gray-800"
+          className="flex-1 rounded-lg border px-3 py-2 text-sm border-edge bg-surface-elevated"
         />
         <Button onClick={() => setQ(search.trim())}>{t('marketing.ingredient-sub.search')}</Button>
       </div>

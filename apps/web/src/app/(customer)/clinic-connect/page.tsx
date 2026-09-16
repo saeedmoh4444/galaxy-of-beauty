@@ -85,13 +85,13 @@ export default function ClinicConnectPage(): JSX.Element {
               value={reason}
               onChange={(e) => setReason(e.target.value)}
               placeholder={t('clinicConnect.reasonPlaceholder')}
-              className="w-full rounded-lg border px-3 py-2 text-sm dark:border-gray-700 dark:bg-gray-800"
+              className="w-full rounded-lg border px-3 py-2 text-sm border-edge bg-surface-elevated"
               rows={3}
             />
             <select
               value={urgency}
               onChange={(e) => setUrgency(e.target.value as 'routine' | 'urgent' | 'emergency')}
-              className="w-full rounded-lg border px-3 py-2 text-sm dark:border-gray-700 dark:bg-gray-800"
+              className="w-full rounded-lg border px-3 py-2 text-sm border-edge bg-surface-elevated"
             >
               {['routine', 'urgent', 'emergency'].map((u) => (
                 <option key={u} value={u}>

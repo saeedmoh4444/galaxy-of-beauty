@@ -197,7 +197,7 @@ export default function BeautyProfilePage(): JSX.Element {
                 {t('beautyProfile.notesTitle')}
               </h3>
               <textarea
-                className="w-full rounded-lg border border-edge p-3 text-sm dark:bg-gray-800"
+                className="w-full rounded-lg border border-edge p-3 text-sm bg-surface-elevated"
                 rows={3}
                 value={notes}
                 onChange={(e) => setNotes(e.target.value)}

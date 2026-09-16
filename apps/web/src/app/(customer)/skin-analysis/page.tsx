@@ -96,7 +96,7 @@ export default function SkinAnalysisPage(): JSX.Element {
                 placeholder="https://..."
                 value={imageUrl}
                 onChange={(e) => setImageUrl(e.target.value)}
-                className="flex-1 rounded-lg border border-edge px-3 py-2 text-sm dark:bg-gray-800"
+                className="flex-1 rounded-lg border border-edge px-3 py-2 text-sm bg-surface-elevated"
               />
               <Button
                 onClick={() => {

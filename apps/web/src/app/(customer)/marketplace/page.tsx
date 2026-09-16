@@ -58,7 +58,7 @@ export default function MarketplacePage(): JSX.Element {
           value={search}
           onChange={(e) => setSearch(e.target.value)}
           placeholder={t('marketplace.searchPlaceholder')}
-          className="mb-6 w-full rounded-xl border border-edge px-4 py-3 text-sm text-end dark:bg-gray-800 dark:text-gray-100"
+          className="mb-6 w-full rounded-xl border border-edge px-4 py-3 text-sm text-end bg-surface-elevated dark:text-gray-100"
         />
 
         {products.isLoading ? (
@@ -70,7 +70,7 @@ export default function MarketplacePage(): JSX.Element {
             {items.map((p) => (
               <div
                 key={p.id as number}
-                className="rounded-2xl border border-edge-muted bg-white p-4 dark:bg-gray-900"
+                className="rounded-2xl border border-edge-muted bg-surface-elevated p-4"
               >
                 <ServiceImage
                   src={(p.imageUrl as string) ?? null}

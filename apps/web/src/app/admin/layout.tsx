@@ -53,7 +53,7 @@ export default function AdminLayout({ children }: { children: ReactNode }): Reac
 
   return (
     <div className="flex min-h-screen">
-      <aside className="hidden w-64 border-e border-edge bg-white p-4 md:block dark:bg-gray-950">
+      <aside className="hidden w-64 border-e border-edge bg-surface-elevated p-4 md:block">
         <Link href="/admin/dashboard" className="mb-6 block text-lg font-bold text-brand-600">
           {t('admin.title')}
         </Link>
@@ -99,7 +99,7 @@ export default function AdminLayout({ children }: { children: ReactNode }): Reac
         </div>
       </aside>
       <div className="flex flex-1 flex-col overflow-auto">
-        <header className="sticky top-0 z-30 flex items-center justify-end gap-2 border-b border-edge bg-white/80 px-4 py-2 backdrop-blur dark:bg-gray-950/80">
+        <header className="sticky top-0 z-30 flex items-center justify-end gap-2 border-b border-edge bg-surface-elevated/80 px-4 py-2 backdrop-blur">
           <LanguageToggle />
           <ThemeToggle />
         </header>

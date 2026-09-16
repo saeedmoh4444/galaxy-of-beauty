@@ -126,7 +126,7 @@ export default function RestockReminderPage(): JSX.Element {
                 type="text"
                 value={productName}
                 onChange={(e) => setProductName(e.target.value)}
-                className="w-full rounded-lg border px-3 py-2 text-sm dark:border-gray-700 dark:bg-gray-800 mt-1"
+                className="w-full rounded-lg border px-3 py-2 text-sm border-edge bg-surface-elevated mt-1"
               />
             </div>
             <div>
@@ -137,7 +137,7 @@ export default function RestockReminderPage(): JSX.Element {
                 id="rr-category"
                 value={category}
                 onChange={(e) => setCategory(e.target.value)}
-                className="w-full rounded-lg border px-3 py-2 text-sm dark:border-gray-700 dark:bg-gray-800 mt-1"
+                className="w-full rounded-lg border px-3 py-2 text-sm border-edge bg-surface-elevated mt-1"
               >
                 {categories.map((c: Record<string, unknown>) => (
                   <option key={c.key as string} value={c.key as string}>

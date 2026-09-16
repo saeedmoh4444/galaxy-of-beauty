@@ -84,14 +84,14 @@ export default function ServiceWishlistPage(): JSX.Element {
               value={name}
               onChange={(e) => setName(e.target.value)}
               placeholder={t('serviceWishlist.serviceNamePlaceholder')}
-              className="w-full rounded-lg border px-3 py-2 text-sm dark:border-gray-700 dark:bg-gray-800"
+              className="w-full rounded-lg border px-3 py-2 text-sm border-edge bg-surface-elevated"
             />
             <input
               type="number"
               value={price}
               onChange={(e) => setPrice(parseInt(e.target.value) || 0)}
               placeholder={t('serviceWishlist.currentPricePlaceholder')}
-              className="w-full rounded-lg border px-3 py-2 text-sm dark:border-gray-700 dark:bg-gray-800"
+              className="w-full rounded-lg border px-3 py-2 text-sm border-edge bg-surface-elevated"
             />
             <Button
               onClick={() => {

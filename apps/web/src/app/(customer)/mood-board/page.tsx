@@ -271,7 +271,7 @@ export default function MoodBoardPage(): JSX.Element {
                 value={newBoardName}
                 onChange={(e) => setNewBoardName(e.target.value)}
                 placeholder={t('mood.placeholder.name')}
-                className="w-full rounded-lg border border-edge px-3 py-2 text-sm focus:border-brand-500 focus:outline-none dark:bg-gray-800"
+                className="w-full rounded-lg border border-edge px-3 py-2 text-sm focus:border-brand-500 focus:outline-none bg-surface-elevated"
               />
             </div>
             <div>
@@ -287,7 +287,7 @@ export default function MoodBoardPage(): JSX.Element {
                 onChange={(e) => setNewBoardDesc(e.target.value)}
                 placeholder={t('mood.placeholder.description')}
                 rows={2}
-                className="w-full rounded-lg border border-edge px-3 py-2 text-sm focus:border-brand-500 focus:outline-none dark:bg-gray-800"
+                className="w-full rounded-lg border border-edge px-3 py-2 text-sm focus:border-brand-500 focus:outline-none bg-surface-elevated"
               />
             </div>
             <div className="flex justify-end gap-3 pt-2">
@@ -317,7 +317,7 @@ export default function MoodBoardPage(): JSX.Element {
                 value={pinImageUrl}
                 onChange={(e) => setPinImageUrl(e.target.value)}
                 placeholder="https://example.com/image.jpg"
-                className="w-full rounded-lg border border-edge px-3 py-2 text-sm focus:border-brand-500 focus:outline-none dark:bg-gray-800"
+                className="w-full rounded-lg border border-edge px-3 py-2 text-sm focus:border-brand-500 focus:outline-none bg-surface-elevated"
               />
               {pinImageUrl && (
                 <div className="mt-2 h-32 rounded-xl bg-surface-muted overflow-hidden">
@@ -346,7 +346,7 @@ export default function MoodBoardPage(): JSX.Element {
                 value={pinTitle}
                 onChange={(e) => setPinTitle(e.target.value)}
                 placeholder={t('mood.placeholder.title')}
-                className="w-full rounded-lg border border-edge px-3 py-2 text-sm focus:border-brand-500 focus:outline-none dark:bg-gray-800"
+                className="w-full rounded-lg border border-edge px-3 py-2 text-sm focus:border-brand-500 focus:outline-none bg-surface-elevated"
               />
             </div>
             <div>
@@ -362,7 +362,7 @@ export default function MoodBoardPage(): JSX.Element {
                 value={pinTags}
                 onChange={(e) => setPinTags(e.target.value)}
                 placeholder={t('mood.placeholder.tags')}
-                className="w-full rounded-lg border border-edge px-3 py-2 text-sm focus:border-brand-500 focus:outline-none dark:bg-gray-800"
+                className="w-full rounded-lg border border-edge px-3 py-2 text-sm focus:border-brand-500 focus:outline-none bg-surface-elevated"
               />
             </div>
             <div className="flex justify-end gap-3 pt-2">

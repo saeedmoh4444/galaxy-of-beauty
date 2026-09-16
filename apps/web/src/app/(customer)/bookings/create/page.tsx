@@ -293,7 +293,7 @@ export default function CreateBookingPage(): JSX.Element {
                 </label>
                 <select
                   id="bc-variant"
-                  className="w-full rounded-lg border border-edge p-2 text-sm dark:bg-gray-800"
+                  className="w-full rounded-lg border border-edge p-2 text-sm bg-surface-elevated"
                   value={variantId || ''}
                   onChange={(e) => setVariantId(Number(e.target.value) || undefined)}
                 >
@@ -319,7 +319,7 @@ export default function CreateBookingPage(): JSX.Element {
                   min={new Date(Date.now() + 86400000).toISOString().slice(0, 10)}
                   value={bookingDate}
                   onChange={(e) => setBookingDate(e.target.value)}
-                  className="w-full rounded-lg border border-edge p-2 text-sm dark:bg-gray-800"
+                  className="w-full rounded-lg border border-edge p-2 text-sm bg-surface-elevated"
                 />
               </div>
               <div>
@@ -330,7 +330,7 @@ export default function CreateBookingPage(): JSX.Element {
                   id="bc-time"
                   value={bookingTime}
                   onChange={(e) => setBookingTime(e.target.value)}
-                  className="w-full rounded-lg border border-edge p-2 text-sm dark:bg-gray-800"
+                  className="w-full rounded-lg border border-edge p-2 text-sm bg-surface-elevated"
                 >
                   {TIME_SLOTS.map((slot) => (
                     <option key={slot} value={slot}>
@@ -347,7 +347,7 @@ export default function CreateBookingPage(): JSX.Element {
               </label>
               <select
                 id="bc-address"
-                className="w-full rounded-lg border border-edge p-2 text-sm dark:bg-gray-800"
+                className="w-full rounded-lg border border-edge p-2 text-sm bg-surface-elevated"
                 value={addressId || ''}
                 onChange={(e) => setAddressId(Number(e.target.value) || undefined)}
               >
@@ -367,7 +367,7 @@ export default function CreateBookingPage(): JSX.Element {
                 </label>
                 <select
                   id="bc-member"
-                  className="w-full rounded-lg border border-edge p-2 text-sm dark:bg-gray-800"
+                  className="w-full rounded-lg border border-edge p-2 text-sm bg-surface-elevated"
                   value={familyMemberId || ''}
                   onChange={(e) => setFamilyMemberId(Number(e.target.value) || undefined)}
                 >
@@ -387,7 +387,7 @@ export default function CreateBookingPage(): JSX.Element {
               </label>
               <textarea
                 id="bc-notes"
-                className="w-full rounded-lg border border-edge p-3 text-sm dark:bg-gray-800"
+                className="w-full rounded-lg border border-edge p-3 text-sm bg-surface-elevated"
                 rows={3}
                 value={notes}
                 onChange={(e) => setNotes(e.target.value)}

@@ -161,7 +161,7 @@ export default async function ShopTheLookPage(): Promise<JSX.Element> {
                 {look.services.map((s, i) => (
                   <div
                     key={i}
-                    className="flex items-center justify-between rounded-lg bg-white/60 dark:bg-gray-800/60 p-3"
+                    className="flex items-center justify-between rounded-lg bg-surface-elevated/60 p-3"
                   >
                     <div className="flex items-center gap-2">
                       <span>{s.emoji}</span>

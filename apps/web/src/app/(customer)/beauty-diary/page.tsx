@@ -66,7 +66,7 @@ export default function BeautyDiaryPage(): JSX.Element {
               onChange={(e) => setContent(e.target.value)}
               placeholder={t('beautyDiary.placeholder')}
               rows={3}
-              className="w-full rounded-lg border px-3 py-2 text-sm dark:border-gray-700 dark:bg-gray-800"
+              className="w-full rounded-lg border px-3 py-2 text-sm border-edge bg-surface-elevated"
             />
             <div className="flex gap-2 mt-3 justify-center">
               {MOODS.map((m) => (

@@ -87,21 +87,21 @@ export default function SelfCarePage(): JSX.Element {
                   placeholder={t('selfCare.sleepHoursPlaceholder')}
                   value={sleep}
                   onChange={(e) => setSleep(e.target.value)}
-                  className="rounded-lg border border-edge p-2 text-sm dark:bg-gray-800"
+                  className="rounded-lg border border-edge p-2 text-sm bg-surface-elevated"
                 />
                 <input
                   type="number"
                   placeholder={t('selfCare.waterPlaceholder')}
                   value={water}
                   onChange={(e) => setWater(e.target.value)}
-                  className="rounded-lg border border-edge p-2 text-sm dark:bg-gray-800"
+                  className="rounded-lg border border-edge p-2 text-sm bg-surface-elevated"
                 />
               </div>
               <input
                 placeholder={t('selfCare.notesPlaceholder')}
                 value={notes}
                 onChange={(e) => setNotes(e.target.value)}
-                className="w-full rounded-lg border border-edge p-2 text-sm dark:bg-gray-800"
+                className="w-full rounded-lg border border-edge p-2 text-sm bg-surface-elevated"
               />
             </div>
             <Button

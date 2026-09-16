@@ -56,7 +56,7 @@ export default function SmartSchedulePage(): JSX.Element {
             type="date"
             value={datePref}
             onChange={(e) => setDatePref(e.target.value)}
-            className="rounded-lg border px-3 py-2 text-sm dark:border-gray-700 dark:bg-gray-800"
+            className="rounded-lg border px-3 py-2 text-sm border-edge bg-surface-elevated"
             placeholder={t('smartSchedule.datePlaceholder')}
           />
         </Card>

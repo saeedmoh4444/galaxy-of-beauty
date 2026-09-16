@@ -57,12 +57,12 @@ export default function BeautyClosetPage(): JSX.Element {
               value={name}
               onChange={(e) => setName(e.target.value)}
               placeholder={t('beautyCloset.productNamePlaceholder')}
-              className="w-full rounded-lg border px-3 py-2 text-sm dark:border-gray-700 dark:bg-gray-800"
+              className="w-full rounded-lg border px-3 py-2 text-sm border-edge bg-surface-elevated"
             />
             <select
               value={cat}
               onChange={(e) => setCat(e.target.value)}
-              className="w-full rounded-lg border px-3 py-2 text-sm dark:border-gray-700 dark:bg-gray-800"
+              className="w-full rounded-lg border px-3 py-2 text-sm border-edge bg-surface-elevated"
             >
               {CATS.map((c) => (
                 <option key={c} value={c}>

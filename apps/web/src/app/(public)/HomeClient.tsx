@@ -382,7 +382,7 @@ export function HomeClient({
               <Card
                 key={i}
                 padding="lg"
-                className="text-center bg-white/80 dark:bg-gray-900/80 backdrop-blur"
+                className="text-center bg-surface-elevated/80 backdrop-blur"
               >
                 <p className="text-lg font-bold text-yellow-500">
                   {'★'.repeat(tst.rating)}

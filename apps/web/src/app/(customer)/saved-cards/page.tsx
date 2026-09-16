@@ -128,7 +128,7 @@ export default function SavedCardsPage(): JSX.Element {
               />
               <div className="flex gap-3">
                 <select
-                  className="flex-1 rounded-lg border border-edge p-2 dark:bg-gray-800"
+                  className="flex-1 rounded-lg border border-edge p-2 bg-surface-elevated"
                   value={form.brand}
                   onChange={(e) => setForm({ ...form, brand: e.target.value as typeof form.brand })}
                 >
@@ -138,7 +138,7 @@ export default function SavedCardsPage(): JSX.Element {
                   <option value="amex">Amex</option>
                 </select>
                 <select
-                  className="w-20 rounded-lg border border-edge p-2 dark:bg-gray-800"
+                  className="w-20 rounded-lg border border-edge p-2 bg-surface-elevated"
                   value={form.expMonth}
                   onChange={(e) => setForm({ ...form, expMonth: e.target.value })}
                 >
@@ -149,7 +149,7 @@ export default function SavedCardsPage(): JSX.Element {
                   ))}
                 </select>
                 <select
-                  className="w-24 rounded-lg border border-edge p-2 dark:bg-gray-800"
+                  className="w-24 rounded-lg border border-edge p-2 bg-surface-elevated"
                   value={form.expYear}
                   onChange={(e) => setForm({ ...form, expYear: e.target.value })}
                 >

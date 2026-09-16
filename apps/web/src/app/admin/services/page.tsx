@@ -205,7 +205,7 @@ export default function AdminServicesPage(): JSX.Element {
           </label>
           <select
             id="as-cat-filter"
-            className="rounded-lg border border-edge bg-white p-2 text-sm dark:bg-gray-900"
+            className="rounded-lg border border-edge bg-surface-elevated p-2 text-sm"
             value={catFilter ?? ''}
             onChange={(e) => setCatFilter(e.target.value ? Number(e.target.value) : null)}
           >
@@ -446,7 +446,7 @@ export default function AdminServicesPage(): JSX.Element {
             </label>
             <select
               id="as-cat-create"
-              className="w-full rounded-lg border border-edge bg-white p-2 text-sm dark:bg-gray-900"
+              className="w-full rounded-lg border border-edge bg-surface-elevated p-2 text-sm"
               value={form.categoryId || ''}
               onChange={(e) => setForm({ ...form, categoryId: Number(e.target.value) || 0 })}
             >
@@ -533,7 +533,7 @@ export default function AdminServicesPage(): JSX.Element {
             </label>
             <select
               id="as-cat-edit"
-              className="w-full rounded-lg border border-edge bg-white p-2 text-sm dark:bg-gray-900"
+              className="w-full rounded-lg border border-edge bg-surface-elevated p-2 text-sm"
               value={form.categoryId || ''}
               onChange={(e) => setForm({ ...form, categoryId: Number(e.target.value) || 0 })}
             >

@@ -103,7 +103,7 @@ export default function SpaPlannerPage(): JSX.Element {
                 value={name}
                 onChange={(e) => setName(e.target.value)}
                 placeholder={t('spaPlanner.planNamePlaceholder')}
-                className="flex-1 rounded-lg border px-3 py-2 text-sm dark:border-gray-700 dark:bg-gray-800"
+                className="flex-1 rounded-lg border px-3 py-2 text-sm border-edge bg-surface-elevated"
               />
               <Button
                 onClick={() => {

@@ -185,7 +185,7 @@ export default function LiveStreamDetailPage(): JSX.Element {
                     }}
                     placeholder={t('marketing.live-stream-detail.message-placeholder')}
                     maxLength={300}
-                    className="flex-1 rounded-lg border px-3 py-2 text-xs dark:border-gray-700 dark:bg-gray-800"
+                    className="flex-1 rounded-lg border px-3 py-2 text-xs border-edge bg-surface-elevated"
                   />
                   <Button
                     size="sm"

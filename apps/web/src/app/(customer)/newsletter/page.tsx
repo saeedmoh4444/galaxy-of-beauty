@@ -40,7 +40,7 @@ export default function NewsletterPage(): JSX.Element {
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 placeholder={t('newsletter.emailPlaceholder')}
-                className="flex-1 rounded-lg border px-3 py-2 text-sm dark:border-gray-700 dark:bg-gray-800"
+                className="flex-1 rounded-lg border px-3 py-2 text-sm border-edge bg-surface-elevated"
               />
               <Button
                 onClick={() => {

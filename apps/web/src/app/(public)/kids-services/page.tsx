@@ -131,7 +131,7 @@ export default function KidsServicesPage(): JSX.Element {
                 value={childName}
                 onChange={(e) => setChildName(e.target.value)}
                 placeholder={t('marketing.kids-services.name-placeholder')}
-                className="w-full rounded-lg border px-3 py-2 text-sm dark:border-gray-700 dark:bg-gray-800 mt-1"
+                className="w-full rounded-lg border px-3 py-2 text-sm border-edge bg-surface-elevated mt-1"
               />
             </div>
             <div>
@@ -145,7 +145,7 @@ export default function KidsServicesPage(): JSX.Element {
                 onChange={(e) => setChildAge(parseInt(e.target.value) || 0)}
                 min={0}
                 max={17}
-                className="w-20 rounded-lg border px-3 py-2 text-sm dark:border-gray-700 dark:bg-gray-800 mt-1"
+                className="w-20 rounded-lg border px-3 py-2 text-sm border-edge bg-surface-elevated mt-1"
               />
             </div>
           </div>

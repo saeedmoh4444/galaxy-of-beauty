@@ -58,7 +58,7 @@ export default function IngredientAnalyzerPage(): JSX.Element {
           onChange={(e) => setText(e.target.value)}
           placeholder={t('marketing.ingredient-analyzer.textarea-placeholder')}
           rows={6}
-          className="w-full rounded-lg border px-3 py-2 text-sm dark:border-gray-700 dark:bg-gray-800"
+          className="w-full rounded-lg border px-3 py-2 text-sm border-edge bg-surface-elevated"
         />
         <div className="mt-3 flex gap-2">
           <Button

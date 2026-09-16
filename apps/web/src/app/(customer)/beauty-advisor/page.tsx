@@ -117,7 +117,7 @@ export default function BeautyAdvisorPage(): JSX.Element {
             value={input}
             onChange={(e) => setInput(e.target.value)}
             placeholder={t('beautyAdvisor.placeholder')}
-            className="flex-1 rounded-xl border px-4 py-3 text-sm dark:border-gray-700 dark:bg-gray-800"
+            className="flex-1 rounded-xl border px-4 py-3 text-sm border-edge bg-surface-elevated"
             onKeyDown={(e) => {
               if (e.key === 'Enter') handleSend();
             }}

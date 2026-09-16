@@ -217,7 +217,7 @@ export default function AdminCategoriesPage(): JSX.Element {
             </label>
             <select
               id="ac-parent-create"
-              className="w-full rounded-lg border border-edge bg-white p-2 text-sm dark:bg-gray-900"
+              className="w-full rounded-lg border border-edge bg-surface-elevated p-2 text-sm"
               value={form.parentId ?? ''}
               onChange={(e) =>
                 setForm({ ...form, parentId: e.target.value ? Number(e.target.value) : null })
@@ -273,7 +273,7 @@ export default function AdminCategoriesPage(): JSX.Element {
             </label>
             <select
               id="ac-parent-edit"
-              className="w-full rounded-lg border border-edge bg-white p-2 text-sm dark:bg-gray-900"
+              className="w-full rounded-lg border border-edge bg-surface-elevated p-2 text-sm"
               value={form.parentId ?? ''}
               onChange={(e) =>
                 setForm({ ...form, parentId: e.target.value ? Number(e.target.value) : null })

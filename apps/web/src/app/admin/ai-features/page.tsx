@@ -30,7 +30,7 @@ export default function AdminAiFeaturesPage(): JSX.Element {
               value={reviewId}
               onChange={(e) => setReviewId(e.target.value)}
               placeholder={t('admin.ai-features.review-id-placeholder')}
-              className="flex-1 rounded-lg border px-3 py-2 text-sm dark:border-gray-700 dark:bg-gray-800"
+              className="flex-1 rounded-lg border px-3 py-2 text-sm border-edge bg-surface-elevated"
             />
             <Button
               onClick={() =>
@@ -64,13 +64,13 @@ export default function AdminAiFeaturesPage(): JSX.Element {
               value={svcAr}
               onChange={(e) => setSvcAr(e.target.value)}
               placeholder={t('admin.ai-features.service-name-ar')}
-              className="w-full rounded-lg border px-3 py-2 text-sm dark:border-gray-700 dark:bg-gray-800"
+              className="w-full rounded-lg border px-3 py-2 text-sm border-edge bg-surface-elevated"
             />
             <input
               value={svcEn}
               onChange={(e) => setSvcEn(e.target.value)}
               placeholder={t('admin.ai-features.service-name-en')}
-              className="w-full rounded-lg border px-3 py-2 text-sm dark:border-gray-700 dark:bg-gray-800"
+              className="w-full rounded-lg border px-3 py-2 text-sm border-edge bg-surface-elevated"
             />
             <Button
               onClick={() =>

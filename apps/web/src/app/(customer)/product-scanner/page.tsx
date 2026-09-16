@@ -141,7 +141,7 @@ export default function ProductScannerPage(): JSX.Element {
               onChange={(e) => setBarcode(e.target.value.replace(/\D/g, '').slice(0, 20))}
               onKeyDown={(e) => e.key === 'Enter' && handleLookup()}
               placeholder={t('scanner.barcodePlaceholder')}
-              className="flex-1 rounded-lg border px-3 py-2.5 text-sm tracking-widest dark:border-gray-700 dark:bg-gray-800"
+              className="flex-1 rounded-lg border px-3 py-2.5 text-sm tracking-widest border-edge bg-surface-elevated"
               dir="ltr"
             />
             <Button onClick={handleLookup} loading={isLoading} disabled={barcode.length < 8}>

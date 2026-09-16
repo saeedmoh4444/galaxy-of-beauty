@@ -75,7 +75,7 @@ export default function ColorAnalysisPage(): JSX.Element {
               key={sc.key}
               type="button"
               onClick={() => setSeason(sc.key)}
-              className={`flex-1 rounded-2xl border-2 p-3 text-center transition-all ${season === sc.key ? 'border-rose-400 bg-rose-50 dark:border-rose-600 dark:bg-rose-950' : 'border-edge-muted bg-white dark:bg-gray-900'}`}
+              className={`flex-1 rounded-2xl border-2 p-3 text-center transition-all ${season === sc.key ? 'border-rose-400 bg-rose-50 dark:border-rose-600 dark:bg-rose-950' : 'border-edge-muted bg-surface-elevated'}`}
             >
               <span className="text-2xl">{sc.emoji}</span>
               <p
@@ -87,7 +87,7 @@ export default function ColorAnalysisPage(): JSX.Element {
           ))}
         </div>
 
-        <div className="rounded-2xl border border-edge-muted bg-white p-6 dark:bg-gray-900">
+        <div className="rounded-2xl border border-edge-muted bg-surface-elevated p-6">
           <h3 className="text-xl font-bold text-text-primary">
             {s.emoji} {t(s.name)} — {t(s.desc)}
           </h3>

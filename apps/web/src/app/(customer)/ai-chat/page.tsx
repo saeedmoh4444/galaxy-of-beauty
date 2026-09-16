@@ -151,7 +151,7 @@ export default function AiChatPage(): JSX.Element {
         <div className="border-t border-edge pt-4">
           <div className="flex gap-2">
             <textarea
-              className="flex-1 resize-none rounded-xl border border-edge bg-white p-3 text-sm outline-none focus:border-brand-400 dark:bg-gray-800"
+              className="flex-1 resize-none rounded-xl border border-edge bg-surface-elevated p-3 text-sm outline-none focus:border-brand-400"
               rows={2}
               value={input}
               onChange={(e) => setInput(e.target.value)}

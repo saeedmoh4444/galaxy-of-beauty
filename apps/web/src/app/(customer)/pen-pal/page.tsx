@@ -70,7 +70,7 @@ export default function PenPalPage(): JSX.Element {
               value={bio}
               onChange={(e) => setBio(e.target.value)}
               placeholder={t('penPal.bioPlaceholder')}
-              className="w-full rounded-lg border px-3 py-2 text-sm dark:border-gray-700 dark:bg-gray-800 mb-3"
+              className="w-full rounded-lg border px-3 py-2 text-sm border-edge bg-surface-elevated mb-3"
               rows={2}
             />
             <Button

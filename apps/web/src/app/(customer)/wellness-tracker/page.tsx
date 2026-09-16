@@ -80,7 +80,7 @@ export default function WellnessTrackerPage(): JSX.Element {
                 max={20}
                 value={water}
                 onChange={(e) => setWater(parseInt(e.target.value) || 0)}
-                className="w-full rounded-lg border px-3 py-2 text-sm dark:border-gray-700 dark:bg-gray-800 mt-1"
+                className="w-full rounded-lg border px-3 py-2 text-sm border-edge bg-surface-elevated mt-1"
               />
             </div>
             <div>
@@ -95,7 +95,7 @@ export default function WellnessTrackerPage(): JSX.Element {
                 max={24}
                 value={sleep}
                 onChange={(e) => setSleep(parseFloat(e.target.value) || 0)}
-                className="w-full rounded-lg border px-3 py-2 text-sm dark:border-gray-700 dark:bg-gray-800 mt-1"
+                className="w-full rounded-lg border px-3 py-2 text-sm border-edge bg-surface-elevated mt-1"
               />
             </div>
             <div>
@@ -108,7 +108,7 @@ export default function WellnessTrackerPage(): JSX.Element {
                 min={0}
                 value={steps}
                 onChange={(e) => setSteps(parseInt(e.target.value) || 0)}
-                className="w-full rounded-lg border px-3 py-2 text-sm dark:border-gray-700 dark:bg-gray-800 mt-1"
+                className="w-full rounded-lg border px-3 py-2 text-sm border-edge bg-surface-elevated mt-1"
               />
             </div>
             <div>

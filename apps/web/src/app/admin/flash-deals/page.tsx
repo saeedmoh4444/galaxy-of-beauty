@@ -66,7 +66,7 @@ export default function AdminFlashDealsPage(): JSX.Element {
             <select
               value={svcId}
               onChange={(e) => setSvcId(Number(e.target.value))}
-              className="rounded-lg border px-3 py-2 text-sm dark:border-gray-700 dark:bg-gray-800"
+              className="rounded-lg border px-3 py-2 text-sm border-edge bg-surface-elevated"
             >
               {SERVICES.map((s) => (
                 <option key={s.id} value={s.id}>
@@ -81,7 +81,7 @@ export default function AdminFlashDealsPage(): JSX.Element {
               min={10}
               max={80}
               placeholder={t('admin.flash-deals.discount-placeholder')}
-              className="rounded-lg border px-3 py-2 text-sm dark:border-gray-700 dark:bg-gray-800"
+              className="rounded-lg border px-3 py-2 text-sm border-edge bg-surface-elevated"
             />
             <input
               type="number"
@@ -90,7 +90,7 @@ export default function AdminFlashDealsPage(): JSX.Element {
               min={1}
               max={72}
               placeholder={t('admin.flash-deals.duration-placeholder')}
-              className="rounded-lg border px-3 py-2 text-sm dark:border-gray-700 dark:bg-gray-800"
+              className="rounded-lg border px-3 py-2 text-sm border-edge bg-surface-elevated"
             />
             <input
               type="number"
@@ -98,7 +98,7 @@ export default function AdminFlashDealsPage(): JSX.Element {
               onChange={(e) => setMax(Number(e.target.value))}
               min={1}
               placeholder={t('admin.flash-deals.max-placeholder')}
-              className="rounded-lg border px-3 py-2 text-sm dark:border-gray-700 dark:bg-gray-800"
+              className="rounded-lg border px-3 py-2 text-sm border-edge bg-surface-elevated"
             />
           </div>
           <Button

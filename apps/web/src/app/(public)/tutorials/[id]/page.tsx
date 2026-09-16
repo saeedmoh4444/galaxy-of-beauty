@@ -203,7 +203,7 @@ export default function TutorialDetailPage(): JSX.Element {
         <p className="text-xl font-bold">{t('marketing.tutorials.cta-title')}</p>
         <p className="mt-1 text-white/80">{t('marketing.tutorials.cta-desc')}</p>
         <Link href="/tutorials" className="mt-4 inline-block">
-          <span className="inline-flex items-center gap-2 rounded-xl bg-white/20 px-5 py-2 text-sm font-bold backdrop-blur hover:bg-white/30 transition-colors">
+          <span className="inline-flex items-center gap-2 rounded-xl bg-surface-elevated/20 px-5 py-2 text-sm font-bold backdrop-blur hover:bg-surface-elevated/30 transition-colors">
             {t('marketing.tutorials.cta-link')}
           </span>
         </Link>

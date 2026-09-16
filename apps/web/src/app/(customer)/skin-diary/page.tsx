@@ -154,7 +154,7 @@ export default function SkinDiaryPage(): JSX.Element {
                 type="url"
                 value={imageUrl}
                 onChange={(e) => setImageUrl(e.target.value)}
-                className="w-full rounded-lg border px-3 py-2 text-sm dark:border-gray-700 dark:bg-gray-800 mt-1"
+                className="w-full rounded-lg border px-3 py-2 text-sm border-edge bg-surface-elevated mt-1"
               />
             </div>
             <div>
@@ -165,7 +165,7 @@ export default function SkinDiaryPage(): JSX.Element {
                 id="skd-condition"
                 value={condition}
                 onChange={(e) => setCondition(e.target.value as TranslationKey)}
-                className="w-full rounded-lg border px-3 py-2 text-sm dark:border-gray-700 dark:bg-gray-800 mt-1"
+                className="w-full rounded-lg border px-3 py-2 text-sm border-edge bg-surface-elevated mt-1"
               >
                 {CONDITIONS.map((c) => (
                   <option key={c} value={c}>
@@ -195,7 +195,7 @@ export default function SkinDiaryPage(): JSX.Element {
                 id="skd-notes"
                 value={notes}
                 onChange={(e) => setNotes(e.target.value)}
-                className="w-full rounded-lg border px-3 py-2 text-sm dark:border-gray-700 dark:bg-gray-800 mt-1"
+                className="w-full rounded-lg border px-3 py-2 text-sm border-edge bg-surface-elevated mt-1"
                 rows={2}
               />
             </div>

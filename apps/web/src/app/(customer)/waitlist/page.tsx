@@ -131,7 +131,7 @@ export default function WaitlistPage(): JSX.Element {
             </label>
             <select
               id="wl-tech"
-              className="w-full rounded-lg border border-edge bg-white p-2.5 text-sm outline-none focus:border-brand-500 dark:bg-gray-800"
+              className="w-full rounded-lg border border-edge bg-surface-elevated p-2.5 text-sm outline-none focus:border-brand-500"
               value={selectedTechId}
               onChange={(e) => setSelectedTechId(e.target.value)}
             >

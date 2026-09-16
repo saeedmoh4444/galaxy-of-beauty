@@ -183,7 +183,7 @@ export default function SalonMapPage(): JSX.Element {
       />
 
       {/* City Selector Bar */}
-      <div className="absolute top-0 start-0 end-0 z-1000 bg-white/90 dark:bg-gray-900/90 backdrop-blur border-b border-edge">
+      <div className="absolute top-0 start-0 end-0 z-1000 bg-surface-elevated/90 backdrop-blur border-b border-edge">
         <div className="mx-auto max-w-6xl px-4 py-3">
           <div className="flex items-center gap-3 overflow-x-auto pb-1">
             <span className="text-sm font-bold text-text-primary shrink-0">
@@ -295,7 +295,7 @@ export default function SalonMapPage(): JSX.Element {
 
       {/* Stats bar */}
       <div className="absolute bottom-4 end-4 z-1000 hidden sm:block">
-        <div className="rounded-full bg-white/90 dark:bg-gray-900/90 backdrop-blur px-3 py-1.5 text-xs font-medium text-text-secondary shadow">
+        <div className="rounded-full bg-surface-elevated/90 backdrop-blur px-3 py-1.5 text-xs font-medium text-text-secondary shadow">
           {t('marketing.salon-map.technicians-count', {
             count: techs.length,
             city: selectedCity?.nameAr ?? '',

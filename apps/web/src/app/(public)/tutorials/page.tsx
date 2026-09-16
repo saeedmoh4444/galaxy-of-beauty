@@ -211,7 +211,7 @@ export default function TutorialsPage(): JSX.Element {
                     )}
                     {/* Play overlay */}
                     <div className="absolute inset-0 flex items-center justify-center">
-                      <div className="flex h-12 w-12 items-center justify-center rounded-full bg-white/90 text-text-primary shadow-lg transition-transform group-hover:scale-110">
+                      <div className="flex h-12 w-12 items-center justify-center rounded-full bg-surface-elevated/90 text-text-primary shadow-lg transition-transform group-hover:scale-110">
                         <svg className="h-5 w-5 me-[-2px]" fill="currentColor" viewBox="0 0 24 24">
                           <path d="M8 5v14l11-7z" />
                         </svg>

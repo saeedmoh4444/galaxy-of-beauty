@@ -301,7 +301,7 @@ export default function GroupBookingsPage(): JSX.Element {
                 value={formName}
                 onChange={(e) => setFormName(e.target.value)}
                 placeholder={t('groupBookings.placeholder.name')}
-                className="w-full rounded-lg border border-edge px-3 py-2 text-sm focus:border-brand-500 focus:outline-none focus:ring-1 focus:ring-brand-500 dark:bg-gray-800"
+                className="w-full rounded-lg border border-edge px-3 py-2 text-sm focus:border-brand-500 focus:outline-none focus:ring-1 focus:ring-brand-500 bg-surface-elevated"
               />
             </div>
 
@@ -317,7 +317,7 @@ export default function GroupBookingsPage(): JSX.Element {
                 id="gb-theme"
                 value={formTheme}
                 onChange={(e) => setFormTheme(e.target.value)}
-                className="w-full rounded-lg border border-edge px-3 py-2 text-sm focus:border-brand-500 focus:outline-none focus:ring-1 focus:ring-brand-500 dark:bg-gray-800"
+                className="w-full rounded-lg border border-edge px-3 py-2 text-sm focus:border-brand-500 focus:outline-none focus:ring-1 focus:ring-brand-500 bg-surface-elevated"
               >
                 {THEMES.map((themeOpt) => (
                   <option key={themeOpt.value} value={themeOpt.value}>
@@ -376,14 +376,14 @@ export default function GroupBookingsPage(): JSX.Element {
                       value={m.name}
                       onChange={(e) => updateMember(idx, 'name', e.target.value)}
                       placeholder={t('groupBookings.placeholder.memberName')}
-                      className="flex-1 min-w-0 rounded border border-edge px-2 py-1.5 text-sm focus:border-brand-500 focus:outline-none dark:bg-gray-800"
+                      className="flex-1 min-w-0 rounded border border-edge px-2 py-1.5 text-sm focus:border-brand-500 focus:outline-none bg-surface-elevated"
                     />
                     <input
                       type="number"
                       value={m.serviceId}
                       onChange={(e) => updateMember(idx, 'serviceId', e.target.value)}
                       placeholder={t('groupBookings.placeholder.serviceId')}
-                      className="w-24 rounded border border-edge px-2 py-1.5 text-sm focus:border-brand-500 focus:outline-none dark:bg-gray-800"
+                      className="w-24 rounded border border-edge px-2 py-1.5 text-sm focus:border-brand-500 focus:outline-none bg-surface-elevated"
                     />
                     {members.length > 2 && (
                       <button

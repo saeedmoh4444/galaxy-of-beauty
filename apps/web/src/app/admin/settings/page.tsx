@@ -213,7 +213,7 @@ export default function AdminSettingsPage(): JSX.Element {
             </label>
             <select
               id="aset-export-format"
-              className="rounded-lg border border-edge bg-white p-2 text-sm dark:bg-gray-900"
+              className="rounded-lg border border-edge bg-surface-elevated p-2 text-sm"
               value={exportFormat}
               onChange={(e) => setExportFormat(e.target.value as 'csv' | 'json')}
             >

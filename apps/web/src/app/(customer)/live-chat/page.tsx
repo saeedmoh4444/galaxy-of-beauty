@@ -61,7 +61,7 @@ export default function LiveChatPage(): JSX.Element {
             ))}
             <div ref={bottomRef} />
           </div>
-          <div className="flex gap-2 mt-3 pt-3 border-t dark:border-gray-700">
+          <div className="flex gap-2 mt-3 pt-3 border-t border-edge">
             <input
               value={msg}
               onChange={(e) => setMsg(e.target.value)}
@@ -69,7 +69,7 @@ export default function LiveChatPage(): JSX.Element {
                 e.key === 'Enter' && msg.trim() && sendMut.mutate({ message: msg.trim() })
               }
               placeholder={t('liveChat.placeholder')}
-              className="flex-1 rounded-lg border px-3 py-2 text-sm dark:border-gray-700 dark:bg-gray-800"
+              className="flex-1 rounded-lg border px-3 py-2 text-sm border-edge bg-surface-elevated"
             />
             <Button
               onClick={() => msg.trim() && sendMut.mutate({ message: msg.trim() })}
