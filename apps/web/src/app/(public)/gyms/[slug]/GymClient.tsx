@@ -29,6 +29,7 @@ export interface GymPageData {
     licenseVerifiedAt: string | null;
     descriptionJson: { ar?: string; en?: string } | null;
     logoUrl: string | null;
+    bannerUrl: string | null;
     ratingAvg: number | null;
     totalReviews: number;
     womenOnlyStaff?: boolean;
@@ -145,6 +146,18 @@ export function GymClient({ data }: { data: GymPageData }): JSX.Element {
           />
         </div>
       </div>
+
+      {/* Gym banner — E7 KYC banner media */}
+      {gym.bannerUrl ? (
+        <div className="overflow-hidden rounded-3xl">
+          <ServiceImage
+            src={gym.bannerUrl}
+            alt={gym.storeName ?? ''}
+            size="full"
+            className="h-48 w-full object-cover md:h-64"
+          />
+        </div>
+      ) : null}
 
       {bio[locale] ? (
         <p className="max-w-2xl text-sm leading-relaxed text-text-secondary">{bio[locale]}</p>

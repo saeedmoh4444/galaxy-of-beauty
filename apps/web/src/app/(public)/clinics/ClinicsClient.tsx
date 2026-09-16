@@ -9,6 +9,7 @@ import {
   formatCurrency,
   HeroSection,
   ServiceImage,
+  TrustBadges,
 } from '@galaxy/ui';
 import { useLocale } from '@/components/LocaleProvider';
 
@@ -63,11 +64,32 @@ export function ClinicsClient({ data }: { data: ClinicsPageData }): JSX.Element 
                         {' · '}
                         {formatCurrency(Number(c.consultationPrice ?? 0))}
                       </p>
-                      <span className="mt-1 inline-block rounded-full bg-green-100 px-2 py-0.5 text-xs font-medium text-green-700">
-                        {t('clinics.verified-badge', { agency: 'MOH/SFDA' })}
-                      </span>
                     </div>
                   </div>
+                  <TrustBadges
+                    className="mt-3"
+                    items={[
+                      {
+                        variant: 'verified' as const,
+                        label: t('clinics.verified-badge', { agency: 'MOH/SFDA' }),
+                      },
+                      ...(Number(c.totalReviews ?? 0) > 0
+                        ? [
+                            {
+                              variant: 'rating' as const,
+                              label: t('misc.rating'),
+                              value: Number(c.ratingAvg ?? 0).toFixed(1),
+                            },
+                          ]
+                        : []),
+                      ...(c.womenOnlyStaff
+                        ? [{ variant: 'womenOnly' as const, label: t('trust.womenOnly') }]
+                        : []),
+                      ...(c.privateSuite
+                        ? [{ variant: 'private' as const, label: t('trust.privateSuite') }]
+                        : []),
+                    ]}
+                  />
                 </Card>
               </Link>
             ))}

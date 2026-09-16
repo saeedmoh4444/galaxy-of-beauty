@@ -2,7 +2,7 @@
 import type { JSX } from 'react';
 
 import Link from 'next/link';
-import { Card, ErrorAlert, EmptyState, HeroSection, ServiceImage } from '@galaxy/ui';
+import { Card, ErrorAlert, EmptyState, HeroSection, ServiceImage, TrustBadges } from '@galaxy/ui';
 import { useLocale } from '@/components/LocaleProvider';
 
 export interface NailBarsPageData {
@@ -55,11 +55,32 @@ export function NailBarsClient({ data }: { data: NailBarsPageData }): JSX.Elemen
                         {t(`nailBars.type.${n.nailBarType as string}` as never)} ·{' '}
                         {n.nailBarCity as string}
                       </p>
-                      <span className="mt-1 inline-block rounded-full bg-green-100 px-2 py-0.5 text-xs font-medium text-green-700">
-                        {t('nailBars.pay-at-venue')}
-                      </span>
                     </div>
                   </div>
+                  <TrustBadges
+                    className="mt-3"
+                    items={[
+                      {
+                        variant: 'verified' as const,
+                        label: t('nailBars.verified-badge'),
+                      },
+                      ...(Number(n.totalReviews ?? 0) > 0
+                        ? [
+                            {
+                              variant: 'rating' as const,
+                              label: t('misc.rating'),
+                              value: Number(n.ratingAvg ?? 0).toFixed(1),
+                            },
+                          ]
+                        : []),
+                      ...(n.womenOnlyStaff
+                        ? [{ variant: 'womenOnly' as const, label: t('trust.womenOnly') }]
+                        : []),
+                      ...(n.privateSuite
+                        ? [{ variant: 'private' as const, label: t('trust.privateSuite') }]
+                        : []),
+                    ]}
+                  />
                 </Card>
               </Link>
             ))}
