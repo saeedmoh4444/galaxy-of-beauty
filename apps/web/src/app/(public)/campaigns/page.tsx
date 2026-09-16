@@ -10,10 +10,11 @@ import {
   ErrorAlert,
   EmptyState,
   formatCurrency,
+  ServiceImage,
   CAMPAIGN_POLL_INTERVAL_MS,
 } from '@galaxy/ui';
 import Link from 'next/link';
-import { localize } from '@galaxy/shared';
+import { localize, pageHeroKey } from '@galaxy/shared';
 import { useLocale } from '@/components/LocaleProvider';
 
 interface Campaign {
@@ -78,7 +79,12 @@ export default function CampaignsPage(): JSX.Element {
   return (
     <div className="mx-auto max-w-6xl px-4 py-12">
       <div className="mb-10 text-center">
-        <span className="text-6xl">📣</span>
+        <ServiceImage
+          service={pageHeroKey('campaigns')}
+          alt=""
+          size="xl"
+          className="mx-auto rounded-3xl"
+        />
         <h1 className="mt-4 text-3xl font-bold text-text-primary">
           {t('marketing.campaigns.title')}
         </h1>

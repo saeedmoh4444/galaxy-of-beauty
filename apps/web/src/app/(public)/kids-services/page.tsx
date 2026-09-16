@@ -2,8 +2,16 @@
 import { useState } from 'react';
 import type { JSX } from 'react';
 import { api } from '@/lib/trpc';
-import { Card, CardListSkeleton, ErrorAlert, Button, formatCurrency } from '@galaxy/ui';
+import {
+  Card,
+  CardListSkeleton,
+  ErrorAlert,
+  Button,
+  formatCurrency,
+  ServiceImage,
+} from '@galaxy/ui';
 import { useAuth } from '@galaxy/ui';
+import { pageHeroKey } from '@galaxy/shared';
 import { useLocale } from '@/components/LocaleProvider';
 import Link from 'next/link';
 
@@ -40,7 +48,12 @@ export default function KidsServicesPage(): JSX.Element {
   return (
     <div className="mx-auto max-w-5xl px-4 py-12">
       <div className="mb-10 text-center">
-        <span className="text-6xl">🧸</span>
+        <ServiceImage
+          service={pageHeroKey('kids-services')}
+          alt=""
+          size="xl"
+          className="mx-auto rounded-3xl"
+        />
         <h1 className="mt-4 text-3xl font-bold">{t('marketing.kids-services.title')}</h1>
         <p className="mt-2 text-text-secondary">{t('marketing.kids-services.subtitle')}</p>
       </div>

@@ -5,7 +5,8 @@ import type { JSX } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { api } from '@/lib/trpc';
-import { Card, GridSkeleton, ErrorAlert, EmptyState, Pagination } from '@galaxy/ui';
+import { Card, GridSkeleton, ErrorAlert, EmptyState, Pagination, ServiceImage } from '@galaxy/ui';
+import { pageHeroKey } from '@galaxy/shared';
 import { useLocale } from '@/components/LocaleProvider';
 
 interface Tutorial {
@@ -72,7 +73,12 @@ export default function TutorialsPage(): JSX.Element {
     <div className="mx-auto max-w-6xl px-4 py-12">
       {/* Header */}
       <div className="mb-10 text-center">
-        <span className="text-6xl">🎓</span>
+        <ServiceImage
+          service={pageHeroKey('tutorials')}
+          alt=""
+          size="xl"
+          className="mx-auto rounded-3xl"
+        />
         <h1 className="mt-4 text-3xl font-bold text-text-primary">
           {t('marketing.tutorials.title')}
         </h1>

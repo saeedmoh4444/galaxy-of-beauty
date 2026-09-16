@@ -5,9 +5,9 @@ import type { JSX } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { api } from '@/lib/trpc';
-import { localize, type TranslationKey } from '@galaxy/shared';
+import { localize, pageHeroKey, type TranslationKey } from '@galaxy/shared';
 import { useLocale } from '@/components/LocaleProvider';
-import { GridSkeleton, ErrorAlert, EmptyState, Pagination } from '@galaxy/ui';
+import { GridSkeleton, ErrorAlert, EmptyState, Pagination, ServiceImage } from '@galaxy/ui';
 
 interface BlogPost {
   id: number;
@@ -74,7 +74,12 @@ export function BlogClient({
   return (
     <div className="mx-auto max-w-6xl px-4 py-12">
       <div className="mb-10 text-center">
-        <span className="text-6xl">📰</span>
+        <ServiceImage
+          service={pageHeroKey('blog')}
+          alt=""
+          size="xl"
+          className="mx-auto rounded-3xl"
+        />
         <h1 className="mt-4 text-3xl font-bold text-text-primary">{t('marketing.blog.title')}</h1>
         <p className="mt-2 text-text-secondary dark:text-text-tertiary">
           {t('marketing.blog.subtitle')}

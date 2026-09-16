@@ -3,7 +3,16 @@
 import { useState } from 'react';
 import type { JSX } from 'react';
 import { api } from '@/lib/trpc';
-import { Card, GridSkeleton, ErrorAlert, EmptyState, Button, Modal } from '@galaxy/ui';
+import {
+  Card,
+  GridSkeleton,
+  ErrorAlert,
+  EmptyState,
+  Button,
+  Modal,
+  ServiceImage,
+} from '@galaxy/ui';
+import { pageHeroKey } from '@galaxy/shared';
 import { useAuth } from '@galaxy/ui';
 import { useLocale } from '@/components/LocaleProvider';
 
@@ -38,7 +47,12 @@ export default function BeforeAfterPage(): JSX.Element {
   return (
     <div className="mx-auto max-w-6xl px-4 py-12">
       <div className="mb-10 text-center">
-        <span className="text-6xl">🔄</span>
+        <ServiceImage
+          service={pageHeroKey('before-after')}
+          alt=""
+          size="xl"
+          className="mx-auto rounded-3xl"
+        />
         <h1 className="mt-4 text-3xl font-bold">{t('marketing.before-after.title')}</h1>
         <p className="mt-2 text-text-secondary">{t('marketing.before-after.subtitle')}</p>
       </div>

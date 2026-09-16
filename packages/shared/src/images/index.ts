@@ -193,3 +193,36 @@ export function serviceKeyFromCategorySlug(slug?: string | null): string {
   };
   return (slug && map[slug]) || 'default';
 }
+
+/**
+ * §3.5 hero-emoji sweep — map a (public) marketing page slug onto a shared
+ * image-registry key for the page header (ServiceImage replaces the old
+ * emoji glyph). Thematic pages get a matching photo; everything else falls
+ * back to the generic beauty shot.
+ */
+const PAGE_HERO_KEYS: Record<string, string> = {
+  'bridal-concierge': 'bridalPackage',
+  'shop-the-look': 'makeup',
+  'look-of-the-day': 'makeup',
+  'behind-scenes': 'makeup',
+  'beauty-shorts': 'makeup',
+  'live-stream': 'makeup',
+  tutorials: 'makeup',
+  'video-testimonials': 'makeup',
+  'featured-tech': 'makeup',
+  'beauty-quiz': 'facial',
+  'ingredient-analyzer': 'facial',
+  'ingredient-sub': 'facial',
+  'before-after': 'facial',
+  'mommy-and-me': 'facial',
+  'pregnancy-beauty': 'facial',
+  'booking-heatmap': 'massage',
+  'group-buy': 'spa',
+  'surprise-me': 'spa',
+  'audio-rooms': 'spa',
+};
+
+export function pageHeroKey(slug?: string | null): string {
+  if (!slug) return 'beautyService';
+  return PAGE_HERO_KEYS[slug] ?? 'beautyService';
+}

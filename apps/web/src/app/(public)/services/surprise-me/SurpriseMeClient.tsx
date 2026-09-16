@@ -5,9 +5,9 @@ import type { JSX } from 'react';
 import Link from 'next/link';
 import { api } from '@/lib/trpc';
 import type { RouterOutputs } from '@galaxy/api';
-import { localize } from '@galaxy/shared';
+import { localize, pageHeroKey } from '@galaxy/shared';
 import { useLocale } from '@/components/LocaleProvider';
-import { Button, Card, GridSkeleton, ErrorAlert } from '@galaxy/ui';
+import { Button, Card, GridSkeleton, ErrorAlert, ServiceImage } from '@galaxy/ui';
 
 type ServiceItem = RouterOutputs['services']['list']['items'][number];
 
@@ -50,7 +50,12 @@ export function SurpriseMeClient({ data }: { data: SurpriseMePageData }): JSX.El
   return (
     <div className="mx-auto max-w-2xl px-4 py-16 text-center">
       <div className="mb-8">
-        <span className="text-6xl">🎲</span>
+        <ServiceImage
+          service={pageHeroKey('surprise-me')}
+          alt=""
+          size="xl"
+          className="mx-auto rounded-3xl"
+        />
         <h1 className="mt-4 text-3xl font-bold text-text-primary">
           {t('marketing.surprise-me.title')}
         </h1>

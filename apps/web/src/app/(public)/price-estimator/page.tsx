@@ -3,7 +3,8 @@
 import { useState } from 'react';
 import type { JSX } from 'react';
 import { api } from '@/lib/trpc';
-import { Card, FormSkeleton, ErrorAlert, Button, formatCurrency } from '@galaxy/ui';
+import { Card, FormSkeleton, ErrorAlert, Button, formatCurrency, ServiceImage } from '@galaxy/ui';
+import { pageHeroKey } from '@galaxy/shared';
 import { useLocale } from '@/components/LocaleProvider';
 
 interface EstimateResult {
@@ -81,7 +82,12 @@ export default function PriceEstimatorPage(): JSX.Element {
     <div className="mx-auto max-w-lg px-4 py-12">
       {/* Header */}
       <div className="mb-8 text-center">
-        <span className="text-6xl">🧮</span>
+        <ServiceImage
+          service={pageHeroKey('price-estimator')}
+          alt=""
+          size="xl"
+          className="mx-auto rounded-3xl"
+        />
         <h1 className="mt-4 text-3xl font-bold text-text-primary">
           {t('marketing.price-estimator.title')}
         </h1>

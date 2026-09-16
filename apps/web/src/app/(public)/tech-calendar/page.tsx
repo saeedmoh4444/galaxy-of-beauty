@@ -3,7 +3,15 @@
 import { useState } from 'react';
 import type { JSX } from 'react';
 import { api } from '@/lib/trpc';
-import { Card, CardListSkeleton, TableSkeleton, ErrorAlert, Button } from '@galaxy/ui';
+import {
+  Card,
+  CardListSkeleton,
+  TableSkeleton,
+  ErrorAlert,
+  Button,
+  ServiceImage,
+} from '@galaxy/ui';
+import { pageHeroKey } from '@galaxy/shared';
 import Link from 'next/link';
 import { useLocale } from '@/components/LocaleProvider';
 
@@ -70,7 +78,12 @@ export default function TechCalendarPage(): JSX.Element {
   return (
     <div className="mx-auto max-w-4xl px-4 py-12">
       <div className="mb-8 text-center">
-        <span className="text-6xl">📅</span>
+        <ServiceImage
+          service={pageHeroKey('tech-calendar')}
+          alt=""
+          size="xl"
+          className="mx-auto rounded-3xl"
+        />
         <h1 className="mt-4 text-3xl font-bold">{t('marketing.tech-calendar.title')}</h1>
         <p className="mt-2 text-text-secondary">{t('marketing.tech-calendar.subtitle')}</p>
       </div>

@@ -2,7 +2,8 @@
 import { useState } from 'react';
 import type { JSX } from 'react';
 import { api } from '@/lib/trpc';
-import { Card, CardListSkeleton, Button } from '@galaxy/ui';
+import { Card, CardListSkeleton, Button, ServiceImage } from '@galaxy/ui';
+import { pageHeroKey } from '@galaxy/shared';
 import Link from 'next/link';
 import { useLocale } from '@/components/LocaleProvider';
 
@@ -34,7 +35,12 @@ export default function ServiceRecommenderPage(): JSX.Element {
   return (
     <div className="mx-auto max-w-3xl px-4 py-12">
       <div className="mb-8 text-center">
-        <span className="text-6xl">🎯</span>
+        <ServiceImage
+          service={pageHeroKey('service-recommender')}
+          alt=""
+          size="xl"
+          className="mx-auto rounded-3xl"
+        />
         <h1 className="mt-4 text-3xl font-bold">{t('marketing.service-recommender.title')}</h1>
         <p className="mt-2 text-text-secondary">{t('marketing.service-recommender.subtitle')}</p>
       </div>

@@ -2,8 +2,9 @@
 import type { JSX } from 'react';
 
 import { api } from '@/lib/trpc';
-import { Card, CardListSkeleton, ErrorAlert } from '@galaxy/ui';
+import { Card, CardListSkeleton, ErrorAlert, ServiceImage } from '@galaxy/ui';
 import { useLocale } from '@/components/LocaleProvider';
+import { pageHeroKey } from '@galaxy/shared';
 
 export default function BeautyPodcastPage(): JSX.Element {
   const { t } = useLocale();
@@ -18,7 +19,12 @@ export default function BeautyPodcastPage(): JSX.Element {
   return (
     <div className="mx-auto max-w-3xl px-4 py-12">
       <div className="mb-8 text-center">
-        <span className="text-6xl">🎧</span>
+        <ServiceImage
+          service={pageHeroKey('beauty-podcast')}
+          alt=""
+          size="xl"
+          className="mx-auto rounded-3xl"
+        />
         <h1 className="mt-4 text-3xl font-bold">{t('marketing.beauty-podcast.title')}</h1>
         <p className="mt-2 text-text-secondary">{t('marketing.beauty-podcast.subtitle')}</p>
       </div>

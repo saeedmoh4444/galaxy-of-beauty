@@ -4,7 +4,8 @@ import { useState } from 'react';
 import type { JSX } from 'react';
 import { api } from '@/lib/trpc';
 import { useLocale } from '@/components/LocaleProvider';
-import { Card, CardListSkeleton } from '@galaxy/ui';
+import { Card, CardListSkeleton, ServiceImage } from '@galaxy/ui';
+import { pageHeroKey } from '@galaxy/shared';
 
 export default function BeautyFaqPage(): JSX.Element {
   const { t } = useLocale();
@@ -26,7 +27,12 @@ export default function BeautyFaqPage(): JSX.Element {
   return (
     <div className="mx-auto max-w-3xl px-4 py-12">
       <div className="mb-8 text-center">
-        <span className="text-6xl">❓</span>
+        <ServiceImage
+          service={pageHeroKey('beauty-faq')}
+          alt=""
+          size="xl"
+          className="mx-auto rounded-3xl"
+        />
         <h1 className="mt-4 text-3xl font-bold">Beauty FAQ</h1>
         <p className="mt-2 text-text-secondary">{t('marketing.beauty-faq.subtitle')}</p>
       </div>

@@ -1,7 +1,8 @@
 'use client';
 import type { JSX } from 'react';
 import { api } from '@/lib/trpc';
-import { CardListSkeleton, useAuth } from '@galaxy/ui';
+import { CardListSkeleton, ServiceImage, useAuth } from '@galaxy/ui';
+import { pageHeroKey } from '@galaxy/shared';
 import { useLocale } from '@/components/LocaleProvider';
 
 type ShortRow = {
@@ -34,7 +35,12 @@ export default function BeautyShortsPage(): JSX.Element {
   return (
     <div className="mx-auto max-w-md px-4 py-12">
       <div className="mb-8 text-center">
-        <span className="text-6xl">🎬</span>
+        <ServiceImage
+          service={pageHeroKey('beauty-shorts')}
+          alt=""
+          size="xl"
+          className="mx-auto rounded-3xl"
+        />
         <h1 className="mt-4 text-3xl font-bold">{t('beautyShorts.title')}</h1>
         <p className="mt-2 text-text-secondary">{t('beautyShorts.subtitle')}</p>
         <p className="mt-2 text-xs text-text-tertiary">{t('beautyShorts.privacy')}</p>

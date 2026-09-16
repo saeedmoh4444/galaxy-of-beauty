@@ -2,7 +2,8 @@
 import type { JSX } from 'react';
 
 import { api } from '@/lib/trpc';
-import { Card, GridSkeleton, ErrorAlert, EmptyState } from '@galaxy/ui';
+import { Card, GridSkeleton, ErrorAlert, EmptyState, ServiceImage } from '@galaxy/ui';
+import { pageHeroKey } from '@galaxy/shared';
 import Link from 'next/link';
 import { useLocale } from '@/components/LocaleProvider';
 
@@ -35,7 +36,12 @@ export default function LiveStreamPage(): JSX.Element {
   return (
     <div className="mx-auto max-w-6xl px-4 py-12">
       <div className="mb-10 text-center">
-        <span className="text-6xl">📺</span>
+        <ServiceImage
+          service={pageHeroKey('live-stream')}
+          alt=""
+          size="xl"
+          className="mx-auto rounded-3xl"
+        />
         <h1 className="mt-4 text-3xl font-bold text-text-primary">
           {t('marketing.live-stream.title')}
         </h1>

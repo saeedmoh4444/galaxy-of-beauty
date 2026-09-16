@@ -3,7 +3,8 @@
 import { useState } from 'react';
 import type { JSX } from 'react';
 import { api } from '@/lib/trpc';
-import { Card, CardListSkeleton, ErrorAlert, Button } from '@galaxy/ui';
+import { Card, CardListSkeleton, ErrorAlert, Button, ServiceImage } from '@galaxy/ui';
+import { pageHeroKey } from '@galaxy/shared';
 import { useLocale } from '@/components/LocaleProvider';
 
 const RATING_COLORS: Record<string, string> = {
@@ -41,7 +42,12 @@ export default function IngredientAnalyzerPage(): JSX.Element {
   return (
     <div className="mx-auto max-w-3xl px-4 py-12">
       <div className="mb-8 text-center">
-        <span className="text-6xl">🧪</span>
+        <ServiceImage
+          service={pageHeroKey('ingredient-analyzer')}
+          alt=""
+          size="xl"
+          className="mx-auto rounded-3xl"
+        />
         <h1 className="mt-4 text-3xl font-bold">{t('marketing.ingredient-analyzer.title')}</h1>
         <p className="mt-2 text-text-secondary">{t('marketing.ingredient-analyzer.subtitle')}</p>
       </div>

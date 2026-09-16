@@ -1,7 +1,8 @@
 'use client';
 import type { JSX } from 'react';
 import { api } from '@/lib/trpc';
-import { Card, CardListSkeleton, formatCurrency } from '@galaxy/ui';
+import { Card, CardListSkeleton, formatCurrency, ServiceImage } from '@galaxy/ui';
+import { pageHeroKey } from '@galaxy/shared';
 import { useLocale } from '@/components/LocaleProvider';
 
 export default function SmartPricingPage(): JSX.Element {
@@ -15,7 +16,12 @@ export default function SmartPricingPage(): JSX.Element {
   return (
     <div className="mx-auto max-w-3xl px-4 py-12">
       <div className="mb-8 text-center">
-        <span className="text-6xl">💰</span>
+        <ServiceImage
+          service={pageHeroKey('smart-pricing')}
+          alt=""
+          size="xl"
+          className="mx-auto rounded-3xl"
+        />
         <h1 className="mt-4 text-3xl font-bold">{t('marketing.smart-pricing.title')}</h1>
         <p className="mt-2 text-text-secondary">{t('marketing.smart-pricing.subtitle')}</p>
       </div>

@@ -17,6 +17,7 @@ import {
 import { useAuth } from '@galaxy/ui';
 import Link from 'next/link';
 import { useLocale } from '@/components/LocaleProvider';
+import { pageHeroKey } from '@galaxy/shared';
 
 interface Deal {
   id: number;
@@ -124,7 +125,12 @@ export default function FlashDealsPage(): JSX.Element {
     <div className="mx-auto max-w-5xl px-4 py-12">
       {/* Header */}
       <div className="mb-10 text-center">
-        <span className="text-6xl">⚡</span>
+        <ServiceImage
+          service={pageHeroKey('flash-deals')}
+          alt=""
+          size="xl"
+          className="mx-auto rounded-3xl"
+        />
         <h1 className="mt-4 text-3xl font-bold text-text-primary">
           {t('marketing.flash-deals.title')}
         </h1>

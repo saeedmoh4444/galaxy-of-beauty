@@ -1,9 +1,10 @@
 'use client';
 import type { JSX } from 'react';
 import { api } from '@/lib/trpc';
-import { Card, CardListSkeleton, Button } from '@galaxy/ui';
+import { Card, CardListSkeleton, Button, ServiceImage } from '@galaxy/ui';
 import { useAuth } from '@galaxy/ui';
 import { useLocale } from '@/components/LocaleProvider';
+import { pageHeroKey } from '@galaxy/shared';
 
 export default function BeautyAwardsPage(): JSX.Element {
   const { user } = useAuth();
@@ -19,7 +20,12 @@ export default function BeautyAwardsPage(): JSX.Element {
   return (
     <div className="mx-auto max-w-3xl px-4 py-12">
       <div className="mb-8 text-center">
-        <span className="text-6xl">🏆</span>
+        <ServiceImage
+          service={pageHeroKey('beauty-awards')}
+          alt=""
+          size="xl"
+          className="mx-auto rounded-3xl"
+        />
         <h1 className="mt-4 text-3xl font-bold">{t('marketing.beauty-awards.title')}</h1>
         <p className="mt-2 text-text-secondary">
           {t('marketing.beauty-awards.vote-cta', { month: (data?.month as string) ?? '' })}

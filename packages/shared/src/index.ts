@@ -70,6 +70,7 @@ export {
   getCategoryImage,
   serviceKeyFromCategorySlug,
   womensCategoryImageKey,
+  pageHeroKey,
 } from './images';
 
 // Service detail trust layer (shared by web + RN mirror)

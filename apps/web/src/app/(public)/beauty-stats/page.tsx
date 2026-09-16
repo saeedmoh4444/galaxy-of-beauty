@@ -1,8 +1,8 @@
 import type { JSX } from 'react';
 import { getServerCaller } from '@/lib/server-trpc';
-import { Card } from '@galaxy/ui';
+import { Card, ServiceImage } from '@galaxy/ui';
 import { getServerLocale } from '@/lib/i18n';
-import { t } from '@galaxy/shared';
+import { pageHeroKey, t } from '@galaxy/shared';
 
 export default async function BeautyStatsPage(): Promise<JSX.Element> {
   const locale = await getServerLocale();
@@ -25,7 +25,12 @@ export default async function BeautyStatsPage(): Promise<JSX.Element> {
   return (
     <div className="mx-auto max-w-5xl px-4 py-16">
       <div className="text-center mb-16">
-        <span className="text-7xl">📊</span>
+        <ServiceImage
+          service={pageHeroKey('beauty-stats')}
+          alt=""
+          size="xl"
+          className="mx-auto rounded-3xl"
+        />
         <h1 className="mt-6 text-4xl font-extrabold">
           {t('marketing.beauty-stats.title', locale)}
         </h1>
