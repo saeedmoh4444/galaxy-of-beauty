@@ -1,33 +1,14 @@
 import type { JSX } from 'react';
+import { FormSkeleton } from '@galaxy/ui';
+
 export default function RegisterLoading(): JSX.Element {
   return (
     <div
       className="flex min-h-screen items-center justify-center bg-linear-to-br from-brand-50 to-brand-50 px-4 dark:from-gray-950 dark:to-gray-900"
       dir="rtl"
     >
-      <div className="w-full max-w-lg rounded-2xl border border-edge bg-white p-8 shadow-sm dark:border-gray-700 dark:bg-gray-900">
-        <div className="space-y-6">
-          <div className="space-y-2 text-center">
-            <div className="mx-auto h-10 w-48 animate-pulse rounded-lg bg-surface-muted" />
-            <div className="mx-auto h-4 w-40 animate-pulse rounded bg-surface-muted" />
-          </div>
-          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-            {Array.from({ length: 6 }).map((_, i) => (
-              <div key={i} className="space-y-2">
-                <div className="h-4 w-20 animate-pulse rounded bg-surface-muted" />
-                <div className="h-10 w-full animate-pulse rounded-lg bg-surface-muted" />
-              </div>
-            ))}
-          </div>
-          <div className="space-y-2">
-            <div className="h-4 w-24 animate-pulse rounded bg-surface-muted" />
-            <div className="flex gap-3">
-              <div className="h-12 flex-1 animate-pulse rounded-lg bg-surface-muted" />
-              <div className="h-12 flex-1 animate-pulse rounded-lg bg-surface-muted" />
-            </div>
-          </div>
-          <div className="h-11 w-full animate-pulse rounded-lg bg-surface-muted" />
-        </div>
+      <div className="w-full max-w-lg">
+        <FormSkeleton fields={6} ariaLabel="جاري تحميل نموذج التسجيل" />
       </div>
     </div>
   );

@@ -2,7 +2,7 @@
 import { useState } from 'react';
 import type { JSX } from 'react';
 import { api } from '@/lib/trpc';
-import { Card, KPIRowSkeleton, Button } from '@galaxy/ui';
+import { Card, KPIRowSkeleton, ListSkeleton, Button } from '@galaxy/ui';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
 import { useLocale } from '@/components/LocaleProvider';
 import type { TranslationKey } from '@galaxy/shared';
@@ -428,11 +428,7 @@ export default function CycleTrackerPage(): JSX.Element {
         )}
 
         {entriesLoading ? (
-          <div className="space-y-1">
-            {Array.from({ length: 28 }, (_, i) => (
-              <div key={i} className="h-8 bg-surface-muted rounded animate-pulse" />
-            ))}
-          </div>
+          <ListSkeleton rows={28} />
         ) : (
           <Card padding="lg">
             <h3 className="font-bold mb-3"> {t('cycleTracker.daysTitle')}</h3>

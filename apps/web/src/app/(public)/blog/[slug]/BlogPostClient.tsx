@@ -7,7 +7,7 @@ import { api } from '@/lib/trpc';
 import type { RouterOutputs } from '@galaxy/api';
 import { localize } from '@galaxy/shared';
 import { useLocale } from '@/components/LocaleProvider';
-import { ErrorAlert, Button } from '@galaxy/ui';
+import { ErrorAlert, Button, Skeleton, TextLineSkeleton } from '@galaxy/ui';
 import { ShareButtons } from '@/components/ShareButtons';
 import { Breadcrumbs } from '@/components/Breadcrumbs';
 
@@ -75,11 +75,13 @@ export function BlogPostClient({
   if (isLoading && !post) {
     return (
       <div className="mx-auto max-w-3xl px-4 py-24">
-        <div className="animate-pulse space-y-6">
-          <div className="h-6 w-32 rounded bg-surface-muted" />
-          <div className="h-64 w-full rounded-2xl bg-surface-muted" />
-          <div className="h-10 w-3/4 rounded bg-surface-muted" />
-        </div>
+        <Skeleton>
+          <div className="space-y-6">
+            <div className="h-6 w-32 rounded bg-surface-muted" />
+            <div className="h-64 w-full rounded-2xl bg-surface-muted" />
+            <TextLineSkeleton width="w-3/4" className="h-10" />
+          </div>
+        </Skeleton>
       </div>
     );
   }

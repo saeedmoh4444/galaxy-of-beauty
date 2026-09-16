@@ -3,7 +3,7 @@
 import { useState, useRef, useEffect, useCallback } from 'react';
 import type { JSX } from 'react';
 import { api } from '@/lib/trpc';
-import { Card, GridSkeleton, Button, formatCurrency } from '@galaxy/ui';
+import { Card, GridSkeleton, AvatarSkeleton, Button, formatCurrency } from '@galaxy/ui';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
 import { useLocale } from '@/components/LocaleProvider';
 import type { TranslationKey } from '@galaxy/shared';
@@ -442,7 +442,7 @@ export default function VirtualTryOnPage(): JSX.Element {
               {palettesLoading ? (
                 <div className="flex gap-2">
                   {Array.from({ length: 6 }, (_, i) => (
-                    <div key={i} className="h-9 w-9 rounded-full bg-surface-muted animate-pulse" />
+                    <AvatarSkeleton key={i} size={9} />
                   ))}
                 </div>
               ) : (
