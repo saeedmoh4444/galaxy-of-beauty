@@ -61,7 +61,7 @@ export function WomenEmployerBadge({
             {isChampion ? '' : ''}
           </span>
           <div>
-            <h4 className="text-sm font-bold text-text-primary dark:text-gray-100">
+            <h4 className="text-sm font-bold text-text-primary">
               {isChampion ? championTitle : employerTitle}
             </h4>
             <p className="text-[10px] text-text-tertiary dark:text-text-tertiary">
@@ -82,7 +82,7 @@ export function WomenEmployerBadge({
       </div>
 
       {/* Progress bar */}
-      <div className="mt-2 h-2 overflow-hidden rounded-full bg-surface-muted dark:bg-gray-700">
+      <div className="mt-2 h-2 overflow-hidden rounded-full bg-surface-muted">
         <div
           className={cn(
             'h-full rounded-full transition-all',

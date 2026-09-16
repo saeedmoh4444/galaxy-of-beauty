@@ -40,7 +40,7 @@ export default function TechSlotsPage(): JSX.Element {
             <button
               key={d}
               onClick={() => setDate(d)}
-              className={`rounded-lg px-4 py-2 text-sm font-medium ${d === date ? 'bg-brand-600 text-white' : 'bg-surface-muted dark:bg-gray-800'}`}
+              className={`rounded-lg px-4 py-2 text-sm font-medium ${d === date ? 'bg-brand-600 text-white' : 'bg-surface-muted'}`}
             >
               {d}
             </button>

@@ -145,10 +145,8 @@ export function SecureCallBadge({
       </div>
 
       {/* How it works */}
-      <div className="mt-2 rounded-lg bg-surface-muted p-2.5 dark:bg-gray-800">
-        <p className="text-[10px] font-bold text-text-secondary dark:text-gray-300">
-          {howItWorksTitle}
-        </p>
+      <div className="mt-2 rounded-lg bg-surface-muted p-2.5">
+        <p className="text-[10px] font-bold text-text-secondary">{howItWorksTitle}</p>
         <p className="mt-0.5 text-[9px] leading-relaxed text-text-tertiary dark:text-text-secondary">
           {howItWorksTextPrefix}
           {expiresIn}

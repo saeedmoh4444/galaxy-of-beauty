@@ -50,7 +50,7 @@ interface Group {
 
 const DEFAULT_STATUS: { label: TranslationKey; color: string } = {
   label: 'groupBookings.status.unknown',
-  color: 'bg-surface-muted text-text-primary dark:bg-gray-800 dark:text-gray-300',
+  color: 'bg-surface-muted text-text-primary',
 };
 const STATUS_MAP: Record<string, { label: TranslationKey; color: string }> = {
   PENDING: {
@@ -67,7 +67,7 @@ const STATUS_MAP: Record<string, { label: TranslationKey; color: string }> = {
   },
   COMPLETED: {
     label: 'groupBookings.status.completed',
-    color: 'bg-surface-muted text-text-primary dark:bg-gray-800 dark:text-gray-300',
+    color: 'bg-surface-muted text-text-primary',
   },
   CANCELLED: {
     label: 'groupBookings.status.cancelled',
@@ -176,9 +176,7 @@ export default function GroupBookingsPage(): JSX.Element {
         {/* Header */}
         <div className="flex items-center justify-between">
           <div>
-            <h1 className="text-2xl font-bold text-text-primary dark:text-gray-100">
-              {t('groupBookings.title')}
-            </h1>
+            <h1 className="text-2xl font-bold text-text-primary">{t('groupBookings.title')}</h1>
             <p className="mt-1 text-sm text-text-secondary dark:text-text-tertiary">
               {t('groupBookings.subtitle')}
             </p>
@@ -207,7 +205,7 @@ export default function GroupBookingsPage(): JSX.Element {
           ].map((b) => (
             <Card key={b.title} padding="md" className="text-center">
               <span className="text-3xl">{b.emoji}</span>
-              <h3 className="mt-2 font-semibold text-text-primary dark:text-gray-100">{b.title}</h3>
+              <h3 className="mt-2 font-semibold text-text-primary">{b.title}</h3>
               <p className="text-xs text-text-secondary">{b.desc}</p>
             </Card>
           ))}
@@ -238,9 +236,7 @@ export default function GroupBookingsPage(): JSX.Element {
                       <div className="flex items-center gap-4">
                         <span className="text-4xl">{THEME_EMOJI[group.theme] ?? ''}</span>
                         <div>
-                          <h3 className="text-lg font-bold text-text-primary dark:text-gray-100">
-                            {group.name}
-                          </h3>
+                          <h3 className="text-lg font-bold text-text-primary">{group.name}</h3>
                           <div className="mt-1 flex items-center gap-3">
                             <span
                               className={`rounded-full px-2.5 py-0.5 text-xs font-medium ${statusInfo.color}`}
@@ -295,7 +291,7 @@ export default function GroupBookingsPage(): JSX.Element {
             <div>
               <label
                 htmlFor="gb-name"
-                className="block text-sm font-semibold text-text-primary dark:text-gray-300 mb-1"
+                className="block text-sm font-semibold text-text-primary mb-1"
               >
                 {t('groupBookings.label.name')}
               </label>
@@ -305,7 +301,7 @@ export default function GroupBookingsPage(): JSX.Element {
                 value={formName}
                 onChange={(e) => setFormName(e.target.value)}
                 placeholder={t('groupBookings.placeholder.name')}
-                className="w-full rounded-lg border border-edge px-3 py-2 text-sm focus:border-brand-500 focus:outline-none focus:ring-1 focus:ring-brand-500 dark:border-gray-700 dark:bg-gray-800"
+                className="w-full rounded-lg border border-edge px-3 py-2 text-sm focus:border-brand-500 focus:outline-none focus:ring-1 focus:ring-brand-500 dark:bg-gray-800"
               />
             </div>
 
@@ -313,7 +309,7 @@ export default function GroupBookingsPage(): JSX.Element {
             <div>
               <label
                 htmlFor="gb-theme"
-                className="block text-sm font-semibold text-text-primary dark:text-gray-300 mb-1"
+                className="block text-sm font-semibold text-text-primary mb-1"
               >
                 {t('groupBookings.label.theme')}
               </label>
@@ -321,7 +317,7 @@ export default function GroupBookingsPage(): JSX.Element {
                 id="gb-theme"
                 value={formTheme}
                 onChange={(e) => setFormTheme(e.target.value)}
-                className="w-full rounded-lg border border-edge px-3 py-2 text-sm focus:border-brand-500 focus:outline-none focus:ring-1 focus:ring-brand-500 dark:border-gray-700 dark:bg-gray-800"
+                className="w-full rounded-lg border border-edge px-3 py-2 text-sm focus:border-brand-500 focus:outline-none focus:ring-1 focus:ring-brand-500 dark:bg-gray-800"
               >
                 {THEMES.map((themeOpt) => (
                   <option key={themeOpt.value} value={themeOpt.value}>
@@ -333,7 +329,7 @@ export default function GroupBookingsPage(): JSX.Element {
 
             {/* Discount */}
             <div>
-              <label className="block text-sm font-semibold text-text-primary dark:text-gray-300 mb-1">
+              <label className="block text-sm font-semibold text-text-primary mb-1">
                 {t('groupBookings.label.discount')}:{' '}
                 <span className="text-brand-600">{formDiscount}%</span>
               </label>
@@ -356,7 +352,7 @@ export default function GroupBookingsPage(): JSX.Element {
             {/* Members */}
             <div>
               <div className="flex items-center justify-between mb-2">
-                <label className="text-sm font-semibold text-text-primary dark:text-gray-300">
+                <label className="text-sm font-semibold text-text-primary">
                   {t('groupBookings.label.members', { count: members.length })}
                 </label>
                 <button
@@ -372,7 +368,7 @@ export default function GroupBookingsPage(): JSX.Element {
                 {members.map((m, idx) => (
                   <div
                     key={idx}
-                    className="flex items-center gap-2 rounded-lg border border-edge-muted p-2 dark:border-gray-700"
+                    className="flex items-center gap-2 rounded-lg border border-edge-muted p-2"
                   >
                     <span className="text-xs font-bold text-text-tertiary w-5">{idx + 1}</span>
                     <input
@@ -380,14 +376,14 @@ export default function GroupBookingsPage(): JSX.Element {
                       value={m.name}
                       onChange={(e) => updateMember(idx, 'name', e.target.value)}
                       placeholder={t('groupBookings.placeholder.memberName')}
-                      className="flex-1 min-w-0 rounded border border-edge px-2 py-1.5 text-sm focus:border-brand-500 focus:outline-none dark:border-gray-700 dark:bg-gray-800"
+                      className="flex-1 min-w-0 rounded border border-edge px-2 py-1.5 text-sm focus:border-brand-500 focus:outline-none dark:bg-gray-800"
                     />
                     <input
                       type="number"
                       value={m.serviceId}
                       onChange={(e) => updateMember(idx, 'serviceId', e.target.value)}
                       placeholder={t('groupBookings.placeholder.serviceId')}
-                      className="w-24 rounded border border-edge px-2 py-1.5 text-sm focus:border-brand-500 focus:outline-none dark:border-gray-700 dark:bg-gray-800"
+                      className="w-24 rounded border border-edge px-2 py-1.5 text-sm focus:border-brand-500 focus:outline-none dark:bg-gray-800"
                     />
                     {members.length > 2 && (
                       <button

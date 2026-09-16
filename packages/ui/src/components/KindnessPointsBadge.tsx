@@ -151,7 +151,7 @@ export function KindnessPointsBadge({
             {levelDef.emoji}
           </div>
           <div>
-            <h4 className="text-sm font-bold text-text-primary dark:text-gray-100">{title}</h4>
+            <h4 className="text-sm font-bold text-text-primary">{title}</h4>
             <p className={cn('text-[10px] font-medium', levelDef.color)}>
               {levelDef.emoji} {levelDef.title[locale]}
             </p>
@@ -171,7 +171,7 @@ export function KindnessPointsBadge({
       {nextDef && (
         <div className="mt-3 rounded-xl bg-pink-50 p-2.5 dark:bg-pink-950">
           <div className="flex items-center justify-between text-[10px]">
-            <span className="text-text-secondary dark:text-gray-300">
+            <span className="text-text-secondary">
               {reachPrefix}
               {nextDef.title[locale]}
             </span>
@@ -195,17 +195,13 @@ export function KindnessPointsBadge({
 
       {/* Activity list */}
       <div className="mt-3 space-y-1">
-        <p className="text-[10px] font-bold text-text-primary dark:text-gray-100">
-          {activityListTitle}
-        </p>
+        <p className="text-[10px] font-bold text-text-primary">{activityListTitle}</p>
         {ACTIVITIES.map((a) => (
           <div
             key={a.action.ar}
-            className="flex items-center justify-between rounded-lg bg-surface-muted px-2.5 py-1.5 dark:bg-gray-800"
+            className="flex items-center justify-between rounded-lg bg-surface-muted px-2.5 py-1.5"
           >
-            <span className="text-[10px] text-text-secondary dark:text-gray-300">
-              {a.action[locale]}
-            </span>
+            <span className="text-[10px] text-text-secondary">{a.action[locale]}</span>
             <span className="text-[10px] font-bold text-pink-600 dark:text-pink-400">
               +{a.points}
             </span>

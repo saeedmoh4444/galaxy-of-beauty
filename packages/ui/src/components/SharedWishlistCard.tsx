@@ -89,9 +89,7 @@ export function SharedWishlistCard({
             <span className="text-sm shrink-0" aria-hidden="true">
               {item.isGifted ? '🎁' : item.emoji || ''}
             </span>
-            <span className="flex-1 text-[10px] font-medium text-text-primary dark:text-gray-100">
-              {item.name}
-            </span>
+            <span className="flex-1 text-[10px] font-medium text-text-primary">{item.name}</span>
             <span
               className={cn(
                 'text-[10px] font-bold',

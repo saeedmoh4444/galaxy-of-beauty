@@ -75,7 +75,7 @@ export function BirthdayMonthBadge({
       {/* What's included */}
       <div className="mt-3 rounded-xl bg-white/60 p-3 dark:bg-gray-800/60">
         <p className="text-[10px] font-bold text-pink-700 dark:text-pink-300">{giftsTitle}</p>
-        <div className="mt-1.5 space-y-1 text-[10px] text-text-secondary dark:text-gray-300">
+        <div className="mt-1.5 space-y-1 text-[10px] text-text-secondary">
           <p>
             • {discount}
             {gift1Suffix}

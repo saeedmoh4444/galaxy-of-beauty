@@ -110,7 +110,7 @@ export function MainLayout({ children }: { children: ReactNode }): JSX.Element {
   return (
     <div className="min-h-screen bg-surface">
       {/* Navbar */}
-      <header className="sticky top-0 z-40 border-b border-edge bg-white/80 backdrop-blur dark:border-gray-800 dark:bg-gray-950/80">
+      <header className="sticky top-0 z-40 border-b border-edge bg-white/80 backdrop-blur dark:bg-gray-950/80">
         <div className="mx-auto flex h-16 max-w-7xl items-center justify-between gap-4 px-4">
           <div className="flex items-center gap-3">
             {/* Mobile drawer toggle */}
@@ -154,7 +154,7 @@ export function MainLayout({ children }: { children: ReactNode }): JSX.Element {
               onChange={(e) => setNavQuery(e.target.value)}
               placeholder={t('nav.search')}
               aria-label={t('nav.search')}
-              className="w-full rounded-full border border-edge bg-surface-muted px-4 py-2 text-sm text-text-primary placeholder:text-text-tertiary focus:border-brand-400 focus:outline-none dark:border-gray-700 dark:bg-gray-900"
+              className="w-full rounded-full border border-edge bg-surface-muted px-4 py-2 text-sm text-text-primary placeholder:text-text-tertiary focus:border-brand-400 focus:outline-none"
             />
           </form>
 
@@ -186,7 +186,7 @@ export function MainLayout({ children }: { children: ReactNode }): JSX.Element {
                 <div
                   id="nav-more-menu"
                   data-testid="nav-more-menu"
-                  className="absolute end-0 top-full mt-2 w-64 rounded-2xl border border-edge bg-white p-2 shadow-xl dark:border-gray-700 dark:bg-gray-900"
+                  className="absolute end-0 top-full mt-2 w-64 rounded-2xl border border-edge bg-white p-2 shadow-xl dark:bg-gray-900"
                 >
                   {moreLinks.map((link) => (
                     <Link
@@ -198,7 +198,7 @@ export function MainLayout({ children }: { children: ReactNode }): JSX.Element {
                       {t(link.key)}
                     </Link>
                   ))}
-                  <div className="mt-1 border-t border-edge-muted pt-1 dark:border-gray-800">
+                  <div className="mt-1 border-t border-edge-muted pt-1">
                     <p className="px-3 py-1 text-xs font-bold text-text-tertiary">
                       {t('nav.venues')}
                     </p>
@@ -227,7 +227,7 @@ export function MainLayout({ children }: { children: ReactNode }): JSX.Element {
             <ThemeToggle />
             <Link
               href="/login"
-              className="whitespace-nowrap rounded-lg px-3 py-2 text-sm font-medium text-text-secondary transition-colors hover:bg-surface-muted dark:text-gray-300 dark:hover:bg-gray-800"
+              className="whitespace-nowrap rounded-lg px-3 py-2 text-sm font-medium text-text-secondary transition-colors hover:bg-surface-muted dark:hover:bg-gray-800"
             >
               {t('auth.loginShort')}
             </Link>
@@ -264,10 +264,10 @@ export function MainLayout({ children }: { children: ReactNode }): JSX.Element {
             </div>
             <div className="space-y-1">
               {renderDrawerLinks(primaryLinks)}
-              <div className="mt-3 border-t border-edge-muted pt-2 dark:border-gray-800">
+              <div className="mt-3 border-t border-edge-muted pt-2">
                 {renderDrawerLinks(moreLinks)}
               </div>
-              <div className="mt-3 border-t border-edge-muted pt-2 dark:border-gray-800">
+              <div className="mt-3 border-t border-edge-muted pt-2">
                 <p className="px-3 py-1 text-xs font-bold text-text-tertiary">{t('nav.venues')}</p>
                 {renderDrawerLinks(venueLinks)}
               </div>
@@ -281,7 +281,7 @@ export function MainLayout({ children }: { children: ReactNode }): JSX.Element {
       <BackToTop />
 
       {/* Footer */}
-      <footer className="border-t border-edge bg-white dark:border-gray-800 dark:bg-gray-950">
+      <footer className="border-t border-edge bg-white dark:bg-gray-950">
         <div className="mx-auto max-w-7xl px-4 py-12">
           <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-4">
             <div>
@@ -351,7 +351,7 @@ export function MainLayout({ children }: { children: ReactNode }): JSX.Element {
               </div>
             </div>
           </div>
-          <div className="mt-10 border-t border-edge-muted pt-6 text-center text-sm text-text-tertiary dark:border-gray-800">
+          <div className="mt-10 border-t border-edge-muted pt-6 text-center text-sm text-text-tertiary">
             © {new Date().getFullYear()} {t('common.brandName')}. {t('footer.rights')}
           </div>
         </div>

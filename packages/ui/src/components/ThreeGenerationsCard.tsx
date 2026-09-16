@@ -117,7 +117,7 @@ export function ThreeGenerationsCard({
         <span className="text-3xl" aria-hidden="true">
           💐
         </span>
-        <h4 className="mt-1 text-sm font-bold text-text-primary dark:text-gray-100">{title}</h4>
+        <h4 className="mt-1 text-sm font-bold text-text-primary">{title}</h4>
         <p className="text-[10px] text-text-tertiary dark:text-text-tertiary">{subtitle}</p>
       </div>
 
@@ -133,9 +133,7 @@ export function ThreeGenerationsCard({
                 (member.key === 'grandma' ? '' : member.key === 'mom' ? '' : '')}
             </span>
             <p className={cn('mt-1 text-[10px] font-bold', member.color)}>{member.label[locale]}</p>
-            <p className="text-[10px] font-semibold text-text-primary dark:text-gray-100">
-              {member.data.name}
-            </p>
+            <p className="text-[10px] font-semibold text-text-primary">{member.data.name}</p>
             {member.data.service && (
               <p className="mt-0.5 text-[9px] text-text-tertiary dark:text-text-tertiary">
                 {member.data.service}
@@ -149,7 +147,7 @@ export function ThreeGenerationsCard({
       <div className="mt-3 grid grid-cols-3 gap-2 text-center">
         <div className="rounded-xl bg-white/60 p-2 dark:bg-gray-800/60">
           <p className="text-[9px] text-text-tertiary dark:text-text-secondary">{durationLabel}</p>
-          <p className="text-xs font-bold text-text-primary dark:text-gray-100">{duration}</p>
+          <p className="text-xs font-bold text-text-primary">{duration}</p>
         </div>
         <div className="rounded-xl bg-white/60 p-2 dark:bg-gray-800/60">
           <p className="text-[9px] text-text-tertiary dark:text-text-secondary">{priceLabel}</p>
@@ -159,7 +157,7 @@ export function ThreeGenerationsCard({
         </div>
         <div className="rounded-xl bg-white/60 p-2 dark:bg-gray-800/60">
           <p className="text-[9px] text-text-tertiary dark:text-text-secondary">{perPersonLabel}</p>
-          <p className="text-xs font-bold text-text-primary dark:text-gray-100">
+          <p className="text-xs font-bold text-text-primary">
             {Math.round(totalPrice / 3)} {currencySuffix}
           </p>
         </div>
@@ -167,10 +165,8 @@ export function ThreeGenerationsCard({
 
       {/* What's included */}
       <div className="mt-3 rounded-xl bg-white/60 p-3 dark:bg-gray-800/60">
-        <p className="text-[10px] font-bold text-text-primary dark:text-gray-100">
-          {includesLabel}
-        </p>
-        <div className="mt-1.5 grid grid-cols-2 gap-1 text-[10px] text-text-secondary dark:text-gray-300">
+        <p className="text-[10px] font-bold text-text-primary">{includesLabel}</p>
+        <div className="mt-1.5 grid grid-cols-2 gap-1 text-[10px] text-text-secondary">
           {INCLUDED_ITEMS.map((item) => (
             <span key={item.ar}>• {item[locale]}</span>
           ))}

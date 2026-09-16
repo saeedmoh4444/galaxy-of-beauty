@@ -144,11 +144,11 @@ export function BeautyBudgetPlanner({
 
       {/* Monthly budget display */}
       <div className="mt-3 grid grid-cols-2 gap-2">
-        <div className="rounded-xl bg-surface-muted p-3 text-center dark:bg-gray-800">
+        <div className="rounded-xl bg-surface-muted p-3 text-center">
           <p className="text-[9px] text-text-tertiary dark:text-text-secondary">
             {monthlyIncomeLabel}
           </p>
-          <p className="text-sm font-bold text-text-primary dark:text-gray-100">
+          <p className="text-sm font-bold text-text-primary">
             {monthlyIncome.toLocaleString('ar-SA')} {currencySuffix}
           </p>
         </div>
@@ -162,9 +162,7 @@ export function BeautyBudgetPlanner({
 
       {/* Category breakdown */}
       <div className="mt-3 space-y-1.5">
-        <p className="text-[10px] font-bold text-text-primary dark:text-gray-100">
-          {breakdownTitle}
-        </p>
+        <p className="text-[10px] font-bold text-text-primary">{breakdownTitle}</p>
         {CATEGORIES.map((cat) => {
           const amount = Math.round(beautyBudget * (cat.percentage / 100));
           return (
@@ -172,16 +170,16 @@ export function BeautyBudgetPlanner({
               <span className="text-xs w-5 text-center" aria-hidden="true">
                 {cat.emoji}
               </span>
-              <span className="text-[10px] text-text-secondary dark:text-gray-300 w-24 truncate">
+              <span className="text-[10px] text-text-secondary w-24 truncate">
                 {cat.name[locale]}
               </span>
-              <div className="flex-1 h-1.5 rounded-full bg-surface-muted dark:bg-gray-700">
+              <div className="flex-1 h-1.5 rounded-full bg-surface-muted">
                 <div
                   className={cn('h-full rounded-full bg-gradient-to-r', cat.color)}
                   style={{ width: `${cat.percentage}%` }}
                 />
               </div>
-              <span className="text-[10px] font-bold text-text-primary dark:text-gray-100 w-16 text-end">
+              <span className="text-[10px] font-bold text-text-primary w-16 text-end">
                 {amount} {currencySuffix}
               </span>
             </div>

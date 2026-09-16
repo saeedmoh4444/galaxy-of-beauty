@@ -139,14 +139,12 @@ export default function BeautyQuizPage(): JSX.Element {
     return (
       <div className="mx-auto max-w-lg px-4 py-16 text-center">
         <span className="text-6xl">✨</span>
-        <h1 className="mt-4 text-3xl font-bold text-text-primary dark:text-gray-100">
-          {t(result.title)}
-        </h1>
+        <h1 className="mt-4 text-3xl font-bold text-text-primary">{t(result.title)}</h1>
         <p className="mt-2 text-text-secondary">{t('marketing.beauty-quiz.result-title')}</p>
         <div className="mt-6 space-y-2">
           {result.services.map((s) => (
             <Card key={s} padding="sm">
-              <p className="font-medium text-text-primary dark:text-gray-100">{t(s)}</p>
+              <p className="font-medium text-text-primary">{t(s)}</p>
             </Card>
           ))}
         </div>
@@ -178,18 +176,16 @@ export default function BeautyQuizPage(): JSX.Element {
           {step + 1} / {questions.length}
         </p>
       </div>
-      <h2 className="mb-6 text-2xl font-bold text-text-primary dark:text-gray-100">{t(q.text)}</h2>
+      <h2 className="mb-6 text-2xl font-bold text-text-primary">{t(q.text)}</h2>
       <div className="space-y-3">
         {q.options.map((o) => (
           <button
             key={o.value}
             onClick={() => handleAnswer(q.id, o.value)}
-            className="flex w-full items-center gap-4 rounded-xl border border-edge p-4 text-end transition-all hover:border-brand-400 hover:bg-brand-50 dark:border-gray-700 dark:hover:bg-brand-950"
+            className="flex w-full items-center gap-4 rounded-xl border border-edge p-4 text-end transition-all hover:border-brand-400 hover:bg-brand-50 dark:hover:bg-brand-950"
           >
             <span className="text-2xl">{o.icon}</span>
-            <span className="text-lg font-medium text-text-primary dark:text-gray-100">
-              {t(o.label)}
-            </span>
+            <span className="text-lg font-medium text-text-primary">{t(o.label)}</span>
           </button>
         ))}
       </div>

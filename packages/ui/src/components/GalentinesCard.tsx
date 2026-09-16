@@ -97,7 +97,7 @@ export function GalentinesCard({
 
       {/* Friend list */}
       <div className="mt-3 rounded-xl bg-white/60 p-3 dark:bg-gray-800/60">
-        <p className="text-[10px] font-bold text-text-primary dark:text-gray-100">{withYouLabel}</p>
+        <p className="text-[10px] font-bold text-text-primary">{withYouLabel}</p>
         <div className="mt-1.5 flex flex-wrap gap-1.5">
           <span className="rounded-full bg-pink-100 px-2.5 py-1 text-[10px] font-bold text-pink-700 dark:bg-pink-900 dark:text-pink-300">
             {youLabel}
@@ -116,7 +116,7 @@ export function GalentinesCard({
       {/* What's included */}
       <div className="mt-3 rounded-xl bg-white/60 p-3 dark:bg-gray-800/60">
         <p className="text-[10px] font-bold text-pink-700 dark:text-pink-300">{includesLabel}</p>
-        <div className="mt-1 grid grid-cols-2 gap-1 text-[10px] text-text-secondary dark:text-gray-300">
+        <div className="mt-1 grid grid-cols-2 gap-1 text-[10px] text-text-secondary">
           {INCLUDED_ITEMS.map((item) => (
             <span key={item.ar}>• {item[locale]}</span>
           ))}
@@ -127,7 +127,7 @@ export function GalentinesCard({
       <div className="mt-3 grid grid-cols-3 gap-2 text-center">
         <div className="rounded-xl bg-white/60 p-2 dark:bg-gray-800/60">
           <p className="text-[9px] text-text-tertiary dark:text-text-secondary">{totalLabel}</p>
-          <p className="text-xs font-bold text-text-primary dark:text-gray-100">
+          <p className="text-xs font-bold text-text-primary">
             {totalPrice} {currencySuffix}
           </p>
         </div>

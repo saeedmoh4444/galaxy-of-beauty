@@ -80,7 +80,7 @@ export function GroupDiscountBadge({
             {discountLabel}
           </span>
         </div>
-        <p className="mt-1 text-[10px] text-text-secondary dark:text-gray-300">
+        <p className="mt-1 text-[10px] text-text-secondary">
           {whenBookingPrefix}
           {groupSize} {peopleTogetherText}
         </p>
@@ -102,9 +102,7 @@ export function GroupDiscountBadge({
                 : 'bg-white/40 dark:bg-gray-800/40',
             )}
           >
-            <p className="text-[10px] font-bold text-text-primary dark:text-gray-100">
-              {tier.size}+
-            </p>
+            <p className="text-[10px] font-bold text-text-primary">{tier.size}+</p>
             <p className="text-[10px] font-bold text-violet-700 dark:text-violet-300">
               -{tier.off}%
             </p>
@@ -116,9 +114,7 @@ export function GroupDiscountBadge({
       {originalPrice && priceAfterDiscount && savingsPerPerson && (
         <div className="mt-2 rounded-xl bg-white/60 p-3 dark:bg-gray-800/60">
           {serviceName && (
-            <p className="text-center text-[10px] font-bold text-text-primary dark:text-gray-100">
-              {serviceName}
-            </p>
+            <p className="text-center text-[10px] font-bold text-text-primary">{serviceName}</p>
           )}
           <div className="mt-1 flex items-center justify-center gap-2 text-[10px]">
             <span className="text-text-tertiary line-through dark:text-text-secondary">

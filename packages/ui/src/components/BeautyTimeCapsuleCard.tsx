@@ -67,7 +67,7 @@ export function BeautyTimeCapsuleCard({
         <p className="text-2xl" aria-hidden="true">
           {isFuture ? '' : ''}
         </p>
-        <p className="mt-1 text-xs text-text-secondary dark:text-gray-300">
+        <p className="mt-1 text-xs text-text-secondary">
           {isFuture ? saveRoutineText : oldRoutineText}
         </p>
       </div>

@@ -131,7 +131,7 @@ export default function PregnancyBeautyPage(): JSX.Element {
     <div className="mx-auto max-w-5xl px-4 py-12">
       <div className="text-center mb-10">
         <span className="text-6xl">🤰</span>
-        <h1 className="mt-4 text-3xl font-bold text-text-primary dark:text-gray-100">
+        <h1 className="mt-4 text-3xl font-bold text-text-primary">
           {t('marketing.pregnancy-beauty.title')}
         </h1>
         <p className="mt-2 text-text-secondary">{t('marketing.pregnancy-beauty.subtitle')}</p>

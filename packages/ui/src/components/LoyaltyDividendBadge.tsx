@@ -68,8 +68,7 @@ const TIERS: Record<'silver' | 'gold' | 'diamond', TierDef> = {
     label: { ar: 'فضية', en: 'Silver' },
     minSpend: 1000,
     rate: 3,
-    color:
-      'bg-surface-muted text-text-secondary border-edge dark:bg-gray-900 dark:text-gray-300 dark:border-gray-700',
+    color: 'bg-surface-muted text-text-secondary border-edge',
     gradient: 'from-gray-400 to-slate-500',
   },
   gold: {
@@ -145,7 +144,7 @@ export function LoyaltyDividendBadge({
             {tierDef.emoji}
           </span>
           <div>
-            <h4 className="text-sm font-bold text-text-primary dark:text-gray-100">{title}</h4>
+            <h4 className="text-sm font-bold text-text-primary">{title}</h4>
             <p className="text-[10px] text-text-tertiary dark:text-text-tertiary">
               {rankLabel}
               {tierDef.label[locale]} · {rate}% {cashbackWord}
@@ -155,7 +154,7 @@ export function LoyaltyDividendBadge({
 
         {/* Cashback amount */}
         <div className="text-center">
-          <p className="text-lg font-bold text-text-primary dark:text-gray-100">
+          <p className="text-lg font-bold text-text-primary">
             {cashback} {currencySuffix}
           </p>
           <p className="text-[9px] text-text-tertiary dark:text-text-secondary">
@@ -168,7 +167,7 @@ export function LoyaltyDividendBadge({
       <div className="mt-3 grid grid-cols-3 gap-2">
         <div className="rounded-xl bg-white/60 p-2 text-center dark:bg-gray-800/60">
           <p className="text-[9px] text-text-tertiary dark:text-text-secondary">{spendLabel}</p>
-          <p className="text-xs font-bold text-text-primary dark:text-gray-100">
+          <p className="text-xs font-bold text-text-primary">
             {yearlySpend.toLocaleString('ar-SA')} {currencySuffix}
           </p>
         </div>
@@ -178,7 +177,7 @@ export function LoyaltyDividendBadge({
         </div>
         <div className="rounded-xl bg-white/60 p-2 text-center dark:bg-gray-800/60">
           <p className="text-[9px] text-text-tertiary dark:text-text-secondary">{payoutLabel}</p>
-          <p className="text-xs font-bold text-text-primary dark:text-gray-100">{payoutMonth}</p>
+          <p className="text-xs font-bold text-text-primary">{payoutMonth}</p>
         </div>
       </div>
 
@@ -186,15 +185,13 @@ export function LoyaltyDividendBadge({
       {nextTier && (
         <div className="mt-3 rounded-xl bg-white/60 p-2.5 dark:bg-gray-800/60">
           <div className="flex items-center justify-between text-[10px]">
-            <span className="text-text-secondary dark:text-gray-300">
+            <span className="text-text-secondary">
               {toNextTierPrefix}
               {nextTier.label[locale]}
             </span>
-            <span className="font-bold text-text-primary dark:text-gray-100">
-              {progressToNext}%
-            </span>
+            <span className="font-bold text-text-primary">{progressToNext}%</span>
           </div>
-          <div className="mt-1 h-1.5 overflow-hidden rounded-full bg-surface-muted dark:bg-gray-700">
+          <div className="mt-1 h-1.5 overflow-hidden rounded-full bg-surface-muted">
             <div
               className={cn(
                 'h-full rounded-full bg-gradient-to-r transition-all duration-700',

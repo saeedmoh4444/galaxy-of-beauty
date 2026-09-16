@@ -132,13 +132,13 @@ export function PromReadyCard({
       {/* The look */}
       <div className="mt-3 rounded-xl bg-white/60 p-3 dark:bg-gray-800/60">
         <p className="text-[10px] font-bold text-brand-700 dark:text-brand-300">{lookLabel}</p>
-        <p className="mt-1 text-xs text-text-primary dark:text-gray-100">{ev.look[locale]}</p>
+        <p className="mt-1 text-xs text-text-primary">{ev.look[locale]}</p>
       </div>
 
       {/* What's included */}
       <div className="mt-2 rounded-xl bg-white/60 p-3 dark:bg-gray-800/60">
         <p className="text-[10px] font-bold text-brand-700 dark:text-brand-300">{includesLabel}</p>
-        <div className="mt-1 grid grid-cols-2 gap-1 text-[10px] text-text-secondary dark:text-gray-300">
+        <div className="mt-1 grid grid-cols-2 gap-1 text-[10px] text-text-secondary">
           {INCLUDED_ITEMS.map((item) => (
             <span key={item.ar}>• {item[locale]}</span>
           ))}

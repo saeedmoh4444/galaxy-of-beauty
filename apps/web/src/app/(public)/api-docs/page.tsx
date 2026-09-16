@@ -52,7 +52,7 @@ export default function ApiDocsPage(): JSX.Element {
                 OpenAPI JSON
               </button>
             </div>
-            <div className="mt-4 rounded-xl bg-surface-muted dark:bg-gray-800 p-4">
+            <div className="mt-4 rounded-xl bg-surface-muted p-4">
               <p className="text-xs font-bold text-text-secondary mb-2"> Authentication</p>
               <code className="text-xs break-all">
                 {(data?.authentication as Record<string, string>)?.header}
@@ -74,7 +74,7 @@ export default function ApiDocsPage(): JSX.Element {
                   {(cat.routers as string[]).map((r: string) => (
                     <span
                       key={r}
-                      className="rounded-full bg-surface-muted dark:bg-gray-800 px-2.5 py-1 text-xs font-mono"
+                      className="rounded-full bg-surface-muted px-2.5 py-1 text-xs font-mono"
                     >
                       {r}
                     </span>

@@ -138,7 +138,7 @@ export function TechnicianProfileClient({ data }: { data: TechnicianProfileData 
             {galleryImages.slice(0, 8).map((img, i) => (
               <div
                 key={i}
-                className="relative aspect-square rounded-xl bg-surface-muted flex items-center justify-center overflow-hidden dark:bg-gray-800"
+                className="relative aspect-square rounded-xl bg-surface-muted flex items-center justify-center overflow-hidden"
               >
                 {img.imageUrl ? (
                   <Image

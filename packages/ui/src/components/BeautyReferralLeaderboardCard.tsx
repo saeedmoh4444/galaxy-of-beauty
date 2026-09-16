@@ -68,9 +68,7 @@ export function BeautyReferralLeaderboardCard({
           >
             <span className="text-sm w-6 text-center">{medals[i] || `${i + 1}.`}</span>
             <span className="text-sm">{l.emoji || ''}</span>
-            <span className="flex-1 text-[10px] font-bold text-text-primary dark:text-gray-100">
-              {l.name}
-            </span>
+            <span className="flex-1 text-[10px] font-bold text-text-primary">{l.name}</span>
             <span className="text-[10px] font-bold text-amber-700 dark:text-amber-300">
               {l.referrals} {referralsText}
             </span>

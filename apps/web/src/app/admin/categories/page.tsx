@@ -211,13 +211,13 @@ export default function AdminCategoriesPage(): JSX.Element {
           <div>
             <label
               htmlFor="ac-parent-create"
-              className="mb-1 block text-sm font-medium text-text-primary dark:text-gray-300"
+              className="mb-1 block text-sm font-medium text-text-primary"
             >
               {t('admin.categories.parent-category')}
             </label>
             <select
               id="ac-parent-create"
-              className="w-full rounded-lg border border-edge bg-white p-2 text-sm dark:border-gray-700 dark:bg-gray-900"
+              className="w-full rounded-lg border border-edge bg-white p-2 text-sm dark:bg-gray-900"
               value={form.parentId ?? ''}
               onChange={(e) =>
                 setForm({ ...form, parentId: e.target.value ? Number(e.target.value) : null })
@@ -267,13 +267,13 @@ export default function AdminCategoriesPage(): JSX.Element {
           <div>
             <label
               htmlFor="ac-parent-edit"
-              className="mb-1 block text-sm font-medium text-text-primary dark:text-gray-300"
+              className="mb-1 block text-sm font-medium text-text-primary"
             >
               {t('admin.categories.parent-category')}
             </label>
             <select
               id="ac-parent-edit"
-              className="w-full rounded-lg border border-edge bg-white p-2 text-sm dark:border-gray-700 dark:bg-gray-900"
+              className="w-full rounded-lg border border-edge bg-white p-2 text-sm dark:bg-gray-900"
               value={form.parentId ?? ''}
               onChange={(e) =>
                 setForm({ ...form, parentId: e.target.value ? Number(e.target.value) : null })

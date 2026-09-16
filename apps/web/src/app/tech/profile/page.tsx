@@ -233,13 +233,13 @@ export default function TechProfilePage(): JSX.Element {
               </div>
 
               {kycStatus === 'PENDING' || kycStatus === 'REJECTED' ? (
-                <div className="mt-4 space-y-3 border-t border-edge pt-4 dark:border-gray-700">
+                <div className="mt-4 space-y-3 border-t border-edge pt-4">
                   {kycMsg && <p className="text-sm text-amber-600">{kycMsg}</p>}
                   <div className="flex gap-3">
                     <select
                       value={docType}
                       onChange={(e) => setDocType(e.target.value)}
-                      className="rounded-lg border border-edge bg-white px-3 py-2 text-sm dark:border-gray-600 dark:bg-gray-900"
+                      className="rounded-lg border border-edge bg-white px-3 py-2 text-sm dark:bg-gray-900"
                     >
                       <option value="NATIONAL_ID">{t('tech.profile.doc-national-id')}</option>
                       <option value="PASSPORT">{t('tech.profile.doc-passport')}</option>
@@ -253,7 +253,7 @@ export default function TechProfilePage(): JSX.Element {
                     />
                   </div>
                   <div className="flex items-center gap-3">
-                    <label className="cursor-pointer rounded-lg border border-edge px-3 py-2 text-sm dark:border-gray-600">
+                    <label className="cursor-pointer rounded-lg border border-edge px-3 py-2 text-sm">
                       {uploadKycMut.isPending ? '…' : t('vendorPortal.apply.upload')}
                       <input
                         type="file"
@@ -324,7 +324,7 @@ export default function TechProfilePage(): JSX.Element {
                 <div className="flex items-center gap-3 self-end pb-2">
                   <label
                     htmlFor="tp-eco-friendly"
-                    className="text-sm font-medium text-text-primary dark:text-gray-300"
+                    className="text-sm font-medium text-text-primary"
                   >
                     {t('tech.profile.eco-friendly')}
                   </label>
@@ -351,21 +351,21 @@ export default function TechProfilePage(): JSX.Element {
             <Card>
               <h2 className="mb-4 text-lg font-semibold">{t('tech.profile.stats-title')}</h2>
               <div className="grid grid-cols-2 gap-4 sm:grid-cols-4">
-                <div className="rounded-xl bg-surface-muted p-4 text-center dark:bg-gray-800">
+                <div className="rounded-xl bg-surface-muted p-4 text-center">
                   <p className="text-2xl font-bold text-amber-500">
                     {(tech?.ratingAvg as number) ?? 0}
                   </p>
                   <p className="mt-1 text-xs text-text-secondary">{t('tech.profile.rating')}</p>
                 </div>
-                <div className="rounded-xl bg-surface-muted p-4 text-center dark:bg-gray-800">
-                  <p className="text-2xl font-bold text-text-primary dark:text-gray-100">
+                <div className="rounded-xl bg-surface-muted p-4 text-center">
+                  <p className="text-2xl font-bold text-text-primary">
                     {String((tech?.totalReviews as number) ?? 0)}
                   </p>
                   <p className="mt-1 text-xs text-text-secondary">
                     {t('tech.profile.total-reviews')}
                   </p>
                 </div>
-                <div className="rounded-xl bg-surface-muted p-4 text-center dark:bg-gray-800">
+                <div className="rounded-xl bg-surface-muted p-4 text-center">
                   <p className="text-2xl font-bold text-brand-600 dark:text-brand-300">
                     {String((tech?.completedBookings as number) ?? 0)}
                   </p>
@@ -373,8 +373,8 @@ export default function TechProfilePage(): JSX.Element {
                     {t('tech.profile.completed-bookings')}
                   </p>
                 </div>
-                <div className="rounded-xl bg-surface-muted p-4 text-center dark:bg-gray-800">
-                  <p className="truncate text-sm font-bold text-text-primary dark:text-gray-100">
+                <div className="rounded-xl bg-surface-muted p-4 text-center">
+                  <p className="truncate text-sm font-bold text-text-primary">
                     {(me?.phone as string) ?? '—'}
                   </p>
                   <p className="mt-1 text-xs text-text-secondary">{t('tech.profile.phone')}</p>
@@ -392,7 +392,7 @@ export default function TechProfilePage(): JSX.Element {
                 <select
                   value={selectedServiceId ?? ''}
                   onChange={(e) => setSelectedServiceId(Number(e.target.value))}
-                  className="flex-1 rounded-lg border border-edge bg-white px-3 py-2 text-sm dark:border-gray-600 dark:bg-gray-900"
+                  className="flex-1 rounded-lg border border-edge bg-white px-3 py-2 text-sm dark:bg-gray-900"
                 >
                   <option value="">{t('tech.profile.select-service')}</option>
                   {allServices.map((s) => (

@@ -61,7 +61,7 @@ export default function ProductComparePage(): JSX.Element {
               <button
                 key={p.id as number}
                 onClick={() => toggle(p.id as number)}
-                className={`rounded-xl border-2 p-3 text-center transition-all ${selected.includes(p.id as number) ? 'border-brand-400 bg-brand-50 dark:bg-brand-950 scale-105' : 'border-edge dark:border-gray-700'}`}
+                className={`rounded-xl border-2 p-3 text-center transition-all ${selected.includes(p.id as number) ? 'border-brand-400 bg-brand-50 dark:bg-brand-950 scale-105' : 'border-edge'}`}
               >
                 <span className="text-3xl">{p.emoji as string}</span>
                 <p className="text-xs font-bold mt-1">{p.nameAr as string}</p>

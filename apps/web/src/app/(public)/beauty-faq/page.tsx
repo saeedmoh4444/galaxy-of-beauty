@@ -51,7 +51,7 @@ export default function BeautyFaqPage(): JSX.Element {
       <div className="flex flex-wrap gap-2 mb-6">
         <button
           onClick={() => setCategory(undefined)}
-          className={`rounded-full px-3 py-1 text-xs ${!category ? 'bg-brand-600 text-white' : 'bg-surface-muted dark:bg-gray-800'}`}
+          className={`rounded-full px-3 py-1 text-xs ${!category ? 'bg-brand-600 text-white' : 'bg-surface-muted'}`}
         >
           {t('marketing.beauty-faq.all')}
         </button>
@@ -59,7 +59,7 @@ export default function BeautyFaqPage(): JSX.Element {
           <button
             key={c.key as string}
             onClick={() => setCategory(c.key as string)}
-            className={`rounded-full px-3 py-1 text-xs ${category === c.key ? 'bg-brand-600 text-white' : 'bg-surface-muted dark:bg-gray-800'}`}
+            className={`rounded-full px-3 py-1 text-xs ${category === c.key ? 'bg-brand-600 text-white' : 'bg-surface-muted'}`}
           >
             {c.emoji as string} {c.nameAr as string}
           </button>
@@ -73,7 +73,7 @@ export default function BeautyFaqPage(): JSX.Element {
           {faqs.map((f: Record<string, unknown>, i: number) => (
             <Card key={i} padding="lg">
               <details className="group">
-                <summary className="cursor-pointer font-bold text-text-primary dark:text-gray-100 hover:text-brand-600 transition-colors">
+                <summary className="cursor-pointer font-bold text-text-primary hover:text-brand-600 transition-colors">
                   {f.q as string}
                 </summary>
                 <p className="mt-3 text-sm text-text-secondary dark:text-text-tertiary leading-relaxed border-t border-edge-muted pt-3">

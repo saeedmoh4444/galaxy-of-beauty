@@ -108,9 +108,7 @@ export function DVSupportBadge({
             🤝
           </span>
           <div>
-            <p className="text-[10px] font-bold text-text-primary dark:text-gray-100">
-              {partnerLabel}
-            </p>
+            <p className="text-[10px] font-bold text-text-primary">{partnerLabel}</p>
             <p className="text-xs text-brand-700 dark:text-brand-300">{partnerShelter}</p>
           </div>
         </div>

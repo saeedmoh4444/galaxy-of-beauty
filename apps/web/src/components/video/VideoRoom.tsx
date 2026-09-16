@@ -256,9 +256,7 @@ export function VideoRoom({
         <div className="mb-4 flex items-center justify-between">
           <p className="text-sm text-text-secondary">
             {t('videoRoom.roomNumber')}{' '}
-            <code className="rounded bg-surface-muted px-2 py-1 text-xs dark:bg-gray-800">
-              {roomId}
-            </code>
+            <code className="rounded bg-surface-muted px-2 py-1 text-xs">{roomId}</code>
           </p>
           <Button variant="outline" onClick={() => navigator.clipboard.writeText(roomId)}>
             {t('videoRoom.copyRoomNumber')}

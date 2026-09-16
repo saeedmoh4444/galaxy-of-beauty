@@ -84,7 +84,7 @@ function ErrorFallback({
         </button>
         <button
           onClick={() => window.location.reload()}
-          className="rounded-lg border border-edge px-5 py-2.5 text-sm font-medium text-text-secondary hover:bg-surface-muted dark:border-gray-600 dark:text-gray-300 dark:hover:bg-gray-800 transition-colors focus:outline-none focus:ring-2 focus:ring-gray-400 focus:ring-offset-2"
+          className="rounded-lg border border-edge px-5 py-2.5 text-sm font-medium text-text-secondary hover:bg-surface-muted dark:hover:bg-gray-800 transition-colors focus:outline-none focus:ring-2 focus:ring-gray-400 focus:ring-offset-2"
           aria-label={t('error.reload-page', locale)}
         >
           {t('error.reload-page', locale)}

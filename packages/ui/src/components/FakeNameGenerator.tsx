@@ -187,7 +187,7 @@ export function FakeNameGenerator({
       )}
 
       {/* Privacy note */}
-      <div className="mt-3 flex items-start gap-1.5 rounded-lg bg-surface-muted p-2 dark:bg-gray-800">
+      <div className="mt-3 flex items-start gap-1.5 rounded-lg bg-surface-muted p-2">
         <span className="text-xs shrink-0" aria-hidden="true">
           🔒
         </span>

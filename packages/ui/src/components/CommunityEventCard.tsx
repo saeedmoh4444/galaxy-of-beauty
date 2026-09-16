@@ -92,7 +92,7 @@ export function CommunityEventCard({
             )}
           </div>
           {event.maxAttendees && (
-            <div className="mt-1 h-1.5 overflow-hidden rounded-full bg-surface-muted dark:bg-gray-700">
+            <div className="mt-1 h-1.5 overflow-hidden rounded-full bg-surface-muted">
               <div
                 className="h-full rounded-full bg-gradient-to-r from-violet-400 to-brand-500 transition-all"
                 style={{ width: `${Math.round((event.attendees / event.maxAttendees) * 100)}%` }}
@@ -119,7 +119,7 @@ export function CommunityEventCard({
           isRegistered
             ? 'bg-emerald-50 text-emerald-700 dark:bg-emerald-950 dark:text-emerald-300'
             : isFull
-              ? 'bg-surface-muted text-text-tertiary cursor-not-allowed dark:bg-gray-700 dark:text-text-secondary'
+              ? 'bg-surface-muted text-text-tertiary cursor-not-allowed dark:text-text-secondary'
               : 'bg-violet-600 text-white hover:bg-violet-700',
         )}
       >

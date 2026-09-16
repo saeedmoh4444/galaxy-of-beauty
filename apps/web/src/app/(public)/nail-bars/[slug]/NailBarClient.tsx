@@ -84,9 +84,7 @@ export function NailBarClient({ data }: { data: NailBarPageData }): JSX.Element 
             <ServiceImage src={n.logoUrl ?? null} alt={n.storeName ?? ''} size="full" />
           </div>
           <div>
-            <h1 className="text-2xl font-bold text-text-primary dark:text-gray-100">
-              {n.storeName}
-            </h1>
+            <h1 className="text-2xl font-bold text-text-primary">{n.storeName}</h1>
             <p className="mt-1 text-sm text-text-secondary">
               {n.nailBarType ? t(`nailBars.type.${n.nailBarType}` as never) : ''} · {n.nailBarCity}{' '}
               · {n.nailBarAddress}

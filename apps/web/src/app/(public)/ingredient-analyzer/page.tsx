@@ -105,7 +105,7 @@ export default function IngredientAnalyzerPage(): JSX.Element {
             {ingredients.map((ing: Record<string, unknown>, i: number) => (
               <div
                 key={i}
-                className="flex items-center justify-between rounded-lg bg-surface-muted dark:bg-gray-800 px-3 py-2"
+                className="flex items-center justify-between rounded-lg bg-surface-muted px-3 py-2"
               >
                 <span className="text-sm font-medium">{ing.name as string}</span>
                 <span

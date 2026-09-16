@@ -145,7 +145,7 @@ export function Modal({
         ref={panelRef}
         tabIndex={-1}
         className={cn(
-          'relative w-full rounded-2xl bg-surface shadow-xl outline-none dark:bg-gray-900',
+          'relative w-full rounded-2xl bg-surface shadow-xl outline-none',
           'animate-in zoom-in-95 duration-200',
           sizeStyles[size],
           className,
@@ -170,7 +170,7 @@ export function Modal({
         )}
 
         {(title || description) && (
-          <div className="border-b border-edge px-6 py-4 dark:border-gray-700">
+          <div className="border-b border-edge px-6 py-4">
             {title && (
               <h2 id="modal-title" className="text-lg font-semibold text-text-primary">
                 {title}

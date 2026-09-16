@@ -36,7 +36,7 @@ export default function ClinicConnectPage(): JSX.Element {
             {list.map((c: Record<string, unknown>) => (
               <div
                 key={c.id as number}
-                className="flex items-center justify-between rounded-xl bg-surface-muted dark:bg-gray-800 p-4"
+                className="flex items-center justify-between rounded-xl bg-surface-muted p-4"
               >
                 <div className="flex items-center gap-3">
                   <span className="text-3xl">{c.emoji as string}</span>

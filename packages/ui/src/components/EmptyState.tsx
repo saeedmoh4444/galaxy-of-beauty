@@ -21,7 +21,7 @@ export function EmptyState({ icon, title, description, action, className = '' }:
   return (
     <div className={`flex flex-col items-center justify-center py-16 text-center ${className}`}>
       {icon ?? (
-        <div className="mb-4 rounded-full bg-surface-muted p-4 dark:bg-gray-800">
+        <div className="mb-4 rounded-full bg-surface-muted p-4">
           <svg
             className="h-8 w-8 text-text-tertiary"
             fill="none"
@@ -37,7 +37,7 @@ export function EmptyState({ icon, title, description, action, className = '' }:
           </svg>
         </div>
       )}
-      <h3 className="text-lg font-semibold text-text-primary dark:text-gray-100">{title}</h3>
+      <h3 className="text-lg font-semibold text-text-primary">{title}</h3>
       {description && (
         <p className="mt-2 max-w-sm text-sm text-text-secondary dark:text-text-tertiary">
           {description}

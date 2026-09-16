@@ -64,7 +64,7 @@ export function BeautyVlogCard({
 
       {/* Info */}
       <div className="mt-2">
-        <p className="text-xs font-bold text-text-primary dark:text-gray-100">{vlog.title}</p>
+        <p className="text-xs font-bold text-text-primary">{vlog.title}</p>
         <div className="mt-1 flex items-center gap-2 text-[10px] text-text-tertiary dark:text-text-secondary">
           <span> {vlog.technician}</span>
           {vlog.category && <span>· {vlog.category}</span>}

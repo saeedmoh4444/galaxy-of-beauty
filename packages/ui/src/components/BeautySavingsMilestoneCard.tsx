@@ -80,9 +80,7 @@ export function BeautySavingsMilestoneCard({
             <div
               className={cn(
                 'flex-1 h-2 rounded-full',
-                saved >= m
-                  ? `bg-gradient-to-r ${COLORS[i % COLORS.length]}`
-                  : 'bg-surface-muted dark:bg-gray-700',
+                saved >= m ? `bg-gradient-to-r ${COLORS[i % COLORS.length]}` : 'bg-surface-muted',
               )}
             >
               <div

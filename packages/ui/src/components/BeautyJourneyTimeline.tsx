@@ -154,7 +154,7 @@ export function BeautyJourneyTimeline({
     <div className={cn('rounded-2xl bg-white p-5 dark:bg-gray-900', className)}>
       {/* Header */}
       <div className="text-center">
-        <h4 className="text-sm font-bold text-text-primary dark:text-gray-100">{title}</h4>
+        <h4 className="text-sm font-bold text-text-primary">{title}</h4>
         <p className="mt-0.5 text-[10px] text-text-tertiary dark:text-text-tertiary">{subtitle}</p>
       </div>
 
@@ -178,7 +178,7 @@ export function BeautyJourneyTimeline({
                       ? 'border-current bg-white shadow-sm dark:bg-gray-800'
                       : isPast
                         ? 'border-emerald-300 bg-emerald-50 dark:border-emerald-800 dark:bg-emerald-950'
-                        : 'border-edge bg-surface-muted dark:border-gray-700 dark:bg-gray-800',
+                        : 'border-edge bg-surface-muted',
                   )}
                   style={{
                     borderColor: isActive ? undefined : undefined,
@@ -215,7 +215,7 @@ export function BeautyJourneyTimeline({
                           ? def.color
                           : isFuture
                             ? 'text-text-tertiary dark:text-text-secondary'
-                            : 'text-text-secondary dark:text-gray-300',
+                            : 'text-text-secondary',
                       )}
                     >
                       {def.title[locale]}
@@ -243,7 +243,7 @@ export function BeautyJourneyTimeline({
                         className={cn(
                           'rounded-full px-2 py-0.5 text-[9px] font-medium',
                           isActive
-                            ? 'bg-surface-muted text-text-secondary dark:bg-gray-700 dark:text-gray-300'
+                            ? 'bg-surface-muted text-text-secondary'
                             : 'bg-emerald-50 text-emerald-700 dark:bg-emerald-950 dark:text-emerald-300',
                         )}
                       >

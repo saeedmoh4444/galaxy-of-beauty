@@ -51,7 +51,7 @@ export default function TechnicianQAPage(): JSX.Element {
         <div className="flex flex-wrap gap-2">
           <button
             onClick={() => setCategory(undefined)}
-            className={`rounded-full px-3 py-1 text-xs font-medium ${!category ? 'bg-brand-600 text-white' : 'bg-surface-muted dark:bg-gray-800'}`}
+            className={`rounded-full px-3 py-1 text-xs font-medium ${!category ? 'bg-brand-600 text-white' : 'bg-surface-muted'}`}
           >
             {t('marketing.technician-qa.all-filter')}
           </button>
@@ -59,7 +59,7 @@ export default function TechnicianQAPage(): JSX.Element {
             <button
               key={c.key}
               onClick={() => setCategory(c.key)}
-              className={`rounded-full px-3 py-1 text-xs font-medium ${category === c.key ? 'bg-brand-600 text-white' : 'bg-surface-muted dark:bg-gray-800'}`}
+              className={`rounded-full px-3 py-1 text-xs font-medium ${category === c.key ? 'bg-brand-600 text-white' : 'bg-surface-muted'}`}
             >
               {c.emoji} {c.nameAr}
             </button>
@@ -96,9 +96,7 @@ export default function TechnicianQAPage(): JSX.Element {
               <div className="flex items-start gap-3">
                 <span className="text-2xl">❓</span>
                 <div className="flex-1">
-                  <p className="font-bold text-sm text-text-primary dark:text-gray-100">
-                    {item.question as string}
-                  </p>
+                  <p className="font-bold text-sm text-text-primary">{item.question as string}</p>
                   {item.isAnswered ? (
                     <div className="mt-2 rounded-xl bg-green-50 dark:bg-green-950 p-3">
                       <div className="flex items-center gap-2 mb-1">
@@ -107,9 +105,7 @@ export default function TechnicianQAPage(): JSX.Element {
                           {item.technicianName as string}
                         </span>
                       </div>
-                      <p className="text-sm text-text-primary dark:text-gray-300">
-                        {item.answer as string}
-                      </p>
+                      <p className="text-sm text-text-primary">{item.answer as string}</p>
                     </div>
                   ) : (
                     <p className="mt-2 text-xs text-amber-500">

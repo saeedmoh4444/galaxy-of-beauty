@@ -107,7 +107,7 @@ export default function AdminDisputesPage(): JSX.Element {
             <button
               key={tab}
               onClick={() => setStatusTab(tab)}
-              className={`rounded-full px-4 py-1.5 text-sm font-medium ${statusTab === tab ? 'bg-brand-600 text-white' : 'bg-surface-muted dark:bg-gray-800 dark:text-gray-300'}`}
+              className={`rounded-full px-4 py-1.5 text-sm font-medium ${statusTab === tab ? 'bg-brand-600 text-white' : 'bg-surface-muted dark:text-gray-300'}`}
             >
               {t(badge.labelKey)}
             </button>
@@ -196,13 +196,13 @@ export default function AdminDisputesPage(): JSX.Element {
             <div>
               <label
                 htmlFor="ad-resolve-status"
-                className="mb-1 block text-sm font-medium text-text-primary dark:text-gray-300"
+                className="mb-1 block text-sm font-medium text-text-primary"
               >
                 {t('admin.disputes.resolution')}
               </label>
               <select
                 id="ad-resolve-status"
-                className="w-full rounded-lg border border-edge bg-white p-2 text-sm dark:border-gray-700 dark:bg-gray-900"
+                className="w-full rounded-lg border border-edge bg-white p-2 text-sm dark:bg-gray-900"
                 value={resolveStatus}
                 onChange={(e) => setResolveStatus(e.target.value)}
               >
@@ -215,13 +215,13 @@ export default function AdminDisputesPage(): JSX.Element {
             <div>
               <label
                 htmlFor="ad-resolution"
-                className="mb-1 block text-sm font-medium text-text-primary dark:text-gray-300"
+                className="mb-1 block text-sm font-medium text-text-primary"
               >
                 {t('admin.disputes.resolution-details')}
               </label>
               <textarea
                 id="ad-resolution"
-                className="w-full rounded-lg border border-edge bg-white p-2 text-sm dark:border-gray-700 dark:bg-gray-900"
+                className="w-full rounded-lg border border-edge bg-white p-2 text-sm dark:bg-gray-900"
                 rows={4}
                 value={resolutionText}
                 onChange={(e) => setResolutionText(e.target.value)}

@@ -99,7 +99,7 @@ export default function AdminTechniciansPage(): JSX.Element {
           <button
             key={tab}
             onClick={() => setKycTab(tab)}
-            className={`rounded-full px-4 py-1.5 text-sm font-medium ${kycTab === tab ? 'bg-brand-600 text-white' : 'bg-surface-muted dark:bg-gray-800 dark:text-gray-300'}`}
+            className={`rounded-full px-4 py-1.5 text-sm font-medium ${kycTab === tab ? 'bg-brand-600 text-white' : 'bg-surface-muted dark:text-gray-300'}`}
           >
             {tab === 'ALL'
               ? t('admin.all')
@@ -211,13 +211,13 @@ export default function AdminTechniciansPage(): JSX.Element {
             <div>
               <label
                 htmlFor="at-review-note"
-                className="mb-1 block text-sm font-medium text-text-primary dark:text-gray-300"
+                className="mb-1 block text-sm font-medium text-text-primary"
               >
                 {t('admin.technicians.notes')}
               </label>
               <textarea
                 id="at-review-note"
-                className="w-full rounded-lg border border-edge bg-white p-2 text-sm dark:border-gray-700 dark:bg-gray-900"
+                className="w-full rounded-lg border border-edge bg-white p-2 text-sm dark:bg-gray-900"
                 rows={3}
                 value={reviewNote}
                 onChange={(e) => setReviewNote(e.target.value)}

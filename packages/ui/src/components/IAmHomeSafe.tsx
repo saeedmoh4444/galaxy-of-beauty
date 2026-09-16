@@ -100,7 +100,7 @@ export function IAmHomeSafe({
           {checkedIn ? '✅' : '🏠'}
         </span>
         <div>
-          <h4 className="text-sm font-bold text-text-primary dark:text-gray-100">
+          <h4 className="text-sm font-bold text-text-primary">
             {checkedIn ? checkedInTitle : confirmTitle}
           </h4>
           <p className="text-[10px] text-text-tertiary dark:text-text-tertiary">
@@ -149,7 +149,7 @@ export function IAmHomeSafe({
           <span className="text-xs" aria-hidden="true">
             📞
           </span>
-          <span className="text-[10px] text-text-secondary dark:text-gray-300">
+          <span className="text-[10px] text-text-secondary">
             {alertContactPrefix}
             {alertContact.name} ({alertContact.phone}){alertContactSuffix}
           </span>

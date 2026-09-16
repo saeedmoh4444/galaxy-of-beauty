@@ -195,9 +195,7 @@ export default function DiscoverPage(): JSX.Element {
                   <div className="h-24 overflow-hidden rounded-xl">
                     <ServiceImage service={f.image} size="full" alt={t(f.title)} />
                   </div>
-                  <h3 className="mt-3 font-bold text-sm text-text-primary dark:text-gray-100">
-                    {t(f.title)}
-                  </h3>
+                  <h3 className="mt-3 font-bold text-sm text-text-primary">{t(f.title)}</h3>
                   <p className="mt-1 text-xs text-text-secondary dark:text-text-tertiary">
                     {t(f.desc)}
                   </p>

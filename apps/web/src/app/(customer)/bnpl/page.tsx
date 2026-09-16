@@ -66,7 +66,7 @@ export default function BNPLPage(): JSX.Element {
                 <button
                   key={p.key as string}
                   onClick={() => setProvider(p.key as 'tabby' | 'tamara')}
-                  className={`flex-1 rounded-xl p-3 text-center ${provider === p.key ? 'bg-brand-100 dark:bg-brand-950 ring-2 ring-brand-300' : 'bg-surface-muted dark:bg-gray-800'}`}
+                  className={`flex-1 rounded-xl p-3 text-center ${provider === p.key ? 'bg-brand-100 dark:bg-brand-950 ring-2 ring-brand-300' : 'bg-surface-muted'}`}
                 >
                   <span className="text-2xl">{p.emoji as string}</span>
                   <p className="font-bold text-sm mt-1">{p.nameAr as string}</p>

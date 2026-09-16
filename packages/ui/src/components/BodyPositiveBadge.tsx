@@ -145,12 +145,8 @@ export function BodyPositiveBadge({
               {f.emoji}
             </span>
             <div>
-              <p className="text-xs font-bold text-text-primary dark:text-gray-100">
-                {f.label[locale]}
-              </p>
-              <p className="text-[10px] text-text-secondary dark:text-gray-300">
-                {f.detail[locale]}
-              </p>
+              <p className="text-xs font-bold text-text-primary">{f.label[locale]}</p>
+              <p className="text-[10px] text-text-secondary">{f.detail[locale]}</p>
             </div>
           </div>
         ))}

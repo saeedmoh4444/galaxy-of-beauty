@@ -49,7 +49,7 @@ export default function MarketplacePage(): JSX.Element {
           <div>
             <PageTitle title={t('marketplace.title')} subtitle={t('marketplace.subtitle')} />
           </div>
-          <span className="rounded-full bg-surface-muted px-4 py-2 text-sm font-bold text-text-primary dark:bg-gray-800 dark:text-gray-100">
+          <span className="rounded-full bg-surface-muted px-4 py-2 text-sm font-bold text-text-primary">
             {cartCount}
           </span>
         </div>
@@ -58,7 +58,7 @@ export default function MarketplacePage(): JSX.Element {
           value={search}
           onChange={(e) => setSearch(e.target.value)}
           placeholder={t('marketplace.searchPlaceholder')}
-          className="mb-6 w-full rounded-xl border border-edge px-4 py-3 text-sm text-end dark:border-gray-700 dark:bg-gray-800 dark:text-gray-100"
+          className="mb-6 w-full rounded-xl border border-edge px-4 py-3 text-sm text-end dark:bg-gray-800 dark:text-gray-100"
         />
 
         {products.isLoading ? (
@@ -70,7 +70,7 @@ export default function MarketplacePage(): JSX.Element {
             {items.map((p) => (
               <div
                 key={p.id as number}
-                className="rounded-2xl border border-edge-muted bg-white p-4 dark:border-gray-800 dark:bg-gray-900"
+                className="rounded-2xl border border-edge-muted bg-white p-4 dark:bg-gray-900"
               >
                 <ServiceImage
                   src={(p.imageUrl as string) ?? null}
@@ -78,7 +78,7 @@ export default function MarketplacePage(): JSX.Element {
                   size="full"
                   className="mb-2 h-32 w-full"
                 />
-                <h4 className="mt-2 text-sm font-bold text-text-primary dark:text-gray-100">
+                <h4 className="mt-2 text-sm font-bold text-text-primary">
                   {(p.nameAr as string) ?? (p.titleAr as string)}
                 </h4>
                 <p className="mt-1 text-xs text-text-tertiary dark:text-text-secondary line-clamp-2">

@@ -53,9 +53,7 @@ export default function RecurringPage(): JSX.Element {
     <DashboardLayout userRole="CUSTOMER">
       <div className="mx-auto max-w-3xl space-y-6">
         <div className="flex items-center justify-between">
-          <h1 className="text-2xl font-bold text-text-primary dark:text-gray-100">
-            {t('recurring.title')}
-          </h1>
+          <h1 className="text-2xl font-bold text-text-primary">{t('recurring.title')}</h1>
           <Button onClick={() => setShowAdd(true)}>{t('recurring.add')}</Button>
         </div>
         {isLoading ? (
@@ -149,7 +147,7 @@ export default function RecurringPage(): JSX.Element {
                 <select
                   value={form.frequency}
                   onChange={(e) => setForm({ ...form, frequency: e.target.value })}
-                  className="w-full rounded-lg border border-edge p-2 dark:border-gray-600 dark:bg-gray-800"
+                  className="w-full rounded-lg border border-edge p-2 dark:bg-gray-800"
                 >
                   <option value="WEEKLY">{t('recurring.freq.weekly')}</option>
                   <option value="BIWEEKLY">{t('recurring.freq.biweekly')}</option>

@@ -211,11 +211,9 @@ export function EmergencyBeautyFund({
       </div>
 
       {/* What's included */}
-      <div className="mt-3 rounded-xl bg-surface-muted p-3 dark:bg-gray-800">
-        <p className="text-[10px] font-bold text-text-primary dark:text-gray-100">
-          {includesLabel}
-        </p>
-        <div className="mt-1 grid grid-cols-2 gap-1 text-[10px] text-text-secondary dark:text-gray-300">
+      <div className="mt-3 rounded-xl bg-surface-muted p-3">
+        <p className="text-[10px] font-bold text-text-primary">{includesLabel}</p>
+        <div className="mt-1 grid grid-cols-2 gap-1 text-[10px] text-text-secondary">
           <span>• {item1}</span>
           <span>• {item2}</span>
           <span>• {item3}</span>

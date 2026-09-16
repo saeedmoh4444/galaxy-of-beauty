@@ -93,7 +93,7 @@ export function GalleryClient({ data }: { data: GalleryPageData }): JSX.Element 
           <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
             {items.map((img: GalleryImage) => (
               <Card key={img.id} padding="none" className="group cursor-pointer overflow-hidden">
-                <div className="relative flex aspect-square items-center justify-center bg-surface-muted text-5xl dark:bg-gray-800">
+                <div className="relative flex aspect-square items-center justify-center bg-surface-muted text-5xl">
                   {img.imageUrl ? (
                     <Image
                       src={String(img.imageUrl)}
@@ -116,7 +116,7 @@ export function GalleryClient({ data }: { data: GalleryPageData }): JSX.Element 
                       </span>
                     ) : null}
                     {img.category ? (
-                      <span className="ms-1 mt-1 inline-block rounded bg-surface-muted px-2 py-0.5 text-xs text-text-secondary dark:bg-gray-800 dark:text-text-tertiary">
+                      <span className="ms-1 mt-1 inline-block rounded bg-surface-muted px-2 py-0.5 text-xs text-text-secondary dark:text-text-tertiary">
                         {String(img.category)}
                       </span>
                     ) : null}

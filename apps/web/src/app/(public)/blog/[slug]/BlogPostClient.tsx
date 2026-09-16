@@ -172,7 +172,7 @@ export function BlogPostClient({
           dangerouslySetInnerHTML={{ __html: body }}
         />
 
-        <div className="mt-10 rounded-2xl border border-edge bg-surface-muted p-6 dark:border-gray-800 dark:bg-gray-900">
+        <div className="mt-10 rounded-2xl border border-edge bg-surface-muted p-6">
           <p className="mb-3 text-sm font-semibold">{t('marketing.blog-post.share-cta')}</p>
           <ShareButtons title={title} />
         </div>

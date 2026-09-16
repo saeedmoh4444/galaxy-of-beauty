@@ -55,7 +55,7 @@ export default function TechBookingsPage(): JSX.Element {
             <button
               key={s}
               onClick={() => setStatus(s === 'ALL' ? undefined : s)}
-              className={`rounded-full px-4 py-1.5 text-sm font-medium ${(s === 'ALL' && !status) || s === status ? 'bg-brand-600 text-white' : 'bg-surface-muted dark:bg-gray-800'}`}
+              className={`rounded-full px-4 py-1.5 text-sm font-medium ${(s === 'ALL' && !status) || s === status ? 'bg-brand-600 text-white' : 'bg-surface-muted'}`}
             >
               {t(bookingStatusLabelKey(s))}
             </button>

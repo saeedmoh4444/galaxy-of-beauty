@@ -51,9 +51,7 @@ export default function ChallengesPage(): JSX.Element {
               <Card key={c.id} className="flex items-center gap-4 p-5">
                 <span className="text-4xl">{cfg.emoji}</span>
                 <div className="flex-1">
-                  <h4 className="text-sm font-bold text-text-primary dark:text-gray-100">
-                    {t(cfg.label)}
-                  </h4>
+                  <h4 className="text-sm font-bold text-text-primary">{t(cfg.label)}</h4>
                   {prog && (
                     <p className="mt-1 text-xs text-text-tertiary dark:text-text-secondary">
                       {prog.current}/{prog.total} — {Math.round((prog.current / prog.total) * 100)}%

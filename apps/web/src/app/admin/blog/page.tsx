@@ -104,7 +104,7 @@ export default function AdminBlogPage(): JSX.Element {
             </label>
             <textarea
               id="ab-body-ar"
-              className="w-full rounded-lg border border-edge p-2 text-sm dark:border-gray-600 dark:bg-gray-800"
+              className="w-full rounded-lg border border-edge p-2 text-sm dark:bg-gray-800"
               rows={5}
               value={form.bodyAr}
               onChange={(e) => setForm({ ...form, bodyAr: e.target.value })}
@@ -116,7 +116,7 @@ export default function AdminBlogPage(): JSX.Element {
             </label>
             <textarea
               id="ab-body-en"
-              className="w-full rounded-lg border border-edge p-2 text-sm dark:border-gray-600 dark:bg-gray-800"
+              className="w-full rounded-lg border border-edge p-2 text-sm dark:bg-gray-800"
               rows={5}
               value={form.bodyEn}
               onChange={(e) => setForm({ ...form, bodyEn: e.target.value })}

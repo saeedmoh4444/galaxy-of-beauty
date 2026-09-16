@@ -70,7 +70,7 @@ export function BeautyPodcastCard({
 
       {/* Episode card */}
       <div className="mt-3 rounded-xl bg-rose-50 p-3 dark:bg-rose-950">
-        <p className="text-xs font-bold text-text-primary dark:text-gray-100">{episode.title}</p>
+        <p className="text-xs font-bold text-text-primary">{episode.title}</p>
 
         {/* Guest */}
         <div className="mt-1.5 flex items-center gap-2">
@@ -78,9 +78,7 @@ export function BeautyPodcastCard({
             👤
           </div>
           <div>
-            <p className="text-[10px] font-bold text-text-primary dark:text-gray-100">
-              {episode.guest}
-            </p>
+            <p className="text-[10px] font-bold text-text-primary">{episode.guest}</p>
             {episode.guestTitle && (
               <p className="text-[9px] text-text-tertiary dark:text-text-secondary">
                 {episode.guestTitle}
@@ -91,7 +89,7 @@ export function BeautyPodcastCard({
 
         {/* Description */}
         {episode.description && (
-          <p className="mt-1.5 text-[10px] leading-relaxed text-text-secondary dark:text-gray-300">
+          <p className="mt-1.5 text-[10px] leading-relaxed text-text-secondary">
             {episode.description}
           </p>
         )}

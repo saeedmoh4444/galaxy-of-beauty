@@ -125,7 +125,7 @@ export default function FlashDealsPage(): JSX.Element {
       {/* Header */}
       <div className="mb-10 text-center">
         <span className="text-6xl">⚡</span>
-        <h1 className="mt-4 text-3xl font-bold text-text-primary dark:text-gray-100">
+        <h1 className="mt-4 text-3xl font-bold text-text-primary">
           {t('marketing.flash-deals.title')}
         </h1>
         <p className="mt-2 text-text-secondary dark:text-text-tertiary">
@@ -192,9 +192,7 @@ export default function FlashDealsPage(): JSX.Element {
 
                   <div className="flex-1 min-w-0">
                     {/* Title */}
-                    <h3 className="text-xl font-bold text-text-primary dark:text-gray-100">
-                      {title}
-                    </h3>
+                    <h3 className="text-xl font-bold text-text-primary">{title}</h3>
                     <p className="mt-0.5 text-xs text-text-secondary">
                       {deal.serviceNameEn && deal.serviceNameEn !== title ? deal.serviceNameEn : ''}
                     </p>
@@ -236,7 +234,7 @@ export default function FlashDealsPage(): JSX.Element {
                     {/* Action */}
                     <div className="mt-4 flex flex-wrap items-center gap-3">
                       {soldOut ? (
-                        <span className="rounded-lg bg-surface-muted px-4 py-2 text-sm font-semibold text-text-secondary dark:bg-gray-800">
+                        <span className="rounded-lg bg-surface-muted px-4 py-2 text-sm font-semibold text-text-secondary">
                           {t('marketing.flash-deals.sold-out')}
                         </span>
                       ) : isClaimed ? (

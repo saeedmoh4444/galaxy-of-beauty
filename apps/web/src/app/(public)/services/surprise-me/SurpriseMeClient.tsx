@@ -51,7 +51,7 @@ export function SurpriseMeClient({ data }: { data: SurpriseMePageData }): JSX.El
     <div className="mx-auto max-w-2xl px-4 py-16 text-center">
       <div className="mb-8">
         <span className="text-6xl">🎲</span>
-        <h1 className="mt-4 text-3xl font-bold text-text-primary dark:text-gray-100">
+        <h1 className="mt-4 text-3xl font-bold text-text-primary">
           {t('marketing.surprise-me.title')}
         </h1>
         <p className="mt-2 text-text-secondary dark:text-text-tertiary">
@@ -92,7 +92,7 @@ function ServiceCard({ svc }: { svc: ServiceItem }): JSX.Element {
       <div className="mx-auto flex h-32 w-32 items-center justify-center rounded-full bg-linear-to-br from-brand-100 to-accent-100 text-5xl dark:from-brand-900 dark:to-accent-900">
         🎁
       </div>
-      <h2 className="mt-4 text-xl font-bold text-text-primary dark:text-gray-100">
+      <h2 className="mt-4 text-xl font-bold text-text-primary">
         {localize(svc.titleJson, locale)}
       </h2>
       <p className="mt-2 text-sm text-text-secondary">

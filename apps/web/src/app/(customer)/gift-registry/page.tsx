@@ -140,7 +140,7 @@ export default function GiftRegistryPage(): JSX.Element {
                 <select
                   value={form.occasion}
                   onChange={(e) => setForm({ ...form, occasion: e.target.value })}
-                  className="w-full rounded-lg border border-edge p-2 dark:border-gray-600 dark:bg-gray-800"
+                  className="w-full rounded-lg border border-edge p-2 dark:bg-gray-800"
                 >
                   <option value="wedding">{t('giftRegistry.occasion.wedding')}</option>
                   <option value="birthday">{t('giftRegistry.occasion.birthday')}</option>

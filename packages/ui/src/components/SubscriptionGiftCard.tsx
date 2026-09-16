@@ -83,9 +83,7 @@ export function SubscriptionGiftCard({
             <div className="flex items-center gap-2">
               <span className="text-lg">{opt.emoji}</span>
               <div>
-                <p className="text-xs font-bold text-text-primary dark:text-gray-100">
-                  {opt.label[locale]}
-                </p>
+                <p className="text-xs font-bold text-text-primary">{opt.label[locale]}</p>
                 {opt.discount && (
                   <p className="text-[9px] text-emerald-600 dark:text-emerald-400">
                     {opt.discount[locale]}

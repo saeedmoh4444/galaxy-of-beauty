@@ -97,13 +97,11 @@ export default function AdminSettingsPage(): JSX.Element {
             {settingsEntries.map(([key, value]) => (
               <div
                 key={key}
-                className="flex items-center justify-between border-b border-edge-muted pb-2 dark:border-gray-800"
+                className="flex items-center justify-between border-b border-edge-muted pb-2"
               >
                 <div className="flex-1">
                   <p className="text-sm font-medium">{key}</p>
-                  <p className="text-sm text-text-primary dark:text-gray-300">
-                    {String(value ?? '')}
-                  </p>
+                  <p className="text-sm text-text-primary">{String(value ?? '')}</p>
                 </div>
                 <Button size="sm" variant="outline" onClick={() => openEdit(key, value)}>
                   {t('button.edit')}
@@ -163,7 +161,7 @@ export default function AdminSettingsPage(): JSX.Element {
                   )
                 : '—'}
             </p>
-            <p className="mt-2 max-h-32 overflow-y-auto whitespace-pre-wrap rounded bg-surface-muted p-2 text-xs dark:bg-gray-900">
+            <p className="mt-2 max-h-32 overflow-y-auto whitespace-pre-wrap rounded bg-surface-muted p-2 text-xs">
               {typeof termsData?.content === 'object' && termsData.content !== null
                 ? String(
                     (termsData.content as { ar?: string }).ar ?? JSON.stringify(termsData.content),
@@ -194,10 +192,7 @@ export default function AdminSettingsPage(): JSX.Element {
         ) : (
           <div className="flex flex-wrap gap-2">
             {citiesData.map((city: CityItem, i: number) => (
-              <span
-                key={i}
-                className="rounded-full bg-surface-muted px-3 py-1 text-sm dark:bg-gray-800"
-              >
+              <span key={i} className="rounded-full bg-surface-muted px-3 py-1 text-sm">
                 {city.nameAr}
               </span>
             ))}
@@ -212,13 +207,13 @@ export default function AdminSettingsPage(): JSX.Element {
           <div>
             <label
               htmlFor="aset-export-format"
-              className="mb-1 block text-sm font-medium text-text-primary dark:text-gray-300"
+              className="mb-1 block text-sm font-medium text-text-primary"
             >
               {t('admin.settings.format')}
             </label>
             <select
               id="aset-export-format"
-              className="rounded-lg border border-edge bg-white p-2 text-sm dark:border-gray-700 dark:bg-gray-900"
+              className="rounded-lg border border-edge bg-white p-2 text-sm dark:bg-gray-900"
               value={exportFormat}
               onChange={(e) => setExportFormat(e.target.value as 'csv' | 'json')}
             >

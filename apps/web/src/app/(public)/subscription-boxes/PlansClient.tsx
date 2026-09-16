@@ -23,9 +23,7 @@ export function PlansClient({ data }: { data: PlansPageData }): JSX.Element {
   return (
     <div className="mx-auto max-w-5xl space-y-6 px-4 py-8">
       <div className="text-center">
-        <h1 className="text-3xl font-bold text-text-primary dark:text-gray-100">
-          {t('marketing.plans.title')}
-        </h1>
+        <h1 className="text-3xl font-bold text-text-primary">{t('marketing.plans.title')}</h1>
         <p className="mt-3 text-text-secondary dark:text-text-tertiary">
           {t('marketing.plans.subtitle')}
         </p>
@@ -58,7 +56,7 @@ export function PlansClient({ data }: { data: PlansPageData }): JSX.Element {
                       ? ''
                       : ''}
               </div>
-              <h3 className="text-center text-lg font-bold text-text-primary dark:text-gray-100">
+              <h3 className="text-center text-lg font-bold text-text-primary">
                 {localize(plan.nameJson, locale)}
               </h3>
               <p className="mt-2 text-center text-sm text-text-secondary dark:text-text-tertiary">
@@ -111,8 +109,8 @@ export function PlansClient({ data }: { data: PlansPageData }): JSX.Element {
       )}
 
       {/* How it works */}
-      <div className="mt-12 rounded-2xl bg-surface-muted p-8 dark:bg-gray-800">
-        <h3 className="mb-6 text-center text-lg font-bold text-text-primary dark:text-gray-100">
+      <div className="mt-12 rounded-2xl bg-surface-muted p-8">
+        <h3 className="mb-6 text-center text-lg font-bold text-text-primary">
           {t('marketing.plans.how-it-works')}
         </h3>
         <div className="grid gap-6 sm:grid-cols-3">
@@ -135,9 +133,7 @@ export function PlansClient({ data }: { data: PlansPageData }): JSX.Element {
           ].map((step, i) => (
             <div key={i} className="text-center">
               <div className="text-3xl">{step.emoji}</div>
-              <h4 className="mt-2 font-semibold text-text-primary dark:text-gray-100">
-                {step.title}
-              </h4>
+              <h4 className="mt-2 font-semibold text-text-primary">{step.title}</h4>
               <p className="mt-1 text-sm text-text-secondary dark:text-text-tertiary">
                 {step.desc}
               </p>

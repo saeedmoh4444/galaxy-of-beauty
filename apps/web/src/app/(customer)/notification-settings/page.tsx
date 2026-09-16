@@ -67,9 +67,7 @@ export default function NotificationSettingsPage(): JSX.Element {
   return (
     <DashboardLayout userRole="CUSTOMER">
       <div className="mx-auto max-w-lg space-y-6">
-        <h1 className="text-2xl font-bold text-text-primary dark:text-gray-100">
-          {t('notificationSettings.title')}
-        </h1>
+        <h1 className="text-2xl font-bold text-text-primary">{t('notificationSettings.title')}</h1>
         {isLoading ? (
           <CardListSkeleton count={6} />
         ) : (
@@ -77,12 +75,10 @@ export default function NotificationSettingsPage(): JSX.Element {
             {TOGGLES.map((item) => (
               <div
                 key={item.key}
-                className="flex items-center justify-between border-b border-edge-muted p-4 last:border-0 dark:border-gray-800"
+                className="flex items-center justify-between border-b border-edge-muted p-4 last:border-0"
               >
                 <div>
-                  <p className="font-medium text-text-primary dark:text-gray-100">
-                    {t(item.label)}
-                  </p>
+                  <p className="font-medium text-text-primary">{t(item.label)}</p>
                   <p className="text-xs text-text-secondary">{t(item.desc)}</p>
                 </div>
                 <button

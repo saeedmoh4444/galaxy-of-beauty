@@ -146,7 +146,7 @@ export function EventsClient({ initialEvents }: { initialEvents: unknown[] }): J
                       ''
                     )}
                   </div>
-                  <h3 className="text-lg font-bold text-text-primary dark:text-gray-100">{name}</h3>
+                  <h3 className="text-lg font-bold text-text-primary">{name}</h3>
                   {desc && <p className="mt-1 text-sm text-text-secondary line-clamp-2">{desc}</p>}
                   <div className="mt-3 space-y-1 text-xs text-text-tertiary">
                     <p> {date}</p>

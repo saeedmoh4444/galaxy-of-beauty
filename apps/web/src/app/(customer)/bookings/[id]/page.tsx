@@ -29,7 +29,7 @@ const STATUS_COLORS: Record<string, string> = {
   COMPLETED: 'bg-green-100 text-green-700',
   CANCELLED: 'bg-red-100 text-red-700',
   REJECTED: 'bg-red-100 text-red-700',
-  NO_SHOW: 'bg-surface-muted text-text-secondary dark:bg-gray-800 dark:text-gray-300',
+  NO_SHOW: 'bg-surface-muted text-text-secondary',
 };
 
 export default function BookingDetailPage(): JSX.Element {
@@ -74,7 +74,7 @@ export default function BookingDetailPage(): JSX.Element {
             <div className="flex items-center justify-between">
               <span className="text-sm text-text-secondary">{t('booking.status-label')}</span>
               <span
-                className={`rounded-full px-3 py-1 text-xs font-medium ${STATUS_COLORS[booking.status] || 'bg-surface-muted text-text-secondary dark:bg-gray-800 dark:text-gray-300'}`}
+                className={`rounded-full px-3 py-1 text-xs font-medium ${STATUS_COLORS[booking.status] || 'bg-surface-muted text-text-secondary'}`}
               >
                 {t(STATUS_LABELS[booking.status] ?? (booking.status as TranslationKey))}
               </span>

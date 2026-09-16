@@ -198,9 +198,7 @@ export function BeautyQuizCard({
       </div>
 
       {/* Question */}
-      <p className="mt-3 text-xs font-bold text-text-primary dark:text-gray-100">
-        {q.question[locale]}
-      </p>
+      <p className="mt-3 text-xs font-bold text-text-primary">{q.question[locale]}</p>
 
       {/* Options */}
       <div className="mt-2 space-y-1.5">
@@ -211,7 +209,7 @@ export function BeautyQuizCard({
               bg = 'bg-emerald-100 border-emerald-400 dark:bg-emerald-950 dark:border-emerald-600';
             else if (i === selected)
               bg = 'bg-rose-100 border-rose-400 dark:bg-rose-950 dark:border-rose-600';
-            else bg = 'bg-surface-muted opacity-50 dark:bg-gray-800';
+            else bg = 'bg-surface-muted opacity-50';
           }
 
           return (

@@ -104,7 +104,7 @@ export default function BeautyFortunePage(): JSX.Element {
         {!fortune && !opening && (
           <div>
             <span className="text-8xl">🔮</span>
-            <h1 className="mt-6 text-3xl font-extrabold text-text-primary dark:text-gray-100">
+            <h1 className="mt-6 text-3xl font-extrabold text-text-primary">
               {t('marketing.beauty-fortune.title')}
             </h1>
             <p className="mt-2 text-text-secondary dark:text-text-tertiary">
@@ -126,7 +126,7 @@ export default function BeautyFortunePage(): JSX.Element {
         {fortune && !opening && (
           <Card padding="lg" className="bg-white/90 backdrop-blur dark:bg-gray-900/90">
             <span className="text-6xl">{fortune.emoji}</span>
-            <p className="mt-6 text-2xl font-bold text-text-primary dark:text-gray-100 leading-relaxed">
+            <p className="mt-6 text-2xl font-bold text-text-primary leading-relaxed">
               {t(fortune.text)}
             </p>
             <div className="mt-6 rounded-xl bg-brand-50 p-4 dark:bg-brand-950">

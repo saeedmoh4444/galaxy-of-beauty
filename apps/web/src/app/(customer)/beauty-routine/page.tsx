@@ -137,9 +137,7 @@ export default function BeautyRoutinePage(): JSX.Element {
   return (
     <DashboardLayout userRole="CUSTOMER">
       <div className="mx-auto max-w-3xl space-y-6">
-        <h1 className="text-2xl font-bold text-text-primary dark:text-gray-100">
-          {t('routine.title')}
-        </h1>
+        <h1 className="text-2xl font-bold text-text-primary">{t('routine.title')}</h1>
         <p className="text-sm text-text-secondary">{t('routine.subtitle')}</p>
 
         {isLoading ? (

@@ -69,9 +69,7 @@ export default function StreakCalendarPage(): JSX.Element {
   return (
     <DashboardLayout userRole="CUSTOMER">
       <div className="mx-auto max-w-2xl space-y-6">
-        <h1 className="text-2xl font-bold text-text-primary dark:text-gray-100">
-          {t('streakCalendar.title')}
-        </h1>
+        <h1 className="text-2xl font-bold text-text-primary">{t('streakCalendar.title')}</h1>
 
         {isLoading ? (
           <KPIRowSkeleton count={1} />
@@ -119,7 +117,7 @@ export default function StreakCalendarPage(): JSX.Element {
                 {weeks.map((w, i) => (
                   <div
                     key={i}
-                    className={`rounded-lg p-3 text-center text-xs transition-all ${w.booked ? 'bg-green-100 dark:bg-green-900/30 border border-green-300 dark:border-green-700' : 'bg-surface-muted dark:bg-gray-800 border border-edge'} ${w.isCurrent ? 'ring-2 ring-brand-500' : ''}`}
+                    className={`rounded-lg p-3 text-center text-xs transition-all ${w.booked ? 'bg-green-100 dark:bg-green-900/30 border border-green-300 dark:border-green-700' : 'bg-surface-muted border border-edge'} ${w.isCurrent ? 'ring-2 ring-brand-500' : ''}`}
                   >
                     <div className="text-lg">{w.booked ? '' : '—'}</div>
                     <div className="mt-1 text-text-secondary">{w.label}</div>
@@ -145,7 +143,7 @@ export default function StreakCalendarPage(): JSX.Element {
                 {Object.entries(MILESTONES).map(([weeks, m]) => (
                   <div
                     key={weeks}
-                    className={`flex items-center justify-between rounded-lg p-3 ${Number(weeks) <= currentStreak ? 'bg-green-50 dark:bg-green-900/20' : Number(weeks) === nextMilestone ? 'bg-brand-50 dark:bg-brand-950' : 'bg-surface-muted dark:bg-gray-800'}`}
+                    className={`flex items-center justify-between rounded-lg p-3 ${Number(weeks) <= currentStreak ? 'bg-green-50 dark:bg-green-900/20' : Number(weeks) === nextMilestone ? 'bg-brand-50 dark:bg-brand-950' : 'bg-surface-muted'}`}
                   >
                     <div className="flex items-center gap-2">
                       <span className="text-lg">{m.emoji}</span>

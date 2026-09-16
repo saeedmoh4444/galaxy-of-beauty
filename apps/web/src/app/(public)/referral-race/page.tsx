@@ -53,7 +53,7 @@ export default function ReferralRacePage(): JSX.Element {
             {leaders.map((l: Record<string, unknown>, idx: number) => (
               <div
                 key={l.userId as number}
-                className="flex items-center gap-3 rounded-lg bg-surface-muted dark:bg-gray-800 p-3"
+                className="flex items-center gap-3 rounded-lg bg-surface-muted p-3"
               >
                 <span className="text-xl w-8 text-center">
                   {['🥇', '🥈', '🥉'][idx] ?? `#${idx + 1}`}

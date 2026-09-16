@@ -47,7 +47,7 @@ export function TechnicianCard({
   return (
     <Card padding="md" hover className={`text-center ${className}`}>
       <Avatar src={tech.avatarUrl} name={tech.name} size="xl" className="mx-auto" />
-      <h3 className="mt-3 text-sm font-bold text-text-primary dark:text-gray-100">{tech.name}</h3>
+      <h3 className="mt-3 text-sm font-bold text-text-primary">{tech.name}</h3>
 
       {tech.speciality ? (
         <Badge variant="brand" size="sm" className="mt-1">

@@ -43,9 +43,7 @@ export default function LoyaltyDashboardPage(): JSX.Element {
   return (
     <DashboardLayout userRole="CUSTOMER">
       <div className="mx-auto max-w-3xl space-y-6">
-        <h1 className="text-2xl font-bold text-text-primary dark:text-gray-100">
-          {t('loyalty.title')}
-        </h1>
+        <h1 className="text-2xl font-bold text-text-primary">{t('loyalty.title')}</h1>
 
         {isLoading ? (
           <CardListSkeleton count={4} />
@@ -96,7 +94,7 @@ export default function LoyaltyDashboardPage(): JSX.Element {
                 {(TIER_BENEFITS[currentTier] ?? []).map((b: TranslationKey, i: number) => (
                   <div
                     key={i}
-                    className="flex items-center gap-3 rounded-lg bg-surface-muted p-3 text-sm dark:bg-gray-800"
+                    className="flex items-center gap-3 rounded-lg bg-surface-muted p-3 text-sm"
                   >
                     <span className="text-brand-600">✅</span> {t(b)}
                   </div>
@@ -117,9 +115,7 @@ export default function LoyaltyDashboardPage(): JSX.Element {
                       <div className="flex items-center gap-3">
                         <span className="text-2xl">{tierObj.emoji}</span>
                         <div>
-                          <p className="font-bold text-text-primary dark:text-gray-100">
-                            {tierObj.nameAr}
-                          </p>
+                          <p className="font-bold text-text-primary">{tierObj.nameAr}</p>
                           <p className="text-xs text-text-secondary">
                             {t('loyalty.fromPoints', {
                               minPoints: tierObj.minPoints.toLocaleString(),
@@ -139,7 +135,7 @@ export default function LoyaltyDashboardPage(): JSX.Element {
                         .map((b: TranslationKey, i: number) => (
                           <span
                             key={i}
-                            className="rounded-full bg-surface-muted px-2 py-0.5 text-xs text-text-secondary dark:bg-gray-800"
+                            className="rounded-full bg-surface-muted px-2 py-0.5 text-xs text-text-secondary"
                           >
                             {t(b)}
                           </span>

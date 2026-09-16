@@ -73,9 +73,7 @@ export default function GiftCardsPage(): JSX.Element {
   return (
     <DashboardLayout userRole="CUSTOMER">
       <div className="mx-auto max-w-3xl space-y-6">
-        <h1 className="text-2xl font-bold text-text-primary dark:text-gray-100">
-          {t('giftCards.title')}
-        </h1>
+        <h1 className="text-2xl font-bold text-text-primary">{t('giftCards.title')}</h1>
 
         <div className="flex gap-2 border-b border-edge">
           {[
@@ -154,13 +152,13 @@ export default function GiftCardsPage(): JSX.Element {
               <div>
                 <label
                   htmlFor="gc-message"
-                  className="mb-1 block text-sm font-medium text-text-primary dark:text-gray-300"
+                  className="mb-1 block text-sm font-medium text-text-primary"
                 >
                   {t('giftCards.giftMessageLabel')}
                 </label>
                 <textarea
                   id="gc-message"
-                  className="w-full rounded-lg border border-edge p-2 text-sm dark:border-gray-600 dark:bg-gray-800"
+                  className="w-full rounded-lg border border-edge p-2 text-sm dark:bg-gray-800"
                   rows={3}
                   value={giftMessage}
                   onChange={(e) => setGiftMessage(e.target.value)}

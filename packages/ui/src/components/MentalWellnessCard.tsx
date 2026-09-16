@@ -184,7 +184,7 @@ export function MentalWellnessCard({
   return (
     <div
       className={cn(
-        'rounded-2xl border border-edge-muted bg-white p-5 dark:border-gray-800 dark:bg-gray-900',
+        'rounded-2xl border border-edge-muted bg-white p-5 dark:bg-gray-900',
         className,
       )}
     >
@@ -195,30 +195,22 @@ export function MentalWellnessCard({
             {m.emoji}
           </span>
           <div>
-            <h4 className="text-sm font-bold text-text-primary dark:text-gray-100">
-              {m.title[locale]}
-            </h4>
-            <p className="text-[10px] text-text-secondary dark:text-gray-300">
-              {m.description[locale]}
-            </p>
+            <h4 className="text-sm font-bold text-text-primary">{m.title[locale]}</h4>
+            <p className="text-[10px] text-text-secondary">{m.description[locale]}</p>
           </div>
         </div>
       </div>
 
       {/* Package */}
-      <div className="mt-3 rounded-xl bg-surface-muted p-3 dark:bg-gray-800">
-        <p className="text-[10px] font-bold text-text-primary dark:text-gray-100">
-          {m.packageName[locale]}
-        </p>
+      <div className="mt-3 rounded-xl bg-surface-muted p-3">
+        <p className="text-[10px] font-bold text-text-primary">{m.packageName[locale]}</p>
         <div className="mt-1.5 space-y-0.5">
           {m.recommendations.map((r) => (
             <div key={r.ar} className="flex items-center gap-1.5">
               <span className="text-[10px] text-text-tertiary" aria-hidden="true">
                 ✨
               </span>
-              <span className="text-[10px] text-text-secondary dark:text-gray-300">
-                {r[locale]}
-              </span>
+              <span className="text-[10px] text-text-secondary">{r[locale]}</span>
             </div>
           ))}
         </div>
@@ -228,7 +220,7 @@ export function MentalWellnessCard({
       <div className="mt-3 flex items-center justify-between">
         <div>
           <p className="text-[9px] text-text-tertiary dark:text-text-secondary">{priceLabel}</p>
-          <p className="text-lg font-bold text-text-primary dark:text-gray-100">
+          <p className="text-lg font-bold text-text-primary">
             {m.price} {currencySuffix}
           </p>
         </div>

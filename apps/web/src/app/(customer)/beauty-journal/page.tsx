@@ -52,9 +52,7 @@ export default function BeautyJournalPage(): JSX.Element {
   return (
     <DashboardLayout userRole="CUSTOMER">
       <div className="mx-auto max-w-2xl space-y-6">
-        <h1 className="text-2xl font-bold text-text-primary dark:text-gray-100">
-          {t('beautyJournal.title')}
-        </h1>
+        <h1 className="text-2xl font-bold text-text-primary">{t('beautyJournal.title')}</h1>
         <p className="text-sm text-text-secondary">{t('beautyJournal.subtitle')}</p>
 
         {/* New Entry */}
@@ -64,14 +62,14 @@ export default function BeautyJournalPage(): JSX.Element {
               placeholder={t('beautyJournal.titlePlaceholder')}
               value={title}
               onChange={(e) => setTitle(e.target.value)}
-              className="w-full rounded-lg border border-edge p-2 text-sm dark:border-gray-600 dark:bg-gray-800"
+              className="w-full rounded-lg border border-edge p-2 text-sm dark:bg-gray-800"
             />
             <textarea
               placeholder={t('beautyDiary.placeholder')}
               value={content}
               onChange={(e) => setContent(e.target.value)}
               rows={3}
-              className="w-full rounded-lg border border-edge p-3 text-sm dark:border-gray-600 dark:bg-gray-800"
+              className="w-full rounded-lg border border-edge p-3 text-sm dark:bg-gray-800"
             />
             <div className="flex gap-4 flex-wrap">
               <div className="flex gap-1">
@@ -88,7 +86,7 @@ export default function BeautyJournalPage(): JSX.Element {
               <select
                 value={serviceType}
                 onChange={(e) => setServiceType(e.target.value)}
-                className="rounded-lg border border-edge p-2 text-xs dark:border-gray-600 dark:bg-gray-800"
+                className="rounded-lg border border-edge p-2 text-xs dark:bg-gray-800"
               >
                 <option value="">{t('beautyJournal.serviceTypeLabel')}</option>
                 {SERVICE_TYPES.map((s) => (
@@ -149,11 +147,7 @@ export default function BeautyJournalPage(): JSX.Element {
                     })}
                   </span>
                 </div>
-                {e.title && (
-                  <h3 className="font-semibold text-text-primary dark:text-gray-100 mb-1">
-                    {e.title}
-                  </h3>
-                )}
+                {e.title && <h3 className="font-semibold text-text-primary mb-1">{e.title}</h3>}
                 <p className="text-sm text-text-secondary dark:text-text-tertiary whitespace-pre-wrap">
                   {e.content}
                 </p>

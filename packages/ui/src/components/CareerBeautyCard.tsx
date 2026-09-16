@@ -134,7 +134,7 @@ export function CareerBeautyCard({
         </div>
         <div className="min-w-0 flex-1">
           <h4 className="text-sm font-bold text-sky-700 dark:text-sky-300">{title}</h4>
-          <p className="text-xs font-bold text-text-primary dark:text-gray-100">
+          <p className="text-xs font-bold text-text-primary">
             {prof.title[locale]} — {prof.look[locale]}
           </p>
         </div>

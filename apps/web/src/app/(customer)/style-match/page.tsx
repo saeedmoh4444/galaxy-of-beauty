@@ -96,7 +96,7 @@ export default function StyleMatchPage(): JSX.Element {
                 className="block w-full text-sm text-text-secondary file:me-4 file:rounded-lg file:border-0 file:bg-brand-600 file:px-4 file:py-2 file:text-sm file:font-semibold file:text-white"
               />
               {photoPreview && (
-                <div className="mt-3 rounded-xl overflow-hidden h-40 bg-surface-muted dark:bg-gray-800">
+                <div className="mt-3 rounded-xl overflow-hidden h-40 bg-surface-muted">
                   {/* eslint-disable-next-line @next/next/no-img-element -- blob: URL from URL.createObjectURL cannot be passed to next/image */}
                   <img
                     src={photoPreview}
@@ -116,7 +116,7 @@ export default function StyleMatchPage(): JSX.Element {
                   <button
                     key={p.label}
                     onClick={() => applyPreset(p.colors, p.label)}
-                    className={`rounded-full px-3 py-1 text-xs font-medium transition-all ${activePreset === p.label ? 'bg-brand-600 text-white' : 'bg-surface-muted dark:bg-gray-800 hover:bg-surface-muted'}`}
+                    className={`rounded-full px-3 py-1 text-xs font-medium transition-all ${activePreset === p.label ? 'bg-brand-600 text-white' : 'bg-surface-muted hover:bg-surface-muted'}`}
                   >
                     <span className="flex items-center gap-1.5">
                       {p.colors.map((c) => (
@@ -179,7 +179,7 @@ export default function StyleMatchPage(): JSX.Element {
                 <button
                   key={c.key}
                   onClick={() => setCategory(c.key === category ? '' : c.key)}
-                  className={`rounded-full px-4 py-2 text-sm font-medium transition-all ${category === c.key ? 'bg-brand-600 text-white shadow-md' : category === '' && c.key === '' ? 'bg-brand-600 text-white shadow-md' : 'bg-surface-muted dark:bg-gray-800 hover:bg-surface-muted'}`}
+                  className={`rounded-full px-4 py-2 text-sm font-medium transition-all ${category === c.key ? 'bg-brand-600 text-white shadow-md' : category === '' && c.key === '' ? 'bg-brand-600 text-white shadow-md' : 'bg-surface-muted hover:bg-surface-muted'}`}
                 >
                   {c.emoji} {t(c.label)}
                 </button>
@@ -233,7 +233,7 @@ export default function StyleMatchPage(): JSX.Element {
                   </div>
                   <div className="mt-3">
                     <div className="flex items-center justify-between">
-                      <span className="rounded-full bg-surface-muted dark:bg-gray-800 px-2 py-0.5 text-[10px] font-medium">
+                      <span className="rounded-full bg-surface-muted px-2 py-0.5 text-[10px] font-medium">
                         {r.style as string}
                       </span>
                       <div className="flex items-center gap-1">
@@ -265,7 +265,7 @@ export default function StyleMatchPage(): JSX.Element {
                         {(r.products as string[]).map((p: string) => (
                           <span
                             key={p}
-                            className="rounded bg-surface-muted dark:bg-gray-800 px-1.5 py-0.5 text-[10px] text-text-secondary"
+                            className="rounded bg-surface-muted px-1.5 py-0.5 text-[10px] text-text-secondary"
                           >
                             {p}
                           </span>

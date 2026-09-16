@@ -62,9 +62,9 @@ export function PrayerTimes({
   }, []);
 
   return (
-    <div className="rounded-xl border border-edge bg-surface-muted p-3 dark:border-gray-700 dark:bg-gray-900">
+    <div className="rounded-xl border border-edge bg-surface-muted p-3">
       <div className="flex items-center justify-between">
-        <span className="text-xs font-semibold text-text-primary dark:text-gray-100">{title}</span>
+        <span className="text-xs font-semibold text-text-primary">{title}</span>
         {prayer.next ? (
           <span className="text-[10px] text-text-secondary dark:text-text-tertiary">
             {upcomingPrefix}

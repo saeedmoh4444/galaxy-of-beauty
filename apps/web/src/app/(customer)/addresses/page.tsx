@@ -80,9 +80,7 @@ export default function AddressesPage(): JSX.Element {
     <DashboardLayout userRole="CUSTOMER">
       <div className="mx-auto max-w-3xl space-y-6">
         <div className="flex items-center justify-between">
-          <h1 className="text-2xl font-bold text-text-primary dark:text-gray-100">
-            {t('profile.addresses')}
-          </h1>
+          <h1 className="text-2xl font-bold text-text-primary">{t('profile.addresses')}</h1>
           <Button onClick={() => setShowForm(true)}>{t('profile.add-address')}</Button>
         </div>
 

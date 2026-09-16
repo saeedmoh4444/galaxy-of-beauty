@@ -124,9 +124,7 @@ export function FirstFacialCard({
           {STEPS.map((s) => (
             <div key={s.text.ar} className="flex items-center gap-1.5">
               <span aria-hidden="true">{s.emoji}</span>
-              <span className="text-[10px] text-text-secondary dark:text-gray-300">
-                {s.text[locale]}
-              </span>
+              <span className="text-[10px] text-text-secondary">{s.text[locale]}</span>
             </div>
           ))}
         </div>

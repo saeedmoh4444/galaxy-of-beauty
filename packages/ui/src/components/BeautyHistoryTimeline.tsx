@@ -142,7 +142,7 @@ export function BeautyHistoryTimeline({
                   {era.year[locale]}
                 </span>
               </div>
-              <p className="mt-0.5 text-[10px] leading-relaxed text-text-secondary dark:text-gray-300">
+              <p className="mt-0.5 text-[10px] leading-relaxed text-text-secondary">
                 {era.fact[locale]}
               </p>
             </div>

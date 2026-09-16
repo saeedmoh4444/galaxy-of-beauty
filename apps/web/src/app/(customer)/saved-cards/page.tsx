@@ -64,9 +64,7 @@ export default function SavedCardsPage(): JSX.Element {
     <DashboardLayout userRole="CUSTOMER">
       <div className="mx-auto max-w-2xl space-y-6 px-4 py-8">
         <div className="flex items-center justify-between">
-          <h1 className="text-2xl font-bold text-text-primary dark:text-gray-100">
-            {t('savedCards.title')}
-          </h1>
+          <h1 className="text-2xl font-bold text-text-primary">{t('savedCards.title')}</h1>
           <Button onClick={() => setShowAdd(true)}>{t('savedCards.addCard')}</Button>
         </div>
 
@@ -85,7 +83,7 @@ export default function SavedCardsPage(): JSX.Element {
               <div className="flex items-center gap-4">
                 <span className="text-2xl">{brandIcons[c.brand as string] || ''}</span>
                 <div>
-                  <p className="font-semibold text-text-primary dark:text-gray-100">
+                  <p className="font-semibold text-text-primary">
                     {String(c.brand).toUpperCase()} ···· {String(c.lastFour)}
                   </p>
                   <p className="text-xs text-text-tertiary">
@@ -114,7 +112,7 @@ export default function SavedCardsPage(): JSX.Element {
         {showAdd && (
           <Modal open={showAdd} onClose={() => setShowAdd(false)}>
             <div className="space-y-4">
-              <h3 className="text-lg font-bold text-text-primary dark:text-gray-100">
+              <h3 className="text-lg font-bold text-text-primary">
                 {t('savedCards.addModalTitle')}
               </h3>
               <Input
@@ -130,7 +128,7 @@ export default function SavedCardsPage(): JSX.Element {
               />
               <div className="flex gap-3">
                 <select
-                  className="flex-1 rounded-lg border border-edge p-2 dark:border-gray-600 dark:bg-gray-800"
+                  className="flex-1 rounded-lg border border-edge p-2 dark:bg-gray-800"
                   value={form.brand}
                   onChange={(e) => setForm({ ...form, brand: e.target.value as typeof form.brand })}
                 >
@@ -140,7 +138,7 @@ export default function SavedCardsPage(): JSX.Element {
                   <option value="amex">Amex</option>
                 </select>
                 <select
-                  className="w-20 rounded-lg border border-edge p-2 dark:border-gray-600 dark:bg-gray-800"
+                  className="w-20 rounded-lg border border-edge p-2 dark:bg-gray-800"
                   value={form.expMonth}
                   onChange={(e) => setForm({ ...form, expMonth: e.target.value })}
                 >
@@ -151,7 +149,7 @@ export default function SavedCardsPage(): JSX.Element {
                   ))}
                 </select>
                 <select
-                  className="w-24 rounded-lg border border-edge p-2 dark:border-gray-600 dark:bg-gray-800"
+                  className="w-24 rounded-lg border border-edge p-2 dark:bg-gray-800"
                   value={form.expYear}
                   onChange={(e) => setForm({ ...form, expYear: e.target.value })}
                 >

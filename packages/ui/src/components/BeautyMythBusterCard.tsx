@@ -116,7 +116,7 @@ export function BeautyMythBusterCard({
 
           {/* Source */}
           {source && (
-            <div className="rounded-lg bg-surface-muted p-2 dark:bg-gray-800">
+            <div className="rounded-lg bg-surface-muted p-2">
               <p className="text-[10px] text-text-tertiary dark:text-text-secondary">
                 {sourcePrefix}
                 {source}

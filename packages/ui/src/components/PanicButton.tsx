@@ -132,7 +132,7 @@ export function PanicButton({
           ? 'border-red-300 bg-red-50 dark:border-red-900 dark:bg-red-950'
           : stage === 'done'
             ? 'border-emerald-200 bg-emerald-50 dark:border-emerald-900 dark:bg-emerald-950'
-            : 'border-edge-muted bg-white dark:border-gray-800 dark:bg-gray-900',
+            : 'border-edge-muted bg-white dark:bg-gray-900',
         className,
       )}
     >
@@ -168,21 +168,19 @@ export function PanicButton({
 
           {/* Who will be notified */}
           <div className="rounded-xl bg-white p-2.5 dark:bg-gray-800">
-            <p className="text-[10px] font-bold text-text-primary dark:text-gray-100">
-              {willNotifyLabel}
-            </p>
+            <p className="text-[10px] font-bold text-text-primary">{willNotifyLabel}</p>
             <div className="mt-1 space-y-1">
               {contacts.map((c) => (
                 <div
                   key={c.phone}
-                  className="flex items-center gap-1.5 text-[10px] text-text-secondary dark:text-gray-300"
+                  className="flex items-center gap-1.5 text-[10px] text-text-secondary"
                 >
                   <span>{c.relation === 'mother' ? '' : ''}</span>
                   <span className="font-bold">{c.name}</span>
                   <span className="text-text-tertiary">{c.phone}</span>
                 </div>
               ))}
-              <div className="flex items-center gap-1.5 text-[10px] text-text-secondary dark:text-gray-300">
+              <div className="flex items-center gap-1.5 text-[10px] text-text-secondary">
                 <span>🚓</span>
                 <span className="font-bold">{policeLabel}</span>
                 <span className="text-text-tertiary">999</span>
@@ -216,7 +214,7 @@ export function PanicButton({
             <button
               type="button"
               onClick={handleCancel}
-              className="rounded-xl border border-edge bg-white px-4 py-2.5 text-xs font-bold text-text-secondary hover:bg-surface-muted dark:border-gray-700 dark:bg-gray-800 dark:text-gray-300"
+              className="rounded-xl border border-edge bg-white px-4 py-2.5 text-xs font-bold text-text-secondary hover:bg-surface-muted dark:bg-gray-800"
             >
               {cancelButtonText}
             </button>

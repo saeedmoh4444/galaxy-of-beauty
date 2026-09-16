@@ -110,7 +110,7 @@ export function RandomActOfBeauty({
             <span className="text-4xl" aria-hidden="true">
               🎉
             </span>
-            <p className="mt-1 text-xs text-text-secondary dark:text-gray-300">{anyServiceText}</p>
+            <p className="mt-1 text-xs text-text-secondary">{anyServiceText}</p>
             <div className="mt-2 flex flex-wrap justify-center gap-1">
               {SURPRISES.map((s) => (
                 <span

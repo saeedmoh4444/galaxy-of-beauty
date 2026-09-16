@@ -61,7 +61,7 @@ export function BeautyHabitTrackerCard({
         </div>
       </div>
 
-      <div className="mt-1 h-1.5 rounded-full bg-surface-muted dark:bg-gray-700">
+      <div className="mt-1 h-1.5 rounded-full bg-surface-muted">
         <div
           className="h-full rounded-full bg-gradient-to-r from-emerald-400 to-green-500 transition-all"
           style={{ width: `${pct}%` }}
@@ -85,7 +85,7 @@ export function BeautyHabitTrackerCard({
                 'flex-1 text-start text-[10px]',
                 h.done
                   ? 'text-emerald-700 dark:text-emerald-300 line-through'
-                  : 'text-text-primary dark:text-gray-100',
+                  : 'text-text-primary',
               )}
             >
               {h.name}

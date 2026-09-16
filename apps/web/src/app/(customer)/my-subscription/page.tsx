@@ -78,9 +78,7 @@ export default function MySubscriptionPage(): JSX.Element {
   return (
     <DashboardLayout userRole="CUSTOMER">
       <div className="mx-auto max-w-2xl space-y-6">
-        <h1 className="text-2xl font-bold text-text-primary dark:text-gray-100">
-          {t('mySubscription.title')}
-        </h1>
+        <h1 className="text-2xl font-bold text-text-primary">{t('mySubscription.title')}</h1>
 
         {/* Status Card */}
         <Card
@@ -89,9 +87,7 @@ export default function MySubscriptionPage(): JSX.Element {
         >
           <div className="text-center">
             <span className="text-5xl">💳</span>
-            <h2 className="mt-3 text-xl font-bold text-text-primary dark:text-gray-100">
-              {planName}
-            </h2>
+            <h2 className="mt-3 text-xl font-bold text-text-primary">{planName}</h2>
             <p className="mt-1 text-sm text-text-secondary">
               {t('mySubscription.perMonth', {
                 count: servicesPerMonth,

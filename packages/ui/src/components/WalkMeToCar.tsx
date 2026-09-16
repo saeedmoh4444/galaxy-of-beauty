@@ -81,7 +81,7 @@ export function WalkMeToCar({
         'rounded-2xl border p-4 transition-all',
         isDark
           ? 'border-indigo-200 bg-indigo-50/50 dark:border-indigo-900 dark:bg-indigo-950/30'
-          : 'border-edge-muted bg-white dark:border-gray-800 dark:bg-gray-900',
+          : 'border-edge-muted bg-white dark:bg-gray-900',
         className,
       )}
     >
@@ -144,7 +144,7 @@ export function WalkMeToCar({
             'mt-3 w-full rounded-xl py-2.5 text-xs font-bold transition-all active:scale-[0.98]',
             isDark
               ? 'bg-indigo-600 text-white hover:bg-indigo-700 shadow-sm shadow-indigo-200 dark:shadow-indigo-900'
-              : 'bg-surface-muted text-text-secondary hover:bg-indigo-50 hover:text-indigo-700 dark:bg-gray-800 dark:text-gray-300',
+              : 'bg-surface-muted text-text-secondary hover:bg-indigo-50 hover:text-indigo-700',
           )}
         >
           {isHomeService ? homeButtonText : carButtonText}

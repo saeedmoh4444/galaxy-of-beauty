@@ -28,7 +28,7 @@ export default function AdminGiftCardsPage(): JSX.Element {
       ) : (
         <Card padding="none">
           <table className="w-full text-sm">
-            <thead className="bg-surface-muted text-text-secondary dark:bg-gray-800">
+            <thead className="bg-surface-muted text-text-secondary">
               <tr>
                 <th className="p-3 text-end">{t('admin.gift-cards.code-header')}</th>
                 <th className="p-3 text-end">{t('admin.gift-cards.amount-header')}</th>

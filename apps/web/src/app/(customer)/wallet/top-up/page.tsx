@@ -30,9 +30,7 @@ export default function WalletTopUpPage(): JSX.Element {
   return (
     <DashboardLayout userRole="CUSTOMER">
       <div className="mx-auto max-w-lg space-y-6">
-        <h1 className="text-2xl font-bold text-text-primary dark:text-gray-100">
-          {t('wallet.top-up')}
-        </h1>
+        <h1 className="text-2xl font-bold text-text-primary">{t('wallet.top-up')}</h1>
         {isLoading ? (
           <KPIRowSkeleton count={1} />
         ) : (
@@ -56,7 +54,7 @@ export default function WalletTopUpPage(): JSX.Element {
                   setSelected(a);
                   setAmount('');
                 }}
-                className={`rounded-xl border-2 p-4 text-center transition-all ${selected === a ? 'border-brand-500 bg-brand-50 dark:bg-brand-950' : 'border-edge hover:border-brand-300 dark:border-gray-700'}`}
+                className={`rounded-xl border-2 p-4 text-center transition-all ${selected === a ? 'border-brand-500 bg-brand-50 dark:bg-brand-950' : 'border-edge hover:border-brand-300'}`}
               >
                 <p className="text-2xl font-extrabold text-brand-600">{a}</p>
                 <p className="text-xs text-text-tertiary">{t('misc.sar')}</p>
@@ -76,7 +74,7 @@ export default function WalletTopUpPage(): JSX.Element {
               setAmount(e.target.value);
               setSelected(null);
             }}
-            className="w-full rounded-lg border border-edge p-3 text-center text-lg dark:border-gray-600 dark:bg-gray-800"
+            className="w-full rounded-lg border border-edge p-3 text-center text-lg dark:bg-gray-800"
           />
           <Button onClick={handleTopUp} size="lg" className="w-full mt-4">
             {t('wallet.top-up-button', { amount: formatCurrency(selected || Number(amount) || 0) })}

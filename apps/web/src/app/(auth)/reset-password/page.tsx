@@ -28,7 +28,7 @@ export default function ResetPasswordPage(): JSX.Element {
   return (
     <div className="flex min-h-screen items-center justify-center px-4">
       <Card padding="lg" className="w-full max-w-md">
-        <h1 className="mb-6 text-center text-2xl font-bold text-text-primary dark:text-gray-100">
+        <h1 className="mb-6 text-center text-2xl font-bold text-text-primary">
           {t('auth.reset-title')}
         </h1>
         {msg && <p className="mb-4 rounded-lg bg-green-50 p-3 text-sm text-green-700">{msg}</p>}

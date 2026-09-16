@@ -53,7 +53,7 @@ export default function AdminLayout({ children }: { children: ReactNode }): Reac
 
   return (
     <div className="flex min-h-screen">
-      <aside className="hidden w-64 border-e border-edge bg-white p-4 md:block dark:border-gray-800 dark:bg-gray-950">
+      <aside className="hidden w-64 border-e border-edge bg-white p-4 md:block dark:bg-gray-950">
         <Link href="/admin/dashboard" className="mb-6 block text-lg font-bold text-brand-600">
           {t('admin.title')}
         </Link>
@@ -73,7 +73,7 @@ export default function AdminLayout({ children }: { children: ReactNode }): Reac
             </Link>
           ))}
         </nav>
-        <div className="mt-6 border-t border-edge pt-4 dark:border-gray-800">
+        <div className="mt-6 border-t border-edge pt-4">
           <Link
             href="/dashboard"
             className="block rounded-lg px-3 py-2 text-sm text-text-secondary hover:bg-surface-muted dark:text-text-tertiary dark:hover:bg-gray-900"
@@ -99,13 +99,11 @@ export default function AdminLayout({ children }: { children: ReactNode }): Reac
         </div>
       </aside>
       <div className="flex flex-1 flex-col overflow-auto">
-        <header className="sticky top-0 z-30 flex items-center justify-end gap-2 border-b border-edge bg-white/80 px-4 py-2 backdrop-blur dark:border-gray-800 dark:bg-gray-950/80">
+        <header className="sticky top-0 z-30 flex items-center justify-end gap-2 border-b border-edge bg-white/80 px-4 py-2 backdrop-blur dark:bg-gray-950/80">
           <LanguageToggle />
           <ThemeToggle />
         </header>
-        <main className="flex-1 overflow-auto bg-surface-muted p-6 dark:bg-gray-950">
-          {children}
-        </main>
+        <main className="flex-1 overflow-auto bg-surface-muted p-6">{children}</main>
       </div>
     </div>
   );

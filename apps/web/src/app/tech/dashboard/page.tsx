@@ -469,7 +469,7 @@ export default function TechDashboardPage(): JSX.Element {
                 <select
                   value={promoSvcId ?? ''}
                   onChange={(e) => setPromoSvcId(Number(e.target.value) || undefined)}
-                  className="w-full rounded-lg border border-edge p-2 text-sm dark:border-gray-600 dark:bg-gray-800"
+                  className="w-full rounded-lg border border-edge p-2 text-sm dark:bg-gray-800"
                 >
                   <option value="">—</option>
                   {myServices.map((mapping: Record<string, unknown>) => {

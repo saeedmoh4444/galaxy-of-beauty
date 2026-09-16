@@ -92,7 +92,7 @@ export default function ReferralsPage(): JSX.Element {
                 {t('referrals.yourCode')}
               </p>
               <div className="my-4 flex items-center justify-center gap-3">
-                <span className="rounded-lg bg-surface-muted px-6 py-3 text-2xl font-bold tracking-widest text-brand-600 dark:bg-gray-800">
+                <span className="rounded-lg bg-surface-muted px-6 py-3 text-2xl font-bold tracking-widest text-brand-600">
                   {(codeData?.code as string) ?? '---'}
                 </span>
                 <button

@@ -53,7 +53,7 @@ export default function WomensServicesPage(): JSX.Element {
     <div className="mx-auto max-w-5xl px-4 py-12">
       <div className="mb-10 text-center">
         <ServiceImage service="beautyService" alt="" size="xl" className="mx-auto rounded-3xl" />
-        <h1 className="mt-4 text-3xl font-bold text-text-primary dark:text-gray-100">
+        <h1 className="mt-4 text-3xl font-bold text-text-primary">
           {t('marketing.womens-services.title')}
         </h1>
         <p className="mt-2 text-text-secondary dark:text-text-tertiary">
@@ -114,9 +114,7 @@ export default function WomensServicesPage(): JSX.Element {
                   size="lg"
                   className="mx-auto"
                 />
-                <h3 className="mt-3 text-lg font-bold text-text-primary dark:text-gray-100">
-                  {c.nameAr as string}
-                </h3>
+                <h3 className="mt-3 text-lg font-bold text-text-primary">{c.nameAr as string}</h3>
                 <p className="mt-1 text-xs text-text-secondary dark:text-text-tertiary">
                   {c.description as string}
                 </p>
@@ -175,9 +173,7 @@ export default function WomensServicesPage(): JSX.Element {
                     size="sm"
                   />
                   <div>
-                    <h3 className="font-bold text-text-primary dark:text-gray-100">
-                      {s.nameAr as string}
-                    </h3>
+                    <h3 className="font-bold text-text-primary">{s.nameAr as string}</h3>
                     <p className="text-xs text-text-secondary">{s.nameEn as string}</p>
                     {(s.precautions as string) ? (
                       <p className="text-xs text-amber-600 mt-0.5"> {s.precautions as string}</p>
@@ -219,7 +215,7 @@ export default function WomensServicesPage(): JSX.Element {
               padding="lg"
               className="bg-linear-to-r from-green-50 to-emerald-50 dark:from-green-950 dark:to-emerald-950 border-none"
             >
-              <h3 className="font-bold mb-3 text-text-primary dark:text-gray-100">
+              <h3 className="font-bold mb-3 text-text-primary">
                 {t('marketing.womens-services.tips-title')}
               </h3>
               <div className="space-y-2">

@@ -15,7 +15,7 @@ export function BeautyMakeupMatteCard({
   return (
     <div
       className={cn(
-        'rounded-2xl border border-edge-muted bg-white p-4 dark:border-gray-800 dark:bg-gray-900',
+        'rounded-2xl border border-edge-muted bg-white p-4 dark:bg-gray-900',
         className,
       )}
     >
@@ -51,10 +51,7 @@ export function BeautyMakeupMatteCard({
             },
           },
         ].map((t, i) => (
-          <div
-            key={i}
-            className="flex items-center gap-2 rounded-lg bg-surface-muted px-3 py-2 dark:bg-gray-800"
-          >
+          <div key={i} className="flex items-center gap-2 rounded-lg bg-surface-muted px-3 py-2">
             <span className="text-sm shrink-0">{t.emoji}</span>
             <span className="text-[10px] text-text-primary">{t.text[locale]}</span>
           </div>

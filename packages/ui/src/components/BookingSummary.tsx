@@ -78,7 +78,7 @@ export function BookingSummary({
   return (
     <Card padding="lg" className={className}>
       <div className="flex items-center justify-between">
-        <h3 className="text-lg font-bold text-text-primary dark:text-gray-100">{title}</h3>
+        <h3 className="text-lg font-bold text-text-primary">{title}</h3>
         {booking.status ? <Badge variant={statusVariant as any}>{booking.status}</Badge> : null}
       </div>
 
@@ -87,32 +87,26 @@ export function BookingSummary({
       <div className="space-y-2 text-sm">
         <div className="flex justify-between">
           <span className="text-text-secondary dark:text-text-tertiary">{codeLabel}</span>
-          <span className="font-mono font-semibold text-text-primary dark:text-gray-100">
-            {booking.code}
-          </span>
+          <span className="font-mono font-semibold text-text-primary">{booking.code}</span>
         </div>
         <div className="flex justify-between">
           <span className="text-text-secondary dark:text-text-tertiary">{serviceLabel}</span>
-          <span className="font-semibold text-text-primary dark:text-gray-100">
-            {booking.service}
-          </span>
+          <span className="font-semibold text-text-primary">{booking.service}</span>
         </div>
         {booking.technician ? (
           <div className="flex justify-between">
             <span className="text-text-secondary dark:text-text-tertiary">{technicianLabel}</span>
-            <span className="font-semibold text-text-primary dark:text-gray-100">
-              {booking.technician}
-            </span>
+            <span className="font-semibold text-text-primary">{booking.technician}</span>
           </div>
         ) : null}
         <div className="flex justify-between">
           <span className="text-text-secondary dark:text-text-tertiary">{dateLabel}</span>
-          <span className="text-text-primary dark:text-gray-100">{booking.date}</span>
+          <span className="text-text-primary">{booking.date}</span>
         </div>
         {booking.address ? (
           <div className="flex justify-between">
             <span className="text-text-secondary dark:text-text-tertiary">{addressLabel}</span>
-            <span className="text-text-primary dark:text-gray-100">{booking.address}</span>
+            <span className="text-text-primary">{booking.address}</span>
           </div>
         ) : null}
       </div>
@@ -122,7 +116,7 @@ export function BookingSummary({
       <div className="space-y-1 text-sm">
         <div className="flex justify-between">
           <span className="text-text-secondary dark:text-text-tertiary">{priceLabel}</span>
-          <span className="text-text-primary dark:text-gray-100">
+          <span className="text-text-primary">
             {booking.price} {currencySuffix}
           </span>
         </div>
@@ -135,7 +129,7 @@ export function BookingSummary({
           </div>
         ) : null}
         <div className="flex justify-between text-base font-bold">
-          <span className="text-text-primary dark:text-gray-100">{totalLabel}</span>
+          <span className="text-text-primary">{totalLabel}</span>
           <span className="text-brand-600 dark:text-brand-400">
             {total} {currencySuffix}
           </span>

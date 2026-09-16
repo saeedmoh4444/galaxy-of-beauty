@@ -58,7 +58,7 @@ export default function WishlistPage(): JSX.Element {
                 const titleJson = service.titleJson;
                 return (
                   <Card key={item.id as number} padding="md" className="relative">
-                    <div className="relative mb-3 flex h-36 items-center justify-center overflow-hidden rounded-lg bg-surface-muted dark:bg-gray-800">
+                    <div className="relative mb-3 flex h-36 items-center justify-center overflow-hidden rounded-lg bg-surface-muted">
                       <ServiceImage
                         src={(service.imageUrl as string) || null}
                         alt=""
@@ -92,7 +92,7 @@ export default function WishlistPage(): JSX.Element {
                 return (
                   <Card key={item.id as number} padding="md" className="relative">
                     <div className="mb-3 flex items-center gap-3">
-                      <div className="relative flex h-16 w-16 items-center justify-center overflow-hidden rounded-full bg-surface-muted dark:bg-gray-800">
+                      <div className="relative flex h-16 w-16 items-center justify-center overflow-hidden rounded-full bg-surface-muted">
                         <ServiceImage
                           src={(user.avatarUrl as string) || null}
                           alt=""

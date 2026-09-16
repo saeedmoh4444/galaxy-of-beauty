@@ -70,9 +70,7 @@ export function StorefrontClient({ data }: { data: StorefrontPageData }): JSX.El
           className="h-20 w-20 rounded-2xl"
         />
         <div>
-          <h1 className="text-2xl font-bold text-text-primary dark:text-gray-100">
-            {store.storeName}
-          </h1>
+          <h1 className="text-2xl font-bold text-text-primary">{store.storeName}</h1>
           <p className="mt-1 text-sm text-text-secondary">
             {t('stores.product-count', { count: data.productCount })}
           </p>
@@ -118,7 +116,7 @@ export function StorefrontClient({ data }: { data: StorefrontPageData }): JSX.El
               />
               <div className="flex items-start justify-between gap-3">
                 <div className="min-w-0">
-                  <p className="truncate font-bold text-text-primary dark:text-gray-100">
+                  <p className="truncate font-bold text-text-primary">
                     {localize(p.nameJson, locale)}
                   </p>
                   <p className="mt-1 text-sm font-semibold text-brand-600">

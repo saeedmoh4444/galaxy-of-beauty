@@ -100,7 +100,7 @@ export function BeautySubscriptionCard({
         <span className="text-3xl" aria-hidden="true">
           {t.emoji}
         </span>
-        <h4 className="mt-1 text-sm font-bold text-text-primary dark:text-gray-100">{title}</h4>
+        <h4 className="mt-1 text-sm font-bold text-text-primary">{title}</h4>
         <p className="text-[10px] text-text-tertiary dark:text-text-tertiary">
           {planPrefix}
           {t.label[locale]}
@@ -109,7 +109,7 @@ export function BeautySubscriptionCard({
 
       {/* Price */}
       <div className="mt-3 rounded-xl bg-white/60 p-4 text-center dark:bg-gray-800/60">
-        <p className="text-3xl font-bold text-text-primary dark:text-gray-100">
+        <p className="text-3xl font-bold text-text-primary">
           {t.price} {currencySuffix}
         </p>
         <p className="text-[10px] text-text-tertiary dark:text-text-secondary">{monthlySuffix}</p>
@@ -117,16 +117,12 @@ export function BeautySubscriptionCard({
 
       {/* Includes */}
       <div className="mt-2 rounded-xl bg-white/60 p-3 dark:bg-gray-800/60">
-        <p className="text-[10px] font-bold text-text-primary dark:text-gray-100">
-          {includesTitle}
-        </p>
+        <p className="text-[10px] font-bold text-text-primary">{includesTitle}</p>
         <div className="mt-1 space-y-0.5">
           {t.includes.map((item) => (
             <div key={item.ar} className="flex items-center gap-1.5">
               <span className="text-[10px] text-emerald-500">✅</span>
-              <span className="text-[10px] text-text-secondary dark:text-gray-300">
-                {item[locale]}
-              </span>
+              <span className="text-[10px] text-text-secondary">{item[locale]}</span>
             </div>
           ))}
         </div>
@@ -141,7 +137,7 @@ export function BeautySubscriptionCard({
             className={cn(
               'flex-1 rounded-lg py-1.5 text-[10px] font-bold transition-colors',
               key === tier
-                ? 'bg-white text-text-primary shadow-sm dark:bg-gray-700 dark:text-gray-100'
+                ? 'bg-white text-text-primary shadow-sm dark:bg-gray-700'
                 : 'text-text-tertiary hover:bg-white/50 dark:hover:bg-gray-700/50',
             )}
           >

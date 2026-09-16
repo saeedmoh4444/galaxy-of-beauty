@@ -100,7 +100,7 @@ export function BeautySavingsGoal({
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
-          <h4 className="text-sm font-bold text-text-primary dark:text-gray-100">{title}</h4>
+          <h4 className="text-sm font-bold text-text-primary">{title}</h4>
           <p className="mt-0.5 text-xs text-text-tertiary dark:text-text-tertiary">{subtitle}</p>
         </div>
         <div className="rounded-full bg-amber-50 px-3 py-1 text-xs font-bold text-amber-700 dark:bg-amber-950 dark:text-amber-300">
@@ -132,12 +132,9 @@ export function BeautySavingsGoal({
           const currentContribute = contribute[i] ?? '';
 
           return (
-            <div
-              key={i}
-              className="rounded-xl border border-edge-muted bg-surface p-3 dark:border-gray-800 dark:bg-gray-800"
-            >
+            <div key={i} className="rounded-xl border border-edge-muted bg-surface p-3">
               <div className="flex items-center justify-between">
-                <span className="text-xs font-semibold text-text-primary dark:text-gray-100">
+                <span className="text-xs font-semibold text-text-primary">
                   {goal.emoji ? `${goal.emoji} ` : ''}
                   {goal.label}
                 </span>
@@ -155,7 +152,7 @@ export function BeautySavingsGoal({
 
               {/* Per-goal progress */}
               <div className="mt-1.5 flex items-center gap-2">
-                <div className="flex-1 h-2 overflow-hidden rounded-full bg-surface-muted dark:bg-gray-700">
+                <div className="flex-1 h-2 overflow-hidden rounded-full bg-surface-muted">
                   <div
                     className={cn(
                       'h-full rounded-full transition-all duration-700',
@@ -166,9 +163,7 @@ export function BeautySavingsGoal({
                     style={{ width: `${pct}%` }}
                   />
                 </div>
-                <span className="text-xs font-bold text-text-secondary dark:text-gray-300">
-                  {pct}%
-                </span>
+                <span className="text-xs font-bold text-text-secondary">{pct}%</span>
               </div>
 
               {/* SAR labels */}
@@ -183,7 +178,7 @@ export function BeautySavingsGoal({
 
               {/* Monthly contribution row */}
               {goal.monthly && remaining > 0 && (
-                <div className="mt-2 flex items-center gap-2 border-t border-edge-muted pt-2 dark:border-gray-700">
+                <div className="mt-2 flex items-center gap-2 border-t border-edge-muted pt-2">
                   <span className="text-[10px] text-text-tertiary dark:text-text-secondary">
                     {monthlyPrefix}
                     {formatSAR(goal.monthly)}

@@ -28,7 +28,7 @@ export default function FeatureFlagsPage(): JSX.Element {
   return (
     <>
       <div className="mx-auto max-w-3xl space-y-6 px-4 py-8">
-        <h1 className="text-2xl font-bold text-text-primary dark:text-gray-100">Feature Flags</h1>
+        <h1 className="text-2xl font-bold text-text-primary">Feature Flags</h1>
         {isLoading ? (
           <TableSkeleton rows={5} cols={4} />
         ) : isError ? (
@@ -36,7 +36,7 @@ export default function FeatureFlagsPage(): JSX.Element {
         ) : (
           <Card padding="none">
             <table className="w-full text-sm">
-              <thead className="bg-surface-muted text-text-secondary dark:bg-gray-800 dark:text-text-tertiary">
+              <thead className="bg-surface-muted text-text-secondary dark:text-text-tertiary">
                 <tr>
                   <th className="p-3 text-end">{t('admin.feature-flags.feature-header')}</th>
                   <th className="p-3 text-end">{t('admin.feature-flags.status-header')}</th>

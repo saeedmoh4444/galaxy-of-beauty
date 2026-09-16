@@ -80,9 +80,7 @@ export function BeautyPenPalCard({
             <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-brand-200 text-lg dark:bg-brand-800">
               👩
             </div>
-            <p className="mt-1 text-[10px] font-bold text-text-primary dark:text-gray-100">
-              {youText}
-            </p>
+            <p className="mt-1 text-[10px] font-bold text-text-primary">{youText}</p>
           </div>
           <span className="text-brand-400 text-xl" aria-hidden="true">
             💌
@@ -91,9 +89,7 @@ export function BeautyPenPalCard({
             <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-pink-200 text-lg dark:bg-pink-800">
               👩
             </div>
-            <p className="mt-1 text-[10px] font-bold text-text-primary dark:text-gray-100">
-              {friendText}
-            </p>
+            <p className="mt-1 text-[10px] font-bold text-text-primary">{friendText}</p>
           </div>
         </div>
       </div>
@@ -121,7 +117,7 @@ export function BeautyPenPalCard({
               'rounded-full px-2 py-0.5 text-[9px] font-medium',
               c.ar === match.city
                 ? 'bg-brand-100 text-brand-700 dark:bg-brand-900 dark:text-brand-300'
-                : 'bg-surface-muted text-text-tertiary dark:bg-gray-800 dark:text-text-secondary',
+                : 'bg-surface-muted text-text-tertiary dark:text-text-secondary',
             )}
           >
             {c[locale]}

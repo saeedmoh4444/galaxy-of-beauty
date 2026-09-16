@@ -65,7 +65,7 @@ export function AddToCalendar({
     <div className="flex gap-2">
       <button
         onClick={generateICS}
-        className="rounded-lg border border-edge px-3 py-1.5 text-xs font-medium text-text-secondary hover:bg-surface-muted dark:border-gray-700 dark:text-text-tertiary"
+        className="rounded-lg border border-edge px-3 py-1.5 text-xs font-medium text-text-secondary hover:bg-surface-muted dark:text-text-tertiary"
       >
         {t('calendar.add-to-calendar')}
       </button>
@@ -73,7 +73,7 @@ export function AddToCalendar({
         href={googleCalUrl()}
         target="_blank"
         rel="noopener noreferrer"
-        className="rounded-lg border border-edge px-3 py-1.5 text-xs font-medium text-text-secondary hover:bg-surface-muted dark:border-gray-700 dark:text-text-tertiary"
+        className="rounded-lg border border-edge px-3 py-1.5 text-xs font-medium text-text-secondary hover:bg-surface-muted dark:text-text-tertiary"
       >
         Google
       </a>

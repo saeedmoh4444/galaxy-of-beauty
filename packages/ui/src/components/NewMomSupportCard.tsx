@@ -109,7 +109,7 @@ export function NewMomSupportCard({
       {/* What we offer */}
       <div className="mt-2 rounded-xl bg-white/60 p-3 dark:bg-gray-800/60">
         <p className="text-[10px] font-bold text-sky-800 dark:text-sky-200">{offersTitle}</p>
-        <div className="mt-1.5 space-y-1 text-[10px] text-text-secondary dark:text-gray-300">
+        <div className="mt-1.5 space-y-1 text-[10px] text-text-secondary">
           <p>{offer1}</p>
           <p>{offer2}</p>
           {isNewborn && <p>{offer3}</p>}

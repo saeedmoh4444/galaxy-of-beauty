@@ -113,7 +113,7 @@ export function FreeCourseCard({
           {course.emoji || ''}
         </div>
         <div className="min-w-0 flex-1">
-          <h4 className="text-sm font-bold text-text-primary dark:text-gray-100">{course.title}</h4>
+          <h4 className="text-sm font-bold text-text-primary">{course.title}</h4>
           <div className="mt-1 flex flex-wrap items-center gap-1.5">
             <span className={cn('rounded-full px-2 py-0.5 text-[10px] font-medium', level.color)}>
               {level.emoji} {level.label[locale]}
@@ -134,22 +134,22 @@ export function FreeCourseCard({
 
       {/* Meta row */}
       <div className="mt-3 grid grid-cols-2 gap-2 text-[10px]">
-        <div className="flex items-center gap-1 text-text-secondary dark:text-gray-300">
+        <div className="flex items-center gap-1 text-text-secondary">
           <span aria-hidden="true">⏳</span>
           {course.duration}
         </div>
-        <div className="flex items-center gap-1 text-text-secondary dark:text-gray-300">
+        <div className="flex items-center gap-1 text-text-secondary">
           <span aria-hidden="true">📚</span>
           {course.lessons} {lessonsSuffix}
         </div>
         {course.instructor && (
-          <div className="flex items-center gap-1 text-text-secondary dark:text-gray-300">
+          <div className="flex items-center gap-1 text-text-secondary">
             <span aria-hidden="true">🎓</span>
             {course.instructor}
           </div>
         )}
         {course.enrolled !== undefined && (
-          <div className="flex items-center gap-1 text-text-secondary dark:text-gray-300">
+          <div className="flex items-center gap-1 text-text-secondary">
             <span aria-hidden="true">👥</span>
             {course.enrolled.toLocaleString('ar-SA')} {enrolledSuffix}
           </div>

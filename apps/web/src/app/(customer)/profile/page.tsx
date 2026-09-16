@@ -179,7 +179,7 @@ export default function ProfilePage(): JSX.Element {
               <Card padding="lg">
                 <div className="space-y-4">
                   <div>
-                    <span className="mb-1 block text-sm font-medium text-text-primary dark:text-gray-300">
+                    <span className="mb-1 block text-sm font-medium text-text-primary">
                       {t('profile.name')}
                     </span>
                     <InlineEdit
@@ -191,7 +191,7 @@ export default function ProfilePage(): JSX.Element {
                     />
                   </div>
                   <div>
-                    <span className="mb-1 block text-sm font-medium text-text-primary dark:text-gray-300">
+                    <span className="mb-1 block text-sm font-medium text-text-primary">
                       {t('profile.phone')}
                     </span>
                     <InlineEdit
@@ -206,7 +206,7 @@ export default function ProfilePage(): JSX.Element {
                   <div>
                     <label
                       htmlFor="pf-lang"
-                      className="mb-1 block text-sm font-medium text-text-primary dark:text-gray-300"
+                      className="mb-1 block text-sm font-medium text-text-primary"
                     >
                       {t('profile.language')}
                     </label>
@@ -214,7 +214,7 @@ export default function ProfilePage(): JSX.Element {
                       id="pf-lang"
                       value={(userData.preferredLanguage as string) ?? 'ar'}
                       onChange={(e) => saveLanguage(e.target.value as 'ar' | 'en')}
-                      className="w-full rounded-lg border border-edge bg-white px-3 py-2 text-sm dark:border-gray-700 dark:bg-gray-900"
+                      className="w-full rounded-lg border border-edge bg-white px-3 py-2 text-sm dark:bg-gray-900"
                     >
                       <option value="ar">{t('profile.arabic')}</option>
                       <option value="en">English</option>

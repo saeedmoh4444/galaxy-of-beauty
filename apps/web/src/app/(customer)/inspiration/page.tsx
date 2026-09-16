@@ -121,7 +121,7 @@ export default function InspirationPage(): JSX.Element {
                   />
                 ) : (
                   <div
-                    className="mb-3 flex h-40 items-center justify-center rounded-xl bg-surface-muted text-4xl dark:bg-gray-800"
+                    className="mb-3 flex h-40 items-center justify-center rounded-xl bg-surface-muted text-4xl"
                     aria-hidden="true"
                   ></div>
                 )}

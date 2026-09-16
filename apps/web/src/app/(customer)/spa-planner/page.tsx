@@ -90,7 +90,7 @@ export default function SpaPlannerPage(): JSX.Element {
                   <button
                     key={b.id as string}
                     onClick={() => toggleBreak(b.id as string)}
-                    className={`rounded-full px-4 py-2 text-sm ${selectedBreaks.includes(b.id as string) ? 'bg-brand-600 text-white' : 'bg-surface-muted dark:bg-gray-800'}`}
+                    className={`rounded-full px-4 py-2 text-sm ${selectedBreaks.includes(b.id as string) ? 'bg-brand-600 text-white' : 'bg-surface-muted'}`}
                   >
                     {b.emoji as string} {b.nameAr as string}
                   </button>

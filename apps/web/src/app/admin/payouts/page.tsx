@@ -58,9 +58,7 @@ export default function PayoutsPage(): JSX.Element {
   return (
     <>
       <div className="mx-auto max-w-5xl space-y-6 px-4 py-8">
-        <h1 className="text-2xl font-bold text-text-primary dark:text-gray-100">
-          {t('admin.payouts.title')}
-        </h1>
+        <h1 className="text-2xl font-bold text-text-primary">{t('admin.payouts.title')}</h1>
         {isLoading ? (
           <TableSkeleton rows={5} cols={5} />
         ) : isError ? (
@@ -70,7 +68,7 @@ export default function PayoutsPage(): JSX.Element {
         ) : (
           <Card padding="none">
             <table className="w-full text-sm">
-              <thead className="bg-surface-muted text-text-secondary dark:bg-gray-800 dark:text-text-tertiary">
+              <thead className="bg-surface-muted text-text-secondary dark:text-text-tertiary">
                 <tr>
                   <th className="p-3 text-end">{t('admin.payouts.technician-header')}</th>
                   <th className="p-3 text-end">{t('admin.payouts.amount-header')}</th>

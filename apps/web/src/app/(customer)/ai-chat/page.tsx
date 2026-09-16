@@ -71,7 +71,7 @@ export default function AiChatPage(): JSX.Element {
   return (
     <DashboardLayout userRole="CUSTOMER">
       <div className="mx-auto flex h-[calc(100vh-12rem)] max-w-3xl flex-col">
-        <div className="flex items-center gap-3 border-b border-edge pb-4 dark:border-gray-700">
+        <div className="flex items-center gap-3 border-b border-edge pb-4">
           <div className="flex h-12 w-12 items-center justify-center rounded-full bg-brand-100 text-2xl dark:bg-brand-900">
             {BEAUTY_GALAXY_AVATAR}
           </div>
@@ -111,7 +111,7 @@ export default function AiChatPage(): JSX.Element {
                   className={`max-w-[80%] rounded-2xl px-4 py-3 ${
                     msg.role === 'user'
                       ? 'rounded-br-md bg-brand-600 text-white'
-                      : 'rounded-bl-md border border-brand-200 bg-brand-50 text-text-primary dark:border-brand-800 dark:bg-purple-900/30 dark:text-gray-200'
+                      : 'rounded-bl-md border border-brand-200 bg-brand-50 text-text-primary dark:border-brand-800 dark:bg-purple-900/30'
                   }`}
                 >
                   {msg.role === 'assistant' && (
@@ -148,10 +148,10 @@ export default function AiChatPage(): JSX.Element {
           <div ref={messagesEndRef} />
         </div>
 
-        <div className="border-t border-edge pt-4 dark:border-gray-700">
+        <div className="border-t border-edge pt-4">
           <div className="flex gap-2">
             <textarea
-              className="flex-1 resize-none rounded-xl border border-edge bg-white p-3 text-sm outline-none focus:border-brand-400 dark:border-gray-600 dark:bg-gray-800"
+              className="flex-1 resize-none rounded-xl border border-edge bg-white p-3 text-sm outline-none focus:border-brand-400 dark:bg-gray-800"
               rows={2}
               value={input}
               onChange={(e) => setInput(e.target.value)}

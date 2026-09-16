@@ -205,7 +205,7 @@ export default function ReferralDashboardPage(): JSX.Element {
                   <span className="text-xl w-8 text-center font-bold">
                     {['', '', '', '4️⃣', '5️⃣'][idx] ?? `${idx + 1}`}
                   </span>
-                  <div className="flex-1 h-4 rounded-full bg-surface-muted dark:bg-gray-800 overflow-hidden">
+                  <div className="flex-1 h-4 rounded-full bg-surface-muted overflow-hidden">
                     <div
                       className="h-full rounded-full bg-linear-to-r from-brand-400 to-brand-500"
                       style={{

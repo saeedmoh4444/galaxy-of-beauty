@@ -64,16 +64,14 @@ export default function AdminAreasPage(): JSX.Element {
     <>
       <div className="mx-auto max-w-5xl space-y-6 px-4 py-8">
         <div className="flex items-center justify-between">
-          <h1 className="text-2xl font-bold text-text-primary dark:text-gray-100">
-            {t('admin.areas.title')}
-          </h1>
+          <h1 className="text-2xl font-bold text-text-primary">{t('admin.areas.title')}</h1>
           <Button onClick={() => setShowAdd(true)}>{t('admin.areas.add-area')}</Button>
         </div>
 
         {/* City filter */}
         <div className="flex gap-3">
           <select
-            className="rounded-lg border border-edge p-2 text-sm dark:border-gray-600 dark:bg-gray-800"
+            className="rounded-lg border border-edge p-2 text-sm dark:bg-gray-800"
             value={cityFilter || ''}
             onChange={(e) => setCityFilter(Number(e.target.value) || undefined)}
           >
@@ -95,7 +93,7 @@ export default function AdminAreasPage(): JSX.Element {
         ) : (
           <Card padding="none">
             <table className="w-full text-sm">
-              <thead className="bg-surface-muted text-text-secondary dark:bg-gray-800 dark:text-text-tertiary">
+              <thead className="bg-surface-muted text-text-secondary dark:text-text-tertiary">
                 <tr>
                   <th className="p-3 text-end">{t('admin.areas.area-header')}</th>
                   <th className="p-3 text-end">{t('admin.areas.city-header')}</th>
@@ -145,12 +143,12 @@ export default function AdminAreasPage(): JSX.Element {
             }}
           >
             <div className="w-full max-w-md rounded-2xl bg-white p-6 shadow-xl dark:bg-gray-900">
-              <h3 className="mb-4 text-lg font-bold text-text-primary dark:text-gray-100">
+              <h3 className="mb-4 text-lg font-bold text-text-primary">
                 {t('admin.areas.add-title')}
               </h3>
               <div className="space-y-3">
                 <select
-                  className="w-full rounded-lg border border-edge p-2 text-sm dark:border-gray-600 dark:bg-gray-800"
+                  className="w-full rounded-lg border border-edge p-2 text-sm dark:bg-gray-800"
                   value={newArea.cityId}
                   onChange={(e) => setNewArea({ ...newArea, cityId: e.target.value })}
                 >

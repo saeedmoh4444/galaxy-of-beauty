@@ -106,7 +106,7 @@ export default function SkinDiaryPage(): JSX.Element {
           <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
             {items.map((e: Record<string, unknown>) => (
               <Card key={e.id as number} padding="md" className="group">
-                <div className="relative h-36 rounded-xl bg-surface-muted dark:bg-gray-800 overflow-hidden">
+                <div className="relative h-36 rounded-xl bg-surface-muted overflow-hidden">
                   <Image src={e.imageUrl as string} alt="" fill className="object-cover" />
                 </div>
                 <div className="mt-2 flex items-center justify-between">

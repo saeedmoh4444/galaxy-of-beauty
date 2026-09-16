@@ -78,7 +78,7 @@ export default function PriceDropAlertsPage(): JSX.Element {
               {alerts.map((a: Record<string, unknown>) => (
                 <div
                   key={a.id as number}
-                  className="flex items-center justify-between rounded-lg bg-surface-muted dark:bg-gray-800 p-3"
+                  className="flex items-center justify-between rounded-lg bg-surface-muted p-3"
                 >
                   <div>
                     <span className="text-lg me-2">{a.emoji as string}</span>

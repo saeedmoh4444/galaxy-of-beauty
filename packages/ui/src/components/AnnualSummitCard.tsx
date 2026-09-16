@@ -148,9 +148,7 @@ export function AnnualSummitCard({
                   {s.emoji || ''}
                 </span>
                 <div>
-                  <p className="text-[10px] font-bold text-text-primary dark:text-gray-100">
-                    {s.name}
-                  </p>
+                  <p className="text-[10px] font-bold text-text-primary">{s.name}</p>
                   <p className="text-[9px] text-text-tertiary dark:text-text-secondary">
                     {s.title}
                   </p>

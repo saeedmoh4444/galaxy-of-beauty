@@ -36,7 +36,7 @@ export default function BeautyBingoPage(): JSX.Element {
                 <button
                   key={t.id as number}
                   onClick={() => markMut.mutate({ taskId: t.id as number })}
-                  className={`rounded-xl p-3 text-xs font-medium transition-all ${t.completed ? 'bg-green-100 dark:bg-green-900 text-green-700 line-through' : 'bg-surface-muted dark:bg-gray-800 hover:bg-brand-50'}`}
+                  className={`rounded-xl p-3 text-xs font-medium transition-all ${t.completed ? 'bg-green-100 dark:bg-green-900 text-green-700 line-through' : 'bg-surface-muted hover:bg-brand-50'}`}
                 >
                   {t.completed ? '' : '⬜'} {t.task as string}
                 </button>

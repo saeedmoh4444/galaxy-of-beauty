@@ -305,7 +305,7 @@ export default function CustomerDashboardPage(): JSX.Element {
                   {pins.data.slice(0, 3).map((p) => (
                     <div
                       key={p.id}
-                      className="relative h-20 w-20 shrink-0 overflow-hidden rounded-xl bg-surface-muted dark:bg-gray-800"
+                      className="relative h-20 w-20 shrink-0 overflow-hidden rounded-xl bg-surface-muted"
                     >
                       <ServiceImage
                         src={p.imageUrl ?? null}
@@ -345,7 +345,7 @@ export default function CustomerDashboardPage(): JSX.Element {
                         </div>
                         <span className="text-xs font-bold text-brand-600">{pct.toFixed(0)}%</span>
                       </div>
-                      <div className="mt-1 h-1.5 rounded-full bg-surface-muted dark:bg-gray-700">
+                      <div className="mt-1 h-1.5 rounded-full bg-surface-muted">
                         <div
                           className="h-1.5 rounded-full bg-brand-500"
                           style={{ width: `${pct}%` }}

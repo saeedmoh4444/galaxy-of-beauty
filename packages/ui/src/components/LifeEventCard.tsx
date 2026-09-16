@@ -204,9 +204,7 @@ export function LifeEventCard({
           {e.emoji}
         </div>
         <div>
-          <h4 className="text-sm font-bold text-text-primary dark:text-gray-100">
-            {e.title[locale]}
-          </h4>
+          <h4 className="text-sm font-bold text-text-primary">{e.title[locale]}</h4>
           <p className="text-[10px] text-text-tertiary dark:text-text-tertiary">
             {e.description[locale]}
           </p>
@@ -215,12 +213,10 @@ export function LifeEventCard({
 
       {/* Package name */}
       <div className="mt-3 rounded-xl bg-white/60 p-3 dark:bg-gray-800/60">
-        <p className="text-[10px] font-bold text-text-primary dark:text-gray-100">
-          {e.packageName[locale]}
-        </p>
+        <p className="text-[10px] font-bold text-text-primary">{e.packageName[locale]}</p>
         <ul className="mt-1.5 grid grid-cols-2 gap-x-2 gap-y-0.5">
           {e.contents.map((item) => (
-            <li key={item.ar} className="text-[10px] text-text-secondary dark:text-gray-300">
+            <li key={item.ar} className="text-[10px] text-text-secondary">
               {item[locale]}
             </li>
           ))}
@@ -231,7 +227,7 @@ export function LifeEventCard({
       <div className="mt-3 flex items-center justify-between">
         <div>
           <p className="text-[9px] text-text-tertiary dark:text-text-secondary">{priceLabel}</p>
-          <p className="text-lg font-bold text-text-primary dark:text-gray-100">
+          <p className="text-lg font-bold text-text-primary">
             {e.price} {currencySuffix}
           </p>
         </div>

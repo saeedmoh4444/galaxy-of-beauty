@@ -79,7 +79,7 @@ export default function CampaignsPage(): JSX.Element {
     <div className="mx-auto max-w-6xl px-4 py-12">
       <div className="mb-10 text-center">
         <span className="text-6xl">📣</span>
-        <h1 className="mt-4 text-3xl font-bold text-text-primary dark:text-gray-100">
+        <h1 className="mt-4 text-3xl font-bold text-text-primary">
           {t('marketing.campaigns.title')}
         </h1>
         <p className="mt-2 text-text-secondary dark:text-text-tertiary">
@@ -136,7 +136,7 @@ export default function CampaignsPage(): JSX.Element {
                         <Countdown endsAt={c.endsAt} />
                       </div>
                       {c.promoCode && (
-                        <div className="mt-2 flex items-center gap-2 rounded-lg bg-surface-muted dark:bg-gray-800 p-2">
+                        <div className="mt-2 flex items-center gap-2 rounded-lg bg-surface-muted p-2">
                           <span className="text-xs text-text-secondary">
                             {t('marketing.campaigns.code-label')}
                           </span>

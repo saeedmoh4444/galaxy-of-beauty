@@ -42,10 +42,8 @@ export function AddOnSuggestions({
   if (addOns.length === 0) return null;
 
   return (
-    <div
-      className={`rounded-2xl border border-edge bg-surface-muted p-4 dark:border-gray-700 dark:bg-gray-900 ${className}`}
-    >
-      <h4 className="text-sm font-semibold text-text-primary dark:text-gray-100">{title}</h4>
+    <div className={`rounded-2xl border border-edge bg-surface-muted p-4 ${className}`}>
+      <h4 className="text-sm font-semibold text-text-primary">{title}</h4>
       <p className="mt-1 text-xs text-text-secondary dark:text-text-tertiary">{subtitle}</p>
       <div className="mt-3 space-y-2">
         {addOns.map((addOn) => (
@@ -54,7 +52,7 @@ export function AddOnSuggestions({
             className="flex items-center justify-between rounded-lg bg-white p-3 dark:bg-gray-800"
           >
             <div>
-              <span className="text-sm font-medium text-text-primary dark:text-gray-100">
+              <span className="text-sm font-medium text-text-primary">
                 {addOn.emoji ? `${addOn.emoji} ` : ''}
                 {addOn.name}
               </span>

@@ -160,7 +160,7 @@ export function BeautyChallengeCard({
                     ? 'bg-emerald-100 text-emerald-600 dark:bg-emerald-900 dark:text-emerald-400'
                     : isToday
                       ? 'bg-emerald-500 text-white ring-2 ring-emerald-300'
-                      : 'bg-surface-muted text-text-tertiary dark:bg-gray-800 dark:text-text-secondary',
+                      : 'bg-surface-muted text-text-tertiary dark:text-text-secondary',
                 )}
               >
                 {isCompleted ? '' : d.emoji}

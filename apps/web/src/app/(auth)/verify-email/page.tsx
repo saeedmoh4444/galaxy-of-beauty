@@ -44,7 +44,7 @@ export default function VerifyEmailPage(): JSX.Element {
   return (
     <div className="flex min-h-screen items-center justify-center px-4">
       <Card padding="lg" className="w-full max-w-md text-center">
-        <h1 className="mb-4 text-2xl font-bold text-text-primary dark:text-gray-100">
+        <h1 className="mb-4 text-2xl font-bold text-text-primary">
           {t('auth.verify-email-title')}
         </h1>
         {status === 'loading' && (

@@ -144,13 +144,13 @@ export default function AdminDashboardPage(): JSX.Element {
             {t('admin.dashboard.system-info')}
           </h3>
           <div className="grid gap-3 text-sm sm:grid-cols-3">
-            <div className="rounded-lg bg-surface-muted p-3 dark:bg-gray-800">
+            <div className="rounded-lg bg-surface-muted p-3">
               <span className="text-text-secondary">Node.js</span>
               <p className="font-mono font-semibold text-text-primary">
                 {String(stats?.nodeVersion ?? '-')}
               </p>
             </div>
-            <div className="rounded-lg bg-surface-muted p-3 dark:bg-gray-800">
+            <div className="rounded-lg bg-surface-muted p-3">
               <span className="text-text-secondary">{t('admin.dashboard.uptime')}</span>
               <p className="font-semibold text-text-primary">
                 {t('admin.dashboard.uptime-minutes', {
@@ -158,7 +158,7 @@ export default function AdminDashboardPage(): JSX.Element {
                 })}
               </p>
             </div>
-            <div className="rounded-lg bg-surface-muted p-3 dark:bg-gray-800">
+            <div className="rounded-lg bg-surface-muted p-3">
               <span className="text-text-secondary">{t('admin.dashboard.database')}</span>
               <p className="font-semibold text-success">
                 {String(stats?.dbStatus ?? t('admin.dashboard.connected'))}

@@ -50,9 +50,7 @@ export default function BundlesPage(): JSX.Element {
   return (
     <div className="mx-auto max-w-5xl px-4 py-8">
       <div className="text-center mb-8">
-        <h1 className="text-3xl font-bold text-text-primary dark:text-gray-100">
-          {t('marketing.bundles.title')}
-        </h1>
+        <h1 className="text-3xl font-bold text-text-primary">{t('marketing.bundles.title')}</h1>
         <p className="mt-2 text-text-secondary">{t('marketing.bundles.subtitle')}</p>
       </div>
 
@@ -101,11 +99,11 @@ export default function BundlesPage(): JSX.Element {
                 <button
                   key={svc.id}
                   onClick={() => toggle(svc.id)}
-                  className={`text-end rounded-2xl border-2 p-4 transition-all ${selected.has(svc.id) ? 'border-brand-500 bg-brand-50 dark:bg-brand-950' : 'border-edge hover:border-brand-300 dark:border-gray-700'}`}
+                  className={`text-end rounded-2xl border-2 p-4 transition-all ${selected.has(svc.id) ? 'border-brand-500 bg-brand-50 dark:bg-brand-950' : 'border-edge hover:border-brand-300'}`}
                 >
                   <div className="flex items-center justify-between">
                     <div>
-                      <p className="font-semibold text-text-primary dark:text-gray-100">
+                      <p className="font-semibold text-text-primary">
                         {localize(svc.titleJson, locale)}
                       </p>
                       <p className="text-sm text-text-secondary">

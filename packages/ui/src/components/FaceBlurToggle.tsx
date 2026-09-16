@@ -104,8 +104,8 @@ export function FaceBlurToggle({
       )}
 
       {/* Status */}
-      <div className="mt-2 rounded-lg bg-surface-muted p-2 dark:bg-gray-800">
-        <p className="text-center text-[10px] text-text-secondary dark:text-gray-300">
+      <div className="mt-2 rounded-lg bg-surface-muted p-2">
+        <p className="text-center text-[10px] text-text-secondary">
           {enabled ? enabledFooterText : disabledFooterText}
         </p>
       </div>

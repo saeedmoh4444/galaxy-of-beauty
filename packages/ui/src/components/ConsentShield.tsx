@@ -160,7 +160,7 @@ export function ConsentShield({
                 'flex items-center gap-3 rounded-xl border p-3 transition-all',
                 isGranted
                   ? 'border-emerald-200 bg-emerald-50 dark:border-emerald-800 dark:bg-emerald-950'
-                  : 'border-edge-muted bg-surface-muted dark:border-gray-800 dark:bg-gray-800',
+                  : 'border-edge-muted bg-surface-muted',
               )}
             >
               <span className="text-lg shrink-0" aria-hidden="true">
@@ -168,9 +168,7 @@ export function ConsentShield({
               </span>
               <div className="min-w-0 flex-1">
                 <div className="flex items-center gap-1.5">
-                  <p className="text-xs font-bold text-text-primary dark:text-gray-100">
-                    {def.label[locale]}
-                  </p>
+                  <p className="text-xs font-bold text-text-primary">{def.label[locale]}</p>
                   {isRequired && (
                     <span className="rounded bg-amber-100 px-1.5 py-0.5 text-[8px] font-bold text-amber-700 dark:bg-amber-900 dark:text-amber-300">
                       {requiredLabel}

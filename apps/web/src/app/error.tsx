@@ -55,7 +55,7 @@ export default function RootError({
         </button>
         <Link
           href="/"
-          className="rounded-xl border border-edge px-6 py-3 text-sm font-semibold text-text-secondary transition-colors hover:bg-surface-muted dark:border-gray-600 dark:text-gray-300 dark:hover:bg-gray-800"
+          className="rounded-xl border border-edge px-6 py-3 text-sm font-semibold text-text-secondary transition-colors hover:bg-surface-muted dark:hover:bg-gray-800"
         >
           {t('common.back-home', locale)}
         </Link>

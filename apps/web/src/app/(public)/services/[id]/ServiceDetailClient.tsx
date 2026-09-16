@@ -170,7 +170,7 @@ export function ServiceDetailClient({ svc }: { svc: ServiceDetailData }): JSX.El
               .share?.({ title, url: window.location.href })
               .catch(() => navigator.clipboard.writeText(window.location.href))
           }
-          className="rounded-lg border border-edge px-3 py-1 text-xs text-text-secondary hover:bg-surface-muted dark:border-gray-700 dark:text-text-tertiary"
+          className="rounded-lg border border-edge px-3 py-1 text-xs text-text-secondary hover:bg-surface-muted dark:text-text-tertiary"
         >
           {t('marketing.service-detail.share')}
         </button>
@@ -178,7 +178,7 @@ export function ServiceDetailClient({ svc }: { svc: ServiceDetailData }): JSX.El
           onClick={() => {
             navigator.clipboard.writeText(window.location.href);
           }}
-          className="rounded-lg border border-edge px-3 py-1 text-xs text-text-secondary hover:bg-surface-muted dark:border-gray-700 dark:text-text-tertiary"
+          className="rounded-lg border border-edge px-3 py-1 text-xs text-text-secondary hover:bg-surface-muted dark:text-text-tertiary"
         >
           {t('marketing.service-detail.copy-link')}
         </button>
@@ -210,10 +210,7 @@ export function ServiceDetailClient({ svc }: { svc: ServiceDetailData }): JSX.El
           </h2>
           <div className="mt-2 flex flex-wrap gap-2">
             {variants.map((v) => (
-              <span
-                key={v.id}
-                className="rounded-full bg-surface-muted px-3 py-1 text-sm dark:bg-gray-800"
-              >
+              <span key={v.id} className="rounded-full bg-surface-muted px-3 py-1 text-sm">
                 {localize(v.nameJson, locale)}
                 {Number(v.priceDelta) > 0 ? ` (+${formatCurrency(Number(v.priceDelta))})` : ''}
               </span>

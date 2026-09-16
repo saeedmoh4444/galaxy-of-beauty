@@ -106,13 +106,13 @@ export function PricingCoachCard({
 
       {/* Service */}
       <div className="mt-3 rounded-xl bg-blue-50 p-3 dark:bg-blue-950">
-        <p className="text-xs font-bold text-text-primary dark:text-gray-100">{service.name}</p>
+        <p className="text-xs font-bold text-text-primary">{service.name}</p>
         <div className="mt-2 flex items-center justify-between">
           <div className="text-center">
             <p className="text-[9px] text-text-tertiary dark:text-text-secondary">
               {currentPriceLabel}
             </p>
-            <p className="text-lg font-bold text-text-primary dark:text-gray-100">
+            <p className="text-lg font-bold text-text-primary">
               {service.currentPrice} {currencySuffix}
             </p>
           </div>
@@ -136,11 +136,11 @@ export function PricingCoachCard({
             +{diff} {currencySuffix} (+{pctIncrease}%)
           </p>
         </div>
-        <div className="rounded-lg bg-surface-muted p-2 dark:bg-gray-800">
+        <div className="rounded-lg bg-surface-muted p-2">
           <p className="text-[9px] text-text-tertiary dark:text-text-secondary">
             {competitorAvgLabel}
           </p>
-          <p className="text-xs font-bold text-text-primary dark:text-gray-100">
+          <p className="text-xs font-bold text-text-primary">
             {service.competitorAvg ? `${service.competitorAvg} ${currencySuffix}` : '—'}
           </p>
         </div>
@@ -148,7 +148,7 @@ export function PricingCoachCard({
 
       {/* Demand indicator */}
       {demand && (
-        <div className="mt-2 flex items-center gap-1.5 rounded-lg bg-surface-muted p-2 dark:bg-gray-800">
+        <div className="mt-2 flex items-center gap-1.5 rounded-lg bg-surface-muted p-2">
           <span>{demand.emoji}</span>
           <span className={cn('text-[10px] font-medium', demand.color)}>
             {demand.label[locale]}

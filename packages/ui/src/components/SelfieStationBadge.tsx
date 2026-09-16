@@ -68,9 +68,7 @@ export function SelfieStationBadge({
             key={f.label.ar}
             className={cn(
               'flex items-center gap-2 rounded-lg px-2.5 py-2',
-              f.available
-                ? 'bg-fuchsia-50 dark:bg-fuchsia-950'
-                : 'bg-surface-muted opacity-40 dark:bg-gray-800',
+              f.available ? 'bg-fuchsia-50 dark:bg-fuchsia-950' : 'bg-surface-muted opacity-40',
             )}
           >
             <span className="text-sm" aria-hidden="true">

@@ -63,13 +63,11 @@ export default function CorporateWellnessPage(): JSX.Element {
                   key={p.id}
                   type="button"
                   onClick={() => setPlanId(p.id)}
-                  className={`flex gap-4 rounded-2xl border-2 p-5 text-end transition-all ${planId === p.id ? 'border-rose-300 bg-rose-50 dark:border-rose-700 dark:bg-rose-950' : 'border-edge-muted bg-white dark:border-gray-800 dark:bg-gray-900'}`}
+                  className={`flex gap-4 rounded-2xl border-2 p-5 text-end transition-all ${planId === p.id ? 'border-rose-300 bg-rose-50 dark:border-rose-700 dark:bg-rose-950' : 'border-edge-muted bg-white dark:bg-gray-900'}`}
                 >
                   <span className="text-4xl shrink-0">{p.emoji}</span>
                   <div className="flex-1">
-                    <h4 className="text-sm font-bold text-text-primary dark:text-gray-100">
-                      {p.nameAr}
-                    </h4>
+                    <h4 className="text-sm font-bold text-text-primary">{p.nameAr}</h4>
                     <p className="mt-1 text-lg font-extrabold text-rose-600 dark:text-rose-400">
                       {p.price.toLocaleString()} {t('beautyParty.currency')}{' '}
                       <span className="text-xs font-normal text-text-tertiary dark:text-text-secondary">
@@ -103,25 +101,25 @@ export default function CorporateWellnessPage(): JSX.Element {
             </button>
 
             {showForm && (
-              <div className="space-y-4 rounded-2xl border border-edge-muted bg-white p-5 dark:border-gray-800 dark:bg-gray-900">
+              <div className="space-y-4 rounded-2xl border border-edge-muted bg-white p-5 dark:bg-gray-900">
                 <input
                   value={companyName}
                   onChange={(e) => setCompanyName(e.target.value)}
                   placeholder={t('corporateWellness.companyPlaceholder')}
-                  className="w-full rounded-xl border border-edge px-4 py-3 text-sm text-end dark:border-gray-700 dark:bg-gray-800 dark:text-gray-100"
+                  className="w-full rounded-xl border border-edge px-4 py-3 text-sm text-end dark:bg-gray-800 dark:text-gray-100"
                 />
                 <input
                   value={contactName}
                   onChange={(e) => setContactName(e.target.value)}
                   placeholder={t('corporateWellness.contactPlaceholder')}
-                  className="w-full rounded-xl border border-edge px-4 py-3 text-sm text-end dark:border-gray-700 dark:bg-gray-800 dark:text-gray-100"
+                  className="w-full rounded-xl border border-edge px-4 py-3 text-sm text-end dark:bg-gray-800 dark:text-gray-100"
                 />
                 <input
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   type="email"
                   placeholder={t('corporateWellness.emailPlaceholder')}
-                  className="w-full rounded-xl border border-edge px-4 py-3 text-sm text-end dark:border-gray-700 dark:bg-gray-800 dark:text-gray-100"
+                  className="w-full rounded-xl border border-edge px-4 py-3 text-sm text-end dark:bg-gray-800 dark:text-gray-100"
                 />
                 <button
                   type="button"
@@ -137,15 +135,13 @@ export default function CorporateWellnessPage(): JSX.Element {
           <div className="space-y-6">
             {enquiryItems.length > 0 && (
               <Card className="p-4">
-                <h3 className="text-sm font-bold text-text-primary dark:text-gray-100">
+                <h3 className="text-sm font-bold text-text-primary">
                   {t('corporateWellness.myEnquiries')}
                 </h3>
                 <div className="mt-3 space-y-2">
                   {enquiryItems.map((e, i) => (
-                    <div key={i} className="rounded-lg bg-surface-muted p-3 dark:bg-gray-800">
-                      <p className="text-sm font-semibold text-text-primary dark:text-gray-100">
-                        {e.companyName}
-                      </p>
+                    <div key={i} className="rounded-lg bg-surface-muted p-3">
+                      <p className="text-sm font-semibold text-text-primary">{e.companyName}</p>
                       <p className="text-xs text-text-tertiary dark:text-text-secondary">
                         {e.planId} ·{' '}
                         {new Date(e.createdAt).toLocaleDateString(

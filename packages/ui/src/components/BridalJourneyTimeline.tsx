@@ -208,7 +208,7 @@ export function BridalJourneyTimeline({
                         ? 'border-emerald-300 bg-emerald-50 dark:border-emerald-800 dark:bg-emerald-950'
                         : isCurrent
                           ? 'border-rose-400 bg-rose-50 dark:border-rose-800 dark:bg-rose-950'
-                          : 'border-edge bg-surface-muted dark:border-gray-700 dark:bg-gray-800',
+                          : 'border-edge bg-surface-muted',
                     )}
                   >
                     <span className={cn(isPast && !isCurrent && 'opacity-40')}>
@@ -229,7 +229,7 @@ export function BridalJourneyTimeline({
                 <div className={cn('pb-3 flex-1', isPast && !isCurrent && 'opacity-50')}>
                   <div className="flex items-center justify-between">
                     <div>
-                      <span className="text-xs font-bold text-text-primary dark:text-gray-100">
+                      <span className="text-xs font-bold text-text-primary">
                         {beforeLabel} {m.month} {monthsWord}
                       </span>
                       <span className="ms-2 text-[10px] text-text-tertiary dark:text-text-secondary">
@@ -243,9 +243,7 @@ export function BridalJourneyTimeline({
                     )}
                   </div>
 
-                  <p className="mt-0.5 text-[10px] text-text-secondary dark:text-gray-300">
-                    {m.description[locale]}
-                  </p>
+                  <p className="mt-0.5 text-[10px] text-text-secondary">{m.description[locale]}</p>
 
                   {/* Services */}
                   <div className="mt-1 flex flex-wrap gap-1">

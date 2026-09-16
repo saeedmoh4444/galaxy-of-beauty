@@ -69,7 +69,7 @@ export default function BeforeAfterPage(): JSX.Element {
                   <p className="text-[10px] text-text-tertiary mb-1 text-center">
                     {t('marketing.before-after.before-label')}
                   </p>
-                  <div className="h-32 rounded-xl bg-surface-muted dark:bg-gray-800 flex items-center justify-center text-3xl">
+                  <div className="h-32 rounded-xl bg-surface-muted flex items-center justify-center text-3xl">
                     📷
                   </div>
                 </div>

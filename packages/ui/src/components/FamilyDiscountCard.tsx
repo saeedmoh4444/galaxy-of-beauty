@@ -76,7 +76,7 @@ export function FamilyDiscountCard({
                 : 'bg-white/30 dark:bg-gray-800/30 opacity-50',
             )}
           >
-            <p className="text-[10px] font-bold text-text-primary dark:text-gray-100">
+            <p className="text-[10px] font-bold text-text-primary">
               {tier.size} {membersText}
             </p>
             <p className="text-[10px] font-bold text-emerald-700 dark:text-emerald-300">
