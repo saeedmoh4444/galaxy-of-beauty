@@ -4217,6 +4217,11 @@ export const miscMessages = {
   },
   // E6e — before/after galleries
   'gallery.beforeAfterTitle': { ar: 'نتائج قبل وبعد', en: 'Before & after results' },
+  'gallery.emptyTitle': { ar: 'صور النتائج قادمة', en: 'Real results, coming soon' },
+  'gallery.emptyDescription': {
+    ar: 'ستظهر هنا صور قبل وبعد موثّقة من خبيراتنا فور اعتمادها',
+    en: 'Verified before & after photos from our experts appear here once approved.',
+  },
   'tech.shorts.type-reel': { ar: 'فيديو (ريل)', en: 'Reel' },
   'tech.shorts.type-before-after': { ar: 'صورة قبل/بعد', en: 'Before/after image' },
   'tech.shorts.after-image-url': { ar: 'رابط صورة النتيجة', en: 'Result image URL' },

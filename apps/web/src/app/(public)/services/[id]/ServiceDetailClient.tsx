@@ -91,11 +91,13 @@ export function ServiceDetailClient({ svc }: { svc: ServiceDetailData }): JSX.El
     },
   });
 
-  // E6e — before/after gallery for the first mapped technician.
-  const galleryTechUserId = techs[0]?.technician?.user?.id;
+  // E6e — before/after gallery merged across all mapped technicians.
+  const galleryTechUserIds = techs
+    .map((ts) => ts.technician?.user?.id)
+    .filter((id): id is number => !!id);
   const galleryQ = api.beautyShorts.gallery.useQuery(
-    { technicianUserId: galleryTechUserId ?? 0 },
-    { enabled: !!galleryTechUserId },
+    { technicianUserIds: galleryTechUserIds },
+    { enabled: galleryTechUserIds.length > 0 },
   );
   const galleryItems = (galleryQ.data as GalleryItem[] | undefined) ?? [];
 
@@ -277,16 +279,16 @@ export function ServiceDetailClient({ svc }: { svc: ServiceDetailData }): JSX.El
         </div>
       )}
 
-      {/* E6e — before/after gallery (approved shorts of the first technician) */}
-      {galleryItems.length > 0 && (
+      {/* E6e — before/after gallery (approved shorts across mapped technicians) */}
+      {galleryItems.length > 0 ? (
         <div className="mt-12" data-testid="ba-gallery">
           <div className="mb-4 flex items-center justify-between">
             <h2 className="text-lg font-semibold text-text-primary">
               {t('gallery.beforeAfterTitle')}
             </h2>
-            {galleryTechUserId && (
+            {galleryTechUserIds[0] && (
               <Link
-                href={`/gallery/${galleryTechUserId}`}
+                href={`/gallery/${galleryTechUserIds[0]}`}
                 className="text-sm font-semibold text-brand-600 hover:underline"
               >
                 {t('marketing.service-detail.view-full-gallery')}
@@ -305,6 +307,15 @@ export function ServiceDetailClient({ svc }: { svc: ServiceDetailData }): JSX.El
             ))}
           </div>
         </div>
+      ) : (
+        techs.length > 0 && (
+          <div className="mt-12" data-testid="ba-gallery-empty">
+            <EmptyState
+              title={t('gallery.emptyTitle')}
+              description={t('gallery.emptyDescription')}
+            />
+          </div>
+        )
       )}
 
       {/* Related — real imagery, same category mapping as the hero */}
