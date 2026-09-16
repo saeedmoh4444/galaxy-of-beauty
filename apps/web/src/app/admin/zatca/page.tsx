@@ -98,7 +98,7 @@ export default function AdminZatcaPage(): JSX.Element {
             <button
               key={tab}
               onClick={() => setStatusTab(tab)}
-              className={`rounded-full px-4 py-1.5 text-sm font-medium ${statusTab === tab ? 'bg-brand-600 text-white' : 'bg-surface-muted dark:text-gray-300'}`}
+              className={`rounded-full px-4 py-1.5 text-sm font-medium ${statusTab === tab ? 'bg-brand-600 text-white' : 'bg-surface-muted text-text-secondary'}`}
             >
               {t(badge.labelKey)}
             </button>
