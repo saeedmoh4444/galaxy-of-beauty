@@ -99,7 +99,7 @@ export default function AdminTechniciansPage(): JSX.Element {
           <button
             key={tab}
             onClick={() => setKycTab(tab)}
-            className={`rounded-full px-4 py-1.5 text-sm font-medium ${kycTab === tab ? 'bg-brand-600 text-white' : 'bg-surface-muted dark:text-gray-300'}`}
+            className={`rounded-full px-4 py-1.5 text-sm font-medium ${kycTab === tab ? 'bg-brand-600 text-white' : 'bg-surface-muted text-text-secondary'}`}
           >
             {tab === 'ALL'
               ? t('admin.all')

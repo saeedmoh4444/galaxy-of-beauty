@@ -106,20 +106,20 @@ export default function CorporateWellnessPage(): JSX.Element {
                   value={companyName}
                   onChange={(e) => setCompanyName(e.target.value)}
                   placeholder={t('corporateWellness.companyPlaceholder')}
-                  className="w-full rounded-xl border border-edge px-4 py-3 text-sm text-end bg-surface-elevated dark:text-gray-100"
+                  className="w-full rounded-xl border border-edge px-4 py-3 text-sm text-end bg-surface-elevated text-text-primary"
                 />
                 <input
                   value={contactName}
                   onChange={(e) => setContactName(e.target.value)}
                   placeholder={t('corporateWellness.contactPlaceholder')}
-                  className="w-full rounded-xl border border-edge px-4 py-3 text-sm text-end bg-surface-elevated dark:text-gray-100"
+                  className="w-full rounded-xl border border-edge px-4 py-3 text-sm text-end bg-surface-elevated text-text-primary"
                 />
                 <input
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   type="email"
                   placeholder={t('corporateWellness.emailPlaceholder')}
-                  className="w-full rounded-xl border border-edge px-4 py-3 text-sm text-end bg-surface-elevated dark:text-gray-100"
+                  className="w-full rounded-xl border border-edge px-4 py-3 text-sm text-end bg-surface-elevated text-text-primary"
                 />
                 <button
                   type="button"
