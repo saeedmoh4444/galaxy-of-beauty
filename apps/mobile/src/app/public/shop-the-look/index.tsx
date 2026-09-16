@@ -1,13 +1,6 @@
 import type { JSX } from 'react';
-import {
-  View,
-  Text,
-  ScrollView,
-  StyleSheet,
-  TouchableOpacity,
-  Image,
-  RefreshControl,
-} from 'react-native';
+import { View, Text, ScrollView, StyleSheet, TouchableOpacity, RefreshControl } from 'react-native';
+import { ServiceImage } from '@/components/ServiceImage';
 import { SkeletonList } from '@/components/SkeletonCard';
 import { trpc } from '@/lib/trpc-react';
 import { useLocale } from '@/components/LocaleProvider';
@@ -58,13 +51,13 @@ export default function ShopTheLookScreen(): JSX.Element {
         looks.map((l) => (
           <View key={l.id} style={styles.card}>
             <View style={styles.lookHeader}>
-              {l.imageUrl ? (
-                <Image source={{ uri: l.imageUrl }} style={styles.lookImage} />
-              ) : (
-                <View style={styles.lookPlaceholder}>
-                  <Text style={{ fontSize: 32 }}>👗</Text>
-                </View>
-              )}
+              <ServiceImage
+                src={l.imageUrl ?? null}
+                alt={l.titleAr ?? ''}
+                height={80}
+                width={80}
+                borderRadius={12}
+              />
               <View style={{ flex: 1 }}>
                 <Text style={styles.lookTitle}>{l.titleAr ?? ''}</Text>
                 <Text style={styles.lookBy}> {l.technician ?? ''}</Text>
