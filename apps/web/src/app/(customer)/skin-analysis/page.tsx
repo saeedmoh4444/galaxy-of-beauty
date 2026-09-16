@@ -48,9 +48,7 @@ export default function SkinAnalysisPage(): JSX.Element {
     <DashboardLayout userRole="CUSTOMER">
       <div className="mx-auto max-w-4xl space-y-6">
         <div>
-          <h1 className="text-2xl font-bold text-text-primary dark:text-gray-100">
-            {t('skin.title')}
-          </h1>
+          <h1 className="text-2xl font-bold text-text-primary">{t('skin.title')}</h1>
           <p className="mt-1 text-sm text-text-secondary">{t('skin.subtitle')}</p>
         </div>
 
@@ -98,7 +96,7 @@ export default function SkinAnalysisPage(): JSX.Element {
                 placeholder="https://..."
                 value={imageUrl}
                 onChange={(e) => setImageUrl(e.target.value)}
-                className="flex-1 rounded-lg border border-edge px-3 py-2 text-sm dark:border-gray-700 dark:bg-gray-800"
+                className="flex-1 rounded-lg border border-edge px-3 py-2 text-sm dark:bg-gray-800"
               />
               <Button
                 onClick={() => {
@@ -183,7 +181,7 @@ export default function SkinAnalysisPage(): JSX.Element {
                             ? t('skin.recs.products')
                             : t('skin.recs.routine')}
                       </p>
-                      <ul className="list-disc list-inside text-sm text-text-primary dark:text-gray-300 space-y-0.5">
+                      <ul className="list-disc list-inside text-sm text-text-primary space-y-0.5">
                         {recs.map((r, i) => (
                           <li key={i}>{r}</li>
                         ))}
@@ -232,7 +230,7 @@ export default function SkinAnalysisPage(): JSX.Element {
                       {(res?.concerns as string[])?.slice(0, 3).map((c: string) => (
                         <span
                           key={c}
-                          className="text-[10px] text-text-secondary bg-surface-muted dark:bg-gray-800 rounded px-1.5 py-0.5"
+                          className="text-[10px] text-text-secondary bg-surface-muted rounded px-1.5 py-0.5"
                         >
                           {c}
                         </span>

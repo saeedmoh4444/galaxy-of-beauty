@@ -118,9 +118,7 @@ export default function BeautyProfilePage(): JSX.Element {
   return (
     <DashboardLayout userRole="CUSTOMER">
       <div className="mx-auto max-w-2xl space-y-6">
-        <h1 className="text-2xl font-bold text-text-primary dark:text-gray-100">
-          {t('beautyProfile.title')}
-        </h1>
+        <h1 className="text-2xl font-bold text-text-primary">{t('beautyProfile.title')}</h1>
         <p className="text-sm text-text-secondary">{t('beautyProfile.subtitle')}</p>
 
         {isLoading ? (
@@ -161,7 +159,7 @@ export default function BeautyProfilePage(): JSX.Element {
             />
 
             <Card padding="md">
-              <h3 className="mb-3 font-semibold text-text-primary dark:text-gray-100">
+              <h3 className="mb-3 font-semibold text-text-primary">
                 {t('beautyProfile.concernsTitle')}
               </h3>
               <div className="flex flex-wrap gap-2">
@@ -169,7 +167,7 @@ export default function BeautyProfilePage(): JSX.Element {
                   <button
                     key={o}
                     onClick={() => toggle(concerns, setConcerns, o)}
-                    className={`rounded-full px-3 py-1.5 text-xs font-medium transition-colors ${concerns.includes(o) ? 'bg-brand-600 text-white' : 'bg-surface-muted text-text-secondary dark:bg-gray-800'}`}
+                    className={`rounded-full px-3 py-1.5 text-xs font-medium transition-colors ${concerns.includes(o) ? 'bg-brand-600 text-white' : 'bg-surface-muted text-text-secondary'}`}
                   >
                     {LABELS[o] ? t(LABELS[o]) : o}
                   </button>
@@ -178,7 +176,7 @@ export default function BeautyProfilePage(): JSX.Element {
             </Card>
 
             <Card padding="md">
-              <h3 className="mb-3 font-semibold text-text-primary dark:text-gray-100">
+              <h3 className="mb-3 font-semibold text-text-primary">
                 {t('beautyProfile.scentsTitle')}
               </h3>
               <div className="flex flex-wrap gap-2">
@@ -186,7 +184,7 @@ export default function BeautyProfilePage(): JSX.Element {
                   <button
                     key={o}
                     onClick={() => toggle(scents, setScents, o)}
-                    className={`rounded-full px-3 py-1.5 text-xs font-medium transition-colors ${scents.includes(o) ? 'bg-accent-500 text-white' : 'bg-surface-muted text-text-secondary dark:bg-gray-800'}`}
+                    className={`rounded-full px-3 py-1.5 text-xs font-medium transition-colors ${scents.includes(o) ? 'bg-accent-500 text-white' : 'bg-surface-muted text-text-secondary'}`}
                   >
                     {LABELS[o] ? t(LABELS[o]) : o}
                   </button>
@@ -195,11 +193,11 @@ export default function BeautyProfilePage(): JSX.Element {
             </Card>
 
             <Card padding="md">
-              <h3 className="mb-2 font-semibold text-text-primary dark:text-gray-100">
+              <h3 className="mb-2 font-semibold text-text-primary">
                 {t('beautyProfile.notesTitle')}
               </h3>
               <textarea
-                className="w-full rounded-lg border border-edge p-3 text-sm dark:border-gray-600 dark:bg-gray-800"
+                className="w-full rounded-lg border border-edge p-3 text-sm dark:bg-gray-800"
                 rows={3}
                 value={notes}
                 onChange={(e) => setNotes(e.target.value)}
@@ -209,7 +207,7 @@ export default function BeautyProfilePage(): JSX.Element {
 
             {/* E3 — fitness measurements + goals */}
             <Card padding="md">
-              <h3 className="mb-3 font-semibold text-text-primary dark:text-gray-100">
+              <h3 className="mb-3 font-semibold text-text-primary">
                 {t('profile.measurements.title')}
               </h3>
               <div className="grid gap-3 sm:grid-cols-3">
@@ -293,7 +291,7 @@ function Section({
   const { t } = useLocale();
   return (
     <Card padding="md">
-      <h3 className="mb-3 font-semibold text-text-primary dark:text-gray-100">{title}</h3>
+      <h3 className="mb-3 font-semibold text-text-primary">{title}</h3>
       <div className="flex flex-wrap gap-2">
         {options.map((o) => (
           <button

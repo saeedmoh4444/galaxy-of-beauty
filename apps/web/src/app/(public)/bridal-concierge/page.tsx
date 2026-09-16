@@ -199,7 +199,7 @@ function BridalDashboard(): JSX.Element {
     <>
       {/* Dashboard Header */}
       <div className="text-center sm:text-end">
-        <h1 className="text-2xl font-bold text-text-primary dark:text-gray-100">
+        <h1 className="text-2xl font-bold text-text-primary">
           {t('marketing.bridal-concierge.dashboard-title')}
         </h1>
         <p className="mt-1 text-sm text-text-secondary">
@@ -213,11 +213,11 @@ function BridalDashboard(): JSX.Element {
           {STEPS.map((step, idx) => (
             <div key={step.key} className="text-center">
               <div
-                className={`mx-auto flex h-12 w-12 items-center justify-center rounded-full text-2xl transition-all ${idx < currentStep ? 'bg-green-100 ring-2 ring-green-500 dark:bg-green-900' : idx === currentStep ? 'bg-brand-100 ring-2 ring-brand-500 animate-pulse dark:bg-brand-900' : 'bg-surface-muted dark:bg-gray-800 opacity-50'}`}
+                className={`mx-auto flex h-12 w-12 items-center justify-center rounded-full text-2xl transition-all ${idx < currentStep ? 'bg-green-100 ring-2 ring-green-500 dark:bg-green-900' : idx === currentStep ? 'bg-brand-100 ring-2 ring-brand-500 animate-pulse dark:bg-brand-900' : 'bg-surface-muted opacity-50'}`}
               >
                 {idx < currentStep ? '' : step.emoji}
               </div>
-              <p className="mt-1.5 text-xs font-semibold text-text-primary dark:text-gray-300 hidden sm:block">
+              <p className="mt-1.5 text-xs font-semibold text-text-primary hidden sm:block">
                 {t(step.label)}
               </p>
             </div>
@@ -234,7 +234,7 @@ function BridalDashboard(): JSX.Element {
       {/* Wedding Details */}
       <Card padding="lg">
         <div className="flex items-center justify-between mb-4">
-          <h2 className="text-lg font-bold text-text-primary dark:text-gray-100">
+          <h2 className="text-lg font-bold text-text-primary">
             {t('marketing.bridal-concierge.wedding-details')}
           </h2>
           <Button size="sm" variant="ghost" onClick={openProfileForm}>
@@ -313,13 +313,11 @@ function BridalDashboard(): JSX.Element {
               )}
             </div>
             {concierge?.notes && (
-              <div className="mt-4 rounded-xl bg-surface-muted p-3 dark:bg-gray-800">
+              <div className="mt-4 rounded-xl bg-surface-muted p-3">
                 <p className="text-xs text-text-tertiary mb-1">
                   {t('marketing.bridal-concierge.notes-label')}
                 </p>
-                <p className="text-sm text-text-primary dark:text-gray-300 whitespace-pre-wrap">
-                  {concierge.notes}
-                </p>
+                <p className="text-sm text-text-primary whitespace-pre-wrap">{concierge.notes}</p>
               </div>
             )}
           </>
@@ -330,7 +328,7 @@ function BridalDashboard(): JSX.Element {
       <Card padding="lg">
         <div className="flex items-center justify-between mb-4">
           <div>
-            <h2 className="text-lg font-bold text-text-primary dark:text-gray-100">
+            <h2 className="text-lg font-bold text-text-primary">
               {t('marketing.bridal-concierge.services-title')}
             </h2>
             <p className="text-xs text-text-secondary">
@@ -358,7 +356,7 @@ function BridalDashboard(): JSX.Element {
               >
                 <div className="flex items-center gap-3">
                   <div
-                    className={`flex h-10 w-10 items-center justify-center rounded-full text-lg ${svc.isTrialDone ? 'bg-green-100 dark:bg-green-900' : 'bg-surface-muted dark:bg-gray-800'}`}
+                    className={`flex h-10 w-10 items-center justify-center rounded-full text-lg ${svc.isTrialDone ? 'bg-green-100 dark:bg-green-900' : 'bg-surface-muted'}`}
                   >
                     {svc.isTrialDone ? '✅' : '⏳'}
                   </div>
@@ -404,7 +402,7 @@ function BridalDashboard(): JSX.Element {
         padding="lg"
         className="bg-linear-to-r from-pink-50 to-brand-50 dark:from-pink-950 dark:to-brand-950 border-none"
       >
-        <h3 className="font-bold text-text-primary dark:text-gray-100 mb-3">
+        <h3 className="font-bold text-text-primary mb-3">
           {t('marketing.bridal-concierge.bride-tips')}
         </h3>
         <div className="grid gap-2 text-sm text-text-secondary dark:text-text-tertiary">
@@ -425,7 +423,7 @@ function BridalDashboard(): JSX.Element {
           <div>
             <label
               htmlFor="bcd-wedding-date"
-              className="block text-sm font-semibold text-text-primary dark:text-gray-300 mb-1"
+              className="block text-sm font-semibold text-text-primary mb-1"
             >
               {t('marketing.bridal-concierge.wedding-date')}
             </label>
@@ -434,14 +432,14 @@ function BridalDashboard(): JSX.Element {
               type="datetime-local"
               value={weddingDate}
               onChange={(e) => setWeddingDate(e.target.value)}
-              className="w-full rounded-lg border border-edge px-3 py-2 text-sm focus:border-brand-500 focus:outline-none focus:ring-1 focus:ring-brand-500 dark:border-gray-700 dark:bg-gray-800"
+              className="w-full rounded-lg border border-edge px-3 py-2 text-sm focus:border-brand-500 focus:outline-none focus:ring-1 focus:ring-brand-500 dark:bg-gray-800"
             />
           </div>
           <div className="grid gap-4 sm:grid-cols-2">
             <div>
               <label
                 htmlFor="bcd-venue"
-                className="block text-sm font-semibold text-text-primary dark:text-gray-300 mb-1"
+                className="block text-sm font-semibold text-text-primary mb-1"
               >
                 {t('marketing.bridal-concierge.venue')}
               </label>
@@ -451,13 +449,13 @@ function BridalDashboard(): JSX.Element {
                 value={venue}
                 onChange={(e) => setVenue(e.target.value)}
                 placeholder={t('marketing.bridal-concierge.venue-placeholder')}
-                className="w-full rounded-lg border border-edge px-3 py-2 text-sm focus:border-brand-500 focus:outline-none focus:ring-1 focus:ring-brand-500 dark:border-gray-700 dark:bg-gray-800"
+                className="w-full rounded-lg border border-edge px-3 py-2 text-sm focus:border-brand-500 focus:outline-none focus:ring-1 focus:ring-brand-500 dark:bg-gray-800"
               />
             </div>
             <div>
               <label
                 htmlFor="bcd-guests"
-                className="block text-sm font-semibold text-text-primary dark:text-gray-300 mb-1"
+                className="block text-sm font-semibold text-text-primary mb-1"
               >
                 {t('marketing.bridal-concierge.guest-count-label')}
               </label>
@@ -467,14 +465,14 @@ function BridalDashboard(): JSX.Element {
                 value={guestCount}
                 onChange={(e) => setGuestCount(e.target.value)}
                 placeholder={t('marketing.bridal-concierge.guests-placeholder')}
-                className="w-full rounded-lg border border-edge px-3 py-2 text-sm focus:border-brand-500 focus:outline-none focus:ring-1 focus:ring-brand-500 dark:border-gray-700 dark:bg-gray-800"
+                className="w-full rounded-lg border border-edge px-3 py-2 text-sm focus:border-brand-500 focus:outline-none focus:ring-1 focus:ring-brand-500 dark:bg-gray-800"
               />
             </div>
           </div>
           <div>
             <label
               htmlFor="bcd-budget"
-              className="block text-sm font-semibold text-text-primary dark:text-gray-300 mb-1"
+              className="block text-sm font-semibold text-text-primary mb-1"
             >
               {t('marketing.bridal-concierge.budget-label')}
             </label>
@@ -484,13 +482,13 @@ function BridalDashboard(): JSX.Element {
               value={budget}
               onChange={(e) => setBudget(e.target.value)}
               placeholder={t('marketing.bridal-concierge.budget-placeholder')}
-              className="w-full rounded-lg border border-edge px-3 py-2 text-sm focus:border-brand-500 focus:outline-none focus:ring-1 focus:ring-brand-500 dark:border-gray-700 dark:bg-gray-800"
+              className="w-full rounded-lg border border-edge px-3 py-2 text-sm focus:border-brand-500 focus:outline-none focus:ring-1 focus:ring-brand-500 dark:bg-gray-800"
             />
           </div>
           <div>
             <label
               htmlFor="bcd-notes"
-              className="block text-sm font-semibold text-text-primary dark:text-gray-300 mb-1"
+              className="block text-sm font-semibold text-text-primary mb-1"
             >
               {t('marketing.bridal-concierge.notes-field')}
             </label>
@@ -500,7 +498,7 @@ function BridalDashboard(): JSX.Element {
               onChange={(e) => setNotes(e.target.value)}
               placeholder={t('marketing.bridal-concierge.notes-placeholder')}
               rows={3}
-              className="w-full rounded-lg border border-edge px-3 py-2 text-sm focus:border-brand-500 focus:outline-none focus:ring-1 focus:ring-brand-500 dark:border-gray-700 dark:bg-gray-800"
+              className="w-full rounded-lg border border-edge px-3 py-2 text-sm focus:border-brand-500 focus:outline-none focus:ring-1 focus:ring-brand-500 dark:bg-gray-800"
             />
           </div>
           {formError && (
@@ -528,7 +526,7 @@ function BridalDashboard(): JSX.Element {
           <div>
             <label
               htmlFor="bcd-service-id"
-              className="block text-sm font-semibold text-text-primary dark:text-gray-300 mb-1"
+              className="block text-sm font-semibold text-text-primary mb-1"
             >
               {t('marketing.bridal-concierge.service-id-label')}
             </label>
@@ -538,13 +536,13 @@ function BridalDashboard(): JSX.Element {
               value={newServiceId}
               onChange={(e) => setNewServiceId(e.target.value)}
               placeholder={t('marketing.bridal-concierge.service-id-placeholder')}
-              className="w-full rounded-lg border border-edge px-3 py-2 text-sm focus:border-brand-500 focus:outline-none focus:ring-1 focus:ring-brand-500 dark:border-gray-700 dark:bg-gray-800"
+              className="w-full rounded-lg border border-edge px-3 py-2 text-sm focus:border-brand-500 focus:outline-none focus:ring-1 focus:ring-brand-500 dark:bg-gray-800"
             />
           </div>
           <div>
             <label
               htmlFor="bcd-trial-date"
-              className="block text-sm font-semibold text-text-primary dark:text-gray-300 mb-1"
+              className="block text-sm font-semibold text-text-primary mb-1"
             >
               {t('marketing.bridal-concierge.trial-date-label')}
             </label>
@@ -553,13 +551,13 @@ function BridalDashboard(): JSX.Element {
               type="datetime-local"
               value={newTrialDate}
               onChange={(e) => setNewTrialDate(e.target.value)}
-              className="w-full rounded-lg border border-edge px-3 py-2 text-sm focus:border-brand-500 focus:outline-none focus:ring-1 focus:ring-brand-500 dark:border-gray-700 dark:bg-gray-800"
+              className="w-full rounded-lg border border-edge px-3 py-2 text-sm focus:border-brand-500 focus:outline-none focus:ring-1 focus:ring-brand-500 dark:bg-gray-800"
             />
           </div>
           <div>
             <label
               htmlFor="bcd-service-notes"
-              className="block text-sm font-semibold text-text-primary dark:text-gray-300 mb-1"
+              className="block text-sm font-semibold text-text-primary mb-1"
             >
               {t('marketing.bridal-concierge.notes-field')}
             </label>
@@ -569,7 +567,7 @@ function BridalDashboard(): JSX.Element {
               onChange={(e) => setNewServiceNotes(e.target.value)}
               placeholder={t('marketing.bridal-concierge.service-notes-placeholder')}
               rows={2}
-              className="w-full rounded-lg border border-edge px-3 py-2 text-sm focus:border-brand-500 focus:outline-none focus:ring-1 focus:ring-brand-500 dark:border-gray-700 dark:bg-gray-800"
+              className="w-full rounded-lg border border-edge px-3 py-2 text-sm focus:border-brand-500 focus:outline-none focus:ring-1 focus:ring-brand-500 dark:bg-gray-800"
             />
           </div>
           {serviceError && (
@@ -600,7 +598,7 @@ function MarketingLanding(): JSX.Element {
     <>
       <div className="text-center">
         <span className="text-7xl">👰</span>
-        <h1 className="mt-6 text-4xl font-extrabold text-text-primary dark:text-gray-100">
+        <h1 className="mt-6 text-4xl font-extrabold text-text-primary">
           {t('marketing.bridal-concierge.landing-title')}
         </h1>
         <p className="mt-4 text-lg text-text-secondary dark:text-text-tertiary max-w-2xl mx-auto leading-relaxed">
@@ -617,9 +615,7 @@ function MarketingLanding(): JSX.Element {
         {MARKETING_FEATURES.map((f, i) => (
           <Card key={i} padding="lg" className="text-center transition-all hover:shadow-lg">
             <div className="text-4xl">{f.icon}</div>
-            <h3 className="mt-3 text-lg font-bold text-text-primary dark:text-gray-100">
-              {t(f.title)}
-            </h3>
+            <h3 className="mt-3 text-lg font-bold text-text-primary">{t(f.title)}</h3>
             <p className="mt-2 text-sm text-text-secondary dark:text-text-tertiary leading-relaxed">
               {t(f.desc)}
             </p>

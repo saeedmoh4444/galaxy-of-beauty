@@ -118,7 +118,7 @@ export default function FeaturedTechPage(): JSX.Element {
           <div className="flex flex-wrap gap-3">
             {pastTechs.map((t: Record<string, unknown>) => (
               <Link key={t.id as number} href={`/technicians/${t.id}`}>
-                <span className="inline-flex items-center gap-2 rounded-full bg-surface-muted dark:bg-gray-800 px-4 py-2 text-sm hover:bg-surface-muted transition-colors">
+                <span className="inline-flex items-center gap-2 rounded-full bg-surface-muted px-4 py-2 text-sm hover:bg-surface-muted transition-colors">
                   <span>{t.emoji as string}</span>
                   <span className="font-medium">{t.name as string}</span>
                   <span className="text-xs text-text-tertiary">

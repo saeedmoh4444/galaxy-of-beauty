@@ -203,9 +203,7 @@ export default function CreateBookingPage(): JSX.Element {
   return (
     <DashboardLayout userRole="CUSTOMER">
       <div className="mx-auto max-w-2xl space-y-6 px-4 py-8">
-        <h1 className="text-2xl font-bold text-text-primary dark:text-gray-100">
-          {t('booking.new-booking')}
-        </h1>
+        <h1 className="text-2xl font-bold text-text-primary">{t('booking.new-booking')}</h1>
 
         {/* Progress steps */}
         <div className="flex items-center gap-2 text-sm">
@@ -236,9 +234,7 @@ export default function CreateBookingPage(): JSX.Element {
 
         {step === 1 && (
           <Card padding="md">
-            <h3 className="mb-4 font-semibold text-text-primary dark:text-gray-100">
-              {t('booking.choose-service')}
-            </h3>
+            <h3 className="mb-4 font-semibold text-text-primary">{t('booking.choose-service')}</h3>
             <div className="max-h-80 space-y-2 overflow-y-auto">
               {services.map((s) => (
                 <button
@@ -254,7 +250,7 @@ export default function CreateBookingPage(): JSX.Element {
                       : 'border-edge'
                   }`}
                 >
-                  <p className="font-semibold text-text-primary dark:text-gray-100">
+                  <p className="font-semibold text-text-primary">
                     {localize((s as unknown as { titleJson: unknown }).titleJson, locale)}
                   </p>
                   <p className="mt-1 text-sm text-text-secondary">
@@ -270,9 +266,7 @@ export default function CreateBookingPage(): JSX.Element {
 
         {step === 2 && svc && (
           <Card padding="md">
-            <h3 className="mb-4 font-semibold text-text-primary dark:text-gray-100">
-              {t('booking.details')}
-            </h3>
+            <h3 className="mb-4 font-semibold text-text-primary">{t('booking.details')}</h3>
 
             <p className="mb-2 text-sm font-bold text-brand-600">
               {localize((svc as unknown as { titleJson: unknown }).titleJson, locale)}
@@ -299,7 +293,7 @@ export default function CreateBookingPage(): JSX.Element {
                 </label>
                 <select
                   id="bc-variant"
-                  className="w-full rounded-lg border border-edge p-2 text-sm dark:border-gray-600 dark:bg-gray-800"
+                  className="w-full rounded-lg border border-edge p-2 text-sm dark:bg-gray-800"
                   value={variantId || ''}
                   onChange={(e) => setVariantId(Number(e.target.value) || undefined)}
                 >
@@ -325,7 +319,7 @@ export default function CreateBookingPage(): JSX.Element {
                   min={new Date(Date.now() + 86400000).toISOString().slice(0, 10)}
                   value={bookingDate}
                   onChange={(e) => setBookingDate(e.target.value)}
-                  className="w-full rounded-lg border border-edge p-2 text-sm dark:border-gray-600 dark:bg-gray-800"
+                  className="w-full rounded-lg border border-edge p-2 text-sm dark:bg-gray-800"
                 />
               </div>
               <div>
@@ -336,7 +330,7 @@ export default function CreateBookingPage(): JSX.Element {
                   id="bc-time"
                   value={bookingTime}
                   onChange={(e) => setBookingTime(e.target.value)}
-                  className="w-full rounded-lg border border-edge p-2 text-sm dark:border-gray-600 dark:bg-gray-800"
+                  className="w-full rounded-lg border border-edge p-2 text-sm dark:bg-gray-800"
                 >
                   {TIME_SLOTS.map((slot) => (
                     <option key={slot} value={slot}>
@@ -353,7 +347,7 @@ export default function CreateBookingPage(): JSX.Element {
               </label>
               <select
                 id="bc-address"
-                className="w-full rounded-lg border border-edge p-2 text-sm dark:border-gray-600 dark:bg-gray-800"
+                className="w-full rounded-lg border border-edge p-2 text-sm dark:bg-gray-800"
                 value={addressId || ''}
                 onChange={(e) => setAddressId(Number(e.target.value) || undefined)}
               >
@@ -373,7 +367,7 @@ export default function CreateBookingPage(): JSX.Element {
                 </label>
                 <select
                   id="bc-member"
-                  className="w-full rounded-lg border border-edge p-2 text-sm dark:border-gray-600 dark:bg-gray-800"
+                  className="w-full rounded-lg border border-edge p-2 text-sm dark:bg-gray-800"
                   value={familyMemberId || ''}
                   onChange={(e) => setFamilyMemberId(Number(e.target.value) || undefined)}
                 >
@@ -393,7 +387,7 @@ export default function CreateBookingPage(): JSX.Element {
               </label>
               <textarea
                 id="bc-notes"
-                className="w-full rounded-lg border border-edge p-3 text-sm dark:border-gray-600 dark:bg-gray-800"
+                className="w-full rounded-lg border border-edge p-3 text-sm dark:bg-gray-800"
                 rows={3}
                 value={notes}
                 onChange={(e) => setNotes(e.target.value)}
@@ -414,9 +408,7 @@ export default function CreateBookingPage(): JSX.Element {
 
         {step === 3 && (
           <Card padding="md">
-            <h3 className="mb-4 font-semibold text-text-primary dark:text-gray-100">
-              {t('booking.confirm')}
-            </h3>
+            <h3 className="mb-4 font-semibold text-text-primary">{t('booking.confirm')}</h3>
 
             <div className="space-y-3 text-sm">
               <div className="flex justify-between border-b pb-2">
@@ -501,7 +493,7 @@ export default function CreateBookingPage(): JSX.Element {
             {/* Phase 3 sprint 2 — payment clarity: how you'll pay */}
             <div
               data-testid="payment-clarity"
-              className="mt-4 rounded-lg border border-edge bg-surface-muted p-4 dark:border-gray-700 dark:bg-gray-900"
+              className="mt-4 rounded-lg border border-edge bg-surface-muted p-4"
             >
               <p className="mb-2 text-sm font-semibold text-text-primary">
                 {t('booking.payment.title')}

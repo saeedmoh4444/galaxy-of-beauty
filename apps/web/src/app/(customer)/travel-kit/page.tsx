@@ -40,7 +40,7 @@ export default function TravelKitPage(): JSX.Element {
                   setDest(d.key as string);
                   setSearchDest(d.key as string);
                 }}
-                className={`rounded-xl px-4 py-3 text-sm transition-all ${dest === d.key ? 'bg-brand-600 text-white shadow-md' : 'bg-surface-muted dark:bg-gray-800'}`}
+                className={`rounded-xl px-4 py-3 text-sm transition-all ${dest === d.key ? 'bg-brand-600 text-white shadow-md' : 'bg-surface-muted'}`}
               >
                 {d.nameAr as string}
               </button>
@@ -77,7 +77,7 @@ export default function TravelKitPage(): JSX.Element {
               {items.map((item: Record<string, unknown>, i: number) => (
                 <div
                   key={i}
-                  className={`flex items-center gap-3 rounded-lg p-3 ${item.essential ? 'bg-green-50 dark:bg-green-950 border border-green-200 dark:border-green-800' : 'bg-surface-muted dark:bg-gray-800'}`}
+                  className={`flex items-center gap-3 rounded-lg p-3 ${item.essential ? 'bg-green-50 dark:bg-green-950 border border-green-200 dark:border-green-800' : 'bg-surface-muted'}`}
                 >
                   <span className="text-2xl">{item.emoji as string}</span>
                   <div className="flex-1">

@@ -45,7 +45,7 @@ export default function LoyaltyPunchCardPage(): JSX.Element {
               {Array.from({ length: total }, (_, i) => (
                 <div
                   key={i}
-                  className={`flex h-14 w-14 items-center justify-center rounded-full text-2xl transition-all ${i < stamps ? 'bg-brand-100 dark:bg-brand-900 ring-2 ring-brand-500 scale-110 shadow-lg' : 'bg-surface-muted dark:bg-gray-800 opacity-50'}`}
+                  className={`flex h-14 w-14 items-center justify-center rounded-full text-2xl transition-all ${i < stamps ? 'bg-brand-100 dark:bg-brand-900 ring-2 ring-brand-500 scale-110 shadow-lg' : 'bg-surface-muted opacity-50'}`}
                 >
                   {i < stamps ? '' : '○'}
                 </div>

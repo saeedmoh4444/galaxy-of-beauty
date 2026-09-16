@@ -266,7 +266,7 @@ export function HomeClient({
       </section>
 
       {/* Popular Services */}
-      <section className="bg-surface-muted px-4 py-16 dark:bg-gray-900">
+      <section className="bg-surface-muted px-4 py-16">
         <div className="mx-auto max-w-7xl">
           <h2 className="mb-8 text-2xl font-bold">{t('marketing.home.popular-services')}</h2>
           {fetchError && (

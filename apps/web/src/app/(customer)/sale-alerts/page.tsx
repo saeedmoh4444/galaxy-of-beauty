@@ -100,10 +100,7 @@ export default function SaleAlertsPage(): JSX.Element {
                     {(a.categories as string[])?.map((c: string) => {
                       const cat = categories.find((x) => x.key === c);
                       return (
-                        <span
-                          key={c}
-                          className="rounded-full bg-surface-muted dark:bg-gray-800 px-2 py-0.5 text-xs"
-                        >
+                        <span key={c} className="rounded-full bg-surface-muted px-2 py-0.5 text-xs">
                           {cat?.emoji as string} {cat?.nameAr as string}
                         </span>
                       );
@@ -150,7 +147,7 @@ export default function SaleAlertsPage(): JSX.Element {
                             : [...p, c.key as string],
                         )
                       }
-                      className={`rounded-full px-3 py-1.5 text-xs font-medium ${selectedCats.includes(c.key as string) ? 'bg-brand-600 text-white' : 'bg-surface-muted dark:bg-gray-800'}`}
+                      className={`rounded-full px-3 py-1.5 text-xs font-medium ${selectedCats.includes(c.key as string) ? 'bg-brand-600 text-white' : 'bg-surface-muted'}`}
                     >
                       {c.emoji as string} {c.nameAr as string}
                     </button>

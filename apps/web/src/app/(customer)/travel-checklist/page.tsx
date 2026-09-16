@@ -100,22 +100,20 @@ export default function TravelChecklistPage(): JSX.Element {
               style={dest === dt.key ? { borderColor: dt.color } : { borderColor: '#e5e7eb' }}
             >
               <span className="text-2xl">{dt.emoji}</span>
-              <p className="mt-1 text-xs font-semibold text-text-primary dark:text-gray-100">
-                {t(dt.name)}
-              </p>
+              <p className="mt-1 text-xs font-semibold text-text-primary">{t(dt.name)}</p>
             </button>
           ))}
         </div>
 
         <div className={`rounded-2xl bg-linear-to-br ${d.bg} p-6`}>
-          <h3 className="text-lg font-bold text-text-primary dark:text-gray-100">
+          <h3 className="text-lg font-bold text-text-primary">
             {d.emoji} {t(d.name)}
           </h3>
-          <p className="mt-2 rounded-xl bg-white/60 p-3 text-sm text-text-secondary dark:bg-gray-800/60 dark:text-gray-300">
+          <p className="mt-2 rounded-xl bg-white/60 p-3 text-sm text-text-secondary dark:bg-gray-800/60">
             {t(d.tips)}
           </p>
 
-          <h4 className="mt-6 text-sm font-bold text-text-primary dark:text-gray-100">
+          <h4 className="mt-6 text-sm font-bold text-text-primary">
             {t('travel.essentialsTitle')}
           </h4>
           <div className="mt-3 space-y-2">
@@ -132,7 +130,7 @@ export default function TravelChecklistPage(): JSX.Element {
                   {checked.has(item) ? '' : ''}
                 </span>
                 <span
-                  className={`text-sm ${checked.has(item) ? 'text-emerald-700 line-through dark:text-emerald-300' : 'text-text-primary dark:text-gray-200'}`}
+                  className={`text-sm ${checked.has(item) ? 'text-emerald-700 line-through dark:text-emerald-300' : 'text-text-primary'}`}
                 >
                   {t(item)}
                 </span>
@@ -140,7 +138,7 @@ export default function TravelChecklistPage(): JSX.Element {
             ))}
           </div>
 
-          <p className="mt-4 text-center text-sm font-bold text-text-primary dark:text-gray-100">
+          <p className="mt-4 text-center text-sm font-bold text-text-primary">
             {t('travel.progress', { done: checked.size, total: d.essentials.length })}
           </p>
         </div>

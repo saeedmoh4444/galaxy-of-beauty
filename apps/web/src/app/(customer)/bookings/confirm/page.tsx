@@ -21,9 +21,7 @@ export default function BookingConfirmPage(): JSX.Element {
         <div className="mx-auto flex h-24 w-24 items-center justify-center rounded-full bg-green-100 text-6xl dark:bg-green-900">
           ✅
         </div>
-        <h1 className="text-3xl font-extrabold text-text-primary dark:text-gray-100">
-          {t('booking.success-title')}
-        </h1>
+        <h1 className="text-3xl font-extrabold text-text-primary">{t('booking.success-title')}</h1>
         <p className="text-text-secondary">{t('booking.success-message')}</p>
 
         {/* Phase 3 sprint 2 — payment explainer under the confirmation */}
@@ -58,7 +56,7 @@ export default function BookingConfirmPage(): JSX.Element {
               </span>
             </div>
           </div>
-          <div className="mt-4 border-t border-edge-muted pt-4 dark:border-gray-800">
+          <div className="mt-4 border-t border-edge-muted pt-4">
             <AddToCalendar
               title={t('booking.calendar-title', { code })}
               startAt={date}

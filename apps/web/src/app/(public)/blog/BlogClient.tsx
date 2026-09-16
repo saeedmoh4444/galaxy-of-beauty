@@ -75,9 +75,7 @@ export function BlogClient({
     <div className="mx-auto max-w-6xl px-4 py-12">
       <div className="mb-10 text-center">
         <span className="text-6xl">📰</span>
-        <h1 className="mt-4 text-3xl font-bold text-text-primary dark:text-gray-100">
-          {t('marketing.blog.title')}
-        </h1>
+        <h1 className="mt-4 text-3xl font-bold text-text-primary">{t('marketing.blog.title')}</h1>
         <p className="mt-2 text-text-secondary dark:text-text-tertiary">
           {t('marketing.blog.subtitle')}
         </p>
@@ -92,7 +90,7 @@ export function BlogClient({
             setPage(1);
           }}
           placeholder={t('marketing.blog.search-placeholder')}
-          className="w-full max-w-md rounded-xl border border-edge bg-surface-muted px-4 py-2.5 text-sm focus:border-brand-500 focus:outline-none focus:ring-2 focus:ring-brand-100 dark:border-gray-700 dark:bg-gray-800 dark:placeholder:text-text-secondary"
+          className="w-full max-w-md rounded-xl border border-edge bg-surface-muted px-4 py-2.5 text-sm focus:border-brand-500 focus:outline-none focus:ring-2 focus:ring-brand-100 dark:placeholder:text-text-secondary"
         />
       </div>
 
@@ -153,7 +151,7 @@ export function BlogClient({
                 : '';
               return (
                 <Link key={post.id} href={`/blog/${post.slug}`} className="group">
-                  <article className="overflow-hidden rounded-2xl border border-edge bg-white transition-all hover:shadow-xl hover:-translate-y-1 dark:border-gray-800 dark:bg-gray-900">
+                  <article className="overflow-hidden rounded-2xl border border-edge bg-white transition-all hover:shadow-xl hover:-translate-y-1 dark:bg-gray-900">
                     <div className="relative flex h-48 items-center justify-center bg-linear-to-br from-brand-100 to-accent-100 text-5xl dark:from-brand-900 dark:to-accent-900">
                       {post.imageUrl ? (
                         <Image
@@ -167,7 +165,7 @@ export function BlogClient({
                       )}
                     </div>
                     <div className="p-5">
-                      <h2 className="text-lg font-bold text-text-primary group-hover:text-brand-600 dark:text-gray-100 line-clamp-2">
+                      <h2 className="text-lg font-bold text-text-primary group-hover:text-brand-600 line-clamp-2">
                         {title}
                       </h2>
                       <div className="mt-3 flex items-center gap-3 text-xs text-text-tertiary">

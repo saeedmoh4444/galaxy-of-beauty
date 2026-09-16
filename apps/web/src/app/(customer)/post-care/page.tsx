@@ -101,16 +101,14 @@ export default function PostCarePage(): JSX.Element {
       <div className="mx-auto max-w-4xl space-y-6">
         {/* Header */}
         <div className="text-center sm:text-end">
-          <h1 className="text-2xl font-bold text-text-primary dark:text-gray-100">
-            {t('postCare.title')}
-          </h1>
+          <h1 className="text-2xl font-bold text-text-primary">{t('postCare.title')}</h1>
           <p className="mt-1 text-sm text-text-secondary dark:text-text-tertiary">
             {t('postCare.subtitle')}
           </p>
         </div>
 
         {/* Tabs */}
-        <div className="flex gap-2 rounded-xl bg-surface-muted p-1 dark:bg-gray-800">
+        <div className="flex gap-2 rounded-xl bg-surface-muted p-1">
           {TABS.map((tab) => (
             <button
               key={tab.key}
@@ -152,7 +150,7 @@ export default function PostCarePage(): JSX.Element {
                         💆
                       </div>
                       <div>
-                        <h3 className="font-bold text-text-primary dark:text-gray-100">
+                        <h3 className="font-bold text-text-primary">
                           {locale === 'en' ? plan.serviceNameEn : plan.serviceNameAr}
                         </h3>
                         <p className="text-xs text-text-secondary">
@@ -184,7 +182,7 @@ export default function PostCarePage(): JSX.Element {
                               <div key={tip.id} className="flex gap-3 p-4">
                                 <span className="text-2xl shrink-0">{tip.emoji}</span>
                                 <div>
-                                  <h4 className="text-sm font-bold text-text-primary dark:text-gray-100">
+                                  <h4 className="text-sm font-bold text-text-primary">
                                     {locale === 'en' ? tip.titleEn : tip.titleAr}
                                   </h4>
                                   <p className="mt-1 text-sm text-text-secondary dark:text-text-tertiary leading-relaxed">
@@ -222,7 +220,7 @@ export default function PostCarePage(): JSX.Element {
                           className="text-center transition-all hover:shadow-lg hover:-translate-y-0.5 cursor-pointer"
                         >
                           <span className="text-4xl">{cat.emoji}</span>
-                          <h3 className="mt-2 text-lg font-bold text-text-primary dark:text-gray-100">
+                          <h3 className="mt-2 text-lg font-bold text-text-primary">
                             {locale === 'en' ? cat.nameEn : cat.nameAr}
                           </h3>
                           <p className="text-xs text-text-secondary">
@@ -245,7 +243,7 @@ export default function PostCarePage(): JSX.Element {
                         <span className="text-3xl shrink-0">{tip.emoji}</span>
                         <div>
                           <div className="flex items-center gap-2 mb-1">
-                            <h4 className="font-bold text-text-primary dark:text-gray-100">
+                            <h4 className="font-bold text-text-primary">
                               {locale === 'en' ? tip.titleEn : tip.titleAr}
                             </h4>
                             <span
@@ -284,9 +282,7 @@ export default function PostCarePage(): JSX.Element {
           padding="lg"
           className="bg-linear-to-r from-brand-50 to-brand-50 dark:from-brand-950 dark:to-brand-950 border-none text-center"
         >
-          <p className="text-lg font-bold text-text-primary dark:text-gray-100">
-            {t('postCare.rememberTitle')}
-          </p>
+          <p className="text-lg font-bold text-text-primary">{t('postCare.rememberTitle')}</p>
           <p className="mt-1 text-sm text-text-secondary dark:text-text-tertiary">
             {t('postCare.rememberBody')}
           </p>

@@ -67,9 +67,7 @@ export default function BirthdayRewardsPage(): JSX.Element {
         {/* Header */}
         <div className="text-center">
           <span className="text-7xl">🎂</span>
-          <h1 className="mt-4 text-3xl font-bold text-text-primary dark:text-gray-100">
-            {t('birthday.title')}
-          </h1>
+          <h1 className="mt-4 text-3xl font-bold text-text-primary">{t('birthday.title')}</h1>
           <p className="mt-2 text-text-secondary dark:text-text-tertiary">
             {t('birthday.subtitle')}
           </p>
@@ -94,7 +92,7 @@ export default function BirthdayRewardsPage(): JSX.Element {
                 /* Claimed State */
                 <div className="text-center relative z-10">
                   <span className="text-6xl">🎉</span>
-                  <h2 className="mt-4 text-2xl font-extrabold text-text-primary dark:text-gray-100">
+                  <h2 className="mt-4 text-2xl font-extrabold text-text-primary">
                     {t('birthday.claimedTitle')}
                   </h2>
                   <p className="mt-2 text-text-secondary dark:text-text-tertiary">
@@ -143,7 +141,7 @@ export default function BirthdayRewardsPage(): JSX.Element {
                 /* Unclaimed — can claim */
                 <div className="text-center relative z-10">
                   <span className="text-6xl">🎁</span>
-                  <h2 className="mt-4 text-2xl font-extrabold text-text-primary dark:text-gray-100">
+                  <h2 className="mt-4 text-2xl font-extrabold text-text-primary">
                     {t('birthday.waitingTitle')}
                   </h2>
                   <p className="mt-2 text-text-secondary dark:text-text-tertiary">
@@ -170,7 +168,7 @@ export default function BirthdayRewardsPage(): JSX.Element {
                 /* No reward yet */
                 <div className="text-center relative z-10">
                   <span className="text-6xl">⏳</span>
-                  <h2 className="mt-4 text-xl font-bold text-text-primary dark:text-gray-100">
+                  <h2 className="mt-4 text-xl font-bold text-text-primary">
                     {t('birthday.notYetTitle')}
                   </h2>
                   <p className="mt-2 text-text-secondary dark:text-text-tertiary">
@@ -196,23 +194,19 @@ export default function BirthdayRewardsPage(): JSX.Element {
             <div className="grid gap-4 sm:grid-cols-3">
               <Card padding="md" className="text-center">
                 <span className="text-3xl">📅</span>
-                <h3 className="mt-2 font-semibold text-text-primary dark:text-gray-100">
-                  {t('birthday.annualGift')}
-                </h3>
+                <h3 className="mt-2 font-semibold text-text-primary">{t('birthday.annualGift')}</h3>
                 <p className="text-xs text-text-secondary">{t('birthday.annualGiftDesc')}</p>
               </Card>
               <Card padding="md" className="text-center">
                 <span className="text-3xl">👥</span>
-                <h3 className="mt-2 font-semibold text-text-primary dark:text-gray-100">
+                <h3 className="mt-2 font-semibold text-text-primary">
                   {t('birthday.forAllMembers')}
                 </h3>
                 <p className="text-xs text-text-secondary">{t('birthday.forAllMembersDesc')}</p>
               </Card>
               <Card padding="md" className="text-center">
                 <span className="text-3xl">⏰</span>
-                <h3 className="mt-2 font-semibold text-text-primary dark:text-gray-100">
-                  {t('birthday.valid30')}
-                </h3>
+                <h3 className="mt-2 font-semibold text-text-primary">{t('birthday.valid30')}</h3>
                 <p className="text-xs text-text-secondary">{t('birthday.valid30Desc')}</p>
               </Card>
             </div>
@@ -222,9 +216,7 @@ export default function BirthdayRewardsPage(): JSX.Element {
               padding="lg"
               className="bg-linear-to-r from-pink-100 to-rose-100 dark:from-pink-950 dark:to-rose-950 border-none"
             >
-              <h3 className="font-bold text-text-primary dark:text-gray-100 mb-3">
-                {t('birthday.ideasTitle')}
-              </h3>
+              <h3 className="font-bold text-text-primary mb-3">{t('birthday.ideasTitle')}</h3>
               <div className="grid gap-2 text-sm text-text-secondary dark:text-text-tertiary sm:grid-cols-2">
                 <p> {t('birthday.idea1')}</p>
                 <p> {t('birthday.idea2')}</p>

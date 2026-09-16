@@ -71,7 +71,7 @@ export default function SalonManagementPage(): JSX.Element {
             {s.map((m: Record<string, unknown>) => (
               <div
                 key={m.id as number}
-                className="flex items-center justify-between rounded-lg bg-surface-muted dark:bg-gray-800 p-3"
+                className="flex items-center justify-between rounded-lg bg-surface-muted p-3"
               >
                 <div className="flex items-center gap-3">
                   <span className="text-2xl">{m.emoji as string}</span>

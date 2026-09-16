@@ -88,7 +88,7 @@ export default function SavingsGoalsPage(): JSX.Element {
                 >
                   <div className="flex items-center justify-between">
                     <div>
-                      <h3 className="text-lg font-bold text-text-primary dark:text-gray-100">
+                      <h3 className="text-lg font-bold text-text-primary">
                         {g.title} {g.status === 'COMPLETED' && ''}
                       </h3>
                       <p className="text-sm text-text-secondary">

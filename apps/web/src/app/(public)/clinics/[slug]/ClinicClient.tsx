@@ -105,9 +105,7 @@ export function ClinicClient({ data }: { data: ClinicPageData }): JSX.Element {
           <ServiceImage src={clinic.logoUrl ?? null} alt={clinic.storeName ?? ''} size="full" />
         </div>
         <div>
-          <h1 className="text-2xl font-bold text-text-primary dark:text-gray-100">
-            {clinic.storeName}
-          </h1>
+          <h1 className="text-2xl font-bold text-text-primary">{clinic.storeName}</h1>
           <p className="mt-1 text-sm text-text-secondary">
             {clinic.clinicType ? t(`clinics.treatment.${clinic.clinicType}` as never) : ''}
           </p>

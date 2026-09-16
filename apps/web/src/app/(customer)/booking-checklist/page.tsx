@@ -34,7 +34,7 @@ export default function BookingChecklistPage(): JSX.Element {
             <button
               key={c.key as string}
               onClick={() => setCategory(c.key as string)}
-              className={`rounded-full px-4 py-2 text-sm font-medium ${category === c.key ? 'bg-brand-600 text-white' : 'bg-surface-muted dark:bg-gray-800'}`}
+              className={`rounded-full px-4 py-2 text-sm font-medium ${category === c.key ? 'bg-brand-600 text-white' : 'bg-surface-muted'}`}
             >
               {c.emoji as string} {c.nameAr as string}
             </button>
@@ -47,10 +47,7 @@ export default function BookingChecklistPage(): JSX.Element {
           <Card padding="lg">
             <div className="space-y-4">
               {items.map((item: Record<string, unknown>, i: number) => (
-                <div
-                  key={i}
-                  className="flex items-center gap-4 rounded-xl bg-surface-muted dark:bg-gray-800 p-4"
-                >
+                <div key={i} className="flex items-center gap-4 rounded-xl bg-surface-muted p-4">
                   <span className="text-3xl">{item.emoji as string}</span>
                   <div>
                     <p className="font-semibold">{item.textAr as string}</p>

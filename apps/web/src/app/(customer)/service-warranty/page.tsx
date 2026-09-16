@@ -115,10 +115,7 @@ export default function ServiceWarrantyPage(): JSX.Element {
           ) : (
             <div className="grid gap-4 sm:grid-cols-3">
               {coverage.map((c: Record<string, string>, i: number) => (
-                <div
-                  key={i}
-                  className="text-center rounded-xl bg-surface-muted dark:bg-gray-800 p-4"
-                >
+                <div key={i} className="text-center rounded-xl bg-surface-muted p-4">
                   <span className="text-3xl">{c.emoji}</span>
                   <h4 className="mt-2 font-bold text-sm">{c.titleAr}</h4>
                   <p className="mt-1 text-xs text-text-secondary">{c.descAr}</p>

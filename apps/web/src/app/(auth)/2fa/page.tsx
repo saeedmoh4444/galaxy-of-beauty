@@ -41,7 +41,7 @@ export default function TwoFactorPage(): JSX.Element {
   return (
     <div className="flex min-h-screen items-center justify-center px-4">
       <Card className="w-full max-w-md" padding="lg">
-        <h1 className="mb-2 text-center text-2xl font-bold text-text-primary dark:text-gray-100">
+        <h1 className="mb-2 text-center text-2xl font-bold text-text-primary">
           {t('auth.2fa-title')}
         </h1>
         <p className="mb-6 text-center text-sm text-text-secondary">{t('auth.2fa-subtitle')}</p>
@@ -104,17 +104,17 @@ export default function TwoFactorPage(): JSX.Element {
             ) : (
               /* Step 2: Show QR code placeholder + secret + verify input */
               <div className="space-y-4">
-                <div className="rounded-lg bg-surface-muted p-4 text-center dark:bg-gray-800">
-                  <p className="mb-2 text-sm font-medium text-text-primary dark:text-gray-300">
+                <div className="rounded-lg bg-surface-muted p-4 text-center">
+                  <p className="mb-2 text-sm font-medium text-text-primary">
                     {t('auth.2fa-scan-qr')}
                   </p>
                   {/* QR Code placeholder */}
-                  <div className="mx-auto flex h-40 w-40 items-center justify-center rounded-xl border-2 border-dashed border-edge bg-white dark:border-gray-600 dark:bg-gray-900">
+                  <div className="mx-auto flex h-40 w-40 items-center justify-center rounded-xl border-2 border-dashed border-edge bg-white dark:bg-gray-900">
                     <span className="text-xs text-text-tertiary">QR Code</span>
                   </div>
                 </div>
 
-                <div className="rounded-lg bg-surface-muted p-3 dark:bg-gray-800">
+                <div className="rounded-lg bg-surface-muted p-3">
                   <p className="mb-1 text-xs font-medium text-text-secondary">
                     {t('auth.2fa-secret')}
                   </p>
@@ -124,7 +124,7 @@ export default function TwoFactorPage(): JSX.Element {
                   <p className="mt-1 text-xs text-text-tertiary">{t('auth.2fa-manual-entry')}</p>
                 </div>
 
-                <div className="border-t border-edge pt-4 dark:border-gray-700">
+                <div className="border-t border-edge pt-4">
                   <p className="mb-3 text-sm font-medium">{t('auth.2fa-verify-prompt')}</p>
 
                   {verifyMut.isError && (

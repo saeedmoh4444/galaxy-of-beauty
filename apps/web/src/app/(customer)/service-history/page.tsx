@@ -59,9 +59,7 @@ export default function ServiceHistoryPage(): JSX.Element {
   return (
     <DashboardLayout userRole="CUSTOMER">
       <div className="mx-auto max-w-3xl space-y-8">
-        <h1 className="text-2xl font-bold text-text-primary dark:text-gray-100">
-          {t('serviceHistory.title')}
-        </h1>
+        <h1 className="text-2xl font-bold text-text-primary">{t('serviceHistory.title')}</h1>
 
         {/* Favorite Services — Reorder */}
         {favorites.length > 0 && (

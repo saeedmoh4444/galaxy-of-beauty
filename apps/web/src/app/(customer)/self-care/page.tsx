@@ -38,9 +38,7 @@ export default function SelfCarePage(): JSX.Element {
   return (
     <DashboardLayout userRole="CUSTOMER">
       <div className="mx-auto max-w-lg space-y-6">
-        <h1 className="text-2xl font-bold text-text-primary dark:text-gray-100">
-          {t('selfCare.title')}
-        </h1>
+        <h1 className="text-2xl font-bold text-text-primary">{t('selfCare.title')}</h1>
 
         {today ? (
           <Card padding="lg" className="text-center">
@@ -89,21 +87,21 @@ export default function SelfCarePage(): JSX.Element {
                   placeholder={t('selfCare.sleepHoursPlaceholder')}
                   value={sleep}
                   onChange={(e) => setSleep(e.target.value)}
-                  className="rounded-lg border border-edge p-2 text-sm dark:border-gray-600 dark:bg-gray-800"
+                  className="rounded-lg border border-edge p-2 text-sm dark:bg-gray-800"
                 />
                 <input
                   type="number"
                   placeholder={t('selfCare.waterPlaceholder')}
                   value={water}
                   onChange={(e) => setWater(e.target.value)}
-                  className="rounded-lg border border-edge p-2 text-sm dark:border-gray-600 dark:bg-gray-800"
+                  className="rounded-lg border border-edge p-2 text-sm dark:bg-gray-800"
                 />
               </div>
               <input
                 placeholder={t('selfCare.notesPlaceholder')}
                 value={notes}
                 onChange={(e) => setNotes(e.target.value)}
-                className="w-full rounded-lg border border-edge p-2 text-sm dark:border-gray-600 dark:bg-gray-800"
+                className="w-full rounded-lg border border-edge p-2 text-sm dark:bg-gray-800"
               />
             </div>
             <Button

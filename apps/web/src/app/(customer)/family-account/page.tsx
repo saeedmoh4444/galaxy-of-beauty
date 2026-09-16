@@ -155,9 +155,7 @@ export default function FamilyAccountPage(): JSX.Element {
         {/* Header */}
         <div className="flex items-center justify-between">
           <div>
-            <h1 className="text-2xl font-bold text-text-primary dark:text-gray-100">
-              {t('family.title')}
-            </h1>
+            <h1 className="text-2xl font-bold text-text-primary">{t('family.title')}</h1>
             <p className="mt-1 text-sm text-text-secondary dark:text-text-tertiary">
               {t('family.subtitle')}
             </p>
@@ -181,7 +179,7 @@ export default function FamilyAccountPage(): JSX.Element {
           ].map((b) => (
             <Card key={b.title} padding="md" className="text-center">
               <span className="text-3xl">{b.emoji}</span>
-              <h3 className="mt-2 font-semibold text-text-primary dark:text-gray-100">{b.title}</h3>
+              <h3 className="mt-2 font-semibold text-text-primary">{b.title}</h3>
               <p className="text-xs text-text-secondary">{b.desc}</p>
             </Card>
           ))}
@@ -212,9 +210,7 @@ export default function FamilyAccountPage(): JSX.Element {
                     {AGE_EMOJI[m.ageGroup] ?? ''}
                   </div>
                   <div className="flex-1 min-w-0">
-                    <h3 className="text-lg font-bold text-text-primary dark:text-gray-100">
-                      {m.name}
-                    </h3>
+                    <h3 className="text-lg font-bold text-text-primary">{m.name}</h3>
                     <p className="text-xs text-text-secondary">
                       {relationships.find((r) => r.key === m.relationship)?.nameAr ??
                         m.relationship}
@@ -229,7 +225,7 @@ export default function FamilyAccountPage(): JSX.Element {
                           return (
                             <span
                               key={p}
-                              className="inline-flex items-center gap-0.5 rounded-full bg-surface-muted px-2 py-0.5 text-[10px] text-text-secondary dark:bg-gray-800 dark:text-text-tertiary"
+                              className="inline-flex items-center gap-0.5 rounded-full bg-surface-muted px-2 py-0.5 text-[10px] text-text-secondary dark:text-text-tertiary"
                             >
                               {pref?.emoji} {pref?.nameAr ?? p}
                             </span>
@@ -249,7 +245,7 @@ export default function FamilyAccountPage(): JSX.Element {
                 </div>
 
                 {/* Actions */}
-                <div className="mt-4 flex gap-2 border-t border-edge-muted pt-3 dark:border-gray-800">
+                <div className="mt-4 flex gap-2 border-t border-edge-muted pt-3">
                   <Link
                     href={`/bookings/create?for=${encodeURIComponent(m.name)}`}
                     className="flex-1"
@@ -291,7 +287,7 @@ export default function FamilyAccountPage(): JSX.Element {
             <div>
               <label
                 htmlFor="fa-name"
-                className="block text-sm font-semibold text-text-primary dark:text-gray-300 mb-1"
+                className="block text-sm font-semibold text-text-primary mb-1"
               >
                 {t('family.label.name')}
               </label>
@@ -301,7 +297,7 @@ export default function FamilyAccountPage(): JSX.Element {
                 value={formName}
                 onChange={(e) => setFormName(e.target.value)}
                 placeholder={t('family.placeholder.fullName')}
-                className="w-full rounded-lg border border-edge px-3 py-2 text-sm focus:border-brand-500 focus:outline-none focus:ring-1 focus:ring-brand-500 dark:border-gray-700 dark:bg-gray-800"
+                className="w-full rounded-lg border border-edge px-3 py-2 text-sm focus:border-brand-500 focus:outline-none focus:ring-1 focus:ring-brand-500 dark:bg-gray-800"
               />
             </div>
 
@@ -309,7 +305,7 @@ export default function FamilyAccountPage(): JSX.Element {
               <div>
                 <label
                   htmlFor="fa-relation"
-                  className="block text-sm font-semibold text-text-primary dark:text-gray-300 mb-1"
+                  className="block text-sm font-semibold text-text-primary mb-1"
                 >
                   {t('family.label.relationship')}
                 </label>
@@ -317,7 +313,7 @@ export default function FamilyAccountPage(): JSX.Element {
                   id="fa-relation"
                   value={formRelation}
                   onChange={(e) => setFormRelation(e.target.value)}
-                  className="w-full rounded-lg border border-edge px-3 py-2 text-sm focus:border-brand-500 focus:outline-none dark:border-gray-700 dark:bg-gray-800"
+                  className="w-full rounded-lg border border-edge px-3 py-2 text-sm focus:border-brand-500 focus:outline-none dark:bg-gray-800"
                 >
                   {relationships.map((r) => (
                     <option key={r.key} value={r.key}>
@@ -329,7 +325,7 @@ export default function FamilyAccountPage(): JSX.Element {
               <div>
                 <label
                   htmlFor="fa-age"
-                  className="block text-sm font-semibold text-text-primary dark:text-gray-300 mb-1"
+                  className="block text-sm font-semibold text-text-primary mb-1"
                 >
                   {t('family.label.ageGroup')}
                 </label>
@@ -337,7 +333,7 @@ export default function FamilyAccountPage(): JSX.Element {
                   id="fa-age"
                   value={formAge}
                   onChange={(e) => setFormAge(e.target.value)}
-                  className="w-full rounded-lg border border-edge px-3 py-2 text-sm focus:border-brand-500 focus:outline-none dark:border-gray-700 dark:bg-gray-800"
+                  className="w-full rounded-lg border border-edge px-3 py-2 text-sm focus:border-brand-500 focus:outline-none dark:bg-gray-800"
                 >
                   {ageGroups.map((a) => (
                     <option key={a.key} value={a.key}>
@@ -350,7 +346,7 @@ export default function FamilyAccountPage(): JSX.Element {
 
             <div>
               {/* eslint-disable-next-line jsx-a11y/label-has-associated-control -- label precedes preference toggle buttons */}
-              <label className="block text-sm font-semibold text-text-primary dark:text-gray-300 mb-2">
+              <label className="block text-sm font-semibold text-text-primary mb-2">
                 {t('family.label.preferences')}
               </label>
               <div className="flex flex-wrap gap-2">
@@ -374,7 +370,7 @@ export default function FamilyAccountPage(): JSX.Element {
             <div>
               <label
                 htmlFor="fa-notes"
-                className="block text-sm font-semibold text-text-primary dark:text-gray-300 mb-1"
+                className="block text-sm font-semibold text-text-primary mb-1"
               >
                 {t('family.label.notes')}
               </label>
@@ -384,7 +380,7 @@ export default function FamilyAccountPage(): JSX.Element {
                 onChange={(e) => setFormNotes(e.target.value)}
                 placeholder={t('family.placeholder.notes')}
                 rows={2}
-                className="w-full rounded-lg border border-edge px-3 py-2 text-sm focus:border-brand-500 focus:outline-none focus:ring-1 focus:ring-brand-500 dark:border-gray-700 dark:bg-gray-800"
+                className="w-full rounded-lg border border-edge px-3 py-2 text-sm focus:border-brand-500 focus:outline-none focus:ring-1 focus:ring-brand-500 dark:bg-gray-800"
               />
             </div>
 
@@ -392,7 +388,7 @@ export default function FamilyAccountPage(): JSX.Element {
             <div>
               <label
                 htmlFor="fa-emergency"
-                className="block text-sm font-semibold text-text-primary dark:text-gray-300 mb-1"
+                className="block text-sm font-semibold text-text-primary mb-1"
               >
                 {t('familyAccount.emergency-contact')}
               </label>
@@ -400,14 +396,14 @@ export default function FamilyAccountPage(): JSX.Element {
                 id="fa-emergency"
                 value={formEmergency}
                 onChange={(e) => setFormEmergency(e.target.value)}
-                className="w-full rounded-lg border border-edge px-3 py-2 text-sm focus:border-brand-500 focus:outline-none focus:ring-1 focus:ring-brand-500 dark:border-gray-700 dark:bg-gray-800"
+                className="w-full rounded-lg border border-edge px-3 py-2 text-sm focus:border-brand-500 focus:outline-none focus:ring-1 focus:ring-brand-500 dark:bg-gray-800"
               />
             </div>
 
             <div>
               <label
                 htmlFor="fa-allergies"
-                className="block text-sm font-semibold text-text-primary dark:text-gray-300 mb-1"
+                className="block text-sm font-semibold text-text-primary mb-1"
               >
                 {t('familyAccount.allergies')}
               </label>
@@ -415,7 +411,7 @@ export default function FamilyAccountPage(): JSX.Element {
                 id="fa-allergies"
                 value={formAllergies}
                 onChange={(e) => setFormAllergies(e.target.value)}
-                className="w-full rounded-lg border border-edge px-3 py-2 text-sm focus:border-brand-500 focus:outline-none focus:ring-1 focus:ring-brand-500 dark:border-gray-700 dark:bg-gray-800"
+                className="w-full rounded-lg border border-edge px-3 py-2 text-sm focus:border-brand-500 focus:outline-none focus:ring-1 focus:ring-brand-500 dark:bg-gray-800"
               />
             </div>
 

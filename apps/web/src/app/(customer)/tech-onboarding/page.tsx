@@ -50,9 +50,7 @@ export default function TechOnboardingPage(): JSX.Element {
                   key={s.key as string}
                   delay={150 + i * 60}
                   className={`flex items-center gap-3 rounded-lg p-3 ${
-                    s.completed
-                      ? 'bg-green-50 dark:bg-green-950'
-                      : 'bg-surface-muted dark:bg-gray-800'
+                    s.completed ? 'bg-green-50 dark:bg-green-950' : 'bg-surface-muted'
                   }`}
                 >
                   <span className="text-2xl">{s.emoji as string}</span>

@@ -25,9 +25,7 @@ export default function ComparePage(): JSX.Element {
 
   return (
     <div className="mx-auto max-w-6xl px-4 py-8">
-      <h1 className="mb-6 text-2xl font-bold text-text-primary dark:text-gray-100">
-        {t('marketing.compare.title')}
-      </h1>
+      <h1 className="mb-6 text-2xl font-bold text-text-primary">{t('marketing.compare.title')}</h1>
 
       {ids.length < 2 ? (
         <EmptyState
@@ -45,9 +43,9 @@ export default function ComparePage(): JSX.Element {
         />
       ) : (
         <div className="overflow-x-auto">
-          <table className="w-full border-collapse rounded-xl border border-edge dark:border-gray-700">
+          <table className="w-full border-collapse rounded-xl border border-edge">
             <thead>
-              <tr className="bg-surface-muted dark:bg-gray-800">
+              <tr className="bg-surface-muted">
                 <th className="p-4 text-end text-sm font-semibold text-text-secondary dark:text-text-tertiary min-w-[140px]">
                   {t('marketing.compare.feature-col')}
                 </th>
@@ -57,7 +55,7 @@ export default function ComparePage(): JSX.Element {
                       <div className="flex h-16 w-16 items-center justify-center rounded-xl bg-brand-50 text-2xl dark:bg-brand-950">
                         💅
                       </div>
-                      <p className="text-sm font-bold text-text-primary dark:text-gray-100">
+                      <p className="text-sm font-bold text-text-primary">
                         {localize(s.titleJson as Record<string, string>, locale)}
                       </p>
                     </div>
@@ -68,7 +66,7 @@ export default function ComparePage(): JSX.Element {
             <tbody className="divide-y divide-edge-muted">
               {/* Price row */}
               <tr className="hover:bg-surface-muted dark:hover:bg-gray-900">
-                <td className="p-4 text-sm font-medium text-text-primary dark:text-gray-300">
+                <td className="p-4 text-sm font-medium text-text-primary">
                   {t('marketing.compare.price-col')}
                 </td>
                 {services.map((s) => (
@@ -82,7 +80,7 @@ export default function ComparePage(): JSX.Element {
               </tr>
               {/* Duration */}
               <tr className="hover:bg-surface-muted dark:hover:bg-gray-900">
-                <td className="p-4 text-sm font-medium text-text-primary dark:text-gray-300">
+                <td className="p-4 text-sm font-medium text-text-primary">
                   {t('marketing.compare.duration-col')}
                 </td>
                 {services.map((s) => (
@@ -96,7 +94,7 @@ export default function ComparePage(): JSX.Element {
               </tr>
               {/* Category */}
               <tr className="hover:bg-surface-muted dark:hover:bg-gray-900">
-                <td className="p-4 text-sm font-medium text-text-primary dark:text-gray-300">
+                <td className="p-4 text-sm font-medium text-text-primary">
                   {t('marketing.compare.category-col')}
                 </td>
                 {services.map((s) => (
@@ -110,7 +108,7 @@ export default function ComparePage(): JSX.Element {
               </tr>
               {/* Bookings */}
               <tr className="hover:bg-surface-muted dark:hover:bg-gray-900">
-                <td className="p-4 text-sm font-medium text-text-primary dark:text-gray-300">
+                <td className="p-4 text-sm font-medium text-text-primary">
                   {t('marketing.compare.bookings-col')}
                 </td>
                 {services.map((s) => (
@@ -124,7 +122,7 @@ export default function ComparePage(): JSX.Element {
               </tr>
               {/* Tags */}
               <tr className="hover:bg-surface-muted dark:hover:bg-gray-900">
-                <td className="p-4 text-sm font-medium text-text-primary dark:text-gray-300">
+                <td className="p-4 text-sm font-medium text-text-primary">
                   {t('marketing.compare.tags-col')}
                 </td>
                 {services.map((s) => (
@@ -144,7 +142,7 @@ export default function ComparePage(): JSX.Element {
               </tr>
               {/* Variants */}
               <tr className="hover:bg-surface-muted dark:hover:bg-gray-900">
-                <td className="p-4 text-sm font-medium text-text-primary dark:text-gray-300">
+                <td className="p-4 text-sm font-medium text-text-primary">
                   {t('marketing.compare.variants-col')}
                 </td>
                 {services.map((s) => (

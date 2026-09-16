@@ -76,7 +76,7 @@ export default function VIPMembershipPage(): JSX.Element {
                     {benefits.map((b: string, i: number) => (
                       <li key={i} className="flex items-center gap-2 text-sm">
                         <span className="text-brand-500">✨</span>{' '}
-                        <span className="text-text-primary dark:text-gray-300">{b}</span>
+                        <span className="text-text-primary">{b}</span>
                       </li>
                     ))}
                   </ul>

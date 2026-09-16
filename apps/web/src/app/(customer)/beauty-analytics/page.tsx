@@ -54,9 +54,7 @@ export default function BeautyAnalyticsPage(): JSX.Element {
     <DashboardLayout userRole="CUSTOMER">
       <div className="mx-auto max-w-4xl space-y-6">
         <div>
-          <h1 className="text-2xl font-bold text-text-primary dark:text-gray-100">
-            {t('beautyAnalytics.title')}
-          </h1>
+          <h1 className="text-2xl font-bold text-text-primary">{t('beautyAnalytics.title')}</h1>
           <p className="mt-1 text-sm text-text-secondary dark:text-text-tertiary">
             {t('beautyAnalytics.subtitle')}
           </p>
@@ -119,9 +117,7 @@ export default function BeautyAnalyticsPage(): JSX.Element {
                   {categories.map((cat) => (
                     <div key={cat.category}>
                       <div className="flex justify-between text-sm mb-1">
-                        <span className="font-semibold text-text-primary dark:text-gray-300">
-                          {cat.category}
-                        </span>
+                        <span className="font-semibold text-text-primary">{cat.category}</span>
                         <span className="text-text-secondary">
                           {t('beautyAnalytics.bookingsSpent', {
                             count: cat.count,
@@ -129,7 +125,7 @@ export default function BeautyAnalyticsPage(): JSX.Element {
                           })}
                         </span>
                       </div>
-                      <div className="h-3 rounded-full bg-surface-muted dark:bg-gray-800 overflow-hidden">
+                      <div className="h-3 rounded-full bg-surface-muted overflow-hidden">
                         <div
                           className="h-full rounded-full bg-linear-to-r from-brand-400 to-brand-500 transition-all"
                           style={{ width: `${cat.pct}%` }}

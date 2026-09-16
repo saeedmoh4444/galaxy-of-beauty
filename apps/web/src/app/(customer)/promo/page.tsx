@@ -36,9 +36,7 @@ export default function PromoPage(): JSX.Element {
   return (
     <DashboardLayout userRole="CUSTOMER">
       <div className="mx-auto max-w-lg space-y-6 px-4 py-8">
-        <h1 className="text-2xl font-bold text-text-primary dark:text-gray-100">
-          {t('promo.title')}
-        </h1>
+        <h1 className="text-2xl font-bold text-text-primary">{t('promo.title')}</h1>
 
         <Card padding="md">
           <div className="space-y-4">

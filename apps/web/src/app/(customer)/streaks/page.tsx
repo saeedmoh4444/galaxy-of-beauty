@@ -81,7 +81,7 @@ export default function StreaksPage(): JSX.Element {
                 <p className="mt-3 text-sm text-text-secondary dark:text-text-tertiary">
                   {t('streaks.lastBooking')}
                 </p>
-                <p className="mt-1 text-lg font-semibold text-text-primary dark:text-gray-300">
+                <p className="mt-1 text-lg font-semibold text-text-primary">
                   {streakData?.lastBookingDate
                     ? new Date(streakData.lastBookingDate as unknown as string).toLocaleDateString(
                         locale === 'en' ? 'en-GB' : 'ar-SA',
@@ -148,7 +148,7 @@ export default function StreaksPage(): JSX.Element {
                                 {t('streaks.earned')}
                               </span>
                             ) : (
-                              <span className="rounded-full bg-surface-muted px-2.5 py-0.5 text-xs font-medium text-text-secondary dark:bg-gray-800">
+                              <span className="rounded-full bg-surface-muted px-2.5 py-0.5 text-xs font-medium text-text-secondary">
                                 {t('streaks.notYet')}
                               </span>
                             )}

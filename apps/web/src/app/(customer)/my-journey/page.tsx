@@ -63,9 +63,7 @@ export default function MyJourneyPage(): JSX.Element {
   return (
     <DashboardLayout userRole="CUSTOMER">
       <div className="mx-auto max-w-2xl space-y-6">
-        <h1 className="text-2xl font-bold text-text-primary dark:text-gray-100">
-          {t('myJourney.title')}
-        </h1>
+        <h1 className="text-2xl font-bold text-text-primary">{t('myJourney.title')}</h1>
         <p className="text-sm text-text-secondary">{t('myJourney.subtitle')}</p>
 
         {/* Summary */}
@@ -113,12 +111,12 @@ export default function MyJourneyPage(): JSX.Element {
             {milestones.map((m, i) => (
               <div
                 key={i}
-                className={`flex items-center gap-3 rounded-lg p-3 ${m.achieved ? 'bg-green-50 dark:bg-green-900/20' : 'bg-surface-muted dark:bg-gray-800/50 opacity-50'}`}
+                className={`flex items-center gap-3 rounded-lg p-3 ${m.achieved ? 'bg-green-50 dark:bg-green-900/20' : 'bg-surface-muted opacity-50'}`}
               >
                 <span className="text-2xl">{m.achieved ? m.emoji : ''}</span>
                 <div className="flex-1">
                   <p
-                    className={`font-semibold text-sm ${m.achieved ? 'text-text-primary dark:text-gray-100' : 'text-text-tertiary'}`}
+                    className={`font-semibold text-sm ${m.achieved ? 'text-text-primary' : 'text-text-tertiary'}`}
                   >
                     {t(m.label as TranslationKey)}
                   </p>

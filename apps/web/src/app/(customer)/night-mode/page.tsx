@@ -36,7 +36,7 @@ export default function NightModePage(): JSX.Element {
                 return (
                   <div
                     key={i}
-                    className={`flex items-center gap-3 rounded-lg p-3 transition-all ${done ? 'bg-green-50 dark:bg-green-950 opacity-70' : 'bg-surface-muted dark:bg-gray-800'}`}
+                    className={`flex items-center gap-3 rounded-lg p-3 transition-all ${done ? 'bg-green-50 dark:bg-green-950 opacity-70' : 'bg-surface-muted'}`}
                   >
                     <span className="text-2xl">{s.emoji as string}</span>
                     <span className="text-xs text-text-tertiary w-12">{s.time as string}</span>

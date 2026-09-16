@@ -396,9 +396,7 @@ export default function VirtualTryOnPage(): JSX.Element {
       <div className="mx-auto max-w-4xl space-y-6">
         {/* Header */}
         <div className="text-center sm:text-end">
-          <h1 className="text-2xl font-bold text-text-primary dark:text-gray-100">
-            {t('tryOn.title')}
-          </h1>
+          <h1 className="text-2xl font-bold text-text-primary">{t('tryOn.title')}</h1>
           <p className="mt-1 text-sm text-text-secondary dark:text-text-tertiary">
             {t('tryOn.subtitle')}
           </p>
@@ -409,7 +407,7 @@ export default function VirtualTryOnPage(): JSX.Element {
           <div className="space-y-4 lg:col-span-2">
             {/* Makeup Type Selector */}
             <Card padding="md">
-              <h3 className="text-sm font-semibold text-text-primary dark:text-gray-300 mb-3">
+              <h3 className="text-sm font-semibold text-text-primary mb-3">
                 {t('tryOn.makeupType')}
               </h3>
               <div className="grid grid-cols-2 gap-2">
@@ -423,7 +421,7 @@ export default function VirtualTryOnPage(): JSX.Element {
                     className={`flex items-center gap-2 rounded-xl px-3 py-2.5 text-sm font-medium transition-all ${
                       makeupType === typeKey
                         ? 'bg-brand-100 text-brand-700 ring-2 ring-brand-300 dark:bg-brand-900 dark:text-brand-300'
-                        : 'bg-surface-muted text-text-secondary hover:bg-surface-muted dark:bg-gray-800 dark:text-text-tertiary'
+                        : 'bg-surface-muted text-text-secondary hover:bg-surface-muted dark:text-text-tertiary'
                     }`}
                   >
                     <span className="text-lg">{TYPE_LABELS[typeKey].emoji}</span>
@@ -435,7 +433,7 @@ export default function VirtualTryOnPage(): JSX.Element {
 
             {/* Color Palette */}
             <Card padding="md">
-              <h3 className="text-sm font-semibold text-text-primary dark:text-gray-300 mb-3">
+              <h3 className="text-sm font-semibold text-text-primary mb-3">
                 {t('tryOn.colors')}{' '}
                 {selectedColor && <span className="text-brand-600">— {selectedColor.nameAr}</span>}
               </h3>
@@ -456,7 +454,7 @@ export default function VirtualTryOnPage(): JSX.Element {
 
             {/* Intensity Slider */}
             <Card padding="md">
-              <h3 className="text-sm font-semibold text-text-primary dark:text-gray-300 mb-3">
+              <h3 className="text-sm font-semibold text-text-primary mb-3">
                 {t('tryOn.intensity')}: <span className="text-brand-600">{intensity}%</span>
               </h3>
               <input
@@ -592,7 +590,7 @@ export default function VirtualTryOnPage(): JSX.Element {
         {/* Product Recommendations */}
         {selectedColor && (
           <Card padding="lg">
-            <h3 className="text-lg font-bold text-text-primary dark:text-gray-100 mb-1">
+            <h3 className="text-lg font-bold text-text-primary mb-1">
               {t('tryOn.suggestedProducts')}
             </h3>
             <p className="text-sm text-text-secondary mb-4">
@@ -627,7 +625,7 @@ export default function VirtualTryOnPage(): JSX.Element {
                           {p.brand}
                         </p>
                       )}
-                      <h4 className="text-sm font-bold text-text-primary dark:text-gray-100 mt-0.5 line-clamp-1">
+                      <h4 className="text-sm font-bold text-text-primary mt-0.5 line-clamp-1">
                         {p.nameAr}
                       </h4>
                       <p className="mt-1 text-sm font-extrabold text-brand-600">
@@ -653,9 +651,7 @@ export default function VirtualTryOnPage(): JSX.Element {
           padding="lg"
           className="bg-linear-to-r from-pink-50 to-rose-50 dark:from-pink-950 dark:to-rose-950 border-none"
         >
-          <h3 className="font-bold text-text-primary dark:text-gray-100 mb-3">
-            {t('tryOn.tipsTitle')}
-          </h3>
+          <h3 className="font-bold text-text-primary mb-3">{t('tryOn.tipsTitle')}</h3>
           <div className="grid gap-2 text-sm text-text-secondary dark:text-text-tertiary sm:grid-cols-2">
             <p>{t('tryOn.tip1')}</p>
             <p>{t('tryOn.tip2')}</p>

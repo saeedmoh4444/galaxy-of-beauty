@@ -102,7 +102,7 @@ export default function DNABeautyPage(): JSX.Element {
               {qs.map((q: Record<string, unknown>) => (
                 <div
                   key={q.id as string}
-                  className="flex items-center justify-between rounded-lg bg-surface-muted dark:bg-gray-800 p-3"
+                  className="flex items-center justify-between rounded-lg bg-surface-muted p-3"
                 >
                   <span className="text-sm">{q.q as string}</span>
                   <div className="flex gap-2">

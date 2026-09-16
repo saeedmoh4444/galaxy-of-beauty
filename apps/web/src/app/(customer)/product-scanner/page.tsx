@@ -226,7 +226,7 @@ export default function ProductScannerPage(): JSX.Element {
                         className={`rounded-full px-2.5 py-0.5 text-xs font-medium ${
                           isAllergen
                             ? 'bg-red-100 text-red-700 dark:bg-red-900 dark:text-red-300'
-                            : 'bg-surface-muted text-text-secondary dark:bg-gray-800 dark:text-text-tertiary'
+                            : 'bg-surface-muted text-text-secondary dark:text-text-tertiary'
                         }`}
                       >
                         {ing} {isAllergen && ''}
@@ -245,7 +245,7 @@ export default function ProductScannerPage(): JSX.Element {
                   {alternatives.map((alt) => (
                     <div
                       key={alt.id}
-                      className="flex items-center justify-between rounded-xl bg-surface-muted dark:bg-gray-800 p-3"
+                      className="flex items-center justify-between rounded-xl bg-surface-muted p-3"
                     >
                       <div className="flex items-center gap-3">
                         <span className="text-2xl">{alt.emoji}</span>

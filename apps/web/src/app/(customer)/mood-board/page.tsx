@@ -136,9 +136,7 @@ export default function MoodBoardPage(): JSX.Element {
         {/* Header */}
         <div className="flex items-center justify-between">
           <div>
-            <h1 className="text-2xl font-bold text-text-primary dark:text-gray-100">
-              {t('mood.title')}
-            </h1>
+            <h1 className="text-2xl font-bold text-text-primary">{t('mood.title')}</h1>
             <p className="mt-1 text-sm text-text-secondary dark:text-text-tertiary">
               {t('mood.subtitle', { totalPins, boards: allBoards.length })}
             </p>
@@ -188,9 +186,7 @@ export default function MoodBoardPage(): JSX.Element {
 
                 {/* Info */}
                 <div className="mt-3">
-                  <h3 className="text-lg font-bold text-text-primary dark:text-gray-100">
-                    {board.name}
-                  </h3>
+                  <h3 className="text-lg font-bold text-text-primary">{board.name}</h3>
                   {board.description && (
                     <p className="text-xs text-text-secondary mt-0.5">{board.description}</p>
                   )}
@@ -208,7 +204,7 @@ export default function MoodBoardPage(): JSX.Element {
                         gap="gap-1"
                       >
                         {(pin) => (
-                          <div className="relative h-16 overflow-hidden rounded bg-surface-muted dark:bg-gray-800">
+                          <div className="relative h-16 overflow-hidden rounded bg-surface-muted">
                             <Image
                               src={pin.imageUrl}
                               alt={pin.title}
@@ -228,7 +224,7 @@ export default function MoodBoardPage(): JSX.Element {
                 )}
 
                 {/* Actions */}
-                <div className="mt-4 flex gap-2 border-t border-edge-muted pt-3 dark:border-gray-800">
+                <div className="mt-4 flex gap-2 border-t border-edge-muted pt-3">
                   <Button
                     size="sm"
                     className="flex-1"
@@ -265,7 +261,7 @@ export default function MoodBoardPage(): JSX.Element {
             <div>
               <label
                 htmlFor="mb-name"
-                className="block text-sm font-semibold text-text-primary dark:text-gray-300 mb-1"
+                className="block text-sm font-semibold text-text-primary mb-1"
               >
                 {t('mood.label.name')}
               </label>
@@ -275,13 +271,13 @@ export default function MoodBoardPage(): JSX.Element {
                 value={newBoardName}
                 onChange={(e) => setNewBoardName(e.target.value)}
                 placeholder={t('mood.placeholder.name')}
-                className="w-full rounded-lg border border-edge px-3 py-2 text-sm focus:border-brand-500 focus:outline-none dark:border-gray-700 dark:bg-gray-800"
+                className="w-full rounded-lg border border-edge px-3 py-2 text-sm focus:border-brand-500 focus:outline-none dark:bg-gray-800"
               />
             </div>
             <div>
               <label
                 htmlFor="mb-desc"
-                className="block text-sm font-semibold text-text-primary dark:text-gray-300 mb-1"
+                className="block text-sm font-semibold text-text-primary mb-1"
               >
                 {t('mood.label.description')}
               </label>
@@ -291,7 +287,7 @@ export default function MoodBoardPage(): JSX.Element {
                 onChange={(e) => setNewBoardDesc(e.target.value)}
                 placeholder={t('mood.placeholder.description')}
                 rows={2}
-                className="w-full rounded-lg border border-edge px-3 py-2 text-sm focus:border-brand-500 focus:outline-none dark:border-gray-700 dark:bg-gray-800"
+                className="w-full rounded-lg border border-edge px-3 py-2 text-sm focus:border-brand-500 focus:outline-none dark:bg-gray-800"
               />
             </div>
             <div className="flex justify-end gap-3 pt-2">
@@ -311,7 +307,7 @@ export default function MoodBoardPage(): JSX.Element {
             <div>
               <label
                 htmlFor="mb-image"
-                className="block text-sm font-semibold text-text-primary dark:text-gray-300 mb-1"
+                className="block text-sm font-semibold text-text-primary mb-1"
               >
                 {t('mood.label.imageUrl')}
               </label>
@@ -321,10 +317,10 @@ export default function MoodBoardPage(): JSX.Element {
                 value={pinImageUrl}
                 onChange={(e) => setPinImageUrl(e.target.value)}
                 placeholder="https://example.com/image.jpg"
-                className="w-full rounded-lg border border-edge px-3 py-2 text-sm focus:border-brand-500 focus:outline-none dark:border-gray-700 dark:bg-gray-800"
+                className="w-full rounded-lg border border-edge px-3 py-2 text-sm focus:border-brand-500 focus:outline-none dark:bg-gray-800"
               />
               {pinImageUrl && (
-                <div className="mt-2 h-32 rounded-xl bg-surface-muted dark:bg-gray-800 overflow-hidden">
+                <div className="mt-2 h-32 rounded-xl bg-surface-muted overflow-hidden">
                   {/* eslint-disable-next-line @next/next/no-img-element -- user-entered URL may not be an allowed remote host for the optimizer */}
                   <img
                     src={pinImageUrl}
@@ -340,7 +336,7 @@ export default function MoodBoardPage(): JSX.Element {
             <div>
               <label
                 htmlFor="mb-title"
-                className="block text-sm font-semibold text-text-primary dark:text-gray-300 mb-1"
+                className="block text-sm font-semibold text-text-primary mb-1"
               >
                 {t('mood.label.title')}
               </label>
@@ -350,13 +346,13 @@ export default function MoodBoardPage(): JSX.Element {
                 value={pinTitle}
                 onChange={(e) => setPinTitle(e.target.value)}
                 placeholder={t('mood.placeholder.title')}
-                className="w-full rounded-lg border border-edge px-3 py-2 text-sm focus:border-brand-500 focus:outline-none dark:border-gray-700 dark:bg-gray-800"
+                className="w-full rounded-lg border border-edge px-3 py-2 text-sm focus:border-brand-500 focus:outline-none dark:bg-gray-800"
               />
             </div>
             <div>
               <label
                 htmlFor="mb-tags"
-                className="block text-sm font-semibold text-text-primary dark:text-gray-300 mb-1"
+                className="block text-sm font-semibold text-text-primary mb-1"
               >
                 {t('mood.label.tags')}
               </label>
@@ -366,7 +362,7 @@ export default function MoodBoardPage(): JSX.Element {
                 value={pinTags}
                 onChange={(e) => setPinTags(e.target.value)}
                 placeholder={t('mood.placeholder.tags')}
-                className="w-full rounded-lg border border-edge px-3 py-2 text-sm focus:border-brand-500 focus:outline-none dark:border-gray-700 dark:bg-gray-800"
+                className="w-full rounded-lg border border-edge px-3 py-2 text-sm focus:border-brand-500 focus:outline-none dark:bg-gray-800"
               />
             </div>
             <div className="flex justify-end gap-3 pt-2">

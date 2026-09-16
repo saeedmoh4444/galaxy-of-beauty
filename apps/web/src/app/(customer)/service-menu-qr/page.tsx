@@ -33,7 +33,7 @@ export default function ServiceMenuQrPage(): JSX.Element {
               {list.map((tx: Record<string, unknown>) => (
                 <div
                   key={tx.id as number}
-                  className="flex items-center justify-between rounded-xl bg-surface-muted dark:bg-gray-800 p-4"
+                  className="flex items-center justify-between rounded-xl bg-surface-muted p-4"
                 >
                   <div>
                     <p className="font-bold">{tx.name as string}</p>
@@ -61,7 +61,7 @@ export default function ServiceMenuQrPage(): JSX.Element {
             <h3 className="font-bold mb-3">
               {t('serviceMenuQr.qrForMenu', { name: result.technicianName as string })}
             </h3>
-            <div className="mx-auto flex h-40 w-40 items-center justify-center rounded-xl bg-surface-muted dark:bg-gray-800 text-6xl">
+            <div className="mx-auto flex h-40 w-40 items-center justify-center rounded-xl bg-surface-muted text-6xl">
               📱
             </div>
             <p className="text-xs text-text-secondary mt-2 break-all">{result.menuUrl as string}</p>

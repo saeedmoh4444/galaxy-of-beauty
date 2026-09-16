@@ -116,7 +116,7 @@ export default function WellnessTrackerPage(): JSX.Element {
               <label className="text-sm font-semibold">{t('wellnessTracker.skincareLabel')}</label>
               <button
                 onClick={() => setSkincare(!skincare)}
-                className={`mt-1 w-full rounded-lg border px-3 py-2 text-sm font-medium transition-colors ${skincare ? 'bg-green-100 border-green-400 text-green-700 dark:bg-green-900 dark:text-green-300' : 'bg-surface-muted border-edge text-text-secondary dark:bg-gray-800 dark:border-gray-700'}`}
+                className={`mt-1 w-full rounded-lg border px-3 py-2 text-sm font-medium transition-colors ${skincare ? 'bg-green-100 border-green-400 text-green-700 dark:bg-green-900 dark:text-green-300' : 'bg-surface-muted border-edge text-text-secondary'}`}
               >
                 {skincare ? t('wellnessTracker.done') : t('wellnessTracker.notDone')}
               </button>

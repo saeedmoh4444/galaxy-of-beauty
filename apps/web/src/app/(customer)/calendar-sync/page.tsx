@@ -145,7 +145,7 @@ export default function CalendarSyncPage(): JSX.Element {
               {events.map((e: Record<string, unknown>) => (
                 <div
                   key={e.id as number}
-                  className="flex items-center gap-3 rounded-lg bg-surface-muted dark:bg-gray-800 p-3"
+                  className="flex items-center gap-3 rounded-lg bg-surface-muted p-3"
                 >
                   <span className="text-2xl">{e.emoji as string}</span>
                   <div className="flex-1">

@@ -103,24 +103,22 @@ export default function PostTreatmentPage(): JSX.Element {
                 setSelected(key);
                 setCompleted([]);
               }}
-              className={`flex-1 rounded-2xl border-2 p-3 text-center transition-all ${selected === key ? 'border-rose-400 bg-rose-50 dark:border-rose-600 dark:bg-rose-950' : 'border-edge-muted bg-white dark:border-gray-800 dark:bg-gray-900'}`}
+              className={`flex-1 rounded-2xl border-2 p-3 text-center transition-all ${selected === key ? 'border-rose-400 bg-rose-50 dark:border-rose-600 dark:bg-rose-950' : 'border-edge-muted bg-white dark:bg-gray-900'}`}
             >
               <span className="text-2xl">{val.emoji}</span>
-              <p className="mt-1 text-xs font-semibold text-text-primary dark:text-gray-100">
-                {t(val.label)}
-              </p>
+              <p className="mt-1 text-xs font-semibold text-text-primary">{t(val.label)}</p>
             </button>
           ))}
         </div>
 
-        <div className="rounded-2xl border border-edge-muted bg-white p-6 dark:border-gray-800 dark:bg-gray-900">
-          <h3 className="text-lg font-bold text-text-primary dark:text-gray-100">
+        <div className="rounded-2xl border border-edge-muted bg-white p-6 dark:bg-gray-900">
+          <h3 className="text-lg font-bold text-text-primary">
             {treat.emoji} {t(treat.label)}
           </h3>
 
           <div className="mt-4">
             <div className="flex items-center justify-between">
-              <span className="text-sm font-bold text-text-primary dark:text-gray-100">
+              <span className="text-sm font-bold text-text-primary">
                 {t('postTreatment.progress')}
               </span>
               <span className="text-sm font-bold text-rose-600 dark:text-rose-400">
@@ -135,7 +133,7 @@ export default function PostTreatmentPage(): JSX.Element {
             </div>
           </div>
 
-          <h4 className="mt-6 text-sm font-bold text-text-primary dark:text-gray-100">
+          <h4 className="mt-6 text-sm font-bold text-text-primary">
             {t('postTreatment.important')}
           </h4>
           <div className="mt-2 space-y-1">
@@ -149,7 +147,7 @@ export default function PostTreatmentPage(): JSX.Element {
             ))}
           </div>
 
-          <h4 className="mt-6 text-sm font-bold text-text-primary dark:text-gray-100">
+          <h4 className="mt-6 text-sm font-bold text-text-primary">
             {t('postTreatment.timelineTitle')}
           </h4>
           <div className="mt-2 space-y-2">
@@ -167,7 +165,7 @@ export default function PostTreatmentPage(): JSX.Element {
                 </span>
                 <div>
                   <p
-                    className={`text-sm font-bold ${completed.includes(tl.day) ? 'text-emerald-700 dark:text-emerald-300' : 'text-text-primary dark:text-gray-200'}`}
+                    className={`text-sm font-bold ${completed.includes(tl.day) ? 'text-emerald-700 dark:text-emerald-300' : 'text-text-primary'}`}
                   >
                     {t(tl.day)}
                   </p>
