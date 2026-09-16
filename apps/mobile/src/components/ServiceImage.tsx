@@ -14,6 +14,10 @@ interface ServiceImageProps {
   alt?: string;
   style?: StyleProp<ImageStyle>;
   height?: number;
+  /** Square width — defaults to `height` when omitted. */
+  width?: number;
+  /** Corner radius in px — defaults to 12. */
+  borderRadius?: number;
 }
 
 export function ServiceImage({
@@ -22,9 +26,12 @@ export function ServiceImage({
   alt = '',
   style,
   height = 160,
+  width,
+  borderRadius = 12,
 }: ServiceImageProps): JSX.Element {
   const [failed, setFailed] = useState(false);
   const imageSrc = src ?? getServiceImage(service);
+  const w = width ?? height;
 
   if (failed || !imageSrc) {
     const letter = alt?.[0] ?? service?.[0]?.toUpperCase() ?? '';
@@ -32,7 +39,7 @@ export function ServiceImage({
       <View
         testID="service-image-fallback"
         accessibilityLabel={alt || service || 'Beauty service'}
-        style={[styles.fallback, { height }, style]}
+        style={[styles.fallback, { height, width: w, borderRadius }, style]}
       >
         <Text style={styles.letter}>{letter}</Text>
       </View>
@@ -46,7 +53,7 @@ export function ServiceImage({
       accessibilityLabel={alt || service || 'Beauty service'}
       onError={() => setFailed(true)}
       resizeMode="cover"
-      style={[{ height }, style]}
+      style={[{ height, width: w, borderRadius }, style]}
     />
   );
 }
@@ -56,7 +63,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     backgroundColor: '#fbcfe8',
-    borderRadius: 12,
   },
   letter: {
     fontSize: 28,
