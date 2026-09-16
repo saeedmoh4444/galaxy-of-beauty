@@ -13,12 +13,7 @@ export function BeautyMakeupMatteCard({
   locale?: 'ar' | 'en';
 }): JSX.Element {
   return (
-    <div
-      className={cn(
-        'rounded-2xl border border-edge-muted bg-white p-4 dark:bg-gray-900',
-        className,
-      )}
-    >
+    <div className={cn('rounded-2xl border border-edge-muted bg-surface-elevated p-4', className)}>
       <div className="flex items-center gap-2">
         <span className="text-xl">💄</span>
         <div>

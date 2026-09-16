@@ -42,7 +42,7 @@ export function BeautyRecipeCard({
   return (
     <div
       className={cn(
-        'rounded-2xl border border-emerald-100 bg-white p-4 dark:border-emerald-900 dark:bg-gray-900',
+        'rounded-2xl border border-emerald-100 bg-surface-elevated p-4 dark:border-emerald-900',
         className,
       )}
     >
@@ -70,7 +70,7 @@ export function BeautyRecipeCard({
           {recipe.ingredients.map((ing) => (
             <span
               key={ing}
-              className="rounded-full bg-white px-2 py-0.5 text-[9px] text-emerald-800 dark:bg-gray-800 dark:text-emerald-200"
+              className="rounded-full bg-surface-elevated px-2 py-0.5 text-[9px] text-emerald-800 dark:text-emerald-200"
             >
               {ing}
             </span>
@@ -79,7 +79,7 @@ export function BeautyRecipeCard({
       </div>
 
       {/* Steps */}
-      <div className="mt-2 rounded-xl bg-white/60 p-3 dark:bg-gray-800/60">
+      <div className="mt-2 rounded-xl bg-surface-elevated/60 p-3">
         <p className="text-[10px] font-bold text-text-primary">{stepsLabel}</p>
         <div className="mt-1 space-y-1">
           {recipe.steps.map((step, i) => (

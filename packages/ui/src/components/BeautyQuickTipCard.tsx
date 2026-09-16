@@ -52,7 +52,7 @@ export function BeautyQuickTipCard({
         <button
           type="button"
           onClick={onNextTip}
-          className="mt-3 w-full rounded-xl border border-teal-200 py-2 text-[10px] font-bold text-teal-700 hover:bg-white/60 dark:hover:bg-gray-800/60 dark:border-teal-800 dark:text-teal-300 transition-colors"
+          className="mt-3 w-full rounded-xl border border-teal-200 py-2 text-[10px] font-bold text-teal-700 hover:bg-surface-elevated/60 dark:hover:bg-gray-800/60 dark:border-teal-800 dark:text-teal-300 transition-colors"
         >
           {nextTipText}
         </button>

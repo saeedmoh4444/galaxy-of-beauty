@@ -48,7 +48,7 @@ export function BeautyPodcastCard({
   return (
     <div
       className={cn(
-        'rounded-2xl border border-rose-100 bg-white p-4 dark:border-rose-900 dark:bg-gray-900',
+        'rounded-2xl border border-rose-100 bg-surface-elevated p-4 dark:border-rose-900',
         className,
       )}
     >
@@ -74,7 +74,7 @@ export function BeautyPodcastCard({
 
         {/* Guest */}
         <div className="mt-1.5 flex items-center gap-2">
-          <div className="flex h-8 w-8 items-center justify-center rounded-full bg-white text-sm dark:bg-gray-700">
+          <div className="flex h-8 w-8 items-center justify-center rounded-full bg-surface-elevated text-sm">
             👤
           </div>
           <div>

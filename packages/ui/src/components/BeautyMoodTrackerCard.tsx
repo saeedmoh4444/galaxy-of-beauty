@@ -51,7 +51,7 @@ export function BeautyMoodTrackerCard({
   return (
     <div
       className={cn(
-        'rounded-2xl border border-violet-100 bg-white p-4 dark:border-violet-900 dark:bg-gray-900',
+        'rounded-2xl border border-violet-100 bg-surface-elevated p-4 dark:border-violet-900',
         className,
       )}
     >

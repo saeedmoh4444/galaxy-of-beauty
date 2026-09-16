@@ -60,7 +60,7 @@ export function BeautyMythBusterCard({
   return (
     <div
       className={cn(
-        'rounded-2xl border border-rose-100 bg-white p-5 dark:border-rose-900 dark:bg-gray-900',
+        'rounded-2xl border border-rose-100 bg-surface-elevated p-5 dark:border-rose-900',
         className,
       )}
     >
@@ -132,7 +132,7 @@ export function BeautyMythBusterCard({
                 setRevealed(false);
                 onNextMyth();
               }}
-              className="w-full rounded-xl border border-rose-200 bg-white py-2 text-[10px] font-bold text-rose-600 hover:bg-rose-50 dark:border-rose-800 dark:bg-gray-800 dark:text-rose-400"
+              className="w-full rounded-xl border border-rose-200 bg-surface-elevated py-2 text-[10px] font-bold text-rose-600 hover:bg-rose-50 dark:border-rose-800 dark:text-rose-400"
             >
               {nextMythText}
             </button>
