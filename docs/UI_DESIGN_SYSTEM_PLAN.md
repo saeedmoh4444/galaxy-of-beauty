@@ -131,6 +131,32 @@ establishment (women-only, privacy) need a guided first run.
 - Acceptance: tour completes in <60s, 100% skippable, ar+en, zero
   console errors, dashboard smoke tests green.
 
+## 3.7 RN mirrors of the §3.5 imagery sweeps (audited 2026-09-16)
+
+The web sweeps (#165–#174) eliminated emoji-as-visual placeholders, but
+the mobile app has not mirrored them yet. Audit (2026-09-16):
+
+- **320** mobile screen directories; **75** hero-sized emoji sites
+  (`fontSize: 40+`); **0** expo-image imports; the shared image registry
+  (`@galaxy/shared/images`) is referenced in **1** file; `ServiceImage`
+  (web component) is used in **2** mobile files only.
+
+Sprint breakdown (each PR-sized):
+
+1. **RN imagery foundation** — an `ImageCard`-style RN component in
+   apps/mobile (expo-image + shared registry + branded letter-avatar
+   fallback, mirroring web `ServiceImage`); wire expo-image where missing.
+2. **Home/Discover/screens hero sweep** — the 75 `fontSize: 40+` emoji
+   sites mapped through the registry (reuse web `pageHeroKey`/category
+   keys so both platforms render the same photography).
+3. **Empty states & cards** — mobile EmptyState/icon emoji → the Icon
+   set or real imagery per screen.
+4. **Trust signals** — mirror venue TrustBadges + service-detail trust
+   row in RN (mobile.public.service-detail.trust.* keys already exist).
+
+Acceptance: grep finds zero hero-emoji sites in apps/mobile/src;
+mobile builds (tsc + jest) green; screenshots for home/discover/services.
+
 ## 4. Design direction (what "modern" means HERE)
 
 The platform's moat is trust + women-first. The design must radiate:
