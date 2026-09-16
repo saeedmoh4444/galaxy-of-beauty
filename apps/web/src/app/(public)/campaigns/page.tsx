@@ -2,7 +2,6 @@
 
 import { useState, useEffect } from 'react';
 import type { JSX } from 'react';
-import Image from 'next/image';
 import { api } from '@/lib/trpc';
 import {
   Card,
@@ -118,12 +117,12 @@ export default function CampaignsPage(): JSX.Element {
                     padding="none"
                     className="overflow-hidden border-2 border-red-200 dark:border-red-800 hover:shadow-xl transition-all"
                   >
-                    <div className="relative flex h-36 items-center justify-center bg-linear-to-br from-red-100 to-amber-100 dark:from-red-950 dark:to-amber-950 text-5xl">
-                      {c.imageUrl ? (
-                        <Image src={c.imageUrl} alt="" fill className="object-cover" />
-                      ) : (
-                        <span>🎉</span>
-                      )}
+                    <div className="relative flex h-36 items-center justify-center bg-linear-to-br from-red-100 to-amber-100 dark:from-red-950 dark:to-amber-950">
+                      <ServiceImage
+                        src={c.imageUrl ?? null}
+                        alt={localize(c.nameJson, locale)}
+                        size="full"
+                      />
                       <span className="absolute top-3 end-3 rounded-full bg-red-500 px-3 py-1 text-xs font-bold text-white animate-pulse">
                         {t('marketing.campaigns.active')}
                       </span>
@@ -182,8 +181,12 @@ export default function CampaignsPage(): JSX.Element {
                     padding="none"
                     className="overflow-hidden opacity-70 hover:opacity-100 transition-all"
                   >
-                    <div className="flex h-36 items-center justify-center bg-linear-to-br from-blue-100 to-brand-100 dark:from-blue-950 dark:to-brand-950 text-5xl">
-                      <span>📅</span>
+                    <div className="relative flex h-36 items-center justify-center bg-linear-to-br from-blue-100 to-brand-100 dark:from-blue-950 dark:to-brand-950">
+                      <ServiceImage
+                        src={c.imageUrl ?? null}
+                        alt={localize(c.nameJson, locale)}
+                        size="full"
+                      />
                     </div>
                     <div className="p-5">
                       <h3 className="text-lg font-bold">{localize(c.nameJson, locale)}</h3>

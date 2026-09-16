@@ -6,7 +6,7 @@ import type { RouterOutputs } from '@galaxy/api';
 import { api } from '@/lib/trpc';
 import { localize } from '@galaxy/shared';
 import { useLocale } from '@/components/LocaleProvider';
-import { Card, EmptyState } from '@galaxy/ui';
+import { Card, EmptyState, ServiceImage } from '@galaxy/ui';
 
 type GalleryImage = RouterOutputs['gallery']['byTechnician']['items'][number];
 
@@ -34,20 +34,13 @@ function BeforeAfterSection({ technicianUserId }: { technicianUserId: number }):
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
         {beforeAfters.map((s) => (
           <Card key={s.id} padding="none" className="overflow-hidden">
-            {s.beforeImageUrl || s.thumbnailUrl ? (
-              <div className="relative flex aspect-square items-center justify-center bg-surface-muted">
-                <Image
-                  src={String(s.beforeImageUrl ?? s.thumbnailUrl)}
-                  alt={(s.titleJson as Record<string, string>)?.ar ?? ''}
-                  fill
-                  className="object-cover"
-                />
-              </div>
-            ) : (
-              <div className="flex aspect-square items-center justify-center bg-linear-to-br from-brand-50 to-brand-50 text-5xl dark:from-brand-950 dark:to-brand-950">
-                ✨
-              </div>
-            )}
+            <div className="relative flex aspect-square items-center justify-center overflow-hidden bg-surface-muted">
+              <ServiceImage
+                src={(s.beforeImageUrl ?? s.thumbnailUrl) || null}
+                alt={(s.titleJson as Record<string, string>)?.ar ?? ''}
+                size="full"
+              />
+            </div>
             <div className="p-3">
               <p className="text-sm font-medium text-text-primary">
                 {locale === 'en'
