@@ -118,6 +118,24 @@ describe('before/after galleries (E6e)', () => {
     expect(none).toHaveLength(0);
   });
 
+  it('accepts technicianUserIds list and merges approved shorts across technicians', async () => {
+    const anon = await caller(null);
+    const merged = await anon.beautyShorts.gallery({
+      technicianUserIds: [techUser.id, otherUser.id],
+    });
+    const ids = merged.map((s: any) => s.id);
+    expect(ids).toContain(createdShortIds[0]); // tech A approved before_after
+    expect(ids).toContain(createdShortIds[2]); // tech B approved before_after
+    expect(ids).not.toContain(createdShortIds[1]); // pending
+    expect(ids).not.toContain(createdShortIds[3]); // reel
+  });
+
+  it('returns an empty list for an empty technicianUserIds list', async () => {
+    const anon = await caller(null);
+    const none = await anon.beautyShorts.gallery({ technicianUserIds: [] });
+    expect(none).toHaveLength(0);
+  });
+
   it('does not leak other technicians or unapproved posts', async () => {
     const anon = await caller(null);
     const otherGallery = await anon.beautyShorts.gallery({ technicianUserId: otherUser.id });

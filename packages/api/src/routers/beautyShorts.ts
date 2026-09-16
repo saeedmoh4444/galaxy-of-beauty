@@ -109,19 +109,34 @@ export const beautyShortsRouter = router({
     }),
 
   /**
-   * gallery — E6e: a technician's approved before/after shorts (by USER id),
-   * surfaced on the technician profile/gallery pages. Public.
+   * gallery — E6e: approved before/after shorts (by USER id), surfaced on
+   * the technician profile/gallery pages and merged across all of a
+   * service's mapped technicians on the service detail page. Public.
+   * Pass one of `technicianUserId` or `technicianUserIds` (max 10).
    */
   gallery: publicProcedure
-    .input(z.object({ technicianUserId: z.number().int().positive() }))
+    .input(
+      z
+        .object({
+          technicianUserId: z.number().int().positive().optional(),
+          technicianUserIds: z.array(z.number().int().positive()).max(10).optional(),
+        })
+        .refine((v) => v.technicianUserId !== undefined || v.technicianUserIds !== undefined, {
+          message: 'Provide technicianUserId or technicianUserIds',
+        }),
+    )
     .query(async ({ input }) => {
-      const technician = await db.technician.findUnique({
-        where: { userId: input.technicianUserId },
+      const userIds =
+        input.technicianUserIds ?? (input.technicianUserId ? [input.technicianUserId] : []);
+      if (userIds.length === 0) return [];
+      const technicians = await db.technician.findMany({
+        where: { userId: { in: userIds } },
+        select: { id: true },
       });
-      if (!technician) return [];
+      if (technicians.length === 0) return [];
       return db.short.findMany({
         where: {
-          technicianId: technician.id,
+          technicianId: { in: technicians.map((t) => t.id) },
           type: 'before_after',
           isApproved: true,
           isActive: true,
