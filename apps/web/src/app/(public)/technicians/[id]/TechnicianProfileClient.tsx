@@ -6,7 +6,7 @@ import Image from 'next/image';
 import type { RouterOutputs } from '@galaxy/api';
 import { localize } from '@galaxy/shared';
 import { useLocale } from '@/components/LocaleProvider';
-import { Card, EmptyState, Button, formatCurrency } from '@galaxy/ui';
+import { Card, EmptyState, Button, formatCurrency, ServiceImage } from '@galaxy/ui';
 
 export type TechnicianProfileItem = RouterOutputs['technicians']['getById'] & {
   galleryImages?: Array<{ imageUrl?: string; captionJson?: { ar?: string } }>;
@@ -56,12 +56,8 @@ export function TechnicianProfileClient({ data }: { data: TechnicianProfileData 
 
       <Card padding="lg" className="mt-6">
         <div className="flex flex-col items-center gap-6 sm:flex-row sm:items-start">
-          <div className="relative flex h-32 w-32 items-center justify-center rounded-full bg-linear-to-br from-brand-100 to-accent-100 text-5xl dark:from-brand-900 dark:to-accent-900">
-            {user.avatarUrl ? (
-              <Image src={user.avatarUrl} alt={name} fill className="rounded-full object-cover" />
-            ) : (
-              <span>👩</span>
-            )}
+          <div className="relative flex h-32 w-32 items-center justify-center overflow-hidden rounded-full bg-linear-to-br from-brand-100 to-accent-100 dark:from-brand-900 dark:to-accent-900">
+            <ServiceImage src={user.avatarUrl ?? null} alt={name} size="full" />
           </div>
           <div className="flex-1 text-center sm:text-end">
             <div className="flex items-center justify-center gap-2 sm:justify-start">

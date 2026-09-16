@@ -1,6 +1,6 @@
 import type { JSX } from 'react';
 import Link from 'next/link';
-import Image from 'next/image';
+import { ServiceImage } from '@galaxy/ui';
 import { t, localize } from '@galaxy/shared';
 import { getServerCaller } from '@/lib/server-trpc';
 import { getServerLocale } from '@/lib/i18n';
@@ -54,12 +54,8 @@ export default async function BeautyPackagesPage(): Promise<JSX.Element> {
                 key={pkg.id}
                 className="overflow-hidden rounded-2xl border border-edge bg-surface-elevated"
               >
-                <div className="relative flex h-40 items-center justify-center bg-linear-to-br from-brand-200 to-accent-200 text-5xl dark:from-brand-900 dark:to-accent-900">
-                  {pkg.imageUrl ? (
-                    <Image src={pkg.imageUrl} alt={name} fill className="object-cover" />
-                  ) : (
-                    <span>🎁</span>
-                  )}
+                <div className="relative flex h-40 items-center justify-center overflow-hidden bg-linear-to-br from-brand-200 to-accent-200 dark:from-brand-900 dark:to-accent-900">
+                  <ServiceImage src={pkg.imageUrl ?? null} alt={name} size="full" />
                 </div>
                 <div className="p-5">
                   <div className="flex items-center justify-between">
