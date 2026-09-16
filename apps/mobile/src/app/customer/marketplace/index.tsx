@@ -10,6 +10,8 @@ import {
 import { useState } from 'react';
 import type { JSX } from 'react';
 import { ErrorAlert } from '@/components/ErrorAlert';
+import { EmptyState } from '@/components/EmptyState';
+import { ServiceImage } from '@/components/ServiceImage';
 import { SkeletonList } from '@/components/SkeletonCard';
 import { trpc } from '@/lib/trpc-react';
 import { localize } from '@galaxy/shared';
@@ -21,6 +23,7 @@ interface MarketProduct {
   nameJson?: { ar?: string };
   brand?: string;
   price?: number;
+  imageUrl?: string | null;
 }
 
 interface MarketProductsResponse {
@@ -100,17 +103,17 @@ export default function MarketplaceScreen(): JSX.Element {
         placeholderTextColor="#9ca3af"
       />
 
-      {products.length === 0 && (
-        <View style={{ alignItems: 'center', padding: 30 }}>
-          <Text style={{ fontSize: 40 }}>🛒</Text>
-          <Text style={{ color: '#6b7280', marginTop: 8 }}>{t('marketplace.noProducts')}</Text>
-        </View>
-      )}
+      {products.length === 0 && <EmptyState emoji="🛒" title={t('marketplace.noProducts')} />}
 
       <View style={s.grid}>
         {products.map((p) => (
           <TouchableOpacity key={p.id} style={s.prod} onPress={() => handleAddToCart(p.id ?? 0)}>
-            <Text style={{ fontSize: 36, textAlign: 'center' }}>🧴</Text>
+            <ServiceImage
+              src={(p.imageUrl as string | null) ?? null}
+              alt={localize(p.nameJson, locale) || ''}
+              height={44}
+              width={44}
+            />
             <Text
               style={{ fontWeight: '600', fontSize: 13, textAlign: 'center', marginTop: 6 }}
               numberOfLines={1}

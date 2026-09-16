@@ -134,28 +134,30 @@ establishment (women-only, privacy) need a guided first run.
 ## 3.7 RN mirrors of the §3.5 imagery sweeps (audited 2026-09-16)
 
 The web sweeps (#165–#174) eliminated emoji-as-visual placeholders, but
-the mobile app has not mirrored them yet. Audit (2026-09-16):
+the mobile app has not mirrored them yet. Audit (2026-09-16, corrected
+2026-09-16 evening — the earlier "75 hero-emoji sites" count included
+icon glyphs like ✓/K/!, not emoji):
 
-- **320** mobile screen directories; **75** hero-sized emoji sites
-  (`fontSize: 40+`); **0** expo-image imports; the shared image registry
-  (`@galaxy/shared/images`) is referenced in **1** file; `ServiceImage`
-  (web component) is used in **2** mobile files only.
+- **320** mobile screen directories; **17** real emoji-as-visual sites
+  (all empty states / placeholders / success icons — mobile has no
+  hero-emoji problem); **0** expo-image imports; the shared image
+  registry (`@galaxy/shared/images`) is used via the RN `ServiceImage`
+  component (already exists, extended with width/borderRadius in #176).
 
 Sprint breakdown (each PR-sized):
 
-1. **RN imagery foundation** — an `ImageCard`-style RN component in
-   apps/mobile (expo-image + shared registry + branded letter-avatar
-   fallback, mirroring web `ServiceImage`); wire expo-image where missing.
-2. **Home/Discover/screens hero sweep** — the 75 `fontSize: 40+` emoji
-   sites mapped through the registry (reuse web `pageHeroKey`/category
-   keys so both platforms render the same photography).
-3. **Empty states & cards** — mobile EmptyState/icon emoji → the Icon
-   set or real imagery per screen.
+1. ~~RN imagery foundation~~ — DONE (#176): ServiceImage width/borderRadius
+   knobs + storefront adoption (home categories, services rows).
+2. **Empty states & card imagery** — shared RN `EmptyState` component +
+   adopt the inline `{x.length === 0 && emoji}` blocks; swap card
+   emoji thumbnails (product 🧴, avatar 👤) for ServiceImage.
+3. **Media placeholders** — skin-timeline 📷 before/after, gallery
+   🖼️, shop-the-look 👗 → real imagery where data exists.
 4. **Trust signals** — mirror venue TrustBadges + service-detail trust
    row in RN (mobile.public.service-detail.trust.* keys already exist).
 
 Acceptance: grep finds zero hero-emoji sites in apps/mobile/src;
-mobile builds (tsc + jest) green; screenshots for home/discover/services.
+mobile builds (tsc + lint) green; screenshots for home/discover/services.
 
 ## 4. Design direction (what "modern" means HERE)
 

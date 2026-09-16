@@ -1,6 +1,7 @@
 import type { JSX } from 'react';
 import { View, Text, ScrollView, StyleSheet, TouchableOpacity, RefreshControl } from 'react-native';
 import { ErrorAlert } from '@/components/ErrorAlert';
+import { EmptyState } from '@/components/EmptyState';
 import { SkeletonList } from '@/components/SkeletonCard';
 import { useLocale } from '@/components/LocaleProvider';
 import { useAuthState } from '@/hooks/useAuthState';
@@ -109,12 +110,7 @@ export default function BeautyEventsScreen(): JSX.Element {
         </View>
       )}
 
-      {items.length === 0 && (
-        <View style={{ alignItems: 'center', padding: 30 }}>
-          <Text style={{ fontSize: 40 }}>🎉</Text>
-          <Text style={{ color: '#6b7280', marginTop: 8 }}>{t('beautyEvents.empty')}</Text>
-        </View>
-      )}
+      {items.length === 0 && <EmptyState emoji="🎉" title={t('beautyEvents.empty')} />}
 
       {items.map((e) => {
         const isReg = registeredIds.has(e.id);
