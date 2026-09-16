@@ -3,7 +3,16 @@
 import { useMemo } from 'react';
 import type { JSX } from 'react';
 import { api } from '@/lib/trpc';
-import { Card, Button, ErrorAlert, EmptyState, useToast, useAuth } from '@galaxy/ui';
+import {
+  Card,
+  Button,
+  ErrorAlert,
+  EmptyState,
+  useToast,
+  useAuth,
+  TrustBadges,
+  ServiceImage,
+} from '@galaxy/ui';
 import { useLocale } from '@/components/LocaleProvider';
 import { localize } from '@galaxy/shared';
 
@@ -71,14 +80,9 @@ export function NailBarClient({ data }: { data: NailBarPageData }): JSX.Element 
     <div className="mx-auto max-w-5xl space-y-6 px-4 py-8">
       <Card padding="lg">
         <div className="flex items-start gap-4">
-          {n.logoUrl ? (
-            // eslint-disable-next-line @next/next/no-img-element
-            <img src={n.logoUrl} alt={n.storeName} className="h-16 w-16 rounded-2xl object-cover" />
-          ) : (
-            <div className="flex h-16 w-16 items-center justify-center rounded-2xl bg-brand-100 text-3xl">
-              💅
-            </div>
-          )}
+          <div className="h-16 w-16 overflow-hidden rounded-2xl">
+            <ServiceImage src={n.logoUrl ?? null} alt={n.storeName ?? ''} size="full" />
+          </div>
           <div>
             <h1 className="text-2xl font-bold text-text-primary dark:text-gray-100">
               {n.storeName}
@@ -87,23 +91,34 @@ export function NailBarClient({ data }: { data: NailBarPageData }): JSX.Element 
               {n.nailBarType ? t(`nailBars.type.${n.nailBarType}` as never) : ''} · {n.nailBarCity}{' '}
               · {n.nailBarAddress}
             </p>
-            {n.licenseVerifiedAt && (
-              <span className="mt-2 inline-block rounded-full bg-green-100 px-2 py-0.5 text-xs font-medium text-green-700">
-                {t('nailBars.verified', { agency: n.licenseAgency ?? '' })}
-              </span>
-            )}
-            <div className="mt-2 flex flex-wrap gap-1">
-              {(n.womenOnlyStaff as boolean) && (
-                <span className="rounded-full bg-pink-100 px-2 py-0.5 text-[10px] text-pink-700">
-                  🙋‍♀️ {t('trust.womenOnly')}
-                </span>
-              )}
-              {(n.privateSuite as boolean) && (
-                <span className="rounded-full bg-brand-100 px-2 py-0.5 text-[10px] text-brand-700">
-                  🚪 {t('trust.privateSuite')}
-                </span>
-              )}
-            </div>
+            <TrustBadges
+              className="mt-3"
+              items={[
+                ...(n.licenseVerifiedAt
+                  ? [
+                      {
+                        variant: 'verified' as const,
+                        label: t('nailBars.verified', { agency: n.licenseAgency ?? '' }),
+                      },
+                    ]
+                  : []),
+                ...(n.totalReviews > 0
+                  ? [
+                      {
+                        variant: 'rating' as const,
+                        label: t('misc.rating'),
+                        value: Number(n.ratingAvg ?? 0).toFixed(1),
+                      },
+                    ]
+                  : []),
+                ...(n.womenOnlyStaff
+                  ? [{ variant: 'womenOnly' as const, label: t('trust.womenOnly') }]
+                  : []),
+                ...(n.privateSuite
+                  ? [{ variant: 'private' as const, label: t('trust.privateSuite') }]
+                  : []),
+              ]}
+            />
           </div>
         </div>
         {n.descriptionJson && (

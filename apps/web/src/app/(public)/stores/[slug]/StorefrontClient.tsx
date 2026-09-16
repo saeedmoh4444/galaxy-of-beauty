@@ -11,6 +11,7 @@ import {
   useToast,
   useAuth,
   ServiceImage,
+  TrustBadges,
 } from '@galaxy/ui';
 import { useLocale } from '@/components/LocaleProvider';
 import { localize } from '@galaxy/shared';
@@ -74,10 +75,29 @@ export function StorefrontClient({ data }: { data: StorefrontPageData }): JSX.El
           </h1>
           <p className="mt-1 text-sm text-text-secondary">
             {t('stores.product-count', { count: data.productCount })}
-            {store.isVerified ? ` · ${t('stores.verified')}` : ''}
           </p>
+          <TrustBadges
+            className="mt-3"
+            items={
+              store.isVerified
+                ? [{ variant: 'verified' as const, label: t('stores.verified') }]
+                : []
+            }
+          />
         </div>
       </div>
+
+      {/* Store banner — E7 KYC banner media */}
+      {store.bannerUrl ? (
+        <div className="overflow-hidden rounded-3xl">
+          <ServiceImage
+            src={store.bannerUrl}
+            alt={store.storeName ?? ''}
+            size="full"
+            className="h-48 w-full object-cover md:h-64"
+          />
+        </div>
+      ) : null}
 
       {bio[locale] ? (
         <p className="max-w-2xl text-sm leading-relaxed text-text-secondary">{bio[locale]}</p>
