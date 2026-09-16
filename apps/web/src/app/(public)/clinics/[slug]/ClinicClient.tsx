@@ -3,7 +3,17 @@
 import { useMemo, useState } from 'react';
 import type { JSX } from 'react';
 import { api } from '@/lib/trpc';
-import { Card, Button, Modal, ErrorAlert, EmptyState, useToast, useAuth } from '@galaxy/ui';
+import {
+  Card,
+  Button,
+  Modal,
+  ErrorAlert,
+  EmptyState,
+  useToast,
+  useAuth,
+  TrustBadges,
+  ServiceImage,
+} from '@galaxy/ui';
 import { useLocale } from '@/components/LocaleProvider';
 import { localize } from '@galaxy/shared';
 
@@ -91,31 +101,40 @@ export function ClinicClient({ data }: { data: ClinicPageData }): JSX.Element {
     <div className="mx-auto max-w-5xl space-y-8 px-4 py-8">
       {/* Clinic header */}
       <div className="flex items-center gap-4">
-        {clinic.logoUrl ? (
-          // eslint-disable-next-line @next/next/no-img-element
-          <img
-            src={clinic.logoUrl}
-            alt={clinic.storeName}
-            className="h-20 w-20 rounded-2xl object-cover"
-          />
-        ) : (
-          <div className="flex h-20 w-20 items-center justify-center rounded-2xl bg-brand-100 text-4xl">
-            🏥
-          </div>
-        )}
+        <div className="h-20 w-20 overflow-hidden rounded-2xl">
+          <ServiceImage src={clinic.logoUrl ?? null} alt={clinic.storeName ?? ''} size="full" />
+        </div>
         <div>
           <h1 className="text-2xl font-bold text-text-primary dark:text-gray-100">
             {clinic.storeName}
           </h1>
           <p className="mt-1 text-sm text-text-secondary">
             {clinic.clinicType ? t(`clinics.treatment.${clinic.clinicType}` as never) : ''}
-            {clinic.totalReviews > 0 ? ` · ⭐ ${Number(clinic.ratingAvg ?? 0).toFixed(1)}` : ''}
           </p>
-          {clinic.licenseVerifiedAt && (
-            <span className="mt-2 inline-block rounded-full bg-green-100 px-2 py-0.5 text-xs font-semibold text-green-700">
-              {t('clinics.verified-badge', { agency: clinic.licenseAgency ?? 'MOH/SFDA' })}
-            </span>
-          )}
+          <TrustBadges
+            className="mt-3"
+            items={[
+              ...(clinic.licenseVerifiedAt
+                ? [
+                    {
+                      variant: 'verified' as const,
+                      label: t('clinics.verified-badge', {
+                        agency: clinic.licenseAgency ?? 'MOH/SFDA',
+                      }),
+                    },
+                  ]
+                : []),
+              ...(clinic.totalReviews > 0
+                ? [
+                    {
+                      variant: 'rating' as const,
+                      label: t('misc.rating'),
+                      value: Number(clinic.ratingAvg ?? 0).toFixed(1),
+                    },
+                  ]
+                : []),
+            ]}
+          />
         </div>
       </div>
 
