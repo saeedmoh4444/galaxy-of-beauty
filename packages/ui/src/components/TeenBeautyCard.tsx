@@ -87,9 +87,7 @@ export function TeenBeautyCard({
             {service.emoji || ''}
           </div>
           <div>
-            <h4 className="text-sm font-bold text-text-primary dark:text-gray-100">
-              {service.name}
-            </h4>
+            <h4 className="text-sm font-bold text-text-primary">{service.name}</h4>
             <p className="text-[10px] text-text-tertiary dark:text-text-tertiary">
               {service.duration || defaultDuration}
             </p>
@@ -104,9 +102,7 @@ export function TeenBeautyCard({
 
       {/* Description */}
       {service.description && (
-        <p className="mt-2 text-xs leading-relaxed text-text-secondary dark:text-gray-300">
-          {service.description}
-        </p>
+        <p className="mt-2 text-xs leading-relaxed text-text-secondary">{service.description}</p>
       )}
 
       {/* Learning points */}
@@ -120,7 +116,7 @@ export function TeenBeautyCard({
               <span className="text-[10px] text-brand-400" aria-hidden="true">
                 ✅
               </span>
-              <span className="text-[10px] text-text-secondary dark:text-gray-300">{point}</span>
+              <span className="text-[10px] text-text-secondary">{point}</span>
             </div>
           ))}
         </div>

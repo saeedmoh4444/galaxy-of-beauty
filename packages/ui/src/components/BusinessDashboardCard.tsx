@@ -99,7 +99,7 @@ export function BusinessDashboardCard({
           <span className="text-text-tertiary dark:text-text-secondary">{marginLabel}</span>
           <span className="font-bold text-emerald-700 dark:text-emerald-300">{margin}%</span>
         </div>
-        <div className="mt-1 h-2 overflow-hidden rounded-full bg-surface-muted dark:bg-gray-700">
+        <div className="mt-1 h-2 overflow-hidden rounded-full bg-surface-muted">
           <div
             className="h-full rounded-full bg-gradient-to-r from-emerald-400 to-green-500 transition-all"
             style={{ width: `${Math.min(100, margin)}%` }}

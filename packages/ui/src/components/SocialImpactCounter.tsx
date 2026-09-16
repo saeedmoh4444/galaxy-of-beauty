@@ -122,7 +122,7 @@ export function SocialImpactCounter({
                   <span className="text-sm" aria-hidden="true">
                     {metric.emoji}
                   </span>
-                  <span className="text-[10px] font-bold text-text-primary dark:text-gray-100">
+                  <span className="text-[10px] font-bold text-text-primary">
                     {metric.label[locale]}
                   </span>
                 </div>

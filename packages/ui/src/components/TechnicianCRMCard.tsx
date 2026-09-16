@@ -106,7 +106,7 @@ export function TechnicianCRMCard({
       {/* Additional metrics */}
       <div className="mt-2 grid grid-cols-2 gap-2">
         {revenueThisMonth !== undefined && (
-          <div className="rounded-xl bg-surface-muted p-2.5 text-center dark:bg-gray-800">
+          <div className="rounded-xl bg-surface-muted p-2.5 text-center">
             <p className="text-[9px] text-text-tertiary dark:text-text-secondary">{revenueLabel}</p>
             <p className="text-sm font-bold text-emerald-700 dark:text-emerald-300">
               {revenueThisMonth.toLocaleString('ar-SA')} {currencySuffix}
@@ -114,7 +114,7 @@ export function TechnicianCRMCard({
           </div>
         )}
         {avgRating !== undefined && (
-          <div className="rounded-xl bg-surface-muted p-2.5 text-center dark:bg-gray-800">
+          <div className="rounded-xl bg-surface-muted p-2.5 text-center">
             <p className="text-[9px] text-text-tertiary dark:text-text-secondary">{ratingLabel}</p>
             <p className="text-sm font-bold text-amber-700 dark:text-amber-300"> {avgRating}</p>
           </div>

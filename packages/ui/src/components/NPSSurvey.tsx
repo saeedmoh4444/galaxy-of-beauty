@@ -56,10 +56,8 @@ export function NPSSurvey({
   const [feedback, setFeedback] = useState('');
 
   return (
-    <div
-      className={`rounded-2xl border border-edge bg-white p-6 dark:border-gray-700 dark:bg-gray-900 ${className}`}
-    >
-      <h3 className="text-lg font-bold text-text-primary dark:text-gray-100">{questionTitle}</h3>
+    <div className={`rounded-2xl border border-edge bg-white p-6 dark:bg-gray-900 ${className}`}>
+      <h3 className="text-lg font-bold text-text-primary">{questionTitle}</h3>
       <p className="mt-1 text-sm text-text-secondary dark:text-text-tertiary">{questionSubtitle}</p>
 
       {score === null ? (
@@ -80,7 +78,7 @@ export function NPSSurvey({
         <div className="mt-4 space-y-3">
           <div className="text-center">
             <span className="text-4xl">{SCORE_LABELS[score]}</span>
-            <p className="mt-1 text-sm font-semibold text-text-primary dark:text-gray-100">
+            <p className="mt-1 text-sm font-semibold text-text-primary">
               {score >= 9 ? excellentText : score >= 7 ? goodText : poorText}
             </p>
           </div>
@@ -89,7 +87,7 @@ export function NPSSurvey({
             value={feedback}
             onChange={(e) => setFeedback(e.target.value)}
             rows={3}
-            className="w-full rounded-lg border border-edge bg-surface-muted px-3 py-2 text-sm dark:border-gray-700 dark:bg-gray-800 dark:text-gray-100"
+            className="w-full rounded-lg border border-edge bg-surface-muted px-3 py-2 text-sm dark:text-gray-100"
           />
           <div className="flex gap-2">
             <button
@@ -100,7 +98,7 @@ export function NPSSurvey({
             </button>
             <button
               onClick={onDismiss}
-              className="rounded-lg border border-edge px-4 py-2 text-sm text-text-secondary hover:bg-surface-muted dark:border-gray-700 dark:hover:bg-gray-800"
+              className="rounded-lg border border-edge px-4 py-2 text-sm text-text-secondary hover:bg-surface-muted dark:hover:bg-gray-800"
             >
               {skipButtonText}
             </button>

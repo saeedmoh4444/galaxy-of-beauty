@@ -60,9 +60,7 @@ export function ServiceCard({
       </div>
 
       {/* Title + Description */}
-      <h3 className="text-sm font-bold text-text-primary dark:text-gray-100 line-clamp-1">
-        {service.title}
-      </h3>
+      <h3 className="text-sm font-bold text-text-primary line-clamp-1">{service.title}</h3>
       {service.description ? (
         <p className="mt-1 text-xs text-text-secondary dark:text-text-tertiary line-clamp-2">
           {service.description}

@@ -109,9 +109,7 @@ export function IngredientGlossaryCard({
           🧴
         </div>
         <div className="min-w-0 flex-1">
-          <h4 className="text-sm font-bold text-text-primary dark:text-gray-100">
-            {ingredient.name}
-          </h4>
+          <h4 className="text-sm font-bold text-text-primary">{ingredient.name}</h4>
           {ingredient.arabicName && (
             <p className="text-[10px] text-text-tertiary dark:text-text-secondary">
               {ingredient.arabicName}
@@ -171,10 +169,8 @@ export function IngredientGlossaryCard({
 
       {/* Safety note */}
       {ingredient.safetyNote && (
-        <div className="mt-2 rounded-lg bg-surface-muted p-2 dark:bg-gray-800">
-          <p className="text-[10px] text-text-secondary dark:text-gray-300">
-            {ingredient.safetyNote}
-          </p>
+        <div className="mt-2 rounded-lg bg-surface-muted p-2">
+          <p className="text-[10px] text-text-secondary">{ingredient.safetyNote}</p>
         </div>
       )}
 

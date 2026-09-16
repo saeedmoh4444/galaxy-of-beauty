@@ -154,9 +154,7 @@ export function BeautySkinQuizCard({
           {step + 1}/{QUESTIONS.length}
         </span>
       </div>
-      <p className="mt-2 text-xs font-bold text-text-primary dark:text-gray-100">
-        {q.question[locale]}
-      </p>
+      <p className="mt-2 text-xs font-bold text-text-primary">{q.question[locale]}</p>
       <div className="mt-3 space-y-1.5">
         {q.options.map((opt, i) => (
           <button

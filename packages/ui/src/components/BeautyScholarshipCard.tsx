@@ -82,9 +82,7 @@ export function BeautyScholarshipCard({
         </div>
         <div className="min-w-0 flex-1">
           <h4 className="text-sm font-bold text-teal-700 dark:text-teal-300">{title}</h4>
-          <p className="text-xs font-bold text-text-primary dark:text-gray-100 mt-0.5">
-            {program.name}
-          </p>
+          <p className="text-xs font-bold text-text-primary mt-0.5">{program.name}</p>
         </div>
         <span className="shrink-0 rounded-full bg-teal-50 px-2.5 py-0.5 text-[10px] font-bold text-teal-700 dark:bg-teal-950 dark:text-teal-300">
           {freeBadgeText}
@@ -109,15 +107,13 @@ export function BeautyScholarshipCard({
 
       {/* Includes */}
       {program.includes && program.includes.length > 0 && (
-        <div className="mt-2 rounded-xl bg-surface-muted p-2.5 dark:bg-gray-800">
-          <p className="text-[10px] font-bold text-text-primary dark:text-gray-100">
-            {includesLabel}
-          </p>
+        <div className="mt-2 rounded-xl bg-surface-muted p-2.5">
+          <p className="text-[10px] font-bold text-text-primary">{includesLabel}</p>
           <div className="mt-1 flex flex-wrap gap-1">
             {program.includes.map((item) => (
               <span
                 key={item}
-                className="rounded-full bg-white px-2 py-0.5 text-[9px] text-text-secondary dark:bg-gray-700 dark:text-gray-300"
+                className="rounded-full bg-white px-2 py-0.5 text-[9px] text-text-secondary dark:bg-gray-700"
               >
                 {item}
               </span>
@@ -136,7 +132,7 @@ export function BeautyScholarshipCard({
           </span>
           <span className="font-bold text-teal-700 dark:text-teal-300">{pct}%</span>
         </div>
-        <div className="mt-1 h-1.5 overflow-hidden rounded-full bg-surface-muted dark:bg-gray-700">
+        <div className="mt-1 h-1.5 overflow-hidden rounded-full bg-surface-muted">
           <div
             className={cn(
               'h-full rounded-full bg-gradient-to-r transition-all',
@@ -164,7 +160,7 @@ export function BeautyScholarshipCard({
             'flex-1 rounded-xl py-2 text-[10px] font-bold transition-all active:scale-[0.98]',
             remaining > 0
               ? 'bg-teal-600 text-white hover:bg-teal-700'
-              : 'bg-surface-muted text-text-tertiary cursor-not-allowed dark:bg-gray-700 dark:text-text-secondary',
+              : 'bg-surface-muted text-text-tertiary cursor-not-allowed dark:text-text-secondary',
           )}
         >
           {remaining > 0 ? applyButtonText : registrationClosedText}

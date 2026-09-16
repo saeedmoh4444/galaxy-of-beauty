@@ -140,9 +140,7 @@ export function BeautySleepCard({
               <span className="text-sm w-6 text-center shrink-0" aria-hidden="true">
                 {step.emoji}
               </span>
-              <span className="flex-1 text-[10px] text-text-primary dark:text-gray-100">
-                {step.action[locale]}
-              </span>
+              <span className="flex-1 text-[10px] text-text-primary">{step.action[locale]}</span>
               <span className="text-[10px] text-text-tertiary dark:text-text-secondary w-12 text-end">
                 {step.duration[locale]}
               </span>

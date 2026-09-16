@@ -63,14 +63,9 @@ export function BeautyStyleMatchCard({
 
       <div className="mt-3 space-y-1.5">
         {matches.slice(1).map((m, i) => (
-          <div
-            key={i}
-            className="flex items-center gap-2 rounded-lg bg-surface-muted px-3 py-2 dark:bg-gray-800"
-          >
+          <div key={i} className="flex items-center gap-2 rounded-lg bg-surface-muted px-3 py-2">
             <span className="text-sm">{m.emoji}</span>
-            <span className="flex-1 text-[10px] text-text-primary dark:text-gray-100">
-              {m.style}
-            </span>
+            <span className="flex-1 text-[10px] text-text-primary">{m.style}</span>
             <span className="text-[10px] font-bold text-fuchsia-700 dark:text-fuchsia-300">
               {m.match}%
             </span>

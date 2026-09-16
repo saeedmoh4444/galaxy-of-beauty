@@ -22,7 +22,7 @@ export function SectionHeading({
   return (
     <div className={`mb-4 flex items-end justify-between ${className}`}>
       <div>
-        <h2 className="text-lg font-bold text-text-primary dark:text-gray-100">{title}</h2>
+        <h2 className="text-lg font-bold text-text-primary">{title}</h2>
         {description ? (
           <p className="mt-0.5 text-sm text-text-secondary dark:text-text-tertiary">
             {description}

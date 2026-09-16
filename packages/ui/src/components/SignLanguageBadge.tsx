@@ -100,9 +100,7 @@ export function SignLanguageBadge({
                 👩
               </div>
               <div className="min-w-0 flex-1">
-                <p className="text-xs font-bold text-text-primary dark:text-gray-100">
-                  {tech.name}
-                </p>
+                <p className="text-xs font-bold text-text-primary">{tech.name}</p>
                 {tech.specialty && (
                   <p className="text-[10px] text-text-tertiary dark:text-text-secondary">
                     {tech.specialty}

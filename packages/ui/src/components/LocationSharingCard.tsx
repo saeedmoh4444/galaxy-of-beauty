@@ -118,11 +118,11 @@ export function LocationSharingCard({
 
       {/* Service context */}
       {(address || technicianName) && (
-        <div className="mt-2 space-y-1 rounded-lg bg-surface-muted p-2.5 dark:bg-gray-800">
+        <div className="mt-2 space-y-1 rounded-lg bg-surface-muted p-2.5">
           {technicianName && (
             <div className="flex items-center gap-1.5 text-[10px]">
               <span aria-hidden="true">💇</span>
-              <span className="text-text-secondary dark:text-gray-300">
+              <span className="text-text-secondary">
                 {technicianPrefix}
                 <span className="font-bold">{technicianName}</span>
               </span>
@@ -131,13 +131,13 @@ export function LocationSharingCard({
           {address && (
             <div className="flex items-center gap-1.5 text-[10px]">
               <span aria-hidden="true">🏠</span>
-              <span className="text-text-secondary dark:text-gray-300">{address}</span>
+              <span className="text-text-secondary">{address}</span>
             </div>
           )}
           {estimatedEnd && (
             <div className="flex items-center gap-1.5 text-[10px]">
               <span aria-hidden="true">⏰</span>
-              <span className="text-text-secondary dark:text-gray-300">
+              <span className="text-text-secondary">
                 {estimatedEndPrefix}
                 {estimatedEnd}
               </span>
@@ -171,9 +171,7 @@ export function LocationSharingCard({
                   {contact.relation === 'mother' ? '' : contact.relation === 'sister' ? '' : ''}
                 </div>
                 <div>
-                  <p className="text-xs font-bold text-text-primary dark:text-gray-100">
-                    {contact.name}
-                  </p>
+                  <p className="text-xs font-bold text-text-primary">{contact.name}</p>
                   <p className="text-[10px] text-text-tertiary dark:text-text-secondary">
                     {contact.phone}
                     {contact.relation && ` · ${contact.relation}`}

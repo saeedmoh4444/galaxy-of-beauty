@@ -170,7 +170,7 @@ export function MommyAndMeCard({
           <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-gradient-to-br from-pink-200 to-rose-200 text-lg dark:from-pink-800 dark:to-rose-800">
             👩
           </div>
-          <p className="mt-1 text-[10px] font-bold text-text-primary dark:text-gray-100">{mom}</p>
+          <p className="mt-1 text-[10px] font-bold text-text-primary">{mom}</p>
           <p className="text-[9px] text-text-tertiary dark:text-text-secondary">{momLabel}</p>
         </div>
 
@@ -182,9 +182,7 @@ export function MommyAndMeCard({
           <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-gradient-to-br from-brand-200 to-violet-200 text-lg dark:from-brand-800 dark:to-violet-800">
             👧
           </div>
-          <p className="mt-1 text-[10px] font-bold text-text-primary dark:text-gray-100">
-            {daughter}
-          </p>
+          <p className="mt-1 text-[10px] font-bold text-text-primary">{daughter}</p>
           <p className="text-[9px] text-text-tertiary dark:text-text-secondary">
             {daughterAge} {yearsSuffix}
           </p>
@@ -198,12 +196,8 @@ export function MommyAndMeCard({
             {exp.emoji}
           </span>
           <div>
-            <p className="text-xs font-bold text-text-primary dark:text-gray-100">
-              {exp.title[locale]}
-            </p>
-            <p className="text-[10px] text-text-secondary dark:text-gray-300">
-              {exp.description[locale]}
-            </p>
+            <p className="text-xs font-bold text-text-primary">{exp.title[locale]}</p>
+            <p className="text-[10px] text-text-secondary">{exp.description[locale]}</p>
           </div>
         </div>
 
@@ -243,7 +237,7 @@ export function MommyAndMeCard({
       <div className="mt-3 grid grid-cols-2 gap-2">
         <div className="rounded-xl bg-white/60 p-2 text-center dark:bg-gray-800/60">
           <p className="text-[9px] text-text-tertiary dark:text-text-secondary">{durationLabel}</p>
-          <p className="text-xs font-bold text-text-primary dark:text-gray-100">{duration}</p>
+          <p className="text-xs font-bold text-text-primary">{duration}</p>
         </div>
         <div className="rounded-xl bg-white/60 p-2 text-center dark:bg-gray-800/60">
           <p className="text-[9px] text-text-tertiary dark:text-text-secondary">{priceLabel}</p>

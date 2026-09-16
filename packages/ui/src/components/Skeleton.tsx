@@ -14,7 +14,7 @@ export function Skeleton({ children }: ChildrenProps) {
 
 export function CardSkeleton() {
   return (
-    <div className="rounded-2xl border border-edge p-6 dark:border-gray-700">
+    <div className="rounded-2xl border border-edge p-6">
       <div className="animate-pulse space-y-4">
         <div className="h-48 w-full rounded-xl bg-surface-muted" />
         <div className="h-4 w-3/4 rounded bg-surface-muted" />
@@ -251,10 +251,7 @@ export function GridSkeleton({
       className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4"
     >
       {Array.from({ length: count }, (_, i) => (
-        <div
-          key={i}
-          className="rounded-2xl border border-edge bg-white p-4 dark:border-gray-700 dark:bg-gray-900"
-        >
+        <div key={i} className="rounded-2xl border border-edge bg-white p-4 dark:bg-gray-900">
           <div className="animate-pulse space-y-3">
             <div className="aspect-square w-full rounded-xl bg-surface-muted" />
             <div className="h-4 w-3/4 rounded bg-surface-muted" />

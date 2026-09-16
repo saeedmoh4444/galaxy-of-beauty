@@ -122,12 +122,8 @@ export function HijabiBeautyCard({
               {tip.emoji}
             </span>
             <div>
-              <p className="text-xs font-bold text-text-primary dark:text-gray-100">
-                {tip.title[locale]}
-              </p>
-              <p className="text-[10px] text-text-secondary dark:text-gray-300">
-                {tip.desc[locale]}
-              </p>
+              <p className="text-xs font-bold text-text-primary">{tip.title[locale]}</p>
+              <p className="text-[10px] text-text-secondary">{tip.desc[locale]}</p>
             </div>
           </div>
         ))}

@@ -152,9 +152,7 @@ export function CyclePhaseCard({
             {data.emoji}
           </span>
           <div>
-            <h4 className="text-sm font-bold text-text-primary dark:text-gray-100">
-              {data.title[locale]}
-            </h4>
+            <h4 className="text-sm font-bold text-text-primary">{data.title[locale]}</h4>
             <p className="text-[10px] text-text-tertiary dark:text-text-tertiary">
               {data.days[locale]}
               {day && ` — ${todayLabel} ${day}`}
@@ -168,16 +166,14 @@ export function CyclePhaseCard({
             <span className="text-[10px] text-text-tertiary dark:text-text-tertiary">
               {dayLabel}
             </span>
-            <div className="text-lg font-bold text-text-primary dark:text-gray-100">{day}</div>
+            <div className="text-lg font-bold text-text-primary">{day}</div>
             <span className="text-[10px] text-text-tertiary dark:text-text-tertiary">/ 28</span>
           </div>
         )}
       </div>
 
       {/* Description */}
-      <p className="mt-2 text-xs leading-relaxed text-text-secondary dark:text-gray-300">
-        {data.description[locale]}
-      </p>
+      <p className="mt-2 text-xs leading-relaxed text-text-secondary">{data.description[locale]}</p>
 
       {/* Cycle progress bar */}
       <div className="mt-3">
@@ -225,7 +221,7 @@ export function CyclePhaseCard({
               className={cn(
                 'flex-1 rounded-full px-2 py-1 text-[10px] font-medium transition-all',
                 p === phase
-                  ? 'bg-white text-text-primary shadow-sm dark:bg-gray-800 dark:text-gray-100'
+                  ? 'bg-white text-text-primary shadow-sm dark:bg-gray-800'
                   : 'text-text-tertiary hover:bg-white/50 dark:hover:bg-gray-800/50',
               )}
             >
@@ -244,7 +240,7 @@ export function CyclePhaseCard({
           </h5>
           <ul className="mt-1 space-y-0.5">
             {data.recommended.map((r) => (
-              <li key={r.ar} className="text-[10px] text-text-secondary dark:text-gray-300">
+              <li key={r.ar} className="text-[10px] text-text-secondary">
                 • {r[locale]}
               </li>
             ))}
@@ -256,7 +252,7 @@ export function CyclePhaseCard({
           <h5 className="text-[10px] font-bold text-danger dark:text-red-400">{avoidLabel}</h5>
           <ul className="mt-1 space-y-0.5">
             {data.avoid.map((a) => (
-              <li key={a.ar} className="text-[10px] text-text-secondary dark:text-gray-300">
+              <li key={a.ar} className="text-[10px] text-text-secondary">
                 • {a[locale]}
               </li>
             ))}

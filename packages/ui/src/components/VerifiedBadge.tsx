@@ -29,7 +29,7 @@ const STATUS_CONFIG: Record<
   PENDING: {
     emoji: '🕐',
     labelAr: { ar: 'بانتظار التوثيق', en: 'Awaiting verification' },
-    color: 'bg-surface-muted text-text-secondary dark:bg-gray-800 dark:text-text-tertiary',
+    color: 'bg-surface-muted text-text-secondary dark:text-text-tertiary',
   },
   REJECTED: {
     emoji: '❌',

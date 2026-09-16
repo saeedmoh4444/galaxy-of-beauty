@@ -110,10 +110,10 @@ export function BeautyWikiCard({
       </div>
 
       {/* Title */}
-      <h4 className="mt-2 text-sm font-bold text-text-primary dark:text-gray-100">{entry.title}</h4>
+      <h4 className="mt-2 text-sm font-bold text-text-primary">{entry.title}</h4>
 
       {/* Excerpt */}
-      <p className="mt-1 text-xs leading-relaxed text-text-secondary dark:text-gray-300 line-clamp-3">
+      <p className="mt-1 text-xs leading-relaxed text-text-secondary line-clamp-3">
         {entry.excerpt}
       </p>
 

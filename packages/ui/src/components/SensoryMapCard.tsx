@@ -125,12 +125,8 @@ export function SensoryMapCard({
               <span className="text-2xl" aria-hidden="true">
                 {z.emoji}
               </span>
-              <p className="mt-1 text-[10px] font-bold text-text-primary dark:text-gray-100">
-                {z.label[locale]}
-              </p>
-              <p className="text-[9px] text-text-secondary dark:text-gray-300">
-                {z.description[locale]}
-              </p>
+              <p className="mt-1 text-[10px] font-bold text-text-primary">{z.label[locale]}</p>
+              <p className="text-[9px] text-text-secondary">{z.description[locale]}</p>
             </div>
           );
         })}

@@ -107,7 +107,7 @@ export function BeautyWebinarCard({
             </span>
           </div>
           {webinar.maxSeats && (
-            <div className="mt-1 h-1.5 overflow-hidden rounded-full bg-surface-muted dark:bg-gray-700">
+            <div className="mt-1 h-1.5 overflow-hidden rounded-full bg-surface-muted">
               <div
                 className="h-full rounded-full bg-gradient-to-r from-indigo-400 to-blue-500 transition-all"
                 style={{ width: `${Math.round((webinar.registered / webinar.maxSeats) * 100)}%` }}
@@ -125,7 +125,7 @@ export function BeautyWebinarCard({
         className={cn(
           'mt-3 w-full rounded-xl py-2 text-xs font-bold transition-all active:scale-[0.98]',
           isFull
-            ? 'bg-surface-muted text-text-tertiary cursor-not-allowed dark:bg-gray-700 dark:text-text-secondary'
+            ? 'bg-surface-muted text-text-tertiary cursor-not-allowed dark:text-text-secondary'
             : 'bg-indigo-600 text-white hover:bg-indigo-700',
         )}
       >

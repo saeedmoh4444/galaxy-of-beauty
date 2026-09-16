@@ -78,7 +78,7 @@ export function BeautyVoiceAssistantCard({
               <span className="text-xs" aria-hidden="true">
                 {cmd.emoji}
               </span>
-              <span className="text-[10px] text-text-secondary dark:text-gray-300 italic">
+              <span className="text-[10px] text-text-secondary italic">
                 &ldquo;{cmd.text[locale]}&rdquo;
               </span>
             </div>

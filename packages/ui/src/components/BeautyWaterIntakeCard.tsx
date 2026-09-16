@@ -60,7 +60,7 @@ export function BeautyWaterIntakeCard({
               'h-7 w-7 rounded-lg text-xs transition-all',
               i < cups
                 ? 'bg-sky-200 text-sky-700 dark:bg-sky-900 dark:text-sky-300'
-                : 'bg-surface-muted text-text-tertiary hover:bg-sky-50 dark:bg-gray-800',
+                : 'bg-surface-muted text-text-tertiary hover:bg-sky-50',
             )}
           ></button>
         ))}

@@ -74,9 +74,7 @@ export function DadApprovalBadge({
             {parentApproved ? '' : ''}
           </span>
           <div>
-            <h4 className="text-sm font-bold text-text-primary dark:text-gray-100">
-              {serviceName}
-            </h4>
+            <h4 className="text-sm font-bold text-text-primary">{serviceName}</h4>
             <p className="text-[10px] text-text-tertiary dark:text-text-tertiary">
               {parentApproved ? approvedStatusText : `${needsApprovalPrefix}${parentName}`}
             </p>
@@ -97,7 +95,7 @@ export function DadApprovalBadge({
       {/* Age context */}
       {age !== undefined && (
         <div className="mt-2 rounded-lg bg-white/60 p-2 text-center dark:bg-black/20">
-          <p className="text-[10px] text-text-secondary dark:text-gray-300">
+          <p className="text-[10px] text-text-secondary">
             {age} {yearsSeparatorText}
             {needsApproval ? approvalRequiredText : approvalNotRequiredText}
           </p>
@@ -108,10 +106,8 @@ export function DadApprovalBadge({
       {!parentApproved && (
         <>
           <div className="mt-2 rounded-xl bg-white/60 p-3 dark:bg-black/20">
-            <p className="text-[10px] font-bold text-text-primary dark:text-gray-100">
-              {approvalHowTitle}
-            </p>
-            <div className="mt-1 space-y-0.5 text-[10px] text-text-secondary dark:text-gray-300">
+            <p className="text-[10px] font-bold text-text-primary">{approvalHowTitle}</p>
+            <div className="mt-1 space-y-0.5 text-[10px] text-text-secondary">
               <p>
                 1. {approvalStep1Prefix}
                 {parentName}

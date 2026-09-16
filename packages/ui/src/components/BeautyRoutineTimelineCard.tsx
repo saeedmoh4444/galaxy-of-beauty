@@ -67,7 +67,7 @@ export function BeautyRoutineTimelineCard({
                 <span className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-amber-100 text-[9px] font-bold text-amber-700 dark:bg-amber-900 dark:text-amber-300">
                   {i + 1}
                 </span>
-                <span className="text-[10px] text-text-secondary dark:text-gray-300">{step}</span>
+                <span className="text-[10px] text-text-secondary">{step}</span>
               </div>
             ))}
           </div>
@@ -87,7 +87,7 @@ export function BeautyRoutineTimelineCard({
                 <span className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-indigo-100 text-[9px] font-bold text-indigo-700 dark:bg-indigo-900 dark:text-indigo-300">
                   {i + 1}
                 </span>
-                <span className="text-[10px] text-text-secondary dark:text-gray-300">{step}</span>
+                <span className="text-[10px] text-text-secondary">{step}</span>
               </div>
             ))}
           </div>

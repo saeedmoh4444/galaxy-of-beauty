@@ -80,14 +80,14 @@ export function BeautyRecipeCard({
 
       {/* Steps */}
       <div className="mt-2 rounded-xl bg-white/60 p-3 dark:bg-gray-800/60">
-        <p className="text-[10px] font-bold text-text-primary dark:text-gray-100">{stepsLabel}</p>
+        <p className="text-[10px] font-bold text-text-primary">{stepsLabel}</p>
         <div className="mt-1 space-y-1">
           {recipe.steps.map((step, i) => (
             <div key={i} className="flex items-start gap-1.5">
               <span className="flex h-4 w-4 shrink-0 items-center justify-center rounded-full bg-emerald-200 text-[8px] font-bold text-emerald-700 dark:bg-emerald-800 dark:text-emerald-300">
                 {i + 1}
               </span>
-              <span className="text-[10px] text-text-secondary dark:text-gray-300">{step}</span>
+              <span className="text-[10px] text-text-secondary">{step}</span>
             </div>
           ))}
         </div>

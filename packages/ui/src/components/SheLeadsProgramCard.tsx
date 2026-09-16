@@ -117,9 +117,7 @@ export function SheLeadsProgramCard({
             <span className="text-lg" aria-hidden="true">
               {m.emoji}
             </span>
-            <p className="mt-0.5 text-[10px] font-bold text-text-primary dark:text-gray-100">
-              {m.title[locale]}
-            </p>
+            <p className="mt-0.5 text-[10px] font-bold text-text-primary">{m.title[locale]}</p>
             <p className="text-[9px] text-text-tertiary dark:text-text-tertiary">
               {m.desc[locale]}
             </p>

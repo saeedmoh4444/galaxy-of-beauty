@@ -106,7 +106,7 @@ const ROLES: Record<LeadershipRole, RoleDef> = {
 const TIER_STYLES: Record<RoleDef['tier'], string> = {
   gold: 'border-amber-300 bg-gradient-to-br from-amber-50 to-yellow-50 dark:border-amber-800 dark:from-amber-950 dark:to-yellow-950',
   silver:
-    'border-edge bg-gradient-to-br from-gray-50 to-slate-50 dark:border-gray-700 dark:from-gray-900 dark:to-slate-900',
+    'border-edge bg-gradient-to-br from-gray-50 to-slate-50 dark:from-gray-900 dark:to-slate-900',
   bronze:
     'border-orange-300 bg-gradient-to-br from-orange-50 to-amber-50 dark:border-orange-800 dark:from-orange-950 dark:to-amber-950',
 };
@@ -123,7 +123,7 @@ const TIER_BADGE: Record<
   silver: {
     emoji: '🥈',
     label: { ar: 'فضي', en: 'Silver' },
-    className: 'bg-surface-muted text-text-secondary dark:bg-gray-800 dark:text-gray-300',
+    className: 'bg-surface-muted text-text-secondary',
   },
   bronze: {
     emoji: '🥉',
@@ -193,26 +193,14 @@ export function SheLeadsBadge({
 
       {/* Name + title */}
       <div className="mt-2">
-        <h4
-          className={cn(
-            'font-bold text-text-primary dark:text-gray-100',
-            isSm ? 'text-xs' : 'text-sm',
-          )}
-        >
-          {name}
-        </h4>
+        <h4 className={cn('font-bold text-text-primary', isSm ? 'text-xs' : 'text-sm')}>{name}</h4>
         <p className="text-[10px] font-medium text-text-tertiary dark:text-text-tertiary">
           {roleDef.emoji} {roleDef.title[locale]}
         </p>
       </div>
 
       {/* Description */}
-      <p
-        className={cn(
-          'mt-1 text-text-secondary dark:text-gray-300',
-          isSm ? 'text-[10px]' : 'text-xs',
-        )}
-      >
+      <p className={cn('mt-1 text-text-secondary', isSm ? 'text-[10px]' : 'text-xs')}>
         {roleDef.description[locale]}
       </p>
 

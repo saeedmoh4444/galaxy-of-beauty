@@ -150,9 +150,7 @@ export function PregnancySafeBadge({
           {t.emoji}
         </span>
         <div>
-          <h4 className="text-sm font-bold text-text-primary dark:text-gray-100">
-            {t.label[locale]}
-          </h4>
+          <h4 className="text-sm font-bold text-text-primary">{t.label[locale]}</h4>
           <p className="text-[10px] text-text-tertiary dark:text-text-tertiary">
             {t.description[locale]}
           </p>
@@ -166,7 +164,7 @@ export function PregnancySafeBadge({
       {service && (
         <div className="mt-3 rounded-xl bg-white/70 p-3 dark:bg-gray-800/70">
           <div className="flex items-center justify-between">
-            <p className="text-xs font-bold text-text-primary dark:text-gray-100">{service.name}</p>
+            <p className="text-xs font-bold text-text-primary">{service.name}</p>
             <span className="text-xs font-bold text-emerald-700 dark:text-emerald-400">
               {service.price} {currencySuffix}
             </span>
@@ -187,7 +185,7 @@ export function PregnancySafeBadge({
           </h5>
           <ul className="mt-1 space-y-0.5">
             {t.allowed.map((item) => (
-              <li key={item.ar} className="text-[10px] text-text-secondary dark:text-gray-300">
+              <li key={item.ar} className="text-[10px] text-text-secondary">
                 • {item[locale]}
               </li>
             ))}
@@ -197,7 +195,7 @@ export function PregnancySafeBadge({
           <h5 className="text-[10px] font-bold text-rose-600 dark:text-rose-400">{avoidLabel}</h5>
           <ul className="mt-1 space-y-0.5">
             {t.avoid.map((item) => (
-              <li key={item.ar} className="text-[10px] text-text-secondary dark:text-gray-300">
+              <li key={item.ar} className="text-[10px] text-text-secondary">
                 • {item[locale]}
               </li>
             ))}

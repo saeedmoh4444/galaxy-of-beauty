@@ -29,7 +29,7 @@ export function Spinner({
       className={`inline-flex flex-col items-center gap-2 ${className}`}
     >
       <div
-        className={`${sizeMap[size]} animate-spin rounded-full border-edge border-t-brand-600 dark:border-gray-700 dark:border-t-brand-400`}
+        className={`${sizeMap[size]} animate-spin rounded-full border-edge border-t-brand-600 dark:border-t-brand-400`}
         aria-hidden="true"
       />
       <span className="sr-only">{label}</span>

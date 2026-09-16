@@ -101,7 +101,7 @@ export function BridalBeautyCountdown({
                   'flex h-6 w-6 shrink-0 items-center justify-center rounded-full text-xs',
                   m.done
                     ? 'bg-emerald-200 text-emerald-700 dark:bg-emerald-800 dark:text-emerald-300'
-                    : 'bg-surface-muted text-text-secondary dark:bg-gray-700',
+                    : 'bg-surface-muted text-text-secondary',
                 )}
               >
                 {m.done ? '' : m.emoji}
@@ -109,9 +109,7 @@ export function BridalBeautyCountdown({
               <span
                 className={cn(
                   'flex-1 text-[10px]',
-                  m.done
-                    ? 'text-emerald-700 dark:text-emerald-300'
-                    : 'text-text-secondary dark:text-gray-300',
+                  m.done ? 'text-emerald-700 dark:text-emerald-300' : 'text-text-secondary',
                 )}
               >
                 {m.label[locale]}

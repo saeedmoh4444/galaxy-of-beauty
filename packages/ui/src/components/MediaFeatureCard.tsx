@@ -58,9 +58,7 @@ export function MediaFeatureCard({
         </div>
         <div className="min-w-0 flex-1">
           <h4 className="text-sm font-bold text-sky-700 dark:text-sky-300">{heading}</h4>
-          <p className="mt-0.5 text-xs font-bold text-text-primary dark:text-gray-100">
-            {feature.title}
-          </p>
+          <p className="mt-0.5 text-xs font-bold text-text-primary">{feature.title}</p>
           <div className="mt-1 flex items-center gap-2 text-[10px] text-text-tertiary dark:text-text-secondary">
             <span>
               {TYPE_ICONS[feature.type || 'online']} {feature.outlet}

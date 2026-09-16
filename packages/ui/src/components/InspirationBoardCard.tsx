@@ -100,7 +100,7 @@ export function InspirationBoardCard({
               </span>
             ))}
             {collaborators.length > 4 && (
-              <span className="flex h-6 w-6 items-center justify-center rounded-full border-2 border-white bg-surface-muted text-[8px] text-text-secondary dark:border-gray-900 dark:bg-gray-700">
+              <span className="flex h-6 w-6 items-center justify-center rounded-full border-2 border-white bg-surface-muted text-[8px] text-text-secondary dark:border-gray-900">
                 +{collaborators.length - 4}
               </span>
             )}
@@ -118,9 +118,7 @@ export function InspirationBoardCard({
             <div className="flex h-12 items-center justify-center rounded-lg bg-white text-2xl dark:bg-gray-800">
               {pin.emoji}
             </div>
-            <p className="mt-1.5 text-[10px] font-bold text-text-primary dark:text-gray-100 truncate">
-              {pin.title}
-            </p>
+            <p className="mt-1.5 text-[10px] font-bold text-text-primary truncate">{pin.title}</p>
             {pin.savedBy && (
               <p className="text-[9px] text-text-tertiary dark:text-text-secondary">
                 {' '}

@@ -172,9 +172,7 @@ export function PostpartumCareCard({
 
       {/* Services */}
       <div className="mt-3 space-y-2">
-        <p className="text-[10px] font-bold text-text-primary dark:text-gray-100">
-          {servicesLabel}
-        </p>
+        <p className="text-[10px] font-bold text-text-primary">{servicesLabel}</p>
         {SERVICES.map((service) => {
           const isAvailable = daysSinceBirth >= service.availableFromDay;
           const daysUntil = service.availableFromDay - daysSinceBirth;
@@ -186,16 +184,14 @@ export function PostpartumCareCard({
                 'flex items-center gap-3 rounded-xl border p-3 transition-all',
                 isAvailable
                   ? 'border-brand-200 bg-brand-50 dark:border-brand-800 dark:bg-brand-950'
-                  : 'border-edge-muted bg-surface-muted opacity-60 dark:border-gray-800 dark:bg-gray-800',
+                  : 'border-edge-muted bg-surface-muted opacity-60',
               )}
             >
               <span className="text-lg shrink-0" aria-hidden="true">
                 {service.emoji}
               </span>
               <div className="min-w-0 flex-1">
-                <p className="text-xs font-bold text-text-primary dark:text-gray-100">
-                  {service.name[locale]}
-                </p>
+                <p className="text-xs font-bold text-text-primary">{service.name[locale]}</p>
                 <p className="text-[10px] text-text-tertiary dark:text-text-tertiary">
                   {service.description[locale]}
                 </p>
