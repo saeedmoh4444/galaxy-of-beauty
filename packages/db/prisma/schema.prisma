@@ -298,6 +298,9 @@ model Technician {
   longitude            Float?
   isEcoFriendly       Boolean  @default(false) // Uses cruelty-free/organic products
   bufferMinutes       Int      @default(15)    // Buffer between bookings
+  // 1.1 Dynamic pricing — NEW | EXPERIENCED | PREMIUM | CELEBRITY
+  // (tier multiplier applies only to dynamicPricingEnabled services).
+  tier                String   @default("NEW")
   createdAt           DateTime  @default(now())
   updatedAt           DateTime  @updatedAt
 
@@ -396,6 +399,7 @@ model Category {
   parent   Category?  @relation("CategoryTree", fields: [parentId], references: [id], onDelete: SetNull)
   children Category[] @relation("CategoryTree")
   services Service[]
+  pricingRules ServicePricing[]
 
   @@index([parentId])
   @@index([slug])
@@ -421,6 +425,9 @@ model Service {
   // E6d — trust badges (Tier 2): modesty is the #1 purchase driver in KSA.
   isWomenOnlyStaff Boolean @default(false) // female staff only
   isPrivateSuite   Boolean @default(false) // fully private suite
+  // 1.1 Dynamic pricing (ENHANCEMENT_PLAN) — opt-in per service; when on,
+  // bookings.create prices via tier × peak rules × surge (lib/pricing.ts).
+  dynamicPricingEnabled Boolean @default(false)
   sortOrder       Int      @default(0)
   createdAt       DateTime @default(now())
   updatedAt       DateTime @updatedAt
@@ -435,6 +442,7 @@ model Service {
   wishlistItems     WishlistItem[]
   bundlesAsPrimary  ServiceBundle[] @relation("BundlePrimary")
   bundlesAsChild    ServiceBundle[] @relation("BundleChild")
+  pricingRules      ServicePricing[]
 
   @@index([categoryId, isActive])
   @@index([basePrice])
@@ -453,6 +461,31 @@ model ServiceVariant {
 
   @@index([serviceId])
   @@map("service_variants")
+}
+
+// =============================================================================
+// 1.1 Dynamic pricing — peak/off-peak rules (ENHANCEMENT_PLAN)
+// =============================================================================
+
+model ServicePricing {
+  id              Int     @id @default(autoincrement())
+  serviceId       Int?    // null = applies to all services
+  categoryId      Int?    // null = applies to all categories
+  technicianTier  String? // NEW | EXPERIENCED | PREMIUM | CELEBRITY; null = all
+  dayOfWeek       Int?    // 0 (Sun) – 6 (Sat); null = every day
+  hourStart       Int?    // 0-23 inclusive; null = all day
+  hourEnd         Int?    // 0-23 exclusive; null = all day
+  priceMultiplier Decimal @db.Decimal(4, 2) // e.g. 1.30 = +30%
+  isActive        Boolean @default(true)
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  service  Service?  @relation(fields: [serviceId], references: [id], onDelete: Cascade)
+  category Category? @relation(fields: [categoryId], references: [id], onDelete: Cascade)
+
+  @@index([serviceId, isActive])
+  @@index([isActive])
+  @@map("service_pricing_rules")
 }
 
 // =============================================================================
@@ -591,6 +624,9 @@ model Booking {
   familyMemberId            Int?
   // K3 (kids plan): optional Mommy & Me bundle link.
   bundleId                  Int?
+  // 1.1 Dynamic pricing — engine breakdown snapshot at booking time
+  // ({ base, tierMultiplier, peakMultiplier, surgeMultiplier, total }).
+  pricingBreakdown          Json?
   createdAt          DateTime      @default(now())
   updatedAt          DateTime      @updatedAt
 
