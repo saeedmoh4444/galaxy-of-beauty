@@ -3,6 +3,7 @@ import { View, Text, ScrollView, StyleSheet, TouchableOpacity, RefreshControl } 
 import { useRouter } from 'expo-router';
 import { ErrorAlert } from '@/components/ErrorAlert';
 import { SkeletonList } from '@/components/SkeletonCard';
+import { TrustChips } from '@/components/TrustChips';
 import { trpc } from '@/lib/trpc-react';
 import { useLocale } from '@/components/LocaleProvider';
 
@@ -13,6 +14,7 @@ interface StoreItem {
   logoUrl?: string | null;
   ratingAvg?: number;
   totalReviews?: number;
+  isVerified?: boolean;
   _count?: { products?: number };
 }
 
@@ -57,9 +59,13 @@ export default function StoresScreen(): JSX.Element {
           <View style={s.body}>
             <Text style={s.name}>{store.storeName ?? ''}</Text>
             <Text style={s.meta}>
-              ⭐ {Number(store.ratingAvg ?? 0).toFixed(1)} ({store.totalReviews ?? 0}) ·{' '}
               {store._count?.products ?? 0} {t('mobile.stores.products')}
             </Text>
+            <TrustChips
+              verifiedLabel={store.isVerified ? t('mobile.stores.verified') : undefined}
+              rating={store.ratingAvg}
+              reviews={store.totalReviews}
+            />
           </View>
         </TouchableOpacity>
       ))}
