@@ -93,7 +93,9 @@ export default function ReferralDashboardPage(): JSX.Element {
           </Card>
           <Card padding="md" className="text-center">
             <p className="text-3xl">✅</p>
-            <p className="mt-1 text-2xl font-bold text-green-600">{s.completedReferrals}</p>
+            <p className="mt-1 text-2xl font-bold text-green-600 dark:text-green-400">
+              {s.completedReferrals}
+            </p>
             <p className="text-xs text-text-secondary">{t('referrals.stat.completed')}</p>
           </Card>
           <Card padding="md" className="text-center">
@@ -105,7 +107,7 @@ export default function ReferralDashboardPage(): JSX.Element {
           </Card>
           <Card padding="md" className="text-center">
             <p className="text-3xl">🎁</p>
-            <p className="mt-1 text-2xl font-bold text-amber-600">
+            <p className="mt-1 text-2xl font-bold text-amber-600 dark:text-amber-400">
               {formatCurrency(s.pendingRewards)}
             </p>
             <p className="text-xs text-text-secondary">{t('referralDashboard.stat.pending')}</p>
@@ -170,9 +172,9 @@ export default function ReferralDashboardPage(): JSX.Element {
                   <span
                     className={`rounded-full px-2.5 py-0.5 text-xs font-medium ${
                       r.status === 'COMPLETED'
-                        ? 'bg-green-100 text-green-700'
+                        ? 'bg-green-100 dark:bg-green-950 text-green-700 dark:text-green-300'
                         : r.status === 'PENDING'
-                          ? 'bg-yellow-100 text-yellow-700'
+                          ? 'bg-yellow-100 dark:bg-yellow-950 text-yellow-700 dark:text-yellow-300'
                           : 'bg-surface-muted text-text-secondary'
                     }`}
                   >

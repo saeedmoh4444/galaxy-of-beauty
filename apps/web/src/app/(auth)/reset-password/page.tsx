@@ -31,7 +31,11 @@ export default function ResetPasswordPage(): JSX.Element {
         <h1 className="mb-6 text-center text-2xl font-bold text-text-primary">
           {t('auth.reset-title')}
         </h1>
-        {msg && <p className="mb-4 rounded-lg bg-green-50 p-3 text-sm text-green-700">{msg}</p>}
+        {msg && (
+          <p className="mb-4 rounded-lg bg-green-50 dark:bg-green-950 p-3 text-sm text-green-700 dark:text-green-300">
+            {msg}
+          </p>
+        )}
         {error && <ErrorAlert message={error} />}
         <form
           onSubmit={(e) => {

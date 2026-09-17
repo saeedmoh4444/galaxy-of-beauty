@@ -161,7 +161,7 @@ export default function AuditLogPage(): JSX.Element {
                           <span
                             className={`rounded-full px-2 py-0.5 text-xs font-medium ${
                               (log.action as string)?.startsWith('ERROR_')
-                                ? 'bg-red-100 text-red-700'
+                                ? 'bg-red-100 dark:bg-red-950 text-red-700 dark:text-red-300'
                                 : 'bg-blue-100 text-blue-700'
                             }`}
                           >

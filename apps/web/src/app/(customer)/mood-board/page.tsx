@@ -245,7 +245,7 @@ export default function MoodBoardPage(): JSX.Element {
                       if (!confirm(t('mood.confirmDelete', { name: board.name }))) return;
                       deleteBoardMut.mutate({ boardId: board.id });
                     }}
-                    className="text-red-500 hover:text-red-700"
+                    className="text-red-500 dark:text-red-400 hover:text-red-700"
                   >
                     🗑️
                   </Button>

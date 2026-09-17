@@ -44,7 +44,7 @@ export default function AdminLoyaltyPage(): JSX.Element {
                         {(r.descriptionAr as string) ?? ''}
                       </p>
                     </div>
-                    <span className="font-bold text-amber-600">
+                    <span className="font-bold text-amber-600 dark:text-amber-400">
                       {t('admin.loyalty.points-cost', { points: r.pointsCost as number })}
                     </span>
                   </div>

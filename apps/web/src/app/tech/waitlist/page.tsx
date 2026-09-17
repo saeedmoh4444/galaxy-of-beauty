@@ -63,7 +63,7 @@ export default function TechWaitlistPage(): JSX.Element {
                         · {b.bookingCode as string}
                       </p>
                     </div>
-                    <span className="rounded-full bg-yellow-100 px-3 py-1 text-xs text-yellow-700">
+                    <span className="rounded-full bg-yellow-100 dark:bg-yellow-950 px-3 py-1 text-xs text-yellow-700 dark:text-yellow-300">
                       {t('tech.waitlist.pending')}
                     </span>
                   </div>

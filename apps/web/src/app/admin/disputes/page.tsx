@@ -21,16 +21,19 @@ type DisputeItem = NonNullable<RouterOutput['disputes']['listAdmin']>['items'][n
 const statusBadge = (status: string): { labelKey: TranslationKey; className: string } => {
   switch (status) {
     case 'OPEN':
-      return { labelKey: 'admin.disputes.status-open', className: 'bg-red-100 text-red-700' };
+      return {
+        labelKey: 'admin.disputes.status-open',
+        className: 'bg-red-100 dark:bg-red-950 text-red-700 dark:text-red-300',
+      };
     case 'UNDER_REVIEW':
       return {
         labelKey: 'admin.disputes.status-under-review',
-        className: 'bg-amber-100 text-amber-700',
+        className: 'bg-amber-100 dark:bg-amber-950 text-amber-700 dark:text-amber-300',
       };
     case 'RESOLVED_CUSTOMER':
       return {
         labelKey: 'admin.disputes.status-customer',
-        className: 'bg-green-100 text-green-700',
+        className: 'bg-green-100 dark:bg-green-950 text-green-700 dark:text-green-300',
       };
     case 'RESOLVED_TECHNICIAN':
       return {

@@ -44,12 +44,12 @@ export default function EmergencyBookingPage(): JSX.Element {
           <div className="flex items-center gap-3">
             <span className="text-3xl">🚨</span>
             <div>
-              <p className="font-bold text-red-700">
+              <p className="font-bold text-red-700 dark:text-red-300">
                 {t('emergencyBooking.surcharge', {
                   price: formatCurrency((avail?.emergencySurcharge as number) ?? 50),
                 })}
               </p>
-              <p className="text-xs text-red-600">
+              <p className="text-xs text-red-600 dark:text-red-400">
                 {t('emergencyBooking.within', {
                   within:
                     (avail?.availableWithin as string) ?? t('emergencyBooking.withinFallback'),
@@ -93,7 +93,7 @@ export default function EmergencyBookingPage(): JSX.Element {
                 >
                   <div className="flex justify-between items-center">
                     <span className="font-bold">{tech.name as string}</span>
-                    <span className="font-bold text-red-600">
+                    <span className="font-bold text-red-600 dark:text-red-400">
                       {formatCurrency(tech.price as number)}
                     </span>
                   </div>
@@ -121,14 +121,19 @@ export default function EmergencyBookingPage(): JSX.Element {
         </Card>
 
         {bookingCode ? (
-          <Card padding="lg" className="text-center border-2 border-green-300 bg-green-50">
+          <Card
+            padding="lg"
+            className="text-center border-2 border-green-300 bg-green-50 dark:bg-green-950"
+          >
             <p className="text-3xl">✅</p>
-            <p className="font-bold text-green-700 mt-2">{t('emergencyBooking.success')}</p>
+            <p className="font-bold text-green-700 dark:text-green-300 mt-2">
+              {t('emergencyBooking.success')}
+            </p>
             <p className="text-sm text-text-secondary">
               {t('emergencyBooking.codeLabel')}{' '}
               <span className="font-mono font-bold">{bookingCode}</span>
             </p>
-            <p className="text-lg font-bold text-green-600 mt-1">
+            <p className="text-lg font-bold text-green-600 dark:text-green-400 mt-1">
               {t('emergencyBooking.total', {
                 price: formatCurrency((avail?.totalEstimate as number) ?? 0),
               })}

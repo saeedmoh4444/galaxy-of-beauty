@@ -37,7 +37,7 @@ export default function TechPerformancePage(): JSX.Element {
                 </p>
               </Card>
               <Card padding="lg" className="text-center">
-                <p className="text-2xl font-extrabold text-green-600">
+                <p className="text-2xl font-extrabold text-green-600 dark:text-green-400">
                   {data?.completedBookings as number}
                 </p>
                 <p className="text-xs text-text-secondary">{t('tech.performance.completed')}</p>
@@ -51,7 +51,7 @@ export default function TechPerformancePage(): JSX.Element {
                 </p>
               </Card>
               <Card padding="lg" className="text-center">
-                <p className="text-2xl font-extrabold text-amber-600">
+                <p className="text-2xl font-extrabold text-amber-600 dark:text-amber-400">
                   {data?.avgRating as number}
                 </p>
                 <p className="text-xs text-text-secondary">
@@ -62,9 +62,12 @@ export default function TechPerformancePage(): JSX.Element {
               </Card>
             </div>
 
-            <Card padding="lg" className="text-center border-2 border-green-200 bg-green-50">
+            <Card
+              padding="lg"
+              className="text-center border-2 border-green-200 bg-green-50 dark:bg-green-950"
+            >
               <p className="text-sm text-text-secondary">{t('tech.performance.total-earnings')}</p>
-              <p className="text-3xl font-extrabold text-green-600">
+              <p className="text-3xl font-extrabold text-green-600 dark:text-green-400">
                 {formatCurrency(data?.totalEarnings as number)}
               </p>
             </Card>

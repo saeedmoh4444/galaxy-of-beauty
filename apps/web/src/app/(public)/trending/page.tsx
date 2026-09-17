@@ -59,7 +59,7 @@ export default function TrendingPage(): JSX.Element {
                       {formatCurrency(Number(s.basePrice ?? 0))}
                     </p>
                   </div>
-                  <span className="rounded-full bg-red-100 px-3 py-1 text-xs font-bold text-red-700">
+                  <span className="rounded-full bg-red-100 dark:bg-red-950 px-3 py-1 text-xs font-bold text-red-700 dark:text-red-300">
                     {t('marketing.trending.bookings-count', { count: s.bookingCount as number })}
                   </span>
                 </div>

@@ -10,9 +10,18 @@ import { localize, type TranslationKey } from '@galaxy/shared';
 
 const KYC_BADGES: Record<string, { colour: string; labelKey: TranslationKey }> = {
   PENDING: { colour: 'bg-surface-muted text-text-primary', labelKey: 'tech.profile.kyc-pending' },
-  SUBMITTED: { colour: 'bg-amber-100 text-amber-700', labelKey: 'tech.profile.kyc-submitted' },
-  VERIFIED: { colour: 'bg-green-100 text-green-700', labelKey: 'tech.profile.kyc-verified' },
-  REJECTED: { colour: 'bg-red-100 text-red-700', labelKey: 'tech.profile.kyc-rejected' },
+  SUBMITTED: {
+    colour: 'bg-amber-100 dark:bg-amber-950 text-amber-700 dark:text-amber-300',
+    labelKey: 'tech.profile.kyc-submitted',
+  },
+  VERIFIED: {
+    colour: 'bg-green-100 dark:bg-green-950 text-green-700 dark:text-green-300',
+    labelKey: 'tech.profile.kyc-verified',
+  },
+  REJECTED: {
+    colour: 'bg-red-100 dark:bg-red-950 text-red-700 dark:text-red-300',
+    labelKey: 'tech.profile.kyc-rejected',
+  },
 };
 
 /** Inline custom-price editor for one technician service mapping (B.8c). */
@@ -234,7 +243,7 @@ export default function TechProfilePage(): JSX.Element {
 
               {kycStatus === 'PENDING' || kycStatus === 'REJECTED' ? (
                 <div className="mt-4 space-y-3 border-t border-edge pt-4">
-                  {kycMsg && <p className="text-sm text-amber-600">{kycMsg}</p>}
+                  {kycMsg && <p className="text-sm text-amber-600 dark:text-amber-400">{kycMsg}</p>}
                   <div className="flex gap-3">
                     <select
                       value={docType}
@@ -268,11 +277,13 @@ export default function TechProfilePage(): JSX.Element {
                   </div>
                 </div>
               ) : kycStatus === 'SUBMITTED' ? (
-                <p className="mt-2 text-sm text-amber-600">
+                <p className="mt-2 text-sm text-amber-600 dark:text-amber-400">
                   {t('tech.profile.kyc-submitted-desc')}
                 </p>
               ) : (
-                <p className="mt-2 text-sm text-green-600">{t('tech.profile.kyc-verified-desc')}</p>
+                <p className="mt-2 text-sm text-green-600 dark:text-green-400">
+                  {t('tech.profile.kyc-verified-desc')}
+                </p>
               )}
             </Card>
 
@@ -280,7 +291,9 @@ export default function TechProfilePage(): JSX.Element {
             <Card>
               <h2 className="mb-4 text-lg font-semibold">{t('tech.profile.personal-info')}</h2>
               {profileMsg && (
-                <p className={`mb-3 text-sm ${profileErr ? 'text-red-600' : 'text-green-600'}`}>
+                <p
+                  className={`mb-3 text-sm ${profileErr ? 'text-red-600 dark:text-red-400' : 'text-green-600 dark:text-green-400'}`}
+                >
                   {profileMsg}
                 </p>
               )}
@@ -352,7 +365,7 @@ export default function TechProfilePage(): JSX.Element {
               <h2 className="mb-4 text-lg font-semibold">{t('tech.profile.stats-title')}</h2>
               <div className="grid grid-cols-2 gap-4 sm:grid-cols-4">
                 <div className="rounded-xl bg-surface-muted p-4 text-center">
-                  <p className="text-2xl font-bold text-amber-500">
+                  <p className="text-2xl font-bold text-amber-500 dark:text-amber-400">
                     {(tech?.ratingAvg as number) ?? 0}
                   </p>
                   <p className="mt-1 text-xs text-text-secondary">{t('tech.profile.rating')}</p>
@@ -385,7 +398,9 @@ export default function TechProfilePage(): JSX.Element {
             {/* ── Services Management ── */}
             <Card>
               <h2 className="mb-4 text-lg font-semibold">{t('tech.profile.provided-services')}</h2>
-              {serviceMsg && <p className="mb-3 text-sm text-green-600">{serviceMsg}</p>}
+              {serviceMsg && (
+                <p className="mb-3 text-sm text-green-600 dark:text-green-400">{serviceMsg}</p>
+              )}
 
               {/* Add service */}
               <div className="mb-4 flex flex-wrap gap-3">

@@ -84,7 +84,7 @@ export default function RewardsMarketplacePage(): JSX.Element {
                 <Card
                   key={r.id as number}
                   padding="lg"
-                  className={`text-center ${isRedeemed ? 'border-2 border-green-300 bg-green-50' : canAfford ? '' : 'opacity-50'}`}
+                  className={`text-center ${isRedeemed ? 'border-2 border-green-300 bg-green-50 dark:bg-green-950' : canAfford ? '' : 'opacity-50'}`}
                 >
                   <span className="text-4xl">
                     {r.rewardType === 'free_service'
@@ -97,7 +97,7 @@ export default function RewardsMarketplacePage(): JSX.Element {
                   <p className="text-xs text-text-secondary mt-1">
                     {(r.descriptionJson as Record<string, string>)?.ar ?? ''}
                   </p>
-                  <p className="text-2xl font-extrabold text-amber-600 mt-3">
+                  <p className="text-2xl font-extrabold text-amber-600 dark:text-amber-400 mt-3">
                     {t('rewardsMarketplace.points', { count: r.pointsCost as number })}
                   </p>
                   {(r.rewardValue as number) > 0 && (
@@ -114,7 +114,7 @@ export default function RewardsMarketplacePage(): JSX.Element {
                     </p>
                   )}
                   {isRedeemed ? (
-                    <p className="text-green-600 font-bold mt-3">
+                    <p className="text-green-600 dark:text-green-400 font-bold mt-3">
                       {t('rewardsMarketplace.redeemed')}
                     </p>
                   ) : (
@@ -149,7 +149,7 @@ export default function RewardsMarketplacePage(): JSX.Element {
                 <div key={tx.id as number} className="flex justify-between text-sm border-b pb-2">
                   <span className="text-text-secondary">{tx.reason as string}</span>
                   <span
-                    className={`font-bold ${(tx.points as number) > 0 ? 'text-green-600' : 'text-red-600'}`}
+                    className={`font-bold ${(tx.points as number) > 0 ? 'text-green-600 dark:text-green-400' : 'text-red-600 dark:text-red-400'}`}
                   >
                     {(tx.points as number) > 0 ? '+' : ''}
                     {t('rewardsMarketplace.points', { count: tx.points as number })}

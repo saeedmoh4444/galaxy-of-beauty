@@ -117,7 +117,7 @@ export default function AdminSettingsPage(): JSX.Element {
         <h2 className="mb-3 text-lg font-semibold">{t('admin.settings.maintenance-mode')}</h2>
         <div className="flex items-center gap-4">
           <span
-            className={`rounded-full px-3 py-1 text-sm font-medium ${maintenanceMode ? 'bg-red-100 text-red-700' : 'bg-green-100 text-green-700'}`}
+            className={`rounded-full px-3 py-1 text-sm font-medium ${maintenanceMode ? 'bg-red-100 dark:bg-red-950 text-red-700 dark:text-red-300' : 'bg-green-100 dark:bg-green-950 text-green-700 dark:text-green-300'}`}
           >
             {maintenanceMode ? t('status.active') : t('status.inactive')}
           </span>
@@ -233,7 +233,9 @@ export default function AdminSettingsPage(): JSX.Element {
           </Button>
         </div>
         {exportBookingsQuery.data && (
-          <p className="mt-2 text-sm text-green-600">{t('admin.settings.export-success')}</p>
+          <p className="mt-2 text-sm text-green-600 dark:text-green-400">
+            {t('admin.settings.export-success')}
+          </p>
         )}
       </Card>
 

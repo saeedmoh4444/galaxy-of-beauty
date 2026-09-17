@@ -55,8 +55,8 @@ export default function TechEarningsPage(): JSX.Element {
   const statusColours: Record<string, string> = {
     PENDING: 'bg-surface-muted text-text-secondary',
     PROCESSING: 'bg-blue-100 text-blue-700',
-    COMPLETED: 'bg-green-100 text-green-700',
-    FAILED: 'bg-red-100 text-red-700',
+    COMPLETED: 'bg-green-100 dark:bg-green-950 text-green-700 dark:text-green-300',
+    FAILED: 'bg-red-100 dark:bg-red-950 text-red-700 dark:text-red-300',
   };
   const statusLabelKeys: Record<string, TranslationKey> = {
     PENDING: 'tech.earnings.status-pending',
@@ -94,13 +94,13 @@ export default function TechEarningsPage(): JSX.Element {
               <p className="text-sm text-text-secondary">
                 {t('tech.earnings.withdrawable-balance')}
               </p>
-              <p className="text-2xl font-bold text-green-600">
+              <p className="text-2xl font-bold text-green-600 dark:text-green-400">
                 {formatCurrency(Number(bal?.balance ?? 0))}
               </p>
             </Card>
             <Card className="text-center">
               <p className="text-sm text-text-secondary">{t('tech.earnings.pending-balance')}</p>
-              <p className="text-2xl font-bold text-amber-600">
+              <p className="text-2xl font-bold text-amber-600 dark:text-amber-400">
                 {formatCurrency(Number(bal?.bonusBalance ?? 0))}
               </p>
             </Card>
@@ -141,7 +141,7 @@ export default function TechEarningsPage(): JSX.Element {
                   className="flex items-center justify-between py-1.5 text-sm"
                 >
                   <span className="text-text-primary">{day.date as string}</span>
-                  <span className="font-medium text-green-600">
+                  <span className="font-medium text-green-600 dark:text-green-400">
                     {formatCurrency(Number(day.earnings ?? 0))}
                   </span>
                   <span className="text-text-secondary">{String(day.count ?? 0)}</span>
@@ -149,7 +149,7 @@ export default function TechEarningsPage(): JSX.Element {
               ))}
               <div className="flex items-center justify-between border-t border-edge pt-3 font-semibold">
                 <span>{t('tech.earnings.total')}</span>
-                <span className="text-green-600">
+                <span className="text-green-600 dark:text-green-400">
                   {formatCurrency(Number(earnings?.totalEarnings ?? 0))}
                 </span>
                 <span>{String(earnings?.totalBookings ?? 0)}</span>
@@ -227,7 +227,9 @@ export default function TechEarningsPage(): JSX.Element {
         >
           <div className="space-y-4">
             {withdrawMsg && (
-              <p className={`text-sm ${withdrawMut.isError ? 'text-red-600' : 'text-green-600'}`}>
+              <p
+                className={`text-sm ${withdrawMut.isError ? 'text-red-600 dark:text-red-400' : 'text-green-600 dark:text-green-400'}`}
+              >
                 {withdrawMsg}
               </p>
             )}

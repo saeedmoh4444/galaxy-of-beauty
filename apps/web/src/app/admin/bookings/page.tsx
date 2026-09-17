@@ -104,7 +104,7 @@ export default function AdminBookingsPage(): JSX.Element {
                   </p>
                 </div>
                 <span
-                  className={`rounded-full px-3 py-1 text-xs font-medium ${b.status === 'COMPLETED' ? 'bg-green-100 text-green-700' : b.status === 'CANCELLED' ? 'bg-red-100 text-red-700' : 'bg-brand-100 text-brand-700'}`}
+                  className={`rounded-full px-3 py-1 text-xs font-medium ${b.status === 'COMPLETED' ? 'bg-green-100 dark:bg-green-950 text-green-700 dark:text-green-300' : b.status === 'CANCELLED' ? 'bg-red-100 dark:bg-red-950 text-red-700 dark:text-red-300' : 'bg-brand-100 text-brand-700'}`}
                 >
                   {b.status}
                 </span>

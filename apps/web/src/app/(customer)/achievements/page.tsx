@@ -58,13 +58,13 @@ export default function AchievementsPage(): JSX.Element {
                 <p className="text-xs text-text-secondary">{t('achievements.bookings')}</p>
               </Card>
               <Card padding="md" className="text-center">
-                <p className="text-xl font-extrabold text-green-600">
+                <p className="text-xl font-extrabold text-green-600 dark:text-green-400">
                   {formatCurrency((stats?.totalSpent as number) ?? 0)}
                 </p>
                 <p className="text-xs text-text-secondary">{t('achievements.spending')}</p>
               </Card>
               <Card padding="md" className="text-center">
-                <p className="text-xl font-extrabold text-amber-600">
+                <p className="text-xl font-extrabold text-amber-600 dark:text-amber-400">
                   {(stats?.streakDays as number) ?? 0}
                 </p>
                 <p className="text-xs text-text-secondary">{t('achievements.streakDays')}</p>
@@ -88,7 +88,7 @@ export default function AchievementsPage(): JSX.Element {
                   <h3 className="font-bold mt-2">{a.nameAr as string}</h3>
                   <p className="text-xs text-text-secondary mt-1">{a.desc as string}</p>
                   {a.earned ? (
-                    <span className="mt-2 inline-block rounded-full bg-amber-100 px-2 py-0.5 text-xs text-amber-700">
+                    <span className="mt-2 inline-block rounded-full bg-amber-100 dark:bg-amber-950 px-2 py-0.5 text-xs text-amber-700 dark:text-amber-300">
                       {t('achievements.earned')}
                     </span>
                   ) : (

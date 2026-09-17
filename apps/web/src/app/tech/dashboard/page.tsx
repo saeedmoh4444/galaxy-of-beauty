@@ -267,7 +267,7 @@ export default function TechDashboardPage(): JSX.Element {
                 </div>
               </div>
               {proposeMut.isError && (
-                <p className="text-sm text-red-600">{proposeMut.error.message}</p>
+                <p className="text-sm text-red-600 dark:text-red-400">{proposeMut.error.message}</p>
               )}
               <Button
                 onClick={() =>
@@ -306,10 +306,10 @@ export default function TechDashboardPage(): JSX.Element {
                   <span
                     className={`rounded-full px-3 py-1 text-xs font-medium ${
                       p.status === 'APPROVED'
-                        ? 'bg-green-100 text-green-700'
+                        ? 'bg-green-100 dark:bg-green-950 text-green-700 dark:text-green-300'
                         : p.status === 'REJECTED'
-                          ? 'bg-red-100 text-red-700'
-                          : 'bg-amber-100 text-amber-700'
+                          ? 'bg-red-100 dark:bg-red-950 text-red-700 dark:text-red-300'
+                          : 'bg-amber-100 dark:bg-amber-950 text-amber-700 dark:text-amber-300'
                     }`}
                   >
                     {t(
@@ -319,7 +319,7 @@ export default function TechDashboardPage(): JSX.Element {
                   </span>
                 </div>
                 {p.status === 'REJECTED' && p.reviewNotes ? (
-                  <p className="mt-2 text-xs text-red-600">
+                  <p className="mt-2 text-xs text-red-600 dark:text-red-400">
                     {t('tech.packages.reject-reason', { reason: p.reviewNotes as string })}
                   </p>
                 ) : null}
@@ -399,7 +399,9 @@ export default function TechDashboardPage(): JSX.Element {
                 {t('tech.shorts.consent')}
               </label>
               {shortCreateMut.isError && (
-                <p className="text-sm text-red-600">{shortCreateMut.error.message}</p>
+                <p className="text-sm text-red-600 dark:text-red-400">
+                  {shortCreateMut.error.message}
+                </p>
               )}
               <Button
                 onClick={() =>
@@ -441,7 +443,9 @@ export default function TechDashboardPage(): JSX.Element {
                   </div>
                   <span
                     className={`rounded-full px-3 py-1 text-xs font-medium ${
-                      s.isApproved ? 'bg-green-100 text-green-700' : 'bg-amber-100 text-amber-700'
+                      s.isApproved
+                        ? 'bg-green-100 dark:bg-green-950 text-green-700 dark:text-green-300'
+                        : 'bg-amber-100 dark:bg-amber-950 text-amber-700 dark:text-amber-300'
                     }`}
                   >
                     {s.isApproved ? t('tech.shorts.approved') : t('tech.shorts.pending')}
@@ -505,7 +509,9 @@ export default function TechDashboardPage(): JSX.Element {
                 />
               </div>
               {proposePromoMut.isError && (
-                <p className="text-sm text-red-600">{proposePromoMut.error.message}</p>
+                <p className="text-sm text-red-600 dark:text-red-400">
+                  {proposePromoMut.error.message}
+                </p>
               )}
               <Button
                 onClick={() =>
@@ -537,7 +543,7 @@ export default function TechDashboardPage(): JSX.Element {
                       <p className="font-semibold text-text-primary">{payload.titleAr as string}</p>
                       <p className="text-sm text-text-secondary">
                         {formatCurrency(payload.originalPrice as number)} ←{' '}
-                        <span className="font-bold text-red-600">
+                        <span className="font-bold text-red-600 dark:text-red-400">
                           {formatCurrency(payload.dealPrice as number)}
                         </span>
                       </p>
@@ -545,10 +551,10 @@ export default function TechDashboardPage(): JSX.Element {
                     <span
                       className={`rounded-full px-3 py-1 text-xs font-medium ${
                         sub.status === 'APPROVED'
-                          ? 'bg-green-100 text-green-700'
+                          ? 'bg-green-100 dark:bg-green-950 text-green-700 dark:text-green-300'
                           : sub.status === 'REJECTED'
-                            ? 'bg-red-100 text-red-700'
-                            : 'bg-amber-100 text-amber-700'
+                            ? 'bg-red-100 dark:bg-red-950 text-red-700 dark:text-red-300'
+                            : 'bg-amber-100 dark:bg-amber-950 text-amber-700 dark:text-amber-300'
                       }`}
                     >
                       {t(
@@ -558,7 +564,7 @@ export default function TechDashboardPage(): JSX.Element {
                     </span>
                   </div>
                   {sub.status === 'REJECTED' && sub.reviewNotes ? (
-                    <p className="mt-2 text-xs text-red-600">
+                    <p className="mt-2 text-xs text-red-600 dark:text-red-400">
                       {t('tech.packages.reject-reason', { reason: sub.reviewNotes as string })}
                     </p>
                   ) : null}

@@ -43,7 +43,7 @@ export default function SmartPricingPage(): JSX.Element {
                   </span>
                 )}
                 <p
-                  className={`text-2xl font-extrabold ${(s.currentPrice as number) < (s.basePrice as number) ? 'text-green-600' : 'text-brand-600'}`}
+                  className={`text-2xl font-extrabold ${(s.currentPrice as number) < (s.basePrice as number) ? 'text-green-600 dark:text-green-400' : 'text-brand-600'}`}
                 >
                   {t('marketing.smart-pricing.price-sar', {
                     price: formatCurrency(s.currentPrice as number),

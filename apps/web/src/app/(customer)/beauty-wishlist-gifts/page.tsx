@@ -87,9 +87,14 @@ export default function BeautyWishlistGiftsPage(): JSX.Element {
         )}
 
         {created && (
-          <Card padding="lg" className="text-center border-2 border-green-300 bg-green-50">
+          <Card
+            padding="lg"
+            className="text-center border-2 border-green-300 bg-green-50 dark:bg-green-950"
+          >
             <p className="text-2xl">✅</p>
-            <p className="font-bold text-green-700 mt-2">{t('wishlistGifts.created')}</p>
+            <p className="font-bold text-green-700 dark:text-green-300 mt-2">
+              {t('wishlistGifts.created')}
+            </p>
           </Card>
         )}
 

@@ -53,7 +53,7 @@ export default function AdminGroupBookingsPage(): JSX.Element {
                       {formatCurrency(Number(g.totalAmount ?? 0))}
                     </p>
                     <span
-                      className={`rounded-full px-2 py-0.5 text-xs ${g.status === 'PENDING' ? 'bg-yellow-100 text-yellow-700' : 'bg-green-100 text-green-700'}`}
+                      className={`rounded-full px-2 py-0.5 text-xs ${g.status === 'PENDING' ? 'bg-yellow-100 dark:bg-yellow-950 text-yellow-700 dark:text-yellow-300' : 'bg-green-100 dark:bg-green-950 text-green-700 dark:text-green-300'}`}
                     >
                       {g.status as string}
                     </span>

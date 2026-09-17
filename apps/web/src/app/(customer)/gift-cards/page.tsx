@@ -116,7 +116,7 @@ export default function GiftCardsPage(): JSX.Element {
                       )}
                     </div>
                     <span
-                      className={`rounded-full px-2 py-0.5 text-xs ${card.status === 'ACTIVE' ? 'bg-green-100 text-green-700' : 'bg-surface-muted text-text-secondary'}`}
+                      className={`rounded-full px-2 py-0.5 text-xs ${card.status === 'ACTIVE' ? 'bg-green-100 dark:bg-green-950 text-green-700 dark:text-green-300' : 'bg-surface-muted text-text-secondary'}`}
                     >
                       {card.status === 'ACTIVE' ? t('giftCards.active') : t('giftCards.used')}
                     </span>
@@ -201,7 +201,7 @@ export default function GiftCardsPage(): JSX.Element {
               <Button onClick={handleCheckBalance} className="w-full">
                 {t('giftCards.check')}
               </Button>
-              {checkError && <p className="text-sm text-red-600">{checkError}</p>}
+              {checkError && <p className="text-sm text-red-600 dark:text-red-400">{checkError}</p>}
               {checkResult && (
                 <div className="rounded-lg bg-green-50 p-4 dark:bg-green-950">
                   <p className="font-mono font-bold text-green-800 dark:text-green-200">
@@ -215,7 +215,7 @@ export default function GiftCardsPage(): JSX.Element {
                     {formatCurrency(Number(checkResult.originalAmount))}
                   </p>
                   {checkResult.recipientName && (
-                    <p className="text-xs text-green-600">
+                    <p className="text-xs text-green-600 dark:text-green-400">
                       {t('giftCards.forRecipient')} {checkResult.recipientName}
                     </p>
                   )}

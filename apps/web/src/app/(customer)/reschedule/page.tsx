@@ -57,9 +57,14 @@ export default function ReschedulePage(): JSX.Element {
         </div>
 
         {done && (
-          <Card padding="lg" className="text-center border-2 border-green-300 bg-green-50">
+          <Card
+            padding="lg"
+            className="text-center border-2 border-green-300 bg-green-50 dark:bg-green-950"
+          >
             <p className="text-2xl">✅</p>
-            <p className="font-bold text-green-700 mt-2">{t('reschedule.success')}</p>
+            <p className="font-bold text-green-700 dark:text-green-300 mt-2">
+              {t('reschedule.success')}
+            </p>
           </Card>
         )}
 
@@ -94,7 +99,7 @@ export default function ReschedulePage(): JSX.Element {
                       </span>
                     </div>
                     <span
-                      className={`rounded-full px-2 py-0.5 text-xs ${b.status === 'ACCEPTED' ? 'bg-green-100 text-green-700' : 'bg-yellow-100 text-yellow-700'}`}
+                      className={`rounded-full px-2 py-0.5 text-xs ${b.status === 'ACCEPTED' ? 'bg-green-100 dark:bg-green-950 text-green-700 dark:text-green-300' : 'bg-yellow-100 dark:bg-yellow-950 text-yellow-700 dark:text-yellow-300'}`}
                     >
                       {t(bookingStatusLabelKey(b.status as string))}
                     </span>

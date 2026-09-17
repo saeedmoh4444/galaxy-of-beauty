@@ -70,7 +70,9 @@ export default function SaleAlertsPage(): JSX.Element {
                 >
                   <span className="text-2xl">{d.emoji as string}</span>
                   <p className="font-bold text-sm mt-1">{d.titleAr as string}</p>
-                  <p className="text-xs text-red-500 font-bold mt-1">-{d.discount as number}%</p>
+                  <p className="text-xs text-red-500 dark:text-red-400 font-bold mt-1">
+                    -{d.discount as number}%
+                  </p>
                   <p className="text-[10px] text-text-tertiary">
                     {t('saleAlerts.endsIn', { endsIn: d.endsIn as string })}
                   </p>
@@ -113,7 +115,7 @@ export default function SaleAlertsPage(): JSX.Element {
                 <div className="flex items-center gap-2">
                   <button
                     onClick={() => toggleMut.mutate({ id: a.id as number })}
-                    className={`text-sm ${a.active ? 'text-green-500' : 'text-text-tertiary'}`}
+                    className={`text-sm ${a.active ? 'text-green-500 dark:text-green-400' : 'text-text-tertiary'}`}
                   >
                     {a.active ? '' : ''}
                   </button>

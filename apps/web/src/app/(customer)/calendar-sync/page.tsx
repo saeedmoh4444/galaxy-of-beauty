@@ -113,7 +113,9 @@ export default function CalendarSyncPage(): JSX.Element {
               </Button>
             )}
             {!status?.configured && (
-              <p className="mt-2 text-xs text-amber-600">{t('calendarSync.notConfigured')}</p>
+              <p className="mt-2 text-xs text-amber-600 dark:text-amber-400">
+                {t('calendarSync.notConfigured')}
+              </p>
             )}
           </div>
         </Card>

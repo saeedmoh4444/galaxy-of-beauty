@@ -60,7 +60,7 @@ export default async function BeautyPackagesPage(): Promise<JSX.Element> {
                 <div className="p-5">
                   <div className="flex items-center justify-between">
                     <h2 className="text-lg font-bold text-text-primary">{name}</h2>
-                    <span className="rounded-full bg-red-100 px-2 py-0.5 text-xs font-bold text-red-600">
+                    <span className="rounded-full bg-red-100 dark:bg-red-950 px-2 py-0.5 text-xs font-bold text-red-600 dark:text-red-400">
                       -{pkg.discountPercent}%
                     </span>
                   </div>

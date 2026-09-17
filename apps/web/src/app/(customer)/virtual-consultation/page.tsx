@@ -156,7 +156,7 @@ export default function VirtualConsultationPage(): JSX.Element {
                     {b.consultantType as string} — {b.slot as string}
                   </span>
                   <span
-                    className={`rounded-full px-2 py-0.5 text-xs ${b.status === 'CONFIRMED' ? 'bg-green-100 text-green-700' : 'bg-yellow-100 text-yellow-700'}`}
+                    className={`rounded-full px-2 py-0.5 text-xs ${b.status === 'CONFIRMED' ? 'bg-green-100 dark:bg-green-950 text-green-700 dark:text-green-300' : 'bg-yellow-100 dark:bg-yellow-950 text-yellow-700 dark:text-yellow-300'}`}
                   >
                     {b.status as string}
                   </span>

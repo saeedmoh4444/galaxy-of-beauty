@@ -83,19 +83,21 @@ export default function IngredientAnalyzerPage(): JSX.Element {
         <Card padding="lg">
           <div className="grid grid-cols-4 gap-4 mb-4 text-center">
             <div>
-              <p className="text-2xl font-bold text-green-600">{stats.safe}</p>
+              <p className="text-2xl font-bold text-green-600 dark:text-green-400">{stats.safe}</p>
               <p className="text-xs text-text-secondary">
                 {t('marketing.ingredient-analyzer.safe-label')}
               </p>
             </div>
             <div>
-              <p className="text-2xl font-bold text-amber-600">{stats.caution}</p>
+              <p className="text-2xl font-bold text-amber-600 dark:text-amber-400">
+                {stats.caution}
+              </p>
               <p className="text-xs text-text-secondary">
                 {t('marketing.ingredient-analyzer.caution-label')}
               </p>
             </div>
             <div>
-              <p className="text-2xl font-bold text-red-600">{stats.avoid}</p>
+              <p className="text-2xl font-bold text-red-600 dark:text-red-400">{stats.avoid}</p>
               <p className="text-xs text-text-secondary">
                 {t('marketing.ingredient-analyzer.avoid-label')}
               </p>

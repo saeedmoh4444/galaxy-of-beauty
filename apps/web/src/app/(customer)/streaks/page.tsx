@@ -71,7 +71,7 @@ export default function StreaksPage(): JSX.Element {
                 <p className="mt-3 text-sm text-text-secondary dark:text-text-tertiary">
                   {t('streaks.longest')}
                 </p>
-                <p className="mt-1 text-4xl font-bold text-amber-600">
+                <p className="mt-1 text-4xl font-bold text-amber-600 dark:text-amber-400">
                   {(streakData?.longestStreak as number) ?? 0}
                 </p>
                 <p className="text-xs text-text-tertiary">{t('streaks.weeks')}</p>
@@ -153,7 +153,7 @@ export default function StreaksPage(): JSX.Element {
                               </span>
                             )}
                             {Number(ach.rewardAmount) > 0 && (
-                              <span className="text-xs font-semibold text-amber-600">
+                              <span className="text-xs font-semibold text-amber-600 dark:text-amber-400">
                                 +{formatCurrency(Number(ach.rewardAmount))}
                               </span>
                             )}

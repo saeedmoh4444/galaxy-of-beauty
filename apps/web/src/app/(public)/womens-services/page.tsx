@@ -63,7 +63,7 @@ export default function WomensServicesPage(): JSX.Element {
 
       {bookingResult ? (
         <Card padding="lg" className="text-center border-2 border-green-300 dark:border-green-700">
-          <Icon name="check" size="xl" className="mx-auto text-green-600" />
+          <Icon name="check" size="xl" className="mx-auto text-green-600 dark:text-green-400" />
           <h2 className="mt-4 text-xl font-bold">{t('marketing.womens-services.booked-title')}</h2>
           <p className="font-bold mt-1">{bookingResult.service as string}</p>
           <p className="text-2xl font-extrabold text-brand-600 mt-2">
@@ -88,7 +88,9 @@ export default function WomensServicesPage(): JSX.Element {
               ))}
             </div>
           ) : null}
-          <p className="text-sm text-green-600 mt-2">{bookingResult.message as string}</p>
+          <p className="text-sm text-green-600 dark:text-green-400 mt-2">
+            {bookingResult.message as string}
+          </p>
           <Button
             variant="ghost"
             className="mt-4"
@@ -176,7 +178,10 @@ export default function WomensServicesPage(): JSX.Element {
                     <h3 className="font-bold text-text-primary">{s.nameAr as string}</h3>
                     <p className="text-xs text-text-secondary">{s.nameEn as string}</p>
                     {(s.precautions as string) ? (
-                      <p className="text-xs text-amber-600 mt-0.5"> {s.precautions as string}</p>
+                      <p className="text-xs text-amber-600 dark:text-amber-400 mt-0.5">
+                        {' '}
+                        {s.precautions as string}
+                      </p>
                     ) : null}
                   </div>
                 </div>

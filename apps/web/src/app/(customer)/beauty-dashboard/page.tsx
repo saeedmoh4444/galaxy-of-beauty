@@ -44,13 +44,13 @@ export default function BeautyDashboardPage(): JSX.Element {
                 <p className="text-xs text-text-secondary">{t('beautyDashboard.upcoming')}</p>
               </Card>
               <Card padding="lg" className="text-center">
-                <p className="text-2xl font-extrabold text-green-600">
+                <p className="text-2xl font-extrabold text-green-600 dark:text-green-400">
                   {(data?.completedBookings as number) ?? 0}
                 </p>
                 <p className="text-xs text-text-secondary">{t('referrals.stat.completed')}</p>
               </Card>
               <Card padding="lg" className="text-center">
-                <p className="text-2xl font-extrabold text-amber-600">
+                <p className="text-2xl font-extrabold text-amber-600 dark:text-amber-400">
                   {(data?.streakDays as number) ?? 0}
                 </p>
                 <p className="text-xs text-text-secondary">{t('beautyDashboard.streakDays')}</p>
@@ -75,7 +75,7 @@ export default function BeautyDashboardPage(): JSX.Element {
                       >
                         <span>{b.serviceName as string}</span>
                         <span
-                          className={`rounded-full px-2 py-0.5 text-xs ${b.status === 'COMPLETED' ? 'bg-green-100 text-green-700' : b.status === 'ACCEPTED' ? 'bg-blue-100 text-blue-700' : 'bg-yellow-100 text-yellow-700'}`}
+                          className={`rounded-full px-2 py-0.5 text-xs ${b.status === 'COMPLETED' ? 'bg-green-100 dark:bg-green-950 text-green-700 dark:text-green-300' : b.status === 'ACCEPTED' ? 'bg-blue-100 text-blue-700' : 'bg-yellow-100 dark:bg-yellow-950 text-yellow-700 dark:text-yellow-300'}`}
                         >
                           {b.status as string}
                         </span>

@@ -54,13 +54,13 @@ export default function AdminFinancePage(): JSX.Element {
           </Card>
           <Card className="text-center">
             <p className="text-sm text-text-secondary">{t('admin.finance.platform-fees')}</p>
-            <p className="text-2xl font-bold text-amber-600">
+            <p className="text-2xl font-bold text-amber-600 dark:text-amber-400">
               {formatCurrency(Number(fin?.platformFees ?? 0))}
             </p>
           </Card>
           <Card className="text-center">
             <p className="text-sm text-text-secondary">{t('admin.finance.technician-earnings')}</p>
-            <p className="text-2xl font-bold text-green-600">
+            <p className="text-2xl font-bold text-green-600 dark:text-green-400">
               {formatCurrency(Number(fin?.technicianEarnings ?? 0))}
             </p>
           </Card>
@@ -102,7 +102,9 @@ export default function AdminFinancePage(): JSX.Element {
           </Button>
         </div>
         {calculateMut.data && (
-          <p className="mt-2 text-sm text-green-600">{t('admin.finance.calculated-success')}</p>
+          <p className="mt-2 text-sm text-green-600 dark:text-green-400">
+            {t('admin.finance.calculated-success')}
+          </p>
         )}
       </Card>
 

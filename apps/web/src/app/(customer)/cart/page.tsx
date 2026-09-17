@@ -87,7 +87,7 @@ export default function CartPage(): JSX.Element {
                           variant="ghost"
                           onClick={() => removeMut.mutate({ productId: product?.id as number })}
                           loading={removeMut.isPending}
-                          className="text-red-500"
+                          className="text-red-500 dark:text-red-400"
                         >
                           {t('cart.remove')}
                         </Button>

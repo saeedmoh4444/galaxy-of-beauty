@@ -98,7 +98,7 @@ export default async function RewardsPage(): Promise<JSX.Element> {
                     </span>
                   </div>
                   {r.minTier && r.minTier !== 'SILVER' && (
-                    <p className="mt-2 text-xs text-amber-600">
+                    <p className="mt-2 text-xs text-amber-600 dark:text-amber-400">
                       {t('marketing.rewards.tier-requirement', locale, {
                         tier: t(TIER_LABELS[r.minTier]?.name ?? '', locale),
                       })}

@@ -102,7 +102,7 @@ export default function ReferralsPage(): JSX.Element {
                   {copyMsg || t('referrals.copy')}
                 </button>
               </div>
-              {copyMsg && <p className="text-sm text-green-600">{copyMsg}</p>}
+              {copyMsg && <p className="text-sm text-green-600 dark:text-green-400">{copyMsg}</p>}
               <Button className="mt-4" onClick={handleShare}>
                 {t('referrals.shareCode')}
               </Button>
@@ -122,7 +122,7 @@ export default function ReferralsPage(): JSX.Element {
                 <p className="text-sm text-text-secondary dark:text-text-tertiary">
                   {t('referrals.stat.totalEarned')}
                 </p>
-                <p className="mt-1 text-3xl font-bold text-green-600">
+                <p className="mt-1 text-3xl font-bold text-green-600 dark:text-green-400">
                   {formatCurrency(Number(statsData?.totalEarned ?? 0))}
                 </p>
               </Card>
@@ -133,7 +133,7 @@ export default function ReferralsPage(): JSX.Element {
                 <p className="text-sm text-text-secondary dark:text-text-tertiary">
                   {t('referrals.stat.completed')}
                 </p>
-                <p className="mt-1 text-2xl font-bold text-green-600">
+                <p className="mt-1 text-2xl font-bold text-green-600 dark:text-green-400">
                   {(statsData?.completedReferrals as number) ?? 0}
                 </p>
               </Card>
@@ -141,7 +141,7 @@ export default function ReferralsPage(): JSX.Element {
                 <p className="text-sm text-text-secondary dark:text-text-tertiary">
                   {t('referrals.stat.pending')}
                 </p>
-                <p className="mt-1 text-2xl font-bold text-amber-600">
+                <p className="mt-1 text-2xl font-bold text-amber-600 dark:text-amber-400">
                   {(statsData?.pendingReferrals as number) ?? 0}
                 </p>
               </Card>
@@ -164,7 +164,9 @@ export default function ReferralsPage(): JSX.Element {
                   {t('referrals.apply')}
                 </Button>
               </div>
-              {applyMsg && <p className="mt-2 text-sm text-green-600">{applyMsg}</p>}
+              {applyMsg && (
+                <p className="mt-2 text-sm text-green-600 dark:text-green-400">{applyMsg}</p>
+              )}
             </Card>
 
             {/* Referral History */}
@@ -201,7 +203,7 @@ export default function ReferralsPage(): JSX.Element {
                               ? t('referrals.stat.completed')
                               : t('referrals.stat.pending')}
                           </span>
-                          <span className="text-sm font-semibold text-green-600">
+                          <span className="text-sm font-semibold text-green-600 dark:text-green-400">
                             {formatCurrency(Number(r.referrerReward))}
                           </span>
                         </div>

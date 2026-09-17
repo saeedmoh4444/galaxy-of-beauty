@@ -79,7 +79,7 @@ export default function RecurringPage(): JSX.Element {
                   </div>
                   <div className="flex gap-2">
                     <span
-                      className={`rounded px-2 py-0.5 text-xs ${b.status === 'ACTIVE' ? 'bg-green-100 text-green-700' : b.status === 'PAUSED' ? 'bg-amber-100 text-amber-700' : 'bg-surface-muted text-text-secondary'}`}
+                      className={`rounded px-2 py-0.5 text-xs ${b.status === 'ACTIVE' ? 'bg-green-100 dark:bg-green-950 text-green-700 dark:text-green-300' : b.status === 'PAUSED' ? 'bg-amber-100 dark:bg-amber-950 text-amber-700 dark:text-amber-300' : 'bg-surface-muted text-text-secondary'}`}
                     >
                       {b.status === 'ACTIVE'
                         ? t('recurring.status.active')

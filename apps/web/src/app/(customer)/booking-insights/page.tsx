@@ -35,7 +35,7 @@ export default function BookingInsightsPage(): JSX.Element {
                 <p className="text-xs text-text-secondary">{t('bookingInsights.totalBookings')}</p>
               </Card>
               <Card padding="lg" className="text-center">
-                <p className="text-2xl font-extrabold text-green-600">
+                <p className="text-2xl font-extrabold text-green-600 dark:text-green-400">
                   {formatCurrency(Number(insights?.totalSpent ?? 0))}
                 </p>
                 <p className="text-xs text-text-secondary">{t('bookingInsights.totalSpent')}</p>
@@ -51,7 +51,7 @@ export default function BookingInsightsPage(): JSX.Element {
             <div className="grid gap-4 sm:grid-cols-2">
               <Card padding="lg" className="text-center">
                 <p className="text-sm text-text-secondary">{t('bookingInsights.streak')}</p>
-                <p className="text-3xl font-extrabold text-amber-600 mt-1">
+                <p className="text-3xl font-extrabold text-amber-600 dark:text-amber-400 mt-1">
                   {((insights?.streak as Record<string, unknown>)?.currentStreak as number) ?? 0}
                 </p>
               </Card>
@@ -75,13 +75,13 @@ export default function BookingInsightsPage(): JSX.Element {
               <div className="space-y-2 text-sm">
                 <div className="flex justify-between">
                   <span>{t('bookingInsights.completed')}</span>
-                  <span className="font-bold text-green-600">
+                  <span className="font-bold text-green-600 dark:text-green-400">
                     {(insights?.completedBookings as number) ?? 0}
                   </span>
                 </div>
                 <div className="flex justify-between">
                   <span>{t('bookingInsights.cancelled')}</span>
-                  <span className="font-bold text-red-500">
+                  <span className="font-bold text-red-500 dark:text-red-400">
                     {(insights?.cancelledBookings as number) ?? 0}
                   </span>
                 </div>

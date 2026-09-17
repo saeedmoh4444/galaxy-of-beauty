@@ -97,7 +97,7 @@ export default function SavingsGoalsPage(): JSX.Element {
                       </p>
                     </div>
                     <span
-                      className={`text-sm font-bold ${g.status === 'COMPLETED' ? 'text-green-600' : 'text-brand-600'}`}
+                      className={`text-sm font-bold ${g.status === 'COMPLETED' ? 'text-green-600 dark:text-green-400' : 'text-brand-600'}`}
                     >
                       {pct.toFixed(0)}%
                     </span>

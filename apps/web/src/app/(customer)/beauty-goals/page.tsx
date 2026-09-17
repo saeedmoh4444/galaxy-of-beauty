@@ -146,7 +146,7 @@ export default function BeautyGoalsPage(): JSX.Element {
                   {cat.goals.map((g, i) => (
                     <label
                       key={i}
-                      className={`flex items-center gap-3 p-2 rounded-lg cursor-pointer transition-all ${catGoals[i] ? 'bg-green-50 line-through text-text-tertiary' : ''}`}
+                      className={`flex items-center gap-3 p-2 rounded-lg cursor-pointer transition-all ${catGoals[i] ? 'bg-green-50 dark:bg-green-950 line-through text-text-tertiary' : ''}`}
                     >
                       <input
                         type="checkbox"

@@ -154,7 +154,7 @@ export default function SearchPage(): JSX.Element {
                           </p>
                           <div className="mt-1 flex flex-wrap gap-1">
                             {s.isWomenOnlyStaff && (
-                              <span className="rounded-full bg-pink-100 px-2 py-0.5 text-[10px] text-pink-700">
+                              <span className="rounded-full bg-pink-100 dark:bg-pink-950 px-2 py-0.5 text-[10px] text-pink-700 dark:text-pink-300">
                                 🙋‍♀️ {t('trust.womenOnly')}
                               </span>
                             )}
@@ -164,7 +164,7 @@ export default function SearchPage(): JSX.Element {
                               </span>
                             )}
                             {s.isPregnancySafe && (
-                              <span className="rounded-full bg-green-100 px-2 py-0.5 text-[10px] text-green-700">
+                              <span className="rounded-full bg-green-100 dark:bg-green-950 px-2 py-0.5 text-[10px] text-green-700 dark:text-green-300">
                                 🤰 {t('trust.pregnancySafe')}
                               </span>
                             )}

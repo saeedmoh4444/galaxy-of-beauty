@@ -91,8 +91,8 @@ export function MeasurementHistory(): JSX.Element {
                   progress[f.key]!.delta === 0
                     ? ''
                     : progress[f.key]!.delta < 0
-                      ? ' text-green-600'
-                      : ' text-amber-600'
+                      ? ' text-green-600 dark:text-green-400'
+                      : ' text-amber-600 dark:text-amber-400'
                 }
               >
                 {' '}

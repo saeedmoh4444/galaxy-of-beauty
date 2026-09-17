@@ -93,17 +93,17 @@ export default function AdminAnalyticsPage(): JSX.Element {
             <StatCard
               title={t('admin.analytics.completed')}
               value={String(byStatusMap['COMPLETED'] ?? 0)}
-              color="text-green-600"
+              color="text-green-600 dark:text-green-400"
             />
             <StatCard
               title={t('admin.analytics.pending')}
               value={String(byStatusMap['REQUESTED'] ?? 0)}
-              color="text-amber-600"
+              color="text-amber-600 dark:text-amber-400"
             />
             <StatCard
               title={t('admin.analytics.cancelled')}
               value={String(byStatusMap['CANCELLED'] ?? 0)}
-              color="text-red-600"
+              color="text-red-600 dark:text-red-400"
             />
           </div>
         )}

@@ -27,7 +27,11 @@ interface ProductData {
 }
 
 const SAFETY_COLOR = (score: number) =>
-  score >= 90 ? 'text-green-600' : score >= 75 ? 'text-amber-600' : 'text-red-600';
+  score >= 90
+    ? 'text-green-600 dark:text-green-400'
+    : score >= 75
+      ? 'text-amber-600 dark:text-amber-400'
+      : 'text-red-600 dark:text-red-400';
 const SAFETY_BG = (score: number) =>
   score >= 90 ? 'bg-green-500' : score >= 75 ? 'bg-amber-500' : 'bg-red-500';
 const SAFETY_LABEL = (score: number): TranslationKey =>

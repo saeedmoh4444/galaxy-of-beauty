@@ -17,7 +17,7 @@ const kycBadge = (status: string): { labelKey: TranslationKey; className: string
     case 'VERIFIED':
       return {
         labelKey: 'admin.technicians.kyc-verified',
-        className: 'bg-green-100 text-green-700',
+        className: 'bg-green-100 dark:bg-green-950 text-green-700 dark:text-green-300',
       };
     case 'SUBMITTED':
       return {
@@ -25,12 +25,15 @@ const kycBadge = (status: string): { labelKey: TranslationKey; className: string
         className: 'bg-blue-100 text-blue-700',
       };
     case 'REJECTED':
-      return { labelKey: 'admin.technicians.kyc-rejected', className: 'bg-red-100 text-red-700' };
+      return {
+        labelKey: 'admin.technicians.kyc-rejected',
+        className: 'bg-red-100 dark:bg-red-950 text-red-700 dark:text-red-300',
+      };
     case 'PENDING':
     default:
       return {
         labelKey: 'admin.technicians.kyc-pending',
-        className: 'bg-amber-100 text-amber-700',
+        className: 'bg-amber-100 dark:bg-amber-950 text-amber-700 dark:text-amber-300',
       };
   }
 };
@@ -198,7 +201,10 @@ export default function AdminTechniciansPage(): JSX.Element {
               {((reviewTech.kycDocuments as { type: string; url: string }[]) ?? []).length > 0 ? (
                 (reviewTech.kycDocuments as { type: string; url: string }[]).map(
                   (doc, i: number) => (
-                    <p key={i} className="text-sm text-blue-600 hover:underline cursor-pointer">
+                    <p
+                      key={i}
+                      className="text-sm text-blue-600 dark:text-blue-400 hover:underline cursor-pointer"
+                    >
                       {doc.type ?? t('admin.technicians.document-index', { index: i + 1 })}
                     </p>
                   ),

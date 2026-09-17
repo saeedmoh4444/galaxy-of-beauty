@@ -68,7 +68,9 @@ export default function TwoFactorPage(): JSX.Element {
 
                 {disableMut.isError && <ErrorAlert message={disableMut.error.message} />}
                 {disableMut.isSuccess && (
-                  <p className="text-sm text-green-600">{t('auth.2fa-disabled')}</p>
+                  <p className="text-sm text-green-600 dark:text-green-400">
+                    {t('auth.2fa-disabled')}
+                  </p>
                 )}
 
                 <Button
@@ -132,9 +134,13 @@ export default function TwoFactorPage(): JSX.Element {
                       <ErrorAlert message={verifyMut.error.message} />
                     </div>
                   )}
-                  {verifyError && <p className="mb-2 text-sm text-red-600">{verifyError}</p>}
+                  {verifyError && (
+                    <p className="mb-2 text-sm text-red-600 dark:text-red-400">{verifyError}</p>
+                  )}
                   {verifyMut.isSuccess && (
-                    <p className="mb-2 text-sm text-green-600">{t('auth.2fa-verify-success')}</p>
+                    <p className="mb-2 text-sm text-green-600 dark:text-green-400">
+                      {t('auth.2fa-verify-success')}
+                    </p>
                   )}
 
                   <Input

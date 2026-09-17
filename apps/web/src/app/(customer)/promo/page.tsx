@@ -56,7 +56,7 @@ export default function PromoPage(): JSX.Element {
             <Button onClick={handleValidate} className="w-full">
               {t('promo.check')}
             </Button>
-            {error && <p className="text-sm text-red-600">{error}</p>}
+            {error && <p className="text-sm text-red-600 dark:text-red-400">{error}</p>}
           </div>
         </Card>
 
@@ -80,20 +80,20 @@ export default function PromoPage(): JSX.Element {
               </div>
               <div className="flex justify-between">
                 <span>{t('promo.field.value')}</span>
-                <span className="font-bold text-green-700">
+                <span className="font-bold text-green-700 dark:text-green-300">
                   {result.discountValue as number}
                   {result.discountType === 'percent' ? '%' : ` ${t('promo.currency')}`}
                 </span>
               </div>
               <div className="flex justify-between">
                 <span>{t('promo.field.discount')}</span>
-                <span className="font-bold text-green-700">
+                <span className="font-bold text-green-700 dark:text-green-300">
                   -{Number(result.discountAmount).toFixed(2)} {t('promo.currency')}
                 </span>
               </div>
               <div className="flex justify-between border-t pt-2">
                 <span className="font-bold">{t('promo.field.total')}</span>
-                <span className="text-lg font-bold text-green-700">
+                <span className="text-lg font-bold text-green-700 dark:text-green-300">
                   {Number(result.finalAmount).toFixed(2)} {t('promo.currency')}
                 </span>
               </div>

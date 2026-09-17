@@ -45,7 +45,7 @@ export default function AdminGiftCardsPage(): JSX.Element {
                   <td className="p-3">{formatCurrency(Number(c.balance))}</td>
                   <td className="p-3">
                     <span
-                      className={`rounded px-2 py-0.5 text-xs ${c.status === 'ACTIVE' ? 'bg-green-100 text-green-700' : 'bg-surface-muted text-text-secondary'}`}
+                      className={`rounded px-2 py-0.5 text-xs ${c.status === 'ACTIVE' ? 'bg-green-100 dark:bg-green-950 text-green-700 dark:text-green-300' : 'bg-surface-muted text-text-secondary'}`}
                     >
                       {c.status === 'ACTIVE'
                         ? t('admin.gift-cards.active')

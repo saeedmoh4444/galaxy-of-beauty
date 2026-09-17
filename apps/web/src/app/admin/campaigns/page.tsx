@@ -65,7 +65,7 @@ export default function AdminCampaignsPage(): JSX.Element {
                   </p>
                 </div>
                 <span
-                  className={`rounded px-2 py-0.5 text-xs ${c.isActive ? 'bg-green-100 text-green-700' : 'bg-surface-muted text-text-secondary'}`}
+                  className={`rounded px-2 py-0.5 text-xs ${c.isActive ? 'bg-green-100 dark:bg-green-950 text-green-700 dark:text-green-300' : 'bg-surface-muted text-text-secondary'}`}
                 >
                   {c.isActive ? t('status.active') : t('status.inactive')}
                 </span>

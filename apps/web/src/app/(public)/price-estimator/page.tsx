@@ -106,7 +106,7 @@ export default function PriceEstimatorPage(): JSX.Element {
               className="block text-sm font-semibold text-text-primary mb-1.5"
             >
               {t('marketing.price-estimator.service-label')}
-              <span className="text-red-500">*</span>
+              <span className="text-red-500 dark:text-red-400">*</span>
             </label>
 
             {selectedService ? (
@@ -128,7 +128,7 @@ export default function PriceEstimatorPage(): JSX.Element {
                 </div>
                 <button
                   onClick={() => setSelectedServiceId(null)}
-                  className="text-text-tertiary hover:text-red-500 p-1 transition-colors"
+                  className="text-text-tertiary hover:text-red-500 hover:dark:text-red-400 p-1 transition-colors"
                   title={t('marketing.price-estimator.change-service')}
                 ></button>
               </div>
@@ -192,7 +192,7 @@ export default function PriceEstimatorPage(): JSX.Element {
                 className="w-full rounded-xl border border-edge bg-surface-muted px-4 py-3 text-sm uppercase tracking-wider focus:border-brand-500 focus:outline-none focus:ring-2 focus:ring-brand-100 dark:placeholder:text-text-secondary"
               />
               {promoCode && estimate?.promoValid && (
-                <span className="absolute start-3 top-1/2 -translate-y-1/2 text-green-500 text-sm font-bold">
+                <span className="absolute start-3 top-1/2 -translate-y-1/2 text-green-500 dark:text-green-400 text-sm font-bold">
                   {t('marketing.price-estimator.promo-valid')}
                 </span>
               )}

@@ -63,13 +63,16 @@ export function TechnicianProfileClient({ data }: { data: TechnicianProfileData 
             <div className="flex items-center justify-center gap-2 sm:justify-start">
               <h1 className="text-2xl font-bold text-text-primary">{name}</h1>
               {kycStatus === 'VERIFIED' && (
-                <span className="text-green-500" title={t('marketing.technician-profile.verified')}>
+                <span
+                  className="text-green-500 dark:text-green-400"
+                  title={t('marketing.technician-profile.verified')}
+                >
                   ✅
                 </span>
               )}
               {isEco && (
                 <span
-                  className="text-green-500"
+                  className="text-green-500 dark:text-green-400"
                   title={t('marketing.technician-profile.eco-friendly')}
                 >
                   🌿
@@ -81,7 +84,7 @@ export function TechnicianProfileClient({ data }: { data: TechnicianProfileData 
               {area ? `${locale === 'ar' ? '، ' : ', '}${area}` : ''}
             </p>
             <div className="mt-2 flex items-center justify-center gap-4 sm:justify-start">
-              <span className="text-amber-500"> {rating.toFixed(1)}</span>
+              <span className="text-amber-500 dark:text-amber-400"> {rating.toFixed(1)}</span>
               <span className="text-text-tertiary">
                 {t('marketing.technician-profile.completed-bookings', { count: completed })}
               </span>

@@ -130,7 +130,7 @@ export default function StreakCalendarPage(): JSX.Element {
                   {t('streakCalendar.legendBooked')}
                 </span>
                 <span className="flex items-center gap-1">
-                  <span className="h-2 w-2 rounded-full bg-gray-300" />{' '}
+                  <span className="h-2 w-2 rounded-full bg-gray-300 dark:bg-gray-600" />{' '}
                   {t('streakCalendar.legendNotBooked')}
                 </span>
               </div>
@@ -155,7 +155,7 @@ export default function StreakCalendarPage(): JSX.Element {
                       </div>
                     </div>
                     {Number(weeks) <= currentStreak ? (
-                      <span className="text-green-600 text-xs font-bold">
+                      <span className="text-green-600 dark:text-green-400 text-xs font-bold">
                         {t('streakCalendar.done')}
                       </span>
                     ) : (

@@ -76,8 +76,8 @@ export default function BookingHeatmapPage(): JSX.Element {
           </div>
           <div className="mt-4 flex items-center justify-center gap-2 text-xs text-text-tertiary">
             <span>{t('marketing.booking-heatmap.quiet')}</span>
-            <div className="w-4 h-3 rounded bg-green-200" />
-            <div className="w-4 h-3 rounded bg-yellow-200" />
+            <div className="w-4 h-3 rounded bg-green-200 dark:bg-green-900" />
+            <div className="w-4 h-3 rounded bg-yellow-200 dark:bg-yellow-900" />
             <div className="w-4 h-3 rounded bg-orange-300" />
             <div className="w-4 h-3 rounded bg-red-400" />
             <span>{t('marketing.booking-heatmap.busy')}</span>

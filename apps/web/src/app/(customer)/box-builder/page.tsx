@@ -48,7 +48,7 @@ export default function BoxBuilderPage(): JSX.Element {
                 ? t('boxBuilder.monthly')
                 : t('boxBuilder.quarterly')}
             </p>
-            <p className="text-sm text-green-600 mt-1">
+            <p className="text-sm text-green-600 dark:text-green-400 mt-1">
               {t('boxBuilder.saved', { amount: formatCurrency(result.discount as number) })}
             </p>
             <div className="mt-3 flex flex-wrap justify-center gap-1">
@@ -114,8 +114,10 @@ export default function BoxBuilderPage(): JSX.Element {
                     <span>{formatCurrency(subtotal)}</span>
                   </div>
                   <div className="flex justify-between text-sm">
-                    <span className="text-green-600">{t('boxBuilder.discount')}</span>
-                    <span className="text-green-600">
+                    <span className="text-green-600 dark:text-green-400">
+                      {t('boxBuilder.discount')}
+                    </span>
+                    <span className="text-green-600 dark:text-green-400">
                       -{formatCurrency(Math.round(subtotal * (freq === 'monthly' ? 0.15 : 0.1)))}
                     </span>
                   </div>

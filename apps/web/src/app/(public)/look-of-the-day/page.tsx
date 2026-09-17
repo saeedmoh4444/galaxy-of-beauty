@@ -72,7 +72,7 @@ export default function LookOfTheDayPage(): JSX.Element {
               {user && (
                 <button
                   onClick={() => voteMut.mutate({ lookId: l.id as number })}
-                  className="text-red-400 hover:text-red-600 text-sm"
+                  className="text-red-400 hover:text-red-600 hover:dark:text-red-400 text-sm"
                 >
                   {t('marketing.look-of-the-day.vote')}
                 </button>

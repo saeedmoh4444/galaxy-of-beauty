@@ -171,7 +171,7 @@ export default function BeautyRoutinePage(): JSX.Element {
               </h3>
               <div className="grid gap-4 sm:grid-cols-3">
                 <div>
-                  <h4 className="font-semibold text-sm mb-2 text-amber-600">
+                  <h4 className="font-semibold text-sm mb-2 text-amber-600 dark:text-amber-400">
                     {' '}
                     {t('routine.morning')}
                   </h4>

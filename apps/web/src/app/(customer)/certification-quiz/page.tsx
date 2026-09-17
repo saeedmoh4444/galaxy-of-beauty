@@ -149,7 +149,9 @@ export default function CertificationQuizPage(): JSX.Element {
                       )}
                     </p>
                   </div>
-                  <span className="font-bold text-green-700">{c.score as number}%</span>
+                  <span className="font-bold text-green-700 dark:text-green-300">
+                    {c.score as number}%
+                  </span>
                 </div>
               ))}
             </div>

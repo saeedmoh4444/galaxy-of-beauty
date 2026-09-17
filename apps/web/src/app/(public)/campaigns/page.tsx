@@ -49,7 +49,12 @@ function Countdown({ endsAt }: { endsAt: string }) {
     const i = setInterval(update, CAMPAIGN_POLL_INTERVAL_MS);
     return () => clearInterval(i);
   }, [endsAt, t]);
-  return <span className="text-xs font-semibold text-red-500 animate-pulse"> {label}</span>;
+  return (
+    <span className="text-xs font-semibold text-red-500 dark:text-red-400 animate-pulse">
+      {' '}
+      {label}
+    </span>
+  );
 }
 
 export default function CampaignsPage(): JSX.Element {
@@ -133,7 +138,7 @@ export default function CampaignsPage(): JSX.Element {
                         {localize(c.descriptionJson, locale)}
                       </p>
                       <div className="mt-3 flex items-center justify-between">
-                        <span className="text-2xl font-extrabold text-red-600">
+                        <span className="text-2xl font-extrabold text-red-600 dark:text-red-400">
                           {c.discountType === 'percent'
                             ? `-${c.discountValue}%`
                             : `-${formatCurrency(c.discountValue)}`}

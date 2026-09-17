@@ -35,7 +35,7 @@ export default function BehindScenesPage(): JSX.Element {
               padding="md"
               className="group hover:shadow-lg transition-all"
             >
-              <div className="relative h-40 rounded-xl bg-gray-800 flex items-center justify-center text-4xl">
+              <div className="relative h-40 rounded-xl bg-gray-800 dark:bg-gray-700 flex items-center justify-center text-4xl">
                 {v.emoji as string}
               </div>
               <div className="mt-2">

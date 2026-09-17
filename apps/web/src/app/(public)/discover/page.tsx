@@ -248,7 +248,7 @@ function TrendingNow(): JSX.Element {
                 <p className="text-xs text-brand-600 mt-1">
                   {formatCurrency(Number(s.basePrice ?? 0))}
                 </p>
-                <span className="mt-1 inline-block rounded-full bg-red-100 px-2 py-0.5 text-xs text-red-700">
+                <span className="mt-1 inline-block rounded-full bg-red-100 dark:bg-red-950 px-2 py-0.5 text-xs text-red-700 dark:text-red-300">
                   {t('marketing.discover.bookings-count', { count: s.bookingCount as number })}
                 </span>
               </Card>

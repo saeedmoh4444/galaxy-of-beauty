@@ -86,12 +86,16 @@ export default function BeautyAnalyticsPage(): JSX.Element {
               </Card>
               <Card padding="lg" className="text-center">
                 <p className="text-4xl">✅</p>
-                <p className="mt-2 text-3xl font-extrabold text-green-600">{s.completedBookings}</p>
+                <p className="mt-2 text-3xl font-extrabold text-green-600 dark:text-green-400">
+                  {s.completedBookings}
+                </p>
                 <p className="text-xs text-text-secondary">{t('beautyAnalytics.kpi.completed')}</p>
               </Card>
               <Card padding="lg" className="text-center">
                 <p className="text-4xl">📈</p>
-                <p className="mt-2 text-3xl font-extrabold text-blue-600">{s.completionRate}%</p>
+                <p className="mt-2 text-3xl font-extrabold text-blue-600 dark:text-blue-400">
+                  {s.completionRate}%
+                </p>
                 <p className="text-xs text-text-secondary">
                   {t('beautyAnalytics.kpi.completionRate')}
                 </p>
@@ -179,7 +183,9 @@ export default function BeautyAnalyticsPage(): JSX.Element {
                             ? t('beautyAnalytics.source.cashback')
                             : c.source}
                       </span>
-                      <span className="font-bold text-green-600">+{formatCurrency(c.amount)}</span>
+                      <span className="font-bold text-green-600 dark:text-green-400">
+                        +{formatCurrency(c.amount)}
+                      </span>
                     </div>
                   ))}
                 </div>

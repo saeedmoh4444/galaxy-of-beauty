@@ -104,7 +104,10 @@ export default function BeforeAfterPage(): JSX.Element {
               </div>
               <div className="mt-2 flex items-center justify-between">
                 <span className="text-xs text-text-tertiary">{ba.userName as string}</span>
-                <span className="text-xs text-red-500"> {ba.likes as number}</span>
+                <span className="text-xs text-red-500 dark:text-red-400">
+                  {' '}
+                  {ba.likes as number}
+                </span>
               </div>
             </Card>
           ))}
