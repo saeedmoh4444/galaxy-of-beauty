@@ -11,6 +11,7 @@ import { buildUser, buildCategory, buildService } from './factories';
 
 let user: JwtPayload;
 let owner: JwtPayload;
+let nailBarOwner: JwtPayload;
 const createdUserIds: number[] = [];
 const createdVendorIds: number[] = [];
 const createdCategoryIds: number[] = [];
@@ -24,9 +25,11 @@ describe('trust badges (E6d)', () => {
   beforeAll(async () => {
     const u = await prisma.user.create({ data: buildUser() });
     const o = await prisma.user.create({ data: buildUser() });
+    const nbo = await prisma.user.create({ data: buildUser() });
     user = { id: u.id, role: 'CUSTOMER', email: u.email };
     owner = { id: o.id, role: 'CUSTOMER', email: o.email };
-    createdUserIds.push(u.id, o.id);
+    nailBarOwner = { id: nbo.id, role: 'CUSTOMER', email: nbo.email };
+    createdUserIds.push(u.id, o.id, nbo.id);
 
     // Women-only + private-suite service.
     const cat = await prisma.category.create({ data: buildCategory() });
@@ -53,6 +56,20 @@ describe('trust badges (E6d)', () => {
       },
     });
     createdVendorIds.push(flagged.id);
+
+    // K3 W9 — a verified nail bar with the child-friendly corner flag.
+    const corner = await prisma.vendor.create({
+      data: {
+        userId: nbo.id,
+        storeName: 'صالون ركن أطفال',
+        storeSlug: 'trust-corner-k3',
+        type: 'NAIL_BAR',
+        nailBarType: 'standard',
+        childFriendlyCorner: true,
+        isVerified: true,
+      },
+    });
+    createdVendorIds.push(corner.id);
   }, 15000);
 
   afterAll(async () => {
@@ -104,6 +121,37 @@ describe('trust badges (E6d)', () => {
 
     const customer = await caller(user);
     await expect(customer.vendorPortal.setTrustFlags({ womenOnlyStaff: true })).rejects.toThrow();
+  });
+
+  it('setTrustFlags accepts the child-friendly corner flag (W9)', async () => {
+    const c = await caller(owner);
+    const updated = await c.vendorPortal.setTrustFlags({ childFriendlyCorner: true });
+    expect(updated.childFriendlyCorner).toBe(true);
+    const cleared = await c.vendorPortal.setTrustFlags({ childFriendlyCorner: false });
+    expect(cleared.childFriendlyCorner).toBe(false);
+  });
+
+  it('setBanner persists the venue banner and null clears it', async () => {
+    const c = await caller(owner);
+    const withBanner = await c.vendorPortal.setBanner({
+      bannerUrl: 'https://cdn.galaxyofbeauty.com/banners/venue-1.jpg',
+    });
+    expect(withBanner.bannerUrl).toBe('https://cdn.galaxyofbeauty.com/banners/venue-1.jpg');
+
+    const cleared = await c.vendorPortal.setBanner({ bannerUrl: null });
+    expect(cleared.bannerUrl).toBeNull();
+
+    const customer = await caller(user);
+    await expect(
+      customer.vendorPortal.setBanner({ bannerUrl: 'https://cdn.galaxyofbeauty.com/x.jpg' }),
+    ).rejects.toThrow();
+  });
+
+  it('nailBars.list filters by the child-friendly corner flag', async () => {
+    const c = await caller(user);
+    const filtered = await c.nailBars.list({ childFriendly: true });
+    expect(filtered.items.some((n: any) => n.id === createdVendorIds[1])).toBe(true);
+    expect(filtered.items.every((n: any) => n.childFriendlyCorner === true)).toBe(true);
   });
 
   it('nailBars.list accepts the privateSuite filter', async () => {
