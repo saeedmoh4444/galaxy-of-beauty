@@ -12,6 +12,7 @@ import type { JSX } from 'react';
 import { LARGE_PAGE_SIZE } from '@galaxy/ui';
 import { ErrorAlert } from '@/components/ErrorAlert';
 import { EmptyState } from '@/components/EmptyState';
+import { Icon } from '@/components/Icon';
 import { SkeletonList } from '@/components/SkeletonCard';
 import { trpc } from '@/lib/trpc-react';
 import { useLocale } from '@/components/LocaleProvider';
@@ -92,7 +93,7 @@ export default function RescheduleScreen(): JSX.Element {
             alignItems: 'center',
           }}
         >
-          <Text style={{ fontSize: 32 }}>✅</Text>
+          <Icon name="check-circle" size={32} color="#059669" />
           <Text style={{ fontWeight: '700', color: '#059669', marginTop: 8 }}>
             {t('mobile.reschedule.success')}
           </Text>

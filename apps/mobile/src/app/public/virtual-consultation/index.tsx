@@ -2,6 +2,7 @@ import { View, Text, ScrollView, StyleSheet, TouchableOpacity } from 'react-nati
 import { useState } from 'react';
 import type { JSX } from 'react';
 import { useLocale } from '@/components/LocaleProvider';
+import { Icon } from '@/components/Icon';
 import { ScreenState } from '@/components/ScreenState';
 import { trpc } from '@/lib/trpc-react';
 import { getAuthToken } from '@/lib/authToken';
@@ -100,7 +101,7 @@ export default function VirtualConsultationScreen(): JSX.Element {
 
         {booked && consultant ? (
           <View style={styles.confirmed}>
-            <Text style={styles.cfEmoji}>✅</Text>
+            <Icon name="check-circle" size={64} color="#7c3aed" />
             <Text style={styles.cfTitle}>
               {t('mobile.public.virtual-consultation.booked-title')}
             </Text>
@@ -247,7 +248,6 @@ const styles = StyleSheet.create({
     borderWidth: 2,
     borderColor: '#c4b5fd',
   },
-  cfEmoji: { fontSize: 64 },
   cfTitle: { fontSize: 20, fontWeight: '800', color: '#7c3aed', marginTop: 8 },
   cfText: { fontSize: 16, fontWeight: '600', color: '#111827', marginTop: 8 },
   cfSlot: { fontSize: 13, color: '#6b7280', marginTop: 4 },

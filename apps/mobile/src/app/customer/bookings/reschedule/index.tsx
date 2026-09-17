@@ -3,6 +3,7 @@ import { useState } from 'react';
 import type { JSX } from 'react';
 import { LARGE_PAGE_SIZE } from '@galaxy/ui';
 import { SkeletonList } from '@/components/SkeletonCard';
+import { Icon } from '@/components/Icon';
 import { trpc } from '@/lib/trpc-react';
 import { useLocale } from '@/components/LocaleProvider';
 import { useAuthState } from '@/hooks/useAuthState';
@@ -52,7 +53,7 @@ export default function RescheduleScreen(): JSX.Element {
       <ScrollView style={styles.c} contentContainerStyle={styles.i}>
         <Text style={styles.t}>{t('bookings.reschedule.title')}</Text>
         <View style={[styles.card, styles.rc]}>
-          <Text style={styles.re}>✅</Text>
+          <Icon name="check-circle" size={48} color="#059669" />
           <Text style={styles.rt}>{t('bookings.reschedule.requested')}</Text>
           <Text style={styles.rm}>{t('bookings.reschedule.notified')}</Text>
         </View>
@@ -118,7 +119,6 @@ const styles = StyleSheet.create({
   rb: { backgroundColor: '#2563eb', borderRadius: 10, paddingHorizontal: 14, paddingVertical: 10 },
   rbt: { color: '#fff', fontSize: 12, fontWeight: '600' },
   rc: { alignItems: 'center', borderWidth: 2, borderColor: '#86efac' },
-  re: { fontSize: 48 },
   rt: { fontSize: 18, fontWeight: '700', color: '#111827', marginTop: 8 },
   rm: { fontSize: 13, color: '#6b7280', marginTop: 4 },
 });
