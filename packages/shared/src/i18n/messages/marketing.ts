@@ -4,8 +4,8 @@
 export const marketingMessages = {
   // Home
   'marketing.home.hero-title': {
-    ar: 'اكتشفي جمالك مع أفضل الفنيات',
-    en: 'Discover your beauty with the best service providers',
+    ar: 'اكتشفي جمالكِ مع جالكسي بيوتي',
+    en: 'Discover your beauty with Galaxy of Beauty',
   },
   'marketing.home.hero-subtitle': {
     ar: 'احجزي خدمات التجميل المنزلية بكل سهولة — شعر، بشرة، مكياج، مساج والمزيد',
@@ -2337,7 +2337,7 @@ export const marketingMessages = {
 
   // Hero rollouts (Rose Blush phase — K-beauty flat heroes)
   'marketing.services.hero-subtitle': {
-    ar: 'كل خدمات التجميل والرعاية في مكان واحد — احجزي، قارني، واستمتعي بخصوصية كاملة',
-    en: 'Every beauty and care service in one place — book, compare, and enjoy complete privacy',
+    ar: 'جالكسي بيوتي — كل خدمات التجميل والرعاية في مكان واحد. احجزي، قارني، واستمتعي بخصوصية كاملة',
+    en: 'Galaxy of Beauty — every beauty and care service in one place. Book, compare, and enjoy complete privacy',
   },
 } as const satisfies Record<string, { ar: string; en: string }>;

@@ -187,7 +187,8 @@ startup-modern. "Modern" is a hygiene bar; "distinctly hers" is the goal.
   Beauty"** (ar: جالكسي بيوتي). The Dalal rename (#108) is reverted
   across code, SEO metadata, emails/SMS, and the AI advisor persona
   (`scripts/brand-revert-sweep.mjs` was the one-off migration).
-  Hero-branding work is now unblocked.
+  Hero-branding work is now unblocked — home + services hero copy
+  carries the brand name (2026-09-17 pm).
 - **Scope guard**: visual work must not regress the shipped E-features;
   every phase keeps 1009/1009 tests + tsc/lint green (screens are
   smoke-covered by the E2E suite).
