@@ -250,6 +250,35 @@ export const bookingRouter = router({
         totalAmount = pricingBreakdown.total;
       }
 
+      // 4c. Beauty subscription (2.2 SUB-2) — usage tracking, allowance
+      // discount and VIP cap. Bundles keep their fixed promotional price.
+      const activeSub = !bundle
+        ? await tx.customerSubscription.findFirst({
+            where: { userId: customerId, status: 'ACTIVE' },
+            include: { plan: true },
+          })
+        : null;
+      if (activeSub) {
+        const used = activeSub.bookingsThisMonth;
+        const allowance = activeSub.plan.servicesPerMonth;
+        // VIP tier (dedicated technician): hard cap at the allowance.
+        if (activeSub.plan.dedicatedTechnician && used >= allowance) {
+          throw new TRPCError({
+            code: 'CONFLICT',
+            message: 'Monthly subscription limit reached — upgrade your plan for more bookings',
+          });
+        }
+        // Basic/Premium: services beyond the allowance get the plan discount.
+        if (used >= allowance && activeSub.plan.discountPercent > 0) {
+          totalAmount =
+            Math.round(totalAmount * (1 - activeSub.plan.discountPercent / 100) * 100) / 100;
+        }
+        await tx.customerSubscription.update({
+          where: { id: activeSub.id },
+          data: { bookingsThisMonth: { increment: 1 } },
+        });
+      }
+
       // 5. Generate booking code
       const bookingCode = `GOB-${crypto.randomBytes(4).toString('hex').toUpperCase()}`;
 

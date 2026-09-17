@@ -10,11 +10,13 @@
 
 import { startWorkers, shutdownWorkers } from './index';
 import { startTokenCleanup, stopTokenCleanup } from './tokenCleanup';
+import { startSubscriptionRenewal, stopSubscriptionRenewal } from './subscriptionRenewal';
 
 // Graceful shutdown
 async function shutdown() {
   console.log('[Worker Process] Shutting down...');
   stopTokenCleanup();
+  stopSubscriptionRenewal();
   await shutdownWorkers();
   process.exit(0);
 }
@@ -23,7 +25,8 @@ process.on('SIGTERM', shutdown);
 process.on('SIGINT', shutdown);
 
 // Start
-console.log('[Worker Process] Starting background job workers + token cleanup...');
+console.log('[Worker Process] Starting background job workers + cleanup sweeps...');
 startWorkers();
 startTokenCleanup();
-console.log('[Worker Process] Ready — processing jobs + hourly token purge');
+startSubscriptionRenewal();
+console.log('[Worker Process] Ready — workers + hourly token purge + daily subscription renewal');
