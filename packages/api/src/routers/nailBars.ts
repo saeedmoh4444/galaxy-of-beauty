@@ -24,6 +24,8 @@ export const nailBarsRouter = router({
         // E6d — women-only-staff / private-suite nail bars.
         womenOnly: z.boolean().optional(),
         privateSuite: z.boolean().optional(),
+        // K3 (kids plan, W9) — child-friendly corner filter.
+        childFriendly: z.boolean().optional(),
       }),
     )
     .query(async ({ input }) => {
@@ -33,6 +35,7 @@ export const nailBarsRouter = router({
         isVerified: true,
         ...(input.womenOnly ? { womenOnlyStaff: true } : {}),
         ...(input.privateSuite ? { privateSuite: true } : {}),
+        ...(input.childFriendly ? { childFriendlyCorner: true } : {}),
         ...(input.city ? { nailBarCity: input.city } : {}),
       };
       const skip = (input.page - 1) * input.limit;
@@ -52,6 +55,7 @@ export const nailBarsRouter = router({
             totalReviews: true,
             womenOnlyStaff: true,
             privateSuite: true,
+            childFriendlyCorner: true,
           },
           orderBy: { ratingAvg: 'desc' },
           skip,

@@ -45,7 +45,8 @@ export type IconName =
   | 'more-horizontal'
   | 'shield-check'
   | 'lock'
-  | 'users';
+  | 'users'
+  | 'happy';
 
 const GLYPHS: Record<IconName, ComponentProps<typeof Ionicons>['name']> = {
   search: 'search',
@@ -82,6 +83,7 @@ const GLYPHS: Record<IconName, ComponentProps<typeof Ionicons>['name']> = {
   'shield-check': 'shield-checkmark-outline',
   lock: 'lock-closed-outline',
   users: 'people-outline',
+  happy: 'happy-outline',
 };
 
 export const iconSizes = { sm: 16, md: 20, lg: 24, xl: 32 } as const;
