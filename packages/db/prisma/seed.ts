@@ -6,7 +6,7 @@ function generateBookingCode(): string {
 }
 
 async function main() {
-  console.log(' Seeding Dalal database...\n');
+  console.log(' Seeding Galaxy of Beauty database...\n');
 
   // ---- Clean existing data (in dependency order) ----
   const db = prisma as any;
@@ -1923,7 +1923,7 @@ async function main() {
         tags: ['استرخاء', 'صحة'],
       },
       {
-        nameJson: { ar: 'بطاقة هدية دلال', en: 'Dalal Gift Card' },
+        nameJson: { ar: 'بطاقة هدية جالكسي بيوتي', en: 'Galaxy of Beauty Gift Card' },
         descJson: { ar: 'قيمة ٣٠٠ ر.س', en: 'Value: 300 SAR' },
         price: 300,
         category: 'giftcard',
@@ -3278,6 +3278,17 @@ async function main() {
           en: 'Hi {{customerName}}, we hope you enjoyed your {{serviceName}} session. Share your review and book your next visit!',
         },
       },
+      // 2.2 Beauty Subscription — 3-day renewal reminder.
+      {
+        key: 'subscription_renewal_reminder',
+        category: 'bookingReminders',
+        channels: ['in_app', 'push'],
+        titleJson: { ar: 'تجديد اشتراكك قريب', en: 'Your Subscription Renews Soon' },
+        bodyJson: {
+          ar: 'أهلًا {{customerName}}، سيتم تجديد باقة {{planName}} خلال ٣ أيام بسعر {{price}} ر.س. يمكنك الإيقاف من صفحة الاشتراكات.',
+          en: 'Hi {{customerName}}, your {{planName}} plan renews in 3 days at {{price}} SAR. You can pause it anytime from your subscriptions page.',
+        },
+      },
       {
         key: 'loyalty_nudge',
         category: 'promotions',
@@ -3296,8 +3307,8 @@ async function main() {
         channels: ['in_app', 'push'],
         titleJson: { ar: 'تمت الموافقة على طلبك', en: 'Your Submission Was Approved' },
         bodyJson: {
-          ar: 'تهانينا {{providerName}}! تمت الموافقة على {{subjectName}} من قبل فريق دلال.',
-          en: 'Congratulations {{providerName}}! Your {{subjectName}} was approved by the Dalal team.',
+          ar: 'تهانينا {{providerName}}! تمت الموافقة على {{subjectName}} من قبل فريق جالكسي بيوتي.',
+          en: 'Congratulations {{providerName}}! Your {{subjectName}} was approved by the Galaxy of Beauty team.',
         },
       },
       {
