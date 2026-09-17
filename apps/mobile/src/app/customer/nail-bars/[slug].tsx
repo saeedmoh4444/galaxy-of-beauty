@@ -3,6 +3,7 @@ import { useLocalSearchParams } from 'expo-router';
 import { useMemo } from 'react';
 import type { JSX } from 'react';
 import { ErrorAlert } from '@/components/ErrorAlert';
+import { ServiceImage } from '@/components/ServiceImage';
 import { SkeletonList } from '@/components/SkeletonCard';
 import { TrustChips } from '@/components/TrustChips';
 import { useAuthState } from '@/hooks/useAuthState';
@@ -65,6 +66,9 @@ export default function NailBarScreen(): JSX.Element {
         privateSuite={bar.privateSuite}
         privateSuiteLabel={t('mobile.public.service-detail.trust.privateSuite')}
       />
+      {bar.bannerUrl ? (
+        <ServiceImage src={bar.bannerUrl} alt={bar.storeName ?? ''} height={160} style={s.banner} />
+      ) : null}
 
       <Text style={[s.section, { marginTop: 16 }]}>{t('mobile.nailBars.slots')}</Text>
       {slots.map((slot) => (
@@ -97,6 +101,7 @@ const s = StyleSheet.create({
   i: { padding: 16, paddingBottom: 40 },
   title: { fontSize: 22, fontWeight: '800', color: '#111827' },
   meta: { fontSize: 13, color: '#6b7280', marginTop: 4 },
+  banner: { width: '100%', borderRadius: 20, marginTop: 12 },
   section: { fontSize: 16, fontWeight: '700', color: '#111827', marginBottom: 10 },
   card: {
     flexDirection: 'row',
