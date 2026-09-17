@@ -1221,13 +1221,17 @@ model SubscriptionPlan {
   id              Int      @id @default(autoincrement())
   nameJson        Json     // { ar: "الباقة الذهبية", en: "Gold Package" }
   descriptionJson Json
-  interval        String   @default("MONTHLY") // MONTHLY, BIWEEKLY, WEEKLY
+  interval        String   @default("MONTHLY") // MONTHLY, BIWEEKLY, WEEKLY, YEARLY
   price           Decimal  @db.Decimal(10, 2)
   servicesPerMonth Int     @default(1)
   discountPercent Int      @default(0) // vs individual bookings
   isActive        Boolean  @default(true)
   // E3 — gym-scoped membership plan (null = global beauty-box plan).
   gymId           Int?
+  // 2.2 Beauty Subscription perks (VIP tier).
+  priorityBooking Boolean @default(false) // front-of-queue acceptance
+  freeHomeService Boolean @default(false) // home-visit fee waived
+  dedicatedTechnician Boolean @default(false) // preferred technician matching
   createdAt       DateTime @default(now())
 
   gym           Vendor?  @relation(fields: [gymId], references: [id])
@@ -1244,6 +1248,9 @@ model CustomerSubscription {
   currentPeriodStart DateTime
   currentPeriodEnd   DateTime
   bookingsThisMonth  Int      @default(0)
+  // 2.2 Beauty Subscription — auto-renewal (renewal job rolls the period
+  // and sends a 3-day reminder).
+  autoRenew       Boolean  @default(true)
   cancelledAt     DateTime?
   createdAt       DateTime @default(now())
   updatedAt       DateTime @updatedAt
@@ -1253,6 +1260,7 @@ model CustomerSubscription {
 
   @@unique([userId, planId])
   @@index([userId, status])
+  @@index([status, currentPeriodEnd])
   @@map("customer_subscriptions")
 }
 
