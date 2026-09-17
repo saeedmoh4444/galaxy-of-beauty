@@ -5,7 +5,7 @@ import type { JSX } from 'react';
  * Hero Banner — landing page hero section with title, subtitle, CTA, and stats.
  *
  * Usage:
- *   <HeroBanner title="دلال" subtitle="منصتكِ الأولى لحجز خدمات التجميل" cta="احجزي الآن" onCta={() => ...} />
+ *   <HeroBanner title="جالكسي بيوتي" subtitle="منصتكِ الأولى لحجز خدمات التجميل" cta="احجزي الآن" onCta={() => ...} />
  */
 
 interface HeroBannerProps {

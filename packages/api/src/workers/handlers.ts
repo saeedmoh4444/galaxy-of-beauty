@@ -247,7 +247,7 @@ export async function handleIntegrationJob(job: Job<CalendarSyncJob>): Promise<v
     ((booking.service?.titleJson as Record<string, string> | null)?.ar ?? '') || 'حجز';
   const event = {
     summary: summary ?? `💅 ${serviceTitle} — ${booking.bookingCode}`,
-    description: 'حجز من منصة دلال — Dalal booking',
+    description: 'حجز من منصة جالكسي بيوتي — Galaxy of Beauty booking',
     start: startAt ?? booking.startAt.toISOString(),
     end: endAt ?? booking.endAt.toISOString(),
   };

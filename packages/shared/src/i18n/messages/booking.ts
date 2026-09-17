@@ -123,8 +123,8 @@ export const bookingMessages = {
     en: 'Your booking was created successfully. The service provider will confirm the appointment shortly.',
   },
   'booking.calendar-title': {
-    ar: 'حجز دلال - {code}',
-    en: 'Dalal booking - {code}',
+    ar: 'حجز جالكسي بيوتي - {code}',
+    en: 'Galaxy of Beauty booking - {code}',
   },
   'booking.view-my-bookings': { ar: 'عرض حجوزاتي', en: 'View My Bookings' },
   'booking.book-another-service': { ar: 'احجزي خدمة أخرى', en: 'Book Another Service' },

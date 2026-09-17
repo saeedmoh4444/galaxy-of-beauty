@@ -146,7 +146,7 @@ export const calendarSyncRouter = router({
         const title = ((b.service?.titleJson as Record<string, string> | null)?.ar ?? '') || 'حجز';
         const eventId = await createGoogleCalendarEvent(integration.accessToken, {
           summary: `💅 ${title} — ${b.bookingCode}`,
-          description: 'حجز من منصة دلال — Dalal booking',
+          description: 'حجز من منصة جالكسي بيوتي — Galaxy of Beauty booking',
           start: b.startAt.toISOString(),
           end: b.endAt.toISOString(),
         });

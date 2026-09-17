@@ -4,7 +4,7 @@ import type { JSX } from 'react';
 import { cn } from '@galaxy/shared';
 
 /**
- * Alumni Network Card — graduate network for Dalal Beauty Academy alumni.
+ * Alumni Network Card — graduate network for Galaxy of Beauty Beauty Academy alumni.
  * From Phase W10: Saudi Women Leadership — "She Leads" Program.
  *
  * Usage:

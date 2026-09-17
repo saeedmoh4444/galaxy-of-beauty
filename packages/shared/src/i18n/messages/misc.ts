@@ -10,7 +10,7 @@ export const miscMessages = {
   'notif.promotion': { ar: 'عرض جديد', en: 'New Promotion' },
 
   // Onboarding
-  'onboarding.welcome': { ar: 'مرحباً بكِ في دلال', en: 'Welcome to Dalal' },
+  'onboarding.welcome': { ar: 'مرحباً بكِ في جالكسي بيوتي', en: 'Welcome to Galaxy of Beauty' },
   'onboarding.getStarted': { ar: 'ابدئي الآن', en: 'Get Started' },
   'onboarding.skip': { ar: 'تخطي', en: 'Skip' },
 
@@ -1460,7 +1460,7 @@ export const miscMessages = {
   // Beauty Advisor
   'beautyAdvisor.title': {
     ar: 'مجرة الجمال — بيوتي AI',
-    en: 'Dalal — Beauty AI',
+    en: 'Galaxy of Beauty — Beauty AI',
   },
   'beautyAdvisor.subtitle': {
     ar: 'اسأليني عن أي شيء يخص العناية والتجميل',
@@ -1468,7 +1468,7 @@ export const miscMessages = {
   },
   'beautyAdvisor.welcome': {
     ar: 'مرحباً! أنا مجرة الجمال، مستشارة جمالكِ الشخصية. اسأليني أي سؤال عن العناية بالبشرة، المكياج، الشعر، أو أي نصيحة تجميلية!',
-    en: 'Hello! I am Dalal, your personal beauty advisor. Ask me anything about skincare, makeup, hair, or any beauty tip!',
+    en: 'Hello! I am your personal beauty advisor at Galaxy of Beauty. Ask me anything about skincare, makeup, hair, or any beauty tip!',
   },
   'beautyAdvisor.errorFallback': {
     ar: 'عذراً، لم أستطع الإجابة.',
@@ -1623,7 +1623,7 @@ export const miscMessages = {
     ar: 'ضعي واقي الشمس كل ساعتين عند التعرض للشمس المباشرة. الكمية المناسبة: نصف ملعقة صغيرة للوجه.',
     en: 'Reapply sunscreen every two hours in direct sun. The right amount: half a teaspoon for the face.',
   },
-  'beautyTips.tip.source': { ar: 'دلال', en: 'Dalal' },
+  'beautyTips.tip.source': { ar: 'جالكسي بيوتي', en: 'Galaxy of Beauty' },
   'beautyTips.challenge.title': { ar: 'تحدي الترطيب', en: 'Hydration challenge' },
   'beautyTips.challenge.duration': { ar: '5 دقائق', en: '5 minutes' },
 
@@ -2001,7 +2001,7 @@ export const miscMessages = {
     en: 'Invite your friends and earn together — SAR 20 for every friend who signs up and books',
   },
   'referralDashboard.toast.copied': { ar: 'تم نسخ الكود', en: 'Code copied' },
-  'referralDashboard.share.join': { ar: 'انضمي لدلال', en: 'Join Dalal' },
+  'referralDashboard.share.join': { ar: 'انضمي لجالكسي بيوتي', en: 'Join Galaxy of Beauty' },
   'referralDashboard.share.usageLabel': { ar: ' — استخدمي كود: ', en: ' — Use code: ' },
   'referralDashboard.stat.invited': { ar: 'مدعوة', en: 'Invited' },
   'referralDashboard.stat.earned': { ar: 'ربح', en: 'Earned' },
@@ -3628,8 +3628,8 @@ export const miscMessages = {
   'travelKit.optional': { ar: 'اختياري', en: 'Optional' },
   'vendorPortal.title': { ar: 'بوابة البائعين', en: 'Vendor Portal' },
   'vendorPortal.subtitle': {
-    ar: 'أديري منتجاتكِ في متجر دلال',
-    en: 'Manage your products in the Dalal store',
+    ar: 'أديري منتجاتكِ في متجر جالكسي بيوتي',
+    en: 'Manage your products in the Galaxy of Beauty store',
   },
   'vendorPortal.newProduct': { ar: 'منتج جديد', en: 'New product' },
   'vendorPortal.products': { ar: 'منتج', en: 'Products' },

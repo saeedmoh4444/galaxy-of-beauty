@@ -11,7 +11,7 @@ import { useLocale } from '@/components/LocaleProvider';
 const slides = [
   {
     emoji: '🌸',
-    title: 'أهلاً بكِ في دلال',
+    title: 'أهلاً بكِ في جالكسي بيوتي',
     desc: 'منصتكِ الشاملة لكل خدمات التجميل والعناية',
   },
   { emoji: '📅', title: 'احجزي بسهولة', desc: 'تصفحي الخدمات واحجزي موعدكِ في دقائق' },

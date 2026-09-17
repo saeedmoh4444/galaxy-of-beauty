@@ -3,7 +3,7 @@ import type { JSX } from 'react';
 
 /**
  * Beauty Goal Tracker — visual progress for beauty learning goals.
- * From Phase W6: Dalal Beauty Academy.
+ * From Phase W6: Galaxy of Beauty Beauty Academy.
  *
  * Usage:
  *   <BeautyGoalTracker goals={[{ label: 'تعلم أساسيات المكياج', progress: 60 }]} />

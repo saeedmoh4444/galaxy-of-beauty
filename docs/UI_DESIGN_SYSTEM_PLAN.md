@@ -183,8 +183,11 @@ startup-modern. "Modern" is a hygiene bar; "distinctly hers" is the goal.
 
 - **Figma seat**: VIEW-only today — Phases 2–4 require a writable seat
   (confirm/upgrade before starting them).
-- **Brand naming**: "Galaxy of Beauty" now covers lifestyle — the naming
-  decision (plan doc §5) should land before any hero-branding work.
+- **Brand naming**: RESOLVED 2026-09-17 — the brand is **"Galaxy of
+  Beauty"** (ar: جالكسي بيوتي). The Dalal rename (#108) is reverted
+  across code, SEO metadata, emails/SMS, and the AI advisor persona
+  (`scripts/brand-revert-sweep.mjs` was the one-off migration).
+  Hero-branding work is now unblocked.
 - **Scope guard**: visual work must not regress the shipped E-features;
   every phase keeps 1009/1009 tests + tsc/lint green (screens are
   smoke-covered by the E2E suite).
