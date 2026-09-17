@@ -130,7 +130,7 @@ export default function AdminCategoriesPage(): JSX.Element {
                   </div>
                   <div className="flex items-center gap-3">
                     <span
-                      className={`rounded-full px-2 py-0.5 text-xs ${cat.isActive ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700'}`}
+                      className={`rounded-full px-2 py-0.5 text-xs ${cat.isActive ? 'bg-green-100 dark:bg-green-950 text-green-700 dark:text-green-300' : 'bg-red-100 dark:bg-red-950 text-red-700 dark:text-red-300'}`}
                     >
                       {cat.isActive ? t('status.active') : t('status.inactive')}
                     </span>
@@ -164,7 +164,7 @@ export default function AdminCategoriesPage(): JSX.Element {
                       </div>
                       <div className="flex items-center gap-3">
                         <span
-                          className={`rounded-full px-2 py-0.5 text-xs ${child.isActive ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700'}`}
+                          className={`rounded-full px-2 py-0.5 text-xs ${child.isActive ? 'bg-green-100 dark:bg-green-950 text-green-700 dark:text-green-300' : 'bg-red-100 dark:bg-red-950 text-red-700 dark:text-red-300'}`}
                         >
                           {child.isActive ? t('status.active') : t('status.inactive')}
                         </span>

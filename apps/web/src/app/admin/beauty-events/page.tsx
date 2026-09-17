@@ -157,7 +157,7 @@ export default function AdminBeautyEventsPage(): JSX.Element {
                       {e.price ? formatCurrency(Number(e.price)) : t('admin.beauty-events.free')}
                     </p>
                     <span
-                      className={`rounded-full px-2 py-0.5 text-xs ${e.isPublished ? 'bg-green-100 text-green-700' : 'bg-surface-muted'}`}
+                      className={`rounded-full px-2 py-0.5 text-xs ${e.isPublished ? 'bg-green-100 dark:bg-green-950 text-green-700 dark:text-green-300' : 'bg-surface-muted'}`}
                     >
                       {e.isPublished
                         ? t('admin.beauty-events.published')

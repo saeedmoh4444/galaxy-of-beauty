@@ -52,7 +52,7 @@ export default function TechWalletPage(): JSX.Element {
               <p className="text-xs text-text-secondary">{t('tech.wallet.bonus')}</p>
             </Card>
             <Card padding="lg" className="text-center">
-              <p className="text-2xl font-extrabold text-green-600">
+              <p className="text-2xl font-extrabold text-green-600 dark:text-green-400">
                 {formatCurrency(Number(wallet?.totalEarnings ?? 0))}
               </p>
               <p className="text-xs text-text-secondary">{t('tech.wallet.total-earnings')}</p>
@@ -97,7 +97,7 @@ export default function TechWalletPage(): JSX.Element {
                     )}
                   </span>
                   <span
-                    className={`font-bold ${Number(tx.amount) > 0 ? 'text-green-600' : 'text-red-600'}`}
+                    className={`font-bold ${Number(tx.amount) > 0 ? 'text-green-600 dark:text-green-400' : 'text-red-600 dark:text-red-400'}`}
                   >
                     {Number(tx.amount) > 0 ? '+' : ''}
                     {formatCurrency(Math.abs(Number(tx.amount)))}

@@ -37,10 +37,10 @@ export default function PayoutsPage(): JSX.Element {
 
   const statusBadge = (s: string) => {
     const map: Record<string, string> = {
-      PENDING: 'bg-yellow-100 text-yellow-700',
+      PENDING: 'bg-yellow-100 dark:bg-yellow-950 text-yellow-700 dark:text-yellow-300',
       PROCESSING: 'bg-blue-100 text-blue-700',
-      COMPLETED: 'bg-green-100 text-green-700',
-      FAILED: 'bg-red-100 text-red-700',
+      COMPLETED: 'bg-green-100 dark:bg-green-950 text-green-700 dark:text-green-300',
+      FAILED: 'bg-red-100 dark:bg-red-950 text-red-700 dark:text-red-300',
     };
     const labelKeys: Record<string, TranslationKey> = {
       PENDING: 'admin.payouts.status-pending',

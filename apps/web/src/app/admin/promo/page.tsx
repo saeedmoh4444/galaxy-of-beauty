@@ -39,13 +39,13 @@ export default function AdminPromoPage(): JSX.Element {
                     <p className="text-xs text-text-secondary">{(p.description as string) ?? ''}</p>
                   </div>
                   <div className="text-end">
-                    <p className="font-bold text-green-600">
+                    <p className="font-bold text-green-600 dark:text-green-400">
                       {p.discountType === 'percent'
                         ? `${p.discountValue as number}%`
                         : formatCurrency(p.discountValue as number)}
                     </p>
                     <span
-                      className={`rounded-full px-2 py-0.5 text-xs ${p.isActive ? 'bg-green-100 text-green-700' : 'bg-surface-muted'}`}
+                      className={`rounded-full px-2 py-0.5 text-xs ${p.isActive ? 'bg-green-100 dark:bg-green-950 text-green-700 dark:text-green-300' : 'bg-surface-muted'}`}
                     >
                       {p.isActive ? t('status.active') : t('admin.promo.expired')}
                     </span>

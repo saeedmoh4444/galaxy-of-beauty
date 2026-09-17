@@ -25,13 +25,22 @@ type InvoiceItem = NonNullable<RouterOutput['zatca']['listInvoices']>['items'][n
 const statusBadge = (status: string): { labelKey: TranslationKey; className: string } => {
   switch (status) {
     case 'PENDING':
-      return { labelKey: 'admin.zatca.status-pending', className: 'bg-amber-100 text-amber-700' };
+      return {
+        labelKey: 'admin.zatca.status-pending',
+        className: 'bg-amber-100 dark:bg-amber-950 text-amber-700 dark:text-amber-300',
+      };
     case 'REPORTED':
       return { labelKey: 'admin.zatca.status-reported', className: 'bg-blue-100 text-blue-700' };
     case 'CLEARED':
-      return { labelKey: 'admin.zatca.status-cleared', className: 'bg-green-100 text-green-700' };
+      return {
+        labelKey: 'admin.zatca.status-cleared',
+        className: 'bg-green-100 dark:bg-green-950 text-green-700 dark:text-green-300',
+      };
     case 'REJECTED':
-      return { labelKey: 'admin.zatca.status-rejected', className: 'bg-red-100 text-red-700' };
+      return {
+        labelKey: 'admin.zatca.status-rejected',
+        className: 'bg-red-100 dark:bg-red-950 text-red-700 dark:text-red-300',
+      };
     default:
       return {
         labelKey: status as unknown as TranslationKey,

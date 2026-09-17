@@ -58,7 +58,7 @@ export default function BundlesPage(): JSX.Element {
         {[2, 3, 4, 5].map((n) => (
           <div
             key={n}
-            className={`rounded-full px-4 py-1.5 text-xs font-bold ${count >= n ? 'bg-green-100 text-green-700' : 'bg-surface-muted text-text-tertiary'}`}
+            className={`rounded-full px-4 py-1.5 text-xs font-bold ${count >= n ? 'bg-green-100 dark:bg-green-950 text-green-700 dark:text-green-300' : 'bg-surface-muted text-text-tertiary'}`}
           >
             {t('marketing.bundles.discount-formula', {
               n,
@@ -76,7 +76,7 @@ export default function BundlesPage(): JSX.Element {
             </span>
             <span className="font-bold">{count}</span> ·{' '}
             <span className="text-text-secondary">{t('marketing.bundles.discount-label')}</span>
-            <span className="font-bold text-green-600">-{discount}%</span>
+            <span className="font-bold text-green-600 dark:text-green-400">-{discount}%</span>
           </p>
         </div>
       )}

@@ -52,7 +52,7 @@ export default function FeaturedTechPage(): JSX.Element {
             <div className="mx-auto flex h-24 w-24 items-center justify-center rounded-full bg-linear-to-br from-amber-400 to-yellow-500 text-5xl shadow-xl">
               {current.emoji as string}
             </div>
-            <p className="text-xs text-amber-600 font-bold mt-3">
+            <p className="text-xs text-amber-600 dark:text-amber-400 font-bold mt-3">
               {t('marketing.featured-tech.badge')}
               {new Date(current.weekOf as string).toLocaleDateString(
                 locale === 'ar' ? 'ar-SA' : 'en-GB',

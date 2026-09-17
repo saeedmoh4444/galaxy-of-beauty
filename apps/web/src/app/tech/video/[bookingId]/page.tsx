@@ -89,7 +89,9 @@ export default function TechVideoSessionPage(): JSX.Element {
         ) : sess.status === 'IN_PROGRESS' ? (
           <Card padding="md" className="text-center">
             <div className="mb-4 text-5xl">🟢</div>
-            <h3 className="font-semibold text-green-700">{t('videoSession.sessionActive')}</h3>
+            <h3 className="font-semibold text-green-700 dark:text-green-300">
+              {t('videoSession.sessionActive')}
+            </h3>
             <div className="mt-4 flex gap-3 justify-center">
               <Button
                 onClick={() =>

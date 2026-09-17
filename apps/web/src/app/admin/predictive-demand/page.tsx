@@ -81,9 +81,9 @@ export default function PredictiveDemandPage(): JSX.Element {
                     <span
                       className={
                         s.trend === 'up'
-                          ? 'text-green-600'
+                          ? 'text-green-600 dark:text-green-400'
                           : s.trend === 'down'
-                            ? 'text-red-600'
+                            ? 'text-red-600 dark:text-red-400'
                             : 'text-text-secondary'
                       }
                     >

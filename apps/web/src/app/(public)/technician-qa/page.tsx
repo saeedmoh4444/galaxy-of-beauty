@@ -108,7 +108,7 @@ export default function TechnicianQAPage(): JSX.Element {
                       <p className="text-sm text-text-primary">{item.answer as string}</p>
                     </div>
                   ) : (
-                    <p className="mt-2 text-xs text-amber-500">
+                    <p className="mt-2 text-xs text-amber-500 dark:text-amber-400">
                       {t('marketing.technician-qa.pending-label')}
                     </p>
                   )}

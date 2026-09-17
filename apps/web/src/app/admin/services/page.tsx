@@ -277,12 +277,12 @@ export default function AdminServicesPage(): JSX.Element {
                     </div>
                     <div className="flex items-center gap-2">
                       {svc.isPopular && (
-                        <span className="rounded-full bg-amber-100 px-2 py-0.5 text-xs text-amber-700">
+                        <span className="rounded-full bg-amber-100 dark:bg-amber-950 px-2 py-0.5 text-xs text-amber-700 dark:text-amber-300">
                           {t('admin.services.popular')}
                         </span>
                       )}
                       <span
-                        className={`rounded-full px-2 py-0.5 text-xs ${svc.isActive ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700'}`}
+                        className={`rounded-full px-2 py-0.5 text-xs ${svc.isActive ? 'bg-green-100 dark:bg-green-950 text-green-700 dark:text-green-300' : 'bg-red-100 dark:bg-red-950 text-red-700 dark:text-red-300'}`}
                       >
                         {svc.isActive ? t('status.active') : t('status.inactive')}
                       </span>

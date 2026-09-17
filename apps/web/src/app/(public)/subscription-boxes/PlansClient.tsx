@@ -156,7 +156,9 @@ function SubscribeButton({ planId, planName: _planName }: { planId: number; plan
 
   if (subscribed) {
     return (
-      <p className="text-sm font-semibold text-green-600">{t('marketing.plans.subscribed')}</p>
+      <p className="text-sm font-semibold text-green-600 dark:text-green-400">
+        {t('marketing.plans.subscribed')}
+      </p>
     );
   }
 

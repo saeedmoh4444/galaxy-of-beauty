@@ -49,12 +49,14 @@ export default function VideoTestimonialsPage(): JSX.Element {
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
           {items.map((t: Record<string, unknown>) => (
             <Card key={t.id as number} padding="md">
-              <div className="h-36 rounded-xl bg-gray-800 flex items-center justify-center text-4xl">
+              <div className="h-36 rounded-xl bg-gray-800 dark:bg-gray-700 flex items-center justify-center text-4xl">
                 ▶️
               </div>
               <div className="mt-2 flex items-center gap-1">
                 <span className="text-sm font-bold">{t.userName as string}</span>
-                <span className="text-amber-500">{''.repeat(t.rating as number)}</span>
+                <span className="text-amber-500 dark:text-amber-400">
+                  {''.repeat(t.rating as number)}
+                </span>
               </div>
               <p className="text-sm mt-1">{t.comment as string}</p>
               <p className="text-xs text-text-secondary mt-1">
@@ -96,7 +98,7 @@ export default function VideoTestimonialsPage(): JSX.Element {
               <button
                 key={s}
                 onClick={() => setRating(s)}
-                className={`text-2xl ${s <= rating ? 'text-amber-500' : 'text-gray-300'}`}
+                className={`text-2xl ${s <= rating ? 'text-amber-500 dark:text-amber-400' : 'text-gray-300 dark:text-gray-600'}`}
               ></button>
             ))}
           </div>

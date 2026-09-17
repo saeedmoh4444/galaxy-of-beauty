@@ -40,7 +40,7 @@ export default function AdminToolsPage(): JSX.Element {
                     <p className="text-xs text-text-secondary">{(f.description as string) ?? ''}</p>
                   </div>
                   <span
-                    className={`rounded-full px-3 py-1 text-xs ${f.enabled ? 'bg-green-100 text-green-700' : 'bg-surface-muted text-text-secondary'}`}
+                    className={`rounded-full px-3 py-1 text-xs ${f.enabled ? 'bg-green-100 dark:bg-green-950 text-green-700 dark:text-green-300' : 'bg-surface-muted text-text-secondary'}`}
                   >
                     {f.enabled ? t('admin.enabled') : t('admin.disabled')}
                   </span>

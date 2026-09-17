@@ -59,7 +59,9 @@ export default function TechCalendarPage(): JSX.Element {
                 </Button>
               </div>
               {syncMut.isSuccess && (
-                <p className="text-sm text-green-600">{syncMut.data?.message as string}</p>
+                <p className="text-sm text-green-600 dark:text-green-400">
+                  {syncMut.data?.message as string}
+                </p>
               )}
             </div>
           </Card>
@@ -78,7 +80,9 @@ export default function TechCalendarPage(): JSX.Element {
                 {t('tech.calendar.connect-button')}
               </Button>
               {connectMut.isSuccess && (
-                <p className="text-sm text-green-600">{connectMut.data?.message as string}</p>
+                <p className="text-sm text-green-600 dark:text-green-400">
+                  {connectMut.data?.message as string}
+                </p>
               )}
             </div>
           </Card>

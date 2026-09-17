@@ -162,7 +162,10 @@ export default function PregnancyBeautyPage(): JSX.Element {
           </h3>
           <div className="flex flex-wrap gap-2">
             {SAFE_INGREDIENTS.map((i) => (
-              <span key={i} className="rounded-full bg-green-100 px-3 py-1 text-sm text-green-700">
+              <span
+                key={i}
+                className="rounded-full bg-green-100 dark:bg-green-950 px-3 py-1 text-sm text-green-700 dark:text-green-300"
+              >
                 {t(i)}
               </span>
             ))}
@@ -174,7 +177,10 @@ export default function PregnancyBeautyPage(): JSX.Element {
           </h3>
           <div className="flex flex-wrap gap-2">
             {AVOID_INGREDIENTS.map((i) => (
-              <span key={i} className="rounded-full bg-red-100 px-3 py-1 text-sm text-red-700">
+              <span
+                key={i}
+                className="rounded-full bg-red-100 dark:bg-red-950 px-3 py-1 text-sm text-red-700 dark:text-red-300"
+              >
                 {t(i)}
               </span>
             ))}

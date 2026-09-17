@@ -114,7 +114,9 @@ export function PostpartumSection(): JSX.Element {
           ))}
         </div>
         <div className="rounded-xl border border-amber-200 bg-amber-50 p-3 dark:border-amber-800 dark:bg-amber-950/40">
-          <p className="text-xs font-bold text-amber-700">{t('postpartum.signalsTitle')}</p>
+          <p className="text-xs font-bold text-amber-700 dark:text-amber-300">
+            {t('postpartum.signalsTitle')}
+          </p>
           <ul className="mt-1 space-y-1 text-xs text-amber-800 dark:text-amber-300">
             {lib.signals.map((s, i) => (
               <li key={i}>
@@ -205,7 +207,9 @@ export function MenopauseCard(): JSX.Element {
           ))}
         </div>
         <div className="rounded-xl border border-amber-200 bg-amber-50 p-3 dark:border-amber-800 dark:bg-amber-950/40">
-          <p className="text-xs font-bold text-amber-700">{t('menopause.signalsTitle')}</p>
+          <p className="text-xs font-bold text-amber-700 dark:text-amber-300">
+            {t('menopause.signalsTitle')}
+          </p>
           <ul className="mt-1 space-y-1 text-xs text-amber-800 dark:text-amber-300">
             {lib.signals.map((s, i) => (
               <li key={i}>
@@ -326,7 +330,7 @@ export function PamperCard(): JSX.Element {
               <div className="mt-1 flex flex-wrap gap-2">
                 {d.spaServices.map((s) => (
                   <Link key={s.id as number} href="/search">
-                    <span className="rounded-full bg-pink-100 px-3 py-1 text-xs text-pink-700">
+                    <span className="rounded-full bg-pink-100 dark:bg-pink-950 px-3 py-1 text-xs text-pink-700 dark:text-pink-300">
                       {locale === 'en'
                         ? ((s.titleJson as Record<string, string>)?.en ?? '')
                         : ((s.titleJson as Record<string, string>)?.ar ?? '')}

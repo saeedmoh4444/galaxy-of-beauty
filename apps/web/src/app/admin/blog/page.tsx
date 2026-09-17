@@ -67,7 +67,7 @@ export default function AdminBlogPage(): JSX.Element {
                   </p>
                 </div>
                 <span
-                  className={`rounded px-2 py-0.5 text-xs ${p.isPublished ? 'bg-green-100 text-green-700' : 'bg-amber-100 text-amber-700'}`}
+                  className={`rounded px-2 py-0.5 text-xs ${p.isPublished ? 'bg-green-100 dark:bg-green-950 text-green-700 dark:text-green-300' : 'bg-amber-100 dark:bg-amber-950 text-amber-700 dark:text-amber-300'}`}
                 >
                   {p.isPublished ? t('admin.beauty-events.published') : t('admin.blog.draft')}
                 </span>
