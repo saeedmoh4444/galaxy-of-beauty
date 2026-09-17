@@ -24,6 +24,7 @@ import {
   bookingChecklistRouter,
   bookingHeatmapRouter,
   serviceQueueRouter,
+  pricingRouter,
 } from '../domains/booking';
 
 // Catalog
@@ -371,6 +372,7 @@ export const appRouter = router({
   bookingChecklist: bookingChecklistRouter,
   bookingHeatmap: bookingHeatmapRouter,
   serviceQueue: serviceQueueRouter,
+  pricing: pricingRouter,
 
   // Catalog
   categories: categoryRouter,

@@ -110,6 +110,11 @@ export const bookingMessages = {
   'booking.notes-placeholder': { ar: 'أي ملاحظات إضافية...', en: 'Any additional notes...' },
   'booking.previous': { ar: 'السابق', en: 'Previous' },
   'booking.price': { ar: 'السعر', en: 'Price' },
+  'booking.price.base': { ar: 'السعر الأساسي', en: 'Base price' },
+  'booking.price.tier': { ar: 'مستوى الخبيرة', en: 'Provider tier' },
+  'booking.price.peak': { ar: 'وقت الذروة', en: 'Peak time' },
+  'booking.price.surge': { ar: 'ارتفاع الطلب', en: 'High demand' },
+  'booking.price.total': { ar: 'الإجمالي', en: 'Total' },
   'booking.duration': { ar: 'المدة', en: 'Duration' },
   'booking.technician-confirm-note': {
     ar: '* ستقوم مقدمة الخدمة بتأكيد الموعد النهائي بعد مراجعة الحجز.',
