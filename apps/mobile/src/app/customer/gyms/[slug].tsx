@@ -3,6 +3,7 @@ import { View, Text, ScrollView, StyleSheet, TouchableOpacity, RefreshControl } 
 import { useLocalSearchParams } from 'expo-router';
 import { ErrorAlert } from '@/components/ErrorAlert';
 import { SkeletonList } from '@/components/SkeletonCard';
+import { TrustChips } from '@/components/TrustChips';
 import { trpc } from '@/lib/trpc-react';
 import { localize } from '@galaxy/shared';
 import { useLocale } from '@/components/LocaleProvider';
@@ -19,6 +20,8 @@ interface GymDetail {
   descriptionJson?: { ar?: string; en?: string } | null;
   ratingAvg?: number;
   totalReviews?: number;
+  womenOnlyStaff?: boolean;
+  privateSuite?: boolean;
   plans?: Array<Record<string, unknown>>;
   dayPasses?: Array<Record<string, unknown>>;
 }
@@ -81,7 +84,15 @@ export default function GymDetailScreen(): JSX.Element {
         {t(`gyms.type.${gym.gymType ?? ''}` as never)} · {gym.gymCity ?? ''} ·{' '}
         {gym.gymAddress ?? ''}
       </Text>
-      {gym.licenseVerifiedAt ? <Text style={s.badge}>{t('mobile.gyms.verified')}</Text> : null}
+      <TrustChips
+        verifiedLabel={gym.licenseVerifiedAt ? t('mobile.gyms.verified') : undefined}
+        rating={gym.ratingAvg}
+        reviews={gym.totalReviews}
+        womenOnly={gym.womenOnlyStaff}
+        womenOnlyLabel={t('mobile.public.service-detail.trust.womenOnly')}
+        privateSuite={gym.privateSuite}
+        privateSuiteLabel={t('mobile.public.service-detail.trust.privateSuite')}
+      />
 
       {/* Group classes */}
       <Text style={s.section}>{t('mobile.gyms.classes')}</Text>
@@ -179,17 +190,6 @@ const s = StyleSheet.create({
   i: { padding: 16, paddingBottom: 40 },
   name: { fontSize: 22, fontWeight: '800', color: '#111827' },
   meta: { fontSize: 13, color: '#6b7280', marginTop: 4 },
-  badge: {
-    fontSize: 11,
-    color: '#047857',
-    backgroundColor: '#d1fae5',
-    alignSelf: 'flex-start',
-    paddingHorizontal: 8,
-    paddingVertical: 2,
-    borderRadius: 999,
-    marginTop: 6,
-    overflow: 'hidden',
-  },
   section: { fontSize: 16, fontWeight: '700', color: '#111827', marginTop: 20, marginBottom: 8 },
   empty: { color: '#9ca3af', fontSize: 13 },
   row: {

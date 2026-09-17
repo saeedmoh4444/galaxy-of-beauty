@@ -4,6 +4,7 @@ import { useMemo } from 'react';
 import type { JSX } from 'react';
 import { ErrorAlert } from '@/components/ErrorAlert';
 import { SkeletonList } from '@/components/SkeletonCard';
+import { TrustChips } from '@/components/TrustChips';
 import { useAuthState } from '@/hooks/useAuthState';
 import { trpc } from '@/lib/trpc-react';
 import { useLocale } from '@/components/LocaleProvider';
@@ -55,6 +56,15 @@ export default function NailBarScreen(): JSX.Element {
         {bar.nailBarType ? t(`nailBars.type.${bar.nailBarType}` as never) : ''} ·{' '}
         {bar.nailBarCity ?? ''} · {bar.nailBarAddress ?? ''}
       </Text>
+      <TrustChips
+        verifiedLabel={t('mobile.nailBars.verified')}
+        rating={bar.ratingAvg}
+        reviews={bar.totalReviews}
+        womenOnly={bar.womenOnlyStaff}
+        womenOnlyLabel={t('mobile.public.service-detail.trust.womenOnly')}
+        privateSuite={bar.privateSuite}
+        privateSuiteLabel={t('mobile.public.service-detail.trust.privateSuite')}
+      />
 
       <Text style={[s.section, { marginTop: 16 }]}>{t('mobile.nailBars.slots')}</Text>
       {slots.map((slot) => (

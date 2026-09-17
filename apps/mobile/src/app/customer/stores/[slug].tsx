@@ -3,6 +3,7 @@ import { View, Text, ScrollView, StyleSheet, TouchableOpacity, RefreshControl } 
 import { useLocalSearchParams } from 'expo-router';
 import { ErrorAlert } from '@/components/ErrorAlert';
 import { SkeletonList } from '@/components/SkeletonCard';
+import { TrustChips } from '@/components/TrustChips';
 import { trpc } from '@/lib/trpc-react';
 import { localize } from '@galaxy/shared';
 import { useLocale } from '@/components/LocaleProvider';
@@ -56,10 +57,11 @@ export default function StoreDetailScreen(): JSX.Element {
       }
     >
       <Text style={s.name}>{store.storeName}</Text>
-      <Text style={s.meta}>
-        ⭐ {Number(store.ratingAvg ?? 0).toFixed(1)} ({store.totalReviews ?? 0}) ·{' '}
-        {store.isVerified ? t('mobile.stores.verified') : ''}
-      </Text>
+      <TrustChips
+        verifiedLabel={store.isVerified ? t('mobile.stores.verified') : undefined}
+        rating={store.ratingAvg}
+        reviews={store.totalReviews}
+      />
 
       {products.map((p, idx) => (
         <View key={p.id ?? idx} style={s.card}>
@@ -93,7 +95,6 @@ const s = StyleSheet.create({
   c: { flex: 1, backgroundColor: '#fff' },
   i: { padding: 16, paddingBottom: 40 },
   name: { fontSize: 22, fontWeight: '800', color: '#111827' },
-  meta: { fontSize: 13, color: '#6b7280', marginTop: 4, marginBottom: 16 },
   card: {
     flexDirection: 'row',
     alignItems: 'center',
