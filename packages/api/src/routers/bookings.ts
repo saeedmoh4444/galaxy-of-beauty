@@ -1,10 +1,12 @@
 import { z } from 'zod';
 import { TRPCError } from '@trpc/server';
 import { prisma } from '@galaxy/db';
+import type { Prisma } from '@galaxy/db';
 import crypto from 'crypto';
 import { notFound, forbidden } from '../lib/errors';
 import { protectedProcedure, customerProcedure, technicianProcedure, router } from '../trpc';
 import { createBookingSchema, bookingQuerySchema } from '../validators/booking';
+import { computeDynamicPrice } from '../lib/pricing';
 import { emitToUser, emitToTechnician, emitToAdmin } from '../socket/index';
 import type { CashbackJob, LoyaltyPointsJob, CalendarSyncJob } from '../workers';
 import { notifyUser } from '../lib/notify';
@@ -207,6 +209,47 @@ export const bookingRouter = router({
         totalAmount += Number(variant.priceDelta);
       }
 
+      // 4b. Dynamic pricing (1.1) — only for opt-in services. The static
+      // base/variant/hourly/bundle price above is the input to the engine;
+      // bundles keep their fixed promotional price (skip).
+      let pricingBreakdown: ReturnType<typeof computeDynamicPrice> | null = null;
+      if (!bundle && service.dynamicPricingEnabled) {
+        const rules = await tx.servicePricing.findMany({ where: { isActive: true } });
+        // Surge: the technician's slot fill within ±2h of the booking.
+        const windowStart = new Date(input.startAt).getTime() - 2 * 3_600_000;
+        const windowEnd = new Date(input.endAt).getTime() + 2 * 3_600_000;
+        const windowSlots = await tx.availabilitySlot.findMany({
+          where: {
+            technicianId: technician.id,
+            startAt: { gte: new Date(windowStart), lte: new Date(windowEnd) },
+          },
+          select: { isBooked: true },
+        });
+        const surgeRatio =
+          windowSlots.length >= 4
+            ? windowSlots.filter((s) => s.isBooked).length / windowSlots.length
+            : 0;
+        pricingBreakdown = computeDynamicPrice({
+          base: totalAmount,
+          tier: technician.tier,
+          serviceId: service.id,
+          categoryId: service.categoryId,
+          rules: rules.map((r) => ({
+            isActive: r.isActive,
+            serviceId: r.serviceId,
+            categoryId: r.categoryId,
+            technicianTier: r.technicianTier,
+            dayOfWeek: r.dayOfWeek,
+            hourStart: r.hourStart,
+            hourEnd: r.hourEnd,
+            priceMultiplier: Number(r.priceMultiplier),
+          })),
+          date: new Date(input.startAt),
+          surgeRatio,
+        });
+        totalAmount = pricingBreakdown.total;
+      }
+
       // 5. Generate booking code
       const bookingCode = `GOB-${crypto.randomBytes(4).toString('hex').toUpperCase()}`;
 
@@ -230,6 +273,7 @@ export const bookingRouter = router({
           idempotencyKey: input.idempotencyKey,
           familyMemberId: input.familyMemberId ?? null,
           bundleId: input.bundleId ?? null,
+          pricingBreakdown: (pricingBreakdown as unknown as Prisma.InputJsonValue) ?? undefined,
         },
       });
 

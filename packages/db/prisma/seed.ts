@@ -48,6 +48,7 @@ async function main() {
     db.serviceVariant.deleteMany(),
     db.serviceTagAssignment.deleteMany(),
     db.serviceTag.deleteMany(),
+    db.servicePricing.deleteMany(),
     db.service.deleteMany(),
     db.category.deleteMany(),
     db.technicianBadgeAssignment.deleteMany(),
@@ -2166,7 +2167,7 @@ async function main() {
   }
   console.log(` ${customers.length} customers`);
 
-  // Technicians
+  // Technicians (tier = 1.1 dynamic pricing: NEW | EXPERIENCED | PREMIUM | CELEBRITY)
   const techData = [
     {
       name: 'نورة العمري',
@@ -2174,22 +2175,39 @@ async function main() {
       speciality: 'makeup',
       rating: 4.9,
       city: 'الرياض',
+      tier: 'CELEBRITY',
     },
-    { name: 'سارة الحربي', email: 'tech2@test.com', speciality: 'hair', rating: 4.8, city: 'جدة' },
+    {
+      name: 'سارة الحربي',
+      email: 'tech2@test.com',
+      speciality: 'hair',
+      rating: 4.8,
+      city: 'جدة',
+      tier: 'PREMIUM',
+    },
     {
       name: 'د. ليلى القحطاني',
       email: 'tech3@test.com',
       speciality: 'skincare',
       rating: 4.9,
       city: 'الدمام',
+      tier: 'PREMIUM',
     },
-    { name: 'هند المطيري', email: 'tech4@test.com', speciality: 'nails', rating: 4.7, city: 'جدة' },
+    {
+      name: 'هند المطيري',
+      email: 'tech4@test.com',
+      speciality: 'nails',
+      rating: 4.7,
+      city: 'جدة',
+      tier: 'EXPERIENCED',
+    },
     {
       name: 'عبير الزهراني',
       email: 'tech5@test.com',
       speciality: 'henna',
       rating: 4.8,
       city: 'الرياض',
+      tier: 'EXPERIENCED',
     },
     {
       name: 'منال السالم',
@@ -2197,6 +2215,7 @@ async function main() {
       speciality: 'massage',
       rating: 4.6,
       city: 'المدينة المنورة',
+      tier: 'EXPERIENCED',
     },
     {
       name: 'غادة الرشيد',
@@ -2204,6 +2223,7 @@ async function main() {
       speciality: 'waxing',
       rating: 4.8,
       city: 'الرياض',
+      tier: 'EXPERIENCED',
     },
     {
       name: 'دلال الجهني',
@@ -2211,8 +2231,16 @@ async function main() {
       speciality: 'lashes',
       rating: 4.9,
       city: 'جدة',
+      tier: 'PREMIUM',
     },
-    { name: 'نوف العنزي', email: 'tech9@test.com', speciality: 'spa', rating: 4.7, city: 'الخبر' },
+    {
+      name: 'نوف العنزي',
+      email: 'tech9@test.com',
+      speciality: 'spa',
+      rating: 4.7,
+      city: 'الخبر',
+      tier: 'NEW',
+    },
   ];
   const technicians: Record<string, any>[] = [];
   for (const td of techData) {
@@ -2235,6 +2263,7 @@ async function main() {
         ratingAvg: td.rating,
         completedBookings: Math.floor(Math.random() * 50 + 10),
         kycStatus: 'VERIFIED',
+        tier: td.tier ?? 'NEW',
       },
     });
     // Assign services to technician
@@ -2274,6 +2303,23 @@ async function main() {
     }
   }
   console.log(` ${slotCount} availability slots`);
+
+  // 1.1 Dynamic pricing — default peak rules: Thu/Fri/Sat evenings
+  // (16:00-22:00) +30%. Rules only affect services with
+  // dynamicPricingEnabled — no seeded service is enabled (admin opt-in).
+  await prisma.servicePricing.createMany({
+    data: [4, 5, 6].map((dayOfWeek) => ({
+      serviceId: null,
+      categoryId: null,
+      technicianTier: null,
+      dayOfWeek,
+      hourStart: 16,
+      hourEnd: 22,
+      priceMultiplier: 1.3,
+      isActive: true,
+    })),
+  });
+  console.log(' 3 dynamic-pricing peak rules (Thu/Fri/Sat 16:00-22:00 +30%)');
 
   // Addresses for first customer
   const addr1 = await prisma.address.create({
