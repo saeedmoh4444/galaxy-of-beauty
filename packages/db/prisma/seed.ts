@@ -49,6 +49,7 @@ async function main() {
     db.serviceTagAssignment.deleteMany(),
     db.serviceTag.deleteMany(),
     db.servicePricing.deleteMany(),
+    db.serviceBundle.deleteMany(),
     db.service.deleteMany(),
     db.category.deleteMany(),
     db.technicianBadgeAssignment.deleteMany(),
@@ -66,6 +67,8 @@ async function main() {
     db.customerQuizResponse.deleteMany(),
     db.customerAiSubscription.deleteMany(),
     db.aiSubscriptionPlan.deleteMany(),
+    db.customerSubscription.deleteMany(),
+    db.subscriptionPlan.deleteMany(),
     db.zatcaInvoice.deleteMany(),
     db.auditLog.deleteMany(),
     db.platformConfig.deleteMany(),
@@ -2320,6 +2323,98 @@ async function main() {
     })),
   });
   console.log(' 3 dynamic-pricing peak rules (Thu/Fri/Sat 16:00-22:00 +30%)');
+
+  // 2.2 Beauty Subscription — Basic/Premium/VIP catalog, monthly + yearly
+  // (annual = 10 monthly payments, "2 months free").
+  await prisma.subscriptionPlan.createMany({
+    data: [
+      {
+        nameJson: { ar: 'الباقة الأساسية', en: 'Basic' },
+        descriptionJson: {
+          ar: 'قص شعر + مانيكير شهرياً، وخصم 10% على الخدمات الإضافية',
+          en: 'Monthly haircut + manicure, 10% off additional services',
+        },
+        interval: 'MONTHLY',
+        price: 199,
+        servicesPerMonth: 2,
+        discountPercent: 10,
+        priorityBooking: false,
+        freeHomeService: false,
+        dedicatedTechnician: false,
+      },
+      {
+        nameJson: { ar: 'الباقة المميزة', en: 'Premium' },
+        descriptionJson: {
+          ar: 'خدمتان من اختيارك + فيشل شهرياً، خصم 15%، وأولوية في الحجز',
+          en: '2 services of choice + a facial monthly, 15% off, priority booking',
+        },
+        interval: 'MONTHLY',
+        price: 399,
+        servicesPerMonth: 3,
+        discountPercent: 15,
+        priorityBooking: true,
+        freeHomeService: false,
+        dedicatedTechnician: false,
+      },
+      {
+        nameJson: { ar: 'الباقة الملكية', en: 'VIP' },
+        descriptionJson: {
+          ar: 'خدمات غير محدودة (حتى 8 شهرياً)، خصم 20% على المنتجات، فنية مخصصة، وخدمة منزلية مجانية',
+          en: 'Unlimited services (up to 8/mo), 20% off products, dedicated technician, free home service',
+        },
+        interval: 'MONTHLY',
+        price: 799,
+        servicesPerMonth: 8,
+        discountPercent: 20,
+        priorityBooking: true,
+        freeHomeService: true,
+        dedicatedTechnician: true,
+      },
+      {
+        nameJson: { ar: 'الأساسية — سنوي', en: 'Basic — Yearly' },
+        descriptionJson: {
+          ar: 'الباقة الأساسية لمدة سنة كاملة — شهران مجاناً',
+          en: 'Basic for a full year — 2 months free',
+        },
+        interval: 'YEARLY',
+        price: 1990,
+        servicesPerMonth: 2,
+        discountPercent: 10,
+        priorityBooking: false,
+        freeHomeService: false,
+        dedicatedTechnician: false,
+      },
+      {
+        nameJson: { ar: 'المميزة — سنوي', en: 'Premium — Yearly' },
+        descriptionJson: {
+          ar: 'الباقة المميزة لمدة سنة كاملة — شهران مجاناً',
+          en: 'Premium for a full year — 2 months free',
+        },
+        interval: 'YEARLY',
+        price: 3990,
+        servicesPerMonth: 3,
+        discountPercent: 15,
+        priorityBooking: true,
+        freeHomeService: false,
+        dedicatedTechnician: false,
+      },
+      {
+        nameJson: { ar: 'الملكية — سنوي', en: 'VIP — Yearly' },
+        descriptionJson: {
+          ar: 'الباقة الملكية لمدة سنة كاملة — شهران مجاناً',
+          en: 'VIP for a full year — 2 months free',
+        },
+        interval: 'YEARLY',
+        price: 7990,
+        servicesPerMonth: 8,
+        discountPercent: 20,
+        priorityBooking: true,
+        freeHomeService: true,
+        dedicatedTechnician: true,
+      },
+    ],
+  });
+  console.log(' 6 beauty subscription plans (Basic/Premium/VIP × monthly/yearly)');
 
   // Addresses for first customer
   const addr1 = await prisma.address.create({
