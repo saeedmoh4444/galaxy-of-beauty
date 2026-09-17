@@ -583,6 +583,8 @@ export const vendorPortalRouter = router({
       z.object({
         womenOnlyStaff: z.boolean().optional(),
         privateSuite: z.boolean().optional(),
+        // K3 (kids plan, W9) — child-friendly corner in salons.
+        childFriendlyCorner: z.boolean().optional(),
       }),
     )
     .mutation(async ({ ctx, input }) => {
@@ -593,7 +595,22 @@ export const vendorPortalRouter = router({
         data: {
           ...(input.womenOnlyStaff !== undefined ? { womenOnlyStaff: input.womenOnlyStaff } : {}),
           ...(input.privateSuite !== undefined ? { privateSuite: input.privateSuite } : {}),
+          ...(input.childFriendlyCorner !== undefined
+            ? { childFriendlyCorner: input.childFriendlyCorner }
+            : {}),
         },
+      });
+    }),
+
+  /** setBanner — E7 follow-up: the venue's hero banner (null clears it). */
+  setBanner: customerProcedure
+    .input(z.object({ bannerUrl: z.string().url().nullable() }))
+    .mutation(async ({ ctx, input }) => {
+      const vendor = await prisma.vendor.findUnique({ where: { userId: ctx.user.id } });
+      if (!vendor) throw new TRPCError({ code: 'FORBIDDEN', message: 'Vendor not found' });
+      return prisma.vendor.update({
+        where: { id: vendor.id },
+        data: { bannerUrl: input.bannerUrl },
       });
     }),
 

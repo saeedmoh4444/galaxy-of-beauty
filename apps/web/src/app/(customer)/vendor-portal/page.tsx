@@ -113,7 +113,6 @@ export default function VendorPortalPage(): JSX.Element {
     onSuccess: () => refetchStore(),
   });
   // E6d — trust badge self-service toggles.
-  const trustMut = api.vendorPortal.setTrustFlags.useMutation({});
 
   const uploadDoc =
     (documentType: 'cr' | 'national_id' | 'bank_letter' | 'medical_license' | 'license') =>
@@ -532,17 +531,17 @@ export default function VendorPortalPage(): JSX.Element {
 
   /* ---------- Clinic dashboard (E2) ---------- */
   if (store && (store.type as string) === 'CLINIC') {
-    return <ClinicDashboard store={store} />;
+    return <ClinicDashboard store={store} refetchStore={() => refetchStore()} />;
   }
 
   /* ---------- Gym dashboard (E3) ---------- */
   if (store && (store.type as string) === 'GYM') {
-    return <GymDashboard store={store} />;
+    return <GymDashboard store={store} refetchStore={() => refetchStore()} />;
   }
 
   /* ---------- Nail bar dashboard (E5) ---------- */
   if (store && (store.type as string) === 'NAIL_BAR') {
-    return <NailBarDashboard store={store} />;
+    return <NailBarDashboard store={store} refetchStore={() => refetchStore()} />;
   }
 
   /* ---------- At-home salon dashboard (E5) ---------- */
@@ -561,38 +560,11 @@ export default function VendorPortalPage(): JSX.Element {
           <Button onClick={() => setShow(true)}>+ {t('vendorPortal.newProduct')}</Button>
         </div>
 
-        {/* E6d — trust badge toggles (vendor self-service) */}
-        <Card padding="md">
-          <h3 className="mb-2 text-sm font-semibold">{t('vendorPortal.trust.title')}</h3>
-          <div className="flex flex-wrap gap-4">
-            <label className="flex items-center gap-2 text-sm">
-              <input
-                type="checkbox"
-                checked={(store as Record<string, unknown>).womenOnlyStaff as boolean}
-                onChange={(e) =>
-                  trustMut.mutate(
-                    { womenOnlyStaff: e.target.checked },
-                    { onSuccess: () => refetchStore() },
-                  )
-                }
-              />
-              🙋‍♀️ {t('vendorPortal.trust.women-only')}
-            </label>
-            <label className="flex items-center gap-2 text-sm">
-              <input
-                type="checkbox"
-                checked={(store as Record<string, unknown>).privateSuite as boolean}
-                onChange={(e) =>
-                  trustMut.mutate(
-                    { privateSuite: e.target.checked },
-                    { onSuccess: () => refetchStore() },
-                  )
-                }
-              />
-              🚪 {t('vendorPortal.trust.private-suite')}
-            </label>
-          </div>
-        </Card>
+        {/* E6d/E7/K3 — trust toggles + venue banner (self-service) */}
+        <VenueProfileCard
+          store={store as Record<string, unknown>}
+          refetchStore={() => refetchStore()}
+        />
 
         {/* Store plan Phase 1 — approval status */}
         {store && !(store.isVerified as boolean) && (
@@ -910,7 +882,136 @@ export default function VendorPortalPage(): JSX.Element {
  * E2 — clinic dashboard (the same provider shell as stores): consultation
  * price, slot management, and incoming consultation requests.
  */
-function ClinicDashboard({ store }: { store: Record<string, unknown> }): JSX.Element {
+/* ================================================================
+ * Venue profile card — E6d trust toggles + E7 banner (all venues)
+ * ================================================================ */
+function VenueProfileCard({
+  store,
+  refetchStore,
+}: {
+  store: Record<string, unknown>;
+  refetchStore: () => void;
+}): JSX.Element {
+  const { t } = useLocale();
+  const trustMut = api.vendorPortal.setTrustFlags.useMutation({});
+  const bannerMut = api.vendorPortal.setBanner.useMutation({
+    onSuccess: () => refetchStore(),
+  });
+  const uploadMut = api.uploads.uploadMedia.useMutation({});
+  const [bannerPreview, setBannerPreview] = useState('');
+
+  const onBannerFile = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = () => {
+      uploadMut.mutate(
+        {
+          mediaType: 'image',
+          file: {
+            name: file.name,
+            type: file.type,
+            size: file.size,
+            base64: String(reader.result ?? ''),
+          },
+        },
+        {
+          onSuccess: (res) => {
+            setBannerPreview(res.url);
+            bannerMut.mutate({ bannerUrl: res.url });
+          },
+        },
+      );
+    };
+    reader.readAsDataURL(file);
+  };
+
+  const banner = ((store.bannerUrl as string | null) ?? bannerPreview) as string | null;
+
+  return (
+    <Card padding="md">
+      <h3 className="mb-2 text-sm font-semibold">{t('vendorPortal.trust.title')}</h3>
+      <div className="flex flex-wrap gap-4">
+        <label className="flex items-center gap-2 text-sm">
+          <input
+            type="checkbox"
+            checked={(store as Record<string, unknown>).womenOnlyStaff as boolean}
+            onChange={(e) =>
+              trustMut.mutate(
+                { womenOnlyStaff: e.target.checked },
+                { onSuccess: () => refetchStore() },
+              )
+            }
+          />
+          🙋‍♀️ {t('vendorPortal.trust.women-only')}
+        </label>
+        <label className="flex items-center gap-2 text-sm">
+          <input
+            type="checkbox"
+            checked={(store as Record<string, unknown>).privateSuite as boolean}
+            onChange={(e) =>
+              trustMut.mutate(
+                { privateSuite: e.target.checked },
+                { onSuccess: () => refetchStore() },
+              )
+            }
+          />
+          🚪 {t('vendorPortal.trust.private-suite')}
+        </label>
+        {/* K3 W9 — child-friendly corner (toys/coloring for moms). */}
+        <label className="flex items-center gap-2 text-sm">
+          <input
+            type="checkbox"
+            checked={(store as Record<string, unknown>).childFriendlyCorner as boolean}
+            onChange={(e) =>
+              trustMut.mutate(
+                { childFriendlyCorner: e.target.checked },
+                { onSuccess: () => refetchStore() },
+              )
+            }
+          />
+          🧸 {t('vendorPortal.trust.child-friendly')}
+        </label>
+      </div>
+
+      {/* E7 — venue hero banner (upload via the media pipeline). */}
+      <div className="mt-4 border-t border-border-muted pt-4">
+        <p className="mb-2 text-sm font-semibold">{t('vendorPortal.banner.title')}</p>
+        <div className="flex items-center gap-3">
+          {banner && (
+            // eslint-disable-next-line @next/next/no-img-element
+            <img src={banner} alt="banner" className="h-16 w-32 rounded-xl object-cover" />
+          )}
+          <input type="file" accept="image/*" onChange={onBannerFile} className="w-full text-sm" />
+          {(store.bannerUrl as string | null) && (
+            <Button
+              size="sm"
+              variant="ghost"
+              onClick={() => {
+                setBannerPreview('');
+                bannerMut.mutate({ bannerUrl: null });
+              }}
+              loading={bannerMut.isPending}
+            >
+              ✕
+            </Button>
+          )}
+        </div>
+        {uploadMut.isPending && (
+          <p className="mt-1 text-xs text-text-tertiary">{t('vendorPortal.banner.uploading')}</p>
+        )}
+      </div>
+    </Card>
+  );
+}
+
+function ClinicDashboard({
+  store,
+  refetchStore,
+}: {
+  store: Record<string, unknown>;
+  refetchStore: () => void;
+}): JSX.Element {
   const { t } = useLocale();
   const [price, setPrice] = useState(String((store.consultationPrice as number) ?? 0));
   const [slotStart, setSlotStart] = useState(
@@ -965,6 +1066,8 @@ function ClinicDashboard({ store }: { store: Record<string, unknown> }): JSX.Ele
             </p>
           </Card>
         )}
+
+        <VenueProfileCard store={store} refetchStore={refetchStore} />
 
         {/* Consultation price */}
         <Card padding="md">
@@ -1135,7 +1238,13 @@ function DocUploadInput({
  * E3 — gym dashboard (the same provider shell as stores/clinics): schedule
  * capacity-based classes and manage incoming class bookings.
  */
-function GymDashboard({ store }: { store: Record<string, unknown> }): JSX.Element {
+function GymDashboard({
+  store,
+  refetchStore,
+}: {
+  store: Record<string, unknown>;
+  refetchStore: () => void;
+}): JSX.Element {
   const { t, locale } = useLocale();
   const [clsNameAr, setClsNameAr] = useState('');
   const [clsNameEn, setClsNameEn] = useState('');
@@ -1193,6 +1302,8 @@ function GymDashboard({ store }: { store: Record<string, unknown> }): JSX.Elemen
             </p>
           </Card>
         )}
+
+        <VenueProfileCard store={store} refetchStore={refetchStore} />
 
         {/* Classes */}
         <Card padding="lg">
@@ -1332,7 +1443,13 @@ function GymDashboard({ store }: { store: Record<string, unknown> }): JSX.Elemen
 /* ================================================================
  * E5 — Nail bar dashboard (station-capacity slots + bookings)
  * ================================================================ */
-function NailBarDashboard({ store }: { store: Record<string, unknown> }): JSX.Element {
+function NailBarDashboard({
+  store,
+  refetchStore,
+}: {
+  store: Record<string, unknown>;
+  refetchStore: () => void;
+}): JSX.Element {
   const { t } = useLocale();
   const [slotStart, setSlotStart] = useState(
     new Date(Date.now() + 24 * 3_600_000).toISOString().slice(0, 16),
@@ -1381,6 +1498,8 @@ function NailBarDashboard({ store }: { store: Record<string, unknown> }): JSX.El
             </p>
           </Card>
         )}
+
+        <VenueProfileCard store={store} refetchStore={refetchStore} />
 
         {/* Station slots */}
         <Card padding="lg">

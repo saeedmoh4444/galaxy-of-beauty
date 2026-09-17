@@ -4219,6 +4219,9 @@ export const miscMessages = {
     ar: 'يوجد جناح خاص',
     en: 'Private suite available',
   },
+  'vendorPortal.trust.child-friendly': { ar: 'ركن أطفال', en: 'Child-friendly corner' },
+  'vendorPortal.banner.title': { ar: 'بانر المنشأة', en: 'Venue banner' },
+  'vendorPortal.banner.uploading': { ar: 'جاري رفع البانر…', en: 'Uploading banner…' },
   // E6e — before/after galleries
   'gallery.beforeAfterTitle': { ar: 'نتائج قبل وبعد', en: 'Before & after results' },
   'gallery.emptyTitle': { ar: 'صور النتائج قادمة', en: 'Real results, coming soon' },
