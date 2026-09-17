@@ -6,7 +6,7 @@ import { api } from '@/lib/trpc';
 import type { RouterOutputs } from '@galaxy/api';
 import { localize } from '@galaxy/shared';
 import { useLocale } from '@/components/LocaleProvider';
-import { Card, ErrorAlert, EmptyState, Button } from '@galaxy/ui';
+import { Card, ErrorAlert, EmptyState, Button, useAuth } from '@galaxy/ui';
 
 type PlanItem = RouterOutputs['subscriptionBoxes']['plans'][number];
 
@@ -108,6 +108,9 @@ export function PlansClient({ data }: { data: PlansPageData }): JSX.Element {
         </div>
       )}
 
+      {/* 2.2 — my subscriptions management (logged-in customers) */}
+      <MySubscriptions />
+
       {/* How it works */}
       <div className="mt-12 rounded-2xl bg-surface-muted p-8">
         <h3 className="mb-6 text-center text-lg font-bold text-text-primary">
@@ -166,5 +169,131 @@ function SubscribeButton({ planId, planName: _planName }: { planId: number; plan
     <Button onClick={() => subscribeMut.mutate({ planId })} loading={subscribeMut.isPending}>
       {t('marketing.plans.subscribe-now')}
     </Button>
+  );
+}
+
+/** 2.2 SUB-3 — the customer's subscriptions with lifecycle controls. */
+function MySubscriptions() {
+  const { t, locale } = useLocale();
+  const { isAuthenticated } = useAuth();
+  const subsQ = api.subscriptionBoxes.mySubscriptions.useQuery(undefined, {
+    enabled: isAuthenticated,
+  });
+  const pauseMut = api.subscriptionBoxes.pause.useMutation({ onSuccess: () => subsQ.refetch() });
+  const resumeMut = api.subscriptionBoxes.resume.useMutation({ onSuccess: () => subsQ.refetch() });
+  const cancelMut = api.subscriptionBoxes.cancel.useMutation({ onSuccess: () => subsQ.refetch() });
+  const renewMut = api.subscriptionBoxes.setAutoRenew.useMutation({
+    onSuccess: () => subsQ.refetch(),
+  });
+
+  const subs = (subsQ.data as unknown as Record<string, unknown>[] | undefined) ?? [];
+
+  if (!isAuthenticated || subs.length === 0) return null;
+
+  const statusLabel = (s: string) => {
+    switch (s) {
+      case 'ACTIVE':
+        return t('marketing.plans.status-active');
+      case 'PAUSED':
+        return t('marketing.plans.status-paused');
+      case 'CANCELLED':
+        return t('marketing.plans.status-cancelled');
+      case 'EXPIRED':
+        return t('marketing.plans.status-expired');
+      default:
+        return s;
+    }
+  };
+
+  return (
+    <div className="mt-12">
+      <h3 className="mb-4 text-center text-lg font-bold text-text-primary">
+        {t('marketing.plans.my-title')}
+      </h3>
+      <div className="space-y-3">
+        {subs.map((sub) => {
+          const plan = sub.plan as Record<string, unknown>;
+          const planName = localize(plan?.nameJson, locale);
+          const status = sub.status as string;
+          const active = status === 'ACTIVE';
+          return (
+            <Card key={sub.id as number} padding="md" className="flex flex-wrap items-center gap-4">
+              <div className="min-w-40 flex-1">
+                <p className="font-bold text-text-primary">{planName}</p>
+                <p className="text-xs text-text-secondary">
+                  {t('marketing.plans.my-usage')}: {sub.bookingsThisMonth as number}/
+                  {plan?.servicesPerMonth as number}
+                  {plan?.discountPercent ? ` · ${plan.discountPercent}% off` : ''}
+                </p>
+                <p className="text-xs text-text-tertiary">
+                  {t('marketing.plans.my-renewal')}:{' '}
+                  {new Date(sub.currentPeriodEnd as string).toLocaleDateString(
+                    locale === 'en' ? 'en-GB' : 'ar-SA',
+                  )}
+                  {' · '}
+                  {sub.autoRenew
+                    ? t('marketing.plans.my-autorenew-on')
+                    : t('marketing.plans.my-autorenew-off')}
+                </p>
+              </div>
+              <span
+                className={`rounded-full px-2 py-0.5 text-xs font-semibold ${
+                  active
+                    ? 'bg-green-100 text-green-700 dark:bg-green-950 dark:text-green-300'
+                    : 'bg-surface-muted text-text-tertiary'
+                }`}
+              >
+                {statusLabel(status)}
+              </span>
+              <div className="flex flex-wrap gap-2">
+                <Button
+                  size="sm"
+                  variant="outline"
+                  onClick={() =>
+                    renewMut.mutate({
+                      id: sub.id as number,
+                      autoRenew: !(sub.autoRenew as boolean),
+                    })
+                  }
+                  loading={renewMut.isPending}
+                >
+                  {sub.autoRenew
+                    ? t('marketing.plans.my-autorenew-disable')
+                    : t('marketing.plans.my-autorenew-enable')}
+                </Button>
+                {active ? (
+                  <>
+                    <Button
+                      size="sm"
+                      variant="outline"
+                      onClick={() => pauseMut.mutate({ id: sub.id as number })}
+                      loading={pauseMut.isPending}
+                    >
+                      {t('marketing.plans.my-pause')}
+                    </Button>
+                    <Button
+                      size="sm"
+                      variant="ghost"
+                      onClick={() => cancelMut.mutate({ id: sub.id as number })}
+                      loading={cancelMut.isPending}
+                    >
+                      {t('marketing.plans.my-cancel')}
+                    </Button>
+                  </>
+                ) : status === 'PAUSED' ? (
+                  <Button
+                    size="sm"
+                    onClick={() => resumeMut.mutate({ id: sub.id as number })}
+                    loading={resumeMut.isPending}
+                  >
+                    {t('marketing.plans.my-resume')}
+                  </Button>
+                ) : null}
+              </div>
+            </Card>
+          );
+        })}
+      </div>
+    </div>
   );
 }
