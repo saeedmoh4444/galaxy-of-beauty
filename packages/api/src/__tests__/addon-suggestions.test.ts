@@ -9,6 +9,7 @@ import { prisma } from '@galaxy/db';
 import { appRouter } from '../routers/index';
 import { createTRPCContext } from '../context';
 import { generateCsrfToken } from '../lib/csrf';
+import { buildUser } from './factories';
 import type { JwtPayload } from '../lib/jwt';
 
 const CSRF = generateCsrfToken();
@@ -22,15 +23,29 @@ async function authCaller(user: JwtPayload | null) {
 const SUFFIX = Date.now();
 const createdServiceIds: number[] = [];
 const createdCategoryIds: number[] = [];
+const createdBookingIds: number[] = [];
+const createdUserIds: number[] = [];
+let customer: JwtPayload;
+let techUserId = 0;
+let addressId = 0;
 
 beforeAll(async () => {
-  const cat = await prisma.category.create({
-    data: {
-      nameJson: { ar: `تصنيف إضافات ${SUFFIX}`, en: `Addon category ${SUFFIX}` },
-      slug: `addon-cat-${SUFFIX}`,
-    },
-  });
+  const [cat, address, tech, user] = await Promise.all([
+    prisma.category.create({
+      data: {
+        nameJson: { ar: `تصنيف إضافات ${SUFFIX}`, en: `Addon category ${SUFFIX}` },
+        slug: `addon-cat-${SUFFIX}`,
+      },
+    }),
+    prisma.address.findFirst({ select: { id: true } }),
+    prisma.technician.findFirst({ select: { userId: true } }),
+    prisma.user.create({ data: buildUser() }),
+  ]);
   createdCategoryIds.push(cat.id);
+  createdUserIds.push(user.id);
+  addressId = address?.id ?? 1;
+  techUserId = tech?.userId ?? 1;
+  customer = { id: user.id, role: 'CUSTOMER', email: user.email };
 
   const main = await prisma.service.create({
     data: {
@@ -102,6 +117,9 @@ beforeAll(async () => {
 
 afterAll(async () => {
   try {
+    await prisma.booking.deleteMany({ where: { id: { in: createdBookingIds } } });
+  } catch {}
+  try {
     await prisma.serviceAddon.deleteMany({ where: { serviceId: { in: createdServiceIds } } });
   } catch {}
   try {
@@ -109,6 +127,9 @@ afterAll(async () => {
   } catch {}
   try {
     await prisma.category.deleteMany({ where: { id: { in: createdCategoryIds } } });
+  } catch {}
+  try {
+    await prisma.user.deleteMany({ where: { id: { in: createdUserIds } } });
   } catch {}
 });
 
@@ -166,5 +187,42 @@ describe('service add-ons catalog (1.3 AO-1)', () => {
     await expect(
       anon.services.addAddon({ serviceId: createdServiceIds[0], addonId: createdServiceIds[3] }),
     ).rejects.toThrow();
+  });
+});
+
+describe('bookings.create add-ons (1.3 AO-2)', () => {
+  it('prices addons with the bundle discount and stores addonsJson', async () => {
+    const c = await authCaller(customer);
+    const booking = await c.bookings.create({
+      technicianId: techUserId,
+      serviceId: createdServiceIds[0], // main 80 SAR
+      addonIds: [createdServiceIds[1]], // blow-dry 60 SAR, 15% bundle discount
+      addressId,
+      startAt: new Date(Date.now() + 3 * 86_400_000).toISOString(),
+      endAt: new Date(Date.now() + 3 * 86_400_000 + 3_600_000).toISOString(),
+      idempotencyKey: `ao-bk-${Date.now()}`,
+    });
+    createdBookingIds.push(booking.id);
+
+    // 80 + 60 × 0.85 = 131
+    expect(Number(booking.totalAmount)).toBe(131);
+    expect(booking.addonsJson).toMatchObject([
+      { id: createdServiceIds[1], price: 51, titleJson: { ar: 'تصفيف بلو دراي' } },
+    ]);
+  });
+
+  it('rejects an addon not linked to the service', async () => {
+    const c = await authCaller(customer);
+    await expect(
+      c.bookings.create({
+        technicianId: techUserId,
+        serviceId: createdServiceIds[0],
+        addonIds: [createdServiceIds[3]], // hair mask — never linked
+        addressId,
+        startAt: new Date(Date.now() + 4 * 86_400_000).toISOString(),
+        endAt: new Date(Date.now() + 4 * 86_400_000 + 3_600_000).toISOString(),
+        idempotencyKey: `ao-bk-${Date.now()}-2`,
+      }),
+    ).rejects.toThrow(/not linked|addon/i);
   });
 });

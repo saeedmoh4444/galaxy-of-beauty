@@ -633,6 +633,8 @@ model Booking {
   // 1.1 Dynamic pricing — engine breakdown snapshot at booking time
   // ({ base, tierMultiplier, peakMultiplier, surgeMultiplier, total }).
   pricingBreakdown          Json?
+  // 1.3 Add-Ons — booked add-on snapshot [{ id, titleJson, price }].
+  addonsJson                Json?
   createdAt          DateTime      @default(now())
   updatedAt          DateTime      @updatedAt
 
