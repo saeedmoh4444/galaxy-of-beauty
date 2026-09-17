@@ -14,6 +14,7 @@ import { trpc } from '@/lib/trpc-react';
 import { useLocale } from '@/components/LocaleProvider';
 import { useAuthState } from '@/hooks/useAuthState';
 import { useToast } from '@/components/Toast';
+import { useHaptics } from '@/hooks/useHaptics';
 import { useRouter } from 'expo-router';
 
 interface FamilyMember {
@@ -29,6 +30,7 @@ export default function FamilyAccountScreen(): JSX.Element {
   const isAuthed = useAuthState();
   const { t } = useLocale();
   const { showToast } = useToast();
+  const { trigger } = useHaptics();
   const router = useRouter();
   const q = trpc.familyAccount.list.useQuery(undefined, { enabled: isAuthed });
   const data: FamilyMember[] = (q.data as unknown as FamilyMember[] | undefined) ?? [];
@@ -39,11 +41,15 @@ export default function FamilyAccountScreen(): JSX.Element {
   const [formAllergies, setFormAllergies] = useState('');
   const updateMut = trpc.familyAccount.update.useMutation({
     onSuccess: () => {
+      trigger('success');
       showToast('success', t('mobile.familyAccount.saved'));
       setEditing(null);
       void q.refetch();
     },
-    onError: (e) => showToast('error', e.message),
+    onError: (e) => {
+      trigger('error');
+      showToast('error', e.message);
+    },
   });
 
   const openEditor = (m: FamilyMember) => {

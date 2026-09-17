@@ -14,12 +14,15 @@ import { useState } from 'react';
 import { DEFAULT_PAGE_SIZE } from '@galaxy/ui';
 import { useToast } from '@/components/Toast';
 import { useLocale } from '@/components/LocaleProvider';
+import { useHaptics } from '@/hooks/useHaptics';
 
 export default function SkinAnalysisScreen() {
   const { t, locale } = useLocale();
   const isAuthed = useAuthState();
   const [imageUrl, setImageUrl] = useState('');
   const { showToast } = useToast();
+  // 5.5 Mobile polish — haptic feedback on capture/analyze.
+  const { trigger } = useHaptics();
   const [showCamera, setShowCamera] = useState(false);
   const { hasPermission, requestPermission, takePhoto } = useCamera();
 
@@ -59,6 +62,7 @@ export default function SkinAnalysisScreen() {
     setShowCamera(false);
     if (photo?.uri) {
       setImageUrl(photo.uri);
+      trigger('success');
       showToast('success', t('mobile.skinAnalysis.capture-success'));
     }
   };

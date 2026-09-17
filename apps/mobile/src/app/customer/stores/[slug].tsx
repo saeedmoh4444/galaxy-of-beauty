@@ -10,6 +10,7 @@ import { localize } from '@galaxy/shared';
 import { useLocale } from '@/components/LocaleProvider';
 import { useAuthState } from '@/hooks/useAuthState';
 import { useToast } from '@/components/Toast';
+import { useHaptics } from '@/hooks/useHaptics';
 
 interface StoreDetail {
   id?: number;
@@ -32,10 +33,15 @@ export default function StoreDetailScreen(): JSX.Element {
   const { slug } = useLocalSearchParams<{ slug: string }>();
   const isAuthed = useAuthState();
   const { showToast } = useToast();
+  // 5.5 Mobile polish — haptic feedback on cart add.
+  const { trigger } = useHaptics();
 
   const detailQ = trpc.marketplace.vendorDetail.useQuery({ slug: slug ?? '' });
   const addToCartMut = trpc.marketplace.addToCart.useMutation({
-    onSuccess: () => showToast('success', t('mobile.stores.added-to-cart')),
+    onSuccess: () => {
+      trigger('success');
+      showToast('success', t('mobile.stores.added-to-cart'));
+    },
   });
 
   const store = detailQ.data as unknown as StoreDetail | null;

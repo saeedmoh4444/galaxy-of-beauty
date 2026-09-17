@@ -5,6 +5,9 @@ import type { JSX } from 'react';
 import { ScreenState } from '@/components/ScreenState';
 import { useLocale } from '@/components/LocaleProvider';
 import { useAuthState } from '@/hooks/useAuthState';
+import { useHaptics } from '@/hooks/useHaptics';
+import { BottomSheet } from '@/components/BottomSheet';
+import { themeColors, useTheme } from '@/components/ThemeProvider';
 import { trpc } from '@/lib/trpc-react';
 import {
   TourStep,
@@ -74,7 +77,19 @@ export default function BeautyDashboardScreen(): JSX.Element {
   const { t } = useLocale();
   const router = useRouter();
   const isAuthed = useAuthState();
+  const { trigger } = useHaptics();
+  const { isDark } = useTheme();
+  const sheetC = isDark ? themeColors.dark : themeColors.light;
   const [tourOpen, setTourOpen] = useState(false);
+  // 5.5 Mobile polish — bottom sheet for secondary quick actions.
+  const [moreOpen, setMoreOpen] = useState(false);
+  const MORE_ACTIONS = [
+    { icon: '👨‍👩‍👧', labelKey: 'beautyDashboard.more-family', href: '/customer/family-account' },
+    { icon: '🎁', labelKey: 'beautyDashboard.more-gift-cards', href: '/customer/gift-cards' },
+    { icon: '❤️', labelKey: 'beautyDashboard.more-wishlist', href: '/customer/wishlist' },
+    { icon: '⚡', labelKey: 'beautyDashboard.more-flash-deals', href: '/public/flash-deals' },
+    { icon: '🛍️', labelKey: 'beautyDashboard.more-stores', href: '/customer/stores' },
+  ] as const;
   const loyalty = trpc.loyalty.myAccount.useQuery(undefined, { enabled: isAuthed });
   const insights = trpc.analytics.customerInsights.useQuery(undefined, { enabled: isAuthed });
   const lData = loyalty.data as Record<string, unknown> | undefined;
@@ -168,6 +183,21 @@ export default function BeautyDashboardScreen(): JSX.Element {
                 </TouchableOpacity>
               </TourStep>
             ))}
+            {/* 5.5 Mobile polish — "more" opens the secondary actions sheet. */}
+            <View style={styles.quickCell}>
+              <TouchableOpacity
+                style={styles.quickBtn}
+                activeOpacity={0.7}
+                onPress={() => {
+                  trigger('selection');
+                  setMoreOpen(true);
+                }}
+                accessibilityRole="button"
+              >
+                <Text style={styles.quickIcon}>✨</Text>
+                <Text style={styles.quickLabel}>{t('beautyDashboard.quick-more')}</Text>
+              </TouchableOpacity>
+            </View>
           </View>
 
           {[
@@ -212,6 +242,30 @@ export default function BeautyDashboardScreen(): JSX.Element {
           progress: (current, total) => t('mobile.tour.progress', { current, total }),
         }}
       />
+
+      {/* 5.5 Mobile polish — secondary quick actions bottom sheet. */}
+      <BottomSheet
+        open={moreOpen}
+        onClose={() => setMoreOpen(false)}
+        title={t('beautyDashboard.more-title')}
+      >
+        {MORE_ACTIONS.map((a) => (
+          <TouchableOpacity
+            key={a.labelKey}
+            style={styles.moreRow}
+            activeOpacity={0.7}
+            onPress={() => {
+              setMoreOpen(false);
+              trigger('light');
+              router.push(a.href as never);
+            }}
+            accessibilityRole="button"
+          >
+            <Text style={styles.moreIcon}>{a.icon}</Text>
+            <Text style={[styles.moreLabel, { color: sheetC.text }]}>{t(a.labelKey)}</Text>
+          </TouchableOpacity>
+        ))}
+      </BottomSheet>
     </WalkthroughProvider>
   );
 }
@@ -265,6 +319,17 @@ const styles = StyleSheet.create({
     color: COLORS.gray900,
     flexShrink: 1,
   },
+  // 5.5 Mobile polish — bottom sheet rows.
+  moreRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 12,
+    paddingVertical: 14,
+    borderBottomWidth: 1,
+    borderBottomColor: '#f3f4f6',
+  },
+  moreIcon: { fontSize: 20 },
+  moreLabel: { fontSize: 15, fontWeight: '600', color: COLORS.gray900 },
   card: {
     backgroundColor: COLORS.white,
     borderRadius: 14,
