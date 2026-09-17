@@ -115,6 +115,13 @@ export const bookingMessages = {
   'booking.price.peak': { ar: 'وقت الذروة', en: 'Peak time' },
   'booking.price.surge': { ar: 'ارتفاع الطلب', en: 'High demand' },
   'booking.price.total': { ar: 'الإجمالي', en: 'Total' },
+  // 1.3 Add-Ons — booking upsells.
+  'booking.addons.title': {
+    ar: 'من حجزوا هذه الخدمة أضافوا أيضاً',
+    en: 'Customers who booked this also added',
+  },
+  'booking.addons.popular': { ar: 'الأكثر طلباً', en: 'Popular' },
+  'booking.addons.total': { ar: 'مجموع الإضافات', en: 'Add-ons total' },
   'booking.duration': { ar: 'المدة', en: 'Duration' },
   'booking.technician-confirm-note': {
     ar: '* ستقوم مقدمة الخدمة بتأكيد الموعد النهائي بعد مراجعة الحجز.',
