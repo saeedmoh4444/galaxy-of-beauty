@@ -22,6 +22,7 @@ async function authCaller(user: JwtPayload) {
 }
 
 const SUFFIX = Date.now();
+const ADMIN: JwtPayload = { id: 3, role: 'ADMIN', email: 'admin@galaxyofbeauty.sa' };
 let customer: JwtPayload;
 let techUserId: number;
 let techProfileId: number;
@@ -382,5 +383,58 @@ describe('dynamic pricing — pricing.preview', () => {
         startAt: nextSundayMorning().toISOString(),
       }),
     ).rejects.toThrow(/Service not found/);
+  });
+});
+
+describe('dynamic pricing — admin rules CRUD', () => {
+  it('creates, lists, updates and deletes rules (admin only)', async () => {
+    const admin = await authCaller(ADMIN);
+
+    const created = await admin.pricingAdmin.create({
+      serviceId: enabledServiceId,
+      technicianTier: null,
+      dayOfWeek: 0,
+      hourStart: 8,
+      hourEnd: 12,
+      priceMultiplier: 1.2,
+    });
+    ruleIds.push(created.id);
+    expect(Number(created.priceMultiplier)).toBe(1.2);
+
+    const list = await admin.pricingAdmin.list();
+    expect(list.some((r: any) => r.id === created.id)).toBe(true);
+
+    const updated = await admin.pricingAdmin.update({
+      id: created.id,
+      priceMultiplier: 1.4,
+      isActive: false,
+    });
+    expect(Number(updated.priceMultiplier)).toBe(1.4);
+    expect(updated.isActive).toBe(false);
+
+    await admin.pricingAdmin.delete({ id: created.id });
+    ruleIds.splice(ruleIds.indexOf(created.id), 1);
+    const after = await admin.pricingAdmin.list();
+    expect(after.some((r: any) => r.id === created.id)).toBe(false);
+  });
+
+  it('rejects non-admin callers', async () => {
+    const c = await authCaller(customer);
+    await expect(c.pricingAdmin.list()).rejects.toThrow();
+    await expect(c.pricingAdmin.create({ priceMultiplier: 1.1 })).rejects.toThrow();
+  });
+
+  it('toggles the per-service dynamic pricing flag', async () => {
+    const admin = await authCaller(ADMIN);
+    const on = await admin.pricingAdmin.setServiceFlag({
+      serviceId: disabledServiceId,
+      enabled: true,
+    });
+    expect(on.dynamicPricingEnabled).toBe(true);
+    const off = await admin.pricingAdmin.setServiceFlag({
+      serviceId: disabledServiceId,
+      enabled: false,
+    });
+    expect(off.dynamicPricingEnabled).toBe(false);
   });
 });

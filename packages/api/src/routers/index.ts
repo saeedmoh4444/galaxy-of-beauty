@@ -135,6 +135,7 @@ import {
   customerRetentionRouter,
   technicianVerificationRouter,
   customerSegmentsRouter,
+  pricingAdminRouter,
 } from '../domains/admin';
 
 // AI
@@ -476,6 +477,7 @@ export const appRouter = router({
   customerRetention: customerRetentionRouter,
   technicianVerification: technicianVerificationRouter,
   customerSegments: customerSegmentsRouter,
+  pricingAdmin: pricingAdminRouter,
 
   // AI
   ai: aiRouter,
