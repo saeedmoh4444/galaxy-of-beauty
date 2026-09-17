@@ -613,6 +613,10 @@ export const mobileCustomerBMessages = {
   },
   'mobile.familyAccount.emergency-contact': { ar: 'جهة اتصال للطوارئ', en: 'Emergency contact' },
   'mobile.familyAccount.allergies': { ar: 'الحساسية', en: 'Allergies' },
+  'mobile.familyAccount.edit-safety': { ar: 'تعديل بيانات السلامة', en: 'Edit safety details' },
+  'mobile.familyAccount.save': { ar: 'حفظ', en: 'Save' },
+  'mobile.familyAccount.cancel': { ar: 'إلغاء', en: 'Cancel' },
+  'mobile.familyAccount.saved': { ar: 'تم حفظ بيانات السلامة', en: 'Safety details saved' },
   'mobile.booking.bundle-selected': {
     ar: 'باقة ماما وأنا: {name}',
     en: 'Mommy & Me bundle: {name}',
