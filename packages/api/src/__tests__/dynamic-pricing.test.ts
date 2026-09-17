@@ -317,3 +317,70 @@ describe('dynamic pricing — bookings.create integration', () => {
     expect(booking.pricingBreakdown).toMatchObject({ tierMultiplier: 1, total: 100 });
   });
 });
+
+describe('dynamic pricing — pricing.preview', () => {
+  it('previews the dynamic total without booking', async () => {
+    const c = await authCaller(customer);
+    // Sunday 14:00 — clear of the surge slots the integration test created
+    // around 10:00 and of the seeded Thu-Sat peak window.
+    const start = nextSundayMorning();
+    start.setHours(14, 0, 0, 0);
+
+    // Sunday 13:00-15:00 rule on the enabled service (cleaned within the test).
+    const rule = await prisma.servicePricing.create({
+      data: {
+        serviceId: enabledServiceId,
+        technicianTier: null,
+        dayOfWeek: 0,
+        hourStart: 13,
+        hourEnd: 15,
+        priceMultiplier: 1.3,
+      },
+    });
+
+    const preview = await c.pricing.preview({
+      serviceId: enabledServiceId,
+      technicianId: techUserId, // PREMIUM-tier technician
+      startAt: start.toISOString(),
+    });
+    expect(preview.enabled).toBe(true);
+    expect(preview.breakdown).toMatchObject({
+      base: 100,
+      tierMultiplier: 1.5,
+      peakMultiplier: 1.3,
+      surgeMultiplier: 1,
+      total: 195,
+    });
+
+    await prisma.servicePricing.delete({ where: { id: rule.id } });
+  });
+
+  it('previews static pricing for non-enabled services', async () => {
+    const c = await authCaller(customer);
+    const preview = await c.pricing.preview({
+      serviceId: disabledServiceId,
+      technicianId: techUserId,
+      startAt: nextSundayMorning().toISOString(),
+    });
+    expect(preview.enabled).toBe(false);
+    expect(preview.breakdown).toMatchObject({ base: 100, total: 100 });
+  });
+
+  it('rejects a missing technician or service', async () => {
+    const c = await authCaller(customer);
+    await expect(
+      c.pricing.preview({
+        serviceId: enabledServiceId,
+        technicianId: 99999999,
+        startAt: nextSundayMorning().toISOString(),
+      }),
+    ).rejects.toThrow(/Technician not found/);
+    await expect(
+      c.pricing.preview({
+        serviceId: 99999999,
+        technicianId: techUserId,
+        startAt: nextSundayMorning().toISOString(),
+      }),
+    ).rejects.toThrow(/Service not found/);
+  });
+});

@@ -130,6 +130,25 @@ export default function CreateBookingScreen() {
   }, [activeBundle, serviceId]);
   const loading = servicesQ.isLoading || addressesQ.isLoading;
 
+  // 1.1 Dynamic pricing — live preview for the confirm step. Mirrors the
+  // auto-assign logic in handleSubmit (first technician for the service).
+  const previewTechnicianId = svc?.technicianServices?.[0]?.technician?.userId ?? 0;
+  const previewStartAt = (() => {
+    const [ph, pm] = bookingTime.split(':').map(Number);
+    const start = new Date(`${bookingDate}T00:00:00`);
+    start.setHours(ph, pm, 0, 0);
+    return start.toISOString();
+  })();
+  const previewQ = trpc.pricing.preview.useQuery(
+    {
+      serviceId: serviceId ?? 0,
+      technicianId: previewTechnicianId,
+      startAt: previewStartAt,
+    },
+    { enabled: step === 3 && !!serviceId && previewTechnicianId > 0 },
+  ) as { data?: { enabled?: boolean; breakdown?: Record<string, number> } };
+  const pricePreview = previewQ.data;
+
   const variants = svc?.variants ?? [];
   // Displayed total: base price + selected variant delta. K4: hourly
   // services (babysitting) price by duration instead.
@@ -439,13 +458,68 @@ export default function CreateBookingScreen() {
               <Text style={styles.summaryLabel}>{t('booking.service')}</Text>
               <Text style={styles.summaryValue}>{localize(svc.titleJson, locale)}</Text>
             </View>
-            <View style={styles.summaryRow}>
-              <Text style={styles.summaryLabel}>{t('booking.price')}</Text>
-              <Text style={styles.summaryPrice}>
-                {Number(svc.basePrice).toFixed(0)} {t('misc.sar')}
-                {isHourly ? ` / ${t('mobile.booking.per-hour')}` : ''}
-              </Text>
-            </View>
+            {pricePreview?.enabled && !activeBundle ? (
+              <View style={styles.summary}>
+                <View style={styles.summaryRow}>
+                  <Text style={styles.summaryLabel}>{t('booking.price.base')}</Text>
+                  <Text style={styles.summaryValue}>
+                    {Number(pricePreview.breakdown?.base ?? 0).toFixed(0)} {t('misc.sar')}
+                  </Text>
+                </View>
+                {Number(pricePreview.breakdown?.tierMultiplier ?? 1) > 1 && (
+                  <View style={styles.summaryRow}>
+                    <Text style={styles.summarySub}>
+                      {t('booking.price.tier')} (×{pricePreview.breakdown?.tierMultiplier})
+                    </Text>
+                    <Text style={styles.summarySub}>
+                      +
+                      {((Number(pricePreview.breakdown?.tierMultiplier ?? 1) - 1) * 100).toFixed(0)}
+                      %
+                    </Text>
+                  </View>
+                )}
+                {Number(pricePreview.breakdown?.peakMultiplier ?? 1) > 1 && (
+                  <View style={styles.summaryRow}>
+                    <Text style={styles.summarySub}>
+                      {t('booking.price.peak')} (×{pricePreview.breakdown?.peakMultiplier})
+                    </Text>
+                    <Text style={styles.summarySub}>
+                      +
+                      {((Number(pricePreview.breakdown?.peakMultiplier ?? 1) - 1) * 100).toFixed(0)}
+                      %
+                    </Text>
+                  </View>
+                )}
+                {Number(pricePreview.breakdown?.surgeMultiplier ?? 1) > 1 && (
+                  <View style={styles.summaryRow}>
+                    <Text style={styles.summarySub}>
+                      {t('booking.price.surge')} (×{pricePreview.breakdown?.surgeMultiplier})
+                    </Text>
+                    <Text style={styles.summarySub}>
+                      +
+                      {((Number(pricePreview.breakdown?.surgeMultiplier ?? 1) - 1) * 100).toFixed(
+                        0,
+                      )}
+                      %
+                    </Text>
+                  </View>
+                )}
+                <View style={styles.summaryRow}>
+                  <Text style={styles.summaryTotalLabel}>{t('booking.price.total')}</Text>
+                  <Text style={styles.summaryPrice}>
+                    {Number(pricePreview.breakdown?.total ?? 0).toFixed(0)} {t('misc.sar')}
+                  </Text>
+                </View>
+              </View>
+            ) : (
+              <View style={styles.summaryRow}>
+                <Text style={styles.summaryLabel}>{t('booking.price')}</Text>
+                <Text style={styles.summaryPrice}>
+                  {Number(svc.basePrice).toFixed(0)} {t('misc.sar')}
+                  {isHourly ? ` / ${t('mobile.booking.per-hour')}` : ''}
+                </Text>
+              </View>
+            )}
             {isHourly && (
               <>
                 <View style={styles.summaryRow}>
@@ -666,6 +740,7 @@ const styles = StyleSheet.create({
   },
   summaryLabel: { fontSize: 13, color: '#6b7280' },
   summaryValue: { fontSize: 14, color: '#374151' },
+  summarySub: { fontSize: 12, color: '#9ca3af' },
   summaryPrice: { fontSize: 16, fontWeight: '700', color: '#7c3aed' },
   disclaimer: {
     fontSize: 11,

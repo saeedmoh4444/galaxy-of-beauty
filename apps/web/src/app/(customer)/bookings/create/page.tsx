@@ -76,6 +76,29 @@ export default function CreateBookingPage(): JSX.Element {
   const bundles = (bundlesData as unknown as Array<Record<string, unknown>> | undefined) ?? [];
   const activeBundle = bundles.find((b) => b.id === bundleId);
 
+  // 1.1 Dynamic pricing — live preview for the confirm step. Mirrors the
+  // auto-assign logic in handleSubmit (first technician for the service).
+  const previewTechnicianId =
+    (
+      svc as unknown as {
+        technicianServices?: Array<{ technician?: { userId?: number } }>;
+      }
+    )?.technicianServices?.[0]?.technician?.userId ?? 0;
+  const previewStartAt = (() => {
+    const [ph, pm] = bookingTime.split(':').map(Number);
+    const start = new Date(`${bookingDate}T00:00:00`);
+    start.setHours(ph, pm, 0, 0);
+    return start.toISOString();
+  })();
+  const { data: pricePreview } = api.pricing.preview.useQuery(
+    {
+      serviceId: serviceId ?? 0,
+      technicianId: previewTechnicianId,
+      startAt: previewStartAt,
+    },
+    { enabled: step === 3 && !!serviceId && previewTechnicianId > 0 },
+  ) as { data: { enabled: boolean; breakdown: Record<string, number> } | undefined };
+
   // A preselected bundle drives the primary (mother) service — jump the
   // customer straight to the details step.
   useEffect(() => {
@@ -419,13 +442,60 @@ export default function CreateBookingPage(): JSX.Element {
                     : ''}
                 </span>
               </div>
-              <div className="flex justify-between border-b pb-2">
-                <span className="text-text-secondary">{t('booking.price')}</span>
-                <span className="font-bold text-brand-600">
-                  {num((svc as unknown as { basePrice?: unknown })?.basePrice).toFixed(0)}{' '}
-                  {t('misc.sar')}
-                </span>
-              </div>
+              {pricePreview?.enabled && !activeBundle ? (
+                <div className="space-y-1 border-b pb-2">
+                  <div className="flex justify-between">
+                    <span className="text-text-secondary">{t('booking.price.base')}</span>
+                    <span>
+                      {pricePreview.breakdown.base.toFixed(0)} {t('misc.sar')}
+                    </span>
+                  </div>
+                  {pricePreview.breakdown.tierMultiplier > 1 && (
+                    <div className="flex justify-between text-xs">
+                      <span className="text-text-tertiary">
+                        {t('booking.price.tier')} (×{pricePreview.breakdown.tierMultiplier})
+                      </span>
+                      <span className="text-text-tertiary">
+                        +{((pricePreview.breakdown.tierMultiplier - 1) * 100).toFixed(0)}%
+                      </span>
+                    </div>
+                  )}
+                  {pricePreview.breakdown.peakMultiplier > 1 && (
+                    <div className="flex justify-between text-xs">
+                      <span className="text-text-tertiary">
+                        {t('booking.price.peak')} (×{pricePreview.breakdown.peakMultiplier})
+                      </span>
+                      <span className="text-text-tertiary">
+                        +{((pricePreview.breakdown.peakMultiplier - 1) * 100).toFixed(0)}%
+                      </span>
+                    </div>
+                  )}
+                  {pricePreview.breakdown.surgeMultiplier > 1 && (
+                    <div className="flex justify-between text-xs">
+                      <span className="text-text-tertiary">
+                        {t('booking.price.surge')} (×{pricePreview.breakdown.surgeMultiplier})
+                      </span>
+                      <span className="text-text-tertiary">
+                        +{((pricePreview.breakdown.surgeMultiplier - 1) * 100).toFixed(0)}%
+                      </span>
+                    </div>
+                  )}
+                  <div className="flex justify-between pt-1">
+                    <span className="text-text-secondary">{t('booking.price.total')}</span>
+                    <span className="font-bold text-brand-600">
+                      {pricePreview.breakdown.total.toFixed(0)} {t('misc.sar')}
+                    </span>
+                  </div>
+                </div>
+              ) : (
+                <div className="flex justify-between border-b pb-2">
+                  <span className="text-text-secondary">{t('booking.price')}</span>
+                  <span className="font-bold text-brand-600">
+                    {num((svc as unknown as { basePrice?: unknown })?.basePrice).toFixed(0)}{' '}
+                    {t('misc.sar')}
+                  </span>
+                </div>
+              )}
               <div className="flex justify-between border-b pb-2">
                 <span className="text-text-secondary">{t('booking.duration')}</span>
                 <span>
