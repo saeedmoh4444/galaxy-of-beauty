@@ -3,6 +3,7 @@ import { View, Text, ScrollView, StyleSheet, TouchableOpacity, RefreshControl } 
 import { useRouter } from 'expo-router';
 import { ErrorAlert } from '@/components/ErrorAlert';
 import { SkeletonList } from '@/components/SkeletonCard';
+import { TrustChips } from '@/components/TrustChips';
 import { trpc } from '@/lib/trpc-react';
 import { useLocale } from '@/components/LocaleProvider';
 
@@ -14,6 +15,8 @@ interface ClinicItem {
   consultationPrice?: number;
   ratingAvg?: number;
   totalReviews?: number;
+  womenOnlyStaff?: boolean;
+  privateSuite?: boolean;
 }
 
 export default function ClinicsScreen(): JSX.Element {
@@ -62,7 +65,15 @@ export default function ClinicsScreen(): JSX.Element {
               {t(`clinics.treatment.${clinic.clinicType ?? ''}` as never)} ·{' '}
               {t('mobile.clinics.price', { price: Number(clinic.consultationPrice ?? 0) })}
             </Text>
-            <Text style={s.badge}>{t('mobile.clinics.verified')}</Text>
+            <TrustChips
+              verifiedLabel={t('mobile.clinics.verified')}
+              rating={clinic.ratingAvg}
+              reviews={clinic.totalReviews}
+              womenOnly={clinic.womenOnlyStaff}
+              womenOnlyLabel={t('mobile.public.service-detail.trust.womenOnly')}
+              privateSuite={clinic.privateSuite}
+              privateSuiteLabel={t('mobile.public.service-detail.trust.privateSuite')}
+            />
           </View>
         </TouchableOpacity>
       ))}
@@ -97,16 +108,5 @@ const s = StyleSheet.create({
   body: { flex: 1 },
   name: { fontSize: 15, fontWeight: '700', color: '#111827' },
   meta: { fontSize: 12, color: '#6b7280', marginTop: 2 },
-  badge: {
-    fontSize: 11,
-    color: '#047857',
-    backgroundColor: '#d1fae5',
-    alignSelf: 'flex-start',
-    paddingHorizontal: 8,
-    paddingVertical: 2,
-    borderRadius: 999,
-    marginTop: 4,
-    overflow: 'hidden',
-  },
   empty: { textAlign: 'center', color: '#9ca3af', marginTop: 24 },
 });

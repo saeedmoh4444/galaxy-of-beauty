@@ -3,6 +3,7 @@ import { View, Text, ScrollView, StyleSheet, TouchableOpacity, RefreshControl } 
 import { useRouter } from 'expo-router';
 import { ErrorAlert } from '@/components/ErrorAlert';
 import { SkeletonList } from '@/components/SkeletonCard';
+import { TrustChips } from '@/components/TrustChips';
 import { trpc } from '@/lib/trpc-react';
 import { useLocale } from '@/components/LocaleProvider';
 
@@ -13,6 +14,9 @@ interface NailBarItem {
   nailBarType?: string | null;
   nailBarCity?: string | null;
   ratingAvg?: number;
+  totalReviews?: number;
+  womenOnlyStaff?: boolean;
+  privateSuite?: boolean;
 }
 
 export default function NailBarsScreen(): JSX.Element {
@@ -58,7 +62,15 @@ export default function NailBarsScreen(): JSX.Element {
             <Text style={s.meta}>
               {t(`nailBars.type.${bar.nailBarType ?? ''}` as never)} · {bar.nailBarCity ?? ''}
             </Text>
-            <Text style={s.badge}>{t('mobile.nailBars.pay-at-venue')}</Text>
+            <TrustChips
+              verifiedLabel={t('mobile.nailBars.verified')}
+              rating={bar.ratingAvg}
+              reviews={bar.totalReviews}
+              womenOnly={bar.womenOnlyStaff}
+              womenOnlyLabel={t('mobile.public.service-detail.trust.womenOnly')}
+              privateSuite={bar.privateSuite}
+              privateSuiteLabel={t('mobile.public.service-detail.trust.privateSuite')}
+            />
           </View>
         </TouchableOpacity>
       ))}
@@ -93,16 +105,5 @@ const s = StyleSheet.create({
   body: { flex: 1 },
   name: { fontSize: 15, fontWeight: '700', color: '#111827' },
   meta: { fontSize: 12, color: '#6b7280', marginTop: 2 },
-  badge: {
-    fontSize: 11,
-    color: '#be185d',
-    backgroundColor: '#fce7f3',
-    alignSelf: 'flex-start',
-    paddingHorizontal: 8,
-    paddingVertical: 2,
-    borderRadius: 999,
-    marginTop: 4,
-    overflow: 'hidden',
-  },
   empty: { textAlign: 'center', color: '#9ca3af', marginTop: 24 },
 });

@@ -11,6 +11,7 @@ import {
 import { useLocalSearchParams, useRouter } from 'expo-router';
 import { SkeletonList } from '@/components/SkeletonCard';
 import { ErrorAlert } from '@/components/ErrorAlert';
+import { Icon, type IconName } from '@/components/Icon';
 import { ServiceImage } from '@/components/ServiceImage';
 import { trpc } from '@/lib/trpc-react';
 import { buildServiceTrust, localize, serviceKeyFromCategorySlug } from '@galaxy/shared';
@@ -59,12 +60,12 @@ interface GalleryItem {
   titleJson?: ServiceJson | null;
 }
 
-const TRUST_GLYPH: Record<string, string> = {
-  safeSpace: '🛡️',
-  womenOnly: '👩',
-  private: '🔒',
-  verified: '✅',
-  rating: '⭐',
+const VARIANT_ICON: Record<string, IconName> = {
+  safeSpace: 'shield-check',
+  womenOnly: 'users',
+  private: 'lock',
+  verified: 'check',
+  rating: 'star',
 };
 
 export default function ServiceDetailScreen(): JSX.Element {
@@ -170,8 +171,9 @@ export default function ServiceDetailScreen(): JSX.Element {
       <View style={styles.row}>
         {trust.items.map((item) => (
           <View key={item.variant} style={styles.trustBadge}>
+            <Icon name={VARIANT_ICON[item.variant] ?? 'sparkle'} size={11} color="#9d174d" />
             <Text style={styles.trustBadgeText}>
-              {TRUST_GLYPH[item.variant]} {item.label}
+              {item.label}
               {item.value ? ` ${item.value}` : ''}
             </Text>
           </View>
@@ -255,8 +257,9 @@ export default function ServiceDetailScreen(): JSX.Element {
                     <Text style={styles.techName}>{user.name}</Text>
                     {tech.kycStatus === 'VERIFIED' && (
                       <View style={styles.verifiedBadge}>
+                        <Icon name="check" size={10} color="#15803d" />
                         <Text style={styles.verifiedText}>
-                          ✅ {t('mobile.public.service-detail.trust.verified')}
+                          {t('mobile.public.service-detail.trust.verified')}
                         </Text>
                       </View>
                     )}
@@ -354,6 +357,9 @@ const styles = StyleSheet.create({
   cat: { fontSize: 13, color: '#6b7280', textAlign: 'right', marginTop: 2 },
   desc: { fontSize: 14, color: '#374151', lineHeight: 24, textAlign: 'right', marginTop: 10 },
   trustBadge: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 4,
     backgroundColor: '#fff',
     borderColor: '#f9a8d4',
     borderWidth: 1,
@@ -425,6 +431,9 @@ const styles = StyleSheet.create({
   techNameRow: { flexDirection: 'row', alignItems: 'center', gap: 6, justifyContent: 'flex-end' },
   techName: { fontSize: 14, fontWeight: '700', color: '#111827' },
   verifiedBadge: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 3,
     backgroundColor: '#dcfce7',
     borderRadius: 999,
     paddingHorizontal: 8,
