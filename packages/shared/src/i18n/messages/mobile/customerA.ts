@@ -298,6 +298,14 @@ export const mobileCustomerAMessages = {
   'beautyDashboard.quick-ai': { ar: 'المستشارة الذكية', en: 'AI Advisor' },
   'beautyDashboard.quick-wellness': { ar: 'مركز العافية', en: 'Wellness Hub' },
   'beautyDashboard.quick-referrals': { ar: 'دعوة الصديقات', en: 'Invite Friends' },
+  // 5.5 Mobile polish — secondary quick actions in the bottom sheet.
+  'beautyDashboard.quick-more': { ar: 'المزيد', en: 'More' },
+  'beautyDashboard.more-title': { ar: 'المزيد من الإجراءات', en: 'More actions' },
+  'beautyDashboard.more-family': { ar: 'حساب العائلة', en: 'Family account' },
+  'beautyDashboard.more-gift-cards': { ar: 'بطاقات الهدايا', en: 'Gift cards' },
+  'beautyDashboard.more-wishlist': { ar: 'المفضلة', en: 'Wishlist' },
+  'beautyDashboard.more-flash-deals': { ar: 'عروض فلاش', en: 'Flash deals' },
+  'beautyDashboard.more-stores': { ar: 'المتاجر', en: 'Stores' },
   'beautyDashboard.replay-tour': { ar: 'جولة تعريفية', en: 'Guided tour' },
 
   // ── beauty-diary ──
