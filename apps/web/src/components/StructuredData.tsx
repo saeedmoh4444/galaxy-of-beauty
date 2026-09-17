@@ -31,7 +31,7 @@ export function OrganizationSchema(): JSX.Element {
   const data = {
     '@context': 'https://schema.org',
     '@type': 'BeautySalon',
-    name: 'Dalal | دلال',
+    name: 'Galaxy of Beauty | جالكسي بيوتي',
     description: 'Secure marketplace for beauty & grooming services in Saudi Arabia',
     url: 'https://galaxyofbeauty.sa',
     logo: 'https://galaxyofbeauty.sa/logo.png',
@@ -61,7 +61,7 @@ export function ServiceSchema({ service }: { service: ServiceData }): JSX.Elemen
     description: service.description,
     provider: {
       '@type': 'BeautySalon',
-      name: 'Dalal',
+      name: 'Galaxy of Beauty',
     },
     areaServed: { '@type': 'Country', name: 'SA' },
     offers: {

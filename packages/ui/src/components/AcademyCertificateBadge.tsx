@@ -4,7 +4,7 @@ import type { JSX } from 'react';
 import { cn } from '@galaxy/shared';
 
 /**
- * Academy Certificate Badge — course completion certification from Dalal Beauty Academy.
+ * Academy Certificate Badge — course completion certification from Galaxy of Beauty Beauty Academy.
  * From Phase W6: Education & Empowerment — Paid Certifications.
  *
  * Usage:

@@ -18,8 +18,8 @@ export const viewport: Viewport = {
 
 export const metadata: Metadata = {
   title: {
-    default: 'Dalal | دلال',
-    template: '%s | Dalal',
+    default: 'Galaxy of Beauty | جالكسي بيوتي',
+    template: '%s | Galaxy of Beauty',
   },
   description:
     'Secure marketplace for beauty & grooming services in Saudi Arabia — book vetted female technicians for hair, nails, skincare, makeup, massage & henna.',
@@ -27,17 +27,17 @@ export const metadata: Metadata = {
   icons: { icon: '/logo.png', apple: '/logo.png' },
   manifest: '/manifest.json',
   openGraph: {
-    title: 'Dalal | دلال',
+    title: 'Galaxy of Beauty | جالكسي بيوتي',
     description:
       'Secure marketplace for beauty & grooming services in Saudi Arabia — book vetted female technicians.',
-    siteName: 'Dalal',
+    siteName: 'Galaxy of Beauty',
     locale: 'ar_SA',
     type: 'website',
     images: ['/logo.png'],
   },
   twitter: {
     card: 'summary',
-    title: 'Dalal | دلال',
+    title: 'Galaxy of Beauty | جالكسي بيوتي',
     description: 'Beauty & grooming marketplace — Saudi Arabia',
   },
   robots: {

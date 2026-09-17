@@ -44,7 +44,7 @@ export function NPSSurvey({
   onDismiss,
   className = '',
   questionTitle = 'كيف كانت تجربتك؟',
-  questionSubtitle = 'ما مدى احتمالية أن توصي صديقاتك بدلال؟',
+  questionSubtitle = 'ما مدى احتمالية أن توصي صديقاتك بجالكسي بيوتي؟',
   excellentText = 'رائع! شكراً لكِ ',
   goodText = 'شكراً لتقييمكِ ',
   poorText = 'نعتذر عن التجربة ',
