@@ -10,6 +10,7 @@ import { useState } from 'react';
 import type { JSX } from 'react';
 import { ScreenState } from '@/components/ScreenState';
 import { useAuthState } from '@/hooks/useAuthState';
+import { useHaptics } from '@/hooks/useHaptics';
 import { trpc } from '@/lib/trpc-react';
 import { useToast } from '@/components/Toast';
 import { useLocale } from '@/components/LocaleProvider';
@@ -31,17 +32,22 @@ export default function WalletTopUpScreen(): JSX.Element {
   const [amount, setAmount] = useState('');
   const [selected, setSelected] = useState<number | null>(null);
   const { showToast } = useToast();
+  // 5.5 Mobile polish — haptic confirmation on payment success.
+  const { trigger } = useHaptics();
   const utils = trpc.useUtils();
   const balance = trpc.wallet.getBalance.useQuery(undefined, { enabled: isAuthed });
 
   const topUp = trpc.wallet.topUp.useMutation({
     onSuccess: (res) => {
+      // 5.5 Mobile polish — haptic confirmation on payment success.
+      trigger('success');
       showToast('success', res.message);
       setAmount('');
       setSelected(null);
       void utils.wallet.getBalance.invalidate();
     },
     onError: () => {
+      trigger('error');
       showToast('error', t('mobile.topUp.top-up-error'));
     },
   });

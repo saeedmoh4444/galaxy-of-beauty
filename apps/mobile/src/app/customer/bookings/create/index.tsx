@@ -15,6 +15,7 @@ import { MAX_LIST_SIZE } from '@galaxy/ui';
 import { localize } from '@galaxy/shared';
 import { useLocale } from '@/components/LocaleProvider';
 import { useToast } from '@/components/Toast';
+import { useHaptics } from '@/hooks/useHaptics';
 
 interface ServiceListItem {
   id?: number;
@@ -163,6 +164,9 @@ export default function CreateBookingScreen() {
     onError: () => showToast('error', t('promo.redeem-failed')),
   });
 
+  // 5.5 Mobile polish — haptic feedback on the booking outcome.
+  const { trigger } = useHaptics();
+
   const createMut = trpc.bookings.create.useMutation({
     onSuccess: (result) => {
       if (appliedPromo) {
@@ -171,10 +175,12 @@ export default function CreateBookingScreen() {
           redeemMut.mutate({ code: appliedPromo.code, bookingId });
         }
       }
+      trigger('success');
       showToast('success', t('booking.created-success'));
       setTimeout(() => router.back(), 1000);
     },
     onError: () => {
+      trigger('error');
       showToast('error', t('booking.create-failed'));
     },
   });

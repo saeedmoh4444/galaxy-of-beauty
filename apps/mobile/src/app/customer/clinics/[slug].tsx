@@ -19,6 +19,7 @@ import { localize } from '@galaxy/shared';
 import { useLocale } from '@/components/LocaleProvider';
 import { useAuthState } from '@/hooks/useAuthState';
 import { useToast } from '@/components/Toast';
+import { useHaptics } from '@/hooks/useHaptics';
 
 const TREATMENT_TYPES = ['dermatology', 'laser', 'injectables', 'dental', 'nutrition'] as const;
 
@@ -43,6 +44,8 @@ export default function ClinicDetailScreen(): JSX.Element {
   const { slug } = useLocalSearchParams<{ slug: string }>();
   const isAuthed = useAuthState();
   const { showToast } = useToast();
+  // 5.5 Mobile polish — haptic confirmation on booking.
+  const { trigger } = useHaptics();
 
   const detailQ = trpc.clinics.detail.useQuery({ slug: slug ?? '' });
   const slotsQ = trpc.clinics.slots.useQuery(
@@ -55,12 +58,16 @@ export default function ClinicDetailScreen(): JSX.Element {
   );
   const bookMut = trpc.clinics.book.useMutation({
     onSuccess: () => {
+      trigger('success');
       showToast('success', t('mobile.clinics.booked'));
       setBookingSlot(null);
       setConsent(false);
       slotsQ.refetch();
     },
-    onError: (e) => showToast('error', e.message),
+    onError: (e) => {
+      trigger('error');
+      showToast('error', e.message);
+    },
   });
 
   const [bookingSlot, setBookingSlot] = useState<Record<string, unknown> | null>(null);
