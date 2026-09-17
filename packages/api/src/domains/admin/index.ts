@@ -19,3 +19,4 @@ export { technicianPerformanceRouter } from '../../routers/technicianPerformance
 export { customerRetentionRouter } from '../../routers/customerRetention';
 export { technicianVerificationRouter } from '../../routers/technicianVerification';
 export { customerSegmentsRouter } from '../../routers/customerSegments';
+export { pricingAdminRouter } from '../../routers/pricingAdmin';
