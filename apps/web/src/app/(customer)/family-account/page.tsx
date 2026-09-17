@@ -269,7 +269,7 @@ export default function FamilyAccountPage(): JSX.Element {
                     size="sm"
                     variant="ghost"
                     onClick={() => handleRemove(m.id, m.name)}
-                    className="text-red-500 hover:text-red-700"
+                    className="text-red-500 dark:text-red-400 hover:text-red-700"
                   >
                     🗑️
                   </Button>

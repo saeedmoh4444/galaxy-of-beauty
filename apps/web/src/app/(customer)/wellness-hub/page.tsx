@@ -167,7 +167,7 @@ export default function WellnessHubPage(): JSX.Element {
               <p className="text-xs text-text-secondary">{t('wellnessHub.stat.mood')}</p>
             </Card>
             <Card padding="md" className="text-center">
-              <p className="text-2xl font-extrabold text-blue-600">
+              <p className="text-2xl font-extrabold text-blue-600 dark:text-blue-400">
                 {d?.todayMood ? String(d.todayMood.energy) + '/10' : '—'}
               </p>
               <p className="text-xs text-text-secondary">{t('wellnessHub.stat.energy')}</p>

@@ -76,7 +76,7 @@ export default function SocialPage(): JSX.Element {
                       {(s.titleJson as Record<string, string>)?.ar ??
                         t('social.serviceFallback', { id: s.serviceId as number })}
                     </span>
-                    <span className="rounded-full bg-red-100 px-2 py-0.5 text-xs text-red-700">
+                    <span className="rounded-full bg-red-100 dark:bg-red-950 px-2 py-0.5 text-xs text-red-700 dark:text-red-300">
                       {t('social.bookings', { count: s.bookingCount as number })}
                     </span>
                   </div>

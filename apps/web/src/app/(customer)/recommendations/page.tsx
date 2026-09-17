@@ -103,7 +103,7 @@ export default function RecommendationsPage(): JSX.Element {
                     {t('recommendations.minutes', { count: s.durationMin as number })}
                   </p>
                   {s.reason === 'popular' && (
-                    <span className="mt-1 inline-block rounded-full bg-amber-100 px-2 py-0.5 text-xs text-amber-700">
+                    <span className="mt-1 inline-block rounded-full bg-amber-100 dark:bg-amber-950 px-2 py-0.5 text-xs text-amber-700 dark:text-amber-300">
                       {t('recommendations.mostRequested')}
                     </span>
                   )}

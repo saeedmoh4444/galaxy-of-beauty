@@ -53,7 +53,7 @@ export default function PriceDropAlertsPage(): JSX.Element {
                   <span className="text-xs text-text-tertiary line-through">
                     {formatCurrency(s.prevPrice as number)}
                   </span>
-                  <span className="text-sm font-extrabold text-green-600">
+                  <span className="text-sm font-extrabold text-green-600 dark:text-green-400">
                     {formatCurrency(s.price as number)} {t('beautyParty.currency')}
                   </span>
                 </div>

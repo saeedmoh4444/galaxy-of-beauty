@@ -143,7 +143,7 @@ export default function StyleMatchPage(): JSX.Element {
                     {customColors.length > 1 && (
                       <button
                         onClick={() => removeColor(i)}
-                        className="text-text-tertiary hover:text-red-500 text-xs"
+                        className="text-text-tertiary hover:text-red-500 hover:dark:text-red-400 text-xs"
                       ></button>
                     )}
                   </div>
@@ -237,7 +237,7 @@ export default function StyleMatchPage(): JSX.Element {
                         {r.style as string}
                       </span>
                       <div className="flex items-center gap-1">
-                        <span className="text-xs font-bold text-green-600">
+                        <span className="text-xs font-bold text-green-600 dark:text-green-400">
                           {r.matchPct as number}%
                         </span>
                         <span className="text-[10px] text-text-tertiary">

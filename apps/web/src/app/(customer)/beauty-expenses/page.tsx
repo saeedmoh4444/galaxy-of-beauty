@@ -48,14 +48,14 @@ export default function BeautyExpensesPage(): JSX.Element {
                 <p className="text-xs text-text-secondary">{t('beautyExpenses.lastMonth')}</p>
               </Card>
               <Card padding="lg" className="text-center">
-                <p className="text-2xl font-extrabold text-green-600">
+                <p className="text-2xl font-extrabold text-green-600 dark:text-green-400">
                   {formatCurrency((data?.thisYearTotal as number) ?? 0)}
                 </p>
                 <p className="text-xs text-text-secondary">{t('beautyExpenses.thisYear')}</p>
               </Card>
               <Card padding="lg" className="text-center">
                 <p
-                  className={`text-2xl font-extrabold ${((data?.monthOverMonth as number) ?? 0) >= 0 ? 'text-red-500' : 'text-green-600'}`}
+                  className={`text-2xl font-extrabold ${((data?.monthOverMonth as number) ?? 0) >= 0 ? 'text-red-500 dark:text-red-400' : 'text-green-600 dark:text-green-400'}`}
                 >
                   {(data?.monthOverMonth as number) ?? 0}%
                 </p>

@@ -61,13 +61,13 @@ export default function WalletPage(): JSX.Element {
             </Card>
             <Card className="text-center">
               <p className="text-sm text-text-secondary">{t('wallet.withdrawable-balance')}</p>
-              <p className="text-2xl font-bold text-green-600">
+              <p className="text-2xl font-bold text-green-600 dark:text-green-400">
                 {formatCurrency(Number(bal?.balance ?? 0))}
               </p>
             </Card>
             <Card className="text-center">
               <p className="text-sm text-text-secondary">{t('wallet.bonus')}</p>
-              <p className="text-2xl font-bold text-amber-600">
+              <p className="text-2xl font-bold text-amber-600 dark:text-amber-400">
                 {formatCurrency(Number(bal?.bonusBalance ?? 0))}
               </p>
             </Card>
@@ -77,7 +77,7 @@ export default function WalletPage(): JSX.Element {
         <div className="flex justify-end">
           <Button onClick={() => setShowWithdraw(true)}>{t('wallet.request-withdraw')}</Button>
         </div>
-        {msg && <p className="text-sm text-green-600">{msg}</p>}
+        {msg && <p className="text-sm text-green-600 dark:text-green-400">{msg}</p>}
 
         <h2 className="text-lg font-semibold">{t('wallet.transactions')}</h2>
         {txs.isLoading ? (
@@ -103,7 +103,7 @@ export default function WalletPage(): JSX.Element {
                     </p>
                   </div>
                   <p
-                    className={`text-sm font-semibold ${tx.type === 'CREDIT' ? 'text-green-600' : 'text-red-600'}`}
+                    className={`text-sm font-semibold ${tx.type === 'CREDIT' ? 'text-green-600 dark:text-green-400' : 'text-red-600 dark:text-red-400'}`}
                   >
                     {tx.type === 'CREDIT' ? '+' : '-'}
                     {formatCurrency(Number(tx.amount))}

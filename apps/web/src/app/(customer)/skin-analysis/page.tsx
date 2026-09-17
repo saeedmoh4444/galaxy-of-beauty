@@ -132,7 +132,7 @@ export default function SkinAnalysisPage(): JSX.Element {
               </div>
               <div className="rounded-xl bg-surface-elevated p-4">
                 <p className="text-xs text-text-secondary">{t('skin.result.hydration')}</p>
-                <p className="text-xl font-bold text-blue-600">
+                <p className="text-xl font-bold text-blue-600 dark:text-blue-400">
                   {(result['hydrationLevel'] as string) || '—'}
                 </p>
               </div>
@@ -144,7 +144,7 @@ export default function SkinAnalysisPage(): JSX.Element {
               </div>
               <div className="rounded-xl bg-surface-elevated p-4">
                 <p className="text-xs text-text-secondary">{t('skin.result.age')}</p>
-                <p className="text-xl font-bold text-amber-600">
+                <p className="text-xl font-bold text-amber-600 dark:text-amber-400">
                   {(result['ageEstimate'] as string) || '—'}
                 </p>
               </div>

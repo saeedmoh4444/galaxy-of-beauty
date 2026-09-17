@@ -53,7 +53,7 @@ export default function FavoritesPage(): JSX.Element {
                     variant="ghost"
                     onClick={() => removeMut.mutate({ id: f.id as number })}
                     loading={removeMut.isPending}
-                    className="text-red-500"
+                    className="text-red-500 dark:text-red-400"
                   >
                     {t('favorites.remove')}
                   </Button>

@@ -71,12 +71,14 @@ export default function BeautyBudgetPage(): JSX.Element {
                   <div className="mt-4 flex justify-around text-sm">
                     <div>
                       <p className="text-text-secondary">{t('beautyBudget.spent')}</p>
-                      <p className="font-bold text-red-500">{formatCurrency(spent)}</p>
+                      <p className="font-bold text-red-500 dark:text-red-400">
+                        {formatCurrency(spent)}
+                      </p>
                     </div>
                     <div>
                       <p className="text-text-secondary">{t('beautyBudget.remaining')}</p>
                       <p
-                        className={`font-bold ${remaining >= 0 ? 'text-green-600' : 'text-red-600'}`}
+                        className={`font-bold ${remaining >= 0 ? 'text-green-600 dark:text-green-400' : 'text-red-600 dark:text-red-400'}`}
                       >
                         {formatCurrency(remaining)}
                       </p>

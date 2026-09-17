@@ -66,12 +66,16 @@ export default function BeautyBudgetPlannerPage(): JSX.Element {
             <p className="text-2xl font-extrabold">{formatCurrency(totalBudget)}</p>
             <p className="text-xs text-text-secondary">{t('beautyBudgetPlanner.budgetLabel')}</p>
           </Card>
-          <Card padding="lg" className="text-center bg-green-50">
-            <p className="text-2xl font-extrabold text-green-600">{formatCurrency(allocated)}</p>
+          <Card padding="lg" className="text-center bg-green-50 dark:bg-green-950">
+            <p className="text-2xl font-extrabold text-green-600 dark:text-green-400">
+              {formatCurrency(allocated)}
+            </p>
             <p className="text-xs text-text-secondary">{t('beautyBudgetPlanner.allocated')}</p>
           </Card>
           <Card padding="lg" className="text-center bg-blue-50">
-            <p className="text-2xl font-extrabold text-blue-600">{formatCurrency(remaining)}</p>
+            <p className="text-2xl font-extrabold text-blue-600 dark:text-blue-400">
+              {formatCurrency(remaining)}
+            </p>
             <p className="text-xs text-text-secondary">{t('beautyBudgetPlanner.remaining')}</p>
           </Card>
         </div>
@@ -104,7 +108,7 @@ export default function BeautyBudgetPlannerPage(): JSX.Element {
                       </div>
                     </div>
                     <p
-                      className={`font-bold ${spent > c.budget ? 'text-red-600' : 'text-brand-600'}`}
+                      className={`font-bold ${spent > c.budget ? 'text-red-600 dark:text-red-400' : 'text-brand-600'}`}
                     >
                       {formatCurrency(spent)}
                     </p>

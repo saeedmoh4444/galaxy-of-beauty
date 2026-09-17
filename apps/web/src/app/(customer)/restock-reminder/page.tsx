@@ -102,7 +102,7 @@ export default function RestockReminderPage(): JSX.Element {
                     </div>
                     <button
                       onClick={() => deleteMut.mutate({ id: item.id as number })}
-                      className="text-text-tertiary hover:text-red-500"
+                      className="text-text-tertiary hover:text-red-500 hover:dark:text-red-400"
                     ></button>
                   </div>
                 </Card>

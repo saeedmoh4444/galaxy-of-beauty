@@ -39,7 +39,9 @@ export default function InvoicesPage(): JSX.Element {
             <p className="text-xs text-text-secondary">{t('invoices.paidCount')}</p>
           </Card>
           <Card padding="lg" className="text-center">
-            <p className="text-2xl font-extrabold text-green-600">{formatCurrency(totalSpent)}</p>
+            <p className="text-2xl font-extrabold text-green-600 dark:text-green-400">
+              {formatCurrency(totalSpent)}
+            </p>
             <p className="text-xs text-text-secondary">{t('invoices.totalSpent')}</p>
           </Card>
         </div>
@@ -73,10 +75,10 @@ export default function InvoicesPage(): JSX.Element {
                       </p>
                     </div>
                     <div className="text-end">
-                      <p className="font-bold text-green-600">
+                      <p className="font-bold text-green-600 dark:text-green-400">
                         {formatCurrency(Number(b.totalAmount) || 0)}
                       </p>
-                      <span className="rounded-full bg-green-100 px-2 py-0.5 text-xs text-green-700">
+                      <span className="rounded-full bg-green-100 dark:bg-green-950 px-2 py-0.5 text-xs text-green-700 dark:text-green-300">
                         {t('invoices.paidBadge')}
                       </span>
                     </div>

@@ -37,11 +37,13 @@ export default function CashbackPage(): JSX.Element {
         ) : (
           <div className="grid gap-4 sm:grid-cols-3">
             <Card padding="lg" className="text-center bg-amber-50">
-              <p className="text-2xl font-extrabold text-amber-600">{info?.rate as number}%</p>
+              <p className="text-2xl font-extrabold text-amber-600 dark:text-amber-400">
+                {info?.rate as number}%
+              </p>
               <p className="text-xs text-text-secondary">{t('cashback.rate')}</p>
             </Card>
-            <Card padding="lg" className="text-center bg-green-50">
-              <p className="text-2xl font-extrabold text-green-600">
+            <Card padding="lg" className="text-center bg-green-50 dark:bg-green-950">
+              <p className="text-2xl font-extrabold text-green-600 dark:text-green-400">
                 {formatCurrency((info?.totalBalance as number) ?? 0)}
               </p>
               <p className="text-xs text-text-secondary">{t('cashback.balance')}</p>
@@ -63,7 +65,7 @@ export default function CashbackPage(): JSX.Element {
 
         {(info?.isFirstBooking as boolean) && (
           <Card padding="lg" className="border-2 border-amber-300 bg-amber-50 text-center">
-            <p className="font-bold text-amber-700">
+            <p className="font-bold text-amber-700 dark:text-amber-300">
               {t('cashback.firstBonusBanner', {
                 amount: formatCurrency(info?.firstBookingBonus as number),
               })}
@@ -86,7 +88,7 @@ export default function CashbackPage(): JSX.Element {
                       locale === 'en' ? 'en-GB' : 'ar-SA',
                     )}
                   </span>
-                  <span className="font-bold text-green-600">
+                  <span className="font-bold text-green-600 dark:text-green-400">
                     +{formatCurrency(tx.amount as number)}
                   </span>
                 </div>

@@ -127,10 +127,10 @@ export default function BeautyDiscoveryPage(): JSX.Element {
                       <span className="text-text-tertiary line-through text-sm">
                         {formatCurrency(d.originalPrice as number)}
                       </span>
-                      <span className="font-bold text-red-600">
+                      <span className="font-bold text-red-600 dark:text-red-400">
                         {formatCurrency(d.dealPrice as number)}
                       </span>
-                      <span className="rounded-full bg-red-100 px-2 py-0.5 text-xs text-red-700">
+                      <span className="rounded-full bg-red-100 dark:bg-red-950 px-2 py-0.5 text-xs text-red-700 dark:text-red-300">
                         -{d.discount as number}%
                       </span>
                     </div>

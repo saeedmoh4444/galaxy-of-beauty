@@ -491,7 +491,7 @@ export default function VendorPortalPage(): JSX.Element {
                 applyGymMut.isError ||
                 applyNailBarMut.isError ||
                 applyAthomeMut.isError) && (
-                <p className="text-sm text-red-600">
+                <p className="text-sm text-red-600 dark:text-red-400">
                   {(applyMut.isError
                     ? applyMut.error?.message
                     : applyClinicMut.isError
@@ -632,8 +632,8 @@ export default function VendorPortalPage(): JSX.Element {
                       <span
                         className={`rounded-full px-2 py-0.5 text-xs font-medium ${
                           o.status === 'FULFILLED'
-                            ? 'bg-green-100 text-green-700'
-                            : 'bg-amber-100 text-amber-700'
+                            ? 'bg-green-100 dark:bg-green-950 text-green-700 dark:text-green-300'
+                            : 'bg-amber-100 dark:bg-amber-950 text-amber-700 dark:text-amber-300'
                         }`}
                       >
                         {o.status === 'FULFILLED'
@@ -679,16 +679,16 @@ export default function VendorPortalPage(): JSX.Element {
                         <span className="text-xs text-text-tertiary line-through">
                           {formatCurrency(payload.originalPrice as number)}
                         </span>
-                        <span className="text-sm font-bold text-red-600">
+                        <span className="text-sm font-bold text-red-600 dark:text-red-400">
                           {formatCurrency(payload.dealPrice as number)}
                         </span>
                         <span
                           className={`rounded-full px-2 py-0.5 text-xs ${
                             sub.status === 'APPROVED'
-                              ? 'bg-green-100 text-green-700'
+                              ? 'bg-green-100 dark:bg-green-950 text-green-700 dark:text-green-300'
                               : sub.status === 'REJECTED'
-                                ? 'bg-red-100 text-red-700'
-                                : 'bg-amber-100 text-amber-700'
+                                ? 'bg-red-100 dark:bg-red-950 text-red-700 dark:text-red-300'
+                                : 'bg-amber-100 dark:bg-amber-950 text-amber-700 dark:text-amber-300'
                           }`}
                         >
                           {sub.status === 'APPROVED'
@@ -786,7 +786,9 @@ export default function VendorPortalPage(): JSX.Element {
               onChange={(e) => setDealEnds(e.target.value)}
             />
             {proposeDealMut.isError && (
-              <p className="text-sm text-red-600">{proposeDealMut.error.message}</p>
+              <p className="text-sm text-red-600 dark:text-red-400">
+                {proposeDealMut.error.message}
+              </p>
             )}
             <Button
               onClick={() =>

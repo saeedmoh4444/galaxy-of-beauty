@@ -249,7 +249,7 @@ export default function CreateBookingPage(): JSX.Element {
                 >
                   {label}
                 </span>
-                {i < 2 && <span className="text-gray-300">→</span>}
+                {i < 2 && <span className="text-gray-300 dark:text-gray-600">→</span>}
               </div>
             ),
           )}
@@ -546,7 +546,7 @@ export default function CreateBookingPage(): JSX.Element {
                     <span className="text-text-secondary">
                       {t('promo.field.discount')} ({appliedPromo.code})
                     </span>
-                    <span className="font-semibold text-green-600">
+                    <span className="font-semibold text-green-600 dark:text-green-400">
                       −{appliedPromo.discountAmount.toFixed(0)} {t('misc.sar')}
                     </span>
                   </div>
@@ -613,7 +613,9 @@ export default function CreateBookingPage(): JSX.Element {
                 </div>
               )}
               {promoMsg && (
-                <p className={`mt-2 text-sm ${promoErr ? 'text-red-600' : 'text-green-600'}`}>
+                <p
+                  className={`mt-2 text-sm ${promoErr ? 'text-red-600 dark:text-red-400' : 'text-green-600 dark:text-green-400'}`}
+                >
                   {promoMsg}
                 </p>
               )}

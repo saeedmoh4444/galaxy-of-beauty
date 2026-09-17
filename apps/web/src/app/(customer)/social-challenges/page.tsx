@@ -113,7 +113,10 @@ export default function SocialChallengesPage(): JSX.Element {
               {joined.map((k) => {
                 const c = CHALLENGES.find((x) => x.key === k);
                 return c ? (
-                  <span key={k} className="rounded-full bg-amber-100 px-3 py-1 text-sm">
+                  <span
+                    key={k}
+                    className="rounded-full bg-amber-100 dark:bg-amber-950 px-3 py-1 text-sm"
+                  >
                     {c.emoji} {t(c.name)}
                   </span>
                 ) : null;

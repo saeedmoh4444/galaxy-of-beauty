@@ -29,9 +29,11 @@ export default function PaymentsPage(): JSX.Element {
           <p className="mt-1 text-sm text-text-secondary">{t('payments.subtitle')}</p>
         </div>
 
-        <Card padding="lg" className="text-center bg-green-50">
+        <Card padding="lg" className="text-center bg-green-50 dark:bg-green-950">
           <p className="text-sm text-text-secondary">{t('payments.totalSpent')}</p>
-          <p className="text-3xl font-extrabold text-green-600">{formatCurrency(totalSpent)}</p>
+          <p className="text-3xl font-extrabold text-green-600 dark:text-green-400">
+            {formatCurrency(totalSpent)}
+          </p>
         </Card>
 
         {isLoading ? (
@@ -64,7 +66,7 @@ export default function PaymentsPage(): JSX.Element {
                   </p>
                 </div>
                 <span
-                  className={`font-bold ${(tx.amount as number) > 0 ? 'text-green-600' : 'text-red-600'}`}
+                  className={`font-bold ${(tx.amount as number) > 0 ? 'text-green-600 dark:text-green-400' : 'text-red-600 dark:text-red-400'}`}
                 >
                   {(tx.amount as number) > 0 ? '+' : ''}
                   {formatCurrency(Math.abs(tx.amount as number))}

@@ -70,9 +70,14 @@ export default function AdvancedBookingPage(): JSX.Element {
         </div>
 
         {done ? (
-          <Card padding="lg" className="text-center border-2 border-green-300 bg-green-50">
+          <Card
+            padding="lg"
+            className="text-center border-2 border-green-300 bg-green-50 dark:bg-green-950"
+          >
             <p className="text-3xl">✅</p>
-            <p className="font-bold text-green-700 mt-2">{t('advancedBooking.success')}</p>
+            <p className="font-bold text-green-700 dark:text-green-300 mt-2">
+              {t('advancedBooking.success')}
+            </p>
           </Card>
         ) : (
           <>
@@ -166,7 +171,9 @@ export default function AdvancedBookingPage(): JSX.Element {
                 </div>
                 <p className="text-sm">
                   {t('advancedBooking.totalAfterDiscount')}{' '}
-                  <span className="font-bold text-green-600">{formatCurrency(totalPrice)}</span>
+                  <span className="font-bold text-green-600 dark:text-green-400">
+                    {formatCurrency(totalPrice)}
+                  </span>
                 </p>
                 <Button
                   onClick={() =>

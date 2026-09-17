@@ -53,7 +53,7 @@ export default function IoTSyncPage(): JSX.Element {
               <span className="text-5xl">{d.emoji as string}</span>
               <h3 className="font-bold mt-2">{d.nameAr as string}</h3>
               <p
-                className={`text-xs mt-1 ${d.status === 'connected' ? 'text-green-600' : 'text-text-tertiary'}`}
+                className={`text-xs mt-1 ${d.status === 'connected' ? 'text-green-600 dark:text-green-400' : 'text-text-tertiary'}`}
               >
                 {d.status === 'connected' ? t('iotSync.connected') : t('iotSync.disconnected')}
               </p>

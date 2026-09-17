@@ -133,7 +133,7 @@ export default function SubscriptionsPage(): JSX.Element {
                           key={i}
                           className="flex items-center gap-2 text-text-secondary dark:text-text-tertiary"
                         >
-                          <span className="text-green-500">&#10003;</span>
+                          <span className="text-green-500 dark:text-green-400">&#10003;</span>
                           {f}
                         </li>
                       ))}

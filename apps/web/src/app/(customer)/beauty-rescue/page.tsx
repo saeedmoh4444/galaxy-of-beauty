@@ -101,13 +101,18 @@ export default function BeautyRescuePage(): JSX.Element {
         </div>
 
         {booked && emergency ? (
-          <Card padding="lg" className="text-center border-2 border-green-300 bg-green-50">
+          <Card
+            padding="lg"
+            className="text-center border-2 border-green-300 bg-green-50 dark:bg-green-950"
+          >
             <p className="text-5xl">✅</p>
-            <p className="font-bold text-green-700 text-xl mt-3">{t('rescue.bookedTitle')}</p>
+            <p className="font-bold text-green-700 dark:text-green-300 text-xl mt-3">
+              {t('rescue.bookedTitle')}
+            </p>
             <p className="text-sm text-text-secondary mt-1">
               {t('rescue.onTheWay', { time: t(emergency.time) })}
             </p>
-            <p className="text-2xl font-extrabold text-green-600 mt-3">
+            <p className="text-2xl font-extrabold text-green-600 dark:text-green-400 mt-3">
               {formatCurrency(emergency.price * surcharge)}
             </p>
             <p className="text-xs text-text-secondary">{t('rescue.includesEmergencyFee')}</p>
@@ -159,7 +164,7 @@ export default function BeautyRescuePage(): JSX.Element {
                   <span>{t('rescue.servicePrice')}</span>
                   <span>{formatCurrency(emergency.price)}</span>
                 </div>
-                <div className="flex justify-between text-sm text-red-600">
+                <div className="flex justify-between text-sm text-red-600 dark:text-red-400">
                   <span>{t('rescue.emergencyFee')}</span>
                   <span>+{formatCurrency(emergency.price * 0.5)}</span>
                 </div>

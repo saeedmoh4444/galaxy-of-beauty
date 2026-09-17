@@ -98,7 +98,7 @@ export default function ExpiryTrackerPage(): JSX.Element {
                         {t('expiryTracker.daysLeft', { days: i.daysLeft as number })}
                       </span>
                     ) : (
-                      <span className="text-sm text-green-600 font-bold">
+                      <span className="text-sm text-green-600 dark:text-green-400 font-bold">
                         {t('expiryTracker.daysLeft', { days: i.daysLeft as number })}
                       </span>
                     )}

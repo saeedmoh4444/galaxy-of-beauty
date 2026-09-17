@@ -118,7 +118,7 @@ export default function ReviewsPage(): JSX.Element {
                           {Array.from({ length: 5 }, (_, i) => (
                             <span
                               key={i}
-                              className={`text-lg ${i < ((b.reviewRating as number) ?? 0) ? 'text-amber-400' : 'text-gray-300'}`}
+                              className={`text-lg ${i < ((b.reviewRating as number) ?? 0) ? 'text-amber-400' : 'text-gray-300 dark:text-gray-600'}`}
                             >
                               &#9733;
                             </span>
@@ -158,7 +158,7 @@ export default function ReviewsPage(): JSX.Element {
                 <button
                   key={star}
                   type="button"
-                  className={`text-3xl transition-colors ${star <= (hoverRating || rating) ? 'text-amber-400' : 'text-gray-300'}`}
+                  className={`text-3xl transition-colors ${star <= (hoverRating || rating) ? 'text-amber-400' : 'text-gray-300 dark:text-gray-600'}`}
                   onClick={() => setRating(star)}
                   onMouseEnter={() => setHoverRating(star)}
                   onMouseLeave={() => setHoverRating(0)}

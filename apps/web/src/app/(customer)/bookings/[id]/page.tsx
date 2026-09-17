@@ -24,11 +24,11 @@ const STATUS_LABELS: Record<string, TranslationKey> = {
 };
 
 const STATUS_COLORS: Record<string, string> = {
-  REQUESTED: 'bg-amber-100 text-amber-700',
+  REQUESTED: 'bg-amber-100 dark:bg-amber-950 text-amber-700 dark:text-amber-300',
   ACCEPTED: 'bg-blue-100 text-blue-700',
-  COMPLETED: 'bg-green-100 text-green-700',
-  CANCELLED: 'bg-red-100 text-red-700',
-  REJECTED: 'bg-red-100 text-red-700',
+  COMPLETED: 'bg-green-100 dark:bg-green-950 text-green-700 dark:text-green-300',
+  CANCELLED: 'bg-red-100 dark:bg-red-950 text-red-700 dark:text-red-300',
+  REJECTED: 'bg-red-100 dark:bg-red-950 text-red-700 dark:text-red-300',
   NO_SHOW: 'bg-surface-muted text-text-secondary',
 };
 

@@ -70,7 +70,7 @@ export default function BeautyPartyPage(): JSX.Element {
               <span>{formatCurrency(total)}</span>
             </div>
             {discount > 0 && (
-              <div className="flex justify-between text-sm text-green-600">
+              <div className="flex justify-between text-sm text-green-600 dark:text-green-400">
                 <span>{t('beautyParty.groupDiscount', { discount })}</span>
                 <span>-{formatCurrency((total * discount) / 100)}</span>
               </div>

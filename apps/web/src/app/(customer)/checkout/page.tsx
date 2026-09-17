@@ -56,9 +56,14 @@ export default function CheckoutPage(): JSX.Element {
         ) : cartItems.length === 0 ? (
           <EmptyState title={t('wallet.empty-cart')} />
         ) : placed ? (
-          <Card padding="lg" className="text-center border-2 border-green-300 bg-green-50">
-            <Icon name="check" size="xl" className="mx-auto text-green-600" />
-            <p className="font-bold text-green-700 mt-2">{t('wallet.order-placed')}</p>
+          <Card
+            padding="lg"
+            className="text-center border-2 border-green-300 bg-green-50 dark:bg-green-950"
+          >
+            <Icon name="check" size="xl" className="mx-auto text-green-600 dark:text-green-400" />
+            <p className="font-bold text-green-700 dark:text-green-300 mt-2">
+              {t('wallet.order-placed')}
+            </p>
             <p className="text-sm text-text-secondary mt-1">{t('wallet.order-confirm-message')}</p>
           </Card>
         ) : (
@@ -121,7 +126,9 @@ export default function CheckoutPage(): JSX.Element {
               </div>
             </Card>
 
-            {buyMut.isError && <p className="text-sm text-red-600">{buyMut.error.message}</p>}
+            {buyMut.isError && (
+              <p className="text-sm text-red-600 dark:text-red-400">{buyMut.error.message}</p>
+            )}
             <Button
               onClick={() => buyMut.mutate({})}
               loading={buyMut.isPending}

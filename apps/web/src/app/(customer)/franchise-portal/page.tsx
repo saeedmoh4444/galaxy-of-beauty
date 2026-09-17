@@ -55,7 +55,9 @@ export default function FranchisePortalPage(): JSX.Element {
             </Card>
             <Card padding="md" className="text-center">
               <p className="text-3xl">📈</p>
-              <p className="text-2xl font-bold text-green-600">+{(dash?.growth as number) ?? 0}%</p>
+              <p className="text-2xl font-bold text-green-600 dark:text-green-400">
+                +{(dash?.growth as number) ?? 0}%
+              </p>
               <p className="text-xs text-text-secondary">{t('franchisePortal.growth')}</p>
             </Card>
           </div>
@@ -76,7 +78,7 @@ export default function FranchisePortalPage(): JSX.Element {
                   {formatCurrency(l.revenue as number)}
                 </span>
                 <span
-                  className={`rounded-full px-2 py-0.5 text-xs ${l.status === 'active' ? 'bg-green-100 text-green-700' : 'bg-yellow-100 text-yellow-700'}`}
+                  className={`rounded-full px-2 py-0.5 text-xs ${l.status === 'active' ? 'bg-green-100 dark:bg-green-950 text-green-700 dark:text-green-300' : 'bg-yellow-100 dark:bg-yellow-950 text-yellow-700 dark:text-yellow-300'}`}
                 >
                   {l.status === 'active'
                     ? t('franchisePortal.active')

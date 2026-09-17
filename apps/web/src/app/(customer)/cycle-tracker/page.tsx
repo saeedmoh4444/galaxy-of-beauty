@@ -271,7 +271,9 @@ export default function CycleTrackerPage(): JSX.Element {
               </p>
             )}
             {!today?.hasSettings && (
-              <p className="text-xs text-amber-600 mt-2">{t('cycleTracker.noSettings')}</p>
+              <p className="text-xs text-amber-600 dark:text-amber-400 mt-2">
+                {t('cycleTracker.noSettings')}
+              </p>
             )}
             {/* E4a — fertile window + prediction source */}
             {fertileWindow && (
@@ -336,7 +338,7 @@ export default function CycleTrackerPage(): JSX.Element {
                     <button
                       key={f}
                       onClick={() => setFlow(f === flow ? '' : f)}
-                      className={`rounded-full px-4 py-1.5 text-xs ${flow === f ? 'bg-red-100 text-red-700 ring-1 ring-red-400' : 'bg-surface-muted'}`}
+                      className={`rounded-full px-4 py-1.5 text-xs ${flow === f ? 'bg-red-100 dark:bg-red-950 text-red-700 dark:text-red-300 ring-1 ring-red-400' : 'bg-surface-muted'}`}
                     >
                       {f === 'light'
                         ? t('cycleTracker.flow.light')

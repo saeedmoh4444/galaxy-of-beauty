@@ -56,7 +56,7 @@ export default function FollowingPage(): JSX.Element {
                     variant="ghost"
                     onClick={() => unfollowMut.mutate({ technicianId: f.technicianId as number })}
                     loading={unfollowMut.isPending}
-                    className="text-red-500"
+                    className="text-red-500 dark:text-red-400"
                   >
                     {t('following.unfollow')}
                   </Button>

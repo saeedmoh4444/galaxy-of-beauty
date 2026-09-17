@@ -154,7 +154,7 @@ export default function WellnessTrackerPage(): JSX.Element {
           <div className="grid gap-4 sm:grid-cols-5">
             <Card padding="md" className="text-center">
               <p className="text-3xl">💧</p>
-              <p className="text-2xl font-bold text-blue-600">{w.avgWater}</p>
+              <p className="text-2xl font-bold text-blue-600 dark:text-blue-400">{w.avgWater}</p>
               <p className="text-xs text-text-secondary">{t('wellnessTracker.avgWater')}</p>
             </Card>
             <Card padding="md" className="text-center">
@@ -164,19 +164,21 @@ export default function WellnessTrackerPage(): JSX.Element {
             </Card>
             <Card padding="md" className="text-center">
               <p className="text-3xl">😊</p>
-              <p className="text-2xl font-bold text-amber-600">{w.avgMood}</p>
+              <p className="text-2xl font-bold text-amber-600 dark:text-amber-400">{w.avgMood}</p>
               <p className="text-xs text-text-secondary">{t('wellnessHub.avgMood')}</p>
             </Card>
             <Card padding="md" className="text-center">
               <p className="text-3xl">👟</p>
-              <p className="text-2xl font-bold text-green-600">
+              <p className="text-2xl font-bold text-green-600 dark:text-green-400">
                 {(w.totalSteps / 1000).toFixed(1)}k
               </p>
               <p className="text-xs text-text-secondary">{t('wellnessTracker.totalSteps')}</p>
             </Card>
             <Card padding="md" className="text-center">
               <p className="text-3xl">🧴</p>
-              <p className="text-2xl font-bold text-pink-600">{w.skincareDays}/7</p>
+              <p className="text-2xl font-bold text-pink-600 dark:text-pink-300">
+                {w.skincareDays}/7
+              </p>
               <p className="text-xs text-text-secondary">{t('wellnessTracker.skincareDays')}</p>
             </Card>
           </div>

@@ -75,7 +75,9 @@ export default function MyJourneyPage(): JSX.Element {
           </Card>
           <Card className="text-center" padding="lg">
             <span className="text-3xl">✅</span>
-            <p className="text-3xl font-extrabold text-pink-600 mt-2">{completed.length}</p>
+            <p className="text-3xl font-extrabold text-pink-600 dark:text-pink-300 mt-2">
+              {completed.length}
+            </p>
             <p className="text-sm text-text-secondary">{t('myJourney.completedBookings')}</p>
           </Card>
           <Card className="text-center" padding="lg">
@@ -85,7 +87,9 @@ export default function MyJourneyPage(): JSX.Element {
           </Card>
           <Card className="text-center" padding="lg">
             <span className="text-3xl">💇</span>
-            <p className="text-3xl font-extrabold text-amber-600 mt-2">{uniqueTechnicians}</p>
+            <p className="text-3xl font-extrabold text-amber-600 dark:text-amber-400 mt-2">
+              {uniqueTechnicians}
+            </p>
             <p className="text-sm text-text-secondary">{t('myJourney.uniqueTechs')}</p>
           </Card>
         </div>
@@ -94,7 +98,9 @@ export default function MyJourneyPage(): JSX.Element {
         <div className="grid gap-4 sm:grid-cols-2">
           <Card padding="md" className="text-center">
             <p className="text-sm text-text-secondary">{t('myJourney.totalSpent')}</p>
-            <p className="text-2xl font-extrabold text-green-600">{formatCurrency(totalSpent)}</p>
+            <p className="text-2xl font-extrabold text-green-600 dark:text-green-400">
+              {formatCurrency(totalSpent)}
+            </p>
           </Card>
           <Card padding="md" className="text-center">
             <p className="text-sm text-text-secondary">{t('myJourney.bestStreak')}</p>
@@ -126,7 +132,9 @@ export default function MyJourneyPage(): JSX.Element {
                     </p>
                   )}
                 </div>
-                {m.achieved && <span className="text-green-600 text-sm">✅</span>}
+                {m.achieved && (
+                  <span className="text-green-600 dark:text-green-400 text-sm">✅</span>
+                )}
               </div>
             ))}
           </div>

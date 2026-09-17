@@ -389,7 +389,7 @@ export default function GroupBookingsPage(): JSX.Element {
                       <button
                         type="button"
                         onClick={() => removeMember(idx)}
-                        className="text-text-tertiary hover:text-red-500 p-1"
+                        className="text-text-tertiary hover:text-red-500 hover:dark:text-red-400 p-1"
                       ></button>
                     )}
                   </div>

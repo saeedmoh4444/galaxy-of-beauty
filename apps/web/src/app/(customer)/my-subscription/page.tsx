@@ -113,7 +113,9 @@ export default function MySubscriptionPage(): JSX.Element {
                 <p className="text-text-secondary">{t('mySubscription.remaining')}</p>
               </div>
               <div className="text-center">
-                <p className="font-bold text-green-600">-{plan.discountPercent || 0}%</p>
+                <p className="font-bold text-green-600 dark:text-green-400">
+                  -{plan.discountPercent || 0}%
+                </p>
                 <p className="text-text-secondary">{t('mySubscription.savings')}</p>
               </div>
             </div>
@@ -127,7 +129,7 @@ export default function MySubscriptionPage(): JSX.Element {
             <div className="flex justify-between">
               <span className="text-text-secondary">{t('mySubscription.statusLabel')}</span>
               <span
-                className={`font-bold ${sub.status === 'ACTIVE' ? 'text-green-600' : (sub.status as string) === 'PAUSED' ? 'text-amber-600' : 'text-red-600'}`}
+                className={`font-bold ${sub.status === 'ACTIVE' ? 'text-green-600 dark:text-green-400' : (sub.status as string) === 'PAUSED' ? 'text-amber-600 dark:text-amber-400' : 'text-red-600 dark:text-red-400'}`}
               >
                 {sub.status === 'ACTIVE'
                   ? t('mySubscription.status.active')
@@ -142,7 +144,9 @@ export default function MySubscriptionPage(): JSX.Element {
             </div>
             <div className="flex justify-between">
               <span className="text-text-secondary">{t('mySubscription.discount')}</span>
-              <span className="text-green-600 font-bold">-{plan.discountPercent || 0}%</span>
+              <span className="text-green-600 dark:text-green-400 font-bold">
+                -{plan.discountPercent || 0}%
+              </span>
             </div>
             <div className="flex justify-between">
               <span className="text-text-secondary">{t('mySubscription.remainingBookings')}</span>
@@ -168,7 +172,7 @@ export default function MySubscriptionPage(): JSX.Element {
           <Link href="/subscription-boxes" className="text-sm text-brand-600 hover:underline">
             {t('mySubscription.changePlan')}
           </Link>
-          <span className="mx-2 text-gray-300">|</span>
+          <span className="mx-2 text-gray-300 dark:text-gray-600">|</span>
           <Link href="/wallet" className="text-sm text-brand-600 hover:underline">
             {t('mySubscription.wallet')}
           </Link>
