@@ -2,6 +2,7 @@ import { View, Text, ScrollView, StyleSheet, TouchableOpacity, RefreshControl } 
 import { useState } from 'react';
 import type { JSX } from 'react';
 import { ErrorAlert } from '@/components/ErrorAlert';
+import { Icon } from '@/components/Icon';
 import { SkeletonList } from '@/components/SkeletonCard';
 import { useAuthState } from '@/hooks/useAuthState';
 import { trpc } from '@/lib/trpc-react';
@@ -118,7 +119,7 @@ export default function VirtualConsultationScreen(): JSX.Element {
             alignItems: 'center',
           }}
         >
-          <Text style={{ fontSize: 32 }}>✅</Text>
+          <Icon name="check-circle" size={32} color="#059669" />
           <Text style={{ fontWeight: '700', color: '#059669', marginTop: 8 }}>
             {t('mobile.virtualConsultation.booked')}
           </Text>
