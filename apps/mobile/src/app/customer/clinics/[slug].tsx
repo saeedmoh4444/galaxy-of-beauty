@@ -12,6 +12,7 @@ import {
 import { useLocalSearchParams } from 'expo-router';
 import { ErrorAlert } from '@/components/ErrorAlert';
 import { SkeletonList } from '@/components/SkeletonCard';
+import { TrustChips } from '@/components/TrustChips';
 import { trpc } from '@/lib/trpc-react';
 import { localize } from '@galaxy/shared';
 import { useLocale } from '@/components/LocaleProvider';
@@ -30,6 +31,8 @@ interface ClinicDetail {
   descriptionJson?: { ar?: string; en?: string } | null;
   ratingAvg?: number;
   totalReviews?: number;
+  womenOnlyStaff?: boolean;
+  privateSuite?: boolean;
   packages?: Array<Record<string, unknown>>;
 }
 
@@ -88,11 +91,19 @@ export default function ClinicDetailScreen(): JSX.Element {
         {t(`clinics.treatment.${clinic.clinicType ?? ''}` as never)} ·{' '}
         {t('mobile.clinics.price', { price: Number(clinic.consultationPrice ?? 0) })}
       </Text>
-      {clinic.licenseVerifiedAt ? (
-        <Text style={s.badge}>
-          {t('mobile.clinics.verified')} · {clinic.licenseAgency ?? ''}
-        </Text>
-      ) : null}
+      <TrustChips
+        verifiedLabel={
+          clinic.licenseVerifiedAt
+            ? `${t('mobile.clinics.verified')} · ${clinic.licenseAgency ?? ''}`
+            : undefined
+        }
+        rating={clinic.ratingAvg}
+        reviews={clinic.totalReviews}
+        womenOnly={clinic.womenOnlyStaff}
+        womenOnlyLabel={t('mobile.public.service-detail.trust.womenOnly')}
+        privateSuite={clinic.privateSuite}
+        privateSuiteLabel={t('mobile.public.service-detail.trust.privateSuite')}
+      />
       {clinic.descriptionJson?.[locale] ? (
         <Text style={s.bio}>{clinic.descriptionJson[locale]}</Text>
       ) : null}
@@ -189,17 +200,6 @@ const s = StyleSheet.create({
   name: { fontSize: 22, fontWeight: '800', color: '#111827' },
   meta: { fontSize: 13, color: '#6b7280', marginTop: 4 },
   bio: { fontSize: 13, color: '#6b7280', marginTop: 8, lineHeight: 20 },
-  badge: {
-    fontSize: 11,
-    color: '#047857',
-    backgroundColor: '#d1fae5',
-    alignSelf: 'flex-start',
-    paddingHorizontal: 8,
-    paddingVertical: 2,
-    borderRadius: 999,
-    marginTop: 6,
-    overflow: 'hidden',
-  },
   section: { fontSize: 16, fontWeight: '700', color: '#111827', marginTop: 20, marginBottom: 8 },
   empty: { color: '#9ca3af', fontSize: 13 },
   slotRow: {
