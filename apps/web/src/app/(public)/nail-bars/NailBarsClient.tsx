@@ -7,6 +7,8 @@ import { useLocale } from '@/components/LocaleProvider';
 
 export interface NailBarsPageData {
   nailBars: Array<Record<string, unknown>>;
+  /** K3 (W9) — active child-friendly filter state. */
+  childFriendly?: boolean;
   fetchError?: string;
 }
 
@@ -31,6 +33,17 @@ export function NailBarsClient({ data }: { data: NailBarsPageData }): JSX.Elemen
         className="mb-2"
       />
       <div className="mx-auto max-w-5xl space-y-6 px-4 pb-8">
+        {/* K3 (W9) — child-friendly corner filter */}
+        <Link
+          href={data.childFriendly ? '/nail-bars' : '/nail-bars?childFriendly=1'}
+          className={`inline-flex items-center gap-2 rounded-full px-4 py-1.5 text-sm font-semibold ring-1 transition-colors ${
+            data.childFriendly
+              ? 'bg-brand-600 text-white ring-brand-600'
+              : 'bg-surface-elevated text-text-secondary ring-edge hover:text-brand-600'
+          }`}
+        >
+          🧸 {t('trust.childFriendly')}
+        </Link>
         {data.nailBars.length === 0 ? (
           <EmptyState title={t('nailBars.empty')} />
         ) : (
@@ -78,6 +91,9 @@ export function NailBarsClient({ data }: { data: NailBarsPageData }): JSX.Elemen
                         : []),
                       ...(n.privateSuite
                         ? [{ variant: 'private' as const, label: t('trust.privateSuite') }]
+                        : []),
+                      ...(n.childFriendlyCorner
+                        ? [{ variant: 'childFriendly' as const, label: t('trust.childFriendly') }]
                         : []),
                     ]}
                   />

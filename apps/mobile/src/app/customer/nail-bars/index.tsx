@@ -1,4 +1,5 @@
 import type { JSX } from 'react';
+import { useState } from 'react';
 import { View, Text, ScrollView, StyleSheet, TouchableOpacity, RefreshControl } from 'react-native';
 import { useRouter } from 'expo-router';
 import { ErrorAlert } from '@/components/ErrorAlert';
@@ -17,12 +18,19 @@ interface NailBarItem {
   totalReviews?: number;
   womenOnlyStaff?: boolean;
   privateSuite?: boolean;
+  childFriendlyCorner?: boolean;
 }
 
 export default function NailBarsScreen(): JSX.Element {
   const { t } = useLocale();
   const router = useRouter();
-  const barsQ = trpc.nailBars.list.useQuery({ page: 1, limit: 50 });
+  // K3 (kids plan, W9) — child-friendly corner filter.
+  const [childFriendly, setChildFriendly] = useState(false);
+  const barsQ = trpc.nailBars.list.useQuery({
+    page: 1,
+    limit: 50,
+    ...(childFriendly ? { childFriendly: true } : {}),
+  });
 
   const bars: NailBarItem[] = Array.isArray(
     (barsQ.data as unknown as { items?: NailBarItem[] } | null)?.items,
@@ -48,6 +56,15 @@ export default function NailBarsScreen(): JSX.Element {
       }
     >
       <Text style={s.title}>{t('mobile.nailBars.title')}</Text>
+      <TouchableOpacity
+        style={[s.filterChip, childFriendly && s.filterChipActive]}
+        onPress={() => setChildFriendly((v) => !v)}
+        testID="nail-bars-child-friendly-filter"
+      >
+        <Text style={[s.filterChipText, childFriendly && s.filterChipTextActive]}>
+          🧸 {t('mobile.nailBars.child-friendly')}
+        </Text>
+      </TouchableOpacity>
       {bars.map((bar) => (
         <TouchableOpacity
           key={bar.id}
@@ -70,6 +87,8 @@ export default function NailBarsScreen(): JSX.Element {
               womenOnlyLabel={t('mobile.public.service-detail.trust.womenOnly')}
               privateSuite={bar.privateSuite}
               privateSuiteLabel={t('mobile.public.service-detail.trust.privateSuite')}
+              childFriendly={bar.childFriendlyCorner}
+              childFriendlyLabel={t('mobile.nailBars.child-friendly')}
             />
           </View>
         </TouchableOpacity>
@@ -83,6 +102,19 @@ const s = StyleSheet.create({
   c: { flex: 1, backgroundColor: '#fff' },
   i: { padding: 16, paddingBottom: 40 },
   title: { fontSize: 22, fontWeight: '800', color: '#111827', marginBottom: 16 },
+  filterChip: {
+    alignSelf: 'flex-start',
+    borderRadius: 999,
+    borderWidth: 1,
+    borderColor: '#e5e7eb',
+    backgroundColor: '#fff',
+    paddingHorizontal: 12,
+    paddingVertical: 6,
+    marginBottom: 12,
+  },
+  filterChipActive: { backgroundColor: '#db2777', borderColor: '#db2777' },
+  filterChipText: { fontSize: 12, fontWeight: '700', color: '#6b7280' },
+  filterChipTextActive: { color: '#fff' },
   card: {
     flexDirection: 'row',
     alignItems: 'center',

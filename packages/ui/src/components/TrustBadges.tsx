@@ -8,7 +8,8 @@ import type { JSX } from 'react';
  * Labels come from the i18n catalog — the component holds no copy.
  */
 
-export type TrustBadgeVariant = 'womenOnly' | 'private' | 'verified' | 'rating' | 'safeSpace';
+export type TrustBadgeVariant =
+  'womenOnly' | 'private' | 'verified' | 'rating' | 'safeSpace' | 'childFriendly';
 
 const VARIANT_GLYPH: Record<TrustBadgeVariant, string> = {
   womenOnly: '🌸',
@@ -16,6 +17,7 @@ const VARIANT_GLYPH: Record<TrustBadgeVariant, string> = {
   verified: '✓',
   rating: '★',
   safeSpace: '✨',
+  childFriendly: '🧸',
 };
 
 export function TrustBadge({

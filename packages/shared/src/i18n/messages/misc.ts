@@ -4205,6 +4205,8 @@ export const miscMessages = {
   },
   // E6d — trust badges (Tier 2)
   'trust.womenOnly': { ar: 'كادر نسائي فقط', en: 'Women-only staff' },
+  // K3 (kids plan, W9) — child-friendly corner flag.
+  'trust.childFriendly': { ar: 'ركن أطفال', en: 'Child-friendly corner' },
   'trust.privateSuite': { ar: 'جناح خاص', en: 'Private suite' },
   'trust.pregnancySafe': { ar: 'آمن للحمل', en: 'Pregnancy-safe' },
   // Phase 3 sprint 2 — service-detail trust layer

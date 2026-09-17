@@ -1371,6 +1371,8 @@ model Vendor {
   // E6d — trust badges at the venue level (clinics/gyms/nail bars).
   womenOnlyStaff Boolean @default(false)
   privateSuite   Boolean @default(false)
+  // K3 (kids plan, W9) — child-friendly corner in salons (toys/coloring).
+  childFriendlyCorner Boolean @default(false)
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
 

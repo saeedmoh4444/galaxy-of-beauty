@@ -356,6 +356,7 @@ export const mobileCustomerBMessages = {
   'mobile.nailBars.empty': { ar: 'لا توجد صالونات أظافر', en: 'No nail bars' },
   'mobile.nailBars.load-error': { ar: 'فشل تحميل الصالونات', en: 'Failed to load nail bars' },
   'mobile.nailBars.verified': { ar: 'مصرح', en: 'Licensed' },
+  'mobile.nailBars.child-friendly': { ar: 'ركن أطفال', en: 'Child-friendly corner' },
   'mobile.nailBars.pay-at-venue': { ar: 'الدفع في الصالون', en: 'Pay at venue' },
   'mobile.nailBars.slots': { ar: 'المحطات المتاحة', en: 'Available stations' },
   'mobile.nailBars.no-slots': { ar: 'لا توجد مواعيد متاحة', en: 'No slots available' },

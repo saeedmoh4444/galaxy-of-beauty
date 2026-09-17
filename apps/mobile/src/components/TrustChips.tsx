@@ -10,6 +10,9 @@ interface TrustChipsProps {
   womenOnlyLabel?: string;
   privateSuite?: boolean;
   privateSuiteLabel?: string;
+  /** K3 (kids plan, W9) — child-friendly corner flag. */
+  childFriendly?: boolean;
+  childFriendlyLabel?: string;
 }
 
 /**
@@ -25,6 +28,8 @@ export function TrustChips({
   womenOnlyLabel,
   privateSuite,
   privateSuiteLabel,
+  childFriendly,
+  childFriendlyLabel,
 }: TrustChipsProps) {
   const showRating = typeof rating === 'number' && rating > 0;
   return (
@@ -54,6 +59,12 @@ export function TrustChips({
         <View style={[styles.chip, styles.chipPink]}>
           <Icon name="lock" size={11} color="#9d174d" />
           <Text style={[styles.text, styles.textPink]}>{privateSuiteLabel}</Text>
+        </View>
+      ) : null}
+      {childFriendly && childFriendlyLabel ? (
+        <View style={[styles.chip, styles.chipAmber]}>
+          <Icon name="happy" size={11} color="#b45309" />
+          <Text style={[styles.text, styles.textAmber]}>{childFriendlyLabel}</Text>
         </View>
       ) : null}
     </View>
