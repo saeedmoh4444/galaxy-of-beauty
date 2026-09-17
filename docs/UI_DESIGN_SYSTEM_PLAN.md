@@ -166,6 +166,12 @@ private-suite) + icon swaps in the service-detail trust row.
 Acceptance: grep finds zero hero-emoji sites in apps/mobile/src;
 mobile builds (tsc + lint) green; screenshots for home/discover/services.
 
+Long-tail emoji audit (parked 2026-09-12, verified clean 2026-09-17):
+the `emoji:''` props and lone U+200D/U+FE0F blanks were eliminated by
+the #165–#178 sweeps. `scripts/zwj-stray-scan.mjs` is the regression
+guard — flags stray ZWJ/VS16 chars (valid keycap sequences excluded);
+runs against apps/web, packages/ui and apps/mobile, currently 0 hits.
+
 ## 4. Design direction (what "modern" means HERE)
 
 The platform's moat is trust + women-first. The design must radiate:
