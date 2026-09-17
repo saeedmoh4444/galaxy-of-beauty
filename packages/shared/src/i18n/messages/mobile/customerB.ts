@@ -617,6 +617,7 @@ export const mobileCustomerBMessages = {
   'mobile.familyAccount.save': { ar: 'حفظ', en: 'Save' },
   'mobile.familyAccount.cancel': { ar: 'إلغاء', en: 'Cancel' },
   'mobile.familyAccount.saved': { ar: 'تم حفظ بيانات السلامة', en: 'Safety details saved' },
+  'mobile.familyAccount.kids-services': { ar: 'تصفحي خدمات الأطفال', en: 'Browse kids services' },
   'mobile.booking.bundle-selected': {
     ar: 'باقة ماما وأنا: {name}',
     en: 'Mommy & Me bundle: {name}',

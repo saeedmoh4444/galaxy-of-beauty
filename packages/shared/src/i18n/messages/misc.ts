@@ -1188,6 +1188,7 @@ export const miscMessages = {
   },
   'family.empty.action': { ar: 'إضافة أول فرد', en: 'Add First Member' },
   'family.prevBookings': { ar: '{count} حجز سابق', en: '{count} previous booking(s)' },
+  'family.kidsServices': { ar: 'تصفحي خدمات الأطفال', en: 'Browse kids services' },
   'family.bookFor': { ar: 'احجزي لـ{name}', en: 'Book for {name}' },
   'family.confirmRemove': {
     ar: 'هل أنتِ متأكدة من حذف "{name}" من حساب العائلة؟',
