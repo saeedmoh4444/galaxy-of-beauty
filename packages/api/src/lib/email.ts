@@ -90,6 +90,49 @@ export async function sendEmail({ to, subject, html }: SendEmailParams): Promise
 }
 
 /**
+ * Dark-mode-aware email shell (ENHANCEMENT_PLAN 5.3).
+ *
+ * Declares color-scheme support so dark email clients invert the page
+ * chrome, then swaps the hardcoded light surfaces (lavender wash, white
+ * cards, gray text) via prefers-color-scheme media queries. Every
+ * outbound template should run its body through this helper.
+ */
+export function emailShell(inner: string, dir: 'rtl' | 'ltr' = 'rtl'): string {
+  return `
+    <!doctype html>
+    <html lang="${dir === 'rtl' ? 'ar' : 'en'}" dir="${dir}">
+      <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <meta name="color-scheme" content="light dark" />
+        <meta name="supported-color-schemes" content="light dark" />
+        <style>
+          :root { color-scheme: light dark; }
+          body { margin: 0; padding: 0; }
+          .gob-shell { background: #faf5ff; padding: 20px; }
+          .gob-card { background: #ffffff; }
+          .gob-text-strong { color: #111827; }
+          .gob-text-soft { color: #6b7280; }
+          .gob-text-muted { color: #9ca3af; }
+          .gob-divider { border-color: #e5e7eb; }
+          @media (prefers-color-scheme: dark) {
+            .gob-shell { background: #1f1235; }
+            .gob-card { background: #2d1b4e; }
+            .gob-text-strong { color: #f5f3ff; }
+            .gob-text-soft { color: #c4b5fd; }
+            .gob-text-muted { color: #a78bfa; }
+            .gob-divider { border-color: #4c3a75; }
+          }
+        </style>
+      </head>
+      <body>
+        ${inner}
+      </body>
+    </html>
+  `;
+}
+
+/**
  * Send a password reset email.
  */
 export async function sendPasswordResetEmail(
@@ -107,28 +150,31 @@ export async function sendPasswordResetEmail(
     : 'Password Reset - Galaxy of Beauty';
 
   const html = isAr
-    ? `
-      <div dir="rtl" style="font-family: Tahoma, sans-serif; max-width: 480px; margin: auto; padding: 24px;">
-        <h2 style="color: #7c3aed;">مرحباً ${name}،</h2>
-        <p>لقد طلبتِ إعادة تعيين كلمة المرور لحسابك في <strong>جالكسي بيوتي</strong>.</p>
-        <p>انقري على الزر أدناه لإعادة تعيين كلمة المرور (صالح لمدة ساعة واحدة):</p>
+    ? emailShell(`
+      <div style="font-family: Tahoma, sans-serif; max-width: 480px; margin: auto; padding: 24px;">
+        <h2 style="color: #a78bfa;">مرحباً ${name}،</h2>
+        <p class="gob-text-strong">لقد طلبتِ إعادة تعيين كلمة المرور لحسابك في <strong>جالكسي بيوتي</strong>.</p>
+        <p class="gob-text-soft">انقري على الزر أدناه لإعادة تعيين كلمة المرور (صالح لمدة ساعة واحدة):</p>
         <a href="${resetUrl}" style="display: inline-block; background: #7c3aed; color: #fff; padding: 12px 32px; border-radius: 8px; text-decoration: none; font-size: 16px; margin: 16px 0;">إعادة تعيين كلمة المرور</a>
-        <p style="color: #6b7280; font-size: 14px;">إذا لم تطلبي إعادة التعيين، يمكنك تجاهل هذا البريد الإلكتروني.</p>
-        <hr style="border: none; border-top: 1px solid #e5e7eb; margin: 24px 0;" />
-        <p style="color: #9ca3af; font-size: 12px;">جالكسي بيوتي — منصتكِ للجمال والعناية</p>
+        <p class="gob-text-soft" style="font-size: 14px;">إذا لم تطلبي إعادة التعيين، يمكنك تجاهل هذا البريد الإلكتروني.</p>
+        <hr class="gob-divider" style="border: none; border-top: 1px solid; margin: 24px 0;" />
+        <p class="gob-text-muted" style="font-size: 12px;">جالكسي بيوتي — منصتكِ للجمال والعناية</p>
       </div>
-    `
-    : `
+    `)
+    : emailShell(
+        `
       <div style="font-family: Arial, sans-serif; max-width: 480px; margin: auto; padding: 24px;">
-        <h2 style="color: #7c3aed;">Hello ${name},</h2>
-        <p>You requested a password reset for your <strong>Galaxy of Beauty</strong> account.</p>
-        <p>Click the button below to reset your password (valid for 1 hour):</p>
+        <h2 style="color: #a78bfa;">Hello ${name},</h2>
+        <p class="gob-text-strong">You requested a password reset for your <strong>Galaxy of Beauty</strong> account.</p>
+        <p class="gob-text-soft">Click the button below to reset your password (valid for 1 hour):</p>
         <a href="${resetUrl}" style="display: inline-block; background: #7c3aed; color: #fff; padding: 12px 32px; border-radius: 8px; text-decoration: none; font-size: 16px; margin: 16px 0;">Reset Password</a>
-        <p style="color: #6b7280; font-size: 14px;">If you did not request this, you can safely ignore this email.</p>
-        <hr style="border: none; border-top: 1px solid #e5e7eb; margin: 24px 0;" />
-        <p style="color: #9ca3af; font-size: 12px;">Galaxy of Beauty — Your beauty & grooming platform</p>
+        <p class="gob-text-soft" style="font-size: 14px;">If you did not request this, you can safely ignore this email.</p>
+        <hr class="gob-divider" style="border: none; border-top: 1px solid; margin: 24px 0;" />
+        <p class="gob-text-muted" style="font-size: 12px;">Galaxy of Beauty — Your beauty & grooming platform</p>
       </div>
-    `;
+    `,
+        'ltr',
+      );
 
   await sendEmail({ to, subject, html });
 }
@@ -138,22 +184,22 @@ export async function sendPasswordResetEmail(
  */
 export async function sendWelcomeEmail(to: string, name: string): Promise<void> {
   const subject = 'مرحباً بكِ في جالكسي بيوتي';
-  const html = `
-    <div dir="rtl" style="max-width:600px;margin:0 auto;font-family:Tajawal,sans-serif;background:#faf5ff;padding:20px;border-radius:16px">
+  const html = emailShell(`
+    <div class="gob-shell" style="max-width:600px;margin:0 auto;font-family:Tajawal,sans-serif;border-radius:16px">
       <div style="text-align:center;padding:30px">
-        <h1 style="color:#7c3aed;margin:0"> جالكسي بيوتي</h1>
-        <p style="font-size:20px;color:#111827;margin-top:16px">مرحباً ${name}!</p>
-        <p style="color:#6b7280;line-height:1.8">
+        <h1 style="color:#a78bfa;margin:0"> جالكسي بيوتي</h1>
+        <p class="gob-text-strong" style="font-size:20px;margin-top:16px">مرحباً ${name}!</p>
+        <p class="gob-text-soft" style="line-height:1.8">
           شكراً لانضمامكِ إلى جالكسي بيوتي — منصتكِ الأولى لحجز خدمات التجميل في السعودية.
         </p>
-        <div style="background:white;border-radius:12px;padding:20px;margin:20px 0;text-align:right">
-          <p style="font-weight:700;color:#7c3aed"> هدية ترحيبية:</p>
-          <p style="color:#111827">استخدمي كود <strong style="color:#7c3aed;font-size:18px">WELCOME20</strong> للحصول على خصم ٢٠٪ على أول حجز!</p>
+        <div class="gob-card" style="border-radius:12px;padding:20px;margin:20px 0;text-align:right">
+          <p style="font-weight:700;color:#a78bfa"> هدية ترحيبية:</p>
+          <p class="gob-text-strong">استخدمي كود <strong style="color:#a78bfa;font-size:18px">WELCOME20</strong> للحصول على خصم ٢٠٪ على أول حجز!</p>
         </div>
         <a href="${process.env['NEXT_PUBLIC_APP_URL'] || 'http://localhost:3000'}/bookings/create" style="display:inline-block;background:#7c3aed;color:white;padding:14px 32px;border-radius:12px;text-decoration:none;font-weight:700;margin-top:12px">احجزي موعدكِ الأول</a>
-        <p style="color:#9ca3af;font-size:12px;margin-top:24px">جالكسي بيوتي — منصة التجميل الأولى في السعودية</p>
+        <p class="gob-text-muted" style="font-size:12px;margin-top:24px">جالكسي بيوتي — منصة التجميل الأولى في السعودية</p>
       </div>
-    </div>`;
+    </div>`);
 
   await sendEmail({ to, subject, html });
 }

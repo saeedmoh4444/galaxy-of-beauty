@@ -154,11 +154,14 @@ export async function handleNotificationJob(job: Job<NotificationJob>): Promise<
     if (!user) return;
 
     if (channels.includes('email') && user.email) {
-      const { sendEmail } = await import('../lib/email');
+      const { sendEmail, emailShell } = await import('../lib/email');
       await sendEmail({
         to: user.email,
         subject: titleEn,
-        html: `<h2>${titleEn}</h2><p>${bodyEn}</p>`,
+        html: emailShell(
+          `<h2 class="gob-text-strong">${titleEn}</h2><p class="gob-text-soft">${bodyEn}</p>`,
+          'ltr',
+        ),
       });
     }
     if (channels.includes('sms') && user.phone) {

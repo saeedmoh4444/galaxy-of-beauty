@@ -3,7 +3,7 @@ import { prisma } from '@galaxy/db';
 import { router, protectedProcedure, adminProcedure } from '../trpc';
 import { emitToUser } from '../socket/index';
 import { sendPushToUser } from '../lib/push';
-import { sendEmail } from '../lib/email';
+import { sendEmail, emailShell } from '../lib/email';
 
 export const notificationRouter = router({
   // ── List notifications (paginated, newest first) ──────────────────────────
@@ -192,7 +192,10 @@ export const notificationRouter = router({
         sendEmail({
           to: user.email,
           subject: locale === 'en' ? titleEn : titleAr,
-          html: `<div dir="${locale === 'ar' ? 'rtl' : 'ltr'}" style="font-family:sans-serif;padding:20px;max-width:600px"><h2>${locale === 'en' ? titleEn : titleAr}</h2><p>${locale === 'en' ? bodyEn : bodyAr}</p>${link ? `<p><a href="${link}">${locale === 'en' ? 'View details' : 'عرض التفاصيل'}</a></p>` : ''}</div>`,
+          html: emailShell(
+            `<div style="font-family:sans-serif;padding:20px;max-width:600px"><h2 class="gob-text-strong">${locale === 'en' ? titleEn : titleAr}</h2><p class="gob-text-soft">${locale === 'en' ? bodyEn : bodyAr}</p>${link ? `<p><a href="${link}" style="color:#a78bfa">${locale === 'en' ? 'View details' : 'عرض التفاصيل'}</a></p>` : ''}</div>`,
+            locale === 'ar' ? 'rtl' : 'ltr',
+          ),
         }).catch(() => {
           /* non-critical */
         });
