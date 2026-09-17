@@ -156,6 +156,13 @@ Sprint breakdown (each PR-sized):
 4. **Trust signals** — mirror venue TrustBadges + service-detail trust
    row in RN (mobile.public.service-detail.trust.* keys already exist).
 
+Bonus leftover from #178: the ✅ success indicators (newsletter,
+reschedule, corporate-wellness, virtual-consultation) → real icons
+via a new shared RN `Icon` component (`@expo/vector-icons`, font-based
+— no native module, OTA-safe) in #179. The trust sprint (#180) reuses
+it: `TrustChips` on the 4 venue lists (verified/rating/women-only/
+private-suite) + icon swaps in the service-detail trust row.
+
 Acceptance: grep finds zero hero-emoji sites in apps/mobile/src;
 mobile builds (tsc + lint) green; screenshots for home/discover/services.
 
