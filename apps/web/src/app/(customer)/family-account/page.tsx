@@ -236,6 +236,14 @@ export default function FamilyAccountPage(): JSX.Element {
                     {m.notes && (
                       <p className="mt-1 text-xs text-text-tertiary italic"> {m.notes}</p>
                     )}
+                    {(m.ageGroup === 'child' || m.ageGroup === 'infant') && (
+                      <Link
+                        href="/kids-services"
+                        className="mt-2 inline-flex items-center gap-1 text-xs font-semibold text-brand-600 hover:underline"
+                      >
+                        👶 {t('family.kidsServices')}
+                      </Link>
+                    )}
                     {(m.bookingCount ?? 0) > 0 && (
                       <p className="mt-1 text-xs text-brand-600 font-medium">
                         {t('family.prevBookings', { count: m.bookingCount ?? 0 })}

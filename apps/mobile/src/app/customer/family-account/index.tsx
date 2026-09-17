@@ -14,11 +14,13 @@ import { trpc } from '@/lib/trpc-react';
 import { useLocale } from '@/components/LocaleProvider';
 import { useAuthState } from '@/hooks/useAuthState';
 import { useToast } from '@/components/Toast';
+import { useRouter } from 'expo-router';
 
 interface FamilyMember {
   id?: number;
   name?: string;
   relation?: string;
+  ageGroup?: string;
   emergencyContact?: string | null;
   allergies?: string | null;
 }
@@ -27,6 +29,7 @@ export default function FamilyAccountScreen(): JSX.Element {
   const isAuthed = useAuthState();
   const { t } = useLocale();
   const { showToast } = useToast();
+  const router = useRouter();
   const q = trpc.familyAccount.list.useQuery(undefined, { enabled: isAuthed });
   const data: FamilyMember[] = (q.data as unknown as FamilyMember[] | undefined) ?? [];
 
@@ -141,6 +144,17 @@ export default function FamilyAccountScreen(): JSX.Element {
                 ⚠️ {t('mobile.familyAccount.allergies')}: {m.allergies}
               </Text>
             ) : null}
+            {(m.ageGroup === 'child' || m.ageGroup === 'infant') && (
+              <TouchableOpacity
+                style={styles.kidsLink}
+                onPress={() => router.push('/public/kids-services')}
+                testID="family-kids-services"
+              >
+                <Text style={styles.kidsLinkText}>
+                  👶 {t('mobile.familyAccount.kids-services')}
+                </Text>
+              </TouchableOpacity>
+            )}
           </View>
         </TouchableOpacity>
       ))}
@@ -165,6 +179,8 @@ const styles = StyleSheet.create({
   name: { fontSize: 14, fontWeight: '600', color: '#111827' },
   relation: { fontSize: 12, color: '#6b7280', marginTop: 2 },
   safety: { fontSize: 11, color: '#92400e', marginTop: 2 },
+  kidsLink: { marginTop: 4, alignSelf: 'flex-start' },
+  kidsLinkText: { fontSize: 12, fontWeight: '700', color: '#be185d' },
   form: {
     backgroundColor: '#fff',
     borderRadius: 14,
