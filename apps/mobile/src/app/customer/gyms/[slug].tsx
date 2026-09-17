@@ -2,6 +2,7 @@ import type { JSX } from 'react';
 import { View, Text, ScrollView, StyleSheet, TouchableOpacity, RefreshControl } from 'react-native';
 import { useLocalSearchParams } from 'expo-router';
 import { ErrorAlert } from '@/components/ErrorAlert';
+import { ServiceImage } from '@/components/ServiceImage';
 import { SkeletonList } from '@/components/SkeletonCard';
 import { TrustChips } from '@/components/TrustChips';
 import { trpc } from '@/lib/trpc-react';
@@ -17,6 +18,7 @@ interface GymDetail {
   gymCity?: string | null;
   gymAddress?: string | null;
   licenseVerifiedAt?: string | null;
+  bannerUrl?: string | null;
   descriptionJson?: { ar?: string; en?: string } | null;
   ratingAvg?: number;
   totalReviews?: number;
@@ -93,6 +95,9 @@ export default function GymDetailScreen(): JSX.Element {
         privateSuite={gym.privateSuite}
         privateSuiteLabel={t('mobile.public.service-detail.trust.privateSuite')}
       />
+      {gym.bannerUrl ? (
+        <ServiceImage src={gym.bannerUrl} alt={gym.storeName ?? ''} height={160} style={s.banner} />
+      ) : null}
 
       {/* Group classes */}
       <Text style={s.section}>{t('mobile.gyms.classes')}</Text>
@@ -190,6 +195,7 @@ const s = StyleSheet.create({
   i: { padding: 16, paddingBottom: 40 },
   name: { fontSize: 22, fontWeight: '800', color: '#111827' },
   meta: { fontSize: 13, color: '#6b7280', marginTop: 4 },
+  banner: { width: '100%', borderRadius: 20, marginTop: 12 },
   section: { fontSize: 16, fontWeight: '700', color: '#111827', marginTop: 20, marginBottom: 8 },
   empty: { color: '#9ca3af', fontSize: 13 },
   row: {

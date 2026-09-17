@@ -2,6 +2,7 @@ import type { JSX } from 'react';
 import { View, Text, ScrollView, StyleSheet, TouchableOpacity, RefreshControl } from 'react-native';
 import { useLocalSearchParams } from 'expo-router';
 import { ErrorAlert } from '@/components/ErrorAlert';
+import { ServiceImage } from '@/components/ServiceImage';
 import { SkeletonList } from '@/components/SkeletonCard';
 import { TrustChips } from '@/components/TrustChips';
 import { trpc } from '@/lib/trpc-react';
@@ -17,6 +18,7 @@ interface StoreDetail {
   ratingAvg?: number;
   totalReviews?: number;
   isVerified?: boolean;
+  bannerUrl?: string | null;
   products?: Array<{
     id?: number;
     nameJson?: { ar?: string; en?: string };
@@ -62,6 +64,14 @@ export default function StoreDetailScreen(): JSX.Element {
         rating={store.ratingAvg}
         reviews={store.totalReviews}
       />
+      {store.bannerUrl ? (
+        <ServiceImage
+          src={store.bannerUrl}
+          alt={store.storeName ?? ''}
+          height={160}
+          style={s.banner}
+        />
+      ) : null}
 
       {products.map((p, idx) => (
         <View key={p.id ?? idx} style={s.card}>
@@ -95,6 +105,7 @@ const s = StyleSheet.create({
   c: { flex: 1, backgroundColor: '#fff' },
   i: { padding: 16, paddingBottom: 40 },
   name: { fontSize: 22, fontWeight: '800', color: '#111827' },
+  banner: { width: '100%', borderRadius: 20, marginTop: 12 },
   card: {
     flexDirection: 'row',
     alignItems: 'center',
