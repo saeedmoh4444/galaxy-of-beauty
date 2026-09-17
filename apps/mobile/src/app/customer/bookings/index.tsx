@@ -1,5 +1,5 @@
-import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
-import { useState } from 'react';
+import { View, Text, TouchableOpacity, StyleSheet, FlatList, RefreshControl } from 'react-native';
+import { useEffect, useRef, useState } from 'react';
 import type { JSX } from 'react';
 import { useRouter } from 'expo-router';
 import { ScreenState } from '@/components/ScreenState';
@@ -21,11 +21,45 @@ export default function BookingsScreen(): JSX.Element {
   const isAuthed = useAuthState();
   const [status, setStatus] = useState<string | undefined>();
   const { locale, t } = useLocale();
+  // 5.5 Mobile polish — infinite scroll via accumulated pages (the router
+  // uses page-based input, so tRPC v11's cursor-only useInfiniteQuery does
+  // not apply; append pages manually and reset on filter change).
+  const [page, setPage] = useState(1);
+  const [items, setItems] = useState<Record<string, unknown>[]>([]);
+  const [refreshing, setRefreshing] = useState(false);
+  const lastKey = useRef('');
   const bookings = trpc.bookings.list.useQuery(
-    { status, limit: DEFAULT_PAGE_SIZE, page: 1 },
+    { status, limit: DEFAULT_PAGE_SIZE, page },
     { enabled: isAuthed },
   );
-  const data = bookings.data?.bookings as unknown[] | undefined;
+  const pageData = bookings.data as
+    { bookings?: unknown[]; totalPages?: number; page?: number } | undefined;
+  useEffect(() => {
+    const key = `${status ?? 'ALL'}`;
+    const rows = (pageData?.bookings ?? []) as Record<string, unknown>[];
+    if (key !== lastKey.current) {
+      // Filter changed — reset the accumulated list.
+      lastKey.current = key;
+      setItems(rows);
+    } else if (page === 1) {
+      setItems(rows);
+    } else if (pageData?.page === page && rows.length > 0) {
+      setItems((prev) => [...prev, ...rows]);
+    }
+  }, [pageData, page, status]);
+  const isLoading = bookings.isLoading && !refreshing;
+
+  const loadMore = () => {
+    if (!pageData) return;
+    if ((pageData.page ?? 1) < (pageData.totalPages ?? 1) && !bookings.isFetching) {
+      setPage(pageData.page! + 1);
+    }
+  };
+  const onRefresh = () => {
+    setRefreshing(true);
+    setPage(1);
+    void bookings.refetch().finally(() => setRefreshing(false));
+  };
 
   const statusLabels: Record<string, string> = {
     REQUESTED: t('bookings.status-pending'),
@@ -35,11 +69,48 @@ export default function BookingsScreen(): JSX.Element {
     CANCELLED: t('booking.status.CANCELLED'),
   };
 
+  const renderItem = ({ item }: { item: Record<string, unknown> }) => {
+    const b = item;
+    return (
+      <View style={styles.card}>
+        <View style={styles.row}>
+          <Text style={styles.code}>{b.bookingCode as string}</Text>
+          <Text
+            style={[
+              styles.badge,
+              { color: STATUS_COLORS[b.status as string] ?? STATUS_COLORS.DEFAULT },
+            ]}
+          >
+            {statusLabels[b.status as string] ?? (b.status as string)}
+          </Text>
+        </View>
+        <Text style={styles.date}>
+          {new Date(b.startAt as string).toLocaleString(locale === 'ar' ? 'ar-SA' : 'en-GB')}
+        </Text>
+        {b.familyMember ? (
+          <Text style={styles.onBehalf}>
+            {t('mobile.booking.on-behalf-of', {
+              name: (b.familyMember as Record<string, unknown>).name as string,
+            })}
+          </Text>
+        ) : null}
+        {(b.status === 'PAID' || b.status === 'IN_PROGRESS') && (
+          <TouchableOpacity
+            style={styles.videoBtn}
+            onPress={() => router.push(`/customer/video/${b.id}` as never)}
+          >
+            <Text style={styles.videoBtnText}>{t('mobile.booking.video-call')}</Text>
+          </TouchableOpacity>
+        )}
+      </View>
+    );
+  };
+
   return (
     <ScreenState
-      isLoading={bookings.isLoading}
+      isLoading={isLoading}
       isError={bookings.isError}
-      isEmpty={!data || data.length === 0}
+      isEmpty={!items || items.length === 0}
       errorMessage={t('booking.load-error')}
       emptyTitle={t('booking.no-bookings')}
       emptyDescription={t('bookings.empty-cta')}
@@ -50,7 +121,10 @@ export default function BookingsScreen(): JSX.Element {
         {STATUS_TABS.map((s) => (
           <TouchableOpacity
             key={s}
-            onPress={() => setStatus(s === 'ALL' ? undefined : s)}
+            onPress={() => {
+              setStatus(s === 'ALL' ? undefined : s);
+              setPage(1);
+            }}
             style={[styles.tab, (!status && s === 'ALL') || s === status ? styles.tabActive : {}]}
           >
             <Text
@@ -64,39 +138,26 @@ export default function BookingsScreen(): JSX.Element {
           </TouchableOpacity>
         ))}
       </View>
-      {(data as Record<string, unknown>[])?.map((b: Record<string, unknown>, i: number) => (
-        <View key={i} style={styles.card}>
-          <View style={styles.row}>
-            <Text style={styles.code}>{b.bookingCode as string}</Text>
-            <Text
-              style={[
-                styles.badge,
-                { color: STATUS_COLORS[b.status as string] ?? STATUS_COLORS.DEFAULT },
-              ]}
-            >
-              {statusLabels[b.status as string] ?? (b.status as string)}
-            </Text>
-          </View>
-          <Text style={styles.date}>
-            {new Date(b.startAt as string).toLocaleString(locale === 'ar' ? 'ar-SA' : 'en-GB')}
-          </Text>
-          {b.familyMember ? (
-            <Text style={styles.onBehalf}>
-              {t('mobile.booking.on-behalf-of', {
-                name: (b.familyMember as Record<string, unknown>).name as string,
-              })}
-            </Text>
-          ) : null}
-          {(b.status === 'PAID' || b.status === 'IN_PROGRESS') && (
-            <TouchableOpacity
-              style={styles.videoBtn}
-              onPress={() => router.push(`/customer/video/${b.id}` as never)}
-            >
-              <Text style={styles.videoBtnText}>{t('mobile.booking.video-call')}</Text>
-            </TouchableOpacity>
-          )}
-        </View>
-      ))}
+      <FlatList
+        data={items}
+        keyExtractor={(item) => String(item.id)}
+        renderItem={renderItem}
+        onEndReached={loadMore}
+        onEndReachedThreshold={0.4}
+        refreshControl={
+          <RefreshControl
+            refreshing={refreshing || (bookings.isRefetching && page === 1)}
+            onRefresh={onRefresh}
+            colors={[COLORS.brand]}
+            tintColor={COLORS.brand}
+          />
+        }
+        ListFooterComponent={
+          bookings.isFetching && page > 1 ? (
+            <Text style={styles.footerLoading}>{t('state.loading')}</Text>
+          ) : null
+        }
+      />
     </ScreenState>
   );
 }
@@ -139,4 +200,5 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   videoBtnText: { color: COLORS.white, fontSize: 13, fontWeight: '700' },
+  footerLoading: { textAlign: 'center', color: COLORS.gray400, paddingVertical: 12, fontSize: 12 },
 });
