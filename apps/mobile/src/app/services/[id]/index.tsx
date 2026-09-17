@@ -31,6 +31,7 @@ interface ServiceDetail {
   isPrivateSuite?: boolean;
   isPregnancySafe?: boolean;
   isMommyFriendly?: boolean;
+  isHourly?: boolean;
   category?: { slug?: string | null; nameAr?: string | null };
   variants?: Array<{ id: number; nameJson?: ServiceJson | null; priceDelta?: number }>;
   technicianServices?: Array<{
@@ -204,6 +205,7 @@ export default function ServiceDetailScreen(): JSX.Element {
           <Text style={styles.cardLabel}>{t('mobile.public.service-detail.price')}</Text>
           <Text style={styles.price}>
             {t('mobile.public.currency', { price: (data.basePrice ?? 0).toLocaleString() })}
+            {data.isHourly ? ` / ${t('mobile.booking.per-hour')}` : ''}
           </Text>
         </View>
         <View>
