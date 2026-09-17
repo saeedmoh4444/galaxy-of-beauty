@@ -378,6 +378,8 @@ export const serviceRouter = router({
           variants: { where: { isActive: true } },
           servicesWithAddon: {
             where: { isActive: true },
+            // 1.3 — popular pairings first ("also added" order).
+            orderBy: [{ popularityScore: 'desc' }, { id: 'asc' }],
             include: {
               addon: {
                 select: {
@@ -629,6 +631,10 @@ export const serviceRouter = router({
       z.object({
         serviceId: z.number().int().positive(),
         addonId: z.number().int().positive(),
+        // 1.3 — marketplace metadata on the link.
+        popularityScore: z.number().int().min(0).optional(),
+        isSuggested: z.boolean().optional(),
+        bundleDiscountPercent: z.number().int().min(0).max(100).optional(),
       }),
     )
     .mutation(async ({ input }) => {
@@ -660,7 +666,13 @@ export const serviceRouter = router({
       }
 
       const serviceAddon = await prisma.serviceAddon.create({
-        data: { serviceId: input.serviceId, addonId: input.addonId },
+        data: {
+          serviceId: input.serviceId,
+          addonId: input.addonId,
+          popularityScore: input.popularityScore ?? 0,
+          isSuggested: input.isSuggested ?? false,
+          bundleDiscountPercent: input.bundleDiscountPercent ?? 0,
+        },
       });
 
       return serviceAddon;
