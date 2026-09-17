@@ -10,6 +10,7 @@ import { localize } from '@galaxy/shared';
 import { useLocale } from '@/components/LocaleProvider';
 import { useAuthState } from '@/hooks/useAuthState';
 import { useToast } from '@/components/Toast';
+import { useHaptics } from '@/hooks/useHaptics';
 
 interface GymDetail {
   id?: number;
@@ -33,6 +34,8 @@ export default function GymDetailScreen(): JSX.Element {
   const { slug } = useLocalSearchParams<{ slug: string }>();
   const isAuthed = useAuthState();
   const { showToast } = useToast();
+  // 5.5 Mobile polish — haptic confirmation on booking/subscribe/buy.
+  const { trigger } = useHaptics();
 
   const detailQ = trpc.gyms.detail.useQuery({ slug: slug ?? '' });
   const classesQ = trpc.gyms.classes.useQuery(
@@ -45,18 +48,34 @@ export default function GymDetailScreen(): JSX.Element {
   );
   const bookMut = trpc.gyms.bookClass.useMutation({
     onSuccess: () => {
+      trigger('success');
       showToast('success', t('mobile.gyms.booked'));
       classesQ.refetch();
     },
-    onError: (e) => showToast('error', e.message),
+    onError: (e) => {
+      trigger('error');
+      showToast('error', e.message);
+    },
   });
   const subscribeMut = trpc.subscriptionBoxes.subscribe.useMutation({
-    onSuccess: () => showToast('success', t('mobile.gyms.subscribe')),
-    onError: (e) => showToast('error', e.message),
+    onSuccess: () => {
+      trigger('success');
+      showToast('success', t('mobile.gyms.subscribe'));
+    },
+    onError: (e) => {
+      trigger('error');
+      showToast('error', e.message);
+    },
   });
   const buyPassMut = trpc.classPass.purchase.useMutation({
-    onSuccess: () => showToast('success', t('mobile.gyms.buy')),
-    onError: (e) => showToast('error', e.message),
+    onSuccess: () => {
+      trigger('success');
+      showToast('success', t('mobile.gyms.buy'));
+    },
+    onError: (e) => {
+      trigger('error');
+      showToast('error', e.message);
+    },
   });
 
   const gym = detailQ.data as unknown as GymDetail | null;
