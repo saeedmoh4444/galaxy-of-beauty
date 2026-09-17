@@ -9,6 +9,7 @@ import {
 } from 'react-native';
 import { useState } from 'react';
 import type { JSX } from 'react';
+import { Icon } from '@/components/Icon';
 import { SkeletonList } from '@/components/SkeletonCard';
 import { trpc } from '@/lib/trpc-react';
 import { useLocale } from '@/components/LocaleProvider';
@@ -65,7 +66,7 @@ export default function NewsletterScreen(): JSX.Element {
         </View>
       ) : (
         <View style={[styles.card, styles.sc]}>
-          <Text style={{ fontSize: 48 }}>✅</Text>
+          <Icon name="check-circle" size={48} color="#059669" />
           <Text style={styles.st}>{t('mobile.newsletter.subscribed')}</Text>
         </View>
       )}
