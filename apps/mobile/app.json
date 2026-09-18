@@ -1,17 +1,17 @@
 {
   "expo": {
-    "name": "Dalal",
+    "name": "Galaxy of Beauty",
     "slug": "galaxy-of-beauty",
     "version": "2.0.0",
     "orientation": "portrait",
     "scheme": "galaxyofbeauty",
     "platforms": ["ios", "android", "web"],
-    "icon": "./assets/logo.png",
+    "icon": "./assets/icon.png",
     "userInterfaceStyle": "automatic",
     "splash": {
-      "image": "./assets/logo.png",
+      "image": "./assets/icon.png",
       "resizeMode": "contain",
-      "backgroundColor": "#7c3aed"
+      "backgroundColor": "#c2255c"
     },
     "ios": {
       "supportsTablet": true,
@@ -24,14 +24,14 @@
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./assets/logo.png",
-        "backgroundColor": "#7c3aed"
+        "foregroundImage": "./assets/adaptive-foreground.png",
+        "backgroundColor": "#c2255c"
       },
       "package": "sa.galaxyofbeauty.app",
       "permissions": ["CAMERA", "ACCESS_FINE_LOCATION", "VIBRATE"]
     },
     "web": {
-      "favicon": "./assets/logo.png",
+      "favicon": "./assets/icon.png",
       "bundler": "metro"
     },
     "plugins": [
@@ -47,8 +47,8 @@
       }
     },
     "notification": {
-      "icon": "./assets/logo.png",
-      "color": "#7c3aed"
+      "icon": "./assets/notification-icon.png",
+      "color": "#c2255c"
     },
     "updates": {
       "url": "https://u.expo.dev/fe529822-25a6-4c65-9bec-38fe925d1ae3",
