@@ -3419,6 +3419,48 @@ async function main() {
     console.log(`    Trust badges: ${err.message?.slice(0, 60)}`);
   }
 
+  // ---- 1.3 Add-Ons Marketplace — popular pairings ("customers who booked
+  // this also added"). The core `services` array carries no slugs, so link
+  // by index: 0 haircut, 1 hair color, 2 manicure, 3 facial, 4 bridal
+  // makeup, 6 henna, 7 blow-dry, 8 deep conditioning, 9 express facial,
+  // 10 makeup trial. Popularity drives the getById addon order.
+  try {
+    const link = async (
+      mainIdx: number,
+      addonIdx: number,
+      popularityScore: number,
+      isSuggested = false,
+      bundleDiscountPercent = 0,
+    ) => {
+      const main = services[mainIdx];
+      const addon = services[addonIdx];
+      if (!main || !addon) return false;
+      await prisma.serviceAddon.upsert({
+        where: { serviceId_addonId: { serviceId: main.id, addonId: addon.id } },
+        create: {
+          serviceId: main.id,
+          addonId: addon.id,
+          popularityScore,
+          isSuggested,
+          bundleDiscountPercent,
+        },
+        update: { popularityScore, isSuggested, bundleDiscountPercent },
+      });
+      return true;
+    };
+
+    let linked = 0;
+    linked += (await link(0, 7, 95, true, 15)) ? 1 : 0; // haircut + blow-dry
+    linked += (await link(0, 8, 40)) ? 1 : 0; // haircut + deep conditioning
+    linked += (await link(2, 6, 88, true, 10)) ? 1 : 0; // manicure + henna art
+    linked += (await link(1, 8, 82, true, 15)) ? 1 : 0; // hair color + deep conditioning
+    linked += (await link(4, 10, 75, true, 20)) ? 1 : 0; // bridal makeup + trial
+    linked += (await link(3, 9, 70)) ? 1 : 0; // facial + express facial
+    console.log(` Add-on marketplace: ${linked} popular pairings linked`);
+  } catch (err: any) {
+    console.log(`    Add-on links: ${err.message?.slice(0, 60)}`);
+  }
+
   // ---- E7 — beauty shorts (persisted media, pre-approved for the demo) ----
   const SAMPLE_VIDEOS = [
     'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4',

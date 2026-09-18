@@ -520,6 +520,12 @@ model ServiceAddon {
   serviceId Int
   addonId   Int
   isActive  Boolean @default(true)
+  // 1.3 Add-Ons Marketplace — popularity drives "customers who booked
+  // this also added" ordering; suggested = curated pairing; the bundle
+  // discount is applied when booked together with the main service.
+  popularityScore     Int     @default(0)
+  isSuggested         Boolean @default(false)
+  bundleDiscountPercent Int   @default(0)
 
   service Service @relation("ServiceAddons", fields: [serviceId], references: [id], onDelete: Cascade)
   addon   Service @relation("AddonServices", fields: [addonId], references: [id], onDelete: Cascade)
