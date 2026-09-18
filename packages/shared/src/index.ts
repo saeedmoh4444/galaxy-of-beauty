@@ -82,3 +82,4 @@ export type {
   TrustItemVariant,
 } from './serviceDetail';
 export { buildBeautyProfileInput, BEAUTY_PROFILE_OPTIONS } from './utils/beautyProfile';
+export { formatHijriDate } from './utils/hijri';
