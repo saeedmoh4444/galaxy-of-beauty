@@ -149,6 +149,9 @@ importers:
       expo-updates:
         specifier: ~57.0.22
         version: 57.0.22(expo@57.0.22)(react-native@0.86.3(@babel/core@7.29.7)(@react-native/metro-config@0.87.0(@babel/core@7.29.7))(@types/react@19.3.0)(react@19.3.0))(react@19.3.0)
+      lottie-react-native:
+        specifier: ~7.3.8
+        version: 7.3.8(react-native@0.86.3(@babel/core@7.29.7)(@react-native/metro-config@0.87.0(@babel/core@7.29.7))(@types/react@19.3.0)(react@19.3.0))(react@19.3.0)
       react:
         specifier: 19.3.0
         version: 19.3.0
@@ -246,6 +249,9 @@ importers:
       '@trpc/server':
         specifier: ^11.0.0
         version: 11.18.0(typescript@5.9.3)
+      lottie-react:
+        specifier: ^3.1.2
+        version: 3.1.2(react-dom@19.3.0(react@19.3.0))(react@19.3.0)
       next:
         specifier: ^16.3.1
         version: 16.3.5(@babel/core@7.29.7)(@opentelemetry/api@1.9.1)(@playwright/test@1.63.0)(@types/node@20.19.43)(babel-plugin-react-compiler@1.0.0)(react-dom@19.3.0(react@19.3.0))(react@19.3.0)
@@ -5795,6 +5801,28 @@ packages:
   loose-envify@1.4.0:
     resolution: {integrity: sha512-lyuxPGr/Wfhrlem2CL/UcnUc1zcqKAImBDzukY7Y5F/yQiNdko6+fRLevlw1HgMySw7f611UIY408EtxRSoK3Q==}
     hasBin: true
+
+  lottie-react-native@7.3.8:
+    resolution: {integrity: sha512-GAOl99TKi0c6xCcB1AJ+o70mgOPIAI/7K2G+Gs+o4po/qBhgvWijPNCKH8h6yNmlwFTg+RN3DmzRvHNFGxZMKQ==}
+    peerDependencies:
+      '@lottiefiles/dotlottie-react': ^0.13.5
+      react: '*'
+      react-native: '>=0.46'
+      react-native-windows: '>=0.63.x'
+    peerDependenciesMeta:
+      '@lottiefiles/dotlottie-react':
+        optional: true
+      react-native-windows:
+        optional: true
+
+  lottie-react@3.1.2:
+    resolution: {integrity: sha512-otbTz+Kk1ksYzcWFAlcH8xFGBWkW/hUNEHy6gLvYf7kgEkZxyPT8lXJeBu/5o0xo0cdMwvd/lwkpuXCTSQmJdQ==}
+    peerDependencies:
+      react: ^18.2.0 || ^19.0.0
+      react-dom: ^18.2.0 || ^19.0.0
+
+  lottie-web@5.13.0:
+    resolution: {integrity: sha512-+gfBXl6sxXMPe8tKQm7qzLnUy5DUPJPKIyRHwtpCpyUEYjHYRJC/5gjUvdkuO2c3JllrPtHXH5UJJK8LRYl5yQ==}
 
   loupe@3.2.1:
     resolution: {integrity: sha512-CdzqowRJCeLU72bHvWqwRBBlLcMEtIvGrlvef74kMnV2AolS9Y8xUv1I0U/MNAWMhBlKIoyuEgoJ0t/bbwHbLQ==}
@@ -13366,6 +13394,19 @@ snapshots:
   loose-envify@1.4.0:
     dependencies:
       js-tokens: 4.0.0
+
+  lottie-react-native@7.3.8(react-native@0.86.3(@babel/core@7.29.7)(@react-native/metro-config@0.87.0(@babel/core@7.29.7))(@types/react@19.3.0)(react@19.3.0))(react@19.3.0):
+    dependencies:
+      react: 19.3.0
+      react-native: 0.86.3(@babel/core@7.29.7)(@react-native/metro-config@0.87.0(@babel/core@7.29.7))(@types/react@19.3.0)(react@19.3.0)
+
+  lottie-react@3.1.2(react-dom@19.3.0(react@19.3.0))(react@19.3.0):
+    dependencies:
+      lottie-web: 5.13.0
+      react: 19.3.0
+      react-dom: 19.3.0(react@19.3.0)
+
+  lottie-web@5.13.0: {}
 
   loupe@3.2.1: {}
 

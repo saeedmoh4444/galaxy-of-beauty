@@ -1,7 +1,10 @@
 import type { JSX } from 'react';
 import { View, Text, ScrollView, StyleSheet, TouchableOpacity } from 'react-native';
 import { useLocalSearchParams } from 'expo-router';
-import { formatHijriDate } from '@galaxy/shared';
+import * as Linking from 'expo-linking';
+import LottieView from 'lottie-react-native';
+import successCheck from '@galaxy/ui/assets/success-check.json';
+import { buildWhatsAppShareUrl, formatHijriDate } from '@galaxy/shared';
 import { useLocale } from '@/components/LocaleProvider';
 
 // NO API: booking confirm is params-driven (code/date passed from the booking
@@ -15,7 +18,8 @@ export default function BookingConfirmScreen(): JSX.Element {
   return (
     <ScrollView style={styles.c} contentContainerStyle={styles.i}>
       <View style={styles.iconCircle}>
-        <Text style={styles.iconEmoji}>✅</Text>
+        {/* Quick win #3 — animated success check (plays once on mount) */}
+        <LottieView source={successCheck} autoPlay loop={false} style={styles.lottie} />
       </View>
       <Text style={styles.t}>{t('booking.success-title')}</Text>
       <Text style={styles.sub}>{t('booking.success-message')}</Text>
@@ -54,6 +58,17 @@ export default function BookingConfirmScreen(): JSX.Element {
         </View>
       </View>
 
+      {/* 6.5 quick win — viral share: WhatsApp deep link (no API needed) */}
+      <TouchableOpacity
+        style={styles.waBtn}
+        onPress={() => {
+          const message = t('booking.share-title', { code: bookingCode });
+          void Linking.openURL(buildWhatsAppShareUrl(message)).catch(() => undefined);
+        }}
+      >
+        <Text style={styles.waBtnText}>{t('share.via-whatsapp')}</Text>
+      </TouchableOpacity>
+
       <TouchableOpacity style={styles.viewBtn}>
         <Text style={styles.viewBtnText}>{t('booking.view-my-bookings')}</Text>
       </TouchableOpacity>
@@ -76,7 +91,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     marginBottom: 20,
   },
-  iconEmoji: { fontSize: 48 },
+  lottie: { width: 68, height: 68 },
   t: { fontSize: 28, fontWeight: '800', color: '#059669', textAlign: 'center', marginBottom: 8 },
   sub: { fontSize: 14, color: '#6b7280', textAlign: 'center', marginBottom: 30, lineHeight: 22 },
   card: { backgroundColor: '#fff', borderRadius: 16, padding: 20, width: '100%', marginBottom: 20 },
@@ -91,6 +106,15 @@ const styles = StyleSheet.create({
   label: { fontSize: 13, color: '#6b7280' },
   value: { fontSize: 13, fontWeight: '600', color: '#111827' },
   code: { fontSize: 14, fontWeight: '700', color: '#059669', fontFamily: 'monospace' },
+  waBtn: {
+    backgroundColor: '#16a34a',
+    borderRadius: 14,
+    padding: 16,
+    alignItems: 'center',
+    width: '100%',
+    marginBottom: 10,
+  },
+  waBtnText: { fontSize: 14, fontWeight: '700', color: '#fff' },
   viewBtn: {
     backgroundColor: '#f3f4f6',
     borderRadius: 14,

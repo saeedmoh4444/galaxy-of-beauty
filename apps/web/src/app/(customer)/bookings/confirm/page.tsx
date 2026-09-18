@@ -3,10 +3,13 @@ import type { JSX } from 'react';
 
 import { useSearchParams } from 'next/navigation';
 import Link from 'next/link';
+import { Lottie } from 'lottie-react';
 import { Button, Card, formatHijriDate } from '@galaxy/ui';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
 import { AddToCalendar } from '@/components/AddToCalendar';
+import { ShareButtons } from '@/components/ShareButtons';
 import { useLocale } from '@/components/LocaleProvider';
+import successCheck from '@galaxy/ui/assets/success-check.json';
 
 export default function BookingConfirmPage(): JSX.Element {
   const { t, locale } = useLocale();
@@ -18,8 +21,9 @@ export default function BookingConfirmPage(): JSX.Element {
   return (
     <DashboardLayout userRole="CUSTOMER">
       <div className="mx-auto max-w-lg space-y-6 py-8 text-center">
-        <div className="mx-auto flex h-24 w-24 items-center justify-center rounded-full bg-green-100 text-6xl dark:bg-green-900">
-          ✅
+        <div className="mx-auto flex h-24 w-24 items-center justify-center rounded-full bg-green-100 dark:bg-green-900">
+          {/* Quick win #3 — animated success check (plays once on mount) */}
+          <Lottie src={successCheck} autoplay loop={false} className="h-16 w-16" />
         </div>
         <h1 className="text-3xl font-extrabold text-text-primary">{t('booking.success-title')}</h1>
         <p className="text-text-secondary">{t('booking.success-message')}</p>
@@ -71,6 +75,11 @@ export default function BookingConfirmPage(): JSX.Element {
             />
           </div>
         </Card>
+
+        {/* 6.5 quick win — viral share: WhatsApp/X/copy on confirmation */}
+        <div className="flex justify-center">
+          <ShareButtons title={t('booking.share-title', { code })} />
+        </div>
 
         <div className="space-y-2">
           <Link href="/bookings">

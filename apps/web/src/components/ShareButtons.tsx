@@ -1,7 +1,7 @@
 'use client';
 import type { JSX } from 'react';
 
-import { SHARE_URLS } from '@galaxy/ui';
+import { SHARE_URLS, buildWhatsAppShareUrl } from '@galaxy/ui';
 import { useLocale } from '@/components/LocaleProvider';
 
 interface ShareButtonsProps {
@@ -17,7 +17,7 @@ export function ShareButtons({ title, url }: ShareButtonsProps): JSX.Element {
     const encoded = encodeURIComponent(shareUrl);
     const encodedTitle = encodeURIComponent(title);
     const urls: Record<string, string> = {
-      whatsapp: `${SHARE_URLS.whatsapp}${encodedTitle}%20${encoded}`,
+      whatsapp: buildWhatsAppShareUrl(`${title} ${shareUrl}`),
       twitter: `${SHARE_URLS.twitter}${encodedTitle}&url=${encoded}`,
       facebook: `${SHARE_URLS.facebook}${encoded}`,
       copy: shareUrl,
