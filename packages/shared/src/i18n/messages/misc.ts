@@ -1330,6 +1330,16 @@ export const miscMessages = {
   },
   'skin.analysisFallback': { ar: 'تحليل', en: 'Analysis' },
   'skin.latest': { ar: 'الأحدث', en: 'Latest' },
+  'skin.uploading': { ar: 'جارٍ رفع الصورة…', en: 'Uploading photo…' },
+  'skin.uploaded': { ar: 'تم رفع الصورة بنجاح', en: 'Photo uploaded successfully' },
+  'skin.uploadError': {
+    ar: 'فشل رفع الصورة، حاولي مرة أخرى',
+    en: 'Upload failed, please try again',
+  },
+  'skin.uploadTooLarge': {
+    ar: 'الصورة كبيرة جداً (الحد الأقصى ٥ ميجابايت)',
+    en: 'Image too large (max 5 MB)',
+  },
 
   // Mood Board
   'mood.title': { ar: 'لوحة الإلهام', en: 'Inspiration Board' },

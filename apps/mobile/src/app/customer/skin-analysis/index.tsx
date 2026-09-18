@@ -44,6 +44,25 @@ export default function SkinAnalysisScreen() {
       showToast('error', t('mobile.skinAnalysis.analyze-error'));
     },
   });
+  // 3.1 — upload-first pipeline: analyze accepts http(s) URLs only, so the
+  // camera photo is uploaded to storage before analysis.
+  const [uploading, setUploading] = useState(false);
+  const uploadMut = trpc.uploads.uploadMedia.useMutation({
+    onSuccess: (uploaded) => {
+      setUploading(false);
+      const url = (uploaded as { url?: string })?.url;
+      if (!url) {
+        showToast('error', t('mobile.skinAnalysis.upload-error'));
+        return;
+      }
+      setImageUrl(url);
+      showToast('success', t('mobile.skinAnalysis.capture-success'));
+    },
+    onError: () => {
+      setUploading(false);
+      showToast('error', t('mobile.skinAnalysis.upload-error'));
+    },
+  });
   // Clear the previous result while a new analysis is in flight (previous behavior)
   const result = analyzeMut.isPending
     ? null
@@ -60,10 +79,21 @@ export default function SkinAnalysisScreen() {
     setShowCamera(true);
     const photo = await takePhoto();
     setShowCamera(false);
-    if (photo?.uri) {
-      setImageUrl(photo.uri);
+    if (photo?.base64) {
       trigger('success');
-      showToast('success', t('mobile.skinAnalysis.capture-success'));
+      setUploading(true);
+      uploadMut.mutate({
+        mediaType: 'image',
+        file: {
+          name: 'skin-selfie.jpg',
+          type: 'image/jpeg',
+          // ~3/4 of base64 length approximates the byte size.
+          size: Math.floor((photo.base64.length * 3) / 4),
+          base64: photo.base64,
+        },
+      });
+    } else if (photo?.uri) {
+      showToast('error', t('mobile.skinAnalysis.capture-retry'));
     }
   };
 
@@ -107,12 +137,21 @@ export default function SkinAnalysisScreen() {
             style={styles.cameraBtn}
             onPress={handleCameraCapture}
             activeOpacity={0.8}
+            disabled={uploading}
           >
-            <Text style={styles.cameraBtnText}>
-              {showCamera ? t('mobile.skinAnalysis.capturing') : t('mobile.skinAnalysis.capture')}
-            </Text>
+            {uploading ? (
+              <ActivityIndicator color="#fff" size="small" />
+            ) : (
+              <Text style={styles.cameraBtnText}>
+                {showCamera ? t('mobile.skinAnalysis.capturing') : t('mobile.skinAnalysis.capture')}
+              </Text>
+            )}
           </TouchableOpacity>
         </View>
+
+        {uploading && (
+          <Text style={styles.uploadingText}>{t('mobile.skinAnalysis.uploading')}</Text>
+        )}
 
         <TextInput
           style={styles.urlInput}
@@ -268,6 +307,13 @@ const styles = StyleSheet.create({
   },
   uploadEmoji: { fontSize: 40, marginBottom: 8 },
   uploadHint: { fontSize: 13, color: '#9ca3af', marginBottom: 12 },
+  uploadingText: {
+    fontSize: 13,
+    color: '#db2777',
+    textAlign: 'center',
+    marginTop: -4,
+    marginBottom: 12,
+  },
   cameraBtn: {
     backgroundColor: '#ec4899',
     borderRadius: 10,
