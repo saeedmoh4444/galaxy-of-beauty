@@ -1,6 +1,8 @@
 import type { JSX } from 'react';
 import { View, Text, ScrollView, StyleSheet, TouchableOpacity } from 'react-native';
 import { useLocalSearchParams } from 'expo-router';
+import * as Linking from 'expo-linking';
+import { buildWhatsAppShareUrl } from '@galaxy/shared';
 import { useLocale } from '@/components/LocaleProvider';
 
 // NO API: booking confirm is params-driven (code/date passed from the booking
@@ -46,6 +48,17 @@ export default function BookingConfirmScreen(): JSX.Element {
         </View>
       </View>
 
+      {/* 6.5 quick win — viral share: WhatsApp deep link (no API needed) */}
+      <TouchableOpacity
+        style={styles.waBtn}
+        onPress={() => {
+          const message = t('booking.share-title', { code: bookingCode });
+          void Linking.openURL(buildWhatsAppShareUrl(message)).catch(() => undefined);
+        }}
+      >
+        <Text style={styles.waBtnText}>{t('share.via-whatsapp')}</Text>
+      </TouchableOpacity>
+
       <TouchableOpacity style={styles.viewBtn}>
         <Text style={styles.viewBtnText}>{t('booking.view-my-bookings')}</Text>
       </TouchableOpacity>
@@ -83,6 +96,15 @@ const styles = StyleSheet.create({
   label: { fontSize: 13, color: '#6b7280' },
   value: { fontSize: 13, fontWeight: '600', color: '#111827' },
   code: { fontSize: 14, fontWeight: '700', color: '#059669', fontFamily: 'monospace' },
+  waBtn: {
+    backgroundColor: '#16a34a',
+    borderRadius: 14,
+    padding: 16,
+    alignItems: 'center',
+    width: '100%',
+    marginBottom: 10,
+  },
+  waBtnText: { fontSize: 14, fontWeight: '700', color: '#fff' },
   viewBtn: {
     backgroundColor: '#f3f4f6',
     borderRadius: 14,

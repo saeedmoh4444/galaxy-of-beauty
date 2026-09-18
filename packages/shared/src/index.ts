@@ -24,6 +24,7 @@ export * from './menopause';
 export { cn } from './utils/cn';
 export { formatCurrency } from './utils/formatCurrency';
 export { getSaudiSeason, getFridayBlockedHours } from './utils/saudiCalendar';
+export { buildWhatsAppShareUrl } from './utils/whatsapp';
 
 // Types
 export type {

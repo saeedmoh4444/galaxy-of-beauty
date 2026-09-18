@@ -138,6 +138,10 @@ export const bookingMessages = {
     ar: 'حجز جالكسي بيوتي - {code}',
     en: 'Galaxy of Beauty booking - {code}',
   },
+  'booking.share-title': {
+    ar: 'تم تأكيد حجزي في جالكسي بيوتي! رقم الحجز: {code}',
+    en: 'My Galaxy of Beauty booking is confirmed! Code: {code}',
+  },
   'booking.view-my-bookings': { ar: 'عرض حجوزاتي', en: 'View My Bookings' },
   'booking.book-another-service': { ar: 'احجزي خدمة أخرى', en: 'Book Another Service' },
   'booking.back-to-dashboard': { ar: 'العودة للوحة التحكم', en: 'Back to Dashboard' },
