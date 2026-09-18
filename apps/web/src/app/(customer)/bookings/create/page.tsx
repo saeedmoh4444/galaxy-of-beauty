@@ -125,6 +125,24 @@ export default function CreateBookingPage(): JSX.Element {
     ? num((svc as unknown as { basePrice?: unknown })?.basePrice) * hourlyHours
     : num((svc as unknown as { basePrice?: unknown })?.basePrice) + variantDelta;
 
+  // 1.3 Add-Ons — "customers who booked this also added" upsells.
+  const addonOptions = ((svc as unknown as { servicesWithAddon?: unknown[] })?.servicesWithAddon ??
+    []) as Array<{
+    id: number;
+    popularityScore: number;
+    isSuggested: boolean;
+    bundleDiscountPercent: number;
+    addon: { id: number; titleJson: unknown; basePrice: unknown; durationMin: number };
+  }>;
+  const [selectedAddons, setSelectedAddons] = useState<number[]>([]);
+  const addonsTotal = addonOptions
+    .filter((a) => selectedAddons.includes(a.addon.id))
+    .reduce(
+      (sum, a) =>
+        sum + Math.round(num(a.addon.basePrice) * (1 - a.bundleDiscountPercent / 100) * 100) / 100,
+      0,
+    );
+
   const redeemMut = api.promo.redeemOnBooking.useMutation({
     onError: () => addToast('error', t('promo.redeem-failed')),
   });
@@ -220,6 +238,7 @@ export default function CreateBookingPage(): JSX.Element {
       endAt: new Date(start.getTime() + durationMin * 60000).toISOString(),
       familyMemberId,
       bundleId,
+      addonIds: selectedAddons.length > 0 ? selectedAddons : undefined,
     });
   };
 
@@ -502,6 +521,59 @@ export default function CreateBookingPage(): JSX.Element {
                   {num((svc as unknown as { durationMin?: unknown })?.durationMin)} {t('misc.min')}
                 </span>
               </div>
+              {/* 1.3 Add-Ons — "customers who booked this also added" */}
+              {addonOptions.length > 0 && !activeBundle && (
+                <div className="border-b pb-3">
+                  <p className="mb-2 text-sm font-semibold text-text-primary">
+                    {t('booking.addons.title')}
+                  </p>
+                  <div className="space-y-2">
+                    {addonOptions.slice(0, 5).map((a) => (
+                      <label
+                        key={a.addon.id}
+                        className="flex cursor-pointer items-center gap-2 text-sm"
+                      >
+                        <input
+                          type="checkbox"
+                          checked={selectedAddons.includes(a.addon.id)}
+                          onChange={(e) =>
+                            setSelectedAddons((prev) =>
+                              e.target.checked
+                                ? [...prev, a.addon.id]
+                                : prev.filter((id) => id !== a.addon.id),
+                            )
+                          }
+                        />
+                        <span className="flex-1">
+                          {localize(a.addon.titleJson, locale)}
+                          {a.isSuggested && (
+                            <span className="ms-2 rounded-full bg-brand-100 px-2 py-0.5 text-[10px] font-bold text-brand-700 dark:bg-brand-900 dark:text-brand-300">
+                              {t('booking.addons.popular')}
+                            </span>
+                          )}
+                        </span>
+                        <span className="text-text-secondary">
+                          {Math.round(num(a.addon.basePrice) * (1 - a.bundleDiscountPercent / 100))}{' '}
+                          {t('misc.sar')}
+                          {a.bundleDiscountPercent > 0 && (
+                            <span className="ms-1 text-xs text-green-600 dark:text-green-400">
+                              −{a.bundleDiscountPercent}%
+                            </span>
+                          )}
+                        </span>
+                      </label>
+                    ))}
+                  </div>
+                  {addonsTotal > 0 && (
+                    <div className="mt-2 flex justify-between text-sm">
+                      <span className="text-text-secondary">{t('booking.addons.total')}</span>
+                      <span className="font-bold text-brand-600">
+                        {addonsTotal.toFixed(0)} {t('misc.sar')}
+                      </span>
+                    </div>
+                  )}
+                </div>
+              )}
               {isHourly && (
                 <>
                   <div className="flex justify-between border-b pb-2">
