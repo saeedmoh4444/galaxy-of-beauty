@@ -16,6 +16,7 @@ import { localize } from '@galaxy/shared';
 import { useLocale } from '@/components/LocaleProvider';
 import { useToast } from '@/components/Toast';
 import { useHaptics } from '@/hooks/useHaptics';
+import { enqueueAction, isNetworkError } from '@/utils/offlineQueue';
 
 interface ServiceListItem {
   id?: number;
@@ -204,7 +205,15 @@ export default function CreateBookingScreen() {
       showToast('success', t('booking.created-success'));
       setTimeout(() => router.back(), 1000);
     },
-    onError: () => {
+    onError: (error, variables) => {
+      // Offline-first (5.5): a network failure means the request never
+      // reached the server — queue it (same idempotencyKey replays
+      // safely) and confirm on reconnect instead of failing the booking.
+      if (isNetworkError(error)) {
+        void enqueueAction('create_booking', variables as Record<string, unknown>);
+        showToast('info', t('mobile.offline.booking-queued'));
+        return;
+      }
       trigger('error');
       showToast('error', t('booking.create-failed'));
     },
