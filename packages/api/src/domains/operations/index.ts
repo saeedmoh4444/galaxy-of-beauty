@@ -13,6 +13,7 @@ export { corporateWellnessRouter } from '../../routers/corporateWellness';
 export { franchisePortalRouter } from '../../routers/franchisePortal';
 export { virtualConsultationRouter } from '../../routers/virtualConsultation';
 export { dnaBeautyRouter } from '../../routers/dnaBeauty';
+export { beautyDnaRouter } from '../../routers/beautyDna';
 export { iotSyncRouter } from '../../routers/iotSync';
 export { beautyMetaverseRouter } from '../../routers/beautyMetaverse';
 export { geofenceOffersRouter } from '../../routers/geofenceOffers';

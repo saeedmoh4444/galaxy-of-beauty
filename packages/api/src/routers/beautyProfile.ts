@@ -17,6 +17,9 @@ export const beautyProfileRouter = router({
         hairType: z.enum(['straight', 'wavy', 'curly', 'coily']).optional(),
         hairLength: z.enum(['short', 'medium', 'long']).optional(),
         skinTone: z.enum(['fair', 'medium', 'olive', 'tan', 'deep']).optional(),
+        // 3.1 — Skin/Hair Match inputs (also set by the skinAnalysis bridge).
+        undertone: z.enum(['cool', 'warm', 'neutral']).optional(),
+        faceShape: z.enum(['oval', 'round', 'square', 'heart', 'diamond', 'long']).optional(),
         allergies: z.array(z.string()).optional(),
         preferredScents: z.array(z.string()).optional(),
         makeupStyle: z.enum(['natural', 'glam', 'soft', 'bold']).optional(),
