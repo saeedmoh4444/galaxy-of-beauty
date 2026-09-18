@@ -2,6 +2,7 @@ import { Stack } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
 import { useEffect } from 'react';
 import SocketProvider from '@/components/SocketProvider';
+import { OfflineSyncProvider } from '@/components/OfflineSyncProvider';
 import { ErrorBoundary } from '@/components/ErrorBoundary';
 import { ToastProvider } from '@/components/Toast';
 import { TRPCProvider } from '@/lib/trpc-react';
@@ -188,6 +189,7 @@ function RootNavigator() {
               <Stack.Screen name="admin/settings/index" options={{ title: t('mobile.settings') }} />
             </Stack>
           </SocketProvider>
+          <OfflineSyncProvider />
         </TRPCProvider>
       </ToastProvider>
     </ErrorBoundary>

@@ -118,4 +118,12 @@ export const mobileCoreMessages = {
     ar: 'يرجى التحقق من اتصالك بالإنترنت والمحاولة مرة أخرى',
     en: 'Please check your internet connection and try again',
   },
+  'mobile.offline.booking-queued': {
+    ar: 'لا يوجد اتصال — تم حفظ حجزك وسيُرسل تلقائياً عند عودة الاتصال',
+    en: 'No connection — your booking was saved and will be sent when you are back online',
+  },
+  'mobile.offline.synced': {
+    ar: 'تم مزامنة الحجوزات المحفوظة',
+    en: 'Saved bookings synced',
+  },
 } as const;

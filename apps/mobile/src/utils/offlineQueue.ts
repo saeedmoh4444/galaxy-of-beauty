@@ -1,38 +1,21 @@
 /**
  * Offline Action Queue — Queue booking actions when offline, sync when online.
  *
- * Uses AsyncStorage for persistence and NetInfo for connectivity detection.
- * When the device goes online, queued actions are replayed in order.
+ * Persists via AsyncStorage (utils/storage) and replays through the
+ * vanilla tRPC client (trpcClient — usable outside React, unlike the
+ * hooks client which needs a QueryClient context).
+ *
+ * Wiring (OfflineSyncProvider):
+ *   - NetInfo listener feeds setOnlineStatus() — coming back online auto-syncs
+ *   - syncQueue() is also called once at app start to drain leftovers
+ *   - onSyncComplete(n) notifies with the number of synced actions
  *
  * Usage:
- *   import { enqueueAction, syncQueue } from '@/utils/offlineQueue';
- *   await enqueueAction({ type: 'create_booking', payload: {...} });
+ *   await enqueueAction('create_booking', { serviceId, ... });
  */
 
-// AsyncStorage from expo — try require to avoid type issues
-const AsyncStorage = (() => {
-  try {
-    // AsyncStorage is an optional dependency — require dynamically with in-memory fallback
-    // eslint-disable-next-line @typescript-eslint/no-require-imports
-    return require('@react-native-async-storage/async-storage').default;
-  } catch {
-    // Fallback in-memory store if package not installed
-    const store = new Map<string, string>();
-    return {
-      getItem: async (k: string) => store.get(k) ?? null,
-      setItem: async (k: string, v: string) => {
-        store.set(k, v);
-      },
-      removeItem: async (k: string) => {
-        store.delete(k);
-      },
-    };
-  }
-})() as {
-  getItem(k: string): Promise<string | null>;
-  setItem(k: string, v: string): Promise<void>;
-  removeItem(k: string): Promise<void>;
-};
+import { AsyncStorage } from '@/utils/storage';
+import { trpcClient } from '@/lib/trpc-react';
 
 const QUEUE_KEY = 'gob_offline_queue';
 
@@ -44,20 +27,15 @@ interface QueuedAction {
   retries: number;
 }
 
-interface OfflineMutationClient {
-  create: { mutate(input: Record<string, unknown>): Promise<unknown> };
-  cancel: { mutate(input: Record<string, unknown>): Promise<unknown> };
-}
-
 let isOnline = true;
 let syncInProgress = false;
-let listeners: Array<() => void> = [];
+let listeners: Array<(syncedCount: number) => void> = [];
 
 export function setOnlineStatus(online: boolean): void {
   const wasOffline = !isOnline;
   isOnline = online;
   if (wasOffline && online) {
-    syncQueue(); // Auto-sync when coming back online
+    void syncQueue(); // Auto-sync when coming back online
   }
 }
 
@@ -65,7 +43,7 @@ export function getOnlineStatus(): boolean {
   return isOnline;
 }
 
-export function onSyncComplete(cb: () => void): () => void {
+export function onSyncComplete(cb: (syncedCount: number) => void): () => void {
   listeners.push(cb);
   return () => {
     listeners = listeners.filter((l) => l !== cb);
@@ -84,14 +62,14 @@ export async function enqueueAction(type: string, payload: Record<string, unknow
   await saveQueue(queue);
 
   if (isOnline) {
-    syncQueue();
+    void syncQueue();
   }
 }
 
 export async function getQueue(): Promise<QueuedAction[]> {
   try {
     const raw = await AsyncStorage.getItem(QUEUE_KEY);
-    return raw ? JSON.parse(raw) : [];
+    return raw ? (JSON.parse(raw) as QueuedAction[]) : [];
   } catch {
     return [];
   }
@@ -101,24 +79,24 @@ async function saveQueue(queue: QueuedAction[]): Promise<void> {
   await AsyncStorage.setItem(QUEUE_KEY, JSON.stringify(queue));
 }
 
-export async function syncQueue(): Promise<void> {
-  if (syncInProgress || !isOnline) return;
+/** Replay queued actions in order. Returns how many were synced. */
+export async function syncQueue(): Promise<number> {
+  if (syncInProgress || !isOnline) return 0;
   syncInProgress = true;
 
   try {
     const queue = await getQueue();
     if (queue.length === 0) {
-      syncInProgress = false;
-      return;
+      return 0;
     }
 
     const remaining: QueuedAction[] = [];
+    let synced = 0;
 
     for (const action of queue) {
       try {
-        // Attempt to replay the action
         await replayAction(action);
-        // Success — don't add to remaining
+        synced += 1;
       } catch (err: unknown) {
         // Failed — keep in queue if under max retries
         if (action.retries < 3) {
@@ -133,24 +111,28 @@ export async function syncQueue(): Promise<void> {
 
     await saveQueue(remaining);
 
-    // Notify listeners
-    for (const cb of listeners) cb();
+    if (synced > 0) {
+      for (const cb of listeners) cb(synced);
+    }
+    return synced;
   } finally {
     syncInProgress = false;
   }
 }
 
 async function replayAction(action: QueuedAction): Promise<void> {
-  // Dynamic import to avoid circular dependency
-  const { trpc } = await import('@/lib/trpc-react');
-  const bookings = trpc.bookings as unknown as OfflineMutationClient;
-
   switch (action.type) {
     case 'create_booking':
-      await bookings.create.mutate(action.payload);
+      await trpcClient.bookings.create.mutate(
+        action.payload as Parameters<typeof trpcClient.bookings.create.mutate>[0],
+      );
       break;
     case 'cancel_booking':
-      await bookings.cancel.mutate(action.payload);
+      // The router has no standalone cancel — it goes through transition.
+      await trpcClient.bookings.transition.mutate({
+        id: action.payload.bookingId as number,
+        action: 'cancel',
+      });
       break;
     default:
       console.warn(`[OfflineQueue] Unknown action type: ${action.type}`);
@@ -163,4 +145,14 @@ export async function clearQueue(): Promise<void> {
 
 export function getQueueLength(): Promise<number> {
   return getQueue().then((q) => q.length);
+}
+
+/**
+ * True when an error means the request never reached the server (so a
+ * queued retry is safe and cannot double-charge) — not a server or
+ * validation rejection.
+ */
+export function isNetworkError(err: unknown): boolean {
+  const msg = (err as Error | null)?.message ?? '';
+  return /network request failed|fetch failed|failed to fetch|network error/i.test(msg);
 }
