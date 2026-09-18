@@ -9,6 +9,8 @@ export const BEAUTY_PROFILE_OPTIONS = {
   hairTypes: ['straight', 'wavy', 'curly', 'coily'] as const,
   hairLengths: ['short', 'medium', 'long'] as const,
   skinTones: ['fair', 'medium', 'olive', 'tan', 'deep'] as const,
+  undertones: ['cool', 'warm', 'neutral'] as const,
+  faceShapes: ['oval', 'round', 'square', 'heart', 'diamond', 'long'] as const,
   makeupStyles: ['natural', 'glam', 'soft', 'bold'] as const,
   concerns: ['acne', 'aging', 'dark_spots', 'redness', 'dryness', 'large_pores', 'uneven_texture'],
   scents: ['floral', 'citrus', 'woody', 'fresh', 'sweet', 'oriental'],
@@ -19,6 +21,10 @@ export interface BeautyProfileFormState {
   hairType: string;
   hairLength: string;
   skinTone: string;
+  // 3.1 additions — optional so pre-match consumers compile unchanged;
+  // the web/mobile editors pass them once the chips land (PR 4).
+  undertone?: string;
+  faceShape?: string;
   makeupStyle: string;
   concerns: string[];
   scents: string[];
@@ -34,6 +40,8 @@ export interface BeautyProfileUpsertInput {
   hairType?: (typeof BEAUTY_PROFILE_OPTIONS.hairTypes)[number];
   hairLength?: (typeof BEAUTY_PROFILE_OPTIONS.hairLengths)[number];
   skinTone?: (typeof BEAUTY_PROFILE_OPTIONS.skinTones)[number];
+  undertone?: (typeof BEAUTY_PROFILE_OPTIONS.undertones)[number];
+  faceShape?: (typeof BEAUTY_PROFILE_OPTIONS.faceShapes)[number];
   makeupStyle?: (typeof BEAUTY_PROFILE_OPTIONS.makeupStyles)[number];
   concerns?: string[];
   preferredScents?: string[];
@@ -76,6 +84,8 @@ export function buildBeautyProfileInput(form: BeautyProfileFormState): BeautyPro
     input.hairLength = form.hairLength as BeautyProfileUpsertInput['hairLength'];
   }
   if (form.skinTone) input.skinTone = form.skinTone as BeautyProfileUpsertInput['skinTone'];
+  if (form.undertone) input.undertone = form.undertone as BeautyProfileUpsertInput['undertone'];
+  if (form.faceShape) input.faceShape = form.faceShape as BeautyProfileUpsertInput['faceShape'];
   if (form.makeupStyle) {
     input.makeupStyle = form.makeupStyle as BeautyProfileUpsertInput['makeupStyle'];
   }

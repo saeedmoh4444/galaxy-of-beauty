@@ -207,3 +207,92 @@ export function buildReview(overrides: BuildReviewOverrides) {
     comment: overrides.comment ?? 'خدمة ممتازة',
   };
 }
+
+// ── Vendor (store plan / 3.1 demo products) ─────────────────
+
+export interface BuildVendorOverrides {
+  userId: number;
+  storeName?: string;
+  storeSlug?: string;
+}
+
+export function buildVendor(overrides: BuildVendorOverrides) {
+  const s = seq();
+  return {
+    userId: overrides.userId,
+    storeName: overrides.storeName ?? `متجر تجريبي ${s}`,
+    storeSlug: overrides.storeSlug ?? `vendor-${uid()}-${s}`,
+    type: 'VENDOR',
+    licenseNumber: 'TEST-LICENSE',
+    isVerified: true,
+    isActive: true,
+  };
+}
+
+// ── Product (3.1 Beauty DNA match fixtures) ─────────────────
+
+export interface BuildProductOverrides {
+  vendorId: number;
+  categoryId: number;
+  nameJson?: { ar: string; en: string };
+  price?: number;
+  brand?: string;
+  tags?: string[];
+  // Polymorphic 3.1 payload: makeup { kind, shade, shadeHex, undertone, depth }
+  // or fragrance { kind, fragranceFamily, seasons } — passed through as-is.
+  attributes?: unknown;
+}
+
+export function buildProduct(overrides: BuildProductOverrides) {
+  const s = seq();
+  return {
+    vendorId: overrides.vendorId,
+    categoryId: overrides.categoryId,
+    nameJson: overrides.nameJson ?? { ar: `منتج ${s}`, en: `Product ${s}` },
+    descriptionJson: { ar: 'وصف المنتج', en: 'Product description' },
+    price: overrides.price ?? 100,
+    stock: 10,
+    imageUrl: null,
+    images: [],
+    brand: overrides.brand ?? 'TestBrand',
+    emoji: '🧴',
+    isActive: true,
+    isFeatured: false,
+    tags: overrides.tags ?? [],
+    attributes: overrides.attributes ?? null,
+  };
+}
+
+// ── BeautyProfile (3.1 match inputs) ────────────────────────
+
+export interface BuildBeautyProfileOverrides {
+  userId: number;
+  skinType?: string;
+  hairType?: string;
+  hairLength?: string;
+  skinTone?: string;
+  undertone?: string;
+  faceShape?: string;
+  preferredScents?: string[];
+  concerns?: string[];
+}
+
+export function buildBeautyProfile(overrides: BuildBeautyProfileOverrides) {
+  return {
+    userId: overrides.userId,
+    skinType: overrides.skinType ?? null,
+    hairType: overrides.hairType ?? null,
+    hairLength: overrides.hairLength ?? null,
+    skinTone: overrides.skinTone ?? null,
+    undertone: overrides.undertone ?? null,
+    faceShape: overrides.faceShape ?? null,
+    allergies: [],
+    preferredScents: overrides.preferredScents ?? [],
+    makeupStyle: null,
+    concerns: overrides.concerns ?? [],
+    notes: null,
+    preferences: [],
+    colorPalette: [],
+    fitnessGoals: [],
+  };
+}

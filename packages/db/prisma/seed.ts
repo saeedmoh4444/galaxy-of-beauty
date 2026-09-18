@@ -1,4 +1,8 @@
+// tsx does not auto-load .env — do it before ../src/client evaluates
+// (client.ts captures DATABASE_URL at import time).
+import 'dotenv/config';
 import { prisma } from '../src/client';
+import type { Prisma } from '../src';
 import crypto from 'crypto';
 
 function generateBookingCode(): string {
@@ -3221,6 +3225,213 @@ async function main() {
     console.log(` ${PRODUCT_CATEGORIES.length} product categories`);
   } catch (err: any) {
     console.log(`    Product categories: ${err.message?.slice(0, 60)}`);
+  }
+
+  // ---- 3.1 Beauty DNA demo products (skin/hair/fragrance match data) ----
+  // Attributes use the polymorphic payload discriminated by `kind`:
+  // makeup { shade, shadeHex, undertone, depth } | fragrance { fragranceFamily, seasons }.
+  try {
+    const demoVendorUser = await prisma.user.create({
+      data: {
+        email: 'demo-store@galaxyofbeauty.sa',
+        phone: '+966599000001',
+        passwordHash: customerPasswordHash,
+        name: 'متجر جالاكسي التجريبي',
+        role: 'CUSTOMER',
+        emailVerified: true,
+        preferredLanguage: 'ar',
+      },
+    });
+
+    const demoVendor = await prisma.vendor.create({
+      data: {
+        userId: demoVendorUser.id,
+        storeName: 'Galaxy Demo Store',
+        storeSlug: 'galaxy-demo-store',
+        descriptionJson: {
+          ar: 'متجر تجريبي لمنتجات البصمة الجمالية (3.1)',
+          en: 'Beauty DNA 3.1 demo products',
+        },
+        type: 'VENDOR',
+        licenseNumber: 'DEMO-3.1',
+        isVerified: true,
+        isActive: true,
+        commissionRate: 10,
+      },
+    });
+
+    const [makeupCat, fragranceCat] = await Promise.all([
+      prisma.productCategory.findUniqueOrThrow({ where: { slug: 'product-makeup' } }),
+      prisma.productCategory.findUniqueOrThrow({ where: { slug: 'product-fragrance' } }),
+    ]);
+
+    const FOUNDATIONS = [
+      {
+        shade: 'porcelain',
+        shadeHex: '#F6E3D0',
+        undertone: 'cool',
+        depth: 1,
+        ar: 'بورسلين',
+        en: 'Porcelain',
+      },
+      {
+        shade: 'ivory',
+        shadeHex: '#F3DCC4',
+        undertone: 'neutral',
+        depth: 1,
+        ar: 'عاجي',
+        en: 'Ivory',
+      },
+      { shade: 'sand', shadeHex: '#EAC9A8', undertone: 'warm', depth: 2, ar: 'رملي', en: 'Sand' },
+      { shade: 'beige', shadeHex: '#DDB58C', undertone: 'warm', depth: 3, ar: 'بيج', en: 'Beige' },
+      {
+        shade: 'golden',
+        shadeHex: '#C89B67',
+        undertone: 'neutral',
+        depth: 4,
+        ar: 'ذهبي',
+        en: 'Golden',
+      },
+      { shade: 'mocha', shadeHex: '#A87A4C', undertone: 'warm', depth: 5, ar: 'موكا', en: 'Mocha' },
+      {
+        shade: 'espresso',
+        shadeHex: '#7C5330',
+        undertone: 'neutral',
+        depth: 6,
+        ar: 'إسبريسو',
+        en: 'Espresso',
+      },
+    ] as const;
+
+    const makeupProducts = FOUNDATIONS.map((f) => ({
+      vendorId: demoVendor.id,
+      categoryId: makeupCat.id,
+      nameJson: { ar: `كريم أساس سيلك ${f.ar}`, en: `Silk Foundation ${f.en}` },
+      descriptionJson: {
+        ar: `كريم أساس بدرجة ${f.ar} بعمق ${f.depth} من 6 — أساس ساتان يدوم 12 ساعة.`,
+        en: `Foundation shade ${f.en}, depth ${f.depth}/6 — a 12-hour satin base.`,
+      },
+      price: 129,
+      stock: 100,
+      brand: 'Galaxy Beauty Lab',
+      emoji: '🧴',
+      tags: ['foundation', 'long-wear'] as string[],
+      attributes: {
+        kind: 'makeup',
+        shade: f.shade,
+        shadeHex: f.shadeHex,
+        undertone: f.undertone,
+        depth: f.depth,
+      } as unknown as Prisma.InputJsonValue,
+      images: [] as string[],
+    }));
+
+    const CONCEALERS = [
+      { shade: 'light', shadeHex: '#F0D9C0', undertone: 'cool', depth: 2, ar: 'فاتح', en: 'Light' },
+      { shade: 'deep', shadeHex: '#9A6B45', undertone: 'warm', depth: 5, ar: 'داكن', en: 'Deep' },
+    ] as const;
+
+    const concealerProducts = CONCEALERS.map((c) => ({
+      vendorId: demoVendor.id,
+      categoryId: makeupCat.id,
+      nameJson: { ar: `كونسيلر إخفاء ${c.ar}`, en: `Conceal Perfect ${c.en}` },
+      descriptionJson: {
+        ar: `كونسيلر بدرجة ${c.ar} يغطي الهالات ويصحح البقع.`,
+        en: `Concealer shade ${c.en} covering dark circles and spots.`,
+      },
+      price: 89,
+      stock: 100,
+      brand: 'Galaxy Beauty Lab',
+      emoji: '🧴',
+      tags: ['concealer'] as string[],
+      images: [] as string[],
+      attributes: {
+        kind: 'makeup',
+        shade: c.shade,
+        shadeHex: c.shadeHex,
+        undertone: c.undertone,
+        depth: c.depth,
+      } as unknown as Prisma.InputJsonValue,
+    }));
+
+    const PERFUMES = [
+      {
+        family: 'floral',
+        seasons: ['spring', 'summer'],
+        ar: 'وردة الطائف',
+        en: 'Taif Rose',
+        price: 249,
+        emoji: '🌸',
+      },
+      {
+        family: 'citrus',
+        seasons: ['summer', 'spring'],
+        ar: 'برتقال جدة',
+        en: 'Jeddah Citrus',
+        price: 219,
+        emoji: '🍋',
+      },
+      {
+        family: 'fresh',
+        seasons: ['summer', 'spring'],
+        ar: 'نسيم الصباح',
+        en: 'Morning Breeze',
+        price: 199,
+        emoji: '🌿',
+      },
+      {
+        family: 'woody',
+        seasons: ['autumn', 'winter'],
+        ar: 'عود الرياض',
+        en: 'Riyadh Oud',
+        price: 289,
+        emoji: '🪵',
+      },
+      {
+        family: 'oriental',
+        seasons: ['winter', 'autumn'],
+        ar: 'عنبر الشرق',
+        en: 'Amber Orient',
+        price: 349,
+        emoji: '✨',
+      },
+      {
+        family: 'sweet',
+        seasons: ['winter', 'autumn'],
+        ar: 'فانيليا',
+        en: 'Vanilla Dream',
+        price: 269,
+        emoji: '🍬',
+      },
+    ] as const;
+
+    const fragranceProducts = PERFUMES.map((p) => ({
+      vendorId: demoVendor.id,
+      categoryId: fragranceCat.id,
+      nameJson: { ar: `عطر ${p.ar}`, en: `${p.en} Eau de Parfum` },
+      descriptionJson: {
+        ar: `عطر بلمسة ${p.ar} يناسب الأجواء الباردة والدافئة حسب الموسم.`,
+        en: `A ${p.family} fragrance suited to its seasons.`,
+      },
+      price: p.price,
+      stock: 80,
+      brand: 'Galaxy Beauty Lab',
+      emoji: p.emoji,
+      tags: ['perfume', p.family] as string[],
+      images: [] as string[],
+      attributes: {
+        kind: 'fragrance',
+        fragranceFamily: p.family,
+        seasons: p.seasons,
+      } as unknown as Prisma.InputJsonValue,
+    }));
+
+    await prisma.product.createMany({
+      data: [...makeupProducts, ...concealerProducts, ...fragranceProducts],
+    });
+    console.log(' 3.1 Beauty DNA demo store: 9 makeup + 6 fragrance products');
+  } catch (err: any) {
+    console.log(`    Demo products: ${err.message?.slice(0, 60)}`);
   }
 
   // ---- Notification templates (B.26 framework) ----
