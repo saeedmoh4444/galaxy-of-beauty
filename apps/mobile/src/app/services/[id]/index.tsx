@@ -9,6 +9,7 @@ import {
   Share,
 } from 'react-native';
 import { useLocalSearchParams, useRouter } from 'expo-router';
+import * as Linking from 'expo-linking';
 import { SkeletonList } from '@/components/SkeletonCard';
 import { ErrorAlert } from '@/components/ErrorAlert';
 import { Icon, type IconName } from '@/components/Icon';
@@ -16,6 +17,8 @@ import { ServiceImage } from '@/components/ServiceImage';
 import { trpc } from '@/lib/trpc-react';
 import { buildServiceTrust, localize, serviceKeyFromCategorySlug } from '@galaxy/shared';
 import { useLocale } from '@/components/LocaleProvider';
+import { useToast } from '@/components/Toast';
+import { copyText } from '@/utils/clipboard';
 
 type ServiceJson = { ar?: string; en?: string };
 
@@ -72,6 +75,7 @@ const VARIANT_ICON: Record<string, IconName> = {
 export default function ServiceDetailScreen(): JSX.Element {
   const { locale, t } = useLocale();
   const router = useRouter();
+  const { showToast } = useToast();
   const { id } = useLocalSearchParams<{ id: string }>();
   const q = trpc.services.getById.useQuery({ id: parseInt(id, 10) });
   const data = (q.data as unknown as ServiceDetail | null) ?? null;
@@ -192,13 +196,29 @@ export default function ServiceDetailScreen(): JSX.Element {
         </View>
       )}
 
-      {/* Share */}
-      <TouchableOpacity
-        style={styles.shareBtn}
-        onPress={() => Share.share({ title, message: `${title}` }).catch(() => undefined)}
-      >
-        <Text style={styles.shareText}>{t('mobile.public.service-detail.share')}</Text>
-      </TouchableOpacity>
+      {/* Share + copy link */}
+      <View style={styles.shareRow}>
+        <TouchableOpacity
+          style={styles.shareBtn}
+          onPress={() => Share.share({ title, message: `${title}` }).catch(() => undefined)}
+        >
+          <Text style={styles.shareText}>{t('mobile.public.service-detail.share')}</Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          style={styles.shareBtn}
+          onPress={() => {
+            const link = Linking.createURL(`/services/${data.id}`);
+            void copyText(link).then((ok) =>
+              showToast(
+                ok ? 'success' : 'error',
+                ok ? t('mobile.clipboard.copied') : t('mobile.clipboard.copy-failed'),
+              ),
+            );
+          }}
+        >
+          <Text style={styles.shareText}>{t('mobile.public.service-detail.copy-link')}</Text>
+        </TouchableOpacity>
+      </View>
 
       <View style={styles.card}>
         <View>
@@ -377,6 +397,7 @@ const styles = StyleSheet.create({
     paddingVertical: 5,
   },
   stageChipText: { fontSize: 11, color: '#6d28d9', fontWeight: '700' },
+  shareRow: { flexDirection: 'row', gap: 8 },
   shareBtn: {
     alignSelf: 'flex-start',
     borderColor: '#e5e7eb',
