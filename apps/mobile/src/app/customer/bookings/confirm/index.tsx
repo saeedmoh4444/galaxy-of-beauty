@@ -1,6 +1,8 @@
 import type { JSX } from 'react';
 import { View, Text, ScrollView, StyleSheet, TouchableOpacity } from 'react-native';
 import { useLocalSearchParams } from 'expo-router';
+import LottieView from 'lottie-react-native';
+import successCheck from '@galaxy/ui/assets/success-check.json';
 import { useLocale } from '@/components/LocaleProvider';
 
 // NO API: booking confirm is params-driven (code/date passed from the booking
@@ -14,7 +16,8 @@ export default function BookingConfirmScreen(): JSX.Element {
   return (
     <ScrollView style={styles.c} contentContainerStyle={styles.i}>
       <View style={styles.iconCircle}>
-        <Text style={styles.iconEmoji}>✅</Text>
+        {/* Quick win #3 — animated success check (plays once on mount) */}
+        <LottieView source={successCheck} autoPlay loop={false} style={styles.lottie} />
       </View>
       <Text style={styles.t}>{t('booking.success-title')}</Text>
       <Text style={styles.sub}>{t('booking.success-message')}</Text>
@@ -68,7 +71,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     marginBottom: 20,
   },
-  iconEmoji: { fontSize: 48 },
+  lottie: { width: 68, height: 68 },
   t: { fontSize: 28, fontWeight: '800', color: '#059669', textAlign: 'center', marginBottom: 8 },
   sub: { fontSize: 14, color: '#6b7280', textAlign: 'center', marginBottom: 30, lineHeight: 22 },
   card: { backgroundColor: '#fff', borderRadius: 16, padding: 20, width: '100%', marginBottom: 20 },
