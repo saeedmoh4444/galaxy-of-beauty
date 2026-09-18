@@ -3069,6 +3069,8 @@ export const miscMessages = {
     en: 'Any allergies, special preferences, or notes for the service provider...',
   },
   'beautyProfile.saveButton': { ar: 'حفظ الملف الجمالي', en: 'Save beauty profile' },
+  'beautyProfile.editButton': { ar: 'تعديل الملف الجمالي', en: 'Edit beauty profile' },
+  'beautyProfile.cancelButton': { ar: 'إلغاء', en: 'Cancel' },
   'beautyProfile.opt.oily': { ar: 'دهنية', en: 'Oily' },
   'beautyProfile.opt.dry': { ar: 'جافة', en: 'Dry' },
   'beautyProfile.opt.combination': { ar: 'مختلطة', en: 'Combination' },
