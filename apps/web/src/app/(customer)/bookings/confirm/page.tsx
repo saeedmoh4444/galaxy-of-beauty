@@ -6,6 +6,7 @@ import Link from 'next/link';
 import { Button, Card, formatHijriDate } from '@galaxy/ui';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
 import { AddToCalendar } from '@/components/AddToCalendar';
+import { ShareButtons } from '@/components/ShareButtons';
 import { useLocale } from '@/components/LocaleProvider';
 
 export default function BookingConfirmPage(): JSX.Element {
@@ -71,6 +72,11 @@ export default function BookingConfirmPage(): JSX.Element {
             />
           </div>
         </Card>
+
+        {/* 6.5 quick win — viral share: WhatsApp/X/copy on confirmation */}
+        <div className="flex justify-center">
+          <ShareButtons title={t('booking.share-title', { code })} />
+        </div>
 
         <div className="space-y-2">
           <Link href="/bookings">
