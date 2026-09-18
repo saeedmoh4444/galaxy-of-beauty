@@ -5,32 +5,11 @@
  * (browser) or the `Authorization: Bearer <token>` header (mobile clients).
  * Login stores the token here; both tRPC clients read it per request.
  *
- * Persisted via AsyncStorage when available (offlineQueue.ts pattern),
- * with an in-memory fallback.
+ * Persisted via AsyncStorage when available (utils/storage — real module
+ * on binaries that include it, in-memory fallback otherwise).
  */
 
-// AsyncStorage is an optional dependency — require dynamically with in-memory fallback
-const AsyncStorage = (() => {
-  try {
-    // eslint-disable-next-line @typescript-eslint/no-require-imports
-    return require('@react-native-async-storage/async-storage').default;
-  } catch {
-    const store = new Map<string, string>();
-    return {
-      getItem: async (k: string) => store.get(k) ?? null,
-      setItem: async (k: string, v: string) => {
-        store.set(k, v);
-      },
-      removeItem: async (k: string) => {
-        store.delete(k);
-      },
-    };
-  }
-})() as {
-  getItem(k: string): Promise<string | null>;
-  setItem(k: string, v: string): Promise<void>;
-  removeItem(k: string): Promise<void>;
-};
+import { AsyncStorage } from '@/utils/storage';
 
 const TOKEN_KEY = 'gob_access_token';
 
