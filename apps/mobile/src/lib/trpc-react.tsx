@@ -13,9 +13,11 @@
  */
 
 import { QueryClient, QueryClientProvider, QueryCache, MutationCache } from '@tanstack/react-query';
+import { persistQueryClient } from '@tanstack/react-query-persist-client';
+import { createAsyncStoragePersister } from '@tanstack/query-async-storage-persister';
 import { httpBatchLink } from '@trpc/client';
 import { createTRPCReact } from '@trpc/react-query';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import type { ReactNode } from 'react';
 import superjson from 'superjson';
 import type { AppRouter } from '@galaxy/api';
@@ -23,11 +25,24 @@ import { DEFAULT_LOCAL_URL } from '@galaxy/ui';
 import { router } from 'expo-router';
 import { getAuthHeaders, getAuthToken, setAuthToken } from './authToken';
 import { setSocketToken } from '@/hooks/useSocket';
+import { AsyncStorage } from '@/utils/storage';
+import { isPersistedQueryKey, PERSIST_BUSTER } from '@/utils/persistConfig';
 
 const API_URL = process.env.EXPO_PUBLIC_API_URL ?? `${DEFAULT_LOCAL_URL}/api/trpc`;
 
 // Create the tRPC React client
 export const trpc = createTRPCReact<AppRouter>();
+
+// Vanilla client — works outside React (offlineQueue replay, scripts).
+export const trpcClient = trpc.createClient({
+  links: [
+    httpBatchLink({
+      url: API_URL,
+      headers: getAuthHeaders,
+      transformer: superjson,
+    }),
+  ],
+});
 
 // Global UNAUTHORIZED handler: a stale token (or a guest opening an
 // authenticated screen) must not leave the app stuck on error states —
@@ -67,17 +82,30 @@ export function TRPCProvider({ children }: { children: ReactNode }): ReactNode {
         mutationCache: new MutationCache({ onError: handleUnauthorized }),
       }),
   );
-  const [trpcClient] = useState(() =>
-    trpc.createClient({
-      links: [
-        httpBatchLink({
-          url: API_URL,
-          headers: getAuthHeaders,
-          transformer: superjson,
-        }),
-      ],
-    }),
-  );
+
+  // Offline-first (5.5): persist the public catalog cache so discovery
+  // screens render instantly offline/on cold start. User-scoped queries
+  // never touch storage (persistConfig whitelist). maxAge bounds how long
+  // stale catalog data may survive without a network refresh.
+  useEffect(() => {
+    let unsubscribe: (() => void) | undefined;
+    try {
+      // persistQueryClient returns [unsubscribe, hydratedPromise]
+      [unsubscribe] = persistQueryClient({
+        queryClient,
+        persister: createAsyncStoragePersister({ storage: AsyncStorage }),
+        buster: PERSIST_BUSTER,
+        maxAge: 24 * 60 * 60 * 1000, // 24h
+        dehydrateOptions: {
+          shouldDehydrateQuery: (query) =>
+            query.state.status === 'success' && isPersistedQueryKey(query.queryKey),
+        },
+      });
+    } catch {
+      // Storage unavailable (pre-module binary) — run without persistence.
+    }
+    return () => unsubscribe?.();
+  }, [queryClient]);
 
   return (
     <trpc.Provider client={trpcClient} queryClient={queryClient}>

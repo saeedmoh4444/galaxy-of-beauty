@@ -16,6 +16,7 @@ import { localize } from '@galaxy/shared';
 import { useLocale } from '@/components/LocaleProvider';
 import { useToast } from '@/components/Toast';
 import { useHaptics } from '@/hooks/useHaptics';
+import { enqueueAction, isNetworkError } from '@/utils/offlineQueue';
 
 interface ServiceListItem {
   id?: number;
@@ -43,6 +44,18 @@ interface AppliedPromo {
 interface ServiceDetail extends ServiceListItem {
   technicianServices?: TechnicianService[];
   variants?: ServiceVariant[];
+  servicesWithAddon?: Array<{
+    addonId?: number;
+    popularityScore?: number;
+    isSuggested?: boolean;
+    bundleDiscountPercent?: number;
+    addon?: {
+      id?: number;
+      titleJson?: { ar?: string; en?: string };
+      basePrice?: number;
+      durationMin?: number;
+    };
+  }>;
 }
 
 interface AddressItem {
@@ -84,6 +97,8 @@ export default function CreateBookingScreen() {
   const [addressId, setAddressId] = useState<number | undefined>();
   // K1 (kids plan): optional "book on behalf of" family member.
   const [familyMemberId, setFamilyMemberId] = useState<number | undefined>();
+  // 1.3 Add-Ons — selected add-on service ids.
+  const [selectedAddons, setSelectedAddons] = useState<number[]>([]);
   // K3 (kids plan): optional Mommy & Me bundle preselected (?bundleId=) —
   // fixed for the lifetime of the flow.
   const bundleId = preselectedBundleId;
@@ -150,6 +165,17 @@ export default function CreateBookingScreen() {
   ) as { data?: { enabled?: boolean; breakdown?: Record<string, number> } };
   const pricePreview = previewQ.data;
 
+  // 1.3 Add-Ons — "customers who booked this also added" upsells.
+  const addonOptions = svc?.servicesWithAddon ?? [];
+  const addonsTotal = addonOptions
+    .filter((a) => selectedAddons.includes(a.addon?.id ?? -1))
+    .reduce(
+      (sum, a) =>
+        sum +
+        Math.round(Number(a.addon?.basePrice ?? 0) * (1 - (a.bundleDiscountPercent ?? 0) / 100)),
+      0,
+    );
+
   const variants = svc?.variants ?? [];
   // Displayed total: base price + selected variant delta. K4: hourly
   // services (babysitting) price by duration instead.
@@ -179,7 +205,15 @@ export default function CreateBookingScreen() {
       showToast('success', t('booking.created-success'));
       setTimeout(() => router.back(), 1000);
     },
-    onError: () => {
+    onError: (error, variables) => {
+      // Offline-first (5.5): a network failure means the request never
+      // reached the server — queue it (same idempotencyKey replays
+      // safely) and confirm on reconnect instead of failing the booking.
+      if (isNetworkError(error)) {
+        void enqueueAction('create_booking', variables as Record<string, unknown>);
+        showToast('info', t('mobile.offline.booking-queued'));
+        return;
+      }
       trigger('error');
       showToast('error', t('booking.create-failed'));
     },
@@ -248,6 +282,7 @@ export default function CreateBookingScreen() {
       endAt: new Date(start.getTime() + durationMin * 60000).toISOString(),
       familyMemberId,
       bundleId,
+      addonIds: selectedAddons.length > 0 ? selectedAddons : undefined,
     });
   };
 
@@ -545,6 +580,53 @@ export default function CreateBookingScreen() {
                 {svc.durationMin} {t('misc.min')}
               </Text>
             </View>
+            {/* 1.3 Add-Ons — "customers who booked this also added" */}
+            {addonOptions.length > 0 && !activeBundle && (
+              <View style={styles.addonBlock}>
+                <Text style={styles.addonTitle}>{t('booking.addons.title')}</Text>
+                {addonOptions.slice(0, 5).map((a) => {
+                  const addonPrice = Math.round(
+                    Number(a.addon?.basePrice ?? 0) * (1 - (a.bundleDiscountPercent ?? 0) / 100),
+                  );
+                  return (
+                    <TouchableOpacity
+                      key={a.addon?.id}
+                      style={styles.addonRow}
+                      activeOpacity={0.7}
+                      onPress={() => {
+                        const aid = a.addon?.id;
+                        if (aid === undefined) return;
+                        setSelectedAddons((prev) =>
+                          prev.includes(aid) ? prev.filter((id) => id !== aid) : [...prev, aid],
+                        );
+                      }}
+                    >
+                      <Text style={styles.addonCheck}>
+                        {selectedAddons.includes(a.addon?.id ?? -1) ? '☑' : '☐'}
+                      </Text>
+                      <View style={{ flex: 1 }}>
+                        <Text style={styles.addonName}>
+                          {localize(a.addon?.titleJson, locale)}
+                          {a.isSuggested ? ` · ${t('booking.addons.popular')}` : ''}
+                        </Text>
+                      </View>
+                      <Text style={styles.addonPrice}>
+                        {addonPrice} {t('misc.sar')}
+                        {a.bundleDiscountPercent ? ` (−${a.bundleDiscountPercent}%)` : ''}
+                      </Text>
+                    </TouchableOpacity>
+                  );
+                })}
+                {addonsTotal > 0 && (
+                  <View style={styles.summaryRow}>
+                    <Text style={styles.summaryTotalLabel}>{t('booking.addons.total')}</Text>
+                    <Text style={styles.summaryPrice}>
+                      {addonsTotal.toFixed(0)} {t('misc.sar')}
+                    </Text>
+                  </View>
+                )}
+              </View>
+            )}
             <View style={styles.summaryRow}>
               <Text style={styles.summaryLabel}>{t('booking.choose-time')}</Text>
               <Text style={styles.summaryValue}>
@@ -748,6 +830,13 @@ const styles = StyleSheet.create({
   summaryValue: { fontSize: 14, color: '#374151' },
   summarySub: { fontSize: 12, color: '#9ca3af' },
   summaryPrice: { fontSize: 16, fontWeight: '700', color: '#7c3aed' },
+  // 1.3 Add-Ons — booking upsell block.
+  addonBlock: { borderBottomWidth: 1, borderBottomColor: '#f3f4f6', paddingBottom: 10 },
+  addonTitle: { fontSize: 13, fontWeight: '700', color: '#111827', marginBottom: 6 },
+  addonRow: { flexDirection: 'row', alignItems: 'center', gap: 8, paddingVertical: 4 },
+  addonCheck: { fontSize: 16, color: '#7c3aed', width: 22 },
+  addonName: { flex: 1, fontSize: 13, color: '#374151' },
+  addonPrice: { fontSize: 12, fontWeight: '600', color: '#6b7280' },
   disclaimer: {
     fontSize: 11,
     color: '#92400e',

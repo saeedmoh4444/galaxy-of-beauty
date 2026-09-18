@@ -279,6 +279,43 @@ export const bookingRouter = router({
         });
       }
 
+      // 4d. Add-ons (1.3) — each addon must be linked to the main service;
+      // priced at basePrice × (1 - bundleDiscountPercent/100). Bundles
+      // keep their fixed price and reject add-ons.
+      let addonsJson: Array<Record<string, unknown>> | null = null;
+      if (input.addonIds && input.addonIds.length > 0) {
+        if (bundle) {
+          throw new TRPCError({
+            code: 'BAD_REQUEST',
+            message: 'Add-ons cannot be combined with bundles',
+          });
+        }
+        const links = await tx.serviceAddon.findMany({
+          where: { serviceId: input.serviceId, isActive: true },
+        });
+        const linkByAddon = new Map(links.map((l) => [l.addonId, l]));
+        const addons = await tx.service.findMany({
+          where: { id: { in: input.addonIds } },
+          select: { id: true, titleJson: true, basePrice: true },
+        });
+        for (const addonId of input.addonIds) {
+          const link = linkByAddon.get(addonId);
+          if (!link) {
+            throw new TRPCError({
+              code: 'BAD_REQUEST',
+              message: `Add-on ${addonId} is not linked to this service`,
+            });
+          }
+        }
+        addonsJson = addons.map((a) => {
+          const link = linkByAddon.get(a.id)!;
+          const price =
+            Math.round(Number(a.basePrice) * (1 - link.bundleDiscountPercent / 100) * 100) / 100;
+          totalAmount = Math.round((totalAmount + price) * 100) / 100;
+          return { id: a.id, titleJson: a.titleJson, price };
+        });
+      }
+
       // 5. Generate booking code
       const bookingCode = `GOB-${crypto.randomBytes(4).toString('hex').toUpperCase()}`;
 
@@ -303,6 +340,7 @@ export const bookingRouter = router({
           familyMemberId: input.familyMemberId ?? null,
           bundleId: input.bundleId ?? null,
           pricingBreakdown: (pricingBreakdown as unknown as Prisma.InputJsonValue) ?? undefined,
+          addonsJson: (addonsJson as unknown as Prisma.InputJsonValue) ?? undefined,
         },
       });
 
