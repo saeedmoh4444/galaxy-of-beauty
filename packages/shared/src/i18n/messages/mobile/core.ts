@@ -118,6 +118,8 @@ export const mobileCoreMessages = {
     ar: 'يرجى التحقق من اتصالك بالإنترنت والمحاولة مرة أخرى',
     en: 'Please check your internet connection and try again',
   },
+  'mobile.clipboard.copied': { ar: 'تم النسخ', en: 'Copied' },
+  'mobile.clipboard.copy-failed': { ar: 'تعذر النسخ', en: 'Copy failed' },
   'mobile.offline.booking-queued': {
     ar: 'لا يوجد اتصال — تم حفظ حجزك وسيُرسل تلقائياً عند عودة الاتصال',
     en: 'No connection — your booking was saved and will be sent when you are back online',
