@@ -313,6 +313,7 @@ import { postCareRouter } from './postCare';
 import { womensServicesRouter } from './womensServices';
 import { kidsServicesRouter } from './kidsServices';
 import { beautyStatsRouter } from './beautyStats';
+import { npsRouter } from './nps';
 
 export const appRouter = router({
   // Health — checks DB + Redis connectivity for load balancers / Docker healthchecks
@@ -413,6 +414,7 @@ export const appRouter = router({
 
   // Social
   reviews: reviewRouter,
+  nps: npsRouter,
   disputes: disputeRouter,
   community: communityRouter,
   social: socialRouter,

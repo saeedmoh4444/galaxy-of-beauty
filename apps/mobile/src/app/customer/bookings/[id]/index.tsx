@@ -2,6 +2,7 @@ import type { JSX } from 'react';
 import { View, Text, ScrollView, StyleSheet } from 'react-native';
 import { useLocalSearchParams } from 'expo-router';
 import { ScreenState } from '@/components/ScreenState';
+import { NpsCard } from '@/components/NpsCard';
 import { trpc } from '@/lib/trpc-react';
 import { useLocale } from '@/components/LocaleProvider';
 import { formatCurrency } from '@galaxy/ui';
@@ -76,6 +77,7 @@ export default function BookingDetailScreen(): JSX.Element {
             <Text style={[styles.value, row.color ? { color: row.color } : {}]}>{row.value}</Text>
           </View>
         ))}
+        {data?.status === 'COMPLETED' && <NpsCard bookingId={Number(data.id)} />}
       </ScrollView>
     </ScreenState>
   );

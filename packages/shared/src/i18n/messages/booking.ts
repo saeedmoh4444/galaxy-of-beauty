@@ -146,4 +146,17 @@ export const bookingMessages = {
   'booking.book-another-service': { ar: 'احجزي خدمة أخرى', en: 'Book Another Service' },
   'booking.back-to-dashboard': { ar: 'العودة للوحة التحكم', en: 'Back to Dashboard' },
   'booking.hijri-date': { ar: 'التاريخ الهجري', en: 'Hijri date' },
+  // NPS post-booking survey (quick win #6)
+  'nps.title': { ar: 'قيّمي تجربتك', en: 'Rate your experience' },
+  'nps.question': {
+    ar: 'ما مدى احتمال أن توصي جالكسي بيوتي لصديقة؟',
+    en: 'How likely are you to recommend Galaxy of Beauty to a friend?',
+  },
+  'nps.comment-placeholder': {
+    ar: 'أخبرينا المزيد (اختياري)',
+    en: 'Tell us more (optional)',
+  },
+  'nps.submit': { ar: 'إرسال التقييم', en: 'Submit rating' },
+  'nps.thanks': { ar: 'شكراً لتقييمك!', en: 'Thank you for your feedback!' },
+  'nps.already': { ar: 'قيّمتِ هذه الخدمة بـ {score}/10', en: 'You rated this service {score}/10' },
 } as const;
