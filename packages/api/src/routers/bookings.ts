@@ -651,6 +651,32 @@ export const bookingRouter = router({
             where: { userId: booking.technicianId },
             data: { completedBookings: { increment: 1 } },
           });
+
+          // 3.1 Beauty DNA — ongoing learning: the completed booking's
+          // service category becomes part of the customer's preferences
+          // (deduped, most recent last, capped at 20).
+          const service = await tx.service.findUnique({
+            where: { id: booking.serviceId },
+            select: { category: { select: { slug: true } } },
+          });
+          const slug = service?.category?.slug;
+          if (slug) {
+            const profile = await tx.beautyProfile.findUnique({
+              where: { userId: booking.customerId },
+              select: { preferences: true },
+            });
+            if (profile) {
+              const kept = profile.preferences.filter((p) => p !== slug);
+              await tx.beautyProfile.update({
+                where: { userId: booking.customerId },
+                data: { preferences: [...kept.slice(-19), slug] },
+              });
+            } else {
+              await tx.beautyProfile.create({
+                data: { userId: booking.customerId, preferences: [slug] },
+              });
+            }
+          }
         }
 
         // Build update payload
