@@ -81,3 +81,4 @@ export type {
   ServiceTrustResult,
   TrustItemVariant,
 } from './serviceDetail';
+export { buildBeautyProfileInput, BEAUTY_PROFILE_OPTIONS } from './utils/beautyProfile';
