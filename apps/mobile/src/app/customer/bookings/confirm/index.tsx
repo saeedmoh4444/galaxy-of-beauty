@@ -2,7 +2,7 @@ import type { JSX } from 'react';
 import { View, Text, ScrollView, StyleSheet, TouchableOpacity } from 'react-native';
 import { useLocalSearchParams } from 'expo-router';
 import * as Linking from 'expo-linking';
-import { buildWhatsAppShareUrl } from '@galaxy/shared';
+import { buildWhatsAppShareUrl, formatHijriDate } from '@galaxy/shared';
 import { useLocale } from '@/components/LocaleProvider';
 
 // NO API: booking confirm is params-driven (code/date passed from the booking
@@ -35,6 +35,13 @@ export default function BookingConfirmScreen(): JSX.Element {
               month: 'long',
               day: 'numeric',
             })}
+          </Text>
+        </View>
+        {/* Saudi-market relevance — the booking date in the Hijri calendar */}
+        <View style={styles.row}>
+          <Text style={styles.label}>{t('booking.hijri-date')}</Text>
+          <Text style={styles.value}>
+            {formatHijriDate(new Date(bookingDate), locale === 'ar' ? 'ar' : 'en')}
           </Text>
         </View>
         <View style={styles.row}>
