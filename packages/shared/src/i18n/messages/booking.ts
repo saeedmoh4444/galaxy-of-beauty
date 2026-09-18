@@ -141,4 +141,5 @@ export const bookingMessages = {
   'booking.view-my-bookings': { ar: 'عرض حجوزاتي', en: 'View My Bookings' },
   'booking.book-another-service': { ar: 'احجزي خدمة أخرى', en: 'Book Another Service' },
   'booking.back-to-dashboard': { ar: 'العودة للوحة التحكم', en: 'Back to Dashboard' },
+  'booking.hijri-date': { ar: 'التاريخ الهجري', en: 'Hijri date' },
 } as const;

@@ -3,7 +3,7 @@ import type { JSX } from 'react';
 
 import { useSearchParams } from 'next/navigation';
 import Link from 'next/link';
-import { Button, Card } from '@galaxy/ui';
+import { Button, Card, formatHijriDate } from '@galaxy/ui';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
 import { AddToCalendar } from '@/components/AddToCalendar';
 import { useLocale } from '@/components/LocaleProvider';
@@ -44,6 +44,13 @@ export default function BookingConfirmPage(): JSX.Element {
                   month: 'long',
                   day: 'numeric',
                 })}
+              </span>
+            </div>
+            {/* Saudi-market relevance — the booking date in the Hijri calendar */}
+            <div className="flex justify-between">
+              <span className="text-text-secondary">{t('booking.hijri-date')}</span>
+              <span dir="rtl" className="font-medium">
+                {formatHijriDate(new Date(date), locale === 'ar' ? 'ar' : 'en')}
               </span>
             </div>
             <div className="flex justify-between">
