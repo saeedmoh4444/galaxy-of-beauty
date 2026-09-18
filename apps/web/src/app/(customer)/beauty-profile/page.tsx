@@ -13,6 +13,7 @@ import {
   type TranslationKey,
 } from '@galaxy/shared';
 import { MeasurementHistory } from '@/components/wellness/MeasurementHistory';
+import { BeautyDnaMatches } from '@/components/wellness/BeautyDnaMatches';
 
 const LABELS: Record<string, TranslationKey> = {
   oily: 'beautyProfile.opt.oily',
@@ -31,19 +32,42 @@ const LABELS: Record<string, TranslationKey> = {
   olive: 'beautyProfile.opt.olive',
   tan: 'beautyProfile.opt.tan',
   deep: 'beautyProfile.opt.deep',
+  cool: 'beautyProfile.opt.cool',
+  warm: 'beautyProfile.opt.warm',
+  neutral: 'beautyProfile.opt.neutral',
+  oval: 'beautyProfile.opt.oval',
+  round: 'beautyProfile.opt.round',
+  square: 'beautyProfile.opt.square',
+  heart: 'beautyProfile.opt.heart',
+  diamond: 'beautyProfile.opt.diamond',
   natural: 'beautyProfile.opt.natural',
   glam: 'beautyProfile.opt.glam',
   soft: 'beautyProfile.opt.soft',
   bold: 'beautyProfile.opt.bold',
 };
 
+// Face-shape options share codes with hair lengths ('long') — separate map.
+const FACE_SHAPE_LABELS: Record<string, TranslationKey> = {
+  oval: 'beautyProfile.opt.oval',
+  round: 'beautyProfile.opt.round',
+  square: 'beautyProfile.opt.square',
+  heart: 'beautyProfile.opt.heart',
+  diamond: 'beautyProfile.opt.diamond',
+  long: 'beautyProfile.opt.faceLong',
+};
+
 export default function BeautyProfilePage(): JSX.Element {
   const { t } = useLocale();
   const { addToast } = useToast();
   const { data, isLoading, isError, refetch } = api.beautyProfile.get.useQuery();
+  const utils = api.useUtils();
   const upsertMut = api.beautyProfile.upsert.useMutation({
     onSuccess: () => {
       refetch();
+      // 3.1 — matches read the profile; refresh them after every save.
+      void utils.beautyDna.skinMatch.invalidate();
+      void utils.beautyDna.hairMatch.invalidate();
+      void utils.beautyDna.fragranceMatch.invalidate();
       addToast('success', t('beautyProfile.savedToast'));
     },
   });
@@ -52,6 +76,9 @@ export default function BeautyProfilePage(): JSX.Element {
   const [hairType, setHairType] = useState('');
   const [hairLength, setHairLength] = useState('');
   const [skinTone, setSkinTone] = useState('');
+  // 3.1 — Skin/Hair Match inputs (also set by the skin-analysis bridge).
+  const [undertone, setUndertone] = useState('');
+  const [faceShape, setFaceShape] = useState('');
   const [makeupStyle, setMakeupStyle] = useState('');
   const [concerns, setConcerns] = useState<string[]>([]);
   const [scents, setScents] = useState<string[]>([]);
@@ -69,6 +96,8 @@ export default function BeautyProfilePage(): JSX.Element {
       setHairType(data.hairType || '');
       setHairLength(data.hairLength || '');
       setSkinTone(data.skinTone || '');
+      setUndertone(data.undertone || '');
+      setFaceShape(data.faceShape || '');
       setMakeupStyle(data.makeupStyle || '');
       setConcerns(data.concerns || []);
       setScents(data.preferredScents || []);
@@ -92,6 +121,8 @@ export default function BeautyProfilePage(): JSX.Element {
         hairType,
         hairLength,
         skinTone,
+        undertone,
+        faceShape,
         makeupStyle,
         concerns,
         scents,
@@ -138,6 +169,20 @@ export default function BeautyProfilePage(): JSX.Element {
               options={BEAUTY_PROFILE_OPTIONS.skinTones}
               selected={skinTone}
               setSelected={setSkinTone}
+            />
+            {/* 3.1 — undertone + face shape feed Skin/Hair Match */}
+            <Section
+              title={t('beautyProfile.sectionUndertone')}
+              options={BEAUTY_PROFILE_OPTIONS.undertones}
+              selected={undertone}
+              setSelected={setUndertone}
+            />
+            <Section
+              title={t('beautyProfile.sectionFaceShape')}
+              options={BEAUTY_PROFILE_OPTIONS.faceShapes}
+              selected={faceShape}
+              setSelected={setFaceShape}
+              labelMap={FACE_SHAPE_LABELS}
             />
             <Section
               title={t('beautyProfile.sectionMakeupStyle')}
@@ -255,6 +300,9 @@ export default function BeautyProfilePage(): JSX.Element {
             {/* E4b — measurement history (logs + progress) */}
             <MeasurementHistory />
 
+            {/* 3.1 Beauty DNA — Skin/Hair/Fragrance matches */}
+            <BeautyDnaMatches />
+
             <Button onClick={handleSave} loading={upsertMut.isPending} className="w-full" size="lg">
               {t('beautyProfile.saveButton')}
             </Button>
@@ -270,11 +318,13 @@ function Section({
   options,
   selected,
   setSelected,
+  labelMap = LABELS,
 }: {
   title: string;
   options: readonly string[];
   selected: string;
   setSelected: (v: string) => void;
+  labelMap?: Record<string, TranslationKey>;
 }): JSX.Element {
   const { t } = useLocale();
   return (
@@ -287,7 +337,7 @@ function Section({
             onClick={() => setSelected(selected === o ? '' : o)}
             className={`rounded-full px-4 py-2 text-sm font-medium transition-colors ${selected === o ? 'bg-brand-600 text-white' : 'bg-surface-muted text-text-secondary hover:bg-surface-muted dark:hover:bg-gray-700'}`}
           >
-            {LABELS[o] ? t(LABELS[o]) : o}
+            {labelMap[o] ? t(labelMap[o]) : o}
           </button>
         ))}
       </div>

@@ -68,6 +68,7 @@ export const mobileCoreMessages = {
   'mobile.core.menuSavedCards': { ar: 'البطاقات المحفوظة', en: 'Saved Cards' },
   'mobile.core.menuReferrals': { ar: 'الإحالات', en: 'Referrals' },
   'mobile.core.menuBeautyDashboard': { ar: 'لوحة الجمال', en: 'Beauty Dashboard' },
+  'mobile.core.menuBeautyProfile': { ar: 'بصمتي الجمالية', en: 'Beauty DNA' },
   'mobile.core.menuAcademy': { ar: 'أكاديمية الجمال', en: 'Beauty Academy' },
   'mobile.core.menuNotifications': { ar: 'الإشعارات', en: 'Notifications' },
   'mobile.core.aiAssistantHelp': {

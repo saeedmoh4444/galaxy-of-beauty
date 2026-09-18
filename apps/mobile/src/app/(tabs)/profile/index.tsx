@@ -38,6 +38,7 @@ const MENU_ITEMS: { labelKey: TranslationKey; href: string }[] = [
   { labelKey: 'mobile.core.menuSavedCards', href: '/customer/saved-cards' },
   { labelKey: 'mobile.core.menuReferrals', href: '/customer/referrals' },
   { labelKey: 'mobile.core.menuBeautyDashboard', href: '/customer/beauty-dashboard' },
+  { labelKey: 'mobile.core.menuBeautyProfile', href: '/customer/beauty-profile' },
   { labelKey: 'mobile.core.menuCommunity', href: '/customer/community' },
   { labelKey: 'mobile.core.menuAcademy', href: '/customer/beauty-academy' },
   { labelKey: 'wellness.title', href: '/customer/wellness' },

@@ -48,6 +48,7 @@ export const customerNavGroups: NavGroup[] = [
       { href: '/wellness-hub', key: 'nav.wellness-hub', icon: 'sparkle' },
       { href: '/wellness-tracker', key: 'nav.wellness-tracker', icon: 'clock' },
       { href: '/skin-analysis', key: 'nav.skin-analysis', icon: 'camera' },
+      { href: '/beauty-profile', key: 'nav.beauty-profile', icon: 'sparkle' },
       { href: '/skin-diary', key: 'nav.skin-diary', icon: 'edit' },
       { href: '/ai-assistant', key: 'nav.ai-assistant', icon: 'chat' },
       { href: '/ai-chat', key: 'nav.ai-chat', icon: 'chat' },
