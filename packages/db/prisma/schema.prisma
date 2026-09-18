@@ -1368,6 +1368,10 @@ model Product {
   isActive    Boolean  @default(true)
   isFeatured  Boolean  @default(false)
   tags        String[] // organic, vegan, cruelty-free, etc.
+  // 3.1 Beauty DNA — polymorphic match payload, discriminated by `kind`:
+  // makeup { kind, shade, shadeHex, undertone, depth 1..6 }
+  // fragrance { kind, fragranceFamily, seasons[] } | haircare { kind, hairTypes[] }
+  attributes  Json?
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
 
@@ -1813,6 +1817,8 @@ model BeautyProfile {
   hairType    String?  // straight, wavy, curly, coily
   hairLength  String?  // short, medium, long
   skinTone    String?  // fair, medium, olive, tan, deep
+  undertone   String?  // 3.1 Skin Match: cool, warm, neutral
+  faceShape   String?  // 3.1 Hair Match: oval, round, square, heart, diamond, long
   allergies   String[] // e.g. ["latex", "fragrance", "nuts"]
   preferredScents String[] // floral, citrus, woody, etc.
   makeupStyle String?  // natural, glam, soft, bold

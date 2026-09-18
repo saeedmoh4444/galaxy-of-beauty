@@ -1,5 +1,5 @@
 /**
- * Dalal — Seed Data Enrichment
+ * Galaxy of Beauty — Seed Data Enrichment
  *
  * Generates realistic production-scale data on top of the base seed.
  * Run AFTER `pnpm db:seed`:
@@ -17,6 +17,8 @@
  *   Gift Card Txns: 0 → 10
  */
 
+// tsx does not auto-load .env — do it before ../src/client evaluates.
+import 'dotenv/config';
 import { prisma } from '../src/client';
 import crypto from 'crypto';
 

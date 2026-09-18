@@ -83,4 +83,24 @@ export type {
   TrustItemVariant,
 } from './serviceDetail';
 export { buildBeautyProfileInput, BEAUTY_PROFILE_OPTIONS } from './utils/beautyProfile';
+export {
+  FACE_SHAPES,
+  HAIR_LENGTH_RANK,
+  HAIR_STYLE_CATALOG,
+  parseProductAttributes,
+  SEASONS,
+  SKIN_TONE_DEPTH,
+  UNDERTONES,
+  getClimateSeason,
+} from './utils/beautyDna';
+export type {
+  FaceShape,
+  FragranceAttributes,
+  HairLengthKey,
+  HairStyleEntry,
+  MakeupAttributes,
+  ProductMatchAttributes,
+  Season,
+  Undertone,
+} from './utils/beautyDna';
 export { formatHijriDate } from './utils/hijri';
