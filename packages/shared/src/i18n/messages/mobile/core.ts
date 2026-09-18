@@ -118,4 +118,6 @@ export const mobileCoreMessages = {
     ar: 'يرجى التحقق من اتصالك بالإنترنت والمحاولة مرة أخرى',
     en: 'Please check your internet connection and try again',
   },
+  'mobile.clipboard.copied': { ar: 'تم النسخ', en: 'Copied' },
+  'mobile.clipboard.copy-failed': { ar: 'تعذر النسخ', en: 'Copy failed' },
 } as const;

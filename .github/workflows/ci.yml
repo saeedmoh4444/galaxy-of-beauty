@@ -116,6 +116,8 @@ jobs:
       - run: pnpm --filter @galaxy/api test
         env:
           DATABASE_URL: 'postgresql://gob_admin:gob_test_pass@localhost:5432/Galaxy_of_Beauty_db?schema=public'
+      # Mobile pure-logic unit tests (node env — no react-native imports)
+      - run: pnpm --filter @galaxy/mobile test:unit
 
   # ── Build ─────────────────────────────────────────────────
   build:
