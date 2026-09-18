@@ -1,5 +1,5 @@
 /**
- * Dalal — Mobile Detox E2E Tests (Comprehensive)
+ * Galaxy of Beauty — Mobile Detox E2E Tests (Comprehensive)
  *
  * Prerequisites:
  *   1. Detox CLI:  npm i -g detox-cli
@@ -12,7 +12,7 @@ import { device, element, by, expect as detoxExpect } from 'detox';
 const DEMO_EMAIL = 'admin@galaxyofbeauty.sa';
 const DEMO_PASSWORD = 'Admin@123456';
 
-describe('Dalal Mobile App', () => {
+describe('Galaxy of Beauty Mobile App', () => {
   beforeAll(async () => {
     await device.launchApp({ newInstance: true });
   });
