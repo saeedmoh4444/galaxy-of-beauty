@@ -7,24 +7,12 @@ import { Card, FormSkeleton, ErrorAlert, Button, Input } from '@galaxy/ui';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
 import { useToast } from '@galaxy/ui';
 import { useLocale } from '@/components/LocaleProvider';
-import type { TranslationKey } from '@galaxy/shared';
+import {
+  BEAUTY_PROFILE_OPTIONS,
+  buildBeautyProfileInput,
+  type TranslationKey,
+} from '@galaxy/shared';
 import { MeasurementHistory } from '@/components/wellness/MeasurementHistory';
-
-const SKIN_TYPES = ['oily', 'dry', 'combination', 'sensitive', 'normal'] as const;
-const HAIR_TYPES = ['straight', 'wavy', 'curly', 'coily'] as const;
-const HAIR_LENGTHS = ['short', 'medium', 'long'] as const;
-const SKIN_TONES = ['fair', 'medium', 'olive', 'tan', 'deep'] as const;
-const MAKEUP_STYLES = ['natural', 'glam', 'soft', 'bold'] as const;
-const CONCERN_OPTIONS = [
-  'acne',
-  'aging',
-  'dark_spots',
-  'redness',
-  'dryness',
-  'large_pores',
-  'uneven_texture',
-];
-const SCENT_OPTIONS = ['floral', 'citrus', 'woody', 'fresh', 'sweet', 'oriental'];
 
 const LABELS: Record<string, TranslationKey> = {
   oily: 'beautyProfile.opt.oily',
@@ -98,22 +86,22 @@ export default function BeautyProfilePage(): JSX.Element {
   };
 
   const handleSave = () =>
-    upsertMut.mutate({
-      skinType: (skinType || undefined) as (typeof SKIN_TYPES)[number] | undefined,
-      hairType: (hairType || undefined) as (typeof HAIR_TYPES)[number] | undefined,
-      hairLength: (hairLength || undefined) as (typeof HAIR_LENGTHS)[number] | undefined,
-      skinTone: (skinTone || undefined) as (typeof SKIN_TONES)[number] | undefined,
-      makeupStyle: (makeupStyle || undefined) as (typeof MAKEUP_STYLES)[number] | undefined,
-      concerns: concerns.length ? concerns : undefined,
-      preferredScents: scents.length ? scents : undefined,
-      notes: notes || undefined,
-      measurements: {
-        heightCm: heightCm ? Number(heightCm) : undefined,
-        weightKg: weightKg ? Number(weightKg) : undefined,
-        waistCm: waistCm ? Number(waistCm) : undefined,
-      },
-      fitnessGoals: fitnessGoals.length ? fitnessGoals : undefined,
-    });
+    upsertMut.mutate(
+      buildBeautyProfileInput({
+        skinType,
+        hairType,
+        hairLength,
+        skinTone,
+        makeupStyle,
+        concerns,
+        scents,
+        notes,
+        heightCm,
+        weightKg,
+        waistCm,
+        fitnessGoals,
+      }),
+    );
 
   return (
     <DashboardLayout userRole="CUSTOMER">
@@ -129,31 +117,31 @@ export default function BeautyProfilePage(): JSX.Element {
           <div className="space-y-6">
             <Section
               title={t('beautyProfile.sectionSkinType')}
-              options={[...SKIN_TYPES]}
+              options={BEAUTY_PROFILE_OPTIONS.skinTypes}
               selected={skinType}
               setSelected={setSkinType}
             />
             <Section
               title={t('beautyProfile.sectionHairType')}
-              options={[...HAIR_TYPES]}
+              options={BEAUTY_PROFILE_OPTIONS.hairTypes}
               selected={hairType}
               setSelected={setHairType}
             />
             <Section
               title={t('beautyProfile.sectionHairLength')}
-              options={[...HAIR_LENGTHS]}
+              options={BEAUTY_PROFILE_OPTIONS.hairLengths}
               selected={hairLength}
               setSelected={setHairLength}
             />
             <Section
               title={t('beautyProfile.sectionSkinTone')}
-              options={[...SKIN_TONES]}
+              options={BEAUTY_PROFILE_OPTIONS.skinTones}
               selected={skinTone}
               setSelected={setSkinTone}
             />
             <Section
               title={t('beautyProfile.sectionMakeupStyle')}
-              options={[...MAKEUP_STYLES]}
+              options={BEAUTY_PROFILE_OPTIONS.makeupStyles}
               selected={makeupStyle}
               setSelected={setMakeupStyle}
             />
@@ -163,7 +151,7 @@ export default function BeautyProfilePage(): JSX.Element {
                 {t('beautyProfile.concernsTitle')}
               </h3>
               <div className="flex flex-wrap gap-2">
-                {CONCERN_OPTIONS.map((o) => (
+                {BEAUTY_PROFILE_OPTIONS.concerns.map((o) => (
                   <button
                     key={o}
                     onClick={() => toggle(concerns, setConcerns, o)}
@@ -180,7 +168,7 @@ export default function BeautyProfilePage(): JSX.Element {
                 {t('beautyProfile.scentsTitle')}
               </h3>
               <div className="flex flex-wrap gap-2">
-                {SCENT_OPTIONS.map((o) => (
+                {BEAUTY_PROFILE_OPTIONS.scents.map((o) => (
                   <button
                     key={o}
                     onClick={() => toggle(scents, setScents, o)}
