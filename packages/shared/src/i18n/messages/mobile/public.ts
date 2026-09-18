@@ -611,6 +611,7 @@ export const mobilePublicMessages = {
     en: 'View full gallery',
   },
   'mobile.public.service-detail.share': { ar: 'مشاركة', en: 'Share' },
+  'mobile.public.service-detail.copy-link': { ar: 'نسخ الرابط', en: 'Copy link' },
   'mobile.public.service-detail.gallery-title': {
     ar: 'قبل وبعد',
     en: 'Before & after',

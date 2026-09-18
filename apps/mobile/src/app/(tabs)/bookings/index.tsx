@@ -4,6 +4,8 @@ import type { JSX } from 'react';
 import { DEFAULT_PAGE_SIZE } from '@galaxy/ui';
 import type { TranslationKey } from '@galaxy/shared';
 import { ScreenState } from '@/components/ScreenState';
+import { useToast } from '@/components/Toast';
+import { copyText } from '@/utils/clipboard';
 import { trpc } from '@/lib/trpc-react';
 import { useAuthState } from '@/hooks/useAuthState';
 import { useLocale } from '@/components/LocaleProvider';
@@ -23,6 +25,7 @@ export default function BookingsScreen(): JSX.Element {
   const [page] = useState(1);
   const { t, locale } = useLocale();
   const { isDark } = useTheme();
+  const { showToast } = useToast();
   const c = isDark ? themeColors.dark : themeColors.light;
   const styles = makeStyles(c);
   const statusColors: Record<string, string> = {
@@ -61,7 +64,21 @@ export default function BookingsScreen(): JSX.Element {
         )}
       </View>
       {(data as Record<string, unknown>[])?.map((b: Record<string, unknown>, i: number) => (
-        <TouchableOpacity key={i} style={styles.card} activeOpacity={0.7}>
+        <TouchableOpacity
+          key={i}
+          style={styles.card}
+          activeOpacity={0.7}
+          // Long-press context menu: copy the booking code for support/reference
+          onLongPress={() => {
+            const code = b.bookingCode as string;
+            void copyText(code).then((ok) =>
+              showToast(
+                ok ? 'success' : 'error',
+                ok ? t('mobile.clipboard.copied') : t('mobile.clipboard.copy-failed'),
+              ),
+            );
+          }}
+        >
           <View style={styles.row}>
             <View style={styles.left}>
               <Text style={styles.code}>{b.bookingCode as string}</Text>
