@@ -6,6 +6,7 @@ import Link from 'next/link';
 import { api } from '@/lib/trpc';
 import { Card, DetailSkeleton, ErrorAlert, Button, formatCurrency } from '@galaxy/ui';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
+import { NpsCard } from '@/components/NpsCard';
 import { useLocale } from '@/components/LocaleProvider';
 import type { TranslationKey } from '@galaxy/shared';
 import { localize } from '@galaxy/shared';
@@ -131,6 +132,9 @@ export default function BookingDetailPage(): JSX.Element {
             </Button>
           </div>
         )}
+
+        {/* Quick win #6 — post-booking NPS survey for completed visits */}
+        {booking.status === 'COMPLETED' && <NpsCard bookingId={booking.id} />}
       </div>
     </DashboardLayout>
   );

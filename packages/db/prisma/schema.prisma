@@ -157,6 +157,7 @@ model User {
   subscriptions     CustomerSubscription[]
   promoUsages       PromoUsage[]
   skinAnalyses       SkinAnalysis[]
+  npsResponses       NpsResponse[]
   vendor             Vendor?
   productReviews     ProductReview[]
   cartItems          CartItem[]
@@ -4043,4 +4044,22 @@ model NailBarBooking {
   @@unique([slotId, customerId])
   @@index([customerId])
   @@map("nail_bar_bookings")
+}
+
+// =============================================================================
+// NPS Post-Booking Survey (ENHANCEMENT_PLAN quick win #6)
+// =============================================================================
+
+model NpsResponse {
+  id        Int      @id @default(autoincrement())
+  userId    Int
+  bookingId Int?     @unique // one response per booking; null = general rating
+  score     Int      // 0-10 NPS scale
+  comment   String?  @db.VarChar(500)
+  createdAt DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId, createdAt])
+  @@map("nps_responses")
 }
