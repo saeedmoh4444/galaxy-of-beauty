@@ -15,6 +15,8 @@ export const notificationPrefsRouter = router({
         community: true,
         emailDigest: false,
         smsAlerts: false,
+        // 6.5 WhatsApp — proactive sends are opt-in (privacy-first default).
+        whatsappAlerts: false,
       }
     );
   }),
@@ -27,6 +29,7 @@ export const notificationPrefsRouter = router({
         community: z.boolean().optional(),
         emailDigest: z.boolean().optional(),
         smsAlerts: z.boolean().optional(),
+        whatsappAlerts: z.boolean().optional(),
       }),
     )
     .mutation(async ({ ctx, input }) =>
