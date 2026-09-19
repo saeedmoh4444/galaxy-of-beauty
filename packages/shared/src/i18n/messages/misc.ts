@@ -1913,6 +1913,14 @@ export const miscMessages = {
     ar: 'إشعارات عبر الرسائل النصية',
     en: 'Notifications via text messages',
   },
+  'notificationSettings.toggle.whatsappAlerts': {
+    ar: 'تنبيهات واتساب',
+    en: 'WhatsApp alerts',
+  },
+  'notificationSettings.desc.whatsappAlerts': {
+    ar: 'تذكيرات المواعيد عبر واتساب (اختياري)',
+    en: 'Appointment reminders via WhatsApp (opt-in)',
+  },
 
   // Recurring Bookings
   'recurring.title': { ar: 'حجوزات متكررة', en: 'Recurring Bookings' },

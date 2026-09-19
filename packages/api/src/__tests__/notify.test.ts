@@ -143,6 +143,62 @@ describe('notify framework (B.26)', () => {
       await prisma.notificationPreference.delete({ where: { userId } });
     });
 
+    it('drops whatsapp when whatsappAlerts=false but keeps in_app + push (6.5)', async () => {
+      const userId = createdUserIds[0]!;
+      await prisma.notificationPreference.create({ data: { userId, whatsappAlerts: false } });
+      // Own isolated template — the seeded booking_reminder may lack the
+      // whatsapp channel until the DB is re-seeded with the new defaults.
+      await prisma.notificationTemplate.upsert({
+        where: { key: 'test_whatsapp_reminder' },
+        create: {
+          key: 'test_whatsapp_reminder',
+          category: 'bookingReminders',
+          channels: ['in_app', 'push', 'whatsapp'],
+          titleJson: { ar: 'تذكير', en: 'Reminder' },
+          bodyJson: { ar: 'موعدك قريب', en: 'Your appointment is soon' },
+        },
+        update: { channels: ['in_app', 'push', 'whatsapp'] },
+      });
+      await notifyUser({ userId, templateKey: 'test_whatsapp_reminder', vars: {} });
+      const row = await prisma.notification.findFirst({
+        where: { userId, type: 'test_whatsapp_reminder' },
+        orderBy: { id: 'desc' },
+      });
+      expect(row).not.toBeNull();
+      expect(row!.sentVia).not.toContain('whatsapp');
+      expect(row!.sentVia).toContain('in_app');
+      expect(row!.sentVia).toContain('push');
+      await prisma.notification.deleteMany({ where: { userId, type: 'test_whatsapp_reminder' } });
+      await prisma.notificationTemplate.delete({ where: { key: 'test_whatsapp_reminder' } });
+      await prisma.notificationPreference.delete({ where: { userId } });
+    });
+
+    it('keeps whatsapp when whatsappAlerts is true (opt-in, 6.5)', async () => {
+      const userId = createdUserIds[0]!;
+      await prisma.notificationPreference.create({ data: { userId, whatsappAlerts: true } });
+      await prisma.notificationTemplate.upsert({
+        where: { key: 'test_whatsapp_reminder' },
+        create: {
+          key: 'test_whatsapp_reminder',
+          category: 'bookingReminders',
+          channels: ['in_app', 'push', 'whatsapp'],
+          titleJson: { ar: 'تذكير', en: 'Reminder' },
+          bodyJson: { ar: 'موعدك قريب', en: 'Your appointment is soon' },
+        },
+        update: { channels: ['in_app', 'push', 'whatsapp'] },
+      });
+      await notifyUser({ userId, templateKey: 'test_whatsapp_reminder', vars: {} });
+      const row = await prisma.notification.findFirst({
+        where: { userId, type: 'test_whatsapp_reminder' },
+        orderBy: { id: 'desc' },
+      });
+      expect(row).not.toBeNull();
+      expect(row!.sentVia).toContain('whatsapp');
+      await prisma.notification.deleteMany({ where: { userId, type: 'test_whatsapp_reminder' } });
+      await prisma.notificationTemplate.delete({ where: { key: 'test_whatsapp_reminder' } });
+      await prisma.notificationPreference.delete({ where: { userId } });
+    });
+
     it('is a silent no-op for an unknown or inactive template', async () => {
       const userId = createdUserIds[0]!;
       await expect(

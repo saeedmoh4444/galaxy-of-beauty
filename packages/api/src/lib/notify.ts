@@ -77,6 +77,7 @@ export async function notifyUser({
     if (ch === 'in_app') continue;
     if (ch === 'sms' && prefs?.smsAlerts === false) continue;
     if (ch === 'email' && prefs?.emailDigest === false) continue;
+    if (ch === 'whatsapp' && prefs?.whatsappAlerts === false) continue;
     external.push(ch);
   }
   const sentVia = ['in_app', ...external];
