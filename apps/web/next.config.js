@@ -107,11 +107,11 @@ const nextConfig = {
   // ── Bundle Optimization ────────────────────────────────
   poweredByHeader: false,
   // Turbopack is the default bundler in Next 16; the webpack block below
-  // still serves --webpack / ANALYZE builds.
+  // still serves --webpack builds.
   turbopack: {},
   reactStrictMode: true,
 
-  webpack(config, { isServer, dev }) {
+  webpack(config) {
     // Suppress bullmq optional dependency warning (falls back to ioredis)
     config.resolve = {
       ...config.resolve,
@@ -124,17 +124,6 @@ const nextConfig = {
       ...config.optimization,
       sideEffects: true,
     };
-
-    // Add bundle analyzer in analyze mode
-    if (process.env['ANALYZE'] === 'true') {
-      const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer');
-      config.plugins.push(
-        new BundleAnalyzerPlugin({
-          analyzerMode: 'static',
-          reportFilename: isServer ? '../analyze/server.html' : './analyze/client.html',
-        }),
-      );
-    }
 
     return config;
   },
