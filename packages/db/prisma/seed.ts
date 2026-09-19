@@ -122,6 +122,11 @@ async function main() {
     db.short.deleteMany(),
     // 3.1 — skin analyses reference users; wipe before user.deleteMany().
     db.skinAnalysis.deleteMany(),
+    // 2.5 — social commerce posts reference users; wipe before user.deleteMany().
+    db.beautyPostEngagement.deleteMany(),
+    db.beautyPostComment.deleteMany(),
+    db.beautyPostLike.deleteMany(),
+    db.beautyPost.deleteMany(),
     db.user.deleteMany(),
     db.saudiCity.deleteMany(),
   ]);
@@ -3434,6 +3439,99 @@ async function main() {
     console.log(' 3.1 Beauty DNA demo store: 9 makeup + 6 fragrance products');
   } catch (err: any) {
     console.log(`    Demo products: ${err.message?.slice(0, 60)}`);
+  }
+
+  // ---- 2.5 Social Commerce demo posts (shoppable feed) ----
+  try {
+    // demoVendor lives inside the 3.1 try block — re-resolve by slug.
+    const postsVendor = await prisma.vendor.findUnique({
+      where: { storeSlug: 'galaxy-demo-store' },
+    });
+    const postProducts = postsVendor
+      ? await prisma.product.findMany({
+          where: { vendorId: postsVendor.id },
+          orderBy: { id: 'asc' },
+          take: 6,
+        })
+      : [];
+    const perfume = await prisma.product.findFirst({
+      where: { category: { slug: 'product-fragrance' } },
+      orderBy: { id: 'asc' },
+    });
+    const [foundation] = postProducts;
+    const makeupService = services[0];
+    const facialService = services[1] ?? services[0];
+
+    const POSTS = [
+      {
+        authorId: technicians[0]!.user.id, // verified technician
+        imageUrl:
+          'https://images.unsplash.com/photo-1487412947147-5cebf100ffc2?w=800&auto=format&fit=crop',
+        caption: 'إطلالة السهرة كاملة — كريم أساس سيلك مع مكياج خفيف ✨ #MyGalaxyLook',
+        tags: {
+          products: [foundation?.id].filter(Boolean),
+          services: [makeupService?.id].filter(Boolean),
+        },
+        featured: true,
+      },
+      {
+        authorId: customer.id,
+        imageUrl:
+          'https://images.unsplash.com/photo-1522337660859-02fbefca4702?w=800&auto=format&fit=crop',
+        caption: 'روتيني الصباحي مع الأساس الجديد — نتيجة رائعة من أول استخدام 💕',
+        tags: {
+          products: [postProducts[2]?.id].filter(Boolean),
+          services: [facialService?.id].filter(Boolean),
+        },
+        featured: true,
+      },
+      {
+        authorId: customer.id,
+        imageUrl:
+          'https://images.unsplash.com/photo-1541643600914-78b084683601?w=800&auto=format&fit=crop',
+        caption: 'عطر ورد الطائف من متجر جالاكسي — ثبات يدوم طوال اليوم 🌸',
+        tags: { products: [perfume?.id].filter(Boolean), services: [] },
+        featured: false,
+      },
+      {
+        authorId: technicians[1]?.user.id ?? technicians[0]!.user.id,
+        imageUrl:
+          'https://images.unsplash.com/photo-1512290923902-8a9f81dc236c?w=800&auto=format&fit=crop',
+        caption: 'نتيجة جلسة العناية اليوم — إشراقة طبيعية بدون فلتر 💆‍♀️',
+        tags: { products: [], services: [facialService?.id].filter(Boolean) },
+        featured: false,
+      },
+    ] as const;
+
+    const createdPosts = [];
+    for (const p of POSTS) {
+      const post = await prisma.beautyPost.create({
+        data: {
+          userId: p.authorId,
+          imageUrl: p.imageUrl,
+          caption: p.caption,
+          tagsJson: p.tags as unknown as Prisma.InputJsonValue,
+          featured: p.featured,
+        },
+      });
+      createdPosts.push(post);
+    }
+    await prisma.beautyPostLike.createMany({
+      data: [
+        { postId: createdPosts[0]!.id, userId: customer.id },
+        { postId: createdPosts[1]!.id, userId: technicians[0]!.user.id },
+      ],
+    });
+    await prisma.beautyPost.updateMany({
+      where: { id: { in: [createdPosts[0]!.id, createdPosts[1]!.id] } },
+      data: { likes: 1 },
+    });
+    await prisma.beautyPostComment.create({
+      data: { postId: createdPosts[0]!.id, userId: customer.id, content: 'إطلالة رائعة! 😍' },
+    });
+    console.log(' 2.5 Social commerce: 4 demo posts (2 featured)');
+  } catch (err: any) {
+    console.log(`    Demo posts: ${err.message?.slice(0, 60)}`);
   }
 
   // ---- Notification templates (B.26 framework) ----
