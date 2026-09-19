@@ -2039,6 +2039,64 @@ model CommunityComment {
   @@map("community_comments")
 }
 
+// =============================================================================
+// 2.5 Social Commerce — Shoppable Beauty Posts
+// =============================================================================
+
+model BeautyPost {
+  id         Int      @id @default(autoincrement())
+  userId     Int      // author — customer (UGC) or technician (verified badge)
+  imageUrl   String
+  caption    String?
+  // { products: [productId], services: [serviceId] } — validated on create.
+  tagsJson   Json?
+  likes      Int      @default(0) // denormalized (CommunityPost pattern)
+  views      Int      @default(0) // shorts counter precedent
+  featured   Boolean  @default(false) // admin-curated homepage row
+  isApproved Boolean  @default(true) // instant publish (user decision)
+  createdAt  DateTime @default(now())
+
+  @@index([isApproved, createdAt])
+  @@index([featured, createdAt])
+  @@map("beauty_posts")
+}
+
+model BeautyPostLike {
+  id        Int      @id @default(autoincrement())
+  postId    Int
+  userId    Int
+  createdAt DateTime @default(now())
+
+  @@unique([postId, userId])
+  @@index([postId])
+  @@map("beauty_post_likes")
+}
+
+model BeautyPostComment {
+  id        Int      @id @default(autoincrement())
+  postId    Int
+  userId    Int
+  content   String   @db.VarChar(500)
+  createdAt DateTime @default(now())
+
+  @@index([postId, createdAt])
+  @@map("beauty_post_comments")
+}
+
+// 2.5 engagement analytics — event rows for views/clicks/conversions.
+model BeautyPostEngagement {
+  id        Int      @id @default(autoincrement())
+  postId    Int
+  userId    Int?
+  kind      String // view | product_click | service_click | conversion
+  targetId  Int?    // product/service id for click kinds
+  createdAt DateTime @default(now())
+
+  @@index([postId, kind])
+  @@index([kind, createdAt])
+  @@map("beauty_post_engagements")
+}
+
 model EventRegistration {
   id        Int      @id @default(autoincrement())
   eventId   Int

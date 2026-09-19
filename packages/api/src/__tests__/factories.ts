@@ -296,3 +296,27 @@ export function buildBeautyProfile(overrides: BuildBeautyProfileOverrides) {
     fitnessGoals: [],
   };
 }
+
+// ── BeautyPost (2.5 social commerce) ───────────────────────
+
+export interface BuildBeautyPostOverrides {
+  userId: number;
+  imageUrl?: string;
+  caption?: string;
+  tags?: { products?: number[]; services?: number[] };
+  featured?: boolean;
+}
+
+export function buildBeautyPost(overrides: BuildBeautyPostOverrides) {
+  const s = seq();
+  return {
+    userId: overrides.userId,
+    imageUrl: overrides.imageUrl ?? `https://images.example.com/post-${uid()}.jpg`,
+    caption: overrides.caption ?? `إطلالة ${s}`,
+    tagsJson: overrides.tags
+      ? { products: overrides.tags.products ?? [], services: overrides.tags.services ?? [] }
+      : null,
+    featured: overrides.featured ?? false,
+    isApproved: true,
+  };
+}
