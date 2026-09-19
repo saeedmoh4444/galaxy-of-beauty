@@ -1,0 +1,4 @@
+{
+  "name": "@galaxy/cycle-b",
+  "main": "./src/index.ts"
+}

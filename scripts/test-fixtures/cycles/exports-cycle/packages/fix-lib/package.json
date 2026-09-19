@@ -1,0 +1,7 @@
+{
+  "name": "@galaxy/fix-lib",
+  "exports": {
+    ".": "./src/index.ts",
+    "./sub": "./src/sub.ts"
+  }
+}
