@@ -3,6 +3,7 @@
 export { reviewRouter } from '../../routers/reviews';
 export { disputeRouter } from '../../routers/disputes';
 export { communityRouter } from '../../routers/community';
+export { beautyPostsRouter } from '../../routers/beautyPosts';
 export { socialRouter } from '../../routers/social';
 export { socialChallengesRouter } from '../../routers/socialChallenges';
 export { challengesRouter } from '../../routers/challenges';
