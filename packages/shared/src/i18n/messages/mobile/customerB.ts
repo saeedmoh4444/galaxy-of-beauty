@@ -941,6 +941,24 @@ export const mobileCustomerBMessages = {
     en: 'Could not read the photo, please retake it',
   },
 
+  // ---- 2.5 social commerce (beauty-posts) ----
+  'mobile.beautyPosts.title': { ar: 'إطلالاتي', en: 'My Galaxy Looks' },
+  'mobile.beautyPosts.subtitle': {
+    ar: 'كل إطلالة قابلة للشراء — اضغطي على الوسوم',
+    en: 'Every look is shoppable — tap the tags',
+  },
+  'mobile.beautyPosts.verified': { ar: 'موثقة', en: 'Verified' },
+  'mobile.beautyPosts.get-this-look': { ar: 'احصلي على هذه الإطلالة', en: 'Get this look' },
+  'mobile.beautyPosts.add-to-cart': { ar: 'أضيفي للسلة', en: 'Add to cart' },
+  'mobile.beautyPosts.added-to-cart': { ar: 'تمت الإضافة إلى السلة', en: 'Added to cart' },
+  'mobile.beautyPosts.cart-error': { ar: 'فشل الإضافة إلى السلة', en: 'Could not add to cart' },
+  'mobile.beautyPosts.book': { ar: 'احجزي', en: 'Book' },
+  'mobile.beautyPosts.comments': { ar: 'التعليقات', en: 'Comments' },
+  'mobile.beautyPosts.comment-placeholder': { ar: 'أضيفي تعليقاً…', en: 'Add a comment…' },
+  'mobile.beautyPosts.send': { ar: 'إرسال', en: 'Send' },
+  'mobile.beautyPosts.home-title': { ar: 'إطلالات مميزة', en: 'Featured looks' },
+  'mobile.beautyPosts.view-all': { ar: 'الكل', en: 'All' },
+
   // ---- skincare-guide ----
   'mobile.skincareGuide.title': { ar: 'دليل المكونات', en: ' Ingredient Guide' },
   'mobile.skincareGuide.subtitle': {

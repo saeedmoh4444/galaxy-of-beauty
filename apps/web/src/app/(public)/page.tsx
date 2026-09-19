@@ -21,18 +21,21 @@ export default async function HomePage(): Promise<JSX.Element> {
   let technicianTotal = 0;
   let placeCount = 0;
   let shorts: AnyShort[] = [];
+  let featuredPosts: AnyShort[] = [];
   let fetchError: string | undefined;
 
   try {
     const caller = await getServerCaller();
 
-    const [catsResult, svcResult, techResult, coverageResult, shortsResult] = await Promise.all([
-      caller.categories.list(),
-      caller.services.list({ sort: 'popular', limit: 6 }),
-      caller.technicians.list({ limit: 1 }),
-      caller.technicians.coverage(),
-      caller.beautyShorts.home(),
-    ]);
+    const [catsResult, svcResult, techResult, coverageResult, shortsResult, postsResult] =
+      await Promise.all([
+        caller.categories.list(),
+        caller.services.list({ sort: 'popular', limit: 6 }),
+        caller.technicians.list({ limit: 1 }),
+        caller.technicians.coverage(),
+        caller.beautyShorts.home(),
+        caller.beautyPosts.featured(),
+      ]);
 
     // Serialize through superjson to strip Prisma Decimal → Number
     // before passing to Client Components (avoids Next.js RSC warnings)
@@ -49,6 +52,8 @@ export default async function HomePage(): Promise<JSX.Element> {
     technicianTotal = tech.total;
     placeCount = coverage.areas.length > 0 ? coverage.areas.length : coverage.cities.length;
     shorts = serializeForClient(shortsResult as AnyShort[]);
+    // 2.5 — featured shoppable looks for the homepage row.
+    featuredPosts = serializeForClient(postsResult as AnyShort[]);
   } catch (e) {
     fetchError = (e as Error).message || t('marketing.home.load-error', locale);
   }
@@ -63,6 +68,7 @@ export default async function HomePage(): Promise<JSX.Element> {
       technicianTotal={technicianTotal}
       placeCount={placeCount}
       initialShorts={serializeForClient(shorts) as unknown as HomePageProps['initialShorts']}
+      featuredPosts={serializeForClient(featuredPosts) as unknown as HomePageProps['featuredPosts']}
       fetchError={fetchError}
     />
   );

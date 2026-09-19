@@ -4255,6 +4255,28 @@ export const miscMessages = {
   },
   // E7 — beauty media layer
   'beautyShorts.title': { ar: 'جمال شورتس', en: 'Beauty Shorts' },
+  // 2.5 Social Commerce — shoppable looks feed
+  'beautyPosts.title': { ar: 'إطلالاتي', en: 'My Galaxy Looks' },
+  'beautyPosts.subtitle': {
+    ar: 'شاركي إطلالتكِ وتابعي إطلالات مجتمعنا — كل إطلالة قابلة للشراء',
+    en: 'Share your look and explore our community — every look is shoppable',
+  },
+  'beautyPosts.shareLook': { ar: 'شاركي إطلالتكِ', en: 'Share your look' },
+  'beautyPosts.getThisLook': { ar: 'احصلي على هذه الإطلالة', en: 'Get this look' },
+  'beautyPosts.addToCart': { ar: 'أضيفي للسلة', en: 'Add to cart' },
+  'beautyPosts.addedToCart': { ar: 'تمت الإضافة إلى السلة', en: 'Added to cart' },
+  'beautyPosts.cartError': { ar: 'فشل الإضافة إلى السلة', en: 'Could not add to cart' },
+  'beautyPosts.book': { ar: 'احجزي', en: 'Book' },
+  'beautyPosts.comments': { ar: 'التعليقات', en: 'Comments' },
+  'beautyPosts.commentPlaceholder': { ar: 'أضيفي تعليقاً…', en: 'Add a comment…' },
+  'beautyPosts.send': { ar: 'إرسال', en: 'Send' },
+  'beautyPosts.created': { ar: 'تم نشر إطلالتكِ', en: 'Your look is live' },
+  'beautyPosts.createError': { ar: 'فشل نشر الإطلالة', en: 'Could not publish the look' },
+  'beautyPosts.new.title': { ar: 'إطلالة جديدة', en: 'New look' },
+  'beautyPosts.new.caption': { ar: 'الوصف', en: 'Caption' },
+  'beautyPosts.new.tagProducts': { ar: 'أضيفي منتجات (اختياري)', en: 'Tag products (optional)' },
+  'beautyPosts.new.tagServices': { ar: 'أضيفي خدمات (اختياري)', en: 'Tag services (optional)' },
+  'beautyPosts.new.publish': { ar: 'نشر الإطلالة', en: 'Publish look' },
   'beautyShorts.subtitle': {
     ar: 'فيديوهات ونتائج حقيقية من فناناتنا',
     en: 'Real videos and results from our artists',
