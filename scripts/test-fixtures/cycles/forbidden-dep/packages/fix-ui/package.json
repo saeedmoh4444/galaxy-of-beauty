@@ -1,0 +1,4 @@
+{
+  "name": "@galaxy/fix-ui",
+  "main": "./src/index.ts"
+}

@@ -180,7 +180,6 @@ export function requireOwnership(
  * authenticated users with matching role/userId configuration.
  */
 export function requireFeatureFlag(flagKey: string) {
-  // Lazy import to avoid circular dependency
   const cachedFlags = new Map<string, { enabled: boolean; expiresAt: number }>();
 
   return middleware(async ({ ctx, next }) => {
