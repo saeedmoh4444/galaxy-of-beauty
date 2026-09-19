@@ -58,7 +58,7 @@ export default function CalendarSyncScreen(): JSX.Element {
             void statusQ.refetch();
             void upcomingQ.refetch();
           }}
-          colors={['#0891b2']}
+          colors={['#c2255c']}
         />
       }
     >

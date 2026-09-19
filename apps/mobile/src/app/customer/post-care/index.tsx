@@ -31,7 +31,7 @@ export default function PostCareScreen(): JSX.Element {
           onRefresh={async () => {
             await libraryQ.refetch();
           }}
-          colors={['#059669']}
+          colors={['#c2255c']}
         />
       }
     >

@@ -52,7 +52,7 @@ export default function SmartScheduleScreen(): JSX.Element {
             onRefresh={async () => {
               await servicesQ.refetch();
             }}
-            colors={['#059669']}
+            colors={['#c2255c']}
           />
         }
       >

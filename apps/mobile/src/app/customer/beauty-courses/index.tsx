@@ -71,7 +71,7 @@ export default function BeautyCoursesScreen(): JSX.Element {
           onRefresh={async () => {
             await coursesQ.refetch();
           }}
-          colors={['#db2777']}
+          colors={['#c2255c']}
         />
       }
     >

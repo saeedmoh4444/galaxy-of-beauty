@@ -45,7 +45,7 @@ export default function CashbackScreen(): JSX.Element {
             void infoQ.refetch();
             void historyQ.refetch();
           }}
-          colors={['#059669']}
+          colors={['#c2255c']}
         />
       }
     >

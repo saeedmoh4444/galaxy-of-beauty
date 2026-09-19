@@ -27,7 +27,7 @@ export default function VIPMembershipScreen(): JSX.Element {
           onRefresh={async () => {
             await tierQ.refetch();
           }}
-          colors={['#7c3aed']}
+          colors={['#c2255c']}
         />
       }
     >

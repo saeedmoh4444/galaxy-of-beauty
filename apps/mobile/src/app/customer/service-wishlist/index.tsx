@@ -37,7 +37,7 @@ export default function ServiceWishlistScreen(): JSX.Element {
           onRefresh={async () => {
             await itemsQ.refetch();
           }}
-          colors={['#7c3aed']}
+          colors={['#c2255c']}
         />
       }
     >

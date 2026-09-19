@@ -79,7 +79,7 @@ export default function SocialScreen(): JSX.Element {
           onRefresh={async () => {
             await trendingQ.refetch();
           }}
-          colors={['#db2777']}
+          colors={['#c2255c']}
         />
       }
     >

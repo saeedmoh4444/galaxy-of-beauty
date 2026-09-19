@@ -29,7 +29,7 @@ export default function SavingsGoalsScreen(): JSX.Element {
           onRefresh={async () => {
             await goalsQ.refetch();
           }}
-          colors={['#059669']}
+          colors={['#c2255c']}
         />
       }
     >

@@ -114,7 +114,7 @@ export default function WellnessHubScreen(): JSX.Element {
           onRefresh={async () => {
             await dashQ.refetch();
           }}
-          colors={['#db2777']}
+          colors={['#c2255c']}
         />
       }
     >

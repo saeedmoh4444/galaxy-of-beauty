@@ -66,7 +66,7 @@ export default function RideHailingScreen(): JSX.Element {
           onRefresh={async () => {
             await providersQ.refetch();
           }}
-          colors={['#2563eb']}
+          colors={['#c2255c']}
         />
       }
     >

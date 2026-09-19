@@ -66,7 +66,7 @@ export default function BnplScreen(): JSX.Element {
             void providersQ.refetch();
             void eligibilityQ.refetch();
           }}
-          colors={['#0891b2']}
+          colors={['#c2255c']}
         />
       }
     >

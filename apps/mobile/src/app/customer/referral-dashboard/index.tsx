@@ -29,7 +29,7 @@ export default function ReferralDashboardScreen(): JSX.Element {
           onRefresh={async () => {
             await statsQ.refetch();
           }}
-          colors={['#7c3aed']}
+          colors={['#c2255c']}
         />
       }
     >

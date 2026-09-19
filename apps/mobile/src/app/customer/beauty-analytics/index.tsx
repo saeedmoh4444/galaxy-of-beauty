@@ -51,7 +51,7 @@ export default function BeautyAnalyticsScreen(): JSX.Element {
             void byCatQ.refetch();
             void trendQ.refetch();
           }}
-          colors={['#8b5cf6']}
+          colors={['#c2255c']}
         />
       }
     >

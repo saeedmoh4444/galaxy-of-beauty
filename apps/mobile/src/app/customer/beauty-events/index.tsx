@@ -76,7 +76,7 @@ export default function BeautyEventsScreen(): JSX.Element {
             void eventsQ.refetch();
             void myRegsQ.refetch();
           }}
-          colors={['#db2777']}
+          colors={['#c2255c']}
         />
       }
     >

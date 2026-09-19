@@ -36,7 +36,7 @@ export default function SalonManagementScreen(): JSX.Element {
             void dashQ.refetch();
             void staffQ.refetch();
           }}
-          colors={['#0891b2']}
+          colors={['#c2255c']}
         />
       }
     >

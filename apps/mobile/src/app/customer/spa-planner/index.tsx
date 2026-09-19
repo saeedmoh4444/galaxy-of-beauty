@@ -29,7 +29,7 @@ export default function SpaPlannerScreen(): JSX.Element {
           onRefresh={async () => {
             await servicesQ.refetch();
           }}
-          colors={['#0891b2']}
+          colors={['#c2255c']}
         />
       }
     >

@@ -102,7 +102,7 @@ export default function VirtualConsultationScreen(): JSX.Element {
           onRefresh={async () => {
             await bookingsQ.refetch();
           }}
-          colors={['#db2777']}
+          colors={['#c2255c']}
         />
       }
     >

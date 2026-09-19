@@ -76,7 +76,7 @@ export default function RescheduleScreen(): JSX.Element {
           onRefresh={async () => {
             await bookingsQ.refetch();
           }}
-          colors={['#db2777']}
+          colors={['#c2255c']}
         />
       }
     >

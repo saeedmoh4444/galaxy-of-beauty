@@ -69,7 +69,7 @@ export default function TechWaitlistScreen(): JSX.Element {
             void popularQ.refetch();
             void myListQ.refetch();
           }}
-          colors={['#f59e0b']}
+          colors={['#c2255c']}
         />
       }
     >

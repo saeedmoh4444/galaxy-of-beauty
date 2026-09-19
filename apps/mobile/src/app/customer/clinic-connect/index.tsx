@@ -47,7 +47,7 @@ export default function ClinicConnectScreen(): JSX.Element {
             void clinicsQ.refetch();
             void referralsQ.refetch();
           }}
-          colors={['#0891b2']}
+          colors={['#c2255c']}
         />
       }
     >

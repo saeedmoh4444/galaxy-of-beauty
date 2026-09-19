@@ -30,7 +30,7 @@ export default function RestockReminderScreen(): JSX.Element {
           onRefresh={async () => {
             await itemsQ.refetch();
           }}
-          colors={['#f59e0b']}
+          colors={['#c2255c']}
         />
       }
     >

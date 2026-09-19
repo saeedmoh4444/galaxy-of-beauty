@@ -54,7 +54,7 @@ export default function VideoBookingScreen(): JSX.Element {
           onRefresh={async () => {
             await dataQ.refetch();
           }}
-          colors={['#7c3aed']}
+          colors={['#c2255c']}
         />
       }
     >

@@ -28,7 +28,7 @@ export default function SkinDiaryScreen(): JSX.Element {
           onRefresh={async () => {
             await entriesQ.refetch();
           }}
-          colors={['#ec4899']}
+          colors={['#c2255c']}
         />
       }
     >

@@ -87,7 +87,7 @@ export default function EmergencyBookingScreen(): JSX.Element {
             onRefresh={async () => {
               await servicesQ.refetch();
             }}
-            colors={['#ef4444']}
+            colors={['#c2255c']}
           />
         }
       >

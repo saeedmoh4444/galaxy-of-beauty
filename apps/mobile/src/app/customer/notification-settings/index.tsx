@@ -30,7 +30,7 @@ export default function NotificationSettingsScreen(): JSX.Element {
           onRefresh={async () => {
             await prefsQ.refetch();
           }}
-          colors={['#6366f1']}
+          colors={['#c2255c']}
         />
       }
     >

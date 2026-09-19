@@ -31,7 +31,7 @@ export default function RoutineSchedulerScreen(): JSX.Element {
           onRefresh={async () => {
             await routinesQ.refetch();
           }}
-          colors={['#8b5cf6']}
+          colors={['#c2255c']}
         />
       }
     >

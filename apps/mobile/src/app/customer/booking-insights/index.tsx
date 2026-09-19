@@ -38,7 +38,7 @@ export default function BookingInsightsScreen(): JSX.Element {
             void analyticsQ.refetch();
             void byCatQ.refetch();
           }}
-          colors={['#0891b2']}
+          colors={['#c2255c']}
         />
       }
     >

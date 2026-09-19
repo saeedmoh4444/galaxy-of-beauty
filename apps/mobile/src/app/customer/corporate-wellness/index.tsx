@@ -79,7 +79,7 @@ export default function CorporateWellnessScreen(): JSX.Element {
             void plansQ.refetch();
             void enquiriesQ.refetch();
           }}
-          colors={['#db2777']}
+          colors={['#c2255c']}
         />
       }
     >

@@ -28,7 +28,7 @@ export default function PenPalScreen(): JSX.Element {
           onRefresh={async () => {
             await matchQ.refetch();
           }}
-          colors={['#ec4899']}
+          colors={['#c2255c']}
         />
       }
     >

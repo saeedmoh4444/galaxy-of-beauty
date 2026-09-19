@@ -28,7 +28,7 @@ export default function MoodBoardScreen(): JSX.Element {
           onRefresh={async () => {
             await pinsQ.refetch();
           }}
-          colors={['#ec4899']}
+          colors={['#c2255c']}
         />
       }
     >

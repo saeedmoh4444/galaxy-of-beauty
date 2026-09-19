@@ -27,7 +27,7 @@ export default function WellnessTrackerScreen(): JSX.Element {
           onRefresh={async () => {
             await todayQ.refetch();
           }}
-          colors={['#059669']}
+          colors={['#c2255c']}
         />
       }
     >

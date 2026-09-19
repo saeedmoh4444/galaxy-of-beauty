@@ -32,7 +32,7 @@ export default function IoTSyncScreen(): JSX.Element {
           onRefresh={async () => {
             await q.refetch();
           }}
-          colors={['#0891b2']}
+          colors={['#c2255c']}
         />
       }
     >

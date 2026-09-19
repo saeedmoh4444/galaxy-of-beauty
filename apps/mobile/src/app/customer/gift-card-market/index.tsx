@@ -36,7 +36,7 @@ export default function GiftCardMarketScreen(): JSX.Element {
           onRefresh={async () => {
             await q.refetch();
           }}
-          colors={['#7c3aed']}
+          colors={['#c2255c']}
         />
       }
     >

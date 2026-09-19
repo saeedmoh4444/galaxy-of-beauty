@@ -30,7 +30,7 @@ export default function LoyaltyPunchCardScreen(): JSX.Element {
           onRefresh={async () => {
             await cardQ.refetch();
           }}
-          colors={['#f59e0b']}
+          colors={['#c2255c']}
         />
       }
     >
