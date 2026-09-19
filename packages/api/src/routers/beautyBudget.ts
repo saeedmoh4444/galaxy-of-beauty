@@ -1,6 +1,7 @@
 import { z } from 'zod';
 import { prisma } from '@galaxy/db';
 import { customerProcedure, router } from '../trpc';
+import { SPENT_STATUSES } from '../lib/advisor';
 
 const db = prisma;
 
@@ -12,8 +13,14 @@ export const beautyBudgetRouter = router({
     const budget = await db.beautyBudget.findUnique({
       where: { userId_month: { userId: ctx.user.id, month } },
     });
+    // 3.3 fix — cancelled/rejected/no-show bookings are not real spend;
+    // counting them skewed the budget coach and the settings screen.
     const bookings = await db.booking.findMany({
-      where: { customerId: ctx.user.id, createdAt: { gte: new Date(`${month}-01`) } },
+      where: {
+        customerId: ctx.user.id,
+        status: { in: [...SPENT_STATUSES] },
+        createdAt: { gte: new Date(`${month}-01`) },
+      },
     });
     const spent = bookings.reduce((sum: number, b: any) => sum + Number(b.totalAmount || 0), 0);
     return {

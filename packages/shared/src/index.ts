@@ -23,7 +23,8 @@ export * from './menopause';
 // Utils (pure functions, no JSX)
 export { cn } from './utils/cn';
 export { formatCurrency } from './utils/formatCurrency';
-export { getSaudiSeason, getFridayBlockedHours } from './utils/saudiCalendar';
+export { getSaudiSeason, getFridayBlockedHours, getUpcomingOccasions } from './utils/saudiCalendar';
+export type { UpcomingOccasion } from './utils/saudiCalendar';
 export { buildWhatsAppShareUrl } from './utils/whatsapp';
 
 // Types

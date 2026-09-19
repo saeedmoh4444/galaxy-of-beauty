@@ -87,3 +87,50 @@ export function getFridayBlockedHours(
   if (date.getDay() !== FRIDAY) return null;
   return { start: FRIDAY_PRAYER_START, end: FRIDAY_PRAYER_END };
 }
+
+// ── 3.3 Proactive advisor: upcoming occasions ───────────────────
+
+export interface UpcomingOccasion {
+  key: 'ramadan_start' | 'eid_al_fitr' | 'eid_al_adha';
+  labelAr: string;
+  labelEn: string;
+  emoji: string;
+  /** ISO day (YYYY-MM-DD) the occasion starts. */
+  date: string;
+}
+
+const OCCASION_META: Record<
+  UpcomingOccasion['key'],
+  { labelAr: string; labelEn: string; emoji: string }
+> = {
+  ramadan_start: { labelAr: 'رمضان', labelEn: 'Ramadan', emoji: '🌙' },
+  eid_al_fitr: { labelAr: 'عيد الفطر', labelEn: 'Eid al-Fitr', emoji: '🌙' },
+  eid_al_adha: { labelAr: 'عيد الأضحى', labelEn: 'Eid al-Adha', emoji: '🕌' },
+};
+
+/**
+ * Occasions starting between `date` and `date + daysAhead`, soonest first.
+ * Feeds the 3.3 occasion detector ("Eid is in 14 days — prepare your look").
+ * Day comparisons use the same UTC-day convention as getSaudiSeason.
+ */
+export function getUpcomingOccasions(date: Date = new Date(), daysAhead = 21): UpcomingOccasion[] {
+  const today = date.toISOString().slice(0, 10);
+  const horizon = new Date(date.getTime() + daysAhead * 86_400_000).toISOString().slice(0, 10);
+
+  const upcoming: Array<{ key: UpcomingOccasion['key']; date: string }> = [];
+  for (const r of RAMADAN_DATES) {
+    if (r.eidAlFitr >= today && r.eidAlFitr <= horizon) {
+      upcoming.push({ key: 'eid_al_fitr', date: r.eidAlFitr });
+    }
+    if (r.eidAlAdha >= today && r.eidAlAdha <= horizon) {
+      upcoming.push({ key: 'eid_al_adha', date: r.eidAlAdha });
+    }
+    if (r.start >= today && r.start <= horizon) {
+      upcoming.push({ key: 'ramadan_start', date: r.start });
+    }
+  }
+
+  return upcoming
+    .sort((a, b) => a.date.localeCompare(b.date))
+    .map(({ key, date }) => ({ key, date, ...OCCASION_META[key] }));
+}
