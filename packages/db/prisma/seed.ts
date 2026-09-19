@@ -120,6 +120,8 @@ async function main() {
     // E7 — media layer (shorts + likes).
     db.shortLike.deleteMany(),
     db.short.deleteMany(),
+    // 3.1 — skin analyses reference users; wipe before user.deleteMany().
+    db.skinAnalysis.deleteMany(),
     db.user.deleteMany(),
     db.saudiCity.deleteMany(),
   ]);
