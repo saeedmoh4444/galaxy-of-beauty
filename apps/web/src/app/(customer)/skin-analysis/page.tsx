@@ -247,7 +247,11 @@ export default function SkinAnalysisPage(): JSX.Element {
         ) : isError ? (
           <ErrorAlert message={t('skin.err.load')} onRetry={() => refetch()} />
         ) : histItems.length === 0 ? (
-          <EmptyState title={t('skin.empty.title')} description={t('skin.empty.desc')} />
+          <EmptyState
+            mood="sparkle"
+            title={t('skin.empty.title')}
+            description={t('skin.empty.desc')}
+          />
         ) : (
           <div className="space-y-3">
             {histItems.map((a, idx) => {

@@ -80,7 +80,7 @@ export default function BookingsPage(): JSX.Element {
           <ErrorAlert message={t('booking.load-error')} onRetry={() => refetch()} />
         ) : bookings.length === 0 ? (
           <div>
-            <EmptyState title={t('booking.no-bookings')} />
+            <EmptyState mood="happy" title={t('booking.no-bookings')} />
             <div className="text-center">
               <Link href="/services">
                 <Button>{t('booking.browse-services')}</Button>

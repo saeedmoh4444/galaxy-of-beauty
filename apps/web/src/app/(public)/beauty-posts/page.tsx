@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react';
 import type { JSX } from 'react';
 import Link from 'next/link';
 import { api } from '@/lib/trpc';
-import { CardListSkeleton, VerifiedBadge, useAuth, useToast } from '@galaxy/ui';
+import { CardListSkeleton, EmptyState, VerifiedBadge, useAuth, useToast } from '@galaxy/ui';
 import { useLocale } from '@/components/LocaleProvider';
 
 type PostRow = {
@@ -84,6 +84,20 @@ export default function BeautyPostsPage(): JSX.Element {
 
       {isLoading ? (
         <CardListSkeleton count={3} />
+      ) : posts.length === 0 ? (
+        <EmptyState
+          mood="sparkle"
+          title={t('beautyPosts.title')}
+          description={t('beautyPosts.subtitle')}
+          action={
+            isAuthenticated
+              ? {
+                  label: t('beautyPosts.shareLook'),
+                  onPress: () => (window.location.href = '/beauty-posts/new'),
+                }
+              : undefined
+          }
+        />
       ) : (
         <div className="space-y-6">
           {posts.map((post) => (

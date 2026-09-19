@@ -64,7 +64,7 @@ export default function MarketplacePage(): JSX.Element {
         {products.isLoading ? (
           <GridSkeleton count={8} />
         ) : items.length === 0 ? (
-          <EmptyState title={t('marketplace.noProducts')} />
+          <EmptyState mood="sparkle" title={t('marketplace.noProducts')} />
         ) : (
           <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
             {items.map((p) => (
