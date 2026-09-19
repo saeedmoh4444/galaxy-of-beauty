@@ -5,6 +5,7 @@ import { api } from '@/lib/trpc';
 import { Card, DashboardSkeleton, Button, formatCurrency, ErrorAlert } from '@galaxy/ui';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
 import { useLocale } from '@/components/LocaleProvider';
+import { AdvisorInsights } from '@/components/wellness/AdvisorInsights';
 
 export default function BeautyDashboardPage(): JSX.Element {
   const { t } = useLocale();
@@ -62,6 +63,9 @@ export default function BeautyDashboardPage(): JSX.Element {
                 <p className="text-xs text-text-secondary">{t('beautyDashboard.wallet')}</p>
               </Card>
             </div>
+
+            {/* 3.3 — proactive AI advisor (deterministic insights) */}
+            <AdvisorInsights />
 
             <div className="grid gap-6 lg:grid-cols-2">
               <Card padding="lg">

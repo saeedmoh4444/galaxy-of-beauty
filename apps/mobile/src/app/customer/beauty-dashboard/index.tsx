@@ -92,6 +92,10 @@ export default function BeautyDashboardScreen(): JSX.Element {
   ] as const;
   const loyalty = trpc.loyalty.myAccount.useQuery(undefined, { enabled: isAuthed });
   const insights = trpc.analytics.customerInsights.useQuery(undefined, { enabled: isAuthed });
+  // 3.3 — proactive AI advisor (deterministic insights, same engine as
+  // the daily sweep).
+  const advisor = trpc.beautyInsights.advisor.useQuery(undefined, { enabled: isAuthed });
+  const advisorInsights = (advisor.data as unknown as Array<Record<string, unknown>>) ?? [];
   const lData = loyalty.data as Record<string, unknown> | undefined;
   const iData = insights.data as Record<string, unknown> | undefined;
 
@@ -227,6 +231,36 @@ export default function BeautyDashboardScreen(): JSX.Element {
               <Text style={styles.label}>{item.label}</Text>
             </View>
           ))}
+
+          {/* 3.3 — proactive AI advisor insights */}
+          {advisorInsights.length > 0 && (
+            <View style={styles.advisorCard}>
+              <Text style={styles.advisorTitle}>✨ {t('beautyDashboard.advisor-title')}</Text>
+              {advisorInsights.slice(0, 3).map((insight, i) => (
+                <TouchableOpacity
+                  key={i}
+                  style={styles.advisorRow}
+                  onPress={() => {
+                    if (insight.link) {
+                      router.push(insight.link as never);
+                    }
+                  }}
+                  activeOpacity={0.7}
+                >
+                  <Text style={styles.advisorEmoji}>{String(insight.emoji ?? '✨')}</Text>
+                  <View style={styles.advisorBody}>
+                    <Text style={styles.advisorHead} numberOfLines={1}>
+                      {String(insight.titleAr ?? insight.titleEn ?? '')}
+                    </Text>
+                    <Text style={styles.advisorText} numberOfLines={2}>
+                      {String(insight.bodyAr ?? insight.bodyEn ?? '')}
+                    </Text>
+                  </View>
+                  <Text style={styles.advisorArrow}>›</Text>
+                </TouchableOpacity>
+              ))}
+            </View>
+          )}
         </View>
       </ScreenState>
 
@@ -345,4 +379,36 @@ const styles = StyleSheet.create({
   },
   value: { fontSize: 16, fontWeight: '700' },
   label: { fontSize: 13, color: COLORS.gray400 },
+  // 3.3 — proactive AI advisor insights
+  advisorCard: {
+    backgroundColor: COLORS.white,
+    borderRadius: 14,
+    padding: 16,
+    marginTop: 8,
+    borderLeftWidth: 4,
+    borderLeftColor: COLORS.brand,
+    shadowColor: '#000',
+    shadowOpacity: 0.05,
+    shadowRadius: 4,
+    elevation: 2,
+  },
+  advisorTitle: {
+    fontSize: 15,
+    fontWeight: '700',
+    color: COLORS.brand,
+    marginBottom: 8,
+  },
+  advisorRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 10,
+    paddingVertical: 8,
+    borderTopWidth: 1,
+    borderTopColor: '#f3f4f6',
+  },
+  advisorEmoji: { fontSize: 18 },
+  advisorBody: { flex: 1 },
+  advisorHead: { fontSize: 13, fontWeight: '600', color: COLORS.gray900 },
+  advisorText: { fontSize: 12, color: COLORS.gray400, marginTop: 1 },
+  advisorArrow: { fontSize: 18, color: '#d1d5db' },
 });
