@@ -487,6 +487,23 @@ export const mobileCustomerAMessages = {
   'beautyProfile.title': { ar: 'ملف الجمال', en: 'Beauty Profile' },
   'beautyProfile.skin-type': { ar: 'نوع البشرة: {type}', en: 'Skin type: {type}' },
   'beautyProfile.hair-type': { ar: 'نوع الشعر: {type}', en: 'Hair type: {type}' },
+  // 3.1 Beauty DNA — stack header + match sections
+  'mobile.beautyProfile': { ar: 'بصمتي الجمالية', en: 'Beauty DNA' },
+  'mobile.beautyDna.skinMatch.title': { ar: 'تطابق درجات البشرة', en: 'Skin Shade Match' },
+  'mobile.beautyDna.hairMatch.title': { ar: 'تسريحات تناسب وجهكِ', en: 'Hair Style Match' },
+  'mobile.beautyDna.fragranceMatch.title': { ar: 'عطور تناسب ذوقكِ', en: 'Fragrance Match' },
+  'mobile.beautyDna.missing.skinTone': {
+    ar: 'حددي درجة بشرتكِ لعرض درجات كريم الأساس المطابقة',
+    en: 'Set your skin tone to see matching foundation shades',
+  },
+  'mobile.beautyDna.missing.faceShape': {
+    ar: 'حددي شكل وجهكِ ونوع شعركِ لعرض التسريحات المقترحة',
+    en: 'Set your face shape and hair type to see style suggestions',
+  },
+  'mobile.beautyDna.missing.preferredScents': {
+    ar: 'اختاري روائحكِ المفضلة لعرض العطور المقترحة',
+    en: 'Pick your preferred scents to see perfume suggestions',
+  },
 
   // ── beauty-reminders ──
   'beautyReminders.load-error': {

@@ -21,6 +21,8 @@ interface BeautyProfileData {
   hairType?: string | null;
   hairLength?: string | null;
   skinTone?: string | null;
+  undertone?: string | null;
+  faceShape?: string | null;
   makeupStyle?: string | null;
   concerns?: string[];
   preferredScents?: string[];
@@ -46,6 +48,9 @@ export default function BeautyProfileScreen(): JSX.Element {
   const [hairType, setHairType] = useState('');
   const [hairLength, setHairLength] = useState('');
   const [skinTone, setSkinTone] = useState('');
+  // 3.1 — Skin/Hair Match inputs (also set by the skin-analysis bridge).
+  const [undertone, setUndertone] = useState('');
+  const [faceShape, setFaceShape] = useState('');
   const [makeupStyle, setMakeupStyle] = useState('');
   const [concerns, setConcerns] = useState<string[]>([]);
   const [scents, setScents] = useState<string[]>([]);
@@ -54,11 +59,16 @@ export default function BeautyProfileScreen(): JSX.Element {
   const data = q.data as unknown as BeautyProfileData | null;
   const m = data?.measurements ?? {};
 
+  const utils = trpc.useUtils();
   const upsertMut = trpc.beautyProfile.upsert.useMutation({
     onSuccess: () => {
       setEditing(false);
       showToast('success', t('beautyProfile.savedToast'));
       void q.refetch();
+      // 3.1 — matches read the profile; refresh them after every save.
+      void utils.beautyDna.skinMatch.invalidate();
+      void utils.beautyDna.hairMatch.invalidate();
+      void utils.beautyDna.fragranceMatch.invalidate();
     },
     onError: () => showToast('error', t('beautyProfile.loadError')),
   });
@@ -68,6 +78,8 @@ export default function BeautyProfileScreen(): JSX.Element {
     setHairType(data?.hairType ?? '');
     setHairLength(data?.hairLength ?? '');
     setSkinTone(data?.skinTone ?? '');
+    setUndertone(data?.undertone ?? '');
+    setFaceShape(data?.faceShape ?? '');
     setMakeupStyle(data?.makeupStyle ?? '');
     setConcerns(data?.concerns ?? []);
     setScents(data?.preferredScents ?? []);
@@ -86,6 +98,8 @@ export default function BeautyProfileScreen(): JSX.Element {
         hairType,
         hairLength,
         skinTone,
+        undertone,
+        faceShape,
         makeupStyle,
         concerns,
         scents,
@@ -142,6 +156,9 @@ export default function BeautyProfileScreen(): JSX.Element {
           <TouchableOpacity style={styles.editBtn} onPress={enterEdit}>
             <Text style={styles.editBtnText}>{t('beautyProfile.editButton')}</Text>
           </TouchableOpacity>
+
+          {/* 3.1 Beauty DNA — Skin/Hair/Fragrance matches */}
+          <BeautyDnaMatchesView isAuthed={isAuthed} />
         </>
       ) : (
         <View style={styles.card}>
@@ -172,6 +189,21 @@ export default function BeautyProfileScreen(): JSX.Element {
             selected={skinTone}
             onSelect={setSkinTone}
             labelFor={labelFor}
+          />
+          {/* 3.1 — undertone + face shape feed Skin/Hair Match */}
+          <ChipRow
+            title={t('beautyProfile.sectionUndertone')}
+            options={BEAUTY_PROFILE_OPTIONS.undertones}
+            selected={undertone}
+            onSelect={setUndertone}
+            labelFor={labelFor}
+          />
+          <ChipRow
+            title={t('beautyProfile.sectionFaceShape')}
+            options={BEAUTY_PROFILE_OPTIONS.faceShapes}
+            selected={faceShape}
+            onSelect={setFaceShape}
+            labelFor={faceShapeLabelFor}
           />
           <ChipRow
             title={t('beautyProfile.sectionMakeupStyle')}
@@ -225,6 +257,87 @@ export default function BeautyProfileScreen(): JSX.Element {
 /** Raw option → i18n label (mirrors the web page's LABELS fallback). */
 function labelFor(o: string): string {
   return `beautyProfile.opt.${o}`;
+}
+
+/** Face shape 'long' collides with hair length 'long' — distinct key. */
+function faceShapeLabelFor(o: string): string {
+  return o === 'long' ? 'beautyProfile.opt.faceLong' : `beautyProfile.opt.${o}`;
+}
+
+type JsonRecord = Record<string, unknown>;
+
+function pickName(nameJson: unknown): string {
+  const n = (nameJson ?? {}) as JsonRecord;
+  return (n['ar'] as string) || (n['en'] as string) || '';
+}
+
+/**
+ * 3.1 — read-only Smart matches block (view mode). Three independent
+ * queries over the deterministic beautyDna router; invalidated by the
+ * editor's upsert onSuccess.
+ */
+function BeautyDnaMatchesView({ isAuthed }: { isAuthed: boolean }): JSX.Element {
+  const { t } = useLocale();
+  const skinQ = trpc.beautyDna.skinMatch.useQuery({}, { enabled: isAuthed });
+  const hairQ = trpc.beautyDna.hairMatch.useQuery({}, { enabled: isAuthed });
+  const fragranceQ = trpc.beautyDna.fragranceMatch.useQuery({}, { enabled: isAuthed });
+
+  const skin = (skinQ.data ?? {}) as JsonRecord;
+  const hair = (hairQ.data ?? {}) as JsonRecord;
+  const fragrance = (fragranceQ.data ?? {}) as JsonRecord;
+
+  const renderMatches = (
+    titleKey: string,
+    data: JsonRecord,
+    missingKey: string | null,
+    pickLine: (m: JsonRecord) => string,
+    swatch?: (m: JsonRecord) => string | null,
+  ) => {
+    const matches = (data.matches as Array<JsonRecord>) ?? [];
+    const missing = (data.missing as string[] | undefined) ?? [];
+    return (
+      <View style={styles.matchCard}>
+        <Text style={styles.sectionTitle}>{t(titleKey as never)}</Text>
+        {missingKey && missing.includes(missingKey) ? (
+          <Text style={styles.matchHint}>
+            {t(`mobile.beautyDna.missing.${missingKey}` as never)}
+          </Text>
+        ) : (
+          matches.slice(0, 3).map((m, i) => (
+            <View key={i} style={styles.matchRow}>
+              {swatch ? (
+                <View
+                  style={[styles.swatch, { backgroundColor: (swatch(m) as string) || '#ccc' }]}
+                />
+              ) : null}
+              <Text style={styles.matchName} numberOfLines={1}>
+                {pickLine(m)}
+              </Text>
+              <Text style={styles.matchPct}>{String(m.matchPct ?? '')}%</Text>
+            </View>
+          ))
+        )}
+      </View>
+    );
+  };
+
+  return (
+    <View style={styles.matchesBlock}>
+      {renderMatches(
+        'mobile.beautyDna.skinMatch.title',
+        skin,
+        'skinTone',
+        (m) => pickName((m.product as JsonRecord).nameJson),
+        (m) => ((m.product as JsonRecord).attributes as JsonRecord)?.shadeHex as string | null,
+      )}
+      {renderMatches('mobile.beautyDna.hairMatch.title', hair, 'faceShape', (m) =>
+        pickName((m.style as JsonRecord).nameJson),
+      )}
+      {renderMatches('mobile.beautyDna.fragranceMatch.title', fragrance, 'preferredScents', (m) =>
+        pickName((m.product as JsonRecord).nameJson),
+      )}
+    </View>
+  );
 }
 
 function ChipRow(props: {
@@ -309,4 +422,19 @@ const styles = StyleSheet.create({
   saveBtnText: { fontSize: 14, fontWeight: '700', color: '#fff' },
   cancelBtn: { padding: 12, alignItems: 'center' },
   cancelBtnText: { fontSize: 13, fontWeight: '600', color: '#6b7280' },
+  // 3.1 — Smart matches (view mode)
+  matchesBlock: { marginTop: 20, gap: 12 },
+  matchCard: { backgroundColor: '#fff', borderRadius: 16, padding: 16 },
+  matchHint: { fontSize: 13, color: '#6b7280', lineHeight: 20 },
+  matchRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingVertical: 7,
+    borderBottomWidth: 1,
+    borderBottomColor: '#f3f4f6',
+    gap: 8,
+  },
+  swatch: { width: 14, height: 14, borderRadius: 7, borderWidth: 1, borderColor: '#e5e7eb' },
+  matchName: { flex: 1, fontSize: 13, fontWeight: '600', color: '#374151' },
+  matchPct: { fontSize: 12, fontWeight: '800', color: '#db2777' },
 });

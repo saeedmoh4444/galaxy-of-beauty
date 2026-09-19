@@ -133,6 +133,10 @@ function RootNavigator() {
                 options={{ title: t('mobile.skinAnalysis') }}
               />
               <Stack.Screen
+                name="customer/beauty-profile/index"
+                options={{ title: t('mobile.beautyProfile') }}
+              />
+              <Stack.Screen
                 name="customer/loyalty/index"
                 options={{ title: t('mobile.loyalty') }}
               />

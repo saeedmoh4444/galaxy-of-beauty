@@ -98,6 +98,7 @@ export const navMessages = {
   'nav.promo': { ar: 'كود الخصم', en: 'Promo Code' },
   'nav.saved-cards': { ar: 'البطاقات', en: 'Cards' },
   'nav.skin-analysis': { ar: 'تحليل البشرة', en: 'Skin Analysis' },
+  'nav.beauty-profile': { ar: 'بصمتي الجمالية', en: 'Beauty DNA' },
   'nav.ai-chat': { ar: 'مجرة الجمال', en: 'Beauty Galaxy' },
   'nav.subscriptions': { ar: 'الاشتراكات', en: 'Subscriptions' },
   'nav.subscription-boxes': { ar: 'الصناديق الشهرية', en: 'Boxes' },
