@@ -1,0 +1,3 @@
+// fixture chunk c — 250 bytes of near-incompressible content
+// 0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef
+// 0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef

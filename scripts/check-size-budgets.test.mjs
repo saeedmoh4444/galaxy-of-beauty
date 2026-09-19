@@ -80,6 +80,7 @@ test('STRICT mode enforces FE-007 budgets directly', () => {
   try {
     fs.cpSync(fxWeb, dir, { recursive: true });
     const big = path.join(dir, '.next', 'static', 'chunks', 'big.js');
+    fs.mkdirSync(path.dirname(big), { recursive: true });
     fs.writeFileSync(big, crypto.randomBytes(110 * 1024));
     const statsPath = path.join(dir, '.next', 'diagnostics', 'route-bundle-stats-strict.json');
     fs.writeFileSync(

@@ -1,0 +1,37 @@
+[
+  {
+    "route": "/",
+    "firstLoadUncompressedJsBytes": 1500,
+    "firstLoadChunkPaths": [".next\\static\\chunks\\a.js", ".next\\static\\chunks\\b.js"]
+  },
+  {
+    "route": "/offline",
+    "firstLoadUncompressedJsBytes": 250,
+    "firstLoadChunkPaths": [".next\\static\\chunks\\c.js"]
+  },
+  {
+    "route": "/dashboard",
+    "firstLoadUncompressedJsBytes": 2000,
+    "firstLoadChunkPaths": [".next/static/chunks/a.js", ".next/static/chunks/c.js"]
+  },
+  {
+    "route": "/login",
+    "firstLoadUncompressedJsBytes": 1500,
+    "firstLoadChunkPaths": [".next/static/chunks/a.js", ".next/static/chunks/b.js"]
+  },
+  {
+    "route": "/admin/users",
+    "firstLoadUncompressedJsBytes": 500,
+    "firstLoadChunkPaths": [".next/static/chunks/b.js"]
+  },
+  {
+    "route": "/api/health",
+    "firstLoadUncompressedJsBytes": 250,
+    "firstLoadChunkPaths": [".next/static/chunks/c.js"]
+  },
+  {
+    "route": "/_not-found",
+    "firstLoadUncompressedJsBytes": 250,
+    "firstLoadChunkPaths": [".next/static/chunks/c.js"]
+  }
+]
