@@ -69,7 +69,7 @@ structurally from `apps/web/src/app` page files:
 
 - **Lighthouse CI**: Run on every PR for critical pages
 - **Web Vitals**: `useReportWebVitals` in `_app.tsx` → Sentry
-- **Bundle Analysis**: `ANALYZE=true pnpm build` for periodic review
+- **Bundle Analysis**: `pnpm check:budgets` — the FE-007 gate measures every route's gzipped First-Load JS on every CI build (see "Automated Enforcement" above); `STRICT=1` checks against the FE-007 caps
 
 ## FE-008: Image Optimization
 
