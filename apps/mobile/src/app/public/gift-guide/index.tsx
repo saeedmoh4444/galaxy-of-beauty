@@ -39,7 +39,7 @@ export default function GiftGuideScreen(): JSX.Element {
           onRefresh={async () => {
             await guidesQ.refetch();
           }}
-          colors={['#db2777']}
+          colors={['#c2255c']}
         />
       }
     >

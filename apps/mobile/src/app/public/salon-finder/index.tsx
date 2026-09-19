@@ -32,7 +32,7 @@ export default function SalonFinderScreen(): JSX.Element {
           onRefresh={async () => {
             await salonsQ.refetch();
           }}
-          colors={['#db2777']}
+          colors={['#c2255c']}
         />
       }
     >

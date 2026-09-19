@@ -30,7 +30,7 @@ export default function BeautyPodcastScreen(): JSX.Element {
           onRefresh={async () => {
             await epsQ.refetch();
           }}
-          colors={['#7c3aed']}
+          colors={['#c2255c']}
         />
       }
     >

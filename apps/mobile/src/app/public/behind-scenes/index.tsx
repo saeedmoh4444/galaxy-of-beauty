@@ -27,7 +27,7 @@ export default function BehindScenesScreen(): JSX.Element {
           onRefresh={async () => {
             await videosQ.refetch();
           }}
-          colors={['#f59e0b']}
+          colors={['#c2255c']}
         />
       }
     >

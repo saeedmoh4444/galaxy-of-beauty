@@ -36,7 +36,7 @@ export default function FeaturedTechScreen(): JSX.Element {
             void currentQ.refetch();
             void pastQ.refetch();
           }}
-          colors={['#f59e0b']}
+          colors={['#c2255c']}
         />
       }
     >

@@ -44,7 +44,7 @@ export default function TechCalendarScreen(): JSX.Element {
           onRefresh={async () => {
             await slotsQ.refetch();
           }}
-          colors={['#059669']}
+          colors={['#c2255c']}
         />
       }
     >

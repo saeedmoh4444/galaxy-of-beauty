@@ -28,7 +28,7 @@ export default function LookOfTheDayScreen(): JSX.Element {
           onRefresh={async () => {
             await looksQ.refetch();
           }}
-          colors={['#f59e0b']}
+          colors={['#c2255c']}
         />
       }
     >

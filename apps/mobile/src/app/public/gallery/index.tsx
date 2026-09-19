@@ -28,7 +28,7 @@ export default function GalleryScreen(): JSX.Element {
           onRefresh={async () => {
             await photosQ.refetch();
           }}
-          colors={['#7c3aed']}
+          colors={['#c2255c']}
         />
       }
     >

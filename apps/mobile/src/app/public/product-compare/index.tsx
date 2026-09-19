@@ -36,7 +36,7 @@ export default function ProductCompareScreen(): JSX.Element {
           onRefresh={async () => {
             await productsQ.refetch();
           }}
-          colors={['#0891b2']}
+          colors={['#c2255c']}
         />
       }
     >

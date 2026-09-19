@@ -50,7 +50,7 @@ export default function BridalConciergeScreen(): JSX.Element {
           onRefresh={async () => {
             await conciergeQ.refetch();
           }}
-          colors={['#db2777']}
+          colors={['#c2255c']}
         />
       }
     >

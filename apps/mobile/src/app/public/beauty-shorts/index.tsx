@@ -55,7 +55,7 @@ export default function BeautyShortsScreen(): JSX.Element {
           onRefresh={async () => {
             await shortsQ.refetch();
           }}
-          colors={['#db2777']}
+          colors={['#c2255c']}
         />
       }
     >

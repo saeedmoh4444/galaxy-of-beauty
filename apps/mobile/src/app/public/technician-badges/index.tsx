@@ -31,7 +31,7 @@ export default function TechnicianBadgesScreen(): JSX.Element {
           onRefresh={async () => {
             await q.refetch();
           }}
-          colors={['#8b5cf6']}
+          colors={['#c2255c']}
         />
       }
     >

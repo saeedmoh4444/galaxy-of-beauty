@@ -30,7 +30,7 @@ export default function SalonMapScreen(): JSX.Element {
           onRefresh={async () => {
             await salonsQ.refetch();
           }}
-          colors={['#059669']}
+          colors={['#c2255c']}
         />
       }
     >

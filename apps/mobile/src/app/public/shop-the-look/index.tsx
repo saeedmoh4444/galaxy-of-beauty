@@ -39,7 +39,7 @@ export default function ShopTheLookScreen(): JSX.Element {
           onRefresh={async () => {
             await looksQ.refetch();
           }}
-          colors={['#ec4899']}
+          colors={['#c2255c']}
         />
       }
     >

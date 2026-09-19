@@ -38,7 +38,7 @@ export default function KidsServicesScreen(): JSX.Element {
           onRefresh={async () => {
             await catsQ.refetch();
           }}
-          colors={['#f59e0b']}
+          colors={['#c2255c']}
         />
       }
     >

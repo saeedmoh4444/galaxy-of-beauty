@@ -41,7 +41,7 @@ export default function CampaignsScreen(): JSX.Element {
           onRefresh={async () => {
             await campaignsQ.refetch();
           }}
-          colors={['#f59e0b']}
+          colors={['#c2255c']}
         />
       }
     >

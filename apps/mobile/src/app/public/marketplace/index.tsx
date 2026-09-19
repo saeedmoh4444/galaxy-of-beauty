@@ -28,7 +28,7 @@ export default function MarketplaceScreen(): JSX.Element {
           onRefresh={async () => {
             await productsQ.refetch();
           }}
-          colors={['#db2777']}
+          colors={['#c2255c']}
         />
       }
     >

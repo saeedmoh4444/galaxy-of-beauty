@@ -37,7 +37,7 @@ export default function CompareScreen(): JSX.Element {
           onRefresh={async () => {
             await servicesQ.refetch();
           }}
-          colors={['#6366f1']}
+          colors={['#c2255c']}
         />
       }
     >

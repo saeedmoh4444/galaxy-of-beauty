@@ -4,7 +4,7 @@ import type { JSX } from 'react';
 import { useSearchParams } from 'next/navigation';
 import Link from 'next/link';
 import { Lottie } from 'lottie-react';
-import { Button, Card, formatHijriDate } from '@galaxy/ui';
+import { Button, Card, formatHijriDate, ConfettiBurst } from '@galaxy/ui';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
 import { AddToCalendar } from '@/components/AddToCalendar';
 import { ShareButtons } from '@/components/ShareButtons';
@@ -20,6 +20,8 @@ export default function BookingConfirmPage(): JSX.Element {
 
   return (
     <DashboardLayout userRole="CUSTOMER">
+      {/* 5.1 — one-shot confetti celebration alongside the Lottie check. */}
+      <ConfettiBurst />
       <div className="mx-auto max-w-lg space-y-6 py-8 text-center">
         <div className="mx-auto flex h-24 w-24 items-center justify-center rounded-full bg-green-100 dark:bg-green-900">
           {/* Quick win #3 — animated success check (plays once on mount) */}

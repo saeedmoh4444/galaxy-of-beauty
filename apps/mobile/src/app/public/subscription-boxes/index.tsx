@@ -39,7 +39,7 @@ export default function SubscriptionBoxesScreen(): JSX.Element {
           onRefresh={async () => {
             await boxesQ.refetch();
           }}
-          colors={['#7c3aed']}
+          colors={['#c2255c']}
         />
       }
     >

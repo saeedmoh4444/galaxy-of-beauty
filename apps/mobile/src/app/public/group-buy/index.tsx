@@ -30,7 +30,7 @@ export default function GroupBuyScreen(): JSX.Element {
           onRefresh={async () => {
             await dealsQ.refetch();
           }}
-          colors={['#059669']}
+          colors={['#c2255c']}
         />
       }
     >

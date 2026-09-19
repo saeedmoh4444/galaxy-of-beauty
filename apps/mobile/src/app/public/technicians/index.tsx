@@ -41,7 +41,7 @@ export default function TechniciansScreen(): JSX.Element {
           onRefresh={async () => {
             await techsQ.refetch();
           }}
-          colors={['#db2777']}
+          colors={['#c2255c']}
         />
       }
     >

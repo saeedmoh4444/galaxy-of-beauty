@@ -41,7 +41,7 @@ export default function TechLeaderboardScreen(): JSX.Element {
           onRefresh={async () => {
             await boardQ.refetch();
           }}
-          colors={['#f59e0b']}
+          colors={['#c2255c']}
         />
       }
     >

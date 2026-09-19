@@ -41,7 +41,7 @@ export default function EventsScreen(): JSX.Element {
           onRefresh={async () => {
             await eventsQ.refetch();
           }}
-          colors={['#7c3aed']}
+          colors={['#c2255c']}
         />
       }
     >

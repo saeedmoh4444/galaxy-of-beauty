@@ -21,7 +21,7 @@ export default function WhatsAppBotScreen(): JSX.Element {
           onRefresh={async () => {
             await q.refetch();
           }}
-          colors={['#25D366']}
+          colors={['#c2255c']}
         />
       }
     >
