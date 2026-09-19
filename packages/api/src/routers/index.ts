@@ -119,6 +119,7 @@ import { safetyRouter } from '../domains/safety';
 import {
   adminRouter,
   adminAnalyticsV2Router,
+  advancedAnalyticsRouter,
   adminReportsRouter,
   adminToolsRouter,
   analyticsRouter,
@@ -465,6 +466,7 @@ export const appRouter = router({
   // Admin
   admin: adminRouter,
   adminAnalyticsV2: adminAnalyticsV2Router,
+  advancedAnalytics: advancedAnalyticsRouter,
   adminReports: adminReportsRouter,
   adminTools: adminToolsRouter,
   analytics: analyticsRouter,
