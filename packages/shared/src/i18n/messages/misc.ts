@@ -2209,6 +2209,12 @@ export const miscMessages = {
   'beautyDashboard.journal': { ar: 'يوميات الجمال', en: 'Beauty journal' },
   'beautyDashboard.wishlist': { ar: 'قائمة الأمنيات', en: 'Wishlist' },
   'beautyDashboard.bonus': { ar: 'رصيد المكافآت', en: 'Bonus balance' },
+  // 3.3 — proactive AI advisor
+  'beautyDashboard.advisor.title': { ar: 'توصيات ذكية لكِ', en: 'Smart tips for you' },
+  'beautyDashboard.advisor.typeReminder': { ar: 'تذكير ذكي', en: 'Smart reminder' },
+  'beautyDashboard.advisor.typeOccasion': { ar: 'مناسبة قادمة', en: 'Upcoming occasion' },
+  'beautyDashboard.advisor.typeBudget': { ar: 'مستشارة الميزانية', en: 'Budget coach' },
+  'beautyDashboard.advisor.typeTrend': { ar: 'رائج هذا الأسبوع', en: 'Trending this week' },
 
   // Savings Goals
   'savingsGoals.title': { ar: 'أهداف الادخار', en: ' Savings Goals' },

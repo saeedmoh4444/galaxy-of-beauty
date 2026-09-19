@@ -293,6 +293,8 @@ export const mobileCustomerAMessages = {
   'beautyDashboard.bookings': { ar: 'الحجوزات', en: 'Bookings' },
   'beautyDashboard.spending': { ar: 'الإنفاق', en: 'Spending' },
   'beautyDashboard.sar': { ar: '{value} ر.س', en: '{value} SAR' },
+  // 3.3 — proactive AI advisor
+  'beautyDashboard.advisor-title': { ar: 'توصيات ذكية لكِ', en: 'Smart tips for you' },
   'beautyDashboard.quick-book': { ar: 'احجزي الآن', en: 'Book now' },
   'beautyDashboard.quick-wallet': { ar: 'المحفظة', en: 'Wallet' },
   'beautyDashboard.quick-ai': { ar: 'المستشارة الذكية', en: 'AI Advisor' },
