@@ -3491,6 +3491,14 @@ async function main() {
           en: 'Hi {{customerName}}, we hope you enjoyed your {{serviceName}} session. Share your review and book your next visit!',
         },
       },
+      // 3.3 Proactive AI advisor — one in-app insight per user per week.
+      {
+        key: 'advisor_insight',
+        category: 'tips',
+        channels: ['in_app'],
+        titleJson: { ar: 'توصية ذكية لكِ', en: 'A smart tip for you' },
+        bodyJson: { ar: '{{insightTextAr}}', en: '{{insightTextEn}}' },
+      },
       // 2.2 Beauty Subscription — 3-day renewal reminder.
       {
         key: 'subscription_renewal_reminder',

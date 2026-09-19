@@ -11,12 +11,14 @@
 import { startWorkers, shutdownWorkers } from './index';
 import { startTokenCleanup, stopTokenCleanup } from './tokenCleanup';
 import { startSubscriptionRenewal, stopSubscriptionRenewal } from './subscriptionRenewal';
+import { startInsightsSweep, stopInsightsSweep } from './insightsSweep';
 
 // Graceful shutdown
 async function shutdown() {
   console.log('[Worker Process] Shutting down...');
   stopTokenCleanup();
   stopSubscriptionRenewal();
+  stopInsightsSweep();
   await shutdownWorkers();
   process.exit(0);
 }
@@ -29,4 +31,7 @@ console.log('[Worker Process] Starting background job workers + cleanup sweeps..
 startWorkers();
 startTokenCleanup();
 startSubscriptionRenewal();
-console.log('[Worker Process] Ready — workers + hourly token purge + daily subscription renewal');
+startInsightsSweep();
+console.log(
+  '[Worker Process] Ready — workers + hourly token purge + daily subscription renewal + 3.3 advisor sweep',
+);

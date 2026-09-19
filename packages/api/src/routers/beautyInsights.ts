@@ -1,6 +1,7 @@
 import { z } from 'zod';
 import { prisma } from '@galaxy/db';
 import { customerProcedure, router } from '../trpc';
+import { buildAdvisorInsights } from '../lib/advisor';
 
 export const beautyInsightsRouter = router({
   myInsights: customerProcedure.query(async ({ ctx }) => {
@@ -52,4 +53,9 @@ export const beautyInsightsRouter = router({
       }
       return trends;
     }),
+
+  // 3.3 Proactive AI advisor — deterministic, priority-sorted insights
+  // (cadence reminders, occasion, budget, trend). Same engine the daily
+  // insightsSweep worker uses for in-app notifications.
+  advisor: customerProcedure.query(({ ctx }) => buildAdvisorInsights(ctx.user.id)),
 });
