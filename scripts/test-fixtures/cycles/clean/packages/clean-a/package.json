@@ -1,0 +1,4 @@
+{
+  "name": "@galaxy/clean-a",
+  "main": "./src/index.ts"
+}
