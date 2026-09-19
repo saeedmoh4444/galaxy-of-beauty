@@ -38,6 +38,7 @@ export default function WishlistPage(): JSX.Element {
         ) : items.length === 0 ? (
           <div>
             <EmptyState
+              mood="sparkle"
               title={t('wishlist.emptyTitle')}
               description={t('wishlist.emptyDescription')}
             />

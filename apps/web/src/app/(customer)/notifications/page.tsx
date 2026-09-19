@@ -52,6 +52,7 @@ export default function NotificationsPage(): JSX.Element {
         ) : items.length === 0 ? (
           <div>
             <EmptyState
+              mood="happy"
               title={t('profile.no-notifications')}
               description={t('profile.no-notifications-desc')}
             />

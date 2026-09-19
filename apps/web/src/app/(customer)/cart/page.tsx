@@ -49,6 +49,7 @@ export default function CartPage(): JSX.Element {
           <CardListSkeleton count={4} />
         ) : cartItems.length === 0 ? (
           <EmptyState
+            mood="happy"
             title={t('cart.empty')}
             action={{ label: t('cart.shop'), onPress: () => router.push('/marketplace') }}
           />
