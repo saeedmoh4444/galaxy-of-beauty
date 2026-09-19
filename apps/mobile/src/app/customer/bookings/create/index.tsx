@@ -6,11 +6,12 @@ import {
   StyleSheet,
   ActivityIndicator,
   TextInput,
+  Animated,
 } from 'react-native';
 import { useRouter, useLocalSearchParams } from 'expo-router';
 import { trpc } from '@/lib/trpc-react';
 import { useAuthState } from '@/hooks/useAuthState';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { MAX_LIST_SIZE } from '@galaxy/ui';
 import { localize } from '@galaxy/shared';
 import { useLocale } from '@/components/LocaleProvider';
@@ -92,6 +93,16 @@ export default function CreateBookingScreen() {
   const { locale, t } = useLocale();
   const { showToast } = useToast();
   const [step, setStep] = useState(1);
+  // 5.1 — animate each wizard step in on change.
+  const stepAnim = useRef(new Animated.Value(1)).current;
+  useEffect(() => {
+    stepAnim.setValue(0);
+    Animated.timing(stepAnim, {
+      toValue: 1,
+      duration: 260,
+      useNativeDriver: true,
+    }).start();
+  }, [step, stepAnim]);
   const [serviceId, setServiceId] = useState<number | undefined>();
   const [variantId, setVariantId] = useState<number | undefined>();
   const [addressId, setAddressId] = useState<number | undefined>();
@@ -325,381 +336,408 @@ export default function CreateBookingScreen() {
         )}
       </View>
 
-      {step === 1 && (
-        <View>
-          <Text style={styles.sectionTitle}>{t('booking.choose-service')}</Text>
-          {services.map((s, i) => (
-            <TouchableOpacity
-              key={s.id ?? i}
-              style={[styles.serviceCard, serviceId === s.id && styles.serviceCardActive]}
-              onPress={() => {
-                setServiceId(s.id);
-                setStep(2);
-              }}
-              activeOpacity={0.7}
-            >
-              <Text style={styles.serviceName}>{localize(s.titleJson, locale)}</Text>
-              <Text style={styles.serviceMeta}>
-                {t('bookings.create.service-meta', {
-                  price: Number(s.basePrice).toFixed(0),
-                  duration: s.durationMin ?? '',
-                })}
-              </Text>
-            </TouchableOpacity>
-          ))}
-        </View>
-      )}
+      <Animated.View
+        style={{
+          opacity: stepAnim,
+          transform: [
+            {
+              translateY: stepAnim.interpolate({
+                inputRange: [0, 1],
+                outputRange: [12, 0],
+              }),
+            },
+          ],
+        }}
+      >
+        {step === 1 && (
+          <View>
+            <Text style={styles.sectionTitle}>{t('booking.choose-service')}</Text>
+            {services.map((s, i) => (
+              <TouchableOpacity
+                key={s.id ?? i}
+                style={[styles.serviceCard, serviceId === s.id && styles.serviceCardActive]}
+                onPress={() => {
+                  setServiceId(s.id);
+                  setStep(2);
+                }}
+                activeOpacity={0.7}
+              >
+                <Text style={styles.serviceName}>{localize(s.titleJson, locale)}</Text>
+                <Text style={styles.serviceMeta}>
+                  {t('bookings.create.service-meta', {
+                    price: Number(s.basePrice).toFixed(0),
+                    duration: s.durationMin ?? '',
+                  })}
+                </Text>
+              </TouchableOpacity>
+            ))}
+          </View>
+        )}
 
-      {step === 2 && svc && (
-        <View>
-          <Text style={styles.sectionTitle}>{t('booking.details')}</Text>
-          <Text style={styles.selectedService}>{localize(svc.titleJson, locale)}</Text>
+        {step === 2 && svc && (
+          <View>
+            <Text style={styles.sectionTitle}>{t('booking.details')}</Text>
+            <Text style={styles.selectedService}>{localize(svc.titleJson, locale)}</Text>
 
-          {activeBundle && (
-            <View style={styles.bundleBanner}>
-              <Text style={styles.bundleBannerText}>
-                {t('mobile.booking.bundle-selected', {
-                  name: localize(activeBundle.nameJson, locale),
-                })}
-              </Text>
-              <Text style={styles.bundleBannerPrice}>
-                {Number(activeBundle.bundlePrice).toLocaleString()} {t('misc.sar')}
-              </Text>
-            </View>
-          )}
+            {activeBundle && (
+              <View style={styles.bundleBanner}>
+                <Text style={styles.bundleBannerText}>
+                  {t('mobile.booking.bundle-selected', {
+                    name: localize(activeBundle.nameJson, locale),
+                  })}
+                </Text>
+                <Text style={styles.bundleBannerPrice}>
+                  {Number(activeBundle.bundlePrice).toLocaleString()} {t('misc.sar')}
+                </Text>
+              </View>
+            )}
 
-          {!activeBundle && variants.length > 0 && (
-            <View style={styles.field}>
-              <Text style={styles.label}>{t('bookings.create.variant-label')}</Text>
-              <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.chipRow}>
-                <TouchableOpacity
-                  style={[styles.chip, !variantId && styles.chipActive]}
-                  onPress={() => setVariantId(undefined)}
+            {!activeBundle && variants.length > 0 && (
+              <View style={styles.field}>
+                <Text style={styles.label}>{t('bookings.create.variant-label')}</Text>
+                <ScrollView
+                  horizontal
+                  showsHorizontalScrollIndicator={false}
+                  style={styles.chipRow}
                 >
-                  <Text style={[styles.chipText, !variantId && { color: '#fff' }]}>
-                    {t('bookings.create.variant-basic')}
+                  <TouchableOpacity
+                    style={[styles.chip, !variantId && styles.chipActive]}
+                    onPress={() => setVariantId(undefined)}
+                  >
+                    <Text style={[styles.chipText, !variantId && { color: '#fff' }]}>
+                      {t('bookings.create.variant-basic')}
+                    </Text>
+                  </TouchableOpacity>
+                  {variants.map((v, i) => (
+                    <TouchableOpacity
+                      key={v.id ?? i}
+                      style={[styles.chip, variantId === v.id && styles.chipActive]}
+                      onPress={() => setVariantId(v.id)}
+                    >
+                      <Text style={[styles.chipText, variantId === v.id && { color: '#fff' }]}>
+                        {localize(v.nameJson, locale)}
+                      </Text>
+                    </TouchableOpacity>
+                  ))}
+                </ScrollView>
+              </View>
+            )}
+
+            <View style={styles.field}>
+              <Text style={styles.label}>{t('bookings.create.address-label')}</Text>
+              {addresses.map((a, i) => (
+                <TouchableOpacity
+                  key={a.id ?? i}
+                  style={[styles.optionCard, addressId === a.id && styles.optionCardActive]}
+                  onPress={() => setAddressId(a.id)}
+                >
+                  <Text style={styles.optionText}>
+                    {a.label} — {a.city}
                   </Text>
                 </TouchableOpacity>
-                {variants.map((v, i) => (
+              ))}
+            </View>
+
+            {members.length > 0 && (
+              <View style={styles.field}>
+                <Text style={styles.label}>{t('mobile.booking.family-member')}</Text>
+                <TouchableOpacity
+                  style={[styles.optionCard, !familyMemberId && styles.optionCardActive]}
+                  onPress={() => setFamilyMemberId(undefined)}
+                >
+                  <Text style={styles.optionText}>{t('mobile.booking.family-member-none')}</Text>
+                </TouchableOpacity>
+                {members.map((m, i) => (
                   <TouchableOpacity
-                    key={v.id ?? i}
-                    style={[styles.chip, variantId === v.id && styles.chipActive]}
-                    onPress={() => setVariantId(v.id)}
+                    key={(m.id as number) ?? i}
+                    style={[styles.optionCard, familyMemberId === m.id && styles.optionCardActive]}
+                    onPress={() => setFamilyMemberId(m.id as number)}
                   >
-                    <Text style={[styles.chipText, variantId === v.id && { color: '#fff' }]}>
-                      {localize(v.nameJson, locale)}
+                    <Text style={styles.optionText}>
+                      {String(m.name)} ({String(m.relationship)} · {String(m.ageGroup)})
+                    </Text>
+                  </TouchableOpacity>
+                ))}
+              </View>
+            )}
+
+            <View style={styles.field}>
+              <Text style={styles.label}>{t('booking.choose-date')}</Text>
+              <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.chipRow}>
+                {NEXT_DAYS.map((d) => (
+                  <TouchableOpacity
+                    key={d.iso}
+                    style={[styles.chip, bookingDate === d.iso && styles.chipActive]}
+                    onPress={() => setBookingDate(d.iso)}
+                  >
+                    <Text style={[styles.chipText, bookingDate === d.iso && { color: '#fff' }]}>
+                      {d.label}
                     </Text>
                   </TouchableOpacity>
                 ))}
               </ScrollView>
             </View>
-          )}
 
-          <View style={styles.field}>
-            <Text style={styles.label}>{t('bookings.create.address-label')}</Text>
-            {addresses.map((a, i) => (
-              <TouchableOpacity
-                key={a.id ?? i}
-                style={[styles.optionCard, addressId === a.id && styles.optionCardActive]}
-                onPress={() => setAddressId(a.id)}
-              >
-                <Text style={styles.optionText}>
-                  {a.label} — {a.city}
-                </Text>
-              </TouchableOpacity>
-            ))}
-          </View>
-
-          {members.length > 0 && (
             <View style={styles.field}>
-              <Text style={styles.label}>{t('mobile.booking.family-member')}</Text>
-              <TouchableOpacity
-                style={[styles.optionCard, !familyMemberId && styles.optionCardActive]}
-                onPress={() => setFamilyMemberId(undefined)}
-              >
-                <Text style={styles.optionText}>{t('mobile.booking.family-member-none')}</Text>
+              <Text style={styles.label}>{t('booking.choose-time')}</Text>
+              <View style={styles.timeGrid}>
+                {TIME_SLOTS.map((slot) => (
+                  <TouchableOpacity
+                    key={slot}
+                    style={[styles.chip, bookingTime === slot && styles.chipActive]}
+                    onPress={() => setBookingTime(slot)}
+                  >
+                    <Text style={[styles.chipText, bookingTime === slot && { color: '#fff' }]}>
+                      {slot}
+                    </Text>
+                  </TouchableOpacity>
+                ))}
+              </View>
+            </View>
+
+            <View style={styles.field}>
+              <Text style={styles.label}>{t('booking.notes')}</Text>
+              <TextInput
+                style={[styles.input, styles.textArea]}
+                value={notes}
+                onChangeText={setNotes}
+                placeholder={t('booking.notes-placeholder')}
+                placeholderTextColor="#9ca3af"
+                multiline
+                numberOfLines={3}
+              />
+            </View>
+
+            <View style={styles.btnRow}>
+              <TouchableOpacity style={styles.backBtn} onPress={() => setStep(1)}>
+                <Text style={styles.backText}>{t('booking.previous')}</Text>
               </TouchableOpacity>
-              {members.map((m, i) => (
-                <TouchableOpacity
-                  key={(m.id as number) ?? i}
-                  style={[styles.optionCard, familyMemberId === m.id && styles.optionCardActive]}
-                  onPress={() => setFamilyMemberId(m.id as number)}
-                >
-                  <Text style={styles.optionText}>
-                    {String(m.name)} ({String(m.relationship)} · {String(m.ageGroup)})
-                  </Text>
-                </TouchableOpacity>
-              ))}
-            </View>
-          )}
-
-          <View style={styles.field}>
-            <Text style={styles.label}>{t('booking.choose-date')}</Text>
-            <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.chipRow}>
-              {NEXT_DAYS.map((d) => (
-                <TouchableOpacity
-                  key={d.iso}
-                  style={[styles.chip, bookingDate === d.iso && styles.chipActive]}
-                  onPress={() => setBookingDate(d.iso)}
-                >
-                  <Text style={[styles.chipText, bookingDate === d.iso && { color: '#fff' }]}>
-                    {d.label}
-                  </Text>
-                </TouchableOpacity>
-              ))}
-            </ScrollView>
-          </View>
-
-          <View style={styles.field}>
-            <Text style={styles.label}>{t('booking.choose-time')}</Text>
-            <View style={styles.timeGrid}>
-              {TIME_SLOTS.map((slot) => (
-                <TouchableOpacity
-                  key={slot}
-                  style={[styles.chip, bookingTime === slot && styles.chipActive]}
-                  onPress={() => setBookingTime(slot)}
-                >
-                  <Text style={[styles.chipText, bookingTime === slot && { color: '#fff' }]}>
-                    {slot}
-                  </Text>
-                </TouchableOpacity>
-              ))}
+              <TouchableOpacity style={styles.nextBtn} onPress={() => setStep(3)}>
+                <Text style={styles.nextText}>{t('button.next')}</Text>
+              </TouchableOpacity>
             </View>
           </View>
+        )}
 
-          <View style={styles.field}>
-            <Text style={styles.label}>{t('booking.notes')}</Text>
-            <TextInput
-              style={[styles.input, styles.textArea]}
-              value={notes}
-              onChangeText={setNotes}
-              placeholder={t('booking.notes-placeholder')}
-              placeholderTextColor="#9ca3af"
-              multiline
-              numberOfLines={3}
-            />
-          </View>
-
-          <View style={styles.btnRow}>
-            <TouchableOpacity style={styles.backBtn} onPress={() => setStep(1)}>
-              <Text style={styles.backText}>{t('booking.previous')}</Text>
-            </TouchableOpacity>
-            <TouchableOpacity style={styles.nextBtn} onPress={() => setStep(3)}>
-              <Text style={styles.nextText}>{t('button.next')}</Text>
-            </TouchableOpacity>
-          </View>
-        </View>
-      )}
-
-      {step === 3 && svc && (
-        <View>
-          <Text style={styles.sectionTitle}>{t('booking.confirm')}</Text>
-          <View style={styles.summary}>
-            <View style={styles.summaryRow}>
-              <Text style={styles.summaryLabel}>{t('booking.service')}</Text>
-              <Text style={styles.summaryValue}>{localize(svc.titleJson, locale)}</Text>
-            </View>
-            {pricePreview?.enabled && !activeBundle ? (
-              <View style={styles.summary}>
-                <View style={styles.summaryRow}>
-                  <Text style={styles.summaryLabel}>{t('booking.price.base')}</Text>
-                  <Text style={styles.summaryValue}>
-                    {Number(pricePreview.breakdown?.base ?? 0).toFixed(0)} {t('misc.sar')}
-                  </Text>
+        {step === 3 && svc && (
+          <View>
+            <Text style={styles.sectionTitle}>{t('booking.confirm')}</Text>
+            <View style={styles.summary}>
+              <View style={styles.summaryRow}>
+                <Text style={styles.summaryLabel}>{t('booking.service')}</Text>
+                <Text style={styles.summaryValue}>{localize(svc.titleJson, locale)}</Text>
+              </View>
+              {pricePreview?.enabled && !activeBundle ? (
+                <View style={styles.summary}>
+                  <View style={styles.summaryRow}>
+                    <Text style={styles.summaryLabel}>{t('booking.price.base')}</Text>
+                    <Text style={styles.summaryValue}>
+                      {Number(pricePreview.breakdown?.base ?? 0).toFixed(0)} {t('misc.sar')}
+                    </Text>
+                  </View>
+                  {Number(pricePreview.breakdown?.tierMultiplier ?? 1) > 1 && (
+                    <View style={styles.summaryRow}>
+                      <Text style={styles.summarySub}>
+                        {t('booking.price.tier')} (×{pricePreview.breakdown?.tierMultiplier})
+                      </Text>
+                      <Text style={styles.summarySub}>
+                        +
+                        {((Number(pricePreview.breakdown?.tierMultiplier ?? 1) - 1) * 100).toFixed(
+                          0,
+                        )}
+                        %
+                      </Text>
+                    </View>
+                  )}
+                  {Number(pricePreview.breakdown?.peakMultiplier ?? 1) > 1 && (
+                    <View style={styles.summaryRow}>
+                      <Text style={styles.summarySub}>
+                        {t('booking.price.peak')} (×{pricePreview.breakdown?.peakMultiplier})
+                      </Text>
+                      <Text style={styles.summarySub}>
+                        +
+                        {((Number(pricePreview.breakdown?.peakMultiplier ?? 1) - 1) * 100).toFixed(
+                          0,
+                        )}
+                        %
+                      </Text>
+                    </View>
+                  )}
+                  {Number(pricePreview.breakdown?.surgeMultiplier ?? 1) > 1 && (
+                    <View style={styles.summaryRow}>
+                      <Text style={styles.summarySub}>
+                        {t('booking.price.surge')} (×{pricePreview.breakdown?.surgeMultiplier})
+                      </Text>
+                      <Text style={styles.summarySub}>
+                        +
+                        {((Number(pricePreview.breakdown?.surgeMultiplier ?? 1) - 1) * 100).toFixed(
+                          0,
+                        )}
+                        %
+                      </Text>
+                    </View>
+                  )}
+                  <View style={styles.summaryRow}>
+                    <Text style={styles.summaryTotalLabel}>{t('booking.price.total')}</Text>
+                    <Text style={styles.summaryPrice}>
+                      {Number(pricePreview.breakdown?.total ?? 0).toFixed(0)} {t('misc.sar')}
+                    </Text>
+                  </View>
                 </View>
-                {Number(pricePreview.breakdown?.tierMultiplier ?? 1) > 1 && (
-                  <View style={styles.summaryRow}>
-                    <Text style={styles.summarySub}>
-                      {t('booking.price.tier')} (×{pricePreview.breakdown?.tierMultiplier})
-                    </Text>
-                    <Text style={styles.summarySub}>
-                      +
-                      {((Number(pricePreview.breakdown?.tierMultiplier ?? 1) - 1) * 100).toFixed(0)}
-                      %
-                    </Text>
-                  </View>
-                )}
-                {Number(pricePreview.breakdown?.peakMultiplier ?? 1) > 1 && (
-                  <View style={styles.summaryRow}>
-                    <Text style={styles.summarySub}>
-                      {t('booking.price.peak')} (×{pricePreview.breakdown?.peakMultiplier})
-                    </Text>
-                    <Text style={styles.summarySub}>
-                      +
-                      {((Number(pricePreview.breakdown?.peakMultiplier ?? 1) - 1) * 100).toFixed(0)}
-                      %
-                    </Text>
-                  </View>
-                )}
-                {Number(pricePreview.breakdown?.surgeMultiplier ?? 1) > 1 && (
-                  <View style={styles.summaryRow}>
-                    <Text style={styles.summarySub}>
-                      {t('booking.price.surge')} (×{pricePreview.breakdown?.surgeMultiplier})
-                    </Text>
-                    <Text style={styles.summarySub}>
-                      +
-                      {((Number(pricePreview.breakdown?.surgeMultiplier ?? 1) - 1) * 100).toFixed(
-                        0,
-                      )}
-                      %
-                    </Text>
-                  </View>
-                )}
+              ) : (
                 <View style={styles.summaryRow}>
-                  <Text style={styles.summaryTotalLabel}>{t('booking.price.total')}</Text>
+                  <Text style={styles.summaryLabel}>{t('booking.price')}</Text>
                   <Text style={styles.summaryPrice}>
-                    {Number(pricePreview.breakdown?.total ?? 0).toFixed(0)} {t('misc.sar')}
+                    {Number(svc.basePrice).toFixed(0)} {t('misc.sar')}
+                    {isHourly ? ` / ${t('mobile.booking.per-hour')}` : ''}
                   </Text>
                 </View>
+              )}
+              {isHourly && (
+                <>
+                  <View style={styles.summaryRow}>
+                    <Text style={styles.summaryLabel}>
+                      {t('booking.hourly-total', {
+                        hours: hourlyHours,
+                        rate: Number(svc.basePrice),
+                      })}
+                    </Text>
+                    <Text style={styles.summaryPrice}>
+                      {orderAmount.toFixed(0)} {t('misc.sar')}
+                    </Text>
+                  </View>
+                  <Text style={styles.disclaimer}>
+                    {t('mobile.booking.babysitting-disclaimer')}
+                  </Text>
+                </>
+              )}
+              <View style={styles.summaryRow}>
+                <Text style={styles.summaryLabel}>{t('booking.duration')}</Text>
+                <Text style={styles.summaryValue}>
+                  {svc.durationMin} {t('misc.min')}
+                </Text>
+              </View>
+              {/* 1.3 Add-Ons — "customers who booked this also added" */}
+              {addonOptions.length > 0 && !activeBundle && (
+                <View style={styles.addonBlock}>
+                  <Text style={styles.addonTitle}>{t('booking.addons.title')}</Text>
+                  {addonOptions.slice(0, 5).map((a) => {
+                    const addonPrice = Math.round(
+                      Number(a.addon?.basePrice ?? 0) * (1 - (a.bundleDiscountPercent ?? 0) / 100),
+                    );
+                    return (
+                      <TouchableOpacity
+                        key={a.addon?.id}
+                        style={styles.addonRow}
+                        activeOpacity={0.7}
+                        onPress={() => {
+                          const aid = a.addon?.id;
+                          if (aid === undefined) return;
+                          setSelectedAddons((prev) =>
+                            prev.includes(aid) ? prev.filter((id) => id !== aid) : [...prev, aid],
+                          );
+                        }}
+                      >
+                        <Text style={styles.addonCheck}>
+                          {selectedAddons.includes(a.addon?.id ?? -1) ? '☑' : '☐'}
+                        </Text>
+                        <View style={{ flex: 1 }}>
+                          <Text style={styles.addonName}>
+                            {localize(a.addon?.titleJson, locale)}
+                            {a.isSuggested ? ` · ${t('booking.addons.popular')}` : ''}
+                          </Text>
+                        </View>
+                        <Text style={styles.addonPrice}>
+                          {addonPrice} {t('misc.sar')}
+                          {a.bundleDiscountPercent ? ` (−${a.bundleDiscountPercent}%)` : ''}
+                        </Text>
+                      </TouchableOpacity>
+                    );
+                  })}
+                  {addonsTotal > 0 && (
+                    <View style={styles.summaryRow}>
+                      <Text style={styles.summaryTotalLabel}>{t('booking.addons.total')}</Text>
+                      <Text style={styles.summaryPrice}>
+                        {addonsTotal.toFixed(0)} {t('misc.sar')}
+                      </Text>
+                    </View>
+                  )}
+                </View>
+              )}
+              <View style={styles.summaryRow}>
+                <Text style={styles.summaryLabel}>{t('booking.choose-time')}</Text>
+                <Text style={styles.summaryValue}>
+                  {t('booking.date-time-confirm', { date: bookingDate, time: bookingTime })}
+                </Text>
+              </View>
+              {appliedPromo && (
+                <>
+                  <View style={styles.summaryRow}>
+                    <Text style={styles.summaryLabel}>
+                      {t('promo.field.discount')} ({appliedPromo.code})
+                    </Text>
+                    <Text style={styles.summaryDiscount}>
+                      −{appliedPromo.discountAmount.toFixed(0)} {t('misc.sar')}
+                    </Text>
+                  </View>
+                  <View style={styles.summaryRow}>
+                    <Text style={styles.summaryTotalLabel}>{t('promo.field.total')}</Text>
+                    <Text style={styles.summaryPrice}>
+                      {appliedPromo.finalAmount.toFixed(0)} {t('misc.sar')}
+                    </Text>
+                  </View>
+                </>
+              )}
+            </View>
+
+            {/* Promo code (B.2) */}
+            {appliedPromo ? (
+              <View style={styles.promoApplied}>
+                <Text style={styles.promoAppliedText}>
+                  {t('promo.applied')}: {appliedPromo.code}
+                </Text>
+                <TouchableOpacity onPress={handleRemovePromo}>
+                  <Text style={styles.promoRemove}>{t('promo.remove')}</Text>
+                </TouchableOpacity>
               </View>
             ) : (
-              <View style={styles.summaryRow}>
-                <Text style={styles.summaryLabel}>{t('booking.price')}</Text>
-                <Text style={styles.summaryPrice}>
-                  {Number(svc.basePrice).toFixed(0)} {t('misc.sar')}
-                  {isHourly ? ` / ${t('mobile.booking.per-hour')}` : ''}
-                </Text>
+              <View style={styles.promoRow}>
+                <TextInput
+                  style={[styles.input, styles.promoInput]}
+                  value={promoCode}
+                  onChangeText={(v) => setPromoCode(v.toUpperCase())}
+                  placeholder={t('promo.codePlaceholder')}
+                  placeholderTextColor="#9ca3af"
+                  autoCapitalize="characters"
+                />
+                <TouchableOpacity style={styles.promoBtn} onPress={handleApplyPromo}>
+                  <Text style={styles.promoBtnText}>{t('promo.apply')}</Text>
+                </TouchableOpacity>
               </View>
             )}
-            {isHourly && (
-              <>
-                <View style={styles.summaryRow}>
-                  <Text style={styles.summaryLabel}>
-                    {t('booking.hourly-total', { hours: hourlyHours, rate: Number(svc.basePrice) })}
-                  </Text>
-                  <Text style={styles.summaryPrice}>
-                    {orderAmount.toFixed(0)} {t('misc.sar')}
-                  </Text>
-                </View>
-                <Text style={styles.disclaimer}>{t('mobile.booking.babysitting-disclaimer')}</Text>
-              </>
-            )}
-            <View style={styles.summaryRow}>
-              <Text style={styles.summaryLabel}>{t('booking.duration')}</Text>
-              <Text style={styles.summaryValue}>
-                {svc.durationMin} {t('misc.min')}
-              </Text>
-            </View>
-            {/* 1.3 Add-Ons — "customers who booked this also added" */}
-            {addonOptions.length > 0 && !activeBundle && (
-              <View style={styles.addonBlock}>
-                <Text style={styles.addonTitle}>{t('booking.addons.title')}</Text>
-                {addonOptions.slice(0, 5).map((a) => {
-                  const addonPrice = Math.round(
-                    Number(a.addon?.basePrice ?? 0) * (1 - (a.bundleDiscountPercent ?? 0) / 100),
-                  );
-                  return (
-                    <TouchableOpacity
-                      key={a.addon?.id}
-                      style={styles.addonRow}
-                      activeOpacity={0.7}
-                      onPress={() => {
-                        const aid = a.addon?.id;
-                        if (aid === undefined) return;
-                        setSelectedAddons((prev) =>
-                          prev.includes(aid) ? prev.filter((id) => id !== aid) : [...prev, aid],
-                        );
-                      }}
-                    >
-                      <Text style={styles.addonCheck}>
-                        {selectedAddons.includes(a.addon?.id ?? -1) ? '☑' : '☐'}
-                      </Text>
-                      <View style={{ flex: 1 }}>
-                        <Text style={styles.addonName}>
-                          {localize(a.addon?.titleJson, locale)}
-                          {a.isSuggested ? ` · ${t('booking.addons.popular')}` : ''}
-                        </Text>
-                      </View>
-                      <Text style={styles.addonPrice}>
-                        {addonPrice} {t('misc.sar')}
-                        {a.bundleDiscountPercent ? ` (−${a.bundleDiscountPercent}%)` : ''}
-                      </Text>
-                    </TouchableOpacity>
-                  );
-                })}
-                {addonsTotal > 0 && (
-                  <View style={styles.summaryRow}>
-                    <Text style={styles.summaryTotalLabel}>{t('booking.addons.total')}</Text>
-                    <Text style={styles.summaryPrice}>
-                      {addonsTotal.toFixed(0)} {t('misc.sar')}
-                    </Text>
-                  </View>
+            {promoMsg ? (
+              <Text style={[styles.promoMsg, promoErr && styles.promoMsgErr]}>{promoMsg}</Text>
+            ) : null}
+            <Text style={styles.note}>{t('bookings.create.technician-note')}</Text>
+            <View style={styles.btnRow}>
+              <TouchableOpacity style={styles.backBtn} onPress={() => setStep(2)}>
+                <Text style={styles.backText}>{t('booking.previous')}</Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={styles.nextBtn}
+                onPress={handleSubmit}
+                disabled={createMut.isPending}
+              >
+                {createMut.isPending ? (
+                  <ActivityIndicator color="#fff" />
+                ) : (
+                  <Text style={styles.nextText}>{t('booking.confirm')}</Text>
                 )}
-              </View>
-            )}
-            <View style={styles.summaryRow}>
-              <Text style={styles.summaryLabel}>{t('booking.choose-time')}</Text>
-              <Text style={styles.summaryValue}>
-                {t('booking.date-time-confirm', { date: bookingDate, time: bookingTime })}
-              </Text>
-            </View>
-            {appliedPromo && (
-              <>
-                <View style={styles.summaryRow}>
-                  <Text style={styles.summaryLabel}>
-                    {t('promo.field.discount')} ({appliedPromo.code})
-                  </Text>
-                  <Text style={styles.summaryDiscount}>
-                    −{appliedPromo.discountAmount.toFixed(0)} {t('misc.sar')}
-                  </Text>
-                </View>
-                <View style={styles.summaryRow}>
-                  <Text style={styles.summaryTotalLabel}>{t('promo.field.total')}</Text>
-                  <Text style={styles.summaryPrice}>
-                    {appliedPromo.finalAmount.toFixed(0)} {t('misc.sar')}
-                  </Text>
-                </View>
-              </>
-            )}
-          </View>
-
-          {/* Promo code (B.2) */}
-          {appliedPromo ? (
-            <View style={styles.promoApplied}>
-              <Text style={styles.promoAppliedText}>
-                {t('promo.applied')}: {appliedPromo.code}
-              </Text>
-              <TouchableOpacity onPress={handleRemovePromo}>
-                <Text style={styles.promoRemove}>{t('promo.remove')}</Text>
               </TouchableOpacity>
             </View>
-          ) : (
-            <View style={styles.promoRow}>
-              <TextInput
-                style={[styles.input, styles.promoInput]}
-                value={promoCode}
-                onChangeText={(v) => setPromoCode(v.toUpperCase())}
-                placeholder={t('promo.codePlaceholder')}
-                placeholderTextColor="#9ca3af"
-                autoCapitalize="characters"
-              />
-              <TouchableOpacity style={styles.promoBtn} onPress={handleApplyPromo}>
-                <Text style={styles.promoBtnText}>{t('promo.apply')}</Text>
-              </TouchableOpacity>
-            </View>
-          )}
-          {promoMsg ? (
-            <Text style={[styles.promoMsg, promoErr && styles.promoMsgErr]}>{promoMsg}</Text>
-          ) : null}
-          <Text style={styles.note}>{t('bookings.create.technician-note')}</Text>
-          <View style={styles.btnRow}>
-            <TouchableOpacity style={styles.backBtn} onPress={() => setStep(2)}>
-              <Text style={styles.backText}>{t('booking.previous')}</Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-              style={styles.nextBtn}
-              onPress={handleSubmit}
-              disabled={createMut.isPending}
-            >
-              {createMut.isPending ? (
-                <ActivityIndicator color="#fff" />
-              ) : (
-                <Text style={styles.nextText}>{t('booking.confirm')}</Text>
-              )}
-            </TouchableOpacity>
           </View>
-        </View>
-      )}
+        )}
+      </Animated.View>
     </ScrollView>
   );
 }

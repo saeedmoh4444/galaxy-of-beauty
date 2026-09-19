@@ -251,6 +251,34 @@ layer(base);
   }
 }
 
+/* ── 5.1 Micro-motion utilities ───────────────────────── */
+/* Branded skeleton shimmer (gradient sweep) + booking wizard step
+   transitions. Exposed as Tailwind 4 theme animations. */
+@theme {
+  --animate-shimmer: shimmer 1.6s linear infinite;
+  --animate-step-in: stepIn 0.3s ease-out;
+
+  @keyframes shimmer {
+    from {
+      background-position: 200% 0;
+    }
+    to {
+      background-position: -200% 0;
+    }
+  }
+
+  @keyframes stepIn {
+    from {
+      opacity: 0;
+      transform: translateY(10px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+}
+
 /* ── Reduced Motion (FE-005) ──────────────────────────── */
 /* Respects the user's OS-level motion preference.         */
 /* Disables all animations and transitions when requested. */
