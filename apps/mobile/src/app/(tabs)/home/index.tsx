@@ -1,5 +1,5 @@
 import type { JSX } from 'react';
-import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
+import { View, Text, TouchableOpacity, StyleSheet, ScrollView, Image } from 'react-native';
 import { useRouter } from 'expo-router';
 import { localize, serviceKeyFromCategorySlug } from '@galaxy/shared';
 import { ScreenState } from '@/components/ScreenState';
@@ -25,6 +25,15 @@ export default function HomeScreen(): JSX.Element {
   });
   const dailyTip = trpc.dailyBeautyTip.today.useQuery();
   const compliments = trpc.sisterhoodCompliments.count.useQuery();
+  // 2.5 — featured shoppable looks (homepage row).
+  const featuredQ = trpc.beautyPosts.featured.useQuery(undefined, { enabled: true });
+  const featured =
+    (featuredQ.data as unknown as Array<{
+      id: number;
+      imageUrl: string;
+      caption: string | null;
+      likes: number;
+    }>) ?? [];
 
   const data = cats.data as unknown[] | undefined;
 
@@ -85,6 +94,38 @@ export default function HomeScreen(): JSX.Element {
         )}
       </View>
 
+      {/* 2.5 — featured shoppable looks */}
+      {featured.length > 0 && (
+        <View style={styles.looksSection}>
+          <View style={styles.looksHeader}>
+            <Text style={styles.looksTitle}>{t('mobile.beautyPosts.home-title')}</Text>
+            <TouchableOpacity onPress={() => router.push('/public/beauty-posts' as never)}>
+              <Text style={styles.looksAll}>{t('mobile.beautyPosts.view-all')}</Text>
+            </TouchableOpacity>
+          </View>
+          <ScrollView
+            horizontal
+            showsHorizontalScrollIndicator={false}
+            contentContainerStyle={styles.looksRow}
+          >
+            {featured.map((p) => (
+              <TouchableOpacity
+                key={p.id}
+                style={styles.lookCard}
+                activeOpacity={0.8}
+                onPress={() => router.push('/public/beauty-posts' as never)}
+              >
+                <Image source={{ uri: p.imageUrl }} style={styles.lookImg} />
+                <Text style={styles.lookCaption} numberOfLines={2}>
+                  {p.caption}
+                </Text>
+                <Text style={styles.lookMeta}>❤️ {p.likes}</Text>
+              </TouchableOpacity>
+            ))}
+          </ScrollView>
+        </View>
+      )}
+
       <View style={styles.grid}>
         {(data as Record<string, unknown>[])?.map((cat: Record<string, unknown>, i: number) => (
           <TouchableOpacity
@@ -136,6 +177,30 @@ const makeStyles = (c: typeof themeColors.light | typeof themeColors.dark) =>
     },
     moreBtnText: { fontSize: 12, fontWeight: '700', color: c.textSecondary },
     grid: { flexDirection: 'row', flexWrap: 'wrap', gap: 10 },
+    // 2.5 — featured shoppable looks
+    looksSection: { marginBottom: 16 },
+    looksHeader: {
+      flexDirection: 'row',
+      justifyContent: 'space-between',
+      alignItems: 'center',
+      marginBottom: 10,
+    },
+    looksTitle: { fontSize: 16, fontWeight: '800', color: c.text },
+    looksAll: { fontSize: 12, fontWeight: '700', color: c.brand },
+    looksRow: { gap: 10, paddingRight: 8 },
+    lookCard: {
+      width: 150,
+      backgroundColor: c.surface,
+      borderRadius: 14,
+      overflow: 'hidden',
+      shadowColor: '#000',
+      shadowOpacity: 0.05,
+      shadowRadius: 4,
+      elevation: 2,
+    },
+    lookImg: { width: '100%', height: 110, backgroundColor: c.bg },
+    lookCaption: { fontSize: 12, fontWeight: '600', color: c.text, padding: 8 },
+    lookMeta: { fontSize: 10, color: c.textSecondary, paddingHorizontal: 8, paddingBottom: 8 },
     card: {
       width: '30%',
       backgroundColor: c.surface,

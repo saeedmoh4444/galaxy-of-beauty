@@ -35,6 +35,9 @@ export const marketingMessages = {
   // Real-media reels row (E7 — Phase 3 sprint 1)
   'marketing.home.reels-title': { ar: 'شاهدينا', en: 'Watch us' },
   'marketing.home.reels-view-all': { ar: 'عرض الكل', en: 'View all' },
+  // 2.5 — featured shoppable looks row
+  'marketing.home.looks-title': { ar: 'إطلالات يمكنكِ شراؤها', en: 'Shoppable looks' },
+  'marketing.home.looks-view-all': { ar: 'كل الإطلالات', en: 'All looks' },
   'marketing.home.book-now': { ar: 'احجزي الآن', en: 'Book now' },
   'marketing.home.surprise-me': { ar: 'فاجئيني', en: 'Surprise me' },
   'marketing.home.categories': { ar: 'الأقسام', en: 'Categories' },

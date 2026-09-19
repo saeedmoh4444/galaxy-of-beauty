@@ -44,6 +44,15 @@ interface ShortItem {
   views: number;
 }
 
+// 2.5 Social Commerce — featured shoppable look (homepage row).
+interface FeaturedPostItem {
+  id: number;
+  imageUrl: string;
+  caption: string | null;
+  likes: number;
+  views: number;
+}
+
 export interface HomePageProps {
   initialCategories: Category[];
   initialServices: Service[];
@@ -51,6 +60,7 @@ export interface HomePageProps {
   technicianTotal: number;
   placeCount: number;
   initialShorts: ShortItem[];
+  featuredPosts?: FeaturedPostItem[];
   fetchError?: string;
 }
 
@@ -71,6 +81,7 @@ export function HomeClient({
   technicianTotal,
   placeCount,
   initialShorts,
+  featuredPosts = [],
   fetchError,
 }: HomePageProps): JSX.Element {
   const { t, locale } = useLocale();
@@ -330,6 +341,49 @@ export function HomeClient({
                   durationSec={s.durationSec}
                   views={s.views}
                 />
+              </Link>
+            ))}
+          </div>
+        </section>
+      )}
+
+      {/* 2.5 — featured shoppable looks ("#MyGalaxyLook") */}
+      {featuredPosts.length > 0 && (
+        <section data-testid="home-looks" className="mx-auto max-w-7xl px-4 py-16">
+          <div className="mb-8 flex items-center justify-between">
+            <h2 className="text-2xl font-bold">{t('marketing.home.looks-title')}</h2>
+            <Link
+              href="/beauty-posts"
+              className="text-sm font-semibold text-brand-600 hover:text-brand-700"
+            >
+              {t('marketing.home.looks-view-all')}
+            </Link>
+          </div>
+          <div className="flex gap-4 overflow-x-auto pb-4 snap-x">
+            {featuredPosts.map((p) => (
+              <Link
+                key={p.id}
+                href="/beauty-posts"
+                className="shrink-0 snap-start"
+                aria-label={p.caption ?? ''}
+              >
+                <div className="w-64 overflow-hidden rounded-2xl bg-surface-elevated shadow-sm">
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img
+                    src={p.imageUrl}
+                    alt={p.caption ?? ''}
+                    className="h-44 w-full object-cover"
+                    loading="lazy"
+                  />
+                  <div className="space-y-1 p-3">
+                    <p className="line-clamp-2 text-sm font-semibold text-text-primary">
+                      {p.caption}
+                    </p>
+                    <p className="text-xs text-text-tertiary">
+                      ❤️ {p.likes} · 👁 {p.views}
+                    </p>
+                  </div>
+                </div>
               </Link>
             ))}
           </div>

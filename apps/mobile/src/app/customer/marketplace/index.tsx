@@ -7,6 +7,7 @@ import {
   TextInput,
   RefreshControl,
 } from 'react-native';
+import { useRouter } from 'expo-router';
 import { useState } from 'react';
 import type { JSX } from 'react';
 import { ErrorAlert } from '@/components/ErrorAlert';
@@ -37,6 +38,7 @@ interface CartItem {
 export default function MarketplaceScreen(): JSX.Element {
   const { locale, t } = useLocale();
   const isAuthed = useAuthState();
+  const router = useRouter();
   const [search, setSearch] = useState('');
   const productsQ = trpc.marketplace.products.useQuery({
     search: search || undefined,
@@ -90,6 +92,8 @@ export default function MarketplaceScreen(): JSX.Element {
             paddingHorizontal: 14,
             paddingVertical: 6,
           }}
+          // 2.5 fix — the cart badge previously had no navigation target.
+          onPress={() => router.push('/customer/cart' as never)}
         >
           <Text> {cartCount}</Text>
         </TouchableOpacity>
