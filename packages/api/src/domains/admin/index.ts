@@ -2,6 +2,7 @@
 // Dashboard, user management, analytics, disputes, KYC, reports, settings, feature flags, CMS
 export { adminRouter } from '../../routers/admin';
 export { adminAnalyticsV2Router } from '../../routers/adminAnalyticsV2';
+export { advancedAnalyticsRouter } from '../../routers/advancedAnalytics';
 export { adminReportsRouter } from '../../routers/adminReports';
 export { adminToolsRouter } from '../../routers/adminTools';
 export { analyticsRouter } from '../../routers/analytics';
