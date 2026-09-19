@@ -28,7 +28,7 @@ export default function ServiceTrendsScreen(): JSX.Element {
           onRefresh={async () => {
             await dataQ.refetch();
           }}
-          colors={['#ec4899']}
+          colors={['#c2255c']}
         />
       }
     >

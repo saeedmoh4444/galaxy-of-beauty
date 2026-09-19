@@ -40,7 +40,7 @@ export default function BundlesScreen(): JSX.Element {
           onRefresh={async () => {
             await servicesQ.refetch();
           }}
-          colors={['#f59e0b']}
+          colors={['#c2255c']}
         />
       }
     >

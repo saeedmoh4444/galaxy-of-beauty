@@ -41,7 +41,7 @@ export default function BeautyPackagesScreen(): JSX.Element {
           onRefresh={async () => {
             await packagesQ.refetch();
           }}
-          colors={['#db2777']}
+          colors={['#c2255c']}
         />
       }
     >

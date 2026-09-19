@@ -25,7 +25,7 @@ export default function BeautyFaqScreen(): JSX.Element {
           onRefresh={async () => {
             await faqsQ.refetch();
           }}
-          colors={['#7c3aed']}
+          colors={['#c2255c']}
         />
       }
     >

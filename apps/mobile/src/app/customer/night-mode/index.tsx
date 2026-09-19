@@ -45,7 +45,7 @@ export default function NightModeScreen(): JSX.Element {
         <RefreshControl
           refreshing={refreshing}
           onRefresh={() => fetch(true)}
-          colors={['#6366f1']}
+          colors={['#c2255c']}
         />
       }
     >

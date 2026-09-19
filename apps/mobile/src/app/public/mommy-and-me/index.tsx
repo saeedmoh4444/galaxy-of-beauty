@@ -27,7 +27,7 @@ export default function MommyAndMeScreen(): JSX.Element {
           onRefresh={async () => {
             await bundlesQ.refetch();
           }}
-          colors={['#ec4899']}
+          colors={['#c2255c']}
         />
       }
     >

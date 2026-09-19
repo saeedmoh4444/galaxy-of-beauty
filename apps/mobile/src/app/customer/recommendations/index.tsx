@@ -53,7 +53,7 @@ export default function RecommendationsScreen(): JSX.Element {
           onRefresh={async () => {
             await servicesQ.refetch();
           }}
-          colors={['#ec4899']}
+          colors={['#c2255c']}
         />
       }
     >

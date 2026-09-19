@@ -102,7 +102,7 @@ export default function SalonMembershipScreen(): JSX.Element {
           onRefresh={async () => {
             await membershipQ.refetch();
           }}
-          colors={['#db2777']}
+          colors={['#c2255c']}
         />
       }
     >

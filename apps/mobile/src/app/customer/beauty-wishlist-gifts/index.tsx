@@ -41,7 +41,7 @@ export default function BeautyWishlistGiftsScreen(): JSX.Element {
           onRefresh={async () => {
             await q.refetch();
           }}
-          colors={['#ec4899']}
+          colors={['#c2255c']}
         />
       }
     >

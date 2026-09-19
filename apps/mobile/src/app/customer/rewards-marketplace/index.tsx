@@ -96,7 +96,7 @@ export default function RewardsMarketplaceScreen(): JSX.Element {
           onRefresh={async () => {
             await accountQ.refetch();
           }}
-          colors={['#db2777']}
+          colors={['#c2255c']}
         />
       }
     >

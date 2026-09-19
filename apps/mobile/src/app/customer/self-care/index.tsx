@@ -29,7 +29,7 @@ export default function SelfCareScreen(): JSX.Element {
           onRefresh={async () => {
             await historyQ.refetch();
           }}
-          colors={['#ec4899']}
+          colors={['#c2255c']}
         />
       }
     >

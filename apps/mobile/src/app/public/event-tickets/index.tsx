@@ -29,7 +29,7 @@ export default function EventTicketsScreen(): JSX.Element {
           onRefresh={async () => {
             await eventsQ.refetch();
           }}
-          colors={['#8b5cf6']}
+          colors={['#c2255c']}
         />
       }
     >

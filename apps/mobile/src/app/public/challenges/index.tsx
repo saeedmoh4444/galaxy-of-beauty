@@ -46,7 +46,7 @@ export default function ChallengesScreen(): JSX.Element {
           onRefresh={async () => {
             await challengesQ.refetch();
           }}
-          colors={['#f59e0b']}
+          colors={['#c2255c']}
         />
       }
     >

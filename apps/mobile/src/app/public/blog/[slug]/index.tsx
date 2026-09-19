@@ -41,7 +41,7 @@ export default function BlogPostScreen(): JSX.Element {
           onRefresh={async () => {
             await postQ.refetch();
           }}
-          colors={['#7c3aed']}
+          colors={['#c2255c']}
         />
       }
     >

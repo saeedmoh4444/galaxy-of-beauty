@@ -38,7 +38,7 @@ export default function NewsletterScreen(): JSX.Element {
           onRefresh={async () => {
             await issuesQ.refetch();
           }}
-          colors={['#2563eb']}
+          colors={['#c2255c']}
         />
       }
     >

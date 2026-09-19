@@ -85,7 +85,7 @@ export default function CycleTrackerScreen(): JSX.Element {
             todayQ.refetch();
             entriesQ.refetch();
           }}
-          colors={['#ec4899']}
+          colors={['#c2255c']}
         />
       }
     >

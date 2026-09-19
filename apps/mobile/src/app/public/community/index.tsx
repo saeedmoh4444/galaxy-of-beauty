@@ -73,7 +73,7 @@ export default function CommunityScreen(): JSX.Element {
             onRefresh={async () => {
               await postsQ.refetch();
             }}
-            colors={['#7c3aed']}
+            colors={['#c2255c']}
           />
         }
       >

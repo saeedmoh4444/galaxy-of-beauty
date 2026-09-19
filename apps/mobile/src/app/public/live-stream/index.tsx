@@ -30,7 +30,7 @@ export default function LiveStreamScreen(): JSX.Element {
           onRefresh={async () => {
             await upcomingQ.refetch();
           }}
-          colors={['#ef4444']}
+          colors={['#c2255c']}
         />
       }
     >

@@ -30,7 +30,7 @@ export default function FlashDealsScreen(): JSX.Element {
           onRefresh={async () => {
             await dealsQ.refetch();
           }}
-          colors={['#dc2626']}
+          colors={['#c2255c']}
         />
       }
     >

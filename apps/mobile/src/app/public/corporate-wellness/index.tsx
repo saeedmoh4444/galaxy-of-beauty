@@ -29,7 +29,7 @@ export default function CorporateWellnessScreen(): JSX.Element {
           onRefresh={async () => {
             await plansQ.refetch();
           }}
-          colors={['#059669']}
+          colors={['#c2255c']}
         />
       }
     >

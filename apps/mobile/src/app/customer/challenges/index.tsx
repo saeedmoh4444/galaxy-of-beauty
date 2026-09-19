@@ -54,7 +54,7 @@ export default function ChallengesScreen(): JSX.Element {
             void listQ.refetch();
             void progressQ.refetch();
           }}
-          colors={['#f59e0b']}
+          colors={['#c2255c']}
         />
       }
     >

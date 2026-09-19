@@ -30,7 +30,7 @@ export default function SaleAlertsScreen(): JSX.Element {
           onRefresh={async () => {
             await alertsQ.refetch();
           }}
-          colors={['#dc2626']}
+          colors={['#c2255c']}
         />
       }
     >

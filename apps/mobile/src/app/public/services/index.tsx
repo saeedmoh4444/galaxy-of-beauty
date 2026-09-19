@@ -59,7 +59,7 @@ export default function ServicesScreen(): JSX.Element {
           onRefresh={async () => {
             await categoriesQ.refetch();
           }}
-          colors={['#db2777']}
+          colors={['#c2255c']}
         />
       }
     >

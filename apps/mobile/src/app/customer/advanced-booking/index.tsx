@@ -125,7 +125,7 @@ export default function AdvancedBookingScreen(): JSX.Element {
             void addressesQ.refetch();
             void techniciansQ.refetch();
           }}
-          colors={['#059669']}
+          colors={['#c2255c']}
         />
       }
     >

@@ -31,7 +31,7 @@ export default function VideoTestimonialsScreen(): JSX.Element {
           onRefresh={async () => {
             await videosQ.refetch();
           }}
-          colors={['#dc2626']}
+          colors={['#c2255c']}
         />
       }
     >

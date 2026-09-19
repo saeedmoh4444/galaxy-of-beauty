@@ -38,7 +38,7 @@ export default function ExpiryTrackerScreen(): JSX.Element {
           onRefresh={async () => {
             await q.refetch();
           }}
-          colors={['#ef4444']}
+          colors={['#c2255c']}
         />
       }
     >

@@ -73,7 +73,7 @@ export default function BeautyDiscoveryScreen(): JSX.Element {
               void featuredQ.refetch();
               void forYouQ.refetch();
             }}
-            colors={['#db2777']}
+            colors={['#c2255c']}
           />
         }
       >

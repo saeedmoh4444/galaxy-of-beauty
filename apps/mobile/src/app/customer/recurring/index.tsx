@@ -31,7 +31,7 @@ export default function RecurringScreen(): JSX.Element {
           onRefresh={async () => {
             await bookingsQ.refetch();
           }}
-          colors={['#7c3aed']}
+          colors={['#c2255c']}
         />
       }
     >

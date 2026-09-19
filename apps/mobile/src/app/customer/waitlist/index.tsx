@@ -27,7 +27,7 @@ export default function WaitlistScreen(): JSX.Element {
           onRefresh={async () => {
             await entriesQ.refetch();
           }}
-          colors={['#f59e0b']}
+          colors={['#c2255c']}
         />
       }
     >

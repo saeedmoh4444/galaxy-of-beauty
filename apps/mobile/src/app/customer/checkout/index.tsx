@@ -38,7 +38,7 @@ export default function CheckoutScreen(): JSX.Element {
           onRefresh={async () => {
             await balanceQ.refetch();
           }}
-          colors={['#059669']}
+          colors={['#c2255c']}
         />
       }
     >

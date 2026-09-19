@@ -112,7 +112,7 @@ export default function CommunityScreen(): JSX.Element {
           onRefresh={async () => {
             await feedQ.refetch();
           }}
-          colors={['#db2777']}
+          colors={['#c2255c']}
         />
       }
     >

@@ -52,7 +52,7 @@ export default function TechOnboardingScreen(): JSX.Element {
           onRefresh={async () => {
             await dataQ.refetch();
           }}
-          colors={['#059669']}
+          colors={['#c2255c']}
         />
       }
     >

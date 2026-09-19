@@ -30,7 +30,7 @@ export default function HomeServiceScreen(): JSX.Element {
           onRefresh={async () => {
             await estimateQ.refetch();
           }}
-          colors={['#059669']}
+          colors={['#c2255c']}
         />
       }
     >

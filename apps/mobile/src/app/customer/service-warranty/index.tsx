@@ -28,7 +28,7 @@ export default function ServiceWarrantyScreen(): JSX.Element {
           onRefresh={async () => {
             await claimsQ.refetch();
           }}
-          colors={['#2563eb']}
+          colors={['#c2255c']}
         />
       }
     >

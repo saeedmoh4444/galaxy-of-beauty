@@ -40,7 +40,7 @@ export default function TravelKitScreen(): JSX.Element {
           onRefresh={async () => {
             await destsQ.refetch();
           }}
-          colors={['#0891b2']}
+          colors={['#c2255c']}
         />
       }
     >

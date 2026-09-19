@@ -37,7 +37,7 @@ export default function WomensServicesScreen(): JSX.Element {
           onRefresh={async () => {
             await catsQ.refetch();
           }}
-          colors={['#be185d']}
+          colors={['#c2255c']}
         />
       }
     >

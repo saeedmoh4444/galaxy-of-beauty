@@ -30,7 +30,7 @@ export default function BookingHeatmapScreen(): JSX.Element {
           onRefresh={async () => {
             await heatmapQ.refetch();
           }}
-          colors={['#ef4444']}
+          colors={['#c2255c']}
         />
       }
     >

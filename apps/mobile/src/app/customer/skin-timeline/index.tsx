@@ -31,7 +31,7 @@ export default function SkinTimelineScreen(): JSX.Element {
           onRefresh={async () => {
             await entriesQ.refetch();
           }}
-          colors={['#8b5cf6']}
+          colors={['#c2255c']}
         />
       }
     >

@@ -25,7 +25,7 @@ export default function VirtualTryOnScreen(): JSX.Element {
           onRefresh={async () => {
             await palettesQ.refetch();
           }}
-          colors={['#ec4899']}
+          colors={['#c2255c']}
         />
       }
     >

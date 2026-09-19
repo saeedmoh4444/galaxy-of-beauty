@@ -66,7 +66,7 @@ export default function LastMileScreen(): JSX.Element {
           onRefresh={async () => {
             await productsQ.refetch();
           }}
-          colors={['#f59e0b']}
+          colors={['#c2255c']}
         />
       }
     >

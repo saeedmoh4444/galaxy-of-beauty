@@ -39,7 +39,7 @@ export default function ServiceMenuQRScreen(): JSX.Element {
           onRefresh={async () => {
             await techsQ.refetch();
           }}
-          colors={['#059669']}
+          colors={['#c2255c']}
         />
       }
     >

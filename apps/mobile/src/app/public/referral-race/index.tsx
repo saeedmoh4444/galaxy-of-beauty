@@ -33,7 +33,7 @@ export default function ReferralRaceScreen(): JSX.Element {
           onRefresh={async () => {
             await leaderboardQ.refetch();
           }}
-          colors={['#7c3aed']}
+          colors={['#c2255c']}
         />
       }
     >

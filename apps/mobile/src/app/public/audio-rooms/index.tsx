@@ -45,7 +45,7 @@ export default function AudioRoomsScreen(): JSX.Element {
           onRefresh={async () => {
             await roomsQ.refetch();
           }}
-          colors={['#dc2626']}
+          colors={['#c2255c']}
         />
       }
     >

@@ -23,7 +23,7 @@ export default function ApiDocsScreen(): JSX.Element {
           onRefresh={async () => {
             await docsQ.refetch();
           }}
-          colors={['#6366f1']}
+          colors={['#c2255c']}
         />
       }
     >

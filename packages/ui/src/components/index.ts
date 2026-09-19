@@ -574,6 +574,7 @@ export { Walkthrough, type WalkthroughStep } from './motion/Walkthrough';
 export { StepTransition } from './motion/StepTransition';
 export { Mascot } from './Mascot';
 export type { MascotMood } from './Mascot';
+export { ConfettiBurst } from './ConfettiBurst';
 
 // Trust layer (Phase 3 sprint 1)
 export { TrustBadge, TrustBadges, type TrustBadgeVariant } from './TrustBadges';

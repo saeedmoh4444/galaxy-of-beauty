@@ -26,7 +26,7 @@ export default function MySubscriptionScreen(): JSX.Element {
           onRefresh={async () => {
             await subQ.refetch();
           }}
-          colors={['#7c3aed']}
+          colors={['#c2255c']}
         />
       }
     >

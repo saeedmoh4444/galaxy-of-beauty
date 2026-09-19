@@ -55,7 +55,7 @@ export default function VendorPortalScreen(): JSX.Element {
             void dashQ.refetch();
             void productsQ.refetch();
           }}
-          colors={['#7c3aed']}
+          colors={['#c2255c']}
         />
       }
     >

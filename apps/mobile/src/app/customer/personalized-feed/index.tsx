@@ -35,7 +35,7 @@ export default function PersonalizedFeedScreen(): JSX.Element {
           onRefresh={async () => {
             await feedQ.refetch();
           }}
-          colors={['#ec4899']}
+          colors={['#c2255c']}
         />
       }
     >

@@ -40,7 +40,7 @@ export default function BeautyStoriesScreen(): JSX.Element {
           onRefresh={async () => {
             await storiesQ.refetch();
           }}
-          colors={['#7c3aed']}
+          colors={['#c2255c']}
         />
       }
     >
