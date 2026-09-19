@@ -78,7 +78,7 @@ consumers, so removal needs a product decision.
 | `beautyMoodboard.*`            | Unused                              |
 | `beautyScanner.*`              | Duplicate of productScanner         |
 
-## Dependency Rules (enforced by ARCH-003)
+## Dependency Rules (enforced by ARCH-003 via scripts/check-cycles.mjs, CI job "Architecture Gates")
 
 ```
 config/ ──> (no deps)
