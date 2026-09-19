@@ -2374,6 +2374,8 @@ model NotificationPreference {
   community   Boolean @default(true)
   emailDigest Boolean @default(false)
   smsAlerts   Boolean @default(false)
+  // 6.5 WhatsApp Business — proactive sends are opt-in (privacy-first).
+  whatsappAlerts Boolean @default(false)
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
 

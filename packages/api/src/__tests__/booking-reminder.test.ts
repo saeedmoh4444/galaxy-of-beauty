@@ -121,7 +121,10 @@ describe('booking reminders (B.26)', () => {
     expect((row!.titleJson as { ar: string }).ar).toBe('تذكير بموعدك');
     expect((row!.bodyJson as { ar: string }).ar).toContain('قص شعر');
     expect((row!.bodyJson as { ar: string }).ar).toContain('الأحد ٧ سبتمبر');
-    expect(row!.sentVia).toEqual(['in_app', 'push']);
+    // Template default channels include whatsapp since 6.5 (the transport
+    // silently skips when unconfigured; users without a prefs row inherit
+    // the template channels — same semantics as sms).
+    expect(row!.sentVia).toEqual(['in_app', 'push', 'whatsapp']);
   });
 
   it('skips reminders for cancelled or completed bookings', async () => {
