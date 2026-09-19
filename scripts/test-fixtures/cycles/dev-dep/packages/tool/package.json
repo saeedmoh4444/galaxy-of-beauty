@@ -1,0 +1,7 @@
+{
+  "name": "@galaxy/tool",
+  "main": "./src/index.ts",
+  "devDependencies": {
+    "@galaxy/core": "workspace:*"
+  }
+}

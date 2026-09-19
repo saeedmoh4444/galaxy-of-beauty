@@ -1,0 +1,4 @@
+{
+  "name": "@galaxy/core",
+  "main": "./src/index.ts"
+}
