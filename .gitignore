@@ -7,6 +7,8 @@ node_modules/
 dist/
 build/
 .next/
+# test fixtures for the FE-007 size gate ship a fake .next tree
+!scripts/test-fixtures/budgets/web/.next/
 .expo/
 *.tsbuildinfo
 
