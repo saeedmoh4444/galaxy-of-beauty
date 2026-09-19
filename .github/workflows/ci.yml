@@ -56,6 +56,8 @@ jobs:
           node-version: '${{ env.NODE_VERSION }}'
           cache: 'pnpm'
       - run: pnpm install --frozen-lockfile
+      - name: Start Turbo remote cache
+        uses: rharkor/caching-for-turbo@v2.3.12
       - run: pnpm --filter @galaxy/db exec prisma generate
       - run: pnpm type-check
 
@@ -71,6 +73,8 @@ jobs:
           node-version: '${{ env.NODE_VERSION }}'
           cache: 'pnpm'
       - run: pnpm install --frozen-lockfile
+      - name: Start Turbo remote cache
+        uses: rharkor/caching-for-turbo@v2.3.12
       - run: pnpm lint
 
   # ── Unit Tests ─────────────────────────────────────────────
@@ -102,6 +106,8 @@ jobs:
           node-version: '${{ env.NODE_VERSION }}'
           cache: 'pnpm'
       - run: pnpm install --frozen-lockfile
+      - name: Start Turbo remote cache
+        uses: rharkor/caching-for-turbo@v2.3.12
       - run: pnpm --filter @galaxy/db exec prisma generate
         env:
           DATABASE_URL: 'postgresql://gob_admin:gob_test_pass@localhost:5432/Galaxy_of_Beauty_db?schema=public'
@@ -132,7 +138,9 @@ jobs:
           node-version: '${{ env.NODE_VERSION }}'
           cache: 'pnpm'
       - run: pnpm install --frozen-lockfile
-      - run: pnpm turbo run build --force
+      - name: Start Turbo remote cache
+        uses: rharkor/caching-for-turbo@v2.3.12
+      - run: pnpm turbo run build
 
   # ── E2E Tests ─────────────────────────────────────────────
   e2e:
@@ -164,6 +172,8 @@ jobs:
           node-version: '${{ env.NODE_VERSION }}'
           cache: 'pnpm'
       - run: pnpm install --frozen-lockfile
+      - name: Start Turbo remote cache
+        uses: rharkor/caching-for-turbo@v2.3.12
 
       - name: Generate Prisma Client
         run: pnpm --filter @galaxy/db exec prisma generate
@@ -179,7 +189,7 @@ jobs:
         run: pnpm --filter @galaxy/web exec playwright install --with-deps chromium firefox
 
       - name: Build Web App
-        run: pnpm --filter @galaxy/web build
+        run: pnpm turbo run build --filter=@galaxy/web
         env:
           DATABASE_URL: 'postgresql://gob_admin:gob_test_pass@localhost:5432/Galaxy_of_Beauty_db?schema=public'
           JWT_ACCESS_SECRET: 'e2e-access-9f8a7b6c5d4e3f2a1b0c9d8e7f6a5b4c'
