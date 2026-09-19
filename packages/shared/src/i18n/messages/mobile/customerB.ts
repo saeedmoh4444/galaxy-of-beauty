@@ -931,6 +931,15 @@ export const mobileCustomerBMessages = {
     ar: 'حملي أول صورة لتحليل بشرتك',
     en: 'Upload your first photo to analyze your skin',
   },
+  'mobile.skinAnalysis.uploading': { ar: 'جارٍ رفع الصورة…', en: 'Uploading photo…' },
+  'mobile.skinAnalysis.upload-error': {
+    ar: 'فشل رفع الصورة، حاولي مرة أخرى',
+    en: 'Upload failed, please try again',
+  },
+  'mobile.skinAnalysis.capture-retry': {
+    ar: 'تعذر قراءة الصورة، أعيدي الالتقاط',
+    en: 'Could not read the photo, please retake it',
+  },
 
   // ---- skincare-guide ----
   'mobile.skincareGuide.title': { ar: 'دليل المكونات', en: ' Ingredient Guide' },

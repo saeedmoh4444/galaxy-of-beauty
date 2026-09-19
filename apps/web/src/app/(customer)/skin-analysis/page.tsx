@@ -3,14 +3,16 @@
 import { useState } from 'react';
 import type { JSX } from 'react';
 import { api } from '@/lib/trpc';
-import { Card, CardListSkeleton, ErrorAlert, EmptyState, Button } from '@galaxy/ui';
+import { Card, CardListSkeleton, ErrorAlert, EmptyState, Button, useToast } from '@galaxy/ui';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
 import { useLocale } from '@/components/LocaleProvider';
 
 export default function SkinAnalysisPage(): JSX.Element {
   const { t, locale } = useLocale();
+  const { addToast } = useToast();
   const [imageUrl, setImageUrl] = useState('');
   const [analyzing, setAnalyzing] = useState(false);
+  const [uploading, setUploading] = useState(false);
   const [result, setResult] = useState<Record<string, unknown> | null>(null);
 
   const {
@@ -27,6 +29,47 @@ export default function SkinAnalysisPage(): JSX.Element {
     },
     onError: () => setAnalyzing(false),
   });
+  // 3.1 — upload-first pipeline: the analyze contract accepts http(s) URLs
+  // only (OpenAI Vision cannot read file:// or data: URIs).
+  const uploadMutation = api.uploads.uploadMedia.useMutation({
+    onSuccess: (uploaded) => {
+      setUploading(false);
+      const url = (uploaded as { url?: string }).url;
+      if (!url) {
+        addToast('error', t('skin.uploadError'));
+        return;
+      }
+      setImageUrl(url);
+      addToast('success', t('skin.uploaded'));
+    },
+    onError: () => {
+      setUploading(false);
+      addToast('error', t('skin.uploadError'));
+    },
+  });
+
+  const handleFileSelect = (file: File | undefined) => {
+    if (!file) return;
+    if (!file.type.startsWith('image/')) {
+      addToast('error', t('skin.uploadError'));
+      return;
+    }
+    if (file.size > 5 * 1024 * 1024) {
+      addToast('error', t('skin.uploadTooLarge'));
+      return;
+    }
+    const reader = new FileReader();
+    reader.onload = () => {
+      const base64 = String(reader.result);
+      setUploading(true);
+      uploadMutation.mutate({
+        mediaType: 'image',
+        file: { name: file.name, type: file.type, size: file.size, base64 },
+      });
+    };
+    reader.onerror = () => addToast('error', t('skin.uploadError'));
+    reader.readAsDataURL(file);
+  };
 
   const histItems =
     ((history as unknown as Record<string, unknown>)?.items as Array<Record<string, unknown>>) ||
@@ -87,8 +130,11 @@ export default function SkinAnalysisPage(): JSX.Element {
             <input
               type="file"
               accept="image/*"
-              className="block w-full text-sm text-text-secondary file:me-4 file:rounded-lg file:border-0 file:bg-brand-600 file:px-4 file:py-2 file:text-sm file:font-semibold file:text-white hover:file:bg-brand-700"
+              onChange={(e) => handleFileSelect(e.target.files?.[0])}
+              disabled={uploading}
+              className="block w-full text-sm text-text-secondary file:me-4 file:rounded-lg file:border-0 file:bg-brand-600 file:px-4 file:py-2 file:text-sm file:font-semibold file:text-white hover:file:bg-brand-700 disabled:opacity-50"
             />
+            {uploading && <p className="text-xs text-brand-600">{t('skin.uploading')}</p>}
             <p className="text-xs text-text-tertiary">{t('skin.orImageUrl')}</p>
             <div className="flex gap-2">
               <input
