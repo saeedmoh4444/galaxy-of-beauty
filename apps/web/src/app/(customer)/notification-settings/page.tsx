@@ -40,6 +40,11 @@ const TOGGLES: { key: string; label: TranslationKey; desc: TranslationKey }[] = 
     label: 'notificationSettings.toggle.smsAlerts',
     desc: 'notificationSettings.desc.smsAlerts',
   },
+  {
+    key: 'whatsappAlerts',
+    label: 'notificationSettings.toggle.whatsappAlerts',
+    desc: 'notificationSettings.desc.whatsappAlerts',
+  },
 ];
 
 export default function NotificationSettingsPage(): JSX.Element {
