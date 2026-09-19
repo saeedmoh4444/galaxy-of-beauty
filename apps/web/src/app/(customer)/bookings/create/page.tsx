@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react';
 import type { JSX } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { api } from '@/lib/trpc';
-import { Card, Button, Input } from '@galaxy/ui';
+import { Card, Button, Input, StepTransition } from '@galaxy/ui';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
 import { useToast } from '@galaxy/ui';
 import { useLocale } from '@/components/LocaleProvider';
@@ -253,18 +253,18 @@ export default function CreateBookingPage(): JSX.Element {
             (label, i) => (
               <div key={i} className="flex items-center gap-2">
                 <span
-                  className={`flex h-8 w-8 items-center justify-center rounded-full text-xs font-bold ${
+                  className={`flex h-8 w-8 items-center justify-center rounded-full text-xs font-bold transition-all duration-300 ${
                     step > i + 1
                       ? 'bg-green-500 text-white'
                       : step === i + 1
-                        ? 'bg-brand-600 text-white'
+                        ? 'bg-brand-600 text-white scale-110'
                         : 'bg-surface-muted text-text-secondary'
                   }`}
                 >
                   {step > i + 1 ? '' : i + 1}
                 </span>
                 <span
-                  className={step === i + 1 ? 'font-bold text-brand-600' : 'text-text-tertiary'}
+                  className={`transition-colors duration-300 ${step === i + 1 ? 'font-bold text-brand-600' : 'text-text-tertiary'}`}
                 >
                   {label}
                 </span>
@@ -274,439 +274,447 @@ export default function CreateBookingPage(): JSX.Element {
           )}
         </div>
 
-        {step === 1 && (
-          <Card padding="md">
-            <h3 className="mb-4 font-semibold text-text-primary">{t('booking.choose-service')}</h3>
-            <div className="max-h-80 space-y-2 overflow-y-auto">
-              {services.map((s) => (
-                <button
-                  key={s.id}
-                  data-testid="service-option"
-                  onClick={() => {
-                    setServiceId(s.id);
-                    setStep(2);
-                  }}
-                  className={`w-full rounded-lg border p-4 text-end transition-colors hover:border-brand-400 ${
-                    serviceId === s.id
-                      ? 'border-brand-500 bg-brand-50 dark:bg-brand-950'
-                      : 'border-edge'
-                  }`}
-                >
-                  <p className="font-semibold text-text-primary">
-                    {localize((s as unknown as { titleJson: unknown }).titleJson, locale)}
-                  </p>
-                  <p className="mt-1 text-sm text-text-secondary">
-                    {num((s as unknown as { basePrice: unknown }).basePrice).toFixed(0)}{' '}
-                    {t('misc.sar')} · {num((s as unknown as { durationMin: unknown }).durationMin)}{' '}
-                    {t('misc.min')}
-                  </p>
-                </button>
-              ))}
-            </div>
-          </Card>
-        )}
-
-        {step === 2 && svc && (
-          <Card padding="md">
-            <h3 className="mb-4 font-semibold text-text-primary">{t('booking.details')}</h3>
-
-            <p className="mb-2 text-sm font-bold text-brand-600">
-              {localize((svc as unknown as { titleJson: unknown }).titleJson, locale)}
-            </p>
-
-            {activeBundle && (
-              <div className="mb-4 rounded-lg border border-brand-200 bg-brand-50 p-3 text-sm dark:border-brand-800 dark:bg-brand-950">
-                <p className="font-semibold text-brand-700">
-                  {t('booking.bundle-selected', {
-                    name: localize(activeBundle.nameJson, locale),
-                  })}
-                </p>
-                <p className="mt-1 text-brand-600">
-                  {t('marketing.mommy-and-me.per-two')} ·{' '}
-                  {Number(activeBundle.bundlePrice).toFixed(0)} {t('misc.sar')}
-                </p>
+        {/* 5.1 — step panels re-animate on every step change. */}
+        <StepTransition stepKey={step} className="space-y-4">
+          {step === 1 && (
+            <Card padding="md">
+              <h3 className="mb-4 font-semibold text-text-primary">
+                {t('booking.choose-service')}
+              </h3>
+              <div className="max-h-80 space-y-2 overflow-y-auto">
+                {services.map((s) => (
+                  <button
+                    key={s.id}
+                    data-testid="service-option"
+                    onClick={() => {
+                      setServiceId(s.id);
+                      setStep(2);
+                    }}
+                    className={`w-full rounded-lg border p-4 text-end transition-colors hover:border-brand-400 ${
+                      serviceId === s.id
+                        ? 'border-brand-500 bg-brand-50 dark:bg-brand-950'
+                        : 'border-edge'
+                    }`}
+                  >
+                    <p className="font-semibold text-text-primary">
+                      {localize((s as unknown as { titleJson: unknown }).titleJson, locale)}
+                    </p>
+                    <p className="mt-1 text-sm text-text-secondary">
+                      {num((s as unknown as { basePrice: unknown }).basePrice).toFixed(0)}{' '}
+                      {t('misc.sar')} ·{' '}
+                      {num((s as unknown as { durationMin: unknown }).durationMin)} {t('misc.min')}
+                    </p>
+                  </button>
+                ))}
               </div>
-            )}
+            </Card>
+          )}
 
-            {!activeBundle && variants.length > 0 && (
+          {step === 2 && svc && (
+            <Card padding="md">
+              <h3 className="mb-4 font-semibold text-text-primary">{t('booking.details')}</h3>
+
+              <p className="mb-2 text-sm font-bold text-brand-600">
+                {localize((svc as unknown as { titleJson: unknown }).titleJson, locale)}
+              </p>
+
+              {activeBundle && (
+                <div className="mb-4 rounded-lg border border-brand-200 bg-brand-50 p-3 text-sm dark:border-brand-800 dark:bg-brand-950">
+                  <p className="font-semibold text-brand-700">
+                    {t('booking.bundle-selected', {
+                      name: localize(activeBundle.nameJson, locale),
+                    })}
+                  </p>
+                  <p className="mt-1 text-brand-600">
+                    {t('marketing.mommy-and-me.per-two')} ·{' '}
+                    {Number(activeBundle.bundlePrice).toFixed(0)} {t('misc.sar')}
+                  </p>
+                </div>
+              )}
+
+              {!activeBundle && variants.length > 0 && (
+                <div className="mb-4">
+                  <label htmlFor="bc-variant" className="mb-2 block text-sm text-text-secondary">
+                    {t('booking.choose-variant')}
+                  </label>
+                  <select
+                    id="bc-variant"
+                    className="w-full rounded-lg border border-edge p-2 text-sm bg-surface-elevated"
+                    value={variantId || ''}
+                    onChange={(e) => setVariantId(Number(e.target.value) || undefined)}
+                  >
+                    <option value="">{t('booking.base-service')}</option>
+                    {variants.map((v) => (
+                      <option key={v.id as number} value={v.id as number}>
+                        {localize(v.nameJson, locale)} (+{num(v.priceDelta).toFixed(0)}{' '}
+                        {t('misc.sar')})
+                      </option>
+                    ))}
+                  </select>
+                </div>
+              )}
+
+              <div className="mb-4 grid grid-cols-2 gap-4">
+                <div>
+                  <label htmlFor="bc-date" className="mb-2 block text-sm text-text-secondary">
+                    {t('booking.choose-date')}
+                  </label>
+                  <input
+                    id="bc-date"
+                    type="date"
+                    min={new Date(Date.now() + 86400000).toISOString().slice(0, 10)}
+                    value={bookingDate}
+                    onChange={(e) => setBookingDate(e.target.value)}
+                    className="w-full rounded-lg border border-edge p-2 text-sm bg-surface-elevated"
+                  />
+                </div>
+                <div>
+                  <label htmlFor="bc-time" className="mb-2 block text-sm text-text-secondary">
+                    {t('booking.choose-time')}
+                  </label>
+                  <select
+                    id="bc-time"
+                    value={bookingTime}
+                    onChange={(e) => setBookingTime(e.target.value)}
+                    className="w-full rounded-lg border border-edge p-2 text-sm bg-surface-elevated"
+                  >
+                    {TIME_SLOTS.map((slot) => (
+                      <option key={slot} value={slot}>
+                        {slot}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+              </div>
+
               <div className="mb-4">
-                <label htmlFor="bc-variant" className="mb-2 block text-sm text-text-secondary">
-                  {t('booking.choose-variant')}
+                <label htmlFor="bc-address" className="mb-2 block text-sm text-text-secondary">
+                  {t('booking.choose-address')}
                 </label>
                 <select
-                  id="bc-variant"
+                  id="bc-address"
                   className="w-full rounded-lg border border-edge p-2 text-sm bg-surface-elevated"
-                  value={variantId || ''}
-                  onChange={(e) => setVariantId(Number(e.target.value) || undefined)}
+                  value={addressId || ''}
+                  onChange={(e) => setAddressId(Number(e.target.value) || undefined)}
                 >
-                  <option value="">{t('booking.base-service')}</option>
-                  {variants.map((v) => (
-                    <option key={v.id as number} value={v.id as number}>
-                      {localize(v.nameJson, locale)} (+{num(v.priceDelta).toFixed(0)}{' '}
-                      {t('misc.sar')})
+                  <option value="">{t('booking.choose-address-placeholder')}</option>
+                  {addresses.map((a) => (
+                    <option key={a.id} value={a.id}>
+                      {String(a.label)} — {String(a.city)}
                     </option>
                   ))}
                 </select>
               </div>
-            )}
 
-            <div className="mb-4 grid grid-cols-2 gap-4">
-              <div>
-                <label htmlFor="bc-date" className="mb-2 block text-sm text-text-secondary">
-                  {t('booking.choose-date')}
+              {members.length > 0 && (
+                <div className="mb-4">
+                  <label htmlFor="bc-member" className="mb-2 block text-sm text-text-secondary">
+                    {t('booking.family-member')}
+                  </label>
+                  <select
+                    id="bc-member"
+                    className="w-full rounded-lg border border-edge p-2 text-sm bg-surface-elevated"
+                    value={familyMemberId || ''}
+                    onChange={(e) => setFamilyMemberId(Number(e.target.value) || undefined)}
+                  >
+                    <option value="">{t('booking.family-member-placeholder')}</option>
+                    {members.map((m) => (
+                      <option key={m.id as number} value={m.id as number}>
+                        {String(m.name)} ({String(m.relationship)} · {String(m.ageGroup)})
+                      </option>
+                    ))}
+                  </select>
+                </div>
+              )}
+
+              <div className="mb-4">
+                <label htmlFor="bc-notes" className="mb-2 block text-sm text-text-secondary">
+                  {t('booking.notes')}
                 </label>
-                <input
-                  id="bc-date"
-                  type="date"
-                  min={new Date(Date.now() + 86400000).toISOString().slice(0, 10)}
-                  value={bookingDate}
-                  onChange={(e) => setBookingDate(e.target.value)}
-                  className="w-full rounded-lg border border-edge p-2 text-sm bg-surface-elevated"
+                <textarea
+                  id="bc-notes"
+                  className="w-full rounded-lg border border-edge p-3 text-sm bg-surface-elevated"
+                  rows={3}
+                  value={notes}
+                  onChange={(e) => setNotes(e.target.value)}
+                  placeholder={t('booking.notes-placeholder')}
                 />
               </div>
-              <div>
-                <label htmlFor="bc-time" className="mb-2 block text-sm text-text-secondary">
-                  {t('booking.choose-time')}
-                </label>
-                <select
-                  id="bc-time"
-                  value={bookingTime}
-                  onChange={(e) => setBookingTime(e.target.value)}
-                  className="w-full rounded-lg border border-edge p-2 text-sm bg-surface-elevated"
-                >
-                  {TIME_SLOTS.map((slot) => (
-                    <option key={slot} value={slot}>
-                      {slot}
-                    </option>
-                  ))}
-                </select>
+
+              <div className="flex gap-3">
+                <Button onClick={() => setStep(1)} variant="outline">
+                  {t('booking.previous')}
+                </Button>
+                <Button data-testid="step-next" onClick={() => setStep(3)} className="flex-1">
+                  {t('button.next')}
+                </Button>
               </div>
-            </div>
+            </Card>
+          )}
 
-            <div className="mb-4">
-              <label htmlFor="bc-address" className="mb-2 block text-sm text-text-secondary">
-                {t('booking.choose-address')}
-              </label>
-              <select
-                id="bc-address"
-                className="w-full rounded-lg border border-edge p-2 text-sm bg-surface-elevated"
-                value={addressId || ''}
-                onChange={(e) => setAddressId(Number(e.target.value) || undefined)}
-              >
-                <option value="">{t('booking.choose-address-placeholder')}</option>
-                {addresses.map((a) => (
-                  <option key={a.id} value={a.id}>
-                    {String(a.label)} — {String(a.city)}
-                  </option>
-                ))}
-              </select>
-            </div>
+          {step === 3 && (
+            <Card padding="md">
+              <h3 className="mb-4 font-semibold text-text-primary">{t('booking.confirm')}</h3>
 
-            {members.length > 0 && (
-              <div className="mb-4">
-                <label htmlFor="bc-member" className="mb-2 block text-sm text-text-secondary">
-                  {t('booking.family-member')}
-                </label>
-                <select
-                  id="bc-member"
-                  className="w-full rounded-lg border border-edge p-2 text-sm bg-surface-elevated"
-                  value={familyMemberId || ''}
-                  onChange={(e) => setFamilyMemberId(Number(e.target.value) || undefined)}
-                >
-                  <option value="">{t('booking.family-member-placeholder')}</option>
-                  {members.map((m) => (
-                    <option key={m.id as number} value={m.id as number}>
-                      {String(m.name)} ({String(m.relationship)} · {String(m.ageGroup)})
-                    </option>
-                  ))}
-                </select>
-              </div>
-            )}
-
-            <div className="mb-4">
-              <label htmlFor="bc-notes" className="mb-2 block text-sm text-text-secondary">
-                {t('booking.notes')}
-              </label>
-              <textarea
-                id="bc-notes"
-                className="w-full rounded-lg border border-edge p-3 text-sm bg-surface-elevated"
-                rows={3}
-                value={notes}
-                onChange={(e) => setNotes(e.target.value)}
-                placeholder={t('booking.notes-placeholder')}
-              />
-            </div>
-
-            <div className="flex gap-3">
-              <Button onClick={() => setStep(1)} variant="outline">
-                {t('booking.previous')}
-              </Button>
-              <Button data-testid="step-next" onClick={() => setStep(3)} className="flex-1">
-                {t('button.next')}
-              </Button>
-            </div>
-          </Card>
-        )}
-
-        {step === 3 && (
-          <Card padding="md">
-            <h3 className="mb-4 font-semibold text-text-primary">{t('booking.confirm')}</h3>
-
-            <div className="space-y-3 text-sm">
-              <div className="flex justify-between border-b pb-2">
-                <span className="text-text-secondary">{t('booking.service')}</span>
-                <span className="font-semibold">
-                  {svc
-                    ? localize((svc as unknown as { titleJson: unknown }).titleJson, locale)
-                    : ''}
-                </span>
-              </div>
-              {pricePreview?.enabled && !activeBundle ? (
-                <div className="space-y-1 border-b pb-2">
-                  <div className="flex justify-between">
-                    <span className="text-text-secondary">{t('booking.price.base')}</span>
-                    <span>
-                      {pricePreview.breakdown.base.toFixed(0)} {t('misc.sar')}
-                    </span>
-                  </div>
-                  {pricePreview.breakdown.tierMultiplier > 1 && (
-                    <div className="flex justify-between text-xs">
-                      <span className="text-text-tertiary">
-                        {t('booking.price.tier')} (×{pricePreview.breakdown.tierMultiplier})
-                      </span>
-                      <span className="text-text-tertiary">
-                        +{((pricePreview.breakdown.tierMultiplier - 1) * 100).toFixed(0)}%
-                      </span>
-                    </div>
-                  )}
-                  {pricePreview.breakdown.peakMultiplier > 1 && (
-                    <div className="flex justify-between text-xs">
-                      <span className="text-text-tertiary">
-                        {t('booking.price.peak')} (×{pricePreview.breakdown.peakMultiplier})
-                      </span>
-                      <span className="text-text-tertiary">
-                        +{((pricePreview.breakdown.peakMultiplier - 1) * 100).toFixed(0)}%
-                      </span>
-                    </div>
-                  )}
-                  {pricePreview.breakdown.surgeMultiplier > 1 && (
-                    <div className="flex justify-between text-xs">
-                      <span className="text-text-tertiary">
-                        {t('booking.price.surge')} (×{pricePreview.breakdown.surgeMultiplier})
-                      </span>
-                      <span className="text-text-tertiary">
-                        +{((pricePreview.breakdown.surgeMultiplier - 1) * 100).toFixed(0)}%
-                      </span>
-                    </div>
-                  )}
-                  <div className="flex justify-between pt-1">
-                    <span className="text-text-secondary">{t('booking.price.total')}</span>
-                    <span className="font-bold text-brand-600">
-                      {pricePreview.breakdown.total.toFixed(0)} {t('misc.sar')}
-                    </span>
-                  </div>
-                </div>
-              ) : (
+              <div className="space-y-3 text-sm">
                 <div className="flex justify-between border-b pb-2">
-                  <span className="text-text-secondary">{t('booking.price')}</span>
-                  <span className="font-bold text-brand-600">
-                    {num((svc as unknown as { basePrice?: unknown })?.basePrice).toFixed(0)}{' '}
-                    {t('misc.sar')}
-                  </span>
-                </div>
-              )}
-              <div className="flex justify-between border-b pb-2">
-                <span className="text-text-secondary">{t('booking.duration')}</span>
-                <span>
-                  {num((svc as unknown as { durationMin?: unknown })?.durationMin)} {t('misc.min')}
-                </span>
-              </div>
-              {/* 1.3 Add-Ons — "customers who booked this also added" */}
-              {addonOptions.length > 0 && !activeBundle && (
-                <div className="border-b pb-3">
-                  <p className="mb-2 text-sm font-semibold text-text-primary">
-                    {t('booking.addons.title')}
-                  </p>
-                  <div className="space-y-2">
-                    {addonOptions.slice(0, 5).map((a) => (
-                      <label
-                        key={a.addon.id}
-                        className="flex cursor-pointer items-center gap-2 text-sm"
-                      >
-                        <input
-                          type="checkbox"
-                          checked={selectedAddons.includes(a.addon.id)}
-                          onChange={(e) =>
-                            setSelectedAddons((prev) =>
-                              e.target.checked
-                                ? [...prev, a.addon.id]
-                                : prev.filter((id) => id !== a.addon.id),
-                            )
-                          }
-                        />
-                        <span className="flex-1">
-                          {localize(a.addon.titleJson, locale)}
-                          {a.isSuggested && (
-                            <span className="ms-2 rounded-full bg-brand-100 px-2 py-0.5 text-[10px] font-bold text-brand-700 dark:bg-brand-900 dark:text-brand-300">
-                              {t('booking.addons.popular')}
-                            </span>
-                          )}
-                        </span>
-                        <span className="text-text-secondary">
-                          {Math.round(num(a.addon.basePrice) * (1 - a.bundleDiscountPercent / 100))}{' '}
-                          {t('misc.sar')}
-                          {a.bundleDiscountPercent > 0 && (
-                            <span className="ms-1 text-xs text-green-600 dark:text-green-400">
-                              −{a.bundleDiscountPercent}%
-                            </span>
-                          )}
-                        </span>
-                      </label>
-                    ))}
-                  </div>
-                  {addonsTotal > 0 && (
-                    <div className="mt-2 flex justify-between text-sm">
-                      <span className="text-text-secondary">{t('booking.addons.total')}</span>
-                      <span className="font-bold text-brand-600">
-                        {addonsTotal.toFixed(0)} {t('misc.sar')}
-                      </span>
-                    </div>
-                  )}
-                </div>
-              )}
-              {isHourly && (
-                <>
-                  <div className="flex justify-between border-b pb-2">
-                    <span className="text-text-secondary">
-                      {t('booking.hourly-total', {
-                        hours: hourlyHours,
-                        rate: num((svc as unknown as { basePrice?: unknown })?.basePrice),
-                      })}
-                    </span>
-                    <span className="font-bold text-brand-600">
-                      {orderAmount.toFixed(0)} {t('misc.sar')}
-                    </span>
-                  </div>
-                  <p className="mt-2 rounded-lg bg-amber-50 p-2 text-xs text-amber-800 dark:bg-amber-950 dark:text-amber-300">
-                    {t('booking.babysitting-disclaimer')}
-                  </p>
-                </>
-              )}
-              <div className="flex justify-between border-b pb-2">
-                <span className="text-text-secondary">{t('booking.choose-time')}</span>
-                <span className="font-semibold">
-                  {t('booking.date-time-confirm', { date: bookingDate, time: bookingTime })}
-                </span>
-              </div>
-              {familyMemberId && (
-                <div className="flex justify-between border-b pb-2">
-                  <span className="text-text-secondary">{t('booking.family-member')}</span>
+                  <span className="text-text-secondary">{t('booking.service')}</span>
                   <span className="font-semibold">
-                    {String(members.find((m) => m.id === familyMemberId)?.name ?? '')}
+                    {svc
+                      ? localize((svc as unknown as { titleJson: unknown }).titleJson, locale)
+                      : ''}
                   </span>
                 </div>
-              )}
-              {activeBundle && (
-                <div className="flex justify-between border-b pb-2">
-                  <span className="text-text-secondary">{t('booking.bundle')}</span>
-                  <span className="font-semibold">{localize(activeBundle.nameJson, locale)}</span>
-                </div>
-              )}
-              {appliedPromo && (
-                <>
+                {pricePreview?.enabled && !activeBundle ? (
+                  <div className="space-y-1 border-b pb-2">
+                    <div className="flex justify-between">
+                      <span className="text-text-secondary">{t('booking.price.base')}</span>
+                      <span>
+                        {pricePreview.breakdown.base.toFixed(0)} {t('misc.sar')}
+                      </span>
+                    </div>
+                    {pricePreview.breakdown.tierMultiplier > 1 && (
+                      <div className="flex justify-between text-xs">
+                        <span className="text-text-tertiary">
+                          {t('booking.price.tier')} (×{pricePreview.breakdown.tierMultiplier})
+                        </span>
+                        <span className="text-text-tertiary">
+                          +{((pricePreview.breakdown.tierMultiplier - 1) * 100).toFixed(0)}%
+                        </span>
+                      </div>
+                    )}
+                    {pricePreview.breakdown.peakMultiplier > 1 && (
+                      <div className="flex justify-between text-xs">
+                        <span className="text-text-tertiary">
+                          {t('booking.price.peak')} (×{pricePreview.breakdown.peakMultiplier})
+                        </span>
+                        <span className="text-text-tertiary">
+                          +{((pricePreview.breakdown.peakMultiplier - 1) * 100).toFixed(0)}%
+                        </span>
+                      </div>
+                    )}
+                    {pricePreview.breakdown.surgeMultiplier > 1 && (
+                      <div className="flex justify-between text-xs">
+                        <span className="text-text-tertiary">
+                          {t('booking.price.surge')} (×{pricePreview.breakdown.surgeMultiplier})
+                        </span>
+                        <span className="text-text-tertiary">
+                          +{((pricePreview.breakdown.surgeMultiplier - 1) * 100).toFixed(0)}%
+                        </span>
+                      </div>
+                    )}
+                    <div className="flex justify-between pt-1">
+                      <span className="text-text-secondary">{t('booking.price.total')}</span>
+                      <span className="font-bold text-brand-600">
+                        {pricePreview.breakdown.total.toFixed(0)} {t('misc.sar')}
+                      </span>
+                    </div>
+                  </div>
+                ) : (
                   <div className="flex justify-between border-b pb-2">
-                    <span className="text-text-secondary">
-                      {t('promo.field.discount')} ({appliedPromo.code})
-                    </span>
-                    <span className="font-semibold text-green-600 dark:text-green-400">
-                      −{appliedPromo.discountAmount.toFixed(0)} {t('misc.sar')}
-                    </span>
-                  </div>
-                  <div className="flex justify-between pb-2">
-                    <span className="font-semibold">{t('promo.field.total')}</span>
+                    <span className="text-text-secondary">{t('booking.price')}</span>
                     <span className="font-bold text-brand-600">
-                      {appliedPromo.finalAmount.toFixed(0)} {t('misc.sar')}
+                      {num((svc as unknown as { basePrice?: unknown })?.basePrice).toFixed(0)}{' '}
+                      {t('misc.sar')}
                     </span>
                   </div>
-                </>
-              )}
-            </div>
-
-            {/* Phase 3 sprint 2 — payment clarity: how you'll pay */}
-            <div
-              data-testid="payment-clarity"
-              className="mt-4 rounded-lg border border-edge bg-surface-muted p-4"
-            >
-              <p className="mb-2 text-sm font-semibold text-text-primary">
-                {t('booking.payment.title')}
-              </p>
-              <div className="grid gap-2 sm:grid-cols-2">
-                <div className="rounded-lg bg-surface p-3">
-                  <p className="text-sm font-semibold text-brand-700">
-                    {t('booking.payment.online-label')}
-                  </p>
-                  <p className="mt-1 text-xs text-text-secondary">
-                    {t('booking.payment.online-desc')}
-                  </p>
+                )}
+                <div className="flex justify-between border-b pb-2">
+                  <span className="text-text-secondary">{t('booking.duration')}</span>
+                  <span>
+                    {num((svc as unknown as { durationMin?: unknown })?.durationMin)}{' '}
+                    {t('misc.min')}
+                  </span>
                 </div>
-                <div className="rounded-lg bg-surface p-3">
-                  <p className="text-sm font-semibold text-brand-700">
-                    {t('booking.payment.venue-label')}
-                  </p>
-                  <p className="mt-1 text-xs text-text-secondary">
-                    {t('booking.payment.venue-desc')}
-                  </p>
+                {/* 1.3 Add-Ons — "customers who booked this also added" */}
+                {addonOptions.length > 0 && !activeBundle && (
+                  <div className="border-b pb-3">
+                    <p className="mb-2 text-sm font-semibold text-text-primary">
+                      {t('booking.addons.title')}
+                    </p>
+                    <div className="space-y-2">
+                      {addonOptions.slice(0, 5).map((a) => (
+                        <label
+                          key={a.addon.id}
+                          className="flex cursor-pointer items-center gap-2 text-sm"
+                        >
+                          <input
+                            type="checkbox"
+                            checked={selectedAddons.includes(a.addon.id)}
+                            onChange={(e) =>
+                              setSelectedAddons((prev) =>
+                                e.target.checked
+                                  ? [...prev, a.addon.id]
+                                  : prev.filter((id) => id !== a.addon.id),
+                              )
+                            }
+                          />
+                          <span className="flex-1">
+                            {localize(a.addon.titleJson, locale)}
+                            {a.isSuggested && (
+                              <span className="ms-2 rounded-full bg-brand-100 px-2 py-0.5 text-[10px] font-bold text-brand-700 dark:bg-brand-900 dark:text-brand-300">
+                                {t('booking.addons.popular')}
+                              </span>
+                            )}
+                          </span>
+                          <span className="text-text-secondary">
+                            {Math.round(
+                              num(a.addon.basePrice) * (1 - a.bundleDiscountPercent / 100),
+                            )}{' '}
+                            {t('misc.sar')}
+                            {a.bundleDiscountPercent > 0 && (
+                              <span className="ms-1 text-xs text-green-600 dark:text-green-400">
+                                −{a.bundleDiscountPercent}%
+                              </span>
+                            )}
+                          </span>
+                        </label>
+                      ))}
+                    </div>
+                    {addonsTotal > 0 && (
+                      <div className="mt-2 flex justify-between text-sm">
+                        <span className="text-text-secondary">{t('booking.addons.total')}</span>
+                        <span className="font-bold text-brand-600">
+                          {addonsTotal.toFixed(0)} {t('misc.sar')}
+                        </span>
+                      </div>
+                    )}
+                  </div>
+                )}
+                {isHourly && (
+                  <>
+                    <div className="flex justify-between border-b pb-2">
+                      <span className="text-text-secondary">
+                        {t('booking.hourly-total', {
+                          hours: hourlyHours,
+                          rate: num((svc as unknown as { basePrice?: unknown })?.basePrice),
+                        })}
+                      </span>
+                      <span className="font-bold text-brand-600">
+                        {orderAmount.toFixed(0)} {t('misc.sar')}
+                      </span>
+                    </div>
+                    <p className="mt-2 rounded-lg bg-amber-50 p-2 text-xs text-amber-800 dark:bg-amber-950 dark:text-amber-300">
+                      {t('booking.babysitting-disclaimer')}
+                    </p>
+                  </>
+                )}
+                <div className="flex justify-between border-b pb-2">
+                  <span className="text-text-secondary">{t('booking.choose-time')}</span>
+                  <span className="font-semibold">
+                    {t('booking.date-time-confirm', { date: bookingDate, time: bookingTime })}
+                  </span>
+                </div>
+                {familyMemberId && (
+                  <div className="flex justify-between border-b pb-2">
+                    <span className="text-text-secondary">{t('booking.family-member')}</span>
+                    <span className="font-semibold">
+                      {String(members.find((m) => m.id === familyMemberId)?.name ?? '')}
+                    </span>
+                  </div>
+                )}
+                {activeBundle && (
+                  <div className="flex justify-between border-b pb-2">
+                    <span className="text-text-secondary">{t('booking.bundle')}</span>
+                    <span className="font-semibold">{localize(activeBundle.nameJson, locale)}</span>
+                  </div>
+                )}
+                {appliedPromo && (
+                  <>
+                    <div className="flex justify-between border-b pb-2">
+                      <span className="text-text-secondary">
+                        {t('promo.field.discount')} ({appliedPromo.code})
+                      </span>
+                      <span className="font-semibold text-green-600 dark:text-green-400">
+                        −{appliedPromo.discountAmount.toFixed(0)} {t('misc.sar')}
+                      </span>
+                    </div>
+                    <div className="flex justify-between pb-2">
+                      <span className="font-semibold">{t('promo.field.total')}</span>
+                      <span className="font-bold text-brand-600">
+                        {appliedPromo.finalAmount.toFixed(0)} {t('misc.sar')}
+                      </span>
+                    </div>
+                  </>
+                )}
+              </div>
+
+              {/* Phase 3 sprint 2 — payment clarity: how you'll pay */}
+              <div
+                data-testid="payment-clarity"
+                className="mt-4 rounded-lg border border-edge bg-surface-muted p-4"
+              >
+                <p className="mb-2 text-sm font-semibold text-text-primary">
+                  {t('booking.payment.title')}
+                </p>
+                <div className="grid gap-2 sm:grid-cols-2">
+                  <div className="rounded-lg bg-surface p-3">
+                    <p className="text-sm font-semibold text-brand-700">
+                      {t('booking.payment.online-label')}
+                    </p>
+                    <p className="mt-1 text-xs text-text-secondary">
+                      {t('booking.payment.online-desc')}
+                    </p>
+                  </div>
+                  <div className="rounded-lg bg-surface p-3">
+                    <p className="text-sm font-semibold text-brand-700">
+                      {t('booking.payment.venue-label')}
+                    </p>
+                    <p className="mt-1 text-xs text-text-secondary">
+                      {t('booking.payment.venue-desc')}
+                    </p>
+                  </div>
                 </div>
               </div>
-            </div>
 
-            {/* Promo code (B.2) */}
-            <div className="mt-4">
-              {appliedPromo ? (
-                <div className="flex items-center justify-between rounded-lg border border-green-200 bg-green-50 px-4 py-3 dark:border-green-800 dark:bg-green-950">
-                  <p className="text-sm font-semibold text-green-700 dark:text-green-300">
-                    {t('promo.applied')}: {appliedPromo.code}
+              {/* Promo code (B.2) */}
+              <div className="mt-4">
+                {appliedPromo ? (
+                  <div className="flex items-center justify-between rounded-lg border border-green-200 bg-green-50 px-4 py-3 dark:border-green-800 dark:bg-green-950">
+                    <p className="text-sm font-semibold text-green-700 dark:text-green-300">
+                      {t('promo.applied')}: {appliedPromo.code}
+                    </p>
+                    <Button size="sm" variant="outline" onClick={handleRemovePromo}>
+                      {t('promo.remove')}
+                    </Button>
+                  </div>
+                ) : (
+                  <div className="flex gap-2">
+                    <Input
+                      value={promoCode}
+                      onChange={(e) => setPromoCode(e.target.value.toUpperCase())}
+                      placeholder={t('promo.codePlaceholder')}
+                      className="flex-1"
+                    />
+                    <Button onClick={handleApplyPromo} variant="outline">
+                      {t('promo.apply')}
+                    </Button>
+                  </div>
+                )}
+                {promoMsg && (
+                  <p
+                    className={`mt-2 text-sm ${promoErr ? 'text-red-600 dark:text-red-400' : 'text-green-600 dark:text-green-400'}`}
+                  >
+                    {promoMsg}
                   </p>
-                  <Button size="sm" variant="outline" onClick={handleRemovePromo}>
-                    {t('promo.remove')}
-                  </Button>
-                </div>
-              ) : (
-                <div className="flex gap-2">
-                  <Input
-                    value={promoCode}
-                    onChange={(e) => setPromoCode(e.target.value.toUpperCase())}
-                    placeholder={t('promo.codePlaceholder')}
-                    className="flex-1"
-                  />
-                  <Button onClick={handleApplyPromo} variant="outline">
-                    {t('promo.apply')}
-                  </Button>
-                </div>
-              )}
-              {promoMsg && (
-                <p
-                  className={`mt-2 text-sm ${promoErr ? 'text-red-600 dark:text-red-400' : 'text-green-600 dark:text-green-400'}`}
-                >
-                  {promoMsg}
-                </p>
-              )}
-            </div>
+                )}
+              </div>
 
-            <p className="mt-4 text-sm text-text-tertiary">
-              {t('booking.technician-confirm-note')}
-            </p>
+              <p className="mt-4 text-sm text-text-tertiary">
+                {t('booking.technician-confirm-note')}
+              </p>
 
-            <div className="mt-6 flex gap-3">
-              <Button onClick={() => setStep(2)} variant="outline">
-                {t('booking.previous')}
-              </Button>
-              <Button onClick={handleSubmit} loading={submitting} className="flex-1">
-                {t('booking.confirm')}
-              </Button>
-            </div>
-          </Card>
-        )}
+              <div className="mt-6 flex gap-3">
+                <Button onClick={() => setStep(2)} variant="outline">
+                  {t('booking.previous')}
+                </Button>
+                <Button onClick={handleSubmit} loading={submitting} className="flex-1">
+                  {t('booking.confirm')}
+                </Button>
+              </div>
+            </Card>
+          )}
+        </StepTransition>
       </div>
     </DashboardLayout>
   );

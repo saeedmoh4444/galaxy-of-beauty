@@ -571,6 +571,9 @@ export { Sparkles, type SparkleSpec } from './motion/Sparkles';
 export { Marquee } from './motion/Marquee';
 export { HeroSection } from './motion/HeroSection';
 export { Walkthrough, type WalkthroughStep } from './motion/Walkthrough';
+export { StepTransition } from './motion/StepTransition';
+export { Mascot } from './Mascot';
+export type { MascotMood } from './Mascot';
 
 // Trust layer (Phase 3 sprint 1)
 export { TrustBadge, TrustBadges, type TrustBadgeVariant } from './TrustBadges';
