@@ -3462,7 +3462,7 @@ async function main() {
       {
         key: 'booking_reminder',
         category: 'bookingReminders',
-        channels: ['in_app', 'push'],
+        channels: ['in_app', 'push', 'whatsapp'],
         titleJson: { ar: 'تذكير بموعدك', en: 'Upcoming Appointment Reminder' },
         bodyJson: {
           ar: 'تذكير: موعدك لخدمة {{serviceName}} بتاريخ {{date}} الساعة {{time}}. نراكم قريبًا!',
@@ -3493,7 +3493,7 @@ async function main() {
       {
         key: 'subscription_renewal_reminder',
         category: 'bookingReminders',
-        channels: ['in_app', 'push'],
+        channels: ['in_app', 'push', 'whatsapp'],
         titleJson: { ar: 'تجديد اشتراكك قريب', en: 'Your Subscription Renews Soon' },
         bodyJson: {
           ar: 'أهلًا {{customerName}}، سيتم تجديد باقة {{planName}} خلال ٣ أيام بسعر {{price}} ر.س. يمكنك الإيقاف من صفحة الاشتراكات.',

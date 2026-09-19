@@ -146,7 +146,12 @@ export async function handleNotificationJob(job: Job<NotificationJob>): Promise<
 
   // External channels — real dispatch (B.26). All senders are failure-
   // tolerant: unconfigured providers log and return, never throw.
-  if (channels.includes('email') || channels.includes('sms') || channels.includes('push')) {
+  if (
+    channels.includes('email') ||
+    channels.includes('sms') ||
+    channels.includes('push') ||
+    channels.includes('whatsapp')
+  ) {
     const user = await prisma.user.findUnique({
       where: { id: userId },
       select: { email: true, phone: true, preferredLanguage: true },
@@ -175,6 +180,12 @@ export async function handleNotificationJob(job: Job<NotificationJob>): Promise<
         title: user.preferredLanguage === 'en' ? titleEn : titleAr,
         body: user.preferredLanguage === 'en' ? bodyEn : bodyAr,
       });
+    }
+    // 6.5 WhatsApp — Cloud API when configured; silent no-op otherwise
+    // (transport is failure-tolerant, like every other external sender).
+    if (channels.includes('whatsapp') && user.phone) {
+      const { sendWhatsAppText } = await import('../lib/whatsapp');
+      await sendWhatsAppText(user.phone, bodyAr || titleAr);
     }
   }
 }
