@@ -141,6 +141,7 @@ jobs:
       - name: Start Turbo remote cache
         uses: rharkor/caching-for-turbo@v2.3.12
       - run: pnpm turbo run build
+      - run: node scripts/check-size-budgets.mjs
 
   # ── E2E Tests ─────────────────────────────────────────────
   e2e:
