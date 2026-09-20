@@ -902,7 +902,6 @@ export const adminMessages = {
   'admin.pricing.create-button': { ar: 'إضافة القاعدة', en: 'Add Rule' },
   'admin.pricing.rules-title': { ar: 'القواعد الحالية', en: 'Current Rules' },
   'admin.pricing.no-rules': { ar: 'لا توجد قواعد', en: 'No rules' },
-  'admin.pricing.delete': { ar: 'حذف', en: 'Delete' },
   'admin.pricing.active': { ar: 'نشطة', en: 'Active' },
   'admin.pricing.inactive': { ar: 'موقوفة', en: 'Inactive' },
   'admin.pricing.services-title': { ar: 'تفعيل الخدمات', en: 'Service Opt-ins' },

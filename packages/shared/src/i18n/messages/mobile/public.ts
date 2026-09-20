@@ -606,10 +606,6 @@ export const mobilePublicMessages = {
     en: 'No providers for this service yet',
   },
   'mobile.public.service-detail.related-services': { ar: 'خدمات مشابهة', en: 'Related services' },
-  'mobile.public.service-detail.view-full-gallery': {
-    ar: 'عرض المعرض الكامل',
-    en: 'View full gallery',
-  },
   'mobile.public.service-detail.share': { ar: 'مشاركة', en: 'Share' },
   'mobile.public.service-detail.copy-link': { ar: 'نسخ الرابط', en: 'Copy link' },
   'mobile.public.service-detail.gallery-title': {

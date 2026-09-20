@@ -8,7 +8,6 @@ export const authMessages = {
   'auth.email': { ar: 'البريد الإلكتروني', en: 'Email' },
   'auth.password': { ar: 'كلمة المرور', en: 'Password' },
   'auth.forgotPassword': { ar: 'نسيت كلمة المرور؟', en: 'Forgot Password?' },
-  'auth.noAccount': { ar: 'ليس لديك حساب؟', en: "Don't have an account?" },
   'auth.hasAccount': { ar: 'لديك حساب؟', en: 'Already have an account?' },
 
   // Login — 2FA step
