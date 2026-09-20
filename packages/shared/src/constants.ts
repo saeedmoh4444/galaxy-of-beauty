@@ -103,6 +103,15 @@ export const SOCKET_RECONNECT_MAX_DELAY_MS = 30_000;
 export const RATE_LIMIT_PUBLIC = 20; // public endpoints per minute
 export const RATE_LIMIT_AUTH = 60; // authenticated endpoints per minute
 export const RATE_LIMIT_ADMIN = 300; // admin endpoints per minute
+
+/**
+ * Jummah (Friday congregational prayer) window — minutes from local midnight.
+ * Saudi mosques pray around 12:15; 11:30–13:30 covers travel + prayer + return.
+ * Booking slots overlapping this window on Fridays are blocked (6.4).
+ */
+export const JUMMAH_START_MINUTE = 11 * 60 + 30; // 11:30
+export const JUMMAH_END_MINUTE = 13 * 60 + 30; // 13:30
+
 /** Default cache TTL (seconds). */
 export const CACHE_DEFAULT_TTL_S = 300; // 5 minutes
 
