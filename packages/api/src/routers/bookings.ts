@@ -3,7 +3,8 @@ import { TRPCError } from '@trpc/server';
 import { prisma } from '@galaxy/db';
 import type { Prisma } from '@galaxy/db';
 import crypto from 'crypto';
-import { notFound, forbidden } from '../lib/errors';
+import { notFound, forbidden, badRequest } from '../lib/errors';
+import { isJummahBlocked, JUMMAH_BLOCK_REASON } from '../lib/jummah';
 import { protectedProcedure, customerProcedure, technicianProcedure, router } from '../trpc';
 import { createBookingSchema, bookingQuerySchema } from '../validators/booking';
 import { computeDynamicPrice } from '../lib/pricing';
@@ -130,6 +131,15 @@ export const bookingRouter = router({
           message: 'Slot is already booked',
         });
       }
+      if (isJummahBlocked(slot.startAt, slot.endAt)) {
+        throw badRequest(`This slot overlaps the ${JUMMAH_BLOCK_REASON}`);
+      }
+    }
+
+    // 2b2. 6.4: direct startAt/endAt flows (date/time picker) must also
+    // respect the Friday prayer window.
+    if (isJummahBlocked(new Date(input.startAt), new Date(input.endAt))) {
+      throw badRequest(`Booking overlaps the ${JUMMAH_BLOCK_REASON}`);
     }
 
     // 2c. Family member (K1): optional "book on behalf of" link — the member
