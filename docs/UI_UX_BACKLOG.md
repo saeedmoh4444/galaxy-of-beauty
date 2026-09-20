@@ -165,6 +165,8 @@
 **Effort:** Low (1–2 hours). Add plugin, fix existing violations, add to CI pipeline.
 **Long-term value:** Catches missing `alt` text, missing labels, incorrect ARIA roles, and keyboard trap issues before they reach production. The existing code already has good a11y foundations — this prevents regression.
 
+**Status (2026-09-20):** ✅ **Web DONE** — beyond lint: runtime axe-core CI gate ships (FE-009, `apps/web/e2e/axe-a11y.spec.ts`, zero serious/critical on scanned routes). ⏸ **Mobile deferred** — jsx-a11y's DOM-oriented rules false-positive on RN's `accessibilityRole`/`accessibilityLabel`/`onPress` and miss RN-specific a11y; the right tool is `eslint-plugin-react-native-a11y` (see docs/frontend/accessibility-budgets.md).
+
 ### 4.3 Create an icon library from SVGs (retire emoji-as-icons)
 
 **Initiative:** Build a `<Icon>` component with the 30 most-used icons from a consistent icon set (Lucide or Phosphor).
