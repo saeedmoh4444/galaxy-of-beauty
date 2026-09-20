@@ -23,6 +23,8 @@
     "check:cycles": "node scripts/check-cycles.mjs",
     "check:budgets": "node scripts/check-size-budgets.mjs",
     "graph": "node scripts/gen-dependency-graph.mjs",
+    "load:smoke": "k6 run scripts/load/smoke.js",
+    "load:load": "k6 run scripts/load/load.js",
     "audit:prod": "pnpm audit --prod",
     "verify": "pnpm format:check && pnpm lint && pnpm type-check && pnpm db:validate && pnpm test:unit && pnpm check:cycles && pnpm build",
     "prepare": "husky"
