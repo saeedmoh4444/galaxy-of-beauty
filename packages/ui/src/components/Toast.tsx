@@ -69,8 +69,10 @@ export function ToastProvider({
   return (
     <ToastContext.Provider value={{ toasts, addToast, removeToast }}>
       {children}
-      {/* Toast container */}
+      {/* Toast container — role="status" makes the aria-label valid and
+          exposes the region as a polite live region */}
       <div
+        role="status"
         aria-live="polite"
         aria-label={ariaLabel}
         className="pointer-events-none fixed bottom-4 start-1/2 z-50 flex -translate-x-1/2 flex-col-reverse gap-2"
