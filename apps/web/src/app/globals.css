@@ -45,19 +45,23 @@ layer(base);
 
     /* Text — warm near-blacks, never pure */
     --color-text-primary: #2d1b22;
-    --color-text-secondary: #8a6e78;
-    --color-text-tertiary: #b3a0ab;
+    /* WCAG 4.5:1 on surface/surface-muted/surface-elevated (FE-009 axe gate).
+       Hierarchy is carried by size/weight; secondary and tertiary share the
+       same hue to keep the required contrast. */
+    --color-text-secondary: #84646f;
+    --color-text-tertiary: #84646f;
 
     /* Border — soft blush edges */
     --color-border-default: #f0e4e8;
     --color-border-muted: #f6ecef;
 
-    /* Semantic status */
-    --color-success: #10b981;
+    /* Semantic status — 700-weight shades: used as TEXT on the *-subtle
+       backgrounds, so they must meet WCAG 4.5:1 (FE-009 axe gate) */
+    --color-success: #047857;
     --color-success-subtle: #ecf7f1;
-    --color-warning: #f59e0b;
+    --color-warning: #b45309;
     --color-warning-subtle: #fdf6ec;
-    --color-danger: #e5484d;
+    --color-danger: #b91c1c;
     --color-danger-subtle: #fdefef;
     --color-info: #3b82f6;
     --color-info-subtle: #eff5fc;

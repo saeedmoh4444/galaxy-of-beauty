@@ -143,9 +143,9 @@ export function BeautyBudgetCard({
                 </div>
               </div>
 
-              {/* Price */}
+              {/* Price — lime-800 keeps ≥4.5:1 on surface-muted (FE-009 axe gate) */}
               <div className="shrink-0 text-end">
-                <div className="text-sm font-bold text-lime-700 dark:text-lime-400">
+                <div className="text-sm font-bold text-lime-800 dark:text-lime-400">
                   {service.price} {currencySuffix}
                 </div>
                 {service.originalPrice && (
