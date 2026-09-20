@@ -2,35 +2,13 @@
 
 export const miscMessages = {
   // Notifications
-  'notif.bookingCreated': { ar: 'تم إنشاء الحجز', en: 'Booking Created' },
-  'notif.bookingAccepted': { ar: 'تم قبول الحجز', en: 'Booking Accepted' },
-  'notif.bookingCompleted': { ar: 'تم اكتمال الحجز', en: 'Booking Completed' },
-  'notif.paymentReceived': { ar: 'تم استلام الدفع', en: 'Payment Received' },
-  'notif.newMessage': { ar: 'رسالة جديدة', en: 'New Message' },
-  'notif.promotion': { ar: 'عرض جديد', en: 'New Promotion' },
 
   // Onboarding
-  'onboarding.welcome': { ar: 'مرحباً بكِ في جالكسي بيوتي', en: 'Welcome to Galaxy of Beauty' },
-  'onboarding.getStarted': { ar: 'ابدئي الآن', en: 'Get Started' },
-  'onboarding.skip': { ar: 'تخطي', en: 'Skip' },
 
   // Membership & Bundles
-  'membership.basic': { ar: 'الباقة الأساسية', en: 'Basic Plan' },
-  'membership.premium': { ar: 'الباقة المميزة', en: 'Premium Plan' },
-  'membership.vip': { ar: 'الباقة الشاملة', en: 'VIP Plan' },
-  'bundle.save': { ar: 'وفر', en: 'Save' },
-  'bundle.includes': { ar: 'تشمل', en: 'Includes' },
-  'bundle.services': { ar: 'خدمات', en: 'Services' },
-  'deal.flash': { ar: 'عرض فلاش', en: 'Flash Deal' },
-  'deal.endsIn': { ar: 'ينتهي خلال', en: 'Ends in' },
 
   // Women-Only Platform
   'women.safeSpace': { ar: 'مساحة نسائية آمنة', en: 'Safe Women-Only Space' },
-  'women.privacyFirst': { ar: 'خصوصيتكِ أولاً', en: 'Your Privacy First' },
-  'women.femaleOnly': { ar: 'نسائي بالكامل', en: 'Female Only' },
-  'women.verified': { ar: 'فنيات موثقات', en: 'Verified Service Providers' },
-  'women.periodKit': { ar: 'أدوات الدورة الشهرية متوفرة', en: 'Period Kit Available' },
-  'women.prayerRoom': { ar: 'غرفة صلاة متوفرة', en: 'Prayer Room Available' },
 
   // Shared across customer pages
   'common.loadFailed': { ar: 'فشل التحميل', en: 'Failed to load' },
@@ -2211,10 +2189,6 @@ export const miscMessages = {
   'beautyDashboard.bonus': { ar: 'رصيد المكافآت', en: 'Bonus balance' },
   // 3.3 — proactive AI advisor
   'beautyDashboard.advisor.title': { ar: 'توصيات ذكية لكِ', en: 'Smart tips for you' },
-  'beautyDashboard.advisor.typeReminder': { ar: 'تذكير ذكي', en: 'Smart reminder' },
-  'beautyDashboard.advisor.typeOccasion': { ar: 'مناسبة قادمة', en: 'Upcoming occasion' },
-  'beautyDashboard.advisor.typeBudget': { ar: 'مستشارة الميزانية', en: 'Budget coach' },
-  'beautyDashboard.advisor.typeTrend': { ar: 'رائج هذا الأسبوع', en: 'Trending this week' },
 
   // Savings Goals
   'savingsGoals.title': { ar: 'أهداف الادخار', en: ' Savings Goals' },
@@ -2431,12 +2405,6 @@ export const miscMessages = {
   'myJourney.weeks': { ar: '{count} أسابيع', en: '{count} weeks' },
   'myJourney.milestonesTitle': { ar: 'الإنجازات', en: ' Milestones' },
   'myJourney.continue': { ar: 'استمري في رحلتكِ ', en: 'Continue your journey' },
-  'myJourney.milestone.first': { ar: 'أول حجز', en: 'First booking' },
-  'myJourney.milestone.five': { ar: '٥ حجوزات', en: '5 bookings' },
-  'myJourney.milestone.ten': { ar: '١٠ حجوزات', en: '10 bookings' },
-  'myJourney.milestone.savings': { ar: 'توفير ١٠٠٠ ر.س', en: 'Saved 1000 SAR' },
-  'myJourney.milestone.techs': { ar: '٣ فنيات مختلفات', en: '3 different service providers' },
-  'myJourney.milestone.services': { ar: '٥ خدمات مختلفة', en: '5 different services' },
 
   // Saved Cards
   'savedCards.title': { ar: 'البطاقات المحفوظة', en: 'Saved Cards' },
@@ -2596,7 +2564,6 @@ export const miscMessages = {
     en: "Resolved in technician's favor",
   },
   'disputes.status.closed': { ar: 'مغلقة', en: 'Closed' },
-  'disputes.status.unknown': { ar: 'غير معروف', en: 'Unknown' },
   'disputes.adminDecision': { ar: 'قرار الإدارة', en: 'Admin decision' },
   'disputes.bookingLabel': { ar: 'رقم الحجز', en: 'Booking number' },
   'disputes.bookingPlaceholder': { ar: 'أدخل رقم الحجز', en: 'Enter booking number' },
@@ -3144,33 +3111,6 @@ export const miscMessages = {
     ar: 'اختاري روائحكِ المفضلة لعرض العطور المقترحة.',
     en: 'Pick your preferred scents to see perfume suggestions.',
   },
-  'beautyDna.reason.tone_depth': { ar: 'درجة مناسبة', en: 'Shade depth match' },
-  'beautyDna.reason.tone_undertone': { ar: 'أندرتون متوافق', en: 'Undertone match' },
-  'beautyDna.reason.length_fit': { ar: 'مناسب للطول', en: 'Length compatible' },
-  'beautyDna.reason.season_family': { ar: 'عائلة موسمية', en: 'Seasonal family' },
-  'beautyDna.reason.face_oval': { ar: 'وجه بيضاوي', en: 'Oval face' },
-  'beautyDna.reason.face_round': { ar: 'وجه دائري', en: 'Round face' },
-  'beautyDna.reason.face_square': { ar: 'وجه مربع', en: 'Square face' },
-  'beautyDna.reason.face_heart': { ar: 'وجه قلبي', en: 'Heart face' },
-  'beautyDna.reason.face_diamond': { ar: 'وجه معينيّ', en: 'Diamond face' },
-  'beautyDna.reason.face_long': { ar: 'وجه مستطيل', en: 'Long face' },
-  'beautyDna.reason.texture_straight': { ar: 'شعر أملس', en: 'Straight hair' },
-  'beautyDna.reason.texture_wavy': { ar: 'شعر مموج', en: 'Wavy hair' },
-  'beautyDna.reason.texture_curly': { ar: 'شعر مجعد', en: 'Curly hair' },
-  'beautyDna.reason.texture_coily': { ar: 'شعر كيرلي', en: 'Coily hair' },
-  'beautyDna.reason.length_short': { ar: 'طول قصير', en: 'Short length' },
-  'beautyDna.reason.length_medium': { ar: 'طول متوسط', en: 'Medium length' },
-  'beautyDna.reason.length_long': { ar: 'طول طويل', en: 'Long length' },
-  'beautyDna.reason.scent_floral': { ar: 'زهري', en: 'Floral' },
-  'beautyDna.reason.scent_citrus': { ar: 'حمضي', en: 'Citrus' },
-  'beautyDna.reason.scent_woody': { ar: 'خشبي', en: 'Woody' },
-  'beautyDna.reason.scent_fresh': { ar: 'منعش', en: 'Fresh' },
-  'beautyDna.reason.scent_sweet': { ar: 'حلو', en: 'Sweet' },
-  'beautyDna.reason.scent_oriental': { ar: 'شرقي', en: 'Oriental' },
-  'beautyDna.reason.season_winter': { ar: 'شتوي', en: 'Winter' },
-  'beautyDna.reason.season_spring': { ar: 'ربيعي', en: 'Spring' },
-  'beautyDna.reason.season_summer': { ar: 'صيفي', en: 'Summer' },
-  'beautyDna.reason.season_autumn': { ar: 'خريفي', en: 'Autumn' },
   'beautyDna.family.floral': { ar: 'زهري', en: 'Floral' },
   'beautyDna.family.citrus': { ar: 'حمضي', en: 'Citrus' },
   'beautyDna.family.woody': { ar: 'خشبي', en: 'Woody' },
@@ -3833,7 +3773,6 @@ export const miscMessages = {
   'clinics.slots.empty': { ar: 'لا توجد مواعيد متاحة حالياً', en: 'No open slots right now' },
   'clinics.slots.book': { ar: 'احجزي', en: 'Book' },
   'clinics.book.title': { ar: 'حجز استشارة', en: 'Book a consultation' },
-  'clinics.book.type': { ar: 'نوع الاستشارة', en: 'Treatment type' },
   'clinics.book.consent': {
     ar: 'أوافق على الإقرار الطبي واستخدام بياناتي لهذه الاستشارة',
     en: 'I consent to the medical disclaimer and the use of my data for this consultation',
@@ -3870,8 +3809,6 @@ export const miscMessages = {
     en: 'Awaiting admin review of your license and documents',
   },
   // E2 — KSA provider documents (apply wizards)
-  'vendorPortal.apply.clinic-type': { ar: 'نوع العيادة', en: 'Clinic type' },
-  'vendorPortal.apply.license-agency': { ar: 'جهة الترخيص', en: 'License agency' },
   'vendorPortal.apply.documents-title': {
     ar: 'المستندات المطلوبة (السعودية)',
     en: 'Required documents (KSA)',
@@ -3936,7 +3873,6 @@ export const miscMessages = {
   'nav.clinics': { ar: 'العيادات', en: 'Clinics' },
   'nav.stores': { ar: 'المتاجر', en: 'Stores' },
   // E3 — gym registration + dashboard (vendor portal shell)
-  'vendorPortal.apply.gym-type': { ar: 'نوع النادي', en: 'Gym type' },
   'vendorPortal.apply.gym-city': { ar: 'المدينة', en: 'City' },
   'vendorPortal.apply.gym-address': { ar: 'العنوان', en: 'Address' },
   'vendorPortal.apply.doc-license': {
@@ -4090,15 +4026,6 @@ export const miscMessages = {
   'videoRoom.title': { ar: 'غرفة الفيديو', en: 'Video room' },
   'videoRoom.roomNumber': { ar: 'رقم الغرفة:', en: 'Room number:' },
   'videoRoom.booking': { ar: 'الحجز:', en: 'Booking:' },
-  'videoRoom.integrationNote': {
-    ar: 'واجهة الفيديو — يتم التكامل مع Daily.co أو Whereby',
-    en: 'Video interface — integrates with Daily.co or Whereby',
-  },
-  'videoRoom.providerNote': {
-    ar: 'عند ربط مزود فيديو، ستظهر هنا واجهة المكالمة المباشرة',
-    en: 'Once a video provider is connected, the live call interface will appear here',
-  },
-  'videoRoom.back': { ar: 'العودة', en: 'Back' },
   'videoRoom.copyRoomNumber': { ar: 'نسخ رقم الغرفة', en: 'Copy room number' },
   'videoRoom.connecting': { ar: 'جارٍ الاتصال…', en: 'Connecting…' },
   'videoRoom.waitingPeer': {
@@ -4131,7 +4058,6 @@ export const miscMessages = {
   'vipMembership.membershipActive': { ar: 'عضوية نشطة', en: 'Active membership' },
   'vipMembership.upgrade': { ar: 'ترقية', en: 'Upgrade' },
   'wellness.title': { ar: 'الصحة والعافية', en: 'Health and Wellness' },
-  'wellness.subtitle': { ar: 'جمالكِ يبدأ من صحتكِ', en: 'Your beauty starts with your health' },
   'wishlist.title': { ar: 'المفضلة', en: 'Favorites' },
   'wishlist.loadError': { ar: 'فشل تحميل المفضلة', en: 'Failed to load favorites' },
   'wishlist.emptyTitle': { ar: 'المفضلة فارغة', en: 'Favorites is empty' },
@@ -4192,7 +4118,6 @@ export const miscMessages = {
   'measurements.title': { ar: 'قياسات الجسم', en: 'Body measurements' },
   'measurements.add': { ar: 'تسجيل قياس جديد', en: 'Log a measurement' },
   'measurements.history': { ar: 'سجل القياسات', en: 'Measurement history' },
-  'measurements.empty': { ar: 'لم تُسجل أي قياسات بعد', en: 'No measurements logged yet' },
   'measurements.weight': { ar: 'الوزن (كجم)', en: 'Weight (kg)' },
   'measurements.waist': { ar: 'الخصر (سم)', en: 'Waist (cm)' },
   'measurements.hip': { ar: 'الورك (سم)', en: 'Hips (cm)' },
@@ -4200,31 +4125,16 @@ export const miscMessages = {
   'measurements.thigh': { ar: 'الفخذ (سم)', en: 'Thigh (cm)' },
   'measurements.bodyFat': { ar: 'نسبة الدهون %', en: 'Body fat %' },
   'measurements.notes': { ar: 'ملاحظة (اختياري)', en: 'Note (optional)' },
-  'measurements.save': { ar: 'حفظ', en: 'Save' },
-  'measurements.progress': { ar: 'التقدم', en: 'Progress' },
-  'measurements.delta': { ar: 'التغير {delta}', en: 'Change {delta}' },
   // E4b — persisted BNPL plans
   'bnpl.myPlans': { ar: 'خططي الحالية', en: 'My plans' },
-  'bnpl.noPlans': { ar: 'لا توجد خطط بعد', en: 'No plans yet' },
   'bnpl.paidOf': { ar: 'دفعة {paid} من {total}', en: 'Payment {paid} of {total}' },
   'bnpl.markPaid': { ar: 'سجّلي الدفعة', en: 'Mark as paid' },
-  'bnpl.status.ACTIVE': { ar: 'نشطة', en: 'Active' },
-  'bnpl.status.COMPLETED': { ar: 'مكتملة', en: 'Completed' },
   // E6a — life-stage journeys + period pampering
   'lifeStage.title': { ar: 'رحلتك الآن', en: 'Your journey now' },
   'lifeStage.autoHint': {
     ar: 'تم تحديدها تلقائياً — يمكنك تغييرها',
     en: 'Auto-detected — you can change it',
   },
-  'lifeStage.link.bridal': { ar: 'خدمة العروس', en: 'Bridal concierge' },
-  'lifeStage.link.packages': { ar: 'الباقات', en: 'Packages' },
-  'lifeStage.link.campaigns': { ar: 'الحملات', en: 'Campaigns' },
-  'lifeStage.link.cycle': { ar: 'متابعة الدورة', en: 'Cycle tracker' },
-  'lifeStage.link.clinics': { ar: 'العيادات', en: 'Clinics' },
-  'lifeStage.link.hub': { ar: 'مركز العافية', en: 'Wellness hub' },
-  'lifeStage.link.search': { ar: 'البحث', en: 'Search' },
-  'lifeStage.link.stores': { ar: 'المتاجر', en: 'Stores' },
-  'lifeStage.link.discover': { ar: 'اكتشفي', en: 'Discover' },
   'lifeStage.pamper.title': { ar: 'تدليل ما قبل الدورة', en: 'Pre-period pampering' },
   'lifeStage.pamper.active': {
     ar: 'دورتكِ قريبة — دللي نفسك بهذه العروض',

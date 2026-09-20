@@ -491,9 +491,6 @@ export const mobileCustomerAMessages = {
   'beautyProfile.hair-type': { ar: 'نوع الشعر: {type}', en: 'Hair type: {type}' },
   // 3.1 Beauty DNA — stack header + match sections
   'mobile.beautyProfile': { ar: 'بصمتي الجمالية', en: 'Beauty DNA' },
-  'mobile.beautyDna.skinMatch.title': { ar: 'تطابق درجات البشرة', en: 'Skin Shade Match' },
-  'mobile.beautyDna.hairMatch.title': { ar: 'تسريحات تناسب وجهكِ', en: 'Hair Style Match' },
-  'mobile.beautyDna.fragranceMatch.title': { ar: 'عطور تناسب ذوقكِ', en: 'Fragrance Match' },
   'mobile.beautyDna.missing.skinTone': {
     ar: 'حددي درجة بشرتكِ لعرض درجات كريم الأساس المطابقة',
     en: 'Set your skin tone to see matching foundation shades',
@@ -614,26 +611,6 @@ export const mobileCustomerAMessages = {
   },
 
   // ── beauty-wishlist-gifts ──
-  'beautyWishlist.title': { ar: 'قائمة الهدايا', en: 'Gift List' },
-  'beautyWishlist.subtitle': {
-    ar: 'شاركي قائمة أمنياتكِ مع الأصدقاء والعائلة',
-    en: 'Share your wishlist with friends and family',
-  },
-  'beautyWishlist.occasion': { ar: 'المناسبة', en: ' Occasion' },
-  'beautyWishlist.occasion-birthday': { ar: 'عيد ميلاد', en: 'Birthday' },
-  'beautyWishlist.occasion-eid': { ar: 'العيد', en: 'Eid' },
-  'beautyWishlist.occasion-wedding': { ar: 'زفاف', en: 'Wedding' },
-  'beautyWishlist.occasion-graduation': { ar: 'تخرج', en: 'Graduation' },
-  'beautyWishlist.occasion-valentine': { ar: 'عيد الحب', en: 'Valentine' },
-  'beautyWishlist.occasion-mothersday': { ar: 'عيد الأم', en: "Mother's Day" },
-  'beautyWishlist.share-title': { ar: 'رابط المشاركة', en: ' Share Link' },
-  'beautyWishlist.copied': { ar: 'تم النسخ', en: ' Copied' },
-  'beautyWishlist.copy': { ar: 'نسخ', en: ' Copy' },
-  'beautyWishlist.my-wishes': {
-    ar: 'أمنياتي ({emoji} {name})',
-    en: 'My Wishes ({emoji} {name})',
-  },
-  'beautyWishlist.add-wish': { ar: '+ إضافة أمنية', en: '+ Add a Wish' },
 
   // ── birthday-rewards ──
   'birthdayRewards.title': { ar: 'مكافآت الميلاد', en: 'Birthday Rewards' },
@@ -777,11 +754,6 @@ export const mobileCustomerAMessages = {
   'cycleTracker.day': { ar: 'اليوم {day}', en: 'Day {day}' },
   'cycleTracker.days': { ar: 'الأيام {days}', en: 'Days {days}' },
   'cycleTracker.tips': { ar: 'توصيات الجمال', en: ' Beauty Recommendations' },
-  'cycleTracker.services': { ar: 'الخدمات المناسبة', en: ' Recommended Services' },
-  'cycleTracker.phase-menstrual': { ar: 'الدورة', en: 'Menstrual' },
-  'cycleTracker.phase-follicular': { ar: 'الجريبي', en: 'Follicular' },
-  'cycleTracker.phase-ovulation': { ar: 'الإباضة', en: 'Ovulation' },
-  'cycleTracker.phase-luteal': { ar: 'الأصفري', en: 'Luteal' },
   // E4a — period tracking upgrade (mobile)
   'cycleTracker.fertileWindow': { ar: 'نافذة الخصوبة', en: 'Fertile window' },
   'cycleTracker.fertileToday': {

@@ -3,7 +3,6 @@
 export const navMessages = {
   'nav.home': { ar: 'الرئيسية', en: 'Home' },
   'nav.services': { ar: 'الخدمات', en: 'Services' },
-  'nav.bookings': { ar: 'الحجوزات', en: 'Bookings' },
   'nav.wallet': { ar: 'المحفظة', en: 'Wallet' },
   'nav.wellness-hub': { ar: 'مركز العافية', en: 'Wellness hub' },
   'nav.referrals': { ar: 'دعوة الصديقات', en: 'Referrals' },
@@ -44,8 +43,6 @@ export const navMessages = {
   },
   'common.brandName': { ar: 'جالكسي بيوتي', en: 'Galaxy of Beauty' },
   'common.close': { ar: 'إغلاق', en: 'Close' },
-  'common.switchToLight': { ar: 'تفعيل الوضع النهاري', en: 'Switch to light mode' },
-  'common.switchToDark': { ar: 'تفعيل الوضع الليلي', en: 'Switch to dark mode' },
   'nav.myBookings': { ar: 'حجوزاتي', en: 'My Bookings' },
   'nav.bookings.create': { ar: 'حجز جديد', en: 'New Booking' },
   'nav.wishlist': { ar: 'المفضلة', en: 'Wishlist' },
