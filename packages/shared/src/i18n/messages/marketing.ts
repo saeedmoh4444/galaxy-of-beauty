@@ -113,6 +113,7 @@ export const marketingMessages = {
   'marketing.services.title': { ar: 'الخدمات', en: 'Services' },
   'marketing.services.surprise-me': { ar: 'فاجئيني', en: 'Surprise me' },
   'marketing.services.search-placeholder': { ar: 'بحث عن خدمة...', en: 'Search for a service...' },
+  'marketing.services.sort-label': { ar: 'ترتيب الخدمات', en: 'Sort services' },
   'marketing.services.sort-newest': { ar: 'الأحدث', en: 'Newest' },
   'marketing.services.sort-price-asc': { ar: 'السعر: منخفض لأعلى', en: 'Price: low to high' },
   'marketing.services.sort-price-desc': { ar: 'السعر: أعلى لمنخفض', en: 'Price: high to low' },

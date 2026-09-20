@@ -202,7 +202,8 @@ export function KindnessPointsBadge({
             className="flex items-center justify-between rounded-lg bg-surface-muted px-2.5 py-1.5"
           >
             <span className="text-[10px] text-text-secondary">{a.action[locale]}</span>
-            <span className="text-[10px] font-bold text-pink-600 dark:text-pink-400">
+            {/* pink-700 keeps ≥4.5:1 on surface-muted (FE-009 axe gate) */}
+            <span className="text-[10px] font-bold text-pink-700 dark:text-pink-400">
               +{a.points}
             </span>
           </div>
