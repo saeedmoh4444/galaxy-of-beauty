@@ -3,6 +3,7 @@ import { TRPCError } from '@trpc/server';
 import { prisma } from '@galaxy/db';
 import { publicProcedure, technicianProcedure, router } from '../trpc';
 import { notFound, forbidden, badRequest } from '../lib/errors';
+import { isJummahBlocked, JUMMAH_BLOCK_REASON } from '../lib/jummah';
 
 export const slotRouter = router({
   /**
@@ -37,7 +38,8 @@ export const slotRouter = router({
         orderBy: { startAt: 'asc' },
       });
 
-      return slots;
+      // 6.4: Friday prayer window slots never show as bookable
+      return slots.filter((s) => !isJummahBlocked(s.startAt, s.endAt));
     }),
 
   /**
@@ -78,6 +80,10 @@ export const slotRouter = router({
       for (const slot of slots) {
         if (slot.startAt >= slot.endAt) {
           throw badRequest('startAt must be before endAt for all slots');
+        }
+        // 6.4: block slots overlapping the Friday prayer window
+        if (isJummahBlocked(slot.startAt, slot.endAt)) {
+          throw badRequest(`Slot overlaps ${JUMMAH_BLOCK_REASON}: ${slot.startAt.toISOString()}`);
         }
       }
 
@@ -150,6 +156,10 @@ export const slotRouter = router({
       for (const slot of slots) {
         if (slot.startAt >= slot.endAt) {
           throw badRequest('start must be before end for all time slots');
+        }
+        // 6.4: block slots overlapping the Friday prayer window
+        if (isJummahBlocked(slot.startAt, slot.endAt)) {
+          throw badRequest(`Slot overlaps ${JUMMAH_BLOCK_REASON}: ${slot.startAt.toISOString()}`);
         }
       }
 
