@@ -10,7 +10,8 @@
     "lint": "eslint . --max-warnings 250",
     "type-check": "tsc --noEmit",
     "clean": "rm -rf .next .turbo",
-    "test:e2e": "playwright test"
+    "test:e2e": "playwright test",
+    "test:a11y": "playwright test e2e/axe-a11y.spec.ts"
   },
   "dependencies": {
     "@dnd-kit/core": "^6.3.1",
