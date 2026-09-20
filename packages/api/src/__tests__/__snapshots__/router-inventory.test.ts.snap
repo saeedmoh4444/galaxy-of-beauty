@@ -612,6 +612,8 @@ notifications.markRead	mutation	protected
 notifications.registerPushToken	mutation	protected
 notifications.send	mutation	admin
 notifications.unreadCount	query	protected
+nps.byTechnician	query	public
+nps.markFollowedUp	mutation	admin
 nps.mine	query	customer
 nps.stats	query	admin
 nps.submit	mutation	customer

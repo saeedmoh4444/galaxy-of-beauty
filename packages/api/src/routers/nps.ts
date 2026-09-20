@@ -2,7 +2,8 @@ import { z } from 'zod';
 import { TRPCError } from '@trpc/server';
 import { prisma } from '@galaxy/db';
 import { SMALL_PAGE_SIZE } from '@galaxy/shared';
-import { customerProcedure, adminProcedure, router } from '../trpc';
+import { customerProcedure, adminProcedure, publicProcedure, router } from '../trpc';
+import { notifyUser } from '../lib/notify';
 
 /**
  * NPS post-booking survey (ENHANCEMENT_PLAN quick win #6).
@@ -40,7 +41,7 @@ export const npsRouter = router({
         });
       }
     }
-    return prisma.npsResponse.create({
+    const response = await prisma.npsResponse.create({
       data: {
         userId: ctx.user.id,
         bookingId: input.bookingId,
@@ -48,6 +49,28 @@ export const npsRouter = router({
         comment: input.comment?.trim() || null,
       },
     });
+
+    // 4.3 detractor loop: NPS ≤ 6 → alert every admin to follow up
+    // within 24h (markFollowedUp closes the loop).
+    if (input.score <= 6) {
+      const admins = await prisma.user.findMany({
+        where: { role: 'ADMIN' },
+        select: { id: true },
+      });
+      for (const admin of admins) {
+        await notifyUser({
+          userId: admin.id,
+          templateKey: 'nps_detractor',
+          vars: {
+            score: input.score,
+            comment: response.comment ?? '',
+            bookingId: input.bookingId ?? 0,
+          },
+          link: '/admin',
+        });
+      }
+    }
+    return response;
   }),
 
   /** The customer's own responses (used to render "already rated" states). */
@@ -58,6 +81,50 @@ export const npsRouter = router({
       take: SMALL_PAGE_SIZE,
     }),
   ),
+
+  /** 4.3: close the detractor loop — stamp the follow-up time. */
+  markFollowedUp: adminProcedure
+    .input(z.object({ responseId: z.number().int().positive() }))
+    .mutation(async ({ input }) => {
+      const response = await prisma.npsResponse.findUnique({ where: { id: input.responseId } });
+      if (!response) throw new TRPCError({ code: 'NOT_FOUND', message: 'Response not found' });
+      return prisma.npsResponse.update({
+        where: { id: input.responseId },
+        data: { followedUpAt: new Date() },
+      });
+    }),
+
+  /**
+   * 4.3: public NPS aggregate for a technician profile — the score comes
+   * from responses linked to the technician's bookings. NpsResponse has no
+   * booking relation (scalar bookingId), so join via a booking-id lookup.
+   */
+  byTechnician: publicProcedure
+    .input(z.object({ technicianId: z.number().int().positive() }))
+    .query(async ({ input }) => {
+      const bookingIds = (
+        await prisma.booking.findMany({
+          where: { technicianId: input.technicianId },
+          select: { id: true },
+        })
+      ).map((b) => b.id);
+      if (bookingIds.length === 0) {
+        return { total: 0, average: 0, distribution: { detractors: 0, passives: 0, promoters: 0 } };
+      }
+      const rows = await prisma.npsResponse.findMany({
+        where: { bookingId: { in: bookingIds } },
+        select: { score: true },
+      });
+      const total = rows.length;
+      const average = total === 0 ? 0 : rows.reduce((s, r) => s + r.score, 0) / total;
+      const distribution = { detractors: 0, passives: 0, promoters: 0 };
+      for (const r of rows) {
+        if (r.score <= 6) distribution.detractors += 1;
+        else if (r.score <= 8) distribution.passives += 1;
+        else distribution.promoters += 1;
+      }
+      return { total, average: Math.round(average * 100) / 100, distribution };
+    }),
 
   /** Aggregate dashboard for admins. */
   stats: adminProcedure.query(async () => {

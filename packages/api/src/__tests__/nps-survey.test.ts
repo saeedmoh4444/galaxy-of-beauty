@@ -175,4 +175,69 @@ describe('NPS survey', () => {
     const mine = await caller.nps.mine({});
     expect(Array.isArray(mine)).toBe(true);
   });
+
+  // ── 4.3 Customer Feedback Loop ──────────────────────────
+
+  it('a detractor score (≤ 6) alerts every admin to follow up within 24h', async () => {
+    const admin = await prisma.user.findFirst({ where: { role: 'ADMIN' } });
+    expect(admin).toBeTruthy();
+
+    const bookingId = await completedBooking(customer);
+    const caller = await callerFor(customer);
+    const res = await caller.nps.submit({
+      bookingId,
+      score: 4,
+      comment: 'التجربة كانت سيئة',
+    });
+    expect(res.score).toBe(4);
+
+    const alert = await prisma.notification.findFirst({
+      where: { userId: admin!.id, type: 'nps_detractor' },
+      orderBy: { createdAt: 'desc' },
+    });
+    expect(alert).toBeTruthy();
+  });
+
+  it('a promoter score (≥ 9) does not alert admins', async () => {
+    const admin = await prisma.user.findFirst({ where: { role: 'ADMIN' } });
+    const before = await prisma.notification.count({
+      where: { userId: admin!.id, type: 'nps_detractor' },
+    });
+
+    const bookingId = await completedBooking(customer);
+    const caller = await callerFor(customer);
+    await caller.nps.submit({ bookingId, score: 10 });
+
+    const after = await prisma.notification.count({
+      where: { userId: admin!.id, type: 'nps_detractor' },
+    });
+    expect(after).toBe(before);
+  });
+
+  it('markFollowedUp stamps the loop-closing timestamp', async () => {
+    const bookingId = await completedBooking(customer);
+    const caller = await callerFor(customer);
+    const res = await caller.nps.submit({ bookingId, score: 3 });
+
+    const admin = await prisma.user.findFirst({ where: { role: 'ADMIN' } });
+    const adminCaller = await callerFor({ id: admin!.id, role: 'ADMIN', email: admin!.email });
+    const updated = await adminCaller.nps.markFollowedUp({ responseId: res.id });
+    expect(updated.followedUpAt).toBeInstanceOf(Date);
+
+    const row = await prisma.npsResponse.findUnique({ where: { id: res.id } });
+    expect(row!.followedUpAt).toBeInstanceOf(Date);
+  });
+
+  it('byTechnician aggregates scores from the technician’s bookings', async () => {
+    const bookingId = await completedBooking(customer);
+    const caller = await callerFor(customer);
+    await caller.nps.submit({ bookingId, score: 9 });
+
+    const anon = await callerFor();
+    // Booking.technicianId stores the technician's USER id (house convention).
+    const agg = await anon.nps.byTechnician({ technicianId: technicianUserId });
+    expect(agg.total).toBeGreaterThanOrEqual(1);
+    expect(agg.average).toBeGreaterThanOrEqual(0);
+    expect(agg.distribution.promoters).toBeGreaterThanOrEqual(1);
+  });
 });
