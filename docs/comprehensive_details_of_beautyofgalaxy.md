@@ -315,7 +315,7 @@ Customer Shares Referral Code → Friend Registers with Code
 - **Skip link** — keyboard users can skip to main content
 - **Screen reader** — ARIA labels, roles, live regions on all components
 - **Reduced motion** — `prefers-reduced-motion: reduce` respected globally
-- **A11y linting** — `eslint-plugin-jsx-a11y` with strict rules in CI
+- **A11y linting** — `eslint-plugin-jsx-a11y` (web, warn-level) plus the **axe-core CI gate** (`apps/web/e2e/axe-a11y.spec.ts`, FE-009): zero serious/critical WCAG A/AA violations on scanned routes, moderate findings allowlist-only
 - **Semantic colour tokens** — 18 CSS custom properties with automatic dark mode
 
 ### 5.4 Design System
