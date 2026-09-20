@@ -1,9 +1,6 @@
 // Booking flow + booking status strings.
 
 export const bookingMessages = {
-  'booking.selectService': { ar: 'اختيار الخدمة', en: 'Select Service' },
-  'booking.selectTechnician': { ar: 'اختيار مقدمة الخدمة', en: 'Select Service Provider' },
-  'booking.selectTime': { ar: 'اختيار الوقت', en: 'Select Time' },
   'booking.confirm': { ar: 'تأكيد الحجز', en: 'Confirm Booking' },
   'booking.status.REQUESTED': { ar: 'قيد الطلب', en: 'Requested' },
   'booking.status.ACCEPTED': { ar: 'مقبول', en: 'Accepted' },
@@ -16,10 +13,6 @@ export const bookingMessages = {
   'booking.status.NO_SHOW': { ar: 'لم تحضر', en: 'No Show' },
   'booking.status.PAYMENT_AUTHORIZED': { ar: 'تم الدفع', en: 'Payment Authorized' },
   'booking.service': { ar: 'الخدمة', en: 'Service' },
-  'booking.technician': { ar: 'مقدمة الخدمة', en: 'Service Provider' },
-  'booking.dateTime': { ar: 'التاريخ والوقت', en: 'Date & Time' },
-  'booking.summary': { ar: 'ملخص الحجز', en: 'Booking Summary' },
-  'booking.discount': { ar: 'الخصم', en: 'Discount' },
 
   // Customer bookings list
   'booking.my-bookings': { ar: 'حجوزاتي', en: 'My Bookings' },
@@ -44,12 +37,6 @@ export const bookingMessages = {
   'familyAccount.emergency-contact': { ar: 'جهة اتصال للطوارئ', en: 'Emergency contact' },
   'familyAccount.allergies': { ar: 'الحساسية', en: 'Allergies' },
   'booking.bundle-selected': { ar: 'باقة ماما وأنا: {name}', en: 'Mommy & Me bundle: {name}' },
-  'booking.pref.gentle': { ar: 'منتجات لطيفة', en: 'Gentle products' },
-  'booking.pref.hypoallergenic': { ar: 'مضاد للحساسية', en: 'Hypoallergenic' },
-  'booking.pref.fragrance_free': { ar: 'خالٍ من العطور', en: 'Fragrance-free' },
-  'booking.pref.natural': { ar: 'منتجات طبيعية', en: 'Natural products' },
-  'booking.pref.quick': { ar: 'جلسات سريعة', en: 'Quick sessions' },
-  'booking.pref.quiet': { ar: 'بيئة هادئة', en: 'Quiet environment' },
   'booking.confirm-cancel': { ar: 'تأكيد الإلغاء', en: 'Confirm Cancellation' },
   'booking.cancel-booking': { ar: 'إلغاء الحجز', en: 'Cancel Booking' },
   'booking.confirm-cancel-question': {
@@ -105,8 +92,6 @@ export const bookingMessages = {
     en: 'Date & Time: {date} {time}',
   },
   'booking.choose-address-placeholder': { ar: 'اختر عنواناً...', en: 'Select an address...' },
-  'booking.promo-code': { ar: 'كود الخصم (اختياري)', en: 'Promo Code (optional)' },
-  'booking.promo-example': { ar: 'مثال: WELCOME20', en: 'e.g. WELCOME20' },
   'booking.notes-placeholder': { ar: 'أي ملاحظات إضافية...', en: 'Any additional notes...' },
   'booking.previous': { ar: 'السابق', en: 'Previous' },
   'booking.price': { ar: 'السعر', en: 'Price' },

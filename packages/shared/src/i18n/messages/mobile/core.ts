@@ -3,21 +3,9 @@
 // reuse the shared core/nav/auth modules).
 
 export const mobileCoreMessages = {
-  'mobile.done': { ar: 'تم', en: 'Done' },
-  'mobile.success': { ar: 'تم بنجاح', en: 'Success' },
   'mobile.failed': { ar: 'فشلت العملية', en: 'Operation failed' },
   'mobile.twoFactorCode': { ar: 'رمز التحقق', en: 'Verification code' },
   'mobile.newBooking': { ar: 'حجز جديد', en: 'New Booking' },
-  'mobile.bookingConfirmed': { ar: 'تم تأكيد الحجز', en: 'Booking confirmed' },
-  'mobile.bookingCancelled': { ar: 'تم إلغاء الحجز', en: 'Booking cancelled' },
-  'mobile.selectDate': { ar: 'اختاري التاريخ', en: 'Select date' },
-  'mobile.totalAmount': { ar: 'المبلغ الإجمالي', en: 'Total amount' },
-  'mobile.checkout': { ar: 'إتمام الدفع', en: 'Checkout' },
-  'mobile.invoices': { ar: 'الفواتير', en: 'Invoices' },
-  'mobile.points': { ar: 'نقاط', en: 'Points' },
-  'mobile.tier': { ar: 'الفئة', en: 'Tier' },
-  'mobile.rewards': { ar: 'المكافآت', en: 'Rewards' },
-  'mobile.cashback': { ar: 'استرداد نقدي', en: 'Cashback' },
   'mobile.videoConsult': { ar: 'استشارة فيديو', en: 'Video Consultation' },
   'mobile.referrals': { ar: 'الإحالات', en: 'Referrals' },
   'mobile.adminFinance': { ar: 'الإدارة المالية', en: 'Finance' },

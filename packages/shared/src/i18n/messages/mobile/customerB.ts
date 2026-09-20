@@ -191,121 +191,6 @@ export const mobileCustomerBMessages = {
   },
   'mobile.postTreatment.instructions': { ar: 'التعليمات', en: ' Instructions' },
   'mobile.postTreatment.timeline': { ar: 'الجدول الزمني', en: ' Timeline' },
-  'mobile.postTreatment.day-1': { ar: 'اليوم 1', en: 'Day 1' },
-  'mobile.postTreatment.day-2-3': { ar: 'اليوم 2-3', en: 'Day 2-3' },
-  'mobile.postTreatment.day-4-7': { ar: 'اليوم 4-7', en: 'Day 4-7' },
-  'mobile.postTreatment.day-4-plus': { ar: 'اليوم 4+', en: 'Day 4+' },
-  'mobile.postTreatment.day-1-2': { ar: 'اليوم 1-2', en: 'Day 1-2' },
-  'mobile.postTreatment.day-3-5': { ar: 'اليوم 3-5', en: 'Day 3-5' },
-  'mobile.postTreatment.day-6-plus': { ar: 'اليوم 6+', en: 'Day 6+' },
-  'mobile.postTreatment.day-2-7': { ar: 'اليوم 2-7', en: 'Day 2-7' },
-  'mobile.postTreatment.week-2-plus': { ar: 'الأسبوع 2+', en: 'Week 2+' },
-  'mobile.postTreatment.aftercare-facial-1': { ar: 'لا تلمسي وجهكِ', en: "Don't touch your face" },
-  'mobile.postTreatment.aftercare-facial-2': {
-    ar: 'تجنبي المكياج ٢٤ ساعة',
-    en: 'Avoid makeup for 24 hours',
-  },
-  'mobile.postTreatment.aftercare-facial-3': {
-    ar: 'استخدمي واقي شمس',
-    en: 'Use sunscreen',
-  },
-  'mobile.postTreatment.aftercare-facial-4': {
-    ar: 'اشربي ماء بكثرة',
-    en: 'Drink plenty of water',
-  },
-  'mobile.postTreatment.aftercare-waxing-1': {
-    ar: 'تجنبي الشمس ٤٨ ساعة',
-    en: 'Avoid the sun for 48 hours',
-  },
-  'mobile.postTreatment.aftercare-waxing-2': {
-    ar: 'لا تستخدمي مقشر',
-    en: "Don't use exfoliators",
-  },
-  'mobile.postTreatment.aftercare-waxing-3': {
-    ar: 'ارتدي ملابس قطنية',
-    en: 'Wear cotton clothing',
-  },
-  'mobile.postTreatment.aftercare-waxing-4': {
-    ar: 'رطبي المنطقة',
-    en: 'Moisturize the area',
-  },
-  'mobile.postTreatment.aftercare-hair-color-1': {
-    ar: 'لا تغسلي شعركِ ٤٨ ساعة',
-    en: "Don't wash your hair for 48 hours",
-  },
-  'mobile.postTreatment.aftercare-hair-color-2': {
-    ar: 'استخدمي شامبو خالي من الكبريتات',
-    en: 'Use a sulfate-free shampoo',
-  },
-  'mobile.postTreatment.aftercare-hair-color-3': {
-    ar: 'تجنبي الحرارة',
-    en: 'Avoid heat styling',
-  },
-  'mobile.postTreatment.aftercare-hair-color-4': {
-    ar: 'استخدمي بلسم مرطب',
-    en: 'Use a moisturizing conditioner',
-  },
-  'mobile.postTreatment.aftercare-nails-1': {
-    ar: 'تجنبي الماء الساخن',
-    en: 'Avoid hot water',
-  },
-  'mobile.postTreatment.aftercare-nails-2': {
-    ar: 'استخدمي كريم يدين',
-    en: 'Use hand cream',
-  },
-  'mobile.postTreatment.aftercare-nails-3': {
-    ar: 'لا تستخدمي أظافركِ كأدوات',
-    en: "Don't use your nails as tools",
-  },
-  'mobile.postTreatment.aftercare-nails-4': { ar: 'زيوت للأظافر', en: 'Apply nail oil' },
-  'mobile.postTreatment.action-facial-day-1': {
-    ar: 'لا تغسلي وجهكِ — اتركي المنتجات',
-    en: "Don't wash your face — leave the products on",
-  },
-  'mobile.postTreatment.action-facial-day-2-3': {
-    ar: 'غسول لطيف + مرطب',
-    en: 'Gentle cleanser + moisturizer',
-  },
-  'mobile.postTreatment.action-facial-day-4-7': {
-    ar: 'عودي لروتينك الطبيعي',
-    en: 'Return to your normal routine',
-  },
-  'mobile.postTreatment.action-waxing-day-1': {
-    ar: 'لا تلمسي المنطقة — تجنبي الحرارة',
-    en: "Don't touch the area — avoid heat",
-  },
-  'mobile.postTreatment.action-waxing-day-2-3': {
-    ar: 'ترطيب خفيف + ملابس فضفاضة',
-    en: 'Light moisturizing + loose clothing',
-  },
-  'mobile.postTreatment.action-waxing-day-4-plus': {
-    ar: 'تقشير لطيف لمنع الشعر تحت الجلد',
-    en: 'Gentle exfoliation to prevent ingrown hairs',
-  },
-  'mobile.postTreatment.action-hair-color-day-1-2': {
-    ar: 'لا تغسلي — ثبتي اللون',
-    en: "Don't wash — set the color",
-  },
-  'mobile.postTreatment.action-hair-color-day-3-5': {
-    ar: 'غسيل بماء بارد + بلسم',
-    en: 'Rinse with cool water + conditioner',
-  },
-  'mobile.postTreatment.action-hair-color-day-6-plus': {
-    ar: 'روتين طبيعي مع حماية من الحرارة',
-    en: 'Normal routine with heat protection',
-  },
-  'mobile.postTreatment.action-nails-day-1': {
-    ar: 'حافظي على جفاف الأظافر',
-    en: 'Keep your nails dry',
-  },
-  'mobile.postTreatment.action-nails-day-2-7': {
-    ar: 'رطبي يومياً + زيت للأظافر',
-    en: 'Moisturize daily + nail oil',
-  },
-  'mobile.postTreatment.action-nails-week-2-plus': {
-    ar: 'لمسات تصحيحية عند الحاجة',
-    en: 'Touch-ups when needed',
-  },
 
   // ---- post-care ----
   'mobile.postCare.title': { ar: 'عناية ما بعد الخدمة', en: 'Post-Service Care' },
@@ -336,7 +221,6 @@ export const mobileCustomerBMessages = {
   'mobile.clinics.slots': { ar: 'المواعيد المتاحة', en: 'Open slots' },
   'mobile.clinics.no-slots': { ar: 'لا توجد مواعيد متاحة', en: 'No open slots' },
   'mobile.clinics.book': { ar: 'حجز استشارة', en: 'Book consultation' },
-  'mobile.clinics.type': { ar: 'نوع الاستشارة', en: 'Treatment type' },
   'mobile.clinics.consent': {
     ar: 'أوافق على الإقرار الطبي',
     en: 'I consent to the medical disclaimer',
@@ -344,7 +228,6 @@ export const mobileCustomerBMessages = {
   'mobile.clinics.confirm': { ar: 'تأكيد الحجز', en: 'Confirm' },
   'mobile.clinics.booked': { ar: 'تم إرسال طلب الحجز', en: 'Booking request sent' },
   'mobile.clinics.packages': { ar: 'باقات العلاج', en: 'Treatment packages' },
-  'mobile.clinics.my': { ar: 'استشاراتي', en: 'My consultations' },
   'mobile.clinics.login-to-book': {
     ar: 'سجلي الدخول للحجز',
     en: 'Sign in to book',
@@ -504,9 +387,6 @@ export const mobileCustomerBMessages = {
     ar: 'اكتشفي أحدث الصيحات والفنيات المميزات',
     en: 'Discover the latest trends and top service providers',
   },
-  'mobile.social.tab-trending': { ar: 'رائج', en: ' Trending' },
-  'mobile.social.tab-spotlight': { ar: 'مميزات', en: ' Spotlight' },
-  'mobile.social.tab-tips': { ar: 'نصائح', en: ' Tips' },
   'mobile.social.tab-feed': { ar: 'قبل وبعد', en: ' Before & After' },
   'mobile.social.trending-services': { ar: 'الخدمات الرائجة', en: ' Trending Services' },
   'mobile.social.bookings-count': { ar: '{count} حجز', en: '{count} bookings' },
@@ -533,7 +413,6 @@ export const mobileCustomerBMessages = {
   'mobile.wellnessHub.energy': { ar: 'طاقة', en: 'Energy' },
   'mobile.wellnessHub.sleep': { ar: 'نوم', en: 'Sleep' },
   'mobile.wellnessHub.water': { ar: 'ماء', en: 'Water' },
-  'mobile.wellnessHub.skin-type': { ar: 'النوع: {type}', en: 'Type: {type}' },
   'mobile.wellnessHub.weekly-summary': { ar: 'ملخص الأسبوع', en: ' Weekly Summary' },
   'mobile.wellnessHub.avg-mood': {
     ar: 'متوسط المزاج: {avg}/5',
@@ -561,8 +440,6 @@ export const mobileCustomerBMessages = {
     ar: 'تغذية من أجل جمالك',
     en: 'Nutrition for your beauty',
   },
-  'mobile.wellnessContent.journalPromptTitle': { ar: 'سؤال اليوم', en: "Today's prompt" },
-  'mobile.wellnessContent.load-error': { ar: 'فشل تحميل المحتوى', en: 'Failed to load content' },
   // E6a — life-stage journeys + period pampering (mobile)
   'mobile.lifeStage.title': { ar: 'رحلتك الآن', en: 'Your journey now' },
   'mobile.lifeStage.pamper-title': { ar: 'تدليل ما قبل الدورة', en: 'Pre-period pampering' },
@@ -606,7 +483,6 @@ export const mobileCustomerBMessages = {
   },
   'mobile.booking.family-member-none': { ar: 'لا (حجز لنفسي)', en: 'No (book for myself)' },
   'mobile.booking.on-behalf-of': { ar: 'على حساب: {name}', en: 'On behalf of: {name}' },
-  'mobile.booking.bundle': { ar: 'الباقة', en: 'Bundle' },
   'mobile.booking.per-hour': { ar: 'لكل ساعة', en: 'per hour' },
   'mobile.booking.babysitting-disclaimer': {
     ar: 'تنبيه: خدمة جليسة أطفال — يُرجى إضافة جهة اتصال للطوارئ في ملف الطفل. نتحقق من مقدمات الخدمة، ويبقى الأهل مسؤولين عن الإشراف النهائي.',
@@ -623,23 +499,15 @@ export const mobileCustomerBMessages = {
     ar: 'باقة ماما وأنا: {name}',
     en: 'Mommy & Me bundle: {name}',
   },
-  'mobile.booking.pref.gentle': { ar: 'منتجات لطيفة', en: 'Gentle products' },
-  'mobile.booking.pref.hypoallergenic': { ar: 'مضاد للحساسية', en: 'Hypoallergenic' },
-  'mobile.booking.pref.fragrance_free': { ar: 'خالٍ من العطور', en: 'Fragrance-free' },
-  'mobile.booking.pref.natural': { ar: 'منتجات طبيعية', en: 'Natural products' },
-  'mobile.booking.pref.quick': { ar: 'جلسات سريعة', en: 'Quick sessions' },
-  'mobile.booking.pref.quiet': { ar: 'بيئة هادئة', en: 'Quiet environment' },
   'mobile.services.mommy-friendly': { ar: 'مناسب للأمهات والأطفال', en: 'Mommy & kid friendly' },
   'mobile.video.unavailable': { ar: 'الجلسة غير متاحة', en: 'Session unavailable' },
   'mobile.video.start': { ar: 'بدء الاستشارة', en: 'Start consultation' },
   'mobile.video.start-failed': { ar: 'تعذر بدء الجلسة', en: 'Failed to start session' },
   'mobile.video.title': { ar: 'جلسة فيديو', en: ' Video Session' },
   'mobile.video.join-room': { ar: 'دخول الغرفة', en: ' Enter Room' },
-  'mobile.video.room-toast': { ar: 'رقم الغرفة: {room}', en: 'Room number: {room}' },
   'mobile.video.unknown': { ar: 'غير معروف', en: 'Unknown' },
   'mobile.video.room-label': { ar: 'رقم الغرفة', en: 'Room number' },
   'mobile.video.booking-id': { ar: 'الحجز: {id}', en: 'Booking: {id}' },
-  'mobile.video.video-ui': { ar: 'واجهة الفيديو', en: 'Video interface' },
   'mobile.video.connecting': { ar: 'جارٍ الاتصال…', en: 'Connecting…' },
   'mobile.video.waiting-peer': {
     ar: 'بانتظار انضمام الطرف الآخر…',
@@ -655,11 +523,6 @@ export const mobileCustomerBMessages = {
     ar: 'تعذر الوصول إلى الكاميرا أو الميكروفون',
     en: 'Could not access camera or microphone',
   },
-  'mobile.video.integration-note': {
-    ar: 'يتم التكامل مع Daily.co أو Whereby',
-    en: 'Integration with Daily.co or Whereby is in progress',
-  },
-  'mobile.video.copied': { ar: 'تم النسخ', en: ' Copied' },
 
   // ---- gift-card-market ----
   'mobile.giftCardMarket.title': { ar: 'سوق البطاقات', en: ' Gift Card Market' },

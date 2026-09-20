@@ -15,11 +15,6 @@ export const mobileTechMessages = {
   // ---- Waitlist ----
   'mobile.tech.waitlist.title': { ar: 'قائمة الانتظار', en: 'Waitlist' },
   'mobile.tech.waitlist.subtitle': { ar: 'إدارة طلبات الانتظار', en: 'Manage waiting requests' },
-  'mobile.tech.waitlist.notified': { ar: 'تم الإشعار', en: 'Notified' },
-  'mobile.tech.waitlist.notify-available': {
-    ar: 'إشعار بتوفر موعد',
-    en: 'Notify When Available',
-  },
 
   // ---- Calendar ----
   'mobile.tech.calendar.title': { ar: 'التقويم', en: 'Calendar' },
@@ -76,8 +71,6 @@ export const mobileTechMessages = {
   'mobile.tech.performance.revenue-sar': { ar: 'ر.س الإيرادات', en: 'SAR revenue' },
   'mobile.tech.performance.attendance-rate': { ar: 'نسبة الحضور', en: 'Attendance Rate' },
   'mobile.tech.performance.bookings-trend': { ar: 'اتجاه الحجوزات', en: 'Bookings Trend' },
-  'mobile.tech.performance.month-june': { ar: 'يونيو', en: 'June' },
-  'mobile.tech.performance.month-august': { ar: 'أغسطس', en: 'August' },
   'mobile.tech.performance.top-services': {
     ar: 'خدماتي الأكثر طلباً',
     en: 'My Most Requested Services',
