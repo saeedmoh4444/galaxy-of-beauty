@@ -4123,6 +4123,7 @@ model NpsResponse {
   score     Int      // 0-10 NPS scale
   comment   String?  @db.VarChar(500)
   createdAt DateTime @default(now())
+  followedUpAt DateTime? // 4.3: set when the detractor loop is closed
 
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 

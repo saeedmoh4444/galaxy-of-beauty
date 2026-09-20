@@ -3640,6 +3640,21 @@ async function main() {
           en: 'Sorry {{providerName}}, your {{subjectName}} was rejected.{{reason}}',
         },
       },
+      // 4.3 — detractor alert for admins. Category 'admin' is not a
+      // preference toggle → always delivered.
+      {
+        key: 'nps_detractor',
+        category: 'admin',
+        channels: ['in_app', 'push'],
+        titleJson: {
+          ar: 'تقييم منخفض — متابعة خلال 24 ساعة',
+          en: 'Detractor NPS — follow up within 24h',
+        },
+        bodyJson: {
+          ar: 'تقييم {{score}}/10{{comment}}. الحجز {{bookingId}} — تابعي العميلة خلال 24 ساعة.',
+          en: 'Score {{score}}/10{{comment}}. Booking {{bookingId}} — follow up with the customer within 24h.',
+        },
+      },
       // E2 — clinic consultation decisions. Category 'provider' is not a
       // preference toggle → always delivered.
       {
