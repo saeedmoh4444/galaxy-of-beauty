@@ -338,7 +338,6 @@ export const marketingMessages = {
     ar: 'عرض المعرض كاملاً',
     en: 'View full gallery',
   },
-  'marketing.service-detail.stage-friendly': { ar: 'مناسبة لرحلتك', en: 'Fits your journey' },
 
   // Technician profile
   'marketing.technician-profile.not-found': {
@@ -511,10 +510,6 @@ export const marketingMessages = {
   'marketing.plans.free-home-service': { ar: 'خدمة منزلية مجانية', en: 'Free home service' },
   'marketing.plans.dedicated-technician': { ar: 'فنية مخصصة', en: 'Dedicated provider' },
   'marketing.plans.my-title': { ar: 'اشتراكاتي', en: 'My subscriptions' },
-  'marketing.plans.my-empty': {
-    ar: 'ليس لديك اشتراك نشط بعد',
-    en: 'You have no active subscription yet',
-  },
   'marketing.plans.my-usage': { ar: 'الاستخدام هذا الشهر', en: 'Usage this month' },
   'marketing.plans.my-renewal': { ar: 'التجديد التالي', en: 'Next renewal' },
   'marketing.plans.my-pause': { ar: 'إيقاف مؤقت', en: 'Pause' },
@@ -524,7 +519,6 @@ export const marketingMessages = {
   'marketing.plans.my-autorenew-off': { ar: 'تجديد تلقائي: موقوف', en: 'Auto-renew: off' },
   'marketing.plans.my-autorenew-disable': { ar: 'أوقفي التجديد', en: 'Turn off auto-renew' },
   'marketing.plans.my-autorenew-enable': { ar: 'فعّلي التجديد', en: 'Turn on auto-renew' },
-  'marketing.plans.my-toggle-autorenew': { ar: 'تبديل التجديد التلقائي', en: 'Toggle auto-renew' },
   'marketing.plans.status-active': { ar: 'نشط', en: 'Active' },
   'marketing.plans.status-paused': { ar: 'موقوف مؤقتاً', en: 'Paused' },
   'marketing.plans.status-cancelled': { ar: 'ملغي', en: 'Cancelled' },
@@ -658,7 +652,6 @@ export const marketingMessages = {
     en: 'Stroll through the booths of the world’s top brands',
   },
   'marketing.beauty-expo.visitors': { ar: ' {count} زائر', en: ' {count} visitors' },
-  'marketing.beauty-shorts.subtitle': { ar: 'فيديوهات قصيرة وسريعة', en: 'Short and quick videos' },
   'marketing.beauty-stories.subtitle': {
     ar: 'قصص يومية من فنياتنا',
     en: 'Daily stories from our service providers',
@@ -1728,66 +1721,10 @@ export const marketingMessages = {
     ar: 'أحدث الإطلالات من مجتمع جالكسي بيوتي',
     en: 'The latest looks from the Galaxy of Beauty community',
   },
-  'marketing.mommy-and-me.pkg-mani-title': {
-    ar: 'مانيكير الأم وابنتها',
-    en: 'Mommy and daughter manicure',
-  },
-  'marketing.mommy-and-me.pkg-mani-desc': {
-    ar: 'جلسة مانيكير للأم مع ابنتها في وقت واحد',
-    en: 'A manicure session for mom and her daughter at the same time',
-  },
-  'marketing.mommy-and-me.svc-manicure': { ar: 'مانيكير', en: 'Manicure' },
-  'marketing.mommy-and-me.svc-nail-polish': { ar: 'طلاء أظافر', en: 'Nail polish' },
-  'marketing.mommy-and-me.pkg-hair-title': {
-    ar: 'تسريحة الأم وابنتها',
-    en: 'Mommy and daughter hairstyle',
-  },
-  'marketing.mommy-and-me.pkg-hair-desc': {
-    ar: 'تسريحتين متناسقتين لمناسبتكِ الخاصة',
-    en: 'Two matching hairstyles for your special occasion',
-  },
-  'marketing.mommy-and-me.svc-hairstyle': { ar: 'تسريحة شعر', en: 'Hairstyling' },
-  'marketing.mommy-and-me.pkg-skin-title': {
-    ar: 'عناية بالبشرة للأم وابنتها',
-    en: 'Skincare for mommy and daughter',
-  },
-  'marketing.mommy-and-me.pkg-skin-desc': {
-    ar: 'جلسة تنظيف وترطيب للبشرة معاً',
-    en: 'A cleansing and hydrating skin session together',
-  },
-  'marketing.mommy-and-me.svc-facial': { ar: 'تنظيف بشرة', en: 'Facial cleansing' },
-  'marketing.mommy-and-me.svc-mask': { ar: 'ماسك وجه', en: 'Face mask' },
-  'marketing.mommy-and-me.pkg-wedding-title': {
-    ar: 'إطلالة الزفاف للأم والعروس',
-    en: 'The wedding look for mother and bride',
-  },
-  'marketing.mommy-and-me.pkg-wedding-desc': {
-    ar: 'مكياج وتسريحة للأم وبنتها يوم الزفاف',
-    en: 'Makeup and hairstyling for mom and her daughter on the wedding day',
-  },
-  'marketing.mommy-and-me.svc-makeup': { ar: 'مكياج', en: 'Makeup' },
-  'marketing.mommy-and-me.pkg-birthday-title': { ar: 'حفلة أعياد الميلاد', en: 'Birthday party' },
-  'marketing.mommy-and-me.pkg-birthday-desc': {
-    ar: 'باقة تجميل لحفلة عيد ميلاد الأم أو البنت',
-    en: 'A beauty package for mom or daughter birthday party',
-  },
-  'marketing.mommy-and-me.pkg-spa-title': {
-    ar: 'يوم منتجع صحي للأم وابنتها',
-    en: 'A spa day for mommy and daughter',
-  },
-  'marketing.mommy-and-me.pkg-spa-desc': {
-    ar: 'يوم كامل من الاسترخاء والعناية معاً',
-    en: 'A full day of relaxation and care together',
-  },
-  'marketing.mommy-and-me.svc-massage': { ar: 'مساج', en: 'Massage' },
-  'marketing.mommy-and-me.svc-moroccan-bath': { ar: 'حمام مغربي', en: 'Moroccan bath' },
-  'marketing.mommy-and-me.svc-skincare': { ar: 'عناية بالبشرة', en: 'Skincare' },
-  'marketing.mommy-and-me.svc-pedicure': { ar: 'باديكير', en: 'Pedicure' },
   'marketing.mommy-and-me.subtitle': {
     ar: 'لحظات جميلة تشاركينها مع ابنتكِ. باقات تجميل مصممة خصيصاً للأمهات وبناتهن — لأن الجمال يصبح أجمل عندما نتشاركه',
     en: 'Beautiful moments you share with your daughter. Beauty packages designed especially for mothers and daughters — because beauty becomes more beautiful when shared',
   },
-  'marketing.mommy-and-me.price-sar': { ar: '{price} ر.س', en: '{price} SAR' },
   'marketing.mommy-and-me.per-two': { ar: 'للشخصين', en: 'For two' },
   'marketing.mommy-and-me.book-for-two': { ar: 'احجزي لشخصين', en: 'Book for two' },
   'marketing.mommy-and-me.gift-ideal': { ar: 'هدية مثالية', en: ' The perfect gift' },
@@ -2196,7 +2133,6 @@ export const marketingMessages = {
     ar: 'مدربة وخبيرة تدرب فنيات أخريات',
     en: 'A trainer and expert who mentors other service providers',
   },
-  'marketing.technician-badges.badge-fallback': { ar: 'شارة تميز', en: 'Excellence badge' },
   'marketing.technician-badges.title': { ar: 'شارات الفنيات', en: 'Service Provider badges' },
   'marketing.technician-badges.subtitle': {
     ar: 'تعرفي على شارات التميز التي تحصل عليها فنياتنا — دليل على الاحترافية والجودة',
@@ -2320,7 +2256,6 @@ export const marketingMessages = {
     ar: 'تحتفظ جالكسي بيوتي بالحق في تعديل هذه الشروط في أي وقت. سيتم إشعاركِ بأي تغييرات جوهرية عبر البريد الإلكتروني أو عبر المنصة.',
     en: 'Galaxy of Beauty reserves the right to amend these terms at any time. You will be notified of any material changes via email or through the platform.',
   },
-  'marketing.tutorials.difficulty-unknown': { ar: 'غير معروف', en: 'Unknown' },
   'marketing.tutorials.difficulty-beginner': { ar: 'مبتدئ', en: 'Beginner' },
   'marketing.tutorials.difficulty-intermediate': { ar: 'متوسط', en: 'Intermediate' },
   'marketing.tutorials.difficulty-advanced': { ar: 'متقدم', en: 'Advanced' },

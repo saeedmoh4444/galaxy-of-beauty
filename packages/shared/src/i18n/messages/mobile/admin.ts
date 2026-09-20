@@ -139,7 +139,6 @@ export const mobileAdminMessages = {
   'mobile.admin.beauty-events.ended-f': { ar: 'منتهية', en: 'Ended' },
   'mobile.admin.beauty-events.upcoming-badge': { ar: 'قادم', en: 'Upcoming' },
   'mobile.admin.beauty-events.ended': { ar: 'منتهي', en: 'Ended' },
-  'mobile.admin.beauty-events.attendees': { ar: '{count} مشاركة', en: '{count} participants' },
 
   // ---- Cashback ----
   'mobile.admin.cashback.subtitle': { ar: 'سياسات استرداد النقود', en: 'Cashback policies' },
@@ -183,15 +182,6 @@ export const mobileAdminMessages = {
     ar: 'إدارة مستويات العضوية والمكافآت',
     en: 'Manage membership tiers and rewards',
   },
-  'mobile.admin.loyalty.tier-summary': {
-    ar: 'خصم {discount}% · {points} نقطة',
-    en: '{discount}% discount · {points} points',
-  },
-  'mobile.admin.loyalty.members-count': { ar: '{count} عضوة', en: '{count} members' },
-  'mobile.admin.loyalty.stats': { ar: 'إحصائيات', en: 'Statistics' },
-  'mobile.admin.loyalty.total-members': { ar: 'مجموع العضوات', en: 'Total members' },
-  'mobile.admin.loyalty.points-awarded': { ar: 'نقطة ممنوحة', en: 'Points awarded' },
-  'mobile.admin.loyalty.retention-rate': { ar: 'نسبة الاحتفاظ', en: 'Retention rate' },
 
   // ---- Promo ----
   'mobile.admin.promo.title': { ar: 'إدارة العروض', en: 'Manage Promotions' },
@@ -216,12 +206,8 @@ export const mobileAdminMessages = {
     ar: 'إدارة اشتراكات العضوية',
     en: 'Manage membership subscriptions',
   },
-  'mobile.admin.subscriptions.sar-monthly': { ar: 'ر.س شهرياً', en: 'SAR monthly' },
-  'mobile.admin.subscriptions.cancelled': { ar: 'ملغاة', en: 'Cancelled' },
   'mobile.admin.subscriptions.free': { ar: 'مجاناً', en: 'Free' },
   'mobile.admin.subscriptions.price-month': { ar: '{price} ر.س/شهر', en: '{price} SAR/month' },
-  'mobile.admin.subscriptions.cancelled-m': { ar: 'ملغى', en: 'Cancelled' },
-  'mobile.admin.subscriptions.since': { ar: 'منذ {date}', en: 'Since {date}' },
 
   // ---- Settings ----
   'mobile.admin.settings.title': { ar: 'الإعدادات', en: 'Settings' },
