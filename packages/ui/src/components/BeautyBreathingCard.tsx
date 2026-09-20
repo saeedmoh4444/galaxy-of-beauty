@@ -28,7 +28,7 @@ export function BeautyBreathingCard({
       <div className="text-center">
         <span className="text-3xl">🫁</span>
         <h4 className="mt-1 text-sm font-bold text-sky-800 dark:text-sky-200">{title}</h4>
-        <p className="text-[10px] text-sky-500 dark:text-sky-400">{subtitle}</p>
+        <p className="text-[10px] text-sky-700 dark:text-sky-400">{subtitle}</p>
       </div>
       <div className="mt-3 space-y-2">
         {[

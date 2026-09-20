@@ -110,7 +110,7 @@ export function AcademyCertificateBadge({
           </span>
         </div>
         <h4 className="mt-2 text-sm font-bold text-blue-800 dark:text-blue-200">{title}</h4>
-        <p className="text-[10px] text-blue-500 dark:text-blue-400">{academyName}</p>
+        <p className="text-[10px] text-blue-700 dark:text-blue-400">{academyName}</p>
       </div>
 
       {/* Course name */}
@@ -179,7 +179,7 @@ export function AcademyCertificateBadge({
       </div>
 
       {/* Accreditation */}
-      <p className="mt-2 text-center text-[9px] text-blue-500 dark:text-blue-400">
+      <p className="mt-2 text-center text-[9px] text-blue-700 dark:text-blue-400">
         {accreditationText}
       </p>
     </div>

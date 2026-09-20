@@ -155,7 +155,7 @@ export function BeautySeasonalLookbookCard({
         <span className="text-xl">{s.emoji}</span>
         <div>
           <h4 className="text-sm font-bold text-pink-700 dark:text-pink-300">{title}</h4>
-          <p className="text-[10px] text-pink-500 dark:text-pink-400">{s.title[locale]}</p>
+          <p className="text-[10px] text-pink-700 dark:text-pink-400">{s.title[locale]}</p>
         </div>
       </div>
 

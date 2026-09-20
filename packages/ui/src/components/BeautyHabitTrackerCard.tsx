@@ -54,7 +54,7 @@ export function BeautyHabitTrackerCard({
           </span>
           <div>
             <h4 className="text-sm font-bold text-emerald-700 dark:text-emerald-300">{title}</h4>
-            <p className="text-[10px] text-emerald-500 dark:text-emerald-400">
+            <p className="text-[10px] text-emerald-700 dark:text-emerald-400">
               {done}/{items.length} · {pct}%
             </p>
           </div>
@@ -90,7 +90,7 @@ export function BeautyHabitTrackerCard({
             >
               {h.name}
             </span>
-            <span className={cn('text-xs', h.done ? 'text-emerald-500' : 'text-text-tertiary')}>
+            <span className={cn('text-xs', h.done ? 'text-emerald-700' : 'text-text-tertiary')}>
               {h.done ? '' : '○'}
             </span>
           </button>

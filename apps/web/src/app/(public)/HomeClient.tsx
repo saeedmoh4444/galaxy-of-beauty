@@ -439,7 +439,7 @@ export function HomeClient({
                 padding="lg"
                 className="text-center bg-surface-elevated/80 backdrop-blur"
               >
-                <p className="text-lg font-bold text-yellow-500 dark:text-yellow-400">
+                <p className="text-lg font-bold text-yellow-800 dark:text-yellow-400">
                   {'★'.repeat(tst.rating)}
                   {'☆'.repeat(5 - tst.rating)}
                 </p>

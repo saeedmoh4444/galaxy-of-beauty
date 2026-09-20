@@ -23,7 +23,7 @@ export function BeautyCelluliteCard({
         <span className="text-xl">🍊</span>
         <div>
           <h4 className="text-sm font-bold text-orange-700 dark:text-orange-300">{title}</h4>
-          <p className="text-[10px] text-orange-500 dark:text-orange-400">{subtitle}</p>
+          <p className="text-[10px] text-orange-700 dark:text-orange-400">{subtitle}</p>
         </div>
       </div>
       <div className="mt-3 space-y-1">

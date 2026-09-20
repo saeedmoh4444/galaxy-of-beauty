@@ -50,7 +50,7 @@ export function BeautyFootCareCard({
         <span className="text-xl">🦶</span>
         <div>
           <h4 className="text-sm font-bold text-teal-700 dark:text-teal-300">{title}</h4>
-          <p className="text-[10px] text-teal-500 dark:text-teal-400">{subtitle}</p>
+          <p className="text-[10px] text-teal-700 dark:text-teal-400">{subtitle}</p>
         </div>
       </div>
       <div className="mt-3 grid grid-cols-2 gap-1.5">

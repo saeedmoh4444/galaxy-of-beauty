@@ -50,7 +50,7 @@ function Countdown({ endsAt }: { endsAt: string }) {
     return () => clearInterval(i);
   }, [endsAt, t]);
   return (
-    <span className="text-xs font-semibold text-red-500 dark:text-red-400 animate-pulse">
+    <span className="text-xs font-semibold text-red-700 dark:text-red-400 animate-pulse">
       {' '}
       {label}
     </span>

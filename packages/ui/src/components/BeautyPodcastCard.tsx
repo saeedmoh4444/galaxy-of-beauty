@@ -59,7 +59,7 @@ export function BeautyPodcastCard({
         </div>
         <div>
           <h4 className="text-sm font-bold text-rose-700 dark:text-rose-300">{title}</h4>
-          <p className="text-[10px] text-rose-500 dark:text-rose-400">{subtitle}</p>
+          <p className="text-[10px] text-rose-700 dark:text-rose-400">{subtitle}</p>
         </div>
         {episode.episodeNumber && (
           <span className="ms-auto shrink-0 rounded-full bg-rose-50 px-2 py-0.5 text-[10px] font-bold text-rose-600 dark:bg-rose-950 dark:text-rose-400">

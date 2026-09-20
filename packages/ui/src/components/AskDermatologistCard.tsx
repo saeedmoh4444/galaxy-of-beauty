@@ -119,7 +119,7 @@ export function AskDermatologistCard({
           )}
         </div>
         <p className="mt-1 text-xs font-bold text-blue-800 dark:text-blue-200">{arabicDate}</p>
-        <p className="text-[10px] text-blue-500 dark:text-blue-400">8:00 {sessionTimeText}</p>
+        <p className="text-[10px] text-blue-700 dark:text-blue-400">8:00 {sessionTimeText}</p>
       </div>
 
       {/* Questions counter */}

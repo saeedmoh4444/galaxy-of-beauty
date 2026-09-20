@@ -105,7 +105,7 @@ export default function SmartSchedulePage(): JSX.Element {
                       </div>
                     </div>
                     <div className="text-end">
-                      <span className="text-xs text-amber-500 dark:text-amber-400">
+                      <span className="text-xs text-amber-800 dark:text-amber-400">
                         {s.rating as number}
                       </span>
                       <Button size="sm" className="mt-1 block">

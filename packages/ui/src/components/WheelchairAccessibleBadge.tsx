@@ -106,7 +106,7 @@ export function WheelchairAccessibleBadge({
         </span>
         <div>
           <h4 className="text-sm font-bold text-blue-700 dark:text-blue-300">{title}</h4>
-          <p className="text-[10px] text-blue-500 dark:text-blue-400">
+          <p className="text-[10px] text-blue-700 dark:text-blue-400">
             {features.length} {accessibilityCountText}
           </p>
         </div>

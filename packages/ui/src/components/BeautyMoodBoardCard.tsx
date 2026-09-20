@@ -48,7 +48,7 @@ export function BeautyMoodBoardCard({
           </span>
           <div>
             <h4 className="text-sm font-bold text-violet-700 dark:text-violet-300">{title}</h4>
-            <p className="text-[10px] text-violet-500 dark:text-violet-400">
+            <p className="text-[10px] text-violet-700 dark:text-violet-400">
               {items.length} {countSuffix}
             </p>
           </div>

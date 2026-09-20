@@ -123,7 +123,7 @@ export function BeautyCertificationPathCard({
         </div>
         <div className="min-w-0 flex-1">
           <h4 className="text-sm font-bold text-blue-700 dark:text-blue-300">{p.title[locale]}</h4>
-          <p className="text-[10px] text-blue-500 dark:text-blue-400">{subtitle}</p>
+          <p className="text-[10px] text-blue-700 dark:text-blue-400">{subtitle}</p>
         </div>
         {p.accredited && (
           <span className="shrink-0 rounded-full bg-emerald-50 px-2 py-0.5 text-[9px] font-bold text-emerald-700 dark:bg-emerald-950 dark:text-emerald-300">

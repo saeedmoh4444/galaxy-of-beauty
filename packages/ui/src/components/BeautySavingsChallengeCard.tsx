@@ -60,7 +60,7 @@ export function BeautySavingsChallengeCard({
         <h4 className="mt-1 text-sm font-bold text-emerald-700 dark:text-emerald-300">
           {challenge.name}
         </h4>
-        <p className="text-[10px] text-emerald-500 dark:text-emerald-400">
+        <p className="text-[10px] text-emerald-700 dark:text-emerald-400">
           {dailyTarget} {currencyText} {dailyText} · {challenge.days} {daysText}
         </p>
       </div>

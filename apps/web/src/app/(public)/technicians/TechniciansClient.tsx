@@ -94,7 +94,7 @@ export function TechniciansClient({ data }: { data: TechniciansPageData }): JSX.
                     <p className="text-sm text-text-secondary">{cityName}</p>
                     {bio && <p className="mt-1 line-clamp-2 text-xs text-text-tertiary">{bio}</p>}
                     <div className="mt-3 flex items-center gap-3 text-sm">
-                      <span className="flex items-center gap-1 text-amber-500 dark:text-amber-400">
+                      <span className="flex items-center gap-1 text-amber-800 dark:text-amber-400">
                         <Icon name="star" size="sm" />
                         {rating.toFixed(1)}
                       </span>

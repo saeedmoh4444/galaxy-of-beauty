@@ -177,7 +177,7 @@ export function BridalJourneyTimeline({
       <div className="text-center">
         <span className="text-3xl" aria-hidden="true"></span>
         <h4 className="mt-1 text-sm font-bold text-rose-700 dark:text-rose-300">{title}</h4>
-        <p className="text-[10px] text-rose-500 dark:text-rose-400">{subtitle}</p>
+        <p className="text-[10px] text-rose-700 dark:text-rose-400">{subtitle}</p>
         {weddingDate && (
           <p className="mt-0.5 text-[10px] font-bold text-rose-600 dark:text-rose-400">
             {dateLabel} {weddingDate}
@@ -280,7 +280,7 @@ export function BridalJourneyTimeline({
       </div>
 
       {/* Footer */}
-      <p className="mt-2 text-center text-[9px] text-rose-500 dark:text-rose-400">{footerText}</p>
+      <p className="mt-2 text-center text-[9px] text-rose-700 dark:text-rose-400">{footerText}</p>
     </div>
   );
 }

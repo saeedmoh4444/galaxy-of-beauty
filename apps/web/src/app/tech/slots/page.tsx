@@ -114,7 +114,7 @@ export default function TechSlotsPage(): JSX.Element {
                     )}
                   </span>
                   <span
-                    className={`text-xs ${s.isBooked ? 'text-red-500 dark:text-red-400' : 'text-green-500 dark:text-green-400'}`}
+                    className={`text-xs ${s.isBooked ? 'text-red-700 dark:text-red-400' : 'text-green-500 dark:text-green-400'}`}
                   >
                     {s.isBooked ? t('tech.slots.booked') : t('tech.slots.available')}
                   </span>

@@ -56,7 +56,7 @@ export function BeautySecretSantaCard({
           🎁
         </span>
         <h4 className="mt-1 text-sm font-bold text-red-700 dark:text-red-300">{title}</h4>
-        <p className="text-[10px] text-red-500 dark:text-red-400">{group}</p>
+        <p className="text-[10px] text-red-700 dark:text-red-400">{group}</p>
       </div>
 
       <div className="mt-3 grid grid-cols-2 gap-2">

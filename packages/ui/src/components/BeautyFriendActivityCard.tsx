@@ -44,7 +44,7 @@ export function BeautyFriendActivityCard({
         <span className="text-xl" aria-hidden="true"></span>
         <div>
           <h4 className="text-sm font-bold text-fuchsia-700 dark:text-fuchsia-300">{title}</h4>
-          <p className="text-[10px] text-fuchsia-500 dark:text-fuchsia-400">
+          <p className="text-[10px] text-fuchsia-700 dark:text-fuchsia-400">
             {activities.length} {countSuffix}
           </p>
         </div>
@@ -62,7 +62,7 @@ export function BeautyFriendActivityCard({
                 <span className="font-bold">{a.friend}</span> {a.action}
               </p>
             </div>
-            <span className="text-[9px] text-fuchsia-500 dark:text-fuchsia-400 shrink-0">
+            <span className="text-[9px] text-fuchsia-700 dark:text-fuchsia-400 shrink-0">
               {a.time}
             </span>
           </div>

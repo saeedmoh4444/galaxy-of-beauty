@@ -47,7 +47,7 @@ export function BeautyDreamBoardCard({
           🌟
         </span>
         <h4 className="mt-1 text-sm font-bold text-violet-800 dark:text-violet-200">{title}</h4>
-        <p className="text-[10px] text-violet-500 dark:text-violet-400">
+        <p className="text-[10px] text-violet-700 dark:text-violet-400">
           {dreams.length} {dreamCountText}
         </p>
       </div>
@@ -73,7 +73,7 @@ export function BeautyDreamBoardCard({
         )}
       </div>
 
-      <p className="mt-2 text-center text-[9px] text-violet-500 dark:text-violet-400">
+      <p className="mt-2 text-center text-[9px] text-violet-700 dark:text-violet-400">
         {footerText}
       </p>
     </div>

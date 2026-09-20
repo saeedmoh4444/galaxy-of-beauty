@@ -97,7 +97,7 @@ export function LayawayBadge({
           <span className="text-lg" aria-hidden="true"></span>
           <div>
             <h4 className="text-sm font-bold text-violet-700 dark:text-violet-300">{title}</h4>
-            <p className="text-[10px] text-violet-500 dark:text-violet-400">
+            <p className="text-[10px] text-violet-700 dark:text-violet-400">
               {installmentsPrefix}
               {installments}
               {installmentsSuffix}
@@ -114,19 +114,19 @@ export function LayawayBadge({
       {/* Price breakdown */}
       <div className="mt-3 grid grid-cols-3 gap-2 text-center">
         <div className="rounded-xl bg-violet-50 p-2 dark:bg-violet-950">
-          <p className="text-[10px] text-violet-500 dark:text-violet-400">{totalLabel}</p>
+          <p className="text-[10px] text-violet-700 dark:text-violet-400">{totalLabel}</p>
           <p className="text-sm font-bold text-violet-800 dark:text-violet-200">
             {totalPrice} {currencySuffix}
           </p>
         </div>
         <div className="rounded-xl bg-violet-50 p-2 dark:bg-violet-950">
-          <p className="text-[10px] text-violet-500 dark:text-violet-400">{installmentLabel}</p>
+          <p className="text-[10px] text-violet-700 dark:text-violet-400">{installmentLabel}</p>
           <p className="text-sm font-bold text-violet-800 dark:text-violet-200">
             {installmentAmount} {currencySuffix}
           </p>
         </div>
         <div className="rounded-xl bg-violet-50 p-2 dark:bg-violet-950">
-          <p className="text-[10px] text-violet-500 dark:text-violet-400">{installmentsLabel}</p>
+          <p className="text-[10px] text-violet-700 dark:text-violet-400">{installmentsLabel}</p>
           <p className="text-sm font-bold text-violet-800 dark:text-violet-200">{installments}x</p>
         </div>
       </div>

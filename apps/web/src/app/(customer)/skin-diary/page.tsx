@@ -122,7 +122,7 @@ export default function SkinDiaryPage(): JSX.Element {
                 <div className="mt-1 flex items-center gap-1">
                   <span className="text-xs text-text-secondary"> {e.hydration as number}/10</span>
                   {(e.concerns as string[])?.map((c: string) => (
-                    <span key={c} className="text-[10px] text-red-500 dark:text-red-400">
+                    <span key={c} className="text-[10px] text-red-700 dark:text-red-400">
                       •{c}
                     </span>
                   ))}

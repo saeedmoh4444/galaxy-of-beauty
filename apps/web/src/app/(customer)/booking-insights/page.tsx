@@ -81,7 +81,7 @@ export default function BookingInsightsPage(): JSX.Element {
                 </div>
                 <div className="flex justify-between">
                   <span>{t('bookingInsights.cancelled')}</span>
-                  <span className="font-bold text-red-500 dark:text-red-400">
+                  <span className="font-bold text-red-700 dark:text-red-400">
                     {(insights?.cancelledBookings as number) ?? 0}
                   </span>
                 </div>

@@ -94,7 +94,7 @@ export function BeautySeasonalReminderCard({
           {reminderPrefix}
           {s.title[locale]}
         </h4>
-        <p className="text-[10px] text-sky-500 dark:text-sky-400">{subtitle}</p>
+        <p className="text-[10px] text-sky-700 dark:text-sky-400">{subtitle}</p>
       </div>
       <div className="mt-3 space-y-1.5">
         {s.reminders.map((r, i) => (
