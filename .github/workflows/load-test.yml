@@ -1,0 +1,56 @@
+name: Load Test
+
+on:
+  workflow_dispatch:
+    inputs:
+      target-url:
+        description: 'Base URL to test'
+        type: string
+        default: 'https://galaxyofbeauty.sa'
+      scenario:
+        description: 'Scenario'
+        type: choice
+        options: [smoke, load]
+        default: load
+      vus:
+        description: 'Virtual users (load scenario)'
+        type: number
+        default: 30
+      duration:
+        description: 'Hold duration (load scenario)'
+        type: string
+        default: '60s'
+  schedule:
+    # Saturday 03:00 SAST (01:00 UTC) — off-peak; no other scheduled workflows exist
+    - cron: '0 1 * * 6'
+
+permissions:
+  contents: read
+
+jobs:
+  load-test:
+    name: Load Test
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v7
+
+      # Smoke always runs — 3 requests, cheap sanity check
+      - name: Smoke test
+        uses: grafana/k6-action@v0.3.1
+        with:
+          filename: scripts/load/smoke.js
+          flags: --env TARGET_URL=${{ inputs.target-url || 'https://galaxyofbeauty.sa' }}
+
+      # Load stage on manual load scenario or the weekly schedule.
+      # Threshold breach => k6 exits non-zero => job goes red BY DESIGN;
+      # triage via the k6 output in this step + Sentry.
+      - name: Load test
+        if: inputs.scenario == 'load' || github.event_name == 'schedule'
+        uses: grafana/k6-action@v0.3.1
+        with:
+          filename: scripts/load/load.js
+          flags: >-
+            --env TARGET_URL=${{ inputs.target-url || 'https://galaxyofbeauty.sa' }}
+            --env VUS=${{ inputs.vus || 30 }}
+            --env DURATION=${{ inputs.duration || '60s' }}
