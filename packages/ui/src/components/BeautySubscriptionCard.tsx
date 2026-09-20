@@ -121,7 +121,7 @@ export function BeautySubscriptionCard({
         <div className="mt-1 space-y-0.5">
           {t.includes.map((item) => (
             <div key={item.ar} className="flex items-center gap-1.5">
-              <span className="text-[10px] text-emerald-500">✅</span>
+              <span className="text-[10px] text-emerald-700">✅</span>
               <span className="text-[10px] text-text-secondary">{item[locale]}</span>
             </div>
           ))}

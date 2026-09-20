@@ -52,7 +52,7 @@ export function BeautyAccountabilityCard({
           🤝
         </span>
         <h4 className="mt-1 text-sm font-bold text-teal-700 dark:text-teal-300">{title}</h4>
-        <p className="text-[10px] text-teal-500 dark:text-teal-400">
+        <p className="text-[10px] text-teal-700 dark:text-teal-400">
           {partner} {encouragesText} {goal}
         </p>
       </div>

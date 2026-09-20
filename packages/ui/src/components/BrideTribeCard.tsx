@@ -88,7 +88,7 @@ export function BrideTribeCard({
       <div className="text-center">
         <span className="text-3xl" aria-hidden="true"></span>
         <h4 className="mt-1 text-sm font-bold text-rose-700 dark:text-rose-300">{title}</h4>
-        <p className="text-[10px] text-rose-500 dark:text-rose-400">{subtitle}</p>
+        <p className="text-[10px] text-rose-700 dark:text-rose-400">{subtitle}</p>
       </div>
 
       {/* Bride */}

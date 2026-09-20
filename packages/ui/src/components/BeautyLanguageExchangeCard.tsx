@@ -60,7 +60,7 @@ export function BeautyLanguageExchangeCard({
         </span>
         <div>
           <h4 className="text-sm font-bold text-teal-700 dark:text-teal-300">{title}</h4>
-          <p className="text-[10px] text-teal-500 dark:text-teal-400">
+          <p className="text-[10px] text-teal-700 dark:text-teal-400">
             {fromLang === 'ar' ? arToEnLabel : enToArLabel}
           </p>
         </div>

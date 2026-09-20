@@ -122,7 +122,7 @@ export default function ColorAnalysisPage(): JSX.Element {
               {' '}
               {t('color.jewelry')}
             </span>
-            <span className="text-lg font-bold text-amber-500 dark:text-amber-400">
+            <span className="text-lg font-bold text-amber-800 dark:text-amber-400">
               {t(s.jewelry)}
             </span>
           </div>

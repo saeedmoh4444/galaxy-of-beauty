@@ -67,7 +67,7 @@ export function SharedWishlistCard({
           </span>
           <div>
             <h4 className="text-sm font-bold text-pink-700 dark:text-pink-300">{title}</h4>
-            <p className="text-[10px] text-pink-500 dark:text-pink-400">
+            <p className="text-[10px] text-pink-700 dark:text-pink-400">
               {items.length}
               {wishesCountText}
               {gifted > 0 && `${gifted} ${giftedText}`}

@@ -65,7 +65,7 @@ export function StudentDiscountBadge({
           </span>
           <div>
             <h4 className="text-sm font-bold text-orange-700 dark:text-orange-300">{title}</h4>
-            <p className="text-[10px] text-orange-500 dark:text-orange-400">
+            <p className="text-[10px] text-orange-700 dark:text-orange-400">
               {discount}% {discountText}
             </p>
           </div>

@@ -54,7 +54,7 @@ export function BeautyRecipeCard({
           <h4 className="text-sm font-bold text-emerald-700 dark:text-emerald-300">
             {recipe.title}
           </h4>
-          <p className="text-[10px] text-emerald-500 dark:text-emerald-400">
+          <p className="text-[10px] text-emerald-700 dark:text-emerald-400">
             {recipe.duration} · {naturalText}
             {recipe.forSkin && ` · ${recipe.forSkin}`}
           </p>

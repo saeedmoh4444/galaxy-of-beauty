@@ -106,7 +106,7 @@ export default function WishlistPage(): JSX.Element {
                         <p className="text-xs text-text-secondary">{technician.city as string}</p>
                       </div>
                     </div>
-                    <div className="flex items-center gap-1 text-sm text-amber-500 dark:text-amber-400">
+                    <div className="flex items-center gap-1 text-sm text-amber-800 dark:text-amber-400">
                       <Icon name="star" size="sm" />
                       <span>{Number(technician.ratingAvg).toFixed(1)}</span>
                     </div>

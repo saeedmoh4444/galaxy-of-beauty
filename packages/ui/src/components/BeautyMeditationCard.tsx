@@ -26,7 +26,7 @@ export function BeautyMeditationCard({
       <div className="text-center">
         <span className="text-3xl">🧘</span>
         <h4 className="mt-1 text-sm font-bold text-violet-800 dark:text-violet-200">{title}</h4>
-        <p className="text-[10px] text-violet-500 dark:text-violet-400">{subtitle}</p>
+        <p className="text-[10px] text-violet-700 dark:text-violet-400">{subtitle}</p>
       </div>
       <div className="mt-3 space-y-2">
         {[

@@ -65,7 +65,7 @@ export function MirrorStickerCard({
           🪞
         </span>
         <h4 className="mt-1 text-sm font-bold text-pink-700 dark:text-pink-300">{title}</h4>
-        <p className="text-[10px] text-pink-500 dark:text-pink-400">{subtitle}</p>
+        <p className="text-[10px] text-pink-700 dark:text-pink-400">{subtitle}</p>
       </div>
 
       {/* Mirror frame */}
@@ -98,7 +98,7 @@ export function MirrorStickerCard({
         ))}
       </div>
 
-      <p className="mt-2 text-center text-[9px] text-pink-500 dark:text-pink-400">
+      <p className="mt-2 text-center text-[9px] text-pink-700 dark:text-pink-400">
         {morningRitualText}
       </p>
     </div>

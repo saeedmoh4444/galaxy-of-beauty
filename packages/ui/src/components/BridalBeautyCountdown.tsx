@@ -81,7 +81,7 @@ export function BridalBeautyCountdown({
         <h4 className="mt-1 text-sm font-bold text-rose-700 dark:text-rose-300">
           {isPast ? weddingDayTitle : countdownTitle}
         </h4>
-        <p className="text-[10px] text-rose-500 dark:text-rose-400">
+        <p className="text-[10px] text-rose-700 dark:text-rose-400">
           {isPast ? congratsText : `${daysLeft} ${daysRemainingText}`}
         </p>
       </div>

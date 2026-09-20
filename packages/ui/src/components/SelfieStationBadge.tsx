@@ -57,7 +57,7 @@ export function SelfieStationBadge({
         </span>
         <div>
           <h4 className="text-sm font-bold text-fuchsia-700 dark:text-fuchsia-300">{title}</h4>
-          <p className="text-[10px] text-fuchsia-500 dark:text-fuchsia-400">{subtitle}</p>
+          <p className="text-[10px] text-fuchsia-700 dark:text-fuchsia-400">{subtitle}</p>
         </div>
       </div>
 

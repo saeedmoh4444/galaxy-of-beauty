@@ -54,7 +54,7 @@ export default function VideoTestimonialsPage(): JSX.Element {
               </div>
               <div className="mt-2 flex items-center gap-1">
                 <span className="text-sm font-bold">{t.userName as string}</span>
-                <span className="text-amber-500 dark:text-amber-400">
+                <span className="text-amber-800 dark:text-amber-400">
                   {''.repeat(t.rating as number)}
                 </span>
               </div>
@@ -98,7 +98,7 @@ export default function VideoTestimonialsPage(): JSX.Element {
               <button
                 key={s}
                 onClick={() => setRating(s)}
-                className={`text-2xl ${s <= rating ? 'text-amber-500 dark:text-amber-400' : 'text-gray-300 dark:text-gray-600'}`}
+                className={`text-2xl ${s <= rating ? 'text-amber-800 dark:text-amber-400' : 'text-gray-300 dark:text-gray-600'}`}
               ></button>
             ))}
           </div>

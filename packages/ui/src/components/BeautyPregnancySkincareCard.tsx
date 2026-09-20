@@ -23,7 +23,7 @@ export function BeautyPregnancySkincareCard({
         <span className="text-xl">🤰</span>
         <div>
           <h4 className="text-sm font-bold text-pink-700 dark:text-pink-300">{title}</h4>
-          <p className="text-[10px] text-pink-500 dark:text-pink-400">{subtitle}</p>
+          <p className="text-[10px] text-pink-700 dark:text-pink-400">{subtitle}</p>
         </div>
       </div>
       <div className="mt-3 grid grid-cols-2 gap-1.5">

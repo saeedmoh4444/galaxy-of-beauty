@@ -53,7 +53,7 @@ export function PressKitCard({
         </span>
         <div>
           <h4 className="text-sm font-bold text-sky-700 dark:text-sky-300">{title}</h4>
-          <p className="text-[10px] text-sky-500 dark:text-sky-400">{subtitle}</p>
+          <p className="text-[10px] text-sky-700 dark:text-sky-400">{subtitle}</p>
         </div>
       </div>
 
@@ -86,7 +86,7 @@ export function PressKitCard({
         {downloadButtonText}
       </button>
 
-      <p className="mt-1.5 text-center text-[9px] text-sky-500 dark:text-sky-400">{footerText}</p>
+      <p className="mt-1.5 text-center text-[9px] text-sky-700 dark:text-sky-400">{footerText}</p>
     </div>
   );
 }

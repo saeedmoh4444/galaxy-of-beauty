@@ -103,7 +103,7 @@ export function FakeNameGenerator({
         </span>
         <div>
           <h4 className="text-sm font-bold text-fuchsia-700 dark:text-fuchsia-300">{title}</h4>
-          <p className="text-[10px] text-fuchsia-500 dark:text-fuchsia-400">{subtitle}</p>
+          <p className="text-[10px] text-fuchsia-700 dark:text-fuchsia-400">{subtitle}</p>
         </div>
       </div>
 
@@ -119,7 +119,7 @@ export function FakeNameGenerator({
           <button
             type="button"
             onClick={() => setSelected(null)}
-            className="mt-1 block w-full text-center text-[10px] text-fuchsia-500 underline hover:text-fuchsia-700 dark:text-fuchsia-400"
+            className="mt-1 block w-full text-center text-[10px] text-fuchsia-700 underline hover:text-fuchsia-700 dark:text-fuchsia-400"
           >
             {changeLabel}
           </button>
@@ -140,7 +140,7 @@ export function FakeNameGenerator({
           {/* Generated name */}
           {generated && (
             <div className="mt-3 rounded-xl bg-fuchsia-50 p-3 text-center dark:bg-fuchsia-950">
-              <p className="text-[10px] text-fuchsia-500 dark:text-fuchsia-400">
+              <p className="text-[10px] text-fuchsia-700 dark:text-fuchsia-400">
                 {suggestionLabel}
               </p>
               <p className="mt-1 text-xl font-bold text-fuchsia-700 dark:text-fuchsia-300">

@@ -103,7 +103,7 @@ export function BeautyBankCard({
 
         <div className="mt-1 flex items-baseline justify-between">
           <span className="text-lg font-bold text-pink-800 dark:text-pink-200">{funded}</span>
-          <span className="text-[10px] text-pink-500 dark:text-pink-400">
+          <span className="text-[10px] text-pink-700 dark:text-pink-400">
             {goalPrefix}
             {goal}
           </span>
@@ -131,21 +131,21 @@ export function BeautyBankCard({
               💇
             </p>
             <p className="font-bold text-pink-800 dark:text-pink-200">50 {currencySuffix}</p>
-            <p className="text-pink-500 dark:text-pink-400">{example1}</p>
+            <p className="text-pink-700 dark:text-pink-400">{example1}</p>
           </div>
           <div className="rounded-lg bg-surface-elevated/60 p-2">
             <p className="text-lg" aria-hidden="true">
               💄
             </p>
             <p className="font-bold text-pink-800 dark:text-pink-200">150 {currencySuffix}</p>
-            <p className="text-pink-500 dark:text-pink-400">{example2}</p>
+            <p className="text-pink-700 dark:text-pink-400">{example2}</p>
           </div>
           <div className="rounded-lg bg-surface-elevated/60 p-2">
             <p className="text-lg" aria-hidden="true">
               🧖
             </p>
             <p className="font-bold text-pink-800 dark:text-pink-200">300 {currencySuffix}</p>
-            <p className="text-pink-500 dark:text-pink-400">{example3}</p>
+            <p className="text-pink-700 dark:text-pink-400">{example3}</p>
           </div>
         </div>
       </div>
@@ -160,7 +160,7 @@ export function BeautyBankCard({
       </button>
 
       {/* Impact stories link */}
-      <p className="mt-2 text-center text-[9px] text-pink-500 dark:text-pink-400 underline cursor-pointer">
+      <p className="mt-2 text-center text-[9px] text-pink-700 dark:text-pink-400 underline cursor-pointer">
         {storiesLinkText}
       </p>
     </div>

@@ -84,7 +84,7 @@ export function TechnicianProfileClient({ data }: { data: TechnicianProfileData 
               {area ? `${locale === 'ar' ? '، ' : ', '}${area}` : ''}
             </p>
             <div className="mt-2 flex items-center justify-center gap-4 sm:justify-start">
-              <span className="text-amber-500 dark:text-amber-400"> {rating.toFixed(1)}</span>
+              <span className="text-amber-800 dark:text-amber-400"> {rating.toFixed(1)}</span>
               <span className="text-text-tertiary">
                 {t('marketing.technician-profile.completed-bookings', { count: completed })}
               </span>
