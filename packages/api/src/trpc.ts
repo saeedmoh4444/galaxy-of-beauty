@@ -54,8 +54,14 @@ const rateLimitGuard = middleware(async ({ ctx, next, path }) => {
 });
 
 // ---- Public (no auth) ----
-// All procedures get request-counted and rate-limited by default
-export const publicProcedure = procedure.use(requestCounter).use(rateLimitGuard);
+// All procedures get request-counted and rate-limited by default.
+// .meta({ tier }) stamps the minimum auth tier; it is inert at runtime and
+// consumed only by the router-inventory snapshot gate (__tests__/
+// router-inventory.test.ts) — meta propagates through .use() chains.
+export const publicProcedure = procedure
+  .use(requestCounter)
+  .use(rateLimitGuard)
+  .meta({ tier: 'public' });
 
 // ---- CSRF Protection (applied to mutations) ----
 const csrfGuard = middleware(({ ctx, next }) => {
@@ -82,7 +88,11 @@ const csrfGuard = middleware(({ ctx, next }) => {
 /**
  * Public mutation — request-counted, CSRF-protected, no auth required.
  */
-export const publicMutation = procedure.use(requestCounter).use(rateLimitGuard).use(csrfGuard);
+export const publicMutation = procedure
+  .use(requestCounter)
+  .use(rateLimitGuard)
+  .use(csrfGuard)
+  .meta({ tier: 'public' });
 
 // ---- Authenticated ----
 const isAuthed = middleware(({ ctx, next }) => {
@@ -92,12 +102,15 @@ const isAuthed = middleware(({ ctx, next }) => {
   return next({ ctx: { ...ctx, user: ctx.user } });
 });
 
-export const protectedProcedure = procedure.use(isAuthed).use(rateLimitGuard);
+export const protectedProcedure = procedure
+  .use(isAuthed)
+  .use(rateLimitGuard)
+  .meta({ tier: 'protected' });
 
 /**
  * Protected mutation — requires auth + CSRF.
  */
-export const protectedMutation = protectedProcedure.use(csrfGuard);
+export const protectedMutation = protectedProcedure.use(csrfGuard).meta({ tier: 'protected' });
 
 // ---- Role-based ----
 const hasRole = (...roles: string[]) =>
@@ -111,17 +124,23 @@ const hasRole = (...roles: string[]) =>
     return next({ ctx: { ...ctx, user: ctx.user } });
   });
 
-export const customerProcedure = protectedProcedure.use(hasRole('CUSTOMER'));
-export const technicianProcedure = protectedProcedure.use(hasRole('TECHNICIAN'));
-export const adminProcedure = protectedProcedure.use(hasRole('ADMIN'));
-export const staffProcedure = protectedProcedure.use(hasRole('TECHNICIAN', 'ADMIN'));
+export const customerProcedure = protectedProcedure
+  .use(hasRole('CUSTOMER'))
+  .meta({ tier: 'customer' });
+export const technicianProcedure = protectedProcedure
+  .use(hasRole('TECHNICIAN'))
+  .meta({ tier: 'technician' });
+export const adminProcedure = protectedProcedure.use(hasRole('ADMIN')).meta({ tier: 'admin' });
+export const staffProcedure = protectedProcedure
+  .use(hasRole('TECHNICIAN', 'ADMIN'))
+  .meta({ tier: 'staff' });
 
 /**
  * Role-based mutations — require auth + role + CSRF.
  */
-export const customerMutation = customerProcedure.use(csrfGuard);
-export const technicianMutation = technicianProcedure.use(csrfGuard);
-export const adminMutation = adminProcedure.use(csrfGuard);
+export const customerMutation = customerProcedure.use(csrfGuard).meta({ tier: 'customer' });
+export const technicianMutation = technicianProcedure.use(csrfGuard).meta({ tier: 'technician' });
+export const adminMutation = adminProcedure.use(csrfGuard).meta({ tier: 'admin' });
 
 // ---- Resource Ownership ----
 
