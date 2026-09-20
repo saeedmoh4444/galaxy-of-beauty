@@ -143,7 +143,7 @@ export default function StyleMatchPage(): JSX.Element {
                     {customColors.length > 1 && (
                       <button
                         onClick={() => removeColor(i)}
-                        className="text-text-tertiary hover:text-red-500 hover:dark:text-red-400 text-xs"
+                        className="text-text-tertiary hover:text-red-700 hover:dark:text-red-400 text-xs"
                       ></button>
                     )}
                   </div>

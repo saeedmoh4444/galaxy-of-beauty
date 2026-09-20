@@ -148,7 +148,7 @@ export function PanicButton({
           </span>
           <div>
             <p className="text-sm font-bold text-red-700 dark:text-red-300">{title}</p>
-            <p className="text-[10px] text-red-500 dark:text-red-400">{idleDescription}</p>
+            <p className="text-[10px] text-red-700 dark:text-red-400">{idleDescription}</p>
           </div>
         </button>
       )}
@@ -162,7 +162,7 @@ export function PanicButton({
             </span>
             <div>
               <p className="text-sm font-bold text-red-700 dark:text-red-300">{confirmTitle}</p>
-              <p className="text-[10px] text-red-500 dark:text-red-400">{confirmDescription}</p>
+              <p className="text-[10px] text-red-700 dark:text-red-400">{confirmDescription}</p>
             </div>
           </div>
 
@@ -232,7 +232,7 @@ export function PanicButton({
           </div>
           <div>
             <p className="text-sm font-bold text-red-700 dark:text-red-300">{activatedTitle}</p>
-            <p className="text-[10px] text-red-500 dark:text-red-400">
+            <p className="text-[10px] text-red-700 dark:text-red-400">
               {notifiedPrefix}
               {contacts.length + 1}
               {notifiedSuffix}

@@ -73,7 +73,7 @@ export function BeautyRewardsCard({
             <h4 className="text-sm font-bold text-amber-700 dark:text-amber-300">
               {myRewardsTitle}
             </h4>
-            <p className="text-[10px] text-amber-500 dark:text-amber-400">
+            <p className="text-[10px] text-amber-800 dark:text-amber-400">
               {points.toLocaleString('ar-SA')}
               {pointsSuffix}
             </p>

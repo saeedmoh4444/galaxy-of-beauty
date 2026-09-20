@@ -46,7 +46,7 @@ export function BeautyTrendAlertCard({
         </span>
         <div>
           <h4 className="text-sm font-bold text-rose-700 dark:text-rose-300">{title}</h4>
-          <p className="text-[10px] text-rose-500 dark:text-rose-400">
+          <p className="text-[10px] text-rose-700 dark:text-rose-400">
             {trends.length} {countSuffix}
           </p>
         </div>

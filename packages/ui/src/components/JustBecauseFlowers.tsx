@@ -112,7 +112,7 @@ export function JustBecauseFlowers({
         <h4 className="mt-1 text-sm font-bold text-rose-700 dark:text-rose-300">
           {received ? sentTitle : surpriseTitle}
         </h4>
-        <p className="text-[10px] text-rose-500 dark:text-rose-400">
+        <p className="text-[10px] text-rose-700 dark:text-rose-400">
           {received
             ? `${receivedPrefix}${bouquet.name[locale]} — ${bouquet.color[locale]}`
             : surpriseDescription}
@@ -131,7 +131,7 @@ export function JustBecauseFlowers({
             {inPrefix}
             {lastReceived}
           </p>
-          <p className="mt-0.5 text-[10px] text-rose-500 dark:text-rose-400">{thankYouText}</p>
+          <p className="mt-0.5 text-[10px] text-rose-700 dark:text-rose-400">{thankYouText}</p>
         </div>
       ) : (
         <div className="mt-3 rounded-xl bg-rose-50 p-3 text-center dark:bg-rose-950">
@@ -152,7 +152,7 @@ export function JustBecauseFlowers({
         </span>
       </div>
 
-      <p className="mt-2 text-center text-[9px] text-rose-500 dark:text-rose-400">{footerText}</p>
+      <p className="mt-2 text-center text-[9px] text-rose-700 dark:text-rose-400">{footerText}</p>
     </div>
   );
 }

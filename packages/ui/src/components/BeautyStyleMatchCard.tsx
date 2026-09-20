@@ -49,7 +49,7 @@ export function BeautyStyleMatchCard({
           👗
         </span>
         <h4 className="mt-1 text-sm font-bold text-fuchsia-700 dark:text-fuchsia-300">{heading}</h4>
-        <p className="text-[10px] text-fuchsia-500 dark:text-fuchsia-400">{subtitle}</p>
+        <p className="text-[10px] text-fuchsia-700 dark:text-fuchsia-400">{subtitle}</p>
       </div>
 
       <div className="mt-3 rounded-xl bg-fuchsia-50 p-4 text-center dark:bg-fuchsia-950">

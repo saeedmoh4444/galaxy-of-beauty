@@ -47,7 +47,7 @@ export function BeautyRoutineTimelineCard({
           </span>
           <div>
             <h4 className="text-sm font-bold text-sky-700 dark:text-sky-300">{title}</h4>
-            {skinType && <p className="text-[10px] text-sky-500 dark:text-sky-400">{skinType}</p>}
+            {skinType && <p className="text-[10px] text-sky-700 dark:text-sky-400">{skinType}</p>}
           </div>
         </div>
       </div>

@@ -67,7 +67,7 @@ export function GroupDiscountBadge({
       <div className="text-center">
         <span className="text-3xl" aria-hidden="true"></span>
         <h4 className="mt-1 text-sm font-bold text-violet-800 dark:text-violet-200">{title}</h4>
-        <p className="text-[10px] text-violet-500 dark:text-violet-400">{subtitle}</p>
+        <p className="text-[10px] text-violet-700 dark:text-violet-400">{subtitle}</p>
       </div>
 
       {/* Discount visual */}
@@ -76,7 +76,7 @@ export function GroupDiscountBadge({
           <span className="text-3xl font-bold text-violet-700 dark:text-violet-300">
             {discount}%
           </span>
-          <span className="text-sm font-bold text-violet-500 dark:text-violet-400">
+          <span className="text-sm font-bold text-violet-700 dark:text-violet-400">
             {discountLabel}
           </span>
         </div>
@@ -142,7 +142,7 @@ export function GroupDiscountBadge({
         {inviteButtonText}
       </button>
 
-      <p className="mt-2 text-center text-[9px] text-violet-500 dark:text-violet-400">
+      <p className="mt-2 text-center text-[9px] text-violet-700 dark:text-violet-400">
         {footerText}
       </p>
     </div>

@@ -53,7 +53,7 @@ export function BeautyPlaylistCard({
         </span>
         <div>
           <h4 className="text-sm font-bold text-violet-700 dark:text-violet-300">{title}</h4>
-          <p className="text-[10px] text-violet-500 dark:text-violet-400">{subtitle}</p>
+          <p className="text-[10px] text-violet-700 dark:text-violet-400">{subtitle}</p>
         </div>
       </div>
 
@@ -67,7 +67,7 @@ export function BeautyPlaylistCard({
             <span className="flex-1 text-[10px] font-medium text-violet-800 dark:text-violet-200">
               {t.title[locale]}
             </span>
-            <span className="text-[10px] text-violet-500 dark:text-violet-400">{t.duration}</span>
+            <span className="text-[10px] text-violet-700 dark:text-violet-400">{t.duration}</span>
             <span className="text-violet-400 text-xs">▶️</span>
           </div>
         ))}

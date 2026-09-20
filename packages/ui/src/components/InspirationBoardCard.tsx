@@ -60,7 +60,7 @@ export function InspirationBoardCard({
           </span>
           <div>
             <h4 className="text-sm font-bold text-rose-700 dark:text-rose-300">{boardName}</h4>
-            <p className="text-[10px] text-rose-500 dark:text-rose-400">
+            <p className="text-[10px] text-rose-700 dark:text-rose-400">
               {pins.length} {inspirationCountText}
               {collaborators &&
                 collaborators.length > 0 &&
@@ -138,7 +138,7 @@ export function InspirationBoardCard({
           <button
             type="button"
             onClick={onAddPin}
-            className="flex flex-col items-center justify-center rounded-xl border-2 border-dashed border-rose-200 p-3 text-rose-400 hover:border-rose-300 hover:text-rose-500 dark:border-rose-800 dark:hover:border-rose-700 transition-colors"
+            className="flex flex-col items-center justify-center rounded-xl border-2 border-dashed border-rose-200 p-3 text-rose-400 hover:border-rose-300 hover:text-rose-700 dark:border-rose-800 dark:hover:border-rose-700 transition-colors"
           >
             <svg
               className="h-6 w-6"

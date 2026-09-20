@@ -137,7 +137,7 @@ export function BeautyBudgetCard({
                   {service.rating && (
                     <>
                       <span aria-hidden="true">·</span>
-                      <span className="text-amber-500"> {service.rating}</span>
+                      <span className="text-amber-800"> {service.rating}</span>
                     </>
                   )}
                 </div>

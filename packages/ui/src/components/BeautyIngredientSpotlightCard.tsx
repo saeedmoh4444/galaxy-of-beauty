@@ -48,7 +48,7 @@ export function BeautyIngredientSpotlightCard({
             <h4 className="text-sm font-bold text-amber-700 dark:text-amber-300">
               {ingredient.name}
             </h4>
-            <p className="text-[10px] text-amber-500 dark:text-amber-400">{ingredient.type}</p>
+            <p className="text-[10px] text-amber-800 dark:text-amber-400">{ingredient.type}</p>
           </div>
         </div>
         <span className="rounded-full bg-amber-100 px-3 py-1 text-sm font-extrabold text-amber-700 dark:bg-amber-900 dark:text-amber-300">

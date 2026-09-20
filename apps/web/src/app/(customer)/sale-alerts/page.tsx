@@ -70,7 +70,7 @@ export default function SaleAlertsPage(): JSX.Element {
                 >
                   <span className="text-2xl">{d.emoji as string}</span>
                   <p className="font-bold text-sm mt-1">{d.titleAr as string}</p>
-                  <p className="text-xs text-red-500 dark:text-red-400 font-bold mt-1">
+                  <p className="text-xs text-red-700 dark:text-red-400 font-bold mt-1">
                     -{d.discount as number}%
                   </p>
                   <p className="text-[10px] text-text-tertiary">
