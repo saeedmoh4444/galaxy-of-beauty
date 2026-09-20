@@ -2,7 +2,6 @@
 
 import { useEffect, useRef } from 'react';
 import type { Socket } from 'socket.io-client';
-import { io } from 'socket.io-client';
 import { useQueryClient } from '@tanstack/react-query';
 import { useAuth } from '@galaxy/ui';
 import {
@@ -56,50 +55,74 @@ export function useSocket(): void {
     // re-runs on auth change and the cleanup disconnects on logout.
     if (!isAuthenticated) return;
 
-    // ── Create and connect ──────────────────────────────
-    // Auth token is now an HttpOnly cookie — sent automatically by the browser
-    // on same-origin connections. No need to read from localStorage.
-    const socket: Socket = io(SOCKET_URL, {
-      withCredentials: true, // Send HttpOnly cookies on handshake
-      transports: ['websocket', 'polling'],
-      reconnection: true,
-      reconnectionAttempts: SOCKET_RECONNECT_ATTEMPTS,
-      reconnectionDelay: SOCKET_RECONNECT_DELAY_MS,
-      reconnectionDelayMax: SOCKET_RECONNECT_MAX_DELAY_MS,
-    });
+    let cancelled = false;
+    let socket: Socket | null = null;
+    let teardown: (() => void) | null = null;
 
-    socketRef.current = socket;
+    // Dynamic import: socket.io-client + engine.io (~120K minified) ship
+    // only when an authenticated user actually connects (bundle slimming).
+    void (async () => {
+      const { io } = await import('socket.io-client');
+      if (cancelled) return;
 
-    // ── Connection lifecycle ────────────────────────────
-    socket.on('connect', () => {
-      if (process.env['NODE_ENV'] !== 'production') console.log('[Socket] Connected:', socket.id);
-    });
+      // ── Create and connect ──────────────────────────────
+      // Auth token is now an HttpOnly cookie — sent automatically by the browser
+      // on same-origin connections. No need to read from localStorage.
+      socket = io(SOCKET_URL, {
+        withCredentials: true, // Send HttpOnly cookies on handshake
+        transports: ['websocket', 'polling'],
+        reconnection: true,
+        reconnectionAttempts: SOCKET_RECONNECT_ATTEMPTS,
+        reconnectionDelay: SOCKET_RECONNECT_DELAY_MS,
+        reconnectionDelayMax: SOCKET_RECONNECT_MAX_DELAY_MS,
+      });
 
-    socket.on('connect_error', (err: Error) => {
-      if (process.env['NODE_ENV'] !== 'production')
-        console.error('[Socket] Connection error:', err.message);
-    });
+      socketRef.current = socket;
 
-    socket.on('disconnect', (reason: string) => {
-      if (process.env['NODE_ENV'] !== 'production') console.log('[Socket] Disconnected:', reason);
-    });
+      // ── Connection lifecycle ────────────────────────────
+      socket.on('connect', () => {
+        if (process.env['NODE_ENV'] !== 'production')
+          console.log('[Socket] Connected:', socket?.id);
+      });
 
-    // ── Incoming events → invalidate React Query caches ─
-    Object.entries(EVENT_CACHE_MAP).forEach(([event, tags]) => {
-      socket.on(event, () => {
-        tags.forEach((tag) => {
-          queryClient.invalidateQueries({ queryKey: [tag] });
+      socket.on('connect_error', (err: Error) => {
+        if (process.env['NODE_ENV'] !== 'production')
+          console.error('[Socket] Connection error:', err.message);
+      });
+
+      socket.on('disconnect', (reason: string) => {
+        if (process.env['NODE_ENV'] !== 'production') console.log('[Socket] Disconnected:', reason);
+      });
+
+      // ── Incoming events → invalidate React Query caches ─
+      Object.entries(EVENT_CACHE_MAP).forEach(([event, tags]) => {
+        socket?.on(event, () => {
+          tags.forEach((tag) => {
+            queryClient.invalidateQueries({ queryKey: [tag] });
+          });
         });
       });
-    });
+
+      if (cancelled) {
+        socket?.disconnect();
+        return;
+      }
+
+      // ── Cleanup (moved here because the socket exists only after
+      //    the dynamic import resolves) ─────────────────────
+      teardown = () => {
+        Object.keys(EVENT_CACHE_MAP).forEach((event) => {
+          socket?.off(event);
+        });
+        socket?.disconnect();
+        socketRef.current = null;
+      };
+    })();
 
     // ── Cleanup ─────────────────────────────────────────
     return () => {
-      Object.keys(EVENT_CACHE_MAP).forEach((event) => {
-        socket.off(event);
-      });
-      socket.disconnect();
-      socketRef.current = null;
+      cancelled = true;
+      teardown?.();
     };
   }, [queryClient, isAuthenticated]);
 }
