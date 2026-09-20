@@ -1852,6 +1852,26 @@ export const miscMessages = {
   // Notification Settings
   'notificationSettings.title': { ar: 'إعدادات الإشعارات', en: 'Notification Settings' },
   'notificationSettings.toast.updated': { ar: 'تم تحديث الإعدادات', en: 'Settings updated' },
+  // ── 6.2 PDPL — consent management ───────────────────────
+  'notificationSettings.consent.title': { ar: 'إدارة الموافقات', en: 'Consent Management' },
+  'notificationSettings.consent.subtitle': {
+    ar: 'وفق نظام حماية البيانات الشخصية (PDPL) — يمكنك الاطلاع على موافقاتك وسحبها في أي وقت.',
+    en: 'Per the Personal Data Protection Law (PDPL) — review your consents and withdraw them at any time.',
+  },
+  'notificationSettings.consent.marketing-label': {
+    ar: 'الموافقة على الرسائل التسويقية',
+    en: 'Marketing communications consent',
+  },
+  'notificationSettings.consent.marketing-desc': {
+    ar: 'العروض والخصومات والأخبار عبر الإشعارات والبريد',
+    en: 'Offers, discounts, and news via notifications and email',
+  },
+  'notificationSettings.consent.granted': { ar: 'موافقة مُسجّلة', en: 'Consent recorded' },
+  'notificationSettings.consent.granted-at': { ar: 'آخر تحديث', en: 'Last updated' },
+  'notificationSettings.consent.no-records': {
+    ar: 'لا توجد موافقات مسجلة بعد',
+    en: 'No consents recorded yet',
+  },
   'notificationSettings.toggle.bookingReminders': {
     ar: 'تذكير بالمواعيد',
     en: 'Booking reminders',
