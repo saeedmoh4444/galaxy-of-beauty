@@ -23,7 +23,7 @@ export function BeautyDryClimateCard({
         <span className="text-xl">💧</span>
         <div>
           <h4 className="text-sm font-bold text-amber-700 dark:text-amber-300">{title}</h4>
-          <p className="text-[10px] text-amber-500 dark:text-amber-400">{subtitle}</p>
+          <p className="text-[10px] text-amber-800 dark:text-amber-400">{subtitle}</p>
         </div>
       </div>
       <div className="mt-3 space-y-1">

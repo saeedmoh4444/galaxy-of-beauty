@@ -365,7 +365,7 @@ export default function TechProfilePage(): JSX.Element {
               <h2 className="mb-4 text-lg font-semibold">{t('tech.profile.stats-title')}</h2>
               <div className="grid grid-cols-2 gap-4 sm:grid-cols-4">
                 <div className="rounded-xl bg-surface-muted p-4 text-center">
-                  <p className="text-2xl font-bold text-amber-500 dark:text-amber-400">
+                  <p className="text-2xl font-bold text-amber-800 dark:text-amber-400">
                     {(tech?.ratingAvg as number) ?? 0}
                   </p>
                   <p className="mt-1 text-xs text-text-secondary">{t('tech.profile.rating')}</p>

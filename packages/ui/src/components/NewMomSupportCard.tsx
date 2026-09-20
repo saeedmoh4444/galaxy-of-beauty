@@ -90,7 +90,7 @@ export function NewMomSupportCard({
         <h4 className="mt-1 text-sm font-bold text-sky-800 dark:text-sky-200">
           {isNewborn ? newbornTitle : returnTitle}
         </h4>
-        <p className="text-[10px] text-sky-500 dark:text-sky-400">
+        <p className="text-[10px] text-sky-700 dark:text-sky-400">
           {momName ? `${momName} — ` : ''}
           {servicesText}
         </p>
@@ -135,7 +135,7 @@ export function NewMomSupportCard({
         {bookButtonText}
       </button>
 
-      <p className="mt-2 text-center text-[9px] text-sky-500 dark:text-sky-400">{footerText}</p>
+      <p className="mt-2 text-center text-[9px] text-sky-700 dark:text-sky-400">{footerText}</p>
     </div>
   );
 }

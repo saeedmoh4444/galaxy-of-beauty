@@ -103,7 +103,7 @@ export function BeautyWeatherCard({
           </span>
           <div>
             <h4 className="text-sm font-bold text-sky-700 dark:text-sky-300">{title}</h4>
-            <p className="text-[10px] text-sky-500 dark:text-sky-400">
+            <p className="text-[10px] text-sky-700 dark:text-sky-400">
               {a.title[locale]}
               {temp ? ` · ${temp}°C` : ''}
             </p>

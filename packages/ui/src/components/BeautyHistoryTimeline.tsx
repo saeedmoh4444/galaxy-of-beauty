@@ -119,7 +119,7 @@ export function BeautyHistoryTimeline({
           📜
         </span>
         <h4 className="mt-1 text-sm font-bold text-amber-700 dark:text-amber-300">{title}</h4>
-        <p className="text-[10px] text-amber-500 dark:text-amber-400">{subtitle}</p>
+        <p className="text-[10px] text-amber-800 dark:text-amber-400">{subtitle}</p>
       </div>
 
       <div className="mt-4">

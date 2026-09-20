@@ -106,7 +106,7 @@ export default function PriceEstimatorPage(): JSX.Element {
               className="block text-sm font-semibold text-text-primary mb-1.5"
             >
               {t('marketing.price-estimator.service-label')}
-              <span className="text-red-500 dark:text-red-400">*</span>
+              <span className="text-red-700 dark:text-red-400">*</span>
             </label>
 
             {selectedService ? (
@@ -128,7 +128,7 @@ export default function PriceEstimatorPage(): JSX.Element {
                 </div>
                 <button
                   onClick={() => setSelectedServiceId(null)}
-                  className="text-text-tertiary hover:text-red-500 hover:dark:text-red-400 p-1 transition-colors"
+                  className="text-text-tertiary hover:text-red-700 hover:dark:text-red-400 p-1 transition-colors"
                   title={t('marketing.price-estimator.change-service')}
                 ></button>
               </div>

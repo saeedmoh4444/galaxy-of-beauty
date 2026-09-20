@@ -55,7 +55,7 @@ export function BeautySquadCard({
         <h4 className="mt-2 text-sm font-bold text-fuchsia-800 dark:text-fuchsia-200">
           {squad.name}
         </h4>
-        <p className="text-[10px] text-fuchsia-500 dark:text-fuchsia-400">
+        <p className="text-[10px] text-fuchsia-700 dark:text-fuchsia-400">
           {squad.members} {membersText}
         </p>
       </div>
@@ -86,7 +86,7 @@ export function BeautySquadCard({
         </button>
       </div>
 
-      <p className="mt-2 text-center text-[9px] text-fuchsia-500 dark:text-fuchsia-400">
+      <p className="mt-2 text-center text-[9px] text-fuchsia-700 dark:text-fuchsia-400">
         {footerText}
       </p>
     </div>

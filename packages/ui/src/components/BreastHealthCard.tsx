@@ -56,7 +56,7 @@ export function BreastHealthCard({
           🎀
         </span>
         <h4 className="mt-1 text-sm font-bold text-pink-800 dark:text-pink-200">{title}</h4>
-        <p className="text-[10px] text-pink-500 dark:text-pink-400">{subtitle}</p>
+        <p className="text-[10px] text-pink-700 dark:text-pink-400">{subtitle}</p>
       </div>
 
       <div className="mt-3 rounded-xl bg-surface-elevated/60 p-4 text-center">
@@ -93,7 +93,7 @@ export function BreastHealthCard({
         {learnButtonText}
       </button>
 
-      <p className="mt-2 text-center text-[9px] text-pink-500 dark:text-pink-400">{footerText}</p>
+      <p className="mt-2 text-center text-[9px] text-pink-700 dark:text-pink-400">{footerText}</p>
     </div>
   );
 }

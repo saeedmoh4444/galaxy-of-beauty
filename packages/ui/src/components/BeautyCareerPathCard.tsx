@@ -143,7 +143,7 @@ export function BeautyCareerPathCard({
         </div>
         <div className="min-w-0 flex-1">
           <h4 className="text-sm font-bold text-teal-700 dark:text-teal-300">{p.title[locale]}</h4>
-          <p className="text-[10px] text-teal-500 dark:text-teal-400">{subtitle}</p>
+          <p className="text-[10px] text-teal-700 dark:text-teal-400">{subtitle}</p>
         </div>
       </div>
 

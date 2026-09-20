@@ -55,7 +55,7 @@ export function BeautyVisionBoardCard({
           </span>
           <div>
             <h4 className="text-sm font-bold text-amber-700 dark:text-amber-300">{title}</h4>
-            <p className="text-[10px] text-amber-500 dark:text-amber-400">
+            <p className="text-[10px] text-amber-800 dark:text-amber-400">
               {goals.length} {goalCountText} · {achieved} {achievedCountText}
             </p>
           </div>

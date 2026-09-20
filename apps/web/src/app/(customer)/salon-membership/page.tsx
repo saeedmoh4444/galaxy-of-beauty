@@ -103,7 +103,7 @@ export default function SalonMembershipPage(): JSX.Element {
                 <Button
                   variant="ghost"
                   onClick={() => cancelMut.mutate()}
-                  className="mt-3 text-red-500 dark:text-red-400"
+                  className="mt-3 text-red-700 dark:text-red-400"
                 >
                   {t('membership.cancelAutoRenew')}
                 </Button>

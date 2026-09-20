@@ -74,7 +74,7 @@ export function PersonalStylingCard({
           👗
         </span>
         <h4 className="mt-1 text-sm font-bold text-fuchsia-700 dark:text-fuchsia-300">{title}</h4>
-        <p className="text-[10px] text-fuchsia-500 dark:text-fuchsia-400">{subtitle}</p>
+        <p className="text-[10px] text-fuchsia-700 dark:text-fuchsia-400">{subtitle}</p>
         {stylist && (
           <p className="mt-0.5 text-[10px] text-text-tertiary dark:text-text-secondary">
             {withStylistPrefix}

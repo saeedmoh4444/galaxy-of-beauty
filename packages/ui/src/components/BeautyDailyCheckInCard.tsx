@@ -57,7 +57,7 @@ export function BeautyDailyCheckInCard({
           <span className="text-xl">✅</span>
           <div>
             <h4 className="text-sm font-bold text-emerald-700 dark:text-emerald-300">{title}</h4>
-            <p className="text-[10px] text-emerald-500 dark:text-emerald-400">
+            <p className="text-[10px] text-emerald-700 dark:text-emerald-400">
               {checked.size}/{RITUALS.length} · {pct}%
             </p>
           </div>

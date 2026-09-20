@@ -56,7 +56,7 @@ export function BusinessDashboardCard({
           </span>
           <div>
             <h4 className="text-sm font-bold text-emerald-700 dark:text-emerald-300">{title}</h4>
-            <p className="text-[10px] text-emerald-500 dark:text-emerald-400">{month}</p>
+            <p className="text-[10px] text-emerald-700 dark:text-emerald-400">{month}</p>
           </div>
         </div>
         <span

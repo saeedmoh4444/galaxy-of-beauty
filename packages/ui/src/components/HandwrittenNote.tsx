@@ -136,7 +136,7 @@ export function HandwrittenNote({
         </p>
       )}
 
-      <p className="mt-1 text-center text-[9px] italic text-rose-500 dark:text-rose-400">
+      <p className="mt-1 text-center text-[9px] italic text-rose-700 dark:text-rose-400">
         {footerText}
       </p>
     </div>

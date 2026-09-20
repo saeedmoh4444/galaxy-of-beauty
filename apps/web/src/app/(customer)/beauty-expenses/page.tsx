@@ -55,7 +55,7 @@ export default function BeautyExpensesPage(): JSX.Element {
               </Card>
               <Card padding="lg" className="text-center">
                 <p
-                  className={`text-2xl font-extrabold ${((data?.monthOverMonth as number) ?? 0) >= 0 ? 'text-red-500 dark:text-red-400' : 'text-green-600 dark:text-green-400'}`}
+                  className={`text-2xl font-extrabold ${((data?.monthOverMonth as number) ?? 0) >= 0 ? 'text-red-700 dark:text-red-400' : 'text-green-600 dark:text-green-400'}`}
                 >
                   {(data?.monthOverMonth as number) ?? 0}%
                 </p>

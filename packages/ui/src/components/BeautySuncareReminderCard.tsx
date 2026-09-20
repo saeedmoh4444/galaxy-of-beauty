@@ -51,7 +51,7 @@ export function BeautySuncareReminderCard({
         <span className="text-3xl shrink-0">🌞</span>
         <div className="flex-1 min-w-0">
           <h4 className="text-sm font-bold text-amber-700 dark:text-amber-300">{title}</h4>
-          <p className="text-[10px] text-amber-500 dark:text-amber-400">
+          <p className="text-[10px] text-amber-800 dark:text-amber-400">
             SPF {spf} · {lastApplied ? `${lastAppliedPrefix} ${lastApplied}` : notAppliedText}
           </p>
         </div>

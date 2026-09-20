@@ -73,13 +73,13 @@ export function BeautyMythBusterCard({
           <h4 className="text-sm font-bold text-rose-700 dark:text-rose-300">
             {CAT_EMOJIS[category]} {mythOrFactTitle}
           </h4>
-          <p className="text-[10px] text-rose-500 dark:text-rose-400">{subtitle}</p>
+          <p className="text-[10px] text-rose-700 dark:text-rose-400">{subtitle}</p>
         </div>
       </div>
 
       {/* Myth */}
       <div className="mt-3 rounded-xl bg-rose-50 p-4 dark:bg-rose-950">
-        <p className="text-center text-[10px] font-bold text-rose-500 dark:text-rose-400">
+        <p className="text-center text-[10px] font-bold text-rose-700 dark:text-rose-400">
           {mythLabel}
         </p>
         <p className="mt-1 text-center text-sm font-bold text-rose-800 dark:text-rose-200">
