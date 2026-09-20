@@ -105,6 +105,7 @@ export function ServicesClient({ data }: { data: ServicesPageData }): JSX.Elemen
               setSort(e.target.value);
               setPage(1);
             }}
+            aria-label={t('marketing.services.sort-label')}
             className="rounded-lg border border-edge px-3 py-2 text-sm bg-surface-elevated"
           >
             <option value="newest">{t('marketing.services.sort-newest')}</option>
