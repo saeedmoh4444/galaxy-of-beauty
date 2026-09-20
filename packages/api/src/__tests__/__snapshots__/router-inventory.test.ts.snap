@@ -949,6 +949,8 @@ uploads.uploadAvatar	mutation	protected
 uploads.uploadImage	mutation	admin
 uploads.uploadKycDocument	mutation	protected
 uploads.uploadMedia	mutation	protected
+users.consent.mine	query	protected
+users.consent.set	mutation	protected
 users.deleteMe	mutation	protected
 users.exportMyData	query	protected
 users.getById	query	public

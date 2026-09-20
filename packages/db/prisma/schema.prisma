@@ -158,6 +158,7 @@ model User {
   promoUsages       PromoUsage[]
   skinAnalyses       SkinAnalysis[]
   npsResponses       NpsResponse[]
+  consentRecords     ConsentRecord[]
   vendor             Vendor?
   productReviews     ProductReview[]
   cartItems          CartItem[]
@@ -4129,4 +4130,20 @@ model NpsResponse {
 
   @@index([userId, createdAt])
   @@map("nps_responses")
+}
+
+// ── 6.2 PDPL — consent records (what the customer agreed to, when, revocable)
+model ConsentRecord {
+  id        Int      @id @default(autoincrement())
+  userId    Int
+  type      String // 'marketing' | 'cookies' | ...
+  granted   Boolean
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, type])
+  @@index([userId])
+  @@map("consent_records")
 }

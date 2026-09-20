@@ -252,4 +252,34 @@ export const userRouter = router({
     });
     return { message: 'تم إنهاء جميع الجلسات الأخرى' };
   }),
+
+  // ── 6.2 PDPL — consent management (what the customer agreed to, when,
+  //    revocable). One record per (user, type); upsert semantics.
+  consent: router({
+    mine: protectedProcedure.query(async ({ ctx }) =>
+      prisma.consentRecord.findMany({
+        where: { userId: ctx.user.id },
+        orderBy: { updatedAt: 'desc' },
+      }),
+    ),
+    set: protectedProcedure
+      .input(
+        z.object({
+          type: z.string().min(2).max(40),
+          granted: z.boolean(),
+        }),
+      )
+      .mutation(async ({ ctx, input }) => {
+        const data = {
+          userId: ctx.user.id,
+          type: input.type,
+          granted: input.granted,
+        };
+        return prisma.consentRecord.upsert({
+          where: { userId_type: { userId: ctx.user.id, type: input.type } },
+          create: data,
+          update: { granted: input.granted },
+        });
+      }),
+  }),
 });
