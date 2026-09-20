@@ -107,7 +107,7 @@ test.describe('Axe a11y gate (chromium)', () => {
 test.describe('Axe a11y gate (firefox, local-only)', () => {
   test.skip(
     ({ isMobile, browserName }) =>
-      isMobile || (browserName !== 'firefox' && !process.env['AXE_ALL_BROWSERS']),
+      isMobile || browserName !== 'firefox' || !process.env['AXE_ALL_BROWSERS'],
     'firefox pass is opt-in via AXE_ALL_BROWSERS=1',
   );
   axeTests('firefox');
