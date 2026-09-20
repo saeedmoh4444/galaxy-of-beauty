@@ -2303,4 +2303,77 @@ export const marketingMessages = {
     ar: 'جالكسي بيوتي — كل خدمات التجميل والرعاية في مكان واحد. احجزي، قارني، واستمتعي بخصوصية كاملة',
     en: 'Galaxy of Beauty — every beauty and care service in one place. Book, compare, and enjoy complete privacy',
   },
+  // ── 6.2 PDPL — privacy policy page ──────────────────────
+  'marketing.privacy.title': { ar: 'سياسة الخصوصية', en: 'Privacy Policy' },
+  'marketing.privacy.intro': {
+    ar: 'نحترم خصوصيتك ونلتزم بنظام حماية البيانات الشخصية السعودي (PDPL). توضح هذه السياسة البيانات التي نجمعها، ولماذا، وكيف تحمينها.',
+    en: 'We respect your privacy and comply with the Saudi Personal Data Protection Law (PDPL). This policy explains what data we collect, why, and how you can protect it.',
+  },
+  'marketing.privacy.s1-title': { ar: 'البيانات التي نجمعها', en: 'Data we collect' },
+  'marketing.privacy.s1-body': {
+    ar: 'بيانات الحساب (الاسم، البريد الإلكتروني، رقم الجوال)، بيانات الحجز (الخدمات، المواعيد، العناوين)، بيانات الدفع عبر مزوّدين معتمدين، والبيانات الفنية (نوع المتصفح، سجلات الوصول).',
+    en: 'Account data (name, email, mobile number), booking data (services, appointments, addresses), payment data through certified providers, and technical data (browser type, access logs).',
+  },
+  'marketing.privacy.s2-title': { ar: 'أغراض المعالجة', en: 'Purposes of processing' },
+  'marketing.privacy.s2-body': {
+    ar: 'نعالج بياناتك لتقديم الخدمات والحجوزات، وتحسين المنصة، والالتزام بالمتطلبات النظامية (مثل الفوترة الإلكترونية). لا نبيع بياناتك لأي طرف ثالث.',
+    en: 'We process your data to deliver services and bookings, improve the platform, and comply with legal requirements (such as e-invoicing). We never sell your data to third parties.',
+  },
+  'marketing.privacy.s3-title': { ar: 'الأساس النظامي', en: 'Legal basis' },
+  'marketing.privacy.s3-body': {
+    ar: 'نعتمد على موافقتك الصريحة، وتنفيذ العقد، والالتزامات النظامية كأساس لمعالجة البيانات، وفقاً للمادتين السادسة والعاشرة من نظام PDPL.',
+    en: 'We rely on your explicit consent, contract performance, and legal obligations as the basis for processing, per Articles 6 and 10 of the PDPL.',
+  },
+  'marketing.privacy.s4-title': { ar: 'حقوقك', en: 'Your rights' },
+  'marketing.privacy.s4-body': {
+    ar: 'يحق لك الاطلاع على بياناتك، وتصحيحها، وطلب تصديرها، وحذفها نهائياً من حسابك (الإعدادات ← حذف الحساب)، وسحب الموافقة في أي وقت.',
+    en: 'You may access, correct, export, and permanently delete your data from your account (Settings → Delete account), and withdraw consent at any time.',
+  },
+  'marketing.privacy.s5-title': { ar: 'مشاركة البيانات', en: 'Data sharing' },
+  'marketing.privacy.s5-body': {
+    ar: 'نشارك البيانات فقط مع مزوّدي الخدمة الذين ينفّذون حجزك، ومع مقدمي البنية التحتية (استضافة، دفع، إشعارات) بموجب اتفاقيات معالجة ملزمة.',
+    en: 'Data is shared only with the service providers fulfilling your booking, and with infrastructure providers (hosting, payments, notifications) under binding processing agreements.',
+  },
+  'marketing.privacy.s6-title': { ar: 'تواصلي معنا', en: 'Contact us' },
+  'marketing.privacy.s6-body': {
+    ar: 'لأي استفسار حول الخصوصية أو لممارسة حقوقك: privacy@galaxyofbeauty.sa',
+    en: 'For privacy questions or to exercise your rights: privacy@galaxyofbeauty.sa',
+  },
+  // ── 6.2 PDPL — data retention page ──────────────────────
+  'marketing.retention.title': { ar: 'سياسة الاحتفاظ بالبيانات', en: 'Data Retention Policy' },
+  'marketing.retention.intro': {
+    ar: 'نحتفظ ببياناتك فقط للمدة اللازمة لتحقيق الغرض من جمعها، ثم نحذفها أو نجهّلها تلقائياً وفق الجدول التالي.',
+    en: 'We keep your data only as long as needed for the purpose it was collected, then delete or anonymize it automatically per the table below.',
+  },
+  'marketing.retention.s1-title': { ar: 'بيانات الحساب', en: 'Account data' },
+  'marketing.retention.s1-body': {
+    ar: 'تُحفظ طوال فترة نشاط حسابك، وتُحذف نهائياً خلال 30 يوماً من طلب حذف الحساب.',
+    en: 'Kept while your account is active; permanently deleted within 30 days of an account-deletion request.',
+  },
+  'marketing.retention.s2-title': {
+    ar: 'سجلات الحجوزات والفواتير',
+    en: 'Booking and invoice records',
+  },
+  'marketing.retention.s2-body': {
+    ar: 'تُحفظ 6 سنوات وفق متطلبات هيئة الزكاة والضريبة والجمارك للفوترة الإلكترونية.',
+    en: 'Kept 6 years per ZATCA e-invoicing requirements.',
+  },
+  'marketing.retention.s3-title': { ar: 'الرسائل والإشعارات', en: 'Messages and notifications' },
+  'marketing.retention.s3-body': {
+    ar: 'تُحفظ 12 شهراً ثم تُحذف تلقائياً.',
+    en: 'Kept 12 months, then deleted automatically.',
+  },
+  'marketing.retention.s4-title': {
+    ar: 'بيانات تقنية وسجلات وصول',
+    en: 'Technical data and access logs',
+  },
+  'marketing.retention.s4-body': {
+    ar: 'تُحفظ 90 يوماً لأغراض الأمان واكتشاف الاحتيال.',
+    en: 'Kept 90 days for security and fraud-detection purposes.',
+  },
+  'marketing.retention.s5-title': { ar: 'طلب الحذف', en: 'Deletion requests' },
+  'marketing.retention.s5-body': {
+    ar: 'يمكنك طلب حذف بياناتك فوراً من الإعدادات ← حذف الحساب، مع مراعاة الاستثناءات النظامية (الفواتير).',
+    en: 'Request immediate deletion from Settings → Delete account, subject to legal exceptions (invoices).',
+  },
 } as const satisfies Record<string, { ar: string; en: string }>;

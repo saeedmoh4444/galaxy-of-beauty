@@ -145,6 +145,10 @@ export default function RegisterPage(): JSX.Element {
             {t('auth.agree-terms')}{' '}
             <Link href="/terms" className="text-brand-600">
               {t('auth.terms')}
+            </Link>{' '}
+            {'· '}
+            <Link href="/privacy" className="text-brand-600">
+              {t('marketing.privacy.title')}
             </Link>
           </label>
           <Button type="submit" className="w-full" loading={mutation.isPending}>
