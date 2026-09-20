@@ -63,32 +63,65 @@ const assertNoSerious = (label: string, violations: Violation[]) => {
   ).toEqual([]);
 };
 
+/**
+ * Moderate-impact violations we consciously accept per page. Policy:
+ * - Only `moderate` impact may ever appear here — serious/critical are
+ *   always fixed (see assertNoSerious), and minor findings are below the bar.
+ * - Entries must carry a TODO referencing the owning backlog item and only
+ *   shrink; a NEW moderate rule id that is not listed here fails the gate.
+ * - Measured 2026-09-20: all five scanned routes report zero moderate
+ *   violations, so this starts EMPTY (zero-tolerance policy).
+ */
+const MODERATE_ALLOWLIST: Record<string, Record<string, { max: number; todo: string }>> = {};
+
+const assertModerateAllowed = (label: string, violations: Violation[]) => {
+  const moderate = violations.filter((v) => v.impact === 'moderate');
+  for (const v of moderate) {
+    const entry = MODERATE_ALLOWLIST[label]?.[v.id];
+    expect(
+      entry && v.nodes.length <= entry.max,
+      `${label}: moderate violation "${v.id}" x${v.nodes.length} is not allowlisted — ` +
+        `add it to MODERATE_ALLOWLIST with a TODO, or fix it`,
+    ).toBe(true);
+  }
+};
+
 const axeTests = (browserName: string) => {
   test('home page has no serious/critical a11y violations', async ({ page }) => {
     await page.goto('/');
-    assertNoSerious('/', await scan(page));
+    const violations = await scan(page);
+    assertNoSerious('/', violations);
+    assertModerateAllowed('/', violations);
   });
 
   test('services page has no serious/critical a11y violations', async ({ page }) => {
     await page.goto('/services');
-    assertNoSerious('/services', await scan(page));
+    const violations = await scan(page);
+    assertNoSerious('/services', violations);
+    assertModerateAllowed('/services', violations);
   });
 
   test('login page has no serious/critical a11y violations', async ({ page }) => {
     await page.goto('/login');
-    assertNoSerious('/login', await scan(page));
+    const violations = await scan(page);
+    assertNoSerious('/login', violations);
+    assertModerateAllowed('/login', violations);
   });
 
   test('customer dashboard has no serious/critical a11y violations', async ({ page }) => {
     await loginAsCustomer(page);
     await page.goto('/dashboard');
-    assertNoSerious('/dashboard', await scan(page));
+    const violations = await scan(page);
+    assertNoSerious('/dashboard', violations);
+    assertModerateAllowed('/dashboard', violations);
   });
 
   test('admin dashboard has no serious/critical a11y violations', async ({ page }) => {
     await loginAsAdmin(page);
     await page.goto('/admin/dashboard');
-    assertNoSerious('/admin/dashboard', await scan(page));
+    const violations = await scan(page);
+    assertNoSerious('/admin/dashboard', violations);
+    assertModerateAllowed('/admin/dashboard', violations);
   });
 };
 
