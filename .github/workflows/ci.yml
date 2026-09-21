@@ -19,7 +19,7 @@ jobs:
     name: Format (Prettier)
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
       - uses: pnpm/action-setup@v6
       - uses: actions/setup-node@v7
         with:
@@ -35,7 +35,7 @@ jobs:
     # Blocking: fails only when high/critical findings EXCEED the baseline
     # accepted in SECURITY.md (7 high). New findings block the PR.
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
       - uses: pnpm/action-setup@v6
       - uses: actions/setup-node@v7
         with:

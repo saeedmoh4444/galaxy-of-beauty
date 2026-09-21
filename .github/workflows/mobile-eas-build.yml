@@ -37,7 +37,7 @@ jobs:
     name: Verify (type-check + export)
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
       - uses: pnpm/action-setup@v6
         with: {}
       - uses: actions/setup-node@v7
@@ -60,7 +60,7 @@ jobs:
     env:
       HAS_EXPO_TOKEN: ${{ secrets.EXPO_TOKEN != '' }}
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
       - uses: pnpm/action-setup@v6
         with: {}
       - uses: actions/setup-node@v7
@@ -88,7 +88,7 @@ jobs:
     env:
       HAS_EXPO_TOKEN: ${{ secrets.EXPO_TOKEN != '' }}
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
       - uses: pnpm/action-setup@v6
         with: {}
       - uses: actions/setup-node@v7
@@ -117,7 +117,7 @@ jobs:
       # Secrets can't be referenced in step `if:` directly — proxy through an env var.
       HAS_EXPO_TOKEN: ${{ secrets.EXPO_TOKEN != '' }}
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
       - uses: pnpm/action-setup@v6
         with: {}
       - uses: actions/setup-node@v7
