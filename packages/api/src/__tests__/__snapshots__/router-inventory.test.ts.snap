@@ -554,13 +554,17 @@ lookOfTheDay.submit	mutation	customer
 lookOfTheDay.today	query	public
 lookOfTheDay.vote	mutation	customer
 loyalty.adjustPoints	mutation	admin
+loyalty.createBoost	mutation	admin
 loyalty.createReward	mutation	admin
+loyalty.deleteBoost	mutation	admin
 loyalty.leaderboard	query	public
+loyalty.listBoosts	query	admin
 loyalty.listRewards	query	admin
 loyalty.myAccount	query	protected
 loyalty.myTransactions	query	protected
 loyalty.redeem	mutation	protected
 loyalty.rewards	query	public
+loyalty.summary	query	protected
 loyaltyPunchCard.myCard	query	customer
 marketplace.addReview	mutation	customer
 marketplace.addToCart	mutation	customer
