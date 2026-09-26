@@ -147,7 +147,7 @@ jobs:
           JWT_ACCESS_SECRET: 'e2e-access-9f8a7b6c5d4e3f2a1b0c9d8e7f6a5b4c'
           JWT_REFRESH_SECRET: 'e2e-refresh-1a2b3c4d5e6f7a8b9c0d1e2f3a4b5c6d'
 
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v7
         if: always()
         with:
           name: e2e-report
