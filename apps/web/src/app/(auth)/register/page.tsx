@@ -1,8 +1,8 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import type { JSX } from 'react';
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import Link from 'next/link';
 import { api } from '@/lib/trpc';
 import { Button, Input, Card, ErrorAlert } from '@galaxy/ui';
@@ -13,6 +13,37 @@ export default function RegisterPage(): JSX.Element {
   const router = useRouter();
   const { login } = useAuth();
   const { t } = useLocale();
+  const params = useSearchParams();
+
+  // 8.1b — capture the share link's ref + UTM params so the referral is
+  // applied (with attribution) once the new member reaches the
+  // (customer)/referrals page.
+  useEffect(() => {
+    const ref = params.get('ref');
+    const utm = {
+      source: params.get('utm_source'),
+      medium: params.get('utm_medium'),
+      campaign: params.get('utm_campaign'),
+      content: params.get('utm_content'),
+    };
+    if (!ref && !utm.source && !utm.medium && !utm.campaign && !utm.content) return;
+    try {
+      sessionStorage.setItem(
+        'referralEntry',
+        JSON.stringify({
+          ref: ref ?? undefined,
+          utm: {
+            source: utm.source ?? undefined,
+            medium: utm.medium ?? undefined,
+            campaign: utm.campaign ?? undefined,
+            content: utm.content ?? undefined,
+          },
+        }),
+      );
+    } catch {
+      /* private mode */
+    }
+  }, [params]);
   const [form, setForm] = useState({
     name: '',
     email: '',

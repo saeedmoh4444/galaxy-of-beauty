@@ -18,7 +18,17 @@ import { useLocale } from '@/components/LocaleProvider';
 export default function ReferralsPage(): JSX.Element {
   const { t, locale } = useLocale();
   const [copyMsg, setCopyMsg] = useState('');
-  const [applyCode, setApplyCode] = useState('');
+  // 8.1b — prefill from the register page (ref + UTM captured in
+  // sessionStorage when the visitor landed on a share link).
+  const [storedEntry] = useState<{ ref?: string; utm?: Record<string, string> } | null>(() => {
+    try {
+      const raw = sessionStorage.getItem('referralEntry');
+      return raw ? (JSON.parse(raw) as { ref?: string; utm?: Record<string, string> }) : null;
+    } catch {
+      return null;
+    }
+  });
+  const [applyCode, setApplyCode] = useState(storedEntry?.ref ?? '');
   const [applyMsg, setApplyMsg] = useState('');
 
   const codeQ = api.referrals.getMyCode.useQuery();
@@ -31,6 +41,11 @@ export default function ReferralsPage(): JSX.Element {
         }),
       );
       setApplyCode('');
+      try {
+        sessionStorage.removeItem('referralEntry');
+      } catch {
+        /* private mode */
+      }
     },
     onError: (err) => {
       setApplyMsg(err.message);
@@ -158,7 +173,13 @@ export default function ReferralsPage(): JSX.Element {
                   className="flex-1"
                 />
                 <Button
-                  onClick={() => applyMut.mutate({ code: applyCode })}
+                  onClick={() =>
+                    applyMut.mutate(
+                      storedEntry?.utm
+                        ? { code: applyCode, utm: storedEntry.utm }
+                        : { code: applyCode },
+                    )
+                  }
                   loading={applyMut.isPending}
                 >
                   {t('referrals.apply')}
