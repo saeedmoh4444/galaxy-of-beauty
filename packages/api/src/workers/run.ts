@@ -16,6 +16,7 @@ import { startLoyaltyExpirySweep, stopLoyaltyExpirySweep } from './loyaltyExpiry
 import { startWelcomeSeries, stopWelcomeSeries } from './welcomeSeries';
 import { startReengagement, stopReengagement } from './reengagement';
 import { startAbandonedCart, stopAbandonedCart } from './abandonedCart';
+import { startPostBooking, stopPostBooking } from './postBooking';
 
 // Graceful shutdown
 async function shutdown() {
@@ -27,6 +28,7 @@ async function shutdown() {
   stopWelcomeSeries();
   stopReengagement();
   stopAbandonedCart();
+  stopPostBooking();
   await shutdownWorkers();
   process.exit(0);
 }
@@ -44,6 +46,7 @@ startLoyaltyExpirySweep();
 startWelcomeSeries();
 startReengagement();
 startAbandonedCart();
+startPostBooking();
 console.log(
-  '[Worker Process] Ready — workers + hourly token purge + daily subscription renewal + 3.3 advisor sweep + 8.2 loyalty expiry + 8.3 welcome/re-engagement/abandoned-cart',
+  '[Worker Process] Ready — workers + hourly token purge + daily subscription renewal + 3.3 advisor sweep + 8.2 loyalty expiry + 8.3 welcome/re-engagement/abandoned-cart/post-booking',
 );
