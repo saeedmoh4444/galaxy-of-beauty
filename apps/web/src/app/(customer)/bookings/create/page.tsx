@@ -33,6 +33,9 @@ export default function CreateBookingPage(): JSX.Element {
   const params = useSearchParams();
   const preselectedServiceId = Number(params.get('serviceId')) || undefined;
   const preselectedBundleId = Number(params.get('bundleId')) || undefined;
+  // 1.2 Service Bundles: preselected package from /bundles/[id] — fixed for
+  // the lifetime of the flow (same pattern as the K3 ?bundleId=).
+  const preselectedBeautyBundleId = Number(params.get('beautyBundleId')) || undefined;
   const { addToast } = useToast();
 
   const [step, setStep] = useState(1);
@@ -67,6 +70,10 @@ export default function CreateBookingPage(): JSX.Element {
   const { data: addressesData } = api.addresses.list.useQuery();
   const { data: familyMembers } = api.familyAccount.list.useQuery();
   const { data: bundlesData } = api.bundles.list.useQuery();
+  const { data: beautyBundleData } = api.beautyBundles.get.useQuery(
+    { id: preselectedBeautyBundleId ?? 0 },
+    { enabled: !!preselectedBeautyBundleId, retry: false },
+  );
 
   const services = servicesData?.items ?? [];
   const svc = serviceDetail;
@@ -75,6 +82,11 @@ export default function CreateBookingPage(): JSX.Element {
   const members = (familyMembers as unknown as Array<Record<string, unknown>> | undefined) ?? [];
   const bundles = (bundlesData as unknown as Array<Record<string, unknown>> | undefined) ?? [];
   const activeBundle = bundles.find((b) => b.id === bundleId);
+  const activeBeautyBundle = beautyBundleData as
+    | (Record<string, unknown> & {
+        services?: Array<Record<string, unknown>>;
+      })
+    | undefined;
 
   // 1.1 Dynamic pricing — live preview for the confirm step. Mirrors the
   // auto-assign logic in handleSubmit (first technician for the service).
@@ -96,7 +108,7 @@ export default function CreateBookingPage(): JSX.Element {
       technicianId: previewTechnicianId,
       startAt: previewStartAt,
     },
-    { enabled: step === 3 && !!serviceId && previewTechnicianId > 0 },
+    { enabled: step === 3 && !!serviceId && previewTechnicianId > 0 && !activeBeautyBundle },
   ) as { data: { enabled: boolean; breakdown: Record<string, number> } | undefined };
 
   // A preselected bundle drives the primary (mother) service — jump the
@@ -111,6 +123,18 @@ export default function CreateBookingPage(): JSX.Element {
     }
   }, [activeBundle, serviceId]);
 
+  // 1.2: a preselected beauty bundle anchors its FIRST service — jump the
+  // customer straight to the details step.
+  useEffect(() => {
+    if (activeBeautyBundle && !serviceId) {
+      const first = activeBeautyBundle.services?.[0];
+      if (first?.id) {
+        setServiceId(first.id as number);
+        setStep((s) => (s < 2 ? 2 : s));
+      }
+    }
+  }, [activeBeautyBundle, serviceId]);
+
   // Displayed total: base price + selected variant delta.
   const variantDelta = variantId ? num(variants.find((v) => v.id === variantId)?.priceDelta) : 0;
   // K4 (kids plan): hourly services (babysitting) price by duration.
@@ -121,9 +145,11 @@ export default function CreateBookingPage(): JSX.Element {
         Math.ceil(num((svc as unknown as { durationMin?: number })?.durationMin, 60) / 60),
       )
     : 0;
-  const orderAmount = isHourly
-    ? num((svc as unknown as { basePrice?: unknown })?.basePrice) * hourlyHours
-    : num((svc as unknown as { basePrice?: unknown })?.basePrice) + variantDelta;
+  const orderAmount = activeBeautyBundle
+    ? num(activeBeautyBundle.totalPrice)
+    : isHourly
+      ? num((svc as unknown as { basePrice?: unknown })?.basePrice) * hourlyHours
+      : num((svc as unknown as { basePrice?: unknown })?.basePrice) + variantDelta;
 
   // 1.3 Add-Ons — "customers who booked this also added" upsells.
   const addonOptions = ((svc as unknown as { servicesWithAddon?: unknown[] })?.servicesWithAddon ??
@@ -222,10 +248,14 @@ export default function CreateBookingPage(): JSX.Element {
     const [h, m] = bookingTime.split(':').map(Number);
     const start = new Date(`${bookingDate}T00:00:00`);
     start.setHours(h, m, 0, 0);
-    const durationMin = num(
-      svc ? (svc as unknown as { durationMin?: number }).durationMin : 60,
-      60,
-    );
+    // 1.2: a beauty bundle books ONE slot covering the sequential services —
+    // duration is the sum of the included services.
+    const durationMin = activeBeautyBundle
+      ? (activeBeautyBundle.services ?? []).reduce(
+          (sum, s) => sum + num((s as Record<string, unknown>).durationMin),
+          0,
+        )
+      : num(svc ? (svc as unknown as { durationMin?: number }).durationMin : 60, 60);
 
     createMut.mutate({
       serviceId,
@@ -238,6 +268,7 @@ export default function CreateBookingPage(): JSX.Element {
       endAt: new Date(start.getTime() + durationMin * 60000).toISOString(),
       familyMemberId,
       bundleId,
+      beautyBundleId: preselectedBeautyBundleId,
       addonIds: selectedAddons.length > 0 ? selectedAddons : undefined,
     });
   };
@@ -332,7 +363,29 @@ export default function CreateBookingPage(): JSX.Element {
                 </div>
               )}
 
-              {!activeBundle && variants.length > 0 && (
+              {activeBeautyBundle && (
+                <div
+                  data-testid="beauty-bundle-banner"
+                  className="mb-4 rounded-lg border border-rose-200 bg-rose-50 p-3 text-sm dark:border-rose-800 dark:bg-rose-950"
+                >
+                  <p className="font-semibold text-rose-700 dark:text-rose-400">
+                    {t('bundles.selectedBanner', {
+                      name: localize(activeBeautyBundle.titleJson, locale),
+                    })}
+                  </p>
+                  <p className="mt-1 text-rose-600 dark:text-rose-500">
+                    {t('bundles.servicesCount', {
+                      count: (activeBeautyBundle.serviceIds as number[]).length,
+                    })}{' '}
+                    · {num(activeBeautyBundle.totalPrice).toFixed(0)} {t('misc.sar')}{' '}
+                    <span className="line-through opacity-70">
+                      {num(activeBeautyBundle.originalPrice).toFixed(0)}
+                    </span>
+                  </p>
+                </div>
+              )}
+
+              {!activeBundle && !activeBeautyBundle && variants.length > 0 && (
                 <div className="mb-4">
                   <label htmlFor="bc-variant" className="mb-2 block text-sm text-text-secondary">
                     {t('booking.choose-variant')}
@@ -465,7 +518,7 @@ export default function CreateBookingPage(): JSX.Element {
                       : ''}
                   </span>
                 </div>
-                {pricePreview?.enabled && !activeBundle ? (
+                {pricePreview?.enabled && !activeBundle && !activeBeautyBundle ? (
                   <div className="space-y-1 border-b pb-2">
                     <div className="flex justify-between">
                       <span className="text-text-secondary">{t('booking.price.base')}</span>
@@ -527,7 +580,7 @@ export default function CreateBookingPage(): JSX.Element {
                   </span>
                 </div>
                 {/* 1.3 Add-Ons — "customers who booked this also added" */}
-                {addonOptions.length > 0 && !activeBundle && (
+                {addonOptions.length > 0 && !activeBundle && !activeBeautyBundle && (
                   <div className="border-b pb-3">
                     <p className="mb-2 text-sm font-semibold text-text-primary">
                       {t('booking.addons.title')}
@@ -617,6 +670,24 @@ export default function CreateBookingPage(): JSX.Element {
                   <div className="flex justify-between border-b pb-2">
                     <span className="text-text-secondary">{t('booking.bundle')}</span>
                     <span className="font-semibold">{localize(activeBundle.nameJson, locale)}</span>
+                  </div>
+                )}
+                {activeBeautyBundle && (
+                  <div
+                    data-testid="bundle-price-row"
+                    className="flex justify-between border-b pb-2"
+                  >
+                    <span className="text-text-secondary">
+                      {localize(activeBeautyBundle.titleJson, locale)}
+                    </span>
+                    <span className="text-end">
+                      <span className="block text-xs text-text-tertiary line-through">
+                        {num(activeBeautyBundle.originalPrice).toFixed(0)} {t('misc.sar')}
+                      </span>
+                      <span className="font-bold text-brand-600">
+                        {num(activeBeautyBundle.totalPrice).toFixed(0)} {t('misc.sar')}
+                      </span>
+                    </span>
                   </div>
                 )}
                 {appliedPromo && (

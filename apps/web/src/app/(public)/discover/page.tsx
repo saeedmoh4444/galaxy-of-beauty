@@ -4,6 +4,7 @@ import Link from 'next/link';
 import { api } from '@/lib/trpc';
 import { localize, prioritizeByLinks } from '@galaxy/shared';
 import { useLocale } from '@/components/LocaleProvider';
+import { SeasonalBanner } from '@/components/seasonal/SeasonalBanner';
 import {
   Card,
   GridSkeleton,
@@ -183,6 +184,8 @@ export default function DiscoverPage(): JSX.Element {
         gradient="from-brand-50 via-surface to-accent-50"
         className="mb-2"
       />
+      {/* 1.4 Seasonal & Event Services — themed banner (hidden off-season). */}
+      <SeasonalBanner />
       <div className="mx-auto max-w-6xl px-4 pb-12">
         <div
           data-testid="discover-grid"

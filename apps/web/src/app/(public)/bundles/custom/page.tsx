@@ -50,6 +50,11 @@ export default function BundlesPage(): JSX.Element {
   return (
     <div className="mx-auto max-w-5xl px-4 py-8">
       <div className="text-center mb-8">
+        {/* 1.2: the builder moved to /bundles/custom — the catalog lives
+            at /bundles. Link back so visitors can browse pre-built packages. */}
+        <Link href="/bundles" className="mb-3 inline-block text-sm text-brand-600 hover:underline">
+          ← {t('bundles.title')}
+        </Link>
         <h1 className="text-3xl font-bold text-text-primary">{t('marketing.bundles.title')}</h1>
         <p className="mt-2 text-text-secondary">{t('marketing.bundles.subtitle')}</p>
       </div>

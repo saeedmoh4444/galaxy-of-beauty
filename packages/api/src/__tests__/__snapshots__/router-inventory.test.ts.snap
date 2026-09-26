@@ -1,7 +1,10 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
 exports[`router inventory > matches the canonical procedure list (detail snapshot) 1`] = `
-"accountability.checkIn	mutation	customer
+"abTest.convert	mutation	protected
+abTest.results	query	admin
+abTest.variant	query	protected
+accountability.checkIn	mutation	customer
 accountability.findPartner	mutation	customer
 accountability.myPartners	query	customer
 accountability.stats	query	customer
@@ -114,7 +117,11 @@ beautyBudgetPlanner.myBudgets	query	customer
 beautyBudgetPlanner.setBudget	mutation	customer
 beautyBundles.adminList	query	admin
 beautyBundles.create	mutation	admin
+beautyBundles.delete	mutation	admin
+beautyBundles.get	query	public
 beautyBundles.list	query	public
+beautyBundles.quote	query	public
+beautyBundles.update	mutation	admin
 beautyCircles.create	mutation	customer
 beautyCircles.getById	query	customer
 beautyCircles.join	mutation	customer
@@ -546,14 +553,19 @@ lookOfTheDay.feed	query	public
 lookOfTheDay.submit	mutation	customer
 lookOfTheDay.today	query	public
 lookOfTheDay.vote	mutation	customer
+loyalty.activeBoosts	query	public
 loyalty.adjustPoints	mutation	admin
+loyalty.createBoost	mutation	admin
 loyalty.createReward	mutation	admin
+loyalty.deleteBoost	mutation	admin
 loyalty.leaderboard	query	public
+loyalty.listBoosts	query	admin
 loyalty.listRewards	query	admin
 loyalty.myAccount	query	protected
 loyalty.myTransactions	query	protected
 loyalty.redeem	mutation	protected
 loyalty.rewards	query	public
+loyalty.summary	query	protected
 loyaltyPunchCard.myCard	query	customer
 marketplace.addReview	mutation	customer
 marketplace.addToCart	mutation	customer
@@ -764,6 +776,10 @@ savingsMilestones.stats	query	customer
 search.nearMe	query	public
 search.search	query	public
 search.suggestions	query	public
+seasonalServices.active	query	public
+seasonalServices.create	mutation	admin
+seasonalServices.list	query	admin
+seasonalServices.update	mutation	admin
 secretSanta.createGroup	mutation	customer
 secretSanta.draw	mutation	customer
 secretSanta.getAssignment	query	customer

@@ -5,6 +5,7 @@ import { api } from '@/lib/trpc';
 import { Card, CardListSkeleton, ErrorAlert, EmptyState, LOYALTY_TIERS } from '@galaxy/ui';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
 import { useLocale } from '@/components/LocaleProvider';
+import { localize } from '@galaxy/shared';
 import type { TranslationKey } from '@galaxy/shared';
 
 /** UI‑only marketing copy per tier (benefits shown to the customer). */
@@ -28,8 +29,13 @@ const TIER_BENEFITS: Record<string, TranslationKey[]> = {
 };
 
 export default function LoyaltyDashboardPage(): JSX.Element {
-  const { t } = useLocale();
+  const { t, locale } = useLocale();
   const { data: account, isLoading, isError, refetch } = api.loyalty.myAccount.useQuery();
+  // 8.2 — active points boosts (public mirror of the admin CRUD).
+  const { data: activeBoosts } = api.loyalty.activeBoosts.useQuery(undefined, {
+    retry: false,
+  });
+  const boosts = (activeBoosts ?? []) as Array<Record<string, unknown>>;
 
   const tierKey = (account?.tier as string) || 'SILVER';
   const currentTier = tierKey as keyof typeof LOYALTY_TIERS;
@@ -44,6 +50,30 @@ export default function LoyaltyDashboardPage(): JSX.Element {
     <DashboardLayout userRole="CUSTOMER">
       <div className="mx-auto max-w-3xl space-y-6">
         <h1 className="text-2xl font-bold text-text-primary">{t('loyalty.title')}</h1>
+
+        {/* 8.2 — active points boosts */}
+        {boosts.length > 0 && (
+          <div
+            data-testid="loyalty-boost-banner"
+            className="rounded-2xl border border-amber-200 bg-amber-50 p-4 dark:border-amber-800 dark:bg-amber-950"
+          >
+            {boosts.map((b) => (
+              <p
+                key={b.id as number}
+                className="text-sm font-bold text-amber-800 dark:text-amber-300"
+              >
+                ⚡{' '}
+                {t('loyalty.boost.banner', {
+                  name: localize(b.nameJson, locale),
+                  multiplier: Number(b.multiplier),
+                  date: new Date(String(b.endsAt)).toLocaleDateString(
+                    locale === 'ar' ? 'ar-SA' : 'en-GB',
+                  ),
+                })}
+              </p>
+            ))}
+          </div>
+        )}
 
         {isLoading ? (
           <CardListSkeleton count={4} />

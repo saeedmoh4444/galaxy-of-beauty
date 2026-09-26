@@ -40,6 +40,13 @@ export const miscMessages = {
   },
   'loyalty.membershipLevel': { ar: 'مستوى عضويتكِ', en: 'Your Membership Level' },
   'loyalty.points': { ar: 'نقطة', en: 'points' },
+  // 8.2 — points boost events.
+  'loyalty.boost.banner': {
+    ar: '{name} — نقاطك مضاعفة ×{multiplier} حتى {date}',
+    en: '{name} — double points ×{multiplier} until {date}',
+  },
+  'loyalty.boost.label': { ar: 'مضاعف نقاط ×{multiplier}', en: '{multiplier}x points' },
+  'loyalty.boost.none': { ar: 'لا مضاعفات نشطة حالياً', en: 'No active boosts right now' },
   'loyalty.multiplier': { ar: 'المضاعف:', en: 'Multiplier:' },
   'loyalty.progressToward': { ar: 'التقدم نحو', en: 'Progress toward' },
   'loyalty.pointsRemaining': { ar: 'نقطة متبقية', en: 'points left' },
@@ -539,6 +546,33 @@ export const miscMessages = {
   'seasonal.svc.autumn.nourishingMaskWhy': {
     ar: 'تحضير البشرة للشتاء',
     en: 'Prepares skin for winter',
+  },
+
+  // 1.4 Seasonal & Event Services — themed banner (driven by lib/season).
+  'seasonal.banner.ramadan': {
+    ar: 'عروض رمضان — {count} خدمات موسمية',
+    en: 'Ramadan offers — {count} seasonal services',
+  },
+  'seasonal.banner.eid': {
+    ar: 'إطلالات العيد — {count} خدمات موسمية',
+    en: 'Eid looks — {count} seasonal services',
+  },
+  'seasonal.banner.graduation': {
+    ar: 'توهج التخرج — {count} خدمات موسمية',
+    en: 'Graduation glow — {count} seasonal services',
+  },
+  'seasonal.banner.valentine': {
+    ar: 'عروض فالنتاين — {count} خدمات موسمية',
+    en: 'Valentine offers — {count} seasonal services',
+  },
+  'seasonal.banner.cta': { ar: 'تصفحي العروض الموسمية', en: 'Browse seasonal offers' },
+  'seasonal.banner.premium': {
+    ar: '+{premium} ر.س رسم موسمي',
+    en: '+{premium} SAR seasonal premium',
+  },
+  'seasonal.banner.none': {
+    ar: 'لا عروض موسمية نشطة حالياً',
+    en: 'No seasonal offers active right now',
   },
 
   // Post-Treatment

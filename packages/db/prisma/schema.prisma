@@ -1,8 +1,6 @@
-// =============================================================================
-// Galaxy of Beauty - Prisma Schema
+// ======================================================================// Galaxy of Beauty - Prisma Schema
 // PostgreSQL 15+ | All models with indexes, JSONB localization, and relations
-// =============================================================================
-
+// ======================================================================
 generator client {
   provider        = "prisma-client-js"
 }
@@ -11,10 +9,8 @@ datasource db {
   provider = "postgresql"
 }
 
-// =============================================================================
-// Enums
-// =============================================================================
-
+// ======================================================================// Enums
+// ======================================================================
 enum UserRole {
   CUSTOMER
   TECHNICIAN
@@ -111,10 +107,8 @@ enum AiFeature {
   ONBOARDING_QUIZ
 }
 
-// =============================================================================
-// Users & Authentication
-// =============================================================================
-
+// ======================================================================// Users & Authentication
+// ======================================================================
 model User {
   id                Int       @id @default(autoincrement())
   email             String    @unique
@@ -251,6 +245,8 @@ model LoyaltyTransaction {
   points      Int      // Positive = earned, negative = redeemed
   reason      String   // "booking", "streak_bonus", "referral", "redemption", "tier_bonus"
   referenceId String?  // Booking ID, etc.
+  // 8.2: earned points expire 12 months after earn; redemptions stay null.
+  expiresAt   DateTime?
   createdAt   DateTime @default(now())
 
   account     LoyaltyAccount @relation(fields: [accountId], references: [id], onDelete: Cascade)
@@ -258,6 +254,20 @@ model LoyaltyTransaction {
   @@index([accountId])
   @@index([createdAt])
   @@map("loyalty_transactions")
+}
+
+// 8.2 Loyalty 2.0 — points boost events (double-points weekends, etc.).
+model LoyaltyBoost {
+  id         Int      @id @default(autoincrement())
+  nameJson   Json     // { ar, en }
+  multiplier Decimal  @db.Decimal(4, 2) // 2.0 = double points
+  startsAt   DateTime
+  endsAt     DateTime
+  isActive   Boolean  @default(true)
+  createdAt  DateTime @default(now())
+
+  @@index([isActive, startsAt, endsAt])
+  @@map("loyalty_boosts")
 }
 
 model LoyaltyReward {
@@ -274,10 +284,8 @@ model LoyaltyReward {
   @@map("loyalty_rewards")
 }
 
-// =============================================================================
-// Technician Profile
-// =============================================================================
-
+// ======================================================================// Technician Profile
+// ======================================================================
 model Technician {
   id                  Int       @id @default(autoincrement())
   userId              Int       @unique
@@ -319,10 +327,8 @@ model Technician {
   @@map("technicians")
 }
 
-// =============================================================================
-// Wallet & Transactions
-// =============================================================================
-
+// ======================================================================// Wallet & Transactions
+// ======================================================================
 model Wallet {
   id           Int     @id @default(autoincrement())
   userId       Int     @unique
@@ -355,10 +361,8 @@ model WalletTransaction {
   @@map("wallet_transactions")
 }
 
-// =============================================================================
-// Addresses
-// =============================================================================
-
+// ======================================================================// Addresses
+// ======================================================================
 model Address {
   id        Int      @id @default(autoincrement())
   userId    Int
@@ -382,10 +386,8 @@ model Address {
   @@map("addresses")
 }
 
-// =============================================================================
-// Service Catalog
-// =============================================================================
-
+// ======================================================================// Service Catalog
+// ======================================================================
 model Category {
   id        Int    @id @default(autoincrement())
   nameJson  Json   // { ar: "العناية بالشعر", en: "Hair Care" }
@@ -402,6 +404,7 @@ model Category {
   children Category[] @relation("CategoryTree")
   services Service[]
   pricingRules ServicePricing[]
+  seasonalServices SeasonalService[]
 
   @@index([parentId])
   @@index([slug])
@@ -465,10 +468,8 @@ model ServiceVariant {
   @@map("service_variants")
 }
 
-// =============================================================================
-// 1.1 Dynamic pricing — peak/off-peak rules (ENHANCEMENT_PLAN)
-// =============================================================================
-
+// ======================================================================// 1.1 Dynamic pricing — peak/off-peak rules (ENHANCEMENT_PLAN)
+// ======================================================================
 model ServicePricing {
   id              Int     @id @default(autoincrement())
   serviceId       Int?    // null = applies to all services
@@ -490,11 +491,9 @@ model ServicePricing {
   @@map("service_pricing_rules")
 }
 
-// =============================================================================
-// K3 (kids plan) — Mommy & Me bundles: mother service + child service booked
+// ======================================================================// K3 (kids plan) — Mommy & Me bundles: mother service + child service booked
 // as ONE booking with a bundle price.
-// =============================================================================
-
+// ======================================================================
 model ServiceBundle {
   id             Int     @id @default(autoincrement())
   slug           String  @unique
@@ -559,10 +558,8 @@ model ServiceTagAssignment {
   @@map("service_tag_assignments")
 }
 
-// =============================================================================
-// Technician ↔ Service Mapping
-// =============================================================================
-
+// ======================================================================// Technician ↔ Service Mapping
+// ======================================================================
 model TechnicianService {
   id           Int      @id @default(autoincrement())
   technicianId Int
@@ -581,10 +578,8 @@ model TechnicianService {
   @@map("technician_services")
 }
 
-// =============================================================================
-// Availability & Booking
-// =============================================================================
-
+// ======================================================================// Availability & Booking
+// ======================================================================
 model AvailabilitySlot {
   id           Int      @id @default(autoincrement())
   technicianId Int
@@ -637,6 +632,11 @@ model Booking {
   pricingBreakdown          Json?
   // 1.3 Add-Ons — booked add-on snapshot [{ id, titleJson, price }].
   addonsJson                Json?
+  // 1.2 Service Bundles — pre-built package link + execution snapshot
+  // ({ id, titleJson, discountPct, totalPrice, originalPrice,
+  //    serviceIds: [{ id, titleJson }] }).
+  beautyBundleId            Int?
+  beautyBundleJson          Json?
   createdAt          DateTime      @default(now())
   updatedAt          DateTime      @updatedAt
 
@@ -653,6 +653,7 @@ model Booking {
   videoSession VideoSession?
   familyMember FamilyMember?   @relation(fields: [familyMemberId], references: [id], onDelete: SetNull)
   bundle      ServiceBundle?   @relation(fields: [bundleId], references: [id], onDelete: SetNull)
+  beautyBundle BeautyBundle?  @relation(fields: [beautyBundleId], references: [id], onDelete: SetNull)
 
   @@index([customerId, status, createdAt])
   @@index([technicianId, status, startAt])
@@ -660,10 +661,8 @@ model Booking {
   @@map("bookings")
 }
 
-// =============================================================================
-// Payments (PayFort / Amazon Payment Services)
-// =============================================================================
-
+// ======================================================================// Payments (PayFort / Amazon Payment Services)
+// ======================================================================
 model Payment {
   id            Int           @id @default(autoincrement())
   bookingId     Int           @unique
@@ -686,10 +685,8 @@ model Payment {
   @@map("payments")
 }
 
-// =============================================================================
-// Payouts (Technician Earnings)
-// =============================================================================
-
+// ======================================================================// Payouts (Technician Earnings)
+// ======================================================================
 model Payout {
   id           Int          @id @default(autoincrement())
   technicianId Int?         // References User.id (technician's user ID); null for store payouts
@@ -714,10 +711,8 @@ model Payout {
   @@map("payouts")
 }
 
-// =============================================================================
-// Reviews & Ratings
-// =============================================================================
-
+// ======================================================================// Reviews & Ratings
+// ======================================================================
 model Review {
   id        Int      @id @default(autoincrement())
   bookingId Int      @unique
@@ -735,10 +730,8 @@ model Review {
   @@map("reviews")
 }
 
-// =============================================================================
-// Disputes
-// =============================================================================
-
+// ======================================================================// Disputes
+// ======================================================================
 model Dispute {
   id          Int           @id @default(autoincrement())
   bookingId   Int           @unique
@@ -762,10 +755,8 @@ model Dispute {
   @@map("disputes")
 }
 
-// =============================================================================
-// Notifications
-// =============================================================================
-
+// ======================================================================// Notifications
+// ======================================================================
 model Notification {
   id        Int      @id @default(autoincrement())
   userId    Int
@@ -803,10 +794,8 @@ model NotificationTemplate {
   @@map("notification_templates")
 }
 
-// =============================================================================
-// Waitlist
-// =============================================================================
-
+// ======================================================================// Waitlist
+// ======================================================================
 model WaitlistEntry {
   id            Int            @id @default(autoincrement())
   customerId    Int
@@ -829,10 +818,8 @@ model WaitlistEntry {
   @@map("waitlist_entries")
 }
 
-// =============================================================================
-// Terms & Compliance
-// =============================================================================
-
+// ======================================================================// Terms & Compliance
+// ======================================================================
 model TermsAcceptance {
   id           Int      @id @default(autoincrement())
   userId       Int
@@ -847,10 +834,8 @@ model TermsAcceptance {
   @@map("terms_acceptances")
 }
 
-// =============================================================================
-// ZATCA E-Invoicing
-// =============================================================================
-
+// ======================================================================// ZATCA E-Invoicing
+// ======================================================================
 model ZatcaInvoice {
   id                  Int         @id @default(autoincrement())
   bookingId           Int         @unique
@@ -873,10 +858,8 @@ model ZatcaInvoice {
   @@map("zatca_invoices")
 }
 
-// =============================================================================
-// Audit Log (Admin Actions)
-// =============================================================================
-
+// ======================================================================// Audit Log (Admin Actions)
+// ======================================================================
 model AuditLog {
   id         Int      @id @default(autoincrement())
   adminId    Int
@@ -895,10 +878,8 @@ model AuditLog {
   @@map("audit_logs")
 }
 
-// =============================================================================
-// AI & Subscription Features
-// =============================================================================
-
+// ======================================================================// AI & Subscription Features
+// ======================================================================
 model AiSubscriptionPlan {
   id            Int    @id @default(autoincrement())
   nameJson      Json   // { ar: "الباقة الأساسية", en: "Basic Plan" }
@@ -946,10 +927,8 @@ model AiUsage {
   @@map("ai_usage")
 }
 
-// =============================================================================
-// AI Chatbot (Beauty Galaxy)
-// =============================================================================
-
+// ======================================================================// AI Chatbot (Beauty Galaxy)
+// ======================================================================
 model ChatMessage {
   id         Int      @id @default(autoincrement())
   senderId   Int
@@ -968,10 +947,8 @@ model ChatMessage {
   @@map("chat_messages")
 }
 
-// =============================================================================
-// Onboarding Quiz & Recommendations
-// =============================================================================
-
+// ======================================================================// Onboarding Quiz & Recommendations
+// ======================================================================
 model CustomerQuizResponse {
   id        Int      @id @default(autoincrement())
   userId    Int      @unique
@@ -994,10 +971,8 @@ model RecommendationFeedback {
   @@map("recommendation_feedback")
 }
 
-// =============================================================================
-// Wishlist (Customer Saved Items)
-// =============================================================================
-
+// ======================================================================// Wishlist (Customer Saved Items)
+// ======================================================================
 model WishlistItem {
   id           Int      @id @default(autoincrement())
   userId       Int
@@ -1016,10 +991,8 @@ model WishlistItem {
   @@map("wishlist_items")
 }
 
-// =============================================================================
-// Saudi Cities Reference Data (for dropdowns, autocomplete)
-// =============================================================================
-
+// ======================================================================// Saudi Cities Reference Data (for dropdowns, autocomplete)
+// ======================================================================
 model SaudiCity {
   id        Int    @id @default(autoincrement())
   nameAr    String
@@ -1050,10 +1023,8 @@ model Area {
   @@map("areas")
 }
 
-// =============================================================================
-// Beauty Streaks & Achievements (Gamification)
-// =============================================================================
-
+// ======================================================================// Beauty Streaks & Achievements (Gamification)
+// ======================================================================
 model Streak {
   id              Int      @id @default(autoincrement())
   customerId      Int      @unique
@@ -1095,10 +1066,8 @@ model UserAchievement {
   @@map("user_achievements")
 }
 
-// =============================================================================
-// Referral Program
-// =============================================================================
-
+// ======================================================================// Referral Program
+// ======================================================================
 model Referral {
   id             Int      @id @default(autoincrement())
   referrerId     Int      // User who referred
@@ -1120,10 +1089,8 @@ model Referral {
   @@map("referrals")
 }
 
-// =============================================================================
-// Platform Configuration (Admin Settings)
-// =============================================================================
-
+// ======================================================================// Platform Configuration (Admin Settings)
+// ======================================================================
 model PlatformConfig {
   id           Int      @id @default(autoincrement())
   key          String   @unique
@@ -1136,10 +1103,8 @@ model PlatformConfig {
   @@map("platform_configs")
 }
 
-// =============================================================================
-// Saved Payment Methods
-// =============================================================================
-
+// ======================================================================// Saved Payment Methods
+// ======================================================================
 model SavedCard {
   id           Int      @id @default(autoincrement())
   userId       Int
@@ -1159,10 +1124,8 @@ model SavedCard {
   @@map("saved_cards")
 }
 
-// =============================================================================
-// Portfolio / Before & After Gallery
-// =============================================================================
-
+// ======================================================================// Portfolio / Before & After Gallery
+// ======================================================================
 model GalleryImage {
   id           Int      @id @default(autoincrement())
   technicianId Int
@@ -1181,10 +1144,8 @@ model GalleryImage {
   @@map("gallery_images")
 }
 
-// =============================================================================
-// Promo Codes & Flash Deals
-// =============================================================================
-
+// ======================================================================// Promo Codes & Flash Deals
+// ======================================================================
 model PromoCode {
   id              Int      @id @default(autoincrement())
   code            String   @unique
@@ -1223,10 +1184,8 @@ model PromoUsage {
   @@map("promo_usages")
 }
 
-// =============================================================================
-// Subscription Boxes (Monthly Beauty Packages)
-// =============================================================================
-
+// ======================================================================// Subscription Boxes (Monthly Beauty Packages)
+// ======================================================================
 model SubscriptionPlan {
   id              Int      @id @default(autoincrement())
   nameJson        Json     // { ar: "الباقة الذهبية", en: "Gold Package" }
@@ -1274,10 +1233,8 @@ model CustomerSubscription {
   @@map("customer_subscriptions")
 }
 
-// =============================================================================
-// Feature Flags
-// =============================================================================
-
+// ======================================================================// Feature Flags
+// ======================================================================
 model FeatureFlag {
   id          Int      @id @default(autoincrement())
   key         String   @unique
@@ -1292,10 +1249,8 @@ model FeatureFlag {
   @@map("feature_flags")
 }
 
-// =============================================================================
-// Video Consultations
-// =============================================================================
-
+// ======================================================================// Video Consultations
+// ======================================================================
 model VideoSession {
   id          Int      @id @default(autoincrement())
   bookingId   Int      @unique
@@ -1315,10 +1270,8 @@ model VideoSession {
   @@map("video_sessions")
 }
 
-// =============================================================================
-// AI Skin Analysis
-// =============================================================================
-
+// ======================================================================// AI Skin Analysis
+// ======================================================================
 model SkinAnalysis {
   id          Int      @id @default(autoincrement())
   userId      Int
@@ -1335,10 +1288,8 @@ model SkinAnalysis {
   @@map("skin_analyses")
 }
 
-// =============================================================================
-// Beauty Product Marketplace
-// =============================================================================
-
+// ======================================================================// Beauty Product Marketplace
+// ======================================================================
 model ProductCategory {
   id        Int      @id @default(autoincrement())
   nameJson  Json     // { ar: "عناية بالبشرة", en: "Skincare" }
@@ -1609,10 +1560,8 @@ model CartItem {
   @@map("cart_items")
 }
 
-// =============================================================================
-// Gift Cards / Beauty Vouchers
-// =============================================================================
-
+// ======================================================================// Gift Cards / Beauty Vouchers
+// ======================================================================
 model GiftCard {
   id          String   @id @default(uuid())
   code        String   @unique
@@ -1644,10 +1593,8 @@ model GiftCardTransaction {
   @@map("gift_card_transactions")
 }
 
-// =============================================================================
-// Group / Party Bookings
-// =============================================================================
-
+// ======================================================================// Group / Party Bookings
+// ======================================================================
 model GroupBooking {
   id          Int      @id @default(autoincrement())
   organizerId Int      // Customer who created the group
@@ -1680,10 +1627,8 @@ model GroupBookingMember {
   @@map("group_booking_members")
 }
 
-// =============================================================================
-// Beauty Packages (curated service bundles)
-// =============================================================================
-
+// ======================================================================// Beauty Packages (curated service bundles)
+// ======================================================================
 model BeautyPackage {
   id              Int      @id @default(autoincrement())
   nameJson        Json     // { ar, en }
@@ -1746,10 +1691,8 @@ model BeautyPackageService {
   @@map("beauty_package_services")
 }
 
-// =============================================================================
-// Customer Favorites (quick rebooking)
-// =============================================================================
-
+// ======================================================================// Customer Favorites (quick rebooking)
+// ======================================================================
 model CustomerFavorite {
   id           Int      @id @default(autoincrement())
   userId       Int
@@ -1763,10 +1706,8 @@ model CustomerFavorite {
   @@map("customer_favorites")
 }
 
-// =============================================================================
-// Seasonal Campaigns (Ramadan, Eid, wedding season, etc.)
-// =============================================================================
-
+// ======================================================================// Seasonal Campaigns (Ramadan, Eid, wedding season, etc.)
+// ======================================================================
 model Campaign {
   id              Int      @id @default(autoincrement())
   nameJson        Json     // { ar, en }
@@ -1786,10 +1727,8 @@ model Campaign {
   @@map("campaigns")
 }
 
-// =============================================================================
-// Beauty Blog / Tips
-// =============================================================================
-
+// ======================================================================// Beauty Blog / Tips
+// ======================================================================
 model BlogPost {
   id          Int      @id @default(autoincrement())
   titleJson   Json     // { ar, en }
@@ -1807,10 +1746,8 @@ model BlogPost {
   @@map("blog_posts")
 }
 
-// =============================================================================
-// Beauty Profile — Personalized Customer Preferences
-// =============================================================================
-
+// ======================================================================// Beauty Profile — Personalized Customer Preferences
+// ======================================================================
 model BeautyProfile {
   id          Int      @id @default(autoincrement())
   userId      Int      @unique
@@ -1841,10 +1778,8 @@ model BeautyProfile {
   @@map("beauty_profiles")
 }
 
-// =============================================================================
-// Bridal Concierge — Wedding Beauty Planning
-// =============================================================================
-
+// ======================================================================// Bridal Concierge — Wedding Beauty Planning
+// ======================================================================
 model BridalConcierge {
   id            Int      @id @default(autoincrement())
   userId        Int      @unique
@@ -1877,10 +1812,8 @@ model BridalService {
   @@map("bridal_services")
 }
 
-// =============================================================================
-// Technician Skill Badges
-// =============================================================================
-
+// ======================================================================// Technician Skill Badges
+// ======================================================================
 model TechnicianBadge {
   id          Int    @id @default(autoincrement())
   key         String @unique // "bridal_specialist", "organic_products", "celebrity_stylist"
@@ -1905,10 +1838,8 @@ model TechnicianBadgeAssignment {
   @@map("technician_badge_assignments")
 }
 
-// =============================================================================
-// Beauty Events — Workshops, Masterclasses
-// =============================================================================
-
+// ======================================================================// Beauty Events — Workshops, Masterclasses
+// ======================================================================
 model BeautyEvent {
   id            Int      @id @default(autoincrement())
   nameJson      Json     // { ar, en }
@@ -1929,10 +1860,8 @@ model BeautyEvent {
   @@map("beauty_events")
 }
 
-// =============================================================================
-// Self-Care Tracker — Daily Wellness Check-ins
-// =============================================================================
-
+// ======================================================================// Self-Care Tracker — Daily Wellness Check-ins
+// ======================================================================
 model SelfCareCheckin {
   id          Int      @id @default(autoincrement())
   userId      Int
@@ -1947,10 +1876,8 @@ model SelfCareCheckin {
   @@map("self_care_checkins")
 }
 
-// =============================================================================
-// Beauty Budget — Monthly Spending Overview
-// =============================================================================
-
+// ======================================================================// Beauty Budget — Monthly Spending Overview
+// ======================================================================
 model BeautyBudget {
   id          Int      @id @default(autoincrement())
   userId      Int
@@ -1964,10 +1891,8 @@ model BeautyBudget {
   @@map("beauty_budgets")
 }
 
-// =============================================================================
-// Beauty Inspiration Board — Save looks & ideas
-// =============================================================================
-
+// ======================================================================// Beauty Inspiration Board — Save looks & ideas
+// ======================================================================
 model InspirationPin {
   id          Int      @id @default(autoincrement())
   userId      Int
@@ -1983,10 +1908,8 @@ model InspirationPin {
   @@map("inspiration_pins")
 }
 
-// =============================================================================
-// Recurring Bookings — Automated repeat appointments
-// =============================================================================
-
+// ======================================================================// Recurring Bookings — Automated repeat appointments
+// ======================================================================
 model RecurringBooking {
   id            Int      @id @default(autoincrement())
   userId        Int
@@ -2004,10 +1927,8 @@ model RecurringBooking {
   @@map("recurring_bookings")
 }
 
-// =============================================================================
-// Beauty Community — Social Feed
-// =============================================================================
-
+// ======================================================================// Beauty Community — Social Feed
+// ======================================================================
 model CommunityPost {
   id          Int      @id @default(autoincrement())
   userId      Int
@@ -2040,10 +1961,8 @@ model CommunityComment {
   @@map("community_comments")
 }
 
-// =============================================================================
-// 2.5 Social Commerce — Shoppable Beauty Posts
-// =============================================================================
-
+// ======================================================================// 2.5 Social Commerce — Shoppable Beauty Posts
+// ======================================================================
 model BeautyPost {
   id         Int      @id @default(autoincrement())
   userId     Int      // author — customer (UGC) or technician (verified badge)
@@ -2387,10 +2306,8 @@ model TravelKitItem {
   @@map("travel_kit_items")
 }
 
-// =============================================================================
-// Beauty Gift Registry — Friends contribute to service funds
-// =============================================================================
-
+// ======================================================================// Beauty Gift Registry — Friends contribute to service funds
+// ======================================================================
 model GiftRegistry {
   id          Int      @id @default(autoincrement())
   userId      Int
@@ -2420,10 +2337,8 @@ model GiftRegistryContribution {
   @@map("gift_registry_contributions")
 }
 
-// =============================================================================
-// Notification Preferences
-// =============================================================================
-
+// ======================================================================// Notification Preferences
+// ======================================================================
 model NotificationPreference {
   id          Int      @id @default(autoincrement())
   userId      Int      @unique
@@ -2441,10 +2356,8 @@ model NotificationPreference {
   @@map("notification_preferences")
 }
 
-// =============================================================================
-// Birthday Rewards
-// =============================================================================
-
+// ======================================================================// Birthday Rewards
+// ======================================================================
 model BirthdayReward {
   id          Int      @id @default(autoincrement())
   userId      Int
@@ -2460,10 +2373,8 @@ model BirthdayReward {
   @@map("birthday_rewards")
 }
 
-// =============================================================================
-// Beauty Savings Goals
-// =============================================================================
-
+// ======================================================================// Beauty Savings Goals
+// ======================================================================
 model SavingsGoal {
   id          Int      @id @default(autoincrement())
   userId      Int
@@ -2482,10 +2393,8 @@ model SavingsGoal {
   @@map("savings_goals")
 }
 
-// =============================================================================
-// Technician Follow System
-// =============================================================================
-
+// ======================================================================// Technician Follow System
+// ======================================================================
 model TechnicianFollow {
   id            Int      @id @default(autoincrement())
   customerId    Int
@@ -2498,10 +2407,8 @@ model TechnicianFollow {
   @@map("technician_follows")
 }
 
-// =============================================================================
-// Beauty Journal — Track your beauty journey
-// =============================================================================
-
+// ======================================================================// Beauty Journal — Track your beauty journey
+// ======================================================================
 model BeautyJournal {
   id          Int      @id @default(autoincrement())
   userId      Int
@@ -2517,10 +2424,8 @@ model BeautyJournal {
   @@map("beauty_journals")
 }
 
-// =============================================================================
-// Flash Deals — Limited-Time Offers
-// =============================================================================
-
+// ======================================================================// Flash Deals — Limited-Time Offers
+// ======================================================================
 model FlashDeal {
   id                Int      @id @default(autoincrement())
   serviceId         Int
@@ -2541,10 +2446,8 @@ model FlashDeal {
   @@map("flash_deals")
 }
 
-// =============================================================================
-// Family Account — Family members for booking on behalf
-// =============================================================================
-
+// ======================================================================// Family Account — Family members for booking on behalf
+// ======================================================================
 model FamilyMember {
   id           Int      @id @default(autoincrement())
   userId       Int
@@ -2564,10 +2467,8 @@ model FamilyMember {
   @@map("family_members")
 }
 
-// =============================================================================
-// Skin Diary — Photo timeline tracking skin changes
-// =============================================================================
-
+// ======================================================================// Skin Diary — Photo timeline tracking skin changes
+// ======================================================================
 model SkinDiaryEntry {
   id             Int      @id @default(autoincrement())
   userId         Int
@@ -2582,10 +2483,8 @@ model SkinDiaryEntry {
   @@map("skin_diary_entries")
 }
 
-// =============================================================================
-// Wellness Tracker — Daily health & beauty check-ins
-// =============================================================================
-
+// ======================================================================// Wellness Tracker — Daily health & beauty check-ins
+// ======================================================================
 model WellnessCheckin {
   id        Int      @id @default(autoincrement())
   userId    Int
@@ -2603,10 +2502,8 @@ model WellnessCheckin {
   @@map("wellness_checkins")
 }
 
-// =============================================================================
-// Beauty Pen Pal — Interest-based beauty buddy matching
-// =============================================================================
-
+// ======================================================================// Beauty Pen Pal — Interest-based beauty buddy matching
+// ======================================================================
 model PenPalProfile {
   id        Int      @id @default(autoincrement())
   userId    Int      @unique
@@ -2617,10 +2514,8 @@ model PenPalProfile {
   @@map("pen_pal_profiles")
 }
 
-// =============================================================================
-// Live Chat — Customer support chat messages
-// =============================================================================
-
+// ======================================================================// Live Chat — Customer support chat messages
+// ======================================================================
 model LiveChatMessage {
   id        Int      @id @default(autoincrement())
   userId    Int
@@ -2633,10 +2528,8 @@ model LiveChatMessage {
   @@map("live_chat_messages")
 }
 
-// =============================================================================
-// Technician Q&A — Customer questions + technician answers
-// =============================================================================
-
+// ======================================================================// Technician Q&A — Customer questions + technician answers
+// ======================================================================
 model QAQuestion {
   id              Int      @id @default(autoincrement())
   userId          Int
@@ -2652,10 +2545,8 @@ model QAQuestion {
   @@map("qa_questions")
 }
 
-// =============================================================================
-// Mood Board — Visual inspiration boards + pins
-// =============================================================================
-
+// ======================================================================// Mood Board — Visual inspiration boards + pins
+// ======================================================================
 model MoodBoard {
   id          Int      @id @default(autoincrement())
   userId      Int
@@ -2687,10 +2578,8 @@ model MoodBoardPin {
   @@map("mood_board_pins")
 }
 
-// =============================================================================
-// Service Wishlist — Price tracking for desired services
-// =============================================================================
-
+// ======================================================================// Service Wishlist — Price tracking for desired services
+// ======================================================================
 model ServiceWishlistItem {
   id              Int      @id @default(autoincrement())
   userId          Int
@@ -2705,10 +2594,8 @@ model ServiceWishlistItem {
   @@map("service_wishlist_items")
 }
 
-// =============================================================================
-// Gift Card Market — P2P gift card listings
-// =============================================================================
-
+// ======================================================================// Gift Card Market — P2P gift card listings
+// ======================================================================
 model GiftCardListing {
   id           Int      @id @default(autoincrement())
   sellerId     Int
@@ -2724,10 +2611,8 @@ model GiftCardListing {
   @@map("gift_card_listings")
 }
 
-// =============================================================================
-// Expiry Tracker — Product expiration tracking
-// =============================================================================
-
+// ======================================================================// Expiry Tracker — Product expiration tracking
+// ======================================================================
 model ExpiryTrackerItem {
   id            Int      @id @default(autoincrement())
   userId        Int
@@ -2742,10 +2627,8 @@ model ExpiryTrackerItem {
   @@map("expiry_tracker_items")
 }
 
-// =============================================================================
-// Restock Reminder — Product repurchase tracking
-// =============================================================================
-
+// ======================================================================// Restock Reminder — Product repurchase tracking
+// ======================================================================
 model RestockReminderItem {
   id            Int      @id @default(autoincrement())
   userId        Int
@@ -3162,6 +3045,8 @@ model SalonMembership {
     createdAt     DateTime @default(now())
     updatedAt     DateTime @updatedAt
 
+    bookings Booking[]
+
     @@index([isActive, sortOrder])
     @@map("beauty_bundles")
   }
@@ -3186,10 +3071,8 @@ model SalonMembership {
 
 
 
-// =============================================================================
-// Beauty Circles — Private women-only groups (W4 Sisterhood)
-// =============================================================================
-
+// ======================================================================// Beauty Circles — Private women-only groups (W4 Sisterhood)
+// ======================================================================
 model BeautyCircle {
   id        Int      @id @default(autoincrement())
   name      String
@@ -4026,10 +3909,8 @@ model CustomerSegment {
   @@map("customer_segments")
 }
 
-// =============================================================================
-// E4b — Measurement History + BNPL Installment Plans
-// =============================================================================
-
+// ======================================================================// E4b — Measurement History + BNPL Installment Plans
+// ======================================================================
 // E4b — body measurement history (progress tracking toward beauty/fitness goals).
 model MeasurementLog {
   id         Int      @id @default(autoincrement())
@@ -4079,10 +3960,8 @@ model BnplPlan {
   @@map("bnpl_plans")
 }
 
-// =============================================================================
-// E5 — Nail bars (venue vertical: station-capacity slots, pay-at-venue)
-// =============================================================================
-
+// ======================================================================// E5 — Nail bars (venue vertical: station-capacity slots, pay-at-venue)
+// ======================================================================
 model NailBarSlot {
   id          Int      @id @default(autoincrement())
   nailBarId   Int
@@ -4113,10 +3992,8 @@ model NailBarBooking {
   @@map("nail_bar_bookings")
 }
 
-// =============================================================================
-// NPS Post-Booking Survey (ENHANCEMENT_PLAN quick win #6)
-// =============================================================================
-
+// ======================================================================// NPS Post-Booking Survey (ENHANCEMENT_PLAN quick win #6)
+// ======================================================================
 model NpsResponse {
   id        Int      @id @default(autoincrement())
   userId    Int
@@ -4146,4 +4023,35 @@ model ConsentRecord {
   @@unique([userId, type])
   @@index([userId])
   @@map("consent_records")
+}
+
+// ── 4.2 A/B testing — impression/conversion events per test + variant
+model AbTestEvent {
+  id        Int      @id @default(autoincrement())
+  testKey   String
+  variant   String // 'A' | 'B'
+  eventType String // 'impression' | 'conversion'
+  userId    Int?
+  createdAt DateTime @default(now())
+
+  @@index([testKey, variant, eventType])
+  @@map("ab_test_events")
+}
+// ── 1.4 Seasonal & Event Services — date-windowed seasonal offerings
+model SeasonalService {
+  id           Int      @id @default(autoincrement())
+  nameJson     Json     // { ar, en }
+  categoryId   Int
+  season       String   // EID / RAMADAN / GRADUATION / VALENTINE
+  startDate    DateTime
+  endDate      DateTime
+  pricePremium Decimal  @default(0) @db.Decimal(10, 2) // extra over base price
+  isActive     Boolean  @default(true)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  category Category @relation(fields: [categoryId], references: [id])
+
+  @@index([season, startDate, endDate])
+  @@map("seasonal_services")
 }
