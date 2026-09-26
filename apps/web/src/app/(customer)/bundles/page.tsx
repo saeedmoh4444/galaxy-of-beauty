@@ -22,8 +22,15 @@ export default function BundlesPage(): JSX.Element {
   return (
     <DashboardLayout userRole="CUSTOMER">
       <PageContainer width="wide">
-        <div className="mb-6">
+        <div className="mb-6 flex items-end justify-between gap-4">
           <PageTitle title={t('bundles.title')} subtitle={t('bundles.subtitle')} />
+          <Link
+            href="/bundles/custom"
+            data-testid="bundle-builder-link"
+            className="mb-1 shrink-0 text-sm font-bold text-brand-600 hover:underline"
+          >
+            {t('marketing.bundles.title')} ←
+          </Link>
         </div>
 
         {isLoading ? (
