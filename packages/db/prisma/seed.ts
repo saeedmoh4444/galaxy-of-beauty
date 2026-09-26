@@ -3875,6 +3875,17 @@ async function main() {
           en: 'Hi {{customerName}}, you left items in your cart! Complete your order with code {{code}} for {{discount}}% off (valid 24 hours).',
         },
       },
+      // 8.3d — post-booking review request (2–26h after the appointment).
+      {
+        key: 'post_booking_review',
+        category: 'bookingReminders',
+        channels: ['in_app', 'push'],
+        titleJson: { ar: 'كيف كانت تجربتك؟', en: 'How Was Your Experience?' },
+        bodyJson: {
+          ar: 'أهلًا {{customerName}}، نتمنى أن تكون تجربتك رائعة! قيّمي زيارتك وساعدينا نخدمكِ أفضل — وموعدك القادم بانتظارك.',
+          en: 'Hi {{customerName}}, we hope your visit was lovely! Rate it and help us serve you better — your next appointment awaits.',
+        },
+      },
       // B.6/B.7 — provider submission decisions. Category 'provider' is not
       // a preference toggle → always delivered.
       {
