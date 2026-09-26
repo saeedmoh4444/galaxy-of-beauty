@@ -5,6 +5,7 @@ import { MAX_AUTH_ATTEMPTS, MS_PER_DAY, MS_PER_WEEK } from '@galaxy/shared';
 import { publicMutation, protectedProcedure, protectedMutation, router } from '../trpc';
 import { prisma } from '@galaxy/db';
 import type { Prisma } from '@galaxy/db';
+import { sendWelcomeDay0 } from '../workers/welcomeSeries';
 import {
   hashPassword,
   verifyPassword,
@@ -204,6 +205,10 @@ export const authRouter = router({
       await prisma.wallet.create({
         data: { userId: user.id },
       });
+
+      // 8.3 — welcome series day 0 (fire-and-forget; days 1/3/7 ride the
+      // daily sweep).
+      void sendWelcomeDay0(user.id, user.name ?? '');
 
       // Create technician profile if applicable
       if (input.role === 'TECHNICIAN') {
