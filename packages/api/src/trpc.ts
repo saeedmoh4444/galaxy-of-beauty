@@ -5,6 +5,7 @@ import type { Context } from './context';
 import { verifyCsrfToken } from './lib/csrf';
 import { checkRateLimit } from './lib/rateLimit';
 import { incrementRequestCount, incrementErrorCount, recordTiming } from './lib/requestCounters';
+import { startProcedureSpan } from './lib/tracing';
 
 const t = initTRPC.context<Context>().create({
   transformer: superjson,
@@ -28,6 +29,21 @@ const requestCounter = t.middleware(async ({ next, path }) => {
   const duration = performance.now() - t0;
   recordTiming(path, duration);
   return result;
+});
+
+// ── 7.3 Tracing Middleware — span per procedure (noop when OTEL off) ──
+const tracingGuard = t.middleware(async ({ ctx, path, type, next }) => {
+  const span = startProcedureSpan(path, type as 'query' | 'mutation', {
+    'user.id': ctx.user?.id ?? 'anonymous',
+  });
+  try {
+    return await next();
+  } catch (err) {
+    span.recordException(err as Error);
+    throw err;
+  } finally {
+    span.end();
+  }
 });
 
 export const { router, procedure, middleware, mergeRouters } = t;
@@ -59,6 +75,7 @@ const rateLimitGuard = middleware(async ({ ctx, next, path }) => {
 // consumed only by the router-inventory snapshot gate (__tests__/
 // router-inventory.test.ts) — meta propagates through .use() chains.
 export const publicProcedure = procedure
+  .use(tracingGuard)
   .use(requestCounter)
   .use(rateLimitGuard)
   .meta({ tier: 'public' });
@@ -89,6 +106,7 @@ const csrfGuard = middleware(({ ctx, next }) => {
  * Public mutation — request-counted, CSRF-protected, no auth required.
  */
 export const publicMutation = procedure
+  .use(tracingGuard)
   .use(requestCounter)
   .use(rateLimitGuard)
   .use(csrfGuard)
@@ -103,6 +121,7 @@ const isAuthed = middleware(({ ctx, next }) => {
 });
 
 export const protectedProcedure = procedure
+  .use(tracingGuard)
   .use(isAuthed)
   .use(rateLimitGuard)
   .meta({ tier: 'protected' });
