@@ -1,7 +1,7 @@
 import type { JSX } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, ScrollView, Image } from 'react-native';
 import { useRouter } from 'expo-router';
-import { localize, serviceKeyFromCategorySlug } from '@galaxy/shared';
+import { localize, serviceKeyFromCategorySlug, seasonalBannerFor } from '@galaxy/shared';
 import { ScreenState } from '@/components/ScreenState';
 import { ServiceImage } from '@/components/ServiceImage';
 import { trpc } from '@/lib/trpc-react';
@@ -35,6 +35,19 @@ export default function HomeScreen(): JSX.Element {
       likes: number;
     }>) ?? [];
 
+  // 1.4 Seasonal & Event Services — themed banner (hidden off-season).
+  const seasonalQ = trpc.seasonalServices.active.useQuery(undefined, { retry: false });
+  const seasonalPayload = seasonalQ.data as
+    | {
+        seasons?: string[];
+        items?: Array<{ id?: number; nameJson?: { ar?: string; en?: string } }>;
+      }
+    | undefined;
+  const seasonalBanner = seasonalBannerFor(
+    seasonalPayload?.seasons ?? [],
+    seasonalPayload?.items?.length ?? 0,
+  );
+
   const data = cats.data as unknown[] | undefined;
 
   return (
@@ -59,6 +72,29 @@ export default function HomeScreen(): JSX.Element {
           <Text style={styles.moreBtnText}>{t('nav.more')}</Text>
         </TouchableOpacity>
       </View>
+
+      {/* 1.4 Seasonal & Event Services — themed banner (hidden off-season) */}
+      {seasonalBanner ? (
+        <TouchableOpacity
+          testID="seasonal-banner"
+          style={styles.seasonalBanner}
+          activeOpacity={0.8}
+          onPress={() => {
+            trigger();
+            router.push('/customer/seasonal-calendar');
+          }}
+        >
+          <Text style={styles.seasonalBannerTitle}>
+            {t('seasonal.banner.cta')} · {seasonalBanner.itemCount}
+          </Text>
+          <Text style={styles.seasonalBannerSub} numberOfLines={1}>
+            {(seasonalPayload?.items ?? [])
+              .slice(0, 3)
+              .map((i) => localize(i.nameJson, locale))
+              .join(' · ')}
+          </Text>
+        </TouchableOpacity>
+      ) : null}
 
       {/* Community Stats Bar */}
       <View style={styles.statsRow}>
@@ -220,6 +256,27 @@ const makeStyles = (c: typeof themeColors.light | typeof themeColors.dark) =>
       textAlign: 'center',
     },
     statsRow: { marginBottom: 16, gap: 8 },
+    // 1.4 Seasonal & Event Services banner
+    seasonalBanner: {
+      borderRadius: 14,
+      borderWidth: 1,
+      borderColor: '#fbcfe8',
+      backgroundColor: '#fdf2f8',
+      padding: 12,
+      marginBottom: 12,
+    },
+    seasonalBannerTitle: {
+      fontSize: 13,
+      fontWeight: '700',
+      color: '#db2777',
+      textAlign: 'right',
+    },
+    seasonalBannerSub: {
+      fontSize: 11,
+      color: '#9ca3af',
+      marginTop: 4,
+      textAlign: 'right',
+    },
     statBadge: {
       flexDirection: 'row',
       alignItems: 'center',
