@@ -632,6 +632,17 @@ export const adminMessages = {
   'admin.loyalty.available-rewards': { ar: 'المكافآت المتاحة', en: 'Available Rewards' },
   'admin.loyalty.no-rewards': { ar: 'لا توجد مكافآت', en: 'No rewards' },
   'admin.loyalty.points-cost': { ar: '{points} نقطة', en: '{points} points' },
+  // 8.2 — boost events CRUD.
+  'admin.loyalty.boosts': { ar: 'مضاعفات النقاط', en: 'Points Boosts' },
+  'admin.loyalty.no-boosts': { ar: 'لا توجد مضاعفات', en: 'No boosts' },
+  'admin.loyalty.boost-name-ar': { ar: 'اسم المضاعف (عربي)', en: 'Boost name (Arabic)' },
+  'admin.loyalty.boost-name-en': { ar: 'اسم المضاعف (إنجليزي)', en: 'Boost name (English)' },
+  'admin.loyalty.boost-multiplier': { ar: 'المضاعف', en: 'Multiplier' },
+  'admin.loyalty.boost-start': { ar: 'يبدأ', en: 'Starts' },
+  'admin.loyalty.boost-end': { ar: 'ينتهي', en: 'Ends' },
+  'admin.loyalty.boost-create': { ar: 'إنشاء مضاعف', en: 'Create boost' },
+  'admin.loyalty.boost-delete': { ar: 'حذف', en: 'Delete' },
+  'admin.loyalty.boost-window': { ar: '{start} → {end}', en: '{start} → {end}' },
 
   'admin.monitoring.svc-database': { ar: 'قاعدة البيانات', en: 'Database' },
   'admin.monitoring.svc-redis': { ar: ' Redis', en: 'Redis' },

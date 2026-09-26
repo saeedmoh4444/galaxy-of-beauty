@@ -553,6 +553,7 @@ lookOfTheDay.feed	query	public
 lookOfTheDay.submit	mutation	customer
 lookOfTheDay.today	query	public
 lookOfTheDay.vote	mutation	customer
+loyalty.activeBoosts	query	public
 loyalty.adjustPoints	mutation	admin
 loyalty.createBoost	mutation	admin
 loyalty.createReward	mutation	admin
