@@ -2095,6 +2095,10 @@ export const miscMessages = {
     ar: 'لا توجد بيانات كافية بعد',
     en: 'Not enough data yet',
   },
+  'referralDashboard.prizesTitle': { ar: 'جوائز الشهر', en: ' Monthly prizes' },
+  'referralDashboard.prizes.rank': { ar: 'المركز', en: 'Rank' },
+  'referralDashboard.prizes.noWinner': { ar: 'بانتظار الفائزة', en: 'No winner yet' },
+  'referralDashboard.prizes.winner': { ar: 'الفائزة: {name}', en: 'Winner: {name}' },
 
   // Advanced Booking
   'advancedBooking.title': { ar: 'حجز متقدم', en: ' Advanced Booking' },

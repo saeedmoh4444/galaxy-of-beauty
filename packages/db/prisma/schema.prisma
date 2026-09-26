@@ -169,6 +169,7 @@ model User {
   achievements      UserAchievement[]
   referralsMade     Referral[]         @relation("ReferralsMade")
   referralsReceived Referral[]         @relation("ReferralsReceived")
+  referralPrizes    ReferralPrize[]
   kindnessAccount   KindnessAccount?
   beautyCircleMembers BeautyCircleMember[]
   clinicConsultations ClinicConsultation[]
@@ -1106,6 +1107,25 @@ model Referral {
   @@index([referredId])
   @@index([referralCode])
   @@map("referrals")
+}
+
+// ======================================================================// Referral Program — Monthly Prizes
+// ======================================================================
+model ReferralPrize {
+  id         Int      @id @default(autoincrement())
+  month      String // "YYYY-MM" (UTC) — the month being rewarded
+  rank       Int // 1..3
+  amount     Decimal  @db.Decimal(10, 2)
+  winnerId   Int?
+  status     String   @default("PENDING") // PENDING, CREDITED
+  creditedAt DateTime?
+  createdAt  DateTime @default(now())
+
+  winner User? @relation(fields: [winnerId], references: [id], onDelete: SetNull)
+
+  @@unique([month, rank])
+  @@index([winnerId])
+  @@map("referral_prizes")
 }
 
 // ======================================================================// Platform Configuration (Admin Settings)
