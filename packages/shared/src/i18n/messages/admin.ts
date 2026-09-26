@@ -901,6 +901,13 @@ export const adminMessages = {
   'admin.zatca.export-quarterly': { ar: 'ربع سنوي', en: 'Quarterly' },
   'admin.zatca.export-index': { ar: 'الرقم (شهر أو ربع)', en: 'Index (month or quarter)' },
   'admin.zatca.export-button': { ar: 'تصدير CSV', en: 'Export CSV' },
+  'admin.zatca.dashboard-title': { ar: 'لوحة الامتثال', en: 'Compliance overview' },
+  'admin.zatca.stat.invoices': { ar: 'إجمالي الفواتير', en: 'Total invoices' },
+  'admin.zatca.stat.vat': { ar: 'ضريبة محصّلة', en: 'VAT collected' },
+  'admin.zatca.stat.pending': { ar: 'بانتظار الإبلاغ', en: 'Pending reporting' },
+  'admin.zatca.stat.clearance': { ar: 'نسبة التصفية', en: 'Clearance rate' },
+  'admin.zatca.activity-title': { ar: 'النشاط الأخير', en: 'Recent activity' },
+  'admin.zatca.activity-empty': { ar: 'لا نشاط بعد', en: 'No activity yet' },
 
   // 1.1 Dynamic pricing — admin rules UI
   'admin.pricing.title': { ar: 'التسعير الديناميكي', en: 'Dynamic Pricing' },

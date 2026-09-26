@@ -1070,10 +1070,13 @@ womensServices.book	mutation	customer
 womensServices.byCategory	query	public
 womensServices.categories	query	public
 womensServices.safetyTips	query	public
+zatca.auditTrail	query	admin
+zatca.dashboard	query	admin
 zatca.generateInvoice	mutation	admin
 zatca.getInvoice	query	protected
 zatca.listInvoices	query	admin
 zatca.reportInvoice	mutation	admin
 zatca.vatReport	query	admin
-zatca.vatReportCsv	mutation	admin"
+zatca.vatReportCsv	mutation	admin
+zatca.verifyChain	query	admin"
 `;
