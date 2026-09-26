@@ -5,6 +5,8 @@ import type { JSX } from 'react';
 import { PageContainer, PageTitle } from '@galaxy/ui';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
 import { useLocale } from '@/components/LocaleProvider';
+import { api } from '@/lib/trpc';
+import { localize, seasonalBannerFor } from '@galaxy/shared';
 import type { TranslationKey } from '@galaxy/shared';
 
 const SEASONS: {
@@ -140,14 +142,58 @@ const SEASONS: {
 ];
 
 export default function SeasonalCalendarPage(): JSX.Element {
-  const { t } = useLocale();
+  const { t, locale } = useLocale();
   const [season, setSeason] = useState('summer');
   const s = SEASONS.find((x) => x.key === season)!;
+
+  // 1.4 — active seasonal offerings (Hijri/Gregorian detection from
+  // lib/season); empty off-season.
+  const activeQ = api.seasonalServices.active.useQuery(undefined, { retry: false });
+  const activePayload = activeQ.data as
+    | {
+        seasons?: string[];
+        items?: Array<{
+          id?: number;
+          nameJson?: { ar?: string; en?: string };
+          pricePremium?: number;
+        }>;
+      }
+    | undefined;
+  const activeBanner = seasonalBannerFor(
+    activePayload?.seasons ?? [],
+    activePayload?.items?.length ?? 0,
+  );
 
   return (
     <DashboardLayout userRole="CUSTOMER">
       <PageContainer width="default">
         <PageTitle title={t('seasonal.title')} subtitle={t('seasonal.subtitle')} />
+
+        {/* 1.4 — active seasonal offerings; empty state off-season */}
+        <div
+          data-testid="seasonal-active"
+          className="mb-6 rounded-2xl border border-edge-muted bg-surface-elevated p-4"
+        >
+          <p className="text-sm font-bold text-text-primary">{t('seasonal.banner.cta')}</p>
+          {activeBanner && activePayload?.items?.length ? (
+            <div className="mt-3 space-y-2">
+              {activePayload.items.map((item) => (
+                <div key={item.id} className="flex items-center justify-between text-sm">
+                  <span className="text-text-primary">{localize(item.nameJson, locale)}</span>
+                  {Number(item.pricePremium) > 0 && (
+                    <span className="text-xs font-bold text-brand-600">
+                      {t('seasonal.banner.premium', {
+                        premium: Number(item.pricePremium).toFixed(0),
+                      })}
+                    </span>
+                  )}
+                </div>
+              ))}
+            </div>
+          ) : (
+            <p className="mt-2 text-xs text-text-tertiary">{t('seasonal.banner.none')}</p>
+          )}
+        </div>
 
         <div className="mb-6 flex gap-2">
           {SEASONS.map((sc) => (
