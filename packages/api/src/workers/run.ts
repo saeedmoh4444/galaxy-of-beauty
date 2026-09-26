@@ -15,6 +15,7 @@ import { startInsightsSweep, stopInsightsSweep } from './insightsSweep';
 import { startLoyaltyExpirySweep, stopLoyaltyExpirySweep } from './loyaltyExpiry';
 import { startWelcomeSeries, stopWelcomeSeries } from './welcomeSeries';
 import { startReengagement, stopReengagement } from './reengagement';
+import { startAbandonedCart, stopAbandonedCart } from './abandonedCart';
 
 // Graceful shutdown
 async function shutdown() {
@@ -25,6 +26,7 @@ async function shutdown() {
   stopLoyaltyExpirySweep();
   stopWelcomeSeries();
   stopReengagement();
+  stopAbandonedCart();
   await shutdownWorkers();
   process.exit(0);
 }
@@ -41,6 +43,7 @@ startInsightsSweep();
 startLoyaltyExpirySweep();
 startWelcomeSeries();
 startReengagement();
+startAbandonedCart();
 console.log(
-  '[Worker Process] Ready — workers + hourly token purge + daily subscription renewal + 3.3 advisor sweep + 8.2 loyalty expiry + 8.3 welcome series + 8.3 re-engagement',
+  '[Worker Process] Ready — workers + hourly token purge + daily subscription renewal + 3.3 advisor sweep + 8.2 loyalty expiry + 8.3 welcome/re-engagement/abandoned-cart',
 );

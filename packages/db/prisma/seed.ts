@@ -3864,6 +3864,17 @@ async function main() {
           en: 'Hi {{customerName}}, it has been a while since your last visit! Book now and get a free add-on with your appointment.',
         },
       },
+      // 8.3c — abandoned cart (24h + 10% code).
+      {
+        key: 'cart_abandoned',
+        category: 'promotions',
+        channels: ['in_app', 'push'],
+        titleJson: { ar: 'سلتك بانتظارك', en: 'Your Cart Is Waiting' },
+        bodyJson: {
+          ar: 'أهلًا {{customerName}}، تركتِ منتجات في سلتك! أكملي طلبك بكود {{code}} واحصلي على خصم {{discount}}٪ (صالحة ٢٤ ساعة).',
+          en: 'Hi {{customerName}}, you left items in your cart! Complete your order with code {{code}} for {{discount}}% off (valid 24 hours).',
+        },
+      },
       // B.6/B.7 — provider submission decisions. Category 'provider' is not
       // a preference toggle → always delivered.
       {
