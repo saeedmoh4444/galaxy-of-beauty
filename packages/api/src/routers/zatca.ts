@@ -4,6 +4,7 @@ import { createHash } from 'crypto';
 import { adminProcedure, protectedProcedure, router } from '../trpc';
 import { prisma } from '@galaxy/db';
 import { ZATCA_TEST_VAT, ZATCA_API_URL as SHARED_ZATCA_URL } from '@galaxy/shared';
+import { appendAudit, verifyChain as verifyAuditChain } from '../lib/zatcaAudit';
 
 // ── ZATCA Configuration ───────────────────────────────────
 const VAT_RATE = 0.15; // 15% VAT in Saudi Arabia
@@ -131,7 +132,7 @@ async function reportToZatcaApi(invoice: {
 export const zatcaRouter = router({
   generateInvoice: adminProcedure
     .input(z.object({ bookingId: z.number() }))
-    .mutation(async ({ input }) => {
+    .mutation(async ({ input, ctx }) => {
       const booking = await prisma.booking.findUnique({
         where: { id: input.bookingId },
         include: {
@@ -195,15 +196,25 @@ export const zatcaRouter = router({
         invoiceHash,
       });
 
-      const invoice = await prisma.zatcaInvoice.create({
-        data: {
-          bookingId: input.bookingId,
-          invoiceNumber,
-          invoiceHash,
-          cryptographicStamp,
-          qrCode,
-          status: 'PENDING',
-        },
+      const invoice = await prisma.$transaction(async (tx) => {
+        const created = await tx.zatcaInvoice.create({
+          data: {
+            bookingId: input.bookingId,
+            invoiceNumber,
+            invoiceHash,
+            cryptographicStamp,
+            qrCode,
+            status: 'PENDING',
+          },
+        });
+        // 6.1a — audit the generation event (genesis link).
+        await appendAudit(tx, {
+          invoiceId: created.id,
+          event: 'GENERATED',
+          actorId: ctx.user.id,
+          detail: { invoiceNumber: created.invoiceNumber, bookingId: input.bookingId },
+        });
+        return created;
       });
 
       return {
@@ -231,7 +242,7 @@ export const zatcaRouter = router({
 
   reportInvoice: adminProcedure
     .input(z.object({ invoiceId: z.number() }))
-    .mutation(async ({ input }) => {
+    .mutation(async ({ input, ctx }) => {
       const invoice = await prisma.zatcaInvoice.findUnique({
         where: { id: input.invoiceId },
         include: {
@@ -268,14 +279,32 @@ export const zatcaRouter = router({
         createdAt: invoice.createdAt,
       });
 
-      const updated = await prisma.zatcaInvoice.update({
-        where: { id: input.invoiceId },
-        data: {
-          status: result.success ? 'REPORTED' : 'PENDING',
-          reportedAt: result.success ? new Date() : undefined,
-          errorMessage: result.error || undefined,
-          ...(result.clearanceId ? { clearanceId: result.clearanceId } : {}),
-        },
+      // 6.1a — audit the attempt and its outcome atomically with the
+      // status update.
+      const updated = await prisma.$transaction(async (tx) => {
+        await appendAudit(tx, {
+          invoiceId: invoice.id,
+          event: 'REPORT_REQUESTED',
+          actorId: ctx.user.id,
+        });
+        const upd = await tx.zatcaInvoice.update({
+          where: { id: input.invoiceId },
+          data: {
+            status: result.success ? 'REPORTED' : 'PENDING',
+            reportedAt: result.success ? new Date() : undefined,
+            errorMessage: result.error || undefined,
+            ...(result.clearanceId ? { clearanceId: result.clearanceId } : {}),
+          },
+        });
+        await appendAudit(tx, {
+          invoiceId: invoice.id,
+          event: result.success ? 'REPORTED' : 'REPORT_FAILED',
+          actorId: ctx.user.id,
+          detail: result.success
+            ? { clearanceId: result.clearanceId ?? null }
+            : { error: result.error ?? null },
+        });
+        return upd;
       });
 
       return {
@@ -403,6 +432,103 @@ export const zatcaRouter = router({
         page: input.page,
         limit: input.limit,
         totalPages: Math.ceil(total / input.limit),
+      };
+    }),
+
+  // ── 6.1a — compliance dashboard ─────────────────────────────────────
+  dashboard: adminProcedure.query(async () => {
+    const invoices = await prisma.zatcaInvoice.findMany({
+      include: { booking: { select: { totalAmount: true } } },
+    });
+
+    const statusCounts: Record<'PENDING' | 'REPORTED' | 'CLEARED' | 'REJECTED', number> = {
+      PENDING: 0,
+      REPORTED: 0,
+      CLEARED: 0,
+      REJECTED: 0,
+    };
+    let totalVatCollected = 0;
+    for (const inv of invoices) {
+      statusCounts[inv.status] += 1;
+      if (inv.status === 'REPORTED' || inv.status === 'CLEARED') {
+        totalVatCollected += (inv.booking.totalAmount.toNumber() * VAT_RATE) / (1 + VAT_RATE);
+      }
+    }
+    const settled = statusCounts.REPORTED + statusCounts.CLEARED + statusCounts.REJECTED;
+
+    const recent = await prisma.zatcaAuditLog.findMany({
+      take: 10,
+      orderBy: { id: 'desc' },
+      include: { invoice: { select: { invoiceNumber: true } } },
+    });
+
+    return {
+      totalInvoices: invoices.length,
+      statusCounts,
+      totalVatCollected: Math.round(totalVatCollected * 100) / 100,
+      pendingReportCount: statusCounts.PENDING,
+      rejectedCount: statusCounts.REJECTED,
+      clearanceRate: settled === 0 ? 0 : Math.round((statusCounts.CLEARED / settled) * 10000) / 100,
+      recentActivity: recent.map((a) => ({
+        id: a.id,
+        invoiceId: a.invoiceId,
+        invoiceNumber: a.invoice.invoiceNumber,
+        event: a.event,
+        actorId: a.actorId,
+        createdAt: a.createdAt,
+      })),
+    };
+  }),
+
+  // ── 6.1a — audit trail ──────────────────────────────────────────────
+  auditTrail: adminProcedure
+    .input(
+      z.object({
+        invoiceId: z.number().int().positive(),
+        page: z.number().optional().default(1),
+        limit: z.number().optional().default(50),
+      }),
+    )
+    .query(async ({ input }) => {
+      const where = { invoiceId: input.invoiceId };
+      const [items, total] = await Promise.all([
+        prisma.zatcaAuditLog.findMany({
+          where,
+          skip: (input.page - 1) * input.limit,
+          take: input.limit,
+          orderBy: { id: 'asc' },
+        }),
+        prisma.zatcaAuditLog.count({ where }),
+      ]);
+      return {
+        items,
+        total,
+        page: input.page,
+        limit: input.limit,
+        totalPages: Math.ceil(total / input.limit),
+      };
+    }),
+
+  verifyChain: adminProcedure
+    .input(z.object({ invoiceId: z.number().int().positive() }))
+    .query(async ({ input }) => {
+      const entries = await prisma.zatcaAuditLog.findMany({
+        where: { invoiceId: input.invoiceId },
+        orderBy: { id: 'asc' },
+      });
+      return {
+        valid: verifyAuditChain(
+          entries.map((e) => ({
+            previousHash: e.previousHash,
+            entryHash: e.entryHash,
+            invoiceId: e.invoiceId,
+            event: e.event,
+            actorId: e.actorId,
+            createdAt: e.createdAt,
+            detail: e.detail,
+          })),
+        ),
+        entries: entries.length,
       };
     }),
 });

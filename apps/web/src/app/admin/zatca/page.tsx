@@ -63,6 +63,8 @@ export default function AdminZatcaPage(): JSX.Element {
     },
     { enabled: isAuthenticated },
   );
+  // 6.1a — compliance dashboard + recent audit activity.
+  const { data: dash } = api.zatca.dashboard.useQuery(undefined, { enabled: isAuthenticated });
   const generateMut = api.zatca.generateInvoice.useMutation({
     onSuccess: () => {
       refetch();
@@ -99,6 +101,57 @@ export default function AdminZatcaPage(): JSX.Element {
           {t('admin.zatca.issue-invoice')}
         </Button>
       </div>
+
+      {/* 6.1a — compliance dashboard */}
+      <h2 className="text-lg font-bold">{t('admin.zatca.dashboard-title')}</h2>
+      <div className="grid gap-4 sm:grid-cols-4">
+        <Card padding="md" className="text-center">
+          <p className="text-2xl font-bold">{dash?.totalInvoices ?? 0}</p>
+          <p className="text-xs text-text-secondary">{t('admin.zatca.stat.invoices')}</p>
+        </Card>
+        <Card padding="md" className="text-center">
+          <p className="text-2xl font-bold text-brand-600">
+            {formatCurrency(dash?.totalVatCollected ?? 0)}
+          </p>
+          <p className="text-xs text-text-secondary">{t('admin.zatca.stat.vat')}</p>
+        </Card>
+        <Card padding="md" className="text-center">
+          <p className="text-2xl font-bold text-amber-600 dark:text-amber-400">
+            {dash?.pendingReportCount ?? 0}
+          </p>
+          <p className="text-xs text-text-secondary">{t('admin.zatca.stat.pending')}</p>
+        </Card>
+        <Card padding="md" className="text-center">
+          <p className="text-2xl font-bold text-green-600 dark:text-green-400">
+            {dash?.clearanceRate ?? 0}%
+          </p>
+          <p className="text-xs text-text-secondary">{t('admin.zatca.stat.clearance')}</p>
+        </Card>
+      </div>
+
+      {/* 6.1a — recent audit activity */}
+      <h2 className="text-lg font-bold">{t('admin.zatca.activity-title')}</h2>
+      {(dash?.recentActivity ?? []).length === 0 ? (
+        <p className="text-sm text-text-tertiary text-center py-4">
+          {t('admin.zatca.activity-empty')}
+        </p>
+      ) : (
+        <Card padding="md">
+          <div className="space-y-2">
+            {(dash?.recentActivity ?? []).map((a) => (
+              <div key={a.id} className="flex items-center justify-between gap-3 text-sm">
+                <span className="font-mono text-xs text-text-secondary">{a.event}</span>
+                <span className="flex-1 truncate">{a.invoiceNumber}</span>
+                <span className="text-xs text-text-tertiary">
+                  {a.createdAt
+                    ? new Date(a.createdAt).toLocaleDateString(locale === 'en' ? 'en-GB' : 'ar-SA')
+                    : '—'}
+                </span>
+              </div>
+            ))}
+          </div>
+        </Card>
+      )}
 
       <div className="flex flex-wrap gap-2">
         {STATUS_TABS.map((tab) => {

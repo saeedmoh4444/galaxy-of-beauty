@@ -877,10 +877,32 @@ model ZatcaInvoice {
   updatedAt           DateTime    @updatedAt
 
   booking Booking @relation(fields: [bookingId], references: [id], onDelete: Cascade)
+  auditLogs ZatcaAuditLog[]
 
   @@index([invoiceNumber])
   @@index([status])
   @@map("zatca_invoices")
+}
+
+// ======================================================================// ZATCA Audit Trail (6.1a)
+// ======================================================================
+// Immutable, hash-chained lifecycle events per invoice. No update/delete
+// procedures exist for these rows; tampering breaks the chain and is
+// detected by zatca.verifyChain.
+model ZatcaAuditLog {
+  id           Int      @id @default(autoincrement())
+  invoiceId    Int
+  event        String // GENERATED, REPORT_REQUESTED, REPORTED, REPORT_FAILED, CLEARED
+  actorId      Int
+  detail       Json?
+  previousHash String // previous entry's hash; genesis = 64 zeros
+  entryHash    String // sha256(previousHash|invoiceId|event|actorId|createdAt|detail)
+  createdAt    DateTime @default(now())
+
+  invoice ZatcaInvoice @relation(fields: [invoiceId], references: [id], onDelete: Cascade)
+
+  @@index([invoiceId])
+  @@map("zatca_audit_logs")
 }
 
 // ======================================================================// Audit Log (Admin Actions)
