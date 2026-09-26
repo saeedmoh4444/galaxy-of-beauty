@@ -40,6 +40,27 @@ export const miscMessages = {
   },
   'loyalty.membershipLevel': { ar: 'مستوى عضويتكِ', en: 'Your Membership Level' },
   'loyalty.points': { ar: 'نقطة', en: 'points' },
+  // 7.3 — public status page.
+  'status.title': { ar: 'حالة المنصة', en: 'Platform Status' },
+  'status.subtitle': {
+    ar: 'مؤشرات التوافر والأعطال الحالية',
+    en: 'Availability and current incidents',
+  },
+  'status.availability': { ar: 'التوافر', en: 'Availability' },
+  'status.p95': { ar: 'زمن الاستجابة (p95)', en: 'Response time (p95)' },
+  'status.burnRate': { ar: 'معدل استهلاك الميزانية', en: 'Error-budget burn rate' },
+  'status.requests': { ar: 'الطلبات', en: 'Requests' },
+  'status.openIncidents': { ar: 'أعطال مفتوحة', en: 'Open incidents' },
+  'status.resolvedRecently': { ar: 'أُصلحت مؤخراً', en: 'Recently resolved' },
+  'status.none': {
+    ar: 'لا توجد أعطال — كل الأنظمة تعمل',
+    en: 'No incidents — all systems operational',
+  },
+  'status.severity.minor': { ar: 'بسيط', en: 'Minor' },
+  'status.severity.major': { ar: 'كبير', en: 'Major' },
+  'status.severity.critical': { ar: 'حرج', en: 'Critical' },
+  'status.open': { ar: 'مفتوح', en: 'Open' },
+  'status.resolved': { ar: 'تم الإصلاح', en: 'Resolved' },
   // 8.2 — points boost events.
   'loyalty.boost.banner': {
     ar: '{name} — نقاطك مضاعفة ×{multiplier} حتى {date}',
