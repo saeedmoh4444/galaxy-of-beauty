@@ -73,6 +73,8 @@ export default function AdminZatcaPage(): JSX.Element {
     },
   });
   const reportMut = api.zatca.reportInvoice.useMutation({ onSuccess: () => refetch() });
+  // 6.1c — clearance (REPORTED/PENDING) and re-report (REJECTED).
+  const clearMut = api.zatca.clearInvoice.useMutation({ onSuccess: () => refetch() });
 
   const invoices = data?.items ?? [];
 
@@ -85,6 +87,9 @@ export default function AdminZatcaPage(): JSX.Element {
 
   const handleReport = (invoice: InvoiceItem) => {
     reportMut.mutate({ invoiceId: invoice.id });
+  };
+  const handleClear = (invoice: InvoiceItem) => {
+    clearMut.mutate({ invoiceId: invoice.id });
   };
 
   return (
@@ -220,6 +225,26 @@ export default function AdminZatcaPage(): JSX.Element {
                       loading={reportMut.isPending}
                     >
                       {t('admin.zatca.report')}
+                    </Button>
+                  )}
+                  {inv.status === 'REPORTED' && (
+                    <Button
+                      size="sm"
+                      variant="secondary"
+                      onClick={() => handleClear(inv)}
+                      loading={clearMut.isPending}
+                    >
+                      {t('admin.zatca.clear')}
+                    </Button>
+                  )}
+                  {inv.status === 'REJECTED' && (
+                    <Button
+                      size="sm"
+                      variant="secondary"
+                      onClick={() => handleReport(inv)}
+                      loading={reportMut.isPending}
+                    >
+                      {t('admin.zatca.rereport')}
                     </Button>
                   )}
                 </div>

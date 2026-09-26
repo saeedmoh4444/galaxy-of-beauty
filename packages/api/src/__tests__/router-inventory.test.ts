@@ -78,15 +78,15 @@ describe('router inventory', () => {
     expect(counts).toMatchInlineSnapshot(`
       {
         "byTier": {
-          "admin": 202,
+          "admin": 203,
           "customer": 481,
           "protected": 104,
           "public": 244,
           "staff": 0,
           "technician": 45,
         },
-        "mutations": 451,
-        "procedures": 1076,
+        "mutations": 452,
+        "procedures": 1077,
         "queries": 625,
         "subscriptions": 0,
       }
@@ -100,7 +100,7 @@ describe('router inventory', () => {
   it('matches the canonical procedure list hash', () => {
     const hash = createHash('sha256').update(inventory(appRouter).join('\n')).digest('hex');
     expect(hash).toMatchInlineSnapshot(
-      `"acfe30afd97a67b496c9f2c009524b23c7701322e01311bde4285b195e045719"`,
+      `"37d1acc39a024635cb0ba220d086964f3b3ddafdcc5422121dc87ea6f5f1bf73"`,
     );
   });
 });
