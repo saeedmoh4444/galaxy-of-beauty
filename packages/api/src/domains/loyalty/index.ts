@@ -8,3 +8,4 @@ export { loyaltyPunchCardRouter } from '../../routers/loyaltyPunchCard';
 export { birthdayRewardRouter } from '../../routers/birthdayRewards';
 export { vipMembershipRouter } from '../../routers/vipMembership';
 export { referralRaceRouter } from '../../routers/referralRace';
+export { influencerRouter } from '../../routers/influencers';

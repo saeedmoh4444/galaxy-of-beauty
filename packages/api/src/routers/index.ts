@@ -67,6 +67,7 @@ import {
   birthdayRewardRouter,
   vipMembershipRouter,
   referralRaceRouter,
+  influencerRouter,
 } from '../domains/loyalty';
 
 // Social
@@ -417,6 +418,7 @@ export const appRouter = router({
   birthdayRewards: birthdayRewardRouter,
   vipMembership: vipMembershipRouter,
   referralRace: referralRaceRouter,
+  influencers: influencerRouter,
 
   // Social
   reviews: reviewRouter,

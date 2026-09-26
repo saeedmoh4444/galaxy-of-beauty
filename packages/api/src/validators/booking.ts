@@ -37,6 +37,8 @@ export const createBookingSchema = z.object({
   // 1.3 Add-Ons — services linked to the main service via ServiceAddon,
   // priced at basePrice × (1 - bundleDiscountPercent/100).
   addonIds: z.array(z.number().int().positive()).max(10).optional(),
+  // 8.1c — optional influencer code (validated against active influencers).
+  influencerCode: z.string().min(4).max(32).optional(),
 });
 
 export const bookingStatusSchema = z.object({

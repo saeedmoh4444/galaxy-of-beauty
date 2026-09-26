@@ -48,6 +48,7 @@ export default function CreateBookingPage(): JSX.Element {
   // mommy-and-me page (?bundleId=) — fixed for the lifetime of the flow.
   const bundleId = preselectedBundleId;
   const [notes, setNotes] = useState('');
+  const [influencerCode, setInfluencerCode] = useState('');
   const [submitting, setSubmitting] = useState(false);
   // B.2 — promo chain: validate at confirm, redeem after booking creation.
   const [promoCode, setPromoCode] = useState('');
@@ -264,6 +265,7 @@ export default function CreateBookingPage(): JSX.Element {
       technicianId,
       idempotencyKey: crypto.randomUUID(),
       notes: notes || undefined,
+      influencerCode: influencerCode.trim() || undefined,
       startAt: start.toISOString(),
       endAt: new Date(start.getTime() + durationMin * 60000).toISOString(),
       familyMemberId,
@@ -491,6 +493,20 @@ export default function CreateBookingPage(): JSX.Element {
                   value={notes}
                   onChange={(e) => setNotes(e.target.value)}
                   placeholder={t('booking.notes-placeholder')}
+                />
+              </div>
+
+              {/* 8.1c — optional influencer code */}
+              <div className="mb-4">
+                <label htmlFor="bc-influencer" className="mb-2 block text-sm text-text-secondary">
+                  {t('booking.influencerCode')}
+                </label>
+                <input
+                  id="bc-influencer"
+                  className="w-full rounded-lg border border-edge p-3 text-sm bg-surface-elevated"
+                  value={influencerCode}
+                  onChange={(e) => setInfluencerCode(e.target.value)}
+                  placeholder={t('booking.influencerCode-placeholder')}
                 />
               </div>
 

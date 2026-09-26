@@ -54,6 +54,11 @@ export const bookingMessages = {
   'booking.date': { ar: 'التاريخ', en: 'Date' },
   'booking.time': { ar: 'الوقت', en: 'Time' },
   'booking.notes': { ar: 'ملاحظات', en: 'Notes' },
+  'booking.influencerCode': { ar: 'كود المؤثر (اختياري)', en: 'Influencer code (optional)' },
+  'booking.influencerCode-placeholder': {
+    ar: 'أدخلي كود المؤثر إن وجد',
+    en: 'Enter an influencer code if you have one',
+  },
 
   // Booking create flow
   'booking.new-booking': { ar: 'حجز جديد', en: 'New Booking' },

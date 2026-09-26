@@ -392,6 +392,19 @@ export const bookingRouter = router({
         };
       }
 
+      // 4e. Influencer code (8.1c) — must resolve to an active influencer.
+      const normalizedInfluencerCode = input.influencerCode
+        ? input.influencerCode.trim().toUpperCase()
+        : null;
+      if (normalizedInfluencerCode) {
+        const influencer = await tx.influencer.findUnique({
+          where: { code: normalizedInfluencerCode },
+        });
+        if (!influencer || !influencer.isActive) {
+          throw new TRPCError({ code: 'NOT_FOUND', message: 'Influencer code not found' });
+        }
+      }
+
       // 5. Generate booking code
       const bookingCode = `GOB-${crypto.randomBytes(4).toString('hex').toUpperCase()}`;
 
@@ -412,6 +425,7 @@ export const bookingRouter = router({
           paymentFee: 0,
           cashHandlingFee: 0,
           notes: input.notes ?? null,
+          influencerCode: normalizedInfluencerCode,
           idempotencyKey: input.idempotencyKey,
           familyMemberId: input.familyMemberId ?? null,
           bundleId: input.bundleId ?? null,
@@ -810,6 +824,49 @@ export const bookingRouter = router({
                   idempotencyKey: `referral_${referral.id}_${userId}`,
                 },
               });
+            }
+          }
+          // 8.1c Influencer — commission on the completed booking
+          // (rate % of the total). Linked accounts are credited to the
+          // wallet; unlinked influencers just accumulate counters.
+          if (booking.influencerCode) {
+            const influencer = await tx.influencer.findUnique({
+              where: { code: booking.influencerCode },
+            });
+            if (influencer && influencer.isActive) {
+              const commission = booking.totalAmount
+                .mul(influencer.commissionRate)
+                .div(100)
+                .toDecimalPlaces(2);
+              await tx.influencer.update({
+                where: { id: influencer.id },
+                data: {
+                  totalBookings: { increment: 1 },
+                  totalCommission: { increment: commission },
+                },
+              });
+              if (influencer.userId) {
+                const wallet = await tx.wallet.findUnique({
+                  where: { userId: influencer.userId },
+                });
+                if (wallet) {
+                  await tx.wallet.update({
+                    where: { userId: influencer.userId },
+                    data: { bonusBalance: { increment: commission } },
+                  });
+                  await tx.walletTransaction.create({
+                    data: {
+                      walletId: wallet.id,
+                      type: 'CREDIT',
+                      source: 'INFLUENCER_COMMISSION',
+                      amount: commission,
+                      description: `عمولة مؤثر ${influencer.code}`,
+                      referenceId: `influencer_${booking.id}`,
+                      idempotencyKey: `influencer_${booking.id}`,
+                    },
+                  });
+                }
+              }
             }
           }
         }
