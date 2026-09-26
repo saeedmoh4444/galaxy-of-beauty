@@ -8,6 +8,7 @@ import { isJummahBlocked, JUMMAH_BLOCK_REASON } from '../lib/jummah';
 import { protectedProcedure, customerProcedure, technicianProcedure, router } from '../trpc';
 import { createBookingSchema, bookingQuerySchema } from '../validators/booking';
 import { computeDynamicPrice } from '../lib/pricing';
+import { tieredReferrerReward } from '../lib/referralRewards';
 import { emitToUser, emitToTechnician, emitToAdmin } from '../socket/index';
 import type { CashbackJob, LoyaltyPointsJob, CalendarSyncJob } from '../workers';
 import { notifyUser } from '../lib/notify';
@@ -684,6 +685,55 @@ export const bookingRouter = router({
             } else {
               await tx.beautyProfile.create({
                 data: { userId: booking.customerId, preferences: [slug] },
+              });
+            }
+          }
+
+          // 8.1 Referral 2.0 — credit both sides when the referred
+          // customer completes a booking; referrer reward is tiered by
+          // their lifetime completed-referral count (50/200/500 SAR).
+          const referral = await tx.referral.findFirst({
+            where: { referredId: booking.customerId, status: 'PENDING', rewardCredited: false },
+          });
+          if (referral) {
+            const completedCount = await tx.referral.count({
+              where: { referrerId: referral.referrerId, status: 'COMPLETED' },
+            });
+            const referrerAmount = tieredReferrerReward(completedCount + 1);
+            await tx.referral.update({
+              where: { id: referral.id },
+              data: {
+                status: 'COMPLETED',
+                rewardCredited: true,
+                referrerReward: referrerAmount,
+                completedAt: new Date(),
+              },
+            });
+            const credits: Array<[number, number, string]> = [
+              [referral.referrerId, referrerAmount, `مكافأة إحالة #${referral.id}`],
+              [
+                booking.customerId,
+                referral.referredReward.toNumber(),
+                `مكافأة استخدام كود إحالة #${referral.id}`,
+              ],
+            ];
+            for (const [userId, amount, description] of credits) {
+              const wallet = await tx.wallet.findUnique({ where: { userId } });
+              if (!wallet) continue; // wallets are created at registration
+              await tx.wallet.update({
+                where: { userId },
+                data: { bonusBalance: { increment: amount } },
+              });
+              await tx.walletTransaction.create({
+                data: {
+                  walletId: wallet.id,
+                  type: 'CREDIT',
+                  source: 'REFERRAL_BONUS',
+                  amount,
+                  description,
+                  referenceId: `referral_${referral.id}`,
+                  idempotencyKey: `referral_${referral.id}_${userId}`,
+                },
               });
             }
           }
