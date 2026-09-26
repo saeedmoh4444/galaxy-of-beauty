@@ -1,8 +1,11 @@
 import { fetchRequestHandler } from '@trpc/server/adapters/fetch';
-import { appRouter, createTRPCContext } from '@galaxy/api';
+import { appRouter, createTRPCContext, initTracing } from '@galaxy/api';
 import { verifyAccessToken } from '@galaxy/api';
 import { generateCsrfToken, buildCsrfCookie } from '@galaxy/api';
 import type { NextRequest } from 'next/server';
+
+// 7.3 — OpenTelemetry bootstrap (noop unless OTEL_ENABLED=true).
+void initTracing();
 
 const CSRF_COOKIE_NAME = 'csrf-token';
 const AUTH_ACCESS_COOKIE = 'gob_access';

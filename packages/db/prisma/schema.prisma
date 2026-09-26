@@ -270,6 +270,21 @@ model LoyaltyBoost {
   @@map("loyalty_boosts")
 }
 
+// 7.3 Observability 2.0 — incidents for the public status page.
+model Incident {
+  id              Int       @id @default(autoincrement())
+  titleJson       Json      // { ar, en }
+  descriptionJson Json?
+  severity        String    @default("minor") // minor, major, critical
+  status          String    @default("open") // open, resolved
+  startedAt       DateTime  @default(now())
+  resolvedAt      DateTime?
+  createdAt       DateTime  @default(now())
+
+  @@index([status, startedAt])
+  @@map("incidents")
+}
+
 model LoyaltyReward {
   id            Int      @id @default(autoincrement())
   nameJson      Json     // { ar: "خصم ٢٠٪", en: "20% Discount" }
