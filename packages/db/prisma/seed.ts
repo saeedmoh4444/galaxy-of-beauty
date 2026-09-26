@@ -1441,6 +1441,86 @@ async function main() {
   }
   console.log(` ${beautyBundleDefs.length} beauty bundles (1.2)`);
 
+  // ---- 1.4 Seasonal & Event Services ----
+  // Wide rolling windows (the season filter from lib/season gates
+  // visibility); admins narrow real windows via seasonalServices.update.
+  // Idempotent: upsert by (season, Arabic name).
+  const seasonalDefs = [
+    {
+      ar: 'باقة ما قبل الإفطار',
+      en: 'Pre-Iftar Glow',
+      season: 'RAMADAN',
+      categoryIdx: 3,
+      premium: 30,
+    },
+    {
+      ar: 'حناء ليالي رمضان',
+      en: 'Ramadan Night Henna',
+      season: 'RAMADAN',
+      categoryIdx: 5,
+      premium: 20,
+    },
+    {
+      ar: 'إطلالة العيد الكاملة',
+      en: 'Complete Eid Look',
+      season: 'EID',
+      categoryIdx: 3,
+      premium: 40,
+    },
+    {
+      ar: 'باقة العيد العائلية',
+      en: 'Eid Family Package',
+      season: 'EID',
+      categoryIdx: 2,
+      premium: 60,
+    },
+    { ar: 'توهج التخرج', en: 'Graduation Glow', season: 'GRADUATION', categoryIdx: 2, premium: 25 },
+    {
+      ar: 'مكياج التخرج',
+      en: 'Graduation Makeup',
+      season: 'GRADUATION',
+      categoryIdx: 3,
+      premium: 15,
+    },
+    {
+      ar: 'إطلالة فالنتاين',
+      en: 'Valentine Look',
+      season: 'VALENTINE',
+      categoryIdx: 3,
+      premium: 20,
+    },
+    {
+      ar: 'سبا اليوم الوردي',
+      en: 'Pink Day Spa',
+      season: 'VALENTINE',
+      categoryIdx: 4,
+      premium: 35,
+    },
+  ] as const;
+  for (const def of seasonalDefs) {
+    const existing = await prisma.seasonalService.findFirst({
+      where: {
+        season: def.season,
+        nameJson: { path: ['ar'], equals: def.ar },
+      },
+    });
+    const data = {
+      nameJson: { ar: def.ar, en: def.en },
+      categoryId: categories[def.categoryIdx]!.id,
+      season: def.season,
+      startDate: new Date('2026-01-01T00:00:00.000Z'),
+      endDate: new Date('2026-12-31T23:59:59.000Z'),
+      pricePremium: def.premium,
+      isActive: true,
+    };
+    if (existing) {
+      await prisma.seasonalService.update({ where: { id: existing.id }, data });
+    } else {
+      await prisma.seasonalService.create({ data });
+    }
+  }
+  console.log(` ${seasonalDefs.length} seasonal services (1.4)`);
+
   // ---- Service Variants ----
   await prisma.serviceVariant.createMany({
     data: [

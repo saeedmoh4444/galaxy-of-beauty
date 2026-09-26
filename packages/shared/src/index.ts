@@ -79,6 +79,10 @@ export {
 export { bundleDiscountFor, buildBundleQuote } from './bundlePricing';
 export type { BundleQuote } from './bundlePricing';
 
+// 1.4 Seasonal & Event Services — themed banner decision
+export { seasonalBannerFor } from './seasonalBanner';
+export type { SeasonalBannerTheme, SeasonalBannerResult } from './seasonalBanner';
+
 // Service detail trust layer (shared by web + RN mirror)
 export { buildServiceTrust } from './serviceDetail';
 export type {
