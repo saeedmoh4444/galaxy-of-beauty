@@ -1,7 +1,26 @@
 import { z } from 'zod';
 import { TRPCError } from '@trpc/server';
-import { publicProcedure, protectedProcedure, router } from '../trpc';
+import { publicProcedure, protectedProcedure, adminProcedure, router } from '../trpc';
 import { prisma } from '@galaxy/db';
+import {
+  MONTHLY_PRIZE_AMOUNTS,
+  REFERRED_REWARD,
+  tieredReferrerReward,
+  monthKey,
+  monthRange,
+  previousMonthKey,
+} from '../lib/referralRewards';
+
+/** "YYYY-MM" with a real month number (1..12). */
+const monthInput = z
+  .string()
+  .regex(/^\d{4}-\d{2}$/)
+  .refine((m) => {
+    const [y, mo] = m.split('-').map((p) => Number(p));
+    const jan = new Date(Date.UTC(y ?? 0, (mo ?? 1) - 1, 1));
+    return jan.getUTCMonth() === (mo ?? 1) - 1;
+  }, 'Invalid month')
+  .optional();
 
 function generateReferralCode(userId: number, name: string): string {
   // Create a readable code from user's name + a short hash
@@ -175,18 +194,121 @@ export const referralRouter = router({
       };
     }),
 
-  // ── Leaderboard ───────────────────────────────────────
+  // ── Leaderboard (8.1a v2: enriched, optional month filter) ─────────
   leaderboard: publicProcedure
-    .input(z.object({ limit: z.number().default(10) }))
+    .input(z.object({ limit: z.number().default(10), month: monthInput }))
     .query(async ({ input }) => {
-      const topReferrers = await prisma.referral.groupBy({
+      const window = input.month ? monthRange(input.month) : null;
+      const leaders = await prisma.referral.groupBy({
         by: ['referrerId'],
-        where: { status: 'COMPLETED' },
+        where: {
+          status: 'COMPLETED',
+          ...(window ? { completedAt: { gte: window.start, lt: window.end } } : {}),
+        },
         _count: { id: true },
-        orderBy: { _count: { id: 'desc' } },
+        orderBy: [{ _count: { id: 'desc' } }, { referrerId: 'asc' }],
         take: input.limit,
       });
-      return topReferrers;
+      const users = await prisma.user.findMany({
+        where: { id: { in: leaders.map((l) => l.referrerId) } },
+        select: { id: true, name: true, avatarUrl: true },
+      });
+      const byId = new Map(users.map((u) => [u.id, u]));
+      return leaders.map((l, i) => {
+        const u = byId.get(l.referrerId);
+        return {
+          rank: i + 1,
+          userId: l.referrerId,
+          name: u?.name ?? 'مستخدمة',
+          avatarUrl: u?.avatarUrl ?? null,
+          count: l._count.id,
+        };
+      });
+    }),
+
+  // ── Monthly prizes (8.1a) ───────────────────────────────────────────
+  monthlyPrizes: publicProcedure.input(z.object({ month: monthInput })).query(async ({ input }) => {
+    const month = input.month ?? monthKey(new Date());
+    const rows = await prisma.referralPrize.findMany({
+      where: { month },
+      include: { winner: { select: { name: true } } },
+    });
+    const byRank = new Map(rows.map((r) => [r.rank, r]));
+    return {
+      month,
+      prizes: [1, 2, 3].map((rank) => {
+        const row = byRank.get(rank);
+        return {
+          rank,
+          amount: row ? row.amount.toNumber() : MONTHLY_PRIZE_AMOUNTS[rank - 1]!,
+          winnerId: row?.winnerId ?? null,
+          winnerName: row?.winner?.name ?? null,
+          status: row?.status ?? 'PENDING',
+          creditedAt: row?.creditedAt ?? null,
+        };
+      }),
+    };
+  }),
+
+  // Award the top-3 referrers of a month (defaults to the previous
+  // month). Idempotent: any existing rows for the month short-circuit.
+  awardMonthlyPrizes: adminProcedure
+    .input(z.object({ month: monthInput }))
+    .mutation(async ({ input }) => {
+      const month = input.month ?? previousMonthKey();
+      const existing = await prisma.referralPrize.findMany({
+        where: { month },
+        orderBy: { rank: 'asc' },
+      });
+      if (existing.length > 0) {
+        return existing.map((p) => ({ ...p, amount: p.amount.toNumber() }));
+      }
+
+      const window = monthRange(month);
+      const top = await prisma.referral.groupBy({
+        by: ['referrerId'],
+        where: { status: 'COMPLETED', completedAt: { gte: window.start, lt: window.end } },
+        _count: { id: true },
+        orderBy: [{ _count: { id: 'desc' } }, { referrerId: 'asc' }],
+        take: 3,
+      });
+      if (top.length === 0) return [];
+
+      const prizes = [];
+      for (let i = 0; i < top.length; i++) {
+        const amount = MONTHLY_PRIZE_AMOUNTS[i]!;
+        const prize = await prisma.referralPrize.create({
+          data: {
+            month,
+            rank: i + 1,
+            amount,
+            winnerId: top[i]!.referrerId,
+            status: 'CREDITED',
+            creditedAt: new Date(),
+          },
+        });
+        const wallet = await prisma.wallet.findUnique({
+          where: { userId: top[i]!.referrerId },
+        });
+        if (wallet) {
+          await prisma.wallet.update({
+            where: { userId: top[i]!.referrerId },
+            data: { bonusBalance: { increment: amount } },
+          });
+          await prisma.walletTransaction.create({
+            data: {
+              walletId: wallet.id,
+              type: 'CREDIT',
+              source: 'REFERRAL_BONUS',
+              amount,
+              description: `جائزة إحالات شهر ${month} — المركز ${i + 1}`,
+              referenceId: `prize_${prize.id}`,
+            },
+          });
+        }
+        prizes.push(prize);
+      }
+      return prizes.map((p) => ({ ...p, amount: p.amount.toNumber() }));
     }),
 
   // ── Share card ────────────────────────────────────────
@@ -227,9 +349,10 @@ export const referralRouter = router({
             : 'فضي (إحالة واحدة)';
     const nextCount = count >= 10 ? 0 : count >= 5 ? 10 - count : count >= 1 ? 5 - count : 1;
 
-    // Double-sided rewards
-    const referrerBonus = count >= 10 ? 50 : count >= 5 ? 30 : 20;
-    const referredBonus = 20; // New user always gets 20 SAR
+    // Double-sided rewards — aligned with lib/referralRewards (the same
+    // schedule the booking completion path credits).
+    const referrerBonus = tieredReferrerReward(count + 1);
+    const referredBonus = REFERRED_REWARD; // New user always gets 20 SAR
 
     return {
       referralCode,

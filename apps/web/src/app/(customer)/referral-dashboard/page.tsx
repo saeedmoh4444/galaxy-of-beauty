@@ -43,7 +43,29 @@ export default function ReferralDashboardPage(): JSX.Element {
     refetch: () => void;
   };
   const { data: leaderboard } = api.referrals.leaderboard.useQuery({ limit: 10 }) as {
-    data: Array<{ referrerId: number; _count: { id: number } }> | undefined;
+    data:
+      | Array<{
+          rank: number;
+          userId: number;
+          name: string;
+          avatarUrl: string | null;
+          count: number;
+        }>
+      | undefined;
+  };
+  const { data: prizes } = api.referrals.monthlyPrizes.useQuery({}) as {
+    data:
+      | {
+          month: string;
+          prizes: Array<{
+            rank: number;
+            amount: number;
+            winnerId: number | null;
+            winnerName: string | null;
+            status: string;
+          }>;
+        }
+      | undefined;
   };
   const { data: share } = api.referrals.shareCard.useQuery() as {
     data: { code: string; shareUrl: string; shareText: string } | undefined;
@@ -202,25 +224,61 @@ export default function ReferralDashboardPage(): JSX.Element {
         ) : (
           <Card padding="md">
             <div className="space-y-2">
-              {topReferrers.slice(0, 5).map((entry, idx) => (
-                <div key={entry.referrerId} className="flex items-center gap-3 py-1">
+              {topReferrers.slice(0, 5).map((entry) => (
+                <div key={entry.userId} className="flex items-center gap-3 py-1">
                   <span className="text-xl w-8 text-center font-bold">
-                    {['', '', '', '4️⃣', '5️⃣'][idx] ?? `${idx + 1}`}
+                    {['🥇', '🥈', '🥉'][entry.rank - 1] ?? entry.rank}
                   </span>
-                  <div className="flex-1 h-4 rounded-full bg-surface-muted overflow-hidden">
+                  <div className="flex h-8 w-8 items-center justify-center rounded-full bg-brand-100 dark:bg-brand-900 text-sm font-bold text-brand-700 dark:text-brand-300 shrink-0">
+                    {entry.avatarUrl ? (
+                      // eslint-disable-next-line @next/next/no-img-element
+                      <img
+                        src={entry.avatarUrl}
+                        alt={entry.name}
+                        className="h-8 w-8 rounded-full object-cover"
+                      />
+                    ) : (
+                      (entry.name?.charAt(0) ?? '؟')
+                    )}
+                  </div>
+                  <p className="flex-1 truncate text-sm font-semibold">{entry.name}</p>
+                  <div className="flex-1 max-w-40 h-4 rounded-full bg-surface-muted overflow-hidden">
                     <div
                       className="h-full rounded-full bg-linear-to-r from-brand-400 to-brand-500"
                       style={{
-                        width: `${Math.min(100, (entry._count.id / Math.max(1, topReferrers[0]?._count?.id ?? 1)) * 100)}%`,
+                        width: `${Math.min(100, (entry.count / Math.max(1, topReferrers[0]?.count ?? 1)) * 100)}%`,
                       }}
                     />
                   </div>
-                  <span className="text-sm font-semibold w-12 text-end">{entry._count.id}</span>
+                  <span className="text-sm font-semibold w-12 text-end">{entry.count}</span>
                 </div>
               ))}
             </div>
           </Card>
         )}
+
+        {/* Monthly Prizes */}
+        <h3 className="text-lg font-bold">{t('referralDashboard.prizesTitle')}</h3>
+        <Card padding="md">
+          <div className="space-y-2">
+            {(prizes?.prizes ?? []).map((p) => (
+              <div
+                key={p.rank}
+                className="flex items-center justify-between rounded-lg bg-surface-muted/60 px-3 py-2"
+              >
+                <div className="flex items-center gap-3">
+                  <span className="text-xl">{['🥇', '🥈', '🥉'][p.rank - 1] ?? p.rank}</span>
+                  <span className="text-sm font-semibold">{formatCurrency(p.amount)}</span>
+                </div>
+                <span className="text-xs text-text-secondary">
+                  {p.winnerName
+                    ? t('referralDashboard.prizes.winner', { name: p.winnerName })
+                    : t('referralDashboard.prizes.noWinner')}
+                </span>
+              </div>
+            ))}
+          </div>
+        </Card>
       </div>
     </DashboardLayout>
   );

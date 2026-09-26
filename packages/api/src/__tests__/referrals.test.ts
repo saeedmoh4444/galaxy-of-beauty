@@ -286,12 +286,13 @@ describe('referrals router', () => {
       const board = await c.referrals.leaderboard({});
       expect(board.length).toBeLessThanOrEqual(10);
       for (let i = 1; i < board.length; i++) {
-        expect(board[i - 1]!._count.id).toBeGreaterThanOrEqual(board[i]!._count.id);
+        expect(board[i - 1]!.count).toBeGreaterThanOrEqual(board[i]!.count);
       }
-      const cEntry = board.find((e: any) => e.referrerId === secondC.id);
-      const aEntry = board.find((e: any) => e.referrerId === referrerA.id);
-      expect(cEntry?._count.id).toBe(2);
-      expect(aEntry?._count.id).toBe(1);
+      const cEntry = board.find((e: any) => e.userId === secondC.id);
+      const aEntry = board.find((e: any) => e.userId === referrerA.id);
+      expect(cEntry?.count).toBe(2);
+      expect(aEntry?.count).toBe(1);
+      expect(aEntry?.name).toBe('Test');
     });
 
     it('respects a custom limit', async () => {
@@ -318,7 +319,7 @@ describe('referrals router', () => {
       expect(s.tier).toBe('مبتدئ');
       expect(s.nextTier).toBe('فضي (إحالة واحدة)');
       expect(s.nextCount).toBe(1);
-      expect(s.referrerBonus).toBe(20);
+      expect(s.referrerBonus).toBe(50); // tieredReferrerReward(0 + 1)
       expect(s.referredBonus).toBe(20);
       expect(s.recentReferrals).toHaveLength(0);
       expect(s.completedReferrals).toBeLessThanOrEqual(s.totalReferrals);
@@ -335,6 +336,8 @@ describe('referrals router', () => {
       expect(s.tier).toBe('فضي');
       expect(s.nextTier).toBe('ذهبي (٥ إحالات)');
       expect(s.nextCount).toBe(4);
+      expect(s.referrerBonus).toBe(50); // next referral: still tier 1
+      expect(s.referredBonus).toBe(20);
       expect(s.referralCode).toBe(`GOB-LEAD-${referrerA.id}-1`); // most recent first
       expect(s.recentReferrals).toHaveLength(2);
       expect(s.recentReferrals[0]!.rewarded).toBe(true);
@@ -361,6 +364,7 @@ describe('referrals router', () => {
       expect(cs.tier).toBe('ذهبي');
       expect(cs.nextTier).toBe('الماسي (١٠ إحالات)');
       expect(cs.nextCount).toBe(5);
+      expect(cs.referrerBonus).toBe(200); // next referral: tier 2
       expect(cs.totalEarnings).toBe(100); // 5 x default 20
     });
 

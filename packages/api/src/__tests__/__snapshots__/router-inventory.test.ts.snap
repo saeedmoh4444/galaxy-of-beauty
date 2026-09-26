@@ -713,10 +713,12 @@ referralRace.leaderboard	query	public
 referralRace.myRank	query	customer
 referralRace.share	mutation	customer
 referrals.applyCode	mutation	protected
+referrals.awardMonthlyPrizes	mutation	admin
 referrals.getEnhancedStats	query	protected
 referrals.getMyCode	query	protected
 referrals.getStats	query	protected
 referrals.leaderboard	query	public
+referrals.monthlyPrizes	query	public
 referrals.shareCard	query	protected
 reschedule.history	query	protected
 reschedule.request	mutation	customer
