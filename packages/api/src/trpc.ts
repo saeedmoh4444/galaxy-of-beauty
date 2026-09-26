@@ -5,6 +5,7 @@ import type { Context } from './context';
 import { verifyCsrfToken } from './lib/csrf';
 import { checkRateLimit } from './lib/rateLimit';
 import { incrementRequestCount, incrementErrorCount, recordTiming } from './lib/requestCounters';
+import { recordSloRequest, recordSloError, recordSloLatency } from './lib/slo';
 
 const t = initTRPC.context<Context>().create({
   transformer: superjson,
@@ -21,11 +22,17 @@ const t = initTRPC.context<Context>().create({
 });
 
 // ── Request Counting + Performance Middleware ──
+// 7.3: the SLO counters feed from here — one request, one latency sample,
+// one error per procedure, for both http and createCaller. tRPC v11 note:
+// downstream errors do NOT reject next() — they arrive as result.ok=false.
 const requestCounter = t.middleware(async ({ next, path }) => {
+  recordSloRequest();
   incrementRequestCount();
   const t0 = performance.now();
   const result = await next();
+  if (!result.ok) recordSloError();
   const duration = performance.now() - t0;
+  recordSloLatency(duration);
   recordTiming(path, duration);
   return result;
 });

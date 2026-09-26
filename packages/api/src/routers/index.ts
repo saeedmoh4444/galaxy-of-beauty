@@ -319,6 +319,7 @@ import { beautyStatsRouter } from './beautyStats';
 import { npsRouter } from './nps';
 import { abTestRouter } from './abTest';
 import { seasonalServicesRouter } from './seasonalServices';
+import { observabilityRouter } from './observability';
 
 export const appRouter = router({
   // Health — checks DB + Redis connectivity for load balancers / Docker healthchecks
@@ -422,6 +423,8 @@ export const appRouter = router({
   nps: npsRouter,
   abTest: abTestRouter,
   seasonalServices: seasonalServicesRouter,
+  // 7.3 Observability 2.0
+  observability: observabilityRouter,
   disputes: disputeRouter,
   community: communityRouter,
   beautyPosts: beautyPostsRouter,
