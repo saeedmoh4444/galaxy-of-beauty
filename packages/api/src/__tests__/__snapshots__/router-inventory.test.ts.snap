@@ -629,6 +629,7 @@ nps.markFollowedUp	mutation	admin
 nps.mine	query	customer
 nps.stats	query	admin
 nps.submit	mutation	customer
+observability.sloStatus	query	public
 payments.authorize	mutation	customer
 payments.capture	mutation	technician
 payments.getByBooking	query	protected

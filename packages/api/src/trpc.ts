@@ -5,6 +5,7 @@ import type { Context } from './context';
 import { verifyCsrfToken } from './lib/csrf';
 import { checkRateLimit } from './lib/rateLimit';
 import { incrementRequestCount, incrementErrorCount, recordTiming } from './lib/requestCounters';
+import { recordSloRequest, recordSloError, recordSloLatency } from './lib/slo';
 import { startProcedureSpan } from './lib/tracing';
 
 const t = initTRPC.context<Context>().create({
@@ -22,11 +23,17 @@ const t = initTRPC.context<Context>().create({
 });
 
 // ── Request Counting + Performance Middleware ──
+// 7.3: the SLO counters feed from here — one request, one latency sample,
+// one error per procedure, for both http and createCaller. tRPC v11 note:
+// downstream errors do NOT reject next() — they arrive as result.ok=false.
 const requestCounter = t.middleware(async ({ next, path }) => {
+  recordSloRequest();
   incrementRequestCount();
   const t0 = performance.now();
   const result = await next();
+  if (!result.ok) recordSloError();
   const duration = performance.now() - t0;
+  recordSloLatency(duration);
   recordTiming(path, duration);
   return result;
 });
@@ -37,10 +44,11 @@ const tracingGuard = t.middleware(async ({ ctx, path, type, next }) => {
     'user.id': ctx.user?.id ?? 'anonymous',
   });
   try {
-    return await next();
-  } catch (err) {
-    span.recordException(err as Error);
-    throw err;
+    // tRPC v11: downstream errors do NOT reject next() — they arrive as
+    // result.ok === false, so record the exception from the result.
+    const result = await next();
+    if (!result.ok) span.recordException(result.error as Error);
+    return result;
   } finally {
     span.end();
   }
