@@ -3853,6 +3853,17 @@ async function main() {
           en: '{{customerName}}, ready for your first visit? Book now and earn loyalty points from day one.',
         },
       },
+      // 8.3b — 30-day inactivity re-engagement.
+      {
+        key: 'reengagement_30d',
+        category: 'promotions',
+        channels: ['in_app', 'push'],
+        titleJson: { ar: 'اشتقنا لكِ', en: 'We Miss You' },
+        bodyJson: {
+          ar: 'أهلًا {{customerName}}، مرّت فترة منذ زيارتك الأخيرة! احجزي الآن واحصلي على إضافة مجانية مع موعدك.',
+          en: 'Hi {{customerName}}, it has been a while since your last visit! Book now and get a free add-on with your appointment.',
+        },
+      },
       // B.6/B.7 — provider submission decisions. Category 'provider' is not
       // a preference toggle → always delivered.
       {
