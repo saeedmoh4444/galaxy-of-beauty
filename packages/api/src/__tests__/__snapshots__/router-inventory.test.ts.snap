@@ -767,6 +767,10 @@ savingsMilestones.stats	query	customer
 search.nearMe	query	public
 search.search	query	public
 search.suggestions	query	public
+seasonalServices.active	query	public
+seasonalServices.create	mutation	admin
+seasonalServices.list	query	admin
+seasonalServices.update	mutation	admin
 secretSanta.createGroup	mutation	customer
 secretSanta.draw	mutation	customer
 secretSanta.getAssignment	query	customer

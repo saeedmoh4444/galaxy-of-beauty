@@ -318,6 +318,7 @@ import { kidsServicesRouter } from './kidsServices';
 import { beautyStatsRouter } from './beautyStats';
 import { npsRouter } from './nps';
 import { abTestRouter } from './abTest';
+import { seasonalServicesRouter } from './seasonalServices';
 
 export const appRouter = router({
   // Health — checks DB + Redis connectivity for load balancers / Docker healthchecks
@@ -420,6 +421,7 @@ export const appRouter = router({
   reviews: reviewRouter,
   nps: npsRouter,
   abTest: abTestRouter,
+  seasonalServices: seasonalServicesRouter,
   disputes: disputeRouter,
   community: communityRouter,
   beautyPosts: beautyPostsRouter,
