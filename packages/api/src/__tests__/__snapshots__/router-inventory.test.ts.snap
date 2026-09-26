@@ -117,7 +117,11 @@ beautyBudgetPlanner.myBudgets	query	customer
 beautyBudgetPlanner.setBudget	mutation	customer
 beautyBundles.adminList	query	admin
 beautyBundles.create	mutation	admin
+beautyBundles.delete	mutation	admin
+beautyBundles.get	query	public
 beautyBundles.list	query	public
+beautyBundles.quote	query	public
+beautyBundles.update	mutation	admin
 beautyCircles.create	mutation	customer
 beautyCircles.getById	query	customer
 beautyCircles.join	mutation	customer
