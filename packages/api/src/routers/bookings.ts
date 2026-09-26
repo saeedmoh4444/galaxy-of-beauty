@@ -9,6 +9,7 @@ import { protectedProcedure, customerProcedure, technicianProcedure, router } fr
 import { createBookingSchema, bookingQuerySchema } from '../validators/booking';
 import { computeDynamicPrice } from '../lib/pricing';
 import { tieredReferrerReward } from '../lib/referralRewards';
+import { creditLoyaltyPoints, LOYALTY_REFERRAL_POINTS } from '../lib/loyalty';
 import { emitToUser, emitToTechnician, emitToAdmin } from '../socket/index';
 import type { CashbackJob, LoyaltyPointsJob, CalendarSyncJob } from '../workers';
 import { notifyUser } from '../lib/notify';
@@ -709,6 +710,14 @@ export const bookingRouter = router({
                 completedAt: new Date(),
               },
             });
+            // 8.2: referrals also earn loyalty points for the referrer.
+            await creditLoyaltyPoints(
+              tx,
+              referral.referrerId,
+              LOYALTY_REFERRAL_POINTS,
+              'referral',
+              `referral_${referral.id}`,
+            );
             const credits: Array<[number, number, string]> = [
               [referral.referrerId, referrerAmount, `مكافأة إحالة #${referral.id}`],
               [
