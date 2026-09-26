@@ -129,6 +129,74 @@ async function reportToZatcaApi(invoice: {
   }
 }
 
+type ReportableInvoice = {
+  id: number;
+  invoiceNumber: string;
+  invoiceHash: string | null;
+  cryptographicStamp: string | null;
+  qrCode: string | null;
+  status: string;
+  createdAt: Date;
+  booking: {
+    bookingCode: string;
+    totalAmount: { toNumber(): number };
+    customer: { name: string };
+  };
+};
+
+/**
+ * 6.1c — shared report flow: call the API, update the invoice and audit
+ * the outcome atomically. A failed retry on a REJECTED invoice keeps it
+ * REJECTED (validation failures persist until the data is fixed).
+ */
+async function performReport(
+  invoice: ReportableInvoice,
+  actorId: number,
+): Promise<{
+  updated: Awaited<ReturnType<typeof prisma.zatcaInvoice.update>>;
+  result: { success: boolean; clearanceId?: string; error?: string };
+}> {
+  const result = await reportToZatcaApi({
+    invoiceNumber: invoice.invoiceNumber,
+    invoiceHash: invoice.invoiceHash || '',
+    cryptographicStamp: invoice.cryptographicStamp || '',
+    qrCode: invoice.qrCode || '',
+    totalAmount: invoice.booking.totalAmount.toNumber(),
+    bookingCode: invoice.booking.bookingCode,
+    customerName: invoice.booking.customer.name,
+    createdAt: invoice.createdAt,
+  });
+
+  const failedStatus = invoice.status === 'REJECTED' ? 'REJECTED' : 'PENDING';
+  const updated = await prisma.$transaction(async (tx) => {
+    await appendAudit(tx, {
+      invoiceId: invoice.id,
+      event: 'REPORT_REQUESTED',
+      actorId,
+    });
+    const upd = await tx.zatcaInvoice.update({
+      where: { id: invoice.id },
+      data: {
+        status: result.success ? 'REPORTED' : failedStatus,
+        reportedAt: result.success ? new Date() : undefined,
+        errorMessage: result.error || undefined,
+        ...(result.clearanceId ? { clearanceId: result.clearanceId } : {}),
+      },
+    });
+    await appendAudit(tx, {
+      invoiceId: invoice.id,
+      event: result.success ? 'REPORTED' : 'REPORT_FAILED',
+      actorId,
+      detail: result.success
+        ? { clearanceId: result.clearanceId ?? null }
+        : { error: result.error ?? null },
+    });
+    return upd;
+  });
+
+  return { updated, result };
+}
+
 export const zatcaRouter = router({
   generateInvoice: adminProcedure
     .input(z.object({ bookingId: z.number() }))
@@ -217,10 +285,30 @@ export const zatcaRouter = router({
         return created;
       });
 
+      // 6.1c — real-time reporting when explicitly enabled.
+      let finalStatus: string = invoice.status;
+      let finalClearanceId: string | null = null;
+      if (process.env['ZATCA_AUTO_REPORT'] === 'true') {
+        const { updated } = await performReport(
+          {
+            ...invoice,
+            status: 'PENDING',
+            booking: {
+              bookingCode: booking.bookingCode,
+              totalAmount: booking.totalAmount,
+              customer: { name: booking.customer.name },
+            },
+          },
+          ctx.user.id,
+        );
+        finalStatus = updated.status;
+        finalClearanceId = updated.clearanceId;
+      }
+
       return {
         id: invoice.id,
         invoiceNumber: invoice.invoiceNumber,
-        status: invoice.status,
+        status: finalStatus,
         invoiceHash: invoice.invoiceHash,
         cryptographicStamp: invoice.cryptographicStamp,
         qrCode: invoice.qrCode,
@@ -237,6 +325,7 @@ export const zatcaRouter = router({
           totalAmount: totalWithVat,
           customerName: booking.customer.name,
         },
+        clearanceId: finalClearanceId,
       };
     }),
 
@@ -260,52 +349,15 @@ export const zatcaRouter = router({
         throw new TRPCError({ code: 'NOT_FOUND', message: 'Invoice not found' });
       }
 
-      if (invoice.status !== 'PENDING') {
+      // 6.1c — REJECTED invoices can be re-reported after data fixes.
+      if (invoice.status !== 'PENDING' && invoice.status !== 'REJECTED') {
         throw new TRPCError({
           code: 'BAD_REQUEST',
-          message: `Cannot report invoice with status ${invoice.status}. Only PENDING invoices can be reported.`,
+          message: `Cannot report invoice with status ${invoice.status}. Only PENDING or REJECTED invoices can be reported.`,
         });
       }
 
-      // Call ZATCA API
-      const result = await reportToZatcaApi({
-        invoiceNumber: invoice.invoiceNumber,
-        invoiceHash: invoice.invoiceHash || '',
-        cryptographicStamp: invoice.cryptographicStamp || '',
-        qrCode: invoice.qrCode || '',
-        totalAmount: invoice.booking.totalAmount.toNumber(),
-        bookingCode: invoice.booking.bookingCode,
-        customerName: invoice.booking.customer.name,
-        createdAt: invoice.createdAt,
-      });
-
-      // 6.1a — audit the attempt and its outcome atomically with the
-      // status update.
-      const updated = await prisma.$transaction(async (tx) => {
-        await appendAudit(tx, {
-          invoiceId: invoice.id,
-          event: 'REPORT_REQUESTED',
-          actorId: ctx.user.id,
-        });
-        const upd = await tx.zatcaInvoice.update({
-          where: { id: input.invoiceId },
-          data: {
-            status: result.success ? 'REPORTED' : 'PENDING',
-            reportedAt: result.success ? new Date() : undefined,
-            errorMessage: result.error || undefined,
-            ...(result.clearanceId ? { clearanceId: result.clearanceId } : {}),
-          },
-        });
-        await appendAudit(tx, {
-          invoiceId: invoice.id,
-          event: result.success ? 'REPORTED' : 'REPORT_FAILED',
-          actorId: ctx.user.id,
-          detail: result.success
-            ? { clearanceId: result.clearanceId ?? null }
-            : { error: result.error ?? null },
-        });
-        return upd;
-      });
+      const { updated, result } = await performReport(invoice, ctx.user.id);
 
       return {
         id: updated.id,
@@ -315,6 +367,52 @@ export const zatcaRouter = router({
         clearanceId: result.clearanceId || null,
         error: result.error || null,
         success: result.success,
+      };
+    }),
+
+  // 6.1c — clearance: REPORTED or (simplified-flow) PENDING -> CLEARED.
+  clearInvoice: adminProcedure
+    .input(z.object({ invoiceId: z.number(), clearanceId: z.string().max(100).optional() }))
+    .mutation(async ({ input, ctx }) => {
+      const invoice = await prisma.zatcaInvoice.findUnique({
+        where: { id: input.invoiceId },
+      });
+
+      if (!invoice) {
+        throw new TRPCError({ code: 'NOT_FOUND', message: 'Invoice not found' });
+      }
+
+      if (invoice.status === 'CLEARED' || invoice.status === 'REJECTED') {
+        throw new TRPCError({
+          code: 'BAD_REQUEST',
+          message: `Cannot clear invoice with status ${invoice.status}.`,
+        });
+      }
+
+      const updated = await prisma.$transaction(async (tx) => {
+        const upd = await tx.zatcaInvoice.update({
+          where: { id: input.invoiceId },
+          data: {
+            status: 'CLEARED',
+            clearedAt: new Date(),
+            ...(input.clearanceId ? { clearanceId: input.clearanceId } : {}),
+          },
+        });
+        await appendAudit(tx, {
+          invoiceId: invoice.id,
+          event: 'CLEARED',
+          actorId: ctx.user.id,
+          detail: { clearanceId: input.clearanceId ?? null },
+        });
+        return upd;
+      });
+
+      return {
+        id: updated.id,
+        invoiceNumber: updated.invoiceNumber,
+        status: updated.status,
+        clearedAt: updated.clearedAt,
+        clearanceId: updated.clearanceId,
       };
     }),
 

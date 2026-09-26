@@ -890,6 +890,8 @@ export const adminMessages = {
   'admin.zatca.invoice-number': { ar: 'فاتورة #{number}', en: 'Invoice #{number}' },
   'admin.zatca.booking': { ar: 'الحجز: {code}', en: 'Booking: {code}' },
   'admin.zatca.report': { ar: 'إبلاغ', en: 'Report' },
+  'admin.zatca.clear': { ar: 'تصفية', en: 'Clear' },
+  'admin.zatca.rereport': { ar: 'إعادة إبلاغ', en: 'Re-report' },
   'admin.zatca.issue-title': { ar: 'إصدار فاتورة جديدة', en: 'Issue New Invoice' },
   'admin.zatca.booking-number': { ar: 'رقم الحجز', en: 'Booking Number' },
   'admin.zatca.booking-placeholder': { ar: 'أدخل رقم الحجز', en: 'Enter the booking number' },

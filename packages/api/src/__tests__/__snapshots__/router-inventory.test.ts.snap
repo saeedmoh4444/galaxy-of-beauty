@@ -1071,6 +1071,7 @@ womensServices.byCategory	query	public
 womensServices.categories	query	public
 womensServices.safetyTips	query	public
 zatca.auditTrail	query	admin
+zatca.clearInvoice	mutation	admin
 zatca.dashboard	query	admin
 zatca.generateInvoice	mutation	admin
 zatca.getInvoice	query	protected
