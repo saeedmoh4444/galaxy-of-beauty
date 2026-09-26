@@ -51,9 +51,14 @@ describe('sendSeasonalEmails', () => {
     expect(SEASON_DEDUP_DAYS).toBe(45);
 
     const count = await sendSeasonalEmails(['EID', 'RAMADAN']);
-    expect(count).toBe(4); // 2 seasons × 2 members
+    // Total is DB-wide (seeded customers are eligible too) — pin the
+    // fixtures instead of the total.
+    expect(count).toBeGreaterThanOrEqual(4); // 2 seasons × 2 members
 
     for (const id of [userA, userB]) {
+      expect(
+        await prisma.notification.count({ where: { userId: id, type: 'seasonal_start' } }),
+      ).toBe(2); // exactly one per season per member
       for (const season of ['EID', 'RAMADAN']) {
         const row = await prisma.notification.findFirst({
           where: {
