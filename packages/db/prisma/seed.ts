@@ -3897,6 +3897,17 @@ async function main() {
           en: 'Happy birthday {{customerName}}! 🎂 Our gift: {{discount}}% off your next booking — available on your birthday rewards page.',
         },
       },
+      // 8.3f — season-start announcements (per-season link dedup).
+      {
+        key: 'seasonal_start',
+        category: 'promotions',
+        channels: ['in_app', 'push'],
+        titleJson: { ar: 'موسم {{seasonName}} وصل ✨', en: '{{seasonName}} Season Is Here ✨' },
+        bodyJson: {
+          ar: 'أهلًا {{customerName}}، عروض موسم {{seasonName}} متاحة الآن — باقات وعروض خاصة بانتظارك.',
+          en: 'Hi {{customerName}}, {{seasonName}} season offers are live — special packages and deals await.',
+        },
+      },
       // B.6/B.7 — provider submission decisions. Category 'provider' is not
       // a preference toggle → always delivered.
       {

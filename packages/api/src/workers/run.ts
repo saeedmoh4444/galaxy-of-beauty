@@ -18,6 +18,7 @@ import { startReengagement, stopReengagement } from './reengagement';
 import { startAbandonedCart, stopAbandonedCart } from './abandonedCart';
 import { startPostBooking, stopPostBooking } from './postBooking';
 import { startBirthday, stopBirthday } from './birthday';
+import { startSeasonalMarketing, stopSeasonalMarketing } from './seasonalMarketing';
 
 // Graceful shutdown
 async function shutdown() {
@@ -31,6 +32,7 @@ async function shutdown() {
   stopAbandonedCart();
   stopPostBooking();
   stopBirthday();
+  stopSeasonalMarketing();
   await shutdownWorkers();
   process.exit(0);
 }
@@ -50,6 +52,7 @@ startReengagement();
 startAbandonedCart();
 startPostBooking();
 startBirthday();
+startSeasonalMarketing();
 console.log(
-  '[Worker Process] Ready — workers + hourly token purge + daily subscription renewal + 3.3 advisor sweep + 8.2 loyalty expiry + 8.3 welcome/re-engagement/abandoned-cart/post-booking/birthday',
+  '[Worker Process] Ready — workers + hourly token purge + daily subscription renewal + 3.3 advisor sweep + 8.2 loyalty expiry + 8.3 welcome/re-engagement/abandoned-cart/post-booking/birthday/seasonal',
 );
