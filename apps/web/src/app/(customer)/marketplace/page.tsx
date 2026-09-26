@@ -1,5 +1,6 @@
 'use client';
 
+import Link from 'next/link';
 import { api } from '@/lib/trpc';
 import { useState } from 'react';
 import type { JSX } from 'react';
@@ -53,6 +54,15 @@ export default function MarketplacePage(): JSX.Element {
             {cartCount}
           </span>
         </div>
+
+        {/* 1.2 Service Bundles entry point */}
+        <Link
+          href="/bundles"
+          data-testid="marketplace-bundles-link"
+          className="mb-6 inline-flex items-center gap-2 rounded-xl border border-rose-200 bg-rose-50 px-4 py-2 text-sm font-bold text-rose-700 transition-colors hover:bg-rose-100 dark:border-rose-800 dark:bg-rose-950 dark:text-rose-300"
+        >
+          {t('bundles.title')} · {t('bundles.saveLabel')} ↓
+        </Link>
 
         <input
           value={search}

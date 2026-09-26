@@ -31,6 +31,9 @@ export const createBookingSchema = z.object({
   // K3 (kids plan): optional Mommy & Me bundle — prices the booking at the
   // bundle price and uses the primary (mother) service.
   bundleId: z.number().int().positive().optional(),
+  // 1.2 Service Bundles: optional pre-built beauty package — prices the
+  // booking at the bundle price and anchors the first service.
+  beautyBundleId: z.number().int().positive().optional(),
   // 1.3 Add-Ons — services linked to the main service via ServiceAddon,
   // priced at basePrice × (1 - bundleDiscountPercent/100).
   addonIds: z.array(z.number().int().positive()).max(10).optional(),

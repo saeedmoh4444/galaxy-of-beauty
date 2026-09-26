@@ -1338,6 +1338,189 @@ async function main() {
   );
   console.log(` ${bundleData.length} mommy-and-me bundles`);
 
+  // ---- 1.2 Service Bundles (pre-built packages) ----
+  // Arabic-first packages (our_galaxy_of_beauty §3.1, adapted to the seeded
+  // catalog). Idempotent: upsert by Arabic title so re-seeds don't stack
+  // duplicates or orphan booking links.
+  const round2 = (n: number) => Math.round(n * 100) / 100;
+  const svcByArTitle = (ar: string) => {
+    const svc = services.find((s) => (s.titleJson as { ar: string }).ar === ar);
+    if (!svc) throw new Error(`Seed: service not found by title: ${ar}`);
+    return svc;
+  };
+  const beautyBundleDefs = [
+    {
+      titleJson: { ar: 'الباقة الذهبية', en: 'Golden Package' },
+      descriptionJson: {
+        ar: 'مانيكير + تنظيف بشرة + مساج — يوم عناية كامل',
+        en: 'Manicure + facial + massage — a full care day',
+      },
+      discountPct: 15,
+      sortOrder: 1,
+      services: ['مانيكير جل', 'تنظيف بشرة عميق', 'مساج استرخائي'],
+    },
+    {
+      titleJson: { ar: 'باقة العروس', en: 'Bridal Package' },
+      descriptionJson: {
+        ar: 'مكياج عرايس كامل + حناء نقش + تمويج شعر',
+        en: 'Full bridal makeup + henna art + styling',
+      },
+      discountPct: 15,
+      sortOrder: 2,
+      services: ['مكياج عرايس كامل', 'حناء نقش', 'تمويج شعر'],
+    },
+    {
+      titleJson: { ar: 'باقة السهرة', en: 'Evening Package' },
+      descriptionJson: {
+        ar: 'مكياج + تسريحة + مانيكير لإطلالة سهرة متكاملة',
+        en: 'Makeup + styling + manicure for a complete evening look',
+      },
+      discountPct: 15,
+      sortOrder: 3,
+      services: ['مكياج عرايس كامل', 'تمويج شعر', 'مانيكير جل'],
+    },
+    {
+      titleJson: { ar: 'باقة الاسترخاء', en: 'Spa Package' },
+      descriptionJson: {
+        ar: 'مساج + تنظيف بشرة + مانيكير — استرخاء من الرأس للأظافر',
+        en: 'Massage + facial + manicure — head-to-nails relaxation',
+      },
+      discountPct: 15,
+      sortOrder: 4,
+      services: ['مساج استرخائي', 'تنظيف بشرة عميق', 'مانيكير جل'],
+    },
+    {
+      titleJson: { ar: 'باقة العناية', en: 'Care Package' },
+      descriptionJson: {
+        ar: 'صبغ + علاج عميق + تمويج للعناية الكاملة بالشعر',
+        en: 'Color + deep treatment + styling for complete hair care',
+      },
+      discountPct: 15,
+      sortOrder: 5,
+      services: ['صبغ شعر كامل', 'علاج الشعر العميق', 'تمويج شعر'],
+    },
+    {
+      titleJson: { ar: 'باقة العيد', en: 'Eid Package' },
+      descriptionJson: {
+        ar: 'حناء + تنظيف بشرة + مانيكير — إطلالة العيد كاملة',
+        en: 'Henna + facial + manicure — the complete Eid look',
+      },
+      discountPct: 15,
+      sortOrder: 6,
+      isSeasonal: true,
+      season: 'EID',
+      services: ['حناء نقش', 'تنظيف بشرة عميق', 'مانيكير جل'],
+    },
+  ] as const;
+  for (const def of beautyBundleDefs) {
+    const svcIds = def.services.map((ar) => svcByArTitle(ar).id);
+    const original = round2(
+      svcIds.reduce((sum, id) => sum + Number(services.find((s) => s.id === id)!.basePrice), 0),
+    );
+    const total = round2(original * (1 - def.discountPct / 100));
+    const data = {
+      titleJson: def.titleJson,
+      descriptionJson: def.descriptionJson,
+      serviceIds: svcIds,
+      discountPct: def.discountPct,
+      originalPrice: original,
+      totalPrice: total,
+      isSeasonal: def.isSeasonal ?? false,
+      season: def.season ?? null,
+      sortOrder: def.sortOrder,
+      isActive: true,
+    };
+    const existing = await prisma.beautyBundle.findFirst({
+      where: { titleJson: { path: ['ar'], equals: def.titleJson.ar } },
+    });
+    if (existing) {
+      await prisma.beautyBundle.update({ where: { id: existing.id }, data });
+    } else {
+      await prisma.beautyBundle.create({ data });
+    }
+  }
+  console.log(` ${beautyBundleDefs.length} beauty bundles (1.2)`);
+
+  // ---- 1.4 Seasonal & Event Services ----
+  // Wide rolling windows (the season filter from lib/season gates
+  // visibility); admins narrow real windows via seasonalServices.update.
+  // Idempotent: upsert by (season, Arabic name).
+  const seasonalDefs = [
+    {
+      ar: 'باقة ما قبل الإفطار',
+      en: 'Pre-Iftar Glow',
+      season: 'RAMADAN',
+      categoryIdx: 3,
+      premium: 30,
+    },
+    {
+      ar: 'حناء ليالي رمضان',
+      en: 'Ramadan Night Henna',
+      season: 'RAMADAN',
+      categoryIdx: 5,
+      premium: 20,
+    },
+    {
+      ar: 'إطلالة العيد الكاملة',
+      en: 'Complete Eid Look',
+      season: 'EID',
+      categoryIdx: 3,
+      premium: 40,
+    },
+    {
+      ar: 'باقة العيد العائلية',
+      en: 'Eid Family Package',
+      season: 'EID',
+      categoryIdx: 2,
+      premium: 60,
+    },
+    { ar: 'توهج التخرج', en: 'Graduation Glow', season: 'GRADUATION', categoryIdx: 2, premium: 25 },
+    {
+      ar: 'مكياج التخرج',
+      en: 'Graduation Makeup',
+      season: 'GRADUATION',
+      categoryIdx: 3,
+      premium: 15,
+    },
+    {
+      ar: 'إطلالة فالنتاين',
+      en: 'Valentine Look',
+      season: 'VALENTINE',
+      categoryIdx: 3,
+      premium: 20,
+    },
+    {
+      ar: 'سبا اليوم الوردي',
+      en: 'Pink Day Spa',
+      season: 'VALENTINE',
+      categoryIdx: 4,
+      premium: 35,
+    },
+  ] as const;
+  for (const def of seasonalDefs) {
+    const existing = await prisma.seasonalService.findFirst({
+      where: {
+        season: def.season,
+        nameJson: { path: ['ar'], equals: def.ar },
+      },
+    });
+    const data = {
+      nameJson: { ar: def.ar, en: def.en },
+      categoryId: categories[def.categoryIdx]!.id,
+      season: def.season,
+      startDate: new Date('2026-01-01T00:00:00.000Z'),
+      endDate: new Date('2026-12-31T23:59:59.000Z'),
+      pricePremium: def.premium,
+      isActive: true,
+    };
+    if (existing) {
+      await prisma.seasonalService.update({ where: { id: existing.id }, data });
+    } else {
+      await prisma.seasonalService.create({ data });
+    }
+  }
+  console.log(` ${seasonalDefs.length} seasonal services (1.4)`);
+
   // ---- Service Variants ----
   await prisma.serviceVariant.createMany({
     data: [
@@ -3616,6 +3799,17 @@ async function main() {
         bodyJson: {
           ar: '{{customerName}}، باقي {{pointsNeeded}} نقطة فقط لتصلي إلى مستوى {{nextTier}}!',
           en: '{{customerName}}, only {{pointsNeeded}} points to reach {{nextTier}} tier!',
+        },
+      },
+      // 8.2 — loyalty points expiry heads-up (30 days).
+      {
+        key: 'loyalty_points_expiring',
+        category: 'promotions',
+        channels: ['in_app', 'push'],
+        titleJson: { ar: 'نقاطك على وشك الانتهاء', en: 'Your Points Expire Soon' },
+        bodyJson: {
+          ar: 'أهلًا {{customerName}}، ستنتهي صلاحية {{points}} نقطة بتاريخ {{date}}. استخدميها قبل فوات الأوان!',
+          en: 'Hi {{customerName}}, {{points}} points expire on {{date}}. Use them before they are gone!',
         },
       },
       // B.6/B.7 — provider submission decisions. Category 'provider' is not

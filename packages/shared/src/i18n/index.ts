@@ -15,6 +15,7 @@ import { adminMessages } from './messages/admin';
 import { marketingMessages } from './messages/marketing';
 import { uiMessages } from './messages/ui';
 import { miscMessages } from './messages/misc';
+import { bundlesMessages } from './messages/bundles';
 import { mobileCoreMessages } from './messages/mobile/core';
 import { mobileAuthMessages } from './messages/mobile/auth';
 import { mobileCustomerMessages } from './messages/mobile/customer';
@@ -51,6 +52,7 @@ const domainMessages = {
   ...marketingMessages,
   ...uiMessages,
   ...miscMessages,
+  ...bundlesMessages,
 };
 
 export const webMessages = {

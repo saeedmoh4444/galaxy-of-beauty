@@ -13,6 +13,7 @@ import {
   deleteGoogleCalendarEvent,
   refreshGoogleToken,
 } from '../lib/googleCalendar';
+import { creditLoyaltyPoints } from '../lib/loyalty';
 
 // ── Job type definitions ──
 
@@ -95,35 +96,9 @@ export async function handleWalletJob(job: Job<CashbackJob>): Promise<void> {
 export async function handleLoyaltyJob(job: Job<LoyaltyPointsJob>): Promise<void> {
   const { userId, bookingId, points, reason } = job.data;
 
-  let account = await prisma.loyaltyAccount.findUnique({ where: { userId } });
-  if (!account) {
-    account = await prisma.loyaltyAccount.create({
-      data: { userId, points: 0, lifetimePoints: 0, tier: 'SILVER' },
-    });
-  }
-
-  const newPoints = account.points + points;
-  const newLifetime = account.lifetimePoints + points;
-
-  // Determine tier
-  let tier = 'SILVER';
-  if (newLifetime >= 2000) tier = 'PLATINUM';
-  else if (newLifetime >= 500) tier = 'GOLD';
-
-  await prisma.$transaction([
-    prisma.loyaltyAccount.update({
-      where: { userId },
-      data: { points: newPoints, lifetimePoints: newLifetime, tier },
-    }),
-    prisma.loyaltyTransaction.create({
-      data: {
-        accountId: account.id,
-        points,
-        reason,
-        referenceId: `booking_${bookingId}`,
-      },
-    }),
-  ]);
+  // 8.2: one implementation for every earn path — booking points now ride
+  // creditLoyaltyPoints too (expiry + boost windows apply).
+  await creditLoyaltyPoints(prisma, userId, points, reason, `booking_${bookingId}`);
 }
 
 export async function handleNotificationJob(job: Job<NotificationJob>): Promise<void> {
