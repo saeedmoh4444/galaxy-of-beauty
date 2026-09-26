@@ -75,6 +75,10 @@ export {
   pageHeroKey,
 } from './images';
 
+// 1.2 Service Bundles — progressive custom-bundle pricing
+export { bundleDiscountFor, buildBundleQuote } from './bundlePricing';
+export type { BundleQuote } from './bundlePricing';
+
 // Service detail trust layer (shared by web + RN mirror)
 export { buildServiceTrust } from './serviceDetail';
 export type {
