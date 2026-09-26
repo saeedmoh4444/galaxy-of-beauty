@@ -76,6 +76,79 @@ export const loyaltyRouter = router({
       return { items, total, page: input.page, limit: input.limit };
     }),
 
+  // 8.2 — effective balance (expired points excluded) + expiring-soon.
+  summary: protectedProcedure.query(async ({ ctx }) => {
+    const account = await prisma.loyaltyAccount.findUnique({ where: { userId: ctx.user.id } });
+    if (!account) {
+      return {
+        points: 0,
+        lifetimePoints: 0,
+        tier: 'SILVER',
+        effectivePoints: 0,
+        expiringSoon: 0,
+        expiringAt: null,
+      };
+    }
+    const txns = await prisma.loyaltyTransaction.findMany({
+      where: { accountId: account.id },
+      select: { points: true, expiresAt: true },
+    });
+    const now = new Date();
+    const effectivePoints = txns.reduce(
+      (sum, t) => (t.expiresAt === null || t.expiresAt > now ? sum + t.points : sum),
+      0,
+    );
+    const soon = new Date(now.getTime() + 30 * 86_400_000);
+    let expiringSoon = 0;
+    let expiringAt: Date | null = null;
+    for (const t of txns) {
+      if (t.points > 0 && t.expiresAt && t.expiresAt > now && t.expiresAt <= soon) {
+        expiringSoon += t.points;
+        if (!expiringAt || t.expiresAt < expiringAt) expiringAt = t.expiresAt;
+      }
+    }
+    return {
+      points: account.points,
+      lifetimePoints: account.lifetimePoints,
+      tier: account.tier,
+      effectivePoints,
+      expiringSoon,
+      expiringAt,
+    };
+  }),
+
+  // ── Admin: boost events (8.2) ───────────────────────────
+  listBoosts: adminProcedure.query(async () =>
+    prisma.loyaltyBoost.findMany({ orderBy: { startsAt: 'desc' } }),
+  ),
+  createBoost: adminProcedure
+    .input(
+      z.object({
+        nameJson: z.object({ ar: z.string(), en: z.string() }),
+        multiplier: z.number().min(1.1).max(5),
+        startsAt: z.string().datetime(),
+        endsAt: z.string().datetime(),
+        isActive: z.boolean().default(true),
+      }),
+    )
+    .mutation(async ({ input }) => {
+      if (new Date(input.startsAt) >= new Date(input.endsAt)) {
+        throw new TRPCError({ code: 'BAD_REQUEST', message: 'startsAt must be before endsAt' });
+      }
+      return prisma.loyaltyBoost.create({
+        data: {
+          nameJson: input.nameJson,
+          multiplier: input.multiplier,
+          startsAt: new Date(input.startsAt),
+          endsAt: new Date(input.endsAt),
+          isActive: input.isActive,
+        },
+      });
+    }),
+  deleteBoost: adminProcedure
+    .input(z.object({ id: z.number().int().positive() }))
+    .mutation(async ({ input }) => prisma.loyaltyBoost.delete({ where: { id: input.id } })),
+
   // ── Available rewards ───────────────────────────────────
   // Public catalog (web + mobile public /rewards pages). Eligibility flags
   // fall back to guest defaults when no user is signed in.

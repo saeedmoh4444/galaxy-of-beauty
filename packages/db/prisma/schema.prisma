@@ -245,6 +245,8 @@ model LoyaltyTransaction {
   points      Int      // Positive = earned, negative = redeemed
   reason      String   // "booking", "streak_bonus", "referral", "redemption", "tier_bonus"
   referenceId String?  // Booking ID, etc.
+  // 8.2: earned points expire 12 months after earn; redemptions stay null.
+  expiresAt   DateTime?
   createdAt   DateTime @default(now())
 
   account     LoyaltyAccount @relation(fields: [accountId], references: [id], onDelete: Cascade)
@@ -252,6 +254,20 @@ model LoyaltyTransaction {
   @@index([accountId])
   @@index([createdAt])
   @@map("loyalty_transactions")
+}
+
+// 8.2 Loyalty 2.0 — points boost events (double-points weekends, etc.).
+model LoyaltyBoost {
+  id         Int      @id @default(autoincrement())
+  nameJson   Json     // { ar, en }
+  multiplier Decimal  @db.Decimal(4, 2) // 2.0 = double points
+  startsAt   DateTime
+  endsAt     DateTime
+  isActive   Boolean  @default(true)
+  createdAt  DateTime @default(now())
+
+  @@index([isActive, startsAt, endsAt])
+  @@map("loyalty_boosts")
 }
 
 model LoyaltyReward {
