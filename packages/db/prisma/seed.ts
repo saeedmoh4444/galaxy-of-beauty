@@ -3801,6 +3801,17 @@ async function main() {
           en: '{{customerName}}, only {{pointsNeeded}} points to reach {{nextTier}} tier!',
         },
       },
+      // 8.2 — loyalty points expiry heads-up (30 days).
+      {
+        key: 'loyalty_points_expiring',
+        category: 'promotions',
+        channels: ['in_app', 'push'],
+        titleJson: { ar: 'نقاطك على وشك الانتهاء', en: 'Your Points Expire Soon' },
+        bodyJson: {
+          ar: 'أهلًا {{customerName}}، ستنتهي صلاحية {{points}} نقطة بتاريخ {{date}}. استخدميها قبل فوات الأوان!',
+          en: 'Hi {{customerName}}, {{points}} points expire on {{date}}. Use them before they are gone!',
+        },
+      },
       // B.6/B.7 — provider submission decisions. Category 'provider' is not
       // a preference toggle → always delivered.
       {
