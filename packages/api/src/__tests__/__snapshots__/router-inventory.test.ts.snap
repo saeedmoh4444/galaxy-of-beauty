@@ -1076,5 +1076,7 @@ zatca.generateInvoice	mutation	admin
 zatca.getInvoice	query	protected
 zatca.listInvoices	query	admin
 zatca.reportInvoice	mutation	admin
+zatca.vatReport	query	admin
+zatca.vatReportCsv	mutation	admin
 zatca.verifyChain	query	admin"
 `;

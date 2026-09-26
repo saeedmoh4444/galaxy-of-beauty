@@ -54,6 +54,9 @@ export default function AdminZatcaPage(): JSX.Element {
   const [statusTab, setStatusTab] = useState<string>('PENDING');
   const [generateOpen, setGenerateOpen] = useState(false);
   const [bookingId, setBookingId] = useState('');
+  const [vatYear, setVatYear] = useState(new Date().getFullYear());
+  const [vatPeriod, setVatPeriod] = useState<'monthly' | 'quarterly'>('monthly');
+  const [vatIndex, setVatIndex] = useState(1);
   const { isAuthenticated } = useAuth();
 
   const { data, isLoading, isError, refetch } = api.zatca.listInvoices.useQuery(
@@ -73,6 +76,20 @@ export default function AdminZatcaPage(): JSX.Element {
     },
   });
   const reportMut = api.zatca.reportInvoice.useMutation({ onSuccess: () => refetch() });
+  // 6.1b — VAT report CSV export.
+  const csvMut = api.zatca.vatReportCsv.useMutation({
+    onSuccess: (res) => {
+      const blob = new Blob([(res as unknown as { csv: string }).csv], {
+        type: 'text/csv;charset=utf-8',
+      });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `vat-${vatYear}-${vatPeriod}-${vatIndex}.csv`;
+      a.click();
+      URL.revokeObjectURL(url);
+    },
+  });
 
   const invoices = data?.items ?? [];
 
@@ -102,6 +119,57 @@ export default function AdminZatcaPage(): JSX.Element {
         </Button>
       </div>
 
+      {/* 6.1b — VAT report export */}
+      <Card padding="md">
+        <h2 className="mb-3 font-semibold">{t('admin.zatca.export-title')}</h2>
+        <div className="flex flex-wrap items-end gap-3">
+          <div>
+            <label className="mb-1 block text-xs text-text-secondary">
+              {t('admin.zatca.export-year')}
+            </label>
+            <Input
+              type="number"
+              value={String(vatYear)}
+              onChange={(e) => setVatYear(Number(e.target.value))}
+            />
+          </div>
+          <div>
+            <label className="mb-1 block text-xs text-text-secondary">
+              {t('admin.zatca.export-period')}
+            </label>
+            <select
+              value={vatPeriod}
+              onChange={(e) => {
+                setVatPeriod(e.target.value as 'monthly' | 'quarterly');
+                setVatIndex(1);
+              }}
+              className="rounded-lg border border-edge bg-surface-elevated p-2 text-sm"
+            >
+              <option value="monthly">{t('admin.zatca.export-monthly')}</option>
+              <option value="quarterly">{t('admin.zatca.export-quarterly')}</option>
+            </select>
+          </div>
+          <div>
+            <label className="mb-1 block text-xs text-text-secondary">
+              {t('admin.zatca.export-index')}
+            </label>
+            <Input
+              type="number"
+              value={String(vatIndex)}
+              min={1}
+              max={vatPeriod === 'monthly' ? 12 : 4}
+              onChange={(e) => setVatIndex(Number(e.target.value))}
+            />
+          </div>
+          <Button
+            variant="secondary"
+            onClick={() => csvMut.mutate({ year: vatYear, period: vatPeriod, index: vatIndex })}
+            loading={csvMut.isPending}
+          >
+            {t('admin.zatca.export-button')}
+          </Button>
+        </div>
+      </Card>
       {/* 6.1a — compliance dashboard */}
       <h2 className="text-lg font-bold">{t('admin.zatca.dashboard-title')}</h2>
       <div className="grid gap-4 sm:grid-cols-4">
