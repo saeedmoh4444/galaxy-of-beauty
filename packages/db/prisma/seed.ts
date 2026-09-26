@@ -3812,6 +3812,47 @@ async function main() {
           en: 'Hi {{customerName}}, {{points}} points expire on {{date}}. Use them before they are gone!',
         },
       },
+      // 8.3 — welcome series (day 0 at signup, 1/3/7 via the daily sweep).
+      {
+        key: 'welcome_day0',
+        category: 'promotions',
+        channels: ['in_app', 'push'],
+        titleJson: { ar: 'أهلًا بكِ في مجرة الجمال', en: 'Welcome to Galaxy of Beauty' },
+        bodyJson: {
+          ar: 'أهلًا {{customerName}}! اكتشفي عالمكِ الجمالي — خدمات، مجتمع، ومكافآت بانتظارك.',
+          en: 'Welcome {{customerName}}! Your beauty world awaits — services, community, and rewards.',
+        },
+      },
+      {
+        key: 'welcome_day1',
+        category: 'promotions',
+        channels: ['in_app', 'push'],
+        titleJson: { ar: 'ابدئي رحلتكِ', en: 'Start Your Journey' },
+        bodyJson: {
+          ar: '{{customerName}}، تصفحي آلاف خدمات التجميل واختاري ما يناسبك.',
+          en: '{{customerName}}, browse thousands of beauty services and pick what fits you.',
+        },
+      },
+      {
+        key: 'welcome_day3',
+        category: 'promotions',
+        channels: ['in_app', 'push'],
+        titleJson: { ar: 'متجر الجمال بانتظاركِ', en: 'The Beauty Store Awaits' },
+        bodyJson: {
+          ar: '{{customerName}}، منتجات تجميل أصلية وخصومات حصرية في متجر الجمال.',
+          en: '{{customerName}}, authentic beauty products and exclusive deals in the store.',
+        },
+      },
+      {
+        key: 'welcome_day7',
+        category: 'promotions',
+        channels: ['in_app', 'push'],
+        titleJson: { ar: 'احجزي أول موعدكِ', en: 'Book Your First Visit' },
+        bodyJson: {
+          ar: '{{customerName}}، جاهزة لأول موعد؟ احجزي الآن واكسبي نقاط ولاء من أول زيارة.',
+          en: '{{customerName}}, ready for your first visit? Book now and earn loyalty points from day one.',
+        },
+      },
       // B.6/B.7 — provider submission decisions. Category 'provider' is not
       // a preference toggle → always delivered.
       {

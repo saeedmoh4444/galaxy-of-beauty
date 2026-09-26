@@ -13,6 +13,7 @@ import { startTokenCleanup, stopTokenCleanup } from './tokenCleanup';
 import { startSubscriptionRenewal, stopSubscriptionRenewal } from './subscriptionRenewal';
 import { startInsightsSweep, stopInsightsSweep } from './insightsSweep';
 import { startLoyaltyExpirySweep, stopLoyaltyExpirySweep } from './loyaltyExpiry';
+import { startWelcomeSeries, stopWelcomeSeries } from './welcomeSeries';
 
 // Graceful shutdown
 async function shutdown() {
@@ -21,6 +22,7 @@ async function shutdown() {
   stopSubscriptionRenewal();
   stopInsightsSweep();
   stopLoyaltyExpirySweep();
+  stopWelcomeSeries();
   await shutdownWorkers();
   process.exit(0);
 }
@@ -35,6 +37,7 @@ startTokenCleanup();
 startSubscriptionRenewal();
 startInsightsSweep();
 startLoyaltyExpirySweep();
+startWelcomeSeries();
 console.log(
-  '[Worker Process] Ready — workers + hourly token purge + daily subscription renewal + 3.3 advisor sweep + 8.2 loyalty expiry',
+  '[Worker Process] Ready — workers + hourly token purge + daily subscription renewal + 3.3 advisor sweep + 8.2 loyalty expiry + 8.3 welcome series',
 );
