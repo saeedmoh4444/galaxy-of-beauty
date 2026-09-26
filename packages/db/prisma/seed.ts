@@ -3886,6 +3886,17 @@ async function main() {
           en: 'Hi {{customerName}}, we hope your visit was lovely! Rate it and help us serve you better — your next appointment awaits.',
         },
       },
+      // 8.3e — birthday (20% off; the sweep also creates the yearly reward).
+      {
+        key: 'birthday',
+        category: 'promotions',
+        channels: ['in_app', 'push'],
+        titleJson: { ar: 'عيد ميلاد سعيد!', en: 'Happy Birthday!' },
+        bodyJson: {
+          ar: 'كل عام وأنتِ بخير {{customerName}}! 🎂 هديتنا لكِ: خصم {{discount}}٪ على حجزك القادم — متاح في صفحة مكافآت عيد الميلاد.',
+          en: 'Happy birthday {{customerName}}! 🎂 Our gift: {{discount}}% off your next booking — available on your birthday rewards page.',
+        },
+      },
       // B.6/B.7 — provider submission decisions. Category 'provider' is not
       // a preference toggle → always delivered.
       {
