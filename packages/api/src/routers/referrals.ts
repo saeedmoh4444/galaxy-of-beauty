@@ -87,18 +87,37 @@ export const referralRouter = router({
       .filter((r) => r.status === 'PENDING' && !r.rewardCredited)
       .reduce((sum, r) => sum + r.referrerReward.toNumber(), 0);
 
+    // 8.1b — per-source attribution breakdown.
+    const attribution = new Map<
+      string,
+      { source: string | null; campaign: string | null; count: number }
+    >();
+    for (const r of referralsMade) {
+      const key = `${r.utmSource ?? ''}\u0000${r.utmCampaign ?? ''}`;
+      const entry = attribution.get(key) ?? {
+        source: r.utmSource,
+        campaign: r.utmCampaign,
+        count: 0,
+      };
+      entry.count++;
+      attribution.set(key, entry);
+    }
+
     return {
       totalReferred: referralsMade.length,
       completedReferrals: completedReferrals.length,
       pendingReferrals: referralsMade.length - completedReferrals.length,
       totalEarned,
       pendingRewards,
+      attribution: [...attribution.values()],
       referrals: referralsMade.map((r) => ({
         id: r.id,
         status: r.status,
         referralCode: r.referralCode,
         rewardCredited: r.rewardCredited,
         referrerReward: r.referrerReward.toNumber(),
+        utmSource: r.utmSource,
+        utmCampaign: r.utmCampaign,
         referred: r.referred,
         completedAt: r.completedAt,
         createdAt: r.createdAt,
@@ -107,7 +126,20 @@ export const referralRouter = router({
   }),
 
   applyCode: protectedProcedure
-    .input(z.object({ code: z.string() }))
+    .input(
+      z.object({
+        code: z.string(),
+        // 8.1b — attribution from the share link's UTM params.
+        utm: z
+          .object({
+            source: z.string().max(100).optional(),
+            medium: z.string().max(100).optional(),
+            campaign: z.string().max(100).optional(),
+            content: z.string().max(100).optional(),
+          })
+          .optional(),
+      }),
+    )
     .mutation(async ({ input, ctx }) => {
       const code = input.code.trim().toUpperCase();
 
@@ -182,6 +214,14 @@ export const referralRouter = router({
           referredId: ctx.user.id,
           referralCode: code,
           status: 'PENDING',
+          ...(input.utm
+            ? {
+                utmSource: input.utm.source ?? null,
+                utmMedium: input.utm.medium ?? null,
+                utmCampaign: input.utm.campaign ?? null,
+                utmContent: input.utm.content ?? null,
+              }
+            : {}),
         },
       });
 
@@ -318,9 +358,11 @@ export const referralRouter = router({
       select: { referralCode: true },
     });
     const code = ref?.referralCode || `GOB-${ctx.user.id}`;
+    const base = `${process.env['NEXT_PUBLIC_APP_URL'] || 'http://localhost:3000'}/register`;
     return {
       code,
-      shareUrl: `${process.env['NEXT_PUBLIC_APP_URL'] || 'http://localhost:3000'}/register?ref=${code}`,
+      // 8.1b — UTM-tagged so redemptions carry their channel back.
+      shareUrl: `${base}?ref=${encodeURIComponent(code)}&utm_source=referral&utm_medium=share&utm_campaign=${encodeURIComponent(code)}`,
       shareText: 'انضمي إلى جالكسي بيوتي واحصلي على خصم ٢٠ ريال!',
     };
   }),

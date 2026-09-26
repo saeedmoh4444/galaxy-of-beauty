@@ -1097,6 +1097,11 @@ model Referral {
   rewardCredited Boolean  @default(false)
   referrerReward Decimal  @default(20) @db.Decimal(10, 2)
   referredReward Decimal  @default(20) @db.Decimal(10, 2)
+  // 8.1b — attribution from the share link's UTM params.
+  utmSource   String?
+  utmMedium   String?
+  utmCampaign String?
+  utmContent  String?
   completedAt    DateTime?
   createdAt      DateTime @default(now())
 
