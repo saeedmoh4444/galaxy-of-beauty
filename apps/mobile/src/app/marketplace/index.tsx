@@ -1,5 +1,6 @@
 import type { JSX } from 'react';
 import { View, Text, ScrollView, TouchableOpacity, StyleSheet, RefreshControl } from 'react-native';
+import { useRouter } from 'expo-router';
 import { SkeletonList } from '@/components/SkeletonCard';
 import { ErrorAlert } from '@/components/ErrorAlert';
 import { trpc } from '@/lib/trpc-react';
@@ -14,6 +15,7 @@ interface MarketplaceProduct {
 }
 
 export default function MarketplaceScreen(): JSX.Element {
+  const router = useRouter();
   const { t } = useLocale();
   const q = trpc.marketplace.products.useQuery({});
   const products = (q.data as unknown as { items?: MarketplaceProduct[] } | null)?.items ?? [];
@@ -37,6 +39,19 @@ export default function MarketplaceScreen(): JSX.Element {
       }
     >
       <Text style={styles.t}>{t('mobile.public.marketplace.title')}</Text>
+
+      {/* 1.2 Service Bundles entry point */}
+      <TouchableOpacity
+        testID="marketplace-bundles-link"
+        style={styles.bundlesLink}
+        activeOpacity={0.7}
+        onPress={() => router.push('/bundles')}
+      >
+        <Text style={styles.bundlesLinkText}>
+          {t('bundles.title')} · {t('bundles.saveLabel')} ↓
+        </Text>
+      </TouchableOpacity>
+
       <View style={styles.grid}>
         {products.map((p) => (
           <TouchableOpacity key={p.id} style={styles.card}>
@@ -57,6 +72,20 @@ const styles = StyleSheet.create({
   c: { flex: 1, backgroundColor: '#fdf2f8' },
   i: { padding: 16, paddingTop: 30, paddingBottom: 40 },
   t: { fontSize: 24, fontWeight: '800', color: '#db2777', textAlign: 'center', marginBottom: 20 },
+  bundlesLink: {
+    backgroundColor: '#fdf2f8',
+    borderColor: '#fbcfe8',
+    borderWidth: 1,
+    borderRadius: 12,
+    padding: 12,
+    marginBottom: 16,
+  },
+  bundlesLinkText: {
+    fontSize: 13,
+    fontWeight: '700',
+    color: '#db2777',
+    textAlign: 'center',
+  },
   grid: { flexDirection: 'row', flexWrap: 'wrap', gap: 10 },
   card: {
     width: '47%',
