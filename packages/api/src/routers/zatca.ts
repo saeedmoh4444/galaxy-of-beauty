@@ -405,4 +405,139 @@ export const zatcaRouter = router({
         totalPages: Math.ceil(total / input.limit),
       };
     }),
+
+  // ── 6.1b — VAT reports (monthly / quarterly) ────────────────────────
+  vatReport: adminProcedure
+    .input(
+      z
+        .object({
+          year: z.number().int().min(2020).max(2100),
+          period: z.enum(['monthly', 'quarterly']),
+          index: z.number().int().min(1).max(12),
+        })
+        .refine((i) => (i.period === 'quarterly' ? i.index <= 4 : true), {
+          message: 'Quarterly index must be 1..4',
+        }),
+    )
+    .query(async ({ input }) => {
+      const rows = await collectVatRows(input.year, input.period, input.index);
+      return {
+        window: vatWindow(input.year, input.period, input.index),
+        rows,
+        totals: vatTotals(rows),
+      };
+    }),
+
+  vatReportCsv: adminProcedure
+    .input(
+      z
+        .object({
+          year: z.number().int().min(2020).max(2100),
+          period: z.enum(['monthly', 'quarterly']),
+          index: z.number().int().min(1).max(12),
+        })
+        .refine((i) => (i.period === 'quarterly' ? i.index <= 4 : true), {
+          message: 'Quarterly index must be 1..4',
+        }),
+    )
+    .mutation(async ({ input }) => {
+      const rows = await collectVatRows(input.year, input.period, input.index);
+      const lines = [
+        'InvoiceNumber,Date,Status,Subtotal,VAT,Total',
+        ...rows.map((r) =>
+          [
+            r.invoiceNumber,
+            r.createdAt.toISOString(),
+            r.status,
+            r.subtotal.toFixed(2),
+            r.vat.toFixed(2),
+            r.total.toFixed(2),
+          ].join(','),
+        ),
+      ];
+      return {
+        csv: `﻿${lines.join('\n')}`,
+        window: vatWindow(input.year, input.period, input.index),
+        totals: vatTotals(rows),
+      };
+    }),
 });
+
+/** Inclusive [start, end) UTC window for a report period. */
+function vatWindow(
+  year: number,
+  period: 'monthly' | 'quarterly',
+  index: number,
+): { start: string; end: string } {
+  const startMonth = period === 'monthly' ? index - 1 : (index - 1) * 3;
+  const endMonth = period === 'monthly' ? index : index * 3;
+  return {
+    start: new Date(Date.UTC(year, startMonth, 1)).toISOString(),
+    end: new Date(Date.UTC(year, endMonth, 1)).toISOString(),
+  };
+}
+
+type VatRow = {
+  invoiceId: number;
+  invoiceNumber: string;
+  bookingCode: string;
+  customerName: string;
+  createdAt: Date;
+  status: string;
+  subtotal: number;
+  vat: number;
+  total: number;
+};
+
+async function collectVatRows(
+  year: number,
+  period: 'monthly' | 'quarterly',
+  index: number,
+): Promise<VatRow[]> {
+  const { start, end } = vatWindow(year, period, index);
+  const invoices = await prisma.zatcaInvoice.findMany({
+    where: { createdAt: { gte: new Date(start), lt: new Date(end) } },
+    orderBy: { createdAt: 'asc' },
+    include: {
+      booking: {
+        select: {
+          bookingCode: true,
+          totalAmount: true,
+          customer: { select: { name: true } },
+        },
+      },
+    },
+  });
+  return invoices.map((inv) => {
+    const total = inv.booking.totalAmount.toNumber();
+    const vat = (total * VAT_RATE) / (1 + VAT_RATE);
+    const subtotal = total - vat;
+    const r2 = (n: number) => Math.round(n * 100) / 100;
+    return {
+      invoiceId: inv.id,
+      invoiceNumber: inv.invoiceNumber,
+      bookingCode: inv.booking.bookingCode,
+      customerName: inv.booking.customer.name,
+      createdAt: inv.createdAt,
+      status: inv.status,
+      subtotal: r2(subtotal),
+      vat: r2(vat),
+      total: r2(total),
+    };
+  });
+}
+
+function vatTotals(rows: VatRow[]): {
+  count: number;
+  subtotal: number;
+  vat: number;
+  total: number;
+} {
+  const r2 = (n: number) => Math.round(n * 100) / 100;
+  return {
+    count: rows.length,
+    subtotal: r2(rows.reduce((s, r) => s + r.subtotal, 0)),
+    vat: r2(rows.reduce((s, r) => s + r.vat, 0)),
+    total: r2(rows.reduce((s, r) => s + r.total, 0)),
+  };
+}

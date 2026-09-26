@@ -894,6 +894,13 @@ export const adminMessages = {
   'admin.zatca.booking-number': { ar: 'رقم الحجز', en: 'Booking Number' },
   'admin.zatca.booking-placeholder': { ar: 'أدخل رقم الحجز', en: 'Enter the booking number' },
   'admin.zatca.issue-button': { ar: 'إصدار', en: 'Issue' },
+  'admin.zatca.export-title': { ar: 'تصدير تقرير الضريبة', en: 'Export VAT report' },
+  'admin.zatca.export-year': { ar: 'السنة', en: 'Year' },
+  'admin.zatca.export-period': { ar: 'الفترة', en: 'Period' },
+  'admin.zatca.export-monthly': { ar: 'شهري', en: 'Monthly' },
+  'admin.zatca.export-quarterly': { ar: 'ربع سنوي', en: 'Quarterly' },
+  'admin.zatca.export-index': { ar: 'الرقم (شهر أو ربع)', en: 'Index (month or quarter)' },
+  'admin.zatca.export-button': { ar: 'تصدير CSV', en: 'Export CSV' },
 
   // 1.1 Dynamic pricing — admin rules UI
   'admin.pricing.title': { ar: 'التسعير الديناميكي', en: 'Dynamic Pricing' },
