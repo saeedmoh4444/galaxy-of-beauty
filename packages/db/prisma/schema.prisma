@@ -130,6 +130,8 @@ model User {
   lastLoginAt       DateTime?
   // 8.3b — monthly re-engagement throttle marker.
   lastReengagementAt DateTime?
+  // 8.3e — birthday automation (month/day used; year ignored).
+  birthDate           DateTime?
   createdAt         DateTime  @default(now())
   updatedAt         DateTime  @updatedAt
 
