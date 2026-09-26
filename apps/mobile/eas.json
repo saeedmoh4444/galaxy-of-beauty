@@ -4,6 +4,20 @@
     "appVersionSource": "local"
   },
   "build": {
+    "development": {
+      "distribution": "internal",
+      "developmentClient": true,
+      "android": {
+        "buildType": "apk",
+        "gradleCommand": ":app:assembleDebug"
+      },
+      "ios": {
+        "simulator": true
+      },
+      "env": {
+        "EXPO_PUBLIC_API_URL": "https://galaxyofbeauty.sa/api/trpc"
+      }
+    },
     "preview": {
       "distribution": "internal",
       "android": {
