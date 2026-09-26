@@ -8,6 +8,8 @@ import { isJummahBlocked, JUMMAH_BLOCK_REASON } from '../lib/jummah';
 import { protectedProcedure, customerProcedure, technicianProcedure, router } from '../trpc';
 import { createBookingSchema, bookingQuerySchema } from '../validators/booking';
 import { computeDynamicPrice } from '../lib/pricing';
+import { tieredReferrerReward } from '../lib/referralRewards';
+import { creditLoyaltyPoints, LOYALTY_REFERRAL_POINTS } from '../lib/loyalty';
 import { emitToUser, emitToTechnician, emitToAdmin } from '../socket/index';
 import type { CashbackJob, LoyaltyPointsJob, CalendarSyncJob } from '../workers';
 import { notifyUser } from '../lib/notify';
@@ -62,6 +64,7 @@ const bookingDetailInclude = {
     select: { id: true, name: true, relationship: true, ageGroup: true, preferences: true },
   },
   bundle: { select: { id: true, nameJson: true } },
+  beautyBundle: { select: { id: true, titleJson: true } },
 } as const;
 
 const bookingListInclude = {
@@ -74,6 +77,7 @@ const bookingListInclude = {
     select: { id: true, name: true, relationship: true, ageGroup: true, preferences: true },
   },
   bundle: { select: { id: true, nameJson: true } },
+  beautyBundle: { select: { id: true, titleJson: true } },
 } as const;
 
 // ---------------------------------------------------------------------------
@@ -169,6 +173,33 @@ export const bookingRouter = router({
       throw new TRPCError({ code: 'NOT_FOUND', message: 'Bundle not found or inactive' });
     }
 
+    // 2e. Beauty bundle (1.2): optional pre-built package — must exist, be
+    // active, and inside its validity window. Mutually exclusive with the
+    // K3 bundle.
+    if (input.beautyBundleId && input.bundleId) {
+      throw new TRPCError({
+        code: 'BAD_REQUEST',
+        message: 'A beauty bundle cannot be combined with a mommy-and-me bundle',
+      });
+    }
+    const beautyBundle = input.beautyBundleId
+      ? await prisma.beautyBundle.findFirst({
+          where: { id: input.beautyBundleId, isActive: true },
+        })
+      : null;
+    if (input.beautyBundleId && !beautyBundle) {
+      throw new TRPCError({ code: 'NOT_FOUND', message: 'Beauty bundle not found or inactive' });
+    }
+    if (beautyBundle) {
+      const now = new Date();
+      if (beautyBundle.validFrom && now < beautyBundle.validFrom) {
+        throw new TRPCError({ code: 'BAD_REQUEST', message: 'Beauty bundle is not available yet' });
+      }
+      if (beautyBundle.validUntil && now > beautyBundle.validUntil) {
+        throw new TRPCError({ code: 'BAD_REQUEST', message: 'Beauty bundle has expired' });
+      }
+    }
+
     // 3. Atomic create
     const booking = await prisma.$transaction(async (tx) => {
       // Re-check slot inside transaction to avoid races (slot flows only)
@@ -185,9 +216,17 @@ export const bookingRouter = router({
       }
 
       // 4. Calculate totalAmount — bundles ride the primary (mother) service
-      // and price at the bundle price; variant deltas only apply otherwise.
+      // and price at the bundle price; beauty bundles (1.2) anchor the
+      // first service in the package; variant deltas only apply otherwise.
+      const anchorServiceId = bundle
+        ? bundle.primaryServiceId
+        : beautyBundle
+          ? // create enforces serviceIds.min(2); the NOT_FOUND guard below
+            // covers a malformed (empty) package anyway.
+            beautyBundle.serviceIds[0]!
+          : input.serviceId;
       const service = await tx.service.findUnique({
-        where: { id: bundle ? bundle.primaryServiceId : input.serviceId },
+        where: { id: anchorServiceId },
       });
       if (!service) {
         throw new TRPCError({
@@ -196,17 +235,21 @@ export const bookingRouter = router({
         });
       }
 
-      let totalAmount = bundle ? Number(bundle.bundlePrice) : Number(service.basePrice);
+      let totalAmount = bundle
+        ? Number(bundle.bundlePrice)
+        : beautyBundle
+          ? Number(beautyBundle.totalPrice)
+          : Number(service.basePrice);
 
       // K4 (kids plan): hourly services (babysitting) price by the booked
       // duration — rate × ceil(hours), minimum one hour.
-      if (!bundle && service.isHourly) {
+      if (!bundle && !beautyBundle && service.isHourly) {
         const bookedMs = new Date(input.endAt).getTime() - new Date(input.startAt).getTime();
         const hours = Math.max(1, Math.ceil(bookedMs / 3_600_000));
         totalAmount = Number(service.basePrice) * hours;
       }
 
-      if (!bundle && input.variantId) {
+      if (!bundle && !beautyBundle && input.variantId) {
         const variant = await tx.serviceVariant.findUnique({
           where: { id: input.variantId },
         });
@@ -223,7 +266,7 @@ export const bookingRouter = router({
       // base/variant/hourly/bundle price above is the input to the engine;
       // bundles keep their fixed promotional price (skip).
       let pricingBreakdown: ReturnType<typeof computeDynamicPrice> | null = null;
-      if (!bundle && service.dynamicPricingEnabled) {
+      if (!bundle && !beautyBundle && service.dynamicPricingEnabled) {
         const rules = await tx.servicePricing.findMany({ where: { isActive: true } });
         // Surge: the technician's slot fill within ±2h of the booking.
         const windowStart = new Date(input.startAt).getTime() - 2 * 3_600_000;
@@ -262,12 +305,13 @@ export const bookingRouter = router({
 
       // 4c. Beauty subscription (2.2 SUB-2) — usage tracking, allowance
       // discount and VIP cap. Bundles keep their fixed promotional price.
-      const activeSub = !bundle
-        ? await tx.customerSubscription.findFirst({
-            where: { userId: customerId, status: 'ACTIVE' },
-            include: { plan: true },
-          })
-        : null;
+      const activeSub =
+        !bundle && !beautyBundle
+          ? await tx.customerSubscription.findFirst({
+              where: { userId: customerId, status: 'ACTIVE' },
+              include: { plan: true },
+            })
+          : null;
       if (activeSub) {
         const used = activeSub.bookingsThisMonth;
         const allowance = activeSub.plan.servicesPerMonth;
@@ -294,7 +338,7 @@ export const bookingRouter = router({
       // keep their fixed price and reject add-ons.
       let addonsJson: Array<Record<string, unknown>> | null = null;
       if (input.addonIds && input.addonIds.length > 0) {
-        if (bundle) {
+        if (bundle || beautyBundle) {
           throw new TRPCError({
             code: 'BAD_REQUEST',
             message: 'Add-ons cannot be combined with bundles',
@@ -326,6 +370,28 @@ export const bookingRouter = router({
         });
       }
 
+      // 4e. Beauty bundle (1.2) — snapshot the execution order so later
+      // admin edits to the bundle don't rewrite booking history.
+      let beautyBundleJson: Record<string, unknown> | null = null;
+      if (beautyBundle) {
+        const bundleServices = await tx.service.findMany({
+          where: { id: { in: beautyBundle.serviceIds } },
+          select: { id: true, titleJson: true },
+        });
+        const titleById = new Map(bundleServices.map((s) => [s.id, s.titleJson]));
+        beautyBundleJson = {
+          id: beautyBundle.id,
+          titleJson: beautyBundle.titleJson,
+          discountPct: beautyBundle.discountPct,
+          totalPrice: Number(beautyBundle.totalPrice),
+          originalPrice: Number(beautyBundle.originalPrice),
+          serviceIds: beautyBundle.serviceIds.map((id) => ({
+            id,
+            titleJson: titleById.get(id) ?? { ar: '', en: '' },
+          })),
+        };
+      }
+
       // 5. Generate booking code
       const bookingCode = `GOB-${crypto.randomBytes(4).toString('hex').toUpperCase()}`;
 
@@ -335,7 +401,7 @@ export const bookingRouter = router({
           bookingCode,
           customerId,
           technicianId: input.technicianId,
-          serviceId: bundle ? bundle.primaryServiceId : input.serviceId,
+          serviceId: anchorServiceId,
           variantId: input.variantId ?? null,
           addressId: input.addressId,
           startAt: new Date(input.startAt),
@@ -349,8 +415,10 @@ export const bookingRouter = router({
           idempotencyKey: input.idempotencyKey,
           familyMemberId: input.familyMemberId ?? null,
           bundleId: input.bundleId ?? null,
+          beautyBundleId: input.beautyBundleId ?? null,
           pricingBreakdown: (pricingBreakdown as unknown as Prisma.InputJsonValue) ?? undefined,
           addonsJson: (addonsJson as unknown as Prisma.InputJsonValue) ?? undefined,
+          beautyBundleJson: (beautyBundleJson as unknown as Prisma.InputJsonValue) ?? undefined,
         },
       });
 
@@ -684,6 +752,63 @@ export const bookingRouter = router({
             } else {
               await tx.beautyProfile.create({
                 data: { userId: booking.customerId, preferences: [slug] },
+              });
+            }
+          }
+
+          // 8.1 Referral 2.0 — credit both sides when the referred
+          // customer completes a booking; referrer reward is tiered by
+          // their lifetime completed-referral count (50/200/500 SAR).
+          const referral = await tx.referral.findFirst({
+            where: { referredId: booking.customerId, status: 'PENDING', rewardCredited: false },
+          });
+          if (referral) {
+            const completedCount = await tx.referral.count({
+              where: { referrerId: referral.referrerId, status: 'COMPLETED' },
+            });
+            const referrerAmount = tieredReferrerReward(completedCount + 1);
+            await tx.referral.update({
+              where: { id: referral.id },
+              data: {
+                status: 'COMPLETED',
+                rewardCredited: true,
+                referrerReward: referrerAmount,
+                completedAt: new Date(),
+              },
+            });
+            // 8.2: referrals also earn loyalty points for the referrer.
+            await creditLoyaltyPoints(
+              tx,
+              referral.referrerId,
+              LOYALTY_REFERRAL_POINTS,
+              'referral',
+              `referral_${referral.id}`,
+            );
+            const credits: Array<[number, number, string]> = [
+              [referral.referrerId, referrerAmount, `مكافأة إحالة #${referral.id}`],
+              [
+                booking.customerId,
+                referral.referredReward.toNumber(),
+                `مكافأة استخدام كود إحالة #${referral.id}`,
+              ],
+            ];
+            for (const [userId, amount, description] of credits) {
+              const wallet = await tx.wallet.findUnique({ where: { userId } });
+              if (!wallet) continue; // wallets are created at registration
+              await tx.wallet.update({
+                where: { userId },
+                data: { bonusBalance: { increment: amount } },
+              });
+              await tx.walletTransaction.create({
+                data: {
+                  walletId: wallet.id,
+                  type: 'CREDIT',
+                  source: 'REFERRAL_BONUS',
+                  amount,
+                  description,
+                  referenceId: `referral_${referral.id}`,
+                  idempotencyKey: `referral_${referral.id}_${userId}`,
+                },
               });
             }
           }
