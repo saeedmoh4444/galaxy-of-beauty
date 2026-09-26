@@ -894,6 +894,13 @@ export const adminMessages = {
   'admin.zatca.booking-number': { ar: 'رقم الحجز', en: 'Booking Number' },
   'admin.zatca.booking-placeholder': { ar: 'أدخل رقم الحجز', en: 'Enter the booking number' },
   'admin.zatca.issue-button': { ar: 'إصدار', en: 'Issue' },
+  'admin.zatca.dashboard-title': { ar: 'لوحة الامتثال', en: 'Compliance overview' },
+  'admin.zatca.stat.invoices': { ar: 'إجمالي الفواتير', en: 'Total invoices' },
+  'admin.zatca.stat.vat': { ar: 'ضريبة محصّلة', en: 'VAT collected' },
+  'admin.zatca.stat.pending': { ar: 'بانتظار الإبلاغ', en: 'Pending reporting' },
+  'admin.zatca.stat.clearance': { ar: 'نسبة التصفية', en: 'Clearance rate' },
+  'admin.zatca.activity-title': { ar: 'النشاط الأخير', en: 'Recent activity' },
+  'admin.zatca.activity-empty': { ar: 'لا نشاط بعد', en: 'No activity yet' },
 
   // 1.1 Dynamic pricing — admin rules UI
   'admin.pricing.title': { ar: 'التسعير الديناميكي', en: 'Dynamic Pricing' },
