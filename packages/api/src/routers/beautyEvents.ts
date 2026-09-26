@@ -242,4 +242,69 @@ export const beautyEventRouter = router({
         tier: event.tier,
       };
     }),
+
+  // 2.4c — certificates of completion. One per REGISTERED attendee of a
+  // finished professional event (workshop/masterclass/retreat).
+  issueCertificates: adminProcedure
+    .input(z.object({ eventId: z.number() }))
+    .mutation(async ({ input }) => {
+      const event = await prisma.beautyEvent.findUnique({ where: { id: input.eventId } });
+      if (!event) {
+        throw new TRPCError({ code: 'NOT_FOUND', message: 'Event not found' });
+      }
+      if (event.endsAt > new Date()) {
+        throw new TRPCError({
+          code: 'BAD_REQUEST',
+          message: 'Certificates can only be issued after the event ends',
+        });
+      }
+      if (!['workshop', 'masterclass', 'retreat'].includes(event.eventType)) {
+        throw new TRPCError({
+          code: 'BAD_REQUEST',
+          message: 'Certificates are only issued for professional courses',
+        });
+      }
+
+      const registrations = await prisma.eventRegistration.findMany({
+        where: { eventId: input.eventId, status: 'REGISTERED' },
+        orderBy: { id: 'asc' },
+      });
+      const existing = new Set(
+        (
+          await prisma.eventCertificate.findMany({
+            where: { registrationId: { in: registrations.map((r) => r.id) } },
+            select: { registrationId: true },
+          })
+        ).map((c) => c.registrationId),
+      );
+
+      let issued = 0;
+      for (const reg of registrations) {
+        if (existing.has(reg.id)) continue;
+        const number = `GOB-CERT-${String(event.id).padStart(4, '0')}-${String(reg.id).padStart(4, '0')}`;
+        await prisma.eventCertificate.create({
+          data: { registrationId: reg.id, certificateNumber: number },
+        });
+        issued++;
+      }
+      return { issued };
+    }),
+
+  myCertificates: customerProcedure.query(async ({ ctx }) => {
+    const mine = await prisma.eventRegistration.findMany({
+      where: { userId: ctx.user.id },
+      select: { id: true, eventId: true, status: true },
+    });
+    const certs = await prisma.eventCertificate.findMany({
+      where: { registrationId: { in: mine.map((r) => r.id) } },
+      orderBy: { issuedAt: 'desc' },
+    });
+    const regById = new Map(mine.map((r) => [r.id, r]));
+    return certs.map((c) => ({
+      id: c.id,
+      certificateNumber: c.certificateNumber,
+      issuedAt: c.issuedAt,
+      eventId: regById.get(c.registrationId)?.eventId ?? null,
+    }));
+  }),
 });

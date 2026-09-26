@@ -148,8 +148,10 @@ beautyDna.skinMatch	query	customer
 beautyEvents.accessDetails	query	customer
 beautyEvents.cancelRegistration	mutation	customer
 beautyEvents.create	mutation	admin
+beautyEvents.issueCertificates	mutation	admin
 beautyEvents.list	query	public
 beautyEvents.listAll	query	admin
+beautyEvents.myCertificates	query	customer
 beautyEvents.myRegistrations	query	customer
 beautyEvents.register	mutation	customer
 beautyEvents.upcoming	query	public
