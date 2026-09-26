@@ -502,6 +502,11 @@ hairColorSim.save	mutation	customer
 health	query	public
 homeService.estimate	query	public
 homeService.request	mutation	customer
+influencers.create	mutation	admin
+influencers.list	query	admin
+influencers.resolve	query	public
+influencers.stats	query	protected
+influencers.update	mutation	admin
 ingredientAnalyzer.analyze	query	public
 ingredientAnalyzer.myScans	query	customer
 ingredientAnalyzer.scan	mutation	customer
