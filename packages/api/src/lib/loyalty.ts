@@ -8,10 +8,11 @@
  * existing transactions.
  */
 import type { Prisma } from '@galaxy/db';
+import { pointsExpiryDate, boostedPoints } from '@galaxy/shared';
 
 type LoyaltyClient = Pick<
   Prisma.TransactionClient,
-  'loyaltyAccount' | 'loyaltyTransaction' | '$transaction'
+  'loyaltyAccount' | 'loyaltyTransaction' | 'loyaltyBoost' | '$transaction'
 >;
 
 export async function creditLoyaltyPoints(
@@ -28,8 +29,25 @@ export async function creditLoyaltyPoints(
     });
   }
 
-  const newPoints = account.points + points;
-  const lifetimePoints = account.lifetimePoints + (points > 0 ? points : 0);
+  // 8.2: positive earns carry a 12-month expiry and ride any active boost
+  // window (highest multiplier wins when windows overlap).
+  let finalPoints = points;
+  let expiresAt: Date | null = null;
+  if (points > 0) {
+    expiresAt = pointsExpiryDate();
+    const boost = await client.loyaltyBoost.findFirst({
+      where: {
+        isActive: true,
+        startsAt: { lte: new Date() },
+        endsAt: { gte: new Date() },
+      },
+      orderBy: { multiplier: 'desc' },
+    });
+    if (boost) finalPoints = boostedPoints(points, Number(boost.multiplier));
+  }
+
+  const newPoints = account.points + finalPoints;
+  const lifetimePoints = account.lifetimePoints + (finalPoints > 0 ? finalPoints : 0);
 
   let tier = 'SILVER';
   if (lifetimePoints >= 2000) tier = 'PLATINUM';
@@ -43,9 +61,10 @@ export async function creditLoyaltyPoints(
     client.loyaltyTransaction.create({
       data: {
         accountId: account.id,
-        points,
+        points: finalPoints,
         reason,
         referenceId,
+        expiresAt,
       },
     }),
   ]);

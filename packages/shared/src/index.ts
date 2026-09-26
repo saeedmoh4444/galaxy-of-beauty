@@ -83,6 +83,9 @@ export type { BundleQuote } from './bundlePricing';
 export { seasonalBannerFor } from './seasonalBanner';
 export type { SeasonalBannerTheme, SeasonalBannerResult } from './seasonalBanner';
 
+// 8.2 Loyalty 2.0 — points expiry + boost math
+export { pointsExpiryDate, boostedPoints, LOYALTY_EXPIRY_MONTHS } from './loyaltyExpiry';
+
 // Service detail trust layer (shared by web + RN mirror)
 export { buildServiceTrust } from './serviceDetail';
 export type {
