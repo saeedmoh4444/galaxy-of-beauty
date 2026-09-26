@@ -88,8 +88,11 @@ function buildNextDays(locale: 'ar' | 'en'): Array<{ iso: string; label: string 
 
 export default function CreateBookingScreen() {
   const router = useRouter();
-  const params = useLocalSearchParams<{ bundleId?: string }>();
+  const params = useLocalSearchParams<{ bundleId?: string; beautyBundleId?: string }>();
   const preselectedBundleId = Number(params.bundleId) || undefined;
+  // 1.2 Service Bundles: preselected package from /bundles/[id] — fixed
+  // for the lifetime of the flow (same pattern as the K3 ?bundleId=).
+  const preselectedBeautyBundleId = Number(params.beautyBundleId) || undefined;
   const { locale, t } = useLocale();
   const { showToast } = useToast();
   const [step, setStep] = useState(1);
@@ -132,6 +135,10 @@ export default function CreateBookingScreen() {
   const addressesQ = trpc.addresses.list.useQuery(undefined, { enabled: isAuthed });
   const membersQ = trpc.familyAccount.list.useQuery(undefined, { enabled: isAuthed });
   const bundlesQ = trpc.bundles.list.useQuery();
+  const beautyBundleQ = trpc.beautyBundles.get.useQuery(
+    { id: preselectedBeautyBundleId! },
+    { enabled: !!preselectedBeautyBundleId, retry: false },
+  );
   const svcQ = trpc.services.getById.useQuery({ id: serviceId! }, { enabled: !!serviceId });
 
   const services: ServiceListItem[] =
@@ -143,6 +150,8 @@ export default function CreateBookingScreen() {
   const bundles: Record<string, unknown>[] =
     (bundlesQ.data as unknown as Record<string, unknown>[] | undefined) ?? [];
   const activeBundle = bundles.find((b) => b.id === bundleId);
+  const activeBeautyBundle = beautyBundleQ.data as unknown as
+    (Record<string, unknown> & { services?: Array<Record<string, unknown>> }) | undefined;
 
   // A preselected bundle drives the primary (mother) service — jump the
   // customer straight to the details step.
@@ -155,6 +164,18 @@ export default function CreateBookingScreen() {
       }
     }
   }, [activeBundle, serviceId]);
+
+  // 1.2: a preselected beauty bundle anchors its FIRST service — jump the
+  // customer straight to the details step.
+  useEffect(() => {
+    if (activeBeautyBundle && !serviceId) {
+      const first = activeBeautyBundle.services?.[0];
+      if (first?.id) {
+        setServiceId(first.id as number);
+        setStep((s) => (s < 2 ? 2 : s));
+      }
+    }
+  }, [activeBeautyBundle, serviceId]);
   const loading = servicesQ.isLoading || addressesQ.isLoading;
 
   // 1.1 Dynamic pricing — live preview for the confirm step. Mirrors the
@@ -172,7 +193,7 @@ export default function CreateBookingScreen() {
       technicianId: previewTechnicianId,
       startAt: previewStartAt,
     },
-    { enabled: step === 3 && !!serviceId && previewTechnicianId > 0 },
+    { enabled: step === 3 && !!serviceId && previewTechnicianId > 0 && !activeBeautyBundle },
   ) as { data?: { enabled?: boolean; breakdown?: Record<string, number> } };
   const pricePreview = previewQ.data;
 
@@ -192,10 +213,12 @@ export default function CreateBookingScreen() {
   // services (babysitting) price by duration instead.
   const isHourly = Boolean((svc as unknown as { isHourly?: boolean })?.isHourly);
   const hourlyHours = isHourly ? Math.max(1, Math.ceil((svc?.durationMin ?? 60) / 60)) : 0;
-  const orderAmount = isHourly
-    ? Number(svc?.basePrice ?? 0) * hourlyHours
-    : Number(svc?.basePrice ?? 0) +
-      (variantId ? Number(variants.find((v) => v.id === variantId)?.priceDelta ?? 0) : 0);
+  const orderAmount = activeBeautyBundle
+    ? Number(activeBeautyBundle.totalPrice ?? 0)
+    : isHourly
+      ? Number(svc?.basePrice ?? 0) * hourlyHours
+      : Number(svc?.basePrice ?? 0) +
+        (variantId ? Number(variants.find((v) => v.id === variantId)?.priceDelta ?? 0) : 0);
 
   const redeemMut = trpc.promo.redeemOnBooking.useMutation({
     onError: () => showToast('error', t('promo.redeem-failed')),
@@ -280,7 +303,14 @@ export default function CreateBookingScreen() {
     const [h, m] = bookingTime.split(':').map(Number);
     const start = new Date(`${bookingDate}T00:00:00`);
     start.setHours(h, m, 0, 0);
-    const durationMin = svc?.durationMin ?? 60;
+    // 1.2: a beauty bundle books ONE slot covering the sequential services —
+    // duration is the sum of the included services.
+    const durationMin = activeBeautyBundle
+      ? (activeBeautyBundle.services ?? []).reduce(
+          (sum, s) => sum + Number((s as Record<string, unknown>).durationMin ?? 0),
+          0,
+        )
+      : (svc?.durationMin ?? 60);
 
     createMut.mutate({
       serviceId,
@@ -293,6 +323,7 @@ export default function CreateBookingScreen() {
       endAt: new Date(start.getTime() + durationMin * 60000).toISOString(),
       familyMemberId,
       bundleId,
+      beautyBundleId: preselectedBeautyBundleId,
       addonIds: selectedAddons.length > 0 ? selectedAddons : undefined,
     });
   };
@@ -392,7 +423,23 @@ export default function CreateBookingScreen() {
               </View>
             )}
 
-            {!activeBundle && variants.length > 0 && (
+            {activeBeautyBundle && (
+              <View testID="beauty-bundle-banner" style={styles.bundleBanner}>
+                <Text style={styles.bundleBannerText}>
+                  {t('bundles.selectedBanner', {
+                    name: localize(activeBeautyBundle.titleJson, locale),
+                  })}
+                </Text>
+                <Text style={styles.bundleBannerPrice}>
+                  {t('bundles.servicesCount', {
+                    count: (activeBeautyBundle.serviceIds as number[]).length,
+                  })}{' '}
+                  · {Number(activeBeautyBundle.totalPrice).toLocaleString()} {t('misc.sar')}
+                </Text>
+              </View>
+            )}
+
+            {!activeBundle && !activeBeautyBundle && variants.length > 0 && (
               <View style={styles.field}>
                 <Text style={styles.label}>{t('bookings.create.variant-label')}</Text>
                 <ScrollView
@@ -527,7 +574,7 @@ export default function CreateBookingScreen() {
                 <Text style={styles.summaryLabel}>{t('booking.service')}</Text>
                 <Text style={styles.summaryValue}>{localize(svc.titleJson, locale)}</Text>
               </View>
-              {pricePreview?.enabled && !activeBundle ? (
+              {pricePreview?.enabled && !activeBundle && !activeBeautyBundle ? (
                 <View style={styles.summary}>
                   <View style={styles.summaryRow}>
                     <Text style={styles.summaryLabel}>{t('booking.price.base')}</Text>
@@ -617,8 +664,24 @@ export default function CreateBookingScreen() {
                   {svc.durationMin} {t('misc.min')}
                 </Text>
               </View>
+              {/* 1.2 Service Bundles — fixed bundle price with savings */}
+              {activeBeautyBundle && (
+                <View testID="bundle-price-row" style={styles.summaryRow}>
+                  <Text style={styles.summaryLabel}>
+                    {localize(activeBeautyBundle.titleJson, locale)}
+                  </Text>
+                  <View style={{ alignItems: 'flex-end' }}>
+                    <Text style={[styles.summarySub, { textDecorationLine: 'line-through' }]}>
+                      {Number(activeBeautyBundle.originalPrice).toFixed(0)} {t('misc.sar')}
+                    </Text>
+                    <Text style={styles.summaryPrice}>
+                      {Number(activeBeautyBundle.totalPrice).toFixed(0)} {t('misc.sar')}
+                    </Text>
+                  </View>
+                </View>
+              )}
               {/* 1.3 Add-Ons — "customers who booked this also added" */}
-              {addonOptions.length > 0 && !activeBundle && (
+              {addonOptions.length > 0 && !activeBundle && !activeBeautyBundle && (
                 <View style={styles.addonBlock}>
                   <Text style={styles.addonTitle}>{t('booking.addons.title')}</Text>
                   {addonOptions.slice(0, 5).map((a) => {
