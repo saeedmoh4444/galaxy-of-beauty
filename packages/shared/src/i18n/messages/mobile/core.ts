@@ -40,6 +40,8 @@ export const mobileCoreMessages = {
   'mobile.adminDashboard': { ar: 'لوحة الإدارة', en: 'Admin Dashboard' },
   'mobile.techDashboard': { ar: 'لوحة مقدمة الخدمة', en: 'Service Provider Dashboard' },
   'mobile.marketplace': { ar: 'متجر المنتجات', en: 'Marketplace' },
+  'mobile.bundlesTitle': { ar: 'باقات الخدمات', en: 'Service Bundles' },
+  'mobile.bundleDetails': { ar: 'تفاصيل الباقة', en: 'Bundle Details' },
   'mobile.beautyGalaxy': { ar: 'مجرة الجمال', en: 'Beauty Galaxy' },
   'mobile.gallery': { ar: 'معرض الأعمال', en: 'Gallery' },
   'mobile.compareServices': { ar: 'مقارنة الخدمات', en: 'Compare Services' },

@@ -2,6 +2,7 @@ import { z } from 'zod';
 import { TRPCError } from '@trpc/server';
 import { prisma } from '@galaxy/db';
 import { notFound, forbidden } from '../lib/errors';
+import { creditLoyaltyPoints, LOYALTY_REVIEW_POINTS } from '../lib/loyalty';
 import {
   router,
   publicProcedure,
@@ -65,6 +66,16 @@ export const reviewRouter = router({
           comment,
         },
       });
+
+      // 8.2: reviews earn loyalty points (fire-and-forget — never block
+      // the review submission on the points ledger).
+      void creditLoyaltyPoints(
+        prisma,
+        ctx.user.id,
+        LOYALTY_REVIEW_POINTS,
+        'review',
+        `review_${bookingId}`,
+      ).catch(() => undefined);
 
       // Recalculate technician rating aggregate
       const technician = await prisma.technician.findUnique({

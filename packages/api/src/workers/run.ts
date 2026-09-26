@@ -12,6 +12,7 @@ import { startWorkers, shutdownWorkers } from './index';
 import { startTokenCleanup, stopTokenCleanup } from './tokenCleanup';
 import { startSubscriptionRenewal, stopSubscriptionRenewal } from './subscriptionRenewal';
 import { startInsightsSweep, stopInsightsSweep } from './insightsSweep';
+import { startLoyaltyExpirySweep, stopLoyaltyExpirySweep } from './loyaltyExpiry';
 
 // Graceful shutdown
 async function shutdown() {
@@ -19,6 +20,7 @@ async function shutdown() {
   stopTokenCleanup();
   stopSubscriptionRenewal();
   stopInsightsSweep();
+  stopLoyaltyExpirySweep();
   await shutdownWorkers();
   process.exit(0);
 }
@@ -32,6 +34,7 @@ startWorkers();
 startTokenCleanup();
 startSubscriptionRenewal();
 startInsightsSweep();
+startLoyaltyExpirySweep();
 console.log(
-  '[Worker Process] Ready — workers + hourly token purge + daily subscription renewal + 3.3 advisor sweep',
+  '[Worker Process] Ready — workers + hourly token purge + daily subscription renewal + 3.3 advisor sweep + 8.2 loyalty expiry',
 );
