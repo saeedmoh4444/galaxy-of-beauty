@@ -4147,3 +4147,16 @@ model ConsentRecord {
   @@index([userId])
   @@map("consent_records")
 }
+
+// ── 4.2 A/B testing — impression/conversion events per test + variant
+model AbTestEvent {
+  id        Int      @id @default(autoincrement())
+  testKey   String
+  variant   String // 'A' | 'B'
+  eventType String // 'impression' | 'conversion'
+  userId    Int?
+  createdAt DateTime @default(now())
+
+  @@index([testKey, variant, eventType])
+  @@map("ab_test_events")
+}
