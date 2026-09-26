@@ -86,6 +86,9 @@ export type { SeasonalBannerTheme, SeasonalBannerResult } from './seasonalBanner
 // 8.2 Loyalty 2.0 — points expiry + boost math
 export { pointsExpiryDate, boostedPoints, LOYALTY_EXPIRY_MONTHS } from './loyaltyExpiry';
 
+// 7.3 Observability 2.0 — SLO burn-rate math
+export { burnRate, SLO_TARGET_AVAILABILITY, SLO_TARGET_P95_MS } from './slo';
+
 // Service detail trust layer (shared by web + RN mirror)
 export { buildServiceTrust } from './serviceDetail';
 export type {
