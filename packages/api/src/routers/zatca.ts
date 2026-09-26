@@ -456,7 +456,7 @@ export const zatcaRouter = router({
         ),
       ];
       return {
-        csv: `﻿${lines.join('\n')}`,
+        csv: String.fromCharCode(0xfeff) + lines.join('\n'),
         window: vatWindow(input.year, input.period, input.index),
         totals: vatTotals(rows),
       };
