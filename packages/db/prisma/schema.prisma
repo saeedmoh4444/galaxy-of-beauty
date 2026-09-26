@@ -1936,7 +1936,7 @@ model BeautyEvent {
   id            Int      @id @default(autoincrement())
   nameJson      Json     // { ar, en }
   descriptionJson Json?
-  eventType     String   // workshop, masterclass, launch, seasonal
+  eventType     String   // workshop, masterclass, launch, seasonal, retreat, webinar
   location      String?
   price         Decimal? @db.Decimal(10, 2) // 0 = free
   maxAttendees  Int?
@@ -1944,6 +1944,12 @@ model BeautyEvent {
   endsAt        DateTime
   imageUrl      String?
   isPublished   Boolean  @default(false)
+  // 2.4b — pricing tiers + online-event delivery.
+  tier            String  @default("PAID") // FREE, PAID, VIP
+  goodieBag       Boolean @default(false) // VIP perk
+  meetingProvider String? // zoom, gmeet
+  meetingUrl      String?
+  recordingUrl    String?
   createdAt     DateTime @default(now())
   updatedAt     DateTime @updatedAt
 
