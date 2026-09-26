@@ -4,6 +4,7 @@ import { ScreenState } from '@/components/ScreenState';
 import { trpc } from '@/lib/trpc-react';
 import { useLocale } from '@/components/LocaleProvider';
 import { useAuthState } from '@/hooks/useAuthState';
+import { localize } from '@galaxy/shared';
 import { DEFAULT_PAGE_SIZE } from '@galaxy/ui';
 
 const TIERS: Record<string, { emoji: string }> = {
@@ -35,6 +36,10 @@ export default function LoyaltyScreen(): JSX.Element {
 
   const acc = account.data as unknown as LoyaltyAccount | undefined;
 
+  // 8.2 — active points boosts (public mirror of the admin CRUD).
+  const boostsQ = trpc.loyalty.activeBoosts.useQuery(undefined, { retry: false });
+  const boosts = (boostsQ.data as unknown as Array<Record<string, unknown>> | undefined) ?? [];
+
   const tierLabels: Record<string, string> = {
     SILVER: t('loyalty.tier-silver'),
     GOLD: t('loyalty.tier-gold'),
@@ -50,6 +55,24 @@ export default function LoyaltyScreen(): JSX.Element {
       onRetry={() => account.refetch()}
     >
       <Text style={styles.title}>{t('mobile.loyalty')}</Text>
+
+      {/* 8.2 — active points boosts */}
+      {boosts.length > 0 && (
+        <View testID="loyalty-boost-banner" style={styles.boostBanner}>
+          {boosts.map((b) => (
+            <Text key={b.id as number} style={styles.boostText}>
+              ⚡{' '}
+              {t('loyalty.boost.banner', {
+                name: localize(b.nameJson, locale),
+                multiplier: Number(b.multiplier),
+                date: new Date(String(b.endsAt)).toLocaleDateString(
+                  locale === 'ar' ? 'ar-SA' : 'en-GB',
+                ),
+              })}
+            </Text>
+          ))}
+        </View>
+      )}
 
       {/* Tier Card */}
       <View style={styles.tierCard}>
@@ -115,6 +138,16 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginBottom: 24,
   },
+  // 8.2 — active points boosts banner
+  boostBanner: {
+    backgroundColor: '#fffbeb',
+    borderColor: '#fcd34d',
+    borderWidth: 1,
+    borderRadius: 12,
+    padding: 12,
+    marginBottom: 16,
+  },
+  boostText: { fontSize: 12, fontWeight: '700', color: '#92400e', textAlign: 'right' },
   tierEmoji: { fontSize: 48, marginBottom: 8 },
   tierLabel: { fontSize: 20, fontWeight: '800', color: '#ffffff' },
   points: { fontSize: 28, fontWeight: '800', color: '#ffffff', marginTop: 8 },

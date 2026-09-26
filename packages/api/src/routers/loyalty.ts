@@ -118,6 +118,15 @@ export const loyaltyRouter = router({
   }),
 
   // ── Admin: boost events (8.2) ───────────────────────────
+  // Public mirror for banners: only boosts that are active AND inside
+  // their window right now.
+  activeBoosts: publicProcedure.query(async () => {
+    const now = new Date();
+    return prisma.loyaltyBoost.findMany({
+      where: { isActive: true, startsAt: { lte: now }, endsAt: { gte: now } },
+      orderBy: { multiplier: 'desc' },
+    });
+  }),
   listBoosts: adminProcedure.query(async () =>
     prisma.loyaltyBoost.findMany({ orderBy: { startsAt: 'desc' } }),
   ),
