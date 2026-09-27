@@ -2121,8 +2121,24 @@ model EventRegistration {
   userId    Int
   status    String   @default("REGISTERED")
   createdAt DateTime @default(now())
+  certificate EventCertificate?
+
   @@unique([eventId, userId])
   @@map("event_registrations")
+}
+
+// ======================================================================// Event Certificates (2.4c)
+// ======================================================================
+model EventCertificate {
+  id                Int      @id @default(autoincrement())
+  registrationId    Int      @unique
+  certificateNumber String   @unique
+  issuedAt          DateTime @default(now())
+  createdAt         DateTime @default(now())
+
+  registration EventRegistration @relation(fields: [registrationId], references: [id], onDelete: Cascade)
+
+  @@map("event_certificates")
 }
 
 model HomeServiceRequest {
