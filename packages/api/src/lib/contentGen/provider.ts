@@ -74,5 +74,5 @@ function mockContent(userPrompt: string, shape: string): string {
 
 function extract(text: string, key: string): string | null {
   const m = new RegExp(`${key}[=:]\\s*"([^"]+)"`).exec(text);
-  return m ? m[1] : null;
+  return m ? (m[1] ?? null) : null;
 }
