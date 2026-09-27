@@ -119,3 +119,6 @@ export type {
   Undertone,
 } from './utils/beautyDna';
 export { formatHijriDate } from './utils/hijri';
+
+// Try-On (3.2)
+export * from './tryOn';

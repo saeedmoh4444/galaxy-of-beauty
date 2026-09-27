@@ -9,6 +9,17 @@ import { useLocale } from '@/components/LocaleProvider';
 import type { TranslationKey } from '@galaxy/shared';
 import Link from 'next/link';
 import Image from 'next/image';
+import { getFaceLandmarker, detectLandmarks } from '@/lib/tryOn/faceLandmarker';
+import {
+  drawContour,
+  lipOuterPath,
+  lipInnerPath,
+  leftEyePath,
+  rightEyePath,
+  cheekCenters,
+  mirrorLandmarks,
+  type FaceLandmarks,
+} from '@galaxy/shared/tryOn';
 
 // ---------------------------------------------------------------------------
 // Types
@@ -254,6 +265,68 @@ function ColorPalette({
   );
 }
 
+// 3.2a — real face tracking via MediaPipe FaceMesh; falls back to the
+// approximate face-guide math when no face is detected.
+function drawTrackedOverlay(
+  ctx: CanvasRenderingContext2D,
+  width: number,
+  height: number,
+  landmarks: FaceLandmarks | null,
+  makeupType: MakeupType,
+  colorHex: string,
+  intensity: number,
+) {
+  if (!landmarks || landmarks.length === 0) {
+    drawOverlay(ctx, width, height, makeupType, colorHex, intensity);
+    return;
+  }
+  const alpha = intensity / 100;
+  ctx.globalAlpha = alpha;
+  ctx.fillStyle = colorHex;
+
+  switch (makeupType) {
+    case 'lips': {
+      drawContour(ctx, lipOuterPath(landmarks), width, height);
+      ctx.globalAlpha = alpha * 0.55;
+      drawContour(ctx, lipInnerPath(landmarks), width, height);
+      break;
+    }
+    case 'eyes': {
+      // Eyeshadow softness — half alpha over the eye contours.
+      ctx.globalAlpha = alpha * 0.55;
+      drawContour(ctx, leftEyePath(landmarks), width, height);
+      drawContour(ctx, rightEyePath(landmarks), width, height);
+      break;
+    }
+    case 'blush': {
+      const { left, right } = cheekCenters(landmarks);
+      const r = Math.min(width, height) * 0.06;
+      for (const c of [left, right]) {
+        const g = ctx.createRadialGradient(
+          c.x * width,
+          c.y * height,
+          0,
+          c.x * width,
+          c.y * height,
+          r,
+        );
+        g.addColorStop(0, colorHex);
+        g.addColorStop(1, 'rgba(0,0,0,0)');
+        ctx.fillStyle = g;
+        ctx.beginPath();
+        ctx.arc(c.x * width, c.y * height, r, 0, Math.PI * 2);
+        ctx.fill();
+      }
+      break;
+    }
+    case 'nails':
+      // Nails keep the static guide (no face landmarks involved).
+      drawOverlay(ctx, width, height, makeupType, colorHex, intensity);
+      break;
+  }
+  ctx.globalAlpha = 1;
+}
+
 // ---------------------------------------------------------------------------
 // Main Page
 // ---------------------------------------------------------------------------
@@ -277,6 +350,10 @@ export default function VirtualTryOnPage(): JSX.Element {
   const [selectedColor, setSelectedColor] = useState<ColorItem | null>(null);
   const [intensity, setIntensity] = useState(70);
   const [capturedPhoto, setCapturedPhoto] = useState<string | null>(null);
+  // 3.2a — live face tracking + before/after comparison.
+  const landmarksRef = useRef<FaceLandmarks | null>(null);
+  const [trackingReady, setTrackingReady] = useState(false);
+  const [comparePos, setComparePos] = useState(0); // 0 = full makeup, 100 = raw feed
 
   // Product recommendations
   const recColor = selectedColor?.hex ?? '';
@@ -287,6 +364,35 @@ export default function VirtualTryOnPage(): JSX.Element {
   ) as { data: ProductRec[] | undefined; isLoading: boolean };
 
   const saveSessionMut = api.virtualTryOn.saveSession.useMutation();
+
+  // 3.2a — MediaPipe face detection loop (mirrors for the selfie view).
+  useEffect(() => {
+    if (!cameraReady || !videoRef.current) return;
+    let cancelled = false;
+    let landmarker: Awaited<ReturnType<typeof getFaceLandmarker>> | null = null;
+    getFaceLandmarker()
+      .then((l) => {
+        if (!cancelled) landmarker = l;
+      })
+      .catch(() => {
+        /* keep the approximate fallback */
+      });
+    let animId = 0;
+    const loop = () => {
+      const video = videoRef.current;
+      if (landmarker && video && video.readyState >= 2) {
+        const detected = detectLandmarks(landmarker, video, performance.now());
+        landmarksRef.current = detected && facing === 'user' ? mirrorLandmarks(detected) : detected;
+        if (detected) setTrackingReady(true);
+      }
+      animId = requestAnimationFrame(loop);
+    };
+    animId = requestAnimationFrame(loop);
+    return () => {
+      cancelled = true;
+      cancelAnimationFrame(animId);
+    };
+  }, [cameraReady, facing]);
 
   // Canvas rendering loop
   useEffect(() => {
@@ -319,14 +425,30 @@ export default function VirtualTryOnPage(): JSX.Element {
                 overlayCtx.save();
                 overlayCtx.translate(w, 0);
                 overlayCtx.scale(-1, 1);
-                drawOverlay(overlayCtx, w, h, makeupType, selectedColor.hex, intensity);
+                drawTrackedOverlay(
+                  overlayCtx,
+                  w,
+                  h,
+                  landmarksRef.current,
+                  makeupType,
+                  selectedColor.hex,
+                  intensity,
+                );
                 overlayCtx.restore();
               }
             }
           } else {
             ctx.drawImage(video, 0, 0, w, h);
             if (selectedColor) {
-              drawOverlay(ctx, w, h, makeupType, selectedColor.hex, intensity);
+              drawTrackedOverlay(
+                ctx,
+                w,
+                h,
+                landmarksRef.current,
+                makeupType,
+                selectedColor.hex,
+                intensity,
+              );
             }
           }
         }
@@ -364,13 +486,29 @@ export default function VirtualTryOnPage(): JSX.Element {
         ctx.save();
         ctx.translate(w, 0);
         ctx.scale(-1, 1);
-        drawOverlay(ctx, w, h, makeupType, selectedColor.hex, intensity);
+        drawTrackedOverlay(
+          ctx,
+          w,
+          h,
+          landmarksRef.current,
+          makeupType,
+          selectedColor.hex,
+          intensity,
+        );
         ctx.restore();
       }
     } else {
       ctx.drawImage(videoRef.current!, 0, 0, w, h);
       if (selectedColor) {
-        drawOverlay(ctx, w, h, makeupType, selectedColor.hex, intensity);
+        drawTrackedOverlay(
+          ctx,
+          w,
+          h,
+          landmarksRef.current,
+          makeupType,
+          selectedColor.hex,
+          intensity,
+        );
       }
     }
 
@@ -490,10 +628,11 @@ export default function VirtualTryOnPage(): JSX.Element {
                       muted
                       className={`absolute inset-0 h-full w-full object-cover ${facing === 'user' ? 'scale-x-[-1]' : ''}`}
                     />
-                    {/* Canvas overlay for makeup */}
+                    {/* Canvas overlay for makeup — clipped for before/after */}
                     <canvas
                       ref={canvasRef}
                       className="absolute inset-0 h-full w-full object-cover pointer-events-none"
+                      style={{ clipPath: `inset(0 0 0 ${comparePos}%)` }}
                     />
 
                     {/* Face guide overlay */}
@@ -515,6 +654,11 @@ export default function VirtualTryOnPage(): JSX.Element {
                           style={{ backgroundColor: selectedColor.hex }}
                         />
                         {selectedColor.nameAr} · {intensity}%
+                        {trackingReady && (
+                          <span className="rounded-full bg-brand-500/40 px-1.5 py-0.5 text-[10px] font-semibold">
+                            {t('tryOn.trackingActive')}
+                          </span>
+                        )}
                       </div>
                     )}
 
@@ -526,6 +670,26 @@ export default function VirtualTryOnPage(): JSX.Element {
                         title={t('tryOn.flipCamera')}
                       ></button>
                     </div>
+
+                    {/* 3.2a — before/after comparison slider */}
+                    {cameraReady && selectedColor && (
+                      <div className="absolute bottom-3 start-3 end-3">
+                        <div className="mx-auto max-w-xs rounded-full bg-black/50 px-3 py-1.5 backdrop-blur">
+                          <div className="flex justify-between text-[10px] text-white/80">
+                            <span>{t('tryOn.before')}</span>
+                            <span>{t('tryOn.after')}</span>
+                          </div>
+                          <input
+                            type="range"
+                            min={0}
+                            max={100}
+                            value={comparePos}
+                            onChange={(e) => setComparePos(parseInt(e.target.value, 10))}
+                            className="w-full accent-brand-500"
+                          />
+                        </div>
+                      </div>
+                    )}
 
                     {/* Camera error overlay */}
                     {cameraError && (
