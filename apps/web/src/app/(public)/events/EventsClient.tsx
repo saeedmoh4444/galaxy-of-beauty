@@ -28,6 +28,8 @@ interface Event {
   startsAt: string;
   endsAt: string;
   imageUrl: string | null;
+  tier: string;
+  goodieBag: boolean;
 }
 
 const EVENT_TYPES = [
@@ -145,10 +147,17 @@ export function EventsClient({ initialEvents }: { initialEvents: unknown[] }): J
                     {event.location && <p> {event.location}</p>}
                   </div>
                   <div className="mt-auto pt-4 flex items-center justify-between">
-                    <span className="font-bold text-brand-600">
-                      {event.price
-                        ? formatCurrency(Number(event.price))
-                        : t('marketing.events.free')}
+                    <span className="flex items-center gap-2">
+                      <span className="font-bold text-brand-600">
+                        {event.price
+                          ? formatCurrency(Number(event.price))
+                          : t('marketing.events.free')}
+                      </span>
+                      {event.tier === 'VIP' && event.goodieBag && (
+                        <span className="rounded-full bg-amber-100 dark:bg-amber-950 px-2 py-0.5 text-[10px] font-bold text-amber-700 dark:text-amber-300">
+                          {t('marketing.events.vipBadge')}
+                        </span>
+                      )}
                     </span>
                     <Link href={`/events/${event.id}`}>
                       <Button size="sm">{t('marketing.events.details')}</Button>

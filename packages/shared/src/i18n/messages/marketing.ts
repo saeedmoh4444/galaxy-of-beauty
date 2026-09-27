@@ -413,6 +413,7 @@ export const marketingMessages = {
   },
   'marketing.events.show-all': { ar: 'عرض الكل', en: 'Show all' },
   'marketing.events.free': { ar: 'مجاناً ', en: 'Free' },
+  'marketing.events.vipBadge': { ar: 'VIP مع حقيبة الهدايا', en: 'VIP with goodie bag' },
   'marketing.events.details': { ar: 'تفاصيل', en: 'Details' },
 
   // Blog
