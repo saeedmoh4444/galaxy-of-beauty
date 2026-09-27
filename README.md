@@ -25,9 +25,10 @@ pnpm install --frozen-lockfile
 cp .env.example .env
 # Edit .env with your DATABASE_URL and secrets
 
-# 3. Generate Prisma client & push schema
+# 3. Generate Prisma client & apply migrations
 pnpm db:generate
-pnpm db:push
+pnpm db:migrate:deploy
+# (dev shortcut: `pnpm db:push` skips migration tracking)
 
 # 4. Seed the database
 pnpm db:seed
@@ -59,8 +60,8 @@ galaxy-of-beauty/
 │   ├── web/          Next.js 15 App Router (280 routes)
 │   └── mobile/       Expo SDK 57 + Expo Router
 ├── packages/
-│   ├── api/          tRPC v11 — 243 routers, Zod validation
-│   ├── db/           Prisma — 202 models, 10 migrations
+│   ├── api/          tRPC v11 — 263 routers, Zod validation
+│   ├── db/           Prisma — 229 models, 64 migrations
 │   ├── shared/       Constants, types, i18n, theme (no JSX)
 │   ├── ui/           Components, hooks, Storybook (JSX, web + mobile)
 │   └── config/       TSConfig, ESLint, Prettier, Tailwind preset
@@ -76,7 +77,7 @@ galaxy-of-beauty/
 | --------- | ------------------------------------------------------------------------ |
 | Monorepo  | Turborepo + pnpm workspaces                                              |
 | Web       | Next.js 15 App Router, Tailwind CSS, React 19                            |
-| Mobile    | Expo SDK 57, Expo Router, React Native 0.81                              |
+| Mobile    | Expo SDK 57, Expo Router, React Native 0.86                              |
 | API       | tRPC v11 with Zod validation + superjson transformer                     |
 | Database  | PostgreSQL 15 via Prisma ORM                                             |
 | Cache     | Redis 7 (rate limiting, queues, Socket.IO adapter)                       |
@@ -84,6 +85,32 @@ galaxy-of-beauty/
 | Real-time | Socket.IO with Redis adapter, Zod-validated events                       |
 | Docs      | Storybook 8 for the UI component library                                 |
 | Container | Docker Compose (5 services)                                              |
+
+---
+
+## ✨ Feature Overview
+
+**Marketplace core** — service catalog across 12 beauty categories, technician profiles & KYC, bookings with a full lifecycle state machine, slots, dynamic pricing (tier × peak × surge), service bundles, add-ons, subscriptions, and a vendor marketplace with unified provider model.
+
+**Commerce & loyalty** — wallets with top-up and cashback, gift cards, BNPL, promo codes, loyalty points with boosts and expiry sweeps, referral program 2.0 (tiered rewards 50/200/500, monthly prize leaderboard, UTM attribution), influencer program with booking commissions.
+
+**Growth & marketing** — automated outreach: welcome series (day 0/1/3/7), 30-day re-engagement, abandoned-cart nudges, post-booking review requests, birthday rewards, season-start announcements (Hijri/Gregorian calendar).
+
+**Experiences** — beauty events platform (capacity + auto-promoting waitlists, FREE/PAID/VIP tiers, gated meeting/recording links, certificates of completion), women's lifestyle expansion (clinics, fitness), kids plan, social commerce and shoppable content.
+
+**Compliance & trust** — ZATCA e-invoicing (hash-chained invoices, TLV QR, tamper-evident audit trail, VAT reports with CSV export, clearance flow), PDPL pages, ZATCA-ready VAT handling (15%).
+
+**Platform** — AI beauty advisor & Beauty DNA, WhatsApp integration, A/B testing, analytics dashboard, observability 2.0 (OTel tracing, SLO counters, incident playbooks), dark mode, full Arabic/English with RTL, web + mobile parity.
+
+## 🔌 Integrations & external dependencies
+
+| Integration  | Status                                                                                                                                                                                                                                                               |
+| ------------ | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| ZATCA        | Reporting API call + full invoice lifecycle implemented. **Real-portal onboarding (CSID certs, certified crypto stamp) pending** — dev runs in sim mode (`ZATCA_SIMULATE=true`); needs `ZATCA_API_KEY`/`ZATCA_API_SECRET`. Auto-report via `ZATCA_AUTO_REPORT=true`. |
+| Zoom / GMeet | Meeting + recording links stored and gated to registered attendees; **no live provider API** (no auto-created meetings).                                                                                                                                             |
+| OpenAI       | Beauty DNA / AI advisor / content features require an OpenAI key (features ship dormant without it).                                                                                                                                                                 |
+| EAS / OTA    | Expo pipeline configured (`development` profile in `eas.json`); publishing requires `EXPO_TOKEN` (not stored in the repo).                                                                                                                                           |
+| WhatsApp     | Template-driven notifications implemented (network-gated in tests).                                                                                                                                                                                                  |
 
 ---
 
@@ -95,9 +122,9 @@ galaxy-of-beauty/
 | ESLint            | 0 errors in all workspaces (real ESLint, not tsc aliasing)                                        |
 | Format (Prettier) | 0 warnings (repo-wide pass, `.prettierignore` added)                                              |
 | Build             | 6/6 workspaces passing (Next.js 15: 280 routes)                                                   |
-| API tests         | 38 files, **543 tests** passing                                                                   |
-| Coverage          | Enforced ratchet: 50/61/36/50 (stmts/branches/functions/lines), exit 0                            |
-| E2E (Playwright)  | **168/168** — chromium + firefox + mobile Chrome                                                  |
+| API tests         | 150+ files, **1,360+ tests** passing                                                              |
+| Coverage          | Enforced per-workspace ratchet thresholds, exit 0                                                 |
+| E2E (Playwright)  | 25 specs — full suite passing on every PR (chromium + firefox + mobile Chrome)                    |
 | Runtime smoke     | Mobile HTTP contract script (auth, top-up, idempotency, CSRF) — 5/5                               |
 | Component docs    | Storybook 8 for `@galaxy/ui` (`pnpm --filter @galaxy/ui storybook`)                               |
 | CI                | Frozen install, format, lint, type-check, test, build, E2E (3 browsers), dependency audit, Docker |
@@ -117,7 +144,7 @@ galaxy-of-beauty/
 | `pnpm lint`                                       | ESLint all workspaces                                    |
 | `pnpm format:check`                               | Check formatting                                         |
 | `pnpm test`                                       | Run all tests                                            |
-| `pnpm --filter @galaxy/api test`                  | Run API tests (543 tests)                                |
+| `pnpm --filter @galaxy/api test`                  | Run API tests (1,360+ tests)                             |
 | `pnpm --filter @galaxy/api test:coverage`         | Coverage with enforced ratchet thresholds                |
 | `pnpm --filter @galaxy/web exec playwright test`  | E2E in all 3 browser projects                            |
 | `pnpm --filter @galaxy/ui storybook`              | Component library on :6006                               |
