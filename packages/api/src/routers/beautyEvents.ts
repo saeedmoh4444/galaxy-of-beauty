@@ -1,18 +1,21 @@
 import { z } from 'zod';
 import { TRPCError } from '@trpc/server';
 import { prisma } from '@galaxy/db';
+import type { BeautyEvent } from '@galaxy/db';
 import { DEFAULT_PAGE_SIZE } from '@galaxy/shared';
 import { publicProcedure, adminProcedure, customerProcedure, router } from '../trpc';
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any -- EventRegistration has no relations in Prisma schema (legacy include)
 const db = prisma as any;
 
-const stripAccess = (rows: Array<Record<string, unknown>>) =>
-  rows.map((row) => ({ ...row, meetingUrl: null, recordingUrl: null }));
+const stripAccess = <T extends { meetingUrl?: string | null; recordingUrl?: string | null }>(
+  rows: T[],
+): Array<Omit<T, 'meetingUrl' | 'recordingUrl'>> =>
+  rows.map(({ meetingUrl: _meetingUrl, recordingUrl: _recordingUrl, ...rest }) => rest);
 
 export const beautyEventRouter = router({
   upcoming: publicProcedure.query(async () =>
-    stripAccess(
+    stripAccess<BeautyEvent>(
       await db.beautyEvent.findMany({
         where: { isPublished: true, startsAt: { gte: new Date() } },
         orderBy: { startsAt: 'asc' },
@@ -24,7 +27,7 @@ export const beautyEventRouter = router({
   // by type and shows past + upcoming (was missing entirely: the page
   // called beautyEvents.list and every visit 404ed the procedure).
   list: publicProcedure.query(async () =>
-    stripAccess(
+    stripAccess<BeautyEvent>(
       await db.beautyEvent.findMany({
         where: { isPublished: true },
         orderBy: { startsAt: 'asc' },
