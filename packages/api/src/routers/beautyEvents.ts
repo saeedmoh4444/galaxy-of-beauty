@@ -8,11 +8,7 @@ import { publicProcedure, adminProcedure, customerProcedure, router } from '../t
 const db = prisma as any;
 
 const stripAccess = (rows: Array<Record<string, unknown>>) =>
-  rows.map(({ meetingUrl, recordingUrl, ...rest }) => ({
-    ...rest,
-    meetingUrl: null,
-    recordingUrl: null,
-  }));
+  rows.map((row) => ({ ...row, meetingUrl: null, recordingUrl: null }));
 
 export const beautyEventRouter = router({
   upcoming: publicProcedure.query(async () =>
