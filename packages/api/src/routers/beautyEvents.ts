@@ -1,4 +1,5 @@
 import { z } from 'zod';
+import { TRPCError } from '@trpc/server';
 import { prisma } from '@galaxy/db';
 import { DEFAULT_PAGE_SIZE } from '@galaxy/shared';
 import { publicProcedure, adminProcedure, customerProcedure, router } from '../trpc';
@@ -63,15 +64,39 @@ export const beautyEventRouter = router({
       }),
     ),
 
+  // 2.4a — capacity-aware registration: overflow lands on the waitlist,
+  // and re-registering never downgrades or re-queues an existing row.
   register: customerProcedure
     .input(z.object({ eventId: z.number() }))
-    .mutation(async ({ ctx, input }) =>
-      db.eventRegistration.upsert({
-        where: { eventId_userId: { eventId: input.eventId, userId: ctx.user.id } },
-        update: {},
-        create: { eventId: input.eventId, userId: ctx.user.id },
-      }),
-    ),
+    .mutation(async ({ ctx, input }) => {
+      const event = await prisma.beautyEvent.findUnique({
+        where: { id: input.eventId },
+      });
+      if (!event) {
+        throw new TRPCError({ code: 'NOT_FOUND', message: 'Event not found' });
+      }
+      if (event.startsAt < new Date()) {
+        throw new TRPCError({ code: 'BAD_REQUEST', message: 'Event has already started' });
+      }
+
+      return prisma.$transaction(async (tx) => {
+        const existing = await tx.eventRegistration.findUnique({
+          where: { eventId_userId: { eventId: input.eventId, userId: ctx.user.id } },
+        });
+        if (existing) return existing;
+
+        const registeredCount = await tx.eventRegistration.count({
+          where: { eventId: input.eventId, status: 'REGISTERED' },
+        });
+        const status =
+          event.maxAttendees !== null && registeredCount >= event.maxAttendees
+            ? 'WAITLIST'
+            : 'REGISTERED';
+        return tx.eventRegistration.create({
+          data: { eventId: input.eventId, userId: ctx.user.id, status },
+        });
+      });
+    }),
 
   myRegistrations: customerProcedure.query(async ({ ctx }) =>
     db.eventRegistration.findMany({
@@ -82,12 +107,46 @@ export const beautyEventRouter = router({
     }),
   ),
 
+  // 2.4a — cancelling a REGISTERED spot promotes the oldest waiter.
   cancelRegistration: customerProcedure
     .input(z.object({ eventId: z.number() }))
     .mutation(async ({ ctx, input }) => {
-      await db.eventRegistration.deleteMany({
-        where: { eventId: input.eventId, userId: ctx.user.id },
+      return prisma.$transaction(async (tx) => {
+        const row = await tx.eventRegistration.findUnique({
+          where: { eventId_userId: { eventId: input.eventId, userId: ctx.user.id } },
+        });
+        let promotedUserId: number | null = null;
+        if (row) {
+          await tx.eventRegistration.delete({ where: { id: row.id } });
+          if (row.status === 'REGISTERED') {
+            const oldestWaiter = await tx.eventRegistration.findFirst({
+              where: { eventId: input.eventId, status: 'WAITLIST' },
+              orderBy: { id: 'asc' },
+            });
+            if (oldestWaiter) {
+              await tx.eventRegistration.update({
+                where: { id: oldestWaiter.id },
+                data: { status: 'REGISTERED' },
+              });
+              promotedUserId = oldestWaiter.userId;
+            }
+          }
+        }
+        return { success: true, promotedUserId };
       });
-      return { success: true };
+    }),
+
+  // 2.4a — 1-based position among the waitlisted (0 when not waiting).
+  waitlistPosition: customerProcedure
+    .input(z.object({ eventId: z.number() }))
+    .query(async ({ ctx, input }) => {
+      const mine = await prisma.eventRegistration.findUnique({
+        where: { eventId_userId: { eventId: input.eventId, userId: ctx.user.id } },
+      });
+      if (!mine || mine.status !== 'WAITLIST') return { position: 0 };
+      const ahead = await prisma.eventRegistration.count({
+        where: { eventId: input.eventId, status: 'WAITLIST', id: { lt: mine.id } },
+      });
+      return { position: ahead + 1 };
     }),
 });

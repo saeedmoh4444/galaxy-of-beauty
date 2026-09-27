@@ -152,6 +152,7 @@ beautyEvents.listAll	query	admin
 beautyEvents.myRegistrations	query	customer
 beautyEvents.register	mutation	customer
 beautyEvents.upcoming	query	public
+beautyEvents.waitlistPosition	query	customer
 beautyExpenses.summary	query	customer
 beautyExpo.booths	query	public
 beautyExpo.categories	query	public
