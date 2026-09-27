@@ -11,3 +11,4 @@ export { hairColorSimRouter } from '../../routers/hairColorSim';
 export { personalizedFeedRouter } from '../../routers/personalizedFeed';
 export { styleMatchRouter } from '../../routers/styleMatch';
 export { beautyAnalyticsRouter } from '../../routers/beautyAnalytics';
+export { contentGenRouter } from '../../routers/contentGen';

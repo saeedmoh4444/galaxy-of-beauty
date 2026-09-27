@@ -382,6 +382,11 @@ communityEvents.register	mutation	customer
 concierge.myRequests	query	customer
 concierge.request	mutation	customer
 concierge.stats	query	customer
+contentGen.generateBlogDraft	mutation	admin
+contentGen.generateFaqAnswer	mutation	admin
+contentGen.generateServiceDescription	mutation	admin
+contentGen.generateSocialCaption	mutation	admin
+contentGen.status	query	public
 corporateWellness.enquire	mutation	public
 corporateWellness.myEnquiries	query	customer
 corporateWellness.plans	query	public
