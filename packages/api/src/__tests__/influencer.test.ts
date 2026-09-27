@@ -10,6 +10,7 @@ import { prisma } from '@galaxy/db';
 import { appRouter } from '../routers/index';
 import { createTRPCContext } from '../context';
 import type { JwtPayload } from '../lib/jwt';
+import { safeFutureDate } from './factories';
 
 const CSRF = 'a'.repeat(64);
 
@@ -38,7 +39,7 @@ async function seedSlot(): Promise<number> {
   const slot = await prisma.availabilitySlot.create({
     data: {
       technicianId: technicianRecordId,
-      startAt: new Date(Date.now() + 86400000 * 2),
+      startAt: safeFutureDate(2),
       endAt: new Date(Date.now() + 86400000 * 2 + 3600000),
       isBooked: false,
     },
@@ -155,7 +156,7 @@ describe('influencers router', () => {
       technicianId: technicianUserId,
       addressId,
       slotId: await seedSlot(),
-      startAt: new Date(Date.now() + 86400000 * 2).toISOString(),
+      startAt: safeFutureDate(2).toISOString(),
       endAt: new Date(Date.now() + 86400000 * 2 + 3600000).toISOString(),
       idempotencyKey: newIdemKey(),
       influencerCode: infl.code,
@@ -168,7 +169,7 @@ describe('influencers router', () => {
         technicianId: technicianUserId,
         addressId,
         slotId: await seedSlot(),
-        startAt: new Date(Date.now() + 86400000 * 2).toISOString(),
+        startAt: safeFutureDate(2).toISOString(),
         endAt: new Date(Date.now() + 86400000 * 2 + 3600000).toISOString(),
         idempotencyKey: newIdemKey(),
         influencerCode: 'INF-MISSING',
@@ -191,7 +192,7 @@ describe('influencers router', () => {
       technicianId: technicianUserId,
       addressId,
       slotId: await seedSlot(),
-      startAt: new Date(Date.now() + 86400000 * 2).toISOString(),
+      startAt: safeFutureDate(2).toISOString(),
       endAt: new Date(Date.now() + 86400000 * 2 + 3600000).toISOString(),
       idempotencyKey: newIdemKey(),
       influencerCode: infl.code,
@@ -238,7 +239,7 @@ describe('influencers router', () => {
       technicianId: technicianUserId,
       addressId,
       slotId: await seedSlot(),
-      startAt: new Date(Date.now() + 86400000 * 2).toISOString(),
+      startAt: safeFutureDate(2).toISOString(),
       endAt: new Date(Date.now() + 86400000 * 2 + 3600000).toISOString(),
       idempotencyKey: newIdemKey(),
       influencerCode: infl.code,
