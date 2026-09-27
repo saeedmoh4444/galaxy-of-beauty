@@ -63,7 +63,9 @@ export default function BeautyEventsScreen(): JSX.Element {
   if (eventsQ.isError)
     return <ErrorAlert message={t('beautyEvents.load-error')} onRetry={() => eventsQ.refetch()} />;
 
-  const items: BeautyEvent[] = Array.isArray(eventsQ.data) ? eventsQ.data : [];
+  const items: BeautyEvent[] = (Array.isArray(eventsQ.data)
+    ? eventsQ.data
+    : []) as unknown as BeautyEvent[];
 
   return (
     <ScrollView

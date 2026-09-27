@@ -29,7 +29,7 @@ export default function EventsScreen(): JSX.Element {
 
   if (eventsQ.isLoading) return <SkeletonList count={4} />;
 
-  const events = (eventsQ.data ?? []) as BeautyEvent[];
+  const events = (eventsQ.data ?? []) as unknown as BeautyEvent[];
   const filtered = filter ? events.filter((e) => e.eventType === filter) : events;
   return (
     <ScrollView
