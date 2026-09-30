@@ -1,9 +1,10 @@
 import type { StorybookConfig } from '@storybook/react-vite';
 import { dirname, join } from 'path';
+import { fileURLToPath } from 'node:url';
 
 const config: StorybookConfig = {
   stories: ['../src/**/*.Stories.@(ts|tsx)'],
-  addons: ['@storybook/addon-essentials', '@storybook/addon-interactions', '@storybook/addon-a11y'],
+  addons: ['@storybook/addon-a11y'],
   framework: {
     name: '@storybook/react-vite',
     options: {},
@@ -18,7 +19,7 @@ const config: StorybookConfig = {
         ...viteConfig.resolve,
         alias: {
           ...viteConfig.resolve?.alias,
-          '@': join(dirname(__dirname), 'src'),
+          '@': join(dirname(fileURLToPath(import.meta.url)), 'src'),
         },
       },
     };
