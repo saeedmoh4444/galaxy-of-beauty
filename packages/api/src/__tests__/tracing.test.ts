@@ -15,7 +15,11 @@ import { createTRPCContext } from '../context';
 
 const { startMock, sdkMock } = vi.hoisted(() => {
   const startMock = vi.fn();
-  const sdkMock = vi.fn().mockImplementation(() => ({ start: startMock }));
+  // Regular function (not arrow): vitest 4 constructs mocks invoked with
+  // `new` through the implementation, and arrows are not constructors.
+  const sdkMock = vi.fn().mockImplementation(function () {
+    return { start: startMock };
+  });
   return { startMock, sdkMock };
 });
 
@@ -34,7 +38,9 @@ describe('tracing facade', () => {
     sdkMock.mockClear();
     startMock.mockClear();
     // restoreAllMocks strips vi.fn implementations — re-apply the factory.
-    sdkMock.mockImplementation(() => ({ start: startMock }));
+    sdkMock.mockImplementation(function () {
+      return { start: startMock };
+    });
   });
 
   afterEach(() => {
@@ -69,7 +75,7 @@ describe('tracing facade', () => {
   it('degrades to disabled when the SDK import fails', async () => {
     process.env['OTEL_ENABLED'] = 'true';
     const errSpy = vi.spyOn(console, 'error').mockImplementation(() => {});
-    sdkMock.mockImplementationOnce(() => {
+    sdkMock.mockImplementationOnce(function () {
       throw new Error('no sdk');
     });
     const ok = await initTracing();
