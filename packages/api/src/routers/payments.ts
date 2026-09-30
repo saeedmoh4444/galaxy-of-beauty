@@ -31,7 +31,9 @@ const bookingIdSchema = z.object({
 const webhookSchema = z.object({
   gatewayRef: z.string(),
   status: z.string(),
-  signature: z.string().optional(),
+  // Money-integrity: the signature is mandatory — a missing or invalid
+  // signature means the request is not from the gateway and must be rejected.
+  signature: z.string().min(1),
 });
 
 // ---------------------------------------------------------------------------
@@ -292,9 +294,11 @@ export const paymentRouter = router({
         data: { status: 'REFUNDED' },
       });
 
-      // 3. Reverse wallet transactions associated with this booking
+      // 3. Reverse wallet transactions associated with this booking.
+      // The cashback writer stores `capture_<booking.id>` as its referenceId —
+      // look it up the same way or the reversal never matches any row.
       const walletTransactions = await prisma.walletTransaction.findMany({
-        where: { referenceId: String(input.bookingId) },
+        where: { referenceId: `capture_${input.bookingId}` },
       });
 
       for (const txn of walletTransactions) {
@@ -374,18 +378,16 @@ export const paymentRouter = router({
   // -----------------------------------------------------------------------
   webhook: publicProcedure.input(webhookSchema).mutation(async ({ input }) => {
     try {
-      // Verify webhook signature if provided
-      if (input.signature) {
-        const paramsToVerify: Record<string, string> = {
-          gatewayRef: input.gatewayRef,
-          status: input.status,
-        };
-        if (!verifyWebhookSignature(paramsToVerify, input.signature)) {
-          throw new TRPCError({
-            code: 'FORBIDDEN',
-            message: 'Invalid webhook signature',
-          });
-        }
+      // Verify webhook signature — mandatory, fail closed.
+      const paramsToVerify: Record<string, string> = {
+        gatewayRef: input.gatewayRef,
+        status: input.status,
+      };
+      if (!verifyWebhookSignature(paramsToVerify, input.signature)) {
+        throw new TRPCError({
+          code: 'FORBIDDEN',
+          message: 'Invalid webhook signature',
+        });
       }
 
       // Find payment by gateway reference

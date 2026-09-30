@@ -77,6 +77,14 @@ enum TransactionType {
   DEBIT
 }
 
+// Settlement state of a wallet transaction. Direct client mutations may only
+// create PENDING rows; COMPLETED is reserved for verified gateway callbacks.
+enum TransactionStatus {
+  PENDING
+  COMPLETED
+  FAILED
+}
+
 enum TransactionSource {
   CASHBACK
   PLATFORM_FEE_SHARE
@@ -374,6 +382,7 @@ model WalletTransaction {
   description String?
   referenceId String?           // Links to booking, payout, etc.
   idempotencyKey String?        @unique
+  status      TransactionStatus @default(COMPLETED)
   createdAt   DateTime          @default(now())
 
   wallet Wallet @relation(fields: [walletId], references: [id], onDelete: Cascade)
