@@ -5,6 +5,10 @@ import { adminProcedure, protectedProcedure, router } from '../trpc';
 import { prisma } from '@galaxy/db';
 import { ZATCA_TEST_VAT, ZATCA_API_URL as SHARED_ZATCA_URL } from '@galaxy/shared';
 import { appendAudit, verifyChain as verifyAuditChain } from '../lib/zatcaAudit';
+import { generateCsr } from '../lib/zatcaCrypto';
+
+const ZATCA_COMPLIANCE_DEFAULT =
+  'https://gw-fatoora.zatca.gov.sa/e-invoicing/developer-portal/compliance';
 
 // ── ZATCA Configuration ───────────────────────────────────
 const VAT_RATE = 0.15; // 15% VAT in Saudi Arabia
@@ -589,6 +593,104 @@ export const zatcaRouter = router({
       };
     }),
   // ── 6.1a — compliance dashboard ─────────────────────────────────────
+  // ── 6.1d ─ real-portal onboarding ───────────────────────────────────
+  onboardingStatus: adminProcedure.query(async () => {
+    const credential = await prisma.zatcaCredential.findUnique({
+      where: { env: 'sandbox' },
+    });
+    return {
+      env: 'sandbox',
+      gateway: process.env['ZATCA_COMPLIANCE_URL'] || ZATCA_COMPLIANCE_DEFAULT,
+      // Masked surface — never return key material.
+      credential: credential
+        ? {
+            env: credential.env,
+            status: credential.status,
+            requestId: credential.requestId,
+            errorMessage: credential.errorMessage,
+            updatedAt: credential.updatedAt,
+          }
+        : null,
+    };
+  }),
+
+  // Exchange an OTP + self-signed CSR for the compliance CSID
+  // (sandbox). Requires the user's portal OTP — safe to call without
+  // credentials (the portal answers 4xx, stored as FAILED).
+  requestComplianceCsid: adminProcedure
+    .input(z.object({ otp: z.string().min(4).max(16) }))
+    .mutation(async ({ input }) => {
+      const { csrPem, privateKeyPem } = generateCsr({
+        vatNumber: VAT_NUMBER,
+        commonName: SELLER_NAME_AR,
+        organization: SELLER_NAME_AR,
+        organizationUnit: 'Riyadh',
+        country: 'SA',
+      });
+      const gateway = process.env['ZATCA_COMPLIANCE_URL'] || ZATCA_COMPLIANCE_DEFAULT;
+      try {
+        const res = await fetch(gateway, {
+          method: 'POST',
+          headers: {
+            OTP: input.otp,
+            'Accept-Version': 'V2',
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ csr: csrPem }),
+        });
+        if (!res.ok) {
+          const err = await res.text();
+          throw new Error(`ZATCA error ${res.status}: ${err.slice(0, 200)}`);
+        }
+        const data = (await res.json()) as {
+          binarySecurityToken?: string;
+          secret?: string;
+          certificate?: string;
+          requestID?: string;
+        };
+        const credential = await prisma.zatcaCredential.upsert({
+          where: { env: 'sandbox' },
+          update: {
+            certificatePem: data.certificate ?? '',
+            privateKeyPem,
+            binarySecurityToken: data.binarySecurityToken,
+            secret: data.secret,
+            requestId: data.requestID,
+            status: 'ACTIVE',
+            errorMessage: null,
+          },
+          create: {
+            env: 'sandbox',
+            certificatePem: data.certificate ?? '',
+            privateKeyPem,
+            binarySecurityToken: data.binarySecurityToken,
+            secret: data.secret,
+            requestId: data.requestID,
+            status: 'ACTIVE',
+          },
+        });
+        return { status: credential.status, requestId: credential.requestId, env: credential.env };
+      } catch (err) {
+        await prisma.zatcaCredential.upsert({
+          where: { env: 'sandbox' },
+          update: {
+            certificatePem: '',
+            privateKeyPem,
+            status: 'FAILED',
+            errorMessage: (err as Error).message,
+          },
+          create: {
+            env: 'sandbox',
+            certificatePem: '',
+            privateKeyPem,
+            status: 'FAILED',
+            errorMessage: (err as Error).message,
+          },
+        });
+        return { status: 'FAILED', requestId: null, env: 'sandbox' };
+      }
+    }),
+
   dashboard: adminProcedure.query(async () => {
     const invoices = await prisma.zatcaInvoice.findMany({
       include: { booking: { select: { totalAmount: true } } },

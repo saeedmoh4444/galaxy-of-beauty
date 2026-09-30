@@ -382,6 +382,11 @@ communityEvents.register	mutation	customer
 concierge.myRequests	query	customer
 concierge.request	mutation	customer
 concierge.stats	query	customer
+contentGen.generateBlogDraft	mutation	admin
+contentGen.generateFaqAnswer	mutation	admin
+contentGen.generateServiceDescription	mutation	admin
+contentGen.generateSocialCaption	mutation	admin
+contentGen.status	query	public
 corporateWellness.enquire	mutation	public
 corporateWellness.myEnquiries	query	customer
 corporateWellness.plans	query	public
@@ -1081,7 +1086,9 @@ zatca.dashboard	query	admin
 zatca.generateInvoice	mutation	admin
 zatca.getInvoice	query	protected
 zatca.listInvoices	query	admin
+zatca.onboardingStatus	query	admin
 zatca.reportInvoice	mutation	admin
+zatca.requestComplianceCsid	mutation	admin
 zatca.vatReport	query	admin
 zatca.vatReportCsv	mutation	admin
 zatca.verifyChain	query	admin"

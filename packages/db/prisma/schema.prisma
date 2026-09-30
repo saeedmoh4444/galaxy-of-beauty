@@ -884,6 +884,27 @@ model ZatcaInvoice {
   @@map("zatca_invoices")
 }
 
+// ======================================================================// ZATCA Onboarding Credentials (6.1d)
+// ======================================================================
+// NOTE: stores the CSID private key/cert locally. Acceptable for
+// sandbox + single-tenant admin use; production hardening should move
+// these into a KMS. Fields are admin-accessible only.
+model ZatcaCredential {
+  id                  Int      @id @default(autoincrement())
+  env                 String   @unique // sandbox | production
+  certificatePem      String
+  privateKeyPem       String
+  binarySecurityToken String?
+  secret              String?
+  requestId           String?
+  status              String   @default("PENDING") // PENDING, ACTIVE, FAILED
+  errorMessage        String?
+  createdAt           DateTime @default(now())
+  updatedAt           DateTime @updatedAt
+
+  @@map("zatca_credentials")
+}
+
 // ======================================================================// ZATCA Audit Trail (6.1a)
 // ======================================================================
 // Immutable, hash-chained lifecycle events per invoice. No update/delete
