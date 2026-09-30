@@ -155,7 +155,7 @@ export default function BookingsScreen(): JSX.Element {
         ListFooterComponent={
           bookings.isFetching && page > 1 ? (
             <Text style={styles.footerLoading}>{t('state.loading')}</Text>
-          ) : null
+          ) : undefined
         }
       />
     </ScreenState>
