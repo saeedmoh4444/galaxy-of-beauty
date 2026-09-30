@@ -11,7 +11,7 @@
 import { describe, it, expect, beforeAll, afterAll } from 'vitest';
 import { prisma } from '@galaxy/db';
 import { appRouter } from '../routers/index';
-import { buildUser } from './factories';
+import { buildUser, safeFutureDate } from './factories';
 import type { JwtPayload } from '../lib/jwt';
 
 const createdUserIds: number[] = [];
@@ -38,7 +38,7 @@ async function createEvent(overrides: Record<string, unknown> = {}): Promise<num
     nameAr: 'ماستر كلاس مكياج',
     nameEn: 'Makeup Masterclass',
     eventType: 'masterclass',
-    startsAt: new Date(Date.now() + 86400000 * 20).toISOString(),
+    startsAt: safeFutureDate(20).toISOString(),
     endsAt: new Date(Date.now() + 86400000 * 20 + 10800000).toISOString(),
     isPublished: true,
     ...overrides,

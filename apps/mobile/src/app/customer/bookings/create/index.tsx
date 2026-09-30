@@ -88,7 +88,21 @@ function buildNextDays(locale: 'ar' | 'en'): Array<{ iso: string; label: string 
 
 export default function CreateBookingScreen() {
   const router = useRouter();
-  const params = useLocalSearchParams<{ bundleId?: string; beautyBundleId?: string }>();
+  const params = useLocalSearchParams<{
+    bundleId?: string;
+    beautyBundleId?: string;
+    look?: string;
+  }>();
+  // 3.2b — a try-on look passed from the AR studio prefills the notes.
+  const lookNote = (() => {
+    if (!params.look) return '';
+    try {
+      const look = JSON.parse(params.look) as { type?: string; colorHex?: string };
+      return `لوك التجربة: ${look.type ?? ''} ${look.colorHex ?? ''}`.trim();
+    } catch {
+      return '';
+    }
+  })();
   const preselectedBundleId = Number(params.bundleId) || undefined;
   // 1.2 Service Bundles: preselected package from /bundles/[id] — fixed
   // for the lifetime of the flow (same pattern as the K3 ?bundleId=).
@@ -116,7 +130,7 @@ export default function CreateBookingScreen() {
   // K3 (kids plan): optional Mommy & Me bundle preselected (?bundleId=) —
   // fixed for the lifetime of the flow.
   const bundleId = preselectedBundleId;
-  const [notes, setNotes] = useState('');
+  const [notes, setNotes] = useState(lookNote);
   // Local-date defaults: tomorrow at 10:00. startAt is composed from these
   // in handleSubmit (local time, not UTC) so the user controls the slot.
   const [bookingDate, setBookingDate] = useState<string>(buildNextDays(locale)[0]?.iso ?? '');

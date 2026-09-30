@@ -320,3 +320,14 @@ export function buildBeautyPost(overrides: BuildBeautyPostOverrides) {
     isApproved: true,
   };
 }
+
+/** Booking-safe future date: skips Riyadh Friday (the Jummah window
+ *  blocks bookings 11:30–13:30 Riyadh — see lib/jummah). Riyadh Friday
+ *  spans UTC Thursday 21:00 → Friday 20:59. */
+export function safeFutureDate(daysAhead: number): Date {
+  const d = new Date(Date.now() + daysAhead * 86_400_000);
+  while (d.getUTCDay() === 5 || (d.getUTCDay() === 4 && d.getUTCHours() >= 21)) {
+    d.setUTCDate(d.getUTCDate() + 1);
+  }
+  return d;
+}
