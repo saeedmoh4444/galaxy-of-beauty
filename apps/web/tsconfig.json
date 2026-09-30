@@ -1,6 +1,7 @@
 {
   "extends": "@galaxy/config/tsconfig/next.json",
   "compilerOptions": {
+    "ignoreDeprecations": "6.0",
     "baseUrl": ".",
     "paths": {
       "@/*": ["./src/*"]
