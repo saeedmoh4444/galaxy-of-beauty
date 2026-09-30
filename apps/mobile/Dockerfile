@@ -6,7 +6,7 @@
 #   Open http://localhost:8081 in your browser
 # =============================================================================
 
-FROM node:20-alpine
+FROM node:22-alpine
 RUN corepack enable && corepack prepare pnpm@9 --activate
 WORKDIR /app
 
