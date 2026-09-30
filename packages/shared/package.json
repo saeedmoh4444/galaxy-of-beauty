@@ -11,7 +11,8 @@
     "./hooks": "./src/hooks/index.ts",
     "./utils": "./src/utils/index.ts",
     "./types": "./src/types/index.ts",
-    "./i18n": "./src/i18n/index.ts"
+    "./i18n": "./src/i18n/index.ts",
+    "./tryOn": "./src/tryOn/index.ts"
   },
   "scripts": {
     "build": "tsc",

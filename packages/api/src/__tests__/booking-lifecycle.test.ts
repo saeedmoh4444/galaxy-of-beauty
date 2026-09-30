@@ -8,6 +8,7 @@ import { prisma } from '@galaxy/db';
 import { appRouter } from '../routers/index';
 import { createTRPCContext } from '../context';
 import type { JwtPayload } from '../lib/jwt';
+import { safeFutureDate } from './factories';
 
 const CSRF = 'a'.repeat(64);
 
@@ -37,7 +38,7 @@ async function seedSlot(): Promise<number> {
     data: {
       technicianId: technicianRecordId,
       startAt: new Date(Date.now() + 86400000),
-      endAt: new Date(Date.now() + 86400000 + 3600000),
+      endAt: new Date(safeFutureDate(1).getTime() + 3600000),
       isBooked: false,
     },
   });
@@ -52,7 +53,7 @@ async function createBooking(opts?: { idempotencyKey?: string; slotId?: number }
     addressId,
     slotId: opts?.slotId ?? (await seedSlot()),
     startAt: new Date(Date.now() + 86400000).toISOString(),
-    endAt: new Date(Date.now() + 86400000 + 3600000).toISOString(),
+    endAt: new Date(safeFutureDate(1).getTime() + 3600000).toISOString(),
     idempotencyKey: opts?.idempotencyKey ?? newIdemKey(),
   });
 }

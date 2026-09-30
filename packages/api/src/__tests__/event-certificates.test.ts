@@ -10,7 +10,7 @@
 import { describe, it, expect, beforeAll, afterAll } from 'vitest';
 import { prisma } from '@galaxy/db';
 import { appRouter } from '../routers/index';
-import { buildUser } from './factories';
+import { buildUser, safeFutureDate } from './factories';
 import type { JwtPayload } from '../lib/jwt';
 
 const createdUserIds: number[] = [];
@@ -111,7 +111,7 @@ describe('event certificates', () => {
 
   it('refuses unfinished events and non-professional types', async () => {
     const futureId = await makeEvent({
-      startsAt: new Date(Date.now() + 86400000).toISOString(),
+      startsAt: safeFutureDate(1).toISOString(),
       endsAt: new Date(Date.now() + 86400000 + 7200000).toISOString(),
     });
     await expect(
