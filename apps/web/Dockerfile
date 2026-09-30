@@ -9,7 +9,7 @@
 # =============================================================================
 
 # ---- Base ----
-FROM node:20-alpine AS base
+FROM node:22-alpine AS base
 WORKDIR /app
 
 # Install pnpm
@@ -55,7 +55,7 @@ RUN cd /app/packages/db && npx prisma generate
 RUN cd /app/apps/web && npx next build
 
 # ---- Production (OPS-004: non-root, minimal) ----
-FROM node:20-alpine AS production
+FROM node:22-alpine AS production
 ENV NODE_ENV=production
 
 # Create non-root user
