@@ -23,10 +23,11 @@ export async function sendSms(to: string, message: string): Promise<boolean> {
   const config = getTwilioConfig();
 
   if (!config) {
-    // Twilio not configured — log for development
+    // Twilio not configured — never log phone numbers or OTP bodies, and
+    // report failure (fail closed) so callers know nothing was sent.
     // eslint-disable-next-line no-console
-    console.log(`[SMS] Would send to ${to}: "${message.slice(0, 80)}..."`);
-    return true;
+    console.warn('[SMS] Not sent — Twilio is not configured');
+    return false;
   }
 
   try {

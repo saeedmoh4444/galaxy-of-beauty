@@ -35,16 +35,15 @@ export async function renewDueSubscriptions(): Promise<{ renewed: number; expire
   let expired = 0;
   for (const sub of due) {
     if (sub.autoRenew) {
-      const nextEnd = rollPeriod(sub.currentPeriodEnd, sub.plan.interval);
+      // Money-integrity: never roll the billing period without a verified
+      // charge. No payment method / gateway capture path exists for
+      // renewals yet, so an un-chargeable renewal EXPIRES the subscription
+      // instead of granting free service forever.
       await prisma.customerSubscription.update({
         where: { id: sub.id },
-        data: {
-          currentPeriodStart: sub.currentPeriodEnd,
-          currentPeriodEnd: nextEnd,
-          bookingsThisMonth: 0,
-        },
+        data: { status: 'EXPIRED' },
       });
-      renewed++;
+      expired++;
     } else {
       await prisma.customerSubscription.update({
         where: { id: sub.id },

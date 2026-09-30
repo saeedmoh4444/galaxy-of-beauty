@@ -210,7 +210,7 @@ describe('beauty subscription catalog (2.2 SUB-1)', () => {
 });
 
 describe('renewal engine (2.2 SUB-2)', () => {
-  it('renews an autoRenew subscription and resets bookingsThisMonth', async () => {
+  it('expires an autoRenew subscription past its period (no charge path wired)', async () => {
     const c = await authCaller(customer);
     const plans = await c.subscriptionBoxes.plans();
     const monthly = plans.find(
@@ -229,13 +229,13 @@ describe('renewal engine (2.2 SUB-2)', () => {
     });
 
     const { renewed, expired } = await renewDueSubscriptions();
-    expect(renewed).toBeGreaterThanOrEqual(1);
-    expect(expired).toBe(0);
+    // Money-integrity: the period must NOT roll without a verified charge.
+    expect(renewed).toBe(0);
+    expect(expired).toBeGreaterThanOrEqual(1);
 
     const after = await prisma.customerSubscription.findUniqueOrThrow({ where: { id: subId } });
-    expect(after.status).toBe('ACTIVE');
-    expect(after.currentPeriodEnd.getTime()).toBeGreaterThan(Date.now());
-    expect(after.bookingsThisMonth).toBe(0);
+    expect(after.status).toBe('EXPIRED');
+    expect(after.currentPeriodEnd.getTime()).toBeLessThan(Date.now());
   });
 
   it('expires an autoRenew=false subscription past its period', async () => {

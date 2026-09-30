@@ -2,17 +2,15 @@ import { z } from 'zod';
 import { TRPCError } from '@trpc/server';
 import { prisma } from '@galaxy/db';
 import { MS_PER_DAY } from '@galaxy/shared';
+import crypto from 'crypto';
 import { protectedProcedure, customerProcedure, adminProcedure, router } from '../trpc';
 
 // Generate a gift card code: GIFT-XXXX-XXXX
 function generateCode(): string {
   const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789'; // No I, O, 0, 1 to avoid confusion
-  const a = Array.from({ length: 4 }, () => chars[Math.floor(Math.random() * chars.length)]).join(
-    '',
-  );
-  const b = Array.from({ length: 4 }, () => chars[Math.floor(Math.random() * chars.length)]).join(
-    '',
-  );
+  // Money-integrity: codes are bearer instruments — use a CSPRNG, not Math.random.
+  const a = Array.from({ length: 4 }, () => chars[crypto.randomInt(chars.length)]).join('');
+  const b = Array.from({ length: 4 }, () => chars[crypto.randomInt(chars.length)]).join('');
   return `GIFT-${a}-${b}`;
 }
 

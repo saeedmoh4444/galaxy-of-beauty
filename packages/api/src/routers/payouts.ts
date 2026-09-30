@@ -161,20 +161,14 @@ export const payoutRouter = router({
         data: { status: 'PROCESSING' },
       });
 
-      // In production this would integrate with a bank transfer / wallet API.
-      // For now we complete immediately.
-
-      // Step 2: Mark as COMPLETED
-      const completed = await prisma.payout.update({
+      // Money-integrity: never fabricate a transfer. There is no bank/wallet
+      // provider integration yet, so payouts STAY in PROCESSING — completion
+      // happens only when a real provider reference returns.
+      const processing = await prisma.payout.findUnique({
         where: { id: input.payoutId },
-        data: {
-          status: 'COMPLETED',
-          reference: `PO-${Date.now()}-${input.payoutId}`,
-          processedAt: new Date(),
-        },
       });
 
-      return completed;
+      return processing;
     } catch (err) {
       if (err instanceof TRPCError) throw err;
       throw new TRPCError({

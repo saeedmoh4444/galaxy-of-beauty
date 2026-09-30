@@ -1,7 +1,8 @@
 import { z } from 'zod';
+import { TRPCError } from '@trpc/server';
 import { prisma } from '@galaxy/db';
 import { DEFAULT_PAGE_SIZE, SMALL_PAGE_SIZE } from '@galaxy/shared';
-import { publicProcedure, adminProcedure, router } from '../trpc';
+import { publicProcedure, adminProcedure, customerProcedure, router } from '../trpc';
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any -- Service has no nameJson/emoji in Prisma schema (legacy reads)
 const db = prisma as any;
@@ -81,19 +82,43 @@ export const flashDealRouter = router({
         },
       });
     }),
-  claim: publicProcedure.input(z.object({ dealId: z.number() })).mutation(async ({ input }) => {
-    const deal = await db.flashDeal.findUnique({ where: { id: input.dealId } });
-    if (!deal || !deal.isActive) throw new Error('العرض غير متاح');
-    if (deal.currentRedemptions >= deal.maxRedemptions) throw new Error('نفذت الكمية');
-    await db.flashDeal.update({
-      where: { id: input.dealId },
-      data: { currentRedemptions: { increment: 1 } },
-    });
-    return {
-      dealPrice: Number(deal.dealPrice),
-      originalPrice: Number(deal.originalPrice),
-      discountPercent: deal.discountPercent,
-      serviceId: deal.serviceId,
-    };
-  }),
+  claim: customerProcedure
+    .input(z.object({ dealId: z.number() }))
+    .mutation(async ({ ctx, input }) => {
+      const deal = await db.flashDeal.findUnique({ where: { id: input.dealId } });
+      const now = new Date();
+      if (!deal || !deal.isActive) {
+        throw new TRPCError({ code: 'NOT_FOUND', message: 'العرض غير متاح' });
+      }
+      if (deal.startsAt > now || deal.endsAt < now) {
+        throw new TRPCError({ code: 'PRECONDITION_FAILED', message: 'العرض غير متاح حالياً' });
+      }
+
+      // Atomic redemption guard — the update only lands while capacity remains.
+      const updated = await db.flashDeal.updateMany({
+        where: { id: input.dealId, currentRedemptions: { lt: deal.maxRedemptions } },
+        data: { currentRedemptions: { increment: 1 } },
+      });
+      if (updated.count === 0) {
+        throw new TRPCError({ code: 'CONFLICT', message: 'نفذت الكمية' });
+      }
+
+      // One claim per user per deal — a second claim rolls back the increment.
+      try {
+        await db.flashDealClaim.create({ data: { dealId: input.dealId, userId: ctx.user.id } });
+      } catch {
+        await db.flashDeal.update({
+          where: { id: input.dealId },
+          data: { currentRedemptions: { decrement: 1 } },
+        });
+        throw new TRPCError({ code: 'CONFLICT', message: 'لقد قمت بالمطالبة بهذا العرض مسبقاً' });
+      }
+
+      return {
+        dealPrice: Number(deal.dealPrice),
+        originalPrice: Number(deal.originalPrice),
+        discountPercent: deal.discountPercent,
+        serviceId: deal.serviceId,
+      };
+    }),
 });

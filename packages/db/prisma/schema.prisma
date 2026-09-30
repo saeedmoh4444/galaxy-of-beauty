@@ -2586,8 +2586,24 @@ model FlashDeal {
   isActive          Boolean  @default(true)
   createdAt         DateTime @default(now())
 
+  claims FlashDealClaim[]
+
   @@index([isActive, startsAt, endsAt])
   @@map("flash_deals")
+}
+
+// One claim per user per deal — claims are authenticated and deduplicated.
+model FlashDealClaim {
+  id        Int       @id @default(autoincrement())
+  dealId    Int
+  userId    Int
+  createdAt DateTime  @default(now())
+
+  flashDeal FlashDeal @relation(fields: [dealId], references: [id], onDelete: Cascade)
+
+  @@unique([dealId, userId])
+  @@index([userId])
+  @@map("flash_deal_claims")
 }
 
 // ======================================================================// Family Account — Family members for booking on behalf
