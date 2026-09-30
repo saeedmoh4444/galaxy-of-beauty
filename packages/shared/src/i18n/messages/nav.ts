@@ -132,6 +132,7 @@ export const navMessages = {
   'nav.admin.disputes': { ar: 'النزاعات', en: 'Disputes' },
   'nav.admin.analytics': { ar: 'التحليلات', en: 'Analytics' },
   'nav.admin.zatca': { ar: 'زاتكا', en: 'ZATCA' },
+  'nav.admin.contentGen': { ar: 'مولد المحتوى', en: 'Content Studio' },
   'nav.admin.settings': { ar: 'الإعدادات', en: 'Settings' },
 
   // Phase 3 sprint 4 — public header IA
