@@ -96,3 +96,4 @@ postman/
 .dependabot-merge.sh
 .screenshots/heroes/
 packages/db/generated/
+AGENTS.md
