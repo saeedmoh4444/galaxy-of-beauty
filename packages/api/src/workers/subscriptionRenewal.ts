@@ -16,13 +16,6 @@ import { notifyUser } from '../lib/notify';
 const RENEWAL_INTERVAL_MS = 3_600_000 * 24; // daily
 const REMINDER_DAYS = 3;
 
-function rollPeriod(end: Date, interval: string): Date {
-  const next = new Date(end);
-  if (interval === 'YEARLY') next.setFullYear(next.getFullYear() + 1);
-  else next.setMonth(next.getMonth() + 1);
-  return next;
-}
-
 /** Renew or expire due subscriptions. Returns { renewed, expired }. */
 export async function renewDueSubscriptions(): Promise<{ renewed: number; expired: number }> {
   const now = new Date();
