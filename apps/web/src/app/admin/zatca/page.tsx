@@ -76,6 +76,17 @@ export default function AdminZatcaPage(): JSX.Element {
     },
   });
   const reportMut = api.zatca.reportInvoice.useMutation({ onSuccess: () => refetch() });
+  // 6.1d — real-portal onboarding (Fatoorah).
+  const [onboardOtp, setOnboardOtp] = useState('');
+  const { data: onboard } = api.zatca.onboardingStatus.useQuery(undefined, {
+    enabled: isAuthenticated,
+  });
+  const onboardMut = api.zatca.requestComplianceCsid.useMutation({
+    onSuccess: () => {
+      setOnboardOtp('');
+      void refetch();
+    },
+  });
   // 6.1c — clearance (REPORTED/PENDING) and re-report (REJECTED).
   const clearMut = api.zatca.clearInvoice.useMutation({ onSuccess: () => refetch() });
   // 6.1b — VAT report CSV export.
@@ -175,6 +186,44 @@ export default function AdminZatcaPage(): JSX.Element {
           </Button>
         </div>
       </Card>
+      {/* 6.1d — Fatoorah onboarding */}
+      <Card padding="md">
+        <h2 className="mb-1 font-semibold">{t('admin.zatca.onboarding-title')}</h2>
+        <p className="mb-3 text-xs text-text-secondary">{t('admin.zatca.onboarding-subtitle')}</p>
+        <div className="flex flex-wrap items-end gap-3">
+          <Input
+            label={t('admin.zatca.otp')}
+            value={onboardOtp}
+            onChange={(e) => setOnboardOtp(e.target.value)}
+          />
+          <Button
+            variant="secondary"
+            onClick={() => onboardMut.mutate({ otp: onboardOtp })}
+            loading={onboardMut.isPending}
+          >
+            {t('admin.zatca.onboard-button')}
+          </Button>
+          <p className="text-xs text-text-secondary">
+            {t('admin.zatca.onboarding-status', {
+              s: onboard?.credential
+                ? t(
+                    onboard.credential.status === 'ACTIVE'
+                      ? 'admin.zatca.onboarding-active'
+                      : onboard.credential.status === 'FAILED'
+                        ? 'admin.zatca.onboarding-failed'
+                        : 'admin.zatca.onboarding-pending',
+                  )
+                : t('admin.zatca.onboarding-pending'),
+            })}
+          </p>
+        </div>
+        {onboard?.credential?.errorMessage && (
+          <p className="mt-2 text-xs text-red-600 dark:text-red-400">
+            {onboard.credential.errorMessage}
+          </p>
+        )}
+      </Card>
+
       {/* 6.1a — compliance dashboard */}
       <h2 className="text-lg font-bold">{t('admin.zatca.dashboard-title')}</h2>
       <div className="grid gap-4 sm:grid-cols-4">
