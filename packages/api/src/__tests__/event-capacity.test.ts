@@ -9,7 +9,7 @@
 import { describe, it, expect, beforeAll, afterAll } from 'vitest';
 import { prisma } from '@galaxy/db';
 import { appRouter } from '../routers/index';
-import { buildUser } from './factories';
+import { buildUser, safeFutureDate } from './factories';
 import type { JwtPayload } from '../lib/jwt';
 
 const createdUserIds: number[] = [];
@@ -31,7 +31,7 @@ async function makeEvent(opts: { maxAttendees?: number; startsAt?: Date }) {
       nameJson: { ar: 'فعالية اختبار', en: 'Test Event' },
       eventType: 'workshop',
       maxAttendees: opts.maxAttendees ?? null,
-      startsAt: opts.startsAt ?? new Date(Date.now() + 86400000 * 10),
+      startsAt: opts.startsAt ?? safeFutureDate(10),
       endsAt: new Date(Date.now() + 86400000 * 10 + 7200000),
       isPublished: true,
     },

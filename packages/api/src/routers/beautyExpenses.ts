@@ -68,10 +68,10 @@ export const beautyExpensesRouter = router({
     const monthlyTrend: Array<{ month: string; total: number }> = [];
     for (let i = 5; i >= 0; i--) {
       const start = new Date(now.getFullYear(), now.getMonth() - i, 1);
-      const end = new Date(now.getFullYear(), now.getMonth() - i + 1, 0);
+      const end = new Date(now.getFullYear(), now.getMonth() - i + 1, 1); // exclusive next-month start
       const monthKey = `${start.getFullYear()}-${String(start.getMonth() + 1).padStart(2, '0')}`;
       const monthTotal = allRecentBookings
-        .filter((b: any) => b.createdAt >= start && b.createdAt <= end)
+        .filter((b: any) => b.createdAt >= start && b.createdAt < end)
         .reduce((s: number, b: any) => s + Number(b.totalAmount || 0), 0);
       monthlyTrend.push({ month: monthKey, total: monthTotal });
     }

@@ -37,11 +37,11 @@ export const beautyInsightsRouter = router({
       const now = new Date();
       for (let i = input.months - 1; i >= 0; i--) {
         const start = new Date(now.getFullYear(), now.getMonth() - i, 1);
-        const end = new Date(now.getFullYear(), now.getMonth() - i + 1, 0);
+        const end = new Date(now.getFullYear(), now.getMonth() - i + 1, 1); // exclusive next-month start
         const result = await prisma.booking.aggregate({
           where: {
             customerId: ctx.user.id,
-            createdAt: { gte: start, lte: end },
+            createdAt: { gte: start, lt: end },
             status: 'COMPLETED',
           },
           _sum: { totalAmount: true },

@@ -933,6 +933,23 @@ export const mobileCustomerBMessages = {
     ar: 'جربي ألوان المكياج افتراضياً',
     en: 'Try makeup colors virtually',
   },
+  'mobile.virtualTryOn.type.lips': { ar: 'شفاه', en: 'Lips' },
+  'mobile.virtualTryOn.type.eyes': { ar: 'عيون', en: 'Eyes' },
+  'mobile.virtualTryOn.type.blush': { ar: 'خدود', en: 'Blush' },
+  'mobile.virtualTryOn.type.nails': { ar: 'أظافر', en: 'Nails' },
+  'mobile.virtualTryOn.intensity': { ar: 'الكثافة', en: 'Intensity' },
+  'mobile.virtualTryOn.capture': { ar: 'التقاط ومشاركة', en: 'Capture & share' },
+  'mobile.virtualTryOn.bookThisLook': { ar: 'احجزي هذه الإطلالة', en: 'Book this look' },
+  'mobile.virtualTryOn.shareText': {
+    ar: 'جربت إطلالتي على جالكسي بيوتي! ',
+    en: 'Tried my look on Galaxy of Beauty! ',
+  },
+  'mobile.virtualTryOn.cameraDenied': {
+    ar: 'يحتاج التطبيق إذن الكاميرا لتفعيل التجربة',
+    en: 'Camera permission is needed for the live try-on',
+  },
+  'mobile.virtualTryOn.retry': { ar: 'إعادة المحاولة', en: 'Retry' },
+  'mobile.virtualTryOn.share': { ar: 'مشاركة', en: 'Share' },
 
   // ---- wellness ----
   'mobile.wellness.title': { ar: 'الصحة والعافية', en: ' Health & Wellness' },
