@@ -12,7 +12,7 @@ import { prisma } from '@galaxy/db';
 import { appRouter } from '../routers/index';
 import { createTRPCContext } from '../context';
 import { generateCsrfToken } from '../lib/csrf';
-import { buildUser } from './factories';
+import { buildUser, safeFutureDate } from './factories';
 import { renewDueSubscriptions, sendRenewalReminders } from '../workers/subscriptionRenewal';
 import type { JwtPayload } from '../lib/jwt';
 
@@ -108,7 +108,7 @@ async function setActiveSub(planId: number, autoRenew = true): Promise<number> {
         autoRenew,
         cancelledAt: null,
         currentPeriodStart: new Date(),
-        currentPeriodEnd: new Date(Date.now() + 30 * 86_400_000),
+        currentPeriodEnd: safeFutureDate(30),
         bookingsThisMonth: 0,
       },
     });
@@ -119,7 +119,7 @@ async function setActiveSub(planId: number, autoRenew = true): Promise<number> {
       userId: customer.id,
       planId,
       currentPeriodStart: new Date(),
-      currentPeriodEnd: new Date(Date.now() + 30 * 86_400_000),
+      currentPeriodEnd: safeFutureDate(30),
       autoRenew,
     },
   });
@@ -269,7 +269,7 @@ describe('renewal engine (2.2 SUB-2)', () => {
     const subId = await setActiveSub(monthly.id);
     await prisma.customerSubscription.update({
       where: { id: subId },
-      data: { currentPeriodEnd: new Date(Date.now() + 2 * 86_400_000) },
+      data: { currentPeriodEnd: safeFutureDate(2) },
     });
 
     const reminded = await sendRenewalReminders();
@@ -292,7 +292,7 @@ describe('bookings.create enforcement (2.2 SUB-2)', () => {
       data: { bookingsThisMonth: 2 },
     });
 
-    const total = await bookOne(new Date(Date.now() + 3 * 86_400_000));
+    const total = await bookOne(safeFutureDate(3));
     expect(total).toBe(90); // 100 - 10%
 
     const after = await prisma.customerSubscription.findUniqueOrThrow({ where: { id: subId } });
@@ -308,7 +308,7 @@ describe('bookings.create enforcement (2.2 SUB-2)', () => {
 
     await setActiveSub(basic.id);
 
-    const total = await bookOne(new Date(Date.now() + 4 * 86_400_000));
+    const total = await bookOne(safeFutureDate(4));
     expect(total).toBe(100);
   });
 
@@ -325,8 +325,6 @@ describe('bookings.create enforcement (2.2 SUB-2)', () => {
       data: { bookingsThisMonth: 8 },
     });
 
-    await expect(bookOne(new Date(Date.now() + 5 * 86_400_000))).rejects.toThrow(
-      /Monthly subscription limit/,
-    );
+    await expect(bookOne(safeFutureDate(5))).rejects.toThrow(/Monthly subscription limit/);
   });
 });
