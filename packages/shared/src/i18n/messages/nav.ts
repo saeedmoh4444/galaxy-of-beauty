@@ -131,6 +131,7 @@ export const navMessages = {
   'nav.admin.admin-tools': { ar: 'أدوات المشرف', en: 'Tools' },
   'nav.admin.group-bookings': { ar: 'حجوزات جماعية', en: 'Groups' },
   'nav.admin.disputes': { ar: 'النزاعات', en: 'Disputes' },
+  'nav.admin.queues': { ar: 'طوابير المهام', en: 'Queues' },
   'nav.admin.analytics': { ar: 'التحليلات', en: 'Analytics' },
   'nav.admin.zatca': { ar: 'زاتكا', en: 'ZATCA' },
   'nav.admin.contentGen': { ar: 'مولد المحتوى', en: 'Content Studio' },

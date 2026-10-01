@@ -18,6 +18,7 @@ const adminLinks: { href: string; key: TranslationKey; icon: string }[] = [
   { href: '/admin/services', key: 'nav.admin.services', icon: '' },
   { href: '/admin/bookings', key: 'nav.admin.bookings', icon: '' },
   { href: '/admin/disputes', key: 'nav.admin.disputes', icon: '' },
+  { href: '/admin/queues', key: 'nav.admin.queues', icon: '' },
   { href: '/admin/finance', key: 'nav.admin.finance', icon: '' },
   { href: '/admin/ab-tests', key: 'nav.admin.abTests', icon: '' },
   { href: '/admin/settings', key: 'nav.admin.settings', icon: '' },

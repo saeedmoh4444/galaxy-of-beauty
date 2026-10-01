@@ -722,6 +722,9 @@ promotions.myPromotions	query	technician
 promotions.propose	mutation	technician
 providerReview.decide	mutation	admin
 providerReview.list	query	admin
+queues.list	query	admin
+queues.removeFailed	mutation	admin
+queues.retryFailed	mutation	admin
 recommendations.completeTheLook	query	public
 recommendations.forYou	query	public
 recommendations.frequentlyBookedTogether	query	public
