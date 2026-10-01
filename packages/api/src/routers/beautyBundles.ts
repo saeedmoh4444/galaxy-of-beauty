@@ -37,21 +37,26 @@ export const beautyBundlesRouter = router({
         where,
         orderBy: { sortOrder: 'asc' },
         take: 20,
+        include: { services: { orderBy: { sortOrder: 'asc' } } },
       });
     }),
 
   // Detail with services hydrated in the bundle's declared order.
   get: publicProcedure.input(z.object({ id: z.number() })).query(async ({ input }) => {
-    const bundle = await prisma.beautyBundle.findUnique({ where: { id: input.id } });
+    const bundle = await prisma.beautyBundle.findUnique({
+      where: { id: input.id },
+      include: { services: { orderBy: { sortOrder: 'asc' } } },
+    });
     if (!bundle) throw new TRPCError({ code: 'NOT_FOUND', message: 'Bundle not found' });
-    const services = await prisma.service.findMany({
-      where: { id: { in: bundle.serviceIds } },
+    const { services: links, ...rest } = bundle;
+    const serviceRows = await prisma.service.findMany({
+      where: { id: { in: links.map((l) => l.serviceId) } },
       select: serviceSelect,
     });
-    const ordered = bundle.serviceIds
-      .map((id) => services.find((s) => s.id === id))
-      .filter((s): s is (typeof services)[number] => Boolean(s));
-    return { ...bundle, services: ordered };
+    const ordered = links
+      .map((l) => serviceRows.find((s) => s.id === l.serviceId))
+      .filter((s): s is (typeof serviceRows)[number] => Boolean(s));
+    return { ...rest, services: ordered };
   }),
 
   // Admin: list all
@@ -59,17 +64,38 @@ export const beautyBundlesRouter = router({
     return prisma.beautyBundle.findMany({ orderBy: { createdAt: 'desc' } });
   }),
 
-  // Admin: create
+  // Admin: create — serviceIds now live in the bundle_services join table.
   create: adminProcedure.input(bundleInput).mutation(async ({ input }) => {
-    return prisma.beautyBundle.create({ data: input });
+    const { serviceIds, ...data } = input;
+    return prisma.beautyBundle.create({
+      data: {
+        ...data,
+        services: {
+          create: serviceIds.map((serviceId, sortOrder) => ({ serviceId, sortOrder })),
+        },
+      },
+    });
   }),
 
   // Admin: update (partial)
   update: adminProcedure
     .input(z.object({ id: z.number() }).merge(bundleInput.partial()))
     .mutation(async ({ input }) => {
-      const { id, ...data } = input;
-      return prisma.beautyBundle.update({ where: { id }, data });
+      const { id, serviceIds, ...data } = input;
+      return prisma.beautyBundle.update({
+        where: { id },
+        data: {
+          ...data,
+          ...(serviceIds
+            ? {
+                services: {
+                  deleteMany: {},
+                  create: serviceIds.map((serviceId, sortOrder) => ({ serviceId, sortOrder })),
+                },
+              }
+            : {}),
+        },
+      });
     }),
 
   // Admin: soft delete — bundle history survives on bookings (Slice 2).

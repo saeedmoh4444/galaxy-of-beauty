@@ -377,7 +377,7 @@ export default function CreateBookingPage(): JSX.Element {
                   </p>
                   <p className="mt-1 text-rose-600 dark:text-rose-500">
                     {t('bundles.servicesCount', {
-                      count: (activeBeautyBundle.serviceIds as number[]).length,
+                      count: (activeBeautyBundle.services as unknown[]).length,
                     })}{' '}
                     · {num(activeBeautyBundle.totalPrice).toFixed(0)} {t('misc.sar')}{' '}
                     <span className="line-through opacity-70">
