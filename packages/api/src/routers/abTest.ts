@@ -8,8 +8,10 @@
  */
 import { z } from 'zod';
 import { prisma } from '@galaxy/db';
+import { TRPCError } from '@trpc/server';
 import { protectedProcedure, adminProcedure, router } from '../trpc';
 import { assignVariant } from '../lib/abTest';
+import { abSignificance } from '../lib/abStats';
 
 async function readTestConfig(testKey: string) {
   const row = await prisma.platformConfig.findUnique({ where: { key: `ab_test:${testKey}` } });
@@ -81,6 +83,60 @@ export const abTestRouter = router({
             impressions === 0 ? 0 : Math.round((conversions / impressions) * 1000) / 10,
         };
       };
-      return { testKey: input.testKey, variants: [summarize('A'), summarize('B')] };
+      const variants = [summarize('A'), summarize('B')];
+      // Significance math (stage 12) — chi-square with Yates correction.
+      const significance = abSignificance(
+        { impressions: variants[0]!.impressions, conversions: variants[0]!.conversions },
+        { impressions: variants[1]!.impressions, conversions: variants[1]!.conversions },
+      );
+      return { testKey: input.testKey, variants, significance };
+    }),
+
+  /** Admin: all configured tests (stage 12 admin UI). */
+  list: adminProcedure.query(async () => {
+    const rows = await prisma.platformConfig.findMany({
+      where: { key: { startsWith: 'ab_test:' } },
+    });
+    return rows.map((row) => {
+      let config: Record<string, unknown> = {};
+      try {
+        config = JSON.parse(row.value as string) as Record<string, unknown>;
+      } catch {
+        config = {};
+      }
+      return {
+        testKey: row.key.slice('ab_test:'.length),
+        variantA: config['variantA'] ?? null,
+        variantB: config['variantB'] ?? null,
+        trafficSplit: config['trafficSplit'] ?? 50,
+        winner: config['winner'] ?? null,
+        closed: config['closed'] === true,
+      };
+    });
+  }),
+
+  /** Declare the winner — closes the test by pinning the config (stage 12). */
+  declareWinner: adminProcedure
+    .input(z.object({ testKey: z.string().min(2).max(80), winner: z.enum(['A', 'B']) }))
+    .mutation(async ({ input }) => {
+      const row = await prisma.platformConfig.findUnique({
+        where: { key: `ab_test:${input.testKey}` },
+      });
+      if (!row) {
+        throw new TRPCError({ code: 'NOT_FOUND', message: 'A/B test not found' });
+      }
+      let config: Record<string, unknown> = {};
+      try {
+        config = JSON.parse(row.value as string) as Record<string, unknown>;
+      } catch {
+        config = {};
+      }
+      await prisma.platformConfig.update({
+        where: { key: `ab_test:${input.testKey}` },
+        data: {
+          value: JSON.stringify({ ...config, winner: input.winner, closed: true }),
+        },
+      });
+      return { testKey: input.testKey, winner: input.winner, closed: true };
     }),
 });

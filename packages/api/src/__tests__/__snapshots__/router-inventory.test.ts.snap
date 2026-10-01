@@ -2,6 +2,8 @@
 
 exports[`router inventory > matches the canonical procedure list (detail snapshot) 1`] = `
 "abTest.convert	mutation	protected
+abTest.declareWinner	mutation	admin
+abTest.list	query	admin
 abTest.results	query	admin
 abTest.variant	query	protected
 accountability.checkIn	mutation	customer
@@ -149,6 +151,7 @@ beautyDna.skinMatch	query	customer
 beautyEvents.accessDetails	query	customer
 beautyEvents.cancelRegistration	mutation	customer
 beautyEvents.create	mutation	admin
+beautyEvents.getById	query	public
 beautyEvents.issueCertificates	mutation	admin
 beautyEvents.list	query	public
 beautyEvents.listAll	query	admin
@@ -721,6 +724,9 @@ promotions.myPromotions	query	technician
 promotions.propose	mutation	technician
 providerReview.decide	mutation	admin
 providerReview.list	query	admin
+queues.list	query	admin
+queues.removeFailed	mutation	admin
+queues.retryFailed	mutation	admin
 recommendations.completeTheLook	query	public
 recommendations.forYou	query	public
 recommendations.frequentlyBookedTogether	query	public
