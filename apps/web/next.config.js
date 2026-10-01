@@ -1,5 +1,3 @@
-import { withSentryConfig } from '@sentry/nextjs';
-
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   transpilePackages: ['@galaxy/shared', '@galaxy/api', '@galaxy/db'],
@@ -131,15 +129,4 @@ const nextConfig = {
   },
 };
 
-// Sentry (D4): wrap with withSentryConfig so source maps + build
-// instrumentation are active. The upload step no-ops when SENTRY_ORG /
-// SENTRY_PROJECT are unset, so local/CI builds are unaffected.
-export default withSentryConfig(nextConfig, {
-  silent: true,
-  org: process.env['SENTRY_ORG'],
-  project: process.env['SENTRY_PROJECT'],
-  authToken: process.env['SENTRY_AUTH_TOKEN'],
-  widenClientFileUpload: true,
-  hideSourceMaps: true,
-  disableLogger: true,
-});
+export default nextConfig;
