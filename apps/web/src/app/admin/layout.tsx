@@ -20,6 +20,7 @@ const adminLinks: { href: string; key: TranslationKey; icon: string }[] = [
   { href: '/admin/disputes', key: 'nav.admin.disputes', icon: '' },
   { href: '/admin/queues', key: 'nav.admin.queues', icon: '' },
   { href: '/admin/finance', key: 'nav.admin.finance', icon: '' },
+  { href: '/admin/ab-tests', key: 'nav.admin.abTests', icon: '' },
   { href: '/admin/settings', key: 'nav.admin.settings', icon: '' },
   { href: '/admin/gift-cards', key: 'nav.admin.giftCards', icon: '' },
   { href: '/admin/packages', key: 'nav.admin.packages', icon: '' },

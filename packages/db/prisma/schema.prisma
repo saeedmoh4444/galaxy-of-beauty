@@ -773,8 +773,9 @@ model Review {
 // ======================================================================// Disputes
 // ======================================================================
 model Dispute {
-  id          Int           @id @default(autoincrement())
-  bookingId   Int           @unique
+  id           Int           @id @default(autoincrement())
+  bookingId    Int?          @unique // null = store-order dispute (stage 12)
+  storeOrderId Int?          @unique
   raisedBy    Int           // User who raised the dispute
   reason      String
   description String?
@@ -786,7 +787,8 @@ model Dispute {
   createdAt   DateTime      @default(now())
   updatedAt   DateTime      @updatedAt
 
-  booking     Booking @relation(fields: [bookingId], references: [id], onDelete: Cascade)
+  booking     Booking?    @relation(fields: [bookingId], references: [id], onDelete: Cascade)
+  storeOrder  StoreOrder? @relation(fields: [storeOrderId], references: [id], onDelete: Cascade)
   raiser      User    @relation("DisputeRaisedBy", fields: [raisedBy], references: [id])
   resolver    User?   @relation("DisputeResolvedBy", fields: [resolvedBy], references: [id])
 
@@ -1634,6 +1636,7 @@ model StoreOrder {
 
   vendor   Vendor @relation(fields: [vendorId], references: [id], onDelete: Cascade)
   customer User   @relation(fields: [customerId], references: [id])
+  dispute  Dispute?
 
   @@index([vendorId, status, createdAt])
   @@index([customerId, createdAt])

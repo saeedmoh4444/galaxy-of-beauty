@@ -6,36 +6,69 @@ import { router, protectedProcedure, adminProcedure } from '../trpc';
 
 export const disputeRouter = router({
   // ── Create dispute ────────────────────────────────────────────────────────
+  // Covers bookings AND store orders (stage 12 — store settlement). Exactly
+  // one of bookingId / storeOrderId must be provided.
   create: protectedProcedure
     .input(
       z.object({
-        bookingId: z.number(),
+        bookingId: z.number().optional(),
+        storeOrderId: z.number().optional(),
         reason: z.string().min(1, 'Reason is required'),
         description: z.string().optional(),
       }),
     )
     .mutation(async ({ ctx, input }) => {
-      const { bookingId, reason, description } = input;
-
-      const booking = await prisma.booking.findUnique({
-        where: { id: bookingId },
-        select: { customerId: true, technicianId: true },
-      });
-
-      if (!booking) {
-        throw notFound('Booking');
+      const { bookingId, storeOrderId, reason, description } = input;
+      if (!bookingId && !storeOrderId) {
+        throw new TRPCError({
+          code: 'BAD_REQUEST',
+          message: 'Either bookingId or storeOrderId is required',
+        });
+      }
+      if (bookingId && storeOrderId) {
+        throw new TRPCError({
+          code: 'BAD_REQUEST',
+          message: 'Provide bookingId OR storeOrderId, not both',
+        });
       }
 
-      if (booking.customerId !== ctx.user.id && booking.technicianId !== ctx.user.id) {
-        throw new TRPCError({
-          code: 'FORBIDDEN',
-          message: 'You are not a participant in this booking',
+      if (bookingId) {
+        const booking = await prisma.booking.findUnique({
+          where: { id: bookingId },
+          select: { customerId: true, technicianId: true },
         });
+
+        if (!booking) {
+          throw notFound('Booking');
+        }
+
+        if (booking.customerId !== ctx.user.id && booking.technicianId !== ctx.user.id) {
+          throw new TRPCError({
+            code: 'FORBIDDEN',
+            message: 'You are not a participant in this booking',
+          });
+        }
+      } else {
+        const order = await prisma.storeOrder.findUnique({
+          where: { id: storeOrderId },
+          select: { customerId: true, vendor: { select: { userId: true } } },
+        });
+        if (!order) {
+          throw notFound('Store order');
+        }
+        const isVendorOwner = order.vendor.userId === ctx.user.id;
+        if (order.customerId !== ctx.user.id && !isVendorOwner) {
+          throw new TRPCError({
+            code: 'FORBIDDEN',
+            message: 'You are not a participant in this order',
+          });
+        }
       }
 
       const dispute = await prisma.dispute.create({
         data: {
-          bookingId,
+          bookingId: bookingId ?? null,
+          storeOrderId: storeOrderId ?? null,
           raisedBy: ctx.user.id,
           reason,
           description,
@@ -83,6 +116,15 @@ export const disputeRouter = router({
           resolvedAt: new Date(),
         },
       });
+
+      // Store-order refunds (stage 12): a customer-favourable resolution
+      // refunds the order — the settlement run then excludes it.
+      if (dispute.storeOrderId && status === 'RESOLVED_CUSTOMER') {
+        await prisma.storeOrder.update({
+          where: { id: dispute.storeOrderId },
+          data: { status: 'REFUNDED' },
+        });
+      }
 
       return dispute;
     }),

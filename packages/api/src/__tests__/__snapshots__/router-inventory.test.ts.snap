@@ -2,6 +2,8 @@
 
 exports[`router inventory > matches the canonical procedure list (detail snapshot) 1`] = `
 "abTest.convert	mutation	protected
+abTest.declareWinner	mutation	admin
+abTest.list	query	admin
 abTest.results	query	admin
 abTest.variant	query	protected
 accountability.checkIn	mutation	customer
@@ -655,8 +657,10 @@ payments.getByBooking	query	protected
 payments.refund	mutation	admin
 payments.webhook	mutation	public
 payouts.calculate	mutation	admin
+payouts.calculateStore	mutation	admin
 payouts.listForAdmin	query	admin
 payouts.listMyPayouts	query	technician
+payouts.listStorePayouts	query	customer
 payouts.process	mutation	admin
 penPal.interests	query	customer
 penPal.match	query	customer

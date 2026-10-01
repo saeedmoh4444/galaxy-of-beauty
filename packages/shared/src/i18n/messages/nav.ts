@@ -123,6 +123,7 @@ export const navMessages = {
   'nav.admin.areas': { ar: 'المناطق', en: 'Areas' },
   'nav.admin.bookings': { ar: 'الحجوزات', en: 'Bookings' },
   'nav.admin.finance': { ar: 'المالية', en: 'Finance' },
+  'nav.admin.abTests': { ar: 'اختبارات A/B', en: 'A/B Tests' },
   'nav.admin.flash-deals': { ar: 'عروض فلاش', en: 'Flash Deals' },
   'nav.admin.beauty-events': { ar: 'الفعاليات', en: 'Events' },
   'nav.admin.loyalty': { ar: 'برامج الولاء', en: 'Loyalty' },
