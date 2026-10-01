@@ -103,7 +103,7 @@ export default function BookingsScreen(): JSX.Element {
               ]}
             >
               {STATUS_LABELS[b.status as string]
-                ? t(STATUS_LABELS[b.status as string])
+                ? t(STATUS_LABELS[b.status as string]!)
                 : (b.status as string)}
             </Text>
           </View>

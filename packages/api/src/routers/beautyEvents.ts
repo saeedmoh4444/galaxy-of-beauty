@@ -1,12 +1,11 @@
 import { z } from 'zod';
 import { TRPCError } from '@trpc/server';
-import { prisma } from '@galaxy/db';
+import { prisma, Prisma } from '@galaxy/db';
 import type { BeautyEvent } from '@galaxy/db';
 import { DEFAULT_PAGE_SIZE } from '@galaxy/shared';
 import { publicProcedure, adminProcedure, customerProcedure, router } from '../trpc';
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any -- EventRegistration has no relations in Prisma schema (legacy include)
-const db = prisma as any;
+const db = prisma;
 
 const stripAccess = <T extends { meetingUrl?: string | null; recordingUrl?: string | null }>(
   rows: T[],
@@ -118,7 +117,11 @@ export const beautyEventRouter = router({
         data: {
           ...(nameAr ? { nameJson: { ar: nameAr, en: nameEn } } : {}),
           ...(descriptionAr !== undefined
-            ? { descriptionJson: descriptionAr ? { ar: descriptionAr, en: descriptionEn } : null }
+            ? {
+                descriptionJson: descriptionAr
+                  ? { ar: descriptionAr, en: descriptionEn }
+                  : Prisma.JsonNull,
+              }
             : {}),
           ...(startsAt ? { startsAt: new Date(startsAt) } : {}),
           ...(endsAt ? { endsAt: new Date(endsAt) } : {}),
@@ -161,14 +164,19 @@ export const beautyEventRouter = router({
       });
     }),
 
-  myRegistrations: customerProcedure.query(async ({ ctx }) =>
-    db.eventRegistration.findMany({
+  myRegistrations: customerProcedure.query(async ({ ctx }) => {
+    const registrations = await db.eventRegistration.findMany({
       where: { userId: ctx.user.id },
-      include: { event: true },
       orderBy: { createdAt: 'desc' },
       take: 50,
-    }),
-  ),
+    });
+    // EventRegistration has no event relation — hydrate manually.
+    const events = await db.beautyEvent.findMany({
+      where: { id: { in: registrations.map((r) => r.eventId) } },
+    });
+    const byId = new Map(events.map((e) => [e.id, e]));
+    return registrations.map((r) => ({ ...r, event: byId.get(r.eventId) ?? null }));
+  }),
 
   // 2.4a — cancelling a REGISTERED spot promotes the oldest waiter.
   cancelRegistration: customerProcedure

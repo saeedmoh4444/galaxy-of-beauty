@@ -19,7 +19,8 @@
     "test:coverage": "vitest run --coverage",
     "test:ui": "vitest --ui",
     "socket": "tsx src/socket/server.ts",
-    "worker": "tsx src/workers/run.ts"
+    "worker": "tsx src/workers/run.ts",
+    "test:unit": "vitest run"
   },
   "dependencies": {
     "@galaxy/db": "workspace:*",

@@ -56,7 +56,7 @@ export default function CommunityScreen(): JSX.Element {
 
   const myLikesArr = (myLikesQ.data as MyLike[] | undefined) ?? [];
   const likedIds = new Set(myLikesArr.map((l) => l.postId));
-  const feedItems = (feedQ.data as FeedData | null)?.items ?? [];
+  const feedItems = (feedQ.data as unknown as FeedData | null)?.items ?? [];
   const posts: CommunityPost[] = Array.isArray(feedItems) ? feedItems : [];
   const trendingPosts = (trendingQ.data as CommunityPost[] | undefined) ?? [];
 

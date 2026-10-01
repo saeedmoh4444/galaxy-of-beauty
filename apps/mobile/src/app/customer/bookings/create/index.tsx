@@ -196,7 +196,7 @@ export default function CreateBookingScreen() {
   // auto-assign logic in handleSubmit (first technician for the service).
   const previewTechnicianId = svc?.technicianServices?.[0]?.technician?.userId ?? 0;
   const previewStartAt = (() => {
-    const [ph, pm] = bookingTime.split(':').map(Number);
+    const [ph = 0, pm = 0] = bookingTime.split(':').map(Number);
     const start = new Date(`${bookingDate}T00:00:00`);
     start.setHours(ph, pm, 0, 0);
     return start.toISOString();
@@ -314,7 +314,7 @@ export default function CreateBookingScreen() {
     }
 
     // Compose the slot from the user's local date + time selection.
-    const [h, m] = bookingTime.split(':').map(Number);
+    const [h = 0, m = 0] = bookingTime.split(':').map(Number);
     const start = new Date(`${bookingDate}T00:00:00`);
     start.setHours(h, m, 0, 0);
     // 1.2: a beauty bundle books ONE slot covering the sequential services —

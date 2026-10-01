@@ -70,7 +70,7 @@ export default function RecurringPage(): JSX.Element {
                   <div>
                     <p className="font-semibold">
                       {t('recurring.service', { id: b.serviceId })} ·{' '}
-                      {FREQ_LABELS[b.frequency] ? t(FREQ_LABELS[b.frequency]) : b.frequency}
+                      {FREQ_LABELS[b.frequency] ? t(FREQ_LABELS[b.frequency]!) : b.frequency}
                     </p>
                     <p className="text-sm text-text-secondary">
                       {t('recurring.nextLabel')}

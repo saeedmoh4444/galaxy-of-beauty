@@ -79,7 +79,7 @@ export function BookingSummary({
     <Card padding="lg" className={className}>
       <div className="flex items-center justify-between">
         <h3 className="text-lg font-bold text-text-primary">{title}</h3>
-        {booking.status ? <Badge variant={statusVariant as any}>{booking.status}</Badge> : null}
+        {booking.status ? <Badge variant={statusVariant}>{booking.status}</Badge> : null}
       </div>
 
       <Divider className="my-3" />

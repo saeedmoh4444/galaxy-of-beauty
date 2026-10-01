@@ -73,7 +73,7 @@ export default function TechBookingsScreen(): JSX.Element {
                 { color: STATUS_COLORS[b.status as string] ?? STATUS_COLORS.DEFAULT },
               ]}
             >
-              {STATUS[b.status as string] ? t(STATUS[b.status as string]) : (b.status as string)}
+              {STATUS[b.status as string] ? t(STATUS[b.status as string]!) : (b.status as string)}
             </Text>
           </View>
           <Text style={styles.date}>

@@ -4,7 +4,7 @@ import { WARRANTY_CREDIT_RATE } from '@galaxy/shared';
 import { customerProcedure, router } from '../trpc';
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any -- Booking has no completedAt in Prisma schema (legacy read)
-const db = prisma as any;
+const db = prisma;
 
 export const serviceWarrantyRouter = router({
   policy: customerProcedure.query(() => ({
@@ -44,7 +44,8 @@ export const serviceWarrantyRouter = router({
       const booking = await db.booking.findUnique({ where: { id: input.bookingId } });
       if (!booking || booking.customerId !== ctx.user.id) throw new Error('الحجز غير موجود');
       if (booking.status !== 'COMPLETED') return { eligible: false, reason: 'الخدمة لم تكتمل بعد' };
-      const completedAt = new Date(booking.completedAt || booking.updatedAt);
+      // Booking has no completedAt column; completion time = last update.
+      const completedAt = new Date(booking.updatedAt);
       const hoursSinceCompletion = (Date.now() - completedAt.getTime()) / 3600000;
       if (hoursSinceCompletion > 48)
         return { eligible: false, reason: 'انتهت فترة الضمان (٤٨ ساعة)' };

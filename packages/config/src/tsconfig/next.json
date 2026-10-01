@@ -1,20 +1,18 @@
 {
+  "extends": "./base.json",
   "compilerOptions": {
     "target": "ES2017",
     "lib": ["DOM", "DOM.Iterable", "ESNext"],
-    "module": "ESNext",
-    "moduleResolution": "bundler",
     "jsx": "preserve",
-    "strict": true,
-    "esModuleInterop": true,
-    "skipLibCheck": true,
-    "forceConsistentCasingInFileNames": true,
-    "resolveJsonModule": true,
-    "isolatedModules": true,
     "noEmit": true,
-    "incremental": true,
-    "allowJs": true,
-    "checkJs": false,
-    "plugins": [{ "name": "next" }]
+    "plugins": [{ "name": "next" }],
+    // Flags still being migrated app-wide (audit stage 9) — re-enabled
+    // incrementally; noUncheckedIndexedAccess is enforced already.
+    "noUnusedLocals": false,
+    "noUnusedParameters": false,
+    "verbatimModuleSyntax": false,
+    "declaration": false,
+    "declarationMap": false,
+    "sourceMap": false
   }
 }

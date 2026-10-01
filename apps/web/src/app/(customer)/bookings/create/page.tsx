@@ -98,7 +98,7 @@ export default function CreateBookingPage(): JSX.Element {
       }
     )?.technicianServices?.[0]?.technician?.userId ?? 0;
   const previewStartAt = (() => {
-    const [ph, pm] = bookingTime.split(':').map(Number);
+    const [ph = 0, pm = 0] = bookingTime.split(':').map(Number);
     const start = new Date(`${bookingDate}T00:00:00`);
     start.setHours(ph, pm, 0, 0);
     return start.toISOString();
@@ -246,7 +246,7 @@ export default function CreateBookingPage(): JSX.Element {
     }
 
     // Compose the slot from the user's local date + time selection.
-    const [h, m] = bookingTime.split(':').map(Number);
+    const [h = 0, m = 0] = bookingTime.split(':').map(Number);
     const start = new Date(`${bookingDate}T00:00:00`);
     start.setHours(h, m, 0, 0);
     // 1.2: a beauty bundle books ONE slot covering the sequential services —
@@ -539,43 +539,43 @@ export default function CreateBookingPage(): JSX.Element {
                     <div className="flex justify-between">
                       <span className="text-text-secondary">{t('booking.price.base')}</span>
                       <span>
-                        {pricePreview.breakdown.base.toFixed(0)} {t('misc.sar')}
+                        {(pricePreview.breakdown.base ?? 0).toFixed(0)} {t('misc.sar')}
                       </span>
                     </div>
-                    {pricePreview.breakdown.tierMultiplier > 1 && (
+                    {(pricePreview.breakdown.tierMultiplier ?? 1) > 1 && (
                       <div className="flex justify-between text-xs">
                         <span className="text-text-tertiary">
-                          {t('booking.price.tier')} (×{pricePreview.breakdown.tierMultiplier})
+                          {`${t('booking.price.tier')} (×${pricePreview.breakdown.tierMultiplier ?? 1})`}
                         </span>
                         <span className="text-text-tertiary">
-                          +{((pricePreview.breakdown.tierMultiplier - 1) * 100).toFixed(0)}%
+                          +{(((pricePreview.breakdown.tierMultiplier ?? 1) - 1) * 100).toFixed(0)}%
                         </span>
                       </div>
                     )}
-                    {pricePreview.breakdown.peakMultiplier > 1 && (
+                    {(pricePreview.breakdown.peakMultiplier ?? 1) > 1 && (
                       <div className="flex justify-between text-xs">
                         <span className="text-text-tertiary">
-                          {t('booking.price.peak')} (×{pricePreview.breakdown.peakMultiplier})
+                          {`${t('booking.price.peak')} (×${pricePreview.breakdown.peakMultiplier ?? 1})`}
                         </span>
                         <span className="text-text-tertiary">
-                          +{((pricePreview.breakdown.peakMultiplier - 1) * 100).toFixed(0)}%
+                          +{(((pricePreview.breakdown.peakMultiplier ?? 1) - 1) * 100).toFixed(0)}%
                         </span>
                       </div>
                     )}
-                    {pricePreview.breakdown.surgeMultiplier > 1 && (
+                    {(pricePreview.breakdown.surgeMultiplier ?? 1) > 1 && (
                       <div className="flex justify-between text-xs">
                         <span className="text-text-tertiary">
-                          {t('booking.price.surge')} (×{pricePreview.breakdown.surgeMultiplier})
+                          {`${t('booking.price.surge')} (×${pricePreview.breakdown.surgeMultiplier ?? 1})`}
                         </span>
                         <span className="text-text-tertiary">
-                          +{((pricePreview.breakdown.surgeMultiplier - 1) * 100).toFixed(0)}%
+                          +{(((pricePreview.breakdown.surgeMultiplier ?? 1) - 1) * 100).toFixed(0)}%
                         </span>
                       </div>
                     )}
                     <div className="flex justify-between pt-1">
                       <span className="text-text-secondary">{t('booking.price.total')}</span>
                       <span className="font-bold text-brand-600">
-                        {pricePreview.breakdown.total.toFixed(0)} {t('misc.sar')}
+                        {(pricePreview.breakdown.total ?? 0).toFixed(0)} {t('misc.sar')}
                       </span>
                     </div>
                   </div>

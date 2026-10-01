@@ -260,7 +260,7 @@ export default function ProfileScreen(): JSX.Element {
       </TouchableOpacity>
       <TouchableOpacity
         style={styles.langRow}
-        onPress={() => setMode(THEME_MODES[(THEME_MODES.indexOf(mode) + 1) % THEME_MODES.length])}
+        onPress={() => setMode(THEME_MODES[(THEME_MODES.indexOf(mode) + 1) % THEME_MODES.length]!)}
         activeOpacity={0.6}
       >
         <Text style={styles.langLabel}>{t('mobile.nightMode.title')}</Text>

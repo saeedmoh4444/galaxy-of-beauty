@@ -91,7 +91,7 @@ export default function BeautyJournalPage(): JSX.Element {
                 <option value="">{t('beautyJournal.serviceTypeLabel')}</option>
                 {SERVICE_TYPES.map((s) => (
                   <option key={s} value={s}>
-                    {t(TYPE_LABELS[s])}
+                    {t(TYPE_LABELS[s]!)}
                   </option>
                 ))}
               </select>
@@ -137,7 +137,7 @@ export default function BeautyJournalPage(): JSX.Element {
                   {e.mood && <span>{MOODS[e.mood - 1]}</span>}
                   {e.serviceType && (
                     <span className="rounded-full bg-brand-50 px-2 py-0.5 text-brand-600">
-                      {t(TYPE_LABELS[e.serviceType])}
+                      {t(TYPE_LABELS[e.serviceType]!)}
                     </span>
                   )}
                   <span>

@@ -111,7 +111,7 @@ export function BeautyDnaMatches(): JSX.Element {
                     <p className="text-xs text-text-secondary">
                       {((attrs.shade as string) &&
                         (SHADE_LABELS[attrs.shade as string]
-                          ? t(SHADE_LABELS[attrs.shade as string])
+                          ? t(SHADE_LABELS[attrs.shade as string]!)
                           : (attrs.shade as string))) ||
                         ''}
                       {product.brand ? ` · ${product.brand as string}` : ''}

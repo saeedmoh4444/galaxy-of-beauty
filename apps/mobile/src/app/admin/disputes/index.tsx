@@ -49,7 +49,7 @@ export default function AdminDisputesScreen(): JSX.Element {
       {data.map((d, i) => (
         <View key={i} style={styles.card}>
           <Text style={styles.status}>
-            {d.status && STATUS_MAP[d.status] ? t(STATUS_MAP[d.status]) : d.status}
+            {d.status && STATUS_MAP[d.status] ? t(STATUS_MAP[d.status]!) : d.status}
           </Text>
           <View style={{ flex: 1 }}>
             <Text style={styles.reason}>{d.reason}</Text>

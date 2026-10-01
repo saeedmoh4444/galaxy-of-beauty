@@ -5,7 +5,7 @@ export const mobileTechMessages = {
   'mobile.tech.wallet.title': { ar: 'المحفظة', en: 'Wallet' },
   'mobile.tech.wallet.current-balance': { ar: 'الرصيد الحالي', en: 'Current Balance' },
   'mobile.tech.wallet.pending-settlement': {
-    ar: ' {amount} ر.س قيد التسوية',
+    ar: '{amount} ر.س قيد التسوية',
     en: '{amount} SAR pending settlement',
   },
   'mobile.tech.wallet.current-month': { ar: 'الشهر الحالي', en: 'This Month' },
@@ -46,7 +46,7 @@ export const mobileTechMessages = {
     ar: 'صور من أعمالكِ السابقة',
     en: 'Photos from your previous work',
   },
-  'mobile.tech.gallery.likes': { ar: ' {count} إعجاب', en: '{count} likes' },
+  'mobile.tech.gallery.likes': { ar: '{count} إعجاب', en: '{count} likes' },
 
   // ---- Bookings ----
   'mobile.tech.bookings.title': { ar: 'حجوزاتي', en: 'My Bookings' },

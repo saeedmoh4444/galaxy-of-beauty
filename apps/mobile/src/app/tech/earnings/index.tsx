@@ -56,7 +56,7 @@ export default function TechEarningsScreen(): JSX.Element {
                 <Text style={styles.txnPeriod}>{item.month ? (item.month as string) : ''}</Text>
                 <Text style={styles.txnStatus}>
                   {STATUS_MAP[item.status as string]
-                    ? t(STATUS_MAP[item.status as string])
+                    ? t(STATUS_MAP[item.status as string]!)
                     : (item.status as string)}
                 </Text>
               </View>
