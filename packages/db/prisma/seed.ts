@@ -1421,7 +1421,6 @@ async function main() {
     const data = {
       titleJson: def.titleJson,
       descriptionJson: def.descriptionJson,
-      serviceIds: svcIds,
       discountPct: def.discountPct,
       originalPrice: original,
       totalPrice: total,
@@ -1430,13 +1429,19 @@ async function main() {
       sortOrder: def.sortOrder,
       isActive: true,
     };
+    const bundleServiceLinks = {
+      create: svcIds.map((serviceId, sortOrder) => ({ serviceId, sortOrder })),
+    };
     const existing = await prisma.beautyBundle.findFirst({
       where: { titleJson: { path: ['ar'], equals: def.titleJson.ar } },
     });
     if (existing) {
-      await prisma.beautyBundle.update({ where: { id: existing.id }, data });
+      await prisma.beautyBundle.update({
+        where: { id: existing.id },
+        data: { ...data, services: { deleteMany: {}, ...bundleServiceLinks } },
+      });
     } else {
-      await prisma.beautyBundle.create({ data });
+      await prisma.beautyBundle.create({ data: { ...data, services: bundleServiceLinks } });
     }
   }
   console.log(` ${beautyBundleDefs.length} beauty bundles (1.2)`);
@@ -3201,105 +3206,146 @@ async function main() {
 
   // ── Beauty Bundles ──
   try {
-    await db.beautyBundle.createMany({
-      data: [
-        {
-          titleJson: { ar: 'باقة العروس', en: 'Bridal Package' },
-          descriptionJson: {
-            ar: 'مكياج عرايس + تسريحة شعر + حناء نقش — كل ما تحتاجينه ليومكِ الكبير',
-            en: 'Bridal makeup + hairstyling + henna art',
-          },
-          serviceIds: [5, 1, 7],
-          discountPct: 20,
-          totalPrice: 840,
-          originalPrice: 1050,
-          season: 'WEDDING',
-          isSeasonal: true,
-          sortOrder: 1,
+    // serviceIds moved to the bundle_services join table (stage 8b).
+    const beautyBundleRows = [
+      {
+        titleJson: { ar: 'باقة العروس', en: 'Bridal Package' },
+        descriptionJson: {
+          ar: 'مكياج عرايس + تسريحة شعر + حناء نقش — كل ما تحتاجينه ليومكِ الكبير',
+          en: 'Bridal makeup + hairstyling + henna art',
         },
-        {
-          titleJson: { ar: 'باقة يوم السبا', en: 'Spa Day Package' },
-          descriptionJson: {
-            ar: 'تنظيف بشرة + مساج استرخائي + مانيكير جل — يوم كامل من العناية',
-            en: 'Facial + massage + gel manicure',
-          },
-          serviceIds: [4, 6, 3],
-          discountPct: 15,
-          totalPrice: 383,
-          originalPrice: 450,
-          sortOrder: 2,
+        services: {
+          create: [
+            { serviceId: 5, sortOrder: 0 },
+            { serviceId: 1, sortOrder: 1 },
+            { serviceId: 7, sortOrder: 2 },
+          ],
         },
-        {
-          titleJson: { ar: 'باقة التجديد السريع', en: 'Quick Refresh' },
-          descriptionJson: {
-            ar: 'قص شعر + مانيكير جل — تجديد سريع في ساعة ونصف',
-            en: 'Haircut + gel manicure',
-          },
-          serviceIds: [1, 3],
-          discountPct: 10,
-          totalPrice: 162,
-          originalPrice: 180,
-          sortOrder: 3,
+        discountPct: 20,
+        totalPrice: 840,
+        originalPrice: 1050,
+        season: 'WEDDING',
+        isSeasonal: true,
+        sortOrder: 1,
+      },
+      {
+        titleJson: { ar: 'باقة يوم السبا', en: 'Spa Day Package' },
+        descriptionJson: {
+          ar: 'تنظيف بشرة + مساج استرخائي + مانيكير جل — يوم كامل من العناية',
+          en: 'Facial + massage + gel manicure',
         },
-        {
-          titleJson: { ar: 'باقة العيد', en: 'Eid Glam Package' },
-          descriptionJson: {
-            ar: 'صبغ شعر + مكياج + حناء — إطلالة متكاملة للعيد',
-            en: 'Hair color + makeup + henna',
-          },
-          serviceIds: [2, 5, 7],
-          discountPct: 15,
-          totalPrice: 910,
-          originalPrice: 1070,
-          season: 'EID',
-          isSeasonal: true,
-          sortOrder: 4,
+        services: {
+          create: [
+            { serviceId: 4, sortOrder: 0 },
+            { serviceId: 6, sortOrder: 1 },
+            { serviceId: 3, sortOrder: 2 },
+          ],
         },
-        // Women-only life event bundles (Phase W2)
-        {
-          titleJson: { ar: 'باقة أول تجربة', en: 'First Beauty Experience' },
-          descriptionJson: {
-            ar: 'باقة خاصة للمراهقات: تنظيف بشرة لطيف + مانيكير + استشارة عناية',
-            en: 'Teen-friendly: gentle facial + manicure + beauty consultation',
-          },
-          serviceIds: [9, 3],
-          discountPct: 25,
-          totalPrice: 180,
-          originalPrice: 240,
-          season: 'TEEN',
-          isSeasonal: true,
-          sortOrder: 5,
+        discountPct: 15,
+        totalPrice: 383,
+        originalPrice: 450,
+        sortOrder: 2,
+      },
+      {
+        titleJson: { ar: 'باقة التجديد السريع', en: 'Quick Refresh' },
+        descriptionJson: {
+          ar: 'قص شعر + مانيكير جل — تجديد سريع في ساعة ونصف',
+          en: 'Haircut + gel manicure',
         },
-        {
-          titleJson: { ar: 'باقة الأمومة', en: 'Mommy Refresh' },
-          descriptionJson: {
-            ar: 'للأمهات الجدد: مساج استرخائي + تنظيف بشرة سريع + عناية بالشعر',
-            en: 'New moms: relaxation massage + express facial + hair care',
-          },
-          serviceIds: [6, 9, 1],
-          discountPct: 20,
-          totalPrice: 360,
-          originalPrice: 450,
-          season: 'MOTHER',
-          isSeasonal: true,
-          sortOrder: 6,
+        services: {
+          create: [
+            { serviceId: 1, sortOrder: 0 },
+            { serviceId: 3, sortOrder: 1 },
+          ],
         },
-        {
-          titleJson: { ar: 'باقة الساعة الذهبية', en: 'Golden Hour Package' },
-          descriptionJson: {
-            ar: 'للسيدات ٥٥+: مساج لطيف + عناية بالبشرة + مانيكير — مع شاي وتمر',
-            en: '55+ ladies: gentle massage + skincare + manicure — with tea & dates',
-          },
-          serviceIds: [6, 4, 3],
-          discountPct: 25,
-          totalPrice: 338,
-          originalPrice: 450,
-          season: 'GOLDEN',
-          isSeasonal: true,
-          sortOrder: 7,
+        discountPct: 10,
+        totalPrice: 162,
+        originalPrice: 180,
+        sortOrder: 3,
+      },
+      {
+        titleJson: { ar: 'باقة العيد', en: 'Eid Glam Package' },
+        descriptionJson: {
+          ar: 'صبغ شعر + مكياج + حناء — إطلالة متكاملة للعيد',
+          en: 'Hair color + makeup + henna',
         },
-      ],
-    });
+        services: {
+          create: [
+            { serviceId: 2, sortOrder: 0 },
+            { serviceId: 5, sortOrder: 1 },
+            { serviceId: 7, sortOrder: 2 },
+          ],
+        },
+        discountPct: 15,
+        totalPrice: 910,
+        originalPrice: 1070,
+        season: 'EID',
+        isSeasonal: true,
+        sortOrder: 4,
+      },
+      {
+        titleJson: { ar: 'باقة أول تجربة', en: 'First Beauty Experience' },
+        descriptionJson: {
+          ar: 'باقة خاصة للمراهقات: تنظيف بشرة لطيف + مانيكير + استشارة عناية',
+          en: 'Teen-friendly: gentle facial + manicure + beauty consultation',
+        },
+        services: {
+          create: [
+            { serviceId: 9, sortOrder: 0 },
+            { serviceId: 3, sortOrder: 1 },
+          ],
+        },
+        discountPct: 25,
+        totalPrice: 180,
+        originalPrice: 240,
+        season: 'TEEN',
+        isSeasonal: true,
+        sortOrder: 5,
+      },
+      {
+        titleJson: { ar: 'باقة الأمومة', en: 'Mommy Refresh' },
+        descriptionJson: {
+          ar: 'للأمهات الجدد: مساج استرخائي + تنظيف بشرة سريع + عناية بالشعر',
+          en: 'New moms: relaxation massage + express facial + hair care',
+        },
+        services: {
+          create: [
+            { serviceId: 6, sortOrder: 0 },
+            { serviceId: 9, sortOrder: 1 },
+            { serviceId: 1, sortOrder: 2 },
+          ],
+        },
+        discountPct: 20,
+        totalPrice: 360,
+        originalPrice: 450,
+        season: 'MOTHER',
+        isSeasonal: true,
+        sortOrder: 6,
+      },
+      {
+        titleJson: { ar: 'باقة الساعة الذهبية', en: 'Golden Hour Package' },
+        descriptionJson: {
+          ar: 'للسيدات ٥٥+: مساج لطيف + عناية بالبشرة + مانيكير — مع شاي وتمر',
+          en: '55+ ladies: gentle massage + skincare + manicure — with tea & dates',
+        },
+        services: {
+          create: [
+            { serviceId: 6, sortOrder: 0 },
+            { serviceId: 4, sortOrder: 1 },
+            { serviceId: 3, sortOrder: 2 },
+          ],
+        },
+        discountPct: 25,
+        totalPrice: 338,
+        originalPrice: 450,
+        season: 'GOLDEN',
+        isSeasonal: true,
+        sortOrder: 7,
+      },
+    ];
+    for (const row of beautyBundleRows) {
+      await db.beautyBundle.create({ data: row });
+    }
     console.log(' 7 beauty bundles');
   } catch (err: any) {
     console.log(`    Bundles: ${err.message?.slice(0, 60)}`);

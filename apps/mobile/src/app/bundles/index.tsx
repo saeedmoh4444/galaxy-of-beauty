@@ -11,7 +11,7 @@ interface BundleItem {
   id?: number;
   titleJson?: { ar?: string; en?: string };
   descriptionJson?: { ar?: string; en?: string } | null;
-  serviceIds?: number[];
+  services?: { serviceId?: number }[];
   originalPrice?: number | string;
   totalPrice?: number | string;
 }
@@ -77,7 +77,7 @@ export default function BundlesListScreen(): JSX.Element {
               ) : null}
               <View style={styles.foot}>
                 <Text style={styles.cc}>
-                  {t('bundles.servicesCount', { count: (b.serviceIds ?? []).length })}
+                  {t('bundles.servicesCount', { count: (b.services ?? []).length })}
                 </Text>
                 <Text style={styles.cp}>
                   <Text style={styles.cpo}>

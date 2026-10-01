@@ -68,11 +68,13 @@ beforeAll(async () => {
     data: {
       titleJson: { ar: 'باقة التجديد', en: 'Refresh Package' },
       descriptionJson: { ar: 'ثلاث خدمات', en: 'Three services' },
-      serviceIds: createdServiceIds,
       discountPct: 10,
       originalPrice: 185,
       totalPrice: 166.5,
       sortOrder: 1,
+      services: {
+        create: createdServiceIds.map((serviceId, sortOrder) => ({ serviceId, sortOrder })),
+      },
     },
   });
   createdBundleIds.push(bundle.id);

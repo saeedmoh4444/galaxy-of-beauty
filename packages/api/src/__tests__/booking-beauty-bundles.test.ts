@@ -74,31 +74,40 @@ beforeAll(async () => {
     createdServiceIds.push(svc.id);
   }
 
-  // original 300 → 10% off → total 270.
+  // original 300 → 10% off → total 270. serviceIds now live in the
+  // bundle_services join table (stage 8b).
   const base = {
     titleJson: { ar: 'باقة يوم كامل', en: 'Full Day Package' },
-    serviceIds: createdServiceIds,
     discountPct: 10,
     originalPrice: 300,
     totalPrice: 270,
     sortOrder: 1,
   };
-  const active = await prisma.beautyBundle.create({ data: base });
+  const createBundle = (data: Record<string, unknown>) =>
+    prisma.beautyBundle.create({
+      data: {
+        ...data,
+        services: {
+          create: createdServiceIds.map((serviceId, sortOrder) => ({ serviceId, sortOrder })),
+        },
+      },
+    });
+  const active = await createBundle(base);
   createdBundleIds.push(active.id);
   activeBundleId = active.id;
 
-  const inactive = await prisma.beautyBundle.create({
-    data: { ...base, titleJson: { ar: 'باقة موقوفة', en: 'Paused Package' }, isActive: false },
+  const inactive = await createBundle({
+    ...base,
+    titleJson: { ar: 'باقة موقوفة', en: 'Paused Package' },
+    isActive: false,
   });
   createdBundleIds.push(inactive.id);
   inactiveBundleId = inactive.id;
 
-  const expired = await prisma.beautyBundle.create({
-    data: {
-      ...base,
-      titleJson: { ar: 'باقة منتهية', en: 'Expired Package' },
-      validUntil: new Date(Date.now() - 86_400_000),
-    },
+  const expired = await createBundle({
+    ...base,
+    titleJson: { ar: 'باقة منتهية', en: 'Expired Package' },
+    validUntil: new Date(Date.now() - 86_400_000),
   });
   createdBundleIds.push(expired.id);
   expiredBundleId = expired.id;
