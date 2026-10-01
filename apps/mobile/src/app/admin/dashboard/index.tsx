@@ -45,6 +45,8 @@ export default function AdminDashboardScreen(): JSX.Element {
           { h: '/admin/technicians', l: t('mobile.admin.dashboard.link-technicians') },
           { h: '/admin/finance', l: t('mobile.admin.dashboard.link-finance') },
           { h: '/admin/analytics', l: t('mobile.admin.dashboard.link-analytics') },
+          // M7 nav-hub: entry point to the full admin screen list.
+          { h: '/admin', l: t('nav.more') },
         ].map((link, i) => (
           <TouchableOpacity
             key={i}

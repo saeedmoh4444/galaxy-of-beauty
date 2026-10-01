@@ -62,6 +62,11 @@ export default function TechDashboardScreen(): JSX.Element {
           { h: '/tech/earnings', l: t('tech.dashboard.earnings') },
           { h: '/tech/slots', l: t('mobile.tech.dashboard.slots') },
           { h: '/tech/profile', l: t('mobile.tech.dashboard.my-profile') },
+          // M7 nav-hub expansion: remaining technician screens.
+          { h: '/tech/pro-tools', l: t('mobile.tech.pro-tools.title') },
+          { h: '/tech/waitlist', l: t('mobile.tech.waitlist.title') },
+          { h: '/tech/wallet', l: t('mobile.tech.wallet.title') },
+          { h: '/tech/performance', l: t('tech.performance.title') },
         ].map((l, i) => (
           <TouchableOpacity
             key={i}
