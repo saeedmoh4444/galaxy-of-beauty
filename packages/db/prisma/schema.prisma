@@ -355,6 +355,7 @@ model Technician {
 
   @@index([city, kycStatus])
   @@index([ratingAvg])
+  @@index([userId])
   @@map("technicians")
 }
 
@@ -371,6 +372,7 @@ model Wallet {
   user         User                @relation(fields: [userId], references: [id], onDelete: Cascade)
   transactions WalletTransaction[]
 
+  @@index([userId])
   @@map("wallets")
 }
 
@@ -693,6 +695,8 @@ model Booking {
   @@index([customerId, status, createdAt])
   @@index([technicianId, status, startAt])
   @@index([status, createdAt])
+  @@index([serviceId])
+  @@index([addressId])
   @@map("bookings")
 }
 
@@ -762,6 +766,7 @@ model Review {
   customer User    @relation("CustomerReviews", fields: [customerId], references: [id])
 
   @@index([customerId])
+  @@index([bookingId])
   @@map("reviews")
 }
 
@@ -787,6 +792,7 @@ model Dispute {
 
   @@index([status])
   @@index([raisedBy])
+  @@index([bookingId])
   @@map("disputes")
 }
 
@@ -891,6 +897,7 @@ model ZatcaInvoice {
 
   @@index([invoiceNumber])
   @@index([status])
+  @@index([bookingId])
   @@map("zatca_invoices")
 }
 
@@ -988,6 +995,7 @@ model CustomerAiSubscription {
   usage AiUsage[]
 
   @@index([userId, status])
+  @@index([planId])
   @@map("customer_ai_subscriptions")
 }
 
@@ -1114,6 +1122,7 @@ model Streak {
 
   customer User @relation(fields: [customerId], references: [id], onDelete: Cascade)
 
+  @@index([customerId])
   @@map("streaks")
 }
 
@@ -1524,6 +1533,7 @@ model Vendor {
   @@index([storeSlug])
   @@index([isVerified, isActive])
   @@index([type, isVerified, isActive])
+  @@index([userId])
   @@map("vendors")
 }
 
@@ -2171,6 +2181,7 @@ model EventCertificate {
 
   registration EventRegistration @relation(fields: [registrationId], references: [id], onDelete: Cascade)
 
+  @@index([registrationId])
   @@map("event_certificates")
 }
 
@@ -3295,6 +3306,7 @@ model KindnessAccount {
   transactions   KindnessTransaction[]
 
   @@index([points])
+  @@index([userId])
   @@map("kindness_accounts")
 }
 
@@ -3933,6 +3945,7 @@ model ClassPassPurchase {
   pass             ClassPass @relation(fields: [passId], references: [id], onDelete: Cascade)
 
   @@index([userId])
+  @@index([passId])
   @@map("class_pass_purchases")
 }
 
@@ -4231,6 +4244,7 @@ model SeasonalService {
   category Category @relation(fields: [categoryId], references: [id])
 
   @@index([season, startDate, endDate])
+  @@index([categoryId])
   @@map("seasonal_services")
 }
 
