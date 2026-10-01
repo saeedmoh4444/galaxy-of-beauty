@@ -102,7 +102,7 @@ export const mobileCoreMessages = {
     en: 'It may have been moved or deleted',
   },
   'mobile.notFound.code': { ar: '٤٠٤', en: '404' },
-  'mobile.notFound.home': { ar: 'الرئيسية', en: ' Home' },
+  'mobile.notFound.home': { ar: 'الرئيسية', en: 'Home' },
   'mobile.notFound.back': { ar: '↩️ رجوع', en: '↩️ Back' },
   'mobile.offline.title': { ar: 'أنت غير متصل', en: 'You are offline' },
   'mobile.offline.desc': {

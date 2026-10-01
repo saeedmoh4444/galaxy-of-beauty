@@ -69,14 +69,14 @@ export const mobileAdminMessages = {
   'mobile.admin.audit-log.tag-update': { ar: 'تعديل', en: 'Update' },
 
   // ---- Feature Flags ----
-  'mobile.admin.feature-flags.title': { ar: ' Feature Flags', en: 'Feature Flags' },
+  'mobile.admin.feature-flags.title': { ar: 'Feature Flags', en: 'Feature Flags' },
   'mobile.admin.feature-flags.load-error': {
     ar: 'فشل تحميل الميزات',
     en: 'Failed to load features',
   },
 
   // ---- Monitoring ----
-  'mobile.admin.monitoring.title': { ar: ' Monitoring', en: 'Monitoring' },
+  'mobile.admin.monitoring.title': { ar: 'Monitoring', en: 'Monitoring' },
   'mobile.admin.monitoring.load-error': {
     ar: 'فشل تحميل حالة الأنظمة',
     en: 'Failed to load system health',
