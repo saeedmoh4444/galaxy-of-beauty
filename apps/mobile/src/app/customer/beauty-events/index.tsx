@@ -25,6 +25,7 @@ interface BeautyEvent {
 interface EventRegistration {
   id: number;
   eventId?: number;
+  status?: string;
   event?: { nameJson?: EventNameJson };
 }
 
@@ -41,10 +42,14 @@ export default function BeautyEventsScreen(): JSX.Element {
   const myRegsQ = trpc.beautyEvents.myRegistrations.useQuery(undefined, { enabled: isAuthed });
   const myRegs = (myRegsQ.data ?? []) as EventRegistration[];
   const registeredIds = new Set(myRegs.map((r) => r.eventId));
+  const statusById = new Map(myRegs.map((r) => [r.eventId, r.status]));
 
   const registerMut = trpc.beautyEvents.register.useMutation({
     onSuccess: () => {
+      // Waitlist exposure: myRegistrations includes WAITLIST rows, so the
+      // card flips to the waitlisted chip instead of a silent re-register.
       void eventsQ.refetch();
+      void myRegsQ.refetch();
     },
   });
   const cancelMut = trpc.beautyEvents.cancelRegistration.useMutation({
@@ -134,6 +139,23 @@ export default function BeautyEventsScreen(): JSX.Element {
                 {e.price ? t('beautyEvents.price', { price: e.price }) : t('beautyEvents.free')}
               </Text>
             </View>
+            {statusById.get(e.id) === 'WAITLIST' ? (
+              <Text
+                style={{
+                  fontSize: 11,
+                  fontWeight: '700',
+                  color: '#92400e',
+                  backgroundColor: '#fef3c7',
+                  borderRadius: 10,
+                  paddingHorizontal: 10,
+                  paddingVertical: 4,
+                  marginTop: 8,
+                  overflow: 'hidden',
+                }}
+              >
+                {t('beautyEvents.waitlisted')}
+              </Text>
+            ) : null}
             <TouchableOpacity
               onPress={() => (isReg ? handleCancel(e.id) : handleRegister(e.id))}
               style={[s.btn, isReg && { backgroundColor: '#e5e7eb' }]}

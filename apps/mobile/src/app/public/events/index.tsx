@@ -1,4 +1,12 @@
-import { View, Text, ScrollView, StyleSheet, TouchableOpacity, RefreshControl } from 'react-native';
+import {
+  View,
+  Text,
+  ScrollView,
+  StyleSheet,
+  TouchableOpacity,
+  Pressable,
+  RefreshControl,
+} from 'react-native';
 import { useState } from 'react';
 import type { JSX } from 'react';
 import { useRouter } from 'expo-router';
@@ -72,7 +80,11 @@ export default function EventsScreen(): JSX.Element {
       {filtered.map((e) => {
         const et = ET[e.eventType ?? ''] ?? { label: e.eventType ?? '', emoji: '🎉' };
         return (
-          <View key={e.id} style={styles.card}>
+          <Pressable
+            key={e.id}
+            style={styles.card}
+            onPress={() => router.push(`/public/events/${e.id}` as never)}
+          >
             <Text style={styles.ee}>{et.emoji}</Text>
             <View style={{ flex: 1 }}>
               <Text style={styles.en}>{localize(e.nameJson, locale) ?? e.nameAr ?? ''}</Text>
@@ -88,11 +100,11 @@ export default function EventsScreen(): JSX.Element {
             </View>
             <TouchableOpacity
               style={styles.jb}
-              onPress={() => router.push('/customer/beauty-events' as never)}
+              onPress={() => router.push(`/public/events/${e.id}` as never)}
             >
               <Text style={styles.jt}>{t('mobile.public.events.register')}</Text>
             </TouchableOpacity>
-          </View>
+          </Pressable>
         );
       })}
     </ScrollView>

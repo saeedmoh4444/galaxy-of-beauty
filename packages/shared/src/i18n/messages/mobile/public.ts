@@ -157,6 +157,27 @@ export const mobilePublicMessages = {
   'mobile.public.events.title': { ar: 'الفعاليات', en: 'Events' },
   'mobile.public.events.online': { ar: 'أونلاين', en: 'Online' },
   'mobile.public.events.register': { ar: 'تسجيل', en: 'Register' },
+  'mobile.public.events.notFound': {
+    ar: 'الفعالية غير متاحة أو لم تُنشر بعد',
+    en: 'Event not available or not published yet',
+  },
+  'mobile.public.events.loginToRegister': {
+    ar: 'سجلي الدخول للحجز في هذه الفعالية',
+    en: 'Sign in to register for this event',
+  },
+  'mobile.public.events.registered': { ar: 'تم تسجيلكِ بنجاح', en: 'Registered successfully' },
+  'mobile.public.events.waitlisted': {
+    ar: 'الفعالية مكتملة — تمت إضافتكِ لقائمة الانتظار',
+    en: 'Event full — you are on the waitlist',
+  },
+  'mobile.public.events.waitlistPosition': {
+    ar: 'ترتيبكِ في قائمة الانتظار: {position}',
+    en: 'Waitlist position: {position}',
+  },
+  'mobile.public.events.attendees': { ar: 'السعة القصوى', en: 'Capacity' },
+  'mobile.public.events.price': { ar: 'السعر', en: 'Price' },
+  'mobile.public.events.free': { ar: 'مجاناً', en: 'Free' },
+  'mobile.public.events.details': { ar: 'التفاصيل', en: 'Details' },
   'mobile.public.booking-heatmap.title': { ar: 'خريطة الحجوزات', en: 'Bookings Heatmap' },
   'mobile.public.booking-heatmap.low': { ar: 'هادئ', en: 'Quiet' },
   'mobile.public.booking-heatmap.medium': { ar: 'متوسط', en: 'Average' },

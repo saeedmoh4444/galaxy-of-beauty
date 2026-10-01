@@ -33,6 +33,22 @@ export const beautyEventRouter = router({
       }),
     ),
   ),
+
+  // Audit stage 12 — single-event fetch for the mobile detail screen.
+  // Public + published-only: drafts and unknown ids 404, never leak.
+  getById: publicProcedure
+    .input(z.object({ id: z.number().int().positive() }))
+    .query(async ({ input }) => {
+      const event = await db.beautyEvent.findFirst({
+        where: { id: input.id, isPublished: true },
+      });
+      if (!event) {
+        throw new TRPCError({ code: 'NOT_FOUND', message: 'Event not found' });
+      }
+      const [stripped] = stripAccess<BeautyEvent>([event]);
+      return stripped!;
+    }),
+
   listAll: adminProcedure.query(async () =>
     db.beautyEvent.findMany({ orderBy: { startsAt: 'desc' }, take: 100 }),
   ),
