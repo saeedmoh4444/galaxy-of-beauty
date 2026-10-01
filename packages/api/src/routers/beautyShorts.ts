@@ -18,10 +18,15 @@ const db = prisma;
  * faceBlurred flag signals the KSA women-only media promise.
  */
 export const beautyShortsRouter = router({
-  /** feed — approved + active shorts, newest first (public). */
-  feed: publicProcedure.query(() =>
+  /** feed — approved + active shorts, newest first. Women-only privacy:
+   * anonymous callers only see face-blurred shorts. */
+  feed: publicProcedure.query(({ ctx }) =>
     db.short.findMany({
-      where: { isApproved: true, isActive: true },
+      where: {
+        isApproved: true,
+        isActive: true,
+        ...(ctx.user ? {} : { faceBlurred: true }),
+      },
       orderBy: { createdAt: 'desc' },
       take: 50,
     }),
@@ -31,9 +36,13 @@ export const beautyShortsRouter = router({
    * home — the curated reels row for the public home (Phase 3 sprint 1):
    * approved + active shorts, top by views. Public.
    */
-  home: publicProcedure.query(() =>
+  home: publicProcedure.query(({ ctx }) =>
     db.short.findMany({
-      where: { isApproved: true, isActive: true },
+      where: {
+        isApproved: true,
+        isActive: true,
+        ...(ctx.user ? {} : { faceBlurred: true }),
+      },
       orderBy: [{ views: 'desc' }, { createdAt: 'desc' }],
       take: 8,
     }),

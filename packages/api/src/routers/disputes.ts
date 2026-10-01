@@ -210,11 +210,13 @@ export const disputeRouter = router({
         throw notFound('Dispute');
       }
 
-      // Only participants or admins can view
+      // Only participants or admins can view — store disputes fall back
+      // to raiser/admin (no booking parties).
       if (
         dispute.raisedBy !== ctx.user.id &&
-        dispute.booking.customerId !== ctx.user.id &&
-        dispute.booking.technicianId !== ctx.user.id
+        (!dispute.booking ||
+          (dispute.booking.customerId !== ctx.user.id &&
+            dispute.booking.technicianId !== ctx.user.id))
       ) {
         throw new TRPCError({ code: 'FORBIDDEN', message: 'Access denied' });
       }
