@@ -1,7 +1,7 @@
 import { z } from 'zod';
 import { TRPCError } from '@trpc/server';
 import { prisma } from '@galaxy/db';
-import { publicProcedure, adminProcedure, router } from '../trpc';
+import { customerProcedure, publicProcedure, adminProcedure, router } from '../trpc';
 import { buildBundleQuote } from '@galaxy/shared';
 
 const serviceSelect = {
@@ -122,5 +122,66 @@ export const beautyBundlesRouter = router({
       const byId = new Map(services.map((s) => [s.id, Number(s.basePrice)]));
       const prices = input.serviceIds.map((id) => byId.get(id) as number);
       return { ...buildBundleQuote(prices), services };
+    }),
+
+  // Audit stage 12 — persist a custom-bundle wizard selection (web wizard
+  // tiers: 2=10%, 3=15%, 4=20%, 5=25%). Prices are computed server-side
+  // from live basePrice — the client never supplies money math. Booking
+  // create picks the result up via ?beautyBundleId=.
+  createCustom: customerProcedure
+    .input(
+      z.object({
+        serviceIds: z.array(z.number().int().positive()).min(2).max(5),
+      }),
+    )
+    .mutation(async ({ input }) => {
+      const unique = [...new Set(input.serviceIds)];
+      if (unique.length !== input.serviceIds.length) {
+        throw new TRPCError({ code: 'BAD_REQUEST', message: 'Duplicate services in bundle' });
+      }
+      const services = await prisma.service.findMany({
+        where: { id: { in: unique } },
+        select: serviceSelect,
+      });
+      if (services.length !== unique.length) {
+        throw new TRPCError({ code: 'NOT_FOUND', message: 'One or more services not found' });
+      }
+
+      const WIZARD_TIERS: Record<number, number> = { 2: 10, 3: 15, 4: 20, 5: 25 };
+      const discountPct = WIZARD_TIERS[unique.length] ?? 0;
+      const byId = new Map(services.map((s) => [s.id, Number(s.basePrice)]));
+      const originalPrice =
+        Math.round(unique.reduce((sum, id) => sum + (byId.get(id) as number), 0) * 100) / 100;
+      const totalPrice = Math.round(originalPrice * (1 - discountPct / 100) * 100) / 100;
+
+      const bundle = await prisma.$transaction(async (tx) => {
+        const created = await tx.beautyBundle.create({
+          data: {
+            titleJson: { ar: 'باقتي المخصصة', en: 'My Custom Bundle' },
+            discountPct,
+            originalPrice,
+            totalPrice,
+            isActive: true,
+          },
+        });
+        await tx.bundleService.createMany({
+          data: unique.map((serviceId, sortOrder) => ({
+            bundleId: created.id,
+            serviceId,
+            sortOrder,
+          })),
+        });
+        return created;
+      });
+
+      return {
+        bundleId: bundle.id,
+        quote: {
+          originalPrice,
+          discountPct,
+          totalPrice,
+          savings: Math.round((originalPrice - totalPrice) * 100) / 100,
+        },
+      };
     }),
 });

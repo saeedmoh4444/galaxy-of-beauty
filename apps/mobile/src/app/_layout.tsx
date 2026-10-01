@@ -68,6 +68,10 @@ function RootNavigator() {
               {/* 1.2 Service Bundles */}
               <Stack.Screen name="bundles/index" options={{ title: t('mobile.bundlesTitle') }} />
               <Stack.Screen name="bundles/[id]" options={{ title: t('mobile.bundleDetails') }} />
+              <Stack.Screen
+                name="bundles/custom"
+                options={{ title: t('marketing.bundles.title') }}
+              />
               <Stack.Screen name="compare/index" options={{ title: t('mobile.compareServices') }} />
               <Stack.Screen
                 name="subscription-boxes/index"

@@ -47,6 +47,14 @@ export default function BundlesListScreen(): JSX.Element {
     >
       <Text style={styles.t}>{t('bundles.title')}</Text>
       <Text style={styles.s}>{t('bundles.subtitle')}</Text>
+      <TouchableOpacity
+        style={styles.customCta}
+        testID="bundles-custom-cta"
+        activeOpacity={0.8}
+        onPress={() => router.push('/bundles/custom' as never)}
+      >
+        <Text style={styles.customCtaText}>{t('marketing.bundles.title')} →</Text>
+      </TouchableOpacity>
       {bundles.length === 0 ? (
         <Text style={styles.empty}>{t('bundles.empty')}</Text>
       ) : (
@@ -99,6 +107,14 @@ const styles = StyleSheet.create({
   i: { padding: 16, paddingTop: 30, paddingBottom: 40 },
   t: { fontSize: 24, fontWeight: '800', color: '#db2777', textAlign: 'center' },
   s: { fontSize: 13, color: '#9ca3af', textAlign: 'center', marginTop: 4, marginBottom: 20 },
+  customCta: {
+    backgroundColor: '#7c3aed',
+    borderRadius: 14,
+    padding: 14,
+    alignItems: 'center',
+    marginBottom: 16,
+  },
+  customCtaText: { color: '#fff', fontSize: 14, fontWeight: '700' },
   empty: { fontSize: 14, color: '#6b7280', textAlign: 'center', marginTop: 24 },
   card: {
     backgroundColor: '#fff',
