@@ -7,6 +7,7 @@
 import { describe, it, expect, beforeAll, afterAll } from 'vitest';
 import { prisma } from '@galaxy/db';
 import { appRouter } from '../routers/index';
+import { safeFutureDate } from './factories';
 import type { JwtPayload } from '../lib/jwt';
 
 let admin: JwtPayload;
@@ -83,8 +84,8 @@ async function seedBooking(opts: {
       technicianId: techUser.id,
       serviceId,
       addressId: opts.addressId,
-      startAt: new Date(Date.now() + 86_400_000),
-      endAt: new Date(Date.now() + 86_400_000 + 3_600_000),
+      startAt: safeFutureDate(1),
+      endAt: new Date(safeFutureDate(1).getTime() + 3_600_000),
       status: opts.status ?? 'COMPLETED',
       totalAmount: opts.totalAmount ?? 200,
       platformFee: 0,

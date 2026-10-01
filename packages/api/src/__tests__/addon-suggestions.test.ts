@@ -9,7 +9,7 @@ import { prisma } from '@galaxy/db';
 import { appRouter } from '../routers/index';
 import { createTRPCContext } from '../context';
 import { generateCsrfToken } from '../lib/csrf';
-import { buildUser } from './factories';
+import { buildUser, safeFutureDate } from './factories';
 import type { JwtPayload } from '../lib/jwt';
 
 const CSRF = generateCsrfToken();
@@ -198,8 +198,8 @@ describe('bookings.create add-ons (1.3 AO-2)', () => {
       serviceId: createdServiceIds[0], // main 80 SAR
       addonIds: [createdServiceIds[1]], // blow-dry 60 SAR, 15% bundle discount
       addressId,
-      startAt: new Date(Date.now() + 3 * 86_400_000).toISOString(),
-      endAt: new Date(Date.now() + 3 * 86_400_000 + 3_600_000).toISOString(),
+      startAt: safeFutureDate(3).toISOString(),
+      endAt: new Date(safeFutureDate(3).getTime() + 3_600_000).toISOString(),
       idempotencyKey: `ao-bk-${Date.now()}`,
     });
     createdBookingIds.push(booking.id);
@@ -219,8 +219,8 @@ describe('bookings.create add-ons (1.3 AO-2)', () => {
         serviceId: createdServiceIds[0],
         addonIds: [createdServiceIds[3]], // hair mask — never linked
         addressId,
-        startAt: new Date(Date.now() + 4 * 86_400_000).toISOString(),
-        endAt: new Date(Date.now() + 4 * 86_400_000 + 3_600_000).toISOString(),
+        startAt: safeFutureDate(4).toISOString(),
+        endAt: new Date(safeFutureDate(4).getTime() + 3_600_000).toISOString(),
         idempotencyKey: `ao-bk-${Date.now()}-2`,
       }),
     ).rejects.toThrow(/not linked|addon/i);

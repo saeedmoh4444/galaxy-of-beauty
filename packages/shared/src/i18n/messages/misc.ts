@@ -1197,6 +1197,15 @@ export const miscMessages = {
   'color.palette': { ar: 'لوحة الألوان', en: 'Color Palette' },
   'color.suitableMakeup': { ar: 'المكياج المناسب', en: 'Suitable Makeup' },
   'color.analyze': { ar: 'حللي بشرتكِ', en: 'Analyze Your Skin' },
+  'color.quiz.undertone': { ar: 'ما لون عروق معصمكِ؟', en: 'What color are your wrist veins?' },
+  'color.quiz.undertone.blue': { ar: 'زرقاء / بنفسجية', en: 'Blue / purple' },
+  'color.quiz.undertone.green': { ar: 'خضراء', en: 'Green' },
+  'color.quiz.contrast': { ar: 'لون شعركِ الطبيعي؟', en: 'Your natural hair color?' },
+  'color.quiz.contrast.dark': { ar: 'داكن', en: 'Dark' },
+  'color.quiz.contrast.light': { ar: 'فاتح', en: 'Light' },
+  'color.quiz.take': { ar: 'ابدئي التحليل', en: 'Start analysis' },
+  'color.quiz.result': { ar: 'نتيجتكِ:', en: 'Your result:' },
+  'color.quiz.retake': { ar: 'إعادة التحليل', en: 'Retake' },
 
   // Family Account
   'family.title': { ar: 'حساب العائلة', en: 'Family Account' },

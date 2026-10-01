@@ -11,7 +11,7 @@ import { prisma } from '@galaxy/db';
 import { appRouter } from '../routers/index';
 import { createTRPCContext } from '../context';
 import { generateCsrfToken } from '../lib/csrf';
-import { buildUser } from './factories';
+import { buildUser, safeFutureDate } from './factories';
 import type { JwtPayload } from '../lib/jwt';
 
 const CSRF = generateCsrfToken();
@@ -49,8 +49,8 @@ beforeAll(async () => {
       technicianId: tu.id,
       serviceId: service?.id ?? 1,
       addressId: address?.id ?? 1,
-      startAt: new Date(Date.now() + 86_400_000),
-      endAt: new Date(Date.now() + 86_400_000 + 3_600_000),
+      startAt: safeFutureDate(1),
+      endAt: new Date(safeFutureDate(1).getTime() + 3_600_000),
       totalAmount: 100,
     },
   });

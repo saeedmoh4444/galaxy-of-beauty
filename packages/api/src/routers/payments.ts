@@ -10,9 +10,9 @@ import {
   technicianProcedure,
   adminProcedure,
 } from '../trpc';
-import { CASHBACK_RATE } from '@galaxy/shared';
 import { emitToUser, emitToAdmin } from '../socket/index';
 import { authorizePayment, verifyWebhookSignature } from '../lib/payfort';
+import { getCashbackRatePct } from './cashback';
 
 // ---------------------------------------------------------------------------
 // Input schemas
@@ -202,8 +202,10 @@ export const paymentRouter = router({
         data: { status: 'PAID' },
       });
 
-      // 5. Cashback — credit 5% to customer's wallet (idempotent via referenceId)
-      const cashbackAmount = Number(booking.totalAmount) * CASHBACK_RATE;
+      // 5. Cashback — credit the configured rate to the customer's wallet
+      // (idempotent via referenceId). Rate comes from PlatformConfig with
+      // the shared 5% default.
+      const cashbackAmount = Number(booking.totalAmount) * ((await getCashbackRatePct()) / 100);
       const cashbackRefId = `capture_${booking.id}`;
 
       // Check for existing cashback to avoid double-accrual

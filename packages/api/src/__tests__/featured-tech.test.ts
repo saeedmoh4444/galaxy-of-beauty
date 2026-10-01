@@ -9,6 +9,7 @@
 import { describe, it, expect, beforeAll, afterAll } from 'vitest';
 import { prisma } from '@galaxy/db';
 import { appRouter } from '../routers/index';
+import { safeFutureDate } from './factories';
 
 const ARTIFACT_MARKER = 'FEATURED-TEST-ARTIFACT';
 
@@ -68,8 +69,8 @@ async function seedCompletedBooking(technicianUserId: number, customerUserId: nu
       technicianId: technicianUserId,
       serviceId,
       addressId,
-      startAt: new Date(Date.now() + 86_400_000),
-      endAt: new Date(Date.now() + 86_400_000 + 3_600_000),
+      startAt: safeFutureDate(1),
+      endAt: new Date(safeFutureDate(1).getTime() + 3_600_000),
       status: 'COMPLETED',
       totalAmount: 200,
       platformFee: 0,

@@ -16,7 +16,7 @@ export const eventTicketsRouter = router({
     return events.map((e: any) => ({ ...e, price: Number(e.price ?? 0) }));
   }),
 
-  // Purchase/reserve a ticket
+  // Purchase/reserve a ticket — persisted (W9)
   reserve: customerProcedure
     .input(
       z.object({
@@ -28,16 +28,53 @@ export const eventTicketsRouter = router({
     .mutation(async ({ ctx, input }) => {
       const event = await db.beautyEvent.findUnique({ where: { id: input.eventId } });
       if (!event) throw new Error('الفعالية غير موجودة');
+
+      if (event.maxAttendees) {
+        const booked = await db.eventTicket.count({
+          where: { eventId: event.id, status: { not: 'CANCELLED' } },
+        });
+        if (booked >= event.maxAttendees) throw new Error('التذاكر نفدت');
+      }
+
+      const ticket = await db.eventTicket.create({
+        data: {
+          eventId: event.id,
+          userId: ctx.user.id,
+          attendeeName: input.attendeeName,
+          notes: input.notes,
+          status: 'RESERVED',
+        },
+      });
+
       return {
-        ticketId: `TKT-${ctx.user.id}-${input.eventId}-${Date.now()}`,
-        eventId: input.eventId,
+        ticketId: ticket.id,
+        eventId: event.id,
         eventName: (event.nameJson as Record<string, string>)?.ar ?? '',
-        attendeeName: input.attendeeName,
+        attendeeName: ticket.attendeeName,
         price: Number(event.price ?? 0),
-        status: 'RESERVED',
+        status: ticket.status,
       };
     }),
 
-  // My tickets
-  myTickets: customerProcedure.query(async () => ({ tickets: [] })),
+  // My tickets — real rows (W9)
+  myTickets: customerProcedure.query(async ({ ctx }) => {
+    const tickets = await db.eventTicket.findMany({
+      where: { userId: ctx.user.id },
+      orderBy: { createdAt: 'desc' },
+      include: { event: { select: { nameJson: true, startsAt: true, location: true } } },
+    });
+    return {
+      tickets: tickets.map((t) => ({
+        id: t.id,
+        eventId: t.eventId,
+        eventName: (t.event.nameJson as Record<string, string>)?.ar ?? '',
+        startsAt: t.event.startsAt,
+        location: t.event.location,
+        attendeeName: t.attendeeName,
+        notes: t.notes,
+        status: t.status,
+        createdAt: t.createdAt,
+      })),
+    };
+  }),
 });

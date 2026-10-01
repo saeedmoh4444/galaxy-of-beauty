@@ -9,7 +9,7 @@ import { appRouter } from '../routers/index';
 import { createTRPCContext } from '../context';
 import { prisma } from '@galaxy/db';
 import type { JwtPayload } from '../lib/jwt';
-import { buildUser, buildBooking } from './factories';
+import { buildUser, buildBooking, safeFutureDate } from './factories';
 import { sendSms } from '../lib/sms';
 
 const CSRF = 'a'.repeat(64);
@@ -168,8 +168,8 @@ describe('bookings.create — idempotency ownership', () => {
       serviceId: service!.id,
       technicianId: techUserId,
       addressId: address?.id ?? 1,
-      startAt: new Date(Date.now() + 7 * 86_400_000).toISOString(),
-      endAt: new Date(Date.now() + 7 * 86_400_000 + 3_600_000).toISOString(),
+      startAt: safeFutureDate(7).toISOString(),
+      endAt: new Date(safeFutureDate(7).getTime() + 3_600_000).toISOString(),
       idempotencyKey: key,
     });
 
@@ -184,8 +184,8 @@ describe('bookings.create — idempotency ownership', () => {
           serviceId: service!.id,
           technicianId: techUserId,
           addressId: address?.id ?? 1,
-          startAt: new Date(Date.now() + 7 * 86_400_000).toISOString(),
-          endAt: new Date(Date.now() + 7 * 86_400_000 + 3_600_000).toISOString(),
+          startAt: safeFutureDate(7).toISOString(),
+          endAt: new Date(safeFutureDate(7).getTime() + 3_600_000).toISOString(),
           idempotencyKey: key,
         }),
       ).rejects.toMatchObject({ code: 'NOT_FOUND' });
@@ -203,8 +203,8 @@ describe('bookings.create — idempotency ownership', () => {
       serviceId: service!.id,
       technicianId: techUserId,
       addressId: address?.id ?? 1,
-      startAt: new Date(Date.now() + 8 * 86_400_000).toISOString(),
-      endAt: new Date(Date.now() + 8 * 86_400_000 + 3_600_000).toISOString(),
+      startAt: safeFutureDate(8).toISOString(),
+      endAt: new Date(safeFutureDate(8).getTime() + 3_600_000).toISOString(),
       idempotencyKey: `sb_fee_${Date.now()}_${Math.random().toString(36).slice(2, 8)}`,
     });
 

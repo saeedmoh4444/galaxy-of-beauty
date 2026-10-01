@@ -41,7 +41,7 @@ async function seedSlot(): Promise<number> {
     data: {
       technicianId: technicianRecordId,
       startAt: safeFutureDate(5),
-      endAt: new Date(Date.now() + 86400000 * 5 + 3600000),
+      endAt: new Date(safeFutureDate(5).getTime() + 3600000),
       isBooked: false,
     },
   });
@@ -56,7 +56,7 @@ async function createBooking(): Promise<number> {
     addressId,
     slotId: await seedSlot(),
     startAt: safeFutureDate(5).toISOString(),
-    endAt: new Date(Date.now() + 86400000 * 5 + 3600000).toISOString(),
+    endAt: new Date(safeFutureDate(5).getTime() + 3600000).toISOString(),
     idempotencyKey: newIdemKey(),
   });
   fixtureBookingIds.push(booking.id);

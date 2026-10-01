@@ -62,9 +62,21 @@ export default function BeautyPodcastPage(): JSX.Element {
                 <p className="text-xs text-text-secondary mt-1"> {ep.host as string}</p>
                 <p className="text-xs text-text-tertiary mt-0.5">{ep.description as string}</p>
               </div>
-              <button className="flex h-10 w-10 items-center justify-center rounded-full bg-brand-600 text-white text-lg">
-                ▶
-              </button>
+              <div className="flex flex-col items-center gap-1">
+                <button
+                  className={`flex h-10 w-10 items-center justify-center rounded-full text-lg ${ep.audioUrl ? 'bg-brand-600 text-white' : 'cursor-not-allowed bg-surface-muted text-text-tertiary'}`}
+                  disabled={!ep.audioUrl}
+                  onClick={() => {
+                    if (ep.audioUrl) void new Audio(ep.audioUrl as string).play();
+                  }}
+                  title={ep.audioUrl ? '' : t('common.unavailable')}
+                >
+                  ▶
+                </button>
+                {!ep.audioUrl && (
+                  <p className="text-[9px] text-text-tertiary">{t('common.unavailable')}</p>
+                )}
+              </div>
             </Card>
           ))}
         </div>
