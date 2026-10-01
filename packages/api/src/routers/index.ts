@@ -224,6 +224,7 @@ import {
   clinicsRouter,
   gymsRouter,
   nailBarsRouter,
+  trainersRouter,
 } from '../domains/market';
 
 // Wellness
@@ -572,6 +573,7 @@ export const appRouter = router({
   clinics: clinicsRouter,
   gyms: gymsRouter,
   nailBars: nailBarsRouter,
+  trainers: trainersRouter,
 
   // Wellness
   selfCare: selfCareRouter,

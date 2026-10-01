@@ -184,6 +184,7 @@ model User {
   beautyCircleMembers BeautyCircleMember[]
   clinicConsultations ClinicConsultation[]
   gymClassBookings  GymClassBooking[]
+  trainerSessions   TrainerSession[]
   eventTickets      EventTicket[]
 
   @@index([role, isActive])
@@ -1482,7 +1483,7 @@ model Vendor {
   logoUrl     String?
   bannerUrl   String?
   // Store plan Phase 1 — merchant registration + KYC-ish approval.
-  type            String  @default("STORE") // STORE | VENDOR | CLINIC | GYM | NAIL_BAR | ATHOME (unified provider model)
+  type            String  @default("STORE") // STORE | VENDOR | CLINIC | GYM | NAIL_BAR | ATHOME | TRAINER (unified provider model)
   licenseNumber   String? // commercial registration / CR number, or clinic medical license
   bankIban        String?
   bankName        String?
@@ -1502,6 +1503,12 @@ model Vendor {
   gymType    String? // ladies | family
   gymCity    String?
   gymAddress String?
+  // E3 — trainers (fitness vertical: 1:1 sessions + home training).
+  trainerSpecialty    String? // yoga | pilates | strength | aerobics | zumba
+  trainerCity         String?
+  trainerAddress      String?
+  trainerBio          Json?
+  trainerSessionPrice Decimal  @default(0) @db.Decimal(10, 2) // 0 = contact for pricing
   // E5 — nail bars (venue vertical, station-capacity slots).
   nailBarType    String? // express | standard
   nailBarCity    String?
@@ -1531,6 +1538,7 @@ model Vendor {
   gymPlans            SubscriptionPlan[]
   gymDayPasses        ClassPass[]
   nailBarSlots        NailBarSlot[]
+  trainerSessions     TrainerSession[]
 
   @@index([storeSlug])
   @@index([isVerified, isActive])
@@ -1621,6 +1629,33 @@ model GymClassBooking {
   @@index([classId, status])
   @@index([customerId])
   @@map("gym_class_bookings")
+}
+
+// E3 — trainer 1:1 sessions (light parallel flow in the clinic/gym idiom;
+// home training rides the home-visit address pattern). Price is stamped
+// from the trainer's vendor row at booking time — never client-supplied.
+model TrainerSession {
+  id          Int      @id @default(autoincrement())
+  code        String   @unique // TRN-XXXXXX
+  trainerId   Int
+  customerId  Int
+  specialty   String
+  price       Decimal  @db.Decimal(10, 2)
+  status      String   @default("REQUESTED") // REQUESTED | CONFIRMED | CANCELLED | COMPLETED
+  scheduledAt DateTime
+  durationMin Int      @default(60)
+  isHomeVisit Boolean  @default(false)
+  address     String?
+  notes       String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  trainer  Vendor @relation(fields: [trainerId], references: [id], onDelete: Cascade)
+  customer User   @relation(fields: [customerId], references: [id], onDelete: Cascade)
+
+  @@index([trainerId, status])
+  @@index([customerId, scheduledAt])
+  @@map("trainer_sessions")
 }
 
 // Store plan Phase 1 — per-store order records (store-managed fulfillment).
