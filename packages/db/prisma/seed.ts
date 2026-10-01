@@ -1429,7 +1429,7 @@ async function main() {
       sortOrder: def.sortOrder,
       isActive: true,
     };
-    const services = {
+    const bundleServiceLinks = {
       create: svcIds.map((serviceId, sortOrder) => ({ serviceId, sortOrder })),
     };
     const existing = await prisma.beautyBundle.findFirst({
@@ -1438,10 +1438,10 @@ async function main() {
     if (existing) {
       await prisma.beautyBundle.update({
         where: { id: existing.id },
-        data: { ...data, services: { deleteMany: {}, ...services } },
+        data: { ...data, services: { deleteMany: {}, ...bundleServiceLinks } },
       });
     } else {
-      await prisma.beautyBundle.create({ data: { ...data, services } });
+      await prisma.beautyBundle.create({ data: { ...data, services: bundleServiceLinks } });
     }
   }
   console.log(` ${beautyBundleDefs.length} beauty bundles (1.2)`);
