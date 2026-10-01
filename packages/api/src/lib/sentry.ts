@@ -9,7 +9,7 @@ interface SentryScope {
 }
 
 interface SentryClient {
-  captureException(error: Error, scope?: Partial<SentryScope>): string;
+  captureException(error: Error, scope?: (scope: SentryScope) => void): string;
   captureMessage(message: string, level?: 'info' | 'warning' | 'error'): string;
 }
 
@@ -43,9 +43,13 @@ async function getSentry(): Promise<SentryClient | null> {
 export async function captureError(error: Error, context?: Record<string, unknown>): Promise<void> {
   const sentry = await getSentry();
   if (sentry) {
-    sentry.captureException(error, {
-      setExtra: (_key: string, _value: unknown) => {},
-    } as SentryScope);
+    // Real scope enrichment — @sentry/node accepts a scope callback, so
+    // context keys land on the event as extras.
+    sentry.captureException(error, (scope) => {
+      for (const [key, value] of Object.entries(context ?? {})) {
+        scope.setExtra(key, value);
+      }
+    });
   }
   // Always log to console as fallback
   // eslint-disable-next-line no-console
