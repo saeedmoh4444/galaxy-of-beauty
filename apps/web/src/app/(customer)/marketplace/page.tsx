@@ -95,7 +95,7 @@ export default function MarketplacePage(): JSX.Element {
                   {p.descAr as string}
                 </p>
                 <div className="mt-3 flex items-center justify-between">
-                  <span className="text-lg font-extrabold text-rose-600 dark:text-rose-400">
+                  <span className="text-lg font-extrabold text-rose-700 dark:text-rose-400">
                     {(p.price as number)?.toLocaleString()} {t('misc.sar')}
                   </span>
                   <button
