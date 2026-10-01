@@ -63,7 +63,9 @@ describe('Wallet', () => {
     const key = `mob_${Date.now()}_${Math.random().toString(36).slice(2, 10)}`;
     const result = await customerCaller.wallet.topUp({ amount: 100, idempotencyKey: key });
     expect(result).toHaveProperty('balance');
-    expect(result.message).toBe('تم شحن الرصيد بنجاح');
+    // Money-integrity: top-ups are PENDING intents until a verified gateway
+    // callback credits the wallet — no free balance from a client call.
+    expect(result.status).toBe('PENDING');
   });
 
   it('should accept a UUID idempotency key (web client)', async () => {
@@ -72,13 +74,14 @@ describe('Wallet', () => {
       idempotencyKey: crypto.randomUUID(),
     });
     expect(result).toHaveProperty('balance');
+    expect(result.status).toBe('PENDING');
   });
 
   it('should replay the same idempotency key without double-charging', async () => {
     const key = `mob_${Date.now()}_replay${Math.random().toString(36).slice(2, 6)}`;
     const first = await customerCaller.wallet.topUp({ amount: 100, idempotencyKey: key });
     const second = await customerCaller.wallet.topUp({ amount: 100, idempotencyKey: key });
-    expect(second.message).toBe('Already processed');
+    expect(second.status).toBe(first.status);
     expect(second.balance).toBe(first.balance);
   });
 

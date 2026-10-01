@@ -93,7 +93,7 @@ describe('verifyResponseSignature', () => {
 // ── Authorization ───────────────────────────────────────────
 
 describe('authorizePayment', () => {
-  it('returns a development stub when the gateway is unconfigured', async () => {
+  it('fails closed when the gateway is unconfigured', async () => {
     const result = await authorizePayment({
       amount: 150,
       customerEmail: 'cust@test.local',
@@ -101,10 +101,31 @@ describe('authorizePayment', () => {
       merchantReference: 'BOOK-1',
       returnUrl: 'http://localhost:3000/checkout/return',
     });
-    expect(result.success).toBe(true);
+    // Money-integrity: never fake a successful authorization.
+    expect(result.success).toBe(false);
     expect(result.paymentUrl).toBeNull();
-    expect(result.gatewayRef).toMatch(/^DEV-/);
-    expect(result.message).toContain('development stub');
+    expect(result.gatewayRef).toBeNull();
+    expect(result.message).toContain('not authorized');
+  });
+
+  it('simulates success only with PAYFORT_SIMULATE=true outside production', async () => {
+    const original = process.env['PAYFORT_SIMULATE'];
+    process.env['PAYFORT_SIMULATE'] = 'true';
+    try {
+      const result = await authorizePayment({
+        amount: 150,
+        customerEmail: 'cust@test.local',
+        customerName: 'Test Customer',
+        merchantReference: 'BOOK-1',
+        returnUrl: 'http://localhost:3000/checkout/return',
+      });
+      expect(result.success).toBe(true);
+      expect(result.gatewayRef).toMatch(/^DEV-/);
+      expect(result.message).toContain('development stub');
+    } finally {
+      if (original) process.env['PAYFORT_SIMULATE'] = original;
+      else delete process.env['PAYFORT_SIMULATE'];
+    }
   });
 
   it('sends amount in minor units with a valid request signature', async () => {

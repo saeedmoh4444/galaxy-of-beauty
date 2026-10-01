@@ -17,7 +17,8 @@ function getConfig(): PayFortConfig | null {
   const accessCode = process.env['PAYFORT_ACCESS_CODE'];
   const shaRequest = process.env['PAYFORT_SHA_REQUEST_PHRASE'];
   const shaResponse = process.env['PAYFORT_SHA_RESPONSE_PHRASE'];
-  const sandbox = process.env['PAYFORT_SANDBOX'] !== 'false';
+  const sandbox =
+    process.env['PAYFORT_SANDBOX'] !== 'false' && process.env['NODE_ENV'] !== 'production';
 
   if (!merchantId || !accessCode || !shaRequest || !shaResponse) {
     // PayFort not configured
@@ -103,13 +104,18 @@ export async function authorizePayment(params: {
   const config = getConfig();
 
   if (!config) {
-    // PayFort not configured — return stub (development mode)
+    // Money-integrity: fail closed when the gateway is not configured.
+    // The only simulated success is an explicit opt-in outside production.
+    const simulate =
+      process.env['PAYFORT_SIMULATE'] === 'true' && process.env['NODE_ENV'] !== 'production';
     return {
-      success: true,
+      success: simulate,
       paymentUrl: null,
-      gatewayRef: `DEV-${crypto.randomUUID().slice(0, 20)}`,
+      gatewayRef: simulate ? `DEV-${crypto.randomUUID().slice(0, 20)}` : null,
       fortId: null,
-      message: 'Payment gateway not configured. Using development stub.',
+      message: simulate
+        ? 'Payment gateway not configured. Using development stub.'
+        : 'Payment gateway not configured — payment not authorized.',
     };
   }
 

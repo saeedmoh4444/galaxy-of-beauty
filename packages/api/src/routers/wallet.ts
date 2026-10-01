@@ -194,13 +194,21 @@ export const walletRouter = router({
       });
       if (existing) {
         const wallet = await prisma.wallet.findUnique({ where: { userId: ctx.user.id } });
-        return { balance: Number(wallet?.balance ?? 0), message: 'Already processed' };
+        return {
+          balance: Number(wallet?.balance ?? 0),
+          status: existing.status,
+          message:
+            existing.status === 'COMPLETED' ? 'تم شحن الرصيد بنجاح' : 'طلب الشحن قيد المراجعة',
+        };
       }
 
+      // Money-integrity: a direct client mutation must NOT mint spendable
+      // balance. Record a PENDING intent; the credit lands only through a
+      // verified gateway callback (payments webhook / wallet top-up callback).
       const wallet = await prisma.wallet.upsert({
         where: { userId: ctx.user.id },
-        create: { userId: ctx.user.id, balance: input.amount },
-        update: { balance: { increment: input.amount } },
+        create: { userId: ctx.user.id, balance: 0 },
+        update: {},
       });
 
       await prisma.walletTransaction.create({
@@ -211,9 +219,14 @@ export const walletRouter = router({
           amount: input.amount,
           description: 'شحن رصيد',
           idempotencyKey: input.idempotencyKey,
+          status: 'PENDING',
         },
       });
 
-      return { balance: Number(wallet.balance), message: 'تم شحن الرصيد بنجاح' };
+      return {
+        balance: Number(wallet.balance),
+        status: 'PENDING' as const,
+        message: 'طلب الشحن قيد المراجعة',
+      };
     }),
 });
