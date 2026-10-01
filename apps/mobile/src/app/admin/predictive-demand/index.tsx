@@ -20,6 +20,7 @@ interface ServiceDemand {
 }
 
 interface DemandForecast {
+  status?: string;
   nextWeek?: ForecastWindow;
   nextMonth?: ForecastWindow;
   byService?: ServiceDemand[];
@@ -59,41 +60,55 @@ export default function PredictiveDemandScreen(): JSX.Element {
       }
     >
       <Text style={styles.t}>{t('admin.predictive-demand.title')}</Text>
-      <View style={styles.kpi}>
-        <Text style={styles.kpiTitle}>{t('admin.predictive-demand.next-week')}</Text>
-        <Text style={styles.kpiVal}>
-          {t('admin.predictive-demand.bookings-count', { count: nw.predictedBookings ?? 0 })}
-        </Text>
-        <Text style={styles.kpiMeta}>
-          {t('admin.predictive-demand.peak', { peak: nw.peakDay ?? '' })}
-        </Text>
-      </View>
-      <View style={styles.kpi}>
-        <Text style={styles.kpiTitle}>{t('admin.predictive-demand.next-month')}</Text>
-        <Text style={[styles.kpiVal, { color: '#059669' }]}>
-          {t('admin.predictive-demand.bookings-count', { count: nm.predictedBookings ?? 0 })}
-        </Text>
-        <Text style={styles.kpiMeta}>
-          {t('admin.predictive-demand.confidence-growth', {
-            confidence: nm.confidence ?? 0,
-            growth: nm.growth ?? 0,
-          })}
-        </Text>
-      </View>
-      {bySvc.map((s, i) => (
-        <View key={i} style={styles.row}>
-          <Text style={styles.svcName}>{s.name ?? ''}</Text>
-          <Text style={styles.svcDemand}>{s.currentDemand ?? 0}%</Text>
-          <Text
-            style={[
-              styles.svcTrend,
-              { color: s.trend === 'up' ? '#059669' : s.trend === 'down' ? '#dc2626' : '#6b7280' },
-            ]}
-          >
-            {s.prediction ?? ''}
-          </Text>
+      {f.status === 'NOT_CONFIGURED' ? (
+        <View
+          style={[styles.kpi, { borderWidth: 2, borderColor: '#fcd34d', alignItems: 'center' }]}
+        >
+          <Text style={styles.kpiTitle}>🚧 {t('common.notConfigured')}</Text>
+          <Text style={styles.kpiMeta}>{t('common.unavailable')}</Text>
         </View>
-      ))}
+      ) : (
+        <>
+          <View style={styles.kpi}>
+            <Text style={styles.kpiTitle}>{t('admin.predictive-demand.next-week')}</Text>
+            <Text style={styles.kpiVal}>
+              {t('admin.predictive-demand.bookings-count', { count: nw.predictedBookings ?? 0 })}
+            </Text>
+            <Text style={styles.kpiMeta}>
+              {t('admin.predictive-demand.peak', { peak: nw.peakDay ?? '' })}
+            </Text>
+          </View>
+          <View style={styles.kpi}>
+            <Text style={styles.kpiTitle}>{t('admin.predictive-demand.next-month')}</Text>
+            <Text style={[styles.kpiVal, { color: '#059669' }]}>
+              {t('admin.predictive-demand.bookings-count', { count: nm.predictedBookings ?? 0 })}
+            </Text>
+            <Text style={styles.kpiMeta}>
+              {t('admin.predictive-demand.confidence-growth', {
+                confidence: nm.confidence ?? 0,
+                growth: nm.growth ?? 0,
+              })}
+            </Text>
+          </View>
+          {bySvc.map((s, i) => (
+            <View key={i} style={styles.row}>
+              <Text style={styles.svcName}>{s.name ?? ''}</Text>
+              <Text style={styles.svcDemand}>{s.currentDemand ?? 0}%</Text>
+              <Text
+                style={[
+                  styles.svcTrend,
+                  {
+                    color:
+                      s.trend === 'up' ? '#059669' : s.trend === 'down' ? '#dc2626' : '#6b7280',
+                  },
+                ]}
+              >
+                {s.prediction ?? ''}
+              </Text>
+            </View>
+          ))}
+        </>
+      )}
     </ScrollView>
   );
 }

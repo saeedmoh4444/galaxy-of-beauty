@@ -59,30 +59,48 @@ export default function KidsServicesPage(): JSX.Element {
       </div>
 
       {result ? (
-        <Card padding="lg" className="text-center border-2 border-green-300">
-          <span className="text-6xl">🎉</span>
-          <h2 className="mt-4 text-xl font-bold">{result.message as string}</h2>
-          <p className="text-2xl font-extrabold text-brand-600 mt-2">
-            {t('marketing.kids-services.price-sar', {
-              price: formatCurrency(result.price as number),
-            })}
-          </p>
-          <p className="text-sm text-text-secondary mt-1">
-            {result.childName as string} ·{' '}
-            {t('marketing.kids-services.duration-min', { min: result.durationMin as number })} ·{' '}
-            {result.tip as string}
-          </p>
-          <Button
-            variant="ghost"
-            className="mt-4"
-            onClick={() => {
-              setResult(null);
-              setSelectedCat(null);
-            }}
-          >
-            {t('marketing.kids-services.back')}
-          </Button>
-        </Card>
+        (result.booked as boolean) ? (
+          <Card padding="lg" className="text-center border-2 border-green-300">
+            <span className="text-6xl">🎉</span>
+            <h2 className="mt-4 text-xl font-bold">{result.message as string}</h2>
+            <p className="text-2xl font-extrabold text-brand-600 mt-2">
+              {t('marketing.kids-services.price-sar', {
+                price: formatCurrency(result.price as number),
+              })}
+            </p>
+            <p className="text-sm text-text-secondary mt-1">
+              {result.childName as string} ·{' '}
+              {t('marketing.kids-services.duration-min', { min: result.durationMin as number })} ·{' '}
+              {result.tip as string}
+            </p>
+            <Button
+              variant="ghost"
+              className="mt-4"
+              onClick={() => {
+                setResult(null);
+                setSelectedCat(null);
+              }}
+            >
+              {t('marketing.kids-services.back')}
+            </Button>
+          </Card>
+        ) : (
+          <Card padding="lg" className="text-center border-2 border-amber-300">
+            <span className="text-5xl">🚧</span>
+            <h2 className="mt-4 text-xl font-bold">{t('common.notConfigured')}</h2>
+            <p className="mt-1 text-sm text-text-secondary">{t('common.unavailable')}</p>
+            <Button
+              variant="ghost"
+              className="mt-4"
+              onClick={() => {
+                setResult(null);
+                setSelectedCat(null);
+              }}
+            >
+              {t('marketing.kids-services.back')}
+            </Button>
+          </Card>
+        )
       ) : !selectedCat ? (
         <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
           {categories.map((c: Record<string, unknown>) => (

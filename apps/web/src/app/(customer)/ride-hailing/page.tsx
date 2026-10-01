@@ -49,16 +49,24 @@ export default function RideHailingPage(): JSX.Element {
           <p className="mt-1 text-sm text-text-secondary">{t('rideHailing.subtitle')}</p>
         </div>
         {result ? (
-          <Card padding="lg" className="text-center border-2 border-green-300">
-            <span className="text-6xl">🚗</span>
-            <h2 className="mt-4 text-xl font-bold">{t('rideHailing.booked')}</h2>
-            <p className="font-bold mt-1">
-              {result.driverName as string} · {result.carModel as string}
-            </p>
-            <p className="text-sm text-text-secondary">
-              {result.plateNumber as string} · {result.estimatedArrival as string}
-            </p>
-          </Card>
+          (result.booked as boolean) ? (
+            <Card padding="lg" className="text-center border-2 border-green-300">
+              <span className="text-6xl">🚗</span>
+              <h2 className="mt-4 text-xl font-bold">{t('rideHailing.booked')}</h2>
+              <p className="font-bold mt-1">
+                {result.driverName as string} · {result.carModel as string}
+              </p>
+              <p className="text-sm text-text-secondary">
+                {result.plateNumber as string} · {result.estimatedArrival as string}
+              </p>
+            </Card>
+          ) : (
+            <Card padding="lg" className="text-center border-2 border-amber-300">
+              <span className="text-5xl">🚧</span>
+              <h2 className="mt-4 text-xl font-bold">{t('common.notConfigured')}</h2>
+              <p className="mt-1 text-sm text-text-secondary">{t('common.unavailable')}</p>
+            </Card>
+          )
         ) : (
           <Card padding="lg">
             <h3 className="font-bold mb-4">{t('rideHailing.chooseProvider')}</h3>
@@ -73,13 +81,15 @@ export default function RideHailingPage(): JSX.Element {
                     <div>
                       <p className="font-bold">{p.nameAr as string}</p>
                       <p className="text-xs text-text-secondary">
-                        {p.estimatedTime as string} · {formatCurrency(p.estimatedPrice as number)}{' '}
-                        {t('beautyParty.currency')}
+                        {p.available === false
+                          ? t('common.unavailable')
+                          : `${p.estimatedTime as string} · ${formatCurrency(p.estimatedPrice as number)} ${t('beautyParty.currency')}`}
                       </p>
                     </div>
                   </div>
                   <Button
                     size="sm"
+                    disabled={p.available === false}
                     onClick={() =>
                       bookMut.mutate(
                         {

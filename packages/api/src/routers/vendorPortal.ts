@@ -60,7 +60,9 @@ export const vendorPortalRouter = router({
     const vendor = await prisma.vendor.findUnique({ where: { userId: ctx.user.id } });
 
     if (!vendor) {
-      return { totalProducts: 0, totalSales: 0, revenue: 0, rating: 4.8 };
+      // A store with no vendor and no reviews has no rating — never invent
+      // a 4.8 default.
+      return { totalProducts: 0, totalSales: 0, revenue: 0, rating: 0 };
     }
 
     const agg = await prisma.product.aggregate({
@@ -98,7 +100,7 @@ export const vendorPortalRouter = router({
       totalProducts: agg._count,
       totalSales: agg._sum.sales ?? 0,
       revenue,
-      rating: Number(reviewsAgg._avg.rating?.toFixed(1) ?? 4.8),
+      rating: Number(reviewsAgg._avg.rating?.toFixed(1) ?? 0),
       pendingOrders,
       topProducts,
     };

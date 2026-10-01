@@ -10,11 +10,13 @@ interface RideProvider {
   key: string;
   emoji: string;
   nameAr: string;
-  estimatedTime: string;
-  estimatedPrice: number;
+  available?: boolean;
+  estimatedTime?: string;
+  estimatedPrice?: number;
 }
 
 interface BookingResult {
+  booked?: boolean;
   driverName?: string;
   carModel?: string;
   plateNumber?: string;
@@ -44,16 +46,24 @@ export default function RideHailingScreen(): JSX.Element {
     return (
       <ScrollView style={styles.c} contentContainerStyle={styles.i}>
         <Text style={styles.t}>{t('mobile.rideHailing.title')}</Text>
-        <View style={[styles.card, styles.rc]}>
-          <Text style={styles.re}>🚗</Text>
-          <Text style={styles.rt}>{t('mobile.rideHailing.booked')}</Text>
-          <Text style={styles.rn}>
-            {result.driverName} · {result.carModel}
-          </Text>
-          <Text style={styles.rm}>
-            {result.plateNumber} · {result.estimatedArrival}
-          </Text>
-        </View>
+        {result.booked === false ? (
+          <View style={[styles.card, styles.rc]}>
+            <Text style={styles.re}>🚧</Text>
+            <Text style={styles.rt}>{t('common.notConfigured')}</Text>
+            <Text style={styles.rm}>{t('common.unavailable')}</Text>
+          </View>
+        ) : (
+          <View style={[styles.card, styles.rc]}>
+            <Text style={styles.re}>🚗</Text>
+            <Text style={styles.rt}>{t('mobile.rideHailing.booked')}</Text>
+            <Text style={styles.rn}>
+              {result.driverName} · {result.carModel}
+            </Text>
+            <Text style={styles.rm}>
+              {result.plateNumber} · {result.estimatedArrival}
+            </Text>
+          </View>
+        )}
       </ScrollView>
     );
   return (
@@ -78,13 +88,20 @@ export default function RideHailingScreen(): JSX.Element {
             <Text style={styles.pn}>{p.nameAr}</Text>
             <Text style={styles.pm}>
               {' '}
-              {t('mobile.rideHailing.eta', {
-                time: p.estimatedTime,
-                price: p.estimatedPrice?.toLocaleString(locale === 'en' ? 'en-GB' : 'ar-SA') ?? '',
-              })}
+              {p.available === false
+                ? t('common.unavailable')
+                : t('mobile.rideHailing.eta', {
+                    time: p.estimatedTime ?? '',
+                    price:
+                      p.estimatedPrice?.toLocaleString(locale === 'en' ? 'en-GB' : 'ar-SA') ?? '',
+                  })}
             </Text>
           </View>
-          <TouchableOpacity onPress={() => book(p.key)} style={styles.bb}>
+          <TouchableOpacity
+            onPress={() => book(p.key)}
+            style={[styles.bb, p.available === false && styles.bbd]}
+            disabled={p.available === false}
+          >
             <Text style={styles.bt}>{t('mobile.rideHailing.book')}</Text>
           </TouchableOpacity>
         </View>
@@ -109,6 +126,7 @@ const styles = StyleSheet.create({
   pn: { fontSize: 15, fontWeight: '700', color: '#111827' },
   pm: { fontSize: 12, color: '#6b7280', marginTop: 2 },
   bb: { backgroundColor: '#2563eb', borderRadius: 10, paddingHorizontal: 16, paddingVertical: 8 },
+  bbd: { backgroundColor: '#93c5fd' },
   bt: { color: '#fff', fontSize: 13, fontWeight: '600' },
   rc: { alignItems: 'center', borderWidth: 2, borderColor: '#86efac', flexDirection: 'column' },
   re: { fontSize: 56 },

@@ -110,12 +110,17 @@ export const virtualTryOnRouter = router({
         imageDataUrl: z.string().optional(),
       }),
     )
-    .mutation(async ({ ctx, input }) => ({
-      sessionId: `${ctx.user.id}_${Date.now()}`,
-      saved: true,
-      makeupType: input.makeupType,
-      colorHex: input.colorHex,
-    })),
+    .mutation(async ({ input }) => {
+      // No TryOnSession model exists — never claim a session was saved for
+      // analytics/recommendations.
+      return {
+        sessionId: null,
+        saved: false,
+        reason: 'NOT_CONFIGURED',
+        makeupType: input.makeupType,
+        colorHex: input.colorHex,
+      };
+    }),
 
   // Get recommended products based on color preference
   recommendations: publicProcedure

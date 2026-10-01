@@ -42,6 +42,12 @@ export default function ServiceTrendsPage(): JSX.Element {
         <CardListSkeleton count={2} />
       ) : isError ? (
         <ErrorAlert message={t('marketing.service-trends.load-error')} onRetry={() => refetch()} />
+      ) : data?.unavailable ? (
+        <Card padding="lg" className="border-2 border-amber-300 text-center">
+          <span className="text-5xl">🚧</span>
+          <h2 className="mt-4 text-xl font-bold">{t('common.notConfigured')}</h2>
+          <p className="mt-1 text-sm text-text-secondary">{t('common.unavailable')}</p>
+        </Card>
       ) : (
         <>
           <Card padding="lg" className="mb-6">

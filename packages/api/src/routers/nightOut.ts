@@ -18,7 +18,14 @@ export const nightOutRouter = router({
     .input(z.object({ serviceIndex: z.number().int().min(0).max(2), time: z.string().optional() }))
     .mutation(async ({ input }) => {
       const service = EXPRESS_SERVICES[input.serviceIndex];
-      if (!service) return { error: 'Invalid service' };
-      return { booked: true, service: service.name, price: service.price };
+      if (!service) throw new Error('Invalid service');
+      // Express appointments are not wired to a booking pipeline — never
+      // confirm a booking that was not created.
+      return {
+        booked: false,
+        status: 'NOT_CONFIGURED',
+        reason: 'BOOKING_NOT_CREATED',
+        service: service.name,
+      };
     }),
 });

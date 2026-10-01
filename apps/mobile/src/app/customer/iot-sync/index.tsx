@@ -37,6 +37,10 @@ export default function IoTSyncScreen(): JSX.Element {
       }
     >
       <Text style={styles.t}>{t('mobile.iotSync.title')}</Text>
+      <View style={[styles.card, styles.nb]}>
+        <Text style={styles.dn}>{t('common.notConfigured')}</Text>
+        <Text style={styles.ds}>{t('common.unavailable')}</Text>
+      </View>
       <View style={styles.grid}>
         {devices.map((d) => (
           <View key={d.key} style={styles.card}>
@@ -52,7 +56,11 @@ export default function IoTSyncScreen(): JSX.Element {
                 ? t('mobile.iotSync.connected')
                 : t('mobile.iotSync.disconnected')}
             </Text>
-            <TouchableOpacity onPress={() => connect(d.key ?? '')} style={styles.db}>
+            <TouchableOpacity
+              onPress={() => connect(d.key ?? '')}
+              style={[styles.db, styles.dbd]}
+              disabled
+            >
               <Text style={styles.dbt}>
                 {d.status === 'connected' ? t('mobile.iotSync.sync') : t('mobile.iotSync.link')}
               </Text>
@@ -84,6 +92,14 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
     paddingVertical: 8,
     marginTop: 10,
+  },
+  dbd: { backgroundColor: '#a5f3fc' },
+  nb: {
+    width: '100%',
+    alignItems: 'center',
+    borderWidth: 2,
+    borderColor: '#fcd34d',
+    marginBottom: 12,
   },
   dbt: { color: '#fff', fontSize: 13, fontWeight: '600' },
 });

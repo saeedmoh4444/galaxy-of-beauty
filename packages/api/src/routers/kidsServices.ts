@@ -213,14 +213,16 @@ export const kidsServicesRouter = router({
       const svc = cat?.subServices.find((s) => s.id === input.serviceId);
       if (!svc) throw new Error('الخدمة غير موجودة');
 
+      // The kids catalog is not mapped to Service rows and there is no kids
+      // booking pipeline — never confirm a booking that was not created.
       return {
-        bookingId: `KID-${Date.now()}`,
+        booked: false,
+        status: 'NOT_CREATED',
+        reason: 'BOOKING_NOT_CREATED',
         childName: input.childName,
         service: svc.nameAr,
         price: svc.price,
         durationMin: svc.durationMin,
-        status: 'CONFIRMED',
-        message: `تم حجز "${svc.nameAr}" لـ ${input.childName} بنجاح! `,
         tip: svc.ageMin > 0 ? `مناسبة من عمر ${svc.ageMin} سنوات` : 'مناسبة لجميع الأعمار',
       };
     }),

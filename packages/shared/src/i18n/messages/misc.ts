@@ -12,6 +12,11 @@ export const miscMessages = {
 
   // Shared across customer pages
   'common.loadFailed': { ar: 'فشل التحميل', en: 'Failed to load' },
+  'common.unavailable': { ar: 'غير متاح حالياً', en: 'Currently unavailable' },
+  'common.notConfigured': {
+    ar: 'هذه الخدمة غير مفعلة بعد',
+    en: 'This service is not configured yet',
+  },
 
   // Marketplace
   'marketplace.title': { ar: 'متجر الجمال', en: 'Beauty Store' },

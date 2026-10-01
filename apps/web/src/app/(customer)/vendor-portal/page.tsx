@@ -599,7 +599,7 @@ export default function VendorPortalPage(): JSX.Element {
             <p className="text-xs text-text-secondary">{t('vendorPortal.pendingOrders')}</p>
           </Card>
           <Card padding="md" className="text-center">
-            <p className="text-2xl font-bold">{(dash?.rating as number) ?? 4.8}</p>
+            <p className="text-2xl font-bold">{(dash?.rating as number) ?? 0}</p>
             <p className="text-xs text-text-secondary">{t('vendorPortal.rating')}</p>
           </Card>
         </div>

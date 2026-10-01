@@ -25,6 +25,12 @@ export default function PredictiveDemandPage(): JSX.Element {
           <KPIRowSkeleton count={2} />
           <CardListSkeleton count={3} />
         </>
+      ) : f.status === 'NOT_CONFIGURED' ? (
+        <Card padding="lg" className="border-2 border-amber-300 text-center">
+          <span className="text-5xl">🚧</span>
+          <h2 className="mt-4 text-xl font-bold">{t('common.notConfigured')}</h2>
+          <p className="mt-1 text-sm text-text-secondary">{t('common.unavailable')}</p>
+        </Card>
       ) : (
         <>
           <div className="grid gap-4 sm:grid-cols-2">

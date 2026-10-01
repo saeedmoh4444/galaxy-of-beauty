@@ -19,7 +19,9 @@ export default function SmartPricingScreen(): JSX.Element {
 
   if (itemsQ.isLoading) return <SkeletonList count={4} />;
 
-  const items = (itemsQ.data as unknown as PricingItem[] | null) ?? [];
+  const payload = itemsQ.data as unknown as { configured?: boolean; prices?: PricingItem[] } | null;
+  const items = payload?.prices ?? [];
+  const configured = payload?.configured ?? false;
 
   return (
     <ScrollView
@@ -37,7 +39,15 @@ export default function SmartPricingScreen(): JSX.Element {
     >
       <Text style={styles.t}>{t('mobile.public.smart-pricing.title')}</Text>
       <Text style={styles.sub}>{t('mobile.public.smart-pricing.subtitle')}</Text>
-      {items.length === 0 ? (
+      {!configured ? (
+        <View style={[styles.card, styles.nb]}>
+          <Text style={styles.svcEmoji}>🚧</Text>
+          <View style={{ flex: 1 }}>
+            <Text style={styles.svcName}>{t('common.notConfigured')}</Text>
+            <Text style={styles.svcReason}>{t('common.unavailable')}</Text>
+          </View>
+        </View>
+      ) : items.length === 0 ? (
         <Text style={styles.e}>{t('mobile.public.smart-pricing.empty')}</Text>
       ) : (
         items.map((s) => {
@@ -90,6 +100,7 @@ const styles = StyleSheet.create({
     padding: 14,
     marginBottom: 8,
   },
+  nb: { borderWidth: 2, borderColor: '#fcd34d' },
   svcEmoji: { fontSize: 34 },
   svcName: { fontSize: 15, fontWeight: '700', color: '#111827' },
   svcReason: { fontSize: 11, color: '#6b7280', marginTop: 2 },
