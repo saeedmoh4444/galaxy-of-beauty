@@ -321,6 +321,7 @@ import { kidsServicesRouter } from './kidsServices';
 import { beautyStatsRouter } from './beautyStats';
 import { npsRouter } from './nps';
 import { abTestRouter } from './abTest';
+import { queuesRouter } from './queues';
 import { seasonalServicesRouter } from './seasonalServices';
 import { observabilityRouter } from './observability';
 
@@ -426,6 +427,7 @@ export const appRouter = router({
   reviews: reviewRouter,
   nps: npsRouter,
   abTest: abTestRouter,
+  queues: queuesRouter,
   seasonalServices: seasonalServicesRouter,
   // 7.3 Observability 2.0
   observability: observabilityRouter,

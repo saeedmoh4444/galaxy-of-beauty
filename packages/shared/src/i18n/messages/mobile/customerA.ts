@@ -341,6 +341,7 @@ export const mobileCustomerAMessages = {
   'beautyEvents.free': { ar: 'مجانية', en: 'Free' },
   'beautyEvents.cancel': { ar: 'مسجلة — إلغاء', en: 'Registered — Cancel' },
   'beautyEvents.register': { ar: 'سجلي الآن', en: 'Register Now' },
+  'beautyEvents.waitlisted': { ar: 'في قائمة الانتظار', en: 'On the waitlist' },
   'beautyEvents.type-workshop': { ar: 'ورشة', en: 'Workshop' },
   'beautyEvents.type-masterclass': { ar: 'ماستر كلاس', en: 'Masterclass' },
   'beautyEvents.type-launch': { ar: 'إطلاق', en: 'Launch' },
