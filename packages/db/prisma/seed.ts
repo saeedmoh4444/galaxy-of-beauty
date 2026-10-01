@@ -4145,6 +4145,7 @@ async function main() {
       views: 5200,
       category: 'makeup',
       isApproved: true,
+      faceBlurred: true,
     },
     {
       type: 'reel',
@@ -4154,6 +4155,7 @@ async function main() {
       views: 3800,
       category: 'skincare',
       isApproved: true,
+      faceBlurred: true,
     },
     {
       type: 'reel',
@@ -4162,6 +4164,7 @@ async function main() {
       views: 4100,
       category: 'hair',
       isApproved: true,
+      faceBlurred: true,
     },
     {
       type: 'reel',
@@ -4170,6 +4173,7 @@ async function main() {
       views: 2900,
       category: 'nails',
       isApproved: true,
+      faceBlurred: true,
     },
     {
       type: 'before_after',
@@ -4179,6 +4183,7 @@ async function main() {
       views: 1200,
       category: 'hair',
       isApproved: true,
+      faceBlurred: true,
       consentGiven: true,
     },
     {
@@ -4189,6 +4194,7 @@ async function main() {
       views: 2100,
       category: 'skincare',
       isApproved: true,
+      faceBlurred: true,
       consentGiven: true,
     },
   ];
