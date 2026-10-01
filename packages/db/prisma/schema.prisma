@@ -3194,7 +3194,7 @@ model SalonMembership {
     id            Int      @id @default(autoincrement())
     titleJson     Json     // { ar, en }
     descriptionJson Json?
-    serviceIds    Int[]    // Array of service IDs bundled together
+    // Replaced by the bundle_services join table (stage 8b).
     discountPct   Int      @default(10) // e.g. 20 = 20% off
     totalPrice    Decimal  @db.Decimal(10, 2) // Final price after discount
     originalPrice Decimal  @db.Decimal(10, 2) // Sum of individual service prices
@@ -3209,9 +3209,24 @@ model SalonMembership {
     updatedAt     DateTime @updatedAt
 
     bookings Booking[]
+    services BundleService[]
 
     @@index([isActive, sortOrder])
     @@map("beauty_bundles")
+  }
+
+  // ── Bundle ↔ Service join (stage 8b — replaces serviceIds Int[]) ──
+  model BundleService {
+    id        Int     @id @default(autoincrement())
+    bundleId  Int
+    serviceId Int
+    sortOrder Int     @default(0) // preserves the bundle's declared order
+
+    bundle BeautyBundle @relation(fields: [bundleId], references: [id], onDelete: Cascade)
+
+    @@unique([bundleId, serviceId])
+    @@index([bundleId])
+    @@map("bundle_services")
   }
 
   // ── Beauty Subscriptions ──────────────────────────────────

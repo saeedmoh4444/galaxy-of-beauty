@@ -193,6 +193,7 @@ export const bookingRouter = router({
     const beautyBundle = input.beautyBundleId
       ? await prisma.beautyBundle.findFirst({
           where: { id: input.beautyBundleId, isActive: true },
+          include: { services: { orderBy: { sortOrder: 'asc' } } },
         })
       : null;
     if (input.beautyBundleId && !beautyBundle) {
@@ -231,7 +232,7 @@ export const bookingRouter = router({
         : beautyBundle
           ? // create enforces serviceIds.min(2); the NOT_FOUND guard below
             // covers a malformed (empty) package anyway.
-            beautyBundle.serviceIds[0]!
+            (beautyBundle.services[0]?.serviceId ?? input.serviceId)
           : input.serviceId;
       const service = await tx.service.findUnique({
         where: { id: anchorServiceId },
@@ -382,8 +383,9 @@ export const bookingRouter = router({
       // admin edits to the bundle don't rewrite booking history.
       let beautyBundleJson: Record<string, unknown> | null = null;
       if (beautyBundle) {
+        const bundleServiceIds = beautyBundle.services.map((s) => s.serviceId);
         const bundleServices = await tx.service.findMany({
-          where: { id: { in: beautyBundle.serviceIds } },
+          where: { id: { in: bundleServiceIds } },
           select: { id: true, titleJson: true },
         });
         const titleById = new Map(bundleServices.map((s) => [s.id, s.titleJson]));
@@ -393,7 +395,7 @@ export const bookingRouter = router({
           discountPct: beautyBundle.discountPct,
           totalPrice: Number(beautyBundle.totalPrice),
           originalPrice: Number(beautyBundle.originalPrice),
-          serviceIds: beautyBundle.serviceIds.map((id) => ({
+          serviceIds: bundleServiceIds.map((id) => ({
             id,
             titleJson: titleById.get(id) ?? { ar: '', en: '' },
           })),

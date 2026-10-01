@@ -44,7 +44,7 @@ export default function BundlesPage(): JSX.Element {
               const original = num(b.originalPrice);
               const total = num(b.totalPrice);
               const savings = Math.round((original - total) * 100) / 100;
-              const serviceCount = (b.serviceIds as number[]).length;
+              const serviceCount = ((b.services as unknown[]) ?? []).length;
               return (
                 <Link
                   key={id}
