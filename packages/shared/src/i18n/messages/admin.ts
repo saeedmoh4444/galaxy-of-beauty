@@ -690,6 +690,26 @@ export const adminMessages = {
     en: 'Not enough data yet',
   },
 
+  // ---- Queues dashboard (audit stage 12) ----
+  'admin.queues.title': { ar: 'طوابير المهام', en: 'Job Queues' },
+  'admin.queues.subtitle': {
+    ar: 'حالة طوابير المعالجة الخلفية وأحدث المهام الفاشلة',
+    en: 'Background job queue health and recent failed jobs',
+  },
+  'admin.queues.waiting': { ar: 'بانتظار', en: 'Waiting' },
+  'admin.queues.active': { ar: 'قيد المعالجة', en: 'Active' },
+  'admin.queues.completed': { ar: 'مكتملة', en: 'Completed' },
+  'admin.queues.failed': { ar: 'فاشلة', en: 'Failed' },
+  'admin.queues.delayed': { ar: 'مؤجلة', en: 'Delayed' },
+  'admin.queues.unavailable': { ar: 'Redis غير متاح', en: 'Redis unavailable' },
+  'admin.queues.failedJobs': { ar: 'أحدث المهام الفاشلة', en: 'Recent failed jobs' },
+  'admin.queues.noFailed': { ar: 'لا توجد مهام فاشلة', en: 'No failed jobs' },
+  'admin.queues.reason': { ar: 'السبب', en: 'Reason' },
+  'admin.queues.attempts': { ar: 'المحاولات', en: 'Attempts' },
+  'admin.queues.retry': { ar: 'إعادة المحاولة', en: 'Retry' },
+  'admin.queues.remove': { ar: 'حذف', en: 'Remove' },
+  'admin.queues.opsDone': { ar: 'تم تنفيذ العملية', en: 'Done' },
+
   'admin.packages.title': { ar: 'الباقات', en: 'Packages' },
   'admin.packages.add-package': { ar: 'إضافة باقة', en: 'Add Package' },
   'admin.packages.load-error': { ar: 'فشل التحميل', en: 'Failed to load' },
