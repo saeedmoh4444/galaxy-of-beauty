@@ -400,7 +400,7 @@ export const marketingMessages = {
   'marketing.events.load-error': { ar: 'فشل تحميل الفعاليات', en: 'Failed to load events' },
   'marketing.events.no-events': { ar: 'لا توجد فعاليات', en: 'No events' },
   'marketing.events.no-events-desc': {
-    ar: 'لم تُضف أي فعاليات بعد. تابعي الصفحة قريباً! ',
+    ar: 'لم تُضف أي فعاليات بعد. تابعي الصفحة قريباً!',
     en: 'No events have been added yet. Check back soon!',
   },
   'marketing.events.no-events-of-type': {
@@ -412,7 +412,7 @@ export const marketingMessages = {
     en: 'Try filtering by another type',
   },
   'marketing.events.show-all': { ar: 'عرض الكل', en: 'Show all' },
-  'marketing.events.free': { ar: 'مجاناً ', en: 'Free' },
+  'marketing.events.free': { ar: 'مجاناً', en: 'Free' },
   'marketing.events.vipBadge': { ar: 'VIP مع حقيبة الهدايا', en: 'VIP with goodie bag' },
   'marketing.events.details': { ar: 'تفاصيل', en: 'Details' },
   'marketing.events.reserve-title': { ar: 'احجزي مقعدكِ', en: 'Reserve your seat' },
@@ -442,7 +442,7 @@ export const marketingMessages = {
   'marketing.blog.load-error': { ar: 'فشل تحميل المقالات', en: 'Failed to load articles' },
   'marketing.blog.no-posts': { ar: 'لا توجد مقالات بعد', en: 'No articles yet' },
   'marketing.blog.no-posts-desc': {
-    ar: 'لم ننشر مقالات بعد. تابعي المدونة قريباً! ',
+    ar: 'لم ننشر مقالات بعد. تابعي المدونة قريباً!',
     en: 'We have not published any articles yet. Follow the blog soon!',
   },
   'marketing.blog.no-posts-for-tag': {
@@ -548,7 +548,7 @@ export const marketingMessages = {
   'marketing.beauty-fortune.another': { ar: 'بسكويت آخر', en: 'Another fortune' },
   'marketing.beauty-fortune.book-now': { ar: 'احجزي الآن', en: 'Book now' },
   'marketing.beauty-fortune.fortune-1': {
-    ar: 'جمالكِ يبدأ من داخلكِ — اعتني بنفسكِ اليوم ',
+    ar: 'جمالكِ يبدأ من داخلكِ — اعتني بنفسكِ اليوم',
     en: 'Your beauty starts from within - take care of yourself today',
   },
   'marketing.beauty-fortune.tip-1': {
@@ -556,7 +556,7 @@ export const marketingMessages = {
     en: 'Drink 8 glasses of water today for glowing skin',
   },
   'marketing.beauty-fortune.fortune-2': {
-    ar: 'الابتسامة هي أفضل إكسسوار يمكنكِ ارتداؤه ',
+    ar: 'الابتسامة هي أفضل إكسسوار يمكنكِ ارتداؤه',
     en: 'A smile is the best accessory you can wear',
   },
   'marketing.beauty-fortune.tip-2': {
@@ -564,7 +564,7 @@ export const marketingMessages = {
     en: 'Smile - it releases endorphins and improves your skin',
   },
   'marketing.beauty-fortune.fortune-3': {
-    ar: 'أنتِ أجمل عندما تكونين على طبيعتكِ ',
+    ar: 'أنتِ أجمل عندما تكونين على طبيعتكِ',
     en: 'You are most beautiful when you are yourself',
   },
   'marketing.beauty-fortune.tip-3': {
@@ -572,7 +572,7 @@ export const marketingMessages = {
     en: 'Choose makeup that enhances your natural beauty',
   },
   'marketing.beauty-fortune.fortune-4': {
-    ar: 'الاعتناء بنفسكِ ليس رفاهية — إنه ضرورة ',
+    ar: 'الاعتناء بنفسكِ ليس رفاهية — إنه ضرورة',
     en: 'Taking care of yourself is not a luxury - it is a necessity',
   },
   'marketing.beauty-fortune.tip-4': {
@@ -580,7 +580,7 @@ export const marketingMessages = {
     en: 'Set aside 30 minutes daily to care for your skin',
   },
   'marketing.beauty-fortune.fortune-5': {
-    ar: 'كل يوم هو فرصة جديدة لتتألقي ',
+    ar: 'كل يوم هو فرصة جديدة لتتألقي',
     en: 'Every day is a new chance to shine',
   },
   'marketing.beauty-fortune.tip-5': {
@@ -588,7 +588,7 @@ export const marketingMessages = {
     en: 'Try a new skincare routine this week',
   },
   'marketing.beauty-fortune.fortune-6': {
-    ar: 'الجمال ليس ما ترينه في المرآة فقط — بل ما تشعرين به ',
+    ar: 'الجمال ليس ما ترينه في المرآة فقط — بل ما تشعرين به',
     en: 'Beauty is not just what you see in the mirror - it is what you feel',
   },
   'marketing.beauty-fortune.tip-6': {
@@ -596,7 +596,7 @@ export const marketingMessages = {
     en: 'Treat yourself to a massage session this month',
   },
   'marketing.beauty-fortune.fortune-7': {
-    ar: 'ثقتكِ بنفسكِ هي سر جمالكِ ',
+    ar: 'ثقتكِ بنفسكِ هي سر جمالكِ',
     en: 'Your self-confidence is the secret to your beauty',
   },
   'marketing.beauty-fortune.tip-7': {
@@ -604,7 +604,7 @@ export const marketingMessages = {
     en: 'Stand in front of the mirror and say something positive about yourself',
   },
   'marketing.beauty-fortune.fortune-8': {
-    ar: 'العناية بالبشرة استثمار — ليس مصروفاً ',
+    ar: 'العناية بالبشرة استثمار — ليس مصروفاً',
     en: 'Skincare is an investment - not an expense',
   },
   'marketing.beauty-fortune.tip-8': {
@@ -612,7 +612,7 @@ export const marketingMessages = {
     en: 'Invest in a consistent skincare routine',
   },
   'marketing.beauty-fortune.fortune-9': {
-    ar: 'أنتِ تستحقين الأفضل دائماً ',
+    ar: 'أنتِ تستحقين الأفضل دائماً',
     en: 'You always deserve the best',
   },
   'marketing.beauty-fortune.tip-9': {
@@ -620,7 +620,7 @@ export const marketingMessages = {
     en: 'Do not hesitate to pamper yourself from time to time',
   },
   'marketing.beauty-fortune.fortune-10': {
-    ar: 'جمالكِ فريد — لا تقارنيه بأحد ',
+    ar: 'جمالكِ فريد — لا تقارنيه بأحد',
     en: 'Your beauty is unique - do not compare it to anyone',
   },
   'marketing.beauty-fortune.tip-10': {
@@ -628,7 +628,7 @@ export const marketingMessages = {
     en: 'Choose services that suit your unique skin type',
   },
   'marketing.beauty-fortune.fortune-11': {
-    ar: 'الراحة والاسترخاء سر من أسرار الجمال ',
+    ar: 'الراحة والاسترخاء سر من أسرار الجمال',
     en: 'Rest and relaxation are one of the secrets of beauty',
   },
   'marketing.beauty-fortune.tip-11': {
@@ -636,7 +636,7 @@ export const marketingMessages = {
     en: 'Book a relaxation session this week',
   },
   'marketing.beauty-fortune.fortune-12': {
-    ar: 'غداً أجمل — ابدئي اليوم ',
+    ar: 'غداً أجمل — ابدئي اليوم',
     en: 'Tomorrow is more beautiful - start today',
   },
   'marketing.beauty-fortune.tip-12': {
@@ -648,10 +648,10 @@ export const marketingMessages = {
     ar: 'انضمي لنقاشات مباشرة مع خبراء التجميل',
     en: 'Join live discussions with beauty experts',
   },
-  'marketing.audio-rooms.live-now': { ar: 'مباشر الآن', en: ' Live now' },
+  'marketing.audio-rooms.live-now': { ar: 'مباشر الآن', en: 'Live now' },
   'marketing.audio-rooms.listeners': { ar: '{count} مستمع', en: '{count} listeners' },
   'marketing.audio-rooms.join': { ar: 'انضمام', en: 'Join' },
-  'marketing.audio-rooms.upcoming': { ar: 'قادم', en: ' Upcoming' },
+  'marketing.audio-rooms.upcoming': { ar: 'قادم', en: 'Upcoming' },
   'marketing.beauty-awards.title': { ar: 'جوائز الجمال الشهرية', en: 'Monthly Beauty Awards' },
   'marketing.beauty-awards.vote-cta': {
     ar: 'صوّتي لأفضل الفنيات — {month}',
@@ -664,7 +664,7 @@ export const marketingMessages = {
     ar: 'تجولي في أجنحة أشهر الماركات العالمية',
     en: 'Stroll through the booths of the world’s top brands',
   },
-  'marketing.beauty-expo.visitors': { ar: ' {count} زائر', en: ' {count} visitors' },
+  'marketing.beauty-expo.visitors': { ar: '{count} زائر', en: '{count} visitors' },
   'marketing.beauty-stories.subtitle': {
     ar: 'قصص يومية من فنياتنا',
     en: 'Daily stories from our service providers',
@@ -695,7 +695,7 @@ export const marketingMessages = {
   },
   'marketing.beauty-packages.service-id': { ar: 'خدمة #{id}', en: 'Service #{id}' },
   'marketing.beauty-packages.book-package': { ar: 'احجزي الباقة', en: 'Book this package' },
-  'marketing.bundles.title': { ar: 'اصنعي باقتكِ', en: ' Build your bundle' },
+  'marketing.bundles.title': { ar: 'اصنعي باقتكِ', en: 'Build your bundle' },
   'marketing.bundles.subtitle': {
     ar: 'اختاري ٢-٥ خدمات واحصلي على خصم تلقائي',
     en: 'Choose 2-5 services and get an automatic discount',
@@ -704,12 +704,12 @@ export const marketingMessages = {
     ar: '{n}+ خدمات = -{percent}%',
     en: '{n}+ services = -{percent}%',
   },
-  'marketing.bundles.services-count-label': { ar: 'عدد الخدمات: ', en: 'Number of services: ' },
-  'marketing.bundles.discount-label': { ar: 'الخصم: ', en: 'Discount: ' },
+  'marketing.bundles.services-count-label': { ar: 'عدد الخدمات:', en: 'Number of services:' },
+  'marketing.bundles.discount-label': { ar: 'الخصم:', en: 'Discount:' },
   'marketing.bundles.duration-min': { ar: '{min} دقيقة', en: '{min} minutes' },
   'marketing.bundles.book-cta': {
     ar: 'احجزي باقتكِ بخصم {discount}%',
-    en: ' Book your bundle with {discount}% off',
+    en: 'Book your bundle with {discount}% off',
   },
   'marketing.campaigns.ended': { ar: 'انتهى', en: 'Ended' },
   'marketing.campaigns.days-left': { ar: 'متبقي {count} يوم', en: '{count} days left' },
@@ -726,17 +726,17 @@ export const marketingMessages = {
     en: 'No active campaigns right now',
   },
   'marketing.campaigns.no-campaigns-desc': {
-    ar: 'تابعينا للموسم القادم! ',
-    en: 'Stay tuned for the next season! ',
+    ar: 'تابعينا للموسم القادم!',
+    en: 'Stay tuned for the next season!',
   },
   'marketing.campaigns.browse-services': { ar: 'تصفحي الخدمات', en: 'Browse services' },
-  'marketing.campaigns.active-now': { ar: 'عروض نشطة الآن', en: ' Active offers now' },
+  'marketing.campaigns.active-now': { ar: 'عروض نشطة الآن', en: 'Active offers now' },
   'marketing.campaigns.active': { ar: 'نشط', en: 'Active' },
   'marketing.campaigns.code-label': { ar: 'كود:', en: 'Code:' },
   'marketing.campaigns.copy': { ar: 'نسخ', en: 'Copy' },
   'marketing.campaigns.use-offer': { ar: 'استفيدي من العرض', en: 'Use this offer' },
-  'marketing.campaigns.coming-soon': { ar: 'قريباً', en: ' Coming soon' },
-  'marketing.campaigns.starts': { ar: 'يبدأ ', en: 'Starts ' },
+  'marketing.campaigns.coming-soon': { ar: 'قريباً', en: 'Coming soon' },
+  'marketing.campaigns.starts': { ar: 'يبدأ', en: 'Starts' },
   'marketing.compare.title': { ar: 'مقارنة الخدمات', en: 'Compare Services' },
   'marketing.compare.select-title': {
     ar: 'اختر خدمتين أو أكثر للمقارنة',
@@ -762,7 +762,7 @@ export const marketingMessages = {
   'marketing.compare.bookings-col': { ar: 'الحجوزات', en: 'Bookings' },
   'marketing.compare.tags-col': { ar: 'الوسوم', en: 'Tags' },
   'marketing.compare.variants-col': { ar: 'المتغيرات', en: 'Variants' },
-  'marketing.compare.price-delta': { ar: ' (+{price} ر.س)', en: ' (+{price} SAR)' },
+  'marketing.compare.price-delta': { ar: '(+{price} ر.س)', en: '(+{price} SAR)' },
   'marketing.compare.best-value': { ar: 'الأفضل قيمة:', en: 'Best value:' },
   'marketing.compare.best-per-minute': { ar: 'الأقل سعراً للدقيقة', en: 'Lowest price per minute' },
   'marketing.event-tickets.title': { ar: 'تذاكر الفعاليات', en: 'Event Tickets' },
@@ -776,7 +776,7 @@ export const marketingMessages = {
     ar: 'لم تُضف أي فعاليات بعد',
     en: 'No events have been added yet',
   },
-  'marketing.event-tickets.free': { ar: 'مجاناً ', en: 'Free ' },
+  'marketing.event-tickets.free': { ar: 'مجاناً', en: 'Free' },
   'marketing.event-tickets.price-sar': { ar: '{price} ر.س', en: '{price} SAR' },
   'marketing.event-tickets.booked': { ar: 'تم الحجز', en: 'Booked' },
   'marketing.event-tickets.book-seat': { ar: 'احجزي مقعداً', en: 'Book a seat' },
@@ -792,8 +792,8 @@ export const marketingMessages = {
   },
   'marketing.booking-heatmap.load-error': { ar: 'فشل التحميل', en: 'Failed to load' },
   'marketing.booking-heatmap.bookings-count': { ar: '{count} حجوزات', en: '{count} bookings' },
-  'marketing.booking-heatmap.quiet': { ar: 'هادئ', en: ' Quiet' },
-  'marketing.booking-heatmap.busy': { ar: 'مزدحم', en: ' Busy' },
+  'marketing.booking-heatmap.quiet': { ar: 'هادئ', en: 'Quiet' },
+  'marketing.booking-heatmap.busy': { ar: 'مزدحم', en: 'Busy' },
   'marketing.featured-tech.title': { ar: 'مقدمة خدمة الأسبوع', en: 'Service Provider of the Week' },
   'marketing.featured-tech.subtitle': {
     ar: 'نسلط الضوء على أفضل الفنيات في منصتنا',
@@ -801,18 +801,18 @@ export const marketingMessages = {
   },
   'marketing.featured-tech.load-error': { ar: 'فشل التحميل', en: 'Failed to load' },
   'marketing.featured-tech.badge': {
-    ar: 'مقدمة خدمة الأسبوع — ',
-    en: 'Service Provider of the Week - ',
+    ar: 'مقدمة خدمة الأسبوع —',
+    en: 'Service Provider of the Week -',
   },
-  'marketing.featured-tech.achievements': { ar: 'الإنجازات', en: ' Achievements' },
-  'marketing.featured-tech.services': { ar: 'الخدمات', en: ' Services' },
-  'marketing.featured-tech.quick-interview': { ar: 'مقابلة سريعة', en: ' Quick interview' },
-  'marketing.featured-tech.q-label': { ar: 'س: ', en: 'Q: ' },
-  'marketing.featured-tech.a-label': { ar: 'ج: ', en: 'A: ' },
+  'marketing.featured-tech.achievements': { ar: 'الإنجازات', en: 'Achievements' },
+  'marketing.featured-tech.services': { ar: 'الخدمات', en: 'Services' },
+  'marketing.featured-tech.quick-interview': { ar: 'مقابلة سريعة', en: 'Quick interview' },
+  'marketing.featured-tech.q-label': { ar: 'س:', en: 'Q:' },
+  'marketing.featured-tech.a-label': { ar: 'ج:', en: 'A:' },
   'marketing.featured-tech.full-profile': { ar: 'عرض الملف الكامل ←', en: 'View full profile ←' },
   'marketing.featured-tech.past-technicians': {
     ar: 'فنيات سابقات',
-    en: ' Past service providers',
+    en: 'Past service providers',
   },
   'marketing.flash-deals.ended': { ar: 'انتهى', en: 'Ended' },
   'marketing.flash-deals.time-hms': { ar: '{h} س {m} د {s} ث', en: '{h}h {m}m {s}s' },
@@ -829,12 +829,12 @@ export const marketingMessages = {
     en: 'No flash deals right now',
   },
   'marketing.flash-deals.no-deals-desc': {
-    ar: 'تحققي لاحقاً — العروض تتجدد باستمرار! ',
-    en: 'Check back later - deals are refreshed constantly! ',
+    ar: 'تحققي لاحقاً — العروض تتجدد باستمرار!',
+    en: 'Check back later - deals are refreshed constantly!',
   },
   'marketing.flash-deals.browse-services': { ar: 'تصفح الخدمات', en: 'Browse services' },
   'marketing.flash-deals.sold-out': { ar: 'نفذت الكمية', en: 'Sold out' },
-  'marketing.flash-deals.flash-badge': { ar: 'عرض فلاش', en: ' Flash deal' },
+  'marketing.flash-deals.flash-badge': { ar: 'عرض فلاش', en: 'Flash deal' },
   'marketing.flash-deals.save-amount': { ar: 'وفر {amount}', en: 'Save {amount}' },
   'marketing.flash-deals.redemption-stats': {
     ar: '{current} / {max} تم الاستفادة',
@@ -844,7 +844,7 @@ export const marketingMessages = {
   'marketing.flash-deals.book-now': { ar: 'احجزي الآن', en: 'Book now' },
   'marketing.flash-deals.login-to-claim': { ar: 'سجّلي دخول للاستفادة', en: 'Log in to claim' },
   'marketing.flash-deals.service-details': { ar: 'تفاصيل الخدمة →', en: 'Service details →' },
-  'marketing.flash-deals.dont-miss': { ar: 'لا تفوّتي العروض!', en: ' Don’t miss the deals!' },
+  'marketing.flash-deals.dont-miss': { ar: 'لا تفوّتي العروض!', en: 'Don’t miss the deals!' },
   'marketing.flash-deals.daily-refresh': {
     ar: 'العروض تتجدد يومياً — تابعي صفحة العروض أول بأول',
     en: 'Deals are refreshed daily - keep an eye on this page',
@@ -943,7 +943,7 @@ export const marketingMessages = {
   },
   'marketing.beauty-faq.search-placeholder': {
     ar: 'ابحثي عن سؤال...',
-    en: ' Search for a question...',
+    en: 'Search for a question...',
   },
   'marketing.beauty-faq.search': { ar: 'بحث', en: 'Search' },
   'marketing.beauty-faq.all': { ar: 'الكل', en: 'All' },
@@ -963,7 +963,7 @@ export const marketingMessages = {
   'marketing.kids-services.age': { ar: 'العمر', en: 'Age' },
   'marketing.kids-services.age-from': { ar: 'من عمر {age} سنوات', en: 'From age {age} years' },
   'marketing.kids-services.book': { ar: 'احجزي', en: 'Book' },
-  'marketing.kids-services.tips': { ar: 'نصائح', en: ' Tips' },
+  'marketing.kids-services.tips': { ar: 'نصائح', en: 'Tips' },
   'marketing.kids-services.login-to-book': { ar: 'سجّلي دخول للحجز', en: 'Log in to book' },
   'marketing.smart-pricing.title': { ar: 'الأسعار الذكية', en: 'Smart pricing' },
   'marketing.smart-pricing.subtitle': {
@@ -1397,8 +1397,8 @@ export const marketingMessages = {
     en: 'Wedding planning dashboard',
   },
   'marketing.bridal-concierge.dashboard-subtitle': {
-    ar: 'تابعي تقدمكِ نحو يوم زفافكِ ',
-    en: 'Follow your progress toward your wedding day ',
+    ar: 'تابعي تقدمكِ نحو يوم زفافكِ',
+    en: 'Follow your progress toward your wedding day',
   },
   'marketing.bridal-concierge.wedding-details': { ar: 'تفاصيل الزفاف', en: 'Wedding details' },
   'marketing.bridal-concierge.edit': { ar: 'تعديل', en: 'Edit' },
@@ -1419,7 +1419,7 @@ export const marketingMessages = {
   'marketing.bridal-concierge.guest-count': { ar: '{count} ضيف', en: '{count} guests' },
   'marketing.bridal-concierge.budget': { ar: 'الميزانية', en: 'Budget' },
   'marketing.bridal-concierge.budget-amount': { ar: '{amount} ر.س', en: '{amount} SAR' },
-  'marketing.bridal-concierge.notes-label': { ar: 'ملاحظات', en: ' Notes' },
+  'marketing.bridal-concierge.notes-label': { ar: 'ملاحظات', en: 'Notes' },
   'marketing.bridal-concierge.services-title': { ar: 'خدمات التجميل', en: 'Beauty services' },
   'marketing.bridal-concierge.trials-progress': {
     ar: '{done} / {total} تجربة مكتملة',
@@ -1435,24 +1435,24 @@ export const marketingMessages = {
     en: 'Add makeup, hair, and skincare services for your wedding day',
   },
   'marketing.bridal-concierge.service-id': { ar: 'خدمة #{id}', en: 'Service #{id}' },
-  'marketing.bridal-concierge.trial-label': { ar: 'تجربة: ', en: 'Trial: ' },
+  'marketing.bridal-concierge.trial-label': { ar: 'تجربة:', en: 'Trial:' },
   'marketing.bridal-concierge.mark-trial-done': { ar: 'تمت التجربة', en: 'Trial done' },
-  'marketing.bridal-concierge.bride-tips': { ar: 'نصائح للعروس', en: ' Tips for the bride' },
+  'marketing.bridal-concierge.bride-tips': { ar: 'نصائح للعروس', en: 'Tips for the bride' },
   'marketing.bridal-concierge.tip-skin': {
     ar: 'ابدئي جلسات العناية بالبشرة قبل ٣-٦ أشهر من الزفاف',
-    en: ' Start your skincare sessions 3–6 months before the wedding',
+    en: 'Start your skincare sessions 3–6 months before the wedding',
   },
   'marketing.bridal-concierge.tip-makeup-trial': {
     ar: 'احجزي تجربة المكياج قبل شهرين على الأقل',
-    en: ' Book your makeup trial at least two months ahead',
+    en: 'Book your makeup trial at least two months ahead',
   },
   'marketing.bridal-concierge.tip-hair': {
     ar: 'جربي تسريحة الشعر مع الطرحة قبل ٣ أسابيع',
-    en: ' Try your hairstyle with the veil three weeks before',
+    en: 'Try your hairstyle with the veil three weeks before',
   },
   'marketing.bridal-concierge.tip-nails': {
     ar: 'مانيكير وباديكير قبل يومين من الزفاف',
-    en: ' Get a manicure and pedicure two days before the wedding',
+    en: 'Get a manicure and pedicure two days before the wedding',
   },
   'marketing.bridal-concierge.venue-placeholder': {
     ar: 'قاعة الأفراح، الرياض',
@@ -1492,15 +1492,15 @@ export const marketingMessages = {
     ar: 'يوم زفافكِ يستحق الأفضل. صممنا لكِ خدمة شاملة لتخطيط إطلالتكِ من الألف إلى الياء — تجارب مكياج، عناية بالبشرة، تسريحة الشعر، والمزيد.',
     en: 'Your wedding day deserves the best. We designed a complete service to plan your look from A to Z — makeup trials, skincare, hairstyling, and more.',
   },
-  'marketing.bridal-concierge.login-cta': { ar: 'سجّلي دخول للبدء', en: ' Log in to get started' },
+  'marketing.bridal-concierge.login-cta': { ar: 'سجّلي دخول للبدء', en: 'Log in to get started' },
   'marketing.bridal-concierge.journey-title': {
     ar: 'رحلتكِ نحو يوم الزفاف',
-    en: ' Your journey to the wedding day',
+    en: 'Your journey to the wedding day',
   },
   'marketing.bridal-concierge.step-number': { ar: 'الخطوة {number}', en: 'Step {number}' },
   'marketing.bridal-concierge.help-line': {
-    ar: 'تحتاجين مساعدة؟ تواصلي مع فريقنا على ',
-    en: 'Need help? Contact our team at ',
+    ar: 'تحتاجين مساعدة؟ تواصلي مع فريقنا على',
+    en: 'Need help? Contact our team at',
   },
   'marketing.gift-guide.occasion-birthday-name': { ar: 'عيد ميلاد', en: 'Birthday' },
   'marketing.gift-guide.occasion-birthday-desc': {
@@ -1619,8 +1619,8 @@ export const marketingMessages = {
     ar: 'أنشئي بطاقة هدية بالمبلغ اللي تختارينه',
     en: 'Create a gift card for the amount you choose',
   },
-  'marketing.gift-guide.create-gift-card': { ar: 'إنشاء بطاقة هدية', en: ' Create a gift card' },
-  'marketing.gift-guide.quiz-title': { ar: 'مستشار الهدايا الذكي', en: ' Smart gift advisor' },
+  'marketing.gift-guide.create-gift-card': { ar: 'إنشاء بطاقة هدية', en: 'Create a gift card' },
+  'marketing.gift-guide.quiz-title': { ar: 'مستشار الهدايا الذكي', en: 'Smart gift advisor' },
   'marketing.gift-guide.quiz-subtitle': {
     ar: 'جاوبي على الأسئلة وبنقترح عليكِ أفضل الهدايا',
     en: 'Answer the questions and we will suggest the best gifts for you',
@@ -1724,12 +1724,12 @@ export const marketingMessages = {
     en: 'Soft, natural makeup for Ramadan evenings',
   },
   'marketing.lookbook.tag-evenings': { ar: 'سهرات', en: 'Evenings' },
-  'marketing.lookbook.title': { ar: 'لوك بوك', en: ' Lookbook' },
+  'marketing.lookbook.title': { ar: 'لوك بوك', en: 'Lookbook' },
   'marketing.lookbook.subtitle': {
     ar: 'استلهمي إطلالتكِ من أحدث صيحات الجمال لكل المناسبات',
     en: 'Get inspired by the latest beauty trends for every occasion',
   },
-  'marketing.lookbook.community-title': { ar: 'إطلالات المجتمع', en: ' Community looks' },
+  'marketing.lookbook.community-title': { ar: 'إطلالات المجتمع', en: 'Community looks' },
   'marketing.lookbook.community-subtitle': {
     ar: 'أحدث الإطلالات من مجتمع جالكسي بيوتي',
     en: 'The latest looks from the Galaxy of Beauty community',
@@ -1740,34 +1740,34 @@ export const marketingMessages = {
   },
   'marketing.mommy-and-me.per-two': { ar: 'للشخصين', en: 'For two' },
   'marketing.mommy-and-me.book-for-two': { ar: 'احجزي لشخصين', en: 'Book for two' },
-  'marketing.mommy-and-me.gift-ideal': { ar: 'هدية مثالية', en: ' The perfect gift' },
+  'marketing.mommy-and-me.gift-ideal': { ar: 'هدية مثالية', en: 'The perfect gift' },
   'marketing.mommy-and-me.gift-desc': {
     ar: 'اشتري بطاقة هدية Mommy & Me واهدِ أمكِ أو ابنتكِ يوماً لا يُنسى من العناية والجمال',
     en: 'Buy a Mommy & Me gift card and give your mother or daughter an unforgettable day of care and beauty',
   },
-  'marketing.mommy-and-me.buy-gift-card': { ar: 'اشتري بطاقة هدية', en: ' Buy a gift card' },
+  'marketing.mommy-and-me.buy-gift-card': { ar: 'اشتري بطاقة هدية', en: 'Buy a gift card' },
   'marketing.onboarding.step-1-title': {
     ar: 'أهلاً بكِ في جالكسي بيوتي!',
-    en: ' Welcome to Galaxy of Beauty!',
+    en: 'Welcome to Galaxy of Beauty!',
   },
   'marketing.onboarding.step-1-desc': {
     ar: 'منصتكِ الشاملة للجمال والعناية. دعينا نأخذكِ في جولة سريعة.',
     en: 'Your all-in-one platform for beauty and care. Let us take you on a quick tour.',
   },
   'marketing.onboarding.step-1-action': { ar: 'هيا بنا!', en: "Let's go!" },
-  'marketing.onboarding.step-2-title': { ar: 'اكتشفي الخدمات', en: ' Discover services' },
+  'marketing.onboarding.step-2-title': { ar: 'اكتشفي الخدمات', en: 'Discover services' },
   'marketing.onboarding.step-2-desc': {
     ar: 'تصفحي مئات الخدمات من فنيات معتمدات — شعر، بشرة، مكياج، مساج والمزيد.',
     en: 'Browse hundreds of services from certified service providers — hair, skin, makeup, massage and more.',
   },
   'marketing.onboarding.step-2-action': { ar: 'تصفحي الخدمات', en: 'Browse services' },
-  'marketing.onboarding.step-3-title': { ar: 'اعرفي نوع بشرتكِ', en: ' Know your skin type' },
+  'marketing.onboarding.step-3-title': { ar: 'اعرفي نوع بشرتكِ', en: 'Know your skin type' },
   'marketing.onboarding.step-3-desc': {
     ar: 'اختبار سريع يساعدكِ في معرفة نوع بشرتكِ والخدمات المناسبة لكِ.',
     en: 'A quick quiz that helps you find out your skin type and the services that suit you.',
   },
   'marketing.onboarding.step-3-action': { ar: 'ابدئي الاختبار', en: 'Start the quiz' },
-  'marketing.onboarding.step-4-title': { ar: 'مناسبة خاصة؟', en: ' A special occasion?' },
+  'marketing.onboarding.step-4-title': { ar: 'مناسبة خاصة؟', en: 'A special occasion?' },
   'marketing.onboarding.step-4-desc': {
     ar: 'خططي لإطلالتكِ المثالية مع خدمة تخطيط الزفاف والباقات المخصصة.',
     en: 'Plan your perfect look with the wedding planning service and custom packages.',
@@ -1776,13 +1776,13 @@ export const marketingMessages = {
     ar: 'اكتشفي تخطيط الزفاف',
     en: 'Discover wedding planning',
   },
-  'marketing.onboarding.step-5-title': { ar: 'هدايا الجمال', en: ' Beauty gifts' },
+  'marketing.onboarding.step-5-title': { ar: 'هدايا الجمال', en: 'Beauty gifts' },
   'marketing.onboarding.step-5-desc': {
     ar: 'بطاقات هدايا وسجل هدايا — أهدي من تحبين أو اطلبي ما تتمنين.',
     en: 'Gift cards and a gift registry — gift someone you love or wish for what you want.',
   },
   'marketing.onboarding.step-5-action': { ar: 'تصفحي بطاقات الهدية', en: 'Browse gift cards' },
-  'marketing.onboarding.step-6-title': { ar: 'أنتِ جاهزة!', en: ' You are ready!' },
+  'marketing.onboarding.step-6-title': { ar: 'أنتِ جاهزة!', en: 'You are ready!' },
   'marketing.onboarding.step-6-desc': {
     ar: 'احجزي موعدكِ الأول اليوم واستمتعي بتجربة جمال لا تُنسى.',
     en: 'Book your first appointment today and enjoy an unforgettable beauty experience.',
@@ -1934,11 +1934,11 @@ export const marketingMessages = {
   },
   'marketing.pregnancy-beauty.safe-ingredients-label': {
     ar: 'مكونات آمنة',
-    en: ' Safe ingredients',
+    en: 'Safe ingredients',
   },
   'marketing.pregnancy-beauty.avoid-ingredients-label': {
     ar: 'مكونات يجب تجنبها',
-    en: ' Ingredients to avoid',
+    en: 'Ingredients to avoid',
   },
   'marketing.pregnancy-beauty.tips-heading': { ar: 'نصائح {name}', en: 'Tips {name}' },
   'marketing.price-estimator.title': { ar: 'حاسبة التكلفة', en: 'Cost calculator' },
@@ -1946,7 +1946,7 @@ export const marketingMessages = {
     ar: 'احسبي تكلفة حجزكِ قبل التأكيد — السعر الأساسي، الرسوم، والخصومات',
     en: 'Calculate your booking cost before confirming — base price, fees, and discounts',
   },
-  'marketing.price-estimator.service-label': { ar: 'الخدمة ', en: 'Service ' },
+  'marketing.price-estimator.service-label': { ar: 'الخدمة', en: 'Service' },
   'marketing.price-estimator.service-fallback': { ar: 'خدمة #{id}', en: 'Service #{id}' },
   'marketing.price-estimator.change-service': { ar: 'تغيير الخدمة', en: 'Change service' },
   'marketing.price-estimator.search-placeholder': {
@@ -1954,7 +1954,7 @@ export const marketingMessages = {
     en: 'Search for a service...',
   },
   'marketing.price-estimator.searching': { ar: 'جاري البحث...', en: 'Searching...' },
-  'marketing.price-estimator.promo-label': { ar: 'كود الخصم ', en: 'Promo code ' },
+  'marketing.price-estimator.promo-label': { ar: 'كود الخصم', en: 'Promo code' },
   'marketing.price-estimator.optional': { ar: '(اختياري)', en: '(optional)' },
   'marketing.price-estimator.promo-placeholder': {
     ar: 'مثال: WELCOME20',
@@ -1983,7 +1983,7 @@ export const marketingMessages = {
   },
   'marketing.price-estimator.variant-fallback': { ar: 'المتغير', en: 'Variant' },
   'marketing.price-estimator.subtotal-label': { ar: 'المجموع الفرعي', en: 'Subtotal' },
-  'marketing.price-estimator.discount-row': { ar: 'الخصم ', en: ' Discount ' },
+  'marketing.price-estimator.discount-row': { ar: 'الخصم', en: 'Discount' },
   'marketing.price-estimator.promo-error': {
     ar: 'كود الخصم "{code}" غير صالح أو منتهي الصلاحية',
     en: 'The promo code "{code}" is invalid or expired',
@@ -1995,10 +1995,10 @@ export const marketingMessages = {
     en: 'You saved {amount} SAR!',
   },
   'marketing.price-estimator.book-cta': { ar: 'احجزي الآن ←', en: 'Book now ←' },
-  'marketing.product-compare.dim-hydration': { ar: 'ترطيب', en: ' Hydration' },
-  'marketing.product-compare.dim-absorption': { ar: 'امتصاص', en: ' Absorption' },
-  'marketing.product-compare.dim-value': { ar: 'قيمة', en: ' Value' },
-  'marketing.product-compare.dim-gentle': { ar: 'لطف', en: ' Gentleness' },
+  'marketing.product-compare.dim-hydration': { ar: 'ترطيب', en: 'Hydration' },
+  'marketing.product-compare.dim-absorption': { ar: 'امتصاص', en: 'Absorption' },
+  'marketing.product-compare.dim-value': { ar: 'قيمة', en: 'Value' },
+  'marketing.product-compare.dim-gentle': { ar: 'لطف', en: 'Gentleness' },
   'marketing.product-compare.title': { ar: 'مقارنة المنتجات', en: 'Compare products' },
   'marketing.product-compare.subtitle': {
     ar: 'قارني بين منتجات التجميل جنباً إلى جنب',
@@ -2006,14 +2006,14 @@ export const marketingMessages = {
   },
   'marketing.product-compare.choose-products': {
     ar: 'اختر منتجين للمقارنة ({count}/4)',
-    en: ' Choose two products to compare ({count}/4)',
+    en: 'Choose two products to compare ({count}/4)',
   },
   'marketing.product-compare.price-sar': { ar: '{price} ر.س', en: '{price} SAR' },
   'marketing.product-compare.feature-column': { ar: 'الميزة', en: 'Feature' },
-  'marketing.product-compare.row-price': { ar: 'السعر', en: ' Price' },
-  'marketing.product-compare.row-rating': { ar: 'التقييم', en: ' Rating' },
-  'marketing.product-compare.row-cruelty-free': { ar: 'خالي من القسوة', en: ' Cruelty-free' },
-  'marketing.product-compare.row-vegan': { ar: 'نباتي', en: ' Vegan' },
+  'marketing.product-compare.row-price': { ar: 'السعر', en: 'Price' },
+  'marketing.product-compare.row-rating': { ar: 'التقييم', en: 'Rating' },
+  'marketing.product-compare.row-cruelty-free': { ar: 'خالي من القسوة', en: 'Cruelty-free' },
+  'marketing.product-compare.row-vegan': { ar: 'نباتي', en: 'Vegan' },
   'marketing.product-compare.pick-hint': {
     ar: 'اختر منتجين على الأقل للمقارنة',
     en: 'Choose at least two products to compare',
@@ -2108,10 +2108,10 @@ export const marketingMessages = {
     en: 'Browse the available slots for service providers and book directly',
   },
   'marketing.tech-calendar.load-error': { ar: 'فشل التحميل', en: 'Failed to load' },
-  'marketing.tech-calendar.techs-label': { ar: 'الفنيات', en: ' Service Providers' },
+  'marketing.tech-calendar.techs-label': { ar: 'الفنيات', en: 'Service Providers' },
   'marketing.tech-calendar.available-days': {
-    ar: ' {name} · {count} يوم متاح هذا الشهر',
-    en: ' {name} · {count} days available this month',
+    ar: '{name} · {count} يوم متاح هذا الشهر',
+    en: '{name} · {count} days available this month',
   },
   'marketing.tech-calendar.book-cta': { ar: 'احجزي الآن ←', en: 'Book now ←' },
   'marketing.technician-badges.badge-top-rated': {
@@ -2162,7 +2162,7 @@ export const marketingMessages = {
   },
   'marketing.technician-badges.cta-title': {
     ar: 'ابحثي عن فنيات معتمدات',
-    en: ' Find certified service providers',
+    en: 'Find certified service providers',
   },
   'marketing.technician-badges.cta-desc': {
     ar: 'الفنيات الحاصلات على شارات التميز يقدمن أعلى مستويات الجودة',
@@ -2186,16 +2186,16 @@ export const marketingMessages = {
   'marketing.technician-compare.exp-5': { ar: '٥ سنوات', en: '5 years' },
   'marketing.technician-compare.svc-manicure': { ar: 'مانيكير', en: 'Manicure' },
   'marketing.technician-compare.svc-pedicure': { ar: 'باديكير', en: 'Pedicure' },
-  'marketing.technician-compare.svc-nail-art': { ar: ' nail art', en: ' Nail art' },
+  'marketing.technician-compare.svc-nail-art': { ar: 'nail art', en: 'Nail art' },
   'marketing.technician-compare.spec-skin': { ar: 'بشرة', en: 'Skin' },
   'marketing.technician-compare.exp-12': { ar: '١٢ سنة', en: '12 years' },
   'marketing.technician-compare.svc-facial': { ar: 'تنظيف بشرة', en: 'Facial cleansing' },
   'marketing.technician-compare.svc-peeling': { ar: 'تقشير', en: 'Peeling' },
   'marketing.technician-compare.svc-acne-treatment': { ar: 'علاج حب الشباب', en: 'Acne treatment' },
-  'marketing.technician-compare.dim-speed': { ar: 'السرعة', en: ' Speed' },
-  'marketing.technician-compare.dim-quality': { ar: 'الجودة', en: ' Quality' },
-  'marketing.technician-compare.dim-price': { ar: 'السعر', en: ' Price' },
-  'marketing.technician-compare.dim-communication': { ar: 'التواصل', en: ' Communication' },
+  'marketing.technician-compare.dim-speed': { ar: 'السرعة', en: 'Speed' },
+  'marketing.technician-compare.dim-quality': { ar: 'الجودة', en: 'Quality' },
+  'marketing.technician-compare.dim-price': { ar: 'السعر', en: 'Price' },
+  'marketing.technician-compare.dim-communication': { ar: 'التواصل', en: 'Communication' },
   'marketing.technician-compare.title': { ar: 'مقارنة الفنيات', en: 'Compare service providers' },
   'marketing.technician-compare.subtitle': {
     ar: 'قارني بين الفنيات واختاري الأفضل لكِ (اختاري ٢-٣)',
@@ -2203,17 +2203,17 @@ export const marketingMessages = {
   },
   'marketing.technician-compare.compare-count': {
     ar: 'مقارنة {count} فنيات',
-    en: ' Comparing {count} service providers',
+    en: 'Comparing {count} service providers',
   },
   'marketing.technician-compare.feature-column': { ar: 'الميزة', en: 'Feature' },
-  'marketing.technician-compare.row-rating': { ar: 'التقييم', en: ' Rating' },
-  'marketing.technician-compare.row-reviews': { ar: 'المراجعات', en: ' Reviews' },
-  'marketing.technician-compare.row-price': { ar: 'السعر', en: ' Price' },
+  'marketing.technician-compare.row-rating': { ar: 'التقييم', en: 'Rating' },
+  'marketing.technician-compare.row-reviews': { ar: 'المراجعات', en: 'Reviews' },
+  'marketing.technician-compare.row-price': { ar: 'السعر', en: 'Price' },
   'marketing.technician-compare.price-sar': { ar: '{price} ر.س', en: '{price} SAR' },
-  'marketing.technician-compare.row-city': { ar: 'المدينة', en: ' City' },
-  'marketing.technician-compare.row-experience': { ar: 'الخبرة', en: ' Experience' },
-  'marketing.technician-compare.row-services': { ar: 'الخدمات', en: ' Services' },
-  'marketing.technician-qa.title': { ar: 'اسألي الفنيات', en: ' Ask the service providers' },
+  'marketing.technician-compare.row-city': { ar: 'المدينة', en: 'City' },
+  'marketing.technician-compare.row-experience': { ar: 'الخبرة', en: 'Experience' },
+  'marketing.technician-compare.row-services': { ar: 'الخدمات', en: 'Services' },
+  'marketing.technician-qa.title': { ar: 'اسألي الفنيات', en: 'Ask the service providers' },
   'marketing.technician-qa.subtitle': {
     ar: 'اسألي خبراء التجميل — تجاوب الفنيات على أسئلتكِ',
     en: 'Ask beauty experts — service providers answer your questions',
@@ -2224,7 +2224,7 @@ export const marketingMessages = {
   'marketing.technician-qa.empty-title': { ar: 'لا توجد أسئلة بعد', en: 'No questions yet' },
   'marketing.technician-qa.empty-desc': { ar: 'كوني أول من يسأل!', en: 'Be the first to ask!' },
   'marketing.technician-qa.empty-action': { ar: 'اسألي الآن', en: 'Ask now' },
-  'marketing.technician-qa.pending-label': { ar: 'في انتظار الرد', en: ' Waiting for a reply' },
+  'marketing.technician-qa.pending-label': { ar: 'في انتظار الرد', en: 'Waiting for a reply' },
   'marketing.technician-qa.login-cta': { ar: 'سجّلي دخول للسؤال', en: 'Log in to ask' },
   'marketing.technician-qa.modal-title': { ar: 'اسألي الفنيات', en: 'Ask the service providers' },
   'marketing.technician-qa.category-label': { ar: 'الفئة', en: 'Category' },
@@ -2234,8 +2234,8 @@ export const marketingMessages = {
     en: 'Write your question here...',
   },
   'marketing.technician-qa.cancel': { ar: 'إلغاء', en: 'Cancel' },
-  'marketing.technician-qa.submit': { ar: 'إرسال ', en: 'Send ' },
-  'marketing.terms.title': { ar: 'الشروط والأحكام', en: ' Terms and Conditions' },
+  'marketing.technician-qa.submit': { ar: 'إرسال', en: 'Send' },
+  'marketing.terms.title': { ar: 'الشروط والأحكام', en: 'Terms and Conditions' },
   'marketing.terms.section-1-title': { ar: '١. مقدمة', en: '1. Introduction' },
   'marketing.terms.section-1-body': {
     ar: 'مرحباً بكِ في جالكسي بيوتي. باستخدامكِ للمنصة، فإنكِ توافقين على الشروط والأحكام التالية. يرجى قراءتها بعناية.',
@@ -2283,7 +2283,7 @@ export const marketingMessages = {
   'marketing.tutorials.video-unavailable': { ar: 'الفيديو غير متوفر', en: 'Video unavailable' },
   'marketing.tutorials.views-label': { ar: '{count} مشاهدة', en: '{count} views' },
   'marketing.tutorials.desc-title': { ar: 'وصف الدرس', en: 'Lesson description' },
-  'marketing.tutorials.cta-title': { ar: 'تعلمي المزيد!', en: ' Learn more!' },
+  'marketing.tutorials.cta-title': { ar: 'تعلمي المزيد!', en: 'Learn more!' },
   'marketing.tutorials.cta-desc': {
     ar: 'تصفحي جميع دروس الجمال وتعلمي من أفضل الخبراء',
     en: 'Browse all beauty lessons and learn from the best experts',
@@ -2308,7 +2308,7 @@ export const marketingMessages = {
     en: '← Back to categories',
   },
   'marketing.womens-services.book': { ar: 'احجزي', en: 'Book' },
-  'marketing.womens-services.tips-title': { ar: 'نصائح مهمة', en: ' Important tips' },
+  'marketing.womens-services.tips-title': { ar: 'نصائح مهمة', en: 'Important tips' },
   'marketing.womens-services.login-cta': { ar: 'سجّلي دخول للحجز', en: 'Log in to book' },
 
   // Hero rollouts (Rose Blush phase — K-beauty flat heroes)

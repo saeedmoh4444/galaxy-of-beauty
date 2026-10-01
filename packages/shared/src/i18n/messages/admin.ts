@@ -645,9 +645,9 @@ export const adminMessages = {
   'admin.loyalty.boost-window': { ar: '{start} → {end}', en: '{start} → {end}' },
 
   'admin.monitoring.svc-database': { ar: 'قاعدة البيانات', en: 'Database' },
-  'admin.monitoring.svc-redis': { ar: ' Redis', en: 'Redis' },
-  'admin.monitoring.svc-api': { ar: ' API', en: 'API' },
-  'admin.monitoring.svc-socket': { ar: ' Socket.IO', en: 'Socket.IO' },
+  'admin.monitoring.svc-redis': { ar: 'Redis', en: 'Redis' },
+  'admin.monitoring.svc-api': { ar: 'API', en: 'API' },
+  'admin.monitoring.svc-socket': { ar: 'Socket.IO', en: 'Socket.IO' },
   'admin.monitoring.svc-payments': { ar: 'المدفوعات', en: 'Payments' },
   'admin.monitoring.title': { ar: 'مراقبة المنصة', en: 'Platform Monitoring' },
   'admin.monitoring.subtitle': {
@@ -678,7 +678,7 @@ export const adminMessages = {
     ar: 'الأخطاء (آخر ٢٤ ساعة: {count})',
     en: 'Errors (last 24h: {count})',
   },
-  'admin.monitoring.no-errors': { ar: 'لا توجد أخطاء مسجلة ', en: 'No errors recorded' },
+  'admin.monitoring.no-errors': { ar: 'لا توجد أخطاء مسجلة', en: 'No errors recorded' },
   'admin.monitoring.recent-feed': { ar: 'السجل الأخير', en: 'Recent Feed' },
   'admin.monitoring.no-recent-events': { ar: 'لا توجد أحداث حديثة', en: 'No recent events' },
   'admin.monitoring.daily-activity': {

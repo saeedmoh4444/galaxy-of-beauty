@@ -54,11 +54,11 @@ export const mobilePublicMessages = {
     ar: 'فشل تحميل الغرف الصوتية',
     en: 'Failed to load audio rooms',
   },
-  'mobile.public.audio-rooms.live': { ar: 'مباشر الآن', en: ' Live now' },
+  'mobile.public.audio-rooms.live': { ar: 'مباشر الآن', en: 'Live now' },
   'mobile.public.audio-rooms.listeners': { ar: '{count} مستمعين', en: '{count} listeners' },
   'mobile.public.audio-rooms.join': { ar: 'انضمام', en: 'Join' },
-  'mobile.public.audio-rooms.upcoming': { ar: 'قادم', en: ' Upcoming' },
-  'mobile.public.audio-rooms.remind': { ar: 'تذكير', en: ' Remind' },
+  'mobile.public.audio-rooms.upcoming': { ar: 'قادم', en: 'Upcoming' },
+  'mobile.public.audio-rooms.remind': { ar: 'تذكير', en: 'Remind' },
   'mobile.public.audio-rooms.empty': { ar: 'لا توجد غرف', en: 'No rooms' },
   'mobile.public.beauty-awards.title': { ar: 'جوائز التجميل', en: 'Beauty Awards' },
   'mobile.public.beauty-awards.subtitle': {
@@ -87,20 +87,20 @@ export const mobilePublicMessages = {
   'mobile.public.beauty-packages.save': { ar: 'وفر {amount} ر.س', en: 'Save {amount} SAR' },
   'mobile.public.beauty-faq.title': { ar: 'الأسئلة الشائعة', en: 'Frequently Asked Questions' },
   'mobile.public.beauty-fortune.title': { ar: 'حظ الجمال', en: 'Beauty Fortune' },
-  'mobile.public.beauty-fortune.try': { ar: 'جربي حظك', en: ' Try your luck' },
+  'mobile.public.beauty-fortune.try': { ar: 'جربي حظك', en: 'Try your luck' },
   'mobile.public.discover.title': { ar: 'اكتشف', en: 'Discover' },
   'mobile.public.discover.subtitle': {
     ar: 'اكتشفي خدمات وأفكار جديدة',
     en: 'Discover new services and ideas',
   },
   'mobile.public.discover.load-error': { ar: 'فشل تحميل المحتوى', en: 'Failed to load content' },
-  'mobile.public.discover.categories': { ar: 'الفئات', en: ' Categories' },
-  'mobile.public.discover.trending': { ar: 'الأكثر رواجاً', en: ' Trending' },
+  'mobile.public.discover.categories': { ar: 'الفئات', en: 'Categories' },
+  'mobile.public.discover.trending': { ar: 'الأكثر رواجاً', en: 'Trending' },
   'mobile.public.featured-tech.title': {
     ar: 'مقدمة خدمة الشهر',
     en: 'Service Provider of the Month',
   },
-  'mobile.public.featured-tech.past-title': { ar: 'سابقات', en: ' Previous honorees' },
+  'mobile.public.featured-tech.past-title': { ar: 'سابقات', en: 'Previous honorees' },
   'mobile.public.featured-tech.empty': {
     ar: 'لا توجد فنيات سابقات',
     en: 'No previous honorees',
@@ -120,13 +120,13 @@ export const mobilePublicMessages = {
     en: 'Days remaining: {days}',
   },
   'mobile.public.beauty-quiz.title': { ar: 'اختبار الجمال', en: 'Beauty Quiz' },
-  'mobile.public.beauty-quiz.result-title': { ar: 'نتيجة الاختبار', en: ' Quiz Result' },
+  'mobile.public.beauty-quiz.result-title': { ar: 'نتيجة الاختبار', en: 'Quiz Result' },
   'mobile.public.beauty-quiz.thanks': { ar: 'شكراً لمشاركتك!', en: 'Thank you for participating!' },
   'mobile.public.beauty-quiz.result-desc': {
     ar: 'بناءً على إجاباتك، سنرشح لكِ أفضل الخدمات',
     en: 'Based on your answers, we will recommend the best services for you',
   },
-  'mobile.public.beauty-quiz.restart': { ar: 'إعادة', en: ' Restart' },
+  'mobile.public.beauty-quiz.restart': { ar: 'إعادة', en: 'Restart' },
   'mobile.public.beauty-stats.title': {
     ar: 'جالكسي بيوتي في أرقام',
     en: 'Galaxy of Beauty in Numbers',
@@ -195,7 +195,7 @@ export const mobilePublicMessages = {
     ar: 'اختاري حتى ٣ خدمات للمقارنة',
     en: 'Select up to 3 services to compare',
   },
-  'mobile.public.compare.compare-title': { ar: 'المقارنة', en: ' Comparison' },
+  'mobile.public.compare.compare-title': { ar: 'المقارنة', en: 'Comparison' },
   'mobile.public.event-tickets.title': { ar: 'تذاكر الفعاليات', en: 'Event Tickets' },
   'mobile.public.event-tickets.subtitle': {
     ar: 'احجزي تذكرتكِ لأقرب فعالية',
@@ -203,7 +203,7 @@ export const mobilePublicMessages = {
   },
   'mobile.public.event-tickets.empty': { ar: 'لا توجد فعاليات', en: 'No events' },
   'mobile.public.event-tickets.book': { ar: 'حجز', en: 'Book' },
-  'mobile.public.before-after.title': { ar: 'قبل وبعد', en: ' Before & After' },
+  'mobile.public.before-after.title': { ar: 'قبل وبعد', en: 'Before & After' },
   'mobile.public.before-after.load-error': {
     ar: 'فشل تحميل المعرض',
     en: 'Failed to load the gallery',
@@ -240,11 +240,11 @@ export const mobilePublicMessages = {
   'mobile.public.community.placeholder': { ar: 'شاركي تجربتكِ...', en: 'Share your experience...' },
   'mobile.public.community.post': { ar: 'نشر', en: 'Post' },
   'mobile.public.community.empty': {
-    ar: 'لا توجد منشورات بعد. كوني الأولى! ',
+    ar: 'لا توجد منشورات بعد. كوني الأولى!',
     en: 'No posts yet. Be the first!',
   },
   'mobile.public.community.user': { ar: 'مستخدم', en: 'User' },
-  'mobile.public.community.likes': { ar: ' {count}', en: '{count}' },
+  'mobile.public.community.likes': { ar: '{count}', en: '{count}' },
   'mobile.public.campaigns.title': { ar: 'العروض والحملات', en: 'Offers & Campaigns' },
   'mobile.public.campaigns.subtitle': {
     ar: 'أحدث العروض والتخفيضات',
@@ -292,17 +292,17 @@ export const mobilePublicMessages = {
     ar: 'فشل تحميل التوصيات',
     en: 'Failed to load recommendations',
   },
-  'mobile.public.gift-quiz.recommendations': { ar: 'توصياتنا لكِ', en: ' Our Recommendations' },
+  'mobile.public.gift-quiz.recommendations': { ar: 'توصياتنا لكِ', en: 'Our Recommendations' },
   'mobile.public.gift-quiz.price': { ar: '{price} ر.س', en: '{price} SAR' },
-  'mobile.public.gift-quiz.restart': { ar: 'إعادة الاختبار', en: ' Restart Quiz' },
-  'mobile.public.service-recommender.title': { ar: 'توصيات لكِ', en: ' Recommendations for You' },
+  'mobile.public.gift-quiz.restart': { ar: 'إعادة الاختبار', en: 'Restart Quiz' },
+  'mobile.public.service-recommender.title': { ar: 'توصيات لكِ', en: 'Recommendations for You' },
   'mobile.public.service-recommender.load-error': {
     ar: 'فشل تحميل التوصيات',
     en: 'Failed to load recommendations',
   },
   'mobile.public.service-recommender.empty': { ar: 'لا توجد توصيات', en: 'No recommendations' },
   'mobile.public.price-estimator.title': { ar: 'مقدّر الأسعار', en: 'Price Estimator' },
-  'mobile.public.price-estimator.calculate': { ar: 'احسب التكلفة', en: ' Calculate Cost' },
+  'mobile.public.price-estimator.calculate': { ar: 'احسب التكلفة', en: 'Calculate Cost' },
   'mobile.public.price-estimator.base-price': { ar: 'السعر الأساسي', en: 'Base price' },
   'mobile.public.price-estimator.discount': { ar: 'الخصم', en: 'Discount' },
   'mobile.public.price-estimator.total': { ar: 'الإجمالي', en: 'Total' },
@@ -326,7 +326,7 @@ export const mobilePublicMessages = {
   'mobile.public.onboarding.back': { ar: 'السابق', en: 'Previous' },
   'mobile.public.onboarding.next': { ar: 'التالي →', en: 'Next →' },
   'mobile.public.onboarding.start': { ar: 'ابدئي الآن', en: 'Start Now' },
-  'mobile.public.service-matchmaker.title': { ar: ' Service Matchmaker', en: 'Service Matchmaker' },
+  'mobile.public.service-matchmaker.title': { ar: 'Service Matchmaker', en: 'Service Matchmaker' },
   'mobile.public.service-matchmaker.results': { ar: 'النتائج', en: 'Results' },
   'mobile.public.service-matchmaker.your-perfect-services': {
     ar: 'خدماتكِ المثالية',
@@ -493,7 +493,7 @@ export const mobilePublicMessages = {
     en: 'Shop products inspired by celebrity looks',
   },
   'mobile.public.shop-the-look.empty': { ar: 'لا توجد إطلالات', en: 'No looks' },
-  'mobile.public.shop-the-look.products': { ar: 'المنتجات', en: ' Products' },
+  'mobile.public.shop-the-look.products': { ar: 'المنتجات', en: 'Products' },
   'mobile.public.shop-the-look.buy': { ar: 'شراء', en: 'Buy' },
   // Smart pricing
   'mobile.public.smart-pricing.title': { ar: 'الأسعار الذكية', en: 'Smart Pricing' },
@@ -540,8 +540,8 @@ export const mobilePublicMessages = {
     en: 'Ask your questions to beauty experts',
   },
   'mobile.public.technician-qa.empty': { ar: 'لا توجد أسئلة', en: 'No questions' },
-  'mobile.public.technician-qa.answer': { ar: 'الإجابة:', en: ' Answer:' },
-  'mobile.public.technician-qa.waiting': { ar: 'في انتظار الرد...', en: ' Awaiting reply...' },
+  'mobile.public.technician-qa.answer': { ar: 'الإجابة:', en: 'Answer:' },
+  'mobile.public.technician-qa.waiting': { ar: 'في انتظار الرد...', en: 'Awaiting reply...' },
   // Technicians
   'mobile.public.technicians.title': { ar: 'الفنيات', en: 'Service Providers' },
   'mobile.public.technicians.subtitle': {
@@ -566,23 +566,23 @@ export const mobilePublicMessages = {
   },
   'mobile.public.trending.services': {
     ar: 'الخدمات الرائجة',
-    en: ' Trending Services',
+    en: 'Trending Services',
   },
-  'mobile.public.trending.spotlight': { ar: 'فنيات مميزات', en: ' Featured Service Providers' },
+  'mobile.public.trending.spotlight': { ar: 'فنيات مميزات', en: 'Featured Service Providers' },
   // Tutorials
   'mobile.public.tutorials.title': { ar: 'دروس الجمال', en: 'Beauty Tutorials' },
   'mobile.public.tutorial-detail.load-error': {
     ar: 'تعذر تحميل الدرس',
     en: 'Failed to load the tutorial',
   },
-  'mobile.public.tutorial-detail.steps': { ar: 'الخطوات', en: ' Steps' },
+  'mobile.public.tutorial-detail.steps': { ar: 'الخطوات', en: 'Steps' },
   // Video testimonials
   'mobile.public.video-testimonials.title': { ar: 'تقييمات العملاء', en: 'Customer Reviews' },
   // Surprise me
   'mobile.public.surprise-me.title': { ar: 'فاجئيني', en: 'Surprise Me' },
   'mobile.public.surprise-me.hint': { ar: 'اضغطي للاستكشاف!', en: 'Tap to explore!' },
-  'mobile.public.surprise-me.choose': { ar: 'اختر لي', en: ' Choose for me' },
-  'mobile.public.surprise-me.again': { ar: 'جربي مرة أخرى', en: ' Try again' },
+  'mobile.public.surprise-me.choose': { ar: 'اختر لي', en: 'Choose for me' },
+  'mobile.public.surprise-me.again': { ar: 'جربي مرة أخرى', en: 'Try again' },
   // Service detail
   'mobile.public.service-detail.load-error': {
     ar: 'فشل تحميل الخدمة',
@@ -590,7 +590,7 @@ export const mobilePublicMessages = {
   },
   'mobile.public.service-detail.not-found': { ar: 'الخدمة غير موجودة', en: 'Service not found' },
   'mobile.public.service-detail.duration': {
-    ar: ' {minutes} دقيقة',
+    ar: '{minutes} دقيقة',
     en: '{minutes} minutes',
   },
   'mobile.public.service-detail.price': { ar: 'السعر', en: 'Price' },
