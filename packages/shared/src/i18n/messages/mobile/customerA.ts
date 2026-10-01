@@ -68,10 +68,7 @@ export const mobileCustomerAMessages = {
   },
 
   // ── achievements ──
-  'achievements.subtitle': {
-    ar: 'ميداليات وجوائز رحلتكِ الجمالية',
-    en: 'Medals and rewards from your beauty journey',
-  },
+
   'achievements.progress-count': {
     ar: '{earned}/{total} إنجاز — {pct}%',
     en: '{earned}/{total} achievements — {pct}%',
@@ -88,7 +85,7 @@ export const mobileCustomerAMessages = {
   'advancedBooking.freq-monthly': { ar: 'شهري', en: 'Monthly' },
 
   // ── ai-assistant ──
-  'aiAssistant.title': { ar: 'بيوتي AI', en: 'Beauty AI' },
+
   'aiAssistant.placeholder': {
     ar: 'اسألي عن خدمات التجميل...',
     en: 'Ask about beauty services...',
@@ -103,18 +100,15 @@ export const mobileCustomerAMessages = {
 
   // ── corporate-wellness ──
   'corporateWellness.load-error': { ar: 'فشل تحميل الباقات', en: 'Failed to load plans' },
-  'corporateWellness.subtitle': {
-    ar: 'باقات تجميل وعناية لمنسوبات الشركات',
-    en: 'Beauty and care packages for company employees',
-  },
+
   'corporateWellness.request-received': {
     ar: 'تم استلام طلبكِ وسنتواصل معكِ',
     en: 'We received your request and will contact you',
   },
-  'corporateWellness.title': { ar: 'عافية الشركات', en: 'Corporate Wellness' },
+
   'corporateWellness.price': { ar: '{price} ر.س / سنوياً', en: '{price} SAR / year' },
   'corporateWellness.employees': { ar: 'حتى {count} موظفة', en: 'Up to {count} employees' },
-  'corporateWellness.close': { ar: 'إغلاق', en: 'Close' },
+
   'corporateWellness.submit-request': { ar: 'تقديم طلب', en: 'Submit Request' },
   'corporateWellness.company-name-ph': { ar: 'اسم الشركة', en: 'Company name' },
   'corporateWellness.contact-name-ph': { ar: 'اسم المسؤولة', en: 'Contact name' },
@@ -123,14 +117,14 @@ export const mobileCustomerAMessages = {
   'corporateWellness.my-enquiries': { ar: 'طلباتي السابقة', en: 'My Previous Requests' },
 
   // ── accessories-guide ──
-  'accessoriesGuide.title': { ar: 'دليل الإكسسوارات', en: 'Accessories Guide' },
+
   'accessoriesGuide.subtitle': {
     ar: 'اللمسة الأخيرة لإطلالة متكاملة',
     en: 'The final touch to a complete look',
   },
 
   // ── ai-routine ──
-  'aiRoutine.title': { ar: 'روتين العناية الذكي', en: 'Smart Skincare Routine' },
+
   'aiRoutine.subtitle': {
     ar: 'اختاري نوع بشرتكِ لتوليد روتين مخصص',
     en: 'Choose your skin type to generate a personalized routine',
@@ -146,7 +140,7 @@ export const mobileCustomerAMessages = {
   'aiRoutine.reset': { ar: 'إعادة', en: 'Reset' },
 
   // ── allergen-checker ──
-  'allergenChecker.title': { ar: 'فاحص الحساسية', en: 'Allergen Checker' },
+
   'allergenChecker.subtitle': {
     ar: 'تجنبي المكونات اللي تسبب حساسية لبشرتكِ',
     en: 'Avoid ingredients that irritate your skin',
@@ -188,11 +182,9 @@ export const mobileCustomerAMessages = {
     ar: 'عذراً، لم أستطع الإجابة.',
     en: "Sorry, I couldn't answer that.",
   },
-  'beautyAdvisor.typing': { ar: 'جاري الكتابة...', en: 'Typing...' },
-  'beautyAdvisor.placeholder': { ar: 'اكتبي سؤالكِ...', en: 'Type your question...' },
 
   // ── beauty-analytics ──
-  'beautyAnalytics.title': { ar: 'تحليلات الجمال', en: 'Beauty Analytics' },
+
   'beautyAnalytics.bookings': { ar: 'حجوزات', en: 'Bookings' },
   'beautyAnalytics.completed': { ar: 'مكتملة', en: 'Completed' },
   'beautyAnalytics.rate': { ar: 'نسبة', en: 'Rate' },
@@ -201,12 +193,12 @@ export const mobileCustomerAMessages = {
   'beautyAnalytics.monthly-trend': { ar: 'الاتجاه الشهري', en: 'Monthly Trend' },
 
   // ── beauty-bingo ──
-  'beautyBingo.title': { ar: 'بينجو الجمال', en: 'Beauty Bingo' },
+
   'beautyBingo.completed': { ar: '{done}/{total} مكتملة', en: '{done}/{total} completed' },
 
   // ── beauty-budget ──
   'beautyBudget.load-error': { ar: 'فشل تحميل الميزانية', en: 'Failed to load budget' },
-  'beautyBudget.title': { ar: 'ميزانية الجمال', en: 'Beauty Budget' },
+
   'beautyBudget.monthly-budget': { ar: 'الميزانية الشهرية', en: 'Monthly Budget' },
   'beautyBudget.loyalty-points': {
     ar: 'نقاط الولاء: {points}',
@@ -220,14 +212,13 @@ export const mobileCustomerAMessages = {
   'beautyBudget.remaining': { ar: 'المتبقي', en: 'Remaining' },
 
   // ── beauty-budget-planner ──
-  'beautyBudgetPlanner.title': { ar: 'مخطط الميزانية', en: 'Budget Planner' },
+
   'beautyBudgetPlanner.subtitle': {
     ar: 'خططي لمصاريف جمالكِ السنوية',
     en: 'Plan your yearly beauty spending',
   },
   'beautyBudgetPlanner.budget': { ar: 'الميزانية', en: 'Budget' },
-  'beautyBudgetPlanner.allocated': { ar: 'مخصص', en: 'Allocated' },
-  'beautyBudgetPlanner.remaining': { ar: 'متبقي', en: 'Remaining' },
+
   'beautyBudgetPlanner.categories': { ar: 'الفئات', en: 'Categories' },
   'beautyBudgetPlanner.cat-budget': {
     ar: 'الميزانية: {budget} ر.س / شهرياً',
@@ -243,11 +234,7 @@ export const mobileCustomerAMessages = {
   'beautyBudgetPlanner.cat-products': { ar: 'منتجات', en: 'Products' },
 
   // ── beauty-closet ──
-  'beautyCloset.title': { ar: 'خزانة الجمال', en: 'Beauty Closet' },
-  'beautyCloset.subtitle': {
-    ar: 'منتجاتكِ ومستحضراتكِ الشخصية',
-    en: 'Your personal products and cosmetics',
-  },
+
   'beautyCloset.all': { ar: 'الكل', en: 'All' },
   'beautyCloset.cat-makeup': { ar: 'مكياج', en: 'Makeup' },
   'beautyCloset.cat-skin': { ar: 'عناية', en: 'Skincare' },
@@ -268,14 +255,10 @@ export const mobileCustomerAMessages = {
 
   // ── beauty-courses ──
   'beautyCourses.load-error': { ar: 'فشل تحميل الدورات', en: 'Failed to load courses' },
-  'beautyCourses.title': { ar: 'دورات تجميل', en: 'Beauty Courses' },
-  'beautyCourses.subtitle': {
-    ar: 'تعلمي مهارات التجميل من الخبيرات',
-    en: 'Learn beauty skills from experts',
-  },
+
   'beautyCourses.my-courses': { ar: 'دوراتي ({count})', en: 'My Courses ({count})' },
   'beautyCourses.lessons': { ar: '{lessons} دروس', en: '{lessons} lessons' },
-  'beautyCourses.enrolled': { ar: 'مسجلة', en: 'Enrolled' },
+
   'beautyCourses.enroll-now': { ar: 'سجلي الآن', en: 'Enroll Now' },
   'beautyCourses.course-fallback': { ar: 'دورة #{id}', en: 'Course #{id}' },
   'beautyCourses.level-beginner': { ar: 'مبتدئ', en: 'Beginner' },
@@ -287,7 +270,7 @@ export const mobileCustomerAMessages = {
     ar: 'فشل تحميل لوحة الجمال',
     en: 'Failed to load beauty dashboard',
   },
-  'beautyDashboard.title': { ar: 'لوحة الجمال', en: 'Beauty Dashboard' },
+
   'beautyDashboard.loyalty-points': { ar: 'نقاط الولاء', en: 'Loyalty Points' },
   'beautyDashboard.tier': { ar: 'المستوى', en: 'Tier' },
   'beautyDashboard.bookings': { ar: 'الحجوزات', en: 'Bookings' },
@@ -311,7 +294,7 @@ export const mobileCustomerAMessages = {
   'beautyDashboard.replay-tour': { ar: 'جولة تعريفية', en: 'Guided tour' },
 
   // ── beauty-diary ──
-  'beautyDiary.title': { ar: 'يوميات الجمال', en: 'Beauty Diary' },
+
   'beautyDiary.subtitle': {
     ar: 'اربطي مزاجكِ بروتين جمالكِ',
     en: 'Connect your mood to your beauty routine',
@@ -330,7 +313,7 @@ export const mobileCustomerAMessages = {
 
   // ── beauty-discovery ──
   'beautyDiscovery.load-error': { ar: 'فشل تحميل المحتوى', en: 'Failed to load content' },
-  'beautyDiscovery.title': { ar: 'اكتشفي', en: 'Discover' },
+
   'beautyDiscovery.subtitle': {
     ar: 'خدمات وعروض وفعاليات مخصصة لكِ',
     en: 'Services, offers, and events tailored for you',
@@ -365,7 +348,7 @@ export const mobileCustomerAMessages = {
 
   // ── beauty-expenses ──
   'beautyExpenses.load-error': { ar: 'فشل تحميل البيانات', en: 'Failed to load data' },
-  'beautyExpenses.title': { ar: 'تحليل الإنفاق', en: 'Spending Analysis' },
+
   'beautyExpenses.subtitle': {
     ar: 'تتبعي مصاريفكِ على خدمات التجميل',
     en: 'Track your beauty service expenses',
@@ -382,19 +365,19 @@ export const mobileCustomerAMessages = {
   'beautyExtras.subtitle': { ar: 'مجتمع، امتنان، وأحلام', en: 'Community, gratitude, and dreams' },
 
   // ── beauty-goals ──
-  'beautyGoals.title': { ar: 'أهداف الجمال', en: 'Beauty Goals' },
+
   'beautyGoals.progress': { ar: '{target} جلسة · {pct}%', en: '{target} sessions · {pct}%' },
   'beautyGoals.set-target': { ar: 'تحديد هدف', en: 'Set Target' },
 
   // ── beauty-innovation ──
-  'beautyInnovation.title': { ar: 'الابتكار', en: 'Innovation' },
+
   'beautyInnovation.subtitle': {
     ar: 'تقنيات وأدوات ذكية لجمالكِ',
     en: 'Smart technologies and tools for your beauty',
   },
 
   // ── beauty-journal ──
-  'beautyJournal.title': { ar: 'يوميات الجمال', en: 'Beauty Journal' },
+
   'beautyJournal.load-error': { ar: 'فشل تحميل اليوميات', en: 'Failed to load journal' },
   'beautyJournal.empty': { ar: 'لا توجد مدخلات', en: 'No entries yet' },
   'beautyJournal.entry-fallback': { ar: 'مدخل', en: 'Entry' },
@@ -436,15 +419,9 @@ export const mobileCustomerAMessages = {
   'beautyMentor.topic-nutrition': { ar: 'التغذية', en: 'Nutrition' },
 
   // ── beauty-metaverse ──
-  'beautyMetaverse.title': { ar: 'عالم الجمال الافتراضي', en: 'Virtual Beauty World' },
-  'beautyMetaverse.exit': { ar: 'خروج', en: 'Exit' },
 
   // ── beauty-party ──
-  'beautyParty.title': { ar: 'حفلة تجميل', en: 'Beauty Party' },
-  'beautyParty.subtitle': {
-    ar: 'خططي لحفلة تجميل لكِ ولصديقاتكِ',
-    en: 'Plan a beauty party for you and your friends',
-  },
+
   'beautyParty.choose-theme': { ar: 'اختاري الثيم', en: 'Choose a Theme' },
   'beautyParty.guests-count': {
     ar: 'عدد الصديقات: {count}',
@@ -585,7 +562,7 @@ export const mobileCustomerAMessages = {
   'beautyWishlistGifts.occasion-mothersday': { ar: 'عيد الأم', en: "Mother's Day" },
 
   // ── beauty-rewards ──
-  'beautyRewards.title': { ar: 'المكافآت', en: 'Rewards' },
+
   'beautyRewards.subtitle': {
     ar: 'تقديراً لكونكِ جزءاً من عائلتنا',
     en: 'In appreciation of being part of our family',
@@ -597,11 +574,6 @@ export const mobileCustomerAMessages = {
   'beautyRoutine.evening': { ar: 'المساء', en: 'Evening' },
 
   // ── beauty-services ──
-  'beautyServices.title': { ar: 'خدمات الجمال', en: 'Beauty Services' },
-  'beautyServices.subtitle': {
-    ar: 'اكتشفي كل ما تحتاجينه',
-    en: 'Discover everything you need',
-  },
 
   // ── beauty-tips ──
   'beautyTips.title': { ar: 'نصائح وإرشادات', en: 'Tips & Guidance' },
@@ -620,7 +592,7 @@ export const mobileCustomerAMessages = {
 
   // ── bnpl ──
   'bnpl.title': { ar: 'تقسيط المدفوعات', en: 'Buy Now Pay Later' },
-  'bnpl.approved': { ar: 'تمت الموافقة!', en: 'Approved!' },
+
   'bnpl.amount': { ar: '{amount} ر.س', en: '{amount} SAR' },
   'bnpl.monthly': { ar: '{amount} ر.س / شهرياً', en: '{amount} SAR / month' },
   'bnpl.submit': { ar: 'تقديم الطلب', en: 'Submit Request' },
@@ -659,26 +631,21 @@ export const mobileCustomerAMessages = {
     ar: 'مزامنة تقويم Google غير متوفرة في التطبيق حالياً',
     en: 'Google Calendar sync is not available in the app yet',
   },
-  'calendarSync.title': { ar: 'مزامنة التقويم', en: 'Calendar Sync' },
-  'calendarSync.connected': { ar: 'التقويم مربوط', en: 'Calendar connected' },
+
   'calendarSync.not-connected': {
     ar: 'لم يتم ربط التقويم بعد',
     en: 'Calendar not connected yet',
   },
-  'calendarSync.disconnect': { ar: 'قطع الاتصال', en: 'Disconnect' },
-  'calendarSync.connect': { ar: 'ربط تقويم قوقل', en: 'Connect Google Calendar' },
 
   // ── cart ──
   'cart.load-error': { ar: 'فشل تحميل السلة', en: 'Failed to load cart' },
   'cart.empty-title': { ar: 'السلة فارغة', en: 'Cart is empty' },
   'cart.empty-desc': { ar: 'أضيفي منتجات من المتجر', en: 'Add products from the store' },
-  'cart.title': { ar: 'سلة التسوق', en: 'Shopping Cart' },
-  'cart.quantity': { ar: 'الكمية: {qty}', en: 'Quantity: {qty}' },
+
   'cart.total': { ar: 'الإجمالي: {total}', en: 'Total: {total}' },
-  'cart.checkout': { ar: 'إتمام الشراء', en: 'Checkout' },
 
   // ── cashback ──
-  'cashback.title': { ar: 'استرداد نقدي', en: 'Cashback' },
+
   'cashback.balance': { ar: 'رصيد الكاش باك', en: 'Cashback balance' },
   'cashback.total-balance': { ar: 'الرصيد الإجمالي', en: 'Total balance' },
   'cashback.amount': { ar: '{value} ر.س', en: '{value} SAR' },
@@ -712,10 +679,9 @@ export const mobileCustomerAMessages = {
 
   // ── clinic-connect ──
   'clinicConnect.title': { ar: 'Clinic Connect', en: 'Clinic Connect' },
-  'clinicConnect.refer': { ar: 'إحالة', en: 'Refer' },
+
   'clinicConnect.my-referrals': { ar: 'إحالاتي', en: 'My Referrals' },
-  'clinicConnect.pending': { ar: 'معلقة', en: 'Pending' },
-  'clinicConnect.completed': { ar: 'مكتملة', en: 'Completed' },
+
   'clinicConnect.reason': { ar: 'استشارة جلدية', en: 'Dermatology consultation' },
 
   // ── color-analysis ──
@@ -731,7 +697,7 @@ export const mobileCustomerAMessages = {
 
   // ── community ──
   'community.load-error': { ar: 'فشل تحميل المجتمع', en: 'Failed to load community' },
-  'community.title': { ar: 'مجتمع الجمال', en: 'Beauty Community' },
+
   'community.subtitle': { ar: 'شاركي تجاربكِ وآرائكِ', en: 'Share your experiences and opinions' },
   'community.create': { ar: '+ منشور', en: '+ Post' },
   'community.placeholder': {
@@ -746,26 +712,13 @@ export const mobileCustomerAMessages = {
   'community.comment': { ar: 'تعليق', en: 'Comment' },
 
   // ── cycle-tracker ──
-  'cycleTracker.title': { ar: 'متعقب الدورة', en: 'Cycle Tracker' },
-  'cycleTracker.subtitle': {
-    ar: 'توصيات جمالية حسب يوم دورتكِ',
-    en: 'Beauty recommendations based on your cycle day',
-  },
+
   'cycleTracker.day': { ar: 'اليوم {day}', en: 'Day {day}' },
   'cycleTracker.days': { ar: 'الأيام {days}', en: 'Days {days}' },
   'cycleTracker.tips': { ar: 'توصيات الجمال', en: 'Beauty Recommendations' },
   // E4a — period tracking upgrade (mobile)
-  'cycleTracker.fertileWindow': { ar: 'نافذة الخصوبة', en: 'Fertile window' },
-  'cycleTracker.fertileToday': {
-    ar: 'اليوم ضمن نافذة الخصوبة',
-    en: 'Today is in your fertile window',
-  },
+
   'cycleTracker.pmsTips': { ar: 'نصائح ما قبل الدورة', en: 'PMS tips' },
-  'cycleTracker.pregnancyMode': { ar: 'وضع الحمل', en: 'Pregnancy mode' },
-  'cycleTracker.pregnancyWeeks': {
-    ar: 'الأسبوع {{weeks}} من الحمل',
-    en: 'Week {{weeks}} of pregnancy',
-  },
 
   // ── dashboard ──
   'dashboard.load-error': { ar: 'فشل تحميل لوحة التحكم', en: 'Failed to load dashboard' },
@@ -788,7 +741,7 @@ export const mobileCustomerAMessages = {
     ar: 'يمكنكِ فتح نزاع على أي حجز',
     en: 'You can open a dispute on any booking',
   },
-  'disputes.title': { ar: 'النزاعات', en: 'Disputes' },
+
   'disputes.resolution': { ar: 'الحل: {resolution}', en: 'Resolution: {resolution}' },
   'disputes.open-new': { ar: 'فتح نزاع جديد', en: 'Open New Dispute' },
   'disputes.status-open': { ar: 'مفتوح', en: 'Open' },
@@ -797,17 +750,14 @@ export const mobileCustomerAMessages = {
   'disputes.status-closed': { ar: 'مغلق', en: 'Closed' },
 
   // ── dna-beauty ──
-  'dnaBeauty.title': { ar: 'تحليل الجينات', en: 'DNA Analysis' },
+
   'dnaBeauty.result': { ar: 'نتيجة التحليل', en: 'Analysis Result' },
   'dnaBeauty.match': { ar: '{score}% تطابق', en: '{score}% match' },
   'dnaBeauty.reset': { ar: 'إعادة', en: 'Reset' },
   'dnaBeauty.fill-survey': { ar: 'أكملي الاستبيان', en: 'Complete the survey' },
-  'dnaBeauty.yes': { ar: 'نعم', en: 'Yes' },
-  'dnaBeauty.no': { ar: 'لا', en: 'No' },
-  'dnaBeauty.analyze': { ar: 'تحليل', en: 'Analyze' },
 
   // ── emergency-booking ──
-  'emergencyBooking.title': { ar: 'حجز طارئ', en: 'Emergency Booking' },
+
   'emergencyBooking.success': { ar: 'تم الحجز الطارئ!', en: 'Emergency booking confirmed!' },
   'emergencyBooking.subtitle': {
     ar: 'حجز فوري خلال ٣ ساعات — رسوم إضافية ٥٠ ر.س',
@@ -819,18 +769,13 @@ export const mobileCustomerAMessages = {
   'emergencyBooking.change-service': { ar: 'تغيير الخدمة', en: 'Change Service' },
 
   // ── expiry-tracker ──
-  'expiryTracker.title': { ar: 'متعقب الصلاحية', en: 'Expiry Tracker' },
+
   'expiryTracker.expires': { ar: 'ينتهي بعد {months} شهر', en: 'Expires in {months} months' },
 
   // ── family-account ──
   'familyAccount.title': { ar: 'حساب العائلة', en: 'Family Account' },
 
   // ── family-beauty ──
-  'familyBeauty.title': { ar: 'جمال العائلة', en: 'Family Beauty' },
-  'familyBeauty.subtitle': {
-    ar: 'لحظات جميلة تجمع الأحباب',
-    en: 'Beautiful moments that bring loved ones together',
-  },
 
   // ── favorites ──
   'favorites.load-error': { ar: 'فشل تحميل المفضلة', en: 'Failed to load favorites' },
@@ -843,22 +788,17 @@ export const mobileCustomerAMessages = {
   'favorites.service-id': { ar: 'خدمة #{id}', en: 'Service #{id}' },
 
   // ── following ──
-  'following.title': { ar: 'متابعة الفنيات', en: 'Following Service Providers' },
+
   'following.technician': { ar: 'مقدمة خدمة #{id}', en: 'Service Provider #{id}' },
   'following.since': { ar: 'منذ {date}', en: 'Since {date}' },
-  'following.unfollow': { ar: 'إلغاء المتابعة', en: 'Unfollow' },
 
   // ── franchise-portal ──
-  'franchisePortal.title': { ar: 'بوابة الامتياز', en: 'Franchise Portal' },
-  'franchisePortal.revenue': { ar: 'الإيرادات', en: 'Revenue' },
-  'franchisePortal.bookings': { ar: 'حجز', en: 'Bookings' },
+
   'franchisePortal.staff': { ar: '{staff} موظفات', en: '{staff} staff' },
   'franchisePortal.booking-count': { ar: '{bookings} حجز', en: '{bookings} bookings' },
   'franchisePortal.amount': { ar: '{value} ر.س', en: '{value} SAR' },
-  'franchisePortal.active': { ar: 'نشط', en: 'Active' },
-  'franchisePortal.pending': { ar: 'معلق', en: 'Pending' },
 
   // ── geofence-offers ──
-  'geofenceOffers.title': { ar: 'عروض بالقرب منك', en: 'Offers Near You' },
+
   'geofenceOffers.opt-in': { ar: 'فعلي التنبيهات القريبة', en: 'Enable Nearby Alerts' },
 } as const satisfies Record<string, { ar: string; en: string }>;
