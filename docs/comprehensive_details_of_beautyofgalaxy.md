@@ -1,4 +1,4 @@
-# Dalal | دلال — Comprehensive Platform Details
+# Galaxy of Beauty — Comprehensive Platform Details
 
 > **120+ commits of hardening | 543 tests + 168 E2E | 0 TS errors | 0 ESLint errors | verifiably-correct baseline (CI fully green)**
 
