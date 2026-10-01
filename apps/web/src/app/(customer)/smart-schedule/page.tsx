@@ -1,6 +1,7 @@
 'use client';
 import { useState } from 'react';
 import type { JSX } from 'react';
+import Link from 'next/link';
 import { api } from '@/lib/trpc';
 import { Card, CardListSkeleton, Button } from '@galaxy/ui';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
@@ -108,9 +109,11 @@ export default function SmartSchedulePage(): JSX.Element {
                       <span className="text-xs text-amber-800 dark:text-amber-400">
                         {s.rating as number}
                       </span>
-                      <Button size="sm" className="mt-1 block">
-                        {t('smartSchedule.book')}
-                      </Button>
+                      <Link href={`/services/${serviceId}`}>
+                        <Button size="sm" className="mt-1 block">
+                          {t('smartSchedule.book')}
+                        </Button>
+                      </Link>
                     </div>
                   </div>
                 );

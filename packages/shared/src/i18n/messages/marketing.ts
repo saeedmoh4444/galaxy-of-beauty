@@ -415,6 +415,18 @@ export const marketingMessages = {
   'marketing.events.free': { ar: 'مجاناً ', en: 'Free' },
   'marketing.events.vipBadge': { ar: 'VIP مع حقيبة الهدايا', en: 'VIP with goodie bag' },
   'marketing.events.details': { ar: 'تفاصيل', en: 'Details' },
+  'marketing.events.reserve-title': { ar: 'احجزي مقعدكِ', en: 'Reserve your seat' },
+  'marketing.events.attendee-name': { ar: 'اسم الحاضرة', en: 'Attendee name' },
+  'marketing.events.name-placeholder': { ar: 'اكتبي اسمكِ', en: 'Enter your name' },
+  'marketing.events.reserve': { ar: 'احجزي تذكرتك', en: 'Reserve a ticket' },
+  'marketing.events.reserved': { ar: 'تم حجز تذكرتك!', en: 'Your ticket is reserved!' },
+  'marketing.events.ticket-id': { ar: 'رقم التذكرة', en: 'Ticket ID' },
+  'marketing.events.sold-out': { ar: 'نفدت التذاكر لهذه الفعالية', en: 'This event is sold out' },
+  'marketing.events.sign-in-to-reserve': {
+    ar: 'سجلي الدخول لحجز تذكرتك',
+    en: 'Sign in to reserve your ticket',
+  },
+  'marketing.events.back': { ar: 'رجوع للفعاليات', en: 'Back to events' },
 
   // Blog
   'marketing.blog.title': { ar: 'مدونة الجمال', en: 'Beauty blog' },

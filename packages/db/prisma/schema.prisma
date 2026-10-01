@@ -184,6 +184,7 @@ model User {
   beautyCircleMembers BeautyCircleMember[]
   clinicConsultations ClinicConsultation[]
   gymClassBookings  GymClassBooking[]
+  eventTickets      EventTicket[]
 
   @@index([role, isActive])
   @@index([createdAt])
@@ -1982,6 +1983,8 @@ model BeautyEvent {
   recordingUrl    String?
   createdAt     DateTime @default(now())
   updatedAt     DateTime @updatedAt
+
+  tickets EventTicket[]
 
   @@index([startsAt])
   @@index([isPublished])
@@ -4214,4 +4217,23 @@ model SeasonalService {
 
   @@index([season, startDate, endDate])
   @@map("seasonal_services")
+}
+
+// ── W9 — real event ticketing: reservations persisted, myTickets real
+model EventTicket {
+  id           Int      @id @default(autoincrement())
+  eventId      Int
+  userId       Int
+  attendeeName String
+  notes        String?  @db.VarChar(500)
+  status       String   @default("RESERVED") // RESERVED | CANCELLED | USED
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  user  User        @relation(fields: [userId], references: [id], onDelete: Cascade)
+  event BeautyEvent @relation(fields: [eventId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([eventId])
+  @@map("event_tickets")
 }

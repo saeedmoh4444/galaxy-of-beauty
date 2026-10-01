@@ -1,5 +1,5 @@
 'use client';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import type { JSX } from 'react';
 import { api } from '@/lib/trpc';
 import { Card, Button } from '@galaxy/ui';
@@ -9,6 +9,11 @@ export default function AdminCashbackPage(): JSX.Element {
   const { t } = useLocale();
   const [rate, setRate] = useState(5);
   const setRateMut = api.cashback.setRate.useMutation();
+  const rateQ = api.cashback.getRate.useQuery() as { data?: { rate: number } | undefined };
+
+  useEffect(() => {
+    if (rateQ.data) setRate(rateQ.data.rate);
+  }, [rateQ.data]);
 
   return (
     <>

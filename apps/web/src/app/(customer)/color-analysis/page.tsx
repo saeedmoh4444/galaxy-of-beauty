@@ -62,30 +62,98 @@ const SEASONS: {
 export default function ColorAnalysisPage(): JSX.Element {
   const { t } = useLocale();
   const [season, setSeason] = useState('summer');
+  const [quizOpen, setQuizOpen] = useState(false);
+  const [undertone, setUndertone] = useState<'blue' | 'green'>('blue');
+  const [contrast, setContrast] = useState<'dark' | 'light'>('dark');
+  const [result, setResult] = useState<string | null>(null);
   const s = SEASONS.find((x) => x.key === season)!;
+
+  // Rule-based season mapping (no fabricated AI result): undertone +
+  // hair contrast drive the classic four-season split.
+  const runQuiz = () => {
+    const mapped =
+      undertone === 'blue'
+        ? contrast === 'dark'
+          ? 'winter'
+          : 'summer'
+        : contrast === 'dark'
+          ? 'autumn'
+          : 'spring';
+    setSeason(mapped);
+    setResult(mapped);
+    setQuizOpen(false);
+  };
 
   return (
     <DashboardLayout userRole="CUSTOMER">
       <PageContainer width="default">
         <PageTitle title={t('color.title')} subtitle={t('color.subtitle')} />
 
-        <div className="mb-6 flex gap-2">
-          {SEASONS.map((sc) => (
+        {result && (
+          <p className="mb-4 rounded-2xl border border-rose-200 bg-rose-50 px-4 py-3 text-sm font-bold text-rose-700 dark:border-rose-900 dark:bg-rose-950 dark:text-rose-300">
+            {t('color.quiz.result')} {t(SEASONS.find((x) => x.key === result)!.name)}
+          </p>
+        )}
+
+        {quizOpen ? (
+          <div className="mb-6 space-y-4 rounded-2xl border border-edge-muted bg-surface-elevated p-6">
+            <div>
+              <p className="text-sm font-bold">{t('color.quiz.undertone')}</p>
+              <div className="mt-2 flex gap-2">
+                {(['blue', 'green'] as const).map((o) => (
+                  <button
+                    key={o}
+                    type="button"
+                    onClick={() => setUndertone(o)}
+                    className={`flex-1 rounded-xl border-2 px-3 py-2 text-sm ${undertone === o ? 'border-rose-400 bg-rose-50 dark:border-rose-600 dark:bg-rose-950' : 'border-edge-muted'}`}
+                  >
+                    {t(o === 'blue' ? 'color.quiz.undertone.blue' : 'color.quiz.undertone.green')}
+                  </button>
+                ))}
+              </div>
+            </div>
+            <div>
+              <p className="text-sm font-bold">{t('color.quiz.contrast')}</p>
+              <div className="mt-2 flex gap-2">
+                {(['dark', 'light'] as const).map((o) => (
+                  <button
+                    key={o}
+                    type="button"
+                    onClick={() => setContrast(o)}
+                    className={`flex-1 rounded-xl border-2 px-3 py-2 text-sm ${contrast === o ? 'border-rose-400 bg-rose-50 dark:border-rose-600 dark:bg-rose-950' : 'border-edge-muted'}`}
+                  >
+                    {t(o === 'dark' ? 'color.quiz.contrast.dark' : 'color.quiz.contrast.light')}
+                  </button>
+                ))}
+              </div>
+            </div>
             <button
-              key={sc.key}
               type="button"
-              onClick={() => setSeason(sc.key)}
-              className={`flex-1 rounded-2xl border-2 p-3 text-center transition-all ${season === sc.key ? 'border-rose-400 bg-rose-50 dark:border-rose-600 dark:bg-rose-950' : 'border-edge-muted bg-surface-elevated'}`}
+              onClick={runQuiz}
+              className="w-full rounded-xl bg-rose-600 py-3 text-sm font-bold text-white hover:bg-rose-700 transition-colors"
             >
-              <span className="text-2xl">{sc.emoji}</span>
-              <p
-                className={`mt-1 text-xs font-semibold ${season === sc.key ? 'text-rose-600 dark:text-rose-400' : 'text-text-tertiary dark:text-text-secondary'}`}
-              >
-                {t(sc.name)}
-              </p>
+              {t('color.quiz.take')}
             </button>
-          ))}
-        </div>
+          </div>
+        ) : (
+          <div className="mb-6 flex gap-2">
+            {SEASONS.map((sc) => (
+              <button
+                key={sc.key}
+                type="button"
+                onClick={() => setSeason(sc.key)}
+                className={`flex-1 rounded-2xl border-2 p-3 text-center transition-all ${season === sc.key ? 'border-rose-400 bg-rose-50 dark:border-rose-600 dark:bg-rose-950' : 'border-edge-muted bg-surface-elevated'}`}
+              >
+                <span className="text-2xl">{sc.emoji}</span>
+                <p
+                  className={`mt-1 text-xs font-semibold ${season === sc.key ? 'text-rose-600 dark:text-rose-400' : 'text-text-tertiary dark:text-text-secondary'}`}
+                >
+                  {t(sc.name)}
+                </p>
+              </button>
+            ))}
+          </div>
+        )}
 
         <div className="rounded-2xl border border-edge-muted bg-surface-elevated p-6">
           <h3 className="text-xl font-bold text-text-primary">
@@ -130,9 +198,10 @@ export default function ColorAnalysisPage(): JSX.Element {
 
         <button
           type="button"
+          onClick={() => setQuizOpen((v) => !v)}
           className="mt-6 w-full rounded-2xl bg-rose-600 py-4 text-center text-base font-bold text-white hover:bg-rose-700 transition-colors"
         >
-          {t('color.analyze')}
+          {quizOpen ? t('color.quiz.retake') : t('color.analyze')}
         </button>
       </PageContainer>
     </DashboardLayout>

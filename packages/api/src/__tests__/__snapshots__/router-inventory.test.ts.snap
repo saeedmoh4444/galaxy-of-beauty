@@ -320,6 +320,7 @@ campaigns.listAll	query	admin
 campaigns.upcoming	query	public
 careerBeauty.getProfile	query	public
 careerBeauty.listProfessions	query	public
+cashback.getRate	query	admin
 cashback.history	query	customer
 cashback.info	query	customer
 cashback.setRate	mutation	admin
@@ -914,11 +915,11 @@ subscriptionBoxes.subscribe	mutation	customer
 subscriptionGift.mySentGifts	query	customer
 subscriptionGift.options	query	customer
 subscriptionGift.send	mutation	customer
-subscriptions.cancelAutoRenew	mutation	technician
-subscriptions.getMySubscription	query	technician
+subscriptions.cancelAutoRenew	mutation	customer
+subscriptions.getMySubscription	query	customer
 subscriptions.getPlans	query	public
-subscriptions.getUsage	query	technician
-subscriptions.purchase	mutation	technician
+subscriptions.getUsage	query	customer
+subscriptions.purchase	mutation	customer
 techCalendar.listWithAvailability	query	public
 techCalendar.slots	query	public
 techLeaderboard.categories	query	public

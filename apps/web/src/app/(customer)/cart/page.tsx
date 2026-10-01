@@ -105,7 +105,7 @@ export default function CartPage(): JSX.Element {
                   <p className="text-sm text-text-secondary">{t('cart.total')}</p>
                   <p className="text-2xl font-extrabold">{formatCurrency(total)}</p>
                 </div>
-                <Button size="lg" className="px-8">
+                <Button size="lg" className="px-8" onClick={() => router.push('/checkout')}>
                   {t('cart.checkout')}
                 </Button>
               </div>

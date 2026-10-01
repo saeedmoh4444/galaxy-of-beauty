@@ -30,9 +30,9 @@ export default function BeautyStoriesPage(): JSX.Element {
       ) : (
         <div className="flex gap-4 justify-center flex-wrap">
           {stories.map((s: Record<string, unknown>) => (
-            <button
+            <div
               key={s.id as number}
-              className="relative w-32 h-48 rounded-2xl bg-linear-to-br from-brand-400 to-brand-500 text-white flex flex-col items-center justify-end p-3 hover:scale-105 transition-all shadow-lg"
+              className="relative w-32 h-48 rounded-2xl bg-linear-to-br from-brand-400 to-brand-500 text-white flex flex-col items-center justify-end p-3"
             >
               <span className="text-4xl">{s.emoji as string}</span>
               <p className="text-[10px] font-bold mt-2">{s.technicianName as string}</p>
@@ -40,7 +40,7 @@ export default function BeautyStoriesPage(): JSX.Element {
               <span className="absolute top-2 end-2 rounded-full bg-surface-elevated/20 px-2 py-0.5 text-[9px]">
                 {s.viewers as number}
               </span>
-            </button>
+            </div>
           ))}
         </div>
       )}

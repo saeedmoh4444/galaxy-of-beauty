@@ -1,6 +1,6 @@
 import { z } from 'zod';
 import { TRPCError } from '@trpc/server';
-import { router, publicProcedure, technicianProcedure } from '../trpc';
+import { router, publicProcedure, customerProcedure } from '../trpc';
 import { prisma } from '@galaxy/db';
 import { MAX_LIST_SIZE } from '@galaxy/shared';
 
@@ -20,7 +20,7 @@ export const subscriptionRouter = router({
     }));
   }),
 
-  purchase: technicianProcedure
+  purchase: customerProcedure
     .input(
       z.object({
         planId: z.number(),
@@ -80,7 +80,7 @@ export const subscriptionRouter = router({
       };
     }),
 
-  getMySubscription: technicianProcedure.query(async ({ ctx }) => {
+  getMySubscription: customerProcedure.query(async ({ ctx }) => {
     const subscription = await prisma.customerAiSubscription.findUnique({
       where: { userId: ctx.user.id },
       include: {
@@ -135,7 +135,7 @@ export const subscriptionRouter = router({
     };
   }),
 
-  cancelAutoRenew: technicianProcedure.mutation(async ({ ctx }) => {
+  cancelAutoRenew: customerProcedure.mutation(async ({ ctx }) => {
     const subscription = await prisma.customerAiSubscription.findUnique({
       where: { userId: ctx.user.id },
     });
@@ -158,7 +158,7 @@ export const subscriptionRouter = router({
     };
   }),
 
-  getUsage: technicianProcedure.query(async ({ ctx }) => {
+  getUsage: customerProcedure.query(async ({ ctx }) => {
     const subscription = await prisma.customerAiSubscription.findUnique({
       where: { userId: ctx.user.id },
       include: { plan: true },

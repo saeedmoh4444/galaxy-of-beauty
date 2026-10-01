@@ -1,11 +1,19 @@
 import { z } from 'zod';
 import { prisma } from '@galaxy/db';
+import { CASHBACK_RATE_PCT } from '@galaxy/shared';
 import { customerProcedure, adminProcedure, router } from '../trpc';
 
 const db = prisma;
 
-const CASHBACK_RATE = 5; // 5% cashback on every booking
+const CASHBACK_RATE_KEY = 'cashback_rate';
 const FIRST_BOOKING_BONUS = 50; // Extra 50 SAR on first booking
+
+/** Configured cashback percentage; falls back to the shared default (5). */
+export async function getCashbackRatePct(): Promise<number> {
+  const cfg = await db.platformConfig.findUnique({ where: { key: CASHBACK_RATE_KEY } });
+  const parsed = cfg ? Number.parseInt(cfg.value, 10) : NaN;
+  return Number.isFinite(parsed) && parsed >= 0 && parsed <= 100 ? parsed : CASHBACK_RATE_PCT;
+}
 
 export const cashbackRouter = router({
   // Get my cashback history
@@ -38,7 +46,7 @@ export const cashbackRouter = router({
     const wallet = await db.wallet.findUnique({ where: { userId: ctx.user.id } });
     const bookingCount = await db.booking.count({ where: { customerId: ctx.user.id } });
     return {
-      rate: CASHBACK_RATE,
+      rate: await getCashbackRatePct(),
       balance: Number(wallet?.bonusBalance || 0),
       totalBalance: Number(wallet?.balance || 0),
       isFirstBooking: bookingCount === 0,
@@ -46,11 +54,23 @@ export const cashbackRouter = router({
     };
   }),
 
-  // Admin: set cashback rate
+  // Admin: set cashback rate (persisted, read by info and the capture flow)
   setRate: adminProcedure
     .input(z.object({ rate: z.number().min(1).max(20) }))
-    .mutation(async ({ input }) => {
-      // In production, this would update a platform config
+    .mutation(async ({ ctx, input }) => {
+      await db.platformConfig.upsert({
+        where: { key: CASHBACK_RATE_KEY },
+        create: {
+          key: CASHBACK_RATE_KEY,
+          value: String(input.rate),
+          description: 'Cashback percentage on every booking',
+          updatedBy: ctx.user.id,
+        },
+        update: { value: String(input.rate), updatedBy: ctx.user.id },
+      });
       return { rate: input.rate };
     }),
+
+  // Admin: current persisted rate
+  getRate: adminProcedure.query(async () => ({ rate: await getCashbackRatePct() })),
 });
