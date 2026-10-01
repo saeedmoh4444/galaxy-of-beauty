@@ -24,7 +24,7 @@ function collectBlocks(src: string): Array<{ key: string; block: string }> {
       }
       j++;
     }
-    out.push({ key: m[1], block: src.slice(start + 1, j) });
+    out.push({ key: m[1]!, block: src.slice(start + 1, j) });
   }
   return out;
 }
@@ -36,7 +36,7 @@ function valueOf(block: string, label: 'ar' | 'en'): string | null {
   const q2 = block.indexOf('"', i);
   const q = q1 >= 0 && (q2 < 0 || q1 < q2) ? q1 : q2;
   if (q < 0) return null;
-  const quote = block[q];
+  const quote = block[q]!;
   let j = q + 1;
   let out = '';
   while (j < block.length) {
