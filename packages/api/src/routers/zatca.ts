@@ -1,7 +1,7 @@
 import { z } from 'zod';
 import { TRPCError } from '@trpc/server';
 import { createHash } from 'crypto';
-import { adminProcedure, protectedProcedure, router } from '../trpc';
+import { adminProcedure, customerProcedure, protectedProcedure, router } from '../trpc';
 import { prisma } from '@galaxy/db';
 import { ZATCA_TEST_VAT, ZATCA_API_URL as SHARED_ZATCA_URL } from '@galaxy/shared';
 import { appendAudit, verifyChain as verifyAuditChain } from '../lib/zatcaAudit';
@@ -498,6 +498,59 @@ export const zatcaRouter = router({
     .query(async ({ input }) => {
       const where: any = {};
       if (input.status) where.status = input.status;
+      const skip = (input.page - 1) * input.limit;
+
+      const [items, total] = await Promise.all([
+        prisma.zatcaInvoice.findMany({
+          where,
+          skip,
+          take: input.limit,
+          orderBy: { createdAt: 'desc' },
+          include: {
+            booking: {
+              select: {
+                bookingCode: true,
+                totalAmount: true,
+                customer: { select: { name: true } },
+              },
+            },
+          },
+        }),
+        prisma.zatcaInvoice.count({ where }),
+      ]);
+
+      return {
+        items: items.map((inv) => ({
+          id: inv.id,
+          invoiceNumber: inv.invoiceNumber,
+          status: inv.status,
+          reportedAt: inv.reportedAt,
+          clearedAt: inv.clearedAt,
+          errorMessage: inv.errorMessage,
+          createdAt: inv.createdAt,
+          booking: inv.booking,
+        })),
+        total,
+        page: input.page,
+        limit: input.limit,
+        totalPages: Math.ceil(total / input.limit),
+      };
+    }),
+
+  // Customer-facing: the caller's own invoices (audit M2 — the customer
+  // invoices screen used to call the admin-only listInvoices).
+  myInvoices: customerProcedure
+    .input(
+      z
+        .object({
+          page: z.number().optional().default(1),
+          limit: z.number().optional().default(20),
+        })
+        .optional()
+        .default({} as never),
+    )
+    .query(async ({ ctx, input }) => {
+      const where: any = { booking: { customerId: ctx.user.id } };
       const skip = (input.page - 1) * input.limit;
 
       const [items, total] = await Promise.all([

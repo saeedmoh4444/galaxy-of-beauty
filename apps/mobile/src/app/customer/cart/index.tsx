@@ -1,5 +1,6 @@
 import type { JSX } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
+import { useRouter } from 'expo-router';
 import { ScreenState } from '@/components/ScreenState';
 import { trpc } from '@/lib/trpc-react';
 import { formatCurrency } from '@galaxy/ui';
@@ -17,6 +18,7 @@ const COLORS = {
 
 export default function CartScreen(): JSX.Element {
   const isAuthed = useAuthState();
+  const router = useRouter();
   const { locale, t } = useLocale();
   const cart = trpc.marketplace.cart.useQuery(undefined, { enabled: isAuthed }) ?? {
     data: null,
@@ -64,7 +66,10 @@ export default function CartScreen(): JSX.Element {
       {data && data.length > 0 ? (
         <View style={styles.footer}>
           <Text style={styles.total}>{t('cart.total', { total: formatCurrency(total) })}</Text>
-          <TouchableOpacity style={styles.checkoutBtn}>
+          <TouchableOpacity
+            style={styles.checkoutBtn}
+            onPress={() => router.push('/customer/checkout' as never)}
+          >
             <Text style={styles.checkoutText}>{t('cart.checkout')}</Text>
           </TouchableOpacity>
         </View>

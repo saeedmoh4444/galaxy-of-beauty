@@ -15,6 +15,7 @@ const COLORS = {
 };
 
 interface SubscriptionPlan {
+  id?: number;
   nameJson?: { ar?: string; en?: string };
   priceMonthly?: number;
 }
@@ -50,6 +51,13 @@ export default function SubscriptionsScreen(): JSX.Element {
 
   const subscription = sub.data ?? undefined;
   const plans = plansQ.data ?? [];
+
+  const purchaseMut = trpc.subscriptions.purchase.useMutation({
+    onSuccess: () => {
+      void (sub.refetch as () => void)?.();
+    },
+  });
+  const hasActive = subscription?.status === 'ACTIVE';
 
   return (
     <ScreenState
@@ -96,7 +104,13 @@ export default function SubscriptionsScreen(): JSX.Element {
                 {formatCurrency(Number(p.priceMonthly))}
                 {t('mobile.subscriptions.per-month')}
               </Text>
-              <TouchableOpacity style={styles.subscribeBtn}>
+              <TouchableOpacity
+                style={[styles.subscribeBtn, hasActive && { opacity: 0.5 }]}
+                disabled={hasActive || purchaseMut.isPending}
+                onPress={() => {
+                  if (p.id != null) purchaseMut.mutate({ planId: p.id });
+                }}
+              >
                 <Text style={styles.subscribeText}>{t('mobile.subscriptions.subscribe-now')}</Text>
               </TouchableOpacity>
             </View>

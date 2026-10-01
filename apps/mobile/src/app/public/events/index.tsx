@@ -1,6 +1,7 @@
 import { View, Text, ScrollView, StyleSheet, TouchableOpacity, RefreshControl } from 'react-native';
 import { useState } from 'react';
 import type { JSX } from 'react';
+import { useRouter } from 'expo-router';
 import { SkeletonList } from '@/components/SkeletonCard';
 import { trpc } from '@/lib/trpc-react';
 import { localize } from '@galaxy/shared';
@@ -23,6 +24,7 @@ interface BeautyEvent {
 }
 
 export default function EventsScreen(): JSX.Element {
+  const router = useRouter();
   const { locale, t } = useLocale();
   const [filter, setFilter] = useState<string | null>(null);
   const eventsQ = trpc.beautyEvents.upcoming.useQuery();
@@ -84,7 +86,10 @@ export default function EventsScreen(): JSX.Element {
                 · {e.location ?? t('mobile.public.events.online')}
               </Text>
             </View>
-            <TouchableOpacity style={styles.jb}>
+            <TouchableOpacity
+              style={styles.jb}
+              onPress={() => router.push('/customer/beauty-events' as never)}
+            >
               <Text style={styles.jt}>{t('mobile.public.events.register')}</Text>
             </TouchableOpacity>
           </View>
