@@ -41,6 +41,123 @@ const MORE_LINKS: MoreLink[] = [
   { href: '/public/blog', key: 'nav.blog', emoji: '📰' },
 ];
 
+// M7 nav-hub expansion: every public screen gets a reachable entry point.
+// Labels reuse each destination screen's own title key (never invent keys).
+const COMMUNITY_LINKS: MoreLink[] = [
+  { href: '/public/beauty-stories', key: 'mobile.public.beauty-stories.title', emoji: '📖' },
+  { href: '/public/community', key: 'mobile.public.community.title', emoji: '👭' },
+  { href: '/public/challenges', key: 'mobile.public.challenges.title', emoji: '🏆' },
+  { href: '/public/trending', key: 'mobile.public.discover.trending', emoji: '📈' },
+  { href: '/public/discover', key: 'mobile.public.discover.title', emoji: '🔭' },
+  { href: '/public/beauty-posts', key: 'mobile.beautyPosts.title', emoji: '📸' },
+  { href: '/public/live-stream', key: 'mobile.public.live-stream.title', emoji: '📡' },
+  { href: '/public/audio-rooms', key: 'mobile.public.audio-rooms.title', emoji: '🎧' },
+];
+
+const STYLE_LINKS: MoreLink[] = [
+  { href: '/public/look-of-the-day', key: 'mobile.public.look-of-the-day.title', emoji: '🌟' },
+  { href: '/public/shop-the-look', key: 'mobile.public.shop-the-look.title', emoji: '🛍' },
+  { href: '/public/before-after', key: 'mobile.public.before-after.title', emoji: '🔄' },
+  { href: '/public/behind-scenes', key: 'mobile.public.behind-scenes.title', emoji: '🎥' },
+  { href: '/public/tutorials', key: 'mobile.public.tutorials.title', emoji: '🎓' },
+  { href: '/public/gallery', key: 'mobile.public.gallery.title', emoji: '📷' },
+  { href: '/public/beauty-fortune', key: 'mobile.public.beauty-fortune.title', emoji: '🔮' },
+  { href: '/public/beauty-awards', key: 'mobile.public.beauty-awards.title', emoji: '🏅' },
+  { href: '/public/beauty-expo', key: 'mobile.public.beauty-expo.title', emoji: '🎪' },
+];
+
+const TOOLS_LINKS: MoreLink[] = [
+  {
+    href: '/public/ingredient-analyzer',
+    key: 'mobile.public.ingredient-analyzer.title',
+    emoji: '🧪',
+  },
+  { href: '/public/ingredient-sub', key: 'mobile.public.ingredient-sub.title', emoji: '🧬' },
+  { href: '/public/price-estimator', key: 'mobile.public.price-estimator.title', emoji: '💰' },
+  { href: '/public/product-compare', key: 'mobile.public.product-compare.title', emoji: '📊' },
+  { href: '/public/compare', key: 'mobile.public.compare.title', emoji: '🆚' },
+  {
+    href: '/public/service-matchmaker',
+    key: 'mobile.public.service-matchmaker.title',
+    emoji: '🤝',
+  },
+  {
+    href: '/public/service-recommender',
+    key: 'mobile.public.service-recommender.title',
+    emoji: '💡',
+  },
+  { href: '/public/smart-pricing', key: 'mobile.public.smart-pricing.title', emoji: '💹' },
+  { href: '/public/service-trends', key: 'mobile.public.service-trends.title', emoji: '🧭' },
+  { href: '/public/booking-heatmap', key: 'mobile.public.booking-heatmap.title', emoji: '🔥' },
+  { href: '/public/services', key: 'mobile.public.services.title', emoji: '💼' },
+  { href: '/services/surprise-me', key: 'mobile.public.surprise-me.title', emoji: '🎲' },
+];
+
+const EXPERTS_LINKS: MoreLink[] = [
+  { href: '/public/salon-finder', key: 'mobile.public.salon-finder.title', emoji: '🔎' },
+  { href: '/public/salon-map', key: 'mobile.public.salon-map.title', emoji: '📍' },
+  { href: '/public/salon-membership', key: 'mobile.public.salon-membership.title', emoji: '💳' },
+  {
+    href: '/public/technician-compare',
+    key: 'mobile.public.technician-compare.title',
+    emoji: '👥',
+  },
+  { href: '/public/technician-badges', key: 'mobile.public.technician-badges.title', emoji: '⭐' },
+  { href: '/public/technician-qa', key: 'mobile.public.technician-qa.title', emoji: '❓' },
+  { href: '/public/tech-leaderboard', key: 'mobile.public.tech-leaderboard.title', emoji: '🥇' },
+  { href: '/public/tech-calendar', key: 'mobile.public.tech-calendar.title', emoji: '📅' },
+  { href: '/public/featured-tech', key: 'mobile.public.featured-tech.title', emoji: '💫' },
+  {
+    href: '/public/virtual-consultation',
+    key: 'mobile.public.virtual-consultation.title',
+    emoji: '💬',
+  },
+  {
+    href: '/public/video-testimonials',
+    key: 'mobile.public.video-testimonials.title',
+    emoji: '📹',
+  },
+  { href: '/public/whatsapp-bot', key: 'mobile.public.whatsapp-bot.title', emoji: '🤖' },
+];
+
+const EVENTS_LINKS: MoreLink[] = [
+  { href: '/public/event-tickets', key: 'mobile.public.event-tickets.title', emoji: '🎟' },
+  { href: '/public/group-buy', key: 'mobile.public.group-buy.title', emoji: '🛒' },
+  { href: '/public/flash-deals', key: 'mobile.public.flash-deals.title', emoji: '⚡' },
+  { href: '/public/marketplace', key: 'mobile.public.marketplace.title', emoji: '🧺' },
+  { href: '/public/rewards', key: 'mobile.public.rewards.title', emoji: '🥳' },
+  { href: '/public/referral-race', key: 'mobile.public.referral-race.title', emoji: '🏁' },
+  { href: '/public/gift-guide', key: 'mobile.public.gift-guide.title', emoji: '🎁' },
+  { href: '/public/gift-quiz', key: 'mobile.public.gift-quiz.title', emoji: '🧩' },
+];
+
+const WELLNESS_LINKS: MoreLink[] = [
+  { href: '/public/womens-services', key: 'mobile.public.womens-services.title', emoji: '🌸' },
+  { href: '/public/kids-services', key: 'mobile.public.kids-services.title', emoji: '🧒' },
+  { href: '/public/pregnancy-beauty', key: 'mobile.public.pregnancy-beauty.title', emoji: '🤰' },
+  {
+    href: '/public/corporate-wellness',
+    key: 'mobile.public.corporate-wellness.title',
+    emoji: '🏢',
+  },
+  {
+    href: '/public/subscription-boxes',
+    key: 'mobile.public.subscription-boxes.title',
+    emoji: '🧴',
+  },
+  { href: '/public/beauty-courses', key: 'mobile.public.beauty-courses.title', emoji: '📚' },
+  { href: '/public/beauty-podcast', key: 'mobile.public.beauty-podcast.title', emoji: '🎤' },
+];
+
+const INFO_LINKS: MoreLink[] = [
+  { href: '/public/beauty-faq', key: 'mobile.public.beauty-faq.title', emoji: '💭' },
+  { href: '/public/beauty-stats', key: 'mobile.public.beauty-stats.title', emoji: '🧮' },
+  { href: '/public/terms', key: 'mobile.public.terms.title', emoji: '📜' },
+  // No i18n title key on this screen (hardcoded heading) — plain label.
+  { href: '/public/api-docs', key: 'API Docs' as TranslationKey, emoji: '💻' },
+  { href: '/public/onboarding', key: 'mobile.public.onboarding.start', emoji: '🚀' },
+];
+
 export default function MoreScreen(): JSX.Element {
   const router = useRouter();
   const { t } = useLocale();
@@ -57,6 +174,13 @@ export default function MoreScreen(): JSX.Element {
     </TouchableOpacity>
   );
 
+  const renderSection = (titleKey: TranslationKey, links: MoreLink[]) => (
+    <>
+      <Text style={styles.sectionTitle}>{t(titleKey)}</Text>
+      <View style={styles.section}>{links.map(renderLink)}</View>
+    </>
+  );
+
   return (
     <ScrollView style={styles.c} contentContainerStyle={styles.i}>
       <Text style={styles.title}>{t('nav.more')}</Text>
@@ -66,6 +190,14 @@ export default function MoreScreen(): JSX.Element {
 
       <Text style={styles.sectionTitle}>{t('mobile.public.more.explore')}</Text>
       <View style={styles.section}>{MORE_LINKS.map(renderLink)}</View>
+
+      {renderSection('nav.social', COMMUNITY_LINKS)}
+      {renderSection('nav.discover', STYLE_LINKS)}
+      {renderSection('nav.services', TOOLS_LINKS)}
+      {renderSection('nav.technicians', EXPERTS_LINKS)}
+      {renderSection('nav.events', EVENTS_LINKS)}
+      {renderSection('nav.wellness-hub', WELLNESS_LINKS)}
+      {renderSection('footer.help', INFO_LINKS)}
     </ScrollView>
   );
 }
