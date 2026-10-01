@@ -594,6 +594,16 @@ export const adminMessages = {
   'admin.finance.from-date': { ar: 'من تاريخ', en: 'From Date' },
   'admin.finance.to-date': { ar: 'إلى تاريخ', en: 'To Date' },
   'admin.finance.calculate': { ar: 'احتساب', en: 'Calculate' },
+  'admin.finance.calculate-store': { ar: 'احتساب مستحقات المتاجر', en: 'Settle stores' },
+  'admin.disputes.store-order': { ar: 'طلب متجر #{id}', en: 'Store order #{id}' },
+  'admin.finance.calculate-store-desc': {
+    ar: 'إنشاء مستحقات للمتاجر من الطلبات المكتملة (تستبعد الطلبات المسترجعة)',
+    en: 'Create store settlements from fulfilled orders (refunded orders excluded)',
+  },
+  'admin.finance.calculated-store-success': {
+    ar: 'تم احتساب مستحقات {vendors} متجراً',
+    en: 'Settled {vendors} store(s)',
+  },
   'admin.finance.calculated-success': { ar: 'تم الاحتساب بنجاح', en: 'Calculation completed' },
   'admin.finance.payout-history': { ar: 'سجل المدفوعات', en: 'Payout History' },
   'admin.finance.no-payouts': { ar: 'لا توجد مدفوعات', en: 'No payouts' },

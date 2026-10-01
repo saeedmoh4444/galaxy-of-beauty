@@ -655,8 +655,10 @@ payments.getByBooking	query	protected
 payments.refund	mutation	admin
 payments.webhook	mutation	public
 payouts.calculate	mutation	admin
+payouts.calculateStore	mutation	admin
 payouts.listForAdmin	query	admin
 payouts.listMyPayouts	query	technician
+payouts.listStorePayouts	query	customer
 payouts.process	mutation	admin
 penPal.interests	query	customer
 penPal.match	query	customer

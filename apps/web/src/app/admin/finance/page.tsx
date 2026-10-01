@@ -31,6 +31,7 @@ export default function AdminFinancePage(): JSX.Element {
     { enabled: isAuthenticated },
   );
   const calculateMut = api.payouts.calculate.useMutation();
+  const calculateStoreMut = api.payouts.calculateStore.useMutation();
   const [periodStart, setPeriodStart] = useState('');
   const [periodEnd, setPeriodEnd] = useState('');
 
@@ -104,6 +105,31 @@ export default function AdminFinancePage(): JSX.Element {
         {calculateMut.data && (
           <p className="mt-2 text-sm text-green-600 dark:text-green-400">
             {t('admin.finance.calculated-success')}
+          </p>
+        )}
+      </Card>
+
+      <Card>
+        <h2 className="mb-3 text-lg font-semibold">{t('admin.finance.calculate-store')}</h2>
+        <p className="mb-3 text-sm text-text-secondary">
+          {t('admin.finance.calculate-store-desc')}
+        </p>
+        <Button
+          onClick={() =>
+            calculateStoreMut.mutate({
+              periodStart: new Date(periodStart).toISOString(),
+              periodEnd: new Date(periodEnd).toISOString(),
+            })
+          }
+          loading={calculateStoreMut.isPending}
+        >
+          {t('admin.finance.calculate-store')}
+        </Button>
+        {calculateStoreMut.data && (
+          <p className="mt-2 text-sm text-green-600 dark:text-green-400">
+            {t('admin.finance.calculated-store-success', {
+              vendors: String(calculateStoreMut.data.length),
+            })}
           </p>
         )}
       </Card>
