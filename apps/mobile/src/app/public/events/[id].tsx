@@ -70,7 +70,7 @@ export default function EventDetailScreen(): JSX.Element {
     );
   }
 
-  const event = eventQ.data as EventDetail;
+  const event = eventQ.data as unknown as EventDetail;
   const et = ET[event.eventType] ?? { label: event.eventType, emoji: '🎉' };
   const desc = event.descriptionJson ? (localize(event.descriptionJson, locale) ?? '') : '';
   const date = new Date(event.startsAt).toLocaleDateString(locale === 'ar' ? 'ar-SA' : 'en-GB', {
