@@ -36,19 +36,21 @@ export const womensServicesRouter = router({
       const svc = cat?.subServices.find((s) => s.id === input.serviceId);
       if (!svc) throw new Error('الخدمة غير موجودة');
 
+      // The womens catalog is not mapped to Service rows and there is no
+      // booking pipeline here — never confirm a booking that was not created.
       return {
-        bookingId: `WMN-${Date.now()}`,
+        booked: false,
+        status: 'NOT_CREATED',
+        reason: 'BOOKING_NOT_CREATED',
         service: svc.nameAr,
         price: svc.price,
         durationMin: svc.durationMin,
         precautions: svc.precautions,
-        status: 'CONFIRMED',
         specialRequirements: [
           input.pregnancyTrimester ? `ثلاثي الحمل: ${input.pregnancyTrimester}` : null,
           input.postpartumWeeks ? `أسابيع بعد الولادة: ${input.postpartumWeeks}` : null,
           input.specialNotes,
         ].filter(Boolean),
-        message: 'تم الحجز بنجاح! سنراعي جميع احتياجاتكِ الخاصة',
       };
     }),
 

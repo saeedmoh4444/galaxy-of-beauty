@@ -70,7 +70,7 @@ describe('vendorPortal + buy flow (B.3)', () => {
     expect(dash.totalProducts).toBe(0);
     expect(dash.totalSales).toBe(0);
     expect(dash.revenue).toBe(0);
-    expect(dash.rating).toBeGreaterThan(0); // default rating shown
+    expect(dash.rating).toBe(0); // no reviews → no rating, never a fake default
   });
 
   it('addProduct persists a DB row and auto-creates the vendor + default category', async () => {

@@ -1,17 +1,18 @@
 'use client';
 import type { JSX } from 'react';
 import { api } from '@/lib/trpc';
-import { Card, CardListSkeleton, formatCurrency, ServiceImage } from '@galaxy/ui';
+import { Card, CardListSkeleton, ServiceImage } from '@galaxy/ui';
 import { pageHeroKey } from '@galaxy/shared';
 import { useLocale } from '@/components/LocaleProvider';
 
 export default function SmartPricingPage(): JSX.Element {
   const { t } = useLocale();
   const { data, isLoading } = api.smartPricing.current.useQuery() as {
-    data: Array<Record<string, unknown>> | undefined;
+    data:
+      { configured: boolean; prices: Array<Record<string, unknown>>; reason: string } | undefined;
     isLoading: boolean;
   };
-  const items = data ?? [];
+  const items = data?.prices ?? [];
 
   return (
     <div className="mx-auto max-w-3xl px-4 py-12">
@@ -27,6 +28,12 @@ export default function SmartPricingPage(): JSX.Element {
       </div>
       {isLoading ? (
         <CardListSkeleton count={4} />
+      ) : !data?.configured ? (
+        <Card padding="lg" className="border-2 border-amber-300 text-center">
+          <span className="text-5xl">🚧</span>
+          <h2 className="mt-4 text-xl font-bold">{t('common.notConfigured')}</h2>
+          <p className="mt-1 text-sm text-text-secondary">{t('common.unavailable')}</p>
+        </Card>
       ) : (
         <div className="space-y-3">
           {items.map((s: Record<string, unknown>) => (
@@ -35,25 +42,6 @@ export default function SmartPricingPage(): JSX.Element {
               <div className="flex-1">
                 <h3 className="font-bold text-lg">{s.service as string}</h3>
                 <p className="text-xs text-text-secondary">{s.reason as string}</p>
-              </div>
-              <div className="text-end">
-                {s.currentPrice !== s.basePrice && (
-                  <span className="text-sm text-text-tertiary line-through">
-                    {formatCurrency(s.basePrice as number)}
-                  </span>
-                )}
-                <p
-                  className={`text-2xl font-extrabold ${(s.currentPrice as number) < (s.basePrice as number) ? 'text-green-600 dark:text-green-400' : 'text-brand-600'}`}
-                >
-                  {t('marketing.smart-pricing.price-sar', {
-                    price: formatCurrency(s.currentPrice as number),
-                  })}
-                </p>
-                {(s.discount as number) > 0 && (
-                  <span className="rounded-full bg-green-100 dark:bg-green-900 px-2 py-0.5 text-xs font-bold text-green-700">
-                    -{s.discount as number}%
-                  </span>
-                )}
               </div>
             </Card>
           ))}

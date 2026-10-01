@@ -17,7 +17,11 @@ export default function ServiceTrendsScreen(): JSX.Element {
 
   if (dataQ.isLoading) return <SkeletonList count={4} />;
 
-  const data = (dataQ.data as unknown as { monthly?: ServiceTrend[] } | null)?.monthly ?? [];
+  const payload = dataQ.data as unknown as {
+    monthly?: ServiceTrend[];
+    unavailable?: boolean;
+  } | null;
+  const data = payload?.monthly ?? [];
   return (
     <ScrollView
       style={styles.c}
@@ -33,18 +37,28 @@ export default function ServiceTrendsScreen(): JSX.Element {
       }
     >
       <Text style={styles.t}>{t('mobile.public.service-trends.title')}</Text>
-      {data.map((s, i) => (
-        <View key={i} style={styles.card}>
-          <Text style={styles.em}>{s.emoji ?? ''}</Text>
+      {payload?.unavailable ? (
+        <View style={[styles.card, styles.nb]}>
+          <Text style={styles.em}>🚧</Text>
           <View style={{ flex: 1 }}>
-            <Text style={styles.nm}>{s.nameAr ?? ''}</Text>
-            <Text style={styles.meta}>
-              {s.trend ?? ''} ·{' '}
-              {t('mobile.public.service-trends.growth', { growth: s.growth ?? 0 })}
-            </Text>
+            <Text style={styles.nm}>{t('common.notConfigured')}</Text>
+            <Text style={styles.meta}>{t('common.unavailable')}</Text>
           </View>
         </View>
-      ))}
+      ) : (
+        data.map((s, i) => (
+          <View key={i} style={styles.card}>
+            <Text style={styles.em}>{s.emoji ?? ''}</Text>
+            <View style={{ flex: 1 }}>
+              <Text style={styles.nm}>{s.nameAr ?? ''}</Text>
+              <Text style={styles.meta}>
+                {s.trend ?? ''} ·{' '}
+                {t('mobile.public.service-trends.growth', { growth: s.growth ?? 0 })}
+              </Text>
+            </View>
+          </View>
+        ))
+      )}
     </ScrollView>
   );
 }
@@ -61,6 +75,7 @@ const styles = StyleSheet.create({
     padding: 14,
     marginBottom: 8,
   },
+  nb: { borderWidth: 2, borderColor: '#fcd34d' },
   em: { fontSize: 28 },
   nm: { fontSize: 14, fontWeight: '600', color: '#111827' },
   meta: { fontSize: 12, color: '#6b7280', marginTop: 2 },

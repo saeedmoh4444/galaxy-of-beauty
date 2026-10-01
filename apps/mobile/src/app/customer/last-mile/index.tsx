@@ -15,6 +15,7 @@ interface LastMileProduct {
 }
 
 interface OrderResult {
+  ordered?: boolean;
   product?: string;
   estimatedDelivery?: string;
   total?: number;
@@ -43,17 +44,25 @@ export default function LastMileScreen(): JSX.Element {
     return (
       <ScrollView style={styles.c} contentContainerStyle={styles.i}>
         <Text style={styles.t}>{t('mobile.lastMile.title')}</Text>
-        <View style={[styles.card, styles.rc]}>
-          <Text style={styles.re}>✅</Text>
-          <Text style={styles.rtt}>{t('mobile.lastMile.ordered')}</Text>
-          <Text style={styles.rp}>{result.product}</Text>
-          <Text style={styles.rm}>
-            {t('mobile.lastMile.summary', {
-              estimated: result.estimatedDelivery ?? '',
-              total: result.total?.toLocaleString() ?? '',
-            })}
-          </Text>
-        </View>
+        {result.ordered === false ? (
+          <View style={[styles.card, styles.rc]}>
+            <Text style={styles.re}>🚧</Text>
+            <Text style={styles.rtt}>{t('common.notConfigured')}</Text>
+            <Text style={styles.rm}>{t('common.unavailable')}</Text>
+          </View>
+        ) : (
+          <View style={[styles.card, styles.rc]}>
+            <Text style={styles.re}>✅</Text>
+            <Text style={styles.rtt}>{t('mobile.lastMile.ordered')}</Text>
+            <Text style={styles.rp}>{result.product}</Text>
+            <Text style={styles.rm}>
+              {t('mobile.lastMile.summary', {
+                estimated: result.estimatedDelivery ?? '',
+                total: result.total?.toLocaleString() ?? '',
+              })}
+            </Text>
+          </View>
+        )}
       </ScrollView>
     );
   return (

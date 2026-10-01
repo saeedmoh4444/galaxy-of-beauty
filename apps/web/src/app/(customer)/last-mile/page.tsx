@@ -49,15 +49,23 @@ export default function LastMilePage(): JSX.Element {
           <p className="mt-1 text-sm text-text-secondary">{t('lastMile.subtitle')}</p>
         </div>
         {result ? (
-          <Card padding="lg" className="text-center border-2 border-green-300">
-            <span className="text-6xl">✅</span>
-            <h2 className="mt-4 text-xl font-bold">{t('lastMile.orderPlaced')}</h2>
-            <p className="font-bold mt-1">{result.product as string}</p>
-            <p className="text-sm text-text-secondary">
-              {result.estimatedDelivery as string} · {formatCurrency(result.total as number)}{' '}
-              {t('beautyParty.currency')}
-            </p>
-          </Card>
+          (result.ordered as boolean) ? (
+            <Card padding="lg" className="text-center border-2 border-green-300">
+              <span className="text-6xl">✅</span>
+              <h2 className="mt-4 text-xl font-bold">{t('lastMile.orderPlaced')}</h2>
+              <p className="font-bold mt-1">{result.product as string}</p>
+              <p className="text-sm text-text-secondary">
+                {result.estimatedDelivery as string} · {formatCurrency(result.total as number)}{' '}
+                {t('beautyParty.currency')}
+              </p>
+            </Card>
+          ) : (
+            <Card padding="lg" className="text-center border-2 border-amber-300">
+              <span className="text-5xl">🚧</span>
+              <h2 className="mt-4 text-xl font-bold">{t('common.notConfigured')}</h2>
+              <p className="mt-1 text-sm text-text-secondary">{t('common.unavailable')}</p>
+            </Card>
+          )
         ) : (
           <div className="space-y-3">
             {prods.map((p: Record<string, unknown>) => (

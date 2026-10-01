@@ -33,13 +33,13 @@ export const lastMileDeliveryRouter = router({
     )
     .mutation(async ({ input }) => {
       const product = PRODUCTS.find((p) => p.id === input.productId);
+      // No delivery provider is wired — never fabricate an order id, a
+      // CONFIRMED status, or a tracking URL.
       return {
-        orderId: `LMD-${Date.now()}`,
-        product: product?.nameAr,
-        status: 'CONFIRMED',
-        estimatedDelivery: product?.deliveryTime,
-        trackingUrl: 'https://delivery-track.example.com/order/123',
-        total: (product?.price ?? 0) + 15,
+        ordered: false,
+        status: 'DELIVERY_NOT_CONFIGURED',
+        reason: 'PROVIDER_NOT_CONFIGURED',
+        product: product?.nameAr ?? null,
       };
     }),
 });

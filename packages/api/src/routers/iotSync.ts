@@ -40,22 +40,27 @@ export const iotSyncRouter = router({
   connect: customerProcedure
     .input(z.object({ deviceKey: z.string() }))
     .mutation(async ({ input }) => {
-      const device = DEVICES.find((d) => d.key === input.deviceKey);
-      if (device) {
-        device.status = 'connected';
-        device.lastSync = new Date().toISOString();
-      }
-      return { connected: true, device: input.deviceKey };
+      // No IoT backend is wired — fail closed: never claim a device paired,
+      // and never mutate shared device state for the whole process.
+      return {
+        connected: false,
+        device: input.deviceKey,
+        status: 'NOT_CONFIGURED',
+        reason: 'DEVICE_NOT_SUPPORTED',
+      };
     }),
   syncData: customerProcedure
     .input(
       z.object({ deviceKey: z.string(), metrics: z.record(z.string(), z.number()).optional() }),
     )
-    .mutation(async ({ input }) => ({
-      synced: true,
-      deviceKey: input.deviceKey,
-      metrics: input.metrics ?? { hydration: 72, elasticity: 65, poreSize: 45 },
-      timestamp: new Date().toISOString(),
-      insights: 'بشرتكِ بحالة جيدة! نسبة الترطيب ٧٢٪ — استمري على روتينكِ الحالي ',
-    })),
+    .mutation(async ({ input }) => {
+      // Skin health data is medical — never invent hydration/elasticity
+      // numbers or wellness insights from nothing.
+      return {
+        synced: false,
+        deviceKey: input.deviceKey,
+        status: 'NOT_CONFIGURED',
+        reason: 'NOT_CONFIGURED',
+      };
+    }),
 });

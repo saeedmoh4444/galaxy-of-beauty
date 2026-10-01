@@ -47,6 +47,10 @@ export default function IoTSyncPage(): JSX.Element {
           <h1 className="text-2xl font-bold">{t('iotSync.title')}</h1>
           <p className="mt-1 text-sm text-text-secondary">{t('iotSync.subtitle')}</p>
         </div>
+        <Card padding="md" className="border-2 border-amber-300 text-center">
+          <p className="text-sm font-bold">{t('common.notConfigured')}</p>
+          <p className="mt-1 text-xs text-text-secondary">{t('common.unavailable')}</p>
+        </Card>
         <div className="grid gap-4 sm:grid-cols-3">
           {list.map((d: Record<string, unknown>) => (
             <Card key={d.key as string} padding="lg" className="text-center">
@@ -76,6 +80,7 @@ export default function IoTSyncPage(): JSX.Element {
                 <Button
                   size="sm"
                   className="mt-3"
+                  disabled
                   onClick={() => connectMut.mutate({ deviceKey: d.key as string })}
                 >
                   {t('iotSync.connect')}

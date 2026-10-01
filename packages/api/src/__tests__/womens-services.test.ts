@@ -71,7 +71,7 @@ describe('womensServices.byCategory', () => {
 });
 
 describe('womensServices.book', () => {
-  it('returns a confirmed booking for a known service', async () => {
+  it('fails closed instead of returning a confirmed booking for a known service', async () => {
     const caller = await customerCaller(42);
     const result = await caller.womensServices.book({
       serviceId: 'ps1',
@@ -79,8 +79,11 @@ describe('womensServices.book', () => {
       pregnancyTrimester: 2,
       specialNotes: 'تفضل غرفة خاصة',
     });
-    expect(result.bookingId).toMatch(/^WMN-/);
-    expect(result.status).toBe('CONFIRMED');
+    expect(result.booked).toBe(false);
+    expect(result.status).toBe('NOT_CREATED');
+    expect(result.reason).toBe('BOOKING_NOT_CREATED');
+    expect(result).not.toHaveProperty('bookingId');
+    expect(result).not.toHaveProperty('message');
     expect(result.price).toBeGreaterThan(0);
     expect(result.durationMin).toBeGreaterThan(0);
     expect(result.specialRequirements).toContain('ثلاثي الحمل: 2');
