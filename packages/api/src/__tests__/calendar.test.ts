@@ -8,7 +8,7 @@ import crypto from 'crypto';
 import { describe, it, expect, beforeAll, afterAll, afterEach, vi } from 'vitest';
 import { prisma } from '@galaxy/db';
 import { appRouter } from '../routers/index';
-import { buildUser, buildBooking } from './factories';
+import { buildUser, buildBooking, safeFutureDate } from './factories';
 import type { JwtPayload } from '../lib/jwt';
 
 let techUserId: number;
@@ -34,7 +34,7 @@ function jsonResponse(body: unknown, ok = true): Response {
   });
 }
 
-const FUTURE = () => new Date(Date.now() + 7 * 86_400_000);
+const FUTURE = () => safeFutureDate(7);
 const PAST = () => new Date(Date.now() - 7 * 86_400_000);
 
 async function caller(user: JwtPayload | null) {

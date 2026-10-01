@@ -40,7 +40,7 @@ async function seedSlot(): Promise<number> {
     data: {
       technicianId: technicianRecordId,
       startAt: safeFutureDate(2),
-      endAt: new Date(Date.now() + 86400000 * 2 + 3600000),
+      endAt: new Date(safeFutureDate(2).getTime() + 3600000),
       isBooked: false,
     },
   });
@@ -157,7 +157,7 @@ describe('influencers router', () => {
       addressId,
       slotId: await seedSlot(),
       startAt: safeFutureDate(2).toISOString(),
-      endAt: new Date(Date.now() + 86400000 * 2 + 3600000).toISOString(),
+      endAt: new Date(safeFutureDate(2).getTime() + 3600000).toISOString(),
       idempotencyKey: newIdemKey(),
       influencerCode: infl.code,
     });
@@ -170,7 +170,7 @@ describe('influencers router', () => {
         addressId,
         slotId: await seedSlot(),
         startAt: safeFutureDate(2).toISOString(),
-        endAt: new Date(Date.now() + 86400000 * 2 + 3600000).toISOString(),
+        endAt: new Date(safeFutureDate(2).getTime() + 3600000).toISOString(),
         idempotencyKey: newIdemKey(),
         influencerCode: 'INF-MISSING',
       }),
@@ -193,7 +193,7 @@ describe('influencers router', () => {
       addressId,
       slotId: await seedSlot(),
       startAt: safeFutureDate(2).toISOString(),
-      endAt: new Date(Date.now() + 86400000 * 2 + 3600000).toISOString(),
+      endAt: new Date(safeFutureDate(2).getTime() + 3600000).toISOString(),
       idempotencyKey: newIdemKey(),
       influencerCode: infl.code,
     });
@@ -240,7 +240,7 @@ describe('influencers router', () => {
       addressId,
       slotId: await seedSlot(),
       startAt: safeFutureDate(2).toISOString(),
-      endAt: new Date(Date.now() + 86400000 * 2 + 3600000).toISOString(),
+      endAt: new Date(safeFutureDate(2).getTime() + 3600000).toISOString(),
       idempotencyKey: newIdemKey(),
       influencerCode: infl.code,
     });

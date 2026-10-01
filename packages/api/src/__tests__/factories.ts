@@ -23,7 +23,14 @@ function uid(): string {
 }
 
 function futureDate(daysAhead = 3): Date {
-  return new Date(Date.now() + daysAhead * 86_400_000);
+  // Jummah-safe: bookings on Riyadh Friday 11:30–13:30 are rejected, and
+  // CI runs on Thursdays/Tuesdays would land buildBooking() dates inside
+  // the window. Skip the Riyadh Friday span (UTC Thu 21:00 → Fri 20:59).
+  const d = new Date(Date.now() + daysAhead * 86_400_000);
+  while (d.getUTCDay() === 5 || (d.getUTCDay() === 4 && d.getUTCHours() >= 21)) {
+    d.setUTCDate(d.getUTCDate() + 1);
+  }
+  return d;
 }
 
 // ── User ─────────────────────────────────────────────────────
