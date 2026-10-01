@@ -137,13 +137,7 @@ export default function AdminDisputesPage(): JSX.Element {
                 <div className="flex items-center justify-between">
                   <div className="flex-1">
                     <div className="flex items-center gap-3">
-                      <p className="font-semibold">
-                        {d.booking?.bookingCode
-                          ? d.booking.bookingCode
-                          : d.storeOrderId
-                            ? t('admin.disputes.store-order', { id: d.storeOrderId })
-                            : ''}
-                      </p>
+                      <p className="font-semibold">{d.booking.bookingCode}</p>
                       <span
                         className={`rounded-full px-2 py-0.5 text-xs font-medium ${badge.className}`}
                       >
@@ -196,11 +190,7 @@ export default function AdminDisputesPage(): JSX.Element {
         {selected && (
           <div className="space-y-4">
             <p className="text-sm">
-              <strong>{t('admin.disputes.booking-code')}</strong>{' '}
-              {selected.booking?.bookingCode ??
-                (selected.storeOrderId
-                  ? t('admin.disputes.store-order', { id: selected.storeOrderId })
-                  : '')}
+              <strong>{t('admin.disputes.booking-code')}</strong> {selected.booking.bookingCode}
             </p>
             <p className="text-sm">
               <strong>{t('admin.disputes.reason-label')}</strong> {selected.reason}
