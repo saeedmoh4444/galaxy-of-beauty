@@ -150,7 +150,6 @@ beautyDna.skinMatch	query	customer
 beautyEvents.accessDetails	query	customer
 beautyEvents.cancelRegistration	mutation	customer
 beautyEvents.create	mutation	admin
-beautyEvents.getById	query	public
 beautyEvents.issueCertificates	mutation	admin
 beautyEvents.list	query	public
 beautyEvents.listAll	query	admin
