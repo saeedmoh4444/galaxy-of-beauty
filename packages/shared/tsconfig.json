@@ -1,6 +1,7 @@
 {
   "extends": "@galaxy/config/tsconfig/react-library.json",
   "compilerOptions": {
+    "types": ["node"],
     "outDir": "./dist",
     "rootDir": "./src"
   },
