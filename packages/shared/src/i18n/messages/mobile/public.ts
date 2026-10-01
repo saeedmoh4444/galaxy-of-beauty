@@ -347,6 +347,29 @@ export const mobilePublicMessages = {
   'mobile.public.onboarding.back': { ar: 'السابق', en: 'Previous' },
   'mobile.public.onboarding.next': { ar: 'التالي →', en: 'Next →' },
   'mobile.public.onboarding.start': { ar: 'ابدئي الآن', en: 'Start Now' },
+  'mobile.public.onboarding.slide1.title': {
+    ar: 'أهلاً بكِ في جالكسي بيوتي',
+    en: 'Welcome to Galaxy of Beauty',
+  },
+  'mobile.public.onboarding.slide1.desc': {
+    ar: 'منصتكِ الشاملة لكل خدمات التجميل والعناية',
+    en: 'Your all-in-one platform for beauty and self-care',
+  },
+  'mobile.public.onboarding.slide2.title': { ar: 'احجزي بسهولة', en: 'Book with ease' },
+  'mobile.public.onboarding.slide2.desc': {
+    ar: 'تصفحي الخدمات واحجزي موعدكِ في دقائق',
+    en: 'Browse services and book your appointment in minutes',
+  },
+  'mobile.public.onboarding.slide3.title': { ar: 'أفضل الفنيات', en: 'Top beauty pros' },
+  'mobile.public.onboarding.slide3.desc': {
+    ar: 'اختاري من نخبة الفنيات المحترفات في منطقتكِ',
+    en: 'Choose from elite professionals in your area',
+  },
+  'mobile.public.onboarding.slide4.title': { ar: 'مكافآت وخصومات', en: 'Rewards & deals' },
+  'mobile.public.onboarding.slide4.desc': {
+    ar: 'اكسبي نقاط واستمتعي بعروض حصرية',
+    en: 'Earn points and enjoy exclusive offers',
+  },
   'mobile.public.service-matchmaker.title': { ar: 'Service Matchmaker', en: 'Service Matchmaker' },
   'mobile.public.service-matchmaker.results': { ar: 'النتائج', en: 'Results' },
   'mobile.public.service-matchmaker.your-perfect-services': {
