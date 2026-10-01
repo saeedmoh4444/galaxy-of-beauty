@@ -7,7 +7,7 @@ export default tseslint.config(
     ignores: ['dist/', 'build/', 'node_modules/', '*.config.*', 'storybook-static/', '.storybook/'],
   },
   {
-    files: ['**/*.ts'],
+    files: ['**/*.ts', '**/*.tsx'],
     extends: [js.configs.recommended, ...tseslint.configs.recommended, prettier],
     languageOptions: {
       parserOptions: { project: './tsconfig.json', tsconfigRootDir: import.meta.dirname },

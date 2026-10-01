@@ -45,7 +45,7 @@ export default function SelfCarePage(): JSX.Element {
             <p className="text-sm text-text-secondary">{t('selfCare.todayRating')}</p>
             <p className="mt-2 text-5xl">{MOODS[today.mood - 1]}</p>
             <p className="mt-1 text-sm text-text-tertiary">
-              {MOOD_LABELS[today.mood - 1] ? t(MOOD_LABELS[today.mood - 1]) : ''}
+              {MOOD_LABELS[today.mood - 1] ? t(MOOD_LABELS[today.mood - 1]!) : ''}
             </p>
           </Card>
         ) : (
@@ -63,7 +63,7 @@ export default function SelfCarePage(): JSX.Element {
               ))}
             </div>
             <p className="mt-2 text-center text-sm text-brand-600">
-              {MOOD_LABELS[mood - 1] ? t(MOOD_LABELS[mood - 1]) : ''}
+              {MOOD_LABELS[mood - 1] ? t(MOOD_LABELS[mood - 1]!) : ''}
             </p>
             <div className="mt-4 space-y-3">
               <div>

@@ -1,13 +1,12 @@
 """Trim leading/trailing spaces in ar/en values across ALL i18n catalog
-files. Uses the block_bounds + full-block-rebuild pattern (bounds are
-recomputed against the current buffer before every edit, so mutation
-never desyncs offsets)."""
+files. block_bounds-based (handles single-line AND multi-line entries —
+the previous line-collector skipped single-line blocks). One value per
+block per pass; idempotent — run until it reports 0."""
 import io, re, glob
 
 files = sorted(glob.glob('packages/shared/src/i18n/messages/**/*.ts', recursive=True))
 
 def extract_val(block, label):
-    """Value of the `label: '...'` / `label: "..."` field, or None."""
     i = block.find(label)
     if i < 0:
         return None
@@ -69,21 +68,19 @@ for path in files:
         if not b:
             continue
         block = src[b[0]:b[1]]
-        inner_start = block.find('{') + 1
-        inner_end = block.rfind('}')
-        inner = block[inner_start:inner_end]
-        # trim AT MOST ONE value per block per pass — offsets stay valid;
-        # the script is idempotent, so run repeatedly until it reports 0.
+        open_idx = block.find('{')
+        # trim at most one value per block per pass
         for label in ('ar:', 'en:'):
-            v = extract_val(inner, label)
+            v = extract_val(block[open_idx + 1:], label)
             if v is None:
                 continue
             q, end, val = v
             stripped = val.strip()
             if stripped == val:
                 continue
-            new_inner = inner[:q + 1] + stripped + inner[end:]
-            block = block[:inner_start] + new_inner + block[inner_end:]
+            abs_q = open_idx + 1 + q
+            abs_end = open_idx + 1 + end
+            block = block[:abs_q + 1] + stripped + block[abs_end:]
             src = src[:b[0]] + block + src[b[1]:]
             changed = True
             total_trimmed += 1

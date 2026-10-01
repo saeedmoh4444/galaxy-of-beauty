@@ -1,6 +1,4 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import 'tailwindcss';
 
 /* Semantic colour tokens — keep in sync with apps/web/src/app/globals.css */
 :root {

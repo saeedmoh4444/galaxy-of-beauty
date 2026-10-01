@@ -1,18 +1,17 @@
 {
+  "extends": "./base.json",
   "compilerOptions": {
     "target": "ESNext",
     "lib": ["DOM", "ESNext"],
-    "module": "ESNext",
-    "moduleResolution": "bundler",
     "jsx": "react-jsx",
-    "strict": true,
-    "esModuleInterop": true,
-    "skipLibCheck": true,
-    "forceConsistentCasingInFileNames": true,
-    "resolveJsonModule": true,
-    "isolatedModules": true,
     "noEmit": true,
-    "allowJs": true,
-    "checkJs": false
+    // Flags still being migrated app-wide (audit stage 9) — re-enabled
+    // incrementally; noUncheckedIndexedAccess is enforced already.
+    "noUnusedLocals": false,
+    "noUnusedParameters": false,
+    "verbatimModuleSyntax": false,
+    "declaration": false,
+    "declarationMap": false,
+    "sourceMap": false
   }
 }

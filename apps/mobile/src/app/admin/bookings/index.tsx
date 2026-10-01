@@ -61,7 +61,7 @@ export default function AdminBookingsScreen(): JSX.Element {
             </Text>
           </View>
           <Text style={styles.status}>
-            {b.status && STATUS_MAP[b.status] ? t(STATUS_MAP[b.status]) : b.status}
+            {b.status && STATUS_MAP[b.status] ? t(STATUS_MAP[b.status]!) : b.status}
           </Text>
         </View>
       ))}

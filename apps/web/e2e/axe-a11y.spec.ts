@@ -123,6 +123,41 @@ const axeTests = (browserName: string) => {
     assertNoSerious('/admin/dashboard', violations);
     assertModerateAllowed('/admin/dashboard', violations);
   });
+
+  test('events page has no serious/critical a11y violations', async ({ page }) => {
+    await page.goto('/events');
+    const violations = await scan(page);
+    assertNoSerious('/events', violations);
+    assertModerateAllowed('/events', violations);
+  });
+
+  test('bundles page has no serious/critical a11y violations', async ({ page }) => {
+    await page.goto('/bundles');
+    const violations = await scan(page);
+    assertNoSerious('/bundles', violations);
+    assertModerateAllowed('/bundles', violations);
+  });
+
+  test('marketplace page has no serious/critical a11y violations', async ({ page }) => {
+    await page.goto('/marketplace');
+    const violations = await scan(page);
+    assertNoSerious('/marketplace', violations);
+    assertModerateAllowed('/marketplace', violations);
+  });
+
+  test('technicians page has no serious/critical a11y violations', async ({ page }) => {
+    await page.goto('/technicians');
+    const violations = await scan(page);
+    assertNoSerious('/technicians', violations);
+    assertModerateAllowed('/technicians', violations);
+  });
+
+  test('womens-services page has no serious/critical a11y violations', async ({ page }) => {
+    await page.goto('/womens-services');
+    const violations = await scan(page);
+    assertNoSerious('/womens-services', violations);
+    assertModerateAllowed('/womens-services', violations);
+  });
 };
 
 test.describe('Axe a11y gate (chromium)', () => {

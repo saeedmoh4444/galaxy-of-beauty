@@ -67,7 +67,7 @@ export default function BundlesPage(): JSX.Element {
           >
             {t('marketing.bundles.discount-formula', {
               n,
-              percent: BUNDLE_DISCOUNTS[n],
+              percent: BUNDLE_DISCOUNTS[n] ?? 0,
             })}
           </div>
         ))}

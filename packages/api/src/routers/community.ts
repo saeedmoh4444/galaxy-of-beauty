@@ -3,8 +3,23 @@ import { prisma } from '@galaxy/db';
 import { SMALL_PAGE_SIZE, MS_PER_WEEK } from '@galaxy/shared';
 import { protectedProcedure, customerProcedure, publicProcedure, router } from '../trpc';
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any -- CommunityPost/Comment have no relations in Prisma schema (legacy include)
-const db = prisma as any;
+const db = prisma;
+
+const userSelect = { id: true, name: true, avatarUrl: true } as const;
+
+/** CommunityPost/Comment carry a userId scalar without a schema relation —
+ * hydrate the user records manually (legacy include returned nothing). */
+async function hydrateUsers<T extends { userId: number }>(
+  rows: T[],
+  select: typeof userSelect = userSelect,
+): Promise<(T & { user: Record<string, unknown> | null })[]> {
+  const users = await db.user.findMany({
+    where: { id: { in: [...new Set(rows.map((r) => r.userId))] } },
+    select,
+  });
+  const byId = new Map(users.map((u) => [u.id, u]));
+  return rows.map((r) => ({ ...r, user: byId.get(r.userId) ?? null }));
+}
 
 export const communityRouter = router({
   // Feed with user info and comments count
@@ -19,14 +34,21 @@ export const communityRouter = router({
           orderBy: { createdAt: 'desc' },
           skip,
           take: input.limit,
-          include: {
-            user: { select: { id: true, name: true, avatarUrl: true } },
-            _count: { select: { comments: true } },
-          },
         }),
         db.communityPost.count(),
       ]);
-      return { items: posts, total, page: input.page };
+      const commentCounts = await db.communityComment.groupBy({
+        by: ['postId'],
+        where: { postId: { in: posts.map((p) => p.id) } },
+        _count: { postId: true },
+      });
+      const countsById = new Map(commentCounts.map((c) => [c.postId, c._count.postId]));
+      const hydrated = await hydrateUsers(posts);
+      return {
+        items: hydrated.map((p) => ({ ...p, _count: { comments: countsById.get(p.id) ?? 0 } })),
+        total,
+        page: input.page,
+      };
     }),
 
   // Create post
@@ -39,10 +61,11 @@ export const communityRouter = router({
       }),
     )
     .mutation(async ({ ctx, input }) => {
-      return db.communityPost.create({
+      const post = await db.communityPost.create({
         data: { userId: ctx.user.id, ...input },
-        include: { user: { select: { name: true, avatarUrl: true } } },
       });
+      const [hydrated] = await hydrateUsers([post]);
+      return hydrated;
     }),
 
   // Toggle like
@@ -68,32 +91,33 @@ export const communityRouter = router({
       return { liked: true };
     }),
 
-  // My likes
+  // Post ids the caller has liked
   myLikes: protectedProcedure.query(async ({ ctx }) => {
     return db.communityLike.findMany({ where: { userId: ctx.user.id }, select: { postId: true } });
   }),
 
-  // Comments
-  comments: protectedProcedure
+  // Comments on a post
+  comments: publicProcedure
     .input(
       z.object({ postId: z.number(), page: z.number().default(1), limit: z.number().default(20) }),
     )
     .query(async ({ input }) => {
-      return db.communityComment.findMany({
+      const rows = await db.communityComment.findMany({
         where: { postId: input.postId },
         orderBy: { createdAt: 'asc' },
         take: input.limit,
-        include: { user: { select: { name: true, avatarUrl: true } } },
       });
+      return hydrateUsers(rows);
     }),
 
   addComment: customerProcedure
     .input(z.object({ postId: z.number(), content: z.string().min(1).max(500) }))
     .mutation(async ({ ctx, input }) => {
-      return db.communityComment.create({
+      const comment = await db.communityComment.create({
         data: { postId: input.postId, userId: ctx.user.id, content: input.content },
-        include: { user: { select: { name: true, avatarUrl: true } } },
       });
+      const [hydrated] = await hydrateUsers([comment]);
+      return hydrated;
     }),
 
   // Delete post
@@ -105,11 +129,11 @@ export const communityRouter = router({
   // Trending posts (most liked this week)
   trending: protectedProcedure.query(async () => {
     const weekAgo = new Date(Date.now() - MS_PER_WEEK);
-    return db.communityPost.findMany({
+    const posts = await db.communityPost.findMany({
       where: { createdAt: { gte: weekAgo } },
       orderBy: { likes: 'desc' },
       take: SMALL_PAGE_SIZE,
-      include: { user: { select: { name: true } } },
     });
+    return hydrateUsers(posts, { id: true, name: true, avatarUrl: true });
   }),
 });

@@ -9,7 +9,7 @@ import {
 import { publicProcedure, customerProcedure, router } from '../trpc';
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any -- dynamic where shapes across 4 models
-const db = prisma as any;
+const db = prisma;
 
 export const beautyDiscoveryRouter = router({
   // Public: featured content for the discover page

@@ -198,7 +198,7 @@ export default function WellnessTrackerPage(): JSX.Element {
                       className="w-full rounded-t bg-linear-to-t from-brand-400 to-brand-400"
                       style={{ height: `${h}%` }}
                     />
-                    <span className="text-[10px] text-text-tertiary">{t(DAYS[dayIdx])}</span>
+                    <span className="text-[10px] text-text-tertiary">{t(DAYS[dayIdx]!)}</span>
                   </div>
                 );
               })}

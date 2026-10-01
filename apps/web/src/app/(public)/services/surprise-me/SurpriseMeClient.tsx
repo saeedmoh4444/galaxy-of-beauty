@@ -35,7 +35,7 @@ export function SurpriseMeClient({ data }: { data: SurpriseMePageData }): JSX.El
       });
       const items = result?.items ?? [];
       if (items.length > 0) {
-        setService(items[Math.floor(Math.random() * items.length)]);
+        setService(items[Math.floor(Math.random() * items.length)] ?? null);
       } else {
         setError(t('marketing.surprise-me.no-services'));
       }

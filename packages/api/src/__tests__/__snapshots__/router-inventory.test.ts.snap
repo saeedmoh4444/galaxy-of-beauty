@@ -369,7 +369,7 @@ cms.upsertBanner	mutation	admin
 cms.upsertCategory	mutation	admin
 cms.upsertService	mutation	admin
 community.addComment	mutation	customer
-community.comments	query	protected
+community.comments	query	public
 community.create	mutation	customer
 community.delete	mutation	customer
 community.feed	query	public

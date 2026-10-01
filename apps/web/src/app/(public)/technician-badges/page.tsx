@@ -59,14 +59,8 @@ const BADGE_META: Record<string, { emoji: string; gradient: string; descKey: Tra
   },
 };
 
-function getBadgeMeta(key: string): { emoji: string; gradient: string; descKey: TranslationKey } {
-  return (
-    BADGE_META[key] ?? {
-      emoji: '🏅',
-      gradient: 'from-gray-400 to-gray-500',
-      descKey: 'marketing.technician-badges.badge-fallback',
-    }
-  );
+function getBadgeMeta(key: string): { emoji: string; gradient: string; descKey?: TranslationKey } {
+  return BADGE_META[key] ?? { emoji: '🏅', gradient: 'from-gray-400 to-gray-500' };
 }
 
 export default function TechnicianBadgesPage(): JSX.Element {
@@ -120,7 +114,10 @@ export default function TechnicianBadgesPage(): JSX.Element {
           {allBadges.map((badge) => {
             const meta = getBadgeMeta(badge.key);
             const name = badge.nameJson?.ar ?? badge.nameJson?.en ?? badge.key;
-            const desc = badge.descriptionJson?.ar ?? badge.descriptionJson?.en ?? t(meta.descKey);
+            const desc =
+              badge.descriptionJson?.ar ??
+              badge.descriptionJson?.en ??
+              (meta.descKey ? t(meta.descKey) : '');
 
             return (
               <Card

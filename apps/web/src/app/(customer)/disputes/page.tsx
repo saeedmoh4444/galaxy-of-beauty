@@ -83,7 +83,7 @@ export default function DisputesPage(): JSX.Element {
                       <span
                         className={`rounded-full px-3 py-1 text-xs font-medium ${STATUS_STYLES[statusKey] ?? 'bg-surface-muted text-text-secondary'}`}
                       >
-                        {t(STATUS_LABELS[statusKey] ?? 'disputes.status.unknown')}
+                        {t(STATUS_LABELS[statusKey] ?? 'disputes.status.open')}
                       </span>
                     </div>
                     <p className="text-sm text-text-secondary dark:text-text-tertiary">

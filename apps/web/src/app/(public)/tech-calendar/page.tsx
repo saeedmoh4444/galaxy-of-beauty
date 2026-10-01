@@ -96,7 +96,7 @@ export default function TechCalendarPage(): JSX.Element {
               ◀
             </button>
             <h3 className="text-lg font-bold">
-              {t(MONTHS[month - 1])} {year}
+              {t(MONTHS[month - 1] ?? MONTHS[0])} {year}
             </h3>
             <button onClick={() => setMonth(month === 12 ? 1 : month + 1)} className="text-xl">
               ▶

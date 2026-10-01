@@ -3,7 +3,7 @@ import { LARGE_PAGE_SIZE, MS_PER_90_DAYS } from '@galaxy/shared';
 import { customerProcedure, router } from '../trpc';
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any -- Review model uses customerId, not userId (legacy where)
-const db = prisma as any;
+const db = prisma;
 
 const ACHIEVEMENTS = [
   { key: 'first_booking', nameAr: 'أول حجز', emoji: '🎉', desc: 'أكملي أول حجز تجميل' },
@@ -26,7 +26,7 @@ export const customerAchievementsRouter = router({
         where: { customerId: userId, status: 'COMPLETED' },
         _sum: { totalAmount: true },
       }),
-      db.review.count({ where: { userId } }),
+      db.review.count({ where: { customerId: userId } }),
       db.streak.findUnique({ where: { customerId: userId } }),
       db.booking.findMany({
         where: { customerId: userId, status: 'COMPLETED' },

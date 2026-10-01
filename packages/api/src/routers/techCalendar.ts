@@ -4,7 +4,7 @@ import { DEFAULT_PAGE_SIZE } from '@galaxy/shared';
 import { publicProcedure, router } from '../trpc';
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any -- AvailabilitySlot has no date; Technician no isVerified in Prisma schema (legacy where/orderBy)
-const db = prisma as any;
+const db = prisma;
 
 export const techCalendarRouter = router({
   // Get available slots for a technician on a given date range
@@ -24,10 +24,10 @@ export const techCalendarRouter = router({
         .findMany({
           where: {
             technicianId: input.technicianId,
-            date: { gte: startOfMonth, lte: endOfMonth },
+            startAt: { gte: startOfMonth, lte: endOfMonth },
             isBooked: false,
           },
-          orderBy: { date: 'asc' },
+          orderBy: { startAt: 'asc' },
         })
         .catch(() => []);
 
@@ -62,7 +62,7 @@ export const techCalendarRouter = router({
   listWithAvailability: publicProcedure.query(async () => {
     const technicians = await db.technician
       .findMany({
-        where: { isVerified: true },
+        where: { kycStatus: 'VERIFIED' },
         take: DEFAULT_PAGE_SIZE,
         include: { user: { select: { name: true, avatarUrl: true } } },
       })
