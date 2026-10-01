@@ -594,6 +594,27 @@ export const adminMessages = {
   'admin.finance.from-date': { ar: 'من تاريخ', en: 'From Date' },
   'admin.finance.to-date': { ar: 'إلى تاريخ', en: 'To Date' },
   'admin.finance.calculate': { ar: 'احتساب', en: 'Calculate' },
+  'admin.ab-tests.title': { ar: 'اختبارات A/B', en: 'A/B Tests' },
+  'admin.ab-tests.subtitle': {
+    ar: 'نتائج الاختبارات مع الدلالة الإحصائية وإعلان الفائز',
+    en: 'Test results with statistical significance and winner declaration',
+  },
+  'admin.ab-tests.empty': { ar: 'لا توجد اختبارات مهيأة', en: 'No configured tests' },
+  'admin.ab-tests.running': { ar: 'جارٍ', en: 'Running' },
+  'admin.ab-tests.winner': { ar: 'الفائز: {variant}', en: 'Winner: {variant}' },
+  'admin.ab-tests.variant': { ar: 'النسخة {variant}', en: 'Variant {variant}' },
+  'admin.ab-tests.impressions': { ar: '{count} ظهور', en: '{count} impressions' },
+  'admin.ab-tests.conversions': { ar: '{count} تحويل', en: '{count} conversions' },
+  'admin.ab-tests.p-value': { ar: 'p = {value}', en: 'p = {value}' },
+  'admin.ab-tests.significant-hint': {
+    ar: 'فرق ذو دلالة إحصائية — المرشح: {variant}',
+    en: 'Statistically significant — candidate: {variant}',
+  },
+  'admin.ab-tests.insufficient-data': {
+    ar: 'بيانات غير كافية لحساب الدلالة بعد',
+    en: 'Not enough data for significance yet',
+  },
+  'admin.ab-tests.declare-winner': { ar: 'إعلان الفائز', en: 'Declare winner' },
   'admin.finance.calculate-store': { ar: 'احتساب مستحقات المتاجر', en: 'Settle stores' },
   'admin.disputes.store-order': { ar: 'طلب متجر #{id}', en: 'Store order #{id}' },
   'admin.finance.calculate-store-desc': {
