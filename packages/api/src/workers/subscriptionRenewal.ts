@@ -16,13 +16,6 @@ import { notifyUser } from '../lib/notify';
 const RENEWAL_INTERVAL_MS = 3_600_000 * 24; // daily
 const REMINDER_DAYS = 3;
 
-function rollPeriod(end: Date, interval: string): Date {
-  const next = new Date(end);
-  if (interval === 'YEARLY') next.setFullYear(next.getFullYear() + 1);
-  else next.setMonth(next.getMonth() + 1);
-  return next;
-}
-
 /** Renew or expire due subscriptions. Returns { renewed, expired }. */
 export async function renewDueSubscriptions(): Promise<{ renewed: number; expired: number }> {
   const now = new Date();
@@ -31,27 +24,18 @@ export async function renewDueSubscriptions(): Promise<{ renewed: number; expire
     include: { plan: { select: { interval: true } } },
   });
 
-  let renewed = 0;
+  const renewed = 0;
   let expired = 0;
   for (const sub of due) {
-    if (sub.autoRenew) {
-      const nextEnd = rollPeriod(sub.currentPeriodEnd, sub.plan.interval);
-      await prisma.customerSubscription.update({
-        where: { id: sub.id },
-        data: {
-          currentPeriodStart: sub.currentPeriodEnd,
-          currentPeriodEnd: nextEnd,
-          bookingsThisMonth: 0,
-        },
-      });
-      renewed++;
-    } else {
-      await prisma.customerSubscription.update({
-        where: { id: sub.id },
-        data: { status: 'EXPIRED' },
-      });
-      expired++;
-    }
+    // Money-integrity: never roll the billing period without a verified
+    // charge. No payment method / gateway capture path exists for renewals
+    // yet, so an un-chargeable renewal EXPIRES the subscription instead of
+    // granting free service forever (autoRenew or not).
+    await prisma.customerSubscription.update({
+      where: { id: sub.id },
+      data: { status: 'EXPIRED' },
+    });
+    expired++;
   }
   return { renewed, expired };
 }

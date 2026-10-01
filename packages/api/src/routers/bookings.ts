@@ -2,6 +2,7 @@ import { z } from 'zod';
 import { TRPCError } from '@trpc/server';
 import { prisma } from '@galaxy/db';
 import type { Prisma } from '@galaxy/db';
+import { DEFAULT_PLATFORM_FEE_SAR } from '@galaxy/shared';
 import crypto from 'crypto';
 import { notFound, forbidden, badRequest } from '../lib/errors';
 import { isJummahBlocked, JUMMAH_BLOCK_REASON } from '../lib/jummah';
@@ -98,12 +99,19 @@ export const bookingRouter = router({
   create: customerProcedure.input(createBookingSchema).mutation(async ({ ctx, input }) => {
     const customerId = ctx.user.id;
 
-    // 1. Idempotency check
+    // 1. Idempotency check — only replay the booking for its OWNER. A
+    // colliding/foreign key must not leak another customer's booking
+    // (address, family member, payment details).
     const existing = await prisma.booking.findUnique({
       where: { idempotencyKey: input.idempotencyKey },
       include: bookingDetailInclude,
     });
-    if (existing) return existing;
+    if (existing) {
+      if (existing.customerId !== customerId) {
+        throw new TRPCError({ code: 'NOT_FOUND', message: 'Booking not found' });
+      }
+      return existing;
+    }
 
     // 2a. Look up technician (User ID → Technician record)
     const technician = await prisma.technician.findUnique({
@@ -421,7 +429,9 @@ export const bookingRouter = router({
           endAt: new Date(input.endAt),
           status: 'REQUESTED',
           totalAmount,
-          platformFee: 0,
+          // Money-integrity: platform fee comes from the same constant the
+          // estimator uses — payouts subtract it from technician gross.
+          platformFee: Number(process.env['PLATFORM_FEE_SAR']) || DEFAULT_PLATFORM_FEE_SAR,
           paymentFee: 0,
           cashHandlingFee: 0,
           notes: input.notes ?? null,

@@ -65,28 +65,47 @@ export function isRedisAvailable(): boolean {
  */
 export async function incrementAttempts(key: string, windowSeconds: number): Promise<number> {
   const r = getRedis();
-  if (!r) {
-    // Redis unavailable — allow the request (fail open for availability)
-    return 1;
+
+  if (r) {
+    try {
+      const count = await r.incr(key);
+      if (count === 1) {
+        // First attempt — set expiry on the key
+        await r.expire(key, windowSeconds);
+      }
+      return count;
+    } catch {
+      // Redis error — fall through to the in-process counter (fail closed).
+    }
   }
 
-  try {
-    const count = await r.incr(key);
-    if (count === 1) {
-      // First attempt — set expiry on the key
-      await r.expire(key, windowSeconds);
-    }
-    return count;
-  } catch {
-    // Redis error — fail open
+  // Security: never fail OPEN on the login lockout. When Redis is down the
+  // counter degrades to a per-process map — attempts still accumulate and
+  // the lockout still triggers (per-process only, acceptable degradation).
+  return incrementInMemoryAttempts(key, windowSeconds);
+}
+
+// ── In-process fallback for attempt counters (Redis down) ────────────
+
+const inMemoryAttempts = new Map<string, { count: number; expiresAt: number }>();
+
+function incrementInMemoryAttempts(key: string, windowSeconds: number): number {
+  const now = Date.now();
+  const entry = inMemoryAttempts.get(key);
+  if (!entry || entry.expiresAt <= now) {
+    inMemoryAttempts.set(key, { count: 1, expiresAt: now + windowSeconds * 1000 });
     return 1;
   }
+  entry.count += 1;
+  return entry.count;
 }
 
 /**
  * Reset the attempt counter for a key (e.g., after successful login).
  */
 export async function resetAttempts(key: string): Promise<void> {
+  inMemoryAttempts.delete(key);
+
   const r = getRedis();
   if (!r) return;
 

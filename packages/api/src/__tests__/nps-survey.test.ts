@@ -7,6 +7,7 @@ import { prisma } from '@galaxy/db';
 import { appRouter } from '../routers/index';
 import { createTRPCContext } from '../context';
 import type { JwtPayload } from '../lib/jwt';
+import { safeFutureDate } from './factories';
 
 const CSRF = 'a'.repeat(64);
 
@@ -30,8 +31,8 @@ async function completedBooking(customerUser: JwtPayload): Promise<number> {
   const slot = await prisma.availabilitySlot.create({
     data: {
       technicianId: technicianRecordId,
-      startAt: new Date(Date.now() + 86400000 + uid * 3600000),
-      endAt: new Date(Date.now() + 86400000 + uid * 3600000 + 3600000),
+      startAt: new Date(safeFutureDate(1).getTime() + uid * 3_600_000),
+      endAt: new Date(safeFutureDate(1).getTime() + uid * 3_600_000 + 3_600_000),
       isBooked: false,
     },
   });
@@ -122,8 +123,8 @@ describe('NPS survey', () => {
     const slot = await prisma.availabilitySlot.create({
       data: {
         technicianId: technicianRecordId,
-        startAt: new Date(Date.now() + 86400000 + uid * 3600000),
-        endAt: new Date(Date.now() + 86400000 + uid * 3600000 + 3600000),
+        startAt: new Date(safeFutureDate(1).getTime() + uid * 3_600_000),
+        endAt: new Date(safeFutureDate(1).getTime() + uid * 3_600_000 + 3_600_000),
         isBooked: false,
       },
     });

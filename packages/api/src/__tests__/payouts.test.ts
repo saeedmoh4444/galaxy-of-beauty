@@ -451,21 +451,20 @@ describe('Payout router (integration)', () => {
       });
     });
 
-    it('processes a PENDING payout to COMPLETED with a reference, and refuses a second run', async () => {
+    it('moves a PENDING payout to PROCESSING (no fabricated transfer) and refuses a second run', async () => {
       const p = await seedPayout({ technicianId: techA.id });
       const a = await caller(admin);
 
       const done = await a.payouts.process({ payoutId: p.id });
-      expect(done.status).toBe('COMPLETED');
-      expect(done.reference).toMatch(/^PO-\d+-/);
-      expect(done.processedAt).toBeInstanceOf(Date);
+      // Money-integrity: no bank/wallet provider is wired — the payout must
+      // stay in PROCESSING; COMPLETED requires a real provider reference.
+      expect(done.status).toBe('PROCESSING');
+      expect(done.reference).toBeFalsy();
 
       const row = await prisma.payout.findUnique({ where: { id: p.id } });
-      expect(row!.status).toBe('COMPLETED');
-      expect(row!.processedAt).not.toBeNull();
-      expect(row!.reference).toMatch(/^PO-\d+-/);
+      expect(row!.status).toBe('PROCESSING');
 
-      // Already COMPLETED — not processable again
+      // Already PROCESSING — not processable again
       await expect(a.payouts.process({ payoutId: p.id })).rejects.toMatchObject({
         code: 'PRECONDITION_FAILED',
       });

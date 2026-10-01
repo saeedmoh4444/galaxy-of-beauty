@@ -35,8 +35,12 @@ const BNPL_PROVIDERS = [
 ];
 
 const ELIGIBILITY = {
-  eligible: true,
-  maxAmount: 5000,
+  // Money-integrity: BNPL providers (Tabby/Tamara) are NOT wired — never
+  // fabricate an eligibility decision or an approval. The client must treat
+  // eligible:false as "unavailable", not as a credit rejection.
+  eligible: false,
+  reason: 'PROVIDER_NOT_CONFIGURED',
+  maxAmount: 0,
   minAmount: BNPL_MIN_AMOUNT,
   providers: BNPL_PROVIDERS,
 };
@@ -61,7 +65,8 @@ export const bnplRouter = router({
         paid: false,
       }));
 
-      // E4b — persist the plan (previously computed and discarded).
+      // E4b — persist the plan as PENDING_PROVIDER; approval can only come
+      // from a real provider decision (not wired yet — audit API-11).
       const plan = await db.bnplPlan.create({
         data: {
           userId: ctx.user.id,
@@ -70,12 +75,14 @@ export const bnplRouter = router({
           installments: input.installments,
           monthlyPayment,
           schedule,
+          status: 'PENDING_PROVIDER',
         },
       });
 
       return {
         planId: plan.id,
-        approved: true,
+        approved: false,
+        status: 'PENDING_PROVIDER',
         provider: input.provider,
         totalAmount: input.amount,
         installments: input.installments,

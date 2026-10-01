@@ -52,10 +52,14 @@ describe('bnpl plan persistence (E4b)', () => {
     expect(plan.schedule).toHaveLength(4);
     expect(plan.schedule![0].month).toBe(1);
     expect(plan.schedule![0].paid).toBe(false);
+    // Money-integrity: approval can only come from a real provider decision,
+    // so a fresh plan is never ACTIVE.
+    expect(plan.status).toBe('PENDING_PROVIDER');
+    expect(plan.approved).toBe(false);
 
     const stored = await prisma.bnplPlan.findUniqueOrThrow({ where: { id: plan.planId } });
     expect(stored.userId).toBe(user.id);
-    expect(stored.status).toBe('ACTIVE');
+    expect(stored.status).toBe('PENDING_PROVIDER');
     expect(stored.paidCount).toBe(0);
     expect(Number(stored.totalAmount)).toBe(1200);
     expect(stored.schedule).toHaveLength(4);
@@ -88,6 +92,11 @@ describe('bnpl plan persistence (E4b)', () => {
     const c = await caller(user);
     const mine = await c.bnpl.myPlans();
     const plan = mine.find((p: any) => p.installments === 4 && Number(p.monthlyPayment) === 300)!;
+
+    // A PENDING_PROVIDER plan rejects payments until the provider approves.
+    await expect(c.bnpl.markPaid({ planId: plan.id })).rejects.toThrow();
+    // Simulate the provider approval, then advance the schedule.
+    await prisma.bnplPlan.update({ where: { id: plan.id }, data: { status: 'ACTIVE' } });
 
     const afterFirst = await c.bnpl.markPaid({ planId: plan.id });
     expect(afterFirst.paidCount).toBe(1);
