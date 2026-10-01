@@ -615,7 +615,16 @@ export const adminMessages = {
     en: 'Not enough data for significance yet',
   },
   'admin.ab-tests.declare-winner': { ar: 'إعلان الفائز', en: 'Declare winner' },
+  'admin.finance.calculate-store': { ar: 'احتساب مستحقات المتاجر', en: 'Settle stores' },
   'admin.disputes.store-order': { ar: 'طلب متجر #{id}', en: 'Store order #{id}' },
+  'admin.finance.calculate-store-desc': {
+    ar: 'إنشاء مستحقات للمتاجر من الطلبات المكتملة (تستبعد الطلبات المسترجعة)',
+    en: 'Create store settlements from fulfilled orders (refunded orders excluded)',
+  },
+  'admin.finance.calculated-store-success': {
+    ar: 'تم احتساب مستحقات {vendors} متجراً',
+    en: 'Settled {vendors} store(s)',
+  },
   'admin.finance.calculated-success': { ar: 'تم الاحتساب بنجاح', en: 'Calculation completed' },
   'admin.finance.payout-history': { ar: 'سجل المدفوعات', en: 'Payout History' },
   'admin.finance.no-payouts': { ar: 'لا توجد مدفوعات', en: 'No payouts' },

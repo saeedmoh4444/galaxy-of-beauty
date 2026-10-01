@@ -150,6 +150,7 @@ beautyDna.skinMatch	query	customer
 beautyEvents.accessDetails	query	customer
 beautyEvents.cancelRegistration	mutation	customer
 beautyEvents.create	mutation	admin
+beautyEvents.getById	query	public
 beautyEvents.issueCertificates	mutation	admin
 beautyEvents.list	query	public
 beautyEvents.listAll	query	admin
@@ -657,8 +658,10 @@ payments.getByBooking	query	protected
 payments.refund	mutation	admin
 payments.webhook	mutation	public
 payouts.calculate	mutation	admin
+payouts.calculateStore	mutation	admin
 payouts.listForAdmin	query	admin
 payouts.listMyPayouts	query	technician
+payouts.listStorePayouts	query	customer
 payouts.process	mutation	admin
 penPal.interests	query	customer
 penPal.match	query	customer

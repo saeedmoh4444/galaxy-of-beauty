@@ -1,7 +1,7 @@
 import { z } from 'zod';
 import { TRPCError } from '@trpc/server';
 import { prisma } from '@galaxy/db';
-import { router, adminProcedure, technicianProcedure } from '../trpc';
+import { router, adminProcedure, technicianProcedure, customerProcedure } from '../trpc';
 import { createPayoutSchema, processPayoutSchema } from '../validators/payment';
 
 // ---------------------------------------------------------------------------
@@ -130,6 +130,91 @@ export const payoutRouter = router({
       });
     }
   }),
+
+  // -----------------------------------------------------------------------
+  // calculateStore — Admin computes vendor settlements from FULFILLED
+  // store orders (stage 12). REFUNDED orders are excluded, so a resolved
+  // store dispute automatically removes the order from settlement.
+  // -----------------------------------------------------------------------
+  calculateStore: adminProcedure.input(createPayoutSchema).mutation(async ({ input }) => {
+    const periodStart = new Date(input.periodStart);
+    const periodEnd = new Date(input.periodEnd);
+
+    const orders = await prisma.storeOrder.findMany({
+      where: {
+        status: 'FULFILLED',
+        createdAt: { gte: periodStart, lte: periodEnd },
+      },
+      select: { id: true, vendorId: true, totalAmount: true },
+    });
+
+    const byVendor = new Map<number, { orderCount: number; grossAmount: number }>();
+    for (const order of orders) {
+      const gross = Number(order.totalAmount);
+      const entry = byVendor.get(order.vendorId) ?? { orderCount: 0, grossAmount: 0 };
+      entry.orderCount += 1;
+      entry.grossAmount += gross;
+      byVendor.set(order.vendorId, entry);
+    }
+
+    const settlements = Array.from(byVendor.entries()).map(([vendorId, entry]) => ({
+      vendorId,
+      orderCount: entry.orderCount,
+      amount: entry.grossAmount,
+    }));
+
+    if (settlements.length > 0) {
+      // Re-calculation replaces PENDING vendor rows for the same period.
+      await prisma.payout.deleteMany({
+        where: { periodStart, periodEnd, status: 'PENDING', vendorId: { not: null } },
+      });
+      await prisma.payout.createMany({
+        data: settlements.map((s) => ({
+          vendorId: s.vendorId,
+          periodStart,
+          periodEnd,
+          amount: s.amount,
+          fee: 0,
+          status: 'PENDING' as const,
+        })),
+      });
+    }
+
+    return settlements;
+  }),
+
+  // -----------------------------------------------------------------------
+  // listStorePayouts — the vendor (store owner) views their settlements
+  // -----------------------------------------------------------------------
+  listStorePayouts: customerProcedure
+    .input(
+      z
+        .object({
+          status: z.enum(['PENDING', 'PROCESSING', 'COMPLETED', 'FAILED']).optional(),
+          page: z.coerce.number().int().positive().default(1),
+          limit: z.coerce.number().int().min(1).max(50).default(20),
+        })
+        .optional()
+        .default({} as never),
+    )
+    .query(async ({ ctx, input }) => {
+      const vendor = await prisma.vendor.findUnique({ where: { userId: ctx.user.id } });
+      if (!vendor) {
+        return { items: [], total: 0, page: input.page, limit: input.limit };
+      }
+      const where: Record<string, unknown> = { vendorId: vendor.id };
+      if (input.status) where.status = input.status;
+      const [items, total] = await Promise.all([
+        prisma.payout.findMany({
+          where,
+          orderBy: { createdAt: 'desc' },
+          skip: (input.page - 1) * input.limit,
+          take: input.limit,
+        }),
+        prisma.payout.count({ where }),
+      ]);
+      return { items, total, page: input.page, limit: input.limit };
+    }),
 
   // -----------------------------------------------------------------------
   // process — Admin marks a payout as PROCESSING then COMPLETED
