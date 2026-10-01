@@ -80,7 +80,7 @@ export default function BundlesPage(): JSX.Element {
                       <span className="block text-xs text-text-tertiary line-through">
                         {original.toFixed(0)} {t('misc.sar')}
                       </span>
-                      <span className="text-lg font-extrabold text-rose-600 dark:text-rose-400">
+                      <span className="text-lg font-extrabold text-rose-700 dark:text-rose-400">
                         {total.toFixed(0)} {t('misc.sar')}
                       </span>
                     </span>
