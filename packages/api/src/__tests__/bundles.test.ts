@@ -10,7 +10,7 @@ import { prisma } from '@galaxy/db';
 import { appRouter } from '../routers/index';
 import { createTRPCContext } from '../context';
 import { generateCsrfToken } from '../lib/csrf';
-import { buildUser } from './factories';
+import { buildUser, safeFutureDate } from './factories';
 import type { JwtPayload } from '../lib/jwt';
 
 const CSRF = generateCsrfToken();
@@ -121,7 +121,7 @@ afterAll(async () => {
 });
 
 function bookingInput(overrides: Record<string, unknown> = {}) {
-  const start = new Date(Date.now() + 86_400_000);
+  const start = safeFutureDate(1);
   return {
     technicianId: techUserId,
     serviceId: primaryServiceId,

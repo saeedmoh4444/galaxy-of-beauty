@@ -34,11 +34,12 @@ let uid = 0;
 const newIdemKey = () => `mob_lifecycle_${Date.now()}_${uid++}`;
 
 async function seedSlot(): Promise<number> {
+  const start = safeFutureDate(1);
   const slot = await prisma.availabilitySlot.create({
     data: {
       technicianId: technicianRecordId,
-      startAt: new Date(Date.now() + 86400000),
-      endAt: new Date(safeFutureDate(1).getTime() + 3600000),
+      startAt: start,
+      endAt: new Date(start.getTime() + 3600000),
       isBooked: false,
     },
   });
@@ -47,13 +48,14 @@ async function seedSlot(): Promise<number> {
 
 async function createBooking(opts?: { idempotencyKey?: string; slotId?: number }) {
   const caller = await authCaller(customer);
+  const start = safeFutureDate(1);
   return caller.bookings.create({
     serviceId,
     technicianId: technicianUserId,
     addressId,
     slotId: opts?.slotId ?? (await seedSlot()),
-    startAt: new Date(Date.now() + 86400000).toISOString(),
-    endAt: new Date(safeFutureDate(1).getTime() + 3600000).toISOString(),
+    startAt: start.toISOString(),
+    endAt: new Date(start.getTime() + 3600000).toISOString(),
     idempotencyKey: opts?.idempotencyKey ?? newIdemKey(),
   });
 }

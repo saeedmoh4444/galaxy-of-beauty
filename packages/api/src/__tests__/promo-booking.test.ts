@@ -9,7 +9,7 @@ import { describe, it, expect, beforeAll, afterAll } from 'vitest';
 import { prisma } from '@galaxy/db';
 import { appRouter } from '../routers/index';
 import type { JwtPayload } from '../lib/jwt';
-import { buildUser, buildBooking } from './factories';
+import { buildUser, buildBooking, safeFutureDate } from './factories';
 
 let admin: JwtPayload;
 let customer: JwtPayload;
@@ -65,8 +65,8 @@ async function makeBooking(userId: number) {
         serviceId,
         status: 'COMPLETED',
         totalAmount: 200,
-        startAt: new Date(Date.now() + 3 * 86_400_000),
-        endAt: new Date(Date.now() + 3 * 86_400_000 + 3_600_000),
+        startAt: safeFutureDate(3),
+        endAt: new Date(safeFutureDate(3).getTime() + 3_600_000),
       }),
       addressId,
     },

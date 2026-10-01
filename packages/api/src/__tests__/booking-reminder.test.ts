@@ -8,7 +8,7 @@ import { describe, it, expect, beforeAll, afterAll } from 'vitest';
 import type { Job } from 'bullmq';
 import { prisma } from '@galaxy/db';
 import { handleBookingReminderJob, dispatchNotificationJob } from '../workers/handlers';
-import { buildUser, buildBooking } from './factories';
+import { buildUser, buildBooking, safeFutureDate } from './factories';
 
 function job<T>(data: T, name = 'booking.reminder'): Job<T> {
   return { data, name } as Job<T>;
@@ -30,8 +30,8 @@ async function makeBooking(status: string): Promise<number> {
         technicianId: techUserId,
         serviceId,
         status,
-        startAt: new Date(Date.now() + 2 * 86_400_000),
-        endAt: new Date(Date.now() + 2 * 86_400_000 + 3_600_000),
+        startAt: safeFutureDate(2),
+        endAt: new Date(safeFutureDate(2).getTime() + 3_600_000),
       }),
       addressId,
     },

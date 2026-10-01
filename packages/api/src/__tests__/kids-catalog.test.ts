@@ -11,7 +11,7 @@ import { prisma } from '@galaxy/db';
 import { appRouter } from '../routers/index';
 import { createTRPCContext } from '../context';
 import { generateCsrfToken } from '../lib/csrf';
-import { buildUser } from './factories';
+import { buildUser, safeFutureDate } from './factories';
 import type { JwtPayload } from '../lib/jwt';
 
 const CSRF = generateCsrfToken();
@@ -81,7 +81,7 @@ beforeAll(async () => {
   });
   memberId = member.id;
 
-  const start = new Date(Date.now() + 86_400_000);
+  const start = safeFutureDate(1);
   const booking = await prisma.booking.create({
     data: {
       bookingCode: `GOB-K2-${SUFFIX}`,

@@ -10,6 +10,7 @@
 import { describe, it, expect, beforeAll } from 'vitest';
 import { prisma } from '@galaxy/db';
 import { appRouter } from '../routers/index';
+import { safeFutureDate } from './factories';
 import { createTRPCContext } from '../context';
 import type { JwtPayload } from '../lib/jwt';
 
@@ -47,8 +48,8 @@ async function seedBooking(opts: {
       technicianId,
       serviceId,
       addressId,
-      startAt: new Date(Date.now() + 86400000),
-      endAt: new Date(Date.now() + 86400000 + 3600000),
+      startAt: safeFutureDate(1),
+      endAt: new Date(safeFutureDate(1).getTime() + 3600000),
       status: opts.status ?? 'ACCEPTED',
       totalAmount: opts.totalAmount ?? 200,
       platformFee: 0,

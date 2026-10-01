@@ -7,7 +7,7 @@ import { describe, it, expect, beforeAll, afterAll } from 'vitest';
 import { prisma } from '@galaxy/db';
 import { appRouter } from '../routers/index';
 import type { JwtPayload } from '../lib/jwt';
-import { buildUser } from './factories';
+import { buildUser, safeFutureDate } from './factories';
 
 let owner: JwtPayload;
 let customer: JwtPayload;
@@ -112,8 +112,8 @@ describe('nail bars (E5)', () => {
 
   it('the nail bar owner opens capacity slots and lists them', async () => {
     const c = await caller(owner);
-    const startAt = new Date(Date.now() + 3 * 86_400_000).toISOString();
-    const endAt = new Date(Date.now() + 3 * 86_400_000 + 3600_000).toISOString();
+    const startAt = safeFutureDate(3).toISOString();
+    const endAt = new Date(safeFutureDate(3).getTime() + 3600_000).toISOString();
 
     const slot = await c.vendorPortal['nailBarSlots.add']({
       startAt,
@@ -131,8 +131,8 @@ describe('nail bars (E5)', () => {
     const c = await caller(customer);
     const slots = await c.nailBars.list({});
     // Fetch slots via the public procedure for the verified nail bar.
-    const from = new Date(Date.now() + 2 * 86_400_000).toISOString();
-    const to = new Date(Date.now() + 5 * 86_400_000).toISOString();
+    const from = safeFutureDate(2).toISOString();
+    const to = safeFutureDate(5).toISOString();
     const available = await c.nailBars.slots({
       nailBarId: createdVendorIds[0]!,
       from,
