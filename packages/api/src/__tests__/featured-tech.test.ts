@@ -9,6 +9,7 @@
 import { describe, it, expect, beforeAll, afterAll } from 'vitest';
 import { prisma } from '@galaxy/db';
 import { appRouter } from '../routers/index';
+import { safeFutureDate } from './factories';
 
 const ARTIFACT_MARKER = 'FEATURED-TEST-ARTIFACT';
 
