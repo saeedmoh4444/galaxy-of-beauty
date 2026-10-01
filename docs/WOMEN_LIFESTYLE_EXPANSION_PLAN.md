@@ -3,7 +3,7 @@
 > Status: **v2 — 2026-09-08**. User vision: grow beyond beauty into the
 > woman's life platform — new service verticals (gym, trainers, medical
 > beauty clinics, …) + lifestyle tools (period tracking, …). Extends the
-> provider model from STORE_MARKETPLANE_PLAN.
+> provider model from STORE_MARKETPLACE_PLAN.
 > Delivered so far: E2 clinics (PR #87), E3 gyms (PR #88), E4a cycle
 > upgrade (PR #89), E4b wellness/nutrition/measurements/bnpl (PR #90).
 > v2 adds the E6+ women's-platform differentiators horizon.
@@ -20,7 +20,7 @@ providers + data the AI personalizes everything with (B.25 profile).
 
 | Need                                     | Existing infra                                                                   |
 | ---------------------------------------- | -------------------------------------------------------------------------------- |
-| Provider model (extend with new types)   | unified provider model (STORE_MARKETPLANE_PLAN)                                  |
+| Provider model (extend with new types)   | unified provider model (STORE_MARKETPLACE_PLAN)                                  |
 | Booking engine, slots, payments, reviews | live                                                                             |
 | Cycle tracking                           | `cycleTracker` router (exists — needs upgrade)                                   |
 | Wellness tools                           | sleepTracker, beautyHabits, selfCare, wellnessTracker/Hub, spaPlanner, nightMode |

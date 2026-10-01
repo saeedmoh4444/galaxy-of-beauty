@@ -274,7 +274,7 @@ remaining ungated, mobile tsc + lint clean, API suite 823/823.
       an ML service (Google Vision product search class) — partnership-gated
       like ride-hailing; keep the API seam ready.
     - **Store tie-in**: scanned product → "buy from our stores" handshake
-      (STORE_MARKETPLANE_PLAN Phase 2 — same pattern as restock-reminder).
+      (STORE_MARKETPLACE_PLAN Phase 2 — same pattern as restock-reminder).
 13. **Home-service fulfillment** (user finding, 2026-09-03 — the request is
     a dead end today):
     - Today: `estimate` is solid (shared fee constants), but `request`
