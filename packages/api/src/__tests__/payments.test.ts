@@ -41,27 +41,27 @@ describe('Payment — Idempotency', () => {
 
 describe('Payment — Validation', () => {
   it('should require positive amount', () => {
-    const valid = paymentSchema.safeParse({ amount: 200, method: 'CARD', bookingId: 1 });
+    const valid = paymentSchema.safeParse({ amount: 200, method: 'online', bookingId: 1 });
     expect(valid.success).toBe(true);
   });
 
   it('should reject zero amount', () => {
-    const result = paymentSchema.safeParse({ amount: 0, method: 'CARD', bookingId: 1 });
+    const result = paymentSchema.safeParse({ amount: 0, method: 'online', bookingId: 1 });
     expect(result.success).toBe(false);
   });
 
   it('should reject negative amount', () => {
-    const result = paymentSchema.safeParse({ amount: -50, method: 'CARD', bookingId: 1 });
+    const result = paymentSchema.safeParse({ amount: -50, method: 'online', bookingId: 1 });
     expect(result.success).toBe(false);
   });
 
   it('should reject missing bookingId', () => {
-    const result = paymentSchema.safeParse({ amount: 200, method: 'CARD' });
+    const result = paymentSchema.safeParse({ amount: 200, method: 'online' });
     expect(result.success).toBe(false);
   });
 
   it('should accept valid payment methods', () => {
-    const methods = ['CARD', 'WALLET', 'CASH', 'APPLE_PAY'];
+    const methods = ['online', 'cash'];
     for (const method of methods) {
       const result = paymentSchema.safeParse({
         amount: 200,
@@ -72,13 +72,15 @@ describe('Payment — Validation', () => {
     }
   });
 
-  it('should reject invalid payment method', () => {
-    const result = paymentSchema.safeParse({
-      amount: 200,
-      method: 'BITCOIN',
-      bookingId: 1,
-    });
-    expect(result.success).toBe(false);
+  it('should reject unwired payment methods (no Apple Pay / card enum)', () => {
+    for (const method of ['BITCOIN', 'APPLE_PAY', 'CARD', 'MADA', 'WALLET']) {
+      const result = paymentSchema.safeParse({
+        amount: 200,
+        method,
+        bookingId: 1,
+      });
+      expect(result.success).toBe(false);
+    }
   });
 });
 
@@ -86,7 +88,7 @@ describe('Payment — Amount Validation', () => {
   it('should handle SAR amounts with decimals', () => {
     const result = paymentSchema.safeParse({
       amount: 199.99,
-      method: 'CARD',
+      method: 'online',
       bookingId: 1,
     });
     expect(result.success).toBe(true);
@@ -98,7 +100,7 @@ describe('Payment — Amount Validation', () => {
   it('should reject non-numeric amount', () => {
     const result = paymentSchema.safeParse({
       amount: 'two hundred',
-      method: 'CARD',
+      method: 'online',
       bookingId: 1,
     });
     expect(result.success).toBe(false);
@@ -107,7 +109,7 @@ describe('Payment — Amount Validation', () => {
   it('should reject excessively large amount (potential overflow)', () => {
     const result = paymentSchema.safeParse({
       amount: 999_999_999,
-      method: 'CARD',
+      method: 'online',
       bookingId: 1,
     });
     // Should either reject or cap — depends on business rules

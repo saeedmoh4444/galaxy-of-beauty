@@ -53,8 +53,8 @@ export const walletMessages = {
   'wallet.payment-method': { ar: 'طريقة الدفع', en: 'Payment Method' },
   'wallet.online-payment': { ar: 'دفع إلكتروني', en: 'Online Payment' },
   'wallet.card-brands': {
-    ar: 'مدى · فيزا · ماستركارد · Apple Pay',
-    en: 'Mada · Visa · Mastercard · Apple Pay',
+    ar: 'مدى · فيزا · ماستركارد',
+    en: 'Mada · Visa · Mastercard',
   },
   'wallet.your-balance': { ar: 'رصيدكِ: {balance}', en: 'Your balance: {balance}' },
   'wallet.insufficient-balance': { ar: '(الرصيد غير كاف)', en: '(Insufficient balance)' },
