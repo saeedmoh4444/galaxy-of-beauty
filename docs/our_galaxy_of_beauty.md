@@ -1,4 +1,4 @@
-# Dalal | دلال — Services & Features Catalog
+# Galaxy of Beauty — Services & Features Catalog
 
 > **Your complete beauty and grooming marketplace — for customers, technicians, and the beauty community in Saudi Arabia**
 
@@ -452,6 +452,6 @@ A complete wedding beauty planning service:
 
 ---
 
-**Dalal — جالكسي بيوتي**  
+**Galaxy of Beauty — جالكسي بيوتي**  
 Your complete beauty marketplace in Saudi Arabia.  
 Book vetted female technicians for every beauty need — anytime, anywhere.

@@ -252,8 +252,8 @@ export const disputeRouter = router({
         throw notFound('Dispute');
       }
 
-      // Only participants or admins can view — booking disputes check the
-      // booking parties; store disputes fall back to raiser/admin.
+      // Only participants or admins can view — store disputes fall back
+      // to raiser/admin (no booking parties).
       if (
         dispute.raisedBy !== ctx.user.id &&
         (!dispute.booking ||
