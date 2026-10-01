@@ -457,7 +457,7 @@ featureFlags.list	query	admin
 featureFlags.toggle	mutation	admin
 featureFlags.upsert	mutation	admin
 flashDeals.active	query	public
-flashDeals.claim	mutation	public
+flashDeals.claim	mutation	customer
 flashDeals.create	mutation	admin
 flashDeals.upcoming	query	public
 franchisePortal.addLocation	mutation	customer

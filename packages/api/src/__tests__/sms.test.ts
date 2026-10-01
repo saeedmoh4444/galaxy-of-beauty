@@ -27,11 +27,14 @@ describe('sms lib', () => {
   });
 
   describe('sendSms', () => {
-    it('returns true and logs when Twilio is not configured', async () => {
-      const spy = vi.spyOn(console, 'log').mockImplementation(() => {});
-      const ok = await sendSms('+966500000001', 'مرحباً');
-      expect(ok).toBe(true);
-      expect(spy).toHaveBeenCalled();
+    it('returns false and warns without PII when Twilio is not configured', async () => {
+      const warnSpy = vi.spyOn(console, 'warn').mockImplementation(() => {});
+      const ok = await sendSms('+966500000001', 'secret code 123456');
+      expect(ok).toBe(false);
+      expect(warnSpy).toHaveBeenCalled();
+      // Fail-closed and PII-safe: no phone number or message body in logs.
+      expect(warnSpy.mock.calls.join('\n')).not.toContain('+966500000001');
+      expect(warnSpy.mock.calls.join('\n')).not.toContain('secret code 123456');
     });
 
     it('sends a Basic-authed Twilio request and returns response.ok', async () => {
@@ -69,28 +72,44 @@ describe('sms lib', () => {
   });
 
   describe('templated messages', () => {
+    // The templates no longer log message bodies (PII-safe); assert the
+    // message content through the Twilio request body instead.
+    const decodeBody = (body: unknown): string =>
+      decodeURIComponent(String(body ?? '').replace(/\+/g, ' '));
+
     it('builds Arabic and English booking confirmation messages', async () => {
-      const spy = vi.spyOn(console, 'log').mockImplementation(() => {});
+      setTwilioConfig();
+      const fetchMock = vi.fn().mockResolvedValue(new Response('{}', { status: 201 }));
+      vi.stubGlobal('fetch', fetchMock);
+
       await sendBookingConfirmationSms('+966500000001', 'GOB-1234', '2026-09-01');
-      expect(spy).toHaveBeenCalledWith(expect.stringContaining('GOB-1234'));
+      expect(decodeBody(fetchMock.mock.calls[0]![1].body)).toContain('GOB-1234');
+
       await sendBookingConfirmationSms('+966500000001', 'GOB-1234', '2026-09-01', 'en');
-      expect(spy).toHaveBeenCalledWith(
-        expect.stringContaining('Galaxy of Beauty booking is confirmed'),
+      expect(decodeBody(fetchMock.mock.calls[1]![1].body)).toContain(
+        'Galaxy of Beauty booking is confirmed',
       );
     });
 
     it('builds Arabic and English reminder messages with hours', async () => {
-      const spy = vi.spyOn(console, 'log').mockImplementation(() => {});
+      setTwilioConfig();
+      const fetchMock = vi.fn().mockResolvedValue(new Response('{}', { status: 201 }));
+      vi.stubGlobal('fetch', fetchMock);
+
       await sendBookingReminderSms('+966500000001', 'GOB-1234', 3);
-      expect(spy).toHaveBeenCalledWith(expect.stringContaining('3 ساعة'));
+      expect(decodeBody(fetchMock.mock.calls[0]![1].body)).toContain('3 ساعة');
+
       await sendBookingReminderSms('+966500000001', 'GOB-1234', 3, 'en');
-      expect(spy).toHaveBeenCalledWith(expect.stringContaining('in 3 hours'));
+      expect(decodeBody(fetchMock.mock.calls[1]![1].body)).toContain('in 3 hours');
     });
 
     it('builds the bilingual OTP message', async () => {
-      const spy = vi.spyOn(console, 'log').mockImplementation(() => {});
+      setTwilioConfig();
+      const fetchMock = vi.fn().mockResolvedValue(new Response('{}', { status: 201 }));
+      vi.stubGlobal('fetch', fetchMock);
+
       await sendOtpSms('+966500000001', '123456');
-      expect(spy).toHaveBeenCalledWith(expect.stringContaining('123456'));
+      expect(decodeBody(fetchMock.mock.calls[0]![1].body)).toContain('123456');
     });
   });
 });
