@@ -1087,6 +1087,7 @@ zatca.dashboard	query	admin
 zatca.generateInvoice	mutation	admin
 zatca.getInvoice	query	protected
 zatca.listInvoices	query	admin
+zatca.myInvoices	query	customer
 zatca.onboardingStatus	query	admin
 zatca.reportInvoice	mutation	admin
 zatca.requestComplianceCsid	mutation	admin

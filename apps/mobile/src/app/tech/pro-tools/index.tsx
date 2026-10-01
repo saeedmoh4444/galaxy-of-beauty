@@ -70,32 +70,32 @@ export default function ProToolsScreen(): JSX.Element {
         <View style={styles.grid}>
           <ToolCard
             title={t('mobile.tech.pro-tools.total-clients')}
-            value={String(crm?.data?.totalCustomers ?? 45)}
+            value={String(crm?.data?.totalCustomers ?? 0)}
             subtitle={t('mobile.tech.pro-tools.regular-clients', {
-              count: Number(crm?.data?.regularCustomers ?? 18),
+              count: Number(crm?.data?.regularCustomers ?? 0),
             })}
           />
           <ToolCard
             title={t('mobile.tech.pro-tools.monthly-revenue')}
-            value={formatCurrency(Number(earnings?.data?.thisMonth ?? 8500))}
+            value={formatCurrency(Number(earnings?.data?.thisMonth ?? 0))}
             subtitle={t('mobile.tech.pro-tools.last-month', {
-              amount: formatCurrency(Number(earnings?.data?.lastMonth ?? 7200)),
+              amount: formatCurrency(Number(earnings?.data?.lastMonth ?? 0)),
             })}
           />
           <ToolCard
             title={t('mobile.tech.pro-tools.avg-rating')}
-            value={Number(crm?.data?.avgRating ?? 4.8).toFixed(1)}
+            value={Number(crm?.data?.avgRating ?? 0).toFixed(1)}
             subtitle={t('mobile.tech.pro-tools.out-of-five')}
-            onPress={() => router.push('/tech/reviews' as never)}
+            onPress={() => router.push('/tech/performance' as never)}
           />
           <ToolCard
             title={t('mobile.tech.pro-tools.expenses')}
-            value={formatCurrency(3200)}
+            value={formatCurrency(Number(earnings?.data?.expensesThisMonth ?? 0))}
             subtitle={t('mobile.tech.pro-tools.this-month')}
           />
           <ToolCard
             title={t('mobile.tech.pro-tools.bookings-log')}
-            value={`${crm?.data?.totalBookings ?? 128}+`}
+            value={`${crm?.data?.totalBookings ?? 0}+`}
             subtitle={t('mobile.tech.pro-tools.view-all-bookings')}
             onPress={() => router.push('/tech/bookings' as never)}
           />
@@ -107,7 +107,7 @@ export default function ProToolsScreen(): JSX.Element {
           />
           <ToolCard
             title={t('mobile.tech.pro-tools.gallery')}
-            value={`${crm?.data?.galleryPhotos ?? 12}+`}
+            value={`${crm?.data?.galleryPhotos ?? 0}+`}
             subtitle={t('mobile.tech.pro-tools.photos-work')}
             onPress={() => router.push('/tech/gallery' as never)}
           />

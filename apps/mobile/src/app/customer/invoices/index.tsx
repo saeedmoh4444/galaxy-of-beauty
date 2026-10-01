@@ -8,13 +8,8 @@ const COLORS = { brand: '#7c3aed', white: '#ffffff', gray400: '#6b7280', gray900
 
 export default function InvoicesScreen(): JSX.Element {
   const { t, locale } = useLocale();
-  const invoices = trpc.zatca.listInvoices.useQuery({}) ?? {
-    data: null,
-    isLoading: false,
-    isError: false,
-    refetch: () => {},
-  };
-  const data = invoices.data as unknown[] | undefined;
+  const invoices = trpc.zatca.myInvoices.useQuery({});
+  const data = invoices.data?.items as unknown[] | undefined;
   const statusLabel = (status: string): string => {
     switch (status) {
       case 'PENDING':
