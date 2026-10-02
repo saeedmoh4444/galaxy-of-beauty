@@ -77,6 +77,7 @@ export default function AdminPricingPage(): JSX.Element {
           <select
             value={serviceId}
             onChange={(e) => setServiceId(e.target.value)}
+            aria-label={t('admin.pricing.service')}
             className="rounded-lg border px-3 py-2 text-sm border-edge bg-surface-elevated"
           >
             <option value="">{t('admin.pricing.service')}</option>
@@ -89,6 +90,7 @@ export default function AdminPricingPage(): JSX.Element {
           <select
             value={tier}
             onChange={(e) => setTier(e.target.value)}
+            aria-label={t('admin.pricing.tier')}
             className="rounded-lg border px-3 py-2 text-sm border-edge bg-surface-elevated"
           >
             <option value="">
@@ -103,6 +105,7 @@ export default function AdminPricingPage(): JSX.Element {
           <select
             value={dayOfWeek}
             onChange={(e) => setDayOfWeek(e.target.value)}
+            aria-label={t('admin.pricing.day')}
             className="rounded-lg border px-3 py-2 text-sm border-edge bg-surface-elevated"
           >
             <option value="">
@@ -147,6 +150,7 @@ export default function AdminPricingPage(): JSX.Element {
           <select
             value={categoryId}
             onChange={(e) => setCategoryId(e.target.value)}
+            aria-label={t('admin.pricing.category')}
             className="rounded-lg border px-3 py-2 text-sm border-edge bg-surface-elevated"
           >
             <option value="">{t('admin.pricing.category')}</option>
