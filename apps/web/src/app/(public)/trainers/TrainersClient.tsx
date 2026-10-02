@@ -1,12 +1,31 @@
 'use client';
-import type { JSX } from 'react';
 
+import type { JSX } from 'react';
 import Link from 'next/link';
-import { Card, ErrorAlert, EmptyState, HeroSection, ServiceImage } from '@galaxy/ui';
+import type { TranslationKey } from '@galaxy/shared';
+import {
+  Card,
+  ErrorAlert,
+  EmptyState,
+  HeroSection,
+  ServiceImage,
+  formatCurrency,
+} from '@galaxy/ui';
 import { useLocale } from '@/components/LocaleProvider';
+
+const SPECIALTY_KEYS: Record<string, TranslationKey> = {
+  yoga: 'trainers.specialty.yoga',
+  pilates: 'trainers.specialty.pilates',
+  strength: 'trainers.specialty.strength',
+  aerobics: 'trainers.specialty.aerobics',
+  zumba: 'trainers.specialty.zumba',
+  general: 'trainers.specialty.general',
+};
 
 export interface TrainersPageData {
   trainers: Array<Record<string, unknown>>;
+  // Stage 12 — verified TRAINER vendors with bookable 1:1 sessions.
+  sessionTrainers: Array<Record<string, unknown>>;
   fetchError?: string;
 }
 
@@ -71,6 +90,43 @@ export function TrainersClient({ data }: { data: TrainersPageData }): JSX.Elemen
             })}
           </div>
         )}
+
+        {data.sessionTrainers.length > 0 ? (
+          <div className="border-t border-edge pt-8">
+            <h2 className="text-xl font-bold text-text-primary">{t('trainers.book.title')}</h2>
+            <div className="mt-4 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+              {data.sessionTrainers.map((tr) => {
+                const specialtyKey: TranslationKey =
+                  SPECIALTY_KEYS[String(tr.trainerSpecialty ?? 'general')] ??
+                  SPECIALTY_KEYS.general ??
+                  'trainers.specialty.general';
+                return (
+                  <Link key={tr.id as number} href={`/trainers/sessions/${tr.storeSlug as string}`}>
+                    <Card
+                      padding="md"
+                      className="h-full transition-all hover:-translate-y-0.5 hover:shadow-lg"
+                    >
+                      <ServiceImage
+                        src={(tr.bannerUrl as string) ?? (tr.logoUrl as string) ?? null}
+                        alt={tr.storeName as string}
+                        className="mb-4 h-32 w-full rounded-xl object-cover"
+                      />
+                      <p className="font-bold text-text-primary">{tr.storeName as string}</p>
+                      <p className="text-xs text-text-secondary">
+                        {t(specialtyKey)} · {(tr.trainerCity as string) ?? '—'}
+                      </p>
+                      <p className="mt-2 text-sm font-bold text-brand-600">
+                        {Number(tr.trainerSessionPrice ?? 0) > 0
+                          ? `${t('trainers.book.price')}: ${formatCurrency(Number(tr.trainerSessionPrice))}`
+                          : t('trainers.book.contact-pricing')}
+                      </p>
+                    </Card>
+                  </Link>
+                );
+              })}
+            </div>
+          </div>
+        ) : null}
       </div>
     </div>
   );

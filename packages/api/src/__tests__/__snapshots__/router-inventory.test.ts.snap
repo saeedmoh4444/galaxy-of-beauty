@@ -982,6 +982,11 @@ timeCapsule.myCapsules	query	customer
 timeCapsule.open	mutation	customer
 timeCapsule.save	mutation	customer
 timeCapsule.upcoming	query	customer
+trainers.bookSession	mutation	customer
+trainers.cancelSession	mutation	customer
+trainers.detail	query	public
+trainers.list	query	public
+trainers.mySessions	query	customer
 travelKit.build	query	customer
 travelKit.destinations	query	customer
 travelKit.myKits	query	customer
