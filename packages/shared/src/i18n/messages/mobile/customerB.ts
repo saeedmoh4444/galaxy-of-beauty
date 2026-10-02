@@ -1109,4 +1109,858 @@ export const mobileCustomerBMessages = {
   'mobile.tour.skip': { ar: 'تخطي', en: 'Skip' },
   'mobile.tour.done': { ar: 'تمام، لنبدأ!', en: 'Done, let’s go!' },
   'mobile.tour.progress': { ar: '{current} من {total}', en: '{current} of {total}' },
+
+  // ---- skincare-guide: ingredient guide content (i18n sweep) ----
+  'mobile.skincareGuide.ingredient.vitaminC.title': { ar: 'فيتامين سي', en: 'Vitamin C' },
+  'mobile.skincareGuide.ingredient.vitaminC.subtitle': {
+    ar: 'مضاد الأكسدة الأقوى',
+    en: 'The strongest antioxidant',
+  },
+  'mobile.skincareGuide.ingredient.vitaminC.tip1': {
+    ar: 'صباحاً — قبل واقي الشمس',
+    en: 'Morning — before sunscreen',
+  },
+  'mobile.skincareGuide.ingredient.vitaminC.tip2': {
+    ar: 'يفتح التصبغات ويوحد اللون',
+    en: 'Brightens pigmentation and evens skin tone',
+  },
+  'mobile.skincareGuide.ingredient.vitaminC.tip3': {
+    ar: 'يعزز حماية واقي الشمس',
+    en: 'Boosts your sunscreen’s protection',
+  },
+  'mobile.skincareGuide.ingredient.vitaminC.tip4': {
+    ar: 'L-Ascorbic Acid — أقوى صيغة',
+    en: 'L-Ascorbic Acid — the most potent form',
+  },
+  'mobile.skincareGuide.ingredient.retinol.title': { ar: 'الريتينول', en: 'Retinol' },
+  'mobile.skincareGuide.ingredient.retinol.subtitle': {
+    ar: 'المكون السحري للبشرة',
+    en: 'The magic ingredient for skin',
+  },
+  'mobile.skincareGuide.ingredient.retinol.tip1': {
+    ar: 'مساءً فقط — يتحسس من الشمس',
+    en: 'Evening only — it increases sun sensitivity',
+  },
+  'mobile.skincareGuide.ingredient.retinol.tip2': {
+    ar: 'كمية حبة بازلاء — للوجه كله',
+    en: 'A pea-sized amount — for the whole face',
+  },
+  'mobile.skincareGuide.ingredient.retinol.tip3': {
+    ar: 'ابدئي مرة أسبوعياً — ثم زيدي تدريجياً',
+    en: 'Start once a week — then build up gradually',
+  },
+  'mobile.skincareGuide.ingredient.retinol.tip4': {
+    ar: 'واقي شمس في الصباح — ضروري جداً',
+    en: 'Sunscreen in the morning — absolutely essential',
+  },
+  'mobile.skincareGuide.ingredient.hyaluronicAcid.title': {
+    ar: 'حمض الهيالورونيك',
+    en: 'Hyaluronic Acid',
+  },
+  'mobile.skincareGuide.ingredient.hyaluronicAcid.subtitle': {
+    ar: 'ملك الترطيب',
+    en: 'The king of hydration',
+  },
+  'mobile.skincareGuide.ingredient.hyaluronicAcid.tip1': {
+    ar: 'يحمل 1000 ضعف وزنه ماء',
+    en: 'Holds 1000x its weight in water',
+  },
+  'mobile.skincareGuide.ingredient.hyaluronicAcid.tip2': {
+    ar: 'يطبق على بشرة رطبة — وليس جافة',
+    en: 'Apply to damp skin — not dry',
+  },
+  'mobile.skincareGuide.ingredient.hyaluronicAcid.tip3': {
+    ar: 'مع فيتامين سي — ثنائي رائع',
+    en: 'With vitamin C — a great duo',
+  },
+  'mobile.skincareGuide.ingredient.hyaluronicAcid.tip4': {
+    ar: 'يناسب جميع أنواع البشرة',
+    en: 'Suits all skin types',
+  },
+  'mobile.skincareGuide.ingredient.niacinamide.title': { ar: 'نياسيناميد', en: 'Niacinamide' },
+  'mobile.skincareGuide.ingredient.niacinamide.subtitle': {
+    ar: 'فيتامين B3 المتعدد الفوائد',
+    en: 'Vitamin B3 with multiple benefits',
+  },
+  'mobile.skincareGuide.ingredient.niacinamide.tip1': {
+    ar: 'يقلص المسام — بشرة أنعم',
+    en: 'Shrinks pores — smoother skin',
+  },
+  'mobile.skincareGuide.ingredient.niacinamide.tip2': {
+    ar: 'يوحد اللون — يقلل التصبغات',
+    en: 'Evens skin tone — reduces pigmentation',
+  },
+  'mobile.skincareGuide.ingredient.niacinamide.tip3': {
+    ar: 'يقوي حاجز البشرة',
+    en: 'Strengthens the skin barrier',
+  },
+  'mobile.skincareGuide.ingredient.niacinamide.tip4': {
+    ar: 'آمن مع معظم المكونات — صباح ومساء',
+    en: 'Safe with most ingredients — morning and evening',
+  },
+  'mobile.skincareGuide.ingredient.azelaicAcid.title': { ar: 'حمض الأزيليك', en: 'Azelaic Acid' },
+  'mobile.skincareGuide.ingredient.azelaicAcid.subtitle': {
+    ar: 'المكون اللطيف متعدد الفوائد',
+    en: 'The gentle multi-benefit ingredient',
+  },
+  'mobile.skincareGuide.ingredient.azelaicAcid.tip1': {
+    ar: 'يعالج حبوب الشباب والوردية',
+    en: 'Treats acne and rosacea',
+  },
+  'mobile.skincareGuide.ingredient.azelaicAcid.tip2': {
+    ar: 'يفتح التصبغات — آمن للحوامل',
+    en: 'Brightens pigmentation — pregnancy-safe',
+  },
+  'mobile.skincareGuide.ingredient.azelaicAcid.tip3': {
+    ar: 'لطيف — مناسب للبشرة الحساسة',
+    en: 'Gentle — suitable for sensitive skin',
+  },
+  'mobile.skincareGuide.ingredient.azelaicAcid.tip4': {
+    ar: 'مع النياسيناميد — ثنائي مهدئ',
+    en: 'With niacinamide — a calming duo',
+  },
+  'mobile.skincareGuide.ingredient.ceramides.title': { ar: 'السيراميد', en: 'Ceramides' },
+  'mobile.skincareGuide.ingredient.ceramides.subtitle': {
+    ar: 'طوب بناء حاجز البشرة',
+    en: 'The building blocks of the skin barrier',
+  },
+  'mobile.skincareGuide.ingredient.ceramides.tip1': {
+    ar: 'يعيد بناء حاجز البشرة',
+    en: 'Rebuilds the skin barrier',
+  },
+  'mobile.skincareGuide.ingredient.ceramides.tip2': {
+    ar: 'يمنع فقدان الرطوبة',
+    en: 'Prevents moisture loss',
+  },
+  'mobile.skincareGuide.ingredient.ceramides.tip3': {
+    ar: 'ممتاز للبشرة الحساسة والجافة',
+    en: 'Excellent for sensitive and dry skin',
+  },
+  'mobile.skincareGuide.ingredient.ceramides.tip4': {
+    ar: 'مع النياسيناميد — ثنائي مرمم',
+    en: 'With niacinamide — a repairing duo',
+  },
+  'mobile.skincareGuide.ingredient.peptides.title': { ar: 'الببتيدات', en: 'Peptides' },
+  'mobile.skincareGuide.ingredient.peptides.subtitle': {
+    ar: 'بروتينات صغيرة — نتائج كبيرة',
+    en: 'Small proteins — big results',
+  },
+  'mobile.skincareGuide.ingredient.peptides.tip1': {
+    ar: 'تحفز الكولاجين — بشرة أكثر شباباً',
+    en: 'Stimulate collagen — younger-looking skin',
+  },
+  'mobile.skincareGuide.ingredient.peptides.tip2': {
+    ar: 'يمكن استخدامها صباحاً ومساءً',
+    en: 'Can be used morning and evening',
+  },
+  'mobile.skincareGuide.ingredient.peptides.tip3': {
+    ar: 'آمنة مع معظم المكونات الأخرى',
+    en: 'Safe with most other ingredients',
+  },
+  'mobile.skincareGuide.ingredient.peptides.tip4': {
+    ar: 'النتائج تحتاج 4-8 أسابيع',
+    en: 'Results take 4-8 weeks',
+  },
+  'mobile.skincareGuide.ingredient.exfoliatingAcids.title': {
+    ar: 'أحماض البشرة',
+    en: 'Exfoliating Acids',
+  },
+  'mobile.skincareGuide.ingredient.exfoliatingAcids.subtitle': {
+    ar: 'دليل AHA و BHA و PHA',
+    en: 'A guide to AHA, BHA and PHA',
+  },
+  'mobile.skincareGuide.ingredient.exfoliatingAcids.tip1': {
+    ar: 'AHA — يذيب السطح للتجاعيد',
+    en: 'AHA — dissolves the surface for wrinkles',
+  },
+  'mobile.skincareGuide.ingredient.exfoliatingAcids.tip2': {
+    ar: 'BHA — ينظف المسام للحبوب',
+    en: 'BHA — clears pores for acne',
+  },
+  'mobile.skincareGuide.ingredient.exfoliatingAcids.tip3': {
+    ar: 'PHA — لطيف للبشرة الحساسة',
+    en: 'PHA — gentle for sensitive skin',
+  },
+  'mobile.skincareGuide.ingredient.exfoliatingAcids.tip4': {
+    ar: 'لا تخلطي أحماض مع ريتينول معاً',
+    en: 'Don’t mix acids with retinol together',
+  },
+  'mobile.skincareGuide.ingredient.faceMist.title': { ar: 'رذاذ الوجه', en: 'Face Mist' },
+  'mobile.skincareGuide.ingredient.faceMist.subtitle': {
+    ar: 'انتعاش فوري للبشرة',
+    en: 'Instant refreshment for skin',
+  },
+  'mobile.skincareGuide.ingredient.faceMist.tip1': {
+    ar: 'ماء الورد — مهدئ ومنعش طبيعي',
+    en: 'Rose water — a natural soother and refresher',
+  },
+  'mobile.skincareGuide.ingredient.faceMist.tip2': {
+    ar: 'قبل المرطب — يمتص بشكل أفضل',
+    en: 'Before moisturizer — absorbs better',
+  },
+  'mobile.skincareGuide.ingredient.faceMist.tip3': {
+    ar: 'فوق المكياج — إشراقة منتصف اليوم',
+    en: 'Over makeup — a midday glow',
+  },
+  'mobile.skincareGuide.ingredient.faceMist.tip4': {
+    ar: 'في الطائرة — يحمي من الجفاف',
+    en: 'On the plane — protects against dryness',
+  },
+  'mobile.skincareGuide.ingredient.faceOils.title': { ar: 'زيوت الوجه', en: 'Face Oils' },
+  'mobile.skincareGuide.ingredient.faceOils.subtitle': {
+    ar: 'متى وكيف تستخدمينها',
+    en: 'When and how to use them',
+  },
+  'mobile.skincareGuide.ingredient.faceOils.tip1': {
+    ar: 'آخر خطوة في المساء — تغلق الترطيب',
+    en: 'Last step at night — seals in moisture',
+  },
+  'mobile.skincareGuide.ingredient.faceOils.tip2': {
+    ar: '2-3 قطرات فقط — بين راحة اليد',
+    en: 'Just 2-3 drops — between your palms',
+  },
+  'mobile.skincareGuide.ingredient.faceOils.tip3': {
+    ar: 'ثمر الورد — للتصبغات والتجاعيد',
+    en: 'Rosehip — for pigmentation and wrinkles',
+  },
+  'mobile.skincareGuide.ingredient.faceOils.tip4': {
+    ar: 'جوجوبا — الأقرب لزيوت البشرة',
+    en: 'Jojoba — closest to the skin’s own oils',
+  },
+  'mobile.skincareGuide.ingredient.glassSkin.title': { ar: 'البشرة الزجاجية', en: 'Glass Skin' },
+  'mobile.skincareGuide.ingredient.glassSkin.subtitle': {
+    ar: 'سر البشرة الكورية الصافية',
+    en: 'The secret of clear Korean skin',
+  },
+  'mobile.skincareGuide.ingredient.glassSkin.tip1': {
+    ar: '7 طبقات ترطيب — تونر خفيف يطبق 7 مرات',
+    en: '7 layers of hydration — a light toner applied 7 times',
+  },
+  'mobile.skincareGuide.ingredient.glassSkin.tip2': {
+    ar: 'طبقات رقيقة — كل طبقة تمتص قبل التالية',
+    en: 'Thin layers — let each absorb before the next',
+  },
+  'mobile.skincareGuide.ingredient.glassSkin.tip3': {
+    ar: 'تقشير منتظم — أساس البشرة الزجاجية',
+    en: 'Regular exfoliation — the foundation of glass skin',
+  },
+  'mobile.skincareGuide.ingredient.glassSkin.tip4': {
+    ar: 'واقي شمس يومي — حماية من التصبغات',
+    en: 'Daily sunscreen — protection from pigmentation',
+  },
+  'mobile.skincareGuide.ingredient.sheetMask.title': { ar: 'قناع الورقة', en: 'Sheet Mask' },
+  'mobile.skincareGuide.ingredient.sheetMask.subtitle': {
+    ar: 'علاج مكثف في 15 دقيقة',
+    en: 'An intensive treatment in 15 minutes',
+  },
+  'mobile.skincareGuide.ingredient.sheetMask.tip1': {
+    ar: 'بعد التنظيف — البشرة النظيفة تمتص أفضل',
+    en: 'After cleansing — clean skin absorbs better',
+  },
+  'mobile.skincareGuide.ingredient.sheetMask.tip2': {
+    ar: '15-20 دقيقة — لا تتركيه حتى يجف',
+    en: '15-20 minutes — don’t leave it until it dries',
+  },
+  'mobile.skincareGuide.ingredient.sheetMask.tip3': {
+    ar: 'دلكي الفائض — لا تغسلي وجهك بعده',
+    en: 'Massage in the excess — don’t wash your face after',
+  },
+  'mobile.skincareGuide.ingredient.sheetMask.tip4': {
+    ar: '2-3 مرات أسبوعياً — لا يومياً',
+    en: '2-3 times a week — not daily',
+  },
+  'mobile.skincareGuide.ingredient.essence.title': { ar: 'الإسينس', en: 'Essence' },
+  'mobile.skincareGuide.ingredient.essence.subtitle': {
+    ar: 'الخطوة السحرية في الروتين الكوري',
+    en: 'The magic step in the Korean routine',
+  },
+  'mobile.skincareGuide.ingredient.essence.tip1': {
+    ar: 'بعد التونر — وقبل السيروم',
+    en: 'After toner — and before serum',
+  },
+  'mobile.skincareGuide.ingredient.essence.tip2': {
+    ar: 'قوام مائي خفيف — يخترق الطبقات العميقة',
+    en: 'Light watery texture — penetrates deep layers',
+  },
+  'mobile.skincareGuide.ingredient.essence.tip3': {
+    ar: 'يهيئ البشرة — يمتص السيروم بشكل أفضل',
+    en: 'Preps the skin — serum absorbs better',
+  },
+  'mobile.skincareGuide.ingredient.essence.tip4': {
+    ar: 'يطبق باليدين — ربتي ولا تفركي',
+    en: 'Apply with your hands — pat, don’t rub',
+  },
+  'mobile.skincareGuide.ingredient.snailMucin.title': { ar: 'مادة الحلزون', en: 'Snail Mucin' },
+  'mobile.skincareGuide.ingredient.snailMucin.subtitle': {
+    ar: 'سر الترطيب الكوري',
+    en: 'The secret of Korean hydration',
+  },
+  'mobile.skincareGuide.ingredient.snailMucin.tip1': {
+    ar: 'غني بالجليكوليك أسيد — مقشر لطيف طبيعي',
+    en: 'Rich in glycolic acid — a gentle natural exfoliant',
+  },
+  'mobile.skincareGuide.ingredient.snailMucin.tip2': {
+    ar: 'ألانتوين — يهدئ ويرطب بعمق',
+    en: 'Allantoin — soothes and deeply hydrates',
+  },
+  'mobile.skincareGuide.ingredient.snailMucin.tip3': {
+    ar: 'يعالج الندبات والتصبغات',
+    en: 'Treats scars and pigmentation',
+  },
+  'mobile.skincareGuide.ingredient.snailMucin.tip4': {
+    ar: 'آمن مع معظم المكونات — صباح ومساء',
+    en: 'Safe with most ingredients — morning and evening',
+  },
+  'mobile.skincareGuide.ingredient.centella.title': { ar: 'سينتيلا (Cica)', en: 'Centella (Cica)' },
+  'mobile.skincareGuide.ingredient.centella.subtitle': {
+    ar: 'عشبة النمر — مهدئ خارق',
+    en: 'Tiger grass — a super soother',
+  },
+  'mobile.skincareGuide.ingredient.centella.tip1': {
+    ar: 'يهدئ الالتهابات — ممتاز للبشرة الحساسة',
+    en: 'Calms inflammation — excellent for sensitive skin',
+  },
+  'mobile.skincareGuide.ingredient.centella.tip2': {
+    ar: 'يسرع التئام الجروح — يحفز الكولاجين',
+    en: 'Speeds wound healing — stimulates collagen',
+  },
+  'mobile.skincareGuide.ingredient.centella.tip3': {
+    ar: 'يقلل الاحمرار — بشرة هادئة ومتجانسة',
+    en: 'Reduces redness — calm, even skin',
+  },
+  'mobile.skincareGuide.ingredient.centella.tip4': {
+    ar: 'يقوي حاجز البشرة — يمنع فقدان الرطوبة',
+    en: 'Strengthens the skin barrier — prevents moisture loss',
+  },
+  'mobile.skincareGuide.ingredient.chemicalPeel.title': {
+    ar: 'التقشير الكيميائي',
+    en: 'Chemical Peel',
+  },
+  'mobile.skincareGuide.ingredient.chemicalPeel.subtitle': {
+    ar: 'تجديد البشرة بطريقة احترافية',
+    en: 'Professional skin renewal',
+  },
+  'mobile.skincareGuide.ingredient.chemicalPeel.tip1': {
+    ar: 'سطحي — أحماض خفيفة لا وقت تعافي',
+    en: 'Superficial — mild acids, no downtime',
+  },
+  'mobile.skincareGuide.ingredient.chemicalPeel.tip2': {
+    ar: 'متوسط — يخترق أعمق 3-5 أيام تقشير',
+    en: 'Medium — penetrates deeper, 3-5 days of peeling',
+  },
+  'mobile.skincareGuide.ingredient.chemicalPeel.tip3': {
+    ar: 'عميق — طبيب فقط نتائج قوية',
+    en: 'Deep — doctor only, powerful results',
+  },
+  'mobile.skincareGuide.ingredient.chemicalPeel.tip4': {
+    ar: 'بعد الجلسة — واقي شمس ضروري جداً',
+    en: 'After the session — sunscreen is essential',
+  },
+  'mobile.skincareGuide.ingredient.microneedling.title': {
+    ar: 'المايكرونيدلنغ',
+    en: 'Microneedling',
+  },
+  'mobile.skincareGuide.ingredient.microneedling.subtitle': {
+    ar: 'إبر دقيقة — نتائج مذهلة',
+    en: 'Fine needles — amazing results',
+  },
+  'mobile.skincareGuide.ingredient.microneedling.tip1': {
+    ar: 'يحفز الكولاجين — إبر دقيقة تخترق الجلد',
+    en: 'Stimulates collagen — fine needles pierce the skin',
+  },
+  'mobile.skincareGuide.ingredient.microneedling.tip2': {
+    ar: 'يعالج الندبات والمسام الواسعة',
+    en: 'Treats scars and enlarged pores',
+  },
+  'mobile.skincareGuide.ingredient.microneedling.tip3': {
+    ar: 'جلسة كل 4-6 أسابيع — 3-6 جلسات',
+    en: 'A session every 4-6 weeks — 3-6 sessions',
+  },
+  'mobile.skincareGuide.ingredient.microneedling.tip4': {
+    ar: 'بعد الجلسة — سيروم هيالورونيك أسيد',
+    en: 'After the session — hyaluronic acid serum',
+  },
+  'mobile.skincareGuide.ingredient.hydrafacial.title': { ar: 'الهيدروفيشل', en: 'HydraFacial' },
+  'mobile.skincareGuide.ingredient.hydrafacial.subtitle': {
+    ar: 'تنظيف عميق بضغط الماء',
+    en: 'Deep cleansing with water pressure',
+  },
+  'mobile.skincareGuide.ingredient.hydrafacial.tip1': {
+    ar: 'ينظف المسام بعمق — بدون ألم أو احمرار',
+    en: 'Deep-cleans pores — no pain or redness',
+  },
+  'mobile.skincareGuide.ingredient.hydrafacial.tip2': {
+    ar: 'يرطب ويغذي — في نفس الجلسة',
+    en: 'Hydrates and nourishes — in the same session',
+  },
+  'mobile.skincareGuide.ingredient.hydrafacial.tip3': {
+    ar: '30-45 دقيقة — نتائج فورية',
+    en: '30-45 minutes — instant results',
+  },
+  'mobile.skincareGuide.ingredient.hydrafacial.tip4': {
+    ar: 'مرة شهرياً — للحفاظ على النتائج',
+    en: 'Once a month — to maintain results',
+  },
+  'mobile.skincareGuide.ingredient.bakuchiol.title': { ar: 'الباكوتشيول', en: 'Bakuchiol' },
+  'mobile.skincareGuide.ingredient.bakuchiol.subtitle': {
+    ar: 'بديل الريتينول الطبيعي',
+    en: 'The natural retinol alternative',
+  },
+  'mobile.skincareGuide.ingredient.bakuchiol.tip1': {
+    ar: 'نباتي 100% — مستخلص من نبات البسوراليا',
+    en: '100% plant-based — extracted from the psoralea plant',
+  },
+  'mobile.skincareGuide.ingredient.bakuchiol.tip2': {
+    ar: 'آمن نهاراً — لا يتحسس من الشمس',
+    en: 'Day-safe — doesn’t cause sun sensitivity',
+  },
+  'mobile.skincareGuide.ingredient.bakuchiol.tip3': {
+    ar: 'آمن للحوامل — بديل ممتاز للريتينول',
+    en: 'Pregnancy-safe — an excellent retinol alternative',
+  },
+  'mobile.skincareGuide.ingredient.bakuchiol.tip4': {
+    ar: 'يحفز الكولاجين — بدون تهيج أو تقشير',
+    en: 'Stimulates collagen — without irritation or peeling',
+  },
+  'mobile.skincareGuide.ingredient.mixingIngredients.title': {
+    ar: 'خلط المكونات',
+    en: 'Mixing Ingredients',
+  },
+  'mobile.skincareGuide.ingredient.mixingIngredients.subtitle': {
+    ar: 'ما يصلح معاً — وما لا يصلح',
+    en: 'What works together — and what doesn’t',
+  },
+  'mobile.skincareGuide.ingredient.mixingIngredients.tip1': {
+    ar: 'فيتامين C + واقي شمس — ثنائي مثالي',
+    en: 'Vitamin C + sunscreen — a perfect duo',
+  },
+  'mobile.skincareGuide.ingredient.mixingIngredients.tip2': {
+    ar: 'ريتينول + ببتيدات — مضاد شيخوخة قوي',
+    en: 'Retinol + peptides — a powerful anti-aging combo',
+  },
+  'mobile.skincareGuide.ingredient.mixingIngredients.tip3': {
+    ar: 'ريتينول + أحماض — تهيج شديد',
+    en: 'Retinol + acids — severe irritation',
+  },
+  'mobile.skincareGuide.ingredient.mixingIngredients.tip4': {
+    ar: 'فيتامين C + أحماض — يبطل مفعولهم',
+    en: 'Vitamin C + acids — they cancel each other out',
+  },
+  'mobile.skincareGuide.ingredient.oxygenFacial.title': {
+    ar: 'فيشل الأكسجين',
+    en: 'Oxygen Facial',
+  },
+  'mobile.skincareGuide.ingredient.oxygenFacial.subtitle': {
+    ar: 'أكسجين مضغوط — بشرة مشرقة',
+    en: 'Pressurized oxygen — radiant skin',
+  },
+  'mobile.skincareGuide.ingredient.oxygenFacial.tip1': {
+    ar: 'يرش الأكسجين — مع سيروم مغذي',
+    en: 'Sprays oxygen — with a nourishing serum',
+  },
+  'mobile.skincareGuide.ingredient.oxygenFacial.tip2': {
+    ar: 'ترطيب فوري — بشرة ممتلئة',
+    en: 'Instant hydration — plump skin',
+  },
+  'mobile.skincareGuide.ingredient.oxygenFacial.tip3': {
+    ar: '30-45 دقيقة — بدون ألم',
+    en: '30-45 minutes — painless',
+  },
+  'mobile.skincareGuide.ingredient.oxygenFacial.tip4': {
+    ar: 'قبل المناسبات — نتيجة فورية',
+    en: 'Before occasions — an instant result',
+  },
+  'mobile.skincareGuide.ingredient.diamondFacial.title': {
+    ar: 'فيشل الألماس',
+    en: 'Diamond Facial',
+  },
+  'mobile.skincareGuide.ingredient.diamondFacial.subtitle': {
+    ar: 'سنفرة الألماس — بشرة جديدة',
+    en: 'Diamond exfoliation — new skin',
+  },
+  'mobile.skincareGuide.ingredient.diamondFacial.tip1': {
+    ar: 'رأس ماسي — يقشر السطح بلطف',
+    en: 'Diamond-tipped head — gently exfoliates the surface',
+  },
+  'mobile.skincareGuide.ingredient.diamondFacial.tip2': {
+    ar: 'يحفز الكولاجين — بشرة أنعم',
+    en: 'Stimulates collagen — smoother skin',
+  },
+  'mobile.skincareGuide.ingredient.diamondFacial.tip3': {
+    ar: 'يزيل الخلايا الميتة',
+    en: 'Removes dead skin cells',
+  },
+  'mobile.skincareGuide.ingredient.diamondFacial.tip4': {
+    ar: 'كل 4-6 أسابيع — نتائج مثالية',
+    en: 'Every 4-6 weeks — optimal results',
+  },
+  'mobile.skincareGuide.ingredient.goldFacial.title': { ar: 'فيشل الذهب', en: 'Gold Facial' },
+  'mobile.skincareGuide.ingredient.goldFacial.subtitle': {
+    ar: 'ذهب 24 قيراط — ترفيه ملكي',
+    en: '24-karat gold — a royal indulgence',
+  },
+  'mobile.skincareGuide.ingredient.goldFacial.tip1': {
+    ar: 'رقائق ذهب حقيقية — على الوجه',
+    en: 'Real gold flakes — on the face',
+  },
+  'mobile.skincareGuide.ingredient.goldFacial.tip2': {
+    ar: 'يحسن مرونة البشرة — يبطئ الشيخوخة',
+    en: 'Improves skin elasticity — slows aging',
+  },
+  'mobile.skincareGuide.ingredient.goldFacial.tip3': {
+    ar: 'يعكس الضوء — بشرة متوهجة فوراً',
+    en: 'Reflects light — instantly glowing skin',
+  },
+  'mobile.skincareGuide.ingredient.goldFacial.tip4': {
+    ar: 'فاخر — للمناسبات الخاصة',
+    en: 'Luxurious — for special occasions',
+  },
+  'mobile.skincareGuide.ingredient.plasmaFacial.title': {
+    ar: 'فيشل البلازما',
+    en: 'Plasma Facial',
+  },
+  'mobile.skincareGuide.ingredient.plasmaFacial.subtitle': {
+    ar: 'PRP — بلازما دمكِ لجمالكِ',
+    en: 'PRP — your blood plasma for your beauty',
+  },
+  'mobile.skincareGuide.ingredient.plasmaFacial.tip1': {
+    ar: 'تسحب عينة دم — تستخلص البلازما',
+    en: 'A blood sample is drawn — plasma is extracted',
+  },
+  'mobile.skincareGuide.ingredient.plasmaFacial.tip2': {
+    ar: 'حقن البلازما — تحفز الكولاجين بقوة',
+    en: 'Plasma is injected — powerfully stimulates collagen',
+  },
+  'mobile.skincareGuide.ingredient.plasmaFacial.tip3': {
+    ar: 'نتائج طبيعية 100% — من جسمكِ',
+    en: '100% natural results — from your own body',
+  },
+  'mobile.skincareGuide.ingredient.plasmaFacial.tip4': {
+    ar: '3-4 جلسات — بينها شهر',
+    en: '3-4 sessions — a month apart',
+  },
+  'mobile.skincareGuide.ingredient.caviarFacial.title': {
+    ar: 'فيشل الكافيار',
+    en: 'Caviar Facial',
+  },
+  'mobile.skincareGuide.ingredient.caviarFacial.subtitle': {
+    ar: 'كافيار فاخر — تغذية عميقة',
+    en: 'Luxurious caviar — deep nourishment',
+  },
+  'mobile.skincareGuide.ingredient.caviarFacial.tip1': {
+    ar: 'غني بالأحماض الأمينية — يغذي بعمق',
+    en: 'Rich in amino acids — nourishes deeply',
+  },
+  'mobile.skincareGuide.ingredient.caviarFacial.tip2': {
+    ar: 'أوميغا 3 — يرطب ويجدد',
+    en: 'Omega 3 — hydrates and renews',
+  },
+  'mobile.skincareGuide.ingredient.caviarFacial.tip3': {
+    ar: 'يحسن المرونة — يقلل الخطوط',
+    en: 'Improves elasticity — reduces lines',
+  },
+  'mobile.skincareGuide.ingredient.caviarFacial.tip4': {
+    ar: 'فاخر — من أفخم علاجات التجميل',
+    en: 'Luxurious — one of the finest beauty treatments',
+  },
+  'mobile.skincareGuide.ingredient.darkCircles.title': {
+    ar: 'الهالات السوداء',
+    en: 'Dark Circles',
+  },
+  'mobile.skincareGuide.ingredient.darkCircles.subtitle': {
+    ar: 'أسبابها وعلاجها من جذورها',
+    en: 'Causes and root treatment',
+  },
+  'mobile.skincareGuide.ingredient.darkCircles.tip1': {
+    ar: 'قلة النوم — السبب الأول',
+    en: 'Lack of sleep — the number one cause',
+  },
+  'mobile.skincareGuide.ingredient.darkCircles.tip2': {
+    ar: 'نقص الحديد — سبب شائع',
+    en: 'Iron deficiency — a common cause',
+  },
+  'mobile.skincareGuide.ingredient.darkCircles.tip3': {
+    ar: 'وراثة — ميل طبيعي',
+    en: 'Genetics — a natural tendency',
+  },
+  'mobile.skincareGuide.ingredient.darkCircles.tip4': {
+    ar: 'جفاف — البشرة رقيقة تحت العين',
+    en: 'Dehydration — the skin under the eye is thin',
+  },
+  'mobile.skincareGuide.ingredient.underEyeBags.title': {
+    ar: 'انتفاخ تحت العين',
+    en: 'Under-Eye Puffiness',
+  },
+  'mobile.skincareGuide.ingredient.underEyeBags.subtitle': {
+    ar: 'أكياس العين — حلول سريعة',
+    en: 'Eye bags — quick solutions',
+  },
+  'mobile.skincareGuide.ingredient.underEyeBags.tip1': {
+    ar: 'كمادات باردة — 10 دقائق صباحاً',
+    en: 'Cold compresses — 10 minutes in the morning',
+  },
+  'mobile.skincareGuide.ingredient.underEyeBags.tip2': {
+    ar: 'كافيين موضعي — يضيق الأوعية',
+    en: 'Topical caffeine — constricts blood vessels',
+  },
+  'mobile.skincareGuide.ingredient.underEyeBags.tip3': {
+    ar: 'وسادة مرتفعة — تقلل السوائل',
+    en: 'An elevated pillow — reduces fluid buildup',
+  },
+  'mobile.skincareGuide.ingredient.underEyeBags.tip4': {
+    ar: 'قللي الملح — يسبب الاحتباس',
+    en: 'Cut down on salt — it causes fluid retention',
+  },
+  'mobile.skincareGuide.ingredient.crowFeet.title': {
+    ar: 'خطوط حول العين',
+    en: 'Lines Around the Eyes',
+  },
+  'mobile.skincareGuide.ingredient.crowFeet.subtitle': {
+    ar: 'أقدام الغراب — وقاية وعلاج',
+    en: 'Crow’s feet — prevention and treatment',
+  },
+  'mobile.skincareGuide.ingredient.crowFeet.tip1': {
+    ar: 'نظارة شمس — تمنع التحديق',
+    en: 'Sunglasses — prevent squinting',
+  },
+  'mobile.skincareGuide.ingredient.crowFeet.tip2': {
+    ar: 'تربيت خفيف — لا تفركي',
+    en: 'Light patting — don’t rub',
+  },
+  'mobile.skincareGuide.ingredient.crowFeet.tip3': {
+    ar: 'كريم عيون ببتيدات — صباح ومساء',
+    en: 'Peptide eye cream — morning and evening',
+  },
+  'mobile.skincareGuide.ingredient.crowFeet.tip4': {
+    ar: 'بوتوكس — للخطوط العميقة',
+    en: 'Botox — for deep lines',
+  },
+  'mobile.skincareGuide.ingredient.eyeMassage.title': { ar: 'مساج العين', en: 'Eye Massage' },
+  'mobile.skincareGuide.ingredient.eyeMassage.subtitle': {
+    ar: '3 دقائق — لعيون مشرقة',
+    en: '3 minutes — for bright eyes',
+  },
+  'mobile.skincareGuide.ingredient.eyeMassage.tip1': {
+    ar: 'البنصر — الأخف للتربيت',
+    en: 'Ring finger — the lightest for patting',
+  },
+  'mobile.skincareGuide.ingredient.eyeMassage.tip2': {
+    ar: 'من الداخل للخارج — بحركة دائرية',
+    en: 'From the inside out — in circular motions',
+  },
+  'mobile.skincareGuide.ingredient.eyeMassage.tip3': {
+    ar: 'مع كريم أو زيت — لتزلق الأصابع',
+    en: 'With cream or oil — so fingers glide',
+  },
+  'mobile.skincareGuide.ingredient.eyeMassage.tip4': {
+    ar: '3 دقائق — صباحاً للانتفاخ',
+    en: '3 minutes — in the morning for puffiness',
+  },
+  'mobile.skincareGuide.ingredient.eyeSerum.title': { ar: 'سيروم العين', en: 'Eye Serum' },
+  'mobile.skincareGuide.ingredient.eyeSerum.subtitle': {
+    ar: 'دليل اختيار السيروم المناسب',
+    en: 'A guide to choosing the right serum',
+  },
+  'mobile.skincareGuide.ingredient.eyeSerum.tip1': {
+    ar: 'كافيين — للهالات والانتفاخ',
+    en: 'Caffeine — for dark circles and puffiness',
+  },
+  'mobile.skincareGuide.ingredient.eyeSerum.tip2': {
+    ar: 'ببتيدات — للتجاعيد والخطوط',
+    en: 'Peptides — for wrinkles and lines',
+  },
+  'mobile.skincareGuide.ingredient.eyeSerum.tip3': {
+    ar: 'هيالورونيك — للترطيب العميق',
+    en: 'Hyaluronic — for deep hydration',
+  },
+  'mobile.skincareGuide.ingredient.eyeSerum.tip4': {
+    ar: 'فيتامين C — لتفتيح الهالات',
+    en: 'Vitamin C — to brighten dark circles',
+  },
+  'mobile.skincareGuide.ingredient.acneScars.title': { ar: 'ندبات الحبوب', en: 'Acne Scars' },
+  'mobile.skincareGuide.ingredient.acneScars.subtitle': {
+    ar: 'أنواع الندبات وعلاج كل نوع',
+    en: 'Scar types and how to treat each',
+  },
+  'mobile.skincareGuide.ingredient.acneScars.tip1': {
+    ar: 'حفر: عميقة — تحتاج ليزر أو فيلر',
+    en: 'Pitted: deep — need laser or filler',
+  },
+  'mobile.skincareGuide.ingredient.acneScars.tip2': {
+    ar: 'حمراء: حديثة — تختفي مع الوقت',
+    en: 'Red: recent — fade with time',
+  },
+  'mobile.skincareGuide.ingredient.acneScars.tip3': {
+    ar: 'بنية: تصبغات — تقشير وفيتامين C',
+    en: 'Brown: pigmentation — exfoliation and vitamin C',
+  },
+  'mobile.skincareGuide.ingredient.acneScars.tip4': {
+    ar: 'بارزة: متضخمة — كورتيزون موضعي',
+    en: 'Raised: hypertrophic — topical cortisone',
+  },
+  'mobile.skincareGuide.ingredient.postAcneMarks.title': {
+    ar: 'علامات ما بعد الحبوب',
+    en: 'Post-Acne Marks',
+  },
+  'mobile.skincareGuide.ingredient.postAcneMarks.subtitle': {
+    ar: 'PIH و PIE — الفرق والعلاج',
+    en: 'PIH vs PIE — the difference and treatment',
+  },
+  'mobile.skincareGuide.ingredient.postAcneMarks.tip1': {
+    ar: 'PIH: بني — فيتامين C وأربيوتين',
+    en: 'PIH: brown — vitamin C and arbutin',
+  },
+  'mobile.skincareGuide.ingredient.postAcneMarks.tip2': {
+    ar: 'PIE: احمرار — نيوكسين أزيليك',
+    en: 'PIE: redness — niacinamide and azelaic acid',
+  },
+  'mobile.skincareGuide.ingredient.postAcneMarks.tip3': {
+    ar: 'ريتينول — يسرع تجدد الخلايا',
+    en: 'Retinol — speeds up cell turnover',
+  },
+  'mobile.skincareGuide.ingredient.postAcneMarks.tip4': {
+    ar: 'SPF يومي — يمنع تفاقم التصبغات',
+    en: 'Daily SPF — prevents pigmentation from worsening',
+  },
+  'mobile.skincareGuide.ingredient.minimizePores.title': {
+    ar: 'تصغير المسام',
+    en: 'Minimizing Pores',
+  },
+  'mobile.skincareGuide.ingredient.minimizePores.subtitle': {
+    ar: 'لا تغلق — لكن تصغر',
+    en: 'They never close — but they do shrink',
+  },
+  'mobile.skincareGuide.ingredient.minimizePores.tip1': {
+    ar: 'BHA — ينظف المسام من الداخل',
+    en: 'BHA — cleans pores from within',
+  },
+  'mobile.skincareGuide.ingredient.minimizePores.tip2': {
+    ar: 'نياسيناميد — ينظم الدهون',
+    en: 'Niacinamide — regulates oil',
+  },
+  'mobile.skincareGuide.ingredient.minimizePores.tip3': {
+    ar: 'ماء بارد — يقلص مؤقتاً',
+    en: 'Cold water — temporarily tightens',
+  },
+  'mobile.skincareGuide.ingredient.minimizePores.tip4': {
+    ar: 'برايمر — يملأ المسام بصرياً',
+    en: 'Primer — visually fills pores',
+  },
+  'mobile.skincareGuide.ingredient.fadeAcneMarks.title': {
+    ar: 'تفتيح آثار الحبوب',
+    en: 'Fading Acne Marks',
+  },
+  'mobile.skincareGuide.ingredient.fadeAcneMarks.subtitle': {
+    ar: 'روتين لتوحيد لون البشرة',
+    en: 'A routine to even skin tone',
+  },
+  'mobile.skincareGuide.ingredient.fadeAcneMarks.tip1': {
+    ar: 'فيتامين C — صباحاً لتفتيح التصبغات',
+    en: 'Vitamin C — in the morning to brighten pigmentation',
+  },
+  'mobile.skincareGuide.ingredient.fadeAcneMarks.tip2': {
+    ar: 'أزيليك أسيد — آمن للحوامل',
+    en: 'Azelaic acid — pregnancy-safe',
+  },
+  'mobile.skincareGuide.ingredient.fadeAcneMarks.tip3': {
+    ar: 'أحماض ألفا — تقشير كيميائي',
+    en: 'Alpha acids — chemical exfoliation',
+  },
+  'mobile.skincareGuide.ingredient.fadeAcneMarks.tip4': {
+    ar: 'الصبر — النتائج 8-12 أسبوعاً',
+    en: 'Patience — results in 8-12 weeks',
+  },
+  'mobile.skincareGuide.ingredient.scarTreatments.title': {
+    ar: 'علاجات الندبات',
+    en: 'Scar Treatments',
+  },
+  'mobile.skincareGuide.ingredient.scarTreatments.subtitle': {
+    ar: 'من الكريمات للإجراءات',
+    en: 'From creams to procedures',
+  },
+  'mobile.skincareGuide.ingredient.scarTreatments.tip1': {
+    ar: 'سيليكون جل — أفضل علاج موضعي',
+    en: 'Silicone gel — the best topical treatment',
+  },
+  'mobile.skincareGuide.ingredient.scarTreatments.tip2': {
+    ar: 'مايكرونيدلنغ — كولاجين جديد',
+    en: 'Microneedling — new collagen',
+  },
+  'mobile.skincareGuide.ingredient.scarTreatments.tip3': {
+    ar: 'ليزر فراكشنال — يعيد سطح البشرة',
+    en: 'Fractional laser — resurfaces the skin',
+  },
+  'mobile.skincareGuide.ingredient.scarTreatments.tip4': {
+    ar: 'العلاج المبكر — أفضل من القديمة',
+    en: 'Early treatment — better than for old scars',
+  },
+  'mobile.skincareGuide.ingredient.maskne.title': { ar: 'حبوب الكمامة', en: 'Maskne' },
+  'mobile.skincareGuide.ingredient.maskne.subtitle': {
+    ar: 'Mask-Ne — كيف تتعاملين معها',
+    en: 'Mask-Ne — how to deal with it',
+  },
+  'mobile.skincareGuide.ingredient.maskne.tip1': {
+    ar: 'غيري الكمامة يومياً',
+    en: 'Change your mask daily',
+  },
+  'mobile.skincareGuide.ingredient.maskne.tip2': {
+    ar: 'مرطب خفيف — حاجز حماية',
+    en: 'Light moisturizer — a protective barrier',
+  },
+  'mobile.skincareGuide.ingredient.maskne.tip3': {
+    ar: 'تجنبي المكياج تحت الكمامة',
+    en: 'Avoid makeup under the mask',
+  },
+  'mobile.skincareGuide.ingredient.maskne.tip4': {
+    ar: 'نظفي وجهك بعد نزعها',
+    en: 'Cleanse your face after removing it',
+  },
+  'mobile.skincareGuide.ingredient.koreanRoutine.title': {
+    ar: 'الروتين الكوري',
+    en: 'The Korean Routine',
+  },
+  'mobile.skincareGuide.ingredient.koreanRoutine.subtitle': {
+    ar: 'الترتيب الصحيح للعناية',
+    en: 'The correct order of care',
+  },
+  'mobile.skincareGuide.ingredient.koreanRoutine.tip1': {
+    ar: 'زيت + غسول — تنظيف مزدوج',
+    en: 'Oil + cleanser — double cleansing',
+  },
+  'mobile.skincareGuide.ingredient.koreanRoutine.tip2': {
+    ar: 'مقشر — مرة أسبوعياً',
+    en: 'Exfoliant — once a week',
+  },
+  'mobile.skincareGuide.ingredient.koreanRoutine.tip3': {
+    ar: 'تونر — يرطب ويهيئ',
+    en: 'Toner — hydrates and preps',
+  },
+  'mobile.skincareGuide.ingredient.koreanRoutine.tip4': {
+    ar: 'إسينس — قلب الروتين الكوري',
+    en: 'Essence — the heart of the Korean routine',
+  },
+  'mobile.skincareGuide.ingredient.japaneseRoutine.title': {
+    ar: 'الروتين الياباني',
+    en: 'The Japanese Routine',
+  },
+  'mobile.skincareGuide.ingredient.japaneseRoutine.subtitle': {
+    ar: 'جمال هادئ — بشرة كالخزف',
+    en: 'Quiet beauty — porcelain-like skin',
+  },
+  'mobile.skincareGuide.ingredient.japaneseRoutine.tip1': {
+    ar: 'طبقات خفيفة — لوشن سيروم كريم',
+    en: 'Light layers — lotion, serum, cream',
+  },
+  'mobile.skincareGuide.ingredient.japaneseRoutine.tip2': {
+    ar: 'واقي شمس — أساس الجمال الياباني',
+    en: 'Sunscreen — the foundation of Japanese beauty',
+  },
+  'mobile.skincareGuide.ingredient.japaneseRoutine.tip3': {
+    ar: 'مساج الوجه — يومياً',
+    en: 'Face massage — daily',
+  },
+  'mobile.skincareGuide.ingredient.japaneseRoutine.tip4': {
+    ar: 'الشاي الأخضر — من الداخل والخارج',
+    en: 'Green tea — inside and out',
+  },
 } as const satisfies Record<string, { ar: string; en: string }>;
