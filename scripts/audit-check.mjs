@@ -11,34 +11,47 @@
  * report is still written before the non-zero exit.
  */
 import { spawnSync } from 'node:child_process';
+import { pathToFileURL } from 'node:url';
 
-const res = spawnSync('pnpm', ['audit', '--json'], {
-  encoding: 'utf8',
-  shell: process.platform === 'win32', // pnpm is a shell shim on Linux CI runners
-  // The audit report is ~1.3 MB — spawnSync's 1 MB default kills the
-  // child with SIGTERM mid-output.
-  maxBuffer: 16 * 1024 * 1024,
-});
-
-if (!res.stdout) {
-  console.error('FAIL: pnpm audit produced no output (status', res.status, ')');
-  process.exit(1);
+/**
+ * Pure decision logic: a pnpm audit JSON report passes the gate unless it
+ * contains at least one CRITICAL advisory. High/moderate/low are reported
+ * but do not block (see SECURITY.md baseline).
+ */
+export function evaluateReport(report) {
+  const vulns = report?.metadata?.vulnerabilities ?? {};
+  const { critical = 0, high = 0, moderate = 0, low = 0 } = vulns;
+  return { critical, high, moderate, low, pass: critical === 0 };
 }
 
-let report;
-try {
-  report = JSON.parse(res.stdout);
-} catch {
-  console.error('FAIL: could not parse pnpm audit output');
-  process.exit(1);
-}
+const isMain = process.argv[1] && import.meta.url === pathToFileURL(process.argv[1]).href;
+if (isMain) {
+  const res = spawnSync('pnpm', ['audit', '--json'], {
+    encoding: 'utf8',
+    shell: process.platform === 'win32', // pnpm is a shell shim on Linux CI runners
+    // The audit report is ~1.3 MB — spawnSync's 1 MB default kills the
+    // child with SIGTERM mid-output.
+    maxBuffer: 16 * 1024 * 1024,
+  });
 
-const vulns = report.metadata?.vulnerabilities ?? {};
-const { critical = 0, high = 0, moderate = 0, low = 0 } = vulns;
+  if (!res.stdout) {
+    console.error('FAIL: pnpm audit produced no output (status', res.status, ')');
+    process.exit(1);
+  }
 
-console.log(`audit: ${critical} critical / ${high} high / ${moderate} moderate / ${low} low`);
-if (critical > 0) {
-  console.error(`FAIL: ${critical} critical advisories found — resolve before merging.`);
-  process.exit(1);
+  let report;
+  try {
+    report = JSON.parse(res.stdout);
+  } catch {
+    console.error('FAIL: could not parse pnpm audit output');
+    process.exit(1);
+  }
+
+  const { critical, high, moderate, low, pass } = evaluateReport(report);
+  console.log(`audit: ${critical} critical / ${high} high / ${moderate} moderate / ${low} low`);
+  if (!pass) {
+    console.error(`FAIL: ${critical} critical advisories found — resolve before merging.`);
+    process.exit(1);
+  }
+  console.log('audit gate passed (no critical advisories)');
 }
-console.log('audit gate passed (no critical advisories)');
