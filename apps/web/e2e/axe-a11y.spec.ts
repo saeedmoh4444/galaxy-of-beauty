@@ -158,6 +158,39 @@ const axeTests = (browserName: string) => {
     assertNoSerious('/womens-services', violations);
     assertModerateAllowed('/womens-services', violations);
   });
+
+  // Stage-12 surfaces (trainers, queues, pricing) + checkout — new pages
+  // that had never been axe-scanned (audit stage 10: axe route expansion).
+  test('trainers page has no serious/critical a11y violations', async ({ page }) => {
+    await page.goto('/trainers');
+    const violations = await scan(page);
+    assertNoSerious('/trainers', violations);
+    assertModerateAllowed('/trainers', violations);
+  });
+
+  test('checkout page has no serious/critical a11y violations', async ({ page }) => {
+    await loginAsCustomer(page);
+    await page.goto('/checkout');
+    const violations = await scan(page);
+    assertNoSerious('/checkout', violations);
+    assertModerateAllowed('/checkout', violations);
+  });
+
+  test('admin queues page has no serious/critical a11y violations', async ({ page }) => {
+    await loginAsAdmin(page);
+    await page.goto('/admin/queues');
+    const violations = await scan(page);
+    assertNoSerious('/admin/queues', violations);
+    assertModerateAllowed('/admin/queues', violations);
+  });
+
+  test('admin pricing page has no serious/critical a11y violations', async ({ page }) => {
+    await loginAsAdmin(page);
+    await page.goto('/admin/pricing');
+    const violations = await scan(page);
+    assertNoSerious('/admin/pricing', violations);
+    assertModerateAllowed('/admin/pricing', violations);
+  });
 };
 
 test.describe('Axe a11y gate (chromium)', () => {
