@@ -8,7 +8,9 @@ export const idempotencyKeySchema = z.string().min(1).max(128);
 
 export const paymentSchema = z.object({
   amount: z.number().positive(),
-  method: z.enum(['CARD', 'WALLET', 'CASH', 'APPLE_PAY', 'MADA']),
+  // Mirrors routers/payments.ts: only gateway cards ("online") and cash exist.
+  // No Apple Pay / Mada enum / wallet-pay — those are not wired (audit API-11).
+  method: z.enum(['online', 'cash']),
   bookingId: z.number().int().positive(),
   idempotencyKey: idempotencyKeySchema.optional(),
 });
