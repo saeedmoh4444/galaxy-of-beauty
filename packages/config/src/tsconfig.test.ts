@@ -40,4 +40,14 @@ describe('tsconfig presets', () => {
     const opts = next['compilerOptions'] as Record<string, unknown>;
     expect((opts['plugins'] as Array<Record<string, unknown>>)[0]?.['name']).toBe('next');
   });
+
+  it('presets never disable base strictness flags (S6 regression guard)', () => {
+    const guarded = ['strict', 'noUncheckedIndexedAccess', 'noImplicitOverride'];
+    for (const name of ['next.json', 'expo.json', 'react-library.json']) {
+      const opts = load(name)['compilerOptions'] as Record<string, unknown>;
+      for (const flag of guarded) {
+        expect(opts[flag] ?? true, `${name} disables ${flag}`).not.toBe(false);
+      }
+    }
+  });
 });
