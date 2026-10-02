@@ -1,16 +1,40 @@
+import { useState } from 'react';
 import type { JSX } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
+import NetInfo from '@react-native-community/netinfo';
+import { useRouter } from 'expo-router';
 import { useLocale } from '@/components/LocaleProvider';
+import { setOnlineStatus, syncQueue } from '@/utils/offlineQueue';
 
 export default function OfflineScreen(): JSX.Element {
   const { t } = useLocale();
+  const router = useRouter();
+  const [retrying, setRetrying] = useState(false);
+
+  // Audit gap: the retry button was a no-op. Probe connectivity, flush the
+  // offline queue when we're back, and return to the previous screen.
+  const handleRetry = async () => {
+    setRetrying(true);
+    const state = await NetInfo.fetch();
+    if (state.isConnected) {
+      setOnlineStatus(true);
+      await syncQueue();
+      router.back();
+    }
+    setRetrying(false);
+  };
+
   return (
     <View style={styles.c}>
       <View style={styles.card}>
         <Text style={styles.emoji}>📡</Text>
         <Text style={styles.title}>{t('mobile.offline.title')}</Text>
         <Text style={styles.desc}>{t('mobile.offline.desc')}</Text>
-        <TouchableOpacity onPress={() => {}} style={styles.btn}>
+        <TouchableOpacity
+          onPress={() => void handleRetry()}
+          style={[styles.btn, retrying && { opacity: 0.6 }]}
+          disabled={retrying}
+        >
           <Text style={styles.btnText}>{t('mobile.core.retryButton')}</Text>
         </TouchableOpacity>
       </View>
