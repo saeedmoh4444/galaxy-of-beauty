@@ -106,9 +106,9 @@ export default function BeautyDiaryScreen(): JSX.Element {
         </View>
       ))}
 
-      <TouchableOpacity style={styles.btn}>
+      <View style={styles.btn}>
         <Text style={styles.bt}>{t('beautyDiary.write-today')}</Text>
-      </TouchableOpacity>
+      </View>
     </ScrollView>
   );
 }

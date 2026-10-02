@@ -1,5 +1,5 @@
 import type { JSX } from 'react';
-import { View, Text, ScrollView, StyleSheet, TouchableOpacity, RefreshControl } from 'react-native';
+import { View, Text, ScrollView, StyleSheet, RefreshControl } from 'react-native';
 import { SkeletonList } from '@/components/SkeletonCard';
 import { useLocale } from '@/components/LocaleProvider';
 import { useAuthState } from '@/hooks/useAuthState';
@@ -43,9 +43,9 @@ export default function BeautyGoalsScreen(): JSX.Element {
                 <View style={[styles.pf, { width: `${pct}%` }]} />
               </View>
               <Text style={styles.gm}>{t('beautyGoals.progress', { target: g.target, pct })}</Text>
-              <TouchableOpacity style={styles.sb}>
+              <View style={styles.sb}>
                 <Text style={styles.sbt}>{t('beautyGoals.set-target')}</Text>
-              </TouchableOpacity>
+              </View>
             </View>
           );
         })}

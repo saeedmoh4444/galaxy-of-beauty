@@ -116,9 +116,9 @@ export default function BeautyWishlistGiftsScreen(): JSX.Element {
         ))}
       </View>
 
-      <TouchableOpacity style={styles.btn}>
+      <View style={styles.btn}>
         <Text style={styles.bt}>{t('beautyWishlistGifts.add-wish')}</Text>
-      </TouchableOpacity>
+      </View>
     </ScrollView>
   );
 }

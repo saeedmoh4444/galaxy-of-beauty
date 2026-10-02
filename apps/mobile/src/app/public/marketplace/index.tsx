@@ -1,5 +1,6 @@
 import type { JSX } from 'react';
 import { View, Text, ScrollView, StyleSheet, TouchableOpacity, RefreshControl } from 'react-native';
+import { useRouter } from 'expo-router';
 import { SkeletonList } from '@/components/SkeletonCard';
 import { trpc } from '@/lib/trpc-react';
 import { useLocale } from '@/components/LocaleProvider';
@@ -14,6 +15,7 @@ interface MarketProduct {
 
 export default function MarketplaceScreen(): JSX.Element {
   const { t } = useLocale();
+  const router = useRouter();
   const productsQ = trpc.marketplace.products.useQuery({});
   const products: MarketProduct[] =
     (productsQ.data as unknown as { items?: MarketProduct[] } | undefined)?.items ?? [];
@@ -50,7 +52,11 @@ export default function MarketplaceScreen(): JSX.Element {
               </View>
             ))
           : products.map((p) => (
-              <TouchableOpacity key={p.id} style={styles.card}>
+              <TouchableOpacity
+                key={p.id}
+                style={styles.card}
+                onPress={() => router.push('/customer/marketplace' as never)}
+              >
                 <View style={styles.ci}>
                   <Text style={styles.ce}>{p.emoji ?? ''}</Text>
                 </View>

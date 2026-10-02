@@ -1,5 +1,13 @@
 import type { JSX } from 'react';
-import { View, Text, ScrollView, StyleSheet, TouchableOpacity, RefreshControl } from 'react-native';
+import {
+  View,
+  Text,
+  ScrollView,
+  StyleSheet,
+  TouchableOpacity,
+  RefreshControl,
+  Alert,
+} from 'react-native';
 import { ErrorAlert } from '@/components/ErrorAlert';
 import { SkeletonList } from '@/components/SkeletonCard';
 import { trpc } from '@/lib/trpc-react';
@@ -64,7 +72,12 @@ export default function AudioRoomsScreen(): JSX.Element {
               {t('mobile.public.audio-rooms.listeners', { count: r.listeners ?? 0 })}
             </Text>
           </View>
-          <TouchableOpacity style={styles.joinBtn}>
+          <TouchableOpacity
+            style={styles.joinBtn}
+            onPress={() =>
+              Alert.alert(t('mobile.public.audio-rooms.join'), t('marketing.campaigns.coming-soon'))
+            }
+          >
             <Text style={styles.joinBtnText}>{t('mobile.public.audio-rooms.join')}</Text>
           </TouchableOpacity>
         </View>

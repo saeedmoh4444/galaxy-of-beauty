@@ -1,5 +1,5 @@
 import type { JSX } from 'react';
-import { View, Text, ScrollView, StyleSheet, TouchableOpacity } from 'react-native';
+import { View, Text, ScrollView, StyleSheet } from 'react-native';
 import { useLocale } from '@/components/LocaleProvider';
 const RULES = [
   {
@@ -63,9 +63,9 @@ export default function AdminCashbackScreen(): JSX.Element {
           </View>
         </View>
       ))}
-      <TouchableOpacity style={s.btn}>
+      <View style={s.btn}>
         <Text style={s.btnText}>{t('mobile.admin.cashback.add-rule')}</Text>
-      </TouchableOpacity>
+      </View>
     </ScrollView>
   );
 }

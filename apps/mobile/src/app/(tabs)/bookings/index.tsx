@@ -1,5 +1,6 @@
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import { useState } from 'react';
+import { useRouter } from 'expo-router';
 import type { JSX } from 'react';
 import { DEFAULT_PAGE_SIZE } from '@galaxy/ui';
 import type { TranslationKey } from '@galaxy/shared';
@@ -22,6 +23,7 @@ const STATUS_LABELS: Record<string, TranslationKey> = {
 };
 
 export default function BookingsScreen(): JSX.Element {
+  const router = useRouter();
   const [page] = useState(1);
   const { t, locale } = useLocale();
   const { isDark } = useTheme();
@@ -68,6 +70,7 @@ export default function BookingsScreen(): JSX.Element {
           key={i}
           style={styles.card}
           activeOpacity={0.7}
+          onPress={() => router.push(`/customer/bookings/${b.id}` as never)}
           // Long-press context menu: copy the booking code for support/reference
           onLongPress={() => {
             const code = b.bookingCode as string;

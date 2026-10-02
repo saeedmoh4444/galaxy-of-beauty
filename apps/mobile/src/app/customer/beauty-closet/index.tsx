@@ -101,9 +101,9 @@ export default function BeautyClosetScreen(): JSX.Element {
         </View>
       )}
 
-      <TouchableOpacity style={styles.addBtn}>
+      <View style={styles.addBtn}>
         <Text style={styles.addBt}>{t('beautyCloset.add-product')}</Text>
-      </TouchableOpacity>
+      </View>
     </ScrollView>
   );
 }

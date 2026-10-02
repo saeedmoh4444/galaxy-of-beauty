@@ -32,6 +32,7 @@ export default function BeautyPartyScreen(): JSX.Element {
   };
 
   const q = trpc.services.list.useQuery({});
+  const createMut = trpc.beautyParty.create.useMutation();
 
   const estPerPerson = 150;
   const total = estPerPerson * guests;
@@ -118,7 +119,18 @@ export default function BeautyPartyScreen(): JSX.Element {
         </View>
       </View>
 
-      <TouchableOpacity style={styles.btn}>
+      <TouchableOpacity
+        style={styles.btn}
+        disabled={createMut.isPending}
+        onPress={() =>
+          createMut.mutate({
+            theme,
+            guestCount: guests,
+            totalAmount: finalTotal,
+            discountPct: discount,
+          })
+        }
+      >
         <Text style={styles.bt}>{t('beautyParty.book-now')}</Text>
       </TouchableOpacity>
     </ScrollView>

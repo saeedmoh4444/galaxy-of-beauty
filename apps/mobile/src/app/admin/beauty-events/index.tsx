@@ -1,4 +1,5 @@
 import type { JSX } from 'react';
+import { useState } from 'react';
 import { View, Text, ScrollView, StyleSheet, TouchableOpacity } from 'react-native';
 import { ScreenState } from '@/components/ScreenState';
 import { trpc } from '@/lib/trpc-react';
@@ -28,6 +29,8 @@ export default function AdminBeautyEventsScreen(): JSX.Element {
   const { t, locale } = useLocale();
   const q = trpc.beautyEvents.listAll.useQuery();
   const events = (q.data as unknown as BeautyEvent[] | null) ?? [];
+  const [filter, setFilter] = useState<'upcoming' | 'active' | 'completed'>('upcoming');
+  const visibleEvents = events.filter((e) => eventStatus(e) === filter);
 
   return (
     <ScrollView style={s.c} contentContainerStyle={s.i}>
@@ -37,9 +40,10 @@ export default function AdminBeautyEventsScreen(): JSX.Element {
         {['upcoming', 'active', 'completed'].map((st) => (
           <TouchableOpacity
             key={st}
-            style={[s.fb, st === 'upcoming' && { backgroundColor: '#dbeafe' }]}
+            onPress={() => setFilter(st as 'upcoming' | 'active' | 'completed')}
+            style={[s.fb, st === filter && { backgroundColor: '#dbeafe' }]}
           >
-            <Text style={[s.ft, st === 'upcoming' && { color: '#2563eb' }]}>
+            <Text style={[s.ft, st === filter && { color: '#2563eb' }]}>
               {st === 'upcoming'
                 ? t('mobile.admin.beauty-events.upcoming')
                 : st === 'active'
@@ -52,11 +56,11 @@ export default function AdminBeautyEventsScreen(): JSX.Element {
       <ScreenState
         isLoading={q.isLoading}
         isError={q.isError}
-        isEmpty={events.length === 0}
+        isEmpty={visibleEvents.length === 0}
         emptyTitle={t('admin.beauty-events.empty')}
         onRetry={() => q.refetch()}
       >
-        {events.map((e) => {
+        {visibleEvents.map((e) => {
           const status = eventStatus(e);
           const price = e.price != null && Number(e.price) > 0;
           return (

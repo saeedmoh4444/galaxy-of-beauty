@@ -1,5 +1,5 @@
 import type { JSX } from 'react';
-import { View, Text, ScrollView, StyleSheet, TouchableOpacity } from 'react-native';
+import { View, Text, ScrollView, StyleSheet } from 'react-native';
 import { ScreenState } from '@/components/ScreenState';
 import { trpc } from '@/lib/trpc-react';
 import { useLocale } from '@/components/LocaleProvider';
@@ -79,9 +79,9 @@ export default function AdminFlashDealsScreen(): JSX.Element {
           );
         })}
       </ScreenState>
-      <TouchableOpacity style={s.btn}>
+      <View style={s.btn}>
         <Text style={s.bt}>{t('mobile.admin.flash-deals.new-deal')}</Text>
-      </TouchableOpacity>
+      </View>
     </ScrollView>
   );
 }

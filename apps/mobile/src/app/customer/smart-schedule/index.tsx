@@ -1,6 +1,7 @@
 import { View, Text, ScrollView, StyleSheet, TouchableOpacity, RefreshControl } from 'react-native';
 import { useState } from 'react';
 import type { JSX } from 'react';
+import { useRouter } from 'expo-router';
 import { SkeletonList } from '@/components/SkeletonCard';
 import { trpc } from '@/lib/trpc-react';
 import { useLocale } from '@/components/LocaleProvider';
@@ -29,6 +30,7 @@ interface SmartScheduleData {
 
 export default function SmartScheduleScreen(): JSX.Element {
   const { t, locale } = useLocale();
+  const router = useRouter();
   const [selectedSvc, setSelectedSvc] = useState<number | null>(null);
   const servicesQ = trpc.services.list.useQuery({});
   const services: ServiceRow[] = (servicesQ.data as unknown as ServiceListData | null)?.items ?? [];
@@ -99,7 +101,10 @@ export default function SmartScheduleScreen(): JSX.Element {
               })}
             </Text>
           </View>
-          <TouchableOpacity style={styles.bb}>
+          <TouchableOpacity
+            style={styles.bb}
+            onPress={() => router.push(`/services/${selectedSvc}` as never)}
+          >
             <Text style={styles.bt}>{t('mobile.smartSchedule.book')}</Text>
           </TouchableOpacity>
         </View>

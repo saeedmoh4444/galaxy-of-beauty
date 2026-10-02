@@ -1,5 +1,6 @@
 import type { JSX } from 'react';
 import { View, Text, ScrollView, StyleSheet, TouchableOpacity, RefreshControl } from 'react-native';
+import { useRouter } from 'expo-router';
 import { SkeletonList } from '@/components/SkeletonCard';
 import { trpc } from '@/lib/trpc-react';
 import { DEFAULT_SAUDI_CITY } from '@galaxy/shared';
@@ -17,6 +18,7 @@ interface Salon {
 
 export default function SalonFinderScreen(): JSX.Element {
   const { t } = useLocale();
+  const router = useRouter();
   const salonsQ = trpc.salonMap.explore.useQuery({
     city: DEFAULT_SAUDI_CITY /* TODO: use user location */,
   });
@@ -51,7 +53,10 @@ export default function SalonFinderScreen(): JSX.Element {
               {t('mobile.public.salon-finder.technicians', { count: s.technicianCount ?? 0 })}
             </Text>
           </View>
-          <TouchableOpacity style={styles.vb}>
+          <TouchableOpacity
+            style={styles.vb}
+            onPress={() => router.push(`/technicians/${s.id}` as never)}
+          >
             <Text style={styles.vt}>{t('mobile.public.salon-finder.view')}</Text>
           </TouchableOpacity>
         </View>

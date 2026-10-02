@@ -1,5 +1,6 @@
 import type { JSX } from 'react';
 import { View, Text, ScrollView, StyleSheet, TouchableOpacity, RefreshControl } from 'react-native';
+import { useRouter } from 'expo-router';
 import { ErrorAlert } from '@/components/ErrorAlert';
 import { SkeletonList } from '@/components/SkeletonCard';
 import { trpc } from '@/lib/trpc-react';
@@ -16,6 +17,7 @@ interface SubscriptionBox {
 
 export default function SubscriptionBoxesScreen(): JSX.Element {
   const { t } = useLocale();
+  const router = useRouter();
   const boxesQ = trpc.subscriptionBoxes.plans.useQuery();
 
   if (boxesQ.isLoading) return <SkeletonList count={4} />;
@@ -65,7 +67,10 @@ export default function SubscriptionBoxesScreen(): JSX.Element {
               <Text style={styles.boxPeriod}>
                 {t('mobile.public.subscription-boxes.per-month')}
               </Text>
-              <TouchableOpacity style={styles.subBtn}>
+              <TouchableOpacity
+                style={styles.subBtn}
+                onPress={() => router.push('/subscription-boxes' as never)}
+              >
                 <Text style={styles.subBtnText}>
                   {t('mobile.public.subscription-boxes.subscribe')}
                 </Text>

@@ -1,6 +1,7 @@
 import { View, Text, ScrollView, StyleSheet, TouchableOpacity } from 'react-native';
 import { useState } from 'react';
 import type { JSX } from 'react';
+import { useRouter } from 'expo-router';
 import { useLocale } from '@/components/LocaleProvider';
 
 const SEASONS_COLORS = [
@@ -47,6 +48,7 @@ const SEASONS_COLORS = [
 ];
 
 export default function ColorAnalysisScreen(): JSX.Element {
+  const router = useRouter();
   const { t } = useLocale();
   const [season, setSeason] = useState('summer');
   const s = SEASONS_COLORS.find((x) => x.key === season)!;
@@ -96,7 +98,10 @@ export default function ColorAnalysisScreen(): JSX.Element {
         </View>
       </View>
 
-      <TouchableOpacity style={styles.btn}>
+      <TouchableOpacity
+        style={styles.btn}
+        onPress={() => router.push('/customer/skin-analysis' as never)}
+      >
         <Text style={styles.bt}>{t('colorAnalysis.analyze')}</Text>
       </TouchableOpacity>
     </ScrollView>

@@ -1,5 +1,6 @@
 import { View, Text, TouchableOpacity, StyleSheet, TextInput } from 'react-native';
 import { useState } from 'react';
+import { useRouter } from 'expo-router';
 import type { JSX } from 'react';
 import { localize, serviceKeyFromCategorySlug } from '@galaxy/shared';
 import { ScreenState } from '@/components/ScreenState';
@@ -17,6 +18,7 @@ const COLORS = {
 };
 
 export default function ServicesScreen(): JSX.Element {
+  const router = useRouter();
   const [search, setSearch] = useState('');
   const { t, locale } = useLocale();
   const services = trpc.services.list.useQuery({
@@ -47,7 +49,12 @@ export default function ServicesScreen(): JSX.Element {
         placeholderTextColor={COLORS.gray400}
       />
       {(data as Record<string, unknown>[])?.map((s: Record<string, unknown>, i: number) => (
-        <TouchableOpacity key={i} style={styles.card} activeOpacity={0.7}>
+        <TouchableOpacity
+          key={i}
+          style={styles.card}
+          activeOpacity={0.7}
+          onPress={() => router.push(`/services/${s.id}` as never)}
+        >
           <View style={styles.row}>
             <ServiceImage
               src={(s.imageUrl as string | null) ?? null}

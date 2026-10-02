@@ -1,5 +1,6 @@
 import type { JSX } from 'react';
 import { View, Text, ScrollView, StyleSheet, TouchableOpacity, RefreshControl } from 'react-native';
+import { useRouter } from 'expo-router';
 import { ErrorAlert } from '@/components/ErrorAlert';
 import { SkeletonList } from '@/components/SkeletonCard';
 import { trpc } from '@/lib/trpc-react';
@@ -25,6 +26,7 @@ interface TrendingItem {
 
 export default function DiscoverScreen(): JSX.Element {
   const { t } = useLocale();
+  const router = useRouter();
   const trendingQ = trpc.beautyDiscovery.featured.useQuery();
   const categoriesQ = trpc.categories.list.useQuery();
 
@@ -67,7 +69,11 @@ export default function DiscoverScreen(): JSX.Element {
           >
             <View style={{ flexDirection: 'row', gap: 10 }}>
               {catItems.map((cat) => (
-                <TouchableOpacity key={cat.id ?? cat.key} style={styles.catChip}>
+                <TouchableOpacity
+                  key={cat.id ?? cat.key}
+                  style={styles.catChip}
+                  onPress={() => router.push('/public/services' as never)}
+                >
                   <Text style={styles.catEmoji}>{cat.emoji ?? ''}</Text>
                   <Text style={styles.catName}>{cat.nameAr ?? ''}</Text>
                 </TouchableOpacity>

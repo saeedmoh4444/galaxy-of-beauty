@@ -1,5 +1,6 @@
 import type { JSX } from 'react';
 import { View, Text, ScrollView, StyleSheet, TouchableOpacity, RefreshControl } from 'react-native';
+import { useRouter } from 'expo-router';
 import { ErrorAlert } from '@/components/ErrorAlert';
 import { SkeletonList } from '@/components/SkeletonCard';
 import { trpc } from '@/lib/trpc-react';
@@ -23,6 +24,7 @@ const GRADIENTS: Record<string, string[]> = {
 
 export default function ChallengesScreen(): JSX.Element {
   const { t } = useLocale();
+  const router = useRouter();
   const challengesQ = trpc.challenges.list.useQuery();
 
   if (challengesQ.isLoading) return <SkeletonList count={4} />;
@@ -61,6 +63,7 @@ export default function ChallengesScreen(): JSX.Element {
             <TouchableOpacity
               key={ch.id}
               style={[styles.card, { borderLeftColor: colors[0], borderLeftWidth: 4 }]}
+              onPress={() => router.push('/customer/challenges' as never)}
             >
               <Text style={styles.chEmoji}>{(ch.emoji as string) ?? ''}</Text>
               <View style={{ flex: 1 }}>

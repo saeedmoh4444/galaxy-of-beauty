@@ -1,6 +1,7 @@
 import { View, Text, ScrollView, StyleSheet, TouchableOpacity } from 'react-native';
 import { useState } from 'react';
 import type { JSX } from 'react';
+import { useRouter } from 'expo-router';
 import { useLocale } from '@/components/LocaleProvider';
 
 const SEASONS = [
@@ -64,6 +65,7 @@ const SEASONS = [
 
 export default function SeasonalCalendarScreen(): JSX.Element {
   const { t } = useLocale();
+  const router = useRouter();
   const [season, setSeason] = useState('summer');
   const s = SEASONS.find((x) => x.key === season)!;
 
@@ -107,7 +109,10 @@ export default function SeasonalCalendarScreen(): JSX.Element {
         </View>
       ))}
 
-      <TouchableOpacity style={[styles.btn, { backgroundColor: s.color }]}>
+      <TouchableOpacity
+        style={[styles.btn, { backgroundColor: s.color }]}
+        onPress={() => router.push('/customer/bookings/create' as never)}
+      >
         <Text style={styles.bt}>{t('mobile.seasonalCalendar.book')}</Text>
       </TouchableOpacity>
     </ScrollView>

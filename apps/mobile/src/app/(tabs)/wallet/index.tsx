@@ -1,5 +1,6 @@
 import type { JSX } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
+import { useRouter } from 'expo-router';
 import { ScreenState } from '@/components/ScreenState';
 import { SkeletonList } from '@/components/SkeletonCard';
 import { trpc } from '@/lib/trpc-react';
@@ -27,6 +28,7 @@ interface TxnPage {
 }
 
 export default function WalletScreen(): JSX.Element {
+  const router = useRouter();
   const { t } = useLocale();
   const { isDark } = useTheme();
   const c = isDark ? themeColors.dark : themeColors.light;
@@ -61,7 +63,10 @@ export default function WalletScreen(): JSX.Element {
             })}
           </Text>
         )}
-        <TouchableOpacity style={styles.topUpBtn}>
+        <TouchableOpacity
+          style={styles.topUpBtn}
+          onPress={() => router.push('/customer/wallet/top-up' as never)}
+        >
           <Text style={styles.topUpText}>{t('mobile.core.topUp')}</Text>
         </TouchableOpacity>
       </View>

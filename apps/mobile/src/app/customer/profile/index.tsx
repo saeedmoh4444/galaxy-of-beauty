@@ -1,5 +1,5 @@
 import type { JSX } from 'react';
-import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
+import { View, Text, StyleSheet } from 'react-native';
 import { ScreenState } from '@/components/ScreenState';
 import { trpc } from '@/lib/trpc-react';
 import { useLocale } from '@/components/LocaleProvider';
@@ -51,9 +51,9 @@ export default function CustomerProfileScreen(): JSX.Element {
           <Text style={styles.value}>{row.value ?? '—'}</Text>
         </View>
       ))}
-      <TouchableOpacity style={styles.editBtn}>
+      <View style={styles.editBtn}>
         <Text style={styles.editText}>{t('mobile.profile.edit')}</Text>
-      </TouchableOpacity>
+      </View>
     </ScreenState>
   );
 }
