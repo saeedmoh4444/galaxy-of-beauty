@@ -9,7 +9,7 @@ let container: HTMLDivElement;
 let root: Root;
 let value: unknown;
 
-function Harness({ v, delay }: { v: unknown; delay?: number }): JSX.Element {
+function Harness({ v, delay }: { v: unknown; delay?: number }): JSX.Element | null {
   value = useDebounce(v, delay);
   return null;
 }
