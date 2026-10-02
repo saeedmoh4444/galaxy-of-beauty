@@ -1,23 +1,36 @@
-// NO API: this welcome walkthrough is marketing slides (emoji/title/desc)
-// with no backend procedure. The beautyOnboarding router
-// (questions/submit/status) is an auth-gated (customerProcedure) post-signup
-// preferences questionnaire — a different flow with no public counterpart,
-// and the web page is static too.
+// First-run funnel (audit stage 12): index.tsx routes unseen installs
+// here. Finishing marks the flag and lands on the home tab. The
+// beautyOnboarding router (questions/submit/status) is a separate
+// auth-gated post-signup questionnaire — this walkthrough stays static.
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import { useState } from 'react';
 import type { JSX } from 'react';
+import { router } from 'expo-router';
 import { useLocale } from '@/components/LocaleProvider';
+import { markSeenOnboarding } from '@/utils/onboarding';
 
 const slides = [
   {
     emoji: '🌸',
-    title: 'أهلاً بكِ في جالكسي بيوتي',
-    desc: 'منصتكِ الشاملة لكل خدمات التجميل والعناية',
+    titleKey: 'mobile.public.onboarding.slide1.title',
+    descKey: 'mobile.public.onboarding.slide1.desc',
   },
-  { emoji: '📅', title: 'احجزي بسهولة', desc: 'تصفحي الخدمات واحجزي موعدكِ في دقائق' },
-  { emoji: '💇', title: 'أفضل الفنيات', desc: 'اختاري من نخبة الفنيات المحترفات في منطقتكِ' },
-  { emoji: '🎁', title: 'مكافآت وخصومات', desc: 'اكسبي نقاط واستمتعي بعروض حصرية' },
-];
+  {
+    emoji: '📅',
+    titleKey: 'mobile.public.onboarding.slide2.title',
+    descKey: 'mobile.public.onboarding.slide2.desc',
+  },
+  {
+    emoji: '💇',
+    titleKey: 'mobile.public.onboarding.slide3.title',
+    descKey: 'mobile.public.onboarding.slide3.desc',
+  },
+  {
+    emoji: '🎁',
+    titleKey: 'mobile.public.onboarding.slide4.title',
+    descKey: 'mobile.public.onboarding.slide4.desc',
+  },
+] as const;
 
 export default function OnboardingScreen(): JSX.Element {
   const { t } = useLocale();
@@ -29,8 +42,8 @@ export default function OnboardingScreen(): JSX.Element {
     <View style={styles.c}>
       <View style={styles.i}>
         <Text style={styles.emoji}>{slides[step]!.emoji}</Text>
-        <Text style={styles.title}>{slides[step]!.title}</Text>
-        <Text style={styles.desc}>{slides[step]!.desc}</Text>
+        <Text style={styles.title}>{t(slides[step]!.titleKey)}</Text>
+        <Text style={styles.desc}>{t(slides[step]!.descKey)}</Text>
         <View style={styles.dots}>
           {slides.map((_, i) => (
             <View key={i} style={[styles.dot, i === step && styles.dotActive]} />
@@ -43,7 +56,14 @@ export default function OnboardingScreen(): JSX.Element {
             </TouchableOpacity>
           )}
           <TouchableOpacity
-            onPress={() => (isLast ? null : setStep(step + 1))}
+            onPress={() => {
+              if (isLast) {
+                // First-run funnel: mark seen and land on the home tab.
+                void markSeenOnboarding().then(() => router.replace('/(tabs)/home'));
+              } else {
+                setStep(step + 1);
+              }
+            }}
             style={[styles.nextBtn, isLast && styles.doneBtn]}
           >
             <Text style={styles.nextBtnText}>
