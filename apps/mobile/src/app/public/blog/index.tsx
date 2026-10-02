@@ -1,5 +1,6 @@
 import type { JSX } from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import { Text, StyleSheet, TouchableOpacity } from 'react-native';
+import { useRouter } from 'expo-router';
 import { ScreenState } from '@/components/ScreenState';
 import { trpc } from '@/lib/trpc-react';
 import { localize } from '@galaxy/shared';
@@ -8,12 +9,14 @@ import { useLocale } from '@/components/LocaleProvider';
 const COLORS = { brand: '#7c3aed', white: '#ffffff', gray400: '#6b7280', gray900: '#111827' };
 
 interface BlogPost {
+  slug?: string;
   titleJson?: { ar?: string; en?: string };
   publishedAt?: string;
 }
 
 export default function BlogScreen(): JSX.Element {
   const { locale, t } = useLocale();
+  const router = useRouter();
   const blog = trpc.blog.list.useQuery({ page: 1, limit: 10 });
 
   return (
@@ -27,14 +30,21 @@ export default function BlogScreen(): JSX.Element {
     >
       <Text style={styles.title}>{t('mobile.public.blog.title')}</Text>
       {((blog.data as { items?: BlogPost[] } | undefined)?.items || []).map((post, i) => (
-        <View key={i} style={styles.card}>
+        <TouchableOpacity
+          key={i}
+          style={styles.card}
+          onPress={() =>
+            post.slug ? router.push(`/public/blog/${post.slug}` as never) : undefined
+          }
+          activeOpacity={0.7}
+        >
           <Text style={styles.postTitle}>{localize(post.titleJson, locale)}</Text>
           <Text style={styles.postDate}>
             {post.publishedAt
               ? new Date(post.publishedAt).toLocaleDateString(locale === 'ar' ? 'ar-SA' : 'en-US')
               : ''}
           </Text>
-        </View>
+        </TouchableOpacity>
       ))}
     </ScreenState>
   );

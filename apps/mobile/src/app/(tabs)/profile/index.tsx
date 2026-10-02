@@ -61,6 +61,7 @@ const MENU_ITEMS: { labelKey: TranslationKey; href: string }[] = [
   { labelKey: 'mobile.serviceHistory.title', href: '/customer/service-history' },
   { labelKey: 'bookingInsights.title', href: '/customer/booking-insights' },
   { labelKey: 'mobile.invoices.title', href: '/customer/invoices' },
+  { labelKey: 'beautyEvents.title', href: '/customer/beauty-events' },
   { labelKey: 'mobile.payments.title', href: '/customer/payments' },
   { labelKey: 'cashback.title', href: '/customer/cashback' },
   { labelKey: 'mobile.promo.title', href: '/customer/promo' },
