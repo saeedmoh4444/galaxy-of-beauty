@@ -96,9 +96,10 @@ export function TrainersClient({ data }: { data: TrainersPageData }): JSX.Elemen
             <h2 className="text-xl font-bold text-text-primary">{t('trainers.book.title')}</h2>
             <div className="mt-4 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
               {data.sessionTrainers.map((tr) => {
-                const specialtyKey =
+                const specialtyKey: TranslationKey =
                   SPECIALTY_KEYS[String(tr.trainerSpecialty ?? 'general')] ??
-                  SPECIALTY_KEYS.general;
+                  SPECIALTY_KEYS.general ??
+                  'trainers.specialty.general';
                 return (
                   <Link key={tr.id as number} href={`/trainers/sessions/${tr.storeSlug as string}`}>
                     <Card

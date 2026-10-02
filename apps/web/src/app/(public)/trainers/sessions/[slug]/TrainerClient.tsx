@@ -79,10 +79,13 @@ export function TrainerClient({
   }
 
   const price = Number(trainer.trainerSessionPrice ?? 0);
-  const specialtyKey =
-    SPECIALTY_KEYS[trainer.trainerSpecialty ?? 'general'] ?? SPECIALTY_KEYS.general;
+  const specialtyKey: TranslationKey =
+    SPECIALTY_KEYS[trainer.trainerSpecialty ?? 'general'] ??
+    SPECIALTY_KEYS.general ??
+    'trainers.specialty.general';
   const bio = trainer.trainerBio ? (localize(trainer.trainerBio, locale) ?? '') : '';
-  const mySessions = (myQ.data as Array<{ id: number; scheduledAt: string; status: string }>) ?? [];
+  const mySessions =
+    (myQ.data as unknown as Array<{ id: number; scheduledAt: string; status: string }>) ?? [];
 
   return (
     <div className="mx-auto max-w-4xl px-4 py-8">
