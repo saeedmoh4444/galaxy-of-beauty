@@ -96,6 +96,7 @@ const TOOLS_LINKS: MoreLink[] = [
 const EXPERTS_LINKS: MoreLink[] = [
   { href: '/public/salon-finder', key: 'mobile.public.salon-finder.title', emoji: '🔎' },
   { href: '/public/salon-map', key: 'mobile.public.salon-map.title', emoji: '📍' },
+  { href: '/public/technicians', key: 'mobile.public.technicians.title', emoji: '👩‍🎨' },
   { href: '/public/salon-membership', key: 'mobile.public.salon-membership.title', emoji: '💳' },
   {
     href: '/public/technician-compare',

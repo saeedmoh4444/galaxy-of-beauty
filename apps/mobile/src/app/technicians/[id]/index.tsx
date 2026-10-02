@@ -1,6 +1,6 @@
 import type { JSX } from 'react';
-import { View, Text, ScrollView, StyleSheet, RefreshControl } from 'react-native';
-import { useLocalSearchParams } from 'expo-router';
+import { View, Text, ScrollView, StyleSheet, RefreshControl, TouchableOpacity } from 'react-native';
+import { useLocalSearchParams, useRouter } from 'expo-router';
 import { SkeletonList } from '@/components/SkeletonCard';
 import { ErrorAlert } from '@/components/ErrorAlert';
 import { trpc } from '@/lib/trpc-react';
@@ -17,6 +17,7 @@ interface TechnicianDetail {
 
 export default function TechnicianDetailScreen(): JSX.Element {
   const { t } = useLocale();
+  const router = useRouter();
   const { id } = useLocalSearchParams<{ id: string }>();
   const q = trpc.technicians.getById.useQuery({ userId: parseInt(id, 10) });
   const data = (q.data as unknown as TechnicianDetail | null) ?? null;
@@ -54,6 +55,13 @@ export default function TechnicianDetailScreen(): JSX.Element {
         <Text style={styles.rating}> {data.rating ?? 0}</Text>
         <Text style={styles.city}> {data.city}</Text>
       </View>
+      <TouchableOpacity
+        style={styles.galleryBtn}
+        onPress={() => router.push(`/gallery/${id}` as never)}
+        activeOpacity={0.7}
+      >
+        <Text style={styles.galleryText}>{t('mobile.public.gallery.title')}</Text>
+      </TouchableOpacity>
     </ScrollView>
   );
 }
@@ -66,4 +74,12 @@ const styles = StyleSheet.create({
   spec: { fontSize: 16, fontWeight: '600', color: '#111827' },
   rating: { fontSize: 18, fontWeight: '700', color: '#f59e0b', marginTop: 8 },
   city: { fontSize: 14, color: '#6b7280', marginTop: 4 },
+  galleryBtn: {
+    marginTop: 16,
+    backgroundColor: '#7c3aed',
+    borderRadius: 12,
+    paddingVertical: 14,
+    alignItems: 'center',
+  },
+  galleryText: { color: '#ffffff', fontSize: 15, fontWeight: '700' },
 });

@@ -251,7 +251,7 @@ export default function CreateBookingScreen() {
       }
       trigger('success');
       showToast('success', t('booking.created-success'));
-      setTimeout(() => router.back(), 1000);
+      router.replace('/customer/bookings/confirm');
     },
     onError: (error, variables) => {
       // Offline-first (5.5): a network failure means the request never

@@ -1,5 +1,6 @@
 import type { JSX } from 'react';
-import { View, Text, ScrollView, StyleSheet, RefreshControl } from 'react-native';
+import { View, Text, ScrollView, StyleSheet, RefreshControl, TouchableOpacity } from 'react-native';
+import { useRouter } from 'expo-router';
 import { SkeletonList } from '@/components/SkeletonCard';
 import { trpc } from '@/lib/trpc-react';
 import { useLocale } from '@/components/LocaleProvider';
@@ -16,6 +17,7 @@ interface Tutorial {
 
 export default function TutorialsScreen(): JSX.Element {
   const { t } = useLocale();
+  const router = useRouter();
   const tutorialsQ = trpc.tutorials.list.useQuery({});
 
   if (tutorialsQ.isLoading) return <SkeletonList count={4} />;
@@ -39,7 +41,12 @@ export default function TutorialsScreen(): JSX.Element {
     >
       <Text style={styles.t}>{t('mobile.public.tutorials.title')}</Text>
       {tutorials.map((t) => (
-        <View key={t.id} style={styles.card}>
+        <TouchableOpacity
+          key={t.id}
+          style={styles.card}
+          onPress={() => router.push(`/public/tutorials/${t.id}` as never)}
+          activeOpacity={0.7}
+        >
           <Text style={styles.te}>{t.emoji ?? ''}</Text>
           <View style={{ flex: 1 }}>
             <Text style={styles.tt}>{t.titleAr}</Text>
@@ -48,7 +55,7 @@ export default function TutorialsScreen(): JSX.Element {
             </Text>
           </View>
           <Text style={styles.tv}> {t.views}</Text>
-        </View>
+        </TouchableOpacity>
       ))}
     </ScrollView>
   );

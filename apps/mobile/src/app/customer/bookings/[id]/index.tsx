@@ -1,6 +1,6 @@
 import type { JSX } from 'react';
-import { View, Text, ScrollView, StyleSheet } from 'react-native';
-import { useLocalSearchParams } from 'expo-router';
+import { View, Text, ScrollView, StyleSheet, TouchableOpacity } from 'react-native';
+import { useLocalSearchParams, useRouter } from 'expo-router';
 import { ScreenState } from '@/components/ScreenState';
 import { NpsCard } from '@/components/NpsCard';
 import { trpc } from '@/lib/trpc-react';
@@ -20,6 +20,7 @@ const COLORS = { brand: '#7c3aed', white: '#ffffff', gray400: '#6b7280', gray900
 
 export default function BookingDetailScreen(): JSX.Element {
   const { id } = useLocalSearchParams<{ id: string }>();
+  const router = useRouter();
   const { locale, t } = useLocale();
   const detail = trpc.bookings.getById.useQuery({ id: Number(id) }, { enabled: !!id }) ?? {
     data: null,
@@ -77,6 +78,17 @@ export default function BookingDetailScreen(): JSX.Element {
             <Text style={[styles.value, row.color ? { color: row.color } : {}]}>{row.value}</Text>
           </View>
         ))}
+        {['PENDING', 'ACCEPTED', 'PAID', 'REQUESTED', 'IN_PROGRESS'].includes(
+          data?.status as string,
+        ) && (
+          <TouchableOpacity
+            style={styles.rescheduleBtn}
+            onPress={() => router.push('/customer/bookings/reschedule')}
+            activeOpacity={0.7}
+          >
+            <Text style={styles.rescheduleText}>{t('mobile.reschedule.title')}</Text>
+          </TouchableOpacity>
+        )}
         {data?.status === 'COMPLETED' && <NpsCard bookingId={Number(data.id)} />}
       </ScrollView>
     </ScreenState>
@@ -102,4 +114,12 @@ const styles = StyleSheet.create({
   },
   label: { fontSize: 14, color: COLORS.gray400 },
   value: { fontSize: 14, fontWeight: '600', color: COLORS.gray900 },
+  rescheduleBtn: {
+    marginTop: 20,
+    backgroundColor: COLORS.brand,
+    borderRadius: 12,
+    paddingVertical: 14,
+    alignItems: 'center',
+  },
+  rescheduleText: { color: COLORS.white, fontSize: 15, fontWeight: '700' },
 });

@@ -1,5 +1,6 @@
 import type { JSX } from 'react';
-import { View, Text, ScrollView, StyleSheet, RefreshControl } from 'react-native';
+import { View, Text, ScrollView, StyleSheet, RefreshControl, TouchableOpacity } from 'react-native';
+import { useRouter } from 'expo-router';
 import { ErrorAlert } from '@/components/ErrorAlert';
 import { SkeletonList } from '@/components/SkeletonCard';
 import { trpc } from '@/lib/trpc-react';
@@ -17,6 +18,7 @@ interface Technician {
 
 export default function TechniciansScreen(): JSX.Element {
   const { t } = useLocale();
+  const router = useRouter();
   const techsQ = trpc.technicians.list.useQuery({});
 
   if (techsQ.isLoading) return <SkeletonList count={6} />;
@@ -51,7 +53,12 @@ export default function TechniciansScreen(): JSX.Element {
         <Text style={styles.e}>{t('mobile.public.technicians.empty')}</Text>
       ) : (
         items.map((item) => (
-          <View key={item.id} style={styles.card}>
+          <TouchableOpacity
+            key={item.id}
+            style={styles.card}
+            onPress={() => router.push(`/technicians/${item.id}` as never)}
+            activeOpacity={0.7}
+          >
             <Text style={styles.avatar}>👤</Text>
             <View style={{ flex: 1 }}>
               <Text style={styles.techName}>{item.name as string}</Text>
@@ -72,7 +79,7 @@ export default function TechniciansScreen(): JSX.Element {
                 </Text>
               </View>
             </View>
-          </View>
+          </TouchableOpacity>
         ))
       )}
     </ScrollView>

@@ -1,5 +1,6 @@
 import type { JSX } from 'react';
-import { View, Text, ScrollView, StyleSheet, RefreshControl } from 'react-native';
+import { View, Text, ScrollView, StyleSheet, RefreshControl, TouchableOpacity } from 'react-native';
+import { useRouter } from 'expo-router';
 import { SkeletonList } from '@/components/SkeletonCard';
 import { trpc } from '@/lib/trpc-react';
 import { useLocale } from '@/components/LocaleProvider';
@@ -23,6 +24,7 @@ interface GroupBookingSummary {
 }
 
 export default function GroupBookingsScreen(): JSX.Element {
+  const router = useRouter();
   const isAuthed = useAuthState();
   const { t } = useLocale();
   const q = trpc.groupBookings.myGroups.useQuery(undefined, { enabled: isAuthed });
@@ -46,7 +48,12 @@ export default function GroupBookingsScreen(): JSX.Element {
     >
       <Text style={styles.t}>{t('mobile.groupBookings.title')}</Text>
       {groups.map((g) => (
-        <View key={g.id} style={styles.card}>
+        <TouchableOpacity
+          key={g.id}
+          style={styles.card}
+          onPress={() => router.push(`/customer/group-bookings/${g.id}` as never)}
+          activeOpacity={0.7}
+        >
           <Text style={styles.ge}>{TE[g.theme ?? ''] ?? ''}</Text>
           <View style={{ flex: 1 }}>
             <Text style={styles.gn}>{g.name}</Text>
@@ -73,7 +80,7 @@ export default function GroupBookingsScreen(): JSX.Element {
                     : t('mobile.groupBookings.status-cancelled')}
             </Text>
           </View>
-        </View>
+        </TouchableOpacity>
       ))}
     </ScrollView>
   );
