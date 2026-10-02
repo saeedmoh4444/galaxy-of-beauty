@@ -15,6 +15,7 @@ const COLORS = {
 };
 
 interface AppNotification {
+  id?: number;
   titleJson?: { ar?: string; en?: string };
   titleAr?: string;
   bodyJson?: { ar?: string; en?: string };
@@ -28,6 +29,7 @@ export default function NotificationsScreen(): JSX.Element {
   const isAuthed = useAuthState();
   const notifs = trpc.notifications.list.useQuery({}, { enabled: isAuthed });
   const markAll = trpc.notifications.markAllRead.useMutation();
+  const markRead = trpc.notifications.markRead.useMutation({ onSuccess: () => notifs.refetch() });
   const data = notifs.data as AppNotification[] | undefined;
 
   return (
@@ -57,7 +59,13 @@ export default function NotificationsScreen(): JSX.Element {
         )}
       </View>
       {data?.map((n, i) => (
-        <TouchableOpacity key={i} style={[styles.card, !n.isRead && styles.unread]}>
+        <TouchableOpacity
+          key={i}
+          onPress={() => {
+            if (n.id) markRead.mutate({ id: n.id });
+          }}
+          style={[styles.card, !n.isRead && styles.unread]}
+        >
           <Text style={styles.notifTitle}>{localize(n.titleJson, locale) || n.titleAr || ''}</Text>
           <Text style={styles.notifBody}>{localize(n.bodyJson, locale) || n.body || ''}</Text>
           <Text style={styles.notifTime}>

@@ -1,5 +1,6 @@
 import type { JSX } from 'react';
 import { View, Text, ScrollView, TouchableOpacity, StyleSheet, RefreshControl } from 'react-native';
+import { useRouter } from 'expo-router';
 import { SkeletonList } from '@/components/SkeletonCard';
 import { trpc } from '@/lib/trpc-react';
 import { useLocale } from '@/components/LocaleProvider';
@@ -13,6 +14,7 @@ interface WellnessPlan {
 
 export default function CorporateWellnessScreen(): JSX.Element {
   const { t } = useLocale();
+  const router = useRouter();
   const plansQ = trpc.corporateWellness.plans.useQuery();
 
   if (plansQ.isLoading) return <SkeletonList count={4} />;
@@ -45,7 +47,10 @@ export default function CorporateWellnessScreen(): JSX.Element {
               <Text style={styles.planName}>{p.nameAr}</Text>
               <Text style={styles.planDesc}>{p.descAr}</Text>
             </View>
-            <TouchableOpacity style={styles.inquireBtn}>
+            <TouchableOpacity
+              style={styles.inquireBtn}
+              onPress={() => router.push('/customer/corporate-wellness' as never)}
+            >
               <Text style={styles.inquireText}>
                 {t('mobile.public.corporate-wellness.inquire')}
               </Text>

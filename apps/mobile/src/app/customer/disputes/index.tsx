@@ -1,5 +1,5 @@
 import type { JSX } from 'react';
-import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
+import { View, Text, StyleSheet } from 'react-native';
 import { ScreenState } from '@/components/ScreenState';
 import { trpc } from '@/lib/trpc-react';
 import { useLocale } from '@/components/LocaleProvider';
@@ -56,9 +56,9 @@ export default function DisputesScreen(): JSX.Element {
           </Text>
         </View>
       ))}
-      <TouchableOpacity style={styles.addBtn}>
+      <View style={styles.addBtn}>
         <Text style={styles.addText}>{t('disputes.open-new')}</Text>
-      </TouchableOpacity>
+      </View>
     </ScreenState>
   );
 }

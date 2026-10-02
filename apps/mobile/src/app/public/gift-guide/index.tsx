@@ -1,5 +1,6 @@
 import type { JSX } from 'react';
 import { View, Text, ScrollView, StyleSheet, TouchableOpacity, RefreshControl } from 'react-native';
+import { useRouter } from 'expo-router';
 import { ErrorAlert } from '@/components/ErrorAlert';
 import { SkeletonList } from '@/components/SkeletonCard';
 import { trpc } from '@/lib/trpc-react';
@@ -16,6 +17,7 @@ interface GiftGuide {
 
 export default function GiftGuideScreen(): JSX.Element {
   const { t } = useLocale();
+  const router = useRouter();
   const guidesQ = trpc.giftQuiz.questions.useQuery();
 
   if (guidesQ.isLoading) return <SkeletonList count={4} />;
@@ -60,7 +62,10 @@ export default function GiftGuideScreen(): JSX.Element {
                 })}
               </Text>
             </View>
-            <TouchableOpacity style={styles.viewBtn}>
+            <TouchableOpacity
+              style={styles.viewBtn}
+              onPress={() => router.push('/public/gift-quiz' as never)}
+            >
               <Text style={styles.viewBtnText}>{t('mobile.public.gift-guide.view')}</Text>
             </TouchableOpacity>
           </View>

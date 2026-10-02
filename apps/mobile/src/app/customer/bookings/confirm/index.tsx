@@ -1,6 +1,6 @@
 import type { JSX } from 'react';
 import { View, Text, ScrollView, StyleSheet, TouchableOpacity } from 'react-native';
-import { useLocalSearchParams } from 'expo-router';
+import { useLocalSearchParams, useRouter } from 'expo-router';
 import * as Linking from 'expo-linking';
 import LottieView from 'lottie-react-native';
 import successCheck from '@galaxy/ui/assets/success-check.json';
@@ -10,6 +10,7 @@ import { useLocale } from '@/components/LocaleProvider';
 // NO API: booking confirm is params-driven (code/date passed from the booking
 // flow URL), identical to the web page — no lookup-by-code procedure exists.
 export default function BookingConfirmScreen(): JSX.Element {
+  const router = useRouter();
   const { code, date } = useLocalSearchParams<{ code?: string; date?: string }>();
   const { locale, t } = useLocale();
   const bookingCode = code || '———';
@@ -69,10 +70,16 @@ export default function BookingConfirmScreen(): JSX.Element {
         <Text style={styles.waBtnText}>{t('share.via-whatsapp')}</Text>
       </TouchableOpacity>
 
-      <TouchableOpacity style={styles.viewBtn}>
+      <TouchableOpacity
+        style={styles.viewBtn}
+        onPress={() => router.push('/customer/bookings' as never)}
+      >
         <Text style={styles.viewBtnText}>{t('booking.view-my-bookings')}</Text>
       </TouchableOpacity>
-      <TouchableOpacity style={styles.bookBtn}>
+      <TouchableOpacity
+        style={styles.bookBtn}
+        onPress={() => router.push('/customer/bookings/create' as never)}
+      >
         <Text style={styles.bookBtnText}>{t('booking.book-another-service')}</Text>
       </TouchableOpacity>
     </ScrollView>

@@ -1,5 +1,5 @@
 import type { JSX } from 'react';
-import { View, Text, ScrollView, StyleSheet, TouchableOpacity } from 'react-native';
+import { View, Text, ScrollView, StyleSheet } from 'react-native';
 import { useLocale } from '@/components/LocaleProvider';
 
 export default function SafetyScreen(): JSX.Element {
@@ -80,9 +80,9 @@ export default function SafetyScreen(): JSX.Element {
               <Text style={s.ct}>{item.title}</Text>
               <Text style={s.cs}>{item.desc}</Text>
             </View>
-            <TouchableOpacity style={[s.btn, { backgroundColor: item.color }]}>
+            <View style={[s.btn, { backgroundColor: item.color }]}>
               <Text style={s.bt}>{t('mobile.safety.activate')}</Text>
-            </TouchableOpacity>
+            </View>
           </View>
         ))}
       </View>

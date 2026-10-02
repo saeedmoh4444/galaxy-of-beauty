@@ -1,5 +1,5 @@
 import type { JSX } from 'react';
-import { View, Text, ScrollView, TouchableOpacity, StyleSheet, RefreshControl } from 'react-native';
+import { View, Text, ScrollView, StyleSheet, RefreshControl } from 'react-native';
 import { SkeletonList } from '@/components/SkeletonCard';
 import { trpc } from '@/lib/trpc-react';
 import { useLocale } from '@/components/LocaleProvider';
@@ -36,9 +36,9 @@ export default function CertificationQuizScreen(): JSX.Element {
         <View key={i} style={styles.card}>
           <Text style={styles.qTitle}>{q.titleAr}</Text>
           <Text style={styles.qDesc}>{q.descAr}</Text>
-          <TouchableOpacity style={styles.startBtn}>
+          <View style={styles.startBtn}>
             <Text style={styles.startText}>{t('certificationQuiz.start')}</Text>
-          </TouchableOpacity>
+          </View>
         </View>
       ))}
     </ScrollView>

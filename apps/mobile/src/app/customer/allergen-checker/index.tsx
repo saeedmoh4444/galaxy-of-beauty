@@ -55,6 +55,7 @@ const MY_ALLERGIES = ['alcohol', 'sulfates', 'fragrance'];
 export default function AllergenCheckerScreen(): JSX.Element {
   const { t } = useLocale();
   const [query, setQuery] = useState('');
+  const [submitted, setSubmitted] = useState('');
   const [checked, setChecked] = useState<string[]>(MY_ALLERGIES);
 
   const toggleAllergy = (key: string) => {
@@ -64,6 +65,9 @@ export default function AllergenCheckerScreen(): JSX.Element {
 
   const highRisk = COMMON_ALLERGENS.filter((a) => checked.includes(a.key) && a.risk === 'high');
   const mediumRisk = COMMON_ALLERGENS.filter((a) => checked.includes(a.key) && a.risk === 'medium');
+  const visibleAllergens = submitted
+    ? COMMON_ALLERGENS.filter((a) => a.name.includes(submitted) || a.desc.includes(submitted))
+    : COMMON_ALLERGENS;
 
   return (
     <ScrollView style={styles.c} contentContainerStyle={styles.i}>
@@ -78,14 +82,14 @@ export default function AllergenCheckerScreen(): JSX.Element {
           style={styles.inp}
           placeholderTextColor="#9ca3af"
         />
-        <TouchableOpacity style={styles.sb}>
+        <TouchableOpacity style={styles.sb} onPress={() => setSubmitted(query.trim())}>
           <Text style={styles.sbt}>🔍</Text>
         </TouchableOpacity>
       </View>
 
       <Text style={styles.st}>{t('allergenChecker.my-allergies')}</Text>
       <View style={styles.grid}>
-        {COMMON_ALLERGENS.map((a) => {
+        {visibleAllergens.map((a) => {
           const isChecked = checked.includes(a.key);
           return (
             <TouchableOpacity

@@ -1,6 +1,7 @@
 import { View, Text, ScrollView, StyleSheet, TouchableOpacity, RefreshControl } from 'react-native';
 import { useState } from 'react';
 import type { JSX } from 'react';
+import { useRouter } from 'expo-router';
 import { ErrorAlert } from '@/components/ErrorAlert';
 import { SkeletonList } from '@/components/SkeletonCard';
 import { useAuthState } from '@/hooks/useAuthState';
@@ -54,6 +55,7 @@ interface WellnessDashboard {
 
 export default function WellnessHubScreen(): JSX.Element {
   const { t, locale } = useLocale();
+  const router = useRouter();
   const isAuthed = useAuthState();
   const dashQ = trpc.wellnessHub.dashboard.useQuery(undefined, { enabled: isAuthed });
 
@@ -477,19 +479,31 @@ export default function WellnessHubScreen(): JSX.Element {
       )}
 
       <View style={s.actions}>
-        <TouchableOpacity style={s.actBtn}>
+        <TouchableOpacity
+          style={s.actBtn}
+          onPress={() => router.push('/customer/self-care' as never)}
+        >
           <Text style={{ fontSize: 24 }}>✅</Text>
           <Text style={s.actLabel}>{t('mobile.wellnessHub.action-checkin')}</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={s.actBtn}>
+        <TouchableOpacity
+          style={s.actBtn}
+          onPress={() => router.push('/customer/cycle-tracker' as never)}
+        >
           <Text style={{ fontSize: 24 }}>🌸</Text>
           <Text style={s.actLabel}>{t('mobile.wellnessHub.action-cycle')}</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={s.actBtn}>
+        <TouchableOpacity
+          style={s.actBtn}
+          onPress={() => router.push('/customer/skin-analysis' as never)}
+        >
           <Text style={{ fontSize: 24 }}>🧴</Text>
           <Text style={s.actLabel}>{t('mobile.wellnessHub.action-skin')}</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={s.actBtn}>
+        <TouchableOpacity
+          style={s.actBtn}
+          onPress={() => router.push('/customer/wellness-tracker' as never)}
+        >
           <Text style={{ fontSize: 24 }}>💚</Text>
           <Text style={s.actLabel}>{t('mobile.wellnessHub.action-wellness')}</Text>
         </TouchableOpacity>

@@ -1,5 +1,5 @@
 import type { JSX } from 'react';
-import { View, Text, ScrollView, StyleSheet, TouchableOpacity, RefreshControl } from 'react-native';
+import { View, Text, ScrollView, StyleSheet, RefreshControl } from 'react-native';
 import { ErrorAlert } from '@/components/ErrorAlert';
 import { SkeletonList } from '@/components/SkeletonCard';
 import { trpc } from '@/lib/trpc-react';
@@ -59,9 +59,9 @@ export default function BeautyStoriesScreen(): JSX.Element {
                 {((s.preview as string) ?? (s.descAr as string))?.substring(0, 80)}...
               </Text>
             </View>
-            <TouchableOpacity style={styles.readBtn}>
+            <View style={styles.readBtn}>
               <Text style={styles.readBtnText}>{t('mobile.public.beauty-stories.read')}</Text>
-            </TouchableOpacity>
+            </View>
           </View>
         ))
       )}

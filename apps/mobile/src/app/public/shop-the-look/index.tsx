@@ -1,5 +1,6 @@
 import type { JSX } from 'react';
 import { View, Text, ScrollView, StyleSheet, TouchableOpacity, RefreshControl } from 'react-native';
+import { useRouter } from 'expo-router';
 import { ServiceImage } from '@/components/ServiceImage';
 import { SkeletonList } from '@/components/SkeletonCard';
 import { trpc } from '@/lib/trpc-react';
@@ -23,6 +24,7 @@ interface Look {
 
 export default function ShopTheLookScreen(): JSX.Element {
   const { t } = useLocale();
+  const router = useRouter();
   const looksQ = trpc.lookbook.current.useQuery();
 
   if (looksQ.isLoading) return <SkeletonList count={4} />;
@@ -75,7 +77,10 @@ export default function ShopTheLookScreen(): JSX.Element {
                   <Text style={styles.prodPrice}>
                     {t('mobile.public.currency', { price: (p.price ?? 0).toLocaleString() })}
                   </Text>
-                  <TouchableOpacity style={styles.buyBtn}>
+                  <TouchableOpacity
+                    style={styles.buyBtn}
+                    onPress={() => router.push('/customer/marketplace' as never)}
+                  >
                     <Text style={styles.buyBtnText}>{t('mobile.public.shop-the-look.buy')}</Text>
                   </TouchableOpacity>
                 </View>

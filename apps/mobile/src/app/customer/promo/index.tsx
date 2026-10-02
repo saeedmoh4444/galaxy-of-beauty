@@ -1,4 +1,4 @@
-import { View, Text, TextInput, TouchableOpacity, StyleSheet } from 'react-native';
+import { View, Text, TextInput, StyleSheet } from 'react-native';
 import { useState } from 'react';
 import type { JSX } from 'react';
 import { ScreenState } from '@/components/ScreenState';
@@ -43,9 +43,9 @@ export default function PromoScreen(): JSX.Element {
           onChangeText={setCode}
           autoCapitalize="characters"
         />
-        <TouchableOpacity style={styles.applyBtn}>
+        <View style={styles.applyBtn}>
           <Text style={styles.applyText}>{t('mobile.promo.apply')}</Text>
-        </TouchableOpacity>
+        </View>
       </View>
       {(data as Record<string, unknown>[])?.map((p: Record<string, unknown>, i: number) => (
         <View key={i} style={styles.card}>

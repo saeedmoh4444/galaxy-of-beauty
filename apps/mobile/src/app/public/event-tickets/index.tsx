@@ -1,5 +1,6 @@
 import type { JSX } from 'react';
 import { View, Text, ScrollView, TouchableOpacity, StyleSheet, RefreshControl } from 'react-native';
+import { useRouter } from 'expo-router';
 import { SkeletonList } from '@/components/SkeletonCard';
 import { trpc } from '@/lib/trpc-react';
 import { useLocale } from '@/components/LocaleProvider';
@@ -13,6 +14,7 @@ interface TicketEvent {
 
 export default function EventTicketsScreen(): JSX.Element {
   const { locale, t } = useLocale();
+  const router = useRouter();
   const eventsQ = trpc.eventTickets.available.useQuery();
 
   if (eventsQ.isLoading) return <SkeletonList count={4} />;
@@ -49,7 +51,10 @@ export default function EventTicketsScreen(): JSX.Element {
                   : ''}
               </Text>
             </View>
-            <TouchableOpacity style={styles.bookBtn}>
+            <TouchableOpacity
+              style={styles.bookBtn}
+              onPress={() => router.push(`/public/events/${e.id}` as never)}
+            >
               <Text style={styles.bookBtnText}>{t('mobile.public.event-tickets.book')}</Text>
             </TouchableOpacity>
           </View>

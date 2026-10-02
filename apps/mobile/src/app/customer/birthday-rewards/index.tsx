@@ -14,6 +14,11 @@ export default function BirthdayRewardsScreen(): JSX.Element {
   const { t } = useLocale();
   const isAuthed = useAuthState();
   const q = trpc.birthdayRewards.myReward.useQuery(undefined, { enabled: isAuthed });
+  const claimMut = trpc.birthdayRewards.claim.useMutation({
+    onSuccess: () => {
+      void q.refetch();
+    },
+  });
   if (q.isLoading) return <SkeletonList count={3} />;
   const data = (q.data ?? null) as BirthdayReward | null;
 
@@ -39,7 +44,11 @@ export default function BirthdayRewardsScreen(): JSX.Element {
           <Text style={styles.code}>
             {t('birthdayRewards.code', { code: String(data.promoCode ?? '') })}
           </Text>
-          <TouchableOpacity style={styles.claimBtn}>
+          <TouchableOpacity
+            style={styles.claimBtn}
+            disabled={claimMut.isPending}
+            onPress={() => claimMut.mutate()}
+          >
             <Text style={styles.claimText}>{t('birthdayRewards.claim')}</Text>
           </TouchableOpacity>
         </View>

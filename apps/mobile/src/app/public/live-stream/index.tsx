@@ -1,5 +1,6 @@
 import type { JSX } from 'react';
 import { View, Text, ScrollView, StyleSheet, TouchableOpacity, RefreshControl } from 'react-native';
+import { useRouter } from 'expo-router';
 import { SkeletonList } from '@/components/SkeletonCard';
 import { trpc } from '@/lib/trpc-react';
 import { useLocale } from '@/components/LocaleProvider';
@@ -15,6 +16,7 @@ interface LiveStreamItem {
 
 export default function LiveStreamScreen(): JSX.Element {
   const { t, locale } = useLocale();
+  const router = useRouter();
   const upcomingQ = trpc.liveStream.upcoming.useQuery({});
   const items = (upcomingQ.data as unknown as LiveStreamItem[] | undefined) ?? [];
   if (upcomingQ.isLoading) return <SkeletonList count={4} />;
@@ -45,7 +47,10 @@ export default function LiveStreamScreen(): JSX.Element {
               {s.host ?? ''} · {s.viewers ?? 0}
             </Text>
           </View>
-          <TouchableOpacity style={styles.wb}>
+          <TouchableOpacity
+            style={styles.wb}
+            onPress={() => router.push(`/public/live-stream/${s.id}` as never)}
+          >
             <Text style={styles.wt}>{t('mobile.public.live-stream.watch')}</Text>
           </TouchableOpacity>
         </View>

@@ -2,8 +2,10 @@ import type { JSX } from 'react';
 import { View, Text, ScrollView, StyleSheet, TouchableOpacity, RefreshControl } from 'react-native';
 import { ErrorAlert } from '@/components/ErrorAlert';
 import { SkeletonList } from '@/components/SkeletonCard';
+import { useToast } from '@/components/Toast';
 import { trpc } from '@/lib/trpc-react';
 import { useLocale } from '@/components/LocaleProvider';
+import { copyText } from '@/utils/clipboard';
 
 interface Campaign {
   id?: number;
@@ -18,6 +20,7 @@ interface Campaign {
 
 export default function CampaignsScreen(): JSX.Element {
   const { t } = useLocale();
+  const { showToast } = useToast();
   const campaignsQ = trpc.campaigns.active.useQuery();
 
   if (campaignsQ.isLoading) return <SkeletonList count={4} />;
@@ -67,7 +70,17 @@ export default function CampaignsScreen(): JSX.Element {
                 </Text>
               </View>
             </View>
-            <TouchableOpacity style={styles.copyBtn}>
+            <TouchableOpacity
+              style={styles.copyBtn}
+              onPress={() => {
+                void copyText(c.promoCode ?? '').then((ok) =>
+                  showToast(
+                    ok ? 'success' : 'error',
+                    ok ? t('mobile.clipboard.copied') : t('mobile.clipboard.copy-failed'),
+                  ),
+                );
+              }}
+            >
               <Text style={styles.copyBtnText}>{t('marketing.campaigns.copy')}</Text>
             </TouchableOpacity>
           </View>

@@ -1,5 +1,5 @@
 import type { JSX } from 'react';
-import { View, Text, ScrollView, StyleSheet, TouchableOpacity } from 'react-native';
+import { View, Text, ScrollView, StyleSheet } from 'react-native';
 import { ScreenState } from '@/components/ScreenState';
 import { trpc } from '@/lib/trpc-react';
 import { useLocale } from '@/components/LocaleProvider';
@@ -71,9 +71,9 @@ export default function AdminPromoScreen(): JSX.Element {
           );
         })}
       </ScreenState>
-      <TouchableOpacity style={s.btn}>
+      <View style={s.btn}>
         <Text style={s.btnText}>{t('mobile.admin.promo.add-code')}</Text>
-      </TouchableOpacity>
+      </View>
     </ScrollView>
   );
 }

@@ -1,6 +1,7 @@
 import { View, Text, ScrollView, StyleSheet, TouchableOpacity } from 'react-native';
 import { useState } from 'react';
 import type { JSX } from 'react';
+import { useRouter } from 'expo-router';
 import { useLocale } from '@/components/LocaleProvider';
 
 const MENTOR_LEVELS = [
@@ -12,6 +13,7 @@ const MENTOR_LEVELS = [
 const TOPICS = ['العناية بالبشرة', 'المكياج', 'العناية بالشعر', 'الأظافر', 'العطور', 'التغذية'];
 
 export default function BeautyMentorScreen(): JSX.Element {
+  const router = useRouter();
   const { t } = useLocale();
   const [level, setLevel] = useState('beginner');
   const [selectedTopic, setSelectedTopic] = useState<string | null>(null);
@@ -101,7 +103,10 @@ export default function BeautyMentorScreen(): JSX.Element {
         ))}
       </View>
 
-      <TouchableOpacity style={styles.btn}>
+      <TouchableOpacity
+        style={styles.btn}
+        onPress={() => router.push('/customer/beauty-courses' as never)}
+      >
         <Text style={styles.bt}>{t('beautyMentor.start')}</Text>
       </TouchableOpacity>
     </ScrollView>

@@ -1,5 +1,13 @@
 import type { JSX } from 'react';
-import { View, Text, ScrollView, StyleSheet, TouchableOpacity, RefreshControl } from 'react-native';
+import {
+  View,
+  Text,
+  ScrollView,
+  StyleSheet,
+  TouchableOpacity,
+  RefreshControl,
+  Alert,
+} from 'react-native';
 import { SkeletonList } from '@/components/SkeletonCard';
 import { trpc } from '@/lib/trpc-react';
 import { useLocale } from '@/components/LocaleProvider';
@@ -49,7 +57,12 @@ export default function WhatsAppBotScreen(): JSX.Element {
         ))}
       </View>
 
-      <TouchableOpacity style={styles.btn}>
+      <TouchableOpacity
+        style={styles.btn}
+        onPress={() =>
+          Alert.alert(t('mobile.public.whatsapp-bot.connect'), t('marketing.campaigns.coming-soon'))
+        }
+      >
         <Text style={styles.bt}>{t('mobile.public.whatsapp-bot.connect')}</Text>
       </TouchableOpacity>
     </ScrollView>

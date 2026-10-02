@@ -240,7 +240,7 @@ export default function SkinAnalysisScreen() {
         </View>
       ) : (
         history.map((a) => (
-          <TouchableOpacity key={a.id as number} style={styles.historyCard} activeOpacity={0.7}>
+          <View key={a.id as number} style={styles.historyCard}>
             <View style={styles.histIcon}>
               <Text style={styles.histEmoji}>🧴</Text>
             </View>
@@ -262,7 +262,7 @@ export default function SkinAnalysisScreen() {
               </Text>
             </View>
             <Text style={styles.histArrow}>›</Text>
-          </TouchableOpacity>
+          </View>
         ))
       )}
     </ScrollView>

@@ -1,4 +1,5 @@
 import type { JSX } from 'react';
+import { useState } from 'react';
 import { View, Text, ScrollView, TouchableOpacity, StyleSheet, RefreshControl } from 'react-native';
 import { SkeletonList } from '@/components/SkeletonCard';
 import { trpc } from '@/lib/trpc-react';
@@ -12,6 +13,7 @@ interface HairColor {
 
 export default function HairColorSimScreen(): JSX.Element {
   const { t } = useLocale();
+  const [selected, setSelected] = useState<number | null>(null);
   const q = trpc.hairColorSim.colors.useQuery();
   const colors: HairColor[] = (q.data as unknown as HairColor[] | undefined) ?? [];
 
@@ -35,7 +37,15 @@ export default function HairColorSimScreen(): JSX.Element {
       <Text style={styles.sub}>{t('mobile.hairColorSim.subtitle')}</Text>
       <View style={styles.grid}>
         {colors.map((c, i) => (
-          <TouchableOpacity key={i} style={[styles.color, { backgroundColor: c.hex ?? '#ccc' }]}>
+          <TouchableOpacity
+            key={i}
+            onPress={() => setSelected(i)}
+            style={[
+              styles.color,
+              { backgroundColor: c.hex ?? '#ccc' },
+              selected === i && styles.colorSelected,
+            ]}
+          >
             <Text style={styles.colorName}>{c.nameAr ?? ''}</Text>
           </TouchableOpacity>
         ))}
@@ -58,6 +68,7 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-end',
     padding: 10,
   },
+  colorSelected: { borderWidth: 3, borderColor: '#db2777' },
   colorName: {
     fontSize: 11,
     fontWeight: '600',

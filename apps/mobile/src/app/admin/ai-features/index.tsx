@@ -1,5 +1,5 @@
 import type { JSX } from 'react';
-import { View, Text, ScrollView, StyleSheet, TouchableOpacity } from 'react-native';
+import { View, Text, ScrollView, StyleSheet } from 'react-native';
 import { useLocale } from '@/components/LocaleProvider';
 // NO API: aiFeatures router has no procedure that lists AI feature flags/toggles
 // (only generateDescription/analyzeSentiment admin mutations + customer-side
@@ -48,9 +48,9 @@ export default function AIFeaturesScreen(): JSX.Element {
             <Text style={s.cn}>{f.name}</Text>
             <Text style={s.cd}>{f.desc}</Text>
           </View>
-          <TouchableOpacity style={[s.t, { backgroundColor: f.enabled ? '#059669' : '#6b7280' }]}>
+          <View style={[s.t, { backgroundColor: f.enabled ? '#059669' : '#6b7280' }]}>
             <Text style={s.tt}>{f.enabled ? t('admin.enabled') : t('admin.disabled')}</Text>
-          </TouchableOpacity>
+          </View>
         </View>
       ))}
     </ScrollView>

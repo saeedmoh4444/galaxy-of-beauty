@@ -98,9 +98,9 @@ export default function BeautyBudgetPlannerScreen(): JSX.Element {
           );
         })}
 
-        <TouchableOpacity style={styles.btn}>
+        <View style={styles.btn}>
           <Text style={styles.bt}>{t('beautyBudgetPlanner.save')}</Text>
-        </TouchableOpacity>
+        </View>
       </ScrollView>
     </ScreenState>
   );

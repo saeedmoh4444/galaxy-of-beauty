@@ -54,7 +54,7 @@ export default function MarketplaceScreen(): JSX.Element {
 
       <View style={styles.grid}>
         {products.map((p) => (
-          <TouchableOpacity key={p.id} style={styles.card}>
+          <View key={p.id} style={styles.card}>
             <View style={styles.ci}>
               <Text style={styles.ce}>{p.emoji ?? ''}</Text>
             </View>
@@ -62,7 +62,7 @@ export default function MarketplaceScreen(): JSX.Element {
             <Text style={styles.cp}>
               {t('mobile.public.currency', { price: p.price?.toLocaleString() ?? '' })}
             </Text>
-          </TouchableOpacity>
+          </View>
         ))}
       </View>
     </ScrollView>

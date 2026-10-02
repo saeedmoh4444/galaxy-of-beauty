@@ -16,8 +16,8 @@ import { trpc } from '@/lib/trpc-react';
 
 interface AssistantMessage {
   id?: number;
-  content?: string;
-  role?: string;
+  message?: string;
+  isAgent?: boolean;
 }
 
 export default function AIAssistantScreen(): JSX.Element {
@@ -26,6 +26,16 @@ export default function AIAssistantScreen(): JSX.Element {
   const [input, setInput] = useState('');
   const q = trpc.liveChat.history.useQuery(undefined, { enabled: isAuthed });
   const messages: AssistantMessage[] = (q.data as AssistantMessage[] | undefined) ?? [];
+  const sendMut = trpc.liveChat.send.useMutation({
+    onSuccess: () => {
+      setInput('');
+      void q.refetch();
+    },
+  });
+  const send = () => {
+    if (!input.trim()) return;
+    sendMut.mutate({ message: input.trim() });
+  };
 
   if (q.isLoading)
     return (
@@ -52,8 +62,8 @@ export default function AIAssistantScreen(): JSX.Element {
       >
         <Text style={styles.t}>{t('aiAssistant.title')}</Text>
         {messages.map((m, i) => (
-          <View key={i} style={[styles.msg, m.role === 'user' ? styles.user : styles.bot]}>
-            <Text style={styles.msgText}>{m.content as string}</Text>
+          <View key={i} style={[styles.msg, m.isAgent ? styles.bot : styles.user]}>
+            <Text style={styles.msgText}>{m.message as string}</Text>
           </View>
         ))}
       </ScrollView>
@@ -65,7 +75,7 @@ export default function AIAssistantScreen(): JSX.Element {
           style={styles.input}
           placeholderTextColor="#9ca3af"
         />
-        <TouchableOpacity style={styles.sendBtn}>
+        <TouchableOpacity style={styles.sendBtn} onPress={send}>
           <Text style={styles.sendBtnText}>📤</Text>
         </TouchableOpacity>
       </View>
