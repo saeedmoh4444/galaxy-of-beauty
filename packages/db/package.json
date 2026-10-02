@@ -23,7 +23,9 @@
     "db:seed:enrich": "tsx prisma/seed-enrich.ts",
     "db:studio": "prisma studio",
     "type-check": "tsc --noEmit",
-    "lint": "eslint . --max-warnings 20"
+    "lint": "eslint . --max-warnings 20",
+    "test": "vitest run",
+    "test:unit": "vitest run"
   },
   "dependencies": {
     "@prisma/adapter-pg": "^7.9.1",
@@ -36,6 +38,7 @@
     "@types/node": "^26.6.3",
     "prisma": "^7.9.1",
     "tsx": "^4.23.15",
-    "typescript": "^6.0.3"
+    "typescript": "^6.0.3",
+    "vitest": "^5.0.3"
   }
 }

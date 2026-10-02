@@ -141,6 +141,11 @@ jobs:
           DATABASE_URL: 'postgresql://gob_admin:gob_test_pass@localhost:5432/Galaxy_of_Beauty_db?schema=public'
       # Mobile pure-logic unit tests (node env — no react-native imports)
       - run: pnpm --filter @galaxy/mobile test:unit
+      # Shared/config/ui/db unit tests (audit stage 10 — previously zero)
+      - run: pnpm --filter @galaxy/shared test:unit
+      - run: pnpm --filter @galaxy/config test:unit
+      - run: pnpm --filter @galaxy/ui test
+      - run: pnpm --filter @galaxy/db test
 
   # ── Build ─────────────────────────────────────────────────
   build:
