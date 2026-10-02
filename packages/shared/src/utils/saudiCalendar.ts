@@ -15,11 +15,21 @@ const FRIDAY = 5; // JS getDay() — 0=Sun, 5=Fri
 const FRIDAY_PRAYER_START = 11; // 11:00 AM
 const FRIDAY_PRAYER_END = 14; // 2:00 PM
 
+// Saudi National Day — fixed Gregorian date (Sept 23).
+const NATIONAL_DAY_MONTH = 8; // getMonth() is 0-based
+const NATIONAL_DAY_DAY = 23;
+
+// Hajj season surrounds Eid al-Adha: Arafah (9th Dhul-Hijjah) to the final
+// tawaf days (13th). Eid al-Adha is the 10th, so the window is [-2, +3].
+const HAJJ_BEFORE_DAYS = 2;
+const HAJJ_AFTER_DAYS = 3;
+
 export function getSaudiSeason(date: Date = new Date()): {
   isRamadan: boolean;
   isEidAlFitr: boolean;
   isEidAlAdha: boolean;
   isHajj: boolean;
+  isNationalDay: boolean;
   isFriday: boolean;
   isFridayPrayer(hour?: number): boolean;
   seasonLabel: string | null;
@@ -32,6 +42,7 @@ export function getSaudiSeason(date: Date = new Date()): {
   let isRamadan = false;
   let isEidAlFitr = false;
   let isEidAlAdha = false;
+  let isHajj = false;
 
   for (const r of RAMADAN_DATES) {
     if (today >= r.start && today <= r.end) isRamadan = true;
@@ -43,10 +54,23 @@ export function getSaudiSeason(date: Date = new Date()): {
     const adhaEnd = new Date(r.eidAlAdha);
     adhaEnd.setDate(adhaEnd.getDate() + 4);
     if (today >= r.eidAlAdha && today <= adhaEnd.toISOString().slice(0, 10)) isEidAlAdha = true;
+    // Hajj season: Arafah through the final tawaf days around Eid al-Adha.
+    // Derived from the same ±1-day table — no separate Hijri calendar needed.
+    const hajjStart = new Date(r.eidAlAdha);
+    hajjStart.setDate(hajjStart.getDate() - HAJJ_BEFORE_DAYS);
+    const hajjEnd = new Date(r.eidAlAdha);
+    hajjEnd.setDate(hajjEnd.getDate() + HAJJ_AFTER_DAYS);
+    if (
+      today >= hajjStart.toISOString().slice(0, 10) &&
+      today <= hajjEnd.toISOString().slice(0, 10)
+    ) {
+      isHajj = true;
+    }
   }
 
   const isFriday = dayOfWeek === FRIDAY;
-  const isHajj = false; // Requires proper Hijri calendar for Dhul Hijjah detection
+  const isNationalDay =
+    date.getMonth() === NATIONAL_DAY_MONTH && date.getDate() === NATIONAL_DAY_DAY;
 
   function isFridayPrayer(h: number = hour): boolean {
     return isFriday && h >= FRIDAY_PRAYER_START && h < FRIDAY_PRAYER_END;
@@ -71,6 +95,7 @@ export function getSaudiSeason(date: Date = new Date()): {
     isEidAlFitr,
     isEidAlAdha,
     isHajj,
+    isNationalDay,
     isFriday,
     isFridayPrayer,
     seasonLabel,
