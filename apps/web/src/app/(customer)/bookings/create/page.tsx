@@ -183,7 +183,8 @@ export default function CreateBookingPage(): JSX.Element {
         }
       }
       addToast('success', t('booking.created-success'));
-      router.push(`/bookings`);
+      // Audit gap: the confetti success page existed but nothing reached it.
+      router.push('/bookings/confirm');
     },
     onError: () => {
       addToast('error', t('booking.create-failed'));

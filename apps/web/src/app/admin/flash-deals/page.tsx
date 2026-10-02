@@ -3,19 +3,11 @@ import { useState } from 'react';
 import type { JSX } from 'react';
 import { api } from '@/lib/trpc';
 import { Card, CardListSkeleton, Button, Input, formatCurrency, useAuth } from '@galaxy/ui';
+import { localize } from '@galaxy/shared';
 import { useLocale } from '@/components/LocaleProvider';
 
-const SERVICES = [
-  { id: 1, name: 'مانيكير', emoji: '💅' },
-  { id: 2, name: 'باديكير', emoji: '🦶' },
-  { id: 3, name: 'تنظيف بشرة', emoji: '🧖' },
-  { id: 4, name: 'مساج', emoji: '💆' },
-  { id: 5, name: 'صبغ شعر', emoji: '💈' },
-  { id: 6, name: 'مكياج', emoji: '💄' },
-];
-
 export default function AdminFlashDealsPage(): JSX.Element {
-  const { t } = useLocale();
+  const { t, locale } = useLocale();
   const { isAuthenticated } = useAuth();
   // Gated per the 2026-09-06 sweep (stale logged-out tabs).
   const { data: active, isLoading } = api.flashDeals.active.useQuery(undefined, {
@@ -24,8 +16,16 @@ export default function AdminFlashDealsPage(): JSX.Element {
     data: Array<Record<string, unknown>> | undefined;
     isLoading: boolean;
   };
+  // Audit gap: the create form submitted hardcoded demo ids (1-6) as real
+  // service ids. Use the real catalog instead.
+  const { data: servicesData } = api.services.list.useQuery(
+    { limit: 100 },
+    { enabled: isAuthenticated },
+  ) as { data: unknown };
+  const services = ((servicesData as { items?: Array<Record<string, unknown>> } | undefined)
+    ?.items ?? []) as Array<Record<string, unknown>>;
   const createMut = api.flashDeals.create.useMutation();
-  const [svcId, setSvcId] = useState(1);
+  const [svcId, setSvcId] = useState(0);
   const [discount, setDiscount] = useState(30);
   const [hours, setHours] = useState(24);
   const [maxRedemptions, setMax] = useState(20);
@@ -68,9 +68,12 @@ export default function AdminFlashDealsPage(): JSX.Element {
               onChange={(e) => setSvcId(Number(e.target.value))}
               className="rounded-lg border px-3 py-2 text-sm border-edge bg-surface-elevated"
             >
-              {SERVICES.map((s) => (
-                <option key={s.id} value={s.id}>
-                  {s.emoji} {s.name}
+              <option value={0} disabled>
+                {t('admin.pricing.service')}
+              </option>
+              {services.map((s) => (
+                <option key={s.id as number} value={s.id as number}>
+                  {localize(s.titleJson as never, locale)}
                 </option>
               ))}
             </select>
@@ -103,6 +106,7 @@ export default function AdminFlashDealsPage(): JSX.Element {
           </div>
           <Button
             onClick={() =>
+              svcId > 0 &&
               createMut.mutate({
                 serviceId: svcId,
                 discountPercent: discount,
@@ -111,6 +115,7 @@ export default function AdminFlashDealsPage(): JSX.Element {
               })
             }
             loading={createMut.isPending}
+            disabled={svcId === 0}
             className="w-full mt-3"
           >
             {t('admin.flash-deals.create-button')}
