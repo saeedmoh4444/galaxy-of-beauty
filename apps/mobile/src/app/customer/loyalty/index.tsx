@@ -1,5 +1,6 @@
 import type { JSX } from 'react';
-import { View, Text, FlatList, StyleSheet } from 'react-native';
+import { View, Text, FlatList, Pressable, StyleSheet } from 'react-native';
+import { router } from 'expo-router';
 import { ScreenState } from '@/components/ScreenState';
 import { trpc } from '@/lib/trpc-react';
 import { useLocale } from '@/components/LocaleProvider';
@@ -56,9 +57,13 @@ export default function LoyaltyScreen(): JSX.Element {
     >
       <Text style={styles.title}>{t('mobile.loyalty')}</Text>
 
-      {/* 8.2 — active points boosts */}
+      {/* 8.2 — active points boosts (tap for the full boosts screen) */}
       {boosts.length > 0 && (
-        <View testID="loyalty-boost-banner" style={styles.boostBanner}>
+        <Pressable
+          testID="loyalty-boost-banner"
+          style={styles.boostBanner}
+          onPress={() => router.push('/customer/loyalty/boosts')}
+        >
           {boosts.map((b) => (
             <Text key={b.id as number} style={styles.boostText}>
               ⚡{' '}
@@ -71,7 +76,8 @@ export default function LoyaltyScreen(): JSX.Element {
               })}
             </Text>
           ))}
-        </View>
+          <Text style={styles.boostLink}>{t('mobile.loyaltyBoosts.title')} →</Text>
+        </Pressable>
       )}
 
       {/* Tier Card */}
@@ -148,6 +154,7 @@ const styles = StyleSheet.create({
     marginBottom: 16,
   },
   boostText: { fontSize: 12, fontWeight: '700', color: '#92400e', textAlign: 'right' },
+  boostLink: { fontSize: 12, fontWeight: '800', color: '#db2777', marginTop: 6 },
   tierEmoji: { fontSize: 48, marginBottom: 8 },
   tierLabel: { fontSize: 20, fontWeight: '800', color: '#ffffff' },
   points: { fontSize: 28, fontWeight: '800', color: '#ffffff', marginTop: 8 },

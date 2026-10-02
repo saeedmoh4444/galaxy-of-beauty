@@ -28,6 +28,22 @@ export const mobileCoreMessages = {
   'mobile.slots': { ar: 'المواعيد', en: 'Slots' },
   'mobile.disputes': { ar: 'النزاعات', en: 'Disputes' },
   'mobile.loyalty': { ar: 'الولاء', en: 'Loyalty' },
+  'mobile.loyaltyBoosts.title': { ar: 'مضاعفات النقاط', en: 'Points Boosts' },
+  'mobile.loyaltyBoosts.subtitle': {
+    ar: 'فترات مضاعفة النقاط النشطة حالياً',
+    en: 'Active points multipliers right now',
+  },
+  'mobile.loyaltyBoosts.empty': {
+    ar: 'لا توجد مضاعفات نشطة حالياً — عودي لاحقاً',
+    en: 'No active boosts right now — check back soon',
+  },
+  'mobile.loyaltyBoosts.live': { ar: 'نشطة الآن', en: 'Live now' },
+  'mobile.loyaltyBoosts.window': { ar: 'الفترة', en: 'Window' },
+  'mobile.loyaltyBoosts.howTitle': { ar: 'كيف تعمل المضاعفات؟', en: 'How do boosts work?' },
+  'mobile.loyaltyBoosts.howBody': {
+    ar: 'خلال فترة المضاعفة، كل نقطة تكسبينها من الحجوزات والطلبات تُحسب بالمعامل الظاهر. لا يلزمك أي تفعيل — تُطبق تلقائياً.',
+    en: 'During a boost window, every point you earn from bookings and orders counts at the shown multiplier. Nothing to activate — applied automatically.',
+  },
   'mobile.skinAnalysis': { ar: 'تحليل البشرة', en: 'Skin Analysis' },
   'mobile.serviceDetails': { ar: 'تفاصيل الخدمة', en: 'Service Details' },
   'mobile.myReviews': { ar: 'تقييماتي', en: 'My Reviews' },

@@ -147,6 +147,10 @@ function RootNavigator() {
                 name="customer/loyalty/index"
                 options={{ title: t('mobile.loyalty') }}
               />
+              <Stack.Screen
+                name="customer/loyalty/boosts"
+                options={{ title: t('mobile.loyaltyBoosts.title') }}
+              />
               <Stack.Screen name="customer/promo/index" options={{ title: t('mobile.promo') }} />
 
               {/* Technician screens */}
