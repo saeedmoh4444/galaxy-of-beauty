@@ -190,6 +190,103 @@ export const mobileCustomerBMessages = {
     en: 'Follow-up progress: {progress}%',
   },
   'mobile.postTreatment.instructions': { ar: 'التعليمات', en: 'Instructions' },
+  'mobile.postTreatment.aftercare-facial-1': { ar: 'لا تلمسي وجهك', en: 'Do not touch your face' },
+  'mobile.postTreatment.aftercare-facial-2': {
+    ar: 'تجنبي المكياج لمدة 24 ساعة',
+    en: 'Avoid makeup for 24 hours',
+  },
+  'mobile.postTreatment.aftercare-facial-3': { ar: 'استخدمي واقي الشمس', en: 'Use sunscreen' },
+  'mobile.postTreatment.aftercare-facial-4': {
+    ar: 'اشربي الكثير من الماء',
+    en: 'Drink plenty of water',
+  },
+  'mobile.postTreatment.aftercare-waxing-1': {
+    ar: 'تجنبي الشمس لمدة 48 ساعة',
+    en: 'Avoid sun for 48 hours',
+  },
+  'mobile.postTreatment.aftercare-waxing-2': {
+    ar: 'لا تستخدمي المقشرات',
+    en: 'Do not use exfoliants',
+  },
+  'mobile.postTreatment.aftercare-waxing-3': {
+    ar: 'ارتدي ملابس قطنية',
+    en: 'Wear cotton clothing',
+  },
+  'mobile.postTreatment.aftercare-waxing-4': { ar: 'رطبي المنطقة', en: 'Moisturize the area' },
+  'mobile.postTreatment.aftercare-hair-color-1': {
+    ar: 'لا تغسلي شعرك لمدة 48 ساعة',
+    en: 'Do not wash your hair for 48 hours',
+  },
+  'mobile.postTreatment.aftercare-hair-color-2': {
+    ar: 'استخدمي شامبو خالٍ من الكبريتات',
+    en: 'Use sulfate-free shampoo',
+  },
+  'mobile.postTreatment.aftercare-hair-color-3': { ar: 'تجنبي الحرارة', en: 'Avoid heat' },
+  'mobile.postTreatment.aftercare-hair-color-4': {
+    ar: 'استخدمي بلسم مرطب',
+    en: 'Use a hydrating conditioner',
+  },
+  'mobile.postTreatment.aftercare-nails-1': { ar: 'تجنبي الماء الساخن', en: 'Avoid hot water' },
+  'mobile.postTreatment.aftercare-nails-2': { ar: 'استخدمي كريم اليدين', en: 'Use hand cream' },
+  'mobile.postTreatment.aftercare-nails-3': {
+    ar: 'لا تستخدمي أظافرك كأدوات',
+    en: 'Do not use your nails as tools',
+  },
+  'mobile.postTreatment.aftercare-nails-4': { ar: 'زيوت الأظافر', en: 'Nail oils' },
+  'mobile.postTreatment.day-1': { ar: 'اليوم 1', en: 'Day 1' },
+  'mobile.postTreatment.day-2-3': { ar: 'اليوم 2-3', en: 'Day 2-3' },
+  'mobile.postTreatment.day-4-7': { ar: 'اليوم 4-7', en: 'Day 4-7' },
+  'mobile.postTreatment.day-4-plus': { ar: 'اليوم 4 وما بعد', en: 'Day 4+' },
+  'mobile.postTreatment.day-1-2': { ar: 'اليوم 1-2', en: 'Day 1-2' },
+  'mobile.postTreatment.day-3-5': { ar: 'اليوم 3-5', en: 'Day 3-5' },
+  'mobile.postTreatment.day-6-plus': { ar: 'اليوم 6 وما بعد', en: 'Day 6+' },
+  'mobile.postTreatment.day-2-7': { ar: 'اليوم 2-7', en: 'Day 2-7' },
+  'mobile.postTreatment.week-2-plus': { ar: 'الأسبوع 2 وما بعد', en: 'Week 2+' },
+  'mobile.postTreatment.action-facial-day-1': {
+    ar: 'لا تغسلي وجهك — اتركي المنتجات',
+    en: 'Do not wash your face — leave the products',
+  },
+  'mobile.postTreatment.action-facial-day-2-3': {
+    ar: 'غسول لطيف + مرطب',
+    en: 'Gentle cleanser + moisturizer',
+  },
+  'mobile.postTreatment.action-facial-day-4-7': {
+    ar: 'عودي إلى روتينك المعتاد',
+    en: 'Return to your normal routine',
+  },
+  'mobile.postTreatment.action-waxing-day-1': {
+    ar: 'لا تلمسي المنطقة — تجنبي الحرارة',
+    en: 'Do not touch the area — avoid heat',
+  },
+  'mobile.postTreatment.action-waxing-day-2-3': {
+    ar: 'ترطيب خفيف + ملابس واسعة',
+    en: 'Light moisturizing + loose clothing',
+  },
+  'mobile.postTreatment.action-waxing-day-4-plus': {
+    ar: 'تقشير لطيف لمنع نمو الشعر تحت الجلد',
+    en: 'Gentle exfoliation to prevent ingrown hairs',
+  },
+  'mobile.postTreatment.action-hair-color-day-1-2': {
+    ar: 'لا تغسلي شعرك — ثبتي اللون',
+    en: 'Do not wash — set the color',
+  },
+  'mobile.postTreatment.action-hair-color-day-3-5': {
+    ar: 'اشطفيه بماء بارد + بلسم',
+    en: 'Rinse with cold water + conditioner',
+  },
+  'mobile.postTreatment.action-hair-color-day-6-plus': {
+    ar: 'روتينك المعتاد مع حماية من الحرارة',
+    en: 'Normal routine with heat protection',
+  },
+  'mobile.postTreatment.action-nails-day-1': { ar: 'حافظي على جفاف الأظافر', en: 'Keep nails dry' },
+  'mobile.postTreatment.action-nails-day-2-7': {
+    ar: 'ترطيب يومي + زيت أظافر',
+    en: 'Moisturize daily + nail oil',
+  },
+  'mobile.postTreatment.action-nails-week-2-plus': {
+    ar: 'لمسات عند الحاجة',
+    en: 'Touch-ups when needed',
+  },
   'mobile.postTreatment.timeline': { ar: 'الجدول الزمني', en: 'Timeline' },
 
   // ---- post-care ----
@@ -387,7 +484,10 @@ export const mobileCustomerBMessages = {
     ar: 'اكتشفي أحدث الصيحات والفنيات المميزات',
     en: 'Discover the latest trends and top service providers',
   },
-  'mobile.social.tab-feed': { ar: 'قبل وبعد', en: 'Before & After' },
+  'mobile.social.tab-feed': { ar: 'الرئيسية', en: 'Feed' },
+  'mobile.social.tab-trending': { ar: 'الرائج', en: 'Trending' },
+  'mobile.social.tab-spotlight': { ar: 'التسليط', en: 'Spotlight' },
+  'mobile.social.tab-tips': { ar: 'نصائح', en: 'Tips' },
   'mobile.social.trending-services': { ar: 'الخدمات الرائجة', en: 'Trending Services' },
   'mobile.social.bookings-count': { ar: '{count} حجز', en: '{count} bookings' },
   'mobile.social.spotlight-technicians': { ar: 'فنيات مميزات', en: 'Featured Service Providers' },
@@ -481,6 +581,12 @@ export const mobileCustomerBMessages = {
     ar: 'حجز لصالح فرد من العائلة',
     en: 'Book for a family member',
   },
+  'mobile.booking.pref.gentle': { ar: 'لطيف', en: 'Gentle' },
+  'mobile.booking.pref.hypoallergenic': { ar: 'مضاد للحساسية', en: 'Hypoallergenic' },
+  'mobile.booking.pref.fragrance_free': { ar: 'خالٍ من العطور', en: 'Fragrance-free' },
+  'mobile.booking.pref.natural': { ar: 'طبيعي', en: 'Natural' },
+  'mobile.booking.pref.quick': { ar: 'سريع', en: 'Quick' },
+  'mobile.booking.pref.quiet': { ar: 'هادئ', en: 'Quiet' },
   'mobile.booking.family-member-none': { ar: 'لا (حجز لنفسي)', en: 'No (book for myself)' },
   'mobile.booking.on-behalf-of': { ar: 'على حساب: {name}', en: 'On behalf of: {name}' },
   'mobile.booking.per-hour': { ar: 'لكل ساعة', en: 'per hour' },

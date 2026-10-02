@@ -286,6 +286,7 @@ export const mobilePublicMessages = {
   },
   'mobile.public.ingredient-analyzer.analyze': { ar: 'تحليل', en: 'Analyze' },
   'mobile.public.gallery.title': { ar: 'معرض الصور', en: 'Photo Gallery' },
+  'mobile.public.api-docs.title': { ar: 'توثيق الواجهات البرمجية', en: 'API Docs' },
   'mobile.public.challenges.title': { ar: 'تحديات الجمال', en: 'Beauty Challenges' },
   'mobile.public.challenges.subtitle': {
     ar: 'أكملي التحديات واكسبي مكافآت',
