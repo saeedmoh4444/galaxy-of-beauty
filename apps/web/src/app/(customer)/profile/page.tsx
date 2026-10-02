@@ -223,6 +223,22 @@ export default function ProfilePage(): JSX.Element {
                 </div>
               </Card>
             )}
+
+            {/* Security — 2FA entry point (audit gap: /2fa was orphaned) */}
+            <Card padding="lg">
+              <div className="flex items-center justify-between gap-4">
+                <div>
+                  <p className="font-bold text-text-primary">{t('auth.2fa-title')}</p>
+                  <p className="mt-1 text-sm text-text-secondary">{t('auth.2fa-subtitle')}</p>
+                </div>
+                <Link
+                  href="/2fa"
+                  className="shrink-0 rounded-lg bg-brand-600 px-4 py-2 text-sm font-semibold text-white hover:bg-brand-700"
+                >
+                  {t('auth.2fa-title')}
+                </Link>
+              </div>
+            </Card>
           </>
         )}
 

@@ -1,7 +1,8 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import type { JSX } from 'react';
+import QRCode from 'qrcode';
 import { api } from '@/lib/trpc';
 import { Button, Card, CardSkeleton, ErrorAlert, Input } from '@galaxy/ui';
 import { useLocale } from '@/components/LocaleProvider';
@@ -28,6 +29,28 @@ export default function TwoFactorPage(): JSX.Element {
 
   // Setup result data (secret, otpauthUrl)
   const setupData = setupMut.data;
+
+  // Render the otpauth URL as a QR locally — the TOTP secret never leaves
+  // the browser (no third-party QR image service).
+  const [qrDataUrl, setQrDataUrl] = useState<string | null>(null);
+  useEffect(() => {
+    let cancelled = false;
+    const url = (setupData as { otpauthUrl?: string } | undefined)?.otpauthUrl;
+    if (!url) {
+      setQrDataUrl(null);
+      return;
+    }
+    void QRCode.toDataURL(url, { width: 320, margin: 1 })
+      .then((dataUrl) => {
+        if (!cancelled) setQrDataUrl(dataUrl);
+      })
+      .catch(() => {
+        if (!cancelled) setQrDataUrl(null);
+      });
+    return () => {
+      cancelled = true;
+    };
+  }, [setupData]);
 
   const handleVerify = () => {
     if (verifyCode.length !== 6) {
@@ -110,9 +133,18 @@ export default function TwoFactorPage(): JSX.Element {
                   <p className="mb-2 text-sm font-medium text-text-primary">
                     {t('auth.2fa-scan-qr')}
                   </p>
-                  {/* QR Code placeholder */}
+                  {/* QR rendered locally from the otpauth URL */}
                   <div className="mx-auto flex h-40 w-40 items-center justify-center rounded-xl border-2 border-dashed border-edge bg-surface-elevated">
-                    <span className="text-xs text-text-tertiary">QR Code</span>
+                    {qrDataUrl ? (
+                      // eslint-disable-next-line @next/next/no-img-element -- local data-URL QR; next/image cannot optimize it
+                      <img
+                        src={qrDataUrl}
+                        alt={t('auth.2fa-scan-qr')}
+                        className="h-36 w-36 rounded-lg"
+                      />
+                    ) : (
+                      <span className="text-xs text-text-tertiary">QR Code</span>
+                    )}
                   </div>
                 </div>
 
