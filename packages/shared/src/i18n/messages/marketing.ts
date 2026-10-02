@@ -2270,6 +2270,7 @@ export const marketingMessages = {
     en: 'Galaxy of Beauty reserves the right to amend these terms at any time. You will be notified of any material changes via email or through the platform.',
   },
   'marketing.tutorials.difficulty-beginner': { ar: 'مبتدئ', en: 'Beginner' },
+  'marketing.tutorials.difficulty-unknown': { ar: 'غير محدد', en: 'Unknown difficulty' },
   'marketing.tutorials.difficulty-intermediate': { ar: 'متوسط', en: 'Intermediate' },
   'marketing.tutorials.difficulty-advanced': { ar: 'متقدم', en: 'Advanced' },
   'marketing.tutorials.cat-makeup': { ar: 'مكياج', en: 'Makeup' },

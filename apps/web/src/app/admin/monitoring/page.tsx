@@ -26,6 +26,7 @@ const SERVICE_LABEL_KEYS: Record<string, TranslationKey> = {
   api: 'admin.monitoring.svc-api',
   socket: 'admin.monitoring.svc-socket',
   payments: 'admin.monitoring.svc-payments',
+  sentry: 'admin.monitoring.svc-sentry',
 };
 
 export default function MonitoringPage(): JSX.Element {

@@ -155,7 +155,7 @@ const INFO_LINKS: MoreLink[] = [
   { href: '/public/beauty-stats', key: 'mobile.public.beauty-stats.title', emoji: '🧮' },
   { href: '/public/terms', key: 'mobile.public.terms.title', emoji: '📜' },
   // No i18n title key on this screen (hardcoded heading) — plain label.
-  { href: '/public/api-docs', key: 'API Docs' as TranslationKey, emoji: '💻' },
+  { href: '/public/api-docs', key: 'mobile.public.api-docs.title' as TranslationKey, emoji: '💻' },
   { href: '/public/onboarding', key: 'mobile.public.onboarding.start', emoji: '🚀' },
 ];
 

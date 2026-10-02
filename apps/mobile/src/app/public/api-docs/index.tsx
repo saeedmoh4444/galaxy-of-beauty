@@ -2,6 +2,7 @@ import type { JSX } from 'react';
 import { View, Text, ScrollView, StyleSheet, RefreshControl } from 'react-native';
 import { SkeletonList } from '@/components/SkeletonCard';
 import { trpc } from '@/lib/trpc-react';
+import { useLocale } from '@/components/LocaleProvider';
 
 interface ApiDocsData {
   title?: string;
@@ -10,6 +11,7 @@ interface ApiDocsData {
 }
 
 export default function ApiDocsScreen(): JSX.Element {
+  const { t } = useLocale();
   const docsQ = trpc.apiDocs.reference.useQuery();
   if (docsQ.isLoading) return <SkeletonList count={4} />;
   const data = docsQ.data as ApiDocsData | null;
@@ -27,7 +29,7 @@ export default function ApiDocsScreen(): JSX.Element {
         />
       }
     >
-      <Text style={styles.t}> API Docs</Text>
+      <Text style={styles.t}>{t('mobile.public.api-docs.title')}</Text>
       {data && (
         <View style={styles.card}>
           <Text style={styles.ttl}>

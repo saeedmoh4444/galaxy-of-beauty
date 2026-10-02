@@ -680,6 +680,7 @@ export const adminMessages = {
   'admin.monitoring.svc-api': { ar: 'API', en: 'API' },
   'admin.monitoring.svc-socket': { ar: 'Socket.IO', en: 'Socket.IO' },
   'admin.monitoring.svc-payments': { ar: 'المدفوعات', en: 'Payments' },
+  'admin.monitoring.svc-sentry': { ar: 'سنتري', en: 'Sentry' },
   'admin.monitoring.title': { ar: 'مراقبة المنصة', en: 'Platform Monitoring' },
   'admin.monitoring.subtitle': {
     ar: 'صحة المنصة في الوقت الحقيقي — يعمل منذ {uptime}',
