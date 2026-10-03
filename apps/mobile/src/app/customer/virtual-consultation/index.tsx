@@ -4,6 +4,7 @@ import type { JSX } from 'react';
 import { ErrorAlert } from '@/components/ErrorAlert';
 import { Icon } from '@/components/Icon';
 import { SkeletonList } from '@/components/SkeletonCard';
+import type { TranslationKey } from '@galaxy/shared';
 import { useAuthState } from '@/hooks/useAuthState';
 import { trpc } from '@/lib/trpc-react';
 import { useLocale } from '@/components/LocaleProvider';
@@ -14,42 +15,72 @@ interface ConsultationBooking {
   status?: string;
 }
 
-const CONSULTANTS = [
+interface Consultant {
+  key: string;
+  emoji: string;
+  nameKey: TranslationKey;
+  specialtyKey: TranslationKey;
+  price: number;
+  rating: number;
+  slotKeys: TranslationKey[];
+}
+
+const CONSULTANTS: Consultant[] = [
   {
     key: 'skincare',
     emoji: '🧖',
-    name: 'اخصائية بشرة',
-    specialty: 'تحليل البشرة وتشخيص المشاكل',
+    nameKey: 'virtualConsultation.consultant.skincare.name',
+    specialtyKey: 'virtualConsultation.consultant.skincare.specialty',
     price: 150,
     rating: 4.9,
-    slots: ['9:00 ص', '11:00 ص', '2:00 م', '5:00 م'],
+    slotKeys: [
+      'virtualConsultation.slot.9am',
+      'virtualConsultation.slot.11am',
+      'virtualConsultation.slot.2pm',
+      'virtualConsultation.slot.5pm',
+    ],
   },
   {
     key: 'makeup',
     emoji: '💄',
-    name: 'خبيرة مكياج',
-    specialty: 'استشارة مكياج للمناسبات',
+    nameKey: 'virtualConsultation.consultant.makeup.name',
+    specialtyKey: 'virtualConsultation.consultant.makeup.specialty',
     price: 120,
     rating: 4.8,
-    slots: ['10:00 ص', '1:00 م', '4:00 م', '7:00 م'],
+    slotKeys: [
+      'virtualConsultation.slot.10am',
+      'virtualConsultation.slot.1pm',
+      'virtualConsultation.slot.4pm',
+      'virtualConsultation.slot.7pm',
+    ],
   },
   {
     key: 'hair',
     emoji: '💇',
-    name: 'مصففة شعر',
-    specialty: 'استشارة تسريحات وعناية',
+    nameKey: 'virtualConsultation.consultant.hair.name',
+    specialtyKey: 'virtualConsultation.consultant.hair.specialty',
     price: 100,
     rating: 4.7,
-    slots: ['9:00 ص', '12:00 م', '3:00 م', '6:00 م'],
+    slotKeys: [
+      'virtualConsultation.slot.9am',
+      'virtualConsultation.slot.12pm',
+      'virtualConsultation.slot.3pm',
+      'virtualConsultation.slot.6pm',
+    ],
   },
   {
     key: 'nutrition',
     emoji: '🥗',
-    name: 'اخصائية تغذية',
-    specialty: 'تغذية البشرة والشعر',
+    nameKey: 'virtualConsultation.consultant.nutrition.name',
+    specialtyKey: 'virtualConsultation.consultant.nutrition.specialty',
     price: 130,
     rating: 4.9,
-    slots: ['8:00 ص', '11:00 ص', '2:00 م', '5:00 م'],
+    slotKeys: [
+      'virtualConsultation.slot.8am',
+      'virtualConsultation.slot.11am',
+      'virtualConsultation.slot.2pm',
+      'virtualConsultation.slot.5pm',
+    ],
   },
 ];
 
@@ -60,7 +91,7 @@ export default function VirtualConsultationScreen(): JSX.Element {
     enabled: isAuthed,
   });
   const [selected, setSelected] = useState<string | null>(null);
-  const [slot, setSlot] = useState<string | null>(null);
+  const [slot, setSlot] = useState<TranslationKey | null>(null);
   const [booked, setBooked] = useState(false);
 
   const consultant = CONSULTANTS.find((c) => c.key === selected);
@@ -76,7 +107,7 @@ export default function VirtualConsultationScreen(): JSX.Element {
     bookMut.mutate({
       consultantType: consultant.key,
       scheduledAt: new Date().toISOString(),
-      slot,
+      slot: t(slot),
       price: consultant.price,
     });
   };
@@ -141,15 +172,18 @@ export default function VirtualConsultationScreen(): JSX.Element {
           >
             <Text style={{ fontSize: 40, textAlign: 'center' }}>{c.emoji}</Text>
             <Text style={{ fontWeight: '700', fontSize: 14, textAlign: 'center', marginTop: 8 }}>
-              {c.name}
+              {t(c.nameKey)}
             </Text>
             <Text style={{ fontSize: 11, color: '#6b7280', textAlign: 'center' }}>
-              {c.specialty}
+              {t(c.specialtyKey)}
             </Text>
             <Text
               style={{ fontWeight: '700', color: '#db2777', textAlign: 'center', marginTop: 4 }}
             >
-              {c.price} ر.س · {c.rating}
+              {t('mobile.virtualConsultation.price-rating', {
+                price: c.price,
+                rating: c.rating,
+              })}
             </Text>
           </TouchableOpacity>
         ))}
@@ -159,17 +193,19 @@ export default function VirtualConsultationScreen(): JSX.Element {
         <View style={{ marginTop: 16 }}>
           <Text style={{ fontSize: 16, fontWeight: '700', color: '#111827', marginBottom: 8 }}>
             {t('mobile.virtualConsultation.choose-time', {
-              name: `${consultant.emoji} ${consultant.name}`,
+              name: `${consultant.emoji} ${t(consultant.nameKey)}`,
             })}
           </Text>
           <View style={{ flexDirection: 'row', flexWrap: 'wrap', gap: 8 }}>
-            {consultant.slots.map((s) => (
+            {consultant.slotKeys.map((slotKey) => (
               <TouchableOpacity
-                key={s}
-                onPress={() => setSlot(s)}
-                style={[st.slotBtn, slot === s && { backgroundColor: '#db2777' }]}
+                key={slotKey}
+                onPress={() => setSlot(slotKey)}
+                style={[st.slotBtn, slot === slotKey && { backgroundColor: '#db2777' }]}
               >
-                <Text style={[st.slotText, slot === s && { color: '#fff' }]}>{s}</Text>
+                <Text style={[st.slotText, slot === slotKey && { color: '#fff' }]}>
+                  {t(slotKey)}
+                </Text>
               </TouchableOpacity>
             ))}
           </View>

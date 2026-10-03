@@ -1,59 +1,74 @@
 import { View, Text, ScrollView, StyleSheet, TouchableOpacity } from 'react-native';
 import { useState } from 'react';
 import type { JSX } from 'react';
+import type { TranslationKey } from '@galaxy/shared';
 import { useLocale } from '@/components/LocaleProvider';
 
-const DESTINATIONS = [
+interface Essential {
+  itemKey: TranslationKey;
+  checked: boolean;
+}
+
+interface Destination {
+  key: string;
+  emoji: string;
+  nameKey: TranslationKey;
+  color: string;
+  essentials: Essential[];
+  tipKey: TranslationKey;
+}
+
+const DESTINATIONS: Destination[] = [
   {
     key: 'beach',
     emoji: '🏖️',
-    name: 'شاطئ',
+    nameKey: 'travel.dest.beach',
     color: '#0891b2',
     essentials: [
-      { item: 'واقي شمس SPF50', checked: false },
-      { item: 'شامبو بعد البحر', checked: false },
-      { item: 'بلسم مرطب', checked: false },
-      { item: 'ماسك شعر', checked: false },
-      { item: 'مبرد أظافر', checked: false },
-      { item: 'كريم ترطيب', checked: false },
-      { item: 'بخاخ ملح بحري', checked: false },
-      { item: 'مزيل مكياج مقاوم للماء', checked: false },
+      { itemKey: 'travel.item.beach1', checked: false },
+      { itemKey: 'travel.item.beach2', checked: false },
+      { itemKey: 'travel.item.beach3', checked: false },
+      { itemKey: 'travel.item.beach4', checked: false },
+      { itemKey: 'travel.item.beach5', checked: false },
+      { itemKey: 'travel.item.beach6', checked: false },
+      { itemKey: 'travel.item.beach7', checked: false },
+      { itemKey: 'travel.item.beach8', checked: false },
     ],
-    tips: 'الشعر يحتاج عناية إضافية بعد السباحة — احضري علاج شعر مكثف',
+    tipKey: 'travel.tips.beach',
   },
   {
     key: 'city',
     emoji: '🏙️',
-    name: 'مدينة',
+    nameKey: 'travel.dest.city',
     color: '#6366f1',
     essentials: [
-      { item: 'كريم أساس', checked: false },
-      { item: 'أحمر شفاه', checked: false },
-      { item: 'ماسكارا', checked: false },
-      { item: 'مناديل مبللة', checked: false },
-      { item: 'عطر صغير', checked: false },
-      { item: 'مرطب وجه', checked: false },
-      { item: 'جل حواجب', checked: false },
-      { item: 'بخاخ مثبت مكياج', checked: false },
+      { itemKey: 'travel.item.city1', checked: false },
+      { itemKey: 'travel.item.city2', checked: false },
+      { itemKey: 'travel.item.city3', checked: false },
+      { itemKey: 'travel.item.city4', checked: false },
+      { itemKey: 'travel.item.city5', checked: false },
+      { itemKey: 'travel.item.city6', checked: false },
+      { itemKey: 'travel.item.city7', checked: false },
+      { itemKey: 'travel.item.city8', checked: false },
     ],
-    tips: 'عبوات صغيرة الحجم — وفري مساحة في حقيبتكِ',
+    tipKey: 'travel.tips.city',
   },
   {
     key: 'mountain',
     emoji: '⛰️',
-    name: 'جبال',
+    nameKey: 'travel.dest.mountain',
     color: '#059669',
     essentials: [
-      { item: 'مرطب شفاه', checked: false },
-      { item: 'كريم يدين', checked: false },
-      { item: 'واقي شمس', checked: false },
-      { item: 'لوشن جسم', checked: false },
-      { item: 'زيت شعر', checked: false },
-      { item: 'مصل وجه', checked: false },
-      { item: 'بخاخ ماء', checked: false },
-      { item: 'قناع ترطيب', checked: false },
+      { itemKey: 'travel.item.mountain1', checked: false },
+      { itemKey: 'travel.item.mountain2', checked: false },
+      { itemKey: 'travel.item.mountain3', checked: false },
+      { itemKey: 'travel.item.mountain4', checked: false },
+      { itemKey: 'travel.item.mountain5', checked: false },
+      { itemKey: 'travel.item.mountain6', checked: false },
+      { itemKey: 'travel.item.mountain7', checked: false },
+      { itemKey: 'travel.item.mountain8', checked: false },
     ],
-    tips: 'الجو الجاف يحتاج ترطيب مكثف — ركزي على المنتجات المرطبة',
+    tipKey: 'travel.tips.mountain',
   },
 ];
 
@@ -63,7 +78,7 @@ export default function TravelChecklistScreen(): JSX.Element {
   const [checked, setChecked] = useState<Set<string>>(new Set());
 
   const d = DESTINATIONS.find((x) => x.key === dest)!;
-  const toggle = (item: string) => {
+  const toggle = (item: TranslationKey) => {
     const n = new Set(checked);
     if (n.has(item)) n.delete(item);
     else n.add(item);
@@ -87,7 +102,7 @@ export default function TravelChecklistScreen(): JSX.Element {
             style={[styles.tb, dest === dx.key && { backgroundColor: dx.color }]}
           >
             <Text style={[styles.tbe, dest === dx.key && { color: '#fff' }]}>{dx.emoji}</Text>
-            <Text style={[styles.tbn, dest === dx.key && { color: '#fff' }]}>{dx.name}</Text>
+            <Text style={[styles.tbn, dest === dx.key && { color: '#fff' }]}>{t(dx.nameKey)}</Text>
           </TouchableOpacity>
         ))}
       </View>
@@ -103,26 +118,26 @@ export default function TravelChecklistScreen(): JSX.Element {
       {d.essentials.map((e, i) => (
         <TouchableOpacity
           key={i}
-          onPress={() => toggle(e.item)}
-          style={[styles.item, checked.has(e.item) && styles.itemDone]}
+          onPress={() => toggle(e.itemKey)}
+          style={[styles.item, checked.has(e.itemKey) && styles.itemDone]}
         >
           <View
             style={[
               styles.check,
-              checked.has(e.item) && { backgroundColor: d.color, borderColor: d.color },
+              checked.has(e.itemKey) && { backgroundColor: d.color, borderColor: d.color },
             ]}
           >
-            <Text style={styles.checkText}>{checked.has(e.item) ? '' : '○'}</Text>
+            <Text style={styles.checkText}>{checked.has(e.itemKey) ? '' : '○'}</Text>
           </View>
-          <Text style={[styles.itemText, checked.has(e.item) && styles.itemTextDone]}>
-            {e.item}
+          <Text style={[styles.itemText, checked.has(e.itemKey) && styles.itemTextDone]}>
+            {t(e.itemKey)}
           </Text>
         </TouchableOpacity>
       ))}
 
       <View style={styles.tip}>
         <Text style={styles.tipEmoji}>💡</Text>
-        <Text style={styles.tipText}>{d.tips}</Text>
+        <Text style={styles.tipText}>{t(d.tipKey)}</Text>
       </View>
     </ScrollView>
   );

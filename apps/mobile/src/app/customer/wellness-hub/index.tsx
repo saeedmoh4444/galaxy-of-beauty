@@ -270,7 +270,8 @@ export default function WellnessHubScreen(): JSX.Element {
           </Text>
           {(pamper.deals ?? []).map((deal: any) => (
             <Text key={deal.id} style={{ fontSize: 13, color: '#374151', marginTop: 4 }}>
-              {locale === 'en' ? deal.titleEn : deal.titleAr} · {Number(deal.dealPrice)} ر.س
+              {locale === 'en' ? deal.titleEn : deal.titleAr} ·{' '}
+              {t('mobile.wellnessHub.deal-price', { price: Number(deal.dealPrice) })}
             </Text>
           ))}
           <View style={{ flexDirection: 'row', flexWrap: 'wrap', gap: 6, marginTop: 6 }}>
