@@ -40,7 +40,9 @@ export default function GiftRegistryScreen(): JSX.Element {
           <Text style={styles.emoji}>{g.emoji ?? ''}</Text>
           <View style={{ flex: 1 }}>
             <Text style={styles.name}>{g.nameAr ?? ''}</Text>
-            <Text style={styles.price}>{(g.price ?? 0).toLocaleString()} ر.س</Text>
+            <Text style={styles.price}>
+              {(g.price ?? 0).toLocaleString()} {t('mobile.vendorPortal.sar')}
+            </Text>
           </View>
         </View>
       ))}

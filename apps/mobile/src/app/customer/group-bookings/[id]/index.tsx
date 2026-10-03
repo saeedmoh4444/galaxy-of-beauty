@@ -89,7 +89,9 @@ export default function GroupBookingDetailScreen(): JSX.Element {
       </View>
       <View style={styles.sec}>
         <Text style={styles.secT}>{t('mobile.groupBookings.amount')}</Text>
-        <Text style={styles.ta}>{data.totalAmount?.toLocaleString()} ر.س</Text>
+        <Text style={styles.ta}>
+          {data.totalAmount?.toLocaleString()} {t('mobile.vendorPortal.sar')}
+        </Text>
         <Text style={styles.td}>
           {t('mobile.groupBookings.discount', { value: data.discountPercent ?? 0 })}
         </Text>
