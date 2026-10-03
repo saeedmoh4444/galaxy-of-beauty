@@ -2,39 +2,86 @@ import { View, Text, ScrollView, StyleSheet, TouchableOpacity } from 'react-nati
 import { useState } from 'react';
 import type { JSX } from 'react';
 import { useRouter } from 'expo-router';
+import type { TranslationKey } from '@galaxy/shared';
 import { useLocale } from '@/components/LocaleProvider';
 
-const MENTOR_LEVELS = [
-  { key: 'beginner', emoji: '🌱', name: 'مبتدئة', desc: 'اكتشفي أساسيات العناية' },
-  { key: 'intermediate', emoji: '🌿', name: 'متوسطة', desc: 'طوري روتينكِ' },
-  { key: 'advanced', emoji: '🌳', name: 'متقدمة', desc: 'أتقني فنون التجميل' },
+interface MentorLevel {
+  key: string;
+  emoji: string;
+  nameKey: TranslationKey;
+  descKey: TranslationKey;
+}
+
+const MENTOR_LEVELS: MentorLevel[] = [
+  {
+    key: 'beginner',
+    emoji: '🌱',
+    nameKey: 'beautyMentor.level-beginner',
+    descKey: 'beautyMentor.level-beginner-desc',
+  },
+  {
+    key: 'intermediate',
+    emoji: '🌿',
+    nameKey: 'beautyMentor.level-intermediate',
+    descKey: 'beautyMentor.level-intermediate-desc',
+  },
+  {
+    key: 'advanced',
+    emoji: '🌳',
+    nameKey: 'beautyMentor.level-advanced',
+    descKey: 'beautyMentor.level-advanced-desc',
+  },
 ];
 
-const TOPICS = ['العناية بالبشرة', 'المكياج', 'العناية بالشعر', 'الأظافر', 'العطور', 'التغذية'];
+interface MentorTopic {
+  key: string;
+  labelKey: TranslationKey;
+}
+
+const TOPICS: MentorTopic[] = [
+  { key: 'skin', labelKey: 'beautyMentor.topic-skin' },
+  { key: 'makeup', labelKey: 'beautyMentor.topic-makeup' },
+  { key: 'hair', labelKey: 'beautyMentor.topic-hair' },
+  { key: 'nails', labelKey: 'beautyMentor.topic-nails' },
+  { key: 'perfume', labelKey: 'beautyMentor.topic-perfume' },
+  { key: 'nutrition', labelKey: 'beautyMentor.topic-nutrition' },
+];
+
+interface PlanWeek {
+  labelKey: TranslationKey;
+  titleKey: TranslationKey;
+  descKey: TranslationKey;
+}
+
+const PLAN_WEEKS: PlanWeek[] = [
+  {
+    labelKey: 'mobile.beautyMentor.week1.label',
+    titleKey: 'mobile.beautyMentor.week1.title',
+    descKey: 'mobile.beautyMentor.week1.desc',
+  },
+  {
+    labelKey: 'mobile.beautyMentor.week2.label',
+    titleKey: 'mobile.beautyMentor.week2.title',
+    descKey: 'mobile.beautyMentor.week2.desc',
+  },
+  {
+    labelKey: 'mobile.beautyMentor.week3.label',
+    // title reuses scanner.ingredients (verbatim ar match).
+    titleKey: 'scanner.ingredients',
+    descKey: 'mobile.beautyMentor.week3.desc',
+  },
+  {
+    labelKey: 'mobile.beautyMentor.week4.label',
+    titleKey: 'mobile.beautyMentor.week4.title',
+    descKey: 'mobile.beautyMentor.week4.desc',
+  },
+];
 
 export default function BeautyMentorScreen(): JSX.Element {
   const router = useRouter();
   const { t } = useLocale();
   const [level, setLevel] = useState('beginner');
   const [selectedTopic, setSelectedTopic] = useState<string | null>(null);
-  const levelNames: Record<string, string> = {
-    beginner: t('beautyMentor.level-beginner'),
-    intermediate: t('beautyMentor.level-intermediate'),
-    advanced: t('beautyMentor.level-advanced'),
-  };
-  const levelDescs: Record<string, string> = {
-    beginner: t('beautyMentor.level-beginner-desc'),
-    intermediate: t('beautyMentor.level-intermediate-desc'),
-    advanced: t('beautyMentor.level-advanced-desc'),
-  };
-  const topicLabels = [
-    t('beautyMentor.topic-skin'),
-    t('beautyMentor.topic-makeup'),
-    t('beautyMentor.topic-hair'),
-    t('beautyMentor.topic-nails'),
-    t('beautyMentor.topic-perfume'),
-    t('beautyMentor.topic-nutrition'),
-  ];
 
   const currentLevel = MENTOR_LEVELS.find((l) => l.key === level)!;
 
@@ -52,52 +99,39 @@ export default function BeautyMentorScreen(): JSX.Element {
             style={[styles.lc, level === l.key && styles.lca]}
           >
             <Text style={styles.le}>{l.emoji}</Text>
-            <Text style={[styles.ln, level === l.key && styles.lna]}>
-              {levelNames[l.key] ?? l.name}
-            </Text>
-            <Text style={styles.ld}>{levelDescs[l.key] ?? l.desc}</Text>
+            <Text style={[styles.ln, level === l.key && styles.lna]}>{t(l.nameKey)}</Text>
+            <Text style={styles.ld}>{t(l.descKey)}</Text>
           </TouchableOpacity>
         ))}
       </View>
 
       <Text style={styles.st}>{t('beautyMentor.topics')}</Text>
       <View style={styles.topics}>
-        {TOPICS.map((tp, i) => (
+        {TOPICS.map((tp) => (
           <TouchableOpacity
-            key={tp}
-            onPress={() => setSelectedTopic(tp)}
-            style={[styles.tp, selectedTopic === tp && styles.tpa]}
+            key={tp.key}
+            onPress={() => setSelectedTopic(tp.key)}
+            style={[styles.tp, selectedTopic === tp.key && styles.tpa]}
           >
-            <Text style={[styles.tpt, selectedTopic === tp && styles.tpta]}>
-              {topicLabels[i] ?? tp}
+            <Text style={[styles.tpt, selectedTopic === tp.key && styles.tpta]}>
+              {t(tp.labelKey)}
             </Text>
           </TouchableOpacity>
         ))}
       </View>
 
       <Text style={styles.st}>
-        {t('beautyMentor.learning-plan', {
-          name: levelNames[currentLevel.key] ?? currentLevel.name,
-        })}
+        {t('beautyMentor.learning-plan', { name: t(currentLevel.nameKey) })}
       </Text>
       <View style={styles.plan}>
-        {[
-          {
-            week: 'الأسبوع 1',
-            title: 'أساسيات العناية',
-            desc: 'تعرفي على نوع بشرتكِ والمنتجات المناسبة',
-          },
-          { week: 'الأسبوع 2', title: 'روتين يومي', desc: 'ابنِي روتين صباحي ومسائي متكامل' },
-          { week: 'الأسبوع 3', title: 'المكونات', desc: 'تعلمي قراءة مكونات المنتجات' },
-          { week: 'الأسبوع 4', title: 'تطبيق عملي', desc: 'جلسة تطبيقية مع مرشدة خبيرة' },
-        ].map((w, i) => (
+        {PLAN_WEEKS.map((w, i) => (
           <View key={i} style={styles.week}>
             <View style={styles.wn}>
               <Text style={styles.wnt}>{i + 1}</Text>
             </View>
             <View style={{ flex: 1 }}>
-              <Text style={styles.wt}>{w.title}</Text>
-              <Text style={styles.wd}>{w.desc}</Text>
+              <Text style={styles.wt}>{t(w.titleKey)}</Text>
+              <Text style={styles.wd}>{t(w.descKey)}</Text>
             </View>
           </View>
         ))}

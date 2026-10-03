@@ -1,35 +1,54 @@
 import { View, Text, ScrollView, StyleSheet, TouchableOpacity, RefreshControl } from 'react-native';
 import { useState } from 'react';
 import type { JSX } from 'react';
+import type { TranslationKey } from '@galaxy/shared';
 import { trpc } from '@/lib/trpc-react';
 import { useLocale } from '@/components/LocaleProvider';
 
-const THEMES = [
-  { key: 'spa', emoji: '💆', name: 'سبا منزلي', desc: 'مساج وأقنعة واسترخاء' },
-  { key: 'makeup', emoji: '💄', name: 'حفلة مكياج', desc: 'تجربة مكياج جماعي' },
-  { key: 'nails', emoji: '💅', name: 'صالون أظافر', desc: 'مانيكير وباديكير جماعي' },
-  { key: 'bridal', emoji: '👰', name: 'توديع عزوبية', desc: 'عناية متكاملة للعروس' },
-  { key: 'skincare', emoji: '🧴', name: 'روتين عناية', desc: 'أقنعة وعناية بالبشرة' },
+interface PartyTheme {
+  key: string;
+  emoji: string;
+  nameKey: TranslationKey;
+  descKey: TranslationKey;
+}
+
+const THEMES: PartyTheme[] = [
+  {
+    key: 'spa',
+    emoji: '💆',
+    nameKey: 'beautyParty.theme-spa',
+    descKey: 'beautyParty.theme-spa-desc',
+  },
+  {
+    key: 'makeup',
+    emoji: '💄',
+    nameKey: 'beautyParty.theme-makeup',
+    descKey: 'beautyParty.theme-makeup-desc',
+  },
+  {
+    key: 'nails',
+    emoji: '💅',
+    nameKey: 'beautyParty.theme-nails',
+    descKey: 'beautyParty.theme-nails-desc',
+  },
+  {
+    key: 'bridal',
+    emoji: '👰',
+    nameKey: 'beautyParty.theme-bridal',
+    descKey: 'beautyParty.theme-bridal-desc',
+  },
+  {
+    key: 'skincare',
+    emoji: '🧴',
+    nameKey: 'beautyParty.theme-skincare',
+    descKey: 'beautyParty.theme-skincare-desc',
+  },
 ];
 
 export default function BeautyPartyScreen(): JSX.Element {
   const { t } = useLocale();
   const [theme, setTheme] = useState('spa');
   const [guests, setGuests] = useState(4);
-  const themeNames: Record<string, string> = {
-    spa: t('beautyParty.theme-spa'),
-    makeup: t('beautyParty.theme-makeup'),
-    nails: t('beautyParty.theme-nails'),
-    bridal: t('beautyParty.theme-bridal'),
-    skincare: t('beautyParty.theme-skincare'),
-  };
-  const themeDescs: Record<string, string> = {
-    spa: t('beautyParty.theme-spa-desc'),
-    makeup: t('beautyParty.theme-makeup-desc'),
-    nails: t('beautyParty.theme-nails-desc'),
-    bridal: t('beautyParty.theme-bridal-desc'),
-    skincare: t('beautyParty.theme-skincare-desc'),
-  };
 
   const q = trpc.services.list.useQuery({});
   const createMut = trpc.beautyParty.create.useMutation();
@@ -65,12 +84,8 @@ export default function BeautyPartyScreen(): JSX.Element {
             style={[styles.th, theme === th.key && styles.tha]}
           >
             <Text style={styles.the}>{th.emoji}</Text>
-            <Text style={[styles.thn, theme === th.key && styles.thna]}>
-              {themeNames[th.key] ?? th.name}
-            </Text>
-            <Text style={[styles.thd, theme === th.key && styles.thda]}>
-              {themeDescs[th.key] ?? th.desc}
-            </Text>
+            <Text style={[styles.thn, theme === th.key && styles.thna]}>{t(th.nameKey)}</Text>
+            <Text style={[styles.thd, theme === th.key && styles.thda]}>{t(th.descKey)}</Text>
           </TouchableOpacity>
         ))}
       </View>

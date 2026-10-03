@@ -1,8 +1,3 @@
-apps/mobile/src/app/customer/beauty-innovation/index.tsx
-apps/mobile/src/app/customer/beauty-lifestyle/index.tsx
-apps/mobile/src/app/customer/beauty-mentor/index.tsx
-apps/mobile/src/app/customer/beauty-party/index.tsx
-apps/mobile/src/app/customer/beauty-profile/index.tsx
 apps/mobile/src/app/customer/beauty-reminders/index.tsx
 apps/mobile/src/app/customer/beauty-rescue/index.tsx
 apps/mobile/src/app/customer/beauty-rewards/index.tsx
