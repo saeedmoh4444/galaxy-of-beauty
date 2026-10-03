@@ -1,6 +1,81 @@
 import type { JSX } from 'react';
 import { View, Text, ScrollView, StyleSheet } from 'react-native';
+import type { TranslationKey } from '@galaxy/shared';
 import { useLocale } from '@/components/LocaleProvider';
+
+interface SafetyItem {
+  emoji: string;
+  titleKey: TranslationKey;
+  descKey: TranslationKey;
+  color: string;
+  bg: string;
+}
+
+const SAFETY_ITEMS: SafetyItem[] = [
+  {
+    emoji: '🆘',
+    titleKey: 'mobile.safety.item.emergencyButton.title',
+    descKey: 'mobile.safety.item.emergencyButton.desc',
+    color: '#ef4444',
+    bg: '#fef2f2',
+  },
+  {
+    emoji: '🚗',
+    titleKey: 'mobile.safety.item.carEscort.title',
+    descKey: 'mobile.safety.item.carEscort.desc',
+    color: '#f59e0b',
+    bg: '#fffbeb',
+  },
+  {
+    emoji: '📍',
+    titleKey: 'mobile.safety.item.locationSharing.title',
+    descKey: 'mobile.safety.item.locationSharing.desc',
+    color: '#3b82f6',
+    bg: '#eff6ff',
+  },
+  {
+    emoji: '🏠',
+    titleKey: 'mobile.safety.item.homeArrival.title',
+    descKey: 'mobile.safety.item.homeArrival.desc',
+    color: '#10b981',
+    bg: '#ecfdf5',
+  },
+  {
+    emoji: '🎭',
+    titleKey: 'mobile.safety.item.alias.title',
+    descKey: 'mobile.safety.item.alias.desc',
+    color: '#8b5cf6',
+    bg: '#f5f3ff',
+  },
+  {
+    emoji: '📞',
+    titleKey: 'mobile.safety.item.safeCall.title',
+    descKey: 'mobile.safety.item.safeCall.desc',
+    color: '#06b6d4',
+    bg: '#ecfeff',
+  },
+  {
+    emoji: '🙈',
+    titleKey: 'mobile.safety.item.faceBlur.title',
+    descKey: 'mobile.safety.item.faceBlur.desc',
+    color: '#6366f1',
+    bg: '#eef2ff',
+  },
+  {
+    emoji: '👻',
+    titleKey: 'mobile.safety.item.incognito.title',
+    descKey: 'mobile.safety.item.incognito.desc',
+    color: '#d946ef',
+    bg: '#fdf4ff',
+  },
+  {
+    emoji: '🤝',
+    titleKey: 'mobile.safety.item.consentShield.title',
+    descKey: 'mobile.safety.item.consentShield.desc',
+    color: '#14b8a6',
+    bg: '#f0fdfa',
+  },
+];
 
 export default function SafetyScreen(): JSX.Element {
   const { t } = useLocale();
@@ -9,76 +84,12 @@ export default function SafetyScreen(): JSX.Element {
       <Text style={s.h}>{t('mobile.safety.title')}</Text>
       <Text style={s.sub}>{t('mobile.safety.subtitle')}</Text>
       <View style={s.grid}>
-        {[
-          {
-            emoji: '🆘',
-            title: 'زر الطوارئ',
-            desc: 'اضغطي لإرسال موقعكِ للشرطة',
-            color: '#ef4444',
-            bg: '#fef2f2',
-          },
-          {
-            emoji: '🚗',
-            title: 'توصيلي لسيارتي',
-            desc: 'مرافق حتى باب السيارة',
-            color: '#f59e0b',
-            bg: '#fffbeb',
-          },
-          {
-            emoji: '📍',
-            title: 'مشاركة الموقع',
-            desc: 'شاركي موقعكِ مع صديقة تثقين بها',
-            color: '#3b82f6',
-            bg: '#eff6ff',
-          },
-          {
-            emoji: '🏠',
-            title: 'وصلت للبيت',
-            desc: 'إشعار آلي عند وصولكِ',
-            color: '#10b981',
-            bg: '#ecfdf5',
-          },
-          {
-            emoji: '🎭',
-            title: 'اسم مستعار',
-            desc: 'احجزي باسم مستعار للخصوصية',
-            color: '#8b5cf6',
-            bg: '#f5f3ff',
-          },
-          {
-            emoji: '📞',
-            title: 'اتصال آمن',
-            desc: 'خط ساخن للطوارئ 24/7',
-            color: '#06b6d4',
-            bg: '#ecfeff',
-          },
-          {
-            emoji: '🙈',
-            title: 'تعمية الوجه',
-            desc: 'أخفِ وجهكِ في الصور',
-            color: '#6366f1',
-            bg: '#eef2ff',
-          },
-          {
-            emoji: '👻',
-            title: 'وضع التخفي',
-            desc: 'تصفحي بدون تسجيل نشاطكِ',
-            color: '#d946ef',
-            bg: '#fdf4ff',
-          },
-          {
-            emoji: '🤝',
-            title: 'درع الموافقة',
-            desc: 'موافقة صريحة قبل كل خدمة',
-            color: '#14b8a6',
-            bg: '#f0fdfa',
-          },
-        ].map((item, i) => (
+        {SAFETY_ITEMS.map((item, i) => (
           <View key={i} style={[s.card, { borderLeftColor: item.color, borderLeftWidth: 4 }]}>
             <Text style={s.ce}>{item.emoji}</Text>
             <View style={{ flex: 1 }}>
-              <Text style={s.ct}>{item.title}</Text>
-              <Text style={s.cs}>{item.desc}</Text>
+              <Text style={s.ct}>{t(item.titleKey)}</Text>
+              <Text style={s.cs}>{t(item.descKey)}</Text>
             </View>
             <View style={[s.btn, { backgroundColor: item.color }]}>
               <Text style={s.bt}>{t('mobile.safety.activate')}</Text>

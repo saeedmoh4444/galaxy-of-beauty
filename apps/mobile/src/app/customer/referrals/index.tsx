@@ -55,7 +55,9 @@ export default function ReferralsScreen(): JSX.Element {
             <Text style={styles.statLabel}>{t('mobile.referrals.referrals')}</Text>
           </View>
           <View style={styles.statCard}>
-            <Text style={styles.statNum}>{String(statsData?.totalEarnings ?? 0)} ر.س</Text>
+            <Text style={styles.statNum}>
+              {String(statsData?.totalEarnings ?? 0)} {t('misc.sar')}
+            </Text>
             <Text style={styles.statLabel}>{t('mobile.referrals.rewards')}</Text>
           </View>
         </View>
