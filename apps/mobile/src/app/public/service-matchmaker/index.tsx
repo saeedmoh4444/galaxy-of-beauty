@@ -8,37 +8,50 @@ import {
 } from 'react-native';
 import { useState } from 'react';
 import type { JSX } from 'react';
+import type { TranslationKey } from '@galaxy/shared';
 import { trpc } from '@/lib/trpc-react';
 import { useLocale } from '@/components/LocaleProvider';
 
-const QUESTIONS = [
+interface QuestionOption {
+  labelKey: TranslationKey;
+  value: string;
+  emoji: string;
+}
+
+interface Question {
+  id: string;
+  textKey: TranslationKey;
+  options: QuestionOption[];
+}
+
+const QUESTIONS: Question[] = [
   {
     id: 'mood',
-    text: 'ما مزاجك اليوم؟',
+    textKey: 'mobile.public.serviceMatchmaker.mood.title',
     options: [
-      { label: 'استرخاء', value: 'relax', emoji: '🧘' },
-      { label: 'تجديد', value: 'refresh', emoji: '✨' },
-      { label: 'جرأة', value: 'bold', emoji: '🔥' },
-      { label: 'عناية', value: 'care', emoji: '🤍' },
+      { labelKey: 'marketing.beauty-quiz.opt-relax', value: 'relax', emoji: '🧘' },
+      { labelKey: 'mobile.public.serviceMatchmaker.mood.refresh', value: 'refresh', emoji: '✨' },
+      { labelKey: 'mobile.public.serviceMatchmaker.mood.bold', value: 'bold', emoji: '🔥' },
+      { labelKey: 'mobile.public.lookbook.tag.care', value: 'care', emoji: '🤍' },
     ],
   },
   {
     id: 'focus',
-    text: 'على ماذا تركزين؟',
+    textKey: 'marketing.beauty-quiz.q-focus',
     options: [
-      { label: 'البشرة', value: 'skin', emoji: '🧴' },
-      { label: 'الشعر', value: 'hair', emoji: '💇' },
-      { label: 'الأظافر', value: 'nails', emoji: '💅' },
-      { label: 'المكياج', value: 'makeup', emoji: '💄' },
+      { labelKey: 'marketing.beauty-quiz.opt-skin', value: 'skin', emoji: '🧴' },
+      { labelKey: 'marketing.beauty-quiz.opt-hair', value: 'hair', emoji: '💇' },
+      { labelKey: 'marketing.beauty-quiz.opt-nails', value: 'nails', emoji: '💅' },
+      { labelKey: 'marketing.beauty-quiz.opt-makeup', value: 'makeup', emoji: '💄' },
     ],
   },
   {
     id: 'budget',
-    text: 'ميزانيتك؟',
+    textKey: 'mobile.public.giftQuiz.q.budget',
     options: [
-      { label: 'اقتصادية', value: 'low', emoji: '🪙' },
-      { label: 'متوسطة', value: 'mid', emoji: '💰' },
-      { label: 'فاخرة', value: 'high', emoji: '💎' },
+      { labelKey: 'mobile.public.giftQuiz.option.budget.low', value: 'low', emoji: '🪙' },
+      { labelKey: 'mobile.public.giftQuiz.option.budget.mid', value: 'mid', emoji: '💰' },
+      { labelKey: 'mobile.public.giftQuiz.option.budget.high', value: 'high', emoji: '💎' },
     ],
   },
 ];
@@ -139,11 +152,11 @@ export default function ServiceMatchmakerScreen(): JSX.Element {
           style={[styles.progressFill, { width: `${((step + 1) / QUESTIONS.length) * 100}%` }]}
         />
       </View>
-      <Text style={styles.question}>{q.text}</Text>
+      <Text style={styles.question}>{t(q.textKey)}</Text>
       {q.options.map((o) => (
         <TouchableOpacity key={o.value} onPress={() => select(o.value)} style={styles.option}>
           <Text style={styles.optionEmoji}>{o.emoji}</Text>
-          <Text style={styles.optionLabel}>{o.label}</Text>
+          <Text style={styles.optionLabel}>{t(o.labelKey)}</Text>
         </TouchableOpacity>
       ))}
     </ScrollView>

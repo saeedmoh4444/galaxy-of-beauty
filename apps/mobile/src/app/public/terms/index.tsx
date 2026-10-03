@@ -1,32 +1,60 @@
 import type { JSX } from 'react';
 import { View, Text, ScrollView, StyleSheet } from 'react-native';
+import type { TranslationKey } from '@galaxy/shared';
 import { useLocale } from '@/components/LocaleProvider';
+
+interface TermsSection {
+  titleKey: TranslationKey;
+  bodyKey: TranslationKey;
+}
+
+const SECTIONS: TermsSection[] = [
+  {
+    titleKey: 'mobile.public.terms.intro.title',
+    bodyKey: 'mobile.public.terms.intro.body',
+  },
+  {
+    titleKey: 'mobile.public.terms.accounts.title',
+    bodyKey: 'mobile.public.terms.accounts.body',
+  },
+  {
+    titleKey: 'mobile.bookings',
+    bodyKey: 'mobile.public.terms.bookings.body',
+  },
+  {
+    titleKey: 'mobile.payments.title',
+    bodyKey: 'mobile.public.terms.payments.body',
+  },
+  {
+    titleKey: 'mobile.public.terms.cancellation.title',
+    bodyKey: 'mobile.public.terms.cancellation.body',
+  },
+  {
+    titleKey: 'mobile.public.terms.privacy.title',
+    bodyKey: 'mobile.public.terms.privacy.body',
+  },
+  {
+    titleKey: 'mobile.public.terms.liability.title',
+    bodyKey: 'mobile.public.terms.liability.body',
+  },
+  {
+    titleKey: 'mobile.public.terms.contact.title',
+    bodyKey: 'mobile.public.terms.contact.body',
+  },
+];
+
 export default function TermsScreen(): JSX.Element {
   const { t } = useLocale();
   return (
     <ScrollView style={s.c} contentContainerStyle={s.i}>
       <Text style={s.h}>{t('mobile.public.terms.title')}</Text>
       <Text style={s.d}>{t('mobile.public.terms.updated')}</Text>
-      {[
-        'مقدمة',
-        'باستخدامكِ لمنصة جالكسي بيوتي فإنكِ توافقين على الشروط والأحكام التالية. يرجى قراءتها بعناية.',
-        'الحسابات',
-        'أنتِ مسؤولة عن الحفاظ على سرية حسابكِ وكلمة المرور. يجب أن تكوني 18 عاماً أو أكثر لاستخدام المنصة.',
-        'الحجوزات',
-        'جميع الحجوزات تخضع للتوفر. يمكنكِ إلغاء الحجز قبل 24 ساعة بدون رسوم.',
-        'المدفوعات',
-        'يتم تحصيل المدفوعات عبر بوابات دفع آمنة. الأسعار شاملة لضريبة القيمة المضافة.',
-        'الإلغاء والاسترداد',
-        '• إلغاء قبل 24 ساعة: استرداد كامل\n• إلغاء قبل 12 ساعة: استرداد 50%\n• إلغاء قبل أقل من ساعتين: لا استرداد',
-        'الخصوصية',
-        'نحن نحمي بياناتكِ ولا نشاركها مع أطراف ثالثة بدون موافقتكِ. راجعي سياسة الخصوصية للمزيد.',
-        'المسؤولية',
-        'جالكسي بيوتي غير مسؤولة عن أي إصابات أو أضرار ناتجة عن الخدمات المقدمة من قبل الفنيات المستقلات.',
-        'تواصل',
-        'لأي استفسارات: support@galaxybeauty.sa',
-      ].map((text, i) => (
-        <View key={i} style={i % 2 === 0 ? { marginTop: 20, marginBottom: 4 } : {}}>
-          <Text style={i % 2 === 0 ? s.st : s.sb}>{text}</Text>
+      {SECTIONS.map((section) => (
+        <View key={section.titleKey}>
+          <View style={{ marginTop: 20, marginBottom: 4 }}>
+            <Text style={s.st}>{t(section.titleKey)}</Text>
+          </View>
+          <Text style={s.sb}>{t(section.bodyKey)}</Text>
         </View>
       ))}
     </ScrollView>

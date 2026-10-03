@@ -8068,4 +8068,132 @@ export const mobileCustomerBMessages = {
   'mobile.public.marketplace.hair.desc': { ar: 'عناية متكاملة', en: 'Complete care' },
   'mobile.public.marketplace.nails.title': { ar: 'منتجات الأظافر', en: 'Nail Products' },
   'mobile.public.marketplace.nails.desc': { ar: 'ألوان رائعة', en: 'Gorgeous colors' },
+
+  // ---- public pregnancy-beauty: trimesters, tips, safe & avoid lists (i18n sweep slice 15) ----
+  'mobile.public.pregnancyBeauty.trimester.first': { ar: 'الأول', en: 'First' },
+  'mobile.public.pregnancyBeauty.trimester.second': { ar: 'الثاني', en: 'Second' },
+  'mobile.public.pregnancyBeauty.trimester.third': { ar: 'الثالث', en: 'Third' },
+  'mobile.public.pregnancyBeauty.first.tip1': {
+    ar: 'تجنبي الصبغات الكيميائية',
+    en: 'Avoid chemical dyes',
+  },
+  'mobile.public.pregnancyBeauty.first.tip3': {
+    ar: 'الحناء بديل آمن للشعر',
+    en: 'Henna is a safe alternative for hair',
+  },
+  'mobile.public.pregnancyBeauty.first.safe1': { ar: 'ترطيب البشرة', en: 'Skin hydration' },
+  'mobile.public.pregnancyBeauty.first.safe2': { ar: 'مساج لطيف', en: 'Gentle massage' },
+  'mobile.public.pregnancyBeauty.first.safe3': { ar: 'مانيكير طبيعي', en: 'Natural manicure' },
+  'mobile.public.pregnancyBeauty.first.safe4': { ar: 'عناية بالأقدام', en: 'Foot care' },
+  'mobile.public.pregnancyBeauty.first.avoid1': { ar: 'صبغات الشعر', en: 'Hair dyes' },
+  'mobile.public.pregnancyBeauty.first.avoid2': {
+    ar: 'علاجات كيميائية',
+    en: 'Chemical treatments',
+  },
+  'mobile.public.pregnancyBeauty.first.avoid3': { ar: 'الساونا', en: 'Sauna' },
+  'mobile.public.pregnancyBeauty.first.avoid4': { ar: 'المساج القوي', en: 'Deep tissue massage' },
+  'mobile.public.pregnancyBeauty.second.tip1': {
+    ar: 'البشرة متألقة — استمتعي!',
+    en: 'Skin is glowing — enjoy it!',
+  },
+  'mobile.public.pregnancyBeauty.second.tip2': {
+    ar: 'وقت مناسب للمانيكير',
+    en: 'A good time for a manicure',
+  },
+  'mobile.public.pregnancyBeauty.second.tip3': {
+    ar: 'ترطيب مكثف لمنع علامات التمدد',
+    en: 'Intense hydration to prevent stretch marks',
+  },
+  'mobile.public.pregnancyBeauty.second.safe2': { ar: 'قص وتصفيف شعر', en: 'Haircut and styling' },
+  'mobile.public.pregnancyBeauty.second.safe3': { ar: 'مكياج خفيف', en: 'Light makeup' },
+  'mobile.public.pregnancyBeauty.second.safe4': { ar: 'مساج ظهر لطيف', en: 'Gentle back massage' },
+  'mobile.public.pregnancyBeauty.second.avoid1': {
+    ar: 'الاستلقاء على الظهر طويلاً',
+    en: 'Lying on your back for long periods',
+  },
+  'mobile.public.pregnancyBeauty.second.avoid2': { ar: 'منتجات الريتينول', en: 'Retinol products' },
+  'mobile.public.pregnancyBeauty.third.tip1': {
+    ar: 'قد تظهر الكلف — استخدمي واقي شمس',
+    en: 'Melasma may appear — use sunscreen',
+  },
+  'mobile.public.pregnancyBeauty.third.tip2': {
+    ar: 'رفع القدمين لتقليل التورم',
+    en: 'Elevate your feet to reduce swelling',
+  },
+  'mobile.public.pregnancyBeauty.third.tip3': {
+    ar: 'العناية بالبشرة الجافة',
+    en: 'Care for dry skin',
+  },
+  'mobile.public.pregnancyBeauty.third.safe3': { ar: 'قص شعر', en: 'Haircut' },
+  'mobile.public.pregnancyBeauty.third.safe4': { ar: 'مساج قدمين', en: 'Foot massage' },
+  'mobile.public.pregnancyBeauty.third.avoid1': {
+    ar: 'الاستلقاء على الظهر',
+    en: 'Lying on your back',
+  },
+  'mobile.public.pregnancyBeauty.third.avoid2': { ar: 'العلاجات الطويلة', en: 'Long treatments' },
+  'mobile.public.pregnancyBeauty.third.avoid3': {
+    ar: 'أي منتجات برائحة قوية',
+    en: 'Any strongly scented products',
+  },
+
+  // ---- public salon-membership: plan-specific discount perks (i18n sweep slice 15) ----
+  'mobile.public.salonMembership.premium.discount10': {
+    ar: 'خصم ١٠٪ على جميع الخدمات',
+    en: '10% off all services',
+  },
+  'mobile.public.salonMembership.platinum.discount20': {
+    ar: 'خصم ٢٠٪ على جميع الخدمات',
+    en: '20% off all services',
+  },
+
+  // ---- public service-matchmaker: mood question (i18n sweep slice 15) ----
+  'mobile.public.serviceMatchmaker.mood.title': {
+    ar: 'ما مزاجك اليوم؟',
+    en: 'What is your mood today?',
+  },
+  'mobile.public.serviceMatchmaker.mood.refresh': { ar: 'تجديد', en: 'Refresh' },
+  'mobile.public.serviceMatchmaker.mood.bold': { ar: 'جرأة', en: 'Bold' },
+
+  // ---- public terms: sections (i18n sweep slice 15) ----
+  'mobile.public.terms.intro.title': { ar: 'مقدمة', en: 'Introduction' },
+  'mobile.public.terms.intro.body': {
+    ar: 'باستخدامكِ لمنصة جالكسي بيوتي فإنكِ توافقين على الشروط والأحكام التالية. يرجى قراءتها بعناية.',
+    en: 'By using the Galaxy of Beauty platform, you agree to the following terms and conditions. Please read them carefully.',
+  },
+  'mobile.public.terms.accounts.title': { ar: 'الحسابات', en: 'Accounts' },
+  'mobile.public.terms.accounts.body': {
+    ar: 'أنتِ مسؤولة عن الحفاظ على سرية حسابكِ وكلمة المرور. يجب أن تكوني 18 عاماً أو أكثر لاستخدام المنصة.',
+    en: 'You are responsible for keeping your account and password confidential. You must be 18 years or older to use the platform.',
+  },
+  'mobile.public.terms.bookings.body': {
+    ar: 'جميع الحجوزات تخضع للتوفر. يمكنكِ إلغاء الحجز قبل 24 ساعة بدون رسوم.',
+    en: 'All bookings are subject to availability. You can cancel a booking up to 24 hours in advance at no charge.',
+  },
+  'mobile.public.terms.payments.body': {
+    ar: 'يتم تحصيل المدفوعات عبر بوابات دفع آمنة. الأسعار شاملة لضريبة القيمة المضافة.',
+    en: 'Payments are collected through secure payment gateways. Prices include VAT.',
+  },
+  'mobile.public.terms.cancellation.title': {
+    ar: 'الإلغاء والاسترداد',
+    en: 'Cancellation and Refunds',
+  },
+  'mobile.public.terms.cancellation.body': {
+    ar: '• إلغاء قبل 24 ساعة: استرداد كامل\n• إلغاء قبل 12 ساعة: استرداد 50%\n• إلغاء قبل أقل من ساعتين: لا استرداد',
+    en: '• Cancel 24 hours ahead: full refund\n• Cancel 12 hours ahead: 50% refund\n• Cancel less than two hours ahead: no refund',
+  },
+  'mobile.public.terms.privacy.title': { ar: 'الخصوصية', en: 'Privacy' },
+  'mobile.public.terms.privacy.body': {
+    ar: 'نحن نحمي بياناتكِ ولا نشاركها مع أطراف ثالثة بدون موافقتكِ. راجعي سياسة الخصوصية للمزيد.',
+    en: 'We protect your data and do not share it with third parties without your consent. See the privacy policy for more.',
+  },
+  'mobile.public.terms.liability.title': { ar: 'المسؤولية', en: 'Liability' },
+  'mobile.public.terms.liability.body': {
+    ar: 'جالكسي بيوتي غير مسؤولة عن أي إصابات أو أضرار ناتجة عن الخدمات المقدمة من قبل الفنيات المستقلات.',
+    en: 'Galaxy of Beauty is not liable for any injuries or damages resulting from services provided by independent technicians.',
+  },
+  'mobile.public.terms.contact.title': { ar: 'تواصل', en: 'Contact' },
+  'mobile.public.terms.contact.body': {
+    ar: 'لأي استفسارات: support@galaxybeauty.sa',
+    en: 'For any inquiries: support@galaxybeauty.sa',
+  },
 } as const satisfies Record<string, { ar: string; en: string }>;

@@ -1,54 +1,73 @@
 import { View, Text, ScrollView, StyleSheet, TouchableOpacity } from 'react-native';
 import { useState } from 'react';
 import type { JSX } from 'react';
+import type { TranslationKey } from '@galaxy/shared';
 import { useLocale } from '@/components/LocaleProvider';
 import { ScreenState } from '@/components/ScreenState';
 import { trpc } from '@/lib/trpc-react';
 import { getAuthToken } from '@/lib/authToken';
 
+interface MembershipPlan {
+  key: string;
+  emoji: string;
+  nameKey: TranslationKey;
+  price: number;
+  color: string;
+  benefits: TranslationKey[];
+  notIncluded: TranslationKey[];
+}
+
 // The plan catalog is static (web keeps it static too); the API provides the
 // user's membership + the subscribe/cancel mutations.
-const MEMBERSHIPS = [
+const MEMBERSHIPS: MembershipPlan[] = [
   {
     key: 'basic',
     emoji: '🌱',
-    name: 'الأساسية',
+    nameKey: 'membership.tier.basic',
     price: 0,
     color: '#9ca3af',
-    benefits: ['حجز المواعيد', 'تصفح الخدمات', 'تقييم الفنيات'],
-    notIncluded: ['خصم على الخدمات', 'حجز أولوية', 'استشارات مجانية'],
+    benefits: [
+      'membership.benefit.basic1',
+      'membership.benefit.basic2',
+      'membership.benefit.basic3',
+    ],
+    notIncluded: [
+      'membership.notIncluded.basic1',
+      'membership.notIncluded.basic2',
+      'membership.notIncluded.basic3',
+    ],
   },
   {
     key: 'premium',
     emoji: '⭐',
-    name: 'المميزة',
+    nameKey: 'membership.tier.premium',
     price: 99,
     color: '#f59e0b',
     benefits: [
-      'خصم ١٠٪ على جميع الخدمات',
-      'حجز أولوية',
-      'استشارة مجانية شهرياً',
-      'هدية ترحيبية',
-      'نقاط مضاعفة',
-      'دخول فعاليات حصرية',
+      'mobile.public.salonMembership.premium.discount10',
+      'membership.benefit.premium2',
+      'membership.benefit.premium3',
+      'membership.benefit.premium4',
+      'membership.benefit.premium5',
+      'membership.benefit.premium6',
     ],
-    notIncluded: ['مديرة حساب شخصية'],
+    notIncluded: ['membership.benefit.platinum4'],
   },
   {
     key: 'platinum',
     emoji: '👑',
-    name: 'البلاتينية',
+    nameKey: 'membership.tier.platinum',
     price: 299,
     color: '#7c3aed',
     benefits: [
-      'خصم ٢٠٪ على جميع الخدمات',
-      'حجز فوري',
-      'استشارات غير محدودة',
-      'مديرة حساب شخصية',
-      'هدية شهرية',
-      'نقاط ×٣',
-      'فعاليات VIP',
-      'خدمة توصيل مجانية',
+      'mobile.public.salonMembership.platinum.discount20',
+      'membership.benefit.platinum2',
+      'membership.benefit.platinum3',
+      'membership.benefit.platinum4',
+      'membership.benefit.platinum5',
+      'membership.benefit.platinum6',
+      'membership.benefit.platinum7',
+      'membership.benefit.platinum8',
     ],
     notIncluded: [],
   },
@@ -131,7 +150,7 @@ export default function SalonMembershipScreen(): JSX.Element {
               >
                 <View style={[styles.cardHeader, { backgroundColor: m.color + '20' }]}>
                   <Text style={styles.ce}>{m.emoji}</Text>
-                  <Text style={[styles.cn, { color: m.color }]}>{m.name}</Text>
+                  <Text style={[styles.cn, { color: m.color }]}>{t(m.nameKey)}</Text>
                   <Text style={styles.cp}>
                     {m.price === 0
                       ? t('mobile.public.salon-membership.free')
@@ -143,7 +162,7 @@ export default function SalonMembershipScreen(): JSX.Element {
                   {m.benefits.map((b, i) => (
                     <View key={i} style={styles.benefit}>
                       <Text style={styles.benefitBullet}>✅</Text>
-                      <Text style={styles.benefitText}>{b}</Text>
+                      <Text style={styles.benefitText}>{t(b)}</Text>
                     </View>
                   ))}
                   {m.notIncluded.length > 0 && (
@@ -154,7 +173,7 @@ export default function SalonMembershipScreen(): JSX.Element {
                       {m.notIncluded.map((b, i) => (
                         <View key={i} style={styles.benefit}>
                           <Text style={styles.benefitBulletX}>❌</Text>
-                          <Text style={[styles.benefitText, { color: '#9ca3af' }]}>{b}</Text>
+                          <Text style={[styles.benefitText, { color: '#9ca3af' }]}>{t(b)}</Text>
                         </View>
                       ))}
                     </>

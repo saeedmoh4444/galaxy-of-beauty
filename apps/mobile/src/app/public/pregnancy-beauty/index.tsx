@@ -1,42 +1,90 @@
 import { View, Text, ScrollView, StyleSheet, TouchableOpacity } from 'react-native';
 import { useState } from 'react';
 import type { JSX } from 'react';
+import type { TranslationKey } from '@galaxy/shared';
 import { useLocale } from '@/components/LocaleProvider';
 
-const TRIMESTERS = [
+interface TrimesterCard {
+  key: string;
+  emoji: string;
+  nameKey: TranslationKey;
+  weeks: string;
+  color: string;
+  tips: TranslationKey[];
+  safe: TranslationKey[];
+  avoid: TranslationKey[];
+}
+
+const TRIMESTERS: TrimesterCard[] = [
   {
     key: 'first',
     emoji: '🌱',
-    name: 'الأول',
+    nameKey: 'mobile.public.pregnancyBeauty.trimester.first',
     weeks: '1-13',
     color: '#10b981',
-    tips: ['تجنبي الصبغات الكيميائية', 'استخدمي منتجات طبيعية', 'الحناء بديل آمن للشعر'],
-    safe: ['ترطيب البشرة', 'مساج لطيف', 'مانيكير طبيعي', 'عناية بالأقدام'],
-    avoid: ['صبغات الشعر', 'علاجات كيميائية', 'الساونا', 'المساج القوي'],
+    tips: [
+      'mobile.public.pregnancyBeauty.first.tip1',
+      'marketing.pregnancy-beauty.tip-natural-title',
+      'mobile.public.pregnancyBeauty.first.tip3',
+    ],
+    safe: [
+      'mobile.public.pregnancyBeauty.first.safe1',
+      'mobile.public.pregnancyBeauty.first.safe2',
+      'mobile.public.pregnancyBeauty.first.safe3',
+      'mobile.public.pregnancyBeauty.first.safe4',
+    ],
+    avoid: [
+      'mobile.public.pregnancyBeauty.first.avoid1',
+      'mobile.public.pregnancyBeauty.first.avoid2',
+      'mobile.public.pregnancyBeauty.first.avoid3',
+      'mobile.public.pregnancyBeauty.first.avoid4',
+    ],
   },
   {
     key: 'second',
     emoji: '🌸',
-    name: 'الثاني',
+    nameKey: 'mobile.public.pregnancyBeauty.trimester.second',
     weeks: '14-26',
     color: '#8b5cf6',
-    tips: ['البشرة متألقة — استمتعي!', 'وقت مناسب للمانيكير', 'ترطيب مكثف لمنع علامات التمدد'],
-    safe: ['مانيكير وباديكير', 'قص وتصفيف شعر', 'مكياج خفيف', 'مساج ظهر لطيف'],
-    avoid: ['الاستلقاء على الظهر طويلاً', 'منتجات الريتينول', 'الزيوت العطرية القوية'],
+    tips: [
+      'mobile.public.pregnancyBeauty.second.tip1',
+      'mobile.public.pregnancyBeauty.second.tip2',
+      'mobile.public.pregnancyBeauty.second.tip3',
+    ],
+    safe: [
+      'marketing.shop-the-look.service-manicure-pedicure',
+      'mobile.public.pregnancyBeauty.second.safe2',
+      'mobile.public.pregnancyBeauty.second.safe3',
+      'mobile.public.pregnancyBeauty.second.safe4',
+    ],
+    avoid: [
+      'mobile.public.pregnancyBeauty.second.avoid1',
+      'mobile.public.pregnancyBeauty.second.avoid2',
+      'marketing.pregnancy-beauty.ing-avoid-essential-oils',
+    ],
   },
   {
     key: 'third',
     emoji: '🌟',
-    name: 'الثالث',
+    nameKey: 'mobile.public.pregnancyBeauty.trimester.third',
     weeks: '27-40',
     color: '#ec4899',
     tips: [
-      'قد تظهر الكلف — استخدمي واقي شمس',
-      'رفع القدمين لتقليل التورم',
-      'العناية بالبشرة الجافة',
+      'mobile.public.pregnancyBeauty.third.tip1',
+      'mobile.public.pregnancyBeauty.third.tip2',
+      'mobile.public.pregnancyBeauty.third.tip3',
     ],
-    safe: ['باديكير', 'ترطيب عميق', 'قص شعر', 'مساج قدمين'],
-    avoid: ['الاستلقاء على الظهر', 'العلاجات الطويلة', 'أي منتجات برائحة قوية'],
+    safe: [
+      'marketing.beauty-quiz.svc-pedicure',
+      'beautyServices.prosDeepHydration',
+      'mobile.public.pregnancyBeauty.third.safe3',
+      'mobile.public.pregnancyBeauty.third.safe4',
+    ],
+    avoid: [
+      'mobile.public.pregnancyBeauty.third.avoid1',
+      'mobile.public.pregnancyBeauty.third.avoid2',
+      'mobile.public.pregnancyBeauty.third.avoid3',
+    ],
   },
 ];
 
@@ -59,7 +107,7 @@ export default function PregnancyBeautyScreen(): JSX.Element {
             style={[styles.tab, trimester === tr.key && { backgroundColor: tr.color }]}
           >
             <Text style={[styles.tabText, trimester === tr.key && { color: '#fff' }]}>
-              {tr.emoji} {tr.name}
+              {tr.emoji} {t(tr.nameKey)}
             </Text>
             <Text style={[styles.tabWeeks, trimester === tr.key && { color: '#fff' }]}>
               {t('mobile.public.pregnancy-beauty.weeks', { weeks: tr.weeks })}
@@ -73,7 +121,7 @@ export default function PregnancyBeautyScreen(): JSX.Element {
         {current.tips.map((tip, i) => (
           <View key={i} style={styles.row}>
             <Text style={styles.bullet}>•</Text>
-            <Text style={styles.text}>{tip}</Text>
+            <Text style={styles.text}>{t(tip)}</Text>
           </View>
         ))}
       </View>
@@ -85,7 +133,7 @@ export default function PregnancyBeautyScreen(): JSX.Element {
         <View style={styles.grid}>
           {current.safe.map((s, i) => (
             <View key={i} style={styles.chip}>
-              <Text style={styles.chipText}> {s}</Text>
+              <Text style={styles.chipText}> {t(s)}</Text>
             </View>
           ))}
         </View>
@@ -98,7 +146,7 @@ export default function PregnancyBeautyScreen(): JSX.Element {
         <View style={styles.grid}>
           {current.avoid.map((s, i) => (
             <View key={i} style={[styles.chip, styles.chipAvoid]}>
-              <Text style={[styles.chipText, { color: '#dc2626' }]}> {s}</Text>
+              <Text style={[styles.chipText, { color: '#dc2626' }]}> {t(s)}</Text>
             </View>
           ))}
         </View>

@@ -1,13 +1,14 @@
 import type { JSX } from 'react';
 import { View, Text, ScrollView, StyleSheet, RefreshControl } from 'react-native';
+import type { TranslationKey } from '@galaxy/shared';
 import { SkeletonList } from '@/components/SkeletonCard';
 import { trpc } from '@/lib/trpc-react';
 import { useLocale } from '@/components/LocaleProvider';
 
-const TL: Record<string, { name: string; emoji: string; color: string }> = {
-  SILVER: { name: 'الفضية', emoji: '🥈', color: '#9ca3af' },
-  GOLD: { name: 'الذهبية', emoji: '🥇', color: '#f59e0b' },
-  PLATINUM: { name: 'البلاتينية', emoji: '💎', color: '#7c3aed' },
+const TL: Record<string, { nameKey: TranslationKey; emoji: string; color: string }> = {
+  SILVER: { nameKey: 'marketing.rewards.tier-silver', emoji: '🥈', color: '#9ca3af' },
+  GOLD: { nameKey: 'marketing.rewards.tier-gold', emoji: '🥇', color: '#f59e0b' },
+  PLATINUM: { nameKey: 'marketing.rewards.tier-platinum', emoji: '💎', color: '#7c3aed' },
 };
 
 interface Reward {
@@ -41,13 +42,13 @@ export default function RewardsScreen(): JSX.Element {
     >
       <Text style={styles.t}>{t('mobile.public.rewards.title')}</Text>
       <View style={styles.tr}>
-        {Object.entries(TL).map(([key, t]) => (
+        {Object.entries(TL).map(([key, tier]) => (
           <View
             key={key}
-            style={[styles.tc, { backgroundColor: t.color + '20', borderColor: t.color }]}
+            style={[styles.tc, { backgroundColor: tier.color + '20', borderColor: tier.color }]}
           >
-            <Text style={styles.te}>{t.emoji}</Text>
-            <Text style={[styles.tn, { color: t.color }]}>{t.name}</Text>
+            <Text style={styles.te}>{tier.emoji}</Text>
+            <Text style={[styles.tn, { color: tier.color }]}>{t(tier.nameKey)}</Text>
           </View>
         ))}
       </View>
