@@ -9,6 +9,7 @@ import {
 } from 'react-native';
 import { useState } from 'react';
 import type { JSX } from 'react';
+import type { TranslationKey } from '@galaxy/shared';
 import { ErrorAlert } from '@/components/ErrorAlert';
 import { EmptyState } from '@/components/EmptyState';
 import { SkeletonList } from '@/components/SkeletonCard';
@@ -16,13 +17,13 @@ import { useLocale } from '@/components/LocaleProvider';
 import { useAuthState } from '@/hooks/useAuthState';
 import { trpc } from '@/lib/trpc-react';
 
-const CATS: Record<string, string> = {
-  hair: 'شعر',
-  nails: 'أظافر',
-  skincare: 'بشرة',
-  makeup: 'مكياج',
-  body: 'جسم',
-  other: 'أخرى',
+const CATS: Record<string, TranslationKey> = {
+  hair: 'beautyReminders.cat-hair',
+  nails: 'beautyReminders.cat-nails',
+  skincare: 'beautyReminders.cat-skincare',
+  makeup: 'beautyReminders.cat-makeup',
+  body: 'beautyReminders.cat-body',
+  other: 'beautyReminders.cat-other',
 };
 const INTERVALS = [7, 14, 30, 60, 90];
 

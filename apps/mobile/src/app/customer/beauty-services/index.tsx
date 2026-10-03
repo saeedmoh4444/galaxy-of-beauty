@@ -1,15 +1,16 @@
 import type { JSX } from 'react';
 import { View, Text, ScrollView, StyleSheet } from 'react-native';
+import type { TranslationKey } from '@galaxy/shared';
 import { useLocale } from '@/components/LocaleProvider';
 
 interface Tip {
   emoji: string;
-  text: string;
+  textKey: TranslationKey;
 }
 interface Card {
   emoji: string;
-  title: string;
-  subtitle: string;
+  titleKey: TranslationKey;
+  subtitleKey: TranslationKey;
   color: string;
   bg: string;
   tips: Tip[];
@@ -18,80 +19,80 @@ interface Card {
 const CARDS: Card[] = [
   {
     emoji: '🌞',
-    title: 'نصيحة جمال',
-    subtitle: 'ضعي واقي الشمس كل ساعتين',
+    titleKey: 'mobile.beautyServices.sunAdvice.title',
+    subtitleKey: 'mobile.beautyServices.sunAdvice.subtitle',
     color: '#d97706',
     bg: '#fffbeb',
     tips: [
-      { emoji: '🧴', text: 'SPF 50+ — للوجه والرقبة واليدين' },
-      { emoji: '🔄', text: 'جدديه كل ساعتين — تحت الشمس المباشرة' },
-      { emoji: '🏠', text: 'حتى في البيت — الأشعة تخترق الزجاج' },
-      { emoji: '📅', text: '365 يوم — صيفاً وشتاءً' },
+      { emoji: '🧴', textKey: 'mobile.beautyServices.sunAdvice.tip1' },
+      { emoji: '🔄', textKey: 'mobile.beautyServices.sunAdvice.tip2' },
+      { emoji: '🏠', textKey: 'mobile.beautyServices.sunAdvice.tip3' },
+      { emoji: '📅', textKey: 'mobile.beautyServices.sunAdvice.tip4' },
     ],
   },
   {
     emoji: '🚨',
-    title: 'طوارئ الجمال',
-    subtitle: 'مساعدة فورية — 24 ساعة',
+    titleKey: 'mobile.beautyServices.emergency.title',
+    subtitleKey: 'mobile.beautyServices.emergency.subtitle',
     color: '#e11d48',
     bg: '#fff1f2',
     tips: [
-      { emoji: '📞', text: 'اتصلي: 9200 — خط الطوارئ' },
-      { emoji: '⏰', text: 'وصول خلال 30 دقيقة' },
-      { emoji: '🏡', text: 'خدمة منزلية — للطوارئ' },
-      { emoji: '🩺', text: 'استشارة طبية — عند الحاجة' },
+      { emoji: '📞', textKey: 'mobile.beautyServices.emergency.tip1' },
+      { emoji: '⏰', textKey: 'mobile.beautyServices.emergency.tip2' },
+      { emoji: '🏡', textKey: 'mobile.beautyServices.emergency.tip3' },
+      { emoji: '🩺', textKey: 'mobile.beautyServices.emergency.tip4' },
     ],
   },
   {
     emoji: '🏢',
-    title: 'مرافق الصالون',
-    subtitle: 'واي فاي — مواقف — قهوة',
+    titleKey: 'mobile.beautyServices.facilities.title',
+    subtitleKey: 'mobile.beautyServices.facilities.subtitle',
     color: '#0d9488',
     bg: '#f0fdfa',
     tips: [
-      { emoji: '📶', text: 'واي فاي مجاني — ابقي متصلة' },
-      { emoji: '🅿️', text: 'مواقف سيارات — مجانية' },
-      { emoji: '☕', text: 'ضيافة — قهوة وشاي' },
-      { emoji: '🧸', text: 'ركن أطفال — العبي بأمان' },
+      { emoji: '📶', textKey: 'mobile.beautyServices.facilities.tip1' },
+      { emoji: '🅿️', textKey: 'mobile.beautyServices.facilities.tip2' },
+      { emoji: '☕', textKey: 'mobile.beautyServices.facilities.tip3' },
+      { emoji: '🧸', textKey: 'mobile.beautyServices.facilities.tip4' },
     ],
   },
   {
     emoji: '🕌',
-    title: 'غرفة الصلاة',
-    subtitle: 'سجادات — عباءات — قبلة',
+    titleKey: 'mobile.beautyServices.prayerRoom.title',
+    subtitleKey: 'mobile.beautyServices.prayerRoom.subtitle',
     color: '#059669',
     bg: '#ecfdf5',
     tips: [
-      { emoji: '🧎', text: 'سجادات صلاة — نظيفة ومعطرة' },
-      { emoji: '🧥', text: 'عباءات — متوفرة للصلاة' },
-      { emoji: '🧭', text: 'اتجاه القبلة — محدد بوضوح' },
-      { emoji: '🚿', text: 'مكان وضوء — مجهز بالكامل' },
+      { emoji: '🧎', textKey: 'mobile.beautyServices.prayerRoom.tip1' },
+      { emoji: '🧥', textKey: 'mobile.beautyServices.prayerRoom.tip2' },
+      { emoji: '🧭', textKey: 'mobile.beautyServices.prayerRoom.tip3' },
+      { emoji: '🚿', textKey: 'mobile.beautyServices.prayerRoom.tip4' },
     ],
   },
   {
     emoji: '📊',
-    title: 'مقارنة المنتجات',
-    subtitle: 'كريم A vs كريم B',
+    titleKey: 'marketing.product-compare.title',
+    subtitleKey: 'mobile.beautyServices.productCompare.subtitle',
     color: '#0284c7',
     bg: '#f0f9ff',
     tips: [
-      { emoji: '🧴', text: 'كريم A: 120 ر.س — ترطيب 24 ساعة (4.5)' },
-      { emoji: '💧', text: 'كريم B: 80 ر.س — خفيف وسريع (4.0)' },
-      { emoji: '🥇', text: 'الأفضل: كريم A — ترطيب عميق' },
-      { emoji: '🥈', text: 'الأوفر: كريم B — قيمة ممتازة' },
+      { emoji: '🧴', textKey: 'mobile.beautyServices.productCompare.tip1' },
+      { emoji: '💧', textKey: 'mobile.beautyServices.productCompare.tip2' },
+      { emoji: '🥇', textKey: 'mobile.beautyServices.productCompare.tip3' },
+      { emoji: '🥈', textKey: 'mobile.beautyServices.productCompare.tip4' },
     ],
   },
   {
     emoji: '💎',
-    title: 'الاشتراك المميز',
-    subtitle: 'باقة Premium — خصم 20%',
+    titleKey: 'mobile.beautyLifestyle.card.premiumSubscription.title',
+    subtitleKey: 'mobile.beautyServices.premium.subtitle',
     color: '#7c3aed',
     bg: '#f5f3ff',
     tips: [
-      { emoji: '💰', text: 'خصم 20% على جميع الخدمات' },
-      { emoji: '📅', text: 'حجز أولوية — قبل 48 ساعة' },
-      { emoji: '🎁', text: 'هدية شهرية — منتج تجميل' },
-      { emoji: '⭐', text: 'نقاط مضاعفة — x2 على كل ريال' },
+      { emoji: '💰', textKey: 'mobile.beautyLifestyle.card.premiumSubscription.tip1' },
+      { emoji: '📅', textKey: 'mobile.beautyLifestyle.card.premiumSubscription.tip2' },
+      { emoji: '🎁', textKey: 'mobile.beautyLifestyle.card.premiumSubscription.tip3' },
+      { emoji: '⭐', textKey: 'mobile.beautyLifestyle.card.premiumSubscription.tip4' },
     ],
   },
 ];
@@ -108,15 +109,15 @@ export default function BeautyServicesScreen(): JSX.Element {
             <View style={s.ch}>
               <Text style={s.ce}>{c.emoji}</Text>
               <View style={s.cw}>
-                <Text style={[s.ct, { color: c.color }]}>{c.title}</Text>
-                <Text style={s.cs}>{c.subtitle}</Text>
+                <Text style={[s.ct, { color: c.color }]}>{t(c.titleKey)}</Text>
+                <Text style={s.cs}>{t(c.subtitleKey)}</Text>
               </View>
             </View>
             <View style={s.tl}>
-              {c.tips.map((t, j) => (
+              {c.tips.map((tip, j) => (
                 <View key={j} style={[s.tr, { backgroundColor: c.bg }]}>
-                  <Text style={s.te}>{t.emoji}</Text>
-                  <Text style={[s.tt, { color: c.color }]}>{t.text}</Text>
+                  <Text style={s.te}>{tip.emoji}</Text>
+                  <Text style={[s.tt, { color: c.color }]}>{t(tip.textKey)}</Text>
                 </View>
               ))}
             </View>

@@ -1,15 +1,16 @@
 import type { JSX } from 'react';
 import { View, Text, ScrollView, StyleSheet } from 'react-native';
+import type { TranslationKey } from '@galaxy/shared';
 import { useLocale } from '@/components/LocaleProvider';
 
 interface Tip {
   emoji: string;
-  text: string;
+  textKey: TranslationKey;
 }
 interface Card {
   emoji: string;
-  title: string;
-  subtitle: string;
+  titleKey: TranslationKey;
+  subtitleKey: TranslationKey;
   color: string;
   bg: string;
   tips: Tip[];
@@ -18,93 +19,93 @@ interface Card {
 const CARDS: Card[] = [
   {
     emoji: '🏆',
-    title: 'مكافآت الجمال',
-    subtitle: '1250 نقطة — المستوى الذهبي',
+    titleKey: 'mobile.beautyLifestyle.card.rewards.title',
+    subtitleKey: 'mobile.beautyLifestyle.card.rewards.subtitle',
     color: '#d97706',
     bg: '#fffbeb',
     tips: [
-      { emoji: '⭐', text: '1250 نقطة — قابلة للاستبدال' },
-      { emoji: '🥇', text: 'المستوى: ذهبي — خصم 15%' },
-      { emoji: '🎁', text: 'الهدية القادمة: قناع وجه مجاني' },
-      { emoji: '⏳', text: 'تنتهي النقاط بعد 12 شهراً' },
+      { emoji: '⭐', textKey: 'mobile.beautyLifestyle.card.rewards.tip1' },
+      { emoji: '🥇', textKey: 'mobile.beautyLifestyle.card.rewards.tip2' },
+      { emoji: '🎁', textKey: 'mobile.beautyLifestyle.card.rewards.tip3' },
+      { emoji: '⏳', textKey: 'mobile.beautyLifestyle.card.rewards.tip4' },
     ],
   },
   {
     emoji: '💰',
-    title: 'أرباح الولاء',
-    subtitle: '4500 ر.س إنفاق سنوي',
+    titleKey: 'mobile.beautyRewards.loyalty.title',
+    subtitleKey: 'mobile.beautyRewards.loyalty.subtitle',
     color: '#059669',
     bg: '#ecfdf5',
     tips: [
-      { emoji: '📊', text: 'نسبة الاسترداد: 5% — 225 ر.س سنوياً' },
-      { emoji: '🥇', text: 'المستوى: ذهبي — نسبة أعلى' },
-      { emoji: '👛', text: 'تضاف للمحفظة — تلقائياً' },
-      { emoji: '✅', text: 'تصرف في أي وقت — لا حد أدنى' },
+      { emoji: '📊', textKey: 'mobile.beautyRewards.loyalty.tip1' },
+      { emoji: '🥇', textKey: 'mobile.beautyRewards.loyalty.tip2' },
+      { emoji: '👛', textKey: 'mobile.beautyRewards.loyalty.tip3' },
+      { emoji: '✅', textKey: 'mobile.beautyRewards.loyalty.tip4' },
     ],
   },
   {
     emoji: '🎂',
-    title: 'ذكرى الانضمام',
-    subtitle: 'سنتان — أغسطس 2024',
+    titleKey: 'mobile.beautyRewards.anniversary.title',
+    subtitleKey: 'mobile.beautyRewards.anniversary.subtitle',
     color: '#db2777',
     bg: '#fdf2f8',
     tips: [
-      { emoji: '📅', text: 'عضوة منذ: أغسطس 2024' },
-      { emoji: '💇', text: '48 حجز — في سنتين' },
-      { emoji: '🎁', text: 'هدية الذكرى: خصم 50 ر.س' },
-      { emoji: '❤️', text: 'شكراً لكونكِ جزءاً من عائلتنا' },
+      { emoji: '📅', textKey: 'mobile.beautyRewards.anniversary.tip1' },
+      { emoji: '💇', textKey: 'mobile.beautyRewards.anniversary.tip2' },
+      { emoji: '🎁', textKey: 'mobile.beautyRewards.anniversary.tip3' },
+      { emoji: '❤️', textKey: 'mobile.beautyRewards.anniversary.tip4' },
     ],
   },
   {
     emoji: '🏅',
-    title: 'لوحة الإحالات',
-    subtitle: 'المركز الخامس — 3 إحالات',
+    titleKey: 'mobile.referralDashboard.title',
+    subtitleKey: 'mobile.beautyRewards.leaderboard.subtitle',
     color: '#7c3aed',
     bg: '#f5f3ff',
     tips: [
-      { emoji: '🥇', text: 'نورة: 12 إحالة — المركز الأول' },
-      { emoji: '🥈', text: 'مها: 8 إحالات — المركز الثاني' },
-      { emoji: '🥉', text: 'ريم: 5 إحالات — المركز الثالث' },
-      { emoji: '🙋', text: 'أنتِ: 3 إحالات — المركز الخامس' },
+      { emoji: '🥇', textKey: 'mobile.beautyRewards.leaderboard.tip1' },
+      { emoji: '🥈', textKey: 'mobile.beautyRewards.leaderboard.tip2' },
+      { emoji: '🥉', textKey: 'mobile.beautyRewards.leaderboard.tip3' },
+      { emoji: '🙋', textKey: 'mobile.beautyRewards.leaderboard.tip4' },
     ],
   },
   {
     emoji: '🎓',
-    title: 'خصم الطالبات',
-    subtitle: '15% — للطالبات الجامعيات',
+    titleKey: 'mobile.beautyRewards.student.title',
+    subtitleKey: 'mobile.beautyRewards.student.subtitle',
     color: '#0284c7',
     bg: '#f0f9ff',
     tips: [
-      { emoji: '🎓', text: 'لطالبات الجامعة — undergraduate' },
-      { emoji: '🏷️', text: 'خصم 15% — على جميع الخدمات' },
-      { emoji: '🪪', text: 'إثبات: البطاقة الجامعية' },
-      { emoji: '🚫', text: 'لا يدمج مع عروض أخرى' },
+      { emoji: '🎓', textKey: 'mobile.beautyRewards.student.tip1' },
+      { emoji: '🏷️', textKey: 'mobile.beautyRewards.student.tip2' },
+      { emoji: '🪪', textKey: 'mobile.beautyRewards.student.tip3' },
+      { emoji: '🚫', textKey: 'mobile.beautyLifestyle.card.beautyVoucher.tip4' },
     ],
   },
   {
     emoji: '👥',
-    title: 'خصم المجموعات',
-    subtitle: 'احجزوا معاً — وفروا أكثر',
+    titleKey: 'mobile.beautyRewards.group.title',
+    subtitleKey: 'mobile.beautyRewards.group.subtitle',
     color: '#0d9488',
     bg: '#f0fdfa',
     tips: [
-      { emoji: '3️⃣', text: '3+ أشخاص — خصم 10%' },
-      { emoji: '5️⃣', text: '5+ أشخاص — خصم 15%' },
-      { emoji: '8️⃣', text: '8+ أشخاص — خصم 20%' },
-      { emoji: '🎊', text: 'مناسبات خاصة — باقة VIP' },
+      { emoji: '3️⃣', textKey: 'mobile.beautyRewards.group.tip1' },
+      { emoji: '5️⃣', textKey: 'mobile.beautyRewards.group.tip2' },
+      { emoji: '8️⃣', textKey: 'mobile.beautyRewards.group.tip3' },
+      { emoji: '🎊', textKey: 'mobile.beautyRewards.group.tip4' },
     ],
   },
   {
     emoji: '💖',
-    title: 'نقاط الطيبة',
-    subtitle: 'أفعلي خيراً — اكسبي نقاطاً',
+    titleKey: 'mobile.beautyRewards.kindness.title',
+    subtitleKey: 'mobile.beautyRewards.kindness.subtitle',
     color: '#db2777',
     bg: '#fdf2f8',
     tips: [
-      { emoji: '🤝', text: 'ساعدي صديقة — 50 نقطة' },
-      { emoji: '✍️', text: 'اكتبي تقييماً — 25 نقطة' },
-      { emoji: '🎁', text: 'أحلي هدية — 100 نقطة' },
-      { emoji: '💝', text: 'كوني لطيفة — الجمال في العطاء' },
+      { emoji: '🤝', textKey: 'mobile.beautyRewards.kindness.tip1' },
+      { emoji: '✍️', textKey: 'mobile.beautyRewards.kindness.tip2' },
+      { emoji: '🎁', textKey: 'mobile.beautyRewards.kindness.tip3' },
+      { emoji: '💝', textKey: 'mobile.beautyRewards.kindness.tip4' },
     ],
   },
 ];
@@ -121,15 +122,15 @@ export default function BeautyRewardsScreen(): JSX.Element {
             <View style={s.ch}>
               <Text style={s.ce}>{c.emoji}</Text>
               <View style={s.cw}>
-                <Text style={[s.ct, { color: c.color }]}>{c.title}</Text>
-                <Text style={s.cs}>{c.subtitle}</Text>
+                <Text style={[s.ct, { color: c.color }]}>{t(c.titleKey)}</Text>
+                <Text style={s.cs}>{t(c.subtitleKey)}</Text>
               </View>
             </View>
             <View style={s.tl}>
-              {c.tips.map((t, j) => (
+              {c.tips.map((tip, j) => (
                 <View key={j} style={[s.tr, { backgroundColor: c.bg }]}>
-                  <Text style={s.te}>{t.emoji}</Text>
-                  <Text style={[s.tt, { color: c.color }]}>{t.text}</Text>
+                  <Text style={s.te}>{tip.emoji}</Text>
+                  <Text style={[s.tt, { color: c.color }]}>{t(tip.textKey)}</Text>
                 </View>
               ))}
             </View>
