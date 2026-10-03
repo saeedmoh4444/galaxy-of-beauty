@@ -1,8 +1,15 @@
 import type { JSX } from 'react';
 import { View, Text, ScrollView, StyleSheet } from 'react-native';
+import type { TranslationKey } from '@galaxy/shared';
 import { ScreenState } from '@/components/ScreenState';
 import { trpc } from '@/lib/trpc-react';
 import { useLocale } from '@/components/LocaleProvider';
+
+const TOP_SERVICES: Array<{ nameKey: TranslationKey; count: number; emoji: string }> = [
+  { nameKey: 'mobile.public.lookbook.tag.makeup', count: 15, emoji: '💄' },
+  { nameKey: 'marketing.beauty-quiz.svc-hair-styling', count: 12, emoji: '💇' },
+  { nameKey: 'mobile.public.lookbook.tag.manicure', count: 8, emoji: '💅' },
+];
 
 function monthShort(month: string | undefined, locale: string): string {
   if (!month) return '';
@@ -89,17 +96,13 @@ export default function TechPerformanceScreen(): JSX.Element {
         {/* NO API: top-services breakdown not available for technicians — only admin analytics expose it */}
         <View style={s.card}>
           <Text style={s.ct}>{t('mobile.tech.performance.top-services')}</Text>
-          {[
-            { name: 'مكياج', count: 15, emoji: '💄' },
-            { name: 'تسريحة شعر', count: 12, emoji: '💇' },
-            { name: 'مانيكير', count: 8, emoji: '💅' },
-          ].map((sv, i) => (
+          {TOP_SERVICES.map((sv, i) => (
             <View
               key={i}
               style={{ flexDirection: 'row', alignItems: 'center', gap: 8, marginTop: 8 }}
             >
               <Text>{sv.emoji}</Text>
-              <Text style={{ flex: 1, fontSize: 14, fontWeight: '600' }}>{sv.name}</Text>
+              <Text style={{ flex: 1, fontSize: 14, fontWeight: '600' }}>{t(sv.nameKey)}</Text>
               <Text style={{ fontSize: 14, fontWeight: '700', color: '#7c3aed' }}>{sv.count}</Text>
             </View>
           ))}

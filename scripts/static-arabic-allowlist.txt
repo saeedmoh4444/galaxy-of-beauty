@@ -1,3 +1,1 @@
-apps/mobile/src/app/public/virtual-consultation/index.tsx
-apps/mobile/src/app/tech/gallery/index.tsx
-apps/mobile/src/app/tech/performance/index.tsx
+# Arabic sweep complete — no allowlisted files remain.
