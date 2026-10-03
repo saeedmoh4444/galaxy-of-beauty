@@ -1,15 +1,16 @@
 import type { JSX } from 'react';
 import { View, Text, ScrollView, StyleSheet } from 'react-native';
+import type { TranslationKey } from '@galaxy/shared';
 import { useLocale } from '@/components/LocaleProvider';
 
 interface Tip {
   emoji: string;
-  text: string;
+  textKey: TranslationKey;
 }
 interface Card {
   emoji: string;
-  title: string;
-  subtitle: string;
+  titleKey: TranslationKey;
+  subtitleKey: TranslationKey;
   color: string;
   bg: string;
   tips: Tip[];
@@ -18,236 +19,236 @@ interface Card {
 const CARDS: Card[] = [
   {
     emoji: '🌿',
-    title: 'صالون أخضر',
-    subtitle: 'ممارسات صديقة للبيئة',
+    titleKey: 'mobile.sustainability.card.greenSalon.title',
+    subtitleKey: 'mobile.sustainability.card.greenSalon.subtitle',
     color: '#059669',
     bg: '#ecfdf5',
     tips: [
-      { emoji: '♻️', text: 'إعادة تدوير — جميع العبوات قابلة للتدوير' },
-      { emoji: '🌿', text: 'منتجات عضوية — خالية من المواد الضارة' },
-      { emoji: '💡', text: 'توفير طاقة — إضاءة LED وأجهزة موفرة' },
-      { emoji: '💧', text: 'ترشيد مياه — أنظمة ذكية لتوفير المياه' },
+      { emoji: '♻️', textKey: 'mobile.sustainability.card.greenSalon.tip1' },
+      { emoji: '🌿', textKey: 'mobile.sustainability.card.greenSalon.tip2' },
+      { emoji: '💡', textKey: 'mobile.sustainability.card.greenSalon.tip3' },
+      { emoji: '💧', textKey: 'mobile.sustainability.card.greenSalon.tip4' },
     ],
   },
   {
     emoji: '♿',
-    title: 'صالون متاح',
-    subtitle: 'للجميع بدون استثناء',
+    titleKey: 'mobile.sustainability.card.accessibleSalon.title',
+    subtitleKey: 'mobile.sustainability.card.accessibleSalon.subtitle',
     color: '#0284c7',
     bg: '#f0f9ff',
     tips: [
-      { emoji: '♿', text: 'مداخل ومخارج — مناسبة للكراسي المتحركة' },
-      { emoji: '🤟', text: 'لغة إشارة — موظفات مدربات' },
-      { emoji: '🦻', text: 'مساعدات سمعية — أجهزة متوفرة' },
-      { emoji: '🦯', text: 'قائمة برايل — للخدمات والأسعار' },
+      { emoji: '♿', textKey: 'mobile.sustainability.card.accessibleSalon.tip1' },
+      { emoji: '🤟', textKey: 'mobile.sustainability.card.accessibleSalon.tip2' },
+      { emoji: '🦻', textKey: 'mobile.sustainability.card.accessibleSalon.tip3' },
+      { emoji: '🦯', textKey: 'mobile.sustainability.card.accessibleSalon.tip4' },
     ],
   },
   {
     emoji: '🧘',
-    title: 'صالون حسي',
-    subtitle: 'بيئة هادئة ومريحة',
+    titleKey: 'mobile.sustainability.card.sensorySalon.title',
+    subtitleKey: 'mobile.sustainability.card.sensorySalon.subtitle',
     color: '#7c3aed',
     bg: '#f5f3ff',
     tips: [
-      { emoji: '🤫', text: 'ساعات هادئة — بدون موسيقى أو ضوضاء' },
-      { emoji: '🌙', text: 'إضاءة خافتة — مناسبة للحساسية الضوئية' },
-      { emoji: '🚫', text: 'خالٍ من العطور — للمتحسسات' },
-      { emoji: '🗺️', text: 'خريطة حسية — وصف لكل منطقة' },
+      { emoji: '🤫', textKey: 'mobile.sustainability.card.sensorySalon.tip1' },
+      { emoji: '🌙', textKey: 'mobile.sustainability.card.sensorySalon.tip2' },
+      { emoji: '🚫', textKey: 'mobile.sustainability.card.sensorySalon.tip3' },
+      { emoji: '🗺️', textKey: 'mobile.sustainability.card.sensorySalon.tip4' },
     ],
   },
   {
     emoji: '🌍',
-    title: 'جمال للجميع',
-    subtitle: 'جميع أنواع البشرة والشعر',
+    titleKey: 'mobile.sustainability.card.beautyForAll.title',
+    subtitleKey: 'mobile.sustainability.card.beautyForAll.subtitle',
     color: '#db2777',
     bg: '#fdf2f8',
     tips: [
-      { emoji: '🎨', text: 'جميع ألوان البشرة — منتجات مناسبة للجميع' },
-      { emoji: '💇', text: 'جميع أنواع الشعر — خبيرات لكل الأنواع' },
-      { emoji: '🧓', text: 'جميع الأعمار — من المراهقة للذهبية' },
-      { emoji: '🫶', text: 'جميع الأجسام — Beauty at every size' },
+      { emoji: '🎨', textKey: 'mobile.sustainability.card.beautyForAll.tip1' },
+      { emoji: '💇', textKey: 'mobile.sustainability.card.beautyForAll.tip2' },
+      { emoji: '🧓', textKey: 'mobile.sustainability.card.beautyForAll.tip3' },
+      { emoji: '🫶', textKey: 'mobile.sustainability.card.beautyForAll.tip4' },
     ],
   },
   {
     emoji: '🧎',
-    title: 'غرفة صلاة',
-    subtitle: 'مكان هادئ للعبادة',
+    titleKey: 'mobile.sustainability.card.prayerRoom.title',
+    subtitleKey: 'mobile.sustainability.card.prayerRoom.subtitle',
     color: '#0d9488',
     bg: '#f0fdfa',
     tips: [
-      { emoji: '🕌', text: 'سجادات — نظيفة ومعطرة' },
-      { emoji: '🧕', text: 'عباءات — متوفرة للصلاة' },
-      { emoji: '🧭', text: 'اتجاه القبلة — محدد بوضوح' },
-      { emoji: '💧', text: 'مكان وضوء — مجهز بالكامل' },
+      { emoji: '🕌', textKey: 'mobile.sustainability.card.prayerRoom.tip1' },
+      { emoji: '🧕', textKey: 'mobile.beautyServices.prayerRoom.tip2' },
+      { emoji: '🧭', textKey: 'mobile.beautyServices.prayerRoom.tip3' },
+      { emoji: '💧', textKey: 'mobile.beautyServices.prayerRoom.tip4' },
     ],
   },
   {
     emoji: '☕',
-    title: 'ركن الضيافة',
-    subtitle: 'مشروبات ساخنة وباردة',
+    titleKey: 'mobile.sustainability.card.hospitalityCorner.title',
+    subtitleKey: 'mobile.sustainability.card.hospitalityCorner.subtitle',
     color: '#d97706',
     bg: '#fffbeb',
     tips: [
-      { emoji: '☕', text: 'قهوة — عربية وتركية' },
-      { emoji: '🍵', text: 'شاي — أخضر وأسود وأعشاب' },
-      { emoji: '💧', text: 'ماء — بارد ومعطر بالفواكه' },
-      { emoji: '🌴', text: 'تمر وضيافة — ترحيب حار' },
+      { emoji: '☕', textKey: 'mobile.sustainability.card.hospitalityCorner.tip1' },
+      { emoji: '🍵', textKey: 'mobile.sustainability.card.hospitalityCorner.tip2' },
+      { emoji: '💧', textKey: 'mobile.sustainability.card.hospitalityCorner.tip3' },
+      { emoji: '🌴', textKey: 'mobile.sustainability.card.hospitalityCorner.tip4' },
     ],
   },
   {
     emoji: '🎁',
-    title: 'هدية غير متوقعة',
-    subtitle: 'فاجئي زائرة اليوم',
+    titleKey: 'mobile.sustainability.card.unexpectedGift.title',
+    subtitleKey: 'mobile.sustainability.card.unexpectedGift.subtitle',
     color: '#c026d3',
     bg: '#fdf4ff',
     tips: [
-      { emoji: '💐', text: 'باقة ورود — بدون مناسبة' },
-      { emoji: '💌', text: 'بطاقة شكر — بخط اليد' },
-      { emoji: '🎁', text: 'عينة مجانية — منتج جديد' },
-      { emoji: '💝', text: 'العطاء — الجمال في التفاصيل' },
+      { emoji: '💐', textKey: 'mobile.sustainability.card.unexpectedGift.tip1' },
+      { emoji: '💌', textKey: 'mobile.beautyInnovation.card.randomKindness.tip2' },
+      { emoji: '🎁', textKey: 'mobile.sustainability.card.unexpectedGift.tip3' },
+      { emoji: '💝', textKey: 'mobile.sustainability.card.unexpectedGift.tip4' },
     ],
   },
   {
     emoji: '⏳',
-    title: 'بدون استعجال',
-    subtitle: 'خذي وقتكِ — لا نستعجلكِ',
+    titleKey: 'mobile.sustainability.card.noRush.title',
+    subtitleKey: 'mobile.sustainability.card.noRush.subtitle',
     color: '#0d9488',
     bg: '#f0fdfa',
     tips: [
-      { emoji: '☕', text: 'استرخي — قهوة قبل الخدمة' },
-      { emoji: '💬', text: 'استشارة — مناقشة كاملة قبل البدء' },
-      { emoji: '📅', text: 'لا مواعيد متلاحقة — وقت كافٍ' },
-      { emoji: '🙋', text: 'أي سؤال — نحن هنا للمساعدة' },
+      { emoji: '☕', textKey: 'mobile.sustainability.card.noRush.tip1' },
+      { emoji: '💬', textKey: 'mobile.sustainability.card.noRush.tip2' },
+      { emoji: '📅', textKey: 'mobile.sustainability.card.noRush.tip3' },
+      { emoji: '🙋', textKey: 'mobile.sustainability.card.noRush.tip4' },
     ],
   },
   {
     emoji: '🌱',
-    title: 'الجمال بدون نفايات',
-    subtitle: 'جميلة — وكوكب أجمل',
+    titleKey: 'mobile.sustainability.card.zeroWasteBeauty.title',
+    subtitleKey: 'mobile.sustainability.card.zeroWasteBeauty.subtitle',
     color: '#059669',
     bg: '#ecfdf5',
     tips: [
-      { emoji: '🧼', text: 'شامبو صلب — يدوم 3 شهور' },
-      { emoji: '🧺', text: 'فوط قماش — بدل القطن أحادي الاستخدام' },
-      { emoji: '🧴', text: 'عبوات كبيرة — وأعيدي تعبئة الصغيرة' },
-      { emoji: '📦', text: 'منتجات قابلة للتحلل — تغليف ورقي' },
+      { emoji: '🧼', textKey: 'mobile.sustainability.card.zeroWasteBeauty.tip1' },
+      { emoji: '🧺', textKey: 'mobile.sustainability.card.zeroWasteBeauty.tip2' },
+      { emoji: '🧴', textKey: 'mobile.sustainability.card.zeroWasteBeauty.tip3' },
+      { emoji: '📦', textKey: 'mobile.sustainability.card.zeroWasteBeauty.tip4' },
     ],
   },
   {
     emoji: '♻️',
-    title: 'عبوات قابلة للتعبئة',
-    subtitle: 'اشتري مرة — استخدمي للأبد',
+    titleKey: 'mobile.sustainability.card.refillablePackaging.title',
+    subtitleKey: 'mobile.sustainability.card.refillablePackaging.subtitle',
     color: '#0d9488',
     bg: '#f0fdfa',
     tips: [
-      { emoji: '💰', text: 'أوفر — العبوة الأصلية مرة واحدة' },
-      { emoji: '♻️', text: 'تقلل النفايات — 70% أقل بلاستيك' },
-      { emoji: '💄', text: 'أحمر شفاه — كريم أساس — عطور' },
-      { emoji: '🔄', text: 'ارجعي الفارغة — لخصم على القادمة' },
+      { emoji: '💰', textKey: 'mobile.sustainability.card.refillablePackaging.tip1' },
+      { emoji: '♻️', textKey: 'mobile.sustainability.card.refillablePackaging.tip2' },
+      { emoji: '💄', textKey: 'mobile.sustainability.card.refillablePackaging.tip3' },
+      { emoji: '🔄', textKey: 'mobile.sustainability.card.refillablePackaging.tip4' },
     ],
   },
   {
     emoji: '🧪',
-    title: 'الجمال النظيف',
-    subtitle: 'منتجات آمنة — بدون سموم',
+    titleKey: 'mobile.sustainability.card.cleanBeauty.title',
+    subtitleKey: 'mobile.sustainability.card.cleanBeauty.subtitle',
     color: '#0284c7',
     bg: '#f0f9ff',
     tips: [
-      { emoji: '🚫', text: 'بدون: بارابين سلفات فثالات' },
-      { emoji: '🌱', text: 'مكونات نباتية — غير مختبرة على الحيوانات' },
-      { emoji: '🔍', text: 'اقرئي الملصق — أول 5 مكونات' },
-      { emoji: '📜', text: 'شهادات: EWG COSMOS Leaping Bunny' },
+      { emoji: '🚫', textKey: 'mobile.sustainability.card.cleanBeauty.tip1' },
+      { emoji: '🌱', textKey: 'mobile.sustainability.card.cleanBeauty.tip2' },
+      { emoji: '🔍', textKey: 'mobile.sustainability.card.cleanBeauty.tip3' },
+      { emoji: '📜', textKey: 'mobile.sustainability.card.cleanBeauty.tip4' },
     ],
   },
   {
     emoji: '🔄',
-    title: 'الجمال المُعاد تدويره',
-    subtitle: 'من النفايات — إلى الذهب',
+    titleKey: 'mobile.sustainability.card.recycledBeauty.title',
+    subtitleKey: 'mobile.sustainability.card.recycledBeauty.subtitle',
     color: '#d97706',
     bg: '#fffbeb',
     tips: [
-      { emoji: '☕', text: 'بقايا القهوة — مقشر طبيعي' },
-      { emoji: '🍊', text: 'قشور الحمضيات — زيوت عطرية' },
-      { emoji: '🥑', text: 'بذور الأفوكادو — صبغة وردية' },
-      { emoji: '🌾', text: 'نخالة الأرز — مقشر لطيف للوجه' },
+      { emoji: '☕', textKey: 'mobile.sustainability.card.recycledBeauty.tip1' },
+      { emoji: '🍊', textKey: 'mobile.sustainability.card.recycledBeauty.tip2' },
+      { emoji: '🥑', textKey: 'mobile.sustainability.card.recycledBeauty.tip3' },
+      { emoji: '🌾', textKey: 'mobile.sustainability.card.recycledBeauty.tip4' },
     ],
   },
   {
     emoji: '🚯',
-    title: 'الجمال بدون بلاستيك',
-    subtitle: 'بدائل ذكية للبلاستيك',
+    titleKey: 'mobile.sustainability.card.plasticFreeBeauty.title',
+    subtitleKey: 'mobile.sustainability.card.plasticFreeBeauty.subtitle',
     color: '#4f46e5',
     bg: '#eef2ff',
     tips: [
-      { emoji: '🪥', text: 'فرشاة بامبو — قابلة للتحلل' },
-      { emoji: '🫙', text: 'زجاج وألمنيوم — تدوير للأبد' },
-      { emoji: '🪒', text: 'شفرة معدنية — تدوم سنوات' },
-      { emoji: '🧼', text: 'صابون صلب — بدون تغليف' },
+      { emoji: '🪥', textKey: 'mobile.sustainability.card.plasticFreeBeauty.tip1' },
+      { emoji: '🫙', textKey: 'mobile.sustainability.card.plasticFreeBeauty.tip2' },
+      { emoji: '🪒', textKey: 'mobile.sustainability.card.plasticFreeBeauty.tip3' },
+      { emoji: '🧼', textKey: 'mobile.sustainability.card.plasticFreeBeauty.tip4' },
     ],
   },
   {
     emoji: '🌱',
-    title: 'الجمال النباتي',
-    subtitle: 'خالٍ من المكونات الحيوانية',
+    titleKey: 'mobile.sustainability.card.veganBeauty.title',
+    subtitleKey: 'mobile.sustainability.card.veganBeauty.subtitle',
     color: '#16a34a',
     bg: '#f0fdf4',
     tips: [
-      { emoji: '🚫', text: 'بدون شمع عسل، لانولين، كولاجين' },
-      { emoji: '🌱', text: 'بدائل: شمع الصويا، زبدة الشيا' },
-      { emoji: '🔍', text: 'ابحثي عن شعار Vegan Certified' },
-      { emoji: '📖', text: 'نباتي ≠ طبيعي — اقرئي المكونات' },
+      { emoji: '🚫', textKey: 'mobile.sustainability.card.veganBeauty.tip1' },
+      { emoji: '🌱', textKey: 'mobile.sustainability.card.veganBeauty.tip2' },
+      { emoji: '🔍', textKey: 'mobile.sustainability.card.veganBeauty.tip3' },
+      { emoji: '📖', textKey: 'mobile.sustainability.card.veganBeauty.tip4' },
     ],
   },
   {
     emoji: '🕌',
-    title: 'الجمال الحلال',
-    subtitle: 'منتجات متوافقة مع الشريعة',
+    titleKey: 'mobile.sustainability.card.halalBeauty.title',
+    subtitleKey: 'mobile.sustainability.card.halalBeauty.subtitle',
     color: '#059669',
     bg: '#f0fdfa',
     tips: [
-      { emoji: '🚫', text: 'خالٍ من الكحول والمواد المحرمة' },
-      { emoji: '💧', text: 'قابل للوضوء — يمرر الماء للبشرة' },
-      { emoji: '📜', text: 'شهادة حلال معتمدة' },
-      { emoji: '🌙', text: 'منتجات حلال سعودية' },
+      { emoji: '🚫', textKey: 'mobile.sustainability.card.halalBeauty.tip1' },
+      { emoji: '💧', textKey: 'mobile.sustainability.card.halalBeauty.tip2' },
+      { emoji: '📜', textKey: 'mobile.sustainability.card.halalBeauty.tip3' },
+      { emoji: '🌙', textKey: 'mobile.sustainability.card.halalBeauty.tip4' },
     ],
   },
   {
     emoji: '🐰',
-    title: 'بدون تجارب',
-    subtitle: 'جمال أخلاقي — بدون قسوة',
+    titleKey: 'mobile.sustainability.card.crueltyFree.title',
+    subtitleKey: 'mobile.sustainability.card.crueltyFree.subtitle',
     color: '#ec4899',
     bg: '#fdf2f8',
     tips: [
-      { emoji: '🐰', text: 'شعار Leaping Bunny — المعيار الذهبي' },
-      { emoji: '✅', text: 'PETA Certified — علامة موثوقة' },
-      { emoji: '🚫', text: 'السعودية تمنع تجارب التجميل' },
-      { emoji: '⚠️', text: 'ليس كل "طبيعي" خالٍ من التجارب' },
+      { emoji: '🐰', textKey: 'mobile.sustainability.card.crueltyFree.tip1' },
+      { emoji: '✅', textKey: 'mobile.sustainability.card.crueltyFree.tip2' },
+      { emoji: '🚫', textKey: 'mobile.sustainability.card.crueltyFree.tip3' },
+      { emoji: '⚠️', textKey: 'mobile.sustainability.card.crueltyFree.tip4' },
     ],
   },
   {
     emoji: '🌾',
-    title: 'بدون جلوتين',
-    subtitle: 'للبشرة الحساسة للجلوتين',
+    titleKey: 'mobile.sustainability.card.glutenFree.title',
+    subtitleKey: 'mobile.sustainability.card.glutenFree.subtitle',
     color: '#d97706',
     bg: '#fffbeb',
     tips: [
-      { emoji: '⚠️', text: 'بعض المنتجات تحتوي جلوتين' },
-      { emoji: '🌾', text: 'تأكدي: قمح، شعير، شوفان' },
-      { emoji: '🔍', text: 'معظم المنتجات خالية — لكن تأكدي' },
-      { emoji: '🩺', text: 'سيلياك؟ — استشيري طبيبك' },
+      { emoji: '⚠️', textKey: 'mobile.sustainability.card.glutenFree.tip1' },
+      { emoji: '🌾', textKey: 'mobile.sustainability.card.glutenFree.tip2' },
+      { emoji: '🔍', textKey: 'mobile.sustainability.card.glutenFree.tip3' },
+      { emoji: '🩺', textKey: 'mobile.sustainability.card.glutenFree.tip4' },
     ],
   },
   {
     emoji: '🌸',
-    title: 'بدون عطور',
-    subtitle: 'للبشرة الحساسة والمتحسسة',
+    titleKey: 'mobile.sustainability.card.fragranceFree.title',
+    subtitleKey: 'mobile.sustainability.card.fragranceFree.subtitle',
     color: '#0284c7',
     bg: '#f0f9ff',
     tips: [
-      { emoji: '⚠️', text: 'العطور — السبب الأول لتحسس البشرة' },
-      { emoji: '🔍', text: 'Fragrance-free ≠ Unscented' },
-      { emoji: '🌿', text: 'مناسب للحساسية والإكزيما' },
-      { emoji: '🩺', text: 'منتجات طبية — غالباً خالية من العطور' },
+      { emoji: '⚠️', textKey: 'mobile.sustainability.card.fragranceFree.tip1' },
+      { emoji: '🔍', textKey: 'mobile.sustainability.card.fragranceFree.tip2' },
+      { emoji: '🌿', textKey: 'mobile.sustainability.card.fragranceFree.tip3' },
+      { emoji: '🩺', textKey: 'mobile.sustainability.card.fragranceFree.tip4' },
     ],
   },
 ];
@@ -264,15 +265,15 @@ export default function SustainabilityScreen(): JSX.Element {
             <View style={s.ch}>
               <Text style={s.ce}>{c.emoji}</Text>
               <View style={s.cw}>
-                <Text style={[s.ct, { color: c.color }]}>{c.title}</Text>
-                <Text style={s.cs}>{c.subtitle}</Text>
+                <Text style={[s.ct, { color: c.color }]}>{t(c.titleKey)}</Text>
+                <Text style={s.cs}>{t(c.subtitleKey)}</Text>
               </View>
             </View>
             <View style={s.tl}>
-              {c.tips.map((t, j) => (
+              {c.tips.map((tip, j) => (
                 <View key={j} style={[s.tr, { backgroundColor: c.bg }]}>
-                  <Text style={s.te}>{t.emoji}</Text>
-                  <Text style={[s.tt, { color: c.color }]}>{t.text}</Text>
+                  <Text style={s.te}>{tip.emoji}</Text>
+                  <Text style={[s.tt, { color: c.color }]}>{t(tip.textKey)}</Text>
                 </View>
               ))}
             </View>

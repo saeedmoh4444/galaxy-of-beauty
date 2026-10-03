@@ -6814,4 +6814,389 @@ export const mobileCustomerBMessages = {
     en: 'Explicit consent before every service',
   },
   'mobile.rideHailing.currentLocation': { ar: 'موقعي الحالي', en: 'My current location' },
+
+  // ---- sustainability (sweep slice 12) ----
+  'mobile.sustainability.card.greenSalon.title': { ar: 'صالون أخضر', en: 'Green salon' },
+  'mobile.sustainability.card.greenSalon.subtitle': {
+    ar: 'ممارسات صديقة للبيئة',
+    en: 'Eco-friendly practices',
+  },
+  'mobile.sustainability.card.greenSalon.tip1': {
+    ar: 'إعادة تدوير — جميع العبوات قابلة للتدوير',
+    en: 'Recycling — all packaging is recyclable',
+  },
+  'mobile.sustainability.card.greenSalon.tip2': {
+    ar: 'منتجات عضوية — خالية من المواد الضارة',
+    en: 'Organic products — free of harmful substances',
+  },
+  'mobile.sustainability.card.greenSalon.tip3': {
+    ar: 'توفير طاقة — إضاءة LED وأجهزة موفرة',
+    en: 'Energy saving — LED lighting and efficient appliances',
+  },
+  'mobile.sustainability.card.greenSalon.tip4': {
+    ar: 'ترشيد مياه — أنظمة ذكية لتوفير المياه',
+    en: 'Water conservation — smart systems that save water',
+  },
+  'mobile.sustainability.card.accessibleSalon.title': { ar: 'صالون متاح', en: 'Accessible salon' },
+  'mobile.sustainability.card.accessibleSalon.subtitle': {
+    ar: 'للجميع بدون استثناء',
+    en: 'For everyone, without exception',
+  },
+  'mobile.sustainability.card.accessibleSalon.tip1': {
+    ar: 'مداخل ومخارج — مناسبة للكراسي المتحركة',
+    en: 'Entrances and exits — wheelchair accessible',
+  },
+  'mobile.sustainability.card.accessibleSalon.tip2': {
+    ar: 'لغة إشارة — موظفات مدربات',
+    en: 'Sign language — trained staff',
+  },
+  'mobile.sustainability.card.accessibleSalon.tip3': {
+    ar: 'مساعدات سمعية — أجهزة متوفرة',
+    en: 'Hearing aids — devices available',
+  },
+  'mobile.sustainability.card.accessibleSalon.tip4': {
+    ar: 'قائمة برايل — للخدمات والأسعار',
+    en: 'Braille menu — for services and prices',
+  },
+  'mobile.sustainability.card.sensorySalon.title': {
+    ar: 'صالون حسي',
+    en: 'Sensory-friendly salon',
+  },
+  'mobile.sustainability.card.sensorySalon.subtitle': {
+    ar: 'بيئة هادئة ومريحة',
+    en: 'A calm and comfortable environment',
+  },
+  'mobile.sustainability.card.sensorySalon.tip1': {
+    ar: 'ساعات هادئة — بدون موسيقى أو ضوضاء',
+    en: 'Quiet hours — no music or noise',
+  },
+  'mobile.sustainability.card.sensorySalon.tip2': {
+    ar: 'إضاءة خافتة — مناسبة للحساسية الضوئية',
+    en: 'Dim lighting — suitable for light sensitivity',
+  },
+  'mobile.sustainability.card.sensorySalon.tip3': {
+    ar: 'خالٍ من العطور — للمتحسسات',
+    en: 'Fragrance-free — for those with sensitivities',
+  },
+  'mobile.sustainability.card.sensorySalon.tip4': {
+    ar: 'خريطة حسية — وصف لكل منطقة',
+    en: 'Sensory map — a description of each area',
+  },
+  'mobile.sustainability.card.beautyForAll.title': { ar: 'جمال للجميع', en: 'Beauty for all' },
+  'mobile.sustainability.card.beautyForAll.subtitle': {
+    ar: 'جميع أنواع البشرة والشعر',
+    en: 'All skin and hair types',
+  },
+  'mobile.sustainability.card.beautyForAll.tip1': {
+    ar: 'جميع ألوان البشرة — منتجات مناسبة للجميع',
+    en: 'All skin tones — products suitable for everyone',
+  },
+  'mobile.sustainability.card.beautyForAll.tip2': {
+    ar: 'جميع أنواع الشعر — خبيرات لكل الأنواع',
+    en: 'All hair types — experts for every type',
+  },
+  'mobile.sustainability.card.beautyForAll.tip3': {
+    ar: 'جميع الأعمار — من المراهقة للذهبية',
+    en: 'All ages — from teens to golden years',
+  },
+  'mobile.sustainability.card.beautyForAll.tip4': {
+    ar: 'جميع الأجسام — Beauty at every size',
+    en: 'All body types — Beauty at every size',
+  },
+  'mobile.sustainability.card.prayerRoom.title': { ar: 'غرفة صلاة', en: 'Prayer room' },
+  'mobile.sustainability.card.prayerRoom.subtitle': {
+    ar: 'مكان هادئ للعبادة',
+    en: 'A quiet place for worship',
+  },
+  'mobile.sustainability.card.prayerRoom.tip1': {
+    ar: 'سجادات — نظيفة ومعطرة',
+    en: 'Prayer mats — clean and scented',
+  },
+  'mobile.sustainability.card.hospitalityCorner.title': {
+    ar: 'ركن الضيافة',
+    en: 'Hospitality corner',
+  },
+  'mobile.sustainability.card.hospitalityCorner.subtitle': {
+    ar: 'مشروبات ساخنة وباردة',
+    en: 'Hot and cold drinks',
+  },
+  'mobile.sustainability.card.hospitalityCorner.tip1': {
+    ar: 'قهوة — عربية وتركية',
+    en: 'Coffee — Arabic and Turkish',
+  },
+  'mobile.sustainability.card.hospitalityCorner.tip2': {
+    ar: 'شاي — أخضر وأسود وأعشاب',
+    en: 'Tea — green, black, and herbal',
+  },
+  'mobile.sustainability.card.hospitalityCorner.tip3': {
+    ar: 'ماء — بارد ومعطر بالفواكه',
+    en: 'Water — cold and fruit-infused',
+  },
+  'mobile.sustainability.card.hospitalityCorner.tip4': {
+    ar: 'تمر وضيافة — ترحيب حار',
+    en: 'Dates and treats — a warm welcome',
+  },
+  'mobile.sustainability.card.unexpectedGift.title': {
+    ar: 'هدية غير متوقعة',
+    en: 'An unexpected gift',
+  },
+  'mobile.sustainability.card.unexpectedGift.subtitle': {
+    ar: 'فاجئي زائرة اليوم',
+    en: 'Surprise a visitor today',
+  },
+  'mobile.sustainability.card.unexpectedGift.tip1': {
+    ar: 'باقة ورود — بدون مناسبة',
+    en: 'A bouquet of roses — no occasion needed',
+  },
+  'mobile.sustainability.card.unexpectedGift.tip3': {
+    ar: 'عينة مجانية — منتج جديد',
+    en: 'A free sample — a new product',
+  },
+  'mobile.sustainability.card.unexpectedGift.tip4': {
+    ar: 'العطاء — الجمال في التفاصيل',
+    en: 'Giving — beauty is in the details',
+  },
+  'mobile.sustainability.card.noRush.title': { ar: 'بدون استعجال', en: 'No rush' },
+  'mobile.sustainability.card.noRush.subtitle': {
+    ar: 'خذي وقتكِ — لا نستعجلكِ',
+    en: 'Take your time — we will not rush you',
+  },
+  'mobile.sustainability.card.noRush.tip1': {
+    ar: 'استرخي — قهوة قبل الخدمة',
+    en: 'Relax — coffee before your service',
+  },
+  'mobile.sustainability.card.noRush.tip2': {
+    ar: 'استشارة — مناقشة كاملة قبل البدء',
+    en: 'Consultation — a full discussion before we begin',
+  },
+  'mobile.sustainability.card.noRush.tip3': {
+    ar: 'لا مواعيد متلاحقة — وقت كافٍ',
+    en: 'No back-to-back appointments — plenty of time',
+  },
+  'mobile.sustainability.card.noRush.tip4': {
+    ar: 'أي سؤال — نحن هنا للمساعدة',
+    en: 'Any question — we are here to help',
+  },
+  'mobile.sustainability.card.zeroWasteBeauty.title': {
+    ar: 'الجمال بدون نفايات',
+    en: 'Zero-waste beauty',
+  },
+  'mobile.sustainability.card.zeroWasteBeauty.subtitle': {
+    ar: 'جميلة — وكوكب أجمل',
+    en: 'Beautiful — and a more beautiful planet',
+  },
+  'mobile.sustainability.card.zeroWasteBeauty.tip1': {
+    ar: 'شامبو صلب — يدوم 3 شهور',
+    en: 'Solid shampoo — lasts 3 months',
+  },
+  'mobile.sustainability.card.zeroWasteBeauty.tip2': {
+    ar: 'فوط قماش — بدل القطن أحادي الاستخدام',
+    en: 'Cloth pads — instead of single-use cotton',
+  },
+  'mobile.sustainability.card.zeroWasteBeauty.tip3': {
+    ar: 'عبوات كبيرة — وأعيدي تعبئة الصغيرة',
+    en: 'Large containers — and refill the small ones',
+  },
+  'mobile.sustainability.card.zeroWasteBeauty.tip4': {
+    ar: 'منتجات قابلة للتحلل — تغليف ورقي',
+    en: 'Biodegradable products — paper packaging',
+  },
+  'mobile.sustainability.card.refillablePackaging.title': {
+    ar: 'عبوات قابلة للتعبئة',
+    en: 'Refillable packaging',
+  },
+  'mobile.sustainability.card.refillablePackaging.subtitle': {
+    ar: 'اشتري مرة — استخدمي للأبد',
+    en: 'Buy once — use forever',
+  },
+  'mobile.sustainability.card.refillablePackaging.tip1': {
+    ar: 'أوفر — العبوة الأصلية مرة واحدة',
+    en: 'Cheaper — pay for the original container once',
+  },
+  'mobile.sustainability.card.refillablePackaging.tip2': {
+    ar: 'تقلل النفايات — 70% أقل بلاستيك',
+    en: 'Less waste — 70% less plastic',
+  },
+  'mobile.sustainability.card.refillablePackaging.tip3': {
+    ar: 'أحمر شفاه — كريم أساس — عطور',
+    en: 'Lipstick — foundation — perfumes',
+  },
+  'mobile.sustainability.card.refillablePackaging.tip4': {
+    ar: 'ارجعي الفارغة — لخصم على القادمة',
+    en: 'Return the empty one — for a discount on the next',
+  },
+  'mobile.sustainability.card.cleanBeauty.title': { ar: 'الجمال النظيف', en: 'Clean beauty' },
+  'mobile.sustainability.card.cleanBeauty.subtitle': {
+    ar: 'منتجات آمنة — بدون سموم',
+    en: 'Safe products — no toxins',
+  },
+  'mobile.sustainability.card.cleanBeauty.tip1': {
+    ar: 'بدون: بارابين سلفات فثالات',
+    en: 'Free of: parabens, sulfates, phthalates',
+  },
+  'mobile.sustainability.card.cleanBeauty.tip2': {
+    ar: 'مكونات نباتية — غير مختبرة على الحيوانات',
+    en: 'Plant-based ingredients — not tested on animals',
+  },
+  'mobile.sustainability.card.cleanBeauty.tip3': {
+    ar: 'اقرئي الملصق — أول 5 مكونات',
+    en: 'Read the label — the first 5 ingredients',
+  },
+  'mobile.sustainability.card.cleanBeauty.tip4': {
+    ar: 'شهادات: EWG COSMOS Leaping Bunny',
+    en: 'Certifications: EWG, COSMOS, Leaping Bunny',
+  },
+  'mobile.sustainability.card.recycledBeauty.title': {
+    ar: 'الجمال المُعاد تدويره',
+    en: 'Recycled beauty',
+  },
+  'mobile.sustainability.card.recycledBeauty.subtitle': {
+    ar: 'من النفايات — إلى الذهب',
+    en: 'From waste — to gold',
+  },
+  'mobile.sustainability.card.recycledBeauty.tip1': {
+    ar: 'بقايا القهوة — مقشر طبيعي',
+    en: 'Coffee grounds — a natural scrub',
+  },
+  'mobile.sustainability.card.recycledBeauty.tip2': {
+    ar: 'قشور الحمضيات — زيوت عطرية',
+    en: 'Citrus peels — aromatic oils',
+  },
+  'mobile.sustainability.card.recycledBeauty.tip3': {
+    ar: 'بذور الأفوكادو — صبغة وردية',
+    en: 'Avocado seeds — a pink dye',
+  },
+  'mobile.sustainability.card.recycledBeauty.tip4': {
+    ar: 'نخالة الأرز — مقشر لطيف للوجه',
+    en: 'Rice bran — a gentle face scrub',
+  },
+  'mobile.sustainability.card.plasticFreeBeauty.title': {
+    ar: 'الجمال بدون بلاستيك',
+    en: 'Plastic-free beauty',
+  },
+  'mobile.sustainability.card.plasticFreeBeauty.subtitle': {
+    ar: 'بدائل ذكية للبلاستيك',
+    en: 'Smart alternatives to plastic',
+  },
+  'mobile.sustainability.card.plasticFreeBeauty.tip1': {
+    ar: 'فرشاة بامبو — قابلة للتحلل',
+    en: 'Bamboo brush — biodegradable',
+  },
+  'mobile.sustainability.card.plasticFreeBeauty.tip2': {
+    ar: 'زجاج وألمنيوم — تدوير للأبد',
+    en: 'Glass and aluminum — recycled forever',
+  },
+  'mobile.sustainability.card.plasticFreeBeauty.tip3': {
+    ar: 'شفرة معدنية — تدوم سنوات',
+    en: 'Metal razor — lasts for years',
+  },
+  'mobile.sustainability.card.plasticFreeBeauty.tip4': {
+    ar: 'صابون صلب — بدون تغليف',
+    en: 'Solid soap — no packaging',
+  },
+  'mobile.sustainability.card.veganBeauty.title': { ar: 'الجمال النباتي', en: 'Vegan beauty' },
+  'mobile.sustainability.card.veganBeauty.subtitle': {
+    ar: 'خالٍ من المكونات الحيوانية',
+    en: 'Free of animal-derived ingredients',
+  },
+  'mobile.sustainability.card.veganBeauty.tip1': {
+    ar: 'بدون شمع عسل، لانولين، كولاجين',
+    en: 'No beeswax, lanolin, or collagen',
+  },
+  'mobile.sustainability.card.veganBeauty.tip2': {
+    ar: 'بدائل: شمع الصويا، زبدة الشيا',
+    en: 'Alternatives: soy wax, shea butter',
+  },
+  'mobile.sustainability.card.veganBeauty.tip3': {
+    ar: 'ابحثي عن شعار Vegan Certified',
+    en: 'Look for the Vegan Certified logo',
+  },
+  'mobile.sustainability.card.veganBeauty.tip4': {
+    ar: 'نباتي ≠ طبيعي — اقرئي المكونات',
+    en: 'Vegan ≠ natural — read the ingredients',
+  },
+  'mobile.sustainability.card.halalBeauty.title': { ar: 'الجمال الحلال', en: 'Halal beauty' },
+  'mobile.sustainability.card.halalBeauty.subtitle': {
+    ar: 'منتجات متوافقة مع الشريعة',
+    en: 'Sharia-compliant products',
+  },
+  'mobile.sustainability.card.halalBeauty.tip1': {
+    ar: 'خالٍ من الكحول والمواد المحرمة',
+    en: 'Free of alcohol and forbidden substances',
+  },
+  'mobile.sustainability.card.halalBeauty.tip2': {
+    ar: 'قابل للوضوء — يمرر الماء للبشرة',
+    en: 'Wudu-friendly — lets water reach the skin',
+  },
+  'mobile.sustainability.card.halalBeauty.tip3': {
+    ar: 'شهادة حلال معتمدة',
+    en: 'Certified halal certificate',
+  },
+  'mobile.sustainability.card.halalBeauty.tip4': {
+    ar: 'منتجات حلال سعودية',
+    en: 'Saudi halal products',
+  },
+  'mobile.sustainability.card.crueltyFree.title': { ar: 'بدون تجارب', en: 'Cruelty-free' },
+  'mobile.sustainability.card.crueltyFree.subtitle': {
+    ar: 'جمال أخلاقي — بدون قسوة',
+    en: 'Ethical beauty — without cruelty',
+  },
+  'mobile.sustainability.card.crueltyFree.tip1': {
+    ar: 'شعار Leaping Bunny — المعيار الذهبي',
+    en: 'The Leaping Bunny logo — the gold standard',
+  },
+  'mobile.sustainability.card.crueltyFree.tip2': {
+    ar: 'PETA Certified — علامة موثوقة',
+    en: 'PETA Certified — a trusted mark',
+  },
+  'mobile.sustainability.card.crueltyFree.tip3': {
+    ar: 'السعودية تمنع تجارب التجميل',
+    en: 'Saudi Arabia bans cosmetic testing',
+  },
+  'mobile.sustainability.card.crueltyFree.tip4': {
+    ar: 'ليس كل "طبيعي" خالٍ من التجارب',
+    en: 'Not everything "natural" is cruelty-free',
+  },
+  'mobile.sustainability.card.glutenFree.title': { ar: 'بدون جلوتين', en: 'Gluten-free' },
+  'mobile.sustainability.card.glutenFree.subtitle': {
+    ar: 'للبشرة الحساسة للجلوتين',
+    en: 'For gluten-sensitive skin',
+  },
+  'mobile.sustainability.card.glutenFree.tip1': {
+    ar: 'بعض المنتجات تحتوي جلوتين',
+    en: 'Some products contain gluten',
+  },
+  'mobile.sustainability.card.glutenFree.tip2': {
+    ar: 'تأكدي: قمح، شعير، شوفان',
+    en: 'Check for: wheat, barley, oats',
+  },
+  'mobile.sustainability.card.glutenFree.tip3': {
+    ar: 'معظم المنتجات خالية — لكن تأكدي',
+    en: 'Most products are free — but check',
+  },
+  'mobile.sustainability.card.glutenFree.tip4': {
+    ar: 'سيلياك؟ — استشيري طبيبك',
+    en: 'Celiac? — consult your doctor',
+  },
+  'mobile.sustainability.card.fragranceFree.title': { ar: 'بدون عطور', en: 'Fragrance-free' },
+  'mobile.sustainability.card.fragranceFree.subtitle': {
+    ar: 'للبشرة الحساسة والمتحسسة',
+    en: 'For sensitive and reactive skin',
+  },
+  'mobile.sustainability.card.fragranceFree.tip1': {
+    ar: 'العطور — السبب الأول لتحسس البشرة',
+    en: 'Fragrance — the top cause of skin reactions',
+  },
+  'mobile.sustainability.card.fragranceFree.tip2': {
+    ar: 'Fragrance-free ≠ Unscented',
+    en: 'Fragrance-free ≠ Unscented',
+  },
+  'mobile.sustainability.card.fragranceFree.tip3': {
+    ar: 'مناسب للحساسية والإكزيما',
+    en: 'Suitable for allergies and eczema',
+  },
+  'mobile.sustainability.card.fragranceFree.tip4': {
+    ar: 'منتجات طبية — غالباً خالية من العطور',
+    en: 'Medical products — often fragrance-free',
+  },
 } as const satisfies Record<string, { ar: string; en: string }>;
