@@ -40,7 +40,9 @@ export default function HomeServiceScreen(): JSX.Element {
       </TouchableOpacity>
       {estimate && (
         <View style={styles.card}>
-          <Text style={styles.ep}>{(estimate.totalEstimate ?? 0).toLocaleString()} ر.س</Text>
+          <Text style={styles.ep}>
+            {(estimate.totalEstimate ?? 0).toLocaleString()} {t('misc.sar')}
+          </Text>
           <Text style={styles.em}> {estimate.estimatedDuration ?? ''}</Text>
         </View>
       )}

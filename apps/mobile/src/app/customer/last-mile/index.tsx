@@ -3,6 +3,7 @@ import { useState } from 'react';
 import type { JSX } from 'react';
 import { SkeletonList } from '@/components/SkeletonCard';
 import { trpc } from '@/lib/trpc-react';
+import { DEFAULT_SAUDI_CITY } from '@galaxy/shared';
 import { useLocale } from '@/components/LocaleProvider';
 import { useAuthState } from '@/hooks/useAuthState';
 
@@ -35,7 +36,7 @@ export default function LastMileScreen(): JSX.Element {
   const order = (productId: number) => {
     orderMut.mutate({
       productId,
-      address: 'الرياض',
+      address: DEFAULT_SAUDI_CITY,
       paymentMethod: 'wallet',
     });
   };
@@ -88,7 +89,9 @@ export default function LastMileScreen(): JSX.Element {
             <Text style={styles.pd}> {p.deliveryTime}</Text>
           </View>
           <View style={{ alignItems: 'flex-end' }}>
-            <Text style={styles.pp}>{p.price?.toLocaleString()} ر.س</Text>
+            <Text style={styles.pp}>
+              {p.price?.toLocaleString()} {t('misc.sar')}
+            </Text>
             <TouchableOpacity onPress={() => order(p.id)} style={styles.ob}>
               <Text style={styles.ot}>{t('mobile.lastMile.order')}</Text>
             </TouchableOpacity>

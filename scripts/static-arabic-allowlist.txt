@@ -1,8 +1,3 @@
-apps/mobile/src/app/customer/home-service/index.tsx
-apps/mobile/src/app/customer/last-mile/index.tsx
-apps/mobile/src/app/customer/leadership/index.tsx
-apps/mobile/src/app/customer/life-events/index.tsx
-apps/mobile/src/app/customer/makeup-guide/index.tsx
 apps/mobile/src/app/customer/nail-care-guide/index.tsx
 apps/mobile/src/app/customer/perfume-guide/index.tsx
 apps/mobile/src/app/customer/referrals/index.tsx
