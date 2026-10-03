@@ -6,7 +6,7 @@ export const paymentAuthorizeSchema = z.object({
 });
 
 export const paymentCaptureSchema = z.object({
-  // PayFort capture — no additional fields needed from client
+  // MyFatoorah capture — no additional fields needed from client
 });
 
 export const walletWithdrawSchema = z.object({

@@ -1,6 +1,6 @@
 import { z } from 'zod';
 import { TRPCError } from '@trpc/server';
-import { prisma } from '@galaxy/db';
+import { prisma, Prisma } from '@galaxy/db';
 import { notFound, forbidden } from '../lib/errors';
 import {
   router,
@@ -11,7 +11,17 @@ import {
   adminProcedure,
 } from '../trpc';
 import { emitToUser, emitToAdmin } from '../socket/index';
-import { authorizePayment, verifyWebhookSignature } from '../lib/payfort';
+import {
+  getCountries,
+  getCities,
+  calculateShippingCharge,
+  sendPayment,
+  getPaymentStatus,
+  resolvePaymentState,
+  FatoorahApiError,
+  FatoorahNotConfiguredError,
+} from '../lib/fatoorah';
+import { readCartForCheckout, placeStoreOrders } from '../lib/storeCheckout';
 import { getCashbackRatePct } from './cashback';
 
 // ---------------------------------------------------------------------------
@@ -28,13 +38,66 @@ const bookingIdSchema = z.object({
   bookingId: z.number().int().positive(),
 });
 
-const webhookSchema = z.object({
-  gatewayRef: z.string(),
-  status: z.string(),
-  // Money-integrity: the signature is mandatory — a missing or invalid
-  // signature means the request is not from the gateway and must be rejected.
-  signature: z.string().min(1),
+const statusCallbackSchema = z.object({
+  paymentId: z.string().min(1),
 });
+
+const shippingCitiesSchema = z.object({
+  countryCode: z.string().min(1),
+  searchValue: z.string().optional(),
+  shippingMethod: z.union([z.literal(1), z.literal(2)]).default(1),
+});
+
+const shippingChargeSchema = z.object({
+  shippingMethod: z.union([z.literal(1), z.literal(2)]),
+  countryCode: z.string().min(1),
+  cityName: z.string().min(1),
+  postalCode: z.string().min(1),
+  items: z
+    .array(
+      z.object({
+        name: z.string().min(1),
+        quantity: z.number().int().positive(),
+        weight: z.number().nonnegative().default(0),
+        unitPrice: z.number().nonnegative(),
+      }),
+    )
+    .min(1),
+});
+
+const payCartSchema = z.object({
+  idempotencyKey: z.string().min(8).max(128),
+  method: z.enum(['wallet', 'online']),
+  shipping: z.object({
+    personName: z.string().min(1),
+    mobile: z.string().min(1),
+    lineAddress: z.string().min(1),
+    cityName: z.string().min(1),
+    postalCode: z.string().min(1),
+    countryCode: z.string().min(1),
+    shippingMethod: z.union([z.literal(1), z.literal(2)]),
+  }),
+});
+
+const verifyCartPaymentSchema = z.object({
+  invoiceId: z.string().min(1).optional(),
+  paymentId: z.string().min(1).optional(),
+});
+
+// Map gateway errors onto tRPC: unconfigured → 503, gateway validation
+// errors → 400, anything else → 500 with cause.
+function gatewayError(err: unknown, context: string): TRPCError {
+  if (err instanceof FatoorahNotConfiguredError) {
+    return new TRPCError({
+      code: 'SERVICE_UNAVAILABLE',
+      message: `MyFatoorah not configured (${context})`,
+    });
+  }
+  if (err instanceof FatoorahApiError) {
+    return new TRPCError({ code: 'BAD_REQUEST', message: err.message });
+  }
+  return new TRPCError({ code: 'INTERNAL_SERVER_ERROR', message: context, cause: err });
+}
 
 // ---------------------------------------------------------------------------
 // Router
@@ -93,53 +156,55 @@ export const paymentRouter = router({
           data: { status: 'CONFIRMED_OFFLINE' },
         });
       } else {
-        // Online — PayFort/APS payment gateway integration
+        // Online — MyFatoorah hosted invoice link (NotificationOption LNK).
         const user = await prisma.user.findUnique({
           where: { id: ctx.user.id },
-          select: { email: true, name: true },
+          select: { email: true, name: true, phone: true },
         });
 
         const appUrl = process.env['NEXT_PUBLIC_APP_URL'] || 'http://localhost:3000';
 
-        const payfortResult = await authorizePayment({
-          amount: Number(booking.totalAmount),
-          currency: 'SAR',
-          customerEmail: user?.email || '',
-          customerName: user?.name || 'Customer',
-          merchantReference: `GOB-BOOKING-${booking.id}`,
-          returnUrl: `${appUrl}/bookings/${booking.id}`,
-        });
+        try {
+          const invoice = await sendPayment({
+            customerName: user?.name || 'Customer',
+            customerMobile: user?.phone || '0500000000',
+            customerEmail: user?.email || '',
+            invoiceValue: Number(booking.totalAmount),
+            invoiceItems: [
+              {
+                name: `Booking #${booking.id}`,
+                quantity: 1,
+                unitPrice: Number(booking.totalAmount),
+              },
+            ],
+            displayCurrencyIso: 'SAR',
+            customerReference: `GOB-BOOKING-${booking.id}`,
+            callBackUrl: `${appUrl}/payments/status?paymentId={PaymentId}`,
+            errorUrl: `${appUrl}/payments/status`,
+          });
 
-        // Update payment with gateway reference
-        const updateData: Record<string, string | null> = {};
-        if (payfortResult.gatewayRef) {
-          updateData.gatewayRef = payfortResult.gatewayRef;
-        }
-
-        if (Object.keys(updateData).length > 0) {
           await prisma.payment.update({
             where: { id: payment.id },
-            data: updateData as { gatewayRef?: string },
+            data: { gatewayRef: invoice.invoiceId },
           });
-        }
 
-        if (!payfortResult.success) {
-          // Payment gateway returned an error
+          return {
+            paymentId: payment.id,
+            invoiceId: invoice.invoiceId,
+            invoiceURL: invoice.invoiceURL,
+            gatewayRef: invoice.invoiceId,
+          };
+        } catch (err) {
+          // Gateway rejected the invoice — fail the payment record.
           await prisma.payment.update({
             where: { id: payment.id },
             data: { status: 'FAILED' },
           });
           throw new TRPCError({
             code: 'BAD_REQUEST',
-            message: `Payment failed: ${payfortResult.message}`,
+            message: `Payment failed: ${(err as Error).message}`,
           });
         }
-
-        return {
-          paymentUrl: payfortResult.paymentUrl,
-          paymentId: payment.id,
-          gatewayRef: payfortResult.gatewayRef,
-        };
       }
 
       return {
@@ -375,87 +440,80 @@ export const paymentRouter = router({
   }),
 
   // -----------------------------------------------------------------------
-  // webhook — PayFort / APS webhook handler
-  // Handles post-payment callbacks: capture, decline, refund notifications
+  // statusCallback — MyFatoorah redirect callback verification.
+  // Money-integrity: state changes ONLY after GetPaymentStatus confirms
+  // the gateway result — the redirect alone proves nothing.
   // -----------------------------------------------------------------------
-  webhook: publicProcedure.input(webhookSchema).mutation(async ({ input }) => {
+  statusCallback: publicProcedure.input(statusCallbackSchema).mutation(async ({ input }) => {
     try {
-      // Verify webhook signature — mandatory, fail closed.
-      const paramsToVerify: Record<string, string> = {
-        gatewayRef: input.gatewayRef,
-        status: input.status,
-      };
-      if (!verifyWebhookSignature(paramsToVerify, input.signature)) {
-        throw new TRPCError({
-          code: 'FORBIDDEN',
-          message: 'Invalid webhook signature',
-        });
-      }
+      const status = await getPaymentStatus({ paymentId: input.paymentId });
 
-      // Find payment by gateway reference
       const payment = await prisma.payment.findFirst({
-        where: { gatewayRef: input.gatewayRef },
+        where: { gatewayRef: status.invoiceId },
       });
 
       if (!payment) {
-        throw new TRPCError({
-          code: 'NOT_FOUND',
-          message: 'No payment found for the given gateway reference',
-        });
-      }
-
-      // Map common PayFort status codes to internal status
-      // 14 = success (captured), 2 = declined, 5 = reversed, 8 = refunded
-      let newStatus: 'CAPTURED' | 'FAILED' | 'REFUNDED' | null = null;
-
-      if (input.status === '14') {
-        newStatus = 'CAPTURED';
-      } else if (['2', '5'].includes(input.status)) {
-        newStatus = 'FAILED';
-      } else if (input.status === '8') {
-        newStatus = 'REFUNDED';
-      }
-
-      if (!newStatus) {
+        // Unknown invoice — tolerate (return, don't 500) but never
+        // change any state.
         return {
           received: true,
           processed: false,
-          reason: `Unhandled gateway status: ${input.status}`,
+          reason: 'Unknown invoice',
         };
       }
 
-      // Update payment status
+      const state = resolvePaymentState(status);
+
+      if (state === 'PENDING') {
+        return {
+          received: true,
+          processed: false,
+          reason: 'Gateway status pending',
+        };
+      }
+
+      if (state === 'FAILED') {
+        const failed = await prisma.payment.update({
+          where: { id: payment.id },
+          data: { status: 'FAILED' },
+        });
+        return {
+          received: true,
+          processed: true,
+          paymentId: failed.id,
+          status: failed.status,
+        };
+      }
+
+      // PAID — verified capture: payment CAPTURED + booking PAID.
       const updated = await prisma.payment.update({
         where: { id: payment.id },
-        data: { status: newStatus },
+        data: { status: 'CAPTURED' },
       });
 
-      // On successful capture, update booking to PAID + emit events
-      if (newStatus === 'CAPTURED') {
-        await prisma.booking.update({
-          where: { id: payment.bookingId },
-          data: { status: 'PAID' },
-        });
+      await prisma.booking.update({
+        where: { id: payment.bookingId },
+        data: { status: 'PAID' },
+      });
 
-        // Emit real-time payment success to the customer (we need the booking to get customerId)
-        const booking = await prisma.booking.findUnique({
-          where: { id: payment.bookingId },
-          select: { customerId: true, totalAmount: true },
+      // Emit real-time payment success to the customer (we need the booking to get customerId)
+      const booking = await prisma.booking.findUnique({
+        where: { id: payment.bookingId },
+        select: { customerId: true, totalAmount: true },
+      });
+      if (booking) {
+        emitToUser(booking.customerId, 'payment_success', {
+          bookingId: payment.bookingId,
+          amount: booking.totalAmount,
         });
-        if (booking) {
-          emitToUser(booking.customerId, 'payment_success', {
-            bookingId: payment.bookingId,
-            amount: booking.totalAmount,
-          });
-          emitToUser(booking.customerId, 'wallet_updated', {
-            bookingId: payment.bookingId,
-          });
-        }
-        emitToAdmin('admin_update', {
-          type: 'payment_webhook_captured',
+        emitToUser(booking.customerId, 'wallet_updated', {
           bookingId: payment.bookingId,
         });
       }
+      emitToAdmin('admin_update', {
+        type: 'payment_webhook_captured',
+        bookingId: payment.bookingId,
+      });
 
       return {
         received: true,
@@ -467,7 +525,318 @@ export const paymentRouter = router({
       if (err instanceof TRPCError) throw err;
       throw new TRPCError({
         code: 'INTERNAL_SERVER_ERROR',
-        message: 'Failed to process webhook',
+        message: 'Failed to verify payment status',
+        cause: err,
+      });
+    }
+  }),
+
+  // -----------------------------------------------------------------------
+  // Shipping lookups — MyFatoorah GetCountries / Getcities /
+  // CalculateShippingCharge (public: needed to render checkout forms).
+  // -----------------------------------------------------------------------
+  shippingCountries: publicProcedure.query(async () => {
+    try {
+      return await getCountries();
+    } catch (err) {
+      throw gatewayError(err, 'Failed to fetch shipping countries');
+    }
+  }),
+
+  shippingCities: publicProcedure.input(shippingCitiesSchema).query(async ({ input }) => {
+    try {
+      return await getCities({
+        shippingMethod: input.shippingMethod,
+        countryCode: input.countryCode,
+        searchValue: input.searchValue,
+      });
+    } catch (err) {
+      throw gatewayError(err, 'Failed to fetch shipping cities');
+    }
+  }),
+
+  shippingCharge: publicProcedure.input(shippingChargeSchema).query(async ({ input }) => {
+    try {
+      return await calculateShippingCharge({
+        shippingMethod: input.shippingMethod,
+        countryCode: input.countryCode,
+        cityName: input.cityName,
+        postalCode: input.postalCode,
+        items: input.items,
+      });
+    } catch (err) {
+      throw gatewayError(err, 'Failed to calculate shipping charge');
+    }
+  }),
+
+  // -----------------------------------------------------------------------
+  // payCart — marketplace checkout: shipping + payment in one step.
+  // wallet → atomic debit (checkout PAID); online → MyFatoorah invoice
+  // link (checkout PENDING until verifyCartPayment confirms the gateway).
+  // -----------------------------------------------------------------------
+  payCart: customerProcedure.input(payCartSchema).mutation(async ({ ctx, input }) => {
+    try {
+      const existing = await prisma.storeCheckout.findUnique({
+        where: { idempotencyKey: input.idempotencyKey },
+      });
+      if (existing) {
+        return {
+          checkoutId: existing.id,
+          method: existing.method,
+          status: existing.status,
+          invoiceId: existing.invoiceId,
+          invoiceURL: null,
+          total: Number(existing.total),
+        };
+      }
+
+      const lines = await readCartForCheckout(ctx.user.id);
+      const subtotal = lines.reduce((s, l) => s + l.unitPrice * l.quantity, 0);
+
+      let shippingCharge = 0;
+      try {
+        const charge = await calculateShippingCharge({
+          shippingMethod: input.shipping.shippingMethod,
+          countryCode: input.shipping.countryCode,
+          cityName: input.shipping.cityName,
+          postalCode: input.shipping.postalCode,
+          items: lines.map((l) => ({
+            name: l.name,
+            quantity: l.quantity,
+            weight: 0.5,
+            unitPrice: l.unitPrice,
+          })),
+        });
+        shippingCharge = charge.shippingCharge;
+      } catch (err) {
+        throw gatewayError(err, 'Failed to calculate shipping charge');
+      }
+      const total = subtotal + shippingCharge;
+
+      const shipData = {
+        shipPersonName: input.shipping.personName,
+        shipMobile: input.shipping.mobile,
+        shipLineAddress: input.shipping.lineAddress,
+        shipCityName: input.shipping.cityName,
+        shipPostalCode: input.shipping.postalCode,
+        shipCountryCode: input.shipping.countryCode,
+        shippingMethod: input.shipping.shippingMethod,
+      };
+
+      if (input.method === 'wallet') {
+        try {
+          const checkout = await prisma.$transaction(async (tx) => {
+            const created = await tx.storeCheckout.create({
+              data: {
+                customerId: ctx.user.id,
+                idempotencyKey: input.idempotencyKey,
+                method: 'wallet',
+                subtotal,
+                shippingCharge,
+                total,
+                status: 'PAID',
+                ...shipData,
+              },
+            });
+            await placeStoreOrders(tx, ctx.user.id, lines, created.id);
+
+            const wallet = await tx.wallet.findUnique({ where: { userId: ctx.user.id } });
+            if (!wallet || Number(wallet.balance) < total) {
+              throw new TRPCError({
+                code: 'PRECONDITION_FAILED',
+                message: 'Insufficient wallet balance',
+              });
+            }
+            await tx.wallet.update({
+              where: { id: wallet.id },
+              data: { balance: { decrement: total } },
+            });
+            await tx.walletTransaction.create({
+              data: {
+                walletId: wallet.id,
+                type: 'DEBIT',
+                source: 'STORE_PURCHASE',
+                amount: total,
+                referenceId: `store_checkout_${created.id}`,
+                idempotencyKey: input.idempotencyKey,
+                description: `Store checkout #${created.id}`,
+                status: 'COMPLETED',
+              },
+            });
+            return created;
+          });
+          return { checkoutId: checkout.id, method: 'wallet', status: 'PAID', total };
+        } catch (err) {
+          if (err instanceof Prisma.PrismaClientKnownRequestError && err.code === 'P2002') {
+            // Idempotency race — another call won; return its checkout.
+            const raced = await prisma.storeCheckout.findUnique({
+              where: { idempotencyKey: input.idempotencyKey },
+            });
+            if (raced) {
+              return {
+                checkoutId: raced.id,
+                method: raced.method,
+                status: raced.status,
+                invoiceId: raced.invoiceId,
+                invoiceURL: null,
+                total: Number(raced.total),
+              };
+            }
+          }
+          if (err instanceof TRPCError) throw err;
+          throw new TRPCError({
+            code: 'INTERNAL_SERVER_ERROR',
+            message: 'Failed to process wallet payment',
+            cause: err,
+          });
+        }
+      }
+
+      // Online — MyFatoorah hosted invoice link.
+      let checkoutId: number;
+      try {
+        const checkout = await prisma.$transaction(async (tx) => {
+          const created = await tx.storeCheckout.create({
+            data: {
+              customerId: ctx.user.id,
+              idempotencyKey: input.idempotencyKey,
+              method: 'online',
+              subtotal,
+              shippingCharge,
+              total,
+              status: 'PENDING',
+              ...shipData,
+            },
+          });
+          await placeStoreOrders(tx, ctx.user.id, lines, created.id);
+          return created;
+        });
+        checkoutId = checkout.id;
+      } catch (err) {
+        if (err instanceof Prisma.PrismaClientKnownRequestError && err.code === 'P2002') {
+          const raced = await prisma.storeCheckout.findUnique({
+            where: { idempotencyKey: input.idempotencyKey },
+          });
+          if (raced) {
+            return {
+              checkoutId: raced.id,
+              method: raced.method,
+              status: raced.status,
+              invoiceId: raced.invoiceId,
+              invoiceURL: null,
+              total: Number(raced.total),
+            };
+          }
+        }
+        if (err instanceof TRPCError) throw err;
+        throw new TRPCError({
+          code: 'INTERNAL_SERVER_ERROR',
+          message: 'Failed to create checkout',
+          cause: err,
+        });
+      }
+
+      const user = await prisma.user.findUnique({
+        where: { id: ctx.user.id },
+        select: { email: true },
+      });
+      const appUrl = process.env['NEXT_PUBLIC_APP_URL'] || 'http://localhost:3000';
+
+      let invoice: { invoiceId: string; invoiceURL: string };
+      try {
+        invoice = await sendPayment({
+          customerName: input.shipping.personName,
+          customerMobile: input.shipping.mobile,
+          customerEmail: user?.email || '',
+          invoiceValue: total,
+          invoiceItems: lines.map((l) => ({
+            name: l.name,
+            quantity: l.quantity,
+            unitPrice: l.unitPrice,
+          })),
+          displayCurrencyIso: 'SAR',
+          customerReference: `GOB-CHECKOUT-${checkoutId}`,
+          callBackUrl: `${appUrl}/checkout/status?paymentId={PaymentId}`,
+          errorUrl: `${appUrl}/checkout/status`,
+          shippingMethod: input.shipping.shippingMethod,
+          shippingConsignee: {
+            personName: input.shipping.personName,
+            mobile: input.shipping.mobile,
+            lineAddress: input.shipping.lineAddress,
+            cityName: input.shipping.cityName,
+            postalCode: input.shipping.postalCode,
+            countryCode: input.shipping.countryCode,
+          },
+        });
+      } catch (err) {
+        // Invoice rejected — fail the checkout so vendors never fulfill it.
+        await prisma.storeCheckout
+          .update({ where: { id: checkoutId }, data: { status: 'FAILED' } })
+          .catch(() => {});
+        throw gatewayError(err, 'Payment invoice failed');
+      }
+
+      await prisma.storeCheckout.update({
+        where: { id: checkoutId },
+        data: { invoiceId: invoice.invoiceId, gatewayRef: invoice.invoiceId },
+      });
+
+      return {
+        checkoutId,
+        method: 'online',
+        status: 'PENDING',
+        invoiceId: invoice.invoiceId,
+        invoiceURL: invoice.invoiceURL,
+        total,
+      };
+    } catch (err) {
+      if (err instanceof TRPCError) throw err;
+      throw new TRPCError({
+        code: 'INTERNAL_SERVER_ERROR',
+        message: 'Failed to process cart payment',
+        cause: err,
+      });
+    }
+  }),
+
+  // -----------------------------------------------------------------------
+  // verifyCartPayment — post-redirect status check for store checkouts.
+  // State changes ONLY after GetPaymentStatus confirms the gateway result.
+  // -----------------------------------------------------------------------
+  verifyCartPayment: publicProcedure.input(verifyCartPaymentSchema).mutation(async ({ input }) => {
+    try {
+      if (!input.invoiceId && !input.paymentId) {
+        throw new TRPCError({
+          code: 'BAD_REQUEST',
+          message: 'invoiceId or paymentId required',
+        });
+      }
+      const status = await getPaymentStatus({
+        invoiceId: input.invoiceId,
+        paymentId: input.paymentId,
+      });
+
+      const checkout = await prisma.storeCheckout.findFirst({
+        where: { OR: [{ invoiceId: status.invoiceId }, { gatewayRef: status.invoiceId }] },
+      });
+
+      if (!checkout) {
+        return { status: 'PENDING' as const, processed: false, reason: 'Unknown invoice' };
+      }
+
+      const state = resolvePaymentState(status);
+      if (state !== 'PENDING' && checkout.status !== state) {
+        await prisma.storeCheckout.update({
+          where: { id: checkout.id },
+          data: { status: state },
+        });
+      }
+      return { status: state, checkoutId: checkout.id, processed: state !== 'PENDING' };
+    } catch (err) {
+      if (err instanceof TRPCError) throw err;
+      throw new TRPCError({
+        code: 'INTERNAL_SERVER_ERROR',
+        message: 'Failed to verify cart payment',
         cause: err,
       });
     }
