@@ -4674,4 +4674,762 @@ export const mobileCustomerBMessages = {
     ar: 'طلب تعديل الموعد',
     en: 'Request to change the appointment',
   },
+
+  // ── sweep slice 9: family-beauty / gift-card-market / gift-registry / group-bookings / hair-care-guide ──
+  'mobile.familyBeauty.mommyAndMe.subtitle': {
+    ar: 'نورة وابنتها سارة (8 سنوات)',
+    en: 'Noura and her daughter Sara (8 years old)',
+  },
+  'mobile.familyBeauty.mommyAndMe.tip1': {
+    ar: 'التجربة: ميني فيشل — 250 ر.س',
+    en: 'Experience: mini facial — 250 SAR',
+  },
+  'mobile.familyBeauty.mommyAndMe.tip2': {
+    ar: 'الأم: نورة — عناية بالبشرة',
+    en: 'Mother: Noura — skincare',
+  },
+  'mobile.familyBeauty.mommyAndMe.tip3': {
+    ar: 'الابنة: سارة — 8 سنوات',
+    en: 'Daughter: Sara — 8 years old',
+  },
+  'mobile.familyBeauty.mommyAndMe.tip4': {
+    ar: 'علاج لطيف — مناسب للأطفال',
+    en: 'Gentle treatment — suitable for children',
+  },
+  'mobile.familyBeauty.threeGenerations.title': {
+    ar: 'ثلاثة أجيال',
+    en: 'Three Generations',
+  },
+  'mobile.familyBeauty.threeGenerations.subtitle': {
+    ar: 'الجدة، الأم، والحفيدة',
+    en: 'Grandmother, mother, and granddaughter',
+  },
+  'mobile.familyBeauty.threeGenerations.tip1': {
+    ar: 'الجدة: أم خالد — مساج واسترخاء',
+    en: 'Grandmother: Umm Khalid — massage and relaxation',
+  },
+  'mobile.familyBeauty.threeGenerations.tip2': {
+    ar: 'الأم: نورة — عناية كاملة',
+    en: 'Mother: Noura — full care',
+  },
+  'mobile.familyBeauty.threeGenerations.tip3': {
+    ar: 'الحفيدة: سارة — ميني مانيكير',
+    en: 'Granddaughter: Sara — mini manicure',
+  },
+  'mobile.familyBeauty.threeGenerations.tip4': {
+    ar: 'باقة عائلية — 3 خدمات بسعر مخفض',
+    en: 'Family package — 3 services at a discount',
+  },
+  'mobile.familyBeauty.teenBeauty.title': {
+    ar: 'جمال المراهقات',
+    en: 'Teen Beauty',
+  },
+  'mobile.familyBeauty.teenBeauty.subtitle': {
+    ar: 'أول درس مكياج (12-15 سنة)',
+    en: 'First makeup lesson (12-15 years)',
+  },
+  'mobile.familyBeauty.teenBeauty.tip1': {
+    ar: 'الخدمة: أول درس مكياج — 150 ر.س',
+    en: 'Service: first makeup lesson — 150 SAR',
+  },
+  'mobile.familyBeauty.teenBeauty.tip2': {
+    ar: 'المحتوى: تنظيف، ترطيب، مكياج خفيف',
+    en: 'Content: cleansing, moisturizing, light makeup',
+  },
+  'mobile.familyBeauty.teenBeauty.tip3': {
+    ar: 'بإشراف الأم — إلزامي',
+    en: 'Supervised by the mother — mandatory',
+  },
+  'mobile.familyBeauty.teenBeauty.tip4': {
+    ar: 'نصائح آمنة — مناسبة للعمر',
+    en: 'Safe tips — age-appropriate',
+  },
+  'mobile.familyBeauty.firstFacial.title': {
+    ar: 'أول فيشل',
+    en: 'First Facial',
+  },
+  'mobile.familyBeauty.firstFacial.subtitle': {
+    ar: 'مناسب من 14 سنة',
+    en: 'Suitable from age 14',
+  },
+  'mobile.familyBeauty.firstFacial.tip1': {
+    ar: 'العمر: 14 سنة — بشرة مختلطة',
+    en: 'Age: 14 — combination skin',
+  },
+  'mobile.familyBeauty.firstFacial.tip2': {
+    ar: 'الأم: نورة — مرافقة',
+    en: 'Mother: Noura — accompanying',
+  },
+  'mobile.familyBeauty.firstFacial.tip3': {
+    ar: 'منتجات لطيفة — خالية من العطور',
+    en: 'Gentle products — fragrance-free',
+  },
+  'mobile.familyBeauty.firstFacial.tip4': {
+    ar: 'استشارة قبل الجلسة — تحديد الاحتياج',
+    en: 'Consultation before the session — identifying needs',
+  },
+  'mobile.familyBeauty.bridalTribe.title': {
+    ar: 'قبيلة العروس',
+    en: 'The Bride Tribe',
+  },
+  'mobile.familyBeauty.bridalTribe.subtitle': {
+    ar: 'سارة — 15 مارس 2027',
+    en: 'Sara — 15 March 2027',
+  },
+  'mobile.familyBeauty.bridalTribe.tip1': {
+    ar: 'العروس: سارة — باقة عروس كاملة',
+    en: 'Bride: Sara — full bridal package',
+  },
+  'mobile.familyBeauty.bridalTribe.tip2': {
+    ar: 'الوصيفات: نورة، مها، ريم',
+    en: 'Bridesmaids: Noura, Maha, Reem',
+  },
+  'mobile.familyBeauty.bridalTribe.tip3': {
+    ar: '3 وصيفات — مكياج + شعر',
+    en: '3 bridesmaids — makeup + hair',
+  },
+  'mobile.familyBeauty.bridalTribe.tip4': {
+    ar: 'يوم الزفاف — خدمة منزلية',
+    en: 'Wedding day — home service',
+  },
+  'mobile.familyBeauty.babyShower.subtitle': {
+    ar: '12 ضيفة — للأم المنتظرة',
+    en: '12 guests — for the expectant mother',
+  },
+  'mobile.familyBeauty.babyShower.tip1': {
+    ar: 'للأم: نورة — عناية بالأم المنتظرة',
+    en: 'For the mother: Noura — care for the expectant mother',
+  },
+  'mobile.familyBeauty.babyShower.tip2': {
+    ar: '12 ضيفة — مناسبة خاصة',
+    en: '12 guests — a special occasion',
+  },
+  'mobile.familyBeauty.babyShower.tip3': {
+    ar: 'مساج استرخاء — آمن للحمل',
+    en: 'Relaxing massage — pregnancy-safe',
+  },
+  'mobile.familyBeauty.babyShower.tip4': {
+    ar: 'هدية — باقة عناية للأم',
+    en: 'Gift — a care package for the mother',
+  },
+  'mobile.familyBeauty.valentine.title': {
+    ar: 'قالنتاين',
+    en: "Valentine's",
+  },
+  'mobile.familyBeauty.valentine.subtitle': {
+    ar: '13 فبراير — خصم 20%',
+    en: '13 February — 20% off',
+  },
+  'mobile.familyBeauty.valentine.tip1': {
+    ar: 'الصديقات: نورة، مها — 450 ر.س',
+    en: 'Friends: Noura, Maha — 450 SAR',
+  },
+  'mobile.familyBeauty.valentine.tip2': {
+    ar: 'مانيكير + باديكير — للجميع',
+    en: 'Manicure + pedicure — for everyone',
+  },
+  'mobile.familyBeauty.valentine.tip3': {
+    ar: 'شاي وقهوة — ضيافة مميزة',
+    en: 'Tea and coffee — a special treat',
+  },
+  'mobile.familyBeauty.valentine.tip4': {
+    ar: 'هدية — لكل صديقة',
+    en: 'Gift — for every friend',
+  },
+  'mobile.familyBeauty.newMomSupport.title': {
+    ar: 'دعم الأم الجديدة',
+    en: 'New Mom Support',
+  },
+  'mobile.familyBeauty.newMomSupport.subtitle': {
+    ar: 'نورة — طفلها شهرين',
+    en: 'Noura — her baby is two months old',
+  },
+  'mobile.familyBeauty.newMomSupport.tip1': {
+    ar: 'مساج استرخاء — بعد الولادة',
+    en: 'Relaxing massage — postpartum',
+  },
+  'mobile.familyBeauty.newMomSupport.tip2': {
+    ar: 'عناية بالبشرة — للتغيرات الهرمونية',
+    en: 'Skincare — for hormonal changes',
+  },
+  'mobile.familyBeauty.newMomSupport.tip3': {
+    ar: 'جلسة سريعة — ساعة واحدة',
+    en: 'Quick session — one hour',
+  },
+  'mobile.familyBeauty.newMomSupport.tip4': {
+    ar: 'خدمة منزلية — راحة للأم',
+    en: 'Home service — for the mother’s comfort',
+  },
+  'mobile.familyBeauty.bridalSkin.title': {
+    ar: 'بشرة العروس',
+    en: 'Bridal Skin',
+  },
+  'mobile.familyBeauty.bridalSkin.subtitle': {
+    ar: 'خطة 6 أشهر لبشرة الزفاف',
+    en: 'A 6-month plan for wedding-day skin',
+  },
+  'mobile.familyBeauty.bridalSkin.tip1': {
+    ar: '6 أشهر: بدء روتين + واقي شمس يومي',
+    en: '6 months: start a routine + daily sunscreen',
+  },
+  'mobile.familyBeauty.bridalSkin.tip2': {
+    ar: '3 أشهر: أول جلسة فيشل + تحديد المشاكل',
+    en: '3 months: first facial + identifying issues',
+  },
+  'mobile.familyBeauty.bridalSkin.tip3': {
+    ar: 'شهر واحد: آخر تقشير — لا تجارب جديدة',
+    en: 'One month: last exfoliation — no new experiments',
+  },
+  'mobile.familyBeauty.bridalSkin.tip4': {
+    ar: 'أسبوع الزفاف: ترطيب مكثف',
+    en: 'Wedding week: intensive hydration',
+  },
+  'mobile.familyBeauty.bridalBody.title': {
+    ar: 'جسم العروس',
+    en: 'Bridal Body',
+  },
+  'mobile.familyBeauty.bridalBody.subtitle': {
+    ar: 'عناية شاملة قبل الزفاف',
+    en: 'Complete care before the wedding',
+  },
+  'mobile.familyBeauty.bridalBody.tip1': {
+    ar: 'تقشير الجسم — مرة أسبوعياً',
+    en: 'Body scrub — once a week',
+  },
+  'mobile.familyBeauty.bridalBody.tip2': {
+    ar: 'مساج استرخاء — يخفف التوتر',
+    en: 'Relaxing massage — relieves tension',
+  },
+  'mobile.familyBeauty.bridalBody.tip3': {
+    ar: 'إزالة الشعر — قبل الزفاف بـ 3-5 أيام',
+    en: 'Hair removal — 3-5 days before the wedding',
+  },
+  'mobile.familyBeauty.bridalBody.tip4': {
+    ar: 'تان لطيف — قبل الزفاف بيومين',
+    en: 'Gentle tan — two days before the wedding',
+  },
+  'mobile.familyBeauty.bridalEmergency.title': {
+    ar: 'طوارئ العروس',
+    en: 'Bridal Emergency',
+  },
+  'mobile.familyBeauty.bridalEmergency.subtitle': {
+    ar: 'طقم إنقاذ يوم الزفاف',
+    en: 'Wedding-day rescue kit',
+  },
+  'mobile.familyBeauty.bridalEmergency.tip1': {
+    ar: 'حبة حساسية — لأي تحسس مفاجئ',
+    en: 'Allergy pill — for any sudden reaction',
+  },
+  'mobile.familyBeauty.bridalEmergency.tip2': {
+    ar: 'لصقات — للكعب من الحذاء',
+    en: 'Band-aids — for heels from shoes',
+  },
+  'mobile.familyBeauty.bridalEmergency.tip4': {
+    ar: 'أحمر شفاه — للمسات سريعة',
+    en: 'Lipstick — for quick touch-ups',
+  },
+  'mobile.familyBeauty.bridalTrial.title': {
+    ar: 'تجربة العروس',
+    en: 'Bridal Trial',
+  },
+  'mobile.familyBeauty.bridalTrial.subtitle': {
+    ar: 'بروفة المكياج والشعر',
+    en: 'Makeup and hair rehearsal',
+  },
+  'mobile.familyBeauty.bridalTrial.tip1': {
+    ar: 'قبل الزفاف بشهر — الوقت المثالي',
+    en: 'One month before the wedding — the ideal time',
+  },
+  'mobile.familyBeauty.bridalTrial.tip2': {
+    ar: 'صوري الإطلالة — لتقييمها لاحقاً',
+    en: 'Photograph the look — to evaluate it later',
+  },
+  'mobile.familyBeauty.bridalTrial.tip3': {
+    ar: 'ارتدي أبيض — للتناسق مع الفستان',
+    en: 'Wear white — to match the dress',
+  },
+  'mobile.familyBeauty.bridalTrial.tip4': {
+    ar: 'كوني صريحة — هذه تجربتكِ',
+    en: 'Be honest — this is your trial',
+  },
+  'mobile.familyBeauty.bridalGlow.title': {
+    ar: 'إشراقة العروس',
+    en: 'Bridal Glow',
+  },
+  'mobile.familyBeauty.bridalGlow.subtitle': {
+    ar: 'توهجي في يومكِ الكبير',
+    en: 'Shine on your big day',
+  },
+  'mobile.familyBeauty.bridalGlow.tip1': {
+    ar: '8 أكواب ماء — لمدة شهر قبل الزفاف',
+    en: '8 glasses of water — for a month before the wedding',
+  },
+  'mobile.familyBeauty.bridalGlow.tip2': {
+    ar: 'غذاء صحي — أفوكادو سلمون مكسرات',
+    en: 'Healthy food — avocado, salmon, nuts',
+  },
+  'mobile.familyBeauty.bridalGlow.tip3': {
+    ar: '8 ساعات نوم — أهم سر للبشرة',
+    en: '8 hours of sleep — the most important skin secret',
+  },
+  'mobile.familyBeauty.bridalGlow.tip4': {
+    ar: 'تأمل 10 دقائق — هدوء وثقة',
+    en: 'Meditate for 10 minutes — calm and confidence',
+  },
+  'mobile.familyBeauty.pregnancyGlow.title': {
+    ar: 'إشراقة الحامل',
+    en: 'Pregnancy Glow',
+  },
+  'mobile.familyBeauty.pregnancyGlow.subtitle': {
+    ar: 'بشرة متوهجة أثناء الحمل',
+    en: 'Glowing skin during pregnancy',
+  },
+  'mobile.familyBeauty.pregnancyGlow.tip1': {
+    ar: 'الهرمونات تزيد تدفق الدم — بشرة وردية',
+    en: 'Hormones increase blood flow — rosy skin',
+  },
+  'mobile.familyBeauty.pregnancyGlow.tip2': {
+    ar: 'زيت الورد أو اللوز — لترطيب البطن',
+    en: 'Rose or almond oil — to moisturize the belly',
+  },
+  'mobile.familyBeauty.pregnancyGlow.tip3': {
+    ar: 'نامي جيداً — الإرهاق يظهر على بشرتكِ',
+    en: 'Sleep well — fatigue shows on your skin',
+  },
+  'mobile.familyBeauty.pregnancyGlow.tip4': {
+    ar: 'تغذية صحية — فيتامينات الحمل',
+    en: 'Healthy nutrition — prenatal vitamins',
+  },
+  'mobile.familyBeauty.pregnancyMassage.title': {
+    ar: 'مساج الحامل',
+    en: 'Pregnancy Massage',
+  },
+  'mobile.familyBeauty.pregnancyMassage.subtitle': {
+    ar: 'آمن — بعد الشهر الثالث',
+    en: 'Safe — after the third month',
+  },
+  'mobile.familyBeauty.pregnancyMassage.tip1': {
+    ar: 'الاستلقاء على الجانب — ليس على البطن',
+    en: 'Lie on your side — not on your stomach',
+  },
+  'mobile.familyBeauty.pregnancyMassage.tip2': {
+    ar: 'بعد الشهر الثالث — بأمان',
+    en: 'After the third month — safely',
+  },
+  'mobile.familyBeauty.pregnancyMassage.tip3': {
+    ar: 'تجنبي الزيوت القوية',
+    en: 'Avoid strong oils',
+  },
+  'mobile.familyBeauty.pregnancyMassage.tip4': {
+    ar: 'يخفف آلام الظهر — ويحسن النوم',
+    en: 'Relieves back pain — and improves sleep',
+  },
+  'mobile.familyBeauty.nursingBeauty.title': {
+    ar: 'جمال المرضعة',
+    en: 'Nursing Beauty',
+  },
+  'mobile.familyBeauty.nursingBeauty.subtitle': {
+    ar: 'عناية آمنة أثناء الرضاعة',
+    en: 'Safe care while breastfeeding',
+  },
+  'mobile.familyBeauty.nursingBeauty.tip1': {
+    ar: 'اشربي ماء أكثر — الرضاعة تجفف الجسم',
+    en: 'Drink more water — breastfeeding dehydrates the body',
+  },
+  'mobile.familyBeauty.nursingBeauty.tip2': {
+    ar: 'كريمات آمنة — بدون ريتينول',
+    en: 'Safe creams — without retinol',
+  },
+  'mobile.familyBeauty.nursingBeauty.tip3': {
+    ar: 'شعركِ قد يتساقط — فيتامينات',
+    en: 'Your hair may shed — vitamins',
+  },
+  'mobile.familyBeauty.nursingBeauty.tip4': {
+    ar: 'روتين سريع — 5 دقائق تكفي',
+    en: 'A quick routine — 5 minutes is enough',
+  },
+  'mobile.familyBeauty.postpartumCare.title': {
+    ar: 'عناية ما بعد الولادة',
+    en: 'Postpartum Care',
+  },
+  'mobile.familyBeauty.postpartumCare.subtitle': {
+    ar: 'نفسكِ مهمة — مثل طفلكِ',
+    en: 'You matter too — just like your baby',
+  },
+  'mobile.familyBeauty.postpartumCare.tip1': {
+    ar: '5 دقائق لكِ — غسل وجه وتنفس عميق',
+    en: '5 minutes for you — wash your face and breathe deeply',
+  },
+  'mobile.familyBeauty.postpartumCare.tip2': {
+    ar: 'لا تنعزلي — تحدثي مع صديقة',
+    en: 'Do not isolate yourself — talk to a friend',
+  },
+  'mobile.familyBeauty.postpartumCare.tip3': {
+    ar: 'اكتئاب ما بعد الولادة — ليس ضعفاً',
+    en: 'Postpartum depression — not a weakness',
+  },
+  'mobile.familyBeauty.postpartumCare.tip4': {
+    ar: 'أنتِ أم رائعة — لا تقسي على نفسكِ',
+    en: 'You are a wonderful mother — do not be hard on yourself',
+  },
+  'mobile.hairCareGuide.washing.title': {
+    ar: 'غسيل الشعر',
+    en: 'Hair Washing',
+  },
+  'mobile.hairCareGuide.washing.subtitle': {
+    ar: 'الطريقة الصحيحة',
+    en: 'The right way',
+  },
+  'mobile.hairCareGuide.washing.tip1': {
+    ar: 'بللي الشعر تماماً — 1-2 دقيقة',
+    en: 'Soak your hair completely — 1-2 minutes',
+  },
+  'mobile.hairCareGuide.washing.tip2': {
+    ar: 'الشامبو لفروة الرأس فقط',
+    en: 'Shampoo for the scalp only',
+  },
+  'mobile.hairCareGuide.washing.tip3': {
+    ar: 'البلسم للأطراف فقط — وليس الجذور',
+    en: 'Conditioner for the ends only — not the roots',
+  },
+  'mobile.hairCareGuide.washing.tip4': {
+    ar: 'اشطفي بماء بارد — يغلق البشرة ويضيف لمعان',
+    en: 'Rinse with cold water — closes the cuticle and adds shine',
+  },
+  'mobile.hairCareGuide.hairMask.title': {
+    ar: 'ماسك الشعر',
+    en: 'Hair Mask',
+  },
+  'mobile.hairCareGuide.hairMask.subtitle': {
+    ar: 'وصفات طبيعية للشعر',
+    en: 'Natural recipes for hair',
+  },
+  'mobile.hairCareGuide.hairMask.tip1': {
+    ar: 'أفوكادو + عسل — للشعر الجاف',
+    en: 'Avocado + honey — for dry hair',
+  },
+  'mobile.hairCareGuide.hairMask.tip2': {
+    ar: 'بيض + زيت زيتون — للشعر الضعيف',
+    en: 'Egg + olive oil — for weak hair',
+  },
+  'mobile.hairCareGuide.hairMask.tip3': {
+    ar: 'موز + زبادي — للشعر التالف',
+    en: 'Banana + yogurt — for damaged hair',
+  },
+  'mobile.hairCareGuide.hairMask.tip4': {
+    ar: 'خل تفاح — لمعان وتنظيف الفروة',
+    en: 'Apple cider vinegar — shine and scalp cleansing',
+  },
+  'mobile.hairCareGuide.hairOils.title': {
+    ar: 'زيوت الشعر',
+    en: 'Hair Oils',
+  },
+  'mobile.hairCareGuide.hairOils.subtitle': {
+    ar: 'أي زيت لشعرك؟',
+    en: 'Which oil for your hair?',
+  },
+  'mobile.hairCareGuide.hairOils.tip1': {
+    ar: 'جوز الهند — يخترق الشعرة ترطيب عميق',
+    en: 'Coconut — penetrates the hair shaft for deep moisture',
+  },
+  'mobile.hairCareGuide.hairOils.tip2': {
+    ar: 'الأرغان — ذهبي للمعان وتغذية',
+    en: 'Argan — golden for shine and nourishment',
+  },
+  'mobile.hairCareGuide.hairOils.tip3': {
+    ar: 'إكليل الجبل — يحفز نمو الشعر',
+    en: 'Rosemary — stimulates hair growth',
+  },
+  'mobile.hairCareGuide.hairOils.tip4': {
+    ar: 'الجوجوبا — يشبه زيوت فروة الرأس',
+    en: 'Jojoba — resembles the scalp’s natural oils',
+  },
+  'mobile.hairCareGuide.heatProtection.title': {
+    ar: 'حماية من الحرارة',
+    en: 'Heat Protection',
+  },
+  'mobile.hairCareGuide.heatProtection.subtitle': {
+    ar: 'احمي شعرك من التلف',
+    en: 'Protect your hair from damage',
+  },
+  'mobile.hairCareGuide.heatProtection.tip1': {
+    ar: 'واقي حراري — دائماً قبل المجفف أو المكواة',
+    en: 'Heat protectant — always before the dryer or straightener',
+  },
+  'mobile.hairCareGuide.heatProtection.tip2': {
+    ar: 'حرارة متوسطة — لا القصوى',
+    en: 'Medium heat — not the maximum',
+  },
+  'mobile.hairCareGuide.heatProtection.tip3': {
+    ar: 'لا تمرري المكواة على نفس الخصلة مرتين',
+    en: 'Do not run the straightener over the same strand twice',
+  },
+  'mobile.hairCareGuide.heatProtection.tip4': {
+    ar: 'يوم بدون حرارة في الأسبوع',
+    en: 'One heat-free day a week',
+  },
+  'mobile.hairCareGuide.scalp.title': {
+    ar: 'فروة الرأس',
+    en: 'The Scalp',
+  },
+  'mobile.hairCareGuide.scalp.subtitle': {
+    ar: 'بشرة صحية = شعر صحي',
+    en: 'A healthy scalp = healthy hair',
+  },
+  'mobile.hairCareGuide.scalp.tip1': {
+    ar: 'تقشير فروة الرأس — مرة شهرياً',
+    en: 'Scalp exfoliation — once a month',
+  },
+  'mobile.hairCareGuide.scalp.tip2': {
+    ar: 'تدليك يومي — 5 دقائق بزيت دافئ',
+    en: 'Daily massage — 5 minutes with warm oil',
+  },
+  'mobile.hairCareGuide.scalp.tip3': {
+    ar: 'ماء فاتر — ليس ساخناً',
+    en: 'Lukewarm water — not hot',
+  },
+  'mobile.hairCareGuide.scalp.tip4': {
+    ar: 'سيروم لفروة الرأس — قبل النوم',
+    en: 'Scalp serum — before bed',
+  },
+  'mobile.hairCareGuide.hairColor.title': {
+    ar: 'صبغ الشعر',
+    en: 'Hair Coloring',
+  },
+  'mobile.hairCareGuide.hairColor.subtitle': {
+    ar: 'نصائح قبل الصبغة',
+    en: 'Tips before dyeing',
+  },
+  'mobile.hairCareGuide.hairColor.tip1': {
+    ar: 'لا تغسلي شعرك 48 ساعة قبل الصبغة',
+    en: 'Do not wash your hair for 48 hours before dyeing',
+  },
+  'mobile.hairCareGuide.hairColor.tip2': {
+    ar: 'استخدمي شامبو وبلسم للشعر المصبوغ',
+    en: 'Use shampoo and conditioner for colored hair',
+  },
+  'mobile.hairCareGuide.hairColor.tip3': {
+    ar: 'احمي شعرك من الشمس بعد الصبغة',
+    en: 'Protect your hair from the sun after dyeing',
+  },
+  'mobile.hairCareGuide.hairColor.tip4': {
+    ar: 'جديدي الصبغة كل 4-6 أسابيع',
+    en: 'Refresh the color every 4-6 weeks',
+  },
+  'mobile.hairCareGuide.hairstyling.title': {
+    ar: 'تسريحة الشعر',
+    en: 'Hairstyling',
+  },
+  'mobile.hairCareGuide.hairstyling.subtitle': {
+    ar: 'حسب نوع شعرك',
+    en: 'According to your hair type',
+  },
+  'mobile.hairCareGuide.hairstyling.tip1': {
+    ar: 'الشعر المجعد — كريم ليف ان بعد الغسيل',
+    en: 'Curly hair — leave-in cream after washing',
+  },
+  'mobile.hairCareGuide.hairstyling.tip2': {
+    ar: 'الشعر الناعم — موس رفع الجذور',
+    en: 'Fine hair — root-lifting mousse',
+  },
+  'mobile.hairCareGuide.hairstyling.tip3': {
+    ar: 'الشعر المموج — سبراي ملح البحر',
+    en: 'Wavy hair — sea salt spray',
+  },
+  'mobile.hairCareGuide.hairstyling.tip4': {
+    ar: 'الشعر المتعرج — زبدة شعر + ضفائر',
+    en: 'Coily hair — hair butter + braids',
+  },
+  'mobile.hairCareGuide.bridalHair.title': {
+    ar: 'شعر العروس',
+    en: 'Bridal Hair',
+  },
+  'mobile.hairCareGuide.bridalHair.subtitle': {
+    ar: 'تحضير للعرس',
+    en: 'Preparation for the wedding',
+  },
+  'mobile.hairCareGuide.bridalHair.tip1': {
+    ar: 'ابدئي العناية 6 أشهر قبل الزفاف',
+    en: 'Start the care 6 months before the wedding',
+  },
+  'mobile.hairCareGuide.bridalHair.tip2': {
+    ar: 'آخر قصة قبل الزفاف بأسبوعين',
+    en: 'Last cut two weeks before the wedding',
+  },
+  'mobile.hairCareGuide.bridalHair.tip3': {
+    ar: 'آخر صبغة قبل الزفاف بأسبوع',
+    en: 'Last dye one week before the wedding',
+  },
+  'mobile.hairCareGuide.bridalHair.tip4': {
+    ar: 'حمام زيت أسبوعياً في الشهر الأخير',
+    en: 'An oil bath weekly in the final month',
+  },
+  'mobile.hairCareGuide.summerHair.title': {
+    ar: 'شعر الصيف',
+    en: 'Summer Hair',
+  },
+  'mobile.hairCareGuide.summerHair.subtitle': {
+    ar: 'حماية من الشمس والبحر',
+    en: 'Protection from the sun and sea',
+  },
+  'mobile.hairCareGuide.summerHair.tip1': {
+    ar: 'قبعة أو وشاح — حماية من الأشعة',
+    en: 'A hat or scarf — protection from UV rays',
+  },
+  'mobile.hairCareGuide.summerHair.tip2': {
+    ar: 'بللي شعرك بماء عذب قبل البحر',
+    en: 'Wet your hair with fresh water before the sea',
+  },
+  'mobile.hairCareGuide.summerHair.tip3': {
+    ar: 'سبراي حماية من الشمس للشعر',
+    en: 'Sunscreen spray for hair',
+  },
+  'mobile.hairCareGuide.summerHair.tip4': {
+    ar: 'اشطفي فوراً بعد المسبح',
+    en: 'Rinse immediately after the pool',
+  },
+  'mobile.hairCareGuide.hijabHair.title': {
+    ar: 'شعر المحجبة',
+    en: 'Hijab Hair',
+  },
+  'mobile.hairCareGuide.hijabHair.subtitle': {
+    ar: 'عناية خاصة تحت الحجاب',
+    en: 'Special care under the hijab',
+  },
+  'mobile.hairCareGuide.hijabHair.tip1': {
+    ar: 'غطاء قطني تحت الحجاب — يمتص العرق',
+    en: 'A cotton cap under the hijab — absorbs sweat',
+  },
+  'mobile.hairCareGuide.hijabHair.tip2': {
+    ar: 'فكي شعرك 15 دقيقة يومياً للتهوية',
+    en: 'Loosen your hair 15 minutes a day for ventilation',
+  },
+  'mobile.hairCareGuide.hijabHair.tip3': {
+    ar: 'رطبي شعرك جيداً قبل لبس الحجاب',
+    en: 'Moisturize your hair well before wearing the hijab',
+  },
+  'mobile.hairCareGuide.hijabHair.tip4': {
+    ar: 'تجنبي ربط الشعر بشدة تحت الحجاب',
+    en: 'Avoid tying your hair tightly under the hijab',
+  },
+  'mobile.hairCareGuide.balayage.title': {
+    ar: 'البلياج',
+    en: 'Balayage',
+  },
+  'mobile.hairCareGuide.balayage.subtitle': {
+    ar: 'تقنية فرنسية — لون طبيعي',
+    en: 'A French technique — natural color',
+  },
+  'mobile.hairCareGuide.balayage.tip1': {
+    ar: 'تلوين يدوي — خصل مرسومة بالفرشاة',
+    en: 'Hand-painted — strands painted with a brush',
+  },
+  'mobile.hairCareGuide.balayage.tip2': {
+    ar: 'مظهر طبيعي — جذور أغمق وأطراف أفتح',
+    en: 'A natural look — darker roots, lighter ends',
+  },
+  'mobile.hairCareGuide.balayage.tip3': {
+    ar: 'يدوم 3-4 أشهر — نمو الجذور غير ملحوظ',
+    en: 'Lasts 3-4 months — root growth is unnoticeable',
+  },
+  'mobile.hairCareGuide.balayage.tip4': {
+    ar: 'أغلى من الصبغة — لكن صيانة أقل',
+    en: 'More expensive than dye — but less maintenance',
+  },
+  'mobile.hairCareGuide.hairGloss.title': {
+    ar: 'غلوس الشعر',
+    en: 'Hair Gloss',
+  },
+  'mobile.hairCareGuide.hairGloss.subtitle': {
+    ar: 'لمعان فوري — بدون أمونيا',
+    en: 'Instant shine — ammonia-free',
+  },
+  'mobile.hairCareGuide.hairGloss.tip1': {
+    ar: 'لمعان زجاجي — يعكس الضوء بشكل جميل',
+    en: 'Glass-like shine — reflects light beautifully',
+  },
+  'mobile.hairCareGuide.hairGloss.tip2': {
+    ar: 'شفاف أو ملون — ينعش لون شعركِ',
+    en: 'Clear or tinted — refreshes your hair color',
+  },
+  'mobile.hairCareGuide.hairGloss.tip3': {
+    ar: '20 دقيقة — في الصالون أو في البيت',
+    en: '20 minutes — at the salon or at home',
+  },
+  'mobile.hairCareGuide.hairGloss.tip4': {
+    ar: 'كل 4-6 أسابيع — للحفاظ على اللمعان',
+    en: 'Every 4-6 weeks — to maintain the shine',
+  },
+  'mobile.hairCareGuide.bondRepair.title': {
+    ar: 'ترميم روابط الشعر',
+    en: 'Hair Bond Repair',
+  },
+  'mobile.hairCareGuide.bondRepair.subtitle': {
+    ar: 'إصلاح من الداخل',
+    en: 'Repair from within',
+  },
+  'mobile.hairCareGuide.bondRepair.tip1': {
+    ar: 'يصلح الروابط المكسورة — داخل الشعرة',
+    en: 'Repairs broken bonds — inside the hair',
+  },
+  'mobile.hairCareGuide.bondRepair.tip2': {
+    ar: 'للشعر المصبوغ والمعالج حرارياً',
+    en: 'For colored and heat-treated hair',
+  },
+  'mobile.hairCareGuide.bondRepair.tip3': {
+    ar: 'علاج أسبوعي — 10 دقائق قبل الشامبو',
+    en: 'A weekly treatment — 10 minutes before shampoo',
+  },
+  'mobile.hairCareGuide.bondRepair.tip4': {
+    ar: 'نتائج فورية — شعر أنعم وأقوى',
+    en: 'Instant results — softer, stronger hair',
+  },
+  'mobile.hairCareGuide.heatlessCurls.title': {
+    ar: 'تمويج بدون حرارة',
+    en: 'Heatless Curls',
+  },
+  'mobile.hairCareGuide.heatlessCurls.subtitle': {
+    ar: 'شعر مموج — بدون ضرر',
+    en: 'Wavy hair — without damage',
+  },
+  'mobile.hairCareGuide.heatlessCurls.tip1': {
+    ar: 'الجوارب — طريقة سهلة لفات ناعمة',
+    en: 'Socks — an easy way to soft curls',
+  },
+  'mobile.hairCareGuide.heatlessCurls.tip2': {
+    ar: 'الروبن — شريط طويل تموجات مثالية',
+    en: 'The robe belt — a long strip for perfect waves',
+  },
+  'mobile.hairCareGuide.heatlessCurls.tip3': {
+    ar: 'لفات القماش — طرية للنوم مريحة',
+    en: 'Fabric curlers — soft and comfortable for sleeping',
+  },
+  'mobile.hairCareGuide.heatlessCurls.tip4': {
+    ar: 'قبل النوم — تصفيفة الليل = شعر الصباح',
+    en: 'Before bed — the night style = morning hair',
+  },
+  'mobile.hairCareGuide.hairLoss.title': {
+    ar: 'تساقط الشعر',
+    en: 'Hair Loss',
+  },
+  'mobile.hairCareGuide.hairLoss.subtitle': {
+    ar: 'أسباب وحلول لتساقط الشعر',
+    en: 'Causes and solutions for hair loss',
+  },
+  'mobile.hairCareGuide.hairLoss.tip1': {
+    ar: 'راجعي الطبيب — فقر دم غدة أو هرمونات',
+    en: 'See a doctor — anemia, thyroid, or hormones',
+  },
+  'mobile.hairCareGuide.hairLoss.tip2': {
+    ar: 'تدليك الفروة — 5 دقائق يومياً بزيت دافئ',
+    en: 'Scalp massage — 5 minutes daily with warm oil',
+  },
+  'mobile.hairCareGuide.hairLoss.tip3': {
+    ar: 'تغذية — بروتين حديد زنك فيتامين D',
+    en: 'Nutrition — protein, iron, zinc, vitamin D',
+  },
+  'mobile.hairCareGuide.hairLoss.tip4': {
+    ar: 'مينوكسيديل — العلاج المثبت علمياً',
+    en: 'Minoxidil — the scientifically proven treatment',
+  },
 } as const satisfies Record<string, { ar: string; en: string }>;

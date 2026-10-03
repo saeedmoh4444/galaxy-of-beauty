@@ -1,8 +1,3 @@
-apps/mobile/src/app/customer/family-beauty/index.tsx
-apps/mobile/src/app/customer/gift-card-market/index.tsx
-apps/mobile/src/app/customer/gift-registry/index.tsx
-apps/mobile/src/app/customer/group-bookings/[id]/index.tsx
-apps/mobile/src/app/customer/hair-care-guide/index.tsx
 apps/mobile/src/app/customer/home-service/index.tsx
 apps/mobile/src/app/customer/last-mile/index.tsx
 apps/mobile/src/app/customer/leadership/index.tsx

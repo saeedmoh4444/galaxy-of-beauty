@@ -1,15 +1,16 @@
 import type { JSX } from 'react';
 import { View, Text, ScrollView, StyleSheet } from 'react-native';
+import type { TranslationKey } from '@galaxy/shared';
 import { useLocale } from '@/components/LocaleProvider';
 
 interface Tip {
   emoji: string;
-  text: string;
+  textKey: TranslationKey;
 }
 interface Card {
   emoji: string;
-  title: string;
-  subtitle: string;
+  titleKey: TranslationKey;
+  subtitleKey: TranslationKey;
   color: string;
   bg: string;
   tips: Tip[];
@@ -18,223 +19,223 @@ interface Card {
 const CARDS: Card[] = [
   {
     emoji: '👭',
-    title: 'أمي وأنا',
-    subtitle: 'نورة وابنتها سارة (8 سنوات)',
+    titleKey: 'mobile.public.mommy-and-me.title',
+    subtitleKey: 'mobile.familyBeauty.mommyAndMe.subtitle',
     color: '#db2777',
     bg: '#fdf2f8',
     tips: [
-      { emoji: '🧖', text: 'التجربة: ميني فيشل — 250 ر.س' },
-      { emoji: '👩', text: 'الأم: نورة — عناية بالبشرة' },
-      { emoji: '👧', text: 'الابنة: سارة — 8 سنوات' },
-      { emoji: '🌸', text: 'علاج لطيف — مناسب للأطفال' },
+      { emoji: '🧖', textKey: 'mobile.familyBeauty.mommyAndMe.tip1' },
+      { emoji: '👩', textKey: 'mobile.familyBeauty.mommyAndMe.tip2' },
+      { emoji: '👧', textKey: 'mobile.familyBeauty.mommyAndMe.tip3' },
+      { emoji: '🌸', textKey: 'mobile.familyBeauty.mommyAndMe.tip4' },
     ],
   },
   {
     emoji: '👪',
-    title: 'ثلاثة أجيال',
-    subtitle: 'الجدة، الأم، والحفيدة',
+    titleKey: 'mobile.familyBeauty.threeGenerations.title',
+    subtitleKey: 'mobile.familyBeauty.threeGenerations.subtitle',
     color: '#7c3aed',
     bg: '#f5f3ff',
     tips: [
-      { emoji: '👵', text: 'الجدة: أم خالد — مساج واسترخاء' },
-      { emoji: '👩', text: 'الأم: نورة — عناية كاملة' },
-      { emoji: '👧', text: 'الحفيدة: سارة — ميني مانيكير' },
-      { emoji: '🎁', text: 'باقة عائلية — 3 خدمات بسعر مخفض' },
+      { emoji: '👵', textKey: 'mobile.familyBeauty.threeGenerations.tip1' },
+      { emoji: '👩', textKey: 'mobile.familyBeauty.threeGenerations.tip2' },
+      { emoji: '👧', textKey: 'mobile.familyBeauty.threeGenerations.tip3' },
+      { emoji: '🎁', textKey: 'mobile.familyBeauty.threeGenerations.tip4' },
     ],
   },
   {
     emoji: '💄',
-    title: 'جمال المراهقات',
-    subtitle: 'أول درس مكياج (12-15 سنة)',
+    titleKey: 'mobile.familyBeauty.teenBeauty.title',
+    subtitleKey: 'mobile.familyBeauty.teenBeauty.subtitle',
     color: '#db2777',
     bg: '#fdf2f8',
     tips: [
-      { emoji: '💄', text: 'الخدمة: أول درس مكياج — 150 ر.س' },
-      { emoji: '📋', text: 'المحتوى: تنظيف، ترطيب، مكياج خفيف' },
-      { emoji: '👩', text: 'بإشراف الأم — إلزامي' },
-      { emoji: '✅', text: 'نصائح آمنة — مناسبة للعمر' },
+      { emoji: '💄', textKey: 'mobile.familyBeauty.teenBeauty.tip1' },
+      { emoji: '📋', textKey: 'mobile.familyBeauty.teenBeauty.tip2' },
+      { emoji: '👩', textKey: 'mobile.familyBeauty.teenBeauty.tip3' },
+      { emoji: '✅', textKey: 'mobile.familyBeauty.teenBeauty.tip4' },
     ],
   },
   {
     emoji: '🧖',
-    title: 'أول فيشل',
-    subtitle: 'مناسب من 14 سنة',
+    titleKey: 'mobile.familyBeauty.firstFacial.title',
+    subtitleKey: 'mobile.familyBeauty.firstFacial.subtitle',
     color: '#059669',
     bg: '#ecfdf5',
     tips: [
-      { emoji: '🎂', text: 'العمر: 14 سنة — بشرة مختلطة' },
-      { emoji: '👩', text: 'الأم: نورة — مرافقة' },
-      { emoji: '🧴', text: 'منتجات لطيفة — خالية من العطور' },
-      { emoji: '💬', text: 'استشارة قبل الجلسة — تحديد الاحتياج' },
+      { emoji: '🎂', textKey: 'mobile.familyBeauty.firstFacial.tip1' },
+      { emoji: '👩', textKey: 'mobile.familyBeauty.firstFacial.tip2' },
+      { emoji: '🧴', textKey: 'mobile.familyBeauty.firstFacial.tip3' },
+      { emoji: '💬', textKey: 'mobile.familyBeauty.firstFacial.tip4' },
     ],
   },
   {
     emoji: '👰',
-    title: 'قبيلة العروس',
-    subtitle: 'سارة — 15 مارس 2027',
+    titleKey: 'mobile.familyBeauty.bridalTribe.title',
+    subtitleKey: 'mobile.familyBeauty.bridalTribe.subtitle',
     color: '#c026d3',
     bg: '#fdf4ff',
     tips: [
-      { emoji: '👰', text: 'العروس: سارة — باقة عروس كاملة' },
-      { emoji: '👭', text: 'الوصيفات: نورة، مها، ريم' },
-      { emoji: '💄', text: '3 وصيفات — مكياج + شعر' },
-      { emoji: '🏠', text: 'يوم الزفاف — خدمة منزلية' },
+      { emoji: '👰', textKey: 'mobile.familyBeauty.bridalTribe.tip1' },
+      { emoji: '👭', textKey: 'mobile.familyBeauty.bridalTribe.tip2' },
+      { emoji: '💄', textKey: 'mobile.familyBeauty.bridalTribe.tip3' },
+      { emoji: '🏠', textKey: 'mobile.familyBeauty.bridalTribe.tip4' },
     ],
   },
   {
     emoji: '🍼',
-    title: 'بيبي شاور',
-    subtitle: '12 ضيفة — للأم المنتظرة',
+    titleKey: 'wishlistGifts.occasion.babyShower',
+    subtitleKey: 'mobile.familyBeauty.babyShower.subtitle',
     color: '#0284c7',
     bg: '#f0f9ff',
     tips: [
-      { emoji: '🤰', text: 'للأم: نورة — عناية بالأم المنتظرة' },
-      { emoji: '🎉', text: '12 ضيفة — مناسبة خاصة' },
-      { emoji: '💆', text: 'مساج استرخاء — آمن للحمل' },
-      { emoji: '🎁', text: 'هدية — باقة عناية للأم' },
+      { emoji: '🤰', textKey: 'mobile.familyBeauty.babyShower.tip1' },
+      { emoji: '🎉', textKey: 'mobile.familyBeauty.babyShower.tip2' },
+      { emoji: '💆', textKey: 'mobile.familyBeauty.babyShower.tip3' },
+      { emoji: '🎁', textKey: 'mobile.familyBeauty.babyShower.tip4' },
     ],
   },
   {
     emoji: '💖',
-    title: 'قالنتاين',
-    subtitle: '13 فبراير — خصم 20%',
+    titleKey: 'mobile.familyBeauty.valentine.title',
+    subtitleKey: 'mobile.familyBeauty.valentine.subtitle',
     color: '#e11d48',
     bg: '#fff1f2',
     tips: [
-      { emoji: '👭', text: 'الصديقات: نورة، مها — 450 ر.س' },
-      { emoji: '💅', text: 'مانيكير + باديكير — للجميع' },
-      { emoji: '☕', text: 'شاي وقهوة — ضيافة مميزة' },
-      { emoji: '🎁', text: 'هدية — لكل صديقة' },
+      { emoji: '👭', textKey: 'mobile.familyBeauty.valentine.tip1' },
+      { emoji: '💅', textKey: 'mobile.familyBeauty.valentine.tip2' },
+      { emoji: '☕', textKey: 'mobile.familyBeauty.valentine.tip3' },
+      { emoji: '🎁', textKey: 'mobile.familyBeauty.valentine.tip4' },
     ],
   },
   {
     emoji: '🤝',
-    title: 'دعم الأم الجديدة',
-    subtitle: 'نورة — طفلها شهرين',
+    titleKey: 'mobile.familyBeauty.newMomSupport.title',
+    subtitleKey: 'mobile.familyBeauty.newMomSupport.subtitle',
     color: '#0d9488',
     bg: '#f0fdfa',
     tips: [
-      { emoji: '💆', text: 'مساج استرخاء — بعد الولادة' },
-      { emoji: '🧴', text: 'عناية بالبشرة — للتغيرات الهرمونية' },
-      { emoji: '⏰', text: 'جلسة سريعة — ساعة واحدة' },
-      { emoji: '🏠', text: 'خدمة منزلية — راحة للأم' },
+      { emoji: '💆', textKey: 'mobile.familyBeauty.newMomSupport.tip1' },
+      { emoji: '🧴', textKey: 'mobile.familyBeauty.newMomSupport.tip2' },
+      { emoji: '⏰', textKey: 'mobile.familyBeauty.newMomSupport.tip3' },
+      { emoji: '🏠', textKey: 'mobile.familyBeauty.newMomSupport.tip4' },
     ],
   },
   {
     emoji: '✨',
-    title: 'بشرة العروس',
-    subtitle: 'خطة 6 أشهر لبشرة الزفاف',
+    titleKey: 'mobile.familyBeauty.bridalSkin.title',
+    subtitleKey: 'mobile.familyBeauty.bridalSkin.subtitle',
     color: '#e11d48',
     bg: '#fff1f2',
     tips: [
-      { emoji: '🧴', text: '6 أشهر: بدء روتين + واقي شمس يومي' },
-      { emoji: '🧖', text: '3 أشهر: أول جلسة فيشل + تحديد المشاكل' },
-      { emoji: '🚫', text: 'شهر واحد: آخر تقشير — لا تجارب جديدة' },
-      { emoji: '💧', text: 'أسبوع الزفاف: ترطيب مكثف' },
+      { emoji: '🧴', textKey: 'mobile.familyBeauty.bridalSkin.tip1' },
+      { emoji: '🧖', textKey: 'mobile.familyBeauty.bridalSkin.tip2' },
+      { emoji: '🚫', textKey: 'mobile.familyBeauty.bridalSkin.tip3' },
+      { emoji: '💧', textKey: 'mobile.familyBeauty.bridalSkin.tip4' },
     ],
   },
   {
     emoji: '🛁',
-    title: 'جسم العروس',
-    subtitle: 'عناية شاملة قبل الزفاف',
+    titleKey: 'mobile.familyBeauty.bridalBody.title',
+    subtitleKey: 'mobile.familyBeauty.bridalBody.subtitle',
     color: '#d97706',
     bg: '#fffbeb',
     tips: [
-      { emoji: '🧽', text: 'تقشير الجسم — مرة أسبوعياً' },
-      { emoji: '💆', text: 'مساج استرخاء — يخفف التوتر' },
-      { emoji: '🪒', text: 'إزالة الشعر — قبل الزفاف بـ 3-5 أيام' },
-      { emoji: '🌞', text: 'تان لطيف — قبل الزفاف بيومين' },
+      { emoji: '🧽', textKey: 'mobile.familyBeauty.bridalBody.tip1' },
+      { emoji: '💆', textKey: 'mobile.familyBeauty.bridalBody.tip2' },
+      { emoji: '🪒', textKey: 'mobile.familyBeauty.bridalBody.tip3' },
+      { emoji: '🌞', textKey: 'mobile.familyBeauty.bridalBody.tip4' },
     ],
   },
   {
     emoji: '🆘',
-    title: 'طوارئ العروس',
-    subtitle: 'طقم إنقاذ يوم الزفاف',
+    titleKey: 'mobile.familyBeauty.bridalEmergency.title',
+    subtitleKey: 'mobile.familyBeauty.bridalEmergency.subtitle',
     color: '#7c3aed',
     bg: '#f5f3ff',
     tips: [
-      { emoji: '💊', text: 'حبة حساسية — لأي تحسس مفاجئ' },
-      { emoji: '🩹', text: 'لصقات — للكعب من الحذاء' },
-      { emoji: '📄', text: 'ورق نشاف — لإزالة اللمعان' },
-      { emoji: '💄', text: 'أحمر شفاه — للمسات سريعة' },
+      { emoji: '💊', textKey: 'mobile.familyBeauty.bridalEmergency.tip1' },
+      { emoji: '🩹', textKey: 'mobile.familyBeauty.bridalEmergency.tip2' },
+      { emoji: '📄', textKey: 'mobile.beautyTips.humid.tip2' },
+      { emoji: '💄', textKey: 'mobile.familyBeauty.bridalEmergency.tip4' },
     ],
   },
   {
     emoji: '💇',
-    title: 'تجربة العروس',
-    subtitle: 'بروفة المكياج والشعر',
+    titleKey: 'mobile.familyBeauty.bridalTrial.title',
+    subtitleKey: 'mobile.familyBeauty.bridalTrial.subtitle',
     color: '#0284c7',
     bg: '#f0f9ff',
     tips: [
-      { emoji: '📅', text: 'قبل الزفاف بشهر — الوقت المثالي' },
-      { emoji: '📷', text: 'صوري الإطلالة — لتقييمها لاحقاً' },
-      { emoji: '👗', text: 'ارتدي أبيض — للتناسق مع الفستان' },
-      { emoji: '💬', text: 'كوني صريحة — هذه تجربتكِ' },
+      { emoji: '📅', textKey: 'mobile.familyBeauty.bridalTrial.tip1' },
+      { emoji: '📷', textKey: 'mobile.familyBeauty.bridalTrial.tip2' },
+      { emoji: '👗', textKey: 'mobile.familyBeauty.bridalTrial.tip3' },
+      { emoji: '💬', textKey: 'mobile.familyBeauty.bridalTrial.tip4' },
     ],
   },
   {
     emoji: '✨',
-    title: 'إشراقة العروس',
-    subtitle: 'توهجي في يومكِ الكبير',
+    titleKey: 'mobile.familyBeauty.bridalGlow.title',
+    subtitleKey: 'mobile.familyBeauty.bridalGlow.subtitle',
     color: '#059669',
     bg: '#ecfdf5',
     tips: [
-      { emoji: '💧', text: '8 أكواب ماء — لمدة شهر قبل الزفاف' },
-      { emoji: '🥑', text: 'غذاء صحي — أفوكادو سلمون مكسرات' },
-      { emoji: '😴', text: '8 ساعات نوم — أهم سر للبشرة' },
-      { emoji: '🧘', text: 'تأمل 10 دقائق — هدوء وثقة' },
+      { emoji: '💧', textKey: 'mobile.familyBeauty.bridalGlow.tip1' },
+      { emoji: '🥑', textKey: 'mobile.familyBeauty.bridalGlow.tip2' },
+      { emoji: '😴', textKey: 'mobile.familyBeauty.bridalGlow.tip3' },
+      { emoji: '🧘', textKey: 'mobile.familyBeauty.bridalGlow.tip4' },
     ],
   },
   {
     emoji: '✨',
-    title: 'إشراقة الحامل',
-    subtitle: 'بشرة متوهجة أثناء الحمل',
+    titleKey: 'mobile.familyBeauty.pregnancyGlow.title',
+    subtitleKey: 'mobile.familyBeauty.pregnancyGlow.subtitle',
     color: '#ec4899',
     bg: '#fdf2f8',
     tips: [
-      { emoji: '🌸', text: 'الهرمونات تزيد تدفق الدم — بشرة وردية' },
-      { emoji: '🌹', text: 'زيت الورد أو اللوز — لترطيب البطن' },
-      { emoji: '😴', text: 'نامي جيداً — الإرهاق يظهر على بشرتكِ' },
-      { emoji: '🥗', text: 'تغذية صحية — فيتامينات الحمل' },
+      { emoji: '🌸', textKey: 'mobile.familyBeauty.pregnancyGlow.tip1' },
+      { emoji: '🌹', textKey: 'mobile.familyBeauty.pregnancyGlow.tip2' },
+      { emoji: '😴', textKey: 'mobile.familyBeauty.pregnancyGlow.tip3' },
+      { emoji: '🥗', textKey: 'mobile.familyBeauty.pregnancyGlow.tip4' },
     ],
   },
   {
     emoji: '💆',
-    title: 'مساج الحامل',
-    subtitle: 'آمن — بعد الشهر الثالث',
+    titleKey: 'mobile.familyBeauty.pregnancyMassage.title',
+    subtitleKey: 'mobile.familyBeauty.pregnancyMassage.subtitle',
     color: '#7c3aed',
     bg: '#f5f3ff',
     tips: [
-      { emoji: '🛌', text: 'الاستلقاء على الجانب — ليس على البطن' },
-      { emoji: '✅', text: 'بعد الشهر الثالث — بأمان' },
-      { emoji: '🚫', text: 'تجنبي الزيوت القوية' },
-      { emoji: '😌', text: 'يخفف آلام الظهر — ويحسن النوم' },
+      { emoji: '🛌', textKey: 'mobile.familyBeauty.pregnancyMassage.tip1' },
+      { emoji: '✅', textKey: 'mobile.familyBeauty.pregnancyMassage.tip2' },
+      { emoji: '🚫', textKey: 'mobile.familyBeauty.pregnancyMassage.tip3' },
+      { emoji: '😌', textKey: 'mobile.familyBeauty.pregnancyMassage.tip4' },
     ],
   },
   {
     emoji: '🤱',
-    title: 'جمال المرضعة',
-    subtitle: 'عناية آمنة أثناء الرضاعة',
+    titleKey: 'mobile.familyBeauty.nursingBeauty.title',
+    subtitleKey: 'mobile.familyBeauty.nursingBeauty.subtitle',
     color: '#0d9488',
     bg: '#f0fdfa',
     tips: [
-      { emoji: '💧', text: 'اشربي ماء أكثر — الرضاعة تجفف الجسم' },
-      { emoji: '🧴', text: 'كريمات آمنة — بدون ريتينول' },
-      { emoji: '💊', text: 'شعركِ قد يتساقط — فيتامينات' },
-      { emoji: '⏰', text: 'روتين سريع — 5 دقائق تكفي' },
+      { emoji: '💧', textKey: 'mobile.familyBeauty.nursingBeauty.tip1' },
+      { emoji: '🧴', textKey: 'mobile.familyBeauty.nursingBeauty.tip2' },
+      { emoji: '💊', textKey: 'mobile.familyBeauty.nursingBeauty.tip3' },
+      { emoji: '⏰', textKey: 'mobile.familyBeauty.nursingBeauty.tip4' },
     ],
   },
   {
     emoji: '🌷',
-    title: 'عناية ما بعد الولادة',
-    subtitle: 'نفسكِ مهمة — مثل طفلكِ',
+    titleKey: 'mobile.familyBeauty.postpartumCare.title',
+    subtitleKey: 'mobile.familyBeauty.postpartumCare.subtitle',
     color: '#4f46e5',
     bg: '#eef2ff',
     tips: [
-      { emoji: '🪞', text: '5 دقائق لكِ — غسل وجه وتنفس عميق' },
-      { emoji: '💬', text: 'لا تنعزلي — تحدثي مع صديقة' },
-      { emoji: '🩺', text: 'اكتئاب ما بعد الولادة — ليس ضعفاً' },
-      { emoji: '💗', text: 'أنتِ أم رائعة — لا تقسي على نفسكِ' },
+      { emoji: '🪞', textKey: 'mobile.familyBeauty.postpartumCare.tip1' },
+      { emoji: '💬', textKey: 'mobile.familyBeauty.postpartumCare.tip2' },
+      { emoji: '🩺', textKey: 'mobile.familyBeauty.postpartumCare.tip3' },
+      { emoji: '💗', textKey: 'mobile.familyBeauty.postpartumCare.tip4' },
     ],
   },
 ];
@@ -251,15 +252,15 @@ export default function FamilyBeautyScreen(): JSX.Element {
             <View style={s.ch}>
               <Text style={s.ce}>{c.emoji}</Text>
               <View style={s.cw}>
-                <Text style={[s.ct, { color: c.color }]}>{c.title}</Text>
-                <Text style={s.cs}>{c.subtitle}</Text>
+                <Text style={[s.ct, { color: c.color }]}>{t(c.titleKey)}</Text>
+                <Text style={s.cs}>{t(c.subtitleKey)}</Text>
               </View>
             </View>
             <View style={s.tl}>
-              {c.tips.map((t, j) => (
+              {c.tips.map((tip, j) => (
                 <View key={j} style={[s.tr, { backgroundColor: c.bg }]}>
-                  <Text style={s.te}>{t.emoji}</Text>
-                  <Text style={[s.tt, { color: c.color }]}>{t.text}</Text>
+                  <Text style={s.te}>{tip.emoji}</Text>
+                  <Text style={[s.tt, { color: c.color }]}>{t(tip.textKey)}</Text>
                 </View>
               ))}
             </View>

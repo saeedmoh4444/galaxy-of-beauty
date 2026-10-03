@@ -45,9 +45,13 @@ export default function GiftCardMarketScreen(): JSX.Element {
         {listings.map((l) => (
           <View key={l.id} style={styles.card}>
             <Text style={styles.ce}>🎁</Text>
-            <Text style={styles.cv}>{l.value?.toLocaleString()} ر.س</Text>
+            <Text style={styles.cv}>
+              {l.value?.toLocaleString()} {t('mobile.vendorPortal.sar')}
+            </Text>
             <Text style={styles.op}>{l.value?.toLocaleString()}</Text>
-            <Text style={styles.sp}>{l.sellingPrice?.toLocaleString()} ر.س</Text>
+            <Text style={styles.sp}>
+              {l.sellingPrice?.toLocaleString()} {t('mobile.vendorPortal.sar')}
+            </Text>
             <Text style={styles.db}>
               {t('mobile.giftCardMarket.save', { percent: l.discount ?? 0 })}
             </Text>

@@ -1,15 +1,16 @@
 import type { JSX } from 'react';
 import { View, Text, ScrollView, StyleSheet } from 'react-native';
+import type { TranslationKey } from '@galaxy/shared';
 import { useLocale } from '@/components/LocaleProvider';
 
 interface Tip {
   emoji: string;
-  text: string;
+  textKey: TranslationKey;
 }
 interface Card {
   emoji: string;
-  title: string;
-  subtitle: string;
+  titleKey: TranslationKey;
+  subtitleKey: TranslationKey;
   color: string;
   bg: string;
   tips: Tip[];
@@ -18,197 +19,197 @@ interface Card {
 const CARDS: Card[] = [
   {
     emoji: '🚿',
-    title: 'غسيل الشعر',
-    subtitle: 'الطريقة الصحيحة',
+    titleKey: 'mobile.hairCareGuide.washing.title',
+    subtitleKey: 'mobile.hairCareGuide.washing.subtitle',
     color: '#0284c7',
     bg: '#f0f9ff',
     tips: [
-      { emoji: '💧', text: 'بللي الشعر تماماً — 1-2 دقيقة' },
-      { emoji: '🧴', text: 'الشامبو لفروة الرأس فقط' },
-      { emoji: '🧴', text: 'البلسم للأطراف فقط — وليس الجذور' },
-      { emoji: '🚿', text: 'اشطفي بماء بارد — يغلق البشرة ويضيف لمعان' },
+      { emoji: '💧', textKey: 'mobile.hairCareGuide.washing.tip1' },
+      { emoji: '🧴', textKey: 'mobile.hairCareGuide.washing.tip2' },
+      { emoji: '🧴', textKey: 'mobile.hairCareGuide.washing.tip3' },
+      { emoji: '🚿', textKey: 'mobile.hairCareGuide.washing.tip4' },
     ],
   },
   {
     emoji: '🥑',
-    title: 'ماسك الشعر',
-    subtitle: 'وصفات طبيعية للشعر',
+    titleKey: 'mobile.hairCareGuide.hairMask.title',
+    subtitleKey: 'mobile.hairCareGuide.hairMask.subtitle',
     color: '#7c3aed',
     bg: '#f5f3ff',
     tips: [
-      { emoji: '🥑', text: 'أفوكادو + عسل — للشعر الجاف' },
-      { emoji: '🥚', text: 'بيض + زيت زيتون — للشعر الضعيف' },
-      { emoji: '🍌', text: 'موز + زبادي — للشعر التالف' },
-      { emoji: '🍎', text: 'خل تفاح — لمعان وتنظيف الفروة' },
+      { emoji: '🥑', textKey: 'mobile.hairCareGuide.hairMask.tip1' },
+      { emoji: '🥚', textKey: 'mobile.hairCareGuide.hairMask.tip2' },
+      { emoji: '🍌', textKey: 'mobile.hairCareGuide.hairMask.tip3' },
+      { emoji: '🍎', textKey: 'mobile.hairCareGuide.hairMask.tip4' },
     ],
   },
   {
     emoji: '🫒',
-    title: 'زيوت الشعر',
-    subtitle: 'أي زيت لشعرك؟',
+    titleKey: 'mobile.hairCareGuide.hairOils.title',
+    subtitleKey: 'mobile.hairCareGuide.hairOils.subtitle',
     color: '#d97706',
     bg: '#fffbeb',
     tips: [
-      { emoji: '🥥', text: 'جوز الهند — يخترق الشعرة ترطيب عميق' },
-      { emoji: '🫒', text: 'الأرغان — ذهبي للمعان وتغذية' },
-      { emoji: '🌿', text: 'إكليل الجبل — يحفز نمو الشعر' },
-      { emoji: '🌱', text: 'الجوجوبا — يشبه زيوت فروة الرأس' },
+      { emoji: '🥥', textKey: 'mobile.hairCareGuide.hairOils.tip1' },
+      { emoji: '🫒', textKey: 'mobile.hairCareGuide.hairOils.tip2' },
+      { emoji: '🌿', textKey: 'mobile.hairCareGuide.hairOils.tip3' },
+      { emoji: '🌱', textKey: 'mobile.hairCareGuide.hairOils.tip4' },
     ],
   },
   {
     emoji: '🔥',
-    title: 'حماية من الحرارة',
-    subtitle: 'احمي شعرك من التلف',
+    titleKey: 'mobile.hairCareGuide.heatProtection.title',
+    subtitleKey: 'mobile.hairCareGuide.heatProtection.subtitle',
     color: '#ea580c',
     bg: '#fff7ed',
     tips: [
-      { emoji: '🛡️', text: 'واقي حراري — دائماً قبل المجفف أو المكواة' },
-      { emoji: '🌡️', text: 'حرارة متوسطة — لا القصوى' },
-      { emoji: '🔥', text: 'لا تمرري المكواة على نفس الخصلة مرتين' },
-      { emoji: '📅', text: 'يوم بدون حرارة في الأسبوع' },
+      { emoji: '🛡️', textKey: 'mobile.hairCareGuide.heatProtection.tip1' },
+      { emoji: '🌡️', textKey: 'mobile.hairCareGuide.heatProtection.tip2' },
+      { emoji: '🔥', textKey: 'mobile.hairCareGuide.heatProtection.tip3' },
+      { emoji: '📅', textKey: 'mobile.hairCareGuide.heatProtection.tip4' },
     ],
   },
   {
     emoji: '🧖',
-    title: 'فروة الرأس',
-    subtitle: 'بشرة صحية = شعر صحي',
+    titleKey: 'mobile.hairCareGuide.scalp.title',
+    subtitleKey: 'mobile.hairCareGuide.scalp.subtitle',
     color: '#0d9488',
     bg: '#f0fdfa',
     tips: [
-      { emoji: '🧴', text: 'تقشير فروة الرأس — مرة شهرياً' },
-      { emoji: '💆', text: 'تدليك يومي — 5 دقائق بزيت دافئ' },
-      { emoji: '💦', text: 'ماء فاتر — ليس ساخناً' },
-      { emoji: '💧', text: 'سيروم لفروة الرأس — قبل النوم' },
+      { emoji: '🧴', textKey: 'mobile.hairCareGuide.scalp.tip1' },
+      { emoji: '💆', textKey: 'mobile.hairCareGuide.scalp.tip2' },
+      { emoji: '💦', textKey: 'mobile.hairCareGuide.scalp.tip3' },
+      { emoji: '💧', textKey: 'mobile.hairCareGuide.scalp.tip4' },
     ],
   },
   {
     emoji: '🎨',
-    title: 'صبغ الشعر',
-    subtitle: 'نصائح قبل الصبغة',
+    titleKey: 'mobile.hairCareGuide.hairColor.title',
+    subtitleKey: 'mobile.hairCareGuide.hairColor.subtitle',
     color: '#db2777',
     bg: '#fdf2f8',
     tips: [
-      { emoji: '🚿', text: 'لا تغسلي شعرك 48 ساعة قبل الصبغة' },
-      { emoji: '🧴', text: 'استخدمي شامبو وبلسم للشعر المصبوغ' },
-      { emoji: '☀️', text: 'احمي شعرك من الشمس بعد الصبغة' },
-      { emoji: '📅', text: 'جديدي الصبغة كل 4-6 أسابيع' },
+      { emoji: '🚿', textKey: 'mobile.hairCareGuide.hairColor.tip1' },
+      { emoji: '🧴', textKey: 'mobile.hairCareGuide.hairColor.tip2' },
+      { emoji: '☀️', textKey: 'mobile.hairCareGuide.hairColor.tip3' },
+      { emoji: '📅', textKey: 'mobile.hairCareGuide.hairColor.tip4' },
     ],
   },
   {
     emoji: '💇',
-    title: 'تسريحة الشعر',
-    subtitle: 'حسب نوع شعرك',
+    titleKey: 'mobile.hairCareGuide.hairstyling.title',
+    subtitleKey: 'mobile.hairCareGuide.hairstyling.subtitle',
     color: '#7c3aed',
     bg: '#f5f3ff',
     tips: [
-      { emoji: '🌀', text: 'الشعر المجعد — كريم ليف ان بعد الغسيل' },
-      { emoji: '🧴', text: 'الشعر الناعم — موس رفع الجذور' },
-      { emoji: '🌊', text: 'الشعر المموج — سبراي ملح البحر' },
-      { emoji: '🌿', text: 'الشعر المتعرج — زبدة شعر + ضفائر' },
+      { emoji: '🌀', textKey: 'mobile.hairCareGuide.hairstyling.tip1' },
+      { emoji: '🧴', textKey: 'mobile.hairCareGuide.hairstyling.tip2' },
+      { emoji: '🌊', textKey: 'mobile.hairCareGuide.hairstyling.tip3' },
+      { emoji: '🌿', textKey: 'mobile.hairCareGuide.hairstyling.tip4' },
     ],
   },
   {
     emoji: '👰',
-    title: 'شعر العروس',
-    subtitle: 'تحضير للعرس',
+    titleKey: 'mobile.hairCareGuide.bridalHair.title',
+    subtitleKey: 'mobile.hairCareGuide.bridalHair.subtitle',
     color: '#db2777',
     bg: '#fdf2f8',
     tips: [
-      { emoji: '📅', text: 'ابدئي العناية 6 أشهر قبل الزفاف' },
-      { emoji: '💇', text: 'آخر قصة قبل الزفاف بأسبوعين' },
-      { emoji: '🎨', text: 'آخر صبغة قبل الزفاف بأسبوع' },
-      { emoji: '🫒', text: 'حمام زيت أسبوعياً في الشهر الأخير' },
+      { emoji: '📅', textKey: 'mobile.hairCareGuide.bridalHair.tip1' },
+      { emoji: '💇', textKey: 'mobile.hairCareGuide.bridalHair.tip2' },
+      { emoji: '🎨', textKey: 'mobile.hairCareGuide.bridalHair.tip3' },
+      { emoji: '🫒', textKey: 'mobile.hairCareGuide.bridalHair.tip4' },
     ],
   },
   {
     emoji: '🌞',
-    title: 'شعر الصيف',
-    subtitle: 'حماية من الشمس والبحر',
+    titleKey: 'mobile.hairCareGuide.summerHair.title',
+    subtitleKey: 'mobile.hairCareGuide.summerHair.subtitle',
     color: '#ea580c',
     bg: '#fff7ed',
     tips: [
-      { emoji: '👒', text: 'قبعة أو وشاح — حماية من الأشعة' },
-      { emoji: '💧', text: 'بللي شعرك بماء عذب قبل البحر' },
-      { emoji: '🧴', text: 'سبراي حماية من الشمس للشعر' },
-      { emoji: '🚿', text: 'اشطفي فوراً بعد المسبح' },
+      { emoji: '👒', textKey: 'mobile.hairCareGuide.summerHair.tip1' },
+      { emoji: '💧', textKey: 'mobile.hairCareGuide.summerHair.tip2' },
+      { emoji: '🧴', textKey: 'mobile.hairCareGuide.summerHair.tip3' },
+      { emoji: '🚿', textKey: 'mobile.hairCareGuide.summerHair.tip4' },
     ],
   },
   {
     emoji: '🧕',
-    title: 'شعر المحجبة',
-    subtitle: 'عناية خاصة تحت الحجاب',
+    titleKey: 'mobile.hairCareGuide.hijabHair.title',
+    subtitleKey: 'mobile.hairCareGuide.hijabHair.subtitle',
     color: '#059669',
     bg: '#ecfdf5',
     tips: [
-      { emoji: '🧣', text: 'غطاء قطني تحت الحجاب — يمتص العرق' },
-      { emoji: '💨', text: 'فكي شعرك 15 دقيقة يومياً للتهوية' },
-      { emoji: '💧', text: 'رطبي شعرك جيداً قبل لبس الحجاب' },
-      { emoji: '🚫', text: 'تجنبي ربط الشعر بشدة تحت الحجاب' },
+      { emoji: '🧣', textKey: 'mobile.hairCareGuide.hijabHair.tip1' },
+      { emoji: '💨', textKey: 'mobile.hairCareGuide.hijabHair.tip2' },
+      { emoji: '💧', textKey: 'mobile.hairCareGuide.hijabHair.tip3' },
+      { emoji: '🚫', textKey: 'mobile.hairCareGuide.hijabHair.tip4' },
     ],
   },
   {
     emoji: '🖌',
-    title: 'البلياج',
-    subtitle: 'تقنية فرنسية — لون طبيعي',
+    titleKey: 'mobile.hairCareGuide.balayage.title',
+    subtitleKey: 'mobile.hairCareGuide.balayage.subtitle',
     color: '#d97706',
     bg: '#fffbeb',
     tips: [
-      { emoji: '🖌️', text: 'تلوين يدوي — خصل مرسومة بالفرشاة' },
-      { emoji: '✨', text: 'مظهر طبيعي — جذور أغمق وأطراف أفتح' },
-      { emoji: '📅', text: 'يدوم 3-4 أشهر — نمو الجذور غير ملحوظ' },
-      { emoji: '💰', text: 'أغلى من الصبغة — لكن صيانة أقل' },
+      { emoji: '🖌️', textKey: 'mobile.hairCareGuide.balayage.tip1' },
+      { emoji: '✨', textKey: 'mobile.hairCareGuide.balayage.tip2' },
+      { emoji: '📅', textKey: 'mobile.hairCareGuide.balayage.tip3' },
+      { emoji: '💰', textKey: 'mobile.hairCareGuide.balayage.tip4' },
     ],
   },
   {
     emoji: '✨',
-    title: 'غلوس الشعر',
-    subtitle: 'لمعان فوري — بدون أمونيا',
+    titleKey: 'mobile.hairCareGuide.hairGloss.title',
+    subtitleKey: 'mobile.hairCareGuide.hairGloss.subtitle',
     color: '#7c3aed',
     bg: '#f5f3ff',
     tips: [
-      { emoji: '✨', text: 'لمعان زجاجي — يعكس الضوء بشكل جميل' },
-      { emoji: '🌈', text: 'شفاف أو ملون — ينعش لون شعركِ' },
-      { emoji: '⏱️', text: '20 دقيقة — في الصالون أو في البيت' },
-      { emoji: '📅', text: 'كل 4-6 أسابيع — للحفاظ على اللمعان' },
+      { emoji: '✨', textKey: 'mobile.hairCareGuide.hairGloss.tip1' },
+      { emoji: '🌈', textKey: 'mobile.hairCareGuide.hairGloss.tip2' },
+      { emoji: '⏱️', textKey: 'mobile.hairCareGuide.hairGloss.tip3' },
+      { emoji: '📅', textKey: 'mobile.hairCareGuide.hairGloss.tip4' },
     ],
   },
   {
     emoji: '🔗',
-    title: 'ترميم روابط الشعر',
-    subtitle: 'إصلاح من الداخل',
+    titleKey: 'mobile.hairCareGuide.bondRepair.title',
+    subtitleKey: 'mobile.hairCareGuide.bondRepair.subtitle',
     color: '#0d9488',
     bg: '#f0fdfa',
     tips: [
-      { emoji: '🔗', text: 'يصلح الروابط المكسورة — داخل الشعرة' },
-      { emoji: '💇', text: 'للشعر المصبوغ والمعالج حرارياً' },
-      { emoji: '🧴', text: 'علاج أسبوعي — 10 دقائق قبل الشامبو' },
-      { emoji: '✨', text: 'نتائج فورية — شعر أنعم وأقوى' },
+      { emoji: '🔗', textKey: 'mobile.hairCareGuide.bondRepair.tip1' },
+      { emoji: '💇', textKey: 'mobile.hairCareGuide.bondRepair.tip2' },
+      { emoji: '🧴', textKey: 'mobile.hairCareGuide.bondRepair.tip3' },
+      { emoji: '✨', textKey: 'mobile.hairCareGuide.bondRepair.tip4' },
     ],
   },
   {
     emoji: '➰',
-    title: 'تمويج بدون حرارة',
-    subtitle: 'شعر مموج — بدون ضرر',
+    titleKey: 'mobile.hairCareGuide.heatlessCurls.title',
+    subtitleKey: 'mobile.hairCareGuide.heatlessCurls.subtitle',
     color: '#e11d48',
     bg: '#fff1f2',
     tips: [
-      { emoji: '🧦', text: 'الجوارب — طريقة سهلة لفات ناعمة' },
-      { emoji: '🎀', text: 'الروبن — شريط طويل تموجات مثالية' },
-      { emoji: '💤', text: 'لفات القماش — طرية للنوم مريحة' },
-      { emoji: '🌙', text: 'قبل النوم — تصفيفة الليل = شعر الصباح' },
+      { emoji: '🧦', textKey: 'mobile.hairCareGuide.heatlessCurls.tip1' },
+      { emoji: '🎀', textKey: 'mobile.hairCareGuide.heatlessCurls.tip2' },
+      { emoji: '💤', textKey: 'mobile.hairCareGuide.heatlessCurls.tip3' },
+      { emoji: '🌙', textKey: 'mobile.hairCareGuide.heatlessCurls.tip4' },
     ],
   },
   {
     emoji: '🩺',
-    title: 'تساقط الشعر',
-    subtitle: 'أسباب وحلول لتساقط الشعر',
+    titleKey: 'mobile.hairCareGuide.hairLoss.title',
+    subtitleKey: 'mobile.hairCareGuide.hairLoss.subtitle',
     color: '#0284c7',
     bg: '#f0f9ff',
     tips: [
-      { emoji: '🩺', text: 'راجعي الطبيب — فقر دم غدة أو هرمونات' },
-      { emoji: '💆', text: 'تدليك الفروة — 5 دقائق يومياً بزيت دافئ' },
-      { emoji: '🥗', text: 'تغذية — بروتين حديد زنك فيتامين D' },
-      { emoji: '💊', text: 'مينوكسيديل — العلاج المثبت علمياً' },
+      { emoji: '🩺', textKey: 'mobile.hairCareGuide.hairLoss.tip1' },
+      { emoji: '💆', textKey: 'mobile.hairCareGuide.hairLoss.tip2' },
+      { emoji: '🥗', textKey: 'mobile.hairCareGuide.hairLoss.tip3' },
+      { emoji: '💊', textKey: 'mobile.hairCareGuide.hairLoss.tip4' },
     ],
   },
 ];
@@ -225,15 +226,15 @@ export default function HairCareGuideScreen(): JSX.Element {
             <View style={styles.cardHeader}>
               <Text style={styles.cardEmoji}>{card.emoji}</Text>
               <View style={styles.cardTitleWrap}>
-                <Text style={[styles.cardTitle, { color: card.color }]}>{card.title}</Text>
-                <Text style={styles.cardSubtitle}>{card.subtitle}</Text>
+                <Text style={[styles.cardTitle, { color: card.color }]}>{t(card.titleKey)}</Text>
+                <Text style={styles.cardSubtitle}>{t(card.subtitleKey)}</Text>
               </View>
             </View>
             <View style={styles.tipsList}>
               {card.tips.map((tip, j) => (
                 <View key={j} style={[styles.tipRow, { backgroundColor: card.bg }]}>
                   <Text style={styles.tipEmoji}>{tip.emoji}</Text>
-                  <Text style={[styles.tipText, { color: card.color }]}>{tip.text}</Text>
+                  <Text style={[styles.tipText, { color: card.color }]}>{t(tip.textKey)}</Text>
                 </View>
               ))}
             </View>
