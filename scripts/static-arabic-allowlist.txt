@@ -1,8 +1,3 @@
-apps/mobile/src/app/public/pregnancy-beauty/index.tsx
-apps/mobile/src/app/public/rewards/index.tsx
-apps/mobile/src/app/public/salon-membership/index.tsx
-apps/mobile/src/app/public/service-matchmaker/index.tsx
-apps/mobile/src/app/public/terms/index.tsx
 apps/mobile/src/app/public/virtual-consultation/index.tsx
 apps/mobile/src/app/tech/gallery/index.tsx
 apps/mobile/src/app/tech/performance/index.tsx
