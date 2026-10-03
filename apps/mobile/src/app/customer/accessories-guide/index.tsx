@@ -1,15 +1,16 @@
 import type { JSX } from 'react';
 import { View, Text, ScrollView, StyleSheet } from 'react-native';
+import type { TranslationKey } from '@galaxy/shared';
 import { useLocale } from '@/components/LocaleProvider';
 
 interface Tip {
   emoji: string;
-  text: string;
+  textKey: TranslationKey;
 }
 interface AccCard {
   emoji: string;
-  title: string;
-  subtitle: string;
+  titleKey: TranslationKey;
+  subtitleKey: TranslationKey;
   color: string;
   bg: string;
   tips: Tip[];
@@ -18,41 +19,41 @@ interface AccCard {
 const CARDS: AccCard[] = [
   {
     emoji: '💍',
-    title: 'تنسيق الإكسسوارات',
-    subtitle: 'اللمسة الأخيرة لإطلالتك',
+    titleKey: 'mobile.accessoriesGuide.card.styling.title',
+    subtitleKey: 'mobile.accessoriesGuide.card.styling.subtitle',
     color: '#d97706',
     bg: '#fffbeb',
     tips: [
-      { emoji: '💎', text: 'أقراط — طويلة = وجه أنحف' },
-      { emoji: '📿', text: 'عقد — يناسب فتحة الرقبة' },
-      { emoji: '⌚', text: 'ساعة — كلاسيك لكل مناسبة' },
-      { emoji: '💍', text: 'خواتم — 2-3 كحد أقصى' },
+      { emoji: '💎', textKey: 'mobile.accessoriesGuide.card.styling.tip1' },
+      { emoji: '📿', textKey: 'mobile.accessoriesGuide.card.styling.tip2' },
+      { emoji: '⌚', textKey: 'mobile.accessoriesGuide.card.styling.tip3' },
+      { emoji: '💍', textKey: 'mobile.accessoriesGuide.card.styling.tip4' },
     ],
   },
   {
     emoji: '👜',
-    title: 'حقيبة الجمال',
-    subtitle: 'أساسيات لا تستغني عنها',
+    titleKey: 'mobile.accessoriesGuide.card.beautyBag.title',
+    subtitleKey: 'mobile.accessoriesGuide.card.beautyBag.subtitle',
     color: '#4f46e5',
     bg: '#eef2ff',
     tips: [
-      { emoji: '💄', text: 'أحمر شفاه — لون ناعم للإطلالة اليومية' },
-      { emoji: '🪞', text: 'مرآة صغيرة — للمسات السريعة' },
-      { emoji: '🧴', text: 'مرطب سفر — حجم صغير للطوارئ' },
-      { emoji: '☀️', text: 'واقي شمس — Mini size للشنطة' },
+      { emoji: '💄', textKey: 'mobile.accessoriesGuide.card.beautyBag.tip1' },
+      { emoji: '🪞', textKey: 'mobile.accessoriesGuide.card.beautyBag.tip2' },
+      { emoji: '🧴', textKey: 'mobile.accessoriesGuide.card.beautyBag.tip3' },
+      { emoji: '☀️', textKey: 'mobile.accessoriesGuide.card.beautyBag.tip4' },
     ],
   },
   {
     emoji: '🧕',
-    title: 'أناقة الحجاب',
-    subtitle: 'أفكار لتنسيق حجابك',
+    titleKey: 'mobile.accessoriesGuide.card.hijabElegance.title',
+    subtitleKey: 'mobile.accessoriesGuide.card.hijabElegance.subtitle',
     color: '#059669',
     bg: '#ecfdf5',
     tips: [
-      { emoji: '🎨', text: 'ألوان متناسقة — الحجاب مع لون الفستان' },
-      { emoji: '📌', text: 'تثبيت محكم — دبابيس غير ظاهرة' },
-      { emoji: '🧣', text: 'بطانة حرير — تحمي الشعر من التكسر' },
-      { emoji: '✨', text: 'تغيير الأسلوب — جربي لفات جديدة' },
+      { emoji: '🎨', textKey: 'mobile.accessoriesGuide.card.hijabElegance.tip1' },
+      { emoji: '📌', textKey: 'mobile.accessoriesGuide.card.hijabElegance.tip2' },
+      { emoji: '🧣', textKey: 'mobile.accessoriesGuide.card.hijabElegance.tip3' },
+      { emoji: '✨', textKey: 'mobile.accessoriesGuide.card.hijabElegance.tip4' },
     ],
   },
 ];
@@ -69,15 +70,15 @@ export default function AccessoriesGuideScreen(): JSX.Element {
             <View style={styles.cardHeader}>
               <Text style={styles.cardEmoji}>{card.emoji}</Text>
               <View style={styles.cardTitleWrap}>
-                <Text style={[styles.cardTitle, { color: card.color }]}>{card.title}</Text>
-                <Text style={styles.cardSubtitle}>{card.subtitle}</Text>
+                <Text style={[styles.cardTitle, { color: card.color }]}>{t(card.titleKey)}</Text>
+                <Text style={styles.cardSubtitle}>{t(card.subtitleKey)}</Text>
               </View>
             </View>
             <View style={styles.tipsList}>
               {card.tips.map((tip, j) => (
                 <View key={j} style={[styles.tipRow, { backgroundColor: card.bg }]}>
                   <Text style={styles.tipEmoji}>{tip.emoji}</Text>
-                  <Text style={[styles.tipText, { color: card.color }]}>{tip.text}</Text>
+                  <Text style={[styles.tipText, { color: card.color }]}>{t(tip.textKey)}</Text>
                 </View>
               ))}
             </View>
