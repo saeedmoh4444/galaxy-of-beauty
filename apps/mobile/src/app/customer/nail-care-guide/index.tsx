@@ -1,15 +1,16 @@
 import type { JSX } from 'react';
 import { View, Text, ScrollView, StyleSheet } from 'react-native';
+import type { TranslationKey } from '@galaxy/shared';
 import { useLocale } from '@/components/LocaleProvider';
 
 interface Tip {
   emoji: string;
-  text: string;
+  textKey: TranslationKey;
 }
 interface Card {
   emoji: string;
-  title: string;
-  subtitle: string;
+  titleKey: TranslationKey;
+  subtitleKey: TranslationKey;
   color: string;
   bg: string;
   tips: Tip[];
@@ -18,132 +19,132 @@ interface Card {
 const CARDS: Card[] = [
   {
     emoji: '💅',
-    title: 'فن الأظافر',
-    subtitle: 'أفكار وأساليب',
+    titleKey: 'mobile.nailCareGuide.card.art.title',
+    subtitleKey: 'mobile.nailCareGuide.card.art.subtitle',
     color: '#c026d3',
     bg: '#fdf4ff',
     tips: [
-      { emoji: '💅', text: 'فرنسي — كلاسيك طرف أبيض' },
-      { emoji: '✨', text: 'جليتر — لامع للمناسبات' },
-      { emoji: '🎨', text: 'Ombre — تدرج لونين' },
-      { emoji: '🤍', text: 'طبيعي Nude — لكل يوم' },
+      { emoji: '💅', textKey: 'mobile.nailCareGuide.card.art.tip1' },
+      { emoji: '✨', textKey: 'mobile.nailCareGuide.card.art.tip2' },
+      { emoji: '🎨', textKey: 'mobile.nailCareGuide.card.art.tip3' },
+      { emoji: '🤍', textKey: 'mobile.nailCareGuide.card.art.tip4' },
     ],
   },
   {
     emoji: '💠',
-    title: 'أشكال الأظافر',
-    subtitle: 'أي شكل يناسب يدك؟',
+    titleKey: 'mobile.nailCareGuide.card.shapes.title',
+    subtitleKey: 'mobile.nailCareGuide.card.shapes.subtitle',
     color: '#e11d48',
     bg: '#fff1f2',
     tips: [
-      { emoji: '⚪', text: 'دائري — لأصابع قصيرة' },
-      { emoji: '⬜', text: 'مربع — لأصابع طويلة' },
-      { emoji: '🥚', text: 'بيضاوي — يناسب الجميع' },
-      { emoji: '🔺', text: 'لوزي — يطول الأصابع' },
+      { emoji: '⚪', textKey: 'mobile.nailCareGuide.card.shapes.tip1' },
+      { emoji: '⬜', textKey: 'mobile.nailCareGuide.card.shapes.tip2' },
+      { emoji: '🥚', textKey: 'mobile.nailCareGuide.card.shapes.tip3' },
+      { emoji: '🔺', textKey: 'mobile.nailCareGuide.card.shapes.tip4' },
     ],
   },
   {
     emoji: '🩺',
-    title: 'صحة الأظافر',
-    subtitle: 'علامات تحذيرية',
+    titleKey: 'mobile.nailCareGuide.card.health.title',
+    subtitleKey: 'mobile.nailCareGuide.card.health.subtitle',
     color: '#059669',
     bg: '#ecfdf5',
     tips: [
-      { emoji: '⚪', text: 'بقع بيضاء — نقص زنك أو إصابة' },
-      { emoji: '🟡', text: 'اصفرار — فطريات أو طلاء بدون base coat' },
-      { emoji: '〰️', text: 'خطوط أفقية — إجهاد أو مرض' },
-      { emoji: '🩺', text: 'تغيرات مستمرة — راجعي الطبيب' },
+      { emoji: '⚪', textKey: 'mobile.nailCareGuide.card.health.tip1' },
+      { emoji: '🟡', textKey: 'mobile.nailCareGuide.card.health.tip2' },
+      { emoji: '〰️', textKey: 'mobile.nailCareGuide.card.health.tip3' },
+      { emoji: '🩺', textKey: 'mobile.nailCareGuide.card.health.tip4' },
     ],
   },
   {
     emoji: '💅',
-    title: 'طلاء الأظافر',
-    subtitle: 'لتطبيق مثالي',
+    titleKey: 'mobile.nailCareGuide.card.polish.title',
+    subtitleKey: 'mobile.nailCareGuide.card.polish.subtitle',
     color: '#7c3aed',
     bg: '#f5f3ff',
     tips: [
-      { emoji: '🧴', text: 'Base coat — يحمي الظفر من التصبغ' },
-      { emoji: '🎨', text: 'طبقتان رقيقتان' },
-      { emoji: '✨', text: 'Top coat — لمعان وحماية' },
-      { emoji: '⏳', text: 'انتظري 2-3 دقائق بين الطبقات' },
+      { emoji: '🧴', textKey: 'mobile.nailCareGuide.card.polish.tip1' },
+      { emoji: '🎨', textKey: 'mobile.nailCareGuide.card.polish.tip2' },
+      { emoji: '✨', textKey: 'mobile.nailCareGuide.card.polish.tip3' },
+      { emoji: '⏳', textKey: 'mobile.nailCareGuide.card.polish.tip4' },
     ],
   },
   {
     emoji: '💎',
-    title: 'جل الأظافر',
-    subtitle: 'عناية خاصة للجل',
+    titleKey: 'mobile.nailCareGuide.card.gel.title',
+    subtitleKey: 'mobile.nailCareGuide.card.gel.subtitle',
     color: '#0284c7',
     bg: '#f0f9ff',
     tips: [
-      { emoji: '🌞', text: 'لا تعرضي الجل للشمس — يبهت' },
-      { emoji: '🧤', text: 'قفازات للتنظيف — تحمي الجل' },
-      { emoji: '🫒', text: 'زيّتي البشرة حول الظفر يومياً' },
-      { emoji: '🚫', text: 'لا تقشري الجل — يضعف الظفر' },
+      { emoji: '🌞', textKey: 'mobile.nailCareGuide.card.gel.tip1' },
+      { emoji: '🧤', textKey: 'mobile.nailCareGuide.card.gel.tip2' },
+      { emoji: '🫒', textKey: 'mobile.nailCareGuide.card.gel.tip3' },
+      { emoji: '🚫', textKey: 'mobile.nailCareGuide.card.gel.tip4' },
     ],
   },
   {
     emoji: '🤲',
-    title: 'حمام البارافين',
-    subtitle: 'شمع دافئ — أيدي ناعمة',
+    titleKey: 'mobile.nailCareGuide.card.paraffin.title',
+    subtitleKey: 'mobile.nailCareGuide.card.paraffin.subtitle',
     color: '#d97706',
     bg: '#fffbeb',
     tips: [
-      { emoji: '🕯️', text: 'شمع دافئ — يفتح المسام ويرطب بعمق' },
-      { emoji: '💧', text: 'يعالج الجفاف — ممتاز للشتاء' },
-      { emoji: '⏰', text: '15-20 دقيقة — تغمس الأيدي 3-5 مرات' },
-      { emoji: '🧴', text: 'بعد الجلسة — كريم مرطب لليدين' },
+      { emoji: '🕯️', textKey: 'mobile.nailCareGuide.card.paraffin.tip1' },
+      { emoji: '💧', textKey: 'mobile.nailCareGuide.card.paraffin.tip2' },
+      { emoji: '⏰', textKey: 'mobile.nailCareGuide.card.paraffin.tip3' },
+      { emoji: '🧴', textKey: 'mobile.nailCareGuide.card.paraffin.tip4' },
     ],
   },
   {
     emoji: '🧤',
-    title: 'قناع اليدين',
-    subtitle: 'سبا منزلي ليديكِ',
+    titleKey: 'mobile.nailCareGuide.card.handMask.title',
+    subtitleKey: 'mobile.nailCareGuide.card.handMask.subtitle',
     color: '#e11d48',
     bg: '#fff1f2',
     tips: [
-      { emoji: '🧴', text: 'كريم كثيف — طبقة سميكة على اليدين' },
-      { emoji: '🧤', text: 'قفازات قطنية — للنوم طوال الليل' },
-      { emoji: '✨', text: 'صباحاً — أيدي ناعمة كالحرير' },
-      { emoji: '📅', text: 'مرة أسبوعياً — أو قبل المناسبات' },
+      { emoji: '🧴', textKey: 'mobile.nailCareGuide.card.handMask.tip1' },
+      { emoji: '🧤', textKey: 'mobile.nailCareGuide.card.handMask.tip2' },
+      { emoji: '✨', textKey: 'mobile.nailCareGuide.card.handMask.tip3' },
+      { emoji: '📅', textKey: 'mobile.personalCare.card.lymphaticDrainage.tip4' },
     ],
   },
   {
     emoji: '🛁',
-    title: 'نقع القدمين',
-    subtitle: 'طقس استرخاء للقدمين',
+    titleKey: 'mobile.nailCareGuide.card.footSoak.title',
+    subtitleKey: 'mobile.nailCareGuide.card.footSoak.subtitle',
     color: '#0d9488',
     bg: '#f0fdfa',
     tips: [
-      { emoji: '🧂', text: 'ملح إبسوم — يخفف الآلام' },
-      { emoji: '🌸', text: 'لافندر — للاسترخاء قبل النوم' },
-      { emoji: '🍋', text: 'ليمون — منعش يزيل الروائح' },
-      { emoji: '🍯', text: 'حليب + عسل — ترطيب فاخر' },
+      { emoji: '🧂', textKey: 'mobile.nailCareGuide.card.footSoak.tip1' },
+      { emoji: '🌸', textKey: 'mobile.nailCareGuide.card.footSoak.tip2' },
+      { emoji: '🍋', textKey: 'mobile.nailCareGuide.card.footSoak.tip3' },
+      { emoji: '🍯', textKey: 'mobile.nailCareGuide.card.footSoak.tip4' },
     ],
   },
   {
     emoji: '💪',
-    title: 'تقوية الأظافر',
-    subtitle: 'أظافر قوية — بدون تكسر',
+    titleKey: 'mobile.nailCareGuide.card.strengthening.title',
+    subtitleKey: 'mobile.nailCareGuide.card.strengthening.subtitle',
     color: '#7c3aed',
     bg: '#f5f3ff',
     tips: [
-      { emoji: '💪', text: 'مقوي أظافر — طبقة أساس قبل الطلاء' },
-      { emoji: '🫒', text: 'زيت الأظافر — يومياً' },
-      { emoji: '💊', text: 'بيوتين وزنك — من الداخل للخارج' },
-      { emoji: '🧤', text: 'قفازات للتنظيف — احمي أظافركِ' },
+      { emoji: '💪', textKey: 'mobile.nailCareGuide.card.strengthening.tip1' },
+      { emoji: '🫒', textKey: 'mobile.nailCareGuide.card.strengthening.tip2' },
+      { emoji: '💊', textKey: 'mobile.nailCareGuide.card.strengthening.tip3' },
+      { emoji: '🧤', textKey: 'mobile.nailCareGuide.card.strengthening.tip4' },
     ],
   },
   {
     emoji: '🦶',
-    title: 'عناية بالكالو',
-    subtitle: 'قدمان ناعمتان',
+    titleKey: 'mobile.nailCareGuide.card.callusCare.title',
+    subtitleKey: 'mobile.nailCareGuide.card.callusCare.subtitle',
     color: '#ea580c',
     bg: '#fff7ed',
     tips: [
-      { emoji: '🪨', text: 'حجر الخفاف — بعد النقع مباشرة' },
-      { emoji: '🧴', text: 'كريم يوريا — يرطب ويزيل الجلد الميت' },
-      { emoji: '🧦', text: 'جوارب قطنية — بعد الكريم طوال الليل' },
-      { emoji: '📅', text: 'مرتين أسبوعياً — للصيف خصوصاً' },
+      { emoji: '🪨', textKey: 'mobile.nailCareGuide.card.callusCare.tip1' },
+      { emoji: '🧴', textKey: 'mobile.nailCareGuide.card.callusCare.tip2' },
+      { emoji: '🧦', textKey: 'mobile.nailCareGuide.card.callusCare.tip3' },
+      { emoji: '📅', textKey: 'mobile.nailCareGuide.card.callusCare.tip4' },
     ],
   },
 ];
@@ -160,15 +161,15 @@ export default function NailCareGuideScreen(): JSX.Element {
             <View style={styles.cardHeader}>
               <Text style={styles.cardEmoji}>{card.emoji}</Text>
               <View style={styles.cardTitleWrap}>
-                <Text style={[styles.cardTitle, { color: card.color }]}>{card.title}</Text>
-                <Text style={styles.cardSubtitle}>{card.subtitle}</Text>
+                <Text style={[styles.cardTitle, { color: card.color }]}>{t(card.titleKey)}</Text>
+                <Text style={styles.cardSubtitle}>{t(card.subtitleKey)}</Text>
               </View>
             </View>
             <View style={styles.tipsList}>
               {card.tips.map((tip, j) => (
                 <View key={j} style={[styles.tipRow, { backgroundColor: card.bg }]}>
                   <Text style={styles.tipEmoji}>{tip.emoji}</Text>
-                  <Text style={[styles.tipText, { color: card.color }]}>{tip.text}</Text>
+                  <Text style={[styles.tipText, { color: card.color }]}>{t(tip.textKey)}</Text>
                 </View>
               ))}
             </View>

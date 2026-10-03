@@ -1,16 +1,17 @@
 import type { JSX } from 'react';
 import { View, Text, ScrollView, StyleSheet } from 'react-native';
+import type { TranslationKey } from '@galaxy/shared';
 import { useLocale } from '@/components/LocaleProvider';
 
 interface Tip {
   emoji: string;
-  text: string;
+  textKey: TranslationKey;
 }
 
 interface PerfumeCard {
   emoji: string;
-  title: string;
-  subtitle: string;
+  titleKey: TranslationKey;
+  subtitleKey: TranslationKey;
   color: string;
   bg: string;
   tips: Tip[];
@@ -19,132 +20,132 @@ interface PerfumeCard {
 const PERFUME_CARDS: PerfumeCard[] = [
   {
     emoji: '🌸',
-    title: 'طبقات العطر',
-    subtitle: 'كيف تختارين عطرك',
+    titleKey: 'mobile.perfumeGuide.card.layers.title',
+    subtitleKey: 'mobile.perfumeGuide.card.layers.subtitle',
     color: '#c026d3',
     bg: '#fdf4ff',
     tips: [
-      { emoji: '🍋', text: 'النفحة العليا: أول ما تشمين — حمضيات خفيفة' },
-      { emoji: '🌹', text: 'قلب العطر: بعد 15 دقيقة — ورود وتوابل' },
-      { emoji: '🪵', text: 'القاعدة: بعد ساعة — خشب مسك فانيليا' },
-      { emoji: '⏰', text: 'انتظري 30 دقيقة قبل الحكم على العطر' },
+      { emoji: '🍋', textKey: 'mobile.perfumeGuide.card.layers.tip1' },
+      { emoji: '🌹', textKey: 'mobile.perfumeGuide.card.layers.tip2' },
+      { emoji: '🪵', textKey: 'mobile.perfumeGuide.card.layers.tip3' },
+      { emoji: '⏰', textKey: 'mobile.perfumeGuide.card.layers.tip4' },
     ],
   },
   {
     emoji: '🪵',
-    title: 'دهن العود',
-    subtitle: 'ملك العطور الشرقية',
+    titleKey: 'mobile.perfumeGuide.card.oud.title',
+    subtitleKey: 'mobile.perfumeGuide.card.oud.subtitle',
     color: '#d97706',
     bg: '#fffbeb',
     tips: [
-      { emoji: '💧', text: 'ضعيه على نقاط النبض — قطرة صغيرة تكفي' },
-      { emoji: '🔥', text: 'دفء الجسم — يفوح العطر طوال اليوم' },
-      { emoji: '💎', text: 'العود السعودي — من أفخر الأنواع' },
-      { emoji: '💰', text: 'استثمار — العود الحقيقي ثمين ويدوم' },
+      { emoji: '💧', textKey: 'mobile.perfumeGuide.card.oud.tip1' },
+      { emoji: '🔥', textKey: 'mobile.perfumeGuide.card.oud.tip2' },
+      { emoji: '💎', textKey: 'mobile.perfumeGuide.card.oud.tip3' },
+      { emoji: '💰', textKey: 'mobile.perfumeGuide.card.oud.tip4' },
     ],
   },
   {
     emoji: '🌙',
-    title: 'المسك',
-    subtitle: 'أساس العطور العربية',
+    titleKey: 'mobile.perfumeGuide.card.musk.title',
+    subtitleKey: 'mobile.perfumeGuide.card.musk.subtitle',
     color: '#7c3aed',
     bg: '#f5f3ff',
     tips: [
-      { emoji: '🤍', text: 'المسك الأبيض — أنقى وأخف أنواع المسك' },
-      { emoji: '🌹', text: 'يدمج مع الورد — للعطور النسائية' },
-      { emoji: '🪵', text: 'يدمج مع العود — للعطور القوية' },
-      { emoji: '🫒', text: 'زيت المسك — يدوم أطول من العطر الكحولي' },
+      { emoji: '🤍', textKey: 'mobile.perfumeGuide.card.musk.tip1' },
+      { emoji: '🌹', textKey: 'mobile.perfumeGuide.card.musk.tip2' },
+      { emoji: '🪵', textKey: 'mobile.perfumeGuide.card.musk.tip3' },
+      { emoji: '🫒', textKey: 'mobile.perfumeGuide.card.musk.tip4' },
     ],
   },
   {
     emoji: '🌹',
-    title: 'الورد الطائفي',
-    subtitle: 'ذهب الطائف السائل',
+    titleKey: 'mobile.perfumeGuide.card.taifRose.title',
+    subtitleKey: 'mobile.perfumeGuide.card.taifRose.subtitle',
     color: '#e11d48',
     bg: '#fff1f2',
     tips: [
-      { emoji: '🌄', text: 'يزرع في جبال الطائف — 2000 متر فوق البحر' },
-      { emoji: '🌅', text: 'يقطف عند الفجر — لأعلى تركيز عطري' },
-      { emoji: '💧', text: 'ماء الورد — تونر طبيعي ومنعش' },
-      { emoji: '💎', text: 'من أندر وأغلى الزيوت العطرية في العالم' },
+      { emoji: '🌄', textKey: 'mobile.perfumeGuide.card.taifRose.tip1' },
+      { emoji: '🌅', textKey: 'mobile.perfumeGuide.card.taifRose.tip2' },
+      { emoji: '💧', textKey: 'mobile.perfumeGuide.card.taifRose.tip3' },
+      { emoji: '💎', textKey: 'mobile.perfumeGuide.card.taifRose.tip4' },
     ],
   },
   {
     emoji: '🧪',
-    title: 'مزج العطور',
-    subtitle: 'اصنعي عطرك الخاص',
+    titleKey: 'mobile.perfumeGuide.card.blending.title',
+    subtitleKey: 'mobile.perfumeGuide.card.blending.subtitle',
     color: '#7c3aed',
     bg: '#f5f3ff',
     tips: [
-      { emoji: '🧩', text: 'القاعدة: قاعدة + قلب + نفحة عليا' },
-      { emoji: '📊', text: 'النسب: 50% قاعدة 30% قلب 20% عليا' },
-      { emoji: '⏰', text: 'اتركيه 48 ساعة — لتتجانس المكونات' },
-      { emoji: '🫒', text: 'زيت جوجوبا — حامل مثالي للزيوت العطرية' },
+      { emoji: '🧩', textKey: 'mobile.perfumeGuide.card.blending.tip1' },
+      { emoji: '📊', textKey: 'mobile.perfumeGuide.card.blending.tip2' },
+      { emoji: '⏰', textKey: 'mobile.perfumeGuide.card.blending.tip3' },
+      { emoji: '🫒', textKey: 'mobile.perfumeGuide.card.blending.tip4' },
     ],
   },
   {
     emoji: '📦',
-    title: 'تخزين العطور',
-    subtitle: 'حافظي على عطرك أطول',
+    titleKey: 'mobile.perfumeGuide.card.storage.title',
+    subtitleKey: 'mobile.perfumeGuide.card.storage.subtitle',
     color: '#0284c7',
     bg: '#f0f9ff',
     tips: [
-      { emoji: '🧊', text: 'مكان بارد — 15-20 درجة مئوية' },
-      { emoji: '🌞', text: 'بعيداً عن الشمس — الضوء يدمر العطر' },
-      { emoji: '🎁', text: 'في علبته الأصلية' },
-      { emoji: '🚿', text: 'ليس في الحمام — الرطوبة تفسده' },
+      { emoji: '🧊', textKey: 'mobile.perfumeGuide.card.storage.tip1' },
+      { emoji: '🌞', textKey: 'mobile.perfumeGuide.card.storage.tip2' },
+      { emoji: '🎁', textKey: 'mobile.perfumeGuide.card.storage.tip3' },
+      { emoji: '🚿', textKey: 'mobile.perfumeGuide.card.storage.tip4' },
     ],
   },
   {
     emoji: '📅',
-    title: 'العطر والموسم',
-    subtitle: 'أي عطر في أي فصل',
+    titleKey: 'mobile.perfumeGuide.card.season.title',
+    subtitleKey: 'mobile.perfumeGuide.card.season.subtitle',
     color: '#0284c7',
     bg: '#f0f9ff',
     tips: [
-      { emoji: '🌷', text: 'ربيع — زهري أخضر منعش' },
-      { emoji: '🌞', text: 'صيف — حمضيات بحري خفيف' },
-      { emoji: '🍂', text: 'خريف — خشبي حار دافئ' },
-      { emoji: '🧣', text: 'شتاء — شرقي ثقيل مسك' },
+      { emoji: '🌷', textKey: 'mobile.perfumeGuide.card.season.tip1' },
+      { emoji: '🌞', textKey: 'mobile.perfumeGuide.card.season.tip2' },
+      { emoji: '🍂', textKey: 'mobile.perfumeGuide.card.season.tip3' },
+      { emoji: '🧣', textKey: 'mobile.perfumeGuide.card.season.tip4' },
     ],
   },
   {
     emoji: '🎯',
-    title: 'العطر والمناسبة',
-    subtitle: 'اختيارك يعكس حضورك',
+    titleKey: 'mobile.perfumeGuide.card.occasion.title',
+    subtitleKey: 'mobile.perfumeGuide.card.occasion.subtitle',
     color: '#d97706',
     bg: '#fffbeb',
     tips: [
-      { emoji: '💼', text: 'للعمل — خفيف منعش غير مزعج' },
-      { emoji: '🌃', text: 'للسهرة — شرقي قوي وجذاب' },
-      { emoji: '💪', text: 'للنادي — منعش خفيف جداً' },
-      { emoji: '💍', text: 'للزواج — عطر مميز يدوم طويلاً' },
+      { emoji: '💼', textKey: 'mobile.perfumeGuide.card.occasion.tip1' },
+      { emoji: '🌃', textKey: 'mobile.perfumeGuide.card.occasion.tip2' },
+      { emoji: '💪', textKey: 'mobile.perfumeGuide.card.occasion.tip3' },
+      { emoji: '💍', textKey: 'mobile.perfumeGuide.card.occasion.tip4' },
     ],
   },
   {
     emoji: '⏳',
-    title: 'ثبات العطر',
-    subtitle: 'أسرار تدوم طويلاً',
+    titleKey: 'mobile.perfumeGuide.card.longevity.title',
+    subtitleKey: 'mobile.perfumeGuide.card.longevity.subtitle',
     color: '#059669',
     bg: '#ecfdf5',
     tips: [
-      { emoji: '💧', text: 'رطبي بشرتك قبل العطر — يدوم أطول' },
-      { emoji: '🫀', text: 'ضعيه على نقاط النبض — الرسغ والرقبة' },
-      { emoji: '🚫', text: 'لا تفركي الرسغين — يكسر جزيئات العطر' },
-      { emoji: '👗', text: 'رشي على الملابس — يثبت أطول من الجلد' },
+      { emoji: '💧', textKey: 'mobile.perfumeGuide.card.longevity.tip1' },
+      { emoji: '🫀', textKey: 'mobile.perfumeGuide.card.longevity.tip2' },
+      { emoji: '🚫', textKey: 'mobile.perfumeGuide.card.longevity.tip3' },
+      { emoji: '👗', textKey: 'mobile.perfumeGuide.card.longevity.tip4' },
     ],
   },
   {
     emoji: '🌿',
-    title: 'مكونات العطور',
-    subtitle: 'عائلة العطور الشرقية',
+    titleKey: 'mobile.perfumeGuide.card.notes.title',
+    subtitleKey: 'beautyDna.reason.scent_oriental',
     color: '#d97706',
     bg: '#fffbeb',
     tips: [
-      { emoji: '🪵', text: 'خشبية — عود صندل أرز' },
-      { emoji: '🧂', text: 'حارة — زعفران قرفة هيل' },
-      { emoji: '🌸', text: 'زهرية — ورد ياسمين برتقال' },
-      { emoji: '🍋', text: 'حمضية — برغموت ليمون غريب فروت' },
+      { emoji: '🪵', textKey: 'mobile.perfumeGuide.card.notes.tip1' },
+      { emoji: '🧂', textKey: 'mobile.perfumeGuide.card.notes.tip2' },
+      { emoji: '🌸', textKey: 'mobile.perfumeGuide.card.notes.tip3' },
+      { emoji: '🍋', textKey: 'mobile.perfumeGuide.card.notes.tip4' },
     ],
   },
 ];
@@ -162,15 +163,15 @@ export default function PerfumeGuideScreen(): JSX.Element {
             <View style={styles.cardHeader}>
               <Text style={styles.cardEmoji}>{card.emoji}</Text>
               <View style={styles.cardTitleWrap}>
-                <Text style={[styles.cardTitle, { color: card.color }]}>{card.title}</Text>
-                <Text style={styles.cardSubtitle}>{card.subtitle}</Text>
+                <Text style={[styles.cardTitle, { color: card.color }]}>{t(card.titleKey)}</Text>
+                <Text style={styles.cardSubtitle}>{t(card.subtitleKey)}</Text>
               </View>
             </View>
             <View style={styles.tipsList}>
               {card.tips.map((tip, j) => (
                 <View key={j} style={[styles.tipRow, { backgroundColor: card.bg }]}>
                   <Text style={styles.tipEmoji}>{tip.emoji}</Text>
-                  <Text style={[styles.tipText, { color: card.color }]}>{tip.text}</Text>
+                  <Text style={[styles.tipText, { color: card.color }]}>{t(tip.textKey)}</Text>
                 </View>
               ))}
             </View>

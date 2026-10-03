@@ -38,7 +38,7 @@ export default function RideHailingScreen(): JSX.Element {
     bookMut.mutate({
       bookingId: 1,
       provider: provider as 'uber' | 'careem',
-      pickupAddress: 'موقعي الحالي',
+      pickupAddress: t('mobile.rideHailing.currentLocation'),
     });
   };
   if (providersQ.isLoading) return <SkeletonList count={3} />;

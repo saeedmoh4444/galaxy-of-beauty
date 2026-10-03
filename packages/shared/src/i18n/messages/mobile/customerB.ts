@@ -6373,4 +6373,445 @@ export const mobileCustomerBMessages = {
     ar: 'جديدي الماسكارا — كل 3 أشهر',
     en: 'Replace your mascara — every 3 months',
   },
+  // ---- sweep slice 11: nail-care-guide / perfume-guide / referrals / ride-hailing / safety ----
+  'mobile.nailCareGuide.card.art.title': { ar: 'فن الأظافر', en: 'Nail Art' },
+  'mobile.nailCareGuide.card.art.subtitle': { ar: 'أفكار وأساليب', en: 'Ideas and styles' },
+  'mobile.nailCareGuide.card.art.tip1': {
+    ar: 'فرنسي — كلاسيك طرف أبيض',
+    en: 'French — classic white tip',
+  },
+  'mobile.nailCareGuide.card.art.tip2': {
+    ar: 'جليتر — لامع للمناسبات',
+    en: 'Glitter — sparkly for occasions',
+  },
+  'mobile.nailCareGuide.card.art.tip3': {
+    ar: 'Ombre — تدرج لونين',
+    en: 'Ombre — a two-tone gradient',
+  },
+  'mobile.nailCareGuide.card.art.tip4': {
+    ar: 'طبيعي Nude — لكل يوم',
+    en: 'Natural nude — for every day',
+  },
+  'mobile.nailCareGuide.card.shapes.title': { ar: 'أشكال الأظافر', en: 'Nail Shapes' },
+  'mobile.nailCareGuide.card.shapes.subtitle': {
+    ar: 'أي شكل يناسب يدك؟',
+    en: 'Which shape suits your hand?',
+  },
+  'mobile.nailCareGuide.card.shapes.tip1': {
+    ar: 'دائري — لأصابع قصيرة',
+    en: 'Round — for short fingers',
+  },
+  'mobile.nailCareGuide.card.shapes.tip2': {
+    ar: 'مربع — لأصابع طويلة',
+    en: 'Square — for long fingers',
+  },
+  'mobile.nailCareGuide.card.shapes.tip3': {
+    ar: 'بيضاوي — يناسب الجميع',
+    en: 'Oval — suits everyone',
+  },
+  'mobile.nailCareGuide.card.shapes.tip4': {
+    ar: 'لوزي — يطول الأصابع',
+    en: 'Almond — elongates the fingers',
+  },
+  'mobile.nailCareGuide.card.health.title': { ar: 'صحة الأظافر', en: 'Nail Health' },
+  'mobile.nailCareGuide.card.health.subtitle': { ar: 'علامات تحذيرية', en: 'Warning signs' },
+  'mobile.nailCareGuide.card.health.tip1': {
+    ar: 'بقع بيضاء — نقص زنك أو إصابة',
+    en: 'White spots — zinc deficiency or injury',
+  },
+  'mobile.nailCareGuide.card.health.tip2': {
+    ar: 'اصفرار — فطريات أو طلاء بدون base coat',
+    en: 'Yellowing — fungus or polish without a base coat',
+  },
+  'mobile.nailCareGuide.card.health.tip3': {
+    ar: 'خطوط أفقية — إجهاد أو مرض',
+    en: 'Horizontal lines — stress or illness',
+  },
+  'mobile.nailCareGuide.card.health.tip4': {
+    ar: 'تغيرات مستمرة — راجعي الطبيب',
+    en: 'Persistent changes — see a doctor',
+  },
+  'mobile.nailCareGuide.card.polish.title': { ar: 'طلاء الأظافر', en: 'Nail Polish' },
+  'mobile.nailCareGuide.card.polish.subtitle': {
+    ar: 'لتطبيق مثالي',
+    en: 'For a perfect application',
+  },
+  'mobile.nailCareGuide.card.polish.tip1': {
+    ar: 'Base coat — يحمي الظفر من التصبغ',
+    en: 'Base coat — protects the nail from staining',
+  },
+  'mobile.nailCareGuide.card.polish.tip2': { ar: 'طبقتان رقيقتان', en: 'Two thin coats' },
+  'mobile.nailCareGuide.card.polish.tip3': {
+    ar: 'Top coat — لمعان وحماية',
+    en: 'Top coat — shine and protection',
+  },
+  'mobile.nailCareGuide.card.polish.tip4': {
+    ar: 'انتظري 2-3 دقائق بين الطبقات',
+    en: 'Wait 2-3 minutes between coats',
+  },
+  'mobile.nailCareGuide.card.gel.title': { ar: 'جل الأظافر', en: 'Gel Nails' },
+  'mobile.nailCareGuide.card.gel.subtitle': { ar: 'عناية خاصة للجل', en: 'Special care for gel' },
+  'mobile.nailCareGuide.card.gel.tip1': {
+    ar: 'لا تعرضي الجل للشمس — يبهت',
+    en: "Don't expose gel to the sun — it fades",
+  },
+  'mobile.nailCareGuide.card.gel.tip2': {
+    ar: 'قفازات للتنظيف — تحمي الجل',
+    en: 'Gloves for cleaning — they protect the gel',
+  },
+  'mobile.nailCareGuide.card.gel.tip3': {
+    ar: 'زيّتي البشرة حول الظفر يومياً',
+    en: 'Oil the skin around the nail daily',
+  },
+  'mobile.nailCareGuide.card.gel.tip4': {
+    ar: 'لا تقشري الجل — يضعف الظفر',
+    en: "Don't peel the gel — it weakens the nail",
+  },
+  'mobile.nailCareGuide.card.paraffin.title': { ar: 'حمام البارافين', en: 'Paraffin Bath' },
+  'mobile.nailCareGuide.card.paraffin.subtitle': {
+    ar: 'شمع دافئ — أيدي ناعمة',
+    en: 'Warm wax — soft hands',
+  },
+  'mobile.nailCareGuide.card.paraffin.tip1': {
+    ar: 'شمع دافئ — يفتح المسام ويرطب بعمق',
+    en: 'Warm wax — opens pores and deeply moisturizes',
+  },
+  'mobile.nailCareGuide.card.paraffin.tip2': {
+    ar: 'يعالج الجفاف — ممتاز للشتاء',
+    en: 'Treats dryness — excellent for winter',
+  },
+  'mobile.nailCareGuide.card.paraffin.tip3': {
+    ar: '15-20 دقيقة — تغمس الأيدي 3-5 مرات',
+    en: '15-20 minutes — dip the hands 3-5 times',
+  },
+  'mobile.nailCareGuide.card.paraffin.tip4': {
+    ar: 'بعد الجلسة — كريم مرطب لليدين',
+    en: 'After the session — a moisturizing hand cream',
+  },
+  'mobile.nailCareGuide.card.handMask.title': { ar: 'قناع اليدين', en: 'Hand Mask' },
+  'mobile.nailCareGuide.card.handMask.subtitle': {
+    ar: 'سبا منزلي ليديكِ',
+    en: 'A home spa for your hands',
+  },
+  'mobile.nailCareGuide.card.handMask.tip1': {
+    ar: 'كريم كثيف — طبقة سميكة على اليدين',
+    en: 'Thick cream — a thick layer on the hands',
+  },
+  'mobile.nailCareGuide.card.handMask.tip2': {
+    ar: 'قفازات قطنية — للنوم طوال الليل',
+    en: 'Cotton gloves — sleep in them all night',
+  },
+  'mobile.nailCareGuide.card.handMask.tip3': {
+    ar: 'صباحاً — أيدي ناعمة كالحرير',
+    en: 'In the morning — hands as soft as silk',
+  },
+  'mobile.nailCareGuide.card.footSoak.title': { ar: 'نقع القدمين', en: 'Foot Soak' },
+  'mobile.nailCareGuide.card.footSoak.subtitle': {
+    ar: 'طقس استرخاء للقدمين',
+    en: 'A relaxing ritual for the feet',
+  },
+  'mobile.nailCareGuide.card.footSoak.tip1': {
+    ar: 'ملح إبسوم — يخفف الآلام',
+    en: 'Epsom salt — soothes aches',
+  },
+  'mobile.nailCareGuide.card.footSoak.tip2': {
+    ar: 'لافندر — للاسترخاء قبل النوم',
+    en: 'Lavender — to relax before sleep',
+  },
+  'mobile.nailCareGuide.card.footSoak.tip3': {
+    ar: 'ليمون — منعش يزيل الروائح',
+    en: 'Lemon — refreshing and removes odors',
+  },
+  'mobile.nailCareGuide.card.footSoak.tip4': {
+    ar: 'حليب + عسل — ترطيب فاخر',
+    en: 'Milk + honey — luxurious moisturizing',
+  },
+  'mobile.nailCareGuide.card.strengthening.title': {
+    ar: 'تقوية الأظافر',
+    en: 'Nail Strengthening',
+  },
+  'mobile.nailCareGuide.card.strengthening.subtitle': {
+    ar: 'أظافر قوية — بدون تكسر',
+    en: 'Strong nails — no breakage',
+  },
+  'mobile.nailCareGuide.card.strengthening.tip1': {
+    ar: 'مقوي أظافر — طبقة أساس قبل الطلاء',
+    en: 'Nail strengthener — a base layer before polish',
+  },
+  'mobile.nailCareGuide.card.strengthening.tip2': {
+    ar: 'زيت الأظافر — يومياً',
+    en: 'Nail oil — daily',
+  },
+  'mobile.nailCareGuide.card.strengthening.tip3': {
+    ar: 'بيوتين وزنك — من الداخل للخارج',
+    en: 'Biotin and zinc — from the inside out',
+  },
+  'mobile.nailCareGuide.card.strengthening.tip4': {
+    ar: 'قفازات للتنظيف — احمي أظافركِ',
+    en: 'Gloves for cleaning — protect your nails',
+  },
+  'mobile.nailCareGuide.card.callusCare.title': { ar: 'عناية بالكالو', en: 'Callus Care' },
+  'mobile.nailCareGuide.card.callusCare.subtitle': { ar: 'قدمان ناعمتان', en: 'Soft feet' },
+  'mobile.nailCareGuide.card.callusCare.tip1': {
+    ar: 'حجر الخفاف — بعد النقع مباشرة',
+    en: 'Pumice stone — right after soaking',
+  },
+  'mobile.nailCareGuide.card.callusCare.tip2': {
+    ar: 'كريم يوريا — يرطب ويزيل الجلد الميت',
+    en: 'Urea cream — moisturizes and removes dead skin',
+  },
+  'mobile.nailCareGuide.card.callusCare.tip3': {
+    ar: 'جوارب قطنية — بعد الكريم طوال الليل',
+    en: 'Cotton socks — after the cream, all night',
+  },
+  'mobile.nailCareGuide.card.callusCare.tip4': {
+    ar: 'مرتين أسبوعياً — للصيف خصوصاً',
+    en: 'Twice a week — especially for summer',
+  },
+  'mobile.perfumeGuide.card.layers.title': { ar: 'طبقات العطر', en: 'Perfume Layers' },
+  'mobile.perfumeGuide.card.layers.subtitle': {
+    ar: 'كيف تختارين عطرك',
+    en: 'How to choose your perfume',
+  },
+  'mobile.perfumeGuide.card.layers.tip1': {
+    ar: 'النفحة العليا: أول ما تشمين — حمضيات خفيفة',
+    en: 'Top notes: the first thing you smell — light citrus',
+  },
+  'mobile.perfumeGuide.card.layers.tip2': {
+    ar: 'قلب العطر: بعد 15 دقيقة — ورود وتوابل',
+    en: 'Heart notes: after 15 minutes — roses and spices',
+  },
+  'mobile.perfumeGuide.card.layers.tip3': {
+    ar: 'القاعدة: بعد ساعة — خشب مسك فانيليا',
+    en: 'Base notes: after an hour — wood, musk, vanilla',
+  },
+  'mobile.perfumeGuide.card.layers.tip4': {
+    ar: 'انتظري 30 دقيقة قبل الحكم على العطر',
+    en: 'Wait 30 minutes before judging a perfume',
+  },
+  'mobile.perfumeGuide.card.oud.title': { ar: 'دهن العود', en: 'Oud Oil' },
+  'mobile.perfumeGuide.card.oud.subtitle': {
+    ar: 'ملك العطور الشرقية',
+    en: 'The king of Eastern perfumes',
+  },
+  'mobile.perfumeGuide.card.oud.tip1': {
+    ar: 'ضعيه على نقاط النبض — قطرة صغيرة تكفي',
+    en: 'Apply to pulse points — a small drop is enough',
+  },
+  'mobile.perfumeGuide.card.oud.tip2': {
+    ar: 'دفء الجسم — يفوح العطر طوال اليوم',
+    en: 'Body warmth — the scent diffuses all day',
+  },
+  'mobile.perfumeGuide.card.oud.tip3': {
+    ar: 'العود السعودي — من أفخر الأنواع',
+    en: 'Saudi oud — one of the finest types',
+  },
+  'mobile.perfumeGuide.card.oud.tip4': {
+    ar: 'استثمار — العود الحقيقي ثمين ويدوم',
+    en: 'An investment — real oud is precious and lasts',
+  },
+  'mobile.perfumeGuide.card.musk.title': { ar: 'المسك', en: 'Musk' },
+  'mobile.perfumeGuide.card.musk.subtitle': {
+    ar: 'أساس العطور العربية',
+    en: 'The foundation of Arabian perfumes',
+  },
+  'mobile.perfumeGuide.card.musk.tip1': {
+    ar: 'المسك الأبيض — أنقى وأخف أنواع المسك',
+    en: 'White musk — the purest and lightest type of musk',
+  },
+  'mobile.perfumeGuide.card.musk.tip2': {
+    ar: 'يدمج مع الورد — للعطور النسائية',
+    en: 'Blends with rose — for feminine perfumes',
+  },
+  'mobile.perfumeGuide.card.musk.tip3': {
+    ar: 'يدمج مع العود — للعطور القوية',
+    en: 'Blends with oud — for strong perfumes',
+  },
+  'mobile.perfumeGuide.card.musk.tip4': {
+    ar: 'زيت المسك — يدوم أطول من العطر الكحولي',
+    en: 'Musk oil — lasts longer than alcohol-based perfume',
+  },
+  'mobile.perfumeGuide.card.taifRose.title': { ar: 'الورد الطائفي', en: 'Taif Rose' },
+  'mobile.perfumeGuide.card.taifRose.subtitle': {
+    ar: 'ذهب الطائف السائل',
+    en: 'The liquid gold of Taif',
+  },
+  'mobile.perfumeGuide.card.taifRose.tip1': {
+    ar: 'يزرع في جبال الطائف — 2000 متر فوق البحر',
+    en: 'Grown in the mountains of Taif — 2,000 meters above sea level',
+  },
+  'mobile.perfumeGuide.card.taifRose.tip2': {
+    ar: 'يقطف عند الفجر — لأعلى تركيز عطري',
+    en: 'Picked at dawn — for the highest fragrance concentration',
+  },
+  'mobile.perfumeGuide.card.taifRose.tip3': {
+    ar: 'ماء الورد — تونر طبيعي ومنعش',
+    en: 'Rose water — a natural, refreshing toner',
+  },
+  'mobile.perfumeGuide.card.taifRose.tip4': {
+    ar: 'من أندر وأغلى الزيوت العطرية في العالم',
+    en: 'One of the rarest and most expensive fragrance oils in the world',
+  },
+  'mobile.perfumeGuide.card.blending.title': { ar: 'مزج العطور', en: 'Perfume Blending' },
+  'mobile.perfumeGuide.card.blending.subtitle': {
+    ar: 'اصنعي عطرك الخاص',
+    en: 'Create your own perfume',
+  },
+  'mobile.perfumeGuide.card.blending.tip1': {
+    ar: 'القاعدة: قاعدة + قلب + نفحة عليا',
+    en: 'The formula: base + heart + top notes',
+  },
+  'mobile.perfumeGuide.card.blending.tip2': {
+    ar: 'النسب: 50% قاعدة 30% قلب 20% عليا',
+    en: 'Ratios: 50% base, 30% heart, 20% top',
+  },
+  'mobile.perfumeGuide.card.blending.tip3': {
+    ar: 'اتركيه 48 ساعة — لتتجانس المكونات',
+    en: 'Leave it for 48 hours — for the ingredients to blend',
+  },
+  'mobile.perfumeGuide.card.blending.tip4': {
+    ar: 'زيت جوجوبا — حامل مثالي للزيوت العطرية',
+    en: 'Jojoba oil — an ideal carrier for fragrance oils',
+  },
+  'mobile.perfumeGuide.card.storage.title': { ar: 'تخزين العطور', en: 'Perfume Storage' },
+  'mobile.perfumeGuide.card.storage.subtitle': {
+    ar: 'حافظي على عطرك أطول',
+    en: 'Keep your perfume longer',
+  },
+  'mobile.perfumeGuide.card.storage.tip1': {
+    ar: 'مكان بارد — 15-20 درجة مئوية',
+    en: 'A cool place — 15-20 degrees Celsius',
+  },
+  'mobile.perfumeGuide.card.storage.tip2': {
+    ar: 'بعيداً عن الشمس — الضوء يدمر العطر',
+    en: 'Away from the sun — light destroys perfume',
+  },
+  'mobile.perfumeGuide.card.storage.tip3': { ar: 'في علبته الأصلية', en: 'In its original box' },
+  'mobile.perfumeGuide.card.storage.tip4': {
+    ar: 'ليس في الحمام — الرطوبة تفسده',
+    en: 'Not in the bathroom — humidity spoils it',
+  },
+  'mobile.perfumeGuide.card.season.title': { ar: 'العطر والموسم', en: 'Perfume and Season' },
+  'mobile.perfumeGuide.card.season.subtitle': {
+    ar: 'أي عطر في أي فصل',
+    en: 'Which perfume in which season',
+  },
+  'mobile.perfumeGuide.card.season.tip1': {
+    ar: 'ربيع — زهري أخضر منعش',
+    en: 'Spring — fresh green floral',
+  },
+  'mobile.perfumeGuide.card.season.tip2': {
+    ar: 'صيف — حمضيات بحري خفيف',
+    en: 'Summer — light aquatic citrus',
+  },
+  'mobile.perfumeGuide.card.season.tip3': {
+    ar: 'خريف — خشبي حار دافئ',
+    en: 'Autumn — warm spicy woody',
+  },
+  'mobile.perfumeGuide.card.season.tip4': {
+    ar: 'شتاء — شرقي ثقيل مسك',
+    en: 'Winter — heavy oriental musk',
+  },
+  'mobile.perfumeGuide.card.occasion.title': { ar: 'العطر والمناسبة', en: 'Perfume and Occasion' },
+  'mobile.perfumeGuide.card.occasion.subtitle': {
+    ar: 'اختيارك يعكس حضورك',
+    en: 'Your choice reflects your presence',
+  },
+  'mobile.perfumeGuide.card.occasion.tip1': {
+    ar: 'للعمل — خفيف منعش غير مزعج',
+    en: 'For work — light, fresh, not overpowering',
+  },
+  'mobile.perfumeGuide.card.occasion.tip2': {
+    ar: 'للسهرة — شرقي قوي وجذاب',
+    en: 'For an evening out — strong and alluring oriental',
+  },
+  'mobile.perfumeGuide.card.occasion.tip3': {
+    ar: 'للنادي — منعش خفيف جداً',
+    en: 'For the gym — very light and fresh',
+  },
+  'mobile.perfumeGuide.card.occasion.tip4': {
+    ar: 'للزواج — عطر مميز يدوم طويلاً',
+    en: 'For a wedding — a distinctive, long-lasting perfume',
+  },
+  'mobile.perfumeGuide.card.longevity.title': { ar: 'ثبات العطر', en: 'Perfume Longevity' },
+  'mobile.perfumeGuide.card.longevity.subtitle': {
+    ar: 'أسرار تدوم طويلاً',
+    en: 'Secrets that last long',
+  },
+  'mobile.perfumeGuide.card.longevity.tip1': {
+    ar: 'رطبي بشرتك قبل العطر — يدوم أطول',
+    en: 'Moisturize your skin before perfume — it lasts longer',
+  },
+  'mobile.perfumeGuide.card.longevity.tip2': {
+    ar: 'ضعيه على نقاط النبض — الرسغ والرقبة',
+    en: 'Apply to pulse points — wrist and neck',
+  },
+  'mobile.perfumeGuide.card.longevity.tip3': {
+    ar: 'لا تفركي الرسغين — يكسر جزيئات العطر',
+    en: "Don't rub your wrists — it breaks the perfume molecules",
+  },
+  'mobile.perfumeGuide.card.longevity.tip4': {
+    ar: 'رشي على الملابس — يثبت أطول من الجلد',
+    en: 'Spray on clothes — it lasts longer than on skin',
+  },
+  'mobile.perfumeGuide.card.notes.title': { ar: 'مكونات العطور', en: 'Perfume Notes' },
+  'mobile.perfumeGuide.card.notes.tip1': {
+    ar: 'خشبية — عود صندل أرز',
+    en: 'Woody — oud, sandalwood, cedar',
+  },
+  'mobile.perfumeGuide.card.notes.tip2': {
+    ar: 'حارة — زعفران قرفة هيل',
+    en: 'Spicy — saffron, cinnamon, cardamom',
+  },
+  'mobile.perfumeGuide.card.notes.tip3': {
+    ar: 'زهرية — ورد ياسمين برتقال',
+    en: 'Floral — rose, jasmine, orange blossom',
+  },
+  'mobile.perfumeGuide.card.notes.tip4': {
+    ar: 'حمضية — برغموت ليمون غريب فروت',
+    en: 'Citrus — bergamot, lemon, grapefruit',
+  },
+  'mobile.safety.item.emergencyButton.title': { ar: 'زر الطوارئ', en: 'Emergency button' },
+  'mobile.safety.item.emergencyButton.desc': {
+    ar: 'اضغطي لإرسال موقعكِ للشرطة',
+    en: 'Tap to send your location to the police',
+  },
+  'mobile.safety.item.carEscort.title': { ar: 'توصيلي لسيارتي', en: 'Walk me to my car' },
+  'mobile.safety.item.carEscort.desc': {
+    ar: 'مرافق حتى باب السيارة',
+    en: 'An escort to the car door',
+  },
+  'mobile.safety.item.locationSharing.title': { ar: 'مشاركة الموقع', en: 'Share location' },
+  'mobile.safety.item.locationSharing.desc': {
+    ar: 'شاركي موقعكِ مع صديقة تثقين بها',
+    en: 'Share your location with a friend you trust',
+  },
+  'mobile.safety.item.homeArrival.title': { ar: 'وصلت للبيت', en: "I'm home" },
+  'mobile.safety.item.homeArrival.desc': {
+    ar: 'إشعار آلي عند وصولكِ',
+    en: 'An automatic notification when you arrive',
+  },
+  'mobile.safety.item.alias.title': { ar: 'اسم مستعار', en: 'Alias' },
+  'mobile.safety.item.alias.desc': {
+    ar: 'احجزي باسم مستعار للخصوصية',
+    en: 'Book under an alias for privacy',
+  },
+  'mobile.safety.item.safeCall.title': { ar: 'اتصال آمن', en: 'Safe call' },
+  'mobile.safety.item.safeCall.desc': {
+    ar: 'خط ساخن للطوارئ 24/7',
+    en: 'A 24/7 emergency hotline',
+  },
+  'mobile.safety.item.faceBlur.title': { ar: 'تعمية الوجه', en: 'Face blur' },
+  'mobile.safety.item.faceBlur.desc': { ar: 'أخفِ وجهكِ في الصور', en: 'Hide your face in photos' },
+  'mobile.safety.item.incognito.title': { ar: 'وضع التخفي', en: 'Incognito mode' },
+  'mobile.safety.item.incognito.desc': {
+    ar: 'تصفحي بدون تسجيل نشاطكِ',
+    en: 'Browse without recording your activity',
+  },
+  'mobile.safety.item.consentShield.title': { ar: 'درع الموافقة', en: 'Consent shield' },
+  'mobile.safety.item.consentShield.desc': {
+    ar: 'موافقة صريحة قبل كل خدمة',
+    en: 'Explicit consent before every service',
+  },
+  'mobile.rideHailing.currentLocation': { ar: 'موقعي الحالي', en: 'My current location' },
 } as const satisfies Record<string, { ar: string; en: string }>;
