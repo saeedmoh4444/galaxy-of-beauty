@@ -93,12 +93,16 @@ export default function CreateBookingScreen() {
     beautyBundleId?: string;
     look?: string;
   }>();
+  const { locale, t } = useLocale();
   // 3.2b — a try-on look passed from the AR studio prefills the notes.
   const lookNote = (() => {
     if (!params.look) return '';
     try {
       const look = JSON.parse(params.look) as { type?: string; colorHex?: string };
-      return `لوك التجربة: ${look.type ?? ''} ${look.colorHex ?? ''}`.trim();
+      return t('mobile.bookingsCreate.look-note', {
+        type: look.type ?? '',
+        colorHex: look.colorHex ?? '',
+      }).trim();
     } catch {
       return '';
     }
@@ -107,7 +111,6 @@ export default function CreateBookingScreen() {
   // 1.2 Service Bundles: preselected package from /bundles/[id] — fixed
   // for the lifetime of the flow (same pattern as the K3 ?bundleId=).
   const preselectedBeautyBundleId = Number(params.beautyBundleId) || undefined;
-  const { locale, t } = useLocale();
   const { showToast } = useToast();
   const [step, setStep] = useState(1);
   // 5.1 — animate each wizard step in on change.

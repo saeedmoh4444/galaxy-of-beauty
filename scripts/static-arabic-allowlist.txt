@@ -1,8 +1,3 @@
-apps/mobile/src/app/customer/beauty-wishlist-gifts/index.tsx
-apps/mobile/src/app/customer/booking-checklist/index.tsx
-apps/mobile/src/app/customer/bookings/create/index.tsx
-apps/mobile/src/app/customer/bookings/reschedule/index.tsx
-apps/mobile/src/app/customer/color-analysis/index.tsx
 apps/mobile/src/app/customer/family-beauty/index.tsx
 apps/mobile/src/app/customer/gift-card-market/index.tsx
 apps/mobile/src/app/customer/gift-registry/index.tsx

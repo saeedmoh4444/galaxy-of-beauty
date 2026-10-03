@@ -4638,4 +4638,40 @@ export const mobileCustomerBMessages = {
     ar: 'عطر جديد للعيد — تقليد جميل',
     en: 'A new perfume for Eid — a lovely tradition',
   },
+
+  // ── sweep slice 8: wishlist-gifts / booking-checklist / bookings create+reschedule ──
+  'mobile.beautyWishlistGifts.gift-swedish-massage': {
+    ar: 'جلسة مساج سويدي',
+    en: 'Swedish massage session',
+  },
+  'mobile.beautyWishlistGifts.gift-gel-manicure': { ar: 'مانيكير جل', en: 'Gel manicure' },
+  'mobile.beautyWishlistGifts.gift-skincare-session': {
+    ar: 'جلسة عناية بالبشرة',
+    en: 'Skincare session',
+  },
+  'mobile.beautyWishlistGifts.priority-high': { ar: 'أولوية', en: 'Priority' },
+  'mobile.beautyWishlistGifts.priority-medium': { ar: 'مهم', en: 'Important' },
+  'mobile.beautyWishlistGifts.priority-low': { ar: 'جميل', en: 'Nice' },
+  'mobile.bookingChecklist.item-confirm-booking': {
+    ar: 'تأكيد موعد الحجز',
+    en: 'Confirm the booking appointment',
+  },
+  'mobile.bookingChecklist.item-prepare-space': { ar: 'تجهيز المكان', en: 'Prepare the space' },
+  'mobile.bookingChecklist.item-remove-old-makeup': {
+    ar: 'إزالة المكياج القديم',
+    en: 'Remove old makeup',
+  },
+  'mobile.bookingChecklist.item-drink-water': { ar: 'شرب الماء', en: 'Drink water' },
+  'mobile.bookingChecklist.item-relax-before': {
+    ar: 'الاسترخاء قبل الموعد',
+    en: 'Relax before the appointment',
+  },
+  'mobile.bookingsCreate.look-note': {
+    ar: 'لوك التجربة: {type} {colorHex}',
+    en: 'Try-on look: {type} {colorHex}',
+  },
+  'mobile.bookingsReschedule.reason': {
+    ar: 'طلب تعديل الموعد',
+    en: 'Request to change the appointment',
+  },
 } as const satisfies Record<string, { ar: string; en: string }>;
