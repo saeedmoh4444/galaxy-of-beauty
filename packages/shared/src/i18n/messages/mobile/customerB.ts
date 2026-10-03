@@ -3073,4 +3073,401 @@ export const mobileCustomerBMessages = {
     ar: 'شهادة معتمدة عند إكمال المسار',
     en: 'An accredited certificate upon completing the track',
   },
+
+  // ---- beauty-community cards (sweep s5) ----
+  // card.riyadhSquad.title reuses community.squadName; card.savingsChallenge.title
+  // reuses community.challenge.name (verbatim ar match).
+  'mobile.beautyCommunity.card.riyadhSquad.subtitle': {
+    ar: '4 عضوات — اللقاء القادم 15 أغسطس',
+    en: '4 members — next meetup August 15',
+  },
+  'mobile.beautyCommunity.card.riyadhSquad.tip1': {
+    ar: 'مانيكير جماعي — 15 أغسطس',
+    en: 'Group manicure — August 15',
+  },
+  'mobile.beautyCommunity.card.riyadhSquad.tip2': {
+    ar: '4 عضوات — نورة، مها، ريم، سارة',
+    en: '4 members — Noura, Maha, Reem, Sara',
+  },
+  'mobile.beautyCommunity.card.riyadhSquad.tip3': {
+    ar: 'خصم المجموعة — 15%',
+    en: 'Group discount — 15%',
+  },
+  'mobile.beautyCommunity.card.riyadhSquad.tip4': {
+    ar: 'الهدف: لقاء شهري',
+    en: 'Goal: a monthly meetup',
+  },
+  'mobile.beautyCommunity.card.distinguishedGraduate.title': {
+    ar: 'خريجة متميزة',
+    en: 'Distinguished Graduate',
+  },
+  'mobile.beautyCommunity.card.distinguishedGraduate.subtitle': {
+    ar: 'نورة — دفعة 2025',
+    en: 'Noura — Class of 2025',
+  },
+  'mobile.beautyCommunity.card.distinguishedGraduate.tip1': {
+    ar: 'التخصص: مكياج احترافي — 2025',
+    en: 'Specialty: professional makeup — 2025',
+  },
+  'mobile.beautyCommunity.card.distinguishedGraduate.tip2': {
+    ar: 'المنصب: مديرة صالون',
+    en: 'Role: salon manager',
+  },
+  'mobile.beautyCommunity.card.distinguishedGraduate.tip3': {
+    ar: 'قصتها: من خبيرة لمالكة في سنة',
+    en: 'Her story: from expert to owner in a year',
+  },
+  'mobile.beautyCommunity.card.distinguishedGraduate.tip4': {
+    ar: 'نصيحتها: ثقي بنفسكِ وابدئي صغيراً',
+    en: 'Her advice: believe in yourself and start small',
+  },
+  'mobile.beautyCommunity.card.scholarship.title': {
+    ar: 'منحة دراسية',
+    en: 'Scholarship',
+  },
+  'mobile.beautyCommunity.card.scholarship.subtitle': {
+    ar: 'دورة مكياج احترافي — 3000 ر.س',
+    en: 'Professional makeup course — 3,000 SAR',
+  },
+  'mobile.beautyCommunity.card.scholarship.tip1': {
+    ar: 'قيمة المنحة: 3000 ر.س',
+    en: 'Scholarship value: 3,000 SAR',
+  },
+  'mobile.beautyCommunity.card.scholarship.tip2': {
+    ar: 'المقاعد: 50 — آخر موعد 30 سبتمبر',
+    en: 'Seats: 50 — deadline September 30',
+  },
+  'mobile.beautyCommunity.card.scholarship.tip3': {
+    ar: 'الشروط: شغف بالتجميل + احتياج مالي',
+    en: 'Requirements: a passion for beauty + financial need',
+  },
+  'mobile.beautyCommunity.card.scholarship.tip4': {
+    ar: 'قدمي الآن — الفرصة محدودة',
+    en: 'Apply now — limited opportunity',
+  },
+  'mobile.beautyCommunity.card.discountVoucher.title': {
+    ar: 'قسيمة خصم',
+    en: 'Discount Voucher',
+  },
+  'mobile.beautyCommunity.card.discountVoucher.subtitle': {
+    ar: 'BEAUTY20 — خصم 20%',
+    en: 'BEAUTY20 — 20% off',
+  },
+  'mobile.beautyCommunity.card.discountVoucher.tip1': {
+    ar: 'الكود: BEAUTY20 — خصم 20%',
+    en: 'Code: BEAUTY20 — 20% off',
+  },
+  'mobile.beautyCommunity.card.discountVoucher.tip2': {
+    ar: 'الحد الأدنى: 150 ر.س',
+    en: 'Minimum: 150 SAR',
+  },
+  'mobile.beautyCommunity.card.discountVoucher.tip3': {
+    ar: 'صالح حتى: 31 ديسمبر 2026',
+    en: 'Valid until: December 31, 2026',
+  },
+  'mobile.beautyCommunity.card.discountVoucher.tip4': {
+    ar: 'مرة واحدة لكل عميلة',
+    en: 'Once per customer',
+  },
+  'mobile.beautyCommunity.card.savingsChallenge.subtitle': {
+    ar: '3200/5000 ر.س — 28 مشتركة',
+    en: '3,200/5,000 SAR — 28 participants',
+  },
+  'mobile.beautyCommunity.card.savingsChallenge.tip1': {
+    ar: 'الهدف: 5000 ر.س — وفرّي 3200',
+    en: 'Goal: 5,000 SAR — save 3,200',
+  },
+  'mobile.beautyCommunity.card.savingsChallenge.tip2': {
+    ar: '28 مشتركة — شجعي غيركِ',
+    en: '28 participants — encourage others',
+  },
+  'mobile.beautyCommunity.card.savingsChallenge.tip3': {
+    ar: '64% مكتمل — باقي 1800 ر.س',
+    en: '64% complete — 1,800 SAR to go',
+  },
+  'mobile.beautyCommunity.card.savingsChallenge.tip4': {
+    ar: 'الجائزة: قسيمة 500 ر.س للفائزة',
+    en: 'Prize: a 500 SAR voucher for the winner',
+  },
+  'mobile.beautyCommunity.card.mentorRequest.title': {
+    ar: 'اطلبي مرشداً',
+    en: 'Request a Mentor',
+  },
+  'mobile.beautyCommunity.card.mentorRequest.subtitle': {
+    ar: 'تعلمي من الخبيرات',
+    en: 'Learn from the experts',
+  },
+  'mobile.beautyCommunity.card.mentorRequest.tip1': {
+    ar: 'اهتماماتكِ: مكياج — إدارة الصالونات',
+    en: 'Your interests: makeup — salon management',
+  },
+  'mobile.beautyCommunity.card.mentorRequest.tip2': {
+    ar: 'مرشدة محتملة: م. سارة',
+    en: 'Potential mentor: Sarah M.',
+  },
+  'mobile.beautyCommunity.card.mentorRequest.tip3': {
+    ar: 'جلسة أسبوعية — ساعة واحدة',
+    en: 'A weekly session — one hour',
+  },
+  'mobile.beautyCommunity.card.mentorRequest.tip4': {
+    ar: 'المدة: 3 أشهر — خطة تطوير شخصية',
+    en: 'Duration: 3 months — a personal development plan',
+  },
+  'mobile.beautyCommunity.card.beautyDictionary.title': {
+    ar: 'قاموس الجمال',
+    en: 'Beauty Dictionary',
+  },
+  'mobile.beautyCommunity.card.beautyDictionary.subtitle': {
+    ar: 'تعلمي مصطلحات التجميل',
+    en: 'Learn beauty terminology',
+  },
+  'mobile.beautyCommunity.card.beautyDictionary.tip1': {
+    ar: 'عربي → English — مصطلحات التجميل',
+    en: 'Arabic → English — beauty terminology',
+  },
+  'mobile.beautyCommunity.card.beautyDictionary.tip2': {
+    ar: 'كونتور — Contour',
+    en: 'Contour — Contour',
+  },
+  'mobile.beautyCommunity.card.beautyDictionary.tip3': {
+    ar: 'هايلايتر — Highlighter',
+    en: 'Highlighter — Highlighter',
+  },
+  'mobile.beautyCommunity.card.beautyDictionary.tip4': {
+    ar: 'كلمة جديدة كل يوم',
+    en: 'A new word every day',
+  },
+  'mobile.beautyCommunity.card.progressPhotos.title': {
+    ar: 'صور التقدم',
+    en: 'Progress Photos',
+  },
+  'mobile.beautyCommunity.card.progressPhotos.subtitle': {
+    ar: '3 صور — منذ 1 يونيو 2026',
+    en: '3 photos — since June 1, 2026',
+  },
+  'mobile.beautyCommunity.card.progressPhotos.tip1': {
+    ar: '3 صور — وثقي رحلتكِ',
+    en: '3 photos — document your journey',
+  },
+  'mobile.beautyCommunity.card.progressPhotos.tip2': {
+    ar: 'بداية التوثيق: 1 يونيو 2026',
+    en: 'Tracking started: June 1, 2026',
+  },
+  'mobile.beautyCommunity.card.progressPhotos.tip3': {
+    ar: 'لاحظي الفرق — بشرة أكثر إشراقاً',
+    en: 'Notice the difference — brighter skin',
+  },
+  'mobile.beautyCommunity.card.progressPhotos.tip4': {
+    ar: 'خاص — لكِ فقط',
+    en: 'Private — for you only',
+  },
+  'mobile.beautyCommunity.card.privacyShield.title': {
+    ar: 'درع الخصوصية',
+    en: 'Privacy Shield',
+  },
+  'mobile.beautyCommunity.card.privacyShield.subtitle': {
+    ar: 'تحكمي في معلوماتكِ',
+    en: 'Control your information',
+  },
+  'mobile.beautyCommunity.card.privacyShield.tip1': {
+    ar: 'اختاري من يرى صورتكِ',
+    en: 'Choose who sees your photo',
+  },
+  'mobile.beautyCommunity.card.privacyShield.tip2': {
+    ar: 'تاريخكِ — لكِ وحدكِ',
+    en: 'Your history — yours alone',
+  },
+  'mobile.beautyCommunity.card.privacyShield.tip3': {
+    ar: 'مشفرة — أعلى معايير الأمان',
+    en: 'Encrypted — the highest security standards',
+  },
+  'mobile.beautyCommunity.card.privacyShield.tip4': {
+    ar: 'موافقة — قبل أي مشاركة',
+    en: 'Consent — before any sharing',
+  },
+
+  // ---- beauty-discovery (sweep s5) ----
+  'mobile.beautyDiscovery.separator': { ar: '،', en: ',' },
+
+  // ---- beauty-extras cards (sweep s5) ----
+  // card.beautyVlog.subtitle reuses beautyExtras.dayInNouraLife (verbatim ar match).
+  'mobile.beautyExtras.card.timeCapsule.title': { ar: 'كبسولة الزمن', en: 'Time Capsule' },
+  'mobile.beautyExtras.card.timeCapsule.subtitle': {
+    ar: 'رسالة لنفسكِ المستقبلية',
+    en: 'A message to your future self',
+  },
+  'mobile.beautyExtras.card.timeCapsule.tip1': {
+    ar: 'تاريخ الحفظ: 6 أغسطس 2026',
+    en: 'Saved on: August 6, 2026',
+  },
+  'mobile.beautyExtras.card.timeCapsule.tip2': {
+    ar: 'تفتح في: 6 أغسطس 2027',
+    en: 'Opens on: August 6, 2027',
+  },
+  'mobile.beautyExtras.card.timeCapsule.tip3': {
+    ar: 'رسالة: أهداف جمالكِ للعام القادم',
+    en: 'Message: your beauty goals for next year',
+  },
+  'mobile.beautyExtras.card.timeCapsule.tip4': {
+    ar: 'مرفق: صورة بشرتكِ الآن',
+    en: 'Attached: a photo of your skin now',
+  },
+  'mobile.beautyExtras.card.dreamBoard.title': { ar: 'لوحة الأحلام', en: 'Dream Board' },
+  'mobile.beautyExtras.card.dreamBoard.subtitle': {
+    ar: 'أحلامكِ على لوحة واحدة',
+    en: 'Your dreams on one board',
+  },
+  'mobile.beautyExtras.card.dreamBoard.tip1': {
+    ar: 'شعر طويل صحي — هدفي للعام القادم',
+    en: 'Healthy long hair — my goal for next year',
+  },
+  'mobile.beautyExtras.card.dreamBoard.tip2': {
+    ar: 'إطلالة زفاف مثالية — حلم العمر',
+    en: 'A perfect bridal look — the dream of a lifetime',
+  },
+  'mobile.beautyExtras.card.dreamBoard.tip3': {
+    ar: 'إتقان المكياج — دورة احترافية',
+    en: 'Makeup mastery — a professional course',
+  },
+  'mobile.beautyExtras.card.dreamBoard.tip4': {
+    ar: 'روتين عناية يومي — التزام',
+    en: 'A daily care routine — commitment',
+  },
+  'mobile.beautyExtras.card.secretSanta.title': { ar: 'سكرت سانتا', en: 'Secret Santa' },
+  'mobile.beautyExtras.card.secretSanta.subtitle': {
+    ar: 'تبادل هدايا — عرايس الرياض',
+    en: 'Gift exchange — Riyadh Brides',
+  },
+  'mobile.beautyExtras.card.secretSanta.tip1': {
+    ar: 'المجموعة: عرايس الرياض — 12 مشتركة',
+    en: 'Group: Riyadh Brides — 12 participants',
+  },
+  'mobile.beautyExtras.card.secretSanta.tip2': {
+    ar: 'الميزانية: 200 ر.س للهدية',
+    en: 'Budget: 200 SAR per gift',
+  },
+  'mobile.beautyExtras.card.secretSanta.tip3': {
+    ar: 'القرعة: 15 ديسمبر — تبادل الهدايا',
+    en: 'Draw: December 15 — gift exchange',
+  },
+  'mobile.beautyExtras.card.secretSanta.tip4': {
+    ar: 'حفل التبادل: 25 ديسمبر',
+    en: 'Exchange party: December 25',
+  },
+  'mobile.beautyExtras.card.accountabilityPartner.title': {
+    ar: 'شريك المساءلة',
+    en: 'Accountability Partner',
+  },
+  'mobile.beautyExtras.card.accountabilityPartner.subtitle': {
+    ar: 'نورة — 12 يوم تواصل',
+    en: 'Noura — 12 days of check-ins',
+  },
+  'mobile.beautyExtras.card.accountabilityPartner.tip1': {
+    ar: 'الشريك: نورة — روتين عناية يومي',
+    en: 'Partner: Noura — a daily care routine',
+  },
+  'mobile.beautyExtras.card.accountabilityPartner.tip2': {
+    ar: '12 يوم متواصل — الهدف 30 يوم',
+    en: '12 days in a row — goal is 30 days',
+  },
+  'mobile.beautyExtras.card.accountabilityPartner.tip3': {
+    ar: 'تذكير يومي — الساعة 9 مساءً',
+    en: 'A daily reminder — at 9 PM',
+  },
+  'mobile.beautyExtras.card.accountabilityPartner.tip4': {
+    ar: 'المكافأة: خصم 10% عند 30 يوم',
+    en: 'Reward: 10% off at 30 days',
+  },
+  'mobile.beautyExtras.card.gratitudeCircle.title': {
+    ar: 'دائرة الامتنان',
+    en: 'Gratitude Circle',
+  },
+  'mobile.beautyExtras.card.gratitudeCircle.subtitle': {
+    ar: 'شكراً لكِ — كلمات طيبة',
+    en: 'Thank you — kind words',
+  },
+  'mobile.beautyExtras.card.gratitudeCircle.tip1': {
+    ar: 'نورة → مها: شكراً لنصيحة البشرة!',
+    en: 'Noura → Maha: thanks for the skincare tip!',
+  },
+  'mobile.beautyExtras.card.gratitudeCircle.tip2': {
+    ar: 'مها → ريم: أنتِ ملهمة دائماً',
+    en: 'Maha → Reem: you are always inspiring',
+  },
+  'mobile.beautyExtras.card.gratitudeCircle.tip3': {
+    ar: 'ريم → سارة: شكراً لدعمكِ المتواصل',
+    en: 'Reem → Sara: thanks for your constant support',
+  },
+  'mobile.beautyExtras.card.gratitudeCircle.tip4': {
+    ar: 'أرسلي كلمة شكر — تضيء يوم أحد',
+    en: 'Send a thank-you — it brightens someone’s day',
+  },
+  'mobile.beautyExtras.card.affirmations.title': {
+    ar: 'توكيدات إيجابية',
+    en: 'Positive Affirmations',
+  },
+  'mobile.beautyExtras.card.affirmations.subtitle': {
+    ar: 'أنا جميلة — أنا قوية',
+    en: 'I am beautiful — I am strong',
+  },
+  'mobile.beautyExtras.card.affirmations.tip1': {
+    ar: 'أنا أستحق العناية بنفسي كل يوم',
+    en: 'I deserve to take care of myself every day',
+  },
+  'mobile.beautyExtras.card.affirmations.tip2': {
+    ar: 'جمالي ينبع من ثقتي بنفسي',
+    en: 'My beauty comes from my self-confidence',
+  },
+  'mobile.beautyExtras.card.affirmations.tip3': {
+    ar: 'كل يوم أكون فيه أفضل من الأمس',
+    en: 'Every day I am better than yesterday',
+  },
+  'mobile.beautyExtras.card.affirmations.tip4': {
+    ar: 'أحب نفسي كما أنا — وهذه قوتي',
+    en: 'I love myself as I am — and that is my strength',
+  },
+  'mobile.beautyExtras.card.gratitudeJournal.title': {
+    ar: 'يوميات الامتنان',
+    en: 'Gratitude Journal',
+  },
+  'mobile.beautyExtras.card.gratitudeJournal.subtitle': {
+    ar: '15 تدوينة — استمري',
+    en: '15 entries — keep going',
+  },
+  'mobile.beautyExtras.card.gratitudeJournal.tip1': {
+    ar: '15 تدوينة — 15 يوماً من الشكر',
+    en: '15 entries — 15 days of gratitude',
+  },
+  'mobile.beautyExtras.card.gratitudeJournal.tip2': {
+    ar: '5 أيام متواصلة',
+    en: '5 days in a row',
+  },
+  'mobile.beautyExtras.card.gratitudeJournal.tip3': {
+    ar: 'آخر تدوينة: بشرة مشرقة اليوم',
+    en: 'Latest entry: bright skin today',
+  },
+  'mobile.beautyExtras.card.gratitudeJournal.tip4': {
+    ar: 'الهدف: 30 يوم امتنان',
+    en: 'Goal: 30 days of gratitude',
+  },
+  'mobile.beautyExtras.card.beautyVlog.title': { ar: 'فلوق الجمال', en: 'Beauty Vlog' },
+  'mobile.beautyExtras.card.beautyVlog.tip1': {
+    ar: 'الفئة: مكياج — 8 دقائق',
+    en: 'Category: makeup — 8 minutes',
+  },
+  'mobile.beautyExtras.card.beautyVlog.tip2': {
+    ar: 'تقديم: نورة — خبيرة تجميل',
+    en: 'Presented by: Noura — beauty expert',
+  },
+  'mobile.beautyExtras.card.beautyVlog.tip3': { ar: '1,234 مشاهدة', en: '1,234 views' },
+  'mobile.beautyExtras.card.beautyVlog.tip4': {
+    ar: 'شاهدي الفلوق — تعلمي روتين جديد',
+    en: 'Watch the vlog — learn a new routine',
+  },
+
+  // ---- beauty-goals (sweep s5) ----
+  // goal.glowingSkin reuses beautyDiary.glow-skin (verbatim ar match).
+  'mobile.beautyGoals.goal.hairCare': { ar: 'عناية بالشعر', en: 'Hair Care' },
+  'mobile.beautyGoals.goal.selfCare': { ar: 'عناية ذاتية', en: 'Self-Care' },
+  'mobile.beautyGoals.goal.nails': { ar: 'أظافر مثالية', en: 'Perfect Nails' },
 } as const satisfies Record<string, { ar: string; en: string }>;

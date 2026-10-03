@@ -1,15 +1,16 @@
 import type { JSX } from 'react';
 import { View, Text, ScrollView, StyleSheet } from 'react-native';
+import type { TranslationKey } from '@galaxy/shared';
 import { useLocale } from '@/components/LocaleProvider';
 
 interface Tip {
   emoji: string;
-  text: string;
+  textKey: TranslationKey;
 }
 interface Card {
   emoji: string;
-  title: string;
-  subtitle: string;
+  titleKey: TranslationKey;
+  subtitleKey: TranslationKey;
   color: string;
   bg: string;
   tips: Tip[];
@@ -18,119 +19,119 @@ interface Card {
 const CARDS: Card[] = [
   {
     emoji: '👭',
-    title: 'فرقة الرياض',
-    subtitle: '4 عضوات — اللقاء القادم 15 أغسطس',
+    titleKey: 'community.squadName',
+    subtitleKey: 'mobile.beautyCommunity.card.riyadhSquad.subtitle',
     color: '#7c3aed',
     bg: '#f5f3ff',
     tips: [
-      { emoji: '💅', text: 'مانيكير جماعي — 15 أغسطس' },
-      { emoji: '👥', text: '4 عضوات — نورة، مها، ريم، سارة' },
-      { emoji: '🔖', text: 'خصم المجموعة — 15%' },
-      { emoji: '📅', text: 'الهدف: لقاء شهري' },
+      { emoji: '💅', textKey: 'mobile.beautyCommunity.card.riyadhSquad.tip1' },
+      { emoji: '👥', textKey: 'mobile.beautyCommunity.card.riyadhSquad.tip2' },
+      { emoji: '🔖', textKey: 'mobile.beautyCommunity.card.riyadhSquad.tip3' },
+      { emoji: '📅', textKey: 'mobile.beautyCommunity.card.riyadhSquad.tip4' },
     ],
   },
   {
     emoji: '🏅',
-    title: 'خريجة متميزة',
-    subtitle: 'نورة — دفعة 2025',
+    titleKey: 'mobile.beautyCommunity.card.distinguishedGraduate.title',
+    subtitleKey: 'mobile.beautyCommunity.card.distinguishedGraduate.subtitle',
     color: '#d97706',
     bg: '#fffbeb',
     tips: [
-      { emoji: '💄', text: 'التخصص: مكياج احترافي — 2025' },
-      { emoji: '💼', text: 'المنصب: مديرة صالون' },
-      { emoji: '📖', text: 'قصتها: من خبيرة لمالكة في سنة' },
-      { emoji: '💡', text: 'نصيحتها: ثقي بنفسكِ وابدئي صغيراً' },
+      { emoji: '💄', textKey: 'mobile.beautyCommunity.card.distinguishedGraduate.tip1' },
+      { emoji: '💼', textKey: 'mobile.beautyCommunity.card.distinguishedGraduate.tip2' },
+      { emoji: '📖', textKey: 'mobile.beautyCommunity.card.distinguishedGraduate.tip3' },
+      { emoji: '💡', textKey: 'mobile.beautyCommunity.card.distinguishedGraduate.tip4' },
     ],
   },
   {
     emoji: '🎓',
-    title: 'منحة دراسية',
-    subtitle: 'دورة مكياج احترافي — 3000 ر.س',
+    titleKey: 'mobile.beautyCommunity.card.scholarship.title',
+    subtitleKey: 'mobile.beautyCommunity.card.scholarship.subtitle',
     color: '#059669',
     bg: '#ecfdf5',
     tips: [
-      { emoji: '💰', text: 'قيمة المنحة: 3000 ر.س' },
-      { emoji: '🪑', text: 'المقاعد: 50 — آخر موعد 30 سبتمبر' },
-      { emoji: '📋', text: 'الشروط: شغف بالتجميل + احتياج مالي' },
-      { emoji: '📝', text: 'قدمي الآن — الفرصة محدودة' },
+      { emoji: '💰', textKey: 'mobile.beautyCommunity.card.scholarship.tip1' },
+      { emoji: '🪑', textKey: 'mobile.beautyCommunity.card.scholarship.tip2' },
+      { emoji: '📋', textKey: 'mobile.beautyCommunity.card.scholarship.tip3' },
+      { emoji: '📝', textKey: 'mobile.beautyCommunity.card.scholarship.tip4' },
     ],
   },
   {
     emoji: '🎫',
-    title: 'قسيمة خصم',
-    subtitle: 'BEAUTY20 — خصم 20%',
+    titleKey: 'mobile.beautyCommunity.card.discountVoucher.title',
+    subtitleKey: 'mobile.beautyCommunity.card.discountVoucher.subtitle',
     color: '#e11d48',
     bg: '#fff1f2',
     tips: [
-      { emoji: '🔖', text: 'الكود: BEAUTY20 — خصم 20%' },
-      { emoji: '💳', text: 'الحد الأدنى: 150 ر.س' },
-      { emoji: '📅', text: 'صالح حتى: 31 ديسمبر 2026' },
-      { emoji: '👤', text: 'مرة واحدة لكل عميلة' },
+      { emoji: '🔖', textKey: 'mobile.beautyCommunity.card.discountVoucher.tip1' },
+      { emoji: '💳', textKey: 'mobile.beautyCommunity.card.discountVoucher.tip2' },
+      { emoji: '📅', textKey: 'mobile.beautyCommunity.card.discountVoucher.tip3' },
+      { emoji: '👤', textKey: 'mobile.beautyCommunity.card.discountVoucher.tip4' },
     ],
   },
   {
     emoji: '🏦',
-    title: 'تحدي الادخار',
-    subtitle: '3200/5000 ر.س — 28 مشتركة',
+    titleKey: 'community.challenge.name',
+    subtitleKey: 'mobile.beautyCommunity.card.savingsChallenge.subtitle',
     color: '#0d9488',
     bg: '#f0fdfa',
     tips: [
-      { emoji: '🎯', text: 'الهدف: 5000 ر.س — وفرّي 3200 ' },
-      { emoji: '👥', text: '28 مشتركة — شجعي غيركِ' },
-      { emoji: '📊', text: '64% مكتمل — باقي 1800 ر.س' },
-      { emoji: '🏆', text: 'الجائزة: قسيمة 500 ر.س للفائزة' },
+      { emoji: '🎯', textKey: 'mobile.beautyCommunity.card.savingsChallenge.tip1' },
+      { emoji: '👥', textKey: 'mobile.beautyCommunity.card.savingsChallenge.tip2' },
+      { emoji: '📊', textKey: 'mobile.beautyCommunity.card.savingsChallenge.tip3' },
+      { emoji: '🏆', textKey: 'mobile.beautyCommunity.card.savingsChallenge.tip4' },
     ],
   },
   {
     emoji: '🤝',
-    title: 'اطلبي مرشداً',
-    subtitle: 'تعلمي من الخبيرات',
+    titleKey: 'mobile.beautyCommunity.card.mentorRequest.title',
+    subtitleKey: 'mobile.beautyCommunity.card.mentorRequest.subtitle',
     color: '#db2777',
     bg: '#fdf2f8',
     tips: [
-      { emoji: '💄', text: 'اهتماماتكِ: مكياج — إدارة الصالونات' },
-      { emoji: '👩', text: 'مرشدة محتملة: م. سارة' },
-      { emoji: '⏰', text: 'جلسة أسبوعية — ساعة واحدة' },
-      { emoji: '📆', text: 'المدة: 3 أشهر — خطة تطوير شخصية' },
+      { emoji: '💄', textKey: 'mobile.beautyCommunity.card.mentorRequest.tip1' },
+      { emoji: '👩', textKey: 'mobile.beautyCommunity.card.mentorRequest.tip2' },
+      { emoji: '⏰', textKey: 'mobile.beautyCommunity.card.mentorRequest.tip3' },
+      { emoji: '📆', textKey: 'mobile.beautyCommunity.card.mentorRequest.tip4' },
     ],
   },
   {
     emoji: '📚',
-    title: 'قاموس الجمال',
-    subtitle: 'تعلمي مصطلحات التجميل',
+    titleKey: 'mobile.beautyCommunity.card.beautyDictionary.title',
+    subtitleKey: 'mobile.beautyCommunity.card.beautyDictionary.subtitle',
     color: '#0d9488',
     bg: '#f0fdfa',
     tips: [
-      { emoji: '🔤', text: 'عربي → English — مصطلحات التجميل' },
-      { emoji: '💄', text: 'كونتور — Contour' },
-      { emoji: '✨', text: 'هايلايتر — Highlighter' },
-      { emoji: '🌟', text: 'كلمة جديدة كل يوم' },
+      { emoji: '🔤', textKey: 'mobile.beautyCommunity.card.beautyDictionary.tip1' },
+      { emoji: '💄', textKey: 'mobile.beautyCommunity.card.beautyDictionary.tip2' },
+      { emoji: '✨', textKey: 'mobile.beautyCommunity.card.beautyDictionary.tip3' },
+      { emoji: '🌟', textKey: 'mobile.beautyCommunity.card.beautyDictionary.tip4' },
     ],
   },
   {
     emoji: '📸',
-    title: 'صور التقدم',
-    subtitle: '3 صور — منذ 1 يونيو 2026',
+    titleKey: 'mobile.beautyCommunity.card.progressPhotos.title',
+    subtitleKey: 'mobile.beautyCommunity.card.progressPhotos.subtitle',
     color: '#7c3aed',
     bg: '#f5f3ff',
     tips: [
-      { emoji: '📷', text: '3 صور — وثقي رحلتكِ' },
-      { emoji: '📅', text: 'بداية التوثيق: 1 يونيو 2026' },
-      { emoji: '✨', text: 'لاحظي الفرق — بشرة أكثر إشراقاً' },
-      { emoji: '🔐', text: 'خاص — لكِ فقط' },
+      { emoji: '📷', textKey: 'mobile.beautyCommunity.card.progressPhotos.tip1' },
+      { emoji: '📅', textKey: 'mobile.beautyCommunity.card.progressPhotos.tip2' },
+      { emoji: '✨', textKey: 'mobile.beautyCommunity.card.progressPhotos.tip3' },
+      { emoji: '🔐', textKey: 'mobile.beautyCommunity.card.progressPhotos.tip4' },
     ],
   },
   {
     emoji: '🔏',
-    title: 'درع الخصوصية',
-    subtitle: 'تحكمي في معلوماتكِ',
+    titleKey: 'mobile.beautyCommunity.card.privacyShield.title',
+    subtitleKey: 'mobile.beautyCommunity.card.privacyShield.subtitle',
     color: '#4f46e5',
     bg: '#eef2ff',
     tips: [
-      { emoji: '📷', text: 'اختاري من يرى صورتكِ' },
-      { emoji: '🔒', text: 'تاريخكِ — لكِ وحدكِ' },
-      { emoji: '🔐', text: 'مشفرة — أعلى معايير الأمان' },
-      { emoji: '✅', text: 'موافقة — قبل أي مشاركة' },
+      { emoji: '📷', textKey: 'mobile.beautyCommunity.card.privacyShield.tip1' },
+      { emoji: '🔒', textKey: 'mobile.beautyCommunity.card.privacyShield.tip2' },
+      { emoji: '🔐', textKey: 'mobile.beautyCommunity.card.privacyShield.tip3' },
+      { emoji: '✅', textKey: 'mobile.beautyCommunity.card.privacyShield.tip4' },
     ],
   },
 ];
@@ -147,15 +148,15 @@ export default function BeautyCommunityScreen(): JSX.Element {
             <View style={s.ch}>
               <Text style={s.ce}>{c.emoji}</Text>
               <View style={s.cw}>
-                <Text style={[s.ct, { color: c.color }]}>{c.title}</Text>
-                <Text style={s.cs}>{c.subtitle}</Text>
+                <Text style={[s.ct, { color: c.color }]}>{t(c.titleKey)}</Text>
+                <Text style={s.cs}>{t(c.subtitleKey)}</Text>
               </View>
             </View>
             <View style={s.tl}>
-              {c.tips.map((t, j) => (
+              {c.tips.map((tip, j) => (
                 <View key={j} style={[s.tr, { backgroundColor: c.bg }]}>
-                  <Text style={s.te}>{t.emoji}</Text>
-                  <Text style={[s.tt, { color: c.color }]}>{t.text}</Text>
+                  <Text style={s.te}>{tip.emoji}</Text>
+                  <Text style={[s.tt, { color: c.color }]}>{t(tip.textKey)}</Text>
                 </View>
               ))}
             </View>

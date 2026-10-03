@@ -1,15 +1,23 @@
 import type { JSX } from 'react';
 import { View, Text, ScrollView, StyleSheet, RefreshControl } from 'react-native';
+import type { TranslationKey } from '@galaxy/shared';
 import { SkeletonList } from '@/components/SkeletonCard';
 import { useLocale } from '@/components/LocaleProvider';
 import { useAuthState } from '@/hooks/useAuthState';
 import { trpc } from '@/lib/trpc-react';
 
-const GT = [
-  { key: 'glowing_skin', emoji: '✨', title: 'بشرة متألقة', target: 12 },
-  { key: 'hair_care', emoji: '💇', title: 'عناية بالشعر', target: 8 },
-  { key: 'selfcare', emoji: '🧘', title: 'عناية ذاتية', target: 20 },
-  { key: 'nails', emoji: '💅', title: 'أظافر مثالية', target: 24 },
+interface GoalTrack {
+  key: string;
+  emoji: string;
+  titleKey: TranslationKey;
+  target: number;
+}
+
+const GT: GoalTrack[] = [
+  { key: 'glowing_skin', emoji: '✨', titleKey: 'beautyDiary.glow-skin', target: 12 },
+  { key: 'hair_care', emoji: '💇', titleKey: 'mobile.beautyGoals.goal.hairCare', target: 8 },
+  { key: 'selfcare', emoji: '🧘', titleKey: 'mobile.beautyGoals.goal.selfCare', target: 20 },
+  { key: 'nails', emoji: '💅', titleKey: 'mobile.beautyGoals.goal.nails', target: 24 },
 ];
 
 export default function BeautyGoalsScreen(): JSX.Element {
@@ -38,7 +46,7 @@ export default function BeautyGoalsScreen(): JSX.Element {
           return (
             <View key={g.key} style={styles.card}>
               <Text style={styles.ge}>{g.emoji}</Text>
-              <Text style={styles.gt}>{g.title}</Text>
+              <Text style={styles.gt}>{t(g.titleKey)}</Text>
               <View style={styles.pb}>
                 <View style={[styles.pf, { width: `${pct}%` }]} />
               </View>
