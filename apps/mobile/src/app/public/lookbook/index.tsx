@@ -1,90 +1,133 @@
 import { View, Text, ScrollView, StyleSheet, TouchableOpacity } from 'react-native';
 import { useState } from 'react';
 import type { JSX } from 'react';
+import type { TranslationKey } from '@galaxy/shared';
 import { useLocale } from '@/components/LocaleProvider';
 
-const SEASONS = [
-  { id: 'summer', nameAr: 'صيف ٢٠٢٦', emoji: '☀️', color: '#f59e0b' },
-  { id: 'eid', nameAr: 'أناقة العيد', emoji: '✨', color: '#10b981' },
-  { id: 'wedding', nameAr: 'موسم الأعراس', emoji: '💍', color: '#ec4899' },
-  { id: 'ramadan', nameAr: 'رمضان كريم', emoji: '🌙', color: '#7c3aed' },
+interface Season {
+  id: string;
+  nameKey: TranslationKey;
+  emoji: string;
+  color: string;
+}
+
+const SEASONS: Season[] = [
+  {
+    id: 'summer',
+    nameKey: 'mobile.public.lookbook.season.summer',
+    emoji: '☀️',
+    color: '#f59e0b',
+  },
+  { id: 'eid', nameKey: 'mobile.public.lookbook.season.eid', emoji: '✨', color: '#10b981' },
+  {
+    id: 'wedding',
+    nameKey: 'mobile.public.lookbook.season.wedding',
+    emoji: '💍',
+    color: '#ec4899',
+  },
+  {
+    id: 'ramadan',
+    nameKey: 'mobile.public.lookbook.season.ramadan',
+    emoji: '🌙',
+    color: '#7c3aed',
+  },
 ];
 
-const LOOKS: Record<string, { title: string; desc: string; emoji: string; tags: string[] }[]> = {
+interface Look {
+  titleKey: TranslationKey;
+  descKey: TranslationKey;
+  emoji: string;
+  tagKeys: TranslationKey[];
+}
+
+const LOOKS: Record<string, Look[]> = {
   summer: [
     {
-      title: 'إطلالة شاطئية منعشة',
-      desc: 'مكياج خفيف مقاوم للماء مع تسريحة شاطئية',
+      titleKey: 'mobile.public.lookbook.summer.look1.title',
+      descKey: 'mobile.public.lookbook.summer.look1.desc',
       emoji: '🏖️',
-      tags: ['مكياج', 'شعر', 'عناية'],
+      tagKeys: [
+        'mobile.public.lookbook.tag.makeup',
+        'mobile.public.lookbook.tag.hair',
+        'mobile.public.lookbook.tag.care',
+      ],
     },
     {
-      title: 'عناية بالبشرة قبل الصيف',
-      desc: 'تقشير وترطيب عميق لبشرة متألقة',
+      titleKey: 'mobile.public.lookbook.summer.look2.title',
+      descKey: 'mobile.public.lookbook.summer.look2.desc',
       emoji: '🧴',
-      tags: ['بشرة', 'عناية'],
+      tagKeys: ['mobile.public.lookbook.tag.skin', 'mobile.public.lookbook.tag.care'],
     },
     {
-      title: 'ألوان الصيف الجريئة',
-      desc: 'مانيكير وباديكير بألوان الموسم',
+      titleKey: 'mobile.public.lookbook.summer.look3.title',
+      descKey: 'mobile.public.lookbook.summer.look3.desc',
       emoji: '💅',
-      tags: ['أظافر', 'مانيكير'],
+      tagKeys: ['mobile.public.lookbook.tag.nails', 'mobile.public.lookbook.tag.manicure'],
     },
   ],
   eid: [
     {
-      title: 'إطلالة العيد الفاخرة',
-      desc: 'مكياج سهرة مع تسريحة أنيقة',
+      titleKey: 'mobile.public.lookbook.eid.look1.title',
+      descKey: 'mobile.public.lookbook.eid.look1.desc',
       emoji: '💫',
-      tags: ['مكياج', 'شعر'],
+      tagKeys: ['mobile.public.lookbook.tag.makeup', 'mobile.public.lookbook.tag.hair'],
     },
     {
-      title: 'حناء العيد',
-      desc: 'نقوش حناء عصرية للمناسبات',
+      titleKey: 'mobile.public.lookbook.eid.look2.title',
+      descKey: 'mobile.public.lookbook.eid.look2.desc',
       emoji: '🌿',
-      tags: ['حناء', 'مناسبات'],
+      tagKeys: ['mobile.public.lookbook.tag.henna', 'mobile.public.lookbook.tag.occasions'],
     },
     {
-      title: 'بشرة متألقة للعيد',
-      desc: 'جلسة عناية متكاملة قبل العيد',
+      titleKey: 'mobile.public.lookbook.eid.look3.title',
+      descKey: 'mobile.public.lookbook.eid.look3.desc',
       emoji: '✨',
-      tags: ['بشرة', 'عناية'],
+      tagKeys: ['mobile.public.lookbook.tag.skin', 'mobile.public.lookbook.tag.care'],
     },
   ],
   wedding: [
     {
-      title: 'إطلالة العروس الكاملة',
-      desc: 'مكياج، شعر، وأظافر ليومكِ الكبير',
+      titleKey: 'mobile.public.lookbook.wedding.look1.title',
+      descKey: 'mobile.public.lookbook.wedding.look1.desc',
       emoji: '👰',
-      tags: ['عرايس', 'مكياج', 'شعر'],
+      tagKeys: [
+        'mobile.public.lookbook.tag.brides',
+        'mobile.public.lookbook.tag.makeup',
+        'mobile.public.lookbook.tag.hair',
+      ],
     },
     {
-      title: 'جلسة تصوير العروس',
-      desc: 'مكياج احترافي يدوم طوال اليوم',
+      titleKey: 'mobile.public.lookbook.wedding.look2.title',
+      descKey: 'mobile.public.lookbook.wedding.look2.desc',
       emoji: '📸',
-      tags: ['مكياج', 'تصوير'],
+      tagKeys: ['mobile.public.lookbook.tag.makeup', 'mobile.public.lookbook.tag.photography'],
     },
     {
-      title: 'إطلالة أم العروس',
-      desc: 'مكياج ناعم وأنيق لأم العروس',
+      titleKey: 'mobile.public.lookbook.wedding.look3.title',
+      descKey: 'mobile.public.lookbook.wedding.look3.desc',
       emoji: '💐',
-      tags: ['مكياج', 'مناسبات'],
+      tagKeys: ['mobile.public.lookbook.tag.makeup', 'mobile.public.lookbook.tag.occasions'],
     },
   ],
   ramadan: [
     {
-      title: 'إطلالة رمضانية راقية',
-      desc: 'مكياج ناعم للسهرات الرمضانية',
+      titleKey: 'mobile.public.lookbook.ramadan.look1.title',
+      descKey: 'mobile.public.lookbook.ramadan.look1.desc',
       emoji: '🌙',
-      tags: ['مكياج', 'سهرة'],
+      tagKeys: ['mobile.public.lookbook.tag.makeup', 'mobile.public.lookbook.tag.evening'],
     },
     {
-      title: 'عناية رمضانية',
-      desc: 'روتين عناية ليلي للصائمات',
+      titleKey: 'mobile.public.lookbook.ramadan.look2.title',
+      descKey: 'mobile.public.lookbook.ramadan.look2.desc',
       emoji: '🧴',
-      tags: ['بشرة', 'عناية'],
+      tagKeys: ['mobile.public.lookbook.tag.skin', 'mobile.public.lookbook.tag.care'],
     },
-    { title: 'تسريحة السحور', desc: 'تسريحة سريعة وأنيقة', emoji: '💇', tags: ['شعر', 'تسريحة'] },
+    {
+      titleKey: 'mobile.public.lookbook.ramadan.look3.title',
+      descKey: 'mobile.public.lookbook.ramadan.look3.desc',
+      emoji: '💇',
+      tagKeys: ['mobile.public.lookbook.tag.hair', 'mobile.public.lookbook.tag.hairstyle'],
+    },
   ],
 };
 
@@ -107,7 +150,7 @@ export default function LookbookScreen(): JSX.Element {
               style={[styles.seasonChip, season === s.id && { backgroundColor: s.color }]}
             >
               <Text style={[styles.seasonText, season === s.id && { color: '#fff' }]}>
-                {s.emoji} {s.nameAr}
+                {s.emoji} {t(s.nameKey)}
               </Text>
             </TouchableOpacity>
           ))}
@@ -118,12 +161,12 @@ export default function LookbookScreen(): JSX.Element {
         <View key={i} style={styles.card}>
           <Text style={styles.lookEmoji}>{look.emoji}</Text>
           <View style={{ flex: 1 }}>
-            <Text style={styles.lookTitle}>{look.title}</Text>
-            <Text style={styles.lookDesc}>{look.desc}</Text>
+            <Text style={styles.lookTitle}>{t(look.titleKey)}</Text>
+            <Text style={styles.lookDesc}>{t(look.descKey)}</Text>
             <View style={styles.tags}>
-              {look.tags.map((tag) => (
-                <Text key={tag} style={styles.tag}>
-                  {tag}
+              {look.tagKeys.map((tagKey) => (
+                <Text key={tagKey} style={styles.tag}>
+                  {t(tagKey)}
                 </Text>
               ))}
             </View>

@@ -4,6 +4,7 @@ import type { JSX } from 'react';
 import { ScreenState } from '@/components/ScreenState';
 import { trpc } from '@/lib/trpc-react';
 import { localize } from '@galaxy/shared';
+import type { TranslationKey } from '@galaxy/shared';
 import { useLocale } from '@/components/LocaleProvider';
 
 const COLORS = { brand: '#7c3aed', white: '#ffffff', gray400: '#6b7280', gray900: '#111827' };
@@ -14,18 +15,49 @@ interface GiftRecommendation {
   price?: number;
 }
 
-const QUESTIONS = [
+interface QuizOption {
+  key: string;
+  labelKey: TranslationKey;
+}
+
+interface QuizQuestion {
+  key: string;
+  questionKey: TranslationKey;
+  options: QuizOption[];
+}
+
+const QUESTIONS: QuizQuestion[] = [
   {
     key: 'occasion',
-    q: 'ما هي المناسبة؟',
-    options: ['عيد ميلاد', 'زفاف', 'تخرج', 'شكر', 'بدون مناسبة'],
+    questionKey: 'mobile.public.giftQuiz.q.occasion',
+    options: [
+      { key: 'birthday', labelKey: 'mobile.public.giftQuiz.option.occasion.birthday' },
+      { key: 'wedding', labelKey: 'mobile.public.giftQuiz.option.occasion.wedding' },
+      { key: 'graduation', labelKey: 'mobile.public.giftQuiz.option.occasion.graduation' },
+      { key: 'thankyou', labelKey: 'mobile.public.giftQuiz.option.occasion.thankyou' },
+      { key: 'justbecause', labelKey: 'mobile.public.giftQuiz.option.occasion.justbecause' },
+    ],
   },
   {
     key: 'recipient',
-    q: 'لمن الهدية؟',
-    options: ['صديقة', 'أمي', 'أختي', 'زوجتي', 'نفسي'],
+    questionKey: 'mobile.public.giftQuiz.q.recipient',
+    options: [
+      { key: 'friend', labelKey: 'mobile.public.giftQuiz.option.recipient.friend' },
+      { key: 'mom', labelKey: 'mobile.public.giftQuiz.option.recipient.mom' },
+      { key: 'sister', labelKey: 'mobile.public.giftQuiz.option.recipient.sister' },
+      { key: 'wife', labelKey: 'mobile.public.giftQuiz.option.recipient.wife' },
+      { key: 'self', labelKey: 'mobile.public.giftQuiz.option.recipient.self' },
+    ],
   },
-  { key: 'budget', q: 'ميزانيتك؟', options: ['اقتصادية', 'متوسطة', 'فاخرة'] },
+  {
+    key: 'budget',
+    questionKey: 'mobile.public.giftQuiz.q.budget',
+    options: [
+      { key: 'low', labelKey: 'mobile.public.giftQuiz.option.budget.low' },
+      { key: 'mid', labelKey: 'mobile.public.giftQuiz.option.budget.mid' },
+      { key: 'high', labelKey: 'mobile.public.giftQuiz.option.budget.high' },
+    ],
+  },
 ];
 
 export default function GiftQuizScreen(): JSX.Element {
@@ -48,17 +80,17 @@ export default function GiftQuizScreen(): JSX.Element {
       <Text style={styles.title}>{t('mobile.public.gift-quiz.title')}</Text>
       {step < QUESTIONS.length ? (
         <View style={styles.card}>
-          <Text style={styles.question}>{QUESTIONS[step]!.q}</Text>
-          {QUESTIONS[step]!.options.map((opt, i) => (
+          <Text style={styles.question}>{t(QUESTIONS[step]!.questionKey)}</Text>
+          {QUESTIONS[step]!.options.map((opt) => (
             <TouchableOpacity
-              key={i}
+              key={opt.key}
               style={styles.option}
               onPress={() => {
-                setAnswers({ ...answers, [QUESTIONS[step]!.key]: opt });
+                setAnswers({ ...answers, [QUESTIONS[step]!.key]: opt.key });
                 setStep(step + 1);
               }}
             >
-              <Text style={styles.optionText}>{opt}</Text>
+              <Text style={styles.optionText}>{t(opt.labelKey)}</Text>
             </TouchableOpacity>
           ))}
         </View>
