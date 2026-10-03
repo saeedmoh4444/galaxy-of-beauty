@@ -58,12 +58,10 @@ const envSchema = z.object({
   SMTP_PASS: z.string().optional(),
   EMAIL_FROM: z.string().optional(),
 
-  // ── Payments (PayFort/APS) ─────────────────────────────
-  PAYFORT_MERCHANT_ID: z.string().optional(),
-  PAYFORT_ACCESS_CODE: z.string().optional(),
-  PAYFORT_SHA_REQUEST_PHRASE: z.string().optional(),
-  PAYFORT_SHA_RESPONSE_PHRASE: z.string().optional(),
-  PAYFORT_SANDBOX: z.string().optional(),
+  // ── Payments (MyFatoorah) ─────────────────────────────
+  FATOORAH_API_TOKEN: z.string().optional(),
+  FATOORAH_BASE_URL: z.string().url().optional(),
+  FATOORAH_SIMULATE: z.string().optional(),
 
   // ── SMS (Twilio/Unifonic) ──────────────────────────────
   TWILIO_ACCOUNT_SID: z.string().optional(),

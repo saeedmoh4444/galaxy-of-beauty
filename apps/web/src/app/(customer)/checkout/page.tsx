@@ -6,6 +6,7 @@ import { Card, CardListSkeleton, Button, formatCurrency, EmptyState, Icon } from
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
 import { useLocale } from '@/components/LocaleProvider';
 import { localize } from '@galaxy/shared';
+import ShippingForm, { type ShippingFields } from './components/ShippingForm';
 
 export default function CheckoutPage(): JSX.Element {
   const { t, locale } = useLocale();
@@ -22,17 +23,34 @@ export default function CheckoutPage(): JSX.Element {
   const { data: wallet } = api.wallet.getBalance.useQuery() as {
     data: Record<string, unknown> | undefined;
   };
-  // B.3: the pay button used to be setPlaced(true) — now it completes the
-  // real purchase (stock/sales/vendor revenue) via marketplace.buyCart.
-  // Payment processing (wallet debit / payfort) remains separate work.
-  const buyMut = api.marketplace.buyCart.useMutation({
-    onSuccess: () => {
-      setPlaced(true);
-      refetch();
+  // Checkout completes the real purchase (stock/sales/vendor revenue +
+  // shipping + payment) via payments.payCart — wallet debit or MyFatoorah
+  // hosted invoice link.
+  const payMut = api.payments.payCart.useMutation({
+    onSuccess: (data) => {
+      if (data.invoiceURL) {
+        // Hosted gateway page — the customer pays there and is
+        // redirected back to /checkout/status.
+        window.location.assign(data.invoiceURL);
+      } else {
+        setPlaced(true);
+        refetch();
+      }
     },
   });
   const [method, setMethod] = useState<'wallet' | 'online'>('online');
   const [placed, setPlaced] = useState(false);
+  const [shipping, setShipping] = useState<ShippingFields>({
+    personName: '',
+    mobile: '',
+    lineAddress: '',
+    cityName: '',
+    postalCode: '',
+    countryCode: 'SA',
+    shippingMethod: 1,
+  });
+  const [shippingCharge, setShippingCharge] = useState<number | null>(null);
+
   const cartItems = cart ?? [];
   const subtotal = cartItems.reduce(
     (s: number, i: Record<string, unknown>) =>
@@ -40,8 +58,23 @@ export default function CheckoutPage(): JSX.Element {
     0,
   );
   const fee = subtotal > 0 ? 11 : 0;
-  const total = subtotal + fee;
+  const charge = shippingCharge ?? 0;
+  const total = subtotal + fee + charge;
   const walletBalance = Number(wallet?.balance ?? 0);
+
+  const shippingComplete =
+    shipping.personName.trim().length > 0 &&
+    shipping.mobile.trim().length > 0 &&
+    shipping.lineAddress.trim().length > 0 &&
+    shipping.cityName.length > 0 &&
+    shipping.postalCode.trim().length > 0 &&
+    shipping.countryCode.length > 0;
+
+  const chargeItems = cartItems.map((i: Record<string, unknown>) => ({
+    name: localize((i.product as Record<string, unknown>)?.nameJson, locale),
+    quantity: i.quantity as number,
+    unitPrice: Number((i.product as Record<string, unknown>)?.price ?? 0),
+  }));
 
   return (
     <DashboardLayout userRole="CUSTOMER">
@@ -95,12 +128,23 @@ export default function CheckoutPage(): JSX.Element {
                   <span>{t('wallet.platform-fee')}</span>
                   <span>{formatCurrency(fee)}</span>
                 </div>
+                <div className="flex justify-between text-text-secondary">
+                  <span>{t('wallet.shipping-charge')}</span>
+                  <span>{shippingCharge === null ? '—' : formatCurrency(charge)}</span>
+                </div>
                 <div className="flex justify-between font-bold text-lg">
                   <span>{t('wallet.total')}</span>
                   <span>{formatCurrency(total)}</span>
                 </div>
               </div>
             </Card>
+
+            <ShippingForm
+              value={shipping}
+              onChange={(next) => setShipping((s) => ({ ...s, ...next }))}
+              items={chargeItems}
+              onChargeChange={setShippingCharge}
+            />
 
             <Card padding="lg">
               <h3 className="font-bold mb-3">{t('wallet.payment-method')}</h3>
@@ -126,12 +170,24 @@ export default function CheckoutPage(): JSX.Element {
               </div>
             </Card>
 
-            {buyMut.isError && (
-              <p className="text-sm text-red-600 dark:text-red-400">{buyMut.error.message}</p>
+            {payMut.isError && (
+              <p className="text-sm text-red-600 dark:text-red-400">{payMut.error.message}</p>
+            )}
+            {!shippingComplete && (
+              <p className="text-sm text-amber-600 dark:text-amber-400">
+                {t('wallet.shipping-required')}
+              </p>
             )}
             <Button
-              onClick={() => buyMut.mutate({})}
-              loading={buyMut.isPending}
+              onClick={() =>
+                payMut.mutate({
+                  idempotencyKey: crypto.randomUUID(),
+                  method,
+                  shipping,
+                })
+              }
+              loading={payMut.isPending}
+              disabled={!shippingComplete || (method === 'wallet' && walletBalance < total)}
               className="w-full"
               size="lg"
             >

@@ -3,16 +3,25 @@
  * cashback accrual, and the ownership/status guards.
  * Coverage ratchet target: src/routers/payments.ts (was 7.36%).
  *
- * The online path calls the PayFort gateway over HTTP, so the offline
- * "cash" method is used for the end-to-end flow — it exercises the same
- * record lifecycle (AUTHORIZED -> CAPTURED -> booking PAID + cashback).
+ * The online path now creates a MyFatoorah invoice link; the fatoorah
+ * lib is mocked at the module seam, and the offline "cash" method is
+ * used for the end-to-end flow — it exercises the same record lifecycle
+ * (AUTHORIZED -> CAPTURED -> booking PAID + cashback).
  */
-import { describe, it, expect, beforeAll } from 'vitest';
+import { describe, it, expect, beforeAll, vi } from 'vitest';
 import { prisma } from '@galaxy/db';
 import { appRouter } from '../routers/index';
 import { safeFutureDate } from './factories';
 import { createTRPCContext } from '../context';
 import type { JwtPayload } from '../lib/jwt';
+import { sendPayment } from '../lib/fatoorah';
+
+vi.mock('../lib/fatoorah', async (importOriginal) => {
+  const actual = await importOriginal<typeof import('../lib/fatoorah')>();
+  return { ...actual, sendPayment: vi.fn() };
+});
+
+const sendPaymentMock = vi.mocked(sendPayment);
 
 const CSRF = 'a'.repeat(64);
 
@@ -206,5 +215,63 @@ describe('Payments', () => {
     await expect(techCaller.payments.capture({ bookingId })).rejects.toMatchObject({
       code: 'PRECONDITION_FAILED',
     });
+  });
+
+  it('should authorize an online payment via the MyFatoorah invoice link', async () => {
+    const bookingId = await seedBooking({ customerId: customer.id, totalAmount: 150 });
+    sendPaymentMock.mockResolvedValue({
+      invoiceId: 'INV-ONLINE-1',
+      invoiceURL: 'https://apitest.myfatoorah.com/INV-ONLINE-1',
+    });
+    const caller = await authCaller(customer);
+    const result = await caller.payments.authorize({
+      bookingId,
+      method: 'online',
+      idempotencyKey: crypto.randomUUID(),
+    });
+    expect(result.invoiceURL).toBe('https://apitest.myfatoorah.com/INV-ONLINE-1');
+    expect(result.invoiceId).toBe('INV-ONLINE-1');
+
+    const payment = await prisma.payment.findUnique({ where: { id: result.paymentId } });
+    expect(payment?.status).toBe('AUTHORIZED');
+    expect(payment?.gatewayRef).toBe('INV-ONLINE-1');
+  });
+
+  it('should mark the payment FAILED when the gateway rejects the invoice', async () => {
+    const bookingId = await seedBooking({ customerId: customer.id });
+    sendPaymentMock.mockRejectedValue(new Error('InvoiceValue must be positive'));
+    const caller = await authCaller(customer);
+    await expect(
+      caller.payments.authorize({
+        bookingId,
+        method: 'online',
+        idempotencyKey: crypto.randomUUID(),
+      }),
+    ).rejects.toMatchObject({ code: 'BAD_REQUEST' });
+
+    const payment = await prisma.payment.findFirst({
+      where: { bookingId },
+      orderBy: { id: 'desc' },
+    });
+    expect(payment?.status).toBe('FAILED');
+  });
+
+  it('should mark the payment FAILED when the gateway is unconfigured', async () => {
+    const bookingId = await seedBooking({ customerId: customer.id });
+    sendPaymentMock.mockRejectedValue(new Error('MyFatoorah gateway not configured'));
+    const caller = await authCaller(customer);
+    await expect(
+      caller.payments.authorize({
+        bookingId,
+        method: 'online',
+        idempotencyKey: crypto.randomUUID(),
+      }),
+    ).rejects.toMatchObject({ code: 'BAD_REQUEST' });
+
+    const payment = await prisma.payment.findFirst({
+      where: { bookingId },
+      orderBy: { id: 'desc' },
+    });
+    expect(payment?.status).toBe('FAILED');
   });
 });

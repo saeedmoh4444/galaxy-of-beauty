@@ -34,7 +34,7 @@ const SAFETY_TYPES: Record<
   secure_payment: {
     emoji: '💳',
     label: { ar: 'دفع آمن', en: 'Secure payment' },
-    desc: { ar: 'مشفّر بالكامل عبر PayFort', en: 'Fully encrypted via PayFort' },
+    desc: { ar: 'دفع آمن عبر بوابة MyFatoorah', en: 'Secure payment via MyFatoorah' },
   },
   emergency_support: {
     emoji: '🆘',

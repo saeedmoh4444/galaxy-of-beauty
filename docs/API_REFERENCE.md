@@ -89,23 +89,29 @@ const { data } = trpc.categories.list.useQuery();
 
 ## Domain: Payments (9 routers)
 
-| Procedure                | Type     | Auth       | Description                 |
-| ------------------------ | -------- | ---------- | --------------------------- |
-| `wallet.getBalance`      | query    | Customer   | Wallet balance              |
-| `wallet.getTransactions` | query    | Customer   | Transaction history         |
-| `wallet.topUp`           | mutation | Customer   | Add funds                   |
-| `wallet.withdraw`        | mutation | Customer   | Withdraw to bank            |
-| `payments.authorize`     | mutation | Customer   | Authorize payment (PayFort) |
-| `payments.capture`       | mutation | Admin      | Capture authorized payment  |
-| `payments.refund`        | mutation | Admin      | Refund payment              |
-| `payouts.list`           | query    | Technician | List payouts                |
-| `payouts.request`        | mutation | Technician | Request payout              |
-| `savedCards.*`           | —        | Customer   | Manage saved cards          |
-| `promo.*`                | —        | Customer   | Validate/redeem promo codes |
-| `giftCards.*`            | —        | Customer   | Purchase/redeem gift cards  |
-| `giftCardMarket.*`       | —        | Customer   | P2P gift card market        |
-| `cashback.*`             | —        | Customer   | Cashback history            |
-| `bnpl.*`                 | —        | Customer   | Buy now, pay later          |
+| Procedure                    | Type     | Auth       | Description                                 |
+| ---------------------------- | -------- | ---------- | ------------------------------------------- |
+| `wallet.getBalance`          | query    | Customer   | Wallet balance                              |
+| `wallet.getTransactions`     | query    | Customer   | Transaction history                         |
+| `wallet.topUp`               | mutation | Customer   | Add funds                                   |
+| `wallet.withdraw`            | mutation | Customer   | Withdraw to bank                            |
+| `payments.authorize`         | mutation | Customer   | Authorize payment (MyFatoorah invoice link) |
+| `payments.statusCallback`    | mutation | Public     | Verify booking payment via gateway status   |
+| `payments.shippingCountries` | query    | Public     | MyFatoorah shipping countries               |
+| `payments.shippingCities`    | query    | Public     | MyFatoorah shipping cities                  |
+| `payments.shippingCharge`    | query    | Public     | MyFatoorah shipping charge                  |
+| `payments.payCart`           | mutation | Customer   | Store checkout — shipping + payment         |
+| `payments.verifyCartPayment` | mutation | Public     | Verify store checkout payment               |
+| `payments.capture`           | mutation | Admin      | Capture authorized payment                  |
+| `payments.refund`            | mutation | Admin      | Refund payment                              |
+| `payouts.list`               | query    | Technician | List payouts                                |
+| `payouts.request`            | mutation | Technician | Request payout                              |
+| `savedCards.*`               | —        | Customer   | Manage saved cards                          |
+| `promo.*`                    | —        | Customer   | Validate/redeem promo codes                 |
+| `giftCards.*`                | —        | Customer   | Purchase/redeem gift cards                  |
+| `giftCardMarket.*`           | —        | Customer   | P2P gift card market                        |
+| `cashback.*`                 | —        | Customer   | Cashback history                            |
+| `bnpl.*`                     | —        | Customer   | Buy now, pay later                          |
 
 ## Domain: Loyalty (8 routers)
 

@@ -9,6 +9,7 @@ import {
   adminProcedure,
   router,
 } from '../trpc';
+import { readCartForCheckout, placeStoreOrders } from '../lib/storeCheckout';
 
 export const marketplaceRouter = router({
   // ── Products ──────────────────────────────────────────
@@ -119,66 +120,20 @@ export const marketplaceRouter = router({
    * Transactionally checks stock, decrements it, increments product sales
    * and vendor totalSales, then clears the cart. On insufficient stock the
    * whole purchase is rejected and the cart is kept for correction.
+   * (Checkout pages now use payments.payCart, which adds shipping +
+   * payment on top of the same order placement.)
    */
   buyCart: customerProcedure.input(z.object({})).mutation(async ({ ctx }) => {
-    const cartItems = await prisma.cartItem.findMany({
-      where: { userId: ctx.user.id },
-      include: {
-        product: { select: { id: true, price: true, stock: true, vendorId: true } },
-      },
-    });
-
-    if (cartItems.length === 0) {
-      throw new TRPCError({ code: 'BAD_REQUEST', message: 'Cart is empty' });
-    }
-
-    const shortage = cartItems.find((i) => i.product.stock < i.quantity);
-    if (shortage) {
-      throw new TRPCError({
-        code: 'BAD_REQUEST',
-        message: `Insufficient stock for product #${shortage.productId} (available: ${shortage.product.stock})`,
-      });
-    }
-
-    const total = cartItems.reduce((sum, i) => sum + Number(i.product.price) * i.quantity, 0);
-    const totalItems = cartItems.reduce((sum, i) => sum + i.quantity, 0);
+    const lines = await readCartForCheckout(ctx.user.id);
 
     await prisma.$transaction(async (tx) => {
-      // Store plan Phase 1 — one order record per store in the cart.
-      const byVendor = new Map<number, { amount: number; items: number }>();
-      for (const item of cartItems) {
-        const amount = Number(item.product.price) * item.quantity;
-        await tx.product.update({
-          where: { id: item.productId },
-          data: {
-            stock: { decrement: item.quantity },
-            sales: { increment: item.quantity },
-          },
-        });
-        await tx.vendor.update({
-          where: { id: item.product.vendorId },
-          data: { totalSales: { increment: amount } },
-        });
-        const agg = byVendor.get(item.product.vendorId) ?? { amount: 0, items: 0 };
-        agg.amount += amount;
-        agg.items += item.quantity;
-        byVendor.set(item.product.vendorId, agg);
-      }
-      for (const [vendorId, agg] of byVendor) {
-        await tx.storeOrder.create({
-          data: {
-            vendorId,
-            customerId: ctx.user.id,
-            totalAmount: agg.amount,
-            itemCount: agg.items,
-            status: 'PENDING_FULFILLMENT',
-          },
-        });
-      }
-      await tx.cartItem.deleteMany({ where: { userId: ctx.user.id } });
+      await placeStoreOrders(tx, ctx.user.id, lines);
     });
 
-    return { success: true, items: totalItems, total };
+    const total = lines.reduce((sum, l) => sum + l.unitPrice * l.quantity, 0);
+    const items = lines.reduce((sum, l) => sum + l.quantity, 0);
+
+    return { success: true, items, total };
   }),
 
   // ── Categories ────────────────────────────────────────

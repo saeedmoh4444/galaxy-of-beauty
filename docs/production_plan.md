@@ -100,7 +100,7 @@ Galaxy of Beauty is a Saudi-compliant beauty services marketplace with 254 route
 - [ ] **Rate Limiting** — verify Redis-backed rate limiting is operational
 - [ ] **CSRF** — verify double-submit cookie pattern works under production domain
 - [ ] **ZATCA** — switch from simulation to real API credentials
-- [ ] **Payment Gateway** — configure PayFort / Amazon Payment Services production keys
+- [ ] **Payment Gateway** — configure MyFatoorah production token
 
 ### 3.2 Database
 
@@ -136,7 +136,7 @@ Galaxy of Beauty is a Saudi-compliant beauty services marketplace with 254 route
 - [ ] **ZATCA e-Invoicing** — complete onboarding with ZATCA sandbox → production
 - [ ] **PDPL Compliance** — privacy policy, data retention policy, user data export/deletion
 - [ ] **Terms of Service** — Arabic + English terms, version-tracked acceptance with IP audit
-- [ ] **Payment Provider Agreement** — PayFort / Amazon Payment Services merchant account
+- [ ] **Payment Provider Agreement** — MyFatoorah merchant account
 - [ ] **Domain Registration** — galaxyofbeauty.sa registered with SaudiNIC
 - [ ] **Commercial Registration** — Saudi business license (سجل تجاري)
 - [ ] **VAT Registration** — 15% VAT registration number with ZATCA

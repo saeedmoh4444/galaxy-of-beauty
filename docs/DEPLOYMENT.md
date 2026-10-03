@@ -33,10 +33,7 @@ REDIS_URL=redis://localhost:6379
 JWT_ACCESS_SECRET=<32+ char random string>
 JWT_REFRESH_SECRET=<32+ char random string>
 OPENAI_API_KEY=sk-...            # For AI chatbot + skin analysis
-PAYFORT_MERCHANT_ID=...          # Payment processing
-PAYFORT_ACCESS_CODE=...
-PAYFORT_SHA_REQUEST=...
-PAYFORT_SHA_RESPONSE=...
+FATOORAH_API_TOKEN=...           # Payment processing (MyFatoorah)
 NEXT_PUBLIC_APP_URL=https://galaxyofbeauty.sa
 SENTRY_DSN=...                   # Error monitoring
 ```

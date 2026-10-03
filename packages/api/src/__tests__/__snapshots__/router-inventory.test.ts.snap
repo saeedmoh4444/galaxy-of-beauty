@@ -656,8 +656,13 @@ observability.sloStatus	query	public
 payments.authorize	mutation	customer
 payments.capture	mutation	technician
 payments.getByBooking	query	protected
+payments.payCart	mutation	customer
 payments.refund	mutation	admin
-payments.webhook	mutation	public
+payments.shippingCharge	query	public
+payments.shippingCities	query	public
+payments.shippingCountries	query	public
+payments.statusCallback	mutation	public
+payments.verifyCartPayment	mutation	public
 payouts.calculate	mutation	admin
 payouts.calculateStore	mutation	admin
 payouts.listForAdmin	query	admin
