@@ -3,13 +3,36 @@ import { View, Text, ScrollView, StyleSheet, RefreshControl } from 'react-native
 import { ErrorAlert } from '@/components/ErrorAlert';
 import { SkeletonList } from '@/components/SkeletonCard';
 import { useAuthState } from '@/hooks/useAuthState';
+import type { TranslationKey } from '@galaxy/shared';
 import { trpc } from '@/lib/trpc-react';
 import { useLocale } from '@/components/LocaleProvider';
 
-const STEPS = [
-  { key: 'consultation', emoji: '💬', title: 'استشارة', desc: 'تحديد احتياجات العروس' },
-  { key: 'trial', emoji: '💄', title: 'تجربة', desc: 'تجربة المكياج والتسريحة' },
-  { key: 'final', emoji: '💍', title: 'اليوم الكبير', desc: 'يوم الزفاف' },
+interface StepContent {
+  key: string;
+  emoji: string;
+  titleKey: TranslationKey;
+  descKey: TranslationKey;
+}
+
+const STEPS: StepContent[] = [
+  {
+    key: 'consultation',
+    emoji: '💬',
+    titleKey: 'mobile.public.bridal-concierge.step.consultation.title',
+    descKey: 'mobile.public.bridal-concierge.step.consultation.desc',
+  },
+  {
+    key: 'trial',
+    emoji: '💄',
+    titleKey: 'mobile.public.bridal-concierge.step.trial.title',
+    descKey: 'mobile.public.bridal-concierge.step.trial.desc',
+  },
+  {
+    key: 'final',
+    emoji: '💍',
+    titleKey: 'mobile.public.bridal-concierge.step.final.title',
+    descKey: 'marketing.bridal-concierge.step-wedding',
+  },
 ];
 
 interface ConciergeStep {
@@ -71,9 +94,9 @@ export default function BridalConciergeScreen(): JSX.Element {
             <Text style={styles.stepEmoji}>{step.emoji}</Text>
             <View style={{ flex: 1 }}>
               <Text style={[styles.stepTitle, stepData?.completed && styles.stepTitleDone]}>
-                {step.title}
+                {t(step.titleKey)}
               </Text>
-              <Text style={styles.stepDesc}>{step.desc}</Text>
+              <Text style={styles.stepDesc}>{t(step.descKey)}</Text>
               {stepData?.date && (
                 <Text style={styles.stepDate}>
                   {new Date(stepData.date).toLocaleDateString(locale === 'ar' ? 'ar-SA' : 'en-US')}

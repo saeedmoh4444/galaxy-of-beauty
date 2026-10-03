@@ -7199,4 +7199,732 @@ export const mobileCustomerBMessages = {
     ar: 'منتجات طبية — غالباً خالية من العطور',
     en: 'Medical products — often fragrance-free',
   },
+  'mobile.wellness.card.sleepBeauty.title': {
+    ar: 'نوم الجمال',
+    en: 'Beauty sleep',
+  },
+  'mobile.wellness.card.sleepBeauty.subtitle': {
+    ar: '8 ساعات — سر الجمال الحقيقي',
+    en: '8 hours — the secret to real beauty',
+  },
+  'mobile.wellness.card.sleepBeauty.tip1': {
+    ar: 'نامي قبل 11 مساءً — هرمون النمو يعمل ليلاً',
+    en: 'Sleep before 11 pm — growth hormone works at night',
+  },
+  'mobile.wellness.card.sleepBeauty.tip2': {
+    ar: 'أطفئي الجوال قبل النوم بـ 30 دقيقة',
+    en: 'Turn off your phone 30 minutes before bed',
+  },
+  'mobile.wellness.card.sleepBeauty.tip3': {
+    ar: 'غرفة مظلمة وباردة — 18-20 درجة',
+    en: 'A dark, cool room — 18-20 degrees',
+  },
+  'mobile.wellness.card.sleepBeauty.tip4': {
+    ar: 'نفس موعد النوم يومياً — حتى الإجازة',
+    en: 'The same bedtime every day — even on vacation',
+  },
+  'mobile.wellness.card.water.subtitle': {
+    ar: '8 أكواب يومياً لجمالك',
+    en: '8 glasses a day for your beauty',
+  },
+  'mobile.wellness.card.water.tip1': {
+    ar: 'كوبان عند الاستيقاظ — ينشط الجسم',
+    en: 'Two glasses on waking — it wakes up your body',
+  },
+  'mobile.wellness.card.water.tip2': {
+    ar: 'أضيفي ليمون أو نعناع — طعم منعش',
+    en: 'Add lemon or mint — a refreshing taste',
+  },
+  'mobile.wellness.card.water.tip3': {
+    ar: 'تطبيق تذكير — يساعدك على التتبع',
+    en: 'A reminder app — helps you keep track',
+  },
+  'mobile.wellness.card.water.tip4': {
+    ar: 'قبل كل وجبة — كوب ماء',
+    en: 'Before every meal — a glass of water',
+  },
+  'mobile.wellness.card.nutrition.title': {
+    ar: 'تغذية الجمال',
+    en: 'Beauty nutrition',
+  },
+  'mobile.wellness.card.nutrition.subtitle': {
+    ar: 'ما تأكلينه يظهر على بشرتك',
+    en: 'What you eat shows on your skin',
+  },
+  'mobile.wellness.card.nutrition.tip1': {
+    ar: 'دهون صحية — أفوكادو مكسرات زيت زيتون',
+    en: 'Healthy fats — avocado, nuts, olive oil',
+  },
+  'mobile.wellness.card.nutrition.tip2': {
+    ar: 'مضادات أكسدة — توت فراولة رمان',
+    en: 'Antioxidants — berries, strawberries, pomegranate',
+  },
+  'mobile.wellness.card.nutrition.tip3': {
+    ar: 'أوميغا 3 — سلمون تونة',
+    en: 'Omega-3 — salmon, tuna',
+  },
+  'mobile.wellness.card.nutrition.tip4': {
+    ar: 'خضار ورقية — سبانخ كيل جرير',
+    en: 'Leafy greens — spinach, kale, watercress',
+  },
+  'mobile.wellness.card.exercise.title': {
+    ar: 'رياضة الجمال',
+    en: 'Beauty exercise',
+  },
+  'mobile.wellness.card.exercise.subtitle': {
+    ar: 'حركة = بشرة متوهجة',
+    en: 'Movement = glowing skin',
+  },
+  'mobile.wellness.card.exercise.tip1': {
+    ar: '30 دقيقة مشي يومياً — الحد الأدنى',
+    en: '30 minutes of walking a day — the minimum',
+  },
+  'mobile.wellness.card.exercise.tip2': {
+    ar: 'يوغا — مرونة وهدوء',
+    en: 'Yoga — flexibility and calm',
+  },
+  'mobile.wellness.card.exercise.tip3': {
+    ar: 'تمارين مقاومة — مرتين أسبوعياً',
+    en: 'Resistance training — twice a week',
+  },
+  'mobile.wellness.card.exercise.tip4': {
+    ar: 'بيلاتس — جسم مشدود',
+    en: 'Pilates — a toned body',
+  },
+  'mobile.wellness.card.meditation.title': {
+    ar: 'تأمل واسترخاء',
+    en: 'Meditation and relaxation',
+  },
+  'mobile.wellness.card.meditation.subtitle': {
+    ar: '5 دقائق يومياً',
+    en: '5 minutes a day',
+  },
+  'mobile.wellness.card.meditation.tip1': {
+    ar: 'تنفس عميق — شهيق 4 عدات زفير 6',
+    en: 'Deep breathing — inhale for 4 counts, exhale for 6',
+  },
+  'mobile.wellness.card.meditation.tip2': {
+    ar: 'صباحاً — 5 دقائق قبل بدء اليوم',
+    en: 'In the morning — 5 minutes before your day starts',
+  },
+  'mobile.wellness.card.meditation.tip3': {
+    ar: 'بدون جوال — مكان هادئ',
+    en: 'No phone — a quiet place',
+  },
+  'mobile.wellness.card.meditation.tip4': {
+    ar: 'موسيقى هادئة أو أصوات طبيعة',
+    en: 'Calm music or nature sounds',
+  },
+  'mobile.wellness.card.smile.title': {
+    ar: 'ابتسامة وثقة',
+    en: 'A smile and confidence',
+  },
+  'mobile.wellness.card.smile.subtitle': {
+    ar: 'جمالك من الداخل',
+    en: 'Your beauty comes from within',
+  },
+  'mobile.wellness.card.smile.tip1': {
+    ar: 'قفي أمام المرآة — قولي شيئاً إيجابياً',
+    en: 'Stand in front of the mirror — say something positive',
+  },
+  'mobile.wellness.card.smile.tip2': {
+    ar: 'اكتبي 3 أشياء ممتنة لها يومياً',
+    en: 'Write down 3 things you are grateful for every day',
+  },
+  'mobile.wellness.card.smile.tip3': {
+    ar: 'أحطي نفسك بأشخاص إيجابيين',
+    en: 'Surround yourself with positive people',
+  },
+  'mobile.wellness.card.smile.tip4': {
+    ar: 'حددي أهدافاً صغيرة واحتفلي بها',
+    en: 'Set small goals and celebrate them',
+  },
+  'mobile.wellness.card.sunscreen.subtitle': {
+    ar: 'يومياً — حتى في البيت',
+    en: 'Every day — even at home',
+  },
+  'mobile.wellness.card.sunscreen.tip2': {
+    ar: 'جددي كل ساعتين تحت الشمس',
+    en: 'Reapply every two hours in the sun',
+  },
+  'mobile.wellness.card.posture.title': {
+    ar: 'وقفة الجمال',
+    en: 'Beauty posture',
+  },
+  'mobile.wellness.card.posture.subtitle': {
+    ar: 'ظهر مستقيم = ثقة',
+    en: 'A straight back = confidence',
+  },
+  'mobile.wellness.card.posture.tip1': {
+    ar: 'أكتاف للخلف — ذقن موازي للأرض',
+    en: 'Shoulders back — chin parallel to the floor',
+  },
+  'mobile.wellness.card.posture.tip2': {
+    ar: 'لا تجلسي طويلاً — قومي كل 30 دقيقة',
+    en: 'Don’t sit for long — stand up every 30 minutes',
+  },
+  'mobile.wellness.card.posture.tip3': {
+    ar: 'ارفعي الجوال لمستوى العين',
+    en: 'Raise your phone to eye level',
+  },
+  'mobile.wellness.card.posture.tip4': {
+    ar: 'مساج رقبة — يخفف التوتر',
+    en: 'A neck massage — it relieves tension',
+  },
+  'mobile.wellness.card.ramadan.title': {
+    ar: 'عناية رمضان',
+    en: 'Ramadan care',
+  },
+  'mobile.wellness.card.ramadan.subtitle': {
+    ar: 'روتين الجمال في الشهر الكريم',
+    en: 'Your beauty routine in the holy month',
+  },
+  'mobile.wellness.card.ramadan.tip1': {
+    ar: 'اشربي الماء بين الفطور والسحور — 8 أكواب',
+    en: 'Drink water between iftar and suhoor — 8 glasses',
+  },
+  'mobile.wellness.card.ramadan.tip2': {
+    ar: 'روتين ليلي بسيط — مرطب كثيف قبل النوم',
+    en: 'A simple night routine — a rich moisturizer before bed',
+  },
+  'mobile.wellness.card.ramadan.tip3': {
+    ar: 'واقي شمس — حتى في رمضان',
+    en: 'Sunscreen — even in Ramadan',
+  },
+  'mobile.wellness.card.ramadan.tip4': {
+    ar: 'سيروم مرطب — الجفاف هو العدو الأول',
+    en: 'A hydrating serum — dryness is the first enemy',
+  },
+  'mobile.wellness.card.postWorkout.title': {
+    ar: 'عناية بعد الرياضة',
+    en: 'Post-workout care',
+  },
+  'mobile.wellness.card.postWorkout.subtitle': {
+    ar: 'بشرة نظيفة بعد التمرين',
+    en: 'Clean skin after training',
+  },
+  'mobile.wellness.card.postWorkout.tip1': {
+    ar: 'اغسلي وجهك فوراً — العرق يسد المسام',
+    en: 'Wash your face right away — sweat clogs pores',
+  },
+  'mobile.wellness.card.postWorkout.tip2': {
+    ar: 'ماء بارد — يغلق المسام ويهدئ البشرة',
+    en: 'Cold water — closes pores and calms the skin',
+  },
+  'mobile.wellness.card.postWorkout.tip3': {
+    ar: 'مرطب خفيف — البشرة تمتصه أفضل',
+    en: 'A light moisturizer — your skin absorbs it better',
+  },
+  'mobile.wellness.card.postWorkout.tip4': {
+    ar: 'غيري ملابسك — البكتيريا تتراكم على القماش',
+    en: 'Change your clothes — bacteria build up on fabric',
+  },
+  'mobile.wellness.card.travelBag.title': {
+    ar: 'حقيبة سفر الجمال',
+    en: 'Beauty travel bag',
+  },
+  'mobile.wellness.card.travelBag.subtitle': {
+    ar: 'أساسيات لا تنسينها',
+    en: 'Essentials you must not forget',
+  },
+  'mobile.wellness.card.travelBag.tip1': {
+    ar: 'عبوات صغيرة — أقل من 100 مل للطائرة',
+    en: 'Travel-size bottles — under 100 ml for the plane',
+  },
+  'mobile.wellness.card.travelBag.tip2': {
+    ar: 'واقي شمس — أهم منتج في أي سفر',
+    en: 'Sunscreen — the most important product on any trip',
+  },
+  'mobile.wellness.card.travelBag.tip3': {
+    ar: 'منتجات متعددة — أحمر شفاه = بلاشر',
+    en: 'Multi-use products — lipstick = blush',
+  },
+  'mobile.wellness.card.travelBag.tip4': {
+    ar: 'مناديل ميسيلار — للتنظيف بدون ماء',
+    en: 'Micellar wipes — cleanse without water',
+  },
+  'mobile.wellness.card.capsule.title': {
+    ar: 'كبسولة الجمال',
+    en: 'Beauty capsule',
+  },
+  'mobile.wellness.card.capsule.subtitle': {
+    ar: 'الأقل هو الأكثر',
+    en: 'Less is more',
+  },
+  'mobile.wellness.card.capsule.tip1': {
+    ar: '5 منتجات فقط — منظف مرطب واقي سيروم مقشر',
+    en: 'Just 5 products — cleanser, moisturizer, sunscreen, serum, exfoliant',
+  },
+  'mobile.wellness.card.capsule.tip2': {
+    ar: '3 مستحضرات — BB كريم ماسكارا أحمر شفاه',
+    en: '3 makeup items — BB cream, mascara, lipstick',
+  },
+  'mobile.wellness.card.capsule.tip3': {
+    ar: 'منتج متعدد = مساحة أقل',
+    en: 'A multi-use product = less space',
+  },
+  'mobile.wellness.card.capsule.tip4': {
+    ar: 'كل 3 أشهر — راجعي منتجاتك وتخلصي من القديم',
+    en: 'Every 3 months — review your products and toss the old ones',
+  },
+  'mobile.wellness.card.sleepRituals.title': {
+    ar: 'طقوس النوم',
+    en: 'Sleep rituals',
+  },
+  'mobile.wellness.card.sleepRituals.subtitle': {
+    ar: 'روتين الجمال قبل النوم',
+    en: 'A beauty routine before bed',
+  },
+  'mobile.wellness.card.sleepRituals.tip1': {
+    ar: 'نظفي وجهك — مزدوج: زيت + غسول',
+    en: 'Cleanse your face — double cleanse: oil + wash',
+  },
+  'mobile.wellness.card.sleepRituals.tip2': {
+    ar: 'سيروم ليلي — وقت الإصلاح أثناء النوم',
+    en: 'A night serum — repair time while you sleep',
+  },
+  'mobile.wellness.card.sleepRituals.tip3': {
+    ar: 'تدليك 3 دقائق — يحفز الدورة الدموية',
+    en: 'A 3-minute massage — boosts circulation',
+  },
+  'mobile.wellness.card.sleepRituals.tip4': {
+    ar: 'أطفئي الجوال — الضوء الأزرق يمنع الميلاتونين',
+    en: 'Turn off your phone — blue light blocks melatonin',
+  },
+  'mobile.wellness.card.collagen.title': {
+    ar: 'الكولاجين',
+    en: 'Collagen',
+  },
+  'mobile.wellness.card.collagen.subtitle': {
+    ar: 'بروتين الشباب — بشرة مشدودة',
+    en: 'The youth protein — firmer skin',
+  },
+  'mobile.wellness.card.collagen.tip1': {
+    ar: 'كولاجين سائل — أسرع امتصاصاً',
+    en: 'Liquid collagen — absorbed faster',
+  },
+  'mobile.wellness.card.collagen.tip2': {
+    ar: 'مع فيتامين C — ضروري للامتصاص',
+    en: 'With vitamin C — essential for absorption',
+  },
+  'mobile.wellness.card.collagen.tip3': {
+    ar: 'بعد 25 سنة — الإنتاج يبدأ بالانخفاض',
+    en: 'After 25 — production starts to decline',
+  },
+  'mobile.wellness.card.collagen.tip4': {
+    ar: 'يفيد البشرة الشعر الأظافر والمفاصل',
+    en: 'Benefits skin, hair, nails and joints',
+  },
+  'mobile.wellness.card.biotin.title': {
+    ar: 'البيوتين',
+    en: 'Biotin',
+  },
+  'mobile.wellness.card.biotin.subtitle': {
+    ar: 'فيتامين B7 — للشعر والأظافر',
+    en: 'Vitamin B7 — for hair and nails',
+  },
+  'mobile.wellness.card.biotin.tip1': {
+    ar: 'يقوي الشعر — يقلل التساقط ويزيد الكثافة',
+    en: 'Strengthens hair — less shedding, more density',
+  },
+  'mobile.wellness.card.biotin.tip2': {
+    ar: 'يقوي الأظافر — يقلل التكسر والتقصف',
+    en: 'Strengthens nails — less breaking and peeling',
+  },
+  'mobile.wellness.card.biotin.tip3': {
+    ar: 'موجود طبيعياً — بيض مكسرات أفوكادو',
+    en: 'Found naturally — eggs, nuts, avocado',
+  },
+  'mobile.wellness.card.biotin.tip4': {
+    ar: '3-6 أشهر — لرؤية نتائج واضحة',
+    en: '3-6 months — to see clear results',
+  },
+  'mobile.wellness.card.glutathione.title': {
+    ar: 'الجلوتاثيون',
+    en: 'Glutathione',
+  },
+  'mobile.wellness.card.glutathione.subtitle': {
+    ar: 'ملك مضادات الأكسدة',
+    en: 'The king of antioxidants',
+  },
+  'mobile.wellness.card.glutathione.tip1': {
+    ar: 'يفتح البشرة — يقلل إنتاج الميلانين',
+    en: 'Brightens skin — reduces melanin production',
+  },
+  'mobile.wellness.card.glutathione.tip2': {
+    ar: 'مضاد أكسدة قوي — يحمي من التلف',
+    en: 'A powerful antioxidant — protects against damage',
+  },
+  'mobile.wellness.card.glutathione.tip3': {
+    ar: 'حقن أو كبسولات — تحت إشراف طبي',
+    en: 'Injections or capsules — under medical supervision',
+  },
+  'mobile.wellness.card.glutathione.tip4': {
+    ar: 'مصادر طبيعية — طماطم سبانخ ثوم',
+    en: 'Natural sources — tomato, spinach, garlic',
+  },
+  'mobile.wellness.card.omega3.title': {
+    ar: 'أوميغا 3',
+    en: 'Omega-3',
+  },
+  'mobile.wellness.card.omega3.subtitle': {
+    ar: 'دهون صحية لبشرة جميلة',
+    en: 'Healthy fats for beautiful skin',
+  },
+  'mobile.wellness.card.omega3.tip1': {
+    ar: 'يرطب البشرة — يقوي حاجز الدهون الطبيعي',
+    en: 'Hydrates skin — strengthens the natural lipid barrier',
+  },
+  'mobile.wellness.card.omega3.tip2': {
+    ar: 'يقلل الالتهابات — ممتاز للحبوب',
+    en: 'Reduces inflammation — excellent for acne',
+  },
+  'mobile.wellness.card.omega3.tip3': {
+    ar: 'سلمون تونة سردين — أو كبسولات',
+    en: 'Salmon, tuna, sardines — or capsules',
+  },
+  'mobile.wellness.card.omega3.tip4': {
+    ar: 'مصادر نباتية — جوز بذور كتان شيا',
+    en: 'Plant sources — walnuts, flaxseed, chia',
+  },
+  'mobile.wellness.card.probiotics.title': {
+    ar: 'البروبيوتيك',
+    en: 'Probiotics',
+  },
+  'mobile.wellness.card.probiotics.subtitle': {
+    ar: 'بكتيريا نافعة — بشرة صافية',
+    en: 'Good bacteria — clear skin',
+  },
+  'mobile.wellness.card.probiotics.tip1': {
+    ar: 'صحة الأمعاء = بشرة نقية — اتصال مباشر',
+    en: 'Gut health = clear skin — a direct link',
+  },
+  'mobile.wellness.card.probiotics.tip2': {
+    ar: 'يقلل الالتهابات — مفيد للحبوب والإكزيما',
+    en: 'Reduces inflammation — helpful for acne and eczema',
+  },
+  'mobile.wellness.card.probiotics.tip3': {
+    ar: 'زبادي كفير مخللات — مصادر طبيعية',
+    en: 'Yogurt, kefir, pickles — natural sources',
+  },
+  'mobile.wellness.card.probiotics.tip4': {
+    ar: 'كبسولات بروبيوتيك — تركيز أعلى',
+    en: 'Probiotic capsules — a higher concentration',
+  },
+  'mobile.wellness.card.greenTea.title': {
+    ar: 'الشاي الأخضر',
+    en: 'Green tea',
+  },
+  'mobile.wellness.card.greenTea.subtitle': {
+    ar: 'مشروب الجمال اليومي',
+    en: 'The daily beauty drink',
+  },
+  'mobile.wellness.card.greenTea.tip1': {
+    ar: 'مضاد أكسدة قوي — يحمي البشرة',
+    en: 'A powerful antioxidant — protects the skin',
+  },
+  'mobile.wellness.card.greenTea.tip2': {
+    ar: 'يقلل الالتهابات — للحبوب والاحمرار',
+    en: 'Reduces inflammation — for acne and redness',
+  },
+  'mobile.wellness.card.greenTea.tip3': {
+    ar: '2-3 أكواب يومياً — بدون سكر',
+    en: '2-3 cups a day — without sugar',
+  },
+  'mobile.wellness.card.greenTea.tip4': {
+    ar: 'أكياس الشاي — للعيون المنتفخة',
+    en: 'Tea bags — for puffy eyes',
+  },
+  'mobile.wellness.card.matcha.title': {
+    ar: 'الماتشا',
+    en: 'Matcha',
+  },
+  'mobile.wellness.card.matcha.subtitle': {
+    ar: 'أقوى 10x من الشاي الأخضر',
+    en: '10x stronger than green tea',
+  },
+  'mobile.wellness.card.matcha.tip1': {
+    ar: 'مركز — مضادات أكسدة أكثر',
+    en: 'Concentrated — more antioxidants',
+  },
+  'mobile.wellness.card.matcha.tip2': {
+    ar: 'كلوروفيل — ينقي البشرة من الداخل',
+    en: 'Chlorophyll — purifies the skin from within',
+  },
+  'mobile.wellness.card.matcha.tip3': {
+    ar: 'L-Theanine — استرخاء بدون نعاس',
+    en: 'L-Theanine — relaxation without drowsiness',
+  },
+  'mobile.wellness.card.matcha.tip4': {
+    ar: 'مع الحليب — لاتيه ماتشا لذيذ',
+    en: 'With milk — a delicious matcha latte',
+  },
+  'mobile.wellness.card.turmericLatte.title': {
+    ar: 'لاتيه الكركم',
+    en: 'Turmeric latte',
+  },
+  'mobile.wellness.card.turmericLatte.subtitle': {
+    ar: 'الحليب الذهبي للبشرة',
+    en: 'Golden milk for the skin',
+  },
+  'mobile.wellness.card.turmericLatte.tip1': {
+    ar: 'كركمين — أقوى مضاد التهاب طبيعي',
+    en: 'Curcumin — the strongest natural anti-inflammatory',
+  },
+  'mobile.wellness.card.turmericLatte.tip2': {
+    ar: 'يهدئ البشرة — للحبوب والوردية',
+    en: 'Calms the skin — for acne and rosacea',
+  },
+  'mobile.wellness.card.turmericLatte.tip3': {
+    ar: 'حليب + كركم + فلفل أسود + عسل',
+    en: 'Milk + turmeric + black pepper + honey',
+  },
+  'mobile.wellness.card.turmericLatte.tip4': {
+    ar: 'قبل النوم — يهدئ ويساعد على الاسترخاء',
+    en: 'Before bed — calms and helps you relax',
+  },
+  'mobile.wellness.card.chlorophyll.title': {
+    ar: 'الكلوروفيل',
+    en: 'Chlorophyll',
+  },
+  'mobile.wellness.card.chlorophyll.subtitle': {
+    ar: 'دم النبات — لبشرة نقية',
+    en: 'Plant blood — for clear skin',
+  },
+  'mobile.wellness.card.chlorophyll.tip1': {
+    ar: 'ينقي البشرة — يقلل الحبوب',
+    en: 'Purifies the skin — reduces acne',
+  },
+  'mobile.wellness.card.chlorophyll.tip2': {
+    ar: 'يشبه الهيموجلوبين — ينقي الدم',
+    en: 'Similar to hemoglobin — purifies the blood',
+  },
+  'mobile.wellness.card.chlorophyll.tip3': {
+    ar: '15 قطرة في كوب ماء — صباحاً',
+    en: '15 drops in a glass of water — in the morning',
+  },
+  'mobile.wellness.card.chlorophyll.tip4': {
+    ar: 'طبيعي 100% — مستخلص من البرسيم',
+    en: '100% natural — extracted from alfalfa',
+  },
+  'mobile.wellness.card.beetroot.title': {
+    ar: 'عصير الشمندر',
+    en: 'Beetroot juice',
+  },
+  'mobile.wellness.card.beetroot.subtitle': {
+    ar: 'الإشراقة الوردية من الداخل',
+    en: 'A rosy glow from within',
+  },
+  'mobile.wellness.card.beetroot.tip1': {
+    ar: 'يحسن الدورة الدموية — بشرة وردية',
+    en: 'Improves circulation — rosy skin',
+  },
+  'mobile.wellness.card.beetroot.tip2': {
+    ar: 'غني بالحديد — يحارب شحوب البشرة',
+    en: 'Rich in iron — fights dull, pale skin',
+  },
+  'mobile.wellness.card.beetroot.tip3': {
+    ar: 'فيتامين C — يحفز إنتاج الكولاجين',
+    en: 'Vitamin C — boosts collagen production',
+  },
+  'mobile.wellness.card.beetroot.tip4': {
+    ar: 'شمندر + برتقال + زنجبيل',
+    en: 'Beetroot + orange + ginger',
+  },
+  'mobile.wellness.card.faceYoga.title': {
+    ar: 'يوغا الوجه',
+    en: 'Face yoga',
+  },
+  'mobile.wellness.card.faceYoga.subtitle': {
+    ar: 'تمارين لشد الوجه طبيعياً',
+    en: 'Exercises to firm your face naturally',
+  },
+  'mobile.wellness.card.faceYoga.tip1': {
+    ar: 'تمرين O —— افتحي فمكِ 5 ثوانٍ',
+    en: 'The O exercise — open your mouth for 5 seconds',
+  },
+  'mobile.wellness.card.faceYoga.tip2': {
+    ar: 'تمرين القبلة —— مدي شفاهكِ للأمام',
+    en: 'The kiss exercise — push your lips forward',
+  },
+  'mobile.wellness.card.faceYoga.tip3': {
+    ar: 'رفع الخدود —— ابتسمي بدون عيون',
+    en: 'Cheek lift — smile without using your eyes',
+  },
+  'mobile.wellness.card.faceYoga.tip4': {
+    ar: '5 دقائق يومياً — نتائج 4-6 أسابيع',
+    en: '5 minutes a day — results in 4-6 weeks',
+  },
+  'mobile.wellness.card.barre.title': {
+    ar: 'تمارين الباري',
+    en: 'Barre exercises',
+  },
+  'mobile.wellness.card.barre.subtitle': {
+    ar: 'رشاقة راقصة الباليه',
+    en: 'The grace of a ballerina',
+  },
+  'mobile.wellness.card.barre.tip1': {
+    ar: 'ينحت الساقين — تمارين صغيرة ومركزة',
+    en: 'Sculpts the legs — small, focused moves',
+  },
+  'mobile.wellness.card.barre.tip2': {
+    ar: 'يحسن الوقفة — ظهر مستقيم',
+    en: 'Improves posture — a straight back',
+  },
+  'mobile.wellness.card.barre.tip3': {
+    ar: 'يقوي العضلات الصغيرة — جسم مشدود',
+    en: 'Strengthens small muscles — a toned body',
+  },
+  'mobile.wellness.card.barre.tip4': {
+    ar: 'مناسب لكل الأعمار — بدون قفز',
+    en: 'Suitable for all ages — no jumping',
+  },
+  'mobile.wellness.card.sweatProofMakeup.title': {
+    ar: 'مكياج مقاوم للعرق',
+    en: 'Sweat-proof makeup',
+  },
+  'mobile.wellness.card.sweatProofMakeup.subtitle': {
+    ar: 'إطلالة ثابتة أثناء التمرين',
+    en: 'A look that lasts through your workout',
+  },
+  'mobile.wellness.card.sweatProofMakeup.tip1': {
+    ar: 'برايمر مات — أساس المكياج الرياضي',
+    en: 'A matte primer — the base of workout makeup',
+  },
+  'mobile.wellness.card.sweatProofMakeup.tip2': {
+    ar: 'تينت شفاه وخدود — بدل الكريمي',
+    en: 'A lip and cheek tint — instead of cream products',
+  },
+  'mobile.wellness.card.sweatProofMakeup.tip3': {
+    ar: 'ماسكارا مقاومة للماء — ضرورية',
+    en: 'Waterproof mascara — a must',
+  },
+  'mobile.wellness.card.sweatProofMakeup.tip4': {
+    ar: 'ورق نشاف — للمسة بعد التمرين',
+    en: 'Blotting paper — for a touch-up after training',
+  },
+  'mobile.wellness.card.postWorkoutHair.title': {
+    ar: 'شعر ما بعد الرياضة',
+    en: 'Post-workout hair',
+  },
+  'mobile.wellness.card.postWorkoutHair.subtitle': {
+    ar: 'شعر منتعش بدون غسيل يومي',
+    en: 'Fresh hair without washing daily',
+  },
+  'mobile.wellness.card.postWorkoutHair.tip1': {
+    ar: 'شامبو جاف — قبل التمرين لامتصاص العرق',
+    en: 'Dry shampoo — before training to absorb sweat',
+  },
+  'mobile.wellness.card.postWorkoutHair.tip2': {
+    ar: 'كعكة عالية — تمنع التعرق على الرقبة',
+    en: 'A high bun — keeps sweat off your neck',
+  },
+  'mobile.wellness.card.postWorkoutHair.tip3': {
+    ar: 'بلسم يترك — بعد التمرين',
+    en: 'Leave-in conditioner — after training',
+  },
+  'mobile.wellness.card.postWorkoutHair.tip4': {
+    ar: 'لا تغسلي يومياً — 2-3 مرات أسبوعياً',
+    en: 'Don’t wash daily — 2-3 times a week',
+  },
+  'mobile.wellness.card.workoutGlow.title': {
+    ar: 'إشراقة الرياضة',
+    en: 'Workout glow',
+  },
+  'mobile.wellness.card.workoutGlow.subtitle': {
+    ar: 'توهج طبيعي بعد التمرين',
+    en: 'A natural glow after training',
+  },
+  'mobile.wellness.card.workoutGlow.tip1': {
+    ar: 'الرياضة تحسن الدورة — بشرة وردية',
+    en: 'Exercise improves circulation — rosy skin',
+  },
+  'mobile.wellness.card.workoutGlow.tip2': {
+    ar: 'العرق ينظف المسام — بشرة أنقى',
+    en: 'Sweat cleans the pores — clearer skin',
+  },
+  'mobile.wellness.card.workoutGlow.tip3': {
+    ar: 'نظفي وجهك بعد التمرين — 10 دقائق',
+    en: 'Cleanse your face after training — within 10 minutes',
+  },
+  'mobile.wellness.card.workoutGlow.tip4': {
+    ar: 'اشربي ماء — الرياضة تجفف الجسم',
+    en: 'Drink water — exercise dehydrates the body',
+  },
+  'mobile.wellness.card.sleepPosition.title': {
+    ar: 'وضعية النوم',
+    en: 'Sleep position',
+  },
+  'mobile.wellness.card.sleepPosition.subtitle': {
+    ar: 'كيف تنامين لجمال بشرتكِ',
+    en: 'How to sleep for beautiful skin',
+  },
+  'mobile.wellness.card.sleepPosition.tip1': {
+    ar: 'على الظهر — الأفضل للبشرة والرقبة',
+    en: 'On your back — best for skin and neck',
+  },
+  'mobile.wellness.card.sleepPosition.tip2': {
+    ar: 'على الجانب — يسبب تجاعيد الوجه',
+    en: 'On your side — causes face wrinkles',
+  },
+  'mobile.wellness.card.sleepPosition.tip3': {
+    ar: 'على البطن — الأسوأ للرقبة والظهر',
+    en: 'On your stomach — worst for neck and back',
+  },
+  'mobile.wellness.card.sleepPosition.tip4': {
+    ar: 'وسادة حرير — تقلل احتكاك البشرة',
+    en: 'A silk pillowcase — reduces friction on the skin',
+  },
+  'mobile.wellness.card.nightRoutine.title': {
+    ar: 'روتين ما قبل النوم',
+    en: 'Pre-sleep routine',
+  },
+  'mobile.wellness.card.nightRoutine.subtitle': {
+    ar: '30 دقيقة — لبشرة أجمل صباحاً',
+    en: '30 minutes — for more beautiful skin in the morning',
+  },
+  'mobile.wellness.card.nightRoutine.tip1': {
+    ar: 'نظفي وجهك — إزالة المكياج بالكامل',
+    en: 'Cleanse your face — remove makeup completely',
+  },
+  'mobile.wellness.card.nightRoutine.tip2': {
+    ar: 'سيروم + مرطب ليلي — تجدد البشرة',
+    en: 'Serum + night moisturizer — renews the skin',
+  },
+  'mobile.wellness.card.nightRoutine.tip3': {
+    ar: 'أطفئي الجوال — 30 دقيقة قبل النوم',
+    en: 'Turn off your phone — 30 minutes before bed',
+  },
+  'mobile.wellness.card.nightRoutine.tip4': {
+    ar: 'أجواء هادئة — شمعة كتاب تأمل',
+    en: 'A calm atmosphere — a candle, a book, meditation',
+  },
+  'mobile.virtualConsultation.price-rating': {
+    ar: '{price} ر.س · {rating}',
+    en: '{price} SAR · {rating}',
+  },
+  'mobile.wellnessHub.deal-price': {
+    ar: '{price} ر.س',
+    en: '{price} SAR',
+  },
+  'mobile.public.bridal-concierge.step.consultation.title': {
+    ar: 'استشارة',
+    en: 'Consultation',
+  },
+  'mobile.public.bridal-concierge.step.consultation.desc': {
+    ar: 'تحديد احتياجات العروس',
+    en: 'Identifying the bride’s needs',
+  },
+  'mobile.public.bridal-concierge.step.trial.title': {
+    ar: 'تجربة',
+    en: 'Trial',
+  },
+  'mobile.public.bridal-concierge.step.trial.desc': {
+    ar: 'تجربة المكياج والتسريحة',
+    en: 'Makeup and hairstyle trial',
+  },
+  'mobile.public.bridal-concierge.step.final.title': {
+    ar: 'اليوم الكبير',
+    en: 'The big day',
+  },
 } as const satisfies Record<string, { ar: string; en: string }>;

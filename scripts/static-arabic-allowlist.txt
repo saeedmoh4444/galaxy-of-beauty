@@ -1,8 +1,3 @@
-apps/mobile/src/app/customer/travel-checklist/index.tsx
-apps/mobile/src/app/customer/virtual-consultation/index.tsx
-apps/mobile/src/app/customer/wellness-hub/index.tsx
-apps/mobile/src/app/customer/wellness/index.tsx
-apps/mobile/src/app/public/bridal-concierge/index.tsx
 apps/mobile/src/app/public/events/[id].tsx
 apps/mobile/src/app/public/events/index.tsx
 apps/mobile/src/app/public/gift-quiz/index.tsx
