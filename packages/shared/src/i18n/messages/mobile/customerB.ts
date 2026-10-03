@@ -2721,4 +2721,107 @@ export const mobileCustomerBMessages = {
     ar: 'لصقة حبوب — للطوارئ',
     en: 'Pimple patch — for emergencies',
   },
+
+  // ---- admin AI features (sweep s3) ----
+  'mobile.adminAiFeatures.feature.aiRoutine.name': { ar: 'روتين ذكي', en: 'Smart Routine' },
+  'mobile.adminAiFeatures.feature.aiRoutine.desc': {
+    ar: 'توليد روتين عناية مخصص',
+    en: 'Generate a personalized care routine',
+  },
+  'mobile.adminAiFeatures.feature.aiAdvisor.name': { ar: 'مستشارة AI', en: 'AI Advisor' },
+  'mobile.adminAiFeatures.feature.aiAdvisor.desc': {
+    ar: 'محادثات ذكية للإجابة',
+    en: 'Smart conversations that answer questions',
+  },
+  'mobile.adminAiFeatures.feature.aiColor.name': { ar: 'تحليل ألوان AI', en: 'AI Color Analysis' },
+  'mobile.adminAiFeatures.feature.aiColor.desc': {
+    ar: 'تحليل لون البشرة آلياً',
+    en: 'Automatic skin tone analysis',
+  },
+  'mobile.adminAiFeatures.feature.aiSkin.name': { ar: 'تحليل بشرة AI', en: 'AI Skin Analysis' },
+  'mobile.adminAiFeatures.feature.aiSkin.desc': {
+    ar: 'تشخيص مشاكل البشرة',
+    en: 'Diagnose skin concerns',
+  },
+
+  // ---- admin cashback rules (sweep s3) ----
+  'mobile.adminCashback.rule.manicureSpa': { ar: 'مانيكير سبا', en: 'Spa Manicure' },
+  'mobile.adminCashback.rule.fullMakeup': { ar: 'مكياج كامل', en: 'Full Makeup' },
+  'mobile.adminCashback.rule.relaxingMassage': { ar: 'مساج استرخاء', en: 'Relaxing Massage' },
+  'mobile.adminCashback.rule.hairColoring': { ar: 'صبغ شعر', en: 'Hair Coloring' },
+
+  // ---- admin flash deals (sweep s3) ----
+  'mobile.adminFlashDeals.less-than-hour': { ar: 'أقل من ساعة', en: '< 1h' },
+  'mobile.adminFlashDeals.hours-left': { ar: '{hours} ساعة', en: '{hours}h' },
+
+  // ---- accessories guide (sweep s3) ----
+  'mobile.accessoriesGuide.card.styling.title': {
+    ar: 'تنسيق الإكسسوارات',
+    en: 'Accessory Styling',
+  },
+  'mobile.accessoriesGuide.card.styling.subtitle': {
+    ar: 'اللمسة الأخيرة لإطلالتك',
+    en: 'The finishing touch for your look',
+  },
+  'mobile.accessoriesGuide.card.styling.tip1': {
+    ar: 'أقراط — طويلة = وجه أنحف',
+    en: 'Earrings — long ones slim the face',
+  },
+  'mobile.accessoriesGuide.card.styling.tip2': {
+    ar: 'عقد — يناسب فتحة الرقبة',
+    en: 'Necklace — match the neckline',
+  },
+  'mobile.accessoriesGuide.card.styling.tip3': {
+    ar: 'ساعة — كلاسيك لكل مناسبة',
+    en: 'Watch — a classic for every occasion',
+  },
+  'mobile.accessoriesGuide.card.styling.tip4': {
+    ar: 'خواتم — 2-3 كحد أقصى',
+    en: 'Rings — 2-3 max',
+  },
+  'mobile.accessoriesGuide.card.beautyBag.title': { ar: 'حقيبة الجمال', en: 'Beauty Bag' },
+  'mobile.accessoriesGuide.card.beautyBag.subtitle': {
+    ar: 'أساسيات لا تستغني عنها',
+    en: 'Essentials you cannot do without',
+  },
+  'mobile.accessoriesGuide.card.beautyBag.tip1': {
+    ar: 'أحمر شفاه — لون ناعم للإطلالة اليومية',
+    en: 'Lipstick — a soft shade for everyday looks',
+  },
+  'mobile.accessoriesGuide.card.beautyBag.tip2': {
+    ar: 'مرآة صغيرة — للمسات السريعة',
+    en: 'Small mirror — for quick touch-ups',
+  },
+  'mobile.accessoriesGuide.card.beautyBag.tip3': {
+    ar: 'مرطب سفر — حجم صغير للطوارئ',
+    en: 'Travel moisturizer — a small size for emergencies',
+  },
+  'mobile.accessoriesGuide.card.beautyBag.tip4': {
+    ar: 'واقي شمس — Mini size للشنطة',
+    en: 'Sunscreen — mini size for your bag',
+  },
+  'mobile.accessoriesGuide.card.hijabElegance.title': { ar: 'أناقة الحجاب', en: 'Hijab Elegance' },
+  'mobile.accessoriesGuide.card.hijabElegance.subtitle': {
+    ar: 'أفكار لتنسيق حجابك',
+    en: 'Ideas for styling your hijab',
+  },
+  'mobile.accessoriesGuide.card.hijabElegance.tip1': {
+    ar: 'ألوان متناسقة — الحجاب مع لون الفستان',
+    en: 'Coordinated colors — hijab with the dress color',
+  },
+  'mobile.accessoriesGuide.card.hijabElegance.tip2': {
+    ar: 'تثبيت محكم — دبابيس غير ظاهرة',
+    en: 'Secure hold — invisible pins',
+  },
+  'mobile.accessoriesGuide.card.hijabElegance.tip3': {
+    ar: 'بطانة حرير — تحمي الشعر من التكسر',
+    en: 'Silk lining — protects hair from breakage',
+  },
+  'mobile.accessoriesGuide.card.hijabElegance.tip4': {
+    ar: 'تغيير الأسلوب — جربي لفات جديدة',
+    en: 'Change your style — try new wraps',
+  },
+
+  // ---- addresses (sweep s3) ----
+  'mobile.addresses.separator': { ar: '،', en: ',' },
 } as const satisfies Record<string, { ar: string; en: string }>;

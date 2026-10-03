@@ -37,7 +37,9 @@ export default function AddressesScreen(): JSX.Element {
             {a.isDefault ? <Text style={styles.defaultBadge}>{t('profile.default')}</Text> : null}
           </View>
           <Text style={styles.detail}>
-            {a.street as string}، {a.area as string}، {a.city as string}
+            {[a.street as string, a.area as string, a.city as string].join(
+              `${t('mobile.addresses.separator')} `,
+            )}
           </Text>
         </View>
       ))}

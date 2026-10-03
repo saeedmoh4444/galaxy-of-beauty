@@ -42,12 +42,8 @@ export default function AdminFlashDealsScreen(): JSX.Element {
             : 0;
           const endsIn =
             hoursLeft < 1
-              ? locale === 'ar'
-                ? 'أقل من ساعة'
-                : '< 1h'
-              : locale === 'ar'
-                ? `${hoursLeft} ساعة`
-                : `${hoursLeft}h`;
+              ? t('mobile.adminFlashDeals.less-than-hour')
+              : t('mobile.adminFlashDeals.hours-left', { hours: hoursLeft });
           const name = locale === 'ar' ? d.serviceNameAr : d.serviceNameEn || d.serviceNameAr;
           return (
             <View key={d.id} style={s.card}>
