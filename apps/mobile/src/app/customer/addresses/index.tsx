@@ -38,7 +38,7 @@ export default function AddressesScreen(): JSX.Element {
           </View>
           <Text style={styles.detail}>
             {[a.street as string, a.area as string, a.city as string].join(
-              t('mobile.addresses.separator'),
+              `${t('mobile.addresses.separator')} `,
             )}
           </Text>
         </View>

@@ -2823,5 +2823,5 @@ export const mobileCustomerBMessages = {
   },
 
   // ---- addresses (sweep s3) ----
-  'mobile.addresses.separator': { ar: '، ', en: ', ' },
+  'mobile.addresses.separator': { ar: '،', en: ',' },
 } as const satisfies Record<string, { ar: string; en: string }>;
