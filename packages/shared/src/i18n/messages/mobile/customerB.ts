@@ -8196,4 +8196,15 @@ export const mobileCustomerBMessages = {
     ar: 'لأي استفسارات: support@galaxybeauty.sa',
     en: 'For any inquiries: support@galaxybeauty.sa',
   },
+
+  // ---- Arabic sweep slice 16: tech gallery items/clients/dates ----
+  'mobile.tech.gallery.item.bridalUpdo': { ar: 'تسريحة عروس', en: 'Bridal updo' },
+  'mobile.tech.gallery.item.frenchNails': { ar: 'أظافر فرنسي', en: 'French nails' },
+  'mobile.tech.gallery.client.reem': { ar: 'ريم', en: 'Reem' },
+  'mobile.tech.gallery.date.jul15': { ar: '15 يوليو', en: 'July 15' },
+  'mobile.tech.gallery.date.jul20': { ar: '20 يوليو', en: 'July 20' },
+  'mobile.tech.gallery.date.aug1': { ar: '1 أغسطس', en: 'August 1' },
+  'mobile.tech.gallery.date.aug5': { ar: '5 أغسطس', en: 'August 5' },
+  'mobile.tech.gallery.date.aug10': { ar: '10 أغسطس', en: 'August 10' },
+  'mobile.tech.gallery.date.aug12': { ar: '12 أغسطس', en: 'August 12' },
 } as const satisfies Record<string, { ar: string; en: string }>;
