@@ -1,5 +1,6 @@
 import type { JSX } from 'react';
 import { View, Text, ScrollView, StyleSheet, TouchableOpacity, RefreshControl } from 'react-native';
+import type { TranslationKey } from '@galaxy/shared';
 import { ErrorAlert } from '@/components/ErrorAlert';
 import { SkeletonList } from '@/components/SkeletonCard';
 import { trpc } from '@/lib/trpc-react';
@@ -11,49 +12,67 @@ interface MembershipInfo {
   autoRenew?: boolean;
 }
 
-const MEMBERSHIPS = [
+interface MembershipTier {
+  key: string;
+  emoji: string;
+  nameKey: TranslationKey;
+  price: number;
+  color: string;
+  benefitKeys: TranslationKey[];
+  notIncludedKeys: TranslationKey[];
+}
+
+const MEMBERSHIPS: MembershipTier[] = [
   {
     key: 'basic',
     emoji: '🎫',
-    name: 'الأساسية',
+    nameKey: 'membership.tier.basic',
     price: 0,
     color: '#9ca3af',
-    benefits: ['حجز المواعيد', 'تصفح الخدمات', 'تقييم الفنيات'],
-    notIncluded: ['خصم على الخدمات', 'حجز أولوية', 'استشارات مجانية'],
+    benefitKeys: [
+      'membership.benefit.basic1',
+      'membership.benefit.basic2',
+      'membership.benefit.basic3',
+    ],
+    notIncludedKeys: [
+      'membership.notIncluded.basic1',
+      'membership.notIncluded.basic2',
+      'membership.notIncluded.basic3',
+    ],
   },
   {
     key: 'premium',
     emoji: '💎',
-    name: 'المميزة',
+    nameKey: 'membership.tier.premium',
     price: 99,
     color: '#f59e0b',
-    benefits: [
-      'خصم ١٠٪',
-      'حجز أولوية',
-      'استشارة مجانية شهرياً',
-      'هدية ترحيبية',
-      'نقاط مضاعفة',
-      'دخول فعاليات حصرية',
+    benefitKeys: [
+      'membership.benefit.premium1',
+      'membership.benefit.premium2',
+      'membership.benefit.premium3',
+      'membership.benefit.premium4',
+      'membership.benefit.premium5',
+      'membership.benefit.premium6',
     ],
-    notIncluded: [],
+    notIncludedKeys: [],
   },
   {
     key: 'platinum',
     emoji: '👑',
-    name: 'البلاتينية',
+    nameKey: 'membership.tier.platinum',
     price: 299,
     color: '#7c3aed',
-    benefits: [
-      'خصم ٢٠٪',
-      'حجز فوري',
-      'استشارات غير محدودة',
-      'مديرة حساب شخصية',
-      'هدية شهرية',
-      'نقاط ×٣',
-      'فعاليات VIP',
-      'خدمة توصيل مجانية',
+    benefitKeys: [
+      'membership.benefit.platinum1',
+      'membership.benefit.platinum2',
+      'membership.benefit.platinum3',
+      'membership.benefit.platinum4',
+      'membership.benefit.platinum5',
+      'membership.benefit.platinum6',
+      'membership.benefit.platinum7',
+      'membership.benefit.platinum8',
     ],
-    notIncluded: [],
+    notIncludedKeys: [],
   },
 ];
 
@@ -163,7 +182,7 @@ export default function SalonMembershipScreen(): JSX.Element {
               marginTop: 8,
             }}
           >
-            {m.name}
+            {t(m.nameKey)}
           </Text>
           <Text style={{ fontSize: 22, fontWeight: '800', textAlign: 'center', marginTop: 4 }}>
             {m.price === 0
@@ -174,21 +193,21 @@ export default function SalonMembershipScreen(): JSX.Element {
             <Text style={{ fontWeight: '600', color: '#374151', marginBottom: 4 }}>
               {t('mobile.salonMembership.benefits')}
             </Text>
-            {m.benefits.map((b, i) => (
+            {m.benefitKeys.map((b, i) => (
               <Text key={i} style={{ color: '#059669', fontSize: 12 }}>
-                {b}
+                {t(b)}
               </Text>
             ))}
-            {m.notIncluded.length > 0 && (
+            {m.notIncludedKeys.length > 0 && (
               <>
                 <Text
                   style={{ fontWeight: '600', color: '#9ca3af', marginTop: 8, marginBottom: 4 }}
                 >
                   {t('mobile.salonMembership.not-included')}
                 </Text>
-                {m.notIncluded.map((b, i) => (
+                {m.notIncludedKeys.map((b, i) => (
                   <Text key={i} style={{ color: '#d1d5db', fontSize: 12 }}>
-                    {b}
+                    {t(b)}
                   </Text>
                 ))}
               </>

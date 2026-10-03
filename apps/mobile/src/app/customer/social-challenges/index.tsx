@@ -1,53 +1,64 @@
 import { View, Text, ScrollView, StyleSheet, TouchableOpacity } from 'react-native';
 import { useState } from 'react';
 import type { JSX } from 'react';
+import type { TranslationKey } from '@galaxy/shared';
 import { useLocale } from '@/components/LocaleProvider';
 
-const CHALLENGES = [
+interface Challenge {
+  key: string;
+  emoji: string;
+  nameKey: TranslationKey;
+  descKey: TranslationKey;
+  participants: number;
+  durationKey: TranslationKey;
+  prizeKey: TranslationKey;
+}
+
+const CHALLENGES: Challenge[] = [
   {
     key: '7day_mask',
     emoji: '🧖',
-    name: 'تحدي ٧ أيام قناع',
-    desc: 'قناع يومي للبشرة لمدة أسبوع',
+    nameKey: 'socialChallenge.chal.mask',
+    descKey: 'socialChallenge.desc.mask',
     participants: 234,
-    duration: '7 أيام',
-    prize: 'قناع مجاني',
+    durationKey: 'socialChallenge.duration.mask',
+    prizeKey: 'socialChallenge.prize.mask',
   },
   {
     key: 'selfie_30',
     emoji: '🤳',
-    name: 'تحدي ٣٠ يوم بدون مكياج',
-    desc: 'صوري بشرتكِ يومياً بدون مكياج',
+    nameKey: 'socialChallenge.chal.noMakeup',
+    descKey: 'socialChallenge.desc.noMakeup',
     participants: 156,
-    duration: '30 يوم',
-    prize: 'جلسة عناية مجانية',
+    durationKey: 'socialChallenge.duration.noMakeup',
+    prizeKey: 'socialChallenge.prize.noMakeup',
   },
   {
     key: 'water_challenge',
     emoji: '💧',
-    name: 'تحدي ٨ أكواب ماء',
-    desc: 'اشربي ٨ أكواب ماء يومياً',
+    nameKey: 'socialChallenge.chal.water',
+    descKey: 'socialChallenge.desc.water',
     participants: 412,
-    duration: '14 يوم',
-    prize: 'منتجات ترطيب',
+    durationKey: 'socialChallenge.duration.water',
+    prizeKey: 'socialChallenge.prize.water',
   },
   {
     key: 'night_routine',
     emoji: '🌙',
-    name: 'تحدي الروتين الليلي',
-    desc: 'التزمي بروتينكِ الليلي لمدة ٢١ يوم',
+    nameKey: 'socialChallenge.chal.nightRoutine',
+    descKey: 'socialChallenge.desc.nightRoutine',
     participants: 189,
-    duration: '21 يوم',
-    prize: 'باقة عناية ليلية',
+    durationKey: 'socialChallenge.duration.nightRoutine',
+    prizeKey: 'socialChallenge.prize.nightRoutine',
   },
   {
     key: 'natural_hair',
     emoji: '💇',
-    name: 'تحدي شعر طبيعي',
-    desc: 'تجنبي الحرارة لمدة أسبوعين',
+    nameKey: 'socialChallenge.chal.naturalHair',
+    descKey: 'socialChallenge.desc.naturalHair',
     participants: 98,
-    duration: '14 يوم',
-    prize: 'علاج شعر طبيعي',
+    durationKey: 'socialChallenge.duration.water',
+    prizeKey: 'socialChallenge.prize.naturalHair',
   },
 ];
 
@@ -77,7 +88,7 @@ export default function SocialChallengesScreen(): JSX.Element {
             return (
               <View key={key} style={styles.mc}>
                 <Text style={styles.mce}>{c.emoji}</Text>
-                <Text style={styles.mcn}>{c.name}</Text>
+                <Text style={styles.mcn}>{t(c.nameKey)}</Text>
               </View>
             );
           })
@@ -91,15 +102,15 @@ export default function SocialChallengesScreen(): JSX.Element {
             <View style={styles.ch}>
               <Text style={styles.che}>{c.emoji}</Text>
               <View style={{ flex: 1 }}>
-                <Text style={styles.chn}>{c.name}</Text>
-                <Text style={styles.chd}>{c.desc}</Text>
+                <Text style={styles.chn}>{t(c.nameKey)}</Text>
+                <Text style={styles.chd}>{t(c.descKey)}</Text>
               </View>
             </View>
             <View style={styles.cm}>
               <Text style={styles.cmi}>
-                {c.participants} · {c.duration}
+                {c.participants} · {t(c.durationKey)}
               </Text>
-              <Text style={styles.cmi}> {c.prize}</Text>
+              <Text style={styles.cmi}> {t(c.prizeKey)}</Text>
             </View>
             <View style={styles.cb}>
               <View

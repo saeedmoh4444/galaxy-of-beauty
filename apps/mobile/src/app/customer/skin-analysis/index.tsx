@@ -196,7 +196,7 @@ export default function SkinAnalysisScreen() {
               <Text style={styles.resultLabel}>{t('mobile.skinAnalysis.concerns')}</Text>
               <Text style={styles.resultValue}>
                 {(result.concerns as string[])?.length
-                  ? (result.concerns as string[]).join('، ')
+                  ? (result.concerns as string[]).join(`${t('mobile.beautyDiscovery.separator')} `)
                   : '-'}
               </Text>
             </View>

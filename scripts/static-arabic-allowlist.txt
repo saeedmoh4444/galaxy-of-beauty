@@ -1,8 +1,3 @@
-apps/mobile/src/app/customer/salon-membership/index.tsx
-apps/mobile/src/app/customer/seasonal-calendar/index.tsx
-apps/mobile/src/app/customer/skin-analysis/index.tsx
-apps/mobile/src/app/customer/social-challenges/index.tsx
-apps/mobile/src/app/customer/sustainability/index.tsx
 apps/mobile/src/app/customer/travel-checklist/index.tsx
 apps/mobile/src/app/customer/virtual-consultation/index.tsx
 apps/mobile/src/app/customer/wellness-hub/index.tsx

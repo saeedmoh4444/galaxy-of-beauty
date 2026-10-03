@@ -2,63 +2,144 @@ import { View, Text, ScrollView, StyleSheet, TouchableOpacity } from 'react-nati
 import { useState } from 'react';
 import type { JSX } from 'react';
 import { useRouter } from 'expo-router';
+import type { TranslationKey } from '@galaxy/shared';
 import { useLocale } from '@/components/LocaleProvider';
 
-const SEASONS = [
+interface SeasonService {
+  emoji: string;
+  nameKey: TranslationKey;
+  whyKey: TranslationKey;
+}
+
+interface Season {
+  key: string;
+  emoji: string;
+  nameKey: TranslationKey;
+  monthsKey: TranslationKey;
+  color: string;
+  tipKey: TranslationKey;
+  services: SeasonService[];
+}
+
+const SEASONS: Season[] = [
   {
     key: 'winter',
     emoji: '❄️',
-    name: 'الشتاء',
-    months: 'ديسمبر - فبراير',
+    nameKey: 'seasonal.season.winter',
+    monthsKey: 'seasonal.months.winter',
     color: '#3b82f6',
-    tips: 'البشرة تميل للجفاف — ركزي على الترطيب العميق',
+    tipKey: 'seasonal.tips.winter',
     services: [
-      { emoji: '💧', name: 'ترطيب عميق', why: 'لمكافحة جفاف الشتاء' },
-      { emoji: '💆', name: 'مساج بالزيوت', why: 'تنشيط الدورة الدموية' },
-      { emoji: '💇', name: 'علاج الشعر', why: 'حماية من التقصف' },
-      { emoji: '💅', name: 'أظافر شتوية', why: 'ألوان داكنة للموسم' },
+      {
+        emoji: '💧',
+        nameKey: 'seasonal.svc.winter.deepHydration',
+        whyKey: 'seasonal.svc.winter.deepHydrationWhy',
+      },
+      {
+        emoji: '💆',
+        nameKey: 'seasonal.svc.winter.oilMassage',
+        whyKey: 'seasonal.svc.winter.oilMassageWhy',
+      },
+      {
+        emoji: '💇',
+        nameKey: 'seasonal.svc.winter.hairTreatment',
+        whyKey: 'seasonal.svc.winter.hairTreatmentWhy',
+      },
+      {
+        emoji: '💅',
+        nameKey: 'seasonal.svc.winter.winterNails',
+        whyKey: 'seasonal.svc.winter.winterNailsWhy',
+      },
     ],
   },
   {
     key: 'spring',
     emoji: '🌸',
-    name: 'الربيع',
-    months: 'مارس - مايو',
+    nameKey: 'seasonal.season.spring',
+    monthsKey: 'seasonal.months.spring',
     color: '#ec4899',
-    tips: 'وقت التجديد — بشرة متجددة بعد الشتاء',
+    tipKey: 'seasonal.tips.spring',
     services: [
-      { emoji: '✨', name: 'تقشير البشرة', why: 'إزالة خلايا الشتاء الميتة' },
-      { emoji: '✂️', name: 'قص الشعر', why: 'تجديد بعد جفاف الشتاء' },
-      { emoji: '💄', name: 'مكياج ربيعي', why: 'ألوان باستيل منعشة' },
-      { emoji: '🌿', name: 'علاجات طبيعية', why: 'موسم التجدد الطبيعي' },
+      {
+        emoji: '✨',
+        nameKey: 'seasonal.svc.spring.exfoliation',
+        whyKey: 'seasonal.svc.spring.exfoliationWhy',
+      },
+      {
+        emoji: '✂️',
+        nameKey: 'seasonal.svc.spring.hairTrim',
+        whyKey: 'seasonal.svc.spring.hairTrimWhy',
+      },
+      {
+        emoji: '💄',
+        nameKey: 'seasonal.svc.spring.springMakeup',
+        whyKey: 'seasonal.svc.spring.springMakeupWhy',
+      },
+      {
+        emoji: '🌿',
+        nameKey: 'seasonal.svc.spring.naturalTreatments',
+        whyKey: 'seasonal.svc.spring.naturalTreatmentsWhy',
+      },
     ],
   },
   {
     key: 'summer',
     emoji: '☀️',
-    name: 'الصيف',
-    months: 'يونيو - أغسطس',
+    nameKey: 'seasonal.season.summer',
+    monthsKey: 'seasonal.months.summer',
     color: '#f59e0b',
-    tips: 'حماية من الشمس أساسية — البشرة الدهنية تحتاج عناية',
+    tipKey: 'seasonal.tips.summer',
     services: [
-      { emoji: '🧴', name: 'واقي شمس طبي', why: 'حماية من الأشعة الضارة' },
-      { emoji: '🦶', name: 'باديكير صيفي', why: 'أقدام جاهزة للصيف' },
-      { emoji: '🪒', name: 'إزالة شعر', why: 'بشرة ناعمة للبحر' },
-      { emoji: '💇', name: 'تسريحات صيفية', why: 'شعر مريح للحر' },
+      {
+        emoji: '🧴',
+        nameKey: 'seasonal.svc.summer.medicalSunscreen',
+        whyKey: 'seasonal.svc.summer.medicalSunscreenWhy',
+      },
+      {
+        emoji: '🦶',
+        nameKey: 'seasonal.svc.summer.summerPedicure',
+        whyKey: 'seasonal.svc.summer.summerPedicureWhy',
+      },
+      {
+        emoji: '🪒',
+        nameKey: 'seasonal.svc.summer.hairRemoval',
+        whyKey: 'seasonal.svc.summer.hairRemovalWhy',
+      },
+      {
+        emoji: '💇',
+        nameKey: 'seasonal.svc.summer.summerHairstyles',
+        whyKey: 'seasonal.svc.summer.summerHairstylesWhy',
+      },
     ],
   },
   {
     key: 'autumn',
     emoji: '🍂',
-    name: 'الخريف',
-    months: 'سبتمبر - نوفمبر',
+    nameKey: 'seasonal.season.autumn',
+    monthsKey: 'seasonal.months.autumn',
     color: '#d97706',
-    tips: 'إصلاح أضرار الصيف — تحضير للشتاء',
+    tipKey: 'seasonal.tips.autumn',
     services: [
-      { emoji: '🍋', name: 'علاج التصبغات', why: 'إصلاح أضرار شمس الصيف' },
-      { emoji: '💆', name: 'مساج استرخاء', why: 'عودة للروتين بعد الإجازة' },
-      { emoji: '💇', name: 'علاج الشعر', why: 'ترميم بعد ملح البحر والكلور' },
-      { emoji: '🧖', name: 'قناع مغذي', why: 'تحضير البشرة للشتاء' },
+      {
+        emoji: '🍋',
+        nameKey: 'seasonal.svc.autumn.pigmentation',
+        whyKey: 'seasonal.svc.autumn.pigmentationWhy',
+      },
+      {
+        emoji: '💆',
+        nameKey: 'seasonal.svc.autumn.relaxingMassage',
+        whyKey: 'seasonal.svc.autumn.relaxingMassageWhy',
+      },
+      {
+        emoji: '💇',
+        nameKey: 'seasonal.svc.winter.hairTreatment',
+        whyKey: 'seasonal.svc.autumn.hairTreatmentWhy',
+      },
+      {
+        emoji: '🧖',
+        nameKey: 'seasonal.svc.autumn.nourishingMask',
+        whyKey: 'seasonal.svc.autumn.nourishingMaskWhy',
+      },
     ],
   },
 ];
@@ -85,7 +166,9 @@ export default function SeasonalCalendarScreen(): JSX.Element {
             style={[styles.tb, season === se.key && { backgroundColor: se.color }]}
           >
             <Text style={[styles.tbe, season === se.key && { color: '#fff' }]}>{se.emoji}</Text>
-            <Text style={[styles.tbn, season === se.key && { color: '#fff' }]}>{se.name}</Text>
+            <Text style={[styles.tbn, season === se.key && { color: '#fff' }]}>
+              {t(se.nameKey)}
+            </Text>
           </TouchableOpacity>
         ))}
       </View>
@@ -93,9 +176,9 @@ export default function SeasonalCalendarScreen(): JSX.Element {
       <View style={[styles.card, { borderLeftColor: s.color }]}>
         <Text style={styles.cardEmoji}>{s.emoji}</Text>
         <Text style={styles.cardTitle}>
-          {s.name} — {s.months}
+          {t(s.nameKey)} — {t(s.monthsKey)}
         </Text>
-        <Text style={styles.cardTip}> {s.tips}</Text>
+        <Text style={styles.cardTip}> {t(s.tipKey)}</Text>
       </View>
 
       <Text style={styles.st}>{t('mobile.seasonalCalendar.season-services')}</Text>
@@ -103,8 +186,8 @@ export default function SeasonalCalendarScreen(): JSX.Element {
         <View key={i} style={styles.svc}>
           <Text style={styles.se}>{sv.emoji}</Text>
           <View style={{ flex: 1 }}>
-            <Text style={styles.sn}>{sv.name}</Text>
-            <Text style={styles.sw}>{sv.why}</Text>
+            <Text style={styles.sn}>{t(sv.nameKey)}</Text>
+            <Text style={styles.sw}>{t(sv.whyKey)}</Text>
           </View>
         </View>
       ))}
