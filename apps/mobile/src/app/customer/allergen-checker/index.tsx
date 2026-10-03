@@ -1,52 +1,73 @@
 import { View, Text, ScrollView, StyleSheet, TouchableOpacity, TextInput } from 'react-native';
 import { useState } from 'react';
 import type { JSX } from 'react';
+import type { TranslationKey } from '@galaxy/shared';
 import { useLocale } from '@/components/LocaleProvider';
 
-const COMMON_ALLERGENS = [
+interface Allergen {
+  key: string;
+  emoji: string;
+  nameKey: TranslationKey;
+  risk: 'high' | 'medium' | 'low';
+  descKey: TranslationKey;
+}
+
+const COMMON_ALLERGENS: Allergen[] = [
   {
     key: 'fragrance',
     emoji: '🌸',
-    name: 'العطور',
+    nameKey: 'allergenChecker.allergen.fragrance',
     risk: 'medium',
-    desc: 'قد تسبب تهيج البشرة الحساسة',
+    descKey: 'allergenChecker.desc.fragrance',
   },
-  { key: 'alcohol', emoji: '🍸', name: 'الكحول', risk: 'high', desc: 'يجفف البشرة ويهيجها' },
+  {
+    key: 'alcohol',
+    emoji: '🍸',
+    nameKey: 'allergenChecker.allergen.alcohol',
+    risk: 'high',
+    descKey: 'allergenChecker.desc.alcohol',
+  },
   {
     key: 'parabens',
     emoji: '🧪',
-    name: 'البارابين',
+    nameKey: 'allergenChecker.allergen.parabens',
     risk: 'medium',
-    desc: 'مواد حافظة قد تسبب حساسية',
+    descKey: 'allergenChecker.desc.parabens',
   },
   {
     key: 'sulfates',
     emoji: '🫧',
-    name: 'الكبريتات',
+    nameKey: 'allergenChecker.allergen.sulfates',
     risk: 'high',
-    desc: 'منظفات قاسية على البشرة',
+    descKey: 'allergenChecker.desc.sulfates',
   },
-  { key: 'silicones', emoji: '🧴', name: 'السيليكون', risk: 'low', desc: 'يسد المسام عند البعض' },
+  {
+    key: 'silicones',
+    emoji: '🧴',
+    nameKey: 'allergenChecker.allergen.silicones',
+    risk: 'low',
+    descKey: 'allergenChecker.desc.silicones',
+  },
   {
     key: 'essential_oils',
     emoji: '🌿',
-    name: 'زيوت عطرية',
+    nameKey: 'allergenChecker.allergen.essentialOils',
     risk: 'medium',
-    desc: 'قد تسبب حساسية للبشرة الحساسة',
+    descKey: 'allergenChecker.desc.essentialOils',
   },
   {
     key: 'lanolin',
     emoji: '🐑',
-    name: 'اللانولين',
+    nameKey: 'allergenChecker.allergen.lanolin',
     risk: 'medium',
-    desc: 'دهن صوفي قد يسبب حساسية',
+    descKey: 'allergenChecker.desc.lanolin',
   },
   {
     key: 'formaldehyde',
     emoji: '💀',
-    name: 'الفورمالديهايد',
+    nameKey: 'allergenChecker.allergen.formaldehyde',
     risk: 'high',
-    desc: 'مادة حافظة ضارة',
+    descKey: 'allergenChecker.desc.formaldehyde',
   },
 ];
 
@@ -66,7 +87,9 @@ export default function AllergenCheckerScreen(): JSX.Element {
   const highRisk = COMMON_ALLERGENS.filter((a) => checked.includes(a.key) && a.risk === 'high');
   const mediumRisk = COMMON_ALLERGENS.filter((a) => checked.includes(a.key) && a.risk === 'medium');
   const visibleAllergens = submitted
-    ? COMMON_ALLERGENS.filter((a) => a.name.includes(submitted) || a.desc.includes(submitted))
+    ? COMMON_ALLERGENS.filter(
+        (a) => t(a.nameKey).includes(submitted) || t(a.descKey).includes(submitted),
+      )
     : COMMON_ALLERGENS;
 
   return (
@@ -110,7 +133,7 @@ export default function AllergenCheckerScreen(): JSX.Element {
               ]}
             >
               <Text style={styles.ae}>{a.emoji}</Text>
-              <Text style={styles.an}>{a.name}</Text>
+              <Text style={styles.an}>{t(a.nameKey)}</Text>
               <View
                 style={[
                   styles.ark,
@@ -146,7 +169,7 @@ export default function AllergenCheckerScreen(): JSX.Element {
           <Text style={styles.wt}>{t('allergenChecker.avoid-title')}</Text>
           {highRisk.map((a) => (
             <Text key={a.key} style={styles.wi}>
-              • {a.name}: {a.desc}
+              • {t(a.nameKey)}: {t(a.descKey)}
             </Text>
           ))}
         </View>
@@ -157,7 +180,7 @@ export default function AllergenCheckerScreen(): JSX.Element {
           <Text style={styles.ct}>{t('allergenChecker.caution-title')}</Text>
           {mediumRisk.map((a) => (
             <Text key={a.key} style={styles.ci}>
-              • {a.name}: {a.desc}
+              • {t(a.nameKey)}: {t(a.descKey)}
             </Text>
           ))}
         </View>

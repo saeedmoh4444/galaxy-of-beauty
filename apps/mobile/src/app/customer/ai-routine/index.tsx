@@ -8,15 +8,24 @@ import {
 } from 'react-native';
 import { useState } from 'react';
 import type { JSX } from 'react';
+import type { TranslationKey } from '@galaxy/shared';
 import { trpc } from '@/lib/trpc-react';
 import { useLocale } from '@/components/LocaleProvider';
 
-const SKIN_TYPES = [
-  { key: 'dry', emoji: '🧴', label: 'جافة' },
-  { key: 'oily', emoji: '💧', label: 'دهنية' },
-  { key: 'combination', emoji: '🔀', label: 'مختلطة' },
-  { key: 'normal', emoji: '😊', label: 'عادية' },
-] as const;
+type SkinTypeKey = 'dry' | 'oily' | 'combination' | 'normal';
+
+interface SkinTypeOption {
+  key: SkinTypeKey;
+  emoji: string;
+  labelKey: TranslationKey;
+}
+
+const SKIN_TYPES: SkinTypeOption[] = [
+  { key: 'dry', emoji: '🧴', labelKey: 'aiRoutine.skin-dry' },
+  { key: 'oily', emoji: '💧', labelKey: 'aiRoutine.skin-oily' },
+  { key: 'combination', emoji: '🔀', labelKey: 'aiRoutine.skin-combination' },
+  { key: 'normal', emoji: '😊', labelKey: 'aiRoutine.skin-normal' },
+];
 
 interface RoutineStep {
   emoji?: string;
@@ -37,15 +46,7 @@ interface AIRoutineData {
 
 export default function AIRoutineScreen(): JSX.Element {
   const { t } = useLocale();
-  const skinLabels: Record<string, string> = {
-    dry: t('aiRoutine.skin-dry'),
-    oily: t('aiRoutine.skin-oily'),
-    combination: t('aiRoutine.skin-combination'),
-    normal: t('aiRoutine.skin-normal'),
-  };
-  const [skinType, setSkinType] = useState<'dry' | 'oily' | 'combination' | 'normal'>(
-    'combination',
-  );
+  const [skinType, setSkinType] = useState<SkinTypeKey>('combination');
   const [generated, setGenerated] = useState(false);
   const q = trpc.aiRoutine.generate.useQuery({ skinType }, { enabled: false });
 
@@ -60,15 +61,15 @@ export default function AIRoutineScreen(): JSX.Element {
         <Text style={styles.t}>{t('aiRoutine.title')}</Text>
         <Text style={styles.sub}>{t('aiRoutine.subtitle')}</Text>
         <View style={styles.grid}>
-          {SKIN_TYPES.map((t) => (
+          {SKIN_TYPES.map((st) => (
             <TouchableOpacity
-              key={t.key}
-              onPress={() => setSkinType(t.key)}
-              style={[styles.skinBtn, skinType === t.key && styles.skinBtnActive]}
+              key={st.key}
+              onPress={() => setSkinType(st.key)}
+              style={[styles.skinBtn, skinType === st.key && styles.skinBtnActive]}
             >
-              <Text style={styles.skinEmoji}>{t.emoji}</Text>
-              <Text style={[styles.skinLabel, skinType === t.key && styles.skinLabelActive]}>
-                {skinLabels[t.key] ?? t.label}
+              <Text style={styles.skinEmoji}>{st.emoji}</Text>
+              <Text style={[styles.skinLabel, skinType === st.key && styles.skinLabelActive]}>
+                {t(st.labelKey)}
               </Text>
             </TouchableOpacity>
           ))}

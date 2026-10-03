@@ -2824,4 +2824,219 @@ export const mobileCustomerBMessages = {
 
   // ---- addresses (sweep s3) ----
   'mobile.addresses.separator': { ar: '،', en: ',' },
+
+  // ---- beauty-academy cards (sweep s4) ----
+  'mobile.beautyAcademy.card.encyclopedia.title': {
+    ar: 'موسوعة الجمال',
+    en: 'Beauty Encyclopedia',
+  },
+  'mobile.beautyAcademy.card.encyclopedia.subtitle': {
+    ar: 'فيتامين سي — دليلك الشامل',
+    en: 'Vitamin C — your complete guide',
+  },
+  'mobile.beautyAcademy.card.encyclopedia.tip1': {
+    ar: 'مضاد أكسدة قوي — يفتح البشرة ويوحد لونها',
+    en: 'A powerful antioxidant — brightens and evens the skin tone',
+  },
+  'mobile.beautyAcademy.card.encyclopedia.tip2': {
+    ar: 'صباحاً قبل واقي الشمس — نتائج أفضل',
+    en: 'In the morning before sunscreen — better results',
+  },
+  'mobile.beautyAcademy.card.encyclopedia.tip3': {
+    ar: 'وقت القراءة: 5 دقائق — معلومات موثقة',
+    en: 'Reading time: 5 minutes — verified information',
+  },
+  'mobile.beautyAcademy.card.encyclopedia.tip4': {
+    ar: 'معلومة موثقة — مراجعة من خبراء',
+    en: 'Verified information — reviewed by experts',
+  },
+  'mobile.beautyAcademy.card.skinTest.title': { ar: 'اختبار البشرة', en: 'Skin Quiz' },
+  'mobile.beautyAcademy.card.skinTest.subtitle': {
+    ar: 'اكتشفي نوع بشرتكِ',
+    en: 'Discover your skin type',
+  },
+  'mobile.beautyAcademy.card.skinTest.tip1': {
+    ar: 'كيف تبدو بشرتكِ بعد غسلها؟',
+    en: 'How does your skin look after washing it?',
+  },
+  'mobile.beautyAcademy.card.skinTest.tip2': {
+    ar: 'كيف تتصرف في الطقس الحار؟',
+    en: 'How does it behave in hot weather?',
+  },
+  'mobile.beautyAcademy.card.skinTest.tip3': {
+    ar: 'هل بشرتكِ حساسة للمنتجات الجديدة؟',
+    en: 'Is your skin sensitive to new products?',
+  },
+  'mobile.beautyAcademy.card.skinTest.tip4': {
+    ar: '3 أسئلة — نتيجة فورية لنوع بشرتك',
+    en: '3 questions — an instant result for your skin type',
+  },
+  'mobile.beautyAcademy.card.trivia.title': { ar: 'أسئلة trivia', en: 'Trivia Questions' },
+  'mobile.beautyAcademy.card.trivia.subtitle': {
+    ar: 'هل تعرفين إجابات الجمال؟',
+    en: 'Do you know the beauty answers?',
+  },
+  'mobile.beautyAcademy.card.trivia.tip1': {
+    ar: 'أي فيتامين يسمى فيتامين الجمال؟',
+    en: 'Which vitamin is called the beauty vitamin?',
+  },
+  'mobile.beautyAcademy.card.trivia.tip2': {
+    ar: 'ما هو أقوى مضاد أكسدة في العناية؟',
+    en: 'What is the strongest antioxidant in skincare?',
+  },
+  'mobile.beautyAcademy.card.trivia.tip3': {
+    ar: 'كم وزن ماء يستطيع حمض الهيالورونيك حمله؟',
+    en: 'How much water can hyaluronic acid hold?',
+  },
+  'mobile.beautyAcademy.card.trivia.tip4': {
+    ar: 'أسئلة ممتعة — تعلمي أثناء اللعب',
+    en: 'Fun questions — learn while you play',
+  },
+  'mobile.beautyAcademy.card.myths.title': { ar: 'خرافات الجمال', en: 'Beauty Myths' },
+  'mobile.beautyAcademy.card.myths.subtitle': {
+    ar: 'الحقيقة العلمية وراء الأساطير',
+    en: 'The science behind the legends',
+  },
+  'mobile.beautyAcademy.card.myths.tip1': {
+    ar: '"معجون الأسنان يعالج الحبوب" — خرافة!',
+    en: '"Toothpaste cures pimples" — a myth!',
+  },
+  'mobile.beautyAcademy.card.myths.tip2': {
+    ar: '"الشعر يطول أسرع بالقص المتكرر" — غير صحيح',
+    en: '"Hair grows faster with frequent trims" — not true',
+  },
+  'mobile.beautyAcademy.card.myths.tip3': {
+    ar: 'كل خرافة مع تفسير علمي مبسط',
+    en: 'Every myth with a simple scientific explanation',
+  },
+  'mobile.beautyAcademy.card.myths.tip4': {
+    ar: 'مصادر موثقة — من أطباء جلدية',
+    en: 'Verified sources — from dermatologists',
+  },
+  'mobile.beautyAcademy.card.career.title': { ar: 'المسار الوظيفي', en: 'Career Path' },
+  'mobile.beautyAcademy.card.career.subtitle': { ar: 'فنانة مكياج', en: 'Makeup Artist' },
+  'mobile.beautyAcademy.card.career.tip1': {
+    ar: 'المستوى: مبتدئ — 3 دورات أساسية',
+    en: 'Level: beginner — 3 core courses',
+  },
+  'mobile.beautyAcademy.card.career.tip2': {
+    ar: 'شهادة معتمدة — بعد إكمال 8 وحدات',
+    en: 'Accredited certificate — after completing 8 modules',
+  },
+  'mobile.beautyAcademy.card.career.tip3': {
+    ar: 'المدة التقريبية: 6 أشهر',
+    en: 'Estimated duration: 6 months',
+  },
+  'mobile.beautyAcademy.card.career.tip4': {
+    ar: 'مشروع تخرج — جلسة تصوير كاملة',
+    en: 'Graduation project — a full photo shoot',
+  },
+  'mobile.beautyAcademy.card.recipes.title': { ar: 'وصفات طبيعية', en: 'Natural Recipes' },
+  'mobile.beautyAcademy.card.recipes.subtitle': {
+    ar: 'قناع الأفوكادو والعسل',
+    en: 'Avocado and Honey Mask',
+  },
+  'mobile.beautyAcademy.card.recipes.tip1': {
+    ar: 'المكونات: نصف أفوكادو + ملعقة عسل',
+    en: 'Ingredients: half an avocado + a spoon of honey',
+  },
+  'mobile.beautyAcademy.card.recipes.tip2': {
+    ar: 'المدة: 15 دقيقة على البشرة',
+    en: 'Duration: 15 minutes on the skin',
+  },
+  'mobile.beautyAcademy.card.recipes.tip3': {
+    ar: 'النتيجة: ترطيب عميق وإشراقة',
+    en: 'Result: deep hydration and a glow',
+  },
+  'mobile.beautyAcademy.card.recipes.tip4': {
+    ar: 'مرة أسبوعياً — مناسب للبشرة الجافة',
+    en: 'Once a week — suitable for dry skin',
+  },
+  'mobile.beautyAcademy.card.infographic.title': { ar: 'إنفوجرافيك', en: 'Infographic' },
+  'mobile.beautyAcademy.card.infographic.subtitle': {
+    ar: 'الحماية من الشمس',
+    en: 'Sun Protection',
+  },
+  'mobile.beautyAcademy.card.infographic.tip1': {
+    ar: 'أشعة UVA — 95% تخترق الغيوم والزجاج',
+    en: 'UVA rays — 95% penetrate clouds and glass',
+  },
+  'mobile.beautyAcademy.card.infographic.tip2': {
+    ar: 'SPF 30 — 97% نسبة الحماية',
+    en: 'SPF 30 — 97% protection rate',
+  },
+  'mobile.beautyAcademy.card.infographic.tip3': {
+    ar: 'المصدر: منظمة الصحة العالمية',
+    en: 'Source: World Health Organization',
+  },
+  'mobile.beautyAcademy.card.infographic.tip4': {
+    ar: 'طبقي واقي الشمس يومياً حتى في البيت',
+    en: 'Apply sunscreen daily, even at home',
+  },
+  'mobile.beautyAcademy.card.quickTip.title': { ar: 'نصيحة سريعة', en: 'Quick Tip' },
+  'mobile.beautyAcademy.card.quickTip.subtitle': {
+    ar: 'طبقي المرطب على بشرة رطبة',
+    en: 'Apply moisturizer to damp skin',
+  },
+  'mobile.beautyAcademy.card.quickTip.tip1': {
+    ar: 'التصنيف: ترطيب — الفئة: عناية يومية',
+    en: 'Category: hydration — daily care',
+  },
+  'mobile.beautyAcademy.card.quickTip.tip2': {
+    ar: 'بعد الغسول مباشرة — قبل أن تجف البشرة',
+    en: 'Right after cleansing — before the skin dries',
+  },
+  'mobile.beautyAcademy.card.quickTip.tip3': {
+    ar: 'المرطب يحبس الرطوبة — بشرة أنعم',
+    en: 'Moisturizer locks in hydration — softer skin',
+  },
+  'mobile.beautyAcademy.card.quickTip.tip4': {
+    ar: 'صباح ومساء — للحصول على أفضل نتيجة',
+    en: 'Morning and evening — for the best result',
+  },
+  'mobile.beautyAcademy.card.saudiHeritage.title': { ar: 'التراث السعودي', en: 'Saudi Heritage' },
+  'mobile.beautyAcademy.card.saudiHeritage.subtitle': {
+    ar: 'الحناء — فن وجمال',
+    en: 'Henna — Art and Beauty',
+  },
+  'mobile.beautyAcademy.card.saudiHeritage.tip1': {
+    ar: 'نبات طبيعي — يبرد البشرة ويزينها',
+    en: 'A natural plant — cools and adorns the skin',
+  },
+  'mobile.beautyAcademy.card.saudiHeritage.tip2': {
+    ar: 'نقوش سعودية تقليدية — فن عمره قرون',
+    en: 'Traditional Saudi patterns — an art centuries old',
+  },
+  'mobile.beautyAcademy.card.saudiHeritage.tip3': {
+    ar: 'مناسبة: الأعراس والأعياد',
+    en: 'Occasions: weddings and holidays',
+  },
+  'mobile.beautyAcademy.card.saudiHeritage.tip4': {
+    ar: 'فوائد: تقوية الشعر وتبريد الجسم',
+    en: 'Benefits: strengthens hair and cools the body',
+  },
+  'mobile.beautyAcademy.card.careCertificate.title': {
+    ar: 'شهادة العناية',
+    en: 'Skincare Certificate',
+  },
+  'mobile.beautyAcademy.card.careCertificate.subtitle': {
+    ar: 'مسار العناية بالبشرة',
+    en: 'Skincare Track',
+  },
+  'mobile.beautyAcademy.card.careCertificate.tip1': {
+    ar: '8 وحدات دراسية — من أساسيات إلى متقدم',
+    en: '8 study modules — from basics to advanced',
+  },
+  'mobile.beautyAcademy.card.careCertificate.tip2': {
+    ar: 'مكتمل: 3 من 8 — تقدم 38%',
+    en: 'Completed: 3 of 8 — 38% progress',
+  },
+  'mobile.beautyAcademy.card.careCertificate.tip3': {
+    ar: 'الوحدة القادمة: التقشير الكيميائي',
+    en: 'Next module: chemical peeling',
+  },
+  'mobile.beautyAcademy.card.careCertificate.tip4': {
+    ar: 'شهادة معتمدة عند إكمال المسار',
+    en: 'An accredited certificate upon completing the track',
+  },
 } as const satisfies Record<string, { ar: string; en: string }>;
