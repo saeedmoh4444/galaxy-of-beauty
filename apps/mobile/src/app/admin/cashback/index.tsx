@@ -1,10 +1,22 @@
 import type { JSX } from 'react';
 import { View, Text, ScrollView, StyleSheet } from 'react-native';
+import type { TranslationKey } from '@galaxy/shared';
 import { useLocale } from '@/components/LocaleProvider';
-const RULES = [
+
+interface CashbackRule {
+  id: number;
+  serviceKey: TranslationKey;
+  emoji: string;
+  rate: number;
+  minSpend: number;
+  maxCashback: number;
+  active: boolean;
+}
+
+const RULES: CashbackRule[] = [
   {
     id: 1,
-    service: 'مانيكير سبا',
+    serviceKey: 'mobile.adminCashback.rule.manicureSpa',
     emoji: '💅',
     rate: 5,
     minSpend: 100,
@@ -13,7 +25,7 @@ const RULES = [
   },
   {
     id: 2,
-    service: 'مكياج كامل',
+    serviceKey: 'mobile.adminCashback.rule.fullMakeup',
     emoji: '💄',
     rate: 8,
     minSpend: 300,
@@ -22,14 +34,22 @@ const RULES = [
   },
   {
     id: 3,
-    service: 'مساج استرخاء',
+    serviceKey: 'mobile.adminCashback.rule.relaxingMassage',
     emoji: '💆',
     rate: 10,
     minSpend: 200,
     maxCashback: 75,
     active: false,
   },
-  { id: 4, service: 'صبغ شعر', emoji: '💇', rate: 5, minSpend: 150, maxCashback: 60, active: true },
+  {
+    id: 4,
+    serviceKey: 'mobile.adminCashback.rule.hairColoring',
+    emoji: '💇',
+    rate: 5,
+    minSpend: 150,
+    maxCashback: 60,
+    active: true,
+  },
 ];
 // NO API: cashback router has no admin query for cashback rules (only customer
 // history/info + admin setRate mutation; the web admin page is a rate editor
@@ -45,7 +65,7 @@ export default function AdminCashbackScreen(): JSX.Element {
           <View style={{ flexDirection: 'row', alignItems: 'center', gap: 8 }}>
             <Text style={s.ce}>{r.emoji}</Text>
             <View style={{ flex: 1 }}>
-              <Text style={s.cn}>{r.service}</Text>
+              <Text style={s.cn}>{t(r.serviceKey)}</Text>
               <Text style={s.cd}>
                 {t('mobile.admin.cashback.rule-summary', { rate: r.rate, min: r.minSpend })}
               </Text>

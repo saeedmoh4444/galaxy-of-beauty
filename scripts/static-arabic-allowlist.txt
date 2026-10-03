@@ -1,13 +1,3 @@
-apps/mobile/src/app/admin/ai-features/index.tsx
-apps/mobile/src/app/admin/cashback/index.tsx
-apps/mobile/src/app/admin/flash-deals/index.tsx
-apps/mobile/src/app/customer/accessories-guide/index.tsx
-apps/mobile/src/app/customer/addresses/index.tsx
-apps/mobile/src/app/customer/ai-routine/index.tsx
-apps/mobile/src/app/customer/allergen-checker/index.tsx
-apps/mobile/src/app/customer/beauty-academy/index.tsx
-apps/mobile/src/app/customer/beauty-advisor/index.tsx
-apps/mobile/src/app/customer/beauty-budget-planner/index.tsx
 apps/mobile/src/app/customer/beauty-closet/index.tsx
 apps/mobile/src/app/customer/beauty-community/index.tsx
 apps/mobile/src/app/customer/beauty-discovery/index.tsx

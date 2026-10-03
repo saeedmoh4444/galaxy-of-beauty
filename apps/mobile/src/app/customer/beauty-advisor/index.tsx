@@ -10,16 +10,44 @@ import {
 } from 'react-native';
 import { useState, useRef } from 'react';
 import type { JSX, ElementRef } from 'react';
+import type { TranslationKey } from '@galaxy/shared';
 import { trpc } from '@/lib/trpc-react';
 import { useLocale } from '@/components/LocaleProvider';
 
-const TOPICS = [
-  { key: 'روتين', emoji: '🧴', q: 'كيف أبني روتين عناية يومي؟' },
-  { key: 'بشرة', emoji: '✨', q: 'كيف أحدد نوع بشرتي؟' },
-  { key: 'مكياج', emoji: '💄', q: 'كيف أختار كريم الأساس المناسب؟' },
-  { key: 'شعر', emoji: '💇', q: 'كيف أعتني بشعري حسب نوعه؟' },
-  { key: 'زواج', emoji: '👰', q: 'كيف أخطط لجمالي قبل الزفاف؟' },
-  { key: 'صيف', emoji: '🌞', q: 'كيف أحمي بشرتي في الصيف؟' },
+interface Topic {
+  key: string;
+  emoji: string;
+  labelKey: TranslationKey;
+  qKey: TranslationKey;
+}
+
+const TOPICS: Topic[] = [
+  {
+    key: 'routine',
+    emoji: '🧴',
+    labelKey: 'beautyAdvisor.topic.routine',
+    qKey: 'beautyAdvisor.q.routine',
+  },
+  { key: 'skin', emoji: '✨', labelKey: 'beautyAdvisor.topic.skin', qKey: 'beautyAdvisor.q.skin' },
+  {
+    key: 'makeup',
+    emoji: '💄',
+    labelKey: 'beautyAdvisor.topic.makeup',
+    qKey: 'beautyAdvisor.q.makeup',
+  },
+  { key: 'hair', emoji: '💇', labelKey: 'beautyAdvisor.topic.hair', qKey: 'beautyAdvisor.q.hair' },
+  {
+    key: 'wedding',
+    emoji: '👰',
+    labelKey: 'beautyAdvisor.topic.wedding',
+    qKey: 'beautyAdvisor.q.wedding',
+  },
+  {
+    key: 'summer',
+    emoji: '🌞',
+    labelKey: 'beautyAdvisor.topic.summer',
+    qKey: 'beautyAdvisor.q.summer',
+  },
 ];
 
 export default function BeautyAdvisorScreen(): JSX.Element {
@@ -28,8 +56,7 @@ export default function BeautyAdvisorScreen(): JSX.Element {
   const [messages, setMessages] = useState([
     {
       role: 'assistant',
-      content:
-        'مرحباً! أنا مجرة الجمال، مستشارة جمالكِ الشخصية. اسأليني أي سؤال عن العناية والتجميل!',
+      content: t('beautyAdvisor.welcome'),
     },
   ]);
   const [input, setInput] = useState('');
@@ -67,10 +94,14 @@ export default function BeautyAdvisorScreen(): JSX.Element {
         style={s.topicsRow}
         contentContainerStyle={{ gap: 8, paddingHorizontal: 16 }}
       >
-        {TOPICS.map((t) => (
-          <TouchableOpacity key={t.key} onPress={() => handleSend(t.q)} style={s.topic}>
+        {TOPICS.map((topic) => (
+          <TouchableOpacity
+            key={topic.key}
+            onPress={() => handleSend(t(topic.qKey))}
+            style={s.topic}
+          >
             <Text style={s.topicText}>
-              {t.emoji} {t.key}
+              {topic.emoji} {t(topic.labelKey)}
             </Text>
           </TouchableOpacity>
         ))}
