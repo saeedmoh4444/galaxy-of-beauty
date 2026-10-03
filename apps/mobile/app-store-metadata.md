@@ -35,7 +35,7 @@ FEATURES:
 SECURITY:
 • Saudi PDPL-compliant data protection
 • JWT authentication with 2FA
-• PayFort/APS secure payment gateway
+• MyFatoorah secure payment gateway
 • All technicians are KYC-verified
 
 [AR]
@@ -57,7 +57,7 @@ SECURITY:
 الأمان:
 • حماية بيانات متوافقة مع نظام PDPL السعودي
 • مصادقة JWT مع التحقق الثنائي
-• بوابة دفع آمنة PayFort/APS
+• بوابة دفع آمنة MyFatoorah
 • جميع الفنيات موثقات
 ```
 

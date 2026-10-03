@@ -95,6 +95,13 @@ enum TransactionSource {
   HANDLING_FEE_DEDUCTION
   REFUND
   INFLUENCER_COMMISSION
+  STORE_PURCHASE
+}
+
+enum StoreCheckoutStatus {
+  PENDING
+  PAID
+  FAILED
 }
 
 enum ZatcaStatus {
@@ -170,6 +177,7 @@ model User {
   productReviews     ProductReview[]
   cartItems          CartItem[]
   storeOrders        StoreOrder[]
+  storeCheckouts     StoreCheckout[]
   sentMessages      ChatMessage[]      @relation("SenderMessages")
   auditLogs         AuditLog[]
   wishlistItems     WishlistItem[]
@@ -701,14 +709,14 @@ model Booking {
   @@map("bookings")
 }
 
-// ======================================================================// Payments (PayFort / Amazon Payment Services)
+// ======================================================================// Payments (MyFatoorah)
 // ======================================================================
 model Payment {
   id            Int           @id @default(autoincrement())
   bookingId     Int           @unique
   amount        Decimal       @db.Decimal(10, 2)
   currency      String        @default("SAR")
-  gatewayRef    String?       // PayFort transaction reference
+  gatewayRef    String?       // MyFatoorah InvoiceId
   intent        PaymentIntent @default(AUTHORIZE)
   status        PaymentStatus @default(AUTHORIZED)
   commission    Decimal       @default(0) @db.Decimal(10, 2) // Gateway commission
@@ -1243,7 +1251,7 @@ model PlatformConfig {
 model SavedCard {
   id           Int      @id @default(autoincrement())
   userId       Int
-  cardToken    String   // PayFort/APS token
+  cardToken    String   // MyFatoorah token
   lastFour     String   // Last 4 digits
   brand        String   // visa, mastercard, mada, amex
   expMonth     Int
@@ -1663,19 +1671,52 @@ model StoreOrder {
   id          Int      @id @default(autoincrement())
   vendorId    Int
   customerId  Int
+  checkoutId  Int?
   totalAmount Decimal  @db.Decimal(10, 2)
   itemCount   Int      @default(1)
   status      String   @default("PENDING_FULFILLMENT") // PENDING_FULFILLMENT | FULFILLED
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
 
-  vendor   Vendor @relation(fields: [vendorId], references: [id], onDelete: Cascade)
-  customer User   @relation(fields: [customerId], references: [id])
+  vendor   Vendor         @relation(fields: [vendorId], references: [id], onDelete: Cascade)
+  customer User           @relation(fields: [customerId], references: [id])
+  checkout StoreCheckout? @relation(fields: [checkoutId], references: [id], onDelete: SetNull)
   dispute  Dispute?
 
   @@index([vendorId, status, createdAt])
   @@index([customerId, createdAt])
+  @@index([checkoutId])
   @@map("store_orders")
+}
+
+// MyFatoorah marketplace checkout — one cart = one shipping consignee =
+// one gateway invoice. StoreOrders link back via checkoutId.
+model StoreCheckout {
+  id              Int                 @id @default(autoincrement())
+  customerId      Int
+  idempotencyKey  String              @unique
+  method          String // 'wallet' | 'online'
+  subtotal        Decimal             @db.Decimal(10, 2)
+  shippingCharge  Decimal             @default(0) @db.Decimal(10, 2)
+  total           Decimal             @db.Decimal(10, 2)
+  invoiceId       String?
+  gatewayRef      String?
+  status          StoreCheckoutStatus @default(PENDING)
+  shipPersonName  String
+  shipMobile      String
+  shipLineAddress String
+  shipCityName    String
+  shipPostalCode  String
+  shipCountryCode String
+  shippingMethod  Int?
+  createdAt       DateTime            @default(now())
+  updatedAt       DateTime            @updatedAt
+
+  customer User         @relation(fields: [customerId], references: [id], onDelete: Restrict)
+  orders   StoreOrder[]
+
+  @@index([customerId, createdAt])
+  @@map("store_checkouts")
 }
 
 // Store plan Phase 4b — store-proposed product deals (approved via the

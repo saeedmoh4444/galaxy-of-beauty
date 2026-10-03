@@ -21,7 +21,17 @@ export {
 } from './csrf';
 export { getRedis, isRedisAvailable, incrementAttempts, resetAttempts } from './redis';
 export { sendPushToUser, sendPushToAdmins } from './push';
-export { authorizePayment, verifyWebhookSignature, isPayFortConfigured } from './payfort';
+export {
+  getCountries,
+  getCities,
+  calculateShippingCharge,
+  sendPayment,
+  executePayment,
+  directPayment,
+  getPaymentStatus,
+  isFatoorahConfigured,
+} from './fatoorah';
+export type { FatoorahConfig, FatoorahShippingConsignee, FatoorahShipItem } from './fatoorah';
 export { uploadFile, deleteFile, generatePresignedUrl } from './storage';
 export { sendSms, sendBookingConfirmationSms, sendBookingReminderSms, sendOtpSms } from './sms';
 export {

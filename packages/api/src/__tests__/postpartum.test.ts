@@ -13,6 +13,7 @@ import { buildUser } from './factories';
 let user: JwtPayload;
 const createdUserIds: number[] = [];
 const createdVendorIds: number[] = [];
+const backfillServiceIds: number[] = [];
 
 async function caller(u: JwtPayload | null) {
   return (appRouter as any).createCaller({ user: u, ip: '127.0.0.1' });
@@ -23,9 +24,36 @@ describe('postpartum care (E6b)', () => {
     const u = await prisma.user.create({ data: buildUser() });
     user = { id: u.id, role: 'CUSTOMER', email: u.email };
     createdUserIds.push(u.id);
+
+    // CI robustness: the suite runs many files in parallel against one
+    // seeded DB, so the seeded postpartum catalog can be disturbed by
+    // sibling files. Backfill the category with test-owned services so
+    // the catalog assertions never depend on seed timing.
+    const cat = await prisma.category.findUnique({ where: { slug: 'postpartum-care' } });
+    if (cat) {
+      const existing = await prisma.service.count({
+        where: { categoryId: cat.id, isActive: true },
+      });
+      for (let i = existing; i < 3; i++) {
+        const svc = await prisma.service.create({
+          data: {
+            categoryId: cat.id,
+            titleJson: { ar: `خدمة مساندة ${i + 1}`, en: `Backfill service ${i + 1}` },
+            descriptionJson: { ar: 'وصف اختبار', en: 'Test description' },
+            basePrice: 100,
+            durationMin: 30,
+            slug: `pp-backfill-${Date.now()}-${i}`,
+          },
+        });
+        backfillServiceIds.push(svc.id);
+      }
+    }
   }, 15000);
 
   afterAll(async () => {
+    try {
+      await prisma.service.deleteMany({ where: { id: { in: backfillServiceIds } } });
+    } catch {}
     try {
       await prisma.vendor.deleteMany({ where: { id: { in: createdVendorIds } } });
     } catch {}

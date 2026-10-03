@@ -27,11 +27,11 @@
 
 - Payment creation returns 500
 - Wallet balance not updating
-- PayFort/APS gateway timeout
+- MyFatoorah gateway timeout
 
 **Response**:
 
-1. Check PayFort configuration: verify `PAYFORT_*` env vars
+1. Check MyFatoorah configuration: verify `FATOORAH_API_TOKEN` env var
 2. Check idempotency keys: duplicate POSTs should return cached response
 3. Check payment logs: `grep payment /var/log/app.log | tail -20`
 4. If gateway unreachable: switch to offline mode (wallet-only payments)
@@ -127,12 +127,12 @@
 
 ## Escalation Contacts
 
-| Role                     | Contact                      |
-| ------------------------ | ---------------------------- |
-| On-call engineer         | Primary (rotation)           |
-| Security incident        | security@galaxyofbeauty.sa   |
-| Database admin           | dba@galaxyofbeauty.sa        |
-| Payment provider support | PayFort/APS merchant support |
+| Role                     | Contact                     |
+| ------------------------ | --------------------------- |
+| On-call engineer         | Primary (rotation)          |
+| Security incident        | security@galaxyofbeauty.sa  |
+| Database admin           | dba@galaxyofbeauty.sa       |
+| Payment provider support | MyFatoorah merchant support |
 
 ## Post-Incident Checklist
 

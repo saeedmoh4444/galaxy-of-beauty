@@ -1,21 +1,29 @@
 /**
  * Money-integrity regression tests (2026-09-30 audit, API items 1-4).
  *
- * These pin the fixes for the four free-money / unsigned-webhook holes:
+ * These pin the fixes for the four free-money / unsigned-callback holes:
  *  1. wallet.topUp must NOT mint spendable balance — only a PENDING intent.
- *  2. payments.webhook must reject requests without a valid signature.
+ *  2. payments.statusCallback must change state only from a verified
+ *     gateway status (never from an unsigned callback alone).
  *  3. payments.refund must reverse the cashback written under
  *     `capture_<bookingId>` (the old lookup never matched any row).
- *  4. PayFort must fail closed when unconfigured — never fake `success: true`.
+ *  4. The gateway must fail closed when unconfigured — never fake
+ *     `success: true` (pinned in fatoorah.test.ts).
  */
 import { describe, it, expect, beforeAll, afterAll, vi } from 'vitest';
 import { appRouter } from '../routers/index';
 import { createTRPCContext } from '../context';
 import { prisma, Prisma } from '@galaxy/db';
 import type { JwtPayload } from '../lib/jwt';
-import { authorizePayment } from '../lib/payfort';
-import { verifyWebhookSignature } from '../lib/payfort';
+import { getPaymentStatus } from '../lib/fatoorah';
 import { buildBooking } from './factories';
+
+vi.mock('../lib/fatoorah', async (importOriginal) => {
+  const actual = await importOriginal<typeof import('../lib/fatoorah')>();
+  return { ...actual, getPaymentStatus: vi.fn() };
+});
+
+const getPaymentStatusMock = vi.mocked(getPaymentStatus);
 
 const CSRF = 'a'.repeat(64);
 
@@ -95,21 +103,99 @@ describe('wallet.topUp — no free money', () => {
   });
 });
 
-describe('payments.webhook — signature required', () => {
-  it('rejects a webhook without a signature', async () => {
+describe('payments.statusCallback — verified status only', () => {
+  it('rejects an unknown PaymentId without changing state', async () => {
+    getPaymentStatusMock.mockResolvedValue({
+      invoiceId: 'INV-UNKNOWN',
+      invoiceStatus: 'Paid',
+    });
     const anon = await anonCaller();
-    await expect(
-      anon.payments.webhook({ gatewayRef: 'PAY-anything', status: 'CAPTURED' } as any),
-    ).rejects.toThrow();
+    const result = await anon.payments.statusCallback({ paymentId: 'P-UNKNOWN' });
+    expect(result).toMatchObject({ received: true, processed: false });
   });
 
-  it('rejects a webhook with an invalid signature', async () => {
+  it('marks a Pending gateway status as unprocessed', async () => {
+    const bookingId = await seedStatusBooking();
+    const payment = await prisma.payment.findUnique({ where: { bookingId } });
+    getPaymentStatusMock.mockResolvedValue({
+      invoiceId: payment!.gatewayRef!,
+      invoiceStatus: 'Pending',
+    });
     const anon = await anonCaller();
-    await expect(
-      anon.payments.webhook({ gatewayRef: 'PAY-anything', status: 'CAPTURED', signature: 'bad' }),
-    ).rejects.toThrow();
+    const result = await anon.payments.statusCallback({ paymentId: 'P-CB-1' });
+    expect(result).toMatchObject({ received: true, processed: false });
+
+    const after = await prisma.payment.findUnique({ where: { bookingId } });
+    expect(after?.status).toBe('AUTHORIZED');
+    await cleanupStatusBooking(bookingId);
+  });
+
+  it('marks Paid gateway status as CAPTURED and the booking PAID', async () => {
+    const bookingId = await seedStatusBooking();
+    const payment = await prisma.payment.findUnique({ where: { bookingId } });
+    getPaymentStatusMock.mockResolvedValue({
+      invoiceId: payment!.gatewayRef!,
+      invoiceStatus: 'Paid',
+    });
+    const anon = await anonCaller();
+    const result = await anon.payments.statusCallback({ paymentId: 'P-CB-2' });
+    expect(result).toMatchObject({ received: true, processed: true });
+
+    const after = await prisma.payment.findUnique({ where: { bookingId } });
+    expect(after?.status).toBe('CAPTURED');
+    const booking = await prisma.booking.findUnique({ where: { id: bookingId } });
+    expect(booking?.status).toBe('PAID');
+    await cleanupStatusBooking(bookingId);
   });
 });
+
+async function seedStatusBooking(): Promise<number> {
+  const service = await prisma.service.findFirst();
+  const booking = await prisma.booking.create({
+    data: {
+      ...buildBooking({
+        customerId,
+        serviceId: service!.id,
+        status: 'ACCEPTED',
+        totalAmount: 100,
+      }),
+      // Prisma 7: relation connects and FK scalars are mutually exclusive.
+      customer: { connect: { id: customerId } },
+      technician: { connect: { id: customerId } },
+      service: { connect: { id: service!.id } },
+      address: {
+        connectOrCreate: {
+          where: { id: 999999999 },
+          create: {
+            userId: customerId,
+            label: 'Shipping test',
+            city: 'Riyadh',
+            area: 'Test District',
+            street: 'Test Street',
+            isDefault: false,
+          },
+        },
+      },
+      customerId: undefined,
+      technicianId: undefined,
+      serviceId: undefined,
+    } as never,
+  });
+  await prisma.payment.create({
+    data: {
+      booking: { connect: { id: booking.id } },
+      amount: 100,
+      status: 'AUTHORIZED',
+      gatewayRef: `INV-CB-${Date.now()}`,
+    },
+  });
+  return booking.id;
+}
+
+async function cleanupStatusBooking(bookingId: number): Promise<void> {
+  await prisma.payment.deleteMany({ where: { bookingId } });
+  await prisma.booking.deleteMany({ where: { id: bookingId } });
+}
 
 describe('payments.refund — cashback reversal', () => {
   it('reverses the cashback written under capture_<bookingId>', async () => {
@@ -197,46 +283,6 @@ describe('payments.refund — cashback reversal', () => {
   });
 });
 
-describe('payfort — fail closed when unconfigured', () => {
-  it('returns success:false when the gateway is not configured', async () => {
-    const original = process.env['PAYFORT_ACCESS_CODE'];
-    delete process.env['PAYFORT_ACCESS_CODE'];
-    delete process.env['PAYFORT_SIMULATE'];
-
-    const result = await authorizePayment({
-      amount: 100,
-      customerEmail: 'x@example.com',
-      customerName: 'x',
-      merchantReference: 'mr-1',
-      returnUrl: 'https://x.example/return',
-    });
-
-    if (original) process.env['PAYFORT_ACCESS_CODE'] = original;
-    expect(result.success).toBe(false);
-  });
-
-  it('honours PAYFORT_SIMULATE=true only outside production', async () => {
-    const originalCode = process.env['PAYFORT_ACCESS_CODE'];
-    const originalSim = process.env['PAYFORT_SIMULATE'];
-    delete process.env['PAYFORT_ACCESS_CODE'];
-    process.env['PAYFORT_SIMULATE'] = 'true';
-
-    const result = await authorizePayment({
-      amount: 100,
-      customerEmail: 'x@example.com',
-      customerName: 'x',
-      merchantReference: 'mr-2',
-      returnUrl: 'https://x.example/return',
-    });
-
-    if (originalCode) process.env['PAYFORT_ACCESS_CODE'] = originalCode;
-    if (originalSim) process.env['PAYFORT_SIMULATE'] = originalSim;
-    else delete process.env['PAYFORT_SIMULATE'];
-
-    expect(result.success).toBe(true);
-  });
-});
-
 // Reference import so unused-import lints stay quiet in older configs.
-void verifyWebhookSignature;
 void vi;
+void Prisma;
