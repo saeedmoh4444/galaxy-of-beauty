@@ -7927,4 +7927,145 @@ export const mobileCustomerBMessages = {
     ar: 'اليوم الكبير',
     en: 'The big day',
   },
+
+  // ---- public events: shared event-type labels (i18n sweep slice 14) ----
+  'mobile.public.events.type.workshop': { ar: 'ورشة عمل', en: 'Workshop' },
+  'mobile.public.events.type.masterclass': { ar: 'ماستر كلاس', en: 'Masterclass' },
+  'mobile.public.events.type.launch': { ar: 'إطلاق منتج', en: 'Product Launch' },
+  'mobile.public.events.type.seasonal': { ar: 'موسمي', en: 'Seasonal' },
+  'mobile.public.events.type.retreat': { ar: 'معتكف', en: 'Retreat' },
+  'mobile.public.events.type.webinar': { ar: 'ويبينار', en: 'Webinar' },
+
+  // ---- gift-quiz: questions and options (i18n sweep slice 14) ----
+  'mobile.public.giftQuiz.q.occasion': { ar: 'ما هي المناسبة؟', en: 'What is the occasion?' },
+  'mobile.public.giftQuiz.option.occasion.birthday': { ar: 'عيد ميلاد', en: 'Birthday' },
+  'mobile.public.giftQuiz.option.occasion.wedding': { ar: 'زفاف', en: 'Wedding' },
+  'mobile.public.giftQuiz.option.occasion.graduation': { ar: 'تخرج', en: 'Graduation' },
+  'mobile.public.giftQuiz.option.occasion.thankyou': { ar: 'شكر', en: 'Thank You' },
+  'mobile.public.giftQuiz.option.occasion.justbecause': {
+    ar: 'بدون مناسبة',
+    en: 'Just Because',
+  },
+  'mobile.public.giftQuiz.q.recipient': { ar: 'لمن الهدية؟', en: 'Who is the gift for?' },
+  'mobile.public.giftQuiz.option.recipient.friend': { ar: 'صديقة', en: 'Friend' },
+  'mobile.public.giftQuiz.option.recipient.mom': { ar: 'أمي', en: 'Mom' },
+  'mobile.public.giftQuiz.option.recipient.sister': { ar: 'أختي', en: 'Sister' },
+  'mobile.public.giftQuiz.option.recipient.wife': { ar: 'زوجتي', en: 'Wife' },
+  'mobile.public.giftQuiz.option.recipient.self': { ar: 'نفسي', en: 'Myself' },
+  'mobile.public.giftQuiz.q.budget': { ar: 'ميزانيتك؟', en: 'Your budget?' },
+  'mobile.public.giftQuiz.option.budget.low': { ar: 'اقتصادية', en: 'Budget' },
+  'mobile.public.giftQuiz.option.budget.mid': { ar: 'متوسطة', en: 'Mid-range' },
+  'mobile.public.giftQuiz.option.budget.high': { ar: 'فاخرة', en: 'Premium' },
+
+  // ---- lookbook: seasons, looks, tags (i18n sweep slice 14) ----
+  'mobile.public.lookbook.season.summer': { ar: 'صيف ٢٠٢٦', en: 'Summer 2026' },
+  'mobile.public.lookbook.season.eid': { ar: 'أناقة العيد', en: 'Eid Elegance' },
+  'mobile.public.lookbook.season.wedding': { ar: 'موسم الأعراس', en: 'Wedding Season' },
+  'mobile.public.lookbook.season.ramadan': { ar: 'رمضان كريم', en: 'Ramadan Kareem' },
+  'mobile.public.lookbook.summer.look1.title': {
+    ar: 'إطلالة شاطئية منعشة',
+    en: 'Fresh Beach Look',
+  },
+  'mobile.public.lookbook.summer.look1.desc': {
+    ar: 'مكياج خفيف مقاوم للماء مع تسريحة شاطئية',
+    en: 'Light waterproof makeup with a beachy hairstyle',
+  },
+  'mobile.public.lookbook.summer.look2.title': {
+    ar: 'عناية بالبشرة قبل الصيف',
+    en: 'Pre-Summer Skincare',
+  },
+  'mobile.public.lookbook.summer.look2.desc': {
+    ar: 'تقشير وترطيب عميق لبشرة متألقة',
+    en: 'Exfoliation and deep hydration for glowing skin',
+  },
+  'mobile.public.lookbook.summer.look3.title': {
+    ar: 'ألوان الصيف الجريئة',
+    en: 'Bold Summer Colors',
+  },
+  'mobile.public.lookbook.summer.look3.desc': {
+    ar: 'مانيكير وباديكير بألوان الموسم',
+    en: 'Manicure and pedicure in the season’s colors',
+  },
+  'mobile.public.lookbook.eid.look1.title': {
+    ar: 'إطلالة العيد الفاخرة',
+    en: 'Luxurious Eid Look',
+  },
+  'mobile.public.lookbook.eid.look1.desc': {
+    ar: 'مكياج سهرة مع تسريحة أنيقة',
+    en: 'Evening makeup with an elegant hairstyle',
+  },
+  'mobile.public.lookbook.eid.look2.title': { ar: 'حناء العيد', en: 'Eid Henna' },
+  'mobile.public.lookbook.eid.look2.desc': {
+    ar: 'نقوش حناء عصرية للمناسبات',
+    en: 'Modern henna designs for occasions',
+  },
+  'mobile.public.lookbook.eid.look3.title': { ar: 'بشرة متألقة للعيد', en: 'Glowing Eid Skin' },
+  'mobile.public.lookbook.eid.look3.desc': {
+    ar: 'جلسة عناية متكاملة قبل العيد',
+    en: 'A full care session before Eid',
+  },
+  'mobile.public.lookbook.wedding.look1.title': {
+    ar: 'إطلالة العروس الكاملة',
+    en: 'The Complete Bridal Look',
+  },
+  'mobile.public.lookbook.wedding.look1.desc': {
+    ar: 'مكياج، شعر، وأظافر ليومكِ الكبير',
+    en: 'Makeup, hair, and nails for your big day',
+  },
+  'mobile.public.lookbook.wedding.look2.title': {
+    ar: 'جلسة تصوير العروس',
+    en: 'Bridal Photoshoot',
+  },
+  'mobile.public.lookbook.wedding.look2.desc': {
+    ar: 'مكياج احترافي يدوم طوال اليوم',
+    en: 'Professional makeup that lasts all day',
+  },
+  'mobile.public.lookbook.wedding.look3.title': {
+    ar: 'إطلالة أم العروس',
+    en: 'Mother of the Bride Look',
+  },
+  'mobile.public.lookbook.wedding.look3.desc': {
+    ar: 'مكياج ناعم وأنيق لأم العروس',
+    en: 'Soft, elegant makeup for the mother of the bride',
+  },
+  'mobile.public.lookbook.ramadan.look1.title': {
+    ar: 'إطلالة رمضانية راقية',
+    en: 'Refined Ramadan Look',
+  },
+  'mobile.public.lookbook.ramadan.look1.desc': {
+    ar: 'مكياج ناعم للسهرات الرمضانية',
+    en: 'Soft makeup for Ramadan evenings',
+  },
+  'mobile.public.lookbook.ramadan.look2.title': { ar: 'عناية رمضانية', en: 'Ramadan Self-Care' },
+  'mobile.public.lookbook.ramadan.look2.desc': {
+    ar: 'روتين عناية ليلي للصائمات',
+    en: 'A nightly care routine for those fasting',
+  },
+  'mobile.public.lookbook.ramadan.look3.title': { ar: 'تسريحة السحور', en: 'Suhoor Hairstyle' },
+  'mobile.public.lookbook.ramadan.look3.desc': {
+    ar: 'تسريحة سريعة وأنيقة',
+    en: 'A quick and elegant hairstyle',
+  },
+  'mobile.public.lookbook.tag.makeup': { ar: 'مكياج', en: 'Makeup' },
+  'mobile.public.lookbook.tag.hair': { ar: 'شعر', en: 'Hair' },
+  'mobile.public.lookbook.tag.care': { ar: 'عناية', en: 'Care' },
+  'mobile.public.lookbook.tag.skin': { ar: 'بشرة', en: 'Skin' },
+  'mobile.public.lookbook.tag.nails': { ar: 'أظافر', en: 'Nails' },
+  'mobile.public.lookbook.tag.manicure': { ar: 'مانيكير', en: 'Manicure' },
+  'mobile.public.lookbook.tag.henna': { ar: 'حناء', en: 'Henna' },
+  'mobile.public.lookbook.tag.occasions': { ar: 'مناسبات', en: 'Occasions' },
+  'mobile.public.lookbook.tag.brides': { ar: 'عرايس', en: 'Brides' },
+  'mobile.public.lookbook.tag.photography': { ar: 'تصوير', en: 'Photography' },
+  'mobile.public.lookbook.tag.evening': { ar: 'سهرة', en: 'Evening' },
+  'mobile.public.lookbook.tag.hairstyle': { ar: 'تسريحة', en: 'Hairstyle' },
+
+  // ---- marketplace: fallback category cards (i18n sweep slice 14) ----
+  'mobile.public.marketplace.care.title': { ar: 'منتجات العناية', en: 'Skincare Products' },
+  'mobile.public.marketplace.care.desc': { ar: 'تصفحي المنتجات', en: 'Browse the products' },
+  'mobile.public.marketplace.makeup.title': { ar: 'مستحضرات تجميل', en: 'Cosmetics' },
+  'mobile.public.marketplace.makeup.desc': { ar: 'أفضل الماركات', en: 'The best brands' },
+  'mobile.public.marketplace.hair.title': { ar: 'منتجات الشعر', en: 'Hair Products' },
+  'mobile.public.marketplace.hair.desc': { ar: 'عناية متكاملة', en: 'Complete care' },
+  'mobile.public.marketplace.nails.title': { ar: 'منتجات الأظافر', en: 'Nail Products' },
+  'mobile.public.marketplace.nails.desc': { ar: 'ألوان رائعة', en: 'Gorgeous colors' },
 } as const satisfies Record<string, { ar: string; en: string }>;

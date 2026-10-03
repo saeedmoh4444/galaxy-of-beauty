@@ -13,13 +13,19 @@ import { useRouter } from 'expo-router';
 import { SkeletonList } from '@/components/SkeletonCard';
 import { trpc } from '@/lib/trpc-react';
 import { localize } from '@galaxy/shared';
+import type { TranslationKey } from '@galaxy/shared';
 import { useLocale } from '@/components/LocaleProvider';
 
-const ET: Record<string, { label: string; emoji: string }> = {
-  workshop: { label: 'ورشة عمل', emoji: '🔧' },
-  masterclass: { label: 'ماستر كلاس', emoji: '🎓' },
-  launch: { label: 'إطلاق منتج', emoji: '🚀' },
-  seasonal: { label: 'موسمي', emoji: '🍂' },
+interface EventTypeMeta {
+  labelKey: TranslationKey;
+  emoji: string;
+}
+
+const ET: Record<string, EventTypeMeta> = {
+  workshop: { labelKey: 'mobile.public.events.type.workshop', emoji: '🔧' },
+  masterclass: { labelKey: 'mobile.public.events.type.masterclass', emoji: '🎓' },
+  launch: { labelKey: 'mobile.public.events.type.launch', emoji: '🚀' },
+  seasonal: { labelKey: 'mobile.public.events.type.seasonal', emoji: '🍂' },
 };
 
 interface BeautyEvent {
@@ -64,28 +70,28 @@ export default function EventsScreen(): JSX.Element {
           >
             <Text style={[styles.ft, !filter && styles.fta]}>{t('marketing.events.all')}</Text>
           </TouchableOpacity>
-          {Object.entries(ET).map(([key, t]) => (
+          {Object.entries(ET).map(([key, et]) => (
             <TouchableOpacity
               key={key}
               onPress={() => setFilter(key)}
               style={[styles.fc, filter === key && styles.fca]}
             >
               <Text style={[styles.ft, filter === key && styles.fta]}>
-                {t.emoji} {t.label}
+                {et.emoji} {t(et.labelKey)}
               </Text>
             </TouchableOpacity>
           ))}
         </View>
       </ScrollView>
       {filtered.map((e) => {
-        const et = ET[e.eventType ?? ''] ?? { label: e.eventType ?? '', emoji: '🎉' };
+        const et = ET[e.eventType ?? ''];
         return (
           <Pressable
             key={e.id}
             style={styles.card}
             onPress={() => router.push(`/public/events/${e.id}` as never)}
           >
-            <Text style={styles.ee}>{et.emoji}</Text>
+            <Text style={styles.ee}>{et?.emoji ?? '🎉'}</Text>
             <View style={{ flex: 1 }}>
               <Text style={styles.en}>{localize(e.nameJson, locale) ?? e.nameAr ?? ''}</Text>
               <Text style={styles.em}>

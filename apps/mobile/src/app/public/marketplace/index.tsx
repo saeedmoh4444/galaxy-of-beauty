@@ -3,6 +3,7 @@ import { View, Text, ScrollView, StyleSheet, TouchableOpacity, RefreshControl } 
 import { useRouter } from 'expo-router';
 import { SkeletonList } from '@/components/SkeletonCard';
 import { trpc } from '@/lib/trpc-react';
+import type { TranslationKey } from '@galaxy/shared';
 import { useLocale } from '@/components/LocaleProvider';
 
 interface MarketProduct {
@@ -12,6 +13,35 @@ interface MarketProduct {
   titleAr?: string;
   price?: number;
 }
+
+interface FallbackCard {
+  emoji: string;
+  titleKey: TranslationKey;
+  descKey: TranslationKey;
+}
+
+const FALLBACK_CARDS: FallbackCard[] = [
+  {
+    emoji: '🧴',
+    titleKey: 'mobile.public.marketplace.care.title',
+    descKey: 'mobile.public.marketplace.care.desc',
+  },
+  {
+    emoji: '💄',
+    titleKey: 'mobile.public.marketplace.makeup.title',
+    descKey: 'mobile.public.marketplace.makeup.desc',
+  },
+  {
+    emoji: '💇',
+    titleKey: 'mobile.public.marketplace.hair.title',
+    descKey: 'mobile.public.marketplace.hair.desc',
+  },
+  {
+    emoji: '💅',
+    titleKey: 'mobile.public.marketplace.nails.title',
+    descKey: 'mobile.public.marketplace.nails.desc',
+  },
+];
 
 export default function MarketplaceScreen(): JSX.Element {
   const { t } = useLocale();
@@ -37,18 +67,13 @@ export default function MarketplaceScreen(): JSX.Element {
       <Text style={styles.t}>{t('mobile.public.marketplace.title')}</Text>
       <View style={styles.grid}>
         {products.length === 0
-          ? [
-              { emoji: '🧴', title: 'منتجات العناية', desc: 'تصفحي المنتجات' },
-              { emoji: '💄', title: 'مستحضرات تجميل', desc: 'أفضل الماركات' },
-              { emoji: '💇', title: 'منتجات الشعر', desc: 'عناية متكاملة' },
-              { emoji: '💅', title: 'منتجات الأظافر', desc: 'ألوان رائعة' },
-            ].map((item, i) => (
+          ? FALLBACK_CARDS.map((item, i) => (
               <View key={i} style={styles.card}>
                 <View style={styles.ci}>
                   <Text style={styles.ce}>{item.emoji}</Text>
                 </View>
-                <Text style={styles.ct}>{item.title}</Text>
-                <Text style={styles.cd}>{item.desc}</Text>
+                <Text style={styles.ct}>{t(item.titleKey)}</Text>
+                <Text style={styles.cd}>{t(item.descKey)}</Text>
               </View>
             ))
           : products.map((p) => (

@@ -11,16 +11,22 @@ import { useLocalSearchParams, router } from 'expo-router';
 import { SkeletonList } from '@/components/SkeletonCard';
 import { trpc } from '@/lib/trpc-react';
 import { localize } from '@galaxy/shared';
+import type { TranslationKey } from '@galaxy/shared';
 import { useLocale } from '@/components/LocaleProvider';
 import { useAuthState } from '@/hooks/useAuthState';
 
-const ET: Record<string, { label: string; emoji: string }> = {
-  workshop: { label: 'ورشة عمل', emoji: '🔧' },
-  masterclass: { label: 'ماستر كلاس', emoji: '🎓' },
-  launch: { label: 'إطلاق منتج', emoji: '🚀' },
-  seasonal: { label: 'موسمي', emoji: '🍂' },
-  retreat: { label: 'معتكف', emoji: '🏝' },
-  webinar: { label: 'ويبينار', emoji: '💻' },
+interface EventTypeMeta {
+  labelKey: TranslationKey;
+  emoji: string;
+}
+
+const ET: Record<string, EventTypeMeta> = {
+  workshop: { labelKey: 'mobile.public.events.type.workshop', emoji: '🔧' },
+  masterclass: { labelKey: 'mobile.public.events.type.masterclass', emoji: '🎓' },
+  launch: { labelKey: 'mobile.public.events.type.launch', emoji: '🚀' },
+  seasonal: { labelKey: 'mobile.public.events.type.seasonal', emoji: '🍂' },
+  retreat: { labelKey: 'mobile.public.events.type.retreat', emoji: '🏝' },
+  webinar: { labelKey: 'mobile.public.events.type.webinar', emoji: '💻' },
 };
 
 interface EventDetail {
@@ -71,7 +77,7 @@ export default function EventDetailScreen(): JSX.Element {
   }
 
   const event = eventQ.data as unknown as EventDetail;
-  const et = ET[event.eventType] ?? { label: event.eventType, emoji: '🎉' };
+  const et = ET[event.eventType];
   const desc = event.descriptionJson ? (localize(event.descriptionJson, locale) ?? '') : '';
   const date = new Date(event.startsAt).toLocaleDateString(locale === 'ar' ? 'ar-SA' : 'en-GB', {
     weekday: 'long',
@@ -94,10 +100,10 @@ export default function EventDetailScreen(): JSX.Element {
       <Pressable onPress={() => router.back()} style={styles.backRow} testID="event-back">
         <Text style={styles.backText}>←</Text>
       </Pressable>
-      <Text style={styles.emoji}>{et.emoji}</Text>
+      <Text style={styles.emoji}>{et?.emoji ?? '🎉'}</Text>
       <Text style={styles.name}>{localize(event.nameJson, locale) ?? ''}</Text>
       <Text style={styles.meta}>
-        {et.label} · {date}
+        {et ? t(et.labelKey) : event.eventType} · {date}
       </Text>
       <Text style={styles.meta}>{time}</Text>
       <Text style={styles.meta}>
