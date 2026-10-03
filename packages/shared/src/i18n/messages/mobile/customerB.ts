@@ -1997,4 +1997,762 @@ export const mobileCustomerBMessages = {
     ar: 'التحقق من حالة الدفع',
     en: 'Check payment status',
   },
+
+  // ---- personal-care: card content (i18n sweep) ----
+  'mobile.personalCare.card.brows.title': { ar: 'عناية بالحواجب', en: 'Eyebrow Care' },
+  'mobile.personalCare.card.brows.subtitle': {
+    ar: 'حواجب متناسقة — إطار الوجه',
+    en: 'Well-groomed brows — the frame of the face',
+  },
+  'mobile.personalCare.card.brows.tip1': {
+    ar: 'تحديد الشكل — لا تتبعي الصيحة اتبعي وجهك',
+    en: "Shape selection — don't follow trends, follow your face",
+  },
+  'mobile.personalCare.card.brows.tip2': {
+    ar: 'لا تنتفي كثيراً — الشعر قد لا ينمو مجدداً',
+    en: "Don't over-pluck — hair may not grow back",
+  },
+  'mobile.personalCare.card.brows.tip3': {
+    ar: 'تعبئة الفراغات — قلم حواجب بلون مطابق',
+    en: 'Fill gaps — a brow pencil in a matching shade',
+  },
+  'mobile.personalCare.card.brows.tip4': {
+    ar: 'زيت الخروع — يساعد على تكثيف الحواجب',
+    en: 'Castor oil — helps thicken eyebrows',
+  },
+  'mobile.personalCare.card.lashes.title': { ar: 'عناية بالرموش', en: 'Lash Care' },
+  'mobile.personalCare.card.lashes.subtitle': {
+    ar: 'رموش كثيفة وصحية',
+    en: 'Thick, healthy lashes',
+  },
+  'mobile.personalCare.card.lashes.tip1': {
+    ar: 'تنظيف لطيف — مزيل مكياج خالٍ من الزيوت',
+    en: 'Gentle cleansing — an oil-free makeup remover',
+  },
+  'mobile.personalCare.card.lashes.tip2': {
+    ar: 'زيت الخروع — يطبق ليلاً لتقوية الرموش',
+    en: 'Castor oil — apply at night to strengthen lashes',
+  },
+  'mobile.personalCare.card.lashes.tip3': {
+    ar: 'لا تفركي — الفرك يسبب تساقط الرموش',
+    en: "Don't rub — rubbing causes lash loss",
+  },
+  'mobile.personalCare.card.lashes.tip4': {
+    ar: 'استراحة — خذي استراحة من الرموش الصناعية',
+    en: 'Take a break — give your false lashes a rest',
+  },
+  'mobile.personalCare.card.body.title': { ar: 'عناية بالجسم', en: 'Body Care' },
+  'mobile.personalCare.card.body.subtitle': {
+    ar: 'بشرة ناعمة من الرأس للقدمين',
+    en: 'Smooth skin from head to toe',
+  },
+  'mobile.personalCare.card.body.tip1': {
+    ar: 'تقشير أسبوعي — يزيل الخلايا الميتة ويجدد البشرة',
+    en: 'Weekly exfoliation — removes dead cells and renews the skin',
+  },
+  'mobile.personalCare.card.body.tip2': {
+    ar: 'ترطيب بعد الاستحمام — البشرة تمتص المرطب أفضل',
+    en: 'Moisturize after showering — skin absorbs moisturizer better',
+  },
+  'mobile.personalCare.card.body.tip3': {
+    ar: 'واقي للجسم — لا تنسي رقبتك ويديك وقدميك',
+    en: "Body sunscreen — don't forget your neck, hands and feet",
+  },
+  'mobile.personalCare.card.body.tip4': {
+    ar: 'شرب الماء — بشرة الجسم تحتاج ترطيب من الداخل',
+    en: 'Drink water — body skin needs hydration from within',
+  },
+  'mobile.personalCare.card.smile.title': { ar: 'ابتسامة مشرقة', en: 'Bright Smile' },
+  'mobile.personalCare.card.smile.subtitle': {
+    ar: 'عناية بالأسنان لجمال ابتسامتك',
+    en: 'Dental care for a beautiful smile',
+  },
+  'mobile.personalCare.card.smile.tip1': {
+    ar: 'تنظيف مرتين — صباحاً ومساءً دقيقتان',
+    en: 'Brush twice — morning and evening, two minutes',
+  },
+  'mobile.personalCare.card.smile.tip2': {
+    ar: 'خيط الأسنان — يومياً يمنع التسوس',
+    en: 'Dental floss — daily, prevents cavities',
+  },
+  'mobile.personalCare.card.smile.tip3': {
+    ar: 'تبييض طبيعي — فراولة + بيكربونات',
+    en: 'Natural whitening — strawberry + baking soda',
+  },
+  'mobile.personalCare.card.smile.tip4': {
+    ar: 'فحص دوري — كل 6 أشهر عند الطبيب',
+    en: 'Regular checkup — every 6 months at the dentist',
+  },
+  'mobile.personalCare.card.moroccanBath.title': { ar: 'حمام مغربي', en: 'Moroccan Bath' },
+  'mobile.personalCare.card.moroccanBath.subtitle': {
+    ar: 'طقس الجمال التقليدي',
+    en: 'The traditional beauty ritual',
+  },
+  'mobile.personalCare.card.moroccanBath.tip1': {
+    ar: 'الصابون البلدي — أساس الحمام المغربي',
+    en: 'Beldi soap — the base of the Moroccan bath',
+  },
+  'mobile.personalCare.card.moroccanBath.tip2': {
+    ar: 'الليفة المغربية — تقشير عميق للجسم',
+    en: 'Moroccan loofah — deep body exfoliation',
+  },
+  'mobile.personalCare.card.moroccanBath.tip3': {
+    ar: 'طين الغاسول — ينقي ويشد البشرة',
+    en: 'Ghassoul clay — purifies and firms the skin',
+  },
+  'mobile.personalCare.card.moroccanBath.tip4': {
+    ar: 'ماء الورد — لإنعاش بعد الحمام',
+    en: 'Rose water — a refresher after the bath',
+  },
+  'mobile.personalCare.card.aromatherapy.title': { ar: 'العلاج بالروائح', en: 'Aromatherapy' },
+  'mobile.personalCare.card.aromatherapy.subtitle': {
+    ar: 'زيوت عطرية لجمالك وصحتك',
+    en: 'Essential oils for your beauty and health',
+  },
+  'mobile.personalCare.card.aromatherapy.tip1': {
+    ar: 'اللافندر — للاسترخاء والنوم العميق',
+    en: 'Lavender — for relaxation and deep sleep',
+  },
+  'mobile.personalCare.card.aromatherapy.tip2': {
+    ar: 'الليمون — منعش ومنشط للطاقة',
+    en: 'Lemon — refreshing and energizing',
+  },
+  'mobile.personalCare.card.aromatherapy.tip3': {
+    ar: 'الورد — مهدئ للبشرة الحساسة',
+    en: 'Rose — soothing for sensitive skin',
+  },
+  'mobile.personalCare.card.aromatherapy.tip4': {
+    ar: 'النعناع — للصداع وتنشيط الدورة',
+    en: 'Mint — for headaches and boosting circulation',
+  },
+  'mobile.personalCare.card.dryBrushing.title': { ar: 'التقشير الجاف', en: 'Dry Brushing' },
+  'mobile.personalCare.card.dryBrushing.subtitle': {
+    ar: 'تنظيف عميق بدون ماء',
+    en: 'Deep cleansing without water',
+  },
+  'mobile.personalCare.card.dryBrushing.tip1': {
+    ar: 'من الأسفل للأعلى — دائماً باتجاه القلب',
+    en: 'Bottom to top — always toward the heart',
+  },
+  'mobile.personalCare.card.dryBrushing.tip2': {
+    ar: 'قبل الاستحمام — على بشرة جافة تماماً',
+    en: 'Before showering — on completely dry skin',
+  },
+  'mobile.personalCare.card.dryBrushing.tip3': {
+    ar: '2-3 مرات أسبوعياً — لا يومياً',
+    en: '2-3 times a week — not daily',
+  },
+  'mobile.personalCare.card.dryBrushing.tip4': {
+    ar: 'بعدها — زيت أو كريم مرطب فوراً',
+    en: 'Afterward — oil or moisturizing cream right away',
+  },
+  'mobile.personalCare.card.iceCubes.title': {
+    ar: 'مكعبات الثلج للوجه',
+    en: 'Ice Cubes for the Face',
+  },
+  'mobile.personalCare.card.iceCubes.subtitle': {
+    ar: 'سر إشراقة الصباح',
+    en: 'The secret to morning radiance',
+  },
+  'mobile.personalCare.card.iceCubes.tip1': {
+    ar: 'يقلص المسام — بشرة أنعم فوراً',
+    en: 'Shrinks pores — instantly smoother skin',
+  },
+  'mobile.personalCare.card.iceCubes.tip2': {
+    ar: 'صباحاً — يقلل الانتفاخ تحت العين',
+    en: 'In the morning — reduces under-eye puffiness',
+  },
+  'mobile.personalCare.card.iceCubes.tip3': {
+    ar: 'ثلج ماء الورد — مهدئ للبشرة',
+    en: 'Rose water ice — soothing for the skin',
+  },
+  'mobile.personalCare.card.iceCubes.tip4': {
+    ar: '30 ثانية لكل منطقة — لا تطيلي',
+    en: "30 seconds per area — don't overdo it",
+  },
+  'mobile.personalCare.card.facialSteam.title': { ar: 'بخار الوجه', en: 'Facial Steam' },
+  'mobile.personalCare.card.facialSteam.subtitle': {
+    ar: 'سبا منزلي بسيط',
+    en: 'A simple home spa',
+  },
+  'mobile.personalCare.card.facialSteam.tip1': {
+    ar: 'أضيفي أعشاب — بابونج أو نعناع أو روزماري',
+    en: 'Add herbs — chamomile, mint or rosemary',
+  },
+  'mobile.personalCare.card.facialSteam.tip2': {
+    ar: '5-10 دقائق — مرتين أسبوعياً',
+    en: '5-10 minutes — twice a week',
+  },
+  'mobile.personalCare.card.facialSteam.tip3': {
+    ar: 'مسافة آمنة — 30 سم عن الوجه',
+    en: 'Safe distance — 30 cm from the face',
+  },
+  'mobile.personalCare.card.facialSteam.tip4': {
+    ar: 'بعد البخار — سيروم أو مرطب فوراً',
+    en: 'After steaming — serum or moisturizer right away',
+  },
+  'mobile.personalCare.card.silkPillow.title': { ar: 'وسادة الحرير', en: 'Silk Pillow' },
+  'mobile.personalCare.card.silkPillow.subtitle': {
+    ar: 'سر جمالي أثناء النوم',
+    en: 'A beauty secret while you sleep',
+  },
+  'mobile.personalCare.card.silkPillow.tip1': {
+    ar: 'يمنع تكسر الشعر — احتكاك أقل من القطن',
+    en: 'Prevents hair breakage — less friction than cotton',
+  },
+  'mobile.personalCare.card.silkPillow.tip2': {
+    ar: 'يمنع تجاعيد النوم — بشرة أنعم صباحاً',
+    en: 'Prevents sleep wrinkles — smoother skin in the morning',
+  },
+  'mobile.personalCare.card.silkPillow.tip3': {
+    ar: 'يحافظ على ترطيب البشرة — لا يمتص الزيوت',
+    en: "Preserves skin moisture — doesn't absorb oils",
+  },
+  'mobile.personalCare.card.silkPillow.tip4': {
+    ar: 'اغسليها كل أسبوع — بماء بارد وصابون لطيف',
+    en: 'Wash it weekly — with cold water and gentle soap',
+  },
+  'mobile.personalCare.card.hairRemoval.title': { ar: 'إزالة الشعر', en: 'Hair Removal' },
+  'mobile.personalCare.card.hairRemoval.subtitle': {
+    ar: 'أي طريقة تناسبك؟',
+    en: 'Which method suits you?',
+  },
+  'mobile.personalCare.card.hairRemoval.tip1': {
+    ar: 'حلاوة — طبيعية ألم أقل من الشمع',
+    en: 'Sugaring — natural, with less pain than wax',
+  },
+  'mobile.personalCare.card.hairRemoval.tip2': {
+    ar: 'شمع — نتيجة تدوم 3-4 أسابيع',
+    en: 'Wax — results last 3-4 weeks',
+  },
+  'mobile.personalCare.card.hairRemoval.tip3': {
+    ar: 'ليزر — نتيجة شبه دائمة 6 جلسات',
+    en: 'Laser — near-permanent results in 6 sessions',
+  },
+  'mobile.personalCare.card.hairRemoval.tip4': {
+    ar: 'فتلة — للوجه دقيقة جداً',
+    en: 'Threading — very precise for the face',
+  },
+  'mobile.personalCare.card.detoxWater.title': { ar: 'ماء الديتوكس', en: 'Detox Water' },
+  'mobile.personalCare.card.detoxWater.subtitle': {
+    ar: 'مشروبات طبيعية لبشرة متوهجة',
+    en: 'Natural drinks for glowing skin',
+  },
+  'mobile.personalCare.card.detoxWater.tip1': {
+    ar: 'ليمون + نعناع — منعش يطرد السموم',
+    en: 'Lemon + mint — refreshing, flushes out toxins',
+  },
+  'mobile.personalCare.card.detoxWater.tip2': {
+    ar: 'فراولة + ريحان — مضاد أكسدة بشرة مشرقة',
+    en: 'Strawberry + basil — antioxidant for bright skin',
+  },
+  'mobile.personalCare.card.detoxWater.tip3': {
+    ar: 'خيار + زنجبيل — مهدئ يقلل الالتهابات',
+    en: 'Cucumber + ginger — soothing, reduces inflammation',
+  },
+  'mobile.personalCare.card.detoxWater.tip4': {
+    ar: 'برتقال + قرفة — فيتامين C كولاجين طبيعي',
+    en: 'Orange + cinnamon — vitamin C, natural collagen',
+  },
+  'mobile.personalCare.card.ledMask.title': { ar: 'قناع LED', en: 'LED Mask' },
+  'mobile.personalCare.card.ledMask.subtitle': {
+    ar: 'العلاج بالضوء في منزلك',
+    en: 'Light therapy at home',
+  },
+  'mobile.personalCare.card.ledMask.tip1': {
+    ar: 'أحمر — كولاجين مضاد للشيخوخة',
+    en: 'Red — collagen, anti-aging',
+  },
+  'mobile.personalCare.card.ledMask.tip2': {
+    ar: 'أزرق — يقتل البكتيريا لعلاج الحبوب',
+    en: 'Blue — kills bacteria to treat acne',
+  },
+  'mobile.personalCare.card.ledMask.tip3': {
+    ar: 'أصفر — يفتح البقع يقلل التصبغات',
+    en: 'Yellow — brightens spots, reduces pigmentation',
+  },
+  'mobile.personalCare.card.ledMask.tip4': {
+    ar: 'أخضر — مهدئ يقلل الاحمرار',
+    en: 'Green — soothing, reduces redness',
+  },
+  'mobile.personalCare.card.guaSha.title': { ar: 'روتين القواشا', en: 'Gua Sha Routine' },
+  'mobile.personalCare.card.guaSha.subtitle': {
+    ar: 'تدليك يومي — 5 دقائق فقط',
+    en: 'Daily massage — just 5 minutes',
+  },
+  'mobile.personalCare.card.guaSha.tip1': {
+    ar: 'زيت أو سيروم — لتزلق الأداة على البشرة',
+    en: 'Oil or serum — so the tool glides on the skin',
+  },
+  'mobile.personalCare.card.guaSha.tip2': {
+    ar: 'دائماً للأعلى وللخارج — ضد الجاذبية',
+    en: 'Always up and out — against gravity',
+  },
+  'mobile.personalCare.card.guaSha.tip3': {
+    ar: '5 تمريرات لكل منطقة — بلطف وليس بقوة',
+    en: '5 passes per area — gently, not forcefully',
+  },
+  'mobile.personalCare.card.guaSha.tip4': {
+    ar: 'خزني الحجر في الثلاجة — لانتعاش إضافي',
+    en: 'Store the stone in the fridge — extra freshness',
+  },
+  'mobile.personalCare.card.microcurrent.title': { ar: 'المايكروكرنت', en: 'Microcurrent' },
+  'mobile.personalCare.card.microcurrent.subtitle': {
+    ar: 'تيار كهربائي خفيف — شد فوري',
+    en: 'A mild electric current — instant lift',
+  },
+  'mobile.personalCare.card.microcurrent.tip1': {
+    ar: 'يحفز العضلات — يشد ملامح الوجه',
+    en: 'Stimulates muscles — lifts facial features',
+  },
+  'mobile.personalCare.card.microcurrent.tip2': {
+    ar: 'للأعلى وللخارج — ضد الجاذبية',
+    en: 'Up and out — against gravity',
+  },
+  'mobile.personalCare.card.microcurrent.tip3': {
+    ar: '5-10 دقائق — 3-4 مرات أسبوعياً',
+    en: '5-10 minutes — 3-4 times a week',
+  },
+  'mobile.personalCare.card.microcurrent.tip4': {
+    ar: 'جل موصل — ضروري لتوصيل التيار',
+    en: 'Conductive gel — essential for the current to flow',
+  },
+  'mobile.personalCare.card.radioFrequency.title': {
+    ar: 'الراديو فريكونسي',
+    en: 'Radio Frequency',
+  },
+  'mobile.personalCare.card.radioFrequency.subtitle': {
+    ar: 'موجات حرارية — كولاجين جديد',
+    en: 'Heat waves — new collagen',
+  },
+  'mobile.personalCare.card.radioFrequency.tip1': {
+    ar: 'يسخن الأدمة — يحفز إنتاج الكولاجين',
+    en: 'Heats the dermis — stimulates collagen production',
+  },
+  'mobile.personalCare.card.radioFrequency.tip2': {
+    ar: 'يشد الجلد — يقلل الترهلات والخطوط',
+    en: 'Tightens the skin — reduces sagging and lines',
+  },
+  'mobile.personalCare.card.radioFrequency.tip3': {
+    ar: 'جلسة 30-45 دقيقة — مرة شهرياً',
+    en: 'A 30-45 minute session — once a month',
+  },
+  'mobile.personalCare.card.radioFrequency.tip4': {
+    ar: 'احمرار مؤقت — يختفي خلال ساعات',
+    en: 'Temporary redness — fades within hours',
+  },
+  'mobile.personalCare.card.cryoStick.title': { ar: 'عصا الكرايو', en: 'Cryo Stick' },
+  'mobile.personalCare.card.cryoStick.subtitle': {
+    ar: 'تبريد عميق — انتعاش فوري',
+    en: 'Deep cooling — instant refreshment',
+  },
+  'mobile.personalCare.card.cryoStick.tip1': {
+    ar: 'يقلص المسام — بشرة أنعم وأكثر إشراقاً',
+    en: 'Shrinks pores — smoother, brighter skin',
+  },
+  'mobile.personalCare.card.cryoStick.tip2': {
+    ar: 'تدليك بارد — يقلل الانتفاخ تحت العين',
+    en: 'Cold massage — reduces under-eye puffiness',
+  },
+  'mobile.personalCare.card.cryoStick.tip3': {
+    ar: 'صباحاً — ينشط الدورة الدموية',
+    en: 'In the morning — boosts blood circulation',
+  },
+  'mobile.personalCare.card.cryoStick.tip4': {
+    ar: '3-5 دقائق — لا تطيلي على منطقة واحدة',
+    en: "3-5 minutes — don't linger on one area",
+  },
+  'mobile.personalCare.card.ultrasonic.title': { ar: 'الموجات فوق الصوتية', en: 'Ultrasound' },
+  'mobile.personalCare.card.ultrasonic.subtitle': {
+    ar: 'ملعقة تنظيف المسام',
+    en: 'A pore-cleaning spatula',
+  },
+  'mobile.personalCare.card.ultrasonic.tip1': {
+    ar: 'اهتزازات عالية — تطرد الرؤوس السوداء',
+    en: 'High-frequency vibrations — dislodge blackheads',
+  },
+  'mobile.personalCare.card.ultrasonic.tip2': {
+    ar: 'على بشرة رطبة — أفضل نتائج',
+    en: 'On damp skin — best results',
+  },
+  'mobile.personalCare.card.ultrasonic.tip3': {
+    ar: 'حركي للأعلى — بطول المسام',
+    en: 'Move upward — along the pores',
+  },
+  'mobile.personalCare.card.ultrasonic.tip4': {
+    ar: 'مرة أسبوعياً — لا تفرطي في الاستخدام',
+    en: "Once a week — don't overuse it",
+  },
+  'mobile.personalCare.card.highFrequency.title': { ar: 'التردد العالي', en: 'High Frequency' },
+  'mobile.personalCare.card.highFrequency.subtitle': {
+    ar: 'غاز الأرجون — علاج الحبوب',
+    en: 'Argon gas — acne treatment',
+  },
+  'mobile.personalCare.card.highFrequency.tip1': {
+    ar: 'يجفف الحبوب — يقتل البكتيريا المسببة',
+    en: 'Dries pimples — kills the bacteria causing them',
+  },
+  'mobile.personalCare.card.highFrequency.tip2': {
+    ar: 'يحسن الدورة الدموية — بشرة متوهجة',
+    en: 'Improves blood circulation — glowing skin',
+  },
+  'mobile.personalCare.card.highFrequency.tip3': {
+    ar: 'على بشرة جافة — مع شاش واقي',
+    en: 'On dry skin — with a protective gauze',
+  },
+  'mobile.personalCare.card.highFrequency.tip4': {
+    ar: '3-5 دقائق — مرتين أسبوعياً',
+    en: '3-5 minutes — twice a week',
+  },
+  'mobile.personalCare.card.cellulite.title': { ar: 'السيلوليت', en: 'Cellulite' },
+  'mobile.personalCare.card.cellulite.subtitle': {
+    ar: 'علاج مظهر قشر البرتقال',
+    en: 'Treating the orange-peel look',
+  },
+  'mobile.personalCare.card.cellulite.tip1': {
+    ar: 'مساج التصريف اللمفاوي — يقلل الاحتباس',
+    en: 'Lymphatic drainage massage — reduces retention',
+  },
+  'mobile.personalCare.card.cellulite.tip2': {
+    ar: 'رياضة منتظمة — تحسن الدورة الدموية',
+    en: 'Regular exercise — improves circulation',
+  },
+  'mobile.personalCare.card.cellulite.tip3': {
+    ar: 'اشربي ماء — الترطيب يحسن مظهر الجلد',
+    en: 'Drink water — hydration improves skin appearance',
+  },
+  'mobile.personalCare.card.cellulite.tip4': {
+    ar: 'كافيين موضعي — كريمات تنشط الدورة',
+    en: 'Topical caffeine — creams that boost circulation',
+  },
+  'mobile.personalCare.card.stretchMarks.title': { ar: 'علامات التمدد', en: 'Stretch Marks' },
+  'mobile.personalCare.card.stretchMarks.subtitle': {
+    ar: 'علاج وتخفيف الخطوط',
+    en: 'Treating and fading the lines',
+  },
+  'mobile.personalCare.card.stretchMarks.tip1': {
+    ar: 'زبدة الكاكاو — ترطيب يومي أثناء الحمل',
+    en: 'Cocoa butter — daily moisturizing during pregnancy',
+  },
+  'mobile.personalCare.card.stretchMarks.tip2': {
+    ar: 'زيت ثمر الورد — يحسن مظهر العلامات',
+    en: 'Rosehip oil — improves the appearance of marks',
+  },
+  'mobile.personalCare.card.stretchMarks.tip3': {
+    ar: 'مايكرونيدلنغ — لتحفيز الكولاجين',
+    en: 'Microneedling — to stimulate collagen',
+  },
+  'mobile.personalCare.card.stretchMarks.tip4': {
+    ar: 'العلاج المبكر — أفضل النتائج',
+    en: 'Early treatment — the best results',
+  },
+  'mobile.personalCare.card.bodySculpting.title': { ar: 'نحت الجسم', en: 'Body Sculpting' },
+  'mobile.personalCare.card.bodySculpting.subtitle': {
+    ar: 'تقنيات غير جراحية',
+    en: 'Non-surgical techniques',
+  },
+  'mobile.personalCare.card.bodySculpting.tip1': {
+    ar: 'تجميد الدهون — كريوليبوليسز',
+    en: 'Fat freezing — cryolipolysis',
+  },
+  'mobile.personalCare.card.bodySculpting.tip2': {
+    ar: 'راديو فريكونسي — حرارة تشد الجلد',
+    en: 'Radio frequency — heat that tightens the skin',
+  },
+  'mobile.personalCare.card.bodySculpting.tip3': {
+    ar: 'ألتراساوند — موجات تذيب الدهون',
+    en: 'Ultrasound — waves that melt fat',
+  },
+  'mobile.personalCare.card.bodySculpting.tip4': {
+    ar: 'حقن — إذابة دهون موضعية',
+    en: 'Injections — dissolving localized fat',
+  },
+  'mobile.personalCare.card.bodyWraps.title': { ar: 'لفافات الجسم', en: 'Body Wraps' },
+  'mobile.personalCare.card.bodyWraps.subtitle': {
+    ar: 'علاجات سبا للجسم',
+    en: 'Spa treatments for the body',
+  },
+  'mobile.personalCare.card.bodyWraps.tip1': {
+    ar: 'طين البحر — ينظف ويزيل السموم',
+    en: 'Sea clay — cleanses and removes toxins',
+  },
+  'mobile.personalCare.card.bodyWraps.tip2': {
+    ar: 'شوكولاتة — مضاد أكسدة يرطب وينعم',
+    en: 'Chocolate — an antioxidant that hydrates and smooths',
+  },
+  'mobile.personalCare.card.bodyWraps.tip3': {
+    ar: 'أعشاب بحرية — يغذي وينشط البشرة',
+    en: 'Seaweed — nourishes and revitalizes the skin',
+  },
+  'mobile.personalCare.card.bodyWraps.tip4': {
+    ar: 'قهوة — كافيين يشد وينشط',
+    en: 'Coffee — caffeine that firms and energizes',
+  },
+  'mobile.personalCare.card.lymphaticDrainage.title': {
+    ar: 'التصريف اللمفاوي',
+    en: 'Lymphatic Drainage',
+  },
+  'mobile.personalCare.card.lymphaticDrainage.subtitle': {
+    ar: 'مساج لإزالة السموم',
+    en: 'A detox massage',
+  },
+  'mobile.personalCare.card.lymphaticDrainage.tip1': {
+    ar: 'حركات خفيفة — باتجاه الغدد اللمفاوية',
+    en: 'Light movements — toward the lymph nodes',
+  },
+  'mobile.personalCare.card.lymphaticDrainage.tip2': {
+    ar: 'يقلل احتباس السوائل — جسم أنحف',
+    en: 'Reduces fluid retention — a slimmer body',
+  },
+  'mobile.personalCare.card.lymphaticDrainage.tip3': {
+    ar: 'يقوي المناعة — ينشط الجهاز اللمفاوي',
+    en: 'Strengthens immunity — activates the lymphatic system',
+  },
+  'mobile.personalCare.card.lymphaticDrainage.tip4': {
+    ar: 'مرة أسبوعياً — أو قبل المناسبات',
+    en: 'Once a week — or before occasions',
+  },
+  'mobile.personalCare.card.makeupStorage.title': { ar: 'تخزين المكياج', en: 'Makeup Storage' },
+  'mobile.personalCare.card.makeupStorage.subtitle': {
+    ar: 'حافظي على منتجاتك نظيفة',
+    en: 'Keep your products clean',
+  },
+  'mobile.personalCare.card.makeupStorage.tip1': {
+    ar: 'مكان بارد وجاف — ليس في الحمام',
+    en: 'A cool, dry place — not in the bathroom',
+  },
+  'mobile.personalCare.card.makeupStorage.tip2': {
+    ar: 'منظمات أكريليك شفافة',
+    en: 'Clear acrylic organizers',
+  },
+  'mobile.personalCare.card.makeupStorage.tip3': {
+    ar: 'بعيداً عن الشمس — الضوء يدمر المنتجات',
+    en: 'Away from sunlight — light damages products',
+  },
+  'mobile.personalCare.card.makeupStorage.tip4': {
+    ar: 'قسميها: يومي — أسبوعي — مناسبات',
+    en: 'Sort them: daily — weekly — occasions',
+  },
+  'mobile.personalCare.card.productShelfLife.title': {
+    ar: 'مدة صلاحية المنتجات',
+    en: 'Product Shelf Life',
+  },
+  'mobile.personalCare.card.productShelfLife.subtitle': {
+    ar: 'متى تتخلصين من منتجاتك؟',
+    en: 'When should you get rid of your products?',
+  },
+  'mobile.personalCare.card.productShelfLife.tip1': {
+    ar: 'ماسكارا: 3-6 أشهر',
+    en: 'Mascara: 3-6 months',
+  },
+  'mobile.personalCare.card.productShelfLife.tip2': {
+    ar: 'كريمات: 6-12 شهر بعد الفتح',
+    en: 'Creams: 6-12 months after opening',
+  },
+  'mobile.personalCare.card.productShelfLife.tip3': {
+    ar: 'بودرة: سنتان — الأطول عمراً',
+    en: 'Powder: two years — the longest lasting',
+  },
+  'mobile.personalCare.card.productShelfLife.tip4': {
+    ar: 'طلاء أظافر: سنة — يسمك مع الوقت',
+    en: 'Nail polish: one year — it thickens over time',
+  },
+  'mobile.personalCare.card.vanityOrganization.title': {
+    ar: 'تنظيم التسريحة',
+    en: 'Vanity Organization',
+  },
+  'mobile.personalCare.card.vanityOrganization.subtitle': {
+    ar: 'ركن جمالكِ المثالي',
+    en: 'Your perfect beauty corner',
+  },
+  'mobile.personalCare.card.vanityOrganization.tip1': {
+    ar: 'إضاءة طبيعية — قرب النافذة',
+    en: 'Natural light — near the window',
+  },
+  'mobile.personalCare.card.vanityOrganization.tip2': {
+    ar: 'أدراج مقسمة — كل فئة في درج',
+    en: 'Divided drawers — each category in a drawer',
+  },
+  'mobile.personalCare.card.vanityOrganization.tip3': {
+    ar: 'مرآة مكبرة — للتفاصيل الدقيقة',
+    en: 'Magnifying mirror — for fine details',
+  },
+  'mobile.personalCare.card.vanityOrganization.tip4': {
+    ar: 'نظفي التسريحة أسبوعياً',
+    en: 'Clean the vanity weekly',
+  },
+  'mobile.personalCare.card.travelBag.title': {
+    ar: 'تعبئة حقيبة السفر',
+    en: 'Packing the Travel Bag',
+  },
+  'mobile.personalCare.card.travelBag.subtitle': {
+    ar: 'الأساسيات — بدون فوضى',
+    en: 'The essentials — without the mess',
+  },
+  'mobile.personalCare.card.travelBag.tip1': {
+    ar: 'عبوات سفر صغيرة — أعيدي تعبئتها',
+    en: 'Small travel bottles — refill them',
+  },
+  'mobile.personalCare.card.travelBag.tip2': {
+    ar: 'باليت متعدد — خدود + عيون + هايلايتر',
+    en: 'A multi palette — blush + eyes + highlighter',
+  },
+  'mobile.personalCare.card.travelBag.tip3': {
+    ar: 'قائمة أساسيات — لا تنسي شيئاً',
+    en: "An essentials list — don't forget anything",
+  },
+  'mobile.personalCare.card.travelBag.tip4': {
+    ar: 'حقيبة شفافة — للمطار',
+    en: 'A clear bag — for the airport',
+  },
+  'mobile.personalCare.card.declutter.title': { ar: 'ترتيب وتنظيف', en: 'Sorting and Cleaning' },
+  'mobile.personalCare.card.declutter.subtitle': {
+    ar: 'تخلصي من الفوضى',
+    en: 'Get rid of the clutter',
+  },
+  'mobile.personalCare.card.declutter.tip1': {
+    ar: 'تخلصي من: تغير لون أو رائحة أو قوام',
+    en: 'Discard: changed color, smell or texture',
+  },
+  'mobile.personalCare.card.declutter.tip2': {
+    ar: 'كل 3 أشهر — راجعي مجموعتكِ',
+    en: 'Every 3 months — review your collection',
+  },
+  'mobile.personalCare.card.declutter.tip3': {
+    ar: 'احتفظي بما تستخدمينه فعلاً',
+    en: 'Keep what you actually use',
+  },
+  'mobile.personalCare.card.declutter.tip4': {
+    ar: 'تبرعي بالجديد غير المستخدم',
+    en: 'Donate new, unused items',
+  },
+  'mobile.personalCare.card.neckCare.title': { ar: 'عناية الرقبة', en: 'Neck Care' },
+  'mobile.personalCare.card.neckCare.subtitle': {
+    ar: 'لا تهمليها — تظهر العمر قبل الوجه',
+    en: "Don't neglect it — it shows age before the face",
+  },
+  'mobile.personalCare.card.neckCare.tip1': {
+    ar: 'مددي منتجات الوجه للرقبة والصدر',
+    en: 'Extend face products to the neck and chest',
+  },
+  'mobile.personalCare.card.neckCare.tip2': {
+    ar: 'كريمات مشدودة — ببتيدات وريتينول',
+    en: 'Firming creams — peptides and retinol',
+  },
+  'mobile.personalCare.card.neckCare.tip3': {
+    ar: 'واقي شمس — للرقبة أيضاً',
+    en: 'Sunscreen — for the neck too',
+  },
+  'mobile.personalCare.card.neckCare.tip4': {
+    ar: 'نامي على الظهر — تجاعيد الجانب',
+    en: 'Sleep on your back — side wrinkles',
+  },
+  'mobile.personalCare.card.chestCare.title': { ar: 'عناية الصدر', en: 'Chest Care' },
+  'mobile.personalCare.card.chestCare.subtitle': {
+    ar: 'منطقة مهملة — تستحق العناية',
+    en: 'A neglected area — it deserves care',
+  },
+  'mobile.personalCare.card.chestCare.tip1': {
+    ar: 'نفس روتين وجهكِ — يمتد للصدر',
+    en: 'The same routine as your face — extend it to the chest',
+  },
+  'mobile.personalCare.card.chestCare.tip2': {
+    ar: 'تقشير لطيف — مرة أسبوعياً',
+    en: 'Gentle exfoliation — once a week',
+  },
+  'mobile.personalCare.card.chestCare.tip3': {
+    ar: 'ترطيب بعد الاستحمام',
+    en: 'Moisturize after showering',
+  },
+  'mobile.personalCare.card.chestCare.tip4': {
+    ar: 'SPF يومي — الصدر معرض للشمس',
+    en: 'Daily SPF — the chest is exposed to the sun',
+  },
+  'mobile.personalCare.card.techNeck.title': { ar: 'تجاعيد الجوال', en: 'Phone Wrinkles' },
+  'mobile.personalCare.card.techNeck.subtitle': {
+    ar: 'Tech Neck — أثر النظر للأسفل',
+    en: 'Tech neck — the effect of looking down',
+  },
+  'mobile.personalCare.card.techNeck.tip1': {
+    ar: 'ارفعي الجوال — لمستوى العين',
+    en: 'Raise the phone — to eye level',
+  },
+  'mobile.personalCare.card.techNeck.tip2': {
+    ar: 'وضعية الجلوس — ظهر مستقيم',
+    en: 'Sitting posture — a straight back',
+  },
+  'mobile.personalCare.card.techNeck.tip3': {
+    ar: 'تمارين الرقبة — مد وإطالة يومياً',
+    en: 'Neck exercises — stretch daily',
+  },
+  'mobile.personalCare.card.techNeck.tip4': {
+    ar: 'كريمات الببتيد — تحفز الكولاجين',
+    en: 'Peptide creams — stimulate collagen',
+  },
+  'mobile.personalCare.card.neckMask.title': { ar: 'قناع الرقبة', en: 'Neck Mask' },
+  'mobile.personalCare.card.neckMask.subtitle': {
+    ar: 'علاج مكثف للرقبة',
+    en: 'An intensive treatment for the neck',
+  },
+  'mobile.personalCare.card.neckMask.tip1': {
+    ar: 'قناع سيليكون — يعاد استخدامه',
+    en: 'Silicone mask — reusable',
+  },
+  'mobile.personalCare.card.neckMask.tip2': {
+    ar: 'قناع ورقي للرقبة — مرة أسبوعياً',
+    en: 'A sheet neck mask — once a week',
+  },
+  'mobile.personalCare.card.neckMask.tip3': {
+    ar: '20-30 دقيقة — وقت الاسترخاء',
+    en: '20-30 minutes — relaxation time',
+  },
+  'mobile.personalCare.card.neckMask.tip4': {
+    ar: 'قبل النوم — البشرة تتجدد ليلاً',
+    en: 'Before bed — the skin renews at night',
+  },
+  'mobile.personalCare.card.neckFirming.title': { ar: 'شد الرقبة', en: 'Neck Firming' },
+  'mobile.personalCare.card.neckFirming.subtitle': {
+    ar: 'تمارين وكريمات للرقبة المشدودة',
+    en: 'Exercises and creams for a firm neck',
+  },
+  'mobile.personalCare.card.neckFirming.tip1': {
+    ar: 'تمرين O —— مددي شفاهكِ — 15 مرة',
+    en: 'O exercise — stretch your lips — 15 times',
+  },
+  'mobile.personalCare.card.neckFirming.tip2': {
+    ar: 'مد الرقبة — انظري للسقف 10 ثوانٍ',
+    en: 'Neck stretch — look at the ceiling for 10 seconds',
+  },
+  'mobile.personalCare.card.neckFirming.tip3': {
+    ar: 'كريمات الشد — كافيين وببتيدات',
+    en: 'Firming creams — caffeine and peptides',
+  },
+  'mobile.personalCare.card.neckFirming.tip4': {
+    ar: 'مساج للأعلى — من الترقوة للذقن',
+    en: 'Massage upward — from the collarbone to the chin',
+  },
+  'mobile.personalCare.card.beautyEmergencyKit.title': {
+    ar: 'حقيبة طوارئ الجمال',
+    en: 'Beauty Emergency Kit',
+  },
+  'mobile.personalCare.card.beautyEmergencyKit.subtitle': {
+    ar: 'أساسيات في شنطتكِ',
+    en: 'Essentials in your bag',
+  },
+  'mobile.personalCare.card.beautyEmergencyKit.tip1': {
+    ar: 'أحمر شفاه — لون محايد',
+    en: 'Lipstick — a neutral shade',
+  },
+  'mobile.personalCare.card.beautyEmergencyKit.tip2': {
+    ar: 'ورق نشاف — يزيل اللمعان',
+    en: 'Blotting paper — removes shine',
+  },
+  'mobile.personalCare.card.beautyEmergencyKit.tip3': {
+    ar: 'مرآة صغيرة — للمسات السريعة',
+    en: 'A small mirror — for quick touch-ups',
+  },
+  'mobile.personalCare.card.beautyEmergencyKit.tip4': {
+    ar: 'لصقة حبوب — للطوارئ',
+    en: 'Pimple patch — for emergencies',
+  },
 } as const satisfies Record<string, { ar: string; en: string }>;

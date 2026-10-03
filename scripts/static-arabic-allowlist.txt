@@ -40,7 +40,6 @@ apps/mobile/src/app/customer/life-events/index.tsx
 apps/mobile/src/app/customer/makeup-guide/index.tsx
 apps/mobile/src/app/customer/nail-care-guide/index.tsx
 apps/mobile/src/app/customer/perfume-guide/index.tsx
-apps/mobile/src/app/customer/personal-care/index.tsx
 apps/mobile/src/app/customer/referrals/index.tsx
 apps/mobile/src/app/customer/ride-hailing/index.tsx
 apps/mobile/src/app/customer/safety/index.tsx
