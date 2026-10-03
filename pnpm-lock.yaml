@@ -364,6 +364,9 @@ importers:
       '@opentelemetry/sdk-trace-node':
         specifier: ^2.11.0
         version: 2.11.0(@opentelemetry/api@1.9.1)
+      '@sentry/node':
+        specifier: ^11.1.0
+        version: 11.1.0(@babel/core@7.29.7)(rollup@4.63.2)(webpack@5.108.4(esbuild@0.28.2))
       '@socket.io/redis-adapter':
         specifier: ^8.3.0
         version: 8.3.0(socket.io-adapter@2.5.8)
@@ -10498,6 +10501,20 @@ snapshots:
       '@sentry/replay': 11.1.0
       '@sentry/replay-canvas': 11.1.0
 
+  '@sentry/bundler-plugins@11.1.0(@babel/core@7.29.7)(rollup@4.63.2)(webpack@5.108.4(esbuild@0.28.2))':
+    dependencies:
+      '@sentry/core': 11.1.0
+      dotenv: 17.4.2
+      glob: 13.0.6
+      magic-string: 0.30.21
+      oxc-parser: 0.143.0
+      sentry: 0.44.1
+      supports-color: 8.1.1
+    optionalDependencies:
+      '@babel/core': 7.29.7
+      rollup: 4.63.2
+      webpack: 5.108.4(esbuild@0.28.2)
+
   '@sentry/bundler-plugins@11.1.0(@babel/core@7.29.7)(rollup@4.63.2)(webpack@5.108.4(postcss@8.5.28))':
     dependencies:
       '@sentry/core': 11.1.0
@@ -10543,6 +10560,20 @@ snapshots:
       - '@babel/core'
       - react
       - react-router
+      - webpack
+
+  '@sentry/node@11.1.0(@babel/core@7.29.7)(rollup@4.63.2)(webpack@5.108.4(esbuild@0.28.2))':
+    dependencies:
+      '@opentelemetry/api': 1.9.1
+      '@sentry/bundler-plugins': 11.1.0(@babel/core@7.29.7)(rollup@4.63.2)(webpack@5.108.4(esbuild@0.28.2))
+      '@sentry/conventions': 0.24.0
+      '@sentry/core': 11.1.0
+      '@sentry/opentelemetry': 11.1.0(@opentelemetry/api@1.9.1)
+      '@sentry/server-runtime-injection': 11.1.0
+      '@sentry/server-utils': 11.1.0
+    transitivePeerDependencies:
+      - '@babel/core'
+      - rollup
       - webpack
 
   '@sentry/node@11.1.0(@babel/core@7.29.7)(rollup@4.63.2)(webpack@5.108.4(postcss@8.5.28))':
@@ -14092,6 +14123,17 @@ snapshots:
 
   minimist@1.2.8: {}
 
+  minimizer-webpack-plugin@5.12.0(esbuild@0.28.2)(webpack@5.108.4(esbuild@0.28.2)):
+    dependencies:
+      '@jridgewell/trace-mapping': 0.3.31
+      jest-worker: 27.5.1
+      schema-utils: 4.5.0
+      terser: 5.51.2
+      webpack: 5.108.4(esbuild@0.28.2)
+    optionalDependencies:
+      esbuild: 0.28.2
+    optional: true
+
   minimizer-webpack-plugin@5.12.0(postcss@8.5.28)(webpack@5.108.4(postcss@8.5.28)):
     dependencies:
       '@jridgewell/trace-mapping': 0.3.31
@@ -15866,6 +15908,49 @@ snapshots:
   webidl-conversions@7.0.0: {}
 
   webpack-sources@3.6.0:
+    optional: true
+
+  webpack@5.108.4(esbuild@0.28.2):
+    dependencies:
+      '@types/estree': 1.0.9
+      '@types/json-schema': 7.0.15
+      '@webassemblyjs/ast': 1.14.1
+      '@webassemblyjs/wasm-edit': 1.14.1
+      '@webassemblyjs/wasm-parser': 1.14.1
+      acorn: 8.18.0
+      acorn-import-phases: 1.0.4(acorn@8.18.0)
+      browserslist: 4.29.3
+      chrome-trace-event: 1.0.4
+      enhanced-resolve: 5.26.0
+      es-module-lexer: 2.3.2
+      eslint-scope: 5.1.1
+      events: 3.3.0
+      graceful-fs: 4.2.11
+      loader-runner: 4.3.2
+      mime-db: 1.54.0
+      minimizer-webpack-plugin: 5.12.0(esbuild@0.28.2)(webpack@5.108.4(esbuild@0.28.2))
+      neo-async: 2.6.2
+      schema-utils: 4.5.0
+      tapable: 2.3.3
+      watchpack: 2.5.2
+      webpack-sources: 3.6.0
+    transitivePeerDependencies:
+      - '@minify-html/node'
+      - '@napi-rs/image'
+      - '@swc/core'
+      - '@swc/css'
+      - '@swc/html'
+      - clean-css
+      - cssnano
+      - csso
+      - esbuild
+      - html-minifier-terser
+      - imagemin
+      - lightningcss
+      - postcss
+      - sharp
+      - svgo
+      - uglify-js
     optional: true
 
   webpack@5.108.4(postcss@8.5.28):
