@@ -5432,4 +5432,945 @@ export const mobileCustomerBMessages = {
     ar: 'مينوكسيديل — العلاج المثبت علمياً',
     en: 'Minoxidil — the scientifically proven treatment',
   },
+  'mobile.leadership.card.sheLeads.title': { ar: 'برنامج She Leads', en: 'She Leads Program' },
+  'mobile.leadership.card.sheLeads.subtitle': {
+    ar: 'تمكين المرأة في قطاع التجميل',
+    en: 'Empowering women in the beauty industry',
+  },
+  'mobile.leadership.card.sheLeads.tip1': {
+    ar: 'تدريب: مهارات القيادة والإدارة',
+    en: 'Training: leadership and management skills',
+  },
+  'mobile.leadership.card.sheLeads.tip2': {
+    ar: 'دعم: قروض صغيرة لبدء مشروعكِ',
+    en: 'Support: microloans to start your business',
+  },
+  'mobile.leadership.card.sheLeads.tip3': {
+    ar: 'شبكة: تواصلي مع رائدات أعمال',
+    en: 'Network: connect with women entrepreneurs',
+  },
+  'mobile.leadership.card.sheLeads.tip4': {
+    ar: 'شهادة: اعتماد مهني في القيادة',
+    en: 'Certificate: professional leadership accreditation',
+  },
+  'mobile.leadership.card.entrepreneur.title': { ar: 'رائدة أعمال', en: 'Entrepreneur' },
+  'mobile.leadership.card.entrepreneur.subtitle': {
+    ar: 'ابدئي مشروعكِ في التجميل',
+    en: 'Start your beauty business',
+  },
+  'mobile.leadership.card.entrepreneur.tip1': {
+    ar: 'خطة عمل — نساعدكِ في كتابتها',
+    en: 'Business plan — we help you write it',
+  },
+  'mobile.leadership.card.entrepreneur.tip2': {
+    ar: 'تمويل — حتى 100,000 ر.س',
+    en: 'Funding — up to 100,000 SAR',
+  },
+  'mobile.leadership.card.entrepreneur.tip3': {
+    ar: 'موقع — دعم إيجار أول 6 أشهر',
+    en: 'Location — rent support for the first 6 months',
+  },
+  'mobile.leadership.card.entrepreneur.tip4': {
+    ar: 'إرشاد — مرشد شخصي لمدة سنة',
+    en: 'Mentorship — a personal mentor for one year',
+  },
+  'mobile.leadership.card.successStories.title': { ar: 'قصص نجاح', en: 'Success Stories' },
+  'mobile.leadership.card.successStories.subtitle': {
+    ar: 'نماذج ملهمة من مجتمعنا',
+    en: 'Inspiring examples from our community',
+  },
+  'mobile.leadership.card.successStories.tip1': {
+    ar: 'نورة — افتتحت صالونها بعد 6 أشهر',
+    en: 'Noura — opened her salon after 6 months',
+  },
+  'mobile.leadership.card.successStories.tip2': {
+    ar: 'مها — 3 فروع في سنتين',
+    en: 'Maha — 3 branches in two years',
+  },
+  'mobile.leadership.card.successStories.tip3': {
+    ar: 'ريم — من عاملة لصاحبة علامة تجارية',
+    en: 'Reem — from employee to brand owner',
+  },
+  'mobile.leadership.card.successStories.tip4': {
+    ar: 'أنتِ القصة القادمة!',
+    en: 'You are the next story!',
+  },
+  'mobile.leadership.card.leadershipGoals.title': { ar: 'أهداف القيادة', en: 'Leadership Goals' },
+  'mobile.leadership.card.leadershipGoals.subtitle': {
+    ar: 'خططي لمستقبلكِ المهني',
+    en: 'Plan your professional future',
+  },
+  'mobile.leadership.card.leadershipGoals.tip1': {
+    ar: 'قصير المدى: دورة قيادة (3 أشهر)',
+    en: 'Short term: leadership course (3 months)',
+  },
+  'mobile.leadership.card.leadershipGoals.tip2': {
+    ar: 'متوسط المدى: مشروع صغير (سنة)',
+    en: 'Mid term: small business (one year)',
+  },
+  'mobile.leadership.card.leadershipGoals.tip3': {
+    ar: 'طويل المدى: 3 فروع (3 سنوات)',
+    en: 'Long term: 3 branches (3 years)',
+  },
+  'mobile.leadership.card.leadershipGoals.tip4': {
+    ar: 'الرؤية: علامة تجارية سعودية عالمية',
+    en: 'Vision: a Saudi brand with global reach',
+  },
+  'mobile.lifeEvents.card.lifeStages.subtitle': {
+    ar: '28 سنة — لكل مرحلة جمالها',
+    en: 'Age 28 — every stage has its beauty',
+  },
+  'mobile.lifeEvents.card.lifeStages.tip1': {
+    ar: 'العمر: 28 سنة — مرحلة الشباب',
+    en: 'Age: 28 — the youth stage',
+  },
+  'mobile.lifeEvents.card.lifeStages.tip2': {
+    ar: 'التركيز: وقاية وترطيب وروتين ثابت',
+    en: 'Focus: prevention, hydration, and a consistent routine',
+  },
+  'mobile.lifeEvents.card.lifeStages.tip3': {
+    ar: 'النصيحة: ابدئي بالريتينول تدريجياً',
+    en: 'Tip: start retinol gradually',
+  },
+  'mobile.lifeEvents.card.lifeStages.tip4': {
+    ar: 'أساسيات: واقي شمس، مرطب، سيروم فيتامين سي',
+    en: 'Basics: sunscreen, moisturizer, vitamin C serum',
+  },
+  'mobile.lifeEvents.card.brideJourney.title': { ar: 'رحلة العروس', en: 'Bridal Journey' },
+  'mobile.lifeEvents.card.brideJourney.subtitle': {
+    ar: 'الزفاف: 15 يونيو 2027',
+    en: 'Wedding: June 15, 2027',
+  },
+  'mobile.lifeEvents.card.brideJourney.tip1': {
+    ar: 'قبل 6 أشهر: بدء روتين العناية — تم',
+    en: '6 months before: start your care routine — done',
+  },
+  'mobile.lifeEvents.card.brideJourney.tip2': {
+    ar: 'قبل 5 أشهر: علاجات البشرة — تم',
+    en: '5 months before: skin treatments — done',
+  },
+  'mobile.lifeEvents.card.brideJourney.tip3': {
+    ar: 'قبل 4 أشهر: تجربة المكياج — قادم',
+    en: '4 months before: makeup trial — upcoming',
+  },
+  'mobile.lifeEvents.card.brideJourney.tip4': {
+    ar: 'قبل 3 أشهر: جلسة شعر تجريبية — قادم',
+    en: '3 months before: hair trial — upcoming',
+  },
+  'mobile.lifeEvents.card.goldenBeauty.title': { ar: 'الجمال الذهبي', en: 'Golden Beauty' },
+  'mobile.lifeEvents.card.goldenBeauty.subtitle': { ar: 'للمرأة فوق 50', en: 'For women over 50' },
+  'mobile.lifeEvents.card.goldenBeauty.tip1': {
+    ar: 'تركيز على الترطيب العميق والتغذية',
+    en: 'Focus on deep hydration and nourishment',
+  },
+  'mobile.lifeEvents.card.goldenBeauty.tip2': {
+    ar: 'منتجات غنية بالسيراميد والببتيدات',
+    en: 'Products rich in ceramides and peptides',
+  },
+  'mobile.lifeEvents.card.goldenBeauty.tip4': {
+    ar: 'الجمال الحقيقي — الثقة والراحة',
+    en: 'True beauty — confidence and comfort',
+  },
+  'mobile.lifeEvents.card.careerBeauty.title': { ar: 'جمال المهنة', en: 'Career Beauty' },
+  'mobile.lifeEvents.card.careerBeauty.subtitle': {
+    ar: 'للمرأة العاملة',
+    en: 'For the working woman',
+  },
+  'mobile.lifeEvents.card.careerBeauty.tip1': {
+    ar: 'روتين سريع — 10 دقائق صباحاً',
+    en: 'Quick routine — 10 minutes in the morning',
+  },
+  'mobile.lifeEvents.card.careerBeauty.tip2': {
+    ar: 'مكياج عملي — BB كريم + ماسكارا + بلسم',
+    en: 'Practical makeup — BB cream + mascara + balm',
+  },
+  'mobile.lifeEvents.card.careerBeauty.tip3': {
+    ar: 'سبراي مرطب — للانتعاش طوال اليوم',
+    en: 'Hydrating spray — freshness all day',
+  },
+  'mobile.lifeEvents.card.careerBeauty.tip4': {
+    ar: 'جلسة أسبوعية — للعناية المركزة',
+    en: 'Weekly session — intensive care',
+  },
+  'mobile.lifeEvents.card.postpartumRecovery.subtitle': {
+    ar: 'للأم الجديدة',
+    en: 'For the new mother',
+  },
+  'mobile.lifeEvents.card.postpartumRecovery.tip3': {
+    ar: 'جلسات قصيرة — 45 دقيقة',
+    en: 'Short sessions — 45 minutes',
+  },
+  'mobile.lifeEvents.card.postpartumRecovery.tip4': {
+    ar: 'خدمة منزلية — لراحة الأم',
+    en: 'Home service — for the comfort of the mother',
+  },
+  'mobile.lifeEvents.card.teenSkin.title': { ar: 'دليل بشرة المراهقات', en: 'Teen Skin Guide' },
+  'mobile.lifeEvents.card.teenSkin.subtitle': { ar: '12-18 سنة', en: 'Ages 12-18' },
+  'mobile.lifeEvents.card.teenSkin.tip1': {
+    ar: 'أساسيات: غسول لطيف + مرطب + واقي شمس',
+    en: 'Basics: gentle cleanser + moisturizer + sunscreen',
+  },
+  'mobile.lifeEvents.card.teenSkin.tip2': {
+    ar: 'تجنبي: المنتجات القاسية والمقشرات',
+    en: 'Avoid: harsh products and scrubs',
+  },
+  'mobile.lifeEvents.card.teenSkin.tip3': { ar: 'نصيحة: الأقل هو الأكثر', en: 'Tip: less is more' },
+  'mobile.lifeEvents.card.teenSkin.tip4': {
+    ar: 'دائماً: استشيري مختصة قبل أي علاج',
+    en: 'Always: consult a specialist before any treatment',
+  },
+  'mobile.lifeEvents.card.twenties.title': { ar: 'العناية في العشرينات', en: 'Care in Your 20s' },
+  'mobile.lifeEvents.card.twenties.subtitle': {
+    ar: 'أساس قوي لمستقبل بشرتك',
+    en: 'A strong foundation for the future of your skin',
+  },
+  'mobile.lifeEvents.card.twenties.tip1': {
+    ar: 'واقي شمس يومي — أهم استثمار لبشرتك',
+    en: 'Daily sunscreen — the best investment for your skin',
+  },
+  'mobile.lifeEvents.card.twenties.tip2': {
+    ar: 'روتين أساسي — منظف مرطب واقي شمس',
+    en: 'Basic routine — cleanser, moisturizer, sunscreen',
+  },
+  'mobile.lifeEvents.card.twenties.tip3': {
+    ar: 'فيتامين C — ابدئي مبكراً',
+    en: 'Vitamin C — start early',
+  },
+  'mobile.lifeEvents.card.twenties.tip4': {
+    ar: 'لا ريبتينول بعد — بشرتك تنتجه طبيعياً',
+    en: 'No retinol yet — your skin produces it naturally',
+  },
+  'mobile.lifeEvents.card.thirties.title': { ar: 'العناية في الثلاثينات', en: 'Care in Your 30s' },
+  'mobile.lifeEvents.card.thirties.subtitle': {
+    ar: 'وقاية وعلاج — بشرة متوازنة',
+    en: 'Prevention and treatment — balanced skin',
+  },
+  'mobile.lifeEvents.card.thirties.tip1': {
+    ar: 'ابدئي الريتينول — الكولاجين ينخفض',
+    en: 'Start retinol — collagen is declining',
+  },
+  'mobile.lifeEvents.card.thirties.tip2': {
+    ar: 'كريم عيون — أولى الخطوط الرفيعة',
+    en: 'Eye cream — the first fine lines',
+  },
+  'mobile.lifeEvents.card.thirties.tip3': {
+    ar: 'تقشير منتظم — مرة أسبوعياً AHA/BHA',
+    en: 'Regular exfoliation — weekly AHA/BHA',
+  },
+  'mobile.lifeEvents.card.thirties.tip4': {
+    ar: 'سيروم هيالورونيك — ترطيب مكثف',
+    en: 'Hyaluronic serum — intense hydration',
+  },
+  'mobile.lifeEvents.card.forties.title': { ar: 'العناية في الأربعينات', en: 'Care in Your 40s' },
+  'mobile.lifeEvents.card.forties.subtitle': {
+    ar: 'تجديد وتقوية — بشرة ناضجة',
+    en: 'Renewal and firming — mature skin',
+  },
+  'mobile.lifeEvents.card.forties.tip1': {
+    ar: 'ببتيدات — تحفز الكولاجين وتشد البشرة',
+    en: 'Peptides — boost collagen and firm the skin',
+  },
+  'mobile.lifeEvents.card.forties.tip3': {
+    ar: 'مساج وجه — يحسن الدورة ويرفع البشرة',
+    en: 'Face massage — improves circulation and lifts the skin',
+  },
+  'mobile.lifeEvents.card.forties.tip4': {
+    ar: 'علاجات احترافية — ميكرونيدلنغ أو ليزر',
+    en: 'Professional treatments — microneedling or laser',
+  },
+  'mobile.lifeEvents.card.fifties.title': { ar: 'العناية في الخمسينات', en: 'Care in Your 50s' },
+  'mobile.lifeEvents.card.fifties.subtitle': {
+    ar: 'جمال ناضج — عناية فاخرة',
+    en: 'Mature beauty — luxurious care',
+  },
+  'mobile.lifeEvents.card.fifties.tip1': {
+    ar: 'زيوت غنية — سكوالين أرغان ثمر الورد',
+    en: 'Rich oils — squalane, argan, rosehip',
+  },
+  'mobile.lifeEvents.card.fifties.tip2': {
+    ar: 'مرطبات كثيفة — كريمات وليس جل',
+    en: 'Thick moisturizers — creams, not gels',
+  },
+  'mobile.lifeEvents.card.fifties.tip3': {
+    ar: 'فحوصات هرمونية — الجمال بعد انقطاع الطمث',
+    en: 'Hormone checks — beauty after menopause',
+  },
+  'mobile.lifeEvents.card.fifties.tip4': {
+    ar: 'الجمال الحقيقي — الثقة والعناية الذاتية',
+    en: 'True beauty — confidence and self-care',
+  },
+  'mobile.lifeEvents.card.sixties.title': { ar: 'العناية في الستينات', en: 'Care in Your 60s' },
+  'mobile.lifeEvents.card.sixties.subtitle': {
+    ar: 'بشرة جميلة في كل عمر',
+    en: 'Beautiful skin at every age',
+  },
+  'mobile.lifeEvents.card.sixties.tip1': {
+    ar: 'ترطيب مكثف — كريمات غنية بالسيراميد',
+    en: 'Intense hydration — ceramide-rich creams',
+  },
+  'mobile.lifeEvents.card.sixties.tip2': {
+    ar: 'مساج دوري — يحسن مرونة البشرة',
+    en: 'Regular massage — improves skin elasticity',
+  },
+  'mobile.lifeEvents.card.sixties.tip3': {
+    ar: 'حماية دائمة — البشرة الرقيقة تحتاج عناية',
+    en: 'Constant protection — thin skin needs care',
+  },
+  'mobile.lifeEvents.card.sixties.tip4': {
+    ar: 'الجمال من الداخل — تغذية نوم سعادة',
+    en: 'Beauty from within — nutrition, sleep, happiness',
+  },
+  'mobile.lifeEvents.card.pcos.title': { ar: 'تكيس المبايض', en: 'PCOS' },
+  'mobile.lifeEvents.card.pcos.subtitle': {
+    ar: 'بشرة جميلة رغم الهرمونات',
+    en: 'Beautiful skin despite hormones',
+  },
+  'mobile.lifeEvents.card.pcos.tip1': {
+    ar: 'منتجات خالية من الزيوت — للبشرة الدهنية',
+    en: 'Oil-free products — for oily skin',
+  },
+  'mobile.lifeEvents.card.pcos.tip2': {
+    ar: 'نياسيناميد وزنك — لتنظيم الدهون',
+    en: 'Niacinamide and zinc — to regulate oil',
+  },
+  'mobile.lifeEvents.card.pcos.tip3': {
+    ar: 'تغذية منخفضة السكر — تقلل الالتهابات',
+    en: 'Low-sugar nutrition — reduces inflammation',
+  },
+  'mobile.lifeEvents.card.pcos.tip4': {
+    ar: 'استشيري طبيبك — بعض العلاجات تحتاج وصفة',
+    en: 'Consult your doctor — some treatments need a prescription',
+  },
+  'mobile.lifeEvents.card.pregnancySafe.title': { ar: 'الآمن للحامل', en: 'Pregnancy-Safe' },
+  'mobile.lifeEvents.card.pregnancySafe.subtitle': {
+    ar: 'منتجات آمنة لكِ ولطفلكِ',
+    en: 'Safe products for you and your baby',
+  },
+  'mobile.lifeEvents.card.pregnancySafe.tip1': {
+    ar: 'مسموح: فيتامين C أزيليك هيالورونيك',
+    en: 'Allowed: vitamin C, azelaic acid, hyaluronic acid',
+  },
+  'mobile.lifeEvents.card.pregnancySafe.tip2': {
+    ar: 'بحذر: حمض الساليسيليك أقل من 2%',
+    en: 'With caution: salicylic acid under 2%',
+  },
+  'mobile.lifeEvents.card.pregnancySafe.tip3': {
+    ar: 'ممنوع: ريتينول هيدروكينون بوتوكس',
+    en: 'Forbidden: retinol, hydroquinone, Botox',
+  },
+  'mobile.lifeEvents.card.pregnancySafe.tip4': {
+    ar: 'اسألي طبيبتك قبل أي منتج جديد',
+    en: 'Ask your doctor before any new product',
+  },
+  'mobile.lifeEvents.card.postpartumHair.title': {
+    ar: 'شعر ما بعد الولادة',
+    en: 'Postpartum Hair',
+  },
+  'mobile.lifeEvents.card.postpartumHair.subtitle': {
+    ar: 'تساقط طبيعي — لا تقلقي',
+    en: 'Natural shedding — do not worry',
+  },
+  'mobile.lifeEvents.card.postpartumHair.tip1': {
+    ar: 'يبدأ بعد 3-6 أشهر — يستمر 3-6 أشهر',
+    en: 'Starts after 3-6 months — lasts 3-6 months',
+  },
+  'mobile.lifeEvents.card.postpartumHair.tip2': {
+    ar: 'تدليك الفروة — يحفز نمو شعر جديد',
+    en: 'Scalp massage — stimulates new hair growth',
+  },
+  'mobile.lifeEvents.card.postpartumHair.tip3': {
+    ar: 'فيتامينات ما بعد الولادة — حديد وزنك',
+    en: 'Postpartum vitamins — iron and zinc',
+  },
+  'mobile.lifeEvents.card.postpartumHair.tip4': {
+    ar: 'قصة أقصر — تخفف الثقل وتشجع النمو',
+    en: 'A shorter cut — reduces weight and encourages growth',
+  },
+  'mobile.lifeEvents.card.menopause.title': { ar: 'حول انقطاع الطمث', en: 'About Menopause' },
+  'mobile.lifeEvents.card.menopause.subtitle': {
+    ar: 'جمالكِ في مرحلة التغيير',
+    en: 'Your beauty through the change',
+  },
+  'mobile.lifeEvents.card.menopause.tip1': {
+    ar: 'جفاف البشرة — انتقلي لكريمات أغنى',
+    en: 'Dry skin — switch to richer creams',
+  },
+  'mobile.lifeEvents.card.menopause.tip2': {
+    ar: 'احمرار وهبات — منتجات مهدئة',
+    en: 'Redness and hot flashes — soothing products',
+  },
+  'mobile.lifeEvents.card.menopause.tip3': {
+    ar: 'الكولاجين يقل — ببتيدات وسيراميد',
+    en: 'Collagen declines — peptides and ceramides',
+  },
+  'mobile.lifeEvents.card.menopause.tip4': {
+    ar: 'SPF ضروري — التصبغات تزيد',
+    en: 'SPF is essential — pigmentation increases',
+  },
+  'mobile.lifeEvents.card.hormonalAcne.title': { ar: 'حبوب هرمونية', en: 'Hormonal Acne' },
+  'mobile.lifeEvents.card.hormonalAcne.subtitle': {
+    ar: 'علاج حبوب الذقن والفك',
+    en: 'Treating chin and jaw acne',
+  },
+  'mobile.lifeEvents.card.hormonalAcne.tip1': {
+    ar: 'مكانها: الذقن والفك — علامة هرمونية',
+    en: 'Location: chin and jaw — a hormonal sign',
+  },
+  'mobile.lifeEvents.card.hormonalAcne.tip2': {
+    ar: 'علاج: بنزويل بيروكسايد أو ساليسيليك',
+    en: 'Treatment: benzoyl peroxide or salicylic acid',
+  },
+  'mobile.lifeEvents.card.hormonalAcne.tip3': {
+    ar: 'قللي السكر والألبان — تزيد الالتهاب',
+    en: 'Cut back on sugar and dairy — they increase inflammation',
+  },
+  'mobile.lifeEvents.card.hormonalAcne.tip4': {
+    ar: 'إذا استمرت — راجعي طبيبة للهرمونات',
+    en: 'If it persists — see a doctor about hormones',
+  },
+  'mobile.makeupGuide.card.base.title': { ar: 'أساس المكياج', en: 'Makeup Base' },
+  'mobile.makeupGuide.card.base.subtitle': { ar: 'primer + foundation', en: 'primer + foundation' },
+  'mobile.makeupGuide.card.base.tip1': {
+    ar: 'برايمر — يملأ المسام ويثبت المكياج',
+    en: 'Primer — fills pores and sets makeup',
+  },
+  'mobile.makeupGuide.card.base.tip2': {
+    ar: 'بشرة رطبة — المرطب قبل البرايمر',
+    en: 'Moisturized skin — moisturizer before primer',
+  },
+  'mobile.makeupGuide.card.base.tip3': {
+    ar: 'فاونديشن — طبقة رقيقة',
+    en: 'Foundation — a thin layer',
+  },
+  'mobile.makeupGuide.card.base.tip4': {
+    ar: 'ادمجي بالإسفنجة — وليس الأصابع',
+    en: 'Blend with a sponge — not your fingers',
+  },
+  'mobile.makeupGuide.card.brushes.title': { ar: 'فرش المكياج', en: 'Makeup Brushes' },
+  'mobile.makeupGuide.card.brushes.subtitle': {
+    ar: 'دليل التنظيف والاستخدام',
+    en: 'Cleaning and usage guide',
+  },
+  'mobile.makeupGuide.card.brushes.tip1': {
+    ar: 'نظفي الفرش أسبوعياً — بشامبو أطفال',
+    en: 'Clean brushes weekly — with baby shampoo',
+  },
+  'mobile.makeupGuide.card.brushes.tip2': {
+    ar: 'جففيها أفقياً — لا عمودياً',
+    en: 'Dry them flat — not upright',
+  },
+  'mobile.makeupGuide.card.brushes.tip3': {
+    ar: 'استبدلي الفرش كل 6-12 شهر',
+    en: 'Replace brushes every 6-12 months',
+  },
+  'mobile.makeupGuide.card.brushes.tip4': {
+    ar: 'لا تشاركي فرشك مع أحد',
+    en: 'Never share your brushes',
+  },
+  'mobile.makeupGuide.card.eyes.title': { ar: 'مكياج العيون', en: 'Eye Makeup' },
+  'mobile.makeupGuide.card.eyes.subtitle': { ar: 'تقنيات أساسية', en: 'Essential techniques' },
+  'mobile.makeupGuide.card.eyes.tip1': {
+    ar: 'اللون الفاتح — على كامل الجفن',
+    en: 'Light shade — across the whole lid',
+  },
+  'mobile.makeupGuide.card.eyes.tip2': {
+    ar: 'اللون المتوسط — على الثنية',
+    en: 'Medium shade — on the crease',
+  },
+  'mobile.makeupGuide.card.eyes.tip3': {
+    ar: 'اللون اللامع — في الزاوية الداخلية',
+    en: 'Shimmer shade — in the inner corner',
+  },
+  'mobile.makeupGuide.card.eyes.tip4': {
+    ar: 'ادمجي جيداً — لا خطوط قاسية',
+    en: 'Blend well — no harsh lines',
+  },
+  'mobile.makeupGuide.card.lips.title': { ar: 'مكياج الشفاه', en: 'Lip Makeup' },
+  'mobile.makeupGuide.card.lips.subtitle': { ar: 'لون يدوم طويلاً', en: 'Long-lasting color' },
+  'mobile.makeupGuide.card.lips.tip1': {
+    ar: 'قشري الشفاه — سكر + عسل',
+    en: 'Exfoliate lips — sugar + honey',
+  },
+  'mobile.makeupGuide.card.lips.tip2': {
+    ar: 'رطبي قبل 10 دقائق من اللون',
+    en: 'Moisturize 10 minutes before color',
+  },
+  'mobile.makeupGuide.card.lips.tip3': {
+    ar: 'حددي الشفاه — يمنع التطاير',
+    en: 'Line your lips — prevents bleeding',
+  },
+  'mobile.makeupGuide.card.lips.tip4': {
+    ar: 'طبقتان — وامسحي الزائد بمنديل',
+    en: 'Two layers — blot the excess with a tissue',
+  },
+  'mobile.makeupGuide.card.contour.title': { ar: 'الكونتور', en: 'Contour' },
+  'mobile.makeupGuide.card.contour.subtitle': { ar: 'نحت الوجه', en: 'Face sculpting' },
+  'mobile.makeupGuide.card.contour.tip1': {
+    ar: 'داكن — تحت عظمة الخد',
+    en: 'Dark — under the cheekbone',
+  },
+  'mobile.makeupGuide.card.contour.tip2': {
+    ar: 'فاتح — فوق عظمة الخد',
+    en: 'Light — above the cheekbone',
+  },
+  'mobile.makeupGuide.card.contour.tip3': {
+    ar: 'امزجي جيداً — لا خطوط ظاهرة',
+    en: 'Blend well — no visible lines',
+  },
+  'mobile.makeupGuide.card.contour.tip4': {
+    ar: 'الكريمي أسهل من البودرة للمبتدئات',
+    en: 'Cream is easier than powder for beginners',
+  },
+  'mobile.makeupGuide.card.blush.title': { ar: 'أحمر الخدود', en: 'Blush' },
+  'mobile.makeupGuide.card.blush.subtitle': { ar: 'لمسة حيوية', en: 'A touch of radiance' },
+  'mobile.makeupGuide.card.blush.tip1': {
+    ar: 'ضعيه على تفاحة الخد',
+    en: 'Apply to the apple of the cheek',
+  },
+  'mobile.makeupGuide.card.blush.tip2': {
+    ar: 'امزجي للأعلى نحو الصدغ',
+    en: 'Blend upward toward the temple',
+  },
+  'mobile.makeupGuide.card.blush.tip3': {
+    ar: 'الكريمي — للبشرة الجافة',
+    en: 'Cream — for dry skin',
+  },
+  'mobile.makeupGuide.card.blush.tip4': {
+    ar: 'البودرة — للبشرة الدهنية',
+    en: 'Powder — for oily skin',
+  },
+  'mobile.makeupGuide.card.bridal.title': { ar: 'مكياج العروس', en: 'Bridal Makeup' },
+  'mobile.makeupGuide.card.bridal.subtitle': { ar: 'إطلالة الزفاف', en: 'The wedding look' },
+  'mobile.makeupGuide.card.bridal.tip1': {
+    ar: 'جلسة تجريبية قبل الزفاف بشهر',
+    en: 'A trial session one month before the wedding',
+  },
+  'mobile.makeupGuide.card.bridal.tip2': {
+    ar: 'رطبي بشرتك جيداً أسبوع الزفاف',
+    en: 'Hydrate your skin well the week of the wedding',
+  },
+  'mobile.makeupGuide.card.bridal.tip3': {
+    ar: 'ابدئي المكياج 3 ساعات قبل الحفل',
+    en: 'Start makeup 3 hours before the ceremony',
+  },
+  'mobile.makeupGuide.card.bridal.tip4': {
+    ar: 'مكياج دائم — للصور والفيديو',
+    en: 'Long-wear makeup — for photos and video',
+  },
+  'mobile.makeupGuide.card.naturalLook.subtitle': {
+    ar: 'إطلالة يومية خفيفة',
+    en: 'A light everyday look',
+  },
+  'mobile.makeupGuide.card.naturalLook.tip1': {
+    ar: 'BB كريم — بدل الفاونديشن الثقيل',
+    en: 'BB cream — instead of heavy foundation',
+  },
+  'mobile.makeupGuide.card.naturalLook.tip2': {
+    ar: 'هايلايتر — على عظمة الخد فقط',
+    en: 'Highlighter — on the cheekbone only',
+  },
+  'mobile.makeupGuide.card.naturalLook.tip3': {
+    ar: 'ماسكارا بنية — طبيعية أكثر',
+    en: 'Brown mascara — more natural',
+  },
+  'mobile.makeupGuide.card.naturalLook.tip4': {
+    ar: 'تينت شفاه — لون طبيعي خفيف',
+    en: 'Lip tint — a light natural color',
+  },
+  'mobile.makeupGuide.card.glam.title': { ar: 'مكياج لامع', en: 'Glam Makeup' },
+  'mobile.makeupGuide.card.glam.subtitle': {
+    ar: 'للمناسبات والسهرات',
+    en: 'For occasions and evenings',
+  },
+  'mobile.makeupGuide.card.glam.tip1': {
+    ar: 'جليتر — على الجفن فقط',
+    en: 'Glitter — on the lid only',
+  },
+  'mobile.makeupGuide.card.glam.tip2': {
+    ar: 'برايمر جليتر — يثبت اللمعان',
+    en: 'Glitter primer — sets the sparkle',
+  },
+  'mobile.makeupGuide.card.glam.tip3': {
+    ar: 'هايلايتر على عظمة الترقوة',
+    en: 'Highlighter on the collarbone',
+  },
+  'mobile.makeupGuide.card.glam.tip4': {
+    ar: 'منطقة واحدة لامعة — ليس الوجه كله',
+    en: 'One shiny area — not the whole face',
+  },
+  'mobile.makeupGuide.card.removal.title': { ar: 'إزالة المكياج', en: 'Makeup Removal' },
+  'mobile.makeupGuide.card.removal.subtitle': {
+    ar: 'خطوة لا تهمليها',
+    en: 'A step you must not skip',
+  },
+  'mobile.makeupGuide.card.removal.tip1': {
+    ar: 'ماء ميسيلار — للوجه والعيون',
+    en: 'Micellar water — for face and eyes',
+  },
+  'mobile.makeupGuide.card.removal.tip2': {
+    ar: 'زيت تنظيف — يذيب المكياج المقاوم',
+    en: 'Cleansing oil — dissolves stubborn makeup',
+  },
+  'mobile.makeupGuide.card.removal.tip3': {
+    ar: 'اغسلي بعد المزيل — خطوتين دائماً',
+    en: 'Wash after removing — always two steps',
+  },
+  'mobile.makeupGuide.card.removal.tip4': {
+    ar: 'لا تنامي أبداً بالمكياج',
+    en: 'Never sleep in makeup',
+  },
+  'mobile.makeupGuide.card.faceShapes.title': { ar: 'أشكال الوجه', en: 'Face Shapes' },
+  'mobile.makeupGuide.card.faceShapes.subtitle': {
+    ar: 'حددي شكل وجهكِ',
+    en: 'Determine your face shape',
+  },
+  'mobile.makeupGuide.card.faceShapes.tip1': {
+    ar: 'بيضاوي — متناسق يناسبه كل شيء',
+    en: 'Oval — balanced, suits everything',
+  },
+  'mobile.makeupGuide.card.faceShapes.tip2': {
+    ar: 'قلب — جبهة عريضة ذقن مدبب',
+    en: 'Heart — wide forehead, pointed chin',
+  },
+  'mobile.makeupGuide.card.faceShapes.tip3': {
+    ar: 'دائري — خدود ممتلئة متساوي',
+    en: 'Round — full, even cheeks',
+  },
+  'mobile.makeupGuide.card.faceShapes.tip4': {
+    ar: 'مربع — فك عريض زوايا واضحة',
+    en: 'Square — wide jaw, defined angles',
+  },
+  'mobile.makeupGuide.card.contourGuide.title': { ar: 'دليل الكونتور', en: 'Contour Guide' },
+  'mobile.makeupGuide.card.contourGuide.subtitle': {
+    ar: 'نحت الوجه حسب الشكل',
+    en: 'Face sculpting by shape',
+  },
+  'mobile.makeupGuide.card.contourGuide.tip1': {
+    ar: 'بيضاوي: خفيف تحت عظمة الخد',
+    en: 'Oval: light under the cheekbone',
+  },
+  'mobile.makeupGuide.card.contourGuide.tip2': {
+    ar: 'دائري: تحت الخد بكثافة',
+    en: 'Round: heavily under the cheek',
+  },
+  'mobile.makeupGuide.card.contourGuide.tip3': {
+    ar: 'مربع: زوايا الفك — لتحديد وتنعيم',
+    en: 'Square: jaw angles — to define and soften',
+  },
+  'mobile.makeupGuide.card.contourGuide.tip4': {
+    ar: 'قلب: الذقن — لتقليصه بصرياً',
+    en: 'Heart: the chin — to visually shorten it',
+  },
+  'mobile.makeupGuide.card.blushPlacement.title': { ar: 'موضع البلاشر', en: 'Blush Placement' },
+  'mobile.makeupGuide.card.blushPlacement.subtitle': {
+    ar: 'ارفعي — لا تنزلي',
+    en: 'Lift up — do not drag down',
+  },
+  'mobile.makeupGuide.card.blushPlacement.tip1': {
+    ar: 'بيضاوي: على تفاحة الخد للأعلى',
+    en: 'Oval: on the apple of the cheek, upward',
+  },
+  'mobile.makeupGuide.card.blushPlacement.tip2': {
+    ar: 'دائري: أعلى الخد بزاوية حادة',
+    en: 'Round: high on the cheek at a sharp angle',
+  },
+  'mobile.makeupGuide.card.blushPlacement.tip3': {
+    ar: 'مربع: مركز الخد دائري لتليين',
+    en: 'Square: round the center of the cheek to soften',
+  },
+  'mobile.makeupGuide.card.blushPlacement.tip4': {
+    ar: 'قلب: منخفض تحت تفاحة الخد',
+    en: 'Heart: low, under the apple of the cheek',
+  },
+  'mobile.makeupGuide.card.brows.title': { ar: 'شكل الحواجب', en: 'Eyebrow Shape' },
+  'mobile.makeupGuide.card.brows.subtitle': {
+    ar: 'الحاجب المناسب لوجهكِ',
+    en: 'The brow that suits your face',
+  },
+  'mobile.makeupGuide.card.brows.tip1': {
+    ar: 'بيضاوي: طبيعية — قوس ناعم',
+    en: 'Oval: natural — soft arch',
+  },
+  'mobile.makeupGuide.card.brows.tip2': {
+    ar: 'دائري: قوس مرتفع — يطيل الوجه',
+    en: 'Round: high arch — lengthens the face',
+  },
+  'mobile.makeupGuide.card.brows.tip3': {
+    ar: 'مربع: زوايا حادة — توازن الفك',
+    en: 'Square: sharp angles — balances the jaw',
+  },
+  'mobile.makeupGuide.card.brows.tip4': {
+    ar: 'قلب: مقوسة — تلطف الجبهة',
+    en: 'Heart: curved — softens the forehead',
+  },
+  'mobile.makeupGuide.card.lipLiner.title': { ar: 'تحديد الشفاه', en: 'Lip Lining' },
+  'mobile.makeupGuide.card.lipLiner.subtitle': {
+    ar: 'تقنيات لشفاه أجمل',
+    en: 'Techniques for prettier lips',
+  },
+  'mobile.makeupGuide.card.lipLiner.tip1': {
+    ar: 'تحديد فوق الخط الطبيعي بقليل',
+    en: 'Line slightly above the natural line',
+  },
+  'mobile.makeupGuide.card.lipLiner.tip2': {
+    ar: 'هايلايتر فوق قوس كيوبيد',
+    en: 'Highlighter above the cupid bow',
+  },
+  'mobile.makeupGuide.card.lipLiner.tip3': {
+    ar: 'لونين — فاتح بالوسط داكن بالأطراف',
+    en: 'Two shades — light in the center, dark at the edges',
+  },
+  'mobile.makeupGuide.card.lipLiner.tip4': {
+    ar: 'غلوس على المركز — عمق بصري',
+    en: 'Gloss in the center — visual depth',
+  },
+  'mobile.makeupGuide.card.partyPrep.title': { ar: 'تحضير الحفلة', en: 'Party Prep' },
+  'mobile.makeupGuide.card.partyPrep.subtitle': {
+    ar: 'خطة جمالية قبل المناسبة',
+    en: 'A beauty plan before the occasion',
+  },
+  'mobile.makeupGuide.card.partyPrep.tip1': {
+    ar: 'قبل بأسبوع: فيشل + حواجب + إزالة شعر',
+    en: 'A week before: facial + brows + hair removal',
+  },
+  'mobile.makeupGuide.card.partyPrep.tip2': {
+    ar: 'قبل بيوم: عناية — نامي 8 ساعات',
+    en: 'A day before: self-care — sleep 8 hours',
+  },
+  'mobile.makeupGuide.card.partyPrep.tip3': {
+    ar: 'يوم الحفلة: مكياج قبلها بـ 3 ساعات',
+    en: 'Party day: makeup 3 hours before',
+  },
+  'mobile.makeupGuide.card.partyPrep.tip4': {
+    ar: 'حقيبة طوارئ: روج + ورق نشاف',
+    en: 'Emergency kit: lipstick + blotting paper',
+  },
+  'mobile.makeupGuide.card.interview.title': { ar: 'إطلالة المقابلة', en: 'Interview Look' },
+  'mobile.makeupGuide.card.interview.subtitle': {
+    ar: 'ثقة — واحترافية',
+    en: 'Confidence — and professionalism',
+  },
+  'mobile.makeupGuide.card.interview.tip1': {
+    ar: 'مكياج طبيعي — BB كريم + ماسكارا',
+    en: 'Natural makeup — BB cream + mascara',
+  },
+  'mobile.makeupGuide.card.interview.tip2': {
+    ar: 'أظافر محايدة — Nude أو فرنسي',
+    en: 'Neutral nails — nude or French',
+  },
+  'mobile.makeupGuide.card.interview.tip3': {
+    ar: 'تسريحة مرتبة — كعكة منخفضة',
+    en: 'Neat hairstyle — a low bun',
+  },
+  'mobile.makeupGuide.card.interview.tip4': {
+    ar: 'عطر خفيف — منعش وغير قوي',
+    en: 'Light perfume — fresh, not overpowering',
+  },
+  'mobile.makeupGuide.card.graduation.title': { ar: 'إطلالة التخرج', en: 'Graduation Look' },
+  'mobile.makeupGuide.card.graduation.subtitle': {
+    ar: 'صور تدوم — إطلالة تبقى',
+    en: 'Photos that last — a look that stays',
+  },
+  'mobile.makeupGuide.card.graduation.tip1': {
+    ar: 'مكياج ثابت — الصور تبقى للأبد',
+    en: 'Long-wear makeup — photos last forever',
+  },
+  'mobile.makeupGuide.card.graduation.tip2': {
+    ar: 'أحمر شفاه مات — لا ينتقل للشهادة',
+    en: 'Matte lipstick — will not transfer to the certificate',
+  },
+  'mobile.makeupGuide.card.graduation.tip3': {
+    ar: 'تسريحة تتحمل القبعة',
+    en: 'A hairstyle that survives the cap',
+  },
+  'mobile.makeupGuide.card.graduation.tip4': {
+    ar: 'واقي شمس — الحفل في النهار',
+    en: 'Sunscreen — the ceremony is in daylight',
+  },
+  'mobile.makeupGuide.card.dateNight.title': { ar: 'إطلالة الموعد', en: 'Date Look' },
+  'mobile.makeupGuide.card.dateNight.subtitle': {
+    ar: 'جاذبية — بدون مبالغة',
+    en: 'Alluring — without exaggeration',
+  },
+  'mobile.makeupGuide.card.dateNight.tip1': {
+    ar: 'بشرة متوهجة — هايلايتر على الخد',
+    en: 'Glowing skin — highlighter on the cheek',
+  },
+  'mobile.makeupGuide.card.dateNight.tip2': {
+    ar: 'عيون سموكي ناعمة — ألوان دافئة',
+    en: 'Soft smoky eyes — warm tones',
+  },
+  'mobile.makeupGuide.card.dateNight.tip3': {
+    ar: 'شفاه طبيعية — تينت شفاف',
+    en: 'Natural lips — a sheer tint',
+  },
+  'mobile.makeupGuide.card.dateNight.tip4': {
+    ar: 'عطر على نقاط النبض',
+    en: 'Perfume on pulse points',
+  },
+  'mobile.makeupGuide.card.photoReady.title': { ar: 'جاهزة للصور', en: 'Photo Ready' },
+  'mobile.makeupGuide.card.photoReady.subtitle': {
+    ar: 'مكياج جميل في الكاميرا',
+    en: 'Makeup that looks beautiful on camera',
+  },
+  'mobile.makeupGuide.card.photoReady.tip1': {
+    ar: 'تجنبي SPF العالي — وميض في الفلاش',
+    en: 'Avoid high SPF — flashback in photos',
+  },
+  'mobile.makeupGuide.card.photoReady.tip2': {
+    ar: 'هايلايتر بودرة — وليس كريمي',
+    en: 'Powder highlighter — not cream',
+  },
+  'mobile.makeupGuide.card.photoReady.tip3': {
+    ar: 'ألوان معتدلة — الفلاش يفتح الألوان',
+    en: 'Moderate colors — flash brightens shades',
+  },
+  'mobile.makeupGuide.card.photoReady.tip4': {
+    ar: 'بخاخ تثبيت — آخر خطوة قبل الصور',
+    en: 'Setting spray — the last step before photos',
+  },
+  'mobile.makeupGuide.card.fairSkin.title': { ar: 'البشرة الفاتحة', en: 'Fair Skin' },
+  'mobile.makeupGuide.card.fairSkin.subtitle': {
+    ar: 'عناية خاصة بالبشرة الفاتحة',
+    en: 'Special care for fair skin',
+  },
+  'mobile.makeupGuide.card.fairSkin.tip1': {
+    ar: 'SPF 50+ — البشرة الفاتحة تحترق بسرعة',
+    en: 'SPF 50+ — fair skin burns quickly',
+  },
+  'mobile.makeupGuide.card.fairSkin.tip2': {
+    ar: 'ميل للاحمرار — منتجات مهدئة',
+    en: 'Prone to redness — soothing products',
+  },
+  'mobile.makeupGuide.card.fairSkin.tip3': {
+    ar: 'ألوان: وردي خوخي بيج فاتح',
+    en: 'Colors: pink, peach, light beige',
+  },
+  'mobile.makeupGuide.card.fairSkin.tip4': {
+    ar: 'هايلايتر شمباني — وليس ذهبي',
+    en: 'Champagne highlighter — not gold',
+  },
+  'mobile.makeupGuide.card.mediumSkin.title': { ar: 'البشرة المتوسطة', en: 'Medium Skin' },
+  'mobile.makeupGuide.card.mediumSkin.subtitle': {
+    ar: 'البشرة الزيتونية والقمحية',
+    en: 'Olive and wheat-toned skin',
+  },
+  'mobile.makeupGuide.card.mediumSkin.tip1': {
+    ar: 'SPF 30-50 — الميلانين يحمي جزئياً',
+    en: 'SPF 30-50 — melanin protects partially',
+  },
+  'mobile.makeupGuide.card.mediumSkin.tip2': {
+    ar: 'ميل للتصبغات — فيتامين C أساسي',
+    en: 'Prone to pigmentation — vitamin C is essential',
+  },
+  'mobile.makeupGuide.card.mediumSkin.tip3': {
+    ar: 'ألوان: برونزي خوخي تيراكوتا',
+    en: 'Colors: bronze, peach, terracotta',
+  },
+  'mobile.makeupGuide.card.mediumSkin.tip4': {
+    ar: 'هايلايتر ذهبي — للأندرتون الدافئ',
+    en: 'Gold highlighter — for warm undertones',
+  },
+  'mobile.makeupGuide.card.darkSkin.title': { ar: 'البشرة الداكنة', en: 'Dark Skin' },
+  'mobile.makeupGuide.card.darkSkin.subtitle': { ar: 'غنية بالميلانين', en: 'Rich in melanin' },
+  'mobile.makeupGuide.card.darkSkin.tip1': {
+    ar: 'ميل للجفاف — ترطيب بزبدة الشيا',
+    en: 'Prone to dryness — hydrate with shea butter',
+  },
+  'mobile.makeupGuide.card.darkSkin.tip2': {
+    ar: 'تصبغات — فيتامين C وهيالورونيك',
+    en: 'Pigmentation — vitamin C and hyaluronic acid',
+  },
+  'mobile.makeupGuide.card.darkSkin.tip3': {
+    ar: 'ألوان: برقوقي عنابي ذهبي',
+    en: 'Colors: plum, burgundy, gold',
+  },
+  'mobile.makeupGuide.card.darkSkin.tip4': {
+    ar: 'SPF 30+ — حماية ضرورية',
+    en: 'SPF 30+ — essential protection',
+  },
+  'mobile.makeupGuide.card.undertone.title': { ar: 'الأندرتون', en: 'Undertone' },
+  'mobile.makeupGuide.card.undertone.subtitle': {
+    ar: 'اعرفي أندرتونكِ — تناسق',
+    en: 'Know your undertone — harmony',
+  },
+  'mobile.makeupGuide.card.undertone.tip1': {
+    ar: 'دافئ: عروق خضراء — الذهب يناسبك',
+    en: 'Warm: green veins — gold suits you',
+  },
+  'mobile.makeupGuide.card.undertone.tip2': {
+    ar: 'بارد: عروق زرقاء — الفضة تناسبك',
+    en: 'Cool: blue veins — silver suits you',
+  },
+  'mobile.makeupGuide.card.undertone.tip3': {
+    ar: 'محايد: مزيج — الذهب والفضة',
+    en: 'Neutral: a mix — gold and silver',
+  },
+  'mobile.makeupGuide.card.undertone.tip4': {
+    ar: 'اختبار: ورقة بيضاء — قارني',
+    en: 'Test: a white sheet — compare',
+  },
+  'mobile.makeupGuide.card.shadeMatch.title': { ar: 'مطابقة الألوان', en: 'Shade Matching' },
+  'mobile.makeupGuide.card.shadeMatch.subtitle': {
+    ar: 'اختاري الدرجة المثالية',
+    en: 'Choose the perfect shade',
+  },
+  'mobile.makeupGuide.card.shadeMatch.tip1': {
+    ar: 'جربي على خط الفك — ليس اليد',
+    en: 'Try it on the jawline — not your hand',
+  },
+  'mobile.makeupGuide.card.shadeMatch.tip2': {
+    ar: 'ضوء طبيعي — الإضاءة تخدع',
+    en: 'Natural light — indoor lighting deceives',
+  },
+  'mobile.makeupGuide.card.shadeMatch.tip3': {
+    ar: 'انتظري 5 دقائق — اللون يتغير',
+    en: 'Wait 5 minutes — the color changes',
+  },
+  'mobile.makeupGuide.card.shadeMatch.tip4': {
+    ar: 'درجتين: صيف أغمق — شتاء أفتح',
+    en: 'Two shades: darker in summer — lighter in winter',
+  },
+  'mobile.makeupGuide.card.glasses.title': { ar: 'مكياج النظارات', en: 'Glasses Makeup' },
+  'mobile.makeupGuide.card.glasses.subtitle': {
+    ar: 'إطلالة جميلة مع النظارة',
+    en: 'A pretty look with glasses',
+  },
+  'mobile.makeupGuide.card.glasses.tip1': {
+    ar: 'رموش مرفوعة — لا تلمس العدسات',
+    en: 'Curled lashes — keep off the lenses',
+  },
+  'mobile.makeupGuide.card.glasses.tip2': {
+    ar: 'هايلايتر تحت الحاجب — يبرز العين',
+    en: 'Highlighter under the brow — highlights the eye',
+  },
+  'mobile.makeupGuide.card.glasses.tip3': {
+    ar: 'ظلال مات — ليس لامعاً',
+    en: 'Matte shadows — not shimmery',
+  },
+  'mobile.makeupGuide.card.glasses.tip4': {
+    ar: 'حاجبين مرتبين — الإطار يبرزهما',
+    en: 'Neat brows — the frame draws attention to them',
+  },
+  'mobile.makeupGuide.card.lenses.title': { ar: 'العدسات والمكياج', en: 'Lenses and Makeup' },
+  'mobile.makeupGuide.card.lenses.subtitle': {
+    ar: 'عناية آمنة لعيون جميلة',
+    en: 'Safe care for beautiful eyes',
+  },
+  'mobile.makeupGuide.card.lenses.tip1': {
+    ar: 'العدسات أولاً — ثم المكياج',
+    en: 'Lenses first — then makeup',
+  },
+  'mobile.makeupGuide.card.lenses.tip2': {
+    ar: 'قطرات مرطبة — قبل وبعد المكياج',
+    en: 'Moisturizing drops — before and after makeup',
+  },
+  'mobile.makeupGuide.card.lenses.tip3': {
+    ar: 'تجنبي الجليتر — يسقط في العين',
+    en: 'Avoid glitter — it falls into the eye',
+  },
+  'mobile.makeupGuide.card.lenses.tip4': {
+    ar: 'جديدي الماسكارا — كل 3 أشهر',
+    en: 'Replace your mascara — every 3 months',
+  },
 } as const satisfies Record<string, { ar: string; en: string }>;

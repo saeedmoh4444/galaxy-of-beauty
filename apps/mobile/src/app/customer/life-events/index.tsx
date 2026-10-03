@@ -1,15 +1,16 @@
 import type { JSX } from 'react';
 import { View, Text, ScrollView, StyleSheet } from 'react-native';
+import type { TranslationKey } from '@galaxy/shared';
 import { useLocale } from '@/components/LocaleProvider';
 
 interface Tip {
   emoji: string;
-  text: string;
+  textKey: TranslationKey;
 }
 interface Card {
   emoji: string;
-  title: string;
-  subtitle: string;
+  titleKey: TranslationKey;
+  subtitleKey: TranslationKey;
   color: string;
   bg: string;
   tips: Tip[];
@@ -18,210 +19,210 @@ interface Card {
 const CARDS: Card[] = [
   {
     emoji: '🌸',
-    title: 'مراحل الحياة',
-    subtitle: '28 سنة — لكل مرحلة جمالها',
+    titleKey: 'mobile.lifeEvents.title',
+    subtitleKey: 'mobile.lifeEvents.card.lifeStages.subtitle',
     color: '#db2777',
     bg: '#fdf2f8',
     tips: [
-      { emoji: '🌱', text: 'العمر: 28 سنة — مرحلة الشباب' },
-      { emoji: '💧', text: 'التركيز: وقاية وترطيب وروتين ثابت' },
-      { emoji: '💡', text: 'النصيحة: ابدئي بالريتينول تدريجياً' },
-      { emoji: '🧴', text: 'أساسيات: واقي شمس، مرطب، سيروم فيتامين سي' },
+      { emoji: '🌱', textKey: 'mobile.lifeEvents.card.lifeStages.tip1' },
+      { emoji: '💧', textKey: 'mobile.lifeEvents.card.lifeStages.tip2' },
+      { emoji: '💡', textKey: 'mobile.lifeEvents.card.lifeStages.tip3' },
+      { emoji: '🧴', textKey: 'mobile.lifeEvents.card.lifeStages.tip4' },
     ],
   },
   {
     emoji: '👰',
-    title: 'رحلة العروس',
-    subtitle: 'الزفاف: 15 يونيو 2027',
+    titleKey: 'mobile.lifeEvents.card.brideJourney.title',
+    subtitleKey: 'mobile.lifeEvents.card.brideJourney.subtitle',
     color: '#c026d3',
     bg: '#fdf4ff',
     tips: [
-      { emoji: '🌱', text: 'قبل 6 أشهر: بدء روتين العناية — تم ' },
-      { emoji: '✨', text: 'قبل 5 أشهر: علاجات البشرة — تم ' },
-      { emoji: '💄', text: 'قبل 4 أشهر: تجربة المكياج — قادم' },
-      { emoji: '💇', text: 'قبل 3 أشهر: جلسة شعر تجريبية — قادم' },
+      { emoji: '🌱', textKey: 'mobile.lifeEvents.card.brideJourney.tip1' },
+      { emoji: '✨', textKey: 'mobile.lifeEvents.card.brideJourney.tip2' },
+      { emoji: '💄', textKey: 'mobile.lifeEvents.card.brideJourney.tip3' },
+      { emoji: '💇', textKey: 'mobile.lifeEvents.card.brideJourney.tip4' },
     ],
   },
   {
     emoji: '👑',
-    title: 'الجمال الذهبي',
-    subtitle: 'للمرأة فوق 50',
+    titleKey: 'mobile.lifeEvents.card.goldenBeauty.title',
+    subtitleKey: 'mobile.lifeEvents.card.goldenBeauty.subtitle',
     color: '#d97706',
     bg: '#fffbeb',
     tips: [
-      { emoji: '💧', text: 'تركيز على الترطيب العميق والتغذية' },
-      { emoji: '🧴', text: 'منتجات غنية بالسيراميد والببتيدات' },
-      { emoji: '✨', text: 'تقشير لطيف — مرة أسبوعياً' },
-      { emoji: '💖', text: 'الجمال الحقيقي — الثقة والراحة' },
+      { emoji: '💧', textKey: 'mobile.lifeEvents.card.goldenBeauty.tip1' },
+      { emoji: '🧴', textKey: 'mobile.lifeEvents.card.goldenBeauty.tip2' },
+      { emoji: '✨', textKey: 'mobile.personalCare.card.chestCare.tip2' },
+      { emoji: '💖', textKey: 'mobile.lifeEvents.card.goldenBeauty.tip4' },
     ],
   },
   {
     emoji: '💼',
-    title: 'جمال المهنة',
-    subtitle: 'للمرأة العاملة',
+    titleKey: 'mobile.lifeEvents.card.careerBeauty.title',
+    subtitleKey: 'mobile.lifeEvents.card.careerBeauty.subtitle',
     color: '#0284c7',
     bg: '#f0f9ff',
     tips: [
-      { emoji: '⏰', text: 'روتين سريع — 10 دقائق صباحاً' },
-      { emoji: '💄', text: 'مكياج عملي — BB كريم + ماسكارا + بلسم' },
-      { emoji: '💧', text: 'سبراي مرطب — للانتعاش طوال اليوم' },
-      { emoji: '✨', text: 'جلسة أسبوعية — للعناية المركزة' },
+      { emoji: '⏰', textKey: 'mobile.lifeEvents.card.careerBeauty.tip1' },
+      { emoji: '💄', textKey: 'mobile.lifeEvents.card.careerBeauty.tip2' },
+      { emoji: '💧', textKey: 'mobile.lifeEvents.card.careerBeauty.tip3' },
+      { emoji: '✨', textKey: 'mobile.lifeEvents.card.careerBeauty.tip4' },
     ],
   },
   {
     emoji: '👶',
-    title: 'عناية ما بعد الولادة',
-    subtitle: 'للأم الجديدة',
+    titleKey: 'mobile.familyBeauty.postpartumCare.title',
+    subtitleKey: 'mobile.lifeEvents.card.postpartumRecovery.subtitle',
     color: '#0d9488',
     bg: '#f0fdfa',
     tips: [
-      { emoji: '💆', text: 'مساج استرخاء — يخفف التوتر' },
-      { emoji: '🧴', text: 'عناية بالبشرة — للتغيرات الهرمونية' },
-      { emoji: '⏰', text: 'جلسات قصيرة — 45 دقيقة' },
-      { emoji: '🏠', text: 'خدمة منزلية — لراحة الأم' },
+      { emoji: '💆', textKey: 'mobile.familyBeauty.bridalBody.tip2' },
+      { emoji: '🧴', textKey: 'mobile.familyBeauty.newMomSupport.tip2' },
+      { emoji: '⏰', textKey: 'mobile.lifeEvents.card.postpartumRecovery.tip3' },
+      { emoji: '🏠', textKey: 'mobile.lifeEvents.card.postpartumRecovery.tip4' },
     ],
   },
   {
     emoji: '🎒',
-    title: 'دليل بشرة المراهقات',
-    subtitle: '12-18 سنة',
+    titleKey: 'mobile.lifeEvents.card.teenSkin.title',
+    subtitleKey: 'mobile.lifeEvents.card.teenSkin.subtitle',
     color: '#059669',
     bg: '#ecfdf5',
     tips: [
-      { emoji: '🧴', text: 'أساسيات: غسول لطيف + مرطب + واقي شمس' },
-      { emoji: '💧', text: 'تجنبي: المنتجات القاسية والمقشرات' },
-      { emoji: '🌿', text: 'نصيحة: الأقل هو الأكثر' },
-      { emoji: '💡', text: 'دائماً: استشيري مختصة قبل أي علاج' },
+      { emoji: '🧴', textKey: 'mobile.lifeEvents.card.teenSkin.tip1' },
+      { emoji: '💧', textKey: 'mobile.lifeEvents.card.teenSkin.tip2' },
+      { emoji: '🌿', textKey: 'mobile.lifeEvents.card.teenSkin.tip3' },
+      { emoji: '💡', textKey: 'mobile.lifeEvents.card.teenSkin.tip4' },
     ],
   },
   {
     emoji: '🌱',
-    title: 'العناية في العشرينات',
-    subtitle: 'أساس قوي لمستقبل بشرتك',
+    titleKey: 'mobile.lifeEvents.card.twenties.title',
+    subtitleKey: 'mobile.lifeEvents.card.twenties.subtitle',
     color: '#0284c7',
     bg: '#f0f9ff',
     tips: [
-      { emoji: '🌞', text: 'واقي شمس يومي — أهم استثمار لبشرتك' },
-      { emoji: '🧴', text: 'روتين أساسي — منظف مرطب واقي شمس' },
-      { emoji: '🍊', text: 'فيتامين C — ابدئي مبكراً' },
-      { emoji: '🚫', text: 'لا ريبتينول بعد — بشرتك تنتجه طبيعياً' },
+      { emoji: '🌞', textKey: 'mobile.lifeEvents.card.twenties.tip1' },
+      { emoji: '🧴', textKey: 'mobile.lifeEvents.card.twenties.tip2' },
+      { emoji: '🍊', textKey: 'mobile.lifeEvents.card.twenties.tip3' },
+      { emoji: '🚫', textKey: 'mobile.lifeEvents.card.twenties.tip4' },
     ],
   },
   {
     emoji: '✨',
-    title: 'العناية في الثلاثينات',
-    subtitle: 'وقاية وعلاج — بشرة متوازنة',
+    titleKey: 'mobile.lifeEvents.card.thirties.title',
+    subtitleKey: 'mobile.lifeEvents.card.thirties.subtitle',
     color: '#7c3aed',
     bg: '#f5f3ff',
     tips: [
-      { emoji: '💡', text: 'ابدئي الريتينول — الكولاجين ينخفض' },
-      { emoji: '👀', text: 'كريم عيون — أولى الخطوط الرفيعة' },
-      { emoji: '✨', text: 'تقشير منتظم — مرة أسبوعياً AHA/BHA' },
-      { emoji: '💧', text: 'سيروم هيالورونيك — ترطيب مكثف' },
+      { emoji: '💡', textKey: 'mobile.lifeEvents.card.thirties.tip1' },
+      { emoji: '👀', textKey: 'mobile.lifeEvents.card.thirties.tip2' },
+      { emoji: '✨', textKey: 'mobile.lifeEvents.card.thirties.tip3' },
+      { emoji: '💧', textKey: 'mobile.lifeEvents.card.thirties.tip4' },
     ],
   },
   {
     emoji: '🌟',
-    title: 'العناية في الأربعينات',
-    subtitle: 'تجديد وتقوية — بشرة ناضجة',
+    titleKey: 'mobile.lifeEvents.card.forties.title',
+    subtitleKey: 'mobile.lifeEvents.card.forties.subtitle',
     color: '#e11d48',
     bg: '#fff1f2',
     tips: [
-      { emoji: '💪', text: 'ببتيدات — تحفز الكولاجين وتشد البشرة' },
-      { emoji: '🧱', text: 'سيراميد — يقوي حاجز البشرة' },
-      { emoji: '💆', text: 'مساج وجه — يحسن الدورة ويرفع البشرة' },
-      { emoji: '✨', text: 'علاجات احترافية — ميكرونيدلنغ أو ليزر' },
+      { emoji: '💪', textKey: 'mobile.lifeEvents.card.forties.tip1' },
+      { emoji: '🧱', textKey: 'mobile.beautyTips.dryClimate.tip4' },
+      { emoji: '💆', textKey: 'mobile.lifeEvents.card.forties.tip3' },
+      { emoji: '✨', textKey: 'mobile.lifeEvents.card.forties.tip4' },
     ],
   },
   {
     emoji: '👑',
-    title: 'العناية في الخمسينات',
-    subtitle: 'جمال ناضج — عناية فاخرة',
+    titleKey: 'mobile.lifeEvents.card.fifties.title',
+    subtitleKey: 'mobile.lifeEvents.card.fifties.subtitle',
     color: '#d97706',
     bg: '#fffbeb',
     tips: [
-      { emoji: '🧴', text: 'زيوت غنية — سكوالين أرغان ثمر الورد' },
-      { emoji: '💧', text: 'مرطبات كثيفة — كريمات وليس جل' },
-      { emoji: '🩺', text: 'فحوصات هرمونية — الجمال بعد انقطاع الطمث' },
-      { emoji: '💖', text: 'الجمال الحقيقي — الثقة والعناية الذاتية' },
+      { emoji: '🧴', textKey: 'mobile.lifeEvents.card.fifties.tip1' },
+      { emoji: '💧', textKey: 'mobile.lifeEvents.card.fifties.tip2' },
+      { emoji: '🩺', textKey: 'mobile.lifeEvents.card.fifties.tip3' },
+      { emoji: '💖', textKey: 'mobile.lifeEvents.card.fifties.tip4' },
     ],
   },
   {
     emoji: '🌺',
-    title: 'العناية في الستينات',
-    subtitle: 'بشرة جميلة في كل عمر',
+    titleKey: 'mobile.lifeEvents.card.sixties.title',
+    subtitleKey: 'mobile.lifeEvents.card.sixties.subtitle',
     color: '#059669',
     bg: '#ecfdf5',
     tips: [
-      { emoji: '💧', text: 'ترطيب مكثف — كريمات غنية بالسيراميد' },
-      { emoji: '💆', text: 'مساج دوري — يحسن مرونة البشرة' },
-      { emoji: '🌂', text: 'حماية دائمة — البشرة الرقيقة تحتاج عناية' },
-      { emoji: '🥗', text: 'الجمال من الداخل — تغذية نوم سعادة' },
+      { emoji: '💧', textKey: 'mobile.lifeEvents.card.sixties.tip1' },
+      { emoji: '💆', textKey: 'mobile.lifeEvents.card.sixties.tip2' },
+      { emoji: '🌂', textKey: 'mobile.lifeEvents.card.sixties.tip3' },
+      { emoji: '🥗', textKey: 'mobile.lifeEvents.card.sixties.tip4' },
     ],
   },
   {
     emoji: '🩺',
-    title: 'تكيس المبايض',
-    subtitle: 'بشرة جميلة رغم الهرمونات',
+    titleKey: 'mobile.lifeEvents.card.pcos.title',
+    subtitleKey: 'mobile.lifeEvents.card.pcos.subtitle',
     color: '#0d9488',
     bg: '#f0fdfa',
     tips: [
-      { emoji: '🚫', text: 'منتجات خالية من الزيوت — للبشرة الدهنية' },
-      { emoji: '🧴', text: 'نياسيناميد وزنك — لتنظيم الدهون' },
-      { emoji: '🥗', text: 'تغذية منخفضة السكر — تقلل الالتهابات' },
-      { emoji: '🩺', text: 'استشيري طبيبك — بعض العلاجات تحتاج وصفة' },
+      { emoji: '🚫', textKey: 'mobile.lifeEvents.card.pcos.tip1' },
+      { emoji: '🧴', textKey: 'mobile.lifeEvents.card.pcos.tip2' },
+      { emoji: '🥗', textKey: 'mobile.lifeEvents.card.pcos.tip3' },
+      { emoji: '🩺', textKey: 'mobile.lifeEvents.card.pcos.tip4' },
     ],
   },
   {
     emoji: '🤰',
-    title: 'الآمن للحامل',
-    subtitle: 'منتجات آمنة لكِ ولطفلكِ',
+    titleKey: 'mobile.lifeEvents.card.pregnancySafe.title',
+    subtitleKey: 'mobile.lifeEvents.card.pregnancySafe.subtitle',
     color: '#ec4899',
     bg: '#fdf2f8',
     tips: [
-      { emoji: '✅', text: 'مسموح: فيتامين C أزيليك هيالورونيك' },
-      { emoji: '⚠️', text: 'بحذر: حمض الساليسيليك أقل من 2%' },
-      { emoji: '🚫', text: 'ممنوع: ريتينول هيدروكينون بوتوكس' },
-      { emoji: '🩺', text: 'اسألي طبيبتك قبل أي منتج جديد' },
+      { emoji: '✅', textKey: 'mobile.lifeEvents.card.pregnancySafe.tip1' },
+      { emoji: '⚠️', textKey: 'mobile.lifeEvents.card.pregnancySafe.tip2' },
+      { emoji: '🚫', textKey: 'mobile.lifeEvents.card.pregnancySafe.tip3' },
+      { emoji: '🩺', textKey: 'mobile.lifeEvents.card.pregnancySafe.tip4' },
     ],
   },
   {
     emoji: '💇',
-    title: 'شعر ما بعد الولادة',
-    subtitle: 'تساقط طبيعي — لا تقلقي',
+    titleKey: 'mobile.lifeEvents.card.postpartumHair.title',
+    subtitleKey: 'mobile.lifeEvents.card.postpartumHair.subtitle',
     color: '#7c3aed',
     bg: '#f5f3ff',
     tips: [
-      { emoji: '📅', text: 'يبدأ بعد 3-6 أشهر — يستمر 3-6 أشهر' },
-      { emoji: '💆', text: 'تدليك الفروة — يحفز نمو شعر جديد' },
-      { emoji: '💊', text: 'فيتامينات ما بعد الولادة — حديد وزنك' },
-      { emoji: '✂️', text: 'قصة أقصر — تخفف الثقل وتشجع النمو' },
+      { emoji: '📅', textKey: 'mobile.lifeEvents.card.postpartumHair.tip1' },
+      { emoji: '💆', textKey: 'mobile.lifeEvents.card.postpartumHair.tip2' },
+      { emoji: '💊', textKey: 'mobile.lifeEvents.card.postpartumHair.tip3' },
+      { emoji: '✂️', textKey: 'mobile.lifeEvents.card.postpartumHair.tip4' },
     ],
   },
   {
     emoji: '🦋',
-    title: 'حول انقطاع الطمث',
-    subtitle: 'جمالكِ في مرحلة التغيير',
+    titleKey: 'mobile.lifeEvents.card.menopause.title',
+    subtitleKey: 'mobile.lifeEvents.card.menopause.subtitle',
     color: '#d97706',
     bg: '#fffbeb',
     tips: [
-      { emoji: '💧', text: 'جفاف البشرة — انتقلي لكريمات أغنى' },
-      { emoji: '🌿', text: 'احمرار وهبات — منتجات مهدئة' },
-      { emoji: '💪', text: 'الكولاجين يقل — ببتيدات وسيراميد' },
-      { emoji: '☀️', text: 'SPF ضروري — التصبغات تزيد' },
+      { emoji: '💧', textKey: 'mobile.lifeEvents.card.menopause.tip1' },
+      { emoji: '🌿', textKey: 'mobile.lifeEvents.card.menopause.tip2' },
+      { emoji: '💪', textKey: 'mobile.lifeEvents.card.menopause.tip3' },
+      { emoji: '☀️', textKey: 'mobile.lifeEvents.card.menopause.tip4' },
     ],
   },
   {
     emoji: '🩹',
-    title: 'حبوب هرمونية',
-    subtitle: 'علاج حبوب الذقن والفك',
+    titleKey: 'mobile.lifeEvents.card.hormonalAcne.title',
+    subtitleKey: 'mobile.lifeEvents.card.hormonalAcne.subtitle',
     color: '#ef4444',
     bg: '#fef2f2',
     tips: [
-      { emoji: '📍', text: 'مكانها: الذقن والفك — علامة هرمونية' },
-      { emoji: '🧴', text: 'علاج: بنزويل بيروكسايد أو ساليسيليك' },
-      { emoji: '🥗', text: 'قللي السكر والألبان — تزيد الالتهاب' },
-      { emoji: '🩺', text: 'إذا استمرت — راجعي طبيبة للهرمونات' },
+      { emoji: '📍', textKey: 'mobile.lifeEvents.card.hormonalAcne.tip1' },
+      { emoji: '🧴', textKey: 'mobile.lifeEvents.card.hormonalAcne.tip2' },
+      { emoji: '🥗', textKey: 'mobile.lifeEvents.card.hormonalAcne.tip3' },
+      { emoji: '🩺', textKey: 'mobile.lifeEvents.card.hormonalAcne.tip4' },
     ],
   },
 ];
@@ -238,15 +239,15 @@ export default function LifeEventsScreen(): JSX.Element {
             <View style={s.ch}>
               <Text style={s.ce}>{c.emoji}</Text>
               <View style={s.cw}>
-                <Text style={[s.ct, { color: c.color }]}>{c.title}</Text>
-                <Text style={s.cs}>{c.subtitle}</Text>
+                <Text style={[s.ct, { color: c.color }]}>{t(c.titleKey)}</Text>
+                <Text style={s.cs}>{t(c.subtitleKey)}</Text>
               </View>
             </View>
             <View style={s.tl}>
-              {c.tips.map((t, j) => (
+              {c.tips.map((tip, j) => (
                 <View key={j} style={[s.tr, { backgroundColor: c.bg }]}>
-                  <Text style={s.te}>{t.emoji}</Text>
-                  <Text style={[s.tt, { color: c.color }]}>{t.text}</Text>
+                  <Text style={s.te}>{tip.emoji}</Text>
+                  <Text style={[s.tt, { color: c.color }]}>{t(tip.textKey)}</Text>
                 </View>
               ))}
             </View>

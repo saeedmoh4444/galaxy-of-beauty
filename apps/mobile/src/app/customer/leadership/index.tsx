@@ -1,15 +1,16 @@
 import type { JSX } from 'react';
 import { View, Text, ScrollView, StyleSheet } from 'react-native';
+import type { TranslationKey } from '@galaxy/shared';
 import { useLocale } from '@/components/LocaleProvider';
 
 interface Tip {
   emoji: string;
-  text: string;
+  textKey: TranslationKey;
 }
 interface Card {
   emoji: string;
-  title: string;
-  subtitle: string;
+  titleKey: TranslationKey;
+  subtitleKey: TranslationKey;
   color: string;
   bg: string;
   tips: Tip[];
@@ -18,54 +19,54 @@ interface Card {
 const CARDS: Card[] = [
   {
     emoji: '👑',
-    title: 'برنامج She Leads',
-    subtitle: 'تمكين المرأة في قطاع التجميل',
+    titleKey: 'mobile.leadership.card.sheLeads.title',
+    subtitleKey: 'mobile.leadership.card.sheLeads.subtitle',
     color: '#7c3aed',
     bg: '#f5f3ff',
     tips: [
-      { emoji: '🎓', text: 'تدريب: مهارات القيادة والإدارة' },
-      { emoji: '💰', text: 'دعم: قروض صغيرة لبدء مشروعكِ' },
-      { emoji: '🤝', text: 'شبكة: تواصلي مع رائدات أعمال' },
-      { emoji: '📜', text: 'شهادة: اعتماد مهني في القيادة' },
+      { emoji: '🎓', textKey: 'mobile.leadership.card.sheLeads.tip1' },
+      { emoji: '💰', textKey: 'mobile.leadership.card.sheLeads.tip2' },
+      { emoji: '🤝', textKey: 'mobile.leadership.card.sheLeads.tip3' },
+      { emoji: '📜', textKey: 'mobile.leadership.card.sheLeads.tip4' },
     ],
   },
   {
     emoji: '💼',
-    title: 'رائدة أعمال',
-    subtitle: 'ابدئي مشروعكِ في التجميل',
+    titleKey: 'mobile.leadership.card.entrepreneur.title',
+    subtitleKey: 'mobile.leadership.card.entrepreneur.subtitle',
     color: '#d97706',
     bg: '#fffbeb',
     tips: [
-      { emoji: '📝', text: 'خطة عمل — نساعدكِ في كتابتها' },
-      { emoji: '💰', text: 'تمويل — حتى 100,000 ر.س' },
-      { emoji: '🏪', text: 'موقع — دعم إيجار أول 6 أشهر' },
-      { emoji: '🧭', text: 'إرشاد — مرشد شخصي لمدة سنة' },
+      { emoji: '📝', textKey: 'mobile.leadership.card.entrepreneur.tip1' },
+      { emoji: '💰', textKey: 'mobile.leadership.card.entrepreneur.tip2' },
+      { emoji: '🏪', textKey: 'mobile.leadership.card.entrepreneur.tip3' },
+      { emoji: '🧭', textKey: 'mobile.leadership.card.entrepreneur.tip4' },
     ],
   },
   {
     emoji: '🏆',
-    title: 'قصص نجاح',
-    subtitle: 'نماذج ملهمة من مجتمعنا',
+    titleKey: 'mobile.leadership.card.successStories.title',
+    subtitleKey: 'mobile.leadership.card.successStories.subtitle',
     color: '#db2777',
     bg: '#fdf2f8',
     tips: [
-      { emoji: '💇', text: 'نورة — افتتحت صالونها بعد 6 أشهر' },
-      { emoji: '🏪', text: 'مها — 3 فروع في سنتين' },
-      { emoji: '🚀', text: 'ريم — من عاملة لصاحبة علامة تجارية' },
-      { emoji: '✨', text: 'أنتِ القصة القادمة!' },
+      { emoji: '💇', textKey: 'mobile.leadership.card.successStories.tip1' },
+      { emoji: '🏪', textKey: 'mobile.leadership.card.successStories.tip2' },
+      { emoji: '🚀', textKey: 'mobile.leadership.card.successStories.tip3' },
+      { emoji: '✨', textKey: 'mobile.leadership.card.successStories.tip4' },
     ],
   },
   {
     emoji: '🎯',
-    title: 'أهداف القيادة',
-    subtitle: 'خططي لمستقبلكِ المهني',
+    titleKey: 'mobile.leadership.card.leadershipGoals.title',
+    subtitleKey: 'mobile.leadership.card.leadershipGoals.subtitle',
     color: '#059669',
     bg: '#ecfdf5',
     tips: [
-      { emoji: '🌱', text: 'قصير المدى: دورة قيادة (3 أشهر)' },
-      { emoji: '🌿', text: 'متوسط المدى: مشروع صغير (سنة)' },
-      { emoji: '🌳', text: 'طويل المدى: 3 فروع (3 سنوات)' },
-      { emoji: '🌍', text: 'الرؤية: علامة تجارية سعودية عالمية' },
+      { emoji: '🌱', textKey: 'mobile.leadership.card.leadershipGoals.tip1' },
+      { emoji: '🌿', textKey: 'mobile.leadership.card.leadershipGoals.tip2' },
+      { emoji: '🌳', textKey: 'mobile.leadership.card.leadershipGoals.tip3' },
+      { emoji: '🌍', textKey: 'mobile.leadership.card.leadershipGoals.tip4' },
     ],
   },
 ];
@@ -82,15 +83,15 @@ export default function LeadershipScreen(): JSX.Element {
             <View style={s.ch}>
               <Text style={s.ce}>{c.emoji}</Text>
               <View style={s.cw}>
-                <Text style={[s.ct, { color: c.color }]}>{c.title}</Text>
-                <Text style={s.cs}>{c.subtitle}</Text>
+                <Text style={[s.ct, { color: c.color }]}>{t(c.titleKey)}</Text>
+                <Text style={s.cs}>{t(c.subtitleKey)}</Text>
               </View>
             </View>
             <View style={s.tl}>
-              {c.tips.map((t, j) => (
+              {c.tips.map((tip, j) => (
                 <View key={j} style={[s.tr, { backgroundColor: c.bg }]}>
-                  <Text style={s.te}>{t.emoji}</Text>
-                  <Text style={[s.tt, { color: c.color }]}>{t.text}</Text>
+                  <Text style={s.te}>{tip.emoji}</Text>
+                  <Text style={[s.tt, { color: c.color }]}>{t(tip.textKey)}</Text>
                 </View>
               ))}
             </View>
