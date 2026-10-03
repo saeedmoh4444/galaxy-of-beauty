@@ -1,6 +1,21 @@
-// Sentry Node.js instrumentation stub.
-// In production, initialize with: @sentry/node
-// For now, provides a structured error-logging facade.
+// Sentry Node.js instrumentation. Lazily initializes @sentry/node only
+// when SENTRY_DSN is set; without it, provides a console-logging facade.
+
+import type * as SentryNodeModule from '@sentry/node';
+
+// The Function() wrapper keeps the spec out of bundler static analysis,
+// since this package runs standalone AND bundled inside the web app.
+export function loadSentryNode(): Promise<typeof SentryNodeModule> {
+  return Function('return import("@sentry/node")')();
+}
+
+type SentryLoader = typeof loadSentryNode;
+let sentryLoader: SentryLoader = loadSentryNode;
+
+// Test seam: swap the loader (e.g., to simulate a missing/broken module).
+export function _setSentryLoaderForTests(loader: SentryLoader): void {
+  sentryLoader = loader;
+}
 
 interface SentryScope {
   setTag(key: string, value: string): void;
@@ -25,7 +40,7 @@ async function getSentry(): Promise<SentryClient | null> {
   }
 
   try {
-    const SentryNode = await Function('return import("@sentry/node")')();
+    const SentryNode = await sentryLoader();
     const sampleRate = parseFloat(process.env['SENTRY_TRACES_SAMPLE_RATE'] || '0.1');
     SentryNode.init({
       dsn,
@@ -52,7 +67,6 @@ export async function captureError(error: Error, context?: Record<string, unknow
     });
   }
   // Always log to console as fallback
-  // eslint-disable-next-line no-console
   console.error('[Sentry]', error.message, context || '');
 }
 
@@ -64,6 +78,5 @@ export async function captureMessage(
   if (sentry) {
     sentry.captureMessage(message, level);
   }
-  // eslint-disable-next-line no-console
   console.log(`[Sentry:${level}]`, message);
 }
