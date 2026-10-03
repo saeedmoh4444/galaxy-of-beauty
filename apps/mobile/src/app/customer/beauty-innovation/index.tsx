@@ -1,15 +1,16 @@
 import type { JSX } from 'react';
 import { View, Text, ScrollView, StyleSheet } from 'react-native';
+import type { TranslationKey } from '@galaxy/shared';
 import { useLocale } from '@/components/LocaleProvider';
 
 interface Tip {
   emoji: string;
-  text: string;
+  textKey: TranslationKey;
 }
 interface Card {
   emoji: string;
-  title: string;
-  subtitle: string;
+  titleKey: TranslationKey;
+  subtitleKey: TranslationKey;
   color: string;
   bg: string;
   tips: Tip[];
@@ -18,93 +19,94 @@ interface Card {
 const CARDS: Card[] = [
   {
     emoji: '🎙️',
-    title: 'مساعد صوتي',
-    subtitle: 'اسألي مجرة الجمال — مستشارة جمالك',
+    titleKey: 'mobile.beautyInnovation.card.voiceAssistant.title',
+    subtitleKey: 'mobile.beautyInnovation.card.voiceAssistant.subtitle',
     color: '#7c3aed',
     bg: '#f5f3ff',
     tips: [
-      { emoji: '📋', text: 'قوائم: اسألي عن روتين، منتج، أو نصيحة' },
-      { emoji: '🔊', text: 'تشغيل صوتي — بدون لمس الشاشة' },
-      { emoji: '💬', text: 'بالعربية — تفهم لهجتكِ' },
-      { emoji: '🔒', text: 'خصوصية تامة — محادثاتكِ آمنة' },
+      { emoji: '📋', textKey: 'mobile.beautyInnovation.card.voiceAssistant.tip1' },
+      { emoji: '🔊', textKey: 'mobile.beautyInnovation.card.voiceAssistant.tip2' },
+      { emoji: '💬', textKey: 'mobile.beautyInnovation.card.voiceAssistant.tip3' },
+      { emoji: '🔒', textKey: 'mobile.beautyInnovation.card.voiceAssistant.tip4' },
     ],
   },
   {
     emoji: '🎬',
-    title: 'فلوق الجمال',
-    subtitle: 'يوم في حياة نورة',
+    // Vlog card reuses the beauty-extras vlog keys (verbatim ar match).
+    titleKey: 'mobile.beautyExtras.card.beautyVlog.title',
+    subtitleKey: 'beautyInnovation.vlogTitle',
     color: '#e11d48',
     bg: '#fff1f2',
     tips: [
-      { emoji: '💄', text: 'الفئة: مكياج — 8 دقائق' },
-      { emoji: '👩', text: 'تقديم: نورة — خبيرة تجميل' },
-      { emoji: '👀', text: '1,234 مشاهدة' },
-      { emoji: '📺', text: 'شاهدي الفلوق — تعلمي روتين جديد' },
+      { emoji: '💄', textKey: 'mobile.beautyExtras.card.beautyVlog.tip1' },
+      { emoji: '👩', textKey: 'mobile.beautyExtras.card.beautyVlog.tip2' },
+      { emoji: '👀', textKey: 'mobile.beautyExtras.card.beautyVlog.tip3' },
+      { emoji: '📺', textKey: 'mobile.beautyExtras.card.beautyVlog.tip4' },
     ],
   },
   {
     emoji: '🎵',
-    title: 'قائمة تشغيل',
-    subtitle: 'موسيقى لجلسة عنايتك',
+    titleKey: 'mobile.beautyInnovation.card.playlist.title',
+    subtitleKey: 'mobile.beautyInnovation.card.playlist.subtitle',
     color: '#db2777',
     bg: '#fdf2f8',
     tips: [
-      { emoji: '🎶', text: 'موسيقى هادئة — لجلسة المساج' },
-      { emoji: '🌊', text: 'أصوات طبيعة — للاسترخاء' },
-      { emoji: '📻', text: 'قوائم جاهزة — حسب المزاج' },
-      { emoji: '🔄', text: 'تحديث أسبوعي — قوائم جديدة' },
+      { emoji: '🎶', textKey: 'mobile.beautyInnovation.card.playlist.tip1' },
+      { emoji: '🌊', textKey: 'mobile.beautyInnovation.card.playlist.tip2' },
+      { emoji: '📻', textKey: 'mobile.beautyInnovation.card.playlist.tip3' },
+      { emoji: '🔄', textKey: 'mobile.beautyInnovation.card.playlist.tip4' },
     ],
   },
   {
     emoji: '⛅',
-    title: 'طقس الجمال',
-    subtitle: 'حار — 42 درجة مئوية',
+    titleKey: 'mobile.beautyInnovation.card.beautyWeather.title',
+    subtitleKey: 'mobile.beautyInnovation.card.beautyWeather.subtitle',
     color: '#ea580c',
     bg: '#fff7ed',
     tips: [
-      { emoji: '☀️', text: 'نصيحة: واقي شمس SPF 50+ اليوم' },
-      { emoji: '💧', text: 'مرطب جل خفيف — مناسب للحر' },
-      { emoji: '💄', text: 'مكياج مقاوم للماء — ضروري' },
-      { emoji: '💦', text: 'سبراي مرطب — للانتعاش' },
+      { emoji: '☀️', textKey: 'mobile.beautyInnovation.card.beautyWeather.tip1' },
+      { emoji: '💧', textKey: 'mobile.beautyInnovation.card.beautyWeather.tip2' },
+      { emoji: '💄', textKey: 'mobile.beautyInnovation.card.beautyWeather.tip3' },
+      { emoji: '💦', textKey: 'mobile.beautyInnovation.card.beautyWeather.tip4' },
     ],
   },
   {
     emoji: '🌙',
-    title: 'ليلة في الخارج',
-    subtitle: 'متاح — احجزي الآن',
+    titleKey: 'mobile.beautyInnovation.card.nightOut.title',
+    subtitleKey: 'mobile.beautyInnovation.card.nightOut.subtitle',
     color: '#7c3aed',
     bg: '#f5f3ff',
     tips: [
-      { emoji: '💃', text: 'باقة ليلية — مكياج + شعر' },
-      { emoji: '⏰', text: 'متاح اليوم — قبل 8 مساءً' },
-      { emoji: '💅', text: 'أظافر سريعة — 30 دقيقة' },
-      { emoji: '⭐', text: 'مناسبة خاصة — خدمة VIP' },
+      { emoji: '💃', textKey: 'mobile.beautyInnovation.card.nightOut.tip1' },
+      { emoji: '⏰', textKey: 'mobile.beautyInnovation.card.nightOut.tip2' },
+      { emoji: '💅', textKey: 'mobile.beautyInnovation.card.nightOut.tip3' },
+      { emoji: '⭐', textKey: 'mobile.beautyInnovation.card.nightOut.tip4' },
     ],
   },
   {
     emoji: '🎩',
-    title: 'خدمة الكونسيرج',
-    subtitle: 'مساعدكِ الشخصي للجمال',
+    titleKey: 'mobile.beautyInnovation.card.concierge.title',
+    subtitleKey: 'mobile.beautyInnovation.card.concierge.subtitle',
     color: '#0d9488',
     bg: '#f0fdfa',
     tips: [
-      { emoji: '📅', text: 'حجز مواعيد — أي صالون' },
-      { emoji: '🎁', text: 'شراء هدايا — توصيل للمنزل' },
-      { emoji: '💬', text: 'استشارة — توصيات مخصصة' },
-      { emoji: '🕐', text: 'خدمة 24/7 — دائماً متاحة' },
+      { emoji: '📅', textKey: 'mobile.beautyInnovation.card.concierge.tip1' },
+      { emoji: '🎁', textKey: 'mobile.beautyInnovation.card.concierge.tip2' },
+      { emoji: '💬', textKey: 'mobile.beautyInnovation.card.concierge.tip3' },
+      { emoji: '🕐', textKey: 'mobile.beautyInnovation.card.concierge.tip4' },
     ],
   },
   {
     emoji: '💝',
-    title: 'عمل طيب عشوائي',
-    subtitle: 'فاجئي شخصاً تحبينه',
+    titleKey: 'mobile.beautyInnovation.card.randomKindness.title',
+    subtitleKey: 'mobile.beautyInnovation.card.randomKindness.subtitle',
     color: '#db2777',
     bg: '#fdf2f8',
     tips: [
-      { emoji: '💐', text: 'أرسلي باقة ورود — بدون مناسبة' },
-      { emoji: '💌', text: 'بطاقة شكر — بخط اليد' },
-      { emoji: '🎁', text: 'هدية صغيرة — لمن تحبين' },
-      { emoji: '🤍', text: 'أفعلي خيراً — الجمال في العطاء' },
+      { emoji: '💐', textKey: 'mobile.beautyInnovation.card.randomKindness.tip1' },
+      { emoji: '💌', textKey: 'mobile.beautyInnovation.card.randomKindness.tip2' },
+      { emoji: '🎁', textKey: 'mobile.beautyInnovation.card.randomKindness.tip3' },
+      { emoji: '🤍', textKey: 'mobile.beautyInnovation.card.randomKindness.tip4' },
     ],
   },
 ];
@@ -121,15 +123,15 @@ export default function BeautyInnovationScreen(): JSX.Element {
             <View style={s.ch}>
               <Text style={s.ce}>{c.emoji}</Text>
               <View style={s.cw}>
-                <Text style={[s.ct, { color: c.color }]}>{c.title}</Text>
-                <Text style={s.cs}>{c.subtitle}</Text>
+                <Text style={[s.ct, { color: c.color }]}>{t(c.titleKey)}</Text>
+                <Text style={s.cs}>{t(c.subtitleKey)}</Text>
               </View>
             </View>
             <View style={s.tl}>
-              {c.tips.map((t, j) => (
+              {c.tips.map((tip, j) => (
                 <View key={j} style={[s.tr, { backgroundColor: c.bg }]}>
-                  <Text style={s.te}>{t.emoji}</Text>
-                  <Text style={[s.tt, { color: c.color }]}>{t.text}</Text>
+                  <Text style={s.te}>{tip.emoji}</Text>
+                  <Text style={[s.tt, { color: c.color }]}>{t(tip.textKey)}</Text>
                 </View>
               ))}
             </View>

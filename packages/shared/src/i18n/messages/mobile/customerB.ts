@@ -3470,4 +3470,303 @@ export const mobileCustomerBMessages = {
   'mobile.beautyGoals.goal.hairCare': { ar: 'عناية بالشعر', en: 'Hair Care' },
   'mobile.beautyGoals.goal.selfCare': { ar: 'عناية ذاتية', en: 'Self-Care' },
   'mobile.beautyGoals.goal.nails': { ar: 'أظافر مثالية', en: 'Perfect Nails' },
+
+  // ---- beauty-innovation (sweep s6) ----
+  // card vlog reuses mobile.beautyExtras.card.beautyVlog.* + beautyInnovation.vlogTitle
+  // (verbatim ar matches).
+  'mobile.beautyInnovation.card.voiceAssistant.title': { ar: 'مساعد صوتي', en: 'Voice Assistant' },
+  'mobile.beautyInnovation.card.voiceAssistant.subtitle': {
+    ar: 'اسألي مجرة الجمال — مستشارة جمالك',
+    en: 'Ask Galaxy of Beauty — your beauty advisor',
+  },
+  'mobile.beautyInnovation.card.voiceAssistant.tip1': {
+    ar: 'قوائم: اسألي عن روتين، منتج، أو نصيحة',
+    en: 'Lists: ask about a routine, a product, or a tip',
+  },
+  'mobile.beautyInnovation.card.voiceAssistant.tip2': {
+    ar: 'تشغيل صوتي — بدون لمس الشاشة',
+    en: 'Voice playback — without touching the screen',
+  },
+  'mobile.beautyInnovation.card.voiceAssistant.tip3': {
+    ar: 'بالعربية — تفهم لهجتكِ',
+    en: 'In Arabic — understands your dialect',
+  },
+  'mobile.beautyInnovation.card.voiceAssistant.tip4': {
+    ar: 'خصوصية تامة — محادثاتكِ آمنة',
+    en: 'Complete privacy — your conversations are safe',
+  },
+  'mobile.beautyInnovation.card.playlist.title': { ar: 'قائمة تشغيل', en: 'Playlist' },
+  'mobile.beautyInnovation.card.playlist.subtitle': {
+    ar: 'موسيقى لجلسة عنايتك',
+    en: 'Music for your self-care session',
+  },
+  'mobile.beautyInnovation.card.playlist.tip1': {
+    ar: 'موسيقى هادئة — لجلسة المساج',
+    en: 'Calm music — for your massage session',
+  },
+  'mobile.beautyInnovation.card.playlist.tip2': {
+    ar: 'أصوات طبيعة — للاسترخاء',
+    en: 'Nature sounds — to relax',
+  },
+  'mobile.beautyInnovation.card.playlist.tip3': {
+    ar: 'قوائم جاهزة — حسب المزاج',
+    en: 'Ready-made lists — by mood',
+  },
+  'mobile.beautyInnovation.card.playlist.tip4': {
+    ar: 'تحديث أسبوعي — قوائم جديدة',
+    en: 'Weekly update — new lists',
+  },
+  'mobile.beautyInnovation.card.beautyWeather.title': { ar: 'طقس الجمال', en: 'Beauty Weather' },
+  'mobile.beautyInnovation.card.beautyWeather.subtitle': {
+    ar: 'حار — 42 درجة مئوية',
+    en: 'Hot — 42°C',
+  },
+  'mobile.beautyInnovation.card.beautyWeather.tip1': {
+    ar: 'نصيحة: واقي شمس SPF 50+ اليوم',
+    en: 'Tip: SPF 50+ sunscreen today',
+  },
+  'mobile.beautyInnovation.card.beautyWeather.tip2': {
+    ar: 'مرطب جل خفيف — مناسب للحر',
+    en: 'Light gel moisturizer — suits the heat',
+  },
+  'mobile.beautyInnovation.card.beautyWeather.tip3': {
+    ar: 'مكياج مقاوم للماء — ضروري',
+    en: 'Waterproof makeup — essential',
+  },
+  'mobile.beautyInnovation.card.beautyWeather.tip4': {
+    ar: 'سبراي مرطب — للانتعاش',
+    en: 'Refreshing mist — for a fresh feel',
+  },
+  'mobile.beautyInnovation.card.nightOut.title': { ar: 'ليلة في الخارج', en: 'A Night Out' },
+  'mobile.beautyInnovation.card.nightOut.subtitle': {
+    ar: 'متاح — احجزي الآن',
+    en: 'Available — book now',
+  },
+  'mobile.beautyInnovation.card.nightOut.tip1': {
+    ar: 'باقة ليلية — مكياج + شعر',
+    en: 'Night package — makeup + hair',
+  },
+  'mobile.beautyInnovation.card.nightOut.tip2': {
+    ar: 'متاح اليوم — قبل 8 مساءً',
+    en: 'Available today — before 8 PM',
+  },
+  'mobile.beautyInnovation.card.nightOut.tip3': {
+    ar: 'أظافر سريعة — 30 دقيقة',
+    en: 'Quick nails — 30 minutes',
+  },
+  'mobile.beautyInnovation.card.nightOut.tip4': {
+    ar: 'مناسبة خاصة — خدمة VIP',
+    en: 'Special occasion — VIP service',
+  },
+  'mobile.beautyInnovation.card.concierge.title': {
+    ar: 'خدمة الكونسيرج',
+    en: 'Concierge Service',
+  },
+  'mobile.beautyInnovation.card.concierge.subtitle': {
+    ar: 'مساعدكِ الشخصي للجمال',
+    en: 'Your personal beauty assistant',
+  },
+  'mobile.beautyInnovation.card.concierge.tip1': {
+    ar: 'حجز مواعيد — أي صالون',
+    en: 'Book appointments — any salon',
+  },
+  'mobile.beautyInnovation.card.concierge.tip2': {
+    ar: 'شراء هدايا — توصيل للمنزل',
+    en: 'Buy gifts — home delivery',
+  },
+  'mobile.beautyInnovation.card.concierge.tip3': {
+    ar: 'استشارة — توصيات مخصصة',
+    en: 'Consultation — personalized recommendations',
+  },
+  'mobile.beautyInnovation.card.concierge.tip4': {
+    ar: 'خدمة 24/7 — دائماً متاحة',
+    en: '24/7 service — always available',
+  },
+  'mobile.beautyInnovation.card.randomKindness.title': {
+    ar: 'عمل طيب عشوائي',
+    en: 'Random Act of Kindness',
+  },
+  'mobile.beautyInnovation.card.randomKindness.subtitle': {
+    ar: 'فاجئي شخصاً تحبينه',
+    en: 'Surprise someone you love',
+  },
+  'mobile.beautyInnovation.card.randomKindness.tip1': {
+    ar: 'أرسلي باقة ورود — بدون مناسبة',
+    en: 'Send a bouquet — no occasion needed',
+  },
+  'mobile.beautyInnovation.card.randomKindness.tip2': {
+    ar: 'بطاقة شكر — بخط اليد',
+    en: 'Thank-you card — handwritten',
+  },
+  'mobile.beautyInnovation.card.randomKindness.tip3': {
+    ar: 'هدية صغيرة — لمن تحبين',
+    en: 'A small gift — for someone you love',
+  },
+  'mobile.beautyInnovation.card.randomKindness.tip4': {
+    ar: 'أفعلي خيراً — الجمال في العطاء',
+    en: 'Do good — beauty lies in giving',
+  },
+
+  // ---- beauty-lifestyle (sweep s6) ----
+  // card.priceAlerts.title reuses mobile.priceDropAlerts.title (verbatim ar match).
+  // card.budgetPlanner.title reuses beautyBudgetPlanner.title (verbatim ar match).
+  'mobile.beautyLifestyle.card.rewards.title': { ar: 'مكافآت الجمال', en: 'Beauty Rewards' },
+  'mobile.beautyLifestyle.card.rewards.subtitle': {
+    ar: '1250 نقطة — المستوى الذهبي',
+    en: '1,250 points — Gold tier',
+  },
+  'mobile.beautyLifestyle.card.rewards.tip1': {
+    ar: '1250 نقطة — قابلة للاستبدال',
+    en: '1,250 points — redeemable',
+  },
+  'mobile.beautyLifestyle.card.rewards.tip2': {
+    ar: 'المستوى: ذهبي — خصم 15%',
+    en: 'Tier: Gold — 15% off',
+  },
+  'mobile.beautyLifestyle.card.rewards.tip3': {
+    ar: 'الهدية القادمة: قناع وجه مجاني',
+    en: 'Next gift: a free face mask',
+  },
+  'mobile.beautyLifestyle.card.rewards.tip4': {
+    ar: 'تنتهي النقاط بعد 12 شهراً',
+    en: 'Points expire after 12 months',
+  },
+  'mobile.beautyLifestyle.card.premiumSubscription.title': {
+    ar: 'الاشتراك المميز',
+    en: 'Premium Subscription',
+  },
+  'mobile.beautyLifestyle.card.premiumSubscription.subtitle': {
+    ar: 'باقة Premium الشهرية',
+    en: 'Monthly Premium plan',
+  },
+  'mobile.beautyLifestyle.card.premiumSubscription.tip1': {
+    ar: 'خصم 20% على جميع الخدمات',
+    en: '20% off all services',
+  },
+  'mobile.beautyLifestyle.card.premiumSubscription.tip2': {
+    ar: 'حجز أولوية — قبل 48 ساعة',
+    en: 'Priority booking — 48 hours ahead',
+  },
+  'mobile.beautyLifestyle.card.premiumSubscription.tip3': {
+    ar: 'هدية شهرية — منتج تجميل',
+    en: 'Monthly gift — a beauty product',
+  },
+  'mobile.beautyLifestyle.card.premiumSubscription.tip4': {
+    ar: 'نقاط مضاعفة — x2 على كل ريال',
+    en: 'Double points — x2 on every riyal',
+  },
+  'mobile.beautyLifestyle.card.priceAlerts.subtitle': {
+    ar: 'انخفاض في الأسعار',
+    en: 'Prices are dropping',
+  },
+  'mobile.beautyLifestyle.card.priceAlerts.tip1': {
+    ar: 'مانيكير سبا — من 150 إلى 99 ر.س',
+    en: 'Spa manicure — from 150 to 99 SAR',
+  },
+  'mobile.beautyLifestyle.card.priceAlerts.tip2': {
+    ar: 'مكياج كامل — من 350 إلى 299 ر.س',
+    en: 'Full makeup — from 350 to 299 SAR',
+  },
+  'mobile.beautyLifestyle.card.priceAlerts.tip3': {
+    ar: 'فعّلي التنبيهات — لتلقي العروض',
+    en: 'Turn on alerts — to receive the offers',
+  },
+  'mobile.beautyLifestyle.card.priceAlerts.tip4': {
+    ar: 'العروض تنتهي خلال 48 ساعة',
+    en: 'Offers end within 48 hours',
+  },
+  'mobile.beautyLifestyle.card.savingsMilestones.title': {
+    ar: 'محطات الادخار',
+    en: 'Savings Milestones',
+  },
+  'mobile.beautyLifestyle.card.savingsMilestones.subtitle': {
+    ar: '1500 ر.س مدخرة',
+    en: '1,500 SAR saved',
+  },
+  'mobile.beautyLifestyle.card.savingsMilestones.tip1': {
+    ar: '500 ر.س — تم التحقيق',
+    en: '500 SAR — achieved',
+  },
+  'mobile.beautyLifestyle.card.savingsMilestones.tip2': {
+    ar: '1000 ر.س — تم التحقيق',
+    en: '1,000 SAR — achieved',
+  },
+  'mobile.beautyLifestyle.card.savingsMilestones.tip3': {
+    ar: '2000 ر.س — الهدف القادم',
+    en: '2,000 SAR — next goal',
+  },
+  'mobile.beautyLifestyle.card.savingsMilestones.tip4': {
+    ar: '5000 ر.س — الهدف النهائي',
+    en: '5,000 SAR — final goal',
+  },
+  'mobile.beautyLifestyle.card.budgetPlanner.subtitle': {
+    ar: 'تتبعي إنفاقك على الجمال',
+    en: 'Track your beauty spending',
+  },
+  'mobile.beautyLifestyle.card.budgetPlanner.tip1': {
+    ar: 'الميزانية الشهرية: 500 ر.س',
+    en: 'Monthly budget: 500 SAR',
+  },
+  'mobile.beautyLifestyle.card.budgetPlanner.tip2': {
+    ar: 'المصروف هذا الشهر: 320 ر.س',
+    en: 'Spent this month: 320 SAR',
+  },
+  'mobile.beautyLifestyle.card.budgetPlanner.tip3': {
+    ar: 'المتبقي: 180 ر.س',
+    en: 'Remaining: 180 SAR',
+  },
+  'mobile.beautyLifestyle.card.budgetPlanner.tip4': {
+    ar: 'نصيحة: وفرّي 20% للطوارئ',
+    en: 'Tip: save 20% for emergencies',
+  },
+  'mobile.beautyLifestyle.card.beautyVoucher.title': { ar: 'قسيمة الجمال', en: 'Beauty Voucher' },
+  'mobile.beautyLifestyle.card.beautyVoucher.subtitle': {
+    ar: 'خصم 50 ر.س على خدمتك القادمة',
+    en: '50 SAR off your next service',
+  },
+  'mobile.beautyLifestyle.card.beautyVoucher.tip1': {
+    ar: 'الكود: BEAUTY50 — صالح لمرة واحدة',
+    en: 'Code: BEAUTY50 — valid once',
+  },
+  'mobile.beautyLifestyle.card.beautyVoucher.tip2': {
+    ar: 'ينتهي: 30 سبتمبر 2026',
+    en: 'Expires: September 30, 2026',
+  },
+  'mobile.beautyLifestyle.card.beautyVoucher.tip3': {
+    ar: 'لجميع الخدمات فوق 200 ر.س',
+    en: 'For all services above 200 SAR',
+  },
+  'mobile.beautyLifestyle.card.beautyVoucher.tip4': {
+    ar: 'لا يدمج مع عروض أخرى',
+    en: 'Cannot be combined with other offers',
+  },
+
+  // ---- beauty-mentor (sweep s6) ----
+  // week3.title reuses scanner.ingredients (verbatim ar match).
+  'mobile.beautyMentor.week1.label': { ar: 'الأسبوع 1', en: 'Week 1' },
+  'mobile.beautyMentor.week1.title': { ar: 'أساسيات العناية', en: 'Skincare Basics' },
+  'mobile.beautyMentor.week1.desc': {
+    ar: 'تعرفي على نوع بشرتكِ والمنتجات المناسبة',
+    en: 'Learn your skin type and the right products',
+  },
+  'mobile.beautyMentor.week2.label': { ar: 'الأسبوع 2', en: 'Week 2' },
+  'mobile.beautyMentor.week2.title': { ar: 'روتين يومي', en: 'Daily Routine' },
+  'mobile.beautyMentor.week2.desc': {
+    ar: 'ابنِي روتين صباحي ومسائي متكامل',
+    en: 'Build a complete morning and evening routine',
+  },
+  'mobile.beautyMentor.week3.label': { ar: 'الأسبوع 3', en: 'Week 3' },
+  'mobile.beautyMentor.week3.desc': {
+    ar: 'تعلمي قراءة مكونات المنتجات',
+    en: 'Learn to read product ingredients',
+  },
+  'mobile.beautyMentor.week4.label': { ar: 'الأسبوع 4', en: 'Week 4' },
+  'mobile.beautyMentor.week4.title': { ar: 'تطبيق عملي', en: 'Hands-On Practice' },
+  'mobile.beautyMentor.week4.desc': {
+    ar: 'جلسة تطبيقية مع مرشدة خبيرة',
+    en: 'A practical session with an expert mentor',
+  },
+
+  // ---- beauty-profile (sweep s6) ----
+  'mobile.beautyProfile.listSeparator': { ar: '،', en: ',' },
 } as const satisfies Record<string, { ar: string; en: string }>;

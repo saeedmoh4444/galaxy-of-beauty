@@ -1,15 +1,16 @@
 import type { JSX } from 'react';
 import { View, Text, ScrollView, StyleSheet } from 'react-native';
+import type { TranslationKey } from '@galaxy/shared';
 import { useLocale } from '@/components/LocaleProvider';
 
 interface Tip {
   emoji: string;
-  text: string;
+  textKey: TranslationKey;
 }
 interface Card {
   emoji: string;
-  title: string;
-  subtitle: string;
+  titleKey: TranslationKey;
+  subtitleKey: TranslationKey;
   color: string;
   bg: string;
   tips: Tip[];
@@ -18,80 +19,82 @@ interface Card {
 const CARDS: Card[] = [
   {
     emoji: '🏆',
-    title: 'مكافآت الجمال',
-    subtitle: '1250 نقطة — المستوى الذهبي',
+    titleKey: 'mobile.beautyLifestyle.card.rewards.title',
+    subtitleKey: 'mobile.beautyLifestyle.card.rewards.subtitle',
     color: '#d97706',
     bg: '#fffbeb',
     tips: [
-      { emoji: '⭐', text: '1250 نقطة — قابلة للاستبدال' },
-      { emoji: '🥇', text: 'المستوى: ذهبي — خصم 15%' },
-      { emoji: '🎁', text: 'الهدية القادمة: قناع وجه مجاني' },
-      { emoji: '⏳', text: 'تنتهي النقاط بعد 12 شهراً' },
+      { emoji: '⭐', textKey: 'mobile.beautyLifestyle.card.rewards.tip1' },
+      { emoji: '🥇', textKey: 'mobile.beautyLifestyle.card.rewards.tip2' },
+      { emoji: '🎁', textKey: 'mobile.beautyLifestyle.card.rewards.tip3' },
+      { emoji: '⏳', textKey: 'mobile.beautyLifestyle.card.rewards.tip4' },
     ],
   },
   {
     emoji: '👑',
-    title: 'الاشتراك المميز',
-    subtitle: 'باقة Premium الشهرية',
+    titleKey: 'mobile.beautyLifestyle.card.premiumSubscription.title',
+    subtitleKey: 'mobile.beautyLifestyle.card.premiumSubscription.subtitle',
     color: '#7c3aed',
     bg: '#f5f3ff',
     tips: [
-      { emoji: '🔖', text: 'خصم 20% على جميع الخدمات' },
-      { emoji: '⚡', text: 'حجز أولوية — قبل 48 ساعة' },
-      { emoji: '💝', text: 'هدية شهرية — منتج تجميل' },
-      { emoji: '⏫', text: 'نقاط مضاعفة — x2 على كل ريال' },
+      { emoji: '🔖', textKey: 'mobile.beautyLifestyle.card.premiumSubscription.tip1' },
+      { emoji: '⚡', textKey: 'mobile.beautyLifestyle.card.premiumSubscription.tip2' },
+      { emoji: '💝', textKey: 'mobile.beautyLifestyle.card.premiumSubscription.tip3' },
+      { emoji: '⏫', textKey: 'mobile.beautyLifestyle.card.premiumSubscription.tip4' },
     ],
   },
   {
     emoji: '📉',
-    title: 'تنبيهات الأسعار',
-    subtitle: 'انخفاض في الأسعار',
+    // Title reuses the price-drop-alerts key (verbatim ar match).
+    titleKey: 'mobile.priceDropAlerts.title',
+    subtitleKey: 'mobile.beautyLifestyle.card.priceAlerts.subtitle',
     color: '#e11d48',
     bg: '#fff1f2',
     tips: [
-      { emoji: '💅', text: 'مانيكير سبا — من 150 إلى 99 ر.س' },
-      { emoji: '💄', text: 'مكياج كامل — من 350 إلى 299 ر.س' },
-      { emoji: '🔔', text: 'فعّلي التنبيهات — لتلقي العروض' },
-      { emoji: '⏰', text: 'العروض تنتهي خلال 48 ساعة' },
+      { emoji: '💅', textKey: 'mobile.beautyLifestyle.card.priceAlerts.tip1' },
+      { emoji: '💄', textKey: 'mobile.beautyLifestyle.card.priceAlerts.tip2' },
+      { emoji: '🔔', textKey: 'mobile.beautyLifestyle.card.priceAlerts.tip3' },
+      { emoji: '⏰', textKey: 'mobile.beautyLifestyle.card.priceAlerts.tip4' },
     ],
   },
   {
     emoji: '🏦',
-    title: 'محطات الادخار',
-    subtitle: '1500 ر.س مدخرة',
+    titleKey: 'mobile.beautyLifestyle.card.savingsMilestones.title',
+    subtitleKey: 'mobile.beautyLifestyle.card.savingsMilestones.subtitle',
     color: '#059669',
     bg: '#ecfdf5',
     tips: [
-      { emoji: '✅', text: '500 ر.س — تم التحقيق ' },
-      { emoji: '✅', text: '1000 ر.س — تم التحقيق ' },
-      { emoji: '🎯', text: '2000 ر.س — الهدف القادم' },
-      { emoji: '🏁', text: '5000 ر.س — الهدف النهائي' },
+      { emoji: '✅', textKey: 'mobile.beautyLifestyle.card.savingsMilestones.tip1' },
+      { emoji: '✅', textKey: 'mobile.beautyLifestyle.card.savingsMilestones.tip2' },
+      { emoji: '🎯', textKey: 'mobile.beautyLifestyle.card.savingsMilestones.tip3' },
+      { emoji: '🏁', textKey: 'mobile.beautyLifestyle.card.savingsMilestones.tip4' },
     ],
   },
   {
     emoji: '📊',
-    title: 'مخطط الميزانية',
-    subtitle: 'تتبعي إنفاقك على الجمال',
+    // Title reuses the budget-planner key (verbatim ar match).
+    titleKey: 'beautyBudgetPlanner.title',
+    subtitleKey: 'mobile.beautyLifestyle.card.budgetPlanner.subtitle',
     color: '#0284c7',
     bg: '#f0f9ff',
     tips: [
-      { emoji: '💰', text: 'الميزانية الشهرية: 500 ر.س' },
-      { emoji: '💸', text: 'المصروف هذا الشهر: 320 ر.س' },
-      { emoji: '💵', text: 'المتبقي: 180 ر.س' },
-      { emoji: '💡', text: 'نصيحة: وفرّي 20% للطوارئ' },
+      { emoji: '💰', textKey: 'mobile.beautyLifestyle.card.budgetPlanner.tip1' },
+      { emoji: '💸', textKey: 'mobile.beautyLifestyle.card.budgetPlanner.tip2' },
+      { emoji: '💵', textKey: 'mobile.beautyLifestyle.card.budgetPlanner.tip3' },
+      { emoji: '💡', textKey: 'mobile.beautyLifestyle.card.budgetPlanner.tip4' },
     ],
   },
   {
     emoji: '🎫',
-    title: 'قسيمة الجمال',
-    subtitle: 'خصم 50 ر.س على خدمتك القادمة',
+    titleKey: 'mobile.beautyLifestyle.card.beautyVoucher.title',
+    subtitleKey: 'mobile.beautyLifestyle.card.beautyVoucher.subtitle',
     color: '#db2777',
     bg: '#fdf2f8',
     tips: [
-      { emoji: '🔑', text: 'الكود: BEAUTY50 — صالح لمرة واحدة' },
-      { emoji: '📅', text: 'ينتهي: 30 سبتمبر 2026' },
-      { emoji: '💳', text: 'لجميع الخدمات فوق 200 ر.س' },
-      { emoji: '🚫', text: 'لا يدمج مع عروض أخرى' },
+      { emoji: '🔑', textKey: 'mobile.beautyLifestyle.card.beautyVoucher.tip1' },
+      { emoji: '📅', textKey: 'mobile.beautyLifestyle.card.beautyVoucher.tip2' },
+      { emoji: '💳', textKey: 'mobile.beautyLifestyle.card.beautyVoucher.tip3' },
+      { emoji: '🚫', textKey: 'mobile.beautyLifestyle.card.beautyVoucher.tip4' },
     ],
   },
 ];
@@ -108,15 +111,15 @@ export default function BeautyLifestyleScreen(): JSX.Element {
             <View style={s.ch}>
               <Text style={s.ce}>{c.emoji}</Text>
               <View style={s.cw}>
-                <Text style={[s.ct, { color: c.color }]}>{c.title}</Text>
-                <Text style={s.cs}>{c.subtitle}</Text>
+                <Text style={[s.ct, { color: c.color }]}>{t(c.titleKey)}</Text>
+                <Text style={s.cs}>{t(c.subtitleKey)}</Text>
               </View>
             </View>
             <View style={s.tl}>
-              {c.tips.map((t, j) => (
+              {c.tips.map((tip, j) => (
                 <View key={j} style={[s.tr, { backgroundColor: c.bg }]}>
-                  <Text style={s.te}>{t.emoji}</Text>
-                  <Text style={[s.tt, { color: c.color }]}>{t.text}</Text>
+                  <Text style={s.te}>{tip.emoji}</Text>
+                  <Text style={[s.tt, { color: c.color }]}>{t(tip.textKey)}</Text>
                 </View>
               ))}
             </View>

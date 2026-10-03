@@ -148,7 +148,8 @@ export default function BeautyProfileScreen(): JSX.Element {
               )}
               {(data.fitnessGoals ?? []).length > 0 && (
                 <Text style={styles.label}>
-                  {t('profile.measurements.goals')}: {(data.fitnessGoals ?? []).join('، ')}
+                  {t('profile.measurements.goals')}:{' '}
+                  {(data.fitnessGoals ?? []).join(`${t('mobile.beautyProfile.listSeparator')} `)}
                 </Text>
               )}
             </View>
