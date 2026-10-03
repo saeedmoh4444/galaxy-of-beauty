@@ -1,62 +1,223 @@
 import { View, Text, ScrollView, StyleSheet, TouchableOpacity } from 'react-native';
 import { useState } from 'react';
 import type { JSX } from 'react';
+import type { TranslationKey } from '@galaxy/shared';
 import { useLocale } from '@/components/LocaleProvider';
 
-const EMERGENCIES = [
+interface Emergency {
+  key: string;
+  emoji: string;
+  nameKey: TranslationKey;
+  descKey: TranslationKey;
+  price: number;
+  timeKey: TranslationKey;
+  tipKeys: TranslationKey[];
+}
+
+const EMERGENCIES: Emergency[] = [
   {
     key: 'pimple',
     emoji: '🔴',
-    name: 'بثرة طارئة',
-    desc: 'ظهور بثرة قبل مناسبة',
+    nameKey: 'rescue.emergency.pimple',
+    descKey: 'rescue.desc.pimple',
     price: 50,
-    time: '30 دقيقة',
-    tips: ['علاج موضعي سريع', 'تغطية احترافية', 'نصيحة وقائية'],
+    timeKey: 'rescue.time.pimple',
+    tipKeys: ['rescue.tip.pimple1', 'rescue.tip.pimple2', 'rescue.tip.pimple3'],
   },
   {
     key: 'smudge',
     emoji: '💄',
-    name: 'مكياج متلطخ',
-    desc: 'تلطخ المكياج فجأة',
+    nameKey: 'rescue.emergency.smudge',
+    descKey: 'rescue.desc.smudge',
     price: 40,
-    time: '20 دقيقة',
-    tips: ['إصلاح سريع', 'لمسات نهائية', 'تثبيت المكياج'],
+    timeKey: 'rescue.time.smudge',
+    tipKeys: ['rescue.tip.smudge1', 'rescue.tip.smudge2', 'rescue.tip.smudge3'],
   },
   {
     key: 'hair',
     emoji: '💇',
-    name: 'شعر طارئ',
-    desc: 'تسريحة تفسد فجأة',
+    nameKey: 'rescue.emergency.hair',
+    descKey: 'rescue.desc.hair',
     price: 60,
-    time: '30 دقيقة',
-    tips: ['إعادة تصفيف سريع', 'تثبيت', 'لمسات نهائية'],
+    timeKey: 'rescue.time.hair',
+    tipKeys: ['rescue.tip.hair1', 'rescue.tip.hair2', 'rescue.tip.hair3'],
   },
   {
     key: 'nail',
     emoji: '💅',
-    name: 'ظفر مكسور',
-    desc: 'كسر ظفر قبل مناسبة',
+    nameKey: 'rescue.emergency.nail',
+    descKey: 'rescue.desc.nail',
     price: 35,
-    time: '15 دقيقة',
-    tips: ['إصلاح سريع', 'تطبيق لون مطابق', 'تقوية'],
+    timeKey: 'rescue.time.nail',
+    tipKeys: ['rescue.tip.nail1', 'rescue.tip.nail2', 'rescue.tip.nail3'],
   },
   {
     key: 'dry',
     emoji: '💧',
-    name: 'بشرة جافة',
-    desc: 'جفاف مفاجئ للبشرة',
+    nameKey: 'rescue.emergency.dry',
+    descKey: 'rescue.desc.dry',
     price: 45,
-    time: '25 دقيقة',
-    tips: ['ترطيب طارئ', 'قناع سريع', 'تجهيز للمكياج'],
+    timeKey: 'rescue.time.dry',
+    tipKeys: ['rescue.tip.dry1', 'rescue.tip.dry2', 'rescue.tip.dry3'],
   },
   {
     key: 'redness',
     emoji: '🧊',
-    name: 'احمرار البشرة',
-    desc: 'احمرار أو تهيج مفاجئ',
+    nameKey: 'rescue.emergency.redness',
+    descKey: 'rescue.desc.redness',
     price: 55,
-    time: '30 دقيقة',
-    tips: ['تهدئة فورية', 'قناع مهدئ', 'تغطية خفيفة'],
+    timeKey: 'rescue.time.redness',
+    tipKeys: ['rescue.tip.redness1', 'rescue.tip.redness2', 'rescue.tip.redness3'],
+  },
+];
+
+interface TipItem {
+  e: string;
+  key: TranslationKey;
+}
+
+interface RescueCard {
+  emoji: string;
+  titleKey: TranslationKey;
+  subtitleKey: TranslationKey;
+  color: string;
+  bg: string;
+  tips: TipItem[];
+}
+
+const SOS_CARDS: RescueCard[] = [
+  {
+    emoji: '💢',
+    titleKey: 'mobile.beautyRescue.sos.acne.title',
+    subtitleKey: 'mobile.beautyRescue.sos.acne.subtitle',
+    color: '#ef4444',
+    bg: '#fef2f2',
+    tips: [
+      { e: '🧊', key: 'mobile.beautyRescue.sos.acne.tip1' },
+      { e: '🩹', key: 'mobile.beautyRescue.sos.acne.tip2' },
+      { e: '🙅', key: 'mobile.beautyRescue.sos.acne.tip3' },
+      { e: '🧴', key: 'mobile.beautyRescue.sos.acne.tip4' },
+    ],
+  },
+  {
+    emoji: '🔥',
+    titleKey: 'mobile.beautyRescue.sos.sunburn.title',
+    subtitleKey: 'mobile.beautyRescue.sos.sunburn.subtitle',
+    color: '#ea580c',
+    bg: '#fff7ed',
+    tips: [
+      { e: '❄️', key: 'mobile.beautyRescue.sos.sunburn.tip1' },
+      { e: '🌿', key: 'mobile.beautyRescue.sos.sunburn.tip2' },
+      { e: '💧', key: 'mobile.beautyRescue.sos.sunburn.tip3' },
+      { e: '🙅', key: 'mobile.beautyRescue.sos.sunburn.tip4' },
+    ],
+  },
+  {
+    emoji: '👀',
+    titleKey: 'mobile.beautyRescue.sos.puffyEyes.title',
+    subtitleKey: 'mobile.beautyRescue.sos.puffyEyes.subtitle',
+    color: '#0284c7',
+    bg: '#f0f9ff',
+    tips: [
+      { e: '🥄', key: 'mobile.beautyRescue.sos.puffyEyes.tip1' },
+      { e: '🫖', key: 'mobile.beautyRescue.sos.puffyEyes.tip2' },
+      { e: '🛏️', key: 'mobile.beautyRescue.sos.puffyEyes.tip3' },
+      { e: '👁', key: 'mobile.beautyRescue.sos.puffyEyes.tip4' },
+    ],
+  },
+  {
+    emoji: '👄',
+    titleKey: 'mobile.beautyRescue.sos.chappedLips.title',
+    subtitleKey: 'mobile.beautyRescue.sos.chappedLips.subtitle',
+    color: '#e11d48',
+    bg: '#fff1f2',
+    tips: [
+      { e: '🍯', key: 'mobile.beautyRescue.sos.chappedLips.tip1' },
+      { e: '💊', key: 'mobile.beautyRescue.sos.chappedLips.tip2' },
+      { e: '💧', key: 'mobile.beautyRescue.sos.chappedLips.tip3' },
+      { e: '🙅', key: 'mobile.beautyRescue.sos.chappedLips.tip4' },
+    ],
+  },
+  {
+    emoji: '🧊',
+    titleKey: 'mobile.beautyRescue.sos.redness.title',
+    subtitleKey: 'mobile.beautyRescue.sos.redness.subtitle',
+    color: '#059669',
+    bg: '#ecfdf5',
+    tips: [
+      { e: '💦', key: 'mobile.beautyRescue.sos.redness.tip1' },
+      { e: '🌿', key: 'mobile.beautyRescue.sos.redness.tip2' },
+      { e: '💤', key: 'mobile.beautyRescue.sos.redness.tip3' },
+      { e: '🧴', key: 'mobile.beautyRescue.sos.redness.tip4' },
+    ],
+  },
+];
+
+const AFTERCARE_CARDS: RescueCard[] = [
+  {
+    emoji: '💉',
+    titleKey: 'mobile.beautyRescue.aftercare.botox.title',
+    subtitleKey: 'mobile.beautyRescue.aftercare.botox.subtitle',
+    color: '#0284c7',
+    bg: '#f0f9ff',
+    tips: [
+      { e: '🙅', key: 'mobile.beautyRescue.aftercare.botox.tip1' },
+      { e: '🛌', key: 'mobile.beautyRescue.aftercare.botox.tip2' },
+      { e: '🙅', key: 'mobile.beautyRescue.aftercare.botox.tip3' },
+      { e: '✨', key: 'mobile.beautyRescue.aftercare.botox.tip4' },
+    ],
+  },
+  {
+    emoji: '💧',
+    titleKey: 'mobile.beautyRescue.aftercare.filler.title',
+    subtitleKey: 'mobile.beautyRescue.aftercare.filler.subtitle',
+    color: '#7c3aed',
+    bg: '#f5f3ff',
+    tips: [
+      { e: '❄️', key: 'mobile.beautyRescue.aftercare.filler.tip1' },
+      { e: '🙅', key: 'mobile.beautyRescue.aftercare.filler.tip2' },
+      { e: '🙅', key: 'mobile.beautyRescue.aftercare.filler.tip3' },
+      { e: '✨', key: 'mobile.beautyRescue.aftercare.filler.tip4' },
+    ],
+  },
+  {
+    emoji: '⚡',
+    titleKey: 'mobile.beautyRescue.aftercare.laser.title',
+    subtitleKey: 'mobile.beautyRescue.aftercare.laser.subtitle',
+    color: '#ef4444',
+    bg: '#fef2f2',
+    tips: [
+      { e: '☀️', key: 'mobile.beautyRescue.aftercare.laser.tip1' },
+      { e: '🧴', key: 'mobile.beautyRescue.aftercare.laser.tip2' },
+      { e: '🙅', key: 'mobile.beautyRescue.aftercare.laser.tip3' },
+      { e: '🧴', key: 'mobile.beautyRescue.aftercare.laser.tip4' },
+    ],
+  },
+  {
+    emoji: '🍋',
+    titleKey: 'mobile.beautyRescue.aftercare.peel.title',
+    subtitleKey: 'mobile.beautyRescue.aftercare.peel.subtitle',
+    color: '#d97706',
+    bg: '#fffbeb',
+    tips: [
+      { e: '💧', key: 'mobile.beautyRescue.aftercare.peel.tip1' },
+      { e: '🙅', key: 'mobile.beautyRescue.aftercare.peel.tip2' },
+      { e: '☀️', key: 'mobile.beautyRescue.aftercare.peel.tip3' },
+      { e: '🙅', key: 'mobile.beautyRescue.aftercare.peel.tip4' },
+    ],
+  },
+  {
+    emoji: '🪒',
+    titleKey: 'mobile.beautyRescue.aftercare.hairRemoval.title',
+    subtitleKey: 'mobile.beautyRescue.aftercare.hairRemoval.subtitle',
+    color: '#ec4899',
+    bg: '#fdf2f8',
+    tips: [
+      { e: '🧴', key: 'mobile.beautyRescue.aftercare.hairRemoval.tip1' },
+      { e: '💦', key: 'mobile.beautyRescue.aftercare.hairRemoval.tip2' },
+      { e: '👕', key: 'mobile.beautyRescue.aftercare.hairRemoval.tip3' },
+      { e: '🧖', key: 'mobile.beautyRescue.aftercare.hairRemoval.tip4' },
+    ],
   },
 ];
 
@@ -77,7 +238,7 @@ export default function BeautyRescueScreen(): JSX.Element {
           <Text style={styles.cfEmoji}>✅</Text>
           <Text style={styles.cfTitle}>{t('beautyRescue.requested')}</Text>
           <Text style={styles.cfText}>
-            {t('beautyRescue.on-the-way', { time: emergency.time })}
+            {t('beautyRescue.on-the-way', { time: t(emergency.timeKey) })}
           </Text>
           <Text style={styles.cfPrice}>
             {t('beautyRescue.price-fee', {
@@ -104,10 +265,10 @@ export default function BeautyRescueScreen(): JSX.Element {
                 style={[styles.card, selected === e.key && styles.cardActive]}
               >
                 <Text style={styles.ce}>{e.emoji}</Text>
-                <Text style={styles.cn}>{e.name}</Text>
-                <Text style={styles.cd}>{e.desc}</Text>
+                <Text style={styles.cn}>{t(e.nameKey)}</Text>
+                <Text style={styles.cd}>{t(e.descKey)}</Text>
                 <Text style={styles.cp}>
-                  {t('beautyRescue.price-time', { price: e.price ?? 0, time: e.time ?? '' })}
+                  {t('beautyRescue.price-time', { price: e.price ?? 0, time: t(e.timeKey) })}
                 </Text>
               </TouchableOpacity>
             ))}
@@ -116,13 +277,13 @@ export default function BeautyRescueScreen(): JSX.Element {
           {emergency && (
             <View style={styles.detail}>
               <Text style={styles.dt}>
-                {emergency.emoji} {emergency.name}
+                {emergency.emoji} {t(emergency.nameKey)}
               </Text>
               <Text style={styles.dsub}>{t('beautyRescue.includes')}</Text>
-              {emergency.tips.map((t, i) => (
+              {emergency.tipKeys.map((tipKey, i) => (
                 <View key={i} style={styles.dr}>
                   <Text style={styles.db}>✨</Text>
-                  <Text style={styles.dx}>{t}</Text>
+                  <Text style={styles.dx}>{t(tipKey)}</Text>
                 </View>
               ))}
               <View style={styles.dp}>
@@ -137,7 +298,7 @@ export default function BeautyRescueScreen(): JSX.Element {
               </View>
               <TouchableOpacity onPress={() => setBooked(true)} style={styles.btn}>
                 <Text style={styles.bt}>
-                  {t('beautyRescue.book-now', { time: emergency.time })}
+                  {t('beautyRescue.book-now', { time: t(emergency.timeKey) })}
                 </Text>
               </TouchableOpacity>
             </View>
@@ -155,82 +316,18 @@ export default function BeautyRescueScreen(): JSX.Element {
       >
         {t('beautyRescue.sos-tips')}
       </Text>
-      {[
-        {
-          emoji: '💢',
-          title: 'طوارئ الحبوب',
-          subtitle: 'ظهور مفاجئ — حل سريع',
-          color: '#ef4444',
-          bg: '#fef2f2',
-          tips: [
-            { e: '🧊', t: 'كمادة ثلج — 5 دقائق لتقليل الالتهاب' },
-            { e: '🩹', t: 'لصقة حبوب — تجفف وتحمي من العبث' },
-            { e: '🙅', t: 'لا تضغطي — يزيد الالتهاب ويترك أثراً' },
-            { e: '🧴', t: 'كريم بنزويل بيروكسايد — للطوارئ' },
-          ],
-        },
-        {
-          emoji: '🔥',
-          title: 'علاج حروق الشمس',
-          subtitle: 'إسعاف سريع للبشرة المحروقة',
-          color: '#ea580c',
-          bg: '#fff7ed',
-          tips: [
-            { e: '❄️', t: 'كمادات باردة — 15 دقيقة كل ساعة' },
-            { e: '🌿', t: 'جل الألوفيرا — مبرد في الثلاجة' },
-            { e: '💧', t: 'اشربي ماء كثيراً — الترطيب من الداخل' },
-            { e: '🙅', t: 'لا تقشري — الجلد يتجدد طبيعياً' },
-          ],
-        },
-        {
-          emoji: '👀',
-          title: 'انتفاخ العيون',
-          subtitle: 'صباح منتفخ — حل سريع',
-          color: '#0284c7',
-          bg: '#f0f9ff',
-          tips: [
-            { e: '🥄', t: 'ملعقتان باردتان — على الجفون 5 دقائق' },
-            { e: '🫖', t: 'أكياس شاي أخضر — كافيين يقلص الانتفاخ' },
-            { e: '🛏️', t: 'وسادة مرتفعة — تقلل تجمع السوائل' },
-            { e: '👁', t: 'كريم عيون بكافيين — نتائج فورية' },
-          ],
-        },
-        {
-          emoji: '👄',
-          title: 'تشقق الشفاه',
-          subtitle: 'علاج سريع للشفاه الجافة',
-          color: '#e11d48',
-          bg: '#fff1f2',
-          tips: [
-            { e: '🍯', t: 'مقشر سكر + عسل — مرة أسبوعياً' },
-            { e: '💊', t: 'بلسم بفيتامين E — كل ساعتين' },
-            { e: '💧', t: 'اشربي ماء — الجفاف يبدأ من الداخل' },
-            { e: '🙅', t: 'لا تلعقي شفاهكِ — اللعاب يزيد الجفاف' },
-          ],
-        },
-        {
-          emoji: '🧊',
-          title: 'تهدئة الاحمرار',
-          subtitle: 'بشرة هادئة في دقائق',
-          color: '#059669',
-          bg: '#ecfdf5',
-          tips: [
-            { e: '💦', t: 'ماء بارد — يغسل الوجه ويقلص الأوعية' },
-            { e: '🌿', t: 'جل الألوفيرا — مهدئ طبيعي فوري' },
-            { e: '💤', t: 'أوقفي المنتجات النشطة — يوم راحة' },
-            { e: '🧴', t: 'مرطب بسيط — بدون عطور أو أحماض' },
-          ],
-        },
-      ].map((c, i) => (
+      {SOS_CARDS.map((c, i) => (
         <View key={i} style={[styles.card, { borderColor: c.color + '30' }]}>
           <View style={{ flexDirection: 'row', alignItems: 'center', gap: 10, marginBottom: 8 }}>
             <Text style={{ fontSize: 24 }}>{c.emoji}</Text>
             <View style={{ flex: 1 }}>
-              <Text style={{ fontSize: 14, fontWeight: '700', color: c.color }}>{c.title}</Text>
-              <Text style={{ fontSize: 11, color: '#9ca3af' }}>{c.subtitle}</Text>
+              <Text style={{ fontSize: 14, fontWeight: '700', color: c.color }}>
+                {t(c.titleKey)}
+              </Text>
+              <Text style={{ fontSize: 11, color: '#9ca3af' }}>{t(c.subtitleKey)}</Text>
             </View>
           </View>
-          {c.tips.map((t, j) => (
+          {c.tips.map((tip, j) => (
             <View
               key={j}
               style={{
@@ -244,7 +341,7 @@ export default function BeautyRescueScreen(): JSX.Element {
                 backgroundColor: c.bg,
               }}
             >
-              <Text style={{ fontSize: 12 }}>{t.e}</Text>
+              <Text style={{ fontSize: 12 }}>{tip.e}</Text>
               <Text
                 style={{
                   fontSize: 11,
@@ -254,7 +351,7 @@ export default function BeautyRescueScreen(): JSX.Element {
                   textAlign: 'right',
                 }}
               >
-                {t.t}
+                {t(tip.key)}
               </Text>
             </View>
           ))}
@@ -271,82 +368,18 @@ export default function BeautyRescueScreen(): JSX.Element {
       >
         {t('beautyRescue.aftercare')}
       </Text>
-      {[
-        {
-          emoji: '💉',
-          title: 'بعد البوتوكس',
-          subtitle: 'تعليمات ما بعد الحقن',
-          color: '#0284c7',
-          bg: '#f0f9ff',
-          tips: [
-            { e: '🙅', t: 'لا تلمسي — لا تدلكي 24 ساعة' },
-            { e: '🛌', t: 'ابقِ رأسك مرفوعاً — 4 ساعات' },
-            { e: '🙅', t: 'لا رياضة — 24 ساعة' },
-            { e: '✨', t: 'النتيجة النهائية — 10-14 يوم' },
-          ],
-        },
-        {
-          emoji: '💧',
-          title: 'بعد الفيلر',
-          subtitle: 'عناية ما بعد التعبئة',
-          color: '#7c3aed',
-          bg: '#f5f3ff',
-          tips: [
-            { e: '❄️', t: 'كمادات باردة — لتقليل التورم' },
-            { e: '🙅', t: 'تجنبي الضغط — لا تنامي على الوجه' },
-            { e: '🙅', t: 'لا مكياج — 24 ساعة' },
-            { e: '✨', t: 'النتيجة النهائية — بعد أسبوعين' },
-          ],
-        },
-        {
-          emoji: '⚡',
-          title: 'بعد الليزر',
-          subtitle: 'عناية خاصة بعد جلسة الليزر',
-          color: '#ef4444',
-          bg: '#fef2f2',
-          tips: [
-            { e: '☀️', t: 'تجنبي الشمس — أسبوع كامل' },
-            { e: '🧴', t: 'SPF 50+ — ضرورة مطلقة' },
-            { e: '🙅', t: 'لا تقشري — 5 أيام' },
-            { e: '🧴', t: 'مرطب لطيف — ألوفيرا أو بانثينول' },
-          ],
-        },
-        {
-          emoji: '🍋',
-          title: 'بعد التقشير',
-          subtitle: 'روتين ما بعد التقشير الكيميائي',
-          color: '#d97706',
-          bg: '#fffbeb',
-          tips: [
-            { e: '💧', t: 'ترطيب مكثف — كريمات مهدئة' },
-            { e: '🙅', t: 'لا تقشري الجلد — اتركيه يسقط' },
-            { e: '☀️', t: 'SPF 50+ — البشرة حساسة جداً' },
-            { e: '🙅', t: 'لا ريتينول — لمدة أسبوع' },
-          ],
-        },
-        {
-          emoji: '🪒',
-          title: 'بعد إزالة الشعر',
-          subtitle: 'بشرة ناعمة — بدون التهاب',
-          color: '#ec4899',
-          bg: '#fdf2f8',
-          tips: [
-            { e: '🧴', t: 'كريم مهدئ — ألوفيرا أو بانثينول' },
-            { e: '💦', t: 'لا تعرقي — 24 ساعة بدون رياضة' },
-            { e: '👕', t: 'ملابس قطنية واسعة — للتهوية' },
-            { e: '🧖', t: 'تقشير لطيف — بعد 3 أيام' },
-          ],
-        },
-      ].map((c, i) => (
+      {AFTERCARE_CARDS.map((c, i) => (
         <View key={i} style={[styles.card, { borderColor: c.color + '30' }]}>
           <View style={{ flexDirection: 'row', alignItems: 'center', gap: 10, marginBottom: 8 }}>
             <Text style={{ fontSize: 24 }}>{c.emoji}</Text>
             <View style={{ flex: 1 }}>
-              <Text style={{ fontSize: 14, fontWeight: '700', color: c.color }}>{c.title}</Text>
-              <Text style={{ fontSize: 11, color: '#9ca3af' }}>{c.subtitle}</Text>
+              <Text style={{ fontSize: 14, fontWeight: '700', color: c.color }}>
+                {t(c.titleKey)}
+              </Text>
+              <Text style={{ fontSize: 11, color: '#9ca3af' }}>{t(c.subtitleKey)}</Text>
             </View>
           </View>
-          {c.tips.map((t, j) => (
+          {c.tips.map((tip, j) => (
             <View
               key={j}
               style={{
@@ -360,7 +393,7 @@ export default function BeautyRescueScreen(): JSX.Element {
                 backgroundColor: c.bg,
               }}
             >
-              <Text style={{ fontSize: 12 }}>{t.e}</Text>
+              <Text style={{ fontSize: 12 }}>{tip.e}</Text>
               <Text
                 style={{
                   fontSize: 11,
@@ -370,7 +403,7 @@ export default function BeautyRescueScreen(): JSX.Element {
                   textAlign: 'right',
                 }}
               >
-                {t.t}
+                {t(tip.key)}
               </Text>
             </View>
           ))}

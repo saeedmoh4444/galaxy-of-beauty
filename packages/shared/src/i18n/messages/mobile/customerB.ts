@@ -3769,4 +3769,873 @@ export const mobileCustomerBMessages = {
 
   // ---- beauty-profile (sweep s6) ----
   'mobile.beautyProfile.listSeparator': { ar: '،', en: ',' },
+
+  // ---- beauty-reminders/rescue/rewards/services/tips (sweep s7) ----
+  // beauty-rescue
+  'mobile.beautyRescue.sos.acne.title': { ar: 'طوارئ الحبوب', en: 'Acne SOS' },
+  'mobile.beautyRescue.sos.acne.subtitle': {
+    ar: 'ظهور مفاجئ — حل سريع',
+    en: 'Sudden breakout — a quick fix',
+  },
+  'mobile.beautyRescue.sos.acne.tip1': {
+    ar: 'كمادة ثلج — 5 دقائق لتقليل الالتهاب',
+    en: 'Ice compress — 5 minutes to reduce inflammation',
+  },
+  'mobile.beautyRescue.sos.acne.tip2': {
+    ar: 'لصقة حبوب — تجفف وتحمي من العبث',
+    en: 'Pimple patch — dries it out and keeps you from picking',
+  },
+  'mobile.beautyRescue.sos.acne.tip3': {
+    ar: 'لا تضغطي — يزيد الالتهاب ويترك أثراً',
+    en: 'Do not squeeze — it worsens inflammation and leaves a mark',
+  },
+  'mobile.beautyRescue.sos.acne.tip4': {
+    ar: 'كريم بنزويل بيروكسايد — للطوارئ',
+    en: 'Benzoyl peroxide cream — for emergencies',
+  },
+  'mobile.beautyRescue.sos.sunburn.title': { ar: 'علاج حروق الشمس', en: 'Sunburn treatment' },
+  'mobile.beautyRescue.sos.sunburn.subtitle': {
+    ar: 'إسعاف سريع للبشرة المحروقة',
+    en: 'Fast first aid for burned skin',
+  },
+  'mobile.beautyRescue.sos.sunburn.tip1': {
+    ar: 'كمادات باردة — 15 دقيقة كل ساعة',
+    en: 'Cold compresses — 15 minutes every hour',
+  },
+  'mobile.beautyRescue.sos.sunburn.tip2': {
+    ar: 'جل الألوفيرا — مبرد في الثلاجة',
+    en: 'Aloe vera gel — chilled in the fridge',
+  },
+  'mobile.beautyRescue.sos.sunburn.tip3': {
+    ar: 'اشربي ماء كثيراً — الترطيب من الداخل',
+    en: 'Drink plenty of water — hydration from within',
+  },
+  'mobile.beautyRescue.sos.sunburn.tip4': {
+    ar: 'لا تقشري — الجلد يتجدد طبيعياً',
+    en: 'Do not peel — skin renews itself naturally',
+  },
+  'mobile.beautyRescue.sos.puffyEyes.title': { ar: 'انتفاخ العيون', en: 'Puffy eyes' },
+  'mobile.beautyRescue.sos.puffyEyes.subtitle': {
+    ar: 'صباح منتفخ — حل سريع',
+    en: 'Puffy morning — a quick fix',
+  },
+  'mobile.beautyRescue.sos.puffyEyes.tip1': {
+    ar: 'ملعقتان باردتان — على الجفون 5 دقائق',
+    en: 'Two cold spoons — on the eyelids for 5 minutes',
+  },
+  'mobile.beautyRescue.sos.puffyEyes.tip2': {
+    ar: 'أكياس شاي أخضر — كافيين يقلص الانتفاخ',
+    en: 'Green tea bags — caffeine reduces puffiness',
+  },
+  'mobile.beautyRescue.sos.puffyEyes.tip3': {
+    ar: 'وسادة مرتفعة — تقلل تجمع السوائل',
+    en: 'A raised pillow — reduces fluid buildup',
+  },
+  'mobile.beautyRescue.sos.puffyEyes.tip4': {
+    ar: 'كريم عيون بكافيين — نتائج فورية',
+    en: 'Caffeine eye cream — instant results',
+  },
+  'mobile.beautyRescue.sos.chappedLips.title': { ar: 'تشقق الشفاه', en: 'Chapped lips' },
+  'mobile.beautyRescue.sos.chappedLips.subtitle': {
+    ar: 'علاج سريع للشفاه الجافة',
+    en: 'A quick fix for dry lips',
+  },
+  'mobile.beautyRescue.sos.chappedLips.tip1': {
+    ar: 'مقشر سكر + عسل — مرة أسبوعياً',
+    en: 'Sugar + honey scrub — once a week',
+  },
+  'mobile.beautyRescue.sos.chappedLips.tip2': {
+    ar: 'بلسم بفيتامين E — كل ساعتين',
+    en: 'Vitamin E balm — every two hours',
+  },
+  'mobile.beautyRescue.sos.chappedLips.tip3': {
+    ar: 'اشربي ماء — الجفاف يبدأ من الداخل',
+    en: 'Drink water — dryness starts from within',
+  },
+  'mobile.beautyRescue.sos.chappedLips.tip4': {
+    ar: 'لا تلعقي شفاهكِ — اللعاب يزيد الجفاف',
+    en: 'Do not lick your lips — saliva makes dryness worse',
+  },
+  'mobile.beautyRescue.sos.redness.title': { ar: 'تهدئة الاحمرار', en: 'Calming redness' },
+  'mobile.beautyRescue.sos.redness.subtitle': {
+    ar: 'بشرة هادئة في دقائق',
+    en: 'Calm skin in minutes',
+  },
+  'mobile.beautyRescue.sos.redness.tip1': {
+    ar: 'ماء بارد — يغسل الوجه ويقلص الأوعية',
+    en: 'Cold water — rinses the face and constricts blood vessels',
+  },
+  'mobile.beautyRescue.sos.redness.tip2': {
+    ar: 'جل الألوفيرا — مهدئ طبيعي فوري',
+    en: 'Aloe vera gel — an instant natural soother',
+  },
+  'mobile.beautyRescue.sos.redness.tip3': {
+    ar: 'أوقفي المنتجات النشطة — يوم راحة',
+    en: 'Stop active products — a rest day',
+  },
+  'mobile.beautyRescue.sos.redness.tip4': {
+    ar: 'مرطب بسيط — بدون عطور أو أحماض',
+    en: 'A simple moisturizer — no fragrance or acids',
+  },
+  'mobile.beautyRescue.aftercare.botox.title': { ar: 'بعد البوتوكس', en: 'After Botox' },
+  'mobile.beautyRescue.aftercare.botox.subtitle': {
+    ar: 'تعليمات ما بعد الحقن',
+    en: 'Post-injection instructions',
+  },
+  'mobile.beautyRescue.aftercare.botox.tip1': {
+    ar: 'لا تلمسي — لا تدلكي 24 ساعة',
+    en: 'Do not touch — no massaging for 24 hours',
+  },
+  'mobile.beautyRescue.aftercare.botox.tip2': {
+    ar: 'ابقِ رأسك مرفوعاً — 4 ساعات',
+    en: 'Keep your head elevated — 4 hours',
+  },
+  'mobile.beautyRescue.aftercare.botox.tip3': {
+    ar: 'لا رياضة — 24 ساعة',
+    en: 'No exercise — 24 hours',
+  },
+  'mobile.beautyRescue.aftercare.botox.tip4': {
+    ar: 'النتيجة النهائية — 10-14 يوم',
+    en: 'Final result — 10-14 days',
+  },
+  'mobile.beautyRescue.aftercare.filler.title': { ar: 'بعد الفيلر', en: 'After filler' },
+  'mobile.beautyRescue.aftercare.filler.subtitle': {
+    ar: 'عناية ما بعد التعبئة',
+    en: 'Post-filler care',
+  },
+  'mobile.beautyRescue.aftercare.filler.tip1': {
+    ar: 'كمادات باردة — لتقليل التورم',
+    en: 'Cold compresses — to reduce swelling',
+  },
+  'mobile.beautyRescue.aftercare.filler.tip2': {
+    ar: 'تجنبي الضغط — لا تنامي على الوجه',
+    en: 'Avoid pressure — do not sleep on your face',
+  },
+  'mobile.beautyRescue.aftercare.filler.tip3': {
+    ar: 'لا مكياج — 24 ساعة',
+    en: 'No makeup — 24 hours',
+  },
+  'mobile.beautyRescue.aftercare.filler.tip4': {
+    ar: 'النتيجة النهائية — بعد أسبوعين',
+    en: 'Final result — after two weeks',
+  },
+  'mobile.beautyRescue.aftercare.laser.title': { ar: 'بعد الليزر', en: 'After laser' },
+  'mobile.beautyRescue.aftercare.laser.subtitle': {
+    ar: 'عناية خاصة بعد جلسة الليزر',
+    en: 'Special care after a laser session',
+  },
+  'mobile.beautyRescue.aftercare.laser.tip1': {
+    ar: 'تجنبي الشمس — أسبوع كامل',
+    en: 'Avoid the sun — a full week',
+  },
+  'mobile.beautyRescue.aftercare.laser.tip2': {
+    ar: 'SPF 50+ — ضرورة مطلقة',
+    en: 'SPF 50+ — an absolute must',
+  },
+  'mobile.beautyRescue.aftercare.laser.tip3': {
+    ar: 'لا تقشري — 5 أيام',
+    en: 'Do not exfoliate — 5 days',
+  },
+  'mobile.beautyRescue.aftercare.laser.tip4': {
+    ar: 'مرطب لطيف — ألوفيرا أو بانثينول',
+    en: 'A gentle moisturizer — aloe vera or panthenol',
+  },
+  'mobile.beautyRescue.aftercare.peel.title': { ar: 'بعد التقشير', en: 'After a peel' },
+  'mobile.beautyRescue.aftercare.peel.subtitle': {
+    ar: 'روتين ما بعد التقشير الكيميائي',
+    en: 'Post chemical peel routine',
+  },
+  'mobile.beautyRescue.aftercare.peel.tip1': {
+    ar: 'ترطيب مكثف — كريمات مهدئة',
+    en: 'Intensive hydration — soothing creams',
+  },
+  'mobile.beautyRescue.aftercare.peel.tip2': {
+    ar: 'لا تقشري الجلد — اتركيه يسقط',
+    en: 'Do not exfoliate the skin — let it flake off',
+  },
+  'mobile.beautyRescue.aftercare.peel.tip3': {
+    ar: 'SPF 50+ — البشرة حساسة جداً',
+    en: 'SPF 50+ — the skin is very sensitive',
+  },
+  'mobile.beautyRescue.aftercare.peel.tip4': {
+    ar: 'لا ريتينول — لمدة أسبوع',
+    en: 'No retinol — for one week',
+  },
+  'mobile.beautyRescue.aftercare.hairRemoval.title': {
+    ar: 'بعد إزالة الشعر',
+    en: 'After hair removal',
+  },
+  'mobile.beautyRescue.aftercare.hairRemoval.subtitle': {
+    ar: 'بشرة ناعمة — بدون التهاب',
+    en: 'Smooth skin — without irritation',
+  },
+  'mobile.beautyRescue.aftercare.hairRemoval.tip1': {
+    ar: 'كريم مهدئ — ألوفيرا أو بانثينول',
+    en: 'A soothing cream — aloe vera or panthenol',
+  },
+  'mobile.beautyRescue.aftercare.hairRemoval.tip2': {
+    ar: 'لا تعرقي — 24 ساعة بدون رياضة',
+    en: 'Do not sweat — 24 hours without exercise',
+  },
+  'mobile.beautyRescue.aftercare.hairRemoval.tip3': {
+    ar: 'ملابس قطنية واسعة — للتهوية',
+    en: 'Loose cotton clothing — for ventilation',
+  },
+  'mobile.beautyRescue.aftercare.hairRemoval.tip4': {
+    ar: 'تقشير لطيف — بعد 3 أيام',
+    en: 'Gentle exfoliation — after 3 days',
+  },
+  // beauty-rewards
+  'mobile.beautyRewards.loyalty.title': { ar: 'أرباح الولاء', en: 'Loyalty earnings' },
+  'mobile.beautyRewards.loyalty.subtitle': {
+    ar: '4500 ر.س إنفاق سنوي',
+    en: 'SAR 4,500 annual spending',
+  },
+  'mobile.beautyRewards.loyalty.tip1': {
+    ar: 'نسبة الاسترداد: 5% — 225 ر.س سنوياً',
+    en: 'Cashback rate: 5% — SAR 225 a year',
+  },
+  'mobile.beautyRewards.loyalty.tip2': {
+    ar: 'المستوى: ذهبي — نسبة أعلى',
+    en: 'Tier: Gold — a higher rate',
+  },
+  'mobile.beautyRewards.loyalty.tip3': {
+    ar: 'تضاف للمحفظة — تلقائياً',
+    en: 'Added to the wallet — automatically',
+  },
+  'mobile.beautyRewards.loyalty.tip4': {
+    ar: 'تصرف في أي وقت — لا حد أدنى',
+    en: 'Redeem anytime — no minimum',
+  },
+  'mobile.beautyRewards.anniversary.title': { ar: 'ذكرى الانضمام', en: 'Join anniversary' },
+  'mobile.beautyRewards.anniversary.subtitle': {
+    ar: 'سنتان — أغسطس 2024',
+    en: 'Two years — August 2024',
+  },
+  'mobile.beautyRewards.anniversary.tip1': {
+    ar: 'عضوة منذ: أغسطس 2024',
+    en: 'Member since: August 2024',
+  },
+  'mobile.beautyRewards.anniversary.tip2': {
+    ar: '48 حجز — في سنتين',
+    en: '48 bookings — in two years',
+  },
+  'mobile.beautyRewards.anniversary.tip3': {
+    ar: 'هدية الذكرى: خصم 50 ر.س',
+    en: 'Anniversary gift: SAR 50 off',
+  },
+  'mobile.beautyRewards.anniversary.tip4': {
+    ar: 'شكراً لكونكِ جزءاً من عائلتنا',
+    en: 'Thank you for being part of our family',
+  },
+  'mobile.beautyRewards.leaderboard.subtitle': {
+    ar: 'المركز الخامس — 3 إحالات',
+    en: 'Fifth place — 3 referrals',
+  },
+  'mobile.beautyRewards.leaderboard.tip1': {
+    ar: 'نورة: 12 إحالة — المركز الأول',
+    en: 'Noura: 12 referrals — first place',
+  },
+  'mobile.beautyRewards.leaderboard.tip2': {
+    ar: 'مها: 8 إحالات — المركز الثاني',
+    en: 'Maha: 8 referrals — second place',
+  },
+  'mobile.beautyRewards.leaderboard.tip3': {
+    ar: 'ريم: 5 إحالات — المركز الثالث',
+    en: 'Reem: 5 referrals — third place',
+  },
+  'mobile.beautyRewards.leaderboard.tip4': {
+    ar: 'أنتِ: 3 إحالات — المركز الخامس',
+    en: 'You: 3 referrals — fifth place',
+  },
+  'mobile.beautyRewards.student.title': { ar: 'خصم الطالبات', en: 'Student discount' },
+  'mobile.beautyRewards.student.subtitle': {
+    ar: '15% — للطالبات الجامعيات',
+    en: '15% — for university students',
+  },
+  'mobile.beautyRewards.student.tip1': {
+    ar: 'لطالبات الجامعة — undergraduate',
+    en: 'For university students — undergraduate',
+  },
+  'mobile.beautyRewards.student.tip2': {
+    ar: 'خصم 15% — على جميع الخدمات',
+    en: '15% off — on all services',
+  },
+  'mobile.beautyRewards.student.tip3': {
+    ar: 'إثبات: البطاقة الجامعية',
+    en: 'Proof: university ID card',
+  },
+  'mobile.beautyRewards.group.title': { ar: 'خصم المجموعات', en: 'Group discount' },
+  'mobile.beautyRewards.group.subtitle': {
+    ar: 'احجزوا معاً — وفروا أكثر',
+    en: 'Book together — save more',
+  },
+  'mobile.beautyRewards.group.tip1': { ar: '3+ أشخاص — خصم 10%', en: '3+ people — 10% off' },
+  'mobile.beautyRewards.group.tip2': { ar: '5+ أشخاص — خصم 15%', en: '5+ people — 15% off' },
+  'mobile.beautyRewards.group.tip3': { ar: '8+ أشخاص — خصم 20%', en: '8+ people — 20% off' },
+  'mobile.beautyRewards.group.tip4': {
+    ar: 'مناسبات خاصة — باقة VIP',
+    en: 'Special occasions — a VIP package',
+  },
+  'mobile.beautyRewards.kindness.title': { ar: 'نقاط الطيبة', en: 'Kindness points' },
+  'mobile.beautyRewards.kindness.subtitle': {
+    ar: 'أفعلي خيراً — اكسبي نقاطاً',
+    en: 'Do good — earn points',
+  },
+  'mobile.beautyRewards.kindness.tip1': {
+    ar: 'ساعدي صديقة — 50 نقطة',
+    en: 'Help a friend — 50 points',
+  },
+  'mobile.beautyRewards.kindness.tip2': {
+    ar: 'اكتبي تقييماً — 25 نقطة',
+    en: 'Write a review — 25 points',
+  },
+  'mobile.beautyRewards.kindness.tip3': {
+    ar: 'أحلي هدية — 100 نقطة',
+    en: 'Buy a gift — 100 points',
+  },
+  'mobile.beautyRewards.kindness.tip4': {
+    ar: 'كوني لطيفة — الجمال في العطاء',
+    en: 'Be kind — beauty is in giving',
+  },
+  // beauty-services
+  'mobile.beautyServices.sunAdvice.title': { ar: 'نصيحة جمال', en: 'Beauty advice' },
+  'mobile.beautyServices.sunAdvice.subtitle': {
+    ar: 'ضعي واقي الشمس كل ساعتين',
+    en: 'Apply sunscreen every two hours',
+  },
+  'mobile.beautyServices.sunAdvice.tip1': {
+    ar: 'SPF 50+ — للوجه والرقبة واليدين',
+    en: 'SPF 50+ — for face, neck and hands',
+  },
+  'mobile.beautyServices.sunAdvice.tip2': {
+    ar: 'جدديه كل ساعتين — تحت الشمس المباشرة',
+    en: 'Reapply every two hours — in direct sunlight',
+  },
+  'mobile.beautyServices.sunAdvice.tip3': {
+    ar: 'حتى في البيت — الأشعة تخترق الزجاج',
+    en: 'Even at home — rays pass through glass',
+  },
+  'mobile.beautyServices.sunAdvice.tip4': {
+    ar: '365 يوم — صيفاً وشتاءً',
+    en: '365 days — summer and winter',
+  },
+  'mobile.beautyServices.emergency.title': { ar: 'طوارئ الجمال', en: 'Beauty emergencies' },
+  'mobile.beautyServices.emergency.subtitle': {
+    ar: 'مساعدة فورية — 24 ساعة',
+    en: 'Instant help — 24 hours',
+  },
+  'mobile.beautyServices.emergency.tip1': {
+    ar: 'اتصلي: 9200 — خط الطوارئ',
+    en: 'Call: 9200 — the emergency line',
+  },
+  'mobile.beautyServices.emergency.tip2': {
+    ar: 'وصول خلال 30 دقيقة',
+    en: 'Arrival within 30 minutes',
+  },
+  'mobile.beautyServices.emergency.tip3': {
+    ar: 'خدمة منزلية — للطوارئ',
+    en: 'At-home service — for emergencies',
+  },
+  'mobile.beautyServices.emergency.tip4': {
+    ar: 'استشارة طبية — عند الحاجة',
+    en: 'Medical consultation — when needed',
+  },
+  'mobile.beautyServices.facilities.title': { ar: 'مرافق الصالون', en: 'Salon facilities' },
+  'mobile.beautyServices.facilities.subtitle': {
+    ar: 'واي فاي — مواقف — قهوة',
+    en: 'Wi-Fi — parking — coffee',
+  },
+  'mobile.beautyServices.facilities.tip1': {
+    ar: 'واي فاي مجاني — ابقي متصلة',
+    en: 'Free Wi-Fi — stay connected',
+  },
+  'mobile.beautyServices.facilities.tip2': { ar: 'مواقف سيارات — مجانية', en: 'Parking — free' },
+  'mobile.beautyServices.facilities.tip3': {
+    ar: 'ضيافة — قهوة وشاي',
+    en: 'Refreshments — coffee and tea',
+  },
+  'mobile.beautyServices.facilities.tip4': {
+    ar: 'ركن أطفال — العبي بأمان',
+    en: 'Kids corner — play safely',
+  },
+  'mobile.beautyServices.prayerRoom.title': { ar: 'غرفة الصلاة', en: 'Prayer room' },
+  'mobile.beautyServices.prayerRoom.subtitle': {
+    ar: 'سجادات — عباءات — قبلة',
+    en: 'Prayer mats — abayas — qibla',
+  },
+  'mobile.beautyServices.prayerRoom.tip1': {
+    ar: 'سجادات صلاة — نظيفة ومعطرة',
+    en: 'Prayer mats — clean and scented',
+  },
+  'mobile.beautyServices.prayerRoom.tip2': {
+    ar: 'عباءات — متوفرة للصلاة',
+    en: 'Abayas — available for prayer',
+  },
+  'mobile.beautyServices.prayerRoom.tip3': {
+    ar: 'اتجاه القبلة — محدد بوضوح',
+    en: 'Qibla direction — clearly marked',
+  },
+  'mobile.beautyServices.prayerRoom.tip4': {
+    ar: 'مكان وضوء — مجهز بالكامل',
+    en: 'Wudu area — fully equipped',
+  },
+  'mobile.beautyServices.productCompare.subtitle': {
+    ar: 'كريم A vs كريم B',
+    en: 'Cream A vs Cream B',
+  },
+  'mobile.beautyServices.productCompare.tip1': {
+    ar: 'كريم A: 120 ر.س — ترطيب 24 ساعة (4.5)',
+    en: 'Cream A: SAR 120 — 24-hour hydration (4.5)',
+  },
+  'mobile.beautyServices.productCompare.tip2': {
+    ar: 'كريم B: 80 ر.س — خفيف وسريع (4.0)',
+    en: 'Cream B: SAR 80 — light and fast (4.0)',
+  },
+  'mobile.beautyServices.productCompare.tip3': {
+    ar: 'الأفضل: كريم A — ترطيب عميق',
+    en: 'Best: Cream A — deep hydration',
+  },
+  'mobile.beautyServices.productCompare.tip4': {
+    ar: 'الأوفر: كريم B — قيمة ممتازة',
+    en: 'Best value: Cream B — excellent value',
+  },
+  'mobile.beautyServices.premium.subtitle': {
+    ar: 'باقة Premium — خصم 20%',
+    en: 'Premium package — 20% off',
+  },
+  // beauty-tips
+  'mobile.beautyTips.makeup.title': { ar: 'نصائح المكياج', en: 'Makeup tips' },
+  'mobile.beautyTips.makeup.subtitle': { ar: 'لإطلالة تدوم طويلاً', en: 'For a long-lasting look' },
+  'mobile.beautyTips.makeup.tip1': {
+    ar: 'الترطيب أولاً — بشرة مرطبة = مكياج أجمل',
+    en: 'Moisturize first — hydrated skin = prettier makeup',
+  },
+  'mobile.beautyTips.makeup.tip2': {
+    ar: 'نظفي فرشك — أسبوعياً البكتيريا تتراكم',
+    en: 'Clean your brushes — bacteria build up weekly',
+  },
+  'mobile.beautyTips.makeup.tip3': {
+    ar: 'تاريخ الصلاحية — جددِي مكياجك كل 6-12 شهر',
+    en: 'Expiry date — renew your makeup every 6-12 months',
+  },
+  'mobile.beautyTips.makeup.tip4': {
+    ar: 'أزيلي المكياج — لا تنامي أبداً بالمكياج',
+    en: 'Remove your makeup — never sleep in makeup',
+  },
+  'mobile.beautyTips.spring.title': { ar: 'تذكير الربيع', en: 'Spring reminder' },
+  'mobile.beautyTips.spring.subtitle': {
+    ar: 'روتينكِ يتغير مع الفصول',
+    en: 'Your routine changes with the seasons',
+  },
+  'mobile.beautyTips.spring.tip1': {
+    ar: 'جددي روتين التقشير — بشرة أنعم',
+    en: 'Refresh your exfoliation routine — smoother skin',
+  },
+  'mobile.beautyTips.spring.tip2': {
+    ar: 'انتقلي لمرطب أخف — مع ارتفاع الحرارة',
+    en: 'Switch to a lighter moisturizer — as it warms up',
+  },
+  'mobile.beautyTips.spring.tip3': {
+    ar: 'اهتمي بالحماية من الشمس مبكراً',
+    en: 'Start sun protection early',
+  },
+  'mobile.beautyTips.spring.tip4': {
+    ar: 'جربي ألوان باستيل — منعشة وناعمة',
+    en: 'Try pastel colors — fresh and soft',
+  },
+  'mobile.beautyTips.summer.title': { ar: 'تذكير الصيف', en: 'Summer reminder' },
+  'mobile.beautyTips.summer.subtitle': { ar: 'حماية وانتعاش', en: 'Protection and freshness' },
+  'mobile.beautyTips.summer.tip1': {
+    ar: 'SPF 50+ يومياً — حتى في الظل',
+    en: 'SPF 50+ daily — even in the shade',
+  },
+  'mobile.beautyTips.summer.tip2': {
+    ar: 'مرطب جل خفيف — بدل الكريم الثقيل',
+    en: 'A light gel moisturizer — instead of heavy cream',
+  },
+  'mobile.beautyTips.summer.tip3': {
+    ar: 'اشربي ماء كثيراً — 8 أكواب يومياً',
+    en: 'Drink plenty of water — 8 cups a day',
+  },
+  'mobile.beautyTips.summer.tip4': {
+    ar: 'تجنبي المكياج الثقيل — خففي الطبقات',
+    en: 'Avoid heavy makeup — lighten the layers',
+  },
+  'mobile.beautyTips.winter.title': { ar: 'تذكير الشتاء', en: 'Winter reminder' },
+  'mobile.beautyTips.winter.subtitle': { ar: 'ترطيب وحماية', en: 'Hydration and protection' },
+  'mobile.beautyTips.winter.tip1': {
+    ar: 'مرطب غني — يحمي من الهواء الجاف',
+    en: 'A rich moisturizer — protects from dry air',
+  },
+  'mobile.beautyTips.winter.tip2': {
+    ar: 'بلسم شفاه — ضروري في الشتاء',
+    en: 'Lip balm — a must in winter',
+  },
+  'mobile.beautyTips.winter.tip3': {
+    ar: 'قناع ترطيب أسبوعي — بشرة نضرة',
+    en: 'A weekly hydrating mask — radiant skin',
+  },
+  'mobile.beautyTips.winter.tip4': {
+    ar: 'احمي بشرتكِ من الهواء البارد',
+    en: 'Protect your skin from cold air',
+  },
+  'mobile.beautyTips.trending.title': { ar: 'رائج الآن', en: 'Trending now' },
+  'mobile.beautyTips.trending.subtitle': {
+    ar: 'أحدث صيحات الجمال',
+    en: 'The latest beauty trends',
+  },
+  'mobile.beautyTips.trending.tip1': {
+    ar: 'البشرة الزجاجية — الترطيب قبل المكياج',
+    en: 'Glass skin — hydrate before makeup',
+  },
+  'mobile.beautyTips.trending.tip2': {
+    ar: 'ألوان الباستيل — ناعمة وأنثوية',
+    en: 'Pastel colors — soft and feminine',
+  },
+  'mobile.beautyTips.trending.tip3': {
+    ar: 'العناية بالشفاه — تينت طبيعي',
+    en: 'Lip care — a natural tint',
+  },
+  'mobile.beautyTips.trending.tip4': {
+    ar: 'المكياج الطبيعي — بشرة أولى',
+    en: 'Natural makeup — skin first',
+  },
+  'mobile.beautyTips.hyaluronic.subtitle': {
+    ar: 'مرطب A+ يحمل 1000 ضعف وزنه ماء',
+    en: 'An A+ moisturizer that holds 1000x its weight in water',
+  },
+  'mobile.beautyTips.hyaluronic.tip1': {
+    ar: 'يوجد طبيعياً في البشرة — آمن تماماً',
+    en: 'Found naturally in the skin — completely safe',
+  },
+  'mobile.beautyTips.hyaluronic.tip2': {
+    ar: 'مناسب لجميع أنواع البشرة',
+    en: 'Suitable for all skin types',
+  },
+  'mobile.beautyTips.hyaluronic.tip3': {
+    ar: 'يدمج مع جميع المكونات — ثنائي رائع',
+    en: 'Pairs with all ingredients — a wonderful duo',
+  },
+  'mobile.beautyTips.style.title': { ar: 'تحليل الأسلوب', en: 'Style analysis' },
+  'mobile.beautyTips.style.tip1': {
+    ar: 'كلاسيكي — أنيق وخالد 92%',
+    en: 'Classic — elegant and timeless 92%',
+  },
+  'mobile.beautyTips.style.tip2': {
+    ar: 'عصري — متجدد وجريء 78%',
+    en: 'Modern — renewed and bold 78%',
+  },
+  'mobile.beautyTips.style.tip3': {
+    ar: 'بوهيمي — ناعم وطبيعي 65%',
+    en: 'Bohemian — soft and natural 65%',
+  },
+  'mobile.beautyTips.style.tip4': {
+    ar: 'فاخر — فخم ومتكامل 55%',
+    en: 'Luxurious — opulent and complete 55%',
+  },
+  'mobile.beautyTips.hydration.subtitle': {
+    ar: 'تحدي 5 دقائق يومياً',
+    en: 'A 5-minute daily challenge',
+  },
+  'mobile.beautyTips.hydration.tip1': {
+    ar: 'الصباح — مرطب + واقي شمس',
+    en: 'Morning — moisturizer + sunscreen',
+  },
+  'mobile.beautyTips.hydration.tip2': {
+    ar: 'طوال اليوم — 8 أكواب ماء',
+    en: 'All day — 8 cups of water',
+  },
+  'mobile.beautyTips.hydration.tip3': {
+    ar: 'المساء — سيروم + مرطب ليلي',
+    en: 'Evening — serum + night moisturizer',
+  },
+  'mobile.beautyTips.hydration.tip4': {
+    ar: 'أسبوعياً — قناع ترطيب',
+    en: 'Weekly — a hydrating mask',
+  },
+  'mobile.beautyTips.humid.title': { ar: 'عناية في الرطوبة', en: 'Care in humidity' },
+  'mobile.beautyTips.humid.subtitle': {
+    ar: 'بشرة منتعشة في الجو الرطب',
+    en: 'Fresh skin in humid weather',
+  },
+  'mobile.beautyTips.humid.tip1': {
+    ar: 'مرطب جل — خفيف وليس كريمي',
+    en: 'A gel moisturizer — light, not creamy',
+  },
+  'mobile.beautyTips.humid.tip2': {
+    ar: 'ورق نشاف — لإزالة اللمعان',
+    en: 'Blotting paper — to remove shine',
+  },
+  'mobile.beautyTips.humid.tip3': {
+    ar: 'مكياج خفيف — بدون طبقات ثقيلة',
+    en: 'Light makeup — no heavy layers',
+  },
+  'mobile.beautyTips.humid.tip4': {
+    ar: 'تونر مات — يقلل إفراز الدهون',
+    en: 'A mattifying toner — reduces oil production',
+  },
+  'mobile.beautyTips.dryClimate.title': { ar: 'عناية في الجفاف', en: 'Care in dryness' },
+  'mobile.beautyTips.dryClimate.subtitle': {
+    ar: 'بشرة مرطبة في المناخ الجاف',
+    en: 'Hydrated skin in a dry climate',
+  },
+  'mobile.beautyTips.dryClimate.tip1': {
+    ar: 'مرطب كثيف — كريم غني وليس جل',
+    en: 'A thick moisturizer — a rich cream, not a gel',
+  },
+  'mobile.beautyTips.dryClimate.tip2': {
+    ar: 'سيروم هيالورونيك — قبل المرطب',
+    en: 'Hyaluronic serum — before moisturizer',
+  },
+  'mobile.beautyTips.dryClimate.tip3': {
+    ar: 'مرطب جو — أثناء النوم',
+    en: 'A humidifier — while you sleep',
+  },
+  'mobile.beautyTips.dryClimate.tip4': {
+    ar: 'سيراميد — يقوي حاجز البشرة',
+    en: 'Ceramides — strengthen the skin barrier',
+  },
+  'mobile.beautyTips.heat.title': { ar: 'عناية في الحر', en: 'Care in the heat' },
+  'mobile.beautyTips.heat.subtitle': {
+    ar: 'بشرة محمية في الصيف الحار',
+    en: 'Protected skin in the hot summer',
+  },
+  'mobile.beautyTips.heat.tip1': {
+    ar: 'SPF 50+ — جدديه كل ساعتين',
+    en: 'SPF 50+ — reapply every two hours',
+  },
+  'mobile.beautyTips.heat.tip3': {
+    ar: 'قبعة ونظارة — حماية إضافية',
+    en: 'A hat and sunglasses — extra protection',
+  },
+  'mobile.beautyTips.heat.tip4': {
+    ar: 'جل الألوفيرا مبرد — بعد الشمس',
+    en: 'Chilled aloe vera gel — after sun exposure',
+  },
+  'mobile.beautyTips.cold.title': { ar: 'عناية في البرد', en: 'Care in the cold' },
+  'mobile.beautyTips.cold.subtitle': {
+    ar: 'بشرة محمية في الشتاء القارس',
+    en: 'Protected skin in the harsh winter',
+  },
+  'mobile.beautyTips.cold.tip1': {
+    ar: 'بلسم منظف — بدل الجل القاسي',
+    en: 'A cleansing balm — instead of harsh gel',
+  },
+  'mobile.beautyTips.cold.tip2': {
+    ar: 'كريم سميك قبل الخروج',
+    en: 'A thick cream before going out',
+  },
+  'mobile.beautyTips.cold.tip3': {
+    ar: 'وشاح — يحمي الوجه من الرياح',
+    en: 'A scarf — protects the face from wind',
+  },
+  'mobile.beautyTips.cold.tip4': {
+    ar: 'زيت وجه — طبقة إضافية ليلاً',
+    en: 'Face oil — an extra layer at night',
+  },
+  'mobile.beautyTips.travel.title': { ar: 'عناية المسافرة', en: 'Traveler care' },
+  'mobile.beautyTips.travel.subtitle': {
+    ar: 'بشرتكِ بين المناخات',
+    en: 'Your skin between climates',
+  },
+  'mobile.beautyTips.travel.tip1': {
+    ar: 'منتجات متعددة — ترطب وتحمي',
+    en: 'Multi-purpose products — hydrate and protect',
+  },
+  'mobile.beautyTips.travel.tip2': { ar: 'اشربي ماء في الطائرة', en: 'Drink water on the plane' },
+  'mobile.beautyTips.travel.tip3': {
+    ar: 'قناع ورقي — ترطيب فوري',
+    en: 'A sheet mask — instant hydration',
+  },
+  'mobile.beautyTips.travel.tip4': {
+    ar: 'عدلي روتينك حسب مناخ وجهتك',
+    en: 'Adjust your routine to your destination climate',
+  },
+  'mobile.beautyTips.careMistakes.title': { ar: 'أخطاء العناية', en: 'Skincare mistakes' },
+  'mobile.beautyTips.careMistakes.subtitle': { ar: 'توقفي عنها فوراً', en: 'Stop them right away' },
+  'mobile.beautyTips.careMistakes.tip1': {
+    ar: 'غسل الوجه بماء ساخن — يجرد البشرة',
+    en: 'Washing your face with hot water — strips the skin',
+  },
+  'mobile.beautyTips.careMistakes.tip2': {
+    ar: 'تخطي المرطب — حتى الدهنية تحتاج ترطيب',
+    en: 'Skipping moisturizer — even oily skin needs hydration',
+  },
+  'mobile.beautyTips.careMistakes.tip3': {
+    ar: 'عدم استخدام واقي شمس — سبب الشيخوخة',
+    en: 'Not using sunscreen — a cause of aging',
+  },
+  'mobile.beautyTips.careMistakes.tip4': {
+    ar: 'تغيير المنتجات كل أسبوع — 6-8 أسابيع',
+    en: 'Changing products every week — give each 6-8 weeks',
+  },
+  'mobile.beautyTips.makeupMistakes.title': { ar: 'أخطاء المكياج', en: 'Makeup mistakes' },
+  'mobile.beautyTips.makeupMistakes.subtitle': {
+    ar: 'أخطاء شائعة — حلول بسيطة',
+    en: 'Common mistakes — simple solutions',
+  },
+  'mobile.beautyTips.makeupMistakes.tip1': {
+    ar: 'فاونديشن أفتح — جربي على خط الفك',
+    en: 'Foundation that is too light — test on the jawline',
+  },
+  'mobile.beautyTips.makeupMistakes.tip2': {
+    ar: 'عدم تنظيف الفرش — بكتيريا تسبب الحبوب',
+    en: 'Not cleaning brushes — bacteria cause breakouts',
+  },
+  'mobile.beautyTips.makeupMistakes.tip3': {
+    ar: 'تحديد الشفاه بلون أغمق بكثير',
+    en: 'Lining lips with a much darker color',
+  },
+  'mobile.beautyTips.makeupMistakes.tip4': {
+    ar: 'عيون ثقيلة + شفاه ثقيلة — اختاري واحداً',
+    en: 'Heavy eyes + heavy lips — pick one',
+  },
+  'mobile.beautyTips.hairMistakes.title': { ar: 'أخطاء الشعر', en: 'Hair mistakes' },
+  'mobile.beautyTips.hairMistakes.subtitle': {
+    ar: 'توقفي عنها — شعركِ سيشكركِ',
+    en: 'Stop them — your hair will thank you',
+  },
+  'mobile.beautyTips.hairMistakes.tip1': {
+    ar: 'حرارة بدون واقي — تلف دائم للشعر',
+    en: 'Heat without protection — permanent hair damage',
+  },
+  'mobile.beautyTips.hairMistakes.tip2': {
+    ar: 'بلسم على الجذور — يسد ويثقل الشعر',
+    en: 'Conditioner on the roots — clogs and weighs hair down',
+  },
+  'mobile.beautyTips.hairMistakes.tip3': {
+    ar: 'تمشيط الشعر المبلل بقوة — يتكسر',
+    en: 'Brushing wet hair roughly — it breaks',
+  },
+  'mobile.beautyTips.hairMistakes.tip4': {
+    ar: 'النوم بشعر مبلل — فطريات وتقصف',
+    en: 'Sleeping with wet hair — fungus and split ends',
+  },
+  'mobile.beautyTips.overExfoliation.title': { ar: 'الإفراط في التقشير', en: 'Over-exfoliation' },
+  'mobile.beautyTips.overExfoliation.subtitle': {
+    ar: 'علامات التحذير والحل',
+    en: 'Warning signs and the fix',
+  },
+  'mobile.beautyTips.overExfoliation.tip1': {
+    ar: 'علامات: احمرار حرقان لمعان حساسية',
+    en: 'Signs: redness, burning, shine, sensitivity',
+  },
+  'mobile.beautyTips.overExfoliation.tip2': {
+    ar: 'توقفي فوراً — كل المنتجات النشطة',
+    en: 'Stop immediately — all active products',
+  },
+  'mobile.beautyTips.overExfoliation.tip3': {
+    ar: 'العلاج: مرطب بسيط + سيراميد فقط',
+    en: 'The fix: a simple moisturizer + ceramides only',
+  },
+  'mobile.beautyTips.overExfoliation.tip4': {
+    ar: 'أسبوعين راحة — ثم عودي تدريجياً',
+    en: 'Two weeks of rest — then return gradually',
+  },
+  'mobile.beautyTips.productOverload.title': { ar: 'تحميل المنتجات', en: 'Product overload' },
+  'mobile.beautyTips.productOverload.subtitle': {
+    ar: 'كثرة المنتجات — ضرر أكثر',
+    en: 'Too many products — more harm',
+  },
+  'mobile.beautyTips.productOverload.tip1': {
+    ar: 'لا تخلطي أكثر من 3 منتجات نشطة',
+    en: 'Do not mix more than 3 active products',
+  },
+  'mobile.beautyTips.productOverload.tip2': {
+    ar: 'منتج فعال واحد صباحاً وآخر مساءً',
+    en: 'One active product in the morning and another at night',
+  },
+  'mobile.beautyTips.productOverload.tip3': {
+    ar: 'نظام التدوير: ريتينول — تقشير — راحة',
+    en: 'A rotation system: retinol — exfoliation — rest',
+  },
+  'mobile.beautyTips.productOverload.tip4': {
+    ar: 'البشرة تفضل البساطة — الأقل هو الأكثر',
+    en: 'Skin prefers simplicity — less is more',
+  },
+  'mobile.beautyTips.eidGlow.title': { ar: 'إشراقة العيد', en: 'Eid glow' },
+  'mobile.beautyTips.eidGlow.subtitle': {
+    ar: 'خطة جمالية متكاملة للعيد',
+    en: 'A complete beauty plan for Eid',
+  },
+  'mobile.beautyTips.eidGlow.tip1': {
+    ar: 'قبل بأسبوع: فيشل + حواجب + مانيكير',
+    en: 'A week before: facial + brows + manicure',
+  },
+  'mobile.beautyTips.eidGlow.tip2': {
+    ar: 'ليلة العيد: حمام زيت + مرطب + نوم',
+    en: 'Eid night: hair oil treatment + moisturizer + sleep',
+  },
+  'mobile.beautyTips.eidGlow.tip3': {
+    ar: 'صباح العيد: مكياج ناعم + عطر',
+    en: 'Eid morning: soft makeup + perfume',
+  },
+  'mobile.beautyTips.eidGlow.tip4': {
+    ar: 'صوري إطلالتك — ذكريات العيد',
+    en: 'Photograph your look — Eid memories',
+  },
+  'mobile.beautyTips.eidHair.title': { ar: 'تسريحة العيد', en: 'Eid hairstyle' },
+  'mobile.beautyTips.eidHair.subtitle': {
+    ar: 'تسريحات تناسب عباءة العيد',
+    en: 'Styles that suit the Eid abaya',
+  },
+  'mobile.beautyTips.eidHair.tip1': {
+    ar: 'كعكة منخفضة — أنيقة مع الطرحة',
+    en: 'A low bun — elegant with the tarha',
+  },
+  'mobile.beautyTips.eidHair.tip2': {
+    ar: 'ويفي ناعم — مع لفّة حجاب',
+    en: 'Soft waves — with a hijab wrap',
+  },
+  'mobile.beautyTips.eidHair.tip3': {
+    ar: 'ضفيرة جانبية — عصرية ومريحة',
+    en: 'A side braid — modern and comfortable',
+  },
+  'mobile.beautyTips.eidHair.tip4': {
+    ar: 'حمام زيت قبلها بيوم — لمعان',
+    en: 'A hair oil treatment the day before — shine',
+  },
+  'mobile.beautyTips.eidNails.title': { ar: 'أظافر العيد', en: 'Eid nails' },
+  'mobile.beautyTips.eidNails.subtitle': {
+    ar: 'ألوان وتصاميم تناسب العيد',
+    en: 'Colors and designs for Eid',
+  },
+  'mobile.beautyTips.eidNails.tip1': {
+    ar: 'ألوان باستيل — وردي لافندر بيج',
+    en: 'Pastel colors — pink, lavender, beige',
+  },
+  'mobile.beautyTips.eidNails.tip2': {
+    ar: 'جليتر خفيف — لمسة احتفالية',
+    en: 'Light glitter — a festive touch',
+  },
+  'mobile.beautyTips.eidNails.tip3': {
+    ar: 'هلال ذهبي — تصميم العيد',
+    en: 'A golden crescent — the Eid design',
+  },
+  'mobile.beautyTips.eidNails.tip4': {
+    ar: 'قبل العيد بيومين — لتكون مثالية',
+    en: 'Two days before Eid — to be perfect',
+  },
+  'mobile.beautyTips.eidPerfume.title': { ar: 'عطر العيد', en: 'Eid perfume' },
+  'mobile.beautyTips.eidPerfume.subtitle': {
+    ar: 'العطر المثالي ليوم العيد',
+    en: 'The perfect perfume for Eid day',
+  },
+  'mobile.beautyTips.eidPerfume.tip1': {
+    ar: 'عود وورد — كلاسيكية العيد',
+    en: 'Oud and rose — an Eid classic',
+  },
+  'mobile.beautyTips.eidPerfume.tip2': {
+    ar: 'طبقات — قاعدة + قلب + نفحة',
+    en: 'Layering — base + heart + top notes',
+  },
+  'mobile.beautyTips.eidPerfume.tip3': {
+    ar: 'قبل الخروج بساعة — ليثبت',
+    en: 'An hour before going out — so it lasts',
+  },
+  'mobile.beautyTips.eidPerfume.tip4': {
+    ar: 'عطر جديد للعيد — تقليد جميل',
+    en: 'A new perfume for Eid — a lovely tradition',
+  },
 } as const satisfies Record<string, { ar: string; en: string }>;
