@@ -89,7 +89,7 @@ export default function BeautyDiscoveryScreen(): JSX.Element {
             </Text>
             <Text style={{ color: c.brand, fontSize: 13, marginTop: 4 }}>
               {fy.profile.skinType} · {fy.profile.hairType} ·{' '}
-              {(fy.profile.concerns as string[])?.join('، ')}
+              {(fy.profile.concerns as string[])?.join(`${t('mobile.beautyDiscovery.separator')} `)}
             </Text>
           </View>
         )}

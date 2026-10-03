@@ -1,15 +1,16 @@
 import type { JSX } from 'react';
 import { View, Text, ScrollView, StyleSheet } from 'react-native';
+import type { TranslationKey } from '@galaxy/shared';
 import { useLocale } from '@/components/LocaleProvider';
 
 interface Tip {
   emoji: string;
-  text: string;
+  textKey: TranslationKey;
 }
 interface Card {
   emoji: string;
-  title: string;
-  subtitle: string;
+  titleKey: TranslationKey;
+  subtitleKey: TranslationKey;
   color: string;
   bg: string;
   tips: Tip[];
@@ -18,106 +19,106 @@ interface Card {
 const CARDS: Card[] = [
   {
     emoji: '⏳',
-    title: 'كبسولة الزمن',
-    subtitle: 'رسالة لنفسكِ المستقبلية',
+    titleKey: 'mobile.beautyExtras.card.timeCapsule.title',
+    subtitleKey: 'mobile.beautyExtras.card.timeCapsule.subtitle',
     color: '#7c3aed',
     bg: '#f5f3ff',
     tips: [
-      { emoji: '📅', text: 'تاريخ الحفظ: 6 أغسطس 2026' },
-      { emoji: '🔓', text: 'تفتح في: 6 أغسطس 2027' },
-      { emoji: '💌', text: 'رسالة: أهداف جمالكِ للعام القادم' },
-      { emoji: '📷', text: 'مرفق: صورة بشرتكِ الآن' },
+      { emoji: '📅', textKey: 'mobile.beautyExtras.card.timeCapsule.tip1' },
+      { emoji: '🔓', textKey: 'mobile.beautyExtras.card.timeCapsule.tip2' },
+      { emoji: '💌', textKey: 'mobile.beautyExtras.card.timeCapsule.tip3' },
+      { emoji: '📷', textKey: 'mobile.beautyExtras.card.timeCapsule.tip4' },
     ],
   },
   {
     emoji: '🎨',
-    title: 'لوحة الأحلام',
-    subtitle: 'أحلامكِ على لوحة واحدة',
+    titleKey: 'mobile.beautyExtras.card.dreamBoard.title',
+    subtitleKey: 'mobile.beautyExtras.card.dreamBoard.subtitle',
     color: '#db2777',
     bg: '#fdf2f8',
     tips: [
-      { emoji: '💇', text: 'شعر طويل صحي — هدفي للعام القادم' },
-      { emoji: '👰', text: 'إطلالة زفاف مثالية — حلم العمر' },
-      { emoji: '💄', text: 'إتقان المكياج — دورة احترافية' },
-      { emoji: '🧴', text: 'روتين عناية يومي — التزام' },
+      { emoji: '💇', textKey: 'mobile.beautyExtras.card.dreamBoard.tip1' },
+      { emoji: '👰', textKey: 'mobile.beautyExtras.card.dreamBoard.tip2' },
+      { emoji: '💄', textKey: 'mobile.beautyExtras.card.dreamBoard.tip3' },
+      { emoji: '🧴', textKey: 'mobile.beautyExtras.card.dreamBoard.tip4' },
     ],
   },
   {
     emoji: '🎁',
-    title: 'سكرت سانتا',
-    subtitle: 'تبادل هدايا — عرايس الرياض',
+    titleKey: 'mobile.beautyExtras.card.secretSanta.title',
+    subtitleKey: 'mobile.beautyExtras.card.secretSanta.subtitle',
     color: '#e11d48',
     bg: '#fff1f2',
     tips: [
-      { emoji: '👥', text: 'المجموعة: عرايس الرياض — 12 مشتركة' },
-      { emoji: '💰', text: 'الميزانية: 200 ر.س للهدية' },
-      { emoji: '🎲', text: 'القرعة: 15 ديسمبر — تبادل الهدايا' },
-      { emoji: '🎉', text: 'حفل التبادل: 25 ديسمبر' },
+      { emoji: '👥', textKey: 'mobile.beautyExtras.card.secretSanta.tip1' },
+      { emoji: '💰', textKey: 'mobile.beautyExtras.card.secretSanta.tip2' },
+      { emoji: '🎲', textKey: 'mobile.beautyExtras.card.secretSanta.tip3' },
+      { emoji: '🎉', textKey: 'mobile.beautyExtras.card.secretSanta.tip4' },
     ],
   },
   {
     emoji: '🤝',
-    title: 'شريك المساءلة',
-    subtitle: 'نورة — 12 يوم تواصل',
+    titleKey: 'mobile.beautyExtras.card.accountabilityPartner.title',
+    subtitleKey: 'mobile.beautyExtras.card.accountabilityPartner.subtitle',
     color: '#0d9488',
     bg: '#f0fdfa',
     tips: [
-      { emoji: '👭', text: 'الشريك: نورة — روتين عناية يومي' },
-      { emoji: '📆', text: '12 يوم متواصل — الهدف 30 يوم' },
-      { emoji: '⏰', text: 'تذكير يومي — الساعة 9 مساءً' },
-      { emoji: '🏆', text: 'المكافأة: خصم 10% عند 30 يوم' },
+      { emoji: '👭', textKey: 'mobile.beautyExtras.card.accountabilityPartner.tip1' },
+      { emoji: '📆', textKey: 'mobile.beautyExtras.card.accountabilityPartner.tip2' },
+      { emoji: '⏰', textKey: 'mobile.beautyExtras.card.accountabilityPartner.tip3' },
+      { emoji: '🏆', textKey: 'mobile.beautyExtras.card.accountabilityPartner.tip4' },
     ],
   },
   {
     emoji: '🙏',
-    title: 'دائرة الامتنان',
-    subtitle: 'شكراً لكِ — كلمات طيبة',
+    titleKey: 'mobile.beautyExtras.card.gratitudeCircle.title',
+    subtitleKey: 'mobile.beautyExtras.card.gratitudeCircle.subtitle',
     color: '#db2777',
     bg: '#fdf2f8',
     tips: [
-      { emoji: '💌', text: 'نورة → مها: شكراً لنصيحة البشرة!' },
-      { emoji: '🌟', text: 'مها → ريم: أنتِ ملهمة دائماً' },
-      { emoji: '💐', text: 'ريم → سارة: شكراً لدعمكِ المتواصل' },
-      { emoji: '✨', text: 'أرسلي كلمة شكر — تضيء يوم أحد' },
+      { emoji: '💌', textKey: 'mobile.beautyExtras.card.gratitudeCircle.tip1' },
+      { emoji: '🌟', textKey: 'mobile.beautyExtras.card.gratitudeCircle.tip2' },
+      { emoji: '💐', textKey: 'mobile.beautyExtras.card.gratitudeCircle.tip3' },
+      { emoji: '✨', textKey: 'mobile.beautyExtras.card.gratitudeCircle.tip4' },
     ],
   },
   {
     emoji: '💖',
-    title: 'توكيدات إيجابية',
-    subtitle: 'أنا جميلة — أنا قوية',
+    titleKey: 'mobile.beautyExtras.card.affirmations.title',
+    subtitleKey: 'mobile.beautyExtras.card.affirmations.subtitle',
     color: '#7c3aed',
     bg: '#f5f3ff',
     tips: [
-      { emoji: '🌸', text: 'أنا أستحق العناية بنفسي كل يوم' },
-      { emoji: '👑', text: 'جمالي ينبع من ثقتي بنفسي' },
-      { emoji: '🌱', text: 'كل يوم أكون فيه أفضل من الأمس' },
-      { emoji: '💗', text: 'أحب نفسي كما أنا — وهذه قوتي' },
+      { emoji: '🌸', textKey: 'mobile.beautyExtras.card.affirmations.tip1' },
+      { emoji: '👑', textKey: 'mobile.beautyExtras.card.affirmations.tip2' },
+      { emoji: '🌱', textKey: 'mobile.beautyExtras.card.affirmations.tip3' },
+      { emoji: '💗', textKey: 'mobile.beautyExtras.card.affirmations.tip4' },
     ],
   },
   {
     emoji: '📔',
-    title: 'يوميات الامتنان',
-    subtitle: '15 تدوينة — استمري',
+    titleKey: 'mobile.beautyExtras.card.gratitudeJournal.title',
+    subtitleKey: 'mobile.beautyExtras.card.gratitudeJournal.subtitle',
     color: '#059669',
     bg: '#ecfdf5',
     tips: [
-      { emoji: '📝', text: '15 تدوينة — 15 يوماً من الشكر' },
-      { emoji: '🔥', text: '5 أيام متواصلة' },
-      { emoji: '🌞', text: 'آخر تدوينة: بشرة مشرقة اليوم' },
-      { emoji: '🎯', text: 'الهدف: 30 يوم امتنان' },
+      { emoji: '📝', textKey: 'mobile.beautyExtras.card.gratitudeJournal.tip1' },
+      { emoji: '🔥', textKey: 'mobile.beautyExtras.card.gratitudeJournal.tip2' },
+      { emoji: '🌞', textKey: 'mobile.beautyExtras.card.gratitudeJournal.tip3' },
+      { emoji: '🎯', textKey: 'mobile.beautyExtras.card.gratitudeJournal.tip4' },
     ],
   },
   {
     emoji: '🎬',
-    title: 'فلوق الجمال',
-    subtitle: 'يوم في حياة نورة',
+    titleKey: 'mobile.beautyExtras.card.beautyVlog.title',
+    subtitleKey: 'beautyExtras.dayInNouraLife',
     color: '#e11d48',
     bg: '#fff1f2',
     tips: [
-      { emoji: '💄', text: 'الفئة: مكياج — 8 دقائق' },
-      { emoji: '🎤', text: 'تقديم: نورة — خبيرة تجميل' },
-      { emoji: '👀', text: '1,234 مشاهدة' },
-      { emoji: '🎥', text: 'شاهدي الفلوق — تعلمي روتين جديد' },
+      { emoji: '💄', textKey: 'mobile.beautyExtras.card.beautyVlog.tip1' },
+      { emoji: '🎤', textKey: 'mobile.beautyExtras.card.beautyVlog.tip2' },
+      { emoji: '👀', textKey: 'mobile.beautyExtras.card.beautyVlog.tip3' },
+      { emoji: '🎥', textKey: 'mobile.beautyExtras.card.beautyVlog.tip4' },
     ],
   },
 ];
@@ -134,15 +135,15 @@ export default function BeautyExtrasScreen(): JSX.Element {
             <View style={s.ch}>
               <Text style={s.ce}>{c.emoji}</Text>
               <View style={s.cw}>
-                <Text style={[s.ct, { color: c.color }]}>{c.title}</Text>
-                <Text style={s.cs}>{c.subtitle}</Text>
+                <Text style={[s.ct, { color: c.color }]}>{t(c.titleKey)}</Text>
+                <Text style={s.cs}>{t(c.subtitleKey)}</Text>
               </View>
             </View>
             <View style={s.tl}>
-              {c.tips.map((t, j) => (
+              {c.tips.map((tip, j) => (
                 <View key={j} style={[s.tr, { backgroundColor: c.bg }]}>
-                  <Text style={s.te}>{t.emoji}</Text>
-                  <Text style={[s.tt, { color: c.color }]}>{t.text}</Text>
+                  <Text style={s.te}>{tip.emoji}</Text>
+                  <Text style={[s.tt, { color: c.color }]}>{t(tip.textKey)}</Text>
                 </View>
               ))}
             </View>

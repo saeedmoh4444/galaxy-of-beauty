@@ -5,8 +5,6 @@ import { useLocale } from '@/components/LocaleProvider';
 import { useAuthState } from '@/hooks/useAuthState';
 import { trpc } from '@/lib/trpc-react';
 
-const CATS = ['مكياج', 'عناية', 'شعر', 'أظافر', 'طبيعي'];
-
 interface ClosetProduct {
   id?: number;
   emoji?: string;
@@ -19,12 +17,12 @@ export default function BeautyClosetScreen(): JSX.Element {
   const { locale, t } = useLocale();
   const isAuthed = useAuthState();
   const [filter, setFilter] = useState<string | null>(null);
-  const catLabels = [
-    t('beautyCloset.cat-makeup'),
-    t('beautyCloset.cat-skin'),
-    t('beautyCloset.cat-hair'),
-    t('beautyCloset.cat-nails'),
-    t('beautyCloset.cat-natural'),
+  const cats = [
+    { id: 'makeup', label: t('beautyCloset.cat-makeup') },
+    { id: 'skin', label: t('beautyCloset.cat-skin') },
+    { id: 'hair', label: t('beautyCloset.cat-hair') },
+    { id: 'nails', label: t('beautyCloset.cat-nails') },
+    { id: 'natural', label: t('beautyCloset.cat-natural') },
   ];
   const q = trpc.restockReminder.myItems.useQuery(undefined, { enabled: isAuthed });
   const products: ClosetProduct[] = (q.data as unknown as ClosetProduct[] | undefined) ?? [];
@@ -63,13 +61,13 @@ export default function BeautyClosetScreen(): JSX.Element {
           >
             <Text style={[styles.ft, !filter && styles.fta]}>{t('beautyCloset.all')}</Text>
           </TouchableOpacity>
-          {CATS.map((c, i) => (
+          {cats.map((c) => (
             <TouchableOpacity
-              key={c}
-              onPress={() => setFilter(c)}
-              style={[styles.fc, filter === c && styles.fca]}
+              key={c.id}
+              onPress={() => setFilter(c.label)}
+              style={[styles.fc, filter === c.label && styles.fca]}
             >
-              <Text style={[styles.ft, filter === c && styles.fta]}>{catLabels[i] ?? c}</Text>
+              <Text style={[styles.ft, filter === c.label && styles.fta]}>{c.label}</Text>
             </TouchableOpacity>
           ))}
         </View>
