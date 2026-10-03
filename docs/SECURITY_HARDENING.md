@@ -107,7 +107,7 @@
 
 | #   | Check                                      | Status | Notes                             |
 | --- | ------------------------------------------ | ------ | --------------------------------- |
-| I1  | Payment processing via certified gateway   | ✅     | PayFort/APS — PCI-DSS Level 1     |
+| I1  | Payment processing via certified gateway   | ✅     | MyFatoorah — PCI-DSS Level 1      |
 | I2  | No card data stored on server              | ✅     | Tokenization via payment gateway  |
 | I3  | Idempotency keys for all payment mutations | ✅     | Prevents double-charge            |
 | I4  | Payment webhooks verified                  | ⚠️     | Should add signature verification |

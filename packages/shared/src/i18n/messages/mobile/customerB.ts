@@ -1963,4 +1963,38 @@ export const mobileCustomerBMessages = {
     ar: 'الشاي الأخضر — من الداخل والخارج',
     en: 'Green tea — inside and out',
   },
+  // Checkout — MyFatoorah shipping (payments.payCart flow)
+  'mobile.checkout.shipping-title': { ar: 'عنوان الشحن', en: 'Shipping Address' },
+  'mobile.checkout.shipping-person-name': { ar: 'اسم المستلم', en: 'Recipient name' },
+  'mobile.checkout.shipping-mobile': { ar: 'رقم الجوال', en: 'Mobile number' },
+  'mobile.checkout.shipping-line-address': { ar: 'العنوان', en: 'Address' },
+  'mobile.checkout.shipping-city': { ar: 'المدينة', en: 'City' },
+  'mobile.checkout.shipping-city-placeholder': {
+    ar: 'ابحثي عن مدينتكِ',
+    en: 'Search for your city',
+  },
+  'mobile.checkout.shipping-postal-code': { ar: 'الرمز البريدي', en: 'Postal code' },
+  'mobile.checkout.shipping-country': { ar: 'الدولة', en: 'Country' },
+  'mobile.checkout.shipping-method': { ar: 'شركة الشحن', en: 'Shipping courier' },
+  'mobile.checkout.shipping-method-dhl': { ar: 'دي إتش إل', en: 'DHL' },
+  'mobile.checkout.shipping-method-aramex': { ar: 'أرامكس', en: 'Aramex' },
+  'mobile.checkout.shipping-charge': { ar: 'رسوم الشحن', en: 'Shipping' },
+  'mobile.checkout.shipping-required': {
+    ar: 'أكملي بيانات الشحن للمتابعة',
+    en: 'Complete the shipping details to continue',
+  },
+  'mobile.checkout.redirecting-gateway': {
+    ar: 'جارٍ تحويلك إلى بوابة الدفع…',
+    en: 'Redirecting you to the payment gateway…',
+  },
+  'mobile.checkout.payment-pending': {
+    ar: 'الدفع قيد المعالجة',
+    en: 'Payment is still processing',
+  },
+  'mobile.checkout.payment-failed': { ar: 'فشلت عملية الدفع', en: 'Payment failed' },
+  'mobile.checkout.payment-success': { ar: 'تم الدفع بنجاح', en: 'Payment successful' },
+  'mobile.checkout.check-payment-status': {
+    ar: 'التحقق من حالة الدفع',
+    en: 'Check payment status',
+  },
 } as const satisfies Record<string, { ar: string; en: string }>;

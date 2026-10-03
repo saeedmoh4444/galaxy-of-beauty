@@ -59,4 +59,39 @@ export const walletMessages = {
   'wallet.your-balance': { ar: 'رصيدكِ: {balance}', en: 'Your balance: {balance}' },
   'wallet.insufficient-balance': { ar: '(الرصيد غير كاف)', en: '(Insufficient balance)' },
   'wallet.pay-now': { ar: 'ادفعي {amount}', en: 'Pay {amount}' },
+
+  // Checkout — MyFatoorah shipping
+  'wallet.shipping-title': { ar: 'عنوان الشحن', en: 'Shipping Address' },
+  'wallet.shipping-person-name': { ar: 'اسم المستلم', en: 'Recipient name' },
+  'wallet.shipping-mobile': { ar: 'رقم الجوال', en: 'Mobile number' },
+  'wallet.shipping-line-address': { ar: 'العنوان', en: 'Address' },
+  'wallet.shipping-city': { ar: 'المدينة', en: 'City' },
+  'wallet.shipping-city-placeholder': {
+    ar: 'ابحثي عن مدينتكِ',
+    en: 'Search for your city',
+  },
+  'wallet.shipping-postal-code': { ar: 'الرمز البريدي', en: 'Postal code' },
+  'wallet.shipping-country': { ar: 'الدولة', en: 'Country' },
+  'wallet.shipping-method': { ar: 'شركة الشحن', en: 'Shipping courier' },
+  'wallet.shipping-method-dhl': { ar: 'دي إتش إل', en: 'DHL' },
+  'wallet.shipping-method-aramex': { ar: 'أرامكس', en: 'Aramex' },
+  'wallet.shipping-charge': { ar: 'رسوم الشحن', en: 'Shipping' },
+  'wallet.shipping-required': {
+    ar: 'أكملي بيانات الشحن للمتابعة',
+    en: 'Complete the shipping details to continue',
+  },
+  'wallet.redirecting-gateway': {
+    ar: 'جارٍ تحويلك إلى بوابة الدفع…',
+    en: 'Redirecting you to the payment gateway…',
+  },
+  'wallet.payment-pending': {
+    ar: 'الدفع قيد المعالجة',
+    en: 'Payment is still processing',
+  },
+  'wallet.payment-failed': { ar: 'فشلت عملية الدفع', en: 'Payment failed' },
+  'wallet.payment-success': { ar: 'تم الدفع بنجاح', en: 'Payment successful' },
+  'wallet.check-payment-status': {
+    ar: 'التحقق من حالة الدفع',
+    en: 'Check payment status',
+  },
 } as const;

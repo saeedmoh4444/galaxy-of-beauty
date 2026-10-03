@@ -29,7 +29,7 @@
 ┌───────────▼───────────────────────────────────────────────┐
 │                    INFRASTRUCTURE                           │
 │  PostgreSQL 15 · Redis 7 · Socket.IO · Docker Compose     │
-│  PayFort/APS · OpenAI · Google Calendar · ZATCA · SMS    │
+│  MyFatoorah · OpenAI · Google Calendar · ZATCA · SMS    │
 │  Leaflet/OSM · MediaPipe · Cloudinary · Sentry           │
 └─────────────────────────────────────────────────────────────┘
 ```
@@ -47,7 +47,7 @@
    ├── Confirms slot reservation
    └── Emits Socket.IO event → customer room
 5. Payment authorized → payments.authorize
-   ├── PayFort/APS API call
+   ├── MyFatoorah API call
    └── Credits cashback to wallet
 6. Service completed → bookings.transition (COMPLETED)
    ├── Unlocks review creation
@@ -61,7 +61,7 @@
 
 | Category    | Features                                                                                  |
 | ----------- | ----------------------------------------------------------------------------------------- |
-| Core        | Booking System · Payments (PayFort) · Wallet · Auth (JWT+2FA) · AI Chatbot                |
+| Core        | Booking System · Payments (MyFatoorah) · Wallet · Auth (JWT+2FA) · AI Chatbot             |
 | Commerce    | Gift Cards · Beauty Packages · Price Estimator · Flash Deals · Box Builder · Marketplace  |
 | Social      | Community Feed · Group Bookings · Mood Board · Technician Q&A · Referrals                 |
 | Content     | Blog · Beauty Tutorials · Live Stream · Beauty Courses · Lookbook · Campaigns             |

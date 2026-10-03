@@ -709,7 +709,7 @@ model Booking {
   @@map("bookings")
 }
 
-// ======================================================================// Payments (PayFort / Amazon Payment Services)
+// ======================================================================// Payments (MyFatoorah)
 // ======================================================================
 model Payment {
   id            Int           @id @default(autoincrement())
@@ -1251,7 +1251,7 @@ model PlatformConfig {
 model SavedCard {
   id           Int      @id @default(autoincrement())
   userId       Int
-  cardToken    String   // PayFort/APS token
+  cardToken    String   // MyFatoorah token
   lastFour     String   // Last 4 digits
   brand        String   // visa, mastercard, mada, amex
   expMonth     Int

@@ -60,7 +60,7 @@ avoids three separate half-features.
 
 - Public store pages: logo, bio, rating, product grid (mirrors the
   `gallery/[technicianId]` pattern)
-- Products flow through the existing marketplace cart/checkout (Payfort +
+- Products flow through the existing marketplace cart/checkout (MyFatoorah +
   cash already work)
 - Multi-vendor orders: one cart, split per store, per-store order records,
   stock decrement on payment
@@ -90,7 +90,7 @@ avoids three separate half-features.
 | -------------------------- | -------------------------------------------------------- |
 | Registration + approval    | technician KYC pipeline + B.7 submission queue           |
 | Product catalog            | `VendorProduct` (planned in B.3 — widen to StoreProduct) |
-| Cart / checkout / payments | marketplace + Payfort + cash (live)                      |
+| Cart / checkout / payments | marketplace + MyFatoorah + wallet + cash (live)          |
 | Payouts / statements       | payouts router (technician-scoped, reusable machinery)   |
 | Disputes / refunds         | disputes router                                          |
 | i18n / themes / components | shared catalog + @galaxy/ui                              |
