@@ -1,31 +1,77 @@
 import { View, Text, ScrollView, StyleSheet, TouchableOpacity, RefreshControl } from 'react-native';
 import { useState } from 'react';
 import type { JSX } from 'react';
+import type { TranslationKey } from '@galaxy/shared';
 import { useLocale } from '@/components/LocaleProvider';
 import { useAuthState } from '@/hooks/useAuthState';
 import { trpc } from '@/lib/trpc-react';
 
-const OCCASIONS = [
-  { key: 'birthday', emoji: '🎂', name: 'عيد ميلاد' },
-  { key: 'eid', emoji: '🌙', name: 'العيد' },
-  { key: 'wedding', emoji: '💍', name: 'زفاف' },
-  { key: 'graduation', emoji: '🎓', name: 'تخرج' },
-  { key: 'valentine', emoji: '💖', name: 'عيد الحب' },
-  { key: 'mothersday', emoji: '💐', name: 'عيد الأم' },
+interface OccasionItem {
+  key: string;
+  emoji: string;
+  nameKey: TranslationKey;
+}
+
+type GiftPriority = 'high' | 'medium' | 'low';
+
+interface GiftItem {
+  emoji: string;
+  nameKey: TranslationKey;
+  price: number;
+  priority: GiftPriority;
+  priorityKey: TranslationKey;
+}
+
+const OCCASIONS: OccasionItem[] = [
+  { key: 'birthday', emoji: '🎂', nameKey: 'beautyWishlistGifts.occasion-birthday' },
+  { key: 'eid', emoji: '🌙', nameKey: 'beautyWishlistGifts.occasion-eid' },
+  { key: 'wedding', emoji: '💍', nameKey: 'beautyWishlistGifts.occasion-wedding' },
+  { key: 'graduation', emoji: '🎓', nameKey: 'beautyWishlistGifts.occasion-graduation' },
+  { key: 'valentine', emoji: '💖', nameKey: 'beautyWishlistGifts.occasion-valentine' },
+  { key: 'mothersday', emoji: '💐', nameKey: 'beautyWishlistGifts.occasion-mothersday' },
 ];
+
+const GIFTS: GiftItem[] = [
+  {
+    emoji: '💆',
+    nameKey: 'mobile.beautyWishlistGifts.gift-swedish-massage',
+    price: 350,
+    priority: 'high',
+    priorityKey: 'mobile.beautyWishlistGifts.priority-high',
+  },
+  {
+    emoji: '💅',
+    nameKey: 'mobile.beautyWishlistGifts.gift-gel-manicure',
+    price: 180,
+    priority: 'medium',
+    priorityKey: 'mobile.beautyWishlistGifts.priority-medium',
+  },
+  {
+    emoji: '🧖',
+    nameKey: 'mobile.beautyWishlistGifts.gift-skincare-session',
+    price: 250,
+    priority: 'low',
+    priorityKey: 'mobile.beautyWishlistGifts.priority-low',
+  },
+  {
+    emoji: '💇',
+    nameKey: 'marketing.shop-the-look.service-hair-styling',
+    price: 200,
+    priority: 'low',
+    priorityKey: 'mobile.beautyWishlistGifts.priority-low',
+  },
+];
+
+const PRIORITY_BG: Record<GiftPriority, string> = {
+  high: '#fee2e2',
+  medium: '#fef3c7',
+  low: '#f3f4f6',
+};
 
 export default function BeautyWishlistGiftsScreen(): JSX.Element {
   const { t } = useLocale();
   const isAuthed = useAuthState();
   const q = trpc.wishlist.list.useQuery(undefined, { enabled: isAuthed });
-  const occasionLabels: Record<string, string> = {
-    birthday: t('beautyWishlistGifts.occasion-birthday'),
-    eid: t('beautyWishlistGifts.occasion-eid'),
-    wedding: t('beautyWishlistGifts.occasion-wedding'),
-    graduation: t('beautyWishlistGifts.occasion-graduation'),
-    valentine: t('beautyWishlistGifts.occasion-valentine'),
-    mothersday: t('beautyWishlistGifts.occasion-mothersday'),
-  };
   const [selectedOccasion, setSelectedOccasion] = useState('birthday');
   const [shareMode, setShareMode] = useState(false);
 
@@ -58,7 +104,7 @@ export default function BeautyWishlistGiftsScreen(): JSX.Element {
           >
             <Text style={styles.oe}>{o.emoji}</Text>
             <Text style={[styles.on, selectedOccasion === o.key && styles.ona]}>
-              {occasionLabels[o.key] ?? o.name}
+              {t(o.nameKey)}
             </Text>
           </TouchableOpacity>
         ))}
@@ -79,38 +125,21 @@ export default function BeautyWishlistGiftsScreen(): JSX.Element {
       <Text style={styles.st}>
         {t('beautyWishlistGifts.my-wishes', {
           emoji: occasion.emoji,
-          name: occasionLabels[occasion.key] ?? occasion.name,
+          name: t(occasion.nameKey),
         })}
       </Text>
       <View style={styles.gifts}>
-        {[
-          { emoji: '💆', name: 'جلسة مساج سويدي', price: 350, priority: 'أولوية' },
-          { emoji: '💅', name: 'مانيكير جل', price: 180, priority: 'مهم' },
-          { emoji: '🧖', name: 'جلسة عناية بالبشرة', price: 250, priority: 'جميل' },
-          { emoji: '💇', name: 'تصفيف شعر', price: 200, priority: 'جميل' },
-        ].map((g, i) => (
+        {GIFTS.map((g, i) => (
           <View key={i} style={styles.gift}>
             <Text style={styles.ge}>{g.emoji}</Text>
             <View style={{ flex: 1 }}>
-              <Text style={styles.gn}>{g.name}</Text>
+              <Text style={styles.gn}>{t(g.nameKey)}</Text>
               <Text style={styles.gp}>
                 {t('beautyWishlistGifts.amount', { value: g.price.toLocaleString() })}
               </Text>
             </View>
-            <View
-              style={[
-                styles.gpr,
-                {
-                  backgroundColor:
-                    g.priority === 'أولوية'
-                      ? '#fee2e2'
-                      : g.priority === 'مهم'
-                        ? '#fef3c7'
-                        : '#f3f4f6',
-                },
-              ]}
-            >
-              <Text style={styles.gpt}>{g.priority}</Text>
+            <View style={[styles.gpr, { backgroundColor: PRIORITY_BG[g.priority] }]}>
+              <Text style={styles.gpt}>{t(g.priorityKey)}</Text>
             </View>
           </View>
         ))}

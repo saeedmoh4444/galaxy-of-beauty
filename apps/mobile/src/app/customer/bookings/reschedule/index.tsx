@@ -44,7 +44,7 @@ export default function RescheduleScreen(): JSX.Element {
     rescheduleMut.mutate({
       bookingId,
       newStartAt: nd,
-      reason: 'طلب تعديل الموعد',
+      reason: t('mobile.bookingsReschedule.reason'),
     });
   };
   if (bookingsQ.isLoading) return <SkeletonList count={4} />;

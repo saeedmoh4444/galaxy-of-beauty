@@ -1,5 +1,6 @@
 import type { JSX } from 'react';
 import { View, Text, StyleSheet } from 'react-native';
+import type { TranslationKey } from '@galaxy/shared';
 import { ScreenState } from '@/components/ScreenState';
 import { trpc } from '@/lib/trpc-react';
 import { useLocale } from '@/components/LocaleProvider';
@@ -12,12 +13,12 @@ const COLORS = {
   gray900: '#111827',
   checked: '#10b981',
 };
-const CHECKLIST = [
-  'تأكيد موعد الحجز',
-  'تجهيز المكان',
-  'إزالة المكياج القديم',
-  'شرب الماء',
-  'الاسترخاء قبل الموعد',
+const CHECKLIST: TranslationKey[] = [
+  'mobile.bookingChecklist.item-confirm-booking',
+  'mobile.bookingChecklist.item-prepare-space',
+  'mobile.bookingChecklist.item-remove-old-makeup',
+  'mobile.bookingChecklist.item-drink-water',
+  'mobile.bookingChecklist.item-relax-before',
 ];
 
 export default function BookingChecklistScreen(): JSX.Element {
@@ -42,10 +43,10 @@ export default function BookingChecklistScreen(): JSX.Element {
       onRetry={() => list.refetch()}
     >
       <Text style={styles.title}>{t('bookingChecklist.title')}</Text>
-      {CHECKLIST.map((item, i) => (
+      {CHECKLIST.map((itemKey, i) => (
         <View key={i} style={styles.row}>
           <Text style={styles.check}>⬜</Text>
-          <Text style={styles.text}>{item}</Text>
+          <Text style={styles.text}>{t(itemKey)}</Text>
         </View>
       ))}
     </ScreenState>

@@ -2,48 +2,60 @@ import { View, Text, ScrollView, StyleSheet, TouchableOpacity } from 'react-nati
 import { useState } from 'react';
 import type { JSX } from 'react';
 import { useRouter } from 'expo-router';
+import type { TranslationKey } from '@galaxy/shared';
 import { useLocale } from '@/components/LocaleProvider';
 
-const SEASONS_COLORS = [
+interface SeasonPalette {
+  key: string;
+  emoji: string;
+  nameKey: TranslationKey;
+  descKey: TranslationKey;
+  colors: string[];
+  skinKey: TranslationKey;
+  makeupKeys: TranslationKey[];
+  jewelryKey: TranslationKey;
+}
+
+const SEASONS_COLORS: SeasonPalette[] = [
   {
     key: 'winter',
     emoji: '❄️',
-    name: 'شتوية',
-    desc: 'ألوان باردة وعميقة',
+    nameKey: 'color.season.winter',
+    descKey: 'color.desc.winter',
     colors: ['#1e1b4b', '#312e81', '#831843', '#ffffff', '#000000', '#dc2626', '#4c1d95'],
-    skin: 'بشرة فاتحة أو زيتونية باردة',
-    makeup: ['أحمر شفاه عنابي', 'ظلال عيون بنفسجية', 'أيلاينر أسود'],
-    jewelry: 'الفضة',
+    skinKey: 'color.skin.winter',
+    makeupKeys: ['color.makeup.winter1', 'color.makeup.winter2', 'color.makeup.winter3'],
+    jewelryKey: 'color.jewelry.silver',
   },
   {
     key: 'summer',
     emoji: '☀️',
-    name: 'صيفية',
-    desc: 'ألوان ناعمة وباستيل',
+    nameKey: 'color.season.summer',
+    descKey: 'color.desc.summer',
     colors: ['#fbcfe8', '#ddd6fe', '#bfdbfe', '#d1d5db', '#ec4899', '#8b5cf6', '#93c5fd'],
-    skin: 'بشرة فاتحة أو متوسطة باردة',
-    makeup: ['أحمر شفاه وردي', 'ظلال عيون لافندر', 'ماسكارا بنية'],
-    jewelry: 'الفضة',
+    skinKey: 'color.skin.summer',
+    makeupKeys: ['color.makeup.summer1', 'color.makeup.summer2', 'color.makeup.summer3'],
+    jewelryKey: 'color.jewelry.silver',
   },
   {
     key: 'autumn',
     emoji: '🍂',
-    name: 'خريفية',
-    desc: 'ألوان دافئة وغنية',
+    nameKey: 'color.season.autumn',
+    descKey: 'color.desc.autumn',
     colors: ['#fef3c7', '#fed7aa', '#fde68a', '#d97706', '#b45309', '#92400e', '#78350f'],
-    skin: 'بشرة زيتونية دافئة أو ذهبية',
-    makeup: ['أحمر شفاه برونزي', 'ظلال عيون ترابية', 'بلاشر خوخي'],
-    jewelry: 'الذهب',
+    skinKey: 'color.skin.autumn',
+    makeupKeys: ['color.makeup.autumn1', 'color.makeup.autumn2', 'color.makeup.autumn3'],
+    jewelryKey: 'color.jewelry.gold',
   },
   {
     key: 'spring',
     emoji: '🌸',
-    name: 'ربيعية',
-    desc: 'ألوان مشرقة ودافئة',
+    nameKey: 'color.season.spring',
+    descKey: 'color.desc.spring',
     colors: ['#fef08a', '#fde047', '#86efac', '#fca5a5', '#fb923c', '#22c55e', '#fbbf24'],
-    skin: 'بشرة فاتحة دافئة أو خوخية',
-    makeup: ['أحمر شفاه مرجاني', 'ظلال عيون ذهبية', 'هايلايتر شمباني'],
-    jewelry: 'الذهب',
+    skinKey: 'color.skin.spring',
+    makeupKeys: ['color.makeup.spring1', 'color.makeup.spring2', 'color.makeup.spring3'],
+    jewelryKey: 'color.jewelry.gold',
   },
 ];
 
@@ -66,16 +78,16 @@ export default function ColorAnalysisScreen(): JSX.Element {
             style={[styles.tb, season === sc.key && styles.tbA]}
           >
             <Text style={styles.tbe}>{sc.emoji}</Text>
-            <Text style={[styles.tbn, season === sc.key && styles.tbnA]}>{sc.name}</Text>
+            <Text style={[styles.tbn, season === sc.key && styles.tbnA]}>{t(sc.nameKey)}</Text>
           </TouchableOpacity>
         ))}
       </View>
 
       <View style={styles.card}>
         <Text style={styles.ct}>
-          {s.emoji} {s.name} — {s.desc}
+          {s.emoji} {t(s.nameKey)} — {t(s.descKey)}
         </Text>
-        <Text style={styles.cs}> {s.skin}</Text>
+        <Text style={styles.cs}> {t(s.skinKey)}</Text>
 
         <Text style={styles.st}>{t('colorAnalysis.palette')}</Text>
         <View style={styles.palette}>
@@ -85,16 +97,16 @@ export default function ColorAnalysisScreen(): JSX.Element {
         </View>
 
         <Text style={styles.st}>{t('colorAnalysis.makeup')}</Text>
-        {s.makeup.map((m, i) => (
+        {s.makeupKeys.map((m, i) => (
           <View key={i} style={styles.makeupItem}>
             <Text style={styles.makeupEmoji}>💄</Text>
-            <Text style={styles.makeupText}>{m}</Text>
+            <Text style={styles.makeupText}>{t(m)}</Text>
           </View>
         ))}
 
         <View style={styles.jewelryRow}>
           <Text style={styles.jewelryLabel}>{t('colorAnalysis.jewelry')}</Text>
-          <Text style={styles.jewelryValue}>{s.jewelry}</Text>
+          <Text style={styles.jewelryValue}>{t(s.jewelryKey)}</Text>
         </View>
       </View>
 
