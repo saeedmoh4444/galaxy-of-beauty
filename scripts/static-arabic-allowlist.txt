@@ -1,8 +1,3 @@
-apps/mobile/src/app/customer/ai-routine/index.tsx
-apps/mobile/src/app/customer/allergen-checker/index.tsx
-apps/mobile/src/app/customer/beauty-academy/index.tsx
-apps/mobile/src/app/customer/beauty-advisor/index.tsx
-apps/mobile/src/app/customer/beauty-budget-planner/index.tsx
 apps/mobile/src/app/customer/beauty-closet/index.tsx
 apps/mobile/src/app/customer/beauty-community/index.tsx
 apps/mobile/src/app/customer/beauty-discovery/index.tsx

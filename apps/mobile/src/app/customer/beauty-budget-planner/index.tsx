@@ -1,18 +1,63 @@
 import { View, Text, ScrollView, StyleSheet, TouchableOpacity } from 'react-native';
 import { useState } from 'react';
 import type { JSX } from 'react';
+import type { TranslationKey } from '@galaxy/shared';
 import { ScreenState } from '@/components/ScreenState';
 import { useLocale } from '@/components/LocaleProvider';
 import { useAuthState } from '@/hooks/useAuthState';
 import { trpc } from '@/lib/trpc-react';
 
-const CATEGORIES = [
-  { key: 'hair', emoji: '💇', name: 'الشعر', budget: 200, color: '#ec4899' },
-  { key: 'skin', emoji: '🧴', name: 'البشرة', budget: 300, color: '#8b5cf6' },
-  { key: 'nails', emoji: '💅', name: 'الأظافر', budget: 100, color: '#f59e0b' },
-  { key: 'makeup', emoji: '💄', name: 'المكياج', budget: 150, color: '#db2777' },
-  { key: 'spa', emoji: '💆', name: 'السبا', budget: 250, color: '#059669' },
-  { key: 'products', emoji: '🛒', name: 'منتجات', budget: 200, color: '#0891b2' },
+interface BudgetCategory {
+  key: string;
+  emoji: string;
+  nameKey: TranslationKey;
+  budget: number;
+  color: string;
+}
+
+const CATEGORIES: BudgetCategory[] = [
+  {
+    key: 'hair',
+    emoji: '💇',
+    nameKey: 'beautyBudgetPlanner.cat-hair',
+    budget: 200,
+    color: '#ec4899',
+  },
+  {
+    key: 'skin',
+    emoji: '🧴',
+    nameKey: 'beautyBudgetPlanner.cat-skin',
+    budget: 300,
+    color: '#8b5cf6',
+  },
+  {
+    key: 'nails',
+    emoji: '💅',
+    nameKey: 'beautyBudgetPlanner.cat-nails',
+    budget: 100,
+    color: '#f59e0b',
+  },
+  {
+    key: 'makeup',
+    emoji: '💄',
+    nameKey: 'beautyBudgetPlanner.cat-makeup',
+    budget: 150,
+    color: '#db2777',
+  },
+  {
+    key: 'spa',
+    emoji: '💆',
+    nameKey: 'beautyBudgetPlanner.cat-spa',
+    budget: 250,
+    color: '#059669',
+  },
+  {
+    key: 'products',
+    emoji: '🛒',
+    nameKey: 'beautyBudgetPlanner.cat-products',
+    budget: 200,
+    color: '#0891b2',
+  },
 ];
 
 export default function BeautyBudgetPlannerScreen(): JSX.Element {
@@ -25,14 +70,6 @@ export default function BeautyBudgetPlannerScreen(): JSX.Element {
   );
   const items = budgets.data ?? [];
   const [selectedCat, setSelectedCat] = useState<string | null>(null);
-  const categoryLabels: Record<string, string> = {
-    hair: t('beautyBudgetPlanner.cat-hair'),
-    skin: t('beautyBudgetPlanner.cat-skin'),
-    nails: t('beautyBudgetPlanner.cat-nails'),
-    makeup: t('beautyBudgetPlanner.cat-makeup'),
-    spa: t('beautyBudgetPlanner.cat-spa'),
-    products: t('beautyBudgetPlanner.cat-products'),
-  };
 
   const totalBudget = CATEGORIES.reduce((sum, c) => sum + c.budget, 0);
   const allocated = items.reduce((s, i) => s + i.spent, 0);
@@ -78,7 +115,7 @@ export default function BeautyBudgetPlannerScreen(): JSX.Element {
             >
               <Text style={styles.ce}>{c.emoji}</Text>
               <View style={{ flex: 1 }}>
-                <Text style={styles.cn}>{categoryLabels[c.key] ?? c.name}</Text>
+                <Text style={styles.cn}>{t(c.nameKey)}</Text>
                 <Text style={styles.cb}>
                   {t('beautyBudgetPlanner.cat-budget', { budget: c.budget.toLocaleString() })}
                 </Text>

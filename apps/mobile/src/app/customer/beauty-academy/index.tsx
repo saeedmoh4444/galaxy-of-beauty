@@ -1,15 +1,16 @@
 import type { JSX } from 'react';
 import { View, Text, ScrollView, StyleSheet } from 'react-native';
+import type { TranslationKey } from '@galaxy/shared';
 import { useLocale } from '@/components/LocaleProvider';
 
 interface Tip {
   emoji: string;
-  text: string;
+  textKey: TranslationKey;
 }
 interface Card {
   emoji: string;
-  title: string;
-  subtitle: string;
+  titleKey: TranslationKey;
+  subtitleKey: TranslationKey;
   color: string;
   bg: string;
   tips: Tip[];
@@ -18,132 +19,132 @@ interface Card {
 const CARDS: Card[] = [
   {
     emoji: '📖',
-    title: 'موسوعة الجمال',
-    subtitle: 'فيتامين سي — دليلك الشامل',
+    titleKey: 'mobile.beautyAcademy.card.encyclopedia.title',
+    subtitleKey: 'mobile.beautyAcademy.card.encyclopedia.subtitle',
     color: '#d97706',
     bg: '#fffbeb',
     tips: [
-      { emoji: '✨', text: 'مضاد أكسدة قوي — يفتح البشرة ويوحد لونها' },
-      { emoji: '🌅', text: 'صباحاً قبل واقي الشمس — نتائج أفضل' },
-      { emoji: '⏰', text: 'وقت القراءة: 5 دقائق — معلومات موثقة' },
-      { emoji: '✅', text: 'معلومة موثقة — مراجعة من خبراء' },
+      { emoji: '✨', textKey: 'mobile.beautyAcademy.card.encyclopedia.tip1' },
+      { emoji: '🌅', textKey: 'mobile.beautyAcademy.card.encyclopedia.tip2' },
+      { emoji: '⏰', textKey: 'mobile.beautyAcademy.card.encyclopedia.tip3' },
+      { emoji: '✅', textKey: 'mobile.beautyAcademy.card.encyclopedia.tip4' },
     ],
   },
   {
     emoji: '🔍',
-    title: 'اختبار البشرة',
-    subtitle: 'اكتشفي نوع بشرتكِ',
+    titleKey: 'mobile.beautyAcademy.card.skinTest.title',
+    subtitleKey: 'mobile.beautyAcademy.card.skinTest.subtitle',
     color: '#0d9488',
     bg: '#f0fdfa',
     tips: [
-      { emoji: '💧', text: 'كيف تبدو بشرتكِ بعد غسلها؟' },
-      { emoji: '🥵', text: 'كيف تتصرف في الطقس الحار؟' },
-      { emoji: '🌸', text: 'هل بشرتكِ حساسة للمنتجات الجديدة؟' },
-      { emoji: '🎯', text: '3 أسئلة — نتيجة فورية لنوع بشرتك' },
+      { emoji: '💧', textKey: 'mobile.beautyAcademy.card.skinTest.tip1' },
+      { emoji: '🥵', textKey: 'mobile.beautyAcademy.card.skinTest.tip2' },
+      { emoji: '🌸', textKey: 'mobile.beautyAcademy.card.skinTest.tip3' },
+      { emoji: '🎯', textKey: 'mobile.beautyAcademy.card.skinTest.tip4' },
     ],
   },
   {
     emoji: '❓',
-    title: 'أسئلة trivia',
-    subtitle: 'هل تعرفين إجابات الجمال؟',
+    titleKey: 'mobile.beautyAcademy.card.trivia.title',
+    subtitleKey: 'mobile.beautyAcademy.card.trivia.subtitle',
     color: '#7c3aed',
     bg: '#f5f3ff',
     tips: [
-      { emoji: '💊', text: 'أي فيتامين يسمى فيتامين الجمال؟' },
-      { emoji: '🧪', text: 'ما هو أقوى مضاد أكسدة في العناية؟' },
-      { emoji: '💧', text: 'كم وزن ماء يستطيع حمض الهيالورونيك حمله؟' },
-      { emoji: '🎮', text: 'أسئلة ممتعة — تعلمي أثناء اللعب' },
+      { emoji: '💊', textKey: 'mobile.beautyAcademy.card.trivia.tip1' },
+      { emoji: '🧪', textKey: 'mobile.beautyAcademy.card.trivia.tip2' },
+      { emoji: '💧', textKey: 'mobile.beautyAcademy.card.trivia.tip3' },
+      { emoji: '🎮', textKey: 'mobile.beautyAcademy.card.trivia.tip4' },
     ],
   },
   {
     emoji: '🤔',
-    title: 'خرافات الجمال',
-    subtitle: 'الحقيقة العلمية وراء الأساطير',
+    titleKey: 'mobile.beautyAcademy.card.myths.title',
+    subtitleKey: 'mobile.beautyAcademy.card.myths.subtitle',
     color: '#e11d48',
     bg: '#fff1f2',
     tips: [
-      { emoji: '🦷', text: '"معجون الأسنان يعالج الحبوب" — خرافة!' },
-      { emoji: '💇', text: '"الشعر يطول أسرع بالقص المتكرر" — غير صحيح' },
-      { emoji: '🔬', text: 'كل خرافة مع تفسير علمي مبسط' },
-      { emoji: '🩺', text: 'مصادر موثقة — من أطباء جلدية' },
+      { emoji: '🦷', textKey: 'mobile.beautyAcademy.card.myths.tip1' },
+      { emoji: '💇', textKey: 'mobile.beautyAcademy.card.myths.tip2' },
+      { emoji: '🔬', textKey: 'mobile.beautyAcademy.card.myths.tip3' },
+      { emoji: '🩺', textKey: 'mobile.beautyAcademy.card.myths.tip4' },
     ],
   },
   {
     emoji: '💼',
-    title: 'المسار الوظيفي',
-    subtitle: 'فنانة مكياج',
+    titleKey: 'mobile.beautyAcademy.card.career.title',
+    subtitleKey: 'mobile.beautyAcademy.card.career.subtitle',
     color: '#db2777',
     bg: '#fdf2f8',
     tips: [
-      { emoji: '🌱', text: 'المستوى: مبتدئ — 3 دورات أساسية' },
-      { emoji: '🎓', text: 'شهادة معتمدة — بعد إكمال 8 وحدات' },
-      { emoji: '📅', text: 'المدة التقريبية: 6 أشهر' },
-      { emoji: '📸', text: 'مشروع تخرج — جلسة تصوير كاملة' },
+      { emoji: '🌱', textKey: 'mobile.beautyAcademy.card.career.tip1' },
+      { emoji: '🎓', textKey: 'mobile.beautyAcademy.card.career.tip2' },
+      { emoji: '📅', textKey: 'mobile.beautyAcademy.card.career.tip3' },
+      { emoji: '📸', textKey: 'mobile.beautyAcademy.card.career.tip4' },
     ],
   },
   {
     emoji: '🥑',
-    title: 'وصفات طبيعية',
-    subtitle: 'قناع الأفوكادو والعسل',
+    titleKey: 'mobile.beautyAcademy.card.recipes.title',
+    subtitleKey: 'mobile.beautyAcademy.card.recipes.subtitle',
     color: '#059669',
     bg: '#ecfdf5',
     tips: [
-      { emoji: '🥑', text: 'المكونات: نصف أفوكادو + ملعقة عسل' },
-      { emoji: '⏳', text: 'المدة: 15 دقيقة على البشرة' },
-      { emoji: '✨', text: 'النتيجة: ترطيب عميق وإشراقة' },
-      { emoji: '📆', text: 'مرة أسبوعياً — مناسب للبشرة الجافة' },
+      { emoji: '🥑', textKey: 'mobile.beautyAcademy.card.recipes.tip1' },
+      { emoji: '⏳', textKey: 'mobile.beautyAcademy.card.recipes.tip2' },
+      { emoji: '✨', textKey: 'mobile.beautyAcademy.card.recipes.tip3' },
+      { emoji: '📆', textKey: 'mobile.beautyAcademy.card.recipes.tip4' },
     ],
   },
   {
     emoji: '🧴',
-    title: 'إنفوجرافيك',
-    subtitle: 'الحماية من الشمس',
+    titleKey: 'mobile.beautyAcademy.card.infographic.title',
+    subtitleKey: 'mobile.beautyAcademy.card.infographic.subtitle',
     color: '#0284c7',
     bg: '#f0f9ff',
     tips: [
-      { emoji: '☀️', text: 'أشعة UVA — 95% تخترق الغيوم والزجاج' },
-      { emoji: '🌞', text: 'SPF 30 — 97% نسبة الحماية' },
-      { emoji: '📚', text: 'المصدر: منظمة الصحة العالمية' },
-      { emoji: '🧴', text: 'طبقي واقي الشمس يومياً حتى في البيت' },
+      { emoji: '☀️', textKey: 'mobile.beautyAcademy.card.infographic.tip1' },
+      { emoji: '🌞', textKey: 'mobile.beautyAcademy.card.infographic.tip2' },
+      { emoji: '📚', textKey: 'mobile.beautyAcademy.card.infographic.tip3' },
+      { emoji: '🧴', textKey: 'mobile.beautyAcademy.card.infographic.tip4' },
     ],
   },
   {
     emoji: '💡',
-    title: 'نصيحة سريعة',
-    subtitle: 'طبقي المرطب على بشرة رطبة',
+    titleKey: 'mobile.beautyAcademy.card.quickTip.title',
+    subtitleKey: 'mobile.beautyAcademy.card.quickTip.subtitle',
     color: '#d97706',
     bg: '#fffbeb',
     tips: [
-      { emoji: '📋', text: 'التصنيف: ترطيب — الفئة: عناية يومية' },
-      { emoji: '⏰', text: 'بعد الغسول مباشرة — قبل أن تجف البشرة' },
-      { emoji: '💧', text: 'المرطب يحبس الرطوبة — بشرة أنعم' },
-      { emoji: '🌅', text: 'صباح ومساء — للحصول على أفضل نتيجة' },
+      { emoji: '📋', textKey: 'mobile.beautyAcademy.card.quickTip.tip1' },
+      { emoji: '⏰', textKey: 'mobile.beautyAcademy.card.quickTip.tip2' },
+      { emoji: '💧', textKey: 'mobile.beautyAcademy.card.quickTip.tip3' },
+      { emoji: '🌅', textKey: 'mobile.beautyAcademy.card.quickTip.tip4' },
     ],
   },
   {
     emoji: '🌿',
-    title: 'التراث السعودي',
-    subtitle: 'الحناء — فن وجمال',
+    titleKey: 'mobile.beautyAcademy.card.saudiHeritage.title',
+    subtitleKey: 'mobile.beautyAcademy.card.saudiHeritage.subtitle',
     color: '#d97706',
     bg: '#fffbeb',
     tips: [
-      { emoji: '🌿', text: 'نبات طبيعي — يبرد البشرة ويزينها' },
-      { emoji: '🎨', text: 'نقوش سعودية تقليدية — فن عمره قرون' },
-      { emoji: '💍', text: 'مناسبة: الأعراس والأعياد' },
-      { emoji: '💪', text: 'فوائد: تقوية الشعر وتبريد الجسم' },
+      { emoji: '🌿', textKey: 'mobile.beautyAcademy.card.saudiHeritage.tip1' },
+      { emoji: '🎨', textKey: 'mobile.beautyAcademy.card.saudiHeritage.tip2' },
+      { emoji: '💍', textKey: 'mobile.beautyAcademy.card.saudiHeritage.tip3' },
+      { emoji: '💪', textKey: 'mobile.beautyAcademy.card.saudiHeritage.tip4' },
     ],
   },
   {
     emoji: '🎓',
-    title: 'شهادة العناية',
-    subtitle: 'مسار العناية بالبشرة',
+    titleKey: 'mobile.beautyAcademy.card.careCertificate.title',
+    subtitleKey: 'mobile.beautyAcademy.card.careCertificate.subtitle',
     color: '#0d9488',
     bg: '#f0fdfa',
     tips: [
-      { emoji: '📝', text: '8 وحدات دراسية — من أساسيات إلى متقدم' },
-      { emoji: '📊', text: 'مكتمل: 3 من 8 — تقدم 38%' },
-      { emoji: '🔜', text: 'الوحدة القادمة: التقشير الكيميائي' },
-      { emoji: '🏆', text: 'شهادة معتمدة عند إكمال المسار' },
+      { emoji: '📝', textKey: 'mobile.beautyAcademy.card.careCertificate.tip1' },
+      { emoji: '📊', textKey: 'mobile.beautyAcademy.card.careCertificate.tip2' },
+      { emoji: '🔜', textKey: 'mobile.beautyAcademy.card.careCertificate.tip3' },
+      { emoji: '🏆', textKey: 'mobile.beautyAcademy.card.careCertificate.tip4' },
     ],
   },
 ];
@@ -160,15 +161,15 @@ export default function BeautyAcademyScreen(): JSX.Element {
             <View style={s.ch}>
               <Text style={s.ce}>{c.emoji}</Text>
               <View style={s.cw}>
-                <Text style={[s.ct, { color: c.color }]}>{c.title}</Text>
-                <Text style={s.cs}>{c.subtitle}</Text>
+                <Text style={[s.ct, { color: c.color }]}>{t(c.titleKey)}</Text>
+                <Text style={s.cs}>{t(c.subtitleKey)}</Text>
               </View>
             </View>
             <View style={s.tl}>
-              {c.tips.map((t, j) => (
+              {c.tips.map((tip, j) => (
                 <View key={j} style={[s.tr, { backgroundColor: c.bg }]}>
-                  <Text style={s.te}>{t.emoji}</Text>
-                  <Text style={[s.tt, { color: c.color }]}>{t.text}</Text>
+                  <Text style={s.te}>{tip.emoji}</Text>
+                  <Text style={[s.tt, { color: c.color }]}>{t(tip.textKey)}</Text>
                 </View>
               ))}
             </View>
