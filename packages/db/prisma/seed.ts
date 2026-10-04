@@ -55,6 +55,8 @@ async function main() {
     db.servicePricing.deleteMany(),
     db.serviceBundle.deleteMany(),
     db.service.deleteMany(),
+    // 1.4 — seasonal services reference categories; wipe before them.
+    db.seasonalService.deleteMany(),
     db.category.deleteMany(),
     db.technicianBadgeAssignment.deleteMany(),
     db.technicianBadge.deleteMany(),
@@ -2691,6 +2693,8 @@ async function main() {
   }> = [
     { status: 'COMPLETED', daysAgo: 7 },
     { status: 'COMPLETED', daysAgo: 14 },
+    { status: 'COMPLETED', daysAgo: 21 },
+    { status: 'COMPLETED', daysAgo: 30 },
     { status: 'ACCEPTED', daysAgo: 1 },
     { status: 'REQUESTED', daysAgo: 0 },
     { status: 'IN_PROGRESS', daysAgo: 0 },
@@ -2725,32 +2729,6 @@ async function main() {
     }
   }
   console.log(` ${bookingCount} bookings`);
-
-  // Reviews
-  let reviewCount = 0;
-  const reviewComments = [
-    'خدمة ممتازة وأنيقة!',
-    'رائعة جداً، سأكرر التجربة',
-    'محترفة ونظيفة، شكراً',
-    'أفضل فنية جربتها',
-  ];
-  for (let i = 0; i < 4; i++) {
-    try {
-      await (prisma as any).review.create({
-        data: {
-          userId: customers[i % customers.length]!.id,
-          technicianId: technicians[i % technicians.length]!.id,
-          serviceId: services[i % services.length]!.id,
-          rating: 4 + (i % 2),
-          comment: reviewComments[i]!,
-        },
-      });
-      reviewCount++;
-    } catch {
-      /* skip if booking reference missing */
-    }
-  }
-  console.log(` ${reviewCount} reviews`);
 
   // Wallet transactions
   try {
@@ -2801,8 +2779,10 @@ async function main() {
       try {
         await (prisma as any).review.create({
           data: {
-            bookingId: allBookings[i].id,
-            customerId: allBookings[i].customerId,
+            // Prisma 7: required relations are written via connect (scalar
+            // FKs are mutually exclusive with their relation connects).
+            booking: { connect: { id: allBookings[i].id } },
+            customer: { connect: { id: allBookings[i].customerId } },
             rating: 4 + (i % 2),
             comment: reviewComments[i]!,
           },
