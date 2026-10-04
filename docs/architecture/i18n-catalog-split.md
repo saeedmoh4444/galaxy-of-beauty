@@ -1,5 +1,7 @@
 # Per-Platform i18n Catalog Split — Architecture
 
+<!-- cspell:ignore Turbopack -->
+
 **Status**: live (PR #368 + #370). **Guarded**: CI build fails on violations.
 **Last updated**: 2026-10-04
 
@@ -9,7 +11,7 @@ The web bundle shipped all ~8,825 catalog keys because web pages imported the le
 
 ## Module map
 
-```
+```text
 packages/shared/src/i18n/
 ├── runtime.ts        # catalog-INDEPENDENT leaf: tFrom(key: string), isRTL, locales, localize
 ├── web.ts            # 11 DOMAIN files only → webMessages (5,268 keys)
