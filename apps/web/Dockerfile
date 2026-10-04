@@ -46,6 +46,10 @@ CMD ["pnpm", "dev"]
 
 # ---- Builder ----
 FROM deps AS builder
+# NEXT_PUBLIC_* vars are inlined into the client bundle at build time;
+# without this the browser-side Sentry client stays dormant in Docker.
+ARG NEXT_PUBLIC_SENTRY_DSN
+ENV NEXT_PUBLIC_SENTRY_DSN=$NEXT_PUBLIC_SENTRY_DSN
 COPY packages/db/src ./packages/db/src
 COPY packages/api/src ./packages/api/src
 COPY packages/shared/src ./packages/shared/src

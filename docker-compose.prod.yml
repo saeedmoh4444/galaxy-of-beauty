@@ -36,6 +36,8 @@ services:
     build:
       dockerfile: apps/web/Dockerfile
       target: production
+      args:
+        NEXT_PUBLIC_SENTRY_DSN: ${SENTRY_DSN}
     environment:
       NODE_ENV: production
       SENTRY_DSN: ${SENTRY_DSN}
