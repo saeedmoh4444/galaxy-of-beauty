@@ -256,3 +256,11 @@ curl https://galaxyofbeauty.sa/api/trpc/health
 ```
 
 See `docs/DEPLOYMENT.md` for full production runbook (PM2, Nginx, SSL).
+
+---
+
+## Companion Guides
+
+- **Architecture blueprint + honest tech decisions**: [`brain_code.md`](../../brain_code.md)
+- **Working rulebook (commands, gates, patterns, gotchas)**: [`Rules_to_make_well_archtichtrue-platform.md`](../../Rules_to_make_well_archtichtrue-platform.md)
+- **i18n per-platform catalog split**: [`docs/architecture/i18n-catalog-split.md`](architecture/i18n-catalog-split.md)
