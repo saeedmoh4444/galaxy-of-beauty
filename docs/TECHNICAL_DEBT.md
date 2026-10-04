@@ -1,6 +1,6 @@
 # Technical Debt Register — DOC-009
 
-**Updated**: 2026-08-17
+**Updated**: 2026-10-04
 **Review cadence**: Every sprint planning
 
 ## Severity Legend
@@ -11,6 +11,60 @@
 | **P1** | High — significant maintenance cost or risk          | Fix within 30 days |
 | **P2** | Medium — slows development, manageable               | Fix within 90 days |
 | **P3** | Low — cosmetic, nice-to-have                         | Backlog            |
+
+---
+
+## Active Debt Items (2026-10-04)
+
+### P0 — Critical
+
+| ID   | Item                                  | Why                                                                                                      | Notes                                                                |
+| ---- | ------------------------------------- | -------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------- |
+| P0-A | MyFatoorah live token                 | Payment gateway runs on dev stubs — no real charges possible until the token lands.                      | USER-GATED — token from MyFatoorah dashboard; then real sandbox E2E. |
+| P0-B | Circuit breaker for external gateways | MyFatoorah/OpenAI/ZATCA/SMS/WhatsApp have only BullMQ's 3 retries; a down gateway degrades booking flow. | brain_code.md Part 2 has the full pattern list.                      |
+| P0-C | Staging environment                   | Risky changes ride against the shared dev DB; no prod-clone safety net.                                  |                                                                      |
+
+### P1 — High
+
+| ID   | Item                            | Why                                                                                                                                               | Notes                                                 |
+| ---- | ------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------- |
+| P1-A | FE-007 bundle gap               | Routes run ~560–650 KB gzipped vs 100–150 KB targets. Catalog split (#368) reclaimed ~91 KB; the shared tRPC/API chunk set is the remaining bulk. | Next step: audit + slim the shared chunk set.         |
+| P1-B | DB backups in production        | `scripts/backup-db.sh` exists in compose but nothing schedules it.                                                                                | Cron it or use managed snapshots at deploy time.      |
+| P1-C | Alerting                        | Sentry catches errors; no paging on queue stalls, disk, payment failures.                                                                         |                                                       |
+| P1-D | Seed `(prisma as any)` sections | The reviews drift already bit once (#369); other legacy sections can drift silently again.                                                        | Sweep seed.ts to typed calls, Prisma 7 connects.      |
+| P1-E | Read replica / CQRS-lite        | Analytics + list queries will hammer the primary at scale.                                                                                        | Defer until 10K+ users, but plan the split point now. |
+
+### P2 — Medium
+
+| ID   | Item                                | Why                                                                                             | Notes                                              |
+| ---- | ----------------------------------- | ----------------------------------------------------------------------------------------------- | -------------------------------------------------- |
+| P2-A | Queue monitoring dashboard          | BullMQ runs blind — no visibility into depth/failures without a dashboard.                      |                                                    |
+| P2-B | Feature-toggles admin UI            | FeatureFlag table + middleware exist; no admin UI or gradual rollout.                           |                                                    |
+| P2-C | Lint warnings tolerated             | ~27–33 pre-existing warnings ride under `--max-warnings` per package.                           | Triage quarterly; convert to errors incrementally. |
+| P2-D | Legacy `as any` in web/mobile pages | Budget improved massively (943→3 mobile, 286→1 web) but some legacy casts remain in pages/seed. |                                                    |
+| P2-E | Sentry client build arg (Docker)    | ✅ DONE 2026-10-04 (#371) — moved to Resolved.                                                  | (placeholder row removed on next register pass)    |
+
+### P3 — Low
+
+| ID   | Item                                    | Why                                                                                                             | Notes                                                     |
+| ---- | --------------------------------------- | --------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------- |
+| P3-A | Mobile TranslationKey import (cosmetic) | Mobile files import the global `TranslationKey` from the root barrel; `i18n-mobile` exports the identical type. | Pure cosmetics — skip unless touching those files anyway. |
+| P3-B | Expo SDK 58 canary                      | SDK 57 is current; 58 canary upgrade was queued in September.                                                   | Do as a dedicated majors-PR when ready.                   |
+| P3-C | Dangling `./ui` export in shared        | Audit item S1 — `./ui` in the shared exports map is unused/dangling.                                            | Remove when verifying no consumers.                       |
+
+---
+
+## Resolved Since Last Register Pass (Sept–Oct 2026)
+
+| Item                                            | Resolution                                                                            |
+| ----------------------------------------------- | ------------------------------------------------------------------------------------- |
+| PayFort gateway replaced                        | ✅ MyFatoorah full integration (#353): 7 endpoints, shipping UI, StoreCheckout.       |
+| Sentry dormant                                  | ✅ Activated (#352): DSN wired, @sentry/node declared, E2E-verified.                  |
+| Static Arabic across mobile (68-file allowlist) | ✅ 16 sweep slices (#350-#367): zero static Arabic; allowlist empty.                  |
+| Web bundle shipping mobile catalog keys         | ✅ Per-platform i18n split (#368): ~91 KB gzipped off every route; CI leak guard.     |
+| Seed drift (reviews + cleanup ordering)         | ✅ Fixed (#369): 4 reviews seed cleanly; seed idempotent (double-run verified).       |
+| Info badge WCAG contrast (3.35:1)               | ✅ Fixed (#369): `--color-info` → blue-700 (6.11:1); E2E axe gate green.              |
+| Global i18n union accepted by web t()           | ✅ Fixed (#370): strict `WebTranslationKey`; mobile.* keys are compile errors on web. |
 
 ---
 
@@ -34,26 +88,6 @@
 | P3-01 | 3 models flagged for archival (duplicates)            | ✅ BeautySanta + BeautyQuest were already gone. Affirmation/AffirmationFavorite archived 2026-08-17: affirmations router removed (zero web/mobile consumers, zero tests, zero rows — tables verified empty), models dropped via migration `20260817010000_archive_affirmations`; sisterhoodCompliments is the live replacement. Router count 243 → 242 (contract test + docs updated)                                                                                                                                                                                       |
 | P3-03 | Turbo cache warnings (shared/ui no output)            | ✅ Fixed 2026-08-17: package-level turbo.json with outputs:[] (turbo v2 dropped the package.json `turbo` field) — warning gone                                                                                                                                                                                                                                                                                                                                                                                                                                              |
 | P3-02 | JSON localization lacks DB-level shape validation     | ✅ 45 CHECK constraints across 27 tables (migration `20260817020000_i18n_json_shape_constraints`): every {ar,en} JSON field must contain both keys, nullable columns allow NULL. Legacy ar-only rows (32) backfilled en:=ar first; enforcement verified with a negative INSERT test. A token-cleanup test fixture was caught and fixed (2026-08-17)                                                                                                                                                                                                                         |
-
-## Active Debt Items
-
-### P0 — Critical
-
-None active — see Resolved.
-
-### P1 — High
-
-None active — see Resolved.
-
-### P2 — Medium
-
-None active — see Resolved.
-
-### P3 — Low
-
-None active — see Resolved.
-
----
 
 ## Completed Debt Items
 
