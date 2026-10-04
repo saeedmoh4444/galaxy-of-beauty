@@ -53,6 +53,7 @@ export {
   tFrom,
 } from './i18n/web';
 export type { Locale } from './i18n/web';
+export type { WebTranslationKey } from './i18n/web';
 export type { TranslationKey } from './i18n';
 
 // Theme

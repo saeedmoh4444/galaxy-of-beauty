@@ -5,11 +5,6 @@
 // enforces this).
 // ---------------------------------------------------------------------------
 
-// Erased under verbatimModuleSyntax: keeps the legacy t() signature
-// accepting the global union (rewards/page.tsx passes a global-typed
-// variable), without pulling the merged catalog into the web graph.
-import type { TranslationKey } from './index';
-
 import { coreMessages } from './messages/core';
 import { navMessages } from './messages/nav';
 import { authMessages } from './messages/auth';
@@ -50,17 +45,16 @@ export const webMessages = {
   ...domainMessages,
 } as const;
 
-/** Strict web key union — what web t() should tighten to (see below). */
+/** Strict web key union — what web t() now enforces. */
 export type WebTranslationKey = keyof typeof webMessages;
 
 /**
- * Web legacy t(): resolves against webMessages. The key parameter keeps
- * the GLOBAL union (type-only import above) so existing callers passing
- * TranslationKey-typed variables still compile; the strict union is
- * available as WebTranslationKey for opt-in tightening.
+ * Web legacy t(): resolves against webMessages and only accepts web
+ * keys — a mobile.* key is a compile error here (useLocale's t keeps
+ * the global union for dynamic-key call sites).
  */
 export function t(
-  key: TranslationKey,
+  key: WebTranslationKey,
   locale: Locale,
   vars?: Record<string, string | number>,
 ): string {
