@@ -7,7 +7,7 @@ import os from 'node:os';
 import crypto from 'node:crypto';
 import zlib from 'node:zlib';
 
-import { collectPageRoutes, evaluate } from './check-size-budgets.mjs';
+import { collectPageRoutes, evaluate, checkCatalogLeak } from './check-size-budgets.mjs';
 
 const here = path.dirname(fileURLToPath(import.meta.url));
 const fxWeb = path.join(here, 'test-fixtures', 'budgets', 'web');
@@ -101,6 +101,25 @@ test('STRICT mode enforces FE-007 budgets directly', () => {
     });
     assert.equal(res.violations.length, 1);
     assert.match(res.violations[0], /FE-007/);
+  } finally {
+    fs.rmSync(dir, { recursive: true, force: true });
+  }
+});
+
+test('checkCatalogLeak finds no mobile sentinels in a clean tree', () => {
+  const hits = checkCatalogLeak(fxWeb);
+  assert.deepEqual(hits, []);
+});
+
+test('checkCatalogLeak flags a chunk containing a mobile-only sentinel', () => {
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'catalog-leak-'));
+  try {
+    fs.cpSync(fxWeb, dir, { recursive: true });
+    const leaked = path.join(dir, '.next', 'static', 'chunks', 'leaked.js');
+    fs.writeFileSync(leaked, `const x = "احجزي أسبوعياً للحفاظ على استمراريتكِ وكسب المكافآت!";`);
+    const hits = checkCatalogLeak(dir);
+    assert.equal(hits.length, 1);
+    assert.match(hits[0], /leaked\.js/);
   } finally {
     fs.rmSync(dir, { recursive: true, force: true });
   }

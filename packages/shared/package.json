@@ -11,7 +11,10 @@
     "./hooks": "./src/hooks/index.ts",
     "./utils": "./src/utils/index.ts",
     "./types": "./src/types/index.ts",
-    "./i18n": "./src/i18n/index.ts",
+    "./i18n": "./src/i18n/web.ts",
+    "./i18n-web": "./src/i18n/web.ts",
+    "./i18n-mobile": "./src/i18n/mobile.ts",
+    "./i18n-all": "./src/i18n/index.ts",
     "./tryOn": "./src/tryOn/index.ts"
   },
   "scripts": {
