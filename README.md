@@ -10,7 +10,7 @@ Galaxy of Beauty connects female customers with vetted female technicians across
 
 ### Prerequisites
 
-- **Node.js** v20+
+- **Node.js** v22+
 - **pnpm** 9.15.4 (`corepack enable`)
 - **PostgreSQL** 15+
 - **Redis** 7+ (optional — rate limiting and queues degrade gracefully without it)
@@ -57,11 +57,11 @@ pnpm verify         # All checks in sequence
 ```
 galaxy-of-beauty/
 ├── apps/
-│   ├── web/          Next.js 15 App Router (280 routes)
+│   ├── web/          Next.js 16 App Router (300+ routes)
 │   └── mobile/       Expo SDK 57 + Expo Router
 ├── packages/
-│   ├── api/          tRPC v11 — 263 routers, Zod validation
-│   ├── db/           Prisma — 229 models, 64 migrations
+│   ├── api/          tRPC v11 — 266 routers, Zod validation
+│   ├── db/           Prisma — 234 models, 10 migrations
 │   ├── shared/       Constants, types, i18n, theme (no JSX)
 │   ├── ui/           Components, hooks, Storybook (JSX, web + mobile)
 │   └── config/       TSConfig, ESLint, Prettier, Tailwind preset
@@ -76,14 +76,14 @@ galaxy-of-beauty/
 | Layer     | Technology                                                               |
 | --------- | ------------------------------------------------------------------------ |
 | Monorepo  | Turborepo + pnpm workspaces                                              |
-| Web       | Next.js 15 App Router, Tailwind CSS, React 19                            |
-| Mobile    | Expo SDK 57, Expo Router, React Native 0.86                              |
+| Web       | Next.js 16 App Router, Tailwind CSS 4, React 19                          |
+| Mobile    | Expo SDK 57, Expo Router, React Native 0.87                              |
 | API       | tRPC v11 with Zod validation + superjson transformer                     |
 | Database  | PostgreSQL 15 via Prisma ORM                                             |
 | Cache     | Redis 7 (rate limiting, queues, Socket.IO adapter)                       |
 | Auth      | JWT (HS256) — HttpOnly cookies (web) + Bearer token (mobile), 2FA (TOTP) |
 | Real-time | Socket.IO with Redis adapter, Zod-validated events                       |
-| Docs      | Storybook 8 for the UI component library                                 |
+| Docs      | Storybook 10 for the UI component library                                |
 | Container | Docker Compose (5 services)                                              |
 
 ---
@@ -107,28 +107,30 @@ galaxy-of-beauty/
 | Integration  | Status                                                                                                                                                                                                                                                               |
 | ------------ | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | ZATCA        | Reporting API call + full invoice lifecycle implemented. **Real-portal onboarding (CSID certs, certified crypto stamp) pending** — dev runs in sim mode (`ZATCA_SIMULATE=true`); needs `ZATCA_API_KEY`/`ZATCA_API_SECRET`. Auto-report via `ZATCA_AUTO_REPORT=true`. |
+| MyFatoorah   | Payment gateway (replaced PayFort): card payments, saved cards, checkout session flow, sandbox tested end-to-end. **Live token pending** (`FATOORAH_API_TOKEN`, gitignored).                                                                                         |
 | Zoom / GMeet | Meeting + recording links stored and gated to registered attendees; **no live provider API** (no auto-created meetings).                                                                                                                                             |
 | OpenAI       | Beauty DNA / AI advisor / content features require an OpenAI key (features ship dormant without it).                                                                                                                                                                 |
 | EAS / OTA    | Expo pipeline configured (`development` profile in `eas.json`); publishing requires `EXPO_TOKEN` (not stored in the repo).                                                                                                                                           |
 | WhatsApp     | Template-driven notifications implemented (network-gated in tests).                                                                                                                                                                                                  |
+| Sentry       | Error monitoring + session replay wired across web/api/mobile; browser DSN via Docker build arg `NEXT_PUBLIC_SENTRY_DSN` — dormant without it.                                                                                                                       |
 
 ---
 
 ## ✅ Current Status
 
-| Check             | Status                                                                                            |
-| ----------------- | ------------------------------------------------------------------------------------------------- |
-| TypeScript        | 6/6 workspaces passing                                                                            |
-| ESLint            | 0 errors in all workspaces (real ESLint, not tsc aliasing)                                        |
-| Format (Prettier) | 0 warnings (repo-wide pass, `.prettierignore` added)                                              |
-| Build             | 6/6 workspaces passing (Next.js 15: 280 routes)                                                   |
-| API tests         | 150+ files, **1,360+ tests** passing                                                              |
-| Coverage          | Enforced per-workspace ratchet thresholds, exit 0                                                 |
-| E2E (Playwright)  | 25 specs — full suite passing on every PR (chromium + firefox + mobile Chrome)                    |
-| Runtime smoke     | Mobile HTTP contract script (auth, top-up, idempotency, CSRF) — 5/5                               |
-| Component docs    | Storybook 8 for `@galaxy/ui` (`pnpm --filter @galaxy/ui storybook`)                               |
-| CI                | Frozen install, format, lint, type-check, test, build, E2E (3 browsers), dependency audit, Docker |
-| Prod audit        | 15 accepted high findings (documented in SECURITY.md)                                             |
+| Check             | Status                                                                                                                              |
+| ----------------- | ----------------------------------------------------------------------------------------------------------------------------------- |
+| TypeScript        | 6/6 workspaces passing                                                                                                              |
+| ESLint            | 0 errors in all workspaces (real ESLint, not tsc aliasing)                                                                          |
+| Format (Prettier) | 0 warnings (repo-wide pass, `.prettierignore` added)                                                                                |
+| Build             | 6/6 workspaces passing (Next.js 16: 300+ routes)                                                                                    |
+| API tests         | 150+ files, **1,360+ tests** passing                                                                                                |
+| Coverage          | Enforced per-workspace ratchet thresholds, exit 0                                                                                   |
+| E2E (Playwright)  | 25 specs — full suite passing on every PR (chromium + firefox + mobile Chrome)                                                      |
+| Runtime smoke     | Mobile HTTP contract script (auth, top-up, idempotency, CSRF) — 5/5                                                                 |
+| Component docs    | Storybook 10 for `@galaxy/ui` (`pnpm --filter @galaxy/ui storybook`)                                                                |
+| CI                | Frozen install, format, lint, type-check, test, build, architecture gates, size budgets, E2E (3 browsers), dependency audit, Docker |
+| Prod audit        | 8 accepted high findings, 0 critical (documented in SECURITY.md)                                                                    |
 
 **Readiness**: verifiably correct baseline with active coverage ratchet — not yet production-hardened (see [DELIVERY_REPORT.md](DELIVERY_REPORT.md) addendum for the full program status).
 
@@ -161,21 +163,26 @@ galaxy-of-beauty/
 
 ## 📚 Documentation
 
-| Document                                                        | Description                                |
-| --------------------------------------------------------------- | ------------------------------------------ |
-| [Delivery Report](DELIVERY_REPORT.md)                           | Full program status + follow-up addendum   |
-| [Local Testing Guide](docs/LOCAL_TESTING_GUIDE.md)              | Test everything yourself — full checklist  |
-| [ADR-006: Web Session Model](docs/adr/006-web-session-model.md) | Auth architecture decision                 |
-| [Model Ownership Map](docs/architecture/model-ownership.md)     | 202 models → 12 bounded contexts           |
-| [Architecture Context Map](docs/architecture/context-map.md)    | Domain classification + debt audit         |
-| [Migration Standards](docs/architecture/migration-standards.md) | Conventions, redundant index audit         |
-| [API Risk Matrix](docs/testing/risk-matrix.md)                  | Tiered test coverage strategy              |
-| [Audit Plan](docs/AUDIT_PLAN.md)                                | End-to-end bug-audit methodology (A–E)     |
-| [Audit Report](docs/AUDIT_REPORT.md)                            | Findings, fixes, and recommendations       |
-| [UI/UX Backlog](docs/UI_UX_BACKLOG.md)                          | Accessibility/delight backlog — 17/17 done |
-| [Performance Budgets](docs/frontend/performance-budgets.md)     | Web vitals targets                         |
-| [Incident Runbooks](docs/operations/runbooks.md)                | 7 emergency scenarios                      |
-| [SECURITY.md](SECURITY.md)                                      | Vulnerability disclosure + audit           |
+| Document                                                           | Description                                |
+| ------------------------------------------------------------------ | ------------------------------------------ |
+| [Delivery Report](DELIVERY_REPORT.md)                              | Full program status + follow-up addendum   |
+| [Local Testing Guide](docs/LOCAL_TESTING_GUIDE.md)                 | Test everything yourself — full checklist  |
+| [ADR-006: Web Session Model](docs/adr/006-web-session-model.md)    | Auth architecture decision                 |
+| [Model Ownership Map](docs/architecture/model-ownership.md)        | 202 models → 12 bounded contexts           |
+| [Architecture Context Map](docs/architecture/context-map.md)       | Domain classification + debt audit         |
+| [Migration Standards](docs/architecture/migration-standards.md)    | Conventions, redundant index audit         |
+| [API Risk Matrix](docs/testing/risk-matrix.md)                     | Tiered test coverage strategy              |
+| [Audit Plan](docs/AUDIT_PLAN.md)                                   | End-to-end bug-audit methodology (A–E)     |
+| [Audit Report](docs/AUDIT_REPORT.md)                               | Findings, fixes, and recommendations       |
+| [UI/UX Backlog](docs/UI_UX_BACKLOG.md)                             | Accessibility/delight backlog — 17/17 done |
+| [Performance Budgets](docs/frontend/performance-budgets.md)        | Web vitals targets                         |
+| [Incident Runbooks](docs/operations/runbooks.md)                   | 7 emergency scenarios                      |
+| [SECURITY.md](SECURITY.md)                                         | Vulnerability disclosure + audit           |
+| [Platform Rulebook](Rules_to_make_well_archtichtrue-platform.md)   | Golden rules, commands, gates, gotchas     |
+| [Project Brain](brain_code.md)                                     | Living architecture knowledge base         |
+| [i18n Catalog Split](docs/architecture/i18n-catalog-split.md)      | Per-platform catalogs + CI leak guard      |
+| [Technical Debt](docs/TECHNICAL_DEBT.md)                           | Debt register with priorities              |
+| [Roadmap Recommendations](docs/ROADMAP_RECOMMENDATIONS_2026-10.md) | Phased roadmap A–D with effort estimates   |
 
 ---
 
@@ -189,7 +196,7 @@ galaxy-of-beauty/
 - **Rate limiting**: Per-client-IP for anonymous, per-user for authenticated.
 - **Secrets**: Production startup validates against known weak/default secrets.
 - **Audit**: Structured security events for login, password change, token reuse.
-- **Dependencies**: 15 accepted high findings documented in [SECURITY.md](SECURITY.md).
+- **Dependencies**: 8 accepted high findings, 0 critical — documented in [SECURITY.md](SECURITY.md).
 
 ### Reporting Vulnerabilities
 
