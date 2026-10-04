@@ -4,9 +4,9 @@ import type { RouterOutputs } from '@galaxy/api';
 import { Card } from '@galaxy/ui';
 import { getServerLocale } from '@/lib/i18n';
 import { t } from '@galaxy/shared';
-import type { TranslationKey } from '@galaxy/shared';
+import type { WebTranslationKey } from '@galaxy/shared';
 
-const TIER_LABELS: Record<string, { name: TranslationKey; emoji: string; color: string }> = {
+const TIER_LABELS: Record<string, { name: WebTranslationKey; emoji: string; color: string }> = {
   SILVER: {
     name: 'marketing.rewards.tier-silver',
     emoji: '🥈',
