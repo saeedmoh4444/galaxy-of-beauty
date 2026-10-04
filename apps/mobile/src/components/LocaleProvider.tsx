@@ -8,7 +8,13 @@ import {
   type ReactNode,
 } from 'react';
 import type { JSX } from 'react';
-import { isRTL, tFrom, mobileMessages, type Locale, type TranslationKey } from '@galaxy/shared';
+import {
+  isRTL,
+  tFrom,
+  mobileMessages,
+  type Locale,
+  type TranslationKey,
+} from '@galaxy/shared/i18n-mobile';
 import { loadStoredLocale, persistLocale } from '@/lib/locale';
 
 interface LocaleContextValue {

@@ -127,4 +127,12 @@ export const coreMessages = {
   'rebook.ready': { ar: 'مستعدة لتجديد إطلالتكِ؟', en: 'Ready to refresh your look?' },
   'rebook.button': { ar: 'أعيدي الحجز', en: 'Rebook' },
   'rebook.service-fallback': { ar: 'خدمة', en: 'service' },
+
+  // Offline (web) — values mirror mobile.core's mobile.offline.*, so the
+  // web offline page resolves real text instead of the raw key fallback.
+  'offline.title': { ar: 'أنت غير متصل', en: 'You are offline' },
+  'offline.desc': {
+    ar: 'يرجى التحقق من اتصالك بالإنترنت والمحاولة مرة أخرى',
+    en: 'Please check your internet connection and try again',
+  },
 } as const;

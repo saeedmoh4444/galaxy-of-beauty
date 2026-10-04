@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { tFrom, webMessages, mobileMessages, sharedMessages } from '@galaxy/shared';
+import { tFrom, webMessages, mobileMessages, sharedMessages } from '@galaxy/shared/i18n-all';
 
 // §2d regression: the single merged catalog let mobile values silently
 // override web values (38 AR collisions). Each platform must resolve its

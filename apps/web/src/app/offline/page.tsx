@@ -10,8 +10,8 @@ export default function OfflinePage(): JSX.Element {
     <div className="flex min-h-screen items-center justify-center px-4">
       <Card className="w-full max-w-md text-center" padding="lg">
         <EmptyState
-          title={t('mobile.offline.title')}
-          description={t('mobile.offline.desc')}
+          title={t('offline.title')}
+          description={t('offline.desc')}
           action={{ label: t('button.retry'), onPress: () => window.location.reload() }}
         />
       </Card>

@@ -39,19 +39,21 @@ export type {
 } from './types/index';
 export { ar, en } from './types/index';
 
-// i18n
+// i18n — values come from the WEB entry so importing this barrel never
+// pulls the mobile catalogs into a web bundle. TranslationKey stays the
+// global union via an erased type-only re-export (mobile files keep
+// compiling unchanged; no runtime edge to the merged module).
 export {
   defaultLocale,
   supportedLocales,
   isRTL,
   localize,
-  sharedMessages,
   webMessages,
-  mobileMessages,
   t,
   tFrom,
-} from './i18n';
-export type { Locale, TranslationKey } from './i18n';
+} from './i18n/web';
+export type { Locale } from './i18n/web';
+export type { TranslationKey } from './i18n';
 
 // Theme
 export { colors, typography, spacing, borderRadius, shadows, breakpoints } from './theme';

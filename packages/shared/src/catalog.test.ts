@@ -7,6 +7,7 @@ import { describe, it, expect } from 'vitest';
 import { globSync, readFileSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import { buildBundleQuote } from './bundlePricing';
+import { webMessages, mobileMessages, sharedMessages } from './i18n';
 
 function collectBlocks(src: string): Array<{ key: string; block: string }> {
   const out: Array<{ key: string; block: string }> = [];
@@ -81,6 +82,27 @@ describe('i18n catalog integrity (S3 regression)', () => {
         }
       }
     }
+  });
+});
+
+describe('i18n catalog split invariants (per-platform bundling)', () => {
+  it('web catalog contains no mobile.* keys', () => {
+    const leaked = Object.keys(webMessages).filter((k) => k.startsWith('mobile.'));
+    expect(leaked).toEqual([]);
+  });
+
+  it('every web catalog key also exists in the mobile catalog', () => {
+    const missing = Object.keys(webMessages).filter((k) => !(k in mobileMessages));
+    expect(missing).toEqual([]);
+  });
+
+  it('the merged union is structurally identical to the mobile union', () => {
+    expect(Object.keys(sharedMessages).sort()).toEqual(Object.keys(mobileMessages).sort());
+  });
+
+  it('the web catalog is materially smaller than the mobile catalog', () => {
+    // Architecture guard (not an exact-count trap — sweeps add keys weekly).
+    expect(Object.keys(webMessages).length).toBeLessThan(Object.keys(mobileMessages).length - 3000);
   });
 });
 

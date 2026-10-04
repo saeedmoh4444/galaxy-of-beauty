@@ -154,6 +154,40 @@ export function evaluate({
   return { perClass, violations, warnings, unmatched };
 }
 
+/**
+ * i18n catalog leak guard — the web bundle must never contain mobile-only
+ * catalog values (per-platform split: web = domain catalogs only).
+ * Scans built chunks for distinctive Arabic sentinels that exist ONLY in
+ * packages/shared/src/i18n/messages/mobile/customerB.ts.
+ */
+const CATALOG_LEAK_SENTINELS = [
+  'احجزي أسبوعياً للحفاظ على استمراريتكِ وكسب المكافآت!',
+  'خلفيات داكنة ونصوص فاتحة لتجربة مريحة للعين في الإضاءة المنخفضة',
+];
+
+export function checkCatalogLeak(webRoot) {
+  const staticDir = path.join(webRoot, '.next', 'static');
+  if (!fs.existsSync(staticDir)) {
+    throw new Error(`missing ${staticDir} — run: pnpm --filter @galaxy/web build`);
+  }
+  const hits = [];
+  const walk = (dir) => {
+    for (const entry of fs.readdirSync(dir, { withFileTypes: true })) {
+      const abs = path.join(dir, entry.name);
+      if (entry.isDirectory()) walk(abs);
+      else if (entry.name.endsWith('.js') && !entry.name.endsWith('.js.map')) {
+        const src = fs.readFileSync(abs, 'utf8');
+        for (const sentinel of CATALOG_LEAK_SENTINELS) {
+          if (src.includes(sentinel))
+            hits.push(`${path.relative(webRoot, abs)} :: ${sentinel.slice(0, 40)}…`);
+        }
+      }
+    }
+  };
+  walk(staticDir);
+  return hits;
+}
+
 export function main() {
   const args = process.argv.slice(2);
   const opt = (flag, def) => {
@@ -193,6 +227,12 @@ export function main() {
   if (res.violations.length) {
     console.error('FAIL: size budgets exceeded:');
     for (const v of res.violations) console.error(`  - ${v}`);
+    process.exit(1);
+  }
+  const leaks = checkCatalogLeak(webRoot);
+  if (leaks.length) {
+    console.error('FAIL: mobile i18n catalog leaked into web chunks:');
+    for (const l of leaks) console.error(`  - ${l}`);
     process.exit(1);
   }
   console.log('size budget gate PASSED');
