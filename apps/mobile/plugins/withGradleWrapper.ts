@@ -42,6 +42,41 @@ export default function withGradleWrapper(config: import('expo/config').ExpoConf
       }
       await fs.writeFile(propsFile, props);
 
+      // expo-modules-autolinking ships its own included gradle build whose
+      // build.gradle.kts pins kotlin("jvm") 2.1.20 — compileKotlin of
+      // expo-autolinking-settings-plugin fails against Gradle 9.4.1's
+      // bundled stdlib 2.3.0. Patch it in the pnpm virtual store (the
+      // store lives at the monorepo root — two levels up from the app —
+      // on the EAS worker too).
+      const repoRoot = path.resolve(cfg.modRequest.projectRoot, '..', '..');
+      const pnpmStore = path.join(repoRoot, 'node_modules', '.pnpm');
+      try {
+        const entries = await fs.readdir(pnpmStore);
+        const autolinkingDir = entries.find((e) => e.startsWith('expo-modules-autolinking@'));
+        if (autolinkingDir) {
+          const ktsFile = path.join(
+            pnpmStore,
+            autolinkingDir,
+            'node_modules',
+            'expo-modules-autolinking',
+            'android',
+            'expo-gradle-plugin',
+            'build.gradle.kts',
+          );
+          let kts = await fs.readFile(ktsFile, 'utf8');
+          if (/kotlin\("jvm"\) version "[^"]+"/.test(kts)) {
+            kts = kts.replace(
+              /kotlin\("jvm"\) version "[^"]+"/,
+              `kotlin("jvm") version "${KOTLIN_VERSION}"`,
+            );
+            await fs.writeFile(ktsFile, kts);
+          }
+        }
+      } catch (e) {
+        // Non-fatal: build will surface the original error if this misses.
+        console.warn('withGradleWrapper: could not patch expo-modules-autolinking:', e);
+      }
+
       return cfg;
     },
   ]);
