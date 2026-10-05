@@ -52,32 +52,53 @@ export default function withGradleWrapper(config: import('expo/config').ExpoConf
       const pnpmStore = path.join(repoRoot, 'node_modules', '.pnpm');
       try {
         const entries = await fs.readdir(pnpmStore);
-        const autolinkingDir = entries.find((e) => e.startsWith('expo-modules-autolinking@'));
-        if (autolinkingDir) {
-          const ktsFile = path.join(
-            pnpmStore,
-            autolinkingDir,
-            'node_modules',
-            'expo-modules-autolinking',
-            'android',
-            'expo-gradle-plugin',
-            'build.gradle.kts',
-          );
-          let kts = await fs.readFile(ktsFile, 'utf8');
-          if (/kotlin\("jvm"\) version "[^"]+"/.test(kts)) {
-            kts = kts.replace(
-              /kotlin\("jvm"\) version "[^"]+"/,
-              `kotlin("jvm") version "${KOTLIN_VERSION}"`,
-            );
-            await fs.writeFile(ktsFile, kts);
-          }
+        // Several expo packages ship their own included gradle builds that
+        // pin kotlin("jvm") 2.1.20 (expo-modules-autolinking, expo-dev-launcher,
+        // ...). Each compileKotlin fails against Gradle 9.4.1's bundled stdlib
+        // 2.3.0 — and they consume each other's jars, so ALL must move.
+        // Sweep every expo-* package in the pnpm virtual store.
+        const expoDirs = entries.filter((e) => e.startsWith('expo'));
+        for (const dir of expoDirs) {
+          const pkgRoot = path.join(pnpmStore, dir, 'node_modules');
+          await sweepKotlinPins(pkgRoot);
         }
       } catch (e) {
         // Non-fatal: build will surface the original error if this misses.
-        console.warn('withGradleWrapper: could not patch expo-modules-autolinking:', e);
+        console.warn('withGradleWrapper: could not sweep expo kotlin pins:', e);
       }
 
       return cfg;
     },
   ]);
+}
+
+async function sweepKotlinPins(dir: string): Promise<void> {
+  let entries;
+  try {
+    entries = await fs.readdir(dir, { withFileTypes: true });
+  } catch {
+    return;
+  }
+  for (const entry of entries) {
+    const full = path.join(dir, entry.name);
+    if (entry.isDirectory()) {
+      await sweepKotlinPins(full);
+    } else if (entry.name === 'build.gradle.kts') {
+      let kts;
+      try {
+        kts = await fs.readFile(full, 'utf8');
+      } catch {
+        continue;
+      }
+      if (/kotlin\("jvm"\) version "[^"]+"/.test(kts)) {
+        await fs.writeFile(
+          full,
+          kts.replace(
+            /kotlin\("jvm"\) version "[^"]+"/,
+            `kotlin("jvm") version "${KOTLIN_VERSION}"`,
+          ),
+        );
+      }
+    }
+  }
 }
