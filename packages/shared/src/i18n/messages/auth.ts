@@ -7,6 +7,8 @@ export const authMessages = {
   'auth.logout': { ar: 'تسجيل الخروج', en: 'Logout' },
   'auth.email': { ar: 'البريد الإلكتروني', en: 'Email' },
   'auth.password': { ar: 'كلمة المرور', en: 'Password' },
+  'auth.showPassword': { ar: 'إظهار كلمة المرور', en: 'Show password' },
+  'auth.hidePassword': { ar: 'إخفاء كلمة المرور', en: 'Hide password' },
   'auth.forgotPassword': { ar: 'نسيت كلمة المرور؟', en: 'Forgot Password?' },
   'auth.hasAccount': { ar: 'لديك حساب؟', en: 'Already have an account?' },
 

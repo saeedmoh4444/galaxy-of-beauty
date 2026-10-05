@@ -107,6 +107,8 @@ export default function LoginPage(): JSX.Element {
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 placeholder="••••••••"
+                showPasswordLabel={t('auth.showPassword')}
+                hidePasswordLabel={t('auth.hidePassword')}
                 required
               />
             </>

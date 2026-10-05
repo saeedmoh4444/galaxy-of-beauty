@@ -9,6 +9,7 @@ import {
   KeyboardAvoidingView,
   Platform,
   ScrollView,
+  Image,
 } from 'react-native';
 import { useRouter } from 'expo-router';
 import { trpc } from '@/lib/trpc-react';
@@ -18,6 +19,8 @@ import { useBiometric } from '@/hooks/useBiometric';
 import { useToast } from '@/components/Toast';
 import { useLocale } from '@/components/LocaleProvider';
 import { useTheme, themeColors } from '@/components/ThemeProvider';
+import { Icon } from '@/components/Icon';
+import { BRAND_LOGO } from '@/utils/branding';
 
 export default function LoginScreen() {
   const router = useRouter();
@@ -28,6 +31,7 @@ export default function LoginScreen() {
   const styles = makeStyles(c);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
   const [totpToken, setTotpToken] = useState('');
   const [twoFactorRequired, setTwoFactorRequired] = useState(false);
   const { isAvailable, authenticate } = useBiometric();
@@ -80,6 +84,7 @@ export default function LoginScreen() {
       keyboardVerticalOffset={Platform.OS === 'ios' ? 90 : 0}
     >
       <ScrollView contentContainerStyle={styles.scrollContent} keyboardShouldPersistTaps="handled">
+        <Image source={BRAND_LOGO} style={styles.logo} />
         <Text style={styles.title}>{t('auth.login')}</Text>
 
         {!twoFactorRequired ? (
@@ -93,14 +98,26 @@ export default function LoginScreen() {
               autoCapitalize="none"
               testID="login-email"
             />
-            <TextInput
-              style={styles.input}
-              placeholder={t('auth.password')}
-              value={password}
-              onChangeText={setPassword}
-              secureTextEntry
-              testID="login-password"
-            />
+            <View style={styles.passwordRow}>
+              <TextInput
+                style={styles.passwordInput}
+                placeholder={t('auth.password')}
+                value={password}
+                onChangeText={setPassword}
+                secureTextEntry={!showPassword}
+                testID="login-password"
+              />
+              <TouchableOpacity
+                style={styles.eyeToggle}
+                onPress={() => setShowPassword((v) => !v)}
+                accessibilityLabel={
+                  showPassword ? t('mobile.auth.hidePassword') : t('mobile.auth.showPassword')
+                }
+                testID="login-password-toggle"
+              >
+                <Icon name={showPassword ? 'eye-off' : 'eye'} size="sm" color={c.text} />
+              </TouchableOpacity>
+            </View>
           </>
         ) : (
           <View style={styles.totpContainer}>
@@ -154,6 +171,7 @@ const makeStyles = (c: typeof themeColors.light | typeof themeColors.dark) =>
   StyleSheet.create({
     container: { flex: 1, backgroundColor: c.bg },
     scrollContent: { flexGrow: 1, justifyContent: 'center', padding: 24 },
+    logo: { width: 88, height: 88, alignSelf: 'center', marginBottom: 16 },
     title: {
       fontSize: 28,
       fontWeight: '800',
@@ -171,6 +189,22 @@ const makeStyles = (c: typeof themeColors.light | typeof themeColors.dark) =>
       backgroundColor: c.surface,
       color: c.text,
     },
+    passwordRow: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      borderWidth: 1,
+      borderColor: c.border,
+      borderRadius: 12,
+      backgroundColor: c.surface,
+      marginBottom: 16,
+    },
+    passwordInput: {
+      flex: 1,
+      padding: 14,
+      fontSize: 16,
+      color: c.text,
+    },
+    eyeToggle: { paddingHorizontal: 14, opacity: 0.6 },
     button: { backgroundColor: c.brand, borderRadius: 12, padding: 16, alignItems: 'center' },
     buttonDisabled: { opacity: 0.6 },
     buttonText: { color: '#fff', fontSize: 16, fontWeight: '600' },
