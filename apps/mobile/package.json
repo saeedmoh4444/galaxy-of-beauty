@@ -64,6 +64,7 @@
   },
   "devDependencies": {
     "@galaxy/config": "workspace:*",
+    "@react-native/js-polyfills": "0.87.0",
     "@types/react": "~19.3.0",
     "@types/react-dom": "^19",
     "typescript": "^6.0.3",
