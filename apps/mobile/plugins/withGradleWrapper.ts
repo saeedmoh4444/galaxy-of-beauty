@@ -106,22 +106,36 @@ async function sweepKotlinPins(dir: string): Promise<void> {
     const full = path.join(dir, entry.name);
     if (entry.isDirectory()) {
       await sweepKotlinPins(full);
-    } else if (entry.name === 'build.gradle.kts') {
-      let kts;
-      try {
-        kts = await fs.readFile(full, 'utf8');
-      } catch {
-        continue;
-      }
-      if (/kotlin\("jvm"\) version "[^"]+"/.test(kts)) {
-        await fs.writeFile(
-          full,
-          kts.replace(
-            /kotlin\("jvm"\) version "[^"]+"/,
-            `kotlin("jvm") version "${KOTLIN_VERSION}"`,
-          ),
-        );
-      }
+      continue;
+    }
+    let content;
+    try {
+      content = await fs.readFile(full, 'utf8');
+    } catch {
+      continue;
+    }
+    if (entry.name === 'build.gradle.kts' && /kotlin\("jvm"\) version "[^"]+"/.test(content)) {
+      await fs.writeFile(
+        full,
+        content.replace(
+          /kotlin\("jvm"\) version "[^"]+"/,
+          `kotlin("jvm") version "${KOTLIN_VERSION}"`,
+        ),
+      );
+    }
+    // RN's rootproject plugin applies org.jetbrains.kotlin.android globally
+    // when kotlinVersion is set; expo plugins re-apply kotlin-android guarded
+    // only by the short plugin id — the duplicate registration fails with
+    // "Cannot add extension with name 'kotlin'". Widen the negated guards
+    // to require BOTH ids absent before applying.
+    if (content.includes('!plugins.hasPlugin("kotlin-android")')) {
+      await fs.writeFile(
+        full,
+        content.replaceAll(
+          '!plugins.hasPlugin("kotlin-android")',
+          '!plugins.hasPlugin("kotlin-android") && !plugins.hasPlugin("org.jetbrains.kotlin.android")',
+        ),
+      );
     }
   }
 }
