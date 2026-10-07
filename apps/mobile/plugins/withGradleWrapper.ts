@@ -54,6 +54,17 @@ export default function withGradleWrapper(config: import('expo/config').ExpoConf
         await fs.writeFile(appGradleFile, appGradle);
       }
 
+      // AGP 9 removed getDefaultProguardFile("proguard-android.txt") —
+      // evaluation fails on the template's release block. Use the
+      // optimize variant (R8 default) instead.
+      if (appGradle.includes('getDefaultProguardFile("proguard-android.txt")')) {
+        appGradle = appGradle.replace(
+          /getDefaultProguardFile\("proguard-android\.txt"\)/g,
+          'getDefaultProguardFile("proguard-android-optimize.txt")',
+        );
+        await fs.writeFile(appGradleFile, appGradle);
+      }
+
       // expo-modules-autolinking ships its own included gradle build whose
       // build.gradle.kts pins kotlin("jvm") 2.1.20 — compileKotlin of
       // expo-autolinking-settings-plugin fails against Gradle 9.4.1's
