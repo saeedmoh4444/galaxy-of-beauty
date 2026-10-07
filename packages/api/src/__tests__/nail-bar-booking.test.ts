@@ -131,8 +131,12 @@ describe('nail bars (E5)', () => {
     const c = await caller(customer);
     const slots = await c.nailBars.list({});
     // Fetch slots via the public procedure for the verified nail bar.
-    const from = safeFutureDate(2).toISOString();
-    const to = safeFutureDate(5).toISOString();
+    // ±1h buffer: when day+2 is a Friday, the Jummah shift in
+    // safeFutureDate moves it onto the slot's own day (day+3 = Saturday),
+    // and the later-computed `from` can land milliseconds after the
+    // slot's startAt — startAt >= from then misses by a few ms.
+    const from = new Date(safeFutureDate(2).getTime() - 3_600_000).toISOString();
+    const to = new Date(safeFutureDate(5).getTime() + 3_600_000).toISOString();
     const available = await c.nailBars.slots({
       nailBarId: createdVendorIds[0]!,
       from,

@@ -54,6 +54,8 @@ export default function ResetPasswordPage(): JSX.Element {
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             placeholder="••••••••"
+            showPasswordLabel={t('auth.showPassword')}
+            hidePasswordLabel={t('auth.hidePassword')}
           />
           <Input
             type="password"
@@ -61,6 +63,8 @@ export default function ResetPasswordPage(): JSX.Element {
             value={confirm}
             onChange={(e) => setConfirm(e.target.value)}
             placeholder="••••••••"
+            showPasswordLabel={t('auth.showPassword')}
+            hidePasswordLabel={t('auth.hidePassword')}
           />
           <Button type="submit" className="w-full" loading={resetMut.isPending}>
             {t('auth.reset-submit')}

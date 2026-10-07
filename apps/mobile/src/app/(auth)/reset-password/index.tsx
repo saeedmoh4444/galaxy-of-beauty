@@ -10,6 +10,7 @@ import { trpc } from '@/lib/trpc-react';
 import { useState } from 'react';
 import { useRouter } from 'expo-router';
 import { useLocale } from '@/components/LocaleProvider';
+import { Icon } from '@/components/Icon';
 
 export default function ResetPasswordScreen() {
   const router = useRouter();
@@ -17,6 +18,8 @@ export default function ResetPasswordScreen() {
   const [token, setToken] = useState('');
   const [password, setPassword] = useState('');
   const [confirm, setConfirm] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirm, setShowConfirm] = useState(false);
   const [msg, setMsg] = useState('');
   const [error, setError] = useState('');
   const [done, setDone] = useState(false);
@@ -73,20 +76,42 @@ export default function ResetPasswordScreen() {
             onChangeText={setToken}
             autoCapitalize="none"
           />
-          <TextInput
-            style={styles.input}
-            placeholder={t('auth.new-password')}
-            value={password}
-            onChangeText={setPassword}
-            secureTextEntry
-          />
-          <TextInput
-            style={styles.input}
-            placeholder={t('auth.confirm-password')}
-            value={confirm}
-            onChangeText={setConfirm}
-            secureTextEntry
-          />
+          <View style={styles.passwordRow}>
+            <TextInput
+              style={styles.passwordInput}
+              placeholder={t('auth.new-password')}
+              value={password}
+              onChangeText={setPassword}
+              secureTextEntry={!showPassword}
+            />
+            <TouchableOpacity
+              style={styles.eyeToggle}
+              onPress={() => setShowPassword((v) => !v)}
+              accessibilityLabel={
+                showPassword ? t('mobile.auth.hidePassword') : t('mobile.auth.showPassword')
+              }
+            >
+              <Icon name={showPassword ? 'eye-off' : 'eye'} size="sm" color="#6b7280" />
+            </TouchableOpacity>
+          </View>
+          <View style={styles.passwordRow}>
+            <TextInput
+              style={styles.passwordInput}
+              placeholder={t('auth.confirm-password')}
+              value={confirm}
+              onChangeText={setConfirm}
+              secureTextEntry={!showConfirm}
+            />
+            <TouchableOpacity
+              style={styles.eyeToggle}
+              onPress={() => setShowConfirm((v) => !v)}
+              accessibilityLabel={
+                showConfirm ? t('mobile.auth.hidePassword') : t('mobile.auth.showPassword')
+              }
+            >
+              <Icon name={showConfirm ? 'eye-off' : 'eye'} size="sm" color="#6b7280" />
+            </TouchableOpacity>
+          </View>
           <TouchableOpacity style={styles.btn} onPress={handleSubmit}>
             <Text style={styles.btnText}>{t('mobile.auth.changePassword')}</Text>
           </TouchableOpacity>
@@ -107,6 +132,21 @@ const styles = StyleSheet.create({
   },
   hint: { fontSize: 14, color: '#6b7280', textAlign: 'center', marginBottom: 16 },
   form: { gap: 12 },
+  passwordRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    borderWidth: 1,
+    borderColor: '#d1d5db',
+    borderRadius: 12,
+    backgroundColor: '#fff',
+  },
+  passwordInput: {
+    flex: 1,
+    padding: 14,
+    fontSize: 16,
+    color: '#111827',
+  },
+  eyeToggle: { paddingHorizontal: 14, opacity: 0.7 },
   input: {
     borderWidth: 1,
     borderColor: '#d1d5db',

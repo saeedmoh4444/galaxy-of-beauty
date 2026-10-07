@@ -21,6 +21,16 @@ export const Error: Story = {
   args: { label: 'كلمة المرور', type: 'password', error: 'كلمة المرور قصيرة جداً' },
 };
 
+export const Password: Story = {
+  args: {
+    label: 'كلمة المرور',
+    type: 'password',
+    placeholder: '••••••••',
+    showPasswordLabel: 'إظهار كلمة المرور',
+    hidePasswordLabel: 'إخفاء كلمة المرور',
+  },
+};
+
 export const Disabled: Story = {
   args: { label: 'رقم الجوال', value: '+966512345678', disabled: true },
 };

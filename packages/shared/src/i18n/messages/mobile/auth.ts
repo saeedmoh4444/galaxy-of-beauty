@@ -91,4 +91,6 @@ export const mobileAuthMessages = {
   },
   'mobile.auth.verifyAction': { ar: 'توثيق', en: 'Verify' },
   'mobile.auth.back': { ar: 'العودة', en: 'Back' },
+  'mobile.auth.showPassword': { ar: 'إظهار كلمة المرور', en: 'Show password' },
+  'mobile.auth.hidePassword': { ar: 'إخفاء كلمة المرور', en: 'Hide password' },
 } as const;
