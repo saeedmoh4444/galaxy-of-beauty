@@ -147,5 +147,18 @@ async function sweepKotlinPins(dir: string): Promise<void> {
         ),
       );
     }
+    // AGP 9 removed com.android.build.gradle.LibraryExtension — the expo
+    // plugin's getByType(LibraryExtension) fails with "Extension of type
+    // 'LibraryExtension' does not exist". The interface now lives in the
+    // api.dsl package (implemented by LibraryExtensionImpl).
+    if (content.includes('com.android.build.gradle.LibraryExtension')) {
+      await fs.writeFile(
+        full,
+        content.replaceAll(
+          'com.android.build.gradle.LibraryExtension',
+          'com.android.build.api.dsl.LibraryExtension',
+        ),
+      );
+    }
   }
 }
