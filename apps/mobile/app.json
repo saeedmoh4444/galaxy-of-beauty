@@ -39,8 +39,7 @@
       "expo-camera",
       "expo-location",
       "expo-notifications",
-      "@config-plugins/react-native-webrtc",
-      "./plugins/withGradleWrapper"
+      "@config-plugins/react-native-webrtc"
     ],
     "extra": {
       "eas": {
