@@ -123,17 +123,27 @@ async function sweepKotlinPins(dir: string): Promise<void> {
         ),
       );
     }
-    // RN's rootproject plugin applies org.jetbrains.kotlin.android globally
-    // when kotlinVersion is set; expo plugins re-apply kotlin-android guarded
-    // only by the short plugin id — the duplicate registration fails with
-    // "Cannot add extension with name 'kotlin'". Widen the negated guards
-    // to require BOTH ids absent before applying.
-    if (content.includes('!plugins.hasPlugin("kotlin-android")')) {
+    // The Expo root project registers the 'kotlin' extension on modules
+    // outside the plugin registry (visible as [ExpoRootProject] kotlin
+    // 2.3.0 in build logs), so hasPlugin checks cannot detect it and
+    // expo's own kotlin-android apply fails with "Cannot add extension
+    // with name 'kotlin'". Wrap the apply in try/catch — the same
+    // pattern expo's legacy groovy plugin already uses.
+    const applyBlock =
+      /if \(!plugins\.hasPlugin\("kotlin-android"\)\) \{[\s\S]*?plugins\.apply\("kotlin-android"\)\s*\}/;
+    if (applyBlock.test(content)) {
       await fs.writeFile(
         full,
-        content.replaceAll(
-          '!plugins.hasPlugin("kotlin-android")',
-          '!plugins.hasPlugin("kotlin-android") && !plugins.hasPlugin("org.jetbrains.kotlin.android")',
+        content.replace(
+          applyBlock,
+          `if (!plugins.hasPlugin("kotlin-android") && !plugins.hasPlugin("org.jetbrains.kotlin.android")) {
+    try {
+      plugins.apply("kotlin-android")
+    } catch (_: Exception) {
+      // The kotlin extension may already be registered by the root
+      // project plugin — applying again would fail.
+    }
+  }`,
         ),
       );
     }
