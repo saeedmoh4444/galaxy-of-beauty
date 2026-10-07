@@ -42,6 +42,18 @@ export default function withGradleWrapper(config: import('expo/config').ExpoConf
       }
       await fs.writeFile(propsFile, props);
 
+      // With kotlinVersion set, the RN rootproject plugin applies
+      // org.jetbrains.kotlin.android to the app — the prebuild template also
+      // applies it explicitly, and Kotlin 2.3 errors on the duplicate
+      // registration ("Cannot add extension with name 'kotlin'"). Drop the
+      // explicit apply; the RN plugin's application covers it.
+      const appGradleFile = path.join(root, 'app', 'build.gradle');
+      let appGradle = await fs.readFile(appGradleFile, 'utf8');
+      if (appGradle.includes('apply plugin: "org.jetbrains.kotlin.android"')) {
+        appGradle = appGradle.replace(/apply plugin: "org\.jetbrains\.kotlin\.android"\r?\n/, '');
+        await fs.writeFile(appGradleFile, appGradle);
+      }
+
       // expo-modules-autolinking ships its own included gradle build whose
       // build.gradle.kts pins kotlin("jvm") 2.1.20 — compileKotlin of
       // expo-autolinking-settings-plugin fails against Gradle 9.4.1's
