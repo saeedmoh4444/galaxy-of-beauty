@@ -41,6 +41,12 @@ export const adminMessages = {
   },
   'tech.gallery.upload-button': { ar: 'رفع الصورة', en: 'Upload Photo' },
   'tech.gallery.upload-success': { ar: 'تم رفع الصورة بنجاح', en: 'Photo uploaded successfully' },
+  'tech.gallery.image-tab': { ar: 'صورة', en: 'Image' },
+  'tech.gallery.video-tab': { ar: 'فيديو', en: 'Video' },
+  'tech.gallery.video-url-placeholder': { ar: 'رابط الفيديو', en: 'Video URL' },
+  'tech.gallery.my-items': { ar: 'أعمالي', en: 'My Items' },
+  'tech.gallery.no-items': { ar: 'لا توجد أعمال بعد', en: 'No items yet' },
+  'tech.gallery.delete': { ar: 'حذف', en: 'Delete' },
 
   // F5 — richer tech profile details
   'tech.profile.details-title': { ar: 'تفاصيل إضافية', en: 'Additional Details' },
