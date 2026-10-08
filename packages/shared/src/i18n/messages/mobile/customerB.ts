@@ -8086,6 +8086,10 @@ export const mobileCustomerBMessages = {
     ar: '{{count}} منتج',
     en: '{{count}} products',
   },
+  'mobile.public.marketplace.store-rating': {
+    ar: '⭐ {{rating}} · {{count}} تقييم',
+    en: '⭐ {{rating}} · {{count}} reviews',
+  },
   'mobile.public.marketplace.nails.title': { ar: 'منتجات الأظافر', en: 'Nail Products' },
   'mobile.public.marketplace.nails.desc': { ar: 'ألوان رائعة', en: 'Gorgeous colors' },
 

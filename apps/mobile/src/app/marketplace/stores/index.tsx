@@ -72,6 +72,15 @@ export default function StoresScreen(): JSX.Element {
                   count: (s._count as Record<string, number> | undefined)?.products ?? 0,
                 })}
               </Text>
+              {/* S5 — denormalized store rating (kept fresh by product reviews). */}
+              {Number(s.totalReviews ?? 0) > 0 && (
+                <Text style={styles.meta}>
+                  {t('mobile.public.marketplace.store-rating', {
+                    rating: Number(s.ratingAvg ?? 0).toFixed(1),
+                    count: Number(s.totalReviews ?? 0),
+                  })}
+                </Text>
+              )}
             </View>
           </TouchableOpacity>
         ))
