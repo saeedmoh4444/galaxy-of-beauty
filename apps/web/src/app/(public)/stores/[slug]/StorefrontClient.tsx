@@ -25,6 +25,8 @@ export interface StorefrontPageData {
     logoUrl: string | null;
     bannerUrl: string | null;
     isVerified: boolean;
+    ratingAvg: number | null;
+    totalReviews: number;
   } | null;
   products: Array<Record<string, unknown>>;
   productCount: number;
@@ -76,11 +78,20 @@ export function StorefrontClient({ data }: { data: StorefrontPageData }): JSX.El
           </p>
           <TrustBadges
             className="mt-3"
-            items={
-              store.isVerified
+            items={[
+              ...(store.isVerified
                 ? [{ variant: 'verified' as const, label: t('stores.verified') }]
-                : []
-            }
+                : []),
+              ...(store.totalReviews > 0
+                ? [
+                    {
+                      variant: 'rating' as const,
+                      label: t('misc.rating'),
+                      value: (store.ratingAvg ?? 0).toFixed(1),
+                    },
+                  ]
+                : []),
+            ]}
           />
         </div>
       </div>
