@@ -157,11 +157,24 @@ export const payoutRouter = router({
       byVendor.set(order.vendorId, entry);
     }
 
-    const settlements = Array.from(byVendor.entries()).map(([vendorId, entry]) => ({
-      vendorId,
-      orderCount: entry.orderCount,
-      amount: entry.grossAmount,
-    }));
+    // S3 — per-vendor commission (schema default 10%).
+    const vendors = await prisma.vendor.findMany({
+      where: { id: { in: Array.from(byVendor.keys()) } },
+      select: { id: true, commissionRate: true },
+    });
+    const rateById = new Map(vendors.map((v) => [v.id, Number(v.commissionRate)]));
+
+    const round2 = (n: number) => Math.round(n * 100) / 100;
+    const settlements = Array.from(byVendor.entries()).map(([vendorId, entry]) => {
+      const rate = rateById.get(vendorId) ?? 10;
+      const fee = round2((entry.grossAmount * rate) / 100);
+      return {
+        vendorId,
+        orderCount: entry.orderCount,
+        amount: round2(entry.grossAmount - fee),
+        fee,
+      };
+    });
 
     if (settlements.length > 0) {
       // Re-calculation replaces PENDING vendor rows for the same period.
@@ -174,13 +187,43 @@ export const payoutRouter = router({
           periodStart,
           periodEnd,
           amount: s.amount,
-          fee: 0,
+          fee: s.fee,
           status: 'PENDING' as const,
         })),
       });
     }
 
     return settlements;
+  }),
+
+  // -----------------------------------------------------------------------
+  // S3 — setVendorCommission: admin sets a store's platform commission %.
+  // -----------------------------------------------------------------------
+  setVendorCommission: adminProcedure
+    .input(
+      z.object({
+        vendorId: z.number().int().positive(),
+        commissionRate: z.number().min(0).max(100),
+      }),
+    )
+    .mutation(async ({ input }) => {
+      const vendor = await prisma.vendor.findUnique({ where: { id: input.vendorId } });
+      if (!vendor) throw new TRPCError({ code: 'NOT_FOUND', message: 'Vendor not found' });
+      return prisma.vendor.update({
+        where: { id: input.vendorId },
+        data: { commissionRate: input.commissionRate },
+      });
+    }),
+
+  // -----------------------------------------------------------------------
+  // S3 — listStoreVendors: admin view of store vendors + commission rates.
+  // -----------------------------------------------------------------------
+  listStoreVendors: adminProcedure.query(async () => {
+    return prisma.vendor.findMany({
+      where: { type: { in: ['STORE', 'VENDOR'] } },
+      select: { id: true, storeName: true, isVerified: true, isActive: true, commissionRate: true },
+      orderBy: { id: 'asc' },
+    });
   }),
 
   // -----------------------------------------------------------------------
