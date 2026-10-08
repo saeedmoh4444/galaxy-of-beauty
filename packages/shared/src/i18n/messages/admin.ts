@@ -183,6 +183,16 @@ export const adminMessages = {
     en: 'Review merchant registration requests (license + bank)',
   },
   'admin.vendors.empty': { ar: 'لا توجد طلبات معلقة', en: 'No pending requests' },
+  // S3 — store commission management
+  'admin.vendors.commissions-title': { ar: 'عمولات المتاجر', en: 'Store Commissions' },
+  'admin.vendors.commissions-desc': {
+    ar: 'نسبة عمولة المنصة لكل متجر — تُطبَّق عند حساب التسويات.',
+    en: 'Platform commission % per store — applied when settlements are calculated.',
+  },
+  'admin.vendors.no-vendors': { ar: 'لا توجد متاجر بعد', en: 'No stores yet' },
+  'admin.vendors.commission-rate': { ar: 'نسبة العمولة', en: 'Commission rate' },
+  'admin.vendors.verified': { ar: 'موثّق', en: 'Verified' },
+  'admin.vendors.not-verified': { ar: 'غير موثّق', en: 'Not verified' },
   'admin.vendors.license': { ar: 'السجل التجاري', en: 'License' },
   'admin.vendors.bank': { ar: 'البنك', en: 'Bank' },
   'admin.vendors.reject-notes-placeholder': {
