@@ -13,7 +13,7 @@ async function main() {
   console.log(' Seeding Galaxy of Beauty database...\n');
 
   // ---- Clean existing data (in dependency order) ----
-  const db = prisma as any;
+  const db = prisma;
   await prisma.$transaction([
     // FK children first
     db.giftCardTransaction.deleteMany(),
@@ -2709,7 +2709,7 @@ async function main() {
       const endAt = new Date(startAt.getTime() + 60 * 60000);
       const svc = services[bookingCount % services.length]!;
       const tech = technicians[bookingCount % technicians.length]!;
-      await (prisma as any).booking.create({
+      await prisma.booking.create({
         data: {
           bookingCode: generateBookingCode(),
           customerId: customers[bookingCount % customers.length]!.id,
@@ -2732,11 +2732,11 @@ async function main() {
 
   // Wallet transactions
   try {
-    const customerWallet = await (prisma as any).wallet.findUnique({
+    const customerWallet = await prisma.wallet.findUnique({
       where: { userId: customer.id },
     });
     if (customerWallet) {
-      await (prisma as any).walletTransaction.createMany({
+      await prisma.walletTransaction.createMany({
         data: [
           {
             walletId: customerWallet.id,
@@ -2771,13 +2771,13 @@ async function main() {
       'أفضل فنية جربتها',
     ];
     let reviewCount = 0;
-    const allBookings = await (prisma as any).booking.findMany({
+    const allBookings = await prisma.booking.findMany({
       where: { status: 'COMPLETED' },
       take: 4,
     });
     for (let i = 0; i < allBookings.length; i++) {
       try {
-        await (prisma as any).review.create({
+        await prisma.review.create({
           data: {
             // Prisma 7: required relations are written via connect (scalar
             // FKs are mutually exclusive with their relation connects).
@@ -2799,10 +2799,10 @@ async function main() {
 
   // Loyalty, notifications, wishlist, flash deal
   try {
-    await (prisma as any).loyaltyAccount.create({
+    await prisma.loyaltyAccount.create({
       data: { userId: customer.id, points: 650, lifetimePoints: 1200, tier: 'GOLD' },
     });
-    await (prisma as any).notification.createMany({
+    await prisma.notification.createMany({
       data: [
         {
           userId: customer.id,
@@ -2825,10 +2825,10 @@ async function main() {
         },
       ],
     });
-    await (prisma as any).wishlistItem.createMany({
+    await prisma.wishlistItem.createMany({
       data: [{ userId: customer.id, serviceId: services[3]!.id }],
     });
-    await (prisma as any).flashDeal.create({
+    await prisma.flashDeal.create({
       data: {
         serviceId: services[0]!.id,
         titleAr: 'خصم ٤٠٪',
@@ -2842,7 +2842,7 @@ async function main() {
         isActive: true,
       },
     });
-    await (prisma as any).flashDeal.create({
+    await prisma.flashDeal.create({
       data: {
         serviceId: services[4]!.id,
         titleAr: 'خصم ٣٠٪ مكياج',
@@ -2856,7 +2856,7 @@ async function main() {
         isActive: true,
       },
     });
-    await (prisma as any).flashDeal.create({
+    await prisma.flashDeal.create({
       data: {
         serviceId: services[5]!.id,
         titleAr: 'خصم ٣٥٪ مساج',
@@ -2877,7 +2877,7 @@ async function main() {
 
   // Promo codes
   try {
-    await (prisma as any).promoCode.createMany({
+    await prisma.promoCode.createMany({
       data: [
         {
           code: 'WELCOME20',
@@ -2942,7 +2942,7 @@ async function main() {
 
   // Gift cards
   try {
-    await (prisma as any).giftCard.createMany({
+    await prisma.giftCard.createMany({
       data: [
         {
           code: 'GIFT-2024-001',
