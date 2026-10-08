@@ -20,10 +20,12 @@ export default function StoreDashboardPage(): JSX.Element {
   });
 
   useEffect(() => {
-    if (!isLoading && !data) {
+    // Only redirect once authenticated and the store lookup resolved —
+    // otherwise the auth hydration race sends store owners away too.
+    if (isAuthenticated && !isLoading && !data) {
       router.replace('/customer/vendor-portal');
     }
-  }, [isLoading, data, router]);
+  }, [isAuthenticated, isLoading, data, router]);
 
   if (isLoading) {
     return (
