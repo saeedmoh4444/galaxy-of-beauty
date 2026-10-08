@@ -558,7 +558,11 @@ export function VendorPortal({ shellRole = 'CUSTOMER' }: { shellRole?: string })
       <div className="mx-auto max-w-4xl space-y-6">
         <div className="flex items-center justify-between">
           <div>
-            <h1 className="text-2xl font-bold">{t('vendorPortal.title')}</h1>
+            {/* S1 — the owner's store name leads the dashboard (the portal
+                title alone made it feel like a shared page). */}
+            <h1 className="text-2xl font-bold">
+              {(store?.storeName as string | undefined) ?? t('vendorPortal.title')}
+            </h1>
             <p className="mt-1 text-sm text-text-secondary">{t('vendorPortal.subtitle')}</p>
           </div>
           <Button onClick={() => setShow(true)}>+ {t('vendorPortal.newProduct')}</Button>
