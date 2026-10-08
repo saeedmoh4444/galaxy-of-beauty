@@ -9,6 +9,7 @@ import { useHaptics } from '@/hooks/useHaptics';
 import { useLocale } from '@/components/LocaleProvider';
 import { getAuthToken } from '@/lib/authToken';
 import { useTheme, themeColors } from '@/components/ThemeProvider';
+import { BRAND_LOGO } from '@/utils/branding';
 
 export default function HomeScreen(): JSX.Element {
   const router = useRouter();
@@ -60,7 +61,15 @@ export default function HomeScreen(): JSX.Element {
       onRetry={() => cats.refetch()}
     >
       <View style={styles.headerRow}>
-        <Text style={styles.title}>{t('common.brandName')}</Text>
+        {/* Same brand mark as web (public/logo.png) — image + name side by side. */}
+        <View style={styles.brandRow}>
+          <Image
+            source={BRAND_LOGO}
+            style={styles.logo}
+            accessibilityLabel={t('common.brandName')}
+          />
+          <Text style={styles.title}>{t('common.brandName')}</Text>
+        </View>
         <TouchableOpacity
           testID="home-more-button"
           style={styles.moreBtn}
@@ -198,6 +207,8 @@ const makeStyles = (c: typeof themeColors.light | typeof themeColors.dark) =>
       justifyContent: 'space-between',
       marginBottom: 20,
     },
+    brandRow: { flexDirection: 'row', alignItems: 'center', gap: 10 },
+    logo: { width: 40, height: 40, borderRadius: 8 },
     title: {
       fontSize: 24,
       fontWeight: '800',
