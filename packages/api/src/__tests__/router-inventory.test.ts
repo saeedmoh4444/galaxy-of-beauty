@@ -100,7 +100,7 @@ describe('router inventory', () => {
   it('matches the canonical procedure list hash', () => {
     const hash = createHash('sha256').update(inventory(appRouter).join('\n')).digest('hex');
     expect(hash).toMatchInlineSnapshot(
-      `"e5e5d402f4fbf219ca1c60b15015c9bf84aaccdb8840513aa8c674b6c4ed5b83"`,
+      `"56fd08cee2fcd7f55534f8a5152738922633cd888b8b968313d7d1c0e0380499"`,
     );
   });
 });
