@@ -8066,6 +8066,26 @@ export const mobileCustomerBMessages = {
   'mobile.public.marketplace.makeup.desc': { ar: 'أفضل الماركات', en: 'The best brands' },
   'mobile.public.marketplace.hair.title': { ar: 'منتجات الشعر', en: 'Hair Products' },
   'mobile.public.marketplace.hair.desc': { ar: 'عناية متكاملة', en: 'Complete care' },
+  // S2 — mobile store browsing
+  'mobile.public.marketplace.stores-title': { ar: 'المتاجر', en: 'Stores' },
+  'mobile.public.marketplace.stores-link': { ar: 'تصفحي المتاجر', en: 'Browse Stores' },
+  'mobile.public.marketplace.stores-empty': { ar: 'لا توجد متاجر بعد', en: 'No stores yet' },
+  'mobile.public.marketplace.stores-load-error': {
+    ar: 'فشل تحميل المتاجر',
+    en: 'Failed to load stores',
+  },
+  'mobile.public.marketplace.store-load-error': {
+    ar: 'فشل تحميل المتجر',
+    en: 'Failed to load the store',
+  },
+  'mobile.public.marketplace.store-products-empty': {
+    ar: 'لا توجد منتجات بعد',
+    en: 'No products yet',
+  },
+  'mobile.public.marketplace.store-product-count': {
+    ar: '{{count}} منتج',
+    en: '{{count}} products',
+  },
   'mobile.public.marketplace.nails.title': { ar: 'منتجات الأظافر', en: 'Nail Products' },
   'mobile.public.marketplace.nails.desc': { ar: 'ألوان رائعة', en: 'Gorgeous colors' },
 
