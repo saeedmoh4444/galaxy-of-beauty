@@ -351,6 +351,11 @@ model Technician {
   // 1.1 Dynamic pricing — NEW | EXPERIENCED | PREMIUM | CELEBRITY
   // (tier multiplier applies only to dynamicPricingEnabled services).
   tier                String   @default("NEW")
+  // F5 — richer profile details
+  socialLinksJson     Json?    // { instagram?, snapchat?, tiktok?, website? }
+  languages           Json?    // ["ar", "en", ...]
+  certificationsJson  Json?    // [{ titleAr, titleEn, issuer?, year? }]
+  yearsOfExperience   Int?
   createdAt           DateTime  @default(now())
   updatedAt           DateTime  @updatedAt
 
@@ -1272,7 +1277,8 @@ model SavedCard {
 model GalleryImage {
   id           Int      @id @default(autoincrement())
   technicianId Int
-  imageUrl     String
+  imageUrl     String?  // Nullable since F4: an item can be a video instead
+  videoUrl     String?  // F4 — video items play inline in the gallery
   captionJson  Json?    // { ar: "...", en: "..." }
   category     String?  // hair, nails, makeup, etc.
   isBefore     Boolean  @default(false) // Before/after pair indicator
