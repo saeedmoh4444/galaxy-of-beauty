@@ -8,6 +8,13 @@ import { DashboardLayout } from '@/components/layout/DashboardLayout';
 import { useLocale } from '@/components/LocaleProvider';
 import { localize, type TranslationKey } from '@galaxy/shared';
 
+const TIER_LABELS: Record<string, TranslationKey> = {
+  NEW: 'tech.profile.tier-new',
+  EXPERIENCED: 'tech.profile.tier-experienced',
+  PREMIUM: 'tech.profile.tier-premium',
+  CELEBRITY: 'tech.profile.tier-celebrity',
+};
+
 const KYC_BADGES: Record<string, { colour: string; labelKey: TranslationKey }> = {
   PENDING: { colour: 'bg-surface-muted text-text-primary', labelKey: 'tech.profile.kyc-pending' },
   SUBMITTED: {
@@ -99,6 +106,18 @@ export default function TechProfilePage(): JSX.Element {
   const [profileMsg, setProfileMsg] = useState('');
   const [profileErr, setProfileErr] = useState(false);
 
+  // F5 — richer profile details
+  const [years, setYears] = useState('');
+  const [languagesInput, setLanguagesInput] = useState('');
+  const [ig, setIg] = useState('');
+  const [sc, setSc] = useState('');
+  const [tt, setTt] = useState('');
+  const [web, setWeb] = useState('');
+  const [certs, setCerts] = useState<
+    Array<{ titleAr: string; titleEn: string; issuer: string; year: string }>
+  >([]);
+  const [certDraft, setCertDraft] = useState({ titleAr: '', titleEn: '', issuer: '', year: '' });
+
   // KYC
   const [docType, setDocType] = useState('NATIONAL_ID');
   const [docUrl, setDocUrl] = useState('');
@@ -120,12 +139,32 @@ export default function TechProfilePage(): JSX.Element {
     setBioEn(bio?.['en'] ?? '');
     setIsEcoFriendly((tech?.isEcoFriendly as boolean) ?? false);
     setBufferMinutes((tech?.bufferMinutes as number) ?? 5);
+    const links = (tech?.socialLinksJson as Record<string, string> | undefined) ?? {};
+    setIg(links['instagram'] ?? '');
+    setSc(links['snapchat'] ?? '');
+    setTt(links['tiktok'] ?? '');
+    setWeb(links['website'] ?? '');
+    setLanguagesInput(((tech?.languages as string[] | undefined) ?? []).join(', '));
+    setYears(String((tech?.yearsOfExperience as number | undefined) ?? ''));
+    setCerts(
+      (
+        (tech?.certificationsJson as
+          | Array<{ titleAr?: string; titleEn?: string; issuer?: string; year?: number }>
+          | undefined) ?? []
+      ).map((c) => ({
+        titleAr: c.titleAr ?? '',
+        titleEn: c.titleEn ?? '',
+        issuer: c.issuer ?? '',
+        year: c.year !== undefined ? String(c.year) : '',
+      })),
+    );
     setHydrated(true);
   }
 
   const kycStatus = (tech?.kycStatus as string) ?? 'PENDING';
   const badge: { colour: string; labelKey: TranslationKey } =
     KYC_BADGES[kycStatus] ?? KYC_BADGES.PENDING!;
+  const tierKey = TIER_LABELS[(tech?.tier as string) ?? 'NEW'] ?? TIER_LABELS.NEW!;
 
   /* ---------- KYC upload ---------- */
   const handleKycSubmit = () => {
@@ -184,6 +223,25 @@ export default function TechProfilePage(): JSX.Element {
         bioEn: bioEn || undefined,
         bufferMinutes: Number.isFinite(bufferMinutes) ? bufferMinutes : undefined,
         isEcoFriendly,
+        socialLinks: {
+          instagram: ig.trim() || undefined,
+          snapchat: sc.trim() || undefined,
+          tiktok: tt.trim() || undefined,
+          website: web.trim() || undefined,
+        },
+        languages: languagesInput
+          .split(',')
+          .map((s) => s.trim())
+          .filter(Boolean),
+        certifications: certs
+          .filter((c) => c.titleAr.trim() && c.titleEn.trim())
+          .map((c) => ({
+            titleAr: c.titleAr.trim(),
+            titleEn: c.titleEn.trim(),
+            issuer: c.issuer.trim() || undefined,
+            year: Number.isFinite(Number(c.year)) ? Number(c.year) : undefined,
+          })),
+        yearsOfExperience: Number.isFinite(Number(years)) ? Number(years) : undefined,
       });
       setProfileMsg(t('tech.profile.saved-msg'));
       refetch();
@@ -350,6 +408,109 @@ export default function TechProfilePage(): JSX.Element {
                   />
                 </div>
               </div>
+
+              {/* F5 — additional profile details */}
+              <div className="mt-4 border-t border-edge pt-4">
+                <h3 className="mb-3 font-semibold">{t('tech.profile.details-title')}</h3>
+                <div className="grid gap-4 md:grid-cols-2">
+                  <Input
+                    label={t('tech.profile.years-experience')}
+                    type="number"
+                    value={years}
+                    onChange={(e) => setYears(e.target.value)}
+                  />
+                  <Input
+                    label={t('tech.profile.languages')}
+                    value={languagesInput}
+                    onChange={(e) => setLanguagesInput(e.target.value)}
+                  />
+                </div>
+                <p className="mt-1 text-xs text-text-secondary">
+                  {t('tech.profile.languages-hint')}
+                </p>
+
+                <h4 className="mb-2 mt-4 font-semibold">{t('tech.profile.social-links')}</h4>
+                <div className="grid gap-4 md:grid-cols-2">
+                  <Input
+                    label={t('tech.profile.instagram')}
+                    value={ig}
+                    onChange={(e) => setIg(e.target.value)}
+                  />
+                  <Input
+                    label={t('tech.profile.snapchat')}
+                    value={sc}
+                    onChange={(e) => setSc(e.target.value)}
+                  />
+                  <Input
+                    label={t('tech.profile.tiktok')}
+                    value={tt}
+                    onChange={(e) => setTt(e.target.value)}
+                  />
+                  <Input
+                    label={t('tech.profile.website')}
+                    value={web}
+                    onChange={(e) => setWeb(e.target.value)}
+                  />
+                </div>
+
+                <h4 className="mb-2 mt-4 font-semibold">{t('tech.profile.certifications')}</h4>
+                {certs.length > 0 && (
+                  <ul className="mb-3 space-y-2">
+                    {certs.map((c, i) => (
+                      <li
+                        key={i}
+                        className="flex items-center justify-between gap-3 rounded-lg bg-surface-muted px-3 py-2 text-sm"
+                      >
+                        <span className="min-w-0 flex-1 truncate">
+                          {localize({ ar: c.titleAr, en: c.titleEn }, locale)}
+                          {c.issuer ? ` — ${c.issuer}` : ''}
+                          {c.year ? ` (${c.year})` : ''}
+                        </span>
+                        <Button
+                          size="sm"
+                          variant="danger"
+                          onClick={() => setCerts(certs.filter((_, j) => j !== i))}
+                        >
+                          {t('tech.profile.cert-remove')}
+                        </Button>
+                      </li>
+                    ))}
+                  </ul>
+                )}
+                <div className="grid gap-3 md:grid-cols-4">
+                  <Input
+                    placeholder={t('tech.profile.cert-title-ar')}
+                    value={certDraft.titleAr}
+                    onChange={(e) => setCertDraft({ ...certDraft, titleAr: e.target.value })}
+                  />
+                  <Input
+                    placeholder={t('tech.profile.cert-title-en')}
+                    value={certDraft.titleEn}
+                    onChange={(e) => setCertDraft({ ...certDraft, titleEn: e.target.value })}
+                  />
+                  <Input
+                    placeholder={t('tech.profile.cert-issuer')}
+                    value={certDraft.issuer}
+                    onChange={(e) => setCertDraft({ ...certDraft, issuer: e.target.value })}
+                  />
+                  <Input
+                    placeholder={t('tech.profile.cert-year')}
+                    type="number"
+                    value={certDraft.year}
+                    onChange={(e) => setCertDraft({ ...certDraft, year: e.target.value })}
+                  />
+                </div>
+                <Button
+                  size="sm"
+                  className="mt-2"
+                  onClick={() => {
+                    setCerts([...certs, certDraft]);
+                    setCertDraft({ titleAr: '', titleEn: '', issuer: '', year: '' });
+                  }}
+                >
+                  {t('tech.profile.cert-add')}
+                </Button>
+              </div>
               <div className="mt-4">
                 <Button
                   onClick={handleProfileSave}
@@ -391,6 +552,13 @@ export default function TechProfilePage(): JSX.Element {
                     {(me?.phone as string) ?? '—'}
                   </p>
                   <p className="mt-1 text-xs text-text-secondary">{t('tech.profile.phone')}</p>
+                </div>
+                {/* F5 — pricing tier (admin-managed, display-only) */}
+                <div className="rounded-xl bg-surface-muted p-4 text-center">
+                  <p className="text-sm font-bold text-purple-700 dark:text-purple-300">
+                    {t(tierKey)}
+                  </p>
+                  <p className="mt-1 text-xs text-text-secondary">{t('tech.profile.tier')}</p>
                 </div>
               </div>
             </Card>

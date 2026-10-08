@@ -351,6 +351,11 @@ model Technician {
   // 1.1 Dynamic pricing — NEW | EXPERIENCED | PREMIUM | CELEBRITY
   // (tier multiplier applies only to dynamicPricingEnabled services).
   tier                String   @default("NEW")
+  // F5 — richer profile details
+  socialLinksJson     Json?    // { instagram?, snapchat?, tiktok?, website? }
+  languages           Json?    // ["ar", "en", ...]
+  certificationsJson  Json?    // [{ titleAr, titleEn, issuer?, year? }]
+  yearsOfExperience   Int?
   createdAt           DateTime  @default(now())
   updatedAt           DateTime  @updatedAt
 
