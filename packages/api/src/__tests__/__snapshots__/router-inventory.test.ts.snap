@@ -668,7 +668,9 @@ payouts.calculateStore	mutation	admin
 payouts.listForAdmin	query	admin
 payouts.listMyPayouts	query	technician
 payouts.listStorePayouts	query	customer
+payouts.listStoreVendors	query	admin
 payouts.process	mutation	admin
+payouts.setVendorCommission	mutation	admin
 penPal.interests	query	customer
 penPal.match	query	customer
 penPal.register	mutation	customer

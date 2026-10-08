@@ -78,16 +78,16 @@ describe('router inventory', () => {
     expect(counts).toMatchInlineSnapshot(`
       {
         "byTier": {
-          "admin": 220,
+          "admin": 222,
           "customer": 496,
           "protected": 103,
           "public": 252,
           "staff": 0,
           "technician": 41,
         },
-        "mutations": 469,
-        "procedures": 1112,
-        "queries": 643,
+        "mutations": 470,
+        "procedures": 1114,
+        "queries": 644,
         "subscriptions": 0,
       }
     `);
