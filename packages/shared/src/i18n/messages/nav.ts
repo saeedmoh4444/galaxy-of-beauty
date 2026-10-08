@@ -59,6 +59,8 @@ export const navMessages = {
   'nav.gift-card-market': { ar: 'سوق البطاقات', en: 'Gift Market' },
   'nav.live-chat': { ar: 'الدعم المباشر', en: 'Live Chat' },
   'nav.vendor-portal': { ar: 'بوابة البائعين', en: 'Vendor' },
+  // S1 — dedicated store/provider dashboard
+  'nav.store-dashboard': { ar: 'لوحة المتجر', en: 'Store Dashboard' },
   'nav.certification-quiz': { ar: 'الشهادات', en: 'Certification' },
   'nav.tech-waitlist': { ar: 'قائمة الانتظار', en: 'Waitlist' },
   'nav.night-mode': { ar: 'روتين ليلي', en: 'Night Mode' },
