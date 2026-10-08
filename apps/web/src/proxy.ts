@@ -141,6 +141,8 @@ const PROTECTED_PATHS = [
   '/skincare-guide',
   '/smart-schedule',
   '/social',
+  // S1 — dedicated store/provider dashboard
+  '/store',
   '/social-challenges',
   '/spa-planner',
   '/streak-calendar',

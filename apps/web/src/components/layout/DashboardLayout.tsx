@@ -31,6 +31,12 @@ const technicianLinks: NavLink[] = [
   { href: '/tech/profile', key: 'nav.tech.profile', icon: 'user' },
 ];
 
+// S1 — store/provider shell (store/clinic/gym/nail-bar/athome owners).
+const storeLinks: NavLink[] = [
+  { href: '/store', key: 'nav.store-dashboard', icon: 'sparkle' },
+  { href: '/customer/vendor-portal', key: 'nav.vendor-portal', icon: 'external-link' },
+];
+
 const adminLinks: NavLink[] = [
   { href: '/admin/dashboard', key: 'nav.admin.dashboard', icon: 'sparkle' },
   { href: '/admin/users', key: 'nav.admin.users', icon: 'user' },
@@ -66,7 +72,13 @@ export function DashboardLayout({
   const logoutMut = api.auth.logout.useMutation();
   const { t } = useLocale();
   const links =
-    userRole === 'ADMIN' ? adminLinks : userRole === 'TECHNICIAN' ? technicianLinks : customerLinks;
+    userRole === 'ADMIN'
+      ? adminLinks
+      : userRole === 'TECHNICIAN'
+        ? technicianLinks
+        : userRole === 'STORE'
+          ? storeLinks
+          : customerLinks;
 
   // Phase 3 sprint 4 — collapsible groups (customer sidebar only).
   // Default: every group collapsed except the one holding the active route.
