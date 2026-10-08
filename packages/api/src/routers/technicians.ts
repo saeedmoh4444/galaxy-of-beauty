@@ -1,6 +1,7 @@
 import { TRPCError } from '@trpc/server';
 import { z } from 'zod';
 import { prisma } from '@galaxy/db';
+import type { Prisma } from '@galaxy/db';
 import { notFound } from '../lib/errors';
 import { publicProcedure, adminProcedure, technicianProcedure, router } from '../trpc';
 import { addTechnicianServiceSchema } from '../validators/catalog';
@@ -331,6 +332,28 @@ export const technicianRouter = router({
           bioEn: z.string().max(2000).optional(),
           bufferMinutes: z.number().int().min(0).max(180).optional(),
           isEcoFriendly: z.boolean().optional(),
+          // F5 — richer profile details
+          socialLinks: z
+            .object({
+              instagram: z.string().url().optional(),
+              snapchat: z.string().url().optional(),
+              tiktok: z.string().url().optional(),
+              website: z.string().url().optional(),
+            })
+            .optional(),
+          languages: z.array(z.string().min(1).max(50)).max(20).optional(),
+          certifications: z
+            .array(
+              z.object({
+                titleAr: z.string().min(1).max(200),
+                titleEn: z.string().min(1).max(200),
+                issuer: z.string().max(200).optional(),
+                year: z.number().int().min(1950).max(2100).optional(),
+              }),
+            )
+            .max(50)
+            .optional(),
+          yearsOfExperience: z.number().int().min(0).max(70).optional(),
         })
         .refine((v) => Object.keys(v).length > 0, {
           message: 'At least one field is required',
@@ -350,6 +373,10 @@ export const technicianRouter = router({
         bioJson?: { ar?: string; en?: string };
         bufferMinutes?: number;
         isEcoFriendly?: boolean;
+        socialLinksJson?: Prisma.InputJsonValue;
+        languages?: Prisma.InputJsonValue;
+        certificationsJson?: Prisma.InputJsonValue;
+        yearsOfExperience?: number;
       } = {};
       if (input.city !== undefined) data.city = input.city;
       if (input.area !== undefined) data.area = input.area;
@@ -361,6 +388,18 @@ export const technicianRouter = router({
           ar: input.bioAr ?? current.ar,
           en: input.bioEn ?? current.en,
         };
+      }
+      if (input.socialLinks !== undefined) {
+        data.socialLinksJson = input.socialLinks as unknown as Prisma.InputJsonValue;
+      }
+      if (input.languages !== undefined) {
+        data.languages = input.languages as unknown as Prisma.InputJsonValue;
+      }
+      if (input.certifications !== undefined) {
+        data.certificationsJson = input.certifications as unknown as Prisma.InputJsonValue;
+      }
+      if (input.yearsOfExperience !== undefined) {
+        data.yearsOfExperience = input.yearsOfExperience;
       }
 
       return prisma.technician.update({

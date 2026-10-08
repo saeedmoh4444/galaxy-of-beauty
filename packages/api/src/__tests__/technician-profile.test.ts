@@ -129,3 +129,42 @@ describe('technicianRouter.updateProfile', () => {
     await expect(c.technicians.updateProfile({})).rejects.toThrow();
   });
 });
+
+describe('technicianRouter.updateProfile — F5 profile details', () => {
+  let tech: JwtPayload;
+
+  beforeAll(async () => {
+    const { user } = await makeTechnicianUser();
+    tech = { id: user.id, role: 'TECHNICIAN', email: user.email };
+  }, 15000);
+
+  it('persists social links, languages, certifications and experience', async () => {
+    const c = await caller(tech);
+    const updated = await c.technicians.updateProfile({
+      socialLinks: { instagram: 'https://instagram.com/nora', website: 'https://nora.example' },
+      languages: ['ar', 'en'],
+      certifications: [
+        {
+          titleAr: 'شهادة مكياج',
+          titleEn: 'Makeup Certificate',
+          issuer: 'ABC Academy',
+          year: 2024,
+        },
+      ],
+      yearsOfExperience: 7,
+    });
+
+    expect(updated.socialLinksJson).toMatchObject({ instagram: 'https://instagram.com/nora' });
+    expect(updated.languages).toEqual(['ar', 'en']);
+    expect(updated.certificationsJson).toHaveLength(1);
+    expect((updated.certificationsJson as Array<{ titleEn: string }>)[0]!.titleEn).toBe(
+      'Makeup Certificate',
+    );
+    expect(updated.yearsOfExperience).toBe(7);
+  });
+
+  it('rejects malformed languages input', async () => {
+    const c = await caller(tech);
+    await expect(c.technicians.updateProfile({ languages: 'ar' as never })).rejects.toThrow();
+  });
+});

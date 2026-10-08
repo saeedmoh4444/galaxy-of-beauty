@@ -29,25 +29,31 @@ export const galleryRouter = router({
       return { items, total, page: input.page };
     }),
 
-  // Technician: upload a gallery image
+  // Technician: upload a gallery item (image OR video — F4)
   upload: technicianProcedure
     .input(
-      z.object({
-        imageUrl: z.string().url(),
-        captionAr: z.string().optional(),
-        captionEn: z.string().optional(),
-        category: z
-          .enum(['hair', 'nails', 'makeup', 'skin', 'massage', 'henna', 'other'])
-          .optional(),
-        isBefore: z.boolean().default(false),
-        pairId: z.number().int().positive().optional(),
-      }),
+      z
+        .object({
+          imageUrl: z.string().url().optional(),
+          videoUrl: z.string().url().optional(),
+          captionAr: z.string().optional(),
+          captionEn: z.string().optional(),
+          category: z
+            .enum(['hair', 'nails', 'makeup', 'skin', 'massage', 'henna', 'other'])
+            .optional(),
+          isBefore: z.boolean().default(false),
+          pairId: z.number().int().positive().optional(),
+        })
+        .refine((v) => Boolean(v.imageUrl || v.videoUrl), {
+          message: 'Provide imageUrl or videoUrl',
+        }),
     )
     .mutation(async ({ ctx, input }) => {
       return prisma.galleryImage.create({
         data: {
           technicianId: ctx.user.id,
           imageUrl: input.imageUrl,
+          videoUrl: input.videoUrl,
           captionJson: { ar: input.captionAr || '', en: input.captionEn || '' },
           category: input.category,
           isBefore: input.isBefore,
