@@ -24,7 +24,7 @@ let vendorId: number;
 let orderIds: number[] = [];
 let userIds: number[] = [];
 
-describe('store settlement', () => {
+describe('store settlement', { sequential: true }, () => {
   beforeAll(async () => {
     const owner = await prisma.user.create({ data: buildUser() });
     const cust = await prisma.user.create({ data: buildUser() });
@@ -62,6 +62,9 @@ describe('store settlement', () => {
       await prisma.vendor.deleteMany({ where: { id: vendorId } });
     } catch {}
     try {
+      await prisma.vendor.deleteMany({ where: { id: { in: createdVendorIds } } });
+    } catch {}
+    try {
       await prisma.user.deleteMany({ where: { id: { in: userIds } } });
     } catch {}
   });
@@ -75,8 +78,36 @@ describe('store settlement', () => {
     expect(Array.isArray(result)).toBe(true);
     const mine = result.find((p: { vendorId: number }) => p.vendorId === vendorId);
     expect(mine).toBeDefined();
-    expect(Number(mine!.amount)).toBe(200); // FULFILLED only — pending excluded
-    expect(mine!.orderCount).toBe(1);
+    expect(mine!.orderCount).toBe(1); // FULFILLED only — pending excluded
+    // S3 — default 10% commission applies: 200 gross → 180 net, 20 fee.
+    expect(Number(mine!.amount)).toBe(180);
+    expect(Number(mine!.fee)).toBe(20);
+  });
+
+  it('S3 — calculateStore applies the vendor commissionRate', async () => {
+    // Vendor.userId is @unique — one store per owner, so update the rate.
+    await prisma.vendor.update({ where: { id: vendorId }, data: { commissionRate: 25 } });
+    const order = await prisma.storeOrder.create({
+      data: { vendorId, customerId: customer.id, totalAmount: 400, status: 'FULFILLED' },
+    });
+    orderIds.push(order.id);
+
+    const admin = await caller(adminUser);
+    const periodStart = new Date(Date.now() - 7 * 86_400_000).toISOString();
+    const periodEnd = new Date(Date.now() + 86_400_000).toISOString();
+    const result = await admin.payouts.calculateStore({ periodStart, periodEnd });
+
+    const mine = result.find((p: { vendorId: number }) => p.vendorId === vendorId);
+    expect(mine).toBeDefined();
+    // 25% commission on 600 gross (200 + 400) → 450 net, 150 fee.
+    expect(Number(mine!.amount)).toBe(450);
+    expect(Number(mine!.fee)).toBe(150);
+  });
+
+  it('S3 — admin can update a vendor commissionRate', async () => {
+    const admin = await caller(adminUser);
+    const updated = await admin.payouts.setVendorCommission({ vendorId, commissionRate: 15 });
+    expect(Number(updated.commissionRate)).toBe(15);
   });
 
   it('listStorePayouts returns the vendor payouts for the owner', async () => {
