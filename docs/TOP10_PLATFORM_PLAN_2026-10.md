@@ -6,20 +6,22 @@
 >
 > Builds on: `ROADMAP_RECOMMENDATIONS_2026-10.md` (ops phases A–D),
 > `STORE_MARKETPLACE_PLAN.md` (store phases 1–4), `WOMEN_LIFESTYLE_EXPANSION_PLAN.md`.
-> Status: **awaiting GO** — user triggers with "start working and implementing".
+> Status: **EXECUTED 2026-10-08/09** — Phase 0 complete, S1/S2/S3 done,
+> Q4 done, Q1 step 1 done. Remaining work listed per phase below.
+> Provider-system reality check: `docs/architecture/store-provider-system.md`.
 
 ---
 
 ## Phase 0 — Fixes from user testing (start immediately on GO)
 
-| #   | Item                                   | What / why                                                                                                                                                                         | Effort |
-| --- | -------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------ |
-| F1  | **Mobile brand logo on home/header**   | Logo file is already identical to web (md5-verified); `BRAND_LOGO` only renders on login+onboarding. Add it to the mobile home/header (same logo as web)                           | 1–2 h  |
-| F2  | **Duplicate admin nav entry**          | `apps/web/src/app/admin/layout.tsx:30-31` lists `/admin/content-gen` twice — remove one line                                                                                       | 15 min |
-| F3  | **Reactivate `customer@test.com`**     | `isActive=false` in DB (seed creates it active; no auto-lockout exists; login throws "Account is deactivated"). One UPDATE + trace what flipped it (admin audit-log / user-toggle) | 30 min |
-| F4  | **Tech gallery video upload**          | `GalleryImage` is `imageUrl`-only. Add `videoUrl` + migration + upload UI + player (reuse Short/video-upload patterns)                                                             | ~1 day |
-| F5  | **Tech profile richer fields**         | Form has ~15 fields; model supports more: bio AR/EN (`bioJson`), social links, languages, certifications, `isEcoFriendly`, `bufferMinutes`, tier. Extend form + i18n (ar/en)       | ~1 day |
-| F6  | **Fix stale root `.env` DATABASE_URL** | Root .env points to 5432/`gob_secure_pass` (stale); working = 5433/`gob_secure_pass_2024`                                                                                          | 15 min |
+| #   | Item                                   | What / why                                                                                                         | Effort |
+| --- | -------------------------------------- | ------------------------------------------------------------------------------------------------------------------ | ------ |
+| F1  | **Mobile brand logo on home/header**   | ✅ DONE (#385) — logo + name in the mobile home header (web parity, md5-identical asset)                           | 1–2 h  |
+| F2  | **Duplicate admin nav entry**          | ✅ DONE (#384) — duplicate removed + viewport-aware E2E regression spec                                            | 15 min |
+| F3  | **Reactivate `customer@test.com`**     | ✅ DONE — reactivated; root cause: untracked direct DB write (no app code sets isActive=false without anonymizing) | 30 min |
+| F4  | **Tech gallery video upload**          | ✅ DONE (#387) — `GalleryImage.videoUrl` + upload toggle + inline players + My Items grid                          | ~1 day |
+| F5  | **Tech profile richer fields**         | ✅ DONE (#388) — social links, languages, certifications, years of experience, tier badge                          | ~1 day |
+| F6  | **Fix stale root `.env` DATABASE_URL** | ✅ DONE — root .env now 5433/`gob_secure_pass_2024` (matches compose)                                              | 15 min |
 
 Verification per item: type-checks (3 apps) + per-app lint + targeted tests; F1/F4/F5 get mobile/web smoke tests.
 
@@ -34,13 +36,13 @@ Verification per item: type-checks (3 apps) + per-app lint + targeted tests; F1/
 > public pages + admin screens on the shared `Vendor` model — no per-type
 > registration or dashboards.
 
-| #   | Item                                   | What / why                                                                                                                                                                                                                     | Effort   |
-| --- | -------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | -------- |
-| S1  | **Dedicated store dashboard**          | New `(store)` route group (or ownership-based layout): store home, products, orders, settings. Store owners land there after login (guard: user owns a `Vendor`); customer area keeps vendor-portal for the registration entry | 2–3 days |
-| S2  | **Store Phase 2 — public storefronts** | Per-store public pages (logo, bio, rating, product grid), product image upload (remaining from Phase 1), mobile store browsing                                                                                                 | 2–3 days |
-| S3  | **Store Phase 3 — finance**            | Commission config per store/category (admin), store payouts + statements (reuse technician payout machinery), refunds via disputes flow                                                                                        | 2 days   |
-| S4  | **Provider-type registration**         | Extend the registration wizard to gym / clinic / nail-bar types with per-type fields (facility license, staff list, etc.) + per-type dashboard sections. Reuses `ProviderSubmission` queue + KYC pipeline                      | 3–4 days |
-| S5  | **Store Phase 4 — trust & growth**     | Store ratings/reviews, badges, store analytics, promotions through the submission system                                                                                                                                       | 2 days   |
+| #   | Item                                   | What / why                                                                                                                                                                                         | Effort   |
+| --- | -------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------- |
+| S1  | **Dedicated store dashboard**          | ✅ DONE (#389) — literal `/store` segment (NOT a route group — group roots collide with `(public)`), STORE shell + sidebar, auth-hydration-safe guard, store name header                           | 2–3 days |
+| S2  | **Store Phase 2 — public storefronts** | ✅ DONE (pre-existing web + #390 mobile) — `/stores` + `[slug]` already existed with product grids; mobile store browsing added                                                                    | 2–3 days |
+| S3  | **Store Phase 3 — finance**            | ✅ DONE (#391) — per-vendor commissionRate actually applied in `calculateStore` (was gross/fee 0), admin rate editor at `/admin/vendors`; payouts/disputes machinery pre-existed                   | 2 days   |
+| S4  | **Provider-type registration**         | ✅ DONE (pre-existing) — the portal wizard already covers store/clinic/gym/nail-bar/at-home with per-type KSA documents and per-type dashboards (see `docs/architecture/store-provider-system.md`) | 3–4 days |
+| S5  | **Store Phase 4 — trust & growth**     | 🔶 PARTIAL (#393) — ratings now displayed (list + storefront + mobile); badges exist; store analytics beyond top-products + promotions polish remain                                               | 2 days   |
 
 Gates: regulatory decisions on product categories (user), delivery-partner choice (partnership-gated — same class as ride-hailing).
 
@@ -62,15 +64,15 @@ Gates: regulatory decisions on product categories (user), delivery-partner choic
 
 ## Phase 3 — Performance & quality (top-10 class)
 
-| #   | Item                                 | What / why                                                                                                                                                                      | Effort           |
-| --- | ------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------- |
-| Q1  | **Bundle slimming** (C1 / FE-007)    | Routes at 560–650 KB → target 100–150 KB. Catalog split (#368) already cut −91 KB/route; continue: tRPC client chunk, ui barrel, marketing chunk. Size gate measures every step | 2–3 days         |
-| Q2  | **k6 load test @1K concurrent** (C2) | Find the real breaking point before traffic does (needs P3 staging)                                                                                                             | 4 h              |
-| Q3  | **Observability dashboards** (B4)    | API latency, DB pools, queue depth (Sentry metrics or Prometheus/Grafana)                                                                                                       | 8 h              |
-| Q4  | **Code-hygiene sweeps** (D4)         | Seed `(prisma as any)` → typed; lint-warning triage (~30); dangling exports                                                                                                     | 1–2 days         |
-| Q5  | **Security pentest + NCA-ECC** (D3)  | External pentest + Saudi market compliance (after P4)                                                                                                                           | 1 week, external |
-| Q6  | **SEO & Core Web Vitals**            | Per-page meta/OG (ar+en), sitemap polish, LCP/CLS on mobile, Arabic SEO                                                                                                         | 2–3 days         |
-| Q7  | **Mobile parity polish**             | Dark mode on mobile (web dark mode shipped), animations polish, empty/skeleton states                                                                                           | 1–2 days         |
+| #   | Item                                 | What / why                                                                                                                                                             | Effort           |
+| --- | ------------------------------------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------- |
+| Q1  | **Bundle slimming** (C1 / FE-007)    | 🔶 IN PROGRESS — step 1 done (#395: `sideEffects: false` on shared+ui unlocks tree-shaking); next: rebuild + measure the real numbers, then cut the tRPC/API chunk set | 2–3 days         |
+| Q2  | **k6 load test @1K concurrent** (C2) | Find the real breaking point before traffic does (needs P3 staging)                                                                                                    | 4 h              |
+| Q3  | **Observability dashboards** (B4)    | API latency, DB pools, queue depth (Sentry metrics or Prometheus/Grafana)                                                                                              | 8 h              |
+| Q4  | **Code-hygiene sweeps** (D4)         | ✅ DONE (seed part, #394) — all 14 `(prisma as any)` casts removed, fully typed; lint-warning triage (~174 api / ~33 web) remains                                      | 1–2 days         |
+| Q5  | **Security pentest + NCA-ECC** (D3)  | External pentest + Saudi market compliance (after P4)                                                                                                                  | 1 week, external |
+| Q6  | **SEO & Core Web Vitals**            | Per-page meta/OG (ar+en), sitemap polish, LCP/CLS on mobile, Arabic SEO                                                                                                | 2–3 days         |
+| Q7  | **Mobile parity polish**             | Dark mode on mobile EXISTS (ThemeProvider light/dark/system) — remaining: animations polish, empty/skeleton states                                                     | 1–2 days         |
 
 ---
 
