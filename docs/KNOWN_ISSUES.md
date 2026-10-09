@@ -1,6 +1,6 @@
 # Galaxy of Beauty — Known Issues
 
-> **Date:** 2026-08-08 | **Severity:** Low | **Platform Status:** Verifiably-correct baseline (see [DELIVERY_REPORT.md](../DELIVERY_REPORT.md) — not yet production-hardened)
+> **Date:** 2026-10-09 | **Severity:** Low | **Platform Status:** Verifiably-correct baseline (see [DELIVERY_REPORT.md](../DELIVERY_REPORT.md) — not yet production-hardened)
 
 ---
 
@@ -93,3 +93,31 @@ TS 6.0 deprecates `baseUrl` — silenced with `"ignoreDeprecations":
 "6.0"` in apps/mobile/tsconfig.json (revisit before TS 7).
 **Verified:** export produces a 6.1MB Hermes bytecode bundle; mobile
 tsc/lint, web, shared, and ui type-checks all green.
+
+---
+
+## 9. Current Known Issues (2026-10-09 refresh)
+
+### 9.1 iOS physical device blocked (Medium) — USER-GATED
+
+**Symptom:** Expo Go on an iPhone red-screens ("native module doesn't exist") — the app uses webrtc + async-storage native modules that Expo Go cannot provide.
+**Path:** the Android dev-client APK (EAS) is the only working phone path today. An Apple Developer account (~$99/yr) unblocks an iOS dev client + App Store submission.
+
+### 9.2 FE-007 bundle gap (Medium) — IN PROGRESS
+
+**Symptom:** routes ship ~560–650 KB gzipped first-load vs 100–150 KB targets.
+**State:** catalog split (#368) reclaimed ~91 KB/route; `sideEffects: false` on shared+ui (#395) unlocked tree-shaking. **The post-#395 numbers are unmeasured** — next step is a fresh build + size-gate run, then slimming the shared tRPC/API chunk set.
+
+### 9.3 No staging environment (Medium)
+
+**Symptom:** risky changes ride against the shared dev DB; the local API suite also runs `env=test` against it (contention + seed pollution — the advisor "weekly rising category" test flakes locally, and Playwright logins can fail while the suite hammers the DB). CI's isolated DB is clean.
+**Path:** compose override + snapshot/restore script (roadmap A3).
+
+### 9.4 Role-less store owners (Low, by design)
+
+**Symptom:** `UserRole` has no VENDOR role — store/clinic/gym owners are CUSTOMER-role users with a Vendor row; access is ownership-checked (`vendorPortal.*` resolve the vendor from the user id).
+**Assessment:** works correctly today (see `docs/architecture/store-provider-system.md`); adding a role would require migrating every ownership check — decide deliberately before doing it.
+
+### 9.5 Single points of failure (Low, pre-production)
+
+One PostgreSQL, one Redis, no failover, no scheduled backups outside the compose script — acceptable for dev/staging, mandatory to fix before launch (roadmap B1).
