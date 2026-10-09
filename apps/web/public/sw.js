@@ -22,6 +22,15 @@ self.addEventListener('fetch', (event) => {
   const { request } = event;
   if (request.method !== 'GET') return;
 
+  // Build chunks must never come from cache: stale chunks produce
+  // "module factory is not available" / "parentNode of null" errors
+  // after deploys. Chunks are network-first; only app-shell pages
+  // participate in the cache.
+  if (request.url.includes('/_next/')) {
+    event.respondWith(fetch(request));
+    return;
+  }
+
   event.respondWith(
     caches.match(request).then((cached) => {
       const fetched = fetch(request)
