@@ -2,6 +2,10 @@
 
 export const authMessages = {
   'auth.login': { ar: 'تسجيل الدخول', en: 'Login' },
+  'auth.login-subtitle': {
+    ar: 'منصتكِ الأولى لخدمات التجميل والعناية',
+    en: 'Your first platform for beauty & grooming services',
+  },
   'auth.loginShort': { ar: 'دخول', en: 'Login' },
   'auth.register': { ar: 'إنشاء حساب', en: 'Register' },
   'auth.logout': { ar: 'تسجيل الخروج', en: 'Logout' },
