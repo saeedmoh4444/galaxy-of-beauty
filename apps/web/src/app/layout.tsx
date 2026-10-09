@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from 'next';
 import type { ReactNode } from 'react';
 import { cookies } from 'next/headers';
+import Script from 'next/script';
 import type { Locale } from '@galaxy/shared';
 import Providers from '@/components/Providers';
 import { LocaleProvider } from '@/components/LocaleProvider';
@@ -13,7 +14,8 @@ import './globals.css';
 export const dynamic = 'force-dynamic';
 
 export const viewport: Viewport = {
-  themeColor: '#c41e3a',
+  // Brand status-bar color — matches the mobile splash/android background.
+  themeColor: '#c2255c',
 };
 
 export const metadata: Metadata = {
@@ -71,8 +73,12 @@ export default async function RootLayout({
   return (
     <html lang={locale} dir={isRTL ? 'rtl' : 'ltr'} suppressHydrationWarning>
       <head>
-        {/* eslint-disable-next-line @next/next/no-sync-scripts */}
-        <script dangerouslySetInnerHTML={{ __html: themeInitScript }} />
+        {/* next/script beforeInteractive: hoisted and never re-rendered on the
+            client — a raw <script> here caused React 19 dev warnings and a
+            reproducible "parentNode of null" unmount race on the homepage. */}
+        <Script id="theme-init" strategy="beforeInteractive">
+          {themeInitScript}
+        </Script>
       </head>
       <body className="min-h-screen bg-surface font-sans text-text-primary antialiased">
         <SkipLink />
