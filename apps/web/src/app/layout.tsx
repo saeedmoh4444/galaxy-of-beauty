@@ -13,7 +13,8 @@ import './globals.css';
 export const dynamic = 'force-dynamic';
 
 export const viewport: Viewport = {
-  themeColor: '#c41e3a',
+  // Brand status-bar color — matches the mobile splash/android background.
+  themeColor: '#c2255c',
 };
 
 export const metadata: Metadata = {
