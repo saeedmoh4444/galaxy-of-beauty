@@ -42,6 +42,8 @@ export default function LoginPage(): JSX.Element {
       const role = userData.role as string;
       if (role === 'ADMIN') router.push('/admin/dashboard');
       else if (role === 'TECHNICIAN') router.push('/tech/dashboard');
+      // S1 — store owners land on their store dashboard, not the customer one.
+      else if ((data as unknown as { hasVendor?: boolean }).hasVendor) router.push('/store');
       else router.push('/dashboard');
     },
     onError: (err) => {
@@ -81,7 +83,21 @@ export default function LoginPage(): JSX.Element {
   return (
     <div className="flex min-h-screen items-center justify-center px-4">
       <Card className="w-full max-w-md" padding="lg">
-        <h1 className="mb-6 text-center text-2xl font-bold text-text-primary">{t('auth.login')}</h1>
+        {/* Brand mark — same logo + name as the public header (professional login). */}
+        <div className="mb-6 flex flex-col items-center gap-3">
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            src="/logo.png"
+            alt={t('common.brandName')}
+            className="h-16 w-16 rounded-2xl object-cover"
+          />
+          <div className="text-center">
+            <p className="text-xl font-bold leading-none text-brand-600 dark:text-brand-400">
+              {t('common.brandName')}
+            </p>
+            <p className="mt-2 text-sm text-text-secondary">{t('auth.login-subtitle')}</p>
+          </div>
+        </div>
 
         {error && (
           <div className="mb-4">
