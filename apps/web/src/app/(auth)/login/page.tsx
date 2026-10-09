@@ -84,7 +84,7 @@ export default function LoginPage(): JSX.Element {
     <div className="flex min-h-screen items-center justify-center px-4">
       <Card className="w-full max-w-md" padding="lg">
         {/* Brand mark — same logo + name as the public header (professional login). */}
-        <div className="mb-6 flex flex-col items-center gap-3">
+        <div className="mb-4 flex flex-col items-center gap-3">
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
             src="/logo.png"
@@ -98,6 +98,8 @@ export default function LoginPage(): JSX.Element {
             <p className="mt-2 text-sm text-text-secondary">{t('auth.login-subtitle')}</p>
           </div>
         </div>
+        {/* Page-level heading — keeps the a11y outline and the E2E RTL spec. */}
+        <h1 className="mb-6 text-center text-2xl font-bold text-text-primary">{t('auth.login')}</h1>
 
         {error && (
           <div className="mb-4">
