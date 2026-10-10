@@ -2,7 +2,7 @@
 
 > The working rulebook for developing, improving, and enhancing this codebase.
 > Every rule below is load-bearing: it exists because something broke when it was ignored.
-> Updated: 2026-10-09 (post 12-PR wave: store shell, commissions, seed typing, tree-shaking).
+> Updated: 2026-10-10 (post 13-PR wave: locale split, S5 analytics/promotions, zero-lint, SEO metadata, mobile skeletons).
 
 ---
 
@@ -57,6 +57,7 @@ gh pr merge <n> --squash --delete-branch      # verify state == MERGED after (ex
    - New web strings → domain catalogs (`messages/*.ts`). New mobile strings → `messages/mobile/customerB.ts` appended at the end.
    - `t()` keys are **literals only** (TranslationKey union enforces it). Values must have **no leading/trailing spaces** (catalog.test.ts trim gate) — separators are stored trimmed and spaced at the join site.
    - Web legacy `t()` accepts **web keys only** (`WebTranslationKey`); `useLocale().t` keeps the global union for dynamic keys.
+   - **Locale split (post-#403)**: runtime web code loads catalogs ONLY via `getWebCatalog(locale)` (dynamic import + promise cache — React `use()`-safe); server components take the sync `t()` from `@galaxy/shared/i18n/web-server` — importing that subpath from a client component re-bundles both locales and **fails the build** (`checkLocaleSplit`). The root barrel exports NO catalog values. After adding/changing any web key: run `pnpm i18n:generate` and commit the regenerated `messages/generated/{en,ar}.ts` (CI's drift check compares them semantically — prettier reformats them on commit, so never byte-compare).
 7. **Zero static Arabic** outside `t()` in mobile (gate + now-empty allowlist). If a legitimate exception ever appears, it goes through an explicit allowlist entry — and that is a red flag requiring review.
 
 ## 3. Database Rules
@@ -94,7 +95,7 @@ gh pr merge <n> --squash --delete-branch      # verify state == MERGED after (ex
 1. The FE-007 budget gate enforces per-class regression limits (`scripts/size-baseline.json` × 1.05). A deliberate, justified growth (e.g. catalog expansion) may re-baseline — **after** the gate passes against the OLD baseline, and rounded UP to the next KB. Never grow a route silently.
 2. Web bundle hygiene: no runtime import edge from web-reachable modules into `messages/mobile/**` or the merged i18n module (the leak guard enforces it — keep it that way).
 3. **`@galaxy/shared` and `@galaxy/ui` now declare `sideEffects: false`** (#395) — tree-shaking IS enabled for them. Never add side-effectful code (css imports, top-level registrations, global mutation) to those packages; verify purity before extending them.
-4. Lazy-load heavy features (the socket chunk was already split once); the remaining bulk (shared tRPC chunk set) is the known gap toward the 100–150 KB targets — measure with a fresh `next build` + the size gate after every slimming step.
+4. Lazy-load heavy features; the catalog platform-split (~91 KB) and locale split (~118 KB) are shipped and ratcheted (221/213/298/226). The remaining bulk is the Next.js framework chunks + app code — measure with a fresh `next build` + the size gate after every slimming step, and keep the two catalog guards (leak + locale-split sentinels) meaningful.
 
 ## 6. Git / PR / Merge Rules
 
@@ -132,3 +133,12 @@ gh pr merge <n> --squash --delete-branch      # verify state == MERGED after (ex
 - The local API suite runs `env=test` against the **dev DB** — running it while someone uses the dev servers causes contention and can pollute seed data (Playwright login failures locally, advisor weekly-category flake). CI's isolated DB is the authority.
 - Windows CRLF noise shows as phantom `M` files with empty diffs — `git checkout -- <file>` discards it safely; it also blocks branch switches.
 - Background tasks get reaped when the system is critically low on memory — do NOT restart them on your own; restart only when the user asks.
+- **NEVER bare `git stash pop`** — the stash list holds old-session entries (e.g. the pre-completion Arabic-sweep backup). A bare pop digs them up and conflicts the tree. `git stash list` first; pop by explicit ref; recovery from a conflicted pop: `git reset --hard HEAD` (the stash entry survives).
+- **NEVER `git checkout -- .` as a blanket cleanup** — it discards REAL uncommitted work too. Only after verifying the tree holds nothing but EOL phantoms: `git diff --stat` empty AND every listed file shows only the CRLF warning.
+- `generateMetadata` is **server-only** — exporting it from a `'use client'` page fails the build ("generateMetadata from a component marked with use client" + a misleading "next/headers in Pages Router" second error). Client pages get a thin server wrapper (`page.tsx` → `XClient.tsx`).
+- `catch (err)` infers `unknown` (useUnknownInCatchVariables) — `err instanceof Error ? err.message : String(err)` before touching `.message`.
+- Perl multiline regexes fail on CRLF files (`\n` won't cross `\r\n`) — use line-anchored `-pi -e 'if (/…$/)'` patterns or the Edit tool.
+- After fixing an `any` under a `// eslint-disable-next-line @typescript-eslint/no-explicit-any -- reason`, REMOVE the directive too — it becomes an unused-directive warning (same for stale `no-console` disables in the api package, where the rule is OFF).
+- The lint-staged prettier hook reformats generated i18n catalogs on commit — drift checks must compare semantically (import + deep-equal), never byte-equality.
+- Background `tsc` runs race your edits and report stale errors — re-run after any follow-up edit before trusting the result.
+- Creating a branch while another feature branch is checked out layers the commits — `gh pr create` then refuses ("must first push the current branch"): push with `HEAD:<right-name>` and create with `--head <right-name>`, or rebase with `git rebase --onto master <old-base> <branch>` (discard CRLF phantoms first — they block the rebase).
