@@ -6,8 +6,8 @@
 >
 > Builds on: `ROADMAP_RECOMMENDATIONS_2026-10.md` (ops phases A–D),
 > `STORE_MARKETPLACE_PLAN.md` (store phases 1–4), `WOMEN_LIFESTYLE_EXPANSION_PLAN.md`.
-> Status: **EXECUTED 2026-10-08/09** — Phase 0 complete, S1/S2/S3 done,
-> Q4 done, Q1 step 1 done. Remaining work listed per phase below.
+> Status: **EXECUTED 2026-10-08/09/10** — Phase 0 complete, S1–S5 done, Q1/Q4
+> done, Q6/Q7 partially done. Remaining work listed per phase below.
 > Provider-system reality check: `docs/architecture/store-provider-system.md`.
 
 ---
@@ -36,13 +36,13 @@ Verification per item: type-checks (3 apps) + per-app lint + targeted tests; F1/
 > public pages + admin screens on the shared `Vendor` model — no per-type
 > registration or dashboards.
 
-| #   | Item                                   | What / why                                                                                                                                                                                         | Effort   |
-| --- | -------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------- |
-| S1  | **Dedicated store dashboard**          | ✅ DONE (#389) — literal `/store` segment (NOT a route group — group roots collide with `(public)`), STORE shell + sidebar, auth-hydration-safe guard, store name header                           | 2–3 days |
-| S2  | **Store Phase 2 — public storefronts** | ✅ DONE (pre-existing web + #390 mobile) — `/stores` + `[slug]` already existed with product grids; mobile store browsing added                                                                    | 2–3 days |
-| S3  | **Store Phase 3 — finance**            | ✅ DONE (#391) — per-vendor commissionRate actually applied in `calculateStore` (was gross/fee 0), admin rate editor at `/admin/vendors`; payouts/disputes machinery pre-existed                   | 2 days   |
-| S4  | **Provider-type registration**         | ✅ DONE (pre-existing) — the portal wizard already covers store/clinic/gym/nail-bar/at-home with per-type KSA documents and per-type dashboards (see `docs/architecture/store-provider-system.md`) | 3–4 days |
-| S5  | **Store Phase 4 — trust & growth**     | 🔶 PARTIAL (#393) — ratings now displayed (list + storefront + mobile); badges exist; store analytics beyond top-products + promotions polish remain                                               | 2 days   |
+| #   | Item                                   | What / why                                                                                                                                                                                                                             | Effort   |
+| --- | -------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------- |
+| S1  | **Dedicated store dashboard**          | ✅ DONE (#389) — literal `/store` segment (NOT a route group — group roots collide with `(public)`), STORE shell + sidebar, auth-hydration-safe guard, store name header                                                               | 2–3 days |
+| S2  | **Store Phase 2 — public storefronts** | ✅ DONE (pre-existing web + #390 mobile) — `/stores` + `[slug]` already existed with product grids; mobile store browsing added                                                                                                        | 2–3 days |
+| S3  | **Store Phase 3 — finance**            | ✅ DONE (#391) — per-vendor commissionRate actually applied in `calculateStore` (was gross/fee 0), admin rate editor at `/admin/vendors`; payouts/disputes machinery pre-existed                                                       | 2 days   |
+| S4  | **Provider-type registration**         | ✅ DONE (pre-existing) — the portal wizard already covers store/clinic/gym/nail-bar/at-home with per-type KSA documents and per-type dashboards (see `docs/architecture/store-provider-system.md`)                                     | 3–4 days |
+| S5  | **Store Phase 4 — trust & growth**     | ✅ DONE — ratings displayed (#393) + order-based analytics (#404: revenue-30d, orders/AOV, customers, status breakdown) + promotions polish (#408: discount %, validity dates, rejection reason, floor-rule hint, per-product revenue) | 2 days   |
 
 Gates: regulatory decisions on product categories (user), delivery-partner choice (partnership-gated — same class as ride-hailing).
 
@@ -64,15 +64,15 @@ Gates: regulatory decisions on product categories (user), delivery-partner choic
 
 ## Phase 3 — Performance & quality (top-10 class)
 
-| #   | Item                                 | What / why                                                                                                                                                             | Effort           |
-| --- | ------------------------------------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------- |
-| Q1  | **Bundle slimming** (C1 / FE-007)    | 🔶 IN PROGRESS — step 1 done (#395: `sideEffects: false` on shared+ui unlocks tree-shaking); next: rebuild + measure the real numbers, then cut the tRPC/API chunk set | 2–3 days         |
-| Q2  | **k6 load test @1K concurrent** (C2) | Find the real breaking point before traffic does (needs P3 staging)                                                                                                    | 4 h              |
-| Q3  | **Observability dashboards** (B4)    | API latency, DB pools, queue depth (Sentry metrics or Prometheus/Grafana)                                                                                              | 8 h              |
-| Q4  | **Code-hygiene sweeps** (D4)         | ✅ DONE (seed part, #394) — all 14 `(prisma as any)` casts removed, fully typed; lint-warning triage (~174 api / ~33 web) remains                                      | 1–2 days         |
-| Q5  | **Security pentest + NCA-ECC** (D3)  | External pentest + Saudi market compliance (after P4)                                                                                                                  | 1 week, external |
-| Q6  | **SEO & Core Web Vitals**            | Per-page meta/OG (ar+en), sitemap polish, LCP/CLS on mobile, Arabic SEO                                                                                                | 2–3 days         |
-| Q7  | **Mobile parity polish**             | Dark mode on mobile EXISTS (ThemeProvider light/dark/system) — remaining: animations polish, empty/skeleton states                                                     | 1–2 days         |
+| #   | Item                                 | What / why                                                                                                                                                                                                                                                                                                                           | Effort           |
+| --- | ------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ---------------- |
+| Q1  | **Bundle slimming** (C1 / FE-007)    | ✅ DONE — #395 `sideEffects: false` + #402 turbopack hygiene + #403 **locale split** (per-locale generated catalogs, `getWebCatalog` lazy loading). Measured: 565/559/646/575 → **221/213/298/226 KB gz**; baseline ratcheted (#401) + locale-split/leak/drift gates                                                                 | 2–3 days         |
+| Q2  | **k6 load test @1K concurrent** (C2) | Find the real breaking point before traffic does (needs P3 staging)                                                                                                                                                                                                                                                                  | 4 h              |
+| Q3  | **Observability dashboards** (B4)    | API latency, DB pools, queue depth (Sentry metrics or Prometheus/Grafana)                                                                                                                                                                                                                                                            | 8 h              |
+| Q4  | **Code-hygiene sweeps** (D4)         | ✅ DONE — seed part (#394: all 14 `(prisma as any)` casts) + lint triage (#405: api 174→0, web 29→0 warnings; `coverage/` ignored; documented disables only)                                                                                                                                                                         | 1–2 days         |
+| Q5  | **Security pentest + NCA-ECC** (D3)  | External pentest + Saudi market compliance (after P4)                                                                                                                                                                                                                                                                                | 1 week, external |
+| Q6  | **SEO & Core Web Vitals**            | 🔶 PARTIAL — #406: `lib/seo.ts` `pageMeta()` + `generateMetadata` on 16 public pages (ar/en, OG, canonical), sitemap −11 auth-gated entries + CI gate. **Remaining:** CWV measurement pass (needs a production build — dev-mode Lighthouse is noise), per-page metadata for the long tail, Arabic hreflang (needs URL-based locales) | 2–3 days         |
+| Q7  | **Mobile parity polish**             | 🔶 PARTIAL — #407: skeleton loading states on the 7 screens that flashed empty states during load (194 already had them; 272 use queries). **Remaining:** screen-entrance animation sweep (SkeletonCard pulse exists; needs design direction)                                                                                        | 1–2 days         |
 
 ---
 
