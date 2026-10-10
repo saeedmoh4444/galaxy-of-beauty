@@ -1,3 +1,4 @@
+import { SkeletonList } from '@/components/SkeletonCard';
 import { View, Text, ScrollView, StyleSheet, TouchableOpacity, RefreshControl } from 'react-native';
 import { useState } from 'react';
 import type { JSX } from 'react';
@@ -57,6 +58,8 @@ export default function BeautyPartyScreen(): JSX.Element {
   const total = estPerPerson * guests;
   const discount = guests >= 6 ? 20 : guests >= 4 ? 10 : 0;
   const finalTotal = total - (total * discount) / 100;
+
+  if (q.isLoading) return <SkeletonList count={4} />;
 
   return (
     <ScrollView

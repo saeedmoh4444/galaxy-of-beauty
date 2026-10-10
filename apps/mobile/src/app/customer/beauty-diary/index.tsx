@@ -1,3 +1,4 @@
+import { SkeletonList } from '@/components/SkeletonCard';
 import { View, Text, ScrollView, StyleSheet, TouchableOpacity, RefreshControl } from 'react-native';
 import { useState } from 'react';
 import type { JSX } from 'react';
@@ -23,6 +24,8 @@ export default function BeautyDiaryScreen(): JSX.Element {
     { enabled: isAuthed },
   );
   const entries: DiaryEntry[] = (q.data as DiaryEntry[] | undefined) ?? [];
+
+  if (q.isLoading) return <SkeletonList count={5} />;
 
   return (
     <ScrollView

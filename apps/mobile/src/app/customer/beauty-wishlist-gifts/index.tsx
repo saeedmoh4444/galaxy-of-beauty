@@ -1,3 +1,4 @@
+import { SkeletonList } from '@/components/SkeletonCard';
 import { View, Text, ScrollView, StyleSheet, TouchableOpacity, RefreshControl } from 'react-native';
 import { useState } from 'react';
 import type { JSX } from 'react';
@@ -76,6 +77,8 @@ export default function BeautyWishlistGiftsScreen(): JSX.Element {
   const [shareMode, setShareMode] = useState(false);
 
   const occasion = OCCASIONS.find((o) => o.key === selectedOccasion)!;
+
+  if (q.isLoading) return <SkeletonList count={4} />;
 
   return (
     <ScrollView
