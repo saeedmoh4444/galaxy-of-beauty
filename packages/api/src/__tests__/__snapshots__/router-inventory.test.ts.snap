@@ -740,6 +740,7 @@ recurringBookings.cancel	mutation	customer
 recurringBookings.create	mutation	customer
 recurringBookings.list	query	customer
 recurringBookings.pause	mutation	customer
+referralRace.awardPrizes	mutation	admin
 referralRace.leaderboard	query	public
 referralRace.myRank	query	customer
 referralRace.share	mutation	customer
