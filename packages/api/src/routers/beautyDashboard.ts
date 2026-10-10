@@ -26,13 +26,11 @@ export const beautyDashboardRouter = router({
       db.wishlistItem.count({ where: { userId } }),
     ]);
 
-    const upcomingBookings = (bookings as any[]).filter((b: any) =>
+    const upcomingBookings = bookings.filter((b) =>
       ['REQUESTED', 'ACCEPTED'].includes(b.status),
     ).length;
-    const completedBookings = (bookings as any[]).filter(
-      (b: any) => b.status === 'COMPLETED',
-    ).length;
-    const recentBookings = (bookings as any[]).slice(0, 3).map((b: any) => ({
+    const completedBookings = bookings.filter((b) => b.status === 'COMPLETED').length;
+    const recentBookings = bookings.slice(0, 3).map((b) => ({
       id: b.id,
       serviceName: (b.service?.titleJson as Record<string, string>)?.ar ?? '',
       status: b.status,

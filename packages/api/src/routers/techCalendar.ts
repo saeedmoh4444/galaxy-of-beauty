@@ -3,8 +3,22 @@ import { prisma } from '@galaxy/db';
 import { DEFAULT_PAGE_SIZE } from '@galaxy/shared';
 import { publicProcedure, router } from '../trpc';
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any -- AvailabilitySlot has no date; Technician no isVerified in Prisma schema (legacy where/orderBy)
 const db = prisma;
+
+// Legacy slot shape the payload reads (the schema uses startAt/endAt, not date/startTime/endTime).
+interface LegacySlotRow {
+  id: number;
+  date: string | Date;
+  startTime: string;
+  endTime: string;
+}
+
+// Technician card row plus the legacy `rating` field the payload reads (schema stores ratingAvg).
+interface TechnicianCardRow {
+  id: number;
+  rating?: number;
+  user: { name: string | null; avatarUrl: string | null } | null;
+}
 
 export const techCalendarRouter = router({
   // Get available slots for a technician on a given date range
@@ -40,7 +54,7 @@ export const techCalendarRouter = router({
 
       // Group slots by date
       const byDate: Record<string, unknown[]> = {};
-      (slots as any[]).forEach((s: any) => {
+      (slots as unknown as LegacySlotRow[]).forEach((s) => {
         const dateKey = new Date(s.date).toISOString().slice(0, 10);
         if (!byDate[dateKey]) byDate[dateKey] = [];
         byDate[dateKey].push({ id: s.id, startTime: s.startTime, endTime: s.endTime });
@@ -48,7 +62,7 @@ export const techCalendarRouter = router({
 
       return {
         technicianId: input.technicianId,
-        technicianName: (technician as any)?.user?.name ?? '',
+        technicianName: technician?.user?.name ?? '',
         month: input.month,
         year: input.year,
         availableDates: Object.entries(byDate).map(([date, timeSlots]) => ({
@@ -68,7 +82,7 @@ export const techCalendarRouter = router({
       })
       .catch(() => []);
 
-    return (technicians as any[]).map((t: any) => ({
+    return (technicians as TechnicianCardRow[]).map((t) => ({
       id: t.id,
       name: t.user?.name ?? '',
       avatarUrl: t.user?.avatarUrl ?? null,

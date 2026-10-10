@@ -3,7 +3,6 @@ import { prisma } from '@galaxy/db';
 import { BULK_PAGE_SIZE } from '@galaxy/shared';
 import { publicProcedure, router } from '../trpc';
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any -- Technician has no services relation in Prisma schema (legacy include)
 const db = prisma;
 
 // Saudi major city coordinates — geo constants, not business logic

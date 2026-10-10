@@ -77,7 +77,7 @@ export default function ProductScannerPage(): JSX.Element {
     } catch {
       setCameraError(t('scanner.cameraError'));
     }
-  }, []);
+  }, [t]);
 
   const stopCamera = useCallback(() => {
     streamRef.current?.getTracks().forEach((t) => t.stop());

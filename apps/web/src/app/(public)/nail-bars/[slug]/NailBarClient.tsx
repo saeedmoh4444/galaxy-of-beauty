@@ -61,8 +61,8 @@ export function NailBarClient({ data }: { data: NailBarPageData }): JSX.Element 
     onError: (e) => addToast('error', e.message),
   });
 
-  const slots = (slotsQ.data ?? []) as Array<Record<string, any>>;
-  const myBookings = (myQ.data ?? []) as Array<Record<string, any>>;
+  const slots = slotsQ.data ?? [];
+  const myBookings = myQ.data ?? [];
 
   if (data.fetchError || !data.nailBar) {
     return (

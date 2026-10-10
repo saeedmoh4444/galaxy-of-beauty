@@ -25,7 +25,6 @@ export async function sendSms(to: string, message: string): Promise<boolean> {
   if (!config) {
     // Twilio not configured — never log phone numbers or OTP bodies, and
     // report failure (fail closed) so callers know nothing was sent.
-    // eslint-disable-next-line no-console
     console.warn('[SMS] Not sent — Twilio is not configured');
     return false;
   }
@@ -50,7 +49,6 @@ export async function sendSms(to: string, message: string): Promise<boolean> {
 
     return response.ok;
   } catch (err) {
-    // eslint-disable-next-line no-console
     console.error('[SMS] Failed to send:', err);
     return false;
   }

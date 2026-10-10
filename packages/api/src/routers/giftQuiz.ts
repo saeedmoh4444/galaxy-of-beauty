@@ -4,12 +4,36 @@ import { publicProcedure, router } from '../trpc';
 
 const db = prisma;
 
-function formatQuestion(q: any) {
+// One choice inside GiftQuizQuestion.options (Json column).
+interface GiftQuizOption {
+  key: string;
+  labelAr: string;
+  labelEn: string;
+  tags?: string[];
+}
+
+interface GiftQuizQuestionRow {
+  questionKey: string;
+  questionJson: unknown;
+  options: unknown;
+}
+
+interface GiftQuizRecommendationRow {
+  id: number;
+  nameJson: unknown;
+  descJson: unknown;
+  price: number;
+  category: string;
+  emoji: string;
+  tags: unknown;
+}
+
+function formatQuestion(q: GiftQuizQuestionRow) {
   return {
     id: q.questionKey,
-    questionAr: (q.questionJson as Record<string, string>)?.ar ?? '',
-    questionEn: (q.questionJson as Record<string, string>)?.en ?? '',
-    options: (q.options as any[]).map((o: any) => ({
+    questionAr: (q.questionJson as { ar?: string })?.ar ?? '',
+    questionEn: (q.questionJson as { en?: string })?.en ?? '',
+    options: (q.options as GiftQuizOption[]).map((o) => ({
       key: o.key,
       labelAr: o.labelAr,
       labelEn: o.labelEn,
@@ -18,7 +42,7 @@ function formatQuestion(q: any) {
   };
 }
 
-function formatRecommendation(r: any) {
+function formatRecommendation(r: GiftQuizRecommendationRow) {
   return {
     id: r.id,
     nameAr: (r.nameJson as Record<string, string>)?.ar ?? '',
@@ -48,20 +72,20 @@ export const giftQuizRouter = router({
       const allTags: string[] = [];
       const questions = await db.giftQuizQuestion.findMany({ where: { isActive: true } });
       for (const [questionId, optionKey] of Object.entries(input.answers)) {
-        const question = questions.find((q: any) => q.questionKey === questionId);
-        const options = (question?.options as any[]) ?? [];
-        const option = options.find((o: any) => o.key === optionKey);
+        const question = questions.find((q) => q.questionKey === questionId);
+        const options = (question?.options as unknown as GiftQuizOption[]) ?? [];
+        const option = options.find((o) => o.key === optionKey);
         if (option?.tags) allTags.push(...option.tags);
       }
 
       const recs = await db.giftQuizRecommendation.findMany({ where: { isActive: true } });
-      const scored = recs.map((rec: any) => {
+      const scored = recs.map((rec) => {
         const tags = (rec.tags as string[]) ?? [];
         const matches = tags.filter((t: string) => allTags.includes(t)).length;
         const score = Math.min(100, Math.round((matches / Math.max(1, allTags.length)) * 100));
         return { ...formatRecommendation(rec), score };
       });
 
-      return scored.sort((a: any, b: any) => b.score - a.score).slice(0, 4);
+      return scored.sort((a, b) => b.score - a.score).slice(0, 4);
     }),
 });

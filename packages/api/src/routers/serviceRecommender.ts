@@ -135,9 +135,9 @@ export const serviceRecommenderRouter = router({
       }
 
       return categoryScores
-        .sort((a: any, b: any) => b.score - a.score)
+        .sort((a, b) => b.score - a.score)
         .slice(0, 8)
-        .map((c: any) => ({ ...c, matchPct: Math.min(100, Math.round((c.score / 3) * 100)) }));
+        .map((c) => ({ ...c, matchPct: Math.min(100, Math.round((c.score / 3) * 100)) }));
     }),
 
   save: customerProcedure
@@ -145,8 +145,8 @@ export const serviceRecommenderRouter = router({
     .mutation(async ({ ctx, input }) => {
       const scores: Record<string, number> = {};
       for (const [qId, optKey] of Object.entries(input.answers)) {
-        const q = QUESTIONS.find((x: any) => x.id === qId);
-        const opt: any = q?.opts.find((o: any) => o.k === optKey);
+        const q = QUESTIONS.find((x) => x.id === qId);
+        const opt = q?.opts.find((o) => o.k === optKey);
         if (opt?.tags)
           opt.tags.forEach((t: string) => {
             scores[t] = (scores[t] || 0) + 1;

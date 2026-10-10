@@ -1,5 +1,6 @@
 import { z } from 'zod';
 import { prisma } from '@galaxy/db';
+import type { Prisma } from '@galaxy/db';
 import { customerProcedure, router } from '../trpc';
 
 export const customerPreferencesRouter = router({
@@ -13,8 +14,11 @@ export const customerPreferencesRouter = router({
     .mutation(async ({ ctx, input }) => {
       await prisma.customerPreference.upsert({
         where: { userId: ctx.user.id },
-        create: { userId: ctx.user.id, preferences: input.preferences as any },
-        update: { preferences: input.preferences as any },
+        create: {
+          userId: ctx.user.id,
+          preferences: input.preferences as unknown as Prisma.InputJsonValue,
+        },
+        update: { preferences: input.preferences as unknown as Prisma.InputJsonValue },
       });
       return { success: true };
     }),

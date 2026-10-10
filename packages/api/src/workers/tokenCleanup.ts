@@ -46,8 +46,8 @@ export async function cleanupTokens(): Promise<void> {
         `[Cleanup] Purged ${total} items (refresh: ${expired.count + revoked.count}, reset: ${resetExpired.count + resetUsed.count}, notifications: ${oldNotifs.count})`,
       );
     }
-  } catch (err: any) {
-    console.error(`[Cleanup] Error: ${err.message}`);
+  } catch (err) {
+    console.error(`[Cleanup] Error: ${err instanceof Error ? err.message : String(err)}`);
   }
 }
 

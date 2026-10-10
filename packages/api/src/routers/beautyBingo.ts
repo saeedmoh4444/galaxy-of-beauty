@@ -20,7 +20,7 @@ const flag = requireFeatureFlag(EXPERIMENTAL_FEATURES.BEAUTY_BINGO);
 export const beautyBingoRouter = router({
   card: customerProcedure.use(flag).query(async ({ ctx }) => {
     const progress = await prisma.bingoProgress.findMany({ where: { userId: ctx.user.id } });
-    const completedIds = new Set(progress.map((p: any) => p.taskId));
+    const completedIds = new Set(progress.map((p) => p.taskId));
     const tasks = BINGO_CARD.map((t) => ({ ...t, completed: completedIds.has(t.id) }));
     const completed = tasks.filter((t) => t.completed).length;
     return { tasks, completed, total: 9, reward: '٣ خطوط = جلسة مجانية! ' };

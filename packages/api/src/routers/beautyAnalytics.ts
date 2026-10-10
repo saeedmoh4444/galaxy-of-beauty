@@ -27,7 +27,7 @@ export const beautyAnalyticsRouter = router({
       completedBookings,
       completionRate: totalBookings > 0 ? Math.round((completedBookings / totalBookings) * 100) : 0,
       totalSpent: Number(totalSpent?._sum?.amount ?? 0),
-      recentCredits: (walletTx as any[]).map((t: any) => ({
+      recentCredits: walletTx.map((t) => ({
         amount: Number(t.amount),
         source: t.source,
         date: t.createdAt,
@@ -42,7 +42,7 @@ export const beautyAnalyticsRouter = router({
     });
 
     const categoryMap = new Map<string, { count: number; spent: number }>();
-    (bookings as any[]).forEach((b: any) => {
+    bookings.forEach((b) => {
       const catName = (b.service?.category?.nameJson as Record<string, string>)?.ar ?? 'أخرى';
       const prev = categoryMap.get(catName) || { count: 0, spent: 0 };
       categoryMap.set(catName, {
@@ -68,7 +68,7 @@ export const beautyAnalyticsRouter = router({
     });
 
     const monthlyMap = new Map<string, number>();
-    (bookings as any[]).forEach((b: any) => {
+    bookings.forEach((b) => {
       const month = new Date(b.createdAt).toLocaleDateString('ar-SA', {
         month: 'short',
         year: 'numeric',

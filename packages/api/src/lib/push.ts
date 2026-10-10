@@ -95,7 +95,6 @@ export async function sendPushToUser(userId: number, message: PushMessage): Prom
     );
   } catch (err) {
     // Log but don't throw — push failures must not break the API
-    // eslint-disable-next-line no-console
     console.error(`[Push] Error sending to user ${userId}:`, err);
   }
 }
@@ -117,7 +116,6 @@ export async function sendPushToAdmins(message: PushMessage): Promise<void> {
       message,
     );
   } catch (err) {
-    // eslint-disable-next-line no-console
     console.error('[Push] Error sending to admins:', err);
   }
 }

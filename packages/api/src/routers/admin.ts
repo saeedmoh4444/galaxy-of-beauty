@@ -3,6 +3,7 @@ import { TRPCError } from '@trpc/server';
 import { SMALL_PAGE_SIZE } from '@galaxy/shared';
 import { adminProcedure, router } from '../trpc';
 import { prisma } from '@galaxy/db';
+import type { Prisma } from '@galaxy/db';
 
 export const adminRouter = router({
   dashboardStats: adminProcedure.query(async () => {
@@ -86,7 +87,7 @@ export const adminRouter = router({
         .default({} as never),
     )
     .query(async ({ input }) => {
-      const where = input.kycStatus ? { kycStatus: input.kycStatus as any } : {};
+      const where = input.kycStatus ? { kycStatus: input.kycStatus } : {};
       const skip = (input.page - 1) * input.limit;
 
       const [items, total] = await Promise.all([
@@ -147,7 +148,7 @@ export const adminRouter = router({
         .default({} as never),
     )
     .query(async ({ input }) => {
-      const where: any = { role: 'CUSTOMER' };
+      const where: Prisma.UserWhereInput = { role: 'CUSTOMER' };
       if (input.search) {
         where.OR = [
           { name: { contains: input.search, mode: 'insensitive' } },
@@ -277,7 +278,7 @@ export const adminRouter = router({
         .default({} as never),
     )
     .query(async ({ input }) => {
-      const where: any = {};
+      const where: Prisma.BookingWhereInput = {};
       if (input.status) where.status = input.status;
       const skip = (input.page - 1) * input.limit;
 

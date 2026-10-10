@@ -4,7 +4,17 @@ import { customerProcedure, publicProcedure, router } from '../trpc';
 
 const db = prisma;
 
-function formatPlan(p: any) {
+// Corporate plan row from the plans query.
+interface CorporatePlanRow {
+  key: string;
+  nameJson: unknown;
+  price: number;
+  employees: number;
+  services: unknown;
+  emoji: string;
+}
+
+function formatPlan(p: CorporatePlanRow) {
   return {
     id: p.key,
     nameAr: (p.nameJson as Record<string, string>)?.ar ?? '',

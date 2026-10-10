@@ -214,7 +214,6 @@ export default function ServiceWarrantyPage(): JSX.Element {
         >
           <div className="space-y-4">
             <div>
-              {/* eslint-disable-next-line jsx-a11y/label-has-associated-control -- label precedes a non-labelable button group */}
               <label className="block text-sm font-semibold mb-2">{t('warranty.compType')}</label>
               <div className="space-y-2">
                 {COMPENSATION_TYPES.map((comp) => (

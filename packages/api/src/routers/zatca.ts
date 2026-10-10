@@ -3,6 +3,7 @@ import { TRPCError } from '@trpc/server';
 import { createHash } from 'crypto';
 import { adminProcedure, customerProcedure, protectedProcedure, router } from '../trpc';
 import { prisma } from '@galaxy/db';
+import type { Prisma } from '@galaxy/db';
 import { ZATCA_TEST_VAT, ZATCA_API_URL as SHARED_ZATCA_URL } from '@galaxy/shared';
 import { appendAudit, verifyChain as verifyAuditChain } from '../lib/zatcaAudit';
 import { generateCsr } from '../lib/zatcaCrypto';
@@ -496,7 +497,7 @@ export const zatcaRouter = router({
         .default({} as never),
     )
     .query(async ({ input }) => {
-      const where: any = {};
+      const where: Prisma.ZatcaInvoiceWhereInput = {};
       if (input.status) where.status = input.status;
       const skip = (input.page - 1) * input.limit;
 
@@ -550,7 +551,7 @@ export const zatcaRouter = router({
         .default({} as never),
     )
     .query(async ({ ctx, input }) => {
-      const where: any = { booking: { customerId: ctx.user.id } };
+      const where: Prisma.ZatcaInvoiceWhereInput = { booking: { customerId: ctx.user.id } };
       const skip = (input.page - 1) * input.limit;
 
       const [items, total] = await Promise.all([

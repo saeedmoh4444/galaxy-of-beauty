@@ -29,7 +29,7 @@ export const referralRaceRouter = router({
       take: DEFAULT_PAGE_SIZE,
     });
     const enriched = await Promise.all(
-      (leaders as any[]).map(async (l: any, i: number) => {
+      leaders.map(async (l, i) => {
         const user = await db.user.findUnique({
           where: { id: l.referrerId },
           select: { name: true },
@@ -62,7 +62,7 @@ export const referralRaceRouter = router({
       orderBy: { _count: { id: 'desc' } },
       take: BULK_PAGE_SIZE,
     });
-    const rank = (leaders as any[]).findIndex((l: any) => l.referrerId === ctx.user.id) + 1;
+    const rank = leaders.findIndex((l) => l.referrerId === ctx.user.id) + 1;
     return { rank: rank || null, count, prize: rank > 0 && rank <= 3 ? PRIZES[rank - 1] : '' };
   }),
 

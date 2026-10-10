@@ -74,7 +74,7 @@ export const performanceRouter = router({
         take: 50,
       });
 
-      const rows = techs.map((t: any) => ({
+      const rows = techs.map((t) => ({
         name: t.user?.name,
         bookings: t.completedBookings,
         reviews: 0,

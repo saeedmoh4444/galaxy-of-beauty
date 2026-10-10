@@ -1,6 +1,15 @@
 import { z } from 'zod';
 import { prisma } from '@galaxy/db';
+import type { Prisma } from '@galaxy/db';
 import { publicProcedure, adminProcedure, router } from '../trpc';
+
+// FAQ row plus the legacy q/a aliases the search filter tolerates.
+interface FaqFilterRow {
+  question?: string;
+  answer?: string;
+  q?: string;
+  a?: string;
+}
 
 const DEFAULT_FAQS = [
   {
@@ -44,14 +53,14 @@ export const beautyFaqRouter = router({
   search: publicProcedure
     .input(z.object({ query: z.string().optional(), category: z.string().optional() }))
     .query(async ({ input }) => {
-      const where: any = {};
+      const where: Prisma.BeautyFaqWhereInput = {};
       if (input.category) where.category = input.category;
       let results = await prisma.beautyFaq.findMany({ where, orderBy: { sortOrder: 'asc' } });
       if (results.length === 0)
         results = DEFAULT_FAQS.map((f) => ({ ...f, id: 0, sortOrder: 0, createdAt: new Date() }));
       if (input.query)
         results = results.filter(
-          (f: any) =>
+          (f: FaqFilterRow) =>
             (f.question || f.q || '').includes(input.query!) ||
             (f.answer || f.a || '').includes(input.query!),
         );
