@@ -18,8 +18,39 @@ import {
   type Catalog,
   type Locale,
 } from './runtime';
-import { webMessages } from './web';
+// webMessages is rebuilt here from the domain files (NOT imported from
+// ./web anymore): this merged module exists for the i18n regression tests
+// and the erased TranslationKey union, so it must keep the literal spread
+// that preserves keyof typing. Runtime web bundles load the per-locale
+// generated catalogs instead — the drift test in
+// scripts/check-locale-catalogs.test.mjs keeps them in sync with these
+// sources.
+import { coreMessages } from './messages/core';
+import { navMessages } from './messages/nav';
+import { authMessages } from './messages/auth';
+import { bookingMessages } from './messages/booking';
+import { walletMessages } from './messages/wallet';
+import { profileMessages } from './messages/profile';
+import { adminMessages } from './messages/admin';
+import { marketingMessages } from './messages/marketing';
+import { uiMessages } from './messages/ui';
+import { miscMessages } from './messages/misc';
+import { bundlesMessages } from './messages/bundles';
 import { mobileMessages } from './mobile';
+
+export const webMessages = {
+  ...coreMessages,
+  ...navMessages,
+  ...authMessages,
+  ...bookingMessages,
+  ...walletMessages,
+  ...profileMessages,
+  ...adminMessages,
+  ...marketingMessages,
+  ...uiMessages,
+  ...miscMessages,
+  ...bundlesMessages,
+} as const;
 
 export const sharedMessages = {
   ...webMessages,
@@ -43,4 +74,4 @@ export function t(
 
 export { defaultLocale, supportedLocales, isRTL, tFrom, localize };
 export type { Locale };
-export { webMessages, mobileMessages };
+export { mobileMessages };

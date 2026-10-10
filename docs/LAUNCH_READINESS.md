@@ -16,7 +16,7 @@
 | E2E Tests             | ✅ 27 specs × 3 browser projects  | chromium + firefox + mobile Chrome, incl. axe a11y gate     |
 | Lint                  | ✅ 0 errors (warnings tolerated)  | ~27–174 pre-existing warnings per package                   |
 | Contract gates        | ✅ 266 routers / 1,114 procedures | counts + detail list + sha256 hash, money-integrity, i18n   |
-| Size budgets          | ✅ gate green vs baseline         | 565/559/646/575 KB per class (targets 100–150 KB — see §IX) |
+| Size budgets          | ✅ gate green vs baseline         | 221/213/298/226 KB per class (targets 100–150 KB — see §IX) |
 
 ## II. Feature Inventory
 

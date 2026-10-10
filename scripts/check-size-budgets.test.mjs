@@ -7,7 +7,13 @@ import os from 'node:os';
 import crypto from 'node:crypto';
 import zlib from 'node:zlib';
 
-import { collectPageRoutes, evaluate, checkCatalogLeak } from './check-size-budgets.mjs';
+import {
+  collectPageRoutes,
+  evaluate,
+  checkCatalogLeak,
+  checkLocaleSplit,
+  LOCALE_SPLIT_SENTINELS,
+} from './check-size-budgets.mjs';
 
 const here = path.dirname(fileURLToPath(import.meta.url));
 const fxWeb = path.join(here, 'test-fixtures', 'budgets', 'web');
@@ -120,6 +126,41 @@ test('checkCatalogLeak flags a chunk containing a mobile-only sentinel', () => {
     const hits = checkCatalogLeak(dir);
     assert.equal(hits.length, 1);
     assert.match(hits[0], /leaked\.js/);
+  } finally {
+    fs.rmSync(dir, { recursive: true, force: true });
+  }
+});
+
+test('checkLocaleSplit passes when each chunk carries at most one locale', () => {
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'locale-split-'));
+  try {
+    fs.cpSync(fxWeb, dir, { recursive: true });
+    fs.writeFileSync(
+      path.join(dir, '.next', 'static', 'chunks', 'en-only.js'),
+      `const a = "${LOCALE_SPLIT_SENTINELS.en}";`,
+    );
+    fs.writeFileSync(
+      path.join(dir, '.next', 'static', 'chunks', 'ar-only.js'),
+      `const b = "${LOCALE_SPLIT_SENTINELS.ar}";`,
+    );
+    assert.deepEqual(checkLocaleSplit(dir), []);
+  } finally {
+    fs.rmSync(dir, { recursive: true, force: true });
+  }
+});
+
+test('checkLocaleSplit flags a chunk that ships both locale catalogs', () => {
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'locale-split-'));
+  try {
+    fs.cpSync(fxWeb, dir, { recursive: true });
+    const merged = path.join(dir, '.next', 'static', 'chunks', 'merged.js');
+    fs.writeFileSync(
+      merged,
+      `const c = "${LOCALE_SPLIT_SENTINELS.en}"; const d = "${LOCALE_SPLIT_SENTINELS.ar}";`,
+    );
+    const hits = checkLocaleSplit(dir);
+    assert.equal(hits.length, 1);
+    assert.match(hits[0], /merged\.js/);
   } finally {
     fs.rmSync(dir, { recursive: true, force: true });
   }

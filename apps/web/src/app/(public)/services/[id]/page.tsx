@@ -3,7 +3,7 @@ import { getServerCaller, serializeForClient } from '@/lib/server-trpc';
 import { ServiceDetailClient } from './ServiceDetailClient';
 import type { ServiceDetailData } from './ServiceDetailClient';
 import { getServerLocale } from '@/lib/i18n';
-import { t } from '@galaxy/shared';
+import { t } from '@galaxy/shared/i18n/web-server';
 
 export default async function ServiceDetailPage({
   params,

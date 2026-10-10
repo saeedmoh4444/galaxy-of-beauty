@@ -2,7 +2,7 @@ import type { JSX } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import type { Metadata } from 'next';
-import { t } from '@galaxy/shared';
+import { t } from '@galaxy/shared/i18n/web-server';
 import { getServerLocale } from '@/lib/i18n';
 
 export async function generateMetadata(): Promise<Metadata> {

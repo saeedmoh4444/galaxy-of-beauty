@@ -3,7 +3,7 @@ import type { Metadata } from 'next';
 import { getServerCaller, serializeForClient } from '@/lib/server-trpc';
 import { BlogPostClient } from './BlogPostClient';
 import { getServerLocale } from '@/lib/i18n';
-import { t } from '@galaxy/shared';
+import { t } from '@galaxy/shared/i18n/web-server';
 
 interface Props {
   params: Promise<{ slug: string }>;

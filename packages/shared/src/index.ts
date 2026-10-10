@@ -43,17 +43,13 @@ export { ar, en } from './types/index';
 // pulls the mobile catalogs into a web bundle. TranslationKey stays the
 // global union via an erased type-only re-export (mobile files keep
 // compiling unchanged; no runtime edge to the merged module).
-export {
-  defaultLocale,
-  supportedLocales,
-  isRTL,
-  localize,
-  webMessages,
-  t,
-  tFrom,
-} from './i18n/web';
+// Locale split: the barrel exports NO catalog values — client code loads
+// the active locale via getWebCatalog(); server code takes the sync t()
+// from `@galaxy/shared/i18n/web-server`.
+export { defaultLocale, supportedLocales, isRTL, localize, getWebCatalog, tFrom } from './i18n/web';
 export type { Locale } from './i18n/web';
 export type { WebTranslationKey } from './i18n/web';
+export type { WebLocaleCatalog } from './i18n/web';
 export type { TranslationKey } from './i18n';
 
 // Theme
