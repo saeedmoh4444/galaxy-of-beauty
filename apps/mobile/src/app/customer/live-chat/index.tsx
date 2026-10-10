@@ -1,3 +1,4 @@
+import { SkeletonList } from '@/components/SkeletonCard';
 import { View, Text, ScrollView, TextInput, TouchableOpacity, StyleSheet } from 'react-native';
 import { useState } from 'react';
 import { trpc } from '@/lib/trpc-react';
@@ -14,16 +15,13 @@ export default function LiveChatScreen() {
   const { t } = useLocale();
   const isAuthed = useAuthState();
   const [msg, setMsg] = useState('');
-  const { data, refetch } = trpc.liveChat.history.useQuery(undefined, { enabled: isAuthed }) as {
-    data?: ChatMessage[];
-    refetch: () => void;
-  };
-  const messages = data ?? [];
+  const q = trpc.liveChat.history.useQuery(undefined, { enabled: isAuthed });
+  const messages = (q.data as ChatMessage[] | undefined) ?? [];
 
   const sendMut = trpc.liveChat.send.useMutation({
     onSuccess: () => {
       setMsg('');
-      void refetch();
+      void q.refetch();
     },
   });
 
@@ -31,6 +29,8 @@ export default function LiveChatScreen() {
     if (!msg.trim()) return;
     sendMut.mutate({ message: msg.trim() });
   };
+
+  if (q.isLoading) return <SkeletonList count={6} />;
 
   return (
     <View style={styles.c}>
