@@ -1,6 +1,22 @@
 import type { JSX } from 'react';
 import { getServerCaller, serializeForClient } from '@/lib/server-trpc';
 import { BlogClient } from './BlogClient';
+import { t } from '@galaxy/shared/i18n/web-server';
+import { pageMeta } from '@/lib/seo';
+import { getServerLocale } from '@/lib/i18n';
+import type { Metadata } from 'next';
+
+export async function generateMetadata(): Promise<Metadata> {
+  const locale = await getServerLocale();
+  return pageMeta({
+    locale,
+    titleAr: t('marketing.blog.title', 'ar'),
+    titleEn: t('marketing.blog.title', 'en'),
+    descriptionAr: t('marketing.blog.subtitle', 'ar'),
+    descriptionEn: t('marketing.blog.subtitle', 'en'),
+    path: '/blog',
+  });
+}
 
 export default async function BlogPage(): Promise<JSX.Element> {
   let initialPosts: unknown[] = [];

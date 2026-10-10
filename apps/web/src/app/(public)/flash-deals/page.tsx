@@ -18,6 +18,10 @@ import { useAuth } from '@galaxy/ui';
 import Link from 'next/link';
 import { useLocale } from '@/components/LocaleProvider';
 import { pageHeroKey } from '@galaxy/shared';
+import { t } from '@galaxy/shared/i18n/web-server';
+import { pageMeta } from '@/lib/seo';
+import { getServerLocale } from '@/lib/i18n';
+import type { Metadata } from 'next';
 
 interface Deal {
   id: number;
@@ -81,6 +85,18 @@ function CountdownTimer({ endsAt }: { endsAt: string }): JSX.Element {
       {timeLeft}
     </span>
   );
+}
+
+export async function generateMetadata(): Promise<Metadata> {
+  const locale = await getServerLocale();
+  return pageMeta({
+    locale,
+    titleAr: t('marketing.flash-deals.title', 'ar'),
+    titleEn: t('marketing.flash-deals.title', 'en'),
+    descriptionAr: t('marketing.flash-deals.subtitle', 'ar'),
+    descriptionEn: t('marketing.flash-deals.subtitle', 'en'),
+    path: '/flash-deals',
+  });
 }
 
 export default function FlashDealsPage(): JSX.Element {

@@ -2881,6 +2881,7 @@ export const enWebMessages: Record<string, string> = {
   'marketing.mommy-and-me.per-two': 'For two',
   'marketing.mommy-and-me.subtitle':
     'Beautiful moments you share with your daughter. Beauty packages designed especially for mothers and daughters — because beauty becomes more beautiful when shared',
+  'marketing.mommy-and-me.title': 'Mommy & Me — Shared Beauty Packages',
   'marketing.onboarding.back': '← Previous',
   'marketing.onboarding.skip': 'Skip',
   'marketing.onboarding.step-1-action': "Let's go!",
@@ -3185,6 +3186,8 @@ export const enWebMessages: Record<string, string> = {
   'marketing.services.sort-popular': 'Most popular',
   'marketing.services.sort-price-asc': 'Price: low to high',
   'marketing.services.sort-price-desc': 'Price: high to low',
+  'marketing.services.subtitle':
+    'Book home beauty services — hair, skin, makeup, massage, henna and more with vetted technicians',
   'marketing.services.surprise-me': 'Surprise me',
   'marketing.services.title': 'Services',
   'marketing.shop-the-look.book-look': 'Book the look',
@@ -3225,6 +3228,9 @@ export const enWebMessages: Record<string, string> = {
     'Dynamic prices based on demand — book at the right time and save!',
   'marketing.smart-pricing.title': 'Smart pricing',
   'marketing.subscription-boxes.load-error': 'Failed to load plans',
+  'marketing.subscription-boxes.subtitle':
+    'Subscribe to a monthly box delivered to your door with products curated for your beauty needs',
+  'marketing.subscription-boxes.title': 'Monthly Beauty Boxes',
   'marketing.surprise-me.another-suggestion': 'Another suggestion',
   'marketing.surprise-me.book-now': 'Book now',
   'marketing.surprise-me.browse-services': 'Browse services',

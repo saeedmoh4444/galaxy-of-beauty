@@ -5,6 +5,8 @@ import { Card } from '@galaxy/ui';
 import { getServerLocale } from '@/lib/i18n';
 import { t } from '@galaxy/shared/i18n/web-server';
 import type { WebTranslationKey } from '@galaxy/shared';
+import { pageMeta } from '@/lib/seo';
+import type { Metadata } from 'next';
 
 const TIER_LABELS: Record<string, { name: WebTranslationKey; emoji: string; color: string }> = {
   SILVER: {
@@ -19,6 +21,18 @@ const TIER_LABELS: Record<string, { name: WebTranslationKey; emoji: string; colo
     color: 'from-brand-400 to-indigo-500',
   },
 };
+
+export async function generateMetadata(): Promise<Metadata> {
+  const locale = await getServerLocale();
+  return pageMeta({
+    locale,
+    titleAr: t('marketing.rewards.title', 'ar'),
+    titleEn: t('marketing.rewards.title', 'en'),
+    descriptionAr: t('marketing.rewards.subtitle', 'ar'),
+    descriptionEn: t('marketing.rewards.subtitle', 'en'),
+    path: '/rewards',
+  });
+}
 
 export default async function RewardsPage(): Promise<JSX.Element> {
   const locale = await getServerLocale();

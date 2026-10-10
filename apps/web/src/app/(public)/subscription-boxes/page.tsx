@@ -4,6 +4,20 @@ import { PlansClient } from './PlansClient';
 import type { PlansPageData } from './PlansClient';
 import { getServerLocale } from '@/lib/i18n';
 import { t } from '@galaxy/shared/i18n/web-server';
+import { pageMeta } from '@/lib/seo';
+import type { Metadata } from 'next';
+
+export async function generateMetadata(): Promise<Metadata> {
+  const locale = await getServerLocale();
+  return pageMeta({
+    locale,
+    titleAr: t('marketing.subscription-boxes.title', 'ar'),
+    titleEn: t('marketing.subscription-boxes.title', 'en'),
+    descriptionAr: t('marketing.subscription-boxes.subtitle', 'ar'),
+    descriptionEn: t('marketing.subscription-boxes.subtitle', 'en'),
+    path: '/subscription-boxes',
+  });
+}
 
 export default async function SubscriptionBoxesPage(): Promise<JSX.Element> {
   const locale = await getServerLocale();

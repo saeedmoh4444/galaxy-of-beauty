@@ -2850,6 +2850,7 @@ export const arWebMessages: Record<string, string> = {
   'marketing.mommy-and-me.per-two': 'للشخصين',
   'marketing.mommy-and-me.subtitle':
     'لحظات جميلة تشاركينها مع ابنتكِ. باقات تجميل مصممة خصيصاً للأمهات وبناتهن — لأن الجمال يصبح أجمل عندما نتشاركه',
+  'marketing.mommy-and-me.title': 'أمي وأنا — باقات تجميل مشتركة',
   'marketing.onboarding.back': '← السابق',
   'marketing.onboarding.skip': 'تخطي',
   'marketing.onboarding.step-1-action': 'هيا بنا!',
@@ -3138,6 +3139,8 @@ export const arWebMessages: Record<string, string> = {
   'marketing.services.sort-popular': 'الأكثر طلباً',
   'marketing.services.sort-price-asc': 'السعر: منخفض لأعلى',
   'marketing.services.sort-price-desc': 'السعر: أعلى لمنخفض',
+  'marketing.services.subtitle':
+    'احجزي خدمات التجميل المنزلية — شعر، بشرة، مكياج، مساج، حناء والمزيد مع فنيات موثقات',
   'marketing.services.surprise-me': 'فاجئيني',
   'marketing.services.title': 'الخدمات',
   'marketing.shop-the-look.book-look': 'احجزي الإطلالة',
@@ -3176,6 +3179,9 @@ export const arWebMessages: Record<string, string> = {
   'marketing.smart-pricing.subtitle': 'أسعار متغيرة حسب الطلب — احجزي في الوقت المناسب ووفري!',
   'marketing.smart-pricing.title': 'الأسعار الذكية',
   'marketing.subscription-boxes.load-error': 'فشل تحميل الباقات',
+  'marketing.subscription-boxes.subtitle':
+    'اشتركي في صندوق شهري يصل لباب بيتكِ بمنتجات مختارة حسب احتياج جمالكِ',
+  'marketing.subscription-boxes.title': 'صناديق التجميل الشهرية',
   'marketing.surprise-me.another-suggestion': 'اقتراح آخر',
   'marketing.surprise-me.book-now': 'احجزي الآن',
   'marketing.surprise-me.browse-services': 'تصفحي الخدمات',

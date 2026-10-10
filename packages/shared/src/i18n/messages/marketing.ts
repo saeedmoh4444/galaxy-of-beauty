@@ -111,6 +111,10 @@ export const marketingMessages = {
 
   // Services
   'marketing.services.title': { ar: 'الخدمات', en: 'Services' },
+  'marketing.services.subtitle': {
+    ar: 'احجزي خدمات التجميل المنزلية — شعر، بشرة، مكياج، مساج، حناء والمزيد مع فنيات موثقات',
+    en: 'Book home beauty services — hair, skin, makeup, massage, henna and more with vetted technicians',
+  },
   'marketing.services.surprise-me': { ar: 'فاجئيني', en: 'Surprise me' },
   'marketing.services.search-placeholder': { ar: 'بحث عن خدمة...', en: 'Search for a service...' },
   'marketing.services.sort-label': { ar: 'ترتيب الخدمات', en: 'Sort services' },
@@ -1020,6 +1024,14 @@ export const marketingMessages = {
     en: 'Invalid service provider ID',
   },
   'marketing.gallery.load-error': { ar: 'فشل تحميل المعرض', en: 'Failed to load gallery' },
+  'marketing.subscription-boxes.title': {
+    ar: 'صناديق التجميل الشهرية',
+    en: 'Monthly Beauty Boxes',
+  },
+  'marketing.subscription-boxes.subtitle': {
+    ar: 'اشتركي في صندوق شهري يصل لباب بيتكِ بمنتجات مختارة حسب احتياج جمالكِ',
+    en: 'Subscribe to a monthly box delivered to your door with products curated for your beauty needs',
+  },
   'marketing.subscription-boxes.load-error': {
     ar: 'فشل تحميل الباقات',
     en: 'Failed to load plans',
@@ -1733,6 +1745,10 @@ export const marketingMessages = {
   'marketing.lookbook.community-subtitle': {
     ar: 'أحدث الإطلالات من مجتمع جالكسي بيوتي',
     en: 'The latest looks from the Galaxy of Beauty community',
+  },
+  'marketing.mommy-and-me.title': {
+    ar: 'أمي وأنا — باقات تجميل مشتركة',
+    en: 'Mommy & Me — Shared Beauty Packages',
   },
   'marketing.mommy-and-me.subtitle': {
     ar: 'لحظات جميلة تشاركينها مع ابنتكِ. باقات تجميل مصممة خصيصاً للأمهات وبناتهن — لأن الجمال يصبح أجمل عندما نتشاركه',

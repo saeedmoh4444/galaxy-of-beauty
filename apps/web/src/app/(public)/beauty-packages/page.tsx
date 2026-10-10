@@ -5,6 +5,8 @@ import { t } from '@galaxy/shared/i18n/web-server';
 import { localize } from '@galaxy/shared';
 import { getServerCaller } from '@/lib/server-trpc';
 import { getServerLocale } from '@/lib/i18n';
+import { pageMeta } from '@/lib/seo';
+import type { Metadata } from 'next';
 
 interface BeautyPackageItem {
   id: number;
@@ -14,6 +16,18 @@ interface BeautyPackageItem {
   discountPercent: number;
   isActive: boolean;
   services: Array<{ id: number; serviceId: number }>;
+}
+
+export async function generateMetadata(): Promise<Metadata> {
+  const locale = await getServerLocale();
+  return pageMeta({
+    locale,
+    titleAr: t('marketing.beauty-packages.title', 'ar'),
+    titleEn: t('marketing.beauty-packages.title', 'en'),
+    descriptionAr: t('marketing.beauty-packages.subtitle', 'ar'),
+    descriptionEn: t('marketing.beauty-packages.subtitle', 'en'),
+    path: '/beauty-packages',
+  });
 }
 
 export default async function BeautyPackagesPage(): Promise<JSX.Element> {

@@ -1,8 +1,10 @@
 import type { JSX } from 'react';
 import { getServerCaller, serializeForClient } from '@/lib/server-trpc';
 import type { RouterOutputs } from '@galaxy/api';
+import type { Metadata } from 'next';
 import { t } from '@galaxy/shared/i18n/web-server';
 import { getServerLocale } from '@/lib/i18n';
+import { pageMeta } from '@/lib/seo';
 import { HomeClient } from './HomeClient';
 import type { HomePageProps } from './HomeClient';
 
@@ -12,6 +14,19 @@ export const revalidate = 60;
 type AnyCategory = RouterOutputs['categories']['list'][number];
 type AnyService = RouterOutputs['services']['list']['items'][number];
 type AnyShort = RouterOutputs['beautyShorts']['home'][number];
+
+export async function generateMetadata(): Promise<Metadata> {
+  const locale = await getServerLocale();
+  return pageMeta({
+    locale,
+    titleAr: t('marketing.home.hero-title', 'ar'),
+    titleEn: t('marketing.home.hero-title', 'en'),
+    descriptionAr: t('marketing.home.hero-subtitle', 'ar'),
+    descriptionEn: t('marketing.home.hero-subtitle', 'en'),
+    path: '/',
+    imagePath: '/logo.png',
+  });
+}
 
 export default async function HomePage(): Promise<JSX.Element> {
   const locale = await getServerLocale();

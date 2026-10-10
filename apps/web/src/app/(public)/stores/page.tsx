@@ -4,6 +4,20 @@ import { StoresClient } from './StoresClient';
 import type { StoresPageData } from './StoresClient';
 import { getServerLocale } from '@/lib/i18n';
 import { t } from '@galaxy/shared/i18n/web-server';
+import { pageMeta } from '@/lib/seo';
+import type { Metadata } from 'next';
+
+export async function generateMetadata(): Promise<Metadata> {
+  const locale = await getServerLocale();
+  return pageMeta({
+    locale,
+    titleAr: t('stores.title', 'ar'),
+    titleEn: t('stores.title', 'en'),
+    descriptionAr: t('stores.subtitle', 'ar'),
+    descriptionEn: t('stores.subtitle', 'en'),
+    path: '/stores',
+  });
+}
 
 export default async function StoresPage(): Promise<JSX.Element> {
   const locale = await getServerLocale();

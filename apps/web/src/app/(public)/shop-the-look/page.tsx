@@ -4,6 +4,8 @@ import { Card, Button, formatCurrency, ServiceImage } from '@galaxy/ui';
 import { getServerLocale } from '@/lib/i18n';
 import { t } from '@galaxy/shared/i18n/web-server';
 import { pageHeroKey } from '@galaxy/shared';
+import { pageMeta } from '@/lib/seo';
+import type { Metadata } from 'next';
 
 const LOOKS = [
   {
@@ -125,6 +127,18 @@ const LOOKS = [
     ],
   },
 ] as const;
+
+export async function generateMetadata(): Promise<Metadata> {
+  const locale = await getServerLocale();
+  return pageMeta({
+    locale,
+    titleAr: t('marketing.shop-the-look.title', 'ar'),
+    titleEn: t('marketing.shop-the-look.title', 'en'),
+    descriptionAr: t('marketing.shop-the-look.subtitle', 'ar'),
+    descriptionEn: t('marketing.shop-the-look.subtitle', 'en'),
+    path: '/shop-the-look',
+  });
+}
 
 export default async function ShopTheLookPage(): Promise<JSX.Element> {
   const locale = await getServerLocale();
