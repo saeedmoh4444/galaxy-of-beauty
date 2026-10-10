@@ -123,16 +123,17 @@ galaxy-of-beauty/
 | Check             | Status                                                                                                                              |
 | ----------------- | ----------------------------------------------------------------------------------------------------------------------------------- |
 | TypeScript        | 6/6 workspaces passing                                                                                                              |
-| ESLint            | 0 errors in all workspaces (real ESLint, not tsc aliasing)                                                                          |
+| ESLint            | 0 errors AND 0 warnings across api + web (deliberate exceptions are documented disables, guarded by the config-hygiene gate)        |
 | Format (Prettier) | 0 warnings (repo-wide pass, `.prettierignore` added)                                                                                |
 | Build             | 6/6 workspaces passing (Next.js 16: 300+ routes)                                                                                    |
+| Web bundle size   | 221/213/298/226 KB gz per route class (FE-007 gate; i18n locale split, ratcheted baseline)                                          |
 | API tests         | 170+ files, **1,490+ tests** passing                                                                                                |
 | Coverage          | Enforced per-workspace ratchet thresholds, exit 0                                                                                   |
 | E2E (Playwright)  | 27 specs — full suite passing on every PR (chromium + firefox + mobile Chrome)                                                      |
 | Runtime smoke     | Mobile HTTP contract script (auth, top-up, idempotency, CSRF) — 5/5                                                                 |
 | Component docs    | Storybook 10 for `@galaxy/ui` (`pnpm --filter @galaxy/ui storybook`)                                                                |
 | CI                | Frozen install, format, lint, type-check, test, build, architecture gates, size budgets, E2E (3 browsers), dependency audit, Docker |
-| Prod audit        | 8 accepted high findings, 0 critical (documented in SECURITY.md)                                                                    |
+| Prod audit        | 0 critical / 3 accepted high / 2 moderate (documented in SECURITY.md; patch-level fixes overridden)                                 |
 
 **Readiness**: verifiably correct baseline with active coverage ratchet — not yet production-hardened (see [DELIVERY_REPORT.md](DELIVERY_REPORT.md) addendum for the full program status).
 

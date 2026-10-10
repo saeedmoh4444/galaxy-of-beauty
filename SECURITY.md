@@ -15,70 +15,50 @@ We aim to acknowledge reports within 48 hours and provide an initial assessment 
 
 ## Dependency Audit (October 2026)
 
-As of 2026-10-04, `pnpm audit --prod` reports **0 critical / 8 high / 5 moderate** (baseline enforced by `scripts/audit-check.mjs` in CI). The 8 accepted high findings:
-
-### sharp / libheif (1 finding) — 🟡 OPEN (fix available)
-
-- **CVE**: GHSA-rgj7-g3m4-5g8c — libheif vulnerabilities (GHSA-g89c-p67h-r497, GHSA-2jg2-4ch7-h545)
-- **Type**: Image parsing vulnerabilities; affects sharp `<0.35.4` (0.35.3 currently resolved by the `>=0.35.0` override)
-- **Status**: ✅ **Accepted** until the override is bumped — P1 (one-line change)
-- **Note**: The previous libvips finding (CVE-2026-33327, CVE-2026-33328, CVE-2026-35590, CVE-2026-35591) is resolved.
-
-### engine.io (1 finding) — 🟡 OPEN (fix available)
-
-- **CVE**: GHSA-2gc4-cqfq-p2gv — Engine.IO protocol revision mismatch DoS; affects `>=6.6.0 <6.6.10`
-- **Status**: ✅ **Accepted** — fixable via `engine.io >=6.6.10` override (P2)
-- **Compensating controls** (unchanged from Socket.IO policy):
-  - Per-socket message rate limiting (30 msg/s)
-  - All event payloads validated with Zod
-  - Authenticated connections only
-  - Ping timeout: 60s
-- **Note**: The previous Socket.IO parser finding (GHSA-2m8v-j782-fhvr, zero-attachment memory exhaustion) is no longer reported.
-
-### brace-expansion (2 findings) — 🟡 OPEN (fix available)
-
-- **CVE**: GHSA-qhr7-859c-m2p7, GHSA-6j4f-fj2g-mc7p — DoS via uncontrolled recursion; affects `>=4.0.0 <5.0.11`
-- **Status**: ✅ **Accepted** — fixable via `brace-expansion >=5.0.11` override (P2). The existing override only pins `<2 → 1.1.18`.
-- **Compensating controls**: Transitive build-tooling dependency — expansion patterns originate from repo config, not user input.
-
-### deepmerge-ts (1 finding) — 🟡 OPEN (fix available, major)
-
-- **CVE**: GHSA-ggr8-5vv4-36mx — stack exhaustion when merging recursive object graphs; affects `<8.0.0`
-- **Status**: ✅ **Accepted** — fix requires a major upgrade (evaluate consumer first, P3)
-- **Compensating controls**: Merged objects are internal config/state, not attacker-controlled input.
-
-### mysql2 (1 finding) — 🟡 OPEN (fix available)
-
-- **CVE**: GHSA-3f6p-5ww8-9rcr — auth plugin downgrade to `mysql_clear_password` leaks plaintext credentials; affects `<3.22.0`
-- **Status**: ✅ **Accepted** — transitive dependency only; the platform uses PostgreSQL via Prisma and opens no MySQL connections. Fixable via `mysql2 >=3.22.0` override (P3).
-
-### node-forge (1 finding) — 🔴 OPEN (no patch yet)
-
-- **CVE**: GHSA-86w9-cpqp-85rv — RSA PKCS#1 v1.5 signature verification accepts extra nested DigestAlgorithm elements; affects `<=1.4.0` with no patched release
-- **Status**: ✅ **Accepted** (time-bounded per CI policy) — transitive build/deploy-tooling dependency, not exposed to end-user input.
+As of 2026-10-10, `pnpm audit --prod` reports **0 critical / 3 high / 2 moderate** (down from 8 high / 5 moderate on 2026-10-04 — the dependabot wave + two new overrides closed the rest). Baseline enforced by `scripts/audit-check.mjs` in CI (criticals block the merge; high/moderate are documented here). The 3 accepted high findings:
 
 ### braces (1 finding) — 🔴 OPEN (no patch yet)
 
 - **CVE**: GHSA-vfj7-8cjw-p6xm — stack-exhaustion DoS via deeply nested patterns; affects `<=3.0.3` with no patched release
 - **Status**: ✅ **Accepted** (time-bounded per CI policy) — glob patterns originate from repo config, not user input.
 
+### deepmerge-ts (1 finding) — 🟡 OPEN (fix available, major)
+
+- **CVE**: GHSA-ggr8-5vv4-36mx — stack exhaustion when merging recursive object graphs; affects `<8.0.0`
+- **Status**: ✅ **Accepted** — the fix requires a MAJOR upgrade, and deepmerge-ts 7.x is pinned inside `@prisma/config@7.10.0` (repo rule: never override it to a major). Re-evaluate when Prisma bumps.
+- **Compensating controls**: Merged objects are internal config/state, not attacker-controlled input.
+
+### node-forge (1 finding) — 🔴 OPEN (no patch yet)
+
+- **CVE**: GHSA-86w9-cpqp-85rv — RSA PKCS#1 v1.5 signature verification accepts extra nested DigestAlgorithm elements; affects `<=1.4.0` with no patched release
+- **Status**: ✅ **Accepted** (time-bounded per CI policy) — transitive build/deploy-tooling dependency, not exposed to end-user input.
+
+### Moderate findings (2, accepted)
+
+| Package                      | CVE                                     | Reason accepted                                                                          |
+| ---------------------------- | --------------------------------------- | ---------------------------------------------------------------------------------------- |
+| `uuid` 7.0.3                 | missing buffer bounds check in v3/v5/v6 | Fix requires a major (`>=11.1.1`) from a transitive chain — accepted, re-check quarterly |
+| `decode-uri-component` 0.2.2 | DoS via exponential decoding            | Fix is a breaking rewrite (`>=0.5.0`) deep in RN tooling — accepted, re-check quarterly  |
+
 ## Previously Resolved
 
 - **Next.js** — all 8 Next.js 14.2.35 advisories resolved by upgrading to 15.5.23 (commit `c3fa2ea`); the app has since moved to **Next.js 16**.
-- **sharp / libvips** — CVE-2026-33327, CVE-2026-33328, CVE-2026-35590, CVE-2026-35591 resolved via the `>=0.35.0` override (superseded by the libheif finding above).
+- **sharp / libvips + libheif** — resolved via the `>=0.35.4` override.
+- **engine.io** — resolved via the `>=6.6.10` override.
+- **brace-expansion** — resolved via the `>=5.0.11` override (kept alongside the `<2 → 1.1.18` pin).
+- **mysql2** — resolved via the `>=3.22.0` override.
+- **source-map-js** — resolved 2026-10-10 via the `>=1.2.2` override (patch bump).
+- **fast-uri** — resolved 2026-10-10 via the `>=3.1.8` override (patch bump).
 - **image-size (2)**, **JS-YAML (1)**, **nanoid (2)** — no longer reported (`nanoid >=3.3.9` override remains).
 
 ## Planned Remediation
 
-| Priority | Package            | Action                               | Timeline |
-| -------- | ------------------ | ------------------------------------ | -------- |
-| ✅ Done  | Next.js            | Migrated 14.2.35 → 15.5.23 → 16      | 2026     |
-| P1       | sharp              | Bump override to `>=0.35.4`          | Oct 2026 |
-| P2       | engine.io          | Override `>=6.6.10`                  | Oct 2026 |
-| P2       | brace-expansion    | Override `>=5.0.11`                  | Oct 2026 |
-| P3       | mysql2             | Override `>=3.22.0`                  | Q4 2026  |
-| P3       | deepmerge-ts       | Evaluate `>=8.0.0` major upgrade     | Q4 2026  |
-| Monitor  | node-forge, braces | No upstream patch — re-check monthly | Q4 2026  |
+| Priority | Package              | Action                                | Timeline |
+| -------- | -------------------- | ------------------------------------- | -------- |
+| P3       | deepmerge-ts         | Re-evaluate when Prisma bumps the pin | Q1 2027  |
+| P3       | uuid                 | Major upgrade in the transitive chain | Q1 2027  |
+| P3       | decode-uri-component | Replace the consuming chain           | Q1 2027  |
+| Monitor  | node-forge, braces   | No upstream patch — re-check monthly  | Ongoing  |
 
 ## Audit in CI
 
