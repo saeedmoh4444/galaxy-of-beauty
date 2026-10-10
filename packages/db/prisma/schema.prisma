@@ -96,6 +96,7 @@ enum TransactionSource {
   REFUND
   INFLUENCER_COMMISSION
   STORE_PURCHASE
+  GIFT_CARD_PURCHASE
 }
 
 enum StoreCheckoutStatus {
