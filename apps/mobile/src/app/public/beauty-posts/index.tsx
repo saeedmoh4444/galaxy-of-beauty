@@ -1,3 +1,4 @@
+import { SkeletonList } from '@/components/SkeletonCard';
 import {
   View,
   Text,
@@ -76,6 +77,8 @@ export default function BeautyPostsScreen(): JSX.Element {
       content: string;
       author: { name: string };
     }>) ?? [];
+
+  if (feedQ.isLoading) return <SkeletonList count={3} />;
 
   return (
     <ScrollView style={styles.c} contentContainerStyle={styles.i}>

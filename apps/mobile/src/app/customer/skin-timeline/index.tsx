@@ -1,3 +1,4 @@
+import { SkeletonList } from '@/components/SkeletonCard';
 import { View, Text, ScrollView, StyleSheet, TouchableOpacity, RefreshControl } from 'react-native';
 import { useState } from 'react';
 import type { JSX } from 'react';
@@ -20,6 +21,8 @@ export default function SkinTimelineScreen(): JSX.Element {
   const [compareMode, setCompareMode] = useState(false);
   const entriesQ = trpc.skinDiary.entries.useQuery(undefined, { enabled: isAuthed });
   const entries: SkinEntry[] = (entriesQ.data as unknown as SkinEntry[] | undefined) ?? [];
+
+  if (entriesQ.isLoading) return <SkeletonList count={4} />;
 
   return (
     <ScrollView
