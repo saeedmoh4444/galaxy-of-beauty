@@ -61,7 +61,7 @@ galaxy-of-beauty/
 │   └── mobile/       Expo SDK 57 + Expo Router
 ├── packages/
 │   ├── api/          tRPC v11 — 266 routers, Zod validation
-│   ├── db/           Prisma — 234 models, 10 migrations
+│   ├── db/           Prisma — 234 models, 11 migrations (squashed baseline)
 │   ├── shared/       Constants, types, i18n, theme (no JSX)
 │   ├── ui/           Components, hooks, Storybook (JSX, web + mobile)
 │   └── config/       TSConfig, ESLint, Prettier, Tailwind preset
@@ -77,7 +77,7 @@ galaxy-of-beauty/
 | --------- | ------------------------------------------------------------------------ |
 | Monorepo  | Turborepo + pnpm workspaces                                              |
 | Web       | Next.js 16 App Router, Tailwind CSS 4, React 19                          |
-| Mobile    | Expo SDK 57, Expo Router, React Native 0.87                              |
+| Mobile    | Expo SDK 57, Expo Router, React Native 0.86.3 (EAS dev-build aligned)    |
 | API       | tRPC v11 with Zod validation + superjson transformer                     |
 | Database  | PostgreSQL 15 via Prisma ORM                                             |
 | Cache     | Redis 7 (rate limiting, queues, Socket.IO adapter)                       |
@@ -90,7 +90,9 @@ galaxy-of-beauty/
 
 ## ✨ Feature Overview
 
-**Marketplace core** — service catalog across 12 beauty categories, technician profiles & KYC, bookings with a full lifecycle state machine, slots, dynamic pricing (tier × peak × surge), service bundles, add-ons, subscriptions, and a vendor marketplace with unified provider model.
+**Marketplace core** — service catalog across 12 beauty categories, technician profiles & KYC, bookings with a full lifecycle state machine, slots, dynamic pricing (tier × peak × surge), service bundles, add-ons, subscriptions, tech galleries with photo + video items, and rich technician profiles (certifications, languages, social links).
+
+**Store & provider marketplace** — unified provider model: stores, clinics, gyms, nail bars, and at-home salons with one registration wizard (KSA documents + admin approval), dedicated `/store` dashboards, per-store commission settlements with an admin rate editor, product reviews with denormalized ratings, and store browsing on mobile.
 
 **Commerce & loyalty** — wallets with top-up and cashback, gift cards, BNPL, promo codes, loyalty points with boosts and expiry sweeps, referral program 2.0 (tiered rewards 50/200/500, monthly prize leaderboard, UTM attribution), influencer program with booking commissions.
 
@@ -124,9 +126,9 @@ galaxy-of-beauty/
 | ESLint            | 0 errors in all workspaces (real ESLint, not tsc aliasing)                                                                          |
 | Format (Prettier) | 0 warnings (repo-wide pass, `.prettierignore` added)                                                                                |
 | Build             | 6/6 workspaces passing (Next.js 16: 300+ routes)                                                                                    |
-| API tests         | 150+ files, **1,360+ tests** passing                                                                                                |
+| API tests         | 170+ files, **1,490+ tests** passing                                                                                                |
 | Coverage          | Enforced per-workspace ratchet thresholds, exit 0                                                                                   |
-| E2E (Playwright)  | 25 specs — full suite passing on every PR (chromium + firefox + mobile Chrome)                                                      |
+| E2E (Playwright)  | 27 specs — full suite passing on every PR (chromium + firefox + mobile Chrome)                                                      |
 | Runtime smoke     | Mobile HTTP contract script (auth, top-up, idempotency, CSRF) — 5/5                                                                 |
 | Component docs    | Storybook 10 for `@galaxy/ui` (`pnpm --filter @galaxy/ui storybook`)                                                                |
 | CI                | Frozen install, format, lint, type-check, test, build, architecture gates, size budgets, E2E (3 browsers), dependency audit, Docker |
@@ -163,26 +165,28 @@ galaxy-of-beauty/
 
 ## 📚 Documentation
 
-| Document                                                           | Description                                |
-| ------------------------------------------------------------------ | ------------------------------------------ |
-| [Delivery Report](DELIVERY_REPORT.md)                              | Full program status + follow-up addendum   |
-| [Local Testing Guide](docs/LOCAL_TESTING_GUIDE.md)                 | Test everything yourself — full checklist  |
-| [ADR-006: Web Session Model](docs/adr/006-web-session-model.md)    | Auth architecture decision                 |
-| [Model Ownership Map](docs/architecture/model-ownership.md)        | 202 models → 12 bounded contexts           |
-| [Architecture Context Map](docs/architecture/context-map.md)       | Domain classification + debt audit         |
-| [Migration Standards](docs/architecture/migration-standards.md)    | Conventions, redundant index audit         |
-| [API Risk Matrix](docs/testing/risk-matrix.md)                     | Tiered test coverage strategy              |
-| [Audit Plan](docs/AUDIT_PLAN.md)                                   | End-to-end bug-audit methodology (A–E)     |
-| [Audit Report](docs/AUDIT_REPORT.md)                               | Findings, fixes, and recommendations       |
-| [UI/UX Backlog](docs/UI_UX_BACKLOG.md)                             | Accessibility/delight backlog — 17/17 done |
-| [Performance Budgets](docs/frontend/performance-budgets.md)        | Web vitals targets                         |
-| [Incident Runbooks](docs/operations/runbooks.md)                   | 7 emergency scenarios                      |
-| [SECURITY.md](SECURITY.md)                                         | Vulnerability disclosure + audit           |
-| [Platform Rulebook](Rules_to_make_well_archtichtrue-platform.md)   | Golden rules, commands, gates, gotchas     |
-| [Project Brain](brain_code.md)                                     | Living architecture knowledge base         |
-| [i18n Catalog Split](docs/architecture/i18n-catalog-split.md)      | Per-platform catalogs + CI leak guard      |
-| [Technical Debt](docs/TECHNICAL_DEBT.md)                           | Debt register with priorities              |
-| [Roadmap Recommendations](docs/ROADMAP_RECOMMENDATIONS_2026-10.md) | Phased roadmap A–D with effort estimates   |
+| Document                                                              | Description                                |
+| --------------------------------------------------------------------- | ------------------------------------------ |
+| [Delivery Report](DELIVERY_REPORT.md)                                 | Full program status + follow-up addendum   |
+| [Local Testing Guide](docs/LOCAL_TESTING_GUIDE.md)                    | Test everything yourself — full checklist  |
+| [ADR-006: Web Session Model](docs/adr/006-web-session-model.md)       | Auth architecture decision                 |
+| [Model Ownership Map](docs/architecture/model-ownership.md)           | 202 models → 12 bounded contexts           |
+| [Architecture Context Map](docs/architecture/context-map.md)          | Domain classification + debt audit         |
+| [Migration Standards](docs/architecture/migration-standards.md)       | Conventions, redundant index audit         |
+| [API Risk Matrix](docs/testing/risk-matrix.md)                        | Tiered test coverage strategy              |
+| [Audit Plan](docs/AUDIT_PLAN.md)                                      | End-to-end bug-audit methodology (A–E)     |
+| [Audit Report](docs/AUDIT_REPORT.md)                                  | Findings, fixes, and recommendations       |
+| [UI/UX Backlog](docs/UI_UX_BACKLOG.md)                                | Accessibility/delight backlog — 17/17 done |
+| [Performance Budgets](docs/frontend/performance-budgets.md)           | Web vitals targets                         |
+| [Incident Runbooks](docs/operations/runbooks.md)                      | 7 emergency scenarios                      |
+| [SECURITY.md](SECURITY.md)                                            | Vulnerability disclosure + audit           |
+| [Platform Rulebook](Rules_to_make_well_archtichtrue-platform.md)      | Golden rules, commands, gates, gotchas     |
+| [Project Brain](brain_code.md)                                        | Living architecture knowledge base         |
+| [i18n Catalog Split](docs/architecture/i18n-catalog-split.md)         | Per-platform catalogs + CI leak guard      |
+| [Technical Debt](docs/TECHNICAL_DEBT.md)                              | Debt register with priorities              |
+| [Store & Provider System](docs/architecture/store-provider-system.md) | Unified provider model reference           |
+| [Roadmap Recommendations](docs/ROADMAP_RECOMMENDATIONS_2026-10.md)    | Phased roadmap A–D with effort estimates   |
+| [Top-10 Platform Plan](docs/TOP10_PLATFORM_PLAN_2026-10.md)           | Fixes → store systems → launch → quality   |
 
 ---
 

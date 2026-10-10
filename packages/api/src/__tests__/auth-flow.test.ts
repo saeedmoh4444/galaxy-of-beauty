@@ -94,6 +94,24 @@ describe('Auth — Login', () => {
     expect(result.user.role).toBe('ADMIN');
   });
 
+  it('S1 — should report hasVendor for store owners (login routing)', async () => {
+    const caller = await anonCaller();
+    const result = await caller.auth.login({
+      email: 'demo-store@galaxyofbeauty.sa',
+      password: 'Admin@123456',
+    });
+    expect(result.hasVendor).toBe(true);
+  });
+
+  it('S1 — should report hasVendor=false for regular customers', async () => {
+    const caller = await anonCaller();
+    const result = await caller.auth.login({
+      email: 'customer@test.com',
+      password: 'Admin@123456',
+    });
+    expect(result.hasVendor).toBe(false);
+  });
+
   it('should reject login with wrong password', async () => {
     const caller = await anonCaller();
     await expect(
