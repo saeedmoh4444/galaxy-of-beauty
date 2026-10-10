@@ -107,24 +107,64 @@ export const disputeRouter = router({
         });
       }
 
-      const dispute = await prisma.dispute.update({
-        where: { id: disputeId },
-        data: {
-          status,
-          resolution,
-          resolvedBy: ctx.user.id,
-          resolvedAt: new Date(),
-        },
-      });
-
-      // Store-order refunds (stage 12): a customer-favourable resolution
-      // refunds the order — the settlement run then excludes it.
-      if (dispute.storeOrderId && status === 'RESOLVED_CUSTOMER') {
-        await prisma.storeOrder.update({
-          where: { id: dispute.storeOrderId },
-          data: { status: 'REFUNDED' },
+      const dispute = await prisma.$transaction(async (tx) => {
+        const updated = await tx.dispute.update({
+          where: { id: disputeId },
+          data: {
+            status,
+            resolution,
+            resolvedBy: ctx.user.id,
+            resolvedAt: new Date(),
+          },
         });
-      }
+
+        // Store-order refunds (audit #3): a customer-favourable resolution
+        // refunds the order AND moves money. Wallet-paid orders credit the
+        // customer's wallet; online-paid orders need the live Fatoorah
+        // refund API (user-gated) — their order is still marked REFUNDED so
+        // the settlement run excludes it, but no money moves yet.
+        if (updated.storeOrderId && status === 'RESOLVED_CUSTOMER') {
+          const order = await tx.storeOrder.update({
+            where: { id: updated.storeOrderId },
+            data: { status: 'REFUNDED' },
+            select: { id: true, customerId: true, totalAmount: true, checkoutId: true },
+          });
+          // Refund only once — repeated resolve calls must not double-credit.
+          if (existing.status !== 'RESOLVED_CUSTOMER') {
+            const checkout = order.checkoutId
+              ? await tx.storeCheckout.findUnique({
+                  where: { id: order.checkoutId },
+                  select: { method: true },
+                })
+              : null;
+            if (!checkout || checkout.method === 'wallet') {
+              const wallet = await tx.wallet.findUnique({
+                where: { userId: order.customerId },
+              });
+              if (wallet) {
+                const amount = Number(order.totalAmount);
+                await tx.wallet.update({
+                  where: { id: wallet.id },
+                  data: { balance: { increment: amount } },
+                });
+                await tx.walletTransaction.create({
+                  data: {
+                    walletId: wallet.id,
+                    type: 'CREDIT',
+                    source: 'REFUND',
+                    amount,
+                    description: `Dispute refund for store order #${order.id}`,
+                    referenceId: String(order.id),
+                    idempotencyKey: `dispute_refund_${disputeId}`,
+                  },
+                });
+              }
+            }
+          }
+        }
+
+        return updated;
+      });
 
       return dispute;
     }),
