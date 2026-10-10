@@ -28,7 +28,11 @@
         "backgroundColor": "#c2255c"
       },
       "package": "sa.galaxyofbeauty.app",
-      "permissions": ["CAMERA", "ACCESS_FINE_LOCATION", "VIBRATE"]
+      "permissions": ["CAMERA", "ACCESS_FINE_LOCATION", "VIBRATE"],
+      "statusBar": {
+        "backgroundColor": "#c2255c",
+        "barStyle": "light-content"
+      }
     },
     "web": {
       "favicon": "./assets/icon.png",

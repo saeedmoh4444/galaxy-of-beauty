@@ -2,12 +2,13 @@
 // here. Finishing marks the flag and lands on the home tab. The
 // beautyOnboarding router (questions/submit/status) is a separate
 // auth-gated post-signup questionnaire — this walkthrough stays static.
-import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, Image } from 'react-native';
 import { useState } from 'react';
 import type { JSX } from 'react';
 import { router } from 'expo-router';
 import { useLocale } from '@/components/LocaleProvider';
 import { markSeenOnboarding } from '@/utils/onboarding';
+import { BRAND_LOGO } from '@/utils/branding';
 
 const slides = [
   {
@@ -41,6 +42,7 @@ export default function OnboardingScreen(): JSX.Element {
   return (
     <View style={styles.c}>
       <View style={styles.i}>
+        <Image source={BRAND_LOGO} style={styles.logo} />
         <Text style={styles.emoji}>{slides[step]!.emoji}</Text>
         <Text style={styles.title}>{t(slides[step]!.titleKey)}</Text>
         <Text style={styles.desc}>{t(slides[step]!.descKey)}</Text>
@@ -79,6 +81,7 @@ export default function OnboardingScreen(): JSX.Element {
 const styles = StyleSheet.create({
   c: { flex: 1, backgroundColor: '#fdf2f8' },
   i: { flex: 1, justifyContent: 'center', alignItems: 'center', padding: 30 },
+  logo: { width: 88, height: 88, marginBottom: 24 },
   emoji: { fontSize: 80, marginBottom: 30 },
   title: {
     fontSize: 24,

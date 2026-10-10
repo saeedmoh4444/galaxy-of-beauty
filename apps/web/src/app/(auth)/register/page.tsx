@@ -136,12 +136,16 @@ export default function RegisterPage(): JSX.Element {
             type="password"
             value={form.password}
             onChange={(e) => set('password', e.target.value)}
+            showPasswordLabel={t('auth.showPassword')}
+            hidePasswordLabel={t('auth.hidePassword')}
           />
           <Input
             label={t('auth.confirm-password')}
             type="password"
             value={form.confirmPassword}
             onChange={(e) => set('confirmPassword', e.target.value)}
+            showPasswordLabel={t('auth.showPassword')}
+            hidePasswordLabel={t('auth.hidePassword')}
           />
           <div>
             <label

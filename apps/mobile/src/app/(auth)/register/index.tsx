@@ -5,6 +5,7 @@ import { trpc } from '@/lib/trpc-react';
 import { useToast } from '@/components/Toast';
 import { useLocale } from '@/components/LocaleProvider';
 import { useTheme, themeColors } from '@/components/ThemeProvider';
+import { Icon } from '@/components/Icon';
 
 export default function RegisterScreen() {
   const router = useRouter();
@@ -13,6 +14,7 @@ export default function RegisterScreen() {
   const { isDark } = useTheme();
   const c = isDark ? themeColors.dark : themeColors.light;
   const styles = makeStyles(c);
+  const [showPassword, setShowPassword] = useState(false);
   const [form, setForm] = useState({
     name: '',
     email: '',
@@ -70,13 +72,24 @@ export default function RegisterScreen() {
         onChangeText={(t) => set('phone', t)}
         keyboardType="phone-pad"
       />
-      <TextInput
-        style={styles.input}
-        placeholder={t('auth.password')}
-        value={form.password}
-        onChangeText={(t) => set('password', t)}
-        secureTextEntry
-      />
+      <View style={styles.passwordRow}>
+        <TextInput
+          style={styles.passwordInput}
+          placeholder={t('auth.password')}
+          value={form.password}
+          onChangeText={(t) => set('password', t)}
+          secureTextEntry={!showPassword}
+        />
+        <TouchableOpacity
+          style={styles.eyeToggle}
+          onPress={() => setShowPassword((v) => !v)}
+          accessibilityLabel={
+            showPassword ? t('mobile.auth.hidePassword') : t('mobile.auth.showPassword')
+          }
+        >
+          <Icon name={showPassword ? 'eye-off' : 'eye'} size="sm" color={c.text} />
+        </TouchableOpacity>
+      </View>
       <View style={styles.roleRow}>
         <TouchableOpacity
           style={[styles.roleBtn, form.role === 'CUSTOMER' && styles.roleActive]}
@@ -140,6 +153,22 @@ const makeStyles = (c: typeof themeColors.light | typeof themeColors.dark) =>
       backgroundColor: c.surface,
       color: c.text,
     },
+    passwordRow: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      borderWidth: 1,
+      borderColor: c.border,
+      borderRadius: 12,
+      backgroundColor: c.surface,
+      marginBottom: 16,
+    },
+    passwordInput: {
+      flex: 1,
+      padding: 14,
+      fontSize: 16,
+      color: c.text,
+    },
+    eyeToggle: { paddingHorizontal: 14, opacity: 0.6 },
     button: {
       backgroundColor: c.brand,
       borderRadius: 12,

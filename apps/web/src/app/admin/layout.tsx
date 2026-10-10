@@ -28,7 +28,6 @@ const adminLinks: { href: string; key: TranslationKey; icon: string }[] = [
   { href: '/admin/blog', key: 'nav.admin.blog', icon: '' },
   { href: '/admin/zatca', key: 'nav.admin.zatca', icon: '' },
   { href: '/admin/content-gen', key: 'nav.admin.contentGen', icon: '' },
-  { href: '/admin/content-gen', key: 'nav.admin.contentGen', icon: '' },
   { href: '/admin/analytics', key: 'nav.admin.analytics', icon: '' },
   { href: '/admin/advanced-analytics', key: 'adminAnalytics.title', icon: '' },
   { href: '/admin/monitoring', key: 'nav.admin.monitoring', icon: '' },

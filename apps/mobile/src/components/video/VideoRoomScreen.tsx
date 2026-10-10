@@ -9,7 +9,7 @@ import {
   RTCSessionDescription,
   RTCIceCandidate,
   MediaStream as RTCMediaStream,
-} from 'react-native-webrtc';
+} from '@/lib/webrtc';
 import { SOCKET_DEFAULT_PORT } from '@galaxy/shared';
 import { useLocale } from '@/components/LocaleProvider';
 import { getSocketToken } from '@/hooks/useSocket';
@@ -64,6 +64,14 @@ export function VideoRoomScreen({
   const startedRef = useRef(false);
 
   useEffect(() => {
+    // Web preview shim: react-native-webrtc is native-only (see lib/webrtc.web.ts).
+    // Bail before opening a socket so the screen shows the unavailable state.
+    if (!RTCPeerConnection || !mediaDevices) {
+      setStatus('ended');
+      setError(t('mobile.video.unavailable'));
+      return;
+    }
+
     const bookingIdNum = Number(bookingId);
     if (!Number.isFinite(bookingIdNum) || startedRef.current) return;
     startedRef.current = true;

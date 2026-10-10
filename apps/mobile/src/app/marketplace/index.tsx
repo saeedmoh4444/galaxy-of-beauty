@@ -52,6 +52,16 @@ export default function MarketplaceScreen(): JSX.Element {
         </Text>
       </TouchableOpacity>
 
+      {/* S2 — verified stores entry point */}
+      <TouchableOpacity
+        testID="marketplace-stores-link"
+        style={styles.storesLink}
+        activeOpacity={0.7}
+        onPress={() => router.push('/marketplace/stores' as never)}
+      >
+        <Text style={styles.storesLinkText}>{t('mobile.public.marketplace.stores-link')} 🏬</Text>
+      </TouchableOpacity>
+
       <View style={styles.grid}>
         {products.map((p) => (
           <View key={p.id} style={styles.card}>
@@ -84,6 +94,20 @@ const styles = StyleSheet.create({
     fontSize: 13,
     fontWeight: '700',
     color: '#db2777',
+    textAlign: 'center',
+  },
+  storesLink: {
+    backgroundColor: '#fff',
+    borderColor: '#fbcfe8',
+    borderWidth: 1,
+    borderRadius: 12,
+    padding: 12,
+    marginBottom: 16,
+  },
+  storesLinkText: {
+    fontSize: 13,
+    fontWeight: '700',
+    color: '#be185d',
     textAlign: 'center',
   },
   grid: { flexDirection: 'row', flexWrap: 'wrap', gap: 10 },
