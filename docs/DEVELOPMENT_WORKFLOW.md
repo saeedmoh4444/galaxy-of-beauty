@@ -154,7 +154,21 @@ describe('MyFeature', () => {
 });
 ```
 
-### 7. Verify and Commit
+### 7. i18n (if the feature adds UI strings)
+
+Add keys to the domain catalogs (`packages/shared/src/i18n/messages/*.ts` — ar/en pairs), then regenerate the per-locale catalogs and commit them:
+
+```bash
+pnpm i18n:generate   # writes messages/generated/{en,ar}.ts — COMMIT these
+```
+
+CI drift-checks the generated files against the sources — regenerating is not optional.
+
+### 8. Public page SEO (if the page is public)
+
+Public pages get locale-aware metadata via `generateMetadata` + `pageMeta()` (see `docs/architecture/web-seo.md`): server-only (client pages need a thin server wrapper), titles from the i18n catalog, and sitemap additions are verified by the sitemap gate.
+
+### 9. Verify and Commit
 
 ```bash
 pnpm type-check && pnpm test && pnpm build
@@ -264,3 +278,4 @@ See `docs/DEPLOYMENT.md` for full production runbook (PM2, Nginx, SSL).
 - **Architecture blueprint + honest tech decisions**: [`brain_code.md`](../../brain_code.md)
 - **Working rulebook (commands, gates, patterns, gotchas)**: [`Rules_to_make_well_archtichtrue-platform.md`](../../Rules_to_make_well_archtichtrue-platform.md)
 - **i18n per-platform catalog split**: [`docs/architecture/i18n-catalog-split.md`](architecture/i18n-catalog-split.md)
+- **Web SEO & metadata system**: [`docs/architecture/web-seo.md`](architecture/web-seo.md)

@@ -2,7 +2,7 @@
 
 > **Honest architecture audit:** What we use, what we skip, and what we must adopt.
 > No fluff. No marketing. Just engineering decisions and their reasons.
-> Last rebuilt: 2026-10-09 (post 12-PR wave: F1-F6 fixes, S1 store dashboard, S2 mobile stores, S3 commissions, Q4 seed typing, Q1 tree-shaking).
+> Last rebuilt: 2026-10-10 (post 13-PR wave: locale split #403, S5 store analytics #404/#408, Q4 zero-lint #405, Q6 SEO #406, Q7 skeletons #407, plan/docs #409).
 
 ---
 
@@ -72,7 +72,10 @@ galaxy-of-beauty/                       # The Body
 ┌───────────────────────────────────────────────┐
 │           PRESENTATION LAYER                  │
 │  apps/web (Next.js 16)  apps/mobile (Expo 57) │
-│  → useLocale / t(key) per-platform catalogs   │
+│  → web: getWebCatalog(locale) lazy-loaded     │
+│    per-locale catalogs (React use()-safe);    │
+│    server pages: t() from i18n/web-server     │
+│  → mobile: i18n-mobile catalog (eager)        │
 ├───────────────────────────────────────────────┤
 │            APPLICATION LAYER                  │
 │  packages/api — 15 domain barrels:            │
@@ -97,22 +100,25 @@ galaxy-of-beauty/                       # The Body
 
 ## Patterns We Use (and Why)
 
-| Pattern                    | Where                                  | Why                                                                                      |
-| -------------------------- | -------------------------------------- | ---------------------------------------------------------------------------------------- |
-| **Module (Barrel)**        | 15 `domains/<name>/index.ts`           | Single entry per domain; extraction-ready.                                               |
-| **Decorator / Middleware** | tRPC procedure factories               | `customerProcedure = protectedProcedure.use(hasRole('CUSTOMER'))` — composable tiers.    |
-| **Repository**             | Prisma client in `packages/db`         | One data access point; swap DB without touching logic.                                   |
-| **Facade**                 | `lib/fatoorah.ts`, `lib/sentry.ts`     | Gateway/third-party clients behind typed facades; fail-closed when unconfigured.         |
-| **Strategy**               | Payment methods, shipping couriers     | wallet vs online; DHL vs Aramex — swappable per request.                                 |
-| **State Machine**          | Booking/order/checkout lifecycles      | Enum-constrained transitions; impossible invalid states (money-integrity).               |
-| **Observer**               | Socket.IO emitters                     | `emitToUser/emitToAdmin` — decoupled realtime events.                                    |
-| **Command**                | BullMQ jobs                            | Fire-and-forget side effects (`cashback.accrue` etc.), 3 retries + exp backoff.          |
-| **Factory**                | Queue/worker creation                  | `createQueue(name)` — consistent Redis wiring.                                           |
-| **Singleton**              | Prisma + Redis clients                 | `globalForPrisma` — one pool per process.                                                |
-| **Adapter**                | Auth storage (web/mobile)              | localStorage vs SecureStore behind one interface.                                        |
-| **Fail-Closed Gateway**    | MyFatoorah/Sentry facades              | No config → throw/console, never fake success (money-integrity regression-pinned).       |
-| **Test Seam**              | `_setSentryLoaderForTests`, `vi.mock`  | Deterministic failure simulation without network.                                        |
-| **Per-Platform Catalog**   | `i18n/{web,mobile,index}.ts` + runtime | Bundle isolation: web ships 5,268 keys, mobile 8,825; merged module only via `i18n-all`. |
+| Pattern                         | Where                                                                          | Why                                                                                                                                                                                                   |
+| ------------------------------- | ------------------------------------------------------------------------------ | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Module (Barrel)**             | 15 `domains/<name>/index.ts`                                                   | Single entry per domain; extraction-ready.                                                                                                                                                            |
+| **Decorator / Middleware**      | tRPC procedure factories                                                       | `customerProcedure = protectedProcedure.use(hasRole('CUSTOMER'))` — composable tiers.                                                                                                                 |
+| **Repository**                  | Prisma client in `packages/db`                                                 | One data access point; swap DB without touching logic.                                                                                                                                                |
+| **Facade**                      | `lib/fatoorah.ts`, `lib/sentry.ts`                                             | Gateway/third-party clients behind typed facades; fail-closed when unconfigured.                                                                                                                      |
+| **Strategy**                    | Payment methods, shipping couriers                                             | wallet vs online; DHL vs Aramex — swappable per request.                                                                                                                                              |
+| **State Machine**               | Booking/order/checkout lifecycles                                              | Enum-constrained transitions; impossible invalid states (money-integrity).                                                                                                                            |
+| **Observer**                    | Socket.IO emitters                                                             | `emitToUser/emitToAdmin` — decoupled realtime events.                                                                                                                                                 |
+| **Command**                     | BullMQ jobs                                                                    | Fire-and-forget side effects (`cashback.accrue` etc.), 3 retries + exp backoff.                                                                                                                       |
+| **Factory**                     | Queue/worker creation                                                          | `createQueue(name)` — consistent Redis wiring.                                                                                                                                                        |
+| **Singleton**                   | Prisma + Redis clients                                                         | `globalForPrisma` — one pool per process.                                                                                                                                                             |
+| **Adapter**                     | Auth storage (web/mobile)                                                      | localStorage vs SecureStore behind one interface.                                                                                                                                                     |
+| **Fail-Closed Gateway**         | MyFatoorah/Sentry facades                                                      | No config → throw/console, never fake success (money-integrity regression-pinned).                                                                                                                    |
+| **Test Seam**                   | `_setSentryLoaderForTests`, `vi.mock`                                          | Deterministic failure simulation without network.                                                                                                                                                     |
+| **Per-Platform Catalog**        | `i18n/{web,mobile,index}.ts` + runtime                                         | Bundle isolation: web 5,313 keys, mobile 8,825; merged module only via `i18n-all`.                                                                                                                    |
+| **Lazy-Loaded Locale Catalogs** | `getWebCatalog(locale)` + `messages/generated/{en,ar}.ts`                      | Codegen flattens the `{ar,en}` domain sources per locale; a dynamic import + promise cache loads ONLY the active locale (~118 KB gz saved per route). React `use()`-safe (stable promise per locale). |
+| **Server-Only Subpath Export**  | `@galaxy/shared/i18n/web-server`                                               | Sync `t()` for server components statically bundles both locales in the SERVER graph only — importing it client-side is a build failure (locale-split guard).                                         |
+| **Build-Level Guard**           | `checkLocaleSplit()` / `checkCatalogLeak()` / drift / sitemap / config-hygiene | Architecture invariants enforced by scanning built artifacts — a regression fails CI, not code review.                                                                                                |
 
 ## Patterns We Don't Use (and Why)
 
@@ -179,20 +185,20 @@ galaxy-of-beauty/                       # The Body
 
 ## What We Must Add (Production Checklist — updated)
 
-| Priority | Item                                  | Why                                                                                                                                         | Effort         |
-| -------- | ------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------- | -------------- |
-| 🔴 P0    | **MyFatoorah live token**             | Payment gateway still runs on dev stubs; the ONLY blocker to real charges.                                                                  | 5 min          |
-| 🔴 P0    | **Database backups**                  | `scripts/backup-db.sh` exists in compose — cron it or use RDS snapshots.                                                                    | 1 hr           |
-| 🔴 P0    | **Circuit breaker (gateways)**        | See Part 2.                                                                                                                                 | 8 hr           |
-| 🔴 P0    | **Bundle re-measure after #395**      | `sideEffects: false` landed but the real numbers are unmeasured — rebuild, run the size gate, and continue slimming the tRPC/API chunk set. | 4 hr           |
-| 🟡 P1    | **SSL + Nginx**                       | HTTPS is non-negotiable for a payment platform.                                                                                             | 2 hr           |
-| 🟡 P1    | **Prometheus + Grafana**              | Replace in-memory counters with real metrics + dashboards.                                                                                  | 8 hr           |
-| 🟡 P1    | **Alerting**                          | Error rate, payment failures, queue depth, disk >80%.                                                                                       | 4 hr           |
-| 🟡 P1    | **Staging environment**               | Test against a prod clone, not the shared dev DB.                                                                                           | 8 hr           |
-| 🟡 P1    | **Apple Developer account (~$99/yr)** | The ONLY blocker to an iOS dev client + App Store; Expo Go cannot run the app.                                                              | account signup |
-| 🟢 P2    | **App-store submission**              | EAS pipeline is ready (Android APK built + delivered); staged rollout pending.                                                              | 1 day          |
-| 🟢 P2    | **Penetration test**                  | OWASP ZAP or manual — verify CSRF/XSS/injection hardening.                                                                                  | 8 hr           |
-| 🟢 P3    | **Blue-green deploys**                | Zero-downtime deploys incl. migrations.                                                                                                     | 8 hr           |
+| Priority | Item                                      | Why                                                                                                                                                                                                                               | Effort         |
+| -------- | ----------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------- |
+| 🔴 P0    | **MyFatoorah live token**                 | Payment gateway still runs on dev stubs; the ONLY blocker to real charges.                                                                                                                                                        | 5 min          |
+| 🔴 P0    | **Database backups**                      | `scripts/backup-db.sh` exists in compose — cron it or use RDS snapshots.                                                                                                                                                          | 1 hr           |
+| 🔴 P0    | **Circuit breaker (gateways)**            | See Part 2.                                                                                                                                                                                                                       | 8 hr           |
+| ✅ DONE  | **Bundle measured + locale split (#403)** | Measured 221/213/298/226 KB gz; per-locale generated catalogs + lazy loading cut another ~118 KB/route; baseline ratcheted with new locale-split/drift/leak gates. Remaining: framework/app chunk slimming toward FE-007 targets. | shipped        |
+| 🟡 P1    | **SSL + Nginx**                           | HTTPS is non-negotiable for a payment platform.                                                                                                                                                                                   | 2 hr           |
+| 🟡 P1    | **Prometheus + Grafana**                  | Replace in-memory counters with real metrics + dashboards.                                                                                                                                                                        | 8 hr           |
+| 🟡 P1    | **Alerting**                              | Error rate, payment failures, queue depth, disk >80%.                                                                                                                                                                             | 4 hr           |
+| 🟡 P1    | **Staging environment**                   | Test against a prod clone, not the shared dev DB.                                                                                                                                                                                 | 8 hr           |
+| 🟡 P1    | **Apple Developer account (~$99/yr)**     | The ONLY blocker to an iOS dev client + App Store; Expo Go cannot run the app.                                                                                                                                                    | account signup |
+| 🟢 P2    | **App-store submission**                  | EAS pipeline is ready (Android APK built + delivered); staged rollout pending.                                                                                                                                                    | 1 day          |
+| 🟢 P2    | **Penetration test**                      | OWASP ZAP or manual — verify CSRF/XSS/injection hardening.                                                                                                                                                                        | 8 hr           |
+| 🟢 P3    | **Blue-green deploys**                    | Zero-downtime deploys incl. migrations.                                                                                                                                                                                           | 8 hr           |
 
 ---
 
@@ -218,7 +224,8 @@ packages/api/src/
 - `router-inventory.test.ts` — procedure counts + tier map + SHA-256 hash (re-base via `-u` on a clean tree only).
 - `money-integrity.test.ts` — no free money: topUp never mints balance, gateway state only from verified callbacks, refunds reverse cashback.
 - `catalog.test.ts` — i18n invariants: ar+en present, trim-safe, per-platform split guards.
-- `check-size-budgets.mjs` — per-class gzipped budgets + mobile-catalog leak sentinels.
+- `check-size-budgets.mjs` — per-class gzipped budgets + mobile-catalog leak sentinels + locale-split sentinels (no chunk may carry both locales).
+- `generate-locale-catalogs.mjs --check` (drift) + `check-config-hygiene.test.mjs` + `check-sitemap.test.mjs` — codegen, config, and sitemap integrity gates.
 - `find-static-arabic.mjs` — zero hardcoded Arabic outside `t()` (allowlist now empty).
 - `check-cycles.mjs` + `gen-dependency-graph.mjs` — import-graph discipline.
 
@@ -248,15 +255,15 @@ tRPC middleware: requestCounter → rateLimit → csrf → isAuthed → hasRole
 - **The sweep pipeline worked** — 16 sequential slice PRs, each independently verifiable, zero regressions.
 - **Store/provider system complete (2026-10-08 wave)** — dedicated `/store` dashboard shell, mobile store browsing, commission rates actually applied in settlements with an admin editor, store ratings surfaced, provider registration covering store/clinic/gym/nail-bar/at-home.
 - **Seed is fully typed** — all 14 `(prisma as any)` casts removed (#394); the drift class is closed.
-- **Tree-shaking unlocked** — `sideEffects: false` on `@galaxy/shared` + `@galaxy/ui` (#395); every route no longer drags the full i18n catalog and UI barrel by default.
+- **Tree-shaking unlocked + locale split shipped** — `sideEffects: false` (#395) then per-locale generated catalogs (#403): 565/559/646/575 → 221/213/298/226 KB gz, ratcheted and CI-guarded.
 
 ### Weaknesses (hard truths)
 
-- **FE-007 gap**: targets are 100–150 KB/route; reality is ~560–650 KB gzipped. The catalog split reclaimed ~91 KB and `sideEffects: false` just landed — **the remaining bulk (shared tRPC/API chunk set) is still unmeasured after #395; the slimming is not done until the gate numbers drop.**
+- **FE-007 gap (closing)**: targets are 100–150 KB/route; reality is now 213–298 KB gz (from 560–650). The catalog split (~91 KB) + locale split (~118 KB) landed; the remaining bulk is the Next.js framework chunks (~110 KB, mostly fixed cost) + app code. Slimming continues against the ratcheted baseline.
 - **No staging environment** — risky changes ride against the shared dev DB (the local test suite runs `env=test` against it too, which pollutes seed data and flaked tests).
 - **Single points of failure** — one PostgreSQL, one Redis, no failover.
 - **Gateway resilience** — no circuit breaker; a down MyFatoorah degrades checkout (fail-closed, but loudly).
-- **Lint warnings tolerated** — ~27–174 pre-existing warnings ride under `--max-warnings`.
+- **Lint warnings: ZERO** (#405) — the remaining deliberate exceptions are documented disables with reasons, enforced by the config-hygiene gate.
 - **iOS physical device still blocked** — no Apple Developer account; Expo Go cannot run the app (webrtc/async-storage), so the dev-client APK is the only phone path.
 - **Store accounts are role-less** — `UserRole` has no VENDOR; store owners are CUSTOMER-role users with a Vendor row, gated by ownership checks rather than a role.
 
@@ -264,6 +271,6 @@ tRPC middleware: requestCounter → rateLimit → csrf → isAuthed → hasRole
 
 1. **Production infra** — RDS + read replica, ElastiCache, CloudFront.
 2. **Resilience** — circuit breakers, alerting, staging environment, backups.
-3. **Bundle reality** — slim the shared chunk set toward the FE-007 targets (catalog split = step 1, `sideEffects: false` = step 2, measure + cut the tRPC/API chunk set = step 3).
+3. **Bundle reality (steps 1–3 DONE)** — platform split → `sideEffects: false` → locale split measured at 221/213/298/226 KB. Next: attack the framework/app chunks toward FE-007, plus the CWV measurement pass (prod build) from Q6.
 4. **Mobile release** — EAS staged rollout to App Store + Play Store.
 5. **Compliance** — third-party pentest, NCA-ECC/SOC 2 for the Saudi market.
