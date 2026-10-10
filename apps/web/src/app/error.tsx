@@ -1,12 +1,12 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState, Suspense } from 'react';
 import type { JSX } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import type { Locale } from '@galaxy/shared';
-import { t } from '@galaxy/shared';
 import { LOCALE_CHANGE_EVENT } from '@/components/LocaleProvider';
+import { useCatalogT } from '@/components/use-catalog-t';
 
 /**
  * Route-level error page. May render without the LocaleProvider (if the
@@ -31,33 +31,48 @@ export default function RootError({
   error: Error & { digest?: string };
   reset: () => void;
 }): JSX.Element {
+  return (
+    <Suspense fallback={null}>
+      <RootErrorInner error={error} reset={reset} />
+    </Suspense>
+  );
+}
+
+function RootErrorInner({
+  error,
+  reset,
+}: {
+  error: Error & { digest?: string };
+  reset: () => void;
+}): JSX.Element {
   const locale = usePageLocale();
+  const t = useCatalogT(locale);
 
   return (
     <div className="flex min-h-screen flex-col items-center justify-center bg-surface-elevated px-4">
       <Image
         src="/logo.png"
-        alt={t('common.brandName', locale)}
+        alt={t('common.brandName')}
         width={80}
         height={80}
         className="mb-8 h-20 w-20 rounded-2xl object-cover shadow-lg"
       />
-      <h1 className="text-2xl font-bold text-text-primary">{t('error.unexpected', locale)}</h1>
+      <h1 className="text-2xl font-bold text-text-primary">{t('error.unexpected')}</h1>
       <p className="mt-2 max-w-md text-center text-sm text-text-secondary">
-        {error.message || t('error.try-again-support', locale)}
+        {error.message || t('error.try-again-support')}
       </p>
       <div className="mt-6 flex gap-3">
         <button
           onClick={reset}
           className="rounded-xl bg-brand-600 px-6 py-3 text-sm font-semibold text-white transition-colors hover:bg-brand-700"
         >
-          {t('button.retry', locale)}
+          {t('button.retry')}
         </button>
         <Link
           href="/"
           className="rounded-xl border border-edge px-6 py-3 text-sm font-semibold text-text-secondary transition-colors hover:bg-surface-muted dark:hover:bg-gray-800"
         >
-          {t('common.back-home', locale)}
+          {t('common.back-home')}
         </Link>
       </div>
     </div>

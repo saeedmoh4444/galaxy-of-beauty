@@ -1,10 +1,10 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, Suspense } from 'react';
 import type { JSX } from 'react';
 import type { Locale } from '@galaxy/shared';
-import { t } from '@galaxy/shared';
 import { LOCALE_CHANGE_EVENT } from '@/components/LocaleProvider';
+import { useCatalogT } from '@/components/use-catalog-t';
 
 /**
  * Rendered outside the LocaleProvider (root layout), so the locale is read
@@ -21,9 +21,18 @@ function usePageLocale(): Locale {
   return locale;
 }
 
-export function OfflineBanner(): JSX.Element | null {
+export function OfflineBanner(): JSX.Element {
+  return (
+    <Suspense fallback={null}>
+      <OfflineBannerInner />
+    </Suspense>
+  );
+}
+
+function OfflineBannerInner(): JSX.Element | null {
   const [offline, setOffline] = useState(false);
   const locale = usePageLocale();
+  const t = useCatalogT(locale);
 
   useEffect(() => {
     const goOffline = () => setOffline(true);
@@ -41,7 +50,7 @@ export function OfflineBanner(): JSX.Element | null {
 
   return (
     <div className="sticky top-0 z-50 bg-amber-500 px-4 py-2 text-center text-sm font-medium text-white">
-      {t('state.offline-banner', locale)}
+      {t('state.offline-banner')}
     </div>
   );
 }

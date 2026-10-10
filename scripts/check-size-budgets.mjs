@@ -188,6 +188,41 @@ export function checkCatalogLeak(webRoot) {
   return hits;
 }
 
+/**
+ * Locale-split guard — no single client chunk may ship BOTH locale
+ * catalogs. One distinctive sentence from the admin domain in en + ar: if
+ * both appear in one built chunk, the merged catalog is back in the client
+ * graph (e.g. `t`/webMessages imported from the root barrel or the
+ * web-server subpath inside a client component). The locale split keeps
+ * each locale in its own async chunk loaded via getWebCatalog().
+ */
+export const LOCALE_SPLIT_SENTINELS = {
+  en: 'Connect your Google Calendar to view booking appointments automatically and sync them with your personal calendar.',
+  ar: 'اربط تقويم قوقل الخاص بك لعرض مواعيد الحجوزات تلقائياً ومزامنتها مع تقويمك الشخصي.',
+};
+
+export function checkLocaleSplit(webRoot) {
+  const staticDir = path.join(webRoot, '.next', 'static');
+  if (!fs.existsSync(staticDir)) {
+    throw new Error(`missing ${staticDir} — run: pnpm --filter @galaxy/web build`);
+  }
+  const hits = [];
+  const walk = (dir) => {
+    for (const entry of fs.readdirSync(dir, { withFileTypes: true })) {
+      const abs = path.join(dir, entry.name);
+      if (entry.isDirectory()) walk(abs);
+      else if (entry.name.endsWith('.js') && !entry.name.endsWith('.js.map')) {
+        const src = fs.readFileSync(abs, 'utf8');
+        if (src.includes(LOCALE_SPLIT_SENTINELS.en) && src.includes(LOCALE_SPLIT_SENTINELS.ar)) {
+          hits.push(path.relative(webRoot, abs));
+        }
+      }
+    }
+  };
+  walk(staticDir);
+  return hits;
+}
+
 export function main() {
   const args = process.argv.slice(2);
   const opt = (flag, def) => {
@@ -233,6 +268,12 @@ export function main() {
   if (leaks.length) {
     console.error('FAIL: mobile i18n catalog leaked into web chunks:');
     for (const l of leaks) console.error(`  - ${l}`);
+    process.exit(1);
+  }
+  const mergedLocale = checkLocaleSplit(webRoot);
+  if (mergedLocale.length) {
+    console.error('FAIL: a client chunk ships BOTH locale catalogs (locale split regressed):');
+    for (const m of mergedLocale) console.error(`  - ${m}`);
     process.exit(1);
   }
   console.log('size budget gate PASSED');

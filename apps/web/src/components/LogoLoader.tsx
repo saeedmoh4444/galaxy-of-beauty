@@ -1,5 +1,5 @@
 import Image from 'next/image';
-import { t } from '@galaxy/shared';
+import { t } from '@galaxy/shared/i18n/web-server';
 import { getServerLocale } from '@/lib/i18n';
 
 /**

@@ -1,7 +1,7 @@
 import type { JSX } from 'react';
 import { Card } from '@galaxy/ui';
 import { getServerLocale } from '@/lib/i18n';
-import { t } from '@galaxy/shared';
+import { t } from '@galaxy/shared/i18n/web-server';
 
 /** 6.2 PDPL — privacy policy (Arabic-first, plain language). */
 export default async function PrivacyPage(): Promise<JSX.Element> {

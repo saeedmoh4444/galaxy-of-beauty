@@ -8,6 +8,7 @@
     "type-check": "turbo run type-check",
     "format": "prettier --write \"**/*.{ts,tsx,js,jsx,json,md}\"",
     "format:check": "prettier --check \"**/*.{ts,tsx,js,jsx,json,md}\"",
+    "i18n:generate": "node --experimental-strip-types scripts/generate-locale-catalogs.mjs",
     "clean": "turbo run clean",
     "db:generate": "turbo run db:generate",
     "db:push": "turbo run db:push",

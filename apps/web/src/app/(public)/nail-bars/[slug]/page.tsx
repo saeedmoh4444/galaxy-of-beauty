@@ -3,7 +3,7 @@ import { getServerCaller, serializeForClient } from '@/lib/server-trpc';
 import { NailBarClient } from './NailBarClient';
 import type { NailBarPageData } from './NailBarClient';
 import { getServerLocale } from '@/lib/i18n';
-import { t } from '@galaxy/shared';
+import { t } from '@galaxy/shared/i18n/web-server';
 
 export default async function NailBarPage({
   params,

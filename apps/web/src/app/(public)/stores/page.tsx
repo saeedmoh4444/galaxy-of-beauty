@@ -3,7 +3,7 @@ import { getServerCaller, serializeForClient } from '@/lib/server-trpc';
 import { StoresClient } from './StoresClient';
 import type { StoresPageData } from './StoresClient';
 import { getServerLocale } from '@/lib/i18n';
-import { t } from '@galaxy/shared';
+import { t } from '@galaxy/shared/i18n/web-server';
 
 export default async function StoresPage(): Promise<JSX.Element> {
   const locale = await getServerLocale();

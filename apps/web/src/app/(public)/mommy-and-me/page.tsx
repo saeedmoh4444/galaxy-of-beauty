@@ -2,7 +2,8 @@ import type { JSX } from 'react';
 import Link from 'next/link';
 import { Button, ServiceImage } from '@galaxy/ui';
 import { getServerLocale } from '@/lib/i18n';
-import { pageHeroKey, t } from '@galaxy/shared';
+import { t } from '@galaxy/shared/i18n/web-server';
+import { pageHeroKey } from '@galaxy/shared';
 import { MommyAndMeBundles } from './MommyAndMeBundles';
 
 export default async function MommyAndMePage(): Promise<JSX.Element> {

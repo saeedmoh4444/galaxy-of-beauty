@@ -3,7 +3,7 @@ import { getServerCaller, serializeForClient } from '@/lib/server-trpc';
 import { GymsClient } from './GymsClient';
 import type { GymsPageData } from './GymsClient';
 import { getServerLocale } from '@/lib/i18n';
-import { t } from '@galaxy/shared';
+import { t } from '@galaxy/shared/i18n/web-server';
 
 export default async function GymsPage(): Promise<JSX.Element> {
   const locale = await getServerLocale();
