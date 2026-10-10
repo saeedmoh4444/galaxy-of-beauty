@@ -98,14 +98,30 @@ async function main() {
     [path.join(GENERATED_DIR, 'ar.ts'), render('arWebMessages', ar)],
   ];
   if (check) {
-    let ok = true;
-    for (const [p, src] of targets) {
-      if (!fs.existsSync(p) || fs.readFileSync(p, 'utf8') !== src) {
-        ok = false;
-        console.error(`DRIFT: ${path.relative(repoRoot, p)} — run the generator`);
-      }
+    // Compare SEMANTICALLY against the committed generated files — the
+    // lint-staged prettier hook reformats them on commit, so byte-equality
+    // would false-fail. Both sides are loaded with type stripping.
+    const genEn = await import(pathToFileURL(path.join(GENERATED_DIR, 'en.ts')).href);
+    const genAr = await import(pathToFileURL(path.join(GENERATED_DIR, 'ar.ts')).href);
+    const diff = (expected, actual) =>
+      Object.keys(expected)
+        .filter((k) => actual[k] !== expected[k])
+        .slice(0, 5)
+        .map(
+          (k) => `${k}: expected ${JSON.stringify(expected[k])} got ${JSON.stringify(actual[k])}`,
+        );
+    const enDiff = diff(en, genEn.enWebMessages);
+    const arDiff = diff(ar, genAr.arWebMessages);
+    if (enDiff.length || arDiff.length) {
+      console.error(
+        'DRIFT: generated locale catalogs are out of sync with the domain sources — run the generator',
+      );
+      for (const d of enDiff) console.error(`  en ${d}`);
+      for (const d of arDiff) console.error(`  ar ${d}`);
+      process.exit(1);
     }
-    process.exit(ok ? 0 : 1);
+    console.log(`locale catalogs in sync (${Object.keys(en).length} keys)`);
+    return;
   }
   fs.mkdirSync(GENERATED_DIR, { recursive: true });
   for (const [p, src] of targets) fs.writeFileSync(p, src);
