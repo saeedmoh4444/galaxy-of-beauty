@@ -27,8 +27,4 @@ export const customerSegmentsRouter = router({
         },
       }),
     ),
-
-  count: adminProcedure
-    .input(z.object({ segmentId: z.number().int().positive() }))
-    .query(async () => ({ count: 0, message: 'Segmentation engine — coming soon' })),
 });
