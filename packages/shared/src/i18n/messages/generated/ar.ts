@@ -5076,6 +5076,8 @@ export const arWebMessages: Record<string, string> = {
   'vendorPortal.deals.approved': 'معتمد',
   'vendorPortal.deals.empty': 'لا توجد عروض مقترحة بعد',
   'vendorPortal.deals.ends': 'ينتهي عند',
+  'vendorPortal.deals.floor-hint':
+    'خصم يصل إلى ٦٠٪ — لا يمكن أن يقل سعر العرض عن ٤٠٪ من السعر الأصلي',
   'vendorPortal.deals.pending': 'قيد المراجعة',
   'vendorPortal.deals.price': 'سعر العرض (ر.س)',
   'vendorPortal.deals.propose': '+ اقترح عرضاً',

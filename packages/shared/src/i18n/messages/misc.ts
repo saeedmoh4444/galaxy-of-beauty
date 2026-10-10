@@ -3859,6 +3859,10 @@ export const miscMessages = {
   'vendorPortal.deals.title': { ar: 'عروضي على المنتجات', en: 'My Product Deals' },
   'vendorPortal.deals.propose': { ar: '+ اقترح عرضاً', en: '+ Propose deal' },
   'vendorPortal.deals.empty': { ar: 'لا توجد عروض مقترحة بعد', en: 'No proposed deals yet' },
+  'vendorPortal.deals.floor-hint': {
+    ar: 'خصم يصل إلى ٦٠٪ — لا يمكن أن يقل سعر العرض عن ٤٠٪ من السعر الأصلي',
+    en: 'Discount up to 60% — the deal price cannot go below 40% of the regular price',
+  },
   'vendorPortal.deals.price': { ar: 'سعر العرض (ر.س)', en: 'Deal price (SAR)' },
   'vendorPortal.deals.starts': { ar: 'يبدأ من', en: 'Starts at' },
   'vendorPortal.deals.ends': { ar: 'ينتهي عند', en: 'Ends at' },
