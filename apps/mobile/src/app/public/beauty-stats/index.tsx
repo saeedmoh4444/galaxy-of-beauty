@@ -1,3 +1,4 @@
+import { SkeletonList } from '@/components/SkeletonCard';
 import type { JSX } from 'react';
 import { View, Text, ScrollView, StyleSheet } from 'react-native';
 import { trpc } from '@/lib/trpc-react';
@@ -27,6 +28,8 @@ export default function BeautyStatsScreen(): JSX.Element {
   const { locale, t } = useLocale();
   const statsQ = trpc.beautyStats.platform.useQuery();
   const stats = statsQ.data ?? DEFAULT_STATS;
+
+  if (statsQ.isLoading) return <SkeletonList count={6} />;
 
   return (
     <ScrollView style={s.c} contentContainerStyle={s.i}>
