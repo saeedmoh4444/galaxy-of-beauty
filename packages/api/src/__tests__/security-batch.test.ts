@@ -219,6 +219,12 @@ describe('bookings.create — idempotency ownership', () => {
 
 describe('giftCards — code shape', () => {
   it('generates GIFT-XXXX-XXXX codes', async () => {
+    // purchase now takes wallet payment (audit #1) — fund the fixture.
+    await prisma.wallet.upsert({
+      where: { userId: customerId },
+      create: { userId: customerId, balance: 500 },
+      update: { balance: { increment: 500 } },
+    });
     const result = await customerCaller.giftCards.purchase({
       amount: 100,
       recipientName: 'Test',
