@@ -408,7 +408,6 @@ customerPreferences.reset	mutation	customer
 customerPreferences.update	mutation	customer
 customerRetention.churnRisk	query	admin
 customerRetention.stats	query	admin
-customerSegments.count	query	admin
 customerSegments.create	mutation	admin
 customerSegments.list	query	admin
 cycleTracker.logDay	mutation	customer
