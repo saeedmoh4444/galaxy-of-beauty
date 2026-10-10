@@ -1,5 +1,8 @@
 import { z } from 'zod';
+import { prisma } from '@galaxy/db';
 import { customerProcedure, publicProcedure, router } from '../trpc';
+
+const db = prisma;
 
 const CHALLENGES = [
   { id: '7day_skincare', title: 'تحدي 7 أيام عناية', emoji: '🧴', points: 100, days: 7 },
@@ -12,9 +15,36 @@ const CHALLENGES = [
 export const beautyGamificationRouter = router({
   challenges: publicProcedure.query(() => CHALLENGES),
 
+  // Audit #14 — real leaderboard: top loyalty accounts by points, names joined.
   leaderboard: publicProcedure
     .input(z.object({ limit: z.number().int().min(1).max(20).default(10) }))
-    .query(async () => ({ items: [], message: 'Gamification leaderboard — coming soon' })),
+    .query(async ({ input }) => {
+      const accounts = await db.loyaltyAccount.findMany({
+        orderBy: { points: 'desc' },
+        take: input.limit,
+        select: { userId: true, points: true, tier: true },
+      });
+      const users = await db.user.findMany({
+        where: { id: { in: accounts.map((a) => a.userId) } },
+        select: { id: true, name: true },
+      });
+      const byId = new Map(users.map((u) => [u.id, u.name]));
+      return {
+        items: accounts.map((a) => ({
+          userId: a.userId,
+          userName: byId.get(a.userId) ?? 'مستخدمة',
+          points: a.points,
+          tier: a.tier,
+        })),
+      };
+    }),
 
-  myPoints: customerProcedure.query(async () => ({ points: 0, challenges: [] })),
+  myPoints: customerProcedure.query(async ({ ctx }) => {
+    const account = await db.loyaltyAccount.findUnique({ where: { userId: ctx.user.id } });
+    return {
+      points: account?.points ?? 0,
+      tier: account?.tier ?? 'SILVER',
+      challenges: CHALLENGES,
+    };
+  }),
 });
