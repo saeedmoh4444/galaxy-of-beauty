@@ -26,25 +26,46 @@ export const giftCardRouter = router({
       }),
     )
     .mutation(async ({ ctx, input }) => {
+      // Money-integrity (audit gap #1): the card is paid from the wallet —
+      // no wallet, no card.
+      const wallet = await prisma.wallet.findUnique({ where: { userId: ctx.user.id } });
+      if (!wallet || Number(wallet.balance) < input.amount) {
+        throw new TRPCError({ code: 'BAD_REQUEST', message: 'Insufficient wallet balance' });
+      }
       const code = generateCode();
-      const card = await prisma.giftCard.create({
-        data: {
-          code,
-          amount: input.amount,
-          balance: input.amount,
-          purchaserId: ctx.user.id,
-          recipientEmail: input.recipientEmail,
-          recipientName: input.recipientName,
-          message: input.message,
-          expiresAt: new Date(Date.now() + 365 * MS_PER_DAY), // 1 year
-        },
+      return prisma.$transaction(async (tx) => {
+        await tx.wallet.update({
+          where: { id: wallet.id },
+          data: { balance: { decrement: input.amount } },
+        });
+        await tx.walletTransaction.create({
+          data: {
+            walletId: wallet.id,
+            type: 'DEBIT',
+            source: 'GIFT_CARD_PURCHASE',
+            amount: input.amount,
+            description: 'Gift card purchase',
+          },
+        });
+        const card = await tx.giftCard.create({
+          data: {
+            code,
+            amount: input.amount,
+            balance: input.amount,
+            purchaserId: ctx.user.id,
+            recipientEmail: input.recipientEmail,
+            recipientName: input.recipientName,
+            message: input.message,
+            expiresAt: new Date(Date.now() + 365 * MS_PER_DAY), // 1 year
+          },
+        });
+        return {
+          id: card.id,
+          code: card.code,
+          amount: Number(card.amount),
+          message: input.message || '',
+        };
       });
-      return {
-        id: card.id,
-        code: card.code,
-        amount: Number(card.amount),
-        message: input.message || '',
-      };
     }),
 
   // Check balance by code (public)
