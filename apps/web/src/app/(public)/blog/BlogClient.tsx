@@ -62,7 +62,7 @@ export function BlogClient({
 
   const posts: BlogPost[] = useMemo(
     () => data?.items ?? (isLoading ? (initialPosts as BlogPost[]) : []),
-    [data?.items, isLoading],
+    [data?.items, isLoading, initialPosts],
   );
   const totalPages = data
     ? Math.ceil(data.total / POSTS_PER_PAGE)

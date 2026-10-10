@@ -34,7 +34,7 @@ export function MeasurementHistory(): JSX.Element {
     },
   });
 
-  const history = (historyQ.data ?? []) as Array<Record<string, any>>;
+  const history = historyQ.data ?? [];
   const progress = (progressQ.data ?? {}) as Record<
     string,
     { first: number; latest: number; delta: number }

@@ -1,5 +1,6 @@
 import { z } from 'zod';
 import { prisma } from '@galaxy/db';
+import type { Prisma } from '@galaxy/db';
 import { adminProcedure, router } from '../trpc';
 
 export const customerSegmentsRouter = router({
@@ -21,7 +22,7 @@ export const customerSegmentsRouter = router({
       prisma.customerSegment.create({
         data: {
           name: input.name,
-          criteria: input.criteria as any,
+          criteria: input.criteria as unknown as Prisma.InputJsonValue,
           description: input.description ?? null,
         },
       }),

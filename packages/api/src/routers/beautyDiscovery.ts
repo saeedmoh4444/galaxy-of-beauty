@@ -8,7 +8,6 @@ import {
 } from '@galaxy/shared';
 import { publicProcedure, customerProcedure, router } from '../trpc';
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any -- dynamic where shapes across 4 models
 const db = prisma;
 
 export const beautyDiscoveryRouter = router({
@@ -47,26 +46,26 @@ export const beautyDiscoveryRouter = router({
     ]);
 
     return {
-      popularServices: topServices.map((s: any) => ({
+      popularServices: topServices.map((s) => ({
         id: s.id,
-        name: (s.titleJson as any)?.ar,
+        name: (s.titleJson as { ar?: string })?.ar,
         price: Number(s.basePrice),
         emoji: '',
       })),
-      newServices: newServices.map((s: any) => ({
+      newServices: newServices.map((s) => ({
         id: s.id,
-        name: (s.titleJson as any)?.ar,
+        name: (s.titleJson as { ar?: string })?.ar,
         price: Number(s.basePrice),
         emoji: '',
       })),
-      events: upcomingEvents.map((e: any) => ({
+      events: upcomingEvents.map((e) => ({
         id: e.id,
-        name: (e.nameJson as any)?.ar,
+        name: (e.nameJson as { ar?: string })?.ar,
         type: e.eventType,
         date: e.startsAt,
         location: e.location,
       })),
-      flashDeals: activeDeals.map((d: any) => ({
+      flashDeals: activeDeals.map((d) => ({
         id: d.id,
         title: d.titleAr,
         dealPrice: Number(d.dealPrice),
@@ -106,7 +105,7 @@ export const beautyDiscoveryRouter = router({
     // Find preferred categories from booking history
     const catCounts: Record<number, number> = {};
     for (const b of recentBookings) {
-      const catId = (b as any).service?.categoryId;
+      const catId = b.service?.categoryId;
       if (catId) catCounts[catId] = (catCounts[catId] || 0) + 1;
     }
 
@@ -133,15 +132,15 @@ export const beautyDiscoveryRouter = router({
       profile: profile
         ? { skinType: profile.skinType, hairType: profile.hairType, concerns: profile.concerns }
         : null,
-      wishlist: wishlist.map((w: any) => ({
+      wishlist: wishlist.map((w) => ({
         id: w.service?.id,
-        name: (w.service?.titleJson as any)?.ar,
+        name: (w.service?.titleJson as { ar?: string })?.ar,
         price: Number(w.service?.basePrice || 0),
         emoji: '',
       })),
-      suggestions: suggestions.map((s: any) => ({
+      suggestions: suggestions.map((s) => ({
         id: s.id,
-        name: (s.titleJson as any)?.ar,
+        name: (s.titleJson as { ar?: string })?.ar,
         price: Number(s.basePrice),
         emoji: '',
         categoryId: s.categoryId,

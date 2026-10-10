@@ -1,5 +1,6 @@
 import { z } from 'zod';
 import { prisma } from '@galaxy/db';
+import type { Prisma } from '@galaxy/db';
 import { customerProcedure, router } from '../trpc';
 
 const SPA_SERVICES = [
@@ -61,7 +62,11 @@ export const spaPlannerRouter = router({
           });
       });
       return prisma.spaPlan.create({
-        data: { userId: ctx.user.id, name: input.name, items: items as any },
+        data: {
+          userId: ctx.user.id,
+          name: input.name,
+          items: items as unknown as Prisma.InputJsonValue,
+        },
       });
     }),
 });

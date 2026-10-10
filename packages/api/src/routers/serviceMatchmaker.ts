@@ -4,6 +4,12 @@ import { publicProcedure, router } from '../trpc';
 
 const db = prisma;
 
+// One choice inside MatchmakerQuestion.options (Json column).
+interface MatchmakerOption {
+  k: string;
+  t: string[];
+}
+
 export const serviceMatchmakerRouter = router({
   questions: publicProcedure.query(() =>
     db.matchmakerQuestion.findMany({ where: { isActive: true }, orderBy: { sortOrder: 'asc' } }),
@@ -15,14 +21,14 @@ export const serviceMatchmakerRouter = router({
       const userTags: string[] = [];
       const questions = await db.matchmakerQuestion.findMany({ where: { isActive: true } });
       for (const [qId, optKey] of Object.entries(input.answers)) {
-        const q = questions.find((x: any) => x.questionKey === qId);
-        const opts = (q?.options as any[]) ?? [];
-        const opt = opts.find((o: any) => o.k === optKey);
+        const q = questions.find((x) => x.questionKey === qId);
+        const opts = (q?.options as unknown as MatchmakerOption[]) ?? [];
+        const opt = opts.find((o) => o.k === optKey);
         if (opt?.t) userTags.push(...opt.t);
       }
 
       const services = await db.matchmakerService.findMany({ where: { isActive: true } });
-      const scored = (services as any[]).map((s: any) => {
+      const scored = services.map((s) => {
         const tags = (s.tags as string[]) ?? [];
         const matches = tags.filter((t: string) => userTags.includes(t)).length;
         return {
@@ -31,6 +37,6 @@ export const serviceMatchmakerRouter = router({
         };
       });
 
-      return scored.sort((a: any, b: any) => b.score - a.score).slice(0, 4);
+      return scored.sort((a, b) => b.score - a.score).slice(0, 4);
     }),
 });

@@ -215,7 +215,6 @@ export const notificationRouter = router({
         body: locale === 'ar' ? bodyAr : bodyEn,
         data: link ? { link } : undefined,
       }).catch((err) => {
-        // eslint-disable-next-line no-console
         console.error('[Push] Failed to send push notification:', err);
       });
 

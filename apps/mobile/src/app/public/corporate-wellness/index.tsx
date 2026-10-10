@@ -5,10 +5,17 @@ import { SkeletonList } from '@/components/SkeletonCard';
 import { trpc } from '@/lib/trpc-react';
 import { useLocale } from '@/components/LocaleProvider';
 
+// Mirrors the corporateWellness.plans row shape (formatPlan in the api
+// router). descAr is NOT provided by the API — pre-existing gap, renders
+// empty until the plan rows grow a description.
 interface WellnessPlan {
-  id?: number;
+  id?: string;
   emoji?: string;
   nameAr?: string;
+  nameEn?: string;
+  price?: number;
+  employees?: number;
+  services?: string[];
   descAr?: string;
 }
 

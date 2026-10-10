@@ -111,7 +111,6 @@ export async function uploadFile(
     };
   } catch (err) {
     // S3 failed — fall back to local
-    // eslint-disable-next-line no-console
     console.error('[Storage] S3 upload failed, falling back to local:', err);
     const dir = path.join(/*turbopackIgnore: true*/ LOCAL_UPLOAD_DIR, folder);
     ensureDir(dir);
@@ -135,7 +134,6 @@ export async function deleteFile(key: string): Promise<void> {
     const sdk = await Function('return import("@aws-sdk/client-s3")')();
     await s3.send(new sdk.DeleteObjectCommand({ Bucket: bucket, Key: key }));
   } catch (err) {
-    // eslint-disable-next-line no-console
     console.error('[Storage] S3 delete failed:', err);
     const fp = path.join(/*turbopackIgnore: true*/ LOCAL_UPLOAD_DIR, key);
     if (fs.existsSync(/*turbopackIgnore: true*/ fp))

@@ -32,15 +32,15 @@ export const beautyExpensesRouter = router({
     ]);
 
     const thisMonthTotal = thisMonthBookings.reduce(
-      (s: number, b: any) => s + Number(b.totalAmount || 0),
+      (s: number, b) => s + Number(b.totalAmount || 0),
       0,
     );
     const lastMonthTotal = lastMonthBookings.reduce(
-      (s: number, b: any) => s + Number(b.totalAmount || 0),
+      (s: number, b) => s + Number(b.totalAmount || 0),
       0,
     );
     const thisYearTotal = thisYearBookings.reduce(
-      (s: number, b: any) => s + Number(b.totalAmount || 0),
+      (s: number, b) => s + Number(b.totalAmount || 0),
       0,
     );
 
@@ -52,7 +52,7 @@ export const beautyExpensesRouter = router({
         byCategory[catId] = {
           total: 0,
           count: 0,
-          name: (b.service?.titleJson as any)?.ar ?? 'أخرى',
+          name: (b.service?.titleJson as { ar?: string })?.ar ?? 'أخرى',
         };
       byCategory[catId]!.total += Number(b.totalAmount || 0);
       byCategory[catId]!.count += 1;
@@ -71,8 +71,8 @@ export const beautyExpensesRouter = router({
       const end = new Date(now.getFullYear(), now.getMonth() - i + 1, 1); // exclusive next-month start
       const monthKey = `${start.getFullYear()}-${String(start.getMonth() + 1).padStart(2, '0')}`;
       const monthTotal = allRecentBookings
-        .filter((b: any) => b.createdAt >= start && b.createdAt < end)
-        .reduce((s: number, b: any) => s + Number(b.totalAmount || 0), 0);
+        .filter((b) => b.createdAt >= start && b.createdAt < end)
+        .reduce((s: number, b) => s + Number(b.totalAmount || 0), 0);
       monthlyTrend.push({ month: monthKey, total: monthTotal });
     }
 

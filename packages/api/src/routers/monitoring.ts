@@ -213,7 +213,7 @@ export const monitoringRouter = router({
       for (const e of recentErrors) {
         recent.push({
           id: e.id,
-          message: `${e.targetType}: ${(e.newValue as any)?.message ?? e.action}`,
+          message: `${e.targetType}: ${(e.newValue as { message?: string })?.message ?? e.action}`,
           level: e.action === 'ERROR_TIMEOUT' || e.action === 'ERROR_PAYMENT' ? 'error' : 'warning',
           timestamp: e.createdAt.toISOString(),
         });

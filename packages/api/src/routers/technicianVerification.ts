@@ -1,5 +1,6 @@
 import { z } from 'zod';
 import { prisma } from '@galaxy/db';
+import type { Prisma } from '@galaxy/db';
 import { technicianProcedure, adminProcedure, router } from '../trpc';
 import { notFound } from '../lib/errors';
 
@@ -39,9 +40,10 @@ export const technicianVerificationRouter = router({
     .mutation(async ({ input }) =>
       prisma.technicianBadge.create({
         data: {
-          nameJson: input.nameJson as any,
+          nameJson: input.nameJson as unknown as Prisma.InputJsonValue,
           emoji: input.emoji,
           criteria: input.criteria ?? null,
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any -- emoji/criteria are not fields on TechnicianBadge in the Prisma schema; retyping the payload would change the write
         } as any,
       }),
     ),

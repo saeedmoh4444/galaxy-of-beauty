@@ -182,11 +182,9 @@ export function initializeSocket(httpServer: HttpServer): Server {
     const pub = redis.duplicate({ enableOfflineQueue: true });
     const sub = redis.duplicate({ enableOfflineQueue: true });
     pub.on('error', (err) => {
-      // eslint-disable-next-line no-console
       console.error('[Socket] Redis adapter error:', err.message);
     });
     sub.on('error', (err) => {
-      // eslint-disable-next-line no-console
       console.error('[Socket] Redis adapter error:', err.message);
     });
     io.adapter(createAdapter(pub, sub));

@@ -1,5 +1,6 @@
 import { z } from 'zod';
 import { prisma } from '@galaxy/db';
+import type { Prisma } from '@galaxy/db';
 import { publicProcedure, adminProcedure, router } from '../trpc';
 
 export const liveStreamRouter = router({
@@ -60,9 +61,9 @@ export const liveStreamRouter = router({
     )
     .mutation(async ({ input }) => {
       const { id, ...data } = input;
-      const updateData: Record<string, unknown> = { ...data };
+      const updateData: Prisma.LiveStreamUpdateInput = { ...data };
       if (data.status === 'LIVE') updateData.startedAt = new Date();
       if (data.status === 'ENDED') updateData.endedAt = new Date();
-      return prisma.liveStream.update({ where: { id }, data: updateData as any });
+      return prisma.liveStream.update({ where: { id }, data: updateData });
     }),
 });

@@ -1,5 +1,6 @@
 import { z } from 'zod';
 import { prisma } from '@galaxy/db';
+import type { Prisma } from '@galaxy/db';
 import { EXPERIMENTAL_FEATURES } from '@galaxy/shared';
 import { publicProcedure, adminProcedure, router, requireFeatureFlag } from '../trpc';
 
@@ -73,6 +74,8 @@ export const beautyTrendsRouter = router({
     .use(flag)
     .input(z.object({ type: z.string(), data: z.record(z.string(), z.unknown()) }))
     .mutation(async ({ input }) =>
-      prisma.beautyTrend.create({ data: { type: input.type, data: input.data as any } }),
+      prisma.beautyTrend.create({
+        data: { type: input.type, data: input.data as unknown as Prisma.InputJsonValue },
+      }),
     ),
 });

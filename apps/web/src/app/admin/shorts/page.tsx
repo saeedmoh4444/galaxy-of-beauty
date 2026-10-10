@@ -14,7 +14,7 @@ export default function AdminShortsPage(): JSX.Element {
   });
   const decideMut = api.beautyShorts.adminDecide.useMutation({ onSuccess: () => refetch() });
 
-  const pending = (data ?? []) as Array<Record<string, any>>;
+  const pending = data ?? [];
 
   return (
     <div className="mx-auto max-w-4xl space-y-6">

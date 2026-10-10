@@ -2,7 +2,6 @@ import { prisma } from '@galaxy/db';
 import { LARGE_PAGE_SIZE, MS_PER_90_DAYS } from '@galaxy/shared';
 import { customerProcedure, router } from '../trpc';
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any -- Review model uses customerId, not userId (legacy where)
 const db = prisma;
 
 const ACHIEVEMENTS = [
@@ -56,8 +55,7 @@ export const customerAchievementsRouter = router({
     if (Number(totalSpent._sum?.totalAmount || 0) >= 1000) earned.push('big_spender');
     if (reviewsCount >= 1) earned.push('reviewer');
     if ((streak?.currentStreak || 0) >= 7) earned.push('streak_7');
-    if (new Set(serviceTypes.map((b: any) => b.service?.categoryId)).size >= 5)
-      earned.push('explorer');
+    if (new Set(serviceTypes.map((b) => b.service?.categoryId)).size >= 5) earned.push('explorer');
 
     return {
       achievements: ACHIEVEMENTS.map((a) => ({ ...a, earned: earned.includes(a.key) })),
@@ -66,7 +64,7 @@ export const customerAchievementsRouter = router({
         totalSpent: Number(totalSpent._sum?.totalAmount || 0),
         streakDays: streak?.currentStreak || 0,
         reviewsWritten: reviewsCount,
-        uniqueServices: new Set(serviceTypes.map((b: any) => b.service?.categoryId)).size,
+        uniqueServices: new Set(serviceTypes.map((b) => b.service?.categoryId)).size,
       },
       earnedCount: earned.length,
       totalCount: ACHIEVEMENTS.length,

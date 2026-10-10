@@ -22,7 +22,7 @@ export const beautyBudgetRouter = router({
         createdAt: { gte: new Date(`${month}-01`) },
       },
     });
-    const spent = bookings.reduce((sum: number, b: any) => sum + Number(b.totalAmount || 0), 0);
+    const spent = bookings.reduce((sum, b) => sum + Number(b.totalAmount || 0), 0);
     return {
       month,
       budget: budget ? Number(budget.budget) : 0,

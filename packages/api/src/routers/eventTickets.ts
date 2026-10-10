@@ -13,7 +13,7 @@ export const eventTicketsRouter = router({
       orderBy: { startsAt: 'asc' },
       take: DEFAULT_PAGE_SIZE,
     });
-    return events.map((e: any) => ({ ...e, price: Number(e.price ?? 0) }));
+    return events.map((e) => ({ ...e, price: Number(e.price ?? 0) }));
   }),
 
   // Purchase/reserve a ticket — persisted (W9)

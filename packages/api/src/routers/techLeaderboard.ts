@@ -26,10 +26,8 @@ export const techLeaderboardRouter = router({
         by: ['technicianId'],
         _count: { id: true },
       });
-      const countMap = new Map(
-        (bookingCounts as any[]).map((b: any) => [b.technicianId, b._count.id]),
-      );
-      return (techs as any[]).map((t: any) => ({
+      const countMap = new Map(bookingCounts.map((b) => [b.technicianId, b._count.id] as const));
+      return techs.map((t) => ({
         id: t.id,
         name: t.user?.name || '',
         rating: Number(t.ratingAvg || 0),

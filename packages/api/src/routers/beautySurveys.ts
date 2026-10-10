@@ -1,5 +1,6 @@
 import { z } from 'zod';
 import { prisma } from '@galaxy/db';
+import type { Prisma } from '@galaxy/db';
 import { publicProcedure, customerProcedure, adminProcedure, router } from '../trpc';
 
 export const beautySurveysRouter = router({
@@ -29,7 +30,7 @@ export const beautySurveysRouter = router({
         data: {
           userId: ctx.user.id,
           surveyId: input.surveyId,
-          answersJson: input.answersJson as any,
+          answersJson: input.answersJson as unknown as Prisma.InputJsonValue,
         },
       });
     }),
@@ -59,7 +60,10 @@ export const beautySurveysRouter = router({
     )
     .mutation(async ({ input }) =>
       prisma.beautySurvey.create({
-        data: { title: input.title, questionsJson: input.questionsJson as any },
+        data: {
+          title: input.title,
+          questionsJson: input.questionsJson as unknown as Prisma.InputJsonValue,
+        },
       }),
     ),
 });

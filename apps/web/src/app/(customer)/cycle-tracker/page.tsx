@@ -312,7 +312,6 @@ export default function CycleTrackerPage(): JSX.Element {
           <Card padding="lg">
             <div className="space-y-3">
               <div>
-                {/* eslint-disable-next-line jsx-a11y/label-has-associated-control -- label precedes emoji picker buttons */}
                 <label className="text-xs text-text-secondary mb-1 block">
                   {t('cycleTracker.label.mood')}
                 </label>
@@ -329,7 +328,6 @@ export default function CycleTrackerPage(): JSX.Element {
                 </div>
               </div>
               <div>
-                {/* eslint-disable-next-line jsx-a11y/label-has-associated-control -- label precedes flow selector buttons */}
                 <label className="text-xs text-text-secondary mb-1 block">
                   {t('cycleTracker.label.flow')}
                 </label>
@@ -352,7 +350,6 @@ export default function CycleTrackerPage(): JSX.Element {
                 </div>
               </div>
               <div>
-                {/* eslint-disable-next-line jsx-a11y/label-has-associated-control -- label precedes symptom toggle buttons */}
                 <label className="text-xs text-text-secondary mb-1 block">
                   {t('cycleTracker.label.symptoms')}
                 </label>

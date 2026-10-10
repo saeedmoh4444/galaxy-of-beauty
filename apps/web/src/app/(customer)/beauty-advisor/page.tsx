@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 'use client';
 import { useState, useRef, useEffect } from 'react';
 import type { JSX } from 'react';

@@ -621,7 +621,6 @@ export const authRouter = router({
         const locale = (user.preferredLanguage as 'ar' | 'en') || 'ar';
         sendPasswordResetEmail(user.email, user.name, token, locale).catch(
           // Log but don't fail the request if email sending fails
-          // eslint-disable-next-line no-console
           (err) => console.error('[ResetToken] Failed to send email:', err),
         );
       }

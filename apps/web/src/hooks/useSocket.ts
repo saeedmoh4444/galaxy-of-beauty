@@ -82,6 +82,7 @@ export function useSocket(): void {
       // ── Connection lifecycle ────────────────────────────
       socket.on('connect', () => {
         if (process.env['NODE_ENV'] !== 'production')
+          // eslint-disable-next-line no-console -- dev-only connection diagnostics
           console.log('[Socket] Connected:', socket?.id);
       });
 
@@ -91,7 +92,9 @@ export function useSocket(): void {
       });
 
       socket.on('disconnect', (reason: string) => {
-        if (process.env['NODE_ENV'] !== 'production') console.log('[Socket] Disconnected:', reason);
+        if (process.env['NODE_ENV'] !== 'production')
+          // eslint-disable-next-line no-console -- dev-only connection diagnostics
+          console.log('[Socket] Disconnected:', reason);
       });
 
       // ── Incoming events → invalidate React Query caches ─

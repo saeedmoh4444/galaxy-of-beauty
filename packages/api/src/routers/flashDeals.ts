@@ -4,7 +4,6 @@ import { prisma } from '@galaxy/db';
 import { DEFAULT_PAGE_SIZE, SMALL_PAGE_SIZE } from '@galaxy/shared';
 import { publicProcedure, adminProcedure, customerProcedure, router } from '../trpc';
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any -- Service has no nameJson/emoji in Prisma schema (legacy reads)
 const db = prisma;
 
 export const flashDealRouter = router({
@@ -17,7 +16,7 @@ export const flashDealRouter = router({
     });
     // Enrich with service info
     const enriched = await Promise.all(
-      deals.map(async (d: any) => {
+      deals.map(async (d) => {
         const service = await db.service.findUnique({ where: { id: d.serviceId } });
         const nameJson = service?.titleJson as Record<string, string> | undefined;
         return {
@@ -41,7 +40,7 @@ export const flashDealRouter = router({
       orderBy: { startsAt: 'asc' },
       take: SMALL_PAGE_SIZE,
     });
-    return deals.map((d: any) => ({
+    return deals.map((d) => ({
       ...d,
       discountValue: Number(d.discountValue),
       originalPrice: Number(d.originalPrice),

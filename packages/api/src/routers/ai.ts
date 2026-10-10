@@ -2,6 +2,7 @@ import { z } from 'zod';
 import { TRPCError } from '@trpc/server';
 import { router, publicProcedure, protectedProcedure, technicianProcedure } from '../trpc';
 import { prisma } from '@galaxy/db';
+import type { Prisma } from '@galaxy/db';
 import {
   OPENAI_API_URL,
   OPENAI_MODEL,
@@ -385,7 +386,7 @@ export const aiRouter = router({
       if (existing) {
         const updated = await prisma.customerQuizResponse.update({
           where: { userId: ctx.user.id },
-          data: { responses: input.responses as any },
+          data: { responses: input.responses as unknown as Prisma.InputJsonValue },
         });
         return { id: updated.id, updated: true };
       }
@@ -393,7 +394,7 @@ export const aiRouter = router({
       const created = await prisma.customerQuizResponse.create({
         data: {
           userId: ctx.user.id,
-          responses: input.responses as any,
+          responses: input.responses as unknown as Prisma.InputJsonValue,
         },
       });
 

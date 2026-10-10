@@ -10,6 +10,19 @@ function generateCSV(rows: Array<Record<string, unknown>>, columns: string[]): s
   return `${header}\n${body}`;
 }
 
+/** Category row with its services' booking counts (Q4 — typed shape for the
+ * include query; was `any`-cast before). */
+interface TopServiceRow {
+  nameJson: unknown;
+  services: Array<{ bookings: Array<{ totalAmount: unknown }> }>;
+}
+
+/** Booking groupBy row (by technician). */
+interface TopTechRow {
+  technicianId: number | null;
+  _count: { id: number };
+}
+
 export const adminReportsRouter = router({
   dashboard: adminProcedure.query(async () => {
     const now = new Date();
@@ -35,42 +48,35 @@ export const adminReportsRouter = router({
       }),
     ]);
 
-    const byService = (topServices as any[])
-      .map((c: any) => {
-        const bookings = c.services.reduce(
-          (s: number, svc: any) => s + (svc.bookings?.length || 0),
-          0,
-        );
+    const byService = (topServices as TopServiceRow[])
+      .map((c) => {
+        const bookings = c.services.reduce((s: number, svc) => s + (svc.bookings?.length || 0), 0);
         const revenue = c.services.reduce(
-          (s: number, svc: any) =>
-            s +
-            (svc.bookings as any[]).reduce(
-              (bs: number, b: any) => bs + Number(b.totalAmount || 0),
-              0,
-            ),
+          (s: number, svc) =>
+            s + svc.bookings.reduce((bs: number, b) => bs + Number(b.totalAmount || 0), 0),
           0,
         );
         return {
-          name: (c.nameJson as Record<string, string>)?.ar ?? '',
+          name: (c.nameJson as { ar?: string })?.ar ?? '',
           revenue,
           bookings,
           pct: 0,
         };
       })
-      .sort((a: any, b: any) => b.bookings - a.bookings);
+      .sort((a, b) => b.bookings - a.bookings);
 
-    const topTechs = (topTechnicians as any[])
-      .map((t: any) => ({
+    const topTechs = (topTechnicians as TopTechRow[])
+      .map((t) => ({
         name: `فنية #${t.technicianId}`,
         revenue: 0,
         bookings: t._count?.id || 0,
         rating: 0,
       }))
-      .sort((a: any, b: any) => b.bookings - a.bookings);
+      .sort((a, b) => b.bookings - a.bookings);
 
     const totalBookings = byService.reduce((s, b) => s + b.bookings, 0);
     if (totalBookings > 0)
-      byService.forEach((s: any) => {
+      byService.forEach((s) => {
         s.pct = Math.round((s.bookings / totalBookings) * 100);
       });
 
@@ -89,22 +95,15 @@ export const adminReportsRouter = router({
         take: SMALL_PAGE_SIZE,
         include: { services: { include: { bookings: { select: { totalAmount: true } } } } },
       });
-      return (topServices as any[]).map((c: any) => {
-        const bookings = c.services.reduce(
-          (s: number, svc: any) => s + (svc.bookings?.length || 0),
-          0,
-        );
+      return (topServices as TopServiceRow[]).map((c) => {
+        const bookings = c.services.reduce((s: number, svc) => s + (svc.bookings?.length || 0), 0);
         const revenue = c.services.reduce(
-          (s: number, svc: any) =>
-            s +
-            (svc.bookings as any[]).reduce(
-              (bs: number, b: any) => bs + Number(b.totalAmount || 0),
-              0,
-            ),
+          (s: number, svc) =>
+            s + svc.bookings.reduce((bs: number, b) => bs + Number(b.totalAmount || 0), 0),
           0,
         );
         return {
-          name: (c.nameJson as Record<string, string>)?.ar ?? '',
+          name: (c.nameJson as { ar?: string })?.ar ?? '',
           revenue,
           bookings,
           pct: 0,

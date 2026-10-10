@@ -353,7 +353,6 @@ export default function FamilyAccountPage(): JSX.Element {
             </div>
 
             <div>
-              {/* eslint-disable-next-line jsx-a11y/label-has-associated-control -- label precedes preference toggle buttons */}
               <label className="block text-sm font-semibold text-text-primary mb-2">
                 {t('family.label.preferences')}
               </label>

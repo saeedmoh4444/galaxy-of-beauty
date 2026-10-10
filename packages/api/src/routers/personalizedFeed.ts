@@ -36,18 +36,18 @@ export const personalizedFeedRouter = router({
     const interests = ['skincare', 'makeup', 'wellness'];
 
     const items: Array<Record<string, unknown>> = [
-      ...(services as any[]).map((s: any) => ({
+      ...services.map((s) => ({
         id: s.id,
         type: 'service',
-        title: (s.titleJson as any)?.ar,
+        title: (s.titleJson as { ar?: string })?.ar,
         emoji: '💆',
         price: Number(s.basePrice),
         relevance: 90,
       })),
-      ...(products as any[]).map((p: any) => ({
+      ...products.map((p) => ({
         id: p.id,
         type: 'product',
-        title: (p.nameJson as any)?.ar,
+        title: (p.nameJson as { ar?: string })?.ar,
         price: Number(p.price),
         emoji: '🛒',
         relevance: 80,

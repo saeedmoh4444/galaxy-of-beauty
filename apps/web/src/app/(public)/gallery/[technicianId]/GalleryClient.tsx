@@ -24,7 +24,7 @@ function BeforeAfterSection({ technicianUserId }: { technicianUserId: number }):
     { technicianUserId },
     { enabled: technicianUserId > 0 },
   );
-  const beforeAfters = (galleryQ.data ?? []) as Array<Record<string, any>>;
+  const beforeAfters = galleryQ.data ?? [];
 
   if (beforeAfters.length === 0) return <></>;
 
