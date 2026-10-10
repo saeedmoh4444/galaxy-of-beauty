@@ -5,6 +5,20 @@ import { getServerLocale } from '@/lib/i18n';
 import { t } from '@galaxy/shared/i18n/web-server';
 import { pageHeroKey } from '@galaxy/shared';
 import { MommyAndMeBundles } from './MommyAndMeBundles';
+import { pageMeta } from '@/lib/seo';
+import type { Metadata } from 'next';
+
+export async function generateMetadata(): Promise<Metadata> {
+  const locale = await getServerLocale();
+  return pageMeta({
+    locale,
+    titleAr: t('marketing.mommy-and-me.title', 'ar'),
+    titleEn: t('marketing.mommy-and-me.title', 'en'),
+    descriptionAr: t('marketing.mommy-and-me.subtitle', 'ar'),
+    descriptionEn: t('marketing.mommy-and-me.subtitle', 'en'),
+    path: '/mommy-and-me',
+  });
+}
 
 export default async function MommyAndMePage(): Promise<JSX.Element> {
   const locale = await getServerLocale();

@@ -4,6 +4,20 @@ import { NailBarsClient } from './NailBarsClient';
 import type { NailBarsPageData } from './NailBarsClient';
 import { getServerLocale } from '@/lib/i18n';
 import { t } from '@galaxy/shared/i18n/web-server';
+import { pageMeta } from '@/lib/seo';
+import type { Metadata } from 'next';
+
+export async function generateMetadata(): Promise<Metadata> {
+  const locale = await getServerLocale();
+  return pageMeta({
+    locale,
+    titleAr: t('nailBars.title', 'ar'),
+    titleEn: t('nailBars.title', 'en'),
+    descriptionAr: t('nailBars.subtitle', 'ar'),
+    descriptionEn: t('nailBars.subtitle', 'en'),
+    path: '/nail-bars',
+  });
+}
 
 export default async function NailBarsPage({
   searchParams,

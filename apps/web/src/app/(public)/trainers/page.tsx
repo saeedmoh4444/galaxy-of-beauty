@@ -4,6 +4,20 @@ import { TrainersClient } from './TrainersClient';
 import type { TrainersPageData } from './TrainersClient';
 import { getServerLocale } from '@/lib/i18n';
 import { t } from '@galaxy/shared/i18n/web-server';
+import { pageMeta } from '@/lib/seo';
+import type { Metadata } from 'next';
+
+export async function generateMetadata(): Promise<Metadata> {
+  const locale = await getServerLocale();
+  return pageMeta({
+    locale,
+    titleAr: t('trainers.title', 'ar'),
+    titleEn: t('trainers.title', 'en'),
+    descriptionAr: t('trainers.subtitle', 'ar'),
+    descriptionEn: t('trainers.subtitle', 'en'),
+    path: '/trainers',
+  });
+}
 
 export default async function TrainersPage(): Promise<JSX.Element> {
   const locale = await getServerLocale();

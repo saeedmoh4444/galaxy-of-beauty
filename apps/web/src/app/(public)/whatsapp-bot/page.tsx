@@ -3,6 +3,8 @@ import { Card, ServiceImage } from '@galaxy/ui';
 import { getServerLocale } from '@/lib/i18n';
 import { t } from '@galaxy/shared/i18n/web-server';
 import { pageHeroKey } from '@galaxy/shared';
+import { pageMeta } from '@/lib/seo';
+import type { Metadata } from 'next';
 
 const FEATURES = [
   {
@@ -36,6 +38,18 @@ const FEATURES = [
     desc: 'marketing.whatsapp-bot.feature-nearest-salon-desc',
   },
 ] as const;
+
+export async function generateMetadata(): Promise<Metadata> {
+  const locale = await getServerLocale();
+  return pageMeta({
+    locale,
+    titleAr: t('marketing.whatsapp-bot.title', 'ar'),
+    titleEn: t('marketing.whatsapp-bot.title', 'en'),
+    descriptionAr: t('marketing.whatsapp-bot.subtitle', 'ar'),
+    descriptionEn: t('marketing.whatsapp-bot.subtitle', 'en'),
+    path: '/whatsapp-bot',
+  });
+}
 
 export default async function WhatsAppBotPage(): Promise<JSX.Element> {
   const locale = await getServerLocale();
