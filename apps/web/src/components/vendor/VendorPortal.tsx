@@ -612,9 +612,39 @@ export function VendorPortal({ shellRole = 'CUSTOMER' }: { shellRole?: string })
           </Card>
         </div>
 
+        {/* S5 — order-based analytics (30-day revenue, orders, AOV, customers) */}
+        <div className="grid gap-4 sm:grid-cols-4">
+          <Card padding="md" className="text-center">
+            <p className="text-2xl font-bold">
+              {formatCurrency((dash?.revenue30d as number) ?? 0)}
+            </p>
+            <p className="text-xs text-text-secondary">{t('vendorPortal.revenue30d')}</p>
+          </Card>
+          <Card padding="md" className="text-center">
+            <p className="text-2xl font-bold">{(dash?.ordersCount as number) ?? 0}</p>
+            <p className="text-xs text-text-secondary">{t('vendorPortal.ordersCount')}</p>
+          </Card>
+          <Card padding="md" className="text-center">
+            <p className="text-2xl font-bold">{formatCurrency((dash?.aov as number) ?? 0)}</p>
+            <p className="text-xs text-text-secondary">{t('vendorPortal.aov')}</p>
+          </Card>
+          <Card padding="md" className="text-center">
+            <p className="text-2xl font-bold">{(dash?.customerCount as number) ?? 0}</p>
+            <p className="text-xs text-text-secondary">{t('vendorPortal.customers')}</p>
+          </Card>
+        </div>
+
         {/* Store plan Phase 1 — orders */}
         <Card padding="lg">
-          <h3 className="mb-3 font-bold">{t('vendorPortal.orders.title')}</h3>
+          <div className="mb-3 flex flex-wrap items-center justify-between gap-2">
+            <h3 className="font-bold">{t('vendorPortal.orders.title')}</h3>
+            {((dash?.ordersByStatus as Record<string, number> | undefined)?.FULFILLED ?? 0) > 0 && (
+              <span className="rounded-full bg-green-100 px-3 py-1 text-xs font-medium text-green-700 dark:bg-green-900 dark:text-green-300">
+                {t('vendorPortal.fulfilledOrders')}:{' '}
+                {(dash?.ordersByStatus as Record<string, number>).FULFILLED}
+              </span>
+            )}
+          </div>
           {storeOrders.length === 0 ? (
             <p className="text-sm text-text-tertiary">{t('vendorPortal.orders.empty')}</p>
           ) : (
