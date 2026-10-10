@@ -1,18 +1,27 @@
 'use client';
 import type { JSX } from 'react';
 import { api } from '@/lib/trpc';
-import { Card, CardListSkeleton, useAuth } from '@galaxy/ui';
+import { Card, CardListSkeleton, useAuth, ErrorAlert } from '@galaxy/ui';
 import { useLocale } from '@/components/LocaleProvider';
 
 export default function AdminToolsPage(): JSX.Element {
   const { t } = useLocale();
   const { isAuthenticated } = useAuth();
-  const { data: flags, isLoading } = api.featureFlags.list.useQuery(undefined, {
+  const {
+    data: flags,
+    isLoading,
+    isError,
+    refetch,
+  } = api.featureFlags.list.useQuery(undefined, {
     enabled: isAuthenticated,
   }) as {
     data: Array<Record<string, unknown>> | undefined;
     isLoading: boolean;
+    isError: boolean;
+    refetch: () => void;
   };
+
+  if (isError) return <ErrorAlert message={t('state.error')} onRetry={() => refetch()} />;
 
   return (
     <>

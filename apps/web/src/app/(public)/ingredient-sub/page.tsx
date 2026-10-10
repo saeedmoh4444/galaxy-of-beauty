@@ -2,7 +2,7 @@
 import { useState } from 'react';
 import type { JSX } from 'react';
 import { api } from '@/lib/trpc';
-import { Card, CardListSkeleton, Button, ServiceImage } from '@galaxy/ui';
+import { Card, CardListSkeleton, Button, ServiceImage, ErrorAlert } from '@galaxy/ui';
 import { pageHeroKey } from '@galaxy/shared';
 import { useLocale } from '@/components/LocaleProvider';
 
@@ -10,8 +10,14 @@ export default function IngredientSubPage(): JSX.Element {
   const { t } = useLocale();
   const [search, setSearch] = useState('');
   const [q, setQ] = useState('');
-  const { data: list } = api.ingredientSub.list.useQuery() as {
+  const {
+    data: list,
+    isError,
+    refetch,
+  } = api.ingredientSub.list.useQuery() as {
     data: Array<Record<string, unknown>> | undefined;
+    isError: boolean;
+    refetch: () => void;
   };
   const { data: result, isLoading } = api.ingredientSub.find.useQuery(
     { ingredient: q },
@@ -19,6 +25,8 @@ export default function IngredientSubPage(): JSX.Element {
   ) as { data: Record<string, unknown> | undefined; isLoading: boolean };
   const items = (list ?? []) as Array<Record<string, unknown>>;
   const subs = (result?.subs ?? []) as Array<Record<string, unknown>>;
+
+  if (isError) return <ErrorAlert message={t('state.error')} onRetry={() => refetch()} />;
 
   return (
     <div className="mx-auto max-w-3xl px-4 py-12">

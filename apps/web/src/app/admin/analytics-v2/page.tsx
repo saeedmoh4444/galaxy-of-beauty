@@ -1,19 +1,23 @@
 'use client';
 import type { JSX } from 'react';
 import { api } from '@/lib/trpc';
-import { Card, KPIRowSkeleton, formatCurrency, useAuth } from '@galaxy/ui';
+import { Card, KPIRowSkeleton, formatCurrency, useAuth, ErrorAlert } from '@galaxy/ui';
 import { useLocale } from '@/components/LocaleProvider';
 
 export default function AdminAnalyticsV2Page(): JSX.Element {
   const { t } = useLocale();
   const { isAuthenticated } = useAuth();
-  const { data, isLoading } = api.adminAnalyticsV2.dashboard.useQuery(undefined, {
+  const { data, isLoading, isError, refetch } = api.adminAnalyticsV2.dashboard.useQuery(undefined, {
     enabled: isAuthenticated,
   }) as {
     data: Record<string, unknown> | undefined;
     isLoading: boolean;
+    isError: boolean;
+    refetch: () => void;
   };
   const d = data ?? {};
+
+  if (isError) return <ErrorAlert message={t('state.error')} onRetry={() => refetch()} />;
 
   return (
     <div className="mx-auto max-w-6xl px-4 py-12 space-y-6">

@@ -2,18 +2,31 @@
 import { useState } from 'react';
 import type { JSX } from 'react';
 import { api } from '@/lib/trpc';
-import { Card, KPIRowSkeleton, Button, Modal, formatCurrency } from '@galaxy/ui';
+import { Card, KPIRowSkeleton, Button, Modal, formatCurrency, ErrorAlert } from '@galaxy/ui';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
 import { useLocale } from '@/components/LocaleProvider';
 
 export default function FranchisePortalPage(): JSX.Element {
   const { t } = useLocale();
-  const { data: dash, isLoading } = api.franchisePortal.dashboard.useQuery() as {
+  const {
+    data: dash,
+    isLoading,
+    isError,
+    refetch,
+  } = api.franchisePortal.dashboard.useQuery() as {
     data: Record<string, unknown> | undefined;
     isLoading: boolean;
+    isError: boolean;
+    refetch: () => void;
   };
-  const { data: locations } = api.franchisePortal.locations.useQuery() as {
+  const {
+    data: locations,
+    isError: locationsIsError,
+    refetch: refetchLocations,
+  } = api.franchisePortal.locations.useQuery() as {
     data: Array<Record<string, unknown>> | undefined;
+    isError: boolean;
+    refetch: () => void;
   };
   const addMut = api.franchisePortal.addLocation.useMutation();
   const [show, setShow] = useState(false);
@@ -21,6 +34,18 @@ export default function FranchisePortalPage(): JSX.Element {
   const [branch, setBranch] = useState('');
 
   const locs = (locations ?? []) as Array<Record<string, unknown>>;
+
+  if (isError || locationsIsError) {
+    return (
+      <ErrorAlert
+        message={t('state.error')}
+        onRetry={() => {
+          refetch();
+          refetchLocations();
+        }}
+      />
+    );
+  }
 
   return (
     <DashboardLayout userRole="CUSTOMER">

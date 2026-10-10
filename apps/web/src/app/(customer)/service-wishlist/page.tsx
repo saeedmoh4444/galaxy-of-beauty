@@ -2,15 +2,20 @@
 import { useState } from 'react';
 import type { JSX } from 'react';
 import { api } from '@/lib/trpc';
-import { Card, EmptyState, Button, Modal, formatCurrency } from '@galaxy/ui';
+import { Card, EmptyState, Button, Modal, formatCurrency, ErrorAlert } from '@galaxy/ui';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
 import { useLocale } from '@/components/LocaleProvider';
 
 export default function ServiceWishlistPage(): JSX.Element {
   const { t } = useLocale();
-  const { data: items, refetch } = api.serviceWishlist.myWishlist.useQuery() as {
+  const {
+    data: items,
+    refetch,
+    isError,
+  } = api.serviceWishlist.myWishlist.useQuery() as {
     data: Array<Record<string, unknown>> | undefined;
     refetch: () => void;
+    isError: boolean;
   };
   const addMut = api.serviceWishlist.add.useMutation({
     onSuccess: () => {
@@ -24,6 +29,8 @@ export default function ServiceWishlistPage(): JSX.Element {
   const [name, setName] = useState('');
   const [price, setPrice] = useState(100);
   const list = items ?? [];
+
+  if (isError) return <ErrorAlert message={t('state.error')} onRetry={() => refetch()} />;
 
   return (
     <DashboardLayout userRole="CUSTOMER">

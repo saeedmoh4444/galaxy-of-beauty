@@ -2,7 +2,7 @@
 import { useState } from 'react';
 import type { JSX } from 'react';
 import { api } from '@/lib/trpc';
-import { Card, Button, useAuth } from '@galaxy/ui';
+import { Card, Button, useAuth, ErrorAlert } from '@galaxy/ui';
 import { useLocale } from '@/components/LocaleProvider';
 import { localize } from '@galaxy/shared';
 
@@ -12,13 +12,22 @@ export default function AdminPricingPage(): JSX.Element {
   const { t, locale } = useLocale();
   const { isAuthenticated } = useAuth();
 
-  const { data: rulesData, refetch: refetchRules } = api.pricingAdmin.list.useQuery(undefined, {
+  const {
+    data: rulesData,
+    refetch: refetchRules,
+    isError,
+  } = api.pricingAdmin.list.useQuery(undefined, {
     enabled: isAuthenticated,
-  }) as { data: Array<Record<string, unknown>> | undefined; refetch: () => void };
-  const { data: servicesData, refetch: refetchServices } = api.services.list.useQuery(
-    { page: 1, limit: 100 },
-    { enabled: isAuthenticated },
-  ) as { data: { items: Array<Record<string, unknown>> } | undefined; refetch: () => void };
+  }) as { data: Array<Record<string, unknown>> | undefined; refetch: () => void; isError: boolean };
+  const {
+    data: servicesData,
+    refetch: refetchServices,
+    isError: listIsError,
+  } = api.services.list.useQuery({ page: 1, limit: 100 }, { enabled: isAuthenticated }) as {
+    data: { items: Array<Record<string, unknown>> } | undefined;
+    refetch: () => void;
+    isError: boolean;
+  };
 
   const createMut = api.pricingAdmin.create.useMutation({ onSuccess: () => refetchRules() });
   const updateMut = api.pricingAdmin.update.useMutation({ onSuccess: () => refetchRules() });
@@ -62,6 +71,18 @@ export default function AdminPricingPage(): JSX.Element {
     if (r.hourStart !== null && r.hourEnd !== null) parts.push(`${r.hourStart}:00-${r.hourEnd}:00`);
     return parts.join(' · ') || t('admin.pricing.any');
   };
+
+  if (isError || listIsError) {
+    return (
+      <ErrorAlert
+        message={t('state.error')}
+        onRetry={() => {
+          refetchRules();
+          refetchServices();
+        }}
+      />
+    );
+  }
 
   return (
     <div className="mx-auto max-w-4xl space-y-6 px-4 py-8">

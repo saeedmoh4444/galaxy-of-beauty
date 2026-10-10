@@ -3,7 +3,7 @@
 import { useState, useRef, useEffect, useCallback } from 'react';
 import type { JSX } from 'react';
 import { api } from '@/lib/trpc';
-import { Card, GridSkeleton, AvatarSkeleton, Button, formatCurrency } from '@galaxy/ui';
+import { Card, GridSkeleton, AvatarSkeleton, Button, formatCurrency, ErrorAlert } from '@galaxy/ui';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
 import { useLocale } from '@/components/LocaleProvider';
 import type { TranslationKey } from '@galaxy/shared';
@@ -340,10 +340,17 @@ export default function VirtualTryOnPage(): JSX.Element {
     videoRef,
     canvasRef,
   );
-  const { data: palettes, isLoading: palettesLoading } = api.virtualTryOn.palettes.useQuery() as {
+  const {
+    data: palettes,
+    isLoading: palettesLoading,
+    isError,
+    refetch,
+  } = api.virtualTryOn.palettes.useQuery() as {
     data:
       { lips: ColorItem[]; eyes: ColorItem[]; blush: ColorItem[]; nails: ColorItem[] } | undefined;
     isLoading: boolean;
+    isError: boolean;
+    refetch: () => void;
   };
 
   const [makeupType, setMakeupType] = useState<MakeupType>('lips');
@@ -528,6 +535,8 @@ export default function VirtualTryOnPage(): JSX.Element {
 
   const typeKeys = Object.keys(TYPE_LABELS) as MakeupType[];
   const colors: ColorItem[] = palettes?.[makeupType] ?? [];
+
+  if (isError) return <ErrorAlert message={t('state.error')} onRetry={() => refetch()} />;
 
   return (
     <DashboardLayout userRole="CUSTOMER">

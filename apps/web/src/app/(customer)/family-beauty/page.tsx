@@ -32,6 +32,7 @@ import {
   BeautyMaternityStyleCard,
   BeautyNursingBeautyCard,
   BeautyBabyBluesCard,
+  ErrorAlert,
 } from '@galaxy/ui';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
 import { useLocale } from '@/components/LocaleProvider';
@@ -41,6 +42,10 @@ export default function FamilyBeautyPage(): JSX.Element {
   // familyAccount.get doesn't exist — `list` is the real family data; the
   // card's members/familyName lookups fall through to defaults as before.
   const familyAccount = api.familyAccount.list.useQuery();
+
+  if (familyAccount.isError) {
+    return <ErrorAlert message={t('state.error')} onRetry={() => familyAccount.refetch()} />;
+  }
 
   return (
     <DashboardLayout userRole="CUSTOMER">

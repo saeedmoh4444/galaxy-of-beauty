@@ -1,7 +1,7 @@
 'use client';
 import type { JSX } from 'react';
 import { api } from '@/lib/trpc';
-import { CardListSkeleton, ServiceImage, useAuth } from '@galaxy/ui';
+import { CardListSkeleton, ServiceImage, useAuth, ErrorAlert } from '@galaxy/ui';
 import { pageHeroKey } from '@galaxy/shared';
 import { useLocale } from '@/components/LocaleProvider';
 
@@ -22,7 +22,7 @@ type ShortRow = {
 export default function BeautyShortsPage(): JSX.Element {
   const { t, locale } = useLocale();
   const { isAuthenticated } = useAuth();
-  const { data, isLoading, refetch } = api.beautyShorts.feed.useQuery(undefined, {
+  const { data, isLoading, refetch, isError } = api.beautyShorts.feed.useQuery(undefined, {
     refetchOnWindowFocus: false,
   });
   const likeMut = api.beautyShorts.like.useMutation({ onSuccess: () => refetch() });
@@ -31,6 +31,8 @@ export default function BeautyShortsPage(): JSX.Element {
   const shorts = (data ?? []) as unknown as ShortRow[];
 
   const title = (s: ShortRow) => (locale === 'en' ? s.titleJson?.en : s.titleJson?.ar) ?? '';
+
+  if (isError) return <ErrorAlert message={t('state.error')} onRetry={() => refetch()} />;
 
   return (
     <div className="mx-auto max-w-md px-4 py-12">

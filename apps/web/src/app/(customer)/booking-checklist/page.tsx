@@ -3,23 +3,48 @@
 import { useState } from 'react';
 import type { JSX } from 'react';
 import { api } from '@/lib/trpc';
-import { Card, CardListSkeleton } from '@galaxy/ui';
+import { Card, CardListSkeleton, ErrorAlert } from '@galaxy/ui';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
 import { useLocale } from '@/components/LocaleProvider';
 
 export default function BookingChecklistPage(): JSX.Element {
   const { t } = useLocale();
   const [category, setCategory] = useState('makeup');
-  const { data: cats } = api.bookingChecklist.categories.useQuery() as {
+  const {
+    data: cats,
+    isError,
+    refetch,
+  } = api.bookingChecklist.categories.useQuery() as {
     data: Array<Record<string, unknown>> | undefined;
+    isError: boolean;
+    refetch: () => void;
   };
-  const { data, isLoading } = api.bookingChecklist.get.useQuery({ category }) as {
+  const {
+    data,
+    isLoading,
+    isError: getIsError,
+    refetch: refetchGet,
+  } = api.bookingChecklist.get.useQuery({ category }) as {
     data: Record<string, unknown> | undefined;
     isLoading: boolean;
+    isError: boolean;
+    refetch: () => void;
   };
 
   const categories = (cats ?? []) as Array<Record<string, unknown>>;
   const items = (data?.items ?? []) as Array<Record<string, unknown>>;
+
+  if (isError || getIsError) {
+    return (
+      <ErrorAlert
+        message={t('state.error')}
+        onRetry={() => {
+          refetch();
+          refetchGet();
+        }}
+      />
+    );
+  }
 
   return (
     <DashboardLayout userRole="CUSTOMER">

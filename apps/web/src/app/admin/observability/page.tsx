@@ -2,7 +2,7 @@
 import { useState } from 'react';
 import type { JSX } from 'react';
 import { api } from '@/lib/trpc';
-import { Card, useAuth } from '@galaxy/ui';
+import { Card, useAuth, ErrorAlert } from '@galaxy/ui';
 import { useLocale } from '@/components/LocaleProvider';
 import { localize } from '@galaxy/shared';
 
@@ -51,6 +51,18 @@ export default function AdminObservabilityPage(): JSX.Element {
       severity: form.severity as 'minor' | 'major' | 'critical',
     });
   };
+
+  if (slo.isError || incidents.isError) {
+    return (
+      <ErrorAlert
+        message={t('state.error')}
+        onRetry={() => {
+          slo.refetch();
+          incidents.refetch();
+        }}
+      />
+    );
+  }
 
   return (
     <div className="mx-auto max-w-4xl space-y-6">

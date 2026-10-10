@@ -7,7 +7,7 @@ import type { JSX } from 'react';
  */
 import Link from 'next/link';
 import { api } from '@/lib/trpc';
-import { Card } from '@galaxy/ui';
+import { Card, ErrorAlert } from '@galaxy/ui';
 import { useLocale } from '@/components/LocaleProvider';
 
 type StageDef = {
@@ -30,6 +30,10 @@ export function LifeStageCard(): JSX.Element {
 
   const d = stageQ.data as
     { stage: string; source: string; definition: StageDef; stages: StageDef[] } | undefined;
+  if (stageQ.isError) {
+    return <ErrorAlert message={t('state.error')} onRetry={() => stageQ.refetch()} />;
+  }
+
   if (!d) return <></>;
 
   return (
@@ -87,6 +91,10 @@ export function PostpartumSection(): JSX.Element {
     | undefined;
   const services = servicesQ.data ?? [];
   const salons = salonsQ.data ?? [];
+
+  if (stageQ.isError) {
+    return <ErrorAlert message={t('state.error')} onRetry={() => stageQ.refetch()} />;
+  }
 
   if (!isNewMom || !lib) return <></>;
 
@@ -182,6 +190,10 @@ export function MenopauseCard(): JSX.Element {
   const history = historyQ.data ?? [];
   const clinics = clinicsQ.data ?? [];
 
+  if (statusQ.isError) {
+    return <ErrorAlert message={t('state.error')} onRetry={() => statusQ.refetch()} />;
+  }
+
   if (!enabled || !lib) return <></>;
 
   return (
@@ -268,6 +280,10 @@ export function PamperCard(): JSX.Element {
         spaServices: Array<Record<string, unknown>>;
       }
     | undefined;
+
+  if (statusQ.isError) {
+    return <ErrorAlert message={t('state.error')} onRetry={() => statusQ.refetch()} />;
+  }
 
   if (!d) return <></>;
 

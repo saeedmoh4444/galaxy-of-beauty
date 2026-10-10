@@ -3,7 +3,7 @@ import { useState } from 'react';
 import type { JSX } from 'react';
 
 import { api } from '@/lib/trpc';
-import { Card } from '@galaxy/ui';
+import { Card, ErrorAlert } from '@galaxy/ui';
 import { useLocale } from '@/components/LocaleProvider';
 
 /**
@@ -28,6 +28,10 @@ export function NpsCard({ bookingId }: { bookingId: number }): JSX.Element {
       void utils.nps.mine.invalidate();
     },
   });
+
+  if (mineQ.isError) {
+    return <ErrorAlert message={t('state.error')} onRetry={() => mineQ.refetch()} />;
+  }
 
   if (existing) {
     return (

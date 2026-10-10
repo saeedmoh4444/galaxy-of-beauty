@@ -2,7 +2,7 @@
 import { useState } from 'react';
 import type { JSX } from 'react';
 import { api } from '@/lib/trpc';
-import { Card, GridSkeleton, Button, Modal } from '@galaxy/ui';
+import { Card, GridSkeleton, Button, Modal, ErrorAlert } from '@galaxy/ui';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
 import { useLocale } from '@/components/LocaleProvider';
 
@@ -10,15 +10,19 @@ const CATS = ['skincare', 'makeup', 'hair', 'nails', 'natural'];
 
 export default function BeautyClosetPage(): JSX.Element {
   const { t } = useLocale();
-  const { data, isLoading } = api.beautyCloset.myProducts.useQuery() as {
+  const { data, isLoading, isError, refetch } = api.beautyCloset.myProducts.useQuery() as {
     data: Array<Record<string, unknown>> | undefined;
     isLoading: boolean;
+    isError: boolean;
+    refetch: () => void;
   };
   const addMut = api.beautyCloset.addProduct.useMutation();
   const [showAdd, setShowAdd] = useState(false);
   const [name, setName] = useState('');
   const [cat, setCat] = useState('skincare');
   const products = data ?? [];
+
+  if (isError) return <ErrorAlert message={t('state.error')} onRetry={() => refetch()} />;
 
   return (
     <DashboardLayout userRole="CUSTOMER">

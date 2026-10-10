@@ -3,7 +3,15 @@
 import { useState } from 'react';
 import type { JSX } from 'react';
 import { api } from '@/lib/trpc';
-import { Card, FormSkeleton, GridSkeleton, Button, formatCurrency, ServiceImage } from '@galaxy/ui';
+import {
+  Card,
+  FormSkeleton,
+  GridSkeleton,
+  Button,
+  formatCurrency,
+  ServiceImage,
+  ErrorAlert,
+} from '@galaxy/ui';
 import Link from 'next/link';
 import { useLocale } from '@/components/LocaleProvider';
 import { pageHeroKey } from '@galaxy/shared';
@@ -29,9 +37,16 @@ export default function GiftQuizPage(): JSX.Element {
   const [answers, setAnswers] = useState<Record<string, string>>({});
   const [result, setResult] = useState<Rec[] | null>(null);
 
-  const { data: questions, isLoading: qLoad } = api.giftQuiz.questions.useQuery() as {
+  const {
+    data: questions,
+    isLoading: qLoad,
+    isError,
+    refetch: refetchQuestions,
+  } = api.giftQuiz.questions.useQuery() as {
     data: Question[] | undefined;
     isLoading: boolean;
+    isError: boolean;
+    refetch: () => void;
   };
   const {
     data: recs,
@@ -60,6 +75,8 @@ export default function GiftQuizPage(): JSX.Element {
   };
 
   const recommendations = recs ?? result ?? [];
+
+  if (isError) return <ErrorAlert message={t('state.error')} onRetry={() => refetchQuestions()} />;
 
   if (qLoad) {
     return (

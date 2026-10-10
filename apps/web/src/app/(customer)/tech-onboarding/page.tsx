@@ -2,15 +2,16 @@
 import { useState } from 'react';
 import type { JSX } from 'react';
 import { api } from '@/lib/trpc';
-import { Card, Button, Modal, Reveal } from '@galaxy/ui';
+import { Card, Button, Modal, Reveal, ErrorAlert } from '@galaxy/ui';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
 import { useLocale } from '@/components/LocaleProvider';
 
 export default function TechOnboardingPage(): JSX.Element {
   const { t } = useLocale();
-  const { data, refetch } = api.techOnboarding.steps.useQuery() as {
+  const { data, refetch, isError } = api.techOnboarding.steps.useQuery() as {
     data: Record<string, unknown> | undefined;
     refetch: () => void;
+    isError: boolean;
   };
   const submitMut = api.techOnboarding.submitDoc.useMutation({
     onSuccess: () => {
@@ -25,6 +26,8 @@ export default function TechOnboardingPage(): JSX.Element {
   const steps = (data?.steps ?? []) as Array<Record<string, unknown>>;
   const completed = (data?.completed as number) ?? 0;
   const total = (data?.total as number) ?? 5;
+
+  if (isError) return <ErrorAlert message={t('state.error')} onRetry={() => refetch()} />;
 
   return (
     <DashboardLayout userRole="CUSTOMER">

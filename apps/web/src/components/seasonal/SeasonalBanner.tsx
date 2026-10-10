@@ -6,6 +6,7 @@ import { api } from '@/lib/trpc';
 import { seasonalBannerFor, localize } from '@galaxy/shared';
 import type { SeasonalBannerTheme, TranslationKey } from '@galaxy/shared';
 import { useLocale } from '@/components/LocaleProvider';
+import { ErrorAlert } from '@galaxy/ui';
 
 const THEMES: Record<
   SeasonalBannerTheme,
@@ -47,9 +48,13 @@ interface SeasonalItem {
 // active AND the catalog has items (seasonalBannerFor decides both).
 export function SeasonalBanner(): JSX.Element | null {
   const { t, locale } = useLocale();
-  const { data } = api.seasonalServices.active.useQuery(undefined, { retry: false });
+  const { data, isError, refetch } = api.seasonalServices.active.useQuery(undefined, {
+    retry: false,
+  });
   const payload = data as { seasons?: string[]; items?: SeasonalItem[] } | undefined;
   const banner = seasonalBannerFor(payload?.seasons ?? [], payload?.items?.length ?? 0);
+  if (isError) return <ErrorAlert message={t('state.error')} onRetry={() => refetch()} />;
+
   if (!banner) return null;
 
   const theme = THEMES[banner.theme];

@@ -2,25 +2,32 @@
 import { useEffect } from 'react';
 import type { JSX } from 'react';
 import { api } from '@/lib/trpc';
-import { Card, Button, useAuth } from '@galaxy/ui';
+import { Card, Button, useAuth, ErrorAlert } from '@galaxy/ui';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
 import { useLocale } from '@/components/LocaleProvider';
 
 export default function CalendarSyncPage(): JSX.Element {
   const { t, locale } = useLocale();
   const { isAuthenticated } = useAuth();
-  const { data: status, refetch } = api.calendarSync.status.useQuery(undefined, {
+  const {
+    data: status,
+    refetch,
+    isError,
+  } = api.calendarSync.status.useQuery(undefined, {
     enabled: isAuthenticated,
   }) as {
     data: Record<string, unknown> | undefined;
     refetch: () => void;
+    isError: boolean;
   };
-  const { data: upcoming, refetch: refetchUpcoming } = api.calendarSync.upcoming.useQuery(
-    undefined,
-    { enabled: isAuthenticated },
-  ) as {
+  const {
+    data: upcoming,
+    refetch: refetchUpcoming,
+    isError: upcomingIsError,
+  } = api.calendarSync.upcoming.useQuery(undefined, { enabled: isAuthenticated }) as {
     data: Array<Record<string, unknown>> | undefined;
     refetch: () => void;
+    isError: boolean;
   };
   const connectMut = api.calendarSync.connect.useMutation({ onSuccess: () => refetch() });
   const disconnectMut = api.calendarSync.disconnect.useMutation({ onSuccess: () => refetch() });
@@ -54,6 +61,19 @@ export default function CalendarSyncPage(): JSX.Element {
 
   const connected = status?.connected as boolean;
   const events = upcoming ?? [];
+
+  if (isError || upcomingIsError || authUrlQ.isError) {
+    return (
+      <ErrorAlert
+        message={t('state.error')}
+        onRetry={() => {
+          refetch();
+          refetchUpcoming();
+          authUrlQ.refetch();
+        }}
+      />
+    );
+  }
 
   return (
     <DashboardLayout userRole="CUSTOMER">

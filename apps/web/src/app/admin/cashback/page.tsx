@@ -2,18 +2,26 @@
 import { useEffect, useState } from 'react';
 import type { JSX } from 'react';
 import { api } from '@/lib/trpc';
-import { Card, Button } from '@galaxy/ui';
+import { Card, Button, ErrorAlert } from '@galaxy/ui';
 import { useLocale } from '@/components/LocaleProvider';
 
 export default function AdminCashbackPage(): JSX.Element {
   const { t } = useLocale();
   const [rate, setRate] = useState(5);
   const setRateMut = api.cashback.setRate.useMutation();
-  const rateQ = api.cashback.getRate.useQuery() as { data?: { rate: number } | undefined };
+  const rateQ = api.cashback.getRate.useQuery() as {
+    data?: { rate: number } | undefined;
+    isError: boolean;
+    refetch: () => void;
+  };
 
   useEffect(() => {
     if (rateQ.data) setRate(rateQ.data.rate);
   }, [rateQ.data]);
+
+  if (rateQ.isError) {
+    return <ErrorAlert message={t('state.error')} onRetry={() => rateQ.refetch()} />;
+  }
 
   return (
     <>

@@ -1,21 +1,25 @@
 'use client';
 import type { JSX } from 'react';
 import { api } from '@/lib/trpc';
-import { Card, CardListSkeleton, Button } from '@galaxy/ui';
+import { Card, CardListSkeleton, Button, ErrorAlert } from '@galaxy/ui';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
 import { useLocale } from '@/components/LocaleProvider';
 
 export default function BeautyBingoPage(): JSX.Element {
   const { t } = useLocale();
-  const { data, isLoading } = api.beautyBingo.card.useQuery() as {
+  const { data, isLoading, isError, refetch } = api.beautyBingo.card.useQuery() as {
     data: Record<string, unknown> | undefined;
     isLoading: boolean;
+    isError: boolean;
+    refetch: () => void;
   };
   const markMut = api.beautyBingo.mark.useMutation();
 
   const tasks = (data?.tasks ?? []) as Array<Record<string, unknown>>;
   const completed = (data?.completed as number) ?? 0;
   const total = (data?.total as number) ?? 9;
+
+  if (isError) return <ErrorAlert message={t('state.error')} onRetry={() => refetch()} />;
 
   return (
     <DashboardLayout userRole="CUSTOMER">

@@ -2,16 +2,21 @@
 import { useState, useRef, useEffect } from 'react';
 import type { JSX } from 'react';
 import { api } from '@/lib/trpc';
-import { Card, Button } from '@galaxy/ui';
+import { Card, Button, ErrorAlert } from '@galaxy/ui';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
 import { useLocale } from '@/components/LocaleProvider';
 
 export default function LiveChatPage(): JSX.Element {
   const { t, locale } = useLocale();
   const [msg, setMsg] = useState('');
-  const { data: history, refetch } = api.liveChat.history.useQuery() as {
+  const {
+    data: history,
+    refetch,
+    isError,
+  } = api.liveChat.history.useQuery() as {
     data: Array<Record<string, unknown>> | undefined;
     refetch: () => void;
+    isError: boolean;
   };
   const sendMut = api.liveChat.send.useMutation({
     onSuccess: () => {
@@ -25,6 +30,8 @@ export default function LiveChatPage(): JSX.Element {
   }, [history]);
 
   const msgs = history ?? [];
+
+  if (isError) return <ErrorAlert message={t('state.error')} onRetry={() => refetch()} />;
 
   return (
     <DashboardLayout userRole="CUSTOMER">

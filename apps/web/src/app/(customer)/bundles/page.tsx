@@ -3,7 +3,14 @@
 import Link from 'next/link';
 import type { JSX } from 'react';
 import { api } from '@/lib/trpc';
-import { PageContainer, PageTitle, GridSkeleton, EmptyState, ServiceImage } from '@galaxy/ui';
+import {
+  PageContainer,
+  PageTitle,
+  GridSkeleton,
+  EmptyState,
+  ServiceImage,
+  ErrorAlert,
+} from '@galaxy/ui';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
 import { useLocale } from '@/components/LocaleProvider';
 import { localize } from '@galaxy/shared';
@@ -16,8 +23,10 @@ function num(v: unknown): number {
 // browse; the Book CTA lives on the detail page.
 export default function BundlesPage(): JSX.Element {
   const { t, locale } = useLocale();
-  const { data, isLoading } = api.beautyBundles.list.useQuery();
+  const { data, isLoading, isError, refetch } = api.beautyBundles.list.useQuery();
   const bundles = (data ?? []) as Array<Record<string, unknown>>;
+
+  if (isError) return <ErrorAlert message={t('state.error')} onRetry={() => refetch()} />;
 
   return (
     <DashboardLayout userRole="CUSTOMER">

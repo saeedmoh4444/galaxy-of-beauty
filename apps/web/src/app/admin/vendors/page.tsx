@@ -2,7 +2,7 @@
 import { useState } from 'react';
 import type { JSX } from 'react';
 import { api } from '@/lib/trpc';
-import { Card, CardListSkeleton, Button, Input, EmptyState, useAuth } from '@galaxy/ui';
+import { Card, CardListSkeleton, Button, Input, EmptyState, useAuth, ErrorAlert } from '@galaxy/ui';
 import { useLocale } from '@/components/LocaleProvider';
 
 function CommissionRow({ vendor }: { vendor: Record<string, unknown> }): JSX.Element {
@@ -50,6 +50,7 @@ export default function AdminVendorsPage(): JSX.Element {
     data: pendingData,
     isLoading,
     refetch,
+    isError,
   } = api.providerReview.list.useQuery(
     { kind: 'store', status: 'PENDING_REVIEW' },
     { enabled: isAuthenticated },
@@ -57,6 +58,7 @@ export default function AdminVendorsPage(): JSX.Element {
     data: { items: Array<Record<string, unknown>> } | undefined;
     isLoading: boolean;
     refetch: () => void;
+    isError: boolean;
   };
   const pendingSubs = pendingData?.items ?? [];
   const [rejectNotes, setRejectNotes] = useState<Record<number, string>>({});
@@ -67,8 +69,22 @@ export default function AdminVendorsPage(): JSX.Element {
     enabled: isAuthenticated,
   }) as {
     data: Array<Record<string, unknown>> | undefined;
+    isError: boolean;
+    refetch: () => void;
   };
   const vendors = vendorsQ.data ?? [];
+
+  if (isError || vendorsQ.isError) {
+    return (
+      <ErrorAlert
+        message={t('state.error')}
+        onRetry={() => {
+          refetch();
+          vendorsQ.refetch();
+        }}
+      />
+    );
+  }
 
   return (
     <div className="mx-auto max-w-4xl space-y-6">

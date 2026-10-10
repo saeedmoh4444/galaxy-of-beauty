@@ -1,7 +1,7 @@
 'use client';
 import type { JSX } from 'react';
 import { api } from '@/lib/trpc';
-import { Card, FormSkeleton, Button, ServiceImage } from '@galaxy/ui';
+import { Card, FormSkeleton, Button, ServiceImage, ErrorAlert } from '@galaxy/ui';
 import { pageHeroKey } from '@galaxy/shared';
 import { useAuth } from '@galaxy/ui';
 import { useLocale } from '@/components/LocaleProvider';
@@ -9,16 +9,41 @@ import { useLocale } from '@/components/LocaleProvider';
 export default function LookOfTheDayPage(): JSX.Element {
   const { user } = useAuth();
   const { t } = useLocale();
-  const { data: today, isLoading } = api.lookOfTheDay.today.useQuery() as {
+  const {
+    data: today,
+    isLoading,
+    isError,
+    refetch,
+  } = api.lookOfTheDay.today.useQuery() as {
     data: Record<string, unknown> | undefined;
     isLoading: boolean;
+    isError: boolean;
+    refetch: () => void;
   };
-  const { data: feed } = api.lookOfTheDay.feed.useQuery({ page: 1, limit: 12 }) as {
+  const {
+    data: feed,
+    isError: feedIsError,
+    refetch: refetchFeed,
+  } = api.lookOfTheDay.feed.useQuery({ page: 1, limit: 12 }) as {
     data: { items: Array<Record<string, unknown>> } | undefined;
+    isError: boolean;
+    refetch: () => void;
   };
   const voteMut = api.lookOfTheDay.vote.useMutation();
 
   const looks = feed?.items ?? [];
+
+  if (isError || feedIsError) {
+    return (
+      <ErrorAlert
+        message={t('state.error')}
+        onRetry={() => {
+          refetch();
+          refetchFeed();
+        }}
+      />
+    );
+  }
 
   return (
     <div className="mx-auto max-w-5xl px-4 py-12">

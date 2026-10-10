@@ -6,7 +6,7 @@
 import { useState } from 'react';
 import type { JSX } from 'react';
 import { api } from '@/lib/trpc';
-import { Card, Button } from '@galaxy/ui';
+import { Card, Button, ErrorAlert } from '@galaxy/ui';
 import { useLocale } from '@/components/LocaleProvider';
 
 const FIELDS = [
@@ -49,6 +49,18 @@ export function MeasurementHistory(): JSX.Element {
     if (Object.keys(payload).length === 0) return;
     logMut.mutate({ ...payload, notes: notes.trim() || undefined });
   };
+
+  if (historyQ.isError || progressQ.isError) {
+    return (
+      <ErrorAlert
+        message={t('state.error')}
+        onRetry={() => {
+          historyQ.refetch();
+          progressQ.refetch();
+        }}
+      />
+    );
+  }
 
   return (
     <Card padding="md">
