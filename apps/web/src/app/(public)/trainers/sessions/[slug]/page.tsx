@@ -3,7 +3,7 @@ import { getServerCaller, serializeForClient } from '@/lib/server-trpc';
 import { TrainerClient } from './TrainerClient';
 import type { TrainerDetailData } from './TrainerClient';
 import { getServerLocale } from '@/lib/i18n';
-import { t } from '@galaxy/shared';
+import { t } from '@galaxy/shared/i18n/web-server';
 
 export default async function TrainerPage({
   params,

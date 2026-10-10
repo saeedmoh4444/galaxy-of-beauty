@@ -1,10 +1,10 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, Suspense } from 'react';
 import type { JSX } from 'react';
 import type { Locale } from '@galaxy/shared';
-import { t } from '@galaxy/shared';
 import { LOCALE_CHANGE_EVENT } from '@/components/LocaleProvider';
+import { useCatalogT } from '@/components/use-catalog-t';
 
 /**
  * Skip-to-content link for keyboard navigation.
@@ -25,15 +25,24 @@ function usePageLocale(): Locale {
 }
 
 export function SkipLink(): JSX.Element {
+  return (
+    <Suspense fallback={null}>
+      <SkipLinkInner />
+    </Suspense>
+  );
+}
+
+function SkipLinkInner(): JSX.Element {
   const locale = usePageLocale();
+  const t = useCatalogT(locale);
 
   return (
     <a
       href="#main-content"
       className="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:start-4 focus:z-50 focus:rounded-lg focus:bg-brand-600 focus:px-4 focus:py-3 focus:text-sm focus:font-medium focus:text-white focus:shadow-lg focus:outline-none"
-      aria-label={t('common.skip-to-content', locale)}
+      aria-label={t('common.skip-to-content')}
     >
-      {t('common.skip-to-content', locale)}
+      {t('common.skip-to-content')}
     </a>
   );
 }

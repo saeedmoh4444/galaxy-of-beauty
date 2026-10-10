@@ -1,7 +1,7 @@
 import type { JSX } from 'react';
 import { getServerCaller, serializeForClient } from '@/lib/server-trpc';
 import type { RouterOutputs } from '@galaxy/api';
-import { t } from '@galaxy/shared';
+import { t } from '@galaxy/shared/i18n/web-server';
 import { getServerLocale } from '@/lib/i18n';
 import { HomeClient } from './HomeClient';
 import type { HomePageProps } from './HomeClient';

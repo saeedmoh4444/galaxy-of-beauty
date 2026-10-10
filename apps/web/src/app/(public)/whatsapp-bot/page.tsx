@@ -1,7 +1,8 @@
 import type { JSX } from 'react';
 import { Card, ServiceImage } from '@galaxy/ui';
 import { getServerLocale } from '@/lib/i18n';
-import { pageHeroKey, t } from '@galaxy/shared';
+import { t } from '@galaxy/shared/i18n/web-server';
+import { pageHeroKey } from '@galaxy/shared';
 
 const FEATURES = [
   {

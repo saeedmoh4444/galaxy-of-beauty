@@ -1,7 +1,8 @@
 import type { JSX } from 'react';
 import Link from 'next/link';
 import { ServiceImage } from '@galaxy/ui';
-import { t, localize } from '@galaxy/shared';
+import { t } from '@galaxy/shared/i18n/web-server';
+import { localize } from '@galaxy/shared';
 import { getServerCaller } from '@/lib/server-trpc';
 import { getServerLocale } from '@/lib/i18n';
 

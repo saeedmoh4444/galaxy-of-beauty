@@ -1,11 +1,11 @@
 'use client';
 
-import { Component, useEffect, useState } from 'react';
+import { Component, Suspense, useEffect, useState } from 'react';
 import type { ReactNode, ErrorInfo } from 'react';
 import type { JSX } from 'react';
 import type { Locale } from '@galaxy/shared';
-import { t } from '@galaxy/shared';
 import { LOCALE_CHANGE_EVENT } from '@/components/LocaleProvider';
+import { useCatalogT } from '@/components/use-catalog-t';
 
 interface ErrorBoundaryProps {
   children: ReactNode;
@@ -42,6 +42,7 @@ function ErrorFallback({
   onReset: () => void;
 }): JSX.Element {
   const locale = usePageLocale();
+  const t = useCatalogT(locale);
 
   return (
     <div
@@ -65,10 +66,8 @@ function ErrorFallback({
           />
         </svg>
       </div>
-      <h2 className="mt-4 text-xl font-bold text-text-primary">{t('error.unexpected', locale)}</h2>
-      <p className="mt-2 text-sm text-text-secondary max-w-md">
-        {t('error.unexpected-desc', locale)}
-      </p>
+      <h2 className="mt-4 text-xl font-bold text-text-primary">{t('error.unexpected')}</h2>
+      <p className="mt-2 text-sm text-text-secondary max-w-md">{t('error.unexpected-desc')}</p>
       {error && (
         <p className="mt-2 text-xs text-text-tertiary font-mono max-w-lg truncate">
           {error.message}
@@ -78,16 +77,16 @@ function ErrorFallback({
         <button
           onClick={onReset}
           className="rounded-lg bg-brand-600 px-5 py-2.5 text-sm font-medium text-white hover:bg-brand-700 transition-colors focus:outline-none focus:ring-2 focus:ring-brand-500 focus:ring-offset-2"
-          aria-label={t('error.try-again-aria', locale)}
+          aria-label={t('error.try-again-aria')}
         >
-          {t('error.try-again', locale)}
+          {t('error.try-again')}
         </button>
         <button
           onClick={() => window.location.reload()}
           className="rounded-lg border border-edge px-5 py-2.5 text-sm font-medium text-text-secondary hover:bg-surface-muted dark:hover:bg-gray-800 transition-colors focus:outline-none focus:ring-2 focus:ring-gray-400 focus:ring-offset-2"
-          aria-label={t('error.reload-page', locale)}
+          aria-label={t('error.reload-page')}
         >
-          {t('error.reload-page', locale)}
+          {t('error.reload-page')}
         </button>
       </div>
     </div>
@@ -100,17 +99,15 @@ export class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundarySt
     this.state = { hasError: false, error: null };
   }
 
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   static getDerivedStateFromError(error: Error): ErrorBoundaryState {
     return { hasError: true, error };
   }
 
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   override componentDidCatch(error: Error, errorInfo: ErrorInfo): void {
     if (this.props.onError) {
       this.props.onError(error, errorInfo);
     }
-    // eslint-disable-next-line no-console
+
     console.error('[ErrorBoundary]', error.message, errorInfo.componentStack);
   }
 
@@ -122,7 +119,11 @@ export class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundarySt
     if (this.state.hasError) {
       if (this.props.fallback) return this.props.fallback;
 
-      return <ErrorFallback error={this.state.error} onReset={this.handleReset} />;
+      return (
+        <Suspense fallback={null}>
+          <ErrorFallback error={this.state.error} onReset={this.handleReset} />
+        </Suspense>
+      );
     }
 
     return this.props.children;
