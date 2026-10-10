@@ -338,13 +338,22 @@ export const authRouter = router({
       // Strip password hash from response
       const { passwordHash: _, ...safeUser } = user;
 
+      // S1 — store owners land on /store after login; expose a boolean so
+      // the client can route without an extra round-trip.
+      const vendorCount = await prisma.vendor.count({ where: { userId: user.id } });
+
       // Set cookies on response
       const isProduction = ctx.isProduction ?? false;
       ctx.setCookies?.(
         buildAuthCookies({ accessToken, refreshToken: refreshTokenJwt }, isProduction),
       );
 
-      return { user: safeUser, accessToken, refreshToken: refreshTokenJwt };
+      return {
+        user: safeUser,
+        accessToken,
+        refreshToken: refreshTokenJwt,
+        hasVendor: vendorCount > 0,
+      };
     } catch (error) {
       if (error instanceof TRPCError) throw error;
       throw new TRPCError({
