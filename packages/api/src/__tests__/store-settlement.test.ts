@@ -34,6 +34,9 @@ describe('store settlement', { sequential: true }, () => {
     adminUser = { id: adminDb.id, role: 'ADMIN', email: adminDb.email };
     userIds.push(owner.id, cust.id, adminDb.id);
 
+    // The customer's wallet — the dispute refund must credit it (audit #3).
+    await prisma.wallet.create({ data: { userId: cust.id, balance: 0 } });
+
     const vendor = await prisma.vendor.create({
       data: { userId: owner.id, storeName: 'متجر التسوية', storeSlug: `settle-${owner.id}` },
     });
@@ -141,6 +144,22 @@ describe('store settlement', { sequential: true }, () => {
 
     const order = await prisma.storeOrder.findUniqueOrThrow({ where: { id: orderIds[0] } });
     expect(order.status).toBe('REFUNDED');
+
+    // Audit #3 — the refund must actually move money: wallet credited + a
+    // CREDIT REFUND transaction recorded.
+    const wallet = await prisma.wallet.findUniqueOrThrow({ where: { userId: customer.id } });
+    expect(Number(wallet.balance)).toBe(200); // the order total, returned
+
+    const txn = await prisma.walletTransaction.findFirst({
+      where: {
+        walletId: wallet.id,
+        type: 'CREDIT',
+        source: 'REFUND',
+        referenceId: String(orderIds[0]),
+      },
+    });
+    expect(txn).toBeTruthy();
+    expect(Number(txn!.amount)).toBe(200);
   });
 
   it('rejects a dispute with neither bookingId nor storeOrderId', async () => {
