@@ -56,10 +56,14 @@ function getS3Region(): string {
 
 // ── Local Storage ──────────────────────────────────────────
 
-const LOCAL_UPLOAD_DIR = path.join(process.cwd(), process.env['UPLOAD_DIR'] || 'uploads');
+const LOCAL_UPLOAD_DIR = path.join(
+  /*turbopackIgnore: true*/ process.cwd(),
+  process.env['UPLOAD_DIR'] || 'uploads',
+);
 
 function ensureDir(dir: string): void {
-  if (!fs.existsSync(dir)) fs.mkdirSync(dir, { recursive: true });
+  if (!fs.existsSync(/*turbopackIgnore: true*/ dir))
+    fs.mkdirSync(/*turbopackIgnore: true*/ dir, { recursive: true });
 }
 
 function localUrl(key: string): string {
@@ -82,9 +86,9 @@ export async function uploadFile(
 
   if (!s3 || !bucket) {
     // Local fallback
-    const dir = path.join(LOCAL_UPLOAD_DIR, folder);
+    const dir = path.join(/*turbopackIgnore: true*/ LOCAL_UPLOAD_DIR, folder);
     ensureDir(dir);
-    await fs.promises.writeFile(path.join(LOCAL_UPLOAD_DIR, key), buffer);
+    await fs.promises.writeFile(path.join(/*turbopackIgnore: true*/ LOCAL_UPLOAD_DIR, key), buffer);
     return { url: localUrl(key), key };
   }
 
@@ -109,9 +113,9 @@ export async function uploadFile(
     // S3 failed — fall back to local
     // eslint-disable-next-line no-console
     console.error('[Storage] S3 upload failed, falling back to local:', err);
-    const dir = path.join(LOCAL_UPLOAD_DIR, folder);
+    const dir = path.join(/*turbopackIgnore: true*/ LOCAL_UPLOAD_DIR, folder);
     ensureDir(dir);
-    await fs.promises.writeFile(path.join(LOCAL_UPLOAD_DIR, key), buffer);
+    await fs.promises.writeFile(path.join(/*turbopackIgnore: true*/ LOCAL_UPLOAD_DIR, key), buffer);
     return { url: localUrl(key), key };
   }
 }
@@ -121,8 +125,9 @@ export async function deleteFile(key: string): Promise<void> {
   const bucket = getS3Bucket();
 
   if (!s3 || !bucket) {
-    const fp = path.join(LOCAL_UPLOAD_DIR, key);
-    if (fs.existsSync(fp)) await fs.promises.unlink(fp);
+    const fp = path.join(/*turbopackIgnore: true*/ LOCAL_UPLOAD_DIR, key);
+    if (fs.existsSync(/*turbopackIgnore: true*/ fp))
+      await fs.promises.unlink(/*turbopackIgnore: true*/ fp);
     return;
   }
 
@@ -132,8 +137,9 @@ export async function deleteFile(key: string): Promise<void> {
   } catch (err) {
     // eslint-disable-next-line no-console
     console.error('[Storage] S3 delete failed:', err);
-    const fp = path.join(LOCAL_UPLOAD_DIR, key);
-    if (fs.existsSync(fp)) await fs.promises.unlink(fp);
+    const fp = path.join(/*turbopackIgnore: true*/ LOCAL_UPLOAD_DIR, key);
+    if (fs.existsSync(/*turbopackIgnore: true*/ fp))
+      await fs.promises.unlink(/*turbopackIgnore: true*/ fp);
   }
 }
 
