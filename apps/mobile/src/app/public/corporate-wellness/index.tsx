@@ -6,8 +6,8 @@ import { trpc } from '@/lib/trpc-react';
 import { useLocale } from '@/components/LocaleProvider';
 
 // Mirrors the corporateWellness.plans row shape (formatPlan in the api
-// router). descAr is NOT provided by the API — pre-existing gap, renders
-// empty until the plan rows grow a description.
+// router). The model has no description — the subtitle line shows the
+// other language's name instead of an empty field (audit #5).
 interface WellnessPlan {
   id?: string;
   emoji?: string;
@@ -16,11 +16,10 @@ interface WellnessPlan {
   price?: number;
   employees?: number;
   services?: string[];
-  descAr?: string;
 }
 
 export default function CorporateWellnessScreen(): JSX.Element {
-  const { t } = useLocale();
+  const { t, locale } = useLocale();
   const router = useRouter();
   const plansQ = trpc.corporateWellness.plans.useQuery();
 
@@ -52,7 +51,7 @@ export default function CorporateWellnessScreen(): JSX.Element {
             <Text style={styles.planEmoji}>{p.emoji ?? ''}</Text>
             <View style={{ flex: 1 }}>
               <Text style={styles.planName}>{p.nameAr}</Text>
-              <Text style={styles.planDesc}>{p.descAr}</Text>
+              <Text style={styles.planDesc}>{locale === 'en' ? p.nameAr : p.nameEn}</Text>
             </View>
             <TouchableOpacity
               style={styles.inquireBtn}

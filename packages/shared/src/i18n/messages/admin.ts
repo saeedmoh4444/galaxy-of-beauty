@@ -103,6 +103,10 @@ export const adminMessages = {
     en: 'Connect your Google Calendar to view booking appointments automatically and sync them with your personal calendar.',
   },
   'tech.calendar.connect-button': { ar: 'ربط تقويم قوقل', en: 'Connect Google Calendar' },
+  'tech.calendar.not-configured': {
+    ar: 'ربط تقويم قوقل غير مفعّل بعد — نعمل على تفعيله قريباً',
+    en: 'Google Calendar connection is not enabled yet — coming soon',
+  },
 
   'tech.slots.title': { ar: 'المواعيد المتاحة', en: 'Available Slots' },
   'tech.slots.add-slot': { ar: 'إضافة موعد', en: 'Add Slot' },

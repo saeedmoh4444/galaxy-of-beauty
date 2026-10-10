@@ -18,7 +18,7 @@ export const viewport: Viewport = {
   themeColor: '#c2255c',
 };
 
-export const metadata: Metadata = {
+const baseMetadata: Metadata = {
   title: {
     default: 'Galaxy of Beauty | جالكسي بيوتي',
     template: '%s | Galaxy of Beauty',
@@ -54,6 +54,20 @@ export const metadata: Metadata = {
     },
   },
 };
+
+/** Audit #5 — the OG locale follows the visitor's cookie locale instead of
+ * being hardcoded ar_SA (which mislabelled English pages to crawlers). */
+export async function generateMetadata(): Promise<Metadata> {
+  const store = await cookies();
+  const locale: Locale = store.get('gob_lang')?.value === 'en' ? 'en' : 'ar';
+  return {
+    ...baseMetadata,
+    openGraph: {
+      ...baseMetadata.openGraph,
+      locale: locale === 'en' ? 'en_US' : 'ar_SA',
+    },
+  };
+}
 
 export default async function RootLayout({
   children,
