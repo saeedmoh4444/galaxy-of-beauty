@@ -5145,6 +5145,8 @@ export const enWebMessages: Record<string, string> = {
   'vendorPortal.deals.approved': 'Approved',
   'vendorPortal.deals.empty': 'No proposed deals yet',
   'vendorPortal.deals.ends': 'Ends at',
+  'vendorPortal.deals.floor-hint':
+    'Discount up to 60% — the deal price cannot go below 40% of the regular price',
   'vendorPortal.deals.pending': 'Pending review',
   'vendorPortal.deals.price': 'Deal price (SAR)',
   'vendorPortal.deals.propose': '+ Propose deal',

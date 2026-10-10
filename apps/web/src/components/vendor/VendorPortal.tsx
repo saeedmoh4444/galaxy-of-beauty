@@ -704,22 +704,33 @@ export function VendorPortal({ shellRole = 'CUSTOMER' }: { shellRole?: string })
             </Button>
           </div>
           {myDeals.length === 0 ? (
-            <p className="text-sm text-text-tertiary">{t('vendorPortal.deals.empty')}</p>
+            <div className="text-sm text-text-tertiary">
+              <p>{t('vendorPortal.deals.empty')}</p>
+              <p className="mt-1 text-xs">{t('vendorPortal.deals.floor-hint')}</p>
+            </div>
           ) : (
             <div className="space-y-2">
               {myDeals.map((sub: Record<string, unknown>) => {
                 const payload = (sub.payload ?? {}) as Record<string, unknown>;
+                const original = Number(payload.originalPrice ?? 0);
+                const deal = Number(payload.dealPrice ?? 0);
+                const pct = original > 0 ? Math.round((1 - deal / original) * 100) : 0;
                 return (
                   <Card key={sub.id as number} padding="sm">
                     <div className="flex items-center justify-between">
                       <p className="text-sm font-semibold">{payload.titleAr as string}</p>
                       <div className="flex items-center gap-2">
                         <span className="text-xs text-text-tertiary line-through">
-                          {formatCurrency(payload.originalPrice as number)}
+                          {formatCurrency(original)}
                         </span>
                         <span className="text-sm font-bold text-red-600 dark:text-red-400">
-                          {formatCurrency(payload.dealPrice as number)}
+                          {formatCurrency(deal)}
                         </span>
+                        {pct > 0 && (
+                          <span className="rounded-full bg-red-100 px-2 py-0.5 text-xs font-medium text-red-700 dark:bg-red-950 dark:text-red-300">
+                            -{pct}%
+                          </span>
+                        )}
                         <span
                           className={`rounded-full px-2 py-0.5 text-xs ${
                             sub.status === 'APPROVED'
@@ -737,6 +748,22 @@ export function VendorPortal({ shellRole = 'CUSTOMER' }: { shellRole?: string })
                         </span>
                       </div>
                     </div>
+                    {payload.startsAt && payload.endsAt ? (
+                      <p className="mt-1 text-xs text-text-tertiary">
+                        {new Date(payload.startsAt as string).toLocaleDateString(
+                          locale === 'ar' ? 'ar-SA' : 'en-GB',
+                        )}{' '}
+                        —{' '}
+                        {new Date(payload.endsAt as string).toLocaleDateString(
+                          locale === 'ar' ? 'ar-SA' : 'en-GB',
+                        )}
+                      </p>
+                    ) : null}
+                    {sub.status === 'REJECTED' && sub.reviewNotes ? (
+                      <p className="mt-1 text-xs text-red-600 dark:text-red-400">
+                        {t('tech.packages.reject-reason', { reason: sub.reviewNotes as string })}
+                      </p>
+                    ) : null}
                   </Card>
                 );
               })}
@@ -753,7 +780,8 @@ export function VendorPortal({ shellRole = 'CUSTOMER' }: { shellRole?: string })
                     <span className="font-medium">{localize(p.nameJson, locale)}</span>
                     <span className="text-text-secondary">
                       {p.sales as number} {t('vendorPortal.sales')} ·{' '}
-                      {formatCurrency(Number(p.price ?? 0))}
+                      {formatCurrency(Number(p.price ?? 0) * Number(p.sales ?? 0))}{' '}
+                      {t('vendorPortal.revenue')}
                     </span>
                   </div>
                 ))}
