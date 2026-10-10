@@ -62,7 +62,17 @@ export const vendorPortalRouter = router({
     if (!vendor) {
       // A store with no vendor and no reviews has no rating — never invent
       // a 4.8 default.
-      return { totalProducts: 0, totalSales: 0, revenue: 0, rating: 0 };
+      return {
+        totalProducts: 0,
+        totalSales: 0,
+        revenue: 0,
+        rating: 0,
+        ordersByStatus: {},
+        revenue30d: 0,
+        ordersCount: 0,
+        aov: 0,
+        customerCount: 0,
+      };
     }
 
     const agg = await prisma.product.aggregate({
@@ -96,6 +106,33 @@ export const vendorPortalRouter = router({
       select: { id: true, nameJson: true, price: true, sales: true },
     });
 
+    // S5 — order-based analytics (beyond top-products): 30-day revenue,
+    // order count, AOV, distinct customers, and a per-status breakdown.
+    const thirtyDaysAgo = new Date(Date.now() - 30 * 24 * 60 * 60 * 1000);
+    const statusGroups = await prisma.storeOrder.groupBy({
+      by: ['status'],
+      where: { vendorId: vendor.id },
+      _count: true,
+    });
+    const ordersByStatus = Object.fromEntries(statusGroups.map((g) => [g.status, g._count]));
+    const recentAgg = await prisma.storeOrder.aggregate({
+      where: { vendorId: vendor.id, createdAt: { gte: thirtyDaysAgo } },
+      _sum: { totalAmount: true },
+    });
+    const allAgg = await prisma.storeOrder.aggregate({
+      where: { vendorId: vendor.id },
+      _sum: { totalAmount: true },
+      _count: true,
+    });
+    const ordersCount = allAgg._count;
+    const totalOrderValue = Number(allAgg._sum.totalAmount ?? 0);
+    const aov = ordersCount ? Math.round((totalOrderValue / ordersCount) * 100) / 100 : 0;
+    const distinctCustomers = await prisma.storeOrder.findMany({
+      where: { vendorId: vendor.id },
+      select: { customerId: true },
+      distinct: ['customerId'],
+    });
+
     return {
       totalProducts: agg._count,
       totalSales: agg._sum.sales ?? 0,
@@ -103,6 +140,11 @@ export const vendorPortalRouter = router({
       rating: Number(reviewsAgg._avg.rating?.toFixed(1) ?? 0),
       pendingOrders,
       topProducts,
+      ordersByStatus,
+      revenue30d: Number(recentAgg._sum.totalAmount ?? 0),
+      ordersCount,
+      aov,
+      customerCount: distinctCustomers.length,
     };
   }),
 

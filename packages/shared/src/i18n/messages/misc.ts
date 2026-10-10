@@ -3822,6 +3822,12 @@ export const miscMessages = {
   'vendorPortal.add': { ar: 'إضافة', en: 'Add' },
   // Store plan Phase 1 — merchant registration + orders
   'vendorPortal.pendingOrders': { ar: 'طلبات معلقة', en: 'Pending Orders' },
+  // S5 — order-based analytics
+  'vendorPortal.revenue30d': { ar: 'إيرادات ٣٠ يوم', en: 'Revenue (30d)' },
+  'vendorPortal.ordersCount': { ar: 'طلبات', en: 'Orders' },
+  'vendorPortal.aov': { ar: 'متوسط الطلب', en: 'Avg Order' },
+  'vendorPortal.customers': { ar: 'عملاء', en: 'Customers' },
+  'vendorPortal.fulfilledOrders': { ar: 'طلبات منجزة', en: 'Fulfilled' },
   'vendorPortal.apply.title': { ar: 'سجّلي متجرك', en: 'Register Your Store' },
   'vendorPortal.apply.subtitle': {
     ar: 'قدّمي طلب تسجيل متجرك وسيراجعه فريقنا خلال أيام',
