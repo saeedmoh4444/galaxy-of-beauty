@@ -66,6 +66,19 @@ export const giftQuizRouter = router({
     return questions.map(formatQuestion);
   }),
 
+  /**
+   * giftGuides — active recommendations for the gift-guide browsing
+   * screen (audit #5: the mobile screen previously called `questions`
+   * and rendered guide fields that never existed on question rows).
+   */
+  giftGuides: publicProcedure.query(async () => {
+    const recs = await db.giftQuizRecommendation.findMany({
+      where: { isActive: true },
+      orderBy: { sortOrder: 'asc' },
+    });
+    return recs.map(formatRecommendation);
+  }),
+
   recommend: publicProcedure
     .input(z.object({ answers: z.record(z.string(), z.string()) }))
     .query(async ({ input }) => {
