@@ -2,7 +2,7 @@
 
 > **Honest architecture audit:** What we use, what we skip, and what we must adopt.
 > No fluff. No marketing. Just engineering decisions and their reasons.
-> Last rebuilt: 2026-10-04 (post Arabic-sweep, MyFatoorah, Sentry activation, catalog split).
+> Last rebuilt: 2026-10-09 (post 12-PR wave: F1-F6 fixes, S1 store dashboard, S2 mobile stores, S3 commissions, Q4 seed typing, Q1 tree-shaking).
 
 ---
 
@@ -34,9 +34,9 @@ Academic classification:
 galaxy-of-beauty/                       # The Body
 ├── apps/
 │   ├── web/      Next.js 16.3 App Router   # The Face — 319 routes, SEO, dashboards
-│   └── mobile/   Expo SDK 57 (RN 0.87)     # The Hands — 314 screens, OTA via EAS
+│   └── mobile/   Expo SDK 57 (RN 0.86.3)   # The Hands — 314 screens, OTA via EAS
 ├── packages/
-│   ├── api/      tRPC v11                  # The Brain — 266 routers / 1,112 procedures, 15 domains
+│   ├── api/      tRPC v11                  # The Brain — 266 routers / 1,114 procedures, 15 domains
 │   ├── db/       Prisma 7 + PostgreSQL     # The Spine — schema, 100+ migrations, seed
 │   ├── shared/   pure TS                   # The Blood — types, i18n (split per platform), constants
 │   ├── ui/       React 19 + Tailwind 4     # The Skin — 560 components + design tokens
@@ -146,25 +146,25 @@ galaxy-of-beauty/                       # The Body
 
 ## What We Use and Why
 
-| Tech                   | Version    | Reason                                                                     | Choose again?                                        |
-| ---------------------- | ---------- | -------------------------------------------------------------------------- | ---------------------------------------------------- |
-| **tRPC**               | v11        | End-to-end type safety, Zod built-in, no codegen.                          | ✅ Yes — best decision in the stack                  |
-| **Next.js App Router** | 16.3       | Hybrid SSR/CSR, RSC server callers, middleware.                            | ✅ Yes                                               |
-| **Expo**               | SDK 57     | One RN codebase (RN 0.87) → iOS/Android/web + EAS OTA.                     | ✅ Yes (SDK 58 queued)                               |
-| **Prisma**             | 7          | Typed queries + 100+ hand-reviewed migrations.                             | ⚠️ Maybe — cold start still slow; Drizzle is lighter |
-| **PostgreSQL**         | 15+ (dev)  | JSONB for bilingual content, rock solid.                                   | ✅ Yes                                               |
-| **Redis (ioredis)**    | 6          | Cache + BullMQ queues + rate limiting — one tool, three jobs.              | ✅ Yes                                               |
-| **BullMQ**             | 6          | Reliable job queues with retries/backoff.                                  | ✅ Yes — but needs a monitoring dashboard            |
-| **Zod**                | 4          | Runtime validation that infers types.                                      | ✅ Yes                                               |
-| **Socket.IO**          | 4          | Realtime events with polling fallback.                                     | ✅ Yes                                               |
-| **Sentry**             | SDK 11     | **ACTIVE** — web client/server/edge + api facade, DSN wired, E2E-verified. | ✅ Yes                                               |
-| **MyFatoorah**         | v2         | Saudi gateway with SHIPPING (countries/cities/charge) — replaced PayFort.  | ✅ Yes (token pending)                               |
-| **Tailwind CSS**       | 4          | Utility-first, RTL-friendly, tiny output.                                  | ✅ Yes                                               |
-| **pnpm + Turborepo**   | 9.15 + 2.x | Strict workspace installs + cached builds (GH remote cache).               | ✅ Yes                                               |
-| **Vitest**             | 5          | Fast unit/integration tests (1,500+).                                      | ✅ Yes                                               |
-| **Playwright**         | —          | E2E incl. axe a11y gate + visual checks.                                   | ✅ Yes                                               |
-| **k6**                 | —          | Load-test scripts (7.2).                                                   | ✅ Yes                                               |
-| **TypeScript**         | 6.0        | Strict mode everywhere incl. noUncheckedIndexedAccess.                     | ✅ Yes                                               |
+| Tech                   | Version    | Reason                                                                                | Choose again?                                        |
+| ---------------------- | ---------- | ------------------------------------------------------------------------------------- | ---------------------------------------------------- |
+| **tRPC**               | v11        | End-to-end type safety, Zod built-in, no codegen.                                     | ✅ Yes — best decision in the stack                  |
+| **Next.js App Router** | 16.3       | Hybrid SSR/CSR, RSC server callers, middleware.                                       | ✅ Yes                                               |
+| **Expo**               | SDK 57     | One RN codebase (RN 0.86.3 — aligned for EAS dev builds) → iOS/Android/web + EAS OTA. | ✅ Yes (SDK 58 queued)                               |
+| **Prisma**             | 7          | Typed queries + 100+ hand-reviewed migrations.                                        | ⚠️ Maybe — cold start still slow; Drizzle is lighter |
+| **PostgreSQL**         | 15+ (dev)  | JSONB for bilingual content, rock solid.                                              | ✅ Yes                                               |
+| **Redis (ioredis)**    | 6          | Cache + BullMQ queues + rate limiting — one tool, three jobs.                         | ✅ Yes                                               |
+| **BullMQ**             | 6          | Reliable job queues with retries/backoff; admin queues dashboard shipped.             | ✅ Yes                                               |
+| **Zod**                | 4          | Runtime validation that infers types.                                                 | ✅ Yes                                               |
+| **Socket.IO**          | 4          | Realtime events with polling fallback.                                                | ✅ Yes                                               |
+| **Sentry**             | SDK 11     | **ACTIVE** — web client/server/edge + api facade, DSN wired, E2E-verified.            | ✅ Yes                                               |
+| **MyFatoorah**         | v2         | Saudi gateway with SHIPPING (countries/cities/charge) — replaced PayFort.             | ✅ Yes (token pending)                               |
+| **Tailwind CSS**       | 4          | Utility-first, RTL-friendly, tiny output.                                             | ✅ Yes                                               |
+| **pnpm + Turborepo**   | 9.15 + 2.x | Strict workspace installs + cached builds (GH remote cache).                          | ✅ Yes                                               |
+| **Vitest**             | 5          | Fast unit/integration tests (1,500+).                                                 | ✅ Yes                                               |
+| **Playwright**         | —          | E2E incl. axe a11y gate + visual checks.                                              | ✅ Yes                                               |
+| **k6**                 | —          | Load-test scripts (7.2).                                                              | ✅ Yes                                               |
+| **TypeScript**         | 6.0        | Strict mode everywhere incl. noUncheckedIndexedAccess.                                | ✅ Yes                                               |
 
 ## What We Don't Use and Why
 
@@ -179,18 +179,20 @@ galaxy-of-beauty/                       # The Body
 
 ## What We Must Add (Production Checklist — updated)
 
-| Priority | Item                           | Why                                                                        | Effort |
-| -------- | ------------------------------ | -------------------------------------------------------------------------- | ------ |
-| 🔴 P0    | **MyFatoorah live token**      | Payment gateway still runs on dev stubs; the ONLY blocker to real charges. | 5 min  |
-| 🔴 P0    | **Database backups**           | `scripts/backup-db.sh` exists in compose — cron it or use RDS snapshots.   | 1 hr   |
-| 🔴 P0    | **Circuit breaker (gateways)** | See Part 2.                                                                | 8 hr   |
-| 🟡 P1    | **SSL + Nginx**                | HTTPS is non-negotiable for a payment platform.                            | 2 hr   |
-| 🟡 P1    | **Prometheus + Grafana**       | Replace in-memory counters with real metrics + dashboards.                 | 8 hr   |
-| 🟡 P1    | **Alerting**                   | Error rate, payment failures, queue depth, disk >80%.                      | 4 hr   |
-| 🟡 P1    | **Staging environment**        | Test against a prod clone, not the shared dev DB.                          | 8 hr   |
-| 🟢 P2    | **App-store submission**       | EAS pipeline is ready (APK + iOS simulator built); staged rollout pending. | 1 day  |
-| 🟢 P2    | **Penetration test**           | OWASP ZAP or manual — verify CSRF/XSS/injection hardening.                 | 8 hr   |
-| 🟢 P3    | **Blue-green deploys**         | Zero-downtime deploys incl. migrations.                                    | 8 hr   |
+| Priority | Item                                  | Why                                                                                                                                         | Effort         |
+| -------- | ------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------- | -------------- |
+| 🔴 P0    | **MyFatoorah live token**             | Payment gateway still runs on dev stubs; the ONLY blocker to real charges.                                                                  | 5 min          |
+| 🔴 P0    | **Database backups**                  | `scripts/backup-db.sh` exists in compose — cron it or use RDS snapshots.                                                                    | 1 hr           |
+| 🔴 P0    | **Circuit breaker (gateways)**        | See Part 2.                                                                                                                                 | 8 hr           |
+| 🔴 P0    | **Bundle re-measure after #395**      | `sideEffects: false` landed but the real numbers are unmeasured — rebuild, run the size gate, and continue slimming the tRPC/API chunk set. | 4 hr           |
+| 🟡 P1    | **SSL + Nginx**                       | HTTPS is non-negotiable for a payment platform.                                                                                             | 2 hr           |
+| 🟡 P1    | **Prometheus + Grafana**              | Replace in-memory counters with real metrics + dashboards.                                                                                  | 8 hr           |
+| 🟡 P1    | **Alerting**                          | Error rate, payment failures, queue depth, disk >80%.                                                                                       | 4 hr           |
+| 🟡 P1    | **Staging environment**               | Test against a prod clone, not the shared dev DB.                                                                                           | 8 hr           |
+| 🟡 P1    | **Apple Developer account (~$99/yr)** | The ONLY blocker to an iOS dev client + App Store; Expo Go cannot run the app.                                                              | account signup |
+| 🟢 P2    | **App-store submission**              | EAS pipeline is ready (Android APK built + delivered); staged rollout pending.                                                              | 1 day          |
+| 🟢 P2    | **Penetration test**                  | OWASP ZAP or manual — verify CSRF/XSS/injection hardening.                                                                                  | 8 hr           |
+| 🟢 P3    | **Blue-green deploys**                | Zero-downtime deploys incl. migrations.                                                                                                     | 8 hr           |
 
 ---
 
@@ -244,21 +246,24 @@ tRPC middleware: requestCounter → rateLimit → csrf → isAuthed → hasRole
 - **CI is a real gate, not theater** — 9 checks incl. E2E+axe, size budgets, leak guards, contract hashes.
 - **i18n is complete and guarded** — zero static Arabic; 8,825-key catalog; web bundle carries only its 5,268.
 - **The sweep pipeline worked** — 16 sequential slice PRs, each independently verifiable, zero regressions.
+- **Store/provider system complete (2026-10-08 wave)** — dedicated `/store` dashboard shell, mobile store browsing, commission rates actually applied in settlements with an admin editor, store ratings surfaced, provider registration covering store/clinic/gym/nail-bar/at-home.
+- **Seed is fully typed** — all 14 `(prisma as any)` casts removed (#394); the drift class is closed.
+- **Tree-shaking unlocked** — `sideEffects: false` on `@galaxy/shared` + `@galaxy/ui` (#395); every route no longer drags the full i18n catalog and UI barrel by default.
 
 ### Weaknesses (hard truths)
 
-- **`as any` remains** in legacy seed sections and some pages (mitigated by Zod at the edge, but still debt).
-- **FE-007 gap**: targets are 100–150 KB/route; reality is ~560–650 KB gzipped. The catalog split reclaimed ~91 KB — the remaining bulk is the shared tRPC/API chunk set, unslimmed.
-- **No staging environment** — risky changes ride against the shared dev DB.
+- **FE-007 gap**: targets are 100–150 KB/route; reality is ~560–650 KB gzipped. The catalog split reclaimed ~91 KB and `sideEffects: false` just landed — **the remaining bulk (shared tRPC/API chunk set) is still unmeasured after #395; the slimming is not done until the gate numbers drop.**
+- **No staging environment** — risky changes ride against the shared dev DB (the local test suite runs `env=test` against it too, which pollutes seed data and flaked tests).
 - **Single points of failure** — one PostgreSQL, one Redis, no failover.
 - **Gateway resilience** — no circuit breaker; a down MyFatoorah degrades checkout (fail-closed, but loudly).
-- **Lint warnings tolerated** — ~27–33 pre-existing warnings ride under `--max-warnings`.
-- **Seed is `(prisma as any)`-style** — one drift class already bit (reviews); other sections may drift again silently.
+- **Lint warnings tolerated** — ~27–174 pre-existing warnings ride under `--max-warnings`.
+- **iOS physical device still blocked** — no Apple Developer account; Expo Go cannot run the app (webrtc/async-storage), so the dev-client APK is the only phone path.
+- **Store accounts are role-less** — `UserRole` has no VENDOR; store owners are CUSTOMER-role users with a Vendor row, gated by ownership checks rather than a role.
 
 ### The Next Leap (from $110K platform to $250K+ platform)
 
 1. **Production infra** — RDS + read replica, ElastiCache, CloudFront.
 2. **Resilience** — circuit breakers, alerting, staging environment, backups.
-3. **Bundle reality** — slim the shared chunk set toward the FE-007 targets (the catalog split was step 1).
+3. **Bundle reality** — slim the shared chunk set toward the FE-007 targets (catalog split = step 1, `sideEffects: false` = step 2, measure + cut the tRPC/API chunk set = step 3).
 4. **Mobile release** — EAS staged rollout to App Store + Play Store.
 5. **Compliance** — third-party pentest, NCA-ECC/SOC 2 for the Saudi market.
