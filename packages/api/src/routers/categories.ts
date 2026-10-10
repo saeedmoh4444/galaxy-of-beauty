@@ -1,9 +1,15 @@
 import { TRPCError } from '@trpc/server';
 import { z } from 'zod';
 import { prisma } from '@galaxy/db';
+import type { Category } from '@galaxy/db';
 import { publicProcedure, adminProcedure, router } from '../trpc';
 import { createCategorySchema, updateCategorySchema } from '../validators/catalog';
 import { cached, invalidateCachePrefix } from '../lib/cache';
+
+// Category row plus the children array assembled in-memory for the tree route.
+export interface CategoryTreeNode extends Category {
+  children: CategoryTreeNode[];
+}
 
 /** Simple slugify helper for auto-generating slugs from English names. */
 function slugify(text: string): string {
@@ -45,8 +51,8 @@ export const categoryRouter = router({
       orderBy: { sortOrder: 'asc' },
     });
 
-    const map = new Map<number, (typeof allCategories)[number] & { children: any[] }>();
-    const roots: any[] = [];
+    const map = new Map<number, CategoryTreeNode>();
+    const roots: CategoryTreeNode[] = [];
 
     for (const cat of allCategories) {
       map.set(cat.id, { ...cat, children: [] });

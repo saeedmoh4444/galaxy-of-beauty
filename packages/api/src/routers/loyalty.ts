@@ -347,12 +347,10 @@ export async function accrueBookingPoints(
 
     // Tier upgrade notification (log for now)
     if (newTier !== account.tier) {
-      // eslint-disable-next-line no-console
       console.log(`[Loyalty] User ${userId} tier upgrade: ${account.tier} → ${newTier}`);
     }
   } catch (err) {
     // Non-critical — log and continue
-    // eslint-disable-next-line no-console
     console.error('[Loyalty] Failed to accrue points:', err);
   }
 }

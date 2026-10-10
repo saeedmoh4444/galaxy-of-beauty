@@ -85,8 +85,8 @@ export function PostpartumSection(): JSX.Element {
         signals: Array<Record<string, string>>;
       }
     | undefined;
-  const services = (servicesQ.data ?? []) as Array<Record<string, any>>;
-  const salons = (salonsQ.data ?? []) as Array<Record<string, any>>;
+  const services = servicesQ.data ?? [];
+  const salons = salonsQ.data ?? [];
 
   if (!isNewMom || !lib) return <></>;
 
@@ -179,8 +179,8 @@ export function MenopauseCard(): JSX.Element {
         symptoms: Array<Record<string, string>>;
       }
     | undefined;
-  const history = (historyQ.data ?? []) as Array<Record<string, any>>;
-  const clinics = (clinicsQ.data ?? []) as Array<Record<string, any>>;
+  const history = historyQ.data ?? [];
+  const clinics = clinicsQ.data ?? [];
 
   if (!enabled || !lib) return <></>;
 

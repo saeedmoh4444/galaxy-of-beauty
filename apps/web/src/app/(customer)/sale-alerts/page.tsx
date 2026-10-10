@@ -132,7 +132,6 @@ export default function SaleAlertsPage(): JSX.Element {
         <Modal open={showAdd} onClose={() => setShowAdd(false)} title={t('saleAlerts.modal.title')}>
           <div className="space-y-3">
             <div>
-              {/* eslint-disable-next-line jsx-a11y/label-has-associated-control -- label precedes a non-labelable button group */}
               <label className="text-sm font-semibold mb-2 block">
                 {t('saleAlerts.categoriesLabel')}
               </label>

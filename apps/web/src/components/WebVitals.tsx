@@ -61,6 +61,7 @@ export function WebVitals(): null {
           if (process.env.NODE_ENV === 'development') {
             const emoji =
               entry.rating === 'good' ? '' : entry.rating === 'needs-improvement' ? '' : '';
+            // eslint-disable-next-line no-console -- dev-only Web Vitals diagnostics
             console.log(`[WebVitals] ${emoji} ${entry.name}: ${entry.value}`);
           }
         };

@@ -62,6 +62,7 @@ export const beautyScrapbookRouter = router({
     .input(z.object({ tag: z.string(), limit: z.number().int().min(1).max(20).default(10) }))
     .query(async ({ ctx, input }) =>
       prisma.beautyMemory.findMany({
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any -- tags is a Json column queried with a scalar-list `has` filter; retyping would change the query
         where: { userId: ctx.user.id, tags: { has: input.tag } as any },
         take: input.limit,
         orderBy: { date: 'desc' },

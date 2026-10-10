@@ -12,7 +12,7 @@ export const savingsGoalRouter = router({
       take: 20,
       include: { bnplPlan: true },
     });
-    return goals.map((g: any) => ({
+    return goals.map((g) => ({
       ...g,
       targetAmount: Number(g.targetAmount),
       savedAmount: Number(g.savedAmount),

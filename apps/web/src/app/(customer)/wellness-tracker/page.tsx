@@ -112,7 +112,6 @@ export default function WellnessTrackerPage(): JSX.Element {
               />
             </div>
             <div>
-              {/* eslint-disable-next-line jsx-a11y/label-has-associated-control -- toggle button is not a labelable control */}
               <label className="text-sm font-semibold">{t('wellnessTracker.skincareLabel')}</label>
               <button
                 onClick={() => setSkincare(!skincare)}
@@ -122,7 +121,6 @@ export default function WellnessTrackerPage(): JSX.Element {
               </button>
             </div>
             <div className="sm:col-span-2">
-              {/* eslint-disable-next-line jsx-a11y/label-has-associated-control -- mood buttons are not labelable controls */}
               <label className="text-sm font-semibold">{t('wellnessTracker.moodLabel')}</label>
               <div className="mt-1 flex gap-2">
                 {MOODS.map((m) => (

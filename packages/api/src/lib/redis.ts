@@ -36,7 +36,6 @@ export function getRedis(): Redis | null {
       if (loggedErrors.has(err.message)) return;
       loggedErrors.add(err.message);
       // Log Redis errors but don't crash — the API degrades gracefully
-      // eslint-disable-next-line no-console
       console.error('[Redis] Connection error:', err.message);
     });
 

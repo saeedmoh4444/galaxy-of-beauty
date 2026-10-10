@@ -94,7 +94,7 @@ function useCamera(
         setCameraError(t('tryOn.cameraError'));
       }
     },
-    [videoRef],
+    [videoRef, t],
   );
 
   const flipCamera = useCallback(() => {

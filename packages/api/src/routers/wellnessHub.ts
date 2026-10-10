@@ -66,15 +66,13 @@ export const wellnessHubRouter = router({
     const avgMood =
       weeklyCheckins.length > 0
         ? Math.round(
-            weeklyCheckins.reduce((s: number, c: any) => s + (c.mood || 0), 0) /
-              weeklyCheckins.length,
+            weeklyCheckins.reduce((s: number, c) => s + (c.mood || 0), 0) / weeklyCheckins.length,
           )
         : null;
     const avgEnergy =
       weeklyCheckins.length > 0
         ? Math.round(
-            weeklyCheckins.reduce((s: number, c: any) => s + (c.energy || 0), 0) /
-              weeklyCheckins.length,
+            weeklyCheckins.reduce((s: number, c) => s + (c.energy || 0), 0) / weeklyCheckins.length,
           )
         : null;
 
@@ -109,7 +107,7 @@ export const wellnessHubRouter = router({
       // E4a — PMS self-care tips surface on the hub in the luteal phase.
       pmsTips: todayCycle?.phase?.key === 'luteal' ? PMS_LIBRARY : [],
       journalCount,
-      recentJournals: (recentJournals as any[]).map((j: any) => ({
+      recentJournals: recentJournals.map((j) => ({
         id: j.id,
         title: j.title,
         content: j.content?.slice(0, 100),

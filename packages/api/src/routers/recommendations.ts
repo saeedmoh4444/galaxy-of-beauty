@@ -16,7 +16,7 @@ export const recommendationsRouter = router({
         select: { customerId: true },
         take: MAX_LIST_SIZE,
       });
-      const customerIds = bookings.map((b: any) => b.customerId);
+      const customerIds = bookings.map((b) => b.customerId);
       if (customerIds.length === 0) return [];
 
       const related = await db.booking.groupBy({
@@ -27,16 +27,16 @@ export const recommendationsRouter = router({
         take: input.limit,
       });
 
-      const serviceIds = related.map((r: any) => r.serviceId);
+      const serviceIds = related.map((r) => r.serviceId);
       const services = await db.service.findMany({
         where: { id: { in: serviceIds }, isActive: true },
       });
-      return services.map((s: any) => ({
+      return services.map((s) => ({
         id: s.id,
-        title: (s.titleJson as any)?.ar || '',
+        title: (s.titleJson as { ar?: string })?.ar || '',
         basePrice: Number(s.basePrice),
         durationMin: s.durationMin,
-        bookedTogether: related.find((r: any) => r.serviceId === s.id)?._count?.serviceId || 0,
+        bookedTogether: related.find((r) => r.serviceId === s.id)?._count?.serviceId || 0,
       }));
     }),
 
@@ -53,9 +53,9 @@ export const recommendationsRouter = router({
         take: input.limit,
       });
       if (sameCategory.length >= input.limit)
-        return sameCategory.map((s: any) => ({
+        return sameCategory.map((s) => ({
           id: s.id,
-          title: (s.titleJson as any)?.ar || '',
+          title: (s.titleJson as { ar?: string })?.ar || '',
           basePrice: Number(s.basePrice),
           durationMin: s.durationMin,
           reason: 'same_category',
@@ -65,9 +65,9 @@ export const recommendationsRouter = router({
         where: { id: { not: input.serviceId }, isActive: true, isPopular: true },
         take: input.limit,
       });
-      return otherServices.map((s: any) => ({
+      return otherServices.map((s) => ({
         id: s.id,
-        title: (s.titleJson as any)?.ar || '',
+        title: (s.titleJson as { ar?: string })?.ar || '',
         basePrice: Number(s.basePrice),
         durationMin: s.durationMin,
         reason: 'popular',
@@ -88,9 +88,9 @@ export const recommendationsRouter = router({
         where: { isActive: true },
         take: input.limit * 2,
       });
-      return services.slice(0, input.limit).map((s: any) => ({
+      return services.slice(0, input.limit).map((s) => ({
         id: s.id,
-        title: (s.titleJson as any)?.ar || '',
+        title: (s.titleJson as { ar?: string })?.ar || '',
         basePrice: Number(s.basePrice),
         durationMin: s.durationMin,
       }));

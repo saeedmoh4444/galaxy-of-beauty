@@ -36,16 +36,13 @@ initializeSocket(httpServer);
 // server down — log and keep serving (connections simply fall back to
 // single-instance delivery).
 process.on('unhandledRejection', (reason) => {
-  // eslint-disable-next-line no-console
   console.error('[Socket] Unhandled rejection:', (reason as Error)?.message ?? reason);
 });
 
 // Graceful shutdown
 function shutdown(signal: string) {
-  // eslint-disable-next-line no-console
   console.log(`[Socket] ${signal} received — shutting down...`);
   httpServer.close(() => {
-    // eslint-disable-next-line no-console
     console.log('[Socket] Server closed');
     process.exit(0);
   });
@@ -58,7 +55,6 @@ process.on('SIGINT', () => shutdown('SIGINT'));
 
 httpServer.listen(PORT, () => {
   if (process.env['NODE_ENV'] !== 'production') {
-    // eslint-disable-next-line no-console
     console.log(`[Socket] Server listening on port ${PORT}`);
   }
 });

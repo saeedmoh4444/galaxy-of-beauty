@@ -3,7 +3,6 @@ import { prisma } from '@galaxy/db';
 import { WARRANTY_CREDIT_RATE } from '@galaxy/shared';
 import { customerProcedure, router } from '../trpc';
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any -- Booking has no completedAt in Prisma schema (legacy read)
 const db = prisma;
 
 export const serviceWarrantyRouter = router({

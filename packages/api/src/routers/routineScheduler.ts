@@ -42,7 +42,7 @@ export const routineSchedulerRouter = router({
 
   myRoutines: customerProcedure.query(async ({ ctx }) => {
     const completed = await prisma.routineStep.findMany({ where: { userId: ctx.user.id } });
-    const doneSet = new Set(completed.map((s: any) => `${s.routineId}-${s.stepIndex}`));
+    const doneSet = new Set(completed.map((s) => `${s.routineId}-${s.stepIndex}`));
     return PRESETS.map((r) => ({
       ...r,
       steps: r.steps.map((s, i) => ({ ...s, done: doneSet.has(`${r.id}-${i}`) })),

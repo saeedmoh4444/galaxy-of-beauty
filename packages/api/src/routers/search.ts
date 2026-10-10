@@ -57,7 +57,7 @@ export const searchRouter = router({
       if (ilikeResults.length > 0) {
         // Boost ILIKE-matched services to the top
         const ilikeIds = ilikeResults.map((r) => r.id);
-        (serviceWhere as any).id = { in: ilikeIds };
+        serviceWhere['id'] = { in: ilikeIds };
       }
     } catch {
       // ILIKE not available or failed — fall back to Prisma string_contains

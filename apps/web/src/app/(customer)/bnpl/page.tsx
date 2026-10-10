@@ -5,6 +5,7 @@ import { api } from '@/lib/trpc';
 import { Card, Button, formatCurrency } from '@galaxy/ui';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
 import { useLocale } from '@/components/LocaleProvider';
+import type { TranslationKey } from '@galaxy/shared';
 
 export default function BNPLPage(): JSX.Element {
   const { t } = useLocale();
@@ -23,7 +24,7 @@ export default function BNPLPage(): JSX.Element {
   // E4b — persisted plans: list own plans and advance installments.
   const plansQ = api.bnpl.myPlans.useQuery();
   const markPaidMut = api.bnpl.markPaid.useMutation({ onSuccess: () => plansQ.refetch() });
-  const plans = (plansQ.data ?? []) as Array<Record<string, any>>;
+  const plans = plansQ.data ?? [];
 
   const list = (providers ?? []) as Array<Record<string, unknown>>;
 
@@ -131,7 +132,7 @@ export default function BNPLPage(): JSX.Element {
                   <div className="flex items-center justify-between">
                     <p className="font-bold">
                       {p.provider === 'tabby' ? 'Tabby' : 'Tamara'} ·{' '}
-                      {t(('bnpl.status.' + p.status) as any)}
+                      {t(('bnpl.status.' + p.status) as TranslationKey)}
                     </p>
                     <p className="text-sm text-text-secondary">
                       {t('bnpl.paidOf', { paid: p.paidCount, total: p.installments })}

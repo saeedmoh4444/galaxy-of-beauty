@@ -1,5 +1,6 @@
 import { z } from 'zod';
 import { prisma } from '@galaxy/db';
+import type { Prisma } from '@galaxy/db';
 import { EXPERIMENTAL_FEATURES } from '@galaxy/shared';
 import { customerProcedure, router, requireFeatureFlag } from '../trpc';
 
@@ -20,7 +21,7 @@ export const timeCapsuleRouter = router({
         data: {
           userId: ctx.user.id,
           name: input.name,
-          routineJson: input.routineJson as any,
+          routineJson: input.routineJson as unknown as Prisma.InputJsonValue,
           openDate: input.openDate,
         },
       });

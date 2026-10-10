@@ -4,7 +4,24 @@ import { customerProcedure, publicProcedure, router } from '../trpc';
 
 const db = prisma;
 
-function formatCourse(c: any) {
+// Course row from the list/get queries (`_count` included) plus an optional
+// preloaded `enrollments` array for callers that include it.
+interface CourseRow {
+  id: number;
+  titleJson: unknown;
+  descJson: unknown;
+  instructor: string;
+  lessons: number;
+  duration: string;
+  level: string;
+  category: string;
+  emoji: string;
+  rating: number;
+  enrollments?: unknown[];
+  _count?: { enrollments: number };
+}
+
+function formatCourse(c: CourseRow) {
   const titleJson = c.titleJson as Record<string, string> | undefined;
   const descJson = c.descJson as Record<string, string> | undefined;
   const enrollmentCount = Array.isArray(c.enrollments)
@@ -76,7 +93,7 @@ export const beautyCoursesRouter = router({
       include: { course: { include: { _count: { select: { enrollments: true } } } } },
       orderBy: { enrolledAt: 'desc' },
     });
-    return enrollments.map((e: any) => ({
+    return enrollments.map((e) => ({
       enrollmentId: `ENR-${e.userId}-${e.courseId}`,
       courseId: e.courseId,
       status: e.status,

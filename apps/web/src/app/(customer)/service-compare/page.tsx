@@ -22,7 +22,7 @@ export default function ServiceComparePage(): JSX.Element {
         setLoading(false);
       })
       .catch(() => setLoading(false));
-  }, []);
+  }, [utils.services.list]);
   useEffect(() => {
     fetch();
   }, [fetch]);

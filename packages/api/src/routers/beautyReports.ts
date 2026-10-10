@@ -1,5 +1,6 @@
 import { z } from 'zod';
 import { prisma } from '@galaxy/db';
+import type { Prisma } from '@galaxy/db';
 import { adminProcedure, router } from '../trpc';
 
 export const beautyReportsRouter = router({
@@ -46,6 +47,8 @@ export const beautyReportsRouter = router({
   save: adminProcedure
     .input(z.object({ type: z.string(), data: z.record(z.string(), z.unknown()) }))
     .mutation(async ({ input }) =>
-      prisma.beautyReport.create({ data: { type: input.type, data: input.data as any } }),
+      prisma.beautyReport.create({
+        data: { type: input.type, data: input.data as unknown as Prisma.InputJsonValue },
+      }),
     ),
 });

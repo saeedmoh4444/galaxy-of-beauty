@@ -6,13 +6,23 @@ import { SkeletonList } from '@/components/SkeletonCard';
 import { trpc } from '@/lib/trpc-react';
 import { useLocale } from '@/components/LocaleProvider';
 
+// WIRING BUG (pre-existing): this screen calls giftQuiz.questions but
+// renders gift-guide fields (titleAr/occasionAr/…). The questions rows
+// only carry questionAr/questionEn/options, so every guide field renders
+// empty at runtime. The proper fix is a recommendations-list procedure
+// (giftQuizRecommendation has titleAr/occasionAr/priceRange/minPrice) —
+// tracked as a follow-up; this interface keeps the cast compiling until
+// then, with the question fields included for overlap.
 interface GiftGuide {
-  id?: number;
+  id?: string | number;
   emoji?: string;
   titleAr?: string;
   occasionAr?: string;
   priceRange?: string;
   minPrice?: number;
+  questionAr?: string;
+  questionEn?: string;
+  options?: Array<{ key: string; labelAr: string; labelEn: string; tags?: string[] }>;
 }
 
 export default function GiftGuideScreen(): JSX.Element {
