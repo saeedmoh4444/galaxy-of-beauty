@@ -39,3 +39,6 @@ export { beautyIntegrationsRouter } from '../../routers/beautyIntegrations';
 export { customerJourneyRouter } from '../../routers/customerJourney';
 export { beautyGamificationRouter } from '../../routers/beautyGamification';
 export { technicianEarningsRouter } from '../../routers/technicianEarnings';
+export { lookOfTheDayRouter } from '../../routers/lookOfTheDay';
+export { newsletterRouter } from '../../routers/newsletter';
+export { familyAccountRouter } from '../../routers/familyAccount';
