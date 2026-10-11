@@ -4758,6 +4758,7 @@ export const enWebMessages: Record<string, string> = {
     'Google Calendar is connected. Sync your availability to move bookings to your calendar.',
   'tech.calendar.disconnect': 'Disconnect',
   'tech.calendar.load-error': 'Failed to load calendar status',
+  'tech.calendar.not-configured': 'Google Calendar connection is not enabled yet — coming soon',
   'tech.calendar.sync-now': 'Sync Now',
   'tech.calendar.title': 'Google Calendar',
   'tech.dashboard.calendar': 'Calendar',

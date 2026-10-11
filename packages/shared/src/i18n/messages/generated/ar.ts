@@ -4684,6 +4684,7 @@ export const arWebMessages: Record<string, string> = {
   'tech.calendar.connected-desc': 'تقويم قوقل متصل. يمكنك مزامنة مواعيدك لنقل الحجوزات إلى تقويمك.',
   'tech.calendar.disconnect': 'قطع الاتصال',
   'tech.calendar.load-error': 'فشل تحميل حالة التقويم',
+  'tech.calendar.not-configured': 'ربط تقويم قوقل غير مفعّل بعد — نعمل على تفعيله قريباً',
   'tech.calendar.sync-now': 'مزامنة الآن',
   'tech.calendar.title': 'تقويم قوقل',
   'tech.dashboard.calendar': 'تقويم',
