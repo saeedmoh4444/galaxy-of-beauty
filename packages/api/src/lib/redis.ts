@@ -54,6 +54,42 @@ export function isRedisAvailable(): boolean {
   return r !== null && (r.status === 'ready' || r.status === 'connecting');
 }
 
+// ── BullMQ Connection ──────────────────────────────
+
+let bullRedis: Redis | null = null;
+
+/**
+ * Get or create the dedicated BullMQ connection.
+ *
+ * BullMQ workers issue blocking commands (BRPOPLPUSH), which require
+ * `maxRetriesPerRequest: null` — the shared app client sets it to 2 for
+ * regular command resilience, so it must NEVER be passed to a Worker
+ * (BullMQ throws "Your redis options maxRetriesPerRequest must be null").
+ * Lazy-connect keeps construction side-effect free; BullMQ connects it.
+ */
+export function getRedisForBull(): Redis | null {
+  if (bullRedis && (bullRedis.status === 'ready' || bullRedis.status === 'connecting')) {
+    return bullRedis;
+  }
+
+  try {
+    const env = getEnv();
+    bullRedis = new Redis(env.REDIS_URL, {
+      maxRetriesPerRequest: null,
+      retryStrategy(times) {
+        // Keep retrying on the worker connection — jobs must not be lost
+        // because of a transient Redis blip.
+        return Math.min(times * 200, 5000);
+      },
+      lazyConnect: true,
+    });
+    return bullRedis;
+  } catch {
+    // Redis not configured — callers take their degraded path.
+    return null;
+  }
+}
+
 // ── Rate Limiting Helpers ──────────────────────────────────
 
 /**

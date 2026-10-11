@@ -10,7 +10,7 @@
  */
 
 import { Worker, type Job } from 'bullmq';
-import { getRedis } from '../lib/redis';
+import { getRedisForBull } from '../lib/redis';
 import {
   handleWalletJob,
   handleLoyaltyJob,
@@ -34,7 +34,7 @@ function createWorker(
   handler: (job: Job) => Promise<void>,
   concurrency = 2,
 ): Worker | null {
-  const redis = getRedis();
+  const redis = getRedisForBull();
   if (!redis) {
     console.warn(`[Worker] Redis unavailable — cannot create worker for "${queueName}"`);
     return null;
