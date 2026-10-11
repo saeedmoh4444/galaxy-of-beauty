@@ -51,6 +51,17 @@ export default function HomeScreen(): JSX.Element {
 
   const data = cats.data as unknown[] | undefined;
 
+  // Audit #10: secondary sections used to vanish silently when their
+  // queries failed — surface one compact retry row for all of them.
+  const secondaryFailed =
+    dailyTip.isError || compliments.isError || featuredQ.isError || seasonalQ.isError;
+  const refetchSecondary = () => {
+    dailyTip.refetch();
+    compliments.refetch();
+    featuredQ.refetch();
+    seasonalQ.refetch();
+  };
+
   return (
     <ScreenState
       isLoading={cats.isLoading}
@@ -107,6 +118,19 @@ export default function HomeScreen(): JSX.Element {
 
       {/* Community Stats Bar */}
       <View style={styles.statsRow}>
+        {secondaryFailed && (
+          <View style={styles.tipBar}>
+            <View style={styles.tipIcon}>
+              <Text style={styles.tipIconText}>!</Text>
+            </View>
+            <Text style={styles.tipText} numberOfLines={1}>
+              {t('mobile.home.load-error')}
+            </Text>
+            <TouchableOpacity onPress={refetchSecondary} activeOpacity={0.7}>
+              <Text style={styles.moreBtnText}>{t('mobile.core.retryButton')}</Text>
+            </TouchableOpacity>
+          </View>
+        )}
         {kindness?.data?.points !== undefined && (
           <View style={styles.statBadge}>
             <View style={styles.statIcon}>
