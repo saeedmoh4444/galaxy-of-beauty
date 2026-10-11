@@ -2,6 +2,22 @@ import type { JSX } from 'react';
 import { getServerCaller, serializeForClient } from '@/lib/server-trpc';
 import { SurpriseMeClient } from './SurpriseMeClient';
 import type { SurpriseMePageData } from './SurpriseMeClient';
+import { t } from '@galaxy/shared/i18n/web-server';
+import { pageMeta } from '@/lib/seo';
+import { getServerLocale } from '@/lib/i18n';
+import type { Metadata } from 'next';
+
+export async function generateMetadata(): Promise<Metadata> {
+  const locale = await getServerLocale();
+  return pageMeta({
+    locale,
+    titleAr: t('marketing.services.surprise-me', 'ar'),
+    titleEn: t('marketing.services.surprise-me', 'en'),
+    descriptionAr: t('seo.page-description', 'ar'),
+    descriptionEn: t('seo.page-description', 'en'),
+    path: '/services/surprise-me',
+  });
+}
 
 export default async function SurpriseMePage(): Promise<JSX.Element> {
   const data: SurpriseMePageData = { initialService: null };

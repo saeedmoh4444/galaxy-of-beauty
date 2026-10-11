@@ -2,6 +2,22 @@ import type { JSX } from 'react';
 import { notFound } from 'next/navigation';
 import { getServerCaller, serializeForClient } from '@/lib/server-trpc';
 import { EventDetailClient, type EventDetail } from './EventDetailClient';
+import { t } from '@galaxy/shared/i18n/web-server';
+import { pageMeta } from '@/lib/seo';
+import { getServerLocale } from '@/lib/i18n';
+import type { Metadata } from 'next';
+
+export async function generateMetadata(): Promise<Metadata> {
+  const locale = await getServerLocale();
+  return pageMeta({
+    locale,
+    titleAr: t('marketing.events.title', 'ar'),
+    titleEn: t('marketing.events.title', 'en'),
+    descriptionAr: t('seo.page-description', 'ar'),
+    descriptionEn: t('seo.page-description', 'en'),
+    path: '/events/[id]',
+  });
+}
 
 export default async function EventDetailPage({
   params,

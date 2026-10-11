@@ -4457,6 +4457,8 @@ export const enWebMessages: Record<string, string> = {
   'selfCare.title': 'Self Care',
   'selfCare.todayRating': "Today's rating",
   'selfCare.waterPlaceholder': 'Glasses of water',
+  'seo.page-description':
+    'Galaxy of Beauty — book home beauty services, shop products and boxes, and track your beauty journey',
   'serviceCompare.comparison': 'Comparison',
   'serviceCompare.duration': 'Duration',
   'serviceCompare.minutes': '{count} minutes',
