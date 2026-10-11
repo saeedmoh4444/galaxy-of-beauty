@@ -233,6 +233,20 @@ export default function BeautyDashboardScreen(): JSX.Element {
           ))}
 
           {/* 3.3 — proactive AI advisor insights */}
+          {advisor.isError && (
+            <View style={styles.advisorCard}>
+              <Text style={styles.advisorTitle}>✨ {t('beautyDashboard.advisor-title')}</Text>
+              <Text style={styles.advisorText}>{t('beautyDashboard.load-error')}</Text>
+              <TouchableOpacity
+                style={styles.advisorRow}
+                onPress={() => advisor.refetch()}
+                activeOpacity={0.7}
+              >
+                <Text style={styles.advisorHead}>{t('mobile.core.retryButton')}</Text>
+                <Text style={styles.advisorArrow}>›</Text>
+              </TouchableOpacity>
+            </View>
+          )}
           {advisorInsights.length > 0 && (
             <View style={styles.advisorCard}>
               <Text style={styles.advisorTitle}>✨ {t('beautyDashboard.advisor-title')}</Text>
