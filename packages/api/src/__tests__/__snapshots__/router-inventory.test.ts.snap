@@ -485,6 +485,7 @@ giftCards.listAll	query	admin
 giftCards.myCards	query	customer
 giftCards.purchase	mutation	customer
 giftCards.redeem	mutation	customer
+giftQuiz.giftGuides	query	public
 giftQuiz.questions	query	public
 giftQuiz.recommend	query	public
 giftRegistry.contribute	mutation	protected

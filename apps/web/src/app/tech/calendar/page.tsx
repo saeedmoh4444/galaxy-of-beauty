@@ -10,7 +10,6 @@ export default function TechCalendarPage(): JSX.Element {
   const { t } = useLocale();
   const { isAuthenticated } = useAuth();
   const status = api.calendar.status.useQuery(undefined, { enabled: isAuthenticated });
-  const connectMut = api.calendar.connect.useMutation({ onSuccess: () => status.refetch() });
   const disconnectMut = api.calendar.disconnect.useMutation({ onSuccess: () => status.refetch() });
   const syncMut = api.calendar.sync.useMutation({ onSuccess: () => status.refetch() });
 
@@ -73,17 +72,13 @@ export default function TechCalendarPage(): JSX.Element {
               </div>
               <h2 className="text-lg font-semibold">{t('tech.calendar.connect-title')}</h2>
               <p className="text-sm text-text-secondary">{t('tech.calendar.connect-desc')}</p>
-              <Button
-                onClick={() => connectMut.mutate({ authCode: 'stub-auth-code' })}
-                loading={connectMut.isPending}
-              >
+              {/* Audit #5 — the OAuth consent/callback flow is not wired yet;
+                  the button used to submit a hardcoded stub code that always
+                  failed the real token exchange. Disabled until it is. */}
+              <Button disabled title={t('tech.calendar.not-configured')}>
                 {t('tech.calendar.connect-button')}
               </Button>
-              {connectMut.isSuccess && (
-                <p className="text-sm text-green-600 dark:text-green-400">
-                  {connectMut.data?.message as string}
-                </p>
-              )}
+              <p className="text-xs text-text-tertiary">{t('tech.calendar.not-configured')}</p>
             </div>
           </Card>
         )}

@@ -81,7 +81,7 @@ describe('router inventory', () => {
           "admin": 222,
           "customer": 496,
           "protected": 103,
-          "public": 252,
+          "public": 253,
           "staff": 0,
           "technician": 41,
         },
