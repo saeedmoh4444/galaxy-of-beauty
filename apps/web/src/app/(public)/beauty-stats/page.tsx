@@ -4,6 +4,20 @@ import { Card, ServiceImage } from '@galaxy/ui';
 import { getServerLocale } from '@/lib/i18n';
 import { t } from '@galaxy/shared/i18n/web-server';
 import { pageHeroKey } from '@galaxy/shared';
+import { pageMeta } from '@/lib/seo';
+import type { Metadata } from 'next';
+
+export async function generateMetadata(): Promise<Metadata> {
+  const locale = await getServerLocale();
+  return pageMeta({
+    locale,
+    titleAr: t('marketing.beauty-stats.title', 'ar'),
+    titleEn: t('marketing.beauty-stats.title', 'en'),
+    descriptionAr: t('seo.page-description', 'ar'),
+    descriptionEn: t('seo.page-description', 'en'),
+    path: '/beauty-stats',
+  });
+}
 
 export default async function BeautyStatsPage(): Promise<JSX.Element> {
   const locale = await getServerLocale();

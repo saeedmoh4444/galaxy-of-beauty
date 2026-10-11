@@ -2,8 +2,22 @@ import type { JSX } from 'react';
 import { Card } from '@galaxy/ui';
 import { getServerLocale } from '@/lib/i18n';
 import { t } from '@galaxy/shared/i18n/web-server';
+import { pageMeta } from '@/lib/seo';
+import type { Metadata } from 'next';
 
 /** 6.2 PDPL — privacy policy (Arabic-first, plain language). */
+export async function generateMetadata(): Promise<Metadata> {
+  const locale = await getServerLocale();
+  return pageMeta({
+    locale,
+    titleAr: t('marketing.privacy.title', 'ar'),
+    titleEn: t('marketing.privacy.title', 'en'),
+    descriptionAr: t('seo.page-description', 'ar'),
+    descriptionEn: t('seo.page-description', 'en'),
+    path: '/privacy',
+  });
+}
+
 export default async function PrivacyPage(): Promise<JSX.Element> {
   const locale = await getServerLocale();
   return (

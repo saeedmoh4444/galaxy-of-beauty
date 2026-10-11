@@ -3863,6 +3863,11 @@ export const miscMessages = {
     ar: 'خصم يصل إلى ٦٠٪ — لا يمكن أن يقل سعر العرض عن ٤٠٪ من السعر الأصلي',
     en: 'Discount up to 60% — the deal price cannot go below 40% of the regular price',
   },
+  // SEO long tail — generic per-page description where no page-specific copy exists yet.
+  'seo.page-description': {
+    ar: 'منصة جالكسي بيوتي — احجزي خدمات التجميل المنزلية، تسوّقي المنتجات والصناديق، وتابعي رحلتكِ الجمالية',
+    en: 'Galaxy of Beauty — book home beauty services, shop products and boxes, and track your beauty journey',
+  },
   'vendorPortal.deals.price': { ar: 'سعر العرض (ر.س)', en: 'Deal price (SAR)' },
   'vendorPortal.deals.starts': { ar: 'يبدأ من', en: 'Starts at' },
   'vendorPortal.deals.ends': { ar: 'ينتهي عند', en: 'Ends at' },

@@ -4,6 +4,20 @@ import { ServiceDetailClient } from './ServiceDetailClient';
 import type { ServiceDetailData } from './ServiceDetailClient';
 import { getServerLocale } from '@/lib/i18n';
 import { t } from '@galaxy/shared/i18n/web-server';
+import { pageMeta } from '@/lib/seo';
+import type { Metadata } from 'next';
+
+export async function generateMetadata(): Promise<Metadata> {
+  const locale = await getServerLocale();
+  return pageMeta({
+    locale,
+    titleAr: t('marketing.services.title', 'ar'),
+    titleEn: t('marketing.services.title', 'en'),
+    descriptionAr: t('seo.page-description', 'ar'),
+    descriptionEn: t('seo.page-description', 'en'),
+    path: '/services/[id]',
+  });
+}
 
 export default async function ServiceDetailPage({
   params,

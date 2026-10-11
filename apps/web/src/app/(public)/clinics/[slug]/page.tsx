@@ -4,6 +4,20 @@ import { ClinicClient } from './ClinicClient';
 import type { ClinicPageData } from './ClinicClient';
 import { getServerLocale } from '@/lib/i18n';
 import { t } from '@galaxy/shared/i18n/web-server';
+import { pageMeta } from '@/lib/seo';
+import type { Metadata } from 'next';
+
+export async function generateMetadata(): Promise<Metadata> {
+  const locale = await getServerLocale();
+  return pageMeta({
+    locale,
+    titleAr: t('clinics.title', 'ar'),
+    titleEn: t('clinics.title', 'en'),
+    descriptionAr: t('seo.page-description', 'ar'),
+    descriptionEn: t('seo.page-description', 'en'),
+    path: '/clinics/[slug]',
+  });
+}
 
 export default async function ClinicPage({
   params,

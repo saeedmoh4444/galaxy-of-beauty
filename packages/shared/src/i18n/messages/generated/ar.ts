@@ -4389,6 +4389,8 @@ export const arWebMessages: Record<string, string> = {
   'selfCare.title': 'العناية الذاتية',
   'selfCare.todayRating': 'تقييمكِ اليوم',
   'selfCare.waterPlaceholder': 'أكواب الماء',
+  'seo.page-description':
+    'منصة جالكسي بيوتي — احجزي خدمات التجميل المنزلية، تسوّقي المنتجات والصناديق، وتابعي رحلتكِ الجمالية',
   'serviceCompare.comparison': 'المقارنة',
   'serviceCompare.duration': 'المدة',
   'serviceCompare.minutes': '{count} دقيقة',
