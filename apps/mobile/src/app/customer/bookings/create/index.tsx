@@ -16,6 +16,7 @@ import { MAX_LIST_SIZE } from '@galaxy/ui';
 import { localize } from '@galaxy/shared';
 import { useLocale } from '@/components/LocaleProvider';
 import { useToast } from '@/components/Toast';
+import { ScreenState } from '@/components/ScreenState';
 import { useHaptics } from '@/hooks/useHaptics';
 import { enqueueAction, isNetworkError } from '@/utils/offlineQueue';
 
@@ -346,6 +347,25 @@ export default function CreateBookingScreen() {
   };
 
   if (loading) return <ActivityIndicator color="#7c3aed" style={{ marginTop: 40 }} size="large" />;
+
+  // Audit #10: a failed services/addresses query used to render an empty
+  // booking form with no explanation — gate the primary queries.
+  if (servicesQ.isError || addressesQ.isError) {
+    return (
+      <ScreenState
+        isLoading={false}
+        isError
+        isEmpty={false}
+        errorMessage={t('mobile.bookings.load-error')}
+        onRetry={() => {
+          servicesQ.refetch();
+          addressesQ.refetch();
+        }}
+      >
+        {null}
+      </ScreenState>
+    );
+  }
 
   return (
     <ScrollView style={styles.container} contentContainerStyle={styles.inner}>
