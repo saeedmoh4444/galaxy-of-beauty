@@ -13,7 +13,7 @@
  */
 
 import { Queue, type JobsOptions } from 'bullmq';
-import { getRedis } from '../lib/redis';
+import { getRedisForBull } from '../lib/redis';
 
 // Default job options
 const defaultOpts: JobsOptions = {
@@ -24,7 +24,7 @@ const defaultOpts: JobsOptions = {
 };
 
 function createQueue(name: string): Queue {
-  const redis = getRedis();
+  const redis = getRedisForBull();
   if (!redis) {
     throw new Error(`Redis unavailable — cannot create queue "${name}"`);
   }
