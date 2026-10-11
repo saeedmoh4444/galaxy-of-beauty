@@ -50,34 +50,57 @@ export const subscriptionRouter = router({
         });
       }
 
+      // Money-integrity (audit gap #2): the plan is paid from the wallet —
+      // no wallet, no subscription.
+      const price = plan.priceMonthly.toNumber();
+      const wallet = await prisma.wallet.findUnique({ where: { userId: ctx.user.id } });
+      if (!wallet || Number(wallet.balance) < price) {
+        throw new TRPCError({ code: 'BAD_REQUEST', message: 'Insufficient wallet balance' });
+      }
+
       const expiresAt = new Date();
       expiresAt.setMonth(expiresAt.getMonth() + 1);
 
-      const subscription = await prisma.customerAiSubscription.upsert({
-        where: { userId: ctx.user.id },
-        create: {
-          userId: ctx.user.id,
-          planId: input.planId,
-          status: 'ACTIVE',
-          expiresAt,
-          autoRenew: input.autoRenew,
-        },
-        update: {
-          planId: input.planId,
-          status: 'ACTIVE',
-          expiresAt,
-          autoRenew: input.autoRenew,
-        },
-      });
+      return prisma.$transaction(async (tx) => {
+        await tx.wallet.update({
+          where: { id: wallet.id },
+          data: { balance: { decrement: price } },
+        });
+        await tx.walletTransaction.create({
+          data: {
+            walletId: wallet.id,
+            type: 'DEBIT',
+            source: 'SUBSCRIPTION_PURCHASE',
+            amount: price,
+            description: 'AI subscription purchase',
+          },
+        });
+        const subscription = await tx.customerAiSubscription.upsert({
+          where: { userId: ctx.user.id },
+          create: {
+            userId: ctx.user.id,
+            planId: input.planId,
+            status: 'ACTIVE',
+            expiresAt,
+            autoRenew: input.autoRenew,
+          },
+          update: {
+            planId: input.planId,
+            status: 'ACTIVE',
+            expiresAt,
+            autoRenew: input.autoRenew,
+          },
+        });
 
-      return {
-        id: subscription.id,
-        planId: subscription.planId,
-        status: subscription.status,
-        expiresAt: subscription.expiresAt,
-        autoRenew: subscription.autoRenew,
-        message: 'Subscription purchased successfully',
-      };
+        return {
+          id: subscription.id,
+          planId: subscription.planId,
+          status: subscription.status,
+          expiresAt: subscription.expiresAt,
+          autoRenew: subscription.autoRenew,
+          message: 'Subscription purchased successfully',
+        };
+      });
     }),
 
   getMySubscription: customerProcedure.query(async ({ ctx }) => {
