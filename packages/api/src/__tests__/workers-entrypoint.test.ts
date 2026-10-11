@@ -9,6 +9,7 @@ import { describe, it, expect, vi, beforeEach } from 'vitest';
 
 vi.mock('../lib/redis', () => ({
   getRedis: () => null,
+  getRedisForBull: () => null,
 }));
 
 // Import AFTER the mock — the module creates workers at import time.
