@@ -21,3 +21,6 @@ export { customerRetentionRouter } from '../../routers/customerRetention';
 export { technicianVerificationRouter } from '../../routers/technicianVerification';
 export { customerSegmentsRouter } from '../../routers/customerSegments';
 export { pricingAdminRouter } from '../../routers/pricingAdmin';
+export { beautyStatsRouter } from '../../routers/beautyStats';
+export { abTestRouter } from '../../routers/abTest';
+export { npsRouter } from '../../routers/nps';

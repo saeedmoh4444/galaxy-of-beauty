@@ -4,6 +4,20 @@ import { GymClient } from './GymClient';
 import type { GymPageData } from './GymClient';
 import { getServerLocale } from '@/lib/i18n';
 import { t } from '@galaxy/shared/i18n/web-server';
+import { pageMeta } from '@/lib/seo';
+import type { Metadata } from 'next';
+
+export async function generateMetadata(): Promise<Metadata> {
+  const locale = await getServerLocale();
+  return pageMeta({
+    locale,
+    titleAr: t('gyms.title', 'ar'),
+    titleEn: t('gyms.title', 'en'),
+    descriptionAr: t('seo.page-description', 'ar'),
+    descriptionEn: t('seo.page-description', 'en'),
+    path: '/gyms/[slug]',
+  });
+}
 
 export default async function GymPage({
   params,
