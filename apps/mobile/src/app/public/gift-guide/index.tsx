@@ -6,29 +6,25 @@ import { SkeletonList } from '@/components/SkeletonCard';
 import { trpc } from '@/lib/trpc-react';
 import { useLocale } from '@/components/LocaleProvider';
 
-// WIRING BUG (pre-existing): this screen calls giftQuiz.questions but
-// renders gift-guide fields (titleAr/occasionAr/…). The questions rows
-// only carry questionAr/questionEn/options, so every guide field renders
-// empty at runtime. The proper fix is a recommendations-list procedure
-// (giftQuizRecommendation has titleAr/occasionAr/priceRange/minPrice) —
-// tracked as a follow-up; this interface keeps the cast compiling until
-// then, with the question fields included for overlap.
+// Wired to giftQuiz.giftGuides (audit #5 fix) — the active recommendations
+// formatted for these cards. Previously the screen called giftQuiz.questions
+// and every guide field rendered empty.
 interface GiftGuide {
-  id?: string | number;
+  id?: number;
   emoji?: string;
-  titleAr?: string;
-  occasionAr?: string;
-  priceRange?: string;
-  minPrice?: number;
-  questionAr?: string;
-  questionEn?: string;
-  options?: Array<{ key: string; labelAr: string; labelEn: string; tags?: string[] }>;
+  nameAr?: string;
+  nameEn?: string;
+  descAr?: string;
+  descEn?: string;
+  price?: number;
+  category?: string;
+  tags?: string[];
 }
 
 export default function GiftGuideScreen(): JSX.Element {
-  const { t } = useLocale();
+  const { t, locale } = useLocale();
   const router = useRouter();
-  const guidesQ = trpc.giftQuiz.questions.useQuery();
+  const guidesQ = trpc.giftQuiz.giftGuides.useQuery();
 
   if (guidesQ.isLoading) return <SkeletonList count={4} />;
   if (guidesQ.isError)
@@ -62,13 +58,13 @@ export default function GiftGuideScreen(): JSX.Element {
       ) : (
         items.map((g) => (
           <View key={g.id} style={styles.card}>
-            <Text style={styles.guideEmoji}>{(g.emoji as string) ?? ''}</Text>
+            <Text style={styles.guideEmoji}>{g.emoji ?? ''}</Text>
             <View style={{ flex: 1 }}>
-              <Text style={styles.guideTitle}>{g.titleAr as string}</Text>
-              <Text style={styles.guideOccasion}>{g.occasionAr as string}</Text>
+              <Text style={styles.guideTitle}>{locale === 'en' ? g.nameEn : g.nameAr}</Text>
+              <Text style={styles.guideOccasion}>{locale === 'en' ? g.descEn : g.descAr}</Text>
               <Text style={styles.guidePrice}>
                 {t('mobile.public.gift-guide.from-price', {
-                  price: (g.priceRange as string) ?? (g.minPrice as number)?.toLocaleString() ?? '',
+                  price: g.price ? g.price.toLocaleString() : '',
                 })}
               </Text>
             </View>
