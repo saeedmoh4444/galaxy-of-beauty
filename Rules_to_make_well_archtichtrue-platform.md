@@ -2,7 +2,7 @@
 
 > The working rulebook for developing, improving, and enhancing this codebase.
 > Every rule below is load-bearing: it exists because something broke when it was ignored.
-> Updated: 2026-10-10 (post 13-PR wave: locale split, S5 analytics/promotions, zero-lint, SEO metadata, mobile skeletons).
+> Updated: 2026-10-11 (post audit-fix wave #413–#423: money-integrity wallet payments, error-state sweep, mobile gating, barrel sweep; queue-drain + snapshot-staging lessons added).
 
 ---
 
@@ -49,7 +49,7 @@ gh pr merge <n> --squash --delete-branch      # verify state == MERGED after (ex
 
 1. **New tRPC router** → new file in `routers/`, re-export in its `domains/<name>/index.ts`, and **bump the 266-router gate** in `trpc-procedures.test.ts`. Prefer adding procedures to an existing router over a new one.
 2. **Every new procedure** comes from a tiered factory (`publicProcedure`/`protectedProcedure`/`customerProcedure`/`technicianProcedure`/`adminProcedure`) — never a bare `procedure` (tier meta is stamped by the factory).
-3. **Router inventory ritual**: after adding/removing procedures, run `pnpm --dir packages/api exec vitest run src/__tests__/router-inventory.test.ts -u` **on a clean tree**, review the `.snap` diff (counts + hash), and never contaminate it with unrelated edits.
+3. **Router inventory ritual**: after adding/removing procedures, run `pnpm --dir packages/api exec vitest run src/__tests__/router-inventory.test.ts -u` **on a clean tree**, review the `.snap` diff (counts + hash), and never contaminate it with unrelated edits. **Regenerate BEFORE `git add`**: lint-staged prettier commits the STAGED content, so a file staged before `-u` commits the stale values (this shipped broken on #416 once). After staging, verify direction with `git diff --cached | grep '^[+-]'` — the diff must remove OLD counts/hash and add NEW. After a merge-conflict resolution, re-run `-u` on the resolved tree and stage only then.
 4. **Prisma 7 relations**: writes use `connect` (or `connectOrCreate`) — relation connects and FK scalars are mutually exclusive. Required relations on BOTH sides must be satisfied.
 5. **New gateway/external client** → a facade in `lib/` that is **fail-closed**: no config → throw or dev-stub (only when `*_SIMULATE=true` AND not production), never fake success. Test the failure paths.
 6. **i18n catalog split is an invariant** (see `docs/architecture/i18n-catalog-split.md`):
@@ -104,6 +104,11 @@ gh pr merge <n> --squash --delete-branch      # verify state == MERGED after (ex
 3. Merge policy: **merge only on full CI green**. If the branch is BEHIND master: `gh pr update-branch <n>` (merge mode), then `gh pr merge <n> --squash --delete-branch --auto` (policy requires fresh checks on the updated head — `--auto` queues it).
 4. Sweep-style multi-PR work: sequential slices, each merged before the next starts (prevents catalog/append conflicts).
 5. `gh pr merge` can exit 0 without merging — always verify `state == MERGED`.
+6. **Queue-drain operations (strict branch protection makes merges serial)**: each squash-merge advances master and re-BEHINDs every queued branch, so auto-merge re-runs full CI per PR — a 6-PR queue takes hours. To run it safely:
+   - Pre-check every pending merge with `git merge-tree --write-tree origin/master origin/<branch>` (exit 0 = clean; CWD-independent, no worktree churn). A CONFLICTING PR blocks the queue until resolved.
+   - Stalled OPEN+BEHIND with all-green checks → `gh pr update-branch <n>` (merge mode) nudges the engine.
+   - The auto-merge engine does NOT process strictly by enabledAt — a later CLEAN PR can merge first; expect the cascade, don't fight it.
+   - Watch with a **background Bash watcher** (exit 0 on all-MERGED, exit 1 on DIRTY/CLOSED/check-failure, auto-nudge BEHIND-with-no-running-checks stalls). The Monitor tool's shell cannot auth `gh` — don't use it for this.
 
 ## 7. Improvement & Enhancement Protocol (how to propose and land new work)
 
@@ -142,3 +147,8 @@ gh pr merge <n> --squash --delete-branch      # verify state == MERGED after (ex
 - The lint-staged prettier hook reformats generated i18n catalogs on commit — drift checks must compare semantically (import + deep-equal), never byte-equality.
 - Background `tsc` runs race your edits and report stale errors — re-run after any follow-up edit before trusting the result.
 - Creating a branch while another feature branch is checked out layers the commits — `gh pr create` then refuses ("must first push the current branch"): push with `HEAD:<right-name>` and create with `--head <right-name>`, or rebase with `git rebase --onto master <old-base> <branch>` (discard CRLF phantoms first — they block the rebase).
+- **`git merge --abort` (after a dry-run `merge --no-commit`) can leave stale working-tree content** (a post-abort file held pre-regeneration snapshot values) — always `git status --porcelain` after an abort and `git checkout -- <file>` if anything lingers.
+- **E2E logins failing mid-run is usually the bcrypt-under-load flake**, not your diff: parallel chromium + mobile-chrome workers hammer logins; early tests pass, later ones land on `/login`. Before blaming the diff, download the artifact (`gh run download <id> -n playwright-report`) and read the failing test's error-context `.md` — if the page snapshot shows the login page, it's the flake; a clean re-run (nudge first if BEHIND) is the fix.
+- `git worktree remove` on a worktree with node_modules → "Filename too long". `git config core.longpaths true` then retry; for a git-orphaned leftover dir, PowerShell `Remove-Item -Recurse -Force` (requires explicit user approval).
+- `rtk git log -1` can print a stale pre-merge head right after an ff-merge — verify with `git rev-parse HEAD` before trusting it.
+- `du -sh` over a node_modules tree can exceed a 2-minute tool timeout — background it.
