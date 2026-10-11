@@ -2,30 +2,52 @@
 import { useState } from 'react';
 import type { JSX } from 'react';
 import { api } from '@/lib/trpc';
-import { Card, CardSkeleton, Button, formatCurrency, useAuth } from '@galaxy/ui';
+import { Card, CardSkeleton, Button, formatCurrency, useAuth, ErrorAlert } from '@galaxy/ui';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
 import { useLocale } from '@/components/LocaleProvider';
 
 export default function TechWalletPage(): JSX.Element {
   const { t, locale } = useLocale();
   const { isAuthenticated } = useAuth();
-  const { data: wallet, isLoading } = api.wallet.getBalance.useQuery(undefined, {
+  const {
+    data: wallet,
+    isLoading,
+    isError,
+    refetch,
+  } = api.wallet.getBalance.useQuery(undefined, {
     enabled: isAuthenticated,
   }) as {
     data: Record<string, unknown> | undefined;
     isLoading: boolean;
+    isError: boolean;
+    refetch: () => void;
   };
-  const { data: txData } = api.wallet.getTransactions.useQuery(
-    { page: 1, limit: 30 },
-    { enabled: isAuthenticated },
-  ) as {
+  const {
+    data: txData,
+    isError: getTransactionsIsError,
+    refetch: refetchGetTransactions,
+  } = api.wallet.getTransactions.useQuery({ page: 1, limit: 30 }, { enabled: isAuthenticated }) as {
     data: Record<string, unknown> | undefined;
+    isError: boolean;
+    refetch: () => void;
   };
   const withdrawMut = api.wallet.withdraw.useMutation();
   const [amount, setAmount] = useState('');
   // wallet.getTransactions returns { transactions, pagination } — the
   // old `.items` read rendered an empty list forever.
   const transactions = (txData?.transactions as Array<Record<string, unknown>>) ?? [];
+
+  if (isError || getTransactionsIsError) {
+    return (
+      <ErrorAlert
+        message={t('state.error')}
+        onRetry={() => {
+          refetch();
+          refetchGetTransactions();
+        }}
+      />
+    );
+  }
 
   return (
     <DashboardLayout userRole="TECHNICIAN">

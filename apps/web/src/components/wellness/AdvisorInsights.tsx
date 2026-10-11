@@ -3,7 +3,7 @@
 import type { JSX } from 'react';
 import Link from 'next/link';
 import { api } from '@/lib/trpc';
-import { Card } from '@galaxy/ui';
+import { Card, ErrorAlert } from '@galaxy/ui';
 import { useLocale } from '@/components/LocaleProvider';
 import type { TranslationKey } from '@galaxy/shared';
 
@@ -22,8 +22,10 @@ const TYPE_LABELS: Record<string, string> = {
  */
 export function AdvisorInsights(): JSX.Element | null {
   const { t, locale } = useLocale();
-  const { data, isLoading } = api.beautyInsights.advisor.useQuery(undefined);
+  const { data, isLoading, isError, refetch } = api.beautyInsights.advisor.useQuery(undefined);
   const insights = (data as unknown as JsonRecord[]) ?? [];
+
+  if (isError) return <ErrorAlert message={t('state.error')} onRetry={() => refetch()} />;
 
   if (isLoading || insights.length === 0) return null;
 

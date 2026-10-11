@@ -2,21 +2,48 @@
 import { useState } from 'react';
 import type { JSX } from 'react';
 import { api } from '@/lib/trpc';
-import { Card, CardListSkeleton } from '@galaxy/ui';
+import { Card, CardListSkeleton, ErrorAlert } from '@galaxy/ui';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
 import { useLocale } from '@/components/LocaleProvider';
 
 export default function NightModePage(): JSX.Element {
   const { t } = useLocale();
-  const { data: routine, isLoading: rLoad } = api.nightMode.routine.useQuery() as {
+  const {
+    data: routine,
+    isLoading: rLoad,
+    isError,
+    refetch,
+  } = api.nightMode.routine.useQuery() as {
     data: Array<Record<string, unknown>> | undefined;
     isLoading: boolean;
+    isError: boolean;
+    refetch: () => void;
   };
-  const { data: tips } = api.nightMode.tips.useQuery() as { data: string[] | undefined };
+  const {
+    data: tips,
+    isError: tipsIsError,
+    refetch: refetchTips,
+  } = api.nightMode.tips.useQuery() as {
+    data: string[] | undefined;
+    isError: boolean;
+    refetch: () => void;
+  };
   const [checked, setChecked] = useState<Set<number>>(new Set());
 
   const steps = routine ?? [];
   const allTips = tips ?? [];
+
+  if (isError || tipsIsError) {
+    return (
+      <ErrorAlert
+        message={t('state.error')}
+        onRetry={() => {
+          refetch();
+          refetchTips();
+        }}
+      />
+    );
+  }
 
   return (
     <DashboardLayout userRole="CUSTOMER">

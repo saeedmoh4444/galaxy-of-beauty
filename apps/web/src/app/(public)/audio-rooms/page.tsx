@@ -1,7 +1,7 @@
 'use client';
 import type { JSX } from 'react';
 import { api } from '@/lib/trpc';
-import { Card, CardListSkeleton, Button, ServiceImage } from '@galaxy/ui';
+import { Card, CardListSkeleton, Button, ServiceImage, ErrorAlert } from '@galaxy/ui';
 import { useAuth } from '@galaxy/ui';
 import { useLocale } from '@/components/LocaleProvider';
 import { pageHeroKey } from '@galaxy/shared';
@@ -9,15 +9,19 @@ import { pageHeroKey } from '@galaxy/shared';
 export default function AudioRoomsPage(): JSX.Element {
   const { user } = useAuth();
   const { t, locale } = useLocale();
-  const { data, isLoading } = api.audioRooms.rooms.useQuery() as {
+  const { data, isLoading, isError, refetch } = api.audioRooms.rooms.useQuery() as {
     data:
       | { live: Array<Record<string, unknown>>; upcoming: Array<Record<string, unknown>> }
       | undefined;
     isLoading: boolean;
+    isError: boolean;
+    refetch: () => void;
   };
   const joinMut = api.audioRooms.join.useMutation();
   const live = data?.live ?? [];
   const upcoming = data?.upcoming ?? [];
+
+  if (isError) return <ErrorAlert message={t('state.error')} onRetry={() => refetch()} />;
 
   return (
     <div className="mx-auto max-w-2xl px-4 py-12">

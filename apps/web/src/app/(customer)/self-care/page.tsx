@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import type { JSX } from 'react';
 import { api } from '@/lib/trpc';
-import { Card, Button } from '@galaxy/ui';
+import { Card, Button, ErrorAlert } from '@galaxy/ui';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
 import { useToast } from '@galaxy/ui';
 import { useLocale } from '@/components/LocaleProvider';
@@ -32,8 +32,24 @@ export default function SelfCarePage(): JSX.Element {
       setNotes('');
     },
   });
-  const { data: history } = api.selfCare.history.useQuery({ days: 7 });
-  const { data: today } = api.selfCare.todayMood.useQuery();
+  const { data: history, isError, refetch } = api.selfCare.history.useQuery({ days: 7 });
+  const {
+    data: today,
+    isError: todayMoodIsError,
+    refetch: refetchTodayMood,
+  } = api.selfCare.todayMood.useQuery();
+
+  if (isError || todayMoodIsError) {
+    return (
+      <ErrorAlert
+        message={t('state.error')}
+        onRetry={() => {
+          refetch();
+          refetchTodayMood();
+        }}
+      />
+    );
+  }
 
   return (
     <DashboardLayout userRole="CUSTOMER">

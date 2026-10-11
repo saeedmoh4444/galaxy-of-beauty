@@ -2,7 +2,7 @@
 import { useState } from 'react';
 import type { JSX } from 'react';
 import { api } from '@/lib/trpc';
-import { Card, CardListSkeleton, Button, ServiceImage } from '@galaxy/ui';
+import { Card, CardListSkeleton, Button, ServiceImage, ErrorAlert } from '@galaxy/ui';
 import { pageHeroKey } from '@galaxy/shared';
 import Link from 'next/link';
 import { useLocale } from '@/components/LocaleProvider';
@@ -12,8 +12,14 @@ export default function ServiceRecommenderPage(): JSX.Element {
   const [step, setStep] = useState(0);
   const [answers, setAnswers] = useState<Record<string, string>>({});
   const [searchAnswers, setSearchAnswers] = useState<Record<string, string> | null>(null);
-  const { data: questions } = api.serviceRecommender.questions.useQuery() as {
+  const {
+    data: questions,
+    isError,
+    refetch,
+  } = api.serviceRecommender.questions.useQuery() as {
     data: Array<Record<string, unknown>> | undefined;
+    isError: boolean;
+    refetch: () => void;
   };
   const { data: results, isLoading } = api.serviceRecommender.recommend.useQuery(
     { answers: searchAnswers ?? {} },
@@ -31,6 +37,8 @@ export default function ServiceRecommenderPage(): JSX.Element {
   };
 
   const recs = results ?? [];
+
+  if (isError) return <ErrorAlert message={t('state.error')} onRetry={() => refetch()} />;
 
   return (
     <div className="mx-auto max-w-3xl px-4 py-12">

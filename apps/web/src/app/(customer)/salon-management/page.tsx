@@ -2,18 +2,29 @@
 import { useState } from 'react';
 import type { JSX } from 'react';
 import { api } from '@/lib/trpc';
-import { Card, Button, Modal, formatCurrency } from '@galaxy/ui';
+import { Card, Button, Modal, formatCurrency, ErrorAlert } from '@galaxy/ui';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
 import { useLocale } from '@/components/LocaleProvider';
 
 export default function SalonManagementPage(): JSX.Element {
   const { t } = useLocale();
-  const { data: dash } = api.salonManagement.dashboard.useQuery() as {
+  const {
+    data: dash,
+    isError,
+    refetch: refetchDashboard,
+  } = api.salonManagement.dashboard.useQuery() as {
     data: Record<string, unknown> | undefined;
+    isError: boolean;
+    refetch: () => void;
   };
-  const { data: staff, refetch } = api.salonManagement.staff.useQuery() as {
+  const {
+    data: staff,
+    refetch,
+    isError: staffIsError,
+  } = api.salonManagement.staff.useQuery() as {
     data: Array<Record<string, unknown>> | undefined;
     refetch: () => void;
+    isError: boolean;
   };
   const addMut = api.salonManagement.addStaff.useMutation({
     onSuccess: () => {
@@ -28,6 +39,18 @@ export default function SalonManagementPage(): JSX.Element {
   const [role, setRole] = useState('');
 
   const s = staff ?? [];
+
+  if (isError || staffIsError) {
+    return (
+      <ErrorAlert
+        message={t('state.error')}
+        onRetry={() => {
+          refetchDashboard();
+          refetch();
+        }}
+      />
+    );
+  }
 
   return (
     <DashboardLayout userRole="CUSTOMER">

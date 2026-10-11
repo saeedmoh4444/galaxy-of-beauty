@@ -2,26 +2,52 @@
 import { useState } from 'react';
 import type { JSX } from 'react';
 import { api } from '@/lib/trpc';
-import { Card, CardListSkeleton, GridSkeleton, useAuth } from '@galaxy/ui';
+import { Card, CardListSkeleton, GridSkeleton, useAuth, ErrorAlert } from '@galaxy/ui';
 import { useLocale } from '@/components/LocaleProvider';
 import { localize } from '@galaxy/shared';
 
 export default function AdminCmsPage(): JSX.Element {
   const { t, locale } = useLocale();
   const { isAuthenticated } = useAuth();
-  const { data: categories, isLoading: catLoading } = api.cms.listCategories.useQuery(undefined, {
+  const {
+    data: categories,
+    isLoading: catLoading,
+    isError,
+    refetch,
+  } = api.cms.listCategories.useQuery(undefined, {
     enabled: isAuthenticated,
   }) as {
     data: Array<Record<string, unknown>> | undefined;
     isLoading: boolean;
+    isError: boolean;
+    refetch: () => void;
   };
-  const { data: services, isLoading: svcLoading } = api.cms.listServices.useQuery(undefined, {
+  const {
+    data: services,
+    isLoading: svcLoading,
+    isError: listServicesIsError,
+    refetch: refetchListServices,
+  } = api.cms.listServices.useQuery(undefined, {
     enabled: isAuthenticated,
   }) as {
     data: Array<Record<string, unknown>> | undefined;
     isLoading: boolean;
+    isError: boolean;
+    refetch: () => void;
   };
   const [tab, setTab] = useState<'categories' | 'services'>('categories');
+
+  if (isError || listServicesIsError) {
+    return (
+      <ErrorAlert
+        message={t('state.error')}
+        onRetry={() => {
+          refetch();
+          refetchListServices();
+        }}
+      />
+    );
+  }
 
   return (
     <>

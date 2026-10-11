@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import type { JSX } from 'react';
 import { api } from '@/lib/trpc';
-import { Card, Button, formatCurrency } from '@galaxy/ui';
+import { Card, Button, formatCurrency, ErrorAlert } from '@galaxy/ui';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
 import { useLocale } from '@/components/LocaleProvider';
 import Link from 'next/link';
@@ -36,8 +36,14 @@ export default function HomeServicePage(): JSX.Element {
   const [requested, setRequested] = useState<Record<string, unknown> | null>(null);
   const [error, setError] = useState('');
 
-  const { data: estimate } = api.homeService.estimate.useQuery({ city }) as {
+  const {
+    data: estimate,
+    isError,
+    refetch,
+  } = api.homeService.estimate.useQuery({ city }) as {
     data: Record<string, unknown> | undefined;
+    isError: boolean;
+    refetch: () => void;
   };
   const requestMut = api.homeService.request.useMutation({
     onSuccess: (data) => {
@@ -67,6 +73,8 @@ export default function HomeServicePage(): JSX.Element {
       notes: notes.trim() || undefined,
     });
   };
+
+  if (isError) return <ErrorAlert message={t('state.error')} onRetry={() => refetch()} />;
 
   return (
     <DashboardLayout userRole="CUSTOMER">

@@ -1,13 +1,18 @@
 'use client';
 import type { JSX } from 'react';
 import { api } from '@/lib/trpc';
-import { Card, CardListSkeleton, Button } from '@galaxy/ui';
+import { Card, CardListSkeleton, Button, ErrorAlert } from '@galaxy/ui';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
 import { useLocale } from '@/components/LocaleProvider';
 
 export default function GeofenceOffersPage(): JSX.Element {
   const { t } = useLocale();
-  const { data: offers, isLoading } = api.geofenceOffers.nearMe.useQuery({
+  const {
+    data: offers,
+    isLoading,
+    isError,
+    refetch,
+  } = api.geofenceOffers.nearMe.useQuery({
     city: 'الرياض',
   });
   // No customer-facing opt-in procedure exists in the API (only the admin
@@ -16,6 +21,8 @@ export default function GeofenceOffersPage(): JSX.Element {
   const optInMut = (api as any).geofenceOffers.optIn.useMutation();
 
   const items = offers ?? [];
+
+  if (isError) return <ErrorAlert message={t('state.error')} onRetry={() => refetch()} />;
 
   return (
     <DashboardLayout userRole="CUSTOMER">

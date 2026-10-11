@@ -1,7 +1,7 @@
 'use client';
 import type { JSX } from 'react';
 import { api } from '@/lib/trpc';
-import { Card, GridSkeleton, Button, formatCurrency, ServiceImage } from '@galaxy/ui';
+import { Card, GridSkeleton, Button, formatCurrency, ServiceImage, ErrorAlert } from '@galaxy/ui';
 import { useAuth } from '@galaxy/ui';
 import { useLocale } from '@/components/LocaleProvider';
 import { pageHeroKey } from '@galaxy/shared';
@@ -9,12 +9,16 @@ import { pageHeroKey } from '@galaxy/shared';
 export default function GroupBuyPage(): JSX.Element {
   const { user } = useAuth();
   const { t } = useLocale();
-  const { data, isLoading } = api.groupBuy.deals.useQuery() as {
+  const { data, isLoading, isError, refetch } = api.groupBuy.deals.useQuery() as {
     data: Array<Record<string, unknown>> | undefined;
     isLoading: boolean;
+    isError: boolean;
+    refetch: () => void;
   };
   const joinMut = api.groupBuy.join.useMutation();
   const deals = data ?? [];
+
+  if (isError) return <ErrorAlert message={t('state.error')} onRetry={() => refetch()} />;
 
   return (
     <div className="mx-auto max-w-4xl px-4 py-12">

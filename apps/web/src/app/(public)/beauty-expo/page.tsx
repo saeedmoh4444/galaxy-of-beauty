@@ -1,17 +1,21 @@
 'use client';
 import type { JSX } from 'react';
 import { api } from '@/lib/trpc';
-import { Card, GridSkeleton, ServiceImage } from '@galaxy/ui';
+import { Card, GridSkeleton, ServiceImage, ErrorAlert } from '@galaxy/ui';
 import { useLocale } from '@/components/LocaleProvider';
 import { pageHeroKey } from '@galaxy/shared';
 
 export default function BeautyExpoPage(): JSX.Element {
   const { t } = useLocale();
-  const { data, isLoading } = api.beautyExpo.booths.useQuery() as {
+  const { data, isLoading, isError, refetch } = api.beautyExpo.booths.useQuery() as {
     data: Array<Record<string, unknown>> | undefined;
     isLoading: boolean;
+    isError: boolean;
+    refetch: () => void;
   };
   const booths = data ?? [];
+
+  if (isError) return <ErrorAlert message={t('state.error')} onRetry={() => refetch()} />;
 
   return (
     <div className="mx-auto max-w-5xl px-4 py-12">

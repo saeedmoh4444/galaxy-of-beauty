@@ -2,7 +2,15 @@
 import { useState } from 'react';
 import type { JSX } from 'react';
 import { api } from '@/lib/trpc';
-import { Card, CardListSkeleton, Button, Input, formatCurrency, useAuth } from '@galaxy/ui';
+import {
+  Card,
+  CardListSkeleton,
+  Button,
+  Input,
+  formatCurrency,
+  useAuth,
+  ErrorAlert,
+} from '@galaxy/ui';
 import { localize } from '@galaxy/shared';
 import { useLocale } from '@/components/LocaleProvider';
 
@@ -10,18 +18,30 @@ export default function AdminFlashDealsPage(): JSX.Element {
   const { t, locale } = useLocale();
   const { isAuthenticated } = useAuth();
   // Gated per the 2026-09-06 sweep (stale logged-out tabs).
-  const { data: active, isLoading } = api.flashDeals.active.useQuery(undefined, {
+  const {
+    data: active,
+    isLoading,
+    isError,
+    refetch: refetchActive,
+  } = api.flashDeals.active.useQuery(undefined, {
     enabled: isAuthenticated,
   }) as {
     data: Array<Record<string, unknown>> | undefined;
     isLoading: boolean;
+    isError: boolean;
+    refetch: () => void;
   };
   // Audit gap: the create form submitted hardcoded demo ids (1-6) as real
   // service ids. Use the real catalog instead.
-  const { data: servicesData } = api.services.list.useQuery(
-    { limit: 100 },
-    { enabled: isAuthenticated },
-  ) as { data: unknown };
+  const {
+    data: servicesData,
+    isError: listIsError,
+    refetch: refetchList,
+  } = api.services.list.useQuery({ limit: 100 }, { enabled: isAuthenticated }) as {
+    data: unknown;
+    isError: boolean;
+    refetch: () => void;
+  };
   const services = ((servicesData as { items?: Array<Record<string, unknown>> } | undefined)
     ?.items ?? []) as Array<Record<string, unknown>>;
   const createMut = api.flashDeals.create.useMutation();
@@ -31,17 +51,33 @@ export default function AdminFlashDealsPage(): JSX.Element {
   const [maxRedemptions, setMax] = useState(20);
 
   // B.7 — provider promotion proposals review queue.
-  const { data: pendingData, refetch: refetchQueue } = api.providerReview.list.useQuery(
+  const {
+    data: pendingData,
+    refetch: refetchQueue,
+    isError: isError2,
+  } = api.providerReview.list.useQuery(
     { kind: 'promotion', status: 'PENDING_REVIEW' },
     { enabled: isAuthenticated },
-  ) as { data: { items: Array<Record<string, unknown>> } | undefined; refetch: () => void };
+  ) as {
+    data: { items: Array<Record<string, unknown>> } | undefined;
+    refetch: () => void;
+    isError: boolean;
+  };
   const pendingSubs = pendingData?.items ?? [];
 
   // Store plan Phase 4b — store product-deal proposals (same queue).
-  const { data: storeDealData, refetch: refetchStoreDeals } = api.providerReview.list.useQuery(
+  const {
+    data: storeDealData,
+    refetch: refetchStoreDeals,
+    isError: isError3,
+  } = api.providerReview.list.useQuery(
     { kind: 'store_promotion', status: 'PENDING_REVIEW' },
     { enabled: isAuthenticated },
-  ) as { data: { items: Array<Record<string, unknown>> } | undefined; refetch: () => void };
+  ) as {
+    data: { items: Array<Record<string, unknown>> } | undefined;
+    refetch: () => void;
+    isError: boolean;
+  };
   const pendingStoreDeals = storeDealData?.items ?? [];
 
   const [rejectNotes, setRejectNotes] = useState<Record<number, string>>({});
@@ -51,6 +87,20 @@ export default function AdminFlashDealsPage(): JSX.Element {
       refetchStoreDeals();
     },
   });
+
+  if (isError || listIsError || isError2 || isError3) {
+    return (
+      <ErrorAlert
+        message={t('state.error')}
+        onRetry={() => {
+          refetchActive();
+          refetchList();
+          refetchQueue();
+          refetchStoreDeals();
+        }}
+      />
+    );
+  }
 
   return (
     <>

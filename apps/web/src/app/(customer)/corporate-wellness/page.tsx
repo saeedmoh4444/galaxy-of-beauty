@@ -3,7 +3,7 @@
 import { api } from '@/lib/trpc';
 import { useState } from 'react';
 import type { JSX } from 'react';
-import { PageContainer, PageTitle, Card } from '@galaxy/ui';
+import { PageContainer, PageTitle, Card, ErrorAlert } from '@galaxy/ui';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
 import { useLocale } from '@/components/LocaleProvider';
 
@@ -37,6 +37,18 @@ export default function CorporateWellnessPage(): JSX.Element {
 
   const items = plans?.data ?? [];
   const enquiryItems = enquiries?.data ?? [];
+
+  if (plans.isError || enquiries.isError) {
+    return (
+      <ErrorAlert
+        message={t('state.error')}
+        onRetry={() => {
+          plans.refetch();
+          enquiries.refetch();
+        }}
+      />
+    );
+  }
 
   return (
     <DashboardLayout userRole="CUSTOMER">

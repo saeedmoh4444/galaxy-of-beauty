@@ -19,6 +19,7 @@ import {
   TaxHelperCard,
   MicroLoanBadge,
   BeautySavingsGoal,
+  ErrorAlert,
 } from '@galaxy/ui';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
 import { useLocale } from '@/components/LocaleProvider';
@@ -27,6 +28,18 @@ export default function BeautyLifestylePage(): JSX.Element {
   const { t } = useLocale();
   const loyalty = api.loyalty.myAccount.useQuery();
   const budget = api.beautyBudget.get.useQuery();
+  if (loyalty.isError || budget.isError) {
+    return (
+      <ErrorAlert
+        message={t('state.error')}
+        onRetry={() => {
+          loyalty.refetch();
+          budget.refetch();
+        }}
+      />
+    );
+  }
+
   return (
     <DashboardLayout userRole="CUSTOMER">
       <PageContainer width="wide">

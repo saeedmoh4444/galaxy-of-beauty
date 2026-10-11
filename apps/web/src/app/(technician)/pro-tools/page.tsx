@@ -14,6 +14,7 @@ import {
   SheLeadsBadge,
   SheLeadsProgramCard,
   BeautyRewardsCard,
+  ErrorAlert,
 } from '@galaxy/ui';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
 import { useLocale } from '@/components/LocaleProvider';
@@ -53,6 +54,10 @@ export default function ProToolsPage(): JSX.Element {
   const crm = legacyApi.technicians?.myStats?.useQuery?.();
   const earnings = api.technicianEarnings.summary.useQuery();
   const pricing = legacyApi.pricingCoach?.suggestions?.useQuery?.();
+
+  if (earnings.isError) {
+    return <ErrorAlert message={t('state.error')} onRetry={() => earnings.refetch()} />;
+  }
 
   return (
     <DashboardLayout userRole="TECHNICIAN">

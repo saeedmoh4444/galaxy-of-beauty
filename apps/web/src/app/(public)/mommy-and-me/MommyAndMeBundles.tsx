@@ -2,7 +2,7 @@
 
 import type { JSX } from 'react';
 import Link from 'next/link';
-import { Card, Button, GridSkeleton } from '@galaxy/ui';
+import { Card, Button, GridSkeleton, ErrorAlert } from '@galaxy/ui';
 import { api } from '@/lib/trpc';
 import { useLocale } from '@/components/LocaleProvider';
 import { localize } from '@galaxy/shared';
@@ -16,6 +16,10 @@ const BUNDLE_EMOJI = ['💅', '💇', '🧖', '👰'];
 export function MommyAndMeBundles(): JSX.Element {
   const { t, locale } = useLocale();
   const bundlesQ = api.bundles.list.useQuery();
+
+  if (bundlesQ.isError) {
+    return <ErrorAlert message={t('state.error')} onRetry={() => bundlesQ.refetch()} />;
+  }
 
   if (bundlesQ.isLoading) {
     return <GridSkeleton count={4} />;

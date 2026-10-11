@@ -3,7 +3,7 @@
 import { useEffect, useState } from 'react';
 import type { JSX } from 'react';
 import { api } from '@/lib/trpc';
-import { Card, CardListSkeleton } from '@galaxy/ui';
+import { Card, CardListSkeleton, ErrorAlert } from '@galaxy/ui';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
 import { useLocale } from '@/components/LocaleProvider';
 import type { TranslationKey } from '@galaxy/shared';
@@ -50,7 +50,7 @@ const TOGGLES: { key: string; label: TranslationKey; desc: TranslationKey }[] = 
 export default function NotificationSettingsPage(): JSX.Element {
   const { t } = useLocale();
   const { addToast } = useToast();
-  const { data, isLoading, refetch } = api.notificationPrefs.get.useQuery();
+  const { data, isLoading, refetch, isError } = api.notificationPrefs.get.useQuery();
   const updateMut = api.notificationPrefs.update.useMutation({
     onSuccess: () => {
       refetch();
@@ -60,7 +60,11 @@ export default function NotificationSettingsPage(): JSX.Element {
   const [prefs, setPrefs] = useState<Record<string, boolean>>({});
 
   // ── 6.2 PDPL — consent records ──────────────────────────
-  const { data: consentData, refetch: refetchConsents } = api.users.consent.mine.useQuery();
+  const {
+    data: consentData,
+    refetch: refetchConsents,
+    isError: mineIsError,
+  } = api.users.consent.mine.useQuery();
   const consents = (consentData ?? []) as Array<{
     type: string;
     granted: boolean;
@@ -85,6 +89,18 @@ export default function NotificationSettingsPage(): JSX.Element {
     setPrefs(updated);
     updateMut.mutate({ [key]: updated[key] });
   };
+
+  if (isError || mineIsError) {
+    return (
+      <ErrorAlert
+        message={t('state.error')}
+        onRetry={() => {
+          refetch();
+          refetchConsents();
+        }}
+      />
+    );
+  }
 
   return (
     <DashboardLayout userRole="CUSTOMER">

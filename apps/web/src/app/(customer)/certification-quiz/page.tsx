@@ -2,7 +2,7 @@
 import { useState } from 'react';
 import type { JSX } from 'react';
 import { api } from '@/lib/trpc';
-import { Card, CardListSkeleton, Button, useAuth } from '@galaxy/ui';
+import { Card, CardListSkeleton, Button, useAuth, ErrorAlert } from '@galaxy/ui';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
 import { useLocale } from '@/components/LocaleProvider';
 
@@ -11,9 +11,16 @@ export default function CertificationQuizPage(): JSX.Element {
   // /certification-quiz is not middleware-protected — gate the protected
   // certificates query on auth so anonymous visitors don't 401 + bounce.
   const { isAuthenticated, isLoading: authLoading } = useAuth();
-  const { data: quizzes, isLoading } = api.certificationQuiz.quizzes.useQuery() as {
+  const {
+    data: quizzes,
+    isLoading,
+    isError,
+    refetch,
+  } = api.certificationQuiz.quizzes.useQuery() as {
     data: Array<Record<string, unknown>> | undefined;
     isLoading: boolean;
+    isError: boolean;
+    refetch: () => void;
   };
   const { data: certs } = api.certificationQuiz.myCertificates.useQuery(undefined, {
     enabled: !authLoading && isAuthenticated,
@@ -33,6 +40,8 @@ export default function CertificationQuizPage(): JSX.Element {
   const qs = (quizzes ?? []) as Array<Record<string, unknown>>;
   const questions = (quiz?.questions ?? []) as Array<Record<string, unknown>>;
   const myCerts = (certs ?? []) as Array<Record<string, unknown>>;
+
+  if (isError) return <ErrorAlert message={t('state.error')} onRetry={() => refetch()} />;
 
   return (
     <DashboardLayout userRole="CUSTOMER">

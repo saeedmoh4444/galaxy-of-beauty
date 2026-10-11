@@ -2,7 +2,7 @@
 import { useState } from 'react';
 import type { JSX } from 'react';
 import { api } from '@/lib/trpc';
-import { Card, GridSkeleton, Button, Modal, ServiceImage } from '@galaxy/ui';
+import { Card, GridSkeleton, Button, Modal, ServiceImage, ErrorAlert } from '@galaxy/ui';
 import { pageHeroKey } from '@galaxy/shared';
 import { useAuth } from '@galaxy/ui';
 import { useLocale } from '@/components/LocaleProvider';
@@ -10,9 +10,14 @@ import { useLocale } from '@/components/LocaleProvider';
 export default function VideoTestimonialsPage(): JSX.Element {
   const { user } = useAuth();
   const { t } = useLocale();
-  const { data, isLoading } = api.videoTestimonials.feed.useQuery({ page: 1, limit: 12 }) as {
+  const { data, isLoading, isError, refetch } = api.videoTestimonials.feed.useQuery({
+    page: 1,
+    limit: 12,
+  }) as {
     data: { items: Array<Record<string, unknown>> } | undefined;
     isLoading: boolean;
+    isError: boolean;
+    refetch: () => void;
   };
   const submitMut = api.videoTestimonials.submit.useMutation();
   const [show, setShow] = useState(false);
@@ -23,6 +28,8 @@ export default function VideoTestimonialsPage(): JSX.Element {
   const [svcName, setSvcName] = useState('');
 
   const items = data?.items ?? [];
+
+  if (isError) return <ErrorAlert message={t('state.error')} onRetry={() => refetch()} />;
 
   return (
     <div className="mx-auto max-w-4xl px-4 py-12">

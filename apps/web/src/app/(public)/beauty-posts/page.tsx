@@ -4,7 +4,14 @@ import { useEffect, useState } from 'react';
 import type { JSX } from 'react';
 import Link from 'next/link';
 import { api } from '@/lib/trpc';
-import { CardListSkeleton, EmptyState, VerifiedBadge, useAuth, useToast } from '@galaxy/ui';
+import {
+  CardListSkeleton,
+  EmptyState,
+  VerifiedBadge,
+  useAuth,
+  useToast,
+  ErrorAlert,
+} from '@galaxy/ui';
 import { useLocale } from '@/components/LocaleProvider';
 
 type PostRow = {
@@ -39,7 +46,7 @@ export default function BeautyPostsPage(): JSX.Element {
   const { t, locale } = useLocale();
   const { isAuthenticated } = useAuth();
   const { addToast } = useToast();
-  const { data, isLoading, refetch } = api.beautyPosts.feed.useQuery(undefined, {
+  const { data, isLoading, refetch, isError } = api.beautyPosts.feed.useQuery(undefined, {
     refetchOnWindowFocus: false,
   });
   const likeMut = api.beautyPosts.like.useMutation({ onSuccess: () => refetch() });
@@ -66,6 +73,8 @@ export default function BeautyPostsPage(): JSX.Element {
     for (const id of queue) viewedMut.mutate({ postId: id });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [posts.length]);
+
+  if (isError) return <ErrorAlert message={t('state.error')} onRetry={() => refetch()} />;
 
   return (
     <div className="mx-auto max-w-xl px-4 py-12">
@@ -241,7 +250,7 @@ function PostComments({
   onSubmit: () => void;
 }): JSX.Element {
   const { t } = useLocale();
-  const { data } = api.beautyPosts.comments.useQuery({ postId });
+  const { data, isError, refetch } = api.beautyPosts.comments.useQuery({ postId });
   const comments =
     (data as unknown as Array<{
       id: number;
@@ -249,6 +258,8 @@ function PostComments({
       author: { name: string };
       createdAt: string;
     }>) ?? [];
+
+  if (isError) return <ErrorAlert message={t('state.error')} onRetry={() => refetch()} />;
 
   return (
     <div className="space-y-2">

@@ -23,6 +23,7 @@ import {
   PriceAlertBadge,
   LayawayBadge,
   SubscriptionGiftCard,
+  ErrorAlert,
 } from '@galaxy/ui';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
 import { useLocale } from '@/components/LocaleProvider';
@@ -30,6 +31,10 @@ import { useLocale } from '@/components/LocaleProvider';
 export default function BeautyServicesPage(): JSX.Element {
   const { t } = useLocale();
   const loyalty = api.loyalty.myAccount.useQuery();
+
+  if (loyalty.isError) {
+    return <ErrorAlert message={t('state.error')} onRetry={() => loyalty.refetch()} />;
+  }
 
   return (
     <DashboardLayout userRole="CUSTOMER">

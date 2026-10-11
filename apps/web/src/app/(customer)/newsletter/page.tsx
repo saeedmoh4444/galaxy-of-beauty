@@ -2,21 +2,30 @@
 import { useState } from 'react';
 import type { JSX } from 'react';
 import { api } from '@/lib/trpc';
-import { Card, CardListSkeleton, Button } from '@galaxy/ui';
+import { Card, CardListSkeleton, Button, ErrorAlert } from '@galaxy/ui';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
 import { useLocale } from '@/components/LocaleProvider';
 
 export default function NewsletterPage(): JSX.Element {
   const { t } = useLocale();
-  const { data: issues, isLoading } = api.newsletter.issues.useQuery() as {
+  const {
+    data: issues,
+    isLoading,
+    isError,
+    refetch,
+  } = api.newsletter.issues.useQuery() as {
     data: Array<Record<string, unknown>> | undefined;
     isLoading: boolean;
+    isError: boolean;
+    refetch: () => void;
   };
   const subscribeMut = api.newsletter.subscribe.useMutation();
   const [email, setEmail] = useState('');
   const [subscribed, setSubscribed] = useState(false);
 
   const list = issues ?? [];
+
+  if (isError) return <ErrorAlert message={t('state.error')} onRetry={() => refetch()} />;
 
   return (
     <DashboardLayout userRole="CUSTOMER">

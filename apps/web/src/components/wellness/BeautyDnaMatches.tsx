@@ -2,7 +2,7 @@
 
 import type { JSX } from 'react';
 import { api } from '@/lib/trpc';
-import { Card } from '@galaxy/ui';
+import { Card, ErrorAlert } from '@galaxy/ui';
 import { useLocale } from '@/components/LocaleProvider';
 import type { TranslationKey } from '@galaxy/shared';
 
@@ -75,6 +75,19 @@ export function BeautyDnaMatches(): JSX.Element {
   const skinMatches = (skin.matches as Array<JsonRecord>) ?? [];
   const hairMatches = (hair.matches as Array<JsonRecord>) ?? [];
   const fragranceMatches = (fragrance.matches as Array<JsonRecord>) ?? [];
+
+  if (skinQ.isError || hairQ.isError || fragranceQ.isError) {
+    return (
+      <ErrorAlert
+        message={t('state.error')}
+        onRetry={() => {
+          skinQ.refetch();
+          hairQ.refetch();
+          fragranceQ.refetch();
+        }}
+      />
+    );
+  }
 
   return (
     <div className="space-y-6">

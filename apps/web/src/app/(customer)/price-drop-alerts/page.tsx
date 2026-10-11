@@ -3,18 +3,29 @@
 import { useState } from 'react';
 import type { JSX } from 'react';
 import { api } from '@/lib/trpc';
-import { Card, Button, Modal, formatCurrency } from '@galaxy/ui';
+import { Card, Button, Modal, formatCurrency, ErrorAlert } from '@galaxy/ui';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
 import { useLocale } from '@/components/LocaleProvider';
 
 export default function PriceDropAlertsPage(): JSX.Element {
   const { t } = useLocale();
-  const { data: tracked } = api.priceDropAlerts.tracked.useQuery() as {
+  const {
+    data: tracked,
+    isError,
+    refetch: refetchTracked,
+  } = api.priceDropAlerts.tracked.useQuery() as {
     data: Array<Record<string, unknown>> | undefined;
+    isError: boolean;
+    refetch: () => void;
   };
-  const { data: myAlerts, refetch } = api.priceDropAlerts.myAlerts.useQuery() as {
+  const {
+    data: myAlerts,
+    refetch,
+    isError: myAlertsIsError,
+  } = api.priceDropAlerts.myAlerts.useQuery() as {
     data: Array<Record<string, unknown>> | undefined;
     refetch: () => void;
+    isError: boolean;
   };
   const createMut = api.priceDropAlerts.create.useMutation({
     onSuccess: () => {
@@ -30,6 +41,18 @@ export default function PriceDropAlertsPage(): JSX.Element {
 
   const services = (tracked ?? []) as Array<Record<string, unknown>>;
   const alerts = (myAlerts ?? []) as Array<Record<string, unknown>>;
+
+  if (isError || myAlertsIsError) {
+    return (
+      <ErrorAlert
+        message={t('state.error')}
+        onRetry={() => {
+          refetchTracked();
+          refetch();
+        }}
+      />
+    );
+  }
 
   return (
     <DashboardLayout userRole="CUSTOMER">

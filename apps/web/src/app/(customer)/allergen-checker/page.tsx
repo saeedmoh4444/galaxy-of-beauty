@@ -2,7 +2,7 @@
 import { useState } from 'react';
 import type { JSX } from 'react';
 import { api } from '@/lib/trpc';
-import { Card, Button } from '@galaxy/ui';
+import { Card, Button, ErrorAlert } from '@galaxy/ui';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
 import { useLocale } from '@/components/LocaleProvider';
 import type { TranslationKey } from '@galaxy/shared';
@@ -74,8 +74,14 @@ const COMMON_ALLERGENS: {
 
 export default function AllergenCheckerPage(): JSX.Element {
   const { t } = useLocale();
-  const { data: profile } = api.allergenChecker.getProfile.useQuery() as {
+  const {
+    data: profile,
+    isError,
+    refetch,
+  } = api.allergenChecker.getProfile.useQuery() as {
     data: Record<string, unknown> | undefined;
+    isError: boolean;
+    refetch: () => void;
   };
   const saveMut = api.allergenChecker.saveProfile.useMutation();
   const [checked, setChecked] = useState<string[]>(
@@ -85,6 +91,8 @@ export default function AllergenCheckerPage(): JSX.Element {
     if (checked.includes(key)) setChecked(checked.filter((x) => x !== key));
     else setChecked([...checked, key]);
   };
+
+  if (isError) return <ErrorAlert message={t('state.error')} onRetry={() => refetch()} />;
 
   return (
     <DashboardLayout userRole="CUSTOMER">

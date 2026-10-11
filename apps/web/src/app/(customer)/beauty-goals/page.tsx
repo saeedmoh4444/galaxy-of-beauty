@@ -13,6 +13,7 @@ import {
   BeautyLearningPathCard,
   BeautyCertificationPathCard,
   HydrationTracker,
+  ErrorAlert,
 } from '@galaxy/ui';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
 import { useLocale } from '@/components/LocaleProvider';
@@ -111,6 +112,10 @@ export default function BeautyGoalsPage(): JSX.Element {
   );
   const checked = allGoals.filter((g) => goals[g.cat]?.[g.idx]).length;
   const pct = Math.round((checked / allGoals.length) * 100);
+
+  if (visionGoals.isError) {
+    return <ErrorAlert message={t('state.error')} onRetry={() => visionGoals.refetch()} />;
+  }
 
   return (
     <DashboardLayout userRole="CUSTOMER">

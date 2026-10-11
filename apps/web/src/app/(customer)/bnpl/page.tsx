@@ -2,18 +2,30 @@
 import { useState } from 'react';
 import type { JSX } from 'react';
 import { api } from '@/lib/trpc';
-import { Card, Button, formatCurrency } from '@galaxy/ui';
+import { Card, Button, formatCurrency, ErrorAlert } from '@galaxy/ui';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
 import { useLocale } from '@/components/LocaleProvider';
 import type { TranslationKey } from '@galaxy/shared';
 
 export default function BNPLPage(): JSX.Element {
   const { t } = useLocale();
-  const { data: providers } = api.bnpl.providers.useQuery() as {
+  const {
+    data: providers,
+    isError,
+    refetch,
+  } = api.bnpl.providers.useQuery() as {
     data: Array<Record<string, unknown>> | undefined;
+    isError: boolean;
+    refetch: () => void;
   };
-  const { data: eligibility } = api.bnpl.eligibility.useQuery() as {
+  const {
+    data: eligibility,
+    isError: eligibilityIsError,
+    refetch: refetchEligibility,
+  } = api.bnpl.eligibility.useQuery() as {
     data: Record<string, unknown> | undefined;
+    isError: boolean;
+    refetch: () => void;
   };
   const createMut = api.bnpl.createPlan.useMutation();
   const [amount, setAmount] = useState(500);
@@ -27,6 +39,19 @@ export default function BNPLPage(): JSX.Element {
   const plans = plansQ.data ?? [];
 
   const list = (providers ?? []) as Array<Record<string, unknown>>;
+
+  if (isError || eligibilityIsError || plansQ.isError) {
+    return (
+      <ErrorAlert
+        message={t('state.error')}
+        onRetry={() => {
+          refetch();
+          refetchEligibility();
+          plansQ.refetch();
+        }}
+      />
+    );
+  }
 
   return (
     <DashboardLayout userRole="CUSTOMER">

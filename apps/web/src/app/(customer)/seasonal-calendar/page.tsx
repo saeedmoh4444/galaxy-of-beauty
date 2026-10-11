@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import type { JSX } from 'react';
-import { PageContainer, PageTitle } from '@galaxy/ui';
+import { PageContainer, PageTitle, ErrorAlert } from '@galaxy/ui';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
 import { useLocale } from '@/components/LocaleProvider';
 import { api } from '@/lib/trpc';
@@ -163,6 +163,10 @@ export default function SeasonalCalendarPage(): JSX.Element {
     activePayload?.seasons ?? [],
     activePayload?.items?.length ?? 0,
   );
+
+  if (activeQ.isError) {
+    return <ErrorAlert message={t('state.error')} onRetry={() => activeQ.refetch()} />;
+  }
 
   return (
     <DashboardLayout userRole="CUSTOMER">

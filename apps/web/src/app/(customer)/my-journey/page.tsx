@@ -2,7 +2,7 @@
 import type { JSX } from 'react';
 
 import { api } from '@/lib/trpc';
-import { Card, DashboardSkeleton, Button, formatCurrency, useAuth } from '@galaxy/ui';
+import { Card, DashboardSkeleton, Button, formatCurrency, useAuth, ErrorAlert } from '@galaxy/ui';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
 import { useLocale } from '@/components/LocaleProvider';
 import type { TranslationKey } from '@galaxy/shared';
@@ -11,11 +11,17 @@ import Link from 'next/link';
 export default function MyJourneyPage(): JSX.Element {
   const { t, locale } = useLocale();
   const { isAuthenticated } = useAuth();
-  const { data: bookings, isLoading: bLoading } = api.bookings.list.useQuery(
-    { limit: 100 },
-    { enabled: isAuthenticated },
-  );
-  const { data: streak } = api.streaks.get.useQuery(undefined, {
+  const {
+    data: bookings,
+    isLoading: bLoading,
+    isError,
+    refetch,
+  } = api.bookings.list.useQuery({ limit: 100 }, { enabled: isAuthenticated });
+  const {
+    data: streak,
+    isError: getIsError,
+    refetch: refetchGet,
+  } = api.streaks.get.useQuery(undefined, {
     enabled: isAuthenticated,
   });
 
@@ -52,6 +58,18 @@ export default function MyJourneyPage(): JSX.Element {
     { label: 'myJourney.milestone.techs', achieved: uniqueTechnicians >= 3, emoji: '💇' },
     { label: 'myJourney.milestone.services', achieved: uniqueServices >= 5, emoji: '💎' },
   ];
+
+  if (isError || getIsError) {
+    return (
+      <ErrorAlert
+        message={t('state.error')}
+        onRetry={() => {
+          refetch();
+          refetchGet();
+        }}
+      />
+    );
+  }
 
   if (bLoading)
     return (

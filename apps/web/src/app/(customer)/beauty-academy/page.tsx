@@ -26,6 +26,7 @@ import {
   AcademyCertificateBadge,
   ProBonoLessonCard,
   SaudiBeautyHeritageCard,
+  ErrorAlert,
 } from '@galaxy/ui';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
 import { useLocale } from '@/components/LocaleProvider';
@@ -52,6 +53,29 @@ export default function BeautyAcademyPage(): JSX.Element {
   const myths = api.beautyMyths.getRandom.useQuery();
   const recipes = api.beautyRecipes.list.useQuery({ limit: 2 });
   const bookClubs = api.bookClub.list.useQuery({ limit: 2 });
+  if (
+    courses.isError ||
+    dailyTip.isError ||
+    expertTalks.isError ||
+    myths.isError ||
+    recipes.isError ||
+    bookClubs.isError
+  ) {
+    return (
+      <ErrorAlert
+        message={t('state.error')}
+        onRetry={() => {
+          courses.refetch();
+          dailyTip.refetch();
+          expertTalks.refetch();
+          myths.refetch();
+          recipes.refetch();
+          bookClubs.refetch();
+        }}
+      />
+    );
+  }
+
   return (
     <DashboardLayout userRole="CUSTOMER">
       <PageContainer width="wide">

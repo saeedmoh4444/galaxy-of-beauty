@@ -4,7 +4,7 @@ import { useState } from 'react';
 import type { JSX } from 'react';
 import { api } from '@/lib/trpc';
 import { useLocale } from '@/components/LocaleProvider';
-import { Card, CardListSkeleton, ServiceImage } from '@galaxy/ui';
+import { Card, CardListSkeleton, ServiceImage, ErrorAlert } from '@galaxy/ui';
 import { pageHeroKey } from '@galaxy/shared';
 
 export default function BeautyFaqPage(): JSX.Element {
@@ -13,16 +13,44 @@ export default function BeautyFaqPage(): JSX.Element {
   const [category, setCategory] = useState<string | undefined>();
   const [search, setSearch] = useState('');
 
-  const { data: cats } = api.beautyFaq.categories.useQuery() as {
+  const {
+    data: cats,
+    isError,
+    refetch,
+  } = api.beautyFaq.categories.useQuery() as {
     data: Array<Record<string, unknown>> | undefined;
+    isError: boolean;
+    refetch: () => void;
   };
-  const { data, isLoading } = api.beautyFaq.search.useQuery({
+  const {
+    data,
+    isLoading,
+    isError: searchIsError,
+    refetch: refetchSearch,
+  } = api.beautyFaq.search.useQuery({
     query: search || undefined,
     category,
-  }) as { data: Array<Record<string, unknown>> | undefined; isLoading: boolean };
+  }) as {
+    data: Array<Record<string, unknown>> | undefined;
+    isLoading: boolean;
+    isError: boolean;
+    refetch: () => void;
+  };
 
   const categories = (cats ?? []) as Array<Record<string, unknown>>;
   const faqs = (data ?? []) as Array<Record<string, unknown>>;
+
+  if (isError || searchIsError) {
+    return (
+      <ErrorAlert
+        message={t('state.error')}
+        onRetry={() => {
+          refetch();
+          refetchSearch();
+        }}
+      />
+    );
+  }
 
   return (
     <div className="mx-auto max-w-3xl px-4 py-12">

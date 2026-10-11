@@ -2,7 +2,7 @@
 import type { JSX } from 'react';
 
 import { api } from '@/lib/trpc';
-import { PageContainer, PageTitle, Card, Button } from '@galaxy/ui';
+import { PageContainer, PageTitle, Card, Button, ErrorAlert } from '@galaxy/ui';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
 import { useLocale } from '@/components/LocaleProvider';
 import type { TranslationKey } from '@galaxy/shared';
@@ -32,6 +32,18 @@ export default function ChallengesPage(): JSX.Element {
   const join = (challengeId: string) => {
     joinMutation.mutate({ challengeId });
   };
+
+  if (listQuery.isError || progressQuery.isError) {
+    return (
+      <ErrorAlert
+        message={t('state.error')}
+        onRetry={() => {
+          listQuery.refetch();
+          progressQuery.refetch();
+        }}
+      />
+    );
+  }
 
   return (
     <DashboardLayout userRole="CUSTOMER">

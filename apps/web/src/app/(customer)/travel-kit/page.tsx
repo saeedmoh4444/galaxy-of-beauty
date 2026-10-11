@@ -2,14 +2,20 @@
 import { useState } from 'react';
 import type { JSX } from 'react';
 import { api } from '@/lib/trpc';
-import { Card, CardListSkeleton } from '@galaxy/ui';
+import { Card, CardListSkeleton, ErrorAlert } from '@galaxy/ui';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
 import { useLocale } from '@/components/LocaleProvider';
 
 export default function TravelKitPage(): JSX.Element {
   const { t } = useLocale();
-  const { data: dests } = api.travelKit.destinations.useQuery() as {
+  const {
+    data: dests,
+    isError,
+    refetch,
+  } = api.travelKit.destinations.useQuery() as {
     data: Array<Record<string, unknown>> | undefined;
+    isError: boolean;
+    refetch: () => void;
   };
   const [dest, setDest] = useState('beach');
   const [days, setDays] = useState(7);
@@ -22,6 +28,8 @@ export default function TravelKitPage(): JSX.Element {
 
   const destinations = (dests ?? []) as Array<Record<string, unknown>>;
   const items = (kit?.items ?? []) as Array<Record<string, unknown>>;
+
+  if (isError) return <ErrorAlert message={t('state.error')} onRetry={() => refetch()} />;
 
   return (
     <DashboardLayout userRole="CUSTOMER">

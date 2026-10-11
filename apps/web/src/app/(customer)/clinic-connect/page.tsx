@@ -2,17 +2,29 @@
 import { useState } from 'react';
 import type { JSX } from 'react';
 import { api } from '@/lib/trpc';
-import { Card, Button, Modal } from '@galaxy/ui';
+import { Card, Button, Modal, ErrorAlert } from '@galaxy/ui';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
 import { useLocale } from '@/components/LocaleProvider';
 
 export default function ClinicConnectPage(): JSX.Element {
   const { t } = useLocale();
-  const { data: clinics } = api.clinicConnect.clinics.useQuery() as {
+  const {
+    data: clinics,
+    isError,
+    refetch,
+  } = api.clinicConnect.clinics.useQuery() as {
     data: Array<Record<string, unknown>> | undefined;
+    isError: boolean;
+    refetch: () => void;
   };
-  const { data: referrals } = api.clinicConnect.myReferrals.useQuery() as {
+  const {
+    data: referrals,
+    isError: myReferralsIsError,
+    refetch: refetchMyReferrals,
+  } = api.clinicConnect.myReferrals.useQuery() as {
     data: Array<Record<string, unknown>> | undefined;
+    isError: boolean;
+    refetch: () => void;
   };
   const referMut = api.clinicConnect.refer.useMutation();
   const [show, setShow] = useState(false);
@@ -22,6 +34,18 @@ export default function ClinicConnectPage(): JSX.Element {
 
   const list = (clinics ?? []) as Array<Record<string, unknown>>;
   const refs = (referrals ?? []) as Array<Record<string, unknown>>;
+
+  if (isError || myReferralsIsError) {
+    return (
+      <ErrorAlert
+        message={t('state.error')}
+        onRetry={() => {
+          refetch();
+          refetchMyReferrals();
+        }}
+      />
+    );
+  }
 
   return (
     <DashboardLayout userRole="CUSTOMER">

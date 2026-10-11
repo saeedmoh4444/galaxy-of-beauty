@@ -22,6 +22,7 @@ import {
   CharityPartnerBadge,
   BeautyAwardBadgeCard,
   AlumniNetworkCard,
+  ErrorAlert,
 } from '@galaxy/ui';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
 import { useLocale } from '@/components/LocaleProvider';
@@ -29,6 +30,10 @@ import { useLocale } from '@/components/LocaleProvider';
 export default function LeadershipPage(): JSX.Element {
   const { t } = useLocale();
   const socialImpact = api.socialImpact.stats.useQuery();
+
+  if (socialImpact.isError) {
+    return <ErrorAlert message={t('state.error')} onRetry={() => socialImpact.refetch()} />;
+  }
 
   return (
     <DashboardLayout userRole="CUSTOMER">

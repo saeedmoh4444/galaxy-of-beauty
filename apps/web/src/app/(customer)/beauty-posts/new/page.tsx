@@ -4,7 +4,7 @@ import { useState } from 'react';
 import type { JSX } from 'react';
 import { useRouter } from 'next/navigation';
 import { api } from '@/lib/trpc';
-import { Card, Button, Input, useToast } from '@galaxy/ui';
+import { Card, Button, Input, useToast, ErrorAlert } from '@galaxy/ui';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
 import { useLocale } from '@/components/LocaleProvider';
 
@@ -79,6 +79,18 @@ export default function NewBeautyPostPage(): JSX.Element {
     reader.onerror = () => addToast('error', t('skin.uploadError'));
     reader.readAsDataURL(file);
   };
+
+  if (productsQ.isError || servicesQ.isError) {
+    return (
+      <ErrorAlert
+        message={t('state.error')}
+        onRetry={() => {
+          productsQ.refetch();
+          servicesQ.refetch();
+        }}
+      />
+    );
+  }
 
   return (
     <DashboardLayout userRole="CUSTOMER">

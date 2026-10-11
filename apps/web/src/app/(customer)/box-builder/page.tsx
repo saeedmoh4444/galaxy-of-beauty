@@ -3,15 +3,22 @@
 import { useState } from 'react';
 import type { JSX } from 'react';
 import { api } from '@/lib/trpc';
-import { Card, GridSkeleton, Button, formatCurrency } from '@galaxy/ui';
+import { Card, GridSkeleton, Button, formatCurrency, ErrorAlert } from '@galaxy/ui';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
 import { useLocale } from '@/components/LocaleProvider';
 
 export default function BoxBuilderPage(): JSX.Element {
   const { t } = useLocale();
-  const { data: catalog, isLoading } = api.boxBuilder.catalog.useQuery() as {
+  const {
+    data: catalog,
+    isLoading,
+    isError,
+    refetch,
+  } = api.boxBuilder.catalog.useQuery() as {
     data: Array<Record<string, unknown>> | undefined;
     isLoading: boolean;
+    isError: boolean;
+    refetch: () => void;
   };
   const buildMut = api.boxBuilder.build.useMutation();
   const [selected, setSelected] = useState<number[]>([]);
@@ -26,6 +33,8 @@ export default function BoxBuilderPage(): JSX.Element {
   const products = (catalog as Array<Record<string, unknown>>) ?? [];
   const selectedProducts = products.filter((p) => selected.includes(p.id as number));
   const subtotal = selectedProducts.reduce((s, p) => s + (p.price as number), 0);
+
+  if (isError) return <ErrorAlert message={t('state.error')} onRetry={() => refetch()} />;
 
   return (
     <DashboardLayout userRole="CUSTOMER">

@@ -3,15 +3,23 @@
 import { useState } from 'react';
 import type { JSX } from 'react';
 import { api } from '@/lib/trpc';
-import { Card, Button, formatCurrency } from '@galaxy/ui';
+import { Card, Button, formatCurrency, ErrorAlert } from '@galaxy/ui';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
 import { useLocale } from '@/components/LocaleProvider';
 
 export default function SpaPlannerPage(): JSX.Element {
   const { t, locale } = useLocale();
-  const { data: services } = api.spaPlanner.services.useQuery();
-  const { data: breaks } = api.spaPlanner.breaks.useQuery();
-  const { data: myPlans } = api.spaPlanner.myPlans.useQuery();
+  const { data: services, isError, refetch } = api.spaPlanner.services.useQuery();
+  const {
+    data: breaks,
+    isError: breaksIsError,
+    refetch: refetchBreaks,
+  } = api.spaPlanner.breaks.useQuery();
+  const {
+    data: myPlans,
+    isError: myPlansIsError,
+    refetch: refetchMyPlans,
+  } = api.spaPlanner.myPlans.useQuery();
   const createMut = api.spaPlanner.create.useMutation();
 
   const [name, setName] = useState('');
@@ -27,6 +35,19 @@ export default function SpaPlannerPage(): JSX.Element {
   const svcs = (services ?? []) as Array<Record<string, unknown>>;
   const brks = (breaks ?? []) as Array<Record<string, unknown>>;
   const plans = (myPlans ?? []) as Array<Record<string, unknown>>;
+
+  if (isError || breaksIsError || myPlansIsError) {
+    return (
+      <ErrorAlert
+        message={t('state.error')}
+        onRetry={() => {
+          refetch();
+          refetchBreaks();
+          refetchMyPlans();
+        }}
+      />
+    );
+  }
 
   return (
     <DashboardLayout userRole="CUSTOMER">

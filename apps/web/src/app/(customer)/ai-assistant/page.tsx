@@ -3,20 +3,32 @@ import { useState } from 'react';
 import type { JSX } from 'react';
 import Link from 'next/link';
 import { api } from '@/lib/trpc';
-import { Card, CardSkeleton, Button } from '@galaxy/ui';
+import { Card, CardSkeleton, Button, ErrorAlert } from '@galaxy/ui';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
 import { useLocale } from '@/components/LocaleProvider';
 
 export default function AIAssistantPage(): JSX.Element {
   const { t, locale } = useLocale();
   const [q, setQ] = useState('');
-  const { data: topics } = api.aiAssistant.topics.useQuery() as {
+  const {
+    data: topics,
+    isError,
+    refetch,
+  } = api.aiAssistant.topics.useQuery() as {
     data: Array<Record<string, unknown>> | undefined;
+    isError: boolean;
+    refetch: () => void;
   };
   // E8 — lifestyle questions answer from the platform's own data; beauty
   // questions fall back to the classic assistant.
-  const { data: lifestyleTopics } = api.lifestyleAI.topics.useQuery() as {
+  const {
+    data: lifestyleTopics,
+    isError: topicsIsError,
+    refetch: refetchTopics,
+  } = api.lifestyleAI.topics.useQuery() as {
     data: Array<Record<string, unknown>> | undefined;
+    isError: boolean;
+    refetch: () => void;
   };
   const lifestyleMut = api.lifestyleAI.ask.useMutation();
   const askMut = api.aiAssistant.ask.useMutation();
@@ -41,6 +53,18 @@ export default function AIAssistantPage(): JSX.Element {
   const topicList = (topics ?? []) as Array<Record<string, unknown>>;
   const lifestyleTopicList = (lifestyleTopics ?? []) as Array<Record<string, unknown>>;
   const links = (answer?.links ?? []) as Array<{ href: string; key: string }>;
+
+  if (isError || topicsIsError) {
+    return (
+      <ErrorAlert
+        message={t('state.error')}
+        onRetry={() => {
+          refetch();
+          refetchTopics();
+        }}
+      />
+    );
+  }
 
   return (
     <DashboardLayout userRole="CUSTOMER">
