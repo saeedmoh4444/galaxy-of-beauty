@@ -19,6 +19,8 @@ export const mobileCoreMessages = {
   'mobile.analytics': { ar: 'التحليلات', en: 'Analytics' },
   'mobile.calendar': { ar: 'التقويم', en: 'Calendar' },
   'mobile.bookings': { ar: 'الحجوزات', en: 'Bookings' },
+  'mobile.bookings.load-error': { ar: 'فشل تحميل بيانات الحجز', en: 'Failed to load booking data' },
+  'mobile.home.load-error': { ar: 'فشل تحميل بعض الأقسام', en: 'Failed to load some sections' },
   'mobile.services': { ar: 'الخدمات', en: 'Services' },
   'mobile.monthlyBoxes': { ar: 'الصناديق الشهرية', en: 'Monthly Boxes' },
   'mobile.addresses': { ar: 'العناوين', en: 'Addresses' },
