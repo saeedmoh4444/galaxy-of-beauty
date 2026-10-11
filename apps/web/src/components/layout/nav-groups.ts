@@ -112,7 +112,7 @@ export const customerNavGroups: NavGroup[] = [
       { href: '/ride-hailing', key: 'nav.ride-hailing', icon: 'map-pin' },
       { href: '/last-mile', key: 'nav.last-mile', icon: 'map-pin' },
       { href: '/home-service', key: 'nav.home-service', icon: 'map-pin' },
-      { href: '/customer/vendor-portal', key: 'nav.vendor-portal', icon: 'external-link' },
+      { href: '/vendor-portal', key: 'nav.vendor-portal', icon: 'external-link' },
       { href: '/tech-onboarding', key: 'nav.tech-onboarding', icon: 'user' },
       { href: '/tech-waitlist', key: 'nav.tech-waitlist', icon: 'clock' },
       { href: '/certification-quiz', key: 'nav.certification-quiz', icon: 'check' },
