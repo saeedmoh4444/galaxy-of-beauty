@@ -28,6 +28,8 @@ beforeAll(async () => {
   const u = await prisma.user.create({ data: buildUser() });
   customer = { id: u.id, role: 'CUSTOMER', email: u.email };
   createdUserIds.push(u.id);
+  // subscriptions.purchase now takes wallet payment (audit #2) — fund it.
+  await prisma.wallet.create({ data: { userId: u.id, balance: 5000 } });
 }, 15000);
 
 afterAll(async () => {
