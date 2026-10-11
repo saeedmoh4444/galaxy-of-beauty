@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import type { JSX } from 'react';
 import { api } from '@/lib/trpc';
-import { Card, GridSkeleton, Button } from '@galaxy/ui';
+import { Card, GridSkeleton, Button, ErrorAlert } from '@galaxy/ui';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
 import { useLocale } from '@/components/LocaleProvider';
 import Link from 'next/link';
@@ -12,13 +12,22 @@ export default function HairColorSimPage(): JSX.Element {
   const { t } = useLocale();
   const [photo, setPhoto] = useState('');
   const [selected, setSelected] = useState<string | null>(null);
-  const { data: colors, isLoading } = api.hairColorSim.colors.useQuery() as {
+  const {
+    data: colors,
+    isLoading,
+    isError,
+    refetch,
+  } = api.hairColorSim.colors.useQuery() as {
     data: Array<Record<string, unknown>> | undefined;
     isLoading: boolean;
+    isError: boolean;
+    refetch: () => void;
   };
   const saveMut = api.hairColorSim.save.useMutation();
 
   const allColors = colors ?? [];
+
+  if (isError) return <ErrorAlert message={t('state.error')} onRetry={() => refetch()} />;
 
   return (
     <DashboardLayout userRole="CUSTOMER">

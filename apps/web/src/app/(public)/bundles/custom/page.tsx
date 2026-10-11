@@ -5,7 +5,7 @@ import type { JSX } from 'react';
 import Link from 'next/link';
 import { api } from '@/lib/trpc';
 import type { RouterOutputs } from '@galaxy/api';
-import { GridSkeleton, Button, formatCurrency } from '@galaxy/ui';
+import { GridSkeleton, Button, formatCurrency, ErrorAlert } from '@galaxy/ui';
 import { localize } from '@galaxy/shared';
 import { useLocale } from '@/components/LocaleProvider';
 const BUNDLE_DISCOUNTS: Record<number, number> = { 2: 10, 3: 15, 4: 20, 5: 25 };
@@ -28,7 +28,7 @@ type BundlesCard = BundlesServiceItem | (BundlesCategoryItem & { _isCat: true })
 
 export default function BundlesPage(): JSX.Element {
   const { t, locale } = useLocale();
-  const { data, isLoading } = api.categories.list.useQuery();
+  const { data, isLoading, isError, refetch } = api.categories.list.useQuery();
   const services = (data ?? []) as BundlesCategoryItem[];
   const [selected, setSelected] = useState<Set<number>>(new Set());
 
@@ -46,6 +46,8 @@ export default function BundlesPage(): JSX.Element {
 
   const count = selected.size;
   const discount = BUNDLE_DISCOUNTS[count] || 0;
+
+  if (isError) return <ErrorAlert message={t('state.error')} onRetry={() => refetch()} />;
 
   return (
     <div className="mx-auto max-w-5xl px-4 py-8">

@@ -23,6 +23,7 @@ import {
   BeautyAffirmationCard,
   BeautyQuickTipCard,
   BeautyReferralLeaderboardCard,
+  ErrorAlert,
 } from '@galaxy/ui';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
 import { useLocale } from '@/components/LocaleProvider';
@@ -33,6 +34,10 @@ export default function BeautyInnovationPage(): JSX.Element {
     condition: 'hot',
     temp: 42,
   });
+
+  if (weather.isError) {
+    return <ErrorAlert message={t('state.error')} onRetry={() => weather.refetch()} />;
+  }
 
   return (
     <DashboardLayout userRole="CUSTOMER">

@@ -11,6 +11,7 @@ import {
   BeautyLearningPathCard,
   BeautyCertificationPathCard,
   BeautyCareerPathCard,
+  ErrorAlert,
 } from '@galaxy/ui';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
 import { useLocale } from '@/components/LocaleProvider';
@@ -41,6 +42,18 @@ export default function BeautyCoursesPage(): JSX.Element {
 
   const items = courses?.data ?? [];
   const myItems = myCourses?.data ?? [];
+
+  if (courses.isError || myCourses.isError) {
+    return (
+      <ErrorAlert
+        message={t('state.error')}
+        onRetry={() => {
+          courses.refetch();
+          myCourses.refetch();
+        }}
+      />
+    );
+  }
 
   return (
     <DashboardLayout userRole="CUSTOMER">

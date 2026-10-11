@@ -1,17 +1,21 @@
 'use client';
 import type { JSX } from 'react';
 import { api } from '@/lib/trpc';
-import { Card, CardListSkeleton } from '@galaxy/ui';
+import { Card, CardListSkeleton, ErrorAlert } from '@galaxy/ui';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
 import { useLocale } from '@/components/LocaleProvider';
 
 export default function PersonalizedFeedPage(): JSX.Element {
   const { t } = useLocale();
-  const { data, isLoading } = api.personalizedFeed.feed.useQuery() as {
+  const { data, isLoading, isError, refetch } = api.personalizedFeed.feed.useQuery() as {
     data: Record<string, unknown> | undefined;
     isLoading: boolean;
+    isError: boolean;
+    refetch: () => void;
   };
   const items = (data?.items ?? []) as Array<Record<string, unknown>>;
+
+  if (isError) return <ErrorAlert message={t('state.error')} onRetry={() => refetch()} />;
 
   return (
     <DashboardLayout userRole="CUSTOMER">

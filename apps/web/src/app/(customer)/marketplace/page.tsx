@@ -11,6 +11,7 @@ import {
   GridSkeleton,
   EmptyState,
   ServiceImage,
+  ErrorAlert,
 } from '@galaxy/ui';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
 import { useLocale } from '@/components/LocaleProvider';
@@ -42,6 +43,10 @@ export default function MarketplacePage(): JSX.Element {
       /* noop */
     }
   };
+
+  if (products.isError) {
+    return <ErrorAlert message={t('state.error')} onRetry={() => products.refetch()} />;
+  }
 
   return (
     <DashboardLayout userRole="CUSTOMER">

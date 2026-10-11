@@ -9,7 +9,7 @@ import { useEffect, useMemo, useState } from 'react';
 import type { JSX } from 'react';
 import Link from 'next/link';
 import { api } from '@/lib/trpc';
-import { Card, Button } from '@galaxy/ui';
+import { Card, Button, ErrorAlert } from '@galaxy/ui';
 import { useLocale } from '@/components/LocaleProvider';
 
 type Exercise = {
@@ -125,12 +125,28 @@ function BreathingTimer({ exercise }: { exercise: Exercise }): JSX.Element {
 
 export function MentalWellnessSection(): JSX.Element {
   const { t, locale } = useLocale();
-  const { data: exercises } = api.wellnessContent.breathing.useQuery();
-  const { data: meditations } = api.wellnessContent.meditations.useQuery();
+  const { data: exercises, isError, refetch } = api.wellnessContent.breathing.useQuery();
+  const {
+    data: meditations,
+    isError: meditationsIsError,
+    refetch: refetchMeditations,
+  } = api.wellnessContent.meditations.useQuery();
   const [active, setActive] = useState<string | null>(null);
 
   const list = (exercises ?? []) as Exercise[];
   const meds = (meditations ?? []) as Meditation[];
+
+  if (isError || meditationsIsError) {
+    return (
+      <ErrorAlert
+        message={t('state.error')}
+        onRetry={() => {
+          refetch();
+          refetchMeditations();
+        }}
+      />
+    );
+  }
 
   return (
     <div className="grid gap-6 lg:grid-cols-2">
@@ -195,7 +211,7 @@ export function MentalWellnessSection(): JSX.Element {
 
 export function JournalPromptCard(): JSX.Element {
   const { t, locale } = useLocale();
-  const { data: prompts } = api.wellnessContent.prompts.useQuery({});
+  const { data: prompts, isError, refetch } = api.wellnessContent.prompts.useQuery({});
   const prompt = useMemo(() => {
     const list = (prompts ?? []) as Prompt[];
     if (list.length === 0) return null;
@@ -203,6 +219,8 @@ export function JournalPromptCard(): JSX.Element {
     const dayOfYear = Math.floor(Date.now() / 86_400_000) % list.length;
     return list[dayOfYear]!;
   }, [prompts]);
+
+  if (isError) return <ErrorAlert message={t('state.error')} onRetry={() => refetch()} />;
 
   if (!prompt) return <></>;
   return (
@@ -224,9 +242,13 @@ export function JournalPromptCard(): JSX.Element {
 
 export function NutritionSection(): JSX.Element {
   const { t, locale } = useLocale();
-  const { data: goals } = api.wellnessContent.nutritionGoals.useQuery();
+  const { data: goals, isError, refetch } = api.wellnessContent.nutritionGoals.useQuery();
   const [goalKey, setGoalKey] = useState('glow');
-  const { data: goal } = api.wellnessContent.nutrition.useQuery({ goal: goalKey });
+  const {
+    data: goal,
+    isError: nutritionIsError,
+    refetch: refetchNutrition,
+  } = api.wellnessContent.nutrition.useQuery({ goal: goalKey });
 
   const list = (goals ?? []) as Array<{
     key: string;
@@ -235,6 +257,18 @@ export function NutritionSection(): JSX.Element {
     emoji: string;
   }>;
   const card = goal as NutritionGoal | undefined;
+
+  if (isError || nutritionIsError) {
+    return (
+      <ErrorAlert
+        message={t('state.error')}
+        onRetry={() => {
+          refetch();
+          refetchNutrition();
+        }}
+      />
+    );
+  }
 
   return (
     <Card padding="lg">

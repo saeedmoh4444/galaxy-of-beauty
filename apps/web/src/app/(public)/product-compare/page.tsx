@@ -3,7 +3,14 @@
 import { useState } from 'react';
 import type { JSX } from 'react';
 import { api } from '@/lib/trpc';
-import { Card, GridSkeleton, TableSkeleton, formatCurrency, ServiceImage } from '@galaxy/ui';
+import {
+  Card,
+  GridSkeleton,
+  TableSkeleton,
+  formatCurrency,
+  ServiceImage,
+  ErrorAlert,
+} from '@galaxy/ui';
 import { useLocale } from '@/components/LocaleProvider';
 import { pageHeroKey, type TranslationKey } from '@galaxy/shared';
 
@@ -18,9 +25,16 @@ export default function ProductComparePage(): JSX.Element {
   const { t } = useLocale();
   const [selected, setSelected] = useState<number[]>([]);
 
-  const { data: products, isLoading: pLoad } = api.productCompare.list.useQuery() as {
+  const {
+    data: products,
+    isLoading: pLoad,
+    isError,
+    refetch,
+  } = api.productCompare.list.useQuery() as {
     data: Array<Record<string, unknown>> | undefined;
     isLoading: boolean;
+    isError: boolean;
+    refetch: () => void;
   };
   const { data: compareData, isLoading: cLoad } = api.productCompare.compare.useQuery(
     { ids: selected },
@@ -39,6 +53,8 @@ export default function ProductComparePage(): JSX.Element {
   const productsList = (products ?? []) as Array<Record<string, unknown>>;
   const compared = compareData?.products ?? [];
   const dimensions = compareData?.dimensions ?? [];
+
+  if (isError) return <ErrorAlert message={t('state.error')} onRetry={() => refetch()} />;
 
   return (
     <div className="mx-auto max-w-5xl px-4 py-12">

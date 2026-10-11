@@ -3,21 +3,30 @@
 import { useState } from 'react';
 import type { JSX } from 'react';
 import { api } from '@/lib/trpc';
-import { Card, CardListSkeleton } from '@galaxy/ui';
+import { Card, CardListSkeleton, ErrorAlert } from '@galaxy/ui';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
 import { useLocale } from '@/components/LocaleProvider';
 
 export default function RoutineSchedulerPage(): JSX.Element {
   const { t } = useLocale();
-  const { data: routines, isLoading } = api.routineScheduler.myRoutines.useQuery() as {
+  const {
+    data: routines,
+    isLoading,
+    isError,
+    refetch,
+  } = api.routineScheduler.myRoutines.useQuery() as {
     data: Array<Record<string, unknown>> | undefined;
     isLoading: boolean;
+    isError: boolean;
+    refetch: () => void;
   };
   const toggleMut = api.routineScheduler.toggleStep.useMutation();
 
   const [checked, setChecked] = useState<Set<string>>(new Set());
 
   const allRoutines = (routines ?? []) as Array<Record<string, unknown>>;
+
+  if (isError) return <ErrorAlert message={t('state.error')} onRetry={() => refetch()} />;
 
   return (
     <DashboardLayout userRole="CUSTOMER">

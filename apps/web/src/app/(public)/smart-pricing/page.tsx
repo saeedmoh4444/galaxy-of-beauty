@@ -1,18 +1,22 @@
 'use client';
 import type { JSX } from 'react';
 import { api } from '@/lib/trpc';
-import { Card, CardListSkeleton, ServiceImage } from '@galaxy/ui';
+import { Card, CardListSkeleton, ServiceImage, ErrorAlert } from '@galaxy/ui';
 import { pageHeroKey } from '@galaxy/shared';
 import { useLocale } from '@/components/LocaleProvider';
 
 export default function SmartPricingPage(): JSX.Element {
   const { t } = useLocale();
-  const { data, isLoading } = api.smartPricing.current.useQuery() as {
+  const { data, isLoading, isError, refetch } = api.smartPricing.current.useQuery() as {
     data:
       { configured: boolean; prices: Array<Record<string, unknown>>; reason: string } | undefined;
     isLoading: boolean;
+    isError: boolean;
+    refetch: () => void;
   };
   const items = data?.prices ?? [];
+
+  if (isError) return <ErrorAlert message={t('state.error')} onRetry={() => refetch()} />;
 
   return (
     <div className="mx-auto max-w-3xl px-4 py-12">

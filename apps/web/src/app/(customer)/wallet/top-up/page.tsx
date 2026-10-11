@@ -4,7 +4,7 @@ import { useState } from 'react';
 import type { JSX } from 'react';
 import Link from 'next/link';
 import { api } from '@/lib/trpc';
-import { Card, KPIRowSkeleton, Button, formatCurrency } from '@galaxy/ui';
+import { Card, KPIRowSkeleton, Button, formatCurrency, ErrorAlert } from '@galaxy/ui';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
 import { useToast } from '@galaxy/ui';
 import { useLocale } from '@/components/LocaleProvider';
@@ -16,7 +16,7 @@ export default function WalletTopUpPage(): JSX.Element {
   const { addToast } = useToast();
   const [amount, setAmount] = useState('');
   const [selected, setSelected] = useState<number | null>(null);
-  const { data: balance, isLoading } = api.wallet.getBalance.useQuery();
+  const { data: balance, isLoading, isError, refetch } = api.wallet.getBalance.useQuery();
 
   const handleTopUp = () => {
     const a = selected || Number(amount);
@@ -26,6 +26,8 @@ export default function WalletTopUpPage(): JSX.Element {
     }
     addToast('success', t('wallet.redirect-to-payment', { amount: formatCurrency(a) }));
   };
+
+  if (isError) return <ErrorAlert message={t('state.error')} onRetry={() => refetch()} />;
 
   return (
     <DashboardLayout userRole="CUSTOMER">

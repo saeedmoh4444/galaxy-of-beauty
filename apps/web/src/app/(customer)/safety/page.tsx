@@ -15,6 +15,7 @@ import {
   IncognitoModeBadge,
   ConsentShield,
   useAuth,
+  ErrorAlert,
 } from '@galaxy/ui';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
 import { useLocale } from '@/components/LocaleProvider';
@@ -28,6 +29,18 @@ export default function SafetyPage(): JSX.Element {
   const latestBooking = api.bookings.list.useQuery({ limit: 1 }, { enabled: isAuthenticated });
 
   const booking = latestBooking?.data?.bookings?.[0];
+
+  if (emergencyContacts.isError || latestBooking.isError) {
+    return (
+      <ErrorAlert
+        message={t('state.error')}
+        onRetry={() => {
+          emergencyContacts.refetch();
+          latestBooking.refetch();
+        }}
+      />
+    );
+  }
 
   return (
     <DashboardLayout userRole="CUSTOMER">

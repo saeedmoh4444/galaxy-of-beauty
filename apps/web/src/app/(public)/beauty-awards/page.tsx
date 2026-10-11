@@ -1,7 +1,7 @@
 'use client';
 import type { JSX } from 'react';
 import { api } from '@/lib/trpc';
-import { Card, CardListSkeleton, Button, ServiceImage } from '@galaxy/ui';
+import { Card, CardListSkeleton, Button, ServiceImage, ErrorAlert } from '@galaxy/ui';
 import { useAuth } from '@galaxy/ui';
 import { useLocale } from '@/components/LocaleProvider';
 import { pageHeroKey } from '@galaxy/shared';
@@ -9,13 +9,17 @@ import { pageHeroKey } from '@galaxy/shared';
 export default function BeautyAwardsPage(): JSX.Element {
   const { user } = useAuth();
   const { t } = useLocale();
-  const { data, isLoading } = api.beautyAwards.current.useQuery() as {
+  const { data, isLoading, isError, refetch } = api.beautyAwards.current.useQuery() as {
     data: Record<string, unknown> | undefined;
     isLoading: boolean;
+    isError: boolean;
+    refetch: () => void;
   };
   const voteMut = api.beautyAwards.vote.useMutation();
 
   const cats = (data?.categories ?? []) as Array<Record<string, unknown>>;
+
+  if (isError) return <ErrorAlert message={t('state.error')} onRetry={() => refetch()} />;
 
   return (
     <div className="mx-auto max-w-3xl px-4 py-12">

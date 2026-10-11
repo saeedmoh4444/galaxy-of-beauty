@@ -4,6 +4,7 @@ import type { JSX } from 'react';
 import { api } from '@/lib/trpc';
 import { localize } from '@galaxy/shared';
 import { useLocale } from '@/components/LocaleProvider';
+import { ErrorAlert } from '@galaxy/ui';
 
 interface IncidentRow {
   id: number;
@@ -38,6 +39,18 @@ export default function StatusPage(): JSX.Element {
 
   const fmt = (d: string | Date | undefined) =>
     d ? new Date(d).toLocaleString(locale === 'ar' ? 'ar-SA' : 'en-GB') : '';
+
+  if (slo.isError || incidents.isError) {
+    return (
+      <ErrorAlert
+        message={t('state.error')}
+        onRetry={() => {
+          slo.refetch();
+          incidents.refetch();
+        }}
+      />
+    );
+  }
 
   return (
     <div className="mx-auto max-w-3xl px-4 py-10">

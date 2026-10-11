@@ -2,7 +2,7 @@
 import { useState } from 'react';
 import type { JSX } from 'react';
 import { api } from '@/lib/trpc';
-import { Card, CardListSkeleton, Button, formatCurrency, useAuth } from '@galaxy/ui';
+import { Card, CardListSkeleton, Button, formatCurrency, useAuth, ErrorAlert } from '@galaxy/ui';
 import { useLocale } from '@/components/LocaleProvider';
 import { localize, type TranslationKey } from '@galaxy/shared';
 
@@ -16,11 +16,18 @@ const EVENT_TYPES: Array<{ key: string; labelKey: TranslationKey }> = [
 export default function AdminBeautyEventsPage(): JSX.Element {
   const { t, locale } = useLocale();
   const { isAuthenticated } = useAuth();
-  const { data: events, isLoading } = api.beautyEvents.listAll.useQuery(undefined, {
+  const {
+    data: events,
+    isLoading,
+    isError,
+    refetch,
+  } = api.beautyEvents.listAll.useQuery(undefined, {
     enabled: isAuthenticated,
   }) as {
     data: Array<Record<string, unknown>> | undefined;
     isLoading: boolean;
+    isError: boolean;
+    refetch: () => void;
   };
   const createMut = api.beautyEvents.create.useMutation();
   const [nameAr, setNameAr] = useState('');
@@ -57,6 +64,8 @@ export default function AdminBeautyEventsPage(): JSX.Element {
       },
     );
   };
+
+  if (isError) return <ErrorAlert message={t('state.error')} onRetry={() => refetch()} />;
 
   return (
     <>

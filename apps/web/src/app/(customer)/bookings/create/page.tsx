@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react';
 import type { JSX } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { api } from '@/lib/trpc';
-import { Card, Button, Input, StepTransition } from '@galaxy/ui';
+import { Card, Button, Input, StepTransition, ErrorAlert } from '@galaxy/ui';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
 import { useToast } from '@galaxy/ui';
 import { useLocale } from '@/components/LocaleProvider';
@@ -63,14 +63,26 @@ export default function CreateBookingPage(): JSX.Element {
   );
   const [bookingTime, setBookingTime] = useState<string>('10:00');
 
-  const { data: servicesData } = api.services.list.useQuery({ page: 1, limit: 100 });
+  const {
+    data: servicesData,
+    isError,
+    refetch,
+  } = api.services.list.useQuery({ page: 1, limit: 100 });
   const { data: serviceDetail } = api.services.getById.useQuery(
     { id: serviceId ?? 0 },
     { enabled: !!serviceId },
   );
-  const { data: addressesData } = api.addresses.list.useQuery();
-  const { data: familyMembers } = api.familyAccount.list.useQuery();
-  const { data: bundlesData } = api.bundles.list.useQuery();
+  const {
+    data: addressesData,
+    isError: listIsError,
+    refetch: refetchList,
+  } = api.addresses.list.useQuery();
+  const {
+    data: familyMembers,
+    isError: isError2,
+    refetch: refetch2,
+  } = api.familyAccount.list.useQuery();
+  const { data: bundlesData, isError: isError3, refetch: refetch3 } = api.bundles.list.useQuery();
   const { data: beautyBundleData } = api.beautyBundles.get.useQuery(
     { id: preselectedBeautyBundleId ?? 0 },
     { enabled: !!preselectedBeautyBundleId, retry: false },
@@ -275,6 +287,20 @@ export default function CreateBookingPage(): JSX.Element {
       addonIds: selectedAddons.length > 0 ? selectedAddons : undefined,
     });
   };
+
+  if (isError || listIsError || isError2 || isError3) {
+    return (
+      <ErrorAlert
+        message={t('state.error')}
+        onRetry={() => {
+          refetch();
+          refetchList();
+          refetch2();
+          refetch3();
+        }}
+      />
+    );
+  }
 
   return (
     <DashboardLayout userRole="CUSTOMER">

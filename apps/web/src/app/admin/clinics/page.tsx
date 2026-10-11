@@ -2,7 +2,7 @@
 import { useState } from 'react';
 import type { JSX } from 'react';
 import { api } from '@/lib/trpc';
-import { Card, CardListSkeleton, Button, Input, EmptyState, useAuth } from '@galaxy/ui';
+import { Card, CardListSkeleton, Button, Input, EmptyState, useAuth, ErrorAlert } from '@galaxy/ui';
 import { useLocale } from '@/components/LocaleProvider';
 
 export default function AdminClinicsPage(): JSX.Element {
@@ -14,6 +14,7 @@ export default function AdminClinicsPage(): JSX.Element {
     data: pendingData,
     isLoading,
     refetch,
+    isError,
   } = api.providerReview.list.useQuery(
     { kind: 'clinic', status: 'PENDING_REVIEW' },
     { enabled: isAuthenticated },
@@ -21,6 +22,7 @@ export default function AdminClinicsPage(): JSX.Element {
     data: { items: Array<Record<string, unknown>> } | undefined;
     isLoading: boolean;
     refetch: () => void;
+    isError: boolean;
   };
   const pendingSubs = pendingData?.items ?? [];
   const [rejectNotes, setRejectNotes] = useState<Record<number, string>>({});
@@ -37,6 +39,8 @@ export default function AdminClinicsPage(): JSX.Element {
       {label}
     </a>
   );
+
+  if (isError) return <ErrorAlert message={t('state.error')} onRetry={() => refetch()} />;
 
   return (
     <div className="mx-auto max-w-4xl space-y-6">

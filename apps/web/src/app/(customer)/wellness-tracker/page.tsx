@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import type { JSX } from 'react';
 import { api } from '@/lib/trpc';
-import { Card, Button } from '@galaxy/ui';
+import { Card, Button, ErrorAlert } from '@galaxy/ui';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
 import { useLocale } from '@/components/LocaleProvider';
 import type { TranslationKey } from '@galaxy/shared';
@@ -28,12 +28,17 @@ const DAYS: TranslationKey[] = [
 
 export default function WellnessTrackerPage(): JSX.Element {
   const { t } = useLocale();
-  const { refetch } = api.wellnessTracker.today.useQuery() as {
+  const { refetch, isError } = api.wellnessTracker.today.useQuery() as {
     data: Record<string, unknown> | null;
     isLoading: boolean;
     refetch: () => void;
+    isError: boolean;
   };
-  const { data: weekly } = api.wellnessTracker.weekly.useQuery() as {
+  const {
+    data: weekly,
+    isError: weeklyIsError,
+    refetch: refetchWeekly,
+  } = api.wellnessTracker.weekly.useQuery() as {
     data:
       | {
           week: Array<Record<string, unknown>>;
@@ -45,6 +50,8 @@ export default function WellnessTrackerPage(): JSX.Element {
           streak: number;
         }
       | undefined;
+    isError: boolean;
+    refetch: () => void;
   };
   const checkinMut = api.wellnessTracker.checkin.useMutation({ onSuccess: () => refetch() });
 
@@ -55,6 +62,18 @@ export default function WellnessTrackerPage(): JSX.Element {
   const [skincare, setSkincare] = useState(false);
 
   const w = weekly;
+
+  if (isError || weeklyIsError) {
+    return (
+      <ErrorAlert
+        message={t('state.error')}
+        onRetry={() => {
+          refetch();
+          refetchWeekly();
+        }}
+      />
+    );
+  }
 
   return (
     <DashboardLayout userRole="CUSTOMER">

@@ -1,20 +1,32 @@
 'use client';
 import type { JSX } from 'react';
 import { api } from '@/lib/trpc';
-import { Card, CardListSkeleton, formatCurrency, useAuth } from '@galaxy/ui';
+import { Card, CardListSkeleton, formatCurrency, useAuth, ErrorAlert } from '@galaxy/ui';
 import { useLocale } from '@/components/LocaleProvider';
 
 export default function AdminGroupBookingsPage(): JSX.Element {
   const { t } = useLocale();
   const { isAuthenticated } = useAuth();
-  const { data: groupData, isLoading } = api.groupBookings.listAll.useQuery(
+  const {
+    data: groupData,
+    isLoading,
+    isError,
+    refetch,
+  } = api.groupBookings.listAll.useQuery(
     {
       page: 1,
       limit: 20,
     },
     { enabled: isAuthenticated },
-  ) as { data: Record<string, unknown> | undefined; isLoading: boolean };
+  ) as {
+    data: Record<string, unknown> | undefined;
+    isLoading: boolean;
+    isError: boolean;
+    refetch: () => void;
+  };
   const groups = (groupData?.items as Array<Record<string, unknown>>) ?? [];
+
+  if (isError) return <ErrorAlert message={t('state.error')} onRetry={() => refetch()} />;
 
   return (
     <>

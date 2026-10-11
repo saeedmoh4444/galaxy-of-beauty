@@ -1,7 +1,7 @@
 'use client';
 import type { JSX } from 'react';
 import { api } from '@/lib/trpc';
-import { Card, CardSkeleton, useAuth } from '@galaxy/ui';
+import { Card, CardSkeleton, useAuth, ErrorAlert } from '@galaxy/ui';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
 import { useLocale } from '@/components/LocaleProvider';
 import { localize } from '@galaxy/shared';
@@ -11,13 +11,22 @@ export default function TechWaitlistPage(): JSX.Element {
   const { isAuthenticated } = useAuth();
   // Gate: same as tech dashboard — guests with a stale cookie must not
   // fire this auth-only query.
-  const { data: waitlist, isLoading } = api.bookings.getTechnicianPending.useQuery(undefined, {
+  const {
+    data: waitlist,
+    isLoading,
+    isError,
+    refetch,
+  } = api.bookings.getTechnicianPending.useQuery(undefined, {
     enabled: isAuthenticated,
   }) as {
     data: Array<Record<string, unknown>> | undefined;
     isLoading: boolean;
+    isError: boolean;
+    refetch: () => void;
   };
   const bookings = waitlist ?? [];
+
+  if (isError) return <ErrorAlert message={t('state.error')} onRetry={() => refetch()} />;
 
   return (
     <DashboardLayout userRole="TECHNICIAN">

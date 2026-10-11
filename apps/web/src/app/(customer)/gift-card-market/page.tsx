@@ -2,15 +2,20 @@
 import { useState } from 'react';
 import type { JSX } from 'react';
 import { api } from '@/lib/trpc';
-import { Card, Button, Modal, formatCurrency, Icon } from '@galaxy/ui';
+import { Card, Button, Modal, formatCurrency, Icon, ErrorAlert } from '@galaxy/ui';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
 import { useLocale } from '@/components/LocaleProvider';
 
 export default function GiftCardMarketPage(): JSX.Element {
   const { t, locale } = useLocale();
-  const { data: listings, refetch } = api.giftCardMarket.listings.useQuery() as {
+  const {
+    data: listings,
+    refetch,
+    isError,
+  } = api.giftCardMarket.listings.useQuery() as {
     data: Array<Record<string, unknown>> | undefined;
     refetch: () => void;
+    isError: boolean;
   };
   const listMut = api.giftCardMarket.list.useMutation({
     onSuccess: () => {
@@ -24,6 +29,8 @@ export default function GiftCardMarketPage(): JSX.Element {
   const [value, setValue] = useState(300);
   const [sprice, setSprice] = useState(240);
   const items = listings ?? [];
+
+  if (isError) return <ErrorAlert message={t('state.error')} onRetry={() => refetch()} />;
 
   return (
     <DashboardLayout userRole="CUSTOMER">

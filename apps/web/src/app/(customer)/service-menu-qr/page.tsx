@@ -2,20 +2,29 @@
 import { useState } from 'react';
 import type { JSX } from 'react';
 import { api } from '@/lib/trpc';
-import { Card, CardListSkeleton, Button } from '@galaxy/ui';
+import { Card, CardListSkeleton, Button, ErrorAlert } from '@galaxy/ui';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
 import { useLocale } from '@/components/LocaleProvider';
 
 export default function ServiceMenuQrPage(): JSX.Element {
   const { t } = useLocale();
-  const { data: techs, isLoading } = api.serviceMenuQr.list.useQuery() as {
+  const {
+    data: techs,
+    isLoading,
+    isError,
+    refetch,
+  } = api.serviceMenuQr.list.useQuery() as {
     data: Array<Record<string, unknown>> | undefined;
     isLoading: boolean;
+    isError: boolean;
+    refetch: () => void;
   };
   const generateMut = api.serviceMenuQr.generate.useMutation();
   const [result, setResult] = useState<Record<string, unknown> | null>(null);
 
   const list = (techs ?? []) as Array<Record<string, unknown>>;
+
+  if (isError) return <ErrorAlert message={t('state.error')} onRetry={() => refetch()} />;
 
   return (
     <DashboardLayout userRole="CUSTOMER">

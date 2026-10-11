@@ -1,7 +1,7 @@
 'use client';
 import type { JSX } from 'react';
 import { api } from '@/lib/trpc';
-import { Card, CardListSkeleton, Button, EmptyState, useAuth } from '@galaxy/ui';
+import { Card, CardListSkeleton, Button, EmptyState, useAuth, ErrorAlert } from '@galaxy/ui';
 import { useLocale } from '@/components/LocaleProvider';
 
 export default function AdminShortsPage(): JSX.Element {
@@ -9,12 +9,14 @@ export default function AdminShortsPage(): JSX.Element {
   const { isAuthenticated } = useAuth();
 
   // E7 — media moderation queue.
-  const { data, isLoading, refetch } = api.beautyShorts.adminPending.useQuery(undefined, {
+  const { data, isLoading, refetch, isError } = api.beautyShorts.adminPending.useQuery(undefined, {
     enabled: isAuthenticated,
   });
   const decideMut = api.beautyShorts.adminDecide.useMutation({ onSuccess: () => refetch() });
 
   const pending = data ?? [];
+
+  if (isError) return <ErrorAlert message={t('state.error')} onRetry={() => refetch()} />;
 
   return (
     <div className="mx-auto max-w-4xl space-y-6">

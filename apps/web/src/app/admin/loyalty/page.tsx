@@ -2,26 +2,40 @@
 import { useState } from 'react';
 import type { JSX } from 'react';
 import { api } from '@/lib/trpc';
-import { Card, CardListSkeleton, useAuth } from '@galaxy/ui';
+import { Card, CardListSkeleton, useAuth, ErrorAlert } from '@galaxy/ui';
 import { useLocale } from '@/components/LocaleProvider';
 
 export default function AdminLoyaltyPage(): JSX.Element {
   const { t, locale } = useLocale();
   const { isAuthenticated } = useAuth();
   const utils = api.useUtils();
-  const { data: rewards, isLoading: rwLoading } = api.loyalty.listRewards.useQuery(undefined, {
+  const {
+    data: rewards,
+    isLoading: rwLoading,
+    isError,
+    refetch,
+  } = api.loyalty.listRewards.useQuery(undefined, {
     enabled: isAuthenticated,
   }) as {
     data: Array<Record<string, unknown>> | undefined;
     isLoading: boolean;
+    isError: boolean;
+    refetch: () => void;
   };
 
   // 8.2 — boost events CRUD.
-  const { data: boosts, isLoading: boostLoading } = api.loyalty.listBoosts.useQuery(undefined, {
+  const {
+    data: boosts,
+    isLoading: boostLoading,
+    isError: listBoostsIsError,
+    refetch: refetchListBoosts,
+  } = api.loyalty.listBoosts.useQuery(undefined, {
     enabled: isAuthenticated,
   }) as {
     data: Array<Record<string, unknown>> | undefined;
     isLoading: boolean;
+    isError: boolean;
+    refetch: () => void;
   };
   const createBoost = api.loyalty.createBoost.useMutation({
     onSuccess: () => {
@@ -52,6 +66,18 @@ export default function AdminLoyaltyPage(): JSX.Element {
 
   const fmt = (d: unknown) =>
     new Date(String(d)).toLocaleDateString(locale === 'ar' ? 'ar-SA' : 'en-GB');
+
+  if (isError || listBoostsIsError) {
+    return (
+      <ErrorAlert
+        message={t('state.error')}
+        onRetry={() => {
+          refetch();
+          refetchListBoosts();
+        }}
+      />
+    );
+  }
 
   return (
     <>

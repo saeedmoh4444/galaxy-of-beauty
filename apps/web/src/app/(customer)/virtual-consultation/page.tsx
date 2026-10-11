@@ -2,7 +2,7 @@
 import { useState } from 'react';
 import type { JSX } from 'react';
 import { api } from '@/lib/trpc';
-import { Card, Button, formatCurrency } from '@galaxy/ui';
+import { Card, Button, formatCurrency, ErrorAlert } from '@galaxy/ui';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
 import { useLocale } from '@/components/LocaleProvider';
 import type { TranslationKey } from '@galaxy/shared';
@@ -76,13 +76,21 @@ const CONSULTANTS: {
 
 export default function VirtualConsultationPage(): JSX.Element {
   const { t } = useLocale();
-  const { data: bookings } = api.virtualConsultation.myConsultations.useQuery() as {
+  const {
+    data: bookings,
+    isError,
+    refetch,
+  } = api.virtualConsultation.myConsultations.useQuery() as {
     data: Array<Record<string, unknown>> | undefined;
+    isError: boolean;
+    refetch: () => void;
   };
   const bookMut = api.virtualConsultation.book.useMutation();
   const [selected, setSelected] = useState<string | null>(null);
   const [slot, setSlot] = useState<string | null>(null);
   const consultant = CONSULTANTS.find((c) => c.key === selected);
+
+  if (isError) return <ErrorAlert message={t('state.error')} onRetry={() => refetch()} />;
 
   return (
     <DashboardLayout userRole="CUSTOMER">
