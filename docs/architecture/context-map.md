@@ -1,8 +1,8 @@
 # Architecture Context Map — ARCH-001
 
 **Purpose**: Classify every feature domain and define dependency rules.
-**Updated**: 2026-08-11
-**Baseline**: 245 API routers, 202 database models
+**Updated**: 2026-10-11 (baseline refresh — post audit-fix wave #413–#423)
+**Baseline**: 266 API routers, 234 database models
 
 ## Domain Classification
 
