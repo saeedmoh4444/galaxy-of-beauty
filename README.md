@@ -167,29 +167,30 @@ galaxy-of-beauty/
 
 ## 📚 Documentation
 
-| Document                                                              | Description                                |
-| --------------------------------------------------------------------- | ------------------------------------------ |
-| [Delivery Report](DELIVERY_REPORT.md)                                 | Full program status + follow-up addendum   |
-| [Local Testing Guide](docs/LOCAL_TESTING_GUIDE.md)                    | Test everything yourself — full checklist  |
-| [ADR-006: Web Session Model](docs/adr/006-web-session-model.md)       | Auth architecture decision                 |
-| [Model Ownership Map](docs/architecture/model-ownership.md)           | 234 models → 12 bounded contexts           |
-| [Architecture Context Map](docs/architecture/context-map.md)          | Domain classification + debt audit         |
-| [Migration Standards](docs/architecture/migration-standards.md)       | Conventions, redundant index audit         |
-| [API Risk Matrix](docs/testing/risk-matrix.md)                        | Tiered test coverage strategy              |
-| [Audit Plan](docs/AUDIT_PLAN.md)                                      | End-to-end bug-audit methodology (A–E)     |
-| [Audit Report](docs/AUDIT_REPORT.md)                                  | Findings, fixes, and recommendations       |
-| [Deep Audit (2026-10-10)](docs/AUDIT_2026-10-10.md)                   | 20-item platform audit + resolution log    |
-| [UI/UX Backlog](docs/UI_UX_BACKLOG.md)                                | Accessibility/delight backlog — 17/17 done |
-| [Performance Budgets](docs/frontend/performance-budgets.md)           | Web vitals targets                         |
-| [Incident Runbooks](docs/operations/runbooks.md)                      | 7 emergency scenarios                      |
-| [SECURITY.md](SECURITY.md)                                            | Vulnerability disclosure + audit           |
-| [Platform Rulebook](Rules_to_make_well_archtichtrue-platform.md)      | Golden rules, commands, gates, gotchas     |
-| [Project Brain](brain_code.md)                                        | Living architecture knowledge base         |
-| [i18n Catalog Split](docs/architecture/i18n-catalog-split.md)         | Per-platform catalogs + CI leak guard      |
-| [Technical Debt](docs/TECHNICAL_DEBT.md)                              | Debt register with priorities              |
-| [Store & Provider System](docs/architecture/store-provider-system.md) | Unified provider model reference           |
-| [Roadmap Recommendations](docs/ROADMAP_RECOMMENDATIONS_2026-10.md)    | Phased roadmap A–D with effort estimates   |
-| [Top-10 Platform Plan](docs/TOP10_PLATFORM_PLAN_2026-10.md)           | Fixes → store systems → launch → quality   |
+| Document                                                              | Description                                     |
+| --------------------------------------------------------------------- | ----------------------------------------------- |
+| [Delivery Report](DELIVERY_REPORT.md)                                 | Full program status + follow-up addendum        |
+| [Local Testing Guide](docs/LOCAL_TESTING_GUIDE.md)                    | Test everything yourself — full checklist       |
+| [ADR-006: Web Session Model](docs/adr/006-web-session-model.md)       | Auth architecture decision                      |
+| [Model Ownership Map](docs/architecture/model-ownership.md)           | 234 models → 12 bounded contexts                |
+| [Architecture Context Map](docs/architecture/context-map.md)          | Domain classification + debt audit              |
+| [Migration Standards](docs/architecture/migration-standards.md)       | Conventions, redundant index audit              |
+| [API Risk Matrix](docs/testing/risk-matrix.md)                        | Tiered test coverage strategy                   |
+| [Audit Plan](docs/AUDIT_PLAN.md)                                      | End-to-end bug-audit methodology (A–E)          |
+| [Audit Report](docs/AUDIT_REPORT.md)                                  | Findings, fixes, and recommendations            |
+| [Deep Audit (2026-10-10)](docs/AUDIT_2026-10-10.md)                   | 20-item platform audit + resolution log         |
+| [UI/UX Backlog](docs/UI_UX_BACKLOG.md)                                | Accessibility/delight backlog — 17/17 done      |
+| [Performance Budgets](docs/frontend/performance-budgets.md)           | Web vitals targets                              |
+| [Incident Runbooks](docs/operations/runbooks.md)                      | 7 emergency scenarios                           |
+| [SECURITY.md](SECURITY.md)                                            | Vulnerability disclosure + audit                |
+| [Platform Rulebook](Rules_to_make_well_archtichtrue-platform.md)      | Golden rules, commands, gates, gotchas          |
+| [Project Brain](brain_code.md)                                        | Living architecture knowledge base              |
+| [Starter Doc Kit](docs/STARTER_DOC_KIT.md)                            | Which docs to reuse when starting a new project |
+| [i18n Catalog Split](docs/architecture/i18n-catalog-split.md)         | Per-platform catalogs + CI leak guard           |
+| [Technical Debt](docs/TECHNICAL_DEBT.md)                              | Debt register with priorities                   |
+| [Store & Provider System](docs/architecture/store-provider-system.md) | Unified provider model reference                |
+| [Roadmap Recommendations](docs/ROADMAP_RECOMMENDATIONS_2026-10.md)    | Phased roadmap A–D with effort estimates        |
+| [Top-10 Platform Plan](docs/TOP10_PLATFORM_PLAN_2026-10.md)           | Fixes → store systems → launch → quality        |
 
 ---
 
