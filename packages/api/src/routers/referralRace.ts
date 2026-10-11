@@ -1,12 +1,15 @@
 import { z } from 'zod';
 import { prisma } from '@galaxy/db';
 import { BULK_PAGE_SIZE, DEFAULT_PAGE_SIZE, DEFAULT_APP_URL, MS_PER_DAY } from '@galaxy/shared';
-import { customerProcedure, publicProcedure, router } from '../trpc';
+import { adminProcedure, customerProcedure, publicProcedure, router } from '../trpc';
 
 const db = prisma;
 
 const CAMPAIGN_DURATION_DAYS = 14;
 const PRIZES = ['جلسة مجانية', 'خصم ٥٠٪', 'خصم ٣٠٪'];
+// Audit #4 — the prizes are real money now: bonusBalance credits (SAR) for
+// ranks 1-3, mirroring the display prizes (free session / 50% / 30%).
+const RACE_PRIZE_BONUS = [100, 50, 30];
 
 /** Returns the fixed campaign end date. Uses REFERRAL_CAMPAIGN_START env var
  *  (ISO date string) to anchor the campaign, defaulting to the first time this
@@ -79,4 +82,53 @@ export const referralRaceRouter = router({
         message: 'انضمي لجالكسي بيوتي واكسبي جوائز!',
       };
     }),
+
+  /**
+   * awardPrizes (admin) — pay the top-3 referrers of the campaign.
+   * Credits bonusBalance (non-withdrawable) via REFERRAL_BONUS
+   * transactions, idempotent per campaign per winner — safe to re-run.
+   */
+  awardPrizes: adminProcedure.mutation(async () => {
+    const endDate = getEndDate();
+    const campaignKey = endDate.toISOString().slice(0, 10);
+    const leaders = await db.referral.groupBy({
+      by: ['referrerId'],
+      where: { status: 'COMPLETED' },
+      _count: { id: true },
+      orderBy: { _count: { id: 'desc' } },
+      take: 3,
+    });
+
+    const awarded: Array<{ userId: number; rank: number; amount: number }> = [];
+    for (const [i, leader] of leaders.entries()) {
+      const amount = RACE_PRIZE_BONUS[i] ?? 0;
+      if (amount <= 0) continue;
+      const idempotencyKey = `referral_race_${campaignKey}_${leader.referrerId}`;
+      const existing = await db.walletTransaction.findUnique({ where: { idempotencyKey } });
+      if (existing) continue; // already awarded for this campaign
+
+      const wallet = await db.wallet.findUnique({ where: { userId: leader.referrerId } });
+      if (!wallet) continue; // no wallet — nothing to credit
+
+      await db.$transaction(async (tx) => {
+        await tx.wallet.update({
+          where: { id: wallet.id },
+          data: { bonusBalance: { increment: amount } },
+        });
+        await tx.walletTransaction.create({
+          data: {
+            walletId: wallet.id,
+            type: 'CREDIT',
+            source: 'REFERRAL_BONUS',
+            amount,
+            description: `Referral race #${i + 1} prize`,
+            idempotencyKey,
+          },
+        });
+      });
+      awarded.push({ userId: leader.referrerId, rank: i + 1, amount });
+    }
+
+    return { awarded, campaignKey };
+  }),
 });
