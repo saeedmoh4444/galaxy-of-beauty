@@ -1,5 +1,8 @@
 import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
+import { generateCsrfToken, buildCsrfCookie } from '@galaxy/api';
+
+const CSRF_COOKIE_NAME = 'csrf-token';
 
 // Only these prefixes REQUIRE authentication — everything else is public
 // Exception: /marketplace is a guest-browsable storefront (its API is
@@ -178,6 +181,18 @@ export default function proxy(request: NextRequest) {
   // ── Security headers applied to all responses ──
   const response = NextResponse.next();
   response.headers.set('X-Request-ID', requestId);
+
+  // ── CSRF provisioning (page loads) ──
+  // The double-submit token must exist BEFORE the browser's first mutation:
+  // a fresh visit whose first API call is a POST (fast E2E login, a
+  // bookmarked form) has no cookie yet and fails CSRF. Provision it on the
+  // document response — set only when missing/malformed, never rotate
+  // (rotation would break in-flight mutations from other tabs).
+  const isDocumentRequest = request.headers.get('accept')?.includes('text/html') ?? false;
+  const existingCsrf = request.cookies.get(CSRF_COOKIE_NAME)?.value;
+  if (isDocumentRequest && (!existingCsrf || !/^[a-f0-9]{64}$/.test(existingCsrf))) {
+    response.headers.append('Set-Cookie', buildCsrfCookie(generateCsrfToken()));
+  }
 
   // Strict Transport Security (HSTS) — 1 year, include subdomains
   response.headers.set('Strict-Transport-Security', 'max-age=63072000; includeSubDomains; preload');

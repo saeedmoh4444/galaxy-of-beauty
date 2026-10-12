@@ -2,7 +2,7 @@
 import { useState } from 'react';
 import type { JSX } from 'react';
 import { api } from '@/lib/trpc';
-import { Card, Button, Modal, Input, formatCurrency, useAuth } from '@galaxy/ui';
+import { Card, Button, Modal, Input, formatCurrency, useAuth, CardSkeleton } from '@galaxy/ui';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
 import { useLocale } from '@/components/LocaleProvider';
 import { localize } from '@galaxy/shared';
@@ -147,6 +147,20 @@ export function VendorPortal({ shellRole = 'CUSTOMER' }: { shellRole?: string })
 
   const prods = (products as unknown as Array<Record<string, unknown>> | undefined) ?? [];
   const storeOrders = (orders as unknown as Array<Record<string, unknown>> | undefined) ?? [];
+
+  /* ---------- Loading (myStore in flight) — the owner dashboards below must
+      never render against undefined store data (crash: bannerUrl of
+      undefined, caught by the root error boundary). ---------- */
+  if (storeLoading) {
+    return (
+      <DashboardLayout userRole={shellRole}>
+        <div className="mx-auto max-w-4xl space-y-6 p-6">
+          <CardSkeleton />
+          <CardSkeleton />
+        </div>
+      </DashboardLayout>
+    );
+  }
 
   /* ---------- Apply wizard (no store/clinic/gym/nail bar/athome yet) ---------- */
   if (!storeLoading && !store) {

@@ -37,6 +37,6 @@ test.describe('Store Dashboard (S1)', () => {
   test('customer without a store is sent to the vendor portal', async ({ page }) => {
     await login(page, CUSTOMER_EMAIL);
     await page.goto('/store');
-    await expect(page).toHaveURL(/\/customer\/vendor-portal/, { timeout: 60_000 });
+    await expect(page).toHaveURL(/\/vendor-portal/, { timeout: 60_000 });
   });
 });

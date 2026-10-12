@@ -101,7 +101,7 @@ const MENU_ITEMS: { labelKey: TranslationKey; href: string }[] = [
   { labelKey: 'mobile.salonManagement.title', href: '/customer/salon-management' },
   { labelKey: 'mobile.salonMembership.title', href: '/customer/salon-membership' },
   { labelKey: 'franchisePortal.title', href: '/customer/franchise-portal' },
-  { labelKey: 'mobile.vendorPortal.title', href: '/customer/vendor-portal' },
+  { labelKey: 'mobile.vendorPortal.title', href: '/vendor-portal' },
   { labelKey: 'mobile.rideHailing.title', href: '/customer/ride-hailing' },
   { labelKey: 'mobile.lastMile.title', href: '/customer/last-mile' },
   { labelKey: 'disputes.title', href: '/customer/disputes' },
