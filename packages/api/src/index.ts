@@ -2,6 +2,22 @@ export { createTRPCContext } from './context';
 export type { TRPCContext, Context } from './context';
 export { appRouter } from './routers/index';
 export type { AppRouter } from './routers/index';
+export type {
+  MyStore,
+  VendorDashboard,
+  PortalProduct,
+  StoreOrderRow,
+  StoreDealRow,
+  StoreDealPayload,
+  PayoutRow,
+  ClinicSlot,
+  ClinicConsultation,
+  GymClass,
+  GymClassBooking,
+  NailBarSlot,
+  NailBarBooking,
+  HomeRequest,
+} from './types/vendor';
 export {
   signAccessToken,
   signRefreshToken,

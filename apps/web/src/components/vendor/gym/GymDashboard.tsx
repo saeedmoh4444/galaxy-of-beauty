@@ -5,6 +5,7 @@ import { api } from '@/lib/trpc';
 import { Card, Button, Input } from '@galaxy/ui';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
 import { useLocale } from '@/components/LocaleProvider';
+import type { MyStore } from '@galaxy/api';
 import { localize } from '@galaxy/shared';
 import { VenueProfileCard } from '../shared/VenueProfileCard';
 
@@ -17,7 +18,7 @@ export function GymDashboard({
   refetchStore,
   shellRole,
 }: {
-  store: Record<string, unknown>;
+  store: NonNullable<MyStore>;
   refetchStore: () => void;
   shellRole?: string;
 }): JSX.Element {
@@ -33,14 +34,8 @@ export function GymDashboard({
   const [clsCapacity, setClsCapacity] = useState(10);
   const [clsPrice, setClsPrice] = useState(0);
 
-  const classesQ = api.vendorPortal['gymClasses.list'].useQuery(undefined) as {
-    data: Array<Record<string, unknown>> | undefined;
-    refetch: () => void;
-  };
-  const bookingsQ = api.vendorPortal.gymClassBookings.useQuery(undefined) as {
-    data: Array<Record<string, unknown>> | undefined;
-    refetch: () => void;
-  };
+  const classesQ = api.vendorPortal['gymClasses.list'].useQuery(undefined);
+  const bookingsQ = api.vendorPortal.gymClassBookings.useQuery(undefined);
   const addClassMut = api.vendorPortal['gymClasses.add'].useMutation({
     onSuccess: () => classesQ.refetch(),
   });
@@ -140,14 +135,13 @@ export function GymDashboard({
             {t('vendorPortal.gym.class-add')}
           </Button>
           <div className="mt-3 space-y-2">
-            {classes.map((c: Record<string, unknown>) => (
+            {classes.map((c) => (
               <div
                 key={c.id as number}
                 className="flex items-center justify-between rounded-lg border p-3"
               >
                 <p className="text-sm">
-                  {localize(c.nameJson, locale)} ·{' '}
-                  {new Date(c.startsAt as string).toLocaleString('ar-SA')} ·{' '}
+                  {localize(c.nameJson, locale)} · {new Date(c.startsAt).toLocaleString('ar-SA')} ·{' '}
                   {c.enrolledCount as number}/{c.capacity as number}
                 </p>
                 <Button
@@ -174,9 +168,9 @@ export function GymDashboard({
             <p className="text-sm text-text-tertiary">{t('vendorPortal.gym.bookings-empty')}</p>
           ) : (
             <div className="space-y-2">
-              {bookings.map((b: Record<string, unknown>) => {
-                const customer = b.customer as Record<string, unknown> | undefined;
-                const cls = b.class as Record<string, unknown> | undefined;
+              {bookings.map((b) => {
+                const customer = b.customer;
+                const cls = b.class;
                 return (
                   <div
                     key={b.id as number}
@@ -188,7 +182,7 @@ export function GymDashboard({
                       </p>
                       <p className="text-xs text-text-secondary">
                         {cls ? localize(cls.nameJson, locale) : ''} ·{' '}
-                        {cls ? new Date(cls.startsAt as string).toLocaleString('ar-SA') : ''}
+                        {cls ? new Date(cls.startsAt).toLocaleString('ar-SA') : ''}
                       </p>
                     </div>
                     {b.status === 'BOOKED' ? (

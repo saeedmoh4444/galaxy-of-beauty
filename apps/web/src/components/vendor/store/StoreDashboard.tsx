@@ -5,6 +5,7 @@ import { api } from '@/lib/trpc';
 import { Card, Button, Modal, Input, formatCurrency, useAuth } from '@galaxy/ui';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
 import { useLocale } from '@/components/LocaleProvider';
+import type { MyStore, StoreDealPayload } from '@galaxy/api';
 import { localize } from '@galaxy/shared';
 import { VenueProfileCard } from '../shared/VenueProfileCard';
 
@@ -18,7 +19,7 @@ export function StoreDashboard({
   refetchStore,
   shellRole,
 }: {
-  store: Record<string, unknown>;
+  store: NonNullable<MyStore>;
   refetchStore: () => void;
   shellRole?: string;
 }): JSX.Element {
@@ -71,10 +72,10 @@ export function StoreDashboard({
   const [dealEnds, setDealEnds] = useState(
     new Date(Date.now() + 3 * 86_400_000).toISOString().slice(0, 16),
   );
-  const myDeals = (deals as unknown as Array<Record<string, unknown>> | undefined) ?? [];
-  const topProducts = (dash?.topProducts as Array<Record<string, unknown>> | undefined) ?? [];
-  const prods = (products as unknown as Array<Record<string, unknown>> | undefined) ?? [];
-  const storeOrders = (orders as unknown as Array<Record<string, unknown>> | undefined) ?? [];
+  const myDeals = deals ?? [];
+  const topProducts = dash?.topProducts ?? [];
+  const prods = products ?? [];
+  const storeOrders = orders ?? [];
 
   return (
     <DashboardLayout userRole={shellRole}>
@@ -92,10 +93,7 @@ export function StoreDashboard({
         </div>
 
         {/* E6d/E7/K3 — trust toggles + venue banner (self-service) */}
-        <VenueProfileCard
-          store={store as Record<string, unknown>}
-          refetchStore={() => refetchStore()}
-        />
+        <VenueProfileCard store={store} refetchStore={() => refetchStore()} />
 
         {/* Store plan Phase 1 — approval status */}
         {store && !(store.isVerified as boolean) && (
@@ -172,8 +170,8 @@ export function StoreDashboard({
             <p className="text-sm text-text-tertiary">{t('vendorPortal.orders.empty')}</p>
           ) : (
             <div className="space-y-2">
-              {storeOrders.map((o: Record<string, unknown>) => {
-                const customer = o.customer as Record<string, unknown> | undefined;
+              {storeOrders.map((o) => {
+                const customer = o.customer;
                 return (
                   <div
                     key={o.id as number}
@@ -181,12 +179,12 @@ export function StoreDashboard({
                   >
                     <div>
                       <p className="text-sm font-bold">
-                        #{o.id as number} · {formatCurrency(o.totalAmount as number)} ·{' '}
+                        #{o.id as number} · {formatCurrency(Number(o.totalAmount))} ·{' '}
                         {o.itemCount as number} {t('vendorPortal.orders.items')}
                       </p>
                       <p className="text-xs text-text-secondary">
                         {customer?.name as string} ·{' '}
-                        {new Date(o.createdAt as string).toLocaleDateString('ar-SA')}
+                        {new Date(o.createdAt).toLocaleDateString('ar-SA')}
                       </p>
                     </div>
                     <div className="flex items-center gap-2">
@@ -233,8 +231,8 @@ export function StoreDashboard({
             </div>
           ) : (
             <div className="space-y-2">
-              {myDeals.map((sub: Record<string, unknown>) => {
-                const payload = (sub.payload ?? {}) as Record<string, unknown>;
+              {myDeals.map((sub) => {
+                const payload = (sub.payload ?? {}) as unknown as StoreDealPayload;
                 const original = Number(payload.originalPrice ?? 0);
                 const deal = Number(payload.dealPrice ?? 0);
                 const pct = original > 0 ? Math.round((1 - deal / original) * 100) : 0;
@@ -298,7 +296,7 @@ export function StoreDashboard({
             <Card padding="md">
               <h3 className="mb-2 font-bold">{t('vendorPortal.topProducts')}</h3>
               <div className="space-y-1">
-                {topProducts.map((p: Record<string, unknown>) => (
+                {topProducts.map((p) => (
                   <div key={p.id as number} className="flex justify-between text-sm">
                     <span className="font-medium">{localize(p.nameJson, locale)}</span>
                     <span className="text-text-secondary">
@@ -312,7 +310,7 @@ export function StoreDashboard({
             </Card>
           )}
 
-          {prods.map((p: Record<string, unknown>) => (
+          {prods.map((p) => (
             <Card key={p.id as number} padding="md" className="flex items-center justify-between">
               <div className="flex items-center gap-3">
                 <span className="text-2xl">{p.emoji as string}</span>
@@ -350,7 +348,7 @@ export function StoreDashboard({
               className="w-full rounded-lg border px-3 py-2 text-sm border-edge bg-surface-elevated"
             >
               <option value="">—</option>
-              {prods.map((p: Record<string, unknown>) => (
+              {prods.map((p) => (
                 <option key={p.id as number} value={p.id as number}>
                   {p.nameAr as string} · {formatCurrency(p.price as number)}
                 </option>
