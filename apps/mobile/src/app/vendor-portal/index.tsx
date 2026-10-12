@@ -5,34 +5,13 @@ import { useAuthState } from '@/hooks/useAuthState';
 import { trpc } from '@/lib/trpc-react';
 import { useLocale } from '@/components/LocaleProvider';
 
-interface VendorDashboard {
-  totalProducts?: number;
-  totalSales?: number;
-  totalRevenue?: number;
-  revenue?: number;
-  pendingOrders?: number;
-  rating?: number;
-}
-
-interface VendorProduct {
-  id: number;
-  name?: string;
-  nameAr?: string;
-  price?: number;
-  stock?: number;
-  sales?: number;
-  emoji?: string;
-  active?: boolean;
-}
-
 export default function VendorPortalScreen(): JSX.Element {
   const { t, locale } = useLocale();
   const isAuthed = useAuthState();
   const dashQ = trpc.vendorPortal.dashboard.useQuery(undefined, { enabled: isAuthed });
   const productsQ = trpc.vendorPortal.myProducts.useQuery(undefined, { enabled: isAuthed });
-  const dash = dashQ.data as VendorDashboard | null;
-  const products: VendorProduct[] =
-    (productsQ.data as unknown as VendorProduct[] | undefined) ?? [];
+  const dash = dashQ.data;
+  const products = productsQ.data ?? [];
 
   const deleteMut = trpc.vendorPortal.deleteProduct.useMutation({
     onSuccess: () => {
@@ -69,7 +48,7 @@ export default function VendorPortalScreen(): JSX.Element {
         <View style={styles.k}>
           <Text style={styles.ke}>💰</Text>
           <Text style={[styles.kv, { color: '#059669' }]}>
-            {(dash?.totalRevenue ?? 0)?.toLocaleString(locale === 'en' ? 'en-GB' : 'ar-SA')}
+            {(dash?.revenue ?? 0)?.toLocaleString(locale === 'en' ? 'en-GB' : 'ar-SA')}
           </Text>
           <Text style={styles.kl}>{t('mobile.vendorPortal.sar')}</Text>
         </View>
@@ -78,7 +57,7 @@ export default function VendorPortalScreen(): JSX.Element {
         <View key={p.id} style={styles.card}>
           <Text style={styles.em}>🧴</Text>
           <View style={{ flex: 1 }}>
-            <Text style={styles.nm}>{p.name}</Text>
+            <Text style={styles.nm}>{locale === 'ar' ? p.nameAr : p.nameEn}</Text>
             <Text style={styles.meta}>
               {t('marketing.compare.price-sar', {
                 price: p.price?.toLocaleString(locale === 'en' ? 'en-GB' : 'ar-SA') ?? '',

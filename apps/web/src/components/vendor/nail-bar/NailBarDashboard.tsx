@@ -5,6 +5,7 @@ import { api } from '@/lib/trpc';
 import { Card, Button, Input } from '@galaxy/ui';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
 import { useLocale } from '@/components/LocaleProvider';
+import type { MyStore } from '@galaxy/api';
 import { VenueProfileCard } from '../shared/VenueProfileCard';
 
 /* ================================================================
@@ -15,7 +16,7 @@ export function NailBarDashboard({
   refetchStore,
   shellRole,
 }: {
-  store: Record<string, unknown>;
+  store: NonNullable<MyStore>;
   refetchStore: () => void;
   shellRole?: string;
 }): JSX.Element {
@@ -28,14 +29,8 @@ export function NailBarDashboard({
   );
   const [slotCapacity, setSlotCapacity] = useState(4);
 
-  const slotsQ = api.vendorPortal['nailBarSlots.list'].useQuery(undefined) as {
-    data: Array<Record<string, unknown>> | undefined;
-    refetch: () => void;
-  };
-  const bookingsQ = api.vendorPortal.nailBarBookings.useQuery(undefined) as {
-    data: Array<Record<string, unknown>> | undefined;
-    refetch: () => void;
-  };
+  const slotsQ = api.vendorPortal['nailBarSlots.list'].useQuery(undefined);
+  const bookingsQ = api.vendorPortal.nailBarBookings.useQuery(undefined);
   const addSlotMut = api.vendorPortal['nailBarSlots.add'].useMutation({
     onSuccess: () => slotsQ.refetch(),
   });
@@ -108,14 +103,13 @@ export function NailBarDashboard({
             {t('vendorPortal.nailBar.slot-add')}
           </Button>
           <div className="mt-3 space-y-2">
-            {slots.map((s: Record<string, unknown>) => (
+            {slots.map((s) => (
               <div
                 key={s.id as number}
                 className="flex items-center justify-between rounded-xl bg-surface-muted p-3"
               >
                 <p className="text-sm">
-                  {new Date(s.startAt as string).toLocaleString()} →{' '}
-                  {new Date(s.endAt as string).toLocaleString()} ·{' '}
+                  {new Date(s.startAt).toLocaleString()} → {new Date(s.endAt).toLocaleString()} ·{' '}
                   <span className="font-bold">
                     {s.bookedCount as number}/{s.capacity as number}
                   </span>
@@ -141,7 +135,7 @@ export function NailBarDashboard({
             <p className="text-sm text-text-tertiary">{t('vendorPortal.nailBar.bookings-empty')}</p>
           ) : (
             <div className="space-y-2">
-              {bookings.map((b: Record<string, unknown>) => (
+              {bookings.map((b) => (
                 <div
                   key={b.id as number}
                   className="flex items-center justify-between rounded-xl bg-surface-muted p-3"
@@ -149,13 +143,8 @@ export function NailBarDashboard({
                   <div>
                     <p className="text-sm font-bold">{b.code as string}</p>
                     <p className="text-xs text-text-secondary">
-                      {(b.customer as Record<string, unknown> | null)?.name as string} ·{' '}
-                      {(b.customer as Record<string, unknown> | null)?.phone as string} ·{' '}
-                      {b.slot
-                        ? new Date(
-                            (b.slot as Record<string, unknown>).startAt as string,
-                          ).toLocaleString()
-                        : ''}
+                      {b.customer?.name} · {b.customer?.phone} ·{' '}
+                      {b.slot ? new Date(b.slot.startAt).toLocaleString() : ''}
                     </p>
                   </div>
                 </div>
