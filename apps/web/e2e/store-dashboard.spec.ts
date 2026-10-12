@@ -94,7 +94,9 @@ test.describe('Store Dashboard (S1)', () => {
 
     await page.getByTestId('vendor-tab-deals').click();
     await page.getByRole('button', { name: /اقترح عرضاً/ }).click();
-    await page.locator('select').selectOption({ label: new RegExp(name) });
+    // selectOption({ label }) takes an exact string — the option reads
+    // "<nameAr> · <price>".
+    await page.locator('select').selectOption({ label: `${name} · 120` });
     await page.getByLabel('سعر العرض (ر.س)').fill('80');
     await page.getByRole('button', { name: 'حفظ' }).click();
 
