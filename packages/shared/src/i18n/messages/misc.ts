@@ -3810,6 +3810,12 @@ export const miscMessages = {
   },
   'vendorPortal.newProduct': { ar: 'منتج جديد', en: 'New product' },
   'vendorPortal.products': { ar: 'منتج', en: 'Products' },
+  // A3 — tabbed workspace
+  'vendorPortal.tab.overview': { ar: 'نظرة عامة', en: 'Overview' },
+  'vendorPortal.tab.products': { ar: 'المنتجات', en: 'Products' },
+  'vendorPortal.tab.deals': { ar: 'العروض', en: 'Deals' },
+  'vendorPortal.tabs.aria': { ar: 'أقسام لوحة المتجر', en: 'Store dashboard sections' },
+  'vendorPortal.products.empty': { ar: 'لا توجد منتجات بعد', en: 'No products yet' },
   'vendorPortal.sold': { ar: 'مبيعة', en: 'Sold' },
   'vendorPortal.revenue': { ar: 'الإيرادات', en: 'Revenue' },
   'vendorPortal.rating': { ar: 'التقييم', en: 'Rating' },

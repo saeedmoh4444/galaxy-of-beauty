@@ -39,4 +39,29 @@ test.describe('Store Dashboard (S1)', () => {
     await page.goto('/store');
     await expect(page).toHaveURL(/\/vendor-portal/, { timeout: 60_000 });
   });
+
+  test('A3 — store dashboard tabs: overview default, deep link, panel switching', async ({
+    page,
+  }) => {
+    await login(page, STORE_EMAIL);
+    await page.goto('/store');
+    await expect(page).toHaveURL(/\/store$/, { timeout: 60_000 });
+
+    // Four tabs, overview active by default.
+    for (const key of ['overview', 'orders', 'products', 'deals']) {
+      await expect(page.getByTestId(`vendor-tab-${key}`)).toBeVisible();
+    }
+    await expect(page.getByTestId('vendor-tab-overview')).toHaveAttribute('aria-selected', 'true');
+    await expect(page.getByTestId('vendor-panel-overview')).toBeVisible();
+
+    // ?tab=orders deep link opens the orders panel.
+    await page.goto('/store?tab=orders');
+    await expect(page.getByTestId('vendor-tab-orders')).toHaveAttribute('aria-selected', 'true');
+    await expect(page.getByTestId('vendor-panel-orders')).toBeVisible();
+
+    // Switching to products shows the catalog panel with the add button.
+    await page.getByTestId('vendor-tab-products').click();
+    await expect(page.getByTestId('vendor-panel-products')).toBeVisible();
+    await expect(page.getByRole('button', { name: /منتج جديد/ })).toBeVisible();
+  });
 });
