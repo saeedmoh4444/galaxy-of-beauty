@@ -166,4 +166,42 @@ describe('store settlement', { sequential: true }, () => {
     const cust = await caller(customer);
     await expect(cust.disputes.create({ reason: 'x' })).rejects.toThrow();
   });
+
+  it('H0 — concurrent fulfillments accrue exactly one payout', async () => {
+    const ownerCaller = await caller(vendorOwner);
+    const order = await prisma.storeOrder.create({
+      data: { vendorId, customerId: customer.id, totalAmount: 60, status: 'PENDING_FULFILLMENT' },
+    });
+    orderIds.push(order.id);
+
+    const results = await Promise.allSettled([
+      ownerCaller.vendorPortal.fulfillOrder({ orderId: order.id }),
+      ownerCaller.vendorPortal.fulfillOrder({ orderId: order.id }),
+    ]);
+
+    expect(results.filter((r) => r.status === 'fulfilled').length).toBe(1);
+    expect(results.filter((r) => r.status === 'rejected').length).toBe(1);
+
+    const vendor = await prisma.vendor.findUniqueOrThrow({ where: { id: vendorId } });
+    const commission = Math.round(60 * Number(vendor.commissionRate)) / 100;
+    const net = Math.round((60 - commission) * 100) / 100;
+    const payouts = await prisma.payout.count({ where: { vendorId, amount: net } });
+    expect(payouts).toBe(1); // the double-payout race must stay fixed
+  });
+
+  it('H0 — an idempotency key turns a repeat fulfill into a success', async () => {
+    const ownerCaller = await caller(vendorOwner);
+    const order = await prisma.storeOrder.create({
+      data: { vendorId, customerId: customer.id, totalAmount: 70, status: 'PENDING_FULFILLMENT' },
+    });
+    orderIds.push(order.id);
+    const key = `fulfill-${order.id}-${Date.now()}`;
+
+    await ownerCaller.vendorPortal.fulfillOrder({ orderId: order.id, idempotencyKey: key });
+    const again = await ownerCaller.vendorPortal.fulfillOrder({
+      orderId: order.id,
+      idempotencyKey: key,
+    });
+    expect(again.status).toBe('FULFILLED');
+  });
 });
