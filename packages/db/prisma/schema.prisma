@@ -1483,6 +1483,7 @@ model Product {
   reviews  ProductReview[]
   cartItems CartItem[]
   deals    StoreDeal[]
+  orderItems StoreOrderItem[]
 
   @@index([vendorId, isActive])
   @@index([categoryId, isActive])
@@ -1690,11 +1691,32 @@ model StoreOrder {
   customer User           @relation(fields: [customerId], references: [id])
   checkout StoreCheckout? @relation(fields: [checkoutId], references: [id], onDelete: SetNull)
   dispute  Dispute?
+  items    StoreOrderItem[]
 
   @@index([vendorId, status, createdAt])
   @@index([customerId, createdAt])
   @@index([checkoutId])
   @@map("store_orders")
+}
+
+// B0 — per-line snapshot of a store order (name + price at purchase time).
+// StoreOrder.itemCount alone cannot render an order detail, restore stock on
+// cancellation, or produce ZATCA line items.
+model StoreOrderItem {
+  id            Int      @id @default(autoincrement())
+  orderId       Int
+  productId     Int
+  nameSnapshot  Json
+  priceSnapshot Decimal  @db.Decimal(10, 2)
+  quantity      Int
+  createdAt     DateTime @default(now())
+
+  order   StoreOrder @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  product Product    @relation(fields: [productId], references: [id], onDelete: Restrict)
+
+  @@index([orderId])
+  @@index([productId])
+  @@map("store_order_items")
 }
 
 // MyFatoorah marketplace checkout — one cart = one shipping consignee =

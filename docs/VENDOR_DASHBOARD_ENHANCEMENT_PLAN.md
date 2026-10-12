@@ -252,17 +252,21 @@ Acceptance: store-checkout tests extended; settlement math unchanged.
 Design: order drawer — line items (B1), totals incl. VAT label, customer
 name + phone with `wa.me/966…` deep link, status timeline
 (PLACED → PENDING_FULFILLMENT → FULFILLED / CANCELLED), cancel-before-
-fulfillment (no payout accrued yet → no reversal). Status transitions via
-the H0 conditional-update pattern.
+fulfillment (no payout accrued yet → no reversal). Cancellation restores
+stock + sales in the same transaction (reversing the checkout-time
+decrement in `placeStoreOrders`). Status transitions via the H0
+conditional-update pattern.
 Acceptance: state-machine tests for every legal/illegal transition.
 **Effort: M.**
 
 **B3 — Inventory integrity.**
-Design: fulfill decrements each line item's stock in the same transaction;
-insufficient stock → clean `PRECONDITION_FAILED` with item names; stock-0
+Design (corrected at B0 implementation — stock decrements at CHECKOUT,
+not at fulfillment): `placeStoreOrders` already decrements stock and
+rejects insufficient stock. B3 closes the visibility gaps: stock-0
 auto-hides from storefront queries; low-stock threshold per product →
 Overview alert + `low_stock` event (F1).
-Acceptance: stock-boundary tests; storefront hides stock-0 (storefront test).
+Acceptance: storefront hides stock-0 (storefront test); low-stock
+threshold tests.
 **Effort: M.**
 
 **B4 — Earnings & settlement center.**
