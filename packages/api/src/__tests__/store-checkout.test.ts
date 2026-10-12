@@ -61,6 +61,13 @@ async function seedCart(quantity = 1): Promise<void> {
   });
 }
 
+/** Track every order of a checkout for teardown — StoreOrderItem rows keep
+ *  the product FK (Restrict) alive until their orders are deleted. */
+async function trackOrdersFor(checkoutId: number): Promise<void> {
+  const orders = await prisma.storeOrder.findMany({ where: { checkoutId } });
+  orders.forEach((o) => createdOrderIds.push(o.id));
+}
+
 beforeEach(() => {
   vi.clearAllMocks();
 });
@@ -152,6 +159,39 @@ describe('payCart — wallet path', () => {
     expect(cart).toHaveLength(0);
   });
 
+  it('B0 — places per-line StoreOrderItems with name/price snapshots', async () => {
+    await seedCart(1);
+    await prisma.wallet.upsert({
+      where: { userId: customer.id },
+      create: { userId: customer.id, balance: new Prisma.Decimal(1000) },
+      update: { balance: new Prisma.Decimal(1000) },
+    });
+    chargeMock.mockResolvedValue({ shippingCharge: 0 });
+
+    const caller = await authCaller(customer);
+    const result = await caller.payments.payCart({
+      idempotencyKey: `sc_${Date.now()}_items`,
+      method: 'wallet',
+      shipping: SHIPPING,
+    });
+    createdCheckoutIds.push(result.checkoutId);
+
+    const order = await prisma.storeOrder.findFirst({
+      where: { checkoutId: result.checkoutId },
+      include: { items: true },
+    });
+    expect(order).not.toBeNull();
+    createdOrderIds.push(order!.id);
+
+    expect(order!.items).toHaveLength(1);
+    expect(order!.items[0]).toMatchObject({
+      productId,
+      quantity: 1,
+      priceSnapshot: new Prisma.Decimal('100'),
+    });
+    expect((order!.items[0]!.nameSnapshot as { ar?: string }).ar).toBe('سيروم');
+  });
+
   it('rolls everything back on insufficient wallet balance', async () => {
     await seedCart(1);
     await prisma.wallet.upsert({
@@ -200,6 +240,7 @@ describe('payCart — online invoice-link path', () => {
     expect(result.invoiceURL).toBe('https://apitest.myfatoorah.com/INV-SC-1');
     expect(result.invoiceId).toBe('INV-SC-1');
     createdCheckoutIds.push(result.checkoutId);
+    await trackOrdersFor(result.checkoutId);
 
     const checkout = await prisma.storeCheckout.findUnique({ where: { id: result.checkoutId } });
     expect(checkout?.invoiceId).toBe('INV-SC-1');
@@ -229,6 +270,7 @@ describe('payCart — online invoice-link path', () => {
       shipping: SHIPPING,
     });
     createdCheckoutIds.push(created.checkoutId);
+    await trackOrdersFor(created.checkoutId);
 
     // Pending status from the gateway → still PENDING.
     statusMock.mockResolvedValue({ invoiceId: 'INV-SC-2', invoiceStatus: 'Pending' });
@@ -260,6 +302,7 @@ describe('payCart — online invoice-link path', () => {
       shipping: SHIPPING,
     });
     createdCheckoutIds.push(created.checkoutId);
+    await trackOrdersFor(created.checkoutId);
 
     statusMock.mockResolvedValue({ invoiceId: 'INV-SC-3', invoiceStatus: 'Canceled' });
     const failed = await caller.payments.verifyCartPayment({ invoiceId: 'INV-SC-3' });
@@ -288,6 +331,7 @@ describe('payCart — idempotency', () => {
       shipping: SHIPPING,
     });
     createdCheckoutIds.push(first.checkoutId);
+    await trackOrdersFor(first.checkoutId);
     const second = await caller.payments.payCart({
       idempotencyKey: key,
       method: 'online',

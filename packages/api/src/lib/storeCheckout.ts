@@ -14,6 +14,8 @@ export interface CartLine {
   unitPrice: number;
   vendorId: number;
   name: string;
+  /** B0 — bilingual name snapshot for StoreOrderItem.nameSnapshot. */
+  nameJson: { ar?: string; en?: string } | null;
   stock: number;
 }
 
@@ -48,6 +50,7 @@ export async function readCartForCheckout(userId: number): Promise<CartLine[]> {
     vendorId: i.product.vendorId,
     name:
       (i.product.nameJson as { en?: string; ar?: string } | null)?.en ?? `Product #${i.productId}`,
+    nameJson: (i.product.nameJson as { en?: string; ar?: string } | null) ?? null,
     stock: i.product.stock,
   }));
 }
@@ -62,7 +65,19 @@ export async function placeStoreOrders(
   lines: CartLine[],
   checkoutId?: number,
 ): Promise<{ subtotal: number; itemCount: number }> {
-  const byVendor = new Map<number, { amount: number; items: number }>();
+  const vendorLines = new Map<
+    number,
+    {
+      amount: number;
+      items: number;
+      lines: Array<{
+        productId: number;
+        quantity: number;
+        unitPrice: number;
+        nameJson: CartLine['nameJson'];
+      }>;
+    }
+  >();
   let subtotal = 0;
   let itemCount = 0;
 
@@ -83,14 +98,20 @@ export async function placeStoreOrders(
       data: { totalSales: { increment: amount } },
     });
 
-    const agg = byVendor.get(line.vendorId) ?? { amount: 0, items: 0 };
+    const agg = vendorLines.get(line.vendorId) ?? { amount: 0, items: 0, lines: [] };
     agg.amount += amount;
     agg.items += line.quantity;
-    byVendor.set(line.vendorId, agg);
+    agg.lines.push({
+      productId: line.productId,
+      quantity: line.quantity,
+      unitPrice: line.unitPrice,
+      nameJson: line.nameJson,
+    });
+    vendorLines.set(line.vendorId, agg);
   }
 
-  for (const [vendorId, agg] of byVendor) {
-    await tx.storeOrder.create({
+  for (const [vendorId, agg] of vendorLines) {
+    const order = await tx.storeOrder.create({
       data: {
         vendorId,
         customerId: userId,
@@ -100,6 +121,21 @@ export async function placeStoreOrders(
         status: 'PENDING_FULFILLMENT',
       },
     });
+
+    // B0 — per-line snapshot (name + price at purchase time) so order
+    // detail, cancellation restores and ZATCA line items don't depend on
+    // live product rows.
+    if (agg.lines.length > 0) {
+      await tx.storeOrderItem.createMany({
+        data: agg.lines.map((l) => ({
+          orderId: order.id,
+          productId: l.productId,
+          nameSnapshot: (l.nameJson ?? {}) as unknown as Prisma.InputJsonValue,
+          priceSnapshot: l.unitPrice,
+          quantity: l.quantity,
+        })),
+      });
+    }
   }
 
   await tx.cartItem.deleteMany({ where: { userId } });
