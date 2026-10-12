@@ -20,10 +20,15 @@ export interface VendorStoreState {
  * duplicating the query + redirect dance.
  */
 export function useVendorStore(): VendorStoreState {
-  const { isAuthenticated } = useAuth();
-  const { data, isLoading } = api.vendorPortal.myStore.useQuery(undefined, {
+  const { isAuthenticated, isLoading: authLoading } = useAuth();
+  const { data, isLoading: storeLoading } = api.vendorPortal.myStore.useQuery(undefined, {
     enabled: isAuthenticated,
   });
+
+  // Auth hydration AND the store lookup must both resolve before ownership
+  // can be judged — while auth is hydrating the query is disabled, so its
+  // isLoading is false and a naive check would bounce owners to the portal.
+  const isLoading = authLoading || storeLoading;
 
   return {
     store: data as VendorStoreState['store'],
