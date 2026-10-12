@@ -133,7 +133,11 @@ describe('store order cancellation (B2a)', { sequential: true }, () => {
       await prisma.storeCheckout.deleteMany({ where: { id: { in: checkoutIds } } });
     } catch {}
     try {
-      await prisma.walletTransaction.deleteMany({ where: { walletId: { not: -1 } } });
+      // Scope the cleanup to THIS suite's refund transactions — an unscoped
+      // delete would wipe other suites' wallet rows in the shared test DB.
+      await prisma.walletTransaction.deleteMany({
+        where: { referenceId: { in: orderIds.map(String) } },
+      });
     } catch {}
     try {
       await prisma.product.deleteMany({ where: { id: productId } });
