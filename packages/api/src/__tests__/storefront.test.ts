@@ -100,4 +100,33 @@ describe('public storefront (Store Phase 2)', () => {
     const c = await caller();
     await expect(c.marketplace.vendorDetail({ slug: 'no-such-store' })).rejects.toThrow();
   });
+
+  it('B3 — stock-0 products stay hidden from the public storefront', async () => {
+    const c = await caller();
+    const listing = await c.marketplace.vendors({ page: 1, limit: 50 });
+    const verified = listing.items.find((v: { storeName: string }) => v.storeName === 'متجر موثق');
+
+    await prisma.product.create({
+      data: {
+        vendorId: verified.id,
+        categoryId,
+        nameJson: { ar: 'منتج نفد', en: 'Sold out product' },
+        descriptionJson: { ar: '', en: '' },
+        price: 50,
+        stock: 0,
+      },
+    });
+
+    // The store page must not list the sold-out product…
+    const detail = await c.marketplace.vendorDetail({ slug: verified.storeSlug });
+    expect(detail.products.map((p: { nameJson: { ar: string } }) => p.nameJson.ar)).not.toContain(
+      'منتج نفد',
+    );
+
+    // …and neither must the marketplace product listing.
+    const res = await c.marketplace.products({ vendorId: verified.id, page: 1, limit: 50 });
+    expect(res.items.map((p: { nameJson: { ar: string } }) => p.nameJson.ar)).not.toContain(
+      'منتج نفد',
+    );
+  });
 });

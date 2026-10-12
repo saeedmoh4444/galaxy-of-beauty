@@ -25,7 +25,8 @@ export const marketplaceRouter = router({
       }),
     )
     .query(async ({ input }) => {
-      const where: Record<string, unknown> = { isActive: true };
+      // B3 — sold-out products stay hidden from shoppers.
+      const where: Record<string, unknown> = { isActive: true, stock: { gt: 0 } };
       if (input.categoryId) where['categoryId'] = input.categoryId;
       if (input.vendorId) where['vendorId'] = input.vendorId;
       if (input.search) where['nameJson'] = { path: ['ar'], string_contains: input.search };
@@ -167,8 +168,9 @@ export const marketplaceRouter = router({
     const vendor = await prisma.vendor.findFirst({
       where: { storeSlug: input.slug, type: { in: ['STORE', 'VENDOR'] } },
       include: {
-        products: { where: { isActive: true }, take: LARGE_PAGE_SIZE },
-        _count: { select: { products: true } },
+        products: { where: { isActive: true, stock: { gt: 0 } }, take: LARGE_PAGE_SIZE },
+        // B3 — the public count matches what shoppers actually see.
+        _count: { select: { products: { where: { isActive: true, stock: { gt: 0 } } } } },
       },
     });
     if (!vendor) throw new TRPCError({ code: 'NOT_FOUND' });
