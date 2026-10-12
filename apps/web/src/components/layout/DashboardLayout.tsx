@@ -32,7 +32,7 @@ const technicianLinks: NavLink[] = [
 // S1 — store/provider shell (store/clinic/gym/nail-bar/athome owners).
 const storeLinks: NavLink[] = [
   { href: '/store', key: 'nav.store-dashboard', icon: 'sparkle' },
-  { href: '/customer/vendor-portal', key: 'nav.vendor-portal', icon: 'external-link' },
+  { href: '/vendor-portal', key: 'nav.vendor-portal', icon: 'external-link' },
 ];
 
 const adminLinks: NavLink[] = [

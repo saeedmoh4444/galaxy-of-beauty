@@ -97,6 +97,8 @@ const nextConfig = {
       { source: '/home', destination: '/', permanent: true },
       { source: '/admin', destination: '/admin/dashboard', permanent: true },
       { source: '/tech', destination: '/tech/dashboard', permanent: true },
+      // Legacy path: the portal moved out of the (customer) group (audit #6 follow-up).
+      { source: '/customer/vendor-portal', destination: '/vendor-portal', permanent: true },
     ];
   },
 
