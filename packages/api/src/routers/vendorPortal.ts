@@ -235,32 +235,47 @@ export const vendorPortalRouter = router({
   }),
 
   /** fulfillOrder — mark a store order fulfilled (ownership-guarded).
+   *  H0 — the status transition is a conditional update inside the
+   *  transaction: concurrent fulfillments serialize on the row lock and only
+   *  one accrues the payout; a repeat call with the same idempotency key
+   *  returns the fulfilled order instead of failing.
    *  Store plan Phase 3: accrues a PENDING payout — net = total minus the
    *  store's commission rate. */
   fulfillOrder: customerProcedure
-    .input(z.object({ orderId: z.number().int().positive() }))
+    .input(
+      z.object({
+        orderId: z.number().int().positive(),
+        idempotencyKey: z.string().min(8).max(100).optional(),
+      }),
+    )
     .mutation(async ({ ctx, input }) => {
       const vendor = await prisma.vendor.findUnique({ where: { userId: ctx.user.id } });
       if (!vendor) {
         throw new TRPCError({ code: 'NOT_FOUND', message: 'Store not found' });
       }
 
-      const order = await prisma.storeOrder.findUnique({
-        where: { id: input.orderId },
-        select: { vendorId: true, status: true, totalAmount: true },
-      });
-      if (!order || order.vendorId !== vendor.id) {
-        throw new TRPCError({ code: 'NOT_FOUND', message: 'Order not found' });
-      }
-      if (order.status === 'FULFILLED') {
-        throw new TRPCError({ code: 'BAD_REQUEST', message: 'Order already fulfilled' });
-      }
-
       return prisma.$transaction(async (tx) => {
-        const fulfilled = await tx.storeOrder.update({
+        const order = await tx.storeOrder.findUnique({
           where: { id: input.orderId },
+          select: { id: true, vendorId: true, status: true, totalAmount: true },
+        });
+        if (!order || order.vendorId !== vendor.id) {
+          throw new TRPCError({ code: 'NOT_FOUND', message: 'Order not found' });
+        }
+
+        // Atomic transition — the WHERE pins the old status, so a concurrent
+        // fulfill loses the race cleanly instead of double-accruing.
+        const claimed = await tx.storeOrder.updateMany({
+          where: { id: input.orderId, status: 'PENDING_FULFILLMENT' },
           data: { status: 'FULFILLED' },
         });
+
+        if (claimed.count === 0) {
+          if (input.idempotencyKey) {
+            return tx.storeOrder.findUniqueOrThrow({ where: { id: input.orderId } });
+          }
+          throw new TRPCError({ code: 'BAD_REQUEST', message: 'Order already fulfilled' });
+        }
 
         // Phase 3 — accrual: net payout for the store.
         const total = Number(order.totalAmount);
@@ -278,7 +293,7 @@ export const vendorPortalRouter = router({
           },
         });
 
-        return fulfilled;
+        return tx.storeOrder.findUniqueOrThrow({ where: { id: input.orderId } });
       });
     }),
 
