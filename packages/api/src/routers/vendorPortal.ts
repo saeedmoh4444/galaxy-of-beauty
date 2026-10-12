@@ -297,6 +297,98 @@ export const vendorPortalRouter = router({
       });
     }),
 
+  /** cancelOrder — cancel a pending store order (ownership-guarded).
+   *  B2 — restores stock/sales (reversing the checkout-time decrement in
+   *  placeStoreOrders) using the B0 line-item snapshots, and refunds
+   *  wallet-paid customers immediately. Online-paid orders stay CANCELLED
+   *  with the refund deferred to the live Fatoorah API (B5, user-gated) —
+   *  mirroring the dispute refund convention. */
+  cancelOrder: customerProcedure
+    .input(z.object({ orderId: z.number().int().positive() }))
+    .mutation(async ({ ctx, input }) => {
+      const vendor = await prisma.vendor.findUnique({ where: { userId: ctx.user.id } });
+      if (!vendor) {
+        throw new TRPCError({ code: 'NOT_FOUND', message: 'Store not found' });
+      }
+
+      return prisma.$transaction(async (tx) => {
+        const order = await tx.storeOrder.findUnique({
+          where: { id: input.orderId },
+          select: {
+            id: true,
+            vendorId: true,
+            status: true,
+            totalAmount: true,
+            customerId: true,
+            checkoutId: true,
+          },
+        });
+        if (!order || order.vendorId !== vendor.id) {
+          throw new TRPCError({ code: 'NOT_FOUND', message: 'Order not found' });
+        }
+
+        // Atomic transition — only PENDING_FULFILLMENT orders can cancel;
+        // concurrent cancels/fulfills serialize on the row lock.
+        const claimed = await tx.storeOrder.updateMany({
+          where: { id: input.orderId, status: 'PENDING_FULFILLMENT' },
+          data: { status: 'CANCELLED' },
+        });
+        if (claimed.count === 0) {
+          throw new TRPCError({ code: 'BAD_REQUEST', message: 'Order cannot be cancelled' });
+        }
+
+        // B2 — restore stock + sales, reversing the checkout-time effects.
+        const items = await tx.storeOrderItem.findMany({ where: { orderId: input.orderId } });
+        for (const item of items) {
+          await tx.product.update({
+            where: { id: item.productId },
+            data: {
+              stock: { increment: item.quantity },
+              sales: { decrement: item.quantity },
+            },
+          });
+        }
+        await tx.vendor.update({
+          where: { id: vendor.id },
+          data: { totalSales: { decrement: Number(order.totalAmount) } },
+        });
+
+        // Money (audit #3): wallet-paid orders refund the customer
+        // immediately. Online-paid orders keep their money with the platform
+        // until the live Fatoorah refund API — the settlement run only counts
+        // FULFILLED orders, so the deferred refund is not double-paid.
+        const checkout = order.checkoutId
+          ? await tx.storeCheckout.findUnique({
+              where: { id: order.checkoutId },
+              select: { method: true },
+            })
+          : null;
+        if (!checkout || checkout.method === 'wallet') {
+          const wallet = await tx.wallet.findUnique({ where: { userId: order.customerId } });
+          if (wallet) {
+            const amount = Number(order.totalAmount);
+            await tx.wallet.update({
+              where: { id: wallet.id },
+              data: { balance: { increment: amount } },
+            });
+            await tx.walletTransaction.create({
+              data: {
+                walletId: wallet.id,
+                type: 'CREDIT',
+                source: 'REFUND',
+                amount,
+                description: `Cancelled store order #${order.id}`,
+                referenceId: String(order.id),
+                idempotencyKey: `store_order_cancel_${order.id}`,
+              },
+            });
+          }
+        }
+
+        return tx.storeOrder.findUniqueOrThrow({ where: { id: input.orderId } });
+      });
+    }),
+
   // ---------------------------------------------------------------------------
   // Store plan Phase 4b — store-proposed product deals
   // ---------------------------------------------------------------------------
