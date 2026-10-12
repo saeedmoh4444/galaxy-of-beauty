@@ -4,6 +4,7 @@ import { api } from '@/lib/trpc';
 import { Card, Button } from '@galaxy/ui';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
 import { useLocale } from '@/components/LocaleProvider';
+import type { MyStore } from '@galaxy/api';
 
 /* ================================================================
  * E5 — At-home salon dashboard (assigned home requests)
@@ -12,14 +13,11 @@ export function AthomeDashboard({
   store,
   shellRole,
 }: {
-  store: Record<string, unknown>;
+  store: NonNullable<MyStore>;
   shellRole?: string;
 }): JSX.Element {
   const { t } = useLocale();
-  const requestsQ = api.vendorPortal['homeRequests.list'].useQuery(undefined) as {
-    data: Array<Record<string, unknown>> | undefined;
-    refetch: () => void;
-  };
+  const requestsQ = api.vendorPortal['homeRequests.list'].useQuery(undefined);
   const completeMut = api.vendorPortal['homeRequests.complete'].useMutation({
     onSuccess: () => requestsQ.refetch(),
   });
@@ -54,12 +52,10 @@ export function AthomeDashboard({
             <p className="text-sm text-text-tertiary">{t('vendorPortal.athome.requests-empty')}</p>
           ) : (
             <div className="space-y-3">
-              {requests.map((r: Record<string, unknown>) => (
+              {requests.map((r) => (
                 <div key={r.id as number} className="rounded-xl bg-surface-muted p-3">
                   <div className="flex items-center justify-between">
-                    <p className="text-sm font-bold">
-                      {(r.customer as Record<string, unknown> | null)?.name as string}
-                    </p>
+                    <p className="text-sm font-bold">{r.customer?.name}</p>
                     <span className="rounded-full bg-brand-100 px-2 py-0.5 text-xs font-medium text-brand-700">
                       {r.status as string}
                     </span>
@@ -69,15 +65,8 @@ export function AthomeDashboard({
                     {r.preferredTime as string}
                   </p>
                   <p className="mt-1 text-xs text-text-tertiary">
-                    {(r.service as Record<string, unknown> | null)
-                      ? String(
-                          (
-                            (r.service as Record<string, unknown>).titleJson as Record<
-                              string,
-                              string
-                            >
-                          )?.ar ?? '',
-                        )
+                    {r.service
+                      ? String((r.service.titleJson as Record<string, string>)?.ar ?? '')
                       : ''}
                   </p>
                   {r.status === 'PENDING' && (

@@ -5,6 +5,7 @@ import { api } from '@/lib/trpc';
 import { Card, Button, Input, formatCurrency } from '@galaxy/ui';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
 import { useLocale } from '@/components/LocaleProvider';
+import type { MyStore } from '@galaxy/api';
 import { VenueProfileCard } from '../shared/VenueProfileCard';
 
 /**
@@ -16,12 +17,12 @@ export function ClinicDashboard({
   refetchStore,
   shellRole,
 }: {
-  store: Record<string, unknown>;
+  store: NonNullable<MyStore>;
   refetchStore: () => void;
   shellRole?: string;
 }): JSX.Element {
   const { t } = useLocale();
-  const [price, setPrice] = useState(String((store.consultationPrice as number) ?? 0));
+  const [price, setPrice] = useState(String(Number(store.consultationPrice ?? 0)));
   const [slotStart, setSlotStart] = useState(
     new Date(Date.now() + 3_600_000).toISOString().slice(0, 16),
   );
@@ -29,14 +30,8 @@ export function ClinicDashboard({
     new Date(Date.now() + 2 * 3_600_000).toISOString().slice(0, 16),
   );
 
-  const slotsQ = api.vendorPortal['clinicSlots.list'].useQuery(undefined) as {
-    data: Array<Record<string, unknown>> | undefined;
-    refetch: () => void;
-  };
-  const consultsQ = api.vendorPortal.clinicConsultations.useQuery(undefined) as {
-    data: Array<Record<string, unknown>> | undefined;
-    refetch: () => void;
-  };
+  const slotsQ = api.vendorPortal['clinicSlots.list'].useQuery(undefined);
+  const consultsQ = api.vendorPortal.clinicConsultations.useQuery(undefined);
   const priceMut = api.vendorPortal.setConsultationPrice.useMutation({});
   const addSlotMut = api.vendorPortal['clinicSlots.add'].useMutation({
     onSuccess: () => slotsQ.refetch(),
@@ -127,14 +122,14 @@ export function ClinicDashboard({
             </Button>
           </div>
           <div className="space-y-2">
-            {slots.map((s: Record<string, unknown>) => (
+            {slots.map((s) => (
               <div
                 key={s.id as number}
                 className="flex items-center justify-between rounded-lg border p-3"
               >
                 <p className="text-sm">
-                  {new Date(s.startAt as string).toLocaleDateString('ar-SA')} ·{' '}
-                  {new Date(s.startAt as string).toLocaleTimeString('ar-SA', {
+                  {new Date(s.startAt).toLocaleDateString('ar-SA')} ·{' '}
+                  {new Date(s.startAt).toLocaleTimeString('ar-SA', {
                     hour: '2-digit',
                     minute: '2-digit',
                   })}
@@ -166,8 +161,8 @@ export function ClinicDashboard({
             </p>
           ) : (
             <div className="space-y-2">
-              {consults.map((c: Record<string, unknown>) => {
-                const customer = c.customer as Record<string, unknown> | undefined;
+              {consults.map((c) => {
+                const customer = c.customer;
                 return (
                   <div
                     key={c.id as number}
@@ -179,7 +174,7 @@ export function ClinicDashboard({
                         {t(`clinics.treatment.${c.treatmentType as string}` as never)}
                       </p>
                       <p className="text-xs text-text-secondary">
-                        {new Date(c.scheduledAt as string).toLocaleString('ar-SA')} ·{' '}
+                        {new Date(c.scheduledAt).toLocaleString('ar-SA')} ·{' '}
                         {formatCurrency(Number(c.price ?? 0))}
                       </p>
                     </div>

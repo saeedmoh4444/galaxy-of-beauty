@@ -38,7 +38,7 @@ export function VendorPortal({ shellRole = 'CUSTOMER' }: { shellRole?: string })
     isLoading: storeLoading,
     refetch: refetchStore,
   } = api.vendorPortal.myStore.useQuery(undefined, { enabled: isAuthenticated });
-  const store = myStore as unknown as Record<string, unknown> | null;
+  const store = myStore;
 
   // Apply form
   const [applyName, setApplyName] = useState('');
@@ -514,23 +514,23 @@ export function VendorPortal({ shellRole = 'CUSTOMER' }: { shellRole?: string })
   /* ---------- Per-type dashboards (lazy — only the owner's chunk ships) ---------- */
   if (!store) return <></>;
 
-  if (store && (store.type as string) === 'CLINIC') {
+  if (store && store.type === 'CLINIC') {
     return (
       <ClinicDashboard store={store} refetchStore={() => refetchStore()} shellRole={shellRole} />
     );
   }
 
-  if (store && (store.type as string) === 'GYM') {
+  if (store && store.type === 'GYM') {
     return <GymDashboard store={store} refetchStore={() => refetchStore()} shellRole={shellRole} />;
   }
 
-  if (store && (store.type as string) === 'NAIL_BAR') {
+  if (store && store.type === 'NAIL_BAR') {
     return (
       <NailBarDashboard store={store} refetchStore={() => refetchStore()} shellRole={shellRole} />
     );
   }
 
-  if (store && (store.type as string) === 'ATHOME') {
+  if (store && store.type === 'ATHOME') {
     return <AthomeDashboard store={store} shellRole={shellRole} />;
   }
 

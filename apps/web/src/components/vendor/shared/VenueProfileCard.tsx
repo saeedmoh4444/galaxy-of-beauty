@@ -5,6 +5,7 @@ import type * as React from 'react';
 import { api } from '@/lib/trpc';
 import { Card, Button } from '@galaxy/ui';
 import { useLocale } from '@/components/LocaleProvider';
+import type { MyStore } from '@galaxy/api';
 
 /**
  * E6d/E7/K3 — venue profile card: trust toggles + hero banner upload.
@@ -14,7 +15,7 @@ export function VenueProfileCard({
   store,
   refetchStore,
 }: {
-  store: Record<string, unknown>;
+  store: NonNullable<MyStore>;
   refetchStore: () => void;
 }): JSX.Element {
   const { t } = useLocale();
@@ -51,7 +52,7 @@ export function VenueProfileCard({
     reader.readAsDataURL(file);
   };
 
-  const banner = ((store.bannerUrl as string | null) ?? bannerPreview) as string | null;
+  const banner = store.bannerUrl ?? bannerPreview;
 
   return (
     <Card padding="md">
@@ -60,7 +61,7 @@ export function VenueProfileCard({
         <label className="flex items-center gap-2 text-sm">
           <input
             type="checkbox"
-            checked={(store as Record<string, unknown>).womenOnlyStaff as boolean}
+            checked={store.womenOnlyStaff}
             onChange={(e) =>
               trustMut.mutate(
                 { womenOnlyStaff: e.target.checked },
@@ -73,7 +74,7 @@ export function VenueProfileCard({
         <label className="flex items-center gap-2 text-sm">
           <input
             type="checkbox"
-            checked={(store as Record<string, unknown>).privateSuite as boolean}
+            checked={store.privateSuite}
             onChange={(e) =>
               trustMut.mutate(
                 { privateSuite: e.target.checked },
@@ -87,7 +88,7 @@ export function VenueProfileCard({
         <label className="flex items-center gap-2 text-sm">
           <input
             type="checkbox"
-            checked={(store as Record<string, unknown>).childFriendlyCorner as boolean}
+            checked={store.childFriendlyCorner}
             onChange={(e) =>
               trustMut.mutate(
                 { childFriendlyCorner: e.target.checked },
@@ -108,7 +109,7 @@ export function VenueProfileCard({
             <img src={banner} alt="banner" className="h-16 w-32 rounded-xl object-cover" />
           )}
           <input type="file" accept="image/*" onChange={onBannerFile} className="w-full text-sm" />
-          {(store.bannerUrl as string | null) && (
+          {store.bannerUrl && (
             <Button
               size="sm"
               variant="ghost"
