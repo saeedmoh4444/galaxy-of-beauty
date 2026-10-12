@@ -41,12 +41,23 @@ export function StoreDashboard({
   const { data: dash } = api.vendorPortal.dashboard.useQuery(undefined, {
     enabled: isAuthenticated,
   });
-  const { data: products, refetch } = api.vendorPortal.myProducts.useQuery(undefined, {
-    enabled: isAuthenticated,
-  });
-  const { data: orders, refetch: refetchOrders } = api.vendorPortal.orders.useQuery(undefined, {
-    enabled: isAuthenticated && !!store,
-  });
+  // A5 — cursor-paginated lists via useInfiniteQuery.
+  const productsQ = api.vendorPortal.myProducts.useInfiniteQuery(
+    { limit: 20 },
+    {
+      enabled: isAuthenticated,
+      getNextPageParam: (lastPage) => lastPage.nextCursor ?? undefined,
+    },
+  );
+  const ordersQ = api.vendorPortal.orders.useInfiniteQuery(
+    { limit: 20 },
+    {
+      enabled: isAuthenticated && !!store,
+      getNextPageParam: (lastPage) => lastPage.nextCursor ?? undefined,
+    },
+  );
+  const { refetch } = productsQ;
+  const { refetch: refetchOrders } = ordersQ;
   const addMut = api.vendorPortal.addProduct.useMutation({
     onSuccess: () => {
       setShow(false);
@@ -87,8 +98,8 @@ export function StoreDashboard({
   );
   const myDeals = deals ?? [];
   const topProducts = dash?.topProducts ?? [];
-  const prods = products ?? [];
-  const storeOrders = orders ?? [];
+  const prods = productsQ.data?.pages.flatMap((p) => p.items) ?? [];
+  const storeOrders = ordersQ.data?.pages.flatMap((p) => p.items) ?? [];
 
   // A3 — tab state, deep-linkable via ?tab=<key>.
   const [tab, setTab] = useState<TabKey>('overview');
@@ -282,6 +293,18 @@ export function StoreDashboard({
                   })}
                 </div>
               )}
+              {ordersQ.hasNextPage && (
+                <div className="mt-3">
+                  <Button
+                    size="sm"
+                    variant="outline"
+                    onClick={() => ordersQ.fetchNextPage()}
+                    loading={ordersQ.isFetchingNextPage}
+                  >
+                    {t('vendorPortal.loadMore')}
+                  </Button>
+                </div>
+              )}
             </Card>
           </div>
         )}
@@ -328,6 +351,18 @@ export function StoreDashboard({
                   </div>
                 </Card>
               ))
+            )}
+            {productsQ.hasNextPage && (
+              <div className="mt-3">
+                <Button
+                  size="sm"
+                  variant="outline"
+                  onClick={() => productsQ.fetchNextPage()}
+                  loading={productsQ.isFetchingNextPage}
+                >
+                  {t('vendorPortal.loadMore')}
+                </Button>
+              </div>
             )}
           </div>
         )}
