@@ -19,8 +19,13 @@ test.describe('Store Orders (B1)', () => {
   // E2E job shares one database across its browser projects, so chromium —
   // the first project — is the only one that can run them per CI run; the
   // API behavior itself is covered by unit tests across the whole matrix.
-  test('fulfill flow: a seeded pending order flips to fulfilled', async ({ page, browserName }) => {
-    test.skip(browserName !== 'chromium', 'mutates the shared seeded orders — chromium only');
+  test('fulfill flow: a seeded pending order flips to fulfilled', async ({ page }) => {
+    // browserName is 'chromium' even in the mobile-chrome project — key on
+    // the project name instead.
+    test.skip(
+      test.info().project.name !== 'chromium',
+      'mutates the shared seeded orders — chromium only',
+    );
     await login(page);
     await page.goto('/store?tab=orders');
 
@@ -39,8 +44,13 @@ test.describe('Store Orders (B1)', () => {
     await expect(panel.getByText('تم التنفيذ').first()).toBeVisible();
   });
 
-  test('cancel flow: the order drawer cancels a pending order', async ({ page, browserName }) => {
-    test.skip(browserName !== 'chromium', 'mutates the shared seeded orders — chromium only');
+  test('cancel flow: the order drawer cancels a pending order', async ({ page }) => {
+    // browserName is 'chromium' even in the mobile-chrome project — key on
+    // the project name instead.
+    test.skip(
+      test.info().project.name !== 'chromium',
+      'mutates the shared seeded orders — chromium only',
+    );
     await login(page);
     await page.goto('/store?tab=orders');
 
