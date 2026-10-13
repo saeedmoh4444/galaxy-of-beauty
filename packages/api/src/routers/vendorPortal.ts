@@ -268,6 +268,8 @@ export const vendorPortalRouter = router({
           take: input.limit + 1, // peek one row for nextCursor
           include: {
             customer: { select: { id: true, name: true, phone: true } },
+            // B1 — line-item snapshots for the order drawer.
+            items: { orderBy: { id: 'asc' } },
           },
         }),
         prisma.storeOrder.count({ where: { vendorId: vendor.id } }),

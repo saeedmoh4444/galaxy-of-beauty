@@ -3650,6 +3650,48 @@ async function main() {
     console.log(`    Demo products: ${err.message?.slice(0, 60)}`);
   }
 
+  // ---- B1 — demo pending orders for the vendor dashboard E2E ----
+  // Two PENDING_FULFILLMENT orders (one to fulfill, one to cancel) with
+  // B0 line-item snapshots, so the order drawer + lifecycle flows have
+  // deterministic data in a fresh CI database.
+  try {
+    const ordersVendor = await prisma.vendor.findUnique({
+      where: { storeSlug: 'galaxy-demo-store' },
+    });
+    const buyer = await prisma.user.findUnique({ where: { email: 'customer@test.com' } });
+    const ordersProduct = ordersVendor
+      ? await prisma.product.findFirst({
+          where: { vendorId: ordersVendor.id },
+          orderBy: { id: 'asc' },
+        })
+      : null;
+    if (ordersVendor && buyer && ordersProduct) {
+      for (const total of [120, 80]) {
+        const order = await prisma.storeOrder.create({
+          data: {
+            vendorId: ordersVendor.id,
+            customerId: buyer.id,
+            totalAmount: total,
+            itemCount: 1,
+            status: 'PENDING_FULFILLMENT',
+          },
+        });
+        await prisma.storeOrderItem.create({
+          data: {
+            orderId: order.id,
+            productId: ordersProduct.id,
+            nameSnapshot: ordersProduct.nameJson as unknown as Prisma.InputJsonValue,
+            priceSnapshot: total,
+            quantity: 1,
+          },
+        });
+      }
+      console.log('    Demo pending orders: 2 (with line items)');
+    }
+  } catch (err: any) {
+    console.log(`    Demo pending orders: ${err.message?.slice(0, 60)}`);
+  }
+
   // ---- 2.5 Social Commerce demo posts (shoppable feed) ----
   try {
     // demoVendor lives inside the 3.1 try block — re-resolve by slug.

@@ -3861,6 +3861,11 @@ export const miscMessages = {
   'vendorPortal.orders.pending': { ar: 'بانتظار التنفيذ', en: 'Pending fulfillment' },
   'vendorPortal.orders.fulfilled': { ar: 'تم التنفيذ', en: 'Fulfilled' },
   'vendorPortal.orders.fulfill': { ar: 'تنفيذ', en: 'Fulfill' },
+  // B1 — order drawer + lifecycle
+  'vendorPortal.orders.details': { ar: 'التفاصيل', en: 'Details' },
+  'vendorPortal.orders.cancel': { ar: 'إلغاء الطلب', en: 'Cancel order' },
+  'vendorPortal.orders.cancelled': { ar: 'ملغي', en: 'Cancelled' },
+  'vendorPortal.orders.total': { ar: 'الإجمالي', en: 'Total' },
   // Store plan Phase 4b — product deals
   'vendorPortal.topProducts': { ar: 'الأكثر مبيعاً', en: 'Top products' },
   'vendorPortal.deals.title': { ar: 'عروضي على المنتجات', en: 'My Product Deals' },
