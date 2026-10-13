@@ -99,6 +99,9 @@ describe('vendor list pagination (A5)', { sequential: true }, () => {
     expect(page1.nextCursor).toBe(page1.items[2].id);
     // Newest first: the highest id leads.
     expect(page1.items[0].id).toBe(Math.max(...orderIds));
+    // B1 — the rows carry their line-item snapshots for the order drawer.
+    expect(page1.items[0]).toHaveProperty('items');
+    expect(Array.isArray(page1.items[0].items)).toBe(true);
   });
 
   it('orders cursor walk returns every order exactly once, then null cursor', async () => {
