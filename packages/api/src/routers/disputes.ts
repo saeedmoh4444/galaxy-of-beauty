@@ -79,6 +79,55 @@ export const disputeRouter = router({
       return dispute;
     }),
 
+  // ── Vendor response (B5) ──────────────────────────────────────────────────
+  // The store-order vendor answers a customer-raised dispute before admin
+  // resolution. OPEN flips to UNDER_REVIEW on first response; while still
+  // OPEN/UNDER_REVIEW the vendor may update their response. Resolved or
+  // closed disputes reject.
+  respond: protectedProcedure
+    .input(
+      z.object({
+        disputeId: z.number(),
+        response: z.string().min(1, 'Response is required').max(2000),
+      }),
+    )
+    .mutation(async ({ ctx, input }) => {
+      const dispute = await prisma.dispute.findUnique({
+        where: { id: input.disputeId },
+        select: {
+          id: true,
+          status: true,
+          storeOrder: { select: { vendor: { select: { userId: true } } } },
+        },
+      });
+
+      if (!dispute) {
+        throw notFound('Dispute');
+      }
+      if (!dispute.storeOrder || dispute.storeOrder.vendor.userId !== ctx.user.id) {
+        throw new TRPCError({
+          code: 'FORBIDDEN',
+          message: 'Only the order vendor can respond to this dispute',
+        });
+      }
+      if (dispute.status !== 'OPEN' && dispute.status !== 'UNDER_REVIEW') {
+        throw new TRPCError({
+          code: 'BAD_REQUEST',
+          message: 'Cannot respond to a resolved or closed dispute',
+        });
+      }
+
+      return prisma.dispute.update({
+        where: { id: input.disputeId },
+        data: {
+          vendorResponse: input.response,
+          vendorRespondedAt: new Date(),
+          // First response moves the dispute into admin review.
+          ...(dispute.status === 'OPEN' ? { status: 'UNDER_REVIEW' } : {}),
+        },
+      });
+    }),
+
   // ── Resolve dispute (admin) ──────────────────────────────────────────────
   resolve: adminProcedure
     .input(
@@ -283,6 +332,8 @@ export const disputeRouter = router({
               technicianId: true,
             },
           },
+          // B5 — store-order vendor owner may view customer-raised disputes.
+          storeOrder: { select: { vendor: { select: { userId: true } } } },
           raiser: { select: { id: true, name: true, email: true } },
           resolver: { select: { id: true, name: true, email: true } },
         },
@@ -292,10 +343,13 @@ export const disputeRouter = router({
         throw notFound('Dispute');
       }
 
-      // Only participants or admins can view — store disputes fall back
-      // to raiser/admin (no booking parties).
+      // Only participants (including the store-order vendor owner) or admins
+      // can view — store disputes fall back to raiser/vendor/admin (no
+      // booking parties).
+      const isStoreVendorOwner = dispute.storeOrder?.vendor.userId === ctx.user.id;
       if (
         dispute.raisedBy !== ctx.user.id &&
+        !isStoreVendorOwner &&
         (!dispute.booking ||
           (dispute.booking.customerId !== ctx.user.id &&
             dispute.booking.technicianId !== ctx.user.id))
