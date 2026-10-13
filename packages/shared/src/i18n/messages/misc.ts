@@ -3850,6 +3850,9 @@ export const miscMessages = {
     en: 'Resolved for store',
   },
   'vendorPortal.disputes.status.closed': { ar: 'مغلق', en: 'Closed' },
+  // B3b — low-stock alerts on the Overview tab
+  'vendorPortal.lowStock.title': { ar: 'تنبيهات المخزون المنخفض', en: 'Low stock alerts' },
+  'vendorPortal.lowStock.left': { ar: 'متبقي: {count}', en: '{count} left' },
   // S5 — order-based analytics
   'vendorPortal.revenue30d': { ar: 'إيرادات ٣٠ يوم', en: 'Revenue (30d)' },
   'vendorPortal.ordersCount': { ar: 'طلبات', en: 'Orders' },

@@ -116,6 +116,8 @@ export function StoreDashboard({
   );
   const myDeals = deals ?? [];
   const topProducts = dash?.topProducts ?? [];
+  // B3b — low-stock surface (stock ≤ the per-product threshold).
+  const lowStock = dash?.lowStockProducts ?? [];
   const prods = productsQ.data?.pages.flatMap((p) => p.items) ?? [];
   const storeOrders = ordersQ.data?.pages.flatMap((p) => p.items) ?? [];
 
@@ -226,6 +228,30 @@ export function StoreDashboard({
                 <p className="text-xs text-text-secondary">{t('vendorPortal.customers')}</p>
               </Card>
             </div>
+
+            {/* B3b — low-stock alerts (stock ≤ per-product threshold). */}
+            {lowStock.length > 0 && (
+              <Card
+                padding="md"
+                className="border-amber-200 bg-amber-50 dark:border-amber-800 dark:bg-amber-950"
+              >
+                <h3 className="mb-2 font-bold text-amber-700 dark:text-amber-300">
+                  {t('vendorPortal.lowStock.title')}
+                </h3>
+                <ul className="space-y-1">
+                  {lowStock.map((p) => (
+                    <li key={p.id} className="flex justify-between text-sm">
+                      <span className="font-medium">
+                        {localize({ ar: p.nameAr, en: p.nameEn }, locale)}
+                      </span>
+                      <span className="text-text-secondary">
+                        {t('vendorPortal.lowStock.left', { count: p.stock })}
+                      </span>
+                    </li>
+                  ))}
+                </ul>
+              </Card>
+            )}
 
             {/* Phase 4b — top products (analytics P1) */}
             {topProducts.length > 0 && (

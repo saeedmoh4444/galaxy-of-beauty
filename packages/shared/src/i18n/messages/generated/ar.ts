@@ -5125,6 +5125,8 @@ export const arWebMessages: Record<string, string> = {
   'vendorPortal.disputes.status.resolved-customer': 'حُل لصالح العميلة',
   'vendorPortal.disputes.status.resolved-technician': 'حُل لصالح المتجر',
   'vendorPortal.disputes.status.closed': 'مغلق',
+  'vendorPortal.lowStock.title': 'تنبيهات المخزون المنخفض',
+  'vendorPortal.lowStock.left': 'متبقي: {count}',
   'vendorPortal.pricePlaceholder': 'السعر (ر.س)',
   'vendorPortal.productNamePlaceholder': 'اسم المنتج',
   'vendorPortal.products': 'منتج',

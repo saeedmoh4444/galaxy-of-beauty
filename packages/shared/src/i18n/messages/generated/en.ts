@@ -5200,6 +5200,8 @@ export const enWebMessages: Record<string, string> = {
   'vendorPortal.disputes.status.resolved-customer': 'Resolved for customer',
   'vendorPortal.disputes.status.resolved-technician': 'Resolved for store',
   'vendorPortal.disputes.status.closed': 'Closed',
+  'vendorPortal.lowStock.title': 'Low stock alerts',
+  'vendorPortal.lowStock.left': '{count} left',
   'vendorPortal.pricePlaceholder': 'Price (SAR)',
   'vendorPortal.productNamePlaceholder': 'Product name',
   'vendorPortal.products': 'Products',
