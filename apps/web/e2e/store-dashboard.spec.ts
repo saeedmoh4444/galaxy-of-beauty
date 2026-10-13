@@ -102,26 +102,27 @@ test.describe('Store Dashboard (S1)', () => {
       .filter({ hasText: name })
       .first();
 
-    // Edit → price change persists.
+    // Edit → price change persists. formatCurrency renders Arabic-Indic
+    // numerals in the AR locale, so match the ٩٩ glyphs, not ASCII 99.
     await row.getByRole('button', { name: 'تعديل' }).click();
     await page.getByPlaceholder('السعر (ر.س)').fill('99');
     await page.getByRole('button', { name: 'حفظ' }).click();
-    await expect(row.getByText(/99/)).toBeVisible();
+    await expect(row.getByText(/٩٩/)).toBeVisible();
 
     // Duplicate → a draft copy appears with the (نسخة) suffix.
     await row.getByRole('button', { name: 'نسخ' }).click();
     await expect(page.getByText(`${name} (نسخة)`)).toBeVisible();
 
-    // Draft toggle on the copy: the chip appears and the button flips to
-    // نشر (the copy starts as a draft, so the button already reads نشر —
-    // publish it instead and assert the chip disappears).
+    // Draft toggle on the copy: the copy starts as a draft, so its action
+    // button reads نشر — publish it and assert the publish action is gone
+    // (the chip clears; the button now offers مسودة to re-draft).
     const copyRow = page
       .getByTestId('vendor-panel-products')
       .locator('div.flex.items-center.justify-between')
       .filter({ hasText: `${name} (نسخة)` })
       .first();
     await copyRow.getByRole('button', { name: 'نشر' }).click();
-    await expect(copyRow.getByText('مسودة')).toHaveCount(0);
+    await expect(copyRow.getByRole('button', { name: 'نشر' })).toHaveCount(0);
   });
 
   test('A4 — propose deal flow: pending deal appears in the Deals tab', async ({ page }) => {
