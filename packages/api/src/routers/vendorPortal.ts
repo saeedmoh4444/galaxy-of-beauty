@@ -1,6 +1,7 @@
 import { z } from 'zod';
 import { TRPCError } from '@trpc/server';
 import { prisma } from '@galaxy/db';
+import type { Prisma } from '@galaxy/db';
 import { customerProcedure, router } from '../trpc';
 import { notifyUser } from '../lib/notify';
 
@@ -37,22 +38,39 @@ async function generalCategoryId(): Promise<number> {
 function toPortalProduct(p: {
   id: number;
   nameJson: unknown;
+  descriptionJson?: unknown;
   price: unknown;
   stock: number;
   sales: number;
   emoji: string;
   isActive: boolean;
+  isDraft?: boolean | null;
+  images?: string[];
   lowStockThreshold?: number | null;
 }) {
+  const nameAr = (p.nameJson as { ar?: string }).ar ?? '';
+  const nameEn = (p.nameJson as { en?: string }).en ?? '';
+  const descAr = (p.descriptionJson as { ar?: string } | undefined)?.ar ?? '';
+  const descEn = (p.descriptionJson as { en?: string } | undefined)?.en ?? '';
+
+  // C1 — bilingual completeness meter: 25 per filled ar/en name+description.
+  const completeness = [nameAr, nameEn, descAr, descEn].filter((v) => v.trim() !== '').length * 25;
+
   return {
     id: p.id,
-    nameAr: (p.nameJson as { ar?: string }).ar ?? '',
-    nameEn: (p.nameJson as { en?: string }).en ?? '',
+    nameAr,
+    nameEn,
+    descAr,
+    descEn,
     price: Number(p.price),
     stock: p.stock,
     sales: p.sales,
     emoji: p.emoji,
     active: p.isActive,
+    draft: p.isDraft ?? false,
+    images: p.images ?? [],
+    // C1 — listing completeness (editor meter + C2 approval readiness).
+    completeness,
     // B3b — low-stock threshold (products list badge + C1 editor).
     threshold: p.lowStockThreshold ?? 5,
   };
@@ -261,6 +279,140 @@ export const vendorPortalRouter = router({
         data: { isActive: false },
       });
       return { success: true };
+    }),
+
+  // ---------------------------------------------------------------------------
+  // C1 — product editor pro
+  // ---------------------------------------------------------------------------
+
+  /** updateProduct — ownership-guarded edit; partial fields merge into the
+   *  existing bilingual JSON columns (never clobber the other language). */
+  updateProduct: customerProcedure
+    .input(
+      z.object({
+        id: z.number().int().positive(),
+        nameAr: z.string().min(1).optional(),
+        nameEn: z.string().min(1).optional(),
+        descAr: z.string().optional(),
+        descEn: z.string().optional(),
+        price: z.number().min(1).optional(),
+        stock: z.number().int().min(0).optional(),
+        emoji: z.string().optional(),
+        categoryId: z.number().int().positive().optional(),
+        imageUrl: z.string().url().optional(),
+        images: z.array(z.string().url()).max(8).optional(),
+        lowStockThreshold: z.number().int().min(0).max(10000).optional(),
+      }),
+    )
+    .mutation(async ({ ctx, input }) => {
+      const vendor = await prisma.vendor.findUnique({ where: { userId: ctx.user.id } });
+      if (!vendor) throw new TRPCError({ code: 'NOT_FOUND', message: 'Store not found' });
+
+      const existing = await prisma.product.findUnique({ where: { id: input.id } });
+      if (!existing) throw new TRPCError({ code: 'NOT_FOUND', message: 'Product not found' });
+      if (existing.vendorId !== vendor.id) {
+        throw new TRPCError({
+          code: 'FORBIDDEN',
+          message: 'Product is not one of your own products',
+        });
+      }
+
+      const nameJson = {
+        ar: input.nameAr ?? (existing.nameJson as { ar?: string }).ar ?? '',
+        en: input.nameEn ?? (existing.nameJson as { en?: string }).en ?? '',
+      };
+      const descriptionJson = {
+        ar: input.descAr ?? (existing.descriptionJson as { ar?: string }).ar ?? '',
+        en: input.descEn ?? (existing.descriptionJson as { en?: string }).en ?? '',
+      };
+
+      const updated = await prisma.product.update({
+        where: { id: input.id },
+        data: {
+          nameJson,
+          descriptionJson,
+          price: input.price ?? existing.price,
+          stock: input.stock ?? existing.stock,
+          emoji: input.emoji ?? existing.emoji,
+          categoryId: input.categoryId ?? existing.categoryId,
+          imageUrl: input.imageUrl ?? existing.imageUrl,
+          images: input.images ?? existing.images,
+          lowStockThreshold: input.lowStockThreshold ?? existing.lowStockThreshold,
+        },
+      });
+
+      return toPortalProduct(updated);
+    }),
+
+  /** setDraft — draft products stay in the portal but leave the
+   *  storefront (marketplace.products / vendorDetail exclude them). */
+  setDraft: customerProcedure
+    .input(z.object({ id: z.number().int().positive(), draft: z.boolean() }))
+    .mutation(async ({ ctx, input }) => {
+      const vendor = await prisma.vendor.findUnique({ where: { userId: ctx.user.id } });
+      if (!vendor) throw new TRPCError({ code: 'NOT_FOUND', message: 'Store not found' });
+
+      const existing = await prisma.product.findUnique({ where: { id: input.id } });
+      if (!existing) throw new TRPCError({ code: 'NOT_FOUND', message: 'Product not found' });
+      if (existing.vendorId !== vendor.id) {
+        throw new TRPCError({
+          code: 'FORBIDDEN',
+          message: 'Product is not one of your own products',
+        });
+      }
+
+      const updated = await prisma.product.update({
+        where: { id: input.id },
+        data: { isDraft: input.draft },
+      });
+      return toPortalProduct(updated);
+    }),
+
+  /** duplicateProduct — "create similar": copies the catalog fields into a
+   *  fresh draft (stock 0, sales 0) so nothing goes live by accident. */
+  duplicateProduct: customerProcedure
+    .input(z.object({ id: z.number().int().positive() }))
+    .mutation(async ({ ctx, input }) => {
+      const vendor = await prisma.vendor.findUnique({ where: { userId: ctx.user.id } });
+      if (!vendor) throw new TRPCError({ code: 'NOT_FOUND', message: 'Store not found' });
+
+      const existing = await prisma.product.findUnique({ where: { id: input.id } });
+      if (!existing) throw new TRPCError({ code: 'NOT_FOUND', message: 'Product not found' });
+      if (existing.vendorId !== vendor.id) {
+        throw new TRPCError({
+          code: 'FORBIDDEN',
+          message: 'Product is not one of your own products',
+        });
+      }
+
+      const nameJson = existing.nameJson as { ar?: string; en?: string };
+      const copy = await prisma.product.create({
+        data: {
+          vendorId: existing.vendorId,
+          categoryId: existing.categoryId,
+          nameJson: {
+            ar: `${nameJson.ar ?? ''} (نسخة)`,
+            en: `${nameJson.en ?? ''} (copy)`,
+          },
+          descriptionJson: existing.descriptionJson as unknown as Prisma.InputJsonValue,
+          price: existing.price,
+          stock: 0,
+          sales: 0,
+          emoji: existing.emoji,
+          imageUrl: existing.imageUrl,
+          images: existing.images,
+          brand: existing.brand,
+          tags: existing.tags,
+          attributes: existing.attributes
+            ? (existing.attributes as unknown as Prisma.InputJsonValue)
+            : undefined,
+          isActive: true,
+          isDraft: true,
+          lowStockThreshold: existing.lowStockThreshold,
+        },
+      });
+
+      return toPortalProduct(copy);
     }),
 
   // ---------------------------------------------------------------------------

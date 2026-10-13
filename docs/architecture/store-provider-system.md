@@ -57,6 +57,12 @@ One `Vendor` model covers every provider type (`type` column):
   only when a sale _crosses_ the threshold (old > t, new ≤ t) — emitted
   after the transaction commits via `notifyLowStockAlerts` (never inside
   the money transaction).
+- **C1 editor**: `vendorPortal.updateProduct` (ownership-guarded, partial
+  bilingual merges), `setDraft`, `duplicateProduct` (→ fresh draft, stock
+  0). `Product.isDraft` rows stay in the portal but leave the storefronts
+  (`marketplace.products` / `vendorDetail` filter `isDraft: false`).
+  Portal rows carry a bilingual completeness meter (25 per filled
+  ar/en name + description field).
 - **Commission**: per-vendor `commissionRate` (default 10%) is applied in
   `payouts.calculateStore` — payout `amount` = net, `fee` = platform cut.
   Admin edits rates at `/admin/vendors` (`payouts.setVendorCommission`).

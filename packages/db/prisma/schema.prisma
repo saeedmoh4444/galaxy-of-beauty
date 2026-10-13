@@ -1471,6 +1471,7 @@ model Product {
   emoji       String   @default("") // B.3: product card icon
   isActive    Boolean  @default(true)
   isFeatured  Boolean  @default(false)
+  isDraft     Boolean  @default(false) // C1: draft products stay hidden from storefronts
   tags        String[] // organic, vegan, cruelty-free, etc.
   // 3.1 Beauty DNA — polymorphic match payload, discriminated by `kind`:
   // makeup { kind, shade, shadeHex, undertone, depth 1..6 }

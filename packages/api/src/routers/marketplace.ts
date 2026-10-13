@@ -25,8 +25,12 @@ export const marketplaceRouter = router({
       }),
     )
     .query(async ({ input }) => {
-      // B3 — sold-out products stay hidden from shoppers.
-      const where: Record<string, unknown> = { isActive: true, stock: { gt: 0 } };
+      // B3 — sold-out products stay hidden from shoppers; C1 — drafts too.
+      const where: Record<string, unknown> = {
+        isActive: true,
+        isDraft: false,
+        stock: { gt: 0 },
+      };
       if (input.categoryId) where['categoryId'] = input.categoryId;
       if (input.vendorId) where['vendorId'] = input.vendorId;
       if (input.search) where['nameJson'] = { path: ['ar'], string_contains: input.search };
@@ -171,9 +175,17 @@ export const marketplaceRouter = router({
     const vendor = await prisma.vendor.findFirst({
       where: { storeSlug: input.slug, type: { in: ['STORE', 'VENDOR'] } },
       include: {
-        products: { where: { isActive: true, stock: { gt: 0 } }, take: LARGE_PAGE_SIZE },
+        // B3 — sold-out products stay hidden; C1 — drafts too.
+        products: {
+          where: { isActive: true, isDraft: false, stock: { gt: 0 } },
+          take: LARGE_PAGE_SIZE,
+        },
         // B3 — the public count matches what shoppers actually see.
-        _count: { select: { products: { where: { isActive: true, stock: { gt: 0 } } } } },
+        _count: {
+          select: {
+            products: { where: { isActive: true, isDraft: false, stock: { gt: 0 } } },
+          },
+        },
       },
     });
     if (!vendor) throw new TRPCError({ code: 'NOT_FOUND' });
