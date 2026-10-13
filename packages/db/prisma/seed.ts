@@ -4013,6 +4013,18 @@ async function main() {
           en: 'Score {{score}}/10{{comment}}. Booking {{bookingId}} — follow up with the customer within 24h.',
         },
       },
+      // B3b — vendor low-stock crossing alert (emitted by storeCheckout).
+      // Category 'provider' is not a preference toggle → always delivered.
+      {
+        key: 'store_low_stock',
+        category: 'provider',
+        channels: ['in_app', 'push'],
+        titleJson: { ar: 'تنبيه: مخزون منخفض', en: 'Low Stock Alert' },
+        bodyJson: {
+          ar: '{{productName}} أوشك على النفاد — المتبقي {{stock}} فقط. أضيفي مخزوناً جديداً لتجنّب فقدان المبيعات.',
+          en: '{{productName}} is running low — only {{stock}} left. Restock to avoid missing sales.',
+        },
+      },
       // E2 — clinic consultation decisions. Category 'provider' is not a
       // preference toggle → always delivered.
       {

@@ -5114,6 +5114,8 @@ export const arWebMessages: Record<string, string> = {
   'vendorPortal.orders.total': 'الإجمالي',
   'vendorPortal.ordersCount': 'طلبات',
   'vendorPortal.pendingOrders': 'طلبات معلقة',
+  'vendorPortal.lowStock.title': 'تنبيهات المخزون المنخفض',
+  'vendorPortal.lowStock.left': 'متبقي: {count}',
   'vendorPortal.pricePlaceholder': 'السعر (ر.س)',
   'vendorPortal.productNamePlaceholder': 'اسم المنتج',
   'vendorPortal.products': 'منتج',
