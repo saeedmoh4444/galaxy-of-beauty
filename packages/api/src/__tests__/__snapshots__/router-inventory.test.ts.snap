@@ -1030,6 +1030,7 @@ vendorPortal.clinicSlots.remove	mutation	customer
 vendorPortal.confirmConsultation	mutation	customer
 vendorPortal.dashboard	query	customer
 vendorPortal.deleteProduct	mutation	customer
+vendorPortal.duplicateProduct	mutation	customer
 vendorPortal.earnings	query	customer
 vendorPortal.fulfillOrder	mutation	customer
 vendorPortal.gymCancelBooking	mutation	customer
@@ -1054,7 +1055,9 @@ vendorPortal.orders	query	customer
 vendorPortal.proposeDeal	mutation	customer
 vendorPortal.setBanner	mutation	customer
 vendorPortal.setConsultationPrice	mutation	customer
+vendorPortal.setDraft	mutation	customer
 vendorPortal.setTrustFlags	mutation	customer
+vendorPortal.updateProduct	mutation	customer
 video.endSession	mutation	protected
 video.getByBooking	query	protected
 video.startSession	mutation	protected
