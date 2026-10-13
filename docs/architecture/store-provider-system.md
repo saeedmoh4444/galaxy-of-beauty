@@ -57,6 +57,11 @@ One `Vendor` model covers every provider type (`type` column):
 - Store payouts: `payouts.listStorePayouts` (owner), disputes refund
   FULFILLED orders on resolution, `store-settlement.test.ts` pins the math
   (sequential describe — rates are shared rows).
+- **B4 earnings center**: `vendorPortal.earnings` returns the enriched
+  statement (summary cards pending/processed net + fees, rows with
+  gross = net + fee, commissionRate visible); `vendorPortal.earningsCsv`
+  downloads the same rows with AR/EN headers (RFC 4180 quoting). Rendered
+  in the Store dashboard Earnings tab.
 
 ## Ratings & trust
 

@@ -3829,6 +3829,26 @@ export const miscMessages = {
   'vendorPortal.add': { ar: 'إضافة', en: 'Add' },
   // Store plan Phase 1 — merchant registration + orders
   'vendorPortal.pendingOrders': { ar: 'طلبات معلقة', en: 'Pending Orders' },
+  // B4 — earnings & settlement center
+  'vendorPortal.tab.earnings': { ar: 'الأرباح', en: 'Earnings' },
+  'vendorPortal.earnings.title': {
+    ar: 'مركز الأرباح والتسويات',
+    en: 'Earnings & settlement center',
+  },
+  'vendorPortal.earnings.pendingNet': { ar: 'صافي معلق', en: 'Pending (net)' },
+  'vendorPortal.earnings.processedNet': { ar: 'صافي مُعالج', en: 'Processed (net)' },
+  'vendorPortal.earnings.totalFee': { ar: 'إجمالي الرسوم', en: 'Total fees' },
+  'vendorPortal.earnings.commission': { ar: 'عمولة {rate}%', en: '{rate}% commission' },
+  'vendorPortal.earnings.export': { ar: 'تصدير CSV', en: 'Export CSV' },
+  'vendorPortal.earnings.period': { ar: 'الفترة', en: 'Period' },
+  'vendorPortal.earnings.gross': { ar: 'الإجمالي', en: 'Gross' },
+  'vendorPortal.earnings.fee': { ar: 'الرسوم', en: 'Fee' },
+  'vendorPortal.earnings.net': { ar: 'الصافي', en: 'Net' },
+  'vendorPortal.earnings.empty': { ar: 'لا توجد تسويات بعد', en: 'No settlements yet' },
+  'vendorPortal.earnings.status.pending': { ar: 'معلق', en: 'Pending' },
+  'vendorPortal.earnings.status.processing': { ar: 'قيد المعالجة', en: 'Processing' },
+  'vendorPortal.earnings.status.completed': { ar: 'مكتمل', en: 'Completed' },
+  'vendorPortal.earnings.status.failed': { ar: 'فشل', en: 'Failed' },
   // S5 — order-based analytics
   'vendorPortal.revenue30d': { ar: 'إيرادات ٣٠ يوم', en: 'Revenue (30d)' },
   'vendorPortal.ordersCount': { ar: 'طلبات', en: 'Orders' },
