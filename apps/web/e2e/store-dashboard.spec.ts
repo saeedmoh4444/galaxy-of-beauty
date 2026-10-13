@@ -79,6 +79,52 @@ test.describe('Store Dashboard (S1)', () => {
     await expect(page.getByText(name)).toBeVisible();
   });
 
+  test('C1 — edit price, duplicate, and draft-toggle a product', async ({ page }) => {
+    // Mutates the shared CI store — chromium project only (see B1 notes).
+    test.skip(
+      test.info().project.name !== 'chromium',
+      'mutates the shared seeded store — chromium only',
+    );
+    await login(page, STORE_EMAIL);
+    const name = `منتج تعديل ${Date.now()}`;
+
+    await page.goto('/store?tab=products');
+    await page.getByRole('button', { name: /منتج جديد/ }).click();
+    await page.getByPlaceholder('اسم المنتج').fill(name);
+    await page.getByPlaceholder('السعر (ر.س)').fill('50');
+    await page.getByPlaceholder('المخزون').fill('4');
+    await page.getByRole('button', { name: 'إضافة' }).click();
+    await expect(page.getByText(name)).toBeVisible();
+
+    const row = page
+      .getByTestId('vendor-panel-products')
+      .locator('div.flex.items-center.justify-between')
+      .filter({ hasText: name })
+      .first();
+
+    // Edit → price change persists. formatCurrency renders Arabic-Indic
+    // numerals in the AR locale, so match the ٩٩ glyphs, not ASCII 99.
+    await row.getByRole('button', { name: 'تعديل' }).click();
+    await page.getByPlaceholder('السعر (ر.س)').fill('99');
+    await page.getByRole('button', { name: 'حفظ' }).click();
+    await expect(row.getByText(/٩٩/)).toBeVisible();
+
+    // Duplicate → a draft copy appears with the (نسخة) suffix.
+    await row.getByRole('button', { name: 'نسخ' }).click();
+    await expect(page.getByText(`${name} (نسخة)`)).toBeVisible();
+
+    // Draft toggle on the copy: the copy starts as a draft, so its action
+    // button reads نشر — publish it and assert the publish action is gone
+    // (the chip clears; the button now offers مسودة to re-draft).
+    const copyRow = page
+      .getByTestId('vendor-panel-products')
+      .locator('div.flex.items-center.justify-between')
+      .filter({ hasText: `${name} (نسخة)` })
+      .first();
+    await copyRow.getByRole('button', { name: 'نشر' }).click();
+    await expect(copyRow.getByRole('button', { name: 'نشر' })).toHaveCount(0);
+  });
+
   test('A4 — propose deal flow: pending deal appears in the Deals tab', async ({ page }) => {
     await login(page, STORE_EMAIL);
     const name = `منتج عرض ${Date.now()}`;

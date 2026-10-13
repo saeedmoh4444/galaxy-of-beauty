@@ -65,6 +65,48 @@ export function StoreDashboard({
     },
   });
   const deleteMut = api.vendorPortal.deleteProduct.useMutation({ onSuccess: () => refetch() });
+
+  // C1 — product editor pro: edit / draft toggle / duplicate.
+  const updateMut = api.vendorPortal.updateProduct.useMutation({
+    onSuccess: () => {
+      setEditId(null);
+      refetch();
+    },
+  });
+  const duplicateMut = api.vendorPortal.duplicateProduct.useMutation({
+    onSuccess: () => refetch(),
+  });
+  const setDraftMut = api.vendorPortal.setDraft.useMutation({ onSuccess: () => refetch() });
+  const [editId, setEditId] = useState<number | null>(null);
+  const [edNameAr, setEdNameAr] = useState('');
+  const [edNameEn, setEdNameEn] = useState('');
+  const [edDescAr, setEdDescAr] = useState('');
+  const [edDescEn, setEdDescEn] = useState('');
+  const [edPrice, setEdPrice] = useState(0);
+  const [edStock, setEdStock] = useState(0);
+  const [edEmoji, setEdEmoji] = useState('');
+  const [edCategoryId, setEdCategoryId] = useState<number | undefined>();
+  const [edImages, setEdImages] = useState<string[]>([]);
+  const [edThreshold, setEdThreshold] = useState(5);
+  const { data: categories } = api.marketplace.productCategories.useQuery();
+  const edImgMut = api.uploads.uploadMedia.useMutation({
+    onSuccess: (res) => setEdImages((prev) => [...prev, res.url]),
+  });
+
+  /** C1 — open the editor, populating the form from a portal row. */
+  const openEdit = (p: (typeof prods)[number]) => {
+    setEditId(p.id);
+    setEdNameAr(p.nameAr);
+    setEdNameEn(p.nameEn);
+    setEdDescAr(p.descAr);
+    setEdDescEn(p.descEn);
+    setEdPrice(p.price);
+    setEdStock(p.stock);
+    setEdEmoji(p.emoji);
+    setEdCategoryId(undefined);
+    setEdImages(p.images);
+    setEdThreshold(p.threshold);
+  };
   const fulfillMut = api.vendorPortal.fulfillOrder.useMutation({
     onSuccess: () => refetchOrders(),
   });
@@ -526,16 +568,48 @@ export function StoreDashboard({
                   <div className="flex items-center gap-3">
                     <span className="text-2xl">{p.emoji}</span>
                     <div>
-                      <p className="font-bold">{p.nameAr}</p>
+                      <p className="font-bold">
+                        {p.nameAr}
+                        {p.draft && (
+                          <span className="ml-2 rounded-full bg-gray-100 px-2 py-0.5 text-xs font-medium text-gray-600 dark:bg-gray-800 dark:text-gray-300">
+                            {t('vendorPortal.draft')}
+                          </span>
+                        )}
+                      </p>
                       <p className="text-xs text-text-secondary">
                         {t('vendorPortal.stock')}: {p.stock} · {t('vendorPortal.sales')}: {p.sales}
                       </p>
+                      {/* C1 — bilingual completeness meter. */}
+                      <div className="mt-1 h-1.5 w-28 overflow-hidden rounded-full bg-gray-200 dark:bg-gray-800">
+                        <div
+                          className={`h-full ${p.completeness >= 100 ? 'bg-green-500' : 'bg-amber-400'}`}
+                          style={{ width: `${p.completeness}%` }}
+                        />
+                      </div>
                     </div>
                   </div>
-                  <div className="flex items-center gap-3">
+                  <div className="flex items-center gap-2">
                     <span className="font-bold text-brand-600">
                       {formatCurrency(p.price)} {t('beautyParty.currency')}
                     </span>
+                    <Button size="sm" variant="outline" onClick={() => openEdit(p)}>
+                      {t('vendorPortal.edit')}
+                    </Button>
+                    <Button
+                      size="sm"
+                      variant="outline"
+                      onClick={() => duplicateMut.mutate({ id: p.id })}
+                      loading={duplicateMut.isPending}
+                    >
+                      {t('vendorPortal.duplicate')}
+                    </Button>
+                    <Button
+                      size="sm"
+                      variant="ghost"
+                      onClick={() => setDraftMut.mutate({ id: p.id, draft: !p.draft })}
+                    >
+                      {p.draft ? t('vendorPortal.publish') : t('vendorPortal.draft')}
+                    </Button>
                     <Button
                       size="sm"
                       variant="ghost"
@@ -772,6 +846,158 @@ export function StoreDashboard({
               {t('vendorPortal.add')}
             </Button>
           </div>
+        </Modal>
+
+        {/* C1 — product editor pro: bilingual fields, gallery, draft. */}
+        <Modal
+          open={editId !== null}
+          onClose={() => setEditId(null)}
+          title={t('vendorPortal.editProduct')}
+        >
+          {editId !== null && (
+            <div className="space-y-3">
+              <input
+                value={edNameAr}
+                onChange={(e) => setEdNameAr(e.target.value)}
+                placeholder={t('vendorPortal.productNamePlaceholder')}
+                className="w-full rounded-lg border px-3 py-2 text-sm border-edge bg-surface-elevated"
+              />
+              <input
+                value={edNameEn}
+                onChange={(e) => setEdNameEn(e.target.value)}
+                placeholder={t('vendorPortal.nameEnPlaceholder')}
+                className="w-full rounded-lg border px-3 py-2 text-sm border-edge bg-surface-elevated"
+              />
+              <textarea
+                value={edDescAr}
+                onChange={(e) => setEdDescAr(e.target.value)}
+                placeholder={t('vendorPortal.descArPlaceholder')}
+                rows={2}
+                className="w-full rounded-lg border px-3 py-2 text-sm border-edge bg-surface-elevated"
+              />
+              <textarea
+                value={edDescEn}
+                onChange={(e) => setEdDescEn(e.target.value)}
+                placeholder={t('vendorPortal.descEnPlaceholder')}
+                rows={2}
+                className="w-full rounded-lg border px-3 py-2 text-sm border-edge bg-surface-elevated"
+              />
+              <div className="grid grid-cols-2 gap-3">
+                <input
+                  type="number"
+                  value={edPrice}
+                  onChange={(e) => setEdPrice(parseFloat(e.target.value) || 0)}
+                  placeholder={t('vendorPortal.pricePlaceholder')}
+                  className="w-full rounded-lg border px-3 py-2 text-sm border-edge bg-surface-elevated"
+                />
+                <input
+                  type="number"
+                  value={edStock}
+                  onChange={(e) => setEdStock(parseInt(e.target.value) || 0)}
+                  placeholder={t('vendorPortal.stockPlaceholder')}
+                  className="w-full rounded-lg border px-3 py-2 text-sm border-edge bg-surface-elevated"
+                />
+                <input
+                  value={edEmoji}
+                  onChange={(e) => setEdEmoji(e.target.value)}
+                  placeholder="🧴"
+                  className="w-full rounded-lg border px-3 py-2 text-sm border-edge bg-surface-elevated"
+                />
+                <input
+                  type="number"
+                  value={edThreshold}
+                  onChange={(e) => setEdThreshold(parseInt(e.target.value) || 0)}
+                  placeholder={t('vendorPortal.thresholdPlaceholder')}
+                  className="w-full rounded-lg border px-3 py-2 text-sm border-edge bg-surface-elevated"
+                />
+              </div>
+              <select
+                value={edCategoryId ?? ''}
+                onChange={(e) => setEdCategoryId(Number(e.target.value) || undefined)}
+                className="w-full rounded-lg border px-3 py-2 text-sm border-edge bg-surface-elevated"
+              >
+                <option value="">—</option>
+                {(categories ?? []).map((c) => (
+                  <option key={c.id} value={c.id}>
+                    {localize(c.nameJson, locale)}
+                  </option>
+                ))}
+              </select>
+              {/* C1 — multi-image gallery (append via the media pipeline). */}
+              <div className="space-y-2">
+                <p className="text-xs font-semibold text-text-secondary">
+                  {t('vendorPortal.images')}
+                </p>
+                <div className="flex flex-wrap gap-2">
+                  {edImages.map((url, i) => (
+                    <div key={url} className="relative">
+                      {/* eslint-disable-next-line @next/next/no-img-element */}
+                      <img
+                        src={url}
+                        alt={`gallery-${i}`}
+                        className="h-16 w-16 rounded-xl object-cover"
+                      />
+                      <button
+                        type="button"
+                        onClick={() => setEdImages((prev) => prev.filter((_, j) => j !== i))}
+                        className="absolute -right-1 -top-1 rounded-full bg-red-500 px-1.5 text-xs text-white"
+                        aria-label="remove"
+                      >
+                        ×
+                      </button>
+                    </div>
+                  ))}
+                </div>
+                <input
+                  type="file"
+                  accept="image/*"
+                  onChange={(e) => {
+                    const file = e.target.files?.[0];
+                    if (!file) return;
+                    const reader = new FileReader();
+                    reader.onload = () => {
+                      edImgMut.mutate({
+                        mediaType: 'image',
+                        file: {
+                          name: file.name,
+                          type: file.type,
+                          size: file.size,
+                          base64: String(reader.result ?? ''),
+                        },
+                      });
+                    };
+                    reader.readAsDataURL(file);
+                  }}
+                  className="w-full text-sm"
+                />
+              </div>
+              {updateMut.isError && (
+                <p className="text-sm text-red-600 dark:text-red-400">{updateMut.error.message}</p>
+              )}
+              <Button
+                onClick={() => {
+                  if (edNameAr.trim() && edPrice > 0)
+                    updateMut.mutate({
+                      id: editId,
+                      nameAr: edNameAr.trim(),
+                      nameEn: edNameEn.trim() || undefined,
+                      descAr: edDescAr,
+                      descEn: edDescEn,
+                      price: edPrice,
+                      stock: edStock,
+                      emoji: edEmoji,
+                      categoryId: edCategoryId,
+                      images: edImages,
+                      lowStockThreshold: edThreshold,
+                    });
+                }}
+                loading={updateMut.isPending || edImgMut.isPending}
+                className="w-full"
+              >
+                {t('vendorPortal.save')}
+              </Button>
+            </div>
+          )}
         </Modal>
       </div>
     </DashboardLayout>
