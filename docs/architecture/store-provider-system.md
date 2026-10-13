@@ -68,6 +68,12 @@ One `Vendor` model covers every provider type (`type` column):
   gross = net + fee, commissionRate visible); `vendorPortal.earningsCsv`
   downloads the same rows with AR/EN headers (RFC 4180 quoting). Rendered
   in the Store dashboard Earnings tab.
+- **B5 disputes**: one `Dispute` per store order (`storeOrderId` unique).
+  Customer raises → owning vendor responds via `disputes.respond`
+  (`vendorResponse` + `vendorRespondedAt`, OPEN → UNDER_REVIEW) → admin
+  resolves as today (customer-favourable resolution refunds wallet-paid
+  orders; Fatoorah refunds stay gated on `FATOORAH_API_TOKEN`). The order
+  drawer renders the dispute + response form from the `orders` include.
 
 ## Ratings & trust
 

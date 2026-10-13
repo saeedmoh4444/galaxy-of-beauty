@@ -298,6 +298,9 @@ export const vendorPortalRouter = router({
             customer: { select: { id: true, name: true, phone: true } },
             // B1 — line-item snapshots for the order drawer.
             items: { orderBy: { id: 'asc' } },
+            // B5 — the dispute rides along so the drawer renders it without
+            // a second query (1:1 — storeOrderId is unique).
+            dispute: true,
           },
         }),
         prisma.storeOrder.count({ where: { vendorId: vendor.id } }),
