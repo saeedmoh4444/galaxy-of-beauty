@@ -57,6 +57,12 @@ One `Vendor` model covers every provider type (`type` column):
 - Store payouts: `payouts.listStorePayouts` (owner), disputes refund
   FULFILLED orders on resolution, `store-settlement.test.ts` pins the math
   (sequential describe — rates are shared rows).
+- **B5 disputes**: one `Dispute` per store order (`storeOrderId` unique).
+  Customer raises → owning vendor responds via `disputes.respond`
+  (`vendorResponse` + `vendorRespondedAt`, OPEN → UNDER_REVIEW) → admin
+  resolves as today (customer-favourable resolution refunds wallet-paid
+  orders; Fatoorah refunds stay gated on `FATOORAH_API_TOKEN`). The order
+  drawer renders the dispute + response form from the `orders` include.
 
 ## Ratings & trust
 

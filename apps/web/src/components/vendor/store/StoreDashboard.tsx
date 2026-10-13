@@ -77,6 +77,16 @@ export function StoreDashboard({
   });
   const [detailOrder, setDetailOrder] = useState<StoreOrderRow | null>(null);
 
+  // B5 — vendor response to a customer-raised dispute (drawer).
+  const respondMut = api.disputes.respond.useMutation({
+    onSuccess: (updated) => {
+      setDisputeResponse('');
+      refetchOrders();
+      setDetailOrder((d) => (d ? { ...d, dispute: updated } : d));
+    },
+  });
+  const [disputeResponse, setDisputeResponse] = useState('');
+
   const [show, setShow] = useState(false);
   const [name, setName] = useState('');
   const [price, setPrice] = useState(100);
@@ -363,6 +373,84 @@ export function StoreDashboard({
                         >
                           {detailOrder.customer.phone}
                         </a>
+                      )}
+                    </div>
+                  )}
+
+                  {/* B5 — the order's dispute: customer reason, vendor
+                      response, admin resolution (1:1 per order). */}
+                  {detailOrder.dispute && (
+                    <div className="space-y-2 rounded-lg border border-amber-200 bg-amber-50 p-3 dark:border-amber-800 dark:bg-amber-950">
+                      <div className="flex items-center justify-between">
+                        <p className="text-sm font-bold text-amber-700 dark:text-amber-300">
+                          {t('vendorPortal.disputes.title')}
+                        </p>
+                        <span className="rounded-full bg-amber-100 px-2 py-0.5 text-xs font-medium text-amber-700 dark:bg-amber-900 dark:text-amber-300">
+                          {t(
+                            detailOrder.dispute.status === 'OPEN'
+                              ? 'vendorPortal.disputes.status.open'
+                              : detailOrder.dispute.status === 'UNDER_REVIEW'
+                                ? 'vendorPortal.disputes.status.under-review'
+                                : detailOrder.dispute.status === 'RESOLVED_CUSTOMER'
+                                  ? 'vendorPortal.disputes.status.resolved-customer'
+                                  : detailOrder.dispute.status === 'RESOLVED_TECHNICIAN'
+                                    ? 'vendorPortal.disputes.status.resolved-technician'
+                                    : 'vendorPortal.disputes.status.closed',
+                          )}
+                        </span>
+                      </div>
+                      <p className="text-xs text-text-secondary">
+                        <span className="font-semibold">{t('vendorPortal.disputes.reason')}: </span>
+                        {detailOrder.dispute.reason}
+                        {detailOrder.dispute.description
+                          ? ` — ${detailOrder.dispute.description}`
+                          : ''}
+                      </p>
+                      {detailOrder.dispute.vendorResponse && (
+                        <p className="text-xs">
+                          <span className="font-semibold">
+                            {t('vendorPortal.disputes.yourResponse')}:{' '}
+                          </span>
+                          {detailOrder.dispute.vendorResponse}
+                        </p>
+                      )}
+                      {detailOrder.dispute.resolution && (
+                        <p className="text-xs text-green-700 dark:text-green-300">
+                          <span className="font-semibold">
+                            {t('vendorPortal.disputes.resolution')}:{' '}
+                          </span>
+                          {detailOrder.dispute.resolution}
+                        </p>
+                      )}
+                      {(detailOrder.dispute.status === 'OPEN' ||
+                        detailOrder.dispute.status === 'UNDER_REVIEW') && (
+                        <>
+                          {respondMut.isError && (
+                            <p className="text-sm text-red-600 dark:text-red-400">
+                              {respondMut.error.message}
+                            </p>
+                          )}
+                          <textarea
+                            value={disputeResponse}
+                            onChange={(e) => setDisputeResponse(e.target.value)}
+                            placeholder={t('vendorPortal.disputes.responsePlaceholder')}
+                            rows={3}
+                            className="w-full rounded-lg border px-3 py-2 text-sm border-edge bg-surface-elevated"
+                          />
+                          <Button
+                            size="sm"
+                            onClick={() =>
+                              respondMut.mutate({
+                                disputeId: detailOrder.dispute!.id,
+                                response: disputeResponse,
+                              })
+                            }
+                            disabled={!disputeResponse.trim()}
+                            loading={respondMut.isPending}
+                          >
+                            {t('vendorPortal.disputes.submit')}
+                          </Button>
+                        </>
                       )}
                     </div>
                   )}
