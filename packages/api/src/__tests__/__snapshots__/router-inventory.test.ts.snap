@@ -423,6 +423,7 @@ disputes.getById	query	protected
 disputes.list	query	protected
 disputes.listAdmin	query	admin
 disputes.resolve	mutation	admin
+disputes.respond	mutation	protected
 dnaBeauty.analyze	query	customer
 dnaBeauty.myAnalyses	query	customer
 dnaBeauty.questions	query	customer
