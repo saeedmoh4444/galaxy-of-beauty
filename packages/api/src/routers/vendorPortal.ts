@@ -42,6 +42,7 @@ function toPortalProduct(p: {
   sales: number;
   emoji: string;
   isActive: boolean;
+  lowStockThreshold?: number | null;
 }) {
   return {
     id: p.id,
@@ -52,6 +53,8 @@ function toPortalProduct(p: {
     sales: p.sales,
     emoji: p.emoji,
     active: p.isActive,
+    // B3b — low-stock threshold (products list badge + C1 editor).
+    threshold: p.lowStockThreshold ?? 5,
   };
 }
 
@@ -72,6 +75,7 @@ export const vendorPortalRouter = router({
         ordersCount: 0,
         aov: 0,
         customerCount: 0,
+        lowStockProducts: [],
       };
     }
 
@@ -104,6 +108,20 @@ export const vendorPortalRouter = router({
       orderBy: { sales: 'desc' },
       take: 5,
       select: { id: true, nameJson: true, price: true, sales: true },
+    });
+
+    // B3b — low-stock surface: active products at or below their own
+    // threshold (field-to-field comparison), stock-ascending so the most
+    // urgent restocks lead.
+    const lowStockProducts = await prisma.product.findMany({
+      where: {
+        vendorId: vendor.id,
+        isActive: true,
+        stock: { lte: prisma.product.fields.lowStockThreshold },
+      },
+      orderBy: { stock: 'asc' },
+      take: 8,
+      select: { id: true, nameJson: true, stock: true, lowStockThreshold: true },
     });
 
     // S5 — order-based analytics (beyond top-products): 30-day revenue,
@@ -145,6 +163,13 @@ export const vendorPortalRouter = router({
       ordersCount,
       aov,
       customerCount: distinctCustomers.length,
+      lowStockProducts: lowStockProducts.map((p) => ({
+        id: p.id,
+        nameAr: (p.nameJson as { ar?: string }).ar ?? '',
+        nameEn: (p.nameJson as { en?: string }).en ?? '',
+        stock: p.stock,
+        threshold: p.lowStockThreshold,
+      })),
     };
   }),
 
@@ -194,6 +219,8 @@ export const vendorPortalRouter = router({
         categoryId: z.number().int().positive().optional(),
         // E7 — real product shots instead of emojis.
         imageUrl: z.string().url().optional(),
+        // B3b — vendor-set low-stock alert threshold.
+        lowStockThreshold: z.number().int().min(0).max(10000).default(5),
       }),
     )
     .mutation(async ({ ctx, input }) => {
@@ -215,6 +242,7 @@ export const vendorPortalRouter = router({
           emoji: input.emoji,
           imageUrl: input.imageUrl,
           isActive: true,
+          lowStockThreshold: input.lowStockThreshold,
         },
       });
 

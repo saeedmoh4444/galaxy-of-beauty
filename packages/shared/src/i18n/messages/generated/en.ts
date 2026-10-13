@@ -5185,6 +5185,8 @@ export const enWebMessages: Record<string, string> = {
   'vendorPortal.orders.title': 'Orders',
   'vendorPortal.ordersCount': 'Orders',
   'vendorPortal.pendingOrders': 'Pending Orders',
+  'vendorPortal.lowStock.title': 'Low stock alerts',
+  'vendorPortal.lowStock.left': '{count} left',
   'vendorPortal.pricePlaceholder': 'Price (SAR)',
   'vendorPortal.productNamePlaceholder': 'Product name',
   'vendorPortal.products': 'Products',

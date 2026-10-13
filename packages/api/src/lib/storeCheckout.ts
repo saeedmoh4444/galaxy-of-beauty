@@ -1,6 +1,7 @@
 import { prisma } from '@galaxy/db';
 import type { Prisma } from '@galaxy/db';
 import { TRPCError } from '@trpc/server';
+import { notifyUser } from './notify';
 
 // Shared cart → StoreOrder placement used by marketplace.buyCart (no
 // checkout) and payments.payCart (with a StoreCheckout shipping+payment
@@ -17,6 +18,16 @@ export interface CartLine {
   /** B0 — bilingual name snapshot for StoreOrderItem.nameSnapshot. */
   nameJson: { ar?: string; en?: string } | null;
   stock: number;
+  /** B3b — low-stock threshold for the crossing check below. */
+  lowStockThreshold: number;
+}
+
+/** B3b — a product whose stock crossed its threshold during this checkout. */
+export interface LowStockAlert {
+  vendorId: number;
+  productId: number;
+  nameJson: { ar?: string; en?: string } | null;
+  stock: number;
 }
 
 /**
@@ -27,7 +38,16 @@ export async function readCartForCheckout(userId: number): Promise<CartLine[]> {
   const cartItems = await prisma.cartItem.findMany({
     where: { userId },
     include: {
-      product: { select: { id: true, price: true, stock: true, vendorId: true, nameJson: true } },
+      product: {
+        select: {
+          id: true,
+          price: true,
+          stock: true,
+          vendorId: true,
+          nameJson: true,
+          lowStockThreshold: true,
+        },
+      },
     },
   });
 
@@ -52,19 +72,23 @@ export async function readCartForCheckout(userId: number): Promise<CartLine[]> {
       (i.product.nameJson as { en?: string; ar?: string } | null)?.en ?? `Product #${i.productId}`,
     nameJson: (i.product.nameJson as { en?: string; ar?: string } | null) ?? null,
     stock: i.product.stock,
+    lowStockThreshold: i.product.lowStockThreshold,
   }));
 }
 
 /**
  * Place StoreOrders (one per vendor) + stock/sales updates + cart clear.
  * Must run inside a `prisma.$transaction` supplied by the caller.
+ * Returns lowStockAlerts for products whose stock crossed their threshold
+ * in this checkout (old > threshold, new ≤ threshold) — callers notify the
+ * vendor after the transaction commits via {@link notifyLowStockAlerts}.
  */
 export async function placeStoreOrders(
   tx: Prisma.TransactionClient,
   userId: number,
   lines: CartLine[],
   checkoutId?: number,
-): Promise<{ subtotal: number; itemCount: number }> {
+): Promise<{ subtotal: number; itemCount: number; lowStockAlerts: LowStockAlert[] }> {
   const vendorLines = new Map<
     number,
     {
@@ -80,6 +104,7 @@ export async function placeStoreOrders(
   >();
   let subtotal = 0;
   let itemCount = 0;
+  const lowStockAlerts: LowStockAlert[] = [];
 
   for (const line of lines) {
     const amount = line.unitPrice * line.quantity;
@@ -97,6 +122,19 @@ export async function placeStoreOrders(
       where: { id: line.vendorId },
       data: { totalSales: { increment: amount } },
     });
+
+    // B3b — crossing-only: alert once when a sale takes stock over the
+    // threshold edge. Sales while already below don't re-notify, and a
+    // restock (C1 editor) resets the condition naturally.
+    const newStock = line.stock - line.quantity;
+    if (line.stock > line.lowStockThreshold && newStock <= line.lowStockThreshold) {
+      lowStockAlerts.push({
+        vendorId: line.vendorId,
+        productId: line.productId,
+        nameJson: line.nameJson,
+        stock: newStock,
+      });
+    }
 
     const agg = vendorLines.get(line.vendorId) ?? { amount: 0, items: 0, lines: [] };
     agg.amount += amount;
@@ -140,5 +178,38 @@ export async function placeStoreOrders(
 
   await tx.cartItem.deleteMany({ where: { userId } });
 
-  return { subtotal, itemCount };
+  return { subtotal, itemCount, lowStockAlerts };
+}
+
+/**
+ * B3b — emit `store_low_stock` notifications to the owning vendors after the
+ * checkout transaction commits. Notification failure must never fail the
+ * purchase, so every notify is swallowed (the established pattern).
+ */
+export async function notifyLowStockAlerts(alerts: LowStockAlert[]): Promise<void> {
+  if (alerts.length === 0) return;
+
+  const vendors = await prisma.vendor.findMany({
+    where: { id: { in: [...new Set(alerts.map((a) => a.vendorId))] } },
+    select: { id: true, userId: true },
+  });
+  const userIdByVendor = new Map(vendors.map((v) => [v.id, v.userId]));
+
+  for (const alert of alerts) {
+    const userId = userIdByVendor.get(alert.vendorId);
+    if (!userId) continue;
+    const name = alert.nameJson?.en ?? alert.nameJson?.ar ?? `Product #${alert.productId}`;
+    try {
+      await notifyUser({
+        userId,
+        templateKey: 'store_low_stock',
+        vars: { productName: name, stock: alert.stock },
+        link: '/store?tab=products',
+        // B3b — in-app only until the vendor inbox (F1) ships push wiring.
+        channels: ['in_app'],
+      });
+    } catch {
+      // Notification failure must never fail the purchase.
+    }
+  }
 }

@@ -3829,6 +3829,9 @@ export const miscMessages = {
   'vendorPortal.add': { ar: 'إضافة', en: 'Add' },
   // Store plan Phase 1 — merchant registration + orders
   'vendorPortal.pendingOrders': { ar: 'طلبات معلقة', en: 'Pending Orders' },
+  // B3b — low-stock alerts on the Overview tab
+  'vendorPortal.lowStock.title': { ar: 'تنبيهات المخزون المنخفض', en: 'Low stock alerts' },
+  'vendorPortal.lowStock.left': { ar: 'متبقي: {count}', en: '{count} left' },
   // S5 — order-based analytics
   'vendorPortal.revenue30d': { ar: 'إيرادات ٣٠ يوم', en: 'Revenue (30d)' },
   'vendorPortal.ordersCount': { ar: 'طلبات', en: 'Orders' },
