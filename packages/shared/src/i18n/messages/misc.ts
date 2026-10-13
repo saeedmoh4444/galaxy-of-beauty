@@ -3841,6 +3841,27 @@ export const miscMessages = {
   'vendorPortal.thresholdPlaceholder': { ar: 'حد التنبيه', en: 'Alert threshold' },
   // Store plan Phase 1 — merchant registration + orders
   'vendorPortal.pendingOrders': { ar: 'طلبات معلقة', en: 'Pending Orders' },
+  // B5 — vendor-side dispute response (order drawer)
+  'vendorPortal.disputes.title': { ar: 'نزاع على الطلب', en: 'Order dispute' },
+  'vendorPortal.disputes.reason': { ar: 'السبب', en: 'Reason' },
+  'vendorPortal.disputes.yourResponse': { ar: 'ردك', en: 'Your response' },
+  'vendorPortal.disputes.responsePlaceholder': {
+    ar: 'اكتبي ردك على النزاع...',
+    en: 'Write your response to the dispute…',
+  },
+  'vendorPortal.disputes.submit': { ar: 'إرسال الرد', en: 'Submit response' },
+  'vendorPortal.disputes.resolution': { ar: 'قرار الإدارة', en: 'Admin resolution' },
+  'vendorPortal.disputes.status.open': { ar: 'مفتوح', en: 'Open' },
+  'vendorPortal.disputes.status.under-review': { ar: 'قيد المراجعة', en: 'Under review' },
+  'vendorPortal.disputes.status.resolved-customer': {
+    ar: 'حُل لصالح العميلة',
+    en: 'Resolved for customer',
+  },
+  'vendorPortal.disputes.status.resolved-technician': {
+    ar: 'حُل لصالح المتجر',
+    en: 'Resolved for store',
+  },
+  'vendorPortal.disputes.status.closed': { ar: 'مغلق', en: 'Closed' },
   // B3b — low-stock alerts on the Overview tab
   'vendorPortal.lowStock.title': { ar: 'تنبيهات المخزون المنخفض', en: 'Low stock alerts' },
   'vendorPortal.lowStock.left': { ar: 'متبقي: {count}', en: '{count} left' },

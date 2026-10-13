@@ -800,6 +800,9 @@ model Dispute {
   resolution  String?
   resolvedBy  Int?          // Admin who resolved it
   resolvedAt  DateTime?
+  // B5 — vendor-side response before admin resolution (store disputes).
+  vendorResponse   String?
+  vendorRespondedAt DateTime?
   createdAt   DateTime      @default(now())
   updatedAt   DateTime      @updatedAt
 
