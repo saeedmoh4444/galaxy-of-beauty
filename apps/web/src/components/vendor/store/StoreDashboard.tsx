@@ -5,7 +5,7 @@ import { api } from '@/lib/trpc';
 import { Card, Button, Modal, Input, formatCurrency, useAuth } from '@galaxy/ui';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
 import { useLocale } from '@/components/LocaleProvider';
-import type { MyStore, StoreDealPayload } from '@galaxy/api';
+import type { MyStore, StoreDealPayload, StoreOrderRow } from '@galaxy/api';
 import { localize } from '@galaxy/shared';
 import { VenueProfileCard } from '../shared/VenueProfileCard';
 import { DashboardTabs } from '../shared/DashboardTabs';
@@ -68,6 +68,14 @@ export function StoreDashboard({
   const fulfillMut = api.vendorPortal.fulfillOrder.useMutation({
     onSuccess: () => refetchOrders(),
   });
+  // B1 — order drawer + cancel-before-fulfillment.
+  const cancelMut = api.vendorPortal.cancelOrder.useMutation({
+    onSuccess: () => {
+      setDetailOrder(null);
+      refetchOrders();
+    },
+  });
+  const [detailOrder, setDetailOrder] = useState<StoreOrderRow | null>(null);
 
   const [show, setShow] = useState(false);
   const [name, setName] = useState('');
@@ -297,14 +305,21 @@ export function StoreDashboard({
                             className={`rounded-full px-2 py-0.5 text-xs font-medium ${
                               o.status === 'FULFILLED'
                                 ? 'bg-green-100 dark:bg-green-950 text-green-700 dark:text-green-300'
-                                : 'bg-amber-100 dark:bg-amber-950 text-amber-700 dark:text-amber-300'
+                                : o.status === 'CANCELLED'
+                                  ? 'bg-red-100 dark:bg-red-950 text-red-700 dark:text-red-300'
+                                  : 'bg-amber-100 dark:bg-amber-950 text-amber-700 dark:text-amber-300'
                             }`}
                           >
                             {o.status === 'FULFILLED'
                               ? t('vendorPortal.orders.fulfilled')
-                              : t('vendorPortal.orders.pending')}
+                              : o.status === 'CANCELLED'
+                                ? t('vendorPortal.orders.cancelled')
+                                : t('vendorPortal.orders.pending')}
                           </span>
-                          {o.status !== 'FULFILLED' && (
+                          <Button size="sm" variant="outline" onClick={() => setDetailOrder(o)}>
+                            {t('vendorPortal.orders.details')}
+                          </Button>
+                          {o.status === 'PENDING_FULFILLMENT' && (
                             <Button
                               size="sm"
                               onClick={() => fulfillMut.mutate({ orderId: o.id })}
@@ -332,6 +347,72 @@ export function StoreDashboard({
                 </div>
               )}
             </Card>
+
+            {/* B1 — order drawer: line items, customer contact, cancel. */}
+            <Modal
+              open={detailOrder !== null}
+              onClose={() => setDetailOrder(null)}
+              title={detailOrder ? `#${detailOrder.id}` : ''}
+            >
+              {detailOrder && (
+                <div className="space-y-3">
+                  <div className="space-y-1 rounded-lg border p-3">
+                    {detailOrder.items.map((item) => (
+                      <div key={item.id} className="flex justify-between text-sm">
+                        <span className="font-medium">
+                          {(item.nameSnapshot as { ar?: string; en?: string } | null)?.[
+                            locale === 'ar' ? 'ar' : 'en'
+                          ] ?? `#${item.productId}`}
+                        </span>
+                        <span className="text-text-secondary">
+                          {formatCurrency(Number(item.priceSnapshot))} × {item.quantity}
+                        </span>
+                      </div>
+                    ))}
+                    <div className="mt-2 flex justify-between border-t pt-2 text-sm font-bold">
+                      <span>{t('vendorPortal.orders.total')}</span>
+                      <span>{formatCurrency(Number(detailOrder.totalAmount))}</span>
+                    </div>
+                  </div>
+
+                  {detailOrder.customer && (
+                    <div className="text-sm">
+                      <p className="font-semibold">{detailOrder.customer.name}</p>
+                      {detailOrder.customer.phone && (
+                        <a
+                          href={`https://wa.me/${detailOrder.customer.phone
+                            .replace(/^\+/, '')
+                            .replace(/^0/, '966')}`}
+                          target="_blank"
+                          rel="noreferrer"
+                          className="text-brand-600 underline"
+                        >
+                          {detailOrder.customer.phone}
+                        </a>
+                      )}
+                    </div>
+                  )}
+
+                  {detailOrder.status === 'PENDING_FULFILLMENT' && (
+                    <>
+                      {cancelMut.isError && (
+                        <p className="text-sm text-red-600 dark:text-red-400">
+                          {cancelMut.error.message}
+                        </p>
+                      )}
+                      <Button
+                        variant="outline"
+                        onClick={() => cancelMut.mutate({ orderId: detailOrder.id })}
+                        loading={cancelMut.isPending}
+                        className="w-full"
+                      >
+                        {t('vendorPortal.orders.cancel')}
+                      </Button>
+                    </>
+                  )}
+                </div>
+              )}
+            </Modal>
           </div>
         )}
 
