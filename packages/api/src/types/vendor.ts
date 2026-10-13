@@ -19,11 +19,12 @@ export type MyStore = VendorPortalOutputs['myStore'];
 /** Aggregated store KPIs (zeros for non-owners). */
 export type VendorDashboard = VendorPortalOutputs['dashboard'];
 
-/** toPortalProduct shape — the product rows the portal UIs render. */
-export type PortalProduct = VendorPortalOutputs['myProducts'][number];
+/** toPortalProduct shape — the product rows the portal UIs render (A5:
+ *  myProducts is cursor-paginated — items lives inside the page object). */
+export type PortalProduct = VendorPortalOutputs['myProducts']['items'][number];
 
-/** A store order with its customer summary. */
-export type StoreOrderRow = VendorPortalOutputs['orders'][number];
+/** A store order with its customer summary (A5: cursor-paginated page). */
+export type StoreOrderRow = VendorPortalOutputs['orders']['items'][number];
 
 /** A store_promotion provider submission (My Deals). */
 export type StoreDealRow = VendorPortalOutputs['myDeals'][number];

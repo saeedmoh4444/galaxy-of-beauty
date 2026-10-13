@@ -113,20 +113,20 @@ describe('vendorPortal + buy flow (B.3)', () => {
     });
 
     const c = await caller(customer);
-    const mine = await c.vendorPortal.myProducts();
-    expect(mine.length).toBe(1);
-    expect(mine[0]!.nameAr).toBe('زيت الأرغان');
+    const mine = await c.vendorPortal.myProducts({});
+    expect(mine.items.length).toBe(1);
+    expect(mine.items[0]!.nameAr).toBe('زيت الأرغان');
 
     const other = await caller(otherCustomer);
-    const theirs = await other.vendorPortal.myProducts();
-    expect(theirs.length).toBe(1);
-    expect(theirs[0]!.id).toBe(otherProduct.id);
+    const theirs = await other.vendorPortal.myProducts({});
+    expect(theirs.items.length).toBe(1);
+    expect(theirs.items[0]!.id).toBe(otherProduct.id);
   });
 
   it('dashboard aggregates sales and revenue from the DB', async () => {
     const c = await caller(customer);
-    const mine = await c.vendorPortal.myProducts();
-    const productId = mine[0]!.id;
+    const mine = await c.vendorPortal.myProducts({});
+    const productId = mine.items[0]!.id;
 
     await prisma.product.update({
       where: { id: productId },
@@ -141,12 +141,12 @@ describe('vendorPortal + buy flow (B.3)', () => {
 
   it('deleteProduct soft-deletes and hides from myProducts', async () => {
     const c = await caller(customer);
-    const mine = await c.vendorPortal.myProducts();
-    const productId = mine[0]!.id;
+    const mine = await c.vendorPortal.myProducts({});
+    const productId = mine.items[0]!.id;
 
     await c.vendorPortal.deleteProduct({ id: productId });
-    const after = await c.vendorPortal.myProducts();
-    expect(after.find((p: { id: number }) => p.id === productId)).toBeUndefined();
+    const after = await c.vendorPortal.myProducts({});
+    expect(after.items.find((p: { id: number }) => p.id === productId)).toBeUndefined();
 
     const row = await prisma.product.findUniqueOrThrow({ where: { id: productId } });
     expect(row.isActive).toBe(false);

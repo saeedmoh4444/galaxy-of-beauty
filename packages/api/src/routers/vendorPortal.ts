@@ -42,6 +42,7 @@ function toPortalProduct(p: {
   sales: number;
   emoji: string;
   isActive: boolean;
+  lowStockThreshold?: number | null;
 }) {
   return {
     id: p.id,
@@ -52,6 +53,8 @@ function toPortalProduct(p: {
     sales: p.sales,
     emoji: p.emoji,
     active: p.isActive,
+    // B3b — low-stock threshold (products list badge + C1 editor).
+    threshold: p.lowStockThreshold ?? 5,
   };
 }
 
@@ -72,6 +75,7 @@ export const vendorPortalRouter = router({
         ordersCount: 0,
         aov: 0,
         customerCount: 0,
+        lowStockProducts: [],
       };
     }
 
@@ -104,6 +108,20 @@ export const vendorPortalRouter = router({
       orderBy: { sales: 'desc' },
       take: 5,
       select: { id: true, nameJson: true, price: true, sales: true },
+    });
+
+    // B3b — low-stock surface: active products at or below their own
+    // threshold (field-to-field comparison), stock-ascending so the most
+    // urgent restocks lead.
+    const lowStockProducts = await prisma.product.findMany({
+      where: {
+        vendorId: vendor.id,
+        isActive: true,
+        stock: { lte: prisma.product.fields.lowStockThreshold },
+      },
+      orderBy: { stock: 'asc' },
+      take: 8,
+      select: { id: true, nameJson: true, stock: true, lowStockThreshold: true },
     });
 
     // S5 — order-based analytics (beyond top-products): 30-day revenue,
@@ -145,19 +163,50 @@ export const vendorPortalRouter = router({
       ordersCount,
       aov,
       customerCount: distinctCustomers.length,
+      lowStockProducts: lowStockProducts.map((p) => ({
+        id: p.id,
+        nameAr: (p.nameJson as { ar?: string }).ar ?? '',
+        nameEn: (p.nameJson as { en?: string }).en ?? '',
+        stock: p.stock,
+        threshold: p.lowStockThreshold,
+      })),
     };
   }),
 
-  myProducts: customerProcedure.query(async ({ ctx }) => {
-    const vendor = await prisma.vendor.findUnique({ where: { userId: ctx.user.id } });
-    if (!vendor) return [];
+  myProducts: customerProcedure
+    .input(
+      z.object({
+        limit: z.number().int().min(1).max(100).default(20),
+        cursor: z.number().int().positive().optional(),
+      }),
+    )
+    .query(async ({ ctx, input }) => {
+      const vendor = await prisma.vendor.findUnique({ where: { userId: ctx.user.id } });
+      if (!vendor) return { items: [], nextCursor: null, total: 0 };
 
-    const products = await prisma.product.findMany({
-      where: { vendorId: vendor.id, isActive: true },
-      orderBy: { createdAt: 'desc' },
-    });
-    return products.map(toPortalProduct);
-  }),
+      // A5 — cursor pagination on the stable id (autoincrement) instead of
+      // createdAt: equal timestamps can't page deterministically.
+      const where = {
+        vendorId: vendor.id,
+        isActive: true,
+        ...(input.cursor ? { id: { lt: input.cursor } } : {}),
+      };
+      const [products, total] = await Promise.all([
+        prisma.product.findMany({
+          where,
+          orderBy: { id: 'desc' },
+          take: input.limit + 1, // peek one row for nextCursor
+        }),
+        prisma.product.count({ where: { vendorId: vendor.id, isActive: true } }),
+      ]);
+      const hasMore = products.length > input.limit;
+      const page = hasMore ? products.slice(0, input.limit) : products;
+      return {
+        items: page.map(toPortalProduct),
+        nextCursor: hasMore ? page[page.length - 1]!.id : null,
+        total,
+      };
+    }),
 
   addProduct: customerProcedure
     .input(
@@ -170,6 +219,8 @@ export const vendorPortalRouter = router({
         categoryId: z.number().int().positive().optional(),
         // E7 — real product shots instead of emojis.
         imageUrl: z.string().url().optional(),
+        // B3b — vendor-set low-stock alert threshold.
+        lowStockThreshold: z.number().int().min(0).max(10000).default(5),
       }),
     )
     .mutation(async ({ ctx, input }) => {
@@ -191,6 +242,7 @@ export const vendorPortalRouter = router({
           emoji: input.emoji,
           imageUrl: input.imageUrl,
           isActive: true,
+          lowStockThreshold: input.lowStockThreshold,
         },
       });
 
@@ -220,19 +272,44 @@ export const vendorPortalRouter = router({
     return prisma.vendor.findUnique({ where: { userId: ctx.user.id } });
   }),
 
-  /** orders — the store's orders, newest first. */
-  orders: customerProcedure.query(async ({ ctx }) => {
-    const vendor = await prisma.vendor.findUnique({ where: { userId: ctx.user.id } });
-    if (!vendor) return [];
+  /** orders — the store's orders, newest first, cursor-paginated (A5). */
+  orders: customerProcedure
+    .input(
+      z.object({
+        limit: z.number().int().min(1).max(100).default(20),
+        cursor: z.number().int().positive().optional(),
+      }),
+    )
+    .query(async ({ ctx, input }) => {
+      const vendor = await prisma.vendor.findUnique({ where: { userId: ctx.user.id } });
+      if (!vendor) return { items: [], nextCursor: null, total: 0 };
 
-    return prisma.storeOrder.findMany({
-      where: { vendorId: vendor.id },
-      orderBy: { createdAt: 'desc' },
-      include: {
-        customer: { select: { id: true, name: true, phone: true } },
-      },
-    });
-  }),
+      // A5 — id-desc cursor: stable pagination (createdAt ties can't page).
+      const where = {
+        vendorId: vendor.id,
+        ...(input.cursor ? { id: { lt: input.cursor } } : {}),
+      };
+      const [orders, total] = await Promise.all([
+        prisma.storeOrder.findMany({
+          where,
+          orderBy: { id: 'desc' },
+          take: input.limit + 1, // peek one row for nextCursor
+          include: {
+            customer: { select: { id: true, name: true, phone: true } },
+            // B1 — line-item snapshots for the order drawer.
+            items: { orderBy: { id: 'asc' } },
+          },
+        }),
+        prisma.storeOrder.count({ where: { vendorId: vendor.id } }),
+      ]);
+      const hasMore = orders.length > input.limit;
+      const page = hasMore ? orders.slice(0, input.limit) : orders;
+      return {
+        items: page,
+        nextCursor: hasMore ? page[page.length - 1]!.id : null,
+        total,
+      };
+    }),
 
   /** fulfillOrder — mark a store order fulfilled (ownership-guarded).
    *  H0 — the status transition is a conditional update inside the

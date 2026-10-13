@@ -3814,6 +3814,7 @@ export const miscMessages = {
   'vendorPortal.tab.overview': { ar: 'نظرة عامة', en: 'Overview' },
   'vendorPortal.tab.products': { ar: 'المنتجات', en: 'Products' },
   'vendorPortal.tab.deals': { ar: 'العروض', en: 'Deals' },
+  'vendorPortal.loadMore': { ar: 'المزيد', en: 'Load more' },
   'vendorPortal.tabs.aria': { ar: 'أقسام لوحة المتجر', en: 'Store dashboard sections' },
   'vendorPortal.products.empty': { ar: 'لا توجد منتجات بعد', en: 'No products yet' },
   'vendorPortal.sold': { ar: 'مبيعة', en: 'Sold' },
@@ -3828,6 +3829,9 @@ export const miscMessages = {
   'vendorPortal.add': { ar: 'إضافة', en: 'Add' },
   // Store plan Phase 1 — merchant registration + orders
   'vendorPortal.pendingOrders': { ar: 'طلبات معلقة', en: 'Pending Orders' },
+  // B3b — low-stock alerts on the Overview tab
+  'vendorPortal.lowStock.title': { ar: 'تنبيهات المخزون المنخفض', en: 'Low stock alerts' },
+  'vendorPortal.lowStock.left': { ar: 'متبقي: {count}', en: '{count} left' },
   // S5 — order-based analytics
   'vendorPortal.revenue30d': { ar: 'إيرادات ٣٠ يوم', en: 'Revenue (30d)' },
   'vendorPortal.ordersCount': { ar: 'طلبات', en: 'Orders' },
@@ -3860,6 +3864,11 @@ export const miscMessages = {
   'vendorPortal.orders.pending': { ar: 'بانتظار التنفيذ', en: 'Pending fulfillment' },
   'vendorPortal.orders.fulfilled': { ar: 'تم التنفيذ', en: 'Fulfilled' },
   'vendorPortal.orders.fulfill': { ar: 'تنفيذ', en: 'Fulfill' },
+  // B1 — order drawer + lifecycle
+  'vendorPortal.orders.details': { ar: 'التفاصيل', en: 'Details' },
+  'vendorPortal.orders.cancel': { ar: 'إلغاء الطلب', en: 'Cancel order' },
+  'vendorPortal.orders.cancelled': { ar: 'ملغي', en: 'Cancelled' },
+  'vendorPortal.orders.total': { ar: 'الإجمالي', en: 'Total' },
   // Store plan Phase 4b — product deals
   'vendorPortal.topProducts': { ar: 'الأكثر مبيعاً', en: 'Top products' },
   'vendorPortal.deals.title': { ar: 'عروضي على المنتجات', en: 'My Product Deals' },

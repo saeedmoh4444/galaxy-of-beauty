@@ -1464,6 +1464,7 @@ model Product {
   comparePrice Decimal? @db.Decimal(10, 2) // "Was" price for discounts
   stock       Int      @default(0)
   sales       Int      @default(0) // B.3: units sold (vendor portal metric)
+  lowStockThreshold Int @default(5) // B3b: stock ≤ threshold → Overview alert + low_stock event
   imageUrl    String?
   images      String[] // Additional images
   brand       String?

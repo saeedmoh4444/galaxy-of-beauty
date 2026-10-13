@@ -3650,6 +3650,48 @@ async function main() {
     console.log(`    Demo products: ${err.message?.slice(0, 60)}`);
   }
 
+  // ---- B1 — demo pending orders for the vendor dashboard E2E ----
+  // Two PENDING_FULFILLMENT orders (one to fulfill, one to cancel) with
+  // B0 line-item snapshots, so the order drawer + lifecycle flows have
+  // deterministic data in a fresh CI database.
+  try {
+    const ordersVendor = await prisma.vendor.findUnique({
+      where: { storeSlug: 'galaxy-demo-store' },
+    });
+    const buyer = await prisma.user.findUnique({ where: { email: 'customer@test.com' } });
+    const ordersProduct = ordersVendor
+      ? await prisma.product.findFirst({
+          where: { vendorId: ordersVendor.id },
+          orderBy: { id: 'asc' },
+        })
+      : null;
+    if (ordersVendor && buyer && ordersProduct) {
+      for (const total of [120, 80]) {
+        const order = await prisma.storeOrder.create({
+          data: {
+            vendorId: ordersVendor.id,
+            customerId: buyer.id,
+            totalAmount: total,
+            itemCount: 1,
+            status: 'PENDING_FULFILLMENT',
+          },
+        });
+        await prisma.storeOrderItem.create({
+          data: {
+            orderId: order.id,
+            productId: ordersProduct.id,
+            nameSnapshot: ordersProduct.nameJson as unknown as Prisma.InputJsonValue,
+            priceSnapshot: total,
+            quantity: 1,
+          },
+        });
+      }
+      console.log('    Demo pending orders: 2 (with line items)');
+    }
+  } catch (err: any) {
+    console.log(`    Demo pending orders: ${err.message?.slice(0, 60)}`);
+  }
+
   // ---- 2.5 Social Commerce demo posts (shoppable feed) ----
   try {
     // demoVendor lives inside the 3.1 try block — re-resolve by slug.
@@ -3969,6 +4011,18 @@ async function main() {
         bodyJson: {
           ar: 'تقييم {{score}}/10{{comment}}. الحجز {{bookingId}} — تابعي العميلة خلال 24 ساعة.',
           en: 'Score {{score}}/10{{comment}}. Booking {{bookingId}} — follow up with the customer within 24h.',
+        },
+      },
+      // B3b — vendor low-stock crossing alert (emitted by storeCheckout).
+      // Category 'provider' is not a preference toggle → always delivered.
+      {
+        key: 'store_low_stock',
+        category: 'provider',
+        channels: ['in_app', 'push'],
+        titleJson: { ar: 'تنبيه: مخزون منخفض', en: 'Low Stock Alert' },
+        bodyJson: {
+          ar: '{{productName}} أوشك على النفاد — المتبقي {{stock}} فقط. أضيفي مخزوناً جديداً لتجنّب فقدان المبيعات.',
+          en: '{{productName}} is running low — only {{stock}} left. Restock to avoid missing sales.',
         },
       },
       // E2 — clinic consultation decisions. Category 'provider' is not a
