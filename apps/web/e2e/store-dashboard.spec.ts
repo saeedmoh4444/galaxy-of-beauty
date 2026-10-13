@@ -94,9 +94,12 @@ test.describe('Store Dashboard (S1)', () => {
 
     await page.getByTestId('vendor-tab-deals').click();
     await page.getByRole('button', { name: /اقترح عرضاً/ }).click();
-    // selectOption({ label }) takes an exact string — the option reads
-    // "<nameAr> · <price>".
-    await page.locator('select').selectOption({ label: `${name} · 120` });
+    // The option label is "<nameAr> · <localized price>" — formatCurrency
+    // renders Arabic-Indic numerals, so match the option by text and select
+    // its value instead of guessing the label.
+    const option = page.locator('select option').filter({ hasText: name });
+    await expect(option).toHaveCount(1);
+    await page.locator('select').selectOption((await option.getAttribute('value')) ?? '');
     await page.getByLabel('سعر العرض (ر.س)').fill('80');
     await page.getByRole('button', { name: 'حفظ' }).click();
 
