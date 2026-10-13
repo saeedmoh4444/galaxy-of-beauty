@@ -209,3 +209,5 @@ galaxy-of-beauty/
 ### Reporting Vulnerabilities
 
 Email security concerns to the maintainers. Do not open a public issue.
+
+<!-- CI probe 1791898121 -->
