@@ -201,8 +201,8 @@ describe('store registration + approval (Store Phase 1)', () => {
 
     // Store sees the order + pending count on the dashboard.
     const store = await caller(merchant);
-    const ordersList = await store.vendorPortal.orders();
-    expect(ordersList.length).toBe(1);
+    const ordersList = await store.vendorPortal.orders({});
+    expect(ordersList.items.length).toBe(1);
     const dash = await store.vendorPortal.dashboard();
     expect(dash.pendingOrders).toBe(1);
   });
