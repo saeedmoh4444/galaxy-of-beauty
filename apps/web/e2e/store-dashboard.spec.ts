@@ -104,8 +104,10 @@ test.describe('Store Dashboard (S1)', () => {
     await page.getByRole('button', { name: 'حفظ' }).click();
 
     // The proposal rides the admin review queue — pending chip + title.
+    // (.first(): retries accumulate pending deals in the shared CI DB, so
+    // the chip matches more than one card.)
     await expect(page.getByText(name)).toBeVisible();
-    await expect(page.getByText('قيد المراجعة')).toBeVisible();
+    await expect(page.getByText('قيد المراجعة').first()).toBeVisible();
   });
 
   test('A4 — trust toggle persists across reload', async ({ page }) => {
