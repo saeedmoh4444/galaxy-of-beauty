@@ -5170,6 +5170,7 @@ export const enWebMessages: Record<string, string> = {
   'vendorPortal.gym.class-remove': 'Remove',
   'vendorPortal.gym.classes-title': 'Classes',
   'vendorPortal.gym.price': 'Price (0 = free)',
+  'vendorPortal.loadMore': 'Load more',
   'vendorPortal.nailBar.bookings-empty': 'No bookings',
   'vendorPortal.nailBar.bookings-title': 'Station bookings',
   'vendorPortal.nailBar.capacity': 'Stations',

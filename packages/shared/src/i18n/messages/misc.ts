@@ -3814,6 +3814,7 @@ export const miscMessages = {
   'vendorPortal.tab.overview': { ar: 'نظرة عامة', en: 'Overview' },
   'vendorPortal.tab.products': { ar: 'المنتجات', en: 'Products' },
   'vendorPortal.tab.deals': { ar: 'العروض', en: 'Deals' },
+  'vendorPortal.loadMore': { ar: 'المزيد', en: 'Load more' },
   'vendorPortal.tabs.aria': { ar: 'أقسام لوحة المتجر', en: 'Store dashboard sections' },
   'vendorPortal.products.empty': { ar: 'لا توجد منتجات بعد', en: 'No products yet' },
   'vendorPortal.sold': { ar: 'مبيعة', en: 'Sold' },

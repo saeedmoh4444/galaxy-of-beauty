@@ -5095,6 +5095,7 @@ export const arWebMessages: Record<string, string> = {
   'vendorPortal.gym.class-remove': 'حذف',
   'vendorPortal.gym.classes-title': 'الحصص',
   'vendorPortal.gym.price': 'السعر (0 = مجاناً)',
+  'vendorPortal.loadMore': 'المزيد',
   'vendorPortal.nailBar.bookings-empty': 'لا توجد حجوزات',
   'vendorPortal.nailBar.bookings-title': 'حجوزات المحطات',
   'vendorPortal.nailBar.capacity': 'عدد المحطات',

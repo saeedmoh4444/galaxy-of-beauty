@@ -9,9 +9,11 @@ export default function VendorPortalScreen(): JSX.Element {
   const { t, locale } = useLocale();
   const isAuthed = useAuthState();
   const dashQ = trpc.vendorPortal.dashboard.useQuery(undefined, { enabled: isAuthed });
-  const productsQ = trpc.vendorPortal.myProducts.useQuery(undefined, { enabled: isAuthed });
+  const productsQ = trpc.vendorPortal.myProducts.useQuery({}, { enabled: isAuthed });
   const dash = dashQ.data;
-  const products = productsQ.data ?? [];
+  // A5 — myProducts is cursor-paginated; the mobile portal renders the
+  // first page (browse-only by design — web-first dashboards).
+  const products = productsQ.data?.items ?? [];
 
   const deleteMut = trpc.vendorPortal.deleteProduct.useMutation({
     onSuccess: () => {

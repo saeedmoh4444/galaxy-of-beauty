@@ -148,16 +148,40 @@ export const vendorPortalRouter = router({
     };
   }),
 
-  myProducts: customerProcedure.query(async ({ ctx }) => {
-    const vendor = await prisma.vendor.findUnique({ where: { userId: ctx.user.id } });
-    if (!vendor) return [];
+  myProducts: customerProcedure
+    .input(
+      z.object({
+        limit: z.number().int().min(1).max(100).default(20),
+        cursor: z.number().int().positive().optional(),
+      }),
+    )
+    .query(async ({ ctx, input }) => {
+      const vendor = await prisma.vendor.findUnique({ where: { userId: ctx.user.id } });
+      if (!vendor) return { items: [], nextCursor: null, total: 0 };
 
-    const products = await prisma.product.findMany({
-      where: { vendorId: vendor.id, isActive: true },
-      orderBy: { createdAt: 'desc' },
-    });
-    return products.map(toPortalProduct);
-  }),
+      // A5 — cursor pagination on the stable id (autoincrement) instead of
+      // createdAt: equal timestamps can't page deterministically.
+      const where = {
+        vendorId: vendor.id,
+        isActive: true,
+        ...(input.cursor ? { id: { lt: input.cursor } } : {}),
+      };
+      const [products, total] = await Promise.all([
+        prisma.product.findMany({
+          where,
+          orderBy: { id: 'desc' },
+          take: input.limit + 1, // peek one row for nextCursor
+        }),
+        prisma.product.count({ where: { vendorId: vendor.id, isActive: true } }),
+      ]);
+      const hasMore = products.length > input.limit;
+      const page = hasMore ? products.slice(0, input.limit) : products;
+      return {
+        items: page.map(toPortalProduct),
+        nextCursor: hasMore ? page[page.length - 1]!.id : null,
+        total,
+      };
+    }),
 
   addProduct: customerProcedure
     .input(
@@ -220,19 +244,42 @@ export const vendorPortalRouter = router({
     return prisma.vendor.findUnique({ where: { userId: ctx.user.id } });
   }),
 
-  /** orders — the store's orders, newest first. */
-  orders: customerProcedure.query(async ({ ctx }) => {
-    const vendor = await prisma.vendor.findUnique({ where: { userId: ctx.user.id } });
-    if (!vendor) return [];
+  /** orders — the store's orders, newest first, cursor-paginated (A5). */
+  orders: customerProcedure
+    .input(
+      z.object({
+        limit: z.number().int().min(1).max(100).default(20),
+        cursor: z.number().int().positive().optional(),
+      }),
+    )
+    .query(async ({ ctx, input }) => {
+      const vendor = await prisma.vendor.findUnique({ where: { userId: ctx.user.id } });
+      if (!vendor) return { items: [], nextCursor: null, total: 0 };
 
-    return prisma.storeOrder.findMany({
-      where: { vendorId: vendor.id },
-      orderBy: { createdAt: 'desc' },
-      include: {
-        customer: { select: { id: true, name: true, phone: true } },
-      },
-    });
-  }),
+      // A5 — id-desc cursor: stable pagination (createdAt ties can't page).
+      const where = {
+        vendorId: vendor.id,
+        ...(input.cursor ? { id: { lt: input.cursor } } : {}),
+      };
+      const [orders, total] = await Promise.all([
+        prisma.storeOrder.findMany({
+          where,
+          orderBy: { id: 'desc' },
+          take: input.limit + 1, // peek one row for nextCursor
+          include: {
+            customer: { select: { id: true, name: true, phone: true } },
+          },
+        }),
+        prisma.storeOrder.count({ where: { vendorId: vendor.id } }),
+      ]);
+      const hasMore = orders.length > input.limit;
+      const page = hasMore ? orders.slice(0, input.limit) : orders;
+      return {
+        items: page,
+        nextCursor: hasMore ? page[page.length - 1]!.id : null,
+        total,
+      };
+    }),
 
   /** fulfillOrder — mark a store order fulfilled (ownership-guarded).
    *  H0 — the status transition is a conditional update inside the
