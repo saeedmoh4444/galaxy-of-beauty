@@ -148,16 +148,40 @@ export const vendorPortalRouter = router({
     };
   }),
 
-  myProducts: customerProcedure.query(async ({ ctx }) => {
-    const vendor = await prisma.vendor.findUnique({ where: { userId: ctx.user.id } });
-    if (!vendor) return [];
+  myProducts: customerProcedure
+    .input(
+      z.object({
+        limit: z.number().int().min(1).max(100).default(20),
+        cursor: z.number().int().positive().optional(),
+      }),
+    )
+    .query(async ({ ctx, input }) => {
+      const vendor = await prisma.vendor.findUnique({ where: { userId: ctx.user.id } });
+      if (!vendor) return { items: [], nextCursor: null, total: 0 };
 
-    const products = await prisma.product.findMany({
-      where: { vendorId: vendor.id, isActive: true },
-      orderBy: { createdAt: 'desc' },
-    });
-    return products.map(toPortalProduct);
-  }),
+      // A5 — cursor pagination on the stable id (autoincrement) instead of
+      // createdAt: equal timestamps can't page deterministically.
+      const where = {
+        vendorId: vendor.id,
+        isActive: true,
+        ...(input.cursor ? { id: { lt: input.cursor } } : {}),
+      };
+      const [products, total] = await Promise.all([
+        prisma.product.findMany({
+          where,
+          orderBy: { id: 'desc' },
+          take: input.limit + 1, // peek one row for nextCursor
+        }),
+        prisma.product.count({ where: { vendorId: vendor.id, isActive: true } }),
+      ]);
+      const hasMore = products.length > input.limit;
+      const page = hasMore ? products.slice(0, input.limit) : products;
+      return {
+        items: page.map(toPortalProduct),
+        nextCursor: hasMore ? page[page.length - 1]!.id : null,
+        total,
+      };
+    }),
 
   addProduct: customerProcedure
     .input(
@@ -220,19 +244,42 @@ export const vendorPortalRouter = router({
     return prisma.vendor.findUnique({ where: { userId: ctx.user.id } });
   }),
 
-  /** orders — the store's orders, newest first. */
-  orders: customerProcedure.query(async ({ ctx }) => {
-    const vendor = await prisma.vendor.findUnique({ where: { userId: ctx.user.id } });
-    if (!vendor) return [];
+  /** orders — the store's orders, newest first, cursor-paginated (A5). */
+  orders: customerProcedure
+    .input(
+      z.object({
+        limit: z.number().int().min(1).max(100).default(20),
+        cursor: z.number().int().positive().optional(),
+      }),
+    )
+    .query(async ({ ctx, input }) => {
+      const vendor = await prisma.vendor.findUnique({ where: { userId: ctx.user.id } });
+      if (!vendor) return { items: [], nextCursor: null, total: 0 };
 
-    return prisma.storeOrder.findMany({
-      where: { vendorId: vendor.id },
-      orderBy: { createdAt: 'desc' },
-      include: {
-        customer: { select: { id: true, name: true, phone: true } },
-      },
-    });
-  }),
+      // A5 — id-desc cursor: stable pagination (createdAt ties can't page).
+      const where = {
+        vendorId: vendor.id,
+        ...(input.cursor ? { id: { lt: input.cursor } } : {}),
+      };
+      const [orders, total] = await Promise.all([
+        prisma.storeOrder.findMany({
+          where,
+          orderBy: { id: 'desc' },
+          take: input.limit + 1, // peek one row for nextCursor
+          include: {
+            customer: { select: { id: true, name: true, phone: true } },
+          },
+        }),
+        prisma.storeOrder.count({ where: { vendorId: vendor.id } }),
+      ]);
+      const hasMore = orders.length > input.limit;
+      const page = hasMore ? orders.slice(0, input.limit) : orders;
+      return {
+        items: page,
+        nextCursor: hasMore ? page[page.length - 1]!.id : null,
+        total,
+      };
+    }),
 
   /** fulfillOrder — mark a store order fulfilled (ownership-guarded).
    *  H0 — the status transition is a conditional update inside the
@@ -292,6 +339,98 @@ export const vendorPortalRouter = router({
             status: 'PENDING',
           },
         });
+
+        return tx.storeOrder.findUniqueOrThrow({ where: { id: input.orderId } });
+      });
+    }),
+
+  /** cancelOrder — cancel a pending store order (ownership-guarded).
+   *  B2 — restores stock/sales (reversing the checkout-time decrement in
+   *  placeStoreOrders) using the B0 line-item snapshots, and refunds
+   *  wallet-paid customers immediately. Online-paid orders stay CANCELLED
+   *  with the refund deferred to the live Fatoorah API (B5, user-gated) —
+   *  mirroring the dispute refund convention. */
+  cancelOrder: customerProcedure
+    .input(z.object({ orderId: z.number().int().positive() }))
+    .mutation(async ({ ctx, input }) => {
+      const vendor = await prisma.vendor.findUnique({ where: { userId: ctx.user.id } });
+      if (!vendor) {
+        throw new TRPCError({ code: 'NOT_FOUND', message: 'Store not found' });
+      }
+
+      return prisma.$transaction(async (tx) => {
+        const order = await tx.storeOrder.findUnique({
+          where: { id: input.orderId },
+          select: {
+            id: true,
+            vendorId: true,
+            status: true,
+            totalAmount: true,
+            customerId: true,
+            checkoutId: true,
+          },
+        });
+        if (!order || order.vendorId !== vendor.id) {
+          throw new TRPCError({ code: 'NOT_FOUND', message: 'Order not found' });
+        }
+
+        // Atomic transition — only PENDING_FULFILLMENT orders can cancel;
+        // concurrent cancels/fulfills serialize on the row lock.
+        const claimed = await tx.storeOrder.updateMany({
+          where: { id: input.orderId, status: 'PENDING_FULFILLMENT' },
+          data: { status: 'CANCELLED' },
+        });
+        if (claimed.count === 0) {
+          throw new TRPCError({ code: 'BAD_REQUEST', message: 'Order cannot be cancelled' });
+        }
+
+        // B2 — restore stock + sales, reversing the checkout-time effects.
+        const items = await tx.storeOrderItem.findMany({ where: { orderId: input.orderId } });
+        for (const item of items) {
+          await tx.product.update({
+            where: { id: item.productId },
+            data: {
+              stock: { increment: item.quantity },
+              sales: { decrement: item.quantity },
+            },
+          });
+        }
+        await tx.vendor.update({
+          where: { id: vendor.id },
+          data: { totalSales: { decrement: Number(order.totalAmount) } },
+        });
+
+        // Money (audit #3): wallet-paid orders refund the customer
+        // immediately. Online-paid orders keep their money with the platform
+        // until the live Fatoorah refund API — the settlement run only counts
+        // FULFILLED orders, so the deferred refund is not double-paid.
+        const checkout = order.checkoutId
+          ? await tx.storeCheckout.findUnique({
+              where: { id: order.checkoutId },
+              select: { method: true },
+            })
+          : null;
+        if (!checkout || checkout.method === 'wallet') {
+          const wallet = await tx.wallet.findUnique({ where: { userId: order.customerId } });
+          if (wallet) {
+            const amount = Number(order.totalAmount);
+            await tx.wallet.update({
+              where: { id: wallet.id },
+              data: { balance: { increment: amount } },
+            });
+            await tx.walletTransaction.create({
+              data: {
+                walletId: wallet.id,
+                type: 'CREDIT',
+                source: 'REFUND',
+                amount,
+                description: `Cancelled store order #${order.id}`,
+                referenceId: String(order.id),
+                idempotencyKey: `store_order_cancel_${order.id}`,
+              },
+            });
+          }
+        }
 
         return tx.storeOrder.findUniqueOrThrow({ where: { id: input.orderId } });
       });
