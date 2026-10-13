@@ -1,6 +1,6 @@
 # Store & Provider System — Architecture Reference
 
-> Current as of 2026-10-09 (post S1/S2/S3 wave). Supersedes the "store system
+> Current as of 2026-10-13 (post Wave 2 B0–B3b). Supersedes the "store system
 > is missing" assumptions in older plans: the unified provider system is
 > largely built — this documents how it actually works.
 
@@ -51,6 +51,12 @@ One `Vendor` model covers every provider type (`type` column):
 
 - Cart splits per store (`buyCart`) → one `StoreOrder` per vendor,
   store-managed fulfillment (`PENDING_FULFILLMENT → FULFILLED`).
+- **B3b low-stock**: `Product.lowStockThreshold` (default 5). The dashboard
+  surfaces active products at or below threshold (stock-ascending); checkout
+  (`placeStoreOrders`) emits a `store_low_stock` notification to the vendor
+  only when a sale _crosses_ the threshold (old > t, new ≤ t) — emitted
+  after the transaction commits via `notifyLowStockAlerts` (never inside
+  the money transaction).
 - **Commission**: per-vendor `commissionRate` (default 10%) is applied in
   `payouts.calculateStore` — payout `amount` = net, `fee` = platform cut.
   Admin edits rates at `/admin/vendors` (`payouts.setVendorCommission`).

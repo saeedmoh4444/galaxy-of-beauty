@@ -5130,6 +5130,8 @@ export const arWebMessages: Record<string, string> = {
   'vendorPortal.earnings.status.processing': 'قيد المعالجة',
   'vendorPortal.earnings.status.completed': 'مكتمل',
   'vendorPortal.earnings.status.failed': 'فشل',
+  'vendorPortal.lowStock.title': 'تنبيهات المخزون المنخفض',
+  'vendorPortal.lowStock.left': 'متبقي: {count}',
   'vendorPortal.pricePlaceholder': 'السعر (ر.س)',
   'vendorPortal.productNamePlaceholder': 'اسم المنتج',
   'vendorPortal.products': 'منتج',

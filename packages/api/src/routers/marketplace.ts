@@ -9,7 +9,7 @@ import {
   adminProcedure,
   router,
 } from '../trpc';
-import { readCartForCheckout, placeStoreOrders } from '../lib/storeCheckout';
+import { readCartForCheckout, placeStoreOrders, notifyLowStockAlerts } from '../lib/storeCheckout';
 
 export const marketplaceRouter = router({
   // ── Products ──────────────────────────────────────────
@@ -127,9 +127,12 @@ export const marketplaceRouter = router({
   buyCart: customerProcedure.input(z.object({})).mutation(async ({ ctx }) => {
     const lines = await readCartForCheckout(ctx.user.id);
 
-    await prisma.$transaction(async (tx) => {
-      await placeStoreOrders(tx, ctx.user.id, lines);
+    const placed = await prisma.$transaction(async (tx) => {
+      return placeStoreOrders(tx, ctx.user.id, lines);
     });
+
+    // B3b — after commit: low-stock crossing alerts to the vendors.
+    await notifyLowStockAlerts(placed.lowStockAlerts);
 
     const total = lines.reduce((sum, l) => sum + l.unitPrice * l.quantity, 0);
     const items = lines.reduce((sum, l) => sum + l.quantity, 0);

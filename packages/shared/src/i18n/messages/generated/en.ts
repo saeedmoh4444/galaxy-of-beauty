@@ -5205,6 +5205,8 @@ export const enWebMessages: Record<string, string> = {
   'vendorPortal.earnings.status.processing': 'Processing',
   'vendorPortal.earnings.status.completed': 'Completed',
   'vendorPortal.earnings.status.failed': 'Failed',
+  'vendorPortal.lowStock.title': 'Low stock alerts',
+  'vendorPortal.lowStock.left': '{count} left',
   'vendorPortal.pricePlaceholder': 'Price (SAR)',
   'vendorPortal.productNamePlaceholder': 'Product name',
   'vendorPortal.products': 'Products',

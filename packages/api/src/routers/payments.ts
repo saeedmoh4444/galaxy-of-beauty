@@ -21,7 +21,7 @@ import {
   FatoorahApiError,
   FatoorahNotConfiguredError,
 } from '../lib/fatoorah';
-import { readCartForCheckout, placeStoreOrders } from '../lib/storeCheckout';
+import { readCartForCheckout, placeStoreOrders, notifyLowStockAlerts } from '../lib/storeCheckout';
 import { getCashbackRatePct } from './cashback';
 
 // ---------------------------------------------------------------------------
@@ -638,7 +638,7 @@ export const paymentRouter = router({
                 ...shipData,
               },
             });
-            await placeStoreOrders(tx, ctx.user.id, lines, created.id);
+            const placed = await placeStoreOrders(tx, ctx.user.id, lines, created.id);
 
             const wallet = await tx.wallet.findUnique({ where: { userId: ctx.user.id } });
             if (!wallet || Number(wallet.balance) < total) {
@@ -663,9 +663,18 @@ export const paymentRouter = router({
                 status: 'COMPLETED',
               },
             });
-            return created;
+            return { created, lowStockAlerts: placed.lowStockAlerts };
           });
-          return { checkoutId: checkout.id, method: 'wallet', status: 'PAID', total };
+          // B3b — low-stock crossing alerts fire after commit only (never
+          // inside the transaction: a later rollback must not leave orphan
+          // notifications).
+          await notifyLowStockAlerts(checkout.lowStockAlerts);
+          return {
+            checkoutId: checkout.created.id,
+            method: 'wallet',
+            status: 'PAID',
+            total,
+          };
         } catch (err) {
           if (err instanceof Prisma.PrismaClientKnownRequestError && err.code === 'P2002') {
             // Idempotency race — another call won; return its checkout.
@@ -695,7 +704,7 @@ export const paymentRouter = router({
       // Online — MyFatoorah hosted invoice link.
       let checkoutId: number;
       try {
-        const checkout = await prisma.$transaction(async (tx) => {
+        const placed = await prisma.$transaction(async (tx) => {
           const created = await tx.storeCheckout.create({
             data: {
               customerId: ctx.user.id,
@@ -708,10 +717,12 @@ export const paymentRouter = router({
               ...shipData,
             },
           });
-          await placeStoreOrders(tx, ctx.user.id, lines, created.id);
-          return created;
+          const p = await placeStoreOrders(tx, ctx.user.id, lines, created.id);
+          return { created, lowStockAlerts: p.lowStockAlerts };
         });
-        checkoutId = checkout.id;
+        // B3b — low-stock crossing alerts fire after commit only.
+        await notifyLowStockAlerts(placed.lowStockAlerts);
+        checkoutId = placed.created.id;
       } catch (err) {
         if (err instanceof Prisma.PrismaClientKnownRequestError && err.code === 'P2002') {
           const raced = await prisma.storeCheckout.findUnique({

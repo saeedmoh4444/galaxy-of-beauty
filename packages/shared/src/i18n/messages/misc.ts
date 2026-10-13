@@ -3849,6 +3849,9 @@ export const miscMessages = {
   'vendorPortal.earnings.status.processing': { ar: 'قيد المعالجة', en: 'Processing' },
   'vendorPortal.earnings.status.completed': { ar: 'مكتمل', en: 'Completed' },
   'vendorPortal.earnings.status.failed': { ar: 'فشل', en: 'Failed' },
+  // B3b — low-stock alerts on the Overview tab
+  'vendorPortal.lowStock.title': { ar: 'تنبيهات المخزون المنخفض', en: 'Low stock alerts' },
+  'vendorPortal.lowStock.left': { ar: 'متبقي: {count}', en: '{count} left' },
   // S5 — order-based analytics
   'vendorPortal.revenue30d': { ar: 'إيرادات ٣٠ يوم', en: 'Revenue (30d)' },
   'vendorPortal.ordersCount': { ar: 'طلبات', en: 'Orders' },
