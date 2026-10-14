@@ -25,10 +25,12 @@ export const marketplaceRouter = router({
       }),
     )
     .query(async ({ input }) => {
-      // B3 — sold-out products stay hidden from shoppers; C1 — drafts too.
+      // B3 — sold-out products stay hidden from shoppers; C1 — drafts too;
+      // C2 — strict-mode products only surface once approved (LIVE).
       const where: Record<string, unknown> = {
         isActive: true,
         isDraft: false,
+        approvalStatus: 'LIVE',
         stock: { gt: 0 },
       };
       if (input.categoryId) where['categoryId'] = input.categoryId;
@@ -175,15 +177,18 @@ export const marketplaceRouter = router({
     const vendor = await prisma.vendor.findFirst({
       where: { storeSlug: input.slug, type: { in: ['STORE', 'VENDOR'] } },
       include: {
-        // B3 — sold-out products stay hidden; C1 — drafts too.
+        // B3 — sold-out products stay hidden; C1 — drafts too; C2 — only
+        // admin-approved (LIVE) listings surface.
         products: {
-          where: { isActive: true, isDraft: false, stock: { gt: 0 } },
+          where: { isActive: true, isDraft: false, approvalStatus: 'LIVE', stock: { gt: 0 } },
           take: LARGE_PAGE_SIZE,
         },
         // B3 — the public count matches what shoppers actually see.
         _count: {
           select: {
-            products: { where: { isActive: true, isDraft: false, stock: { gt: 0 } } },
+            products: {
+              where: { isActive: true, isDraft: false, approvalStatus: 'LIVE', stock: { gt: 0 } },
+            },
           },
         },
       },

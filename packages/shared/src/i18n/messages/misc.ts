@@ -3827,6 +3827,9 @@ export const miscMessages = {
   'vendorPortal.pricePlaceholder': { ar: 'السعر (ر.س)', en: 'Price (SAR)' },
   'vendorPortal.stockPlaceholder': { ar: 'المخزون', en: 'Stock' },
   'vendorPortal.add': { ar: 'إضافة', en: 'Add' },
+  // C2 — listing approval chips (strict mode)
+  'vendorPortal.approval.pending': { ar: 'قيد المراجعة', en: 'Under review' },
+  'vendorPortal.approval.rejected': { ar: 'مرفوض', en: 'Rejected' },
   // C1 — product editor pro
   'vendorPortal.edit': { ar: 'تعديل', en: 'Edit' },
   'vendorPortal.editProduct': { ar: 'تعديل المنتج', en: 'Edit product' },

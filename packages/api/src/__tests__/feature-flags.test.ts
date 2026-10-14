@@ -32,12 +32,20 @@ const ALL_FLAGS = Object.values(EXPERIMENTAL_FEATURES) as string[];
 describe('Feature flags — seeded state', () => {
   it('seeds every experimental flag as enabled', async () => {
     const flags = await prisma.featureFlag.findMany();
-    expect(flags).toHaveLength(ALL_FLAGS.length);
-    for (const f of flags) {
+    // +1: the C2 listing-approval toggle (operational, seeded OFF).
+    expect(flags).toHaveLength(ALL_FLAGS.length + 1);
+    const experimental = flags.filter((f) => ALL_FLAGS.includes(f.key));
+    expect(experimental).toHaveLength(ALL_FLAGS.length);
+    for (const f of experimental) {
       expect(f.enabled).toBe(true);
       expect(f.rolloutPercent).toBe(100);
     }
-    expect(flags.map((f) => f.key).sort()).toEqual([...ALL_FLAGS].sort());
+    expect(experimental.map((f) => f.key).sort()).toEqual([...ALL_FLAGS].sort());
+    // C2 — strict listing approval ships OFF: relaxed publishing is the
+    // default; ops flip it through the featureFlags router.
+    const approval = flags.find((f) => f.key === 'LISTING_APPROVAL_STRICT');
+    expect(approval?.enabled).toBe(false);
+    expect(approval?.rolloutPercent).toBe(100);
   });
 });
 
