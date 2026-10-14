@@ -3827,6 +3827,18 @@ export const miscMessages = {
   'vendorPortal.pricePlaceholder': { ar: 'السعر (ر.س)', en: 'Price (SAR)' },
   'vendorPortal.stockPlaceholder': { ar: 'المخزون', en: 'Stock' },
   'vendorPortal.add': { ar: 'إضافة', en: 'Add' },
+  // C1 — product editor pro
+  'vendorPortal.edit': { ar: 'تعديل', en: 'Edit' },
+  'vendorPortal.editProduct': { ar: 'تعديل المنتج', en: 'Edit product' },
+  'vendorPortal.save': { ar: 'حفظ', en: 'Save' },
+  'vendorPortal.duplicate': { ar: 'نسخ', en: 'Duplicate' },
+  'vendorPortal.draft': { ar: 'مسودة', en: 'Draft' },
+  'vendorPortal.publish': { ar: 'نشر', en: 'Publish' },
+  'vendorPortal.nameEnPlaceholder': { ar: 'الاسم بالإنجليزية', en: 'English name' },
+  'vendorPortal.descArPlaceholder': { ar: 'الوصف بالعربية', en: 'Arabic description' },
+  'vendorPortal.descEnPlaceholder': { ar: 'الوصف بالإنجليزية', en: 'English description' },
+  'vendorPortal.images': { ar: 'الصور', en: 'Images' },
+  'vendorPortal.thresholdPlaceholder': { ar: 'حد التنبيه', en: 'Alert threshold' },
   // Store plan Phase 1 — merchant registration + orders
   'vendorPortal.pendingOrders': { ar: 'طلبات معلقة', en: 'Pending Orders' },
   // B4 — earnings & settlement center
