@@ -394,13 +394,16 @@ describe('store registration + approval (Store Phase 1)', () => {
   it('vendorPortal.earnings lists only the store own payouts', async () => {
     const store = await caller(merchant);
     const mine = await store.vendorPortal.earnings();
-    // 1 from the ownership-guard test + 1 from the accrual test + 1 from
-    // the commission test = 3 fulfilled orders so far.
-    expect(mine.length).toBe(3);
-    expect(mine.every((p: { vendorId: number }) => p.vendorId === createdVendorIds[0])).toBe(true);
+    // B4 — the statement shape: rows + summary. 1 from the ownership-guard
+    // test + 1 from the accrual test + 1 from the commission test = 3
+    // fulfilled orders so far. Isolation lives in the where clause — the
+    // rows carry no vendorId, so the cross-store zero check below pins it.
+    expect(mine.rows).toHaveLength(3);
+    // fulfillOrder accrues PENDING payouts — the summary mirrors the rows.
+    expect(mine.summary.pendingNet).toBeGreaterThan(0);
 
     const other = await caller(buyer);
     const otherEarnings = await other.vendorPortal.earnings();
-    expect(otherEarnings.length).toBe(0);
+    expect(otherEarnings.rows).toHaveLength(0);
   });
 });

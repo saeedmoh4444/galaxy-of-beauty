@@ -41,8 +41,11 @@ export type StoreDealPayload = {
   endsAt: string;
 };
 
-/** A store payout statement row (Earnings). */
-export type PayoutRow = VendorPortalOutputs['earnings'][number];
+/** A store payout statement row (B4 earnings center). */
+export type PayoutRow = VendorPortalOutputs['earnings']['rows'][number];
+
+/** B4 — the enriched earnings statement (summary cards + rows). */
+export type EarningsStatement = VendorPortalOutputs['earnings'];
 
 /** Vertical dashboards — clinic (flat procedures with dotted names). */
 export type ClinicSlot = VendorPortalOutputs['clinicSlots.list'][number];

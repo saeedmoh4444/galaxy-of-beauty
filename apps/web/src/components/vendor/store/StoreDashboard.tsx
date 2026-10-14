@@ -10,9 +10,9 @@ import { localize } from '@galaxy/shared';
 import { VenueProfileCard } from '../shared/VenueProfileCard';
 import { DashboardTabs } from '../shared/DashboardTabs';
 
-type TabKey = 'overview' | 'orders' | 'products' | 'deals';
+type TabKey = 'overview' | 'orders' | 'products' | 'deals' | 'earnings';
 
-const TAB_KEYS: TabKey[] = ['overview', 'orders', 'products', 'deals'];
+const TAB_KEYS: TabKey[] = ['overview', 'orders', 'products', 'deals', 'earnings'];
 
 /** A3 — read the ?tab= deep link once on mount (hydration-safe; the page is
  *  client-only, so window is available). */
@@ -163,6 +163,23 @@ export function StoreDashboard({
   const prods = productsQ.data?.pages.flatMap((p) => p.items) ?? [];
   const storeOrders = ordersQ.data?.pages.flatMap((p) => p.items) ?? [];
 
+  // B4 — earnings & settlement center (statement + CSV export).
+  const { data: earnings } = api.vendorPortal.earnings.useQuery(undefined, {
+    enabled: isAuthenticated,
+  });
+  const earningsCsv = api.vendorPortal.earningsCsv.useQuery({ locale }, { enabled: false });
+  const downloadCsv = async () => {
+    const res = await earningsCsv.refetch();
+    if (!res.data) return;
+    const blob = new Blob(['﻿', res.data.csv], { type: 'text/csv;charset=utf-8' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `earnings-${new Date().toISOString().slice(0, 10)}.csv`;
+    a.click();
+    URL.revokeObjectURL(url);
+  };
+
   // A3 — tab state, deep-linkable via ?tab=<key>.
   const [tab, setTab] = useState<TabKey>('overview');
   useEffect(() => {
@@ -180,6 +197,7 @@ export function StoreDashboard({
     { key: 'orders', label: t('vendorPortal.orders.title') },
     { key: 'products', label: t('vendorPortal.tab.products') },
     { key: 'deals', label: t('vendorPortal.tab.deals') },
+    { key: 'earnings', label: t('vendorPortal.tab.earnings') },
   ];
 
   // The dashboard query's non-owner branch returns {}, so narrow the union.
@@ -716,6 +734,111 @@ export function StoreDashboard({
                   );
                 })}
               </div>
+            )}
+          </div>
+        )}
+
+        {tab === 'earnings' && (
+          <div
+            role="tabpanel"
+            id="vendor-panel-earnings"
+            data-testid="vendor-panel-earnings"
+            aria-labelledby="vendor-tab-earnings"
+            className="space-y-4"
+          >
+            {/* B4 — earnings & settlement center: summary cards + statement. */}
+            <div className="flex items-center justify-between">
+              <h2 className="text-lg font-bold">{t('vendorPortal.earnings.title')}</h2>
+              <Button
+                size="sm"
+                variant="outline"
+                onClick={downloadCsv}
+                loading={earningsCsv.isFetching}
+              >
+                {t('vendorPortal.earnings.export')}
+              </Button>
+            </div>
+            <div className="grid gap-4 sm:grid-cols-4">
+              <Card padding="md" className="text-center">
+                <p className="text-2xl font-bold">
+                  {formatCurrency(earnings?.summary.pendingNet ?? 0)}
+                </p>
+                <p className="text-xs text-text-secondary">
+                  {t('vendorPortal.earnings.pendingNet')}
+                </p>
+              </Card>
+              <Card padding="md" className="text-center">
+                <p className="text-2xl font-bold">
+                  {formatCurrency(earnings?.summary.processedNet ?? 0)}
+                </p>
+                <p className="text-xs text-text-secondary">
+                  {t('vendorPortal.earnings.processedNet')}
+                </p>
+              </Card>
+              <Card padding="md" className="text-center">
+                <p className="text-2xl font-bold">
+                  {formatCurrency(earnings?.summary.totalFee ?? 0)}
+                </p>
+                <p className="text-xs text-text-secondary">{t('vendorPortal.earnings.totalFee')}</p>
+              </Card>
+              <Card padding="md" className="text-center">
+                <p className="text-2xl font-bold">
+                  {t('vendorPortal.earnings.commission', { rate: earnings?.commissionRate ?? 0 })}
+                </p>
+                <p className="text-xs text-text-secondary">{t('vendorPortal.earnings.net')}</p>
+              </Card>
+            </div>
+            {!earnings || earnings.rows.length === 0 ? (
+              <div className="text-sm text-text-tertiary">
+                <p>{t('vendorPortal.earnings.empty')}</p>
+              </div>
+            ) : (
+              <Card padding="md">
+                <div className="space-y-2">
+                  {earnings.rows.map((r) => (
+                    <div key={r.id} className="flex items-center justify-between text-sm">
+                      <div>
+                        <p className="font-medium">
+                          {t('vendorPortal.earnings.period')}:{' '}
+                          {new Date(r.periodStart).toLocaleDateString(
+                            locale === 'ar' ? 'ar-SA' : 'en-GB',
+                          )}{' '}
+                          —{' '}
+                          {new Date(r.periodEnd).toLocaleDateString(
+                            locale === 'ar' ? 'ar-SA' : 'en-GB',
+                          )}
+                        </p>
+                        <p className="text-xs text-text-tertiary">
+                          {t('vendorPortal.earnings.gross')}: {formatCurrency(r.gross)} ·{' '}
+                          {t('vendorPortal.earnings.fee')}: {formatCurrency(r.fee)}
+                        </p>
+                      </div>
+                      <div className="text-right">
+                        <p className="font-bold">{formatCurrency(r.net)}</p>
+                        <span
+                          className={`rounded-full px-2 py-0.5 text-xs ${
+                            r.status === 'COMPLETED'
+                              ? 'bg-green-100 dark:bg-green-950 text-green-700 dark:text-green-300'
+                              : r.status === 'FAILED'
+                                ? 'bg-red-100 dark:bg-red-950 text-red-700 dark:text-red-300'
+                                : 'bg-amber-100 dark:bg-amber-950 text-amber-700 dark:text-amber-300'
+                          }`}
+                        >
+                          {t(
+                            r.status === 'COMPLETED'
+                              ? 'vendorPortal.earnings.status.completed'
+                              : r.status === 'FAILED'
+                                ? 'vendorPortal.earnings.status.failed'
+                                : r.status === 'PROCESSING'
+                                  ? 'vendorPortal.earnings.status.processing'
+                                  : 'vendorPortal.earnings.status.pending',
+                          )}
+                        </span>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </Card>
             )}
           </div>
         )}
