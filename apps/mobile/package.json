@@ -19,7 +19,7 @@
   },
   "dependencies": {
     "@config-plugins/react-native-webrtc": "^15.0.2",
-    "@expo/dom-webview": "~57.0.1",
+    "@expo/dom-webview": "~58.0.2",
     "@expo/metro-runtime": "~57.0.16",
     "@expo/vector-icons": "^15.0.2",
     "@galaxy/api": "workspace:*",
