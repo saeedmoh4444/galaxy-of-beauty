@@ -187,6 +187,11 @@ export const adminMessages = {
     en: 'Review merchant registration requests (license + bank)',
   },
   'admin.vendors.empty': { ar: 'لا توجد طلبات معلقة', en: 'No pending requests' },
+  // C2 — product listing approval queue
+  'admin.vendors.product-queue-title': {
+    ar: 'مراجعة قوائم المنتجات',
+    en: 'Product listing review',
+  },
   // S3 — store commission management
   'admin.vendors.commissions-title': { ar: 'عمولات المتاجر', en: 'Store Commissions' },
   'admin.vendors.commissions-desc': {

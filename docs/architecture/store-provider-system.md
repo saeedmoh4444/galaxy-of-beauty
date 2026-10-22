@@ -63,6 +63,13 @@ One `Vendor` model covers every provider type (`type` column):
   (`marketplace.products` / `vendorDetail` filter `isDraft: false`).
   Portal rows carry a bilingual completeness meter (25 per filled
   ar/en name + description field).
+- **C2 listing approval**: `Product.approvalStatus` (LIVE default) +
+  `reviewNotes`. Feature flag `LISTING_APPROVAL_STRICT` (OFF = relaxed —
+  products publish instantly). Strict: `addProduct` creates PENDING +
+  a kind-`product` `ProviderSubmission`; `providerReview.decide` flips
+  LIVE (approve) or REJECTED + note (reject); storefronts filter
+  `approvalStatus: 'LIVE'`; the portal products list shows the chips +
+  note; the admin vendors page hosts the review queue.
 - **Commission**: per-vendor `commissionRate` (default 10%) is applied in
   `payouts.calculateStore` — payout `amount` = net, `fee` = platform cut.
   Admin edits rates at `/admin/vendors` (`payouts.setVendorCommission`).

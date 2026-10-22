@@ -47,6 +47,8 @@ function toPortalProduct(p: {
   isDraft?: boolean | null;
   images?: string[];
   lowStockThreshold?: number | null;
+  approvalStatus?: string | null;
+  reviewNotes?: string | null;
 }) {
   const nameAr = (p.nameJson as { ar?: string }).ar ?? '';
   const nameEn = (p.nameJson as { en?: string }).en ?? '';
@@ -73,6 +75,9 @@ function toPortalProduct(p: {
     completeness,
     // B3b — low-stock threshold (products list badge + C1 editor).
     threshold: p.lowStockThreshold ?? 5,
+    // C2 — listing approval state (PENDING | LIVE | REJECTED) + admin note.
+    approvalStatus: p.approvalStatus ?? 'LIVE',
+    reviewNotes: p.reviewNotes ?? null,
   };
 }
 
@@ -248,6 +253,13 @@ export const vendorPortalRouter = router({
       });
       const vendor = await ensureVendor(ctx.user.id, user?.name ?? '');
 
+      // C2 — strict listing approval: when the flag is on, new products
+      // start PENDING and wait for the admin review queue. Off (relaxed,
+      // the default): products publish LIVE immediately as before.
+      const strict = await prisma.featureFlag.findUnique({
+        where: { key: 'LISTING_APPROVAL_STRICT' },
+      });
+
       const product = await prisma.product.create({
         data: {
           vendorId: vendor.id,
@@ -261,8 +273,24 @@ export const vendorPortalRouter = router({
           imageUrl: input.imageUrl,
           isActive: true,
           lowStockThreshold: input.lowStockThreshold,
+          approvalStatus: strict?.enabled ? 'PENDING' : 'LIVE',
         },
       });
+
+      if (strict?.enabled) {
+        await prisma.providerSubmission.create({
+          data: {
+            providerId: ctx.user.id,
+            kind: 'product',
+            payload: {
+              productId: product.id,
+              vendorId: vendor.id,
+              nameJson: { ar: input.nameAr, en: input.nameEn || input.nameAr },
+              price: input.price,
+            },
+          },
+        });
+      }
 
       return toPortalProduct(product);
     }),

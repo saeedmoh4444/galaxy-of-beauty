@@ -1475,6 +1475,10 @@ model Product {
   isActive    Boolean  @default(true)
   isFeatured  Boolean  @default(false)
   isDraft     Boolean  @default(false) // C1: draft products stay hidden from storefronts
+  // C2 — listing approval: LIVE by default (relaxed flag); strict mode
+  // creates PENDING products that only surface after admin approval.
+  approvalStatus String @default("LIVE") // PENDING | LIVE | REJECTED
+  reviewNotes  String?  // C2 — admin rejection note shown in the portal
   tags        String[] // organic, vegan, cruelty-free, etc.
   // 3.1 Beauty DNA — polymorphic match payload, discriminated by `kind`:
   // makeup { kind, shade, shadeHex, undertone, depth 1..6 }
