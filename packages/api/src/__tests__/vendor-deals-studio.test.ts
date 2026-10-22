@@ -41,11 +41,22 @@ async function propose(c: ReturnType<typeof caller>, overrides: Record<string, u
   return sub;
 }
 
-/** Approve a submission and return the materialized StoreDeal. */
+/** Approve a submission and return the materialized StoreDeal (matched by
+ *  the proposal window — the same convention myDeals uses to link a
+ *  submission to its deal; id-desc so re-proposals resolve to their own). */
 async function approve(subId: number) {
   const a = await caller(admin);
   await a.providerReview.decide({ id: subId, approve: true });
-  const deal = await prisma.storeDeal.findFirst({ where: { vendorId } });
+  const sub = await prisma.providerSubmission.findUniqueOrThrow({ where: { id: subId } });
+  const p = sub.payload as { productId: number; startsAt: string; endsAt: string };
+  const deal = await prisma.storeDeal.findFirst({
+    where: {
+      productId: p.productId,
+      startsAt: new Date(p.startsAt),
+      endsAt: new Date(p.endsAt),
+    },
+    orderBy: { id: 'desc' },
+  });
   if (deal) createdDealIds.push(deal.id);
   return deal;
 }
