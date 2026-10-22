@@ -741,6 +741,101 @@ export const vendorPortalRouter = router({
   }),
 
   // ---------------------------------------------------------------------------
+  // C4 — store coupon codes (vendor-proposed, admin-approved, store-scoped)
+  // ---------------------------------------------------------------------------
+
+  /**
+   * createCoupon — a store proposes a coupon for its OWN storefront. The
+   * proposal rides the shared provider-submission queue (kind
+   * 'store_coupon'); admin approval materializes the live PromoCode bound
+   * to the store (vendorId). Rejected proposals never become codes.
+   */
+  createCoupon: customerProcedure
+    .input(
+      z
+        .object({
+          code: z.string().min(3).max(20),
+          discountType: z.enum(['percent', 'fixed']),
+          discountValue: z.number().positive(),
+          minOrderAmount: z.number().optional(),
+          maxDiscount: z.number().optional(),
+          maxUses: z.number().int().positive().optional(),
+          validUntil: z.string().datetime().optional(),
+        })
+        .refine((v) => v.discountType !== 'percent' || v.discountValue <= 100, {
+          message: 'Percent discounts cannot exceed 100',
+        }),
+    )
+    .mutation(async ({ ctx, input }) => {
+      const vendor = await prisma.vendor.findUnique({ where: { userId: ctx.user.id } });
+      if (!vendor) {
+        throw new TRPCError({ code: 'NOT_FOUND', message: 'Store not found' });
+      }
+
+      const code = input.code.toUpperCase();
+      const existing = await prisma.promoCode.findUnique({ where: { code } });
+      if (existing) {
+        throw new TRPCError({ code: 'BAD_REQUEST', message: 'Code already in use' });
+      }
+
+      return prisma.providerSubmission.create({
+        data: {
+          providerId: ctx.user.id,
+          kind: 'store_coupon',
+          status: 'PENDING_REVIEW',
+          payload: {
+            vendorId: vendor.id,
+            code,
+            discountType: input.discountType,
+            discountValue: input.discountValue,
+            minOrderAmount: input.minOrderAmount ?? null,
+            maxDiscount: input.maxDiscount ?? null,
+            maxUses: input.maxUses ?? null,
+            validUntil: input.validUntil ?? null,
+          },
+        },
+      });
+    }),
+
+  /** listCoupons — the store's own live coupon codes. */
+  listCoupons: customerProcedure.query(async ({ ctx }) => {
+    const vendor = await prisma.vendor.findUnique({ where: { userId: ctx.user.id } });
+    if (!vendor) return [];
+
+    return prisma.promoCode.findMany({
+      where: { vendorId: vendor.id },
+      orderBy: { createdAt: 'desc' },
+    });
+  }),
+
+  /** deactivateCoupon — the store pauses one of its own codes. */
+  deactivateCoupon: customerProcedure
+    .input(z.object({ id: z.number().int().positive() }))
+    .mutation(async ({ ctx, input }) => {
+      const vendor = await prisma.vendor.findUnique({ where: { userId: ctx.user.id } });
+      if (!vendor) {
+        throw new TRPCError({ code: 'FORBIDDEN', message: 'Store not found' });
+      }
+
+      const promo = await prisma.promoCode.findUnique({ where: { id: input.id } });
+      if (!promo) {
+        throw new TRPCError({ code: 'NOT_FOUND', message: 'Coupon not found' });
+      }
+      if (promo.vendorId !== vendor.id) {
+        throw new TRPCError({
+          code: 'FORBIDDEN',
+          message: 'Coupon is not one of your own',
+        });
+      }
+
+      await prisma.promoCode.update({
+        where: { id: promo.id },
+        data: { isActive: false },
+      });
+      return { success: true };
+    }),
+
+  // ---------------------------------------------------------------------------
   // E2 — medical clinics dashboard (same provider shell)
   // ---------------------------------------------------------------------------
 

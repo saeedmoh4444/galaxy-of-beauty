@@ -17,6 +17,7 @@ const SUBMISSION_KINDS = [
   'promotion',
   'store',
   'store_promotion',
+  'store_coupon',
   'product',
   'clinic',
   'clinic_package',
@@ -212,6 +213,37 @@ export const providerReviewRouter = router({
               data: { comparePrice: payload.originalPrice },
             }),
           ]);
+        }
+      } else if (submission.kind === 'store_coupon') {
+        // C4 — approved coupons materialize as live PromoCode rows bound
+        // to the proposing store (vendorId scopes redemption). Rejected
+        // proposals never become codes.
+        const payload = submission.payload as {
+          vendorId: number;
+          code: string;
+          discountType: string;
+          discountValue: number;
+          minOrderAmount?: number | null;
+          maxDiscount?: number | null;
+          maxUses?: number | null;
+          validUntil?: string | null;
+        };
+        subjectName = `كوبون ${payload.code}`;
+        if (input.approve) {
+          await prisma.promoCode.create({
+            data: {
+              code: payload.code,
+              discountType: payload.discountType,
+              discountValue: payload.discountValue,
+              minOrderAmount: payload.minOrderAmount ?? null,
+              maxDiscount: payload.maxDiscount ?? null,
+              maxUses: payload.maxUses ?? null,
+              validUntil: payload.validUntil ? new Date(payload.validUntil) : null,
+              isActive: true,
+              vendorId: payload.vendorId,
+              createdBy: submission.providerId,
+            },
+          });
         }
       } else if (submission.kind === 'clinic') {
         // E2 — medical clinic registration. Approve flips the clinic to

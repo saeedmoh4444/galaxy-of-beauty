@@ -1315,11 +1315,16 @@ model PromoCode {
   appliesTo       String?  // "all", "category:3", "service:5"
   createdBy       Int
   createdAt       DateTime @default(now())
+  // C4 — per-store coupon codes: NULL = platform-wide, set = store-scoped
+  // (redemption must match the checkout's store).
+  vendorId        Int?
 
   usages PromoUsage[]
+  vendor  Vendor?    @relation(fields: [vendorId], references: [id], onDelete: SetNull)
 
   @@index([code, isActive])
   @@index([validUntil])
+  @@index([vendorId])
   @@map("promo_codes")
 }
 
@@ -1557,6 +1562,7 @@ model Vendor {
   orders   StoreOrder[]
   deals    StoreDeal[]
   payouts  Payout[]
+  promoCodes PromoCode[]
   clinicSlots         ClinicSlot[]
   clinicConsultations ClinicConsultation[]
   clinicPackages      BeautyPackage[]

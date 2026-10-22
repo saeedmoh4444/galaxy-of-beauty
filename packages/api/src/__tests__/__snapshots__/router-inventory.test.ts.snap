@@ -1028,7 +1028,9 @@ vendorPortal.clinicSlots.add	mutation	customer
 vendorPortal.clinicSlots.list	query	customer
 vendorPortal.clinicSlots.remove	mutation	customer
 vendorPortal.confirmConsultation	mutation	customer
+vendorPortal.createCoupon	mutation	customer
 vendorPortal.dashboard	query	customer
+vendorPortal.deactivateCoupon	mutation	customer
 vendorPortal.deleteProduct	mutation	customer
 vendorPortal.duplicateProduct	mutation	customer
 vendorPortal.earnings	query	customer
@@ -1040,6 +1042,7 @@ vendorPortal.gymClasses.list	query	customer
 vendorPortal.gymClasses.remove	mutation	customer
 vendorPortal.homeRequests.complete	mutation	customer
 vendorPortal.homeRequests.list	query	customer
+vendorPortal.listCoupons	query	customer
 vendorPortal.myAthomeSalon	query	customer
 vendorPortal.myClinic	query	customer
 vendorPortal.myDeals	query	customer
