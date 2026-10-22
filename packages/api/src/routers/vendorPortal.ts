@@ -45,6 +45,7 @@ function toPortalProduct(p: {
   emoji: string;
   isActive: boolean;
   isDraft?: boolean | null;
+  isFeatured?: boolean;
   images?: string[];
   lowStockThreshold?: number | null;
 }) {
@@ -68,6 +69,8 @@ function toPortalProduct(p: {
     emoji: p.emoji,
     active: p.isActive,
     draft: p.isDraft ?? false,
+    // C6 — featured picker (storefront profile ordering).
+    featured: p.isFeatured ?? false,
     images: p.images ?? [],
     // C1 — listing completeness (editor meter + C2 approval readiness).
     completeness,
@@ -368,6 +371,33 @@ export const vendorPortalRouter = router({
       return toPortalProduct(updated);
     }),
 
+  /**
+   * setProductFeatured — C6: the vendor picks which of their own products
+   * lead the public storefront profile (vendorDetail orders featured
+   * first). Ownership-guarded like every other product mutation.
+   */
+  setProductFeatured: customerProcedure
+    .input(z.object({ id: z.number().int().positive(), featured: z.boolean() }))
+    .mutation(async ({ ctx, input }) => {
+      const vendor = await prisma.vendor.findUnique({ where: { userId: ctx.user.id } });
+      if (!vendor) throw new TRPCError({ code: 'NOT_FOUND', message: 'Store not found' });
+
+      const existing = await prisma.product.findUnique({ where: { id: input.id } });
+      if (!existing) throw new TRPCError({ code: 'NOT_FOUND', message: 'Product not found' });
+      if (existing.vendorId !== vendor.id) {
+        throw new TRPCError({
+          code: 'FORBIDDEN',
+          message: 'Product is not one of your own products',
+        });
+      }
+
+      const updated = await prisma.product.update({
+        where: { id: input.id },
+        data: { isFeatured: input.featured },
+      });
+      return toPortalProduct(updated);
+    }),
+
   /** duplicateProduct — "create similar": copies the catalog fields into a
    *  fresh draft (stock 0, sales 0) so nothing goes live by accident. */
   duplicateProduct: customerProcedure
@@ -423,6 +453,34 @@ export const vendorPortalRouter = router({
   myStore: customerProcedure.query(async ({ ctx }) => {
     return prisma.vendor.findUnique({ where: { userId: ctx.user.id } });
   }),
+
+  /**
+   * updateStoreProfile — C6: the About editor for the public storefront.
+   * Bilingual merge into descriptionJson (partial edits keep the other
+   * language — same pattern as updateProduct).
+   */
+  updateStoreProfile: customerProcedure
+    .input(
+      z.object({
+        aboutAr: z.string().optional(),
+        aboutEn: z.string().optional(),
+      }),
+    )
+    .mutation(async ({ ctx, input }) => {
+      const vendor = await prisma.vendor.findUnique({ where: { userId: ctx.user.id } });
+      if (!vendor) throw new TRPCError({ code: 'NOT_FOUND', message: 'Store not found' });
+
+      const existing = (vendor.descriptionJson as { ar?: string; en?: string } | null) ?? {};
+      const descriptionJson = {
+        ar: input.aboutAr ?? existing.ar ?? '',
+        en: input.aboutEn ?? existing.en ?? '',
+      };
+
+      return prisma.vendor.update({
+        where: { id: vendor.id },
+        data: { descriptionJson: descriptionJson as unknown as Prisma.InputJsonValue },
+      });
+    }),
 
   /** orders — the store's orders, newest first, cursor-paginated (A5). */
   orders: customerProcedure

@@ -176,8 +176,10 @@ export const marketplaceRouter = router({
       where: { storeSlug: input.slug, type: { in: ['STORE', 'VENDOR'] } },
       include: {
         // B3 — sold-out products stay hidden; C1 — drafts too.
+        // C6 — featured products lead the storefront profile.
         products: {
           where: { isActive: true, isDraft: false, stock: { gt: 0 } },
+          orderBy: [{ isFeatured: 'desc' }, { createdAt: 'desc' }],
           take: LARGE_PAGE_SIZE,
         },
         // B3 — the public count matches what shoppers actually see.

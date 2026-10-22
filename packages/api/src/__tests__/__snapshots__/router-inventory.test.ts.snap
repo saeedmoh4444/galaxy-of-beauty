@@ -1058,8 +1058,10 @@ vendorPortal.proposeDeal	mutation	customer
 vendorPortal.setBanner	mutation	customer
 vendorPortal.setConsultationPrice	mutation	customer
 vendorPortal.setDraft	mutation	customer
+vendorPortal.setProductFeatured	mutation	customer
 vendorPortal.setTrustFlags	mutation	customer
 vendorPortal.updateProduct	mutation	customer
+vendorPortal.updateStoreProfile	mutation	customer
 video.endSession	mutation	protected
 video.getByBooking	query	protected
 video.startSession	mutation	protected

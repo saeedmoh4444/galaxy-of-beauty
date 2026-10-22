@@ -77,6 +77,10 @@ export function StoreDashboard({
     onSuccess: () => refetch(),
   });
   const setDraftMut = api.vendorPortal.setDraft.useMutation({ onSuccess: () => refetch() });
+  // C6 — featured picker (storefront profile ordering).
+  const featuredMut = api.vendorPortal.setProductFeatured.useMutation({
+    onSuccess: () => refetch(),
+  });
   const [editId, setEditId] = useState<number | null>(null);
   const [edNameAr, setEdNameAr] = useState('');
   const [edNameEn, setEdNameEn] = useState('');
@@ -609,6 +613,15 @@ export function StoreDashboard({
                       onClick={() => setDraftMut.mutate({ id: p.id, draft: !p.draft })}
                     >
                       {p.draft ? t('vendorPortal.publish') : t('vendorPortal.draft')}
+                    </Button>
+                    {/* C6 — featured picker: leads the public storefront. */}
+                    <Button
+                      size="sm"
+                      variant="ghost"
+                      title={t('vendorPortal.featured')}
+                      onClick={() => featuredMut.mutate({ id: p.id, featured: !p.featured })}
+                    >
+                      {p.featured ? '⭐' : '☆'}
                     </Button>
                     <Button
                       size="sm"
