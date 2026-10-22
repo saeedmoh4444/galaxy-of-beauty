@@ -152,6 +152,28 @@ export const providerReviewRouter = router({
           },
         });
         subjectName = payload.storeName ?? `متجر #${vendor.id}`;
+      } else if (submission.kind === 'product') {
+        // C2 — listing approval: the product flips PENDING → LIVE on
+        // approval, or REJECTED with the admin note (surfaced in the
+        // vendor portal product rows).
+        const payload = submission.payload as {
+          productId: number;
+          nameJson?: { ar?: string; en?: string };
+        };
+        const product = await prisma.product.findUnique({
+          where: { id: payload.productId },
+        });
+        if (!product) {
+          throw new TRPCError({ code: 'NOT_FOUND', message: 'Product missing' });
+        }
+        await prisma.product.update({
+          where: { id: product.id },
+          data: {
+            approvalStatus: input.approve ? 'LIVE' : 'REJECTED',
+            reviewNotes: input.approve ? null : (input.notes ?? null),
+          },
+        });
+        subjectName = payload.nameJson?.ar ?? payload.nameJson?.en ?? `منتج #${product.id}`;
       } else if (submission.kind === 'store_promotion') {
         // Store plan Phase 4b — approved deals materialize as StoreDeal
         // rows + the product's comparePrice (the "was" price) so the

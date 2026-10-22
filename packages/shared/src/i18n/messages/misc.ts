@@ -3827,6 +3827,9 @@ export const miscMessages = {
   'vendorPortal.pricePlaceholder': { ar: 'السعر (ر.س)', en: 'Price (SAR)' },
   'vendorPortal.stockPlaceholder': { ar: 'المخزون', en: 'Stock' },
   'vendorPortal.add': { ar: 'إضافة', en: 'Add' },
+  // C2 — listing approval chips (strict mode)
+  'vendorPortal.approval.pending': { ar: 'قيد المراجعة', en: 'Under review' },
+  'vendorPortal.approval.rejected': { ar: 'مرفوض', en: 'Rejected' },
   // C1 — product editor pro
   'vendorPortal.edit': { ar: 'تعديل', en: 'Edit' },
   'vendorPortal.editProduct': { ar: 'تعديل المنتج', en: 'Edit product' },
@@ -3841,6 +3844,26 @@ export const miscMessages = {
   'vendorPortal.thresholdPlaceholder': { ar: 'حد التنبيه', en: 'Alert threshold' },
   // Store plan Phase 1 — merchant registration + orders
   'vendorPortal.pendingOrders': { ar: 'طلبات معلقة', en: 'Pending Orders' },
+  // B4 — earnings & settlement center
+  'vendorPortal.tab.earnings': { ar: 'الأرباح', en: 'Earnings' },
+  'vendorPortal.earnings.title': {
+    ar: 'مركز الأرباح والتسويات',
+    en: 'Earnings & settlement center',
+  },
+  'vendorPortal.earnings.pendingNet': { ar: 'صافي معلق', en: 'Pending (net)' },
+  'vendorPortal.earnings.processedNet': { ar: 'صافي مُعالج', en: 'Processed (net)' },
+  'vendorPortal.earnings.totalFee': { ar: 'إجمالي الرسوم', en: 'Total fees' },
+  'vendorPortal.earnings.commission': { ar: 'عمولة {rate}%', en: '{rate}% commission' },
+  'vendorPortal.earnings.export': { ar: 'تصدير CSV', en: 'Export CSV' },
+  'vendorPortal.earnings.period': { ar: 'الفترة', en: 'Period' },
+  'vendorPortal.earnings.gross': { ar: 'الإجمالي', en: 'Gross' },
+  'vendorPortal.earnings.fee': { ar: 'الرسوم', en: 'Fee' },
+  'vendorPortal.earnings.net': { ar: 'الصافي', en: 'Net' },
+  'vendorPortal.earnings.empty': { ar: 'لا توجد تسويات بعد', en: 'No settlements yet' },
+  'vendorPortal.earnings.status.pending': { ar: 'معلق', en: 'Pending' },
+  'vendorPortal.earnings.status.processing': { ar: 'قيد المعالجة', en: 'Processing' },
+  'vendorPortal.earnings.status.completed': { ar: 'مكتمل', en: 'Completed' },
+  'vendorPortal.earnings.status.failed': { ar: 'فشل', en: 'Failed' },
   // B5 — vendor-side dispute response (order drawer)
   'vendorPortal.disputes.title': { ar: 'نزاع على الطلب', en: 'Order dispute' },
   'vendorPortal.disputes.reason': { ar: 'السبب', en: 'Reason' },
