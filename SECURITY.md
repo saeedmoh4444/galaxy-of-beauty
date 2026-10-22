@@ -15,7 +15,7 @@ We aim to acknowledge reports within 48 hours and provide an initial assessment 
 
 ## Dependency Audit (October 2026)
 
-As of 2026-10-10, `pnpm audit --prod` reports **0 critical / 3 high / 2 moderate** (down from 8 high / 5 moderate on 2026-10-04 — the dependabot wave + two new overrides closed the rest). Baseline enforced by `scripts/audit-check.mjs` in CI (criticals block the merge; high/moderate are documented here). The 3 accepted high findings:
+As of 2026-10-22, `pnpm audit --prod` reports **0 critical / 3 high / 2 moderate**. The Storybook preview origin-validation critical (GHSA, <10.6.2) was closed 2026-10-22 by bumping @storybook/* to 10.6.3 in packages/ui + packages/shared. Baseline enforced by `scripts/audit-check.mjs` in CI (criticals block the merge; high/moderate are documented here). The 3 accepted high findings:
 
 ### braces (1 finding) — 🔴 OPEN (no patch yet)
 
@@ -35,10 +35,11 @@ As of 2026-10-10, `pnpm audit --prod` reports **0 critical / 3 high / 2 moderate
 
 ### Moderate findings (2, accepted)
 
-| Package                      | CVE                                     | Reason accepted                                                                          |
-| ---------------------------- | --------------------------------------- | ---------------------------------------------------------------------------------------- |
-| `uuid` 7.0.3                 | missing buffer bounds check in v3/v5/v6 | Fix requires a major (`>=11.1.1`) from a transitive chain — accepted, re-check quarterly |
-| `decode-uri-component` 0.2.2 | DoS via exponential decoding            | Fix is a breaking rewrite (`>=0.5.0`) deep in RN tooling — accepted, re-check quarterly  |
+| Package                      | CVE                                      | Reason accepted                                                                          |
+| ---------------------------- | ---------------------------------------- | ---------------------------------------------------------------------------------------- |
+| `uuid` 7.0.3                 | missing buffer bounds check in v3/v5/v6  | Fix requires a major (`>=11.1.1`) from a transitive chain — accepted, re-check quarterly |
+| `decode-uri-component` 0.2.2 | DoS via exponential decoding             | Fix is a breaking rewrite (`>=0.5.0`) deep in RN tooling — accepted, re-check quarterly  |
+| `fast-copy` <=3.0.3          | Stack exhaustion on deeply-nested values | Fix available (`>=4.1.0`, major) in a dev-tooling chain — accepted, re-check quarterly   |
 
 ## Previously Resolved
 
