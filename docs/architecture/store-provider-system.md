@@ -63,12 +63,24 @@ One `Vendor` model covers every provider type (`type` column):
   (`marketplace.products` / `vendorDetail` filter `isDraft: false`).
   Portal rows carry a bilingual completeness meter (25 per filled
   ar/en name + description field).
+- **C2 listing approval**: `Product.approvalStatus` (LIVE default) +
+  `reviewNotes`. Feature flag `LISTING_APPROVAL_STRICT` (OFF = relaxed —
+  products publish instantly). Strict: `addProduct` creates PENDING +
+  a kind-`product` `ProviderSubmission`; `providerReview.decide` flips
+  LIVE (approve) or REJECTED + note (reject); storefronts filter
+  `approvalStatus: 'LIVE'`; the portal products list shows the chips +
+  note; the admin vendors page hosts the review queue.
 - **Commission**: per-vendor `commissionRate` (default 10%) is applied in
   `payouts.calculateStore` — payout `amount` = net, `fee` = platform cut.
   Admin edits rates at `/admin/vendors` (`payouts.setVendorCommission`).
 - Store payouts: `payouts.listStorePayouts` (owner), disputes refund
   FULFILLED orders on resolution, `store-settlement.test.ts` pins the math
   (sequential describe — rates are shared rows).
+- **B4 earnings center**: `vendorPortal.earnings` returns the enriched
+  statement (summary cards pending/processed net + fees, rows with
+  gross = net + fee, commissionRate visible); `vendorPortal.earningsCsv`
+  downloads the same rows with AR/EN headers (RFC 4180 quoting). Rendered
+  in the Store dashboard Earnings tab.
 - **B5 disputes**: one `Dispute` per store order (`storeOrderId` unique).
   Customer raises → owning vendor responds via `disputes.respond`
   (`vendorResponse` + `vendorRespondedAt`, OPEN → UNDER_REVIEW) → admin

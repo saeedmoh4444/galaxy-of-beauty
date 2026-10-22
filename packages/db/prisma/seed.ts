@@ -3410,6 +3410,19 @@ async function main() {
       })),
       skipDuplicates: true,
     });
+
+    // C2 — listing approval strictness. OFF = relaxed (verified stores
+    // publish instantly); ops flip it via the featureFlags router.
+    await prisma.featureFlag.upsert({
+      where: { key: 'LISTING_APPROVAL_STRICT' },
+      update: {},
+      create: {
+        key: 'LISTING_APPROVAL_STRICT',
+        name: 'Listing Approval (strict)',
+        enabled: false,
+        rolloutPercent: 100,
+      },
+    });
     console.log(` ${FEATURE_FLAGS.length} feature flags`);
   } catch (err: any) {
     console.log(`    Feature flags: ${err.message?.slice(0, 60)}`);

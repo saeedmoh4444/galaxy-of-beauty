@@ -2,7 +2,16 @@
 import { useState } from 'react';
 import type { JSX } from 'react';
 import { api } from '@/lib/trpc';
-import { Card, CardListSkeleton, Button, Input, EmptyState, useAuth, ErrorAlert } from '@galaxy/ui';
+import {
+  Card,
+  CardListSkeleton,
+  Button,
+  Input,
+  EmptyState,
+  useAuth,
+  ErrorAlert,
+  formatCurrency,
+} from '@galaxy/ui';
 import { useLocale } from '@/components/LocaleProvider';
 
 function CommissionRow({ vendor }: { vendor: Record<string, unknown> }): JSX.Element {
@@ -64,6 +73,26 @@ export default function AdminVendorsPage(): JSX.Element {
   const [rejectNotes, setRejectNotes] = useState<Record<number, string>>({});
   const decideMut = api.providerReview.decide.useMutation({ onSuccess: () => refetch() });
 
+  // C2 — product listing approval queue (strict mode only).
+  const {
+    data: productData,
+    isLoading: productsLoading,
+    refetch: refetchProducts,
+    isError: productsError,
+  } = api.providerReview.list.useQuery(
+    { kind: 'product', status: 'PENDING_REVIEW' },
+    { enabled: isAuthenticated },
+  ) as {
+    data: { items: Array<Record<string, unknown>> } | undefined;
+    isLoading: boolean;
+    refetch: () => void;
+    isError: boolean;
+  };
+  const pendingProducts = productData?.items ?? [];
+  const productDecideMut = api.providerReview.decide.useMutation({
+    onSuccess: () => refetchProducts(),
+  });
+
   // S3 — store commissions (settlement rates).
   const vendorsQ = api.payouts.listStoreVendors.useQuery(undefined, {
     enabled: isAuthenticated,
@@ -74,7 +103,7 @@ export default function AdminVendorsPage(): JSX.Element {
   };
   const vendors = vendorsQ.data ?? [];
 
-  if (isError || vendorsQ.isError) {
+  if (isError || vendorsQ.isError || productsError) {
     return (
       <ErrorAlert
         message={t('state.error')}
@@ -166,6 +195,67 @@ export default function AdminVendorsPage(): JSX.Element {
           })}
         </div>
       )}
+
+      {/* C2 — product listing approval (strict mode queue). */}
+      {productsLoading ? (
+        <CardListSkeleton count={2} />
+      ) : pendingProducts.length > 0 ? (
+        <div className="space-y-3">
+          <h2 className="font-bold">{t('admin.vendors.product-queue-title')}</h2>
+          {pendingProducts.map((sub: Record<string, unknown>) => {
+            const payload = (sub.payload ?? {}) as {
+              nameJson?: { ar?: string; en?: string };
+              price?: number;
+            };
+            const name = payload.nameJson?.ar ?? payload.nameJson?.en ?? `#${sub.id}`;
+            return (
+              <Card key={sub.id as number} padding="lg">
+                <div className="flex flex-wrap items-start justify-between gap-4">
+                  <div className="space-y-1">
+                    <p className="font-bold">{name}</p>
+                    <p className="text-xs text-text-secondary">
+                      {formatCurrency(Number(payload.price ?? 0))}
+                    </p>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <Input
+                      placeholder={t('admin.vendors.reject-notes-placeholder')}
+                      value={rejectNotes[sub.id as number] ?? ''}
+                      onChange={(e) =>
+                        setRejectNotes({ ...rejectNotes, [sub.id as number]: e.target.value })
+                      }
+                      className="w-48"
+                    />
+                    <Button
+                      size="sm"
+                      variant="outline"
+                      onClick={() =>
+                        productDecideMut.mutate({
+                          id: sub.id as number,
+                          approve: false,
+                          notes: rejectNotes[sub.id as number] || undefined,
+                        })
+                      }
+                      loading={productDecideMut.isPending}
+                    >
+                      {t('admin.packages.reject')}
+                    </Button>
+                    <Button
+                      size="sm"
+                      onClick={() =>
+                        productDecideMut.mutate({ id: sub.id as number, approve: true })
+                      }
+                      loading={productDecideMut.isPending}
+                    >
+                      {t('admin.packages.approve')}
+                    </Button>
+                  </div>
+                </div>
+              </Card>
+            );
+          })}
+        </div>
+      ) : null}
     </div>
   );
 }

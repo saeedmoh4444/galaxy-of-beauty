@@ -48,6 +48,8 @@ function toPortalProduct(p: {
   isFeatured?: boolean;
   images?: string[];
   lowStockThreshold?: number | null;
+  approvalStatus?: string | null;
+  reviewNotes?: string | null;
 }) {
   const nameAr = (p.nameJson as { ar?: string }).ar ?? '';
   const nameEn = (p.nameJson as { en?: string }).en ?? '';
@@ -76,6 +78,9 @@ function toPortalProduct(p: {
     completeness,
     // B3b — low-stock threshold (products list badge + C1 editor).
     threshold: p.lowStockThreshold ?? 5,
+    // C2 — listing approval state (PENDING | LIVE | REJECTED) + admin note.
+    approvalStatus: p.approvalStatus ?? 'LIVE',
+    reviewNotes: p.reviewNotes ?? null,
   };
 }
 
@@ -251,6 +256,13 @@ export const vendorPortalRouter = router({
       });
       const vendor = await ensureVendor(ctx.user.id, user?.name ?? '');
 
+      // C2 — strict listing approval: when the flag is on, new products
+      // start PENDING and wait for the admin review queue. Off (relaxed,
+      // the default): products publish LIVE immediately as before.
+      const strict = await prisma.featureFlag.findUnique({
+        where: { key: 'LISTING_APPROVAL_STRICT' },
+      });
+
       const product = await prisma.product.create({
         data: {
           vendorId: vendor.id,
@@ -264,8 +276,24 @@ export const vendorPortalRouter = router({
           imageUrl: input.imageUrl,
           isActive: true,
           lowStockThreshold: input.lowStockThreshold,
+          approvalStatus: strict?.enabled ? 'PENDING' : 'LIVE',
         },
       });
+
+      if (strict?.enabled) {
+        await prisma.providerSubmission.create({
+          data: {
+            providerId: ctx.user.id,
+            kind: 'product',
+            payload: {
+              productId: product.id,
+              vendorId: vendor.id,
+              nameJson: { ar: input.nameAr, en: input.nameEn || input.nameAr },
+              price: input.price,
+            },
+          },
+        });
+      }
 
       return toPortalProduct(product);
     }),
@@ -917,16 +945,94 @@ export const vendorPortalRouter = router({
       });
     }),
 
-  /** earnings — the store's payout statements (Phase 3). */
+  /**
+   * earnings — B4 statement view: summary cards (pending/processed net +
+   * total fees, commissionRate visible) and payout rows with gross =
+   * net + fee. Reuses the Phase 3 payout rows; `payouts.listStorePayouts`
+   * stays the paginated/filtered surface for heavier histories.
+   */
   earnings: customerProcedure.query(async ({ ctx }) => {
     const vendor = await prisma.vendor.findUnique({ where: { userId: ctx.user.id } });
-    if (!vendor) return [];
+    if (!vendor) {
+      return {
+        commissionRate: 0,
+        summary: { pendingNet: 0, processedNet: 0, totalFee: 0 },
+        rows: [],
+      };
+    }
 
-    return prisma.payout.findMany({
+    const payouts = await prisma.payout.findMany({
       where: { vendorId: vendor.id },
       orderBy: { createdAt: 'desc' },
     });
+
+    let pendingNet = 0;
+    let processedNet = 0;
+    let totalFee = 0;
+    const rows = payouts.map((p) => {
+      const net = Number(p.amount);
+      const fee = Number(p.fee);
+      totalFee += fee;
+      if (p.status === 'COMPLETED') processedNet += net;
+      else pendingNet += net;
+      return {
+        id: p.id,
+        periodStart: p.periodStart,
+        periodEnd: p.periodEnd,
+        gross: net + fee,
+        net,
+        fee,
+        status: p.status,
+        reference: p.reference,
+        processedAt: p.processedAt,
+      };
+    });
+
+    return {
+      commissionRate: Number(vendor.commissionRate),
+      summary: { pendingNet, processedNet, totalFee },
+      rows,
+    };
   }),
+
+  /**
+   * earningsCsv — B4 statement download with bilingual headers (RFC 4180
+   * quoting for values containing commas/quotes/newlines).
+   */
+  earningsCsv: customerProcedure
+    .input(z.object({ locale: z.enum(['ar', 'en']).default('en') }))
+    .query(async ({ ctx, input }) => {
+      const vendor = await prisma.vendor.findUnique({ where: { userId: ctx.user.id } });
+      const payouts = vendor
+        ? await prisma.payout.findMany({
+            where: { vendorId: vendor.id },
+            orderBy: { createdAt: 'desc' },
+          })
+        : [];
+
+      const headers =
+        input.locale === 'ar'
+          ? ['بداية الفترة', 'نهاية الفترة', 'الإجمالي', 'الرسوم', 'الصافي', 'الحالة', 'المرجع']
+          : ['Period start', 'Period end', 'Gross', 'Fee', 'Net', 'Status', 'Reference'];
+
+      const esc = (v: string | number) => {
+        const s = String(v);
+        return /[",\r\n]/.test(s) ? `"${s.replace(/"/g, '""')}"` : s;
+      };
+      const lines = payouts.map((p) =>
+        [
+          p.periodStart.toISOString().slice(0, 10),
+          p.periodEnd.toISOString().slice(0, 10),
+          (Number(p.amount) + Number(p.fee)).toFixed(2),
+          Number(p.fee).toFixed(2),
+          Number(p.amount).toFixed(2),
+          p.status,
+          esc(p.reference ?? ''),
+        ].join(','),
+      );
+
+      return { csv: [headers.join(','), ...lines].join('\r\n') };
+    }),
 
   // ---------------------------------------------------------------------------
   // E2 — medical clinics dashboard (same provider shell)
