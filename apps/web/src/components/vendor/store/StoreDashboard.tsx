@@ -1,6 +1,7 @@
 'use client';
 import { useEffect, useState } from 'react';
 import type { JSX } from 'react';
+import type * as React from 'react';
 import { api } from '@/lib/trpc';
 import { Card, Button, Modal, Input, formatCurrency, useAuth } from '@galaxy/ui';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
@@ -166,6 +167,50 @@ export function StoreDashboard({
   const lowStock = dash?.lowStockProducts ?? [];
   const prods = productsQ.data?.pages.flatMap((p) => p.items) ?? [];
   const storeOrders = ordersQ.data?.pages.flatMap((p) => p.items) ?? [];
+
+  // C5 — bulk CSV import: upload → worker job → polled per-row report.
+  const importMut = api.vendorPortal.importProductsCsv.useMutation({});
+  const [importJobId, setImportJobId] = useState<string | null>(null);
+  const importStatusQ = api.vendorPortal.importStatus.useQuery(
+    { jobId: importJobId ?? '' },
+    {
+      enabled: importJobId !== null,
+      // Poll until the job reaches a terminal state.
+      refetchInterval: (q) =>
+        q.state.data?.state === 'completed' || q.state.data?.state === 'failed' ? false : 2000,
+    },
+  );
+  const importReport =
+    importStatusQ.data?.state === 'completed' || importStatusQ.data?.state === 'failed'
+      ? importStatusQ.data
+      : null;
+
+  const downloadImportTemplate = () => {
+    const csv = `nameAr,nameEn,price,stock,emoji\nسيروم,Serum,50,10,🧴`;
+    const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'product-import-template.csv';
+    a.click();
+    URL.revokeObjectURL(url);
+  };
+
+  const onImportFile = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = () => {
+      importMut.mutate(
+        { csv: String(reader.result ?? '') },
+        {
+          onSuccess: (res) => setImportJobId(res.jobId),
+          onError: () => setImportJobId(null),
+        },
+      );
+    };
+    reader.readAsText(file);
+  };
 
   // B4 — earnings & settlement center (statement + CSV export).
   const { data: earnings } = api.vendorPortal.earnings.useQuery(undefined, {
@@ -578,10 +623,58 @@ export function StoreDashboard({
           >
             <div className="flex items-center justify-between">
               <h2 className="text-lg font-bold">{t('vendorPortal.tab.products')}</h2>
-              <Button size="sm" onClick={() => setShow(true)}>
-                + {t('vendorPortal.newProduct')}
-              </Button>
+              <div className="flex items-center gap-2">
+                {/* C5 — bulk CSV import (worker job + live report). */}
+                <input
+                  type="file"
+                  accept=".csv,text/csv"
+                  className="hidden"
+                  id="csv-import-input"
+                  onChange={onImportFile}
+                />
+                <label
+                  htmlFor="csv-import-input"
+                  className="cursor-pointer rounded-xl border border-border-muted px-3 py-1.5 text-sm text-text-secondary hover:bg-surface-elevated"
+                >
+                  {t('vendorPortal.import.choose')}
+                </label>
+                <Button size="sm" variant="ghost" onClick={downloadImportTemplate}>
+                  {t('vendorPortal.import.template')}
+                </Button>
+                <Button size="sm" onClick={() => setShow(true)}>
+                  + {t('vendorPortal.newProduct')}
+                </Button>
+              </div>
             </div>
+            {/* C5 — import progress + report (polled from the worker job). */}
+            {importMut.isPending && (
+              <p className="text-sm text-text-tertiary">{t('vendorPortal.import.uploading')}</p>
+            )}
+            {importReport && (
+              <Card padding="sm">
+                <p className="text-sm font-semibold">
+                  {t('vendorPortal.import.report', {
+                    imported: importReport.report?.imported ?? 0,
+                    total: importReport.report?.totalRows ?? 0,
+                  })}
+                </p>
+                {(importReport.report?.errors ?? []).length > 0 && (
+                  <ul className="mt-1 list-inside list-disc text-xs text-red-600 dark:text-red-400">
+                    {(importReport.report?.errors ?? []).map((er) => (
+                      <li key={er.row}>
+                        {t('vendorPortal.import.row-error', {
+                          row: er.row,
+                          message: er.message,
+                        })}
+                      </li>
+                    ))}
+                  </ul>
+                )}
+              </Card>
+            )}
+            {importMut.isError && (
+              <p className="text-sm text-red-600 dark:text-red-400">{importMut.error.message}</p>
+            )}
             {prods.length === 0 ? (
               <p className="text-sm text-text-tertiary">{t('vendorPortal.products.empty')}</p>
             ) : (

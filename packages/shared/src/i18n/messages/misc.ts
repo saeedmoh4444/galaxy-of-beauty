@@ -3814,6 +3814,15 @@ export const miscMessages = {
   'vendorPortal.tab.overview': { ar: 'نظرة عامة', en: 'Overview' },
   'vendorPortal.tab.products': { ar: 'المنتجات', en: 'Products' },
   'vendorPortal.tab.deals': { ar: 'العروض', en: 'Deals' },
+  // C5 — bulk CSV product import.
+  'vendorPortal.import.choose': { ar: 'استيراد CSV', en: 'Import CSV' },
+  'vendorPortal.import.template': { ar: 'تحميل القالب', en: 'Download template' },
+  'vendorPortal.import.uploading': { ar: 'جارٍ الاستيراد…', en: 'Importing…' },
+  'vendorPortal.import.report': {
+    ar: 'تم استيراد {imported} من {total} منتج',
+    en: 'Imported {imported} of {total} products',
+  },
+  'vendorPortal.import.row-error': { ar: 'الصف {row}: {message}', en: 'Row {row}: {message}' },
   'vendorPortal.loadMore': { ar: 'المزيد', en: 'Load more' },
   'vendorPortal.tabs.aria': { ar: 'أقسام لوحة المتجر', en: 'Store dashboard sections' },
   'vendorPortal.products.empty': { ar: 'لا توجد منتجات بعد', en: 'No products yet' },
