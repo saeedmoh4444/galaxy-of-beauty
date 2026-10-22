@@ -593,10 +593,24 @@ export function StoreDashboard({
                             {t('vendorPortal.draft')}
                           </span>
                         )}
+                        {/* C2 — listing approval state (strict mode). */}
+                        {p.approvalStatus === 'PENDING' && (
+                          <span className="ml-2 rounded-full bg-amber-100 px-2 py-0.5 text-xs font-medium text-amber-700 dark:bg-amber-900 dark:text-amber-300">
+                            {t('vendorPortal.approval.pending')}
+                          </span>
+                        )}
+                        {p.approvalStatus === 'REJECTED' && (
+                          <span className="ml-2 rounded-full bg-red-100 px-2 py-0.5 text-xs font-medium text-red-700 dark:bg-red-950 dark:text-red-300">
+                            {t('vendorPortal.approval.rejected')}
+                          </span>
+                        )}
                       </p>
                       <p className="text-xs text-text-secondary">
                         {t('vendorPortal.stock')}: {p.stock} · {t('vendorPortal.sales')}: {p.sales}
                       </p>
+                      {p.approvalStatus === 'REJECTED' && p.reviewNotes ? (
+                        <p className="text-xs text-red-600 dark:text-red-400">{p.reviewNotes}</p>
+                      ) : null}
                       {/* C1 — bilingual completeness meter. */}
                       <div className="mt-1 h-1.5 w-28 overflow-hidden rounded-full bg-gray-200 dark:bg-gray-800">
                         <div
