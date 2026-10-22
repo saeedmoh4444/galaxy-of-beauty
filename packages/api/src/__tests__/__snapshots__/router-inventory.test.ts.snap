@@ -1032,6 +1032,7 @@ vendorPortal.dashboard	query	customer
 vendorPortal.deleteProduct	mutation	customer
 vendorPortal.duplicateProduct	mutation	customer
 vendorPortal.earnings	query	customer
+vendorPortal.earningsCsv	query	customer
 vendorPortal.fulfillOrder	mutation	customer
 vendorPortal.gymCancelBooking	mutation	customer
 vendorPortal.gymClassBookings	query	customer
