@@ -1043,6 +1043,8 @@ vendorPortal.gymClasses.list	query	customer
 vendorPortal.gymClasses.remove	mutation	customer
 vendorPortal.homeRequests.complete	mutation	customer
 vendorPortal.homeRequests.list	query	customer
+vendorPortal.importProductsCsv	mutation	customer
+vendorPortal.importStatus	query	customer
 vendorPortal.myAthomeSalon	query	customer
 vendorPortal.myClinic	query	customer
 vendorPortal.myDeals	query	customer

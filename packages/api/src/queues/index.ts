@@ -6,6 +6,7 @@
  *   loyalty     — points earning, tier upgrades, streak updates, achievement checks
  *   notifications — email, SMS, push notification dispatch
  *   integrations — calendar sync (Google), ZATCA reporting, external webhooks
+ *   csv-import   — vendor bulk product imports (C5)
  *
  * Usage:
  *   import { walletQueue } from '../queues';
@@ -39,6 +40,7 @@ let _walletQueue: Queue | null = null;
 let _loyaltyQueue: Queue | null = null;
 let _notificationQueue: Queue | null = null;
 let _integrationQueue: Queue | null = null;
+let _csvImportQueue: Queue | null = null;
 
 export function getWalletQueue(): Queue | null {
   if (_walletQueue) return _walletQueue;
@@ -80,6 +82,16 @@ export function getIntegrationQueue(): Queue | null {
   }
 }
 
+export function getCsvImportQueue(): Queue | null {
+  if (_csvImportQueue) return _csvImportQueue;
+  try {
+    _csvImportQueue = createQueue('gob-csv-import');
+    return _csvImportQueue;
+  } catch {
+    return null;
+  }
+}
+
 // Convenience: all queues
 export function getAllQueues(): Record<string, Queue | null> {
   return {
@@ -87,5 +99,6 @@ export function getAllQueues(): Record<string, Queue | null> {
     loyalty: getLoyaltyQueue(),
     notifications: getNotificationQueue(),
     integrations: getIntegrationQueue(),
+    csvImport: getCsvImportQueue(),
   };
 }
