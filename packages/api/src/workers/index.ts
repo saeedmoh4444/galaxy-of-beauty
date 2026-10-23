@@ -17,9 +17,11 @@ import {
   dispatchNotificationJob,
   handleIntegrationJob,
   handleCsvImportJob,
+  handleDailyStatsJob,
 } from './handlers';
 
-// Job types are re-exported from handlers.ts (routers import them from '../workers')
+// Job types + pure helpers are re-exported from handlers.ts (routers
+// import them from '../workers')
 export type {
   CashbackJob,
   LoyaltyPointsJob,
@@ -28,7 +30,9 @@ export type {
   BookingReminderJob,
   CsvImportJob,
   CsvImportReport,
+  DailyStatsJob,
 } from './handlers';
+export { noonUtcDay } from './handlers';
 
 // ── Worker factory ──
 
@@ -72,6 +76,27 @@ export const loyaltyWorker = createWorker('gob-loyalty', handleLoyaltyJob);
 export const notificationWorker = createWorker('gob-notifications', dispatchNotificationJob);
 export const integrationWorker = createWorker('gob-integrations', handleIntegrationJob);
 export const csvImportWorker = createWorker('gob-csv-import', handleCsvImportJob, 1);
+export const analyticsWorker = createWorker('gob-analytics', handleDailyStatsJob, 1);
+
+/**
+ * D1 — register the nightly materialization: fires at 00:30 KSA (21:30Z
+ * previous day) which sits safely inside the just-closed NOON-UTC bucket.
+ * Backfills run ad hoc via the admin/worker surface with { date }.
+ */
+export async function registerAnalyticsScheduler(): Promise<void> {
+  const { getAnalyticsQueue } = await import('../queues');
+  const queue = getAnalyticsQueue();
+  if (!queue) {
+    console.warn('[Workers] Redis unavailable — analytics scheduler not registered');
+    return;
+  }
+  await queue.upsertJobScheduler(
+    'daily-stats-nightly',
+    { pattern: '30 21 * * *' },
+    { name: 'daily.stats', data: {} },
+  );
+  console.log('[Workers] Analytics scheduler registered (30 21 * * * UTC)');
+}
 
 /**
  * Gracefully shut down all workers.
@@ -99,6 +124,8 @@ export function startWorkers(): void {
     notificationWorker ? 'gob-notifications' : null,
     integrationWorker ? 'gob-integrations' : null,
     csvImportWorker ? 'gob-csv-import' : null,
+    analyticsWorker ? 'gob-analytics' : null,
   ].filter(Boolean);
   console.log(`[Workers] Started: ${names.join(', ') || 'none (Redis unavailable)'}`);
+  void registerAnalyticsScheduler();
 }

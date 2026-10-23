@@ -766,6 +766,30 @@ model Payout {
   @@map("payouts")
 }
 
+// D1 — vendor analytics read-model (VENDOR_DASHBOARD_ENHANCEMENT_PLAN
+// Phase D): per-store daily stats materialized nightly by BullMQ from
+// store orders. `day` is the NOON-UTC bucket date (12:00 UTC = 15:00 KSA,
+// so a KSA business day maps to a single calendar date). One row per
+// (vendorId, day) — the materialization job is an idempotent upsert.
+model VendorDailyStat {
+  id                 Int      @id @default(autoincrement())
+  vendorId           Int
+  day                DateTime
+  revenue            Decimal  @db.Decimal(12, 2)
+  orders             Int
+  aov                Decimal  @db.Decimal(10, 2)
+  newCustomers       Int
+  returningCustomers Int
+  productSales       Json // [{ productId, nameAr, quantity, revenue }]
+  createdAt          DateTime @default(now())
+
+  vendor Vendor @relation(fields: [vendorId], references: [id], onDelete: Cascade)
+
+  @@unique([vendorId, day])
+  @@index([vendorId, day])
+  @@map("vendor_daily_stats")
+}
+
 // ======================================================================// Reviews & Ratings
 // ======================================================================
 model Review {
@@ -1563,6 +1587,7 @@ model Vendor {
   deals    StoreDeal[]
   payouts  Payout[]
   promoCodes PromoCode[]
+  dailyStats VendorDailyStat[]
   clinicSlots         ClinicSlot[]
   clinicConsultations ClinicConsultation[]
   clinicPackages      BeautyPackage[]
