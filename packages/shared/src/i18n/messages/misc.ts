@@ -3878,6 +3878,8 @@ export const miscMessages = {
   'vendorPortal.analytics.aov': { ar: 'متوسط الطلب', en: 'Avg order' },
   'vendorPortal.analytics.topProducts': { ar: 'الأكثر مبيعًا', en: 'Top products' },
   'vendorPortal.analytics.empty': { ar: 'لا توجد بيانات بعد', en: 'No data yet' },
+  // D4 — one-click CSV exports.
+  'vendorPortal.export': { ar: 'تصدير CSV', en: 'Export CSV' },
   // D2 — store health score (0–100) + keyed improvement hints.
   'vendorPortal.health.title': { ar: 'صحة المتجر', en: 'Store health' },
   'vendorPortal.health.hint.fulfillment': {

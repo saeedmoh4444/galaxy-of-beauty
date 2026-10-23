@@ -1043,6 +1043,92 @@ export const vendorPortalRouter = router({
       return { csv: [headers.join(','), ...lines].join('\r\n') };
     }),
 
+  /**
+   * D4 — one-click CSV exports (orders / products / analytics), same
+   * bilingual-headers + RFC 4180 + toFixed(2) discipline as earningsCsv.
+   */
+  exportCsv: customerProcedure
+    .input(
+      z.object({
+        kind: z.enum(['orders', 'products', 'analytics']),
+        locale: z.enum(['ar', 'en']).default('en'),
+      }),
+    )
+    .query(async ({ ctx, input }) => {
+      const vendor = await prisma.vendor.findUnique({ where: { userId: ctx.user.id } });
+      const esc = (v: string | number) => {
+        const s = String(v);
+        return /[",\r\n]/.test(s) ? `"${s.replace(/"/g, '""')}"` : s;
+      };
+      const ar = input.locale === 'ar';
+      if (!vendor) return { csv: '' };
+
+      if (input.kind === 'orders') {
+        const orders = await prisma.storeOrder.findMany({
+          where: { vendorId: vendor.id },
+          orderBy: { id: 'asc' },
+          include: { customer: { select: { name: true } } },
+        });
+        const headers = ar
+          ? ['رقم الطلب', 'التاريخ', 'الحالة', 'الإجمالي', 'المنتجات', 'العميل']
+          : ['Order', 'Date', 'Status', 'Total', 'Items', 'Customer'];
+        const lines = orders.map((o) =>
+          [
+            o.id,
+            o.createdAt.toISOString().slice(0, 10),
+            o.status,
+            Number(o.totalAmount).toFixed(2),
+            o.itemCount,
+            esc(o.customer?.name ?? ''),
+          ].join(','),
+        );
+        return { csv: [headers.join(','), ...lines].join('\r\n') };
+      }
+
+      if (input.kind === 'products') {
+        const products = await prisma.product.findMany({
+          where: { vendorId: vendor.id },
+          orderBy: { id: 'asc' },
+        });
+        const headers = ar
+          ? ['المنتج (ع)', 'المنتج (EN)', 'السعر', 'المخزون', 'المبيعات', 'مسودة']
+          : ['Product (AR)', 'Product (EN)', 'Price', 'Stock', 'Sales', 'Draft'];
+        const lines = products.map((p) =>
+          [
+            esc((p.nameJson as { ar?: string }).ar ?? ''),
+            esc((p.nameJson as { en?: string }).en ?? ''),
+            Number(p.price).toFixed(2),
+            p.stock,
+            p.sales,
+            p.isDraft ? 'yes' : '',
+          ].join(','),
+        );
+        return { csv: [headers.join(','), ...lines].join('\r\n') };
+      }
+
+      // analytics — the 90-day read-model series.
+      const { noonUtcDay } = await import('../workers/handlers');
+      const since = noonUtcDay(new Date(Date.now() - 90 * 86_400_000));
+      const rows = await prisma.vendorDailyStat.findMany({
+        where: { vendorId: vendor.id, day: { gte: since } },
+        orderBy: { day: 'asc' },
+      });
+      const headers = ar
+        ? ['اليوم', 'الإيرادات', 'الطلبات', 'متوسط الطلب', 'جدد', 'عائدون']
+        : ['Day', 'Revenue', 'Orders', 'AOV', 'New', 'Returning'];
+      const lines = rows.map((r) =>
+        [
+          r.day.toISOString().slice(0, 10),
+          Number(r.revenue).toFixed(2),
+          r.orders,
+          Number(r.aov).toFixed(2),
+          r.newCustomers,
+          r.returningCustomers,
+        ].join(','),
+      );
+      return { csv: [headers.join(','), ...lines].join('\r\n') };
+    }),
+
   // ---------------------------------------------------------------------------
   // D1 — vendor analytics center (read-model series)
   // ---------------------------------------------------------------------------

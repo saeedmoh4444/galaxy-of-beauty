@@ -1038,6 +1038,7 @@ vendorPortal.earnings	query	customer
 vendorPortal.earningsCsv	query	customer
 vendorPortal.editPendingDeal	mutation	customer
 vendorPortal.endDeal	mutation	customer
+vendorPortal.exportCsv	query	customer
 vendorPortal.fulfillOrder	mutation	customer
 vendorPortal.gymCancelBooking	mutation	customer
 vendorPortal.gymClassBookings	query	customer

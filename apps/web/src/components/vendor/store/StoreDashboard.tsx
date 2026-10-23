@@ -36,6 +36,33 @@ function initialTab(): TabKey {
  * from VendorPortal (A1 decomposition); lazy-loaded per vendor type so only
  * the owner's dashboard chunk ships.
  */
+/**
+ * D4 — one-click CSV export for orders/products/analytics, following the
+ * B4 earnings download pattern (bilingual headers from the server).
+ */
+function useCsvDownload(kind: 'orders' | 'products' | 'analytics'): {
+  download: () => Promise<void>;
+  pending: boolean;
+} {
+  const { locale } = useLocale();
+  const q = api.vendorPortal.exportCsv.useQuery(
+    { kind, locale: locale === 'ar' ? 'ar' : 'en' },
+    { enabled: false },
+  );
+  const download = async () => {
+    const res = await q.refetch();
+    const csv = res.data?.csv ?? '';
+    const blob = new Blob(['﻿' + csv], { type: 'text/csv;charset=utf-8;' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `${kind}-${locale}.csv`;
+    a.click();
+    URL.revokeObjectURL(url);
+  };
+  return { download, pending: q.isFetching };
+}
+
 export function StoreDashboard({
   store,
   refetchStore,
@@ -200,6 +227,10 @@ export function StoreDashboard({
 
   // D1 — analytics read-model series (7/30/90-day toggle).
   const [analyticsDays, setAnalyticsDays] = useState<7 | 30 | 90>(30);
+  const ordersCsv = useCsvDownload('orders');
+  const productsCsv = useCsvDownload('products');
+  const analyticsCsv = useCsvDownload('analytics');
+
   const analyticsQ = api.vendorPortal.analyticsSeries.useQuery(
     { days: analyticsDays },
     { enabled: isAuthenticated },
@@ -456,6 +487,14 @@ export function StoreDashboard({
             <Card padding="lg">
               <div className="mb-3 flex flex-wrap items-center justify-between gap-2">
                 <h3 className="font-bold">{t('vendorPortal.orders.title')}</h3>
+                <Button
+                  size="sm"
+                  variant="outline"
+                  onClick={() => void ordersCsv.download()}
+                  loading={ordersCsv.pending}
+                >
+                  {t('vendorPortal.export')}
+                </Button>
                 {(ordersByStatus?.FULFILLED ?? 0) > 0 && (
                   <span className="rounded-full bg-green-100 px-3 py-1 text-xs font-medium text-green-700 dark:bg-green-900 dark:text-green-300">
                     {t('vendorPortal.fulfilledOrders')}: {ordersByStatus?.FULFILLED}
@@ -703,6 +742,14 @@ export function StoreDashboard({
                 </label>
                 <Button size="sm" variant="ghost" onClick={downloadImportTemplate}>
                   {t('vendorPortal.import.template')}
+                </Button>
+                <Button
+                  size="sm"
+                  variant="outline"
+                  onClick={() => void productsCsv.download()}
+                  loading={productsCsv.pending}
+                >
+                  {t('vendorPortal.export')}
                 </Button>
                 <Button size="sm" onClick={() => setShow(true)}>
                   + {t('vendorPortal.newProduct')}
@@ -1140,6 +1187,14 @@ export function StoreDashboard({
                 role="group"
                 aria-label={t('vendorPortal.analytics.range')}
               >
+                <Button
+                  size="sm"
+                  variant="outline"
+                  onClick={() => void analyticsCsv.download()}
+                  loading={analyticsCsv.pending}
+                >
+                  {t('vendorPortal.export')}
+                </Button>
                 {([7, 30, 90] as const).map((d) => (
                   <Button
                     key={d}

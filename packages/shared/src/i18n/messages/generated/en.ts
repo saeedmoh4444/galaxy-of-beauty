@@ -5220,6 +5220,7 @@ export const enWebMessages: Record<string, string> = {
   'vendorPortal.earnings.totalFee': 'Total fees',
   'vendorPortal.edit': 'Edit',
   'vendorPortal.editProduct': 'Edit product',
+  'vendorPortal.export': 'Export CSV',
   'vendorPortal.featured': 'Feature on storefront',
   'vendorPortal.fulfilledOrders': 'Fulfilled',
   'vendorPortal.gym.bookings-empty': 'No bookings',
