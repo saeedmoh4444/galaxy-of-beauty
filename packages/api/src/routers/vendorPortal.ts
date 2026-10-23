@@ -6,6 +6,7 @@ import { customerProcedure, router } from '../trpc';
 import { notifyUser } from '../lib/notify';
 import { getCsvImportQueue } from '../queues';
 import type { CsvImportReport } from '../workers';
+import { noonUtcDay } from '../workers';
 
 /** B.3: vendor portal is DB-backed (was an in-memory array). */
 
@@ -1037,6 +1038,65 @@ export const vendorPortalRouter = router({
     }),
 
   // ---------------------------------------------------------------------------
+  // ---------------------------------------------------------------------------
+  // D1 — vendor analytics center (read-model series)
+  // ---------------------------------------------------------------------------
+
+  /**
+   * analyticsSeries — D1: the portal reads ONLY the materialized
+   * VendorDailyStat rows (no live order aggregation). Returns the
+   * 7/30/90-day daily series (NOON-UTC buckets) + top products across
+   * the window, aggregated from the per-day productSales snapshots.
+   */
+  analyticsSeries: customerProcedure
+    .input(z.object({ days: z.number().int().min(7).max(90).default(30) }))
+    .query(async ({ ctx, input }) => {
+      const vendor = await prisma.vendor.findUnique({ where: { userId: ctx.user.id } });
+      if (!vendor) return { series: [], topProducts: [] };
+
+      const since = noonUtcDay(new Date(Date.now() - input.days * 24 * 3600_000));
+      const rows = await prisma.vendorDailyStat.findMany({
+        where: { vendorId: vendor.id, day: { gte: since } },
+        orderBy: { day: 'asc' },
+      });
+
+      const prodMap = new Map<
+        number,
+        { productId: number; nameAr: string; quantity: number; revenue: number }
+      >();
+      for (const row of rows) {
+        const sales = (row.productSales ?? []) as Array<{
+          productId: number;
+          nameAr?: string;
+          quantity: number;
+          revenue: number;
+        }>;
+        for (const s of sales) {
+          const cur = prodMap.get(s.productId) ?? {
+            productId: s.productId,
+            nameAr: s.nameAr ?? '',
+            quantity: 0,
+            revenue: 0,
+          };
+          cur.quantity += s.quantity;
+          cur.revenue += s.revenue;
+          prodMap.set(s.productId, cur);
+        }
+      }
+
+      return {
+        series: rows.map((r) => ({
+          day: r.day.toISOString(),
+          revenue: Number(r.revenue),
+          orders: r.orders,
+          aov: Number(r.aov),
+          newCustomers: r.newCustomers,
+          returningCustomers: r.returningCustomers,
+        })),
+        topProducts: [...prodMap.values()].sort((a, b) => b.quantity - a.quantity).slice(0, 5),
+      };
+    }),
+
   // ---------------------------------------------------------------------------
   // C5 — bulk CSV product import (worker-backed)
   // ---------------------------------------------------------------------------

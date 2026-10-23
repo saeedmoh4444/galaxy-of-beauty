@@ -472,3 +472,119 @@ export async function handleCsvImportJob(job: Job<CsvImportJob>): Promise<CsvImp
 
   return { totalRows: body.length, imported, errors };
 }
+
+// ── D1 — vendor analytics read-model materialization ───────────────────────
+
+export interface DailyStatsJob {
+  /** KSA business date (YYYY-MM-DD) to materialize; defaults to yesterday. */
+  date?: string;
+}
+
+/**
+ * NOON-UTC discipline (memory rule): a KSA business day runs 12:00 UTC →
+ * 12:00 UTC (15:00 KSA). Shift the instant back 12h and truncate, so every
+ * order maps to a single calendar bucket date at 00:00 UTC.
+ */
+export function noonUtcDay(input: string | Date): Date {
+  const d =
+    typeof input === 'string'
+      ? new Date(`${input}T12:00:00Z`)
+      : new Date(input.getTime() - 12 * 3600_000);
+  return new Date(Date.UTC(d.getUTCFullYear(), d.getUTCMonth(), d.getUTCDate()));
+}
+
+function yesterdayKsa(): string {
+  return noonUtcDay(new Date()).toISOString().slice(0, 10);
+}
+
+/**
+ * handleDailyStatsJob — D1: materialize one KSA business day's read-model
+ * rows (revenue, orders, AOV, new-vs-returning customers, per-product
+ * sales) for every vendor with FULFILLED orders in the bucket. Upserts on
+ * (vendorId, day) so re-runs and backfills are idempotent.
+ */
+export async function handleDailyStatsJob(job: Job<DailyStatsJob>): Promise<{
+  vendors: number;
+  rows: number;
+}> {
+  const day = noonUtcDay(job.data.date ?? yesterdayKsa());
+  // The bucket window is noon → noon UTC (the shifted KSA day): an order
+  // at 10:00Z belongs to the PREVIOUS bucket, one at 14:00Z to this one.
+  const windowStart = new Date(day.getTime() + 12 * 3600_000);
+  const windowEnd = new Date(windowStart.getTime() + 24 * 3600_000);
+
+  const orders = await prisma.storeOrder.findMany({
+    where: { status: 'FULFILLED', createdAt: { gte: windowStart, lt: windowEnd } },
+    include: { items: true },
+  });
+
+  const byVendor = new Map<number, typeof orders>();
+  for (const o of orders) {
+    const list = byVendor.get(o.vendorId) ?? [];
+    list.push(o);
+    byVendor.set(o.vendorId, list);
+  }
+
+  let rows = 0;
+  for (const [vendorId, vendorOrders] of byVendor) {
+    const revenue = vendorOrders.reduce((sum, o) => sum + Number(o.totalAmount), 0);
+    const customers = new Set(vendorOrders.map((o) => o.customerId));
+
+    let newCustomers = 0;
+    let returningCustomers = 0;
+    for (const customerId of customers) {
+      const earlier = await prisma.storeOrder.findFirst({
+        where: { customerId, status: 'FULFILLED', createdAt: { lt: day } },
+        select: { id: true },
+      });
+      if (earlier) returningCustomers++;
+      else newCustomers++;
+    }
+
+    const prodMap = new Map<
+      number,
+      { productId: number; nameAr: string; quantity: number; revenue: number }
+    >();
+    for (const o of vendorOrders) {
+      for (const it of o.items) {
+        const cur = prodMap.get(it.productId) ?? {
+          productId: it.productId,
+          nameAr: (it.nameSnapshot as { ar?: string }).ar ?? '',
+          quantity: 0,
+          revenue: 0,
+        };
+        cur.quantity += it.quantity;
+        cur.revenue += Number(it.priceSnapshot) * it.quantity;
+        prodMap.set(it.productId, cur);
+      }
+    }
+
+    const productSales = [...prodMap.values()];
+    const aov = revenue / vendorOrders.length;
+
+    await prisma.vendorDailyStat.upsert({
+      where: { vendorId_day: { vendorId, day } },
+      create: {
+        vendorId,
+        day,
+        revenue,
+        orders: vendorOrders.length,
+        aov,
+        newCustomers,
+        returningCustomers,
+        productSales,
+      },
+      update: {
+        revenue,
+        orders: vendorOrders.length,
+        aov,
+        newCustomers,
+        returningCustomers,
+        productSales,
+      },
+    });
+    rows++;
+  }
+
+  return { vendors: byVendor.size, rows };
+}
