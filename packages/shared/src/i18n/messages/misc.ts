@@ -3892,6 +3892,24 @@ export const miscMessages = {
     ar: 'التقييمات الأخيرة تتراجع — استجيبي للملاحظات',
     en: 'Recent reviews are trending down — respond to feedback',
   },
+  // D3 — store advisor (rule-based v1).
+  'vendorPortal.advisor.title': { ar: 'نصائح المتجر', en: 'Store advisor' },
+  'vendorPortal.advisor.restock': {
+    ar: 'مخزون {name} منخفض (متبقي {stock}) — يُباع {weekly} أسبوعيًا',
+    en: '{name} is low ({stock} left) — selling {weekly}/week',
+  },
+  'vendorPortal.advisor.expired-deal': {
+    ar: 'انتهى عرض {name} — حدّثيه أو أوقفيه',
+    en: 'The {name} deal has expired — refresh or end it',
+  },
+  'vendorPortal.advisor.weekend-peak': {
+    ar: 'نصف طلباتك في عطلة نهاية الأسبوع — جهّزي مخزونك للجمعة',
+    en: 'Half your orders land on weekends — stock up for Friday',
+  },
+  'vendorPortal.advisor.aov-drop': {
+    ar: 'متوسط الطلب انخفض من {before} إلى {current} ر.س — جرّبي عروضًا تكميلية',
+    en: 'Average order fell from {before} to {current} SAR — try bundle offers',
+  },
   'vendorPortal.health.hint.stock': {
     ar: 'صحة المخزون منخفضة — أعيدي تزويد المنتجات تحت الحد',
     en: 'Stock health is low — restock products below their thresholds',

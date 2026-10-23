@@ -18,6 +18,7 @@ import {
   handleIntegrationJob,
   handleCsvImportJob,
   handleDailyStatsJob,
+  handleAdvisorDigestJob,
 } from './handlers';
 
 // Job types + pure helpers are re-exported from handlers.ts (routers
@@ -31,6 +32,7 @@ export type {
   CsvImportJob,
   CsvImportReport,
   DailyStatsJob,
+  AdvisorDigestJob,
 } from './handlers';
 export { noonUtcDay } from './handlers';
 
@@ -77,6 +79,7 @@ export const notificationWorker = createWorker('gob-notifications', dispatchNoti
 export const integrationWorker = createWorker('gob-integrations', handleIntegrationJob);
 export const csvImportWorker = createWorker('gob-csv-import', handleCsvImportJob, 1);
 export const analyticsWorker = createWorker('gob-analytics', handleDailyStatsJob, 1);
+export const advisorWorker = createWorker('gob-advisor', handleAdvisorDigestJob, 1);
 
 /**
  * D1 — register the nightly materialization: fires at 00:30 KSA (21:30Z
@@ -95,7 +98,16 @@ export async function registerAnalyticsScheduler(): Promise<void> {
     { pattern: '30 21 * * *' },
     { name: 'daily.stats', data: {} },
   );
-  console.log('[Workers] Analytics scheduler registered (30 21 * * * UTC)');
+  // D3 — weekly advisor digest (Sunday 08:00 UTC, after the nightly roll).
+  const advisorQueue = (await import('../queues')).getAdvisorQueue();
+  if (advisorQueue) {
+    await advisorQueue.upsertJobScheduler(
+      'advisor-digest-weekly',
+      { pattern: '0 8 * * 0' },
+      { name: 'advisor.digest', data: {} },
+    );
+  }
+  console.log('[Workers] Schedulers registered (analytics 30 21 UTC, advisor 0 8 * * 0 UTC)');
 }
 
 /**
@@ -125,6 +137,7 @@ export function startWorkers(): void {
     integrationWorker ? 'gob-integrations' : null,
     csvImportWorker ? 'gob-csv-import' : null,
     analyticsWorker ? 'gob-analytics' : null,
+    advisorWorker ? 'gob-advisor' : null,
   ].filter(Boolean);
   console.log(`[Workers] Started: ${names.join(', ') || 'none (Redis unavailable)'}`);
   void registerAnalyticsScheduler();

@@ -588,3 +588,126 @@ export async function handleDailyStatsJob(job: Job<DailyStatsJob>): Promise<{
 
   return { vendors: byVendor.size, rows };
 }
+
+// ── D3 — AI store advisor: weekly digest materialization ───────────────────
+
+export interface AdvisorDigestJob {
+  /** Scope to one vendor (tests/backfills); undefined = every store. */
+  vendorId?: number;
+}
+
+/**
+ * handleAdvisorDigestJob — D3: run the rule engine over every store (or
+ * one vendor) and drop an in-app notification for stores with at least
+ * one rule, so the advisor surfaces without the vendor visiting the
+ * portal. Returns the number of notified vendors.
+ */
+export async function handleAdvisorDigestJob(job: Job<AdvisorDigestJob>): Promise<{
+  notified: number;
+  rules: number;
+}> {
+  const vendors = await prisma.vendor.findMany({
+    where: {
+      type: { in: ['STORE', 'VENDOR'] },
+      ...(job.data.vendorId ? { id: job.data.vendorId } : {}),
+    },
+    select: { id: true, userId: true },
+  });
+
+  let notified = 0;
+  let totalRules = 0;
+
+  for (const vendor of vendors) {
+    const rules = await advisorRulesForVendor(vendor.id);
+    if (rules.length === 0) continue;
+
+    await prisma.notification.create({
+      data: {
+        userId: vendor.userId,
+        type: 'advisor_digest',
+        titleJson: { ar: 'نصائح متجرك الأسبوعية', en: 'Your weekly store advisor' },
+        bodyJson: {
+          ar: rules
+            .map((r) => r.params?.name ?? '')
+            .filter(Boolean)
+            .slice(0, 3)
+            .join('، '),
+          en: rules
+            .map((r) => r.params?.name ?? '')
+            .filter(Boolean)
+            .slice(0, 3)
+            .join(', '),
+        },
+        link: '/store?tab=overview',
+        sentVia: ['in_app'],
+      },
+    });
+    notified++;
+    totalRules += rules.length;
+  }
+
+  return { notified, rules: totalRules };
+}
+
+/** Shared D3 input gathering — used by vendorPortal.advisor and the digest. */
+export async function advisorRulesForVendor(vendorId: number) {
+  const { computeAdvisorRules } = await import('../lib/storeAdvisor');
+
+  const products = await prisma.product.findMany({
+    where: { vendorId, isActive: true },
+    select: {
+      id: true,
+      nameJson: true,
+      stock: true,
+      lowStockThreshold: true,
+      sales: true,
+      createdAt: true,
+    },
+  });
+  const productInputs = products.map((p) => {
+    const weeks = Math.max((Date.now() - p.createdAt.getTime()) / (7 * 86_400_000), 1);
+    return {
+      id: p.id,
+      nameAr: (p.nameJson as { ar?: string }).ar ?? '',
+      stock: p.stock,
+      threshold: p.lowStockThreshold ?? 5,
+      salesPerWeek: p.sales / weeks,
+    };
+  });
+
+  const deals = await prisma.storeDeal.findMany({
+    where: { vendorId, isActive: true, endsAt: { lt: new Date() } },
+    include: { product: { select: { nameJson: true } } },
+  });
+  const expiredDeals = deals.map((d) => ({
+    id: d.id,
+    titleAr: (d.product.nameJson as { ar?: string }).ar ?? '',
+  }));
+
+  const since30 = new Date(Date.now() - 30 * 86_400_000);
+  const orders = await prisma.storeOrder.findMany({
+    where: { vendorId, createdAt: { gte: since30 } },
+    select: { createdAt: true, totalAmount: true },
+  });
+  let weekendShare: number | null = null;
+  if (orders.length > 0) {
+    const weekend = orders.filter((o) => {
+      const d = o.createdAt.getUTCDay();
+      return d === 5 || d === 6;
+    }).length;
+    weekendShare = weekend / orders.length;
+  }
+  const since7 = new Date(Date.now() - 7 * 86_400_000);
+  const aovOf = (list: typeof orders) =>
+    list.length ? list.reduce((s, o) => s + Number(o.totalAmount), 0) / list.length : null;
+  const aov7d = aovOf(orders.filter((o) => o.createdAt >= since7));
+  const aov30d = aovOf(orders);
+
+  return computeAdvisorRules({
+    products: productInputs,
+    expiredDeals,
+    weekendShare,
+    aov7d,
+    aov30d,
+  });
+}
