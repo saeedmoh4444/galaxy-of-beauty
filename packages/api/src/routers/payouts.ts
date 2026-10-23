@@ -3,6 +3,7 @@ import { TRPCError } from '@trpc/server';
 import { prisma } from '@galaxy/db';
 import { router, adminProcedure, technicianProcedure, customerProcedure } from '../trpc';
 import { createPayoutSchema, processPayoutSchema } from '../validators/payment';
+import { computeStoreHealthScore, gatherStoreHealthFactors } from '../lib/storeHealth';
 
 // ---------------------------------------------------------------------------
 // Additional input schemas
@@ -219,11 +220,21 @@ export const payoutRouter = router({
   // S3 — listStoreVendors: admin view of store vendors + commission rates.
   // -----------------------------------------------------------------------
   listStoreVendors: adminProcedure.query(async () => {
-    return prisma.vendor.findMany({
+    const vendors = await prisma.vendor.findMany({
       where: { type: { in: ['STORE', 'VENDOR'] } },
       select: { id: true, storeName: true, isVerified: true, isActive: true, commissionRate: true },
       orderBy: { id: 'asc' },
     });
+
+    // D2 — admin sees the same store health score as the vendor's
+    // Overview (the list is small and admin-only, so per-row gathering
+    // is acceptable).
+    return Promise.all(
+      vendors.map(async (v) => ({
+        ...v,
+        health: computeStoreHealthScore(await gatherStoreHealthFactors(prisma, v.id)),
+      })),
+    );
   }),
 
   // -----------------------------------------------------------------------

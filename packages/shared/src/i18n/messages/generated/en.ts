@@ -5229,6 +5229,12 @@ export const enWebMessages: Record<string, string> = {
   'vendorPortal.gym.class-remove': 'Remove',
   'vendorPortal.gym.classes-title': 'Classes',
   'vendorPortal.gym.price': 'Price (0 = free)',
+  'vendorPortal.health.hint.cancel':
+    'Cancel rate is high ({percent}%) — confirm stock before listing',
+  'vendorPortal.health.hint.fulfillment': 'Fulfillment is slow ({hours}h avg) — ship faster',
+  'vendorPortal.health.hint.reviews': 'Recent reviews are trending down — respond to feedback',
+  'vendorPortal.health.hint.stock': 'Stock health is low — restock products below their thresholds',
+  'vendorPortal.health.title': 'Store health',
   'vendorPortal.images': 'Images',
   'vendorPortal.import.choose': 'Import CSV',
   'vendorPortal.import.report': 'Imported {imported} of {total} products',
