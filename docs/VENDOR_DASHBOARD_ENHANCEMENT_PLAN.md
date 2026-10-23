@@ -6,7 +6,8 @@
 > Saudi store / clinic / gym / nail-bar / at-home salon runs its business on
 > Galaxy of Beauty.
 >
-> Status: **PLAN v2 — awaiting user "start work"** (2026-10-12)
+> Status: **WAVES 0–4 DELIVERED** (2026-10-23, master `a556683a`) — Wave 5 (Phase E)
+> and Wave 6 (Phases F+G) remain. Delivery record: §7.1.
 
 ---
 
@@ -568,6 +569,23 @@ evidence visibility scoped to order parties + admin.
 ≈ 26–30 PRs, 7 waves, ~6–9 working sessions. Each wave closes with all
 gates green + docs refreshed, merging via the established CI-green
 convention.
+
+### 7.1 Delivery record (waves 0–4 complete)
+
+| Wave | PRs                                                                             | Notes                                                              |
+| ---- | ------------------------------------------------------------------------------- | ------------------------------------------------------------------ |
+| 0    | H0 #430                                                                         | double-payout race killed                                          |
+| 1    | A1 #431 · A2 #433 · A3 #434 · A5 #438 · A4 #437 · B0 #432 · B3a #435 · B2a #436 | foundations + order items + stock hiding + cancelOrder             |
+| 2    | B1 #447 · B3b #448 · B4 #449 · B5 #450                                          | line items UI, low-stock alerts, earnings center, disputes         |
+| 2    | B6 — **SKIPPED by user** (2026-10-13: no FATOORAH_API_TOKEN)                    | schema/UI ship inert when the token lands                          |
+| 3    | C1 #452 · C2 #454 · C3 #465 · C4 #471 · C5 #472 · C6 #470                       | editor pro, approval pipeline, deals studio, coupons, CSV, QR      |
+| 4    | D1 #473 · D1b #474 · D2 #475 · D3 #476 · D4 #477 · D5 #478                      | read-model analytics, health score, advisor, exports, KSA calendar |
+| —    | #469 dependabot                                                                 | housekeeping                                                       |
+
+Waves 5–6 (§7 steps 5–6) remain: E4 → E5 → E1 → E2 → E3, then
+F1 → F5 → F2 → F4 → G1 → G2 → G3. Open decisions §9 items 3–5 still
+default-resolved as recorded (vendor-only health score, autonomous
+coupons + admin pause, H1 deferred).
 
 ## 8. User-gated dependencies (queue — not blockers)
 
