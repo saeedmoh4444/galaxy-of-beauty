@@ -5193,6 +5193,7 @@ export const enWebMessages: Record<string, string> = {
   'vendorPortal.deals.propose': '+ Propose deal',
   'vendorPortal.deals.rejected': 'Rejected',
   'vendorPortal.deals.starts': 'Starts at',
+  'vendorPortal.deals.template-hint': 'Seasonal templates…',
   'vendorPortal.deals.title': 'My Product Deals',
   'vendorPortal.descArPlaceholder': 'Arabic description',
   'vendorPortal.descEnPlaceholder': 'English description',

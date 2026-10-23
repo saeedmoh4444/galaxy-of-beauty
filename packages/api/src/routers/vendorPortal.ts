@@ -10,6 +10,7 @@ import { getCsvImportQueue } from '../queues';
 // (real Redis connections) inside the web build's page-data workers.
 import type { CsvImportReport } from '../workers/handlers';
 import { noonUtcDay, advisorRulesForVendor } from '../workers/handlers';
+import { KSA_SEASONS, seasonMarkers } from '../lib/ksaCalendar';
 import { computeStoreHealthScore, gatherStoreHealthFactors } from '../lib/storeHealth';
 
 /** B.3: vendor portal is DB-backed (was an in-memory array). */
@@ -1130,6 +1131,22 @@ export const vendorPortalRouter = router({
     }),
 
   /**
+   * dealTemplates — D5: the current Gregorian year's KSA season windows
+   * as prefilled propose-deal templates (Ramadan / the two Eids /
+   * National Day) — feeds the C3 deals studio.
+   */
+  dealTemplates: customerProcedure.query(async () => {
+    const year = new Date().getUTCFullYear();
+    return (KSA_SEASONS[year] ?? []).map((w) => ({
+      type: w.type,
+      titleAr: w.titleAr,
+      titleEn: w.titleEn,
+      startsAt: `${w.startsAt}T12:00:00Z`,
+      endsAt: `${w.endsAt}T23:59:59Z`,
+    }));
+  }),
+
+  /**
    * advisor — D3: rule-based store advisor (no LLM in v1). Restock
    * suggestions, expired-deal nudges, weekend-peak hints and AOV-drop
    * flags, ordered by priority — rendered as the Overview advisor card.
@@ -1196,6 +1213,12 @@ export const vendorPortalRouter = router({
           returningCustomers: r.returningCustomers,
         })),
         topProducts: [...prodMap.values()].sort((a, b) => b.quantity - a.quantity).slice(0, 5),
+
+        // D5 — KSA season markers (Ramadan/Eid/National Day) over the window.
+        markers: seasonMarkers(
+          since.toISOString().slice(0, 10),
+          new Date().toISOString().slice(0, 10),
+        ),
       };
     }),
 

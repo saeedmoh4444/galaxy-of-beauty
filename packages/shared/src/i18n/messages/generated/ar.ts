@@ -5118,6 +5118,7 @@ export const arWebMessages: Record<string, string> = {
   'vendorPortal.deals.propose': '+ اقترح عرضاً',
   'vendorPortal.deals.rejected': 'مرفوض',
   'vendorPortal.deals.starts': 'يبدأ من',
+  'vendorPortal.deals.template-hint': 'قوالب المواسم…',
   'vendorPortal.deals.title': 'عروضي على المنتجات',
   'vendorPortal.descArPlaceholder': 'الوصف بالعربية',
   'vendorPortal.descEnPlaceholder': 'الوصف بالإنجليزية',

@@ -3880,6 +3880,8 @@ export const miscMessages = {
   'vendorPortal.analytics.empty': { ar: 'لا توجد بيانات بعد', en: 'No data yet' },
   // D4 — one-click CSV exports.
   'vendorPortal.export': { ar: 'تصدير CSV', en: 'Export CSV' },
+  // D5 — KSA seasonal deal templates.
+  'vendorPortal.deals.template-hint': { ar: 'قوالب المواسم…', en: 'Seasonal templates…' },
   // D2 — store health score (0–100) + keyed improvement hints.
   'vendorPortal.health.title': { ar: 'صحة المتجر', en: 'Store health' },
   'vendorPortal.health.hint.fulfillment': {
