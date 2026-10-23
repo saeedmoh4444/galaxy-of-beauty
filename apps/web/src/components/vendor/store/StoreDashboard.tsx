@@ -1,6 +1,7 @@
 'use client';
 import { useEffect, useState } from 'react';
 import type { JSX } from 'react';
+import type * as React from 'react';
 import { api } from '@/lib/trpc';
 import { Card, Button, Modal, Input, formatCurrency, useAuth } from '@galaxy/ui';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
@@ -10,9 +11,9 @@ import { localize } from '@galaxy/shared';
 import { VenueProfileCard } from '../shared/VenueProfileCard';
 import { DashboardTabs } from '../shared/DashboardTabs';
 
-type TabKey = 'overview' | 'orders' | 'products' | 'deals' | 'earnings';
+type TabKey = 'overview' | 'orders' | 'products' | 'deals' | 'coupons' | 'earnings';
 
-const TAB_KEYS: TabKey[] = ['overview', 'orders', 'products', 'deals', 'earnings'];
+const TAB_KEYS: TabKey[] = ['overview', 'orders', 'products', 'deals', 'coupons', 'earnings'];
 
 /** A3 — read the ?tab= deep link once on mount (hydration-safe; the page is
  *  client-only, so window is available). */
@@ -77,6 +78,10 @@ export function StoreDashboard({
     onSuccess: () => refetch(),
   });
   const setDraftMut = api.vendorPortal.setDraft.useMutation({ onSuccess: () => refetch() });
+  // C6 — featured picker (storefront profile ordering).
+  const featuredMut = api.vendorPortal.setProductFeatured.useMutation({
+    onSuccess: () => refetch(),
+  });
   const [editId, setEditId] = useState<number | null>(null);
   const [edNameAr, setEdNameAr] = useState('');
   const [edNameEn, setEdNameEn] = useState('');
@@ -157,11 +162,74 @@ export function StoreDashboard({
     new Date(Date.now() + 3 * 86_400_000).toISOString().slice(0, 16),
   );
   const myDeals = deals ?? [];
+
+  // C4 — store coupon codes (propose → admin review → live store-scoped code).
+  const { data: coupons, refetch: refetchCoupons } = api.vendorPortal.listCoupons.useQuery(
+    undefined,
+    { enabled: isAuthenticated },
+  );
+  const createCouponMut = api.vendorPortal.createCoupon.useMutation({
+    onSuccess: () => {
+      setCouponCode('');
+      setCouponValue('');
+      refetchCoupons();
+    },
+  });
+  const deactivateCouponMut = api.vendorPortal.deactivateCoupon.useMutation({
+    onSuccess: () => refetchCoupons(),
+  });
+  const [couponCode, setCouponCode] = useState('');
+  const [couponValue, setCouponValue] = useState('');
+  const [couponMin, setCouponMin] = useState('');
   const topProducts = dash?.topProducts ?? [];
   // B3b — low-stock surface (stock ≤ the per-product threshold).
   const lowStock = dash?.lowStockProducts ?? [];
   const prods = productsQ.data?.pages.flatMap((p) => p.items) ?? [];
   const storeOrders = ordersQ.data?.pages.flatMap((p) => p.items) ?? [];
+
+  // C5 — bulk CSV import: upload → worker job → polled per-row report.
+  const importMut = api.vendorPortal.importProductsCsv.useMutation({});
+  const [importJobId, setImportJobId] = useState<string | null>(null);
+  const importStatusQ = api.vendorPortal.importStatus.useQuery(
+    { jobId: importJobId ?? '' },
+    {
+      enabled: importJobId !== null,
+      // Poll until the job reaches a terminal state.
+      refetchInterval: (q) =>
+        q.state.data?.state === 'completed' || q.state.data?.state === 'failed' ? false : 2000,
+    },
+  );
+  const importReport =
+    importStatusQ.data?.state === 'completed' || importStatusQ.data?.state === 'failed'
+      ? importStatusQ.data
+      : null;
+
+  const downloadImportTemplate = () => {
+    const csv = `nameAr,nameEn,price,stock,emoji\nسيروم,Serum,50,10,🧴`;
+    const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'product-import-template.csv';
+    a.click();
+    URL.revokeObjectURL(url);
+  };
+
+  const onImportFile = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = () => {
+      importMut.mutate(
+        { csv: String(reader.result ?? '') },
+        {
+          onSuccess: (res) => setImportJobId(res.jobId),
+          onError: () => setImportJobId(null),
+        },
+      );
+    };
+    reader.readAsText(file);
+  };
 
   // B4 — earnings & settlement center (statement + CSV export).
   const { data: earnings } = api.vendorPortal.earnings.useQuery(undefined, {
@@ -197,6 +265,7 @@ export function StoreDashboard({
     { key: 'orders', label: t('vendorPortal.orders.title') },
     { key: 'products', label: t('vendorPortal.tab.products') },
     { key: 'deals', label: t('vendorPortal.tab.deals') },
+    { key: 'coupons', label: t('vendorPortal.tab.coupons') },
     { key: 'earnings', label: t('vendorPortal.tab.earnings') },
   ];
 
@@ -574,10 +643,58 @@ export function StoreDashboard({
           >
             <div className="flex items-center justify-between">
               <h2 className="text-lg font-bold">{t('vendorPortal.tab.products')}</h2>
-              <Button size="sm" onClick={() => setShow(true)}>
-                + {t('vendorPortal.newProduct')}
-              </Button>
+              <div className="flex items-center gap-2">
+                {/* C5 — bulk CSV import (worker job + live report). */}
+                <input
+                  type="file"
+                  accept=".csv,text/csv"
+                  className="hidden"
+                  id="csv-import-input"
+                  onChange={onImportFile}
+                />
+                <label
+                  htmlFor="csv-import-input"
+                  className="cursor-pointer rounded-xl border border-border-muted px-3 py-1.5 text-sm text-text-secondary hover:bg-surface-elevated"
+                >
+                  {t('vendorPortal.import.choose')}
+                </label>
+                <Button size="sm" variant="ghost" onClick={downloadImportTemplate}>
+                  {t('vendorPortal.import.template')}
+                </Button>
+                <Button size="sm" onClick={() => setShow(true)}>
+                  + {t('vendorPortal.newProduct')}
+                </Button>
+              </div>
             </div>
+            {/* C5 — import progress + report (polled from the worker job). */}
+            {importMut.isPending && (
+              <p className="text-sm text-text-tertiary">{t('vendorPortal.import.uploading')}</p>
+            )}
+            {importReport && (
+              <Card padding="sm">
+                <p className="text-sm font-semibold">
+                  {t('vendorPortal.import.report', {
+                    imported: importReport.report?.imported ?? 0,
+                    total: importReport.report?.totalRows ?? 0,
+                  })}
+                </p>
+                {(importReport.report?.errors ?? []).length > 0 && (
+                  <ul className="mt-1 list-inside list-disc text-xs text-red-600 dark:text-red-400">
+                    {(importReport.report?.errors ?? []).map((er) => (
+                      <li key={er.row}>
+                        {t('vendorPortal.import.row-error', {
+                          row: er.row,
+                          message: er.message,
+                        })}
+                      </li>
+                    ))}
+                  </ul>
+                )}
+              </Card>
+            )}
+            {importMut.isError && (
+              <p className="text-sm text-red-600 dark:text-red-400">{importMut.error.message}</p>
+            )}
             {prods.length === 0 ? (
               <p className="text-sm text-text-tertiary">{t('vendorPortal.products.empty')}</p>
             ) : (
@@ -641,6 +758,15 @@ export function StoreDashboard({
                       onClick={() => setDraftMut.mutate({ id: p.id, draft: !p.draft })}
                     >
                       {p.draft ? t('vendorPortal.publish') : t('vendorPortal.draft')}
+                    </Button>
+                    {/* C6 — featured picker: leads the public storefront. */}
+                    <Button
+                      size="sm"
+                      variant="ghost"
+                      title={t('vendorPortal.featured')}
+                      onClick={() => featuredMut.mutate({ id: p.id, featured: !p.featured })}
+                    >
+                      {p.featured ? '⭐' : '☆'}
                     </Button>
                     <Button
                       size="sm"
@@ -752,6 +878,102 @@ export function StoreDashboard({
           </div>
         )}
 
+        {tab === 'coupons' && (
+          <div
+            role="tabpanel"
+            id="vendor-panel-coupons"
+            data-testid="vendor-panel-coupons"
+            aria-labelledby="vendor-tab-coupons"
+            className="space-y-3"
+          >
+            {/* C4 — propose a store coupon (admin reviews via the queue). */}
+            <Card padding="md">
+              <h3 className="mb-2 text-sm font-semibold">{t('vendorPortal.coupons.create')}</h3>
+              <div className="flex flex-wrap gap-2">
+                <input
+                  value={couponCode}
+                  onChange={(e) => setCouponCode(e.target.value.toUpperCase())}
+                  placeholder={t('vendorPortal.coupons.code')}
+                  className="w-32 rounded-xl border border-border-muted bg-surface px-3 py-2 text-sm"
+                />
+                <input
+                  value={couponValue}
+                  onChange={(e) => setCouponValue(e.target.value)}
+                  placeholder={t('vendorPortal.coupons.value')}
+                  className="w-28 rounded-xl border border-border-muted bg-surface px-3 py-2 text-sm"
+                />
+                <input
+                  value={couponMin}
+                  onChange={(e) => setCouponMin(e.target.value)}
+                  placeholder={t('vendorPortal.coupons.min')}
+                  className="w-32 rounded-xl border border-border-muted bg-surface px-3 py-2 text-sm"
+                />
+                <Button
+                  size="sm"
+                  onClick={() =>
+                    createCouponMut.mutate({
+                      code: couponCode,
+                      discountType: 'percent',
+                      discountValue: Number(couponValue),
+                      ...(couponMin ? { minOrderAmount: Number(couponMin) } : {}),
+                    })
+                  }
+                  loading={createCouponMut.isPending}
+                  disabled={!couponCode || !couponValue}
+                >
+                  {t('vendorPortal.coupons.create')}
+                </Button>
+              </div>
+              {createCouponMut.isError && (
+                <p className="mt-2 text-xs text-red-600 dark:text-red-400">
+                  {createCouponMut.error.message}
+                </p>
+              )}
+            </Card>
+
+            {(coupons ?? []).length === 0 ? (
+              <p className="text-sm text-text-tertiary">{t('vendorPortal.coupons.empty')}</p>
+            ) : (
+              <div className="space-y-2">
+                {(coupons ?? []).map((p) => (
+                  <Card key={p.id} padding="sm" className="flex items-center justify-between">
+                    <div>
+                      <p className="text-sm font-bold">{p.code}</p>
+                      <p className="text-xs text-text-secondary">
+                        {p.discountType === 'percent'
+                          ? `-${Number(p.discountValue)}%`
+                          : formatCurrency(Number(p.discountValue))}{' '}
+                        · {t('vendorPortal.coupons.uses', { used: p.currentUses })}
+                      </p>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <span
+                        className={`rounded-full px-2 py-0.5 text-xs ${
+                          p.isActive
+                            ? 'bg-green-100 text-green-700 dark:bg-green-950 dark:text-green-300'
+                            : 'bg-gray-100 text-gray-600 dark:bg-gray-800 dark:text-gray-300'
+                        }`}
+                      >
+                        {p.isActive
+                          ? t('vendorPortal.coupons.active')
+                          : t('vendorPortal.coupons.inactive')}
+                      </span>
+                      {p.isActive && (
+                        <Button
+                          size="sm"
+                          variant="ghost"
+                          onClick={() => deactivateCouponMut.mutate({ id: p.id })}
+                        >
+                          {t('vendorPortal.coupons.deactivate')}
+                        </Button>
+                      )}
+                    </div>
+                  </Card>
+                ))}
+              </div>
+            )}
+          </div>
+        )}
         {tab === 'earnings' && (
           <div
             role="tabpanel"

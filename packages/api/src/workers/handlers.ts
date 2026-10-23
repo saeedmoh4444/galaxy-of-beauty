@@ -325,3 +325,150 @@ async function syncSideToCalendar(
     console.log(`[Integration] Calendar create failed for user #${userId}, booking #${bookingId}`);
   }
 }
+
+// ── C5 — bulk CSV product import (vendor portal) ─────────────────────────
+
+export interface CsvImportJob {
+  vendorId: number;
+  userId: number;
+  csv: string;
+  idempotencyKey?: string;
+}
+
+export interface CsvImportReport {
+  totalRows: number;
+  imported: number;
+  errors: { row: number; message: string }[];
+}
+
+/**
+ * Minimal RFC4180-ish CSV parser: quoted fields, escaped quotes (""), and
+ * CRLF/LF rows. No multiline fields — the import template never needs them
+ * and this keeps the parser dependency-free (the audit gate dislikes new
+ * deps).
+ */
+export function parseCsv(text: string): string[][] {
+  const rows: string[][] = [];
+  let row: string[] = [];
+  let field = '';
+  let inQuotes = false;
+  for (let i = 0; i < text.length; i++) {
+    const ch = text[i];
+    if (inQuotes) {
+      if (ch === '"') {
+        if (text[i + 1] === '"') {
+          field += '"';
+          i++;
+        } else {
+          inQuotes = false;
+        }
+      } else {
+        field += ch;
+      }
+    } else if (ch === '"') {
+      inQuotes = true;
+    } else if (ch === ',') {
+      row.push(field);
+      field = '';
+    } else if (ch === '\n' || ch === '\r') {
+      if (ch === '\r' && text[i + 1] === '\n') i++;
+      row.push(field);
+      field = '';
+      if (row.some((c) => c.trim() !== '')) rows.push(row);
+      row = [];
+    } else {
+      field += ch;
+    }
+  }
+  row.push(field);
+  if (row.some((c) => c.trim() !== '')) rows.push(row);
+  return rows;
+}
+
+/**
+ * handleCsvImportJob — C5: parse a vendor's uploaded CSV, validate every
+ * row (nameAr required, price ≥ 1, non-negative integer stock, in-file
+ * duplicate names) and create DRAFT products (isDraft: true — nothing
+ * goes live from an import without the vendor reviewing it). The report
+ * (imported + per-row errors) is the job's returnvalue, polled by
+ * vendorPortal.importStatus.
+ */
+export async function handleCsvImportJob(job: Job<CsvImportJob>): Promise<CsvImportReport> {
+  const { vendorId, csv } = job.data;
+
+  const rows = parseCsv(csv.trim());
+  const header = rows[0] ?? [];
+  const expected = ['nameAr', 'nameEn', 'price', 'stock', 'emoji'];
+  const headerOk = expected.every((h, i) => header[i]?.trim().toLowerCase() === h.toLowerCase());
+  if (!headerOk) {
+    return {
+      totalRows: 0,
+      imported: 0,
+      errors: [{ row: 0, message: 'CSV header must be: nameAr,nameEn,price,stock,emoji' }],
+    };
+  }
+  const body = rows.slice(1);
+  if (body.length === 0) {
+    return { totalRows: 0, imported: 0, errors: [{ row: 0, message: 'CSV has no data rows' }] };
+  }
+
+  const general = await prisma.productCategory.findUnique({ where: { slug: 'general' } });
+  const anyCat =
+    general ?? (await prisma.productCategory.findFirst({ orderBy: { sortOrder: 'asc' } }));
+  if (!anyCat) {
+    return {
+      totalRows: body.length,
+      imported: 0,
+      errors: [{ row: 0, message: 'No product categories available' }],
+    };
+  }
+
+  const errors: CsvImportReport['errors'] = [];
+  const seenNames = new Set<string>();
+  let imported = 0;
+
+  for (let idx = 0; idx < body.length; idx++) {
+    const rowNo = idx + 2; // 1-based; the header is row 1
+    const [nameArRaw, nameEnRaw, priceRaw, stockRaw, emojiRaw] = body[idx] ?? [];
+    const name = (nameArRaw ?? '').trim();
+    if (!name) {
+      errors.push({ row: rowNo, message: 'nameAr is required' });
+      continue;
+    }
+    if (seenNames.has(name)) {
+      errors.push({ row: rowNo, message: `Duplicate nameAr: ${name}` });
+      continue;
+    }
+    seenNames.add(name);
+
+    const price = Number(priceRaw);
+    if (!Number.isFinite(price) || price < 1) {
+      errors.push({ row: rowNo, message: 'price must be a number ≥ 1' });
+      continue;
+    }
+    const stockRawStr = (stockRaw ?? '').trim();
+    const stock = stockRawStr === '' ? 10 : Number(stockRawStr);
+    if (!Number.isInteger(stock) || stock < 0) {
+      errors.push({ row: rowNo, message: 'stock must be a non-negative integer' });
+      continue;
+    }
+
+    await prisma.product.create({
+      data: {
+        vendorId,
+        categoryId: anyCat.id,
+        nameJson: { ar: name, en: (nameEnRaw ?? '').trim() || name },
+        descriptionJson: { ar: '', en: '' },
+        price,
+        stock,
+        sales: 0,
+        emoji: (emojiRaw ?? '').trim(),
+        isActive: true,
+        isDraft: true, // C5 — imports land as drafts for vendor review
+      },
+    });
+    imported++;
+  }
+
+  return { totalRows: body.length, imported, errors };
+}

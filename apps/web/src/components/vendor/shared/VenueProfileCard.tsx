@@ -23,8 +23,15 @@ export function VenueProfileCard({
   const bannerMut = api.vendorPortal.setBanner.useMutation({
     onSuccess: () => refetchStore(),
   });
+  // C6 — About editor for the public storefront profile.
+  const aboutMut = api.vendorPortal.updateStoreProfile.useMutation({
+    onSuccess: () => refetchStore(),
+  });
   const uploadMut = api.uploads.uploadMedia.useMutation({});
   const [bannerPreview, setBannerPreview] = useState('');
+  const aboutJson = (store.descriptionJson ?? {}) as { ar?: string; en?: string };
+  const [aboutAr, setAboutAr] = useState(aboutJson.ar ?? '');
+  const [aboutEn, setAboutEn] = useState(aboutJson.en ?? '');
 
   const onBannerFile = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -126,6 +133,35 @@ export function VenueProfileCard({
         {uploadMut.isPending && (
           <p className="mt-1 text-xs text-text-tertiary">{t('vendorPortal.banner.uploading')}</p>
         )}
+      </div>
+
+      {/* C6 — About editor (storefront profile bio). */}
+      <div className="mt-4 border-t border-border-muted pt-4">
+        <p className="mb-2 text-sm font-semibold">{t('vendorPortal.about.title')}</p>
+        <div className="grid gap-2 sm:grid-cols-2">
+          <textarea
+            value={aboutAr}
+            onChange={(e) => setAboutAr(e.target.value)}
+            placeholder={t('vendorPortal.about.arPlaceholder')}
+            rows={3}
+            className="w-full rounded-xl border border-border-muted bg-surface p-2 text-sm"
+          />
+          <textarea
+            value={aboutEn}
+            onChange={(e) => setAboutEn(e.target.value)}
+            placeholder={t('vendorPortal.about.enPlaceholder')}
+            rows={3}
+            className="w-full rounded-xl border border-border-muted bg-surface p-2 text-sm"
+          />
+        </div>
+        <Button
+          size="sm"
+          className="mt-2"
+          onClick={() => aboutMut.mutate({ aboutAr, aboutEn })}
+          loading={aboutMut.isPending}
+        >
+          {t('vendorPortal.about.save')}
+        </Button>
       </div>
     </Card>
   );

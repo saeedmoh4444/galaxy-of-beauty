@@ -3814,6 +3814,29 @@ export const miscMessages = {
   'vendorPortal.tab.overview': { ar: 'نظرة عامة', en: 'Overview' },
   'vendorPortal.tab.products': { ar: 'المنتجات', en: 'Products' },
   'vendorPortal.tab.deals': { ar: 'العروض', en: 'Deals' },
+  // C5 — bulk CSV product import.
+  'vendorPortal.import.choose': { ar: 'استيراد CSV', en: 'Import CSV' },
+  'vendorPortal.import.template': { ar: 'تحميل القالب', en: 'Download template' },
+  'vendorPortal.import.uploading': { ar: 'جارٍ الاستيراد…', en: 'Importing…' },
+  'vendorPortal.import.report': {
+    ar: 'تم استيراد {imported} من {total} منتج',
+    en: 'Imported {imported} of {total} products',
+  },
+  'vendorPortal.import.row-error': { ar: 'الصف {row}: {message}', en: 'Row {row}: {message}' },
+  // C4 — store coupon codes.
+  'vendorPortal.tab.coupons': { ar: 'الكوبونات', en: 'Coupons' },
+  'vendorPortal.coupons.create': { ar: 'اقتراح كوبون', en: 'Propose a coupon' },
+  'vendorPortal.coupons.code': { ar: 'الكود (مثل SAVE20)', en: 'Code (e.g. SAVE20)' },
+  'vendorPortal.coupons.value': { ar: 'الخصم ٪', en: 'Discount %' },
+  'vendorPortal.coupons.min': { ar: 'الحد الأدنى (ر.س)', en: 'Min order (SAR)' },
+  'vendorPortal.coupons.empty': {
+    ar: 'لا توجد كوبونات بعد — اقترحي كوبونًا وسيراجعه فريقنا',
+    en: 'No coupons yet — propose one and our team will review it',
+  },
+  'vendorPortal.coupons.uses': { ar: 'استُخدم {used} مرة', en: 'Used {used} times' },
+  'vendorPortal.coupons.active': { ar: 'نشط', en: 'Active' },
+  'vendorPortal.coupons.inactive': { ar: 'موقوف', en: 'Paused' },
+  'vendorPortal.coupons.deactivate': { ar: 'إيقاف', en: 'Pause' },
   'vendorPortal.loadMore': { ar: 'المزيد', en: 'Load more' },
   'vendorPortal.tabs.aria': { ar: 'أقسام لوحة المتجر', en: 'Store dashboard sections' },
   'vendorPortal.products.empty': { ar: 'لا توجد منتجات بعد', en: 'No products yet' },
@@ -3954,6 +3977,10 @@ export const miscMessages = {
   'stores.empty': { ar: 'لا توجد متاجر بعد', en: 'No stores yet' },
   'stores.not-found': { ar: 'المتجر غير موجود', en: 'Store not found' },
   'stores.load-error': { ar: 'فشل تحميل المتاجر', en: 'Failed to load stores' },
+  // C6 — store QR code (physical-store discovery).
+  'stores.qr.title': { ar: 'رمز QR للمتجر', en: 'Store QR code' },
+  'stores.qr.desc': { ar: 'امسحي الرمز لفتح المتجر', en: 'Scan to open the store' },
+  'stores.qr.download': { ar: 'تحميل الرمز', en: 'Download QR' },
   'stores.product-count': { ar: '{count} منتج', en: '{count} products' },
   'stores.verified': { ar: 'متجر موثق', en: 'Verified' },
   'stores.empty-products': { ar: 'لا توجد منتجات في هذا المتجر', en: 'No products in this store' },
@@ -4491,6 +4518,12 @@ export const miscMessages = {
   'trust.safeSpace': { ar: 'مساحة آمنة للنساء', en: 'Women-only safe space' },
   'trust.mommyFriendly': { ar: 'مناسبة للأمهات', en: 'Mommy-friendly' },
   'vendorPortal.trust.title': { ar: 'شارات الثقة', en: 'Trust badges' },
+  // C6 — storefront profile (About editor + featured picker).
+  'vendorPortal.about.title': { ar: 'نبذة عن المتجر', en: 'About your store' },
+  'vendorPortal.about.arPlaceholder': { ar: 'نبذة بالعربية', en: 'About (Arabic)' },
+  'vendorPortal.about.enPlaceholder': { ar: 'نبذة بالإنجليزية', en: 'About (English)' },
+  'vendorPortal.about.save': { ar: 'حفظ', en: 'Save' },
+  'vendorPortal.featured': { ar: 'تمييز المنتج في واجهة المتجر', en: 'Feature on storefront' },
   'vendorPortal.trust.women-only': { ar: 'كادر نسائي فقط', en: 'Women-only staff' },
   'vendorPortal.trust.private-suite': {
     ar: 'يوجد جناح خاص',

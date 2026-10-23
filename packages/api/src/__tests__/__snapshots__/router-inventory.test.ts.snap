@@ -1028,11 +1028,15 @@ vendorPortal.clinicSlots.add	mutation	customer
 vendorPortal.clinicSlots.list	query	customer
 vendorPortal.clinicSlots.remove	mutation	customer
 vendorPortal.confirmConsultation	mutation	customer
+vendorPortal.createCoupon	mutation	customer
 vendorPortal.dashboard	query	customer
+vendorPortal.deactivateCoupon	mutation	customer
 vendorPortal.deleteProduct	mutation	customer
 vendorPortal.duplicateProduct	mutation	customer
 vendorPortal.earnings	query	customer
 vendorPortal.earningsCsv	query	customer
+vendorPortal.editPendingDeal	mutation	customer
+vendorPortal.endDeal	mutation	customer
 vendorPortal.fulfillOrder	mutation	customer
 vendorPortal.gymCancelBooking	mutation	customer
 vendorPortal.gymClassBookings	query	customer
@@ -1041,6 +1045,9 @@ vendorPortal.gymClasses.list	query	customer
 vendorPortal.gymClasses.remove	mutation	customer
 vendorPortal.homeRequests.complete	mutation	customer
 vendorPortal.homeRequests.list	query	customer
+vendorPortal.importProductsCsv	mutation	customer
+vendorPortal.importStatus	query	customer
+vendorPortal.listCoupons	query	customer
 vendorPortal.myAthomeSalon	query	customer
 vendorPortal.myClinic	query	customer
 vendorPortal.myDeals	query	customer
@@ -1057,8 +1064,10 @@ vendorPortal.proposeDeal	mutation	customer
 vendorPortal.setBanner	mutation	customer
 vendorPortal.setConsultationPrice	mutation	customer
 vendorPortal.setDraft	mutation	customer
+vendorPortal.setProductFeatured	mutation	customer
 vendorPortal.setTrustFlags	mutation	customer
 vendorPortal.updateProduct	mutation	customer
+vendorPortal.updateStoreProfile	mutation	customer
 video.endSession	mutation	protected
 video.getByBooking	query	protected
 video.startSession	mutation	protected

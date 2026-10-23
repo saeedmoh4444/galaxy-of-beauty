@@ -35,13 +35,26 @@ function assertPromoUsable(promo: PromoRow | null, orderAmount: number): asserts
 export const promoRouter = router({
   // Validate a promo code (public — called at checkout)
   validate: publicProcedure
-    .input(z.object({ code: z.string().min(1), orderAmount: z.number().positive() }))
+    .input(
+      z.object({
+        code: z.string().min(1),
+        orderAmount: z.number().positive(),
+        // C4 — store-scoped codes require the checkout's store; platform
+        // codes (vendorId null) ignore it.
+        vendorId: z.number().int().positive().optional(),
+      }),
+    )
     .query(async ({ input }) => {
       const promo = await prisma.promoCode.findUnique({
         where: { code: input.code.toUpperCase() },
       });
 
       assertPromoUsable(promo, input.orderAmount);
+
+      // C4 — a store coupon only applies to its own store's checkout.
+      if (promo.vendorId && promo.vendorId !== input.vendorId) {
+        throw new TRPCError({ code: 'NOT_FOUND', message: 'Invalid or expired promo code' });
+      }
 
       let discount = BigInt(0);
       if (promo.discountType === 'percent') {
@@ -78,6 +91,14 @@ export const promoRouter = router({
       });
 
       assertPromoUsable(promo, Number(booking.totalAmount));
+
+      // C4 — store coupons are scoped to store checkouts, not bookings.
+      if (promo.vendorId) {
+        throw new TRPCError({
+          code: 'BAD_REQUEST',
+          message: 'Store coupons do not apply to bookings',
+        });
+      }
 
       // Double-redemption guard: the unique (promoCodeId, userId, bookingId)
       // index would otherwise surface as an opaque P2002 mid-transaction.
