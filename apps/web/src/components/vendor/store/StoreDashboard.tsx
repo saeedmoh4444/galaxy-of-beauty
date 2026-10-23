@@ -11,9 +11,9 @@ import { localize } from '@galaxy/shared';
 import { VenueProfileCard } from '../shared/VenueProfileCard';
 import { DashboardTabs } from '../shared/DashboardTabs';
 
-type TabKey = 'overview' | 'orders' | 'products' | 'deals' | 'earnings';
+type TabKey = 'overview' | 'orders' | 'products' | 'deals' | 'coupons' | 'earnings';
 
-const TAB_KEYS: TabKey[] = ['overview', 'orders', 'products', 'deals', 'earnings'];
+const TAB_KEYS: TabKey[] = ['overview', 'orders', 'products', 'deals', 'coupons', 'earnings'];
 
 /** A3 — read the ?tab= deep link once on mount (hydration-safe; the page is
  *  client-only, so window is available). */
@@ -162,6 +162,25 @@ export function StoreDashboard({
     new Date(Date.now() + 3 * 86_400_000).toISOString().slice(0, 16),
   );
   const myDeals = deals ?? [];
+
+  // C4 — store coupon codes (propose → admin review → live store-scoped code).
+  const { data: coupons, refetch: refetchCoupons } = api.vendorPortal.listCoupons.useQuery(
+    undefined,
+    { enabled: isAuthenticated },
+  );
+  const createCouponMut = api.vendorPortal.createCoupon.useMutation({
+    onSuccess: () => {
+      setCouponCode('');
+      setCouponValue('');
+      refetchCoupons();
+    },
+  });
+  const deactivateCouponMut = api.vendorPortal.deactivateCoupon.useMutation({
+    onSuccess: () => refetchCoupons(),
+  });
+  const [couponCode, setCouponCode] = useState('');
+  const [couponValue, setCouponValue] = useState('');
+  const [couponMin, setCouponMin] = useState('');
   const topProducts = dash?.topProducts ?? [];
   // B3b — low-stock surface (stock ≤ the per-product threshold).
   const lowStock = dash?.lowStockProducts ?? [];
@@ -246,6 +265,7 @@ export function StoreDashboard({
     { key: 'orders', label: t('vendorPortal.orders.title') },
     { key: 'products', label: t('vendorPortal.tab.products') },
     { key: 'deals', label: t('vendorPortal.tab.deals') },
+    { key: 'coupons', label: t('vendorPortal.tab.coupons') },
     { key: 'earnings', label: t('vendorPortal.tab.earnings') },
   ];
 
@@ -858,6 +878,102 @@ export function StoreDashboard({
           </div>
         )}
 
+        {tab === 'coupons' && (
+          <div
+            role="tabpanel"
+            id="vendor-panel-coupons"
+            data-testid="vendor-panel-coupons"
+            aria-labelledby="vendor-tab-coupons"
+            className="space-y-3"
+          >
+            {/* C4 — propose a store coupon (admin reviews via the queue). */}
+            <Card padding="md">
+              <h3 className="mb-2 text-sm font-semibold">{t('vendorPortal.coupons.create')}</h3>
+              <div className="flex flex-wrap gap-2">
+                <input
+                  value={couponCode}
+                  onChange={(e) => setCouponCode(e.target.value.toUpperCase())}
+                  placeholder={t('vendorPortal.coupons.code')}
+                  className="w-32 rounded-xl border border-border-muted bg-surface px-3 py-2 text-sm"
+                />
+                <input
+                  value={couponValue}
+                  onChange={(e) => setCouponValue(e.target.value)}
+                  placeholder={t('vendorPortal.coupons.value')}
+                  className="w-28 rounded-xl border border-border-muted bg-surface px-3 py-2 text-sm"
+                />
+                <input
+                  value={couponMin}
+                  onChange={(e) => setCouponMin(e.target.value)}
+                  placeholder={t('vendorPortal.coupons.min')}
+                  className="w-32 rounded-xl border border-border-muted bg-surface px-3 py-2 text-sm"
+                />
+                <Button
+                  size="sm"
+                  onClick={() =>
+                    createCouponMut.mutate({
+                      code: couponCode,
+                      discountType: 'percent',
+                      discountValue: Number(couponValue),
+                      ...(couponMin ? { minOrderAmount: Number(couponMin) } : {}),
+                    })
+                  }
+                  loading={createCouponMut.isPending}
+                  disabled={!couponCode || !couponValue}
+                >
+                  {t('vendorPortal.coupons.create')}
+                </Button>
+              </div>
+              {createCouponMut.isError && (
+                <p className="mt-2 text-xs text-red-600 dark:text-red-400">
+                  {createCouponMut.error.message}
+                </p>
+              )}
+            </Card>
+
+            {(coupons ?? []).length === 0 ? (
+              <p className="text-sm text-text-tertiary">{t('vendorPortal.coupons.empty')}</p>
+            ) : (
+              <div className="space-y-2">
+                {(coupons ?? []).map((p) => (
+                  <Card key={p.id} padding="sm" className="flex items-center justify-between">
+                    <div>
+                      <p className="text-sm font-bold">{p.code}</p>
+                      <p className="text-xs text-text-secondary">
+                        {p.discountType === 'percent'
+                          ? `-${Number(p.discountValue)}%`
+                          : formatCurrency(Number(p.discountValue))}{' '}
+                        · {t('vendorPortal.coupons.uses', { used: p.currentUses })}
+                      </p>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <span
+                        className={`rounded-full px-2 py-0.5 text-xs ${
+                          p.isActive
+                            ? 'bg-green-100 text-green-700 dark:bg-green-950 dark:text-green-300'
+                            : 'bg-gray-100 text-gray-600 dark:bg-gray-800 dark:text-gray-300'
+                        }`}
+                      >
+                        {p.isActive
+                          ? t('vendorPortal.coupons.active')
+                          : t('vendorPortal.coupons.inactive')}
+                      </span>
+                      {p.isActive && (
+                        <Button
+                          size="sm"
+                          variant="ghost"
+                          onClick={() => deactivateCouponMut.mutate({ id: p.id })}
+                        >
+                          {t('vendorPortal.coupons.deactivate')}
+                        </Button>
+                      )}
+                    </div>
+                  </Card>
+                ))}
+              </div>
+            )}
+          </div>
+        )}
         {tab === 'earnings' && (
           <div
             role="tabpanel"
