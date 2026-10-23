@@ -1329,6 +1329,7 @@ export function StoreDashboard({
         >
           <div className="space-y-3">
             <select
+              data-testid="deal-product-select"
               value={dealProductId ?? ''}
               onChange={(e) => setDealProductId(Number(e.target.value) || undefined)}
               className="w-full rounded-lg border px-3 py-2 text-sm border-edge bg-surface-elevated"
@@ -1342,6 +1343,7 @@ export function StoreDashboard({
             </select>
             {/* D5 — seasonal deal templates prefill the window. */}
             <select
+              data-testid="deal-template-select"
               defaultValue=""
               onChange={(e) => {
                 const tpl = (templatesQ.data ?? []).find((x) => x.type === e.target.value);
