@@ -11,9 +11,17 @@ import { localize } from '@galaxy/shared';
 import { VenueProfileCard } from '../shared/VenueProfileCard';
 import { DashboardTabs } from '../shared/DashboardTabs';
 
-type TabKey = 'overview' | 'orders' | 'products' | 'deals' | 'coupons' | 'earnings';
+type TabKey = 'overview' | 'orders' | 'products' | 'deals' | 'coupons' | 'earnings' | 'analytics';
 
-const TAB_KEYS: TabKey[] = ['overview', 'orders', 'products', 'deals', 'coupons', 'earnings'];
+const TAB_KEYS: TabKey[] = [
+  'overview',
+  'orders',
+  'products',
+  'deals',
+  'coupons',
+  'earnings',
+  'analytics',
+];
 
 /** A3 — read the ?tab= deep link once on mount (hydration-safe; the page is
  *  client-only, so window is available). */
@@ -189,6 +197,15 @@ export function StoreDashboard({
 
   // C5 — bulk CSV import: upload → worker job → polled per-row report.
   const importMut = api.vendorPortal.importProductsCsv.useMutation({});
+
+  // D1 — analytics read-model series (7/30/90-day toggle).
+  const [analyticsDays, setAnalyticsDays] = useState<7 | 30 | 90>(30);
+  const analyticsQ = api.vendorPortal.analyticsSeries.useQuery(
+    { days: analyticsDays },
+    { enabled: isAuthenticated },
+  );
+  const series = analyticsQ.data?.series ?? [];
+  const analyticsTopProducts = analyticsQ.data?.topProducts ?? [];
   const [importJobId, setImportJobId] = useState<string | null>(null);
   const importStatusQ = api.vendorPortal.importStatus.useQuery(
     { jobId: importJobId ?? '' },
@@ -267,6 +284,7 @@ export function StoreDashboard({
     { key: 'deals', label: t('vendorPortal.tab.deals') },
     { key: 'coupons', label: t('vendorPortal.tab.coupons') },
     { key: 'earnings', label: t('vendorPortal.tab.earnings') },
+    { key: 'analytics', label: t('vendorPortal.tab.analytics') },
   ];
 
   // The dashboard query's non-owner branch returns {}, so narrow the union.
@@ -1076,6 +1094,117 @@ export function StoreDashboard({
                 </div>
               </Card>
             )}
+          </div>
+        )}
+
+        {tab === 'analytics' && (
+          <div
+            role="tabpanel"
+            id="vendor-panel-analytics"
+            data-testid="vendor-panel-analytics"
+            aria-labelledby="vendor-tab-analytics"
+            className="space-y-4"
+          >
+            {/* D1 — read-model analytics: stat tiles + a single-metric daily
+                series (revenue only — one axis, identity from the title) +
+                labeled top products. */}
+            <div className="flex items-center justify-between">
+              <h2 className="text-lg font-bold">{t('vendorPortal.analytics.title')}</h2>
+              <div
+                className="flex gap-1"
+                role="group"
+                aria-label={t('vendorPortal.analytics.range')}
+              >
+                {([7, 30, 90] as const).map((d) => (
+                  <Button
+                    key={d}
+                    size="sm"
+                    variant={analyticsDays === d ? 'primary' : 'ghost'}
+                    onClick={() => setAnalyticsDays(d)}
+                  >
+                    {d}
+                  </Button>
+                ))}
+              </div>
+            </div>
+
+            <div className="grid gap-4 sm:grid-cols-3">
+              <Card padding="md" className="text-center">
+                <p className="text-2xl font-bold">
+                  {formatCurrency(series.reduce((s, x) => s + x.revenue, 0))}
+                </p>
+                <p className="text-xs text-text-secondary">{t('vendorPortal.analytics.revenue')}</p>
+              </Card>
+              <Card padding="md" className="text-center">
+                <p className="text-2xl font-bold">{series.reduce((s, x) => s + x.orders, 0)}</p>
+                <p className="text-xs text-text-secondary">{t('vendorPortal.analytics.orders')}</p>
+              </Card>
+              <Card padding="md" className="text-center">
+                <p className="text-2xl font-bold">
+                  {formatCurrency(
+                    series.length
+                      ? series.reduce((s, x) => s + x.revenue, 0) /
+                          series.reduce((s, x) => s + x.orders, 0)
+                      : 0,
+                  )}
+                </p>
+                <p className="text-xs text-text-secondary">{t('vendorPortal.analytics.aov')}</p>
+              </Card>
+            </div>
+
+            {series.length === 0 ? (
+              <p className="text-sm text-text-tertiary">{t('vendorPortal.analytics.empty')}</p>
+            ) : (
+              <Card padding="md">
+                <p className="mb-2 text-sm font-semibold">{t('vendorPortal.analytics.revenue')}</p>
+                <div className="flex h-28 items-end gap-[2px]">
+                  {series.map((x) => {
+                    const max = Math.max(...series.map((s) => s.revenue), 1);
+                    return (
+                      <div
+                        key={x.day}
+                        className="group relative flex-1"
+                        title={`${new Date(x.day).toLocaleDateString(
+                          locale === 'ar' ? 'ar-SA' : 'en-GB',
+                        )}: ${formatCurrency(x.revenue)}`}
+                      >
+                        <div
+                          className="w-full rounded-t-[4px] bg-brand-600 transition-colors group-hover:bg-brand-700 dark:bg-brand-500 dark:group-hover:bg-brand-400"
+                          style={{ height: `${(x.revenue / max) * 100}%` }}
+                        />
+                      </div>
+                    );
+                  })}
+                </div>
+              </Card>
+            )}
+
+            <Card padding="md">
+              <h3 className="mb-2 text-sm font-semibold">
+                {t('vendorPortal.analytics.topProducts')}
+              </h3>
+              {analyticsTopProducts.length === 0 ? (
+                <p className="text-xs text-text-tertiary">{t('vendorPortal.analytics.empty')}</p>
+              ) : (
+                <div className="space-y-2">
+                  {analyticsTopProducts.map((p) => {
+                    const maxQty = Math.max(...analyticsTopProducts.map((tp) => tp.quantity), 1);
+                    return (
+                      <div key={p.productId} className="flex items-center gap-3">
+                        <p className="w-32 truncate text-sm">{p.nameAr}</p>
+                        <div className="h-2 flex-1 rounded-full bg-surface-elevated">
+                          <div
+                            className="h-2 rounded-full bg-brand-600 dark:bg-brand-500"
+                            style={{ width: `${(p.quantity / maxQty) * 100}%` }}
+                          />
+                        </div>
+                        <p className="w-10 text-right text-xs text-text-secondary">{p.quantity}</p>
+                      </div>
+                    );
+                  })}
+                </div>
+              )}
+            </Card>
           </div>
         )}
 
