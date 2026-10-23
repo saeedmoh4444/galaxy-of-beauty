@@ -8,6 +8,7 @@
  *   integrations — calendar sync (Google), ZATCA reporting, external webhooks
  *   csv-import   — vendor bulk product imports (C5)
  *   analytics    — D1 vendor daily-stat materialization (nightly)
+ *   advisor      — D3 weekly advisor digest
  *
  * Usage:
  *   import { walletQueue } from '../queues';
@@ -43,6 +44,7 @@ let _notificationQueue: Queue | null = null;
 let _integrationQueue: Queue | null = null;
 let _csvImportQueue: Queue | null = null;
 let _analyticsQueue: Queue | null = null;
+let _advisorQueue: Queue | null = null;
 
 export function getWalletQueue(): Queue | null {
   if (_walletQueue) return _walletQueue;
@@ -104,6 +106,16 @@ export function getAnalyticsQueue(): Queue | null {
   }
 }
 
+export function getAdvisorQueue(): Queue | null {
+  if (_advisorQueue) return _advisorQueue;
+  try {
+    _advisorQueue = createQueue('gob-advisor');
+    return _advisorQueue;
+  } catch {
+    return null;
+  }
+}
+
 // Convenience: all queues
 export function getAllQueues(): Record<string, Queue | null> {
   return {
@@ -113,5 +125,6 @@ export function getAllQueues(): Record<string, Queue | null> {
     integrations: getIntegrationQueue(),
     csvImport: getCsvImportQueue(),
     analytics: getAnalyticsQueue(),
+    advisor: getAdvisorQueue(),
   };
 }

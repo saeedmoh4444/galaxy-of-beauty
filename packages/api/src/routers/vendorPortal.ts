@@ -9,7 +9,7 @@ import { getCsvImportQueue } from '../queues';
 // importing from '../workers' would evaluate the BullMQ worker instances
 // (real Redis connections) inside the web build's page-data workers.
 import type { CsvImportReport } from '../workers/handlers';
-import { noonUtcDay } from '../workers/handlers';
+import { noonUtcDay, advisorRulesForVendor } from '../workers/handlers';
 import { computeStoreHealthScore, gatherStoreHealthFactors } from '../lib/storeHealth';
 
 /** B.3: vendor portal is DB-backed (was an in-memory array). */
@@ -1042,6 +1042,17 @@ export const vendorPortalRouter = router({
 
       return { csv: [headers.join(','), ...lines].join('\r\n') };
     }),
+
+  /**
+   * advisor — D3: rule-based store advisor (no LLM in v1). Restock
+   * suggestions, expired-deal nudges, weekend-peak hints and AOV-drop
+   * flags, ordered by priority — rendered as the Overview advisor card.
+   */
+  advisor: customerProcedure.query(async ({ ctx }) => {
+    const vendor = await prisma.vendor.findUnique({ where: { userId: ctx.user.id } });
+    if (!vendor) return [];
+    return advisorRulesForVendor(vendor.id);
+  }),
 
   // ---------------------------------------------------------------------------
   // D1 — vendor analytics center (read-model series)

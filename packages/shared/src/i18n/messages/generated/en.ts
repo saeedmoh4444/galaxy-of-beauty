@@ -5113,6 +5113,12 @@ export const enWebMessages: Record<string, string> = {
   'vendorPortal.about.title': 'About your store',
   'vendorPortal.add': 'Add',
   'vendorPortal.addProductTitle': 'Add product',
+  'vendorPortal.advisor.aov-drop':
+    'Average order fell from {before} to {current} SAR — try bundle offers',
+  'vendorPortal.advisor.expired-deal': 'The {name} deal has expired — refresh or end it',
+  'vendorPortal.advisor.restock': '{name} is low ({stock} left) — selling {weekly}/week',
+  'vendorPortal.advisor.title': 'Store advisor',
+  'vendorPortal.advisor.weekend-peak': 'Half your orders land on weekends — stock up for Friday',
   'vendorPortal.analytics.aov': 'Avg order',
   'vendorPortal.analytics.empty': 'No data yet',
   'vendorPortal.analytics.orders': 'Orders',
