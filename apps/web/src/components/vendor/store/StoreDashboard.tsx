@@ -231,6 +231,9 @@ export function StoreDashboard({
   const productsCsv = useCsvDownload('products');
   const analyticsCsv = useCsvDownload('analytics');
 
+  // D3 — rule-based advisor (restock / expired deals / weekend peak / AOV).
+  const advisorQ = api.vendorPortal.advisor.useQuery(undefined, { enabled: isAuthenticated });
+
   const analyticsQ = api.vendorPortal.analyticsSeries.useQuery(
     { days: analyticsDays },
     { enabled: isAuthenticated },
@@ -386,6 +389,18 @@ export function StoreDashboard({
                 <p className="mt-1 text-xs text-text-secondary">
                   {t('vendorPortal.status.pending-review-desc')}
                 </p>
+              </Card>
+            )}
+
+            {/* D3 — store advisor (rule-based v1, no LLM). */}
+            {(advisorQ.data ?? []).length > 0 && (
+              <Card padding="md">
+                <h3 className="mb-2 text-sm font-semibold">{t('vendorPortal.advisor.title')}</h3>
+                <ul className="list-inside list-disc space-y-1 text-xs text-text-secondary">
+                  {(advisorQ.data ?? []).map((r) => (
+                    <li key={r.key}>{t(r.key as TranslationKey, r.params)}</li>
+                  ))}
+                </ul>
               </Card>
             )}
 

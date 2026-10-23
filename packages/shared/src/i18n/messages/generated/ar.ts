@@ -5039,6 +5039,12 @@ export const arWebMessages: Record<string, string> = {
   'vendorPortal.about.title': 'نبذة عن المتجر',
   'vendorPortal.add': 'إضافة',
   'vendorPortal.addProductTitle': 'إضافة منتج',
+  'vendorPortal.advisor.aov-drop':
+    'متوسط الطلب انخفض من {before} إلى {current} ر.س — جرّبي عروضًا تكميلية',
+  'vendorPortal.advisor.expired-deal': 'انتهى عرض {name} — حدّثيه أو أوقفيه',
+  'vendorPortal.advisor.restock': 'مخزون {name} منخفض (متبقي {stock}) — يُباع {weekly} أسبوعيًا',
+  'vendorPortal.advisor.title': 'نصائح المتجر',
+  'vendorPortal.advisor.weekend-peak': 'نصف طلباتك في عطلة نهاية الأسبوع — جهّزي مخزونك للجمعة',
   'vendorPortal.analytics.aov': 'متوسط الطلب',
   'vendorPortal.analytics.empty': 'لا توجد بيانات بعد',
   'vendorPortal.analytics.orders': 'الطلبات',

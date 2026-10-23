@@ -1021,6 +1021,7 @@ users.revokeOtherSessions	mutation	protected
 users.revokeSession	mutation	protected
 users.updateMe	mutation	protected
 vendorPortal.addProduct	mutation	customer
+vendorPortal.advisor	query	customer
 vendorPortal.analyticsSeries	query	customer
 vendorPortal.cancelOrder	mutation	customer
 vendorPortal.clinicCancelConsultation	mutation	customer
