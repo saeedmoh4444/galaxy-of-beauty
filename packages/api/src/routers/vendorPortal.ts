@@ -5,8 +5,11 @@ import type { Prisma } from '@galaxy/db';
 import { customerProcedure, router } from '../trpc';
 import { notifyUser } from '../lib/notify';
 import { getCsvImportQueue } from '../queues';
-import type { CsvImportReport } from '../workers';
-import { noonUtcDay } from '../workers';
+// D1 gotcha: value-import from '../workers/handlers' (side-effect free) —
+// importing from '../workers' would evaluate the BullMQ worker instances
+// (real Redis connections) inside the web build's page-data workers.
+import type { CsvImportReport } from '../workers/handlers';
+import { noonUtcDay } from '../workers/handlers';
 
 /** B.3: vendor portal is DB-backed (was an in-memory array). */
 
@@ -1037,7 +1040,6 @@ export const vendorPortalRouter = router({
       return { csv: [headers.join(','), ...lines].join('\r\n') };
     }),
 
-  // ---------------------------------------------------------------------------
   // ---------------------------------------------------------------------------
   // D1 — vendor analytics center (read-model series)
   // ---------------------------------------------------------------------------
