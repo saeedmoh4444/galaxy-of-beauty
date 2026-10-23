@@ -5151,6 +5151,7 @@ export const arWebMessages: Record<string, string> = {
   'vendorPortal.earnings.totalFee': 'إجمالي الرسوم',
   'vendorPortal.edit': 'تعديل',
   'vendorPortal.editProduct': 'تعديل المنتج',
+  'vendorPortal.export': 'تصدير CSV',
   'vendorPortal.featured': 'تمييز المنتج في واجهة المتجر',
   'vendorPortal.fulfilledOrders': 'طلبات منجزة',
   'vendorPortal.gym.bookings-empty': 'لا توجد حجوزات',
