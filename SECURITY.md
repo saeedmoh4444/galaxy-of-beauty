@@ -15,7 +15,7 @@ We aim to acknowledge reports within 48 hours and provide an initial assessment 
 
 ## Dependency Audit (October 2026)
 
-As of 2026-10-22, `pnpm audit --prod` reports **0 critical / 3 high / 2 moderate**. The Storybook preview origin-validation critical (GHSA, <10.6.2) was closed 2026-10-22 by bumping @storybook/* to 10.6.3 in packages/ui + packages/shared. Baseline enforced by `scripts/audit-check.mjs` in CI (criticals block the merge; high/moderate are documented here). The 3 accepted high findings:
+As of 2026-10-23, `pnpm audit --prod` reports **0 critical / 3 high / 2 moderate**. The Storybook preview origin-validation critical (GHSA, <10.6.2) was closed 2026-10-22 by bumping @storybook/* to 10.6.3. Two Next.js <16.4.1 criticals (unauthenticated RCE via SVG in the Image Optimization API, and via `use cache` functions returning typed arrays) plus the Server-Actions DoS high landed 2026-10-22/23 and were closed by bumping next to 16.4.2 in apps/web. Baseline enforced by `scripts/audit-check.mjs` in CI (criticals block the merge; high/moderate are documented here). The 3 accepted high findings:
 
 ### braces (1 finding) — 🔴 OPEN (no patch yet)
 
