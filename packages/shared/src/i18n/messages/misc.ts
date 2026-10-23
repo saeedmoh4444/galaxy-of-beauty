@@ -3869,6 +3869,15 @@ export const miscMessages = {
   'vendorPortal.pendingOrders': { ar: 'طلبات معلقة', en: 'Pending Orders' },
   // B4 — earnings & settlement center
   'vendorPortal.tab.earnings': { ar: 'الأرباح', en: 'Earnings' },
+  // D1 — vendor analytics center (read-model series).
+  'vendorPortal.tab.analytics': { ar: 'التحليلات', en: 'Analytics' },
+  'vendorPortal.analytics.title': { ar: 'مركز التحليلات', en: 'Analytics center' },
+  'vendorPortal.analytics.range': { ar: 'نطاق الأيام', en: 'Day range' },
+  'vendorPortal.analytics.revenue': { ar: 'الإيرادات', en: 'Revenue' },
+  'vendorPortal.analytics.orders': { ar: 'الطلبات', en: 'Orders' },
+  'vendorPortal.analytics.aov': { ar: 'متوسط الطلب', en: 'Avg order' },
+  'vendorPortal.analytics.topProducts': { ar: 'الأكثر مبيعًا', en: 'Top products' },
+  'vendorPortal.analytics.empty': { ar: 'لا توجد بيانات بعد', en: 'No data yet' },
   'vendorPortal.earnings.title': {
     ar: 'مركز الأرباح والتسويات',
     en: 'Earnings & settlement center',
