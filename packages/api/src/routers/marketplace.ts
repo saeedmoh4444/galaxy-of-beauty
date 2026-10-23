@@ -179,8 +179,10 @@ export const marketplaceRouter = router({
       include: {
         // B3 — sold-out products stay hidden; C1 — drafts too; C2 — only
         // admin-approved (LIVE) listings surface.
+        // C6 — featured products lead the storefront profile.
         products: {
           where: { isActive: true, isDraft: false, approvalStatus: 'LIVE', stock: { gt: 0 } },
+          orderBy: [{ isFeatured: 'desc' }, { createdAt: 'desc' }],
           take: LARGE_PAGE_SIZE,
         },
         // B3 — the public count matches what shoppers actually see.

@@ -11,6 +11,7 @@ import type { JwtPayload } from '../lib/jwt';
 import { buildUser } from './factories';
 
 const createdUserIds: number[] = [];
+const takenCode = `TAKEN${Date.now().toString(36)}`; // ≤20 chars, unique per run
 const createdSubmissionIds: number[] = [];
 let owner: JwtPayload;
 let outsider: JwtPayload;
@@ -43,7 +44,7 @@ beforeAll(async () => {
 
 afterAll(async () => {
   await prisma.promoCode.deleteMany({
-    where: { OR: [{ vendorId: { in: [ownerVendorId, outsiderVendorId] } }, { code: 'TAKEN10' }] },
+    where: { OR: [{ vendorId: { in: [ownerVendorId, outsiderVendorId] } }, { code: takenCode }] },
   });
   await prisma.providerSubmission.deleteMany({ where: { id: { in: createdSubmissionIds } } });
   await prisma.vendor.deleteMany({ where: { userId: { in: createdUserIds } } });
@@ -71,10 +72,10 @@ describe('C4 — propose a store coupon', () => {
 
   it('rejects a code that is already live', async () => {
     const a = callerFor(admin);
-    await a.promo.create({ code: 'TAKEN10', discountType: 'percent', discountValue: 10 });
+    await a.promo.create({ code: takenCode, discountType: 'percent', discountValue: 10 });
     const c = callerFor(owner);
     await expect(
-      c.vendorPortal.createCoupon({ code: 'TAKEN10', discountType: 'percent', discountValue: 10 }),
+      c.vendorPortal.createCoupon({ code: takenCode, discountType: 'percent', discountValue: 10 }),
     ).rejects.toMatchObject({ code: 'BAD_REQUEST' });
   });
 });
@@ -132,7 +133,7 @@ describe('C4 — store-scoped redemption', () => {
 
   it('keeps platform codes store-agnostic (regression)', async () => {
     const anon = callerFor(null);
-    const res = await anon.promo.validate({ code: 'TAKEN10', orderAmount: 100 });
+    const res = await anon.promo.validate({ code: takenCode, orderAmount: 100 });
     expect(res.valid).toBe(true);
   });
 });

@@ -1035,6 +1035,8 @@ vendorPortal.deleteProduct	mutation	customer
 vendorPortal.duplicateProduct	mutation	customer
 vendorPortal.earnings	query	customer
 vendorPortal.earningsCsv	query	customer
+vendorPortal.editPendingDeal	mutation	customer
+vendorPortal.endDeal	mutation	customer
 vendorPortal.fulfillOrder	mutation	customer
 vendorPortal.gymCancelBooking	mutation	customer
 vendorPortal.gymClassBookings	query	customer
@@ -1060,8 +1062,10 @@ vendorPortal.proposeDeal	mutation	customer
 vendorPortal.setBanner	mutation	customer
 vendorPortal.setConsultationPrice	mutation	customer
 vendorPortal.setDraft	mutation	customer
+vendorPortal.setProductFeatured	mutation	customer
 vendorPortal.setTrustFlags	mutation	customer
 vendorPortal.updateProduct	mutation	customer
+vendorPortal.updateStoreProfile	mutation	customer
 video.endSession	mutation	protected
 video.getByBooking	query	protected
 video.startSession	mutation	protected

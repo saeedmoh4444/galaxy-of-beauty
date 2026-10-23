@@ -3968,6 +3968,10 @@ export const miscMessages = {
   'stores.empty': { ar: 'لا توجد متاجر بعد', en: 'No stores yet' },
   'stores.not-found': { ar: 'المتجر غير موجود', en: 'Store not found' },
   'stores.load-error': { ar: 'فشل تحميل المتاجر', en: 'Failed to load stores' },
+  // C6 — store QR code (physical-store discovery).
+  'stores.qr.title': { ar: 'رمز QR للمتجر', en: 'Store QR code' },
+  'stores.qr.desc': { ar: 'امسحي الرمز لفتح المتجر', en: 'Scan to open the store' },
+  'stores.qr.download': { ar: 'تحميل الرمز', en: 'Download QR' },
   'stores.product-count': { ar: '{count} منتج', en: '{count} products' },
   'stores.verified': { ar: 'متجر موثق', en: 'Verified' },
   'stores.empty-products': { ar: 'لا توجد منتجات في هذا المتجر', en: 'No products in this store' },
@@ -4505,6 +4509,12 @@ export const miscMessages = {
   'trust.safeSpace': { ar: 'مساحة آمنة للنساء', en: 'Women-only safe space' },
   'trust.mommyFriendly': { ar: 'مناسبة للأمهات', en: 'Mommy-friendly' },
   'vendorPortal.trust.title': { ar: 'شارات الثقة', en: 'Trust badges' },
+  // C6 — storefront profile (About editor + featured picker).
+  'vendorPortal.about.title': { ar: 'نبذة عن المتجر', en: 'About your store' },
+  'vendorPortal.about.arPlaceholder': { ar: 'نبذة بالعربية', en: 'About (Arabic)' },
+  'vendorPortal.about.enPlaceholder': { ar: 'نبذة بالإنجليزية', en: 'About (English)' },
+  'vendorPortal.about.save': { ar: 'حفظ', en: 'Save' },
+  'vendorPortal.featured': { ar: 'تمييز المنتج في واجهة المتجر', en: 'Feature on storefront' },
   'vendorPortal.trust.women-only': { ar: 'كادر نسائي فقط', en: 'Women-only staff' },
   'vendorPortal.trust.private-suite': {
     ar: 'يوجد جناح خاص',

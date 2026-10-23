@@ -45,6 +45,7 @@ function toPortalProduct(p: {
   emoji: string;
   isActive: boolean;
   isDraft?: boolean | null;
+  isFeatured?: boolean;
   images?: string[];
   lowStockThreshold?: number | null;
   approvalStatus?: string | null;
@@ -70,6 +71,8 @@ function toPortalProduct(p: {
     emoji: p.emoji,
     active: p.isActive,
     draft: p.isDraft ?? false,
+    // C6 — featured picker (storefront profile ordering).
+    featured: p.isFeatured ?? false,
     images: p.images ?? [],
     // C1 — listing completeness (editor meter + C2 approval readiness).
     completeness,
@@ -396,6 +399,33 @@ export const vendorPortalRouter = router({
       return toPortalProduct(updated);
     }),
 
+  /**
+   * setProductFeatured — C6: the vendor picks which of their own products
+   * lead the public storefront profile (vendorDetail orders featured
+   * first). Ownership-guarded like every other product mutation.
+   */
+  setProductFeatured: customerProcedure
+    .input(z.object({ id: z.number().int().positive(), featured: z.boolean() }))
+    .mutation(async ({ ctx, input }) => {
+      const vendor = await prisma.vendor.findUnique({ where: { userId: ctx.user.id } });
+      if (!vendor) throw new TRPCError({ code: 'NOT_FOUND', message: 'Store not found' });
+
+      const existing = await prisma.product.findUnique({ where: { id: input.id } });
+      if (!existing) throw new TRPCError({ code: 'NOT_FOUND', message: 'Product not found' });
+      if (existing.vendorId !== vendor.id) {
+        throw new TRPCError({
+          code: 'FORBIDDEN',
+          message: 'Product is not one of your own products',
+        });
+      }
+
+      const updated = await prisma.product.update({
+        where: { id: input.id },
+        data: { isFeatured: input.featured },
+      });
+      return toPortalProduct(updated);
+    }),
+
   /** duplicateProduct — "create similar": copies the catalog fields into a
    *  fresh draft (stock 0, sales 0) so nothing goes live by accident. */
   duplicateProduct: customerProcedure
@@ -451,6 +481,34 @@ export const vendorPortalRouter = router({
   myStore: customerProcedure.query(async ({ ctx }) => {
     return prisma.vendor.findUnique({ where: { userId: ctx.user.id } });
   }),
+
+  /**
+   * updateStoreProfile — C6: the About editor for the public storefront.
+   * Bilingual merge into descriptionJson (partial edits keep the other
+   * language — same pattern as updateProduct).
+   */
+  updateStoreProfile: customerProcedure
+    .input(
+      z.object({
+        aboutAr: z.string().optional(),
+        aboutEn: z.string().optional(),
+      }),
+    )
+    .mutation(async ({ ctx, input }) => {
+      const vendor = await prisma.vendor.findUnique({ where: { userId: ctx.user.id } });
+      if (!vendor) throw new TRPCError({ code: 'NOT_FOUND', message: 'Store not found' });
+
+      const existing = (vendor.descriptionJson as { ar?: string; en?: string } | null) ?? {};
+      const descriptionJson = {
+        ar: input.aboutAr ?? existing.ar ?? '',
+        en: input.aboutEn ?? existing.en ?? '',
+      };
+
+      return prisma.vendor.update({
+        where: { id: vendor.id },
+        data: { descriptionJson: descriptionJson as unknown as Prisma.InputJsonValue },
+      });
+    }),
 
   /** orders — the store's orders, newest first, cursor-paginated (A5). */
   orders: customerProcedure
@@ -721,13 +779,171 @@ export const vendorPortalRouter = router({
       });
     }),
 
-  /** myDeals — the store's own deal proposals (any status). */
+  /**
+   * myDeals — the store's own deal proposals (any status), enriched with
+   * the derived lifecycle (C3): pending / upcoming / active / ended /
+   * rejected, the materialized StoreDeal id, and per-deal sales during the
+   * window. Submission → deal is matched by the proposal window (productId
+   * + startsAt + endsAt — the materialized row copies them, id-desc so a
+   * re-proposal of the same window maps to its own row); endDeal only
+   * flips isActive, so the match survives an early end.
+   */
   myDeals: customerProcedure.query(async ({ ctx }) => {
-    return prisma.providerSubmission.findMany({
+    const subs = await prisma.providerSubmission.findMany({
       where: { providerId: ctx.user.id, kind: 'store_promotion' },
       orderBy: { createdAt: 'desc' },
     });
+
+    const now = Date.now();
+    return Promise.all(
+      subs.map(async (sub) => {
+        const p = sub.payload as {
+          productId: number;
+          startsAt: string;
+          endsAt: string;
+        };
+        const starts = new Date(p.startsAt).getTime();
+        const ends = new Date(p.endsAt).getTime();
+
+        const deal = await prisma.storeDeal.findFirst({
+          where: {
+            productId: p.productId,
+            startsAt: new Date(p.startsAt),
+            endsAt: new Date(p.endsAt),
+          },
+          orderBy: { id: 'desc' },
+        });
+
+        let lifecycle: 'pending' | 'upcoming' | 'active' | 'ended' | 'rejected';
+        if (sub.status === 'PENDING_REVIEW') lifecycle = 'pending';
+        else if (sub.status === 'REJECTED') lifecycle = 'rejected';
+        else if (deal && !deal.isActive)
+          lifecycle = 'ended'; // ended early
+        else if (now < starts) lifecycle = 'upcoming';
+        else if (now > ends) lifecycle = 'ended';
+        else lifecycle = 'active';
+
+        // C3 — per-deal sales: order items for the product whose order was
+        // created inside the deal window.
+        let salesInWindow = 0;
+        if (deal) {
+          const agg = await prisma.storeOrderItem.aggregate({
+            where: {
+              productId: p.productId,
+              order: { createdAt: { gte: deal.startsAt, lte: deal.endsAt } },
+            },
+            _sum: { quantity: true },
+          });
+          salesInWindow = agg._sum.quantity ?? 0;
+        }
+
+        return { ...sub, lifecycle, dealId: deal?.id ?? null, salesInWindow };
+      }),
+    );
   }),
+
+  /**
+   * endDeal — the owner ends one of their active deals early. The window
+   * dates stay untouched (myDeals matches submissions to deals by window),
+   * only isActive flips — which also drops the deal from the public
+   * listing, since marketplace.products filters on isActive + window.
+   */
+  endDeal: customerProcedure
+    .input(z.object({ dealId: z.number().int().positive() }))
+    .mutation(async ({ ctx, input }) => {
+      const vendor = await prisma.vendor.findUnique({ where: { userId: ctx.user.id } });
+      if (!vendor) {
+        throw new TRPCError({ code: 'FORBIDDEN', message: 'Store not found' });
+      }
+
+      const deal = await prisma.storeDeal.findUnique({ where: { id: input.dealId } });
+      if (!deal) {
+        throw new TRPCError({ code: 'NOT_FOUND', message: 'Deal not found' });
+      }
+      if (deal.vendorId !== vendor.id) {
+        throw new TRPCError({
+          code: 'FORBIDDEN',
+          message: 'Deal is not one of your own deals',
+        });
+      }
+      if (!deal.isActive) {
+        throw new TRPCError({ code: 'BAD_REQUEST', message: 'Deal already ended' });
+      }
+
+      return prisma.storeDeal.update({
+        where: { id: deal.id },
+        data: { isActive: false },
+      });
+    }),
+
+  /**
+   * editPendingDeal — tweak the window/price of a proposal that the admin
+   * has not decided yet. Same guardrails as proposeDeal (under the regular
+   * price, at/above the 40% floor, endsAt after startsAt).
+   */
+  editPendingDeal: customerProcedure
+    .input(
+      z.object({
+        submissionId: z.number().int().positive(),
+        dealPrice: z.number().positive().optional(),
+        endsAt: z.string().datetime().optional(),
+      }),
+    )
+    .mutation(async ({ ctx, input }) => {
+      const sub = await prisma.providerSubmission.findUnique({
+        where: { id: input.submissionId },
+      });
+      if (!sub || sub.kind !== 'store_promotion') {
+        throw new TRPCError({ code: 'NOT_FOUND', message: 'Deal proposal not found' });
+      }
+      if (sub.providerId !== ctx.user.id) {
+        throw new TRPCError({
+          code: 'FORBIDDEN',
+          message: 'Deal proposal is not one of your own',
+        });
+      }
+      if (sub.status !== 'PENDING_REVIEW') {
+        throw new TRPCError({ code: 'BAD_REQUEST', message: 'Submission already decided' });
+      }
+
+      const p = sub.payload as {
+        productId: number;
+        originalPrice: number;
+        dealPrice: number;
+        startsAt: string;
+        endsAt: string;
+      };
+      const dealPrice = input.dealPrice ?? p.dealPrice;
+      const endsAt = input.endsAt ?? p.endsAt;
+
+      const originalPrice = Number(p.originalPrice);
+      const floor = (originalPrice * 40) / 100;
+      if (dealPrice >= originalPrice) {
+        throw new TRPCError({
+          code: 'BAD_REQUEST',
+          message: 'Deal price must be lower than the regular price',
+        });
+      }
+      if (dealPrice < floor) {
+        throw new TRPCError({
+          code: 'BAD_REQUEST',
+          message: `Deal price below the 40% floor (${floor} SAR)`,
+        });
+      }
+      if (new Date(endsAt) <= new Date(p.startsAt)) {
+        throw new TRPCError({
+          code: 'BAD_REQUEST',
+          message: 'endAt must be after startAt',
+        });
+      }
+
+      return prisma.providerSubmission.update({
+        where: { id: sub.id },
+        data: {
+          payload: { ...p, dealPrice, endsAt } as unknown as Prisma.InputJsonValue,
+        },
+      });
+    }),
 
   /**
    * earnings — B4 statement view: summary cards (pending/processed net +
