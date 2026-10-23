@@ -10,6 +10,7 @@ import { getCsvImportQueue } from '../queues';
 // (real Redis connections) inside the web build's page-data workers.
 import type { CsvImportReport } from '../workers/handlers';
 import { noonUtcDay } from '../workers/handlers';
+import { computeStoreHealthScore, gatherStoreHealthFactors } from '../lib/storeHealth';
 
 /** B.3: vendor portal is DB-backed (was an in-memory array). */
 
@@ -195,6 +196,8 @@ export const vendorPortalRouter = router({
       ordersCount,
       aov,
       customerCount: distinctCustomers.length,
+      // D2 — store health score (0–100) + top improvement hints.
+      health: computeStoreHealthScore(await gatherStoreHealthFactors(prisma, vendor.id)),
       lowStockProducts: lowStockProducts.map((p) => ({
         id: p.id,
         nameAr: (p.nameJson as { ar?: string }).ar ?? '',

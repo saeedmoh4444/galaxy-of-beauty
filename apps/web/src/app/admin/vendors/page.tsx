@@ -17,6 +17,8 @@ import { useLocale } from '@/components/LocaleProvider';
 function CommissionRow({ vendor }: { vendor: Record<string, unknown> }): JSX.Element {
   const { t } = useLocale();
   const vendorId = vendor.id as number;
+  // D2 — health travels on the listStoreVendors row.
+  const health = (vendor.health ?? { score: 60 }) as { score?: number };
   const [rate, setRate] = useState(String(Number(vendor.commissionRate ?? 10)));
   const saveMut = api.payouts.setVendorCommission.useMutation();
 
@@ -28,6 +30,19 @@ function CommissionRow({ vendor }: { vendor: Record<string, unknown> }): JSX.Ele
           {vendor.isVerified ? t('admin.vendors.verified') : t('admin.vendors.not-verified')}
         </p>
       </div>
+      {/* D2 — the same store health score the vendor sees on Overview. */}
+      <span
+        className={`rounded-full px-2 py-0.5 text-xs font-bold ${
+          (health.score ?? 60) >= 80
+            ? 'bg-green-100 text-green-700 dark:bg-green-950 dark:text-green-300'
+            : (health.score ?? 60) >= 60
+              ? 'bg-amber-100 text-amber-700 dark:bg-amber-950 dark:text-amber-300'
+              : 'bg-red-100 text-red-700 dark:bg-red-950 dark:text-red-300'
+        }`}
+        title={t('vendorPortal.health.title')}
+      >
+        {health.score ?? 60}
+      </span>
       <div className="flex items-center gap-2">
         <Input
           type="number"

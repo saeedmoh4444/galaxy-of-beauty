@@ -3878,6 +3878,24 @@ export const miscMessages = {
   'vendorPortal.analytics.aov': { ar: 'متوسط الطلب', en: 'Avg order' },
   'vendorPortal.analytics.topProducts': { ar: 'الأكثر مبيعًا', en: 'Top products' },
   'vendorPortal.analytics.empty': { ar: 'لا توجد بيانات بعد', en: 'No data yet' },
+  // D2 — store health score (0–100) + keyed improvement hints.
+  'vendorPortal.health.title': { ar: 'صحة المتجر', en: 'Store health' },
+  'vendorPortal.health.hint.fulfillment': {
+    ar: 'التجهيز بطيء (متوسط {hours} ساعة) — سارعي بشحن الطلبات',
+    en: 'Fulfillment is slow ({hours}h avg) — ship faster',
+  },
+  'vendorPortal.health.hint.cancel': {
+    ar: 'نسبة الإلغاء مرتفعة ({percent}٪) — تأكدي من المخزون قبل الإدراج',
+    en: 'Cancel rate is high ({percent}%) — confirm stock before listing',
+  },
+  'vendorPortal.health.hint.reviews': {
+    ar: 'التقييمات الأخيرة تتراجع — استجيبي للملاحظات',
+    en: 'Recent reviews are trending down — respond to feedback',
+  },
+  'vendorPortal.health.hint.stock': {
+    ar: 'صحة المخزون منخفضة — أعيدي تزويد المنتجات تحت الحد',
+    en: 'Stock health is low — restock products below their thresholds',
+  },
   'vendorPortal.earnings.title': {
     ar: 'مركز الأرباح والتسويات',
     en: 'Earnings & settlement center',

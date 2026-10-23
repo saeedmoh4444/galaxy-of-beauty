@@ -5154,6 +5154,12 @@ export const arWebMessages: Record<string, string> = {
   'vendorPortal.gym.class-remove': 'حذف',
   'vendorPortal.gym.classes-title': 'الحصص',
   'vendorPortal.gym.price': 'السعر (0 = مجاناً)',
+  'vendorPortal.health.hint.cancel':
+    'نسبة الإلغاء مرتفعة ({percent}٪) — تأكدي من المخزون قبل الإدراج',
+  'vendorPortal.health.hint.fulfillment': 'التجهيز بطيء (متوسط {hours} ساعة) — سارعي بشحن الطلبات',
+  'vendorPortal.health.hint.reviews': 'التقييمات الأخيرة تتراجع — استجيبي للملاحظات',
+  'vendorPortal.health.hint.stock': 'صحة المخزون منخفضة — أعيدي تزويد المنتجات تحت الحد',
+  'vendorPortal.health.title': 'صحة المتجر',
   'vendorPortal.images': 'الصور',
   'vendorPortal.import.choose': 'استيراد CSV',
   'vendorPortal.import.report': 'تم استيراد {imported} من {total} منتج',

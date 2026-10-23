@@ -7,7 +7,7 @@ import { Card, Button, Modal, Input, formatCurrency, useAuth } from '@galaxy/ui'
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
 import { useLocale } from '@/components/LocaleProvider';
 import type { MyStore, StoreDealPayload, StoreOrderRow } from '@galaxy/api';
-import { localize } from '@galaxy/shared';
+import { localize, type TranslationKey } from '@galaxy/shared';
 import { VenueProfileCard } from '../shared/VenueProfileCard';
 import { DashboardTabs } from '../shared/DashboardTabs';
 
@@ -317,6 +317,31 @@ export function StoreDashboard({
           >
             {/* E6d/E7/K3 — trust toggles + venue banner (self-service) */}
             <VenueProfileCard store={store} refetchStore={() => refetchStore()} />
+
+            {/* D2 — store health score (0–100) + top improvement hints. */}
+            <Card padding="md">
+              <div className="flex items-center justify-between">
+                <h3 className="text-sm font-semibold">{t('vendorPortal.health.title')}</h3>
+                <span
+                  className={`rounded-full px-2 py-0.5 text-xs font-bold ${
+                    (dash?.health?.score ?? 60) >= 80
+                      ? 'bg-green-100 text-green-700 dark:bg-green-950 dark:text-green-300'
+                      : (dash?.health?.score ?? 60) >= 60
+                        ? 'bg-amber-100 text-amber-700 dark:bg-amber-950 dark:text-amber-300'
+                        : 'bg-red-100 text-red-700 dark:bg-red-950 dark:text-red-300'
+                  }`}
+                >
+                  {dash?.health?.score ?? 60}
+                </span>
+              </div>
+              {(dash?.health?.hints ?? []).length > 0 && (
+                <ul className="mt-2 list-inside list-disc text-xs text-text-secondary">
+                  {(dash?.health?.hints ?? []).map((h) => (
+                    <li key={h.key}>{t(h.key as TranslationKey, h.params)}</li>
+                  ))}
+                </ul>
+              )}
+            </Card>
 
             {/* Store plan Phase 1 — approval status */}
             {!store.isVerified && (
