@@ -228,6 +228,9 @@ export function StoreDashboard({
   // D1 — analytics read-model series (7/30/90-day toggle).
   const [analyticsDays, setAnalyticsDays] = useState<7 | 30 | 90>(30);
   const ordersCsv = useCsvDownload('orders');
+  const templatesQ = api.vendorPortal.dealTemplates.useQuery(undefined, {
+    enabled: isAuthenticated,
+  });
   const productsCsv = useCsvDownload('products');
   const analyticsCsv = useCsvDownload('analytics');
 
@@ -1247,6 +1250,21 @@ export function StoreDashboard({
               </Card>
             </div>
 
+            {/* D5 — KSA season markers over the window. */}
+            {(analyticsQ.data?.markers ?? []).length > 0 && (
+              <div className="flex flex-wrap gap-2">
+                {(analyticsQ.data?.markers ?? []).map((m) => (
+                  <span
+                    key={`${m.day}-${m.type}`}
+                    className="rounded-full bg-purple-100 px-2 py-0.5 text-xs text-purple-700 dark:bg-purple-950 dark:text-purple-300"
+                  >
+                    {locale === 'ar' ? m.titleAr : m.titleEn} · {m.day.slice(8, 10)}/
+                    {m.day.slice(5, 7)}
+                  </span>
+                ))}
+              </div>
+            )}
+
             {series.length === 0 ? (
               <p className="text-sm text-text-tertiary">{t('vendorPortal.analytics.empty')}</p>
             ) : (
@@ -1311,6 +1329,7 @@ export function StoreDashboard({
         >
           <div className="space-y-3">
             <select
+              data-testid="deal-product-select"
               value={dealProductId ?? ''}
               onChange={(e) => setDealProductId(Number(e.target.value) || undefined)}
               className="w-full rounded-lg border px-3 py-2 text-sm border-edge bg-surface-elevated"
@@ -1319,6 +1338,26 @@ export function StoreDashboard({
               {prods.map((p) => (
                 <option key={p.id} value={p.id}>
                   {p.nameAr} · {formatCurrency(p.price)}
+                </option>
+              ))}
+            </select>
+            {/* D5 — seasonal deal templates prefill the window. */}
+            <select
+              data-testid="deal-template-select"
+              defaultValue=""
+              onChange={(e) => {
+                const tpl = (templatesQ.data ?? []).find((x) => x.type === e.target.value);
+                if (tpl) {
+                  setDealStarts(tpl.startsAt.slice(0, 16));
+                  setDealEnds(tpl.endsAt.slice(0, 16));
+                }
+              }}
+              className="w-full rounded-lg border px-3 py-2 text-sm border-edge bg-surface-elevated"
+            >
+              <option value="">{t('vendorPortal.deals.template-hint')}</option>
+              {(templatesQ.data ?? []).map((tpl) => (
+                <option key={tpl.type} value={tpl.type}>
+                  {locale === 'ar' ? tpl.titleAr : tpl.titleEn}
                 </option>
               ))}
             </select>

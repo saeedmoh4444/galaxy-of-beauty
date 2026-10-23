@@ -1033,6 +1033,7 @@ vendorPortal.confirmConsultation	mutation	customer
 vendorPortal.createCoupon	mutation	customer
 vendorPortal.dashboard	query	customer
 vendorPortal.deactivateCoupon	mutation	customer
+vendorPortal.dealTemplates	query	customer
 vendorPortal.deleteProduct	mutation	customer
 vendorPortal.duplicateProduct	mutation	customer
 vendorPortal.earnings	query	customer
