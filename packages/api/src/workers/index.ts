@@ -16,6 +16,7 @@ import {
   handleLoyaltyJob,
   dispatchNotificationJob,
   handleIntegrationJob,
+  handleCsvImportJob,
 } from './handlers';
 
 // Job types are re-exported from handlers.ts (routers import them from '../workers')
@@ -25,13 +26,17 @@ export type {
   NotificationJob,
   CalendarSyncJob,
   BookingReminderJob,
+  CsvImportJob,
+  CsvImportReport,
 } from './handlers';
 
 // ── Worker factory ──
 
 function createWorker(
   queueName: string,
-  handler: (job: Job) => Promise<void>,
+  // Handlers may return a value (stored as job.returnvalue — e.g. the C5
+  // CSV import report polled by vendorPortal.importStatus).
+  handler: (job: Job) => Promise<unknown>,
   concurrency = 2,
 ): Worker | null {
   const redis = getRedisForBull();
@@ -66,12 +71,19 @@ export const walletWorker = createWorker('gob-wallet', handleWalletJob);
 export const loyaltyWorker = createWorker('gob-loyalty', handleLoyaltyJob);
 export const notificationWorker = createWorker('gob-notifications', dispatchNotificationJob);
 export const integrationWorker = createWorker('gob-integrations', handleIntegrationJob);
+export const csvImportWorker = createWorker('gob-csv-import', handleCsvImportJob, 1);
 
 /**
  * Gracefully shut down all workers.
  */
 export async function shutdownWorkers(): Promise<void> {
-  const workers = [walletWorker, loyaltyWorker, notificationWorker, integrationWorker];
+  const workers = [
+    walletWorker,
+    loyaltyWorker,
+    notificationWorker,
+    integrationWorker,
+    csvImportWorker,
+  ];
   await Promise.all(workers.filter(Boolean).map((w) => w!.close()));
   console.log('[Workers] All workers shut down');
 }
@@ -86,6 +98,7 @@ export function startWorkers(): void {
     loyaltyWorker ? 'gob-loyalty' : null,
     notificationWorker ? 'gob-notifications' : null,
     integrationWorker ? 'gob-integrations' : null,
+    csvImportWorker ? 'gob-csv-import' : null,
   ].filter(Boolean);
   console.log(`[Workers] Started: ${names.join(', ') || 'none (Redis unavailable)'}`);
 }

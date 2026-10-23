@@ -4,6 +4,8 @@ import { prisma } from '@galaxy/db';
 import type { Prisma } from '@galaxy/db';
 import { customerProcedure, router } from '../trpc';
 import { notifyUser } from '../lib/notify';
+import { getCsvImportQueue } from '../queues';
+import type { CsvImportReport } from '../workers';
 
 /** B.3: vendor portal is DB-backed (was an in-memory array). */
 
@@ -1032,6 +1034,66 @@ export const vendorPortalRouter = router({
       );
 
       return { csv: [headers.join(','), ...lines].join('\r\n') };
+    }),
+
+  // ---------------------------------------------------------------------------
+  // ---------------------------------------------------------------------------
+  // C5 — bulk CSV product import (worker-backed)
+  // ---------------------------------------------------------------------------
+
+  /**
+   * importProductsCsv — enqueue a vendor's CSV upload (header:
+   * nameAr,nameEn,price,stock,emoji). The worker validates every row and
+   * creates DRAFT products; the per-row report is polled via importStatus.
+   */
+  importProductsCsv: customerProcedure
+    .input(z.object({ csv: z.string().min(1).max(200_000) }))
+    .mutation(async ({ ctx, input }) => {
+      const vendor = await prisma.vendor.findUnique({ where: { userId: ctx.user.id } });
+      if (!vendor) {
+        throw new TRPCError({ code: 'NOT_FOUND', message: 'Store not found' });
+      }
+
+      const queue = getCsvImportQueue();
+      if (!queue) {
+        throw new TRPCError({ code: 'SERVICE_UNAVAILABLE', message: 'Import queue unavailable' });
+      }
+
+      const job = await queue.add('csv.import', {
+        vendorId: vendor.id,
+        userId: ctx.user.id,
+        csv: input.csv,
+      });
+      return { jobId: String(job.id) };
+    }),
+
+  /**
+   * importStatus — poll a CSV import job (ownership-guarded via the job
+   * payload's userId). The report is the handler's returnvalue; completed
+   * jobs are kept by the queue for 24h.
+   */
+  importStatus: customerProcedure
+    .input(z.object({ jobId: z.string().min(1) }))
+    .query(async ({ ctx, input }) => {
+      const queue = getCsvImportQueue();
+      if (!queue) {
+        throw new TRPCError({ code: 'SERVICE_UNAVAILABLE', message: 'Import queue unavailable' });
+      }
+
+      const job = await queue.getJob(input.jobId);
+      if (!job) {
+        throw new TRPCError({ code: 'NOT_FOUND', message: 'Import job not found' });
+      }
+      if (job.data.userId !== ctx.user.id) {
+        throw new TRPCError({ code: 'FORBIDDEN', message: 'Import job is not one of your own' });
+      }
+
+      const state = await job.getState();
+      return {
+        state,
+        report: (job.returnvalue as CsvImportReport | null) ?? null,
+        failedReason: job.failedReason ?? null,
+      };
     }),
 
   // ---------------------------------------------------------------------------
