@@ -1,5 +1,7 @@
 'use client';
 import type { JSX } from 'react';
+import { useEffect, useState } from 'react';
+import QRCode from 'qrcode';
 
 import { api } from '@/lib/trpc';
 import {
@@ -31,6 +33,42 @@ export interface StorefrontPageData {
   products: Array<Record<string, unknown>>;
   productCount: number;
   fetchError?: string;
+}
+
+/** C6 — store QR code: rendered client-side from the store URL and
+ *  downloadable (mirrors the service-menu QR concept). */
+function StoreQrCard(): JSX.Element {
+  const { t } = useLocale();
+  const [qr, setQr] = useState('');
+
+  useEffect(() => {
+    void QRCode.toDataURL(window.location.href, { width: 240, margin: 1 }).then(setQr);
+  }, []);
+
+  if (!qr) return <></>;
+
+  return (
+    <div className="flex items-center gap-4 rounded-3xl border border-border-muted p-4">
+      {/* eslint-disable-next-line @next/next/no-img-element */}
+      <img src={qr} alt={t('stores.qr.title')} className="h-28 w-28 rounded-xl" />
+      <div>
+        <p className="text-sm font-semibold">{t('stores.qr.title')}</p>
+        <p className="mt-1 text-xs text-text-secondary">{t('stores.qr.desc')}</p>
+        <Button
+          size="sm"
+          className="mt-2"
+          onClick={() => {
+            const a = document.createElement('a');
+            a.href = qr;
+            a.download = 'store-qr.png';
+            a.click();
+          }}
+        >
+          {t('stores.qr.download')}
+        </Button>
+      </div>
+    </div>
+  );
 }
 
 export function StorefrontClient({ data }: { data: StorefrontPageData }): JSX.Element {
@@ -111,6 +149,9 @@ export function StorefrontClient({ data }: { data: StorefrontPageData }): JSX.El
       {bio[locale] ? (
         <p className="max-w-2xl text-sm leading-relaxed text-text-secondary">{bio[locale]}</p>
       ) : null}
+
+      {/* C6 — store QR code for physical-store discovery. */}
+      <StoreQrCard />
 
       {/* Product grid */}
       {data.products.length === 0 ? (
