@@ -1635,6 +1635,9 @@ model ClinicConsultation {
   notes             String?
   consentAcceptedAt DateTime?
   scheduledAt       DateTime
+  // E2 — no-show / cancel-reason tracking (expand-contract).
+  cancelReason      String?
+  noShow            Boolean  @default(false)
   createdAt         DateTime @default(now())
   updatedAt         DateTime @updatedAt
 

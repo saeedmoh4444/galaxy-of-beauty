@@ -21,7 +21,7 @@ export function ClinicDashboard({
   refetchStore: () => void;
   shellRole?: string;
 }): JSX.Element {
-  const { t } = useLocale();
+  const { t, locale } = useLocale();
   const [price, setPrice] = useState(String(Number(store.consultationPrice ?? 0)));
   const [slotStart, setSlotStart] = useState(
     new Date(Date.now() + 3_600_000).toISOString().slice(0, 16),
@@ -43,6 +43,24 @@ export function ClinicDashboard({
     onSuccess: () => consultsQ.refetch(),
   });
   const clinicCancelMut = api.vendorPortal.clinicCancelConsultation.useMutation({
+    onSuccess: () => consultsQ.refetch(),
+  });
+
+  // E2 — clinic console deepening: package proposals, outcomes, utilization.
+  const [pkgNameAr, setPkgNameAr] = useState('');
+  const [pkgNameEn, setPkgNameEn] = useState('');
+  const [pkgDiscount, setPkgDiscount] = useState(15);
+  const [cancelReason, setCancelReason] = useState('');
+  const packagesQ = api.vendorPortal.clinicPackages.useQuery(undefined);
+  const utilizationQ = api.vendorPortal.clinicSlotUtilization.useQuery(undefined);
+  const proposePkgMut = api.vendorPortal.proposeClinicPackage.useMutation({
+    onSuccess: () => {
+      setPkgNameAr('');
+      setPkgNameEn('');
+      void packagesQ.refetch();
+    },
+  });
+  const outcomeMut = api.vendorPortal.clinicOutcome.useMutation({
     onSuccess: () => consultsQ.refetch(),
   });
 
@@ -180,10 +198,21 @@ export function ClinicDashboard({
                     </div>
                     {c.status === 'REQUESTED' ? (
                       <div className="flex items-center gap-2">
+                        <input
+                          value={cancelReason}
+                          onChange={(e) => setCancelReason(e.target.value)}
+                          placeholder={t('vendorPortal.clinic.cancel-reason')}
+                          className="w-32 rounded-lg border px-2 py-1 text-xs border-edge bg-surface-elevated"
+                        />
                         <Button
                           size="sm"
                           variant="outline"
-                          onClick={() => clinicCancelMut.mutate({ consultationId: c.id as number })}
+                          onClick={() =>
+                            clinicCancelMut.mutate({
+                              consultationId: c.id as number,
+                              ...(cancelReason.trim() ? { reason: cancelReason.trim() } : {}),
+                            })
+                          }
                           loading={clinicCancelMut.isPending}
                         >
                           {t('clinics.cancel')}
@@ -196,9 +225,38 @@ export function ClinicDashboard({
                           {t('vendorPortal.clinic.confirm')}
                         </Button>
                       </div>
+                    ) : c.status === 'CONFIRMED' ? (
+                      <div className="flex items-center gap-2">
+                        <Button
+                          size="sm"
+                          variant="outline"
+                          onClick={() =>
+                            outcomeMut.mutate({
+                              consultationId: c.id as number,
+                              outcome: 'no_show',
+                            })
+                          }
+                          loading={outcomeMut.isPending}
+                        >
+                          {t('vendorPortal.clinic.no-show')}
+                        </Button>
+                        <Button
+                          size="sm"
+                          onClick={() =>
+                            outcomeMut.mutate({
+                              consultationId: c.id as number,
+                              outcome: 'completed',
+                            })
+                          }
+                          loading={outcomeMut.isPending}
+                        >
+                          {t('vendorPortal.clinic.complete')}
+                        </Button>
+                      </div>
                     ) : (
                       <span className="text-sm font-semibold">
                         {t(`clinics.status.${c.status as string}` as never)}
+                        {c.noShow ? ` · ${t('vendorPortal.clinic.no-show')}` : ''}
                       </span>
                     )}
                   </div>
@@ -206,6 +264,100 @@ export function ClinicDashboard({
               })}
             </div>
           )}
+        </Card>
+
+        {/* E2 — treatment-package proposals (admin-approved queue). */}
+        <Card padding="lg">
+          <h3 className="mb-3 font-bold">{t('vendorPortal.clinic.packages-title')}</h3>
+          <div className="mb-3 flex flex-wrap items-end gap-3">
+            <Input
+              label={t('vendorPortal.clinic.package-name-ar')}
+              value={pkgNameAr}
+              onChange={(e) => setPkgNameAr(e.target.value)}
+              placeholder="باقة التنظيف العميق"
+            />
+            <Input
+              label={t('vendorPortal.clinic.package-name-en')}
+              value={pkgNameEn}
+              onChange={(e) => setPkgNameEn(e.target.value)}
+              placeholder="Deep Cleanse"
+            />
+            <Input
+              label={t('vendorPortal.clinic.package-discount')}
+              type="number"
+              value={String(pkgDiscount)}
+              onChange={(e) => setPkgDiscount(parseInt(e.target.value) || 0)}
+              className="w-28"
+            />
+            <Button
+              size="sm"
+              disabled={!pkgNameAr.trim() || !pkgNameEn.trim()}
+              onClick={() =>
+                proposePkgMut.mutate({
+                  nameAr: pkgNameAr.trim(),
+                  nameEn: pkgNameEn.trim(),
+                  discountPercent: pkgDiscount,
+                })
+              }
+              loading={proposePkgMut.isPending}
+            >
+              {t('vendorPortal.clinic.package-propose')}
+            </Button>
+          </div>
+          {(packagesQ.data ?? []).length === 0 ? (
+            <p className="text-sm text-text-tertiary">{t('vendorPortal.clinic.packages-empty')}</p>
+          ) : (
+            <div className="space-y-2">
+              {(packagesQ.data ?? []).map((p) => (
+                <div key={p.id} className="flex items-center justify-between rounded-lg border p-3">
+                  <div>
+                    <p className="text-sm font-bold">
+                      {locale === 'ar' ? p.nameAr : p.nameEn} · {p.discountPercent}٪
+                    </p>
+                    {p.reviewNotes ? (
+                      <p className="text-xs text-text-secondary">{p.reviewNotes}</p>
+                    ) : null}
+                  </div>
+                  <span className="rounded-full bg-violet-100 px-2 py-0.5 text-xs text-violet-700 dark:bg-violet-950 dark:text-violet-300">
+                    {t(`vendorPortal.clinic.pkg-status.${p.status}` as never)}
+                  </span>
+                </div>
+              ))}
+            </div>
+          )}
+        </Card>
+
+        {/* E2 — slot utilization (last 30 days). */}
+        <Card padding="lg">
+          <h3 className="mb-3 font-bold">{t('vendorPortal.clinic.utilization-title')}</h3>
+          <p className="text-sm">
+            <span className="font-bold">
+              {utilizationQ.data
+                ? t('vendorPortal.clinic.utilization', {
+                    booked: utilizationQ.data.bookedSlots,
+                    total: utilizationQ.data.totalSlots,
+                  })
+                : '—'}
+            </span>{' '}
+            · {utilizationQ.data?.utilizationPct ?? 0}٪
+          </p>
+          <div className="mt-2 flex h-12 items-end gap-[2px]">
+            {(utilizationQ.data?.byDay ?? []).map((d) => {
+              const max = Math.max(...(utilizationQ.data?.byDay ?? []).map((x) => x.total), 1);
+              return (
+                <div
+                  key={d.day}
+                  className="group relative flex-1"
+                  title={`${d.day}: ${d.booked}/${d.total}`}
+                >
+                  <div
+                    className="w-full rounded-t-[3px] bg-brand-600 transition-colors group-hover:bg-brand-700 dark:bg-brand-500 dark:group-hover:bg-brand-400"
+                    style={{ height: `${(d.total / max) * 100}%` }}
+                  />
+                </div>
+              );
+            })}
+          </div>
         </Card>
       </div>
     </DashboardLayout>

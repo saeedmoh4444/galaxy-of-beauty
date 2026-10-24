@@ -1741,7 +1741,13 @@ export const vendorPortalRouter = router({
 
   /** clinicCancelConsultation — clinic rejects a REQUESTED consultation. */
   clinicCancelConsultation: customerProcedure
-    .input(z.object({ consultationId: z.number().int().positive() }))
+    .input(
+      z.object({
+        consultationId: z.number().int().positive(),
+        // E2 — cancel-reason tracking (surfaced in the console list).
+        reason: z.string().max(500).optional(),
+      }),
+    )
     .mutation(async ({ ctx, input }) => {
       const vendor = await prisma.vendor.findUnique({ where: { userId: ctx.user.id } });
       if (!vendor || vendor.type !== 'CLINIC') {
@@ -1760,7 +1766,10 @@ export const vendorPortalRouter = router({
       return prisma.$transaction(async (tx) => {
         const updated = await tx.clinicConsultation.update({
           where: { id: input.consultationId },
-          data: { status: 'CANCELLED' },
+          data: {
+            status: 'CANCELLED',
+            ...(input.reason ? { cancelReason: input.reason } : {}),
+          },
         });
         await tx.clinicSlot.updateMany({
           where: { consultationId: input.consultationId },
@@ -2165,5 +2174,138 @@ export const vendorPortalRouter = router({
       price: Number(c.price),
       occupancyPct: c.capacity === 0 ? 0 : Math.round((c.enrolledCount / c.capacity) * 100),
     }));
+  }),
+
+  // ---------------------------------------------------------------------------
+  // E2 — clinic console deepening (packages, outcomes, utilization)
+  // ---------------------------------------------------------------------------
+
+  /**
+   * proposeClinicPackage — a clinic proposes a treatment package: a
+   * PENDING_REVIEW BeautyPackage (clinicId-bound) + a 'clinic_package'
+   * submission riding the shared admin queue (providerReview.decide
+   * materializes APPROVED/REJECTED onto the package).
+   */
+  proposeClinicPackage: customerProcedure
+    .input(
+      z.object({
+        nameAr: z.string().min(2).max(120),
+        nameEn: z.string().min(2).max(120),
+        descriptionAr: z.string().max(1000).optional(),
+        descriptionEn: z.string().max(1000).optional(),
+        discountPercent: z.number().int().min(0).max(90).default(15),
+      }),
+    )
+    .mutation(async ({ ctx, input }) => {
+      const vendor = await prisma.vendor.findUnique({ where: { userId: ctx.user.id } });
+      if (!vendor || vendor.type !== 'CLINIC') {
+        throw new TRPCError({ code: 'FORBIDDEN', message: 'Clinic not found' });
+      }
+      const pkg = await prisma.beautyPackage.create({
+        data: {
+          nameJson: { ar: input.nameAr, en: input.nameEn },
+          descriptionJson: { ar: input.descriptionAr ?? '', en: input.descriptionEn ?? '' },
+          discountPercent: input.discountPercent,
+          clinicId: vendor.id,
+          createdByUserId: ctx.user.id,
+          status: 'PENDING_REVIEW',
+        },
+      });
+      const submission = await prisma.providerSubmission.create({
+        data: {
+          providerId: ctx.user.id,
+          kind: 'clinic_package',
+          payload: { packageId: pkg.id, nameJson: { ar: input.nameAr, en: input.nameEn } },
+        },
+      });
+      return { packageId: pkg.id, submissionId: submission.id };
+    }),
+
+  /** clinicPackages — the caller clinic's packages with approval status. */
+  clinicPackages: customerProcedure.query(async ({ ctx }) => {
+    const vendor = await prisma.vendor.findUnique({ where: { userId: ctx.user.id } });
+    if (!vendor || vendor.type !== 'CLINIC') {
+      throw new TRPCError({ code: 'FORBIDDEN', message: 'Clinic not found' });
+    }
+    const packages = await prisma.beautyPackage.findMany({
+      where: { clinicId: vendor.id },
+      orderBy: { id: 'desc' },
+    });
+    return packages.map((p) => ({
+      id: p.id,
+      nameAr: (p.nameJson as { ar?: string }).ar ?? '',
+      nameEn: (p.nameJson as { en?: string }).en ?? '',
+      discountPercent: p.discountPercent,
+      status: p.status,
+      reviewNotes: p.reviewNotes,
+    }));
+  }),
+
+  /**
+   * clinicOutcome — a CONFIRMED consultation ends COMPLETED; outcome
+   * 'no_show' sets the no-show flag (feeds the clinic's no-show stats).
+   */
+  clinicOutcome: customerProcedure
+    .input(
+      z.object({
+        consultationId: z.number().int().positive(),
+        outcome: z.enum(['completed', 'no_show']),
+        reason: z.string().max(500).optional(),
+      }),
+    )
+    .mutation(async ({ ctx, input }) => {
+      const vendor = await prisma.vendor.findUnique({ where: { userId: ctx.user.id } });
+      if (!vendor || vendor.type !== 'CLINIC') {
+        throw new TRPCError({ code: 'FORBIDDEN', message: 'Clinic not found' });
+      }
+      const consult = await prisma.clinicConsultation.findUnique({
+        where: { id: input.consultationId },
+      });
+      if (!consult || consult.clinicId !== vendor.id) {
+        throw new TRPCError({ code: 'NOT_FOUND', message: 'Consultation not found' });
+      }
+      if (consult.status !== 'CONFIRMED') {
+        throw new TRPCError({ code: 'BAD_REQUEST', message: 'Consultation is not confirmed' });
+      }
+      const updated = await prisma.clinicConsultation.update({
+        where: { id: consult.id },
+        data: {
+          status: 'COMPLETED',
+          noShow: input.outcome === 'no_show',
+          ...(input.outcome === 'no_show' && input.reason ? { cancelReason: input.reason } : {}),
+        },
+      });
+      return { id: updated.id, status: updated.status, noShow: updated.noShow };
+    }),
+
+  /** clinicSlotUtilization — booked/total slots over the last 30 days. */
+  clinicSlotUtilization: customerProcedure.query(async ({ ctx }) => {
+    const vendor = await prisma.vendor.findUnique({ where: { userId: ctx.user.id } });
+    if (!vendor || vendor.type !== 'CLINIC') {
+      throw new TRPCError({ code: 'FORBIDDEN', message: 'Clinic not found' });
+    }
+    const since = new Date(Date.now() - 30 * 24 * 3_600_000);
+    const slots = await prisma.clinicSlot.findMany({
+      where: { clinicId: vendor.id, startAt: { gte: since, lte: new Date() } },
+      select: { startAt: true, isBooked: true },
+    });
+    const byDayMap = new Map<string, { total: number; booked: number }>();
+    for (const s of slots) {
+      const day = s.startAt.toISOString().slice(0, 10);
+      const row = byDayMap.get(day) ?? { total: 0, booked: 0 };
+      row.total += 1;
+      if (s.isBooked) row.booked += 1;
+      byDayMap.set(day, row);
+    }
+    const totalSlots = slots.length;
+    const bookedSlots = slots.filter((s) => s.isBooked).length;
+    return {
+      totalSlots,
+      bookedSlots,
+      utilizationPct: totalSlots === 0 ? 0 : Math.round((bookedSlots / totalSlots) * 100),
+      byDay: [...byDayMap.entries()]
+        .map(([day, r]) => ({ day, ...r }))
+        .sort((a, b) => a.day.localeCompare(b.day)),
+    };
   }),
 });
