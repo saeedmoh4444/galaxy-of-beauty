@@ -1058,6 +1058,8 @@ vendorPortal.myDeals	query	customer
 vendorPortal.myGym	query	customer
 vendorPortal.myNailBar	query	customer
 vendorPortal.myProducts	query	customer
+vendorPortal.myReviews	query	customer
+vendorPortal.myReviewsSummary	query	customer
 vendorPortal.myStore	query	customer
 vendorPortal.nailBarBookings	query	customer
 vendorPortal.nailBarSlots.add	mutation	customer
@@ -1065,6 +1067,7 @@ vendorPortal.nailBarSlots.list	query	customer
 vendorPortal.nailBarSlots.remove	mutation	customer
 vendorPortal.orders	query	customer
 vendorPortal.proposeDeal	mutation	customer
+vendorPortal.replyToReview	mutation	customer
 vendorPortal.setBanner	mutation	customer
 vendorPortal.setConsultationPrice	mutation	customer
 vendorPortal.setDraft	mutation	customer

@@ -12,6 +12,7 @@ import type { CsvImportReport } from '../workers/handlers';
 import { noonUtcDay, advisorRulesForVendor } from '../workers/handlers';
 import { KSA_SEASONS, seasonMarkers } from '../lib/ksaCalendar';
 import { computeStoreHealthScore, gatherStoreHealthFactors } from '../lib/storeHealth';
+import { weekBucketStart, weeklyTrendLabels } from '../lib/reviewTrend';
 
 /** B.3: vendor portal is DB-backed (was an in-memory array). */
 
@@ -89,6 +90,34 @@ function toPortalProduct(p: {
     // C2 — listing approval state (PENDING | LIVE | REJECTED) + admin note.
     approvalStatus: p.approvalStatus ?? 'LIVE',
     reviewNotes: p.reviewNotes ?? null,
+  };
+}
+
+/** E4 — map a ProductReview row to the vendor-portal UI shape. */
+function toReviewRow(r: {
+  id: number;
+  rating: number;
+  comment: string | null;
+  createdAt: Date;
+  replyJson: unknown;
+  repliedAt: Date | null;
+  product: { id: number; nameJson: unknown };
+  user: { name: string | null };
+}) {
+  const reply = (r.replyJson as { ar?: string; en?: string } | null) ?? {};
+  return {
+    id: r.id,
+    rating: r.rating,
+    comment: r.comment ?? '',
+    createdAt: r.createdAt.toISOString(),
+    replied: r.repliedAt !== null,
+    repliedAt: r.repliedAt?.toISOString() ?? null,
+    replyAr: reply.ar ?? '',
+    replyEn: reply.en ?? '',
+    productId: r.product.id,
+    productNameAr:
+      (r.product.nameJson as { ar?: string } | undefined)?.ar ?? `منتج #${r.product.id}`,
+    customerName: r.user.name ?? 'عميل',
   };
 }
 
@@ -1220,6 +1249,163 @@ export const vendorPortalRouter = router({
           new Date().toISOString().slice(0, 10),
         ),
       };
+    }),
+
+  // ---------------------------------------------------------------------------
+  // E4 — reputation hub: review list, summary + trend, merchant reply
+  // ---------------------------------------------------------------------------
+
+  /**
+   * myReviews — reviews of the caller's products, newest first, with the
+   * buyer's name + product name for the list rows. Ownership lives in the
+   * product relation: other vendors' reviews never enter the page, so no
+   * per-row guard is needed.
+   */
+  myReviews: customerProcedure
+    .input(
+      z.object({
+        limit: z.number().int().min(1).max(100).default(20),
+        cursor: z.number().int().positive().optional(),
+        // 1-star triage: filter the list to a minimum rating.
+        minRating: z.number().int().min(1).max(5).optional(),
+      }),
+    )
+    .query(async ({ ctx, input }) => {
+      const vendor = await prisma.vendor.findUnique({ where: { userId: ctx.user.id } });
+      if (!vendor) return { items: [], nextCursor: null, total: 0 };
+
+      const where: Prisma.ProductReviewWhereInput = {
+        product: { vendorId: vendor.id },
+        ...(input.minRating ? { rating: { gte: input.minRating } } : {}),
+        ...(input.cursor ? { id: { lt: input.cursor } } : {}),
+      };
+      const [reviews, total] = await Promise.all([
+        prisma.productReview.findMany({
+          where,
+          orderBy: { id: 'desc' },
+          take: input.limit + 1, // peek one row for nextCursor
+          include: {
+            product: { select: { id: true, nameJson: true } },
+            user: { select: { name: true } },
+          },
+        }),
+        prisma.productReview.count({ where: { product: { vendorId: vendor.id } } }),
+      ]);
+      const hasMore = reviews.length > input.limit;
+      const page = hasMore ? reviews.slice(0, input.limit) : reviews;
+      return {
+        items: page.map(toReviewRow),
+        nextCursor: hasMore ? page[page.length - 1]!.id : null,
+        total,
+      };
+    }),
+
+  /**
+   * myReviewsSummary — avg rating, star distribution, unreplied 1-star
+   * count (drives the triage banner) and an 8-week weekly trend (noon-UTC
+   * buckets) for the rating sparkline.
+   */
+  myReviewsSummary: customerProcedure.query(async ({ ctx }) => {
+    const vendor = await prisma.vendor.findUnique({ where: { userId: ctx.user.id } });
+    const labels = weeklyTrendLabels();
+    if (!vendor) {
+      return {
+        total: 0,
+        avg: 0,
+        distribution: { 1: 0, 2: 0, 3: 0, 4: 0, 5: 0 },
+        unrepliedOneStar: 0,
+        trend: labels.map((start) => ({ start, count: 0, avg: 0 })),
+      };
+    }
+
+    const own = { product: { vendorId: vendor.id } };
+    const [agg, grouped, oneStars, recent] = await Promise.all([
+      prisma.productReview.aggregate({ where: own, _avg: { rating: true }, _count: true }),
+      prisma.productReview.groupBy({ by: ['rating'], where: own, _count: true }),
+      prisma.productReview.count({ where: { ...own, rating: 1, repliedAt: null } }),
+      // Trend covers the last 8 weeks — recent rows only, bucketed in JS
+      // (per-vendor review volume is small and the window bounds it).
+      prisma.productReview.findMany({
+        where: { ...own, createdAt: { gte: new Date(`${labels[0]}T00:00:00Z`) } },
+        select: { rating: true, createdAt: true },
+      }),
+    ]);
+
+    const distribution = { 1: 0, 2: 0, 3: 0, 4: 0, 5: 0 };
+    for (const g of grouped) distribution[g.rating as 1 | 2 | 3 | 4 | 5] = g._count;
+
+    const buckets = new Map<string, { start: string; count: number; sum: number }>(
+      labels.map((start) => [start, { start, count: 0, sum: 0 }]),
+    );
+    for (const r of recent) {
+      const b = buckets.get(weekBucketStart(r.createdAt));
+      if (b) {
+        b.count += 1;
+        b.sum += r.rating;
+      }
+    }
+
+    return {
+      total: agg._count,
+      avg: agg._avg.rating === null ? 0 : Math.round(agg._avg.rating * 100) / 100,
+      distribution,
+      unrepliedOneStar: oneStars,
+      trend: [...buckets.values()].map((b) => ({
+        start: b.start,
+        count: b.count,
+        avg: b.count === 0 ? 0 : Math.round((b.sum / b.count) * 100) / 100,
+      })),
+    };
+  }),
+
+  /**
+   * replyToReview — merchant reply on a review of THEIR product.
+   * Ownership-guarded: a review on another vendor's product is
+   * indistinguishable from a missing one (no existence leak). The reply is
+   * bilingual Json — replying in one locale merges, never clobbers.
+   */
+  replyToReview: customerProcedure
+    .input(
+      z
+        .object({
+          reviewId: z.number().int().positive(),
+          replyAr: z.string().max(1000).optional(),
+          replyEn: z.string().max(1000).optional(),
+        })
+        .refine((v) => (v.replyAr?.trim().length ?? 0) > 0 || (v.replyEn?.trim().length ?? 0) > 0, {
+          message: 'Reply text required',
+        }),
+    )
+    .mutation(async ({ ctx, input }) => {
+      const vendor = await prisma.vendor.findUnique({ where: { userId: ctx.user.id } });
+      if (!vendor) {
+        throw new TRPCError({ code: 'NOT_FOUND', message: 'Store not found' });
+      }
+      const review = await prisma.productReview.findUnique({
+        where: { id: input.reviewId },
+        include: { product: { select: { vendorId: true } } },
+      });
+      if (!review || review.product.vendorId !== vendor.id) {
+        throw new TRPCError({ code: 'NOT_FOUND', message: 'Review not found' });
+      }
+
+      const existing = (review.replyJson as { ar?: string; en?: string } | null) ?? {};
+      const updated = await prisma.productReview.update({
+        where: { id: review.id },
+        data: {
+          replyJson: {
+            ...existing,
+            ...(input.replyAr?.trim() ? { ar: input.replyAr.trim() } : {}),
+            ...(input.replyEn?.trim() ? { en: input.replyEn.trim() } : {}),
+          },
+          repliedAt: new Date(),
+        },
+        include: {
+          product: { select: { id: true, nameJson: true } },
+          user: { select: { name: true } },
+        },
+      });
+      return toReviewRow(updated);
     }),
 
   // ---------------------------------------------------------------------------

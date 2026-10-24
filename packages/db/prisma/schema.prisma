@@ -1819,6 +1819,10 @@ model ProductReview {
   comment   String?
   createdAt DateTime @default(now())
 
+  // E4 — merchant reply (bilingual Json, expand-contract).
+  replyJson Json?
+  repliedAt DateTime?
+
   product Product @relation(fields: [productId], references: [id])
   user    User    @relation(fields: [userId], references: [id])
 

@@ -11,7 +11,8 @@ import { localize, type TranslationKey } from '@galaxy/shared';
 import { VenueProfileCard } from '../shared/VenueProfileCard';
 import { DashboardTabs } from '../shared/DashboardTabs';
 
-type TabKey = 'overview' | 'orders' | 'products' | 'deals' | 'coupons' | 'earnings' | 'analytics';
+type TabKey =
+  'overview' | 'orders' | 'products' | 'deals' | 'coupons' | 'earnings' | 'analytics' | 'reviews';
 
 const TAB_KEYS: TabKey[] = [
   'overview',
@@ -243,6 +244,29 @@ export function StoreDashboard({
   );
   const series = analyticsQ.data?.series ?? [];
   const analyticsTopProducts = analyticsQ.data?.topProducts ?? [];
+
+  // E4 — reputation hub: summary + paginated review list + merchant reply.
+  const reviewsSummaryQ = api.vendorPortal.myReviewsSummary.useQuery(undefined, {
+    enabled: isAuthenticated,
+  });
+  const reviewsQ = api.vendorPortal.myReviews.useInfiniteQuery(
+    { limit: 10 },
+    {
+      enabled: isAuthenticated,
+      getNextPageParam: (lastPage) => lastPage.nextCursor ?? undefined,
+    },
+  );
+  const [replyTo, setReplyTo] = useState<number | null>(null);
+  const [replyText, setReplyText] = useState('');
+  const replyMut = api.vendorPortal.replyToReview.useMutation({
+    onSuccess: () => {
+      setReplyTo(null);
+      setReplyText('');
+      void reviewsQ.refetch();
+      void reviewsSummaryQ.refetch();
+    },
+  });
+  const reviews = (reviewsQ.data?.pages ?? []).flatMap((p) => p.items);
   const [importJobId, setImportJobId] = useState<string | null>(null);
   const importStatusQ = api.vendorPortal.importStatus.useQuery(
     { jobId: importJobId ?? '' },
@@ -322,6 +346,7 @@ export function StoreDashboard({
     { key: 'coupons', label: t('vendorPortal.tab.coupons') },
     { key: 'earnings', label: t('vendorPortal.tab.earnings') },
     { key: 'analytics', label: t('vendorPortal.tab.analytics') },
+    { key: 'reviews', label: t('vendorPortal.tab.reviews') },
   ];
 
   // The dashboard query's non-owner branch returns {}, so narrow the union.
@@ -1318,6 +1343,192 @@ export function StoreDashboard({
                 </div>
               )}
             </Card>
+          </div>
+        )}
+
+        {tab === 'reviews' && (
+          <div
+            role="tabpanel"
+            id="vendor-panel-reviews"
+            data-testid="vendor-panel-reviews"
+            aria-labelledby="vendor-tab-reviews"
+            className="space-y-4"
+          >
+            {/* E4 — reputation hub: summary (avg, distribution, 8-week
+                trend), 1-star triage banner, replyable review list. */}
+            <h2 className="text-lg font-bold">{t('vendorPortal.reviews.title')}</h2>
+
+            {(reviewsSummaryQ.data?.unrepliedOneStar ?? 0) > 0 && (
+              <div className="rounded-lg border border-amber-300 bg-amber-50 px-3 py-2 text-sm text-amber-800 dark:border-amber-800 dark:bg-amber-950 dark:text-amber-200">
+                {t('vendorPortal.reviews.one-star-alert', {
+                  count: reviewsSummaryQ.data?.unrepliedOneStar ?? 0,
+                })}
+              </div>
+            )}
+
+            <Card padding="md">
+              <div className="flex flex-wrap items-center gap-6">
+                <div className="text-center">
+                  <p className="text-3xl font-bold">
+                    {(reviewsSummaryQ.data?.avg ?? 0).toFixed(1)}
+                  </p>
+                  <p className="text-xs text-text-secondary">{t('vendorPortal.reviews.avg')}</p>
+                  <p className="mt-1 text-xs text-text-tertiary">
+                    {t('vendorPortal.reviews.total', { count: reviewsSummaryQ.data?.total ?? 0 })}
+                  </p>
+                </div>
+                <div className="min-w-40 flex-1 space-y-1">
+                  {([5, 4, 3, 2, 1] as const).map((star) => {
+                    const count = reviewsSummaryQ.data?.distribution[star] ?? 0;
+                    const max = Math.max(
+                      ...([5, 4, 3, 2, 1] as const).map(
+                        (s) => reviewsSummaryQ.data?.distribution[s] ?? 0,
+                      ),
+                      1,
+                    );
+                    return (
+                      <div key={star} className="flex items-center gap-2">
+                        <span className="w-6 text-xs text-text-secondary">{star}★</span>
+                        <div className="h-2 flex-1 rounded-full bg-surface-elevated">
+                          <div
+                            className="h-2 rounded-full bg-brand-600 dark:bg-brand-500"
+                            style={{ width: `${(count / max) * 100}%` }}
+                          />
+                        </div>
+                        <span className="w-6 text-right text-xs text-text-secondary">{count}</span>
+                      </div>
+                    );
+                  })}
+                </div>
+              </div>
+              <div className="mt-4">
+                <p className="mb-1 text-xs text-text-secondary">
+                  {t('vendorPortal.reviews.trend')}
+                </p>
+                <div className="flex h-12 items-end gap-[2px]">
+                  {(reviewsSummaryQ.data?.trend ?? []).map((b) => {
+                    const max = Math.max(
+                      ...(reviewsSummaryQ.data?.trend ?? []).map((x) => x.count),
+                      1,
+                    );
+                    return (
+                      <div
+                        key={b.start}
+                        className="group relative flex-1"
+                        title={`${b.start}: ${b.count}`}
+                      >
+                        <div
+                          className="w-full rounded-t-[3px] bg-brand-600 transition-colors group-hover:bg-brand-700 dark:bg-brand-500 dark:group-hover:bg-brand-400"
+                          style={{ height: `${(b.count / max) * 100}%` }}
+                        />
+                      </div>
+                    );
+                  })}
+                </div>
+              </div>
+            </Card>
+
+            {reviews.length === 0 ? (
+              <p className="text-sm text-text-tertiary">{t('vendorPortal.reviews.empty')}</p>
+            ) : (
+              <div className="space-y-3">
+                {reviews.map((r) => (
+                  <Card key={r.id} padding="md" className="space-y-2">
+                    <div className="flex items-center justify-between gap-2">
+                      <div className="min-w-0">
+                        <p className="truncate text-sm font-semibold">
+                          {t('vendorPortal.reviews.on', { product: r.productNameAr })}
+                        </p>
+                        <p className="text-xs text-text-secondary">
+                          {t('vendorPortal.reviews.customer', { name: r.customerName })} ·{' '}
+                          {new Date(r.createdAt).toLocaleDateString(
+                            locale === 'ar' ? 'ar-SA' : 'en-GB',
+                          )}
+                        </p>
+                      </div>
+                      <span
+                        className="shrink-0 text-sm text-brand-600 dark:text-brand-400"
+                        aria-label={`${r.rating} / 5`}
+                      >
+                        {'★'.repeat(r.rating)}
+                        <span className="text-text-tertiary">{'★'.repeat(5 - r.rating)}</span>
+                      </span>
+                    </div>
+                    {r.comment && <p className="text-sm">{r.comment}</p>}
+                    {r.replied ? (
+                      <div className="rounded-lg bg-surface-elevated px-3 py-2">
+                        <p className="text-xs font-semibold text-text-secondary">
+                          {t('vendorPortal.reviews.answered')}
+                        </p>
+                        <p className="mt-0.5 text-sm">
+                          {locale === 'ar' ? r.replyAr : r.replyEn || r.replyAr}
+                        </p>
+                      </div>
+                    ) : replyTo === r.id ? (
+                      <div className="space-y-2">
+                        <textarea
+                          value={replyText}
+                          onChange={(e) => setReplyText(e.target.value)}
+                          placeholder={t('vendorPortal.reviews.replyPlaceholder')}
+                          className="w-full rounded-lg border px-3 py-2 text-sm border-edge bg-surface-elevated"
+                          rows={2}
+                        />
+                        <div className="flex gap-2">
+                          <Button
+                            size="sm"
+                            onClick={() =>
+                              replyMut.mutate({
+                                reviewId: r.id,
+                                ...(locale === 'ar'
+                                  ? { replyAr: replyText }
+                                  : { replyEn: replyText }),
+                              })
+                            }
+                            loading={replyMut.isPending}
+                            disabled={replyText.trim() === ''}
+                          >
+                            {t('vendorPortal.save')}
+                          </Button>
+                          <Button
+                            size="sm"
+                            variant="ghost"
+                            onClick={() => {
+                              setReplyTo(null);
+                              setReplyText('');
+                            }}
+                          >
+                            {t('button.cancel')}
+                          </Button>
+                        </div>
+                      </div>
+                    ) : (
+                      <Button
+                        size="sm"
+                        variant="outline"
+                        onClick={() => {
+                          setReplyTo(r.id);
+                          setReplyText('');
+                        }}
+                      >
+                        {t('vendorPortal.reviews.reply')}
+                      </Button>
+                    )}
+                  </Card>
+                ))}
+                {reviewsQ.hasNextPage && (
+                  <div>
+                    <Button
+                      size="sm"
+                      variant="outline"
+                      onClick={() => reviewsQ.fetchNextPage()}
+                      loading={reviewsQ.isFetchingNextPage}
+                    >
+                      {t('vendorPortal.loadMore')}
+                    </Button>
+                  </div>
+                )}
+              </div>
+            )}
           </div>
         )}
 
