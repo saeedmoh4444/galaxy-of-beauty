@@ -47,8 +47,8 @@ test.describe('Store Dashboard (S1)', () => {
     await page.goto('/store');
     await expect(page).toHaveURL(/\/store$/, { timeout: 60_000 });
 
-    // Four tabs, overview active by default.
-    for (const key of ['overview', 'orders', 'products', 'deals']) {
+    // Core tabs visible, overview active by default.
+    for (const key of ['overview', 'orders', 'products', 'deals', 'reviews']) {
       await expect(page.getByTestId(`vendor-tab-${key}`)).toBeVisible();
     }
     await expect(page.getByTestId('vendor-tab-overview')).toHaveAttribute('aria-selected', 'true');
@@ -63,6 +63,11 @@ test.describe('Store Dashboard (S1)', () => {
     await page.getByTestId('vendor-tab-products').click();
     await expect(page.getByTestId('vendor-panel-products')).toBeVisible();
     await expect(page.getByRole('button', { name: /منتج جديد/ })).toBeVisible();
+
+    // E4 — the reviews tab mounts the reputation panel (empty state until
+    // the seeded store collects reviews).
+    await page.getByTestId('vendor-tab-reviews').click();
+    await expect(page.getByTestId('vendor-panel-reviews')).toBeVisible();
   });
 
   test('A4 — add product flow: new product appears in the Products tab', async ({ page }) => {

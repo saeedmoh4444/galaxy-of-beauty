@@ -4017,6 +4017,28 @@ export const miscMessages = {
   'vendorPortal.deals.pending': { ar: 'قيد المراجعة', en: 'Pending review' },
   'vendorPortal.deals.approved': { ar: 'معتمد', en: 'Approved' },
   'vendorPortal.deals.rejected': { ar: 'مرفوض', en: 'Rejected' },
+  // E4 — reputation hub (reviews tab).
+  'vendorPortal.tab.reviews': { ar: 'التقييمات', en: 'Reviews' },
+  'vendorPortal.reviews.title': { ar: 'مركز التقييمات', en: 'Reviews center' },
+  'vendorPortal.reviews.empty': {
+    ar: 'لا توجد تقييمات لمنتجاتك بعد',
+    en: 'No reviews on your products yet',
+  },
+  'vendorPortal.reviews.avg': { ar: 'متوسط التقييم', en: 'Average rating' },
+  'vendorPortal.reviews.total': { ar: '{count} تقييم', en: '{count} reviews' },
+  'vendorPortal.reviews.trend': { ar: 'آخر ٨ أسابيع', en: 'Last 8 weeks' },
+  'vendorPortal.reviews.one-star-alert': {
+    ar: 'لديك {count} تقييم بنجمة واحدة دون رد — الرد يبني الثقة',
+    en: 'You have {count} unreplied 1-star review(s) — replying builds trust',
+  },
+  'vendorPortal.reviews.reply': { ar: 'رد المتجر', en: 'Merchant reply' },
+  'vendorPortal.reviews.replyPlaceholder': {
+    ar: 'اكتبي ردك على هذا التقييم…',
+    en: 'Write your reply to this review…',
+  },
+  'vendorPortal.reviews.answered': { ar: 'تم الرد', en: 'Replied' },
+  'vendorPortal.reviews.on': { ar: 'على {product}', en: 'on {product}' },
+  'vendorPortal.reviews.customer': { ar: 'العميلة {name}', en: 'Customer {name}' },
   // Store plan Phase 2 — public storefront
   'stores.title': { ar: 'المتاجر', en: 'Stores' },
   'stores.subtitle': {
