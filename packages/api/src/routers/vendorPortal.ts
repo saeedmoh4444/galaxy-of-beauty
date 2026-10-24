@@ -1408,6 +1408,63 @@ export const vendorPortalRouter = router({
       return toReviewRow(updated);
     }),
 
+  /**
+   * customers — CRM-lite repeat-customer aggregates (E5). One row per
+   * customer of the caller's store: order count, total spend, last-order
+   * recency, repeat flag. Aggregate-only — name/phone are the only PII
+   * (already visible on the order drawer); email/addresses never leave.
+   */
+  customers: customerProcedure
+    .input(
+      z.object({
+        limit: z.number().int().min(1).max(100).default(20),
+        cursor: z.number().int().positive().optional(),
+      }),
+    )
+    .query(async ({ ctx, input }) => {
+      const vendor = await prisma.vendor.findUnique({ where: { userId: ctx.user.id } });
+      if (!vendor) return { items: [], total: 0, repeatRate: 0, repeatCustomers: 0 };
+
+      const grouped = await prisma.storeOrder.groupBy({
+        by: ['customerId'],
+        where: { vendorId: vendor.id },
+        _count: true,
+        _sum: { totalAmount: true },
+        _max: { createdAt: true },
+      });
+      const users = await prisma.user.findMany({
+        where: { id: { in: grouped.map((g) => g.customerId) } },
+        select: { id: true, name: true, phone: true },
+      });
+      const byId = new Map(users.map((u) => [u.id, u]));
+      const rows = grouped
+        .map((g) => ({
+          customerId: g.customerId,
+          customerName: byId.get(g.customerId)?.name ?? 'عميل',
+          phone: byId.get(g.customerId)?.phone ?? null,
+          orderCount: g._count,
+          totalSpent: Number(g._sum.totalAmount ?? 0),
+          lastOrderAt: g._max.createdAt?.toISOString() ?? null,
+          repeat: g._count > 1,
+        }))
+        .sort((a, b) => b.totalSpent - a.totalSpent || a.customerId - b.customerId);
+
+      const repeatCustomers = rows.filter((r) => r.repeat).length;
+      let start = 0;
+      if (input.cursor) {
+        const i = rows.findIndex((r) => r.customerId === input.cursor);
+        if (i >= 0) start = i + 1;
+      }
+      const page = rows.slice(start, start + input.limit);
+      return {
+        items: page,
+        nextCursor: start + input.limit < rows.length ? page[page.length - 1]!.customerId : null,
+        total: rows.length,
+        repeatRate: rows.length === 0 ? 0 : Math.round((repeatCustomers / rows.length) * 100) / 100,
+        repeatCustomers,
+      };
+    }),
+
   // ---------------------------------------------------------------------------
   // C5 — bulk CSV product import (worker-backed)
   // ---------------------------------------------------------------------------

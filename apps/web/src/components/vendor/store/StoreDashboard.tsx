@@ -12,7 +12,15 @@ import { VenueProfileCard } from '../shared/VenueProfileCard';
 import { DashboardTabs } from '../shared/DashboardTabs';
 
 type TabKey =
-  'overview' | 'orders' | 'products' | 'deals' | 'coupons' | 'earnings' | 'analytics' | 'reviews';
+  | 'overview'
+  | 'orders'
+  | 'products'
+  | 'deals'
+  | 'coupons'
+  | 'earnings'
+  | 'analytics'
+  | 'reviews'
+  | 'customers';
 
 const TAB_KEYS: TabKey[] = [
   'overview',
@@ -22,6 +30,8 @@ const TAB_KEYS: TabKey[] = [
   'coupons',
   'earnings',
   'analytics',
+  'reviews',
+  'customers',
 ];
 
 /** A3 — read the ?tab= deep link once on mount (hydration-safe; the page is
@@ -267,6 +277,20 @@ export function StoreDashboard({
     },
   });
   const reviews = (reviewsQ.data?.pages ?? []).flatMap((p) => p.items);
+
+  // E5 — CRM-lite: repeat-customer aggregates (top spenders, recency).
+  const customersQ = api.vendorPortal.customers.useInfiniteQuery(
+    { limit: 20 },
+    {
+      enabled: isAuthenticated,
+      getNextPageParam: (lastPage) => lastPage.nextCursor ?? undefined,
+    },
+  );
+  const customers = (customersQ.data?.pages ?? []).flatMap((p) => p.items);
+  const customersFirst = customersQ.data?.pages[0];
+  const totalCustomers = customersFirst?.total ?? 0;
+  const repeatCustomers = customersFirst?.repeatCustomers ?? 0;
+  const repeatRate = customersFirst?.repeatRate ?? 0;
   const [importJobId, setImportJobId] = useState<string | null>(null);
   const importStatusQ = api.vendorPortal.importStatus.useQuery(
     { jobId: importJobId ?? '' },
@@ -347,6 +371,7 @@ export function StoreDashboard({
     { key: 'earnings', label: t('vendorPortal.tab.earnings') },
     { key: 'analytics', label: t('vendorPortal.tab.analytics') },
     { key: 'reviews', label: t('vendorPortal.tab.reviews') },
+    { key: 'customers', label: t('vendorPortal.tab.customers') },
   ];
 
   // The dashboard query's non-owner branch returns {}, so narrow the union.
@@ -1528,6 +1553,96 @@ export function StoreDashboard({
                   </div>
                 )}
               </div>
+            )}
+          </div>
+        )}
+
+        {tab === 'customers' && (
+          <div
+            role="tabpanel"
+            id="vendor-panel-customers"
+            data-testid="vendor-panel-customers"
+            aria-labelledby="vendor-tab-customers"
+            className="space-y-4"
+          >
+            {/* E5 — CRM-lite: repeat-customer aggregates (top spenders,
+                recency). Aggregate-only — name/phone, never email. */}
+            <h2 className="text-lg font-bold">{t('vendorPortal.customers.title')}</h2>
+
+            <div className="grid gap-4 sm:grid-cols-3">
+              <Card padding="md" className="text-center">
+                <p className="text-2xl font-bold">{totalCustomers}</p>
+                <p className="text-xs text-text-secondary">{t('vendorPortal.customers.total')}</p>
+              </Card>
+              <Card padding="md" className="text-center">
+                <p className="text-2xl font-bold">{repeatCustomers}</p>
+                <p className="text-xs text-text-secondary">
+                  {t('vendorPortal.customers.repeaters')}
+                </p>
+              </Card>
+              <Card padding="md" className="text-center">
+                <p className="text-2xl font-bold">
+                  {(repeatRate * 100).toLocaleString(locale === 'ar' ? 'ar-SA' : 'en-GB', {
+                    maximumFractionDigits: 0,
+                  })}
+                  ٪
+                </p>
+                <p className="text-xs text-text-secondary">{t('vendorPortal.customers.rate')}</p>
+              </Card>
+            </div>
+
+            {customers.length === 0 ? (
+              <p className="text-sm text-text-tertiary">{t('vendorPortal.customers.empty')}</p>
+            ) : (
+              <Card padding="md" className="space-y-3">
+                {customers.map((c) => (
+                  <div key={c.customerId} className="flex items-center justify-between gap-3">
+                    <div className="min-w-0">
+                      <p className="truncate text-sm font-semibold">
+                        {c.customerName}
+                        {c.repeat && (
+                          <span className="mr-1 rounded-full bg-violet-100 px-2 py-0.5 text-[10px] font-normal text-violet-700 dark:bg-violet-950 dark:text-violet-300">
+                            {t('vendorPortal.customers.repeat')}
+                          </span>
+                        )}
+                      </p>
+                      {c.phone && (
+                        <a
+                          href={`https://wa.me/${c.phone.replace(/^\+/, '').replace(/^0/, '966')}`}
+                          target="_blank"
+                          rel="noreferrer"
+                          className="text-xs text-brand-600 underline"
+                        >
+                          {c.phone}
+                        </a>
+                      )}
+                    </div>
+                    <div className="shrink-0 text-left">
+                      <p className="text-sm font-bold">{formatCurrency(c.totalSpent)}</p>
+                      <p className="text-xs text-text-secondary">
+                        {t('vendorPortal.customers.orders', { count: c.orderCount })} ·{' '}
+                        {c.lastOrderAt
+                          ? new Date(c.lastOrderAt).toLocaleDateString(
+                              locale === 'ar' ? 'ar-SA' : 'en-GB',
+                            )
+                          : ''}
+                      </p>
+                    </div>
+                  </div>
+                ))}
+                {customersQ.hasNextPage && (
+                  <div>
+                    <Button
+                      size="sm"
+                      variant="outline"
+                      onClick={() => customersQ.fetchNextPage()}
+                      loading={customersQ.isFetchingNextPage}
+                    >
+                      {t('vendorPortal.loadMore')}
+                    </Button>
+                  </div>
+                )}
+              </Card>
             )}
           </div>
         )}
