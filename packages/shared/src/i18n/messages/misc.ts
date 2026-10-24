@@ -4133,6 +4133,37 @@ export const miscMessages = {
   },
   'vendorPortal.clinic.consultations-empty': { ar: 'لا توجد طلبات', en: 'No requests' },
   'vendorPortal.clinic.confirm': { ar: 'تأكيد', en: 'Confirm' },
+  // E2 — clinic console deepening (packages, outcomes, utilization).
+  'vendorPortal.clinic.packages-title': { ar: 'باقات العلاج', en: 'Treatment packages' },
+  'vendorPortal.clinic.package-name-ar': {
+    ar: 'اسم الباقة (عربي)',
+    en: 'Package name (AR)',
+  },
+  'vendorPortal.clinic.package-name-en': {
+    ar: 'اسم الباقة (EN)',
+    en: 'Package name (EN)',
+  },
+  'vendorPortal.clinic.package-discount': { ar: 'الخصم ٪', en: 'Discount %' },
+  'vendorPortal.clinic.package-propose': { ar: 'اقتراح الباقة', en: 'Propose package' },
+  'vendorPortal.clinic.packages-empty': {
+    ar: 'لا توجد باقات مقترحة بعد',
+    en: 'No proposed packages yet',
+  },
+  'vendorPortal.clinic.pkg-status.PENDING_REVIEW': { ar: 'قيد المراجعة', en: 'Pending review' },
+  'vendorPortal.clinic.pkg-status.APPROVED': { ar: 'معتمدة', en: 'Approved' },
+  'vendorPortal.clinic.pkg-status.REJECTED': { ar: 'مرفوضة', en: 'Rejected' },
+  'vendorPortal.clinic.pkg-status.DRAFT': { ar: 'مسودة', en: 'Draft' },
+  'vendorPortal.clinic.complete': { ar: 'اكتملت', en: 'Completed' },
+  'vendorPortal.clinic.no-show': { ar: 'لم تحضر', en: 'No-show' },
+  'vendorPortal.clinic.cancel-reason': { ar: 'سبب الإلغاء', en: 'Cancel reason' },
+  'vendorPortal.clinic.utilization-title': {
+    ar: 'إشغال المواعيد (٣٠ يوماً)',
+    en: 'Slot utilization (30 days)',
+  },
+  'vendorPortal.clinic.utilization': {
+    ar: '{booked} من {total} موعد',
+    en: '{booked} of {total} slots',
+  },
   'vendorPortal.clinic.pending-license': {
     ar: 'بانتظار مراجعة الترخيص والمستندات من الإدارة',
     en: 'Awaiting admin review of your license and documents',
