@@ -1031,6 +1031,7 @@ vendorPortal.clinicSlots.list	query	customer
 vendorPortal.clinicSlots.remove	mutation	customer
 vendorPortal.confirmConsultation	mutation	customer
 vendorPortal.createCoupon	mutation	customer
+vendorPortal.customers	query	customer
 vendorPortal.dashboard	query	customer
 vendorPortal.deactivateCoupon	mutation	customer
 vendorPortal.dealTemplates	query	customer

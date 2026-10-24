@@ -4027,6 +4027,18 @@ export const miscMessages = {
   'vendorPortal.reviews.avg': { ar: 'متوسط التقييم', en: 'Average rating' },
   'vendorPortal.reviews.total': { ar: '{count} تقييم', en: '{count} reviews' },
   'vendorPortal.reviews.trend': { ar: 'آخر ٨ أسابيع', en: 'Last 8 weeks' },
+  // E5 — CRM-lite (customers tab).
+  'vendorPortal.tab.customers': { ar: 'العملاء', en: 'Customers' },
+  'vendorPortal.customers.title': { ar: 'عملاؤك المتكررون', en: 'Your repeat customers' },
+  'vendorPortal.customers.total': { ar: 'إجمالي العملاء', en: 'Total customers' },
+  'vendorPortal.customers.repeaters': { ar: 'عملاء متكررون', en: 'Repeat customers' },
+  'vendorPortal.customers.rate': { ar: 'نسبة التكرار', en: 'Repeat rate' },
+  'vendorPortal.customers.empty': {
+    ar: 'لا توجد طلبات على متجرك بعد',
+    en: 'No orders on your store yet',
+  },
+  'vendorPortal.customers.repeat': { ar: 'متكررة', en: 'Repeat' },
+  'vendorPortal.customers.orders': { ar: '{count} طلبات', en: '{count} orders' },
   'vendorPortal.reviews.one-star-alert': {
     ar: 'لديك {count} تقييم بنجمة واحدة دون رد — الرد يبني الثقة',
     en: 'You have {count} unreplied 1-star review(s) — replying builds trust',
