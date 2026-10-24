@@ -4324,6 +4324,15 @@ export const miscMessages = {
   'vendorPortal.nailBar.capacity': { ar: 'عدد المحطات', en: 'Stations' },
   'vendorPortal.nailBar.bookings-title': { ar: 'حجوزات المحطات', en: 'Station bookings' },
   'vendorPortal.nailBar.bookings-empty': { ar: 'لا توجد حجوزات', en: 'No bookings' },
+  // E3 — nail-bar capacity analytics.
+  'vendorPortal.nailBar.capacity-title': {
+    ar: 'إشغال المحطات (٣٠ يوماً)',
+    en: 'Station capacity (30 days)',
+  },
+  'vendorPortal.nailBar.capacity-summary': {
+    ar: '{booked} من {capacity} حجز',
+    en: '{booked} of {capacity} seats',
+  },
   'vendorPortal.athome.coverage': { ar: 'التغطية', en: 'Coverage' },
   'vendorPortal.athome.requests-title': {
     ar: 'طلبات الخدمة المنزلية',
@@ -4331,6 +4340,18 @@ export const miscMessages = {
   },
   'vendorPortal.athome.requests-empty': { ar: 'لا توجد طلبات', en: 'No requests yet' },
   'vendorPortal.athome.complete': { ar: 'إكمال الطلب', en: 'Complete request' },
+  // E3 — accept/decline queue.
+  'vendorPortal.athome.queue-title': {
+    ar: 'طلبات جديدة في مدينتك',
+    en: 'New requests in your city',
+  },
+  'vendorPortal.athome.queue-empty': {
+    ar: 'لا توجد طلبات جديدة في مدينتك',
+    en: 'No new requests in your city',
+  },
+  'vendorPortal.athome.accept': { ar: 'قبول', en: 'Accept' },
+  'vendorPortal.athome.decline': { ar: 'رفض', en: 'Decline' },
+  'vendorPortal.athome.decline-reason': { ar: 'سبب الرفض', en: 'Decline reason' },
   // E5 — admin review queues
   'admin.nailBars.title': { ar: 'صالونات الأظافر والمنزلية', en: 'Nail bars & at-home salons' },
   'admin.nailBars.subtitle': {

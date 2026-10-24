@@ -38,6 +38,9 @@ export function NailBarDashboard({
     onSuccess: () => slotsQ.refetch(),
   });
 
+  // E3 — capacity analytics over the last 30 days.
+  const capacityQ = api.vendorPortal.nailBarCapacity.useQuery(undefined);
+
   const slots = slotsQ.data ?? [];
   const bookings = bookingsQ.data ?? [];
 
@@ -151,6 +154,37 @@ export function NailBarDashboard({
               ))}
             </div>
           )}
+        </Card>
+
+        {/* E3 — capacity analytics: stations filled per day (30 days). */}
+        <Card padding="lg">
+          <h3 className="mb-3 font-bold">{t('vendorPortal.nailBar.capacity-title')}</h3>
+          <p className="text-sm">
+            <span className="font-bold">
+              {t('vendorPortal.nailBar.capacity-summary', {
+                booked: capacityQ.data?.booked ?? 0,
+                capacity: capacityQ.data?.totalCapacity ?? 0,
+              })}
+            </span>{' '}
+            · {capacityQ.data?.fillPct ?? 0}٪
+          </p>
+          <div className="mt-2 flex h-12 items-end gap-[2px]">
+            {(capacityQ.data?.byDay ?? []).map((d) => {
+              const max = Math.max(...(capacityQ.data?.byDay ?? []).map((x) => x.capacity), 1);
+              return (
+                <div
+                  key={d.day}
+                  className="group relative flex-1"
+                  title={`${d.day}: ${d.booked}/${d.capacity}`}
+                >
+                  <div
+                    className="w-full rounded-t-[3px] bg-brand-600 transition-colors group-hover:bg-brand-700 dark:bg-brand-500 dark:group-hover:bg-brand-400"
+                    style={{ height: `${(d.capacity / max) * 100}%` }}
+                  />
+                </div>
+              );
+            })}
+          </div>
         </Card>
       </div>
     </DashboardLayout>

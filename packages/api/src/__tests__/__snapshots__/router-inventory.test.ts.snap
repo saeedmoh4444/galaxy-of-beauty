@@ -1054,8 +1054,11 @@ vendorPortal.gymClasses.remove	mutation	customer
 vendorPortal.gymClassOccupancy	query	customer
 vendorPortal.gymMembers	query	customer
 vendorPortal.gymPlans	query	customer
+vendorPortal.homeRequests.accept	mutation	customer
 vendorPortal.homeRequests.complete	mutation	customer
+vendorPortal.homeRequests.decline	mutation	customer
 vendorPortal.homeRequests.list	query	customer
+vendorPortal.homeRequests.queue	query	customer
 vendorPortal.importProductsCsv	mutation	customer
 vendorPortal.importStatus	query	customer
 vendorPortal.listCoupons	query	customer
@@ -1069,6 +1072,7 @@ vendorPortal.myReviews	query	customer
 vendorPortal.myReviewsSummary	query	customer
 vendorPortal.myStore	query	customer
 vendorPortal.nailBarBookings	query	customer
+vendorPortal.nailBarCapacity	query	customer
 vendorPortal.nailBarSlots.add	mutation	customer
 vendorPortal.nailBarSlots.list	query	customer
 vendorPortal.nailBarSlots.remove	mutation	customer

@@ -2041,14 +2041,137 @@ export const vendorPortalRouter = router({
         where: { id: input.requestId, vendorId: vendor.id },
       });
       if (!request) throw new TRPCError({ code: 'NOT_FOUND', message: 'Request not found' });
-      if (request.status !== 'PENDING') {
+      if (request.status !== 'PENDING' && request.status !== 'ACCEPTED') {
         throw new TRPCError({ code: 'BAD_REQUEST', message: 'Request already completed' });
       }
       return prisma.homeServiceRequest.update({
         where: { id: input.requestId },
-        data: { status: 'COMPLETED' },
+        data: { status: 'COMPLETED', completedAt: new Date() },
       });
     }),
+
+  // ---------------------------------------------------------------------------
+  // E3 — at-home accept/decline queue + nail-bar capacity analytics
+  // ---------------------------------------------------------------------------
+
+  /**
+   * homeRequests.queue — unassigned PENDING requests in the salon's city
+   * (the accept/decline queue). Assigned or decided requests never appear.
+   */
+  'homeRequests.queue': customerProcedure.query(async ({ ctx }) => {
+    const vendor = await prisma.vendor.findUnique({ where: { userId: ctx.user.id } });
+    if (!vendor || vendor.type !== 'ATHOME' || !vendor.homeCity) return [];
+
+    const requests = await prisma.homeServiceRequest.findMany({
+      where: { city: vendor.homeCity, vendorId: null, status: 'PENDING' },
+      orderBy: { createdAt: 'desc' },
+    });
+    const users = await prisma.user.findMany({
+      where: { id: { in: requests.map((r) => r.userId) } },
+      select: { id: true, name: true, phone: true },
+    });
+    const services = await prisma.service.findMany({
+      where: { id: { in: requests.map((r) => r.serviceId) } },
+      select: { id: true, titleJson: true },
+    });
+    return requests.map((r) => ({
+      ...r,
+      customer: users.find((u) => u.id === r.userId) ?? null,
+      service: services.find((s) => s.id === r.serviceId) ?? null,
+    }));
+  }),
+
+  /**
+   * homeRequests.accept — a PENDING city request becomes ACCEPTED and
+   * assigned to the caller's salon (assignedAt stamped).
+   */
+  'homeRequests.accept': customerProcedure
+    .input(z.object({ requestId: z.number().int().positive() }))
+    .mutation(async ({ ctx, input }) => {
+      const vendor = await prisma.vendor.findUnique({ where: { userId: ctx.user.id } });
+      if (!vendor || vendor.type !== 'ATHOME') {
+        throw new TRPCError({ code: 'FORBIDDEN', message: 'At-home salon not found' });
+      }
+      const request = await prisma.homeServiceRequest.findUnique({
+        where: { id: input.requestId },
+      });
+      if (!request || request.city !== vendor.homeCity) {
+        throw new TRPCError({ code: 'NOT_FOUND', message: 'Request not found' });
+      }
+      if (request.status !== 'PENDING' || request.vendorId !== null) {
+        throw new TRPCError({ code: 'BAD_REQUEST', message: 'Request already taken' });
+      }
+      return prisma.homeServiceRequest.update({
+        where: { id: input.requestId },
+        data: { vendorId: vendor.id, assignedAt: new Date(), status: 'ACCEPTED' },
+      });
+    }),
+
+  /**
+   * homeRequests.decline — the salon passes on a PENDING city request;
+   * reason + timestamp are recorded for the platform's dispatch view.
+   */
+  'homeRequests.decline': customerProcedure
+    .input(
+      z.object({
+        requestId: z.number().int().positive(),
+        reason: z.string().max(500).optional(),
+      }),
+    )
+    .mutation(async ({ ctx, input }) => {
+      const vendor = await prisma.vendor.findUnique({ where: { userId: ctx.user.id } });
+      if (!vendor || vendor.type !== 'ATHOME') {
+        throw new TRPCError({ code: 'FORBIDDEN', message: 'At-home salon not found' });
+      }
+      const request = await prisma.homeServiceRequest.findUnique({
+        where: { id: input.requestId },
+      });
+      if (!request || request.city !== vendor.homeCity) {
+        throw new TRPCError({ code: 'NOT_FOUND', message: 'Request not found' });
+      }
+      if (request.status !== 'PENDING') {
+        throw new TRPCError({ code: 'BAD_REQUEST', message: 'Request already decided' });
+      }
+      return prisma.homeServiceRequest.update({
+        where: { id: input.requestId },
+        data: {
+          status: 'DECLINED',
+          declinedAt: new Date(),
+          ...(input.reason ? { declineReason: input.reason } : {}),
+        },
+      });
+    }),
+
+  /** nailBarCapacity — filled capacity across the last 30 days. */
+  nailBarCapacity: customerProcedure.query(async ({ ctx }) => {
+    const vendor = await prisma.vendor.findUnique({ where: { userId: ctx.user.id } });
+    if (!vendor || vendor.type !== 'NAIL_BAR') {
+      throw new TRPCError({ code: 'FORBIDDEN', message: 'Nail bar not found' });
+    }
+    const since = new Date(Date.now() - 30 * 24 * 3_600_000);
+    const slots = await prisma.nailBarSlot.findMany({
+      where: { nailBarId: vendor.id, startAt: { gte: since, lte: new Date() } },
+      select: { startAt: true, capacity: true, bookedCount: true },
+    });
+    const byDayMap = new Map<string, { capacity: number; booked: number }>();
+    for (const s of slots) {
+      const day = s.startAt.toISOString().slice(0, 10);
+      const row = byDayMap.get(day) ?? { capacity: 0, booked: 0 };
+      row.capacity += s.capacity;
+      row.booked += s.bookedCount;
+      byDayMap.set(day, row);
+    }
+    const totalCapacity = slots.reduce((sum, s) => sum + s.capacity, 0);
+    const booked = slots.reduce((sum, s) => sum + s.bookedCount, 0);
+    return {
+      totalCapacity,
+      booked,
+      fillPct: totalCapacity === 0 ? 0 : Math.round((booked / totalCapacity) * 100),
+      byDay: [...byDayMap.entries()]
+        .map(([day, r]) => ({ day, ...r }))
+        .sort((a, b) => a.day.localeCompare(b.day)),
+    };
+  }),
 
   /** gymCancelBooking — gym cancels a member's BOOKED seat. */
   gymCancelBooking: customerProcedure

@@ -2353,6 +2353,10 @@ model HomeServiceRequest {
   // E5 — assigned to a verified at-home salon provider (ATHOME vendor).
   vendorId        Int?
   assignedAt      DateTime?
+  // E3 — accept/decline queue + completion confirmation (expand-contract).
+  declinedAt      DateTime?
+  declineReason   String?
+  completedAt     DateTime?
 
   @@index([userId])
   @@index([vendorId, status])
