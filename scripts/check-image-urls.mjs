@@ -40,14 +40,41 @@ if (isMain) {
       .then((r) => ({ url, status: r.status, ok: r.status >= 200 && r.status < 300 }))
       .catch(() => ({ url, status: 0, ok: false }));
 
-  const results = await Promise.all(urls.map(check));
+  // picsum.photos rate-limits bursts (51/72 failures on a single CI run):
+  // check picsum URLs with 2 retries + backoff, and cap concurrency for the
+  // whole batch. Unsplash URLs stay single-shot — the registry must be honest.
+  const isPicsum = (url) => url.startsWith(PICSUM_BASE);
+  const CONCURRENCY = 8;
+  const results = [];
+  for (let i = 0; i < urls.length; i += CONCURRENCY) {
+    const chunk = urls.slice(i, i + CONCURRENCY);
+    results.push(
+      ...(await Promise.all(
+        chunk.map(async (url) => {
+          let res = await check(url);
+          for (let attempt = 0; attempt < 2 && isPicsum(url) && !res.ok; attempt++) {
+            await new Promise((r) => setTimeout(r, 1000 * (attempt + 1)));
+            res = await check(url);
+          }
+          return res;
+        }),
+      )),
+    );
+  }
   const bad = results.filter((r) => !r.ok);
+  // picsum.photos is a dev-seed placeholder service that rate-limits bursts
+  // (and P('seed') URLs cannot "break" — any seed renders an image). Treat
+  // its failures as warnings; the hard gate covers the Unsplash registry
+  // only, which is what the gate exists for (audit D3's 37/43 hero 404s).
+  const hardBad = bad.filter((r) => !isPicsum(r.url));
+  const softBad = bad.filter((r) => isPicsum(r.url));
 
   console.log(`image-urls: checked ${results.length} registry URLs`);
-  if (bad.length > 0) {
-    console.error(`FAIL: ${bad.length} image URL(s) do not resolve:`);
-    for (const b of bad) console.error(`  ${b.status} ${b.url}`);
+  for (const b of softBad) console.warn(`  WARN (picsum): ${b.status} ${b.url}`);
+  if (hardBad.length > 0) {
+    console.error(`FAIL: ${hardBad.length} image URL(s) do not resolve:`);
+    for (const b of hardBad) console.error(`  ${b.status} ${b.url}`);
     process.exit(1);
   }
-  console.log('image-urls: all resolve');
+  console.log('image-urls: registry URLs resolve');
 }
