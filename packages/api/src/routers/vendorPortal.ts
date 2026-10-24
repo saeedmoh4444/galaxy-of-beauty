@@ -2072,4 +2072,98 @@ export const vendorPortalRouter = router({
         return updated;
       });
     }),
+
+  // ---------------------------------------------------------------------------
+  // E1 — gym membership console (plans, members, occupancy)
+  // ---------------------------------------------------------------------------
+
+  /**
+   * gymPlans — the caller gym's active membership plans with ACTIVE member
+   * counts. Plan editing stays admin (regulatory) — read-only here.
+   */
+  gymPlans: customerProcedure.query(async ({ ctx }) => {
+    const vendor = await prisma.vendor.findUnique({ where: { userId: ctx.user.id } });
+    if (!vendor || vendor.type !== 'GYM') {
+      throw new TRPCError({ code: 'FORBIDDEN', message: 'Gym not found' });
+    }
+    const plans = await prisma.subscriptionPlan.findMany({
+      where: { gymId: vendor.id, isActive: true },
+      orderBy: { price: 'desc' },
+    });
+    const members = await prisma.customerSubscription.groupBy({
+      by: ['planId'],
+      where: { planId: { in: plans.map((p) => p.id) }, status: 'ACTIVE' },
+      _count: true,
+    });
+    const countOf = new Map(members.map((m) => [m.planId, m._count]));
+    return plans.map((p) => ({
+      id: p.id,
+      nameAr: (p.nameJson as { ar?: string }).ar ?? '',
+      nameEn: (p.nameJson as { en?: string }).en ?? '',
+      price: Number(p.price),
+      interval: p.interval,
+      servicesPerMonth: p.servicesPerMonth,
+      discountPercent: p.discountPercent,
+      memberCount: countOf.get(p.id) ?? 0,
+    }));
+  }),
+
+  /**
+   * gymMembers — enrolled members of the caller gym's plans, with plan and
+   * contact info (name/phone — the same PII the gym already sees on
+   * bookings). Includes non-ACTIVE rows with their status for the console.
+   */
+  gymMembers: customerProcedure.query(async ({ ctx }) => {
+    const vendor = await prisma.vendor.findUnique({ where: { userId: ctx.user.id } });
+    if (!vendor || vendor.type !== 'GYM') {
+      throw new TRPCError({ code: 'FORBIDDEN', message: 'Gym not found' });
+    }
+    const subs = await prisma.customerSubscription.findMany({
+      where: { plan: { gymId: vendor.id } },
+      orderBy: { createdAt: 'desc' },
+      include: {
+        user: { select: { name: true, phone: true } },
+        plan: { select: { nameJson: true } },
+      },
+    });
+    return subs.map((s) => ({
+      subscriptionId: s.id,
+      userId: s.userId,
+      memberName: s.user.name,
+      phone: s.user.phone ?? null,
+      planNameAr: (s.plan.nameJson as { ar?: string }).ar ?? '',
+      planNameEn: (s.plan.nameJson as { en?: string }).en ?? '',
+      status: s.status,
+      periodEnd: s.currentPeriodEnd.toISOString(),
+      bookingsThisMonth: s.bookingsThisMonth,
+      autoRenew: s.autoRenew,
+    }));
+  }),
+
+  /**
+   * gymClassOccupancy — upcoming classes of the caller gym with per-class
+   * occupancy (enrolled / capacity). Past classes are excluded.
+   */
+  gymClassOccupancy: customerProcedure.query(async ({ ctx }) => {
+    const vendor = await prisma.vendor.findUnique({ where: { userId: ctx.user.id } });
+    if (!vendor || vendor.type !== 'GYM') {
+      throw new TRPCError({ code: 'FORBIDDEN', message: 'Gym not found' });
+    }
+    const classes = await prisma.gymClass.findMany({
+      where: { gymId: vendor.id, startsAt: { gte: new Date() } },
+      orderBy: { startsAt: 'asc' },
+      take: 50,
+    });
+    return classes.map((c) => ({
+      id: c.id,
+      nameAr: (c.nameJson as { ar?: string }).ar ?? '',
+      nameEn: (c.nameJson as { en?: string }).en ?? '',
+      startsAt: c.startsAt.toISOString(),
+      endsAt: c.endsAt.toISOString(),
+      capacity: c.capacity,
+      enrolled: c.enrolledCount,
+      price: Number(c.price),
+      occupancyPct: c.capacity === 0 ? 0 : Math.round((c.enrolledCount / c.capacity) * 100),
+    }));
+  }),
 });
