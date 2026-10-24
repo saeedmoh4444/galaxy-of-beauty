@@ -2,7 +2,7 @@
 import { useState } from 'react';
 import type { JSX } from 'react';
 import { api } from '@/lib/trpc';
-import { Card, Button, Input } from '@galaxy/ui';
+import { Card, Button, Input, formatCurrency } from '@galaxy/ui';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
 import { useLocale } from '@/components/LocaleProvider';
 import type { MyStore } from '@galaxy/api';
@@ -49,8 +49,16 @@ export function GymDashboard({
     },
   });
 
+  // E1 — gym membership console (plans, members, occupancy).
+  const plansQ = api.vendorPortal.gymPlans.useQuery(undefined);
+  const membersQ = api.vendorPortal.gymMembers.useQuery(undefined);
+  const occupancyQ = api.vendorPortal.gymClassOccupancy.useQuery(undefined);
+
   const classes = classesQ.data ?? [];
   const bookings = bookingsQ.data ?? [];
+  const plans = plansQ.data ?? [];
+  const members = membersQ.data ?? [];
+  const occupancy = occupancyQ.data ?? [];
 
   return (
     <DashboardLayout userRole={shellRole}>
@@ -202,6 +210,93 @@ export function GymDashboard({
                   </div>
                 );
               })}
+            </div>
+          )}
+        </Card>
+
+        {/* E1 — membership console: plans, enrolled members, occupancy. */}
+        <Card padding="lg">
+          <h3 className="mb-3 font-bold">{t('vendorPortal.gym.plans-title')}</h3>
+          {plans.length === 0 ? (
+            <p className="text-sm text-text-tertiary">{t('vendorPortal.gym.plans-empty')}</p>
+          ) : (
+            <div className="space-y-2">
+              {plans.map((p) => (
+                <div key={p.id} className="flex items-center justify-between rounded-lg border p-3">
+                  <div>
+                    <p className="text-sm font-bold">{locale === 'ar' ? p.nameAr : p.nameEn}</p>
+                    <p className="text-xs text-text-secondary">
+                      {formatCurrency(p.price)} · {p.interval}
+                    </p>
+                  </div>
+                  <span className="rounded-full bg-violet-100 px-2 py-0.5 text-xs text-violet-700 dark:bg-violet-950 dark:text-violet-300">
+                    {t('vendorPortal.gym.members', { count: p.memberCount })}
+                  </span>
+                </div>
+              ))}
+            </div>
+          )}
+        </Card>
+
+        <Card padding="lg">
+          <h3 className="mb-3 font-bold">{t('vendorPortal.gym.members-title')}</h3>
+          {members.length === 0 ? (
+            <p className="text-sm text-text-tertiary">{t('vendorPortal.gym.members-empty')}</p>
+          ) : (
+            <div className="space-y-2">
+              {members.map((m) => (
+                <div
+                  key={m.subscriptionId}
+                  className="flex items-center justify-between rounded-lg border p-3"
+                >
+                  <div>
+                    <p className="text-sm font-bold">{m.memberName}</p>
+                    <p className="text-xs text-text-secondary">
+                      {locale === 'ar' ? m.planNameAr : m.planNameEn}
+                      {m.phone ? ` · ${m.phone}` : ''}
+                    </p>
+                  </div>
+                  <div className="text-left">
+                    <p className="text-xs text-text-secondary">
+                      {t(`vendorPortal.gym.member-status.${m.status}` as never)}
+                    </p>
+                    <p className="text-xs text-text-tertiary">
+                      {new Date(m.periodEnd).toLocaleDateString(
+                        locale === 'ar' ? 'ar-SA' : 'en-GB',
+                      )}
+                    </p>
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
+        </Card>
+
+        <Card padding="lg">
+          <h3 className="mb-3 font-bold">{t('vendorPortal.gym.occupancy-title')}</h3>
+          {occupancy.length === 0 ? (
+            <p className="text-sm text-text-tertiary">{t('vendorPortal.gym.occupancy-empty')}</p>
+          ) : (
+            <div className="space-y-2">
+              {occupancy.map((c) => (
+                <div key={c.id} className="rounded-lg border p-3">
+                  <div className="flex items-center justify-between">
+                    <p className="text-sm font-semibold">{locale === 'ar' ? c.nameAr : c.nameEn}</p>
+                    <p className="text-xs text-text-secondary">
+                      {c.enrolled}/{c.capacity} · {c.occupancyPct}٪
+                    </p>
+                  </div>
+                  <div className="mt-2 h-2 rounded-full bg-surface-elevated">
+                    <div
+                      className="h-2 rounded-full bg-brand-600 dark:bg-brand-500"
+                      style={{ width: `${Math.min(c.occupancyPct, 100)}%` }}
+                    />
+                  </div>
+                  <p className="mt-1 text-xs text-text-tertiary">
+                    {new Date(c.startsAt).toLocaleString(locale === 'ar' ? 'ar-SA' : 'en-GB')}
+                  </p>
+                </div>
+              ))}
             </div>
           )}
         </Card>

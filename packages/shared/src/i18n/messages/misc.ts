@@ -4239,6 +4239,18 @@ export const miscMessages = {
   'vendorPortal.gym.class-remove': { ar: 'حذف', en: 'Remove' },
   'vendorPortal.gym.bookings-title': { ar: 'حجوزات الحصص', en: 'Class bookings' },
   'vendorPortal.gym.bookings-empty': { ar: 'لا توجد حجوزات', en: 'No bookings' },
+  // E1 — gym membership console.
+  'vendorPortal.gym.plans-title': { ar: 'خطط العضوية', en: 'Membership plans' },
+  'vendorPortal.gym.plans-empty': { ar: 'لا توجد خطط لعضويتك بعد', en: 'No membership plans yet' },
+  'vendorPortal.gym.members': { ar: '{count} مشترك', en: '{count} members' },
+  'vendorPortal.gym.members-title': { ar: 'المشتركون', en: 'Members' },
+  'vendorPortal.gym.members-empty': { ar: 'لا يوجد مشتركون بعد', en: 'No members yet' },
+  'vendorPortal.gym.member-status.ACTIVE': { ar: 'نشط', en: 'Active' },
+  'vendorPortal.gym.member-status.PAUSED': { ar: 'معلق', en: 'Paused' },
+  'vendorPortal.gym.member-status.CANCELLED': { ar: 'ملغي', en: 'Cancelled' },
+  'vendorPortal.gym.member-status.EXPIRED': { ar: 'منتهي', en: 'Expired' },
+  'vendorPortal.gym.occupancy-title': { ar: 'إشغال الحصص القادمة', en: 'Upcoming class occupancy' },
+  'vendorPortal.gym.occupancy-empty': { ar: 'لا توجد حصص قادمة', en: 'No upcoming classes' },
   // E5 — nail bars (public + vendor portal + admin)
   'nailBars.title': { ar: 'صالونات الأظافر', en: 'Nail Bars' },
   'nailBars.subtitle': {

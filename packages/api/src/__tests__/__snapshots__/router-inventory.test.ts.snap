@@ -1048,6 +1048,9 @@ vendorPortal.gymClassBookings	query	customer
 vendorPortal.gymClasses.add	mutation	customer
 vendorPortal.gymClasses.list	query	customer
 vendorPortal.gymClasses.remove	mutation	customer
+vendorPortal.gymClassOccupancy	query	customer
+vendorPortal.gymMembers	query	customer
+vendorPortal.gymPlans	query	customer
 vendorPortal.homeRequests.complete	mutation	customer
 vendorPortal.homeRequests.list	query	customer
 vendorPortal.importProductsCsv	mutation	customer
