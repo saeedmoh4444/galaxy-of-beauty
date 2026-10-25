@@ -1560,6 +1560,11 @@ model Vendor {
   // G3 — KYC expiry reminders (vendor self-service; 60/30/7-day inbox nudge).
   licenseExpiryDate DateTime?
   licenseRemindedAt DateTime?
+  // A2 — payout automation (PROFESSIONALIZATION Wave A): MANUAL | WEEKLY |
+  // MONTHLY; the daily gob-payouts job settles elapsed windows and stamps
+  // lastPayoutRunAt. Transfers stay human (money-integrity).
+  payoutSchedule  String   @default("MANUAL")
+  lastPayoutRunAt DateTime?
   consultationPrice Decimal  @default(0) @db.Decimal(10, 2)
   // E3 — fitness vertical (gyms).
   gymType    String? // ladies | family

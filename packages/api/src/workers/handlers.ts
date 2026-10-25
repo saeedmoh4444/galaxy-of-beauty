@@ -16,6 +16,7 @@ import {
 import { creditLoyaltyPoints } from '../lib/loyalty';
 import { sendEmail, emailShell } from '../lib/email';
 import { notifyUser } from '../lib/notify';
+import { calculateVendorSettlements } from '../lib/storePayouts';
 
 // ── Job type definitions ──
 
@@ -837,4 +838,78 @@ export async function handleLicenseExpiryReminders(_job: Job<Record<string, neve
   }
 
   return { reminded };
+}
+
+/**
+ * handlePayoutScheduleJob — A2: settle scheduled vendors (WEEKLY/MONTHLY)
+ * whose window has elapsed since lastPayoutRunAt (or creation on the
+ * first run). Creates PENDING payout rows via the SAME settlement math
+ * as the admin calculator — the job never moves money, only the ledger.
+ * Money-integrity: transfers stay human (admin marks COMPLETED).
+ */
+export async function handlePayoutScheduleJob(_job: Job<Record<string, never>>): Promise<{
+  checked: number;
+  settledVendors: number;
+}> {
+  const now = new Date();
+  const scheduled = await prisma.vendor.findMany({
+    where: {
+      isActive: true,
+      payoutSchedule: { in: ['WEEKLY', 'MONTHLY'] },
+    },
+    select: {
+      id: true,
+      userId: true,
+      payoutSchedule: true,
+      lastPayoutRunAt: true,
+      createdAt: true,
+    },
+  });
+
+  const due = scheduled.filter((v) => {
+    if (!v.lastPayoutRunAt) return true; // first run settles immediately
+    const windowDays = v.payoutSchedule === 'WEEKLY' ? 7 : 30;
+    return now.getTime() - v.lastPayoutRunAt.getTime() >= windowDays * 86_400_000;
+  });
+
+  let settledVendors = 0;
+  for (const vendor of due) {
+    try {
+      const periodStart = vendor.lastPayoutRunAt ?? vendor.createdAt;
+      const settlements = await calculateVendorSettlements(periodStart, now);
+      const mine = settlements.find((s) => s.vendorId === vendor.id);
+      if (mine && mine.orderCount > 0) {
+        // Re-settlement replaces PENDING rows for the same window.
+        await prisma.payout.deleteMany({
+          where: { periodStart, periodEnd: now, status: 'PENDING', vendorId: vendor.id },
+        });
+        await prisma.payout.create({
+          data: {
+            vendorId: vendor.id,
+            periodStart,
+            periodEnd: now,
+            amount: mine.amount,
+            fee: mine.fee,
+            status: 'PENDING',
+          },
+        });
+        await notifyUser({
+          userId: vendor.userId,
+          templateKey: 'payout_processing',
+          vars: { amount: String(mine.amount) },
+          link: '/store?tab=earnings',
+          channels: ['in_app'],
+        });
+      }
+      await prisma.vendor.update({
+        where: { id: vendor.id },
+        data: { lastPayoutRunAt: now },
+      });
+      settledVendors++;
+    } catch {
+      // Never break the sweep on one row.
+    }
+  }
+
+  return { checked: scheduled.length, settledVendors };
 }
