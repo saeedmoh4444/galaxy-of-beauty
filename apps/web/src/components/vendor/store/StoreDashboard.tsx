@@ -10,6 +10,7 @@ import type { MyStore, StoreDealPayload, StoreOrderRow } from '@galaxy/api';
 import { localize, type TranslationKey } from '@galaxy/shared';
 import { VenueProfileCard } from '../shared/VenueProfileCard';
 import { SubmissionStatusCard } from '../shared/SubmissionStatusCard';
+import { StaffPanel } from '../shared/StaffPanel';
 import { DashboardTabs } from '../shared/DashboardTabs';
 
 type TabKey =
@@ -22,7 +23,8 @@ type TabKey =
   | 'analytics'
   | 'reviews'
   | 'customers'
-  | 'inbox';
+  | 'inbox'
+  | 'staff';
 
 const TAB_KEYS: TabKey[] = [
   'overview',
@@ -35,6 +37,7 @@ const TAB_KEYS: TabKey[] = [
   'reviews',
   'customers',
   'inbox',
+  'staff',
 ];
 
 /** A3 — read the ?tab= deep link once on mount (hydration-safe; the page is
@@ -91,6 +94,12 @@ export function StoreDashboard({
   const { data: dash } = api.vendorPortal.dashboard.useQuery(undefined, {
     enabled: isAuthenticated,
   });
+  // A1 — the caller's portal relationship drives tab visibility: owners see
+  // everything, staff see only the tabs their capabilities unlock.
+  const accessQ = api.vendorPortal.staff.access.useQuery(undefined, { enabled: isAuthenticated });
+  const access = accessQ.data ?? { kind: 'none', permissions: [] };
+  const can = (cap: string) =>
+    access.kind === 'owner' || (access.permissions as string[]).includes(cap);
   // A5 — cursor-paginated lists via useInfiniteQuery.
   const productsQ = api.vendorPortal.myProducts.useInfiniteQuery(
     { limit: 20 },
@@ -381,17 +390,24 @@ export function StoreDashboard({
     window.history.replaceState(null, '', url);
   };
 
+  // A1 — capability-filtered tabs: owners keep the full bar; staff see only
+  // what their permission list unlocks.
   const tabs = [
     { key: 'overview', label: t('vendorPortal.tab.overview') },
-    { key: 'orders', label: t('vendorPortal.orders.title') },
-    { key: 'products', label: t('vendorPortal.tab.products') },
-    { key: 'deals', label: t('vendorPortal.tab.deals') },
-    { key: 'coupons', label: t('vendorPortal.tab.coupons') },
-    { key: 'earnings', label: t('vendorPortal.tab.earnings') },
-    { key: 'analytics', label: t('vendorPortal.tab.analytics') },
-    { key: 'reviews', label: t('vendorPortal.tab.reviews') },
-    { key: 'customers', label: t('vendorPortal.tab.customers') },
+    ...(can('ORDERS_MANAGE') ? [{ key: 'orders', label: t('vendorPortal.orders.title') }] : []),
+    ...(can('PRODUCTS_MANAGE') ? [{ key: 'products', label: t('vendorPortal.tab.products') }] : []),
+    ...(can('DEALS_MANAGE') ? [{ key: 'deals', label: t('vendorPortal.tab.deals') }] : []),
+    ...(can('COUPONS_MANAGE') ? [{ key: 'coupons', label: t('vendorPortal.tab.coupons') }] : []),
+    ...(can('PAYOUTS_VIEW') ? [{ key: 'earnings', label: t('vendorPortal.tab.earnings') }] : []),
+    ...(can('ANALYTICS_VIEW')
+      ? [{ key: 'analytics', label: t('vendorPortal.tab.analytics') }]
+      : []),
+    ...(can('REVIEWS_MANAGE') ? [{ key: 'reviews', label: t('vendorPortal.tab.reviews') }] : []),
+    ...(can('CUSTOMERS_VIEW')
+      ? [{ key: 'customers', label: t('vendorPortal.tab.customers') }]
+      : []),
     { key: 'inbox', label: t('vendorPortal.inbox.title'), badge: unread },
+    ...(can('STAFF_MANAGE') ? [{ key: 'staff', label: t('vendorPortal.tab.staff') }] : []),
   ];
 
   // The dashboard query's non-owner branch returns {}, so narrow the union.
@@ -1721,6 +1737,18 @@ export function StoreDashboard({
                 })}
               </Card>
             )}
+          </div>
+        )}
+
+        {tab === 'staff' && (
+          <div
+            role="tabpanel"
+            id="vendor-panel-staff"
+            data-testid="vendor-panel-staff"
+            aria-labelledby="vendor-tab-staff"
+          >
+            {/* A1 — team management: invite, permissions, revoke, audit feed. */}
+            <StaffPanel />
           </div>
         )}
 

@@ -2692,6 +2692,23 @@ export const vendorPortalRouter = router({
    * Every management mutation writes the vendor-scoped audit feed.
    */
   staff: router({
+    /**
+     * A1 — the caller's portal relationship (the client primitive for
+     * capability-driven UI: tab visibility, action gating, the staff
+     * badge). Owners get kind 'owner'; ACTIVE staff get their role +
+     * permissions; everyone else gets 'none'.
+     */
+    access: customerProcedure.query(async ({ ctx }) => {
+      const actor = await resolveVendorActor(ctx.user.id);
+      if (!actor) return { kind: 'none', permissions: [] as string[] };
+      if (actor.kind === 'owner') return { kind: 'owner', permissions: [] as string[] };
+      return {
+        kind: 'staff',
+        role: actor.staff.role,
+        permissions: actor.staff.permissions,
+      };
+    }),
+
     /** Rows for the Staff tab — requires STAFF_MANAGE. */
     list: customerProcedure.query(async ({ ctx }) => {
       const actor = await requireStaffManager(ctx.user.id);

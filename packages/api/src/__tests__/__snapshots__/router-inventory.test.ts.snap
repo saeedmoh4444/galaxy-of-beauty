@@ -1089,6 +1089,7 @@ vendorPortal.setLicenseExpiry	mutation	customer
 vendorPortal.setProductFeatured	mutation	customer
 vendorPortal.setTrustFlags	mutation	customer
 vendorPortal.staff.accept	mutation	customer
+vendorPortal.staff.access	query	customer
 vendorPortal.staff.activity	query	customer
 vendorPortal.staff.decline	mutation	customer
 vendorPortal.staff.invite	mutation	customer

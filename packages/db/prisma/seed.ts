@@ -3489,6 +3489,31 @@ async function main() {
       },
     });
 
+    // A1 — demo staff member for the E2E team-management flow
+    // (staff-demo@galaxyofbeauty.sa / Admin@123456): an ACTIVE STAFF
+    // with orders+products capabilities on the demo store.
+    const demoStaffUser = await prisma.user.create({
+      data: {
+        email: 'staff-demo@galaxyofbeauty.sa',
+        phone: '+966599000002',
+        passwordHash: customerPasswordHash,
+        name: 'موظفة المتجر التجريبي',
+        role: 'CUSTOMER',
+        emailVerified: true,
+        preferredLanguage: 'ar',
+      },
+    });
+    await prisma.vendorStaff.create({
+      data: {
+        vendorId: demoVendor.id,
+        userId: demoStaffUser.id,
+        role: 'STAFF',
+        permissions: ['ORDERS_MANAGE', 'PRODUCTS_MANAGE'],
+        status: 'ACTIVE',
+        invitedBy: demoVendorUser.id,
+      },
+    });
+
     const [makeupCat, fragranceCat] = await Promise.all([
       prisma.productCategory.findUniqueOrThrow({ where: { slug: 'product-makeup' } }),
       prisma.productCategory.findUniqueOrThrow({ where: { slug: 'product-fragrance' } }),
