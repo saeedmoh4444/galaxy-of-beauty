@@ -77,6 +77,13 @@ export {
 // 1.2 Service Bundles — progressive custom-bundle pricing
 export { bundleDiscountFor, buildBundleQuote } from './bundlePricing';
 export type { BundleQuote } from './bundlePricing';
+export {
+  DRAFT_KEY,
+  buildVendorApplyDraft,
+  parseVendorApplyDraft,
+  vendorApplyCompleteness,
+} from './vendorApplyDraft';
+export type { VendorApplyDraft } from './vendorApplyDraft';
 
 // 1.4 Seasonal & Event Services — themed banner decision
 export { seasonalBannerFor } from './seasonalBanner';

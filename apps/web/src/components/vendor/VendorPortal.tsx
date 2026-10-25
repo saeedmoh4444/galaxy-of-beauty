@@ -1,5 +1,5 @@
 'use client';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import type { JSX } from 'react';
 import type * as React from 'react';
 import dynamic from 'next/dynamic';
@@ -8,6 +8,12 @@ import { Card, Button, Input, CardSkeleton, useAuth } from '@galaxy/ui';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
 import { useLocale } from '@/components/LocaleProvider';
 import { DocUploadInput } from './shared/DocUploadInput';
+import {
+  DRAFT_KEY,
+  buildVendorApplyDraft,
+  parseVendorApplyDraft,
+  vendorApplyCompleteness,
+} from '@galaxy/shared';
 
 const StoreDashboard = dynamic(() =>
   import('./store/StoreDashboard').then((m) => m.StoreDashboard),
@@ -48,7 +54,10 @@ export function VendorPortal({ shellRole = 'CUSTOMER' }: { shellRole?: string })
   const [applyBio, setApplyBio] = useState('');
   const [applyLogo, setApplyLogo] = useState('');
   const applyMut = api.marketplace.becomeVendor.useMutation({
-    onSuccess: () => refetchStore(),
+    onSuccess: () => {
+      refetchStore();
+      clearDraft();
+    },
   });
 
   // E2 — KSA provider documents + clinic registration.
@@ -72,18 +81,93 @@ export function VendorPortal({ shellRole = 'CUSTOMER' }: { shellRole?: string })
   const [applyNailBarAddress, setApplyNailBarAddress] = useState('');
   const uploadMut = api.uploads.uploadKycDocument.useMutation({});
   const applyClinicMut = api.marketplace.becomeClinic.useMutation({
-    onSuccess: () => refetchStore(),
+    onSuccess: () => {
+      refetchStore();
+      clearDraft();
+    },
   });
   const applyGymMut = api.marketplace.becomeGym.useMutation({
-    onSuccess: () => refetchStore(),
+    onSuccess: () => {
+      refetchStore();
+      clearDraft();
+    },
   });
   const applyNailBarMut = api.marketplace.becomeNailBar.useMutation({
-    onSuccess: () => refetchStore(),
+    onSuccess: () => {
+      refetchStore();
+      clearDraft();
+    },
   });
   const applyAthomeMut = api.marketplace.becomeAthomeSalon.useMutation({
-    onSuccess: () => refetchStore(),
+    onSuccess: () => {
+      refetchStore();
+      clearDraft();
+    },
   });
   // E6d — trust badge self-service toggles.
+
+  // G1 — wizard persistence: restore a previous draft on mount, save it
+  // (debounced) on every change, clear it on successful submission or
+  // once a store exists (submitted from another device).
+  const draftFields = {
+    applyType,
+    applyName,
+    applyBio,
+    applyLogo,
+    applyLicense,
+    applyAgency,
+    applyClinicType,
+    applyGymType,
+    applyGymCity,
+    applyGymAddress,
+    applyNailBarType,
+    applyNailBarCity,
+    applyNailBarAddress,
+    docCr,
+    docNationalId,
+    docBankLetter,
+    docMedicalLicense,
+    docGymLicense,
+  };
+  const [draftResumed, setDraftResumed] = useState(false);
+  const clearDraft = () => {
+    window.localStorage.removeItem(DRAFT_KEY);
+    setDraftResumed(false);
+  };
+  useEffect(() => {
+    const draft = parseVendorApplyDraft(window.localStorage.getItem(DRAFT_KEY));
+    if (!draft) return;
+    setDraftResumed(true);
+    if (draft.applyType) setApplyType(draft.applyType as never);
+    if (draft.applyName) setApplyName(draft.applyName);
+    if (draft.applyBio) setApplyBio(draft.applyBio);
+    if (draft.applyLogo) setApplyLogo(draft.applyLogo);
+    if (draft.applyLicense) setApplyLicense(draft.applyLicense);
+    if (draft.applyAgency) setApplyAgency(draft.applyAgency);
+    if (draft.applyClinicType) setApplyClinicType(draft.applyClinicType);
+    if (draft.applyGymType) setApplyGymType(draft.applyGymType);
+    if (draft.applyGymCity) setApplyGymCity(draft.applyGymCity);
+    if (draft.applyGymAddress) setApplyGymAddress(draft.applyGymAddress);
+    if (draft.applyNailBarType) setApplyNailBarType(draft.applyNailBarType);
+    if (draft.applyNailBarCity) setApplyNailBarCity(draft.applyNailBarCity);
+    if (draft.applyNailBarAddress) setApplyNailBarAddress(draft.applyNailBarAddress);
+    if (draft.docCr) setDocCr(draft.docCr);
+    if (draft.docNationalId) setDocNationalId(draft.docNationalId);
+    if (draft.docBankLetter) setDocBankLetter(draft.docBankLetter);
+    if (draft.docMedicalLicense) setDocMedicalLicense(draft.docMedicalLicense);
+    if (draft.docGymLicense) setDocGymLicense(draft.docGymLicense);
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- mount-only restore
+  }, []);
+  useEffect(() => {
+    const id = setTimeout(() => {
+      window.localStorage.setItem(DRAFT_KEY, buildVendorApplyDraft(draftFields));
+    }, 500);
+    return () => clearTimeout(id);
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- draftFields is rebuilt each render by design
+  }, [draftFields]);
+  useEffect(() => {
+    if (store) window.localStorage.removeItem(DRAFT_KEY);
+  }, [store]);
 
   const uploadDoc =
     (documentType: 'cr' | 'national_id' | 'bank_letter' | 'medical_license' | 'license') =>
@@ -229,6 +313,24 @@ export function VendorPortal({ shellRole = 'CUSTOMER' }: { shellRole?: string })
             <h1 className="text-2xl font-bold">{t('vendorPortal.apply.title')}</h1>
             <p className="mt-1 text-sm text-text-secondary">{t('vendorPortal.apply.subtitle')}</p>
           </div>
+
+          {/* G1 — resume banner: a previous draft was restored from
+              localStorage; completeness reflects the submit button's gate. */}
+          {draftResumed && (
+            <Card
+              padding="md"
+              className="border-amber-200 bg-amber-50 dark:border-amber-800 dark:bg-amber-950"
+            >
+              <div className="flex items-center justify-between gap-3">
+                <p className="text-sm font-semibold text-amber-700 dark:text-amber-300">
+                  {t('vendorPortal.apply.draft-resumed')} · {vendorApplyCompleteness(draftFields)}٪
+                </p>
+                <Button size="sm" variant="outline" onClick={clearDraft}>
+                  {t('vendorPortal.apply.draft-discard')}
+                </Button>
+              </div>
+            </Card>
+          )}
           <Card padding="lg">
             <div className="space-y-3">
               <div className="flex gap-2">
