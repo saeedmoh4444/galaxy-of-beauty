@@ -5071,6 +5071,8 @@ export const arWebMessages: Record<string, string> = {
   'vendorPortal.apply.logo': 'رابط الشعار',
   'vendorPortal.apply.nail-bar-address': 'العنوان',
   'vendorPortal.apply.nail-bar-city': 'المدينة',
+  'vendorPortal.apply.draft-discard': 'تجاهل المسودة',
+  'vendorPortal.apply.draft-resumed': 'استعدنا مسودتك السابقة — أكمل من حيث توقفتِ',
   'vendorPortal.apply.register-athome': 'تسجيل صالون منزلي',
   'vendorPortal.apply.register-clinic': 'تسجيل عيادة',
   'vendorPortal.apply.register-gym': 'تسجيل نادي',
