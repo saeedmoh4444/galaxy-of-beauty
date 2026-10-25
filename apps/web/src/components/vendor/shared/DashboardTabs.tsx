@@ -4,6 +4,8 @@ import type { JSX } from 'react';
 export interface DashboardTab {
   key: string;
   label: string;
+  /** F1 — unread badge chip rendered after the label (e.g. the inbox). */
+  badge?: number;
 }
 
 /**
@@ -47,6 +49,11 @@ export function DashboardTabs({
             }`}
           >
             {tab.label}
+            {tab.badge ? (
+              <span className="ml-1 rounded-full bg-brand-600 px-1.5 py-0.5 text-[10px] font-bold text-white dark:bg-brand-500">
+                {tab.badge}
+              </span>
+            ) : null}
           </button>
         );
       })}
