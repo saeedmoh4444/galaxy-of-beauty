@@ -2,7 +2,7 @@
 
 > The working rulebook for developing, improving, and enhancing this codebase.
 > Every rule below is load-bearing: it exists because something broke when it was ignored.
-> Updated: 2026-10-11 (post audit-fix wave #413–#423: money-integrity wallet payments, error-state sweep, mobile gating, barrel sweep; queue-drain + snapshot-staging lessons added).
+> Updated: 2026-10-25 (vendor program Waves 0–6 COMPLETE — F1/F5/F2/F4/G1/G2/G3; Wave-6 gotchas: Prisma back-relations, alphabetized catalogs, next/link breadcrumbs, stacked seed anchors).
 
 ---
 
@@ -152,3 +152,8 @@ gh pr merge <n> --squash --delete-branch      # verify state == MERGED after (ex
 - `git worktree remove` on a worktree with node_modules → "Filename too long". `git config core.longpaths true` then retry; for a git-orphaned leftover dir, PowerShell `Remove-Item -Recurse -Force` (requires explicit user approval).
 - `rtk git log -1` can print a stale pre-merge head right after an ff-merge — verify with `git rev-parse HEAD` before trusting it.
 - `du -sh` over a node_modules tree can exceed a 2-minute tool timeout — background it.
+- **Prisma 7 back-relations**: a new model with @unique on two FKs (e.g. `ReviewRequest` @@unique([customerId, productId])) needs BOTH parent models to gain the back-relation field in the same schema change — tsc fails without them.
+- Generated i18n catalogs are **alphabetically sorted** — hand-inserting new keys mid-block risks duplicate keys (a duplicate `register-store` shipped once); add keys via the source domain file + regenerate, then verify with the drift guard + grep the block.
+- `next/no-html-link-for-pages` — breadcrumbs must use `next/link`, never a bare `<a href>` (F4).
+- **Stacked-branch seed anchors**: a seed-template anchor from a queued feature only exists on that feature's branch — anchor later branches' templates on a predecessor that is already merged (e.g. `store_low_stock`, not a Wave-6 template).
+- BullMQ v6 repeatable jobs: `queue.upsertJobScheduler(id, { pattern }, { name, data })` — the v3/v4 `repeat` opts are removed (G3 Sunday-09:00 reminder).
