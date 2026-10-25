@@ -1,8 +1,9 @@
 # Store & Provider System — Architecture Reference
 
-> Current as of 2026-10-13 (post Wave 2 B0–B3b). Supersedes the "store system
-> is missing" assumptions in older plans: the unified provider system is
-> largely built — this documents how it actually works.
+> Current as of 2026-10-25 (post Waves 0–6 — the vendor dashboard
+> enhancement program is COMPLETE). Supersedes the "store system is
+> missing" assumptions in older plans: the unified provider system is
+> built — this documents how it actually works.
 
 ## The unified provider model
 
@@ -87,6 +88,65 @@ One `Vendor` model covers every provider type (`type` column):
   resolves as today (customer-favourable resolution refunds wallet-paid
   orders; Fatoorah refunds stay gated on `FATOORAH_API_TOKEN`). The order
   drawer renders the dispute + response form from the `orders` include.
+
+## Growth tooling (Wave 3)
+
+- **C3 deals studio**: `vendorPortal.myDeals` lifecycle (pending/upcoming/
+  active/ended/rejected) over `StoreDeal` — submissions match by window
+  tuple (productId+startsAt+endsAt, id-desc); `endDeal` never touches
+  `endsAt`; `editPendingDeal` for pre-approval edits.
+- **C4 store coupons**: `PromoCode.vendorId` (kind `store_coupon`) —
+  createCoupon/decide/list/deactivate; `promo.validate` scopes by
+  vendorId and rejects redemption on bookings.
+- **C5 bulk CSV import**: `gob-csv-import` queue (concurrency 1) →
+  draft products + per-row report via `importProductsCsv`/`importStatus`.
+- **C6 storefront profile**: `updateStoreProfile` (About editor),
+  `setProductFeatured` (featured-first on `vendorDetail`), store QR card.
+
+## Analytics & ops (Wave 4)
+
+- **D1/D1b**: `VendorDailyStat` read-model (revenue/orders per day,
+  materialized post-commit) + dashboard Analytics tab.
+- **D2 health score**: composite 0–100 (sales/stocks/reviews) with
+  keyed i18n hints.
+- **D3 advisor**: `gob-advisor` queue, weekly rule digest (separate
+  queue family — a worker binds ONE handler).
+- **D4 CSV exports**: earnings/orders exports, RFC 4180, AR/EN headers.
+- **D5 KSA calendar**: Hijri (Kuwaiti algorithm — month already 1-based)
+  - national/religious day banners; noon-UTC buckets for trend windows.
+
+## Engagement & fulfillment (Wave 5)
+
+- **E4 reputation hub**: `replyToReview` (ownership-guarded) with
+  `ProductReview.replyJson`/`repliedAt`; `myReviews`/`myReviewsSummary`
+  (distribution + 8-week trend, noon-UTC week buckets).
+- **E5 CRM-lite**: `vendorPortal.customers` (groupBy customerId on
+  StoreOrder — spenders/repeat/last order; name+phone only, no PII leak).
+- **E1 gym console**: gymPlans/members/class-occupancy, GYM-guarded.
+- **E2 clinic deepening**: consultation outcomes (`cancelReason`,
+  `noShow`, `clinicOutcome`), `proposeClinicPackage`, slot utilization.
+- **E3 at-home + nail-bar**: home-request queue (accept/decline/
+  complete), `nailBarCapacity` fill series.
+
+## Inbox, retention & onboarding (Wave 6)
+
+- **F1 inbox**: post-commit vendor events (order placed, review left,
+  payout processing, dispute resolved) materialize into a notification
+  inbox tab with an unread badge.
+- **F5 review requests**: `ReviewRequest` (@@unique customerId+productId)
+  created post-commit in fulfillOrder — idempotent, never re-emits.
+- **F2 weekly digest**: performance email per store (7-day revenue, top
+  product, low-stock count, advisor rules); log-only until SMTP wired.
+- **F4 storefront SEO**: per-store `generateMetadata` (name/About/
+  og:image via a server wrapper) + breadcrumbs (next/link — never `<a>`).
+- **G1 wizard persistence**: `vendorApplyDraft` (versioned localStorage
+  envelope + completeness meter) with resume banner; clears on success.
+- **G2 submissions**: `mySubmissions` (caller-scoped) +
+  `resubmitSubmission` (REJECTED → fresh PENDING_REVIEW) + shared
+  `SubmissionStatusCard` across all five dashboards.
+- **G3 license expiry**: `Vendor.licenseExpiryDate` captured at
+  onboarding; `gob-reminders` Sunday-09:00 job with a ~10-day
+  `licenseRemindedAt` dedupe stamp.
 
 ## Ratings & trust
 

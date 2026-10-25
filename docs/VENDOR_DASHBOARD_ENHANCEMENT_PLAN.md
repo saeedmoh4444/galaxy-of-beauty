@@ -6,8 +6,8 @@
 > Saudi store / clinic / gym / nail-bar / at-home salon runs its business on
 > Galaxy of Beauty.
 >
-> Status: **WAVES 0–5 DELIVERED** (2026-10-25, master `ab115459`) — Wave 6 (Phases F+G)
-> remains. Delivery record: §7.1.
+> Status: **WAVES 0–6 DELIVERED** (2026-10-25, master `731d15ad`) — the vendor
+> dashboard enhancement program is COMPLETE. Delivery record: §7.1.
 
 ---
 
@@ -570,33 +570,35 @@ evidence visibility scoped to order parties + admin.
 gates green + docs refreshed, merging via the established CI-green
 convention.
 
-### 7.1 Delivery record (waves 0–5 complete)
+### 7.1 Delivery record (waves 0–6 complete)
 
-| Wave | PRs                                                                             | Notes                                                                                   |
-| ---- | ------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------- |
-| 0    | H0 #430                                                                         | double-payout race killed                                                               |
-| 1    | A1 #431 · A2 #433 · A3 #434 · A5 #438 · A4 #437 · B0 #432 · B3a #435 · B2a #436 | foundations + order items + stock hiding + cancelOrder                                  |
-| 2    | B1 #447 · B3b #448 · B4 #449 · B5 #450                                          | line items UI, low-stock alerts, earnings center, disputes                              |
-| 2    | B6 — **SKIPPED by user** (2026-10-13: no FATOORAH_API_TOKEN)                    | schema/UI ship inert when the token lands                                               |
-| 3    | C1 #452 · C2 #454 · C3 #465 · C4 #471 · C5 #472 · C6 #470                       | editor pro, approval pipeline, deals studio, coupons, CSV, QR                           |
-| 4    | D1 #473 · D1b #474 · D2 #475 · D3 #476 · D4 #477 · D5 #478                      | read-model analytics, health score, advisor, exports, KSA calendar                      |
-| 5    | E4 #480 · E5 #481 · E1 #482 · E2 #483 · E3 #485                                 | reviews hub, CRM-lite, gym console, clinic deepening, at-home queue + nail-bar capacity |
-| —    | #469 dependabot · #484 ci-fix                                                   | housekeeping · image-URL gate picsum resilience                                         |
+| Wave | PRs                                                                             | Notes                                                                                                                      |
+| ---- | ------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------- |
+| 0    | H0 #430                                                                         | double-payout race killed                                                                                                  |
+| 1    | A1 #431 · A2 #433 · A3 #434 · A5 #438 · A4 #437 · B0 #432 · B3a #435 · B2a #436 | foundations + order items + stock hiding + cancelOrder                                                                     |
+| 2    | B1 #447 · B3b #448 · B4 #449 · B5 #450                                          | line items UI, low-stock alerts, earnings center, disputes                                                                 |
+| 2    | B6 — **SKIPPED by user** (2026-10-13: no FATOORAH_API_TOKEN)                    | schema/UI ship inert when the token lands                                                                                  |
+| 3    | C1 #452 · C2 #454 · C3 #465 · C4 #471 · C5 #472 · C6 #470                       | editor pro, approval pipeline, deals studio, coupons, CSV, QR                                                              |
+| 4    | D1 #473 · D1b #474 · D2 #475 · D3 #476 · D4 #477 · D5 #478                      | read-model analytics, health score, advisor, exports, KSA calendar                                                         |
+| 5    | E4 #480 · E5 #481 · E1 #482 · E2 #483 · E3 #485                                 | reviews hub, CRM-lite, gym console, clinic deepening, at-home queue + nail-bar capacity                                    |
+| 6    | F1 #487 · F5 #492 · F2 #488 · F4 #489 · G1 #490 · G2 #491 · G3 #493             | inbox + events, review requests, digest email, storefront SEO, wizard persistence, submissions/resubmit, license reminders |
+| —    | #469 dependabot · #484 ci-fix                                                   | housekeeping · image-URL gate picsum resilience                                                                            |
 
-Wave 6 (§7 step 7) remains: F1 → F5 → F2 → F4 → G1 → G2 → G3. Open
-decisions §9 items 3–5 still default-resolved as recorded (vendor-only
-health score, autonomous coupons + admin pause, H1 deferred). F3 is
-BLOCKED-ON-USER (WhatsApp Business API); F2 needs the email-provider
-wiring verified at implementation.
+Wave 6 is delivered — the vendor dashboard enhancement program is
+COMPLETE (Waves 0–6, 2026-10-25). Open decisions §9 items 3–5 remain
+default-resolved as recorded (vendor-only health score, autonomous
+coupons + admin pause, H1 deferred). F3 stays BLOCKED-ON-USER
+(WhatsApp Business API); F2's email channel degrades to log-only
+until the SMTP provider is wired (§8).
 
 ## 8. User-gated dependencies (queue — not blockers)
 
-| Gate                  | Unblocks                                        | Where  |
-| --------------------- | ----------------------------------------------- | ------ |
-| FATOORAH_API_TOKEN    | B5 refunds, B6 store ZATCA invoices             | Wave 2 |
-| OpenAI key            | D3 LLM advisor layer (rule v1 ships without it) | Wave 4 |
-| WhatsApp Business API | F3                                              | Wave 6 |
-| Email provider config | F2 (verify at implementation)                   | Wave 6 |
+| Gate                  | Unblocks                                                            | Where  |
+| --------------------- | ------------------------------------------------------------------- | ------ |
+| FATOORAH_API_TOKEN    | B5 refunds, B6 store ZATCA invoices                                 | Wave 2 |
+| OpenAI key            | D3 LLM advisor layer (rule v1 ships without it)                     | Wave 4 |
+| WhatsApp Business API | F3                                                                  | Wave 6 |
+| Email provider config | F2 (ships log-only; wiring the SMTP provider re-enables real sends) | Wave 6 |
 
 ## 9. Open decisions (answered at kickoff — flags make them cheap to flip)
 
@@ -608,8 +610,10 @@ wiring verified at implementation.
    storefronts — default: vendor-only first.
 4. **H1 store staff accounts**: schedule now (Wave 7+) or defer — default:
    defer.
-5. **F2 email provider**: confirm SES/SendGrid credentials exist — if not,
-   F2 becomes user-gated like F3.
+5. **F2 email provider**: SHIPPED log-only (2026-10-25) — `sendEmail`
+   degrades to a console log when SMTP is unconfigured, so the digest
+   job runs without the provider. Wiring real credentials (SES/SendGrid)
+   upgrades it to actual sends with no code change.
 
 ## 10. Non-goals (scope discipline)
 
@@ -618,5 +622,6 @@ wiring verified at implementation.
 - No mobile vendor dashboards — web-first (store plan §3).
 - No delivery/logistics integration (H3, partner-gated).
 - No revival of the `salonManagement` / `franchisePortal` in-memory mocks.
-- Hybrid store-services (H2) not before Waves 0–6 complete.
+- Hybrid store-services (H2) — the Waves 0–6 gate is now open; schedule
+  deliberately.
 - Admin-side vendor pages touched only where C2/D2 require.
