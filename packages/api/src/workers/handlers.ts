@@ -14,6 +14,7 @@ import {
   refreshGoogleToken,
 } from '../lib/googleCalendar';
 import { creditLoyaltyPoints } from '../lib/loyalty';
+import { sendEmail, emailShell } from '../lib/email';
 
 // ── Job type definitions ──
 
@@ -600,11 +601,15 @@ export interface AdvisorDigestJob {
  * handleAdvisorDigestJob — D3: run the rule engine over every store (or
  * one vendor) and drop an in-app notification for stores with at least
  * one rule, so the advisor surfaces without the vendor visiting the
- * portal. Returns the number of notified vendors.
+ * portal. F2 adds the email channel: a bilingual weekly performance
+ * digest (7-day revenue/orders from the D1 read model, top product,
+ * low-stock count, top advisor rules) to the store owner. sendEmail
+ * degrades to log-only when SMTP is unconfigured.
  */
 export async function handleAdvisorDigestJob(job: Job<AdvisorDigestJob>): Promise<{
   notified: number;
   rules: number;
+  emailed: number;
 }> {
   const vendors = await prisma.vendor.findMany({
     where: {
@@ -616,37 +621,108 @@ export async function handleAdvisorDigestJob(job: Job<AdvisorDigestJob>): Promis
 
   let notified = 0;
   let totalRules = 0;
+  let emailed = 0;
 
   for (const vendor of vendors) {
     const rules = await advisorRulesForVendor(vendor.id);
-    if (rules.length === 0) continue;
 
-    await prisma.notification.create({
-      data: {
-        userId: vendor.userId,
-        type: 'advisor_digest',
-        titleJson: { ar: 'نصائح متجرك الأسبوعية', en: 'Your weekly store advisor' },
-        bodyJson: {
-          ar: rules
-            .map((r) => r.params?.name ?? '')
-            .filter(Boolean)
-            .slice(0, 3)
-            .join('، '),
-          en: rules
-            .map((r) => r.params?.name ?? '')
-            .filter(Boolean)
-            .slice(0, 3)
-            .join(', '),
+    // F2 — weekly performance snapshot for the email channel.
+    const [stats7, topProduct, lowStockCount, owner] = await Promise.all([
+      prisma.vendorDailyStat.aggregate({
+        where: { vendorId: vendor.id, day: { gte: new Date(Date.now() - 7 * 86_400_000) } },
+        _sum: { revenue: true, orders: true },
+      }),
+      prisma.product.findFirst({
+        where: { vendorId: vendor.id, isActive: true },
+        orderBy: { sales: 'desc' },
+        select: { nameJson: true },
+      }),
+      prisma.product.count({
+        where: {
+          vendorId: vendor.id,
+          isActive: true,
+          stock: { lte: prisma.product.fields.lowStockThreshold },
         },
-        link: '/store?tab=overview',
-        sentVia: ['in_app'],
-      },
-    });
-    notified++;
-    totalRules += rules.length;
+      }),
+      prisma.user.findUnique({
+        where: { id: vendor.userId },
+        select: { email: true, preferredLanguage: true },
+      }),
+    ]);
+    const revenue7 = Number(stats7._sum.revenue ?? 0);
+    const orders7 = stats7._sum.orders ?? 0;
+
+    // Nothing to say at all — skip entirely.
+    if (rules.length === 0 && revenue7 === 0 && orders7 === 0) continue;
+
+    if (rules.length > 0) {
+      await prisma.notification.create({
+        data: {
+          userId: vendor.userId,
+          type: 'advisor_digest',
+          titleJson: { ar: 'نصائح متجرك الأسبوعية', en: 'Your weekly store advisor' },
+          bodyJson: {
+            ar: rules
+              .map((r) => r.params?.name ?? '')
+              .filter(Boolean)
+              .slice(0, 3)
+              .join('، '),
+            en: rules
+              .map((r) => r.params?.name ?? '')
+              .filter(Boolean)
+              .slice(0, 3)
+              .join(', '),
+          },
+          link: '/store?tab=overview',
+          sentVia: ['in_app'],
+        },
+      });
+      notified++;
+      totalRules += rules.length;
+    }
+
+    // F2 — email the performance digest (SMTP-less environments log only).
+    if (owner?.email) {
+      const locale = owner.preferredLanguage === 'en' ? 'en' : 'ar';
+      const topName = topProduct
+        ? ((topProduct.nameJson as { ar?: string; en?: string })[locale] ??
+          (topProduct.nameJson as { ar?: string }).ar ??
+          '')
+        : '';
+      const ruleLines =
+        locale === 'ar'
+          ? rules
+              .map((r) => `• ${r.params?.name ?? ''}`)
+              .filter((l) => l.length > 2)
+              .slice(0, 3)
+              .join('<br/>')
+          : rules
+              .map((r) => `• ${r.params?.name ?? ''}`)
+              .filter((l) => l.length > 2)
+              .slice(0, 3)
+              .join('<br/>');
+      const subject =
+        locale === 'ar'
+          ? `نشرتك الأسبوعية — ${orders7} طلبات`
+          : `Your Weekly Digest — ${orders7} orders`;
+      const html = emailShell(
+        `<div style="font-family:Tajawal,sans-serif;max-width:600px;margin:0 auto;padding:24px">
+          <h2 class="gob-text-strong">${locale === 'ar' ? 'أداء متجرك هذا الأسبوع' : 'Your store this week'}</h2>
+          <p class="gob-text-soft">${locale === 'ar' ? 'الإيرادات' : 'Revenue'}: <strong>${revenue7}</strong> ${locale === 'ar' ? 'ر.س' : 'SAR'}</p>
+          <p class="gob-text-soft">${locale === 'ar' ? 'الطلبات' : 'Orders'}: <strong>${orders7}</strong></p>
+          ${topName ? `<p class="gob-text-soft">${locale === 'ar' ? 'الأكثر مبيعاً' : 'Top product'}: <strong>${topName}</strong></p>` : ''}
+          <p class="gob-text-soft">${locale === 'ar' ? 'منتجات تحت حد التنبيه' : 'Low-stock products'}: <strong>${lowStockCount}</strong></p>
+          ${ruleLines ? `<p class="gob-text-soft">${locale === 'ar' ? 'نصائح المستشار' : 'Advisor picks'}:<br/>${ruleLines}</p>` : ''}
+          <a href="${process.env['NEXT_PUBLIC_APP_URL'] || 'http://localhost:3000'}/store?tab=overview" style="display:inline-block;background:#7c3aed;color:#fff;padding:10px 24px;border-radius:8px;text-decoration:none;margin-top:12px">${locale === 'ar' ? 'فتح لوحة المتجر' : 'Open your dashboard'}</a>
+        </div>`,
+        locale === 'ar' ? 'rtl' : 'ltr',
+      );
+      await sendEmail({ to: owner.email, subject, html });
+      emailed++;
+    }
   }
 
-  return { notified, rules: totalRules };
+  return { notified, rules: totalRules, emailed };
 }
 
 /** Shared D3 input gathering — used by vendorPortal.advisor and the digest. */
