@@ -6,7 +6,7 @@
 > Saudi store / clinic / gym / nail-bar / at-home salon runs its business on
 > Galaxy of Beauty.
 >
-> Status: **WAVES 0–6 DELIVERED** (2026-10-25, master `731d15ad`) — the vendor
+> Status: **WAVES 0–6 DELIVERED** (2026-10-25, master `df4a5976`) — the vendor
 > dashboard enhancement program is COMPLETE. Delivery record: §7.1.
 
 ---
