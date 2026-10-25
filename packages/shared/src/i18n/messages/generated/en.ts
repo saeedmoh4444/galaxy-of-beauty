@@ -3592,6 +3592,7 @@ export const enWebMessages: Record<string, string> = {
   'mentor.topic.skincare': 'Skincare',
   'mentor.topicsTitle': 'Topics',
   'misc.min': 'min',
+  'misc.breadcrumbs': 'Breadcrumbs',
   'misc.rating': 'Rating',
   'misc.sar': 'SAR',
   'mood.addImage': 'Add Image',

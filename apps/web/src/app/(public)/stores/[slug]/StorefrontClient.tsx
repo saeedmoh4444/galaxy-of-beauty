@@ -1,6 +1,7 @@
 'use client';
 import type { JSX } from 'react';
 import { useEffect, useState } from 'react';
+import Link from 'next/link';
 import QRCode from 'qrcode';
 
 import { api } from '@/lib/trpc';
@@ -101,6 +102,27 @@ export function StorefrontClient({ data }: { data: StorefrontPageData }): JSX.El
 
   return (
     <div className="mx-auto max-w-5xl space-y-8 px-4 py-8">
+      {/* F4 — breadcrumbs (SEO): home / stores / store name. */}
+      <nav aria-label={t('misc.breadcrumbs')} className="text-xs text-text-secondary">
+        <ol className="flex flex-wrap items-center gap-1">
+          <li>
+            <Link href="/" className="hover:text-brand-600">
+              {t('nav.home')}
+            </Link>
+          </li>
+          <li aria-hidden="true">/</li>
+          <li>
+            <Link href="/stores" className="hover:text-brand-600">
+              {t('stores.title')}
+            </Link>
+          </li>
+          <li aria-hidden="true">/</li>
+          <li aria-current="page" className="text-text-primary">
+            {store.storeName}
+          </li>
+        </ol>
+      </nav>
+
       {/* Store header */}
       <div className="flex items-center gap-4">
         <ServiceImage

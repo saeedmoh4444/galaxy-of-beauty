@@ -7,8 +7,34 @@ import { t } from '@galaxy/shared/i18n/web-server';
 import { pageMeta } from '@/lib/seo';
 import type { Metadata } from 'next';
 
-export async function generateMetadata(): Promise<Metadata> {
+// F4 — per-store metadata: name, About description, banner as og:image,
+// canonical URL. Falls back to the generic stores meta when the vendor
+// is missing or the lookup fails.
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ slug: string }>;
+}): Promise<Metadata> {
+  const { slug } = await params;
   const locale = await getServerLocale();
+  try {
+    const caller = await getServerCaller();
+    const vendor = await caller.marketplace.vendorDetail({ slug });
+    if (vendor) {
+      const desc = (vendor.descriptionJson as { ar?: string; en?: string } | null) ?? {};
+      return pageMeta({
+        locale,
+        titleAr: vendor.storeName,
+        titleEn: vendor.storeName,
+        descriptionAr: desc.ar || t('seo.page-description', 'ar'),
+        descriptionEn: desc.en || t('seo.page-description', 'en'),
+        path: `/stores/${vendor.storeSlug}`,
+        imagePath: vendor.bannerUrl ?? undefined,
+      });
+    }
+  } catch {
+    // fall through to the generic meta
+  }
   return pageMeta({
     locale,
     titleAr: t('stores.title', 'ar'),
