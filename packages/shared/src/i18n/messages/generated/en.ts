@@ -5315,6 +5315,8 @@ export const enWebMessages: Record<string, string> = {
   'vendorPortal.sla.breached': 'Late orders (30d)',
   'vendorPortal.sla.window': 'Fulfillment window (hours)',
   'vendorPortal.sla.lateChip': 'Late',
+  'vendorPortal.disputes.escalated':
+    'Escalated to the platform after the response deadline passed.',
   'vendorPortal.edit': 'Edit',
   'vendorPortal.editProduct': 'Edit product',
   'vendorPortal.export': 'Export CSV',

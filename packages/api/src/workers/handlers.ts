@@ -960,3 +960,54 @@ export async function handleOrderSlaSweep(_job: Job<Record<string, never>>): Pro
 
   return { flagged };
 }
+
+/**
+ * handleDisputeEscalationSweep — A4: store disputes that pass the 48h
+ * vendor-response deadline without a reply escalate once (escalatedAt +
+ * reason) and the vendor is nudged again. The admin disputes list shows
+ * the escalated flag — the escalation IS the admin alert.
+ */
+export async function handleDisputeEscalationSweep(_job: Job<Record<string, never>>): Promise<{
+  escalated: number;
+}> {
+  const deadline = new Date(Date.now() - 48 * 3_600_000);
+  const candidates = await prisma.dispute.findMany({
+    where: {
+      status: { in: ['OPEN', 'UNDER_REVIEW'] },
+      vendorRespondedAt: null,
+      resolvedAt: null,
+      escalatedAt: null,
+      createdAt: { lte: deadline },
+      storeOrderId: { not: null }, // store disputes only (B5 scope)
+    },
+    select: { id: true, storeOrderId: true },
+  });
+
+  let escalated = 0;
+  for (const dispute of candidates) {
+    try {
+      const order = await prisma.storeOrder.findUnique({
+        where: { id: dispute.storeOrderId! },
+        select: { vendorId: true, vendor: { select: { userId: true } } },
+      });
+      await prisma.dispute.update({
+        where: { id: dispute.id },
+        data: { escalatedAt: new Date(), escalatedReason: 'VENDOR_RESPONSE_DEADLINE' },
+      });
+      if (order?.vendor.userId) {
+        await notifyUser({
+          userId: order.vendor.userId,
+          templateKey: 'dispute_escalated',
+          vars: { disputeId: dispute.id },
+          link: '/store?tab=orders',
+          channels: ['in_app'],
+        });
+      }
+      escalated++;
+    } catch {
+      // Never break the sweep on one row.
+    }
+  }
+
+  return { escalated };
+}

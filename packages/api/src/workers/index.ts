@@ -22,6 +22,7 @@ import {
   handleLicenseExpiryReminders,
   handlePayoutScheduleJob,
   handleOrderSlaSweep,
+  handleDisputeEscalationSweep,
 } from './handlers';
 
 // Job types + pure helpers are re-exported from handlers.ts (routers
@@ -86,6 +87,7 @@ export const advisorWorker = createWorker('gob-advisor', handleAdvisorDigestJob,
 export const remindersWorker = createWorker('gob-reminders', handleLicenseExpiryReminders, 1);
 export const payoutsWorker = createWorker('gob-payouts', handlePayoutScheduleJob, 1);
 export const slaWorker = createWorker('gob-sla', handleOrderSlaSweep, 1);
+export const disputesWorker = createWorker('gob-disputes', handleDisputeEscalationSweep, 1);
 
 /**
  * D1 — register the nightly materialization: fires at 00:30 KSA (21:30Z
@@ -141,6 +143,15 @@ export async function registerAnalyticsScheduler(): Promise<void> {
       { name: 'sla.sweep', data: {} },
     );
   }
+  // A4 — daily dispute-escalation sweep (09:10 UTC).
+  const disputesQueue = (await import('../queues')).getDisputesQueue();
+  if (disputesQueue) {
+    await disputesQueue.upsertJobScheduler(
+      'dispute-escalation-daily',
+      { pattern: '10 9 * * *' },
+      { name: 'disputes.escalate', data: {} },
+    );
+  }
   console.log('[Workers] Schedulers registered (analytics 30 21 UTC, advisor 0 8 * * 0 UTC)');
 }
 
@@ -159,6 +170,7 @@ export async function shutdownWorkers(): Promise<void> {
     remindersWorker,
     payoutsWorker,
     slaWorker,
+    disputesWorker,
   ];
   await Promise.all(workers.filter(Boolean).map((w) => w!.close()));
   console.log('[Workers] All workers shut down');
@@ -180,6 +192,7 @@ export function startWorkers(): void {
     remindersWorker ? 'gob-reminders' : null,
     payoutsWorker ? 'gob-payouts' : null,
     slaWorker ? 'gob-sla' : null,
+    disputesWorker ? 'gob-disputes' : null,
   ].filter(Boolean);
   console.log(`[Workers] Started: ${names.join(', ') || 'none (Redis unavailable)'}`);
   void registerAnalyticsScheduler();

@@ -3964,6 +3964,11 @@ export const miscMessages = {
   'vendorPortal.sla.breached': { ar: 'طلبات متأخرة (٣٠ يوم)', en: 'Late orders (30d)' },
   'vendorPortal.sla.window': { ar: 'نافذة التنفيذ (ساعة)', en: 'Fulfillment window (hours)' },
   'vendorPortal.sla.lateChip': { ar: 'متأخر', en: 'Late' },
+  // A4 — dispute SLA.
+  'vendorPortal.disputes.escalated': {
+    ar: 'تم تصعيد النزاع للإدارة بعد تجاوز مهلة الرد.',
+    en: 'Escalated to the platform after the response deadline passed.',
+  },
   // B5 — vendor-side dispute response (order drawer)
   'vendorPortal.disputes.title': { ar: 'نزاع على الطلب', en: 'Order dispute' },
   'vendorPortal.disputes.reason': { ar: 'السبب', en: 'Reason' },
