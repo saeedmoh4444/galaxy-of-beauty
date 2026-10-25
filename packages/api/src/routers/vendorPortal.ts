@@ -2528,4 +2528,22 @@ export const vendorPortalRouter = router({
         },
       });
     }),
+
+  /**
+   * setLicenseExpiry — G3: the vendor records their license/CR expiry so
+   * the weekly sweep can nudge at 60/30/7 days. Updating the date resets
+   * the reminder stamp.
+   */
+  setLicenseExpiry: customerProcedure
+    .input(z.object({ date: z.string().datetime() }))
+    .mutation(async ({ ctx, input }) => {
+      const vendor = await prisma.vendor.findUnique({ where: { userId: ctx.user.id } });
+      if (!vendor) {
+        throw new TRPCError({ code: 'NOT_FOUND', message: 'Store not found' });
+      }
+      return prisma.vendor.update({
+        where: { id: vendor.id },
+        data: { licenseExpiryDate: new Date(input.date), licenseRemindedAt: null },
+      });
+    }),
 });

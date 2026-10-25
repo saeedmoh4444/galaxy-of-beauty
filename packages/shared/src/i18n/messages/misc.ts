@@ -3838,6 +3838,13 @@ export const miscMessages = {
   'vendorPortal.coupons.inactive': { ar: 'موقوف', en: 'Paused' },
   'vendorPortal.coupons.deactivate': { ar: 'إيقاف', en: 'Pause' },
   'vendorPortal.loadMore': { ar: 'المزيد', en: 'Load more' },
+  // G3 — license expiry self-service + reminders.
+  'vendorPortal.license.title': { ar: 'تاريخ انتهاء الترخيص', en: 'License expiry date' },
+  'vendorPortal.license.save': { ar: 'حفظ التاريخ', en: 'Save date' },
+  'vendorPortal.license.hint': {
+    ar: 'سنذكّرك بالتجديد قبل ٦٠ و٣٠ و٧ أيام من الانتهاء',
+    en: 'We remind you to renew at 60, 30 and 7 days before expiry',
+  },
   'vendorPortal.tabs.aria': { ar: 'أقسام لوحة المتجر', en: 'Store dashboard sections' },
   'vendorPortal.products.empty': { ar: 'لا توجد منتجات بعد', en: 'No products yet' },
   'vendorPortal.sold': { ar: 'مبيعة', en: 'Sold' },

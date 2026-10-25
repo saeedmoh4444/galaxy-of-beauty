@@ -15,6 +15,7 @@ import {
 } from '../lib/googleCalendar';
 import { creditLoyaltyPoints } from '../lib/loyalty';
 import { sendEmail, emailShell } from '../lib/email';
+import { notifyUser } from '../lib/notify';
 
 // ── Job type definitions ──
 
@@ -786,4 +787,54 @@ export async function advisorRulesForVendor(vendorId: number) {
     aov7d,
     aov30d,
   });
+}
+
+/**
+ * handleLicenseExpiryReminders — G3: vendors whose license expires inside
+ * the next 60 days get an inbox reminder (template `license_expiring`),
+ * deduped by the licenseRemindedAt stamp (one nudge per ~10 days). Skips
+ * far-future, already-expired and recently-reminded vendors. Swallowed
+ * failures keep the weekly job from breaking on one bad row.
+ */
+export async function handleLicenseExpiryReminders(_job: Job<Record<string, never>>): Promise<{
+  reminded: number;
+}> {
+  const now = new Date();
+  const windowStart = now;
+  const windowEnd = new Date(now.getTime() + 60 * 86_400_000);
+  const tenDaysAgo = new Date(now.getTime() - 10 * 86_400_000);
+
+  const vendors = await prisma.vendor.findMany({
+    where: {
+      licenseExpiryDate: { gt: windowStart, lte: windowEnd },
+      OR: [{ licenseRemindedAt: null }, { licenseRemindedAt: { lt: tenDaysAgo } }],
+    },
+    select: { id: true, userId: true, licenseExpiryDate: true },
+  });
+
+  let reminded = 0;
+  for (const vendor of vendors) {
+    const days = Math.max(
+      1,
+      Math.ceil((vendor.licenseExpiryDate!.getTime() - now.getTime()) / 86_400_000),
+    );
+    try {
+      await notifyUser({
+        userId: vendor.userId,
+        templateKey: 'license_expiring',
+        vars: { days },
+        link: '/store?tab=overview',
+        channels: ['in_app'],
+      });
+      await prisma.vendor.update({
+        where: { id: vendor.id },
+        data: { licenseRemindedAt: new Date() },
+      });
+      reminded++;
+    } catch {
+      // Never break the sweep on one row.
+    }
+  }
+
+  return { reminded };
 }

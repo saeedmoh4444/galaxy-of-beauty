@@ -1085,6 +1085,7 @@ vendorPortal.resubmitSubmission	mutation	customer
 vendorPortal.setBanner	mutation	customer
 vendorPortal.setConsultationPrice	mutation	customer
 vendorPortal.setDraft	mutation	customer
+vendorPortal.setLicenseExpiry	mutation	customer
 vendorPortal.setProductFeatured	mutation	customer
 vendorPortal.setTrustFlags	mutation	customer
 vendorPortal.updateProduct	mutation	customer
