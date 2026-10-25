@@ -9,6 +9,7 @@ import { useLocale } from '@/components/LocaleProvider';
 import type { MyStore, StoreDealPayload, StoreOrderRow } from '@galaxy/api';
 import { localize, type TranslationKey } from '@galaxy/shared';
 import { VenueProfileCard } from '../shared/VenueProfileCard';
+import { SubmissionStatusCard } from '../shared/SubmissionStatusCard';
 import { DashboardTabs } from '../shared/DashboardTabs';
 
 type TabKey =
@@ -20,7 +21,8 @@ type TabKey =
   | 'earnings'
   | 'analytics'
   | 'reviews'
-  | 'customers';
+  | 'customers'
+  | 'inbox';
 
 const TAB_KEYS: TabKey[] = [
   'overview',
@@ -32,6 +34,7 @@ const TAB_KEYS: TabKey[] = [
   'analytics',
   'reviews',
   'customers',
+  'inbox',
 ];
 
 /** A3 — read the ?tab= deep link once on mount (hydration-safe; the page is
@@ -291,6 +294,22 @@ export function StoreDashboard({
   const totalCustomers = customersFirst?.total ?? 0;
   const repeatCustomers = customersFirst?.repeatCustomers ?? 0;
   const repeatRate = customersFirst?.repeatRate ?? 0;
+
+  // F1 — vendor inbox (reuses the notifications domain: list, unread, read).
+  const inboxQ = api.notifications.list.useQuery(
+    { page: 1, limit: 30 },
+    { enabled: isAuthenticated },
+  );
+  const unreadQ = api.notifications.unreadCount.useQuery(undefined, {
+    enabled: isAuthenticated,
+  });
+  const unread = unreadQ.data?.count ?? 0;
+  const refreshInbox = () => {
+    void inboxQ.refetch();
+    void unreadQ.refetch();
+  };
+  const markReadMut = api.notifications.markRead.useMutation({ onSuccess: refreshInbox });
+  const markAllReadMut = api.notifications.markAllRead.useMutation({ onSuccess: refreshInbox });
   const [importJobId, setImportJobId] = useState<string | null>(null);
   const importStatusQ = api.vendorPortal.importStatus.useQuery(
     { jobId: importJobId ?? '' },
@@ -372,6 +391,7 @@ export function StoreDashboard({
     { key: 'analytics', label: t('vendorPortal.tab.analytics') },
     { key: 'reviews', label: t('vendorPortal.tab.reviews') },
     { key: 'customers', label: t('vendorPortal.tab.customers') },
+    { key: 'inbox', label: t('vendorPortal.inbox.title'), badge: unread },
   ];
 
   // The dashboard query's non-owner branch returns {}, so narrow the union.
@@ -430,20 +450,8 @@ export function StoreDashboard({
               )}
             </Card>
 
-            {/* Store plan Phase 1 — approval status */}
-            {!store.isVerified && (
-              <Card
-                padding="md"
-                className="border-amber-200 bg-amber-50 dark:border-amber-800 dark:bg-amber-950"
-              >
-                <p className="text-sm font-semibold text-amber-700 dark:text-amber-300">
-                  {t('vendorPortal.status.pending-review')}
-                </p>
-                <p className="mt-1 text-xs text-text-secondary">
-                  {t('vendorPortal.status.pending-review-desc')}
-                </p>
-              </Card>
-            )}
+            {/* G2 — approval status & resubmission timeline. */}
+            {!store.isVerified && <SubmissionStatusCard />}
 
             {/* D3 — store advisor (rule-based v1, no LLM). */}
             {(advisorQ.data ?? []).length > 0 && (
@@ -1642,6 +1650,75 @@ export function StoreDashboard({
                     </Button>
                   </div>
                 )}
+              </Card>
+            )}
+          </div>
+        )}
+
+        {tab === 'inbox' && (
+          <div
+            role="tabpanel"
+            id="vendor-panel-inbox"
+            data-testid="vendor-panel-inbox"
+            aria-labelledby="vendor-tab-inbox"
+            className="space-y-4"
+          >
+            {/* F1 — vendor inbox: approval decisions, new orders, payouts,
+                low-stock, reviews and dispute updates (notifications
+                domain). Clicking a row marks it read and follows its link. */}
+            <div className="flex items-center justify-between">
+              <h2 className="text-lg font-bold">{t('vendorPortal.inbox.title')}</h2>
+              {unread > 0 && (
+                <Button
+                  size="sm"
+                  variant="outline"
+                  onClick={() => markAllReadMut.mutate({})}
+                  loading={markAllReadMut.isPending}
+                >
+                  {t('vendorPortal.inbox.mark-all')}
+                </Button>
+              )}
+            </div>
+
+            {(inboxQ.data?.items ?? []).length === 0 ? (
+              <p className="text-sm text-text-tertiary">{t('vendorPortal.inbox.empty')}</p>
+            ) : (
+              <Card padding="md" className="space-y-2">
+                {(inboxQ.data?.items ?? []).map((n) => {
+                  const title = n.titleJson as { ar?: string; en?: string };
+                  const body = n.bodyJson as { ar?: string; en?: string };
+                  return (
+                    <button
+                      key={n.id}
+                      type="button"
+                      data-testid={`inbox-row-${n.id}`}
+                      onClick={() => {
+                        markReadMut.mutate({ id: n.id });
+                        if (n.link) window.location.href = n.link;
+                      }}
+                      className={`flex w-full items-start justify-between gap-3 rounded-lg border p-3 text-left transition-colors hover:bg-surface-elevated ${
+                        n.isRead ? 'border-edge' : 'border-brand-300 dark:border-brand-700'
+                      }`}
+                    >
+                      <div className="min-w-0">
+                        <p className="text-sm font-semibold">
+                          {locale === 'ar' ? title.ar : title.en || title.ar}
+                        </p>
+                        <p className="mt-0.5 text-xs text-text-secondary">
+                          {locale === 'ar' ? body.ar : body.en || body.ar}
+                        </p>
+                        <p className="mt-1 text-[10px] text-text-tertiary">
+                          {new Date(n.createdAt).toLocaleString(
+                            locale === 'ar' ? 'ar-SA' : 'en-GB',
+                          )}
+                        </p>
+                      </div>
+                      {!n.isRead && (
+                        <span className="mt-1 h-2 w-2 shrink-0 rounded-full bg-brand-600 dark:bg-brand-400" />
+                      )}
+                    </button>
+                  );
+                })}
               </Card>
             )}
           </div>

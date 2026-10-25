@@ -13,6 +13,7 @@ import { noonUtcDay, advisorRulesForVendor } from '../workers/handlers';
 import { KSA_SEASONS, seasonMarkers } from '../lib/ksaCalendar';
 import { computeStoreHealthScore, gatherStoreHealthFactors } from '../lib/storeHealth';
 import { weekBucketStart, weeklyTrendLabels } from '../lib/reviewTrend';
+import { requestProductReviews } from '../lib/storeReviewRequests';
 
 /** B.3: vendor portal is DB-backed (was an in-memory array). */
 
@@ -611,10 +612,10 @@ export const vendorPortalRouter = router({
         throw new TRPCError({ code: 'NOT_FOUND', message: 'Store not found' });
       }
 
-      return prisma.$transaction(async (tx) => {
+      const result = await prisma.$transaction(async (tx) => {
         const order = await tx.storeOrder.findUnique({
           where: { id: input.orderId },
-          select: { id: true, vendorId: true, status: true, totalAmount: true },
+          select: { id: true, vendorId: true, status: true, totalAmount: true, customerId: true },
         });
         if (!order || order.vendorId !== vendor.id) {
           throw new TRPCError({ code: 'NOT_FOUND', message: 'Order not found' });
@@ -629,7 +630,13 @@ export const vendorPortalRouter = router({
 
         if (claimed.count === 0) {
           if (input.idempotencyKey) {
-            return tx.storeOrder.findUniqueOrThrow({ where: { id: input.orderId } });
+            // Idempotent re-fulfill: return the current row, no re-accrual,
+            // and no review-request re-emission (items: []).
+            return {
+              order: await tx.storeOrder.findUniqueOrThrow({ where: { id: input.orderId } }),
+              customerId: order.customerId,
+              items: [],
+            };
           }
           throw new TRPCError({ code: 'BAD_REQUEST', message: 'Order already fulfilled' });
         }
@@ -650,8 +657,27 @@ export const vendorPortalRouter = router({
           },
         });
 
-        return tx.storeOrder.findUniqueOrThrow({ where: { id: input.orderId } });
+        return {
+          order: await tx.storeOrder.findUniqueOrThrow({ where: { id: input.orderId } }),
+          customerId: order.customerId,
+          items: await tx.storeOrderItem.findMany({
+            where: { orderId: input.orderId },
+            select: { productId: true },
+          }),
+        };
       });
+
+      // F5 — post-fulfillment review requests (post-commit, swallowed).
+      try {
+        await requestProductReviews({
+          customerId: result.customerId,
+          vendorId: vendor.id,
+          items: result.items,
+        });
+      } catch {
+        // Never fail fulfillment on review-request errors.
+      }
+      return result.order;
     }),
 
   /** cancelOrder — cancel a pending store order (ownership-guarded).
@@ -2431,4 +2457,93 @@ export const vendorPortalRouter = router({
         .sort((a, b) => a.day.localeCompare(b.day)),
     };
   }),
+
+  // ---------------------------------------------------------------------------
+  // G2 — submission status & resubmission
+  // ---------------------------------------------------------------------------
+
+  /**
+   * mySubmissions — the caller's provider submissions (the onboarding
+   * timeline: submitted → under review → approved/rejected), newest first,
+   * with the admin review note. Caller-scoped, so no per-row guard needed.
+   */
+  mySubmissions: customerProcedure
+    .input(
+      z.object({
+        kind: z.string().optional(),
+        status: z.enum(['PENDING_REVIEW', 'APPROVED', 'REJECTED']).optional(),
+      }),
+    )
+    .query(async ({ ctx, input }) => {
+      return prisma.providerSubmission.findMany({
+        where: {
+          providerId: ctx.user.id,
+          ...(input.kind ? { kind: input.kind } : {}),
+          ...(input.status ? { status: input.status } : {}),
+        },
+        orderBy: { id: 'desc' },
+        take: 50,
+      });
+    }),
+
+  /**
+   * resubmitSubmission — a REJECTED submission spawns a fresh
+   * PENDING_REVIEW one with merged payload edits (name/bio/logo — the
+   * common rejection fixes). Ownership-guarded; other statuses reject.
+   */
+  resubmitSubmission: customerProcedure
+    .input(
+      z.object({
+        submissionId: z.number().int().positive(),
+        name: z.string().min(2).max(120).optional(),
+        bio: z.string().max(1000).optional(),
+        logo: z.string().max(500).optional(),
+      }),
+    )
+    .mutation(async ({ ctx, input }) => {
+      const sub = await prisma.providerSubmission.findUnique({
+        where: { id: input.submissionId },
+      });
+      if (!sub || sub.providerId !== ctx.user.id) {
+        throw new TRPCError({ code: 'NOT_FOUND', message: 'Submission not found' });
+      }
+      if (sub.status !== 'REJECTED') {
+        throw new TRPCError({
+          code: 'BAD_REQUEST',
+          message: 'Only rejected submissions can be resubmitted',
+        });
+      }
+      const payload = (sub.payload ?? {}) as Record<string, unknown>;
+      return prisma.providerSubmission.create({
+        data: {
+          providerId: ctx.user.id,
+          kind: sub.kind,
+          status: 'PENDING_REVIEW',
+          payload: {
+            ...payload,
+            ...(input.name ? { storeName: input.name } : {}),
+            ...(input.bio ? { descriptionAr: input.bio } : {}),
+            ...(input.logo ? { logoUrl: input.logo } : {}),
+          },
+        },
+      });
+    }),
+
+  /**
+   * setLicenseExpiry — G3: the vendor records their license/CR expiry so
+   * the weekly sweep can nudge at 60/30/7 days. Updating the date resets
+   * the reminder stamp.
+   */
+  setLicenseExpiry: customerProcedure
+    .input(z.object({ date: z.string().datetime() }))
+    .mutation(async ({ ctx, input }) => {
+      const vendor = await prisma.vendor.findUnique({ where: { userId: ctx.user.id } });
+      if (!vendor) {
+        throw new TRPCError({ code: 'NOT_FOUND', message: 'Store not found' });
+      }
+      return prisma.vendor.update({
+        where: { id: vendor.id },
+        data: { licenseExpiryDate: new Date(input.date), licenseRemindedAt: null },
+      });
+    }),
 });

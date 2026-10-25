@@ -4,6 +4,7 @@ import { prisma } from '@galaxy/db';
 import { router, adminProcedure, technicianProcedure, customerProcedure } from '../trpc';
 import { createPayoutSchema, processPayoutSchema } from '../validators/payment';
 import { computeStoreHealthScore, gatherStoreHealthFactors } from '../lib/storeHealth';
+import { notifyUser } from '../lib/notify';
 
 // ---------------------------------------------------------------------------
 // Additional input schemas
@@ -299,6 +300,27 @@ export const payoutRouter = router({
         where: { id: input.payoutId },
         data: { status: 'PROCESSING' },
       });
+
+      // F1 — vendor inbox: store-payout processing alerts the store owner.
+      if (payout.vendorId) {
+        try {
+          const vendor = await prisma.vendor.findUnique({
+            where: { id: payout.vendorId },
+            select: { userId: true },
+          });
+          if (vendor) {
+            await notifyUser({
+              userId: vendor.userId,
+              templateKey: 'payout_processing',
+              vars: { amount: Number(payout.amount) },
+              link: '/store?tab=earnings',
+              channels: ['in_app'],
+            });
+          }
+        } catch {
+          // Notification failure must never fail the payout.
+        }
+      }
 
       // Money-integrity: never fabricate a transfer. There is no bank/wallet
       // provider integration yet, so payouts STAY in PROCESSING — completion

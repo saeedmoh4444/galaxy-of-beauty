@@ -88,7 +88,13 @@ export async function placeStoreOrders(
   userId: number,
   lines: CartLine[],
   checkoutId?: number,
-): Promise<{ subtotal: number; itemCount: number; lowStockAlerts: LowStockAlert[] }> {
+): Promise<{
+  subtotal: number;
+  itemCount: number;
+  lowStockAlerts: LowStockAlert[];
+  /** F1 — the created StoreOrder rows, for the post-commit inbox notify. */
+  orders: Array<{ id: number; vendorId: number; totalAmount: number }>;
+}> {
   const vendorLines = new Map<
     number,
     {
@@ -148,6 +154,7 @@ export async function placeStoreOrders(
     vendorLines.set(line.vendorId, agg);
   }
 
+  const created: Array<{ id: number; vendorId: number; totalAmount: number }> = [];
   for (const [vendorId, agg] of vendorLines) {
     const order = await tx.storeOrder.create({
       data: {
@@ -159,6 +166,7 @@ export async function placeStoreOrders(
         status: 'PENDING_FULFILLMENT',
       },
     });
+    created.push({ id: order.id, vendorId, totalAmount: Number(order.totalAmount) });
 
     // B0 — per-line snapshot (name + price at purchase time) so order
     // detail, cancellation restores and ZATCA line items don't depend on
@@ -178,7 +186,40 @@ export async function placeStoreOrders(
 
   await tx.cartItem.deleteMany({ where: { userId } });
 
-  return { subtotal, itemCount, lowStockAlerts };
+  return { subtotal, itemCount, lowStockAlerts, orders: created };
+}
+
+/**
+ * F1 — emit `store_order_placed` to each owning vendor after the checkout
+ * transaction commits (one notification per order). Same after-commit +
+ * swallow pattern as {@link notifyLowStockAlerts}.
+ */
+export async function notifyOrderPlaced(
+  orders: Array<{ id: number; vendorId: number; totalAmount: number }>,
+): Promise<void> {
+  if (orders.length === 0) return;
+
+  const vendors = await prisma.vendor.findMany({
+    where: { id: { in: [...new Set(orders.map((o) => o.vendorId))] } },
+    select: { id: true, userId: true },
+  });
+  const userIdByVendor = new Map(vendors.map((v) => [v.id, v.userId]));
+
+  for (const order of orders) {
+    const userId = userIdByVendor.get(order.vendorId);
+    if (!userId) continue;
+    try {
+      await notifyUser({
+        userId,
+        templateKey: 'store_order_placed',
+        vars: { orderId: order.id, total: order.totalAmount },
+        link: '/store?tab=orders',
+        channels: ['in_app'],
+      });
+    } catch {
+      // Notification failure must never fail the purchase.
+    }
+  }
 }
 
 /**

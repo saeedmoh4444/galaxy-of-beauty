@@ -116,6 +116,18 @@ export function getAdvisorQueue(): Queue | null {
   }
 }
 
+// G3 — license-expiry reminder sweep queue.
+let _remindersQueue: Queue | null = null;
+export function getRemindersQueue(): Queue | null {
+  if (_remindersQueue) return _remindersQueue;
+  try {
+    _remindersQueue = createQueue('gob-reminders');
+    return _remindersQueue;
+  } catch {
+    return null;
+  }
+}
+
 // Convenience: all queues
 export function getAllQueues(): Record<string, Queue | null> {
   return {
@@ -126,5 +138,6 @@ export function getAllQueues(): Record<string, Queue | null> {
     csvImport: getCsvImportQueue(),
     analytics: getAnalyticsQueue(),
     advisor: getAdvisorQueue(),
+    reminders: getRemindersQueue(),
   };
 }

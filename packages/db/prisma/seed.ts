@@ -4038,6 +4038,70 @@ async function main() {
           en: '{{productName}} is running low — only {{stock}} left. Restock to avoid missing sales.',
         },
       },
+      // G3 — license expiry reminder (vendor inbox).
+      {
+        key: 'license_expiring',
+        category: 'provider',
+        channels: ['in_app', 'push'],
+        titleJson: { ar: 'ترخيصك يقترب من الانتهاء', en: 'Your License Is Expiring' },
+        bodyJson: {
+          ar: 'ينتهي ترخيص متجرك خلال {{days}} يوم — جددي المستندات لتجنّب تعليق المتجر.',
+          en: 'Your store license expires in {{days}} days — renew your documents to avoid suspension.',
+        },
+      },
+      // F1 — vendor inbox events (emitted post-commit; see the F1 wave).
+      {
+        key: 'store_order_placed',
+        category: 'provider',
+        channels: ['in_app', 'push'],
+        titleJson: { ar: 'طلب جديد على متجرك', en: 'New Store Order' },
+        bodyJson: {
+          ar: 'وصل طلب جديد #{{orderId}} بقيمة {{total}} ر.س — بانتظار التنفيذ.',
+          en: 'New order #{{orderId}} for {{total}} SAR is waiting for fulfillment.',
+        },
+      },
+      {
+        key: 'store_review_left',
+        category: 'provider',
+        channels: ['in_app', 'push'],
+        titleJson: { ar: 'تقييم جديد', en: 'New Review' },
+        bodyJson: {
+          ar: 'حصل {{productName}} على تقييم {{rating}}★ — ردّي عليه لبناء الثقة.',
+          en: '{{productName}} received a {{rating}}★ review — reply to build trust.',
+        },
+      },
+      {
+        key: 'payout_processing',
+        category: 'provider',
+        channels: ['in_app', 'push'],
+        titleJson: { ar: 'دفعة قيد المعالجة', en: 'Payout Processing' },
+        bodyJson: {
+          ar: 'بدأت الإدارة معالجة دفعة {{amount}} ر.س إلى حسابك.',
+          en: 'Admin started processing your {{amount}} SAR payout.',
+        },
+      },
+      {
+        key: 'dispute_resolved',
+        category: 'provider',
+        channels: ['in_app', 'push'],
+        titleJson: { ar: 'قرار الإدارة بشأن نزاع', en: 'Dispute Resolution' },
+        bodyJson: {
+          ar: 'صدر قرار الإدارة بشأن نزاع طلبك: {{resolution}}.',
+          en: 'Admin resolved your order dispute: {{resolution}}.',
+        },
+      },
+      // F5 — post-fulfillment review request (customer-facing, once per
+      // customer-product pair).
+      {
+        key: 'store_review_request',
+        category: 'bookingReminders',
+        channels: ['in_app', 'push'],
+        titleJson: { ar: 'قيّمي مشترياتك', en: 'Rate Your Purchase' },
+        bodyJson: {
+          ar: 'وصلتك الطلبية! ما رأيك بـ {{productName}}؟ تقييمك يساعد المتجر على التحسن.',
+          en: 'Your order arrived! How was {{productName}}? Your review helps the store improve.',
+        },
+      },
       // E2 — clinic consultation decisions. Category 'provider' is not a
       // preference toggle → always delivered.
       {
