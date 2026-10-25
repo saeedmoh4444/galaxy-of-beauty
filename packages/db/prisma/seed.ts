@@ -4079,6 +4079,18 @@ async function main() {
           en: 'Admin resolved your order dispute: {{resolution}}.',
         },
       },
+      // F5 — post-fulfillment review request (customer-facing, once per
+      // customer-product pair).
+      {
+        key: 'store_review_request',
+        category: 'bookingReminders',
+        channels: ['in_app', 'push'],
+        titleJson: { ar: 'قيّمي مشترياتك', en: 'Rate Your Purchase' },
+        bodyJson: {
+          ar: 'وصلتك الطلبية! ما رأيك بـ {{productName}}؟ تقييمك يساعد المتجر على التحسن.',
+          en: 'Your order arrived! How was {{productName}}? Your review helps the store improve.',
+        },
+      },
       // E2 — clinic consultation decisions. Category 'provider' is not a
       // preference toggle → always delivered.
       {

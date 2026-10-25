@@ -13,6 +13,7 @@ import { noonUtcDay, advisorRulesForVendor } from '../workers/handlers';
 import { KSA_SEASONS, seasonMarkers } from '../lib/ksaCalendar';
 import { computeStoreHealthScore, gatherStoreHealthFactors } from '../lib/storeHealth';
 import { weekBucketStart, weeklyTrendLabels } from '../lib/reviewTrend';
+import { requestProductReviews } from '../lib/storeReviewRequests';
 
 /** B.3: vendor portal is DB-backed (was an in-memory array). */
 
@@ -611,10 +612,10 @@ export const vendorPortalRouter = router({
         throw new TRPCError({ code: 'NOT_FOUND', message: 'Store not found' });
       }
 
-      return prisma.$transaction(async (tx) => {
+      const result = await prisma.$transaction(async (tx) => {
         const order = await tx.storeOrder.findUnique({
           where: { id: input.orderId },
-          select: { id: true, vendorId: true, status: true, totalAmount: true },
+          select: { id: true, vendorId: true, status: true, totalAmount: true, customerId: true },
         });
         if (!order || order.vendorId !== vendor.id) {
           throw new TRPCError({ code: 'NOT_FOUND', message: 'Order not found' });
@@ -629,7 +630,13 @@ export const vendorPortalRouter = router({
 
         if (claimed.count === 0) {
           if (input.idempotencyKey) {
-            return tx.storeOrder.findUniqueOrThrow({ where: { id: input.orderId } });
+            // Idempotent re-fulfill: return the current row, no re-accrual,
+            // and no review-request re-emission (items: []).
+            return {
+              order: await tx.storeOrder.findUniqueOrThrow({ where: { id: input.orderId } }),
+              customerId: order.customerId,
+              items: [],
+            };
           }
           throw new TRPCError({ code: 'BAD_REQUEST', message: 'Order already fulfilled' });
         }
@@ -650,8 +657,27 @@ export const vendorPortalRouter = router({
           },
         });
 
-        return tx.storeOrder.findUniqueOrThrow({ where: { id: input.orderId } });
+        return {
+          order: await tx.storeOrder.findUniqueOrThrow({ where: { id: input.orderId } }),
+          customerId: order.customerId,
+          items: await tx.storeOrderItem.findMany({
+            where: { orderId: input.orderId },
+            select: { productId: true },
+          }),
+        };
       });
+
+      // F5 — post-fulfillment review requests (post-commit, swallowed).
+      try {
+        await requestProductReviews({
+          customerId: result.customerId,
+          vendorId: vendor.id,
+          items: result.items,
+        });
+      } catch {
+        // Never fail fulfillment on review-request errors.
+      }
+      return result.order;
     }),
 
   /** cancelOrder — cancel a pending store order (ownership-guarded).
