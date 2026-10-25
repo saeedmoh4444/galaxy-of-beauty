@@ -19,6 +19,7 @@ import {
   handleCsvImportJob,
   handleDailyStatsJob,
   handleAdvisorDigestJob,
+  handleLicenseExpiryReminders,
 } from './handlers';
 
 // Job types + pure helpers are re-exported from handlers.ts (routers
@@ -80,6 +81,7 @@ export const integrationWorker = createWorker('gob-integrations', handleIntegrat
 export const csvImportWorker = createWorker('gob-csv-import', handleCsvImportJob, 1);
 export const analyticsWorker = createWorker('gob-analytics', handleDailyStatsJob, 1);
 export const advisorWorker = createWorker('gob-advisor', handleAdvisorDigestJob, 1);
+export const remindersWorker = createWorker('gob-reminders', handleLicenseExpiryReminders, 1);
 
 /**
  * D1 — register the nightly materialization: fires at 00:30 KSA (21:30Z
@@ -107,6 +109,15 @@ export async function registerAnalyticsScheduler(): Promise<void> {
       { name: 'advisor.digest', data: {} },
     );
   }
+  // G3 — weekly license-expiry sweep (Sunday 09:00 UTC).
+  const remindersQueue = (await import('../queues')).getRemindersQueue();
+  if (remindersQueue) {
+    await remindersQueue.upsertJobScheduler(
+      'license-expiry-weekly',
+      { pattern: '0 9 * * 0' },
+      { name: 'reminders.license-expiry', data: {} },
+    );
+  }
   console.log('[Workers] Schedulers registered (analytics 30 21 UTC, advisor 0 8 * * 0 UTC)');
 }
 
@@ -120,6 +131,9 @@ export async function shutdownWorkers(): Promise<void> {
     notificationWorker,
     integrationWorker,
     csvImportWorker,
+    analyticsWorker,
+    advisorWorker,
+    remindersWorker,
   ];
   await Promise.all(workers.filter(Boolean).map((w) => w!.close()));
   console.log('[Workers] All workers shut down');
@@ -138,6 +152,7 @@ export function startWorkers(): void {
     csvImportWorker ? 'gob-csv-import' : null,
     analyticsWorker ? 'gob-analytics' : null,
     advisorWorker ? 'gob-advisor' : null,
+    remindersWorker ? 'gob-reminders' : null,
   ].filter(Boolean);
   console.log(`[Workers] Started: ${names.join(', ') || 'none (Redis unavailable)'}`);
   void registerAnalyticsScheduler();

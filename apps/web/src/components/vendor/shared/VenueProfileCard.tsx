@@ -32,6 +32,15 @@ export function VenueProfileCard({
   const aboutJson = (store.descriptionJson ?? {}) as { ar?: string; en?: string };
   const [aboutAr, setAboutAr] = useState(aboutJson.ar ?? '');
   const [aboutEn, setAboutEn] = useState(aboutJson.en ?? '');
+  // G3 — license/CR expiry self-service.
+  const licenseMut = api.vendorPortal.setLicenseExpiry.useMutation({
+    onSuccess: () => refetchStore(),
+  });
+  const [licenseExpiry, setLicenseExpiry] = useState(
+    store.licenseExpiryDate
+      ? new Date(store.licenseExpiryDate as unknown as string).toISOString().slice(0, 10)
+      : '',
+  );
 
   const onBannerFile = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -162,6 +171,28 @@ export function VenueProfileCard({
         >
           {t('vendorPortal.about.save')}
         </Button>
+      </div>
+
+      {/* G3 — license/CR expiry self-service (drives the 60/30/7 reminders). */}
+      <div className="mt-4 border-t border-border-muted pt-4">
+        <p className="mb-2 text-sm font-semibold">{t('vendorPortal.license.title')}</p>
+        <div className="flex flex-wrap items-end gap-2">
+          <input
+            type="date"
+            value={licenseExpiry}
+            onChange={(e) => setLicenseExpiry(e.target.value)}
+            className="rounded-xl border border-border-muted bg-surface p-2 text-sm"
+          />
+          <Button
+            size="sm"
+            disabled={!licenseExpiry}
+            onClick={() => licenseMut.mutate({ date: new Date(licenseExpiry).toISOString() })}
+            loading={licenseMut.isPending}
+          >
+            {t('vendorPortal.license.save')}
+          </Button>
+        </div>
+        <p className="mt-1 text-xs text-text-tertiary">{t('vendorPortal.license.hint')}</p>
       </div>
     </Card>
   );

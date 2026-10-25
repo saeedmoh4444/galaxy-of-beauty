@@ -4038,6 +4038,17 @@ async function main() {
           en: '{{productName}} is running low — only {{stock}} left. Restock to avoid missing sales.',
         },
       },
+      // G3 — license expiry reminder (vendor inbox).
+      {
+        key: 'license_expiring',
+        category: 'provider',
+        channels: ['in_app', 'push'],
+        titleJson: { ar: 'ترخيصك يقترب من الانتهاء', en: 'Your License Is Expiring' },
+        bodyJson: {
+          ar: 'ينتهي ترخيص متجرك خلال {{days}} يوم — جددي المستندات لتجنّب تعليق المتجر.',
+          en: 'Your store license expires in {{days}} days — renew your documents to avoid suspension.',
+        },
+      },
       // E2 — clinic consultation decisions. Category 'provider' is not a
       // preference toggle → always delivered.
       {
