@@ -5146,6 +5146,9 @@ export const enWebMessages: Record<string, string> = {
   'vendorPortal.apply.nail-bar-address': 'Address',
   'vendorPortal.apply.nail-bar-city': 'City',
   'vendorPortal.apply.register-athome': 'Register at-home salon',
+  'vendorPortal.apply.draft-discard': 'Discard draft',
+  'vendorPortal.apply.draft-resumed':
+    'Your previous draft was restored — continue where you left off',
   'vendorPortal.apply.register-clinic': 'Register a clinic',
   'vendorPortal.apply.register-gym': 'Register a gym',
   'vendorPortal.apply.register-nail-bar': 'Register a nail bar',

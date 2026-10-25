@@ -3978,6 +3978,12 @@ export const miscMessages = {
   'vendorPortal.apply.bio': { ar: 'نبذة عن المتجر', en: 'Store description' },
   'vendorPortal.apply.logo': { ar: 'رابط الشعار', en: 'Logo URL' },
   'vendorPortal.apply.submit': { ar: 'إرسال طلب التسجيل', en: 'Submit Registration' },
+  // G1 — wizard persistence (resume banner).
+  'vendorPortal.apply.draft-resumed': {
+    ar: 'استعدنا مسودتك السابقة — أكمل من حيث توقفتِ',
+    en: 'Your previous draft was restored — continue where you left off',
+  },
+  'vendorPortal.apply.draft-discard': { ar: 'تجاهل المسودة', en: 'Discard draft' },
   'vendorPortal.status.pending-review': {
     ar: 'متجرك قيد المراجعة',
     en: 'Your store is pending review',
