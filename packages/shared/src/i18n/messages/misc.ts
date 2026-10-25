@@ -4029,6 +4029,10 @@ export const miscMessages = {
   'vendorPortal.reviews.trend': { ar: 'آخر ٨ أسابيع', en: 'Last 8 weeks' },
   // E5 — CRM-lite (customers tab).
   'vendorPortal.tab.customers': { ar: 'العملاء', en: 'Customers' },
+  // F1 — vendor inbox (notifications domain).
+  'vendorPortal.inbox.title': { ar: 'الوارد', en: 'Inbox' },
+  'vendorPortal.inbox.empty': { ar: 'لا توجد إشعارات بعد', en: 'No notifications yet' },
+  'vendorPortal.inbox.mark-all': { ar: 'تحديد الكل كمقروء', en: 'Mark all read' },
   'vendorPortal.customers.title': { ar: 'عملاؤك المتكررون', en: 'Your repeat customers' },
   'vendorPortal.customers.total': { ar: 'إجمالي العملاء', en: 'Total customers' },
   'vendorPortal.customers.repeaters': { ar: 'عملاء متكررون', en: 'Repeat customers' },

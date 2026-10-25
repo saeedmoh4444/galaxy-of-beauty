@@ -48,7 +48,15 @@ test.describe('Store Dashboard (S1)', () => {
     await expect(page).toHaveURL(/\/store$/, { timeout: 60_000 });
 
     // Core tabs visible, overview active by default.
-    for (const key of ['overview', 'orders', 'products', 'deals', 'reviews', 'customers']) {
+    for (const key of [
+      'overview',
+      'orders',
+      'products',
+      'deals',
+      'reviews',
+      'customers',
+      'inbox',
+    ]) {
       await expect(page.getByTestId(`vendor-tab-${key}`)).toBeVisible();
     }
     await expect(page.getByTestId('vendor-tab-overview')).toHaveAttribute('aria-selected', 'true');
@@ -72,6 +80,10 @@ test.describe('Store Dashboard (S1)', () => {
     // E5 — the customers tab mounts the CRM-lite panel.
     await page.getByTestId('vendor-tab-customers').click();
     await expect(page.getByTestId('vendor-panel-customers')).toBeVisible();
+
+    // F1 — the inbox tab mounts the notification panel.
+    await page.getByTestId('vendor-tab-inbox').click();
+    await expect(page.getByTestId('vendor-panel-inbox')).toBeVisible();
   });
 
   test('A4 — add product flow: new product appears in the Products tab', async ({ page }) => {
