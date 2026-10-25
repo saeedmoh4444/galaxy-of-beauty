@@ -40,3 +40,32 @@ test.describe('Marketplace Auth', () => {
     expect(response?.status()).toBe(200);
   });
 });
+
+test.describe('Storefront SEO (F4)', () => {
+  test('store pages carry per-store title, canonical and breadcrumbs', async ({ page }) => {
+    await page.goto('/stores');
+    const card = page.locator('a[href^="/stores/"]').first();
+    await expect(card).toBeVisible({ timeout: 60_000 });
+    const href = (await card.getAttribute('href')) ?? '';
+
+    await page.goto(href);
+    await expect(page).toHaveURL(new RegExp(`${href.replace(/[/.]/g, '\\$&')}$`));
+
+    // Per-store <title> — the store name, not the generic stores title.
+    const h1 = await page.getByRole('heading', { level: 1 }).first().textContent();
+    const title = await page.title();
+    expect(h1).toBeTruthy();
+    expect(title).toContain((h1 ?? '').slice(0, 20));
+
+    // Canonical link resolves to the store URL.
+    await expect(page.locator('link[rel="canonical"]')).toHaveAttribute(
+      'href',
+      new RegExp(`${href.replace(/[/.]/g, '\\$&')}$`),
+    );
+
+    // F4 breadcrumbs: home / stores / store name.
+    const crumbs = page.locator('nav[aria-label] ol');
+    await expect(crumbs).toBeVisible();
+    await expect(crumbs.getByRole('link', { name: /stores|المتاجر/i })).toBeVisible();
+  });
+});

@@ -21,6 +21,7 @@ export const coreMessages = {
   // Misc
   'misc.sar': { ar: 'ر.س', en: 'SAR' },
   'misc.min': { ar: 'دقيقة', en: 'min' },
+  'misc.breadcrumbs': { ar: 'مسار التنقل', en: 'Breadcrumbs' },
   'misc.rating': { ar: 'تقييم', en: 'Rating' },
 
   // Time

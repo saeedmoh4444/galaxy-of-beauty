@@ -3529,6 +3529,7 @@ export const arWebMessages: Record<string, string> = {
   'mentor.topic.skincare': 'العناية بالبشرة',
   'mentor.topicsTitle': 'المواضيع',
   'misc.min': 'دقيقة',
+  'misc.breadcrumbs': 'مسار التنقل',
   'misc.rating': 'تقييم',
   'misc.sar': 'ر.س',
   'mood.addImage': 'إضافة صورة',
