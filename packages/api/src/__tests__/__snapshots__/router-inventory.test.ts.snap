@@ -1088,6 +1088,14 @@ vendorPortal.setDraft	mutation	customer
 vendorPortal.setLicenseExpiry	mutation	customer
 vendorPortal.setProductFeatured	mutation	customer
 vendorPortal.setTrustFlags	mutation	customer
+vendorPortal.staff.accept	mutation	customer
+vendorPortal.staff.activity	query	customer
+vendorPortal.staff.decline	mutation	customer
+vendorPortal.staff.invite	mutation	customer
+vendorPortal.staff.list	query	customer
+vendorPortal.staff.myInvitation	query	customer
+vendorPortal.staff.revoke	mutation	customer
+vendorPortal.staff.update	mutation	customer
 vendorPortal.updateProduct	mutation	customer
 vendorPortal.updateStoreProfile	mutation	customer
 video.endSession	mutation	protected

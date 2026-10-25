@@ -122,6 +122,106 @@ function toReviewRow(r: {
   };
 }
 
+// ── A1 store staff accounts ──────────────────────────────────────────
+// (VENDOR_PROFESSIONALIZATION_PLAN Wave A). The role-less ownership
+// invariant governs: staff are CUSTOMER-role users linked to a vendor
+// via VendorStaff — a capability list, never a UserRole.
+
+/** Capability strings stored in VendorStaff.permissions. */
+export const STAFF_CAPABILITIES = [
+  'ORDERS_MANAGE',
+  'PRODUCTS_MANAGE',
+  'COUPONS_MANAGE',
+  'DEALS_MANAGE',
+  'REVIEWS_MANAGE',
+  'PAYOUTS_VIEW',
+  'CUSTOMERS_VIEW',
+  'ANALYTICS_VIEW',
+  'STAFF_MANAGE',
+] as const;
+
+type StaffCapability = (typeof STAFF_CAPABILITIES)[number];
+
+type VendorActor =
+  | { kind: 'owner'; vendor: { id: number; userId: number; storeName: string; storeSlug: string } }
+  | {
+      kind: 'staff';
+      vendor: { id: number; userId: number; storeName: string; storeSlug: string };
+      staff: { id: number; role: string; permissions: string[] };
+    }
+  | null;
+
+/** The caller's relationship to a vendor: owner (Vendor row) or ACTIVE staff. */
+async function resolveVendorActor(userId: number): Promise<VendorActor> {
+  const vendor = await prisma.vendor.findUnique({ where: { userId } });
+  if (vendor) return { kind: 'owner', vendor };
+  const staff = await prisma.vendorStaff.findUnique({
+    where: { userId },
+    include: { vendor: true },
+  });
+  if (staff && staff.status === 'ACTIVE') {
+    return { kind: 'staff', vendor: staff.vendor, staff };
+  }
+  return null;
+}
+
+function staffHasCapability(actor: VendorActor, cap: StaffCapability): boolean {
+  if (!actor) return false;
+  if (actor.kind === 'owner') return true;
+  if (actor.staff.role === 'MANAGER') return true;
+  return actor.staff.permissions.includes(cap);
+}
+
+/** Resolve the actor and require STAFF_MANAGE (owners always pass). */
+async function requireStaffManager(userId: number) {
+  const actor = await resolveVendorActor(userId);
+  if (!actor) {
+    throw new TRPCError({ code: 'FORBIDDEN', message: 'Not a store owner or staff member' });
+  }
+  if (!staffHasCapability(actor, 'STAFF_MANAGE')) {
+    throw new TRPCError({ code: 'FORBIDDEN', message: 'Staff management requires STAFF_MANAGE' });
+  }
+  return actor;
+}
+
+/** Vendor-scoped audit row — every staff-management mutation logs here. */
+async function logStaffAction(
+  vendorId: number,
+  actorUserId: number | null,
+  action: string,
+  targetId: number,
+  metadata?: Record<string, unknown>,
+) {
+  await prisma.staffActivityLog.create({
+    data: {
+      vendorId,
+      actorUserId,
+      action,
+      targetType: 'VendorStaff',
+      targetId: String(targetId),
+      metadata: (metadata ?? undefined) as Prisma.InputJsonValue | undefined,
+    },
+  });
+}
+
+/** The client-facing staff row shape (email+name are owner-visible only). */
+function staffRowShape(
+  row: { id: number; role: string; permissions: string[]; status: string; createdAt: Date },
+  user: { id: number; name: string; email: string; avatarUrl: string | null },
+) {
+  return {
+    id: row.id,
+    userId: user.id,
+    name: user.name,
+    email: user.email,
+    avatarUrl: user.avatarUrl,
+    role: row.role,
+    permissions: row.permissions,
+    status: row.status,
+    createdAt: row.createdAt.toISOString(),
+  };
+}
+
 export const vendorPortalRouter = router({
   dashboard: customerProcedure.query(async ({ ctx }) => {
     const vendor = await prisma.vendor.findUnique({ where: { userId: ctx.user.id } });
@@ -2546,4 +2646,221 @@ export const vendorPortalRouter = router({
         data: { licenseExpiryDate: new Date(input.date), licenseRemindedAt: null },
       });
     }),
+
+  /**
+   * A1 — store staff accounts. Owners (and staff with STAFF_MANAGE)
+   * invite existing users by email; the invitee accepts on the portal.
+   * Every management mutation writes the vendor-scoped audit feed.
+   */
+  staff: router({
+    /** Rows for the Staff tab — requires STAFF_MANAGE. */
+    list: customerProcedure.query(async ({ ctx }) => {
+      const actor = await requireStaffManager(ctx.user.id);
+      const rows = await prisma.vendorStaff.findMany({
+        where: { vendorId: actor.vendor.id },
+        include: { user: { select: { id: true, name: true, email: true, avatarUrl: true } } },
+        orderBy: { createdAt: 'asc' },
+      });
+      return rows.map((r) => staffRowShape(r, r.user));
+    }),
+
+    /** Invite an existing user by email (idempotent for PENDING re-sends). */
+    invite: customerProcedure
+      .input(z.object({ email: z.string().email().max(254) }))
+      .mutation(async ({ ctx, input }) => {
+        const actor = await requireStaffManager(ctx.user.id);
+        const target = await prisma.user.findFirst({
+          where: { email: { equals: input.email, mode: 'insensitive' } },
+        });
+        if (!target) {
+          throw new TRPCError({ code: 'NOT_FOUND', message: 'No account with this email' });
+        }
+        if (target.id === actor.vendor.userId) {
+          throw new TRPCError({ code: 'CONFLICT', message: 'The store owner cannot be staff' });
+        }
+
+        const existing = await prisma.vendorStaff.findUnique({ where: { userId: target.id } });
+        if (existing?.status === 'ACTIVE') {
+          throw new TRPCError({ code: 'CONFLICT', message: 'User is already staff of a store' });
+        }
+        if (existing?.status === 'PENDING' && existing.vendorId !== actor.vendor.id) {
+          throw new TRPCError({
+            code: 'CONFLICT',
+            message: 'User has a pending invitation from another store',
+          });
+        }
+
+        const notify = () =>
+          notifyUser({
+            userId: target.id,
+            templateKey: 'staff_invited',
+            vars: { storeName: actor.vendor.storeName },
+            link: '/customer/vendor-portal',
+          });
+
+        let row: {
+          id: number;
+          role: string;
+          permissions: string[];
+          status: string;
+          createdAt: Date;
+        };
+        if (existing?.status === 'PENDING') {
+          // Re-send only — the invitation already stands.
+          await notify();
+          row = existing;
+        } else {
+          const data = {
+            vendorId: actor.vendor.id,
+            role: 'STAFF',
+            permissions: ['ORDERS_MANAGE'],
+            status: 'PENDING',
+            invitedBy: ctx.user.id,
+          };
+          row = existing
+            ? await prisma.vendorStaff.update({ where: { id: existing.id }, data }) // REVOKED → reactivate
+            : await prisma.vendorStaff.create({ data: { ...data, userId: target.id } });
+          await notify();
+          await logStaffAction(actor.vendor.id, ctx.user.id, 'INVITE_STAFF', row.id, {
+            email: target.email,
+            reactivated: existing !== null,
+          });
+        }
+        return staffRowShape(row, target);
+      }),
+
+    /** Change a staff row's role/permissions — requires STAFF_MANAGE. */
+    update: customerProcedure
+      .input(
+        z
+          .object({
+            staffId: z.number().int().positive(),
+            role: z.enum(['MANAGER', 'STAFF']).optional(),
+            permissions: z.array(z.enum(STAFF_CAPABILITIES)).max(9).optional(),
+          })
+          .refine((v) => v.role !== undefined || v.permissions !== undefined, {
+            message: 'role or permissions required',
+          }),
+      )
+      .mutation(async ({ ctx, input }) => {
+        const actor = await requireStaffManager(ctx.user.id);
+        const row = await prisma.vendorStaff.findUnique({
+          where: { id: input.staffId },
+          include: { user: { select: { id: true, name: true, email: true, avatarUrl: true } } },
+        });
+        if (!row || row.vendorId !== actor.vendor.id) {
+          throw new TRPCError({ code: 'NOT_FOUND', message: 'Staff member not found' });
+        }
+        const updated = await prisma.vendorStaff.update({
+          where: { id: row.id },
+          data: {
+            ...(input.role !== undefined ? { role: input.role } : {}),
+            ...(input.permissions !== undefined ? { permissions: input.permissions } : {}),
+          },
+        });
+        await logStaffAction(actor.vendor.id, ctx.user.id, 'UPDATE_STAFF', row.id, {
+          role: input.role,
+          permissions: input.permissions,
+        });
+        return staffRowShape(updated, row.user);
+      }),
+
+    /** Revoke staff access — requires STAFF_MANAGE. */
+    revoke: customerProcedure
+      .input(z.object({ staffId: z.number().int().positive() }))
+      .mutation(async ({ ctx, input }) => {
+        const actor = await requireStaffManager(ctx.user.id);
+        const row = await prisma.vendorStaff.findUnique({
+          where: { id: input.staffId },
+          include: { user: { select: { id: true, name: true, email: true, avatarUrl: true } } },
+        });
+        if (!row || row.vendorId !== actor.vendor.id) {
+          throw new TRPCError({ code: 'NOT_FOUND', message: 'Staff member not found' });
+        }
+        const updated = await prisma.vendorStaff.update({
+          where: { id: row.id },
+          data: { status: 'REVOKED' },
+        });
+        await notifyUser({
+          userId: row.user.id,
+          templateKey: 'staff_revoked',
+          vars: { storeName: actor.vendor.storeName },
+        });
+        await logStaffAction(actor.vendor.id, ctx.user.id, 'REVOKE_STAFF', row.id);
+        return staffRowShape(updated, row.user);
+      }),
+
+    /** The caller's own PENDING invitation (portal banner), else null. */
+    myInvitation: customerProcedure.query(async ({ ctx }) => {
+      const row = await prisma.vendorStaff.findUnique({
+        where: { userId: ctx.user.id },
+        include: { vendor: { select: { storeName: true, storeSlug: true } } },
+      });
+      if (!row || row.status !== 'PENDING') return null;
+      return {
+        id: row.id,
+        storeName: row.vendor.storeName,
+        storeSlug: row.vendor.storeSlug,
+        role: row.role,
+        permissions: row.permissions,
+        status: row.status,
+        createdAt: row.createdAt.toISOString(),
+      };
+    }),
+
+    /** The invitee accepts their PENDING invitation → ACTIVE. */
+    accept: customerProcedure.mutation(async ({ ctx }) => {
+      const row = await prisma.vendorStaff.findUnique({
+        where: { userId: ctx.user.id },
+        include: { user: { select: { id: true, name: true, email: true, avatarUrl: true } } },
+      });
+      if (!row || row.status !== 'PENDING') {
+        throw new TRPCError({ code: 'NOT_FOUND', message: 'No pending invitation' });
+      }
+      const updated = await prisma.vendorStaff.update({
+        where: { id: row.id },
+        data: { status: 'ACTIVE' },
+      });
+      await logStaffAction(row.vendorId, ctx.user.id, 'ACCEPT_INVITE', row.id);
+      return staffRowShape(updated, row.user);
+    }),
+
+    /** The invitee declines their PENDING invitation → REVOKED. */
+    decline: customerProcedure.mutation(async ({ ctx }) => {
+      const row = await prisma.vendorStaff.findUnique({
+        where: { userId: ctx.user.id },
+        include: { user: { select: { id: true, name: true, email: true, avatarUrl: true } } },
+      });
+      if (!row || row.status !== 'PENDING') {
+        throw new TRPCError({ code: 'NOT_FOUND', message: 'No pending invitation' });
+      }
+      const updated = await prisma.vendorStaff.update({
+        where: { id: row.id },
+        data: { status: 'REVOKED' },
+      });
+      await logStaffAction(row.vendorId, ctx.user.id, 'DECLINE_INVITE', row.id);
+      return staffRowShape(updated, row.user);
+    }),
+
+    /** Recent audit feed for the Staff tab — requires STAFF_MANAGE. */
+    activity: customerProcedure.query(async ({ ctx }) => {
+      const actor = await requireStaffManager(ctx.user.id);
+      const logs = await prisma.staffActivityLog.findMany({
+        where: { vendorId: actor.vendor.id },
+        include: { actor: { select: { name: true } } },
+        orderBy: { createdAt: 'desc' },
+        take: 50,
+      });
+      return logs.map((l) => ({
+        id: l.id,
+        vendorId: l.vendorId,
+        action: l.action,
+        targetType: l.targetType,
+        targetId: l.targetId,
+        metadata: l.metadata,
+        createdAt: l.createdAt.toISOString(),
+        actorName: l.actor?.name ?? '—',
+      }));
+    }),
+  }),
 });

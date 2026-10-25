@@ -4049,6 +4049,28 @@ async function main() {
           en: 'Your store license expires in {{days}} days — renew your documents to avoid suspension.',
         },
       },
+      // A1 — store staff invitations (customer-facing; the invitee is a
+      // CUSTOMER-role user, not a vendor).
+      {
+        key: 'staff_invited',
+        category: 'provider',
+        channels: ['in_app', 'push'],
+        titleJson: { ar: 'دعوة للانضمام إلى متجر', en: 'Store Staff Invitation' },
+        bodyJson: {
+          ar: 'دعاك {{storeName}} للانضمام إلى فريق المتجر. اقبلي الدعوة من بوابة المتجر.',
+          en: '{{storeName}} invited you to join their store team. Accept the invitation from the store portal.',
+        },
+      },
+      {
+        key: 'staff_revoked',
+        category: 'provider',
+        channels: ['in_app', 'push'],
+        titleJson: { ar: 'انتهى وصولك إلى المتجر', en: 'Staff Access Revoked' },
+        bodyJson: {
+          ar: 'أنهى {{storeName}} وصولك إلى لوحة تحكم المتجر.',
+          en: '{{storeName}} ended your access to the store dashboard.',
+        },
+      },
       // F1 — vendor inbox events (emitted post-commit; see the F1 wave).
       {
         key: 'store_order_placed',
