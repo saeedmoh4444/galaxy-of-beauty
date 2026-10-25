@@ -3943,6 +3943,21 @@ export const miscMessages = {
   'vendorPortal.earnings.status.processing': { ar: 'قيد المعالجة', en: 'Processing' },
   'vendorPortal.earnings.status.completed': { ar: 'مكتمل', en: 'Completed' },
   'vendorPortal.earnings.status.failed': { ar: 'فشل', en: 'Failed' },
+  // A2 — payout automation.
+  'vendorPortal.earnings.schedule': { ar: 'جدول الدفعات', en: 'Payout schedule' },
+  'vendorPortal.earnings.scheduleManual': { ar: 'يدوي', en: 'Manual' },
+  'vendorPortal.earnings.scheduleWeekly': { ar: 'أسبوعي', en: 'Weekly' },
+  'vendorPortal.earnings.scheduleMonthly': { ar: 'شهري', en: 'Monthly' },
+  'vendorPortal.earnings.lastRun': { ar: 'آخر تسوية: {date}', en: 'Last settlement: {date}' },
+  'vendorPortal.earnings.firstRunPending': {
+    ar: 'ستتم التسوية التلقائية خلال ٢٤ ساعة.',
+    en: 'The automatic settlement runs within 24 hours.',
+  },
+  'vendorPortal.earnings.manualHint': {
+    ar: 'الدفعات تُسوّى يدوياً بواسطة الإدارة.',
+    en: 'Payouts are settled manually by the platform.',
+  },
+  'vendorPortal.earnings.invoice': { ar: 'فاتورة', en: 'Invoice' },
   // B5 — vendor-side dispute response (order drawer)
   'vendorPortal.disputes.title': { ar: 'نزاع على الطلب', en: 'Order dispute' },
   'vendorPortal.disputes.reason': { ar: 'السبب', en: 'Reason' },

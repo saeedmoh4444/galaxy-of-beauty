@@ -378,6 +378,24 @@ export function StoreDashboard({
     URL.revokeObjectURL(url);
   };
 
+  // A2 — payout automation: schedule selector + per-payout invoice CSV.
+  const utils = api.useUtils();
+  const setScheduleMut = api.vendorPortal.setPayoutSchedule.useMutation({
+    onSuccess: () => {
+      void utils.vendorPortal.earnings.invalidate();
+    },
+  });
+  const downloadInvoice = async (payoutId: number) => {
+    const data = await utils.vendorPortal.payoutInvoice.fetch({ payoutId, locale });
+    const blob = new Blob(['﻿', data.csv], { type: 'text/csv;charset=utf-8' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `payout-${payoutId}.csv`;
+    a.click();
+    URL.revokeObjectURL(url);
+  };
+
   // A3 — tab state, deep-linkable via ?tab=<key>.
   const [tab, setTab] = useState<TabKey>('overview');
   useEffect(() => {
@@ -1176,6 +1194,40 @@ export function StoreDashboard({
                 {t('vendorPortal.earnings.export')}
               </Button>
             </div>
+            {/* A2 — payout automation: cadence selector + sweep status. */}
+            <Card padding="md">
+              <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+                <div>
+                  <p className="text-sm font-medium">{t('vendorPortal.earnings.schedule')}</p>
+                  <p className="mt-0.5 text-xs text-text-secondary">
+                    {earnings?.payoutSchedule === 'MANUAL'
+                      ? t('vendorPortal.earnings.manualHint')
+                      : earnings?.lastPayoutRunAt
+                        ? t('vendorPortal.earnings.lastRun', {
+                            date: new Date(earnings.lastPayoutRunAt).toLocaleDateString(
+                              locale === 'ar' ? 'ar-SA' : 'en-GB',
+                            ),
+                          })
+                        : t('vendorPortal.earnings.firstRunPending')}
+                  </p>
+                </div>
+                <select
+                  data-testid="payout-schedule-select"
+                  value={earnings?.payoutSchedule ?? 'MANUAL'}
+                  onChange={(e) =>
+                    setScheduleMut.mutate({
+                      schedule: e.target.value as 'MANUAL' | 'WEEKLY' | 'MONTHLY',
+                    })
+                  }
+                  disabled={setScheduleMut.isPending}
+                  className="rounded-md border border-border bg-surface px-3 py-2 text-sm"
+                >
+                  <option value="MANUAL">{t('vendorPortal.earnings.scheduleManual')}</option>
+                  <option value="WEEKLY">{t('vendorPortal.earnings.scheduleWeekly')}</option>
+                  <option value="MONTHLY">{t('vendorPortal.earnings.scheduleMonthly')}</option>
+                </select>
+              </div>
+            </Card>
             <div className="grid gap-4 sm:grid-cols-4">
               <Card padding="md" className="text-center">
                 <p className="text-2xl font-bold">
@@ -1252,6 +1304,15 @@ export function StoreDashboard({
                                   : 'vendorPortal.earnings.status.pending',
                           )}
                         </span>
+                        <Button
+                          size="sm"
+                          variant="ghost"
+                          className="mt-1"
+                          onClick={() => downloadInvoice(r.id)}
+                          data-testid={`payout-invoice-${r.id}`}
+                        >
+                          {t('vendorPortal.earnings.invoice')}
+                        </Button>
                       </div>
                     </div>
                   ))}

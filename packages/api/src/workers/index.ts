@@ -20,6 +20,7 @@ import {
   handleDailyStatsJob,
   handleAdvisorDigestJob,
   handleLicenseExpiryReminders,
+  handlePayoutScheduleJob,
 } from './handlers';
 
 // Job types + pure helpers are re-exported from handlers.ts (routers
@@ -82,6 +83,7 @@ export const csvImportWorker = createWorker('gob-csv-import', handleCsvImportJob
 export const analyticsWorker = createWorker('gob-analytics', handleDailyStatsJob, 1);
 export const advisorWorker = createWorker('gob-advisor', handleAdvisorDigestJob, 1);
 export const remindersWorker = createWorker('gob-reminders', handleLicenseExpiryReminders, 1);
+export const payoutsWorker = createWorker('gob-payouts', handlePayoutScheduleJob, 1);
 
 /**
  * D1 — register the nightly materialization: fires at 00:30 KSA (21:30Z
@@ -118,6 +120,16 @@ export async function registerAnalyticsScheduler(): Promise<void> {
       { name: 'reminders.license-expiry', data: {} },
     );
   }
+  // A2 — daily payout-automation sweep (09:00 UTC; the per-vendor window
+  // check makes the daily cadence idempotent for weekly/monthly vendors).
+  const payoutsQueue = (await import('../queues')).getPayoutsQueue();
+  if (payoutsQueue) {
+    await payoutsQueue.upsertJobScheduler(
+      'payout-sweep-daily',
+      { pattern: '0 9 * * *' },
+      { name: 'payouts.sweep', data: {} },
+    );
+  }
   console.log('[Workers] Schedulers registered (analytics 30 21 UTC, advisor 0 8 * * 0 UTC)');
 }
 
@@ -134,6 +146,7 @@ export async function shutdownWorkers(): Promise<void> {
     analyticsWorker,
     advisorWorker,
     remindersWorker,
+    payoutsWorker,
   ];
   await Promise.all(workers.filter(Boolean).map((w) => w!.close()));
   console.log('[Workers] All workers shut down');
@@ -153,6 +166,7 @@ export function startWorkers(): void {
     analyticsWorker ? 'gob-analytics' : null,
     advisorWorker ? 'gob-advisor' : null,
     remindersWorker ? 'gob-reminders' : null,
+    payoutsWorker ? 'gob-payouts' : null,
   ].filter(Boolean);
   console.log(`[Workers] Started: ${names.join(', ') || 'none (Redis unavailable)'}`);
   void registerAnalyticsScheduler();

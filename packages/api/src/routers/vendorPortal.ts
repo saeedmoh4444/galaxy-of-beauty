@@ -1199,6 +1199,9 @@ export const vendorPortalRouter = router({
       commissionRate: Number(vendor.commissionRate),
       summary: { pendingNet, processedNet, totalFee },
       rows,
+      // A2 — payout automation state for the schedule card.
+      payoutSchedule: vendor.payoutSchedule,
+      lastPayoutRunAt: vendor.lastPayoutRunAt?.toISOString() ?? null,
     };
   }),
 
@@ -2919,4 +2922,92 @@ export const vendorPortalRouter = router({
       }));
     }),
   }),
+
+  /**
+   * setPayoutSchedule — A2: the vendor picks their settlement cadence
+   * (MANUAL default keeps the admin-driven flow). Ownership-guarded;
+   * the daily gob-payouts job honors it.
+   */
+  setPayoutSchedule: customerProcedure
+    .input(z.object({ schedule: z.enum(['MANUAL', 'WEEKLY', 'MONTHLY']) }))
+    .mutation(async ({ ctx, input }) => {
+      const vendor = await prisma.vendor.findUnique({ where: { userId: ctx.user.id } });
+      if (!vendor) {
+        throw new TRPCError({ code: 'NOT_FOUND', message: 'Store not found' });
+      }
+      return prisma.vendor.update({
+        where: { id: vendor.id },
+        data: { payoutSchedule: input.schedule },
+        select: { payoutSchedule: true, lastPayoutRunAt: true },
+      });
+    }),
+
+  /**
+   * payoutInvoice — A2: RFC 4180 invoice CSV for one of the caller's
+   * payouts (summary + per-order line items, AR/EN headers). Ownership-
+   * guarded like every earnings export.
+   */
+  payoutInvoice: customerProcedure
+    .input(
+      z.object({
+        payoutId: z.number().int().positive(),
+        locale: z.enum(['ar', 'en']).default('en'),
+      }),
+    )
+    .query(async ({ ctx, input }) => {
+      const vendor = await prisma.vendor.findUnique({ where: { userId: ctx.user.id } });
+      if (!vendor) {
+        throw new TRPCError({ code: 'NOT_FOUND', message: 'Store not found' });
+      }
+      const payout = await prisma.payout.findUnique({ where: { id: input.payoutId } });
+      if (!payout || payout.vendorId !== vendor.id) {
+        throw new TRPCError({ code: 'NOT_FOUND', message: 'Payout not found' });
+      }
+
+      const orders = await prisma.storeOrder.findMany({
+        where: {
+          vendorId: vendor.id,
+          status: 'FULFILLED',
+          createdAt: { gte: payout.periodStart, lte: payout.periodEnd },
+        },
+        orderBy: { createdAt: 'asc' },
+        select: { id: true, createdAt: true, totalAmount: true },
+      });
+
+      const esc = (v: string | number) => {
+        const s = String(v);
+        return /[",\r\n]/.test(s) ? `"${s.replace(/"/g, '""')}"` : s;
+      };
+      const ar = input.locale === 'ar';
+      const header = ar
+        ? [
+            'رقم الفاتورة',
+            'بداية الفترة',
+            'نهاية الفترة',
+            'الإجمالي',
+            'الرسوم',
+            'الصافي',
+            'عدد الطلبات',
+          ]
+        : ['Invoice', 'Period start', 'Period end', 'Gross', 'Fee', 'Net', 'Orders'];
+      const gross = Number(payout.amount) + Number(payout.fee);
+      const summary = [
+        `#${payout.id}`,
+        payout.periodStart.toISOString().slice(0, 10),
+        payout.periodEnd.toISOString().slice(0, 10),
+        gross.toFixed(2),
+        Number(payout.fee).toFixed(2),
+        Number(payout.amount).toFixed(2),
+        String(orders.length),
+      ].join(',');
+
+      const itemHeader = ar ? ['رقم الطلب', 'التاريخ', 'المبلغ'] : ['Order', 'Date', 'Amount'];
+      const itemLines = orders.map((o) =>
+        [o.id, o.createdAt.toISOString().slice(0, 10), Number(o.totalAmount).toFixed(2)].join(','),
+      );
+
+      return {
+        csv: [header.join(','), esc(summary), '', itemHeader.join(','), ...itemLines].join('\r\n'),
+      };
+    }),
 });

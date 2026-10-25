@@ -128,6 +128,18 @@ export function getRemindersQueue(): Queue | null {
   }
 }
 
+// A2 — payout automation sweep (settles WEEKLY/MONTHLY vendor windows).
+let _payoutsQueue: Queue | null = null;
+export function getPayoutsQueue(): Queue | null {
+  if (_payoutsQueue) return _payoutsQueue;
+  try {
+    _payoutsQueue = createQueue('gob-payouts');
+    return _payoutsQueue;
+  } catch {
+    return null;
+  }
+}
+
 // Convenience: all queues
 export function getAllQueues(): Record<string, Queue | null> {
   return {
@@ -139,5 +151,6 @@ export function getAllQueues(): Record<string, Queue | null> {
     analytics: getAnalyticsQueue(),
     advisor: getAdvisorQueue(),
     reminders: getRemindersQueue(),
+    payouts: getPayoutsQueue(),
   };
 }
