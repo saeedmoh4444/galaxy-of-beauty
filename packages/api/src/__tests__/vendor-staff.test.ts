@@ -242,3 +242,111 @@ describe('A1 — store staff accounts', () => {
     });
   });
 });
+
+describe('A1 — staff-scoped portal procedures', () => {
+  it('ACTIVE staff with ORDERS_MANAGE can list orders but not products (capability gate)', async () => {
+    const c = await caller(invitee); // ACTIVE, permissions ['ORDERS_MANAGE']
+    const page = await c.vendorPortal.orders({ limit: 20 });
+    expect(page.items).toEqual([]);
+
+    await expect(c.vendorPortal.myProducts({ limit: 20 })).rejects.toMatchObject({
+      code: 'FORBIDDEN',
+    });
+    await expect(
+      c.vendorPortal.replyToReview({ reviewId: 1, replyEn: 'Thank you' }),
+    ).rejects.toMatchObject({
+      code: 'FORBIDDEN',
+    });
+  });
+
+  it('staff can open the dashboard and myStore resolves to the vendor', async () => {
+    const c = await caller(invitee);
+    const dash = await c.vendorPortal.dashboard();
+    expect(dash.totalProducts).toBe(0); // empty store, but the call succeeds
+
+    const store = await c.vendorPortal.myStore();
+    expect(store.id).toBe(ownerVendorId);
+  });
+
+  it('non-vendor callers keep legacy empty shapes on queries and NOT_FOUND on mutations', async () => {
+    const plainU = await prisma.user.create({ data: buildUser() });
+    createdUserIds.push(plainU.id);
+    const c = await caller({ id: plainU.id, role: 'CUSTOMER', email: plainU.email });
+    // Queries keep the pre-A1 contract: empty pages, not errors.
+    const page = await c.vendorPortal.orders({ limit: 20 });
+    expect(page.items).toEqual([]);
+    const products = await c.vendorPortal.myProducts({ limit: 20 });
+    expect(products.items).toEqual([]);
+    // Mutations never had an empty contract — NOT_FOUND as before.
+    await expect(c.vendorPortal.fulfillOrder({ orderId: 1 })).rejects.toMatchObject({
+      code: 'NOT_FOUND',
+    });
+    await expect(c.vendorPortal.updateProduct({ id: 1, stock: 1 })).rejects.toMatchObject({
+      code: 'NOT_FOUND',
+    });
+  });
+
+  it('PENDING (re-invited) staff lose portal access until they accept', async () => {
+    // The reactivation test left clerk PENDING again: queries fall back to
+    // the empty shape, mutations refuse with NOT_FOUND.
+    const c = await caller(clerk);
+    const page = await c.vendorPortal.orders({ limit: 20 });
+    expect(page.items).toEqual([]);
+    await expect(c.vendorPortal.fulfillOrder({ orderId: 1 })).rejects.toMatchObject({
+      code: 'NOT_FOUND',
+    });
+  });
+
+  it('granting a capability via staff.update unlocks the gated procedure', async () => {
+    // Manager has STAFF_MANAGE + ORDERS_MANAGE — no PRODUCTS_MANAGE yet.
+    const mgr = await caller(manager);
+    await expect(mgr.vendorPortal.myProducts({ limit: 20 })).rejects.toMatchObject({
+      code: 'FORBIDDEN',
+    });
+
+    await (
+      await caller(owner)
+    ).vendorPortal.staff.update({
+      staffId: managerStaffId,
+      permissions: ['STAFF_MANAGE', 'ORDERS_MANAGE', 'PRODUCTS_MANAGE'],
+    });
+
+    const page = await mgr.vendorPortal.myProducts({ limit: 20 });
+    expect(page.items).toEqual([]);
+  });
+
+  it('staff fulfilling an order works (ORDERS_MANAGE) and is ownership-scoped', async () => {
+    // Seed an order for the owner's vendor, then fulfill it as staff.
+    const category = await prisma.productCategory.findFirst({ orderBy: { sortOrder: 'asc' } });
+    const product = await prisma.product.create({
+      data: {
+        vendorId: ownerVendorId,
+        categoryId: category!.id,
+        nameJson: { ar: 'منتج أ1', en: 'A1 product' },
+        descriptionJson: { ar: '', en: '' },
+        price: 50,
+        stock: 5,
+        sales: 0,
+        emoji: '🧴',
+        images: [],
+        isActive: true,
+      },
+    });
+    const order = await prisma.storeOrder.create({
+      data: {
+        vendorId: ownerVendorId,
+        customerId: invitee.id,
+        totalAmount: 50,
+        itemCount: 1,
+        status: 'PENDING_FULFILLMENT',
+      },
+    });
+
+    const c = await caller(invitee);
+    const res = await c.vendorPortal.fulfillOrder({ orderId: order.id });
+    expect(res.status).toBe('FULFILLED');
+
+    await prisma.storeOrder.deleteMany({ where: { id: order.id } });
+    await prisma.product.deleteMany({ where: { id: product.id } });
+  });
+});

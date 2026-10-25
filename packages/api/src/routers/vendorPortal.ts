@@ -184,6 +184,44 @@ async function requireStaffManager(userId: number) {
   return actor;
 }
 
+/**
+ * A1 — staff-scoped vendor lookup. Owners and ACTIVE staff resolve to the
+ * same Vendor row; an optional capability gates staff (owners pass always,
+ * MANAGER role passes implicitly). Non-vendors get NOT_FOUND — the same
+ * signal the old per-procedure lookups produced for owner-less callers.
+ */
+async function vendorForStaff(ctx: { user: { id: number } | null }, capability?: StaffCapability) {
+  if (!ctx.user) {
+    throw new TRPCError({ code: 'UNAUTHORIZED', message: 'Login required' });
+  }
+  const actor = await resolveVendorActor(ctx.user.id);
+  if (!actor) {
+    throw new TRPCError({ code: 'NOT_FOUND', message: 'Store not found' });
+  }
+  if (capability && !staffHasCapability(actor, capability)) {
+    throw new TRPCError({ code: 'FORBIDDEN', message: `Requires ${capability}` });
+  }
+  return prisma.vendor.findUniqueOrThrow({ where: { id: actor.vendor.id } });
+}
+
+/**
+ * A1 — the QUERY variant: owner-less callers keep the legacy empty-shape
+ * contract (the portal renders zeroes for them), staff are capability-
+ * gated (FORBIDDEN), owners and capable staff get the row. Returns null
+ * for owner-less callers so each query can render its own legacy shape.
+ */
+async function vendorForStaffQuery(
+  ctx: { user: { id: number } | null },
+  capability?: StaffCapability,
+) {
+  const actor = await resolveVendorActor(ctx.user?.id ?? -1);
+  if (!actor) return null;
+  if (capability && !staffHasCapability(actor, capability)) {
+    throw new TRPCError({ code: 'FORBIDDEN', message: `Requires ${capability}` });
+  }
+  return prisma.vendor.findUnique({ where: { id: actor.vendor.id } });
+}
+
 /** Vendor-scoped audit row — every staff-management mutation logs here. */
 async function logStaffAction(
   vendorId: number,
@@ -224,7 +262,7 @@ function staffRowShape(
 
 export const vendorPortalRouter = router({
   dashboard: customerProcedure.query(async ({ ctx }) => {
-    const vendor = await prisma.vendor.findUnique({ where: { userId: ctx.user.id } });
+    const vendor = await vendorForStaffQuery(ctx);
 
     if (!vendor) {
       // A store with no vendor and no reviews has no rating — never invent
@@ -347,7 +385,7 @@ export const vendorPortalRouter = router({
       }),
     )
     .query(async ({ ctx, input }) => {
-      const vendor = await prisma.vendor.findUnique({ where: { userId: ctx.user.id } });
+      const vendor = await vendorForStaffQuery(ctx, 'PRODUCTS_MANAGE');
       if (!vendor) return { items: [], nextCursor: null, total: 0 };
 
       // A5 — cursor pagination on the stable id (autoincrement) instead of
@@ -390,11 +428,22 @@ export const vendorPortalRouter = router({
       }),
     )
     .mutation(async ({ ctx, input }) => {
-      const user = await prisma.user.findUnique({
-        where: { id: ctx.user.id },
-        select: { name: true },
-      });
-      const vendor = await ensureVendor(ctx.user.id, user?.name ?? '');
+      // A1: staff are capability-gated; owner-less callers keep the legacy
+      // B.3 auto-create path (minimal vendor row on first product).
+      const actor = await resolveVendorActor(ctx.user.id);
+      let vendor;
+      if (actor) {
+        if (!staffHasCapability(actor, 'PRODUCTS_MANAGE')) {
+          throw new TRPCError({ code: 'FORBIDDEN', message: 'Requires PRODUCTS_MANAGE' });
+        }
+        vendor = await prisma.vendor.findUniqueOrThrow({ where: { id: actor.vendor.id } });
+      } else {
+        const user = await prisma.user.findUnique({
+          where: { id: ctx.user.id },
+          select: { name: true },
+        });
+        vendor = await ensureVendor(ctx.user.id, user?.name ?? '');
+      }
 
       // C2 — strict listing approval: when the flag is on, new products
       // start PENDING and wait for the admin review queue. Off (relaxed,
@@ -441,8 +490,7 @@ export const vendorPortalRouter = router({
   deleteProduct: customerProcedure
     .input(z.object({ id: z.number().int().positive() }))
     .mutation(async ({ ctx, input }) => {
-      const vendor = await prisma.vendor.findUnique({ where: { userId: ctx.user.id } });
-      if (!vendor) return { success: true };
+      const vendor = await vendorForStaff(ctx, 'PRODUCTS_MANAGE');
 
       // Ownership-guarded soft delete.
       await prisma.product.updateMany({
@@ -476,8 +524,7 @@ export const vendorPortalRouter = router({
       }),
     )
     .mutation(async ({ ctx, input }) => {
-      const vendor = await prisma.vendor.findUnique({ where: { userId: ctx.user.id } });
-      if (!vendor) throw new TRPCError({ code: 'NOT_FOUND', message: 'Store not found' });
+      const vendor = await vendorForStaff(ctx, 'PRODUCTS_MANAGE');
 
       const existing = await prisma.product.findUnique({ where: { id: input.id } });
       if (!existing) throw new TRPCError({ code: 'NOT_FOUND', message: 'Product not found' });
@@ -520,8 +567,7 @@ export const vendorPortalRouter = router({
   setDraft: customerProcedure
     .input(z.object({ id: z.number().int().positive(), draft: z.boolean() }))
     .mutation(async ({ ctx, input }) => {
-      const vendor = await prisma.vendor.findUnique({ where: { userId: ctx.user.id } });
-      if (!vendor) throw new TRPCError({ code: 'NOT_FOUND', message: 'Store not found' });
+      const vendor = await vendorForStaff(ctx, 'PRODUCTS_MANAGE');
 
       const existing = await prisma.product.findUnique({ where: { id: input.id } });
       if (!existing) throw new TRPCError({ code: 'NOT_FOUND', message: 'Product not found' });
@@ -547,8 +593,7 @@ export const vendorPortalRouter = router({
   setProductFeatured: customerProcedure
     .input(z.object({ id: z.number().int().positive(), featured: z.boolean() }))
     .mutation(async ({ ctx, input }) => {
-      const vendor = await prisma.vendor.findUnique({ where: { userId: ctx.user.id } });
-      if (!vendor) throw new TRPCError({ code: 'NOT_FOUND', message: 'Store not found' });
+      const vendor = await vendorForStaff(ctx, 'PRODUCTS_MANAGE');
 
       const existing = await prisma.product.findUnique({ where: { id: input.id } });
       if (!existing) throw new TRPCError({ code: 'NOT_FOUND', message: 'Product not found' });
@@ -571,8 +616,7 @@ export const vendorPortalRouter = router({
   duplicateProduct: customerProcedure
     .input(z.object({ id: z.number().int().positive() }))
     .mutation(async ({ ctx, input }) => {
-      const vendor = await prisma.vendor.findUnique({ where: { userId: ctx.user.id } });
-      if (!vendor) throw new TRPCError({ code: 'NOT_FOUND', message: 'Store not found' });
+      const vendor = await vendorForStaff(ctx, 'PRODUCTS_MANAGE');
 
       const existing = await prisma.product.findUnique({ where: { id: input.id } });
       if (!existing) throw new TRPCError({ code: 'NOT_FOUND', message: 'Product not found' });
@@ -617,9 +661,13 @@ export const vendorPortalRouter = router({
   // Store plan Phase 1 — store registration state + orders
   // ---------------------------------------------------------------------------
 
-  /** myStore — the caller's store (or null when not registered yet). */
+  /** myStore — the caller's store (or null when not registered yet).
+   *  A1: staff members resolve to their vendor too — the shell routes
+   *  them to the portal instead of the registration wizard. */
   myStore: customerProcedure.query(async ({ ctx }) => {
-    return prisma.vendor.findUnique({ where: { userId: ctx.user.id } });
+    const actor = await resolveVendorActor(ctx.user.id);
+    if (!actor) return null;
+    return prisma.vendor.findUnique({ where: { id: actor.vendor.id } });
   }),
 
   /**
@@ -659,7 +707,7 @@ export const vendorPortalRouter = router({
       }),
     )
     .query(async ({ ctx, input }) => {
-      const vendor = await prisma.vendor.findUnique({ where: { userId: ctx.user.id } });
+      const vendor = await vendorForStaffQuery(ctx, 'ORDERS_MANAGE');
       if (!vendor) return { items: [], nextCursor: null, total: 0 };
 
       // A5 — id-desc cursor: stable pagination (createdAt ties can't page).
@@ -707,10 +755,7 @@ export const vendorPortalRouter = router({
       }),
     )
     .mutation(async ({ ctx, input }) => {
-      const vendor = await prisma.vendor.findUnique({ where: { userId: ctx.user.id } });
-      if (!vendor) {
-        throw new TRPCError({ code: 'NOT_FOUND', message: 'Store not found' });
-      }
+      const vendor = await vendorForStaff(ctx, 'ORDERS_MANAGE');
 
       const result = await prisma.$transaction(async (tx) => {
         const order = await tx.storeOrder.findUnique({
@@ -789,10 +834,7 @@ export const vendorPortalRouter = router({
   cancelOrder: customerProcedure
     .input(z.object({ orderId: z.number().int().positive() }))
     .mutation(async ({ ctx, input }) => {
-      const vendor = await prisma.vendor.findUnique({ where: { userId: ctx.user.id } });
-      if (!vendor) {
-        throw new TRPCError({ code: 'NOT_FOUND', message: 'Store not found' });
-      }
+      const vendor = await vendorForStaff(ctx, 'ORDERS_MANAGE');
 
       return prisma.$transaction(async (tx) => {
         const order = await tx.storeOrder.findUnique({
@@ -1397,7 +1439,7 @@ export const vendorPortalRouter = router({
       }),
     )
     .query(async ({ ctx, input }) => {
-      const vendor = await prisma.vendor.findUnique({ where: { userId: ctx.user.id } });
+      const vendor = await vendorForStaffQuery(ctx, 'REVIEWS_MANAGE');
       if (!vendor) return { items: [], nextCursor: null, total: 0 };
 
       const where: Prisma.ProductReviewWhereInput = {
@@ -1432,7 +1474,7 @@ export const vendorPortalRouter = router({
    * buckets) for the rating sparkline.
    */
   myReviewsSummary: customerProcedure.query(async ({ ctx }) => {
-    const vendor = await prisma.vendor.findUnique({ where: { userId: ctx.user.id } });
+    const vendor = await vendorForStaffQuery(ctx, 'REVIEWS_MANAGE');
     const labels = weeklyTrendLabels();
     if (!vendor) {
       return {
@@ -1503,10 +1545,7 @@ export const vendorPortalRouter = router({
         }),
     )
     .mutation(async ({ ctx, input }) => {
-      const vendor = await prisma.vendor.findUnique({ where: { userId: ctx.user.id } });
-      if (!vendor) {
-        throw new TRPCError({ code: 'NOT_FOUND', message: 'Store not found' });
-      }
+      const vendor = await vendorForStaff(ctx, 'REVIEWS_MANAGE');
       const review = await prisma.productReview.findUnique({
         where: { id: input.reviewId },
         include: { product: { select: { vendorId: true } } },
@@ -1548,7 +1587,7 @@ export const vendorPortalRouter = router({
       }),
     )
     .query(async ({ ctx, input }) => {
-      const vendor = await prisma.vendor.findUnique({ where: { userId: ctx.user.id } });
+      const vendor = await vendorForStaffQuery(ctx, 'CUSTOMERS_VIEW');
       if (!vendor) return { items: [], total: 0, repeatRate: 0, repeatCustomers: 0 };
 
       const grouped = await prisma.storeOrder.groupBy({
