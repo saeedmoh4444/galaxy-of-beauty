@@ -353,6 +353,37 @@ export const vendorPortalRouter = router({
       distinct: ['customerId'],
     });
 
+    // A3 — fulfillment SLA: 30-day breach count + on-time rate over the
+    // fulfilled orders (fulfilledAt within the vendor's promised window).
+    const slaWindowMs = vendor.fulfillmentSlaHours * 3_600_000;
+    const breachedOrders = await prisma.storeOrder.findMany({
+      where: {
+        vendorId: vendor.id,
+        slaBreachedAt: { not: null },
+        createdAt: { gte: thirtyDaysAgo },
+      },
+      select: { createdAt: true, fulfilledAt: true, slaBreachedAt: true },
+    });
+    const fulfilledOrders = await prisma.storeOrder.findMany({
+      where: {
+        vendorId: vendor.id,
+        status: 'FULFILLED',
+        fulfilledAt: { not: null },
+        createdAt: { gte: thirtyDaysAgo },
+      },
+      select: { createdAt: true, fulfilledAt: true },
+    });
+    const onTime = fulfilledOrders.filter(
+      (o) => o.fulfilledAt!.getTime() - o.createdAt.getTime() <= slaWindowMs,
+    ).length;
+    const sla = {
+      breached30d: breachedOrders.length,
+      onTimeRate: fulfilledOrders.length
+        ? Math.round((onTime / fulfilledOrders.length) * 100)
+        : 100,
+      windowHours: vendor.fulfillmentSlaHours,
+    };
+
     return {
       totalProducts: agg._count,
       totalSales: agg._sum.sales ?? 0,
@@ -374,6 +405,8 @@ export const vendorPortalRouter = router({
         stock: p.stock,
         threshold: p.lowStockThreshold,
       })),
+      // A3 — fulfillment SLA metrics for the Overview card.
+      sla,
     };
   }),
 
@@ -768,9 +801,10 @@ export const vendorPortalRouter = router({
 
         // Atomic transition — the WHERE pins the old status, so a concurrent
         // fulfill loses the race cleanly instead of double-accruing.
+        // A3 — fulfilledAt feeds the SLA on-time rate.
         const claimed = await tx.storeOrder.updateMany({
           where: { id: input.orderId, status: 'PENDING_FULFILLMENT' },
-          data: { status: 'FULFILLED' },
+          data: { status: 'FULFILLED', fulfilledAt: new Date() },
         });
 
         if (claimed.count === 0) {
@@ -2939,6 +2973,24 @@ export const vendorPortalRouter = router({
         where: { id: vendor.id },
         data: { payoutSchedule: input.schedule },
         select: { payoutSchedule: true, lastPayoutRunAt: true },
+      });
+    }),
+
+  /**
+   * setFulfillmentSla — A3: the store's promised order window in hours
+   * (12–168). The daily gob-sla sweep judges breaches against it.
+   */
+  setFulfillmentSla: customerProcedure
+    .input(z.object({ hours: z.number().int().min(12).max(168) }))
+    .mutation(async ({ ctx, input }) => {
+      const vendor = await prisma.vendor.findUnique({ where: { userId: ctx.user.id } });
+      if (!vendor) {
+        throw new TRPCError({ code: 'NOT_FOUND', message: 'Store not found' });
+      }
+      return prisma.vendor.update({
+        where: { id: vendor.id },
+        data: { fulfillmentSlaHours: input.hours },
+        select: { fulfillmentSlaHours: true },
       });
     }),
 

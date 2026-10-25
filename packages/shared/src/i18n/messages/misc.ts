@@ -3958,6 +3958,12 @@ export const miscMessages = {
     en: 'Payouts are settled manually by the platform.',
   },
   'vendorPortal.earnings.invoice': { ar: 'فاتورة', en: 'Invoice' },
+  // A3 — fulfillment SLA.
+  'vendorPortal.sla.title': { ar: 'مهلة التنفيذ', en: 'Fulfillment SLA' },
+  'vendorPortal.sla.onTimeRate': { ar: 'نسبة التنفيذ في الوقت', en: 'On-time rate' },
+  'vendorPortal.sla.breached': { ar: 'طلبات متأخرة (٣٠ يوم)', en: 'Late orders (30d)' },
+  'vendorPortal.sla.window': { ar: 'نافذة التنفيذ (ساعة)', en: 'Fulfillment window (hours)' },
+  'vendorPortal.sla.lateChip': { ar: 'متأخر', en: 'Late' },
   // B5 — vendor-side dispute response (order drawer)
   'vendorPortal.disputes.title': { ar: 'نزاع على الطلب', en: 'Order dispute' },
   'vendorPortal.disputes.reason': { ar: 'السبب', en: 'Reason' },

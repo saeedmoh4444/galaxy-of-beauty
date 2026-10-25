@@ -21,6 +21,7 @@ import {
   handleAdvisorDigestJob,
   handleLicenseExpiryReminders,
   handlePayoutScheduleJob,
+  handleOrderSlaSweep,
 } from './handlers';
 
 // Job types + pure helpers are re-exported from handlers.ts (routers
@@ -84,6 +85,7 @@ export const analyticsWorker = createWorker('gob-analytics', handleDailyStatsJob
 export const advisorWorker = createWorker('gob-advisor', handleAdvisorDigestJob, 1);
 export const remindersWorker = createWorker('gob-reminders', handleLicenseExpiryReminders, 1);
 export const payoutsWorker = createWorker('gob-payouts', handlePayoutScheduleJob, 1);
+export const slaWorker = createWorker('gob-sla', handleOrderSlaSweep, 1);
 
 /**
  * D1 — register the nightly materialization: fires at 00:30 KSA (21:30Z
@@ -130,6 +132,15 @@ export async function registerAnalyticsScheduler(): Promise<void> {
       { name: 'payouts.sweep', data: {} },
     );
   }
+  // A3 — daily fulfillment-SLA sweep (09:05 UTC, after the payout sweep).
+  const slaQueue = (await import('../queues')).getSlaQueue();
+  if (slaQueue) {
+    await slaQueue.upsertJobScheduler(
+      'sla-sweep-daily',
+      { pattern: '5 9 * * *' },
+      { name: 'sla.sweep', data: {} },
+    );
+  }
   console.log('[Workers] Schedulers registered (analytics 30 21 UTC, advisor 0 8 * * 0 UTC)');
 }
 
@@ -147,6 +158,7 @@ export async function shutdownWorkers(): Promise<void> {
     advisorWorker,
     remindersWorker,
     payoutsWorker,
+    slaWorker,
   ];
   await Promise.all(workers.filter(Boolean).map((w) => w!.close()));
   console.log('[Workers] All workers shut down');
@@ -167,6 +179,7 @@ export function startWorkers(): void {
     advisorWorker ? 'gob-advisor' : null,
     remindersWorker ? 'gob-reminders' : null,
     payoutsWorker ? 'gob-payouts' : null,
+    slaWorker ? 'gob-sla' : null,
   ].filter(Boolean);
   console.log(`[Workers] Started: ${names.join(', ') || 'none (Redis unavailable)'}`);
   void registerAnalyticsScheduler();

@@ -4114,6 +4114,17 @@ async function main() {
           en: '{{storeName}} ended your access to the store dashboard.',
         },
       },
+      // A3 — fulfillment SLA breach (vendor inbox, one per order).
+      {
+        key: 'order_sla_breached',
+        category: 'provider',
+        channels: ['in_app', 'push'],
+        titleJson: { ar: 'طلب تجاوز مهلة التنفيذ', en: 'Order Breached Fulfillment SLA' },
+        bodyJson: {
+          ar: 'الطلب #{{orderId}} تجاوز نافذة التنفيذ الموعودة — نفّذه الآن لحماية تقييم متجرك.',
+          en: 'Order #{{orderId}} passed your promised fulfillment window — fulfill it now to protect your store rating.',
+        },
+      },
       // F1 — vendor inbox events (emitted post-commit; see the F1 wave).
       {
         key: 'store_order_placed',
