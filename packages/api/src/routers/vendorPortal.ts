@@ -2457,4 +2457,75 @@ export const vendorPortalRouter = router({
         .sort((a, b) => a.day.localeCompare(b.day)),
     };
   }),
+
+  // ---------------------------------------------------------------------------
+  // G2 — submission status & resubmission
+  // ---------------------------------------------------------------------------
+
+  /**
+   * mySubmissions — the caller's provider submissions (the onboarding
+   * timeline: submitted → under review → approved/rejected), newest first,
+   * with the admin review note. Caller-scoped, so no per-row guard needed.
+   */
+  mySubmissions: customerProcedure
+    .input(
+      z.object({
+        kind: z.string().optional(),
+        status: z.enum(['PENDING_REVIEW', 'APPROVED', 'REJECTED']).optional(),
+      }),
+    )
+    .query(async ({ ctx, input }) => {
+      return prisma.providerSubmission.findMany({
+        where: {
+          providerId: ctx.user.id,
+          ...(input.kind ? { kind: input.kind } : {}),
+          ...(input.status ? { status: input.status } : {}),
+        },
+        orderBy: { id: 'desc' },
+        take: 50,
+      });
+    }),
+
+  /**
+   * resubmitSubmission — a REJECTED submission spawns a fresh
+   * PENDING_REVIEW one with merged payload edits (name/bio/logo — the
+   * common rejection fixes). Ownership-guarded; other statuses reject.
+   */
+  resubmitSubmission: customerProcedure
+    .input(
+      z.object({
+        submissionId: z.number().int().positive(),
+        name: z.string().min(2).max(120).optional(),
+        bio: z.string().max(1000).optional(),
+        logo: z.string().max(500).optional(),
+      }),
+    )
+    .mutation(async ({ ctx, input }) => {
+      const sub = await prisma.providerSubmission.findUnique({
+        where: { id: input.submissionId },
+      });
+      if (!sub || sub.providerId !== ctx.user.id) {
+        throw new TRPCError({ code: 'NOT_FOUND', message: 'Submission not found' });
+      }
+      if (sub.status !== 'REJECTED') {
+        throw new TRPCError({
+          code: 'BAD_REQUEST',
+          message: 'Only rejected submissions can be resubmitted',
+        });
+      }
+      const payload = (sub.payload ?? {}) as Record<string, unknown>;
+      return prisma.providerSubmission.create({
+        data: {
+          providerId: ctx.user.id,
+          kind: sub.kind,
+          status: 'PENDING_REVIEW',
+          payload: {
+            ...payload,
+            ...(input.name ? { storeName: input.name } : {}),
+            ...(input.bio ? { descriptionAr: input.bio } : {}),
+            ...(input.logo ? { logoUrl: input.logo } : {}),
+          },
+        },
+      });
+    }),
 });

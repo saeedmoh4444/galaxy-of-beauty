@@ -9,6 +9,7 @@ import { useLocale } from '@/components/LocaleProvider';
 import type { MyStore, StoreDealPayload, StoreOrderRow } from '@galaxy/api';
 import { localize, type TranslationKey } from '@galaxy/shared';
 import { VenueProfileCard } from '../shared/VenueProfileCard';
+import { SubmissionStatusCard } from '../shared/SubmissionStatusCard';
 import { DashboardTabs } from '../shared/DashboardTabs';
 
 type TabKey =
@@ -449,20 +450,8 @@ export function StoreDashboard({
               )}
             </Card>
 
-            {/* Store plan Phase 1 — approval status */}
-            {!store.isVerified && (
-              <Card
-                padding="md"
-                className="border-amber-200 bg-amber-50 dark:border-amber-800 dark:bg-amber-950"
-              >
-                <p className="text-sm font-semibold text-amber-700 dark:text-amber-300">
-                  {t('vendorPortal.status.pending-review')}
-                </p>
-                <p className="mt-1 text-xs text-text-secondary">
-                  {t('vendorPortal.status.pending-review-desc')}
-                </p>
-              </Card>
-            )}
+            {/* G2 — approval status & resubmission timeline. */}
+            {!store.isVerified && <SubmissionStatusCard />}
 
             {/* D3 — store advisor (rule-based v1, no LLM). */}
             {(advisorQ.data ?? []).length > 0 && (

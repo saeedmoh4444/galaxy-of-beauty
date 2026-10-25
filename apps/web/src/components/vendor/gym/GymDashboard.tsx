@@ -8,6 +8,7 @@ import { useLocale } from '@/components/LocaleProvider';
 import type { MyStore } from '@galaxy/api';
 import { localize } from '@galaxy/shared';
 import { VenueProfileCard } from '../shared/VenueProfileCard';
+import { SubmissionStatusCard } from '../shared/SubmissionStatusCard';
 
 /**
  * E3 — gym dashboard (the same provider shell as stores/clinics): schedule
@@ -71,16 +72,7 @@ export function GymDashboard({
           </p>
         </div>
 
-        {!(store.isVerified as boolean) && (
-          <Card
-            padding="md"
-            className="border-amber-200 bg-amber-50 dark:border-amber-800 dark:bg-amber-950"
-          >
-            <p className="text-sm font-semibold text-amber-700 dark:text-amber-300">
-              {t('vendorPortal.status.pending-review')}
-            </p>
-          </Card>
-        )}
+        {!(store.isVerified as boolean) && <SubmissionStatusCard />}
 
         <VenueProfileCard store={store} refetchStore={refetchStore} />
 
