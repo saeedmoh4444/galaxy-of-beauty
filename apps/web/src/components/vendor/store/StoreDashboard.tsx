@@ -385,6 +385,11 @@ export function StoreDashboard({
       void utils.vendorPortal.earnings.invalidate();
     },
   });
+  const setSlaMut = api.vendorPortal.setFulfillmentSla.useMutation({
+    onSuccess: () => {
+      void utils.vendorPortal.dashboard.invalidate();
+    },
+  });
   const downloadInvoice = async (payoutId: number) => {
     const data = await utils.vendorPortal.payoutInvoice.fetch({ payoutId, locale });
     const blob = new Blob(['﻿', data.csv], { type: 'text/csv;charset=utf-8' });
@@ -486,6 +491,48 @@ export function StoreDashboard({
 
             {/* G2 — approval status & resubmission timeline. */}
             {!store.isVerified && <SubmissionStatusCard />}
+
+            {/* A3 — fulfillment SLA: on-time rate + window selector. */}
+            <Card padding="md">
+              <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+                <div>
+                  <h3 className="text-sm font-semibold">{t('vendorPortal.sla.title')}</h3>
+                  <p className="mt-1 text-xs text-text-secondary">
+                    {t('vendorPortal.sla.onTimeRate')}:{' '}
+                    <span className="font-bold text-text-primary">
+                      {dash?.sla?.onTimeRate ?? 100}%
+                    </span>
+                    {' · '}
+                    {t('vendorPortal.sla.breached')}:{' '}
+                    <span
+                      className={
+                        (dash?.sla?.breached30d ?? 0) > 0
+                          ? 'font-bold text-red-600 dark:text-red-400'
+                          : 'font-bold'
+                      }
+                    >
+                      {dash?.sla?.breached30d ?? 0}
+                    </span>
+                  </p>
+                </div>
+                <label className="flex items-center gap-2 text-sm">
+                  <span className="text-text-secondary">{t('vendorPortal.sla.window')}</span>
+                  <select
+                    data-testid="sla-window-select"
+                    value={dash?.sla?.windowHours ?? 48}
+                    onChange={(e) => setSlaMut.mutate({ hours: Number(e.target.value) })}
+                    disabled={setSlaMut.isPending}
+                    className="rounded-md border border-border bg-surface px-2 py-1.5 text-sm"
+                  >
+                    {[12, 24, 48, 72, 120, 168].map((h) => (
+                      <option key={h} value={h}>
+                        {h}
+                      </option>
+                    ))}
+                  </select>
+                </label>
+              </div>
+            </Card>
 
             {/* D3 — store advisor (rule-based v1, no LLM). */}
             {(advisorQ.data ?? []).length > 0 && (
@@ -647,6 +694,14 @@ export function StoreDashboard({
                                 ? t('vendorPortal.orders.cancelled')
                                 : t('vendorPortal.orders.pending')}
                           </span>
+                          {o.slaBreachedAt && o.status === 'PENDING_FULFILLMENT' && (
+                            <span
+                              data-testid={`order-sla-late-${o.id}`}
+                              className="rounded-full bg-red-100 px-2 py-0.5 text-xs font-medium text-red-700 dark:bg-red-950 dark:text-red-300"
+                            >
+                              {t('vendorPortal.sla.lateChip')}
+                            </span>
+                          )}
                           <Button size="sm" variant="outline" onClick={() => setDetailOrder(o)}>
                             {t('vendorPortal.orders.details')}
                           </Button>

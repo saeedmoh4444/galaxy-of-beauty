@@ -140,6 +140,18 @@ export function getPayoutsQueue(): Queue | null {
   }
 }
 
+// A3 — fulfillment SLA sweep (flags orders past their vendor's window).
+let _slaQueue: Queue | null = null;
+export function getSlaQueue(): Queue | null {
+  if (_slaQueue) return _slaQueue;
+  try {
+    _slaQueue = createQueue('gob-sla');
+    return _slaQueue;
+  } catch {
+    return null;
+  }
+}
+
 // Convenience: all queues
 export function getAllQueues(): Record<string, Queue | null> {
   return {
@@ -152,5 +164,6 @@ export function getAllQueues(): Record<string, Queue | null> {
     advisor: getAdvisorQueue(),
     reminders: getRemindersQueue(),
     payouts: getPayoutsQueue(),
+    sla: getSlaQueue(),
   };
 }

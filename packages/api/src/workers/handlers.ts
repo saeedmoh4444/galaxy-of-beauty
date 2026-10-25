@@ -913,3 +913,50 @@ export async function handlePayoutScheduleJob(_job: Job<Record<string, never>>):
 
   return { checked: scheduled.length, settledVendors };
 }
+
+/**
+ * handleOrderSlaSweep — A3: flag PENDING_FULFILLMENT orders that outlived
+ * their vendor's promised window (fulfillmentSlaHours). One flag per
+ * order (slaBreachedAt), one inbox notification per breach. FULFILLED
+ * orders are never touched. Feeds the A5 quality score.
+ */
+export async function handleOrderSlaSweep(_job: Job<Record<string, never>>): Promise<{
+  flagged: number;
+}> {
+  const now = new Date();
+  const vendors = await prisma.vendor.findMany({
+    where: { isActive: true },
+    select: { id: true, userId: true, storeName: true, fulfillmentSlaHours: true },
+  });
+  const slaById = new Map(vendors.map((v) => [v.id, v.fulfillmentSlaHours]));
+  const userIdById = new Map(vendors.map((v) => [v.id, v.userId]));
+
+  const overdue = await prisma.storeOrder.findMany({
+    where: { status: 'PENDING_FULFILLMENT', slaBreachedAt: null },
+    select: { id: true, vendorId: true, createdAt: true },
+  });
+
+  let flagged = 0;
+  for (const order of overdue) {
+    const slaHours = slaById.get(order.vendorId) ?? 48;
+    if (now.getTime() - order.createdAt.getTime() < slaHours * 3_600_000) continue;
+    try {
+      await prisma.storeOrder.update({
+        where: { id: order.id },
+        data: { slaBreachedAt: now },
+      });
+      await notifyUser({
+        userId: userIdById.get(order.vendorId) ?? -1,
+        templateKey: 'order_sla_breached',
+        vars: { orderId: order.id },
+        link: '/store?tab=orders',
+        channels: ['in_app'],
+      });
+      flagged++;
+    } catch {
+      // Never break the sweep on one row.
+    }
+  }
+
+  return { flagged };
+}
