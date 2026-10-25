@@ -12,13 +12,13 @@
 
 ## 0. Non-goals audit (asked 2026-10-25)
 
-| Non-goal                    | Verdict             | Note                                                                          |
-| --------------------------- | ------------------- | ----------------------------------------------------------------------------- |
-| No VENDOR role              | ✅ KEEP (invariant) | Ownership checks beat role checks; H1 is the sanctioned staff path (A1 below) |
-| No mobile vendor dashboards | ✅ KEEP (web-first) | Store plan §3; revisit only on vendor demand                                  |
-| No delivery integration     | ⏸️ DEFERRED         | H3 — needs a carrier partner (user-gated, D5)                                 |
-| No mock revival             | ✅ DONE permanently | Real system replaced `salonManagement`/`franchisePortal` mocks                |
-| H2 hybrid store-services    | 🔓 GATE OPEN        | Waves 0–6 done — schedulable (C5)                                             |
+| Non-goal                    | Verdict               | Note                                                                          |
+| --------------------------- | --------------------- | ----------------------------------------------------------------------------- |
+| No VENDOR role              | ✅ KEEP (invariant)   | Ownership checks beat role checks; H1 is the sanctioned staff path (A1 below) |
+| No mobile vendor dashboards | 🔁 REVISED 2026-10-25 | User approved a **mobile seller companion** (not full parity) — new Wave E    |
+| No delivery integration     | ⏸️ DEFERRED           | H3 — needs a carrier partner (user-gated, D5)                                 |
+| No mock revival             | ✅ DONE permanently   | Real system replaced `salonManagement`/`franchisePortal` mocks                |
+| H2 hybrid store-services    | 🔓 GATE OPEN          | Waves 0–6 done — schedulable (C5)                                             |
 
 ---
 
@@ -98,6 +98,14 @@ Per-product funnel (views → orders → repeat) on the Analytics tab
 what to promote. Depends on storefront product-view events existing.
 **Effort: M. ~3 PRs.**
 
+**B6 — Vendor social links (user-requested 2026-10-25).**
+Snapchat / TikTok / X / Instagram / Facebook handles per vendor:
+`Vendor.socialLinks` (Json, one URL per network), settings form in the
+vendor portal, icon row on the storefront (web AND mobile store page).
+URL validation + zero-link hygiene (only render networks that are set).
+Socials are a trust signal — they feed the B2 badge logic later.
+**Effort: S–M. ~2 PRs.**
+
 ## 3. Wave C — Catalog & Commerce Depth
 
 **C1 — Product variants.**
@@ -174,17 +182,50 @@ design ready in the plan when the partner lands.
 
 ---
 
-## 5. Execution roadmap & gates
+## 5. Wave E — Mobile Seller Companion (user-requested 2026-10-25)
+
+The non-goal is revised: **not full dashboard parity — a companion.**
+The Saudi market is mobile-first; sellers run their store from the
+phone, deep work (editors, exports, analytics) stays web. The mobile
+app already talks to the same `vendorPortal` router, so this wave is
+native screens over the existing API + a seller home.
+
+**E1 — Seller home (brand identity).**
+Logo, store name, bio, banner, rating, verification badge, health
+score glance — the seller's own profile card + a "view my storefront"
+link. Reuses `myStore` + `dashboard` (already staff-aware).
+**Effort: M. ~2 PRs.**
+
+**E2 — Order operations.**
+Order list (status chips + SLA late flags), fulfill with idempotency
+key, cancel — the daily run loop. Same procedures as the web orders
+tab; native UI + push-notification deep links.
+**Effort: M. ~2 PRs.**
+
+**E3 — Alerts & inbox.**
+Low-stock list, SLA breaches, dispute escalations, payout notices —
+the mobile inbox over the existing notifications domain.
+**Effort: M. ~2 PRs.**
+
+**E4 — Earnings glance + socials.**
+Payout schedule + next-run, pending/processed nets, invoice export
+share-sheet; social links editable from the phone (B6 fields).
+**Effort: M. ~2 PRs.**
+
+## 6. Execution roadmap & gates
 
 Recommended order (each wave independent; start on "start working"):
 
 1. **Wave A first** — it is the professional backbone; A1 unblocks the
    multi-human stores and everything else builds on A2–A5 metrics.
-2. **Wave B** — growth layer, mostly unblocked except B1.
+2. **Wave B** — growth layer, mostly unblocked except B1; **B6 (social
+   links) is the quick win — sliceable anytime.**
 3. **Wave C** — C1→C2→C3→C4 in any order; **C5 last** (its own
    mini-plan; biggest scope).
 4. **Wave D** — D1 after A2 (payout/webhook models stabilize); D2/D4
    anytime; D3/D5 user-gated.
+5. **Wave E** — E1→E2→E3→E4 after A5 (the mobile screens consume the
+   metrics and staff capabilities the wave ships).
 
 | Gate                      | Unblocks            | Type          |
 | ------------------------- | ------------------- | ------------- |
@@ -194,7 +235,7 @@ Recommended order (each wave independent; start on "start working"):
 | Staging infra budget      | D3                  | user decision |
 | Quality-based commissions | A5 optional tier    | user decision |
 
-Totals: ~17 features, ~45–50 PRs, 4 waves. Each PR follows the §6.1
+Totals: ~22 features, ~55–60 PRs, 5 waves. Each PR follows the §6.1
 gate checklist of the delivered program (type-checks ×3, per-app lint,
 TDD test-first, router-inventory/trpc gates, i18n drift guard, docs
 refresh on architecture-touching PRs).
