@@ -3514,6 +3514,24 @@ async function main() {
       },
     });
 
+    // A1 — per-project invitee pool for the E2E invite→accept circle.
+    // The three Playwright browser projects run the spec concurrently
+    // against ONE seeded DB, so each project gets its own invitee (no
+    // cross-project races on a shared row).
+    for (const [i, suffix] of ['chromium', 'firefox', 'mobile-chrome'].entries()) {
+      await prisma.user.create({
+        data: {
+          email: `staff-invitee-${suffix}@galaxyofbeauty.sa`,
+          phone: `+96659900010${i}`,
+          passwordHash: customerPasswordHash,
+          name: `مدعو ${suffix}`,
+          role: 'CUSTOMER',
+          emailVerified: true,
+          preferredLanguage: 'ar',
+        },
+      });
+    }
+
     const [makeupCat, fragranceCat] = await Promise.all([
       prisma.productCategory.findUniqueOrThrow({ where: { slug: 'product-makeup' } }),
       prisma.productCategory.findUniqueOrThrow({ where: { slug: 'product-fragrance' } }),

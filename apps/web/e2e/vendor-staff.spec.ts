@@ -2,13 +2,22 @@ import { test, expect } from '@playwright/test';
 
 const OWNER_EMAIL = 'demo-store@galaxyofbeauty.sa';
 const STAFF_EMAIL = 'staff-demo@galaxyofbeauty.sa';
-const CUSTOMER_EMAIL = 'customer@test.com';
 const PASSWORD = 'Admin@123456';
+
+// The three Playwright projects run concurrently against ONE seeded DB —
+// each project gets its own invitee (seeded in the A1 invitee pool) so
+// the invite→accept circle never races a shared row.
+const INVITEES: Record<string, string> = {
+  chromium: 'staff-invitee-chromium@galaxyofbeauty.sa',
+  firefox: 'staff-invitee-firefox@galaxyofbeauty.sa',
+  'mobile-chrome': 'staff-invitee-mobile-chrome@galaxyofbeauty.sa',
+};
 
 // Dev-server first-load compiles are slow; CI (production build) is fast.
 test.setTimeout(120_000);
 
 async function login(page: import('@playwright/test').Page, email: string) {
+  await page.context().clearCookies();
   await page.goto('/login');
   await page.getByPlaceholder('example@email.com').fill(email);
   await page.getByPlaceholder('••••••••').fill(PASSWORD);
@@ -34,34 +43,31 @@ test.describe('A1 — store staff accounts', () => {
   });
 
   test('owner invites a customer and the invitee accepts into the portal', async ({ page }) => {
-    // Owner opens the Team tab and invites the seeded customer.
+    const inviteeEmail = INVITEES[test.info().project.name] ?? INVITEES['chromium']!;
+
+    // Owner opens the Team tab and invites this project's invitee.
     await login(page, OWNER_EMAIL);
     await page.goto('/store?tab=staff');
     await expect(page.getByTestId('vendor-panel-staff')).toBeVisible();
 
-    const emailInput = page.getByLabel('البريد الإلكتروني');
-    await emailInput.fill(CUSTOMER_EMAIL);
+    await page.getByLabel('البريد الإلكتروني').fill(inviteeEmail);
     await page.getByTestId('staff-invite-button').click();
 
     // The PENDING row appears in the owner's list.
-    await expect(page.getByText(CUSTOMER_EMAIL)).toBeVisible({ timeout: 30_000 });
+    await expect(page.getByText(inviteeEmail)).toBeVisible({ timeout: 30_000 });
 
     // The invitee sees the banner on the portal and accepts.
-    await page
-      .getByRole('button', { name: 'خروج' })
-      .click()
-      .catch(() => {});
-    await login(page, CUSTOMER_EMAIL);
+    await login(page, inviteeEmail);
     await page.goto('/vendor-portal');
     await expect(page.getByTestId('staff-invitation-accept')).toBeVisible({
       timeout: 30_000,
     });
     await page.getByTestId('staff-invitation-accept').click();
 
-    // Accepting flips myStore to the vendor — the portal opens with the
-    // default ORDERS_MANAGE capability: orders visible, products not.
-    await expect(page).toHaveURL(/\/store/, { timeout: 60_000 });
-    await expect(page.getByText('Galaxy Demo Store')).toBeVisible();
+    // Accepting flips myStore to the vendor — the portal shell renders the
+    // store dashboard in place (URL stays /vendor-portal, like owners) with
+    // the default ORDERS_MANAGE capability: orders visible, products not.
+    await expect(page.getByText('Galaxy Demo Store')).toBeVisible({ timeout: 30_000 });
     await expect(page.getByTestId('vendor-tab-orders')).toBeVisible();
     await expect(page.getByTestId('vendor-tab-products')).toBeHidden();
     await expect(page.getByTestId('vendor-tab-staff')).toBeHidden();
