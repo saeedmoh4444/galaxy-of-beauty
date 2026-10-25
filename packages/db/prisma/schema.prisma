@@ -161,6 +161,7 @@ model User {
   bookingsAsTechnician Booking[]        @relation("TechnicianBookings")
   notifications     Notification[]
   reviews           Review[]           @relation("CustomerReviews")
+  reviewRequests    ReviewRequest[]
   termsAcceptances  TermsAcceptance[]
   disputes          Dispute[]          @relation("DisputeRaisedBy")
   resolvedDisputes  Dispute[]          @relation("DisputeResolvedBy")
@@ -1522,6 +1523,7 @@ model Product {
   cartItems CartItem[]
   deals    StoreDeal[]
   orderItems StoreOrderItem[]
+  reviewRequests ReviewRequest[]
 
   @@index([vendorId, isActive])
   @@index([categoryId, isActive])
@@ -1832,6 +1834,22 @@ model ProductReview {
   @@unique([productId, userId])
   @@index([productId])
   @@map("product_reviews")
+}
+
+// F5 — post-fulfillment review requests (cooldown marker: one request per
+// customer-product pair ever; the review itself suppresses the request).
+model ReviewRequest {
+  id         Int      @id @default(autoincrement())
+  customerId Int
+  productId  Int
+  createdAt  DateTime @default(now())
+
+  customer User    @relation(fields: [customerId], references: [id], onDelete: Cascade)
+  product  Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+
+  @@unique([customerId, productId])
+  @@index([productId])
+  @@map("review_requests")
 }
 
 model CartItem {
