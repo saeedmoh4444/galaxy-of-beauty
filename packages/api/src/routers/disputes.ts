@@ -3,6 +3,7 @@ import { TRPCError } from '@trpc/server';
 import { prisma } from '@galaxy/db';
 import { notFound } from '../lib/errors';
 import { router, protectedProcedure, adminProcedure } from '../trpc';
+import { notifyUser } from '../lib/notify';
 
 export const disputeRouter = router({
   // ── Create dispute ────────────────────────────────────────────────────────
@@ -214,6 +215,27 @@ export const disputeRouter = router({
 
         return updated;
       });
+
+      // F1 — vendor inbox: a store-order resolution alerts the store owner.
+      if (dispute.storeOrderId) {
+        try {
+          const order = await prisma.storeOrder.findUnique({
+            where: { id: dispute.storeOrderId },
+            select: { vendor: { select: { userId: true } } },
+          });
+          if (order?.vendor.userId) {
+            await notifyUser({
+              userId: order.vendor.userId,
+              templateKey: 'dispute_resolved',
+              vars: { resolution },
+              link: '/store?tab=orders',
+              channels: ['in_app'],
+            });
+          }
+        } catch {
+          // Notification failure must never fail the resolution.
+        }
+      }
 
       return dispute;
     }),

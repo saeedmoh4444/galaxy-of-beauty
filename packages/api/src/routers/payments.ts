@@ -21,7 +21,12 @@ import {
   FatoorahApiError,
   FatoorahNotConfiguredError,
 } from '../lib/fatoorah';
-import { readCartForCheckout, placeStoreOrders, notifyLowStockAlerts } from '../lib/storeCheckout';
+import {
+  readCartForCheckout,
+  placeStoreOrders,
+  notifyLowStockAlerts,
+  notifyOrderPlaced,
+} from '../lib/storeCheckout';
 import { getCashbackRatePct } from './cashback';
 
 // ---------------------------------------------------------------------------
@@ -663,12 +668,14 @@ export const paymentRouter = router({
                 status: 'COMPLETED',
               },
             });
-            return { created, lowStockAlerts: placed.lowStockAlerts };
+            return { created, lowStockAlerts: placed.lowStockAlerts, orders: placed.orders };
           });
           // B3b — low-stock crossing alerts fire after commit only (never
           // inside the transaction: a later rollback must not leave orphan
           // notifications).
           await notifyLowStockAlerts(checkout.lowStockAlerts);
+          // F1 — new-order inbox notifications after commit.
+          await notifyOrderPlaced(checkout.orders);
           return {
             checkoutId: checkout.created.id,
             method: 'wallet',
@@ -718,10 +725,12 @@ export const paymentRouter = router({
             },
           });
           const p = await placeStoreOrders(tx, ctx.user.id, lines, created.id);
-          return { created, lowStockAlerts: p.lowStockAlerts };
+          return { created, lowStockAlerts: p.lowStockAlerts, orders: p.orders };
         });
         // B3b — low-stock crossing alerts fire after commit only.
         await notifyLowStockAlerts(placed.lowStockAlerts);
+        // F1 — new-order inbox notifications after commit.
+        await notifyOrderPlaced(placed.orders);
         checkoutId = placed.created.id;
       } catch (err) {
         if (err instanceof Prisma.PrismaClientKnownRequestError && err.code === 'P2002') {

@@ -9,7 +9,13 @@ import {
   adminProcedure,
   router,
 } from '../trpc';
-import { readCartForCheckout, placeStoreOrders, notifyLowStockAlerts } from '../lib/storeCheckout';
+import { notifyUser } from '../lib/notify';
+import {
+  readCartForCheckout,
+  placeStoreOrders,
+  notifyLowStockAlerts,
+  notifyOrderPlaced,
+} from '../lib/storeCheckout';
 
 export const marketplaceRouter = router({
   // ── Products ──────────────────────────────────────────
@@ -139,6 +145,8 @@ export const marketplaceRouter = router({
 
     // B3b — after commit: low-stock crossing alerts to the vendors.
     await notifyLowStockAlerts(placed.lowStockAlerts);
+    // F1 — after commit: new-order inbox notifications to the vendors.
+    await notifyOrderPlaced(placed.orders);
 
     const total = lines.reduce((sum, l) => sum + l.unitPrice * l.quantity, 0);
     const items = lines.reduce((sum, l) => sum + l.quantity, 0);
@@ -539,7 +547,7 @@ export const marketplaceRouter = router({
     .mutation(async ({ ctx, input }) => {
       const product = await prisma.product.findUnique({
         where: { id: input.productId },
-        select: { vendorId: true },
+        select: { vendorId: true, nameJson: true },
       });
       if (!product) throw new TRPCError({ code: 'NOT_FOUND', message: 'Product not found' });
 
@@ -567,6 +575,29 @@ export const marketplaceRouter = router({
           totalReviews: agg._count,
         },
       });
+
+      // F1 — vendor inbox: a new (or updated) review alerts the owner.
+      try {
+        const owner = await prisma.vendor.findUnique({
+          where: { id: product.vendorId },
+          select: { userId: true },
+        });
+        if (owner) {
+          await notifyUser({
+            userId: owner.userId,
+            templateKey: 'store_review_left',
+            vars: {
+              rating: input.rating,
+              productName:
+                (product.nameJson as { ar?: string } | null)?.ar ?? `منتج #${input.productId}`,
+            },
+            link: '/store?tab=reviews',
+            channels: ['in_app'],
+          });
+        }
+      } catch {
+        // Notification failure must never fail the review.
+      }
 
       return review;
     }),
