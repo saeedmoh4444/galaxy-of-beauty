@@ -3992,6 +3992,30 @@ export const miscMessages = {
     ar: 'ستتمكنين من النشر في المتجر العام بعد موافقة الإدارة',
     en: 'You will be able to publish to the public marketplace after admin approval',
   },
+  // G2 — submission status & resubmission timeline.
+  'vendorPortal.submission.under-review': {
+    ar: 'طلبك قيد المراجعة',
+    en: 'Your submission is under review',
+  },
+  'vendorPortal.submission.sla': {
+    ar: 'عادةً ما تستغرق المراجعة حتى ٣ أيام عمل',
+    en: 'Reviews usually take up to 3 business days',
+  },
+  'vendorPortal.submission.rejected': { ar: 'رُفض طلبك', en: 'Your submission was rejected' },
+  'vendorPortal.submission.note': { ar: 'ملاحظة الإدارة: {note}', en: 'Admin note: {note}' },
+  'vendorPortal.submission.resubmit': { ar: 'إعادة الإرسال', en: 'Resubmit' },
+  'vendorPortal.submission.resubmit-name': {
+    ar: 'اسم المتجر (معدل)',
+    en: 'Store name (edited)',
+  },
+  'vendorPortal.submission.resubmit-bio': {
+    ar: 'النبذة (معدلة)',
+    en: 'Description (edited)',
+  },
+  'vendorPortal.submission.resubmitted': {
+    ar: 'أُعيد إرسال طلبك للمراجعة',
+    en: 'Your submission was re-sent for review',
+  },
   'vendorPortal.orders.title': { ar: 'الطلبات', en: 'Orders' },
   'vendorPortal.orders.empty': { ar: 'لا توجد طلبات بعد', en: 'No orders yet' },
   'vendorPortal.orders.items': { ar: 'منتج', en: 'items' },

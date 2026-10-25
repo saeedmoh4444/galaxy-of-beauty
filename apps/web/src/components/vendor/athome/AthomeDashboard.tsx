@@ -6,6 +6,7 @@ import { Card, Button } from '@galaxy/ui';
 import { DashboardLayout } from '@/components/layout/DashboardLayout';
 import { useLocale } from '@/components/LocaleProvider';
 import type { MyStore } from '@galaxy/api';
+import { SubmissionStatusCard } from '../shared/SubmissionStatusCard';
 
 /* ================================================================
  * E5 — At-home salon dashboard (assigned home requests)
@@ -52,16 +53,7 @@ export function AthomeDashboard({
           </p>
         </div>
 
-        {!(store.isVerified as boolean) && (
-          <Card
-            padding="md"
-            className="border-amber-200 bg-amber-50 dark:border-amber-800 dark:bg-amber-950"
-          >
-            <p className="text-sm font-semibold text-amber-700 dark:text-amber-300">
-              {t('vendorPortal.status.pending-review')}
-            </p>
-          </Card>
-        )}
+        {!(store.isVerified as boolean) && <SubmissionStatusCard />}
 
         {/* E3 — accept/decline queue: unassigned requests in the salon city. */}
         <Card padding="lg">

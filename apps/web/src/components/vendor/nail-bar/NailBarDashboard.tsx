@@ -7,6 +7,7 @@ import { DashboardLayout } from '@/components/layout/DashboardLayout';
 import { useLocale } from '@/components/LocaleProvider';
 import type { MyStore } from '@galaxy/api';
 import { VenueProfileCard } from '../shared/VenueProfileCard';
+import { SubmissionStatusCard } from '../shared/SubmissionStatusCard';
 
 /* ================================================================
  * E5 — Nail bar dashboard (station-capacity slots + bookings)
@@ -55,16 +56,7 @@ export function NailBarDashboard({
           </p>
         </div>
 
-        {!(store.isVerified as boolean) && (
-          <Card
-            padding="md"
-            className="border-amber-200 bg-amber-50 dark:border-amber-800 dark:bg-amber-950"
-          >
-            <p className="text-sm font-semibold text-amber-700 dark:text-amber-300">
-              {t('vendorPortal.status.pending-review')}
-            </p>
-          </Card>
-        )}
+        {!(store.isVerified as boolean) && <SubmissionStatusCard />}
 
         <VenueProfileCard store={store} refetchStore={refetchStore} />
 
