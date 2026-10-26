@@ -5,10 +5,25 @@
 > makes it _professional_ — trust, growth, catalog depth, and platform
 > resilience for a marketplace that vendors actually run businesses on.
 >
-> Status: **PROPOSED** — nothing here is implemented. Work starts only on
-> the user's explicit "start working" instruction.
+> Status: **WAVE A DELIVERED** (2026-10-26, master `0e8d2d73`) — Waves B–E
+> remain proposed; work resumes on the user's "start working".
 
 ---
+
+## 0a. Wave A — delivery record (DELIVERED 2026-10-26)
+
+| Item                    | PR   | Shipped                                                                   |
+| ----------------------- | ---- | ------------------------------------------------------------------------- |
+| A1 store staff accounts | #495 | VendorStaff + capability enforcement + Team tab + invitation banner + E2E |
+| A2 payout automation    | #496 | payout schedules + gob-payouts sweep + invoice CSV + schedule card        |
+| A3 fulfillment SLA      | #497 | promised window + gob-sla sweep + on-time rate + late chips               |
+| A4 dispute escalation   | #498 | 48h response deadline + gob-disputes sweep + escalation notice            |
+| A5 quality score v2     | #499 | SLA breach + dispute escalation folded into the D2 health score           |
+
+The backbone is live: multi-human stores, automated settlements, SLA
+operations with breach tracking, dispute deadlines, and a quality score
+that punishes the behaviors the sweeps measure. Next: Wave B — or the
+B6 social-links quick win — on "start working".
 
 ## 0. Non-goals audit (asked 2026-10-25)
 
