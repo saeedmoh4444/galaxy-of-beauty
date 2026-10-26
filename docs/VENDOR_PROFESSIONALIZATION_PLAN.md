@@ -5,8 +5,10 @@
 > makes it _professional_ — trust, growth, catalog depth, and platform
 > resilience for a marketplace that vendors actually run businesses on.
 >
-> Status: **WAVE A DELIVERED** (2026-10-26, master `0e8d2d73`) — Waves B–E
-> remain proposed; work resumes on the user's "start working".
+> Status: **WAVES A + B DELIVERED, WAVE E BUILT** (2026-10-26, master
+> `TBD`) — the Wave E (mobile seller companion) PRs #510–#514 are in the
+> merge chain; Waves C–D remain proposed; work resumes on the user's
+> "start working".
 
 ---
 
@@ -24,6 +26,34 @@ The backbone is live: multi-human stores, automated settlements, SLA
 operations with breach tracking, dispute deadlines, and a quality score
 that punishes the behaviors the sweeps measure. Next: Wave B — or the
 B6 social-links quick win — on "start working".
+
+## 0b. Wave B — delivery record (DELIVERED 2026-10-26, master `1eed9461`)
+
+| Item                | PR   | Shipped                                                                  |
+| ------------------- | ---- | ------------------------------------------------------------------------ |
+| B6 social links     | #505 | Snapchat/TikTok/X/Instagram/Facebook on both storefronts                 |
+| B2 vendor tiers     | #506 | computed trust badges (top_rated / fast_fulfillment / responsive_seller) |
+| B3 review showcase  | #507 | storefront reviews + owner replies + reply-reminder nudge                |
+| B4 win-back toolkit | #508 | rate-limited re-engagement (WinbackLog, 14-day per-pair cap)             |
+| B5 funnel analytics | #509 | views → orders → repeat (StoreViewLog + vendorPortal.funnel)             |
+
+B1 (WhatsApp Business) stays user-gated on the Business API key. The
+growth layer is live: social presence, earned trust badges, public
+reviews with owner replies, re-engagement and a conversion funnel.
+
+## 0c. Wave E — delivery record (BUILT 2026-10-26; PRs in the merge chain)
+
+| Item                | PR   | Shipped                                                                                      |
+| ------------------- | ---- | -------------------------------------------------------------------------------------------- |
+| E1 seller home      | #510 | profile card (logo/bio/banner/rating/verified/health) + "view my storefront"                 |
+| E2 order operations | #511 | run loop (chips / SLA flags / fulfill idempotency / cancel) + order detail + push deep links |
+| E3 alerts & inbox   | #512 | seller inbox over the notifications domain + type deep links + unread badge                  |
+| E4a earnings glance | #513 | nets + payout-schedule picker + invoice share-sheet                                          |
+| E4b socials editing | #514 | B6 links editable from the phone (partial merge)                                             |
+
+The companion is built: a seller runs the store from the phone — brand
+identity, the daily fulfill/cancel loop, the alert inbox, the money glance
+and social links — while deep work (editors, exports, analytics) stays web.
 
 ## 0. Non-goals audit (asked 2026-10-25)
 
@@ -240,7 +270,7 @@ Recommended order (each wave independent; start on "start working"):
 4. **Wave D** — D1 after A2 (payout/webhook models stabilize); D2/D4
    anytime; D3/D5 user-gated.
 5. **Wave E** — E1→E2→E3→E4 after A5 (the mobile screens consume the
-   metrics and staff capabilities the wave ships).
+   metrics and staff capabilities the wave ships) — **DELIVERED, see §0c**.
 
 | Gate                      | Unblocks            | Type          |
 | ------------------------- | ------------------- | ------------- |
