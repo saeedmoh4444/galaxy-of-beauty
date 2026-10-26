@@ -114,6 +114,27 @@ export const mobileCustomerBMessages = {
   'mobile.vendorPortal.title': { ar: 'بوابة البائعين', en: 'Vendor Portal' },
   'mobile.vendorPortal.products': { ar: 'منتجات', en: 'Products' },
   'mobile.vendorPortal.sar': { ar: 'ر.س', en: 'SAR' },
+  // ---- vendor-portal orders (Wave E2) ----
+  'mobile.vendorPortal.orders.title': { ar: 'الطلبات', en: 'Orders' },
+  'mobile.vendorPortal.orders.empty': { ar: 'لا توجد طلبات بعد', en: 'No orders yet' },
+  'mobile.vendorPortal.orders.emptyDescription': {
+    ar: 'ستظهر طلبات متجرك هنا فور وصولها',
+    en: 'Your store orders will appear here as they arrive',
+  },
+  'mobile.vendorPortal.orders.pending': { ar: 'قيد التنفيذ', en: 'Pending' },
+  'mobile.vendorPortal.orders.fulfilled': { ar: 'منفّذ', en: 'Fulfilled' },
+  'mobile.vendorPortal.orders.cancelled': { ar: 'ملغي', en: 'Cancelled' },
+  'mobile.vendorPortal.orders.late': { ar: 'متأخر', en: 'Late' },
+  'mobile.vendorPortal.orders.fulfill': { ar: 'تنفيذ', en: 'Fulfill' },
+  'mobile.vendorPortal.orders.cancel': { ar: 'إلغاء', en: 'Cancel' },
+  'mobile.vendorPortal.orders.cancelConfirm': { ar: 'إلغاء هذا الطلب؟', en: 'Cancel this order?' },
+  'mobile.vendorPortal.orders.cancelConfirmBody': {
+    ar: 'سيُسترجع المخزون وتُعاد المبالغ المدفوعة عبر المحفظة.',
+    en: 'Stock is restored and wallet payments are refunded.',
+  },
+  'mobile.vendorPortal.orders.keep': { ar: 'إبقاء الطلب', en: 'Keep order' },
+  'mobile.vendorPortal.orders.total': { ar: '{amount} ر.س', en: '{amount} SAR' },
+  'mobile.vendorPortal.orders.error': { ar: 'فشل تحميل الطلبات', en: 'Failed to load orders' },
 
   // ---- tech-onboarding ----
   'mobile.techOnboarding.title': {
