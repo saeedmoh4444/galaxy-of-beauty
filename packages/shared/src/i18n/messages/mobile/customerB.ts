@@ -300,6 +300,10 @@ export const mobileCustomerBMessages = {
   'mobile.stores.load-error': { ar: 'فشل تحميل المتاجر', en: 'Failed to load stores' },
   'mobile.stores.not-found': { ar: 'المتجر غير موجود', en: 'Store not found' },
   'mobile.stores.verified': { ar: 'متجر موثق', en: 'Verified' },
+  // B2 — computed vendor tiers.
+  'mobile.stores.badge.top-rated': { ar: 'الأعلى تقييماً', en: 'Top Rated' },
+  'mobile.stores.badge.fast-fulfillment': { ar: 'تجهيز سريع', en: 'Fast Fulfillment' },
+  'mobile.stores.badge.responsive-seller': { ar: 'بائع متفاعل', en: 'Responsive Seller' },
   'mobile.stores.stock': { ar: 'المخزون: {count}', en: 'Stock: {count}' },
   'mobile.stores.add-to-cart': { ar: 'أضيفي للسلة', en: 'Add to cart' },
   'mobile.stores.added-to-cart': { ar: 'تمت الإضافة للسلة', en: 'Added to cart' },

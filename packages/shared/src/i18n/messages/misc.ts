@@ -4149,6 +4149,10 @@ export const miscMessages = {
   'stores.qr.download': { ar: 'تحميل الرمز', en: 'Download QR' },
   'stores.product-count': { ar: '{count} منتج', en: '{count} products' },
   'stores.verified': { ar: 'متجر موثق', en: 'Verified' },
+  // B2 — computed vendor tiers.
+  'stores.badge.top-rated': { ar: 'الأعلى تقييماً', en: 'Top Rated' },
+  'stores.badge.fast-fulfillment': { ar: 'تجهيز سريع', en: 'Fast Fulfillment' },
+  'stores.badge.responsive-seller': { ar: 'بائع متفاعل', en: 'Responsive Seller' },
   'stores.empty-products': { ar: 'لا توجد منتجات في هذا المتجر', en: 'No products in this store' },
   'stores.stock': { ar: 'المخزون: {count}', en: 'Stock: {count}' },
   'stores.add-to-cart': { ar: 'أضيفي للسلة', en: 'Add to cart' },

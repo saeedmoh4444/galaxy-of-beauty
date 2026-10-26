@@ -22,6 +22,7 @@ interface StoreDetail {
   isVerified?: boolean;
   bannerUrl?: string | null;
   socialLinks?: Record<string, string> | null;
+  tierBadges?: Array<'top_rated' | 'fast_fulfillment' | 'responsive_seller'>;
   products?: Array<{
     id?: number;
     nameJson?: { ar?: string; en?: string };
@@ -71,6 +72,15 @@ export default function StoreDetailScreen(): JSX.Element {
         verifiedLabel={store.isVerified ? t('mobile.stores.verified') : undefined}
         rating={store.ratingAvg}
         reviews={store.totalReviews}
+        tierLabels={(store.tierBadges ?? []).map((badge) =>
+          t(
+            badge === 'top_rated'
+              ? 'mobile.stores.badge.top-rated'
+              : badge === 'fast_fulfillment'
+                ? 'mobile.stores.badge.fast-fulfillment'
+                : 'mobile.stores.badge.responsive-seller',
+          ),
+        )}
       />
       {/* B6 — social presence (only networks the vendor set). */}
       <SocialIconsRow links={store.socialLinks} />
