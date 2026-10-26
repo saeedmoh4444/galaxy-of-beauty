@@ -3856,6 +3856,19 @@ export const miscMessages = {
   'vendorPortal.productNamePlaceholder': { ar: 'اسم المنتج', en: 'Product name' },
   'vendorPortal.pricePlaceholder': { ar: 'السعر (ر.س)', en: 'Price (SAR)' },
   'vendorPortal.stockPlaceholder': { ar: 'المخزون', en: 'Stock' },
+  // C1 — product variants editor (Wave C)
+  'vendorPortal.variants.title': { ar: 'المتغيرات', en: 'Variants' },
+  'vendorPortal.variants.add': { ar: 'إضافة متغير', en: 'Add variant' },
+  'vendorPortal.variants.empty': {
+    ar: 'لا توجد متغيرات بعد — أضيفي المقاسات أو الدرجات.',
+    en: 'No variants yet — add sizes or shades.',
+  },
+  'vendorPortal.variants.nameAr': { ar: 'الاسم (عربي)', en: 'Name (Arabic)' },
+  'vendorPortal.variants.nameEn': { ar: 'الاسم (إنجليزي)', en: 'Name (English)' },
+  'vendorPortal.variants.sku': { ar: 'رمز SKU (اختياري)', en: 'SKU (optional)' },
+  'vendorPortal.variants.delta': { ar: 'فرق السعر (+/-)', en: 'Price delta (+/-)' },
+  'vendorPortal.variants.threshold': { ar: 'حد التنبيه', en: 'Low-stock threshold' },
+  'vendorPortal.variants.active': { ar: 'نشط', en: 'Active' },
   'vendorPortal.add': { ar: 'إضافة', en: 'Add' },
   // C2 — listing approval chips (strict mode)
   'vendorPortal.approval.pending': { ar: 'قيد المراجعة', en: 'Under review' },
