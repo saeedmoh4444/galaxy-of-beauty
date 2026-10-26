@@ -1011,3 +1011,47 @@ export async function handleDisputeEscalationSweep(_job: Job<Record<string, neve
 
   return { escalated };
 }
+
+/**
+ * handleReviewReplyReminderSweep — B3: nudge vendors about reviews left
+ * unanswered for 48h+. One reminder per review (reminderSentAt stamp);
+ * replied reviews are never touched. Feeds the reviews-center reply flow
+ * (E4) and closes the loop customers see on the storefront.
+ */
+export async function handleReviewReplyReminderSweep(_job: Job<Record<string, never>>): Promise<{
+  reminded: number;
+}> {
+  const deadline = new Date(Date.now() - 48 * 3_600_000);
+  const candidates = await prisma.productReview.findMany({
+    where: { repliedAt: null, reminderSentAt: null, createdAt: { lte: deadline } },
+    select: {
+      id: true,
+      product: { select: { nameJson: true, vendor: { select: { userId: true } } } },
+    },
+  });
+
+  let reminded = 0;
+  for (const review of candidates) {
+    try {
+      await prisma.productReview.update({
+        where: { id: review.id },
+        data: { reminderSentAt: new Date() },
+      });
+      const userId = review.product.vendor.userId;
+      if (userId) {
+        await notifyUser({
+          userId,
+          templateKey: 'review_reply_reminder',
+          vars: { productName: (review.product.nameJson as { ar?: string }).ar ?? '' },
+          link: '/store?tab=reviews',
+          channels: ['in_app'],
+        });
+      }
+      reminded++;
+    } catch {
+      // Never break the sweep on one row.
+    }
+  }
+
+  return { reminded };
+}

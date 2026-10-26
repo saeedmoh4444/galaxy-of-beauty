@@ -304,6 +304,9 @@ export const mobileCustomerBMessages = {
   'mobile.stores.badge.top-rated': { ar: 'الأعلى تقييماً', en: 'Top Rated' },
   'mobile.stores.badge.fast-fulfillment': { ar: 'تجهيز سريع', en: 'Fast Fulfillment' },
   'mobile.stores.badge.responsive-seller': { ar: 'بائع متفاعل', en: 'Responsive Seller' },
+  // B3 — review showcase.
+  'mobile.stores.reviews.title': { ar: 'آراء العملاء', en: 'Customer Reviews' },
+  'mobile.stores.reviews.ownerReply': { ar: 'رد المتجر', en: 'Store reply' },
   'mobile.stores.stock': { ar: 'المخزون: {count}', en: 'Stock: {count}' },
   'mobile.stores.add-to-cart': { ar: 'أضيفي للسلة', en: 'Add to cart' },
   'mobile.stores.added-to-cart': { ar: 'تمت الإضافة للسلة', en: 'Added to cart' },

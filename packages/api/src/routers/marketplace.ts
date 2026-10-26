@@ -242,7 +242,40 @@ export const marketplaceRouter = router({
       disputeEscalationRate: health.disputeEscalationRate,
       reviewReplyRate,
     });
-    return { ...vendor, tierBadges };
+    // B3 — recent reviews WITH owner replies (the loop customers see).
+    const recentReviews = (
+      await prisma.productReview.findMany({
+        where: { product: { vendorId: vendor.id } },
+        orderBy: { createdAt: 'desc' },
+        take: 5,
+        select: {
+          id: true,
+          rating: true,
+          comment: true,
+          createdAt: true,
+          replyJson: true,
+          repliedAt: true,
+          product: { select: { nameJson: true } },
+          user: { select: { name: true } },
+        },
+      })
+    ).map((r) => {
+      const reply = (r.replyJson as { ar?: string; en?: string } | null) ?? {};
+      const name = r.product.nameJson as { ar?: string; en?: string };
+      return {
+        id: r.id,
+        rating: r.rating,
+        comment: r.comment ?? '',
+        createdAt: r.createdAt.toISOString(),
+        replied: r.repliedAt !== null,
+        replyAr: reply.ar ?? '',
+        replyEn: reply.en ?? '',
+        productNameAr: name.ar ?? '',
+        productNameEn: name.en ?? '',
+        customerName: r.user.name ?? '',
+      };
+    });
+    return { ...vendor, tierBadges, recentReviews };
   }),
 
   // ── Become a vendor / store (Store plan Phase 1) ────────

@@ -4136,6 +4136,17 @@ async function main() {
           en: 'Dispute #{{disputeId}} passed the 48h response deadline and was escalated to the platform — respond quickly if you still can.',
         },
       },
+      // B3 — unanswered review nudge (48h+; once per review).
+      {
+        key: 'review_reply_reminder',
+        category: 'provider',
+        channels: ['in_app', 'push'],
+        titleJson: { ar: 'تقييم بانتظار ردك', en: 'Review Awaiting Your Reply' },
+        bodyJson: {
+          ar: 'تقييم {{productName}} بانتظار ردك منذ أكثر من ٤٨ ساعة — ردك يبني الثقة.',
+          en: 'The {{productName}} review has been waiting over 48h — your reply builds trust.',
+        },
+      },
       // F1 — vendor inbox events (emitted post-commit; see the F1 wave).
       {
         key: 'store_order_placed',
