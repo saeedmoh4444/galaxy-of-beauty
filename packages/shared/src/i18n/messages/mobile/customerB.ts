@@ -157,6 +157,34 @@ export const mobileCustomerBMessages = {
     en: 'Failed to load order',
   },
   'mobile.vendorPortal.orderDetail.notFound': { ar: 'الطلب غير موجود', en: 'Order not found' },
+  // ---- vendor-portal earnings (Wave E4) ----
+  'mobile.vendorPortal.earnings.title': { ar: 'الأرباح', en: 'Earnings' },
+  'mobile.vendorPortal.earnings.pending': { ar: 'قيد السداد', en: 'Pending' },
+  'mobile.vendorPortal.earnings.processed': { ar: 'مسدّد', en: 'Processed' },
+  'mobile.vendorPortal.earnings.fee': { ar: 'رسوم المنصة', en: 'Platform fees' },
+  'mobile.vendorPortal.earnings.commission': { ar: 'العمولة {rate}%', en: 'Commission {rate}%' },
+  'mobile.vendorPortal.earnings.schedule': { ar: 'جدول السداد', en: 'Payout schedule' },
+  'mobile.vendorPortal.earnings.scheduleManual': { ar: 'يدوي', en: 'Manual' },
+  'mobile.vendorPortal.earnings.scheduleWeekly': { ar: 'أسبوعي', en: 'Weekly' },
+  'mobile.vendorPortal.earnings.scheduleMonthly': { ar: 'شهري', en: 'Monthly' },
+  'mobile.vendorPortal.earnings.nextRun': {
+    ar: 'الدفعة القادمة المتوقعة: {date}',
+    en: 'Expected next run: {date}',
+  },
+  'mobile.vendorPortal.earnings.lastRun': {
+    ar: 'آخر تسوية: {date}',
+    en: 'Last settlement: {date}',
+  },
+  'mobile.vendorPortal.earnings.manualHint': {
+    ar: 'السداد اليدوي: يقوم المشرف بتسوية دفعاتك.',
+    en: 'Manual payouts: the admin settles your payments.',
+  },
+  'mobile.vendorPortal.earnings.shareInvoice': { ar: 'مشاركة الفاتورة', en: 'Share invoice' },
+  'mobile.vendorPortal.earnings.noPayouts': { ar: 'لا توجد دفعات بعد', en: 'No payouts yet' },
+  'mobile.vendorPortal.earnings.loadError': {
+    ar: 'فشل تحميل الأرباح',
+    en: 'Failed to load earnings',
+  },
   // ---- vendor-portal socials (Wave E4b) ----
   'mobile.vendorPortal.socials.title': { ar: 'روابط التواصل', en: 'Social links' },
   'mobile.vendorPortal.socials.hint': {
