@@ -9,6 +9,10 @@ import { SocialIconsRow } from '@/components/SocialIconsRow';
 import { trpc } from '@/lib/trpc-react';
 import { localize } from '@galaxy/shared';
 import { useLocale } from '@/components/LocaleProvider';
+import { useEffect } from 'react';
+
+/** B5 — session-level store-view dedupe (one per store per app session). */
+const trackedStoreViews = new Set<string>();
 import { useAuthState } from '@/hooks/useAuthState';
 import { useToast } from '@/components/Toast';
 import { useHaptics } from '@/hooks/useHaptics';
@@ -50,6 +54,7 @@ export default function StoreDetailScreen(): JSX.Element {
   const { trigger } = useHaptics();
 
   const detailQ = trpc.marketplace.vendorDetail.useQuery({ slug: slug ?? '' });
+  const trackViewMut = trpc.marketplace.trackStoreView.useMutation();
   const addToCartMut = trpc.marketplace.addToCart.useMutation({
     onSuccess: () => {
       trigger('success');
@@ -59,6 +64,15 @@ export default function StoreDetailScreen(): JSX.Element {
 
   const store = detailQ.data as unknown as StoreDetail | null;
   const products = store?.products ?? [];
+
+  // B5 — one store-view per app session (the funnel input).
+  useEffect(() => {
+    if (slug && store && !trackedStoreViews.has(slug)) {
+      trackedStoreViews.add(slug);
+      void trackViewMut.mutate({ slug });
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [slug, store]);
 
   if (detailQ.isLoading) return <SkeletonList count={4} />;
   if (detailQ.isError || !store)

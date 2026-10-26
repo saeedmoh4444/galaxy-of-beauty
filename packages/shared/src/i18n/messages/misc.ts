@@ -3879,6 +3879,17 @@ export const miscMessages = {
   // D1 — vendor analytics center (read-model series).
   'vendorPortal.tab.analytics': { ar: 'التحليلات', en: 'Analytics' },
   'vendorPortal.analytics.title': { ar: 'مركز التحليلات', en: 'Analytics center' },
+  // B5 — funnel analytics.
+  'vendorPortal.analytics.funnel.title': {
+    ar: 'قمع التحويل (٣٠ يوماً)',
+    en: 'Conversion funnel (30d)',
+  },
+  'vendorPortal.analytics.funnel.views': { ar: 'زيارات المتجر', en: 'Store views' },
+  'vendorPortal.analytics.funnel.orders': { ar: 'طلبات مكتملة', en: 'Fulfilled orders' },
+  'vendorPortal.analytics.funnel.conversion': { ar: 'معدل التحويل', en: 'Conversion' },
+  'vendorPortal.analytics.funnel.repeatRate': { ar: 'نسبة العودة', en: 'Repeat rate' },
+  'vendorPortal.analytics.funnel.topViewed': { ar: 'الأكثر مشاهدة', en: 'Most viewed' },
+  'vendorPortal.analytics.funnel.viewCount': { ar: '{count} مشاهدة', en: '{count} views' },
   'vendorPortal.analytics.range': { ar: 'نطاق الأيام', en: 'Day range' },
   'vendorPortal.analytics.revenue': { ar: 'الإيرادات', en: 'Revenue' },
   'vendorPortal.analytics.orders': { ar: 'الطلبات', en: 'Orders' },

@@ -3113,6 +3113,65 @@ export const vendorPortalRouter = router({
     }),
 
   /**
+   * funnel — B5: 30-day storefront views → orders conversion + repeat
+   * rate + top-viewed products (impressions from trackStoreView). The
+   * legacy empty shape for non-vendors, capability-gated ANALYTICS_VIEW
+   * for staff.
+   */
+  funnel: customerProcedure.query(async ({ ctx }) => {
+    const vendor = await vendorForStaffQuery(ctx, 'ANALYTICS_VIEW');
+    if (!vendor) {
+      return { views30d: 0, orders30d: 0, conversion: 0, repeatRate: 0, topViewed: [] };
+    }
+    const since = new Date(Date.now() - 30 * 86_400_000);
+
+    const [viewsAgg, ordersCount, distinctCustomers, repeaters, topViewed] = await Promise.all([
+      prisma.storeViewLog.aggregate({
+        where: { vendorId: vendor.id, day: { gte: since } },
+        _sum: { views: true },
+      }),
+      prisma.storeOrder.count({
+        where: { vendorId: vendor.id, createdAt: { gte: since }, status: 'FULFILLED' },
+      }),
+      prisma.storeOrder.findMany({
+        where: { vendorId: vendor.id, createdAt: { gte: since }, status: 'FULFILLED' },
+        select: { customerId: true },
+        distinct: ['customerId'],
+      }),
+      prisma.storeOrder.groupBy({
+        by: ['customerId'],
+        where: { vendorId: vendor.id, createdAt: { gte: since }, status: 'FULFILLED' },
+        having: { customerId: { _count: { gt: 1 } } },
+      }),
+      prisma.product.findMany({
+        where: { vendorId: vendor.id, isActive: true },
+        orderBy: { viewCount: 'desc' },
+        take: 5,
+        select: { id: true, nameJson: true, viewCount: true },
+      }),
+    ]);
+
+    const views30d = viewsAgg._sum.views ?? 0;
+    const conversion = views30d ? Math.round((ordersCount / views30d) * 1000) / 10 : 0;
+    const repeatRate = distinctCustomers.length
+      ? Math.round((repeaters.length / distinctCustomers.length) * 100)
+      : 0;
+
+    return {
+      views30d,
+      orders30d: ordersCount,
+      conversion,
+      repeatRate,
+      topViewed: topViewed.map((p) => ({
+        productId: p.id,
+        nameAr: (p.nameJson as { ar?: string }).ar ?? '',
+        nameEn: (p.nameJson as { en?: string }).en ?? '',
+        views: p.viewCount,
+      })),
+    };
+  }),
+
+  /**
    * payoutInvoice — A2: RFC 4180 invoice CSV for one of the caller's
    * payouts (summary + per-order line items, AR/EN headers). Ownership-
    * guarded like every earnings export.

@@ -96,6 +96,22 @@ export function StorefrontClient({ data }: { data: StorefrontPageData }): JSX.El
     onError: (e) => addToast('error', e.message),
   });
 
+  // B5 — one store-view per browser session (the funnel input).
+  const trackViewMut = api.marketplace.trackStoreView.useMutation();
+  useEffect(() => {
+    const slug = data.store?.storeSlug;
+    if (!slug) return;
+    const key = `gob-store-view-${slug}`;
+    try {
+      if (sessionStorage.getItem(key)) return;
+      sessionStorage.setItem(key, '1');
+    } catch {
+      // Private browsing: still track, just without the session guard.
+    }
+    void trackViewMut.mutate({ slug });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [data.store?.storeSlug]);
+
   if (data.fetchError) {
     return (
       <div className="mx-auto max-w-4xl px-4 py-8">
