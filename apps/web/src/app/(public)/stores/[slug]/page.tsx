@@ -70,6 +70,7 @@ export default async function StorefrontPage({
         ratingAvg: vendor.ratingAvg ? Number(vendor.ratingAvg) : null,
         totalReviews: vendor.totalReviews,
         socialLinks: vendor.socialLinks,
+        tierBadges: vendor.tierBadges,
       }) as StorefrontPageData['store'];
       data.products = serializeForClient(vendor.products ?? []);
       data.productCount = vendor._count?.products ?? 0;

@@ -10,6 +10,8 @@ import {
   router,
 } from '../trpc';
 import { notifyUser } from '../lib/notify';
+import { gatherStoreHealthFactors } from '../lib/storeHealth';
+import { computeVendorTierBadges, computeTopRated } from '../lib/vendorTiers';
 import {
   readCartForCheckout,
   placeStoreOrders,
@@ -178,7 +180,19 @@ export const marketplaceRouter = router({
         }),
         prisma.vendor.count({ where: { isActive: true, type: storeTypes } }),
       ]);
-      return { items, total, page: input.page };
+      // B2 — the list uses the cheap top-rated signal only (rating +
+      // volume are already selected scalars; per-row health gathering
+      // would cost N× queries).
+      const rows = items.map((v) => ({
+        ...v,
+        tierBadge: computeTopRated(
+          v.ratingAvg !== null ? Number(v.ratingAvg) : null,
+          v.totalReviews,
+        )
+          ? 'top_rated'
+          : null,
+      }));
+      return { items: rows, total, page: input.page };
     }),
 
   vendorDetail: publicProcedure.input(z.object({ slug: z.string() })).query(async ({ input }) => {
@@ -204,7 +218,31 @@ export const marketplaceRouter = router({
       },
     });
     if (!vendor) throw new TRPCError({ code: 'NOT_FOUND' });
-    return vendor;
+    // B2 — tier badges (full set: the detail page absorbs the per-vendor
+    // factor queries). Same signals as the A5 health score.
+    const [health, fulfilled30d, repliedReviews] = await Promise.all([
+      gatherStoreHealthFactors(prisma, vendor.id),
+      prisma.storeOrder.count({
+        where: {
+          vendorId: vendor.id,
+          status: 'FULFILLED',
+          createdAt: { gte: new Date(Date.now() - 30 * 86_400_000) },
+        },
+      }),
+      prisma.productReview.count({
+        where: { product: { vendorId: vendor.id }, repliedAt: { not: null } },
+      }),
+    ]);
+    const reviewReplyRate = vendor.totalReviews > 0 ? repliedReviews / vendor.totalReviews : null;
+    const tierBadges = computeVendorTierBadges({
+      ratingAvg: vendor.ratingAvg !== null ? Number(vendor.ratingAvg) : null,
+      totalReviews: vendor.totalReviews,
+      fulfillmentSpeedHours: health.fulfillmentSpeedHours,
+      fulfilled30d,
+      disputeEscalationRate: health.disputeEscalationRate,
+      reviewReplyRate,
+    });
+    return { ...vendor, tierBadges };
   }),
 
   // ── Become a vendor / store (Store plan Phase 1) ────────

@@ -32,6 +32,7 @@ export interface StorefrontPageData {
     ratingAvg: number | null;
     totalReviews: number;
     socialLinks: Record<string, string> | null;
+    tierBadges: Array<'top_rated' | 'fast_fulfillment' | 'responsive_seller'>;
   } | null;
   products: Array<Record<string, unknown>>;
   productCount: number;
@@ -141,6 +142,17 @@ export function StorefrontClient({ data }: { data: StorefrontPageData }): JSX.El
           <TrustBadges
             className="mt-3"
             items={[
+              // B2 — computed tier badges lead the trust row.
+              ...(store.tierBadges ?? []).map((badge) => ({
+                variant: 'tier' as const,
+                label: t(
+                  badge === 'top_rated'
+                    ? 'stores.badge.top-rated'
+                    : badge === 'fast_fulfillment'
+                      ? 'stores.badge.fast-fulfillment'
+                      : 'stores.badge.responsive-seller',
+                ),
+              })),
               ...(store.isVerified
                 ? [{ variant: 'verified' as const, label: t('stores.verified') }]
                 : []),
