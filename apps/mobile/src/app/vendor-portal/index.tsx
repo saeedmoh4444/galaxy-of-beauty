@@ -90,6 +90,15 @@ export default function VendorPortalScreen(): JSX.Element {
         <Text style={styles.earningsLabel}>{t('mobile.vendorPortal.earnings.title')}</Text>
         <Text style={styles.earningsArrow}>›</Text>
       </TouchableOpacity>
+      {/* E4b — social links editable from the phone (B6 fields). */}
+      <TouchableOpacity
+        style={styles.socialsRow}
+        onPress={() => router.push('/vendor-portal/socials')}
+      >
+        <Text style={styles.socialsEmoji}>🌐</Text>
+        <Text style={styles.socialsLabel}>{t('mobile.vendorPortal.socials.title')}</Text>
+        <Text style={styles.socialsArrow}>›</Text>
+      </TouchableOpacity>
       {products.map((p) => (
         <View key={p.id} style={styles.card}>
           <Text style={styles.em}>🧴</Text>
@@ -152,6 +161,18 @@ const styles = StyleSheet.create({
   earningsEmoji: { fontSize: 22 },
   earningsLabel: { flex: 1, fontSize: 14, fontWeight: '700', color: '#111827' },
   earningsArrow: { fontSize: 20, color: '#9ca3af' },
+  socialsRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 10,
+    backgroundColor: '#fff',
+    borderRadius: 14,
+    padding: 14,
+    marginBottom: 16,
+  },
+  socialsEmoji: { fontSize: 22 },
+  socialsLabel: { flex: 1, fontSize: 14, fontWeight: '700', color: '#111827' },
+  socialsArrow: { fontSize: 20, color: '#9ca3af' },
   card: {
     flexDirection: 'row',
     alignItems: 'center',
