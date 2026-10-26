@@ -5,9 +5,8 @@
 > makes it _professional_ — trust, growth, catalog depth, and platform
 > resilience for a marketplace that vendors actually run businesses on.
 >
-> Status: **WAVES A + B DELIVERED, WAVE E BUILT** (2026-10-26, master
-> `TBD`) — the Wave E (mobile seller companion) PRs #510–#514 are in the
-> merge chain; Waves C–D remain proposed; work resumes on the user's
+> Status: **WAVES A + B + E DELIVERED** (2026-10-26/27, master
+> `ebbbd4d1`) — Waves C–D remain proposed; work resumes on the user's
 > "start working".
 
 ---
@@ -41,7 +40,7 @@ B1 (WhatsApp Business) stays user-gated on the Business API key. The
 growth layer is live: social presence, earned trust badges, public
 reviews with owner replies, re-engagement and a conversion funnel.
 
-## 0c. Wave E — delivery record (BUILT 2026-10-26; PRs in the merge chain)
+## 0c. Wave E — delivery record (DELIVERED 2026-10-27, master `ebbbd4d1`)
 
 | Item                | PR   | Shipped                                                                                      |
 | ------------------- | ---- | -------------------------------------------------------------------------------------------- |
