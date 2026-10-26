@@ -1516,6 +1516,9 @@ model Product {
   // creates PENDING products that only surface after admin approval.
   approvalStatus String @default("LIVE") // PENDING | LIVE | REJECTED
   reviewNotes  String?  // C2 — admin rejection note shown in the portal
+  // B5 — funnel analytics: storefront impression counter (incremented by
+  // marketplace.trackStoreView on store-page loads).
+  viewCount    Int      @default(0)
   tags        String[] // organic, vegan, cruelty-free, etc.
   // 3.1 Beauty DNA — polymorphic match payload, discriminated by `kind`:
   // makeup { kind, shade, shadeHex, undertone, depth 1..6 }
@@ -1623,6 +1626,7 @@ model Vendor {
   staffMembers        VendorStaff[]
   staffActivity       StaffActivityLog[]
   winbackLogs         WinbackLog[]
+  storeViewLogs       StoreViewLog[]
 
   @@index([storeSlug])
   @@index([isVerified, isActive])
@@ -1691,6 +1695,22 @@ model WinbackLog {
   @@index([vendorId, customerId, createdAt])
   @@index([customerId, createdAt])
   @@map("winback_logs")
+}
+
+// B5 — funnel analytics (PROFESSIONALIZATION Wave B): daily storefront
+// view counts on the NOON-UTC day (the D1 bucket convention). Kept
+// separate from VendorDailyStat so the D1 materializer never touches it.
+model StoreViewLog {
+  id       Int      @id @default(autoincrement())
+  vendorId Int
+  day      DateTime
+  views    Int      @default(0)
+  createdAt DateTime @default(now())
+
+  vendor Vendor @relation(fields: [vendorId], references: [id], onDelete: Cascade)
+
+  @@unique([vendorId, day])
+  @@map("store_view_logs")
 }
 
 // E2 — clinic consultation slots (clinic-managed, claimed by consultations).

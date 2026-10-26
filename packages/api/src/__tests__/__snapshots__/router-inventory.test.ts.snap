@@ -604,6 +604,7 @@ marketplace.productDetail	query	public
 marketplace.productReviews	query	public
 marketplace.products	query	public
 marketplace.removeFromCart	mutation	protected
+marketplace.trackStoreView	mutation	public
 marketplace.vendorDetail	query	public
 marketplace.vendors	query	public
 menopause.clinics	query	customer
@@ -1046,6 +1047,7 @@ vendorPortal.editPendingDeal	mutation	customer
 vendorPortal.endDeal	mutation	customer
 vendorPortal.exportCsv	query	customer
 vendorPortal.fulfillOrder	mutation	customer
+vendorPortal.funnel	query	customer
 vendorPortal.gymCancelBooking	mutation	customer
 vendorPortal.gymClassBookings	query	customer
 vendorPortal.gymClasses.add	mutation	customer

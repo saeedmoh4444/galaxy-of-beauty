@@ -12,6 +12,7 @@ import {
 import { notifyUser } from '../lib/notify';
 import { gatherStoreHealthFactors } from '../lib/storeHealth';
 import { computeVendorTierBadges, computeTopRated } from '../lib/vendorTiers';
+import { noonUtcDay } from '../workers/handlers';
 import {
   readCartForCheckout,
   placeStoreOrders,
@@ -162,6 +163,34 @@ export const marketplaceRouter = router({
   }),
 
   // ── Vendors ───────────────────────────────────────────
+  /**
+   * trackStoreView — B5: storefront impressions. The clients call this
+   * once per session (local guard) when a store page loads; increments
+   * the NOON-UTC daily view log + per-product impression counters.
+   * Never errors — analytics must not break store pages.
+   */
+  trackStoreView: publicProcedure
+    .input(z.object({ slug: z.string().min(1) }))
+    .mutation(async ({ input }) => {
+      const vendor = await prisma.vendor.findFirst({
+        where: { storeSlug: input.slug, isActive: true, type: { in: ['STORE', 'VENDOR'] } },
+        select: { id: true },
+      });
+      if (!vendor) return { ok: true };
+
+      const day = noonUtcDay(new Date());
+      await prisma.storeViewLog.upsert({
+        where: { vendorId_day: { vendorId: vendor.id, day } },
+        update: { views: { increment: 1 } },
+        create: { vendorId: vendor.id, day, views: 1 },
+      });
+      await prisma.product.updateMany({
+        where: { vendorId: vendor.id, isActive: true },
+        data: { viewCount: { increment: 1 } },
+      });
+      return { ok: true };
+    }),
+
   vendors: publicProcedure
     .input(z.object({ page: z.number().default(1), limit: z.number().default(20) }))
     .query(async ({ input }) => {

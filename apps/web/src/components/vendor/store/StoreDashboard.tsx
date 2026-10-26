@@ -266,6 +266,8 @@ export function StoreDashboard({
   );
   const series = analyticsQ.data?.series ?? [];
   const analyticsTopProducts = analyticsQ.data?.topProducts ?? [];
+  // B5 — funnel analytics (views → orders → repeat).
+  const funnelQ = api.vendorPortal.funnel.useQuery(undefined, { enabled: isAuthenticated });
 
   // E4 — reputation hub: summary + paginated review list + merchant reply.
   const reviewsSummaryQ = api.vendorPortal.myReviewsSummary.useQuery(undefined, {
@@ -1438,6 +1440,61 @@ export function StoreDashboard({
                 ))}
               </div>
             </div>
+
+            {/* B5 — the funnel: storefront views → orders + repeat. */}
+            <Card padding="md">
+              <h3 className="mb-2 text-sm font-semibold">
+                {t('vendorPortal.analytics.funnel.title')}
+              </h3>
+              <div className="grid grid-cols-2 gap-4 sm:grid-cols-4">
+                <div>
+                  <p className="text-2xl font-bold">{funnelQ.data?.views30d ?? 0}</p>
+                  <p className="text-xs text-text-secondary">
+                    {t('vendorPortal.analytics.funnel.views')}
+                  </p>
+                </div>
+                <div>
+                  <p className="text-2xl font-bold">{funnelQ.data?.orders30d ?? 0}</p>
+                  <p className="text-xs text-text-secondary">
+                    {t('vendorPortal.analytics.funnel.orders')}
+                  </p>
+                </div>
+                <div>
+                  <p className="text-2xl font-bold">
+                    {(funnelQ.data?.conversion ?? 0).toLocaleString(
+                      locale === 'ar' ? 'ar-SA' : 'en-GB',
+                    )}
+                    ٪
+                  </p>
+                  <p className="text-xs text-text-secondary">
+                    {t('vendorPortal.analytics.funnel.conversion')}
+                  </p>
+                </div>
+                <div>
+                  <p className="text-2xl font-bold">{funnelQ.data?.repeatRate ?? 0}٪</p>
+                  <p className="text-xs text-text-secondary">
+                    {t('vendorPortal.analytics.funnel.repeatRate')}
+                  </p>
+                </div>
+              </div>
+              {(funnelQ.data?.topViewed ?? []).length > 0 && (
+                <div className="mt-3 border-t border-border-muted pt-3">
+                  <p className="mb-1 text-xs font-semibold text-text-secondary">
+                    {t('vendorPortal.analytics.funnel.topViewed')}
+                  </p>
+                  <ul className="space-y-1 text-sm">
+                    {(funnelQ.data?.topViewed ?? []).map((p) => (
+                      <li key={p.productId} className="flex justify-between">
+                        <span className="truncate">{locale === 'ar' ? p.nameAr : p.nameEn}</span>
+                        <span className="text-text-secondary">
+                          {t('vendorPortal.analytics.funnel.viewCount', { count: p.views })}
+                        </span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              )}
+            </Card>
 
             <div className="grid gap-4 sm:grid-cols-3">
               <Card padding="md" className="text-center">
