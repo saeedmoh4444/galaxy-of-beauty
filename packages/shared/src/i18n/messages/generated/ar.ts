@@ -5145,6 +5145,13 @@ export const arWebMessages: Record<string, string> = {
   'vendorPortal.customers.empty': 'لا توجد طلبات على متجرك بعد',
   'vendorPortal.customers.orders': '{count} طلبات',
   'vendorPortal.customers.rate': 'نسبة التكرار',
+  'vendorPortal.customers.winback.title': 'استرجاع العملاء',
+  'vendorPortal.customers.winback.hint':
+    'قوالب جاهزة فقط — إرسال واحد لكل عميلة كل ١٤ يوماً، مع احترام إلغاء الاشتراك.',
+  'vendorPortal.customers.winback.restocked': 'أعدنا توفير منتجك',
+  'vendorPortal.customers.winback.onOffer': 'عروض على مفضلاتك',
+  'vendorPortal.customers.winback.send': 'إرسال إلى {count}',
+  'vendorPortal.customers.winback.result': 'أُرسل {sent} · تم التخطي {skipped}',
   'vendorPortal.customers.repeat': 'متكررة',
   'vendorPortal.customers.repeaters': 'عملاء متكررون',
   'vendorPortal.customers.title': 'عملاؤك المتكررون',

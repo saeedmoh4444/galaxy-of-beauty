@@ -3035,6 +3035,84 @@ export const vendorPortalRouter = router({
     }),
 
   /**
+   * sendWinback — B4: re-engage the vendor's OWN past customers with
+   * pre-approved templates (restocked / on_offer — no free text).
+   * Rate-limited to one win-back per customer per 14 days; the
+   * promotions preference gate handles opt-outs; non-customers are
+   * silently skipped. Returns per-send accounting, never errors on
+   * skips.
+   */
+  sendWinback: customerProcedure
+    .input(
+      z.object({
+        template: z.enum(['restocked', 'on_offer']),
+        customerIds: z.array(z.number().int().positive()).min(1).max(20),
+        productName: z.string().min(1).max(120).optional(),
+      }),
+    )
+    .mutation(async ({ ctx, input }) => {
+      const vendor = await prisma.vendor.findUnique({ where: { userId: ctx.user.id } });
+      if (!vendor) {
+        throw new TRPCError({ code: 'NOT_FOUND', message: 'Store not found' });
+      }
+
+      // Strictly the vendor's own order history (E5 groupBy set).
+      const own = await prisma.storeOrder.groupBy({
+        by: ['customerId'],
+        where: { vendorId: vendor.id },
+      });
+      const ownIds = new Set(own.map((g) => g.customerId));
+
+      // 14-day per-pair rate limit.
+      const since = new Date(Date.now() - 14 * 86_400_000);
+      const recent = await prisma.winbackLog.findMany({
+        where: {
+          vendorId: vendor.id,
+          createdAt: { gte: since },
+          customerId: { in: input.customerIds },
+        },
+        select: { customerId: true },
+      });
+      const recentIds = new Set(recent.map((r) => r.customerId));
+
+      // Explicit promotions opt-outs (honest skip accounting).
+      const optedOut = new Set(
+        (
+          await prisma.notificationPreference.findMany({
+            where: { userId: { in: input.customerIds }, promotions: false },
+            select: { userId: true },
+          })
+        ).map((p) => p.userId),
+      );
+
+      const templateKey =
+        input.template === 'restocked' ? 'store_winback_restocked' : 'store_winback_on_offer';
+      const message =
+        input.template === 'restocked' && input.productName ? input.productName : vendor.storeName;
+
+      let sent = 0;
+      let skipped = 0;
+      for (const customerId of input.customerIds) {
+        if (!ownIds.has(customerId) || recentIds.has(customerId) || optedOut.has(customerId)) {
+          skipped++;
+          continue;
+        }
+        await notifyUser({
+          userId: customerId,
+          templateKey,
+          vars: { storeName: vendor.storeName, message },
+          link: `/stores/${vendor.storeSlug}`,
+          channels: ['in_app'],
+        });
+        await prisma.winbackLog.create({
+          data: { vendorId: vendor.id, customerId, template: input.template },
+        });
+        sent++;
+      }
+      return { sent, skipped };
+    }),
+
+  /**
    * payoutInvoice — A2: RFC 4180 invoice CSV for one of the caller's
    * payouts (summary + per-order line items, AR/EN headers). Ownership-
    * guarded like every earnings export.

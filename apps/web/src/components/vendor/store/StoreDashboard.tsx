@@ -300,6 +300,19 @@ export function StoreDashboard({
   );
   const customers = (customersQ.data?.pages ?? []).flatMap((p) => p.items);
   const customersFirst = customersQ.data?.pages[0];
+
+  // B4 — win-back toolkit: pre-approved templates, selected customers.
+  const [winbackTemplate, setWinbackTemplate] = useState<'restocked' | 'on_offer'>('restocked');
+  const [winbackIds, setWinbackIds] = useState<number[]>([]);
+  const [winbackResult, setWinbackResult] = useState<{ sent: number; skipped: number } | null>(
+    null,
+  );
+  const sendWinbackMut = api.vendorPortal.sendWinback.useMutation({
+    onSuccess: (res) => {
+      setWinbackResult(res);
+      setWinbackIds([]);
+    },
+  });
   const totalCustomers = customersFirst?.total ?? 0;
   const repeatCustomers = customersFirst?.repeatCustomers ?? 0;
   const repeatRate = customersFirst?.repeatRate ?? 0;
@@ -1719,6 +1732,50 @@ export function StoreDashboard({
                 recency). Aggregate-only — name/phone, never email. */}
             <h2 className="text-lg font-bold">{t('vendorPortal.customers.title')}</h2>
 
+            {/* B4 — win-back toolkit: pre-approved templates only,
+                rate-limited server-side, opt-outs honored. */}
+            <Card padding="md">
+              <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+                <div>
+                  <p className="text-sm font-semibold">
+                    {t('vendorPortal.customers.winback.title')}
+                  </p>
+                  <p className="mt-0.5 text-xs text-text-secondary">
+                    {t('vendorPortal.customers.winback.hint')}
+                  </p>
+                </div>
+                <div className="flex flex-wrap items-center gap-2">
+                  <select
+                    value={winbackTemplate}
+                    onChange={(e) => setWinbackTemplate(e.target.value as 'restocked' | 'on_offer')}
+                    className="rounded-md border border-border bg-surface px-2 py-1.5 text-sm"
+                    data-testid="winback-template-select"
+                  >
+                    <option value="restocked">
+                      {t('vendorPortal.customers.winback.restocked')}
+                    </option>
+                    <option value="on_offer">{t('vendorPortal.customers.winback.onOffer')}</option>
+                  </select>
+                  <Button
+                    size="sm"
+                    disabled={winbackIds.length === 0}
+                    loading={sendWinbackMut.isPending}
+                    onClick={() =>
+                      sendWinbackMut.mutate({ template: winbackTemplate, customerIds: winbackIds })
+                    }
+                    data-testid="winback-send-button"
+                  >
+                    {t('vendorPortal.customers.winback.send', { count: winbackIds.length })}
+                  </Button>
+                </div>
+              </div>
+              {winbackResult && (
+                <p className="mt-2 text-xs text-text-secondary">
+                  {t('vendorPortal.customers.winback.result', winbackResult)}
+                </p>
+              )}
+            </Card>
+
             <div className="grid gap-4 sm:grid-cols-3">
               <Card padding="md" className="text-center">
                 <p className="text-2xl font-bold">{totalCustomers}</p>
@@ -1747,26 +1804,40 @@ export function StoreDashboard({
               <Card padding="md" className="space-y-3">
                 {customers.map((c) => (
                   <div key={c.customerId} className="flex items-center justify-between gap-3">
-                    <div className="min-w-0">
-                      <p className="truncate text-sm font-semibold">
-                        {c.customerName}
-                        {c.repeat && (
-                          <span className="mr-1 rounded-full bg-violet-100 px-2 py-0.5 text-[10px] font-normal text-violet-700 dark:bg-violet-950 dark:text-violet-300">
-                            {t('vendorPortal.customers.repeat')}
-                          </span>
+                    <label className="flex min-w-0 items-center gap-2">
+                      <input
+                        type="checkbox"
+                        checked={winbackIds.includes(c.customerId)}
+                        onChange={(e) =>
+                          setWinbackIds((prev) =>
+                            e.target.checked
+                              ? [...prev, c.customerId]
+                              : prev.filter((id) => id !== c.customerId),
+                          )
+                        }
+                        data-testid={`winback-customer-${c.customerId}`}
+                      />
+                      <span className="min-w-0">
+                        <span className="block truncate text-sm font-semibold">
+                          {c.customerName}
+                          {c.repeat && (
+                            <span className="mr-1 rounded-full bg-violet-100 px-2 py-0.5 text-[10px] font-normal text-violet-700 dark:bg-violet-950 dark:text-violet-300">
+                              {t('vendorPortal.customers.repeat')}
+                            </span>
+                          )}
+                        </span>
+                        {c.phone && (
+                          <a
+                            href={`https://wa.me/${c.phone.replace(/^\+/, '').replace(/^0/, '966')}`}
+                            target="_blank"
+                            rel="noreferrer"
+                            className="text-xs text-brand-600 underline"
+                          >
+                            {c.phone}
+                          </a>
                         )}
-                      </p>
-                      {c.phone && (
-                        <a
-                          href={`https://wa.me/${c.phone.replace(/^\+/, '').replace(/^0/, '966')}`}
-                          target="_blank"
-                          rel="noreferrer"
-                          className="text-xs text-brand-600 underline"
-                        >
-                          {c.phone}
-                        </a>
-                      )}
-                    </div>
+                      </span>
+                    </label>
                     <div className="shrink-0 text-left">
                       <p className="text-sm font-bold">{formatCurrency(c.totalSpent)}</p>
                       <p className="text-xs text-text-secondary">

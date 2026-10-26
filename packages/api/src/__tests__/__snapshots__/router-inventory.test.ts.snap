@@ -1083,6 +1083,7 @@ vendorPortal.proposeClinicPackage	mutation	customer
 vendorPortal.proposeDeal	mutation	customer
 vendorPortal.replyToReview	mutation	customer
 vendorPortal.resubmitSubmission	mutation	customer
+vendorPortal.sendWinback	mutation	customer
 vendorPortal.setBanner	mutation	customer
 vendorPortal.setConsultationPrice	mutation	customer
 vendorPortal.setDraft	mutation	customer
