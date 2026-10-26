@@ -1,5 +1,6 @@
 import type { JSX } from 'react';
 import { View, Text, ScrollView, StyleSheet, TouchableOpacity, RefreshControl } from 'react-native';
+import { useRouter } from 'expo-router';
 import { SkeletonList } from '@/components/SkeletonCard';
 import { useAuthState } from '@/hooks/useAuthState';
 import { trpc } from '@/lib/trpc-react';
@@ -7,6 +8,7 @@ import { useLocale } from '@/components/LocaleProvider';
 
 export default function VendorPortalScreen(): JSX.Element {
   const { t, locale } = useLocale();
+  const router = useRouter();
   const isAuthed = useAuthState();
   const dashQ = trpc.vendorPortal.dashboard.useQuery(undefined, { enabled: isAuthed });
   const productsQ = trpc.vendorPortal.myProducts.useQuery({}, { enabled: isAuthed });
@@ -55,6 +57,15 @@ export default function VendorPortalScreen(): JSX.Element {
           <Text style={styles.kl}>{t('mobile.vendorPortal.sar')}</Text>
         </View>
       </View>
+      {/* E4b — social links editable from the phone (B6 fields). */}
+      <TouchableOpacity
+        style={styles.socialsRow}
+        onPress={() => router.push('/vendor-portal/socials')}
+      >
+        <Text style={styles.socialsEmoji}>🌐</Text>
+        <Text style={styles.socialsLabel}>{t('mobile.vendorPortal.socials.title')}</Text>
+        <Text style={styles.socialsArrow}>›</Text>
+      </TouchableOpacity>
       {products.map((p) => (
         <View key={p.id} style={styles.card}>
           <Text style={styles.em}>🧴</Text>
@@ -83,6 +94,18 @@ const styles = StyleSheet.create({
   ke: { fontSize: 28, marginBottom: 4 },
   kv: { fontSize: 22, fontWeight: '800', color: '#111827' },
   kl: { fontSize: 11, color: '#9ca3af' },
+  socialsRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 10,
+    backgroundColor: '#fff',
+    borderRadius: 14,
+    padding: 14,
+    marginBottom: 16,
+  },
+  socialsEmoji: { fontSize: 22 },
+  socialsLabel: { flex: 1, fontSize: 14, fontWeight: '700', color: '#111827' },
+  socialsArrow: { fontSize: 20, color: '#9ca3af' },
   card: {
     flexDirection: 'row',
     alignItems: 'center',
