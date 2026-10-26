@@ -46,6 +46,21 @@ export function VendorPortal({ shellRole = 'CUSTOMER' }: { shellRole?: string })
   } = api.vendorPortal.myStore.useQuery(undefined, { enabled: isAuthenticated });
   const store = myStore;
 
+  // A1 — pending store-team invitation (accept/decline on the portal).
+  const invitationQ = api.vendorPortal.staff.myInvitation.useQuery(undefined, {
+    enabled: isAuthenticated,
+  });
+  const acceptInviteMut = api.vendorPortal.staff.accept.useMutation({
+    onSuccess: () => {
+      void refetchStore();
+    },
+  });
+  const declineInviteMut = api.vendorPortal.staff.decline.useMutation({
+    onSuccess: () => {
+      void invitationQ.refetch();
+    },
+  });
+
   // Apply form
   const [applyName, setApplyName] = useState('');
   const [applyLicense, setApplyLicense] = useState('');
@@ -216,6 +231,43 @@ export function VendorPortal({ shellRole = 'CUSTOMER' }: { shellRole?: string })
 
   /* ---------- Apply wizard (no store/clinic/gym/nail bar/athome yet) ---------- */
   if (!storeLoading && !store) {
+    // A1 — a pending staff invitation supersedes the wizard: the invitee
+    // joins the store team instead of registering a venue of their own.
+    if (invitationQ.data) {
+      return (
+        <DashboardLayout userRole={shellRole}>
+          <div className="mx-auto max-w-xl p-6">
+            <Card padding="md" className="space-y-4">
+              <div>
+                <h1 className="text-xl font-bold">{t('vendorPortal.staff.banner.title')}</h1>
+                <p className="mt-2 text-sm text-text-secondary">
+                  {t('vendorPortal.staff.banner.body', {
+                    storeName: invitationQ.data.storeName,
+                  })}
+                </p>
+              </div>
+              <div className="flex gap-2">
+                <Button
+                  onClick={() => acceptInviteMut.mutate()}
+                  loading={acceptInviteMut.isPending}
+                  data-testid="staff-invitation-accept"
+                >
+                  {t('vendorPortal.staff.accept')}
+                </Button>
+                <Button
+                  variant="ghost"
+                  onClick={() => declineInviteMut.mutate()}
+                  disabled={declineInviteMut.isPending}
+                >
+                  {t('vendorPortal.staff.decline')}
+                </Button>
+              </div>
+            </Card>
+          </div>
+        </DashboardLayout>
+      );
+    }
+
     const isClinic = applyType === 'clinic';
     const isGym = applyType === 'gym';
     const isNailBar = applyType === 'nail_bar';

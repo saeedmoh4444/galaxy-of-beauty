@@ -1,7 +1,9 @@
 /**
  * D2 — store health score (0–100): a composite, honest mirror of store
- * trust, computed from fulfillment speed, cancel rate, review trend
- * (recency-decayed), stock health and (post-F1) response rate.
+ * trust, computed from fulfillment speed, SLA breach rate, cancel rate,
+ * review trend (recency-decayed), stock health and dispute escalation
+ * (A5 v2 — the F1 response-rate placeholder is retired; the inbox
+ * response-rate can rejoin as a factor when it is actually measured).
  *
  * Pure composition logic — the DB factor gathering lives in
  * gatherStoreHealthFactors below; the composition thresholds and decay
@@ -12,14 +14,16 @@ import type { prisma } from '@galaxy/db';
 export interface StoreHealthFactors {
   /** Average hours from order to fulfillment over the last 30 days (null = no data). */
   fulfillmentSpeedHours: number | null;
+  /** A3 — SLA-breached / fulfilled orders over the last 30 days (0–1, null = no data). */
+  slaBreachRate: number | null;
   /** Cancelled / (fulfilled + cancelled) over the last 30 days (0–1, null = no data). */
   cancelRate: number | null;
   /** Recency-decayed average rating 1–5 (null = no reviews). */
   reviewTrend: number | null;
   /** Share of active products above their low-stock threshold (0–1, null = no products). */
   stockHealth: number | null;
-  /** Response rate 0–1 (F1 inbox); null = neutral until the feature lands. */
-  responseRate: number | null;
+  /** A4 — escalated / total store disputes over the last 30 days (0–1, null = none). */
+  disputeEscalationRate: number | null;
 }
 
 export interface StoreHealthHint {
@@ -55,6 +59,15 @@ export function computeStoreHealthScore(f: StoreHealthFactors): StoreHealthResul
       hints.push({ key: 'vendorPortal.health.hint.fulfillment', params: { hours: Math.round(h) } });
   }
 
+  // A3 — SLA breach rate: 0% = 100, linear to 0 at ≥20%.
+  let slaBreach = 60;
+  if (f.slaBreachRate !== null) {
+    const r = f.slaBreachRate;
+    slaBreach = r <= 0 ? 100 : r >= 0.2 ? 0 : Math.round(100 - (r / 0.2) * 100);
+    if (slaBreach < 60)
+      hints.push({ key: 'vendorPortal.health.hint.sla', params: { percent: Math.round(r * 100) } });
+  }
+
   // Cancel rate: 0% = 100, linear to 0 at ≥30%.
   let cancel = 60;
   if (f.cancelRate !== null) {
@@ -82,16 +95,27 @@ export function computeStoreHealthScore(f: StoreHealthFactors): StoreHealthResul
     if (stock < 60) hints.push({ key: 'vendorPortal.health.hint.stock' });
   }
 
-  // Response rate (F1): neutral 60 until the inbox feature lands.
-  let response = 60;
-  if (f.responseRate !== null) {
-    response = Math.round(Math.min(1, Math.max(0, f.responseRate)) * 100);
+  // A4 — dispute escalation rate: 0% = 100, linear to 0 at ≥50%.
+  let dispute = 60;
+  if (f.disputeEscalationRate !== null) {
+    const r = f.disputeEscalationRate;
+    dispute = r <= 0 ? 100 : r >= 0.5 ? 0 : Math.round(100 - (r / 0.5) * 100);
+    if (dispute < 60)
+      hints.push({
+        key: 'vendorPortal.health.hint.dispute',
+        params: { percent: Math.round(r * 100) },
+      });
   }
 
-  // Weighted composite: fulfillment 30, cancel 20, review 20, stock 20,
-  // response 10.
+  // A5 v2 weighted composite: fulfillment 25, SLA breach 15, cancel 20,
+  // review 15, stock 15, dispute escalation 10.
   const score = Math.round(
-    fulfillment * 0.3 + cancel * 0.2 + review * 0.2 + stock * 0.2 + response * 0.1,
+    fulfillment * 0.25 +
+      slaBreach * 0.15 +
+      cancel * 0.2 +
+      review * 0.15 +
+      stock * 0.15 +
+      dispute * 0.1,
   );
 
   return { score, hints: hints.slice(0, 3) };
@@ -153,5 +177,34 @@ export async function gatherStoreHealthFactors(
     stockHealth = healthy / active;
   }
 
-  return { fulfillmentSpeedHours, cancelRate, reviewTrend, stockHealth, responseRate: null };
+  // A3 — SLA breach rate: breached / fulfilled in the last 30 days.
+  const [breachedCount, fulfilledCount] = await Promise.all([
+    prismaClient.storeOrder.count({
+      where: { vendorId, slaBreachedAt: { not: null }, createdAt: { gte: since30 } },
+    }),
+    prismaClient.storeOrder.count({
+      where: { vendorId, status: 'FULFILLED', createdAt: { gte: since30 } },
+    }),
+  ]);
+  const slaBreachRate = fulfilledCount ? breachedCount / fulfilledCount : null;
+
+  // A4 — dispute escalation rate: escalated / all store disputes (30d).
+  const [escalatedDisputes, totalDisputes] = await Promise.all([
+    prismaClient.dispute.count({
+      where: { storeOrder: { vendorId }, escalatedAt: { not: null }, createdAt: { gte: since30 } },
+    }),
+    prismaClient.dispute.count({
+      where: { storeOrder: { vendorId }, createdAt: { gte: since30 } },
+    }),
+  ]);
+  const disputeEscalationRate = totalDisputes ? escalatedDisputes / totalDisputes : null;
+
+  return {
+    fulfillmentSpeedHours,
+    slaBreachRate,
+    cancelRate,
+    reviewTrend,
+    stockHealth,
+    disputeEscalationRate,
+  };
 }

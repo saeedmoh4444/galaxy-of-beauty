@@ -122,9 +122,147 @@ function toReviewRow(r: {
   };
 }
 
+// ── A1 store staff accounts ──────────────────────────────────────────
+// (VENDOR_PROFESSIONALIZATION_PLAN Wave A). The role-less ownership
+// invariant governs: staff are CUSTOMER-role users linked to a vendor
+// via VendorStaff — a capability list, never a UserRole.
+
+/** Capability strings stored in VendorStaff.permissions. */
+export const STAFF_CAPABILITIES = [
+  'ORDERS_MANAGE',
+  'PRODUCTS_MANAGE',
+  'COUPONS_MANAGE',
+  'DEALS_MANAGE',
+  'REVIEWS_MANAGE',
+  'PAYOUTS_VIEW',
+  'CUSTOMERS_VIEW',
+  'ANALYTICS_VIEW',
+  'STAFF_MANAGE',
+] as const;
+
+type StaffCapability = (typeof STAFF_CAPABILITIES)[number];
+
+type VendorActor =
+  | { kind: 'owner'; vendor: { id: number; userId: number; storeName: string; storeSlug: string } }
+  | {
+      kind: 'staff';
+      vendor: { id: number; userId: number; storeName: string; storeSlug: string };
+      staff: { id: number; role: string; permissions: string[] };
+    }
+  | null;
+
+/** The caller's relationship to a vendor: owner (Vendor row) or ACTIVE staff. */
+async function resolveVendorActor(userId: number): Promise<VendorActor> {
+  const vendor = await prisma.vendor.findUnique({ where: { userId } });
+  if (vendor) return { kind: 'owner', vendor };
+  const staff = await prisma.vendorStaff.findUnique({
+    where: { userId },
+    include: { vendor: true },
+  });
+  if (staff && staff.status === 'ACTIVE') {
+    return { kind: 'staff', vendor: staff.vendor, staff };
+  }
+  return null;
+}
+
+function staffHasCapability(actor: VendorActor, cap: StaffCapability): boolean {
+  if (!actor) return false;
+  if (actor.kind === 'owner') return true;
+  if (actor.staff.role === 'MANAGER') return true;
+  return actor.staff.permissions.includes(cap);
+}
+
+/** Resolve the actor and require STAFF_MANAGE (owners always pass). */
+async function requireStaffManager(userId: number) {
+  const actor = await resolveVendorActor(userId);
+  if (!actor) {
+    throw new TRPCError({ code: 'FORBIDDEN', message: 'Not a store owner or staff member' });
+  }
+  if (!staffHasCapability(actor, 'STAFF_MANAGE')) {
+    throw new TRPCError({ code: 'FORBIDDEN', message: 'Staff management requires STAFF_MANAGE' });
+  }
+  return actor;
+}
+
+/**
+ * A1 — staff-scoped vendor lookup. Owners and ACTIVE staff resolve to the
+ * same Vendor row; an optional capability gates staff (owners pass always,
+ * MANAGER role passes implicitly). Non-vendors get NOT_FOUND — the same
+ * signal the old per-procedure lookups produced for owner-less callers.
+ */
+async function vendorForStaff(ctx: { user: { id: number } | null }, capability?: StaffCapability) {
+  if (!ctx.user) {
+    throw new TRPCError({ code: 'UNAUTHORIZED', message: 'Login required' });
+  }
+  const actor = await resolveVendorActor(ctx.user.id);
+  if (!actor) {
+    throw new TRPCError({ code: 'NOT_FOUND', message: 'Store not found' });
+  }
+  if (capability && !staffHasCapability(actor, capability)) {
+    throw new TRPCError({ code: 'FORBIDDEN', message: `Requires ${capability}` });
+  }
+  return prisma.vendor.findUniqueOrThrow({ where: { id: actor.vendor.id } });
+}
+
+/**
+ * A1 — the QUERY variant: owner-less callers keep the legacy empty-shape
+ * contract (the portal renders zeroes for them), staff are capability-
+ * gated (FORBIDDEN), owners and capable staff get the row. Returns null
+ * for owner-less callers so each query can render its own legacy shape.
+ */
+async function vendorForStaffQuery(
+  ctx: { user: { id: number } | null },
+  capability?: StaffCapability,
+) {
+  const actor = await resolveVendorActor(ctx.user?.id ?? -1);
+  if (!actor) return null;
+  if (capability && !staffHasCapability(actor, capability)) {
+    throw new TRPCError({ code: 'FORBIDDEN', message: `Requires ${capability}` });
+  }
+  return prisma.vendor.findUnique({ where: { id: actor.vendor.id } });
+}
+
+/** Vendor-scoped audit row — every staff-management mutation logs here. */
+async function logStaffAction(
+  vendorId: number,
+  actorUserId: number | null,
+  action: string,
+  targetId: number,
+  metadata?: Record<string, unknown>,
+) {
+  await prisma.staffActivityLog.create({
+    data: {
+      vendorId,
+      actorUserId,
+      action,
+      targetType: 'VendorStaff',
+      targetId: String(targetId),
+      metadata: (metadata ?? undefined) as Prisma.InputJsonValue | undefined,
+    },
+  });
+}
+
+/** The client-facing staff row shape (email+name are owner-visible only). */
+function staffRowShape(
+  row: { id: number; role: string; permissions: string[]; status: string; createdAt: Date },
+  user: { id: number; name: string; email: string; avatarUrl: string | null },
+) {
+  return {
+    id: row.id,
+    userId: user.id,
+    name: user.name,
+    email: user.email,
+    avatarUrl: user.avatarUrl,
+    role: row.role,
+    permissions: row.permissions,
+    status: row.status,
+    createdAt: row.createdAt.toISOString(),
+  };
+}
+
 export const vendorPortalRouter = router({
   dashboard: customerProcedure.query(async ({ ctx }) => {
-    const vendor = await prisma.vendor.findUnique({ where: { userId: ctx.user.id } });
+    const vendor = await vendorForStaffQuery(ctx);
 
     if (!vendor) {
       // A store with no vendor and no reviews has no rating — never invent
@@ -215,6 +353,37 @@ export const vendorPortalRouter = router({
       distinct: ['customerId'],
     });
 
+    // A3 — fulfillment SLA: 30-day breach count + on-time rate over the
+    // fulfilled orders (fulfilledAt within the vendor's promised window).
+    const slaWindowMs = vendor.fulfillmentSlaHours * 3_600_000;
+    const breachedOrders = await prisma.storeOrder.findMany({
+      where: {
+        vendorId: vendor.id,
+        slaBreachedAt: { not: null },
+        createdAt: { gte: thirtyDaysAgo },
+      },
+      select: { createdAt: true, fulfilledAt: true, slaBreachedAt: true },
+    });
+    const fulfilledOrders = await prisma.storeOrder.findMany({
+      where: {
+        vendorId: vendor.id,
+        status: 'FULFILLED',
+        fulfilledAt: { not: null },
+        createdAt: { gte: thirtyDaysAgo },
+      },
+      select: { createdAt: true, fulfilledAt: true },
+    });
+    const onTime = fulfilledOrders.filter(
+      (o) => o.fulfilledAt!.getTime() - o.createdAt.getTime() <= slaWindowMs,
+    ).length;
+    const sla = {
+      breached30d: breachedOrders.length,
+      onTimeRate: fulfilledOrders.length
+        ? Math.round((onTime / fulfilledOrders.length) * 100)
+        : 100,
+      windowHours: vendor.fulfillmentSlaHours,
+    };
+
     return {
       totalProducts: agg._count,
       totalSales: agg._sum.sales ?? 0,
@@ -236,6 +405,8 @@ export const vendorPortalRouter = router({
         stock: p.stock,
         threshold: p.lowStockThreshold,
       })),
+      // A3 — fulfillment SLA metrics for the Overview card.
+      sla,
     };
   }),
 
@@ -247,7 +418,7 @@ export const vendorPortalRouter = router({
       }),
     )
     .query(async ({ ctx, input }) => {
-      const vendor = await prisma.vendor.findUnique({ where: { userId: ctx.user.id } });
+      const vendor = await vendorForStaffQuery(ctx, 'PRODUCTS_MANAGE');
       if (!vendor) return { items: [], nextCursor: null, total: 0 };
 
       // A5 — cursor pagination on the stable id (autoincrement) instead of
@@ -290,11 +461,22 @@ export const vendorPortalRouter = router({
       }),
     )
     .mutation(async ({ ctx, input }) => {
-      const user = await prisma.user.findUnique({
-        where: { id: ctx.user.id },
-        select: { name: true },
-      });
-      const vendor = await ensureVendor(ctx.user.id, user?.name ?? '');
+      // A1: staff are capability-gated; owner-less callers keep the legacy
+      // B.3 auto-create path (minimal vendor row on first product).
+      const actor = await resolveVendorActor(ctx.user.id);
+      let vendor;
+      if (actor) {
+        if (!staffHasCapability(actor, 'PRODUCTS_MANAGE')) {
+          throw new TRPCError({ code: 'FORBIDDEN', message: 'Requires PRODUCTS_MANAGE' });
+        }
+        vendor = await prisma.vendor.findUniqueOrThrow({ where: { id: actor.vendor.id } });
+      } else {
+        const user = await prisma.user.findUnique({
+          where: { id: ctx.user.id },
+          select: { name: true },
+        });
+        vendor = await ensureVendor(ctx.user.id, user?.name ?? '');
+      }
 
       // C2 — strict listing approval: when the flag is on, new products
       // start PENDING and wait for the admin review queue. Off (relaxed,
@@ -341,8 +523,7 @@ export const vendorPortalRouter = router({
   deleteProduct: customerProcedure
     .input(z.object({ id: z.number().int().positive() }))
     .mutation(async ({ ctx, input }) => {
-      const vendor = await prisma.vendor.findUnique({ where: { userId: ctx.user.id } });
-      if (!vendor) return { success: true };
+      const vendor = await vendorForStaff(ctx, 'PRODUCTS_MANAGE');
 
       // Ownership-guarded soft delete.
       await prisma.product.updateMany({
@@ -376,8 +557,7 @@ export const vendorPortalRouter = router({
       }),
     )
     .mutation(async ({ ctx, input }) => {
-      const vendor = await prisma.vendor.findUnique({ where: { userId: ctx.user.id } });
-      if (!vendor) throw new TRPCError({ code: 'NOT_FOUND', message: 'Store not found' });
+      const vendor = await vendorForStaff(ctx, 'PRODUCTS_MANAGE');
 
       const existing = await prisma.product.findUnique({ where: { id: input.id } });
       if (!existing) throw new TRPCError({ code: 'NOT_FOUND', message: 'Product not found' });
@@ -420,8 +600,7 @@ export const vendorPortalRouter = router({
   setDraft: customerProcedure
     .input(z.object({ id: z.number().int().positive(), draft: z.boolean() }))
     .mutation(async ({ ctx, input }) => {
-      const vendor = await prisma.vendor.findUnique({ where: { userId: ctx.user.id } });
-      if (!vendor) throw new TRPCError({ code: 'NOT_FOUND', message: 'Store not found' });
+      const vendor = await vendorForStaff(ctx, 'PRODUCTS_MANAGE');
 
       const existing = await prisma.product.findUnique({ where: { id: input.id } });
       if (!existing) throw new TRPCError({ code: 'NOT_FOUND', message: 'Product not found' });
@@ -447,8 +626,7 @@ export const vendorPortalRouter = router({
   setProductFeatured: customerProcedure
     .input(z.object({ id: z.number().int().positive(), featured: z.boolean() }))
     .mutation(async ({ ctx, input }) => {
-      const vendor = await prisma.vendor.findUnique({ where: { userId: ctx.user.id } });
-      if (!vendor) throw new TRPCError({ code: 'NOT_FOUND', message: 'Store not found' });
+      const vendor = await vendorForStaff(ctx, 'PRODUCTS_MANAGE');
 
       const existing = await prisma.product.findUnique({ where: { id: input.id } });
       if (!existing) throw new TRPCError({ code: 'NOT_FOUND', message: 'Product not found' });
@@ -471,8 +649,7 @@ export const vendorPortalRouter = router({
   duplicateProduct: customerProcedure
     .input(z.object({ id: z.number().int().positive() }))
     .mutation(async ({ ctx, input }) => {
-      const vendor = await prisma.vendor.findUnique({ where: { userId: ctx.user.id } });
-      if (!vendor) throw new TRPCError({ code: 'NOT_FOUND', message: 'Store not found' });
+      const vendor = await vendorForStaff(ctx, 'PRODUCTS_MANAGE');
 
       const existing = await prisma.product.findUnique({ where: { id: input.id } });
       if (!existing) throw new TRPCError({ code: 'NOT_FOUND', message: 'Product not found' });
@@ -517,9 +694,13 @@ export const vendorPortalRouter = router({
   // Store plan Phase 1 — store registration state + orders
   // ---------------------------------------------------------------------------
 
-  /** myStore — the caller's store (or null when not registered yet). */
+  /** myStore — the caller's store (or null when not registered yet).
+   *  A1: staff members resolve to their vendor too — the shell routes
+   *  them to the portal instead of the registration wizard. */
   myStore: customerProcedure.query(async ({ ctx }) => {
-    return prisma.vendor.findUnique({ where: { userId: ctx.user.id } });
+    const actor = await resolveVendorActor(ctx.user.id);
+    if (!actor) return null;
+    return prisma.vendor.findUnique({ where: { id: actor.vendor.id } });
   }),
 
   /**
@@ -559,7 +740,7 @@ export const vendorPortalRouter = router({
       }),
     )
     .query(async ({ ctx, input }) => {
-      const vendor = await prisma.vendor.findUnique({ where: { userId: ctx.user.id } });
+      const vendor = await vendorForStaffQuery(ctx, 'ORDERS_MANAGE');
       if (!vendor) return { items: [], nextCursor: null, total: 0 };
 
       // A5 — id-desc cursor: stable pagination (createdAt ties can't page).
@@ -607,10 +788,7 @@ export const vendorPortalRouter = router({
       }),
     )
     .mutation(async ({ ctx, input }) => {
-      const vendor = await prisma.vendor.findUnique({ where: { userId: ctx.user.id } });
-      if (!vendor) {
-        throw new TRPCError({ code: 'NOT_FOUND', message: 'Store not found' });
-      }
+      const vendor = await vendorForStaff(ctx, 'ORDERS_MANAGE');
 
       const result = await prisma.$transaction(async (tx) => {
         const order = await tx.storeOrder.findUnique({
@@ -623,9 +801,10 @@ export const vendorPortalRouter = router({
 
         // Atomic transition — the WHERE pins the old status, so a concurrent
         // fulfill loses the race cleanly instead of double-accruing.
+        // A3 — fulfilledAt feeds the SLA on-time rate.
         const claimed = await tx.storeOrder.updateMany({
           where: { id: input.orderId, status: 'PENDING_FULFILLMENT' },
-          data: { status: 'FULFILLED' },
+          data: { status: 'FULFILLED', fulfilledAt: new Date() },
         });
 
         if (claimed.count === 0) {
@@ -689,10 +868,7 @@ export const vendorPortalRouter = router({
   cancelOrder: customerProcedure
     .input(z.object({ orderId: z.number().int().positive() }))
     .mutation(async ({ ctx, input }) => {
-      const vendor = await prisma.vendor.findUnique({ where: { userId: ctx.user.id } });
-      if (!vendor) {
-        throw new TRPCError({ code: 'NOT_FOUND', message: 'Store not found' });
-      }
+      const vendor = await vendorForStaff(ctx, 'ORDERS_MANAGE');
 
       return prisma.$transaction(async (tx) => {
         const order = await tx.storeOrder.findUnique({
@@ -1057,6 +1233,9 @@ export const vendorPortalRouter = router({
       commissionRate: Number(vendor.commissionRate),
       summary: { pendingNet, processedNet, totalFee },
       rows,
+      // A2 — payout automation state for the schedule card.
+      payoutSchedule: vendor.payoutSchedule,
+      lastPayoutRunAt: vendor.lastPayoutRunAt?.toISOString() ?? null,
     };
   }),
 
@@ -1297,7 +1476,7 @@ export const vendorPortalRouter = router({
       }),
     )
     .query(async ({ ctx, input }) => {
-      const vendor = await prisma.vendor.findUnique({ where: { userId: ctx.user.id } });
+      const vendor = await vendorForStaffQuery(ctx, 'REVIEWS_MANAGE');
       if (!vendor) return { items: [], nextCursor: null, total: 0 };
 
       const where: Prisma.ProductReviewWhereInput = {
@@ -1332,7 +1511,7 @@ export const vendorPortalRouter = router({
    * buckets) for the rating sparkline.
    */
   myReviewsSummary: customerProcedure.query(async ({ ctx }) => {
-    const vendor = await prisma.vendor.findUnique({ where: { userId: ctx.user.id } });
+    const vendor = await vendorForStaffQuery(ctx, 'REVIEWS_MANAGE');
     const labels = weeklyTrendLabels();
     if (!vendor) {
       return {
@@ -1403,10 +1582,7 @@ export const vendorPortalRouter = router({
         }),
     )
     .mutation(async ({ ctx, input }) => {
-      const vendor = await prisma.vendor.findUnique({ where: { userId: ctx.user.id } });
-      if (!vendor) {
-        throw new TRPCError({ code: 'NOT_FOUND', message: 'Store not found' });
-      }
+      const vendor = await vendorForStaff(ctx, 'REVIEWS_MANAGE');
       const review = await prisma.productReview.findUnique({
         where: { id: input.reviewId },
         include: { product: { select: { vendorId: true } } },
@@ -1448,7 +1624,7 @@ export const vendorPortalRouter = router({
       }),
     )
     .query(async ({ ctx, input }) => {
-      const vendor = await prisma.vendor.findUnique({ where: { userId: ctx.user.id } });
+      const vendor = await vendorForStaffQuery(ctx, 'CUSTOMERS_VIEW');
       if (!vendor) return { items: [], total: 0, repeatRate: 0, repeatCustomers: 0 };
 
       const grouped = await prisma.storeOrder.groupBy({
@@ -2545,5 +2721,345 @@ export const vendorPortalRouter = router({
         where: { id: vendor.id },
         data: { licenseExpiryDate: new Date(input.date), licenseRemindedAt: null },
       });
+    }),
+
+  /**
+   * A1 — store staff accounts. Owners (and staff with STAFF_MANAGE)
+   * invite existing users by email; the invitee accepts on the portal.
+   * Every management mutation writes the vendor-scoped audit feed.
+   */
+  staff: router({
+    /**
+     * A1 — the caller's portal relationship (the client primitive for
+     * capability-driven UI: tab visibility, action gating, the staff
+     * badge). Owners get kind 'owner'; ACTIVE staff get their role +
+     * permissions; everyone else gets 'none'.
+     */
+    access: customerProcedure.query(async ({ ctx }) => {
+      const actor = await resolveVendorActor(ctx.user.id);
+      if (!actor) return { kind: 'none', permissions: [] as string[] };
+      if (actor.kind === 'owner') return { kind: 'owner', permissions: [] as string[] };
+      return {
+        kind: 'staff',
+        role: actor.staff.role,
+        permissions: actor.staff.permissions,
+      };
+    }),
+
+    /** Rows for the Staff tab — requires STAFF_MANAGE. */
+    list: customerProcedure.query(async ({ ctx }) => {
+      const actor = await requireStaffManager(ctx.user.id);
+      const rows = await prisma.vendorStaff.findMany({
+        where: { vendorId: actor.vendor.id },
+        include: { user: { select: { id: true, name: true, email: true, avatarUrl: true } } },
+        orderBy: { createdAt: 'asc' },
+      });
+      return rows.map((r) => staffRowShape(r, r.user));
+    }),
+
+    /** Invite an existing user by email (idempotent for PENDING re-sends). */
+    invite: customerProcedure
+      .input(z.object({ email: z.string().email().max(254) }))
+      .mutation(async ({ ctx, input }) => {
+        const actor = await requireStaffManager(ctx.user.id);
+        const target = await prisma.user.findFirst({
+          where: { email: { equals: input.email, mode: 'insensitive' } },
+        });
+        if (!target) {
+          throw new TRPCError({ code: 'NOT_FOUND', message: 'No account with this email' });
+        }
+        if (target.id === actor.vendor.userId) {
+          throw new TRPCError({ code: 'CONFLICT', message: 'The store owner cannot be staff' });
+        }
+
+        const existing = await prisma.vendorStaff.findUnique({ where: { userId: target.id } });
+        if (existing?.status === 'ACTIVE') {
+          throw new TRPCError({ code: 'CONFLICT', message: 'User is already staff of a store' });
+        }
+        if (existing?.status === 'PENDING' && existing.vendorId !== actor.vendor.id) {
+          throw new TRPCError({
+            code: 'CONFLICT',
+            message: 'User has a pending invitation from another store',
+          });
+        }
+
+        const notify = () =>
+          notifyUser({
+            userId: target.id,
+            templateKey: 'staff_invited',
+            vars: { storeName: actor.vendor.storeName },
+            link: '/customer/vendor-portal',
+          });
+
+        let row: {
+          id: number;
+          role: string;
+          permissions: string[];
+          status: string;
+          createdAt: Date;
+        };
+        if (existing?.status === 'PENDING') {
+          // Re-send only — the invitation already stands.
+          await notify();
+          row = existing;
+        } else {
+          const data = {
+            vendorId: actor.vendor.id,
+            role: 'STAFF',
+            permissions: ['ORDERS_MANAGE'],
+            status: 'PENDING',
+            invitedBy: ctx.user.id,
+          };
+          row = existing
+            ? await prisma.vendorStaff.update({ where: { id: existing.id }, data }) // REVOKED → reactivate
+            : await prisma.vendorStaff.create({ data: { ...data, userId: target.id } });
+          await notify();
+          await logStaffAction(actor.vendor.id, ctx.user.id, 'INVITE_STAFF', row.id, {
+            email: target.email,
+            reactivated: existing !== null,
+          });
+        }
+        return staffRowShape(row, target);
+      }),
+
+    /** Change a staff row's role/permissions — requires STAFF_MANAGE. */
+    update: customerProcedure
+      .input(
+        z
+          .object({
+            staffId: z.number().int().positive(),
+            role: z.enum(['MANAGER', 'STAFF']).optional(),
+            permissions: z.array(z.enum(STAFF_CAPABILITIES)).max(9).optional(),
+          })
+          .refine((v) => v.role !== undefined || v.permissions !== undefined, {
+            message: 'role or permissions required',
+          }),
+      )
+      .mutation(async ({ ctx, input }) => {
+        const actor = await requireStaffManager(ctx.user.id);
+        const row = await prisma.vendorStaff.findUnique({
+          where: { id: input.staffId },
+          include: { user: { select: { id: true, name: true, email: true, avatarUrl: true } } },
+        });
+        if (!row || row.vendorId !== actor.vendor.id) {
+          throw new TRPCError({ code: 'NOT_FOUND', message: 'Staff member not found' });
+        }
+        const updated = await prisma.vendorStaff.update({
+          where: { id: row.id },
+          data: {
+            ...(input.role !== undefined ? { role: input.role } : {}),
+            ...(input.permissions !== undefined ? { permissions: input.permissions } : {}),
+          },
+        });
+        await logStaffAction(actor.vendor.id, ctx.user.id, 'UPDATE_STAFF', row.id, {
+          role: input.role,
+          permissions: input.permissions,
+        });
+        return staffRowShape(updated, row.user);
+      }),
+
+    /** Revoke staff access — requires STAFF_MANAGE. */
+    revoke: customerProcedure
+      .input(z.object({ staffId: z.number().int().positive() }))
+      .mutation(async ({ ctx, input }) => {
+        const actor = await requireStaffManager(ctx.user.id);
+        const row = await prisma.vendorStaff.findUnique({
+          where: { id: input.staffId },
+          include: { user: { select: { id: true, name: true, email: true, avatarUrl: true } } },
+        });
+        if (!row || row.vendorId !== actor.vendor.id) {
+          throw new TRPCError({ code: 'NOT_FOUND', message: 'Staff member not found' });
+        }
+        const updated = await prisma.vendorStaff.update({
+          where: { id: row.id },
+          data: { status: 'REVOKED' },
+        });
+        await notifyUser({
+          userId: row.user.id,
+          templateKey: 'staff_revoked',
+          vars: { storeName: actor.vendor.storeName },
+        });
+        await logStaffAction(actor.vendor.id, ctx.user.id, 'REVOKE_STAFF', row.id);
+        return staffRowShape(updated, row.user);
+      }),
+
+    /** The caller's own PENDING invitation (portal banner), else null. */
+    myInvitation: customerProcedure.query(async ({ ctx }) => {
+      const row = await prisma.vendorStaff.findUnique({
+        where: { userId: ctx.user.id },
+        include: { vendor: { select: { storeName: true, storeSlug: true } } },
+      });
+      if (!row || row.status !== 'PENDING') return null;
+      return {
+        id: row.id,
+        storeName: row.vendor.storeName,
+        storeSlug: row.vendor.storeSlug,
+        role: row.role,
+        permissions: row.permissions,
+        status: row.status,
+        createdAt: row.createdAt.toISOString(),
+      };
+    }),
+
+    /** The invitee accepts their PENDING invitation → ACTIVE. */
+    accept: customerProcedure.mutation(async ({ ctx }) => {
+      const row = await prisma.vendorStaff.findUnique({
+        where: { userId: ctx.user.id },
+        include: { user: { select: { id: true, name: true, email: true, avatarUrl: true } } },
+      });
+      if (!row || row.status !== 'PENDING') {
+        throw new TRPCError({ code: 'NOT_FOUND', message: 'No pending invitation' });
+      }
+      const updated = await prisma.vendorStaff.update({
+        where: { id: row.id },
+        data: { status: 'ACTIVE' },
+      });
+      await logStaffAction(row.vendorId, ctx.user.id, 'ACCEPT_INVITE', row.id);
+      return staffRowShape(updated, row.user);
+    }),
+
+    /** The invitee declines their PENDING invitation → REVOKED. */
+    decline: customerProcedure.mutation(async ({ ctx }) => {
+      const row = await prisma.vendorStaff.findUnique({
+        where: { userId: ctx.user.id },
+        include: { user: { select: { id: true, name: true, email: true, avatarUrl: true } } },
+      });
+      if (!row || row.status !== 'PENDING') {
+        throw new TRPCError({ code: 'NOT_FOUND', message: 'No pending invitation' });
+      }
+      const updated = await prisma.vendorStaff.update({
+        where: { id: row.id },
+        data: { status: 'REVOKED' },
+      });
+      await logStaffAction(row.vendorId, ctx.user.id, 'DECLINE_INVITE', row.id);
+      return staffRowShape(updated, row.user);
+    }),
+
+    /** Recent audit feed for the Staff tab — requires STAFF_MANAGE. */
+    activity: customerProcedure.query(async ({ ctx }) => {
+      const actor = await requireStaffManager(ctx.user.id);
+      const logs = await prisma.staffActivityLog.findMany({
+        where: { vendorId: actor.vendor.id },
+        include: { actor: { select: { name: true } } },
+        orderBy: { createdAt: 'desc' },
+        take: 50,
+      });
+      return logs.map((l) => ({
+        id: l.id,
+        vendorId: l.vendorId,
+        action: l.action,
+        targetType: l.targetType,
+        targetId: l.targetId,
+        metadata: l.metadata,
+        createdAt: l.createdAt.toISOString(),
+        actorName: l.actor?.name ?? '—',
+      }));
+    }),
+  }),
+
+  /**
+   * setPayoutSchedule — A2: the vendor picks their settlement cadence
+   * (MANUAL default keeps the admin-driven flow). Ownership-guarded;
+   * the daily gob-payouts job honors it.
+   */
+  setPayoutSchedule: customerProcedure
+    .input(z.object({ schedule: z.enum(['MANUAL', 'WEEKLY', 'MONTHLY']) }))
+    .mutation(async ({ ctx, input }) => {
+      const vendor = await prisma.vendor.findUnique({ where: { userId: ctx.user.id } });
+      if (!vendor) {
+        throw new TRPCError({ code: 'NOT_FOUND', message: 'Store not found' });
+      }
+      return prisma.vendor.update({
+        where: { id: vendor.id },
+        data: { payoutSchedule: input.schedule },
+        select: { payoutSchedule: true, lastPayoutRunAt: true },
+      });
+    }),
+
+  /**
+   * setFulfillmentSla — A3: the store's promised order window in hours
+   * (12–168). The daily gob-sla sweep judges breaches against it.
+   */
+  setFulfillmentSla: customerProcedure
+    .input(z.object({ hours: z.number().int().min(12).max(168) }))
+    .mutation(async ({ ctx, input }) => {
+      const vendor = await prisma.vendor.findUnique({ where: { userId: ctx.user.id } });
+      if (!vendor) {
+        throw new TRPCError({ code: 'NOT_FOUND', message: 'Store not found' });
+      }
+      return prisma.vendor.update({
+        where: { id: vendor.id },
+        data: { fulfillmentSlaHours: input.hours },
+        select: { fulfillmentSlaHours: true },
+      });
+    }),
+
+  /**
+   * payoutInvoice — A2: RFC 4180 invoice CSV for one of the caller's
+   * payouts (summary + per-order line items, AR/EN headers). Ownership-
+   * guarded like every earnings export.
+   */
+  payoutInvoice: customerProcedure
+    .input(
+      z.object({
+        payoutId: z.number().int().positive(),
+        locale: z.enum(['ar', 'en']).default('en'),
+      }),
+    )
+    .query(async ({ ctx, input }) => {
+      const vendor = await prisma.vendor.findUnique({ where: { userId: ctx.user.id } });
+      if (!vendor) {
+        throw new TRPCError({ code: 'NOT_FOUND', message: 'Store not found' });
+      }
+      const payout = await prisma.payout.findUnique({ where: { id: input.payoutId } });
+      if (!payout || payout.vendorId !== vendor.id) {
+        throw new TRPCError({ code: 'NOT_FOUND', message: 'Payout not found' });
+      }
+
+      const orders = await prisma.storeOrder.findMany({
+        where: {
+          vendorId: vendor.id,
+          status: 'FULFILLED',
+          createdAt: { gte: payout.periodStart, lte: payout.periodEnd },
+        },
+        orderBy: { createdAt: 'asc' },
+        select: { id: true, createdAt: true, totalAmount: true },
+      });
+
+      const esc = (v: string | number) => {
+        const s = String(v);
+        return /[",\r\n]/.test(s) ? `"${s.replace(/"/g, '""')}"` : s;
+      };
+      const ar = input.locale === 'ar';
+      const header = ar
+        ? [
+            'رقم الفاتورة',
+            'بداية الفترة',
+            'نهاية الفترة',
+            'الإجمالي',
+            'الرسوم',
+            'الصافي',
+            'عدد الطلبات',
+          ]
+        : ['Invoice', 'Period start', 'Period end', 'Gross', 'Fee', 'Net', 'Orders'];
+      const gross = Number(payout.amount) + Number(payout.fee);
+      const summary = [
+        `#${payout.id}`,
+        payout.periodStart.toISOString().slice(0, 10),
+        payout.periodEnd.toISOString().slice(0, 10),
+        gross.toFixed(2),
+        Number(payout.fee).toFixed(2),
+        Number(payout.amount).toFixed(2),
+        String(orders.length),
+      ].join(',');
+
+      const itemHeader = ar ? ['رقم الطلب', 'التاريخ', 'المبلغ'] : ['Order', 'Date', 'Amount'];
+      const itemLines = orders.map((o) =>
+        [o.id, o.createdAt.toISOString().slice(0, 10), Number(o.totalAmount).toFixed(2)].join(','),
+      );
+
+      return {
+        csv: [header.join(','), esc(summary), '', itemHeader.join(','), ...itemLines].join('\r\n'),
+      };
     }),
 });

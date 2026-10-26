@@ -4,6 +4,7 @@ import { prisma } from '@galaxy/db';
 import { router, adminProcedure, technicianProcedure, customerProcedure } from '../trpc';
 import { createPayoutSchema, processPayoutSchema } from '../validators/payment';
 import { computeStoreHealthScore, gatherStoreHealthFactors } from '../lib/storeHealth';
+import { calculateVendorSettlements } from '../lib/storePayouts';
 import { notifyUser } from '../lib/notify';
 
 // ---------------------------------------------------------------------------
@@ -137,46 +138,13 @@ export const payoutRouter = router({
   // calculateStore — Admin computes vendor settlements from FULFILLED
   // store orders (stage 12). REFUNDED orders are excluded, so a resolved
   // store dispute automatically removes the order from settlement.
+  // A2 — the math lives in lib/storePayouts (shared with the payout job).
   // -----------------------------------------------------------------------
   calculateStore: adminProcedure.input(createPayoutSchema).mutation(async ({ input }) => {
     const periodStart = new Date(input.periodStart);
     const periodEnd = new Date(input.periodEnd);
 
-    const orders = await prisma.storeOrder.findMany({
-      where: {
-        status: 'FULFILLED',
-        createdAt: { gte: periodStart, lte: periodEnd },
-      },
-      select: { id: true, vendorId: true, totalAmount: true },
-    });
-
-    const byVendor = new Map<number, { orderCount: number; grossAmount: number }>();
-    for (const order of orders) {
-      const gross = Number(order.totalAmount);
-      const entry = byVendor.get(order.vendorId) ?? { orderCount: 0, grossAmount: 0 };
-      entry.orderCount += 1;
-      entry.grossAmount += gross;
-      byVendor.set(order.vendorId, entry);
-    }
-
-    // S3 — per-vendor commission (schema default 10%).
-    const vendors = await prisma.vendor.findMany({
-      where: { id: { in: Array.from(byVendor.keys()) } },
-      select: { id: true, commissionRate: true },
-    });
-    const rateById = new Map(vendors.map((v) => [v.id, Number(v.commissionRate)]));
-
-    const round2 = (n: number) => Math.round(n * 100) / 100;
-    const settlements = Array.from(byVendor.entries()).map(([vendorId, entry]) => {
-      const rate = rateById.get(vendorId) ?? 10;
-      const fee = round2((entry.grossAmount * rate) / 100);
-      return {
-        vendorId,
-        orderCount: entry.orderCount,
-        amount: round2(entry.grossAmount - fee),
-        fee,
-      };
-    });
+    const settlements = await calculateVendorSettlements(periodStart, periodEnd);
 
     if (settlements.length > 0) {
       // Re-calculation replaces PENDING vendor rows for the same period.

@@ -187,6 +187,8 @@ model User {
   payouts           Payout[]
   streak            Streak?
   achievements      UserAchievement[]
+  vendorStaff       VendorStaff?
+  staffActions      StaffActivityLog[]
   referralsMade     Referral[]         @relation("ReferralsMade")
   referralsReceived Referral[]         @relation("ReferralsReceived")
   referralPrizes    ReferralPrize[]
@@ -828,6 +830,10 @@ model Dispute {
   // B5 — vendor-side response before admin resolution (store disputes).
   vendorResponse   String?
   vendorRespondedAt DateTime?
+  // A4 — dispute SLA: escalated once when the 48h vendor-response
+  // deadline passes with no reply (auto-escalation to the admin queue).
+  escalatedAt     DateTime?
+  escalatedReason String?
   createdAt   DateTime      @default(now())
   updatedAt   DateTime      @updatedAt
 
@@ -1558,6 +1564,14 @@ model Vendor {
   // G3 — KYC expiry reminders (vendor self-service; 60/30/7-day inbox nudge).
   licenseExpiryDate DateTime?
   licenseRemindedAt DateTime?
+  // A2 — payout automation (PROFESSIONALIZATION Wave A): MANUAL | WEEKLY |
+  // MONTHLY; the daily gob-payouts job settles elapsed windows and stamps
+  // lastPayoutRunAt. Transfers stay human (money-integrity).
+  payoutSchedule  String   @default("MANUAL")
+  lastPayoutRunAt DateTime?
+  // A3 — fulfillment SLA: the store's promised order window (hours); the
+  // daily gob-sla sweep flags breaches (feeds the A5 quality score).
+  fulfillmentSlaHours Int @default(48)
   consultationPrice Decimal  @default(0) @db.Decimal(10, 2)
   // E3 — fitness vertical (gyms).
   gymType    String? // ladies | family
@@ -1601,12 +1615,58 @@ model Vendor {
   gymDayPasses        ClassPass[]
   nailBarSlots        NailBarSlot[]
   trainerSessions     TrainerSession[]
+  staffMembers        VendorStaff[]
+  staffActivity       StaffActivityLog[]
 
   @@index([storeSlug])
   @@index([isVerified, isActive])
   @@index([type, isVerified, isActive])
   @@index([userId])
   @@map("vendors")
+}
+
+// A1 — store staff accounts (VENDOR_PROFESSIONALIZATION_PLAN Wave A).
+// A store owner invites existing users to help run the store. The
+// role-less ownership invariant governs: staff are NOT vendors and get
+// NO UserRole — a VendorStaff row links a CUSTOMER-role user to a
+// vendor with a capability list that gates portal actions.
+model VendorStaff {
+  id          Int      @id @default(autoincrement())
+  vendorId    Int
+  userId      Int      @unique
+  role        String   @default("STAFF") // MANAGER (implicit all) | STAFF (permissions[])
+  permissions String[] @default([]) // capability strings, see STAFF_CAPABILITIES
+  status      String   @default("PENDING") // PENDING | ACTIVE | REVOKED
+  invitedBy   Int // owner/staff user id that sent the invitation
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  vendor Vendor @relation(fields: [vendorId], references: [id], onDelete: Cascade)
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([vendorId])
+  @@index([userId])
+  @@map("vendor_staff")
+}
+
+// A1 — staff audit feed: every staff-management mutation (invite, accept,
+// decline, update, revoke) and (later) staff-initiated portal actions log
+// here; the owner reads it in the Staff tab.
+model StaffActivityLog {
+  id          Int      @id @default(autoincrement())
+  vendorId    Int
+  actorUserId Int? // null = system/owner-less events
+  action      String // INVITE_STAFF | ACCEPT_INVITE | DECLINE_INVITE | UPDATE_STAFF | REVOKE_STAFF | …
+  targetType  String // 'VendorStaff' | …
+  targetId    String
+  metadata    Json?
+  createdAt   DateTime @default(now())
+
+  vendor Vendor @relation(fields: [vendorId], references: [id], onDelete: Cascade)
+  actor  User?  @relation(fields: [actorUserId], references: [id], onDelete: SetNull)
+
+  @@index([vendorId, createdAt])
+  @@map("staff_activity_logs")
 }
 
 // E2 — clinic consultation slots (clinic-managed, claimed by consultations).
@@ -1732,6 +1792,9 @@ model StoreOrder {
   totalAmount Decimal  @db.Decimal(10, 2)
   itemCount   Int      @default(1)
   status      String   @default("PENDING_FULFILLMENT") // PENDING_FULFILLMENT | FULFILLED
+  // A3 — fulfillment SLA: stamped by fulfillOrder; the sweep flags breaches.
+  fulfilledAt   DateTime?
+  slaBreachedAt DateTime?
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
 

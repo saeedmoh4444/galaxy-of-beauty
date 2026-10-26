@@ -3925,6 +3925,15 @@ export const miscMessages = {
     ar: 'صحة المخزون منخفضة — أعيدي تزويد المنتجات تحت الحد',
     en: 'Stock health is low — restock products below their thresholds',
   },
+  // A5 — quality score v2 hints.
+  'vendorPortal.health.hint.sla': {
+    ar: '{percent}٪ من الطلبات تجاوزت مهلة التنفيذ — قلّصي نافذة الوعود أو نفّذي أسرع',
+    en: '{percent}% of orders breached your fulfillment window — promise less or ship faster',
+  },
+  'vendorPortal.health.hint.dispute': {
+    ar: '{percent}٪ من النزاعات تصاعدت للإدارة — ردّي خلال ٤٨ ساعة',
+    en: '{percent}% of disputes escalated to the platform — respond within 48h',
+  },
   'vendorPortal.earnings.title': {
     ar: 'مركز الأرباح والتسويات',
     en: 'Earnings & settlement center',
@@ -3943,6 +3952,32 @@ export const miscMessages = {
   'vendorPortal.earnings.status.processing': { ar: 'قيد المعالجة', en: 'Processing' },
   'vendorPortal.earnings.status.completed': { ar: 'مكتمل', en: 'Completed' },
   'vendorPortal.earnings.status.failed': { ar: 'فشل', en: 'Failed' },
+  // A2 — payout automation.
+  'vendorPortal.earnings.schedule': { ar: 'جدول الدفعات', en: 'Payout schedule' },
+  'vendorPortal.earnings.scheduleManual': { ar: 'يدوي', en: 'Manual' },
+  'vendorPortal.earnings.scheduleWeekly': { ar: 'أسبوعي', en: 'Weekly' },
+  'vendorPortal.earnings.scheduleMonthly': { ar: 'شهري', en: 'Monthly' },
+  'vendorPortal.earnings.lastRun': { ar: 'آخر تسوية: {date}', en: 'Last settlement: {date}' },
+  'vendorPortal.earnings.firstRunPending': {
+    ar: 'ستتم التسوية التلقائية خلال ٢٤ ساعة.',
+    en: 'The automatic settlement runs within 24 hours.',
+  },
+  'vendorPortal.earnings.manualHint': {
+    ar: 'الدفعات تُسوّى يدوياً بواسطة الإدارة.',
+    en: 'Payouts are settled manually by the platform.',
+  },
+  'vendorPortal.earnings.invoice': { ar: 'فاتورة', en: 'Invoice' },
+  // A3 — fulfillment SLA.
+  'vendorPortal.sla.title': { ar: 'مهلة التنفيذ', en: 'Fulfillment SLA' },
+  'vendorPortal.sla.onTimeRate': { ar: 'نسبة التنفيذ في الوقت', en: 'On-time rate' },
+  'vendorPortal.sla.breached': { ar: 'طلبات متأخرة (٣٠ يوم)', en: 'Late orders (30d)' },
+  'vendorPortal.sla.window': { ar: 'نافذة التنفيذ (ساعة)', en: 'Fulfillment window (hours)' },
+  'vendorPortal.sla.lateChip': { ar: 'متأخر', en: 'Late' },
+  // A4 — dispute SLA.
+  'vendorPortal.disputes.escalated': {
+    ar: 'تم تصعيد النزاع للإدارة بعد تجاوز مهلة الرد.',
+    en: 'Escalated to the platform after the response deadline passed.',
+  },
   // B5 — vendor-side dispute response (order drawer)
   'vendorPortal.disputes.title': { ar: 'نزاع على الطلب', en: 'Order dispute' },
   'vendorPortal.disputes.reason': { ar: 'السبب', en: 'Reason' },
@@ -4720,6 +4755,51 @@ export const miscMessages = {
   'vendorPortal.trust.child-friendly': { ar: 'ركن أطفال', en: 'Child-friendly corner' },
   'vendorPortal.banner.title': { ar: 'بانر المنشأة', en: 'Venue banner' },
   'vendorPortal.banner.uploading': { ar: 'جاري رفع البانر…', en: 'Uploading banner…' },
+  // A1 — store staff accounts (invitation + team management).
+  'vendorPortal.staff.banner.title': { ar: 'دعوة لإدارة متجر', en: 'Store team invitation' },
+  'vendorPortal.staff.banner.body': {
+    ar: 'دعاك {storeName} للانضمام إلى فريق المتجر.',
+    en: '{storeName} invited you to join their store team.',
+  },
+  'vendorPortal.staff.accept': { ar: 'قبول الدعوة', en: 'Accept invitation' },
+  'vendorPortal.staff.decline': { ar: 'رفض', en: 'Decline' },
+  'vendorPortal.tab.staff': { ar: 'الفريق', en: 'Team' },
+  'vendorPortal.staff.title': { ar: 'فريق المتجر', en: 'Store team' },
+  'vendorPortal.staff.empty': {
+    ar: 'لا يوجد أعضاء بعد — ادعُ أول عضو من فريقك.',
+    en: 'No members yet — invite your first teammate.',
+  },
+  'vendorPortal.staff.inviteLabel': { ar: 'البريد الإلكتروني', en: 'Email' },
+  'vendorPortal.staff.invite': { ar: 'إرسال دعوة', en: 'Send invitation' },
+  'vendorPortal.staff.inviteErrNotFound': {
+    ar: 'لا يوجد حساب بهذا البريد الإلكتروني.',
+    en: 'No account with this email.',
+  },
+  'vendorPortal.staff.inviteErrConflict': {
+    ar: 'المستخدم ضمن فريق متجر آخر أو لديه دعوة معلقة.',
+    en: 'This user is already on a store team or has a pending invitation.',
+  },
+  'vendorPortal.staff.role': { ar: 'الدور', en: 'Role' },
+  'vendorPortal.staff.roleManager': { ar: 'مدير', en: 'Manager' },
+  'vendorPortal.staff.roleStaff': { ar: 'موظف', en: 'Staff' },
+  'vendorPortal.staff.statusPending': { ar: 'بانتظار القبول', en: 'Pending' },
+  'vendorPortal.staff.statusActive': { ar: 'نشط', en: 'Active' },
+  'vendorPortal.staff.statusRevoked': { ar: 'موقوف', en: 'Revoked' },
+  'vendorPortal.staff.permissions': { ar: 'الصلاحيات', en: 'Permissions' },
+  'vendorPortal.staff.revoke': { ar: 'إيقاف الوصول', en: 'Revoke access' },
+  'vendorPortal.staff.save': { ar: 'حفظ', en: 'Save' },
+  'vendorPortal.staff.cancel': { ar: 'إلغاء', en: 'Cancel' },
+  'vendorPortal.staff.activity': { ar: 'سجل النشاط', en: 'Activity log' },
+  'vendorPortal.staff.you': { ar: '(أنت)', en: '(you)' },
+  'vendorPortal.staff.cap.ORDERS_MANAGE': { ar: 'إدارة الطلبات', en: 'Manage orders' },
+  'vendorPortal.staff.cap.PRODUCTS_MANAGE': { ar: 'إدارة المنتجات', en: 'Manage products' },
+  'vendorPortal.staff.cap.COUPONS_MANAGE': { ar: 'إدارة الكوبونات', en: 'Manage coupons' },
+  'vendorPortal.staff.cap.DEALS_MANAGE': { ar: 'إدارة العروض', en: 'Manage deals' },
+  'vendorPortal.staff.cap.REVIEWS_MANAGE': { ar: 'الرد على التقييمات', en: 'Reply to reviews' },
+  'vendorPortal.staff.cap.PAYOUTS_VIEW': { ar: 'عرض الأرباح', en: 'View earnings' },
+  'vendorPortal.staff.cap.CUSTOMERS_VIEW': { ar: 'عرض العملاء', en: 'View customers' },
+  'vendorPortal.staff.cap.ANALYTICS_VIEW': { ar: 'عرض التحليلات', en: 'View analytics' },
+  'vendorPortal.staff.cap.STAFF_MANAGE': { ar: 'إدارة الفريق', en: 'Manage team' },
   // E6e — before/after galleries
   'gallery.beforeAfterTitle': { ar: 'نتائج قبل وبعد', en: 'Before & after results' },
   'gallery.emptyTitle': { ar: 'صور النتائج قادمة', en: 'Real results, coming soon' },

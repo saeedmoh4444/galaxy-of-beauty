@@ -3489,6 +3489,49 @@ async function main() {
       },
     });
 
+    // A1 — demo staff member for the E2E team-management flow
+    // (staff-demo@galaxyofbeauty.sa / Admin@123456): an ACTIVE STAFF
+    // with orders+products capabilities on the demo store.
+    const demoStaffUser = await prisma.user.create({
+      data: {
+        email: 'staff-demo@galaxyofbeauty.sa',
+        phone: '+966599000002',
+        passwordHash: customerPasswordHash,
+        name: 'موظفة المتجر التجريبي',
+        role: 'CUSTOMER',
+        emailVerified: true,
+        preferredLanguage: 'ar',
+      },
+    });
+    await prisma.vendorStaff.create({
+      data: {
+        vendorId: demoVendor.id,
+        userId: demoStaffUser.id,
+        role: 'STAFF',
+        permissions: ['ORDERS_MANAGE', 'PRODUCTS_MANAGE'],
+        status: 'ACTIVE',
+        invitedBy: demoVendorUser.id,
+      },
+    });
+
+    // A1 — per-project invitee pool for the E2E invite→accept circle.
+    // The three Playwright browser projects run the spec concurrently
+    // against ONE seeded DB, so each project gets its own invitee (no
+    // cross-project races on a shared row).
+    for (const [i, suffix] of ['chromium', 'firefox', 'mobile-chrome'].entries()) {
+      await prisma.user.create({
+        data: {
+          email: `staff-invitee-${suffix}@galaxyofbeauty.sa`,
+          phone: `+96659900010${i}`,
+          passwordHash: customerPasswordHash,
+          name: `مدعو ${suffix}`,
+          role: 'CUSTOMER',
+          emailVerified: true,
+          preferredLanguage: 'ar',
+        },
+      });
+    }
+
     const [makeupCat, fragranceCat] = await Promise.all([
       prisma.productCategory.findUniqueOrThrow({ where: { slug: 'product-makeup' } }),
       prisma.productCategory.findUniqueOrThrow({ where: { slug: 'product-fragrance' } }),
@@ -4047,6 +4090,50 @@ async function main() {
         bodyJson: {
           ar: 'ينتهي ترخيص متجرك خلال {{days}} يوم — جددي المستندات لتجنّب تعليق المتجر.',
           en: 'Your store license expires in {{days}} days — renew your documents to avoid suspension.',
+        },
+      },
+      // A1 — store staff invitations (customer-facing; the invitee is a
+      // CUSTOMER-role user, not a vendor).
+      {
+        key: 'staff_invited',
+        category: 'provider',
+        channels: ['in_app', 'push'],
+        titleJson: { ar: 'دعوة للانضمام إلى متجر', en: 'Store Staff Invitation' },
+        bodyJson: {
+          ar: 'دعاك {{storeName}} للانضمام إلى فريق المتجر. اقبلي الدعوة من بوابة المتجر.',
+          en: '{{storeName}} invited you to join their store team. Accept the invitation from the store portal.',
+        },
+      },
+      {
+        key: 'staff_revoked',
+        category: 'provider',
+        channels: ['in_app', 'push'],
+        titleJson: { ar: 'انتهى وصولك إلى المتجر', en: 'Staff Access Revoked' },
+        bodyJson: {
+          ar: 'أنهى {{storeName}} وصولك إلى لوحة تحكم المتجر.',
+          en: '{{storeName}} ended your access to the store dashboard.',
+        },
+      },
+      // A3 — fulfillment SLA breach (vendor inbox, one per order).
+      {
+        key: 'order_sla_breached',
+        category: 'provider',
+        channels: ['in_app', 'push'],
+        titleJson: { ar: 'طلب تجاوز مهلة التنفيذ', en: 'Order Breached Fulfillment SLA' },
+        bodyJson: {
+          ar: 'الطلب #{{orderId}} تجاوز نافذة التنفيذ الموعودة — نفّذه الآن لحماية تقييم متجرك.',
+          en: 'Order #{{orderId}} passed your promised fulfillment window — fulfill it now to protect your store rating.',
+        },
+      },
+      // A4 — dispute escalation (48h vendor-response deadline passed).
+      {
+        key: 'dispute_escalated',
+        category: 'provider',
+        channels: ['in_app', 'push'],
+        titleJson: { ar: 'نزاع تم تصعيده للإدارة', en: 'Dispute Escalated to Admin' },
+        bodyJson: {
+          ar: 'النزاع #{{disputeId}} تجاوز مهلة الرد (٤٨ ساعة) وتم تصعيده للإدارة — ردّي سريعاً إن أمكن.',
+          en: 'Dispute #{{disputeId}} passed the 48h response deadline and was escalated to the platform — respond quickly if you still can.',
         },
       },
       // F1 — vendor inbox events (emitted post-commit; see the F1 wave).

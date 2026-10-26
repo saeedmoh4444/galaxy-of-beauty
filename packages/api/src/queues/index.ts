@@ -128,6 +128,42 @@ export function getRemindersQueue(): Queue | null {
   }
 }
 
+// A2 — payout automation sweep (settles WEEKLY/MONTHLY vendor windows).
+let _payoutsQueue: Queue | null = null;
+export function getPayoutsQueue(): Queue | null {
+  if (_payoutsQueue) return _payoutsQueue;
+  try {
+    _payoutsQueue = createQueue('gob-payouts');
+    return _payoutsQueue;
+  } catch {
+    return null;
+  }
+}
+
+// A3 — fulfillment SLA sweep (flags orders past their vendor's window).
+let _slaQueue: Queue | null = null;
+export function getSlaQueue(): Queue | null {
+  if (_slaQueue) return _slaQueue;
+  try {
+    _slaQueue = createQueue('gob-sla');
+    return _slaQueue;
+  } catch {
+    return null;
+  }
+}
+
+// A4 — dispute escalation sweep (48h vendor-response deadline).
+let _disputesQueue: Queue | null = null;
+export function getDisputesQueue(): Queue | null {
+  if (_disputesQueue) return _disputesQueue;
+  try {
+    _disputesQueue = createQueue('gob-disputes');
+    return _disputesQueue;
+  } catch {
+    return null;
+  }
+}
+
 // Convenience: all queues
 export function getAllQueues(): Record<string, Queue | null> {
   return {
@@ -139,5 +175,8 @@ export function getAllQueues(): Record<string, Queue | null> {
     analytics: getAnalyticsQueue(),
     advisor: getAdvisorQueue(),
     reminders: getRemindersQueue(),
+    payouts: getPayoutsQueue(),
+    sla: getSlaQueue(),
+    disputes: getDisputesQueue(),
   };
 }

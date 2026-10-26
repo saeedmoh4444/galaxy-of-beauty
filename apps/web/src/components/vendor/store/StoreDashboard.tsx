@@ -10,6 +10,7 @@ import type { MyStore, StoreDealPayload, StoreOrderRow } from '@galaxy/api';
 import { localize, type TranslationKey } from '@galaxy/shared';
 import { VenueProfileCard } from '../shared/VenueProfileCard';
 import { SubmissionStatusCard } from '../shared/SubmissionStatusCard';
+import { StaffPanel } from '../shared/StaffPanel';
 import { DashboardTabs } from '../shared/DashboardTabs';
 
 type TabKey =
@@ -22,7 +23,8 @@ type TabKey =
   | 'analytics'
   | 'reviews'
   | 'customers'
-  | 'inbox';
+  | 'inbox'
+  | 'staff';
 
 const TAB_KEYS: TabKey[] = [
   'overview',
@@ -35,6 +37,7 @@ const TAB_KEYS: TabKey[] = [
   'reviews',
   'customers',
   'inbox',
+  'staff',
 ];
 
 /** A3 — read the ?tab= deep link once on mount (hydration-safe; the page is
@@ -91,6 +94,12 @@ export function StoreDashboard({
   const { data: dash } = api.vendorPortal.dashboard.useQuery(undefined, {
     enabled: isAuthenticated,
   });
+  // A1 — the caller's portal relationship drives tab visibility: owners see
+  // everything, staff see only the tabs their capabilities unlock.
+  const accessQ = api.vendorPortal.staff.access.useQuery(undefined, { enabled: isAuthenticated });
+  const access = accessQ.data ?? { kind: 'none', permissions: [] };
+  const can = (cap: string) =>
+    access.kind === 'owner' || (access.permissions as string[]).includes(cap);
   // A5 — cursor-paginated lists via useInfiniteQuery.
   const productsQ = api.vendorPortal.myProducts.useInfiniteQuery(
     { limit: 20 },
@@ -369,6 +378,29 @@ export function StoreDashboard({
     URL.revokeObjectURL(url);
   };
 
+  // A2 — payout automation: schedule selector + per-payout invoice CSV.
+  const utils = api.useUtils();
+  const setScheduleMut = api.vendorPortal.setPayoutSchedule.useMutation({
+    onSuccess: () => {
+      void utils.vendorPortal.earnings.invalidate();
+    },
+  });
+  const setSlaMut = api.vendorPortal.setFulfillmentSla.useMutation({
+    onSuccess: () => {
+      void utils.vendorPortal.dashboard.invalidate();
+    },
+  });
+  const downloadInvoice = async (payoutId: number) => {
+    const data = await utils.vendorPortal.payoutInvoice.fetch({ payoutId, locale });
+    const blob = new Blob(['﻿', data.csv], { type: 'text/csv;charset=utf-8' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `payout-${payoutId}.csv`;
+    a.click();
+    URL.revokeObjectURL(url);
+  };
+
   // A3 — tab state, deep-linkable via ?tab=<key>.
   const [tab, setTab] = useState<TabKey>('overview');
   useEffect(() => {
@@ -381,17 +413,24 @@ export function StoreDashboard({
     window.history.replaceState(null, '', url);
   };
 
+  // A1 — capability-filtered tabs: owners keep the full bar; staff see only
+  // what their permission list unlocks.
   const tabs = [
     { key: 'overview', label: t('vendorPortal.tab.overview') },
-    { key: 'orders', label: t('vendorPortal.orders.title') },
-    { key: 'products', label: t('vendorPortal.tab.products') },
-    { key: 'deals', label: t('vendorPortal.tab.deals') },
-    { key: 'coupons', label: t('vendorPortal.tab.coupons') },
-    { key: 'earnings', label: t('vendorPortal.tab.earnings') },
-    { key: 'analytics', label: t('vendorPortal.tab.analytics') },
-    { key: 'reviews', label: t('vendorPortal.tab.reviews') },
-    { key: 'customers', label: t('vendorPortal.tab.customers') },
+    ...(can('ORDERS_MANAGE') ? [{ key: 'orders', label: t('vendorPortal.orders.title') }] : []),
+    ...(can('PRODUCTS_MANAGE') ? [{ key: 'products', label: t('vendorPortal.tab.products') }] : []),
+    ...(can('DEALS_MANAGE') ? [{ key: 'deals', label: t('vendorPortal.tab.deals') }] : []),
+    ...(can('COUPONS_MANAGE') ? [{ key: 'coupons', label: t('vendorPortal.tab.coupons') }] : []),
+    ...(can('PAYOUTS_VIEW') ? [{ key: 'earnings', label: t('vendorPortal.tab.earnings') }] : []),
+    ...(can('ANALYTICS_VIEW')
+      ? [{ key: 'analytics', label: t('vendorPortal.tab.analytics') }]
+      : []),
+    ...(can('REVIEWS_MANAGE') ? [{ key: 'reviews', label: t('vendorPortal.tab.reviews') }] : []),
+    ...(can('CUSTOMERS_VIEW')
+      ? [{ key: 'customers', label: t('vendorPortal.tab.customers') }]
+      : []),
     { key: 'inbox', label: t('vendorPortal.inbox.title'), badge: unread },
+    ...(can('STAFF_MANAGE') ? [{ key: 'staff', label: t('vendorPortal.tab.staff') }] : []),
   ];
 
   // The dashboard query's non-owner branch returns {}, so narrow the union.
@@ -452,6 +491,48 @@ export function StoreDashboard({
 
             {/* G2 — approval status & resubmission timeline. */}
             {!store.isVerified && <SubmissionStatusCard />}
+
+            {/* A3 — fulfillment SLA: on-time rate + window selector. */}
+            <Card padding="md">
+              <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+                <div>
+                  <h3 className="text-sm font-semibold">{t('vendorPortal.sla.title')}</h3>
+                  <p className="mt-1 text-xs text-text-secondary">
+                    {t('vendorPortal.sla.onTimeRate')}:{' '}
+                    <span className="font-bold text-text-primary">
+                      {dash?.sla?.onTimeRate ?? 100}%
+                    </span>
+                    {' · '}
+                    {t('vendorPortal.sla.breached')}:{' '}
+                    <span
+                      className={
+                        (dash?.sla?.breached30d ?? 0) > 0
+                          ? 'font-bold text-red-600 dark:text-red-400'
+                          : 'font-bold'
+                      }
+                    >
+                      {dash?.sla?.breached30d ?? 0}
+                    </span>
+                  </p>
+                </div>
+                <label className="flex items-center gap-2 text-sm">
+                  <span className="text-text-secondary">{t('vendorPortal.sla.window')}</span>
+                  <select
+                    data-testid="sla-window-select"
+                    value={dash?.sla?.windowHours ?? 48}
+                    onChange={(e) => setSlaMut.mutate({ hours: Number(e.target.value) })}
+                    disabled={setSlaMut.isPending}
+                    className="rounded-md border border-border bg-surface px-2 py-1.5 text-sm"
+                  >
+                    {[12, 24, 48, 72, 120, 168].map((h) => (
+                      <option key={h} value={h}>
+                        {h}
+                      </option>
+                    ))}
+                  </select>
+                </label>
+              </div>
+            </Card>
 
             {/* D3 — store advisor (rule-based v1, no LLM). */}
             {(advisorQ.data ?? []).length > 0 && (
@@ -613,6 +694,14 @@ export function StoreDashboard({
                                 ? t('vendorPortal.orders.cancelled')
                                 : t('vendorPortal.orders.pending')}
                           </span>
+                          {o.slaBreachedAt && o.status === 'PENDING_FULFILLMENT' && (
+                            <span
+                              data-testid={`order-sla-late-${o.id}`}
+                              className="rounded-full bg-red-100 px-2 py-0.5 text-xs font-medium text-red-700 dark:bg-red-950 dark:text-red-300"
+                            >
+                              {t('vendorPortal.sla.lateChip')}
+                            </span>
+                          )}
                           <Button size="sm" variant="outline" onClick={() => setDetailOrder(o)}>
                             {t('vendorPortal.orders.details')}
                           </Button>
@@ -712,6 +801,16 @@ export function StoreDashboard({
                           )}
                         </span>
                       </div>
+                      {/* A4 — dispute SLA: escalated flag once the 48h
+                          response deadline passes without a reply. */}
+                      {detailOrder.dispute.escalatedAt && (
+                        <p
+                          data-testid={`dispute-escalated-${detailOrder.dispute.id}`}
+                          className="text-xs font-semibold text-red-700 dark:text-red-300"
+                        >
+                          {t('vendorPortal.disputes.escalated')}
+                        </p>
+                      )}
                       <p className="text-xs text-text-secondary">
                         <span className="font-semibold">{t('vendorPortal.disputes.reason')}: </span>
                         {detailOrder.dispute.reason}
@@ -1160,6 +1259,40 @@ export function StoreDashboard({
                 {t('vendorPortal.earnings.export')}
               </Button>
             </div>
+            {/* A2 — payout automation: cadence selector + sweep status. */}
+            <Card padding="md">
+              <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+                <div>
+                  <p className="text-sm font-medium">{t('vendorPortal.earnings.schedule')}</p>
+                  <p className="mt-0.5 text-xs text-text-secondary">
+                    {earnings?.payoutSchedule === 'MANUAL'
+                      ? t('vendorPortal.earnings.manualHint')
+                      : earnings?.lastPayoutRunAt
+                        ? t('vendorPortal.earnings.lastRun', {
+                            date: new Date(earnings.lastPayoutRunAt).toLocaleDateString(
+                              locale === 'ar' ? 'ar-SA' : 'en-GB',
+                            ),
+                          })
+                        : t('vendorPortal.earnings.firstRunPending')}
+                  </p>
+                </div>
+                <select
+                  data-testid="payout-schedule-select"
+                  value={earnings?.payoutSchedule ?? 'MANUAL'}
+                  onChange={(e) =>
+                    setScheduleMut.mutate({
+                      schedule: e.target.value as 'MANUAL' | 'WEEKLY' | 'MONTHLY',
+                    })
+                  }
+                  disabled={setScheduleMut.isPending}
+                  className="rounded-md border border-border bg-surface px-3 py-2 text-sm"
+                >
+                  <option value="MANUAL">{t('vendorPortal.earnings.scheduleManual')}</option>
+                  <option value="WEEKLY">{t('vendorPortal.earnings.scheduleWeekly')}</option>
+                  <option value="MONTHLY">{t('vendorPortal.earnings.scheduleMonthly')}</option>
+                </select>
+              </div>
+            </Card>
             <div className="grid gap-4 sm:grid-cols-4">
               <Card padding="md" className="text-center">
                 <p className="text-2xl font-bold">
@@ -1236,6 +1369,15 @@ export function StoreDashboard({
                                   : 'vendorPortal.earnings.status.pending',
                           )}
                         </span>
+                        <Button
+                          size="sm"
+                          variant="ghost"
+                          className="mt-1"
+                          onClick={() => downloadInvoice(r.id)}
+                          data-testid={`payout-invoice-${r.id}`}
+                        >
+                          {t('vendorPortal.earnings.invoice')}
+                        </Button>
                       </div>
                     </div>
                   ))}
@@ -1721,6 +1863,18 @@ export function StoreDashboard({
                 })}
               </Card>
             )}
+          </div>
+        )}
+
+        {tab === 'staff' && (
+          <div
+            role="tabpanel"
+            id="vendor-panel-staff"
+            data-testid="vendor-panel-staff"
+            aria-labelledby="vendor-tab-staff"
+          >
+            {/* A1 — team management: invite, permissions, revoke, audit feed. */}
+            <StaffPanel />
           </div>
         )}
 
