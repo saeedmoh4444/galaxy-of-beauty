@@ -7,11 +7,15 @@ import { ErrorBoundary } from '@/components/ErrorBoundary';
 import { ToastProvider } from '@/components/Toast';
 import { TRPCProvider } from '@/lib/trpc-react';
 import { loadAuthToken } from '@/lib/authToken';
+import { useNotifications } from '@/hooks/useNotifications';
 import { LocaleProvider, useLocale } from '@/components/LocaleProvider';
 import { ThemeProvider } from '@/components/ThemeProvider';
 
 function RootNavigator() {
   const { t } = useLocale();
+  // E2 — push tap routing (deep links) must be registered at startup so
+  // cold-start notification taps reach the order detail screen.
+  useNotifications();
   useEffect(() => {
     // Restore the persisted access token so authenticated screens work after restart
     void loadAuthToken();
