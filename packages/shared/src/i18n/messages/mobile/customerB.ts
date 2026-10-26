@@ -185,6 +185,19 @@ export const mobileCustomerBMessages = {
     ar: 'فشل تحميل الأرباح',
     en: 'Failed to load earnings',
   },
+  // ---- vendor-portal socials (Wave E4b) ----
+  'mobile.vendorPortal.socials.title': { ar: 'روابط التواصل', en: 'Social links' },
+  'mobile.vendorPortal.socials.hint': {
+    ar: 'أضيفي روابط حسابات متجرك — اتركي الحقل فارغاً لإزالة الرابط.',
+    en: 'Add your store account links — leave a field empty to remove it.',
+  },
+  'mobile.vendorPortal.socials.save': { ar: 'حفظ', en: 'Save' },
+  'mobile.vendorPortal.socials.saved': { ar: 'تم حفظ الروابط', en: 'Links saved' },
+  'mobile.vendorPortal.socials.saveError': {
+    ar: 'فشل الحفظ — تأكدي من صحة الرابط (يبدأ بـ https://)',
+    en: 'Save failed — check the URL (must start with https://)',
+  },
+  'mobile.vendorPortal.socials.loadError': { ar: 'فشل تحميل الروابط', en: 'Failed to load links' },
 
   // ---- tech-onboarding ----
   'mobile.techOnboarding.title': {
