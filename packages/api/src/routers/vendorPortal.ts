@@ -12,6 +12,7 @@ import type { CsvImportReport } from '../workers/handlers';
 import { noonUtcDay, advisorRulesForVendor } from '../workers/handlers';
 import { KSA_SEASONS, seasonMarkers } from '../lib/ksaCalendar';
 import { computeStoreHealthScore, gatherStoreHealthFactors } from '../lib/storeHealth';
+import { forecastFromSales, type StockForecast } from '../lib/stockForecast';
 import { weekBucketStart, weeklyTrendLabels } from '../lib/reviewTrend';
 import { requestProductReviews } from '../lib/storeReviewRequests';
 
@@ -531,6 +532,81 @@ export const vendorPortalRouter = router({
         data: { isActive: false },
       });
       return { success: true };
+    }),
+
+  // ---------------------------------------------------------------------------
+  // C2 — inventory v2 (Wave C)
+  // ---------------------------------------------------------------------------
+
+  /** bulkStockUpdate — spreadsheet-style stock editor. All-or-nothing: a
+   *  foreign product in the batch rejects the WHOLE batch (NOT_FOUND), so
+   *  a mixed selection can never half-apply. */
+  bulkStockUpdate: customerProcedure
+    .input(
+      z.object({
+        updates: z
+          .array(
+            z.object({ productId: z.number().int().positive(), stock: z.number().int().min(0) }),
+          )
+          .min(1)
+          .max(50),
+      }),
+    )
+    .mutation(async ({ ctx, input }) => {
+      const vendor = await vendorForStaff(ctx, 'PRODUCTS_MANAGE');
+      const ids = input.updates.map((u) => u.productId);
+      const owned = await prisma.product.count({
+        where: { id: { in: ids }, vendorId: vendor.id },
+      });
+      if (owned !== ids.length) {
+        throw new TRPCError({ code: 'NOT_FOUND', message: 'One or more products not found' });
+      }
+      await prisma.$transaction(
+        input.updates.map((u) =>
+          prisma.product.update({ where: { id: u.productId }, data: { stock: u.stock } }),
+        ),
+      );
+      return input.updates;
+    }),
+
+  /** stockForecasts — 30-day sales velocity + days-at-stock per product
+   *  from VendorDailyStat.productSales. Foreign ids are ignored (the UI
+   *  sends only its own rows). */
+  stockForecasts: customerProcedure
+    .input(z.object({ productIds: z.array(z.number().int().positive()).min(1).max(100) }))
+    .query(async ({ ctx, input }) => {
+      const vendor = await vendorForStaffQuery(ctx, 'PRODUCTS_MANAGE');
+      if (!vendor) return {};
+      const owned = await prisma.product.findMany({
+        where: { id: { in: input.productIds }, vendorId: vendor.id },
+        select: { id: true, stock: true },
+      });
+      if (owned.length === 0) return {};
+
+      const since = new Date(Date.now() - 30 * 24 * 60 * 60 * 1000);
+      const stats = await prisma.vendorDailyStat.findMany({
+        where: { vendorId: vendor.id, day: { gte: since } },
+        select: { productSales: true },
+      });
+      const quantities = new Map<number, number>();
+      for (const row of stats) {
+        const sales = (row.productSales as Array<{ productId?: number; quantity?: number }>) ?? [];
+        for (const sale of sales) {
+          if (sale.productId) {
+            quantities.set(
+              sale.productId,
+              (quantities.get(sale.productId) ?? 0) + (sale.quantity ?? 0),
+            );
+          }
+        }
+      }
+      const forecasts: Record<number, StockForecast> = {};
+      for (const p of owned) {
+        // The helper divides by the 30-day window — passing the summed
+        // quantity is equivalent to summing per-day quantities.
+        forecasts[p.id] = forecastFromSales([quantities.get(p.id) ?? 0], p.stock);
+      }
+      return forecasts;
     }),
 
   // ---------------------------------------------------------------------------
