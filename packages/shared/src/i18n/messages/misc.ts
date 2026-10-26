@@ -4116,6 +4116,28 @@ export const miscMessages = {
   'vendorPortal.customers.total': { ar: 'إجمالي العملاء', en: 'Total customers' },
   'vendorPortal.customers.repeaters': { ar: 'عملاء متكررون', en: 'Repeat customers' },
   'vendorPortal.customers.rate': { ar: 'نسبة التكرار', en: 'Repeat rate' },
+  // B4 — win-back toolkit.
+  'vendorPortal.customers.winback.title': { ar: 'استرجاع العملاء', en: 'Win-back customers' },
+  'vendorPortal.customers.winback.hint': {
+    ar: 'قوالب جاهزة فقط — إرسال واحد لكل عميلة كل ١٤ يوماً، مع احترام إلغاء الاشتراك.',
+    en: 'Pre-approved templates only — one send per customer per 14 days, opt-outs respected.',
+  },
+  'vendorPortal.customers.winback.restocked': {
+    ar: 'أعدنا توفير منتجك',
+    en: 'We restocked your product',
+  },
+  'vendorPortal.customers.winback.onOffer': {
+    ar: 'عروض على مفضلاتك',
+    en: 'Offers on your favorites',
+  },
+  'vendorPortal.customers.winback.send': {
+    ar: 'إرسال إلى {count}',
+    en: 'Send to {count}',
+  },
+  'vendorPortal.customers.winback.result': {
+    ar: 'أُرسل {sent} · تم التخطي {skipped}',
+    en: 'Sent {sent} · Skipped {skipped}',
+  },
   'vendorPortal.customers.empty': {
     ar: 'لا توجد طلبات على متجرك بعد',
     en: 'No orders on your store yet',

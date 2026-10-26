@@ -189,6 +189,7 @@ model User {
   achievements      UserAchievement[]
   vendorStaff       VendorStaff?
   staffActions      StaffActivityLog[]
+  winbackReceived   WinbackLog[]
   referralsMade     Referral[]         @relation("ReferralsMade")
   referralsReceived Referral[]         @relation("ReferralsReceived")
   referralPrizes    ReferralPrize[]
@@ -1621,6 +1622,7 @@ model Vendor {
   trainerSessions     TrainerSession[]
   staffMembers        VendorStaff[]
   staffActivity       StaffActivityLog[]
+  winbackLogs         WinbackLog[]
 
   @@index([storeSlug])
   @@index([isVerified, isActive])
@@ -1671,6 +1673,24 @@ model StaffActivityLog {
 
   @@index([vendorId, createdAt])
   @@map("staff_activity_logs")
+}
+
+// B4 — win-back toolkit (PROFESSIONALIZATION Wave B): the per-pair
+// send ledger that enforces the 14-day rate limit. Pre-approved
+// templates only; the promotions preference gate handles opt-outs.
+model WinbackLog {
+  id         Int      @id @default(autoincrement())
+  vendorId   Int
+  customerId Int
+  template   String // restocked | on_offer
+  createdAt  DateTime @default(now())
+
+  vendor   Vendor @relation(fields: [vendorId], references: [id], onDelete: Cascade)
+  customer User   @relation(fields: [customerId], references: [id], onDelete: Cascade)
+
+  @@index([vendorId, customerId, createdAt])
+  @@index([customerId, createdAt])
+  @@map("winback_logs")
 }
 
 // E2 — clinic consultation slots (clinic-managed, claimed by consultations).

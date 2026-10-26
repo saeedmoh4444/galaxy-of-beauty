@@ -5221,6 +5221,13 @@ export const enWebMessages: Record<string, string> = {
   'vendorPortal.customers.empty': 'No orders on your store yet',
   'vendorPortal.customers.orders': '{count} orders',
   'vendorPortal.customers.rate': 'Repeat rate',
+  'vendorPortal.customers.winback.title': 'Win-back customers',
+  'vendorPortal.customers.winback.hint':
+    'Pre-approved templates only — one send per customer per 14 days, opt-outs respected.',
+  'vendorPortal.customers.winback.restocked': 'We restocked your product',
+  'vendorPortal.customers.winback.onOffer': 'Offers on your favorites',
+  'vendorPortal.customers.winback.send': 'Send to {count}',
+  'vendorPortal.customers.winback.result': 'Sent {sent} · Skipped {skipped}',
   'vendorPortal.customers.repeat': 'Repeat',
   'vendorPortal.customers.repeaters': 'Repeat customers',
   'vendorPortal.customers.title': 'Your repeat customers',
