@@ -81,6 +81,15 @@ export default function VendorPortalScreen(): JSX.Element {
         ) : null}
         <Text style={styles.ordersArrow}>›</Text>
       </TouchableOpacity>
+      {/* E4 — earnings glance: pending/processed nets + payout schedule. */}
+      <TouchableOpacity
+        style={styles.earningsRow}
+        onPress={() => router.push('/vendor-portal/earnings')}
+      >
+        <Text style={styles.earningsEmoji}>💰</Text>
+        <Text style={styles.earningsLabel}>{t('mobile.vendorPortal.earnings.title')}</Text>
+        <Text style={styles.earningsArrow}>›</Text>
+      </TouchableOpacity>
       {products.map((p) => (
         <View key={p.id} style={styles.card}>
           <Text style={styles.em}>🧴</Text>
@@ -131,6 +140,18 @@ const styles = StyleSheet.create({
     overflow: 'hidden',
   },
   ordersArrow: { fontSize: 20, color: '#9ca3af' },
+  earningsRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 10,
+    backgroundColor: '#fff',
+    borderRadius: 14,
+    padding: 14,
+    marginBottom: 16,
+  },
+  earningsEmoji: { fontSize: 22 },
+  earningsLabel: { flex: 1, fontSize: 14, fontWeight: '700', color: '#111827' },
+  earningsArrow: { fontSize: 20, color: '#9ca3af' },
   card: {
     flexDirection: 'row',
     alignItems: 'center',
