@@ -214,6 +214,8 @@ export async function notifyOrderPlaced(
         templateKey: 'store_order_placed',
         vars: { orderId: order.id, total: order.totalAmount },
         link: '/store?tab=orders',
+        // E2 — the mobile push tap deep-links to the order detail.
+        data: { type: 'store_order_placed', orderId: String(order.id) },
         channels: ['in_app'],
       });
     } catch {
