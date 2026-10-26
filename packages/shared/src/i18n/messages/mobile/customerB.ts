@@ -123,6 +123,40 @@ export const mobileCustomerBMessages = {
     ar: 'أضيفي نبذة عن متجرك من لوحة التحكم على الويب',
     en: 'Add a store bio from the web dashboard',
   },
+  // ---- vendor-portal orders (Wave E2) ----
+  'mobile.vendorPortal.orders.title': { ar: 'الطلبات', en: 'Orders' },
+  'mobile.vendorPortal.orders.empty': { ar: 'لا توجد طلبات بعد', en: 'No orders yet' },
+  'mobile.vendorPortal.orders.emptyDescription': {
+    ar: 'ستظهر طلبات متجرك هنا فور وصولها',
+    en: 'Your store orders will appear here as they arrive',
+  },
+  'mobile.vendorPortal.orders.pending': { ar: 'قيد التنفيذ', en: 'Pending' },
+  'mobile.vendorPortal.orders.fulfilled': { ar: 'منفّذ', en: 'Fulfilled' },
+  'mobile.vendorPortal.orders.cancelled': { ar: 'ملغي', en: 'Cancelled' },
+  'mobile.vendorPortal.orders.late': { ar: 'متأخر', en: 'Late' },
+  'mobile.vendorPortal.orders.fulfill': { ar: 'تنفيذ', en: 'Fulfill' },
+  'mobile.vendorPortal.orders.cancel': { ar: 'إلغاء', en: 'Cancel' },
+  'mobile.vendorPortal.orders.cancelConfirm': { ar: 'إلغاء هذا الطلب؟', en: 'Cancel this order?' },
+  'mobile.vendorPortal.orders.cancelConfirmBody': {
+    ar: 'سيُسترجع المخزون وتُعاد المبالغ المدفوعة عبر المحفظة.',
+    en: 'Stock is restored and wallet payments are refunded.',
+  },
+  'mobile.vendorPortal.orders.keep': { ar: 'إبقاء الطلب', en: 'Keep order' },
+  'mobile.vendorPortal.orders.total': { ar: '{amount} ر.س', en: '{amount} SAR' },
+  'mobile.vendorPortal.orders.error': { ar: 'فشل تحميل الطلبات', en: 'Failed to load orders' },
+  // ---- vendor-portal order detail (Wave E2b) ----
+  'mobile.vendorPortal.orderDetail.title': { ar: 'طلب #{id}', en: 'Order #{id}' },
+  'mobile.vendorPortal.orderDetail.back': { ar: '‹ رجوع للطلبات', en: '‹ Back to orders' },
+  'mobile.vendorPortal.orderDetail.items': { ar: 'الأصناف', en: 'Items' },
+  'mobile.vendorPortal.orderDetail.customer': { ar: 'العميلة', en: 'Customer' },
+  'mobile.vendorPortal.orderDetail.contact': { ar: 'مراسلة واتساب', en: 'WhatsApp' },
+  'mobile.vendorPortal.orderDetail.dispute': { ar: 'نزاع على الطلب', en: 'Order dispute' },
+  'mobile.vendorPortal.orderDetail.disputeReason': { ar: 'السبب', en: 'Reason' },
+  'mobile.vendorPortal.orderDetail.loadError': {
+    ar: 'فشل تحميل الطلب',
+    en: 'Failed to load order',
+  },
+  'mobile.vendorPortal.orderDetail.notFound': { ar: 'الطلب غير موجود', en: 'Order not found' },
   // ---- vendor-portal socials (Wave E4b) ----
   'mobile.vendorPortal.socials.title': { ar: 'روابط التواصل', en: 'Social links' },
   'mobile.vendorPortal.socials.hint': {

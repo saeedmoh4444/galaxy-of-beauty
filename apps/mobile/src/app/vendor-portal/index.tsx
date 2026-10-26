@@ -69,6 +69,18 @@ export default function VendorPortalScreen(): JSX.Element {
           <Text style={styles.kl}>{t('mobile.vendorPortal.sar')}</Text>
         </View>
       </View>
+      {/* E2 — orders entry: the daily run loop (list + fulfill/cancel). */}
+      <TouchableOpacity
+        style={styles.ordersRow}
+        onPress={() => router.push('/vendor-portal/orders')}
+      >
+        <Text style={styles.ordersEmoji}>📦</Text>
+        <Text style={styles.ordersLabel}>{t('mobile.vendorPortal.orders.title')}</Text>
+        {(dash?.pendingOrders ?? 0) > 0 ? (
+          <Text style={styles.ordersBadge}>{dash?.pendingOrders}</Text>
+        ) : null}
+        <Text style={styles.ordersArrow}>›</Text>
+      </TouchableOpacity>
       {/* E4b — social links editable from the phone (B6 fields). */}
       <TouchableOpacity
         style={styles.socialsRow}
@@ -106,6 +118,28 @@ const styles = StyleSheet.create({
   ke: { fontSize: 28, marginBottom: 4 },
   kv: { fontSize: 22, fontWeight: '800', color: '#111827' },
   kl: { fontSize: 11, color: '#9ca3af' },
+  ordersRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 10,
+    backgroundColor: '#fff',
+    borderRadius: 14,
+    padding: 14,
+    marginBottom: 16,
+  },
+  ordersEmoji: { fontSize: 22 },
+  ordersLabel: { flex: 1, fontSize: 14, fontWeight: '700', color: '#111827' },
+  ordersBadge: {
+    fontSize: 12,
+    fontWeight: '800',
+    color: '#fff',
+    backgroundColor: '#7c3aed',
+    borderRadius: 10,
+    paddingHorizontal: 8,
+    paddingVertical: 2,
+    overflow: 'hidden',
+  },
+  ordersArrow: { fontSize: 20, color: '#9ca3af' },
   socialsRow: {
     flexDirection: 'row',
     alignItems: 'center',

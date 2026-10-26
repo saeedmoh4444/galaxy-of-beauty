@@ -43,6 +43,9 @@ export interface NotificationJob {
   bodyAr: string;
   bodyEn: string;
   channels: string[]; // ['email', 'sms', 'push', 'in_app']
+  link?: string;
+  /** E2 — push deep-link payload (Expo notification content.data). */
+  data?: Record<string, string>;
   idempotencyKey?: string;
   /** B.26: notifyUser() already created the in-app row — skip it here. */
   skipInApp?: boolean;
@@ -157,6 +160,7 @@ export async function handleNotificationJob(job: Job<NotificationJob>): Promise<
       await sendPushToUser(userId, {
         title: user.preferredLanguage === 'en' ? titleEn : titleAr,
         body: user.preferredLanguage === 'en' ? bodyEn : bodyAr,
+        data: job.data.data,
       });
     }
     // 6.5 WhatsApp — Cloud API when configured; silent no-op otherwise
