@@ -114,6 +114,15 @@ export const mobileCustomerBMessages = {
   'mobile.vendorPortal.title': { ar: 'بوابة البائعين', en: 'Vendor Portal' },
   'mobile.vendorPortal.products': { ar: 'منتجات', en: 'Products' },
   'mobile.vendorPortal.sar': { ar: 'ر.س', en: 'SAR' },
+  // ---- vendor-portal seller home (Wave E1) ----
+  'mobile.vendorPortal.health': { ar: 'صحة المتجر', en: 'Store Health' },
+  'mobile.vendorPortal.verified': { ar: 'متجر موثّق', en: 'Verified store' },
+  'mobile.vendorPortal.viewStorefront': { ar: 'عرض متجري', en: 'View my storefront' },
+  'mobile.vendorPortal.reviews': { ar: '{count} تقييم', en: '{count} reviews' },
+  'mobile.vendorPortal.noBio': {
+    ar: 'أضيفي نبذة عن متجرك من لوحة التحكم على الويب',
+    en: 'Add a store bio from the web dashboard',
+  },
   // ---- vendor-portal socials (Wave E4b) ----
   'mobile.vendorPortal.socials.title': { ar: 'روابط التواصل', en: 'Social links' },
   'mobile.vendorPortal.socials.hint': {
