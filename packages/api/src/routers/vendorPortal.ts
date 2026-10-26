@@ -534,6 +534,123 @@ export const vendorPortalRouter = router({
     }),
 
   // ---------------------------------------------------------------------------
+  // C1 — product variants (Wave C)
+  // ---------------------------------------------------------------------------
+
+  /** variants — the caller's variants for one of their products. */
+  variants: customerProcedure
+    .input(z.object({ productId: z.number().int().positive() }))
+    .query(async ({ ctx, input }) => {
+      const vendor = await vendorForStaffQuery(ctx, 'PRODUCTS_MANAGE');
+      if (!vendor) return [];
+      const product = await prisma.product.findFirst({
+        where: { id: input.productId, vendorId: vendor.id },
+        select: { id: true },
+      });
+      if (!product) return [];
+      return prisma.productVariant.findMany({
+        where: { productId: input.productId },
+        orderBy: { id: 'asc' },
+      });
+    }),
+
+  /** addVariant — create a size/shade/pack option. Ownership-guarded via
+   *  the product; the price delta must keep the final price non-negative. */
+  addVariant: customerProcedure
+    .input(
+      z.object({
+        productId: z.number().int().positive(),
+        nameAr: z.string().min(1).max(120),
+        nameEn: z.string().min(1).max(120),
+        sku: z.string().max(60).optional(),
+        priceDelta: z.number().default(0),
+        stock: z.number().int().min(0).default(0),
+        lowStockThreshold: z.number().int().min(1).default(5),
+      }),
+    )
+    .mutation(async ({ ctx, input }) => {
+      const vendor = await vendorForStaff(ctx, 'PRODUCTS_MANAGE');
+      const product = await prisma.product.findFirst({
+        where: { id: input.productId, vendorId: vendor.id },
+        select: { id: true, price: true },
+      });
+      if (!product) throw new TRPCError({ code: 'NOT_FOUND', message: 'Product not found' });
+
+      if (Number(product.price) + input.priceDelta < 0) {
+        throw new TRPCError({ code: 'BAD_REQUEST', message: 'Price delta below product price' });
+      }
+
+      return prisma.productVariant.create({
+        data: {
+          productId: input.productId,
+          nameJson: { ar: input.nameAr, en: input.nameEn },
+          sku: input.sku,
+          priceDelta: input.priceDelta,
+          stock: input.stock,
+          lowStockThreshold: input.lowStockThreshold,
+        },
+      });
+    }),
+
+  /** updateVariant — partial edit; nameJson merges per language. */
+  updateVariant: customerProcedure
+    .input(
+      z.object({
+        variantId: z.number().int().positive(),
+        nameAr: z.string().min(1).max(120).optional(),
+        nameEn: z.string().min(1).max(120).optional(),
+        sku: z.string().max(60).optional(),
+        priceDelta: z.number().optional(),
+        stock: z.number().int().min(0).optional(),
+        lowStockThreshold: z.number().int().min(1).optional(),
+        isActive: z.boolean().optional(),
+      }),
+    )
+    .mutation(async ({ ctx, input }) => {
+      const vendor = await vendorForStaff(ctx, 'PRODUCTS_MANAGE');
+      const variant = await prisma.productVariant.findFirst({
+        where: { id: input.variantId, product: { vendorId: vendor.id } },
+        include: { product: { select: { price: true } } },
+      });
+      if (!variant) throw new TRPCError({ code: 'NOT_FOUND', message: 'Variant not found' });
+
+      if (input.priceDelta !== undefined && Number(variant.product.price) + input.priceDelta < 0) {
+        throw new TRPCError({ code: 'BAD_REQUEST', message: 'Price delta below product price' });
+      }
+
+      const existing = (variant.nameJson as { ar?: string; en?: string } | null) ?? {};
+      return prisma.productVariant.update({
+        where: { id: input.variantId },
+        data: {
+          nameJson: {
+            ar: input.nameAr ?? existing.ar ?? '',
+            en: input.nameEn ?? existing.en ?? '',
+          },
+          sku: input.sku,
+          priceDelta: input.priceDelta,
+          stock: input.stock,
+          lowStockThreshold: input.lowStockThreshold,
+          isActive: input.isActive,
+        },
+      });
+    }),
+
+  /** deleteVariant — hard delete (cart lines cascade; order items keep
+   *  their snapshots via SetNull). */
+  deleteVariant: customerProcedure
+    .input(z.object({ variantId: z.number().int().positive() }))
+    .mutation(async ({ ctx, input }) => {
+      const vendor = await vendorForStaff(ctx, 'PRODUCTS_MANAGE');
+      const deleted = await prisma.productVariant.deleteMany({
+        where: { id: input.variantId, product: { vendorId: vendor.id } },
+      });
+      if (deleted.count === 0) {
+        throw new TRPCError({ code: 'NOT_FOUND', message: 'Variant not found' });
+      }
+      return { success: true };
+    }),
+
+  // ---------------------------------------------------------------------------
   // C1 — product editor pro
   // ---------------------------------------------------------------------------
 

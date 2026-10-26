@@ -111,21 +111,64 @@ export const marketplaceRouter = router({
 
   addToCart: customerProcedure
     .input(
-      z.object({ productId: z.number().int().positive(), quantity: z.number().min(1).default(1) }),
+      z.object({
+        productId: z.number().int().positive(),
+        quantity: z.number().min(1).default(1),
+        // C1 — optional variant line; must belong to the product.
+        variantId: z.number().int().positive().optional(),
+      }),
     )
     .mutation(async ({ ctx, input }) => {
-      return prisma.cartItem.upsert({
-        where: { userId_productId: { userId: ctx.user.id, productId: input.productId } },
-        update: { quantity: { increment: input.quantity } },
-        create: { userId: ctx.user.id, productId: input.productId, quantity: input.quantity },
+      if (input.variantId !== undefined) {
+        const variant = await prisma.productVariant.findFirst({
+          where: { id: input.variantId, productId: input.productId, isActive: true },
+          select: { id: true },
+        });
+        if (!variant) {
+          throw new TRPCError({ code: 'BAD_REQUEST', message: 'Variant not found for product' });
+        }
+      }
+      // C1 — merge duplicate adds via findFirst: Prisma types nullable
+      // compound-unique fields as non-null, so the cart has no unique on
+      // (userId, productId, variantId) — see the schema note.
+      const existing = await prisma.cartItem.findFirst({
+        where: {
+          userId: ctx.user.id,
+          productId: input.productId,
+          variantId: input.variantId ?? null,
+        },
+        select: { id: true },
+      });
+      if (existing) {
+        return prisma.cartItem.update({
+          where: { id: existing.id },
+          data: { quantity: { increment: input.quantity } },
+        });
+      }
+      return prisma.cartItem.create({
+        data: {
+          userId: ctx.user.id,
+          productId: input.productId,
+          variantId: input.variantId ?? null,
+          quantity: input.quantity,
+        },
       });
     }),
 
   removeFromCart: protectedProcedure
-    .input(z.object({ productId: z.number().int().positive() }))
+    .input(
+      z.object({
+        productId: z.number().int().positive(),
+        variantId: z.number().int().positive().optional(),
+      }),
+    )
     .mutation(async ({ ctx, input }) => {
       await prisma.cartItem.deleteMany({
-        where: { userId: ctx.user.id, productId: input.productId },
+        where: {
+          userId: ctx.user.id,
+          productId: input.productId,
+          variantId: input.variantId ?? null,
+        },
       });
       return { success: true };
     }),
