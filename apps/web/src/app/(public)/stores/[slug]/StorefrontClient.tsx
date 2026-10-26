@@ -18,6 +18,7 @@ import {
 } from '@galaxy/ui';
 import { useLocale } from '@/components/LocaleProvider';
 import { localize } from '@galaxy/shared';
+import { SocialIcons } from '@/components/vendor/shared/SocialIcons';
 
 export interface StorefrontPageData {
   store: {
@@ -30,6 +31,7 @@ export interface StorefrontPageData {
     isVerified: boolean;
     ratingAvg: number | null;
     totalReviews: number;
+    socialLinks: Record<string, string> | null;
   } | null;
   products: Array<Record<string, unknown>>;
   productCount: number;
@@ -153,6 +155,8 @@ export function StorefrontClient({ data }: { data: StorefrontPageData }): JSX.El
                 : []),
             ]}
           />
+          {/* B6 — social presence (only networks the vendor set). */}
+          <SocialIcons links={store.socialLinks} className="mt-3" />
         </div>
       </div>
 
