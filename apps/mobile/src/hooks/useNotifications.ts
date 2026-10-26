@@ -9,12 +9,14 @@
 
 import { useState, useEffect, useCallback } from 'react';
 import { Platform } from 'react-native';
+import { router } from 'expo-router';
+import { notificationRoute } from '@/utils/vendorOrders';
 
 interface NotificationResponse {
   notification?: {
     request?: {
       content?: {
-        data?: { bookingId?: number; type?: string };
+        data?: { bookingId?: number; type?: string; orderId?: string };
       };
     };
   };
@@ -86,9 +88,11 @@ export function useNotifications() {
     const sub = Notifications.addNotificationReceivedListener(() => {});
     const tapSub = Notifications.addNotificationResponseReceivedListener(
       (response: NotificationResponse) => {
+        // E2 — push deep links: store_order_placed opens the order detail.
         const data = response?.notification?.request?.content?.data;
-        if (data?.bookingId) {
-          /* navigate to booking detail */
+        const route = notificationRoute(data);
+        if (route) {
+          router.push(route as never);
         }
       },
     );

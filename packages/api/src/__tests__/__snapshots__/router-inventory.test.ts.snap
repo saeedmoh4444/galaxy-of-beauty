@@ -1079,6 +1079,7 @@ vendorPortal.nailBarCapacity	query	customer
 vendorPortal.nailBarSlots.add	mutation	customer
 vendorPortal.nailBarSlots.list	query	customer
 vendorPortal.nailBarSlots.remove	mutation	customer
+vendorPortal.orderDetail	query	customer
 vendorPortal.orders	query	customer
 vendorPortal.payoutInvoice	query	customer
 vendorPortal.proposeClinicPackage	mutation	customer
