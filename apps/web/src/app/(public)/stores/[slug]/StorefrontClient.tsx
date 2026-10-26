@@ -33,6 +33,18 @@ export interface StorefrontPageData {
     totalReviews: number;
     socialLinks: Record<string, string> | null;
     tierBadges: Array<'top_rated' | 'fast_fulfillment' | 'responsive_seller'>;
+    recentReviews: Array<{
+      id: number;
+      rating: number;
+      comment: string;
+      createdAt: string;
+      replied: boolean;
+      replyAr: string;
+      replyEn: string;
+      productNameAr: string;
+      productNameEn: string;
+      customerName: string;
+    }>;
   } | null;
   products: Array<Record<string, unknown>>;
   productCount: number;
@@ -234,6 +246,39 @@ export function StorefrontClient({ data }: { data: StorefrontPageData }): JSX.El
             </Card>
           ))}
         </div>
+      )}
+
+      {/* B3 — review showcase: recent reviews WITH owner replies. */}
+      {(data.store?.recentReviews ?? []).length > 0 && (
+        <section aria-label={t('stores.reviews.title')}>
+          <h2 className="mb-3 text-lg font-bold text-text-primary">{t('stores.reviews.title')}</h2>
+          <div className="space-y-3">
+            {data.store!.recentReviews.map((r) => (
+              <Card key={r.id} padding="md" className="space-y-1.5">
+                <div className="flex items-center justify-between gap-2">
+                  <p className="text-sm font-bold">
+                    {'★'.repeat(r.rating)}
+                    <span className="ml-2 font-normal text-text-secondary">
+                      {r.customerName} · {r.productNameAr || r.productNameEn}
+                    </span>
+                  </p>
+                  {r.replied && (
+                    <span className="rounded-full bg-green-100 px-2 py-0.5 text-xs font-medium text-green-700 dark:bg-green-950 dark:text-green-300">
+                      {t('stores.reviews.replied')}
+                    </span>
+                  )}
+                </div>
+                {r.comment && <p className="text-sm text-text-primary">{r.comment}</p>}
+                {r.replied && (
+                  <p className="rounded-lg bg-surface-elevated p-2 text-sm text-text-secondary">
+                    <span className="font-semibold">{t('stores.reviews.ownerReply')}: </span>
+                    {locale === 'ar' ? r.replyAr : r.replyEn || r.replyAr}
+                  </p>
+                )}
+              </Card>
+            ))}
+          </div>
+        </section>
       )}
     </div>
   );

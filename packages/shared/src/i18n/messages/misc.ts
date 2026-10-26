@@ -4153,6 +4153,10 @@ export const miscMessages = {
   'stores.badge.top-rated': { ar: 'الأعلى تقييماً', en: 'Top Rated' },
   'stores.badge.fast-fulfillment': { ar: 'تجهيز سريع', en: 'Fast Fulfillment' },
   'stores.badge.responsive-seller': { ar: 'بائع متفاعل', en: 'Responsive Seller' },
+  // B3 — review showcase.
+  'stores.reviews.title': { ar: 'آراء العملاء', en: 'Customer Reviews' },
+  'stores.reviews.replied': { ar: 'رد المتجر', en: 'Store replied' },
+  'stores.reviews.ownerReply': { ar: 'رد المتجر', en: 'Store reply' },
   'stores.empty-products': { ar: 'لا توجد منتجات في هذا المتجر', en: 'No products in this store' },
   'stores.stock': { ar: 'المخزون: {count}', en: 'Stock: {count}' },
   'stores.add-to-cart': { ar: 'أضيفي للسلة', en: 'Add to cart' },

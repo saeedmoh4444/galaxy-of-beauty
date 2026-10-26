@@ -164,6 +164,18 @@ export function getDisputesQueue(): Queue | null {
   }
 }
 
+// B3 — review reply reminder sweep (unanswered reviews past 48h).
+let _reviewsQueue: Queue | null = null;
+export function getReviewsQueue(): Queue | null {
+  if (_reviewsQueue) return _reviewsQueue;
+  try {
+    _reviewsQueue = createQueue('gob-reviews');
+    return _reviewsQueue;
+  } catch {
+    return null;
+  }
+}
+
 // Convenience: all queues
 export function getAllQueues(): Record<string, Queue | null> {
   return {
@@ -178,5 +190,6 @@ export function getAllQueues(): Record<string, Queue | null> {
     payouts: getPayoutsQueue(),
     sla: getSlaQueue(),
     disputes: getDisputesQueue(),
+    reviews: getReviewsQueue(),
   };
 }

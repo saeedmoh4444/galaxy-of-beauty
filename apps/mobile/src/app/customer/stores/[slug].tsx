@@ -23,6 +23,16 @@ interface StoreDetail {
   bannerUrl?: string | null;
   socialLinks?: Record<string, string> | null;
   tierBadges?: Array<'top_rated' | 'fast_fulfillment' | 'responsive_seller'>;
+  recentReviews?: Array<{
+    id?: number;
+    rating?: number;
+    comment?: string | null;
+    replied?: boolean;
+    replyAr?: string;
+    replyEn?: string;
+    productNameAr?: string;
+    customerName?: string;
+  }>;
   products?: Array<{
     id?: number;
     nameJson?: { ar?: string; en?: string };
@@ -117,6 +127,27 @@ export default function StoreDetailScreen(): JSX.Element {
         </View>
       ))}
       {products.length === 0 && <Text style={s.empty}>{t('mobile.stores.empty-products')}</Text>}
+
+      {/* B3 — review showcase (recent reviews with owner replies). */}
+      {(store.recentReviews ?? []).length > 0 && (
+        <View style={s.reviewsWrap}>
+          <Text style={s.reviewsTitle}>{t('mobile.stores.reviews.title')}</Text>
+          {(store.recentReviews ?? []).map((r, idx) => (
+            <View key={r.id ?? idx} style={s.reviewCard}>
+              <Text style={s.reviewMeta}>
+                {'★'.repeat(r.rating ?? 0)} {r.customerName ?? ''} · {r.productNameAr ?? ''}
+              </Text>
+              {r.comment ? <Text style={s.reviewBody}>{r.comment}</Text> : null}
+              {r.replied ? (
+                <Text style={s.reviewReply}>
+                  {t('mobile.stores.reviews.ownerReply')}:{' '}
+                  {locale === 'ar' ? r.replyAr : r.replyEn || r.replyAr}
+                </Text>
+              ) : null}
+            </View>
+          ))}
+        </View>
+      )}
     </ScrollView>
   );
 }
@@ -149,4 +180,29 @@ const s = StyleSheet.create({
   buyBtnDisabled: { opacity: 0.5 },
   buyText: { color: '#fff', fontSize: 13, fontWeight: '600' },
   empty: { textAlign: 'center', color: '#9ca3af', marginTop: 24 },
+  reviewsWrap: { marginTop: 24 },
+  reviewsTitle: {
+    fontSize: 16,
+    fontWeight: '800',
+    color: '#111827',
+    textAlign: 'right',
+    marginBottom: 8,
+  },
+  reviewCard: {
+    backgroundColor: '#fff',
+    borderRadius: 12,
+    padding: 10,
+    marginBottom: 8,
+  },
+  reviewMeta: { fontSize: 12, fontWeight: '700', color: '#374151', textAlign: 'right' },
+  reviewBody: { fontSize: 13, color: '#111827', textAlign: 'right', marginTop: 4 },
+  reviewReply: {
+    fontSize: 12,
+    color: '#6b7280',
+    textAlign: 'right',
+    marginTop: 6,
+    backgroundColor: '#f9fafb',
+    borderRadius: 8,
+    padding: 6,
+  },
 });
