@@ -5349,6 +5349,9 @@ export const enWebMessages: Record<string, string> = {
     '{percent}% of orders breached your fulfillment window — promise less or ship faster',
   'vendorPortal.health.hint.dispute':
     '{percent}% of disputes escalated to the platform — respond within 48h',
+  'vendorPortal.social.title': 'Social media',
+  'vendorPortal.social.save': 'Save links',
+  'vendorPortal.social.hint': 'Links appear on your public store page.',
   'vendorPortal.health.title': 'Store health',
   'vendorPortal.images': 'Images',
   'vendorPortal.import.choose': 'Import CSV',

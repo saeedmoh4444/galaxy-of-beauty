@@ -5269,6 +5269,9 @@ export const arWebMessages: Record<string, string> = {
   'vendorPortal.health.hint.sla':
     '{percent}٪ من الطلبات تجاوزت مهلة التنفيذ — قلّصي نافذة الوعود أو نفّذي أسرع',
   'vendorPortal.health.hint.dispute': '{percent}٪ من النزاعات تصاعدت للإدارة — ردّي خلال ٤٨ ساعة',
+  'vendorPortal.social.title': 'حسابات التواصل الاجتماعي',
+  'vendorPortal.social.save': 'حفظ الروابط',
+  'vendorPortal.social.hint': 'تظهر الروابط على صفحة متجرك العامة للعملاء.',
   'vendorPortal.health.title': 'صحة المتجر',
   'vendorPortal.images': 'الصور',
   'vendorPortal.import.choose': 'استيراد CSV',

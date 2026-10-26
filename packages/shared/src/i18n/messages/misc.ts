@@ -3934,6 +3934,13 @@ export const miscMessages = {
     ar: '{percent}٪ من النزاعات تصاعدت للإدارة — ردّي خلال ٤٨ ساعة',
     en: '{percent}% of disputes escalated to the platform — respond within 48h',
   },
+  // B6 — social presence.
+  'vendorPortal.social.title': { ar: 'حسابات التواصل الاجتماعي', en: 'Social media' },
+  'vendorPortal.social.save': { ar: 'حفظ الروابط', en: 'Save links' },
+  'vendorPortal.social.hint': {
+    ar: 'تظهر الروابط على صفحة متجرك العامة للعملاء.',
+    en: 'Links appear on your public store page.',
+  },
   'vendorPortal.earnings.title': {
     ar: 'مركز الأرباح والتسويات',
     en: 'Earnings & settlement center',

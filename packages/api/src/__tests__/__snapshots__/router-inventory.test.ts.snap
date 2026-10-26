@@ -1101,6 +1101,7 @@ vendorPortal.staff.myInvitation	query	customer
 vendorPortal.staff.revoke	mutation	customer
 vendorPortal.staff.update	mutation	customer
 vendorPortal.updateProduct	mutation	customer
+vendorPortal.updateSocialLinks	mutation	customer
 vendorPortal.updateStoreProfile	mutation	customer
 video.endSession	mutation	protected
 video.getByBooking	query	protected

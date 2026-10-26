@@ -2995,6 +2995,46 @@ export const vendorPortalRouter = router({
     }),
 
   /**
+   * updateSocialLinks — B6: the vendor's Snapchat/TikTok/X/Instagram/
+   * Facebook handles. Partial merge: omitted networks keep their value,
+   * an empty string removes one, URLs are zod-validated. Ownership-
+   * guarded like every portal mutation.
+   */
+  updateSocialLinks: customerProcedure
+    .input(
+      z
+        .object({
+          snapchat: z.string().url().max(300).or(z.literal('')).optional(),
+          tiktok: z.string().url().max(300).or(z.literal('')).optional(),
+          x: z.string().url().max(300).or(z.literal('')).optional(),
+          instagram: z.string().url().max(300).or(z.literal('')).optional(),
+          facebook: z.string().url().max(300).or(z.literal('')).optional(),
+        })
+        .refine((v) => Object.values(v).some((s) => s !== undefined), {
+          message: 'at least one network required',
+        }),
+    )
+    .mutation(async ({ ctx, input }) => {
+      const vendor = await prisma.vendor.findUnique({ where: { userId: ctx.user.id } });
+      if (!vendor) {
+        throw new TRPCError({ code: 'NOT_FOUND', message: 'Store not found' });
+      }
+
+      const existing = (vendor.socialLinks as Record<string, string> | null) ?? {};
+      const next: Record<string, string> = {};
+      for (const network of ['snapchat', 'tiktok', 'x', 'instagram', 'facebook'] as const) {
+        const value = input[network] ?? existing[network];
+        if (value) next[network] = value; // '' removes, undefined keeps, set adds
+      }
+
+      const updated = await prisma.vendor.update({
+        where: { id: vendor.id },
+        data: { socialLinks: next as unknown as Prisma.InputJsonValue },
+      });
+      return { socialLinks: updated.socialLinks };
+    }),
+
+  /**
    * payoutInvoice — A2: RFC 4180 invoice CSV for one of the caller's
    * payouts (summary + per-order line items, AR/EN headers). Ownership-
    * guarded like every earnings export.

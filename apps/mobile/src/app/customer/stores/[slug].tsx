@@ -5,6 +5,7 @@ import { ErrorAlert } from '@/components/ErrorAlert';
 import { ServiceImage } from '@/components/ServiceImage';
 import { SkeletonList } from '@/components/SkeletonCard';
 import { TrustChips } from '@/components/TrustChips';
+import { SocialIconsRow } from '@/components/SocialIconsRow';
 import { trpc } from '@/lib/trpc-react';
 import { localize } from '@galaxy/shared';
 import { useLocale } from '@/components/LocaleProvider';
@@ -20,6 +21,7 @@ interface StoreDetail {
   totalReviews?: number;
   isVerified?: boolean;
   bannerUrl?: string | null;
+  socialLinks?: Record<string, string> | null;
   products?: Array<{
     id?: number;
     nameJson?: { ar?: string; en?: string };
@@ -70,6 +72,8 @@ export default function StoreDetailScreen(): JSX.Element {
         rating={store.ratingAvg}
         reviews={store.totalReviews}
       />
+      {/* B6 — social presence (only networks the vendor set). */}
+      <SocialIconsRow links={store.socialLinks} />
       {store.bannerUrl ? (
         <ServiceImage
           src={store.bannerUrl}
