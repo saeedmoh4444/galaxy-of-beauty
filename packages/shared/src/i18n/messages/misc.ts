@@ -3925,6 +3925,15 @@ export const miscMessages = {
     ar: 'صحة المخزون منخفضة — أعيدي تزويد المنتجات تحت الحد',
     en: 'Stock health is low — restock products below their thresholds',
   },
+  // A5 — quality score v2 hints.
+  'vendorPortal.health.hint.sla': {
+    ar: '{percent}٪ من الطلبات تجاوزت مهلة التنفيذ — قلّصي نافذة الوعود أو نفّذي أسرع',
+    en: '{percent}% of orders breached your fulfillment window — promise less or ship faster',
+  },
+  'vendorPortal.health.hint.dispute': {
+    ar: '{percent}٪ من النزاعات تصاعدت للإدارة — ردّي خلال ٤٨ ساعة',
+    en: '{percent}% of disputes escalated to the platform — respond within 48h',
+  },
   'vendorPortal.earnings.title': {
     ar: 'مركز الأرباح والتسويات',
     en: 'Earnings & settlement center',

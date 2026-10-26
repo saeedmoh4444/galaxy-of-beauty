@@ -5266,6 +5266,9 @@ export const arWebMessages: Record<string, string> = {
   'vendorPortal.health.hint.fulfillment': 'التجهيز بطيء (متوسط {hours} ساعة) — سارعي بشحن الطلبات',
   'vendorPortal.health.hint.reviews': 'التقييمات الأخيرة تتراجع — استجيبي للملاحظات',
   'vendorPortal.health.hint.stock': 'صحة المخزون منخفضة — أعيدي تزويد المنتجات تحت الحد',
+  'vendorPortal.health.hint.sla':
+    '{percent}٪ من الطلبات تجاوزت مهلة التنفيذ — قلّصي نافذة الوعود أو نفّذي أسرع',
+  'vendorPortal.health.hint.dispute': '{percent}٪ من النزاعات تصاعدت للإدارة — ردّي خلال ٤٨ ساعة',
   'vendorPortal.health.title': 'صحة المتجر',
   'vendorPortal.images': 'الصور',
   'vendorPortal.import.choose': 'استيراد CSV',
