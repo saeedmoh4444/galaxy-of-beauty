@@ -5345,6 +5345,10 @@ export const enWebMessages: Record<string, string> = {
   'vendorPortal.health.hint.fulfillment': 'Fulfillment is slow ({hours}h avg) — ship faster',
   'vendorPortal.health.hint.reviews': 'Recent reviews are trending down — respond to feedback',
   'vendorPortal.health.hint.stock': 'Stock health is low — restock products below their thresholds',
+  'vendorPortal.health.hint.sla':
+    '{percent}% of orders breached your fulfillment window — promise less or ship faster',
+  'vendorPortal.health.hint.dispute':
+    '{percent}% of disputes escalated to the platform — respond within 48h',
   'vendorPortal.health.title': 'Store health',
   'vendorPortal.images': 'Images',
   'vendorPortal.import.choose': 'Import CSV',
