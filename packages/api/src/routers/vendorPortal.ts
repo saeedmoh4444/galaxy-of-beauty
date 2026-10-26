@@ -773,6 +773,31 @@ export const vendorPortalRouter = router({
       };
     }),
 
+  /** orderDetail — one store order with line items, customer summary and
+   *  its dispute (1:1). E2: the mobile detail screen and the push-notification
+   *  deep link fetch by id (the web drawer reuses the list row instead).
+   *  Staff-guarded exactly like orders — ORDERS_MANAGE. */
+  orderDetail: customerProcedure
+    .input(z.object({ orderId: z.number().int().positive() }))
+    .query(async ({ ctx, input }) => {
+      const vendor = await vendorForStaffQuery(ctx, 'ORDERS_MANAGE');
+      if (!vendor) throw new TRPCError({ code: 'NOT_FOUND', message: 'Order not found' });
+
+      const order = await prisma.storeOrder.findUnique({
+        where: { id: input.orderId },
+        include: {
+          customer: { select: { id: true, name: true, phone: true } },
+          items: { orderBy: { id: 'asc' } },
+          dispute: true,
+        },
+      });
+      // Cross-store reads must be indistinguishable from missing rows.
+      if (!order || order.vendorId !== vendor.id) {
+        throw new TRPCError({ code: 'NOT_FOUND', message: 'Order not found' });
+      }
+      return order;
+    }),
+
   /** fulfillOrder — mark a store order fulfilled (ownership-guarded).
    *  H0 — the status transition is a conditional update inside the
    *  transaction: concurrent fulfillments serialize on the row lock and only

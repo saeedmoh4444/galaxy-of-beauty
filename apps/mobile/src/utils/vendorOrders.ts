@@ -29,3 +29,21 @@ export function fulfillIdempotencyKey(orderId: number): string {
   const rand = `${Date.now().toString(36)}-${Math.random().toString(36).slice(2, 10)}`;
   return `mob-${orderId}-${rand}`;
 }
+
+/** WhatsApp contact link — mirrors the web order drawer normalization. */
+export function waLink(phone: string): string {
+  return `https://wa.me/${phone.replace(/^\+/, '').replace(/^0/, '966')}`;
+}
+
+/**
+ * E2 — push tap routing: a store_order_placed notification deep-links to
+ * the mobile order detail. Returns null for anything else (unknown type,
+ * missing/non-numeric orderId) so the handler ignores it.
+ */
+export function notificationRoute(
+  data: { type?: string; orderId?: string } | null | undefined,
+): string | null {
+  if (data?.type !== 'store_order_placed') return null;
+  if (!data.orderId || !/^\d+$/.test(data.orderId)) return null;
+  return `/vendor-portal/orders/${data.orderId}`;
+}

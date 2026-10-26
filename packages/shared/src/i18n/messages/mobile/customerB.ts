@@ -135,6 +135,19 @@ export const mobileCustomerBMessages = {
   'mobile.vendorPortal.orders.keep': { ar: 'إبقاء الطلب', en: 'Keep order' },
   'mobile.vendorPortal.orders.total': { ar: '{amount} ر.س', en: '{amount} SAR' },
   'mobile.vendorPortal.orders.error': { ar: 'فشل تحميل الطلبات', en: 'Failed to load orders' },
+  // ---- vendor-portal order detail (Wave E2b) ----
+  'mobile.vendorPortal.orderDetail.title': { ar: 'طلب #{id}', en: 'Order #{id}' },
+  'mobile.vendorPortal.orderDetail.back': { ar: '‹ رجوع للطلبات', en: '‹ Back to orders' },
+  'mobile.vendorPortal.orderDetail.items': { ar: 'الأصناف', en: 'Items' },
+  'mobile.vendorPortal.orderDetail.customer': { ar: 'العميلة', en: 'Customer' },
+  'mobile.vendorPortal.orderDetail.contact': { ar: 'مراسلة واتساب', en: 'WhatsApp' },
+  'mobile.vendorPortal.orderDetail.dispute': { ar: 'نزاع على الطلب', en: 'Order dispute' },
+  'mobile.vendorPortal.orderDetail.disputeReason': { ar: 'السبب', en: 'Reason' },
+  'mobile.vendorPortal.orderDetail.loadError': {
+    ar: 'فشل تحميل الطلب',
+    en: 'Failed to load order',
+  },
+  'mobile.vendorPortal.orderDetail.notFound': { ar: 'الطلب غير موجود', en: 'Order not found' },
 
   // ---- tech-onboarding ----
   'mobile.techOnboarding.title': {

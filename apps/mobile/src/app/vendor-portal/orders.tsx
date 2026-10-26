@@ -9,6 +9,7 @@ import {
   Alert,
   RefreshControl,
 } from 'react-native';
+import { useRouter } from 'expo-router';
 import { ScreenState } from '@/components/ScreenState';
 import { useAuthState } from '@/hooks/useAuthState';
 import { trpc } from '@/lib/trpc-react';
@@ -30,6 +31,7 @@ const TONE: Record<OrderStatusTone, { bg: string; fg: string; labelKey: string }
  *  the web orders tab; native UI over the existing orders query. */
 export default function VendorOrdersScreen(): JSX.Element {
   const { t, locale } = useLocale();
+  const router = useRouter();
   const isAuthed = useAuthState();
 
   const ordersQ = trpc.vendorPortal.orders.useInfiniteQuery(
@@ -79,7 +81,10 @@ export default function VendorOrdersScreen(): JSX.Element {
     const pending = item.status === 'PENDING_FULFILLMENT';
     const total = Number(item.totalAmount); // Decimal arrives as a string
     return (
-      <View style={styles.card}>
+      <TouchableOpacity
+        style={styles.card}
+        onPress={() => router.push(`/vendor-portal/orders/${item.id}`)}
+      >
         <View style={styles.row}>
           <Text style={styles.orderId}>#{item.id}</Text>
           <View style={styles.chips}>
@@ -122,7 +127,7 @@ export default function VendorOrdersScreen(): JSX.Element {
             </View>
           ) : null}
         </View>
-      </View>
+      </TouchableOpacity>
     );
   };
 

@@ -1,5 +1,11 @@
 import { describe, it, expect } from 'vitest';
-import { orderStatusTone, isLate, fulfillIdempotencyKey } from '../vendorOrders';
+import {
+  orderStatusTone,
+  isLate,
+  fulfillIdempotencyKey,
+  waLink,
+  notificationRoute,
+} from '../vendorOrders';
 
 describe('orderStatusTone', () => {
   it('maps the three StoreOrder statuses to chip tones', () => {
@@ -43,5 +49,29 @@ describe('fulfillIdempotencyKey', () => {
   it('generates a distinct key on every call (repeat presses must not collide)', () => {
     const keys = new Set(Array.from({ length: 50 }, () => fulfillIdempotencyKey(7)));
     expect(keys.size).toBe(50);
+  });
+});
+
+describe('waLink', () => {
+  it('normalizes international and local KSA formats (mirrors the web drawer)', () => {
+    expect(waLink('+966501234567')).toBe('https://wa.me/966501234567');
+    expect(waLink('0501234567')).toBe('https://wa.me/966501234567');
+    expect(waLink('966501234567')).toBe('https://wa.me/966501234567');
+  });
+});
+
+describe('notificationRoute', () => {
+  it('deep-links a store_order_placed push tap to the order detail', () => {
+    expect(notificationRoute({ type: 'store_order_placed', orderId: '42' })).toBe(
+      '/vendor-portal/orders/42',
+    );
+  });
+
+  it('ignores unknown types and malformed payloads', () => {
+    expect(notificationRoute({ type: 'low_stock' })).toBeNull();
+    expect(notificationRoute({ type: 'store_order_placed' })).toBeNull();
+    expect(notificationRoute({ type: 'store_order_placed', orderId: 'abc' })).toBeNull();
+    expect(notificationRoute(undefined)).toBeNull();
+    expect(notificationRoute(null)).toBeNull();
   });
 });
