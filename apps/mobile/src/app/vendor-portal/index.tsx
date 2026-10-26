@@ -1,5 +1,6 @@
 import type { JSX } from 'react';
 import { View, Text, ScrollView, StyleSheet, TouchableOpacity, RefreshControl } from 'react-native';
+import { useRouter } from 'expo-router';
 import { SkeletonList } from '@/components/SkeletonCard';
 import { useAuthState } from '@/hooks/useAuthState';
 import { trpc } from '@/lib/trpc-react';
@@ -7,10 +8,13 @@ import { useLocale } from '@/components/LocaleProvider';
 
 export default function VendorPortalScreen(): JSX.Element {
   const { t, locale } = useLocale();
+  const router = useRouter();
   const isAuthed = useAuthState();
   const dashQ = trpc.vendorPortal.dashboard.useQuery(undefined, { enabled: isAuthed });
   const productsQ = trpc.vendorPortal.myProducts.useQuery({}, { enabled: isAuthed });
+  const unreadQ = trpc.notifications.unreadCount.useQuery(undefined, { enabled: isAuthed });
   const dash = dashQ.data;
+  const unread = unreadQ.data?.count ?? 0;
   // A5 — myProducts is cursor-paginated; the mobile portal renders the
   // first page (browse-only by design — web-first dashboards).
   const products = productsQ.data?.items ?? [];
@@ -55,6 +59,13 @@ export default function VendorPortalScreen(): JSX.Element {
           <Text style={styles.kl}>{t('mobile.vendorPortal.sar')}</Text>
         </View>
       </View>
+      {/* E3 — the seller inbox: low-stock, SLA, dispute and payout notices. */}
+      <TouchableOpacity style={styles.inboxRow} onPress={() => router.push('/vendor-portal/inbox')}>
+        <Text style={styles.inboxEmoji}>🔔</Text>
+        <Text style={styles.inboxLabel}>{t('mobile.notifications.title')}</Text>
+        {unread > 0 ? <Text style={styles.inboxBadge}>{unread}</Text> : null}
+        <Text style={styles.inboxArrow}>›</Text>
+      </TouchableOpacity>
       {products.map((p) => (
         <View key={p.id} style={styles.card}>
           <Text style={styles.em}>🧴</Text>
@@ -83,6 +94,28 @@ const styles = StyleSheet.create({
   ke: { fontSize: 28, marginBottom: 4 },
   kv: { fontSize: 22, fontWeight: '800', color: '#111827' },
   kl: { fontSize: 11, color: '#9ca3af' },
+  inboxRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 10,
+    backgroundColor: '#fff',
+    borderRadius: 14,
+    padding: 14,
+    marginBottom: 16,
+  },
+  inboxEmoji: { fontSize: 22 },
+  inboxLabel: { flex: 1, fontSize: 14, fontWeight: '700', color: '#111827' },
+  inboxBadge: {
+    fontSize: 12,
+    fontWeight: '800',
+    color: '#fff',
+    backgroundColor: '#7c3aed',
+    borderRadius: 10,
+    paddingHorizontal: 8,
+    paddingVertical: 2,
+    overflow: 'hidden',
+  },
+  inboxArrow: { fontSize: 20, color: '#9ca3af' },
   card: {
     flexDirection: 'row',
     alignItems: 'center',
