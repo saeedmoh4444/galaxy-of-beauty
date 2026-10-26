@@ -11,6 +11,7 @@ import {
 } from '../trpc';
 import { notifyUser } from '../lib/notify';
 import { gatherStoreHealthFactors } from '../lib/storeHealth';
+import { evaluateVendorRules } from '../lib/vendorPricing';
 import { computeVendorTierBadges, computeTopRated } from '../lib/vendorTiers';
 import { noonUtcDay } from '../workers/handlers';
 import {
@@ -304,7 +305,33 @@ export const marketplaceRouter = router({
         customerName: r.user.name ?? '',
       };
     });
-    return { ...vendor, tierBadges, recentReviews };
+    // C3 — vendor pricing rules: attach the effective price per product
+    // (weekend/low-stock uplifts; admin overrides win in the lib).
+    const priceRules = await prisma.vendorPriceRule.findMany({
+      where: { vendorId: vendor.id, isActive: true },
+    });
+    const likedRules = priceRules.map((r) => ({
+      id: r.id,
+      isActive: r.isActive,
+      productId: r.productId,
+      ruleType: r.ruleType as 'weekend_uplift' | 'lowstock_floor',
+      dayOfWeek: r.dayOfWeek,
+      multiplier: Number(r.multiplier),
+      adminOverrideMultiplier:
+        r.adminOverrideMultiplier === null ? null : Number(r.adminOverrideMultiplier),
+    }));
+    const now = new Date();
+    const priced = vendor.products.map((p) => {
+      const res = evaluateVendorRules(likedRules, {
+        productId: p.id,
+        date: now,
+        stock: p.stock,
+        lowStockThreshold: p.lowStockThreshold,
+        basePrice: Number(p.price),
+      });
+      return { ...p, effectivePrice: res.price, appliedRuleIds: res.appliedRuleIds };
+    });
+    return { ...vendor, products: priced, tierBadges, recentReviews };
   }),
 
   // ── Become a vendor / store (Store plan Phase 1) ────────
