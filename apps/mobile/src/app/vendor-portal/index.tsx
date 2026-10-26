@@ -2,6 +2,8 @@ import type { JSX } from 'react';
 import { View, Text, ScrollView, StyleSheet, TouchableOpacity, RefreshControl } from 'react-native';
 import { useRouter } from 'expo-router';
 import { SkeletonList } from '@/components/SkeletonCard';
+import { SellerHomeCard } from '@/components/SellerHomeCard';
+import { sellerHomeSummary } from '@/utils/vendorHome';
 import { useAuthState } from '@/hooks/useAuthState';
 import { trpc } from '@/lib/trpc-react';
 import { useLocale } from '@/components/LocaleProvider';
@@ -12,12 +14,16 @@ export default function VendorPortalScreen(): JSX.Element {
   const isAuthed = useAuthState();
   const dashQ = trpc.vendorPortal.dashboard.useQuery(undefined, { enabled: isAuthed });
   const productsQ = trpc.vendorPortal.myProducts.useQuery({}, { enabled: isAuthed });
+  const storeQ = trpc.vendorPortal.myStore.useQuery(undefined, { enabled: isAuthed });
   const unreadQ = trpc.notifications.unreadCount.useQuery(undefined, { enabled: isAuthed });
   const dash = dashQ.data;
   const unread = unreadQ.data?.count ?? 0;
   // A5 — myProducts is cursor-paginated; the mobile portal renders the
   // first page (browse-only by design — web-first dashboards).
   const products = productsQ.data?.items ?? [];
+  // E1 — seller home: the caller's own store profile card (myStore is
+  // staff-aware — staff sellers see their vendor's identity too).
+  const home = sellerHomeSummary(storeQ.data, dash, locale);
 
   const deleteMut = trpc.vendorPortal.deleteProduct.useMutation({
     onSuccess: () => {
@@ -28,7 +34,7 @@ export default function VendorPortalScreen(): JSX.Element {
   const remove = (id: number) => {
     deleteMut.mutate({ id });
   };
-  if (dashQ.isLoading || productsQ.isLoading) return <SkeletonList count={4} />;
+  if (dashQ.isLoading || productsQ.isLoading || storeQ.isLoading) return <SkeletonList count={4} />;
   return (
     <ScrollView
       style={styles.c}
@@ -45,6 +51,12 @@ export default function VendorPortalScreen(): JSX.Element {
       }
     >
       <Text style={styles.t}>{t('mobile.vendorPortal.title')}</Text>
+      {home ? (
+        <SellerHomeCard
+          summary={home}
+          onViewStorefront={() => router.push(`/customer/stores/${home.slug}`)}
+        />
+      ) : null}
       <View style={styles.kr}>
         <View style={styles.k}>
           <Text style={styles.ke}>📦</Text>
