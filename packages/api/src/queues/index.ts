@@ -152,6 +152,18 @@ export function getSlaQueue(): Queue | null {
   }
 }
 
+// A4 — dispute escalation sweep (48h vendor-response deadline).
+let _disputesQueue: Queue | null = null;
+export function getDisputesQueue(): Queue | null {
+  if (_disputesQueue) return _disputesQueue;
+  try {
+    _disputesQueue = createQueue('gob-disputes');
+    return _disputesQueue;
+  } catch {
+    return null;
+  }
+}
+
 // Convenience: all queues
 export function getAllQueues(): Record<string, Queue | null> {
   return {
@@ -165,5 +177,6 @@ export function getAllQueues(): Record<string, Queue | null> {
     reminders: getRemindersQueue(),
     payouts: getPayoutsQueue(),
     sla: getSlaQueue(),
+    disputes: getDisputesQueue(),
   };
 }

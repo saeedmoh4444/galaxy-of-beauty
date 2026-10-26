@@ -5237,6 +5237,7 @@ export const arWebMessages: Record<string, string> = {
   'vendorPortal.sla.breached': 'طلبات متأخرة (٣٠ يوم)',
   'vendorPortal.sla.window': 'نافذة التنفيذ (ساعة)',
   'vendorPortal.sla.lateChip': 'متأخر',
+  'vendorPortal.disputes.escalated': 'تم تصعيد النزاع للإدارة بعد تجاوز مهلة الرد.',
   'vendorPortal.edit': 'تعديل',
   'vendorPortal.editProduct': 'تعديل المنتج',
   'vendorPortal.export': 'تصدير CSV',

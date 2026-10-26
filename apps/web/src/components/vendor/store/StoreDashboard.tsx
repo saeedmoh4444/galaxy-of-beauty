@@ -801,6 +801,16 @@ export function StoreDashboard({
                           )}
                         </span>
                       </div>
+                      {/* A4 — dispute SLA: escalated flag once the 48h
+                          response deadline passes without a reply. */}
+                      {detailOrder.dispute.escalatedAt && (
+                        <p
+                          data-testid={`dispute-escalated-${detailOrder.dispute.id}`}
+                          className="text-xs font-semibold text-red-700 dark:text-red-300"
+                        >
+                          {t('vendorPortal.disputes.escalated')}
+                        </p>
+                      )}
                       <p className="text-xs text-text-secondary">
                         <span className="font-semibold">{t('vendorPortal.disputes.reason')}: </span>
                         {detailOrder.dispute.reason}

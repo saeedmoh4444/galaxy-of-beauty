@@ -4125,6 +4125,17 @@ async function main() {
           en: 'Order #{{orderId}} passed your promised fulfillment window — fulfill it now to protect your store rating.',
         },
       },
+      // A4 — dispute escalation (48h vendor-response deadline passed).
+      {
+        key: 'dispute_escalated',
+        category: 'provider',
+        channels: ['in_app', 'push'],
+        titleJson: { ar: 'نزاع تم تصعيده للإدارة', en: 'Dispute Escalated to Admin' },
+        bodyJson: {
+          ar: 'النزاع #{{disputeId}} تجاوز مهلة الرد (٤٨ ساعة) وتم تصعيده للإدارة — ردّي سريعاً إن أمكن.',
+          en: 'Dispute #{{disputeId}} passed the 48h response deadline and was escalated to the platform — respond quickly if you still can.',
+        },
+      },
       // F1 — vendor inbox events (emitted post-commit; see the F1 wave).
       {
         key: 'store_order_placed',
