@@ -133,6 +133,11 @@ gh pr merge <n> --squash --delete-branch      # verify state == MERGED after (ex
 - `noUncheckedIndexedAccess` — array/record access needs guards (`??`/`!` only where proven).
 - NOON-UTC date convention for date-only fixtures.
 - `docker exec` WITHOUT `-i` silently drops stdin — SQL fed via `< file` never runs; always `docker exec -i`.
+- **Parallel wave branches** (Wave E): N feature branches cut from one master, each editing the same region of a shared file (a screen's import block, one i18n key block), make EVERY subsequent merge conflict — `gh pr update-branch` fails remotely; resolve locally per branch (keep BOTH sides; watch for the closing `},` landing OUTSIDE the conflict region, as in the G3/E4a merges).
+- **Branch hygiene with dirty trees**: `git stash push` does NOT carry untracked files — they ride along the checkout; ALWAYS `git branch --show-current` + `git status --short` after every move. `git checkout <branch> | tail` masks a failed checkout ("Aborting") and the `&&` chain then runs on the WRONG branch (repeat offender — Wave E hit it twice).
+- **Mobile tRPC rows are typed**: `inferRouterOutputs` gives real client types (superjson `Date`, not `string`). Hand-written row interfaces with string dates fail tsc — drop the cast and use the inferred shape.
+- **`notifications.list` returns a PAGE object** `{items,total,...}`, not an array — the legacy customer notifications screen casts it as an array (pre-existing bug, untouched); new screens read `.items`.
+- **expo-notifications listeners must mount at the root** — a tap listener registered inside a screen dies on unmount and cold-start taps are lost; the Wave-E root mount also enables the startup permission prompt (deliberate).
 - `%TEMP%` does not expand in Git Bash — use the absolute path (`C:\Users\<user>\AppData\Local\Temp\...`).
 - `git add` paths are cwd-relative, and the session cwd drifts between repo root / apps / packages — use absolute paths or verify with `pwd` when a pathspec "does not exist".
 - The local API suite runs `env=test` against the **dev DB** — running it while someone uses the dev servers causes contention and can pollute seed data (Playwright login failures locally, advisor weekly-category flake). CI's isolated DB is the authority.
