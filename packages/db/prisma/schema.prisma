@@ -357,6 +357,10 @@ model Technician {
   // 1.1 Dynamic pricing — NEW | EXPERIENCED | PREMIUM | CELEBRITY
   // (tier multiplier applies only to dynamicPricingEnabled services).
   tier                String   @default("NEW")
+  // C5 — store pseudo-technician: exactly one hidden Technician row per
+  // store so the booking engine needs zero forks. The row's User is a
+  // generated non-login account (see lib/storeServices).
+  storeVendorId Int? @unique
   // F5 — richer profile details
   socialLinksJson     Json?    // { instagram?, snapchat?, tiktok?, website? }
   languages           Json?    // ["ar", "en", ...]
@@ -367,6 +371,7 @@ model Technician {
 
   // Relations
   user                  User                @relation(fields: [userId], references: [id], onDelete: Cascade)
+  storeVendor           Vendor?             @relation("StoreTechnician", fields: [storeVendorId], references: [id], onDelete: SetNull)
   availabilitySlots     AvailabilitySlot[]
   technicianServices    TechnicianService[]
   waitlistEntries       WaitlistEntry[]
@@ -487,11 +492,16 @@ model Service {
   // 1.1 Dynamic pricing (ENHANCEMENT_PLAN) — opt-in per service; when on,
   // bookings.create prices via tier × peak rules × surge (lib/pricing.ts).
   dynamicPricingEnabled Boolean @default(false)
+  // C5 — store-owned services (H2 hybrid): null = platform-owned. Store
+  // services live on the storefront's Services tab, not the general browse.
+  vendorId       Int?
+  isStoreService Boolean  @default(false)
   sortOrder       Int      @default(0)
   createdAt       DateTime @default(now())
-  updatedAt       DateTime @updatedAt
+  updatedAt       DateTime @updatedAt()
 
   category          Category            @relation(fields: [categoryId], references: [id])
+  vendor            Vendor?             @relation(fields: [vendorId], references: [id], onDelete: SetNull)
   variants          ServiceVariant[]
   servicesWithAddon ServiceAddon[] @relation("ServiceAddons")
   addonFor          ServiceAddon[] @relation("AddonServices")
@@ -505,6 +515,7 @@ model Service {
 
   @@index([categoryId, isActive])
   @@index([basePrice])
+  @@index([vendorId, isActive])
   @@map("services")
 }
 
@@ -682,6 +693,9 @@ model Booking {
   technicianGoogleEventId   String? // the TECHNICIAN's calendar event
   // K1 (kids plan): optional "book on behalf of" family member link.
   familyMemberId            Int?
+  // C5 — denormalized provider link for store-service bookings (vendor
+  // bookings surface + payout attribution); null = technician booking.
+  vendorId                  Int?
   // K3 (kids plan): optional Mommy & Me bundle link.
   bundleId                  Int?
   // 1.1 Dynamic pricing — engine breakdown snapshot at booking time
@@ -699,6 +713,7 @@ model Booking {
 
   customer   User              @relation("CustomerBookings", fields: [customerId], references: [id])
   technician User              @relation("TechnicianBookings", fields: [technicianId], references: [id])
+  vendor     Vendor?           @relation(fields: [vendorId], references: [id], onDelete: SetNull)
   service    Service           @relation(fields: [serviceId], references: [id])
   address    Address           @relation(fields: [addressId], references: [id])
   slot       AvailabilitySlot? @relation("SlotBooking")
@@ -716,6 +731,7 @@ model Booking {
   @@index([technicianId, status, startAt])
   @@index([status, createdAt])
   @@index([serviceId])
+  @@index([vendorId])
   @@index([addressId])
   @@map("bookings")
 }
@@ -1663,6 +1679,11 @@ model Vendor {
   priceRules          VendorPriceRule[]
   webhooks            VendorWebhook[]
   apiKeys             VendorApiKey[]
+  // C5 — hybrid store-services: the store's bookable services + the
+  // denormalized booking link for the vendor bookings surface/payouts.
+  services            Service[]
+  bookings            Booking[]
+  storeTechnician     Technician?  @relation("StoreTechnician")
 
   @@index([storeSlug])
   @@index([isVerified, isActive])

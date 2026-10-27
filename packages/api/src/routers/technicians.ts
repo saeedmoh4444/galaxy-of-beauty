@@ -25,7 +25,9 @@ export const technicianRouter = router({
     const { city, serviceId, page, limit } = input;
     const skip = (page - 1) * limit;
 
-    const where: Record<string, unknown> = { kycStatus: 'VERIFIED' };
+    // C5 — store pseudo-technicians (storeVendorId) never surface in the
+    // browse; their kycStatus stays PENDING as a second line of defense.
+    const where: Record<string, unknown> = { kycStatus: 'VERIFIED', storeVendorId: null };
 
     if (city) {
       where.city = city;
