@@ -11,6 +11,7 @@ import { localize, type TranslationKey } from '@galaxy/shared';
 import { VenueProfileCard } from '../shared/VenueProfileCard';
 import { SubmissionStatusCard } from '../shared/SubmissionStatusCard';
 import { ProductVariantsModal } from './ProductVariantsModal';
+import { PricingRulesPanel } from './PricingRulesPanel';
 import { StaffPanel } from '../shared/StaffPanel';
 import { DashboardTabs } from '../shared/DashboardTabs';
 
@@ -25,7 +26,8 @@ type TabKey =
   | 'reviews'
   | 'customers'
   | 'inbox'
-  | 'staff';
+  | 'staff'
+  | 'pricing';
 
 const TAB_KEYS: TabKey[] = [
   'overview',
@@ -39,6 +41,7 @@ const TAB_KEYS: TabKey[] = [
   'customers',
   'inbox',
   'staff',
+  'pricing',
 ];
 
 /** A3 — read the ?tab= deep link once on mount (hydration-safe; the page is
@@ -473,6 +476,7 @@ export function StoreDashboard({
     { key: 'overview', label: t('vendorPortal.tab.overview') },
     ...(can('ORDERS_MANAGE') ? [{ key: 'orders', label: t('vendorPortal.orders.title') }] : []),
     ...(can('PRODUCTS_MANAGE') ? [{ key: 'products', label: t('vendorPortal.tab.products') }] : []),
+    ...(can('PRODUCTS_MANAGE') ? [{ key: 'pricing', label: t('vendorPortal.tab.pricing') }] : []),
     ...(can('DEALS_MANAGE') ? [{ key: 'deals', label: t('vendorPortal.tab.deals') }] : []),
     ...(can('COUPONS_MANAGE') ? [{ key: 'coupons', label: t('vendorPortal.tab.coupons') }] : []),
     ...(can('PAYOUTS_VIEW') ? [{ key: 'earnings', label: t('vendorPortal.tab.earnings') }] : []),
@@ -2104,6 +2108,18 @@ export function StoreDashboard({
           >
             {/* A1 — team management: invite, permissions, revoke, audit feed. */}
             <StaffPanel />
+          </div>
+        )}
+
+        {tab === 'pricing' && (
+          <div
+            role="tabpanel"
+            id="vendor-panel-pricing"
+            data-testid="vendor-panel-pricing"
+            aria-labelledby="vendor-tab-pricing"
+          >
+            {/* C3 — uplift-only pricing rules + the per-product change log. */}
+            <PricingRulesPanel />
           </div>
         )}
 
