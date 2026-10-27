@@ -1082,3 +1082,37 @@ export async function handleQueueHealthCheck(): Promise<{
   }
   return assessed;
 }
+
+/**
+ * handleWebhookDelivery — D1b: POST the signed event to the vendor's
+ * endpoint. Non-2xx throws so BullMQ retries (5 exponential attempts);
+ * deleted/deactivated webhooks return without delivering.
+ */
+export async function handleWebhookDelivery(
+  job: Job<{
+    webhookId: number;
+    event: string;
+    payload: Record<string, unknown>;
+  }>,
+): Promise<{ ok: boolean }> {
+  const { webhookId, event, payload } = job.data;
+  const webhook = await prisma.vendorWebhook.findUnique({ where: { id: webhookId } });
+  if (!webhook || !webhook.isActive) return { ok: true };
+
+  const { signWebhookPayload } = await import('../lib/webhookSigning');
+  const body = JSON.stringify({ event, data: payload, deliveredAt: new Date().toISOString() });
+  const signature = signWebhookPayload(webhook.secret, body);
+  const res = await fetch(webhook.url, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'X-Gob-Signature': `sha256=${signature}`,
+    },
+    body,
+    signal: AbortSignal.timeout(10_000),
+  });
+  if (!res.ok) {
+    throw new Error(`Webhook #${webhookId} delivery failed: HTTP ${res.status}`);
+  }
+  return { ok: true };
+}

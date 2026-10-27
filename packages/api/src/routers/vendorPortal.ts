@@ -13,6 +13,8 @@ import { noonUtcDay, advisorRulesForVendor } from '../workers/handlers';
 import { KSA_SEASONS, seasonMarkers } from '../lib/ksaCalendar';
 import { computeStoreHealthScore, gatherStoreHealthFactors } from '../lib/storeHealth';
 import { writeVendorPriceLogs, toRuleLike } from '../lib/vendorPricing';
+import { enqueueWebhookEvents } from '../lib/webhookDelivery';
+import { generateWebhookSecret } from '../lib/webhookSigning';
 import { forecastFromSales, type StockForecast } from '../lib/stockForecast';
 import { weekBucketStart, weeklyTrendLabels } from '../lib/reviewTrend';
 import { requestProductReviews } from '../lib/storeReviewRequests';
@@ -1038,6 +1040,95 @@ export const vendorPortalRouter = router({
       });
     }),
 
+  // ---------------------------------------------------------------------------
+  // D1b — vendor webhooks (Wave D)
+  // ---------------------------------------------------------------------------
+
+  /** webhooks — the caller's endpoints (the secret shows masked — its
+   *  full value is shown exactly once, at creation). */
+  webhooks: customerProcedure.query(async ({ ctx }) => {
+    const vendor = await vendorForStaffQuery(ctx, 'PRODUCTS_MANAGE');
+    if (!vendor) return [];
+    const rows = await prisma.vendorWebhook.findMany({
+      where: { vendorId: vendor.id },
+      orderBy: { createdAt: 'desc' },
+    });
+    return rows.map(({ secret, ...rest }) => ({
+      ...rest,
+      secretMasked: `whsec_${secret.slice(-8)}`,
+    }));
+  }),
+
+  /** createWebhook — returns the signing SECRET once; only the masked
+   *  tail is listable afterwards. */
+  createWebhook: customerProcedure
+    .input(
+      z.object({
+        url: z.string().url().max(500),
+        events: z
+          .array(z.enum(['order.placed', 'order.fulfilled', 'stock.low']))
+          .min(1)
+          .max(3),
+      }),
+    )
+    .mutation(async ({ ctx, input }) => {
+      const vendor = await vendorForStaff(ctx, 'PRODUCTS_MANAGE');
+      const secret = generateWebhookSecret();
+      const webhook = await prisma.vendorWebhook.create({
+        data: {
+          vendorId: vendor.id,
+          url: input.url,
+          secret,
+          events: input.events,
+        },
+      });
+      const { secret: _s, ...rest } = webhook;
+      return { webhook: rest, secret };
+    }),
+
+  /** updateWebhook — partial edit (url/events/active). */
+  updateWebhook: customerProcedure
+    .input(
+      z.object({
+        webhookId: z.number().int().positive(),
+        url: z.string().url().max(500).optional(),
+        events: z
+          .array(z.enum(['order.placed', 'order.fulfilled', 'stock.low']))
+          .min(1)
+          .max(3)
+          .optional(),
+        isActive: z.boolean().optional(),
+      }),
+    )
+    .mutation(async ({ ctx, input }) => {
+      const vendor = await vendorForStaff(ctx, 'PRODUCTS_MANAGE');
+      const webhook = await prisma.vendorWebhook.findFirst({
+        where: { id: input.webhookId, vendorId: vendor.id },
+        select: { id: true },
+      });
+      if (!webhook) throw new TRPCError({ code: 'NOT_FOUND', message: 'Webhook not found' });
+      const updated = await prisma.vendorWebhook.update({
+        where: { id: input.webhookId },
+        data: { url: input.url, events: input.events, isActive: input.isActive },
+      });
+      const { secret: _s, ...rest } = updated;
+      return rest;
+    }),
+
+  /** deleteWebhook — hard delete (delivery jobs no-op on a missing row). */
+  deleteWebhook: customerProcedure
+    .input(z.object({ webhookId: z.number().int().positive() }))
+    .mutation(async ({ ctx, input }) => {
+      const vendor = await vendorForStaff(ctx, 'PRODUCTS_MANAGE');
+      const deleted = await prisma.vendorWebhook.deleteMany({
+        where: { id: input.webhookId, vendorId: vendor.id },
+      });
+      if (deleted.count === 0) {
+        throw new TRPCError({ code: 'NOT_FOUND', message: 'Webhook not found' });
+      }
+      return { success: true };
+    }),
+
   /** orders — the store's orders, newest first, cursor-paginated (A5). */
   orders: customerProcedure
     .input(
@@ -1187,6 +1278,16 @@ export const vendorPortalRouter = router({
         });
       } catch {
         // Never fail fulfillment on review-request errors.
+      }
+      // D1b — the fulfillment event over the vendor's webhooks.
+      try {
+        await enqueueWebhookEvents('order.fulfilled', {
+          vendorId: vendor.id,
+          orderId: result.order.id,
+          total: Number(result.order.totalAmount),
+        });
+      } catch {
+        // Webhook fan-out never fails fulfillment.
       }
       return result.order;
     }),
