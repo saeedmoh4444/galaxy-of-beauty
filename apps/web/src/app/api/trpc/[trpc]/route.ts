@@ -52,6 +52,8 @@ const handler = async (req: NextRequest) => {
   // ── Extract CSRF tokens from cookie and header ──
   const csrfCookie = req.cookies.get(CSRF_COOKIE_NAME)?.value ?? null;
   const csrfHeader = req.headers.get('x-csrf-token') ?? null;
+  // D1 — vendor API key auth (server-to-server integrations).
+  const apiKey = req.headers.get('x-api-key') ?? null;
 
   // Ensure a CSRF cookie is always set
   const existingCookie = req.cookies.get(CSRF_COOKIE_NAME);
@@ -69,6 +71,7 @@ const handler = async (req: NextRequest) => {
         user,
         csrfCookie,
         csrfHeader,
+        apiKey,
         origin,
         isProduction,
         clientIp,
