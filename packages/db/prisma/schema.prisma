@@ -1655,6 +1655,7 @@ model Vendor {
   storeViewLogs       StoreViewLog[]
   priceRules          VendorPriceRule[]
   webhooks            VendorWebhook[]
+  apiKeys             VendorApiKey[]
 
   @@index([storeSlug])
   @@index([isVerified, isActive])
@@ -1719,6 +1720,24 @@ model VendorWebhook {
 
   @@index([vendorId, isActive])
   @@map("vendor_webhooks")
+}
+
+// D1 — vendor API keys (Wave D): the enterprise integration surface.
+// Only the sha256 hash is stored; the plaintext is shown once at creation.
+model VendorApiKey {
+  id         Int       @id @default(autoincrement())
+  vendorId   Int
+  name       String    // the vendor's label ("ERP integration")
+  prefix     String    // "gb_live" — recognizable in logs
+  keyHash    String    @unique // sha256 hex of the full key
+  lastUsedAt DateTime?
+  revokedAt  DateTime?
+  createdAt  DateTime  @default(now())
+
+  vendor Vendor @relation(fields: [vendorId], references: [id], onDelete: Cascade)
+
+  @@index([vendorId, revokedAt])
+  @@map("vendor_api_keys")
 }
 
 // A1 — store staff accounts (VENDOR_PROFESSIONALIZATION_PLAN Wave A).
