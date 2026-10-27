@@ -3955,6 +3955,13 @@ export const miscMessages = {
   'vendorPortal.services.bookings.customer': { ar: 'العميل', en: 'Customer' },
   'vendorPortal.services.bookings.status': { ar: 'الحالة', en: 'Status' },
   'vendorPortal.services.bookings.when': { ar: 'الموعد', en: 'When' },
+  // C5f — booking status actions (same state machine as the engine).
+  'vendorPortal.services.bookings.actions': { ar: 'إجراءات', en: 'Actions' },
+  'vendorPortal.services.bookings.accept': { ar: 'قبول', en: 'Accept' },
+  'vendorPortal.services.bookings.start': { ar: 'بدء', en: 'Start' },
+  'vendorPortal.services.bookings.cancel': { ar: 'إلغاء', en: 'Cancel' },
+  'vendorPortal.services.bookings.complete': { ar: 'إتمام', en: 'Complete' },
+  'vendorPortal.services.bookings.reject': { ar: 'رفض', en: 'Reject' },
   'vendorPortal.duplicate': { ar: 'نسخ', en: 'Duplicate' },
   'vendorPortal.draft': { ar: 'مسودة', en: 'Draft' },
   'vendorPortal.publish': { ar: 'نشر', en: 'Publish' },

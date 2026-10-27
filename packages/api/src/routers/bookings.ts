@@ -25,13 +25,15 @@ import {
 // Booking State Machine
 // ---------------------------------------------------------------------------
 
-const VALID_TRANSITIONS: Record<string, string[]> = {
+// C5 — exported so the vendor flow (vendorPortal.updateServiceBooking)
+// reuses the SAME state machine instead of drifting a parallel one.
+export const VALID_TRANSITIONS: Record<string, string[]> = {
   REQUESTED: ['ACCEPTED', 'REJECTED', 'CANCELLED'],
   ACCEPTED: ['IN_PROGRESS', 'CANCELLED', 'PAYMENT_AUTHORIZED'],
   IN_PROGRESS: ['COMPLETED', 'NO_SHOW'],
 };
 
-const ACTION_TO_STATUS: Record<string, string> = {
+export const ACTION_TO_STATUS: Record<string, string> = {
   accept: 'ACCEPTED',
   reject: 'REJECTED',
   cancel: 'CANCELLED',

@@ -81,6 +81,14 @@ export function StoreServicesPanel(): JSX.Element {
       void slotsQ.refetch();
     },
   });
+  const bookingActionMut = api.vendorPortal.updateServiceBooking.useMutation({
+    onSuccess: () => void bookingsQ.refetch(),
+  });
+
+  type BookingAction = 'accept' | 'reject' | 'cancel' | 'start' | 'complete' | 'no_show';
+  const bookingAction = (id: number, action: BookingAction) => {
+    bookingActionMut.mutate({ id, action });
+  };
 
   const startEdit = (s: ServiceRow) => {
     setEditingId(s.id);
@@ -301,6 +309,9 @@ export function StoreServicesPanel(): JSX.Element {
                   <th className="pb-2 text-right font-medium">
                     {t('vendorPortal.services.price')}
                   </th>
+                  <th className="pb-2 text-right font-medium">
+                    {t('vendorPortal.services.bookings.actions')}
+                  </th>
                 </tr>
               </thead>
               <tbody>
@@ -316,6 +327,55 @@ export function StoreServicesPanel(): JSX.Element {
                     </td>
                     <td className="py-2">{new Date(b.startAt).toLocaleString(locale)}</td>
                     <td className="py-2 text-right">{formatCurrency(b.totalAmount)}</td>
+                    <td className="py-2">
+                      <div className="flex justify-end gap-1">
+                        {/* C5f — the SAME state machine as the engine. */}
+                        {(b.status === 'REQUESTED' || b.status === 'ACCEPTED') && (
+                          <Button
+                            size="sm"
+                            variant="outline"
+                            disabled={bookingActionMut.isPending}
+                            onClick={() =>
+                              bookingAction(b.id, b.status === 'REQUESTED' ? 'accept' : 'start')
+                            }
+                          >
+                            {b.status === 'REQUESTED'
+                              ? t('vendorPortal.services.bookings.accept')
+                              : t('vendorPortal.services.bookings.start')}
+                          </Button>
+                        )}
+                        {b.status === 'ACCEPTED' && (
+                          <Button
+                            size="sm"
+                            variant="ghost"
+                            disabled={bookingActionMut.isPending}
+                            onClick={() => bookingAction(b.id, 'cancel')}
+                          >
+                            {t('vendorPortal.services.bookings.cancel')}
+                          </Button>
+                        )}
+                        {b.status === 'IN_PROGRESS' && (
+                          <Button
+                            size="sm"
+                            variant="outline"
+                            disabled={bookingActionMut.isPending}
+                            onClick={() => bookingAction(b.id, 'complete')}
+                          >
+                            {t('vendorPortal.services.bookings.complete')}
+                          </Button>
+                        )}
+                        {b.status === 'REQUESTED' && (
+                          <Button
+                            size="sm"
+                            variant="ghost"
+                            disabled={bookingActionMut.isPending}
+                            onClick={() => bookingAction(b.id, 'reject')}
+                          >
+                            {t('vendorPortal.services.bookings.reject')}
+                          </Button>
+                        )}
+                      </div>
+                    </td>
                   </tr>
                 ))}
               </tbody>

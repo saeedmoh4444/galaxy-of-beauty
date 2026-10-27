@@ -1130,6 +1130,7 @@ vendorPortal.storeBookings	query	customer
 vendorPortal.updatePriceRule	mutation	customer
 vendorPortal.updateProduct	mutation	customer
 vendorPortal.updateService	mutation	customer
+vendorPortal.updateServiceBooking	mutation	customer
 vendorPortal.updateSocialLinks	mutation	customer
 vendorPortal.updateStoreProfile	mutation	customer
 vendorPortal.updateVariant	mutation	customer

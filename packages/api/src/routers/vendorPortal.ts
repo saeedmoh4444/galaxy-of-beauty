@@ -1,7 +1,7 @@
 import { z } from 'zod';
 import { TRPCError } from '@trpc/server';
 import { prisma } from '@galaxy/db';
-import type { Prisma } from '@galaxy/db';
+import type { Prisma, BookingStatus } from '@galaxy/db';
 import { customerProcedure, router } from '../trpc';
 import { notifyUser } from '../lib/notify';
 import { getCsvImportQueue } from '../queues';
@@ -20,6 +20,10 @@ import { forecastFromSales, type StockForecast } from '../lib/stockForecast';
 import { weekBucketStart, weeklyTrendLabels } from '../lib/reviewTrend';
 import { requestProductReviews } from '../lib/storeReviewRequests';
 import { ensureStoreTechnician } from '../lib/storeServices';
+// C5 — the vendor flow reuses the engine's state machine (exported from
+// bookings.ts) instead of drifting a parallel one.
+import { VALID_TRANSITIONS, ACTION_TO_STATUS } from './bookings';
+import { emitToUser, emitToAdmin } from '../socket/index';
 
 /** B.3: vendor portal is DB-backed (was an in-memory array). */
 
@@ -1247,6 +1251,124 @@ export const vendorPortalRouter = router({
         nextCursor: hasMore ? page[page.length - 1]!.id : null,
         total,
       };
+    }),
+
+  updateServiceBooking: customerProcedure
+    .input(
+      z.object({
+        id: z.number().int().positive(),
+        action: z.enum(['accept', 'reject', 'cancel', 'start', 'complete', 'no_show']),
+        reason: z.string().max(500).optional(),
+      }),
+    )
+    .mutation(async ({ ctx, input }) => {
+      const vendor = await vendorForStaff(ctx, 'ORDERS_MANAGE');
+
+      // Ownership guard: only THIS vendor's store bookings (the
+      // denormalized vendorId), never technician bookings.
+      const booking = await prisma.booking.findUnique({
+        where: { id: input.id },
+        include: {
+          slot: true,
+          service: { select: { titleJson: true } },
+          customer: { select: { name: true, preferredLanguage: true } },
+        },
+      });
+      if (!booking || booking.vendorId !== vendor.id) {
+        throw new TRPCError({ code: 'NOT_FOUND', message: 'Booking not found' });
+      }
+
+      // The SAME state machine as the engine (exported from bookings.ts).
+      const newStatus = ACTION_TO_STATUS[input.action]! as BookingStatus;
+      const validNextStates = VALID_TRANSITIONS[booking.status];
+      if (!validNextStates || !validNextStates.includes(newStatus)) {
+        throw new TRPCError({
+          code: 'BAD_REQUEST',
+          message: `Cannot transition booking from ${booking.status} to ${newStatus}`,
+        });
+      }
+
+      const updatedBooking = await prisma.$transaction(async (tx) => {
+        // Free the slot on cancel or reject (same as the engine).
+        if (input.action === 'cancel' || input.action === 'reject') {
+          if (booking.slot) {
+            await tx.availabilitySlot.update({
+              where: { id: booking.slot.id },
+              data: { isBooked: false, bookingId: null },
+            });
+          }
+        }
+
+        // Completion stats ride the store's hidden technician (parity).
+        if (input.action === 'complete') {
+          await tx.technician.update({
+            where: { userId: booking.technicianId },
+            data: { completedBookings: { increment: 1 } },
+          });
+        }
+
+        return tx.booking.update({
+          where: { id: input.id },
+          data: {
+            status: newStatus,
+            ...(input.action === 'cancel'
+              ? { cancelledAt: new Date(), cancelReason: input.reason ?? null }
+              : {}),
+          },
+        });
+      });
+
+      // Customer-facing real-time event (the store owner acts on the
+      // booking; the pseudo provider is never connected).
+      const eventMap: Record<string, string> = {
+        accept: 'booking_accepted',
+        reject: 'booking_rejected',
+        cancel: 'booking_cancelled',
+        start: 'booking_started',
+        complete: 'booking_completed',
+        no_show: 'booking_no_show',
+      };
+      emitToUser(booking.customerId, eventMap[input.action] ?? 'booking_updated', updatedBooking);
+      emitToAdmin('admin_update', {
+        type: 'booking_action',
+        action: input.action,
+        booking: updatedBooking,
+        actor: 'vendor',
+      });
+
+      // B.26 parity — template notification on acceptance; the vendor's
+      // store name stands in for the technician.
+      if (input.action === 'accept') {
+        try {
+          const svc = booking.service?.titleJson as { ar?: string; en?: string } | null;
+          const customerLocale = booking.customer.preferredLanguage === 'en' ? 'en' : 'ar';
+          const fmt = new Intl.DateTimeFormat(customerLocale === 'ar' ? 'ar-SA' : 'en-GB', {
+            weekday: 'long',
+            month: 'long',
+            day: 'numeric',
+          });
+          const fmtTime = new Intl.DateTimeFormat(customerLocale === 'ar' ? 'ar-SA' : 'en-GB', {
+            hour: '2-digit',
+            minute: '2-digit',
+          });
+          await notifyUser({
+            userId: booking.customerId,
+            templateKey: 'booking_accepted',
+            vars: {
+              customerName: booking.customer.name ?? '',
+              serviceName: svc?.[customerLocale] ?? '',
+              techName: vendor.storeName,
+              date: fmt.format(updatedBooking.startAt),
+              time: fmtTime.format(updatedBooking.startAt),
+            },
+            link: `/bookings/${booking.id}`,
+          });
+        } catch {
+          // Notification failure must never fail the transition
+        }
+      }
+
+      return { id: updatedBooking.id, status: updatedBooking.status };
     }),
 
   // ---------------------------------------------------------------------------
