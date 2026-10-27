@@ -3,6 +3,7 @@ import type { Prisma } from '@galaxy/db';
 import { TRPCError } from '@trpc/server';
 import { notifyUser } from './notify';
 import { enqueueWebhookEvents } from './webhookDelivery';
+import { evaluateVendorRules, toRuleLike } from './vendorPricing';
 
 // Shared cart → StoreOrder placement used by marketplace.buyCart (no
 // checkout) and payments.payCart (with a StoreCheckout shipping+payment
@@ -80,12 +81,33 @@ export async function readCartForCheckout(userId: number): Promise<CartLine[]> {
     });
   }
 
+  // C3c — checkout-time pricing: the vendor's active uplift rules apply
+  // to the cart math (delta adds BEFORE the multiplier).
+  const vendorIds = [...new Set(cartItems.map((i) => i.product.vendorId))];
+  const rulesByVendor = new Map<number, ReturnType<typeof toRuleLike>[]>();
+  for (const vendorId of vendorIds) {
+    const rows = await prisma.vendorPriceRule.findMany({
+      where: { vendorId, isActive: true },
+    });
+    rulesByVendor.set(vendorId, rows.map(toRuleLike));
+  }
+
   return cartItems.map((i) => {
     const productName = (i.product.nameJson as { en?: string; ar?: string } | null) ?? null;
     const variantName = (i.variant?.nameJson as { en?: string; ar?: string } | null) ?? null;
+    const stock = i.variant?.stock ?? i.product.stock;
+    const threshold = i.variant?.lowStockThreshold ?? i.product.lowStockThreshold;
     // C1 — a variant line prices at base + delta and consumes variant
     // stock; the display name composes product + variant labels.
-    const unitPrice = Number(i.product.price) + Number(i.variant?.priceDelta ?? 0);
+    const base = Number(i.product.price) + Number(i.variant?.priceDelta ?? 0);
+    const priced = evaluateVendorRules(rulesByVendor.get(i.product.vendorId) ?? [], {
+      productId: i.productId,
+      date: new Date(),
+      stock,
+      lowStockThreshold: threshold,
+      basePrice: base,
+    });
+    const unitPrice = priced.price;
     const name = variantName
       ? `${productName?.en ?? `Product #${i.productId}`} — ${variantName.en ?? variantName.ar}`
       : (productName?.en ?? `Product #${i.productId}`);
@@ -96,8 +118,8 @@ export async function readCartForCheckout(userId: number): Promise<CartLine[]> {
       vendorId: i.product.vendorId,
       name,
       nameJson: productName,
-      stock: i.variant?.stock ?? i.product.stock,
-      lowStockThreshold: i.variant?.lowStockThreshold ?? i.product.lowStockThreshold,
+      stock,
+      lowStockThreshold: threshold,
       variantId: i.variant?.id ?? null,
       variantNameJson: variantName,
     };
