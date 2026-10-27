@@ -3895,7 +3895,7 @@ export const miscMessages = {
   'vendorPortal.variants.active': { ar: 'نشط', en: 'Active' },
   'vendorPortal.add': { ar: 'إضافة', en: 'Add' },
   // C2b — stock-in (barcode/QR + manual)
-  'vendorPortal.stockin.title': { ar: 'إضافة مخزون', en: 'Stock in' },
+  'vendorPortal.stockin.title': { ar: 'استلام مخزون', en: 'Stock in' },
   'vendorPortal.stockin.quantity': { ar: 'الكمية', en: 'Quantity' },
   'vendorPortal.stockin.variant': { ar: 'المتغير', en: 'Variant' },
   'vendorPortal.stockin.base': { ar: 'المنتج الأساسي', en: 'Base product' },

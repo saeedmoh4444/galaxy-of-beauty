@@ -5382,7 +5382,7 @@ export const arWebMessages: Record<string, string> = {
   'vendorPortal.status.pending-review-desc': 'ستتمكنين من النشر في المتجر العام بعد موافقة الإدارة',
   'vendorPortal.stockin.base': 'المنتج الأساسي',
   'vendorPortal.stockin.quantity': 'الكمية',
-  'vendorPortal.stockin.title': 'إضافة مخزون',
+  'vendorPortal.stockin.title': 'استلام مخزون',
   'vendorPortal.stockin.variant': 'المتغير',
   'vendorPortal.stock': 'مخزون',
   'vendorPortal.stockPlaceholder': 'المخزون',
