@@ -4666,6 +4666,7 @@ export const enWebMessages: Record<string, string> = {
   'status.subtitle': 'Availability and current incidents',
   'status.title': 'Platform Status',
   'stores.add-to-cart': 'Add to cart',
+  'stores.ar-try-on': 'AR try-on',
   'stores.added-to-cart': 'Added to cart',
   'stores.empty': 'No stores yet',
   'stores.empty-products': 'No products in this store',
@@ -5475,6 +5476,10 @@ export const enWebMessages: Record<string, string> = {
   'vendorPortal.status.pending-review': 'Your store is pending review',
   'vendorPortal.status.pending-review-desc':
     'You will be able to publish to the public marketplace after admin approval',
+  'vendorPortal.stockin.base': 'Base product',
+  'vendorPortal.stockin.quantity': 'Quantity',
+  'vendorPortal.stockin.title': 'Stock in',
+  'vendorPortal.stockin.variant': 'Variant',
   'vendorPortal.stock': 'Stock',
   'vendorPortal.stockPlaceholder': 'Stock',
   'vendorPortal.submission.note': 'Admin note: {note}',
