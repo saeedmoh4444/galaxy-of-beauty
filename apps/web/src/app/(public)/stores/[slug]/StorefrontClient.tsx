@@ -91,6 +91,8 @@ export function StorefrontClient({ data }: { data: StorefrontPageData }): JSX.El
   const { t, locale } = useLocale();
   const { addToast } = useToast();
   const { isAuthenticated } = useAuth();
+  // C1c — the selected variant per product (picker state).
+  const [selectedVariants, setSelectedVariants] = useState<Record<number, number>>({});
   const addToCartMut = api.marketplace.addToCart.useMutation({
     onSuccess: () => addToast('success', t('stores.added-to-cart')),
     onError: (e) => addToast('error', e.message),
@@ -237,11 +239,77 @@ export function StorefrontClient({ data }: { data: StorefrontPageData }): JSX.El
                   <p className="truncate font-bold text-text-primary">
                     {localize(p.nameJson, locale)}
                   </p>
+                  {/* C1c — variant picker: chips with the final price; the
+                      add button below targets the selected variant. */}
+                  {(() => {
+                    const variants = ((p as { variants?: Array<Record<string, unknown>> })
+                      .variants ?? []) as Array<{
+                      id: number;
+                      nameJson?: { ar?: string; en?: string } | null;
+                      priceDelta?: string | number;
+                      stock?: number;
+                    }>;
+                    if (variants.length === 0) return null;
+                    const selected = variants.find((v) => v.id === selectedVariants[Number(p.id)]);
+                    return (
+                      <div
+                        className="mt-2 flex flex-wrap gap-1.5"
+                        role="group"
+                        aria-label={t('stores.variant-select')}
+                      >
+                        {variants.map((v) => {
+                          const active = selected?.id === v.id;
+                          return (
+                            <button
+                              key={v.id}
+                              type="button"
+                              onClick={() =>
+                                setSelectedVariants((prev) => ({
+                                  ...prev,
+                                  [Number(p.id)]: v.id,
+                                }))
+                              }
+                              className={`rounded-full border px-2.5 py-1 text-xs font-medium ${
+                                active
+                                  ? 'border-brand-500 bg-brand-50 text-brand-700 dark:bg-brand-950 dark:text-brand-300'
+                                  : 'border-border-muted text-text-secondary hover:bg-surface-muted'
+                              }`}
+                            >
+                              {(v.nameJson as { ar?: string; en?: string } | null)?.[
+                                locale === 'ar' ? 'ar' : 'en'
+                              ] ?? `#${v.id}`}
+                              {Number(v.priceDelta ?? 0) !== 0
+                                ? ` · ${formatCurrency(Number(p.price ?? 0) + Number(v.priceDelta ?? 0))}`
+                                : ''}
+                            </button>
+                          );
+                        })}
+                      </div>
+                    );
+                  })()}
                   <p className="mt-1 text-sm font-semibold text-brand-600">
-                    {formatCurrency(Number(p.price ?? 0))}
+                    {(() => {
+                      const variants = ((p as { variants?: Array<Record<string, unknown>> })
+                        .variants ?? []) as Array<{ id: number; priceDelta?: string | number }>;
+                      const selected = variants.find(
+                        (v) => v.id === selectedVariants[Number(p.id)],
+                      );
+                      return formatCurrency(
+                        Number(p.price ?? 0) + Number(selected?.priceDelta ?? 0),
+                      );
+                    })()}
                   </p>
                   <p className="mt-1 text-xs text-text-secondary">
-                    {t('stores.stock', { count: Number(p.stock ?? 0) })}
+                    {t('stores.stock', {
+                      count: (() => {
+                        const variants = ((p as { variants?: Array<Record<string, unknown>> })
+                          .variants ?? []) as Array<{ id: number; stock?: number }>;
+                        const selected = variants.find(
+                          (v) => v.id === selectedVariants[Number(p.id)],
+                        );
+                        return selected ? Number(selected.stock ?? 0) : Number(p.stock ?? 0);
+                      })(),
+                    })}
                   </p>
                 </div>
                 <Button
@@ -250,7 +318,11 @@ export function StorefrontClient({ data }: { data: StorefrontPageData }): JSX.El
                   loading={addToCartMut.isPending}
                   onClick={() => {
                     if (isAuthenticated) {
-                      addToCartMut.mutate({ productId: p.id as number, quantity: 1 });
+                      addToCartMut.mutate({
+                        productId: p.id as number,
+                        quantity: 1,
+                        variantId: selectedVariants[Number(p.id)],
+                      });
                     } else {
                       addToast('warning', t('stores.login-to-buy'));
                     }

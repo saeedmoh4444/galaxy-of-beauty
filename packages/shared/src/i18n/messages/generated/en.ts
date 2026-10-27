@@ -4667,6 +4667,7 @@ export const enWebMessages: Record<string, string> = {
   'stores.subtitle': 'Shop from verified beauty stores',
   'stores.title': 'Stores',
   'stores.verified': 'Verified',
+  'stores.variant-select': 'Select a variant',
   'stores.badge.top-rated': 'Top Rated',
   'stores.badge.fast-fulfillment': 'Fast Fulfillment',
   'stores.badge.responsive-seller': 'Responsive Seller',
