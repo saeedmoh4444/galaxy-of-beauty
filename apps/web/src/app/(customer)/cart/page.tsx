@@ -26,12 +26,9 @@ export default function CartPage(): JSX.Element {
   const removeMut = api.marketplace.removeFromCart.useMutation();
   const cartItems = data ?? [];
   const total = cartItems.reduce((sum: number, item: Record<string, unknown>) => {
-    const product = item.product as Record<string, unknown>;
-    const variant = item.variant as Record<string, unknown> | null;
-    return (
-      sum +
-      (Number(product?.price ?? 0) + Number(variant?.priceDelta ?? 0)) * (item.quantity as number)
-    );
+    // C3c — the line's effectivePrice already carries the vendor's active
+    // uplift rules (delta added before the multiplier server-side).
+    return sum + Number(item.effectivePrice ?? 0) * (item.quantity as number);
   }, 0);
 
   return (
@@ -63,7 +60,6 @@ export default function CartPage(): JSX.Element {
               {cartItems.map((item: Record<string, unknown>) => {
                 const product = item.product as Record<string, unknown>;
                 const variant = item.variant as Record<string, unknown> | null;
-                const unitPrice = Number(product?.price ?? 0) + Number(variant?.priceDelta ?? 0);
                 return (
                   <Card key={item.id as number} padding="md">
                     <div className="flex items-center justify-between">
@@ -89,13 +85,15 @@ export default function CartPage(): JSX.Element {
                           </p>
                           <p className="text-xs text-text-secondary">
                             {t('cart.quantity', { qty: item.quantity as number })} ·{' '}
-                            {formatCurrency(unitPrice)}
+                            {formatCurrency(Number(item.effectivePrice ?? 0))}
                           </p>
                         </div>
                       </div>
                       <div className="flex items-center gap-3">
                         <span className="font-bold text-brand-600">
-                          {formatCurrency(unitPrice * (item.quantity as number))}
+                          {formatCurrency(
+                            Number(item.effectivePrice ?? 0) * (item.quantity as number),
+                          )}
                         </span>
                         <Button
                           size="sm"
