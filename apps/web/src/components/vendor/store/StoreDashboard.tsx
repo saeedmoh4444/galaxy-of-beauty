@@ -10,6 +10,7 @@ import type { MyStore, StoreDealPayload, StoreOrderRow } from '@galaxy/api';
 import { localize, type TranslationKey } from '@galaxy/shared';
 import { VenueProfileCard } from '../shared/VenueProfileCard';
 import { SubmissionStatusCard } from '../shared/SubmissionStatusCard';
+import { ProductVariantsModal } from './ProductVariantsModal';
 import { StaffPanel } from '../shared/StaffPanel';
 import { DashboardTabs } from '../shared/DashboardTabs';
 
@@ -181,6 +182,14 @@ export function StoreDashboard({
     },
   });
   const [detailOrder, setDetailOrder] = useState<StoreOrderRow | null>(null);
+
+  // C1 — variants manager per product (Wave C).
+  const [variantProduct, setVariantProduct] = useState<{
+    id: number;
+    price: number;
+    nameAr?: string;
+    nameEn?: string;
+  } | null>(null);
 
   // B5 — vendor response to a customer-raised dispute (drawer).
   const respondMut = api.disputes.respond.useMutation({
@@ -1100,6 +1109,21 @@ export function StoreDashboard({
                     </span>
                     <Button size="sm" variant="outline" onClick={() => openEdit(p)}>
                       {t('vendorPortal.edit')}
+                    </Button>
+                    {/* C1 — variants manager (sizes/shades with own stock). */}
+                    <Button
+                      size="sm"
+                      variant="outline"
+                      onClick={() =>
+                        setVariantProduct({
+                          id: p.id,
+                          price: p.price,
+                          nameAr: p.nameAr,
+                          nameEn: p.nameEn,
+                        })
+                      }
+                    >
+                      {t('vendorPortal.variants.title')}
                     </Button>
                     <Button
                       size="sm"
@@ -2383,6 +2407,11 @@ export function StoreDashboard({
             </div>
           )}
         </Modal>
+
+        {/* C1 — variants manager for the selected product. */}
+        {variantProduct ? (
+          <ProductVariantsModal product={variantProduct} onClose={() => setVariantProduct(null)} />
+        ) : null}
       </div>
     </DashboardLayout>
   );

@@ -1534,11 +1534,35 @@ model Product {
   deals    StoreDeal[]
   orderItems StoreOrderItem[]
   reviewRequests ReviewRequest[]
+  variants ProductVariant[]
 
   @@index([vendorId, isActive])
   @@index([categoryId, isActive])
   @@index([price])
   @@map("products")
+}
+
+// C1 — product variants (PROFESSIONALIZATION Wave C): size/shade/pack
+// options with their own SKU, stock and price delta. Variant stock is the
+// checkout stock unit when a variant is selected; the base product keeps
+// its price and acts as the no-variant line.
+model ProductVariant {
+  id          Int      @id @default(autoincrement())
+  productId   Int
+  sku         String?
+  nameJson    Json // { ar, en } — the option label ("50ml", "Deep Rose")
+  priceDelta  Decimal  @default(0) @db.Decimal(10, 2) // signed; final = product.price + delta
+  stock       Int      @default(0)
+  lowStockThreshold Int @default(5) // B3b reuse at variant level
+  isActive    Boolean  @default(true)
+  createdAt   DateTime @default(now())
+
+  product    Product           @relation(fields: [productId], references: [id], onDelete: Cascade)
+  cartItems  CartItem[]
+  orderItems StoreOrderItem[]
+
+  @@index([productId, isActive])
+  @@map("product_variants")
 }
 
 model Vendor {
@@ -1861,6 +1885,11 @@ model StoreOrderItem {
   id            Int      @id @default(autoincrement())
   orderId       Int
   productId     Int
+  // C1 — variant line items: the variant id + its bilingual label snapshot
+  // (rendered by the order drawer/detail; the base product stays in
+  // nameSnapshot).
+  variantId     Int?
+  variantNameJson Json?
   nameSnapshot  Json
   priceSnapshot Decimal  @db.Decimal(10, 2)
   quantity      Int
@@ -1868,6 +1897,7 @@ model StoreOrderItem {
 
   order   StoreOrder @relation(fields: [orderId], references: [id], onDelete: Cascade)
   product Product    @relation(fields: [productId], references: [id], onDelete: Restrict)
+  variant ProductVariant? @relation(fields: [variantId], references: [id], onDelete: SetNull)
 
   @@index([orderId])
   @@index([productId])
@@ -1969,13 +1999,20 @@ model CartItem {
   id        Int      @id @default(autoincrement())
   userId    Int
   productId Int
+  // C1 — a cart line may target a variant; the compound unique lets the
+  // base product and its variants coexist as separate lines.
+  variantId Int?
   quantity  Int      @default(1)
   createdAt DateTime @default(now())
 
   user    User    @relation(fields: [userId], references: [id])
   product Product @relation(fields: [productId], references: [id])
+  variant ProductVariant? @relation(fields: [variantId], references: [id], onDelete: Cascade)
 
-  @@unique([userId, productId])
+  // C1 — the base product and its variants coexist as separate cart lines.
+  // No @@unique: Prisma types nullable compound-unique fields as non-null,
+  // so duplicate adds are merged via findFirst in marketplace.addToCart.
+  @@index([userId, productId, variantId])
   @@index([userId])
   @@map("cart_items")
 }

@@ -1022,6 +1022,7 @@ users.revokeOtherSessions	mutation	protected
 users.revokeSession	mutation	protected
 users.updateMe	mutation	protected
 vendorPortal.addProduct	mutation	customer
+vendorPortal.addVariant	mutation	customer
 vendorPortal.advisor	query	customer
 vendorPortal.analyticsSeries	query	customer
 vendorPortal.bulkStockUpdate	mutation	customer
@@ -1041,6 +1042,7 @@ vendorPortal.dashboard	query	customer
 vendorPortal.deactivateCoupon	mutation	customer
 vendorPortal.dealTemplates	query	customer
 vendorPortal.deleteProduct	mutation	customer
+vendorPortal.deleteVariant	mutation	customer
 vendorPortal.duplicateProduct	mutation	customer
 vendorPortal.earnings	query	customer
 vendorPortal.earningsCsv	query	customer
@@ -1109,6 +1111,8 @@ vendorPortal.stockForecasts	query	customer
 vendorPortal.updateProduct	mutation	customer
 vendorPortal.updateSocialLinks	mutation	customer
 vendorPortal.updateStoreProfile	mutation	customer
+vendorPortal.updateVariant	mutation	customer
+vendorPortal.variants	query	customer
 video.endSession	mutation	protected
 video.getByBooking	query	protected
 video.startSession	mutation	protected
