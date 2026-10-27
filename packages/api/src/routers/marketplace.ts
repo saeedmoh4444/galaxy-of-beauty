@@ -116,7 +116,7 @@ export const marketplaceRouter = router({
             lowStockThreshold: true,
           },
         },
-        // C1 — the variant line's label + delta (and its stock unit for
+        // C1c — the variant line's label + delta (and its stock unit for
         // the pricing rules below).
         variant: {
           select: {
@@ -325,6 +325,8 @@ export const marketplaceRouter = router({
           where: { isActive: true, isDraft: false, approvalStatus: 'LIVE', stock: { gt: 0 } },
           orderBy: [{ isFeatured: 'desc' }, { createdAt: 'desc' }],
           take: LARGE_PAGE_SIZE,
+          // C1c — the storefront variant picker data (active only).
+          include: { variants: { where: { isActive: true }, orderBy: { id: 'asc' } } },
         },
         // B3 — the public count matches what shoppers actually see.
         _count: {

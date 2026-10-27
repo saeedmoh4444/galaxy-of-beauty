@@ -59,6 +59,7 @@ export default function CartPage(): JSX.Element {
             <div className="space-y-3">
               {cartItems.map((item: Record<string, unknown>) => {
                 const product = item.product as Record<string, unknown>;
+                const variant = item.variant as Record<string, unknown> | null;
                 return (
                   <Card key={item.id as number} padding="md">
                     <div className="flex items-center justify-between">
@@ -73,6 +74,14 @@ export default function CartPage(): JSX.Element {
                           <p className="font-bold">
                             {localize(product?.nameJson, locale) ||
                               t('cart.productFallback', { id: String(product?.id ?? '') })}
+                            {/* C1c — the variant label rides the name line. */}
+                            {variant
+                              ? ` — ${
+                                  (variant.nameJson as { ar?: string; en?: string } | null)?.[
+                                    locale === 'ar' ? 'ar' : 'en'
+                                  ] ?? ''
+                                }`
+                              : ''}
                           </p>
                           <p className="text-xs text-text-secondary">
                             {t('cart.quantity', { qty: item.quantity as number })} ·{' '}
@@ -89,7 +98,12 @@ export default function CartPage(): JSX.Element {
                         <Button
                           size="sm"
                           variant="ghost"
-                          onClick={() => removeMut.mutate({ productId: product?.id as number })}
+                          onClick={() =>
+                            removeMut.mutate({
+                              productId: product?.id as number,
+                              variantId: (item.variantId as number | undefined) ?? undefined,
+                            })
+                          }
                           loading={removeMut.isPending}
                           className="text-red-700 dark:text-red-400"
                         >
