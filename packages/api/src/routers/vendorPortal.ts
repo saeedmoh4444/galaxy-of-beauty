@@ -15,6 +15,7 @@ import { computeStoreHealthScore, gatherStoreHealthFactors } from '../lib/storeH
 import { writeVendorPriceLogs, toRuleLike } from '../lib/vendorPricing';
 import { enqueueWebhookEvents } from '../lib/webhookDelivery';
 import { generateWebhookSecret } from '../lib/webhookSigning';
+import { generateApiKey } from '../lib/apiKeys';
 import { forecastFromSales, type StockForecast } from '../lib/stockForecast';
 import { weekBucketStart, weeklyTrendLabels } from '../lib/reviewTrend';
 import { requestProductReviews } from '../lib/storeReviewRequests';
