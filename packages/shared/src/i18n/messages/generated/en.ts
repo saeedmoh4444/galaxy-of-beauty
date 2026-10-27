@@ -4666,6 +4666,7 @@ export const enWebMessages: Record<string, string> = {
   'status.subtitle': 'Availability and current incidents',
   'status.title': 'Platform Status',
   'stores.add-to-cart': 'Add to cart',
+  'stores.ar-try-on': 'AR try-on',
   'stores.added-to-cart': 'Added to cart',
   'stores.empty': 'No stores yet',
   'stores.empty-products': 'No products in this store',
