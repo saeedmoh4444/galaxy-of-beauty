@@ -13,6 +13,7 @@ import { noonUtcDay, advisorRulesForVendor } from '../workers/handlers';
 import { KSA_SEASONS, seasonMarkers } from '../lib/ksaCalendar';
 import { computeStoreHealthScore, gatherStoreHealthFactors } from '../lib/storeHealth';
 import { writeVendorPriceLogs, toRuleLike } from '../lib/vendorPricing';
+import { generateApiKey } from '../lib/apiKeys';
 import { forecastFromSales, type StockForecast } from '../lib/stockForecast';
 import { weekBucketStart, weeklyTrendLabels } from '../lib/reviewTrend';
 import { requestProductReviews } from '../lib/storeReviewRequests';
@@ -1081,6 +1082,59 @@ export const vendorPortalRouter = router({
         orderBy: { createdAt: 'desc' },
         take: 50,
       });
+    }),
+
+  // ---------------------------------------------------------------------------
+  // D1 — vendor API keys (Wave D)
+  // ---------------------------------------------------------------------------
+
+  /** apiKeys — the caller's keys (hashes only — the plaintext is shown
+   *  exactly once, at creation). */
+  apiKeys: customerProcedure.query(async ({ ctx }) => {
+    const vendor = await vendorForStaffQuery(ctx, 'PRODUCTS_MANAGE');
+    if (!vendor) return [];
+    return prisma.vendorApiKey.findMany({
+      where: { vendorId: vendor.id },
+      orderBy: { createdAt: 'desc' },
+      select: {
+        id: true,
+        name: true,
+        prefix: true,
+        lastUsedAt: true,
+        revokedAt: true,
+        createdAt: true,
+      },
+    });
+  }),
+
+  /** createApiKey — returns the PLAINTEXT once; only its sha256 hash is
+   *  stored. The caller must save it now — it can never be recovered. */
+  createApiKey: customerProcedure
+    .input(z.object({ name: z.string().min(1).max(80) }))
+    .mutation(async ({ ctx, input }) => {
+      const vendor = await vendorForStaff(ctx, 'PRODUCTS_MANAGE');
+      const { plaintext, hash, prefix } = generateApiKey('gb_live');
+      const key = await prisma.vendorApiKey.create({
+        data: { vendorId: vendor.id, name: input.name, prefix, keyHash: hash },
+        select: { id: true, name: true, prefix: true, createdAt: true },
+      });
+      return { key, plaintext };
+    }),
+
+  /** revokeApiKey — immediate revocation; in-flight requests fail on the
+   *  next lookup. */
+  revokeApiKey: customerProcedure
+    .input(z.object({ keyId: z.number().int().positive() }))
+    .mutation(async ({ ctx, input }) => {
+      const vendor = await vendorForStaff(ctx, 'PRODUCTS_MANAGE');
+      const updated = await prisma.vendorApiKey.updateMany({
+        where: { id: input.keyId, vendorId: vendor.id, revokedAt: null },
+        data: { revokedAt: new Date() },
+      });
+      if (updated.count === 0) {
+        throw new TRPCError({ code: 'NOT_FOUND', message: 'Key not found' });
+      }
+      return { success: true };
     }),
 
   /** orders — the store's orders, newest first, cursor-paginated (A5). */

@@ -186,6 +186,8 @@ vendor-owned service definitions, per-vendor calendars/reuse of the
 booking engine, technician mapping. Deserves its own mini-plan before
 any work; flag here as the flagship Wave C item.
 **Effort: XL. ~8–10 PRs + mini-plan.**
+**Mini-plan: `docs/VENDOR_HYBRID_STORE_SERVICES_PLAN.md` (drafted
+2026-10-27 — pseudo-technician engine reuse, 8 PRs, acceptance tests).**
 
 ## 4. Wave D — Platform & Resilience
 
