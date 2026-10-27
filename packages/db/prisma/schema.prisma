@@ -1519,6 +1519,13 @@ model Product {
   // B5 — funnel analytics: storefront impression counter (incremented by
   // marketplace.trackStoreView on store-page loads).
   viewCount    Int      @default(0)
+  // C4 — rich media + product-level SEO (Wave C): product video, bilingual
+  // meta title/description (≤60/≤160 chars — enforced in the router), and
+  // the optional AR try-on deep link (vendor opt-in).
+  videoUrl      String?
+  metaTitleJson  Json?
+  metaDescJson   Json?
+  arTryOnUrl    String?
   tags        String[] // organic, vegan, cruelty-free, etc.
   // 3.1 Beauty DNA — polymorphic match payload, discriminated by `kind`:
   // makeup { kind, shade, shadeHex, undertone, depth 1..6 }
