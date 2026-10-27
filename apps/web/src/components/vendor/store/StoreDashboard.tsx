@@ -15,6 +15,7 @@ import { StockInModal } from './StockInModal';
 import { PricingRulesPanel } from './PricingRulesPanel';
 import { StaffPanel } from '../shared/StaffPanel';
 import { DashboardTabs } from '../shared/DashboardTabs';
+import { VendorTour } from '../shared/VendorTour';
 
 type TabKey =
   | 'overview'
@@ -2520,6 +2521,9 @@ export function StoreDashboard({
         {stockInProduct ? (
           <StockInModal product={stockInProduct} onClose={() => setStockInProduct(null)} />
         ) : null}
+
+        {/* D4 — first-visit onboarding tour (dismissed into localStorage). */}
+        <VendorTour onNavigate={(next) => selectTab(next as TabKey)} />
       </div>
     </DashboardLayout>
   );

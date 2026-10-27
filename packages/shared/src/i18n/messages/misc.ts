@@ -4183,6 +4183,27 @@ export const miscMessages = {
   'vendorPortal.reviews.trend': { ar: 'آخر ٨ أسابيع', en: 'Last 8 weeks' },
   // E5 — CRM-lite (customers tab).
   'vendorPortal.tab.customers': { ar: 'العملاء', en: 'Customers' },
+  // D4 — first-visit onboarding tour.
+  'vendorPortal.tour.title': { ar: 'جولة سريعة في متجرك', en: 'Quick tour of your store' },
+  'vendorPortal.tour.skip': { ar: 'تخطي', en: 'Skip' },
+  'vendorPortal.tour.next': { ar: 'التالي', en: 'Next' },
+  'vendorPortal.tour.done': { ar: 'تم', en: 'Done' },
+  'vendorPortal.tour.step.overview': {
+    ar: 'هنا نظرة عامة على متجرك: المبيعات والصحة والتنبيهات.',
+    en: 'Your store at a glance: sales, health and alerts.',
+  },
+  'vendorPortal.tour.step.products': {
+    ar: 'أضف منتجاتك وخدمات الحجز من تبويبي المنتجات والخدمات.',
+    en: 'Add products and bookable services from the products and services tabs.',
+  },
+  'vendorPortal.tour.step.orders': {
+    ar: 'تابع طلباتك وحجوزاتك وجّهزها في الوقت.',
+    en: 'Track your orders and bookings and fulfill them on time.',
+  },
+  'vendorPortal.tour.step.earnings': {
+    ar: 'راقب أرباحك وجدول الدفعات من هنا.',
+    en: 'Watch your earnings and payout schedule here.',
+  },
   // F1 — vendor inbox (notifications domain).
   'vendorPortal.inbox.title': { ar: 'الوارد', en: 'Inbox' },
   'vendorPortal.inbox.empty': { ar: 'لا توجد إشعارات بعد', en: 'No notifications yet' },
