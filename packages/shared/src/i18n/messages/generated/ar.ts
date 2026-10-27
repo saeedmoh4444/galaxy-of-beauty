@@ -4595,6 +4595,7 @@ export const arWebMessages: Record<string, string> = {
   'status.subtitle': 'مؤشرات التوافر والأعطال الحالية',
   'status.title': 'حالة المنصة',
   'stores.add-to-cart': 'أضيفي للسلة',
+  'stores.ar-try-on': 'تجربة AR',
   'stores.added-to-cart': 'تمت الإضافة للسلة',
   'stores.empty': 'لا توجد متاجر بعد',
   'stores.empty-products': 'لا توجد منتجات في هذا المتجر',

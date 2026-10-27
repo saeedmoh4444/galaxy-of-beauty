@@ -4251,6 +4251,8 @@ export const miscMessages = {
   'stores.reviews.ownerReply': { ar: 'رد المتجر', en: 'Store reply' },
   'stores.empty-products': { ar: 'لا توجد منتجات في هذا المتجر', en: 'No products in this store' },
   'stores.stock': { ar: 'المخزون: {count}', en: 'Stock: {count}' },
+  // C4c — AR try-on link on product cards.
+  'stores.ar-try-on': { ar: 'تجربة AR', en: 'AR try-on' },
   'stores.add-to-cart': { ar: 'أضيفي للسلة', en: 'Add to cart' },
   'stores.added-to-cart': { ar: 'تمت الإضافة للسلة', en: 'Added to cart' },
   'stores.login-to-buy': { ar: 'سجلي الدخول للشراء', en: 'Sign in to buy' },

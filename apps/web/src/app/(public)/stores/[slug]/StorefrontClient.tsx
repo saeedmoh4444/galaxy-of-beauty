@@ -91,6 +91,8 @@ export function StorefrontClient({ data }: { data: StorefrontPageData }): JSX.El
   const { t, locale } = useLocale();
   const { addToast } = useToast();
   const { isAuthenticated } = useAuth();
+  // C4c — the gallery image selected per product (thumbnail hover).
+  const [galleryImage, setGalleryImage] = useState<Record<number, string>>({});
   const addToCartMut = api.marketplace.addToCart.useMutation({
     onSuccess: () => addToast('success', t('stores.added-to-cart')),
     onError: (e) => addToast('error', e.message),
@@ -224,43 +226,89 @@ export function StorefrontClient({ data }: { data: StorefrontPageData }): JSX.El
         <EmptyState title={t('stores.empty-products')} />
       ) : (
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-          {data.products.map((p: Record<string, unknown>) => (
-            <Card key={p.id as number} padding="md">
-              <ServiceImage
-                src={(p.imageUrl as string) ?? null}
-                alt={localize(p.nameJson, locale)}
-                size="full"
-                className="mb-3 h-32 w-full"
-              />
-              <div className="flex items-start justify-between gap-3">
-                <div className="min-w-0">
-                  <p className="truncate font-bold text-text-primary">
-                    {localize(p.nameJson, locale)}
-                  </p>
-                  <p className="mt-1 text-sm font-semibold text-brand-600">
-                    {formatCurrency(Number(p.price ?? 0))}
-                  </p>
-                  <p className="mt-1 text-xs text-text-secondary">
-                    {t('stores.stock', { count: Number(p.stock ?? 0) })}
-                  </p>
+          {data.products.map((p: Record<string, unknown>) => {
+            // C4c — gallery + video + AR: the main image switches on
+            // thumbnail hover; the alt ladder = name (en → ar).
+            const gallery = (p.images as string[] | undefined) ?? [];
+            const nameText = localize(p.nameJson, locale);
+            const activeImage =
+              (galleryImage[Number(p.id)] as string | undefined) ?? (p.imageUrl as string) ?? null;
+            return (
+              <Card key={p.id as number} padding="md">
+                {activeImage ? (
+                  <ServiceImage
+                    src={activeImage}
+                    alt={nameText}
+                    size="full"
+                    className="mb-3 h-32 w-full"
+                  />
+                ) : null}
+                {gallery.length > 0 ? (
+                  <div className="mb-3 flex gap-2 overflow-x-auto">
+                    {gallery.map((src) => (
+                      <button
+                        key={src}
+                        type="button"
+                        onMouseEnter={() =>
+                          setGalleryImage((prev) => ({ ...prev, [Number(p.id)]: src }))
+                        }
+                        className={`h-14 w-14 shrink-0 overflow-hidden rounded-lg border ${
+                          activeImage === src ? 'border-brand-500' : 'border-border-muted'
+                        }`}
+                      >
+                        {/* eslint-disable-next-line @next/next/no-img-element */}
+                        <img src={src} alt={nameText} className="h-full w-full object-cover" />
+                      </button>
+                    ))}
+                  </div>
+                ) : null}
+                {p.videoUrl ? (
+                  // eslint-disable-next-line jsx-a11y/media-has-caption
+                  <video
+                    src={p.videoUrl as string}
+                    controls
+                    preload="none"
+                    className="mb-3 w-full rounded-lg"
+                  />
+                ) : null}
+                {p.arTryOnUrl ? (
+                  <a
+                    href={p.arTryOnUrl as string}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="mb-3 inline-block rounded-full bg-brand-50 px-3 py-1 text-xs font-bold text-brand-700 dark:bg-brand-950 dark:text-brand-300"
+                  >
+                    ✨ {t('stores.ar-try-on')}
+                  </a>
+                ) : null}
+                <div className="flex items-start justify-between gap-3">
+                  <div className="min-w-0">
+                    <p className="truncate font-bold text-text-primary">{nameText}</p>
+                    <p className="mt-1 text-sm font-semibold text-brand-600">
+                      {formatCurrency(Number(p.price ?? 0))}
+                    </p>
+                    <p className="mt-1 text-xs text-text-secondary">
+                      {t('stores.stock', { count: Number(p.stock ?? 0) })}
+                    </p>
+                  </div>
+                  <Button
+                    size="sm"
+                    disabled={!isAuthenticated || Number(p.stock ?? 0) <= 0}
+                    loading={addToCartMut.isPending}
+                    onClick={() => {
+                      if (isAuthenticated) {
+                        addToCartMut.mutate({ productId: p.id as number, quantity: 1 });
+                      } else {
+                        addToast('warning', t('stores.login-to-buy'));
+                      }
+                    }}
+                  >
+                    {t('stores.add-to-cart')}
+                  </Button>
                 </div>
-                <Button
-                  size="sm"
-                  disabled={!isAuthenticated || Number(p.stock ?? 0) <= 0}
-                  loading={addToCartMut.isPending}
-                  onClick={() => {
-                    if (isAuthenticated) {
-                      addToCartMut.mutate({ productId: p.id as number, quantity: 1 });
-                    } else {
-                      addToast('warning', t('stores.login-to-buy'));
-                    }
-                  }}
-                >
-                  {t('stores.add-to-cart')}
-                </Button>
-              </div>
-            </Card>
-          ))}
+              </Card>
+            );
+          })}
         </div>
       )}
 
