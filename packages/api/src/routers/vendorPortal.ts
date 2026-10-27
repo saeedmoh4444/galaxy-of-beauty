@@ -712,6 +712,46 @@ export const vendorPortalRouter = router({
       return input.updates;
     }),
 
+  /** stockIn — C2b: increment stock for a product (or one of its
+   *  variants). The barcode/QR stock-in flow and the manual button share
+   *  this mutation; ownership + belongs-to guards keep it honest. */
+  stockIn: customerProcedure
+    .input(
+      z.object({
+        productId: z.number().int().positive(),
+        variantId: z.number().int().positive().optional(),
+        quantity: z.number().int().min(1).max(10_000),
+      }),
+    )
+    .mutation(async ({ ctx, input }) => {
+      const vendor = await vendorForStaff(ctx, 'PRODUCTS_MANAGE');
+      const product = await prisma.product.findFirst({
+        where: { id: input.productId, vendorId: vendor.id },
+        select: { id: true },
+      });
+      if (!product) throw new TRPCError({ code: 'NOT_FOUND', message: 'Product not found' });
+
+      if (input.variantId !== undefined) {
+        const variant = await prisma.productVariant.findFirst({
+          where: { id: input.variantId, productId: input.productId },
+          select: { id: true },
+        });
+        if (!variant) {
+          throw new TRPCError({ code: 'BAD_REQUEST', message: 'Variant not found for product' });
+        }
+        return prisma.productVariant.update({
+          where: { id: input.variantId },
+          data: { stock: { increment: input.quantity } },
+          select: { id: true, stock: true },
+        });
+      }
+      return prisma.product.update({
+        where: { id: input.productId },
+        data: { stock: { increment: input.quantity } },
+        select: { id: true, stock: true },
+      });
+    }),
+
   /** stockForecasts — 30-day sales velocity + days-at-stock per product
    *  from VendorDailyStat.productSales. Foreign ids are ignored (the UI
    *  sends only its own rows). */
