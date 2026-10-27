@@ -11,7 +11,7 @@ import {
 } from '../trpc';
 import { notifyUser } from '../lib/notify';
 import { gatherStoreHealthFactors } from '../lib/storeHealth';
-import { evaluateVendorRules } from '../lib/vendorPricing';
+import { evaluateVendorRules, toRuleLike } from '../lib/vendorPricing';
 import { computeVendorTierBadges, computeTopRated } from '../lib/vendorTiers';
 import { noonUtcDay } from '../workers/handlers';
 import {
@@ -102,11 +102,57 @@ export const marketplaceRouter = router({
 
   // ── Cart ──────────────────────────────────────────────
   cart: protectedProcedure.query(async ({ ctx }) => {
-    return prisma.cartItem.findMany({
+    const items = await prisma.cartItem.findMany({
       where: { userId: ctx.user.id },
       include: {
-        product: { select: { id: true, nameJson: true, price: true, imageUrl: true, stock: true } },
+        product: {
+          select: {
+            id: true,
+            nameJson: true,
+            price: true,
+            imageUrl: true,
+            stock: true,
+            vendorId: true,
+            lowStockThreshold: true,
+          },
+        },
+        // C1 — the variant line's label + delta (and its stock unit for
+        // the pricing rules below).
+        variant: {
+          select: {
+            id: true,
+            nameJson: true,
+            priceDelta: true,
+            stock: true,
+            lowStockThreshold: true,
+          },
+        },
       },
+    });
+
+    // C3c — checkout-time pricing: each line's effective price reflects
+    // the vendor's active uplift rules (delta adds BEFORE the multiplier).
+    const vendorIds = [...new Set(items.map((i) => i.product.vendorId))];
+    const rulesByVendor = new Map<number, ReturnType<typeof toRuleLike>[]>();
+    for (const vendorId of vendorIds) {
+      const rows = await prisma.vendorPriceRule.findMany({
+        where: { vendorId, isActive: true },
+      });
+      rulesByVendor.set(vendorId, rows.map(toRuleLike));
+    }
+
+    return items.map((item) => {
+      const stock = item.variant?.stock ?? item.product.stock;
+      const threshold = item.variant?.lowStockThreshold ?? item.product.lowStockThreshold;
+      const base = Number(item.product.price) + Number(item.variant?.priceDelta ?? 0);
+      const res = evaluateVendorRules(rulesByVendor.get(item.product.vendorId) ?? [], {
+        productId: item.productId,
+        date: new Date(),
+        stock,
+        lowStockThreshold: threshold,
+        basePrice: base,
+      });
+      return { ...item, effectivePrice: res.price, appliedRuleIds: res.appliedRuleIds };
     });
   }),
 
