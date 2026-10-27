@@ -1,6 +1,7 @@
 import { initTRPC, TRPCError } from '@trpc/server';
 import { ZodError } from 'zod';
 import superjson from 'superjson';
+import { prisma } from '@galaxy/db';
 import type { Context } from './context';
 import { verifyCsrfToken } from './lib/csrf';
 import { checkRateLimit } from './lib/rateLimit';
@@ -87,6 +88,30 @@ export const publicProcedure = procedure
   .use(requestCounter)
   .use(rateLimitGuard)
   .meta({ tier: 'public' });
+
+/**
+ * D1 — vendor API key auth (server-to-server integrations). Resolves the
+ * X-Api-Key header against the stored sha256 hashes; attaches the vendor
+ * id to ctx. Missing/invalid/revoked keys are all UNAUTHORIZED.
+ */
+export const vendorApiKeyProcedure = publicProcedure.use(async ({ ctx, next }) => {
+  if (!ctx.apiKey) {
+    throw new TRPCError({ code: 'UNAUTHORIZED', message: 'Missing API key' });
+  }
+  const { hashApiKey } = await import('./lib/apiKeys');
+  const key = await prisma.vendorApiKey.findUnique({
+    where: { keyHash: hashApiKey(ctx.apiKey) },
+    select: { id: true, vendorId: true, revokedAt: true },
+  });
+  if (!key || key.revokedAt) {
+    throw new TRPCError({ code: 'UNAUTHORIZED', message: 'Invalid or revoked API key' });
+  }
+  // Fire-and-forget lastUsedAt stamp — never fail a request on it.
+  void prisma.vendorApiKey.update({ where: { id: key.id }, data: { lastUsedAt: new Date() } });
+  return next({
+    ctx: { ...ctx, vendorApiKey: { keyId: key.id, vendorId: key.vendorId } },
+  });
+});
 
 // ---- CSRF Protection (applied to mutations) ----
 const csrfGuard = middleware(({ ctx, next }) => {
