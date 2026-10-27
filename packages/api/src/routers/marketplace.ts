@@ -106,6 +106,8 @@ export const marketplaceRouter = router({
       where: { userId: ctx.user.id },
       include: {
         product: { select: { id: true, nameJson: true, price: true, imageUrl: true, stock: true } },
+        // C1c — the variant line's label + delta for cart rendering.
+        variant: { select: { id: true, nameJson: true, priceDelta: true } },
       },
     });
   }),
@@ -279,6 +281,8 @@ export const marketplaceRouter = router({
           where: { isActive: true, isDraft: false, approvalStatus: 'LIVE', stock: { gt: 0 } },
           orderBy: [{ isFeatured: 'desc' }, { createdAt: 'desc' }],
           take: LARGE_PAGE_SIZE,
+          // C1c — the storefront variant picker data (active only).
+          include: { variants: { where: { isActive: true }, orderBy: { id: 'asc' } } },
         },
         // B3 — the public count matches what shoppers actually see.
         _count: {
