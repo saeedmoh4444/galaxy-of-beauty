@@ -4,7 +4,9 @@
  */
 import { z } from 'zod';
 import { prisma } from '@galaxy/db';
+import { TRPCError } from '@trpc/server';
 import { adminProcedure, router } from '../trpc';
+import { writeVendorPriceLogs, toRuleLike } from '../lib/vendorPricing';
 
 const ruleInput = z.object({
   serviceId: z.number().int().positive().nullable().optional(),
@@ -83,4 +85,34 @@ export const pricingAdminRouter = router({
         data: { dynamicPricingEnabled: input.enabled },
       }),
     ),
+
+  /** overrideVendorRule — C3: the admin replaces (or clears) a vendor
+   *  rule's multiplier. Precedence: admin > vendor — the evaluation lib
+   *  prefers adminOverrideMultiplier when set. Logs the affected products
+   *  as 'admin'. */
+  overrideVendorRule: adminProcedure
+    .input(
+      z.object({
+        ruleId: z.number().int().positive(),
+        multiplier: z.number().min(1).max(5).nullable(), // null clears the override
+      }),
+    )
+    .mutation(async ({ input }) => {
+      const rule = await prisma.vendorPriceRule.findUnique({ where: { id: input.ruleId } });
+      if (!rule) throw new TRPCError({ code: 'NOT_FOUND', message: 'Rule not found' });
+      const updated = await prisma.vendorPriceRule.update({
+        where: { id: input.ruleId },
+        data: { adminOverrideMultiplier: input.multiplier },
+      });
+      await writeVendorPriceLogs(
+        prisma,
+        rule.vendorId,
+        rule.id,
+        'admin',
+        { ...toRuleLike(updated), isActive: true }, // force-evaluate the changed state
+        true,
+        rule.productId ?? undefined,
+      );
+      return updated;
+    }),
 });

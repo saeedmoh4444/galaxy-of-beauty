@@ -1534,6 +1534,8 @@ model Product {
   deals    StoreDeal[]
   orderItems StoreOrderItem[]
   reviewRequests ReviewRequest[]
+  priceRules VendorPriceRule[]
+  priceLogs ProductPriceLog[]
   variants ProductVariant[]
 
   @@index([vendorId, isActive])
@@ -1651,12 +1653,52 @@ model Vendor {
   staffActivity       StaffActivityLog[]
   winbackLogs         WinbackLog[]
   storeViewLogs       StoreViewLog[]
+  priceRules          VendorPriceRule[]
 
   @@index([storeSlug])
   @@index([isVerified, isActive])
   @@index([type, isVerified, isActive])
   @@index([userId])
   @@map("vendors")
+}
+
+// C3 — vendor pricing rules (Wave C): uplift-only weekend/low-stock rules
+// on the vendor's own products; the admin override replaces a rule's
+// multiplier (precedence: admin > vendor). Uplift-only = the below-cost
+// guardrail is structural (multiplier ≥ 1.0).
+model VendorPriceRule {
+  id          Int      @id @default(autoincrement())
+  vendorId    Int
+  productId   Int?     // null = all of the vendor's products
+  ruleType    String   // weekend_uplift | lowstock_floor
+  dayOfWeek   Int?     // 0=Sun..6=Sat; null = all days
+  multiplier  Decimal  @default(1.1) @db.Decimal(4, 2) // ≥ 1.00 (uplift-only)
+  adminOverrideMultiplier Decimal? @db.Decimal(4, 2)
+  isActive    Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  vendor  Vendor   @relation(fields: [vendorId], references: [id], onDelete: Cascade)
+  product Product? @relation(fields: [productId], references: [id], onDelete: Cascade)
+
+  @@index([vendorId, isActive])
+  @@map("vendor_price_rules")
+}
+
+// C3 — per-product price change log (vendor rule changes + admin overrides).
+model ProductPriceLog {
+  id        Int      @id @default(autoincrement())
+  productId Int
+  ruleId    Int?
+  oldPrice  Decimal  @db.Decimal(10, 2)
+  newPrice  Decimal  @db.Decimal(10, 2)
+  changedBy String   // vendor | admin
+  createdAt DateTime @default(now())
+
+  product Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+
+  @@index([productId, createdAt])
+  @@map("product_price_logs")
 }
 
 // A1 — store staff accounts (VENDOR_PROFESSIONALIZATION_PLAN Wave A).
