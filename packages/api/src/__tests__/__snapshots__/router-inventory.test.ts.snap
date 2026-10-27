@@ -1025,6 +1025,7 @@ vendorPortal.addProduct	mutation	customer
 vendorPortal.addVariant	mutation	customer
 vendorPortal.advisor	query	customer
 vendorPortal.analyticsSeries	query	customer
+vendorPortal.bulkStockUpdate	mutation	customer
 vendorPortal.cancelOrder	mutation	customer
 vendorPortal.clinicCancelConsultation	mutation	customer
 vendorPortal.clinicConsultations	query	customer
@@ -1106,6 +1107,7 @@ vendorPortal.staff.list	query	customer
 vendorPortal.staff.myInvitation	query	customer
 vendorPortal.staff.revoke	mutation	customer
 vendorPortal.staff.update	mutation	customer
+vendorPortal.stockForecasts	query	customer
 vendorPortal.updateProduct	mutation	customer
 vendorPortal.updateSocialLinks	mutation	customer
 vendorPortal.updateStoreProfile	mutation	customer
