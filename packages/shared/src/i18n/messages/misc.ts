@@ -3905,6 +3905,17 @@ export const miscMessages = {
     en: '~{days} days at current velocity',
   },
   'vendorPortal.bulk.noVelocity': { ar: 'بيانات غير كافية بعد', en: 'Not enough data yet' },
+  // C4 — rich media + product-level SEO (editor section)
+  'vendorPortal.media.section': { ar: 'الوسائط و SEO', en: 'Media & SEO' },
+  'vendorPortal.media.video': { ar: 'رابط الفيديو', en: 'Video URL' },
+  'vendorPortal.media.metaTitleAr': { ar: 'عنوان SEO (عربي)', en: 'SEO title (Arabic)' },
+  'vendorPortal.media.metaTitleEn': { ar: 'عنوان SEO (إنجليزي)', en: 'SEO title (English)' },
+  'vendorPortal.media.metaDescAr': { ar: 'وصف SEO (عربي)', en: 'SEO description (Arabic)' },
+  'vendorPortal.media.metaDescEn': { ar: 'وصف SEO (إنجليزي)', en: 'SEO description (English)' },
+  'vendorPortal.media.arTryOn': {
+    ar: 'رابط تجربة AR (اختياري)',
+    en: 'AR try-on link (optional)',
+  },
   // C2 — listing approval chips (strict mode)
   'vendorPortal.approval.pending': { ar: 'قيد المراجعة', en: 'Under review' },
   'vendorPortal.approval.rejected': { ar: 'مرفوض', en: 'Rejected' },

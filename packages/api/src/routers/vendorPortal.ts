@@ -65,6 +65,11 @@ function toPortalProduct(p: {
   lowStockThreshold?: number | null;
   approvalStatus?: string | null;
   reviewNotes?: string | null;
+  // C4 — rich media + product SEO fields for the editor.
+  videoUrl?: string | null;
+  metaTitleJson?: unknown;
+  metaDescJson?: unknown;
+  arTryOnUrl?: string | null;
 }) {
   const nameAr = (p.nameJson as { ar?: string }).ar ?? '';
   const nameEn = (p.nameJson as { en?: string }).en ?? '';
@@ -96,6 +101,13 @@ function toPortalProduct(p: {
     // C2 — listing approval state (PENDING | LIVE | REJECTED) + admin note.
     approvalStatus: p.approvalStatus ?? 'LIVE',
     reviewNotes: p.reviewNotes ?? null,
+    // C4 — rich media + product SEO (editor fields).
+    videoUrl: p.videoUrl ?? null,
+    metaTitleAr: (p.metaTitleJson as { ar?: string } | undefined)?.ar ?? '',
+    metaTitleEn: (p.metaTitleJson as { en?: string } | undefined)?.en ?? '',
+    metaDescAr: (p.metaDescJson as { ar?: string } | undefined)?.ar ?? '',
+    metaDescEn: (p.metaDescJson as { en?: string } | undefined)?.en ?? '',
+    arTryOnUrl: p.arTryOnUrl ?? null,
   };
 }
 
@@ -463,6 +475,13 @@ export const vendorPortalRouter = router({
         imageUrl: z.string().url().optional(),
         // B3b — vendor-set low-stock alert threshold.
         lowStockThreshold: z.number().int().min(0).max(10000).default(5),
+        // C4 — rich media + product SEO (character-guidance guards).
+        videoUrl: z.string().url().max(500).optional(),
+        metaTitleAr: z.string().max(60).optional(),
+        metaTitleEn: z.string().max(60).optional(),
+        metaDescAr: z.string().max(160).optional(),
+        metaDescEn: z.string().max(160).optional(),
+        arTryOnUrl: z.string().url().max(500).optional(),
       }),
     )
     .mutation(async ({ ctx, input }) => {
@@ -504,6 +523,11 @@ export const vendorPortalRouter = router({
           isActive: true,
           lowStockThreshold: input.lowStockThreshold,
           approvalStatus: strict?.enabled ? 'PENDING' : 'LIVE',
+          // C4 — rich media + product SEO.
+          videoUrl: input.videoUrl,
+          metaTitleJson: { ar: input.metaTitleAr ?? '', en: input.metaTitleEn ?? '' },
+          metaDescJson: { ar: input.metaDescAr ?? '', en: input.metaDescEn ?? '' },
+          arTryOnUrl: input.arTryOnUrl,
         },
       });
 
@@ -749,6 +773,13 @@ export const vendorPortalRouter = router({
         imageUrl: z.string().url().optional(),
         images: z.array(z.string().url()).max(8).optional(),
         lowStockThreshold: z.number().int().min(0).max(10000).optional(),
+        // C4 — rich media + product SEO (character-guidance guards).
+        videoUrl: z.string().url().max(500).optional(),
+        metaTitleAr: z.string().max(60).optional(),
+        metaTitleEn: z.string().max(60).optional(),
+        metaDescAr: z.string().max(160).optional(),
+        metaDescEn: z.string().max(160).optional(),
+        arTryOnUrl: z.string().url().max(500).optional(),
       }),
     )
     .mutation(async ({ ctx, input }) => {
@@ -771,6 +802,16 @@ export const vendorPortalRouter = router({
         ar: input.descAr ?? (existing.descriptionJson as { ar?: string }).ar ?? '',
         en: input.descEn ?? (existing.descriptionJson as { en?: string }).en ?? '',
       };
+      // C4 — bilingual meta title/description merge (never clobber the
+      // other language; same pattern as name/description).
+      const metaTitleJson = {
+        ar: input.metaTitleAr ?? (existing.metaTitleJson as { ar?: string } | null)?.ar ?? '',
+        en: input.metaTitleEn ?? (existing.metaTitleJson as { en?: string } | null)?.en ?? '',
+      };
+      const metaDescJson = {
+        ar: input.metaDescAr ?? (existing.metaDescJson as { ar?: string } | null)?.ar ?? '',
+        en: input.metaDescEn ?? (existing.metaDescJson as { en?: string } | null)?.en ?? '',
+      };
 
       const updated = await prisma.product.update({
         where: { id: input.id },
@@ -784,6 +825,10 @@ export const vendorPortalRouter = router({
           imageUrl: input.imageUrl ?? existing.imageUrl,
           images: input.images ?? existing.images,
           lowStockThreshold: input.lowStockThreshold ?? existing.lowStockThreshold,
+          videoUrl: input.videoUrl ?? existing.videoUrl,
+          metaTitleJson: metaTitleJson as unknown as Prisma.InputJsonValue,
+          metaDescJson: metaDescJson as unknown as Prisma.InputJsonValue,
+          arTryOnUrl: input.arTryOnUrl ?? existing.arTryOnUrl,
         },
       });
 
