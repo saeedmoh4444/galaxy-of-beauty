@@ -156,6 +156,13 @@ export function StoreDashboard({
   const [edCategoryId, setEdCategoryId] = useState<number | undefined>();
   const [edImages, setEdImages] = useState<string[]>([]);
   const [edThreshold, setEdThreshold] = useState(5);
+  // C4 — rich media + product SEO editor fields.
+  const [edVideoUrl, setEdVideoUrl] = useState('');
+  const [edMetaTitleAr, setEdMetaTitleAr] = useState('');
+  const [edMetaTitleEn, setEdMetaTitleEn] = useState('');
+  const [edMetaDescAr, setEdMetaDescAr] = useState('');
+  const [edMetaDescEn, setEdMetaDescEn] = useState('');
+  const [edArTryOnUrl, setEdArTryOnUrl] = useState('');
   const { data: categories } = api.marketplace.productCategories.useQuery();
   const edImgMut = api.uploads.uploadMedia.useMutation({
     onSuccess: (res) => setEdImages((prev) => [...prev, res.url]),
@@ -174,6 +181,13 @@ export function StoreDashboard({
     setEdCategoryId(undefined);
     setEdImages(p.images);
     setEdThreshold(p.threshold);
+    // C4 — media + SEO fields.
+    setEdVideoUrl(p.videoUrl ?? '');
+    setEdMetaTitleAr(p.metaTitleAr ?? '');
+    setEdMetaTitleEn(p.metaTitleEn ?? '');
+    setEdMetaDescAr(p.metaDescAr ?? '');
+    setEdMetaDescEn(p.metaDescEn ?? '');
+    setEdArTryOnUrl(p.arTryOnUrl ?? '');
   };
   const fulfillMut = api.vendorPortal.fulfillOrder.useMutation({
     onSuccess: () => refetchOrders(),
@@ -2416,6 +2430,54 @@ export function StoreDashboard({
               {updateMut.isError && (
                 <p className="text-sm text-red-600 dark:text-red-400">{updateMut.error.message}</p>
               )}
+              {/* C4 — rich media + product-level SEO section. Collapsed by
+                  default so the edit modal stays short (a tall modal
+                  clipped the Save button on CI viewports). */}
+              <details className="rounded-lg border border-border-muted p-3">
+                <summary className="cursor-pointer text-sm font-semibold">
+                  {t('vendorPortal.media.section')}
+                </summary>
+                <div className="mt-3 space-y-3">
+                  <Input
+                    label={t('vendorPortal.media.video')}
+                    value={edVideoUrl}
+                    onChange={(e) => setEdVideoUrl(e.target.value)}
+                    placeholder="https://..."
+                  />
+                  <div className="grid grid-cols-2 gap-3">
+                    <div>
+                      <Input
+                        label={`${t('vendorPortal.media.metaTitleAr')} (${edMetaTitleAr.length}/60)`}
+                        value={edMetaTitleAr}
+                        onChange={(e) => setEdMetaTitleAr(e.target.value.slice(0, 60))}
+                      />
+                      <Input
+                        label={`${t('vendorPortal.media.metaTitleEn')} (${edMetaTitleEn.length}/60)`}
+                        value={edMetaTitleEn}
+                        onChange={(e) => setEdMetaTitleEn(e.target.value.slice(0, 60))}
+                      />
+                    </div>
+                    <div>
+                      <Input
+                        label={`${t('vendorPortal.media.metaDescAr')} (${edMetaDescAr.length}/160)`}
+                        value={edMetaDescAr}
+                        onChange={(e) => setEdMetaDescAr(e.target.value.slice(0, 160))}
+                      />
+                      <Input
+                        label={`${t('vendorPortal.media.metaDescEn')} (${edMetaDescEn.length}/160)`}
+                        value={edMetaDescEn}
+                        onChange={(e) => setEdMetaDescEn(e.target.value.slice(0, 160))}
+                      />
+                    </div>
+                  </div>
+                  <Input
+                    label={t('vendorPortal.media.arTryOn')}
+                    value={edArTryOnUrl}
+                    onChange={(e) => setEdArTryOnUrl(e.target.value)}
+                    placeholder="https://..."
+                  />
+                </div>
+              </details>
               <Button
                 onClick={() => {
                   if (edNameAr.trim() && edPrice > 0)
@@ -2431,6 +2493,13 @@ export function StoreDashboard({
                       categoryId: edCategoryId,
                       images: edImages,
                       lowStockThreshold: edThreshold,
+                      // C4 — media + SEO.
+                      videoUrl: edVideoUrl.trim() || undefined,
+                      metaTitleAr: edMetaTitleAr.trim() || undefined,
+                      metaTitleEn: edMetaTitleEn.trim() || undefined,
+                      metaDescAr: edMetaDescAr.trim() || undefined,
+                      metaDescEn: edMetaDescEn.trim() || undefined,
+                      arTryOnUrl: edArTryOnUrl.trim() || undefined,
                     });
                 }}
                 loading={updateMut.isPending || edImgMut.isPending}
