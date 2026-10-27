@@ -2396,10 +2396,14 @@ export function StoreDashboard({
               {updateMut.isError && (
                 <p className="text-sm text-red-600 dark:text-red-400">{updateMut.error.message}</p>
               )}
-              {/* C4 — rich media + product-level SEO section. */}
-              <div className="rounded-lg border border-border-muted p-3">
-                <p className="mb-2 text-sm font-semibold">{t('vendorPortal.media.section')}</p>
-                <div className="space-y-3">
+              {/* C4 — rich media + product-level SEO section. Collapsed by
+                  default so the edit modal stays short (a tall modal
+                  clipped the Save button on CI viewports). */}
+              <details className="rounded-lg border border-border-muted p-3">
+                <summary className="cursor-pointer text-sm font-semibold">
+                  {t('vendorPortal.media.section')}
+                </summary>
+                <div className="mt-3 space-y-3">
                   <Input
                     label={t('vendorPortal.media.video')}
                     value={edVideoUrl}
@@ -2439,7 +2443,7 @@ export function StoreDashboard({
                     placeholder="https://..."
                   />
                 </div>
-              </div>
+              </details>
               <Button
                 onClick={() => {
                   if (edNameAr.trim() && edPrice > 0)
