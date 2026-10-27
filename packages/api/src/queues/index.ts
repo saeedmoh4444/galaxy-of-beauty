@@ -188,6 +188,18 @@ export function getOpsQueue(): Queue | null {
   }
 }
 
+// D1b — vendor webhook delivery (HMAC-signed, 5 exponential retries).
+let _webhooksQueue: Queue | null = null;
+export function getWebhooksQueue(): Queue | null {
+  if (_webhooksQueue) return _webhooksQueue;
+  try {
+    _webhooksQueue = createQueue('gob-webhooks');
+    return _webhooksQueue;
+  } catch {
+    return null;
+  }
+}
+
 // Convenience: all queues
 export function getAllQueues(): Record<string, Queue | null> {
   return {

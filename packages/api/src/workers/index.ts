@@ -25,6 +25,7 @@ import {
   handleDisputeEscalationSweep,
   handleReviewReplyReminderSweep,
   handleQueueHealthCheck,
+  handleWebhookDelivery,
 } from './handlers';
 
 // Job types + pure helpers are re-exported from handlers.ts (routers
@@ -92,6 +93,7 @@ export const slaWorker = createWorker('gob-sla', handleOrderSlaSweep, 1);
 export const disputesWorker = createWorker('gob-disputes', handleDisputeEscalationSweep, 1);
 export const reviewsWorker = createWorker('gob-reviews', handleReviewReplyReminderSweep, 1);
 export const opsWorker = createWorker('gob-ops', handleQueueHealthCheck, 1);
+export const webhooksWorker = createWorker('gob-webhooks', handleWebhookDelivery, 2);
 
 /**
  * D2 — register the queue-health monitor: fires every 10 minutes and
@@ -227,6 +229,7 @@ export function startWorkers(): void {
     disputesWorker ? 'gob-disputes' : null,
     reviewsWorker ? 'gob-reviews' : null,
     opsWorker ? 'gob-ops' : null,
+    webhooksWorker ? 'gob-webhooks' : null,
   ].filter(Boolean);
   console.log(`[Workers] Started: ${names.join(', ') || 'none (Redis unavailable)'}`);
   void registerAnalyticsScheduler();
