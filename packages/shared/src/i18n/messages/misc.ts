@@ -4241,6 +4241,7 @@ export const miscMessages = {
   'stores.qr.download': { ar: 'تحميل الرمز', en: 'Download QR' },
   'stores.product-count': { ar: '{count} منتج', en: '{count} products' },
   'stores.verified': { ar: 'متجر موثق', en: 'Verified' },
+  'stores.variant-select': { ar: 'اختيار متغير', en: 'Select a variant' },
   // B2 — computed vendor tiers.
   'stores.badge.top-rated': { ar: 'الأعلى تقييماً', en: 'Top Rated' },
   'stores.badge.fast-fulfillment': { ar: 'تجهيز سريع', en: 'Fast Fulfillment' },

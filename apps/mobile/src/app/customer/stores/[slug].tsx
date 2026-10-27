@@ -1,4 +1,5 @@
 import type { JSX } from 'react';
+import { useState } from 'react';
 import { View, Text, ScrollView, StyleSheet, TouchableOpacity, RefreshControl } from 'react-native';
 import { useLocalSearchParams } from 'expo-router';
 import { ErrorAlert } from '@/components/ErrorAlert';
@@ -42,6 +43,12 @@ interface StoreDetail {
     nameJson?: { ar?: string; en?: string };
     price?: number;
     stock?: number;
+    variants?: Array<{
+      id?: number;
+      nameJson?: { ar?: string; en?: string };
+      priceDelta?: number;
+      stock?: number;
+    }>;
   }>;
 }
 
@@ -64,6 +71,9 @@ export default function StoreDetailScreen(): JSX.Element {
 
   const store = detailQ.data as unknown as StoreDetail | null;
   const products = store?.products ?? [];
+
+  // C1d — the selected variant per product (picker state).
+  const [selectedVariants, setSelectedVariants] = useState<Record<number, number>>({});
 
   // B5 — one store-view per app session (the funnel input).
   useEffect(() => {
@@ -117,29 +127,64 @@ export default function StoreDetailScreen(): JSX.Element {
         />
       ) : null}
 
-      {products.map((p, idx) => (
-        <View key={p.id ?? idx} style={s.card}>
-          <View style={s.pBody}>
-            <Text style={s.pName}>{localize(p.nameJson, locale)}</Text>
-            <Text style={s.pPrice}>
-              {Number(p.price ?? 0).toFixed(0)} {t('misc.sar')}
-            </Text>
-            <Text style={s.pStock}>
-              {t('mobile.stores.stock', { count: Number(p.stock ?? 0) })}
-            </Text>
+      {products.map((p, idx) => {
+        const variants = p.variants ?? [];
+        const selected = variants.find((v) => v.id === selectedVariants[Number(p.id)]);
+        const price = Number(p.price ?? 0) + Number(selected?.priceDelta ?? 0);
+        const stock = selected ? Number(selected.stock ?? 0) : Number(p.stock ?? 0);
+        return (
+          <View key={p.id ?? idx} style={s.card}>
+            <View style={s.pBody}>
+              <Text style={s.pName}>{localize(p.nameJson, locale)}</Text>
+              {/* C1d — variant chips (label + final price). */}
+              {variants.length > 0 ? (
+                <View style={s.chips}>
+                  {variants.map((v) => {
+                    const active = selected?.id === v.id;
+                    return (
+                      <TouchableOpacity
+                        key={v.id}
+                        onPress={() =>
+                          setSelectedVariants((prev) => ({ ...prev, [Number(p.id)]: Number(v.id) }))
+                        }
+                        style={[s.chip, active && s.chipActive]}
+                      >
+                        <Text style={[s.chipText, active && s.chipTextActive]}>
+                          {(v.nameJson as { ar?: string; en?: string } | null)?.[
+                            locale === 'ar' ? 'ar' : 'en'
+                          ] ?? ''}
+                          {Number(v.priceDelta ?? 0) !== 0
+                            ? ` · ${(Number(p.price ?? 0) + Number(v.priceDelta ?? 0)).toFixed(0)}`
+                            : ''}
+                        </Text>
+                      </TouchableOpacity>
+                    );
+                  })}
+                </View>
+              ) : null}
+              <Text style={s.pPrice}>
+                {price.toFixed(0)} {t('misc.sar')}
+              </Text>
+              <Text style={s.pStock}>{t('mobile.stores.stock', { count: stock })}</Text>
+            </View>
+            <TouchableOpacity
+              style={[s.buyBtn, (!isAuthed || stock <= 0) && s.buyBtnDisabled]}
+              disabled={!isAuthed || stock <= 0}
+              onPress={() => {
+                if (isAuthed && p.id)
+                  addToCartMut.mutate({
+                    productId: p.id,
+                    quantity: 1,
+                    variantId: selectedVariants[Number(p.id)],
+                  });
+                else showToast('warning', t('mobile.stores.login-to-buy'));
+              }}
+            >
+              <Text style={s.buyText}>{t('mobile.stores.add-to-cart')}</Text>
+            </TouchableOpacity>
           </View>
-          <TouchableOpacity
-            style={[s.buyBtn, (!isAuthed || Number(p.stock ?? 0) <= 0) && s.buyBtnDisabled]}
-            disabled={!isAuthed || Number(p.stock ?? 0) <= 0}
-            onPress={() => {
-              if (isAuthed && p.id) addToCartMut.mutate({ productId: p.id, quantity: 1 });
-              else showToast('warning', t('mobile.stores.login-to-buy'));
-            }}
-          >
-            <Text style={s.buyText}>{t('mobile.stores.add-to-cart')}</Text>
-          </TouchableOpacity>
-        </View>
-      ))}
+        );
+      })}
       {products.length === 0 && <Text style={s.empty}>{t('mobile.stores.empty-products')}</Text>}
 
       {/* B3 — review showcase (recent reviews with owner replies). */}
@@ -185,6 +230,18 @@ const s = StyleSheet.create({
   pName: { fontSize: 14, fontWeight: '600', color: '#111827' },
   pPrice: { fontSize: 14, fontWeight: '700', color: '#7c3aed', marginTop: 2 },
   pStock: { fontSize: 11, color: '#9ca3af', marginTop: 2 },
+  // C1d — variant chips.
+  chips: { flexDirection: 'row', flexWrap: 'wrap', gap: 6, marginTop: 6 },
+  chip: {
+    borderWidth: 1,
+    borderColor: '#e5e7eb',
+    borderRadius: 999,
+    paddingHorizontal: 10,
+    paddingVertical: 4,
+  },
+  chipActive: { borderColor: '#7c3aed', backgroundColor: '#f5f3ff' },
+  chipText: { fontSize: 11, color: '#6b7280' },
+  chipTextActive: { color: '#7c3aed', fontWeight: '700' },
   buyBtn: {
     backgroundColor: '#7c3aed',
     borderRadius: 10,
