@@ -244,4 +244,25 @@ export const adminToolsRouter = router({
     const rows = await getQueueHealth();
     return { rows, assessment: assessQueueHealth(rows) };
   }),
+
+  /** opsSnapshot — D2b: the ops view in one call — queue health plus the
+   *  fulfillment backlog, SLA breaches and open disputes. */
+  opsSnapshot: adminProcedure.query(async () => {
+    const { getQueueHealth, assessQueueHealth } = await import('../lib/queueHealth');
+    const [rows, pendingFulfillment, slaBreached, openDisputes] = await Promise.all([
+      getQueueHealth(),
+      prisma.storeOrder.count({ where: { status: 'PENDING_FULFILLMENT' } }),
+      prisma.storeOrder.count({
+        where: { status: 'PENDING_FULFILLMENT', slaBreachedAt: { not: null } },
+      }),
+      prisma.dispute.count({ where: { status: { in: ['OPEN', 'UNDER_REVIEW'] } } }),
+    ]);
+    return {
+      rows,
+      assessment: assessQueueHealth(rows),
+      pendingFulfillment,
+      slaBreached,
+      openDisputes,
+    };
+  }),
 });
