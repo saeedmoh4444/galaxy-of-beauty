@@ -303,6 +303,7 @@ import { techOnboardingRouter } from './techOnboarding';
 import { techWaitlistRouter } from './techWaitlist';
 import { featuredTechRouter } from './featuredTech';
 import { pricingRulesRouter } from './pricingRules';
+import { vendorApiRouter } from './vendorApi';
 import { beautyBundlesRouter } from './beautyBundles';
 import { beautyPlansRouter } from './beautyPlans';
 import { productScannerRouter } from './productScanner';
@@ -482,6 +483,7 @@ export const appRouter = router({
   advancedAnalytics: advancedAnalyticsRouter,
   adminReports: adminReportsRouter,
   adminTools: adminToolsRouter,
+  vendorApi: vendorApiRouter,
   analytics: analyticsRouter,
   cms: cmsRouter,
   featureFlags: featureFlagRouter,
