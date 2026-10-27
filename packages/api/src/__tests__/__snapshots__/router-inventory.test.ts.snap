@@ -39,6 +39,7 @@ adminTools.createAbTest	mutation	admin
 adminTools.exportData	mutation	admin
 adminTools.health	query	admin
 adminTools.impersonate	mutation	admin
+adminTools.queueHealth	query	admin
 advancedAnalytics.cohorts	query	admin
 advancedAnalytics.export	query	admin
 advancedAnalytics.funnel	query	admin
@@ -713,6 +714,7 @@ pricing.preview	query	public
 pricingAdmin.create	mutation	admin
 pricingAdmin.delete	mutation	admin
 pricingAdmin.list	query	admin
+pricingAdmin.overrideVendorRule	mutation	admin
 pricingAdmin.setServiceFlag	mutation	admin
 pricingAdmin.update	mutation	admin
 pricingRules.adminList	query	admin
@@ -1021,6 +1023,7 @@ users.mySessions	query	protected
 users.revokeOtherSessions	mutation	protected
 users.revokeSession	mutation	protected
 users.updateMe	mutation	protected
+vendorPortal.addPriceRule	mutation	customer
 vendorPortal.addProduct	mutation	customer
 vendorPortal.addVariant	mutation	customer
 vendorPortal.advisor	query	customer
@@ -1085,6 +1088,8 @@ vendorPortal.nailBarSlots.remove	mutation	customer
 vendorPortal.orderDetail	query	customer
 vendorPortal.orders	query	customer
 vendorPortal.payoutInvoice	query	customer
+vendorPortal.priceLog	query	customer
+vendorPortal.priceRules	query	customer
 vendorPortal.proposeClinicPackage	mutation	customer
 vendorPortal.proposeDeal	mutation	customer
 vendorPortal.replyToReview	mutation	customer
@@ -1108,6 +1113,7 @@ vendorPortal.staff.myInvitation	query	customer
 vendorPortal.staff.revoke	mutation	customer
 vendorPortal.staff.update	mutation	customer
 vendorPortal.stockForecasts	query	customer
+vendorPortal.updatePriceRule	mutation	customer
 vendorPortal.updateProduct	mutation	customer
 vendorPortal.updateSocialLinks	mutation	customer
 vendorPortal.updateStoreProfile	mutation	customer

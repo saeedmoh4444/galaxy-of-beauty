@@ -12,6 +12,7 @@ import type { CsvImportReport } from '../workers/handlers';
 import { noonUtcDay, advisorRulesForVendor } from '../workers/handlers';
 import { KSA_SEASONS, seasonMarkers } from '../lib/ksaCalendar';
 import { computeStoreHealthScore, gatherStoreHealthFactors } from '../lib/storeHealth';
+import { writeVendorPriceLogs, toRuleLike } from '../lib/vendorPricing';
 import { forecastFromSales, type StockForecast } from '../lib/stockForecast';
 import { weekBucketStart, weeklyTrendLabels } from '../lib/reviewTrend';
 import { requestProductReviews } from '../lib/storeReviewRequests';
@@ -964,6 +965,121 @@ export const vendorPortalRouter = router({
       return prisma.vendor.update({
         where: { id: vendor.id },
         data: { descriptionJson: descriptionJson as unknown as Prisma.InputJsonValue },
+      });
+    }),
+
+  // ---------------------------------------------------------------------------
+  // C3 — vendor pricing rules (Wave C)
+  // ---------------------------------------------------------------------------
+
+  /** priceRules — the caller's active pricing rules (uplift-only). */
+  priceRules: customerProcedure.query(async ({ ctx }) => {
+    const vendor = await vendorForStaffQuery(ctx, 'PRODUCTS_MANAGE');
+    if (!vendor) return [];
+    return prisma.vendorPriceRule.findMany({
+      where: { vendorId: vendor.id },
+      orderBy: { id: 'asc' },
+      include: { product: { select: { id: true, nameJson: true } } },
+    });
+  }),
+
+  /** addPriceRule — create a weekend/low-stock uplift rule. The multiplier
+   *  floor (≥ 1.0) is structural: vendor rules can never discount below
+   *  cost. Writes ProductPriceLog rows for every affected product. */
+  addPriceRule: customerProcedure
+    .input(
+      z.object({
+        productId: z.number().int().positive().optional(),
+        ruleType: z.enum(['weekend_uplift', 'lowstock_floor']),
+        dayOfWeek: z.number().int().min(0).max(6).optional(),
+        multiplier: z.number().min(1).max(5),
+      }),
+    )
+    .mutation(async ({ ctx, input }) => {
+      const vendor = await vendorForStaff(ctx, 'PRODUCTS_MANAGE');
+      if (input.productId !== undefined) {
+        const owned = await prisma.product.findFirst({
+          where: { id: input.productId, vendorId: vendor.id },
+          select: { id: true },
+        });
+        if (!owned) throw new TRPCError({ code: 'NOT_FOUND', message: 'Product not found' });
+      }
+
+      const rule = await prisma.vendorPriceRule.create({
+        data: {
+          vendorId: vendor.id,
+          productId: input.productId ?? null,
+          ruleType: input.ruleType,
+          dayOfWeek: input.dayOfWeek ?? null,
+          multiplier: input.multiplier,
+        },
+      });
+      await writeVendorPriceLogs(
+        prisma,
+        vendor.id,
+        rule.id,
+        'vendor',
+        toRuleLike(rule),
+        true,
+        input.productId,
+      );
+      return rule;
+    }),
+
+  /** updatePriceRule — partial edit (multiplier/day/isActive). Ownership-
+   *  guarded via the rule's vendor. Logs the affected products again. */
+  updatePriceRule: customerProcedure
+    .input(
+      z.object({
+        ruleId: z.number().int().positive(),
+        dayOfWeek: z.number().int().min(0).max(6).optional(),
+        multiplier: z.number().min(1).max(5).optional(),
+        isActive: z.boolean().optional(),
+      }),
+    )
+    .mutation(async ({ ctx, input }) => {
+      const vendor = await vendorForStaff(ctx, 'PRODUCTS_MANAGE');
+      const rule = await prisma.vendorPriceRule.findFirst({
+        where: { id: input.ruleId, vendorId: vendor.id },
+        select: { id: true, productId: true },
+      });
+      if (!rule) throw new TRPCError({ code: 'NOT_FOUND', message: 'Rule not found' });
+
+      const updated = await prisma.vendorPriceRule.update({
+        where: { id: input.ruleId },
+        data: {
+          dayOfWeek: input.dayOfWeek,
+          multiplier: input.multiplier,
+          isActive: input.isActive,
+        },
+      });
+      await writeVendorPriceLogs(
+        prisma,
+        vendor.id,
+        rule.id,
+        'vendor',
+        { ...toRuleLike(updated), isActive: true }, // force-evaluate the changed state
+        updated.isActive, // deactivation logs the decrease direction
+        rule.productId ?? undefined,
+      );
+      return updated;
+    }),
+
+  /** priceLog — the per-product price change log (last 50 entries). */
+  priceLog: customerProcedure
+    .input(z.object({ productId: z.number().int().positive() }))
+    .query(async ({ ctx, input }) => {
+      const vendor = await vendorForStaffQuery(ctx, 'PRODUCTS_MANAGE');
+      if (!vendor) return [];
+      const owned = await prisma.product.findFirst({
+        where: { id: input.productId, vendorId: vendor.id },
+        select: { id: true },
+      });
+      if (!owned) throw new TRPCError({ code: 'NOT_FOUND', message: 'Product not found' });
+      return prisma.productPriceLog.findMany({
+        where: { productId: input.productId },
+        orderBy: { createdAt: 'desc' },
+        take: 50,
       });
     }),
 

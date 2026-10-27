@@ -24,6 +24,7 @@ import {
   handleOrderSlaSweep,
   handleDisputeEscalationSweep,
   handleReviewReplyReminderSweep,
+  handleQueueHealthCheck,
 } from './handlers';
 
 // Job types + pure helpers are re-exported from handlers.ts (routers
@@ -90,6 +91,25 @@ export const payoutsWorker = createWorker('gob-payouts', handlePayoutScheduleJob
 export const slaWorker = createWorker('gob-sla', handleOrderSlaSweep, 1);
 export const disputesWorker = createWorker('gob-disputes', handleDisputeEscalationSweep, 1);
 export const reviewsWorker = createWorker('gob-reviews', handleReviewReplyReminderSweep, 1);
+export const opsWorker = createWorker('gob-ops', handleQueueHealthCheck, 1);
+
+/**
+ * D2 — register the queue-health monitor: fires every 10 minutes and
+ * raises Sentry warnings/errors when a queue stalls (see lib/queueHealth).
+ */
+export async function registerOpsScheduler(): Promise<void> {
+  const { getOpsQueue } = await import('../queues');
+  const queue = getOpsQueue();
+  if (!queue) {
+    console.warn('[Workers] Redis unavailable — ops scheduler not registered');
+    return;
+  }
+  await queue.upsertJobScheduler(
+    'queue-health-check',
+    { pattern: '*/10 * * * *' },
+    { name: 'ops.health-check', data: {} },
+  );
+}
 
 /**
  * D1 — register the nightly materialization: fires at 00:30 KSA (21:30Z
@@ -206,7 +226,9 @@ export function startWorkers(): void {
     slaWorker ? 'gob-sla' : null,
     disputesWorker ? 'gob-disputes' : null,
     reviewsWorker ? 'gob-reviews' : null,
+    opsWorker ? 'gob-ops' : null,
   ].filter(Boolean);
   console.log(`[Workers] Started: ${names.join(', ') || 'none (Redis unavailable)'}`);
   void registerAnalyticsScheduler();
+  void registerOpsScheduler();
 }
