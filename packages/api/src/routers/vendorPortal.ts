@@ -19,6 +19,7 @@ import { generateApiKey } from '../lib/apiKeys';
 import { forecastFromSales, type StockForecast } from '../lib/stockForecast';
 import { weekBucketStart, weeklyTrendLabels } from '../lib/reviewTrend';
 import { requestProductReviews } from '../lib/storeReviewRequests';
+import { ensureStoreTechnician } from '../lib/storeServices';
 
 /** B.3: vendor portal is DB-backed (was an in-memory array). */
 
@@ -46,6 +47,16 @@ async function generalCategoryId(): Promise<number> {
   throw new TRPCError({
     code: 'INTERNAL_SERVER_ERROR',
     message: 'No product categories available',
+  });
+}
+
+/** Fallback category for store services added without one (C5). */
+async function serviceCategoryId(): Promise<number> {
+  const any = await prisma.category.findFirst({ orderBy: { sortOrder: 'asc' } });
+  if (any) return any.id;
+  throw new TRPCError({
+    code: 'INTERNAL_SERVER_ERROR',
+    message: 'No service categories available',
   });
 }
 
@@ -108,6 +119,31 @@ function toPortalProduct(p: {
     metaDescAr: (p.metaDescJson as { ar?: string } | undefined)?.ar ?? '',
     metaDescEn: (p.metaDescJson as { en?: string } | undefined)?.en ?? '',
     arTryOnUrl: p.arTryOnUrl ?? null,
+  };
+}
+
+/** C5 — map a store Service row to the vendor-portal UI shape. */
+function toPortalService(s: {
+  id: number;
+  titleJson: unknown;
+  descriptionJson?: unknown;
+  basePrice: unknown;
+  durationMin: number;
+  imageUrl?: string | null;
+  isActive: boolean;
+  categoryId: number;
+}) {
+  return {
+    id: s.id,
+    titleAr: (s.titleJson as { ar?: string }).ar ?? '',
+    titleEn: (s.titleJson as { en?: string }).en ?? '',
+    descriptionAr: (s.descriptionJson as { ar?: string } | undefined)?.ar ?? '',
+    descriptionEn: (s.descriptionJson as { en?: string } | undefined)?.en ?? '',
+    basePrice: Number(s.basePrice),
+    durationMin: s.durationMin,
+    imageUrl: s.imageUrl ?? null,
+    active: s.isActive,
+    categoryId: s.categoryId,
   };
 }
 
@@ -968,6 +1004,169 @@ export const vendorPortalRouter = router({
       });
 
       return toPortalProduct(copy);
+    }),
+
+  // ---------------------------------------------------------------------------
+  // C5 — hybrid store-services (H2): bookable services owned by the store,
+  // reusing the booking engine via a hidden pseudo-technician.
+  // ---------------------------------------------------------------------------
+
+  services: customerProcedure
+    .input(
+      z.object({
+        limit: z.number().int().min(1).max(100).default(20),
+        cursor: z.number().int().positive().optional(),
+      }),
+    )
+    .query(async ({ ctx, input }) => {
+      const vendor = await vendorForStaffQuery(ctx, 'PRODUCTS_MANAGE');
+      if (!vendor) return { items: [], nextCursor: null, total: 0 };
+
+      const where = {
+        vendorId: vendor.id,
+        isStoreService: true,
+        ...(input.cursor ? { id: { lt: input.cursor } } : {}),
+      };
+      const [services, total] = await Promise.all([
+        prisma.service.findMany({
+          where,
+          orderBy: { id: 'desc' },
+          take: input.limit + 1, // peek one row for nextCursor
+        }),
+        prisma.service.count({ where: { vendorId: vendor.id, isStoreService: true } }),
+      ]);
+      const hasMore = services.length > input.limit;
+      const page = hasMore ? services.slice(0, input.limit) : services;
+      return {
+        items: page.map(toPortalService),
+        nextCursor: hasMore ? page[page.length - 1]!.id : null,
+        total,
+      };
+    }),
+
+  addService: customerProcedure
+    .input(
+      z.object({
+        titleAr: z.string().min(1).max(200),
+        titleEn: z.string().max(200).optional(),
+        descriptionAr: z.string().max(2000).optional(),
+        descriptionEn: z.string().max(2000).optional(),
+        basePrice: z.number().min(1),
+        durationMin: z.number().int().min(5).max(480),
+        categoryId: z.number().int().positive().optional(),
+        imageUrl: z.string().url().max(500).optional(),
+      }),
+    )
+    .mutation(async ({ ctx, input }) => {
+      // Same A1 pattern as addProduct: staff are capability-gated;
+      // owner-less callers keep the legacy auto-create path.
+      const actor = await resolveVendorActor(ctx.user.id);
+      let vendor;
+      if (actor) {
+        if (!staffHasCapability(actor, 'PRODUCTS_MANAGE')) {
+          throw new TRPCError({ code: 'FORBIDDEN', message: 'Requires PRODUCTS_MANAGE' });
+        }
+        vendor = await prisma.vendor.findUniqueOrThrow({ where: { id: actor.vendor.id } });
+      } else {
+        const user = await prisma.user.findUnique({
+          where: { id: ctx.user.id },
+          select: { name: true },
+        });
+        vendor = await ensureVendor(ctx.user.id, user?.name ?? '');
+      }
+
+      const service = await prisma.service.create({
+        data: {
+          vendorId: vendor.id,
+          isStoreService: true,
+          categoryId: input.categoryId ?? (await serviceCategoryId()),
+          titleJson: { ar: input.titleAr, en: input.titleEn || input.titleAr },
+          descriptionJson: {
+            ar: input.descriptionAr ?? '',
+            en: input.descriptionEn ?? input.descriptionAr ?? '',
+          },
+          basePrice: input.basePrice,
+          durationMin: input.durationMin,
+          imageUrl: input.imageUrl,
+          isActive: true,
+        },
+      });
+
+      // H2 — provision the store's pseudo-technician and link the service
+      // so the booking engine's availability queries can see it.
+      const technicianId = await ensureStoreTechnician(vendor.id);
+      await prisma.technicianService.create({
+        data: { technicianId, serviceId: service.id, isActive: true },
+      });
+
+      return toPortalService(service);
+    }),
+
+  updateService: customerProcedure
+    .input(
+      z.object({
+        id: z.number().int().positive(),
+        titleAr: z.string().min(1).max(200).optional(),
+        titleEn: z.string().max(200).optional(),
+        descriptionAr: z.string().max(2000).optional(),
+        descriptionEn: z.string().max(2000).optional(),
+        basePrice: z.number().min(1).optional(),
+        durationMin: z.number().int().min(5).max(480).optional(),
+        categoryId: z.number().int().positive().optional(),
+        imageUrl: z.string().url().max(500).optional(),
+      }),
+    )
+    .mutation(async ({ ctx, input }) => {
+      const vendor = await vendorForStaff(ctx, 'PRODUCTS_MANAGE');
+
+      const existing = await prisma.service.findUnique({ where: { id: input.id } });
+      if (!existing || existing.vendorId !== vendor.id || !existing.isStoreService) {
+        throw new TRPCError({ code: 'NOT_FOUND', message: 'Service not found' });
+      }
+
+      const service = await prisma.service.update({
+        where: { id: input.id },
+        data: {
+          ...(input.titleAr !== undefined
+            ? { titleJson: { ar: input.titleAr, en: input.titleEn ?? input.titleAr } }
+            : {}),
+          ...(input.descriptionAr !== undefined || input.descriptionEn !== undefined
+            ? {
+                descriptionJson: {
+                  ar: input.descriptionAr ?? '',
+                  en: input.descriptionEn ?? input.descriptionAr ?? '',
+                },
+              }
+            : {}),
+          ...(input.basePrice !== undefined ? { basePrice: input.basePrice } : {}),
+          ...(input.durationMin !== undefined ? { durationMin: input.durationMin } : {}),
+          ...(input.categoryId !== undefined ? { categoryId: input.categoryId } : {}),
+          ...(input.imageUrl !== undefined ? { imageUrl: input.imageUrl } : {}),
+        },
+      });
+
+      return toPortalService(service);
+    }),
+
+  deactivateService: customerProcedure
+    .input(z.object({ id: z.number().int().positive() }))
+    .mutation(async ({ ctx, input }) => {
+      const vendor = await vendorForStaff(ctx, 'PRODUCTS_MANAGE');
+
+      // Ownership-guarded soft delete: flips the service AND unlinks it
+      // from the pseudo-technician so availability queries stop seeing it.
+      const updated = await prisma.service.updateMany({
+        where: { id: input.id, vendorId: vendor.id, isStoreService: true },
+        data: { isActive: false },
+      });
+      if (updated.count === 0) {
+        throw new TRPCError({ code: 'NOT_FOUND', message: 'Service not found' });
+      }
+      await prisma.technicianService.updateMany({
+        where: { serviceId: input.id },
+        data: { isActive: false },
+      });
+      return { id: input.id, isActive: false };
     }),
 
   // ---------------------------------------------------------------------------

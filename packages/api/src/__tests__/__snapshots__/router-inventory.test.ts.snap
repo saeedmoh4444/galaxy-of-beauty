@@ -1029,6 +1029,7 @@ vendorApi.products	query	public
 vendorApi.updateStock	mutation	public
 vendorPortal.addPriceRule	mutation	customer
 vendorPortal.addProduct	mutation	customer
+vendorPortal.addService	mutation	customer
 vendorPortal.addVariant	mutation	customer
 vendorPortal.advisor	query	customer
 vendorPortal.analyticsSeries	query	customer
@@ -1050,6 +1051,7 @@ vendorPortal.createWebhook	mutation	customer
 vendorPortal.customers	query	customer
 vendorPortal.dashboard	query	customer
 vendorPortal.deactivateCoupon	mutation	customer
+vendorPortal.deactivateService	mutation	customer
 vendorPortal.dealTemplates	query	customer
 vendorPortal.deleteProduct	mutation	customer
 vendorPortal.deleteVariant	mutation	customer
@@ -1104,6 +1106,7 @@ vendorPortal.replyToReview	mutation	customer
 vendorPortal.resubmitSubmission	mutation	customer
 vendorPortal.revokeApiKey	mutation	customer
 vendorPortal.sendWinback	mutation	customer
+vendorPortal.services	query	customer
 vendorPortal.setBanner	mutation	customer
 vendorPortal.setConsultationPrice	mutation	customer
 vendorPortal.setDraft	mutation	customer
@@ -1125,6 +1128,7 @@ vendorPortal.stockForecasts	query	customer
 vendorPortal.stockIn	mutation	customer
 vendorPortal.updatePriceRule	mutation	customer
 vendorPortal.updateProduct	mutation	customer
+vendorPortal.updateService	mutation	customer
 vendorPortal.updateSocialLinks	mutation	customer
 vendorPortal.updateStoreProfile	mutation	customer
 vendorPortal.updateVariant	mutation	customer
