@@ -1169,6 +1169,31 @@ export const vendorPortalRouter = router({
       return { id: input.id, isActive: false };
     }),
 
+  addAvailabilitySlot: customerProcedure
+    .input(
+      z.object({
+        startAt: z.string().datetime(),
+        endAt: z.string().datetime(),
+      }),
+    )
+    .mutation(async ({ ctx, input }) => {
+      const vendor = await vendorForStaff(ctx, 'PRODUCTS_MANAGE');
+
+      const startAt = new Date(input.startAt);
+      const endAt = new Date(input.endAt);
+      if (endAt <= startAt) {
+        throw new TRPCError({ code: 'BAD_REQUEST', message: 'endAt must be after startAt' });
+      }
+
+      // Slots belong to the store's pseudo-technician — the engine's
+      // availability queries pick them up unchanged.
+      const technicianId = await ensureStoreTechnician(vendor.id);
+      const slot = await prisma.availabilitySlot.create({
+        data: { technicianId, startAt, endAt },
+      });
+      return { id: slot.id, startAt: slot.startAt, endAt: slot.endAt };
+    }),
+
   // ---------------------------------------------------------------------------
   // Store plan Phase 1 — store registration state + orders
   // ---------------------------------------------------------------------------
