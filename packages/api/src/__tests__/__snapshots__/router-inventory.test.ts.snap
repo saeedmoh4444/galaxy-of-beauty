@@ -39,6 +39,7 @@ adminTools.createAbTest	mutation	admin
 adminTools.exportData	mutation	admin
 adminTools.health	query	admin
 adminTools.impersonate	mutation	admin
+adminTools.opsSnapshot	query	admin
 adminTools.queueHealth	query	admin
 advancedAnalytics.cohorts	query	admin
 advancedAnalytics.export	query	admin
