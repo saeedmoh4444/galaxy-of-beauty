@@ -1169,6 +1169,37 @@ export const vendorPortalRouter = router({
       // Slots belong to the store's pseudo-technician — the engine's
       // availability queries pick them up unchanged.
       const technicianId = await ensureStoreTechnician(vendor.id);
+
+      // C5h — availability limits: no overlapping windows and a cap on
+      // upcoming unbooked slots so one store can't flood the calendar.
+      const overlapping = await prisma.availabilitySlot.findFirst({
+        where: {
+          technicianId,
+          startAt: { lt: endAt },
+          endAt: { gt: startAt },
+        },
+        select: { id: true },
+      });
+      if (overlapping) {
+        throw new TRPCError({
+          code: 'BAD_REQUEST',
+          message: 'Slot overlaps an existing slot',
+        });
+      }
+      const upcoming = await prisma.availabilitySlot.count({
+        where: {
+          technicianId,
+          isBooked: false,
+          startAt: { gte: new Date() },
+        },
+      });
+      if (upcoming >= 30) {
+        throw new TRPCError({
+          code: 'BAD_REQUEST',
+          message: 'Too many upcoming slots (max 30)',
+        });
+      }
+
       const slot = await prisma.availabilitySlot.create({
         data: { technicianId, startAt, endAt },
       });
@@ -1303,6 +1334,18 @@ export const vendorPortalRouter = router({
           code: 'BAD_REQUEST',
           message: `Cannot transition booking from ${booking.status} to ${newStatus}`,
         });
+      }
+
+      // C5h — cancellation window: a store cannot cancel a booking that
+      // starts within 4 hours (protects the customer's expectations).
+      if (input.action === 'cancel') {
+        const hoursUntilStart = (booking.startAt.getTime() - Date.now()) / 3_600_000;
+        if (hoursUntilStart < 4) {
+          throw new TRPCError({
+            code: 'BAD_REQUEST',
+            message: 'Bookings starting within 4 hours cannot be cancelled',
+          });
+        }
       }
 
       const updatedBooking = await prisma.$transaction(async (tx) => {
