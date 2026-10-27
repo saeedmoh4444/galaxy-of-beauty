@@ -16,6 +16,7 @@ import { PricingRulesPanel } from './PricingRulesPanel';
 import { StoreServicesPanel } from './StoreServicesPanel';
 import { StaffPanel } from '../shared/StaffPanel';
 import { DashboardTabs } from '../shared/DashboardTabs';
+import { VendorTour } from '../shared/VendorTour';
 
 type TabKey =
   | 'overview'
@@ -536,6 +537,10 @@ export function StoreDashboard({
           onSelect={(key) => selectTab(key as TabKey)}
           label={t('vendorPortal.tabs.aria')}
         />
+
+        {/* D4 — first-visit onboarding tour: inline banner (no overlay,
+            so it never intercepts clicks); dismissed into localStorage. */}
+        <VendorTour onNavigate={(next) => selectTab(next as TabKey)} />
 
         {tab === 'overview' && (
           <div
