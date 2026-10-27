@@ -1059,3 +1059,26 @@ export async function handleReviewReplyReminderSweep(_job: Job<Record<string, ne
 
   return { reminded };
 }
+
+/**
+ * handleQueueHealthCheck — D2: the periodic ops monitor. Snapshots every
+ * queue's depth/failure counts and raises a Sentry warning/error when a
+ * queue stalls or accumulates failures (the brain_code P0). Degrades to a
+ * no-op assessment when Redis is down — infra absence is not a stall.
+ */
+export async function handleQueueHealthCheck(): Promise<{
+  status: 'ok' | 'warn' | 'critical';
+  reasons: string[];
+}> {
+  const { getQueueHealth, assessQueueHealth } = await import('../lib/queueHealth');
+  const { captureMessage } = await import('../lib/sentry');
+  const health = await getQueueHealth();
+  const assessed = assessQueueHealth(health);
+  if (assessed.status !== 'ok') {
+    await captureMessage(
+      `Queue health ${assessed.status}: ${assessed.reasons.join('; ')}`,
+      assessed.status === 'critical' ? 'error' : 'warning',
+    );
+  }
+  return assessed;
+}

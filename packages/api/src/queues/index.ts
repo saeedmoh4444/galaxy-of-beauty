@@ -176,6 +176,18 @@ export function getReviewsQueue(): Queue | null {
   }
 }
 
+// D2 — queue health monitor (every 10 minutes, raises Sentry on stalls).
+let _opsQueue: Queue | null = null;
+export function getOpsQueue(): Queue | null {
+  if (_opsQueue) return _opsQueue;
+  try {
+    _opsQueue = createQueue('gob-ops');
+    return _opsQueue;
+  } catch {
+    return null;
+  }
+}
+
 // Convenience: all queues
 export function getAllQueues(): Record<string, Queue | null> {
   return {
