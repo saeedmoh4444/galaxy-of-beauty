@@ -266,6 +266,36 @@ export function StoreDashboard({
   // B3b — low-stock surface (stock ≤ the per-product threshold).
   const lowStock = dash?.lowStockProducts ?? [];
   const prods = productsQ.data?.pages.flatMap((p) => p.items) ?? [];
+
+  // C2 — bulk stock editor: enter the mode, edit rows, save all changed.
+  const [bulkMode, setBulkMode] = useState(false);
+  const [bulkStocks, setBulkStocks] = useState<Record<number, number>>({});
+  const [bulkTouched, setBulkTouched] = useState<Record<number, boolean>>({});
+  const bulkMut = api.vendorPortal.bulkStockUpdate.useMutation({
+    onSuccess: () => {
+      setBulkStocks({});
+      setBulkTouched({});
+      setBulkMode(false);
+      void productsQ.refetch();
+    },
+  });
+  const forecastsQ = api.vendorPortal.stockForecasts.useQuery(
+    { productIds: prods.map((p) => p.id) },
+    { enabled: bulkMode && prods.length > 0 },
+  );
+  const forecasts = forecastsQ.data ?? {};
+
+  const enterBulk = () => {
+    setBulkStocks(Object.fromEntries(prods.map((p) => [p.id, p.stock])));
+    setBulkTouched({});
+    setBulkMode(true);
+  };
+  const saveBulk = () => {
+    const updates = Object.entries(bulkTouched)
+      .filter(([, touched]) => touched)
+      .map(([id]) => ({ productId: Number(id), stock: bulkStocks[Number(id)] ?? 0 }));
+    if (updates.length > 0) bulkMut.mutate({ updates });
+  };
   const storeOrders = ordersQ.data?.pages.flatMap((p) => p.items) ?? [];
 
   // C5 — bulk CSV import: upload → worker job → polled per-row report.
@@ -967,6 +997,24 @@ export function StoreDashboard({
                 <Button size="sm" onClick={() => setShow(true)}>
                   + {t('vendorPortal.newProduct')}
                 </Button>
+                {/* C2 — bulk stock editor toggle + save. */}
+                <Button
+                  size="sm"
+                  variant="outline"
+                  onClick={bulkMode ? () => setBulkMode(false) : enterBulk}
+                >
+                  {bulkMode ? t('vendorPortal.bulk.exit') : t('vendorPortal.bulk.enter')}
+                </Button>
+                {bulkMode && (
+                  <Button
+                    size="sm"
+                    onClick={saveBulk}
+                    loading={bulkMut.isPending}
+                    disabled={!Object.values(bulkTouched).some(Boolean)}
+                  >
+                    {t('vendorPortal.bulk.save')}
+                  </Button>
+                )}
               </div>
             </div>
             {/* C5 — import progress + report (polled from the worker job). */}
@@ -1025,9 +1073,38 @@ export function StoreDashboard({
                           </span>
                         )}
                       </p>
-                      <p className="text-xs text-text-secondary">
-                        {t('vendorPortal.stock')}: {p.stock} · {t('vendorPortal.sales')}: {p.sales}
-                      </p>
+                      {bulkMode ? (
+                        <div className="mt-1 flex items-center gap-2">
+                          <Input
+                            type="number"
+                            value={bulkStocks[p.id] ?? p.stock}
+                            onChange={(e) => {
+                              const n = parseInt(e.target.value, 10);
+                              if (Number.isNaN(n)) return;
+                              setBulkStocks((prev) => ({ ...prev, [p.id]: n }));
+                              setBulkTouched((prev) => ({ ...prev, [p.id]: n !== p.stock }));
+                            }}
+                            className="w-24"
+                          />
+                          {(() => {
+                            const f = forecasts[p.id];
+                            return f && f.daysAtStock !== null && f.daysAtStock !== undefined ? (
+                              <span className="text-xs text-text-secondary">
+                                {t('vendorPortal.bulk.forecast', { days: f.daysAtStock })}
+                              </span>
+                            ) : (
+                              <span className="text-xs text-text-tertiary">
+                                {t('vendorPortal.bulk.noVelocity')}
+                              </span>
+                            );
+                          })()}
+                        </div>
+                      ) : (
+                        <p className="text-xs text-text-secondary">
+                          {t('vendorPortal.stock')}: {p.stock} · {t('vendorPortal.sales')}:{' '}
+                          {p.sales}
+                        </p>
+                      )}
                       {p.approvalStatus === 'REJECTED' && p.reviewNotes ? (
                         <p className="text-xs text-red-600 dark:text-red-400">{p.reviewNotes}</p>
                       ) : null}
