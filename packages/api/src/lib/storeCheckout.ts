@@ -20,6 +20,9 @@ export interface CartLine {
   stock: number;
   /** B3b — low-stock threshold for the crossing check below. */
   lowStockThreshold: number;
+  /** C1 — variant line: the variant id + its bilingual label snapshot. */
+  variantId?: number | null;
+  variantNameJson?: { ar?: string; en?: string } | null;
 }
 
 /** B3b — a product whose stock crossed its threshold during this checkout. */
@@ -28,6 +31,9 @@ export interface LowStockAlert {
   productId: number;
   nameJson: { ar?: string; en?: string } | null;
   stock: number;
+  /** C1 — variant-level alert: the variant id + its label snapshot. */
+  variantId?: number | null;
+  variantNameJson?: { ar?: string; en?: string } | null;
 }
 
 /**
@@ -48,6 +54,15 @@ export async function readCartForCheckout(userId: number): Promise<CartLine[]> {
           lowStockThreshold: true,
         },
       },
+      variant: {
+        select: {
+          id: true,
+          nameJson: true,
+          priceDelta: true,
+          stock: true,
+          lowStockThreshold: true,
+        },
+      },
     },
   });
 
@@ -55,25 +70,37 @@ export async function readCartForCheckout(userId: number): Promise<CartLine[]> {
     throw new TRPCError({ code: 'BAD_REQUEST', message: 'Cart is empty' });
   }
 
-  const shortage = cartItems.find((i) => i.product.stock < i.quantity);
+  const shortage = cartItems.find((i) => (i.variant?.stock ?? i.product.stock) < i.quantity);
   if (shortage) {
+    const stock = shortage.variant?.stock ?? shortage.product.stock;
     throw new TRPCError({
       code: 'BAD_REQUEST',
-      message: `Insufficient stock for product #${shortage.productId} (available: ${shortage.product.stock})`,
+      message: `Insufficient stock for product #${shortage.productId} (available: ${stock})`,
     });
   }
 
-  return cartItems.map((i) => ({
-    productId: i.productId,
-    quantity: i.quantity,
-    unitPrice: Number(i.product.price),
-    vendorId: i.product.vendorId,
-    name:
-      (i.product.nameJson as { en?: string; ar?: string } | null)?.en ?? `Product #${i.productId}`,
-    nameJson: (i.product.nameJson as { en?: string; ar?: string } | null) ?? null,
-    stock: i.product.stock,
-    lowStockThreshold: i.product.lowStockThreshold,
-  }));
+  return cartItems.map((i) => {
+    const productName = (i.product.nameJson as { en?: string; ar?: string } | null) ?? null;
+    const variantName = (i.variant?.nameJson as { en?: string; ar?: string } | null) ?? null;
+    // C1 — a variant line prices at base + delta and consumes variant
+    // stock; the display name composes product + variant labels.
+    const unitPrice = Number(i.product.price) + Number(i.variant?.priceDelta ?? 0);
+    const name = variantName
+      ? `${productName?.en ?? `Product #${i.productId}`} — ${variantName.en ?? variantName.ar}`
+      : (productName?.en ?? `Product #${i.productId}`);
+    return {
+      productId: i.productId,
+      quantity: i.quantity,
+      unitPrice,
+      vendorId: i.product.vendorId,
+      name,
+      nameJson: productName,
+      stock: i.variant?.stock ?? i.product.stock,
+      lowStockThreshold: i.variant?.lowStockThreshold ?? i.product.lowStockThreshold,
+      variantId: i.variant?.id ?? null,
+      variantNameJson: variantName,
+    };
+  });
 }
 
 /**
@@ -105,6 +132,8 @@ export async function placeStoreOrders(
         quantity: number;
         unitPrice: number;
         nameJson: CartLine['nameJson'];
+        variantId: number | null;
+        variantNameJson: CartLine['variantNameJson'];
       }>;
     }
   >();
@@ -117,13 +146,26 @@ export async function placeStoreOrders(
     subtotal += amount;
     itemCount += line.quantity;
 
-    await tx.product.update({
-      where: { id: line.productId },
-      data: {
-        stock: { decrement: line.quantity },
-        sales: { increment: line.quantity },
-      },
-    });
+    // C1 — a variant line consumes variant stock (the base product stock
+    // is the no-variant unit); the product's sales metric still accrues.
+    if (line.variantId) {
+      await tx.productVariant.update({
+        where: { id: line.variantId },
+        data: { stock: { decrement: line.quantity } },
+      });
+      await tx.product.update({
+        where: { id: line.productId },
+        data: { sales: { increment: line.quantity } },
+      });
+    } else {
+      await tx.product.update({
+        where: { id: line.productId },
+        data: {
+          stock: { decrement: line.quantity },
+          sales: { increment: line.quantity },
+        },
+      });
+    }
     await tx.vendor.update({
       where: { id: line.vendorId },
       data: { totalSales: { increment: amount } },
@@ -139,6 +181,8 @@ export async function placeStoreOrders(
         productId: line.productId,
         nameJson: line.nameJson,
         stock: newStock,
+        variantId: line.variantId ?? null,
+        variantNameJson: line.variantNameJson ?? null,
       });
     }
 
@@ -150,6 +194,8 @@ export async function placeStoreOrders(
       quantity: line.quantity,
       unitPrice: line.unitPrice,
       nameJson: line.nameJson,
+      variantId: line.variantId ?? null,
+      variantNameJson: line.variantNameJson ?? null,
     });
     vendorLines.set(line.vendorId, agg);
   }
@@ -176,6 +222,8 @@ export async function placeStoreOrders(
         data: agg.lines.map((l) => ({
           orderId: order.id,
           productId: l.productId,
+          variantId: l.variantId,
+          variantNameJson: (l.variantNameJson ?? null) as unknown as Prisma.InputJsonValue,
           nameSnapshot: (l.nameJson ?? {}) as unknown as Prisma.InputJsonValue,
           priceSnapshot: l.unitPrice,
           quantity: l.quantity,
@@ -241,7 +289,10 @@ export async function notifyLowStockAlerts(alerts: LowStockAlert[]): Promise<voi
   for (const alert of alerts) {
     const userId = userIdByVendor.get(alert.vendorId);
     if (!userId) continue;
-    const name = alert.nameJson?.en ?? alert.nameJson?.ar ?? `Product #${alert.productId}`;
+    const productName = alert.nameJson?.en ?? alert.nameJson?.ar ?? `Product #${alert.productId}`;
+    // C1 — variant alerts carry the composed "Product — Variant" name.
+    const variantName = alert.variantNameJson?.en ?? alert.variantNameJson?.ar;
+    const name = variantName ? `${productName} — ${variantName}` : productName;
     try {
       await notifyUser({
         userId,
