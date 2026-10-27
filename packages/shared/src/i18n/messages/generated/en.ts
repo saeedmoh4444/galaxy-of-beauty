@@ -5475,6 +5475,10 @@ export const enWebMessages: Record<string, string> = {
   'vendorPortal.status.pending-review': 'Your store is pending review',
   'vendorPortal.status.pending-review-desc':
     'You will be able to publish to the public marketplace after admin approval',
+  'vendorPortal.stockin.base': 'Base product',
+  'vendorPortal.stockin.quantity': 'Quantity',
+  'vendorPortal.stockin.title': 'Stock in',
+  'vendorPortal.stockin.variant': 'Variant',
   'vendorPortal.stock': 'Stock',
   'vendorPortal.stockPlaceholder': 'Stock',
   'vendorPortal.submission.note': 'Admin note: {note}',
