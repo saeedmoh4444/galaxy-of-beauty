@@ -5429,6 +5429,7 @@ export const arWebMessages: Record<string, string> = {
   'vendorPortal.services.bookings.cancel': 'إلغاء',
   'vendorPortal.services.bookings.complete': 'إتمام',
   'vendorPortal.services.bookings.reject': 'رفض',
+  'vendorPortal.serviceRevenue30d': 'إيراد الخدمات (٣٠ يوم)',
   'vendorPortal.sold': 'مبيعة',
   'vendorPortal.status.pending-review': 'متجرك قيد المراجعة',
   'vendorPortal.status.pending-review-desc': 'ستتمكنين من النشر في المتجر العام بعد موافقة الإدارة',

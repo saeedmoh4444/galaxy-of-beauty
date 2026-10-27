@@ -650,6 +650,11 @@ export function StoreDashboard({
               <Card padding="md" className="text-center">
                 <p className="text-2xl font-bold">{formatCurrency(dash?.revenue30d ?? 0)}</p>
                 <p className="text-xs text-text-secondary">{t('vendorPortal.revenue30d')}</p>
+                {/* C5g — store-service revenue rides the same tile. */}
+                <p className="mt-1 text-xs text-text-secondary">
+                  {t('vendorPortal.serviceRevenue30d')}:{' '}
+                  {formatCurrency(dash?.serviceRevenue30d ?? 0)}
+                </p>
               </Card>
               <Card padding="md" className="text-center">
                 <p className="text-2xl font-bold">{dash?.ordersCount ?? 0}</p>
