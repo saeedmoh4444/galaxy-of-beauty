@@ -2,6 +2,7 @@ import { prisma } from '@galaxy/db';
 import type { Prisma } from '@galaxy/db';
 import { TRPCError } from '@trpc/server';
 import { notifyUser } from './notify';
+import { enqueueWebhookEvents } from './webhookDelivery';
 
 // Shared cart → StoreOrder placement used by marketplace.buyCart (no
 // checkout) and payments.payCart (with a StoreCheckout shipping+payment
@@ -266,6 +267,16 @@ export async function notifyOrderPlaced(
         data: { type: 'store_order_placed', orderId: String(order.id) },
         channels: ['in_app'],
       });
+      // D1b — the vendor's webhooks get the same event, signed.
+      try {
+        await enqueueWebhookEvents('order.placed', {
+          vendorId: order.vendorId,
+          orderId: order.id,
+          total: order.totalAmount,
+        });
+      } catch {
+        // Webhook fan-out never fails the purchase.
+      }
     } catch {
       // Notification failure must never fail the purchase.
     }
@@ -304,6 +315,18 @@ export async function notifyLowStockAlerts(alerts: LowStockAlert[]): Promise<voi
       });
     } catch {
       // Notification failure must never fail the purchase.
+    }
+    // D1b — the same alert over the vendor's webhooks.
+    try {
+      await enqueueWebhookEvents('stock.low', {
+        vendorId: alert.vendorId,
+        productId: alert.productId,
+        variantId: alert.variantId ?? null,
+        productName: name,
+        stock: alert.stock,
+      });
+    } catch {
+      // Webhook fan-out never fails the purchase.
     }
   }
 }

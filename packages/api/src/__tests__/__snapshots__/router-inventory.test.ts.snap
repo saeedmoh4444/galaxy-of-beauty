@@ -1045,12 +1045,14 @@ vendorPortal.clinicSlotUtilization	query	customer
 vendorPortal.confirmConsultation	mutation	customer
 vendorPortal.createApiKey	mutation	customer
 vendorPortal.createCoupon	mutation	customer
+vendorPortal.createWebhook	mutation	customer
 vendorPortal.customers	query	customer
 vendorPortal.dashboard	query	customer
 vendorPortal.deactivateCoupon	mutation	customer
 vendorPortal.dealTemplates	query	customer
 vendorPortal.deleteProduct	mutation	customer
 vendorPortal.deleteVariant	mutation	customer
+vendorPortal.deleteWebhook	mutation	customer
 vendorPortal.duplicateProduct	mutation	customer
 vendorPortal.earnings	query	customer
 vendorPortal.earningsCsv	query	customer
@@ -1124,7 +1126,9 @@ vendorPortal.updateProduct	mutation	customer
 vendorPortal.updateSocialLinks	mutation	customer
 vendorPortal.updateStoreProfile	mutation	customer
 vendorPortal.updateVariant	mutation	customer
+vendorPortal.updateWebhook	mutation	customer
 vendorPortal.variants	query	customer
+vendorPortal.webhooks	query	customer
 video.endSession	mutation	protected
 video.getByBooking	query	protected
 video.startSession	mutation	protected
