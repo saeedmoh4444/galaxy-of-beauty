@@ -1113,6 +1113,7 @@ vendorPortal.staff.myInvitation	query	customer
 vendorPortal.staff.revoke	mutation	customer
 vendorPortal.staff.update	mutation	customer
 vendorPortal.stockForecasts	query	customer
+vendorPortal.stockIn	mutation	customer
 vendorPortal.updatePriceRule	mutation	customer
 vendorPortal.updateProduct	mutation	customer
 vendorPortal.updateSocialLinks	mutation	customer

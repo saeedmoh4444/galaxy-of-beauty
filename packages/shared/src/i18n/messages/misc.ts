@@ -3870,6 +3870,11 @@ export const miscMessages = {
   'vendorPortal.variants.threshold': { ar: 'حد التنبيه', en: 'Low-stock threshold' },
   'vendorPortal.variants.active': { ar: 'نشط', en: 'Active' },
   'vendorPortal.add': { ar: 'إضافة', en: 'Add' },
+  // C2b — stock-in (barcode/QR + manual)
+  'vendorPortal.stockin.title': { ar: 'إضافة مخزون', en: 'Stock in' },
+  'vendorPortal.stockin.quantity': { ar: 'الكمية', en: 'Quantity' },
+  'vendorPortal.stockin.variant': { ar: 'المتغير', en: 'Variant' },
+  'vendorPortal.stockin.base': { ar: 'المنتج الأساسي', en: 'Base product' },
   // C2 — inventory v2: bulk stock editor + velocity forecast hints
   'vendorPortal.bulk.title': { ar: 'تعديل المخزون الجماعي', en: 'Bulk stock editor' },
   'vendorPortal.bulk.enter': { ar: 'تعديل جماعي', en: 'Bulk edit' },
