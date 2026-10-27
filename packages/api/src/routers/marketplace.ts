@@ -292,6 +292,12 @@ export const marketplaceRouter = router({
             },
           },
         },
+        // C5 — hybrid store-services: the store's bookable services for
+        // the storefront Services tab (active only).
+        services: {
+          where: { isStoreService: true, isActive: true },
+          orderBy: { id: 'asc' },
+        },
       },
     });
     if (!vendor) throw new TRPCError({ code: 'NOT_FOUND' });
