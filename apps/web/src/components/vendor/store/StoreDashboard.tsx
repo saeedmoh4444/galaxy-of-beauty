@@ -11,6 +11,7 @@ import { localize, type TranslationKey } from '@galaxy/shared';
 import { VenueProfileCard } from '../shared/VenueProfileCard';
 import { SubmissionStatusCard } from '../shared/SubmissionStatusCard';
 import { ProductVariantsModal } from './ProductVariantsModal';
+import { StockInModal } from './StockInModal';
 import { PricingRulesPanel } from './PricingRulesPanel';
 import { StoreServicesPanel } from './StoreServicesPanel';
 import { StaffPanel } from '../shared/StaffPanel';
@@ -207,6 +208,13 @@ export function StoreDashboard({
   const [variantProduct, setVariantProduct] = useState<{
     id: number;
     price: number;
+    nameAr?: string;
+    nameEn?: string;
+  } | null>(null);
+
+  // C2b — stock-in dialog (base product or a variant).
+  const [stockInProduct, setStockInProduct] = useState<{
+    id: number;
     nameAr?: string;
     nameEn?: string;
   } | null>(null);
@@ -1146,6 +1154,16 @@ export function StoreDashboard({
                       }
                     >
                       {t('vendorPortal.variants.title')}
+                    </Button>
+                    {/* C2b — stock-in (base product or a variant). */}
+                    <Button
+                      size="sm"
+                      variant="outline"
+                      onClick={() =>
+                        setStockInProduct({ id: p.id, nameAr: p.nameAr, nameEn: p.nameEn })
+                      }
+                    >
+                      + {t('vendorPortal.stockin.title')}
                     </Button>
                     <Button
                       size="sm"
@@ -2512,6 +2530,11 @@ export function StoreDashboard({
         {/* C1 — variants manager for the selected product. */}
         {variantProduct ? (
           <ProductVariantsModal product={variantProduct} onClose={() => setVariantProduct(null)} />
+        ) : null}
+
+        {/* C2b — stock-in dialog. */}
+        {stockInProduct ? (
+          <StockInModal product={stockInProduct} onClose={() => setStockInProduct(null)} />
         ) : null}
       </div>
     </DashboardLayout>
