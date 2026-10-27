@@ -1026,6 +1026,7 @@ users.revokeSession	mutation	protected
 users.updateMe	mutation	protected
 vendorApi.orders	query	public
 vendorApi.products	query	public
+vendorApi.updateStock	mutation	public
 vendorPortal.addPriceRule	mutation	customer
 vendorPortal.addProduct	mutation	customer
 vendorPortal.addService	mutation	customer
