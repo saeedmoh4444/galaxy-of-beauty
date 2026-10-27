@@ -27,7 +27,11 @@ export default function CartPage(): JSX.Element {
   const cartItems = data ?? [];
   const total = cartItems.reduce((sum: number, item: Record<string, unknown>) => {
     const product = item.product as Record<string, unknown>;
-    return sum + Number(product?.price ?? 0) * (item.quantity as number);
+    const variant = item.variant as Record<string, unknown> | null;
+    return (
+      sum +
+      (Number(product?.price ?? 0) + Number(variant?.priceDelta ?? 0)) * (item.quantity as number)
+    );
   }, 0);
 
   return (
@@ -58,6 +62,8 @@ export default function CartPage(): JSX.Element {
             <div className="space-y-3">
               {cartItems.map((item: Record<string, unknown>) => {
                 const product = item.product as Record<string, unknown>;
+                const variant = item.variant as Record<string, unknown> | null;
+                const unitPrice = Number(product?.price ?? 0) + Number(variant?.priceDelta ?? 0);
                 return (
                   <Card key={item.id as number} padding="md">
                     <div className="flex items-center justify-between">
@@ -72,21 +78,34 @@ export default function CartPage(): JSX.Element {
                           <p className="font-bold">
                             {localize(product?.nameJson, locale) ||
                               t('cart.productFallback', { id: String(product?.id ?? '') })}
+                            {/* C1c — the variant label rides the name line. */}
+                            {variant
+                              ? ` — ${
+                                  (variant.nameJson as { ar?: string; en?: string } | null)?.[
+                                    locale === 'ar' ? 'ar' : 'en'
+                                  ] ?? ''
+                                }`
+                              : ''}
                           </p>
                           <p className="text-xs text-text-secondary">
                             {t('cart.quantity', { qty: item.quantity as number })} ·{' '}
-                            {formatCurrency(Number(product?.price ?? 0))}
+                            {formatCurrency(unitPrice)}
                           </p>
                         </div>
                       </div>
                       <div className="flex items-center gap-3">
                         <span className="font-bold text-brand-600">
-                          {formatCurrency(Number(product?.price ?? 0) * (item.quantity as number))}
+                          {formatCurrency(unitPrice * (item.quantity as number))}
                         </span>
                         <Button
                           size="sm"
                           variant="ghost"
-                          onClick={() => removeMut.mutate({ productId: product?.id as number })}
+                          onClick={() =>
+                            removeMut.mutate({
+                              productId: product?.id as number,
+                              variantId: (item.variantId as number | undefined) ?? undefined,
+                            })
+                          }
                           loading={removeMut.isPending}
                           className="text-red-700 dark:text-red-400"
                         >

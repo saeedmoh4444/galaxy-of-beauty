@@ -4610,6 +4610,7 @@ export const arWebMessages: Record<string, string> = {
   'stores.subtitle': 'تسوّقي من متاجر التجميل الموثقة',
   'stores.title': 'المتاجر',
   'stores.verified': 'متجر موثق',
+  'stores.variant-select': 'اختيار متغير',
   'stores.badge.top-rated': 'الأعلى تقييماً',
   'stores.badge.fast-fulfillment': 'تجهيز سريع',
   'stores.badge.responsive-seller': 'بائع متفاعل',
