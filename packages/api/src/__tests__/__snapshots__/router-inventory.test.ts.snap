@@ -1107,6 +1107,7 @@ vendorPortal.resubmitSubmission	mutation	customer
 vendorPortal.revokeApiKey	mutation	customer
 vendorPortal.sendWinback	mutation	customer
 vendorPortal.services	query	customer
+vendorPortal.serviceSlots	query	customer
 vendorPortal.setBanner	mutation	customer
 vendorPortal.setConsultationPrice	mutation	customer
 vendorPortal.setDraft	mutation	customer
@@ -1125,6 +1126,7 @@ vendorPortal.staff.myInvitation	query	customer
 vendorPortal.staff.revoke	mutation	customer
 vendorPortal.staff.update	mutation	customer
 vendorPortal.stockForecasts	query	customer
+vendorPortal.storeBookings	query	customer
 vendorPortal.updatePriceRule	mutation	customer
 vendorPortal.updateProduct	mutation	customer
 vendorPortal.updateService	mutation	customer

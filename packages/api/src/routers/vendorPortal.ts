@@ -1154,6 +1154,101 @@ export const vendorPortalRouter = router({
       return { id: slot.id, startAt: slot.startAt, endAt: slot.endAt };
     }),
 
+  serviceSlots: customerProcedure
+    .input(
+      z.object({
+        days: z.number().int().min(1).max(30).default(7),
+      }),
+    )
+    .query(async ({ ctx, input }) => {
+      const vendor = await vendorForStaffQuery(ctx, 'PRODUCTS_MANAGE');
+      if (!vendor) return [];
+
+      const tech = await prisma.technician.findUnique({
+        where: { storeVendorId: vendor.id },
+        select: { id: true },
+      });
+      if (!tech) return [];
+
+      const from = new Date();
+      const to = new Date(Date.now() + input.days * 86_400_000);
+      const slots = await prisma.availabilitySlot.findMany({
+        where: { technicianId: tech.id, startAt: { gte: from, lte: to } },
+        orderBy: { startAt: 'asc' },
+        include: {
+          booking: { select: { id: true, service: { select: { titleJson: true } } } },
+        },
+      });
+      return slots.map((s) => ({
+        id: s.id,
+        startAt: s.startAt,
+        endAt: s.endAt,
+        isBooked: s.isBooked,
+        serviceTitleAr: (s.booking?.service.titleJson as { ar?: string } | undefined)?.ar ?? null,
+        serviceTitleEn: (s.booking?.service.titleJson as { en?: string } | undefined)?.en ?? null,
+      }));
+    }),
+
+  storeBookings: customerProcedure
+    .input(
+      z.object({
+        limit: z.number().int().min(1).max(50).default(10),
+        cursor: z.number().int().positive().optional(),
+        status: z
+          .enum([
+            'REQUESTED',
+            'ACCEPTED',
+            'IN_PROGRESS',
+            'COMPLETED',
+            'CANCELLED',
+            'REJECTED',
+            'NO_SHOW',
+            'PAYMENT_AUTHORIZED',
+          ])
+          .optional(),
+      }),
+    )
+    .query(async ({ ctx, input }) => {
+      const vendor = await vendorForStaffQuery(ctx, 'ORDERS_MANAGE');
+      if (!vendor) return { items: [], nextCursor: null, total: 0 };
+
+      const where = {
+        vendorId: vendor.id,
+        ...(input.status ? { status: input.status } : {}),
+        ...(input.cursor ? { id: { lt: input.cursor } } : {}),
+      };
+      const [bookings, total] = await Promise.all([
+        prisma.booking.findMany({
+          where,
+          orderBy: { id: 'desc' },
+          take: input.limit + 1, // peek one row for nextCursor
+          include: {
+            service: { select: { titleJson: true } },
+            customer: { select: { name: true, phone: true } },
+          },
+        }),
+        prisma.booking.count({ where: { vendorId: vendor.id } }),
+      ]);
+      const hasMore = bookings.length > input.limit;
+      const page = hasMore ? bookings.slice(0, input.limit) : bookings;
+      return {
+        items: page.map((b) => ({
+          id: b.id,
+          bookingCode: b.bookingCode,
+          status: b.status,
+          startAt: b.startAt,
+          endAt: b.endAt,
+          totalAmount: Number(b.totalAmount),
+          serviceTitleAr: (b.service.titleJson as { ar?: string }).ar ?? '',
+          serviceTitleEn: (b.service.titleJson as { en?: string }).en ?? '',
+          customerName: b.customer.name,
+          customerPhone: b.customer.phone,
+        })),
+        nextCursor: hasMore ? page[page.length - 1]!.id : null,
+        total,
+      };
+    }),
+
   // ---------------------------------------------------------------------------
   // Store plan Phase 1 — store registration state + orders
   // ---------------------------------------------------------------------------

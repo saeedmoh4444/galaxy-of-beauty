@@ -12,6 +12,7 @@ import { VenueProfileCard } from '../shared/VenueProfileCard';
 import { SubmissionStatusCard } from '../shared/SubmissionStatusCard';
 import { ProductVariantsModal } from './ProductVariantsModal';
 import { PricingRulesPanel } from './PricingRulesPanel';
+import { StoreServicesPanel } from './StoreServicesPanel';
 import { StaffPanel } from '../shared/StaffPanel';
 import { DashboardTabs } from '../shared/DashboardTabs';
 
@@ -27,7 +28,8 @@ type TabKey =
   | 'customers'
   | 'inbox'
   | 'staff'
-  | 'pricing';
+  | 'pricing'
+  | 'services';
 
 const TAB_KEYS: TabKey[] = [
   'overview',
@@ -42,6 +44,7 @@ const TAB_KEYS: TabKey[] = [
   'inbox',
   'staff',
   'pricing',
+  'services',
 ];
 
 /** A3 — read the ?tab= deep link once on mount (hydration-safe; the page is
@@ -491,6 +494,7 @@ export function StoreDashboard({
     ...(can('ORDERS_MANAGE') ? [{ key: 'orders', label: t('vendorPortal.orders.title') }] : []),
     ...(can('PRODUCTS_MANAGE') ? [{ key: 'products', label: t('vendorPortal.tab.products') }] : []),
     ...(can('PRODUCTS_MANAGE') ? [{ key: 'pricing', label: t('vendorPortal.tab.pricing') }] : []),
+    ...(can('PRODUCTS_MANAGE') ? [{ key: 'services', label: t('vendorPortal.tab.services') }] : []),
     ...(can('DEALS_MANAGE') ? [{ key: 'deals', label: t('vendorPortal.tab.deals') }] : []),
     ...(can('COUPONS_MANAGE') ? [{ key: 'coupons', label: t('vendorPortal.tab.coupons') }] : []),
     ...(can('PAYOUTS_VIEW') ? [{ key: 'earnings', label: t('vendorPortal.tab.earnings') }] : []),
@@ -2134,6 +2138,18 @@ export function StoreDashboard({
           >
             {/* C3 — uplift-only pricing rules + the per-product change log. */}
             <PricingRulesPanel />
+          </div>
+        )}
+
+        {tab === 'services' && (
+          <div
+            role="tabpanel"
+            id="vendor-panel-services"
+            data-testid="vendor-panel-services"
+            aria-labelledby="vendor-tab-services"
+          >
+            {/* C5 — hybrid store-services: editor + slots + bookings. */}
+            <StoreServicesPanel />
           </div>
         )}
 
