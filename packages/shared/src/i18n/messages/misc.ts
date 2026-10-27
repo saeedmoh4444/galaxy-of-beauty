@@ -3870,6 +3870,17 @@ export const miscMessages = {
   'vendorPortal.variants.threshold': { ar: 'حد التنبيه', en: 'Low-stock threshold' },
   'vendorPortal.variants.active': { ar: 'نشط', en: 'Active' },
   'vendorPortal.add': { ar: 'إضافة', en: 'Add' },
+  // C2 — inventory v2: bulk stock editor + velocity forecast hints
+  'vendorPortal.bulk.title': { ar: 'تعديل المخزون الجماعي', en: 'Bulk stock editor' },
+  'vendorPortal.bulk.enter': { ar: 'تعديل جماعي', en: 'Bulk edit' },
+  'vendorPortal.bulk.exit': { ar: 'خروج', en: 'Exit' },
+  'vendorPortal.bulk.save': { ar: 'حفظ الكل', en: 'Save all' },
+  'vendorPortal.bulk.saved': { ar: 'تم حفظ المخزون', en: 'Stock saved' },
+  'vendorPortal.bulk.forecast': {
+    ar: '~{days} يوم بالمعدل الحالي',
+    en: '~{days} days at current velocity',
+  },
+  'vendorPortal.bulk.noVelocity': { ar: 'بيانات غير كافية بعد', en: 'Not enough data yet' },
   // C2 — listing approval chips (strict mode)
   'vendorPortal.approval.pending': { ar: 'قيد المراجعة', en: 'Under review' },
   'vendorPortal.approval.rejected': { ar: 'مرفوض', en: 'Rejected' },
