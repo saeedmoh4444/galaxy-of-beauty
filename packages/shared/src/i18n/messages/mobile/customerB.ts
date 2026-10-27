@@ -396,6 +396,10 @@ export const mobileCustomerBMessages = {
   'mobile.stores.added-to-cart': { ar: 'تمت الإضافة للسلة', en: 'Added to cart' },
   'mobile.stores.login-to-buy': { ar: 'سجلي الدخول للشراء', en: 'Sign in to buy' },
   'mobile.stores.empty-products': { ar: 'لا توجد منتجات', en: 'No products' },
+  // C5 — hybrid store-services (mobile Services section).
+  'mobile.stores.services.title': { ar: 'خدمات الحجز', en: 'Bookable services' },
+  'mobile.stores.services.book': { ar: 'احجزي', en: 'Book' },
+  'mobile.stores.services.minutes': { ar: 'دقيقة', en: 'min' },
   // E2 — medical clinics screens
   'mobile.clinics.title': { ar: 'العيادات الطبية', en: 'Medical Clinics' },
   'mobile.clinics.empty': { ar: 'لا توجد عيادات', en: 'No clinics' },
