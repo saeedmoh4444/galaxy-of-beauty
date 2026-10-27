@@ -102,11 +102,8 @@ export function StorefrontClient({ data }: { data: StorefrontPageData }): JSX.El
   const { addToast } = useToast();
   const { isAuthenticated } = useAuth();
   const router = useRouter();
-<<<<<<< HEAD
-=======
   // C4c — the gallery image selected per product (thumbnail hover).
   const [galleryImage, setGalleryImage] = useState<Record<number, string>>({});
->>>>>>> origin/master
   // C1c — the selected variant per product (picker state).
   const [selectedVariants, setSelectedVariants] = useState<Record<number, number>>({});
   const addToCartMut = api.marketplace.addToCart.useMutation({
@@ -381,40 +378,6 @@ export function StorefrontClient({ data }: { data: StorefrontPageData }): JSX.El
             );
           })}
         </div>
-      )}
-
-      {/* C5 — hybrid store-services: bookable services ride the booking
-          engine; the create page auto-resolves the store's provider. */}
-      {(data.store?.services ?? []).length > 0 && (
-        <section aria-label={t('stores.services.title')}>
-          <h2 className="mb-3 text-lg font-bold text-text-primary">{t('stores.services.title')}</h2>
-          <div className="space-y-3">
-            {(data.store!.services ?? []).map((s) => (
-              <Card key={s.id} padding="md" className="flex items-center justify-between gap-3">
-                <div className="min-w-0">
-                  <p className="truncate font-bold">{localize(s.titleJson, locale)}</p>
-                  <p className="mt-1 text-xs text-text-secondary">
-                    {formatCurrency(Number(s.basePrice))} · {s.durationMin}{' '}
-                    {t('stores.services.minutes')}
-                  </p>
-                </div>
-                <Button
-                  size="sm"
-                  disabled={!isAuthenticated}
-                  onClick={() => {
-                    if (isAuthenticated) {
-                      router.push(`/bookings/create?serviceId=${s.id}`);
-                    } else {
-                      addToast('warning', t('stores.login-to-buy'));
-                    }
-                  }}
-                >
-                  {t('stores.services.book')}
-                </Button>
-              </Card>
-            ))}
-          </div>
-        </section>
       )}
 
       {/* C5 — hybrid store-services: bookable services ride the booking
