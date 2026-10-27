@@ -4311,6 +4311,10 @@ export const miscMessages = {
   'stores.reviews.replied': { ar: 'رد المتجر', en: 'Store replied' },
   'stores.reviews.ownerReply': { ar: 'رد المتجر', en: 'Store reply' },
   'stores.empty-products': { ar: 'لا توجد منتجات في هذا المتجر', en: 'No products in this store' },
+  // C5 — hybrid store-services (storefront Services tab).
+  'stores.services.title': { ar: 'خدمات الحجز', en: 'Bookable services' },
+  'stores.services.book': { ar: 'احجزي الآن', en: 'Book' },
+  'stores.services.minutes': { ar: 'دقيقة', en: 'min' },
   'stores.stock': { ar: 'المخزون: {count}', en: 'Stock: {count}' },
   // C4c — AR try-on link on product cards.
   'stores.ar-try-on': { ar: 'تجربة AR', en: 'AR try-on' },
