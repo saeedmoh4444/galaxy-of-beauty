@@ -534,6 +534,10 @@ export function StoreDashboard({
           label={t('vendorPortal.tabs.aria')}
         />
 
+        {/* D4 — first-visit onboarding tour: inline banner (no overlay,
+            so it never intercepts clicks); dismissed into localStorage. */}
+        <VendorTour onNavigate={(next) => selectTab(next as TabKey)} />
+
         {tab === 'overview' && (
           <div
             role="tabpanel"
@@ -2521,9 +2525,6 @@ export function StoreDashboard({
         {stockInProduct ? (
           <StockInModal product={stockInProduct} onClose={() => setStockInProduct(null)} />
         ) : null}
-
-        {/* D4 — first-visit onboarding tour (dismissed into localStorage). */}
-        <VendorTour onNavigate={(next) => selectTab(next as TabKey)} />
       </div>
     </DashboardLayout>
   );

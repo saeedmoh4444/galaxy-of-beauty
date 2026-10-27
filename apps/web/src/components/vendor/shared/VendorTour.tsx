@@ -50,7 +50,7 @@ export function VendorTour({
   return (
     <div
       data-testid="vendor-tour"
-      className="fixed bottom-4 left-1/2 z-50 w-[min(92vw,420px)] -translate-x-1/2 rounded-2xl border border-border-muted bg-surface-elevated p-4 shadow-lg"
+      className="rounded-2xl border border-border-muted bg-surface-elevated p-4 shadow-sm"
     >
       <p className="text-sm font-bold text-text-primary">{t('vendorPortal.tour.title')}</p>
       <p className="mt-1 text-xs leading-relaxed text-text-secondary">{t(current.labelKey)}</p>
