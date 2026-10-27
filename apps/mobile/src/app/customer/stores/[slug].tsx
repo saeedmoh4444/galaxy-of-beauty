@@ -1,7 +1,7 @@
 import type { JSX } from 'react';
 import { useState } from 'react';
 import { View, Text, ScrollView, StyleSheet, TouchableOpacity, RefreshControl } from 'react-native';
-import { useLocalSearchParams } from 'expo-router';
+import { useLocalSearchParams, useRouter } from 'expo-router';
 import { ErrorAlert } from '@/components/ErrorAlert';
 import { ServiceImage } from '@/components/ServiceImage';
 import { SkeletonList } from '@/components/SkeletonCard';
@@ -50,11 +50,19 @@ interface StoreDetail {
       stock?: number;
     }>;
   }>;
+  // C5 — hybrid store-services (mobile Services section).
+  services?: Array<{
+    id?: number;
+    titleJson?: { ar?: string; en?: string };
+    basePrice?: number;
+    durationMin?: number;
+  }>;
 }
 
 export default function StoreDetailScreen(): JSX.Element {
   const { t, locale } = useLocale();
   const { slug } = useLocalSearchParams<{ slug: string }>();
+  const router = useRouter();
   const isAuthed = useAuthState();
   const { showToast } = useToast();
   // 5.5 Mobile polish — haptic feedback on cart add.
@@ -187,6 +195,38 @@ export default function StoreDetailScreen(): JSX.Element {
       })}
       {products.length === 0 && <Text style={s.empty}>{t('mobile.stores.empty-products')}</Text>}
 
+      {/* C5 — hybrid store-services: bookable services (the service detail
+          screen auto-resolves the store's provider). */}
+      {(store?.services ?? []).length > 0 && (
+        <View style={s.svcWrap}>
+          <Text style={s.reviewsTitle}>{t('mobile.stores.services.title')}</Text>
+          {(store!.services ?? []).map((svc, idx) => (
+            <View key={svc.id ?? idx} style={s.svcCard}>
+              <View style={s.svcBody}>
+                <Text style={s.svcName}>{localize(svc.titleJson, locale)}</Text>
+                <Text style={s.svcMeta}>
+                  {Number(svc.basePrice ?? 0).toFixed(0)} {t('misc.sar')} · {svc.durationMin ?? 0}{' '}
+                  {t('mobile.stores.services.minutes')}
+                </Text>
+              </View>
+              <TouchableOpacity
+                style={s.svcBtn}
+                disabled={!isAuthed}
+                onPress={() => {
+                  if (isAuthed && svc.id) {
+                    router.push(`/services/${svc.id}` as never);
+                  } else {
+                    showToast('warning', t('mobile.stores.login-to-buy'));
+                  }
+                }}
+              >
+                <Text style={s.svcBtnText}>{t('mobile.stores.services.book')}</Text>
+              </TouchableOpacity>
+            </View>
+          ))}
+        </View>
+      )}
+
       {/* B3 — review showcase (recent reviews with owner replies). */}
       {(store.recentReviews ?? []).length > 0 && (
         <View style={s.reviewsWrap}>
@@ -252,6 +292,27 @@ const s = StyleSheet.create({
   buyText: { color: '#fff', fontSize: 13, fontWeight: '600' },
   empty: { textAlign: 'center', color: '#9ca3af', marginTop: 24 },
   reviewsWrap: { marginTop: 24 },
+  svcWrap: { marginTop: 24 },
+  svcCard: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 12,
+    borderWidth: 1,
+    borderColor: '#e5e7eb',
+    borderRadius: 14,
+    padding: 14,
+    marginBottom: 8,
+  },
+  svcBody: { flex: 1 },
+  svcName: { fontSize: 14, fontWeight: '700', color: '#111827', textAlign: 'right' },
+  svcMeta: { fontSize: 12, color: '#6b7280', textAlign: 'right', marginTop: 4 },
+  svcBtn: {
+    backgroundColor: '#e11d48',
+    borderRadius: 999,
+    paddingHorizontal: 14,
+    paddingVertical: 8,
+  },
+  svcBtnText: { color: '#fff', fontSize: 12, fontWeight: '700' },
   reviewsTitle: {
     fontSize: 16,
     fontWeight: '800',
