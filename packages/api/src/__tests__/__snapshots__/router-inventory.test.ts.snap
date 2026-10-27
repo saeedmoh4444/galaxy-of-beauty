@@ -1022,11 +1022,14 @@ users.mySessions	query	protected
 users.revokeOtherSessions	mutation	protected
 users.revokeSession	mutation	protected
 users.updateMe	mutation	protected
+vendorApi.orders	query	public
+vendorApi.products	query	public
 vendorPortal.addPriceRule	mutation	customer
 vendorPortal.addProduct	mutation	customer
 vendorPortal.addVariant	mutation	customer
 vendorPortal.advisor	query	customer
 vendorPortal.analyticsSeries	query	customer
+vendorPortal.apiKeys	query	customer
 vendorPortal.bulkStockUpdate	mutation	customer
 vendorPortal.cancelOrder	mutation	customer
 vendorPortal.clinicCancelConsultation	mutation	customer
@@ -1038,6 +1041,7 @@ vendorPortal.clinicSlots.list	query	customer
 vendorPortal.clinicSlots.remove	mutation	customer
 vendorPortal.clinicSlotUtilization	query	customer
 vendorPortal.confirmConsultation	mutation	customer
+vendorPortal.createApiKey	mutation	customer
 vendorPortal.createCoupon	mutation	customer
 vendorPortal.customers	query	customer
 vendorPortal.dashboard	query	customer
@@ -1093,6 +1097,7 @@ vendorPortal.proposeClinicPackage	mutation	customer
 vendorPortal.proposeDeal	mutation	customer
 vendorPortal.replyToReview	mutation	customer
 vendorPortal.resubmitSubmission	mutation	customer
+vendorPortal.revokeApiKey	mutation	customer
 vendorPortal.sendWinback	mutation	customer
 vendorPortal.setBanner	mutation	customer
 vendorPortal.setConsultationPrice	mutation	customer
