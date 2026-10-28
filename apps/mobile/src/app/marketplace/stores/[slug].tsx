@@ -5,6 +5,7 @@ import { SkeletonList } from '@/components/SkeletonCard';
 import { ErrorAlert } from '@/components/ErrorAlert';
 import { trpc } from '@/lib/trpc-react';
 import { useLocale } from '@/components/LocaleProvider';
+import { SocialIconsRow } from '@/components/SocialIconsRow';
 
 // S2 — mobile store detail: logo, name, product grid (marketplace.vendorDetail).
 export default function StoreDetailScreen(): JSX.Element {
@@ -15,6 +16,7 @@ export default function StoreDetailScreen(): JSX.Element {
     | {
         storeName?: string;
         logoUrl?: string | null;
+        socialLinks?: Record<string, string> | null;
         products?: Array<{ id?: number; nameAr?: string; price?: number; emoji?: string }>;
       }
     | undefined;
@@ -61,6 +63,9 @@ export default function StoreDetailScreen(): JSX.Element {
           </Text>
         </View>
       </View>
+
+      {/* B6 — social presence (only networks the vendor set). */}
+      <SocialIconsRow links={store?.socialLinks} />
 
       {products.length === 0 ? (
         <Text style={styles.empty}>{t('mobile.public.marketplace.store-products-empty')}</Text>

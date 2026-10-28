@@ -2,6 +2,7 @@
 import type { JSX } from 'react';
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import QRCode from 'qrcode';
 
 import { api } from '@/lib/trpc';
@@ -18,6 +19,7 @@ import {
 } from '@galaxy/ui';
 import { useLocale } from '@/components/LocaleProvider';
 import { localize } from '@galaxy/shared';
+import { SocialIcons } from '@/components/vendor/shared/SocialIcons';
 
 export interface StorefrontPageData {
   store: {
@@ -30,6 +32,29 @@ export interface StorefrontPageData {
     isVerified: boolean;
     ratingAvg: number | null;
     totalReviews: number;
+    socialLinks: Record<string, string> | null;
+    tierBadges: Array<'top_rated' | 'fast_fulfillment' | 'responsive_seller'>;
+    recentReviews: Array<{
+      id: number;
+      rating: number;
+      comment: string;
+      createdAt: string;
+      replied: boolean;
+      replyAr: string;
+      replyEn: string;
+      productNameAr: string;
+      productNameEn: string;
+      customerName: string;
+    }>;
+    // C5 — hybrid store-services: the store's bookable services.
+    services?: Array<{
+      id: number;
+      titleJson: { ar?: string; en?: string } | null;
+      descriptionJson: { ar?: string; en?: string } | null;
+      basePrice: number;
+      durationMin: number;
+      imageUrl: string | null;
+    }>;
   } | null;
   products: Array<Record<string, unknown>>;
   productCount: number;
@@ -76,10 +101,31 @@ export function StorefrontClient({ data }: { data: StorefrontPageData }): JSX.El
   const { t, locale } = useLocale();
   const { addToast } = useToast();
   const { isAuthenticated } = useAuth();
+  const router = useRouter();
+  // C4c — the gallery image selected per product (thumbnail hover).
+  const [galleryImage, setGalleryImage] = useState<Record<number, string>>({});
+  // C1c — the selected variant per product (picker state).
+  const [selectedVariants, setSelectedVariants] = useState<Record<number, number>>({});
   const addToCartMut = api.marketplace.addToCart.useMutation({
     onSuccess: () => addToast('success', t('stores.added-to-cart')),
     onError: (e) => addToast('error', e.message),
   });
+
+  // B5 — one store-view per browser session (the funnel input).
+  const trackViewMut = api.marketplace.trackStoreView.useMutation();
+  useEffect(() => {
+    const slug = data.store?.storeSlug;
+    if (!slug) return;
+    const key = `gob-store-view-${slug}`;
+    try {
+      if (sessionStorage.getItem(key)) return;
+      sessionStorage.setItem(key, '1');
+    } catch {
+      // Private browsing: still track, just without the session guard.
+    }
+    void trackViewMut.mutate({ slug });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [data.store?.storeSlug]);
 
   if (data.fetchError) {
     return (
@@ -139,6 +185,17 @@ export function StorefrontClient({ data }: { data: StorefrontPageData }): JSX.El
           <TrustBadges
             className="mt-3"
             items={[
+              // B2 — computed tier badges lead the trust row.
+              ...(store.tierBadges ?? []).map((badge) => ({
+                variant: 'tier' as const,
+                label: t(
+                  badge === 'top_rated'
+                    ? 'stores.badge.top-rated'
+                    : badge === 'fast_fulfillment'
+                      ? 'stores.badge.fast-fulfillment'
+                      : 'stores.badge.responsive-seller',
+                ),
+              })),
               ...(store.isVerified
                 ? [{ variant: 'verified' as const, label: t('stores.verified') }]
                 : []),
@@ -153,6 +210,8 @@ export function StorefrontClient({ data }: { data: StorefrontPageData }): JSX.El
                 : []),
             ]}
           />
+          {/* B6 — social presence (only networks the vendor set). */}
+          <SocialIcons links={store.socialLinks} className="mt-3" />
         </div>
       </div>
 
@@ -180,44 +239,212 @@ export function StorefrontClient({ data }: { data: StorefrontPageData }): JSX.El
         <EmptyState title={t('stores.empty-products')} />
       ) : (
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-          {data.products.map((p: Record<string, unknown>) => (
-            <Card key={p.id as number} padding="md">
-              <ServiceImage
-                src={(p.imageUrl as string) ?? null}
-                alt={localize(p.nameJson, locale)}
-                size="full"
-                className="mb-3 h-32 w-full"
-              />
-              <div className="flex items-start justify-between gap-3">
+          {data.products.map((p: Record<string, unknown>) => {
+            // C4c — gallery + video + AR: the main image switches on
+            // thumbnail hover; the alt ladder = name (en → ar).
+            const gallery = (p.images as string[] | undefined) ?? [];
+            const nameText = localize(p.nameJson, locale);
+            const activeImage =
+              (galleryImage[Number(p.id)] as string | undefined) ?? (p.imageUrl as string) ?? null;
+            // C1c — variant picker: chips with the final price; the add
+            // button below targets the selected variant.
+            const variants = ((p as { variants?: Array<Record<string, unknown>> }).variants ??
+              []) as Array<{
+              id: number;
+              nameJson?: { ar?: string; en?: string } | null;
+              priceDelta?: string | number;
+              stock?: number;
+            }>;
+            const selectedVariant = variants.find((v) => v.id === selectedVariants[Number(p.id)]);
+            return (
+              <Card key={p.id as number} padding="md">
+                {activeImage ? (
+                  <ServiceImage
+                    src={activeImage}
+                    alt={nameText}
+                    size="full"
+                    className="mb-3 h-32 w-full"
+                  />
+                ) : null}
+                {gallery.length > 0 ? (
+                  <div className="mb-3 flex gap-2 overflow-x-auto">
+                    {gallery.map((src) => (
+                      <button
+                        key={src}
+                        type="button"
+                        onMouseEnter={() =>
+                          setGalleryImage((prev) => ({ ...prev, [Number(p.id)]: src }))
+                        }
+                        className={`h-14 w-14 shrink-0 overflow-hidden rounded-lg border ${
+                          activeImage === src ? 'border-brand-500' : 'border-border-muted'
+                        }`}
+                      >
+                        {/* eslint-disable-next-line @next/next/no-img-element */}
+                        <img src={src} alt={nameText} className="h-full w-full object-cover" />
+                      </button>
+                    ))}
+                  </div>
+                ) : null}
+                {p.videoUrl ? (
+                  // eslint-disable-next-line jsx-a11y/media-has-caption
+                  <video
+                    src={p.videoUrl as string}
+                    controls
+                    preload="none"
+                    className="mb-3 w-full rounded-lg"
+                  />
+                ) : null}
+                {p.arTryOnUrl ? (
+                  <a
+                    href={p.arTryOnUrl as string}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="mb-3 inline-block rounded-full bg-brand-50 px-3 py-1 text-xs font-bold text-brand-700 dark:bg-brand-950 dark:text-brand-300"
+                  >
+                    ✨ {t('stores.ar-try-on')}
+                  </a>
+                ) : null}
+                <div className="flex items-start justify-between gap-3">
+                  <div className="min-w-0">
+                    <p className="truncate font-bold text-text-primary">{nameText}</p>
+                    {variants.length > 0 ? (
+                      <div
+                        className="mt-2 flex flex-wrap gap-1.5"
+                        role="group"
+                        aria-label={t('stores.variant-select')}
+                      >
+                        {variants.map((v) => {
+                          const active = selectedVariant?.id === v.id;
+                          return (
+                            <button
+                              key={v.id}
+                              type="button"
+                              onClick={() =>
+                                setSelectedVariants((prev) => ({
+                                  ...prev,
+                                  [Number(p.id)]: v.id,
+                                }))
+                              }
+                              className={`rounded-full border px-2.5 py-1 text-xs font-medium ${
+                                active
+                                  ? 'border-brand-500 bg-brand-50 text-brand-700 dark:bg-brand-950 dark:text-brand-300'
+                                  : 'border-border-muted text-text-secondary hover:bg-surface-muted'
+                              }`}
+                            >
+                              {(v.nameJson as { ar?: string; en?: string } | null)?.[
+                                locale === 'ar' ? 'ar' : 'en'
+                              ] ?? `#${v.id}`}
+                              {Number(v.priceDelta ?? 0) !== 0
+                                ? ` · ${formatCurrency(Number(p.price ?? 0) + Number(v.priceDelta ?? 0))}`
+                                : ''}
+                            </button>
+                          );
+                        })}
+                      </div>
+                    ) : null}
+                    <p className="mt-1 text-sm font-semibold text-brand-600">
+                      {formatCurrency(
+                        Number(p.price ?? 0) + Number(selectedVariant?.priceDelta ?? 0),
+                      )}
+                    </p>
+                    <p className="mt-1 text-xs text-text-secondary">
+                      {t('stores.stock', {
+                        count: selectedVariant
+                          ? Number(selectedVariant.stock ?? 0)
+                          : Number(p.stock ?? 0),
+                      })}
+                    </p>
+                  </div>
+                  <Button
+                    size="sm"
+                    disabled={!isAuthenticated || Number(p.stock ?? 0) <= 0}
+                    loading={addToCartMut.isPending}
+                    onClick={() => {
+                      if (isAuthenticated) {
+                        addToCartMut.mutate({
+                          productId: p.id as number,
+                          quantity: 1,
+                          variantId: selectedVariants[Number(p.id)],
+                        });
+                      } else {
+                        addToast('warning', t('stores.login-to-buy'));
+                      }
+                    }}
+                  >
+                    {t('stores.add-to-cart')}
+                  </Button>
+                </div>
+              </Card>
+            );
+          })}
+        </div>
+      )}
+
+      {/* C5 — hybrid store-services: bookable services ride the booking
+          engine; the create page auto-resolves the store's provider. */}
+      {(data.store?.services ?? []).length > 0 && (
+        <section aria-label={t('stores.services.title')}>
+          <h2 className="mb-3 text-lg font-bold text-text-primary">{t('stores.services.title')}</h2>
+          <div className="space-y-3">
+            {(data.store!.services ?? []).map((s) => (
+              <Card key={s.id} padding="md" className="flex items-center justify-between gap-3">
                 <div className="min-w-0">
-                  <p className="truncate font-bold text-text-primary">
-                    {localize(p.nameJson, locale)}
-                  </p>
-                  <p className="mt-1 text-sm font-semibold text-brand-600">
-                    {formatCurrency(Number(p.price ?? 0))}
-                  </p>
+                  <p className="truncate font-bold">{localize(s.titleJson, locale)}</p>
                   <p className="mt-1 text-xs text-text-secondary">
-                    {t('stores.stock', { count: Number(p.stock ?? 0) })}
+                    {formatCurrency(Number(s.basePrice))} · {s.durationMin}{' '}
+                    {t('stores.services.minutes')}
                   </p>
                 </div>
                 <Button
                   size="sm"
-                  disabled={!isAuthenticated || Number(p.stock ?? 0) <= 0}
-                  loading={addToCartMut.isPending}
+                  disabled={!isAuthenticated}
                   onClick={() => {
                     if (isAuthenticated) {
-                      addToCartMut.mutate({ productId: p.id as number, quantity: 1 });
+                      router.push(`/bookings/create?serviceId=${s.id}`);
                     } else {
                       addToast('warning', t('stores.login-to-buy'));
                     }
                   }}
                 >
-                  {t('stores.add-to-cart')}
+                  {t('stores.services.book')}
                 </Button>
-              </div>
-            </Card>
-          ))}
-        </div>
+              </Card>
+            ))}
+          </div>
+        </section>
+      )}
+
+      {/* B3 — review showcase: recent reviews WITH owner replies. */}
+      {(data.store?.recentReviews ?? []).length > 0 && (
+        <section aria-label={t('stores.reviews.title')}>
+          <h2 className="mb-3 text-lg font-bold text-text-primary">{t('stores.reviews.title')}</h2>
+          <div className="space-y-3">
+            {data.store!.recentReviews.map((r) => (
+              <Card key={r.id} padding="md" className="space-y-1.5">
+                <div className="flex items-center justify-between gap-2">
+                  <p className="text-sm font-bold">
+                    {'★'.repeat(r.rating)}
+                    <span className="ml-2 font-normal text-text-secondary">
+                      {r.customerName} · {r.productNameAr || r.productNameEn}
+                    </span>
+                  </p>
+                  {r.replied && (
+                    <span className="rounded-full bg-green-100 px-2 py-0.5 text-xs font-medium text-green-700 dark:bg-green-950 dark:text-green-300">
+                      {t('stores.reviews.replied')}
+                    </span>
+                  )}
+                </div>
+                {r.comment && <p className="text-sm text-text-primary">{r.comment}</p>}
+                {r.replied && (
+                  <p className="rounded-lg bg-surface-elevated p-2 text-sm text-text-secondary">
+                    <span className="font-semibold">{t('stores.reviews.ownerReply')}: </span>
+                    {locale === 'ar' ? r.replyAr : r.replyEn || r.replyAr}
+                  </p>
+                )}
+              </Card>
+            ))}
+          </div>
+        </section>
       )}
     </div>
   );

@@ -18,6 +18,8 @@ export interface TRPCContext {
   clientIp: string | null;
   /** Correlation ID for request tracing across services */
   correlationId: string | null;
+  /** D1 — raw X-Api-Key header (vendor API auth; null for browser calls) */
+  apiKey: string | null;
 }
 
 export interface CreateContextOptions {
@@ -29,6 +31,7 @@ export interface CreateContextOptions {
   setCookies?: (cookies: string[]) => void;
   clientIp?: string | null;
   correlationId?: string | null;
+  apiKey?: string | null;
 }
 
 export async function createTRPCContext(opts?: CreateContextOptions): Promise<TRPCContext> {
@@ -42,6 +45,7 @@ export async function createTRPCContext(opts?: CreateContextOptions): Promise<TR
     setCookies: opts?.setCookies ?? (() => {}),
     clientIp: opts?.clientIp ?? null,
     correlationId: opts?.correlationId ?? null,
+    apiKey: opts?.apiKey ?? null,
   };
 }
 

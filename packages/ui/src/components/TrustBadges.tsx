@@ -9,7 +9,7 @@ import type { JSX } from 'react';
  */
 
 export type TrustBadgeVariant =
-  'womenOnly' | 'private' | 'verified' | 'rating' | 'safeSpace' | 'childFriendly';
+  'womenOnly' | 'private' | 'verified' | 'rating' | 'safeSpace' | 'childFriendly' | 'tier';
 
 const VARIANT_GLYPH: Record<TrustBadgeVariant, string> = {
   womenOnly: '🌸',
@@ -18,6 +18,7 @@ const VARIANT_GLYPH: Record<TrustBadgeVariant, string> = {
   rating: '★',
   safeSpace: '✨',
   childFriendly: '🧸',
+  tier: '🏆',
 };
 
 export function TrustBadge({

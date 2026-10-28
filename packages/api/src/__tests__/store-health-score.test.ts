@@ -35,10 +35,11 @@ afterAll(async () => {
 
 const perfect: StoreHealthFactors = {
   fulfillmentSpeedHours: 6,
+  slaBreachRate: 0,
   cancelRate: 0,
   reviewTrend: 5,
   stockHealth: 1,
-  responseRate: 1,
+  disputeEscalationRate: 0,
 };
 
 describe('D2 — score composition', () => {
@@ -49,10 +50,11 @@ describe('D2 — score composition', () => {
   it('a worst-case store scores 0', () => {
     const worst: StoreHealthFactors = {
       fulfillmentSpeedHours: 100,
+      slaBreachRate: 1,
       cancelRate: 0.5,
       reviewTrend: 1,
       stockHealth: 0,
-      responseRate: 0,
+      disputeEscalationRate: 1,
     };
     const res = computeStoreHealthScore(worst);
     expect(res.score).toBe(0);
@@ -62,10 +64,11 @@ describe('D2 — score composition', () => {
   it('a store with no data is neutral (60) — not punished', () => {
     const none: StoreHealthFactors = {
       fulfillmentSpeedHours: null,
+      slaBreachRate: null,
       cancelRate: null,
       reviewTrend: null,
       stockHealth: null,
-      responseRate: null,
+      disputeEscalationRate: null,
     };
     const res = computeStoreHealthScore(none);
     expect(res.score).toBe(60);
@@ -74,17 +77,18 @@ describe('D2 — score composition', () => {
 
   it('fulfillment threshold: ≤12h full marks, ≥72h zero', () => {
     expect(computeStoreHealthScore({ ...perfect, fulfillmentSpeedHours: 12 }).score).toBe(100);
-    expect(computeStoreHealthScore({ ...perfect, fulfillmentSpeedHours: 72 }).score).toBe(70); // 0×0.3 + 100×0.7
+    expect(computeStoreHealthScore({ ...perfect, fulfillmentSpeedHours: 72 }).score).toBe(75); // 0×0.25 + 100×0.75
     expect(
       computeStoreHealthScore({
         ...perfect,
         fulfillmentSpeedHours: 72,
+        slaBreachRate: null,
         cancelRate: null,
         reviewTrend: null,
         stockHealth: null,
-        responseRate: null,
+        disputeEscalationRate: null,
       }).score,
-    ).toBe(42); // known-bad fulfillment (0) + four neutral factors (60×0.7)
+    ).toBe(45); // known-bad fulfillment (0) + five neutral factors (60×0.75)
   });
 
   it('cancel threshold: ≥30% zeroes the factor', () => {
@@ -92,7 +96,20 @@ describe('D2 — score composition', () => {
   });
 
   it('stock health maps linearly', () => {
-    expect(computeStoreHealthScore({ ...perfect, stockHealth: 0.5 }).score).toBe(90);
+    expect(computeStoreHealthScore({ ...perfect, stockHealth: 0.5 }).score).toBe(93);
+  });
+
+  it('A5 — SLA breach rate: ≥20% zeroes the factor, hints surface', () => {
+    expect(computeStoreHealthScore({ ...perfect, slaBreachRate: 0.2 }).score).toBe(85);
+    const bad = computeStoreHealthScore({ ...perfect, slaBreachRate: 0.3 });
+    expect(bad.score).toBe(85);
+    expect(bad.hints.some((h) => h.key === 'vendorPortal.health.hint.sla')).toBe(true);
+  });
+
+  it('A5 — dispute escalation rate: ≥50% zeroes the factor', () => {
+    expect(computeStoreHealthScore({ ...perfect, disputeEscalationRate: 0.5 }).score).toBe(90);
+    const bad = computeStoreHealthScore({ ...perfect, disputeEscalationRate: 0.6 });
+    expect(bad.hints.some((h) => h.key === 'vendorPortal.health.hint.dispute')).toBe(true);
   });
 });
 

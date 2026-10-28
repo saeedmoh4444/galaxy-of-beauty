@@ -10,8 +10,13 @@ import type { MyStore, StoreDealPayload, StoreOrderRow } from '@galaxy/api';
 import { localize, type TranslationKey } from '@galaxy/shared';
 import { VenueProfileCard } from '../shared/VenueProfileCard';
 import { SubmissionStatusCard } from '../shared/SubmissionStatusCard';
+import { ProductVariantsModal } from './ProductVariantsModal';
+import { StockInModal } from './StockInModal';
+import { PricingRulesPanel } from './PricingRulesPanel';
+import { StoreServicesPanel } from './StoreServicesPanel';
 import { StaffPanel } from '../shared/StaffPanel';
 import { DashboardTabs } from '../shared/DashboardTabs';
+import { VendorTour } from '../shared/VendorTour';
 
 type TabKey =
   | 'overview'
@@ -24,7 +29,9 @@ type TabKey =
   | 'reviews'
   | 'customers'
   | 'inbox'
-  | 'staff';
+  | 'staff'
+  | 'pricing'
+  | 'services';
 
 const TAB_KEYS: TabKey[] = [
   'overview',
@@ -38,6 +45,8 @@ const TAB_KEYS: TabKey[] = [
   'customers',
   'inbox',
   'staff',
+  'pricing',
+  'services',
 ];
 
 /** A3 — read the ?tab= deep link once on mount (hydration-safe; the page is
@@ -151,6 +160,13 @@ export function StoreDashboard({
   const [edCategoryId, setEdCategoryId] = useState<number | undefined>();
   const [edImages, setEdImages] = useState<string[]>([]);
   const [edThreshold, setEdThreshold] = useState(5);
+  // C4 — rich media + product SEO editor fields.
+  const [edVideoUrl, setEdVideoUrl] = useState('');
+  const [edMetaTitleAr, setEdMetaTitleAr] = useState('');
+  const [edMetaTitleEn, setEdMetaTitleEn] = useState('');
+  const [edMetaDescAr, setEdMetaDescAr] = useState('');
+  const [edMetaDescEn, setEdMetaDescEn] = useState('');
+  const [edArTryOnUrl, setEdArTryOnUrl] = useState('');
   const { data: categories } = api.marketplace.productCategories.useQuery();
   const edImgMut = api.uploads.uploadMedia.useMutation({
     onSuccess: (res) => setEdImages((prev) => [...prev, res.url]),
@@ -169,6 +185,13 @@ export function StoreDashboard({
     setEdCategoryId(undefined);
     setEdImages(p.images);
     setEdThreshold(p.threshold);
+    // C4 — media + SEO fields.
+    setEdVideoUrl(p.videoUrl ?? '');
+    setEdMetaTitleAr(p.metaTitleAr ?? '');
+    setEdMetaTitleEn(p.metaTitleEn ?? '');
+    setEdMetaDescAr(p.metaDescAr ?? '');
+    setEdMetaDescEn(p.metaDescEn ?? '');
+    setEdArTryOnUrl(p.arTryOnUrl ?? '');
   };
   const fulfillMut = api.vendorPortal.fulfillOrder.useMutation({
     onSuccess: () => refetchOrders(),
@@ -181,6 +204,21 @@ export function StoreDashboard({
     },
   });
   const [detailOrder, setDetailOrder] = useState<StoreOrderRow | null>(null);
+
+  // C1 — variants manager per product (Wave C).
+  const [variantProduct, setVariantProduct] = useState<{
+    id: number;
+    price: number;
+    nameAr?: string;
+    nameEn?: string;
+  } | null>(null);
+
+  // C2b — stock-in dialog (base product or a variant).
+  const [stockInProduct, setStockInProduct] = useState<{
+    id: number;
+    nameAr?: string;
+    nameEn?: string;
+  } | null>(null);
 
   // B5 — vendor response to a customer-raised dispute (drawer).
   const respondMut = api.disputes.respond.useMutation({
@@ -243,6 +281,36 @@ export function StoreDashboard({
   // B3b — low-stock surface (stock ≤ the per-product threshold).
   const lowStock = dash?.lowStockProducts ?? [];
   const prods = productsQ.data?.pages.flatMap((p) => p.items) ?? [];
+
+  // C2 — bulk stock editor: enter the mode, edit rows, save all changed.
+  const [bulkMode, setBulkMode] = useState(false);
+  const [bulkStocks, setBulkStocks] = useState<Record<number, number>>({});
+  const [bulkTouched, setBulkTouched] = useState<Record<number, boolean>>({});
+  const bulkMut = api.vendorPortal.bulkStockUpdate.useMutation({
+    onSuccess: () => {
+      setBulkStocks({});
+      setBulkTouched({});
+      setBulkMode(false);
+      void productsQ.refetch();
+    },
+  });
+  const forecastsQ = api.vendorPortal.stockForecasts.useQuery(
+    { productIds: prods.map((p) => p.id) },
+    { enabled: bulkMode && prods.length > 0 },
+  );
+  const forecasts = forecastsQ.data ?? {};
+
+  const enterBulk = () => {
+    setBulkStocks(Object.fromEntries(prods.map((p) => [p.id, p.stock])));
+    setBulkTouched({});
+    setBulkMode(true);
+  };
+  const saveBulk = () => {
+    const updates = Object.entries(bulkTouched)
+      .filter(([, touched]) => touched)
+      .map(([id]) => ({ productId: Number(id), stock: bulkStocks[Number(id)] ?? 0 }));
+    if (updates.length > 0) bulkMut.mutate({ updates });
+  };
   const storeOrders = ordersQ.data?.pages.flatMap((p) => p.items) ?? [];
 
   // C5 — bulk CSV import: upload → worker job → polled per-row report.
@@ -266,6 +334,8 @@ export function StoreDashboard({
   );
   const series = analyticsQ.data?.series ?? [];
   const analyticsTopProducts = analyticsQ.data?.topProducts ?? [];
+  // B5 — funnel analytics (views → orders → repeat).
+  const funnelQ = api.vendorPortal.funnel.useQuery(undefined, { enabled: isAuthenticated });
 
   // E4 — reputation hub: summary + paginated review list + merchant reply.
   const reviewsSummaryQ = api.vendorPortal.myReviewsSummary.useQuery(undefined, {
@@ -300,6 +370,19 @@ export function StoreDashboard({
   );
   const customers = (customersQ.data?.pages ?? []).flatMap((p) => p.items);
   const customersFirst = customersQ.data?.pages[0];
+
+  // B4 — win-back toolkit: pre-approved templates, selected customers.
+  const [winbackTemplate, setWinbackTemplate] = useState<'restocked' | 'on_offer'>('restocked');
+  const [winbackIds, setWinbackIds] = useState<number[]>([]);
+  const [winbackResult, setWinbackResult] = useState<{ sent: number; skipped: number } | null>(
+    null,
+  );
+  const sendWinbackMut = api.vendorPortal.sendWinback.useMutation({
+    onSuccess: (res) => {
+      setWinbackResult(res);
+      setWinbackIds([]);
+    },
+  });
   const totalCustomers = customersFirst?.total ?? 0;
   const repeatCustomers = customersFirst?.repeatCustomers ?? 0;
   const repeatRate = customersFirst?.repeatRate ?? 0;
@@ -419,6 +502,8 @@ export function StoreDashboard({
     { key: 'overview', label: t('vendorPortal.tab.overview') },
     ...(can('ORDERS_MANAGE') ? [{ key: 'orders', label: t('vendorPortal.orders.title') }] : []),
     ...(can('PRODUCTS_MANAGE') ? [{ key: 'products', label: t('vendorPortal.tab.products') }] : []),
+    ...(can('PRODUCTS_MANAGE') ? [{ key: 'pricing', label: t('vendorPortal.tab.pricing') }] : []),
+    ...(can('PRODUCTS_MANAGE') ? [{ key: 'services', label: t('vendorPortal.tab.services') }] : []),
     ...(can('DEALS_MANAGE') ? [{ key: 'deals', label: t('vendorPortal.tab.deals') }] : []),
     ...(can('COUPONS_MANAGE') ? [{ key: 'coupons', label: t('vendorPortal.tab.coupons') }] : []),
     ...(can('PAYOUTS_VIEW') ? [{ key: 'earnings', label: t('vendorPortal.tab.earnings') }] : []),
@@ -452,6 +537,10 @@ export function StoreDashboard({
           onSelect={(key) => selectTab(key as TabKey)}
           label={t('vendorPortal.tabs.aria')}
         />
+
+        {/* D4 — first-visit onboarding tour: inline banner (no overlay,
+            so it never intercepts clicks); dismissed into localStorage. */}
+        <VendorTour onNavigate={(next) => selectTab(next as TabKey)} />
 
         {tab === 'overview' && (
           <div
@@ -574,6 +663,11 @@ export function StoreDashboard({
               <Card padding="md" className="text-center">
                 <p className="text-2xl font-bold">{formatCurrency(dash?.revenue30d ?? 0)}</p>
                 <p className="text-xs text-text-secondary">{t('vendorPortal.revenue30d')}</p>
+                {/* C5g — store-service revenue rides the same tile. */}
+                <p className="mt-1 text-xs text-text-secondary">
+                  {t('vendorPortal.serviceRevenue30d')}:{' '}
+                  {formatCurrency(dash?.serviceRevenue30d ?? 0)}
+                </p>
               </Card>
               <Card padding="md" className="text-center">
                 <p className="text-2xl font-bold">{dash?.ordersCount ?? 0}</p>
@@ -929,6 +1023,24 @@ export function StoreDashboard({
                 <Button size="sm" onClick={() => setShow(true)}>
                   + {t('vendorPortal.newProduct')}
                 </Button>
+                {/* C2 — bulk stock editor toggle + save. */}
+                <Button
+                  size="sm"
+                  variant="outline"
+                  onClick={bulkMode ? () => setBulkMode(false) : enterBulk}
+                >
+                  {bulkMode ? t('vendorPortal.bulk.exit') : t('vendorPortal.bulk.enter')}
+                </Button>
+                {bulkMode && (
+                  <Button
+                    size="sm"
+                    onClick={saveBulk}
+                    loading={bulkMut.isPending}
+                    disabled={!Object.values(bulkTouched).some(Boolean)}
+                  >
+                    {t('vendorPortal.bulk.save')}
+                  </Button>
+                )}
               </div>
             </div>
             {/* C5 — import progress + report (polled from the worker job). */}
@@ -987,9 +1099,38 @@ export function StoreDashboard({
                           </span>
                         )}
                       </p>
-                      <p className="text-xs text-text-secondary">
-                        {t('vendorPortal.stock')}: {p.stock} · {t('vendorPortal.sales')}: {p.sales}
-                      </p>
+                      {bulkMode ? (
+                        <div className="mt-1 flex items-center gap-2">
+                          <Input
+                            type="number"
+                            value={bulkStocks[p.id] ?? p.stock}
+                            onChange={(e) => {
+                              const n = parseInt(e.target.value, 10);
+                              if (Number.isNaN(n)) return;
+                              setBulkStocks((prev) => ({ ...prev, [p.id]: n }));
+                              setBulkTouched((prev) => ({ ...prev, [p.id]: n !== p.stock }));
+                            }}
+                            className="w-24"
+                          />
+                          {(() => {
+                            const f = forecasts[p.id];
+                            return f && f.daysAtStock !== null && f.daysAtStock !== undefined ? (
+                              <span className="text-xs text-text-secondary">
+                                {t('vendorPortal.bulk.forecast', { days: f.daysAtStock })}
+                              </span>
+                            ) : (
+                              <span className="text-xs text-text-tertiary">
+                                {t('vendorPortal.bulk.noVelocity')}
+                              </span>
+                            );
+                          })()}
+                        </div>
+                      ) : (
+                        <p className="text-xs text-text-secondary">
+                          {t('vendorPortal.stock')}: {p.stock} · {t('vendorPortal.sales')}:{' '}
+                          {p.sales}
+                        </p>
+                      )}
                       {p.approvalStatus === 'REJECTED' && p.reviewNotes ? (
                         <p className="text-xs text-red-600 dark:text-red-400">{p.reviewNotes}</p>
                       ) : null}
@@ -1008,6 +1149,31 @@ export function StoreDashboard({
                     </span>
                     <Button size="sm" variant="outline" onClick={() => openEdit(p)}>
                       {t('vendorPortal.edit')}
+                    </Button>
+                    {/* C1 — variants manager (sizes/shades with own stock). */}
+                    <Button
+                      size="sm"
+                      variant="outline"
+                      onClick={() =>
+                        setVariantProduct({
+                          id: p.id,
+                          price: p.price,
+                          nameAr: p.nameAr,
+                          nameEn: p.nameEn,
+                        })
+                      }
+                    >
+                      {t('vendorPortal.variants.title')}
+                    </Button>
+                    {/* C2b — stock-in (base product or a variant). */}
+                    <Button
+                      size="sm"
+                      variant="outline"
+                      onClick={() =>
+                        setStockInProduct({ id: p.id, nameAr: p.nameAr, nameEn: p.nameEn })
+                      }
+                    >
+                      + {t('vendorPortal.stockin.title')}
                     </Button>
                     <Button
                       size="sm"
@@ -1426,6 +1592,61 @@ export function StoreDashboard({
               </div>
             </div>
 
+            {/* B5 — the funnel: storefront views → orders + repeat. */}
+            <Card padding="md">
+              <h3 className="mb-2 text-sm font-semibold">
+                {t('vendorPortal.analytics.funnel.title')}
+              </h3>
+              <div className="grid grid-cols-2 gap-4 sm:grid-cols-4">
+                <div>
+                  <p className="text-2xl font-bold">{funnelQ.data?.views30d ?? 0}</p>
+                  <p className="text-xs text-text-secondary">
+                    {t('vendorPortal.analytics.funnel.views')}
+                  </p>
+                </div>
+                <div>
+                  <p className="text-2xl font-bold">{funnelQ.data?.orders30d ?? 0}</p>
+                  <p className="text-xs text-text-secondary">
+                    {t('vendorPortal.analytics.funnel.orders')}
+                  </p>
+                </div>
+                <div>
+                  <p className="text-2xl font-bold">
+                    {(funnelQ.data?.conversion ?? 0).toLocaleString(
+                      locale === 'ar' ? 'ar-SA' : 'en-GB',
+                    )}
+                    ٪
+                  </p>
+                  <p className="text-xs text-text-secondary">
+                    {t('vendorPortal.analytics.funnel.conversion')}
+                  </p>
+                </div>
+                <div>
+                  <p className="text-2xl font-bold">{funnelQ.data?.repeatRate ?? 0}٪</p>
+                  <p className="text-xs text-text-secondary">
+                    {t('vendorPortal.analytics.funnel.repeatRate')}
+                  </p>
+                </div>
+              </div>
+              {(funnelQ.data?.topViewed ?? []).length > 0 && (
+                <div className="mt-3 border-t border-border-muted pt-3">
+                  <p className="mb-1 text-xs font-semibold text-text-secondary">
+                    {t('vendorPortal.analytics.funnel.topViewed')}
+                  </p>
+                  <ul className="space-y-1 text-sm">
+                    {(funnelQ.data?.topViewed ?? []).map((p) => (
+                      <li key={p.productId} className="flex justify-between">
+                        <span className="truncate">{locale === 'ar' ? p.nameAr : p.nameEn}</span>
+                        <span className="text-text-secondary">
+                          {t('vendorPortal.analytics.funnel.viewCount', { count: p.views })}
+                        </span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              )}
+            </Card>
+
             <div className="grid gap-4 sm:grid-cols-3">
               <Card padding="md" className="text-center">
                 <p className="text-2xl font-bold">
@@ -1719,6 +1940,50 @@ export function StoreDashboard({
                 recency). Aggregate-only — name/phone, never email. */}
             <h2 className="text-lg font-bold">{t('vendorPortal.customers.title')}</h2>
 
+            {/* B4 — win-back toolkit: pre-approved templates only,
+                rate-limited server-side, opt-outs honored. */}
+            <Card padding="md">
+              <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+                <div>
+                  <p className="text-sm font-semibold">
+                    {t('vendorPortal.customers.winback.title')}
+                  </p>
+                  <p className="mt-0.5 text-xs text-text-secondary">
+                    {t('vendorPortal.customers.winback.hint')}
+                  </p>
+                </div>
+                <div className="flex flex-wrap items-center gap-2">
+                  <select
+                    value={winbackTemplate}
+                    onChange={(e) => setWinbackTemplate(e.target.value as 'restocked' | 'on_offer')}
+                    className="rounded-md border border-border bg-surface px-2 py-1.5 text-sm"
+                    data-testid="winback-template-select"
+                  >
+                    <option value="restocked">
+                      {t('vendorPortal.customers.winback.restocked')}
+                    </option>
+                    <option value="on_offer">{t('vendorPortal.customers.winback.onOffer')}</option>
+                  </select>
+                  <Button
+                    size="sm"
+                    disabled={winbackIds.length === 0}
+                    loading={sendWinbackMut.isPending}
+                    onClick={() =>
+                      sendWinbackMut.mutate({ template: winbackTemplate, customerIds: winbackIds })
+                    }
+                    data-testid="winback-send-button"
+                  >
+                    {t('vendorPortal.customers.winback.send', { count: winbackIds.length })}
+                  </Button>
+                </div>
+              </div>
+              {winbackResult && (
+                <p className="mt-2 text-xs text-text-secondary">
+                  {t('vendorPortal.customers.winback.result', winbackResult)}
+                </p>
+              )}
+            </Card>
+
             <div className="grid gap-4 sm:grid-cols-3">
               <Card padding="md" className="text-center">
                 <p className="text-2xl font-bold">{totalCustomers}</p>
@@ -1747,26 +2012,40 @@ export function StoreDashboard({
               <Card padding="md" className="space-y-3">
                 {customers.map((c) => (
                   <div key={c.customerId} className="flex items-center justify-between gap-3">
-                    <div className="min-w-0">
-                      <p className="truncate text-sm font-semibold">
-                        {c.customerName}
-                        {c.repeat && (
-                          <span className="mr-1 rounded-full bg-violet-100 px-2 py-0.5 text-[10px] font-normal text-violet-700 dark:bg-violet-950 dark:text-violet-300">
-                            {t('vendorPortal.customers.repeat')}
-                          </span>
+                    <label className="flex min-w-0 items-center gap-2">
+                      <input
+                        type="checkbox"
+                        checked={winbackIds.includes(c.customerId)}
+                        onChange={(e) =>
+                          setWinbackIds((prev) =>
+                            e.target.checked
+                              ? [...prev, c.customerId]
+                              : prev.filter((id) => id !== c.customerId),
+                          )
+                        }
+                        data-testid={`winback-customer-${c.customerId}`}
+                      />
+                      <span className="min-w-0">
+                        <span className="block truncate text-sm font-semibold">
+                          {c.customerName}
+                          {c.repeat && (
+                            <span className="mr-1 rounded-full bg-violet-100 px-2 py-0.5 text-[10px] font-normal text-violet-700 dark:bg-violet-950 dark:text-violet-300">
+                              {t('vendorPortal.customers.repeat')}
+                            </span>
+                          )}
+                        </span>
+                        {c.phone && (
+                          <a
+                            href={`https://wa.me/${c.phone.replace(/^\+/, '').replace(/^0/, '966')}`}
+                            target="_blank"
+                            rel="noreferrer"
+                            className="text-xs text-brand-600 underline"
+                          >
+                            {c.phone}
+                          </a>
                         )}
-                      </p>
-                      {c.phone && (
-                        <a
-                          href={`https://wa.me/${c.phone.replace(/^\+/, '').replace(/^0/, '966')}`}
-                          target="_blank"
-                          rel="noreferrer"
-                          className="text-xs text-brand-600 underline"
-                        >
-                          {c.phone}
-                        </a>
-                      )}
-                    </div>
+                      </span>
+                    </label>
                     <div className="shrink-0 text-left">
                       <p className="text-sm font-bold">{formatCurrency(c.totalSpent)}</p>
                       <p className="text-xs text-text-secondary">
@@ -1875,6 +2154,30 @@ export function StoreDashboard({
           >
             {/* A1 — team management: invite, permissions, revoke, audit feed. */}
             <StaffPanel />
+          </div>
+        )}
+
+        {tab === 'pricing' && (
+          <div
+            role="tabpanel"
+            id="vendor-panel-pricing"
+            data-testid="vendor-panel-pricing"
+            aria-labelledby="vendor-tab-pricing"
+          >
+            {/* C3 — uplift-only pricing rules + the per-product change log. */}
+            <PricingRulesPanel />
+          </div>
+        )}
+
+        {tab === 'services' && (
+          <div
+            role="tabpanel"
+            id="vendor-panel-services"
+            data-testid="vendor-panel-services"
+            aria-labelledby="vendor-tab-services"
+          >
+            {/* C5 — hybrid store-services: editor + slots + bookings. */}
+            <StoreServicesPanel />
           </div>
         )}
 
@@ -2153,6 +2456,54 @@ export function StoreDashboard({
               {updateMut.isError && (
                 <p className="text-sm text-red-600 dark:text-red-400">{updateMut.error.message}</p>
               )}
+              {/* C4 — rich media + product-level SEO section. Collapsed by
+                  default so the edit modal stays short (a tall modal
+                  clipped the Save button on CI viewports). */}
+              <details className="rounded-lg border border-border-muted p-3">
+                <summary className="cursor-pointer text-sm font-semibold">
+                  {t('vendorPortal.media.section')}
+                </summary>
+                <div className="mt-3 space-y-3">
+                  <Input
+                    label={t('vendorPortal.media.video')}
+                    value={edVideoUrl}
+                    onChange={(e) => setEdVideoUrl(e.target.value)}
+                    placeholder="https://..."
+                  />
+                  <div className="grid grid-cols-2 gap-3">
+                    <div>
+                      <Input
+                        label={`${t('vendorPortal.media.metaTitleAr')} (${edMetaTitleAr.length}/60)`}
+                        value={edMetaTitleAr}
+                        onChange={(e) => setEdMetaTitleAr(e.target.value.slice(0, 60))}
+                      />
+                      <Input
+                        label={`${t('vendorPortal.media.metaTitleEn')} (${edMetaTitleEn.length}/60)`}
+                        value={edMetaTitleEn}
+                        onChange={(e) => setEdMetaTitleEn(e.target.value.slice(0, 60))}
+                      />
+                    </div>
+                    <div>
+                      <Input
+                        label={`${t('vendorPortal.media.metaDescAr')} (${edMetaDescAr.length}/160)`}
+                        value={edMetaDescAr}
+                        onChange={(e) => setEdMetaDescAr(e.target.value.slice(0, 160))}
+                      />
+                      <Input
+                        label={`${t('vendorPortal.media.metaDescEn')} (${edMetaDescEn.length}/160)`}
+                        value={edMetaDescEn}
+                        onChange={(e) => setEdMetaDescEn(e.target.value.slice(0, 160))}
+                      />
+                    </div>
+                  </div>
+                  <Input
+                    label={t('vendorPortal.media.arTryOn')}
+                    value={edArTryOnUrl}
+                    onChange={(e) => setEdArTryOnUrl(e.target.value)}
+                    placeholder="https://..."
+                  />
+                </div>
+              </details>
               <Button
                 onClick={() => {
                   if (edNameAr.trim() && edPrice > 0)
@@ -2168,6 +2519,13 @@ export function StoreDashboard({
                       categoryId: edCategoryId,
                       images: edImages,
                       lowStockThreshold: edThreshold,
+                      // C4 — media + SEO.
+                      videoUrl: edVideoUrl.trim() || undefined,
+                      metaTitleAr: edMetaTitleAr.trim() || undefined,
+                      metaTitleEn: edMetaTitleEn.trim() || undefined,
+                      metaDescAr: edMetaDescAr.trim() || undefined,
+                      metaDescEn: edMetaDescEn.trim() || undefined,
+                      arTryOnUrl: edArTryOnUrl.trim() || undefined,
                     });
                 }}
                 loading={updateMut.isPending || edImgMut.isPending}
@@ -2178,6 +2536,16 @@ export function StoreDashboard({
             </div>
           )}
         </Modal>
+
+        {/* C1 — variants manager for the selected product. */}
+        {variantProduct ? (
+          <ProductVariantsModal product={variantProduct} onClose={() => setVariantProduct(null)} />
+        ) : null}
+
+        {/* C2b — stock-in dialog. */}
+        {stockInProduct ? (
+          <StockInModal product={stockInProduct} onClose={() => setStockInProduct(null)} />
+        ) : null}
       </div>
     </DashboardLayout>
   );

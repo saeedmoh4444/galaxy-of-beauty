@@ -10,6 +10,10 @@ import {
   router,
 } from '../trpc';
 import { notifyUser } from '../lib/notify';
+import { gatherStoreHealthFactors } from '../lib/storeHealth';
+import { evaluateVendorRules, toRuleLike } from '../lib/vendorPricing';
+import { computeVendorTierBadges, computeTopRated } from '../lib/vendorTiers';
+import { noonUtcDay } from '../workers/handlers';
 import {
   readCartForCheckout,
   placeStoreOrders,
@@ -98,31 +102,120 @@ export const marketplaceRouter = router({
 
   // ── Cart ──────────────────────────────────────────────
   cart: protectedProcedure.query(async ({ ctx }) => {
-    return prisma.cartItem.findMany({
+    const items = await prisma.cartItem.findMany({
       where: { userId: ctx.user.id },
       include: {
-        product: { select: { id: true, nameJson: true, price: true, imageUrl: true, stock: true } },
+        product: {
+          select: {
+            id: true,
+            nameJson: true,
+            price: true,
+            imageUrl: true,
+            stock: true,
+            vendorId: true,
+            lowStockThreshold: true,
+          },
+        },
+        // C1c — the variant line's label + delta (and its stock unit for
+        // the pricing rules below).
+        variant: {
+          select: {
+            id: true,
+            nameJson: true,
+            priceDelta: true,
+            stock: true,
+            lowStockThreshold: true,
+          },
+        },
       },
+    });
+
+    // C3c — checkout-time pricing: each line's effective price reflects
+    // the vendor's active uplift rules (delta adds BEFORE the multiplier).
+    const vendorIds = [...new Set(items.map((i) => i.product.vendorId))];
+    const rulesByVendor = new Map<number, ReturnType<typeof toRuleLike>[]>();
+    for (const vendorId of vendorIds) {
+      const rows = await prisma.vendorPriceRule.findMany({
+        where: { vendorId, isActive: true },
+      });
+      rulesByVendor.set(vendorId, rows.map(toRuleLike));
+    }
+
+    return items.map((item) => {
+      const stock = item.variant?.stock ?? item.product.stock;
+      const threshold = item.variant?.lowStockThreshold ?? item.product.lowStockThreshold;
+      const base = Number(item.product.price) + Number(item.variant?.priceDelta ?? 0);
+      const res = evaluateVendorRules(rulesByVendor.get(item.product.vendorId) ?? [], {
+        productId: item.productId,
+        date: new Date(),
+        stock,
+        lowStockThreshold: threshold,
+        basePrice: base,
+      });
+      return { ...item, effectivePrice: res.price, appliedRuleIds: res.appliedRuleIds };
     });
   }),
 
   addToCart: customerProcedure
     .input(
-      z.object({ productId: z.number().int().positive(), quantity: z.number().min(1).default(1) }),
+      z.object({
+        productId: z.number().int().positive(),
+        quantity: z.number().min(1).default(1),
+        // C1 — optional variant line; must belong to the product.
+        variantId: z.number().int().positive().optional(),
+      }),
     )
     .mutation(async ({ ctx, input }) => {
-      return prisma.cartItem.upsert({
-        where: { userId_productId: { userId: ctx.user.id, productId: input.productId } },
-        update: { quantity: { increment: input.quantity } },
-        create: { userId: ctx.user.id, productId: input.productId, quantity: input.quantity },
+      if (input.variantId !== undefined) {
+        const variant = await prisma.productVariant.findFirst({
+          where: { id: input.variantId, productId: input.productId, isActive: true },
+          select: { id: true },
+        });
+        if (!variant) {
+          throw new TRPCError({ code: 'BAD_REQUEST', message: 'Variant not found for product' });
+        }
+      }
+      // C1 — merge duplicate adds via findFirst: Prisma types nullable
+      // compound-unique fields as non-null, so the cart has no unique on
+      // (userId, productId, variantId) — see the schema note.
+      const existing = await prisma.cartItem.findFirst({
+        where: {
+          userId: ctx.user.id,
+          productId: input.productId,
+          variantId: input.variantId ?? null,
+        },
+        select: { id: true },
+      });
+      if (existing) {
+        return prisma.cartItem.update({
+          where: { id: existing.id },
+          data: { quantity: { increment: input.quantity } },
+        });
+      }
+      return prisma.cartItem.create({
+        data: {
+          userId: ctx.user.id,
+          productId: input.productId,
+          variantId: input.variantId ?? null,
+          quantity: input.quantity,
+        },
       });
     }),
 
   removeFromCart: protectedProcedure
-    .input(z.object({ productId: z.number().int().positive() }))
+    .input(
+      z.object({
+        productId: z.number().int().positive(),
+        variantId: z.number().int().positive().optional(),
+      }),
+    )
     .mutation(async ({ ctx, input }) => {
       await prisma.cartItem.deleteMany({
-        where: { userId: ctx.user.id, productId: input.productId },
+        where: {
+          userId: ctx.user.id,
+          productId: input.productId,
+          variantId: input.variantId ?? null,
+        },
       });
       return { success: true };
     }),
@@ -160,6 +253,34 @@ export const marketplaceRouter = router({
   }),
 
   // ── Vendors ───────────────────────────────────────────
+  /**
+   * trackStoreView — B5: storefront impressions. The clients call this
+   * once per session (local guard) when a store page loads; increments
+   * the NOON-UTC daily view log + per-product impression counters.
+   * Never errors — analytics must not break store pages.
+   */
+  trackStoreView: publicProcedure
+    .input(z.object({ slug: z.string().min(1) }))
+    .mutation(async ({ input }) => {
+      const vendor = await prisma.vendor.findFirst({
+        where: { storeSlug: input.slug, isActive: true, type: { in: ['STORE', 'VENDOR'] } },
+        select: { id: true },
+      });
+      if (!vendor) return { ok: true };
+
+      const day = noonUtcDay(new Date());
+      await prisma.storeViewLog.upsert({
+        where: { vendorId_day: { vendorId: vendor.id, day } },
+        update: { views: { increment: 1 } },
+        create: { vendorId: vendor.id, day, views: 1 },
+      });
+      await prisma.product.updateMany({
+        where: { vendorId: vendor.id, isActive: true },
+        data: { viewCount: { increment: 1 } },
+      });
+      return { ok: true };
+    }),
+
   vendors: publicProcedure
     .input(z.object({ page: z.number().default(1), limit: z.number().default(20) }))
     .query(async ({ input }) => {
@@ -178,7 +299,19 @@ export const marketplaceRouter = router({
         }),
         prisma.vendor.count({ where: { isActive: true, type: storeTypes } }),
       ]);
-      return { items, total, page: input.page };
+      // B2 — the list uses the cheap top-rated signal only (rating +
+      // volume are already selected scalars; per-row health gathering
+      // would cost N× queries).
+      const rows = items.map((v) => ({
+        ...v,
+        tierBadge: computeTopRated(
+          v.ratingAvg !== null ? Number(v.ratingAvg) : null,
+          v.totalReviews,
+        )
+          ? 'top_rated'
+          : null,
+      }));
+      return { items: rows, total, page: input.page };
     }),
 
   vendorDetail: publicProcedure.input(z.object({ slug: z.string() })).query(async ({ input }) => {
@@ -192,6 +325,8 @@ export const marketplaceRouter = router({
           where: { isActive: true, isDraft: false, approvalStatus: 'LIVE', stock: { gt: 0 } },
           orderBy: [{ isFeatured: 'desc' }, { createdAt: 'desc' }],
           take: LARGE_PAGE_SIZE,
+          // C1c — the storefront variant picker data (active only).
+          include: { variants: { where: { isActive: true }, orderBy: { id: 'asc' } } },
         },
         // B3 — the public count matches what shoppers actually see.
         _count: {
@@ -201,10 +336,99 @@ export const marketplaceRouter = router({
             },
           },
         },
+        // C5 — hybrid store-services: the store's bookable services for
+        // the storefront Services tab (active only).
+        services: {
+          where: { isStoreService: true, isActive: true },
+          orderBy: { id: 'asc' },
+        },
       },
     });
     if (!vendor) throw new TRPCError({ code: 'NOT_FOUND' });
-    return vendor;
+    // B2 — tier badges (full set: the detail page absorbs the per-vendor
+    // factor queries). Same signals as the A5 health score.
+    const [health, fulfilled30d, repliedReviews] = await Promise.all([
+      gatherStoreHealthFactors(prisma, vendor.id),
+      prisma.storeOrder.count({
+        where: {
+          vendorId: vendor.id,
+          status: 'FULFILLED',
+          createdAt: { gte: new Date(Date.now() - 30 * 86_400_000) },
+        },
+      }),
+      prisma.productReview.count({
+        where: { product: { vendorId: vendor.id }, repliedAt: { not: null } },
+      }),
+    ]);
+    const reviewReplyRate = vendor.totalReviews > 0 ? repliedReviews / vendor.totalReviews : null;
+    const tierBadges = computeVendorTierBadges({
+      ratingAvg: vendor.ratingAvg !== null ? Number(vendor.ratingAvg) : null,
+      totalReviews: vendor.totalReviews,
+      fulfillmentSpeedHours: health.fulfillmentSpeedHours,
+      fulfilled30d,
+      disputeEscalationRate: health.disputeEscalationRate,
+      reviewReplyRate,
+    });
+    // B3 — recent reviews WITH owner replies (the loop customers see).
+    const recentReviews = (
+      await prisma.productReview.findMany({
+        where: { product: { vendorId: vendor.id } },
+        orderBy: { createdAt: 'desc' },
+        take: 5,
+        select: {
+          id: true,
+          rating: true,
+          comment: true,
+          createdAt: true,
+          replyJson: true,
+          repliedAt: true,
+          product: { select: { nameJson: true } },
+          user: { select: { name: true } },
+        },
+      })
+    ).map((r) => {
+      const reply = (r.replyJson as { ar?: string; en?: string } | null) ?? {};
+      const name = r.product.nameJson as { ar?: string; en?: string };
+      return {
+        id: r.id,
+        rating: r.rating,
+        comment: r.comment ?? '',
+        createdAt: r.createdAt.toISOString(),
+        replied: r.repliedAt !== null,
+        replyAr: reply.ar ?? '',
+        replyEn: reply.en ?? '',
+        productNameAr: name.ar ?? '',
+        productNameEn: name.en ?? '',
+        customerName: r.user.name ?? '',
+      };
+    });
+    // C3 — vendor pricing rules: attach the effective price per product
+    // (weekend/low-stock uplifts; admin overrides win in the lib).
+    const priceRules = await prisma.vendorPriceRule.findMany({
+      where: { vendorId: vendor.id, isActive: true },
+    });
+    const likedRules = priceRules.map((r) => ({
+      id: r.id,
+      isActive: r.isActive,
+      productId: r.productId,
+      ruleType: r.ruleType as 'weekend_uplift' | 'lowstock_floor',
+      dayOfWeek: r.dayOfWeek,
+      multiplier: Number(r.multiplier),
+      adminOverrideMultiplier:
+        r.adminOverrideMultiplier === null ? null : Number(r.adminOverrideMultiplier),
+    }));
+    const now = new Date();
+    const priced = vendor.products.map((p) => {
+      const res = evaluateVendorRules(likedRules, {
+        productId: p.id,
+        date: now,
+        stock: p.stock,
+        lowStockThreshold: p.lowStockThreshold,
+        basePrice: Number(p.price),
+      });
+      return { ...p, effectivePrice: res.price, appliedRuleIds: res.appliedRuleIds };
+    });
+    return { ...vendor, products: priced, tierBadges, recentReviews };
   }),
 
   // ── Become a vendor / store (Store plan Phase 1) ────────

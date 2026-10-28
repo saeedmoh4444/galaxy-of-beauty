@@ -61,6 +61,10 @@ export function StoresClient({ data }: { data: StoresPageData }): JSX.Element {
                     <TrustBadges
                       className="mt-3"
                       items={[
+                        // B2 — the cheap top-rated signal (computed server-side).
+                        ...(s.tierBadge === 'top_rated'
+                          ? [{ variant: 'tier' as const, label: t('stores.badge.top-rated') }]
+                          : []),
                         { variant: 'verified' as const, label: t('stores.verified') },
                         ...(Number(s.totalReviews ?? 0) > 0
                           ? [
