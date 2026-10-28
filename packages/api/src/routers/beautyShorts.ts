@@ -199,6 +199,21 @@ export const beautyShortsRouter = router({
     .mutation(async ({ ctx, input }) => {
       const author = await resolveShortAuthor(ctx.user.id, input);
 
+      // R2 — 10 active reels per author; the cap keeps storage/egress
+      // costs bounded and nudges quality over volume.
+      const activeReels = await db.short.count({
+        where: {
+          type: 'reel',
+          isActive: true,
+          ...(author.technicianId !== null
+            ? { technicianId: author.technicianId }
+            : { vendorId: author.vendorId ?? undefined }),
+        },
+      });
+      if (activeReels >= 10) {
+        throw new TRPCError({ code: 'FORBIDDEN', message: 'Reel quota reached (10 active reels)' });
+      }
+
       return db.short.create({
         data: {
           type: input.type,
