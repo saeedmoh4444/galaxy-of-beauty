@@ -14,6 +14,12 @@ export default function AdminShortsPage(): JSX.Element {
   });
   const decideMut = api.beautyShorts.adminDecide.useMutation({ onSuccess: () => refetch() });
 
+  // R6 — reported shorts (auto-hidden at 3 reports) for review/restore.
+  const reportsQ = api.beautyShorts.adminReports.useQuery(undefined, { enabled: isAuthenticated });
+  const reportsMut = api.beautyShorts.adminDecide.useMutation({
+    onSuccess: () => reportsQ.refetch(),
+  });
+
   const pending = data ?? [];
 
   if (isError) return <ErrorAlert message={t('state.error')} onRetry={() => refetch()} />;
@@ -77,6 +83,53 @@ export default function AdminShortsPage(): JSX.Element {
               </div>
             </Card>
           ))}
+        </div>
+      )}
+
+      {/* R6 — reported shorts: auto-hidden at 3 reports, restore or keep
+          hidden from here. */}
+      {isAuthenticated && (reportsQ.data ?? []).length > 0 && (
+        <div className="mt-10">
+          <h2 className="text-xl font-bold">{t('admin.shorts.reported')}</h2>
+          <div className="mt-3 space-y-3">
+            {(reportsQ.data ?? []).map((r) => (
+              <Card key={r.id} padding="lg">
+                <div className="flex flex-wrap items-center justify-between gap-4">
+                  <div className="min-w-0 flex-1 space-y-1">
+                    <p className="font-bold">
+                      {locale === 'en'
+                        ? ((r.titleJson as Record<string, string>)?.en ?? '')
+                        : ((r.titleJson as Record<string, string>)?.ar ?? '')}
+                    </p>
+                    <p className="text-xs text-text-secondary">
+                      {t('admin.shorts.reports-count', { count: r.reportCount })}
+                      {r.hidden ? ' · 🔒' : ''}
+                    </p>
+                    <p className="text-xs text-text-tertiary">
+                      {(r.reasons as string[]).join(' · ')}
+                    </p>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <Button
+                      size="sm"
+                      variant="outline"
+                      onClick={() => reportsMut.mutate({ shortId: r.id, approve: false })}
+                      loading={reportsMut.isPending}
+                    >
+                      {t('admin.packages.reject')}
+                    </Button>
+                    <Button
+                      size="sm"
+                      onClick={() => reportsMut.mutate({ shortId: r.id, approve: true })}
+                      loading={reportsMut.isPending}
+                    >
+                      {t('admin.shorts.restore')}
+                    </Button>
+                  </div>
+                </div>
+              </Card>
+            ))}
+          </div>
         </div>
       )}
     </div>
