@@ -259,6 +259,7 @@ beautyShorts.gallery	query	public
 beautyShorts.home	query	public
 beautyShorts.like	mutation	customer
 beautyShorts.myShorts	query	protected
+beautyShorts.surfaceShorts	query	public
 beautyShorts.viewed	mutation	public
 beautyStats.platform	query	public
 beautyStories.feed	query	public
