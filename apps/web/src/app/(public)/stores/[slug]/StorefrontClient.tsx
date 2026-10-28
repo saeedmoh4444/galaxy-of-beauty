@@ -16,6 +16,7 @@ import {
   useAuth,
   ServiceImage,
   TrustBadges,
+  ReelCard,
 } from '@galaxy/ui';
 import { useLocale } from '@/components/LocaleProvider';
 import { localize } from '@galaxy/shared';
@@ -110,6 +111,14 @@ export function StorefrontClient({ data }: { data: StorefrontPageData }): JSX.El
     onSuccess: () => addToast('success', t('stores.added-to-cart')),
     onError: (e) => addToast('error', e.message),
   });
+
+  // R4 — shoppable reels strip (REELS_SHOPPABLE_PLAN): approved reels
+  // attached to this store. Poster-first tiles, hover-play, no eager video.
+  const reelsQ = api.beautyShorts.surfaceShorts.useQuery(
+    { vendorId: data.store?.id ?? 0 },
+    { enabled: Boolean(data.store?.id), refetchOnWindowFocus: false },
+  );
+  const storeReels = (reelsQ.data ?? []) as Array<Record<string, unknown>>;
 
   // B5 — one store-view per browser session (the funnel input).
   const trackViewMut = api.marketplace.trackStoreView.useMutation();
@@ -378,6 +387,30 @@ export function StorefrontClient({ data }: { data: StorefrontPageData }): JSX.El
             );
           })}
         </div>
+      )}
+
+      {/* R4 — store reel strip: approved reels attached to this store.
+          Rendered only when the store has reels (no empty-state noise). */}
+      {storeReels.length > 0 && (
+        <section aria-label={t('beautyShorts.storeReels')} data-testid="store-reels">
+          <h2 className="mb-3 text-lg font-bold text-text-primary">
+            {t('beautyShorts.storeReels')}
+          </h2>
+          <div className="flex gap-3 overflow-x-auto pb-2">
+            {storeReels.map((s) => (
+              <ReelCard
+                key={s.id as number}
+                title={localize(s.titleJson as { ar?: string; en?: string }, locale)}
+                videoUrl={s.videoUrl as string | null}
+                thumbnailUrl={s.thumbnailUrl as string | null}
+                beforeImageUrl={s.beforeImageUrl as string | null}
+                durationSec={Number(s.durationSec ?? 0)}
+                views={Number(s.views ?? 0)}
+                className="shrink-0"
+              />
+            ))}
+          </div>
+        </section>
       )}
 
       {/* C5 — hybrid store-services: bookable services ride the booking

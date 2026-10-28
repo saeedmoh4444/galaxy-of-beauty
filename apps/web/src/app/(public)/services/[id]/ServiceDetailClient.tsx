@@ -11,6 +11,7 @@ import {
   Card,
   EmptyState,
   formatCurrency,
+  ReelCard,
   ServiceImage,
   TrustBadge,
   TrustBadges,
@@ -37,6 +38,7 @@ type ServiceDetailRelated = RouterOutputs['services']['getRelated'][number] & {
   titleJson?: ServiceJson | null;
 };
 type GalleryItem = RouterOutputs['beautyShorts']['gallery'][number];
+type SurfaceShort = RouterOutputs['beautyShorts']['surfaceShorts'][number];
 
 export interface ServiceDetailData {
   id: number;
@@ -100,6 +102,14 @@ export function ServiceDetailClient({ svc }: { svc: ServiceDetailData }): JSX.El
     { enabled: galleryTechUserIds.length > 0 },
   );
   const galleryItems = (galleryQ.data as GalleryItem[] | undefined) ?? [];
+
+  // R4 — service reels (REELS_SHOPPABLE_PLAN): approved reels attached
+  // to this service, newest first. Poster-first, no eager video.
+  const reelsQ = api.beautyShorts.surfaceShorts.useQuery(
+    { serviceId: svc.id },
+    { refetchOnWindowFocus: false },
+  );
+  const serviceReels = (reelsQ.data as SurfaceShort[] | undefined) ?? [];
 
   if (svc.fetchError) {
     return (
@@ -313,6 +323,30 @@ export function ServiceDetailClient({ svc }: { svc: ServiceDetailData }): JSX.El
             />
           </div>
         )
+      )}
+
+      {/* R4 — service reel strip (REELS_SHOPPABLE_PLAN): approved reels
+          attached to this service. Poster-first tiles, hover-play. */}
+      {serviceReels.length > 0 && (
+        <div className="mt-12" data-testid="service-reels">
+          <h2 className="mb-4 text-lg font-semibold text-text-primary">
+            {t('beautyShorts.serviceReels')}
+          </h2>
+          <div className="flex gap-3 overflow-x-auto pb-2">
+            {serviceReels.map((s) => (
+              <ReelCard
+                key={s.id as number}
+                title={localize(s.titleJson as ServiceJson, locale)}
+                videoUrl={s.videoUrl as string | null}
+                thumbnailUrl={s.thumbnailUrl as string | null}
+                beforeImageUrl={s.beforeImageUrl as string | null}
+                durationSec={Number(s.durationSec ?? 0)}
+                views={Number(s.views ?? 0)}
+                className="shrink-0"
+              />
+            ))}
+          </div>
+        </div>
       )}
 
       {/* Related — real imagery, same category mapping as the hero */}
