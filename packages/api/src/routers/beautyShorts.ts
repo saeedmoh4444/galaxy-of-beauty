@@ -290,11 +290,81 @@ export const beautyShortsRouter = router({
   /** myShorts — the caller's own posts with their moderation status. */
   myShorts: protectedProcedure.query(async ({ ctx }) => {
     const technician = await db.technician.findUnique({ where: { userId: ctx.user.id } });
-    if (!technician) return [];
-    return db.short.findMany({
-      where: { technicianId: technician.id },
+    if (technician) {
+      return db.short.findMany({
+        where: { technicianId: technician.id },
+        orderBy: { createdAt: 'desc' },
+      });
+    }
+    // R6 — vendor owners/staff see their store reels (moderation status).
+    const actor = await resolveVendorActor(ctx.user.id);
+    if (actor) {
+      return db.short.findMany({
+        where: { vendorId: actor.vendor.id },
+        orderBy: { createdAt: 'desc' },
+      });
+    }
+    return [];
+  }),
+
+  /**
+   * report — R6 (REELS_SHOPPABLE_PLAN): one report per user per short;
+   * three distinct reports auto-hide the short pending admin review.
+   */
+  report: customerProcedure
+    .input(
+      z.object({
+        shortId: z.number().int().positive(),
+        reason: z.enum(['inappropriate', 'spam', 'privacy', 'other']),
+        note: z.string().max(500).optional(),
+      }),
+    )
+    .mutation(async ({ ctx, input }) => {
+      const short = await db.short.findUnique({ where: { id: input.shortId } });
+      if (!short) throw new TRPCError({ code: 'NOT_FOUND', message: 'Short not found' });
+
+      const existing = await db.shortReport.findUnique({
+        where: { shortId_userId: { shortId: input.shortId, userId: ctx.user.id } },
+      });
+      if (!existing) {
+        await db.shortReport.create({
+          data: {
+            shortId: input.shortId,
+            userId: ctx.user.id,
+            reason: input.reason,
+            note: input.note,
+          },
+        });
+      }
+
+      const reportCount = await db.shortReport.count({ where: { shortId: input.shortId } });
+      let hidden = false;
+      if (reportCount >= 3) {
+        await db.short.update({ where: { id: input.shortId }, data: { isActive: false } });
+        hidden = true;
+      }
+      return { reportCount, hidden, alreadyReported: Boolean(existing) };
+    }),
+
+  /** adminReports — R6: reported shorts with counts + reasons for review. */
+  adminReports: adminProcedure.query(async () => {
+    const shorts = await db.short.findMany({
+      where: { reports: { some: {} } },
+      include: {
+        reports: { select: { reason: true } },
+        _count: { select: { reports: true } },
+      },
       orderBy: { createdAt: 'desc' },
     });
+    return shorts.map((s) => ({
+      id: s.id,
+      titleJson: s.titleJson,
+      isActive: s.isActive,
+      hidden: !s.isActive,
+      isApproved: s.isApproved,
+      reportCount: s._count.reports,
+      reasons: Array.from(new Set(s.reports.map((r) => r.reason))),
+    }));
   }),
 
   /** adminPending — the moderation queue (unapproved posts). */
