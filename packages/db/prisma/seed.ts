@@ -4432,6 +4432,68 @@ async function main() {
   try {
     await prisma.short.createMany({ data: SHORT_SEEDS });
     console.log(` ${SHORT_SEEDS.length} beauty shorts`);
+
+    // R4 — attach store + service reels so the surface strips render on
+    // the demo store page and the service detail page (E2E shoppers-reels).
+    const demoStore = await prisma.vendor.findUnique({
+      where: { storeSlug: 'galaxy-demo-store' },
+      select: { id: true },
+    });
+    if (demoStore) {
+      await prisma.short.createMany({
+        data: [
+          {
+            type: 'reel',
+            titleJson: { ar: 'أحمر الشفاه الأكثر مبيعاً', en: 'Best-selling lipstick' },
+            videoUrl: SAMPLE_VIDEOS[0],
+            durationSec: 28,
+            // Views stay below the home-reels fixtures (100) so the seeded
+            // strip reels never crowd the curated home row's top-8.
+            views: 90,
+            category: 'makeup',
+            isApproved: true,
+            faceBlurred: true,
+            consentGiven: true,
+            vendorId: demoStore.id,
+          },
+          {
+            type: 'reel',
+            titleJson: { ar: 'جولة في المتجر', en: 'Store tour' },
+            videoUrl: SAMPLE_VIDEOS[1],
+            durationSec: 41,
+            views: 60,
+            category: 'general',
+            isApproved: true,
+            faceBlurred: true,
+            consentGiven: true,
+            vendorId: demoStore.id,
+          },
+        ],
+      });
+    }
+    // The service list pages by newest-first (12/page) and the service
+    // creates run in a Promise.all (id order is racy) — anchor on the
+    // exact seeded title so the E2E can find it via the search box.
+    const demoService = await prisma.service.findFirst({
+      where: { titleJson: { path: ['ar'], equals: 'قص شعر كامل' } },
+      select: { id: true },
+    });
+    if (demoService) {
+      await prisma.short.create({
+        data: {
+          type: 'reel',
+          titleJson: { ar: 'خطوات الخدمة', en: 'Service steps' },
+          videoUrl: SAMPLE_VIDEOS[2] ?? SAMPLE_VIDEOS[0],
+          durationSec: 22,
+          views: 40,
+          category: 'general',
+          isApproved: true,
+          faceBlurred: true,
+          consentGiven: true,
+          serviceId: demoService.id,
+        },
+      });
+    }
   } catch (err: any) {
     console.log(`    Shorts: ${err.message?.slice(0, 60)}`);
   }

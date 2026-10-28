@@ -1279,6 +1279,8 @@ export const arWebMessages: Record<string, string> = {
   'beautyShorts.faceBlurred': 'تم تعتيم الوجوه',
   'beautyShorts.like': 'أعجبني',
   'beautyShorts.privacy': 'نساء فقط — المحتوى لا يغادر دائرة النساء أبداً',
+  'beautyShorts.serviceReels': 'فيديوهات الخدمة',
+  'beautyShorts.storeReels': 'فيديوهات المتجر',
   'beautyShorts.subtitle': 'فيديوهات ونتائج حقيقية من فناناتنا',
   'beautyShorts.title': 'جمال شورتس',
   'beautyTips.challenge.duration': '5 دقائق',
