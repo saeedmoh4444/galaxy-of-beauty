@@ -141,6 +141,36 @@ export async function deleteFile(key: string): Promise<void> {
   }
 }
 
+/**
+ * R2 — object size probe (presigned signatures can't bound size; the
+ * post-upload finalize step HEADs the object to enforce the real cap).
+ * Returns the size in bytes, or null when the object doesn't exist.
+ */
+export async function headFile(key: string): Promise<number | null> {
+  const s3 = await getS3Client();
+  const bucket = getS3Bucket();
+
+  if (!s3 || !bucket) {
+    const fp = path.join(/*turbopackIgnore: true*/ LOCAL_UPLOAD_DIR, key);
+    try {
+      const st = await fs.promises.stat(/*turbopackIgnore: true*/ fp);
+      return st.size;
+    } catch {
+      return null;
+    }
+  }
+
+  try {
+    const sdk = await Function('return import("@aws-sdk/client-s3")')();
+    const res = (await s3.send(new sdk.HeadObjectCommand({ Bucket: bucket, Key: key }))) as {
+      ContentLength?: number;
+    };
+    return res.ContentLength ?? null;
+  } catch {
+    return null;
+  }
+}
+
 export async function generatePresignedUrl(
   folder: string,
   contentType: string,

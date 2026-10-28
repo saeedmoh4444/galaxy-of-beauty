@@ -512,6 +512,7 @@ model Service {
   bundlesAsPrimary  ServiceBundle[] @relation("BundlePrimary")
   bundlesAsChild    ServiceBundle[] @relation("BundleChild")
   pricingRules      ServicePricing[]
+  shorts            Short[] // R1 — shoppable reels attached to this service
 
   @@index([categoryId, isActive])
   @@index([basePrice])
@@ -1560,6 +1561,7 @@ model Product {
   priceRules VendorPriceRule[]
   priceLogs ProductPriceLog[]
   variants ProductVariant[]
+  shorts   Short[] // R1 — shoppable reels attached to this product
 
   @@index([vendorId, isActive])
   @@index([categoryId, isActive])
@@ -1684,6 +1686,7 @@ model Vendor {
   services            Service[]
   bookings            Booking[]
   storeTechnician     Technician?  @relation("StoreTechnician")
+  shorts              Short[] // R1 — shoppable reels attached to this store
 
   @@index([storeSlug])
   @@index([isVerified, isActive])
@@ -2669,10 +2672,23 @@ model Short {
   isApproved    Boolean  @default(false) // moderation queue until approved
   faceBlurred   Boolean  @default(false) // privacy option on upload
   consentGiven  Boolean  @default(false) // required consent on upload
+  // R1 — shoppable surface links (REELS_SHOPPABLE_PLAN): reels attach to
+  // a product, a service or a vendor so they surface on store/product/
+  // service pages (beautyShorts.surfaceShorts).
+  productId  Int?
+  serviceId  Int?
+  vendorId   Int?
   createdAt     DateTime @default(now())
+
+  product Product? @relation(fields: [productId], references: [id], onDelete: Cascade)
+  service Service? @relation(fields: [serviceId], references: [id], onDelete: Cascade)
+  vendor  Vendor?  @relation(fields: [vendorId], references: [id], onDelete: Cascade)
 
   @@index([isApproved, isActive])
   @@index([technicianId])
+  @@index([productId])
+  @@index([serviceId])
+  @@index([vendorId])
   @@map("shorts")
 }
 
