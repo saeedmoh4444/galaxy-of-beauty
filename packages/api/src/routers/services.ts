@@ -21,7 +21,9 @@ export const serviceRouter = router({
     const { search, categoryId, minPrice, maxPrice, sort, page, limit } = input;
     const skip = (page - 1) * limit;
 
-    const where: Record<string, unknown> = { isActive: true };
+    // C5 — store services live on their storefront's Services tab, not in
+    // the general browse (platform services only here).
+    const where: Record<string, unknown> = { isActive: true, isStoreService: false };
 
     if (categoryId) {
       where.categoryId = categoryId;

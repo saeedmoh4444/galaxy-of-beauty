@@ -1,7 +1,7 @@
 import { z } from 'zod';
 import { TRPCError } from '@trpc/server';
 import { prisma } from '@galaxy/db';
-import type { Prisma } from '@galaxy/db';
+import type { Prisma, BookingStatus } from '@galaxy/db';
 import { customerProcedure, router } from '../trpc';
 import { notifyUser } from '../lib/notify';
 import { getCsvImportQueue } from '../queues';
@@ -12,8 +12,18 @@ import type { CsvImportReport } from '../workers/handlers';
 import { noonUtcDay, advisorRulesForVendor } from '../workers/handlers';
 import { KSA_SEASONS, seasonMarkers } from '../lib/ksaCalendar';
 import { computeStoreHealthScore, gatherStoreHealthFactors } from '../lib/storeHealth';
+import { writeVendorPriceLogs, toRuleLike } from '../lib/vendorPricing';
+import { enqueueWebhookEvents } from '../lib/webhookDelivery';
+import { generateWebhookSecret } from '../lib/webhookSigning';
+import { generateApiKey } from '../lib/apiKeys';
+import { forecastFromSales, type StockForecast } from '../lib/stockForecast';
 import { weekBucketStart, weeklyTrendLabels } from '../lib/reviewTrend';
 import { requestProductReviews } from '../lib/storeReviewRequests';
+import { ensureStoreTechnician } from '../lib/storeServices';
+// C5 — the vendor flow reuses the engine's state machine (exported from
+// bookings.ts) instead of drifting a parallel one.
+import { VALID_TRANSITIONS, ACTION_TO_STATUS } from './bookings';
+import { emitToUser, emitToAdmin } from '../socket/index';
 
 /** B.3: vendor portal is DB-backed (was an in-memory array). */
 
@@ -44,6 +54,16 @@ async function generalCategoryId(): Promise<number> {
   });
 }
 
+/** Fallback category for store services added without one (C5). */
+async function serviceCategoryId(): Promise<number> {
+  const any = await prisma.category.findFirst({ orderBy: { sortOrder: 'asc' } });
+  if (any) return any.id;
+  throw new TRPCError({
+    code: 'INTERNAL_SERVER_ERROR',
+    message: 'No service categories available',
+  });
+}
+
 /** Map a Product row to the vendor-portal UI shape. */
 function toPortalProduct(p: {
   id: number;
@@ -60,6 +80,11 @@ function toPortalProduct(p: {
   lowStockThreshold?: number | null;
   approvalStatus?: string | null;
   reviewNotes?: string | null;
+  // C4 — rich media + product SEO fields for the editor.
+  videoUrl?: string | null;
+  metaTitleJson?: unknown;
+  metaDescJson?: unknown;
+  arTryOnUrl?: string | null;
 }) {
   const nameAr = (p.nameJson as { ar?: string }).ar ?? '';
   const nameEn = (p.nameJson as { en?: string }).en ?? '';
@@ -91,6 +116,38 @@ function toPortalProduct(p: {
     // C2 — listing approval state (PENDING | LIVE | REJECTED) + admin note.
     approvalStatus: p.approvalStatus ?? 'LIVE',
     reviewNotes: p.reviewNotes ?? null,
+    // C4 — rich media + product SEO (editor fields).
+    videoUrl: p.videoUrl ?? null,
+    metaTitleAr: (p.metaTitleJson as { ar?: string } | undefined)?.ar ?? '',
+    metaTitleEn: (p.metaTitleJson as { en?: string } | undefined)?.en ?? '',
+    metaDescAr: (p.metaDescJson as { ar?: string } | undefined)?.ar ?? '',
+    metaDescEn: (p.metaDescJson as { en?: string } | undefined)?.en ?? '',
+    arTryOnUrl: p.arTryOnUrl ?? null,
+  };
+}
+
+/** C5 — map a store Service row to the vendor-portal UI shape. */
+function toPortalService(s: {
+  id: number;
+  titleJson: unknown;
+  descriptionJson?: unknown;
+  basePrice: unknown;
+  durationMin: number;
+  imageUrl?: string | null;
+  isActive: boolean;
+  categoryId: number;
+}) {
+  return {
+    id: s.id,
+    titleAr: (s.titleJson as { ar?: string }).ar ?? '',
+    titleEn: (s.titleJson as { en?: string }).en ?? '',
+    descriptionAr: (s.descriptionJson as { ar?: string } | undefined)?.ar ?? '',
+    descriptionEn: (s.descriptionJson as { en?: string } | undefined)?.en ?? '',
+    basePrice: Number(s.basePrice),
+    durationMin: s.durationMin,
+    imageUrl: s.imageUrl ?? null,
+    active: s.isActive,
+    categoryId: s.categoryId,
   };
 }
 
@@ -274,6 +331,7 @@ export const vendorPortalRouter = router({
         rating: 0,
         ordersByStatus: {},
         revenue30d: 0,
+        serviceRevenue30d: 0,
         ordersCount: 0,
         aov: 0,
         customerCount: 0,
@@ -339,6 +397,20 @@ export const vendorPortalRouter = router({
       where: { vendorId: vendor.id, createdAt: { gte: thirtyDaysAgo } },
       _sum: { totalAmount: true },
     });
+    // C5g — completed store-service bookings join the 30-day revenue view
+    // (net of the booking's platform fee).
+    const recentBookings = await prisma.booking.findMany({
+      where: {
+        vendorId: vendor.id,
+        status: 'COMPLETED',
+        createdAt: { gte: thirtyDaysAgo },
+      },
+      select: { totalAmount: true, platformFee: true },
+    });
+    const serviceRevenue30d = recentBookings.reduce(
+      (sum, b) => sum + Math.max(0, Number(b.totalAmount) - Number(b.platformFee)),
+      0,
+    );
     const allAgg = await prisma.storeOrder.aggregate({
       where: { vendorId: vendor.id },
       _sum: { totalAmount: true },
@@ -393,6 +465,8 @@ export const vendorPortalRouter = router({
       topProducts,
       ordersByStatus,
       revenue30d: Number(recentAgg._sum.totalAmount ?? 0),
+      // C5g — store-service revenue (completed, net of platform fee).
+      serviceRevenue30d: Math.round(serviceRevenue30d * 100) / 100,
       ordersCount,
       aov,
       customerCount: distinctCustomers.length,
@@ -458,6 +532,13 @@ export const vendorPortalRouter = router({
         imageUrl: z.string().url().optional(),
         // B3b — vendor-set low-stock alert threshold.
         lowStockThreshold: z.number().int().min(0).max(10000).default(5),
+        // C4 — rich media + product SEO (character-guidance guards).
+        videoUrl: z.string().url().max(500).optional(),
+        metaTitleAr: z.string().max(60).optional(),
+        metaTitleEn: z.string().max(60).optional(),
+        metaDescAr: z.string().max(160).optional(),
+        metaDescEn: z.string().max(160).optional(),
+        arTryOnUrl: z.string().url().max(500).optional(),
       }),
     )
     .mutation(async ({ ctx, input }) => {
@@ -499,6 +580,11 @@ export const vendorPortalRouter = router({
           isActive: true,
           lowStockThreshold: input.lowStockThreshold,
           approvalStatus: strict?.enabled ? 'PENDING' : 'LIVE',
+          // C4 — rich media + product SEO.
+          videoUrl: input.videoUrl,
+          metaTitleJson: { ar: input.metaTitleAr ?? '', en: input.metaTitleEn ?? '' },
+          metaDescJson: { ar: input.metaDescAr ?? '', en: input.metaDescEn ?? '' },
+          arTryOnUrl: input.arTryOnUrl,
         },
       });
 
@@ -533,6 +619,236 @@ export const vendorPortalRouter = router({
       return { success: true };
     }),
 
+  // C1 — product variants (Wave C)
+  // ---------------------------------------------------------------------------
+
+  /** variants — the caller's variants for one of their products. */
+  variants: customerProcedure
+    .input(z.object({ productId: z.number().int().positive() }))
+    .query(async ({ ctx, input }) => {
+      const vendor = await vendorForStaffQuery(ctx, 'PRODUCTS_MANAGE');
+      if (!vendor) return [];
+      const product = await prisma.product.findFirst({
+        where: { id: input.productId, vendorId: vendor.id },
+        select: { id: true },
+      });
+      if (!product) return [];
+      return prisma.productVariant.findMany({
+        where: { productId: input.productId },
+        orderBy: { id: 'asc' },
+      });
+    }),
+
+  /** addVariant — create a size/shade/pack option. Ownership-guarded via
+   *  the product; the price delta must keep the final price non-negative. */
+  addVariant: customerProcedure
+    .input(
+      z.object({
+        productId: z.number().int().positive(),
+        nameAr: z.string().min(1).max(120),
+        nameEn: z.string().min(1).max(120),
+        sku: z.string().max(60).optional(),
+        priceDelta: z.number().default(0),
+        stock: z.number().int().min(0).default(0),
+        lowStockThreshold: z.number().int().min(1).default(5),
+      }),
+    )
+    .mutation(async ({ ctx, input }) => {
+      const vendor = await vendorForStaff(ctx, 'PRODUCTS_MANAGE');
+      const product = await prisma.product.findFirst({
+        where: { id: input.productId, vendorId: vendor.id },
+        select: { id: true, price: true },
+      });
+      if (!product) throw new TRPCError({ code: 'NOT_FOUND', message: 'Product not found' });
+
+      if (Number(product.price) + input.priceDelta < 0) {
+        throw new TRPCError({ code: 'BAD_REQUEST', message: 'Price delta below product price' });
+      }
+
+      return prisma.productVariant.create({
+        data: {
+          productId: input.productId,
+          nameJson: { ar: input.nameAr, en: input.nameEn },
+          sku: input.sku,
+          priceDelta: input.priceDelta,
+          stock: input.stock,
+          lowStockThreshold: input.lowStockThreshold,
+        },
+      });
+    }),
+
+  /** updateVariant — partial edit; nameJson merges per language. */
+  updateVariant: customerProcedure
+    .input(
+      z.object({
+        variantId: z.number().int().positive(),
+        nameAr: z.string().min(1).max(120).optional(),
+        nameEn: z.string().min(1).max(120).optional(),
+        sku: z.string().max(60).optional(),
+        priceDelta: z.number().optional(),
+        stock: z.number().int().min(0).optional(),
+        lowStockThreshold: z.number().int().min(1).optional(),
+        isActive: z.boolean().optional(),
+      }),
+    )
+    .mutation(async ({ ctx, input }) => {
+      const vendor = await vendorForStaff(ctx, 'PRODUCTS_MANAGE');
+      const variant = await prisma.productVariant.findFirst({
+        where: { id: input.variantId, product: { vendorId: vendor.id } },
+        include: { product: { select: { price: true } } },
+      });
+      if (!variant) throw new TRPCError({ code: 'NOT_FOUND', message: 'Variant not found' });
+
+      if (input.priceDelta !== undefined && Number(variant.product.price) + input.priceDelta < 0) {
+        throw new TRPCError({ code: 'BAD_REQUEST', message: 'Price delta below product price' });
+      }
+
+      const existing = (variant.nameJson as { ar?: string; en?: string } | null) ?? {};
+      return prisma.productVariant.update({
+        where: { id: input.variantId },
+        data: {
+          nameJson: {
+            ar: input.nameAr ?? existing.ar ?? '',
+            en: input.nameEn ?? existing.en ?? '',
+          },
+          sku: input.sku,
+          priceDelta: input.priceDelta,
+          stock: input.stock,
+          lowStockThreshold: input.lowStockThreshold,
+          isActive: input.isActive,
+        },
+      });
+    }),
+
+  /** deleteVariant — hard delete (cart lines cascade; order items keep
+   *  their snapshots via SetNull). */
+  deleteVariant: customerProcedure
+    .input(z.object({ variantId: z.number().int().positive() }))
+    .mutation(async ({ ctx, input }) => {
+      const vendor = await vendorForStaff(ctx, 'PRODUCTS_MANAGE');
+      const deleted = await prisma.productVariant.deleteMany({
+        where: { id: input.variantId, product: { vendorId: vendor.id } },
+      });
+      if (deleted.count === 0) {
+        throw new TRPCError({ code: 'NOT_FOUND', message: 'Variant not found' });
+      }
+      return { success: true };
+    }),
+  // ---------------------------------------------------------------------------
+  // C2 — inventory v2 (Wave C)
+  // ---------------------------------------------------------------------------
+
+  /** bulkStockUpdate — spreadsheet-style stock editor. All-or-nothing: a
+   *  foreign product in the batch rejects the WHOLE batch (NOT_FOUND), so
+   *  a mixed selection can never half-apply. */
+  bulkStockUpdate: customerProcedure
+    .input(
+      z.object({
+        updates: z
+          .array(
+            z.object({ productId: z.number().int().positive(), stock: z.number().int().min(0) }),
+          )
+          .min(1)
+          .max(50),
+      }),
+    )
+    .mutation(async ({ ctx, input }) => {
+      const vendor = await vendorForStaff(ctx, 'PRODUCTS_MANAGE');
+      const ids = input.updates.map((u) => u.productId);
+      const owned = await prisma.product.count({
+        where: { id: { in: ids }, vendorId: vendor.id },
+      });
+      if (owned !== ids.length) {
+        throw new TRPCError({ code: 'NOT_FOUND', message: 'One or more products not found' });
+      }
+      await prisma.$transaction(
+        input.updates.map((u) =>
+          prisma.product.update({ where: { id: u.productId }, data: { stock: u.stock } }),
+        ),
+      );
+      return input.updates;
+    }),
+
+  /** stockIn — C2b: increment stock for a product (or one of its
+   *  variants). The barcode/QR stock-in flow and the manual button share
+   *  this mutation; ownership + belongs-to guards keep it honest. */
+  stockIn: customerProcedure
+    .input(
+      z.object({
+        productId: z.number().int().positive(),
+        variantId: z.number().int().positive().optional(),
+        quantity: z.number().int().min(1).max(10_000),
+      }),
+    )
+    .mutation(async ({ ctx, input }) => {
+      const vendor = await vendorForStaff(ctx, 'PRODUCTS_MANAGE');
+      const product = await prisma.product.findFirst({
+        where: { id: input.productId, vendorId: vendor.id },
+        select: { id: true },
+      });
+      if (!product) throw new TRPCError({ code: 'NOT_FOUND', message: 'Product not found' });
+
+      if (input.variantId !== undefined) {
+        const variant = await prisma.productVariant.findFirst({
+          where: { id: input.variantId, productId: input.productId },
+          select: { id: true },
+        });
+        if (!variant) {
+          throw new TRPCError({ code: 'BAD_REQUEST', message: 'Variant not found for product' });
+        }
+        return prisma.productVariant.update({
+          where: { id: input.variantId },
+          data: { stock: { increment: input.quantity } },
+          select: { id: true, stock: true },
+        });
+      }
+      return prisma.product.update({
+        where: { id: input.productId },
+        data: { stock: { increment: input.quantity } },
+        select: { id: true, stock: true },
+      });
+    }),
+
+  /** stockForecasts — 30-day sales velocity + days-at-stock per product
+   *  from VendorDailyStat.productSales. Foreign ids are ignored (the UI
+   *  sends only its own rows). */
+  stockForecasts: customerProcedure
+    .input(z.object({ productIds: z.array(z.number().int().positive()).min(1).max(100) }))
+    .query(async ({ ctx, input }) => {
+      const vendor = await vendorForStaffQuery(ctx, 'PRODUCTS_MANAGE');
+      if (!vendor) return {};
+      const owned = await prisma.product.findMany({
+        where: { id: { in: input.productIds }, vendorId: vendor.id },
+        select: { id: true, stock: true },
+      });
+      if (owned.length === 0) return {};
+
+      const since = new Date(Date.now() - 30 * 24 * 60 * 60 * 1000);
+      const stats = await prisma.vendorDailyStat.findMany({
+        where: { vendorId: vendor.id, day: { gte: since } },
+        select: { productSales: true },
+      });
+      const quantities = new Map<number, number>();
+      for (const row of stats) {
+        const sales = (row.productSales as Array<{ productId?: number; quantity?: number }>) ?? [];
+        for (const sale of sales) {
+          if (sale.productId) {
+            quantities.set(
+              sale.productId,
+              (quantities.get(sale.productId) ?? 0) + (sale.quantity ?? 0),
+            );
+          }
+        }
+      }
+      const forecasts: Record<number, StockForecast> = {};
+      for (const p of owned) {
+        // The helper divides by the 30-day window — passing the summed
+        // quantity is equivalent to summing per-day quantities.
+        forecasts[p.id] = forecastFromSales([quantities.get(p.id) ?? 0], p.stock);
+      }
+      return forecasts;
+    }),
+
   // ---------------------------------------------------------------------------
   // C1 — product editor pro
   // ---------------------------------------------------------------------------
@@ -554,6 +870,13 @@ export const vendorPortalRouter = router({
         imageUrl: z.string().url().optional(),
         images: z.array(z.string().url()).max(8).optional(),
         lowStockThreshold: z.number().int().min(0).max(10000).optional(),
+        // C4 — rich media + product SEO (character-guidance guards).
+        videoUrl: z.string().url().max(500).optional(),
+        metaTitleAr: z.string().max(60).optional(),
+        metaTitleEn: z.string().max(60).optional(),
+        metaDescAr: z.string().max(160).optional(),
+        metaDescEn: z.string().max(160).optional(),
+        arTryOnUrl: z.string().url().max(500).optional(),
       }),
     )
     .mutation(async ({ ctx, input }) => {
@@ -576,6 +899,16 @@ export const vendorPortalRouter = router({
         ar: input.descAr ?? (existing.descriptionJson as { ar?: string }).ar ?? '',
         en: input.descEn ?? (existing.descriptionJson as { en?: string }).en ?? '',
       };
+      // C4 — bilingual meta title/description merge (never clobber the
+      // other language; same pattern as name/description).
+      const metaTitleJson = {
+        ar: input.metaTitleAr ?? (existing.metaTitleJson as { ar?: string } | null)?.ar ?? '',
+        en: input.metaTitleEn ?? (existing.metaTitleJson as { en?: string } | null)?.en ?? '',
+      };
+      const metaDescJson = {
+        ar: input.metaDescAr ?? (existing.metaDescJson as { ar?: string } | null)?.ar ?? '',
+        en: input.metaDescEn ?? (existing.metaDescJson as { en?: string } | null)?.en ?? '',
+      };
 
       const updated = await prisma.product.update({
         where: { id: input.id },
@@ -589,6 +922,10 @@ export const vendorPortalRouter = router({
           imageUrl: input.imageUrl ?? existing.imageUrl,
           images: input.images ?? existing.images,
           lowStockThreshold: input.lowStockThreshold ?? existing.lowStockThreshold,
+          videoUrl: input.videoUrl ?? existing.videoUrl,
+          metaTitleJson: metaTitleJson as unknown as Prisma.InputJsonValue,
+          metaDescJson: metaDescJson as unknown as Prisma.InputJsonValue,
+          arTryOnUrl: input.arTryOnUrl ?? existing.arTryOnUrl,
         },
       });
 
@@ -691,6 +1028,450 @@ export const vendorPortalRouter = router({
     }),
 
   // ---------------------------------------------------------------------------
+  // C5 — hybrid store-services (H2): bookable services owned by the store,
+  // reusing the booking engine via a hidden pseudo-technician.
+  // ---------------------------------------------------------------------------
+
+  services: customerProcedure
+    .input(
+      z.object({
+        limit: z.number().int().min(1).max(100).default(20),
+        cursor: z.number().int().positive().optional(),
+      }),
+    )
+    .query(async ({ ctx, input }) => {
+      const vendor = await vendorForStaffQuery(ctx, 'PRODUCTS_MANAGE');
+      if (!vendor) return { items: [], nextCursor: null, total: 0 };
+
+      const where = {
+        vendorId: vendor.id,
+        isStoreService: true,
+        ...(input.cursor ? { id: { lt: input.cursor } } : {}),
+      };
+      const [services, total] = await Promise.all([
+        prisma.service.findMany({
+          where,
+          orderBy: { id: 'desc' },
+          take: input.limit + 1, // peek one row for nextCursor
+        }),
+        prisma.service.count({ where: { vendorId: vendor.id, isStoreService: true } }),
+      ]);
+      const hasMore = services.length > input.limit;
+      const page = hasMore ? services.slice(0, input.limit) : services;
+      return {
+        items: page.map(toPortalService),
+        nextCursor: hasMore ? page[page.length - 1]!.id : null,
+        total,
+      };
+    }),
+
+  addService: customerProcedure
+    .input(
+      z.object({
+        titleAr: z.string().min(1).max(200),
+        titleEn: z.string().max(200).optional(),
+        descriptionAr: z.string().max(2000).optional(),
+        descriptionEn: z.string().max(2000).optional(),
+        basePrice: z.number().min(1),
+        durationMin: z.number().int().min(5).max(480),
+        categoryId: z.number().int().positive().optional(),
+        imageUrl: z.string().url().max(500).optional(),
+      }),
+    )
+    .mutation(async ({ ctx, input }) => {
+      // Same A1 pattern as addProduct: staff are capability-gated;
+      // owner-less callers keep the legacy auto-create path.
+      const actor = await resolveVendorActor(ctx.user.id);
+      let vendor;
+      if (actor) {
+        if (!staffHasCapability(actor, 'PRODUCTS_MANAGE')) {
+          throw new TRPCError({ code: 'FORBIDDEN', message: 'Requires PRODUCTS_MANAGE' });
+        }
+        vendor = await prisma.vendor.findUniqueOrThrow({ where: { id: actor.vendor.id } });
+      } else {
+        const user = await prisma.user.findUnique({
+          where: { id: ctx.user.id },
+          select: { name: true },
+        });
+        vendor = await ensureVendor(ctx.user.id, user?.name ?? '');
+      }
+
+      const service = await prisma.service.create({
+        data: {
+          vendorId: vendor.id,
+          isStoreService: true,
+          categoryId: input.categoryId ?? (await serviceCategoryId()),
+          titleJson: { ar: input.titleAr, en: input.titleEn || input.titleAr },
+          descriptionJson: {
+            ar: input.descriptionAr ?? '',
+            en: input.descriptionEn ?? input.descriptionAr ?? '',
+          },
+          basePrice: input.basePrice,
+          durationMin: input.durationMin,
+          imageUrl: input.imageUrl,
+          isActive: true,
+        },
+      });
+
+      // H2 — provision the store's pseudo-technician and link the service
+      // so the booking engine's availability queries can see it.
+      const technicianId = await ensureStoreTechnician(vendor.id);
+      await prisma.technicianService.create({
+        data: { technicianId, serviceId: service.id, isActive: true },
+      });
+
+      return toPortalService(service);
+    }),
+
+  updateService: customerProcedure
+    .input(
+      z.object({
+        id: z.number().int().positive(),
+        titleAr: z.string().min(1).max(200).optional(),
+        titleEn: z.string().max(200).optional(),
+        descriptionAr: z.string().max(2000).optional(),
+        descriptionEn: z.string().max(2000).optional(),
+        basePrice: z.number().min(1).optional(),
+        durationMin: z.number().int().min(5).max(480).optional(),
+        categoryId: z.number().int().positive().optional(),
+        imageUrl: z.string().url().max(500).optional(),
+      }),
+    )
+    .mutation(async ({ ctx, input }) => {
+      const vendor = await vendorForStaff(ctx, 'PRODUCTS_MANAGE');
+
+      const existing = await prisma.service.findUnique({ where: { id: input.id } });
+      if (!existing || existing.vendorId !== vendor.id || !existing.isStoreService) {
+        throw new TRPCError({ code: 'NOT_FOUND', message: 'Service not found' });
+      }
+
+      const service = await prisma.service.update({
+        where: { id: input.id },
+        data: {
+          ...(input.titleAr !== undefined
+            ? { titleJson: { ar: input.titleAr, en: input.titleEn ?? input.titleAr } }
+            : {}),
+          ...(input.descriptionAr !== undefined || input.descriptionEn !== undefined
+            ? {
+                descriptionJson: {
+                  ar: input.descriptionAr ?? '',
+                  en: input.descriptionEn ?? input.descriptionAr ?? '',
+                },
+              }
+            : {}),
+          ...(input.basePrice !== undefined ? { basePrice: input.basePrice } : {}),
+          ...(input.durationMin !== undefined ? { durationMin: input.durationMin } : {}),
+          ...(input.categoryId !== undefined ? { categoryId: input.categoryId } : {}),
+          ...(input.imageUrl !== undefined ? { imageUrl: input.imageUrl } : {}),
+        },
+      });
+
+      return toPortalService(service);
+    }),
+
+  deactivateService: customerProcedure
+    .input(z.object({ id: z.number().int().positive() }))
+    .mutation(async ({ ctx, input }) => {
+      const vendor = await vendorForStaff(ctx, 'PRODUCTS_MANAGE');
+
+      // Ownership-guarded soft delete: flips the service AND unlinks it
+      // from the pseudo-technician so availability queries stop seeing it.
+      const updated = await prisma.service.updateMany({
+        where: { id: input.id, vendorId: vendor.id, isStoreService: true },
+        data: { isActive: false },
+      });
+      if (updated.count === 0) {
+        throw new TRPCError({ code: 'NOT_FOUND', message: 'Service not found' });
+      }
+      await prisma.technicianService.updateMany({
+        where: { serviceId: input.id },
+        data: { isActive: false },
+      });
+      return { id: input.id, isActive: false };
+    }),
+
+  addAvailabilitySlot: customerProcedure
+    .input(
+      z.object({
+        startAt: z.string().datetime(),
+        endAt: z.string().datetime(),
+      }),
+    )
+    .mutation(async ({ ctx, input }) => {
+      const vendor = await vendorForStaff(ctx, 'PRODUCTS_MANAGE');
+
+      const startAt = new Date(input.startAt);
+      const endAt = new Date(input.endAt);
+      if (endAt <= startAt) {
+        throw new TRPCError({ code: 'BAD_REQUEST', message: 'endAt must be after startAt' });
+      }
+
+      // Slots belong to the store's pseudo-technician — the engine's
+      // availability queries pick them up unchanged.
+      const technicianId = await ensureStoreTechnician(vendor.id);
+
+      // C5h — availability limits: no overlapping windows and a cap on
+      // upcoming unbooked slots so one store can't flood the calendar.
+      const overlapping = await prisma.availabilitySlot.findFirst({
+        where: {
+          technicianId,
+          startAt: { lt: endAt },
+          endAt: { gt: startAt },
+        },
+        select: { id: true },
+      });
+      if (overlapping) {
+        throw new TRPCError({
+          code: 'BAD_REQUEST',
+          message: 'Slot overlaps an existing slot',
+        });
+      }
+      const upcoming = await prisma.availabilitySlot.count({
+        where: {
+          technicianId,
+          isBooked: false,
+          startAt: { gte: new Date() },
+        },
+      });
+      if (upcoming >= 30) {
+        throw new TRPCError({
+          code: 'BAD_REQUEST',
+          message: 'Too many upcoming slots (max 30)',
+        });
+      }
+
+      const slot = await prisma.availabilitySlot.create({
+        data: { technicianId, startAt, endAt },
+      });
+      return { id: slot.id, startAt: slot.startAt, endAt: slot.endAt };
+    }),
+
+  serviceSlots: customerProcedure
+    .input(
+      z.object({
+        days: z.number().int().min(1).max(30).default(7),
+      }),
+    )
+    .query(async ({ ctx, input }) => {
+      const vendor = await vendorForStaffQuery(ctx, 'PRODUCTS_MANAGE');
+      if (!vendor) return [];
+
+      const tech = await prisma.technician.findUnique({
+        where: { storeVendorId: vendor.id },
+        select: { id: true },
+      });
+      if (!tech) return [];
+
+      const from = new Date();
+      const to = new Date(Date.now() + input.days * 86_400_000);
+      const slots = await prisma.availabilitySlot.findMany({
+        where: { technicianId: tech.id, startAt: { gte: from, lte: to } },
+        orderBy: { startAt: 'asc' },
+        include: {
+          booking: { select: { id: true, service: { select: { titleJson: true } } } },
+        },
+      });
+      return slots.map((s) => ({
+        id: s.id,
+        startAt: s.startAt,
+        endAt: s.endAt,
+        isBooked: s.isBooked,
+        serviceTitleAr: (s.booking?.service.titleJson as { ar?: string } | undefined)?.ar ?? null,
+        serviceTitleEn: (s.booking?.service.titleJson as { en?: string } | undefined)?.en ?? null,
+      }));
+    }),
+
+  storeBookings: customerProcedure
+    .input(
+      z.object({
+        limit: z.number().int().min(1).max(50).default(10),
+        cursor: z.number().int().positive().optional(),
+        status: z
+          .enum([
+            'REQUESTED',
+            'ACCEPTED',
+            'IN_PROGRESS',
+            'COMPLETED',
+            'CANCELLED',
+            'REJECTED',
+            'NO_SHOW',
+            'PAYMENT_AUTHORIZED',
+          ])
+          .optional(),
+      }),
+    )
+    .query(async ({ ctx, input }) => {
+      const vendor = await vendorForStaffQuery(ctx, 'ORDERS_MANAGE');
+      if (!vendor) return { items: [], nextCursor: null, total: 0 };
+
+      const where = {
+        vendorId: vendor.id,
+        ...(input.status ? { status: input.status } : {}),
+        ...(input.cursor ? { id: { lt: input.cursor } } : {}),
+      };
+      const [bookings, total] = await Promise.all([
+        prisma.booking.findMany({
+          where,
+          orderBy: { id: 'desc' },
+          take: input.limit + 1, // peek one row for nextCursor
+          include: {
+            service: { select: { titleJson: true } },
+            customer: { select: { name: true, phone: true } },
+          },
+        }),
+        prisma.booking.count({ where: { vendorId: vendor.id } }),
+      ]);
+      const hasMore = bookings.length > input.limit;
+      const page = hasMore ? bookings.slice(0, input.limit) : bookings;
+      return {
+        items: page.map((b) => ({
+          id: b.id,
+          bookingCode: b.bookingCode,
+          status: b.status,
+          startAt: b.startAt,
+          endAt: b.endAt,
+          totalAmount: Number(b.totalAmount),
+          serviceTitleAr: (b.service.titleJson as { ar?: string }).ar ?? '',
+          serviceTitleEn: (b.service.titleJson as { en?: string }).en ?? '',
+          customerName: b.customer.name,
+          customerPhone: b.customer.phone,
+        })),
+        nextCursor: hasMore ? page[page.length - 1]!.id : null,
+        total,
+      };
+    }),
+
+  updateServiceBooking: customerProcedure
+    .input(
+      z.object({
+        id: z.number().int().positive(),
+        action: z.enum(['accept', 'reject', 'cancel', 'start', 'complete', 'no_show']),
+        reason: z.string().max(500).optional(),
+      }),
+    )
+    .mutation(async ({ ctx, input }) => {
+      const vendor = await vendorForStaff(ctx, 'ORDERS_MANAGE');
+
+      // Ownership guard: only THIS vendor's store bookings (the
+      // denormalized vendorId), never technician bookings.
+      const booking = await prisma.booking.findUnique({
+        where: { id: input.id },
+        include: {
+          slot: true,
+          service: { select: { titleJson: true } },
+          customer: { select: { name: true, preferredLanguage: true } },
+        },
+      });
+      if (!booking || booking.vendorId !== vendor.id) {
+        throw new TRPCError({ code: 'NOT_FOUND', message: 'Booking not found' });
+      }
+
+      // The SAME state machine as the engine (exported from bookings.ts).
+      const newStatus = ACTION_TO_STATUS[input.action]! as BookingStatus;
+      const validNextStates = VALID_TRANSITIONS[booking.status];
+      if (!validNextStates || !validNextStates.includes(newStatus)) {
+        throw new TRPCError({
+          code: 'BAD_REQUEST',
+          message: `Cannot transition booking from ${booking.status} to ${newStatus}`,
+        });
+      }
+
+      // C5h — cancellation window: a store cannot cancel a booking that
+      // starts within 4 hours (protects the customer's expectations).
+      if (input.action === 'cancel') {
+        const hoursUntilStart = (booking.startAt.getTime() - Date.now()) / 3_600_000;
+        if (hoursUntilStart < 4) {
+          throw new TRPCError({
+            code: 'BAD_REQUEST',
+            message: 'Bookings starting within 4 hours cannot be cancelled',
+          });
+        }
+      }
+
+      const updatedBooking = await prisma.$transaction(async (tx) => {
+        // Free the slot on cancel or reject (same as the engine).
+        if (input.action === 'cancel' || input.action === 'reject') {
+          if (booking.slot) {
+            await tx.availabilitySlot.update({
+              where: { id: booking.slot.id },
+              data: { isBooked: false, bookingId: null },
+            });
+          }
+        }
+
+        // Completion stats ride the store's hidden technician (parity).
+        if (input.action === 'complete') {
+          await tx.technician.update({
+            where: { userId: booking.technicianId },
+            data: { completedBookings: { increment: 1 } },
+          });
+        }
+
+        return tx.booking.update({
+          where: { id: input.id },
+          data: {
+            status: newStatus,
+            ...(input.action === 'cancel'
+              ? { cancelledAt: new Date(), cancelReason: input.reason ?? null }
+              : {}),
+          },
+        });
+      });
+
+      // Customer-facing real-time event (the store owner acts on the
+      // booking; the pseudo provider is never connected).
+      const eventMap: Record<string, string> = {
+        accept: 'booking_accepted',
+        reject: 'booking_rejected',
+        cancel: 'booking_cancelled',
+        start: 'booking_started',
+        complete: 'booking_completed',
+        no_show: 'booking_no_show',
+      };
+      emitToUser(booking.customerId, eventMap[input.action] ?? 'booking_updated', updatedBooking);
+      emitToAdmin('admin_update', {
+        type: 'booking_action',
+        action: input.action,
+        booking: updatedBooking,
+        actor: 'vendor',
+      });
+
+      // B.26 parity — template notification on acceptance; the vendor's
+      // store name stands in for the technician.
+      if (input.action === 'accept') {
+        try {
+          const svc = booking.service?.titleJson as { ar?: string; en?: string } | null;
+          const customerLocale = booking.customer.preferredLanguage === 'en' ? 'en' : 'ar';
+          const fmt = new Intl.DateTimeFormat(customerLocale === 'ar' ? 'ar-SA' : 'en-GB', {
+            weekday: 'long',
+            month: 'long',
+            day: 'numeric',
+          });
+          const fmtTime = new Intl.DateTimeFormat(customerLocale === 'ar' ? 'ar-SA' : 'en-GB', {
+            hour: '2-digit',
+            minute: '2-digit',
+          });
+          await notifyUser({
+            userId: booking.customerId,
+            templateKey: 'booking_accepted',
+            vars: {
+              customerName: booking.customer.name ?? '',
+              serviceName: svc?.[customerLocale] ?? '',
+              techName: vendor.storeName,
+              date: fmt.format(updatedBooking.startAt),
+              time: fmtTime.format(updatedBooking.startAt),
+            },
+            link: `/bookings/${booking.id}`,
+          });
+        } catch {
+          // Notification failure must never fail the transition
+        }
+      }
+
+      return { id: updatedBooking.id, status: updatedBooking.status };
+    }),
+
+  // ---------------------------------------------------------------------------
   // Store plan Phase 1 — store registration state + orders
   // ---------------------------------------------------------------------------
 
@@ -729,6 +1510,262 @@ export const vendorPortalRouter = router({
         where: { id: vendor.id },
         data: { descriptionJson: descriptionJson as unknown as Prisma.InputJsonValue },
       });
+    }),
+
+  // ---------------------------------------------------------------------------
+  // C3 — vendor pricing rules (Wave C)
+  // ---------------------------------------------------------------------------
+
+  /** priceRules — the caller's active pricing rules (uplift-only). */
+  priceRules: customerProcedure.query(async ({ ctx }) => {
+    const vendor = await vendorForStaffQuery(ctx, 'PRODUCTS_MANAGE');
+    if (!vendor) return [];
+    return prisma.vendorPriceRule.findMany({
+      where: { vendorId: vendor.id },
+      orderBy: { id: 'asc' },
+      include: { product: { select: { id: true, nameJson: true } } },
+    });
+  }),
+
+  /** addPriceRule — create a weekend/low-stock uplift rule. The multiplier
+   *  floor (≥ 1.0) is structural: vendor rules can never discount below
+   *  cost. Writes ProductPriceLog rows for every affected product. */
+  addPriceRule: customerProcedure
+    .input(
+      z.object({
+        productId: z.number().int().positive().optional(),
+        ruleType: z.enum(['weekend_uplift', 'lowstock_floor']),
+        dayOfWeek: z.number().int().min(0).max(6).optional(),
+        multiplier: z.number().min(1).max(5),
+      }),
+    )
+    .mutation(async ({ ctx, input }) => {
+      const vendor = await vendorForStaff(ctx, 'PRODUCTS_MANAGE');
+      if (input.productId !== undefined) {
+        const owned = await prisma.product.findFirst({
+          where: { id: input.productId, vendorId: vendor.id },
+          select: { id: true },
+        });
+        if (!owned) throw new TRPCError({ code: 'NOT_FOUND', message: 'Product not found' });
+      }
+
+      const rule = await prisma.vendorPriceRule.create({
+        data: {
+          vendorId: vendor.id,
+          productId: input.productId ?? null,
+          ruleType: input.ruleType,
+          dayOfWeek: input.dayOfWeek ?? null,
+          multiplier: input.multiplier,
+        },
+      });
+      await writeVendorPriceLogs(
+        prisma,
+        vendor.id,
+        rule.id,
+        'vendor',
+        toRuleLike(rule),
+        true,
+        input.productId,
+      );
+      return rule;
+    }),
+
+  /** updatePriceRule — partial edit (multiplier/day/isActive). Ownership-
+   *  guarded via the rule's vendor. Logs the affected products again. */
+  updatePriceRule: customerProcedure
+    .input(
+      z.object({
+        ruleId: z.number().int().positive(),
+        dayOfWeek: z.number().int().min(0).max(6).optional(),
+        multiplier: z.number().min(1).max(5).optional(),
+        isActive: z.boolean().optional(),
+      }),
+    )
+    .mutation(async ({ ctx, input }) => {
+      const vendor = await vendorForStaff(ctx, 'PRODUCTS_MANAGE');
+      const rule = await prisma.vendorPriceRule.findFirst({
+        where: { id: input.ruleId, vendorId: vendor.id },
+        select: { id: true, productId: true },
+      });
+      if (!rule) throw new TRPCError({ code: 'NOT_FOUND', message: 'Rule not found' });
+
+      const updated = await prisma.vendorPriceRule.update({
+        where: { id: input.ruleId },
+        data: {
+          dayOfWeek: input.dayOfWeek,
+          multiplier: input.multiplier,
+          isActive: input.isActive,
+        },
+      });
+      await writeVendorPriceLogs(
+        prisma,
+        vendor.id,
+        rule.id,
+        'vendor',
+        { ...toRuleLike(updated), isActive: true }, // force-evaluate the changed state
+        updated.isActive, // deactivation logs the decrease direction
+        rule.productId ?? undefined,
+      );
+      return updated;
+    }),
+
+  /** priceLog — the per-product price change log (last 50 entries). */
+  priceLog: customerProcedure
+    .input(z.object({ productId: z.number().int().positive() }))
+    .query(async ({ ctx, input }) => {
+      const vendor = await vendorForStaffQuery(ctx, 'PRODUCTS_MANAGE');
+      if (!vendor) return [];
+      const owned = await prisma.product.findFirst({
+        where: { id: input.productId, vendorId: vendor.id },
+        select: { id: true },
+      });
+      if (!owned) throw new TRPCError({ code: 'NOT_FOUND', message: 'Product not found' });
+      return prisma.productPriceLog.findMany({
+        where: { productId: input.productId },
+        orderBy: { createdAt: 'desc' },
+        take: 50,
+      });
+    }),
+
+  // D1 — vendor API keys (Wave D)
+  // ---------------------------------------------------------------------------
+
+  /** apiKeys — the caller's keys (hashes only — the plaintext is shown
+   *  exactly once, at creation). */
+  apiKeys: customerProcedure.query(async ({ ctx }) => {
+    const vendor = await vendorForStaffQuery(ctx, 'PRODUCTS_MANAGE');
+    if (!vendor) return [];
+    return prisma.vendorApiKey.findMany({
+      where: { vendorId: vendor.id },
+      orderBy: { createdAt: 'desc' },
+      select: {
+        id: true,
+        name: true,
+        prefix: true,
+        lastUsedAt: true,
+        revokedAt: true,
+        createdAt: true,
+      },
+    });
+  }),
+
+  /** createApiKey — returns the PLAINTEXT once; only its sha256 hash is
+   *  stored. The caller must save it now — it can never be recovered. */
+  createApiKey: customerProcedure
+    .input(z.object({ name: z.string().min(1).max(80) }))
+    .mutation(async ({ ctx, input }) => {
+      const vendor = await vendorForStaff(ctx, 'PRODUCTS_MANAGE');
+      const { plaintext, hash, prefix } = generateApiKey('gb_live');
+      const key = await prisma.vendorApiKey.create({
+        data: { vendorId: vendor.id, name: input.name, prefix, keyHash: hash },
+        select: { id: true, name: true, prefix: true, createdAt: true },
+      });
+      return { key, plaintext };
+    }),
+
+  /** revokeApiKey — immediate revocation; in-flight requests fail on the
+   *  next lookup. */
+  revokeApiKey: customerProcedure
+    .input(z.object({ keyId: z.number().int().positive() }))
+    .mutation(async ({ ctx, input }) => {
+      const vendor = await vendorForStaff(ctx, 'PRODUCTS_MANAGE');
+      const updated = await prisma.vendorApiKey.updateMany({
+        where: { id: input.keyId, vendorId: vendor.id, revokedAt: null },
+        data: { revokedAt: new Date() },
+      });
+      if (updated.count === 0) {
+        throw new TRPCError({ code: 'NOT_FOUND', message: 'Key not found' });
+      }
+      return { success: true };
+    }),
+
+  // ---------------------------------------------------------------------------
+  // D1b — vendor webhooks (Wave D)
+  // ---------------------------------------------------------------------------
+
+  /** webhooks — the caller's endpoints (the secret shows masked — its
+   *  full value is shown exactly once, at creation). */
+  webhooks: customerProcedure.query(async ({ ctx }) => {
+    const vendor = await vendorForStaffQuery(ctx, 'PRODUCTS_MANAGE');
+    if (!vendor) return [];
+    const rows = await prisma.vendorWebhook.findMany({
+      where: { vendorId: vendor.id },
+      orderBy: { createdAt: 'desc' },
+    });
+    return rows.map(({ secret, ...rest }) => ({
+      ...rest,
+      secretMasked: `whsec_${secret.slice(-8)}`,
+    }));
+  }),
+
+  /** createWebhook — returns the signing SECRET once; only the masked
+   *  tail is listable afterwards. */
+  createWebhook: customerProcedure
+    .input(
+      z.object({
+        url: z.string().url().max(500),
+        events: z
+          .array(z.enum(['order.placed', 'order.fulfilled', 'stock.low']))
+          .min(1)
+          .max(3),
+      }),
+    )
+    .mutation(async ({ ctx, input }) => {
+      const vendor = await vendorForStaff(ctx, 'PRODUCTS_MANAGE');
+      const secret = generateWebhookSecret();
+      const webhook = await prisma.vendorWebhook.create({
+        data: {
+          vendorId: vendor.id,
+          url: input.url,
+          secret,
+          events: input.events,
+        },
+      });
+      const { secret: _s, ...rest } = webhook;
+      return { webhook: rest, secret };
+    }),
+
+  /** updateWebhook — partial edit (url/events/active). */
+  updateWebhook: customerProcedure
+    .input(
+      z.object({
+        webhookId: z.number().int().positive(),
+        url: z.string().url().max(500).optional(),
+        events: z
+          .array(z.enum(['order.placed', 'order.fulfilled', 'stock.low']))
+          .min(1)
+          .max(3)
+          .optional(),
+        isActive: z.boolean().optional(),
+      }),
+    )
+    .mutation(async ({ ctx, input }) => {
+      const vendor = await vendorForStaff(ctx, 'PRODUCTS_MANAGE');
+      const webhook = await prisma.vendorWebhook.findFirst({
+        where: { id: input.webhookId, vendorId: vendor.id },
+        select: { id: true },
+      });
+      if (!webhook) throw new TRPCError({ code: 'NOT_FOUND', message: 'Webhook not found' });
+      const updated = await prisma.vendorWebhook.update({
+        where: { id: input.webhookId },
+        data: { url: input.url, events: input.events, isActive: input.isActive },
+      });
+      const { secret: _s, ...rest } = updated;
+      return rest;
+    }),
+
+  /** deleteWebhook — hard delete (delivery jobs no-op on a missing row). */
+  deleteWebhook: customerProcedure
+    .input(z.object({ webhookId: z.number().int().positive() }))
+    .mutation(async ({ ctx, input }) => {
+      const vendor = await vendorForStaff(ctx, 'PRODUCTS_MANAGE');
+      const deleted = await prisma.vendorWebhook.deleteMany({
+        where: { id: input.webhookId, vendorId: vendor.id },
+      });
+      if (deleted.count === 0) {
+        throw new TRPCError({ code: 'NOT_FOUND', message: 'Webhook not found' });
+      }
+      return { success: true };
     }),
 
   /** orders — the store's orders, newest first, cursor-paginated (A5). */
@@ -771,6 +1808,31 @@ export const vendorPortalRouter = router({
         nextCursor: hasMore ? page[page.length - 1]!.id : null,
         total,
       };
+    }),
+
+  /** orderDetail — one store order with line items, customer summary and
+   *  its dispute (1:1). E2: the mobile detail screen and the push-notification
+   *  deep link fetch by id (the web drawer reuses the list row instead).
+   *  Staff-guarded exactly like orders — ORDERS_MANAGE. */
+  orderDetail: customerProcedure
+    .input(z.object({ orderId: z.number().int().positive() }))
+    .query(async ({ ctx, input }) => {
+      const vendor = await vendorForStaffQuery(ctx, 'ORDERS_MANAGE');
+      if (!vendor) throw new TRPCError({ code: 'NOT_FOUND', message: 'Order not found' });
+
+      const order = await prisma.storeOrder.findUnique({
+        where: { id: input.orderId },
+        include: {
+          customer: { select: { id: true, name: true, phone: true } },
+          items: { orderBy: { id: 'asc' } },
+          dispute: true,
+        },
+      });
+      // Cross-store reads must be indistinguishable from missing rows.
+      if (!order || order.vendorId !== vendor.id) {
+        throw new TRPCError({ code: 'NOT_FOUND', message: 'Order not found' });
+      }
+      return order;
     }),
 
   /** fulfillOrder — mark a store order fulfilled (ownership-guarded).
@@ -855,6 +1917,16 @@ export const vendorPortalRouter = router({
         });
       } catch {
         // Never fail fulfillment on review-request errors.
+      }
+      // D1b — the fulfillment event over the vendor's webhooks.
+      try {
+        await enqueueWebhookEvents('order.fulfilled', {
+          vendorId: vendor.id,
+          orderId: result.order.id,
+          total: Number(result.order.totalAmount),
+        });
+      } catch {
+        // Webhook fan-out never fails fulfillment.
       }
       return result.order;
     }),
@@ -2993,6 +4065,183 @@ export const vendorPortalRouter = router({
         select: { fulfillmentSlaHours: true },
       });
     }),
+
+  /**
+   * updateSocialLinks — B6: the vendor's Snapchat/TikTok/X/Instagram/
+   * Facebook handles. Partial merge: omitted networks keep their value,
+   * an empty string removes one, URLs are zod-validated. Ownership-
+   * guarded like every portal mutation.
+   */
+  updateSocialLinks: customerProcedure
+    .input(
+      z
+        .object({
+          snapchat: z.string().url().max(300).or(z.literal('')).optional(),
+          tiktok: z.string().url().max(300).or(z.literal('')).optional(),
+          x: z.string().url().max(300).or(z.literal('')).optional(),
+          instagram: z.string().url().max(300).or(z.literal('')).optional(),
+          facebook: z.string().url().max(300).or(z.literal('')).optional(),
+        })
+        .refine((v) => Object.values(v).some((s) => s !== undefined), {
+          message: 'at least one network required',
+        }),
+    )
+    .mutation(async ({ ctx, input }) => {
+      const vendor = await prisma.vendor.findUnique({ where: { userId: ctx.user.id } });
+      if (!vendor) {
+        throw new TRPCError({ code: 'NOT_FOUND', message: 'Store not found' });
+      }
+
+      const existing = (vendor.socialLinks as Record<string, string> | null) ?? {};
+      const next: Record<string, string> = {};
+      for (const network of ['snapchat', 'tiktok', 'x', 'instagram', 'facebook'] as const) {
+        const value = input[network] ?? existing[network];
+        if (value) next[network] = value; // '' removes, undefined keeps, set adds
+      }
+
+      const updated = await prisma.vendor.update({
+        where: { id: vendor.id },
+        data: { socialLinks: next as unknown as Prisma.InputJsonValue },
+      });
+      return { socialLinks: updated.socialLinks };
+    }),
+
+  /**
+   * sendWinback — B4: re-engage the vendor's OWN past customers with
+   * pre-approved templates (restocked / on_offer — no free text).
+   * Rate-limited to one win-back per customer per 14 days; the
+   * promotions preference gate handles opt-outs; non-customers are
+   * silently skipped. Returns per-send accounting, never errors on
+   * skips.
+   */
+  sendWinback: customerProcedure
+    .input(
+      z.object({
+        template: z.enum(['restocked', 'on_offer']),
+        customerIds: z.array(z.number().int().positive()).min(1).max(20),
+        productName: z.string().min(1).max(120).optional(),
+      }),
+    )
+    .mutation(async ({ ctx, input }) => {
+      const vendor = await prisma.vendor.findUnique({ where: { userId: ctx.user.id } });
+      if (!vendor) {
+        throw new TRPCError({ code: 'NOT_FOUND', message: 'Store not found' });
+      }
+
+      // Strictly the vendor's own order history (E5 groupBy set).
+      const own = await prisma.storeOrder.groupBy({
+        by: ['customerId'],
+        where: { vendorId: vendor.id },
+      });
+      const ownIds = new Set(own.map((g) => g.customerId));
+
+      // 14-day per-pair rate limit.
+      const since = new Date(Date.now() - 14 * 86_400_000);
+      const recent = await prisma.winbackLog.findMany({
+        where: {
+          vendorId: vendor.id,
+          createdAt: { gte: since },
+          customerId: { in: input.customerIds },
+        },
+        select: { customerId: true },
+      });
+      const recentIds = new Set(recent.map((r) => r.customerId));
+
+      // Explicit promotions opt-outs (honest skip accounting).
+      const optedOut = new Set(
+        (
+          await prisma.notificationPreference.findMany({
+            where: { userId: { in: input.customerIds }, promotions: false },
+            select: { userId: true },
+          })
+        ).map((p) => p.userId),
+      );
+
+      const templateKey =
+        input.template === 'restocked' ? 'store_winback_restocked' : 'store_winback_on_offer';
+      const message =
+        input.template === 'restocked' && input.productName ? input.productName : vendor.storeName;
+
+      let sent = 0;
+      let skipped = 0;
+      for (const customerId of input.customerIds) {
+        if (!ownIds.has(customerId) || recentIds.has(customerId) || optedOut.has(customerId)) {
+          skipped++;
+          continue;
+        }
+        await notifyUser({
+          userId: customerId,
+          templateKey,
+          vars: { storeName: vendor.storeName, message },
+          link: `/stores/${vendor.storeSlug}`,
+          channels: ['in_app'],
+        });
+        await prisma.winbackLog.create({
+          data: { vendorId: vendor.id, customerId, template: input.template },
+        });
+        sent++;
+      }
+      return { sent, skipped };
+    }),
+
+  /**
+   * funnel — B5: 30-day storefront views → orders conversion + repeat
+   * rate + top-viewed products (impressions from trackStoreView). The
+   * legacy empty shape for non-vendors, capability-gated ANALYTICS_VIEW
+   * for staff.
+   */
+  funnel: customerProcedure.query(async ({ ctx }) => {
+    const vendor = await vendorForStaffQuery(ctx, 'ANALYTICS_VIEW');
+    if (!vendor) {
+      return { views30d: 0, orders30d: 0, conversion: 0, repeatRate: 0, topViewed: [] };
+    }
+    const since = new Date(Date.now() - 30 * 86_400_000);
+
+    const [viewsAgg, ordersCount, distinctCustomers, repeaters, topViewed] = await Promise.all([
+      prisma.storeViewLog.aggregate({
+        where: { vendorId: vendor.id, day: { gte: since } },
+        _sum: { views: true },
+      }),
+      prisma.storeOrder.count({
+        where: { vendorId: vendor.id, createdAt: { gte: since }, status: 'FULFILLED' },
+      }),
+      prisma.storeOrder.findMany({
+        where: { vendorId: vendor.id, createdAt: { gte: since }, status: 'FULFILLED' },
+        select: { customerId: true },
+        distinct: ['customerId'],
+      }),
+      prisma.storeOrder.groupBy({
+        by: ['customerId'],
+        where: { vendorId: vendor.id, createdAt: { gte: since }, status: 'FULFILLED' },
+        having: { customerId: { _count: { gt: 1 } } },
+      }),
+      prisma.product.findMany({
+        where: { vendorId: vendor.id, isActive: true },
+        orderBy: { viewCount: 'desc' },
+        take: 5,
+        select: { id: true, nameJson: true, viewCount: true },
+      }),
+    ]);
+
+    const views30d = viewsAgg._sum.views ?? 0;
+    const conversion = views30d ? Math.round((ordersCount / views30d) * 1000) / 10 : 0;
+    const repeatRate = distinctCustomers.length
+      ? Math.round((repeaters.length / distinctCustomers.length) * 100)
+      : 0;
+
+    return {
+      views30d,
+      orders30d: ordersCount,
+      conversion,
+      repeatRate,
+      topViewed: topViewed.map((p) => ({
+        productId: p.id,
+        nameAr: (p.nameJson as { ar?: string }).ar ?? '',
+        nameEn: (p.nameJson as { en?: string }).en ?? '',
+        views: p.viewCount,
+      })),
+    };
+  }),
 
   /**
    * payoutInvoice — A2: RFC 4180 invoice CSV for one of the caller's

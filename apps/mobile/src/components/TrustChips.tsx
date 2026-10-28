@@ -13,6 +13,8 @@ interface TrustChipsProps {
   /** K3 (kids plan, W9) — child-friendly corner flag. */
   childFriendly?: boolean;
   childFriendlyLabel?: string;
+  /** B2 — computed vendor tiers (Top Rated, Fast Fulfillment, …). */
+  tierLabels?: string[];
 }
 
 /**
@@ -30,10 +32,17 @@ export function TrustChips({
   privateSuiteLabel,
   childFriendly,
   childFriendlyLabel,
+  tierLabels,
 }: TrustChipsProps) {
   const showRating = typeof rating === 'number' && rating > 0;
   return (
     <View style={styles.row}>
+      {(tierLabels ?? []).map((label) => (
+        <View key={label} style={[styles.chip, styles.chipGold]}>
+          <Icon name="star" size={11} color="#a16207" />
+          <Text style={[styles.text, styles.textGold]}>{label}</Text>
+        </View>
+      ))}
       {verifiedLabel ? (
         <View style={[styles.chip, styles.chipGreen]}>
           <Icon name="shield-check" size={11} color="#047857" />
@@ -84,8 +93,10 @@ const styles = StyleSheet.create({
   chipGreen: { backgroundColor: '#d1fae5' },
   chipAmber: { backgroundColor: '#fef3c7' },
   chipPink: { backgroundColor: '#fce7f3' },
+  chipGold: { backgroundColor: '#fef9c3' },
   text: { fontSize: 11, fontWeight: '600' },
   textGreen: { color: '#047857' },
   textAmber: { color: '#b45309' },
   textPink: { color: '#9d174d' },
+  textGold: { color: '#a16207' },
 });
