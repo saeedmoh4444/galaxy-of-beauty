@@ -3967,6 +3967,8 @@ export const miscMessages = {
   'vendorPortal.services.bookings.cancel': { ar: 'إلغاء', en: 'Cancel' },
   'vendorPortal.services.bookings.complete': { ar: 'إتمام', en: 'Complete' },
   'vendorPortal.services.bookings.reject': { ar: 'رفض', en: 'Reject' },
+  // C5g — store-service revenue tile.
+  'vendorPortal.serviceRevenue30d': { ar: 'إيراد الخدمات (٣٠ يوم)', en: 'Service revenue (30d)' },
   'vendorPortal.duplicate': { ar: 'نسخ', en: 'Duplicate' },
   'vendorPortal.draft': { ar: 'مسودة', en: 'Draft' },
   'vendorPortal.publish': { ar: 'نشر', en: 'Publish' },

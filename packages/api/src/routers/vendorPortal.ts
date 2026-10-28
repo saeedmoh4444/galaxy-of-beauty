@@ -331,6 +331,7 @@ export const vendorPortalRouter = router({
         rating: 0,
         ordersByStatus: {},
         revenue30d: 0,
+        serviceRevenue30d: 0,
         ordersCount: 0,
         aov: 0,
         customerCount: 0,
@@ -396,6 +397,20 @@ export const vendorPortalRouter = router({
       where: { vendorId: vendor.id, createdAt: { gte: thirtyDaysAgo } },
       _sum: { totalAmount: true },
     });
+    // C5g — completed store-service bookings join the 30-day revenue view
+    // (net of the booking's platform fee).
+    const recentBookings = await prisma.booking.findMany({
+      where: {
+        vendorId: vendor.id,
+        status: 'COMPLETED',
+        createdAt: { gte: thirtyDaysAgo },
+      },
+      select: { totalAmount: true, platformFee: true },
+    });
+    const serviceRevenue30d = recentBookings.reduce(
+      (sum, b) => sum + Math.max(0, Number(b.totalAmount) - Number(b.platformFee)),
+      0,
+    );
     const allAgg = await prisma.storeOrder.aggregate({
       where: { vendorId: vendor.id },
       _sum: { totalAmount: true },
@@ -450,6 +465,8 @@ export const vendorPortalRouter = router({
       topProducts,
       ordersByStatus,
       revenue30d: Number(recentAgg._sum.totalAmount ?? 0),
+      // C5g — store-service revenue (completed, net of platform fee).
+      serviceRevenue30d: Math.round(serviceRevenue30d * 100) / 100,
       ordersCount,
       aov,
       customerCount: distinctCustomers.length,

@@ -5511,6 +5511,7 @@ export const enWebMessages: Record<string, string> = {
   'vendorPortal.services.bookings.cancel': 'Cancel',
   'vendorPortal.services.bookings.complete': 'Complete',
   'vendorPortal.services.bookings.reject': 'Reject',
+  'vendorPortal.serviceRevenue30d': 'Service revenue (30d)',
   'vendorPortal.sold': 'Sold',
   'vendorPortal.status.pending-review': 'Your store is pending review',
   'vendorPortal.status.pending-review-desc':
