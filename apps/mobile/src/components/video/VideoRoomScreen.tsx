@@ -108,7 +108,11 @@ export function VideoRoomScreen({
       const pc = new RTCPeerConnection({ iceServers });
       pcRef.current = pc;
 
-      pc.onicecandidate = (event: { candidate: { toJSON: () => unknown } | null }) => {
+      // react-native-webrtc 155 types the onicecandidate/ontrack property
+      // setters as broad Event<string> handlers; addEventListener's
+      // event-map overload gives the typed RTCIceCandidateEvent/RTCTrackEvent
+      // with .candidate/.streams instead.
+      pc.addEventListener('icecandidate', (event) => {
         if (event.candidate) {
           socket.emit('video:signal', {
             bookingId: bookingIdNum,
@@ -116,12 +120,12 @@ export function VideoRoomScreen({
             payload: event.candidate.toJSON?.() ?? event.candidate,
           });
         }
-      };
-      pc.ontrack = (event: { streams: RTCMediaStream[] }) => {
+      });
+      pc.addEventListener('track', (event) => {
         const stream = event.streams[0];
         if (stream) setRemoteStreamUrl(stream.toURL());
         setStatus('live');
-      };
+      });
       pc.onconnectionstatechange = () => {
         if (
           (pc as unknown as { connectionState: string }).connectionState === 'failed' &&

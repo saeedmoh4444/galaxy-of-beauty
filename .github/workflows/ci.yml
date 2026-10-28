@@ -74,7 +74,7 @@ jobs:
           cache: 'pnpm'
       - run: pnpm install --frozen-lockfile
       - name: Start Turbo remote cache
-        uses: rharkor/caching-for-turbo@v2.5.1
+        uses: rharkor/caching-for-turbo@v2.5.2
       - run: pnpm --filter @galaxy/db exec prisma generate
       - run: pnpm type-check
 
@@ -91,7 +91,7 @@ jobs:
           cache: 'pnpm'
       - run: pnpm install --frozen-lockfile
       - name: Start Turbo remote cache
-        uses: rharkor/caching-for-turbo@v2.5.1
+        uses: rharkor/caching-for-turbo@v2.5.2
       - run: pnpm lint
 
   # ── Unit Tests ─────────────────────────────────────────────
@@ -124,7 +124,7 @@ jobs:
           cache: 'pnpm'
       - run: pnpm install --frozen-lockfile
       - name: Start Turbo remote cache
-        uses: rharkor/caching-for-turbo@v2.5.1
+        uses: rharkor/caching-for-turbo@v2.5.2
       - run: pnpm --filter @galaxy/db exec prisma generate
         env:
           DATABASE_URL: 'postgresql://gob_admin:gob_test_pass@localhost:5432/Galaxy_of_Beauty_db?schema=public'
@@ -161,7 +161,7 @@ jobs:
           cache: 'pnpm'
       - run: pnpm install --frozen-lockfile
       - name: Start Turbo remote cache
-        uses: rharkor/caching-for-turbo@v2.5.1
+        uses: rharkor/caching-for-turbo@v2.5.2
       - run: pnpm turbo run build
       - run: node scripts/check-size-budgets.mjs
 
@@ -199,7 +199,7 @@ jobs:
           cache: 'pnpm'
       - run: pnpm install --frozen-lockfile
       - name: Start Turbo remote cache
-        uses: rharkor/caching-for-turbo@v2.5.1
+        uses: rharkor/caching-for-turbo@v2.5.2
 
       - name: Generate Prisma Client
         run: pnpm --filter @galaxy/db exec prisma generate
