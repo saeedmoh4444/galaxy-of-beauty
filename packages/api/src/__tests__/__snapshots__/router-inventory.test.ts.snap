@@ -1010,6 +1010,7 @@ tutorials.filters	query	public
 tutorials.getById	query	public
 tutorials.list	query	public
 uploads.deleteUpload	mutation	protected
+uploads.finalizeShortUpload	mutation	protected
 uploads.presignedUrl	mutation	protected
 uploads.uploadAvatar	mutation	protected
 uploads.uploadImage	mutation	admin
