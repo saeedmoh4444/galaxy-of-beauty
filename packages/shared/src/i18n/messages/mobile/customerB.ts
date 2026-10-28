@@ -400,6 +400,8 @@ export const mobileCustomerBMessages = {
   'mobile.stores.services.title': { ar: 'خدمات الحجز', en: 'Bookable services' },
   'mobile.stores.services.book': { ar: 'احجزي', en: 'Book' },
   'mobile.stores.services.minutes': { ar: 'دقيقة', en: 'min' },
+  // R5 — shoppable reel strip (REELS_SHOPPABLE_PLAN).
+  'mobile.stores.reels.title': { ar: 'فيديوهات المتجر', en: 'Store reels' },
   // E2 — medical clinics screens
   'mobile.clinics.title': { ar: 'العيادات الطبية', en: 'Medical Clinics' },
   'mobile.clinics.empty': { ar: 'لا توجد عيادات', en: 'No clinics' },

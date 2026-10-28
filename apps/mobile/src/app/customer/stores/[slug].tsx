@@ -7,6 +7,7 @@ import { ServiceImage } from '@/components/ServiceImage';
 import { SkeletonList } from '@/components/SkeletonCard';
 import { TrustChips } from '@/components/TrustChips';
 import { SocialIconsRow } from '@/components/SocialIconsRow';
+import { ReelStrip } from '@/components/ReelStrip';
 import { trpc } from '@/lib/trpc-react';
 import { localize } from '@galaxy/shared';
 import { useLocale } from '@/components/LocaleProvider';
@@ -126,6 +127,8 @@ export default function StoreDetailScreen(): JSX.Element {
       />
       {/* B6 — social presence (only networks the vendor set). */}
       <SocialIconsRow links={store.socialLinks} />
+      {/* R5 — shoppable reels strip (REELS_SHOPPABLE_PLAN). */}
+      <ReelStrip vendorId={store.id} />
       {store.bannerUrl ? (
         <ServiceImage
           src={store.bannerUrl}
