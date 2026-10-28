@@ -9,6 +9,7 @@ import {
   router,
 } from '../trpc';
 import { resolveVendorActor } from './vendorPortal';
+import { getMediaQueue } from '../queues';
 
 const db = prisma;
 
@@ -199,7 +200,22 @@ export const beautyShortsRouter = router({
     .mutation(async ({ ctx, input }) => {
       const author = await resolveShortAuthor(ctx.user.id, input);
 
-      return db.short.create({
+      // R2 — 10 active reels per author; the cap keeps storage/egress
+      // costs bounded and nudges quality over volume.
+      const activeReels = await db.short.count({
+        where: {
+          type: 'reel',
+          isActive: true,
+          ...(author.technicianId !== null
+            ? { technicianId: author.technicianId }
+            : { vendorId: author.vendorId ?? undefined }),
+        },
+      });
+      if (activeReels >= 10) {
+        throw new TRPCError({ code: 'FORBIDDEN', message: 'Reel quota reached (10 active reels)' });
+      }
+
+      const created = await db.short.create({
         data: {
           type: input.type,
           technicianId: author.technicianId,
@@ -217,6 +233,20 @@ export const beautyShortsRouter = router({
           serviceId: input.serviceId,
         },
       });
+
+      // R3 — enqueue the media pipeline (ffprobe duration + ffmpeg
+      // poster). Fire-and-forget with exponential retries; the handler
+      // degrades gracefully when the binaries are absent.
+      if (created.videoUrl) {
+        const mediaQueue = getMediaQueue();
+        void mediaQueue?.add(
+          'media.process-short',
+          { shortId: created.id },
+          { attempts: 3, backoff: { type: 'exponential', delay: 5000 } },
+        );
+      }
+
+      return created;
     }),
 
   /**
