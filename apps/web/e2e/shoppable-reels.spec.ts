@@ -23,8 +23,12 @@ test('store page shows the reel strip for the demo store', async ({ page }) => {
 });
 
 test('service detail page shows the reel strip for the seeded service', async ({ page }) => {
+  // The listing shows only the 12 newest on page 1 (sort=newest) — the
+  // seeded service is found deterministically via the search box.
   await page.goto('/services');
 
+  const search = page.getByPlaceholder('بحث عن خدمة...');
+  await search.fill('قص شعر كامل');
   const haircut = page.getByRole('heading', { name: 'قص شعر كامل' }).first();
   await haircut.click();
   await expect(page).toHaveURL(/\/services\/\d+/);
