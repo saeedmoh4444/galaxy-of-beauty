@@ -4,9 +4,10 @@
 > gate is open: stores that also sell bookable services, reusing the
 > existing booking engine instead of building a parallel one.
 >
-> Status: **DELIVERED** (2026-10-27) — all 8 slices built and merged
-> (#531 C5a · #532 C5b · #534 C5c · C5d · C5e · C5f · C5g · C5h —
-> TBD-SHA). §9 open questions resolved: store-service reviews reuse
+> Status: **DELIVERED** (2026-10-28) — all 8 slices built and merged
+> (#531 C5a · #532 C5b · #534 C5c · #535 C5d · #536 C5e · #537 C5f ·
+> #538 C5g · #539 C5h — master `14dfea08`). §9 open questions resolved:
+> store-service reviews reuse
 > `ServiceReview` (vendor-scoped, later slice); commission = the
 > vendor's `commissionRate` (C5g folds completed bookings into
 > `calculateVendorSettlements`, gross = totalAmount − platformFee).
