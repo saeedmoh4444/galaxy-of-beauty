@@ -26,6 +26,7 @@ import {
   handleReviewReplyReminderSweep,
   handleQueueHealthCheck,
   handleWebhookDelivery,
+  handleShortMediaJob,
 } from './handlers';
 
 // Job types + pure helpers are re-exported from handlers.ts (routers
@@ -40,6 +41,7 @@ export type {
   CsvImportReport,
   DailyStatsJob,
   AdvisorDigestJob,
+  ShortMediaJob,
 } from './handlers';
 export { noonUtcDay } from './handlers';
 
@@ -94,6 +96,7 @@ export const disputesWorker = createWorker('gob-disputes', handleDisputeEscalati
 export const reviewsWorker = createWorker('gob-reviews', handleReviewReplyReminderSweep, 1);
 export const opsWorker = createWorker('gob-ops', handleQueueHealthCheck, 1);
 export const webhooksWorker = createWorker('gob-webhooks', handleWebhookDelivery, 2);
+export const mediaWorker = createWorker('gob-media', handleShortMediaJob, 1);
 
 /**
  * D2 — register the queue-health monitor: fires every 10 minutes and
@@ -205,6 +208,9 @@ export async function shutdownWorkers(): Promise<void> {
     slaWorker,
     disputesWorker,
     reviewsWorker,
+    opsWorker,
+    webhooksWorker,
+    mediaWorker,
   ];
   await Promise.all(workers.filter(Boolean).map((w) => w!.close()));
   console.log('[Workers] All workers shut down');
@@ -230,6 +236,7 @@ export function startWorkers(): void {
     reviewsWorker ? 'gob-reviews' : null,
     opsWorker ? 'gob-ops' : null,
     webhooksWorker ? 'gob-webhooks' : null,
+    mediaWorker ? 'gob-media' : null,
   ].filter(Boolean);
   console.log(`[Workers] Started: ${names.join(', ') || 'none (Redis unavailable)'}`);
   void registerAnalyticsScheduler();
