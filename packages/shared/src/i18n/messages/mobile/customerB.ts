@@ -114,6 +114,90 @@ export const mobileCustomerBMessages = {
   'mobile.vendorPortal.title': { ar: 'بوابة البائعين', en: 'Vendor Portal' },
   'mobile.vendorPortal.products': { ar: 'منتجات', en: 'Products' },
   'mobile.vendorPortal.sar': { ar: 'ر.س', en: 'SAR' },
+  // ---- vendor-portal seller home (Wave E1) ----
+  'mobile.vendorPortal.health': { ar: 'صحة المتجر', en: 'Store Health' },
+  'mobile.vendorPortal.verified': { ar: 'متجر موثّق', en: 'Verified store' },
+  'mobile.vendorPortal.viewStorefront': { ar: 'عرض متجري', en: 'View my storefront' },
+  'mobile.vendorPortal.reviews': { ar: '{count} تقييم', en: '{count} reviews' },
+  'mobile.vendorPortal.noBio': {
+    ar: 'أضيفي نبذة عن متجرك من لوحة التحكم على الويب',
+    en: 'Add a store bio from the web dashboard',
+  },
+  // ---- vendor-portal orders (Wave E2) ----
+  'mobile.vendorPortal.orders.title': { ar: 'الطلبات', en: 'Orders' },
+  'mobile.vendorPortal.orders.empty': { ar: 'لا توجد طلبات بعد', en: 'No orders yet' },
+  'mobile.vendorPortal.orders.emptyDescription': {
+    ar: 'ستظهر طلبات متجرك هنا فور وصولها',
+    en: 'Your store orders will appear here as they arrive',
+  },
+  'mobile.vendorPortal.orders.pending': { ar: 'قيد التنفيذ', en: 'Pending' },
+  'mobile.vendorPortal.orders.fulfilled': { ar: 'منفّذ', en: 'Fulfilled' },
+  'mobile.vendorPortal.orders.cancelled': { ar: 'ملغي', en: 'Cancelled' },
+  'mobile.vendorPortal.orders.late': { ar: 'متأخر', en: 'Late' },
+  'mobile.vendorPortal.orders.fulfill': { ar: 'تنفيذ', en: 'Fulfill' },
+  'mobile.vendorPortal.orders.cancel': { ar: 'إلغاء', en: 'Cancel' },
+  'mobile.vendorPortal.orders.cancelConfirm': { ar: 'إلغاء هذا الطلب؟', en: 'Cancel this order?' },
+  'mobile.vendorPortal.orders.cancelConfirmBody': {
+    ar: 'سيُسترجع المخزون وتُعاد المبالغ المدفوعة عبر المحفظة.',
+    en: 'Stock is restored and wallet payments are refunded.',
+  },
+  'mobile.vendorPortal.orders.keep': { ar: 'إبقاء الطلب', en: 'Keep order' },
+  'mobile.vendorPortal.orders.total': { ar: '{amount} ر.س', en: '{amount} SAR' },
+  'mobile.vendorPortal.orders.error': { ar: 'فشل تحميل الطلبات', en: 'Failed to load orders' },
+  // ---- vendor-portal order detail (Wave E2b) ----
+  'mobile.vendorPortal.orderDetail.title': { ar: 'طلب #{id}', en: 'Order #{id}' },
+  'mobile.vendorPortal.orderDetail.back': { ar: '‹ رجوع للطلبات', en: '‹ Back to orders' },
+  'mobile.vendorPortal.orderDetail.items': { ar: 'الأصناف', en: 'Items' },
+  'mobile.vendorPortal.orderDetail.customer': { ar: 'العميلة', en: 'Customer' },
+  'mobile.vendorPortal.orderDetail.contact': { ar: 'مراسلة واتساب', en: 'WhatsApp' },
+  'mobile.vendorPortal.orderDetail.dispute': { ar: 'نزاع على الطلب', en: 'Order dispute' },
+  'mobile.vendorPortal.orderDetail.disputeReason': { ar: 'السبب', en: 'Reason' },
+  'mobile.vendorPortal.orderDetail.loadError': {
+    ar: 'فشل تحميل الطلب',
+    en: 'Failed to load order',
+  },
+  'mobile.vendorPortal.orderDetail.notFound': { ar: 'الطلب غير موجود', en: 'Order not found' },
+  // ---- vendor-portal earnings (Wave E4) ----
+  'mobile.vendorPortal.earnings.title': { ar: 'الأرباح', en: 'Earnings' },
+  'mobile.vendorPortal.earnings.pending': { ar: 'قيد السداد', en: 'Pending' },
+  'mobile.vendorPortal.earnings.processed': { ar: 'مسدّد', en: 'Processed' },
+  'mobile.vendorPortal.earnings.fee': { ar: 'رسوم المنصة', en: 'Platform fees' },
+  'mobile.vendorPortal.earnings.commission': { ar: 'العمولة {rate}%', en: 'Commission {rate}%' },
+  'mobile.vendorPortal.earnings.schedule': { ar: 'جدول السداد', en: 'Payout schedule' },
+  'mobile.vendorPortal.earnings.scheduleManual': { ar: 'يدوي', en: 'Manual' },
+  'mobile.vendorPortal.earnings.scheduleWeekly': { ar: 'أسبوعي', en: 'Weekly' },
+  'mobile.vendorPortal.earnings.scheduleMonthly': { ar: 'شهري', en: 'Monthly' },
+  'mobile.vendorPortal.earnings.nextRun': {
+    ar: 'الدفعة القادمة المتوقعة: {date}',
+    en: 'Expected next run: {date}',
+  },
+  'mobile.vendorPortal.earnings.lastRun': {
+    ar: 'آخر تسوية: {date}',
+    en: 'Last settlement: {date}',
+  },
+  'mobile.vendorPortal.earnings.manualHint': {
+    ar: 'السداد اليدوي: يقوم المشرف بتسوية دفعاتك.',
+    en: 'Manual payouts: the admin settles your payments.',
+  },
+  'mobile.vendorPortal.earnings.shareInvoice': { ar: 'مشاركة الفاتورة', en: 'Share invoice' },
+  'mobile.vendorPortal.earnings.noPayouts': { ar: 'لا توجد دفعات بعد', en: 'No payouts yet' },
+  'mobile.vendorPortal.earnings.loadError': {
+    ar: 'فشل تحميل الأرباح',
+    en: 'Failed to load earnings',
+  },
+  // ---- vendor-portal socials (Wave E4b) ----
+  'mobile.vendorPortal.socials.title': { ar: 'روابط التواصل', en: 'Social links' },
+  'mobile.vendorPortal.socials.hint': {
+    ar: 'أضيفي روابط حسابات متجرك — اتركي الحقل فارغاً لإزالة الرابط.',
+    en: 'Add your store account links — leave a field empty to remove it.',
+  },
+  'mobile.vendorPortal.socials.save': { ar: 'حفظ', en: 'Save' },
+  'mobile.vendorPortal.socials.saved': { ar: 'تم حفظ الروابط', en: 'Links saved' },
+  'mobile.vendorPortal.socials.saveError': {
+    ar: 'فشل الحفظ — تأكدي من صحة الرابط (يبدأ بـ https://)',
+    en: 'Save failed — check the URL (must start with https://)',
+  },
+  'mobile.vendorPortal.socials.loadError': { ar: 'فشل تحميل الروابط', en: 'Failed to load links' },
 
   // ---- tech-onboarding ----
   'mobile.techOnboarding.title': {
@@ -300,11 +384,22 @@ export const mobileCustomerBMessages = {
   'mobile.stores.load-error': { ar: 'فشل تحميل المتاجر', en: 'Failed to load stores' },
   'mobile.stores.not-found': { ar: 'المتجر غير موجود', en: 'Store not found' },
   'mobile.stores.verified': { ar: 'متجر موثق', en: 'Verified' },
+  // B2 — computed vendor tiers.
+  'mobile.stores.badge.top-rated': { ar: 'الأعلى تقييماً', en: 'Top Rated' },
+  'mobile.stores.badge.fast-fulfillment': { ar: 'تجهيز سريع', en: 'Fast Fulfillment' },
+  'mobile.stores.badge.responsive-seller': { ar: 'بائع متفاعل', en: 'Responsive Seller' },
+  // B3 — review showcase.
+  'mobile.stores.reviews.title': { ar: 'آراء العملاء', en: 'Customer Reviews' },
+  'mobile.stores.reviews.ownerReply': { ar: 'رد المتجر', en: 'Store reply' },
   'mobile.stores.stock': { ar: 'المخزون: {count}', en: 'Stock: {count}' },
   'mobile.stores.add-to-cart': { ar: 'أضيفي للسلة', en: 'Add to cart' },
   'mobile.stores.added-to-cart': { ar: 'تمت الإضافة للسلة', en: 'Added to cart' },
   'mobile.stores.login-to-buy': { ar: 'سجلي الدخول للشراء', en: 'Sign in to buy' },
   'mobile.stores.empty-products': { ar: 'لا توجد منتجات', en: 'No products' },
+  // C5 — hybrid store-services (mobile Services section).
+  'mobile.stores.services.title': { ar: 'خدمات الحجز', en: 'Bookable services' },
+  'mobile.stores.services.book': { ar: 'احجزي', en: 'Book' },
+  'mobile.stores.services.minutes': { ar: 'دقيقة', en: 'min' },
   // E2 — medical clinics screens
   'mobile.clinics.title': { ar: 'العيادات الطبية', en: 'Medical Clinics' },
   'mobile.clinics.empty': { ar: 'لا توجد عيادات', en: 'No clinics' },

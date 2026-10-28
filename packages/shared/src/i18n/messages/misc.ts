@@ -3810,10 +3810,34 @@ export const miscMessages = {
   },
   'vendorPortal.newProduct': { ar: 'منتج جديد', en: 'New product' },
   'vendorPortal.products': { ar: 'منتج', en: 'Products' },
+  // C3 — vendor pricing rules (Wave C)
+  'vendorPortal.pricing.title': { ar: 'قواعد التسعير', en: 'Pricing rules' },
+  'vendorPortal.pricing.empty': { ar: 'لا توجد قواعد بعد', en: 'No rules yet' },
+  'vendorPortal.pricing.add': { ar: 'إضافة قاعدة', en: 'Add rule' },
+  'vendorPortal.pricing.type': { ar: 'النوع', en: 'Type' },
+  'vendorPortal.pricing.weekend': { ar: 'رفع نهاية الأسبوع', en: 'Weekend uplift' },
+  'vendorPortal.pricing.lowstock': { ar: 'حد أدنى عند انخفاض المخزون', en: 'Low-stock floor' },
+  'vendorPortal.pricing.day': { ar: 'اليوم', en: 'Day' },
+  'vendorPortal.pricing.allDays': { ar: 'كل الأيام', en: 'All days' },
+  'vendorPortal.pricing.fri': { ar: 'الجمعة', en: 'Friday' },
+  'vendorPortal.pricing.sat': { ar: 'السبت', en: 'Saturday' },
+  'vendorPortal.pricing.multiplier': { ar: 'المضاعف (≥ ١.٠)', en: 'Multiplier (≥ 1.0)' },
+  'vendorPortal.pricing.product': {
+    ar: 'المنتج (الكل إن تُرك فارغاً)',
+    en: 'Product (all if empty)',
+  },
+  'vendorPortal.pricing.override': { ar: 'تجاوز الإدارة', en: 'Admin override' },
+  'vendorPortal.pricing.active': { ar: 'نشطة', en: 'Active' },
+  'vendorPortal.pricing.deactivate': { ar: 'إيقاف', en: 'Deactivate' },
+  'vendorPortal.pricing.log': { ar: 'سجل تغيرات السعر', en: 'Price change log' },
+  'vendorPortal.pricing.logEmpty': { ar: 'لا توجد تغييرات بعد', en: 'No changes yet' },
+  'vendorPortal.pricing.byVendor': { ar: 'البائع', en: 'Vendor' },
+  'vendorPortal.pricing.byAdmin': { ar: 'الإدارة', en: 'Admin' },
   // A3 — tabbed workspace
   'vendorPortal.tab.overview': { ar: 'نظرة عامة', en: 'Overview' },
   'vendorPortal.tab.products': { ar: 'المنتجات', en: 'Products' },
   'vendorPortal.tab.deals': { ar: 'العروض', en: 'Deals' },
+  'vendorPortal.tab.pricing': { ar: 'التسعير', en: 'Pricing' },
   // C5 — bulk CSV product import.
   'vendorPortal.import.choose': { ar: 'استيراد CSV', en: 'Import CSV' },
   'vendorPortal.import.template': { ar: 'تحميل القالب', en: 'Download template' },
@@ -3856,7 +3880,47 @@ export const miscMessages = {
   'vendorPortal.productNamePlaceholder': { ar: 'اسم المنتج', en: 'Product name' },
   'vendorPortal.pricePlaceholder': { ar: 'السعر (ر.س)', en: 'Price (SAR)' },
   'vendorPortal.stockPlaceholder': { ar: 'المخزون', en: 'Stock' },
+  // C1 — product variants editor (Wave C)
+  'vendorPortal.variants.title': { ar: 'المتغيرات', en: 'Variants' },
+  'vendorPortal.variants.add': { ar: 'إضافة متغير', en: 'Add variant' },
+  'vendorPortal.variants.empty': {
+    ar: 'لا توجد متغيرات بعد — أضيفي المقاسات أو الدرجات.',
+    en: 'No variants yet — add sizes or shades.',
+  },
+  'vendorPortal.variants.nameAr': { ar: 'الاسم (عربي)', en: 'Name (Arabic)' },
+  'vendorPortal.variants.nameEn': { ar: 'الاسم (إنجليزي)', en: 'Name (English)' },
+  'vendorPortal.variants.sku': { ar: 'رمز SKU (اختياري)', en: 'SKU (optional)' },
+  'vendorPortal.variants.delta': { ar: 'فرق السعر (+/-)', en: 'Price delta (+/-)' },
+  'vendorPortal.variants.threshold': { ar: 'حد التنبيه', en: 'Low-stock threshold' },
+  'vendorPortal.variants.active': { ar: 'نشط', en: 'Active' },
   'vendorPortal.add': { ar: 'إضافة', en: 'Add' },
+  // C2b — stock-in (barcode/QR + manual)
+  'vendorPortal.stockin.title': { ar: 'استلام مخزون', en: 'Stock in' },
+  'vendorPortal.stockin.quantity': { ar: 'الكمية', en: 'Quantity' },
+  'vendorPortal.stockin.variant': { ar: 'المتغير', en: 'Variant' },
+  'vendorPortal.stockin.base': { ar: 'المنتج الأساسي', en: 'Base product' },
+  // C2 — inventory v2: bulk stock editor + velocity forecast hints
+  'vendorPortal.bulk.title': { ar: 'تعديل المخزون الجماعي', en: 'Bulk stock editor' },
+  'vendorPortal.bulk.enter': { ar: 'تعديل جماعي', en: 'Bulk edit' },
+  'vendorPortal.bulk.exit': { ar: 'خروج', en: 'Exit' },
+  'vendorPortal.bulk.save': { ar: 'حفظ الكل', en: 'Save all' },
+  'vendorPortal.bulk.saved': { ar: 'تم حفظ المخزون', en: 'Stock saved' },
+  'vendorPortal.bulk.forecast': {
+    ar: '~{days} يوم بالمعدل الحالي',
+    en: '~{days} days at current velocity',
+  },
+  'vendorPortal.bulk.noVelocity': { ar: 'بيانات غير كافية بعد', en: 'Not enough data yet' },
+  // C4 — rich media + product-level SEO (editor section)
+  'vendorPortal.media.section': { ar: 'الوسائط و SEO', en: 'Media & SEO' },
+  'vendorPortal.media.video': { ar: 'رابط الفيديو', en: 'Video URL' },
+  'vendorPortal.media.metaTitleAr': { ar: 'عنوان SEO (عربي)', en: 'SEO title (Arabic)' },
+  'vendorPortal.media.metaTitleEn': { ar: 'عنوان SEO (إنجليزي)', en: 'SEO title (English)' },
+  'vendorPortal.media.metaDescAr': { ar: 'وصف SEO (عربي)', en: 'SEO description (Arabic)' },
+  'vendorPortal.media.metaDescEn': { ar: 'وصف SEO (إنجليزي)', en: 'SEO description (English)' },
+  'vendorPortal.media.arTryOn': {
+    ar: 'رابط تجربة AR (اختياري)',
+    en: 'AR try-on link (optional)',
+  },
   // C2 — listing approval chips (strict mode)
   'vendorPortal.approval.pending': { ar: 'قيد المراجعة', en: 'Under review' },
   'vendorPortal.approval.rejected': { ar: 'مرفوض', en: 'Rejected' },
@@ -3864,6 +3928,47 @@ export const miscMessages = {
   'vendorPortal.edit': { ar: 'تعديل', en: 'Edit' },
   'vendorPortal.editProduct': { ar: 'تعديل المنتج', en: 'Edit product' },
   'vendorPortal.save': { ar: 'حفظ', en: 'Save' },
+  // C5 — hybrid store-services (H2): portal services tab.
+  'vendorPortal.services.title': { ar: 'الخدمات', en: 'Services' },
+  'vendorPortal.services.add': { ar: 'إضافة خدمة', en: 'Add service' },
+  'vendorPortal.services.edit': { ar: 'تعديل', en: 'Edit' },
+  'vendorPortal.services.deactivate': { ar: 'إلغاء التفعيل', en: 'Deactivate' },
+  'vendorPortal.services.empty': {
+    ar: 'لا توجد خدمات بعد — أضف خدمتك الأولى ليحجزها العملاء.',
+    en: 'No services yet — add your first service so customers can book it.',
+  },
+  'vendorPortal.services.nameAr': { ar: 'الاسم (عربي)', en: 'Name (Arabic)' },
+  'vendorPortal.services.nameEn': { ar: 'الاسم (إنجليزي)', en: 'Name (English)' },
+  'vendorPortal.services.price': { ar: 'السعر (ر.س)', en: 'Price (SAR)' },
+  'vendorPortal.services.duration': { ar: 'المدة (دقيقة)', en: 'Duration (minutes)' },
+  'vendorPortal.services.minutes': { ar: 'دقيقة', en: 'min' },
+  'vendorPortal.services.image': { ar: 'رابط الصورة', en: 'Image URL' },
+  'vendorPortal.services.inactive': { ar: 'غير مفعّلة', en: 'Inactive' },
+  'vendorPortal.services.slots.title': { ar: 'الأوقات المتاحة', en: 'Availability slots' },
+  'vendorPortal.services.slots.add': { ar: 'إضافة وقت', en: 'Add slot' },
+  'vendorPortal.services.slots.start': { ar: 'البداية', en: 'Start' },
+  'vendorPortal.services.slots.end': { ar: 'النهاية', en: 'End' },
+  'vendorPortal.services.slots.booked': { ar: 'محجوز', en: 'Booked' },
+  'vendorPortal.services.slots.free': { ar: 'متاح', en: 'Free' },
+  'vendorPortal.services.slots.empty': {
+    ar: 'لا توجد أوقات قادمة. انشر أوقاتًا ليتمكن العملاء من الحجز.',
+    en: 'No upcoming slots. Publish slots so customers can book.',
+  },
+  'vendorPortal.services.bookings.title': { ar: 'الحجوزات', en: 'Bookings' },
+  'vendorPortal.services.bookings.empty': { ar: 'لا توجد حجوزات بعد.', en: 'No bookings yet.' },
+  'vendorPortal.services.bookings.code': { ar: 'الرمز', en: 'Code' },
+  'vendorPortal.services.bookings.customer': { ar: 'العميل', en: 'Customer' },
+  'vendorPortal.services.bookings.status': { ar: 'الحالة', en: 'Status' },
+  'vendorPortal.services.bookings.when': { ar: 'الموعد', en: 'When' },
+  // C5f — booking status actions (same state machine as the engine).
+  'vendorPortal.services.bookings.actions': { ar: 'إجراءات', en: 'Actions' },
+  'vendorPortal.services.bookings.accept': { ar: 'قبول', en: 'Accept' },
+  'vendorPortal.services.bookings.start': { ar: 'بدء', en: 'Start' },
+  'vendorPortal.services.bookings.cancel': { ar: 'إلغاء', en: 'Cancel' },
+  'vendorPortal.services.bookings.complete': { ar: 'إتمام', en: 'Complete' },
+  'vendorPortal.services.bookings.reject': { ar: 'رفض', en: 'Reject' },
+  // C5g — store-service revenue tile.
+  'vendorPortal.serviceRevenue30d': { ar: 'إيراد الخدمات (٣٠ يوم)', en: 'Service revenue (30d)' },
   'vendorPortal.duplicate': { ar: 'نسخ', en: 'Duplicate' },
   'vendorPortal.draft': { ar: 'مسودة', en: 'Draft' },
   'vendorPortal.publish': { ar: 'نشر', en: 'Publish' },
@@ -3879,6 +3984,17 @@ export const miscMessages = {
   // D1 — vendor analytics center (read-model series).
   'vendorPortal.tab.analytics': { ar: 'التحليلات', en: 'Analytics' },
   'vendorPortal.analytics.title': { ar: 'مركز التحليلات', en: 'Analytics center' },
+  // B5 — funnel analytics.
+  'vendorPortal.analytics.funnel.title': {
+    ar: 'قمع التحويل (٣٠ يوماً)',
+    en: 'Conversion funnel (30d)',
+  },
+  'vendorPortal.analytics.funnel.views': { ar: 'زيارات المتجر', en: 'Store views' },
+  'vendorPortal.analytics.funnel.orders': { ar: 'طلبات مكتملة', en: 'Fulfilled orders' },
+  'vendorPortal.analytics.funnel.conversion': { ar: 'معدل التحويل', en: 'Conversion' },
+  'vendorPortal.analytics.funnel.repeatRate': { ar: 'نسبة العودة', en: 'Repeat rate' },
+  'vendorPortal.analytics.funnel.topViewed': { ar: 'الأكثر مشاهدة', en: 'Most viewed' },
+  'vendorPortal.analytics.funnel.viewCount': { ar: '{count} مشاهدة', en: '{count} views' },
   'vendorPortal.analytics.range': { ar: 'نطاق الأيام', en: 'Day range' },
   'vendorPortal.analytics.revenue': { ar: 'الإيرادات', en: 'Revenue' },
   'vendorPortal.analytics.orders': { ar: 'الطلبات', en: 'Orders' },
@@ -3924,6 +4040,22 @@ export const miscMessages = {
   'vendorPortal.health.hint.stock': {
     ar: 'صحة المخزون منخفضة — أعيدي تزويد المنتجات تحت الحد',
     en: 'Stock health is low — restock products below their thresholds',
+  },
+  // A5 — quality score v2 hints.
+  'vendorPortal.health.hint.sla': {
+    ar: '{percent}٪ من الطلبات تجاوزت مهلة التنفيذ — قلّصي نافذة الوعود أو نفّذي أسرع',
+    en: '{percent}% of orders breached your fulfillment window — promise less or ship faster',
+  },
+  'vendorPortal.health.hint.dispute': {
+    ar: '{percent}٪ من النزاعات تصاعدت للإدارة — ردّي خلال ٤٨ ساعة',
+    en: '{percent}% of disputes escalated to the platform — respond within 48h',
+  },
+  // B6 — social presence.
+  'vendorPortal.social.title': { ar: 'حسابات التواصل الاجتماعي', en: 'Social media' },
+  'vendorPortal.social.save': { ar: 'حفظ الروابط', en: 'Save links' },
+  'vendorPortal.social.hint': {
+    ar: 'تظهر الروابط على صفحة متجرك العامة للعملاء.',
+    en: 'Links appear on your public store page.',
   },
   'vendorPortal.earnings.title': {
     ar: 'مركز الأرباح والتسويات',
@@ -4092,6 +4224,29 @@ export const miscMessages = {
   'vendorPortal.reviews.trend': { ar: 'آخر ٨ أسابيع', en: 'Last 8 weeks' },
   // E5 — CRM-lite (customers tab).
   'vendorPortal.tab.customers': { ar: 'العملاء', en: 'Customers' },
+  // D4 — first-visit onboarding tour.
+  'vendorPortal.tour.title': { ar: 'جولة سريعة في متجرك', en: 'Quick tour of your store' },
+  'vendorPortal.tour.skip': { ar: 'تخطي', en: 'Skip' },
+  'vendorPortal.tour.next': { ar: 'التالي', en: 'Next' },
+  'vendorPortal.tour.done': { ar: 'تم', en: 'Done' },
+  'vendorPortal.tour.step.overview': {
+    ar: 'هنا نظرة عامة على متجرك: المبيعات والصحة والتنبيهات.',
+    en: 'Your store at a glance: sales, health and alerts.',
+  },
+  'vendorPortal.tour.step.products': {
+    ar: 'أضف منتجاتك وخدمات الحجز من تبويبي المنتجات والخدمات.',
+    en: 'Add products and bookable services from the products and services tabs.',
+  },
+  'vendorPortal.tour.step.orders': {
+    ar: 'تابع طلباتك وحجوزاتك وجّهزها في الوقت.',
+    en: 'Track your orders and bookings and fulfill them on time.',
+  },
+  'vendorPortal.tour.step.earnings': {
+    ar: 'راقب أرباحك وجدول الدفعات من هنا.',
+    en: 'Watch your earnings and payout schedule here.',
+  },
+  // C5 — hybrid store-services tab label.
+  'vendorPortal.tab.services': { ar: 'الخدمات', en: 'Services' },
   // F1 — vendor inbox (notifications domain).
   'vendorPortal.inbox.title': { ar: 'الوارد', en: 'Inbox' },
   'vendorPortal.inbox.empty': { ar: 'لا توجد إشعارات بعد', en: 'No notifications yet' },
@@ -4100,6 +4255,28 @@ export const miscMessages = {
   'vendorPortal.customers.total': { ar: 'إجمالي العملاء', en: 'Total customers' },
   'vendorPortal.customers.repeaters': { ar: 'عملاء متكررون', en: 'Repeat customers' },
   'vendorPortal.customers.rate': { ar: 'نسبة التكرار', en: 'Repeat rate' },
+  // B4 — win-back toolkit.
+  'vendorPortal.customers.winback.title': { ar: 'استرجاع العملاء', en: 'Win-back customers' },
+  'vendorPortal.customers.winback.hint': {
+    ar: 'قوالب جاهزة فقط — إرسال واحد لكل عميلة كل ١٤ يوماً، مع احترام إلغاء الاشتراك.',
+    en: 'Pre-approved templates only — one send per customer per 14 days, opt-outs respected.',
+  },
+  'vendorPortal.customers.winback.restocked': {
+    ar: 'أعدنا توفير منتجك',
+    en: 'We restocked your product',
+  },
+  'vendorPortal.customers.winback.onOffer': {
+    ar: 'عروض على مفضلاتك',
+    en: 'Offers on your favorites',
+  },
+  'vendorPortal.customers.winback.send': {
+    ar: 'إرسال إلى {count}',
+    en: 'Send to {count}',
+  },
+  'vendorPortal.customers.winback.result': {
+    ar: 'أُرسل {sent} · تم التخطي {skipped}',
+    en: 'Sent {sent} · Skipped {skipped}',
+  },
   'vendorPortal.customers.empty': {
     ar: 'لا توجد طلبات على متجرك بعد',
     en: 'No orders on your store yet',
@@ -4133,8 +4310,23 @@ export const miscMessages = {
   'stores.qr.download': { ar: 'تحميل الرمز', en: 'Download QR' },
   'stores.product-count': { ar: '{count} منتج', en: '{count} products' },
   'stores.verified': { ar: 'متجر موثق', en: 'Verified' },
+  'stores.variant-select': { ar: 'اختيار متغير', en: 'Select a variant' },
+  // B2 — computed vendor tiers.
+  'stores.badge.top-rated': { ar: 'الأعلى تقييماً', en: 'Top Rated' },
+  'stores.badge.fast-fulfillment': { ar: 'تجهيز سريع', en: 'Fast Fulfillment' },
+  'stores.badge.responsive-seller': { ar: 'بائع متفاعل', en: 'Responsive Seller' },
+  // B3 — review showcase.
+  'stores.reviews.title': { ar: 'آراء العملاء', en: 'Customer Reviews' },
+  'stores.reviews.replied': { ar: 'رد المتجر', en: 'Store replied' },
+  'stores.reviews.ownerReply': { ar: 'رد المتجر', en: 'Store reply' },
   'stores.empty-products': { ar: 'لا توجد منتجات في هذا المتجر', en: 'No products in this store' },
+  // C5 — hybrid store-services (storefront Services tab).
+  'stores.services.title': { ar: 'خدمات الحجز', en: 'Bookable services' },
+  'stores.services.book': { ar: 'احجزي الآن', en: 'Book' },
+  'stores.services.minutes': { ar: 'دقيقة', en: 'min' },
   'stores.stock': { ar: 'المخزون: {count}', en: 'Stock: {count}' },
+  // C4c — AR try-on link on product cards.
+  'stores.ar-try-on': { ar: 'تجربة AR', en: 'AR try-on' },
   'stores.add-to-cart': { ar: 'أضيفي للسلة', en: 'Add to cart' },
   'stores.added-to-cart': { ar: 'تمت الإضافة للسلة', en: 'Added to cart' },
   'stores.login-to-buy': { ar: 'سجلي الدخول للشراء', en: 'Sign in to buy' },

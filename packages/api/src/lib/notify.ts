@@ -37,6 +37,8 @@ export interface NotifyInput {
   templateKey: string;
   vars?: NotifyVars;
   link?: string;
+  /** E2 — push deep-link payload (Expo notification content.data). */
+  data?: Record<string, string>;
   /** Override the template's default channels (e.g. reminders are push-only). */
   channels?: string[];
 }
@@ -46,6 +48,7 @@ export async function notifyUser({
   templateKey,
   vars = {},
   link,
+  data,
   channels,
 }: NotifyInput): Promise<void> {
   const template = await prisma.notificationTemplate.findUnique({
@@ -109,6 +112,7 @@ export async function notifyUser({
           bodyEn: bodyJson.en,
           channels: external,
           link,
+          data,
           skipInApp: true, // the row above already exists
         },
         { attempts: 3, backoff: { type: 'exponential', delay: 1000 } },

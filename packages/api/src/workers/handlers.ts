@@ -43,6 +43,9 @@ export interface NotificationJob {
   bodyAr: string;
   bodyEn: string;
   channels: string[]; // ['email', 'sms', 'push', 'in_app']
+  link?: string;
+  /** E2 — push deep-link payload (Expo notification content.data). */
+  data?: Record<string, string>;
   idempotencyKey?: string;
   /** B.26: notifyUser() already created the in-app row — skip it here. */
   skipInApp?: boolean;
@@ -157,6 +160,7 @@ export async function handleNotificationJob(job: Job<NotificationJob>): Promise<
       await sendPushToUser(userId, {
         title: user.preferredLanguage === 'en' ? titleEn : titleAr,
         body: user.preferredLanguage === 'en' ? bodyEn : bodyAr,
+        data: job.data.data,
       });
     }
     // 6.5 WhatsApp — Cloud API when configured; silent no-op otherwise
@@ -1010,4 +1014,105 @@ export async function handleDisputeEscalationSweep(_job: Job<Record<string, neve
   }
 
   return { escalated };
+}
+
+/**
+ * handleReviewReplyReminderSweep — B3: nudge vendors about reviews left
+ * unanswered for 48h+. One reminder per review (reminderSentAt stamp);
+ * replied reviews are never touched. Feeds the reviews-center reply flow
+ * (E4) and closes the loop customers see on the storefront.
+ */
+export async function handleReviewReplyReminderSweep(_job: Job<Record<string, never>>): Promise<{
+  reminded: number;
+}> {
+  const deadline = new Date(Date.now() - 48 * 3_600_000);
+  const candidates = await prisma.productReview.findMany({
+    where: { repliedAt: null, reminderSentAt: null, createdAt: { lte: deadline } },
+    select: {
+      id: true,
+      product: { select: { nameJson: true, vendor: { select: { userId: true } } } },
+    },
+  });
+
+  let reminded = 0;
+  for (const review of candidates) {
+    try {
+      await prisma.productReview.update({
+        where: { id: review.id },
+        data: { reminderSentAt: new Date() },
+      });
+      const userId = review.product.vendor.userId;
+      if (userId) {
+        await notifyUser({
+          userId,
+          templateKey: 'review_reply_reminder',
+          vars: { productName: (review.product.nameJson as { ar?: string }).ar ?? '' },
+          link: '/store?tab=reviews',
+          channels: ['in_app'],
+        });
+      }
+      reminded++;
+    } catch {
+      // Never break the sweep on one row.
+    }
+  }
+
+  return { reminded };
+}
+
+/**
+ * handleQueueHealthCheck — D2: the periodic ops monitor. Snapshots every
+ * queue's depth/failure counts and raises a Sentry warning/error when a
+ * queue stalls or accumulates failures (the brain_code P0). Degrades to a
+ * no-op assessment when Redis is down — infra absence is not a stall.
+ */
+export async function handleQueueHealthCheck(): Promise<{
+  status: 'ok' | 'warn' | 'critical';
+  reasons: string[];
+}> {
+  const { getQueueHealth, assessQueueHealth } = await import('../lib/queueHealth');
+  const { captureMessage } = await import('../lib/sentry');
+  const health = await getQueueHealth();
+  const assessed = assessQueueHealth(health);
+  if (assessed.status !== 'ok') {
+    await captureMessage(
+      `Queue health ${assessed.status}: ${assessed.reasons.join('; ')}`,
+      assessed.status === 'critical' ? 'error' : 'warning',
+    );
+  }
+  return assessed;
+}
+
+/**
+ * handleWebhookDelivery — D1b: POST the signed event to the vendor's
+ * endpoint. Non-2xx throws so BullMQ retries (5 exponential attempts);
+ * deleted/deactivated webhooks return without delivering.
+ */
+export async function handleWebhookDelivery(
+  job: Job<{
+    webhookId: number;
+    event: string;
+    payload: Record<string, unknown>;
+  }>,
+): Promise<{ ok: boolean }> {
+  const { webhookId, event, payload } = job.data;
+  const webhook = await prisma.vendorWebhook.findUnique({ where: { id: webhookId } });
+  if (!webhook || !webhook.isActive) return { ok: true };
+
+  const { signWebhookPayload } = await import('../lib/webhookSigning');
+  const body = JSON.stringify({ event, data: payload, deliveredAt: new Date().toISOString() });
+  const signature = signWebhookPayload(webhook.secret, body);
+  const res = await fetch(webhook.url, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'X-Gob-Signature': `sha256=${signature}`,
+    },
+    body,
+    signal: AbortSignal.timeout(10_000),
+  });
+  if (!res.ok) {
+    throw new Error(`Webhook #${webhookId} delivery failed: HTTP ${res.status}`);
+  }
+  return { ok: true };
 }

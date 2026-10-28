@@ -15,6 +15,7 @@ import {
 } from '@galaxy/ui';
 import { useLocale } from '@/components/LocaleProvider';
 import { type TranslationKey } from '@galaxy/shared';
+import { OpsPanel } from '@/components/admin/OpsPanel';
 
 type AdminHealth = RouterOutput['adminTools']['health'];
 
@@ -166,6 +167,10 @@ export default function AdminDashboardPage(): JSX.Element {
             </div>
           </div>
         </Card>
+
+        {/* D2b — vendor-ops view: queue lag, fulfillment backlog, SLA
+            breaches and open disputes. */}
+        <OpsPanel />
       </PageContainer>
     </>
   );

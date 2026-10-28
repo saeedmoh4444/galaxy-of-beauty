@@ -23,6 +23,9 @@ import {
   handlePayoutScheduleJob,
   handleOrderSlaSweep,
   handleDisputeEscalationSweep,
+  handleReviewReplyReminderSweep,
+  handleQueueHealthCheck,
+  handleWebhookDelivery,
 } from './handlers';
 
 // Job types + pure helpers are re-exported from handlers.ts (routers
@@ -88,6 +91,27 @@ export const remindersWorker = createWorker('gob-reminders', handleLicenseExpiry
 export const payoutsWorker = createWorker('gob-payouts', handlePayoutScheduleJob, 1);
 export const slaWorker = createWorker('gob-sla', handleOrderSlaSweep, 1);
 export const disputesWorker = createWorker('gob-disputes', handleDisputeEscalationSweep, 1);
+export const reviewsWorker = createWorker('gob-reviews', handleReviewReplyReminderSweep, 1);
+export const opsWorker = createWorker('gob-ops', handleQueueHealthCheck, 1);
+export const webhooksWorker = createWorker('gob-webhooks', handleWebhookDelivery, 2);
+
+/**
+ * D2 — register the queue-health monitor: fires every 10 minutes and
+ * raises Sentry warnings/errors when a queue stalls (see lib/queueHealth).
+ */
+export async function registerOpsScheduler(): Promise<void> {
+  const { getOpsQueue } = await import('../queues');
+  const queue = getOpsQueue();
+  if (!queue) {
+    console.warn('[Workers] Redis unavailable — ops scheduler not registered');
+    return;
+  }
+  await queue.upsertJobScheduler(
+    'queue-health-check',
+    { pattern: '*/10 * * * *' },
+    { name: 'ops.health-check', data: {} },
+  );
+}
 
 /**
  * D1 — register the nightly materialization: fires at 00:30 KSA (21:30Z
@@ -152,6 +176,15 @@ export async function registerAnalyticsScheduler(): Promise<void> {
       { name: 'disputes.escalate', data: {} },
     );
   }
+  // B3 — daily review-reply reminder sweep (09:15 UTC).
+  const reviewsQueue = (await import('../queues')).getReviewsQueue();
+  if (reviewsQueue) {
+    await reviewsQueue.upsertJobScheduler(
+      'review-reminder-daily',
+      { pattern: '15 9 * * *' },
+      { name: 'reviews.remind', data: {} },
+    );
+  }
   console.log('[Workers] Schedulers registered (analytics 30 21 UTC, advisor 0 8 * * 0 UTC)');
 }
 
@@ -171,6 +204,7 @@ export async function shutdownWorkers(): Promise<void> {
     payoutsWorker,
     slaWorker,
     disputesWorker,
+    reviewsWorker,
   ];
   await Promise.all(workers.filter(Boolean).map((w) => w!.close()));
   console.log('[Workers] All workers shut down');
@@ -193,7 +227,11 @@ export function startWorkers(): void {
     payoutsWorker ? 'gob-payouts' : null,
     slaWorker ? 'gob-sla' : null,
     disputesWorker ? 'gob-disputes' : null,
+    reviewsWorker ? 'gob-reviews' : null,
+    opsWorker ? 'gob-ops' : null,
+    webhooksWorker ? 'gob-webhooks' : null,
   ].filter(Boolean);
   console.log(`[Workers] Started: ${names.join(', ') || 'none (Redis unavailable)'}`);
   void registerAnalyticsScheduler();
+  void registerOpsScheduler();
 }

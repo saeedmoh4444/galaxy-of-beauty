@@ -164,6 +164,42 @@ export function getDisputesQueue(): Queue | null {
   }
 }
 
+// B3 — review reply reminder sweep (unanswered reviews past 48h).
+let _reviewsQueue: Queue | null = null;
+export function getReviewsQueue(): Queue | null {
+  if (_reviewsQueue) return _reviewsQueue;
+  try {
+    _reviewsQueue = createQueue('gob-reviews');
+    return _reviewsQueue;
+  } catch {
+    return null;
+  }
+}
+
+// D2 — queue health monitor (every 10 minutes, raises Sentry on stalls).
+let _opsQueue: Queue | null = null;
+export function getOpsQueue(): Queue | null {
+  if (_opsQueue) return _opsQueue;
+  try {
+    _opsQueue = createQueue('gob-ops');
+    return _opsQueue;
+  } catch {
+    return null;
+  }
+}
+
+// D1b — vendor webhook delivery (HMAC-signed, 5 exponential retries).
+let _webhooksQueue: Queue | null = null;
+export function getWebhooksQueue(): Queue | null {
+  if (_webhooksQueue) return _webhooksQueue;
+  try {
+    _webhooksQueue = createQueue('gob-webhooks');
+    return _webhooksQueue;
+  } catch {
+    return null;
+  }
+}
+
 // Convenience: all queues
 export function getAllQueues(): Record<string, Queue | null> {
   return {
@@ -178,5 +214,6 @@ export function getAllQueues(): Record<string, Queue | null> {
     payouts: getPayoutsQueue(),
     sla: getSlaQueue(),
     disputes: getDisputesQueue(),
+    reviews: getReviewsQueue(),
   };
 }
