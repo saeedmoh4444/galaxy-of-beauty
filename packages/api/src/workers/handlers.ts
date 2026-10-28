@@ -6,6 +6,10 @@
  * workers that poll Redis.
  */
 import type { Job } from 'bullmq';
+import { execFile } from 'node:child_process';
+import os from 'node:os';
+import path from 'node:path';
+import fs from 'node:fs/promises';
 import { prisma } from '@galaxy/db';
 import {
   createGoogleCalendarEvent,
@@ -17,6 +21,7 @@ import { creditLoyaltyPoints } from '../lib/loyalty';
 import { sendEmail, emailShell } from '../lib/email';
 import { notifyUser } from '../lib/notify';
 import { calculateVendorSettlements } from '../lib/storePayouts';
+import { uploadFile } from '../lib/storage';
 
 // ── Job type definitions ──
 
@@ -1115,4 +1120,83 @@ export async function handleWebhookDelivery(
     throw new Error(`Webhook #${webhookId} delivery failed: HTTP ${res.status}`);
   }
   return { ok: true };
+}
+
+// ── R3 media pipeline (REELS_SHOPPABLE_PLAN) ──────────────────────────
+
+export interface ShortMediaJob {
+  shortId: number;
+}
+
+/** Callback-style execFile wrapper — resolves { stdout, stderr } and
+ *  rejects on any spawn failure (missing binary included). */
+function runBinary(
+  cmd: string,
+  args: string[],
+  timeoutMs: number,
+): Promise<{ stdout: string; stderr: string }> {
+  return new Promise((resolve, reject) => {
+    execFile(cmd, args, { timeout: timeoutMs }, (err, stdout, stderr) => {
+      if (err) reject(err);
+      else resolve({ stdout: stdout ?? '', stderr: stderr ?? '' });
+    });
+  });
+}
+
+/**
+ * handleShortMediaJob — R3: enrich a reel upload with real metadata.
+ * ffprobe replaces the uploader-supplied durationSec; ffmpeg extracts a
+ * poster frame (720px wide) uploaded next to the original. Both binaries
+ * are OPTIONAL — dev/CI machines without them degrade gracefully and
+ * leave the short untouched (no fabricated metadata, no job failures).
+ */
+export async function handleShortMediaJob(
+  job: Job<ShortMediaJob>,
+): Promise<{ durationSec?: number; poster?: boolean; skipped?: string }> {
+  const { shortId } = job.data;
+  const short = await prisma.short.findUnique({ where: { id: shortId } });
+  if (!short || !short.videoUrl) return { skipped: 'no-video' };
+
+  let durationSec: number | null = null;
+  let posterUrl: string | null = null;
+
+  try {
+    const { stdout } = await runBinary(
+      'ffprobe',
+      ['-v', 'error', '-show_entries', 'format=duration', '-of', 'json', short.videoUrl],
+      15_000,
+    );
+    const parsed = JSON.parse(stdout) as { format?: { duration?: string } };
+    const d = Number(parsed.format?.duration);
+    if (Number.isFinite(d) && d > 0) durationSec = Math.round(d);
+  } catch {
+    // binary missing or probe failed — keep the uploader's durationSec
+  }
+
+  try {
+    const tmp = path.join(os.tmpdir(), `poster-${shortId}-${Date.now()}.jpg`);
+    await runBinary(
+      'ffmpeg',
+      ['-y', '-i', short.videoUrl, '-ss', '1', '-frames:v', '1', '-vf', 'scale=720:-2', tmp],
+      30_000,
+    );
+    const buffer = await fs.readFile(tmp);
+    const up = await uploadFile(buffer, 'poster.jpg', `media/${shortId}`, 'image/jpeg');
+    posterUrl = up.url;
+    await fs.unlink(tmp).catch(() => {});
+  } catch {
+    // no ffmpeg — no poster
+  }
+
+  if (durationSec === null && posterUrl === null) return { skipped: 'no-media-binaries' };
+
+  await prisma.short.update({
+    where: { id: shortId },
+    data: {
+      ...(durationSec !== null ? { durationSec } : {}),
+      ...(posterUrl ? { thumbnailUrl: posterUrl } : {}),
+    },
+  });
+
+  return { durationSec: durationSec ?? short.durationSec, poster: posterUrl !== null };
 }

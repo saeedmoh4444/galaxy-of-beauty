@@ -9,6 +9,7 @@ import {
   router,
 } from '../trpc';
 import { resolveVendorActor } from './vendorPortal';
+import { getMediaQueue } from '../queues';
 
 const db = prisma;
 
@@ -214,7 +215,7 @@ export const beautyShortsRouter = router({
         throw new TRPCError({ code: 'FORBIDDEN', message: 'Reel quota reached (10 active reels)' });
       }
 
-      return db.short.create({
+      const created = await db.short.create({
         data: {
           type: input.type,
           technicianId: author.technicianId,
@@ -232,6 +233,20 @@ export const beautyShortsRouter = router({
           serviceId: input.serviceId,
         },
       });
+
+      // R3 — enqueue the media pipeline (ffprobe duration + ffmpeg
+      // poster). Fire-and-forget with exponential retries; the handler
+      // degrades gracefully when the binaries are absent.
+      if (created.videoUrl) {
+        const mediaQueue = getMediaQueue();
+        void mediaQueue?.add(
+          'media.process-short',
+          { shortId: created.id },
+          { attempts: 3, backoff: { type: 'exponential', delay: 5000 } },
+        );
+      }
+
+      return created;
     }),
 
   /**
