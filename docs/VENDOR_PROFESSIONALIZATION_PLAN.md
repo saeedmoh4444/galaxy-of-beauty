@@ -66,6 +66,28 @@ and social links — while deep work (editors, exports, analytics) stays web.
 
 ---
 
+## 0d. Wave C — delivery record (DELIVERED 2026-10-27, master TBD-SHA)
+
+| Item                     | PRs              | Shipped                                                                                                                                                  |
+| ------------------------ | ---------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| C1 product variants      | #516, #527       | `ProductVariant` + editor + web/mobile pickers + variant cart lines                                                                                      |
+| C2 inventory v2          | #517, #526       | bulk editor + velocity forecasts + stock-in flow (portal)                                                                                                |
+| C3 pricing rules         | #518, #523, #528 | vendor rules engine + portal tab + change log + checkout-time cart math                                                                                  |
+| C4 media + product SEO   | #519, #529       | multi-image galleries/video/AR fields + editor + storefront consumption                                                                                  |
+| C5 hybrid store-services | #531–#53x        | the flagship — schema + pseudo-technician + CRUD → booking reuse → portal/storefront/mobile UI → status actions → payouts → polish (see the hybrid plan) |
+
+## 0e. Wave D — delivery record (DELIVERED 2026-10-27 except user-gated, master TBD-SHA)
+
+| Item                     | PRs              | Shipped                                                     |
+| ------------------------ | ---------------- | ----------------------------------------------------------- |
+| D1 vendor API + webhooks | #522, #524, #530 | API keys + HMAC webhooks + stock writes (products/variants) |
+| D2 queue ops visibility  | #520, #525       | health score + ops admin view (queue lag + backlog)         |
+| D4 vendor UX polish      | #533             | onboarding tour + dark-mode/Arabic audits (both clean)      |
+| D3 staging               | —                | user-gated (infra cost decision)                            |
+| D5 delivery integration  | —                | user-gated (carrier partner contract)                       |
+
+---
+
 ## 1. Wave A — Trust & Operations (the professional backbone)
 
 **A1 — Store staff accounts (H1).**

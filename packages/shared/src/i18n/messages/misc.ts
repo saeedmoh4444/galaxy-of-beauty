@@ -3894,6 +3894,11 @@ export const miscMessages = {
   'vendorPortal.variants.threshold': { ar: 'حد التنبيه', en: 'Low-stock threshold' },
   'vendorPortal.variants.active': { ar: 'نشط', en: 'Active' },
   'vendorPortal.add': { ar: 'إضافة', en: 'Add' },
+  // C2b — stock-in (barcode/QR + manual)
+  'vendorPortal.stockin.title': { ar: 'استلام مخزون', en: 'Stock in' },
+  'vendorPortal.stockin.quantity': { ar: 'الكمية', en: 'Quantity' },
+  'vendorPortal.stockin.variant': { ar: 'المتغير', en: 'Variant' },
+  'vendorPortal.stockin.base': { ar: 'المنتج الأساسي', en: 'Base product' },
   // C2 — inventory v2: bulk stock editor + velocity forecast hints
   'vendorPortal.bulk.title': { ar: 'تعديل المخزون الجماعي', en: 'Bulk stock editor' },
   'vendorPortal.bulk.enter': { ar: 'تعديل جماعي', en: 'Bulk edit' },
@@ -4219,6 +4224,27 @@ export const miscMessages = {
   'vendorPortal.reviews.trend': { ar: 'آخر ٨ أسابيع', en: 'Last 8 weeks' },
   // E5 — CRM-lite (customers tab).
   'vendorPortal.tab.customers': { ar: 'العملاء', en: 'Customers' },
+  // D4 — first-visit onboarding tour.
+  'vendorPortal.tour.title': { ar: 'جولة سريعة في متجرك', en: 'Quick tour of your store' },
+  'vendorPortal.tour.skip': { ar: 'تخطي', en: 'Skip' },
+  'vendorPortal.tour.next': { ar: 'التالي', en: 'Next' },
+  'vendorPortal.tour.done': { ar: 'تم', en: 'Done' },
+  'vendorPortal.tour.step.overview': {
+    ar: 'هنا نظرة عامة على متجرك: المبيعات والصحة والتنبيهات.',
+    en: 'Your store at a glance: sales, health and alerts.',
+  },
+  'vendorPortal.tour.step.products': {
+    ar: 'أضف منتجاتك وخدمات الحجز من تبويبي المنتجات والخدمات.',
+    en: 'Add products and bookable services from the products and services tabs.',
+  },
+  'vendorPortal.tour.step.orders': {
+    ar: 'تابع طلباتك وحجوزاتك وجّهزها في الوقت.',
+    en: 'Track your orders and bookings and fulfill them on time.',
+  },
+  'vendorPortal.tour.step.earnings': {
+    ar: 'راقب أرباحك وجدول الدفعات من هنا.',
+    en: 'Watch your earnings and payout schedule here.',
+  },
   // C5 — hybrid store-services tab label.
   'vendorPortal.tab.services': { ar: 'الخدمات', en: 'Services' },
   // F1 — vendor inbox (notifications domain).
@@ -4299,6 +4325,8 @@ export const miscMessages = {
   'stores.services.book': { ar: 'احجزي الآن', en: 'Book' },
   'stores.services.minutes': { ar: 'دقيقة', en: 'min' },
   'stores.stock': { ar: 'المخزون: {count}', en: 'Stock: {count}' },
+  // C4c — AR try-on link on product cards.
+  'stores.ar-try-on': { ar: 'تجربة AR', en: 'AR try-on' },
   'stores.add-to-cart': { ar: 'أضيفي للسلة', en: 'Add to cart' },
   'stores.added-to-cart': { ar: 'تمت الإضافة للسلة', en: 'Added to cart' },
   'stores.login-to-buy': { ar: 'سجلي الدخول للشراء', en: 'Sign in to buy' },
