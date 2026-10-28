@@ -66,7 +66,7 @@ and social links — while deep work (editors, exports, analytics) stays web.
 
 ---
 
-## 0d. Wave C — delivery record (DELIVERED 2026-10-27, master TBD-SHA)
+## 0d. Wave C — delivery record (DELIVERED 2026-10-27/28, master `14dfea08`)
 
 | Item                     | PRs              | Shipped                                                                                                                                                  |
 | ------------------------ | ---------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -74,9 +74,9 @@ and social links — while deep work (editors, exports, analytics) stays web.
 | C2 inventory v2          | #517, #526       | bulk editor + velocity forecasts + stock-in flow (portal)                                                                                                |
 | C3 pricing rules         | #518, #523, #528 | vendor rules engine + portal tab + change log + checkout-time cart math                                                                                  |
 | C4 media + product SEO   | #519, #529       | multi-image galleries/video/AR fields + editor + storefront consumption                                                                                  |
-| C5 hybrid store-services | #531–#53x        | the flagship — schema + pseudo-technician + CRUD → booking reuse → portal/storefront/mobile UI → status actions → payouts → polish (see the hybrid plan) |
+| C5 hybrid store-services | #531–#539        | the flagship — schema + pseudo-technician + CRUD → booking reuse → portal/storefront/mobile UI → status actions → payouts → polish (see the hybrid plan) |
 
-## 0e. Wave D — delivery record (DELIVERED 2026-10-27 except user-gated, master TBD-SHA)
+## 0e. Wave D — delivery record (DELIVERED 2026-10-27/28 except user-gated, master `14dfea08`)
 
 | Item                     | PRs              | Shipped                                                     |
 | ------------------------ | ---------------- | ----------------------------------------------------------- |
