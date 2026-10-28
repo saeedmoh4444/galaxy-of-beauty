@@ -261,6 +261,7 @@ export const BNPL_MAX_INSTALLMENTS = 4;
 /** Upload size limits (bytes). */
 export const MAX_IMAGE_SIZE = 5 * 1024 * 1024; // 5 MB
 export const MAX_DOC_SIZE = 10 * 1024 * 1024; // 10 MB
+export const MAX_VIDEO_SIZE = 100 * 1024 * 1024; // 100 MB — reel uploads (R2)
 
 /** Default city used when the user's location is unavailable. */
 export const DEFAULT_SAUDI_CITY = 'الرياض';
