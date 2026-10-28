@@ -200,6 +200,19 @@ export function getWebhooksQueue(): Queue | null {
   }
 }
 
+// R3 — reel media pipeline (ffprobe duration + ffmpeg poster; one job
+// per upload, concurrency 1 — heavy work, cheap retries).
+let _mediaQueue: Queue | null = null;
+export function getMediaQueue(): Queue | null {
+  if (_mediaQueue) return _mediaQueue;
+  try {
+    _mediaQueue = createQueue('gob-media');
+    return _mediaQueue;
+  } catch {
+    return null;
+  }
+}
+
 // Convenience: all queues
 export function getAllQueues(): Record<string, Queue | null> {
   return {
@@ -215,5 +228,6 @@ export function getAllQueues(): Record<string, Queue | null> {
     sla: getSlaQueue(),
     disputes: getDisputesQueue(),
     reviews: getReviewsQueue(),
+    media: getMediaQueue(),
   };
 }
