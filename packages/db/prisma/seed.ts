@@ -4447,7 +4447,9 @@ async function main() {
             titleJson: { ar: 'أحمر الشفاه الأكثر مبيعاً', en: 'Best-selling lipstick' },
             videoUrl: SAMPLE_VIDEOS[0],
             durationSec: 28,
-            views: 610,
+            // Views stay below the home-reels fixtures (100) so the seeded
+            // strip reels never crowd the curated home row's top-8.
+            views: 90,
             category: 'makeup',
             isApproved: true,
             faceBlurred: true,
@@ -4459,7 +4461,7 @@ async function main() {
             titleJson: { ar: 'جولة في المتجر', en: 'Store tour' },
             videoUrl: SAMPLE_VIDEOS[1],
             durationSec: 41,
-            views: 380,
+            views: 60,
             category: 'general',
             isApproved: true,
             faceBlurred: true,
@@ -4481,7 +4483,7 @@ async function main() {
           titleJson: { ar: 'خطوات الخدمة', en: 'Service steps' },
           videoUrl: SAMPLE_VIDEOS[2] ?? SAMPLE_VIDEOS[0],
           durationSec: 22,
-          views: 150,
+          views: 40,
           category: 'general',
           isApproved: true,
           faceBlurred: true,

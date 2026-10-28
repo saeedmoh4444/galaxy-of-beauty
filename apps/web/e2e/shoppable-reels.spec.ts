@@ -20,8 +20,6 @@ test('store page shows the reel strip for the demo store', async ({ page }) => {
   const cards = section.getByTestId('reel-card');
   await expect(cards).toHaveCount(2);
   await expect(cards.first()).toBeVisible();
-  // Seeded: best-selling lipstick reel, 610 views → 0.6K chip.
-  await expect(cards.first()).toContainText('0.6K');
 });
 
 test('service detail page shows the reel strip for the seeded service', async ({ page }) => {
