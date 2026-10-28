@@ -209,7 +209,7 @@ type VendorActor =
   | null;
 
 /** The caller's relationship to a vendor: owner (Vendor row) or ACTIVE staff. */
-async function resolveVendorActor(userId: number): Promise<VendorActor> {
+export async function resolveVendorActor(userId: number): Promise<VendorActor> {
   const vendor = await prisma.vendor.findUnique({ where: { userId } });
   if (vendor) return { kind: 'owner', vendor };
   const staff = await prisma.vendorStaff.findUnique({

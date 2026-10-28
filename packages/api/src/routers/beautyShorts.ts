@@ -8,8 +8,74 @@ import {
   adminProcedure,
   router,
 } from '../trpc';
+import { resolveVendorActor } from './vendorPortal';
 
 const db = prisma;
+
+/**
+ * R1 — surface-link ownership guard (REELS_SHOPPABLE_PLAN). A caller may
+ * tag a reel with product/service/vendor ids only within their own
+ * surface: vendor owners/staff tag their catalog, verified technicians
+ * tag services they provide or their own store. Returns the technician
+ * id to stamp (technician callers) or null (vendor callers).
+ */
+async function resolveShortAuthor(
+  userId: number,
+  input: { productId?: number; serviceId?: number; vendorId?: number },
+): Promise<{ technicianId: number | null; vendorId: number | null }> {
+  const technician = await db.technician.findUnique({ where: { userId } });
+  const techVerified = technician?.kycStatus === 'VERIFIED';
+  const actor = await resolveVendorActor(userId);
+  const actorVendorId = actor?.vendor.id ?? null;
+
+  if (!techVerified && !actorVendorId) {
+    throw new TRPCError({
+      code: 'FORBIDDEN',
+      message: 'Only verified technicians or store owners can post media',
+    });
+  }
+
+  // The vendor the caller may tag: vendors tag themselves; store
+  // technicians (C5 storeVendorId) tag their store.
+  const eligibleVendorId = actorVendorId ?? technician?.storeVendorId ?? null;
+
+  if (input.vendorId !== undefined) {
+    if (input.vendorId !== eligibleVendorId) {
+      throw new TRPCError({ code: 'FORBIDDEN', message: 'You can only tag your own store' });
+    }
+  }
+
+  if (input.productId !== undefined) {
+    const product = await db.product.findUnique({ where: { id: input.productId } });
+    if (!product) throw new TRPCError({ code: 'NOT_FOUND', message: 'Product not found' });
+    if (product.vendorId !== eligibleVendorId) {
+      throw new TRPCError({ code: 'FORBIDDEN', message: 'You can only tag your own products' });
+    }
+  }
+
+  if (input.serviceId !== undefined) {
+    const service = await db.service.findUnique({ where: { id: input.serviceId } });
+    if (!service) throw new TRPCError({ code: 'NOT_FOUND', message: 'Service not found' });
+    if (service.vendorId !== null) {
+      // Store service — the store's vendors/technicians may tag it.
+      if (service.vendorId !== eligibleVendorId) {
+        throw new TRPCError({ code: 'FORBIDDEN', message: 'You can only tag your own services' });
+      }
+    } else if (technician) {
+      // Platform service — only a technician who provides it may tag it.
+      const provides = await db.technicianService.findUnique({
+        where: { technicianId_serviceId: { technicianId: technician.id, serviceId: service.id } },
+      });
+      if (!provides) {
+        throw new TRPCError({ code: 'FORBIDDEN', message: 'Tag only services you provide' });
+      }
+    } else {
+      throw new TRPCError({ code: 'FORBIDDEN', message: 'Tag only services you provide' });
+    }
+  }
+
+  return { technicianId: technician?.id ?? null, vendorId: eligibleVendorId };
+}
 
 /**
  * E7 — persisted beauty shorts (reels + before/after). Every upload lands
@@ -73,6 +139,41 @@ export const beautyShortsRouter = router({
   }),
 
   /**
+   * surfaceShorts — R1 (REELS_SHOPPABLE_PLAN): approved + active shorts
+   * attached to a product, a service or a vendor, newest first. The E7
+   * privacy rule holds here too (anonymous = face-blurred only).
+   */
+  surfaceShorts: publicProcedure
+    .input(
+      z
+        .object({
+          productId: z.number().int().positive().optional(),
+          serviceId: z.number().int().positive().optional(),
+          vendorId: z.number().int().positive().optional(),
+        })
+        .refine(
+          (v) => v.productId !== undefined || v.serviceId !== undefined || v.vendorId !== undefined,
+          {
+            message: 'Provide productId, serviceId or vendorId',
+          },
+        ),
+    )
+    .query(({ ctx, input }) =>
+      db.short.findMany({
+        where: {
+          isApproved: true,
+          isActive: true,
+          ...(ctx.user ? {} : { faceBlurred: true }),
+          ...(input.productId !== undefined ? { productId: input.productId } : {}),
+          ...(input.serviceId !== undefined ? { serviceId: input.serviceId } : {}),
+          ...(input.vendorId !== undefined ? { vendorId: input.vendorId } : {}),
+        },
+        orderBy: { createdAt: 'desc' },
+        take: 12,
+      }),
+    ),
+
+  /**
    * create — verified technicians post shorts. Consent is mandatory and
    * the post goes straight to the moderation queue.
    */
@@ -89,21 +190,35 @@ export const beautyShortsRouter = router({
         category: z.string().min(2).max(40).default('general'),
         faceBlurred: z.boolean().default(false),
         consent: z.literal(true, 'consent is required to publish media'),
+        // R1 — optional surface attachments (ownership-guarded).
+        productId: z.number().int().positive().optional(),
+        serviceId: z.number().int().positive().optional(),
+        vendorId: z.number().int().positive().optional(),
       }),
     )
     .mutation(async ({ ctx, input }) => {
-      const technician = await db.technician.findUnique({ where: { userId: ctx.user.id } });
-      if (!technician || technician.kycStatus !== 'VERIFIED') {
-        throw new TRPCError({
-          code: 'FORBIDDEN',
-          message: 'Only verified technicians can post media',
-        });
+      const author = await resolveShortAuthor(ctx.user.id, input);
+
+      // R2 — 10 active reels per author; the cap keeps storage/egress
+      // costs bounded and nudges quality over volume.
+      const activeReels = await db.short.count({
+        where: {
+          type: 'reel',
+          isActive: true,
+          ...(author.technicianId !== null
+            ? { technicianId: author.technicianId }
+            : { vendorId: author.vendorId ?? undefined }),
+        },
+      });
+      if (activeReels >= 10) {
+        throw new TRPCError({ code: 'FORBIDDEN', message: 'Reel quota reached (10 active reels)' });
       }
 
       return db.short.create({
         data: {
           type: input.type,
-          technicianId: technician.id,
+          technicianId: author.technicianId,
+          vendorId: input.vendorId,
           titleJson: { ar: input.titleAr, en: input.titleEn },
           videoUrl: input.videoUrl,
           thumbnailUrl: input.thumbnailUrl,
@@ -113,6 +228,8 @@ export const beautyShortsRouter = router({
           faceBlurred: input.faceBlurred,
           consentGiven: true,
           isApproved: false,
+          productId: input.productId,
+          serviceId: input.serviceId,
         },
       });
     }),

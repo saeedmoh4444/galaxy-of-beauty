@@ -259,6 +259,7 @@ beautyShorts.gallery	query	public
 beautyShorts.home	query	public
 beautyShorts.like	mutation	customer
 beautyShorts.myShorts	query	protected
+beautyShorts.surfaceShorts	query	public
 beautyShorts.viewed	mutation	public
 beautyStats.platform	query	public
 beautyStories.feed	query	public
@@ -1009,6 +1010,7 @@ tutorials.filters	query	public
 tutorials.getById	query	public
 tutorials.list	query	public
 uploads.deleteUpload	mutation	protected
+uploads.finalizeShortUpload	mutation	protected
 uploads.presignedUrl	mutation	protected
 uploads.uploadAvatar	mutation	protected
 uploads.uploadImage	mutation	admin
