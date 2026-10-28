@@ -235,4 +235,34 @@ export const adminToolsRouter = router({
       });
       return { success: true };
     }),
+
+  /** queueHealth — D2: per-queue depth/failure snapshot + the threshold
+   *  assessment (the ops view data). Degrades gracefully when Redis is
+   *  down — rows carry null counts, never throws. */
+  queueHealth: adminProcedure.query(async () => {
+    const { getQueueHealth, assessQueueHealth } = await import('../lib/queueHealth');
+    const rows = await getQueueHealth();
+    return { rows, assessment: assessQueueHealth(rows) };
+  }),
+
+  /** opsSnapshot — D2b: the ops view in one call — queue health plus the
+   *  fulfillment backlog, SLA breaches and open disputes. */
+  opsSnapshot: adminProcedure.query(async () => {
+    const { getQueueHealth, assessQueueHealth } = await import('../lib/queueHealth');
+    const [rows, pendingFulfillment, slaBreached, openDisputes] = await Promise.all([
+      getQueueHealth(),
+      prisma.storeOrder.count({ where: { status: 'PENDING_FULFILLMENT' } }),
+      prisma.storeOrder.count({
+        where: { status: 'PENDING_FULFILLMENT', slaBreachedAt: { not: null } },
+      }),
+      prisma.dispute.count({ where: { status: { in: ['OPEN', 'UNDER_REVIEW'] } } }),
+    ]);
+    return {
+      rows,
+      assessment: assessQueueHealth(rows),
+      pendingFulfillment,
+      slaBreached,
+      openDisputes,
+    };
+  }),
 });

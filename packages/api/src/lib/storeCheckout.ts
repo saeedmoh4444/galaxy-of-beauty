@@ -2,6 +2,8 @@ import { prisma } from '@galaxy/db';
 import type { Prisma } from '@galaxy/db';
 import { TRPCError } from '@trpc/server';
 import { notifyUser } from './notify';
+import { enqueueWebhookEvents } from './webhookDelivery';
+import { evaluateVendorRules, toRuleLike } from './vendorPricing';
 
 // Shared cart → StoreOrder placement used by marketplace.buyCart (no
 // checkout) and payments.payCart (with a StoreCheckout shipping+payment
@@ -20,6 +22,9 @@ export interface CartLine {
   stock: number;
   /** B3b — low-stock threshold for the crossing check below. */
   lowStockThreshold: number;
+  /** C1 — variant line: the variant id + its bilingual label snapshot. */
+  variantId?: number | null;
+  variantNameJson?: { ar?: string; en?: string } | null;
 }
 
 /** B3b — a product whose stock crossed its threshold during this checkout. */
@@ -28,6 +33,9 @@ export interface LowStockAlert {
   productId: number;
   nameJson: { ar?: string; en?: string } | null;
   stock: number;
+  /** C1 — variant-level alert: the variant id + its label snapshot. */
+  variantId?: number | null;
+  variantNameJson?: { ar?: string; en?: string } | null;
 }
 
 /**
@@ -48,6 +56,15 @@ export async function readCartForCheckout(userId: number): Promise<CartLine[]> {
           lowStockThreshold: true,
         },
       },
+      variant: {
+        select: {
+          id: true,
+          nameJson: true,
+          priceDelta: true,
+          stock: true,
+          lowStockThreshold: true,
+        },
+      },
     },
   });
 
@@ -55,25 +72,58 @@ export async function readCartForCheckout(userId: number): Promise<CartLine[]> {
     throw new TRPCError({ code: 'BAD_REQUEST', message: 'Cart is empty' });
   }
 
-  const shortage = cartItems.find((i) => i.product.stock < i.quantity);
+  const shortage = cartItems.find((i) => (i.variant?.stock ?? i.product.stock) < i.quantity);
   if (shortage) {
+    const stock = shortage.variant?.stock ?? shortage.product.stock;
     throw new TRPCError({
       code: 'BAD_REQUEST',
-      message: `Insufficient stock for product #${shortage.productId} (available: ${shortage.product.stock})`,
+      message: `Insufficient stock for product #${shortage.productId} (available: ${stock})`,
     });
   }
 
-  return cartItems.map((i) => ({
-    productId: i.productId,
-    quantity: i.quantity,
-    unitPrice: Number(i.product.price),
-    vendorId: i.product.vendorId,
-    name:
-      (i.product.nameJson as { en?: string; ar?: string } | null)?.en ?? `Product #${i.productId}`,
-    nameJson: (i.product.nameJson as { en?: string; ar?: string } | null) ?? null,
-    stock: i.product.stock,
-    lowStockThreshold: i.product.lowStockThreshold,
-  }));
+  // C3c — checkout-time pricing: the vendor's active uplift rules apply
+  // to the cart math (delta adds BEFORE the multiplier).
+  const vendorIds = [...new Set(cartItems.map((i) => i.product.vendorId))];
+  const rulesByVendor = new Map<number, ReturnType<typeof toRuleLike>[]>();
+  for (const vendorId of vendorIds) {
+    const rows = await prisma.vendorPriceRule.findMany({
+      where: { vendorId, isActive: true },
+    });
+    rulesByVendor.set(vendorId, rows.map(toRuleLike));
+  }
+
+  return cartItems.map((i) => {
+    const productName = (i.product.nameJson as { en?: string; ar?: string } | null) ?? null;
+    const variantName = (i.variant?.nameJson as { en?: string; ar?: string } | null) ?? null;
+    const stock = i.variant?.stock ?? i.product.stock;
+    const threshold = i.variant?.lowStockThreshold ?? i.product.lowStockThreshold;
+    // C1 — a variant line prices at base + delta and consumes variant
+    // stock; the display name composes product + variant labels.
+    const base = Number(i.product.price) + Number(i.variant?.priceDelta ?? 0);
+    const priced = evaluateVendorRules(rulesByVendor.get(i.product.vendorId) ?? [], {
+      productId: i.productId,
+      date: new Date(),
+      stock,
+      lowStockThreshold: threshold,
+      basePrice: base,
+    });
+    const unitPrice = priced.price;
+    const name = variantName
+      ? `${productName?.en ?? `Product #${i.productId}`} — ${variantName.en ?? variantName.ar}`
+      : (productName?.en ?? `Product #${i.productId}`);
+    return {
+      productId: i.productId,
+      quantity: i.quantity,
+      unitPrice,
+      vendorId: i.product.vendorId,
+      name,
+      nameJson: productName,
+      stock,
+      lowStockThreshold: threshold,
+      variantId: i.variant?.id ?? null,
+      variantNameJson: variantName,
+    };
+  });
 }
 
 /**
@@ -105,6 +155,8 @@ export async function placeStoreOrders(
         quantity: number;
         unitPrice: number;
         nameJson: CartLine['nameJson'];
+        variantId: number | null;
+        variantNameJson: CartLine['variantNameJson'];
       }>;
     }
   >();
@@ -117,13 +169,26 @@ export async function placeStoreOrders(
     subtotal += amount;
     itemCount += line.quantity;
 
-    await tx.product.update({
-      where: { id: line.productId },
-      data: {
-        stock: { decrement: line.quantity },
-        sales: { increment: line.quantity },
-      },
-    });
+    // C1 — a variant line consumes variant stock (the base product stock
+    // is the no-variant unit); the product's sales metric still accrues.
+    if (line.variantId) {
+      await tx.productVariant.update({
+        where: { id: line.variantId },
+        data: { stock: { decrement: line.quantity } },
+      });
+      await tx.product.update({
+        where: { id: line.productId },
+        data: { sales: { increment: line.quantity } },
+      });
+    } else {
+      await tx.product.update({
+        where: { id: line.productId },
+        data: {
+          stock: { decrement: line.quantity },
+          sales: { increment: line.quantity },
+        },
+      });
+    }
     await tx.vendor.update({
       where: { id: line.vendorId },
       data: { totalSales: { increment: amount } },
@@ -139,6 +204,8 @@ export async function placeStoreOrders(
         productId: line.productId,
         nameJson: line.nameJson,
         stock: newStock,
+        variantId: line.variantId ?? null,
+        variantNameJson: line.variantNameJson ?? null,
       });
     }
 
@@ -150,6 +217,8 @@ export async function placeStoreOrders(
       quantity: line.quantity,
       unitPrice: line.unitPrice,
       nameJson: line.nameJson,
+      variantId: line.variantId ?? null,
+      variantNameJson: line.variantNameJson ?? null,
     });
     vendorLines.set(line.vendorId, agg);
   }
@@ -176,6 +245,8 @@ export async function placeStoreOrders(
         data: agg.lines.map((l) => ({
           orderId: order.id,
           productId: l.productId,
+          variantId: l.variantId,
+          variantNameJson: (l.variantNameJson ?? null) as unknown as Prisma.InputJsonValue,
           nameSnapshot: (l.nameJson ?? {}) as unknown as Prisma.InputJsonValue,
           priceSnapshot: l.unitPrice,
           quantity: l.quantity,
@@ -214,8 +285,20 @@ export async function notifyOrderPlaced(
         templateKey: 'store_order_placed',
         vars: { orderId: order.id, total: order.totalAmount },
         link: '/store?tab=orders',
+        // E2 — the mobile push tap deep-links to the order detail.
+        data: { type: 'store_order_placed', orderId: String(order.id) },
         channels: ['in_app'],
       });
+      // D1b — the vendor's webhooks get the same event, signed.
+      try {
+        await enqueueWebhookEvents('order.placed', {
+          vendorId: order.vendorId,
+          orderId: order.id,
+          total: order.totalAmount,
+        });
+      } catch {
+        // Webhook fan-out never fails the purchase.
+      }
     } catch {
       // Notification failure must never fail the purchase.
     }
@@ -239,7 +322,10 @@ export async function notifyLowStockAlerts(alerts: LowStockAlert[]): Promise<voi
   for (const alert of alerts) {
     const userId = userIdByVendor.get(alert.vendorId);
     if (!userId) continue;
-    const name = alert.nameJson?.en ?? alert.nameJson?.ar ?? `Product #${alert.productId}`;
+    const productName = alert.nameJson?.en ?? alert.nameJson?.ar ?? `Product #${alert.productId}`;
+    // C1 — variant alerts carry the composed "Product — Variant" name.
+    const variantName = alert.variantNameJson?.en ?? alert.variantNameJson?.ar;
+    const name = variantName ? `${productName} — ${variantName}` : productName;
     try {
       await notifyUser({
         userId,
@@ -251,6 +337,18 @@ export async function notifyLowStockAlerts(alerts: LowStockAlert[]): Promise<voi
       });
     } catch {
       // Notification failure must never fail the purchase.
+    }
+    // D1b — the same alert over the vendor's webhooks.
+    try {
+      await enqueueWebhookEvents('stock.low', {
+        vendorId: alert.vendorId,
+        productId: alert.productId,
+        variantId: alert.variantId ?? null,
+        productName: name,
+        stock: alert.stock,
+      });
+    } catch {
+      // Webhook fan-out never fails the purchase.
     }
   }
 }

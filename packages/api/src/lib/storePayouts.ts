@@ -26,6 +26,25 @@ export async function calculateVendorSettlements(periodStart: Date, periodEnd: D
     byVendor.set(order.vendorId, entry);
   }
 
+  // C5g — store-service bookings (COMPLETED) join the SAME settlement:
+  // gross = totalAmount − the booking's platform fee (the engine's
+  // money-integrity comment: payouts subtract it from provider gross).
+  const bookings = await prisma.booking.findMany({
+    where: {
+      vendorId: { not: null },
+      status: 'COMPLETED',
+      createdAt: { gte: periodStart, lte: periodEnd },
+    },
+    select: { id: true, vendorId: true, totalAmount: true, platformFee: true },
+  });
+  for (const booking of bookings) {
+    const gross = Math.max(0, Number(booking.totalAmount) - Number(booking.platformFee));
+    const entry = byVendor.get(booking.vendorId!) ?? { orderCount: 0, grossAmount: 0 };
+    entry.orderCount += 1;
+    entry.grossAmount += gross;
+    byVendor.set(booking.vendorId!, entry);
+  }
+
   const vendors = await prisma.vendor.findMany({
     where: { id: { in: Array.from(byVendor.keys()) } },
     select: { id: true, commissionRate: true },

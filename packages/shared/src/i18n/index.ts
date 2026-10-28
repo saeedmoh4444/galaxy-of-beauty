@@ -36,7 +36,7 @@ import { marketingMessages } from './messages/marketing';
 import { uiMessages } from './messages/ui';
 import { miscMessages } from './messages/misc';
 import { bundlesMessages } from './messages/bundles';
-import { mobileMessages } from './mobile';
+import { mobileMessages, type TranslationKey as MobileKey } from './mobile';
 
 export const webMessages = {
   ...coreMessages,
@@ -52,12 +52,14 @@ export const webMessages = {
   ...bundlesMessages,
 } as const;
 
-export const sharedMessages = {
+// TS7056 guard: explicit annotation instead of inferring the merged
+// object type (see mobile.ts — the same guard for the mobile side).
+export type TranslationKey = keyof typeof webMessages | MobileKey;
+
+export const sharedMessages: Record<TranslationKey, unknown> = {
   ...webMessages,
   ...mobileMessages,
-} as const;
-
-export type TranslationKey = keyof typeof sharedMessages;
+};
 
 /**
  * Get a translated message from the merged (mobile-overlay) catalog.

@@ -41,6 +41,18 @@ export function VenueProfileCard({
       ? new Date(store.licenseExpiryDate as unknown as string).toISOString().slice(0, 10)
       : '',
   );
+  // B6 — social presence (one URL per network; empty = hidden).
+  const socialMut = api.vendorPortal.updateSocialLinks.useMutation({
+    onSuccess: () => refetchStore(),
+  });
+  const socialJson = (store.socialLinks ?? {}) as Record<string, string>;
+  const [socials, setSocials] = useState<Record<string, string>>({
+    snapchat: socialJson.snapchat ?? '',
+    tiktok: socialJson.tiktok ?? '',
+    x: socialJson.x ?? '',
+    instagram: socialJson.instagram ?? '',
+    facebook: socialJson.facebook ?? '',
+  });
 
   const onBannerFile = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -193,6 +205,37 @@ export function VenueProfileCard({
           </Button>
         </div>
         <p className="mt-1 text-xs text-text-tertiary">{t('vendorPortal.license.hint')}</p>
+      </div>
+
+      {/* B6 — social presence (Snapchat/TikTok/X/Instagram/Facebook). */}
+      <div className="mt-4 border-t border-border-muted pt-4">
+        <p className="mb-2 text-sm font-semibold">{t('vendorPortal.social.title')}</p>
+        <div className="grid gap-2 sm:grid-cols-2">
+          {(['snapchat', 'tiktok', 'x', 'instagram', 'facebook'] as const).map((network) => (
+            <div key={network}>
+              <p className="mb-1 text-xs font-medium capitalize text-text-secondary">{network}</p>
+              <input
+                type="url"
+                value={socials[network] ?? ''}
+                onChange={(e) => setSocials((prev) => ({ ...prev, [network]: e.target.value }))}
+                placeholder="https://"
+                data-testid={`social-input-${network}`}
+                className="w-full rounded-xl border border-border-muted bg-surface p-2 text-sm"
+              />
+            </div>
+          ))}
+        </div>
+        <div className="mt-2 flex items-center gap-2">
+          <Button
+            size="sm"
+            onClick={() => socialMut.mutate(socials)}
+            loading={socialMut.isPending}
+            data-testid="social-save-button"
+          >
+            {t('vendorPortal.social.save')}
+          </Button>
+          <p className="text-xs text-text-tertiary">{t('vendorPortal.social.hint')}</p>
+        </div>
       </div>
     </Card>
   );

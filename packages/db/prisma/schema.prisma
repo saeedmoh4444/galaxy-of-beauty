@@ -189,6 +189,7 @@ model User {
   achievements      UserAchievement[]
   vendorStaff       VendorStaff?
   staffActions      StaffActivityLog[]
+  winbackReceived   WinbackLog[]
   referralsMade     Referral[]         @relation("ReferralsMade")
   referralsReceived Referral[]         @relation("ReferralsReceived")
   referralPrizes    ReferralPrize[]
@@ -356,6 +357,10 @@ model Technician {
   // 1.1 Dynamic pricing — NEW | EXPERIENCED | PREMIUM | CELEBRITY
   // (tier multiplier applies only to dynamicPricingEnabled services).
   tier                String   @default("NEW")
+  // C5 — store pseudo-technician: exactly one hidden Technician row per
+  // store so the booking engine needs zero forks. The row's User is a
+  // generated non-login account (see lib/storeServices).
+  storeVendorId Int? @unique
   // F5 — richer profile details
   socialLinksJson     Json?    // { instagram?, snapchat?, tiktok?, website? }
   languages           Json?    // ["ar", "en", ...]
@@ -366,6 +371,7 @@ model Technician {
 
   // Relations
   user                  User                @relation(fields: [userId], references: [id], onDelete: Cascade)
+  storeVendor           Vendor?             @relation("StoreTechnician", fields: [storeVendorId], references: [id], onDelete: SetNull)
   availabilitySlots     AvailabilitySlot[]
   technicianServices    TechnicianService[]
   waitlistEntries       WaitlistEntry[]
@@ -486,11 +492,16 @@ model Service {
   // 1.1 Dynamic pricing (ENHANCEMENT_PLAN) — opt-in per service; when on,
   // bookings.create prices via tier × peak rules × surge (lib/pricing.ts).
   dynamicPricingEnabled Boolean @default(false)
+  // C5 — store-owned services (H2 hybrid): null = platform-owned. Store
+  // services live on the storefront's Services tab, not the general browse.
+  vendorId       Int?
+  isStoreService Boolean  @default(false)
   sortOrder       Int      @default(0)
   createdAt       DateTime @default(now())
-  updatedAt       DateTime @updatedAt
+  updatedAt       DateTime @updatedAt()
 
   category          Category            @relation(fields: [categoryId], references: [id])
+  vendor            Vendor?             @relation(fields: [vendorId], references: [id], onDelete: SetNull)
   variants          ServiceVariant[]
   servicesWithAddon ServiceAddon[] @relation("ServiceAddons")
   addonFor          ServiceAddon[] @relation("AddonServices")
@@ -504,6 +515,7 @@ model Service {
 
   @@index([categoryId, isActive])
   @@index([basePrice])
+  @@index([vendorId, isActive])
   @@map("services")
 }
 
@@ -681,6 +693,9 @@ model Booking {
   technicianGoogleEventId   String? // the TECHNICIAN's calendar event
   // K1 (kids plan): optional "book on behalf of" family member link.
   familyMemberId            Int?
+  // C5 — denormalized provider link for store-service bookings (vendor
+  // bookings surface + payout attribution); null = technician booking.
+  vendorId                  Int?
   // K3 (kids plan): optional Mommy & Me bundle link.
   bundleId                  Int?
   // 1.1 Dynamic pricing — engine breakdown snapshot at booking time
@@ -698,6 +713,7 @@ model Booking {
 
   customer   User              @relation("CustomerBookings", fields: [customerId], references: [id])
   technician User              @relation("TechnicianBookings", fields: [technicianId], references: [id])
+  vendor     Vendor?           @relation(fields: [vendorId], references: [id], onDelete: SetNull)
   service    Service           @relation(fields: [serviceId], references: [id])
   address    Address           @relation(fields: [addressId], references: [id])
   slot       AvailabilitySlot? @relation("SlotBooking")
@@ -715,6 +731,7 @@ model Booking {
   @@index([technicianId, status, startAt])
   @@index([status, createdAt])
   @@index([serviceId])
+  @@index([vendorId])
   @@index([addressId])
   @@map("bookings")
 }
@@ -1515,6 +1532,16 @@ model Product {
   // creates PENDING products that only surface after admin approval.
   approvalStatus String @default("LIVE") // PENDING | LIVE | REJECTED
   reviewNotes  String?  // C2 — admin rejection note shown in the portal
+  // B5 — funnel analytics: storefront impression counter (incremented by
+  // marketplace.trackStoreView on store-page loads).
+  viewCount    Int      @default(0)
+  // C4 — rich media + product-level SEO (Wave C): product video, bilingual
+  // meta title/description (≤60/≤160 chars — enforced in the router), and
+  // the optional AR try-on deep link (vendor opt-in).
+  videoUrl      String?
+  metaTitleJson  Json?
+  metaDescJson   Json?
+  arTryOnUrl    String?
   tags        String[] // organic, vegan, cruelty-free, etc.
   // 3.1 Beauty DNA — polymorphic match payload, discriminated by `kind`:
   // makeup { kind, shade, shadeHex, undertone, depth 1..6 }
@@ -1530,11 +1557,37 @@ model Product {
   deals    StoreDeal[]
   orderItems StoreOrderItem[]
   reviewRequests ReviewRequest[]
+  priceRules VendorPriceRule[]
+  priceLogs ProductPriceLog[]
+  variants ProductVariant[]
 
   @@index([vendorId, isActive])
   @@index([categoryId, isActive])
   @@index([price])
   @@map("products")
+}
+
+// C1 — product variants (PROFESSIONALIZATION Wave C): size/shade/pack
+// options with their own SKU, stock and price delta. Variant stock is the
+// checkout stock unit when a variant is selected; the base product keeps
+// its price and acts as the no-variant line.
+model ProductVariant {
+  id          Int      @id @default(autoincrement())
+  productId   Int
+  sku         String?
+  nameJson    Json // { ar, en } — the option label ("50ml", "Deep Rose")
+  priceDelta  Decimal  @default(0) @db.Decimal(10, 2) // signed; final = product.price + delta
+  stock       Int      @default(0)
+  lowStockThreshold Int @default(5) // B3b reuse at variant level
+  isActive    Boolean  @default(true)
+  createdAt   DateTime @default(now())
+
+  product    Product           @relation(fields: [productId], references: [id], onDelete: Cascade)
+  cartItems  CartItem[]
+  orderItems StoreOrderItem[]
+
+  @@index([productId, isActive])
+  @@map("product_variants")
 }
 
 model Vendor {
@@ -1572,6 +1625,10 @@ model Vendor {
   // A3 — fulfillment SLA: the store's promised order window (hours); the
   // daily gob-sla sweep flags breaches (feeds the A5 quality score).
   fulfillmentSlaHours Int @default(48)
+  // B6 — social presence (PROFESSIONALIZATION Wave B): one URL per
+  // network { snapchat, tiktok, x, instagram, facebook }; only set
+  // networks render on the storefronts.
+  socialLinks Json?
   consultationPrice Decimal  @default(0) @db.Decimal(10, 2)
   // E3 — fitness vertical (gyms).
   gymType    String? // ladies | family
@@ -1617,12 +1674,98 @@ model Vendor {
   trainerSessions     TrainerSession[]
   staffMembers        VendorStaff[]
   staffActivity       StaffActivityLog[]
+  winbackLogs         WinbackLog[]
+  storeViewLogs       StoreViewLog[]
+  priceRules          VendorPriceRule[]
+  webhooks            VendorWebhook[]
+  apiKeys             VendorApiKey[]
+  // C5 — hybrid store-services: the store's bookable services + the
+  // denormalized booking link for the vendor bookings surface/payouts.
+  services            Service[]
+  bookings            Booking[]
+  storeTechnician     Technician?  @relation("StoreTechnician")
 
   @@index([storeSlug])
   @@index([isVerified, isActive])
   @@index([type, isVerified, isActive])
   @@index([userId])
   @@map("vendors")
+}
+
+// C3 — vendor pricing rules (Wave C): uplift-only weekend/low-stock rules
+// on the vendor's own products; the admin override replaces a rule's
+// multiplier (precedence: admin > vendor). Uplift-only = the below-cost
+// guardrail is structural (multiplier ≥ 1.0).
+model VendorPriceRule {
+  id          Int      @id @default(autoincrement())
+  vendorId    Int
+  productId   Int?     // null = all of the vendor's products
+  ruleType    String   // weekend_uplift | lowstock_floor
+  dayOfWeek   Int?     // 0=Sun..6=Sat; null = all days
+  multiplier  Decimal  @default(1.1) @db.Decimal(4, 2) // ≥ 1.00 (uplift-only)
+  adminOverrideMultiplier Decimal? @db.Decimal(4, 2)
+  isActive    Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  vendor  Vendor   @relation(fields: [vendorId], references: [id], onDelete: Cascade)
+  product Product? @relation(fields: [productId], references: [id], onDelete: Cascade)
+
+  @@index([vendorId, isActive])
+  @@map("vendor_price_rules")
+}
+
+// C3 — per-product price change log (vendor rule changes + admin overrides).
+model ProductPriceLog {
+  id        Int      @id @default(autoincrement())
+  productId Int
+  ruleId    Int?
+  oldPrice  Decimal  @db.Decimal(10, 2)
+  newPrice  Decimal  @db.Decimal(10, 2)
+  changedBy String   // vendor | admin
+  createdAt DateTime @default(now())
+
+  product Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+
+  @@index([productId, createdAt])
+  @@map("product_price_logs")
+}
+
+// D1b — vendor webhooks: HMAC-signed POSTs for order.placed /
+// order.fulfilled / stock.low. The secret is generated once at creation
+// and shown once (same contract as API keys).
+model VendorWebhook {
+  id        Int      @id @default(autoincrement())
+  vendorId  Int
+  url       String
+  secret    String   // shown once; used for HMAC-SHA256 signatures
+  events    String[] // order.placed | order.fulfilled | stock.low
+  isActive  Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  vendor Vendor @relation(fields: [vendorId], references: [id], onDelete: Cascade)
+
+  @@index([vendorId, isActive])
+  @@map("vendor_webhooks")
+}
+
+// D1 — vendor API keys (Wave D): the enterprise integration surface.
+// Only the sha256 hash is stored; the plaintext is shown once at creation.
+model VendorApiKey {
+  id         Int       @id @default(autoincrement())
+  vendorId   Int
+  name       String    // the vendor's label ("ERP integration")
+  prefix     String    // "gb_live" — recognizable in logs
+  keyHash    String    @unique // sha256 hex of the full key
+  lastUsedAt DateTime?
+  revokedAt  DateTime?
+  createdAt  DateTime  @default(now())
+
+  vendor Vendor @relation(fields: [vendorId], references: [id], onDelete: Cascade)
+
+  @@index([vendorId, revokedAt])
+  @@map("vendor_api_keys")
 }
 
 // A1 — store staff accounts (VENDOR_PROFESSIONALIZATION_PLAN Wave A).
@@ -1667,6 +1810,40 @@ model StaffActivityLog {
 
   @@index([vendorId, createdAt])
   @@map("staff_activity_logs")
+}
+
+// B4 — win-back toolkit (PROFESSIONALIZATION Wave B): the per-pair
+// send ledger that enforces the 14-day rate limit. Pre-approved
+// templates only; the promotions preference gate handles opt-outs.
+model WinbackLog {
+  id         Int      @id @default(autoincrement())
+  vendorId   Int
+  customerId Int
+  template   String // restocked | on_offer
+  createdAt  DateTime @default(now())
+
+  vendor   Vendor @relation(fields: [vendorId], references: [id], onDelete: Cascade)
+  customer User   @relation(fields: [customerId], references: [id], onDelete: Cascade)
+
+  @@index([vendorId, customerId, createdAt])
+  @@index([customerId, createdAt])
+  @@map("winback_logs")
+}
+
+// B5 — funnel analytics (PROFESSIONALIZATION Wave B): daily storefront
+// view counts on the NOON-UTC day (the D1 bucket convention). Kept
+// separate from VendorDailyStat so the D1 materializer never touches it.
+model StoreViewLog {
+  id       Int      @id @default(autoincrement())
+  vendorId Int
+  day      DateTime
+  views    Int      @default(0)
+  createdAt DateTime @default(now())
+
+  vendor Vendor @relation(fields: [vendorId], references: [id], onDelete: Cascade)
+
+  @@unique([vendorId, day])
+  @@map("store_view_logs")
 }
 
 // E2 — clinic consultation slots (clinic-managed, claimed by consultations).
@@ -1817,6 +1994,11 @@ model StoreOrderItem {
   id            Int      @id @default(autoincrement())
   orderId       Int
   productId     Int
+  // C1 — variant line items: the variant id + its bilingual label snapshot
+  // (rendered by the order drawer/detail; the base product stays in
+  // nameSnapshot).
+  variantId     Int?
+  variantNameJson Json?
   nameSnapshot  Json
   priceSnapshot Decimal  @db.Decimal(10, 2)
   quantity      Int
@@ -1824,6 +2006,7 @@ model StoreOrderItem {
 
   order   StoreOrder @relation(fields: [orderId], references: [id], onDelete: Cascade)
   product Product    @relation(fields: [productId], references: [id], onDelete: Restrict)
+  variant ProductVariant? @relation(fields: [variantId], references: [id], onDelete: SetNull)
 
   @@index([orderId])
   @@index([productId])
@@ -1893,6 +2076,9 @@ model ProductReview {
   // E4 — merchant reply (bilingual Json, expand-contract).
   replyJson Json?
   repliedAt DateTime?
+  // B3 — review showcase: the daily gob-reviews sweep stamps this once
+  // when an unanswered review passes 48h (nudge dedupe).
+  reminderSentAt DateTime?
 
   product Product @relation(fields: [productId], references: [id])
   user    User    @relation(fields: [userId], references: [id])
@@ -1922,13 +2108,20 @@ model CartItem {
   id        Int      @id @default(autoincrement())
   userId    Int
   productId Int
+  // C1 — a cart line may target a variant; the compound unique lets the
+  // base product and its variants coexist as separate lines.
+  variantId Int?
   quantity  Int      @default(1)
   createdAt DateTime @default(now())
 
   user    User    @relation(fields: [userId], references: [id])
   product Product @relation(fields: [productId], references: [id])
+  variant ProductVariant? @relation(fields: [variantId], references: [id], onDelete: Cascade)
 
-  @@unique([userId, productId])
+  // C1 — the base product and its variants coexist as separate cart lines.
+  // No @@unique: Prisma types nullable compound-unique fields as non-null,
+  // so duplicate adds are merged via findFirst in marketplace.addToCart.
+  @@index([userId, productId, variantId])
   @@index([userId])
   @@map("cart_items")
 }

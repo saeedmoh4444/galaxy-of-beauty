@@ -25,13 +25,15 @@ import {
 // Booking State Machine
 // ---------------------------------------------------------------------------
 
-const VALID_TRANSITIONS: Record<string, string[]> = {
+// C5 — exported so the vendor flow (vendorPortal.updateServiceBooking)
+// reuses the SAME state machine instead of drifting a parallel one.
+export const VALID_TRANSITIONS: Record<string, string[]> = {
   REQUESTED: ['ACCEPTED', 'REJECTED', 'CANCELLED'],
   ACCEPTED: ['IN_PROGRESS', 'CANCELLED', 'PAYMENT_AUTHORIZED'],
   IN_PROGRESS: ['COMPLETED', 'NO_SHOW'],
 };
 
-const ACTION_TO_STATUS: Record<string, string> = {
+export const ACTION_TO_STATUS: Record<string, string> = {
   accept: 'ACCEPTED',
   reject: 'REJECTED',
   cancel: 'CANCELLED',
@@ -244,6 +246,17 @@ export const bookingRouter = router({
         });
       }
 
+      // C5 — a store service can only be booked with the store's own
+      // pseudo-technician (isolation: never with an unrelated technician).
+      if (service.isStoreService) {
+        if (technician.storeVendorId == null || technician.storeVendorId !== service.vendorId) {
+          throw new TRPCError({
+            code: 'BAD_REQUEST',
+            message: 'Store services must be booked with the store provider',
+          });
+        }
+      }
+
       let totalAmount = bundle
         ? Number(bundle.bundlePrice)
         : beautyBundle
@@ -442,6 +455,9 @@ export const bookingRouter = router({
           familyMemberId: input.familyMemberId ?? null,
           bundleId: input.bundleId ?? null,
           beautyBundleId: input.beautyBundleId ?? null,
+          // C5 — store-service bookings carry the vendor link for the
+          // vendor bookings surface + payout attribution; null otherwise.
+          vendorId: service.isStoreService ? service.vendorId : null,
           pricingBreakdown: (pricingBreakdown as unknown as Prisma.InputJsonValue) ?? undefined,
           addonsJson: (addonsJson as unknown as Prisma.InputJsonValue) ?? undefined,
           beautyBundleJson: (beautyBundleJson as unknown as Prisma.InputJsonValue) ?? undefined,

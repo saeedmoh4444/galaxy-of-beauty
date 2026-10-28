@@ -54,11 +54,17 @@ const SHIPPING = {
 };
 
 async function seedCart(quantity = 1): Promise<void> {
-  await prisma.cartItem.upsert({
-    where: { userId_productId: { userId: customer.id, productId } },
-    update: { quantity },
-    create: { userId: customer.id, productId, quantity },
+  // C1 — the cart lost its (userId, productId) unique (variants coexist as
+  // separate lines); merge duplicate adds via findFirst like addToCart does.
+  const existing = await prisma.cartItem.findFirst({
+    where: { userId: customer.id, productId },
+    select: { id: true },
   });
+  if (existing) {
+    await prisma.cartItem.update({ where: { id: existing.id }, data: { quantity } });
+  } else {
+    await prisma.cartItem.create({ data: { userId: customer.id, productId, quantity } });
+  }
 }
 
 /** Track every order of a checkout for teardown — StoreOrderItem rows keep

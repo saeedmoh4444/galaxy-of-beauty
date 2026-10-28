@@ -47,7 +47,24 @@ const domainMessages = {
   ...bundlesMessages,
 };
 
-export const mobileMessages = {
+// TS7056 guard: the merged catalog's INFERRED literal type outgrew the
+// compiler's serialization limit, so the key union is derived from the
+// SOURCE files (each keyof serializes fine) and the merged value gets an
+// explicit annotation instead of inference.
+type DomainKey = keyof typeof domainMessages;
+type MobileOverlayKey =
+  | keyof typeof mobileCoreMessages
+  | keyof typeof mobileAuthMessages
+  | keyof typeof mobileCustomerMessages
+  | keyof typeof mobileCustomerAMessages
+  | keyof typeof mobileCustomerBMessages
+  | keyof typeof mobileTechMessages
+  | keyof typeof mobileAdminMessages
+  | keyof typeof mobilePublicMessages;
+
+export type TranslationKey = DomainKey | MobileOverlayKey;
+
+export const mobileMessages: Record<TranslationKey, Catalog | string> = {
   ...domainMessages,
   ...mobileCoreMessages,
   ...mobileAuthMessages,
@@ -57,13 +74,7 @@ export const mobileMessages = {
   ...mobileTechMessages,
   ...mobileAdminMessages,
   ...mobilePublicMessages,
-} as const;
-
-/**
- * Mobile key union — structurally identical to the merged global union
- * (mobileMessages already contains every domain key).
- */
-export type TranslationKey = keyof typeof mobileMessages;
+};
 
 export function t(
   key: TranslationKey,
