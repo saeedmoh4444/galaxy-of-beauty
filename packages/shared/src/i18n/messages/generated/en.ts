@@ -1286,6 +1286,8 @@ export const enWebMessages: Record<string, string> = {
   'beautyShorts.faceBlurred': 'Faces blurred',
   'beautyShorts.like': 'Like',
   'beautyShorts.privacy': 'Women only — content never leaves the women’s circle',
+  'beautyShorts.serviceReels': 'Service reels',
+  'beautyShorts.storeReels': 'Store reels',
   'beautyShorts.subtitle': 'Real videos and results from our artists',
   'beautyShorts.title': 'Beauty Shorts',
   'beautyTips.challenge.duration': '5 minutes',
