@@ -190,6 +190,7 @@ model User {
   vendorStaff       VendorStaff?
   staffActions      StaffActivityLog[]
   winbackReceived   WinbackLog[]
+  shortReports      ShortReport[] // R6 — reports this user filed against shorts
   referralsMade     Referral[]         @relation("ReferralsMade")
   referralsReceived Referral[]         @relation("ReferralsReceived")
   referralPrizes    ReferralPrize[]
@@ -2683,6 +2684,7 @@ model Short {
   product Product? @relation(fields: [productId], references: [id], onDelete: Cascade)
   service Service? @relation(fields: [serviceId], references: [id], onDelete: Cascade)
   vendor  Vendor?  @relation(fields: [vendorId], references: [id], onDelete: Cascade)
+  reports ShortReport[] // R6 — moderation reports against this short
 
   @@index([isApproved, isActive])
   @@index([technicianId])
@@ -2699,6 +2701,24 @@ model ShortLike {
   createdAt DateTime @default(now())
   @@unique([shortId, userId])
   @@map("short_likes")
+}
+
+// R6 — moderation reports (REELS_SHOPPABLE_PLAN): one report per user
+// per short; three distinct reports auto-hide the short pending review.
+model ShortReport {
+  id       Int      @id @default(autoincrement())
+  shortId  Int
+  userId   Int
+  reason   String // inappropriate | spam | privacy | other
+  note     String?
+  createdAt DateTime @default(now())
+
+  short Short @relation(fields: [shortId], references: [id], onDelete: Cascade)
+  user  User  @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([shortId, userId])
+  @@index([shortId])
+  @@map("short_reports")
 }
 
 model PriceDropAlert {

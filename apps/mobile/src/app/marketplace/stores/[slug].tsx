@@ -6,6 +6,7 @@ import { ErrorAlert } from '@/components/ErrorAlert';
 import { trpc } from '@/lib/trpc-react';
 import { useLocale } from '@/components/LocaleProvider';
 import { SocialIconsRow } from '@/components/SocialIconsRow';
+import { ReelStrip } from '@/components/ReelStrip';
 
 // S2 — mobile store detail: logo, name, product grid (marketplace.vendorDetail).
 export default function StoreDetailScreen(): JSX.Element {
@@ -14,6 +15,7 @@ export default function StoreDetailScreen(): JSX.Element {
   const q = trpc.marketplace.vendorDetail.useQuery({ slug: slug ?? '' }, { enabled: !!slug });
   const store = q.data as unknown as
     | {
+        id?: number;
         storeName?: string;
         logoUrl?: string | null;
         socialLinks?: Record<string, string> | null;
@@ -66,6 +68,9 @@ export default function StoreDetailScreen(): JSX.Element {
 
       {/* B6 — social presence (only networks the vendor set). */}
       <SocialIconsRow links={store?.socialLinks} />
+
+      {/* R5 — shoppable reels strip (REELS_SHOPPABLE_PLAN). */}
+      <ReelStrip vendorId={store?.id} />
 
       {products.length === 0 ? (
         <Text style={styles.empty}>{t('mobile.public.marketplace.store-products-empty')}</Text>

@@ -253,12 +253,14 @@ beautyScrapbook.delete	mutation	customer
 beautyScrapbook.myMemories	query	customer
 beautyShorts.adminDecide	mutation	admin
 beautyShorts.adminPending	query	admin
+beautyShorts.adminReports	query	admin
 beautyShorts.create	mutation	protected
 beautyShorts.feed	query	public
 beautyShorts.gallery	query	public
 beautyShorts.home	query	public
 beautyShorts.like	mutation	customer
 beautyShorts.myShorts	query	protected
+beautyShorts.report	mutation	customer
 beautyShorts.surfaceShorts	query	public
 beautyShorts.viewed	mutation	public
 beautyStats.platform	query	public

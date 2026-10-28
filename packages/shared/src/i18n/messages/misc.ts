@@ -4900,6 +4900,10 @@ export const miscMessages = {
   'admin.shorts.category': { ar: 'التصنيف', en: 'Category' },
   'admin.shorts.face-blur': { ar: 'تعتيم الوجوه', en: 'Face blur' },
   'admin.shorts.consent': { ar: 'الموافقة', en: 'Consent' },
+  // R6 — reported shorts queue (REELS_SHOPPABLE_PLAN).
+  'admin.shorts.reported': { ar: 'فيديوهات مُبلَّغ عنها', en: 'Reported shorts' },
+  'admin.shorts.reports-count': { ar: 'عدد البلاغات: {{count}}', en: 'Reports: {{count}}' },
+  'admin.shorts.restore': { ar: 'استعادة', en: 'Restore' },
   'common.yes': { ar: 'نعم', en: 'Yes' },
   'common.no': { ar: 'لا', en: 'No' },
   // E6c — menopause/perimenopause mode
