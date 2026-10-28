@@ -143,7 +143,8 @@ describe('vendor booking status actions (C5f)', () => {
   it('cancelling a fresh booking frees its slot', async () => {
     // A second booking on a second slot, cancelled by the owner.
     const oc = await caller(owner);
-    const startAt = safeFutureDate(4);
+    // Day 9 (not the beforeAll's Jummah-shifted day-3 window).
+    const startAt = safeFutureDate(9);
     const slot = await oc.vendorPortal.addAvailabilitySlot({
       startAt: startAt.toISOString(),
       endAt: new Date(startAt.getTime() + 3_600_000).toISOString(),
