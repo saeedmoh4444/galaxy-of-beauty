@@ -4873,6 +4873,9 @@ export const miscMessages = {
   'beautyShorts.like': { ar: 'أعجبني', en: 'Like' },
   'beautyShorts.faceBlurred': { ar: 'تم تعتيم الوجوه', en: 'Faces blurred' },
   'beautyShorts.empty': { ar: 'لا توجد فيديوهات بعد', en: 'No videos yet' },
+  // R4 — shoppable reel surfaces (REELS_SHOPPABLE_PLAN).
+  'beautyShorts.storeReels': { ar: 'فيديوهات المتجر', en: 'Store reels' },
+  'beautyShorts.serviceReels': { ar: 'فيديوهات الخدمة', en: 'Service reels' },
   'tech.shorts.title': { ar: 'فيديوهاتي', en: 'My Shorts' },
   'tech.shorts.post': { ar: 'انشري فيديو', en: 'Post a short' },
   'tech.shorts.title-ar': { ar: 'العنوان (عربي)', en: 'Title (Arabic)' },
