@@ -4471,9 +4471,11 @@ async function main() {
         ],
       });
     }
+    // The service list pages by newest-first (12/page) and the service
+    // creates run in a Promise.all (id order is racy) — anchor on the
+    // exact seeded title so the E2E can find it via the search box.
     const demoService = await prisma.service.findFirst({
-      where: { isActive: true, vendorId: null },
-      orderBy: { id: 'asc' },
+      where: { titleJson: { path: ['ar'], equals: 'قص شعر كامل' } },
       select: { id: true },
     });
     if (demoService) {
