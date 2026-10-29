@@ -402,6 +402,10 @@ export const mobileCustomerBMessages = {
   'mobile.stores.services.minutes': { ar: 'دقيقة', en: 'min' },
   // R5 — shoppable reel strip (REELS_SHOPPABLE_PLAN).
   'mobile.stores.reels.title': { ar: 'فيديوهات المتجر', en: 'Store reels' },
+  // P3 — mobile swipe feed (REELS_SHOPPABLE_PLAN Phase 2).
+  'mobile.shorts.title': { ar: 'شاهدينا', en: 'Beauty Shorts' },
+  'mobile.shorts.subtitle': { ar: 'فيديوهات ونتائج حقيقية', en: 'Real videos and results' },
+  'mobile.shorts.empty': { ar: 'لا توجد فيديوهات بعد', en: 'No videos yet' },
   // E2 — medical clinics screens
   'mobile.clinics.title': { ar: 'العيادات الطبية', en: 'Medical Clinics' },
   'mobile.clinics.empty': { ar: 'لا توجد عيادات', en: 'No clinics' },
