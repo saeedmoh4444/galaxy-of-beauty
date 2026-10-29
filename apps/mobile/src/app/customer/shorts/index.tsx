@@ -65,6 +65,9 @@ export default function ShortsFeedScreen(): JSX.Element {
   }, [activeShort?.videoUrl, player]);
 
   useEffect(() => {
+    // react-hooks/immutability: expo-video exposes `muted` only as a
+    // settable property (no setter method) — the toggle must mutate it.
+    // eslint-disable-next-line react-hooks/immutability
     player.muted = muted;
   }, [muted, player]);
 
@@ -111,7 +114,6 @@ export default function ShortsFeedScreen(): JSX.Element {
         }
       }
     };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [active]);
 
   const onMomentumEnd = useCallback(
