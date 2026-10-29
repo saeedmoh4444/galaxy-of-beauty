@@ -191,6 +191,7 @@ model User {
   staffActions      StaffActivityLog[]
   winbackReceived   WinbackLog[]
   shortReports      ShortReport[] // R6 — reports this user filed against shorts
+  shortWatchLogs    ShortWatchLog[] // P2 — watch events this user produced
   referralsMade     Referral[]         @relation("ReferralsMade")
   referralsReceived Referral[]         @relation("ReferralsReceived")
   referralPrizes    ReferralPrize[]
@@ -2685,6 +2686,7 @@ model Short {
   service Service? @relation(fields: [serviceId], references: [id], onDelete: Cascade)
   vendor  Vendor?  @relation(fields: [vendorId], references: [id], onDelete: Cascade)
   reports ShortReport[] // R6 — moderation reports against this short
+  watchLogs ShortWatchLog[] // P2 — watch analytics events
 
   @@index([isApproved, isActive])
   @@index([technicianId])
@@ -2719,6 +2721,24 @@ model ShortReport {
   @@unique([shortId, userId])
   @@index([shortId])
   @@map("short_reports")
+}
+
+// P2 — watch analytics (REELS_SHOPPABLE_PLAN Phase 2): one row per
+// watch event (the feed reports accumulated seconds when a slide loses
+// focus). Aggregates feed adminWatchStats + Phase 3 vendor analytics.
+model ShortWatchLog {
+  id        Int      @id @default(autoincrement())
+  shortId   Int
+  userId    Int?     // null = anonymous viewer
+  seconds   Int      // watched seconds, clamped to the reel duration
+  completed Boolean  @default(false) // ≥80% of duration watched
+  createdAt DateTime @default(now())
+
+  short Short  @relation(fields: [shortId], references: [id], onDelete: Cascade)
+  user  User?  @relation(fields: [userId], references: [id], onDelete: SetNull)
+
+  @@index([shortId, createdAt])
+  @@map("short_watch_logs")
 }
 
 model PriceDropAlert {

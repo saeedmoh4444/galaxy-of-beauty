@@ -1,6 +1,6 @@
 'use client';
 import type { JSX } from 'react';
-import { useCallback, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { api } from '@/lib/trpc';
 import { CardListSkeleton, ErrorAlert, useAuth } from '@galaxy/ui';
 import { useLocale } from '@/components/LocaleProvider';
@@ -35,12 +35,52 @@ export default function BeautyShortsPage(): JSX.Element {
   });
   const likeMut = api.beautyShorts.like.useMutation({ onSuccess: () => refetch() });
   const viewedMut = api.beautyShorts.viewed.useMutation();
+  const watchedMut = api.beautyShorts.watched.useMutation();
 
   const [active, setActive] = useState(0);
   const [muted, setMuted] = useState(true);
   const feedRef = useRef<HTMLDivElement | null>(null);
 
   const shorts = (data ?? []) as unknown as ShortRow[];
+
+  // P2 — watch analytics: report the accumulated watch seconds of the
+  // outgoing slide whenever the active slide changes or the page unmounts.
+  // Refs keep the effect keyed ONLY on `active` — the shorts array and the
+  // mutation object change identity on every refetch (likes refetch), and
+  // an identity-dependent effect would misfire watch events.
+  const shortsRef = useRef<ShortRow[]>([]);
+  shortsRef.current = shorts;
+  const watchedMutRef = useRef(watchedMut.mutate);
+  watchedMutRef.current = watchedMut.mutate;
+
+  const reportWatch = useCallback((shortId: number, startedAt: number) => {
+    const elapsed = Math.round((Date.now() - startedAt) / 1000);
+    if (elapsed < 1) return;
+    const short = shortsRef.current.find((s) => s.id === shortId);
+    if (!short) return;
+    watchedMutRef.current({
+      shortId,
+      seconds: elapsed,
+      completed: short.durationSec > 0 && elapsed >= short.durationSec * 0.8,
+    });
+  }, []);
+
+  const watchRef = useRef<{ shortId: number; startedAt: number } | null>(null);
+  useEffect(() => {
+    const prev = watchRef.current;
+    const current = shortsRef.current[active];
+    if (prev && prev.shortId !== current?.id) reportWatch(prev.shortId, prev.startedAt);
+    watchRef.current = current ? { shortId: current.id, startedAt: Date.now() } : null;
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [active]);
+
+  // Page unmount — report the slide in flight.
+  useEffect(() => {
+    return () => {
+      const last = watchRef.current;
+      if (last) reportWatch(last.shortId, last.startedAt);
+    };
+  }, [reportWatch]);
 
   const title = (s: ShortRow) => (locale === 'en' ? s.titleJson?.en : s.titleJson?.ar) ?? '';
 

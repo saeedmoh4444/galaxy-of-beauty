@@ -140,6 +140,74 @@ export const beautyShortsRouter = router({
   }),
 
   /**
+   * watched — P2 (Phase 2): a watch event fired when a slide loses
+   * focus. Seconds are clamped to the reel duration; zero-second
+   * events are rejected. Anonymous viewers record userId null.
+   */
+  watched: publicProcedure
+    .input(
+      z.object({
+        shortId: z.number().int().positive(),
+        seconds: z.number().min(0.5).max(3600),
+        completed: z.boolean().default(false),
+      }),
+    )
+    .mutation(async ({ ctx, input }) => {
+      const short = await db.short.findUnique({ where: { id: input.shortId } });
+      if (!short) throw new TRPCError({ code: 'NOT_FOUND', message: 'Short not found' });
+
+      const seconds = Math.min(Math.round(input.seconds), Math.max(short.durationSec, 1));
+      const log = await db.shortWatchLog.create({
+        data: {
+          shortId: input.shortId,
+          userId: ctx.user?.id ?? null,
+          seconds,
+          completed: input.completed && seconds >= short.durationSec * 0.8,
+        },
+      });
+      return { ok: true, logId: log.id, seconds };
+    }),
+
+  /** adminWatchStats — P2: 30-day watch aggregation per short. */
+  adminWatchStats: adminProcedure.query(async () => {
+    const since = new Date(Date.now() - 30 * 86_400_000);
+    const grouped = await db.shortWatchLog.groupBy({
+      by: ['shortId'],
+      where: { createdAt: { gte: since } },
+      _sum: { seconds: true },
+      _count: { _all: true },
+    });
+    const completed = await db.shortWatchLog.groupBy({
+      by: ['shortId'],
+      where: { createdAt: { gte: since }, completed: true },
+      _count: { _all: true },
+    });
+    const completedByShort = new Map(completed.map((c) => [c.shortId, c._count._all]));
+
+    const shorts = await db.short.findMany({
+      where: { id: { in: grouped.map((g) => g.shortId) } },
+      select: { id: true, titleJson: true },
+    });
+    const titleById = new Map(shorts.map((s) => [s.id, s.titleJson]));
+
+    return grouped
+      .map((g) => {
+        const events = g._count._all;
+        const completions = completedByShort.get(g.shortId) ?? 0;
+        return {
+          id: g.shortId,
+          titleJson: titleById.get(g.shortId) ?? {},
+          watchSeconds: g._sum.seconds ?? 0,
+          events,
+          completions,
+          completionRate: events > 0 ? completions / events : 0,
+        };
+      })
+      .sort((a, b) => b.watchSeconds - a.watchSeconds)
+      .slice(0, 20);
+  }),
+
+  /**
    * surfaceShorts — R1 (REELS_SHOPPABLE_PLAN): approved + active shorts
    * attached to a product, a service or a vendor, newest first. The E7
    * privacy rule holds here too (anonymous = face-blurred only).
