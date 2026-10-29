@@ -4871,6 +4871,9 @@ export const miscMessages = {
     en: 'Women only — content never leaves the women’s circle',
   },
   'beautyShorts.like': { ar: 'أعجبني', en: 'Like' },
+  // P1 — swipe feed controls (Phase 2).
+  'beautyShorts.mute': { ar: 'كتم الصوت', en: 'Mute' },
+  'beautyShorts.unmute': { ar: 'تشغيل الصوت', en: 'Unmute' },
   'beautyShorts.faceBlurred': { ar: 'تم تعتيم الوجوه', en: 'Faces blurred' },
   'beautyShorts.empty': { ar: 'لا توجد فيديوهات بعد', en: 'No videos yet' },
   // R4 — shoppable reel surfaces (REELS_SHOPPABLE_PLAN).

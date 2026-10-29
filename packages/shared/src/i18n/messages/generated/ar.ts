@@ -1281,11 +1281,13 @@ export const arWebMessages: Record<string, string> = {
   'beautyShorts.empty': 'لا توجد فيديوهات بعد',
   'beautyShorts.faceBlurred': 'تم تعتيم الوجوه',
   'beautyShorts.like': 'أعجبني',
+  'beautyShorts.mute': 'كتم الصوت',
   'beautyShorts.privacy': 'نساء فقط — المحتوى لا يغادر دائرة النساء أبداً',
   'beautyShorts.serviceReels': 'فيديوهات الخدمة',
   'beautyShorts.storeReels': 'فيديوهات المتجر',
   'beautyShorts.subtitle': 'فيديوهات ونتائج حقيقية من فناناتنا',
   'beautyShorts.title': 'جمال شورتس',
+  'beautyShorts.unmute': 'تشغيل الصوت',
   'beautyTips.challenge.duration': '5 دقائق',
   'beautyTips.challenge.title': 'تحدي الترطيب',
   'beautyTips.ingredient.desc':
