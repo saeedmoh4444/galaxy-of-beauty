@@ -6,9 +6,10 @@
 > reels on products, store pages and service cards — not a standalone
 > TikTok clone.
 >
-> Status: **PHASE 1 DELIVERED** (2026-10-28/29, master `f15e0a02`) — the
-> foundation is on master: surfaces, uploads, pipeline, web+mobile strips
-> and moderation. Phases 2–3 (engagement + commerce) remain proposed.
+> Status: **PHASES 1–2 DELIVERED** (2026-10-29/30, master `5c18a3e2`) — the
+> foundation plus the engagement layer are on master: swipe feed (web +
+> mobile), watch analytics and the admin stats surface. Phase 3
+> (commerce) remains proposed.
 
 ---
 
@@ -27,6 +28,21 @@
 The foundation is live: reels attach to catalog surfaces, upload through
 a capped video path, get probed/poster-ized by a worker, render
 poster-first on web + mobile, and moderate through reports/takedowns.
+
+## 0b. Phase 2 — delivery record (DELIVERED 2026-10-29/30)
+
+| Item                  | PR   | Shipped                                                                                                     |
+| --------------------- | ---- | ----------------------------------------------------------------------------------------------------------- |
+| P1 web swipe feed     | #549 | virtualized snap feed on `/beauty-shorts` — autoplay-muted, tap-to-unmute, ≤3 live `<video>` elements + E2E |
+| P2 watch analytics    | #550 | `ShortWatchLog` + `watched`/`adminWatchStats` procedures + feed watch-time reporting + tests                |
+| P3 mobile swipe feed  | #551 | paged `customer/shorts` FlatList feed + home banner entry                                                   |
+| P4 admin watch stats  | #552 | admin 30-day watch analytics section (seconds/events/completion) + `admin.shorts.watchStats` keys           |
+| (in P1) CSP media-src | #549 | `next.config.js` now allows GCS + S3 media origins — reel video actually plays on web                       |
+
+The engagement layer is live: web + mobile swipe feeds with
+virtualization and autoplay-muted playback, watch events recorded per
+reel, and a 30-day analytics surface for admins. Phase 3 (shoppable tags
+and conversion attribution) remains proposed.
 
 ## 0. Why this shape
 
