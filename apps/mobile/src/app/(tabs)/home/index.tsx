@@ -116,6 +116,21 @@ export default function HomeScreen(): JSX.Element {
         </TouchableOpacity>
       ) : null}
 
+      {/* P3 — shoppable reels feed entry (REELS_SHOPPABLE_PLAN Phase 2). */}
+      <TouchableOpacity
+        testID="home-shorts-banner"
+        style={styles.shortsBanner}
+        activeOpacity={0.8}
+        onPress={() => {
+          trigger();
+          router.push('/customer/shorts');
+        }}
+      >
+        <Text style={styles.shortsBannerEmoji}>🎬</Text>
+        <Text style={styles.shortsBannerTitle}>{t('mobile.shorts.title')}</Text>
+        <Text style={styles.shortsBannerSub}>{t('mobile.shorts.subtitle')}</Text>
+      </TouchableOpacity>
+
       {/* Community Stats Bar */}
       <View style={styles.statsRow}>
         {secondaryFailed && (
@@ -300,6 +315,19 @@ const makeStyles = (c: typeof themeColors.light | typeof themeColors.dark) =>
       padding: 12,
       marginBottom: 12,
     },
+    // P3 — reels feed entry banner.
+    shortsBanner: {
+      borderRadius: 14,
+      backgroundColor: '#111827',
+      padding: 14,
+      marginBottom: 12,
+      flexDirection: 'row',
+      alignItems: 'center',
+      gap: 10,
+    },
+    shortsBannerEmoji: { fontSize: 26 },
+    shortsBannerTitle: { color: '#fff', fontSize: 15, fontWeight: '800' },
+    shortsBannerSub: { color: '#d1d5db', fontSize: 12, flex: 1, textAlign: 'right' },
     seasonalBannerTitle: {
       fontSize: 13,
       fontWeight: '700',
