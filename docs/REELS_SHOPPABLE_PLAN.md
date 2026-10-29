@@ -6,10 +6,27 @@
 > reels on products, store pages and service cards — not a standalone
 > TikTok clone.
 >
-> Status: **PROPOSED — work starts on user "start"** (authorized
-> 2026-10-28).
+> Status: **PHASE 1 DELIVERED** (2026-10-28/29, master `f15e0a02`) — the
+> foundation is on master: surfaces, uploads, pipeline, web+mobile strips
+> and moderation. Phases 2–3 (engagement + commerce) remain proposed.
 
 ---
+
+## 0a. Phase 1 — delivery record (DELIVERED 2026-10-28/29)
+
+| Item                  | PR   | Shipped                                                                                       |
+| --------------------- | ---- | --------------------------------------------------------------------------------------------- |
+| Plan doc              | #541 | this document (phases, pre-deployment checklist)                                              |
+| R1 surface linkage    | #542 | `Short` → product/service/vendor FKs + `surfaceShorts` + ownership guards + 14 tests          |
+| R2 video upload path  | #543 | `shorts` presigns (video-only) + 100 MB finalize cap + 10-reel quota + 6 tests                |
+| R3 media pipeline     | #544 | `gob-media` worker — ffprobe duration + ffmpeg poster, graceful degradation + 3 tests         |
+| R4 web surfaces       | #545 | reel strips on store + service pages (poster-first `ReelCard` rows) + E2E                     |
+| R5 mobile surfaces    | #546 | `ReelStrip` on both mobile store screens, expo-video player + `mobile.stores.reels.title` key |
+| R6 moderation reports | #547 | `ShortReport` + report flow + 3-report auto-hide + admin queue + vendor `myShorts` + 8 tests  |
+
+The foundation is live: reels attach to catalog surfaces, upload through
+a capped video path, get probed/poster-ized by a worker, render
+poster-first on web + mobile, and moderate through reports/takedowns.
 
 ## 0. Why this shape
 
