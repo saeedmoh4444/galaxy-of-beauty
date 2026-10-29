@@ -57,11 +57,13 @@ test('scrolling two slides swaps the playing video', async ({ page }) => {
   const count = await slides.count();
   test.skip(count < 3, 'needs at least three seeded reels');
 
-  // The ±1 window keeps slide 0 mounted at active=1 — the first video in
-  // DOM order only changes once the active slide is two positions away.
-  // Scroll with the mouse wheel (real input) and poll generously — CI
-  // runs under load and React re-renders can lag.
-  const firstSrc = await page.locator('video').first().getAttribute('src');
+  // The ±1 window keeps slide 0 mounted at active=1 — its video only
+  // unmounts once the active slide is two positions away. Assert the
+  // unmount (element identity), NOT a src change: several seeded reels
+  // share the same sample video URL, so src comparisons are data-fragile
+  // (feed order is tie-shuffled by createMany's equal timestamps).
+  const firstSlideVideo = slides.first().locator('video');
+  test.skip((await firstSlideVideo.count()) === 0, 'first slide has no video to swap');
   const feed = page.getByTestId('reels-feed');
   await feed.hover();
   for (let i = 0; i < 6; i++) {
@@ -69,7 +71,5 @@ test('scrolling two slides swaps the playing video', async ({ page }) => {
   }
   await page.waitForTimeout(400);
 
-  await expect
-    .poll(async () => page.locator('video').first().getAttribute('src'), { timeout: 10_000 })
-    .not.toBe(firstSrc);
+  await expect(firstSlideVideo).toBeDetached({ timeout: 10_000 });
 });
