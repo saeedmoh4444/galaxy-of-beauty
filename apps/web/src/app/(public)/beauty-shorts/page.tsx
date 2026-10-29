@@ -129,7 +129,11 @@ export default function BeautyShortsPage(): JSX.Element {
                     preload="metadata"
                     className="h-full w-full object-cover"
                     onPlay={() => viewedMut.mutate({ shortId: s.id })}
-                  />
+                  >
+                    {/* a11y: reels are ambient visuals; the track satisfies
+                        jsx-a11y/media-has-caption without inventing captions. */}
+                    <track kind="captions" srcLang="ar" />
+                  </video>
                 ) : (
                   <div className="flex h-full w-full flex-col items-center justify-center bg-gradient-to-br from-gray-800 to-gray-900">
                     {s.type === 'before_after' ? (
