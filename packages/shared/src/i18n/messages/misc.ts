@@ -4907,6 +4907,11 @@ export const miscMessages = {
   'admin.shorts.reported': { ar: 'فيديوهات مُبلَّغ عنها', en: 'Reported shorts' },
   'admin.shorts.reports-count': { ar: 'عدد البلاغات: {{count}}', en: 'Reports: {{count}}' },
   'admin.shorts.restore': { ar: 'استعادة', en: 'Restore' },
+  // P4 — watch analytics surface (Phase 2).
+  'admin.shorts.watchStats': { ar: 'إحصاءات المشاهدة (٣٠ يوم)', en: 'Watch stats (30 days)' },
+  'admin.shorts.watchSeconds': { ar: '{{seconds}} دقيقة مشاهدة', en: '{{seconds}} min watched' },
+  'admin.shorts.watchEvents': { ar: '{{count}} مشاهدة', en: '{{count}} events' },
+  'admin.shorts.completionRate': { ar: 'إكمال {{rate}}٪', en: '{{rate}}% completion' },
   'common.yes': { ar: 'نعم', en: 'Yes' },
   'common.no': { ar: 'لا', en: 'No' },
   // E6c — menopause/perimenopause mode

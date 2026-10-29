@@ -20,6 +20,9 @@ export default function AdminShortsPage(): JSX.Element {
     onSuccess: () => reportsQ.refetch(),
   });
 
+  // P4 — watch analytics (Phase 2): top reels by watch-seconds, 30 days.
+  const watchQ = api.beautyShorts.adminWatchStats.useQuery(undefined, { enabled: isAuthenticated });
+
   const pending = data ?? [];
 
   if (isError) return <ErrorAlert message={t('state.error')} onRetry={() => refetch()} />;
@@ -30,7 +33,6 @@ export default function AdminShortsPage(): JSX.Element {
         <h1 className="text-2xl font-bold">{t('admin.shorts.title')}</h1>
         <p className="mt-1 text-sm text-text-secondary">{t('admin.shorts.subtitle')}</p>
       </div>
-
       {isLoading ? (
         <CardListSkeleton count={4} />
       ) : pending.length === 0 ? (
@@ -85,9 +87,8 @@ export default function AdminShortsPage(): JSX.Element {
           ))}
         </div>
       )}
-
       {/* R6 — reported shorts: auto-hidden at 3 reports, restore or keep
-          hidden from here. */}
+          hidden from here. */}{' '}
       {isAuthenticated && (reportsQ.data ?? []).length > 0 && (
         <div className="mt-10">
           <h2 className="text-xl font-bold">{t('admin.shorts.reported')}</h2>
@@ -125,6 +126,36 @@ export default function AdminShortsPage(): JSX.Element {
                     >
                       {t('admin.shorts.restore')}
                     </Button>
+                  </div>
+                </div>
+              </Card>
+            ))}
+          </div>
+        </div>
+      )}
+      {/* P4 — watch analytics (Phase 2): 30-day top reels by watch time. */}
+      {isAuthenticated && (watchQ.data ?? []).length > 0 && (
+        <div className="mt-10">
+          <h2 className="text-xl font-bold">{t('admin.shorts.watchStats')}</h2>
+          <div className="mt-3 space-y-2">
+            {(watchQ.data ?? []).map((w) => (
+              <Card key={w.id} padding="md">
+                <div className="flex flex-wrap items-center justify-between gap-3">
+                  <div className="min-w-0 flex-1">
+                    <p className="truncate font-semibold">
+                      {locale === 'en'
+                        ? ((w.titleJson as Record<string, string>)?.en ?? '')
+                        : ((w.titleJson as Record<string, string>)?.ar ?? '')}
+                    </p>
+                    <p className="mt-1 text-xs text-text-secondary">
+                      {t('admin.shorts.watchSeconds', {
+                        seconds: Math.round((w.watchSeconds as number) / 60),
+                      })}{' '}
+                      · {t('admin.shorts.watchEvents', { count: w.events as number })} ·{' '}
+                      {t('admin.shorts.completionRate', {
+                        rate: Math.round((w.completionRate as number) * 100),
+                      })}
+                    </p>
                   </div>
                 </div>
               </Card>
