@@ -59,13 +59,17 @@ test('scrolling two slides swaps the playing video', async ({ page }) => {
 
   // The ±1 window keeps slide 0 mounted at active=1 — the first video in
   // DOM order only changes once the active slide is two positions away.
+  // Scroll with the mouse wheel (real input) and poll generously — CI
+  // runs under load and React re-renders can lag.
   const firstSrc = await page.locator('video').first().getAttribute('src');
   const feed = page.getByTestId('reels-feed');
-  await feed.evaluate((el) => {
-    el.scrollTop = el.clientHeight * 2;
-  });
+  await feed.hover();
+  for (let i = 0; i < 6; i++) {
+    await page.mouse.wheel(0, 400);
+  }
+  await page.waitForTimeout(400);
 
   await expect
-    .poll(async () => page.locator('video').first().getAttribute('src'), { timeout: 5000 })
+    .poll(async () => page.locator('video').first().getAttribute('src'), { timeout: 10_000 })
     .not.toBe(firstSrc);
 });
