@@ -71,5 +71,5 @@ test('scrolling two slides swaps the playing video', async ({ page }) => {
   }
   await page.waitForTimeout(400);
 
-  await expect(firstSlideVideo).toBeDetached({ timeout: 10_000 });
+  await expect.poll(async () => firstSlideVideo.count(), { timeout: 10_000 }).toBe(0);
 });
