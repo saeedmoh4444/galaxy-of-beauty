@@ -80,7 +80,10 @@ const nextConfig = {
               // production the socket rides wss: on the app origin.
               "connect-src 'self' https://api.openai.com https://*.sentry.io ws://localhost:* http://localhost:* wss:",
               "frame-src 'self' https://www.youtube.com https://js.stripe.com",
-              "media-src 'self' blob:",
+              // Reels (P1): seeded sample videos + the S3 media buckets
+              // (storage.ts publishes https://<bucket>.s3.<region>.amazonaws.com);
+              // blob: stays for the WebRTC video rooms.
+              "media-src 'self' blob: https://commondatastorage.googleapis.com https://*.s3.me-south-1.amazonaws.com https://*.s3.amazonaws.com",
               "object-src 'none'",
               "base-uri 'self'",
               "form-action 'self'",
