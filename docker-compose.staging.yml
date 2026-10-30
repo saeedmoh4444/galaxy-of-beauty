@@ -3,10 +3,12 @@
 # ═══════════════════════════════════════════
 # A prod-shaped rehearsal environment on a single host (AUDIT_2026-10-30
 # item 7): same images, same compose topology, one replica each, staging
-# secrets, and the monitoring profile by default.
+# secrets. Merges with docker-compose.yml ONLY — prod-only services
+# (nginx, backup, monitoring) are deliberately not redefined here; add
+# `-f docker-compose.prod.yml` to a rehearsal box if you want them.
 #
 # Usage:
-#   cp .env.example .env.staging   # staging DATABASE_URL/secrets
+#   cp .env.example .env.staging   # then fill staging DATABASE_URL/secrets
 #   docker compose -f docker-compose.yml -f docker-compose.staging.yml \
 #     --env-file .env.staging up -d --build
 #
@@ -25,28 +27,73 @@ services:
       - postgres_data_staging:/var/lib/postgresql/data
 
   web:
-    environment:
+    build:
+      dockerfile: apps/web/Dockerfile
+      target: production
+    environment: !override
       NODE_ENV: production
       DATABASE_URL: ${STAGING_DATABASE_URL:?STAGING_DATABASE_URL is required}
       REDIS_URL: redis://redis:6379
+      JWT_ACCESS_SECRET: ${JWT_ACCESS_SECRET:?JWT_ACCESS_SECRET is required}
+      JWT_REFRESH_SECRET: ${JWT_REFRESH_SECRET:?JWT_REFRESH_SECRET is required}
       # Staging-safe defaults: payments simulate, no live alert paging.
       FATOORAH_SIMULATE: 'true'
       ALERT_WEBHOOK_URL: ''
-    deploy:
-      replicas: 1
+    env_file:
+      - path: .env.staging
+        required: false
+    volumes: !reset []
 
   socket:
+    build:
+      dockerfile: apps/web/Dockerfile
+      target: runtime
+    environment: !override
+      NODE_ENV: production
+      SOCKET_PORT: "4001"
+      CORS_ORIGIN: ${STAGING_CORS_ORIGIN:-http://localhost:3000}
+      DATABASE_URL: ${STAGING_DATABASE_URL:?STAGING_DATABASE_URL is required}
+      REDIS_URL: redis://redis:6379
+      JWT_ACCESS_SECRET: ${JWT_ACCESS_SECRET:?JWT_ACCESS_SECRET is required}
+      JWT_REFRESH_SECRET: ${JWT_REFRESH_SECRET:?JWT_REFRESH_SECRET is required}
+    env_file:
+      - path: .env.staging
+        required: false
+    volumes: !reset []
+
+  # BullMQ worker — same runtime image as prod; staging queues rehearse
+  # money flows before prod (never against the shared dev DB).
+  worker:
+    build:
+      context: .
+      dockerfile: apps/web/Dockerfile
+      target: runtime
+    container_name: gob-worker-staging
+    command: pnpm --filter @galaxy/api worker
+    environment: !override
+      NODE_ENV: production
+      DATABASE_URL: ${STAGING_DATABASE_URL:?STAGING_DATABASE_URL is required}
+      REDIS_URL: redis://redis:6379
+      JWT_ACCESS_SECRET: ${JWT_ACCESS_SECRET:?JWT_ACCESS_SECRET is required}
+      JWT_REFRESH_SECRET: ${JWT_REFRESH_SECRET:?JWT_REFRESH_SECRET is required}
+      FATOORAH_SIMULATE: 'true'
+      ALERT_WEBHOOK_URL: ''
+    env_file:
+      - path: .env.staging
+        required: false
+    restart: always
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
     deploy:
-      replicas: 1
-
-  nginx:
-    ports:
-      - '8080:80'
-
-  backup:
-    environment:
-      PGDATABASE: ${POSTGRES_DB:-Galaxy_of_Beauty_db_staging}
-      BACKUP_CRON: '0 4 * * *'
+      resources:
+        limits:
+          memory: 512M
+          cpus: '1'
+    networks:
+      - gob-network
 
 volumes:
   postgres_data_staging:
