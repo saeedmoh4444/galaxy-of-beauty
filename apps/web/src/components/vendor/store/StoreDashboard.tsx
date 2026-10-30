@@ -334,6 +334,10 @@ export function StoreDashboard({
   );
   const series = analyticsQ.data?.series ?? [];
   const analyticsTopProducts = analyticsQ.data?.topProducts ?? [];
+  // Q4 Phase 3 — reel performance (views, watch time, tag clicks,
+  // attributed conversions) from the ReelDailyStat read-model.
+  const reelQ = api.vendorPortal.reelAnalytics.useQuery(undefined, { enabled: isAuthenticated });
+  const reels = reelQ.data?.reels ?? [];
   // B5 — funnel analytics (views → orders → repeat).
   const funnelQ = api.vendorPortal.funnel.useQuery(undefined, { enabled: isAuthenticated });
 
@@ -1653,7 +1657,7 @@ export function StoreDashboard({
                   {formatCurrency(series.reduce((s, x) => s + x.revenue, 0))}
                 </p>
                 <p className="text-xs text-text-secondary">{t('vendorPortal.analytics.revenue')}</p>
-              </Card>
+              </Card>{' '}
               <Card padding="md" className="text-center">
                 <p className="text-2xl font-bold">{series.reduce((s, x) => s + x.orders, 0)}</p>
                 <p className="text-xs text-text-secondary">{t('vendorPortal.analytics.orders')}</p>
@@ -1670,6 +1674,58 @@ export function StoreDashboard({
                 <p className="text-xs text-text-secondary">{t('vendorPortal.analytics.aov')}</p>
               </Card>
             </div>
+
+            {/* Q4 Phase 3 — reel performance: top reels by views with watch
+                time, tag clicks and attributed conversions. */}
+            <Card padding="md" data-testid="vendor-reel-analytics">
+              <h3 className="mb-2 text-sm font-semibold">{t('vendorPortal.reels.title')}</h3>
+              {reels.length === 0 ? (
+                <p className="text-sm text-text-secondary">{t('vendorPortal.reels.empty')}</p>
+              ) : (
+                <div className="overflow-x-auto">
+                  <table className="w-full text-sm">
+                    <thead>
+                      <tr className="text-xs text-text-secondary">
+                        <th className="pb-2 text-start font-semibold">
+                          {t('vendorPortal.reels.title')}
+                        </th>
+                        <th className="pb-2 text-end font-semibold">
+                          {t('vendorPortal.reels.views')}
+                        </th>
+                        <th className="pb-2 text-end font-semibold">
+                          {t('vendorPortal.reels.watchMinutes')}
+                        </th>
+                        <th className="pb-2 text-end font-semibold">
+                          {t('vendorPortal.reels.clicks')}
+                        </th>
+                        <th className="pb-2 text-end font-semibold">
+                          {t('vendorPortal.reels.orders')}
+                        </th>
+                        <th className="pb-2 text-end font-semibold">
+                          {t('vendorPortal.reels.revenue')}
+                        </th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {reels.map((r) => (
+                        <tr key={r.shortId} className="border-t border-border-muted">
+                          <td className="max-w-40 truncate py-2 pe-2 font-bold">
+                            {locale === 'ar'
+                              ? ((r.titleJson as { ar?: string }).ar ?? '')
+                              : ((r.titleJson as { en?: string }).en ?? '')}
+                          </td>
+                          <td className="py-2 text-end">👁️ {r.views.toLocaleString()}</td>
+                          <td className="py-2 text-end">{Math.round(r.watchSeconds / 60)}</td>
+                          <td className="py-2 text-end">{r.clicks}</td>
+                          <td className="py-2 text-end">{r.orders}</td>
+                          <td className="py-2 text-end">{formatCurrency(r.revenue)}</td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              )}
+            </Card>
 
             {/* D5 — KSA season markers over the window. */}
             {(analyticsQ.data?.markers ?? []).length > 0 && (

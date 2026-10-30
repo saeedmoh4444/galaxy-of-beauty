@@ -4001,6 +4001,15 @@ export const miscMessages = {
   'vendorPortal.analytics.aov': { ar: 'متوسط الطلب', en: 'Avg order' },
   'vendorPortal.analytics.topProducts': { ar: 'الأكثر مبيعًا', en: 'Top products' },
   'vendorPortal.analytics.empty': { ar: 'لا توجد بيانات بعد', en: 'No data yet' },
+  // Q4 Phase 3 — reel performance (views, watch time, tag clicks,
+  // attributed conversions from the ReelDailyStat read-model).
+  'vendorPortal.reels.title': { ar: 'أداء الريلز', en: 'Reel performance' },
+  'vendorPortal.reels.empty': { ar: 'لا توجد ريلز بعد', en: 'No reels yet' },
+  'vendorPortal.reels.views': { ar: 'مشاهدات', en: 'Views' },
+  'vendorPortal.reels.watchMinutes': { ar: 'دقائق مشاهدة', en: 'Watch minutes' },
+  'vendorPortal.reels.clicks': { ar: 'نقرات المنتج', en: 'Tag clicks' },
+  'vendorPortal.reels.orders': { ar: 'طلبات منسوبة', en: 'Attributed orders' },
+  'vendorPortal.reels.revenue': { ar: 'إيرادات منسوبة', en: 'Attributed revenue' },
   // D4 — one-click CSV exports.
   'vendorPortal.export': { ar: 'تصدير CSV', en: 'Export CSV' },
   // D5 — KSA seasonal deal templates.

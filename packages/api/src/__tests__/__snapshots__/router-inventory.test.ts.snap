@@ -1112,6 +1112,7 @@ vendorPortal.priceLog	query	customer
 vendorPortal.priceRules	query	customer
 vendorPortal.proposeClinicPackage	mutation	customer
 vendorPortal.proposeDeal	mutation	customer
+vendorPortal.reelAnalytics	query	customer
 vendorPortal.replyToReview	mutation	customer
 vendorPortal.resubmitSubmission	mutation	customer
 vendorPortal.revokeApiKey	mutation	customer
