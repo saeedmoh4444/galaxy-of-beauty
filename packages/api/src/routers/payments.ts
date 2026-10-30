@@ -26,6 +26,7 @@ import {
   placeStoreOrders,
   notifyLowStockAlerts,
   notifyOrderPlaced,
+  cancelCheckoutOrders,
 } from '../lib/storeCheckout';
 import { getCashbackRatePct } from './cashback';
 
@@ -652,10 +653,19 @@ export const paymentRouter = router({
                 message: 'Insufficient wallet balance',
               });
             }
-            await tx.wallet.update({
-              where: { id: wallet.id },
+            // Conditional debit (audit M6) — the WHERE pins balance >= total
+            // so concurrent checkouts with different idempotency keys cannot
+            // overdraw the wallet; the loser of the race gets zero rows.
+            const debited = await tx.wallet.updateMany({
+              where: { id: wallet.id, balance: { gte: total } },
               data: { balance: { decrement: total } },
             });
+            if (debited.count === 0) {
+              throw new TRPCError({
+                code: 'PRECONDITION_FAILED',
+                message: 'Insufficient wallet balance',
+              });
+            }
             await tx.walletTransaction.create({
               data: {
                 walletId: wallet.id,
@@ -789,10 +799,17 @@ export const paymentRouter = router({
           },
         });
       } catch (err) {
-        // Invoice rejected — fail the checkout so vendors never fulfill it.
+        // Invoice rejected — fail the checkout so vendors never fulfill it,
+        // and compensate the placement (cancel the orders + restore the
+        // stock/sales the checkout decremented).
         await prisma.storeCheckout
           .update({ where: { id: checkoutId }, data: { status: 'FAILED' } })
           .catch(() => {});
+        try {
+          await cancelCheckoutOrders(checkoutId);
+        } catch {
+          // Compensation must never mask the gateway error.
+        }
         throw gatewayError(err, 'Payment invoice failed');
       }
 
