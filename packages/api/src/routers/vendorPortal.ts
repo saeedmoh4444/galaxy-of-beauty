@@ -2468,6 +2468,84 @@ export const vendorPortalRouter = router({
   // ---------------------------------------------------------------------------
 
   /**
+   * reelAnalytics — Q4 Phase 3: the store's own reels with 30-day
+   * aggregates (views live, watch seconds from ShortWatchLog, tag clicks
+   * from ShortTagClick, attributed orders/revenue from the ReelDailyStat
+   * read-model), sorted by views so the portal ranks top reels.
+   */
+  reelAnalytics: customerProcedure.query(async ({ ctx }) => {
+    const vendor = await prisma.vendor.findUnique({ where: { userId: ctx.user.id } });
+    const empty = {
+      reels: [],
+      totals: { views: 0, watchSeconds: 0, clicks: 0, orders: 0, revenue: 0 },
+    };
+    if (!vendor) return empty;
+
+    const since = new Date(Date.now() - 30 * 86_400_000);
+    const shorts = await prisma.short.findMany({
+      where: { vendorId: vendor.id, isApproved: true, isActive: true },
+      orderBy: { views: 'desc' },
+      take: 20,
+      select: { id: true, titleJson: true, views: true, createdAt: true },
+    });
+    if (shorts.length === 0) return empty;
+    const ids = shorts.map((s) => s.id);
+
+    const [watch, clicks, reelStats] = await Promise.all([
+      prisma.shortWatchLog.groupBy({
+        by: ['shortId'],
+        where: { shortId: { in: ids }, createdAt: { gte: since } },
+        _sum: { seconds: true },
+      }),
+      prisma.shortTagClick.groupBy({
+        by: ['shortId'],
+        where: { shortId: { in: ids }, clickedAt: { gte: since } },
+        _count: { _all: true },
+      }),
+      prisma.reelDailyStat.groupBy({
+        by: ['shortId'],
+        where: { shortId: { in: ids }, day: { gte: since } },
+        _sum: { orders: true, revenue: true },
+      }),
+    ]);
+    const watchByShort = new Map(watch.map((w) => [w.shortId, w._sum.seconds ?? 0]));
+    const clicksByShort = new Map(clicks.map((c) => [c.shortId, c._count._all]));
+    const statsByShort = new Map(
+      reelStats.map((r) => [
+        r.shortId,
+        { orders: r._sum.orders ?? 0, revenue: Number(r._sum.revenue ?? 0) },
+      ]),
+    );
+
+    const reels = shorts.map((s) => {
+      const stat = statsByShort.get(s.id) ?? { orders: 0, revenue: 0 };
+      return {
+        shortId: s.id,
+        titleJson: s.titleJson,
+        createdAt: s.createdAt.toISOString(),
+        views: s.views,
+        watchSeconds: watchByShort.get(s.id) ?? 0,
+        clicks: clicksByShort.get(s.id) ?? 0,
+        orders: stat.orders,
+        revenue: stat.revenue,
+      };
+    });
+    return {
+      reels,
+      totals: reels.reduce(
+        (acc, r) => ({
+          views: acc.views + r.views,
+          watchSeconds: acc.watchSeconds + r.watchSeconds,
+          clicks: acc.clicks + r.clicks,
+          orders: acc.orders + r.orders,
+          revenue: acc.revenue + r.revenue,
+        }),
+        { views: 0, watchSeconds: 0, clicks: 0, orders: 0, revenue: 0 },
+      ),
+    };
+  }),
+
+  /**
    * analyticsSeries — D1: the portal reads ONLY the materialized
    * VendorDailyStat rows (no live order aggregation). Returns the
    * 7/30/90-day daily series (NOON-UTC buckets) + top products across
