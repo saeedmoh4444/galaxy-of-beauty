@@ -2965,6 +2965,9 @@ export const mobileCustomerBMessages = {
 
   // ---- addresses (sweep s3) ----
   'mobile.addresses.separator': { ar: '،', en: ',' },
+  // D3 — local reminder strings (was hardcoded Arabic in the hook)
+  'mobile.notifications.reminder-title': { ar: 'تذكير بالموعد', en: 'Appointment reminder' },
+  'mobile.notifications.reminder-body': { ar: 'بعد ساعة من الآن', en: 'in one hour' },
 
   // ---- beauty-academy cards (sweep s4) ----
   'mobile.beautyAcademy.card.encyclopedia.title': {
