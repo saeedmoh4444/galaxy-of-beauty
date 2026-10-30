@@ -11,6 +11,9 @@ import { useState, useEffect, useCallback } from 'react';
 import { Platform } from 'react-native';
 import { router } from 'expo-router';
 import { notificationRoute } from '@/utils/vendorOrders';
+import { trpc } from '@/lib/trpc-react';
+import { useAuthState } from '@/hooks/useAuthState';
+import { useLocale } from '@/components/LocaleProvider';
 
 interface NotificationResponse {
   notification?: {
@@ -71,8 +74,14 @@ Notifications.setNotificationHandler({
 });
 
 export function useNotifications() {
+  const { t } = useLocale();
+  const isAuthed = useAuthState();
   const [expoPushToken, setExpoPushToken] = useState<string | null>(null);
   const [permissionGranted, setPermissionGranted] = useState(false);
+
+  // D3 — the token was fetched but NEVER sent to the backend, so push
+  // could not reach the server. Register it once the session exists.
+  const registerToken = trpc.notifications.registerPushToken.useMutation();
 
   useEffect(() => {
     if (!Notifications) return;
@@ -81,6 +90,12 @@ export function useNotifications() {
         if (token) {
           setExpoPushToken(token);
           setPermissionGranted(true);
+          if (isAuthed) {
+            registerToken.mutate({
+              token,
+              platform: Platform.OS === 'ios' ? 'ios' : 'android',
+            });
+          }
         }
       })
       .catch(() => {});
@@ -101,7 +116,8 @@ export function useNotifications() {
       sub?.remove?.();
       tapSub?.remove?.();
     };
-  }, []);
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- register on mount only
+  }, [isAuthed]);
 
   const scheduleReminder = useCallback(
     async (bookingId: number, date: Date, title: string) => {
@@ -111,14 +127,14 @@ export function useNotifications() {
 
       await Notifications.scheduleNotificationAsync({
         content: {
-          title: 'تذكير بالموعد',
-          body: `${title} - بعد ساعة من الآن`,
+          title: t('mobile.notifications.reminder-title'),
+          body: `${title} — ${t('mobile.notifications.reminder-body')}`,
           data: { bookingId, type: 'reminder' },
         },
         trigger: { date: reminderTime },
       });
     },
-    [permissionGranted],
+    [permissionGranted, t],
   );
 
   return { expoPushToken, permissionGranted, scheduleReminder };
@@ -144,7 +160,9 @@ async function registerForPushNotifications(): Promise<string | null> {
   }
 
   const token = await Notifications.getExpoPushTokenAsync({
-    projectId: 'galaxy-of-beauty',
+    // D3 — must be the EAS project UUID from app.json (the old literal
+    // 'galaxy-of-beauty' is not a valid projectId and breaks the call).
+    projectId: 'fe529822-25a6-4c65-9bec-38fe925d1ae3',
   });
   return token.data;
 }
