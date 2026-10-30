@@ -2517,6 +2517,9 @@ export const vendorPortalRouter = router({
           aov: Number(r.aov),
           newCustomers: r.newCustomers,
           returningCustomers: r.returningCustomers,
+          // Q3 Phase 3 — reel-attributed conversions in the bucket.
+          reelOrders: r.reelOrders,
+          reelRevenue: Number(r.reelRevenue),
         })),
         topProducts: [...prodMap.values()].sort((a, b) => b.quantity - a.quantity).slice(0, 5),
 

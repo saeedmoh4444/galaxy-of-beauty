@@ -806,6 +806,10 @@ model VendorDailyStat {
   newCustomers       Int
   returningCustomers Int
   productSales       Json // [{ productId, nameAr, quantity, revenue }]
+  // Q3 Phase 3 — reel-attributed conversions in this bucket (orders whose
+  // customer tapped a shoppable tag on the ordered product within 7 days).
+  reelOrders         Int      @default(0)
+  reelRevenue        Decimal  @default(0) @db.Decimal(12, 2)
   createdAt          DateTime @default(now())
 
   vendor Vendor @relation(fields: [vendorId], references: [id], onDelete: Cascade)
@@ -2693,6 +2697,7 @@ model Short {
   watchLogs ShortWatchLog[] // P2 — watch analytics events
   tags ShortTag[] // Q1 Phase 3 — commerce tags overlaid on this reel
   tagClicks ShortTagClick[] // Q1 — tap ledger for order attribution
+  reelDailyStats ReelDailyStat[] // Q3 — attributed conversions per bucket day
 
   @@index([isApproved, isActive])
   @@index([technicianId])
@@ -2786,6 +2791,24 @@ model ShortTagClick {
   @@index([productId, clickedAt])
   @@index([userId, clickedAt])
   @@map("short_tag_clicks")
+}
+
+// Q3 Phase 3 — per-reel conversion read-model: attributed orders and
+// revenue per (short, NOON-UTC bucket day), materialized by the D1
+// daily-stats job so the portal ranks reels by conversion.
+model ReelDailyStat {
+  id        Int      @id @default(autoincrement())
+  shortId   Int
+  day       DateTime
+  orders    Int
+  revenue   Decimal  @db.Decimal(12, 2)
+  createdAt DateTime @default(now())
+
+  short Short @relation(fields: [shortId], references: [id], onDelete: Cascade)
+
+  @@unique([shortId, day])
+  @@index([shortId, day])
+  @@map("reel_daily_stats")
 }
 
 model PriceDropAlert {
