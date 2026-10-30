@@ -352,3 +352,55 @@ export async function notifyLowStockAlerts(alerts: LowStockAlert[]): Promise<voi
     }
   }
 }
+
+/**
+ * A3 — compensation: cancel a checkout's PENDING_FULFILLMENT orders and
+ * restore the stock/sales the placement decremented (variant-aware).
+ * Used when an online checkout invoice fails or an abandoned PENDING
+ * checkout expires. Returns the number of orders cancelled.
+ */
+export async function cancelCheckoutOrders(checkoutId: number): Promise<number> {
+  return prisma.$transaction(async (tx) => {
+    const orders = await tx.storeOrder.findMany({
+      where: { checkoutId, status: 'PENDING_FULFILLMENT' },
+      include: {
+        items: {
+          select: { productId: true, quantity: true, variantId: true, priceSnapshot: true },
+        },
+      },
+    });
+
+    let cancelled = 0;
+    for (const order of orders) {
+      await tx.storeOrder.update({
+        where: { id: order.id },
+        data: { status: 'CANCELLED' },
+      });
+      cancelled++;
+
+      for (const item of order.items) {
+        if (item.variantId) {
+          await tx.productVariant.update({
+            where: { id: item.variantId },
+            data: { stock: { increment: item.quantity } },
+          });
+        } else {
+          await tx.product.update({
+            where: { id: item.productId },
+            data: { stock: { increment: item.quantity } },
+          });
+        }
+        await tx.product.update({
+          where: { id: item.productId },
+          data: { sales: { decrement: item.quantity } },
+        });
+      }
+
+      await tx.vendor.update({
+        where: { id: order.vendorId },
+        data: { totalSales: { decrement: Number(order.totalAmount) } },
+      });
+    }
+    return cancelled;
+  });
+}
