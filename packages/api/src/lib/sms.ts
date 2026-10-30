@@ -1,5 +1,10 @@
 import { TWILIO_API_URL } from '@galaxy/shared';
 
+import { getBreaker } from './circuitBreaker';
+
+// Circuit breaker (P0 hardening): a down Twilio fails fast.
+const smsBreaker = getBreaker('twilio-sms', { failureThreshold: 3, resetTimeoutMs: 15_000 });
+
 // ── Types ──────────────────────────────────────────────────
 
 interface SmsConfig {
@@ -38,14 +43,16 @@ export async function sendSms(to: string, message: string): Promise<boolean> {
       Body: message,
     }).toString();
 
-    const response = await fetch(`${TWILIO_API_URL}/Accounts/${config.accountSid}/Messages.json`, {
-      method: 'POST',
-      headers: {
-        Authorization: `Basic ${auth}`,
-        'Content-Type': 'application/x-www-form-urlencoded',
-      },
-      body: body.toString(),
-    });
+    const response = await smsBreaker.execute(() =>
+      fetch(`${TWILIO_API_URL}/Accounts/${config.accountSid}/Messages.json`, {
+        method: 'POST',
+        headers: {
+          Authorization: `Basic ${auth}`,
+          'Content-Type': 'application/x-www-form-urlencoded',
+        },
+        body: body.toString(),
+      }),
+    );
 
     return response.ok;
   } catch (err) {

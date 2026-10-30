@@ -2,6 +2,12 @@ import nodemailer from 'nodemailer';
 import type { Transporter } from 'nodemailer';
 import { logger } from './logger';
 
+import { getBreaker } from './circuitBreaker';
+
+// Circuit breaker (P0 hardening): a down SMTP relay fails fast (email
+// failures stay swallowed — the breaker just skips the attempt).
+const smtpBreaker = getBreaker('smtp', { failureThreshold: 3, resetTimeoutMs: 30_000 });
+
 // ── Configuration ──────────────────────────────────────────
 
 interface EmailConfig {
@@ -77,12 +83,14 @@ export async function sendEmail({ to, subject, html }: SendEmailParams): Promise
   }
 
   try {
-    await transport.sendMail({
-      from: config.from,
-      to,
-      subject,
-      html,
-    });
+    await smtpBreaker.execute(() =>
+      transport.sendMail({
+        from: config.from,
+        to,
+        subject,
+        html,
+      }),
+    );
   } catch (err) {
     // Log but don't throw — email failures should not break the API
     logger.error({ err, to, subject }, 'Failed to send email');

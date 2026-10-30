@@ -13,6 +13,11 @@
 
 const WHATSAPP_API_BASE = 'https://graph.facebook.com/v21.0';
 
+import { getBreaker } from './circuitBreaker';
+
+// Circuit breaker (P0 hardening): a down WhatsApp Cloud API fails fast.
+const whatsappBreaker = getBreaker('whatsapp', { failureThreshold: 3, resetTimeoutMs: 15_000 });
+
 export function isWhatsAppConfigured(): boolean {
   return Boolean(process.env['WHATSAPP_TOKEN'] && process.env['WHATSAPP_PHONE_NUMBER_ID']);
 }
@@ -47,19 +52,21 @@ export async function sendWhatsAppText(phone: string, message: string): Promise<
   }
 
   try {
-    const response = await fetch(`${WHATSAPP_API_BASE}/${phoneNumberId}/messages`, {
-      method: 'POST',
-      headers: {
-        Authorization: `Bearer ${token}`,
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        messaging_product: 'whatsapp',
-        to,
-        type: 'text',
-        text: { body: message.slice(0, 4096) },
+    const response = await whatsappBreaker.execute(() =>
+      fetch(`${WHATSAPP_API_BASE}/${phoneNumberId}/messages`, {
+        method: 'POST',
+        headers: {
+          Authorization: `Bearer ${token}`,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          messaging_product: 'whatsapp',
+          to,
+          type: 'text',
+          text: { body: message.slice(0, 4096) },
+        }),
       }),
-    });
+    );
     if (!response.ok) {
       console.warn(`[whatsapp] Cloud API error ${response.status}`);
       return false;

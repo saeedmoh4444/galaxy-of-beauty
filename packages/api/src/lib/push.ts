@@ -1,6 +1,11 @@
 import { prisma } from '@galaxy/db';
 import { logger } from './logger';
 
+import { getBreaker } from './circuitBreaker';
+
+// Circuit breaker (P0 hardening): a down Expo push service fails fast.
+const expoPushBreaker = getBreaker('expo-push', { failureThreshold: 3, resetTimeoutMs: 15_000 });
+
 // ── Types ──────────────────────────────────────────────────
 
 interface PushMessage {
@@ -42,15 +47,17 @@ async function sendExpoPush(tokens: string[], message: PushMessage): Promise<voi
   }));
 
   try {
-    const response = await fetch(EXPO_PUSH_URL, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${accessToken}`,
-        Accept: 'application/json',
-      },
-      body: JSON.stringify(messages),
-    });
+    const response = await expoPushBreaker.execute(() =>
+      fetch(EXPO_PUSH_URL, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${accessToken}`,
+          Accept: 'application/json',
+        },
+        body: JSON.stringify(messages),
+      }),
+    );
 
     if (!response.ok) {
       logger.error({ status: response.status }, 'Expo push API error');

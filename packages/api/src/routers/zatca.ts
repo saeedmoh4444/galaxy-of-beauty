@@ -3,6 +3,10 @@ import { TRPCError } from '@trpc/server';
 import { createHash } from 'crypto';
 import { adminProcedure, customerProcedure, protectedProcedure, router } from '../trpc';
 import { prisma } from '@galaxy/db';
+import { getBreaker } from '../lib/circuitBreaker';
+
+// Circuit breaker (P0 hardening): a down ZATCA portal fails fast.
+const zatcaBreaker = getBreaker('zatca', { failureThreshold: 3, resetTimeoutMs: 15_000 });
 import type { Prisma } from '@galaxy/db';
 import { ZATCA_TEST_VAT, ZATCA_API_URL as SHARED_ZATCA_URL } from '@galaxy/shared';
 import { appendAudit, verifyChain as verifyAuditChain } from '../lib/zatcaAudit';
@@ -97,27 +101,29 @@ async function reportToZatcaApi(invoice: {
   }
 
   try {
-    const response = await fetch(`${ZATCA_API_BASE}/invoices/report`, {
-      method: 'POST',
-      headers: {
-        Authorization: `Basic ${Buffer.from(`${apiKey}:${apiSecret}`).toString('base64')}`,
-        'Content-Type': 'application/json',
-        'Accept-Language': 'ar',
-      },
-      body: JSON.stringify({
-        invoiceNumber: invoice.invoiceNumber,
-        invoiceHash: invoice.invoiceHash,
-        cryptographicStamp: invoice.cryptographicStamp,
-        qrCode: invoice.qrCode,
-        issueDate: invoice.createdAt.toISOString(),
-        invoiceTotal: invoice.totalAmount.toFixed(2),
-        vatAmount: ((invoice.totalAmount * VAT_RATE) / (1 + VAT_RATE)).toFixed(2),
-        vatNumber: VAT_NUMBER,
-        sellerName: SELLER_NAME_AR,
-        bookingReference: invoice.bookingCode,
-        customerName: invoice.customerName,
+    const response = await zatcaBreaker.execute(() =>
+      fetch(`${ZATCA_API_BASE}/invoices/report`, {
+        method: 'POST',
+        headers: {
+          Authorization: `Basic ${Buffer.from(`${apiKey}:${apiSecret}`).toString('base64')}`,
+          'Content-Type': 'application/json',
+          'Accept-Language': 'ar',
+        },
+        body: JSON.stringify({
+          invoiceNumber: invoice.invoiceNumber,
+          invoiceHash: invoice.invoiceHash,
+          cryptographicStamp: invoice.cryptographicStamp,
+          qrCode: invoice.qrCode,
+          issueDate: invoice.createdAt.toISOString(),
+          invoiceTotal: invoice.totalAmount.toFixed(2),
+          vatAmount: ((invoice.totalAmount * VAT_RATE) / (1 + VAT_RATE)).toFixed(2),
+          vatNumber: VAT_NUMBER,
+          sellerName: SELLER_NAME_AR,
+          bookingReference: invoice.bookingCode,
+          customerName: invoice.customerName,
+        }),
       }),
-    });
+    );
 
     if (!response.ok) {
       const err = await response.text();
@@ -683,15 +689,17 @@ export const zatcaRouter = router({
       });
       const gateway = process.env['ZATCA_COMPLIANCE_URL'] || ZATCA_COMPLIANCE_DEFAULT;
       try {
-        const res = await fetch(gateway, {
-          method: 'POST',
-          headers: {
-            OTP: input.otp,
-            'Accept-Version': 'V2',
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({ csr: csrPem }),
-        });
+        const res = await zatcaBreaker.execute(() =>
+          fetch(gateway, {
+            method: 'POST',
+            headers: {
+              OTP: input.otp,
+              'Accept-Version': 'V2',
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ csr: csrPem }),
+          }),
+        );
         if (!res.ok) {
           const err = await res.text();
           throw new Error(`ZATCA error ${res.status}: ${err.slice(0, 200)}`);

@@ -5,6 +5,14 @@ import {
   GOOGLE_OAUTH_SCOPE,
 } from '@galaxy/shared';
 
+import { getBreaker } from './circuitBreaker';
+
+const gcalBreaker = getBreaker('google-calendar', { failureThreshold: 3, resetTimeoutMs: 15_000 });
+
+function gcalFetch(input: string, init?: RequestInit): Promise<Response> {
+  return gcalBreaker.execute(() => fetch(input, init));
+}
+
 // ── Types ──────────────────────────────────────────────────
 
 interface GoogleTokens {
@@ -32,7 +40,7 @@ export async function exchangeGoogleCode(
   if (!config) return null;
 
   try {
-    const response = await fetch(GOOGLE_TOKEN_URL, {
+    const response = await gcalFetch(GOOGLE_TOKEN_URL, {
       method: 'POST',
       headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
       body: new URLSearchParams({
@@ -63,7 +71,7 @@ export async function refreshGoogleToken(refreshToken: string): Promise<GoogleTo
   if (!config) return null;
 
   try {
-    const response = await fetch(GOOGLE_TOKEN_URL, {
+    const response = await gcalFetch(GOOGLE_TOKEN_URL, {
       method: 'POST',
       headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
       body: new URLSearchParams({
@@ -103,7 +111,7 @@ export async function createGoogleCalendarEvent(
   event: CalendarEvent,
 ): Promise<string | null> {
   try {
-    const response = await fetch(`${GOOGLE_CALENDAR_API_URL}/calendars/primary/events`, {
+    const response = await gcalFetch(`${GOOGLE_CALENDAR_API_URL}/calendars/primary/events`, {
       method: 'POST',
       headers: {
         Authorization: `Bearer ${accessToken}`,
@@ -137,7 +145,7 @@ export async function deleteGoogleCalendarEvent(
   eventId: string,
 ): Promise<boolean> {
   try {
-    const response = await fetch(
+    const response = await gcalFetch(
       `${GOOGLE_CALENDAR_API_URL}/calendars/primary/events/${encodeURIComponent(eventId)}`,
       {
         method: 'DELETE',
@@ -157,7 +165,7 @@ export async function updateGoogleCalendarEvent(
   event: CalendarEvent,
 ): Promise<boolean> {
   try {
-    const response = await fetch(
+    const response = await gcalFetch(
       `${GOOGLE_CALENDAR_API_URL}/calendars/primary/events/${encodeURIComponent(eventId)}`,
       {
         method: 'PATCH',
