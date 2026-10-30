@@ -1,0 +1,53 @@
+# ═══════════════════════════════════════════
+# Galaxy of Beauty — Staging Override
+# ═══════════════════════════════════════════
+# A prod-shaped rehearsal environment on a single host (AUDIT_2026-10-30
+# item 7): same images, same compose topology, one replica each, staging
+# secrets, and the monitoring profile by default.
+#
+# Usage:
+#   cp .env.example .env.staging   # staging DATABASE_URL/secrets
+#   docker compose -f docker-compose.yml -f docker-compose.staging.yml \
+#     --env-file .env.staging up -d --build
+#
+# Gate: risky changes (migrations, money flows, gateway wiring) rehearse
+# here BEFORE prod — never against the shared dev DB.
+
+services:
+  postgres:
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-gob_staging}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?POSTGRES_PASSWORD is required for staging}
+      POSTGRES_DB: ${POSTGRES_DB:-Galaxy_of_Beauty_db_staging}
+    ports:
+      - '5434:5432'
+    volumes:
+      - postgres_data_staging:/var/lib/postgresql/data
+
+  web:
+    environment:
+      NODE_ENV: production
+      DATABASE_URL: ${STAGING_DATABASE_URL:?STAGING_DATABASE_URL is required}
+      REDIS_URL: redis://redis:6379
+      # Staging-safe defaults: payments simulate, no live alert paging.
+      FATOORAH_SIMULATE: 'true'
+      ALERT_WEBHOOK_URL: ''
+    deploy:
+      replicas: 1
+
+  socket:
+    deploy:
+      replicas: 1
+
+  nginx:
+    ports:
+      - '8080:80'
+
+  backup:
+    environment:
+      PGDATABASE: ${POSTGRES_DB:-Galaxy_of_Beauty_db_staging}
+      BACKUP_CRON: '0 4 * * *'
+
+volumes:
+  postgres_data_staging:
+    driver: local
