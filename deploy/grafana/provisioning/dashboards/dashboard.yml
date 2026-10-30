@@ -1,0 +1,14 @@
+# Grafana provisioning — dashboard provider. The galaxy-of-beauty
+# dashboard (deploy/grafana-dashboard.json) is mounted into
+# /var/lib/grafana/dashboards by docker-compose.prod.yml.
+apiVersion: 1
+
+providers:
+  - name: 'Galaxy of Beauty'
+    orgId: 1
+    folder: 'Galaxy'
+    type: file
+    disableDeletion: true
+    updateIntervalSeconds: 60
+    options:
+      path: /var/lib/grafana/dashboards
