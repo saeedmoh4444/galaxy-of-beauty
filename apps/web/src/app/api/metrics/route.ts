@@ -1,6 +1,6 @@
 import { renderMetrics } from '@galaxy/api';
 
-export const runtime = 'node';
+export const runtime = 'nodejs';
 export const dynamic = 'force-dynamic';
 
 /**
