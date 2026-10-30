@@ -7,6 +7,8 @@
  * the MyFatoorah circuit.
  */
 import { logger } from './logger';
+import { sendAlert } from './alerting';
+import { recordBreakerState } from './metrics';
 
 export type BreakerState = 'closed' | 'open' | 'halfOpen';
 
@@ -106,7 +108,25 @@ export function getBreaker(
 ): CircuitBreaker {
   const existing = registry.get(name);
   if (existing) return existing;
-  const breaker = new CircuitBreaker({ name, ...opts });
+  const breaker = new CircuitBreaker({
+    name,
+    ...opts,
+    // Default alert hook: page on every OPEN transition (fire-and-forget;
+    // sendAlert never throws and dedupes flapping circuits).
+    onStateChange:
+      opts?.onStateChange ??
+      ((n, _from, to) => {
+        recordBreakerState(n, to);
+        if (to === 'open') {
+          void sendAlert(
+            `breaker-${n}-open`,
+            `Gateway ${n} circuit OPEN`,
+            'Failing fast until the half-open probe recovers.',
+            'critical',
+          );
+        }
+      }),
+  });
   registry.set(name, breaker);
   return breaker;
 }
