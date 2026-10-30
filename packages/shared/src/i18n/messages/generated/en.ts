@@ -4523,6 +4523,8 @@ export const enWebMessages: Record<string, string> = {
   'share.via-twitter': 'Share via Twitter',
   'share.via-whatsapp': 'Share via WhatsApp',
   'share.whatsapp': 'WhatsApp',
+  'shorts.shopNow': 'Shop now',
+  'shorts.viewProduct': 'View product',
   'skin.analysisFallback': 'Analysis',
   'skin.analyze': 'Analyze',
   'skin.concernsTitle': 'Identified Concerns',

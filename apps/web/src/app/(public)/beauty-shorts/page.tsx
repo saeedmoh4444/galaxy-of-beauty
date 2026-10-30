@@ -1,6 +1,7 @@
 'use client';
 import type { JSX } from 'react';
 import { useCallback, useEffect, useRef, useState } from 'react';
+import Link from 'next/link';
 import { api } from '@/lib/trpc';
 import { CardListSkeleton, ErrorAlert, useAuth } from '@galaxy/ui';
 import { useLocale } from '@/components/LocaleProvider';
@@ -17,6 +18,18 @@ type ShortRow = {
   category: string;
   faceBlurred: boolean;
   createdAt: string;
+};
+
+// Q2 Phase 3 — shoppable tag overlays (REELS_SHOPPABLE_PLAN).
+type TagRow = {
+  id: number;
+  productId: number | null;
+  serviceId: number | null;
+  positionSec: number | null;
+  label: { ar?: string; en?: string } | null;
+  productNameAr: string | null;
+  productPrice: number | null;
+  serviceTitleAr: string | null;
 };
 
 // P1 — full-screen swipe feed (REELS_SHOPPABLE_PLAN Phase 2). The feed
@@ -40,6 +53,10 @@ export default function BeautyShortsPage(): JSX.Element {
   const [active, setActive] = useState(0);
   const [muted, setMuted] = useState(true);
   const feedRef = useRef<HTMLDivElement | null>(null);
+  // Q2 Phase 3 — per-slide chip feedback (declared before the active
+  // effect below resets it on reel changes).
+  const [addedTagId, setAddedTagId] = useState<number | null>(null);
+  const [needsLogin, setNeedsLogin] = useState(false);
 
   const shorts = (data ?? []) as unknown as ShortRow[];
 
@@ -71,6 +88,9 @@ export default function BeautyShortsPage(): JSX.Element {
     const current = shortsRef.current[active];
     if (prev && prev.shortId !== current?.id) reportWatch(prev.shortId, prev.startedAt);
     watchRef.current = current ? { shortId: current.id, startedAt: Date.now() } : null;
+    // Q2 — chip feedback is per-slide; clear it when the reel changes.
+    setAddedTagId(null);
+    setNeedsLogin(false);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [active]);
 
@@ -83,6 +103,32 @@ export default function BeautyShortsPage(): JSX.Element {
   }, [reportWatch]);
 
   const title = (s: ShortRow) => (locale === 'en' ? s.titleJson?.en : s.titleJson?.ar) ?? '';
+
+  // Q2 Phase 3 — shoppable tags: the active slide's commerce overlays.
+  // The tags query re-fires per slide; taps record into the Q1 ledger
+  // (fire-and-forget) and authenticated shoppers add straight to cart.
+  const activeShort = shorts[active];
+  const tagsQuery = api.beautyShorts.tags.useQuery(
+    { shortId: activeShort?.id ?? 0 },
+    { enabled: activeShort !== undefined },
+  );
+  const tags = (tagsQuery.data ?? []) as unknown as TagRow[];
+  const tagClickedMut = api.beautyShorts.tagClicked.useMutation();
+  const addToCartMut = api.marketplace.addToCart.useMutation();
+
+  const handleTagShop = async (tag: TagRow) => {
+    tagClickedMut.mutate({ tagId: tag.id });
+    if (tag.productId === null) return;
+    try {
+      await addToCartMut.mutateAsync({ productId: tag.productId });
+      setAddedTagId(tag.id);
+      setNeedsLogin(false);
+    } catch {
+      // Anonymous shoppers: addToCart is customer-gated — surface a login
+      // affordance instead of a silent noop.
+      setNeedsLogin(true);
+    }
+  };
 
   const onScroll = useCallback(() => {
     const el = feedRef.current;
@@ -180,6 +226,55 @@ export default function BeautyShortsPage(): JSX.Element {
                         ❤️ {t('beautyShorts.like')}
                       </button>
                     </div>
+                  </div>
+                )}
+
+                {/* Q2 Phase 3 — shoppable tag chips: the active slide's
+                    commerce overlays (name + price + add-to-cart). */}
+                {isActive && tags.length > 0 && (
+                  <div
+                    data-testid="reel-tags"
+                    className="absolute inset-x-4 bottom-20 flex flex-col items-end gap-2"
+                  >
+                    {tags.map((tag) => (
+                      <div
+                        key={tag.id}
+                        data-testid="reel-tag"
+                        className="flex max-w-full items-center gap-2 rounded-2xl bg-black/60 px-3 py-2 backdrop-blur"
+                      >
+                        <div className="min-w-0 text-end">
+                          <p className="truncate text-xs font-bold">
+                            {tag.label
+                              ? locale === 'en'
+                                ? tag.label.en
+                                : tag.label.ar
+                              : (tag.productNameAr ?? tag.serviceTitleAr ?? '')}
+                          </p>
+                          {tag.productPrice !== null && (
+                            <p className="mt-0.5 text-xs text-white/80">
+                              {tag.productPrice.toLocaleString()} {t('misc.sar')}
+                            </p>
+                          )}
+                        </div>
+                        <button
+                          data-testid="reel-tag-shop"
+                          onClick={() => handleTagShop(tag)}
+                          disabled={addToCartMut.isPending}
+                          className="shrink-0 rounded-xl bg-rose-600 px-3 py-1.5 text-xs font-bold text-white hover:bg-rose-700 disabled:opacity-50"
+                        >
+                          {addedTagId === tag.id ? '✓' : t('shorts.shopNow')}
+                        </button>
+                      </div>
+                    ))}
+                    {needsLogin && (
+                      <Link
+                        data-testid="reel-tag-login"
+                        href="/login"
+                        className="rounded-xl bg-white/10 px-3 py-1.5 text-xs font-bold backdrop-blur hover:bg-white/20"
+                      >
+                        {t('stores.login-to-buy')} · {t('shorts.viewProduct')}
+                      </Link>
+                    )}
                   </div>
                 )}
               </section>

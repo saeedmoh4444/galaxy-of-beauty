@@ -4879,6 +4879,9 @@ export const miscMessages = {
   // R4 — shoppable reel surfaces (REELS_SHOPPABLE_PLAN).
   'beautyShorts.storeReels': { ar: 'فيديوهات المتجر', en: 'Store reels' },
   'beautyShorts.serviceReels': { ar: 'فيديوهات الخدمة', en: 'Service reels' },
+  // Q2 Phase 3 — shoppable commerce overlays (REELS_SHOPPABLE_PLAN).
+  'shorts.shopNow': { ar: 'اشترِ الآن', en: 'Shop now' },
+  'shorts.viewProduct': { ar: 'شاهدي المنتج', en: 'View product' },
   'tech.shorts.title': { ar: 'فيديوهاتي', en: 'My Shorts' },
   'tech.shorts.post': { ar: 'انشري فيديو', en: 'Post a short' },
   'tech.shorts.title-ar': { ar: 'العنوان (عربي)', en: 'Title (Arabic)' },
