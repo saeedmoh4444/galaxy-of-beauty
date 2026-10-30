@@ -6,6 +6,7 @@ import type { Context } from './context';
 import { verifyCsrfToken } from './lib/csrf';
 import { checkRateLimit } from './lib/rateLimit';
 import { incrementRequestCount, incrementErrorCount, recordTiming } from './lib/requestCounters';
+import { httpRequestsTotal, httpErrorsTotal } from './lib/metrics';
 import { recordSloRequest, recordSloError, recordSloLatency } from './lib/slo';
 import { startProcedureSpan } from './lib/tracing';
 
@@ -13,6 +14,7 @@ const t = initTRPC.context<Context>().create({
   transformer: superjson,
   errorFormatter({ shape, error }) {
     incrementErrorCount();
+    httpErrorsTotal.inc();
     return {
       ...shape,
       data: {
@@ -30,6 +32,7 @@ const t = initTRPC.context<Context>().create({
 const requestCounter = t.middleware(async ({ next, path }) => {
   recordSloRequest();
   incrementRequestCount();
+  httpRequestsTotal.inc();
   const t0 = performance.now();
   const result = await next();
   if (!result.ok) recordSloError();

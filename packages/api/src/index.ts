@@ -27,6 +27,7 @@ export {
 export type { JwtPayload } from './lib/jwt';
 export { hashPassword, verifyPassword } from './lib/password';
 export { getEnv } from './lib/env';
+export { renderMetrics, resetMetricsForTests, recordBreakerState } from './lib/metrics';
 export type { Env } from './lib/env';
 export { initTracing, isTracingEnabled } from './lib/tracing';
 export {
