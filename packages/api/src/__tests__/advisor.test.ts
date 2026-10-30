@@ -250,6 +250,51 @@ describe('buildTrendInsight', () => {
     expect(insight!.cityCount).toBeGreaterThanOrEqual(1);
     expect(insight!.bodyAr).toContain('الرياض');
   });
+
+  it('ignores other customers bookings when picking the trend', async () => {
+    // A stranger's spike in another category this week must not hijack
+    // the user's own rising category (the query is per-user).
+    const stranger = await prisma.user.create({ data: buildUser() });
+    createdUserIds.push(stranger.id);
+    const makeup = await prisma.service.findFirst({
+      where: { category: { slug: 'makeup' } },
+    });
+    expect(makeup).toBeTruthy();
+    const strangerAddr = await prisma.address.create({
+      data: {
+        userId: stranger.id,
+        label: 'المنزل',
+        city: 'الرياض',
+        area: 'النخيل',
+        street: 'طريق الملك',
+      },
+    });
+    createdAddressIds.push(strangerAddr.id);
+    for (let i = 0; i < 5; i++) {
+      const strangerBooking = await prisma.booking.create({
+        data: {
+          ...buildBooking({
+            customerId: stranger.id,
+            serviceId: makeup!.id,
+            status: 'COMPLETED',
+          }),
+          addressId: strangerAddr.id,
+          createdAt: daysAgo(1),
+          startAt: daysAgo(1),
+          endAt: daysAgo(1),
+        } as never,
+      });
+      createdBookingIds.push(strangerBooking.id);
+    }
+
+    await makeBooking({ status: 'COMPLETED', createdAt: daysAgo(2) });
+    await makeBooking({ status: 'COMPLETED', createdAt: daysAgo(3) });
+    await makeBooking({ status: 'COMPLETED', createdAt: daysAgo(4) });
+
+    const insight = await buildTrendInsight(userId, NOW);
+    expect(insight).not.toBeNull();
+    expect(insight!.categorySlug).toBe('facial-cleansing');
+  });
 });
 
 describe('buildAdvisorInsights', () => {
