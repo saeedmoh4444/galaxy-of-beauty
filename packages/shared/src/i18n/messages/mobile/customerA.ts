@@ -57,8 +57,13 @@ export const mobileCustomerAMessages = {
     en: 'Add your first address to make booking easier',
   },
   'addresses.add-new': { ar: 'إضافة عنوان جديد', en: 'Add New Address' },
+  'addresses.form-label': { ar: 'اسم العنوان (مثال: المنزل)', en: 'Label (e.g. Home)' },
+  'addresses.form-city': { ar: 'المدينة', en: 'City' },
+  'addresses.form-area': { ar: 'الحي', en: 'Area' },
+  'addresses.form-street': { ar: 'الشارع', en: 'Street' },
   'addresses.save': { ar: 'حفظ', en: 'Save' },
   'addresses.cancel': { ar: 'إلغاء', en: 'Cancel' },
+  'addresses.created': { ar: 'تمت إضافة العنوان', en: 'Address added' },
 
   // ── marketplace ──
   'marketplace.load-error': { ar: 'فشل تحميل المتجر', en: 'Failed to load marketplace' },
