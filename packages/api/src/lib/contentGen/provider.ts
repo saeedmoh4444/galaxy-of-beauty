@@ -4,6 +4,11 @@
  * OpenAI when OPENAI_API_KEY is configured; a deterministic bilingual
  * mock otherwise so the feature is always usable (and testable).
  */
+import { getBreaker } from '../circuitBreaker';
+
+// Circuit breaker (P0 hardening): a down OpenAI fails fast.
+const openaiBreaker = getBreaker('openai', { failureThreshold: 3, resetTimeoutMs: 30_000 });
+
 export type ContentProvider = 'openai' | 'mock';
 
 export interface GeneratedContent {
@@ -25,21 +30,28 @@ export async function generateContent(
   const key = process.env['OPENAI_API_KEY'];
   if (key) {
     try {
-      const res = await fetch('https://api.openai.com/v1/chat/completions', {
-        method: 'POST',
-        headers: {
-          Authorization: `Bearer ${key}`,
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          model: process.env['OPENAI_CONTENT_MODEL'] || 'gpt-4o-mini',
-          temperature: 0.7,
-          messages: [
-            { role: 'system', content: SYSTEM_PROMPT },
-            { role: 'user', content: `${shape}\n\n${userPrompt}` },
-          ],
+      const res = await openaiBreaker.execute(() =>
+        fetch('https://api.openai.com/v1/chat/completions', {
+          method: 'POST',
+          headers: {
+            Authorization: `Bearer ${key}`,
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            model: process.env['OPENAI_CONTENT_MODEL'] || 'gpt-4o-mini',
+            temperature: 0.7,
+            messages: [
+              { role: 'system', content: SYSTEM_PROMPT },
+              {
+                role: 'user',
+                content: `${shape}
+
+${userPrompt}`,
+              },
+            ],
+          }),
         }),
-      });
+      );
       if (!res.ok) {
         throw new Error(`OpenAI error ${res.status}`);
       }

@@ -1,5 +1,7 @@
 import crypto from 'crypto';
 
+import { getBreaker, CircuitOpenError } from './circuitBreaker';
+
 // ── MyFatoorah v2 gateway client ────────────────────────────
 // Shipping-aware payment gateway replacing PayFort. Endpoints:
 //   GetCountries, Getcities, CalculateShippingCharge, SendPayment
@@ -65,6 +67,11 @@ function resolveConfig(opts?: FatoorahCallOptions): { config: FatoorahConfig; si
 
 // ── Shared API call + error mapping ─────────────────────────
 
+// Circuit breaker (P0 hardening): 3 consecutive gateway failures open
+// the circuit for 15s — a down MyFatoorah fails FAST instead of adding
+// seconds to every checkout attempt.
+const fatoorahBreaker = getBreaker('fatoorah', { failureThreshold: 3, resetTimeoutMs: 15_000 });
+
 async function callApi(
   method: 'GET' | 'POST',
   path: string,
@@ -84,15 +91,20 @@ async function callApi(
 
   let response: Response;
   try {
-    response = await fetchFn(url, {
-      method,
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${config.apiToken}`,
-      },
-      ...(opts?.body !== undefined ? { body: JSON.stringify(opts.body) } : {}),
-    });
+    response = await fatoorahBreaker.execute(() =>
+      fetchFn(url, {
+        method,
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${config.apiToken}`,
+        },
+        ...(opts?.body !== undefined ? { body: JSON.stringify(opts.body) } : {}),
+      }),
+    );
   } catch (err) {
+    if (err instanceof CircuitOpenError) {
+      throw new FatoorahApiError(`MyFatoorah circuit open: ${path}`, { cause: err });
+    }
     throw new FatoorahApiError(`MyFatoorah request failed: ${path}`, { cause: err });
   }
 
