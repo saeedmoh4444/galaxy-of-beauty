@@ -13,7 +13,7 @@ import {
 } from 'react-native';
 import { useRouter } from 'expo-router';
 import { trpc } from '@/lib/trpc-react';
-import { setAuthToken } from '@/lib/authToken';
+import { setAuthToken, setAuthRefreshToken } from '@/lib/authToken';
 import { setSocketToken } from '@/hooks/useSocket';
 import { useBiometric } from '@/hooks/useBiometric';
 import { useToast } from '@/components/Toast';
@@ -47,8 +47,10 @@ export default function LoginScreen() {
     onSuccess: (result) => {
       const u = result.user as Record<string, unknown>;
       // Store the access token: HTTP tRPC clients read it via getAuthHeaders(),
-      // the socket uses it for handshake auth
+      // the socket uses it for handshake auth. The refresh token keeps the
+      // session alive past the 15-minute access expiry (audit D1).
       void setAuthToken(result.accessToken);
+      void setAuthRefreshToken(result.refreshToken);
       setSocketToken(result.accessToken);
       if (u.role === 'ADMIN') router.replace('/admin/dashboard');
       else if (u.role === 'TECHNICIAN') router.replace('/tech/dashboard');
