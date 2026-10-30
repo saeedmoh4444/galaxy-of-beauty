@@ -64,6 +64,35 @@ services:
           cpus: '0.5'
     restart: always
 
+  # ── Daily DB backup sidecar (AUDIT_2026-10-30 item 2) ────────────────
+  # Runs backup-container.sh (pg_dump over the compose network, gzip,
+  # 14-day rotation) on a crond schedule. Default 03:00 UTC — override
+  # with BACKUP_CRON. Verify by reading /backups/backup.log on the host
+  # volume after the first scheduled run.
+  backup:
+    image: postgres:15-alpine
+    restart: always
+    depends_on:
+      - postgres
+    environment:
+      PGHOST: postgres
+      PGPORT: '5432'
+      PGUSER: ${POSTGRES_USER:-gob_admin}
+      PGPASSWORD: ${POSTGRES_PASSWORD:?POSTGRES_PASSWORD is required for the backup sidecar}
+      PGDATABASE: ${POSTGRES_DB:-Galaxy_of_Beauty_db}
+      RETENTION_DAYS: '14'
+      BACKUP_CRON: ${BACKUP_CRON:-0 3 * * *}
+    volumes:
+      - ./scripts/backup-container.sh:/backup.sh:ro
+      - backups_data:/backups
+    entrypoint: ["/bin/sh", "-c"]
+    command:
+      - |
+        set -e
+        echo "${BACKUP_CRON} /backup.sh >> /backups/backup.log 2>&1" | crontab -
+        echo "backup sidecar scheduled: ${BACKUP_CRON}"
+        exec crond -f
+
   mobile:
     profiles: ["full"]
     deploy:
@@ -74,6 +103,8 @@ services:
 
 volumes:
   postgres_data:
+    driver: local
+  backups_data:
     driver: local
 
 networks:
