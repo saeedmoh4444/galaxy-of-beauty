@@ -262,7 +262,10 @@ beautyShorts.home	query	public
 beautyShorts.like	mutation	customer
 beautyShorts.myShorts	query	protected
 beautyShorts.report	mutation	customer
+beautyShorts.setTags	mutation	protected
 beautyShorts.surfaceShorts	query	public
+beautyShorts.tagClicked	mutation	public
+beautyShorts.tags	query	public
 beautyShorts.viewed	mutation	public
 beautyShorts.watched	mutation	public
 beautyStats.platform	query	public

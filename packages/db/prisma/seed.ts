@@ -4494,6 +4494,44 @@ async function main() {
         },
       });
     }
+
+    // Q1 Phase 3 — shoppable tags: the two sample reels in the public
+    // feed carry commerce overlays onto demo-store products, so the web
+    // overlay E2E has deterministic tag chips. Anchor on titleJson path
+    // equality (short ids are tie-shuffled by equal createMany
+    // timestamps).
+    const demoProduct = await prisma.product.findFirst({
+      where: { vendorId: demoStore?.id, isActive: true },
+      orderBy: { id: 'asc' },
+    });
+    const eyelinerReel = await prisma.short.findFirst({
+      where: { titleJson: { path: ['ar'], equals: 'طريقة تطبيق الآيلاينر بسهولة' } },
+      select: { id: true },
+    });
+    const skincareReel = await prisma.short.findFirst({
+      where: { titleJson: { path: ['ar'], equals: 'روتين عناية بالبشرة في دقيقة' } },
+      select: { id: true },
+    });
+    if (demoProduct && eyelinerReel) {
+      await prisma.shortTag.create({
+        data: {
+          shortId: eyelinerReel.id,
+          productId: demoProduct.id,
+          positionSec: 8,
+          labelJson: { ar: 'جرّبيه الآن', en: 'Shop it' },
+        },
+      });
+    }
+    if (demoProduct && skincareReel) {
+      await prisma.shortTag.create({
+        data: {
+          shortId: skincareReel.id,
+          productId: demoProduct.id,
+          positionSec: 12,
+          labelJson: { ar: 'أضيفيه لسلتك', en: 'Add to cart' },
+        },
+      });
+    }
   } catch (err: any) {
     console.log(`    Shorts: ${err.message?.slice(0, 60)}`);
   }
