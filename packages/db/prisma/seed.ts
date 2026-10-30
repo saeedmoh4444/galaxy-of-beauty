@@ -3723,10 +3723,30 @@ async function main() {
       : null;
     if (ordersVendor && buyer && ordersProduct) {
       for (const total of [120, 80]) {
+        // Money gate (audit M2): orders are only fulfillable with a PAID
+        // checkout — attach a wallet checkout to each demo order so the
+        // vendor dashboard E2E exercises the real paid path.
+        const checkout = await prisma.storeCheckout.create({
+          data: {
+            customerId: buyer.id,
+            idempotencyKey: `seed_order_${total}_${Date.now()}_${Math.random().toString(36).slice(2, 8)}`,
+            method: 'wallet',
+            subtotal: total,
+            total,
+            status: 'PAID',
+            shipPersonName: buyer.name || 'عميلة تجريبية',
+            shipMobile: buyer.phone || '0500000000',
+            shipLineAddress: 'شارع البذور',
+            shipCityName: 'RIYADH',
+            shipPostalCode: '12345',
+            shipCountryCode: 'SA',
+          },
+        });
         const order = await prisma.storeOrder.create({
           data: {
             vendorId: ordersVendor.id,
             customerId: buyer.id,
+            checkoutId: checkout.id,
             totalAmount: total,
             itemCount: 1,
             status: 'PENDING_FULFILLMENT',

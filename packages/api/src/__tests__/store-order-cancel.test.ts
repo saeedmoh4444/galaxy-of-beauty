@@ -42,6 +42,7 @@ async function createPurchasedOrder(opts: { method?: 'wallet' | 'online'; total?
         method: opts.method,
         subtotal: total,
         total,
+        status: 'PAID',
         shipPersonName: 'Test',
         shipMobile: '0500000000',
         shipLineAddress: 'Test Street',

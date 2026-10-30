@@ -8,7 +8,7 @@ import { describe, it, expect, beforeAll, afterAll } from 'vitest';
 import { prisma } from '@galaxy/db';
 import { appRouter } from '../routers/index';
 import type { JwtPayload } from '../lib/jwt';
-import { buildUser } from './factories';
+import { buildUser, paidCheckoutForOrder } from './factories';
 
 let admin: JwtPayload;
 let merchant: JwtPayload;
@@ -62,6 +62,10 @@ describe('store registration + approval (Store Phase 1)', () => {
     } catch {}
     try {
       await prisma.vendor.deleteMany({ where: { id: { in: createdVendorIds } } });
+    } catch {}
+    try {
+      // Checkouts reference customers (onDelete Restrict) — clear before users.
+      await prisma.storeCheckout.deleteMany({ where: { customerId: { in: createdUserIds } } });
     } catch {}
     try {
       await prisma.user.deleteMany({ where: { id: { in: createdUserIds } } });
@@ -214,6 +218,7 @@ describe('store registration + approval (Store Phase 1)', () => {
     ).rejects.toThrow();
 
     const store = await caller(merchant);
+    await paidCheckoutForOrder(createdOrderIds[0]!);
     const res = await store.vendorPortal.fulfillOrder({ orderId: createdOrderIds[0]! });
     expect(res.status).toBe('FULFILLED');
 
@@ -340,6 +345,7 @@ describe('store registration + approval (Store Phase 1)', () => {
     const payoutsBefore = await prisma.payout.count({
       where: { vendorId: createdVendorIds[0] },
     });
+    await paidCheckoutForOrder(order.id);
     await store.vendorPortal.fulfillOrder({ orderId: order.id });
 
     const payout = await prisma.payout.findFirst({
@@ -381,6 +387,7 @@ describe('store registration + approval (Store Phase 1)', () => {
     createdOrderIds.push(order.id);
 
     const store = await caller(merchant);
+    await paidCheckoutForOrder(order.id);
     await store.vendorPortal.fulfillOrder({ orderId: order.id });
 
     const payout = await prisma.payout.findFirst({

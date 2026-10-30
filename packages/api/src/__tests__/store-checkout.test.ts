@@ -35,6 +35,7 @@ async function authCaller(user: JwtPayload) {
 
 let customer: JwtPayload;
 let productId: number;
+let vendorOwnerId: number;
 const createdUserIds: number[] = [];
 const createdVendorIds: number[] = [];
 const createdCategoryIds: number[] = [];
@@ -86,6 +87,7 @@ beforeAll(async () => {
 
   const vendorUser = await prisma.user.create({ data: buildUser() });
   createdUserIds.push(vendorUser.id);
+  vendorOwnerId = vendorUser.id;
   const vendor = await prisma.vendor.create({ data: buildVendor({ userId: vendorUser.id }) });
   createdVendorIds.push(vendor.id);
   const cat = await prisma.productCategory.create({
@@ -363,5 +365,97 @@ describe('buyCart regression', () => {
     });
     expect(orders.length).toBeGreaterThanOrEqual(1);
     orders.forEach((o) => createdOrderIds.push(o.id));
+  });
+});
+
+describe('A2 — payment gates on fulfillment and cancel', () => {
+  async function vendorCaller() {
+    const user = await prisma.user.findUniqueOrThrow({ where: { id: vendorOwnerId } });
+    return authCaller({ id: user.id, role: 'CUSTOMER', email: user.email });
+  }
+
+  /** Earlier tests in this file consume the product stock — top up. */
+  async function restock() {
+    await prisma.product.update({ where: { id: productId }, data: { stock: 100 } });
+  }
+
+  it('fulfillOrder rejects an order with no checkout (audit M2)', async () => {
+    await restock();
+    await seedCart(1);
+    const c = await authCaller(customer);
+    await c.marketplace.buyCart({});
+    const order = await prisma.storeOrder.findFirstOrThrow({
+      where: { customerId: customer.id, checkoutId: null },
+      orderBy: { id: 'desc' },
+    });
+    createdOrderIds.push(order.id);
+
+    const vc = await vendorCaller();
+    await expect(vc.vendorPortal.fulfillOrder({ orderId: order.id })).rejects.toMatchObject({
+      code: 'PRECONDITION_FAILED',
+    });
+  });
+
+  it('fulfillOrder rejects an order whose checkout is not PAID (audit M2)', async () => {
+    await restock();
+    await seedCart(1);
+    const c = await authCaller(customer);
+    await c.marketplace.buyCart({});
+    const order = await prisma.storeOrder.findFirstOrThrow({
+      where: { customerId: customer.id, checkoutId: null },
+      orderBy: { id: 'desc' },
+    });
+    createdOrderIds.push(order.id);
+
+    // Attach a PENDING (unpaid) online checkout — stock exists, money does not.
+    const checkout = await prisma.storeCheckout.create({
+      data: {
+        customerId: customer.id,
+        idempotencyKey: `a2_pending_${order.id}`,
+        method: 'online',
+        subtotal: order.totalAmount,
+        total: order.totalAmount,
+        status: 'PENDING',
+        shipPersonName: 'Test',
+        shipMobile: '0500000000',
+        shipLineAddress: 'Test Street',
+        shipCityName: 'RIYADH',
+        shipPostalCode: '12345',
+        shipCountryCode: 'SA',
+      },
+    });
+    createdCheckoutIds.push(checkout.id);
+    await prisma.storeOrder.update({ where: { id: order.id }, data: { checkoutId: checkout.id } });
+
+    const vc = await vendorCaller();
+    await expect(vc.vendorPortal.fulfillOrder({ orderId: order.id })).rejects.toMatchObject({
+      code: 'PRECONDITION_FAILED',
+    });
+  });
+
+  it('cancelOrder on a checkout-less order refunds nothing (audit M4 — no money mint)', async () => {
+    await restock();
+    await seedCart(1);
+    const c = await authCaller(customer);
+    await c.marketplace.buyCart({});
+    const order = await prisma.storeOrder.findFirstOrThrow({
+      where: { customerId: customer.id, checkoutId: null },
+      orderBy: { id: 'desc' },
+    });
+    createdOrderIds.push(order.id);
+
+    const wallet = await prisma.wallet.upsert({
+      where: { userId: customer.id },
+      create: { userId: customer.id, balance: new Prisma.Decimal(0) },
+      update: {},
+    });
+    const balanceBefore = Number(wallet.balance);
+
+    const vc = await vendorCaller();
+    const cancelled = await vc.vendorPortal.cancelOrder({ orderId: order.id });
+    expect(cancelled.status).toBe('CANCELLED');
+
+    const after = await prisma.wallet.findUniqueOrThrow({ where: { userId: customer.id } });
+    expect(Number(after.balance)).toBe(balanceBefore);
   });
 });

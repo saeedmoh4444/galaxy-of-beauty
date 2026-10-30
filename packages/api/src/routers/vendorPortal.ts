@@ -1855,10 +1855,37 @@ export const vendorPortalRouter = router({
       const result = await prisma.$transaction(async (tx) => {
         const order = await tx.storeOrder.findUnique({
           where: { id: input.orderId },
-          select: { id: true, vendorId: true, status: true, totalAmount: true, customerId: true },
+          select: {
+            id: true,
+            vendorId: true,
+            status: true,
+            totalAmount: true,
+            customerId: true,
+            checkoutId: true,
+          },
         });
         if (!order || order.vendorId !== vendor.id) {
           throw new TRPCError({ code: 'NOT_FOUND', message: 'Order not found' });
+        }
+
+        // Money gate (audit M2): an order is only fulfillable once its
+        // checkout is PAID — without this, unpaid/abandoned orders would
+        // accrue vendor payouts the platform never collected.
+        if (!order.checkoutId) {
+          throw new TRPCError({
+            code: 'PRECONDITION_FAILED',
+            message: 'Unpaid order cannot be fulfilled',
+          });
+        }
+        const checkout = await tx.storeCheckout.findUnique({
+          where: { id: order.checkoutId },
+          select: { status: true },
+        });
+        if (!checkout || checkout.status !== 'PAID') {
+          throw new TRPCError({
+            code: 'PRECONDITION_FAILED',
+            message: 'Order payment is not confirmed',
+          });
         }
 
         // Atomic transition — the WHERE pins the old status, so a concurrent
@@ -1984,17 +2011,19 @@ export const vendorPortalRouter = router({
           data: { totalSales: { decrement: Number(order.totalAmount) } },
         });
 
-        // Money (audit #3): wallet-paid orders refund the customer
-        // immediately. Online-paid orders keep their money with the platform
-        // until the live Fatoorah refund API — the settlement run only counts
-        // FULFILLED orders, so the deferred refund is not double-paid.
+        // Money (audit #3/#4): ONLY a PAID wallet checkout refunds the
+        // customer immediately — a missing checkout means no money was
+        // ever collected (crediting it would mint balance). Online-paid
+        // orders keep their money with the platform until the live
+        // Fatoorah refund API — the settlement run only counts FULFILLED
+        // orders, so the deferred refund is not double-paid.
         const checkout = order.checkoutId
           ? await tx.storeCheckout.findUnique({
               where: { id: order.checkoutId },
-              select: { method: true },
+              select: { method: true, status: true },
             })
           : null;
-        if (!checkout || checkout.method === 'wallet') {
+        if (checkout && checkout.method === 'wallet' && checkout.status === 'PAID') {
           const wallet = await tx.wallet.findUnique({ where: { userId: order.customerId } });
           if (wallet) {
             const amount = Number(order.totalAmount);

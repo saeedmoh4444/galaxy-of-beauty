@@ -181,13 +181,18 @@ export const disputeRouter = router({
           });
           // Refund only once — repeated resolve calls must not double-credit.
           if (existing.status !== 'RESOLVED_CUSTOMER') {
+            // Money (audit #4): ONLY a PAID wallet checkout credits the
+            // customer — a missing checkout means no money was collected
+            // (crediting it would mint balance). Online-paid orders need
+            // the live Fatoorah refund API (user-gated); their order is
+            // still marked REFUNDED so the settlement run excludes it.
             const checkout = order.checkoutId
               ? await tx.storeCheckout.findUnique({
                   where: { id: order.checkoutId },
-                  select: { method: true },
+                  select: { method: true, status: true },
                 })
               : null;
-            if (!checkout || checkout.method === 'wallet') {
+            if (checkout && checkout.method === 'wallet' && checkout.status === 'PAID') {
               const wallet = await tx.wallet.findUnique({
                 where: { userId: order.customerId },
               });

@@ -9,6 +9,7 @@
  *   const booking = await prisma.booking.create({ data: buildBooking({ customerId: user.id }) });
  */
 import crypto from 'crypto';
+import { prisma } from '@galaxy/db';
 
 // ── Helpers ──────────────────────────────────────────────────
 
@@ -337,4 +338,31 @@ export function safeFutureDate(daysAhead: number): Date {
     d.setUTCDate(d.getUTCDate() + 1);
   }
   return d;
+}
+
+/**
+ * Attaches a PAID wallet checkout to an existing store order — the only
+ * state fulfillOrder accepts (audit M2) and the only state that refunds
+ * on cancel/dispute. Returns the checkout id.
+ */
+export async function paidCheckoutForOrder(orderId: number): Promise<number> {
+  const order = await prisma.storeOrder.findUniqueOrThrow({ where: { id: orderId } });
+  const checkout = await prisma.storeCheckout.create({
+    data: {
+      customerId: order.customerId,
+      idempotencyKey: `test_ck_${orderId}_${crypto.randomUUID().slice(0, 8)}`,
+      method: 'wallet',
+      subtotal: order.totalAmount,
+      total: order.totalAmount,
+      status: 'PAID',
+      shipPersonName: 'Test',
+      shipMobile: '0500000000',
+      shipLineAddress: 'Test Street',
+      shipCityName: 'RIYADH',
+      shipPostalCode: '12345',
+      shipCountryCode: 'SA',
+    },
+  });
+  await prisma.storeOrder.update({ where: { id: orderId }, data: { checkoutId: checkout.id } });
+  return checkout.id;
 }

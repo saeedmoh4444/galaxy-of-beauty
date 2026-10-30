@@ -9,7 +9,7 @@ import { describe, it, expect, beforeAll, afterAll } from 'vitest';
 import { prisma } from '@galaxy/db';
 import { appRouter } from '../routers/index';
 import type { JwtPayload } from '../lib/jwt';
-import { buildUser } from './factories';
+import { buildUser, paidCheckoutForOrder } from './factories';
 import { handleOrderSlaSweep } from '../workers/handlers';
 
 const createdUserIds: number[] = [];
@@ -43,6 +43,9 @@ async function mkOrder(vendorId: number, opts: { ageHours: number; status?: stri
     },
   });
   createdOrderIds.push(o.id);
+  if ((opts.status ?? 'PENDING_FULFILLMENT') === 'PENDING_FULFILLMENT') {
+    await paidCheckoutForOrder(o.id);
+  }
   return o;
 }
 
@@ -101,6 +104,8 @@ afterAll(async () => {
   await prisma.storeOrder.deleteMany({ where: { id: { in: createdOrderIds } } });
   await prisma.vendor.deleteMany({ where: { id: { in: createdVendorIds } } });
   await prisma.notificationTemplate.deleteMany({ where: { id: { in: createdTemplateIds } } });
+  // Checkouts reference customers (onDelete Restrict) — clear before users.
+  await prisma.storeCheckout.deleteMany({ where: { customerId: { in: createdUserIds } } });
   await prisma.user.deleteMany({ where: { id: { in: createdUserIds } } });
 });
 
