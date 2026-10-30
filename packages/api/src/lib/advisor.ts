@@ -261,7 +261,10 @@ export async function buildTrendInsight(
   const lastWeekStart = new Date(now.getTime() - 2 * weekMs);
 
   const recent = await prisma.booking.findMany({
-    where: { createdAt: { gte: lastWeekStart } },
+    // Per-user trend (matches the other insights' customerId scoping) —
+    // a global query picked up other customers' bookings, so parallel
+    // test suites and any busy category could hijack the user's trend.
+    where: { customerId: userId, createdAt: { gte: lastWeekStart } },
     include: { service: { select: { categoryId: true } } },
     take: 5000,
   });
