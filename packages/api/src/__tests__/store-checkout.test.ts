@@ -67,6 +67,11 @@ async function seedCart(quantity = 1): Promise<void> {
   }
 }
 
+/** Earlier tests in this file consume the product stock — top up. */
+async function restock() {
+  await prisma.product.update({ where: { id: productId }, data: { stock: 100 } });
+}
+
 /** Track every order of a checkout for teardown — StoreOrderItem rows keep
  *  the product FK (Restrict) alive until their orders are deleted. */
 async function trackOrdersFor(checkoutId: number): Promise<void> {
@@ -363,5 +368,80 @@ describe('buyCart regression', () => {
     });
     expect(orders.length).toBeGreaterThanOrEqual(1);
     orders.forEach((o) => createdOrderIds.push(o.id));
+  });
+});
+
+describe('A3 — checkout compensation and overdraw guard', () => {
+  it('compensates the placement when the gateway rejects the invoice', async () => {
+    await restock();
+    await seedCart(2);
+    chargeMock.mockResolvedValue({ shippingCharge: 15 });
+    sendMock.mockRejectedValue(new Error('gateway down'));
+
+    const before = await prisma.product.findUniqueOrThrow({ where: { id: productId } });
+    const vendorBefore = await prisma.vendor.findFirstOrThrow({
+      where: { id: before.vendorId },
+    });
+
+    const caller = await authCaller(customer);
+    const idempotencyKey = `sc_${Date.now()}_fail1`;
+    await expect(
+      caller.payments.payCart({ idempotencyKey, method: 'online', shipping: SHIPPING }),
+    ).rejects.toThrow();
+
+    // Checkout FAILED, orders CANCELLED, stock/sales/vendor totals restored.
+    const checkout = await prisma.storeCheckout.findUniqueOrThrow({
+      where: { idempotencyKey },
+    });
+    createdCheckoutIds.push(checkout.id);
+    expect(checkout.status).toBe('FAILED');
+
+    const orders = await prisma.storeOrder.findMany({ where: { checkoutId: checkout.id } });
+    expect(orders.length).toBeGreaterThanOrEqual(1);
+    expect(orders.every((o) => o.status === 'CANCELLED')).toBe(true);
+    orders.forEach((o) => createdOrderIds.push(o.id));
+
+    const after = await prisma.product.findUniqueOrThrow({ where: { id: productId } });
+    expect(after.stock).toBe(before.stock);
+    expect(after.sales).toBe(before.sales);
+
+    const vendorAfter = await prisma.vendor.findFirstOrThrow({ where: { id: before.vendorId } });
+    expect(Number(vendorAfter.totalSales)).toBe(Number(vendorBefore.totalSales));
+  });
+
+  it('refuses a wallet checkout that would overdraw (atomic balance check)', async () => {
+    await restock();
+    await seedCart(1);
+    await prisma.wallet.upsert({
+      where: { userId: customer.id },
+      create: { userId: customer.id, balance: new Prisma.Decimal(100) },
+      update: { balance: new Prisma.Decimal(100) },
+    });
+    chargeMock.mockResolvedValue({ shippingCharge: 0 });
+
+    const caller = await authCaller(customer);
+    const first = await caller.payments.payCart({
+      idempotencyKey: `sc_${Date.now()}_ov1`,
+      method: 'wallet',
+      shipping: SHIPPING,
+    });
+    expect(first.status).toBe('PAID');
+    createdCheckoutIds.push(first.checkoutId);
+    await trackOrdersFor(first.checkoutId);
+
+    // Second purchase with the now-empty wallet must reject without
+    // going negative (audit M6).
+    await restock();
+    await seedCart(1);
+    await expect(
+      caller.payments.payCart({
+        idempotencyKey: `sc_${Date.now()}_ov2`,
+        method: 'wallet',
+        shipping: SHIPPING,
+      }),
+    ).rejects.toMatchObject({ code: 'PRECONDITION_FAILED' });
+
+    const after = await prisma.wallet.findUniqueOrThrow({ where: { userId: customer.id } });
+    expect(Number(after.balance)).toBe(0);
   });
 });
