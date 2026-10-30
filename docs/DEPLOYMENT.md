@@ -246,3 +246,35 @@ is the reliable check.
 prints one benign "unrecognized configuration parameter" warning during
 restore. Data is unaffected — match pg_dump major version to the server
 to silence it.
+
+## TLS / Nginx (AUDIT 2026-10-30 — item 9)
+
+The prod compose now ships an `nginx` service terminating TLS:
+
+1. Place the certs on the host: `deploy/ssl/fullchain.pem` + `deploy/ssl/privkey.pem` (certbot or a managed LB).
+2. The compose-aware config is `deploy/nginx-compose.conf` (upstream `web:3000` on the gob-network; the original `deploy/nginx.conf` remains the host-mode variant).
+3. Ports 80 → 443 redirect + HSTS are configured; verify with `curl -I https://galaxyofbeauty.sa` (expect `strict-transport-security`).
+4. Cert rotation: renew into `deploy/ssl/` and `docker compose restart nginx`.
+
+## Staging Environment (AUDIT 2026-10-30 — item 7)
+
+`docker-compose.staging.yml` is a single-host prod rehearsal: same images and topology, one replica each, staging DB/secrets, payments in simulate mode, no alert paging, nginx on :8080.
+
+```bash
+cp .env.example .env.staging   # STAGING_DATABASE_URL + staging secrets
+docker compose -f docker-compose.yml -f docker-compose.staging.yml \
+  --env-file .env.staging up -d --build
+```
+
+Gate rule: migrations, money flows, and gateway wiring rehearse on staging BEFORE prod — never against the shared dev DB.
+
+## Monitoring Stack (AUDIT 2026-10-30 — item 10)
+
+```bash
+docker compose -f docker-compose.yml -f docker-compose.prod.yml \
+  --profile monitoring up -d   # prometheus :9090, alertmanager :9093, grafana :3001
+```
+
+- `deploy/prometheus.yml` scrapes the API `/metrics` endpoint with `deploy/alerts.yml` rules → Alertmanager.
+- Grafana admin password comes from `GRAFANA_ADMIN_PASSWORD`; `deploy/grafana-dashboard.json` is the starter dashboard.
+- The API must expose `/metrics` (prom-client) for the scrape to have data — in-memory counters (`lib/requestCounters.ts`) are the interim dashboard source until that lands.
