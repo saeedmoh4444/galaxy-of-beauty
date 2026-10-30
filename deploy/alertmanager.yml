@@ -1,0 +1,22 @@
+# ═══════════════════════════════════════════
+# Alertmanager — Galaxy of Beauty
+# ═══════════════════════════════════════════
+# Pages the same ALERT_WEBHOOK_URL endpoint the app's own alerting.ts
+# uses (see docs/operations/runbooks.md). Alertmanager does NOT do env
+# substitution — set the real webhook URL below at deploy time.
+
+global:
+  resolve_timeout: 5m
+
+route:
+  receiver: 'webhook'
+  group_by: ['alertname', 'severity']
+  group_wait: 30s
+  group_interval: 5m
+  repeat_interval: 4h
+
+receivers:
+  - name: 'webhook'
+    webhook_configs:
+      - url: 'https://example.com/alerts'  # TODO(ops): replace with the real ALERT_WEBHOOK_URL at deploy time
+        send_resolved: true

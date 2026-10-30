@@ -2,7 +2,22 @@
 # Galaxy of Beauty — Production Override
 # ═══════════════════════════════════════════
 # Extends docker-compose.yml with production settings.
-# Usage: docker compose -f docker-compose.yml -f docker-compose.prod.yml up -d
+#
+# Usage (secrets come from the env file, both for ${} interpolation and
+# as container environment via env_file):
+#   docker compose -f docker-compose.yml -f docker-compose.prod.yml \
+#     --env-file .env.production up -d --build
+#
+# Required in the env file: POSTGRES_PASSWORD, JWT_ACCESS_SECRET,
+# JWT_REFRESH_SECRET, CORS_ORIGIN (public site origin), SENTRY_DSN, and
+# every integration the platform actually uses (FATOORAH_API_TOKEN,
+# AWS_*, SMTP_*, OPENAI_API_KEY, TWILIO_*, ZATCA_*, ALERT_WEBHOOK_URL).
+# Nothing but nginx (80/443) is published to the host; postgres/redis/
+# socket/web live only on the internal network.
+#
+# Single web replica: compose replicas are invalid here (container_name +
+# host ports collide). Scale out with PM2 on bare metal, or move to a
+# real orchestrator — see docs/DEPLOYMENT.md.
 
 services:
   postgres:
@@ -14,15 +29,9 @@ services:
         reservations:
           memory: 512M
           cpus: '0.5'
-    environment:
-      POSTGRES_SHARED_BUFFERS: 512MB
-      POSTGRES_EFFECTIVE_CACHE_SIZE: 1GB
-      POSTGRES_MAINTENANCE_WORK_MEM: 128MB
-      POSTGRES_WAL_BUFFERS: 16MB
-      POSTGRES_MAX_CONNECTIONS: 100
+    ports: !reset []
     volumes:
       - postgres_data:/var/lib/postgresql/data
-      - ./scripts/backup-db.sh:/backup.sh:ro
 
   redis:
     deploy:
@@ -31,22 +40,29 @@ services:
           memory: 512M
           cpus: '1'
     command: redis-server --maxmemory 256mb --maxmemory-policy allkeys-lru --appendonly yes --save 900 1 --save 300 10
+    ports: !reset []
 
   web:
     build:
       dockerfile: apps/web/Dockerfile
       target: production
       args:
-        NEXT_PUBLIC_SENTRY_DSN: ${SENTRY_DSN}
-    environment:
+        NEXT_PUBLIC_SENTRY_DSN: ${SENTRY_DSN:-}
+        NEXT_PUBLIC_SOCKET_URL: ${NEXT_PUBLIC_SOCKET_URL:-}
+    # !override drops the base dev environment (dev JWT defaults would
+    # trip the weak-secret startup guard in production).
+    environment: !override
       NODE_ENV: production
-      SENTRY_DSN: ${SENTRY_DSN}
-    deploy:
-      replicas: 2
-      resources:
-        limits:
-          memory: 512M
-          cpus: '1'
+      SENTRY_DSN: ${SENTRY_DSN:-}
+      DATABASE_URL: "postgresql://${POSTGRES_USER:-gob_admin}:${POSTGRES_PASSWORD:?POSTGRES_PASSWORD is required}@postgres:5432/${POSTGRES_DB:-Galaxy_of_Beauty_db}?schema=public"
+      REDIS_URL: "redis://redis:6379"
+      JWT_ACCESS_SECRET: ${JWT_ACCESS_SECRET:?JWT_ACCESS_SECRET is required (>=32 chars)}
+      JWT_REFRESH_SECRET: ${JWT_REFRESH_SECRET:?JWT_REFRESH_SECRET is required (>=32 chars)}
+    env_file:
+      - path: .env
+        required: false
+    ports: !reset []
+    volumes: !reset []
     restart: always
     healthcheck:
       test: ["CMD", "wget", "-qO-", "http://localhost:3000/api/trpc/health"]
@@ -55,25 +71,73 @@ services:
       retries: 3
       start_period: 30s
 
+  # Real-time events — runs the runtime stage (needs the API sources for
+  # tsx), production env, no host port (nginx proxies /socket.io).
   socket:
+    build:
+      dockerfile: apps/web/Dockerfile
+      target: runtime
+    environment: !override
+      NODE_ENV: production
+      SOCKET_PORT: "4001"
+      CORS_ORIGIN: ${CORS_ORIGIN:?CORS_ORIGIN is required (public site origin, e.g. https://galaxyofbeauty.sa)}
+      DATABASE_URL: "postgresql://${POSTGRES_USER:-gob_admin}:${POSTGRES_PASSWORD:?POSTGRES_PASSWORD is required}@postgres:5432/${POSTGRES_DB:-Galaxy_of_Beauty_db}?schema=public"
+      REDIS_URL: "redis://redis:6379"
+      JWT_ACCESS_SECRET: ${JWT_ACCESS_SECRET:?JWT_ACCESS_SECRET is required}
+      JWT_REFRESH_SECRET: ${JWT_REFRESH_SECRET:?JWT_REFRESH_SECRET is required}
+    env_file:
+      - path: .env
+        required: false
+    ports: !reset []
+    volumes: !reset []
+    restart: always
+
+  # BullMQ worker — the PM2 gob-worker equivalent. Runs queues, cron
+  # sweeps (subscription renewal, loyalty expiry, token cleanup, ZATCA
+  # follow-ups, vendor webhooks) and the ops disk/queue health checks.
+  # Without this service, none of that runs under Docker.
+  worker:
+    build:
+      context: .
+      dockerfile: apps/web/Dockerfile
+      target: runtime
+    container_name: gob-worker
+    command: pnpm --filter @galaxy/api worker
+    environment: !override
+      NODE_ENV: production
+      DATABASE_URL: "postgresql://${POSTGRES_USER:-gob_admin}:${POSTGRES_PASSWORD:?POSTGRES_PASSWORD is required}@postgres:5432/${POSTGRES_DB:-Galaxy_of_Beauty_db}?schema=public"
+      REDIS_URL: "redis://redis:6379"
+      JWT_ACCESS_SECRET: ${JWT_ACCESS_SECRET:?JWT_ACCESS_SECRET is required}
+      JWT_REFRESH_SECRET: ${JWT_REFRESH_SECRET:?JWT_REFRESH_SECRET is required}
+    env_file:
+      - path: .env
+        required: false
+    restart: always
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
     deploy:
-      replicas: 1
       resources:
         limits:
-          memory: 256M
-          cpus: '0.5'
-    restart: always
+          memory: 512M
+          cpus: '1'
+    networks:
+      - gob-network
 
   # ── Daily DB backup sidecar (AUDIT_2026-10-30 item 2) ────────────────
   # Runs backup-container.sh (pg_dump over the compose network, gzip,
   # 14-day rotation) on a crond schedule. Default 03:00 UTC — override
   # with BACKUP_CRON. Verify by reading /backups/backup.log on the host
-  # volume after the first scheduled run.
+  # volume after the first scheduled run. Must join gob-network (the
+  # postgres service lives there, not on the default network).
   backup:
     image: postgres:15-alpine
     restart: always
     depends_on:
-      - postgres
+      postgres:
+        condition: service_healthy
     environment:
       PGHOST: postgres
       PGPORT: '5432'
@@ -92,6 +156,9 @@ services:
         echo "${BACKUP_CRON} /backup.sh >> /backups/backup.log 2>&1" | crontab -
         echo "backup sidecar scheduled: ${BACKUP_CRON}"
         exec crond -f
+    networks:
+      - gob-network
+
   # ── TLS termination + reverse proxy (AUDIT item 9) ─────────────
   # deploy/nginx-compose.conf mounts read-only; certs live on the host at
   # ./deploy/ssl/{fullchain,privkey}.pem (certbot or a managed LB).
@@ -100,6 +167,7 @@ services:
     restart: always
     depends_on:
       - web
+      - socket
     ports:
       - '80:80'
       - '443:443'
@@ -127,6 +195,10 @@ services:
     profiles: ['monitoring']
     image: prom/alertmanager:v0.27.0
     restart: always
+    command:
+      - '--config.file=/etc/alertmanager/alertmanager.yml'
+    volumes:
+      - ./deploy/alertmanager.yml:/etc/alertmanager/alertmanager.yml:ro
     ports:
       - '9093:9093'
     networks:
@@ -140,9 +212,46 @@ services:
       GF_SECURITY_ADMIN_PASSWORD: ${GRAFANA_ADMIN_PASSWORD:?GRAFANA_ADMIN_PASSWORD is required for the monitoring profile}
     ports:
       - '3001:3000'
+    volumes:
+      - grafana_data:/var/lib/grafana
+      - ./deploy/grafana/provisioning/datasources:/etc/grafana/provisioning/datasources:ro
+      - ./deploy/grafana/provisioning/dashboards:/etc/grafana/provisioning/dashboards:ro
+      - ./deploy/grafana-dashboard.json:/var/lib/grafana/dashboards/galaxy-of-beauty.json:ro
     networks:
       - gob-network
 
+  postgres-exporter:
+    profiles: ['monitoring']
+    image: prometheuscommunity/postgres-exporter:v0.15.0
+    restart: always
+    environment:
+      DATA_SOURCE_NAME: "postgresql://${POSTGRES_USER:-gob_admin}:${POSTGRES_PASSWORD:-}@postgres:5432/${POSTGRES_DB:-Galaxy_of_Beauty_db}?sslmode=disable"
+    networks:
+      - gob-network
+
+  redis-exporter:
+    profiles: ['monitoring']
+    image: oliver006/redis_exporter:v1.59.0
+    restart: always
+    command: ['--redis.addr=redis://redis:6379']
+    networks:
+      - gob-network
+
+  node-exporter:
+    profiles: ['monitoring']
+    image: prom/node-exporter:v1.8.1
+    restart: always
+    pid: host
+    volumes:
+      - '/proc:/host/proc:ro'
+      - '/sys:/host/sys:ro'
+      - '/:/rootfs:ro'
+    command:
+      - '--path.procfs=/host/proc'
+      - '--path.sysfs=/host/sys'
+      - '--path.rootfs=/rootfs'
+    networks:
+      - gob-network
 
   mobile:
     profiles: ["full"]
@@ -156,6 +265,8 @@ volumes:
   postgres_data:
     driver: local
   backups_data:
+    driver: local
+  grafana_data:
     driver: local
 
 networks:
