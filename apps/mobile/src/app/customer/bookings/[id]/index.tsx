@@ -11,7 +11,6 @@ import {
   Pressable,
   ActivityIndicator,
 } from 'react-native';
-} from 'react-native';
 import { useLocalSearchParams, useRouter } from 'expo-router';
 import { ScreenState } from '@/components/ScreenState';
 import { NpsCard } from '@/components/NpsCard';
