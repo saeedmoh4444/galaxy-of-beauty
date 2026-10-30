@@ -5,18 +5,41 @@ import { trpc } from '@/lib/trpc-react';
 import { useLocale } from '@/components/LocaleProvider';
 import { useAuthState } from '@/hooks/useAuthState';
 
+/** The real NotificationPreference fields (the screen previously used a
+ *  local interface with phantom bookings/promo/chat/reviews names). */
 interface NotificationPrefs {
-  bookings?: boolean;
-  promo?: boolean;
-  chat?: boolean;
-  reviews?: boolean;
+  bookingReminders: boolean;
+  promotions: boolean;
+  tips: boolean;
+  community: boolean;
+  emailDigest: boolean;
+  smsAlerts: boolean;
+  whatsappAlerts: boolean;
 }
+
+// UI rows → real preference fields (chat maps to community, reviews to
+// tips — the nearest content switches; email/sms/whatsapp rows arrive
+// with the full preference UI later).
+const ROWS = [
+  { field: 'bookingReminders', labelKey: 'mobile.notificationSettings.bookings' },
+  { field: 'promotions', labelKey: 'mobile.notificationSettings.promo' },
+  { field: 'community', labelKey: 'mobile.notificationSettings.chat' },
+  { field: 'tips', labelKey: 'mobile.notificationSettings.reviews' },
+] as const;
 
 export default function NotificationSettingsScreen(): JSX.Element {
   const { t } = useLocale();
   const isAuthed = useAuthState();
+  const utils = trpc.useUtils();
+
   const prefsQ = trpc.notificationPrefs.get.useQuery(undefined, { enabled: isAuthed });
-  const data = (prefsQ.data as NotificationPrefs | undefined) ?? {};
+  const data = (prefsQ.data as NotificationPrefs | undefined) ?? ({} as NotificationPrefs);
+
+  // D3 — the switches were dead (onValueChange={() => {}}). Persist each
+  // toggle through notificationPrefs.update.
+  const updateMut = trpc.notificationPrefs.update.useMutation({
+    onSuccess: () => void utils.notificationPrefs.get.invalidate(),
+  });
 
   if (prefsQ.isLoading) return <SkeletonList count={3} />;
 
@@ -35,20 +58,12 @@ export default function NotificationSettingsScreen(): JSX.Element {
       }
     >
       <Text style={styles.t}>{t('mobile.notificationSettings.title')}</Text>
-      {(['bookings', 'promo', 'chat', 'reviews'] as const).map((key) => (
-        <View key={key} style={styles.row}>
-          <Text style={styles.label}>
-            {key === 'bookings'
-              ? t('mobile.notificationSettings.bookings')
-              : key === 'promo'
-                ? t('mobile.notificationSettings.promo')
-                : key === 'chat'
-                  ? t('mobile.notificationSettings.chat')
-                  : t('mobile.notificationSettings.reviews')}
-          </Text>
+      {ROWS.map(({ field, labelKey }) => (
+        <View key={field} style={styles.row}>
+          <Text style={styles.label}>{t(labelKey)}</Text>
           <Switch
-            value={data[key] ?? true}
-            onValueChange={() => {}}
+            value={data[field] ?? true}
+            onValueChange={(value) => updateMut.mutate({ [field]: value })}
             trackColor={{ false: '#e5e7eb', true: '#6366f1' }}
           />
         </View>
@@ -68,7 +83,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
     borderRadius: 14,
     padding: 16,
-    marginBottom: 6,
+    marginBottom: 10,
   },
-  label: { fontSize: 14, fontWeight: '600', color: '#111827' },
+  label: { fontSize: 15, fontWeight: '600', color: '#111827' },
 });
