@@ -119,14 +119,19 @@ export default function BeautyShortsPage(): JSX.Element {
   const handleTagShop = async (tag: TagRow) => {
     tagClickedMut.mutate({ tagId: tag.id });
     if (tag.productId === null) return;
+    if (!isAuthenticated) {
+      // The tRPC client auto-redirects on UNAUTHORIZED — check auth
+      // BEFORE calling the cart mutation so anonymous taps get an inline
+      // login affordance instead of a jarring page navigation.
+      setNeedsLogin(true);
+      return;
+    }
     try {
       await addToCartMut.mutateAsync({ productId: tag.productId });
       setAddedTagId(tag.id);
       setNeedsLogin(false);
     } catch {
-      // Anonymous shoppers: addToCart is customer-gated — surface a login
-      // affordance instead of a silent noop.
-      setNeedsLogin(true);
+      /* server-side failure — leave the button actionable */
     }
   };
 
