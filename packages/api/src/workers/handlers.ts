@@ -574,6 +574,40 @@ export async function handleDailyStatsJob(job: Job<DailyStatsJob>): Promise<{
     const productSales = [...prodMap.values()];
     const aov = revenue / vendorOrders.length;
 
+    // Q3 Phase 3 — reel conversion attribution: an order is reel-attributed
+    // when its customer tapped a shoppable tag on the ordered product
+    // within the 7-day window BEFORE the order. Per-reel buckets feed the
+    // ReelDailyStat read-model the portal ranks reels by.
+    const ATTRIBUTION_WINDOW_MS = 7 * 86_400_000;
+    let reelOrders = 0;
+    let reelRevenue = 0;
+    const reelByShort = new Map<number, { orders: number; revenue: number }>();
+    for (const o of vendorOrders) {
+      const orderedProductIds = [...new Set(o.items.map((it) => it.productId))];
+      if (orderedProductIds.length === 0) continue;
+      const click = await prisma.shortTagClick.findFirst({
+        where: {
+          userId: o.customerId,
+          productId: { in: orderedProductIds },
+          clickedAt: {
+            gte: new Date(o.createdAt.getTime() - ATTRIBUTION_WINDOW_MS),
+            lte: o.createdAt,
+          },
+        },
+        orderBy: { clickedAt: 'asc' },
+        select: { shortId: true, productId: true },
+      });
+      if (!click) continue;
+      const line = o.items.find((it) => it.productId === click.productId);
+      const lineRevenue = line ? Number(line.priceSnapshot) * line.quantity : Number(o.totalAmount);
+      reelOrders += 1;
+      reelRevenue += lineRevenue;
+      const cur = reelByShort.get(click.shortId) ?? { orders: 0, revenue: 0 };
+      cur.orders += 1;
+      cur.revenue += lineRevenue;
+      reelByShort.set(click.shortId, cur);
+    }
+
     await prisma.vendorDailyStat.upsert({
       where: { vendorId_day: { vendorId, day } },
       create: {
@@ -585,6 +619,8 @@ export async function handleDailyStatsJob(job: Job<DailyStatsJob>): Promise<{
         newCustomers,
         returningCustomers,
         productSales,
+        reelOrders,
+        reelRevenue,
       },
       update: {
         revenue,
@@ -593,8 +629,17 @@ export async function handleDailyStatsJob(job: Job<DailyStatsJob>): Promise<{
         newCustomers,
         returningCustomers,
         productSales,
+        reelOrders,
+        reelRevenue,
       },
     });
+    for (const [shortId, agg] of reelByShort) {
+      await prisma.reelDailyStat.upsert({
+        where: { shortId_day: { shortId, day } },
+        create: { shortId, day, orders: agg.orders, revenue: agg.revenue },
+        update: { orders: agg.orders, revenue: agg.revenue },
+      });
+    }
     rows++;
   }
 
